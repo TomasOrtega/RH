@@ -16,11 +16,27 @@ namespace GlobalTheory.IsoTorus
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.inner_toLp_toLp]`. Simplify using `[Matrix.mul_apply, dotProduct, mul_comm]`.
+-/
 private lemma conjTranspose_mul_self_apply_eq_inner {m r : ℕ} (B : Matrix (Fin m) (Fin r) ℂ) (j k : Fin r) :
     (Bᴴ * B) j k = ⟪WithLp.toLp 2 (fun i => B i j), WithLp.toLp 2 (fun i => B i k)⟫_ℂ := by
   rw [EuclideanSpace.inner_toLp_toLp]
   simp [Matrix.mul_apply, dotProduct, mul_comm]
 
+/- English proof (translation)
+Set `K : Submodule ℂ (EuclideanSpace ℂ (Fin n))` to `W.comap (WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).toLinearMap`. Set `b` to `stdOrthonormalBasis ℂ K`. Set `B : Matrix (Fin n) (Fin (Module.finrank ℂ K)) ℂ` to `Matrix.of fun i j => (b j : EuclideanSpace ℂ (Fin n)) i`. Establish `hcol : ∀ j, WithLp.toLp 2 (fun i => B i j) = (b j : EuclideanSpace ℂ (Fin n))` using `fun j => rfl`. Establish `hmul : ∀ x : Fin n → ℂ, (B * Bᴴ) *ᵥ x = WithLp.ofLp (∑ j, ⟪(b j : EuclideanSpace ℂ (Fin n)), WithLp.toLp 2 x⟫_ℂ • (b j : EuclideanSpace ℂ (Fin n)))`.
+
+Introduce `x`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.conjTranspose_apply, B, Matrix.of_apply, EuclideanSpace.inner_eq_star_dotProduct, WithLp.ofLp_sum, WithLp.ofLp_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.star_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨_, B, ?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `j k`. Rewrite using `[conjTranspose_mul_self_apply_eq_inner, hcol, hcol, ← Submodule.coe_inner, b.inner_eq_ite]`.
+
+Simplify using `[Matrix.one_apply]`. Rewrite using `[hmul]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1` using `b.sum_repr' ⟨WithLp.toLp 2 x, hx⟩`.
+
+Establish `h2` using `congrArg (fun v : K => WithLp.ofLp (v : EuclideanSpace ℂ (Fin n))) h1`. Simplify `h2` using `[Submodule.coe_inner]`. Introduce `hx`. Establish `h3 : (∑ j, ⟪(b j : EuclideanSpace ℂ (Fin n)), WithLp.toLp 2 x⟫_ℂ • (b j : EuclideanSpace ℂ (Fin n))) ∈ K` using `K.sum_mem fun j _ => K.smul_mem _ (b j).2`. Establish `h4 : WithLp.ofLp (∑ j, ⟪(b j : EuclideanSpace ℂ (Fin n)), WithLp.toLp 2 x⟫_ℂ • (b j : EuclideanSpace ℂ (Fin n))) ∈ W` using `h3`.
+
+Rewrite `h4` using `[hx]`. Then use the resulting hypothesis.
+-/
 theorem exists_frame (W : Submodule ℂ (Fin n → ℂ)) :
     ∃ (r : ℕ) (B : Matrix (Fin n) (Fin r) ℂ), Bᴴ * B = 1 ∧ ∀ x, x ∈ W ↔ (B * Bᴴ) *ᵥ x = x := by
   classical
@@ -59,16 +75,31 @@ theorem exists_frame (W : Submodule ℂ (Fin n → ℂ)) :
           (b j : EuclideanSpace ℂ (Fin n))) ∈ W := h3
       rwa [hx] at h4
 
+/- English proof (translation)
+Use `Matrix.toLin'.injective (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify `h x` using `[Matrix.toLin'_apply]`.
+-/
 theorem ext_mulVec {A B : Matrix (Fin n) (Fin n) ℂ} (h : ∀ x, A *ᵥ x = B *ᵥ x) : A = B := by
   refine Matrix.toLin'.injective (LinearMap.ext fun x => ?_)
   simpa [Matrix.toLin'_apply] using h x
 
+/- English proof (translation)
+Take `⟨r, B, h1, h2⟩` from `exists_frame W`. Use `⟨B * Bᴴ, by rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose], ?_, h2⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Bᴴ B Bᴴ, h1, Matrix.one_mul]`.
+-/
 theorem exists_proj (W : Submodule ℂ (Fin n → ℂ)) :
     ∃ P : Matrix (Fin n) (Fin n) ℂ, Pᴴ = P ∧ P * P = P ∧ ∀ x, x ∈ W ↔ P *ᵥ x = x := by
   obtain ⟨r, B, h1, h2⟩ := exists_frame W
   refine ⟨B * Bᴴ, by rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose], ?_, h2⟩
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc Bᴴ B Bᴴ, h1, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨r, B, h1, h2⟩` from `exists_frame (LinearMap.ker (Matrix.toLin' (P - 1)))`. Establish `memP : ∀ x, x ∈ LinearMap.ker (Matrix.toLin' (P - 1)) ↔ P *ᵥ x = x`. Introduce `x`. Simplify using `[Matrix.toLin'_apply, Matrix.sub_mulVec, sub_eq_zero]`. Establish `hRR : (B * Bᴴ) * (B * Bᴴ) = B * Bᴴ`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Bᴴ B Bᴴ, h1, Matrix.one_mul]`. Establish `hPR : P * (B * Bᴴ) = B * Bᴴ` using `ext_mulVec fun x => by`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `(memP _).1 ((h2 _).2 (by rw [Matrix.mulVec_mulVec, hRR]))`. Establish `hRP : (B * Bᴴ) * P = P` using `ext_mulVec fun x => by`.
+
+Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `(h2 _).1 ((memP _).2 (by rw [Matrix.mulVec_mulVec, h']))`. Establish `hRs : (B * Bᴴ)ᴴ = B * Bᴴ`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Use `⟨r, B, h1, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem proj_frame {P : Matrix (Fin n) (Fin n) ℂ} (h : Pᴴ = P) (h' : P * P = P) :
     ∃ (r : ℕ) (B : Matrix (Fin n) (Fin r) ℂ), Bᴴ * B = 1 ∧ B * Bᴴ = P := by
   obtain ⟨r, B, h1, h2⟩ := exists_frame (LinearMap.ker (Matrix.toLin' (P - 1)))
@@ -90,6 +121,15 @@ theorem proj_frame {P : Matrix (Fin n) (Fin n) ℂ} (h : Pᴴ = P) (h' : P * P =
     _ = (B * Bᴴ) * P := by rw [Matrix.conjTranspose_mul, hRs, h]
     _ = P := hRP
 
+/- English proof (translation)
+Establish `e0 : NormedSpace.exp c = Complex.exp c` using `(congr_fun Complex.exp_eq_exp_ℂ c).symm`. Establish `hS : HasSum (fun k : ℕ => (((Nat.factorial k : ℂ)⁻¹ * c ^ k) • P + if k = 0 then 1 - P else 0)) (Complex.exp c • P + (1 - P))`. Use `HasSum.add ?_ (hasSum_ite_eq 0 (1 - P))` and prove the remaining obligations. Establish `h0` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) c`. Rewrite `h0` using `[e0]`.
+
+Simplify `h0.smul_const P` using `only [smul_eq_mul]`. Establish `hT` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) (c • P)`. Establish `heq : (fun k : ℕ => ((Nat.factorial k : ℂ)⁻¹) • (c • P) ^ k) = fun k : ℕ => (((Nat.factorial k : ℂ)⁻¹ * c ^ k) • P + if k = 0 then 1 - P else 0)`. Use function extensionality and compare the values at `k`. Break down `k with _ | m` into its components or cases.
+
+Simplify using the standard rewrite rules. Rewrite using `[smul_pow, IsIdempotentElem.pow_succ_eq m h, smul_smul]`. Simplify using the standard rewrite rules. Rewrite `hT` using `[heq]`. Rewrite using `[hT.unique hS]`.
+
+Use `module`.
+-/
 theorem exp_idem {P : Matrix (Fin n) (Fin n) ℂ} (h : P * P = P) (c : ℂ) :
     NormedSpace.exp (c • P) = 1 + (Complex.exp c - 1) • P := by
   have e0 : NormedSpace.exp c = Complex.exp c := (congr_fun Complex.exp_eq_exp_ℂ c).symm
@@ -118,23 +158,38 @@ section Tor
 
 variable {P Q : Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+Simplify using `only [tor, add_mul, one_mul, smul_mul_assoc, hP, hQP, smul_zero, add_zero]`. Use `module`.
+-/
 theorem tor_P (hP : P * P = P) (hQP : Q * P = 0) (c d : ℂ) : tor P Q c d * P = c • P := by
   simp only [tor, add_mul, one_mul, smul_mul_assoc, hP, hQP, smul_zero, add_zero]
   module
 
+/- English proof (translation)
+Simplify using `only [tor, mul_add, mul_one, mul_smul_comm, hQ, hQP, smul_zero, add_zero]`. Use `module`.
+-/
 theorem Q_tor (hQ : Q * Q = Q) (hQP : Q * P = 0) (c d : ℂ) : Q * tor P Q c d = d • Q := by
   simp only [tor, mul_add, mul_one, mul_smul_comm, hQ, hQP, smul_zero, add_zero]
   module
 
+/- English proof (translation)
+Simplify using `only [tor, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_smul, hP, hQ, hPQ, hQP, smul_zero, add_zero]`. Use `module`.
+-/
 theorem tor_tor (hP : P * P = P) (hQ : Q * Q = Q) (hPQ : P * Q = 0) (hQP : Q * P = 0) (c d c' d' : ℂ) :
     tor P Q c d * tor P Q c' d' = tor P Q (c * c') (d * d') := by
   simp only [tor, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_smul, hP, hQ,
     hPQ, hQP, smul_zero, add_zero]
   module
 
+/- English proof (translation)
+Simplify using `[tor]`.
+-/
 theorem tor_one : tor P Q 1 1 = 1 := by
   simp [tor]
 
+/- English proof (translation)
+Establish `h1 : Pᴴ = P` using `hP.isSelfAdjoint`. Establish `h2 : P * P = P` using `hP.isIdempotentElem`. Establish `h3` using `Matrix.l2_opNorm_conjTranspose_mul_self P`. Rewrite `h3` using `[h1, h2]`. Use polynomial arithmetic with `[norm_nonneg P]`.
+-/
 private theorem norm_le_one_of_isStarProjection {n : ℕ} {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsStarProjection P) :
     ‖P‖ ≤ 1 := by
   have h1 : Pᴴ = P := hP.isSelfAdjoint
@@ -143,6 +198,11 @@ private theorem norm_le_one_of_isStarProjection {n : ℕ} {P : Matrix (Fin n) (F
   rw [h1, h2] at h3
   nlinarith [norm_nonneg P]
 
+/- English proof (translation)
+Establish `e : tor P Q (c : ℂ) (d : ℂ) = (d : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) + ((1 - d : ℝ) : ℂ) • (1 - Q) + ((c - 1 : ℝ) : ℂ) • P`. Simplify using `only [tor]`. Use `push_cast`. Use `module`. Establish `hn : ∀ r : ℝ, 0 ≤ r → ∀ A : Matrix (Fin n) (Fin n) ℂ, ‖A‖ ≤ 1 → ‖(r : ℂ) • A‖ ≤ r`.
+
+Introduce `r hr A hA`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hr]`. Conclude with `mul_le_of_le_one_right hr hA`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_tor_le (hP : IsStarProjection P) (hQ : IsStarProjection Q) {c d : ℝ} (hc : 1 ≤ c) (hd : d ≤ 1)
     (hd' : 0 ≤ d) : ‖tor P Q c d‖ ≤ c := by
   have e : tor P Q (c : ℂ) (d : ℂ) = (d : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) + ((1 - d : ℝ) : ℂ) • (1 - Q) +
@@ -161,10 +221,16 @@ theorem norm_tor_le (hP : IsStarProjection P) (hQ : IsStarProjection Q) {c d : �
           (hn _ (by linarith) _ (norm_le_one_of_isStarProjection hQ.one_sub))) (hn _ (by linarith) _ (norm_le_one_of_isStarProjection hP))
     _ = c := by ring
 
+/- English proof (translation)
+Simplify using `only [tor]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tor_symm (c d : ℂ) : tor P Q c d = tor Q P d c := by
   simp only [tor]
   abel
 
+/- English proof (translation)
+Establish `hc : Commute (s • P) ((-s) • Q)` using `by show (s • P) * ((-s) • Q) = ((-s) • Q) * (s • P)`. Simplify using `only [smul_mul_assoc, mul_smul_comm, hPQ, hQP, smul_zero]`. Rewrite using `[show s • (P - Q) = s • P + (-s) • Q by module, Matrix.exp_add_of_commute _ _ hc, exp_idem hP, exp_idem hQ]`. Simplify using `only [tor, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, hPQ, smul_zero, add_zero]`.
+-/
 theorem exp_tor (hP : P * P = P) (hQ : Q * Q = Q) (hPQ : P * Q = 0) (hQP : Q * P = 0) (s : ℂ) :
     NormedSpace.exp (s • (P - Q)) = tor P Q (Complex.exp s) (Complex.exp (-s)) := by
   have hc : Commute (s • P) ((-s) • Q) := by
@@ -175,6 +241,11 @@ theorem exp_tor (hP : P * P = P) (hQ : Q * Q = Q) (hPQ : P * Q = 0) (hQP : Q * P
   simp only [tor, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, hPQ,
     smul_zero, add_zero]
 
+/- English proof (translation)
+Establish `hXP : P * X * P = 0` using `by rw [mul_assoc, h1, mul_zero]`. Establish `hL : tor P Q c d * X = X + (c - 1) • (P * X)`. Simplify using `only [tor, add_mul, one_mul, smul_mul_assoc, h2, smul_zero, add_zero]`. Establish `h3' : X - P * X - X * Q + P * X * Q = 0`. Rewrite using `[← h3]`.
+
+Simplify using `only [sub_mul, mul_sub, one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[hL]`. Simplify using `only [tor, add_mul, mul_add, mul_one, smul_mul_assoc, mul_smul_comm, h1, hXP, smul_zero, add_zero]`. Take the linear combination `(norm := module) h3'`.
+-/
 theorem tor_conj (hP : P * P = P) (hQ : Q * Q = Q) (hPQ : P * Q = 0) (hQP : Q * P = 0)
     {X : Matrix (Fin n) (Fin n) ℂ} (h1 : X * P = 0) (h2 : Q * X = 0) (h3 : (1 - P) * X * (1 - Q) = 0)
     (c d : ℂ) : tor P Q c d * X * tor P Q d c =
@@ -190,6 +261,37 @@ theorem tor_conj (hP : P * P = P) (hQ : Q * Q = Q) (hPQ : P * Q = 0) (hQP : Q * 
 
 end Tor
 
+/- English proof (translation)
+Establish `memnw1 : ∀ (M : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → ℂ), (∀ v, star y ⬝ᵥ (M *ᵥ v) = 0) ↔ Mᴴ *ᵥ y = 0`. Introduce `M y`. Establish `e : ∀ v, star y ⬝ᵥ (M *ᵥ v) = star (Mᴴ *ᵥ y) ⬝ᵥ v`. Introduce `v`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.star_mulVec, Matrix.conjTranspose_conjTranspose]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `hself` using `hv (Mᴴ *ᵥ y)`. Rewrite `hself` using `[e]`. Conclude with `dotProduct_star_self_eq_zero.1 hself`.
+
+Introduce `hz v`. Simplify using `[e, hz]`. Establish `memnw2 : ∀ (M : Matrix (Fin n) (Fin n) ℂ), M = 0 ↔ ∀ v, M *ᵥ v = 0` using `fun M => ⟨fun hM v => by rw [hM, Matrix.zero_mulVec], fun hv => ext_mulVec fun v => by rw [hv, Matrix.zero_mulVec]⟩`. Establish `hJJ : Jm ε * Jm ε = 1` using `Jm_mul_self ε`. Establish `hJh : (Jm ε)ᴴ = Jm ε` using `Jm_conjTranspose ε`.
+
+Establish `hQ : (Jm ε * P * Jm ε) * (Jm ε * P * Jm ε) = Jm ε * P * Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Jm ε * P * Jm ε := by rw [hJJ, Matrix.mul_one, Matrix.mul_assoc (Jm ε) P P, h']`. Establish `hQQ0 : (Jm ε * P * Jm ε) * (1 - Jm ε * P * Jm ε) = 0`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.mul_one, hQ, sub_self]`. Establish `ko : ∀ y, (∀ x ∈ W, star y ⬝ᵥ (Jm ε *ᵥ x) = 0) ↔ (Jm ε * P * Jm ε) *ᵥ y = 0`. Introduce `y`. Establish `hr : (∀ x ∈ W, star y ⬝ᵥ (Jm ε *ᵥ x) = 0) ↔ ∀ v, star y ⬝ᵥ ((Jm ε * P) *ᵥ v) = 0`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy v`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hy _ ((hW _).2 (by rw [Matrix.mulVec_mulVec, h']))`. Introduce `hv x hx`. Establish `hx'` using `hv x`.
+
+Rewrite `hx'` using `[← Matrix.mulVec_mulVec, (hW x).1 hx]`. Then use the resulting hypothesis. Establish `e2 : P * Jm ε = Jm ε * (Jm ε * P * Jm ε)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Rewrite using `[hr, memnw1, Matrix.conjTranspose_mul, h, hJh]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hz`. Rewrite using `[Matrix.mul_assoc (Jm ε) P (Jm ε), ← Matrix.mulVec_mulVec, hz, Matrix.mulVec_zero]`. Introduce `hz`. Rewrite using `[e2, ← Matrix.mulVec_mulVec, hz, Matrix.mulVec_zero]`. Simplify using `only [NW, Set.mem_setOf_eq]`.
+
+Unfold `herm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `(memnw2 _).2 fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `h1 _ ((hW _).2 (by rw [Matrix.mulVec_mulVec, h']))`. Use `(memnw2 _).2 fun v => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `(ko _).1 (fun x hx => h3 v x hx)`.
+
+Use `(memnw2 _).2 fun v => ?_` and prove the remaining obligations. Establish `hy : (Jm ε * P * Jm ε) *ᵥ ((1 - Jm ε * P * Jm ε) *ᵥ v) = 0`. Rewrite using `[Matrix.mulVec_mulVec, hQQ0, Matrix.zero_mulVec]`. Establish `hin` using `h2 _ ((ko _).2 hy)`. Rewrite `hin` using `[hW]`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, hin, sub_self]`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[← (hW x).1 hx, Matrix.mulVec_mulVec, h1, Matrix.zero_mulVec]`.
+
+Introduce `y hy`. Establish `hQy : (Jm ε * P * Jm ε) *ᵥ y = 0` using `(ko y).1 hy`. Establish `e3` using `congrArg (fun M => M *ᵥ y) h3`. Simplify using `only [Matrix.zero_mulVec] at e3`. Rewrite `e3` using `[← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, hQy, sub_zero, ← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`.
+
+Rewrite using `[hW]`. Conclude with `e3.symm`. Introduce `y x hx`. Establish `hz : (Jm ε * P * Jm ε) *ᵥ ((umat m - 1) *ᵥ y) = 0`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.zero_mulVec]`.
+
+Conclude with `(ko _).2 hz x hx`.
+-/
 theorem mem_NW {ε : Fin n → Bool} {W : Submodule ℂ (Fin n → ℂ)} {P : Matrix (Fin n) (Fin n) ℂ}
     (h : Pᴴ = P) (h' : P * P = P) (hW : ∀ x, x ∈ W ↔ P *ᵥ x = x) (m : UJ ε) :
     m ∈ NW ε W ↔ (umat m - 1) * P = 0 ∧ (Jm ε * P * Jm ε) * (umat m - 1) = 0 ∧
@@ -273,6 +375,21 @@ theorem mem_NW {ε : Fin n → Bool} {W : Submodule ℂ (Fin n → ℂ)} {P : Ma
 def mid (J P : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   (1 / 2 : ℂ) • ((1 + J) * (1 - P - J * P * J))
 
+/- English proof (translation)
+Establish `hJJ : ∀ x : Matrix (Fin n) (Fin n) ℂ, J * (J * x) = x` using `fun x => by rw [← mul_assoc, hJ, one_mul]`. Establish `hPP : ∀ x : Matrix (Fin n) (Fin n) ℂ, P * (P * x) = P * x` using `fun x => by rw [← mul_assoc, h']`. Establish `hi' : P * (J * P) = 0` using `by rw [← mul_assoc, hi]`. Establish `hi'' : ∀ x : Matrix (Fin n) (Fin n) ℂ, P * (J * (P * x)) = 0` using `fun x => by`. Rewrite using `[← mul_assoc, ← mul_assoc, hi, zero_mul]`.
+
+Establish `hs : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Establish `htr1 : (J * (P * J)).trace = P.trace` using `by rw [Matrix.trace_mul_comm, mul_assoc, hJ, mul_one]`. Establish `htr2 : (J * P).trace = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `htr3 : (P * J).trace = 0` using `by rw [Matrix.trace_mul_comm]; exact htr2`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [mid, Matrix.conjTranspose_smul, Matrix.conjTranspose_mul, Matrix.conjTranspose_sub, Matrix.conjTranspose_add, Matrix.conjTranspose_one, hJ', h, hs]`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, mul_one, one_mul, mul_assoc, hJJ, hJ]`. Use `module`. Simplify using `only [mid, smul_mul_assoc, mul_smul_comm, smul_smul]`.
+
+Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, mul_one, one_mul, mul_assoc, hJJ, hJ, hPP, h', hi', hi'', mul_zero, sub_zero, add_zero]`. Use `module`. Simplify using `only [mid, mul_smul_comm]`. Simplify using `only [mul_sub, mul_add, add_mul, mul_one, one_mul, mul_assoc, hJJ, hJ]`. Use `module`.
+
+Simplify using `only [mid, smul_mul_assoc]`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, mul_one, one_mul, mul_assoc, hJJ, hJ]`. Use `module`. Simplify using `only [mid, mul_smul_comm]`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, mul_one, one_mul, mul_assoc, hJJ, hJ, hPP, h', hi', hi'', mul_zero, zero_mul, sub_zero, add_zero]`.
+
+Use `module`. Simplify using `only [mid, smul_mul_assoc]`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, mul_one, one_mul, mul_assoc, hJJ, hJ, hPP, h', hi', hi'', mul_zero, zero_mul, sub_zero, add_zero]`. Use `module`. Simplify using `only [mid, Matrix.trace_smul, mul_sub, sub_mul, mul_add, add_mul, mul_one, one_mul, mul_assoc, hJJ, hPP, hi', hi'', Matrix.trace_sub, Matrix.trace_add, htr1, htr2, htr3, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mid_facts {J P : Matrix (Fin n) (Fin n) ℂ} (hJ : J * J = 1) (hJ' : Jᴴ = J)
     (h : Pᴴ = P) (h' : P * P = P) (hi : P * J * P = 0) :
     (mid J P)ᴴ = mid J P ∧ mid J P * mid J P = mid J P ∧ J * mid J P = mid J P ∧ mid J P * J = mid J P ∧
@@ -317,15 +434,24 @@ theorem mid_facts {J P : Matrix (Fin n) (Fin n) ℂ} (hJ : J * J = 1) (hJ' : J�
       hPP, hi', hi'', Matrix.trace_sub, Matrix.trace_add, htr1, htr2, htr3, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, h]`.
+-/
 private theorem mul_mul_right_of_mul_eq {l m p q : Type*} [Fintype m] [Fintype p] {A : Matrix l m ℂ} {B : Matrix m p ℂ}
     {C : Matrix l p ℂ} (h : A * B = C) (W : Matrix p q ℂ) : A * (B * W) = C * W := by
   rw [← Matrix.mul_assoc, h]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h]`.
+-/
 private theorem mul_mul_mul_right_of_mul_mul_eq {l m p q s : Type*} [Fintype m] [Fintype p] [Fintype q] {A : Matrix l m ℂ}
     {B : Matrix m p ℂ} {C : Matrix p q ℂ} {D : Matrix l q ℂ} (h : A * B * C = D) (W : Matrix q s ℂ) :
     A * (B * (C * W)) = D * W := by
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hX, hY, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Xᴴ * (X * Xᴴ * A * (Y * Yᴴ)) * Y := by simp only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [hXM, hYN, h, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 private theorem conjTranspose_mul_mul_eq_zero_of_proj {r s : ℕ} {X : Matrix (Fin n) (Fin r) ℂ} {Y : Matrix (Fin n) (Fin s) ℂ}
     {M N A : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ * X = 1) (hXM : X * Xᴴ = M) (hY : Yᴴ * Y = 1)
     (hYN : Y * Yᴴ = N) (h : M * A * N = 0) : Xᴴ * A * Y = 0 := by
@@ -334,11 +460,17 @@ private theorem conjTranspose_mul_mul_eq_zero_of_proj {r s : ℕ} {X : Matrix (F
     _ = Xᴴ * (X * Xᴴ * A * (Y * Yᴴ)) * Y := by simp only [Matrix.mul_assoc]
     _ = 0 := by rw [hXM, hYN, h, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mul_eq_smul_of_mul_proj_eq_smul {r : ℕ} {X : Matrix (Fin n) (Fin r) ℂ} {M A : Matrix (Fin n) (Fin n) ℂ} {c : ℂ}
     (hX : Xᴴ * X = 1) (hXM : X * Xᴴ = M) (h : A * M = c • M) : A * X = c • X := by
   calc A * X = A * (X * Xᴴ) * X := by rw [Matrix.mul_assoc, Matrix.mul_assoc, hX, Matrix.mul_one]
     _ = c • X := by rw [hXM, h, Matrix.smul_mul, ← hXM, Matrix.mul_assoc, hX, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `h2 : (2 : ℂ) • x = 0`. Rewrite using `[two_smul]`. Use `nth_rw 2 [h]`. Conclude with `add_neg_cancel _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem eq_zero_of_eq_neg_flag_measures {x : Matrix (Fin n) (Fin n) ℂ} (h : x = -x) : x = 0 := by
   have h2 : (2 : ℂ) • x = 0 := by
     rw [two_smul]
@@ -347,6 +479,25 @@ private theorem eq_zero_of_eq_neg_flag_measures {x : Matrix (Fin n) (Fin n) ℂ}
   calc x = (1 / 2 : ℂ) • ((2 : ℂ) • x) := by rw [smul_smul]; norm_num
     _ = 0 := by rw [h2, smul_zero]
 
+/- English proof (translation)
+Establish `hJ2 : (-J) * (-J) = 1` using `by rw [neg_mul_neg, hJ]`. Establish `hJ2' : (-J)ᴴ = -J` using `by rw [conjTranspose_neg, hJ']`. Establish `hi2 : P * (-J) * P = 0` using `by rw [mul_neg, neg_mul, hi, neg_zero]`. Take `⟨hMs, hMM, hJM, hMJ, hPM, hMP, hMt⟩` from `mid_facts hJ hJ' h h' hi`. Take `⟨hNs, hNN, hJN, hNJ, hPN, hNP, hNt⟩` from `mid_facts hJ2 hJ2' h h' hi2`.
+
+Take `⟨r, B, hBB, hBP⟩` from `proj_frame h h'`. Take `⟨s, D, hDD, hDM⟩` from `proj_frame hMs hMM`. Take `⟨t, E, hEE, hEN⟩` from `proj_frame hNs hNN`. Establish `hJN' : J * mid (-J) P = -mid (-J) P` using `neg_eq_iff_eq_neg.mp (by rw [← neg_mul]; exact hJN)`. Establish `hNJ' : mid (-J) P * J = -mid (-J) P` using `neg_eq_iff_eq_neg.mp (by rw [← mul_neg]; exact hNJ)`.
+
+Establish `hMN : mid J P * mid (-J) P = 0` using `eq_zero_of_eq_neg_flag_measures (by`. Combine the equalities or inequalities in the displayed calculation. Establish `hNM : mid (-J) P * mid J P = 0` using `eq_zero_of_eq_neg_flag_measures (by`. Combine the equalities or inequalities in the displayed calculation. Establish `hJD : J * D = D`.
+
+Use `mul_eq_smul_of_mul_proj_eq_smul (A := J) (c := 1) hDD hDM (by rw [one_smul, hJM])` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `hJE : J * E = -E`. Use `mul_eq_smul_of_mul_proj_eq_smul (A := J) (c := -1) hEE hEN (by rw [neg_one_smul, hJN'])` as an intermediate fact. Rewrite `this` using `[neg_one_smul]`. Then use the resulting hypothesis.
+
+Establish `hsum : mid J P + mid (-J) P = 1 - P - J * P * J`. Simplify using `only [mid, neg_mul, mul_neg, neg_neg, add_mul, one_mul]`. Use `module`. Use `⟨r, s, t, B, D, E, ?_, ?_, ?_, hBB, hDD, hEE, hBP, conjTranspose_mul_mul_eq_zero_of_proj hBB hBP hBB hBP hi, ?_, ?_, ?_, ?_, ?_, ?_, hJD, hJE, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hBP, Matrix.trace_mul_comm, hBB, Matrix.trace_one, Fintype.card_fin]`.
+
+Rewrite using `[← hMt, ← hDM, Matrix.trace_mul_comm, hDD, Matrix.trace_one, Fintype.card_fin]`. Rewrite using `[← hNt, ← hEN, Matrix.trace_mul_comm, hEE, Matrix.trace_one, Fintype.card_fin]`. Use `conjTranspose_mul_mul_eq_zero_of_proj (A := 1) hBB hBP hDD hDM (by rw [Matrix.mul_one, hPM])` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Use `conjTranspose_mul_mul_eq_zero_of_proj (A := 1) hBB hBP hEE hEN (by rw [Matrix.mul_one, hPN])` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Use `conjTranspose_mul_mul_eq_zero_of_proj (A := 1) hDD hDM hBB hBP (by rw [Matrix.mul_one, hMP])` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Use `conjTranspose_mul_mul_eq_zero_of_proj (A := 1) hEE hEN hBB hBP (by rw [Matrix.mul_one, hNP])` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis.
+
+Use `conjTranspose_mul_mul_eq_zero_of_proj (A := 1) hDD hDM hEE hEN (by rw [Matrix.mul_one, hMN])` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Use `conjTranspose_mul_mul_eq_zero_of_proj (A := 1) hEE hEN hDD hDM (by rw [Matrix.mul_one, hNM])` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Use `congrArg Matrix.conjTranspose hJD` as an intermediate fact.
+
+Rewrite `this` using `[conjTranspose_mul, hJ']`. Then use the resulting hypothesis. Use `congrArg Matrix.conjTranspose hJE` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, hJ', conjTranspose_neg]`. Then use the resulting hypothesis. Rewrite using `[hDM, hEN, ← Matrix.mul_assoc B, hBP, ← Matrix.mul_assoc, add_assoc (P + J * P * J), hsum]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem frame_decomposition_of_projection_J {J P : Matrix (Fin n) (Fin n) ℂ} (hJ : J * J = 1) (hJ' : Jᴴ = J) (h : Pᴴ = P)
     (h' : P * P = P) (hi : P * J * P = 0) :
     ∃ (r s t : ℕ) (B : Matrix (Fin n) (Fin r) ℂ) (D : Matrix (Fin n) (Fin s) ℂ) (E : Matrix (Fin n) (Fin t) ℂ),
@@ -404,6 +555,13 @@ private theorem frame_decomposition_of_projection_J {J P : Matrix (Fin n) (Fin n
   · rw [hDM, hEN, ← Matrix.mul_assoc B, hBP, ← Matrix.mul_assoc, add_assoc (P + J * P * J), hsum]
     abel
 
+/- English proof (translation)
+Take `⟨r, s, t, B, D, E, hr, hs, htt, hBB, hDD, hEE, hBP, hBJB, hBD, hBE, hDB, hEB, hDE, hED, hJD, hJE, hDJ, hEJ, hC⟩` from `frame_decomposition_of_projection_J hJ hJ' h h' hi`. Take `⟨r', s', t', C, D', E', hr', hs', ht', hCC, hDD', hEE', hCP, hCJC, hCD, hCE, hDC, hEC, hDE', hED', hJD', hJE', hDJ', hEJ', hC'⟩` from `frame_decomposition_of_projection_J hJ hJ' g g' gi`. Establish `e1 : r' = r` using `Nat.cast_injective (R := ℂ) (by rw [hr', hr, ht])`. Establish `e2 : s' = s` using `Nat.cast_injective (R := ℂ) (by rw [hs', hs, ht])`. Establish `e3 : t' = t` using `Nat.cast_injective (R := ℂ) (by rw [ht', htt, ht])`.
+
+Substitute `e1 e2 e3` using the available equality. Establish `hBJB' : Bᴴ * (J * B) = 0` using `by rw [← Matrix.mul_assoc]; exact hBJB`. Establish `hCJC' : Cᴴ * (J * C) = 0` using `by rw [← Matrix.mul_assoc]; exact hCJC`. Use `⟨B * Cᴴ + J * (B * (Cᴴ * J)) + D * D'ᴴ + E * E'ᴴ, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJ', Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, neg_zero, Matrix.mul_one, Matri …`.
+
+Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_one, Matrix.one_mul, hJ, mul_mul_right_of_mul_eq hJ, hJD, mul_mul_right_of_mul_eq hJD, hJE, mul_mul_right_of_mul_eq hJE, hDJ', hEJ']`. Normalize the expressions using the abelian group laws. Rewrite using `[← hCP, ← hBP]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, neg_zero, Matrix.mul_one, Matrix.one_mul, hJ, mul_mul_right_of_mul_eq hJ, hBB, mul_mul_right_of_mul_eq hBB, hCC, mul_mul_right_of …`.
+-/
 theorem exists_K {J P P' : Matrix (Fin n) (Fin n) ℂ} (hJ : J * J = 1) (hJ' : Jᴴ = J)
     (h : Pᴴ = P) (h' : P * P = P) (hi : P * J * P = 0)
     (g : P'ᴴ = P') (g' : P' * P' = P') (gi : P' * J * P' = 0) (ht : P.trace = P'.trace) :
@@ -435,6 +593,25 @@ theorem exists_K {J P P' : Matrix (Fin n) (Fin n) ℂ} (hJ : J * J = 1) (hJ' : J
       mul_mul_right_of_mul_eq hJ, hBB, mul_mul_right_of_mul_eq hBB, hCC, mul_mul_right_of_mul_eq hCC, hBJB', mul_mul_mul_right_of_mul_mul_eq hBJB, hCJC', mul_mul_mul_right_of_mul_mul_eq hCJC, hBD, mul_mul_right_of_mul_eq hBD,
       hBE, mul_mul_right_of_mul_eq hBE, hDC, mul_mul_right_of_mul_eq hDC, hEC, mul_mul_right_of_mul_eq hEC]
 
+/- English proof (translation)
+Establish `e1 : tor P Q d c * (q * P) = d • (q * P)`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_mul, one_mul]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[e1, mul_smul_comm, mul_smul_comm, ← mul_assoc p q P, hpq, one_mul, tor_P hP hQP, smul_smul, mul_comm d c, hcd, one_smul, sub_self]`. Combine the equalities or inequalities in the displayed calculation. Establish `f1 : (1 - P) * tor P Q c d = 1 - P + (d - 1) • Q`. Apply the tactic sequence `simp only [tor, mul_add, sub_mul, one_mul, mul_one, mul_smul_comm, hP, hPQ, sub_self, smul_zero, add_zero, sub_zero] <;> module`. Establish `f2 : tor P Q d c * (1 - Q) = 1 - Q + (d - 1) • P`.
+
+Apply the tactic sequence `simp only [tor, mul_sub, add_mul, one_mul, mul_one, smul_mul_assoc, hPQ, hQ, smul_zero, add_zero] <;> module`. Establish `f3 : q * (1 - Q) = (1 - Q) * (q * (1 - Q))`. Establish `: Q * (q * (1 - Q)) = 0` using `by simp only [mul_sub, mul_one, ← mul_assoc, h4, sub_self]`. Rewrite using `[sub_mul, one_mul, this, sub_zero]`. Establish `f4 : p * (1 - Q) = (1 - Q) * (p * (1 - Q))`.
+
+Establish `: Q * (p * (1 - Q)) = 0` using `by simp only [mul_sub, mul_one, ← mul_assoc, h3, sub_self]`. Rewrite using `[sub_mul, one_mul, this, sub_zero]`. Establish `g1 : (1 - P + (d - 1) • Q) * (1 - Q) = (1 - P) * (1 - Q)`. Rewrite using `[add_mul, smul_mul_assoc, mul_sub Q, mul_one, hQ, sub_self, smul_zero, add_zero]`. Establish `g2 : (1 - P + (d - 1) • Q) * P = 0`.
+
+Rewrite using `[add_mul, smul_mul_assoc, hQP, smul_zero, add_zero, sub_mul, one_mul, hP, sub_self]`. Establish `g3 : (1 - Q) * (1 - Q) = 1 - Q`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, hQ, sub_self, sub_zero]`. Establish `main : (1 - P) * (tor P Q c d * p * tor P Q d c * q) * (1 - Q) = (1 - P) * (1 - Q)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← f3]`. Simplify using `only [mul_assoc]`. Use `_ = (1 - P) * tor P Q c d * p * (tor P Q d c * (1 - Q)) * (q * (1 - Q)) := by`. Simplify using `only [mul_assoc]`. Use `_ = (1 - P) * tor P Q c d * p * (1 - Q + (d - 1) • P) * (q * (1 - Q)) := by rw [f2]`.
+
+Use `_ = (1 - P) * tor P Q c d * (p * (1 - Q) + (d - 1) • (p * P)) * (q * (1 - Q)) := by`. Simplify using `only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc, mul_assoc]`. Use `_ = (1 - P) * tor P Q c d * ((1 - Q) * (p * (1 - Q)) + (d - 1) • (P * (p * P))) * (q * (1 - Q)) := by`. Rewrite using `[← f4, h1]`. Use `_ = (1 - P + (d - 1) • Q) * ((1 - Q) * (p * (1 - Q)) + (d - 1) • (P * (p * P))) * (q * (1 - Q)) := by`.
+
+Rewrite using `[f1]`. Use `_ = (1 - P) * (1 - Q) * (p * (1 - Q)) * (q * (1 - Q)) := by`. Rewrite using `[mul_add, ← mul_assoc (1 - P + (d - 1) • Q) (1 - Q), g1, mul_smul_comm, ← mul_assoc (1 - P + (d - 1) • Q) P, g2, zero_mul, smul_zero, add_zero]`. Use `_ = (1 - P) * (1 - Q) * (p * ((1 - Q) * (q * (1 - Q)))) := by simp only [mul_assoc]`. Use `_ = (1 - P) * (1 - Q) * (p * (q * (1 - Q))) := by rw [← f3]`.
+
+Use `_ = (1 - P) * (1 - Q) * (1 - Q) := by rw [← mul_assoc p q, hpq, one_mul]`. Use `_ = (1 - P) * (1 - Q) := by rw [mul_assoc, g3]`. Rewrite using `[mul_sub (1 - P), mul_one, sub_mul, main, sub_self]`.
+-/
 theorem tor_comm {P Q p q : Matrix (Fin n) (Fin n) ℂ} (hP : P * P = P) (hQ : Q * Q = Q) (hPQ : P * Q = 0)
     (hQP : Q * P = 0) (hpq : p * q = 1) (h1 : P * (p * P) = p * P) (h2 : P * (q * P) = q * P)
     (h3 : Q * p * Q = Q * p) (h4 : Q * q * Q = Q * q) {c d : ℂ} (hcd : c * d = 1) :
@@ -496,6 +673,13 @@ theorem tor_comm {P Q p q : Matrix (Fin n) (Fin n) ℂ} (hP : P * P = P) (hQ : Q
         _ = (1 - P) * (1 - Q) := by rw [mul_assoc, g3]
     rw [mul_sub (1 - P), mul_one, sub_mul, main, sub_self]
 
+/- English proof (translation)
+Establish `hinv : ∀ x : UJ ε, (((x : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = Jm ε * (umat x)ᴴ * Jm ε`. Introduce `x`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Establish `hx : (umat x)ᴴ * Jm ε * umat x = Jm ε` using `x.2`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc]`. Use `_ = 1 := by rw [hx, Jm_mul_self]`. Rewrite using `[tendsto_subtype_rng, Units.isInducing_embedProduct.tendsto_nhds_iff]`. Simplify using `only [Function.comp_def, Units.embedProduct_apply]`. Use `h.prodMk_nhds ?_` and prove the remaining obligations.
+
+Simplify using `only [hinv]`. Establish `hc : Continuous fun M : Matrix (Fin n) (Fin n) ℂ => MulOpposite.op (Jm ε * Mᴴ * Jm ε)` using `MulOpposite.continuous_op.comp ((continuous_const.mul continuous_id.matrix_conjTranspose).mul continuous_const)`. Conclude with `(hc.tendsto _).comp h`.
+-/
 theorem tendsto_UJ {ε : Fin n → Bool} {α : Type} {l : Filter α} {f : α → UJ ε} {g : UJ ε}
     (h : Filter.Tendsto (fun s => umat (f s)) l (nhds (umat g))) : Filter.Tendsto f l (nhds g) := by
   have hinv : ∀ x : UJ ε, (((x : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) :
@@ -515,6 +699,11 @@ theorem tendsto_UJ {ε : Fin n → Bool} {α : Type} {l : Filter α} {f : α →
       continuous_const)
   exact (hc.tendsto _).comp h
 
+/- English proof (translation)
+Establish `hPn : 0 < ‖P‖` using `norm_pos_iff.mpr hP`. Establish `he : ‖Complex.exp (s : ℂ)‖ = Real.exp s` using `by rw [Complex.norm_exp, Complex.ofReal_re]`. Establish `key : Real.exp s * ‖P‖ ≤ ‖g‖ * ‖P‖`. Break down `h with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hle : Real.exp s ≤ ‖g‖` using `le_of_mul_le_mul_right key hPn`. Establish `hg : 0 < ‖g‖` using `lt_of_lt_of_le (Real.exp_pos s) hle`. Use `show s ≤ Real.log ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin g)‖`. Conclude with `(Real.le_log_iff_exp_le hg).mpr hle`.
+-/
 theorem le_dOp {g P : Matrix (Fin n) (Fin n) ℂ} {s : ℝ} (hP : P ≠ 0)
     (h : g * P = Complex.exp s • P ∨ P * g = Complex.exp s • P) : s ≤ dOp g := by
   have hPn : 0 < ‖P‖ := norm_pos_iff.mpr hP
@@ -533,6 +722,11 @@ theorem le_dOp {g P : Matrix (Fin n) (Fin n) ℂ} {s : ℝ} (hP : P ≠ 0)
   show s ≤ Real.log ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin g)‖
   exact (Real.le_log_iff_exp_le hg).mpr hle
 
+/- English proof (translation)
+Establish `key : ∀ x y, star y ⬝ᵥ ((P * Jm ε * P) *ᵥ x) = herm (Jm ε) (P *ᵥ x) (P *ᵥ y)`. Introduce `x y`. Rewrite using `[herm, Matrix.star_mulVec, h, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `memP : ∀ x, P *ᵥ x ∈ W` using `fun x => (hW _).2 (by rw [Matrix.mulVec_mulVec, h'])`. Use `ext_mulVec fun x => ?_` and prove the remaining obligations.
+
+Use extensionality with `i`. Use `key x (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[hi _ (memP x) _ (memP _)]`. Simplify using `using this`.
+-/
 theorem isotropic_proj {ε : Fin n → Bool} {W : Submodule ℂ (Fin n → ℂ)} {P : Matrix (Fin n) (Fin n) ℂ}
     (h : Pᴴ = P) (h' : P * P = P) (hW : ∀ x, x ∈ W ↔ P *ᵥ x = x)
     (hi : ∀ x ∈ W, ∀ y ∈ W, herm (Jm ε) x y = 0) : P * Jm ε * P = 0 := by
@@ -547,6 +741,11 @@ theorem isotropic_proj {ε : Fin n → Bool} {W : Submodule ℂ (Fin n → ℂ)}
   rw [hi _ (memP x) _ (memP _)] at this
   simpa using this
 
+/- English proof (translation)
+Apply `ext_mulVec` to reduce the goal to its premises. Introduce `v`. Establish `hx : (Gi * P) *ᵥ v ∈ LinearMap.ker (Matrix.toLin' (P * G - G))`. Establish `e : G * (Gi * P) = P` using `by rw [← Matrix.mul_assoc, hG, Matrix.one_mul]`. Establish `h0 : (P * G - G) * (Gi * P) = 0`.
+
+Rewrite using `[sub_mul, Matrix.mul_assoc, e, hP, sub_self]`. Rewrite using `[LinearMap.mem_ker, Matrix.toLin'_apply, Matrix.mulVec_mulVec, h0, Matrix.zero_mulVec]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mulVec_mulVec]`. Conclude with `(hW _).1 hx`.
+-/
 private lemma mul_inv_mul_proj_of_ker_iff {n : ℕ} {P G Gi P' : Matrix (Fin n) (Fin n) ℂ} (hP : P * P = P) (hG : G * Gi = 1)
     (hW : ∀ x, x ∈ LinearMap.ker (Matrix.toLin' (P * G - G)) ↔ P' *ᵥ x = x) :
     P' * Gi * P = Gi * P := by
@@ -560,6 +759,9 @@ private lemma mul_inv_mul_proj_of_ker_iff {n : ℕ} {P G Gi P' : Matrix (Fin n) 
   rw [Matrix.mul_assoc, ← Matrix.mulVec_mulVec]
   exact (hW _).1 hx
 
+/- English proof (translation)
+Apply `ext_mulVec` to reduce the goal to its premises. Introduce `v`. Establish `hx : P' *ᵥ v ∈ LinearMap.ker (Matrix.toLin' (P * G - G))` using `(hW _).2 (by rw [Matrix.mulVec_mulVec, hP'])`. Rewrite `hx` using `[LinearMap.mem_ker, Matrix.toLin'_apply, Matrix.mulVec_mulVec, sub_mul, Matrix.sub_mulVec, sub_eq_zero]`. Conclude with `hx`.
+-/
 private lemma proj_mul_mul_proj_of_ker_iff {n : ℕ} {P G P' : Matrix (Fin n) (Fin n) ℂ} (hP' : P' * P' = P')
     (hW : ∀ x, x ∈ LinearMap.ker (Matrix.toLin' (P * G - G)) ↔ P' *ᵥ x = x) :
     P * G * P' = G * P' := by
@@ -571,6 +773,23 @@ private lemma proj_mul_mul_proj_of_ker_iff {n : ℕ} {P G P' : Matrix (Fin n) (F
     sub_eq_zero] at hx
   exact hx
 
+/- English proof (translation)
+Establish `hG : umat g * umat g⁻¹ = 1` using `by simp only [umat, Subgroup.coe_inv, Units.mul_inv]`. Establish `hGi : umat g⁻¹ * umat g = 1` using `by simp only [umat, Subgroup.coe_inv, Units.inv_mul]`. Take `⟨P', hP'h, hP'i, hW⟩` from `exists_proj (LinearMap.ker (Matrix.toLin' (P * umat g - umat g)))`. Establish `ha : P' * umat g⁻¹ * P = umat g⁻¹ * P` using `mul_inv_mul_proj_of_ker_iff h' hG hW`. Establish `hb : P * umat g * P' = umat g * P'` using `proj_mul_mul_proj_of_ker_iff hP'i hW`.
+
+Establish `htr : P.trace = P'.trace`. Establish `hAP : umat g * (P' * umat g⁻¹ * P) = P` using `by rw [ha, ← Matrix.mul_assoc, hG, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hg : (umat g)ᴴ * Jm ε * umat g = Jm ε` using `g.2`. Establish `hiso : P' * Jm ε * P' = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = P'ᴴ * (umat g)ᴴ * (Pᴴ * Jm ε * P) * (umat g * P') := by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = 0 := by rw [h, hi]; simp`. Take `⟨k0, hk0u, hk0J, hk0P⟩` from `exists_K (Formalism.REAL.Jm_mul_self ε) (Formalism.REAL.Jm_conjTranspose ε) h h' hi hP'h hP'i hiso htr`. Establish `hk0u' : k0 * k0ᴴ = 1` using `mul_eq_one_comm.mp hk0u`. Set `u : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨k0, k0ᴴ, hk0u', hk0u⟩`. Establish `hu : u ∈ UJ ε` using `by show k0ᴴ * Jm ε * k0 = Jm ε`.
+
+Rewrite using `[Matrix.mul_assoc, ← hk0J, ← Matrix.mul_assoc, hk0u, Matrix.one_mul]`. Establish `hk0P' : P' * k0ᴴ = k0ᴴ * P`. Use `congrArg Matrix.conjTranspose hk0P` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, h, hP'h]`. Use `⟨⟨u, hu⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show k0 ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ k0 * Jm ε = Jm ε * k0`. Conclude with `⟨Matrix.mem_unitaryGroup_iff.mpr (by rw [Matrix.star_eq_conjTranspose]; exact hk0u'), hk0J⟩`. Use `show P * (umat g * k0ᴴ * P) = umat g * k0ᴴ * P`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (umat g), ← hk0P']`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = umat g * P' * k0ᴴ := by rw [hb]`. Use `_ = umat g * k0ᴴ * P := by rw [Matrix.mul_assoc (umat g), hk0P', ← Matrix.mul_assoc]`. Use `show P * (k0 * umat g⁻¹ * P) = k0 * umat g⁻¹ * P`. Establish `e : k0 * umat g⁻¹ * P = P * (k0 * umat g⁻¹ * P)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, ← Matrix.mul_assoc P P, h']`.
+-/
 theorem exists_iwasawa {ε : Fin n → Bool} {P : Matrix (Fin n) (Fin n) ℂ}
     (h : Pᴴ = P) (h' : P * P = P) (hi : P * Jm ε * P = 0) (g : UJ ε) :
     ∃ k : UJ ε, umat k ∈ Kset ε ∧ P * (umat (g * k⁻¹) * P) = umat (g * k⁻¹) * P ∧
@@ -623,6 +842,11 @@ theorem exists_iwasawa {ε : Fin n → Bool} {P : Matrix (Fin n) (Fin n) ℂ}
         _ = P * (k0 * umat g⁻¹ * P) := by simp only [Matrix.mul_assoc]
     rw [e, ← Matrix.mul_assoc P P, h']
 
+/- English proof (translation)
+Establish `hm : (umat p)ᴴ * Jm ε * umat p = Jm ε` using `p.2`. Establish `hl : Jm ε * (umat p)ᴴ * Jm ε * umat p = 1`. Rewrite using `[show Jm ε * (umat p)ᴴ * Jm ε * umat p = Jm ε * ((umat p)ᴴ * Jm ε * umat p) by`. Simplify using `only [mul_assoc], hm, Jm_mul_self]`. Establish `hr : umat p * umat p⁻¹ = 1`.
+
+Simplify using `[umat]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma mul_inv_one_mul_inv_eq_mul_inv {ε : Fin n → Bool} (p : UJ ε) :
     umat p⁻¹ = Jm ε * (umat p)ᴴ * Jm ε := by
   have hm : (umat p)ᴴ * Jm ε * umat p = Jm ε := p.2
@@ -635,6 +859,11 @@ private lemma mul_inv_one_mul_inv_eq_mul_inv {ε : Fin n → Bool} (p : UJ ε) :
     _ = Jm ε * (umat p)ᴴ * Jm ε * (umat p * umat p⁻¹) := by rw [mul_assoc]
     _ = Jm ε * (umat p)ᴴ * Jm ε := by rw [hr, mul_one]
 
+/- English proof (translation)
+Establish `hJ` using `Jm_mul_self ε`. Establish `hJh` using `Jm_conjTranspose ε`. Establish `e` using `congrArg Matrix.conjTranspose hp`. Rewrite `e` using `[mul_inv_one_mul_inv_eq_mul_inv]`. Simplify using `only [Matrix.conjTranspose_mul, h, hJh, Matrix.conjTranspose_conjTranspose] at e`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem perp_stable {ε : Fin n → Bool} {P : Matrix (Fin n) (Fin n) ℂ} (h : Pᴴ = P) (p : UJ ε)
     (hp : P * (umat p⁻¹ * P) = umat p⁻¹ * P) :
     (Jm ε * P * Jm ε) * umat p * (Jm ε * P * Jm ε) = (Jm ε * P * Jm ε) * umat p := by
@@ -649,22 +878,81 @@ theorem perp_stable {ε : Fin n → Bool} {P : Matrix (Fin n) (Fin n) ℂ} (h : 
     _ = Jm ε * P * Jm ε * umat p * (Jm ε * Jm ε) := by simp only [mul_assoc]
     _ = Jm ε * P * Jm ε * umat p := by rw [hJ, mul_one]
 
+/- English proof (translation)
+Simplify using `[tor, Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hP, hQ]`.
+-/
 private theorem tor_conjTranspose_of_hermitian {P Q : Matrix (Fin n) (Fin n) ℂ} (hP : Pᴴ = P) (hQ : Qᴴ = Q) (c d : ℝ) :
     (tor P Q (c : ℂ) (d : ℂ))ᴴ = tor P Q c d := by
   simp [tor, Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hP, hQ]
 
+/- English proof (translation)
+Simplify using `only [tor, mul_add, add_mul, mul_one, one_mul, mul_smul_comm, smul_mul_assoc, hJP, hJQ]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem J_mul_tor_eq_tor_swap_mul_J {J P Q : Matrix (Fin n) (Fin n) ℂ} (hJP : J * P = Q * J) (hJQ : J * Q = P * J)
     (c d : ℂ) : J * tor P Q c d = tor P Q d c * J := by
   simp only [tor, mul_add, add_mul, mul_one, one_mul, mul_smul_comm, smul_mul_assoc, hJP, hJQ]
   abel
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem dOp_eq_log_norm (g : Matrix (Fin n) (Fin n) ℂ) : dOp g = Real.log ‖g‖ := rfl
 
+/- English proof (translation)
+Break down `hx.eq_or_lt with h | h` into its components or cases. Rewrite using `[← h, Real.log_zero]`. Conclude with `ht`. Conclude with `(Real.log_le_log h hxt).trans (Real.log_exp t).le`.
+-/
 private theorem log_le_of_le_exp' {x t : ℝ} (hx : 0 ≤ x) (hxt : x ≤ Real.exp t) (ht : 0 ≤ t) : Real.log x ≤ t := by
   rcases hx.eq_or_lt with h | h
   · rw [← h, Real.log_zero]; exact ht
   · exact (Real.log_le_log h hxt).trans (Real.log_exp t).le
 
+/- English proof (translation)
+Introduce `n ε W hW`. Take `⟨hW0, hiso⟩` from `hW`. Take `⟨P, hPh, hPP, hPW⟩` from `exists_proj W`. Establish `hPJP : P * Jm ε * P = 0` using `isotropic_proj hPh hPP hPW hiso`. Establish `hJJ : Jm ε * Jm ε = 1` using `Jm_mul_self ε`.
+
+Establish `hJh : (Jm ε)ᴴ = Jm ε` using `Jm_conjTranspose ε`. Take `⟨Q, hQ⟩ : ∃ Q, Q = Jm ε * P * Jm ε` from `⟨_, rfl⟩`. Establish `hQh : Qᴴ = Q`. Rewrite using `[hQ, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hJh, hPh, Matrix.mul_assoc]`. Establish `hPQ : P * Q = 0`.
+
+Rewrite using `[hQ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPJP, Matrix.zero_mul]`. Establish `hQP : Q * P = 0`. Rewrite using `[hQ, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc P, hPJP, Matrix.mul_zero]`. Establish `hJP : Jm ε * P = Q * Jm ε`. Rewrite using `[hQ, Matrix.mul_assoc, hJJ, Matrix.mul_one]`.
+
+Establish `hJQ : Jm ε * Q = P * Jm ε`. Rewrite using `[hQ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Establish `hQQ : Q * Q = Q` using `by nth_rewrite 1 [hQ]`. Rewrite using `[Matrix.mul_assoc, hJQ, Matrix.mul_assoc, ← Matrix.mul_assoc P P, hPP, hQ, Matrix.mul_assoc]`. Establish `hPs : IsStarProjection P` using `⟨hPP, hPh⟩`.
+
+Establish `hQs : IsStarProjection Q` using `⟨hQQ, hQh⟩`. Establish `e1 : ∀ s : ℝ, Complex.exp (s : ℂ) = ((Real.exp s : ℝ) : ℂ)` using `fun s => (Complex.ofReal_exp s).symm`. Establish `e2 : ∀ s : ℝ, Complex.exp (-(s : ℂ)) = ((Real.exp (-s) : ℝ) : ℂ)` using `fun s => by`. Rewrite using `[Complex.ofReal_exp, Complex.ofReal_neg]`. Establish `hcd : ∀ s : ℝ, Complex.exp (s : ℂ) * Complex.exp (-(s : ℂ)) = 1` using `fun s => by`.
+
+Rewrite using `[← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`. Establish `hdc : ∀ s : ℝ, Complex.exp (-(s : ℂ)) * Complex.exp (s : ℂ) = 1` using `fun s => by`. Rewrite using `[mul_comm, hcd]`. Establish `hunit1 : ∀ s : ℝ, tor P Q (Complex.exp s) (Complex.exp (-s)) * tor P Q (Complex.exp (-s)) (Complex.exp s) = 1` using `fun s => by`. Rewrite using `[tor_tor hPP hQQ hPQ hQP, hcd, hdc, tor_one]`.
+
+Establish `hunit2 : ∀ s : ℝ, tor P Q (Complex.exp (-s)) (Complex.exp s) * tor P Q (Complex.exp s) (Complex.exp (-s)) = 1` using `fun s => by`. Rewrite using `[tor_tor hPP hQQ hPQ hQP, hcd, hdc, tor_one]`. Establish `hmem : ∀ s : ℝ, inUJ ε (tor P Q (Complex.exp s) (Complex.exp (-s)))` using `fun s => by show (tor P Q _ _)ᴴ * Jm ε * tor P Q _ _ = Jm ε`. Rewrite using `[e1, e2, tor_conjTranspose_of_hermitian hPh hQh, Matrix.mul_assoc, J_mul_tor_eq_tor_swap_mul_J hJP hJQ, ← Matrix.mul_assoc, tor_tor hPP hQQ hPQ hQP, ← e1, ← e2, hcd, hdc, tor_one, Matrix.one_mul]`. Take `⟨a, ha, hai⟩ : ∃ a : ℝ → UJ ε, (∀ s, umat (a s) = tor P Q (Complex.exp s) (Complex.exp (-s))) ∧ ∀ s, umat (a s)⁻¹ = tor P Q (Complex.exp (-s)) (Complex.exp s)` from `⟨fun s => ⟨⟨_, _, hunit1 s, hunit2 s⟩, hmem s⟩, fun _ => rfl, fun _ => rfl⟩`.
+
+Establish `hmul : ∀ x y : UJ ε, umat (x * y) = umat x * umat y` using `fun _ _ => rfl`. Establish `hone : umat (1 : UJ ε) = 1` using `rfl`. Establish `hP0 : P ≠ 0`. Introduce `h`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW0`.
+
+Establish `hx'` using `(hPW x).1 hx`. Rewrite `hx'` using `[h, Matrix.zero_mulVec]`. Conclude with `hx0 hx'.symm`. Establish `hQ0 : Q ≠ 0`. Introduce `h`.
+
+Apply `hP0` to reduce the goal to its premises. Establish `hJQJ : Jm ε * Q * Jm ε = P`. Rewrite using `[hJQ, Matrix.mul_assoc, hJJ, Matrix.mul_one]`. Rewrite using `[← hJQJ, h, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hconj : ∀ s : ℝ, ∀ m ∈ NW ε W, umat (a s * m * (a s)⁻¹) - 1 = Complex.exp (s : ℂ) • (P * (umat m - 1) + (umat m - 1) * Q - (2 : ℂ) • (P * (umat m - 1) * Q)) + Complex.exp (s : ℂ) ^ 2 • (P * (umat m - 1) * Q)`.
+
+Introduce `s m hm`. Take `⟨h1, h2, h3⟩` from `(mem_NW hPh hPP hPW m).1 hm`. Rewrite `h2`, `h3` using `[← hQ]`. Rewrite using `[hmul, hmul, ha, hai, ← tor_conj hPP hQQ hPQ hQP h1 h2 h3 _ (Complex.exp (-(s : ℂ))), mul_sub, sub_mul, mul_one, hunit1]`. Use `⟨a, P - Q, ⟨?_, ?_⟩, fun s => ?_, fun s => ?_, fun s m hm => ⟨?_, ?_⟩, fun m hm => ?_, fun g => ?_⟩` and prove the remaining obligations.
+
+Use `show (P - Q)ᴴ * Jm ε + Jm ε * (P - Q) = 0`. Rewrite using `[Matrix.conjTranspose_sub, hPh, hQh, sub_mul, mul_sub, hJP, hJQ]`. Normalize the expressions using the abelian group laws. Rewrite using `[sub_mul, mul_sub, hJP, hJQ]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[ha]`. Conclude with `(exp_tor hPP hQQ hPQ hQP (s : ℂ)).symm`. Rewrite using `[dOp_eq_log_norm, ha, e1, e2]`. Break down `le_or_gt 0 s with hs | hs` into its components or cases. Rewrite using `[abs_of_nonneg hs]`.
+
+Conclude with `log_le_of_le_exp' (norm_nonneg _) (norm_tor_le hPs hQs (Real.one_le_exp hs) (Real.exp_le_one_iff.mpr (by linarith)) (Real.exp_pos _).le) hs`. Rewrite using `[abs_of_neg hs, tor_symm]`. Conclude with `log_le_of_le_exp' (norm_nonneg _) (norm_tor_le hQs hPs (Real.one_le_exp (by linarith)) (Real.exp_le_one_iff.mpr hs.le) (Real.exp_pos _).le) (by linarith)`. Rewrite using `[mem_NW hPh hPP hPW, ← hQ]`. Take `⟨h1, h2, h3⟩` from `(mem_NW hPh hPP hPW m).1 hm`.
+
+Rewrite `h2`, `h3` using `[← hQ]`. Rewrite using `[hconj s m hm]`. Generalize the expression as in `umat m - 1 = X at h1 h2 h3`. Establish `hPP' : ∀ Y, P * (P * Y) = P * Y` using `fun Y => by rw [← Matrix.mul_assoc, hPP]`. Establish `hQQ' : ∀ Y, Q * (Q * Y) = Q * Y` using `fun Y => by rw [← Matrix.mul_assoc, hQQ]`.
+
+Establish `hPQ' : ∀ Y, P * (Q * Y) = 0` using `fun Y => by rw [← Matrix.mul_assoc, hPQ, Matrix.zero_mul]`. Establish `hQP' : ∀ Y, Q * (P * Y) = 0` using `fun Y => by rw [← Matrix.mul_assoc, hQP, Matrix.zero_mul]`. Establish `h1' : ∀ Y, X * (P * Y) = 0` using `fun Y => by rw [← Matrix.mul_assoc, h1, Matrix.zero_mul]`. Establish `h2' : ∀ Y, Q * (X * Y) = 0` using `fun Y => by rw [← Matrix.mul_assoc, h2, Matrix.zero_mul]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;>`.
+
+Apply the tactic sequence `simp only [add_mul, sub_mul, mul_add, mul_sub, smul_mul_assoc, mul_smul_comm, Matrix.mul_assoc, one_mul, mul_one, h1, h1', h2, h2', hPP, hQQ, hPQ, hQP, hPP', hQQ', hPQ', hQP', Matrix.mul_zero, Matrix.zero_mul, smul_zero, add_zero, zero_add, sub_zero, zero_sub, sub_self, neg_zero] …`. Use `module`. Take `⟨h1, h2, -⟩` from `(mem_NW hPh hPP hPW m).1 hm`. Rewrite `h2` using `[← hQ]`. Establish `hmP : umat m * P = P` using `by rwa [sub_mul, one_mul, sub_eq_zero] at h1`.
+
+Establish `hQm : Q * umat m = Q` using `by rwa [mul_sub, mul_one, sub_eq_zero] at h2`. Rewrite using `[hmul, ha]`. Break down `le_or_gt 0 s with hs | hs` into its components or cases. Rewrite using `[abs_of_nonneg hs]`. Conclude with `le_dOp hP0 (Or.inl (by rw [Matrix.mul_assoc, tor_P hPP hQP, mul_smul_comm, hmP]))`.
+
+Rewrite using `[abs_of_neg hs]`. Use `le_dOp (s := -s) hQ0 (Or.inr ?_)` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, hQm, Q_tor hQQ hQP, Complex.ofReal_neg]`. Apply `tendsto_UJ` to reduce the goal to its premises. Rewrite using `[hone]`.
+
+Establish `hc : Filter.Tendsto (fun s : ℝ => Complex.exp (s : ℂ)) Filter.atBot (nhds 0)`. Use `(Complex.continuous_ofReal.tendsto 0).comp Real.tendsto_exp_atBot` as an intermediate fact. Simplify `this` using `[Function.comp_def, Complex.ofReal_exp]`. Establish `hlim` using `(tendsto_const_nhds (x := (1 : Matrix (Fin n) (Fin n) ℂ))).add ((hc.smul_const (P * (umat m - 1) + (umat m - 1) * Q - (2 : ℂ) • (P * (umat m - 1) * Q))).add ((hc.pow 2).smul_const (P * (umat m - 1) * Q)))`. Simplify using `only [zero_smul, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, add_zero] at hlim`.
+
+Use `hlim.congr fun s => ?_` and prove the remaining obligations. Rewrite using `[← hconj s m hm, add_sub_cancel]`. Take `⟨k, hk, hp1, hp2⟩` from `exists_iwasawa hPh hPP hPJP g`. Use `⟨k, hk, fun s => ?_⟩` and prove the remaining obligations. Establish `hgrp : a s * g * (k⁻¹ * a s * k)⁻¹ * g⁻¹ = a s * (g * k⁻¹) * (a s)⁻¹ * (g * k⁻¹)⁻¹` using `by group`.
+
+Establish `hq1` using `perp_stable hPh (g * k⁻¹) hp2`. Establish `hq2` using `perp_stable hPh (g * k⁻¹)⁻¹ (by rw [inv_inv]; exact hp1)`. Rewrite `hq1`, `hq2` using `[← hQ]`. Establish `hpq : umat (g * k⁻¹) * umat (g * k⁻¹)⁻¹ = 1` using `by rw [← hmul, mul_inv_cancel, hone]`. Rewrite using `[hgrp, mem_NW hPh hPP hPW, ← hQ, hmul, hmul, hmul, ha, hai]`.
+
+Conclude with `tor_comm hPP hQQ hPQ hQP hpq hp1 hp2 hq1 hq2 (hcd s)`.
+-/
 theorem split_torus : ∀ (n : ℕ) (ε : Fin n → Bool) (W : Submodule ℂ (Fin n → ℂ)), IsIsoC ε W → ∃ (a : ℝ → UJ ε) (Hm : Matrix (Fin n) (Fin n) ℂ), inP ε Hm ∧ (∀ s : ℝ, umat (a s) = NormedSpace.exp ((s : ℂ) • Hm)) ∧ (∀ s, dOp (umat (a s)) ≤ |s|) ∧ (∀ s, ∀ m ∈ NW ε W, a s * m * (a s)⁻¹ ∈ NW ε W ∧ |s| ≤ dOp (umat (m * a s))) ∧ (∀ m ∈ NW ε W, Filter.Tendsto (fun s => a s * m * (a s)⁻¹) Filter.atBot (nhds 1)) ∧ ∀ g : UJ ε, ∃ k : UJ ε, umat k ∈ Kset ε ∧ ∀ s, a s * g * (k⁻¹ * a s * k)⁻¹ * g⁻¹ ∈ NW ε W := by
   intro n ε W hW
   obtain ⟨hW0, hiso⟩ := hW

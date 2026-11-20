@@ -9,6 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.NormRatio
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockIp`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_pos (fun k hk => ?_) (MvPolynomial.support_nonempty.2 hp)` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.ofReal_re]`. Use `mul_pos (Complex.normSq_pos.2 (MvPolynomial.mem_support_iff.1 hk)) ?_` and prove the remaining obligations.
+
+Conclude with `Nat.cast_pos.2 (Finset.prod_pos fun _ _ => Nat.factorial_pos _)`.
+-/
 theorem fockIp_self_re_pos {ι : Type} {p : MvPolynomial ι ℂ} (hp : p ≠ 0) :
     0 < (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockIp p p).re := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockIp
@@ -18,6 +23,11 @@ theorem fockIp_self_re_pos {ι : Type} {p : MvPolynomial ι ℂ} (hp : p ≠ 0) 
   refine mul_pos (Complex.normSq_pos.2 (MvPolynomial.mem_support_iff.1 hk)) ?_
   exact Nat.cast_pos.2 (Finset.prod_pos fun _ _ => Nat.factorial_pos _)
 
+/- English proof (translation)
+Introduce `D a d n had h0`. Establish `hpos : 0 < (fockSum D a d n).re`. Unfold `fockSum`. Rewrite using `[Complex.re_sum]`. Use `haveI : Nonempty (GlobalTheory.NormSum.Tup D a d n) := ⟨fun _ _ => ⟨Fin.castLE had, fun _ _ h => h⟩⟩`.
+
+Conclude with `Finset.sum_pos (fun T _ => fockIp_self_re_pos (GlobalTheory.NormAdelic.minorPol_ne_zero T)) (by classical exact ⟨fun _ _ => ⟨Fin.castLE had, fun _ _ h => h⟩, by simp⟩)`. Rewrite `hpos` using `[h0]`. Conclude with `lt_irrefl _ hpos`.
+-/
 theorem fockSum_ne_zero : ∀ (D : D7) (a d : ℕ) (n : D.what₂.Tau → ℕ), a ≤ d → fockSum D a d n ≠ 0 := by
   intro D a d n had h0
   have hpos : 0 < (fockSum D a d n).re := by

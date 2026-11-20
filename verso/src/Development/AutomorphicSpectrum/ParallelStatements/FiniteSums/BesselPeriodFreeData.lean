@@ -30,10 +30,18 @@ def level {X : ℕ → Type} [∀ j, MeasurableSpace (X j)] (α : ∀ j, Measure
     (∀ j, X j) → ℂ :=
   partInt α n f (n - j)
 
+/- English proof (translation)
+Simplify using `[level, partInt]`.
+-/
 theorem level_top {X : ℕ → Type} [∀ j, MeasurableSpace (X j)] (α : ∀ j, Measure (X j)) (n : ℕ)
     (f : (∀ j, X j) → ℂ) : level α n f n = f := by
   simp [level, partInt]
 
+/- English proof (translation)
+Establish `key : ∀ d k, n - d = k → partInt α n f (d + 1) x = ∫ t, partInt α n f d (Function.update x k t) ∂(α k)`. Introduce `d k h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Establish `h1 : n - j = (n - (j + 1)) + 1` using `by omega`.
+
+Unfold `level`. Rewrite using `[h1]`. Conclude with `key _ _ (by omega)`.
+-/
 theorem level_pred {X : ℕ → Type} [∀ j, MeasurableSpace (X j)] (α : ∀ j, Measure (X j)) (n : ℕ)
     (f : (∀ j, X j) → ℂ) (j : ℕ) (hj : j + 1 ≤ n) (x : ∀ j, X j) :
     level α n f j x = ∫ t, level α n f (j + 1) (Function.update x (j + 1) t) ∂(α (j + 1)) := by
@@ -66,6 +74,9 @@ structure SlopeTestRemainingChoices (V : HSp D) where
   ev : ℕ → Fin V.rank → D.host.E
   z : Fin V.rank → D.host.E
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => 1, fun _ _ => 1, fun _ => 1⟩`.
+-/
 example (V : HSp D) : SlopeTestRemainingChoices V := ⟨fun _ _ => 1, fun _ _ => 1, fun _ => 1⟩
 
 def IsAuxiliaryHeckeCharacter (V : HSp D) (j T : ℕ) (A : SlopeTestRemainingChoices V) : Prop :=
@@ -130,6 +141,9 @@ structure RealVec (R : RealData D u) where
   P : ∀ j, MvPolynomial (FVar D (D.sp.Y (j + 1)).rank (D.sp.Y j).rank) ℂ
   vt : ⨂[ℂ] τ, R.Mσ.H τ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ => 1, 0⟩`.
+-/
 example (R : RealData D u) : RealVec R := ⟨0, fun _ => 1, 0⟩
 
 def IsRealIso (V V' : HSp D) (κ : D.what₂.Tau → Matrix (Fin V'.rank) (Fin V.rank) ℂ)
@@ -291,6 +305,11 @@ def PartII : Prop :=
 def PartIII : Prop :=
   ¬ AllLive p → ∀ fd : FreeData R, fd.OK → Pj p fd 0 1 = 0 ∧ ∀ da, fd.IsBesselPeriod da 0
 
+/- English proof (translation)
+Take `⟨fd, hfd, da, x, y, hne⟩` from `hQ`. Establish `h1 : p fd y ≠ 0` using `fun h0 => hne (by rw [h.2 fd hfd, h0, mul_zero])`. Establish `h2 : p' fd y ≠ 0` using `fun h0 => hne (by rw [h'.2 fd hfd, h0, mul_zero])`. Use `⟨p fd y / p' fd y, div_ne_zero h1 h2, fun da' x' => ?_⟩` and prove the remaining obligations. Use `(h.2 fd hfd da' x' y).symm.trans (h'.2 fd hfd da' x' y)` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `-this`.
+-/
 theorem sep_unique {a' : RealVec R → (∀ j, Ginf D j) → ℂ} {p' : ∀ fd : FreeData R, (∀ j, GfC (fd.Y j)) → ℂ}
     (h : IsSep a p) (h' : IsSep a' p') (hQ : ∃ fd : FreeData R, fd.OK ∧ ∃ da x y, fd.Q da x y ≠ 0) :
     ∃ c : ℂ, c ≠ 0 ∧ ∀ da x, a' da x = c * a da x := by
@@ -302,6 +321,9 @@ theorem sep_unique {a' : RealVec R → (∀ j, Ginf D j) → ℂ} {p' : ∀ fd :
   field_simp
   linear_combination -this
 
+/- English proof (translation)
+Unfold `Au`. Use `split_ifs with hl`. Conclude with `(h2 hl).2 fd hfd da`. Simplify using `using (h3 hl fd hfd).2 da`.
+-/
 theorem besselPeriod_eq_Au_mul_projection (h2 : PartII a p) (h3 : PartIII p) (fd : FreeData R) (hfd : fd.OK) (da : RealVec R) :
     fd.IsBesselPeriod da (Au a p da * Pj p fd 0 1) := by
   unfold Au

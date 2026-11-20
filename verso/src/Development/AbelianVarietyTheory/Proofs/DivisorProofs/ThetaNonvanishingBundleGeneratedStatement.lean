@@ -17,6 +17,9 @@ set_option autoImplicit false
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HolUnifSec.hasGen_of_periodic | exact GlobalTheory.HolUnifSec.hasGen_of_periodic | (intros; apply GlobalTheory.HolUnifSec.hasGen_of_periodic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_nonvanishing_bundle_generated : ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → IsProjOver A.hom →
     ∀ (M : LB A.left), M.IsLB → ∀ (g : ℕ) (u : HolUnif A M g) (θ : (Fin g → ℂ) → ℂ), Differentiable ℂ θ →
     (∀ z, θ z ≠ 0) →

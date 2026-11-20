@@ -5,6 +5,9 @@ open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 
 namespace GlobalTheory.HomStab
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Apply `groupHomology.inhomogeneousChains.ext` to reduce the goal to its premises. Introduce `x`. Use extensionality with `a : 2`. Simplify using `[groupHomology.chainsMap_f_single, h]`.
+-/
 private theorem groupHomology_chainsMap_comp_comm_of_compat (k G H : Type) [CommRing k] [Group G] [Group H]
     (φ : H →* G) (A B : Rep k H) (C D : Rep k G)
     (f : A ⟶ B) (g : C ⟶ D) (u : A ⟶ Rep.res φ C) (v : B ⟶ Rep.res φ D)
@@ -17,6 +20,11 @@ private theorem groupHomology_chainsMap_comp_comm_of_compat (k G H : Type) [Comm
   ext a : 2
   simp [groupHomology.chainsMap_f_single, h]
 
+/- English proof (translation)
+Introduce `k G H _ _ _ φ X Y hX hY u₁ u₂ u₃ h₁ h₂ n`. Establish `c₁` using `groupHomology_chainsMap_comp_comm_of_compat k G H φ _ _ _ _ X.f Y.f u₁ u₂ h₁`. Establish `c₂` using `groupHomology_chainsMap_comp_comm_of_compat k G H φ _ _ _ _ X.g Y.g u₂ u₃ h₂`. Establish `d₁` using `congrArg (fun f => HomologicalComplex.homologyMap f n) c₁`. Establish `d₂` using `congrArg (fun f => HomologicalComplex.homologyMap f n) c₂`.
+
+Simplify using `only [HomologicalComplex.homologyMap_comp] at d₁ d₂`. Use `⟨?_, d₁, d₂⟩` and prove the remaining obligations. Set `Φ : X.map (groupHomology.chainsFunctor k H) ⟶ Y.map (groupHomology.chainsFunctor k G)` to `{ τ₁ := groupHomology.chainsMap φ u₁ τ₂ := groupHomology.chainsMap φ u₂ τ₃ := groupHomology.chainsMap φ u₃ comm₁₂ := c₁.symm comm₂₃ := c₂.symm }`. Conclude with `HomologicalComplex.HomologySequence.δ_naturality Φ (groupHomology.map_chainsFunctor_shortExact hX) (groupHomology.map_chainsFunctor_shortExact hY) (n + 1) n rfl`.
+-/
 theorem groupHomology_δ_natural_changeGroup : ∀ (k G H : Type) [CommRing k] [Group G] [Group H] (φ : H →* G) (X : ShortComplex (Rep k H)) (Y : ShortComplex (Rep k G)) (hX : X.ShortExact) (hY : Y.ShortExact) (u₁ : X.X₁ ⟶ Rep.res φ Y.X₁) (u₂ : X.X₂ ⟶ Rep.res φ Y.X₂) (u₃ : X.X₃ ⟶ Rep.res φ Y.X₃), (∀ a, u₂.hom (X.f.hom a) = Y.f.hom (u₁.hom a)) → (∀ a, u₃.hom (X.g.hom a) = Y.g.hom (u₂.hom a)) → ∀ n : ℕ, groupHomology.δ hX (n + 1) n rfl ≫ groupHomology.map φ u₁ n = groupHomology.map φ u₃ (n + 1) ≫ groupHomology.δ hY (n + 1) n rfl ∧ hMap X.f n ≫ groupHomology.map φ u₂ n = groupHomology.map φ u₁ n ≫ hMap Y.f n ∧ hMap X.g n ≫ groupHomology.map φ u₃ n = groupHomology.map φ u₂ n ≫ hMap Y.g n := by
   intro k G H _ _ _ φ X Y hX hY u₁ u₂ u₃ h₁ h₂ n
   have c₁ := groupHomology_chainsMap_comp_comm_of_compat k G H φ _ _ _ _ X.f Y.f u₁ u₂ h₁
@@ -39,6 +47,9 @@ end GlobalTheory.HomStab
 
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.HomStab.groupHomology_δ_natural_changeGroup`.
+-/
 theorem _root_.GlobalTheory.T.groupHomology_longExact_maps_natural_of_res : ∀ (k G H : Type) [CommRing k] [Group G] [Group H] (φ : H →* G) (X : ShortComplex (Rep k H)) (Y : ShortComplex (Rep k G)) (hX : X.ShortExact) (hY : Y.ShortExact) (u₁ : X.X₁ ⟶ Rep.res φ Y.X₁) (u₂ : X.X₂ ⟶ Rep.res φ Y.X₂) (u₃ : X.X₃ ⟶ Rep.res φ Y.X₃), (∀ a, u₂.hom (X.f.hom a) = Y.f.hom (u₁.hom a)) → (∀ a, u₃.hom (X.g.hom a) = Y.g.hom (u₂.hom a)) → ∀ n : ℕ, groupHomology.δ hX (n + 1) n rfl ≫ groupHomology.map φ u₁ n = groupHomology.map φ u₃ (n + 1) ≫ groupHomology.δ hY (n + 1) n rfl ∧ hMap X.f n ≫ groupHomology.map φ u₂ n = groupHomology.map φ u₁ n ≫ hMap Y.f n ∧ hMap X.g n ≫ groupHomology.map φ u₃ n = groupHomology.map φ u₂ n ≫ hMap Y.g n := by
   first
   | exact @GlobalTheory.HomStab.groupHomology_δ_natural_changeGroup

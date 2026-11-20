@@ -3,6 +3,11 @@ open Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hb : Metric.ball s₁ r ∈ 𝓝 s₁` using `Metric.ball_mem_nhds _ hr`. Establish `ha : AnalyticAt ℂ H s₁` using `hH.analyticAt hb`. Use `⟨k + 1, ?_⟩` and prove the remaining obligations. Establish `h1 : AnalyticAt ℂ (fun z => (z - s₁) * H z) s₁` using `(analyticAt_id.sub analyticAt_const).mul ha`. Use `h1.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hb] with z hz`. Distinguish the cases in `hzs : z = s₁`. Simplify using `[hzs]`. Rewrite using `[h z hz hzs, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem meromorphicAt_of_pow_mul_eq {f H : ℂ → ℂ} {s₁ : ℂ} {k : ℕ} {r : ℝ} (hr : 0 < r)
     (h : ∀ s ∈ Metric.ball s₁ r, s ≠ s₁ → H s = (s - s₁) ^ k * f s)
     (hH : DifferentiableOn ℂ H (Metric.ball s₁ r)) : MeromorphicAt f s₁ := by
@@ -17,6 +22,17 @@ theorem meromorphicAt_of_pow_mul_eq {f H : ℂ → ℂ} {s₁ : ℂ} {k : ℕ} {
   · simp [hzs]
   · rw [h z hz hzs, smul_eq_mul]; ring
 
+/- English proof (translation)
+Introduce `f g σ₀ hf hg hfg s`. Establish `hf' : ∀ x, MeromorphicAt f x` using `fun x => by`. Take `⟨k, r, H, hr, h, hH⟩` from `hf x`. Conclude with `meromorphicAt_of_pow_mul_eq hr h hH`. Establish `hg' : ∀ x, MeromorphicAt g x` using `fun x => by`.
+
+Take `⟨k, r, H, hr, h, hH⟩` from `hg x`. Conclude with `meromorphicAt_of_pow_mul_eq hr h hH`. Establish `hm : MeromorphicOn (f - g) Set.univ` using `fun x _ => (hf' x).sub (hg' x)`. Assume the negation of the conclusion as `hne`. Establish `h1 : meromorphicOrderAt (f - g) s ≠ ⊤`.
+
+Introduce `h`. Rewrite `h` using `[meromorphicOrderAt_eq_top_iff]`. Apply `hne` to reduce the goal to its premises. Use `filter_upwards [h] with t ht`. Conclude with `sub_eq_zero.mp ht`.
+
+Establish `h2 : meromorphicOrderAt (f - g) ((σ₀ + 1 : ℝ) : ℂ) ≠ ⊤` using `hm.meromorphicOrderAt_ne_top_of_isPreconnected isPreconnected_univ (Set.mem_univ s) (Set.mem_univ _) h1`. Apply `h2` to reduce the goal to its premises. Rewrite using `[meromorphicOrderAt_eq_top_iff]`. Establish `ho : IsOpen {z : ℂ | σ₀ < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hmem : {z : ℂ | σ₀ < z.re} ∈ 𝓝 ((σ₀ + 1 : ℝ) : ℂ)` using `ho.mem_nhds (by simp)`.
+
+Use `filter_upwards [mem_nhdsWithin_of_mem_nhds hmem] with t ht`. Conclude with `sub_eq_zero.mpr (hfg t ht)`.
+-/
 theorem eventually_eq_nhdsNE_of_meromorphic_of_eqOn_halfPlane : ∀ (f g : ℂ → ℂ) (σ₀ : ℝ),
     (∀ s₁ : ℂ, ∃ (k : ℕ) (r : ℝ) (H : ℂ → ℂ), 0 < r ∧ (∀ s ∈ Metric.ball s₁ r, s ≠ s₁ → H s = (s - s₁) ^ k * f s) ∧
       DifferentiableOn ℂ H (Metric.ball s₁ r)) →

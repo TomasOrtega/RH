@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.OpenCompactLat
 
+/- English proof (translation)
+Establish `hU : IsOpen ((fun x : Matrix Y Y' k => (N : k) • x) '' (A₀ : Set (Matrix Y Y' k)))` using `(Homeomorph.smulOfNeZero (N : k) hN).isOpenMap _ ho`. Establish `hA : IsOpen (A : Set (Matrix Y Y' k))`. Use `A.isOpen_of_mem_nhds (g := 0) (Filter.mem_of_superset (hU.mem_nhds ⟨0, A₀.zero_mem, smul_zero _⟩) ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `(N : k) • y ∈ A`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `h2 y hy`. Use `⟨hA, IsCompact.of_isClosed_subset (hc.image (continuous_const_smul ((M : k)⁻¹))) (A.isClosed_of_isOpen hA) ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `⟨M • x, h1 x hx, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(M : k)⁻¹ • (M • x) = x`. Rewrite using `[← Nat.cast_smul_eq_nsmul k, smul_smul, inv_mul_cancel₀ hM, one_smul]`.
+-/
 theorem isOpen_isCompact_of_nsmul {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] {Y Y' : Type}
     (A A₀ : AddSubgroup (Matrix Y Y' k)) (ho : IsOpen (A₀ : Set (Matrix Y Y' k)))
     (hc : IsCompact (A₀ : Set (Matrix Y Y' k))) (M N : ℕ) (hM : (M : k) ≠ 0) (hN : (N : k) ≠ 0)
@@ -32,6 +39,17 @@ theorem isOpen_isCompact_of_nsmul {k : Type} [Field k] [TopologicalSpace k] [IsT
   change (M : k)⁻¹ • (M • x) = x
   rw [← Nat.cast_smul_eq_nsmul k, smul_smul, inv_mul_cancel₀ hM, one_smul]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p S T LS LT hLS hLT Y Y' _ _ _ _ FS FT`. Establish `hF` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame S`. Establish `hG` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame T`. Take `⟨M, hM, hM'⟩` from `GlobalTheory.DiagLiftFix.exists_nsmul_latO (S := S) (T := T) hLS.fg hLT.fg hF.1 hG.1`. Take `⟨N, hN, hN'⟩` from `GlobalTheory.DiagLiftFix.exists_nsmul_latO (S := S) (T := T) hF.1.fg hG.1.fg hLS hLT`.
+
+Establish `hcast : ∀ n : ℕ, 0 < n → (n : k) ≠ 0` using `fun n hn => by`. Establish `h0 : IsUnit (n : D.host.E)` using `(Nat.cast_ne_zero.2 hn.ne').isUnit`. Establish `h1` using `(h0.map (incA D)).map p.pr`. Rewrite `h1` using `[map_natCast, map_natCast]`. Conclude with `h1.ne_zero`.
+
+Use `isOpen_isCompact_of_nsmul _ _ (GlobalTheory.LocMod.Witness.lat_open (GlobalTheory.LocMod.Place.ofSplitPt p) FS FT hF hG) (GlobalTheory.LocMod.Witness.lat_compact (GlobalTheory.LocMod.Place.ofSplitPt p) FS FT hF hG) M N (hcast M hM) (hcast N hN) ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx`, the goal using `[AddSubgroup.mem_comap]`. Rewrite using `[map_nsmul]`. Conclude with `hM' _ (GlobalTheory.PlaceModel.latO_le_top _ hx)`.
+
+Introduce `y hy`. Rewrite `hy`, the goal using `[AddSubgroup.mem_comap]`. Use `GlobalTheory.SplitLinAt.latHalf D k p S T LS LT _ ?_ (Or.inl ?_)` and prove the remaining obligations. Rewrite using `[map_nsmul]`. Conclude with `hN' _ hy`.
+
+Conclude with `GlobalTheory.LocMod.Witness.up_half (GlobalTheory.LocMod.Place.ofSplitPt p) FS FT _`.
+-/
 theorem openCompact : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S T : HSp D) (LS : Lat S) (LT : Lat T), Submodule.IsLattice D.host.E LS → Submodule.IsLattice D.host.E LT → ∀ (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y), IsOpen (((latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = p.v)).comap (GlobalTheory.LocMod.Witness.upH (GlobalTheory.LocMod.Place.ofSplitPt p) FS FT) : AddSubgroup (Matrix Y Y' k)) : Set (Matrix Y Y' k)) ∧ IsCompact (((latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = p.v)).comap (GlobalTheory.LocMod.Witness.upH (GlobalTheory.LocMod.Place.ofSplitPt p) FS FT) : AddSubgroup (Matrix Y Y' k)) : Set (Matrix Y Y' k)) := by
   intro D k _ _ _ _ p S T LS LT hLS hLT Y Y' _ _ _ _ FS FT
   have hF := GlobalTheory.PlaceModel.isSelfDualC_latFrame S

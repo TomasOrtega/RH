@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.SplitIdem
 
+/- English proof (translation)
+Establish `h2 : (U * w - U * R) * (U * (1 - w) - U * R) = 0`. Take the linear combination `U * U * hR - U * U * hw - m * U * hU`. Use `⟨?_, h2, by linear_combination hδ⟩` and prove the remaining obligations. Take the linear combination `(U * w - U * R) * hδ - h2 + (w - R) * hU`.
+-/
 theorem idem_alg {T : Type} [CommRing T] (p U R w m : T) (hU : p * U = U) (hR : R * R - R + m * p = 0)
     (hδ : U - 2 * (U * R) = p) (hw : w * w - w + m = 0) :
     (U * w - U * R) * (U * w - U * R) = U * w - U * R ∧
@@ -21,6 +24,17 @@ theorem idem_alg {T : Type} [CommRing T] (p U R w m : T) (hU : p * U = U) (hR : 
   refine ⟨?_, h2, by linear_combination hδ⟩
   linear_combination (U * w - U * R) * hδ - h2 + (w - R) * hU
 
+/- English proof (translation)
+Set `j : A →+* A ⊗[F] E` to `algebraMap A _`. Set `k : E →+* A ⊗[F] E` to `(Algebra.TensorProduct.includeRight : E →ₐ[F] A ⊗[F] E)`. Establish `hjk : ∀ a x, a ⊗ₜ[F] x = j a * k x` using `fun a x => by`. Simplify using `[j, k, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `h1 : e = j (φ u) * k ω - j (φ u) * j (φ r)`.
+
+Rewrite using `[he, hjk, hjk, map_neg, map_mul, map_neg, map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : c e = j (φ u) * (1 - k ω) - j (φ u) * j (φ r)`. Rewrite using `[he, map_add, hc1, hcω, hjk, hjk, map_neg, map_mul, map_neg, map_mul, map_one, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h2, h1]`. Use `idem_alg (j (φ 1)) _ _ _ (m : A ⊗[F] E) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, one_mul]`. Establish `: φ r * φ r - φ r + m * φ 1 = 0`. Rewrite using `[← nsmul_eq_mul, ← map_nsmul, ← map_mul, ← map_sub, ← map_add, nsmul_eq_mul, mul_one, hr, map_zero]`.
+
+Simplify using `using congrArg j this`. Establish `: φ u - 2 * (φ u * φ r) = φ 1`. Rewrite using `[two_mul, ← map_mul, ← map_add, ← map_sub, ← hu]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h` using `congrArg j this`. Rewrite `h` using `[map_sub, map_mul, map_mul, map_ofNat]`. Then use the resulting hypothesis. Establish `h` using `congrArg k hω`. Rewrite `h` using `[map_add, map_sub, map_mul, map_natCast, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem idem_tensor {F A E K : Type} [Field F] [CommRing A] [Algebra F A] [CommRing E] [Algebra F E]
     [CommRing K] (φ : K →ₙ+* A) (c : A ⊗[F] E →+* A ⊗[F] E) (ω : E) (m : ℕ) (r u : K)
     (hc1 : ∀ a : A, c (a ⊗ₜ 1) = a ⊗ₜ 1) (hcω : ∀ a : A, c (a ⊗ₜ ω) = a ⊗ₜ (1 - ω))
@@ -52,15 +66,24 @@ section Local
 
 variable (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Conclude with `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v y`.
+-/
 theorem evalV_singleV_same (y : Fv F v) : evalV F v (singleV F v y) = y := by
   classical
   exact RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v y
 
+/- English proof (translation)
+Conclude with `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) y hw`.
+-/
 theorem evalV_singleV_ne (y : Fv F v) {w : HeightOneSpectrum (𝓞 F)} (hw : w ≠ v) :
     evalV F w (singleV F v y) = 0 := by
   classical
   exact RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) y hw
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.ext _ _ h`.
+-/
 theorem af_ext {a b : Af F} (h : ∀ w, evalV F w a = evalV F w b) : a = b :=
   RestrictedProduct.ext _ _ h
 
@@ -82,11 +105,19 @@ def placeHom : Fv F v →ₙ+* AF F where
     · subst hw; simp only [map_mul, evalV_singleV_same]
     · simp only [map_mul, evalV_singleV_ne F v _ hw, mul_zero])
 
+/- English proof (translation)
+Introduce `w` and use `by by_cases hw : w = v · subst hw; rw [evalV_singleV_same]; exact y.2 · rw [evalV_singleV_ne F v _ hw]; exact zero_mem _`.
+-/
 theorem singleV_mem_intAf (y : v.adicCompletionIntegers F) : singleV F v (y : Fv F v) ∈ intAf F := fun w => by
   by_cases hw : w = v
   · subst hw; rw [evalV_singleV_same]; exact y.2
   · rw [evalV_singleV_ne F v _ hw]; exact zero_mem _
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Establish `hm : (2 : v.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← map_ofNat (algebraMap (𝓞 F) (v.adicCompletionIntegers F)) 2, GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff]`. Conclude with `fun h => h h2`. Take `⟨r, hr, -⟩` from `HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)) (Polynomial.X ^ 2 - Polynomial.X + Polynomial.C ((2 * k : ℕ) : v.adicCompletionIntegers F)) (by monicity!) 0 (by simpa using Ideal.mul_mem_right _ _ hm) (by simp)`.
+
+Establish `hunit : IsUnit (1 - 2 * r)` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ (Ideal.mul_mem_right r _ hm)`. Take `⟨u, hu⟩` from `hunit.exists_left_inv`. Use `⟨r, u, ?_, hu⟩` and prove the remaining obligations. Simplify `hr` using `[Polynomial.IsRoot, pow_two]`.
+-/
 theorem exists_root (h2 : (2 : 𝓞 F) ∈ v.asIdeal) (k : ℕ) :
     ∃ r u : v.adicCompletionIntegers F, r * r - r + ((2 * k : ℕ) : v.adicCompletionIntegers F) = 0 ∧
       u * (1 - 2 * r) = 1 := by
@@ -106,6 +137,15 @@ theorem exists_root (h2 : (2 : 𝓞 F) ∈ v.asIdeal) (k : ℕ) :
 
 end Local
 
+/- English proof (translation)
+Take `⟨k, hm⟩ : ∃ k : ℕ, D.host.d + 1 = 4 * (2 * k)` from `⟨(D.host.d + 1) / 8, by have := D.host.hyp.2.2.2.1; omega⟩`. Generalize the expression as in `hmm : 2 * k = m at hm`. Use `set c : D.host.E := (1 + D.host.sqrtMinusD) / 2`. Establish `hc : c ^ 2 - c + (m : D.host.E) = 0`. Establish `e : ((D.host.d : ℕ) : D.host.E) + 1 = 4 * (m : D.host.E)` using `by exact_mod_cast hm`.
+
+Establish `hs` using `D.host.sqrtMinusD_sq`. Simplify using `only [c]`. Take the linear combination `(1 / 4 : D.host.E) * hs - (1 / 4 : D.host.E) * e`. Establish `hint : IsIntegral ℤ c` using `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (m : ℤ), by monicity!, by`. Simplify using `[Polynomial.eval₂_sub, Polynomial.eval₂_add, hc]⟩`.
+
+Use `⟨⟨c, hint⟩, k, ?_, ?_⟩` and prove the remaining obligations. Use `show c * c - c + _ = 0`. Rewrite using `[hmm, ← pow_two, hc]`. Use `show D.host.conj c = 1 - c`. Simplify using `only [c, map_div₀, map_add, map_one, D.host.conj_sqrtMinusD, map_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_omega (D : D7) : ∃ (ω : 𝓞 D.host.E) (k : ℕ),
     (ω : D.host.E) * ω - ω + ((2 * k : ℕ) : D.host.E) = 0 ∧ D.host.conj ω = 1 - ω := by
   obtain ⟨k, hm⟩ : ∃ k : ℕ, D.host.d + 1 = 4 * (2 * k) := ⟨(D.host.d + 1) / 8, by have := D.host.hyp.2.2.2.1; omega⟩
@@ -125,6 +165,9 @@ theorem exists_omega (D : D7) : ∃ (ω : 𝓞 D.host.E) (k : ℕ),
     simp only [c, map_div₀, map_add, map_one, D.host.conj_sqrtMinusD, map_ofNat]
     ring
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Establish `h1 : D.host.φ₀ (D.host.conj x) = starRingEnd ℂ (D.host.φ₀ x)` using `D.host.conjE_apply _ _`. Rewrite using `[h1]`. Use `haveI := D.host.isCMField_hostE`. Conclude with `IsCMField.complexEmbedding_complexConj _ _ _`.
+-/
 theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
   have h1 : D.host.φ₀ (D.host.conj x) = starRingEnd ℂ (D.host.φ₀ x) := D.host.conjE_apply _ _
@@ -132,6 +175,11 @@ theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   haveI := D.host.isCMField_hostE
   exact IsCMField.complexEmbedding_complexConj _ _ _
 
+/- English proof (translation)
+Introduce `D v h2`. Take `⟨ω, k, hω, hc⟩` from `exists_omega D`. Take `⟨r, u, hr, hu⟩` from `exists_root D.host.F v h2 k`. Establish `hcA : ∀ (a : AF D.host.F) (x : D.host.E), cA D (a ⊗ₜ[D.host.F] x) = a ⊗ₜ[D.host.F] star x` using `fun _ _ => rfl`. Establish `key` using `idem_tensor (placeHom D.host.F v) (cA D) (ω : D.host.E) (2 * k) (r : Fv D.host.F v) (u : Fv D.host.F v) (fun a => by rw [hcA, star_one]) (fun a => by rw [hcA, star_eq_conj, hc]) hω (congrArg Subtype.val hr) (congrArg Subtype.val hu) _ rfl`.
+
+Conclude with `⟨_, key.1, key.2.1, key.2.2, _, singleV_mem_intAf D.host.F v u, _, singleV_mem_intAf D.host.F v (-(u * r)), ω, rfl⟩`.
+-/
 theorem exists_split_idempotent : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)), (2 : 𝓞 D.host.F) ∈ v.asIdeal → ∃ e : Formalism.L2.Theta.AE D, e * e = e ∧ e * cA D e = 0 ∧ e + cA D e = algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) (pairA D.host.F 0 (singleV D.host.F v 1)) ∧ ∃ α ∈ intAf D.host.F, ∃ β ∈ intAf D.host.F, ∃ ω : 𝓞 D.host.E, e = pairA D.host.F 0 α ⊗ₜ[D.host.F] (ω : D.host.E) + pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 : D.host.E) := by
   intro D v h2
   obtain ⟨ω, k, hω, hc⟩ := exists_omega D

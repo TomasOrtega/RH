@@ -19,6 +19,17 @@ namespace GlobalTheory
 
 open Polynomial in
 
+/- English proof (translation)
+Use `Fintype.ofFinite K` as an intermediate fact. Establish `hq : 1 < Fintype.card K` using `Fintype.one_lt_card`. Set `f : ℤ[X]` to `X ^ (Fintype.card K - 1) - C 1`. Set `P : StandardEtalePair ℤ` to `⟨f, monic_X_pow_sub_C _ (by omega), derivative f, 1, 0, 1, by simp⟩`. Take `⟨α, hα⟩` from `IsCyclic.exists_generator (α := Kˣ)`.
+
+Establish `h1 : (α : K) ^ (Fintype.card K - 1) = 1` using `FiniteField.pow_card_sub_one_eq_one _ α.ne_zero`. Establish `hm : P.HasMap (α : K)`. Use `⟨by simp [P, f, h1], ?_⟩` and prove the remaining obligations. Establish `: ((Fintype.card K - 1 : ℕ) : K) = -1`. Rewrite using `[Nat.cast_sub hq.le]`.
+
+Simplify using the standard rewrite rules. Simplify using `[P, f, derivative_X_pow, this]`. Use `⟨P.Ring, inferInstance, (P.lift _ hm).toRingHom, ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `: Int.castRingHom P.Ring = algebraMap ℤ P.Ring` using `RingHom.ext_int _ _`. Rewrite using `[this]`.
+
+Conclude with `RingHom.etale_algebraMap.mpr inferInstance`. Distinguish the cases in `hk : k = 0`. Conclude with `⟨0, by simp [hk]⟩`. Take `⟨n, hn⟩` from `(mem_powers_iff_mem_zpowers.mpr (hα (Units.mk0 k hk)))`. Use `⟨P.X ^ n, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg Units.val hn` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_etale_int_surjective_of_finite_field (K : Type) [Field K] [Finite K] :
     ∃ (A : Type) (_ : CommRing A) (β : A →+* K),
       (Int.castRingHom A).Etale ∧ Function.Surjective β := by
@@ -46,12 +57,24 @@ theorem exists_etale_int_surjective_of_finite_field (K : Type) [Field K] [Finite
       have := congrArg Units.val hn
       simpa using this
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Conclude with `⟨_, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K X a⟩`.
+-/
 theorem exists_factor_fromSpecResidueField {K : Type} [Field K] {X : Scheme.{0}}
     (a : Spec (.of K) ⟶ X) {x : X} (hx : a (IsLocalRing.closedPoint K) = x) :
     ∃ φ : X.residueField x ⟶ .of K, Spec.map φ ≫ X.fromSpecResidueField x = a := by
   subst hx
   exact ⟨_, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K X a⟩
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `exists_factor_fromSpecResidueField a ha`. Generalize the expression as in `hy : ξ (IsLocalRing.closedPoint (W.residueField w)) = y at σ hσ`. Take `⟨φ, hφ⟩` from `exists_factor_fromSpecResidueField (K := W.residueField w) ξ hy`. Take `⟨ψ, hψ⟩` from `exists_factor_fromSpecResidueField (K := Y.residueField y) (Y.fromSpecResidueField y ≫ h) (x := w) (by`. Use `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg h (Scheme.fromSpecResidueField_apply y _)).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[← hy, ← Scheme.Hom.comp_apply, hξ]`. Conclude with `Scheme.fromSpecResidueField_apply w _)`. Establish `h1 : ψ ≫ φ = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (W.fromSpecResidueField w), Spec.map_comp, Category.assoc, hψ, ← Category.assoc, hφ, hξ, Spec.map_id]`.
+
+Conclude with `(Category.id_comp _).symm`. Establish `h2 : φ ≫ ψ = 𝟙 _`. Use extensionality with `z`. Apply `φ.hom.injective` to reduce the goal to its premises. Conclude with `congr($h1 (φ z))`.
+
+Use `⟨ψ ≫ σ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hσ, ← hφ, ← Spec.map_comp_assoc, ← Category.assoc φ, h2, Category.id_comp]`.
+-/
 theorem exists_factor_of_lift_fromSpecResidueField {Y W : Scheme.{0}} (h : Y ⟶ W) (w : W)
     (ξ : Spec (W.residueField w) ⟶ Y) (hξ : ξ ≫ h = W.fromSpecResidueField w)
     {K : Type} [Field K] (a : Spec (.of K) ⟶ Y)
@@ -78,6 +101,9 @@ theorem exists_factor_of_lift_fromSpecResidueField {Y W : Scheme.{0}} (h : Y ⟶
   refine ⟨ψ ≫ σ, ?_⟩
   rw [← hσ, ← hφ, ← Spec.map_comp_assoc, ← Category.assoc φ, h2, Category.id_comp]
 
+/- English proof (translation)
+Take `⟨s', hs', e⟩` from `hf (genericPoint_specializes (f s))`. Establish `h : closure {s} ⊆ closure ({s'} : Set S)` using `specializes_iff_closure_subset.mp hs'`. Establish `h'` using `hs.2 isIrreducible_singleton.closure h`. Rewrite using `[← e, (hs'.antisymm (specializes_iff_closure_subset.mpr h')).eq]`.
+-/
 theorem apply_eq_genericPoint_of_generalizingMap {S T : Type*} [TopologicalSpace S]
     [TopologicalSpace T] [T0Space S] [QuasiSober T] [IrreducibleSpace T] {f : S → T}
     (hf : GeneralizingMap f) {s : S} (hs : s ∈ genericPoints S) : f s = genericPoint T := by
@@ -86,12 +112,38 @@ theorem apply_eq_genericPoint_of_generalizingMap {S T : Type*} [TopologicalSpace
   have h' := hs.2 isIrreducible_singleton.closure h
   rw [← e, (hs'.antisymm (specializes_iff_closure_subset.mpr h')).eq]
 
+/- English proof (translation)
+Establish `hd` using `(f.isDiscrete_preimage_singleton (f b)).to_subtype`. Establish `: (⟨a, e⟩ : f ⁻¹' {f b}) ⤳ ⟨b, rfl⟩` using `Topology.IsInducing.subtypeVal.specializes_iff.mp h`. Conclude with `congrArg Subtype.val this.eq`.
+-/
 theorem eq_of_specializes_of_locallyQuasiFinite {X Y : Scheme.{0}} (f : X ⟶ Y)
     [LocallyQuasiFinite f] {a b : X} (h : a ⤳ b) (e : f a = f b) : a = b := by
   have hd := (f.isDiscrete_preimage_singleton (f b)).to_subtype
   have : (⟨a, e⟩ : f ⁻¹' {f b}) ⤳ ⟨b, rfl⟩ := Topology.IsInducing.subtypeVal.specializes_iff.mp h
   exact congrArg Subtype.val this.eq
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian π`. Establish `: IsLocallyNoetherian W` using `LocallyOfFiniteType.isLocallyNoetherian u`. Establish `: LocallyOfFinitePresentation u` using `LocallyOfFinitePresentation.iff_locallyOfFiniteType.mpr ‹_›`. Establish `hNT : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme T` using `forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth g hN`. Use `geometricallyReduced_of_smooth h` as an intermediate fact.
+
+Establish `: IsReduced V` using `GeometricallyReduced.isReduced_of_flat_of_isLocallyNoetherian h`. Establish `: Nonempty V` using `⟨v⟩`. Establish `hgh : ∀ z ∈ genericPoints V, h z = genericPoint W` using `fun z hz => apply_eq_genericPoint_of_generalizingMap (Flat.generalizingMap h) hz`. Establish `hgT : g (genericPoint T) = genericPoint X` using `apply_eq_genericPoint_of_generalizingMap (Flat.generalizingMap g) (by rw [genericPoints_eq_singleton]; rfl)`. Use `TangentCrit.locallyQuasiFinite_of_formallyUnramified g` as an intermediate fact.
+
+Use `TangentCrit.locallyQuasiFinite_of_formallyUnramified h` as an intermediate fact. Establish `hgu : u (genericPoint W) = genericPoint X`. Apply `IsGenericPoint.eq _ (genericPoint_spec X)` to reduce the goal to its premises. Use `(genericPoint_spec W).image u.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, u.denseRange.closure_range]`. Then use the resulting hypothesis.
+
+Establish `hgf : ∀ z ∈ genericPoints V, f z = genericPoint T` using `fun z hz => by`. Use `(eq_of_specializes_of_locallyQuasiFinite g (genericPoint_specializes _) ?_).symm` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← sq, Scheme.Hom.comp_apply, hgh z hz, hgu, hgT]`. Establish `hvc : IsClosed ({v} : Set V)` using `isClosed_of_subset_discrete_closed (t := h ⁻¹' {w}) (by simpa using hv) (h.isDiscrete_preimage_singleton w) (hw.preimage h.continuous)`. Establish `htc : IsClosed ({f v} : Set T)`.
+
+Simplify using `using f.isClosedMap _ hvc`. Set `U' : T.Opens` to `⟨(f '' (h ⁻¹ᵁ U : Set V)ᶜ)ᶜ, (f.isClosedMap _ (h ⁻¹ᵁ U).isOpen.isClosed_compl).isOpen_compl⟩`. Establish `hU' : ∀ z : V, f z ∈ U' → h z ∈ U` using `fun z hz => by`. Assume the negation of the conclusion as `H`. Conclude with `hz ⟨z, H, rfl⟩`.
+
+Establish `hU'ne : (U' : Set T).Nonempty`. Use `⟨genericPoint T, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨z, hz, e⟩`. Take `⟨z₀, hz₀, hs⟩` from `exists_mem_genericPoints_specializes z`. Take `rfl : z₀ = z` from `eq_of_specializes_of_locallyQuasiFinite f hs ((hgf z₀ hz₀).trans e.symm)`.
+
+Apply `hz` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `h z₀ ∈ U`. Rewrite using `[hgh z₀ hz₀]`. Conclude with `((genericPoint_spec W).mem_open_set_iff U.isOpen).mpr (by simpa using hU)`. Establish `hiso : IsIso f`.
+
+Use `isIso_of_isFinite_of_unique_lift_of_classical_points T (g ≫ π) hNT V f hgf (f v) U' htc hU'ne fun p _ a a' e hc hr => ?_` and prove the remaining obligations. Establish `hcl : spMap (IsLocalRing.residue (OO p)) (IsLocalRing.closedPoint (IsLocalRing.ResidueField (OO p))) = cPt p` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue (OO p))`. Take `⟨h₁, h₂⟩` from `hgeo (IsLocalRing.ResidueField (OO p)) (spMap (IsLocalRing.residue (OO p)) ≫ a) (spMap (IsLocalRing.residue (OO p)) ≫ a') (by rw [Category.assoc, e, Category.assoc]) (by rw [Category.assoc, Scheme.Hom.comp_apply, hcl, hc])`. Establish `hran : ∀ b : Sp (OO p) ⟶ V, b ≫ f = a ≫ f → Set.range (gPt p ≫ b ≫ h) ⊆ U`. Introduce and unpack `b hb _ ⟨z, rfl⟩`.
+
+Rewrite using `[← Category.assoc, Scheme.Hom.comp_apply]`. Apply `hU'` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, hb]`. Conclude with `hr ⟨z, rfl⟩`. Use `hmono _ a a' (huniq p (a ≫ h) (a' ≫ h) ?_ ?_ ?_ (hran a rfl) (hran a' e.symm)) e` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Category.assoc, sq, reassoc_of% e]`. Rewrite `h₂` using `[Category.assoc, Scheme.Hom.comp_apply, hcl]`. Then use the resulting hypothesis. Simplify `h₁` using `only [Category.assoc]`. Establish `: Etale (h ≫ u)` using `by rw [sq]; infer_instance`. Take `⟨V', hV', hE⟩` from `exists_opens_range_etale_of_comp V W X h u`.
+
+Conclude with `⟨V', hV'.ge ⟨v, hv⟩, hE⟩`.
+-/
 theorem exists_opens_etale_of_finite_etale_localisation_of_isIntegral
     (X : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π] [LocallyOfFiniteType π]
     (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (W : Scheme.{0}) [IsIntegral W] (u : W ⟶ X)
@@ -174,6 +226,15 @@ theorem exists_opens_etale_of_finite_etale_localisation_of_isIntegral
   obtain ⟨V', hV', hE⟩ := exists_opens_range_etale_of_comp V W X h u
   exact ⟨V', hV'.ge ⟨v, hv⟩, hE⟩
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian T` using `LocallyOfFiniteType.isLocallyNoetherian (g ≫ π)`. Use `IsNormalScheme.of_pred hN` as an intermediate fact. Use `isNormalScheme_of_smooth g` as an intermediate fact. Set `T' : T.Opens` to `IsNormalScheme.component ⟨_, irreducibleComponent_mem_irreducibleComponents (f v)⟩`. Establish `hv' : v ∈ f ⁻¹ᵁ T'` using `mem_irreducibleComponent`.
+
+Establish `hcomp : ∀ {Z : Scheme.{0}} {a b : Z ⟶ (f ⁻¹ᵁ T').toScheme}, a ≫ f ∣_ T' = b ≫ f ∣_ T' → (a ≫ (f ⁻¹ᵁ T').ι) ≫ f = (b ≫ (f ⁻¹ᵁ T').ι) ≫ f` using `fun e => by`. Rewrite using `[Category.assoc, Category.assoc, ← morphismRestrict_ι, reassoc_of% e]`. Use `exists_opens_etale_of_finite_etale_localisation_of_isIntegral X π hN W u w U hw hU huniq (T'.ι ≫ g) ((f ⁻¹ᵁ T').ι ≫ h) (f ∣_ T') ?_ (fun Z a b e₁ e₂ => ?_) ⟨v, hv'⟩ ?_ fun K _ a b e hc => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, sq, morphismRestrict_ι_assoc]`. Rewrite using `[← cancel_mono (f ⁻¹ᵁ T').ι]`.
+
+Conclude with `hmono _ _ _ (by simpa only [Category.assoc] using e₁) (hcomp e₂)`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hv`. Use `hgeo K _ _ (hcomp e) (by` as an intermediate fact. Rewrite using `[Category.assoc, ← morphismRestrict_ι, ← Category.assoc, Scheme.Hom.comp_apply, hc, ← Scheme.Hom.comp_apply, morphismRestrict_ι, Scheme.Hom.comp_apply]`.
+
+Use the proof step `rfl)`. Simplify `this` using `only [Category.assoc]`.
+-/
 theorem exists_opens_etale_of_finite_etale_localisation
     (X : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π] [LocallyOfFiniteType π]
     (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (W : Scheme.{0}) [IsIntegral W] (u : W ⟶ X)
@@ -213,6 +274,39 @@ theorem exists_opens_etale_of_finite_etale_localisation
       rfl)
     simpa only [Category.assoc] using this
 
+/- English proof (translation)
+Introduce `X _ π _ _ hN W _ u _ _ _ w U hw hqf hU huniq`. Set `Q : W.Opens` to `u.quasiFiniteLocus`. Set `w₀ : Q` to `⟨w, hqf⟩`. Set `u₀ : Q.toScheme ⟶ X` to `Q.ι ≫ u`. Establish `hw₀ : IsClosed ({w₀} : Set Q)`.
+
+Use `hw.preimage Q.ι.continuous` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Conclude with `Subtype.ext_iff`. Establish `: Finite (Q.toScheme.residueField w₀)` using `(jacobson_closedPoints_tools_int Q (u₀ ≫ π)).2.1 w₀ hw₀`.
+
+Take `⟨A, _, β, hA, hβ⟩` from `@exists_etale_int_surjective_of_finite_field (Q.toScheme.residueField w₀) (Scheme.instFieldCarrierResidueField _ _) this`. Set `ρ : Sp A ⟶ Sp ℤ` to `spMap (Int.castRingHom A)`. Establish `: Etale ρ` using `HasRingHomProperty.Spec_iff.mpr hA`. Set `g₁` to `pullback.fst π ρ`. Set `h₁` to `pullback.fst u₀ g₁`.
+
+Set `f₁` to `pullback.snd u₀ g₁`. Set `β' : Spec (Q.toScheme.residueField w₀) ⟶ Sp A` to `spMap β`. Set `ξ₀ : Spec (Q.toScheme.residueField w₀) ⟶ pullback π ρ` to `pullback.lift (Q.toScheme.fromSpecResidueField w₀ ≫ u₀) β' (specZIsTerminal.hom_ext _ _)`. Set `ξ : Spec (Q.toScheme.residueField w₀) ⟶ pullback u₀ g₁` to `pullback.lift (Q.toScheme.fromSpecResidueField w₀) ξ₀ (pullback.lift_fst _ _ _).symm`. Establish `hξ : ξ ≫ h₁ = Q.toScheme.fromSpecResidueField w₀` using `pullback.lift_fst _ _ _`.
+
+Establish `hξ' : ξ ≫ f₁ ≫ pullback.snd π ρ = β'`. Rewrite using `[pullback.lift_snd_assoc, pullback.lift_snd]`. Set `w₁` to `ξ (IsLocalRing.closedPoint (Q.toScheme.residueField w₀))`. Establish `hw₁ : h₁ w₁ = w₀`. Rewrite using `[← Scheme.Hom.comp_apply, hξ, Scheme.fromSpecResidueField_apply]`.
+
+Establish `hgeo₁ : ∀ (K : Type) [Field K] (a b : Spec (.of K) ⟶ pullback u₀ g₁), a ≫ f₁ = b ≫ f₁ → a (IsLocalRing.closedPoint K) = w₁ → b (IsLocalRing.closedPoint K) = w₁ → a = b`. Introduce `K _ a b e ha hb`. Take `⟨σ, rfl⟩` from `exists_factor_of_lift_fromSpecResidueField h₁ w₀ ξ hξ a ha`. Take `⟨τ, rfl⟩` from `exists_factor_of_lift_fromSpecResidueField h₁ w₀ ξ hξ b hb`. Establish `e'` using `congr($e ≫ pullback.snd π ρ)`.
+
+Simplify using `only [Category.assoc, hξ'] at e'`. Establish `e'' : CommRingCat.ofHom β ≫ σ = CommRingCat.ofHom β ≫ τ`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_comp]`. Conclude with `e'`.
+
+Establish `: σ = τ`. Use extensionality with `z`. Take `⟨z, rfl⟩` from `hβ z`. Conclude with `congr($e'' z)`. Rewrite using `[this]`.
+
+Take `⟨O, hO, hOw⟩ : ∃ O : Set ↥(pullback u₀ g₁), IsOpen O ∧ O ∩ f₁ ⁻¹' {f₁ w₁} = {w₁}` from `isDiscrete_iff_forall_exists_isOpen.mp (f₁.isDiscrete_preimage_singleton (f₁ w₁)) w₁ rfl`. Set `O' : (pullback u₀ g₁).Opens` to `⟨O, hO⟩`. Set `w₂ : O'` to `⟨w₁, (hOw.ge rfl).1⟩`. Set `f₂` to `O'.ι ≫ f₁`. Take `⟨T, g, _, -, V, -, v, -, _, hv⟩` from `exists_etale_isCompl_of_quasiFiniteAt f₂ (x := w₂) rfl (f₂.quasiFiniteAt w₂)`.
+
+Set `k : V.toScheme ⟶ pullback u₀ g₁` to `V.ι ≫ pullback.fst f₂ g ≫ O'.ι`. Set `f : V.toScheme ⟶ T` to `V.ι ≫ pullback.snd f₂ g`. Establish `hk : k ≫ f₁ = f ≫ g`. Simplify using `only [k, f, Category.assoc]`. Rewrite using `[← pullback.condition]`.
+
+Establish `hkv : k v = w₁`. Simplify using `only [k, Scheme.Hom.comp_apply, Scheme.Opens.ι_apply, hv]`. Both sides reduce to the same expression. Establish `hfib : ∀ z : V.toScheme, f z = f v → k z = w₁` using `fun z hz => by`. Use `hOw.le ⟨(pullback.fst f₂ g (V.ι z)).2, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `f₁ (k z) = f₁ w₁`. Rewrite using `[← hkv, ← Scheme.Hom.comp_apply k f₁, ← Scheme.Hom.comp_apply k f₁, hk, Scheme.Hom.comp_apply f g, Scheme.Hom.comp_apply f g, hz]`. Use `exists_opens_etale_of_finite_etale_localisation X π hN W u w U hw hU huniq (g ≫ g₁) (k ≫ h₁ ≫ Q.ι) f ?_ (fun Z a b e₁ e₂ => ?_) v ?_ fun K _ a b e hc => ?_` and prove the remaining obligations. Rewrite using `[← reassoc_of% hk, ← pullback.condition (f := u₀) (g := g₁)]`. Simplify using `only [Category.assoc]`.
+
+Both sides reduce to the same expression. Establish `e₃ : a ≫ k = b ≫ k`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[← cancel_mono Q.ι]`. Simplify `e₁` using `only [Category.assoc]`.
+
+Rewrite using `[Category.assoc a k, Category.assoc b k, hk, reassoc_of% e₂]`. Rewrite using `[← cancel_mono V.ι]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[← cancel_mono O'.ι]`. Simplify `e₃` using `only [Category.assoc]`.
+
+Simplify `e₂` using `only [Category.assoc]`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hkv, hw₁]`. Both sides reduce to the same expression. Establish `ha : (a ≫ k) (IsLocalRing.closedPoint K) = w₁` using `hfib _ hc`. Establish `hb : (b ≫ k) (IsLocalRing.closedPoint K) = w₁` using `hfib _ (e ▸ hc : (b ≫ f) (IsLocalRing.closedPoint K) = f v)`.
+
+Use `hgeo₁ K _ _ (by` as an intermediate fact. Rewrite using `[Category.assoc a k, Category.assoc b k, hk, reassoc_of% e]) ha hb`. Use `⟨by rw [reassoc_of% this], ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, Scheme.Hom.comp_apply, ha, Scheme.Hom.comp_apply, hw₁]`. Both sides reduce to the same expression.
+-/
 theorem exists_opens_etale_of_unique_classical_points :
     ∀ (X : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π] [LocallyOfFiniteType π], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → ∀ (W : Scheme.{0}) [IsIntegral W] (u : W ⟶ X) [LocallyOfFiniteType u] [IsSeparated u] [IsDominant u] (w : W) (U : W.Opens), IsClosed ({w} : Set W) → u.QuasiFiniteAt w → (U : Set W).Nonempty → (∀ (p : ℕ) [Fact p.Prime] (a a' : Sp (OO p) ⟶ W), a ≫ u = a' ≫ u → a (cPt p) = w → spMap (IsLocalRing.residue (OO p)) ≫ a = spMap (IsLocalRing.residue (OO p)) ≫ a' → Set.range (gPt p ≫ a) ⊆ U → Set.range (gPt p ≫ a') ⊆ U → a = a') → ∃ V : W.Opens, w ∈ V ∧ Etale (V.ι ≫ u) := by
   intro X _ π _ _ hN W _ u _ _ _ w U hw hqf hU huniq

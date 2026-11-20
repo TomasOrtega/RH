@@ -26,6 +26,11 @@ def matAct {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] {n : ℕ}
   map_add' v w := by ext i; simp [smul_add, Finset.sum_add_distrib]
   map_smul' c v := by ext i; simp [Finset.smul_sum, smul_comm c]
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use function extensionality and compare the values at `i`. Use `show ∑ j, (A * B) i j • v j = ∑ k, A i k • ∑ j, B k j • v j`. Simplify using `only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]`.
+
+Conclude with `Finset.sum_comm`.
+-/
 theorem matAct_mul {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] {n : ℕ}
     (A B : Matrix (Fin n) (Fin n) R) :
     (matAct (M := M) (A * B)) = matAct A * matAct B := by
@@ -34,6 +39,9 @@ theorem matAct_mul {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] {n :
   simp only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use extensionality with `v i`. Simplify using `[matAct, Matrix.one_apply]`.
+-/
 theorem matAct_one {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] {n : ℕ} :
     (matAct (M := M) (1 : Matrix (Fin n) (Fin n) R)) = 1 := by
   ext v i
@@ -54,6 +62,9 @@ def twRep {G : Type} [Group G] {O₀ O' : Type} [CommRing O₀] [CommRing O'] [I
 def scalGL {R : Type} [CommRing R] (n : ℕ) : Rˣ →* GL (Fin n) R :=
   Units.map (Matrix.scalar (Fin n)).toMonoidHom
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `Matrix.scalar_commute _ (fun _ => Commute.all _ _) _`.
+-/
 theorem scalGL_comm {R : Type} [CommRing R] {n : ℕ} (a : Rˣ) (A : GL (Fin n) R) :
     scalGL n a * A = A * scalGL n a := by
   apply Units.ext
@@ -113,6 +124,9 @@ open Classical in
 
 def SigG (i : X.Tw) : Finset (X.Sig i) := Finset.univ.filter (goodS bkP i)
 
+/- English proof (translation)
+Simplify using `[SigG]`.
+-/
 theorem mem_SigG (i : X.Tw) (s : X.Sig i) : s ∈ SigG bkP i ↔ goodS bkP i s := by
   classical
   simp [SigG]
@@ -264,6 +278,9 @@ def Tmat (i : X.Tw) (s : X.Sig i) (g : GE N) : Matrix (Fin D.R.r) (Fin D.R.r) (X
   (((chiS i s g)⁻¹ : (X.O0 i)ˣ) : X.O0 i) •
     ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i))
 
+/- English proof (translation)
+Use `show Matrix.scalar (Fin D.R.r) _ * _ = _`. Rewrite using `[Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul]`. Both sides reduce to the same expression.
+-/
 theorem Tgl_coe (i : X.Tw) (s : X.Sig i) (g : GE N) :
     ((Tgl i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)) =
       Tmat i s g := by

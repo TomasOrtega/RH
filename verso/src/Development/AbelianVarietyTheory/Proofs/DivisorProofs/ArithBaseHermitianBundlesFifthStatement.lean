@@ -9,6 +9,9 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BcReadCx.frameSec_norm_cx | exact GlobalTheory.BcReadCx.frameSec_norm_cx | (intros; apply GlobalTheory.BcReadCx.frameSec_norm_cx <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arith_base_hermitian_bundles_fifth : Hypotheses2 → HypothesesH → RegularAlteration →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (P : Finset ℕ) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)
     (Bs : Scheme.{0}) [IsIntegral Bs] (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (arq : IsArithVar q (dimGr D.what₂.Tau O.N O.j))

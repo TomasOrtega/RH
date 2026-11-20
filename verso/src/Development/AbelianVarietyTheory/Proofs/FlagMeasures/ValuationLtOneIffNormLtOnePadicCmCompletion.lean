@@ -15,6 +15,9 @@ open Filter Topology
 
 namespace GlobalTheory.SlocVal
 
+/- English proof (translation)
+Establish `h` using `(hf.tendsto 0).comp hx`. Rewrite `h` using `[map_zero]`. Simplify `h` using `[Function.comp_def, map_pow]`.
+-/
 theorem tendsto_pow_map {A B : Type} [Ring A] [TopologicalSpace A] [Ring B] [TopologicalSpace B]
     (f : A →+* B) (hf : Continuous f) {x : A} (hx : Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0)) :
     Tendsto (fun n : ℕ => f x ^ n) atTop (𝓝 0) := by
@@ -22,6 +25,9 @@ theorem tendsto_pow_map {A B : Type} [Ring A] [TopologicalSpace A] [Ring B] [Top
   rw [map_zero] at h
   simpa [Function.comp_def, map_pow] using h
 
+/- English proof (translation)
+Establish `ho : IsOpenMap e` using `AddMonoidHom.isOpenMap_of_sigmaCompact e.toAddEquiv.toAddMonoidHom e.surjective he`. Conclude with `e.toEquiv.continuous_symm_iff.2 ho`.
+-/
 theorem continuous_symm {A B : Type} [Field A] [TopologicalSpace A] [IsTopologicalRing A]
     [SigmaCompactSpace A] [Field B] [TopologicalSpace B] [IsTopologicalRing B] [BaireSpace B]
     [T2Space B] (e : A ≃+* B) (he : Continuous e) : Continuous e.symm := by
@@ -33,6 +39,13 @@ end GlobalTheory.SlocVal
 
 open GlobalTheory.SlocVal in
 
+/- English proof (translation)
+Introduce `L _ _ _ s g _ i j hi hj z`. Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion (maximalRealSubfield L) s.v` as an intermediate fact. Establish `hj' : Continuous j.symm` using `continuous_symm j hj`. Establish `hi' : Continuous i.symm` using `continuous_symm i hi`. Establish `hφ : Continuous (i.trans j.symm)` using `hj'.comp hi`.
+
+Establish `hψ : Continuous (i.trans j.symm).symm` using `hi'.comp hj`. Establish `hz : Valued.v z < 1 ↔ ‖z‖ < 1` using `(Valued.toNormedField.norm_lt_one_iff).symm`. Rewrite using `[hz, ← tendsto_pow_atTop_nhds_zero_iff_norm_lt_one, ← tendsto_pow_atTop_nhds_zero_iff_norm_lt_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `tendsto_pow_map (i.trans j.symm).toRingHom hφ h`. Introduce `h`. Use `tendsto_pow_map (i.trans j.symm).symm.toRingHom hψ h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem GlobalTheory.valuation_lt_one_iff_norm_lt_one_of_continuous : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) (g : ℕ) [Fact g.Prime] (i : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L) (j : ℚ_[g] ≃+* s.w.adicCompletion L), Continuous i → Continuous j → ∀ z : s.v.adicCompletion (maximalRealSubfield L), Valued.v z < 1 ↔ ‖j.symm (i z)‖ < 1 := by
   intro L _ _ _ s g _ i j hi hj z
   have := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion (maximalRealSubfield L) s.v

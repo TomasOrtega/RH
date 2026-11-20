@@ -19,5 +19,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 open GlobalTheory.Core.Rk.SumBox
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.SumBox.selfDual_sumLatO | exact GlobalTheory.Core.Rk.SumBox.selfDual_sumLatO | (intros; apply GlobalTheory.Core.Rk.SumBox.selfDual_sumLatO <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.orthDecSumLattice_selfDual : ∀ (D : D7) (B W H : HSp D) (o : OrthDec B W H) (LW : Lat W) (LH : Lat H), IsSelfDualC W LW → IsSelfDualC H LH → IsSelfDualC B (sumLatO o LW LH) := by
   first | exact @GlobalTheory.Core.Rk.SumBox.selfDual_sumLatO | exact GlobalTheory.Core.Rk.SumBox.selfDual_sumLatO | (intros; apply GlobalTheory.Core.Rk.SumBox.selfDual_sumLatO <;> assumption)

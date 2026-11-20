@@ -10,6 +10,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ShFam.GalCarry.Corr
 
+/- English proof (translation)
+Introduce `F _ _ I I' Y Y' Rel hS i`. Take `⟨h1, h2, h3, -⟩` from `hS`. Take `⟨ρ, hρ⟩ : ∃ ρ : F →+* (Y i).Fn, genericPt (Y i) ≫ (Y i).str = spMap ρ` from `⟨_, (Spec.map_preimage _).symm⟩`. Use `haveI : CharZero (Y i).Fn := (RingHom.charZero_iff ρ.injective).1 inferInstance`. Use `set K := (Y i).Fn`.
+
+Use `set ι := algebraMap K (AlgebraicClosure K)`. Take `⟨⟨i', q⟩, hq, hqu⟩` from `h3 (AlgebraicClosure K) i (spMap ι ≫ genericPt (Y i))`. Establish `hfix : ∀ σ : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K, spMap (σ : AlgebraicClosure K →+* AlgebraicClosure K) ≫ q = q`. Introduce `σ`. Establish `hσι : (σ : AlgebraicClosure K →+* AlgebraicClosure K).comp ι = ι` using `RingHom.ext fun a => σ.commutes a`.
+
+Establish `hR` using `h2 _ _ (σ : AlgebraicClosure K →+* AlgebraicClosure K) i i' _ _ hq`. Rewrite `hR` using `[← Category.assoc, GlobalTheory.FieldPts.spMap_comp', hσι]`. Use `hqu ⟨i', spMap (σ : AlgebraicClosure K →+* AlgebraicClosure K) ≫ q⟩ hR` as an intermediate fact. Simplify using `using this`. Take `⟨p, hp⟩` from `GlobalTheory.FieldPts.exists_of_fixed q hfix`.
+
+Use `⟨i', p, ?_, hp ▸ hq⟩` and prove the remaining obligations. Use `GlobalTheory.spec_map_field_cancel ι _ _ ?_` and prove the remaining obligations. Establish `e` using `h1 _ i i' _ _ hq`. Simplify using `only [Category.assoc] at e ⊢`. Rewrite using `[← Category.assoc, hp, e]`.
+-/
 theorem partner_generic_descends : ∀ (F : Type) [Field F] [CharZero F] (I I' : Type) (Y : I → Var F) (Y' : I' → Var F)
     (Rel : ∀ (K : Type) [Field K] (i : I) (i' : I'), (Sp K ⟶ (Y i).X) → (Sp K ⟶ (Y' i').X) → Prop), Side Y Y' Rel → ∀ i : I, ∃ (i' : I') (p' : Sp (Y i).Fn ⟶ (Y' i').X),
       p' ≫ (Y' i').str = genericPt (Y i) ≫ (Y i).str ∧

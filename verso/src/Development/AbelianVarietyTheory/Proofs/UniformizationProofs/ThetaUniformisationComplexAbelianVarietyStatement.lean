@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.thetaUnifAV_all | exact GlobalTheory.thetaUnifAV_all | (intros; apply GlobalTheory.thetaUnifAV_all <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaUniformisation_complexAbelianVariety : ThetaUnifAV := by
   first | exact @GlobalTheory.thetaUnifAV_all | exact GlobalTheory.thetaUnifAV_all | (intros; apply GlobalTheory.thetaUnifAV_all <;> assumption)

@@ -10,6 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ClassRegroup
 
+/- English proof (translation)
+Use `set c := ν (J.comap π) with hc`. Establish `h𝓖' : IsFundamentalDomain Γ 𝓖 (c⁻¹ • ν)` using `h𝓖.mono (Measure.smul_absolutelyContinuous)`. Establish `h1 : (c⁻¹ • ν) (J.comap π) = 1`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ← hc, ENNReal.inv_mul_cancel h0 htop]`. Take `⟨hf, hi, he⟩` from `GlobalTheory.DefiniteClassSum.integral_eq_sum (c⁻¹ • ν) π Γ h𝓖' J ho h1 y hy a ha Φ hl hr`.
+
+Establish `hc1 : c⁻¹ ≠ 0` using `ENNReal.inv_ne_zero.2 htop`. Establish `hc2 : c⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.2 h0`. Use `⟨hf, ?_, ?_⟩` and prove the remaining obligations. Unfold `IntegrableOn at hi ⊢`. Rewrite `hi` using `[Measure.restrict_smul]`.
+
+Conclude with `(integrable_smul_measure hc1 hc2).1 hi`. Rewrite using `[← he, Measure.restrict_smul, integral_smul_measure, ENNReal.toReal_inv]`. Establish `hr0 : c.toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨h0, htop⟩`. Rewrite using `[Complex.real_smul, ← mul_assoc, Complex.ofReal_inv, mul_inv_cancel₀ (Complex.ofReal_ne_zero.2 hr0), one_mul]`.
+-/
 theorem integral_eq_vol_mul_sum {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [Group H] (ν : Measure G) [ν.IsMulLeftInvariant] (π : G →* H) (Γ : Subgroup G) [Countable Γ] {𝓖 : Set G}
     (h𝓖 : IsFundamentalDomain Γ 𝓖 ν) (J : Subgroup H) (ho : IsOpen (J.comap π : Set G)) (h0 : ν (J.comap π) ≠ 0)
@@ -33,6 +40,11 @@ theorem integral_eq_vol_mul_sum {G H : Type} [Group G] [TopologicalSpace G] [IsT
     have hr0 : c.toReal ≠ 0 := ENNReal.toReal_ne_zero.2 ⟨h0, htop⟩
     rw [Complex.real_smul, ← mul_assoc, Complex.ofReal_inv, mul_inv_cancel₀ (Complex.ofReal_ne_zero.2 hr0), one_mul]
 
+/- English proof (translation)
+Establish `hle' : J''.comap π ≤ J.comap π` using `Subgroup.comap_mono hle`. Establish `htop : ν (J''.comap π) ≠ ⊤` using `ne_top_of_le_ne_top (h1 ▸ ENNReal.one_ne_top) (measure_mono (μ := ν) (show (J''.comap π : Set G) ⊆ J.comap π from hle'))`. Establish `e1` using `(integral_eq_vol_mul_sum ν π Γ h𝓖 J ho (by rw [h1]; exact one_ne_zero) (by rw [h1]; exact ENNReal.one_ne_top) y hy a ha Φ hl hr).2.2`. Establish `e2` using `(integral_eq_vol_mul_sum ν π Γ h𝓖 J'' ho'' h0 htop y'' hy'' a'' ha'' Φ hl (fun k hk => hr k (hle' hk))).2.2`. Rewrite `e1` using `[h1, ENNReal.toReal_one, Complex.ofReal_one, one_mul]`.
+
+Rewrite using `[← e1, e2, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem sum_regroup {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [Group H] (ν : Measure G) [ν.IsMulLeftInvariant] (π : G →* H) (Γ : Subgroup G) [Countable Γ] {𝓖 : Set G}
     (h𝓖 : IsFundamentalDomain Γ 𝓖 ν) {J J'' : Subgroup H} (hle : J'' ≤ J) (ho : IsOpen (J.comap π : Set G))
@@ -60,6 +72,9 @@ open GlobalTheory.FunObj
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `a b e`. Apply `finG_injective V` to reduce the goal to its premises. Establish `h : finHom V a.1 = finHom V b.1` using `congrArg Subtype.val e`. Use `show Formalism.UG.bc (Lev.swapAE D) (finHom V a.1) = Formalism.UG.bc (Lev.swapAE D) (finHom V b.1)`. Rewrite using `[h]`.
+-/
 theorem gfcToGf_injective (V : HSp D) : Function.Injective (gfcToGf V) := by
   intro a b e
   apply finG_injective V
@@ -72,26 +87,43 @@ noncomputable def finEquiv (V : HSp D) : GfC V ≃* Bridge.Gf V :=
 
 noncomputable def finPt (V : HSp D) : GA D V →* GfC V := (finEquiv V).symm.toMonoidHom.comp (finHom V).rangeRestrict
 
+/- English proof (translation)
+Establish `h : gfcToGf V (finPt V g) = (finHom V).rangeRestrict g` using `(finEquiv V).apply_symm_apply _`. Establish `h2 : finHom V (finPt V g).1 = finHom V g` using `congrArg Subtype.val h`. Use `show Formalism.UG.bc (Lev.swapAE D) (finHom V (finPt V g).1) = Formalism.UG.bc (Lev.swapAE D) (finHom V g)`. Rewrite using `[h2]`.
+-/
 theorem finG_finPt (V : HSp D) (g : GA D V) : finG V (finPt V g) = Lev.finE V g := by
   have h : gfcToGf V (finPt V g) = (finHom V).rangeRestrict g := (finEquiv V).apply_symm_apply _
   have h2 : finHom V (finPt V g).1 = finHom V g := congrArg Subtype.val h
   show Formalism.UG.bc (Lev.swapAE D) (finHom V (finPt V g).1) = Formalism.UG.bc (Lev.swapAE D) (finHom V g)
   rw [h2]
 
+/- English proof (translation)
+The claim follows from `(finEquiv V).symm.surjective.comp (finHom V).rangeRestrict_surjective`.
+-/
 theorem finPt_surjective (V : HSp D) : Function.Surjective (finPt V) :=
   (finEquiv V).symm.surjective.comp (finHom V).rangeRestrict_surjective
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_comap, Subgroup.mem_comap, finG_finPt]`.
+-/
 theorem comap_finPt (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) :
     (K.comap (finG V)).comap (finPt V) = K.comap (Lev.finE V) := by
   ext g
   rw [Subgroup.mem_comap, Subgroup.mem_comap, Subgroup.mem_comap, finG_finPt]
 
+/- English proof (translation)
+Use `(GlobalTheory.DefFree.AdelCls.adelic_classes D V).2.2.2.1 γ hγ (Subtype.ext ?_)` and prove the remaining obligations. Use `congrArg (finG V) h` as an intermediate fact. Rewrite `this` using `[finG_finPt, map_one]`. Conclude with `this`.
+-/
 theorem eq_one_of_finPt (V : HSp D) {γ : GA D V} (hγ : γ ∈ GQ V) (h : finPt V γ = 1) : γ = 1 := by
   refine (GlobalTheory.DefFree.AdelCls.adelic_classes D V).2.2.2.1 γ hγ (Subtype.ext ?_)
   have := congrArg (finG V) h
   rw [finG_finPt, map_one] at this
   exact this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨γ, hγ, e⟩` from `Subgroup.mem_map.1 (Subgroup.mem_comap.1 hx)`. Conclude with `⟨γ, hγ, finG_injective V (by rw [finG_finPt, e])⟩`. Introduce and unpack `⟨γ, hγ, rfl⟩`.
+
+Conclude with `Subgroup.mem_comap.2 (Subgroup.mem_map.2 ⟨γ, hγ, (finG_finPt V γ).symm⟩)`.
+-/
 theorem mem_ratFin (V : HSp D) (x : GfC V) : x ∈ ratFin V ↔ ∃ γ ∈ GQ V, finPt V γ = x := by
   constructor
   · intro hx
@@ -100,6 +132,11 @@ theorem mem_ratFin (V : HSp D) (x : GfC V) : x ∈ ratFin V ↔ ∃ γ ∈ GQ V,
   · rintro ⟨γ, hγ, rfl⟩
     exact Subgroup.mem_comap.2 (Subgroup.mem_map.2 ⟨γ, hγ, (finG_finPt V γ).symm⟩)
 
+/- English proof (translation)
+Introduce `h`. Use `⟨DoubleCoset.mk _ _ h, ?_, ?_⟩` and prove the remaining obligations. Take `⟨r, hr, k, hk, e⟩` from `(DoubleCoset.eq _ _ _ _).1 (DoubleCoset.out_eq' _ _ (DoubleCoset.mk (ratFin V) (K.comap (finG V)) h))`. Take `⟨γ, hγ, rfl⟩` from `(mem_ratFin V r).1 hr`. Conclude with `⟨⟨γ, hγ⟩, ⟨k, hk⟩, e⟩`.
+
+Introduce and unpack `c ⟨γ, k, e⟩`. Rewrite using `[← DoubleCoset.out_eq' _ _ c]`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨finPt V γ, (mem_ratFin V _).2 ⟨γ, γ.2, rfl⟩, k, k.2, e⟩` and prove the remaining obligations.
+-/
 theorem isReps_out (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) :
     Bridge.IsReps ((finPt V).comp (GQ V).subtype) (K.comap (finG V)) (fun c : FinCl V K => Quotient.out c) := by
   intro h
@@ -111,6 +148,13 @@ theorem isReps_out (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) :
     rw [← DoubleCoset.out_eq' _ _ c]
     refine (DoubleCoset.eq _ _ _ _).2 ⟨finPt V γ, (mem_ratFin V _).2 ⟨γ, γ.2, rfl⟩, k, k.2, e⟩
 
+/- English proof (translation)
+Establish `hm : ∀ q : GQ V, q ∈ Bridge.stab ((finPt V).comp (GQ V).subtype) (K.comap (finG V)) x ↔ finG V (x⁻¹ * finPt V q * x) ∈ K` using `fun q => by`. Rewrite using `[Bridge.mem_stab]`. Simplify using `[MulAut.conj_apply]`. Set `f : Bridge.stab ((finPt V).comp (GQ V).subtype) (K.comap (finG V)) x → {γ : ratFin V // finG V (x⁻¹ * γ * x) ∈ K}` to `fun q => ⟨⟨finPt V q.1, (mem_ratFin V _).2 ⟨q.1, q.1.2, rfl⟩⟩, (hm q.1).1 q.2⟩`. Use `Nat.card_congr (Equiv.ofBijective f ⟨?_, ?_⟩)` and prove the remaining obligations.
+
+Introduce `q q' e`. Establish `e1 : finPt V q.1 = finPt V q'.1` using `congrArg (fun s => (s.1 : GfC V)) e`. Establish `e2 : finPt V ((q.1 : GA D V)⁻¹ * q'.1) = 1` using `by rw [map_mul, map_inv, e1, inv_mul_cancel]`. Use `eq_one_of_finPt V (mul_mem (inv_mem q.1.2) q'.1.2) e2` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext (inv_mul_eq_one.1 this))`.
+
+Introduce and unpack `⟨⟨γ, hγ⟩, hk⟩`. Take `⟨q, hq, rfl⟩` from `(mem_ratFin V γ).1 hγ`. Conclude with `⟨⟨⟨q, hq⟩, (hm _).2 hk⟩, rfl⟩`.
+-/
 theorem card_stab (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (x : GfC V) :
     Nat.card (Bridge.stab ((finPt V).comp (GQ V).subtype) (K.comap (finG V)) x) = gamOrd V K x := by
   have hm : ∀ q : GQ V, q ∈ Bridge.stab ((finPt V).comp (GQ V).subtype) (K.comap (finG V)) x ↔
@@ -137,6 +181,19 @@ open GlobalTheory.FunObj
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `hB` using `hT.2.2.2.1`. Establish `hG` using `hT.2.2.2.2.1`. Establish `hC` using `hT.2.2.2.2.2.2`. Use `hμ.1.1` as an intermediate fact.
+
+Establish `hfin` using `(finite_finCl_and_gamOrd V K hV hK).1`. Establish `hfin''` using `(finite_finCl_and_gamOrd V K'' hV hK'').1`. Use `letI := Fintype.ofFinite (FinCl V K)`. Use `letI := Fintype.ofFinite (FinCl V K'')`. Establish `h0 : μ (K''.comap (Lev.finE V)) ≠ 0` using `hK''.1.measure_ne_zero μ ⟨1, one_mem _⟩`.
+
+Use `⟨h0, ?_⟩` and prove the remaining obligations. Use `choose a ha using fun c : FinCl V K => finPt_surjective V (Quotient.out c)`. Use `choose a'' ha'' using fun c : FinCl V K'' => finPt_surjective V (Quotient.out c)`. Establish `ho : IsOpen (((K.comap (finG V)).comap (finPt V) : Subgroup (GA D V)) : Set (GA D V))`. Rewrite using `[comap_finPt]`.
+
+Conclude with `hK.1`. Establish `ho'' : IsOpen (((K''.comap (finG V)).comap (finPt V) : Subgroup (GA D V)) : Set (GA D V))`. Rewrite using `[comap_finPt]`. Conclude with `hK''.1`. Establish `h1 : μ ((K.comap (finG V)).comap (finPt V)) = 1`.
+
+Rewrite using `[comap_finPt]`. Conclude with `GlobalTheory.Mass.Levels.measure_comap_finE hμ.1`. Establish `h0' : μ ((K''.comap (finG V)).comap (finPt V)) ≠ 0` using `by rw [comap_finPt]; exact h0`. Establish `key` using `ClassRegroup.sum_regroup μ (finPt V) (GQ V) hμ.2 (Subgroup.comap_mono hle : K''.comap (finG V) ≤ K.comap (finG V)) ho ho'' h1 h0' _ (isReps_out V K) a ha _ (isReps_out V K'') a'' ha'' (fun g => f (finPt V g)) (fun γ hγ h => by rw [map_mul]; exact hl _ ((mem_ratFin V _).2 ⟨γ, hγ, …`. Simplify using `only [card_stab, comap_finPt, ha, ha''] at key`.
+
+Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Conclude with `key`.
+-/
 theorem finCl_regroup (V : HSp D) (hV : ∀ φ : D.host.E →+* ℂ, (V.gram.map φ).PosDef)
     {K K'' : Subgroup (GL (Fin V.rank) (Lev.EAf D))} (hK : IsCO V K) (hK'' : IsCO V K'') (hle : K'' ≤ K)
     {μ : Measure (GA D V)} {𝓕 : Set (GA D V)} (hμ : Links.IsMeasDef V K μ 𝓕) (f : GfC V → ℂ)
@@ -176,6 +233,19 @@ end GlobalTheory.ClassRegroup
 
 namespace GlobalTheory.ClassRegroup
 
+/- English proof (translation)
+Use `set e := Equiv.piSplitAt v C`. Establish `hs : ∀ (c : C v) (r : ∀ u : {u // u ≠ v}, C u) (c' : C v), e.symm (c, r) = Function.update (e.symm (c', r)) v c`. Introduce `c r c'`. Use function extensionality and compare the values at `u`. Distinguish the cases in `h : u = v`.
+
+Substitute `h` using the available equality. Simplify using `[e, Equiv.piSplitAt_symm_apply]`. Simplify using `[e, Equiv.piSplitAt_symm_apply, h]`. Establish `hp : ∀ (w : ∀ u, C u → ℂ) (c : C v) (r : ∀ u : {u // u ≠ v}, C u), ∏ u, w u (e.symm (c, r) u) = w v c * ∏ u : {u // u ≠ v}, w u (r u)`. Introduce `w c r`.
+
+Rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ v]`. Use `congr 1`. Simplify using `[e, Equiv.piSplitAt_symm_apply]`. Use `Finset.prod_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `[e, Equiv.piSplitAt_symm_apply, u.2]`.
+
+Rewrite using `[← Fintype.sum_equiv e.symm (fun p => (∏ u, w u (e.symm p u)) * G (e.symm p)) _ (fun _ => rfl), ← Fintype.sum_equiv e.symm (fun p => (∏ u, w' u (e.symm p u)) * G (e.symm p)) _ (fun _ => rfl), Fintype.sum_prod_type, Fintype.sum_prod_type, Finset.sum_comm, Finset.sum_comm (γ := C v …`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Break down `isEmpty_or_nonempty (C v) with hC | hne` into its components or cases. Simplify using the standard rewrite rules. Take `⟨c1⟩` from `hne`.
+
+Establish `hR : ∏ u : {u // u ≠ v}, w u (r u) = ∏ u : {u // u ≠ v}, w' u (r u)` using `Finset.prod_congr rfl fun u _ => by rw [hw u u.2]`. Simplify using `only [hp, hR]`. Establish `e1 : ∀ w'' : ∀ u, C u → ℂ, ∑ c, w'' v c * (∏ u : {u // u ≠ v}, w' u (r u)) * G (e.symm (c, r)) = (∏ u : {u // u ≠ v}, w' u (r u)) * ∑ c, w'' v c * G (Function.update (e.symm (c1, r)) v c)` using `fun w'' => by`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [hs c r c1]; ring`.
+
+Rewrite using `[e1 w, e1 w', hG]`.
+-/
 theorem sum_pi_swap_one {ι : Type} [Fintype ι] [DecidableEq ι] {C : ι → Type} [∀ u, Fintype (C u)] (v : ι)
     (w w' : ∀ u, C u → ℂ) (hw : ∀ u, u ≠ v → w u = w' u) (G : (∀ u, C u) → ℂ)
     (hG : ∀ γ : ∀ u, C u, ∑ c, w v c * G (Function.update γ v c) = ∑ c, w' v c * G (Function.update γ v c)) :
@@ -211,6 +281,11 @@ theorem sum_pi_swap_one {ι : Type} [Fintype ι] [DecidableEq ι] {C : ι → Ty
     exact Finset.sum_congr rfl fun c _ => by rw [hs c r c1]; ring
   rw [e1 w, e1 w', hG]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun α : (∀ u, A u) => fun u => j u (α u))` using `fun α α' e =>`. Use function extensionality and compare the values at `fun u => hj u (congr_fun e u)`. Rewrite using `[← Finset.sum_image (s := Finset.univ) (g := fun α : (∀ u, A u) => fun u => j u (α u)) (f := fun γ => (∏ u, w u (γ u)) * F γ) (fun α _ α' _ e => hinj e)]`. Use `(Finset.sum_subset (Finset.subset_univ _) fun γ _ hγ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `h : ∀ u, ∃ a, j u a = γ u`.
+
+Use `choose a ha using h`. Conclude with `absurd (Finset.mem_image.2 ⟨a, Finset.mem_univ _, funext ha⟩) hγ`. Use `push_neg at h`. Take `⟨u, hu⟩` from `h`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ u) (hw u _ hu), zero_mul]`.
+-/
 theorem sum_pi_embed {ι : Type} [Fintype ι] [DecidableEq ι] {A C : ι → Type} [∀ u, Fintype (A u)] [∀ u, Fintype (C u)]
     [∀ u, DecidableEq (C u)] (j : ∀ u, A u → C u) (hj : ∀ u, Function.Injective (j u)) (w : ∀ u, C u → ℂ)
     (hw : ∀ u c, (∀ a, j u a ≠ c) → w u c = 0) (F : (∀ u, C u) → ℂ) :
@@ -228,6 +303,21 @@ theorem sum_pi_embed {ι : Type} [Fintype ι] [DecidableEq ι] {A C : ι → Typ
     obtain ⟨u, hu⟩ := h
     rw [Finset.prod_eq_zero (Finset.mem_univ u) (hw u _ hu), zero_mul]
 
+/- English proof (translation)
+Set `pt : ∀ v, A v ⊕ B v → X v` to `fun v => Sum.elim (pa v) (pb v)`. Set `W : Finset ι → ∀ v, A v ⊕ B v → ℂ` to `fun s v => Sum.elim (fun a => if v ∈ s then 0 else wa v a) (fun b => if v ∈ s then wb v b else 0)`. Set `T : Finset ι → ℂ` to `fun s => ∑ γ : (∀ v, A v ⊕ B v), (∏ v, W s v (γ v)) * f (fun v => pt v (γ v))`. Establish `step : ∀ s, T ∅ = T s`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert v s hv ih`. Rewrite using `[ih]`. Use `sum_pi_swap_one v (W s) (W (insert v s)) ?_ _ ?_` and prove the remaining obligations.
+
+Introduce `u hu`. Use function extensionality and compare the values at `c`. Apply the tactic sequence `cases c <;> simp [W, Finset.mem_insert, hu]`. Introduce `γ`. Establish `hupd : ∀ c, (fun u => pt u (Function.update γ v c u)) = Function.update (fun u => pt u (γ u)) v (pt v c)` using `fun c => funext fun u => Function.apply_update pt γ v c u`.
+
+Simplify using `only [hupd, Fintype.sum_sum_type]`. Use `hP v _ (hf v fun u => pt u (γ u))` as an intermediate fact. Simplify using `only [W, pt, Sum.elim_inl, Sum.elim_inr, hv, if_false, Finset.mem_insert, true_or, if_true, zero_mul, Finset.sum_const_zero, add_zero, zero_add]`. Conclude with `this`. Establish `h0 : T ∅ = ∑ α : (∀ v, A v), (∏ v, wa v (α v)) * f (fun v => pa v (α v))` using `by show ∑ γ : (∀ v, A v ⊕ B v), (∏ v, W ∅ v (γ v)) * f (fun v => pt v (γ v)) = _`.
+
+Rewrite using `[sum_pi_embed (fun v => (Sum.inl : A v → A v ⊕ B v)) (fun v => Sum.inl_injective) (W ∅)]`. Simplify using `[W, pt]`. Introduce `u c hc`. Consider the cases of `c with`. Consider the case `inl a => exact absurd rfl (hc a)`.
+
+Consider the case `inr b => simp [W]`. Establish `h1 : T Finset.univ = ∑ β : (∀ v, B v), (∏ v, wb v (β v)) * f (fun v => pb v (β v))` using `by show ∑ γ : (∀ v, A v ⊕ B v), (∏ v, W Finset.univ v (γ v)) * f (fun v => pt v (γ v)) = _`. Rewrite using `[sum_pi_embed (fun v => (Sum.inr : B v → A v ⊕ B v)) (fun v => Sum.inr_injective) (W Finset.univ)]`. Simplify using `[W, pt]`. Introduce `u c hc`.
+
+Consider the cases of `c with`. Consider the case `inl a => simp [W]`. Consider the case `inr b => exact absurd rfl (hc b)`. Rewrite using `[← h0, ← h1, step]`.
+-/
 theorem sum_pi_regroup {ι : Type} [Fintype ι] [DecidableEq ι] {X A B : ι → Type} [∀ v, Fintype (A v)] [∀ v, Fintype (B v)]
     (wa : ∀ v, A v → ℂ) (pa : ∀ v, A v → X v) (wb : ∀ v, B v → ℂ) (pb : ∀ v, B v → X v) (P : ∀ v, (X v → ℂ) → Prop)
     (hP : ∀ v g, P v g → ∑ a, wa v a * g (pa v a) = ∑ b, wb v b * g (pb v b)) (f : (∀ v, X v) → ℂ)
@@ -288,9 +378,17 @@ def IsInvAt {ι : Type} [DecidableEq ι] (V : ι → HSp D) (K : ∀ v, Subgroup
   ∀ v (x : ∀ v, GfC (V v)), (∀ γ ∈ ratFin (V v), ∀ z, f (Function.update x v (γ * z)) = f (Function.update x v z)) ∧
     ∀ k ∈ (K v).comap (finG (V v)), ∀ z, f (Function.update x v (z * k)) = f (Function.update x v z)
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+-/
 example {ι : Type} [DecidableEq ι] (V : ι → HSp D) (K : ∀ v, Subgroup (GL (Fin (V v).rank) (Lev.EAf D))) :
     IsInvAt V K fun _ => 1 := fun _ _ => ⟨fun _ _ _ => rfl, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Use `letI : ∀ v, Fintype (FinCl (V v) (K v)) := fun v => @Fintype.ofFinite _ (finite_finCl_and_gamOrd (V v) (K v) (hV v) (hK v)).1`. Use `letI : ∀ v, Fintype (FinCl (V v) (K'' v)) := fun v => @Fintype.ofFinite _ (finite_finCl_and_gamOrd (V v) (K'' v) (hV v) (hK'' v)).1`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Use `sum_pi_regroup (X := fun v => GfC (V v)) (A := fun v => FinCl (V v) (K'' v)) (B := fun v => FinCl (V v) (K v)) (fun v c => ((μ v ((K'' v).comap (Lev.finE (V v)))).toReal : ℂ) * ((gamOrd (V v) (K'' v) (Quotient.out c) : ℂ))⁻¹) (fun v c => Quotient.out c) (fun v c => ((gamOrd (V v) …` and prove the remaining obligations. Introduce and unpack `v g ⟨hl, hr⟩`.
+
+Use `(finCl_regroup (V v) (hV v) (hK v) (hK'' v) (hle v) (hμ v) g hl hr).2` as an intermediate fact. Rewrite `this` using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Conclude with `this`.
+-/
 theorem finCl_regroup_pi {ι : Type} [Fintype ι] [DecidableEq ι] (V : ι → HSp D)
     (hV : ∀ v, ∀ φ : D.host.E →+* ℂ, ((V v).gram.map φ).PosDef) {K K'' : ∀ v, Subgroup (GL (Fin (V v).rank) (Lev.EAf D))}
     (hK : ∀ v, IsCO (V v) (K v)) (hK'' : ∀ v, IsCO (V v) (K'' v)) (hle : ∀ v, K'' v ≤ K v)
@@ -313,6 +411,15 @@ theorem finCl_regroup_pi {ι : Type} [Fintype ι] [DecidableEq ι] (V : ι → H
   rw [finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype] at this
   exact this
 
+/- English proof (translation)
+Use `letI : ∀ v, Fintype (FinCl (V v) (K v)) := fun v => @Fintype.ofFinite _ (finite_finCl_and_gamOrd (V v) (K v) (hV v) (hK v)).1`. Use `letI : ∀ v, Fintype (FinCl (V v) (K'' v)) := fun v => @Fintype.ofFinite _ (finite_finCl_and_gamOrd (V v) (K'' v) (hV v) (hK'' v)).1`. Use `letI : ∀ v, Fintype (FinCl (V' v) (L v)) := fun v => @Fintype.ofFinite _ (finite_finCl_and_gamOrd (V' v) (L v) (hV' v) (hL v)).1`. Use `letI : ∀ v, Fintype (FinCl (V' v) (L'' v)) := fun v => @Fintype.ofFinite _ (finite_finCl_and_gamOrd (V' v) (L'' v) (hV' v) (hL'' v)).1`. Establish `e1` using `fun x => finCl_regroup_pi V' hV' hL hL'' hle' hμ' (f x) (hf' x)`.
+
+Establish `e2` using `fun y => finCl_regroup_pi V hV hK hK'' hle hμ (fun x => f x y) (hf y)`. Simplify using `only [finsum_eq_sum_of_fintype] at e1 e2 ⊢`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← e1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Use `_ = ∑ b : (∀ v, FinCl (V' v) (L v)), (∏ v, ((gamOrd (V' v) (L v) (Quotient.out (b v)) : ℂ))⁻¹) * ∑ a : (∀ v, FinCl (V v) (K'' v)), (∏ v, ((μ v ((K'' v).comap (Lev.finE (V v)))).toReal : ℂ) * ((gamOrd (V v) (K'' v) (Quotient.out (a v)) : ℂ))⁻¹) * f (fun v => Quotient.out (a v)) (f …`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => by ring`. Use `_ = _ := by`. Simplify using `only [e2, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem finCl_regroup_prod {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (V : ι → HSp D) (V' : κ → HSp D)
     (hV : ∀ v, ∀ φ : D.host.E →+* ℂ, ((V v).gram.map φ).PosDef) (hV' : ∀ v, ∀ φ : D.host.E →+* ℂ, ((V' v).gram.map φ).PosDef)
     {K K'' : ∀ v, Subgroup (GL (Fin (V v).rank) (Lev.EAf D))} {L L'' : ∀ v, Subgroup (GL (Fin (V' v).rank) (Lev.EAf D))}

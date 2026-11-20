@@ -14,6 +14,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 namespace GlobalTheory.LineKillV
+/- English proof (translation)
+Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTr Pi rf rl p p' hm γ hγ ΦD hΦD Φ₁D hΦ₁D hder Φ₁ hΦ₁`. Establish `hψ : Bs.ψ = ψ` using `hO.psi`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hψ ▸ hTr.base.std`. Take `⟨Y, γs, hY, hγs, hγsY, hprod⟩` from `GlobalTheory.T.unitaryArchimedeanOneParam_eq_prod_cmType_lines D θ hθ W Γ.V hO.JW γ hγ`. Take `⟨Ψ, hΨ, hΨd, hsum⟩` from `_root_.GlobalTheory.T.line_derivative_splits hP _ _ _ Bs _ _ _ _ Γ.M _ _ om _ _ _ _ (GlobalTheory.ThK.RealUniq.isPair_V hTr) _ γs hγs γ hγ hprod ΦD hΦD Φ₁D hder`.
+
+Take `⟨Φ, hΦalg, hΦ⟩` from `hO.algA' ΦD hΦD`. Use `choose Φ' hΦ'alg hΦ' using fun τ => hO.algA' (Ψ τ) (hΨ τ)`. Establish `hder' : ∀ τ, IsDer θ W (fun g => ωA (g, 1)) τ (Y τ) Φ (Φ' τ)`. Introduce `τ z`. Take `⟨u, rfl⟩` from `cA.surjective z`.
+
+Establish `h1` using `hΨd τ u`. Establish `e1 : (fun t : ℝ => GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho Bs.ψ u (om (γs τ (Multiplicative.ofAdd t), 1) ΦD))) = fun t : ℝ => ωA (oneP θ W τ (Y τ) t, 1) Φ (cA u)`. Use function extensionality and compare the values at `t`. Establish `h2` using `(hO.weilA ΦD Φ hΦ (oneP θ W τ (Y τ) t) 1).2 u`. Rewrite `h2` using `[GlobalTheory.KapXLine.kapX_one, ← hγsY τ t]`.
+
+Rewrite using `[hψ]`. Conclude with `h2`. Establish `e2 : GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho Bs.ψ u (Ψ τ)) = Φ' τ (cA u)`. Rewrite using `[hψ]`. Conclude with `(hΦ' τ).2 u`.
+
+Rewrite `h1` using `[e1, e2]`. Conclude with `h1`. Establish `hp : ∀ τ, p (Φ' τ) = 0` using `fun τ => hm.mapA.invl τ (Y τ) (hY τ) Φ hΦalg (Φ' τ) (hΦ'alg τ) (hder' τ)`. Establish `hsumD : IsDatum Γ.M ψ cA Φ₁D (((Finset.univ : Finset D.what₂.Tau).toList.map Φ').sum)`. Rewrite using `[hsum]`.
+
+Conclude with `isDatum_list_sum hstd _ Ψ Φ' hΦ'`. Rewrite using `[IsDatum.fun_eq Γ.M ψ cA cA.surjective hΦ₁ hsumD, map_list_sum, List.map_map]`. Conclude with `List.sum_eq_zero fun x hx => by`. Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hp τ`.
+-/
 theorem line_vector_annihilated : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -71,6 +84,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.LineKillV.line_vector_annihilated | exact _root_.GlobalTheory.LineKillV.line_vector_annihilated | (intros; apply _root_.GlobalTheory.LineKillV.line_vector_annihilated <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_line_vector_annihilation : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

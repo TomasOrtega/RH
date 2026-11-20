@@ -10,6 +10,15 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `hTri hPull p _ D R _ b N h3 hc M 𝔞 ρ E π hπ mπ X u v huv hlv`. Take `⟨o₁, ⟨m₁⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N E.X X E.s u E.univ`. Take `⟨l, hl, hlu⟩` from `hPull p D R b N E.X X E.s (u ≫ E.s) u E.univ o₁ m₁ 𝔞 ρ E.lv E.isLev`. Take `⟨m₁₃, hm₁₃⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m₁ mπ`. Take `⟨m₂, hm₂⟩` from `(hTri p D R b N h3 hc X E.X M.X (u ≫ E.s) E.s M.s o₁ E.univ M.univ v π).2 (u ≫ π) huv.symm m₁₃ mπ`.
+
+Establish `hvs : v ≫ E.s = u ≫ E.s`. Rewrite using `[← hπ, ← Category.assoc, ← Category.assoc, huv]`. Establish `hsec : ∀ y, (l y).left ≫ o₁.A.hom = 𝟙 X` using `fun y => by`. Simplify using `using Over.w (l y)`. Establish `hsec' : ∀ y, (E.lv y).left ≫ E.univ.A.hom = 𝟙 E.X` using `fun y => by`.
+
+Simplify using `using Over.w (E.lv y)`. Establish `hlv₂ : ∀ y, (l y).left ≫ m₂.φ = v ≫ (E.lv y).left` using `fun y => by`. Use `mπ.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[hm₂, hm₁₃, ← Category.assoc, hlu y, Category.assoc, hlv y]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[m₂.cart.1.w, ← Category.assoc, hsec, hsec', Category.comp_id]`. Conclude with `Category.id_comp v`. Conclude with `(E.rep X _ o₁ l hl).unique ⟨rfl, m₁, hlu⟩ ⟨hvs, m₂, hlv₂⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.etInj_of :
     ObjTri → LevPull → EtInj := by
   intro hTri hPull p _ D R _ b N h3 hc M 𝔞 ρ E π hπ mπ X u v huv hlv

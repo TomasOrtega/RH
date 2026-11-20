@@ -18,6 +18,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Use `Submodule.mem_inf.2 ⟨tmul_mem_LamLA W T π' Eπ h' c (a := letE c * Eπ ^ h') (W.AΔ.mul_mem (letE_mem W c) (W.AΔ.pow_mem hE _)) (by rw [← mul_assoc, CrystallineExponents.letE_mul_self]) (by rw [← map_mul, mul_comm]) z, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, LinearMap.sub_apply, ModelFPf.γLA_tmul, show W.γE W.gamK (algebraMap (LetA O n) W.EE (letE c)) = algebraMap (LetA O n) W.EE (W.γA W.gamK (letE c)) from W.γE_ext _ _, Formalism.MainNotions.LiftingTheory.wmap_γA_letE, LinearMap.id_apply, sub_self]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem letE_inv (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : LetA O n)
     (h' : ℕ) (c : ZMod n) (hE : Eπ ∈ W.AΔ) (z : LcQ W T π' c) :
     algebraMap (LetA O n) W.EE (letE c) ⊗ₜ z ∈ InvL W T Pt π' Eπ h' c ⊤ := by
@@ -30,6 +33,99 @@ theorem letE_inv (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL
     LinearMap.id_apply, sub_self]
   exact Submodule.zero_mem _
 
+/- English proof (translation)
+Introduce `f hf x hx hFil h1 y hy hα`. Use `set Eπ := Formalism.MainNotions.DeltaInvariantLattices.Eat E π' with hEπ`. Establish `hj1` using `fun τ => u3downPf_jumps T₁ τ (up τ) (b τ) S η h' (hd1 τ) (hηb τ) (hbS τ)`. Establish `hj2` using `fun τ => u3downPf_jumps T₂ τ (up τ) (b τ) S η h' (hd2 τ) (hηb τ) (hbS τ)`. Take `⟨w, hw⟩` from `hp9.2.2.1`.
+
+Take `⟨w', hw'⟩` from `hp9.2.2.2.2.1`. Establish `hπΔ : π' ∈ W.AΔ` using `hp9.1`. Establish `hEΔ : Eπ ∈ W.AΔ` using `Eat_mem W hπΔ E`. Establish `hπu : IsUnit (algebraMap (LetA O n) W.EE π')`. Rewrite using `[hw, map_mul, map_pow]`.
+
+Conclude with `(w.isUnit.map _).mul (W.EE_π.pow _)`. Establish `hEu : IsUnit (algebraMap (LetA O n) W.EE Eπ)`. Establish `hq` using `Formalism.MainNotions.LiftingTheory.liftb_q_unit W`. Rewrite `hq` using `[hw', map_mul]`. Conclude with `isUnit_of_mul_isUnit_right hq`.
+
+Establish `hE` using `fun τ ζ (hpt : Pt c ζ τ) => u3downPf_lev_E W c ζ (hprim τ ζ hpt) Eπ w' hw'`. Establish `hp0 : (PD.p : O) ≠ 0`. Introduce `h`. Establish `h2 : (PD.p : LL) = 0` using `by rw [← map_natCast (algebraMap O LL), h, map_zero]`. Use `W.v_l` as an intermediate fact.
+
+Rewrite `this` using `[h2, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`. Take `⟨g, hgU, hgD, hgI⟩` from `tmul_mkL_mem_InvL_of_valAt_mem_filC W Pt π' Eπ h' S up b c hπu hEu (fun τ ζ hpt => u3downPf_cc_π' W c ζ (hprim τ ζ hpt) π' _ w hw) hE hΓ f hf`. Establish `low : ∀ (T : LocLat G Qp LL O), ValH W T Pt π' c → (∀ τ, JumpsInV PD T.ρ τ (deep (up τ) (b τ) S ∪ Set.Icc (-(η : ℤ)) η)) → ∀ τ ζ, Pt c ζ τ → ∀ z ∈ NcS W T (c - 1), ∀ a : ℤ, (if up τ then a ≤ -(η : ℤ) else a ≤ -((b τ : ℤ) + S)) → valAt W T c ζ z ∈ Formalism.MainNotions.DeltaInvari …` using `PD) T τ a := by`. Introduce `T V hd τ ζ hpt z hz a ha`.
+
+Take `⟨k, hk⟩` from `V.fil τ ζ hpt z hz`. Use `u3downPf_filC_low T τ a (fun i hi => ?_) le_rfl hk` and prove the remaining obligations. Establish `h` using `hd τ i hi`. Use `hηb τ` as an intermediate fact. Unfold `deep at h`.
+
+Apply the tactic sequence `split_ifs at h ha <;> simp only [Set.mem_union, Set.mem_Icc] at h <;> omega`. Establish `hC : ∀ (T : LocLat G Qp LL O), ValH W T Pt π' c → (∀ τ, JumpsInV PD T.ρ τ (deep (up τ) (b τ) S ∪ Set.Icc (-(η : ℤ)) η)) → ∀ z (hz : z ∈ NcS W T (c - 1)), (∀ τ ζ, Pt c ζ τ → up τ = true → valAt W T c ζ z ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (b τ)) → f ⊗ₜ mkL W T π' c z hz ∈ InvL W T Pt π' Eπ h' c ⊤ := by`. Introduce `T V hd z hz hU`. Use `hgI T z hz fun τ ζ hpt => ?_` and prove the remaining obligations. Use `hbS τ` as an intermediate fact.
+
+Consider the cases of `hu : up τ`. Conclude with `⟨_, hgD τ ζ hpt hu, low T V hd τ ζ hpt z hz _ (by simp only [hu]; push_cast; omega)⟩`. Use `⟨_, hgU τ ζ hpt hu, ?_⟩` and prove the remaining obligations. Rewrite using `[show (h' : ℤ) - ((h' - b τ : ℕ) : ℤ) = b τ by omega]`. Conclude with `hU τ ζ hpt hu`.
+
+Establish `hxU : ∀ τ ζ, Pt c ζ τ → up τ = true → valAt W T₂ c ζ x ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T₂ τ (b τ) := fun τ ζ hpt hu => hFil τ (hPt τ ζ hpt) hu ζ hpt`. Establish `hI2` using `hC T₂ V₂ hd2 x hx hxU`. Establish `hyI : y ∈ InvS W T₂ π' Eπ h' 1 c` using `hMF2.2.2.2.1 _ h1 y hy hα hI2`. Establish `hroot : ∀ τ ζ, Pt c ζ τ → ∃ r : O, constantCoeff (W.lev c ζ π') = algebraMap O LL r ∧ (PD.p : O) ∣ r ^ 2`. Introduce `τ ζ hpt`.
+
+Take `⟨z, hz⟩` from `hzO ζ (hprim τ ζ hpt)`. Conclude with `root W hinj hp9 hs c (hprim τ ζ hpt) hz`. Take `⟨x₁, hx₁, hFx₁⟩` from `hW (c - 1) x hx`. Establish `hdiff : W.map F x₁ - ((PD.p : ℕ) : O) ^ ρ • x ∈ PiNS W T₂ π' 1`. Rewrite using `[hFx₁, sub_self]`.
+
+Conclude with `Submodule.zero_mem _`. Take `⟨a, ha, hea, hΛ, hup, hdn, -⟩` from `hf`. Distinguish the cases in `hA : ∃ τ ζ, Pt c ζ τ ∧ up τ = false`. Use `swap`. Use `lifts_mono W F (Nat.le_add_right _ _) (u3upPf_lift W F Pt π' Eπ h' M ρ c _ _ hMF2 hM hW hNL hG1 hG2 _ h1 (memNL0 W T₂ Pt π' Eπ h' c ha hea hΛ x hx fun τ ζ hpt => ?_) y hy hα)` and prove the remaining obligations.
+
+Establish `hu : up τ = true`. Assume the negation of the conclusion as `hu`. Conclude with `hA ⟨τ, ζ, hpt, by simpa using hu⟩`. Use `hbS τ` as an intermediate fact. Use `⟨h' - b τ, fun i hi => hup τ ζ hpt hu i (by omega), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show (h' : ℤ) - ((h' - b τ : ℕ) : ℤ) = b τ by omega]`. Conclude with `hxU τ ζ hpt hu`. Distinguish the cases in `hB : ∀ τ ζ, Pt c ζ τ → ∃ τ' ζ', Pt c ζ' τ' ∧ up τ' = false ∧ constantCoeff (W.lev c ζ' π') = constantCoeff (W.lev c ζ π')`. Use `lifts_mono W F (Nat.le_add_right _ _) (core W F hfr hc1 hc2 hj1 hj2 hMF1 hMF2 hM f x hx x₁ hx₁ ρ hdiff (hgI T₁ x₁ hx₁ fun τ ζ hpt => ?_) hI2 h1 y hy hα)` and prove the remaining obligations. Consider the cases of `hu : up τ`.
+
+Conclude with `⟨_, hgD τ ζ hpt hu, low T₁ V₁ hd1 τ ζ hpt x₁ hx₁ _ (by simp only [hu]; push_cast; omega)⟩`. Take `⟨τ', ζ', hpt', hu', hcc⟩` from `hB τ ζ hpt`. Take `⟨r, hr, hpr⟩` from `hroot τ ζ hpt`. Take `⟨u, hyu, -⟩` from `simple W hinj hp9 c (hprim τ ζ hpt) hr`. Take `⟨u', hyu', huu'⟩` from `simple W hinj hp9 c (hprim τ' ζ' hpt') (hcc.trans hr)`.
+
+Establish `ht` using `(dv W hp9 hs1 c hpr).transfer hyu' huu' hyu (h' + b τ' + S) g g 0 (fun i hi => by rw [zero_mul]; exact hgD τ' ζ' hpt' hu' i hi)`. Use `hηb τ'` as an intermediate fact. Use `⟨h' + b τ' + S, fun i hi => ?_, low T₁ V₁ hd1 τ ζ hpt x₁ hx₁ _ (by simp only [hu]; push_cast; omega)⟩` and prove the remaining obligations. Establish `h2` using `ht i hi`. Rewrite `h2` using `[zero_mul]`. Then use the resulting hypothesis.
+
+Use `push Not at hB`. Take `⟨τU, ζU, hptU, hne⟩` from `hB`. Take `⟨τD, ζD, hptD, huD⟩` from `hA`. Establish `huU : up τU = true`. Assume the negation of the conclusion as `hu`.
+
+Conclude with `hne τU ζU hptU (by simpa using hu) rfl`. Take `⟨rU, hrU, hpU⟩` from `hroot τU ζU hptU`. Take `⟨rD, hrD, hpD⟩` from `hroot τD ζD hptD`. Establish `hrne : rU ≠ rD` using `fun h => hne τD ζD hptD huD (by rw [hrD, hrU, h])`. Take `⟨zU, hzU⟩` from `hzO ζU (hprim τU ζU hptU)`.
+
+Take `⟨a₂, ha₂, hfac, hδ⟩` from `fact2 W hinj hp9 hs hs1 c (hprim τU ζU hptU) (hprim τD ζD hptD) hzU hrU hpU hrD hpD hrne hp0`. Establish `hτne : τU ≠ τD` using `fun h => by rw [h, huD] at huU; exact Bool.false_ne_true huU`. Establish `hτU : ∀ τ ζ, Pt c ζ τ → up τ = true → τ = τU` using `fun τ ζ hpt hu => (hcard τU τD τ (hPt _ _ hptU) (hPt _ _ hptD) (hPt _ _ hpt) hτne).resolve_right fun h => by`. Rewrite `hu` using `[h, huD]`. Conclude with `Bool.false_ne_true hu`.
+
+Establish `hτD : ∀ τ ζ, Pt c ζ τ → up τ = false → τ = τD` using `fun τ ζ hpt hu => (hcard τU τD τ (hPt _ _ hptU) (hPt _ _ hptD) (hPt _ _ hpt) hτne).resolve_left fun h => by`. Rewrite `hu` using `[h, huU]`. Conclude with `Bool.false_ne_true hu.symm`. Establish `hrr : ∀ τ ζ, Pt c ζ τ → constantCoeff (W.lev c ζ π') = algebraMap O LL rU ∨ constantCoeff (W.lev c ζ π') = algebraMap O LL rD`. Introduce `τ ζ hpt`.
+
+Take `⟨e₁, he₁, -⟩` from `hE τ ζ hpt`. Establish `h0` using `congrArg constantCoeff ((hfac ζ).symm.trans he₁)`. Simplify using `only [yR, map_mul, map_sub, constantCoeff_C, constantCoeff_X, zero_mul, mul_eq_zero, sub_eq_zero] at h0`. Break down `h0 with (h0 | h0) | h0` into its components or cases. Conclude with `absurd h0 (ha₂.map (algebraMap O LL)).ne_zero`.
+
+Conclude with `Or.inl h0`. Conclude with `Or.inr h0`. Establish `hDr : ∀ τ ζ, Pt c ζ τ → up τ = false → constantCoeff (W.lev c ζ π') = algebraMap O LL rD` using `fun τ ζ hpt hu => (hrr τ ζ hpt).resolve_left fun h => hne τ ζ hpt hu (h.trans hrU.symm)`. Take `⟨uU, hyU, huU'⟩` from `simple W hinj hp9 c (hprim τU ζU hptU) hrU`. Take `⟨uD, hyD, huD'⟩` from `simple W hinj hp9 c (hprim τD ζD hptD) hrD`.
+
+Establish `DU` using `dv W hp9 hs1 c hpU`. Establish `DD` using `dv W hp9 hs1 c hpD`. Establish `hbU` using `hbS τU`. Establish `hbD` using `hbS τD`. Establish `hηD` using `hηb τD`.
+
+Distinguish the cases in `hcase : b τD + S + 2 * η < b τU`. Establish `hΛu : IsUnit (algebraMap (LetA O n) W.EE (Eπ ^ h'))` using `by rw [map_pow]; exact hEu.pow _ set a₀ : LetA O n := letE c * ((π' - algebraMap O (LetA O n) rU) ^ (h' - b τU) * (π' - algebraMap O (LetA O n) rD) ^ (h' + (b τD + S))) with ha₀`. Establish `ha₀Δ : a₀ ∈ W.AΔ` using `W.AΔ.mul_mem (letE_mem W c) (W.AΔ.mul_mem (W.AΔ.pow_mem (W.AΔ.sub_mem hπΔ (W.AΔ.algebraMap_mem _)) _) (W.AΔ.pow_mem (W.AΔ.sub_mem hπΔ (W.AΔ.algebraMap_mem _)) _))`. Establish `hea₀ : (letE c : LetA O n) * a₀ = a₀` using `by rw [ha₀, ← mul_assoc, CrystallineExponents.letE_mul_self]`. Establish `hΛ₀ : algebraMap (LetA O n) W.EE (Eπ ^ h') * ((↑hΛu.unit⁻¹ : W.EE) * algebraMap (LetA O n) W.EE a₀) = algebraMap (LetA O n) W.EE a₀`.
+
+Rewrite using `[← mul_assoc, hΛu.mul_val_inv, one_mul]`. Establish `hlev₀ : ∀ ζ, W.lev c ζ a₀ = yR W π' c rU ζ ^ (h' - b τU) * yR W π' c rD ζ ^ (h' + (b τD + S))`. Introduce `ζ`. Rewrite using `[ha₀, map_mul, lev_letE, one_mul, map_mul, map_pow, map_pow, map_sub, map_sub, lev_alg, lev_alg]`. Both sides reduce to the same expression.
+
+Establish `hvanD : ∀ τ ζ, Pt c ζ τ → constantCoeff (W.lev c ζ π') = algebraMap O LL rD → ∀ i < h' + (b τD + S), coeff i (W.lev c ζ a₀) = 0`. Introduce `τ ζ hpt hr`. Take `⟨u, hyu, -⟩` from `simple W hinj hp9 c (hprim τ ζ hpt) hr`. Rewrite using `[hlev₀, mul_comm]`. Conclude with `van_of_dvd hyu _`.
+
+Establish `hN` using `memNL0 W T₂ Pt π' Eπ h' c ha₀Δ hea₀ hΛ₀ x hx fun τ ζ hpt => by`. Consider the cases of `hu : up τ`. Use `⟨_, hvanD τ ζ hpt (hDr τ ζ hpt hu), low T₂ V₂ hd2 τ ζ hpt x hx _ ?_⟩` and prove the remaining obligations. Use `hτD τ ζ hpt hu` as an intermediate fact. Substitute `this` using the available equality.
+
+Simplify using `only [hu]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Use `hτU τ ζ hpt hu` as an intermediate fact. Substitute `this` using the available equality.
+
+Use `⟨h' - b τ, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Break down `hrr τ ζ hpt with hr | hr` into its components or cases. Take `⟨u, hyu, -⟩` from `simple W hinj hp9 c (hprim τ ζ hpt) hr`. Rewrite using `[hlev₀]`. Conclude with `van_of_dvd hyu _ i hi`.
+
+Conclude with `hvanD τ ζ hpt hr i (by omega)`. Rewrite using `[show (h' : ℤ) - ((h' - b τ : ℕ) : ℤ) = b τ by omega]`. Conclude with `hxU τ ζ hpt hu`. Take `⟨m, a', y', hy', hGd, hcmp⟩` from `compare W F hfr hc1 hc2 hj1 hj2 hMF1 hMF2 hW hNL V₂ hEu hh hE hea₀ hΛ₀ x hx hN`. Establish `hy2 : ∀ j, W.map F (y' j) ∈ NcS W T₂ (c - 1)` using `fun j => u3downPf_map_NcS W F hc1 hc2 _ (hy' j)`.
+
+Establish `hmap : ∀ o : Fin m → O, W.map F (∑ j, o j • y' j) = ∑ j, o j • W.map F (y' j)`. Introduce `o`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => LinearMap.map_smul_of_tower _ _ _`. Establish `hsumN : ∀ o : Fin m → O, ∑ j, o j • y' j ∈ NcS W T₁ (c - 1)` using `fun o => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hy' j)`.
+
+Take `⟨o, ho1, ho2⟩` from `caseB DU DD hyU huU' hyD huD' (δ := algebraMap O LL (rU - rD)) (fun h => sub_ne_zero.2 hrne (hinj (h.trans (map_zero _).symm))) (by simp only [yR, map_sub]; ring) a' (fun j => valAt W T₁ c ζU (y' j)) (fun j => valAt W T₂ c ζU (W.map F (y' j))) (valAt W T₂ c ζU x) (CrystallineExpo …`. Rewrite `ho`, the goal using `[← V₁.sum hptU _ o y' hy']`. Rewrite `ho`, the goal using `[V₁.indep _ _ _ _ hptU hptD _ (hsumN o)]`. Establish `h0` using `V₁.inj τD ζD hptD _ (hsumN o) (filC_top T₁ τD _ (fun i hi hJ => by`. Establish `h` using `hd1 τD i hJ`.
+
+Unfold `deep at h`. Simplify using `only [huD, Bool.false_eq_true, if_false, Set.mem_union, Set.mem_Icc] at h`. Use the proof step `omega) ho)`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Rewrite using `[← V₂.sum hptU _ o _ hy2, ← hmap]`.
+
+Conclude with `(V₂.ker τU ζU hptU _ (u3downPf_map_NcS W F hc1 hc2 _ (hsumN o))).2 (UnivLinkPf.univLinkPf_map_PiNS W F hc1 hc2 π' 1 ((V₁.ker τD ζD hptD _ (hsumN o)).1 h0)))`. Use the proof step `(by`. Use `hGd τD ζD hptD` as an intermediate fact. Rewrite using `[funext fun j => V₁.indep _ _ _ _ hptD hptU _ (hy' j)] at this)` and apply the resulting hypothesis. Use the proof step `(hGd τU ζU hptU) (fun i hi => by rw [hcmp τU ζU hptU i hi, hlev₀, mul_assoc])`.
+
+Rewrite `ho1` using `[← V₁.sum hptU _ o y' hy']`. Rewrite `ho2` using `[← V₂.sum hptU _ o _ hy2, ← hmap]`. Establish `hFN` using `u3downPf_map_NcS W F hc1 hc2 _ (hsumN o)`. Establish `hd : W.map F (∑ j, o j • y' j) - ((PD.p : ℕ) : O) ^ (ρ + 2 * σ) • x ∈ PiNS W T₂ π' 1`. Use `(V₂.ker τU ζU hptU _ (Submodule.sub_mem _ hFN (Submodule.smul_mem _ _ hx))).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[sub_eq_add_neg, ← neg_smul, V₂.add τU ζU hptU _ hFN _ (Submodule.smul_mem _ _ hx), V₂.smul τU ζU hptU _ _ hx, ho2, map_neg, map_pow, map_natCast, neg_smul, add_neg_cancel]`. Use `lifts_mono W F (Nat.add_le_add_left (le_max_left _ _) _) (core W F hfr hc1 hc2 hj1 hj2 hMF1 hMF2 hM f x hx _ (hsumN o) _ hd (hC T₁ V₁ hd1 _ (hsumN o) fun τ ζ hpt hu => ?_) hI2 h1 y hy hα)` and prove the remaining obligations. Use `hτU τ ζ hpt hu` as an intermediate fact. Substitute `this` using the available equality. Rewrite using `[V₁.indep _ _ _ _ hpt hptU _ (hsumN o)]`.
+
+Unfold `Formalism.MainNotions.DeltaInvariantLattices.FilC at ho1 ⊢`. Rewrite using `[fildR_gap T₁ τ (η + 1) (b τ) (by have := hηb τ; omega) fun i h1 h2 hJ => by` and apply the resulting hypothesis. Establish `h` using `hd1 τ i hJ`. Unfold `deep at h`. Simplify using `only [hu, if_true, Set.mem_union, Set.mem_Icc] at h`.
+
+Use the proof step `omega]`. Take `⟨x₀, hx₀⟩` from `hdn τD ζD hptD huD`. Establish `hint` using `integ DU DD hyU huU' hyD huD' (δ := algebraMap O LL (rD - rU)) (fun h => sub_ne_zero.2 hrne.symm (hinj (h.trans (map_zero _).symm))) (by simp only [yR, map_sub]; ring) ⟨a, ha⟩ x₀ (algebraMap O LL a₂) h' (b τU) (b τD + S) (by omega) (hup τU ζU hptU huU) (fun i hi => by rw [← hfac, …`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀, o₁, ho₁⟩ : ∃ y₀ ≤ yc, ∃ o₁ : O, algebraMap O LL o₁ = (PD.p : LL) ^ y₀ * (x₀ * algebraMap O LL a₂ ^ h') := by`. Break down `lt_or_ge (b τU) (b τD + S) with h | h` into its components or cases.
+
+Take `⟨o₁, ho₁⟩` from `hint (b τU) h`. Conclude with `⟨0, Nat.zero_le _, o₁, by simpa using ho₁⟩`. Take `⟨o₁, ho₁⟩` from `hint (b τD + S - 1) (by omega)`. Conclude with `⟨yc, le_rfl, caseC PD.p (rD - rU) hδ hun _ (b τU) (b τD + S) (by omega) h o₁ ho₁ yc (hyc _ _ (by omega) (by omega) h)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨o, ho⟩ : ∃ o : O, algebraMap O LL o = (PD.p : LL) ^ y₀ * x₀ := by`.
+
+Take `⟨a₃, ha₃⟩` from `ha₂.exists_right_inv`. Use `⟨o₁ * a₃ ^ h', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ho₁, mul_assoc, mul_assoc, map_pow, ← mul_pow, ← map_mul, ha₃, map_one, one_pow, mul_one]`. Use `set aN : LetA O n := ((PD.p : ℕ) : O) ^ y₀ • a - o • (letE c * Eπ ^ h') with haN`. Establish `haNΔ : aN ∈ W.AΔ` using `W.AΔ.sub_mem (W.AΔ.smul_mem ha _) (W.AΔ.smul_mem (W.AΔ.mul_mem (letE_mem W c) (W.AΔ.pow_mem hEΔ _)) _)`.
+
+Establish `heN : (letE c : LetA O n) * aN = aN`. Rewrite using `[haN, mul_sub, mul_smul_comm, mul_smul_comm, hea, ← mul_assoc, CrystallineExponents.letE_mul_self]`. Establish `hΛN : algebraMap (LetA O n) W.EE (Eπ ^ h') * (((PD.p : ℕ) : O) ^ y₀ • f - o • algebraMap (LetA O n) W.EE (letE c)) = algebraMap (LetA O n) W.EE aN`. Rewrite using `[haN, mul_sub, mul_smul_comm, mul_smul_comm, hΛ, map_sub, algE_smul, algE_smul, ← map_mul, mul_comm]`. Establish `hlevN : ∀ ζ i, coeff i (W.lev c ζ aN) = (PD.p : LL) ^ y₀ * (coeff i (W.lev c ζ a) - x₀ * coeff i (W.lev c ζ (Eπ ^ h')))`.
+
+Introduce `ζ i`. Rewrite using `[haN, map_sub, map_sub, lev_smul, lev_smul, map_mul, lev_letE, one_mul, ho, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN` using `memNL0 W T₂ Pt π' Eπ h' c haNΔ heN hΛN x hx fun τ ζ hpt => by`. Consider the cases of `hu : up τ`.
+
+Take `⟨u, hyu, -⟩` from `simple W hinj hp9 c (hprim τ ζ hpt) (hDr τ ζ hpt hu)`. Establish `ht` using `DD.transfer hyD huD' hyu (h' + b τD + S) ⟨a, ha⟩ ⟨Eπ ^ h', W.AΔ.pow_mem hEΔ _⟩ x₀ hx₀`. Use `⟨h' + b τD + S, fun i hi => ?_, low T₂ V₂ hd2 τ ζ hpt x hx _ ?_⟩` and prove the remaining obligations. Rewrite using `[hlevN, show coeff i (W.lev c ζ a) = x₀ * coeff i (W.lev c ζ (Eπ ^ h')) from ht i hi, sub_self, mul_zero]`. Use `hτD τ ζ hpt hu` as an intermediate fact.
+
+Substitute `this` using the available equality. Simplify using `only [hu]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Use `hbS τ` as an intermediate fact.
+
+Take `⟨e₁, he₁, -⟩` from `hE τ ζ hpt`. Use `⟨h' - b τ, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `van_of_dvd (G := 1) he₁ h' i (by omega)`. Rewrite `h2` using `[mul_one, ← map_pow]`. Rewrite using `[hlevN, hup τ ζ hpt hu i (by omega), h2, mul_zero, sub_zero, mul_zero]`.
+
+Rewrite using `[show (h' : ℤ) - ((h' - b τ : ℕ) : ℤ) = b τ by omega]`. Conclude with `hxU τ ζ hpt hu`. Establish `hK2` using `letE_inv W T₂ Pt π' Eπ h' c hEΔ (mkL W T₂ π' c x hx)`. Use `lifts_mono W F (Nat.add_le_add_left (hy₀.trans (le_max_right _ _)) _) (combine W F hMF2 hM ρ y₀ o ⟨_, h1⟩ ⟨_, (Submodule.mem_inf.1 hK2).1⟩ ⟨_, ModelFPf.NL_le_LamLA W T₂ π' Eπ h' c Pt hN⟩ (Subtype.ext ?_) (fun z hz hαz => ?_) (fun z hz hαz => ?_) y hy hα hyI)` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, TensorProduct.sub_tmul, ← TensorProduct.smul_tmul']`.
+
+Normalize the expressions using the abelian group laws. Conclude with `core W F hfr hc1 hc2 hj1 hj2 hMF1 hMF2 hM _ x hx x₁ hx₁ ρ hdiff (letE_inv W T₁ Pt π' Eπ h' c hEΔ _) hK2 _ z hz hαz`. Conclude with `u3upPf_lift W F Pt π' Eπ h' M ρ c _ _ hMF2 hM hW hNL hG1 hG2 _ _ hN z hz hαz`.
+-/
 theorem mix_local [IsDomain O] (hinj : Function.Injective (algebraMap O LL))
     [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O] [Fact PD.p.Prime]
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)

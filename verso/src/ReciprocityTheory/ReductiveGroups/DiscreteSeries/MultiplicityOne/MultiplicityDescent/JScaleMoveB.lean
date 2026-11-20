@@ -15,6 +15,13 @@ section sm
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `hv' : SmoothOnH (Hpk k r) (fun g => σ g v)` using `hv`. Use `show SmoothOnH (Hpk k r) (fun g => σ g (σ t v))`. Introduce `g₀ hg₀`. Establish `hg₀t : inUH (Hpk k r) (g₀ * t)` using `gv_mul hg₀ ht`. Take `⟨U, F, hU, hgU, hF, hFe⟩` from `hv' (g₀ * t) hg₀t`.
+
+Set `R : Mat k r →L[ℝ] Mat k r` to `LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ t)`. Establish `hR : ∀ g, R g = g * t` using `fun g => rfl`. Use `⟨R ⁻¹' U, F ∘ R, hU.preimage R.continuous, by simpa [hR] using hgU, hF.comp R.contDiff.contDiffOn (fun g hg => hg), fun g hg hgH => ?_⟩` and prove the remaining obligations. Establish `hgH' : g ∈ GV k r` using `hgH`. Simplify using `only [Function.comp, hR]`.
+
+Rewrite using `[← hFe (g * t) hg (gv_mul hgH' ht)]`. Use `show σ g (σ t v) = σ (g * t) v`. Rewrite using `[hσ.1.2 g hgH' t ht]`. Both sides reduce to the same expression.
+-/
 theorem smooth_mul {σ : Mat k r → (H →L[ℂ] H)} (hσ : Formalism.MainNotions.S.IsURepOn (GV k r) σ) {t : Mat k r}
     (ht : t ∈ GV k r) {v : H} (hv : v ∈ Formalism.MainNotions.S.smoothVecs (k := k) (r := r) σ) :
     σ t v ∈ Formalism.MainNotions.S.smoothVecs (k := k) (r := r) σ := by
@@ -36,6 +43,11 @@ theorem smooth_mul {σ : Mat k r → (H →L[ℂ] H)} (hσ : Formalism.MainNotio
 
 end sm
 
+/- English proof (translation)
+Establish `hX' : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Establish `hh : ∀ A : Mat k r, Hpk k r * (Hpk k r * A) = A` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, hpk_sq, Matrix.one_mul]`. Establish `key : (t⁻¹ * X * t)ᴴ * Hpk k r + Hpk k r * (t⁻¹ * X * t) = tᴴ * (Xᴴ * Hpk k r + Hpk k r * X) * t`. Rewrite using `[gv_inv_eq ht]`.
+
+Simplify using `only [conjTranspose_mul, hpk_conjT, conjTranspose_conjTranspose, Matrix.mul_assoc, hpk_sq, Matrix.mul_one, hh, Matrix.add_mul, Matrix.mul_add]`. Use `show (t⁻¹ * X * t)ᴴ * Hpk k r + Hpk k r * (t⁻¹ * X * t) = 0`. Rewrite using `[key, hX', Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem lie_conj {t X : Mat k r} (ht : t ∈ GV k r) (hX : Formalism.MainNotions.S.InLieHpk k r X) :
     Formalism.MainNotions.S.InLieHpk k r (t⁻¹ * X * t) := by
   have hX' : Xᴴ * Hpk k r + Hpk k r * X = 0 := hX
@@ -48,6 +60,19 @@ theorem lie_conj {t X : Mat k r} (ht : t ∈ GV k r) (hX : Formalism.MainNotions
   show (t⁻¹ * X * t)ᴴ * Hpk k r + Hpk k r * (t⁻¹ * X * t) = 0
   rw [key, hX', Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Establish `hti` using `gv_inv_mem ht`. Establish `hu : IsUnit t` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_right_inverse (gv_mul_inv ht))`. Establish `hfun : (fun s : ℝ => σ (NormedSpace.exp ((s : ℂ) • X)) (σ t u)) = fun s : ℝ => σ t (σ (NormedSpace.exp ((s : ℂ) • (t⁻¹ * X * t))) u)`. Use function extensionality and compare the values at `s`. Establish `hE : NormedSpace.exp ((s : ℂ) • X) ∈ GV k r` using `by rw [cast_smul]; exact exp_mem hX s`.
+
+Establish `hconj : (s : ℂ) • (t⁻¹ * X * t) = t⁻¹ * ((s : ℂ) • X) * t`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hconj, Matrix.exp_conj' _ _ hu]`. Establish `h1 : σ (NormedSpace.exp ((s : ℂ) • X)) (σ t u) = σ (NormedSpace.exp ((s : ℂ) • X) * t) u`. Rewrite using `[hσ.1.2 _ hE _ ht]`.
+
+Both sides reduce to the same expression. Establish `h2 : σ t (σ (t⁻¹ * NormedSpace.exp ((s : ℂ) • X) * t) u) = σ (t * (t⁻¹ * NormedSpace.exp ((s : ℂ) • X) * t)) u`. Rewrite using `[hσ.1.2 _ ht _ (gv_mul (gv_mul hti hE) ht)]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, gv_mul_inv ht, Matrix.one_mul]`.
+
+Unfold `Formalism.MainNotions.S.dsig`. Rewrite using `[hfun]`. Use `set f := fun s : ℝ => σ (NormedSpace.exp ((s : ℂ) • (t⁻¹ * X * t))) u with hf`. Distinguish the cases in `hd : DifferentiableAt ℝ f 0`. Conclude with `(((σ t).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd.hasDerivAt).deriv`.
+
+Establish `hnd : ¬ DifferentiableAt ℝ (fun s => σ t (f s)) 0`. Introduce `hd'`. Apply `hd` to reduce the goal to its premises. Establish `hinv : ∀ y : H, σ t⁻¹ (σ t y) = y` using `fun y => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ hti _ ht, gv_inv_mul ht, hσ.1.1]`.
+
+Both sides reduce to the same expression. Establish `: f = fun s => σ t⁻¹ (σ t (f s))` using `by funext s; rw [hinv]`. Rewrite using `[this]`. Conclude with `((σ t⁻¹).restrictScalars ℝ).differentiableAt.comp (0 : ℝ) hd'`. Rewrite using `[deriv_zero_of_not_differentiableAt hnd, deriv_zero_of_not_differentiableAt hd, map_zero]`.
+-/
 theorem dsig_conj {σ : Mat k r → (H →L[ℂ] H)} (hσ : Formalism.MainNotions.S.IsURepOn (GV k r) σ) {t : Mat k r}
     (ht : t ∈ GV k r) {X : Mat k r} (hX : Formalism.MainNotions.S.InLieHpk k r X) (u : H) :
     Formalism.MainNotions.S.dsig (k := k) (r := r) σ X (σ t u) = σ t (Formalism.MainNotions.S.dsig (k := k) (r := r) σ (t⁻¹ * X * t) u) := by
@@ -81,6 +106,9 @@ theorem dsig_conj {σ : Mat k r → (H →L[ℂ] H)} (hσ : Formalism.MainNotion
       exact ((σ t⁻¹).restrictScalars ℝ).differentiableAt.comp (0 : ℝ) hd'
     rw [deriv_zero_of_not_differentiableAt hnd, deriv_zero_of_not_differentiableAt hd, map_zero]
 
+/- English proof (translation)
+The claim follows from `| [], _, u => rfl | X :: w, hw, u => by simp only [Formalism.MainNotions.S.dsigW, List.map_cons] rw [dsigW_conj hσ ht w (fun Y hY => hw Y (List.mem_cons_of_mem X hY)) u, dsig_conj hσ ht (hw X List.mem_cons_self)]`.
+-/
 theorem dsigW_conj {σ : Mat k r → (H →L[ℂ] H)} (hσ : Formalism.MainNotions.S.IsURepOn (GV k r) σ) {t : Mat k r}
     (ht : t ∈ GV k r) : ∀ (ws : List (Mat k r)), (∀ X ∈ ws, Formalism.MainNotions.S.InLieHpk k r X) → ∀ u : H,
     Formalism.MainNotions.S.dsigW (k := k) (r := r) σ ws (σ t u) =
@@ -91,6 +119,13 @@ theorem dsigW_conj {σ : Mat k r → (H →L[ℂ] H)} (hσ : Formalism.MainNotio
     rw [dsigW_conj hσ ht w (fun Y hY => hw Y (List.mem_cons_of_mem X hY)) u,
       dsig_conj hσ ht (hw X List.mem_cons_self)]
 
+/- English proof (translation)
+Take `⟨C, Ws, hWs, hb⟩` from `hB`. Use `⟨C, Ws.map (List.map fun X => t⁻¹ * X * t), ?_, fun v hv => ?_⟩` and prove the remaining obligations. Introduce `w hw X hX`. Take `⟨w0, hw0, rfl⟩` from `List.mem_map.1 hw`. Take `⟨X0, hX0, rfl⟩` from `List.mem_map.1 hX`.
+
+Conclude with `lie_conj ht (hWs w0 hw0 X0 hX0)`. Use `(hb (σ t v) (smooth_mul hσ ht hv)).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[List.map_map]`. Use `congr 1`.
+
+Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `w hw`. Simplify using `only [Function.comp]`. Rewrite using `[dsigW_conj hσ ht w (hWs w hw), hσ.2.1 t ht]`.
+-/
 theorem cw_transport {Wp : Type} [NormedAddCommGroup Wp] {σ : Mat k r → (H →L[ℂ] H)}
     (hσ : Formalism.MainNotions.S.IsURepOn (GV k r) σ) {t : Mat k r} (ht : t ∈ GV k r) {B : H → Wp}
     (hB : Formalism.MainNotions.S.IsCWCont (k := k) (r := r) σ B) :

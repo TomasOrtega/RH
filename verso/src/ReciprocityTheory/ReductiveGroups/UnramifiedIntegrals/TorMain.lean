@@ -15,12 +15,18 @@ open Formalism.L2.Th1.A (shortW)
 
 variable {l : ℕ} [Fact l.Prime] {g2 g3 : ℂ_[l]}
 
+/- English proof (translation)
+Establish `h1 : n ≡ 1 [MOD addOrderOf P]` using `hn.of_dvd (addOrderOf_dvd_of_nsmul_eq_zero hNP)`. Establish `h2` using `nsmul_eq_nsmul_iff_modEq.mpr h1`. Simplify using `using h2`.
+-/
 theorem tor_nsmul_fix {A : Type*} [AddGroup A] (P : A) (N n : ℕ) (hNP : N • P = 0)
     (hn : n ≡ 1 [MOD N]) : n • P = P := by
   have h1 : n ≡ 1 [MOD addOrderOf P] := hn.of_dvd (addOrderOf_dvd_of_nsmul_eq_zero hNP)
   have h2 := nsmul_eq_nsmul_iff_modEq.mpr h1
   simpa using h2
 
+/- English proof (translation)
+Establish `hl : ‖(l : ℂ_[l])‖ < 1`. Rewrite using `[norm_l_Cl]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Rewrite using `[Nat.cast_pow, norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) hl (Nat.totient_pos.mpr hN0).ne'`.
+-/
 theorem tor_norm_mult_lt (N : ℕ) (hN0 : 0 < N) : ‖((l ^ N.totient : ℕ) : ℂ_[l])‖ < 1 := by
   have hl : ‖(l : ℂ_[l])‖ < 1 := by
     rw [norm_l_Cl]
@@ -28,6 +34,21 @@ theorem tor_norm_mult_lt (N : ℕ) (hN0 : 0 < N) : ‖((l ^ N.totient : ℕ) : �
   rw [Nat.cast_pow, norm_pow]
   exact pow_lt_one₀ (norm_nonneg _) hl (Nat.totient_pos.mpr hN0).ne'
 
+/- English proof (translation)
+Take `⟨hW, hΔ⟩` from `good_model h`. Establish `hP0 : P ≠ 0`. Introduce and unpack `rfl`. Conclude with `h2 (by simp)`. Establish `hfix : n • P = P` using `tor_nsmul_fix P N n hNP hn`.
+
+Establish `hsub : P - n • Q = n • (P - Q)`. Rewrite using `[nsmul_sub, hfix]`. Establish `hB : n • Q = P - n • (P - Q)`. Rewrite using `[← hsub]`. Normalize the expressions using the abelian group laws.
+
+Establish `hE : InFormalGroupPoints (n • (P - Q))` using `(formalGroup_nsmul_estimate _ hW hΔ _ hD n).1`. Distinguish the cases in `h0 : n • (P - Q) = 0`. Establish `: n • Q = P` using `by rw [hB, h0, sub_zero]`. Rewrite using `[this, sub_self, norm_zero]`. Conclude with `norm_nonneg _`.
+
+Establish `hPE : ¬ InFormalGroupPoints P` using `torsion_not_mem_formalGroup h P N hN hNP hP0`. Establish `hBE : ¬ InFormalGroupPoints (n • Q)`. Rewrite using `[hB]`. Conclude with `not_mem_formalGroup_sub h P _ hPE hE`. Establish `h2E : ¬ InFormalGroupPoints (P + P)` using `torsion_not_mem_formalGroup h (P + P) N hN (by rw [nsmul_add, hNP, add_zero]) h2`.
+
+Establish `hS : P + n • Q = (P + P) - n • (P - Q)`. Rewrite using `[hB]`. Normalize the expressions using the abelian group laws. Establish `hSE : ¬ InFormalGroupPoints (P + n • Q)`. Rewrite using `[hS]`.
+
+Conclude with `not_mem_formalGroup_sub h _ _ h2E hE`. Take `⟨_, _, hPy⟩` from `integral_of_not_mem_formalGroup h P hPE`. Take `⟨hB0, _, hBy⟩` from `integral_of_not_mem_formalGroup h _ hBE`. Take `⟨hS0, hSx, _⟩` from `integral_of_not_mem_formalGroup h _ hSE`. Use `norm_x_sub_le_of_formalGroup (shortW g2 g3) rfl rfl rfl hW P (n • Q) hP0 hB0 hPy hBy hS0 hSx (by rw [hsub]; exact h0) (by rw [hsub]; exact hE)` as an intermediate fact.
+
+Rewrite `this` using `[hsub]`. Then use the resulting hypothesis.
+-/
 theorem tor_x_step (h : GoodPair l g2 g3) (P Q : (shortW g2 g3).toAffine.Point) (N : ℕ)
     (hN : ¬ l ∣ N) (hNP : N • P = 0) (h2 : P + P ≠ 0) (hD : InFormalGroupPoints (P - Q)) (n : ℕ)
     (hn : n ≡ 1 [MOD N]) : ‖px _ P - px _ (n • Q)‖ ≤ ‖uOf (n • (P - Q))‖ := by
@@ -61,6 +82,15 @@ theorem tor_x_step (h : GoodPair l g2 g3) (P Q : (shortW g2 g3).toAffine.Point) 
     (by rw [hsub]; exact h0) (by rw [hsub]; exact hE)
   rwa [hsub] at this
 
+/- English proof (translation)
+Take `⟨hW, hΔ⟩` from `good_model h`. Establish `hP0 : P ≠ 0`. Introduce and unpack `rfl`. Conclude with `h2 (by simp)`. Establish `hPE : ¬ InFormalGroupPoints P` using `torsion_not_mem_formalGroup h P N hN hNP hP0`.
+
+Take `⟨_, hPx, _⟩` from `integral_of_not_mem_formalGroup h P hPE`. Take `⟨Q, hQ, hD⟩` from `tor_lift h P hP0 hPx (tor_y_unit h P N hN hNP h2)`. Establish `hcop : Nat.Coprime l N` using `((Fact.out : l.Prime).coprime_iff_not_dvd).mpr hN`. Establish `hM : ∀ k : ℕ, (l ^ N.totient) ^ k ≡ 1 [MOD N]` using `fun k => by`. Simplify using `using (Nat.ModEq.pow_totient hcop).pow k`.
+
+Establish `ht` using `formalGroup_pow_tendsto_zero _ hW hΔ _ hD (l ^ N.totient) (tor_norm_mult_lt N hN0)`. Establish `hlim : Filter.Tendsto (fun k : ℕ => px _ ((l ^ N.totient) ^ k • Q)) Filter.atTop (nhds (px _ P))`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun k => ?_) ht` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`.
+
+Conclude with `tor_x_step h P Q N hN hNP h2 hD _ (hM k)`. Establish `hcl : IsClosed ((MaximalUnramifiedExtension l : Subfield ℂ_[l]) : Set ℂ_[l])` using `Subfield.isClosed_topologicalClosure _`. Use `hcl.mem_of_tendsto hlim (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Conclude with `(inSub_px _ _ _ (inSub_nsmul _ _ (good_coeff h) _ Q hQ)).1`.
+-/
 theorem tor_x_mem (h : GoodPair l g2 g3) (P : (shortW g2 g3).toAffine.Point) (N : ℕ) (hN0 : 0 < N)
     (hN : ¬ l ∣ N) (hNP : N • P = 0) (h2 : P + P ≠ 0) : px _ P ∈ MaximalUnramifiedExtension l := by
   obtain ⟨hW, hΔ⟩ := good_model h
@@ -85,6 +115,13 @@ theorem tor_x_mem (h : GoodPair l g2 g3) (P : (shortW g2 g3).toAffine.Point) (N 
   refine hcl.mem_of_tendsto hlim (Filter.Eventually.of_forall fun k => ?_)
   exact (inSub_px _ _ _ (inSub_nsmul _ _ (good_coeff h) _ Q hQ)).1
 
+/- English proof (translation)
+Distinguish the cases in `h2 : P + P = 0`. Conclude with `tor_two h P hP0 h2`. Establish `hx` using `tor_x_mem h P N hN0 hN hNP h2`. Establish `hy` using `tor_y_unit h P N hN hNP h2`. Use `⟨hx, ?_⟩` and prove the remaining obligations.
+
+Establish `hl : l ≠ 2` using `by have := h.five; omega`. Establish `heq : (py _ P) ^ 2 = (px _ P) ^ 3 - g2 / 4 * px _ P - g3 / 4` using `by match P, hP0 with`. Consider the case `.zero, hP0 => exact absurd rfl hP0`. Consider the case `.some x y hxy, _`. Use `(Affine.equation_iff _ _).mp hxy.1` as an intermediate fact.
+
+Simplify using `only [shortW, px, py] at this ⊢`. Take the linear combination `this`. Establish `h4 : (4 : ℂ_[l]) ∈ MaximalUnramifiedExtension l` using `by exact_mod_cast natCast_mem (MaximalUnramifiedExtension l) 4`. Use `sqrt_mem l hl _ _ ?_ hy heq` and prove the remaining obligations. Conclude with `sub_mem (sub_mem (pow_mem hx 3) (mul_mem (div_mem h.mem2 h4) hx)) (div_mem h.mem3 h4)`.
+-/
 theorem tor_kur (h : GoodPair l g2 g3) (P : (shortW g2 g3).toAffine.Point) (N : ℕ) (hN0 : 0 < N)
     (hN : ¬ l ∣ N) (hNP : N • P = 0) (hP0 : P ≠ 0) : px _ P ∈ MaximalUnramifiedExtension l ∧ py _ P ∈ MaximalUnramifiedExtension l := by
   by_cases h2 : P + P = 0

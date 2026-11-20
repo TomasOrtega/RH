@@ -22,28 +22,46 @@ def colL (y : Matrix (Fin m) (Fin (r + s)) R) : Matrix (Fin m) (Fin r) R := Matr
 
 def colR (y : Matrix (Fin m) (Fin (r + s)) R) : Matrix (Fin m) (Fin s) R := Matrix.of fun i j => y i (Fin.natAdd r j)
 
+/- English proof (translation)
+Simplify using `[colJoin]`.
+-/
 @[simp] theorem colJoin_castAdd (y₁ : Matrix (Fin m) (Fin r) R) (y₂ : Matrix (Fin m) (Fin s) R) (i : Fin m) (j : Fin r) :
     colJoin y₁ y₂ i (Fin.castAdd s j) = y₁ i j := by
   simp [colJoin]
 
+/- English proof (translation)
+Simplify using `[colJoin]`.
+-/
 @[simp] theorem colJoin_natAdd (y₁ : Matrix (Fin m) (Fin r) R) (y₂ : Matrix (Fin m) (Fin s) R) (i : Fin m) (j : Fin s) :
     colJoin y₁ y₂ i (Fin.natAdd r j) = y₂ i j := by
   simp [colJoin]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[colL]`.
+-/
 @[simp] theorem colL_colJoin (y₁ : Matrix (Fin m) (Fin r) R) (y₂ : Matrix (Fin m) (Fin s) R) :
     colL (colJoin y₁ y₂) = y₁ := by
   ext i j; simp [colL]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[colR]`.
+-/
 @[simp] theorem colR_colJoin (y₁ : Matrix (Fin m) (Fin r) R) (y₂ : Matrix (Fin m) (Fin s) R) :
     colR (colJoin y₁ y₂) = y₂ := by
   ext i j; simp [colR]
 
+/- English proof (translation)
+Use extensionality with `i k`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) k` and prove the remaining obligations. Simplify using `[colL]`. Simplify using `[colR]`.
+-/
 @[simp] theorem colJoin_colL_colR (y : Matrix (Fin m) (Fin (r + s)) R) : colJoin (colL y) (colR y) = y := by
   ext i k
   refine Fin.addCases (fun j => ?_) (fun j => ?_) k
   · simp [colL]
   · simp [colR]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [← colL_colJoin y₁ y₂, h, colL_colJoin], by rw [← colR_colJoin y₁ y₂, h, colR_colJoin]⟩`.
+-/
 theorem colJoin_injective {y₁ y₁' : Matrix (Fin m) (Fin r) R} {y₂ y₂' : Matrix (Fin m) (Fin s) R}
     (h : colJoin y₁ y₂ = colJoin y₁' y₂') : y₁ = y₁' ∧ y₂ = y₂' :=
   ⟨by rw [← colL_colJoin y₁ y₂, h, colL_colJoin], by rw [← colR_colJoin y₁ y₂, h, colR_colJoin]⟩
@@ -54,29 +72,47 @@ def joinEquiv : Matrix (Fin m) (Fin r) R × Matrix (Fin m) (Fin s) R ≃ Matrix 
   left_inv z := by simp
   right_inv y := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem joinEquiv_apply (z : Matrix (Fin m) (Fin r) R × Matrix (Fin m) (Fin s) R) :
     joinEquiv z = colJoin z.1 z.2 := rfl
 
+/- English proof (translation)
+Use extensionality with `i k`. Apply the tactic sequence `refine Fin.addCases (fun j => ?_) (fun j => ?_) k <;> simp`.
+-/
 theorem colJoin_map {R' : Type*} (f : R → R') (y₁ : Matrix (Fin m) (Fin r) R) (y₂ : Matrix (Fin m) (Fin s) R) :
     (colJoin y₁ y₂).map f = colJoin (y₁.map f) (y₂.map f) := by
   ext i k
   refine Fin.addCases (fun j => ?_) (fun j => ?_) k <;> simp
 
+/- English proof (translation)
+Use extensionality with `i k`. Apply the tactic sequence `refine Fin.addCases (fun j => ?_) (fun j => ?_) k <;> simp`.
+-/
 theorem colJoin_add [Add R] (y₁ y₁' : Matrix (Fin m) (Fin r) R) (y₂ y₂' : Matrix (Fin m) (Fin s) R) :
     colJoin (y₁ + y₁') (y₂ + y₂') = colJoin y₁ y₂ + colJoin y₁' y₂' := by
   ext i k
   refine Fin.addCases (fun j => ?_) (fun j => ?_) k <;> simp
 
+/- English proof (translation)
+Use extensionality with `i k`. Apply the tactic sequence `refine Fin.addCases (fun j => ?_) (fun j => ?_) k <;> simp`.
+-/
 theorem colJoin_neg [Neg R] (y₁ : Matrix (Fin m) (Fin r) R) (y₂ : Matrix (Fin m) (Fin s) R) :
     colJoin (-y₁) (-y₂) = -colJoin y₁ y₂ := by
   ext i k
   refine Fin.addCases (fun j => ?_) (fun j => ?_) k <;> simp
 
+/- English proof (translation)
+Use extensionality with `i k`. Apply the tactic sequence `refine Fin.addCases (fun j => ?_) (fun j => ?_) k <;> simp`.
+-/
 theorem colJoin_sub [Sub R] (y₁ y₁' : Matrix (Fin m) (Fin r) R) (y₂ y₂' : Matrix (Fin m) (Fin s) R) :
     colJoin (y₁ - y₁') (y₂ - y₂') = colJoin y₁ y₂ - colJoin y₁' y₂' := by
   ext i k
   refine Fin.addCases (fun j => ?_) (fun j => ?_) k <;> simp
 
+/- English proof (translation)
+Use extensionality with `i k`. Apply the tactic sequence `refine Fin.addCases (fun j => ?_) (fun j => ?_) k <;> simp`.
+-/
 @[simp] theorem colJoin_zero [Zero R] : colJoin (0 : Matrix (Fin m) (Fin r) R) (0 : Matrix (Fin m) (Fin s) R) = 0 := by
   ext i k
   refine Fin.addCases (fun j => ?_) (fun j => ?_) k <;> simp
@@ -85,6 +121,9 @@ end Join
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `colJoin_map _ p q`.
+-/
 theorem rat_colJoin {m r s : ℕ} (p : Matrix (Fin m) (Fin r) D.host.E) (q : Matrix (Fin m) (Fin s) D.host.E) :
     rat (colJoin p q) = colJoin (rat p) (rat q) :=
   colJoin_map _ p q

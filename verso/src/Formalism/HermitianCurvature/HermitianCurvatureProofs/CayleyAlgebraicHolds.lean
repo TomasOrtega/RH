@@ -13,21 +13,53 @@ namespace UnitInverseArithmetic
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_nonsing_inv A ((Matrix.isUnit_iff_isUnit_det A).mp h)`.
+-/
 theorem mul_inv_of_isUnit {A : Matrix n n ℂ} (h : IsUnit A) : A * A⁻¹ = 1 :=
   Matrix.mul_nonsing_inv A ((Matrix.isUnit_iff_isUnit_det A).mp h)
 
+/- English proof (translation)
+The claim follows from `Matrix.nonsing_inv_mul A ((Matrix.isUnit_iff_isUnit_det A).mp h)`.
+-/
 theorem inv_mul_of_isUnit {A : Matrix n n ℂ} (h : IsUnit A) : A⁻¹ * A = 1 :=
   Matrix.nonsing_inv_mul A ((Matrix.isUnit_iff_isUnit_det A).mp h)
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnit_iff_isUnit_det A).mpr (Matrix.isUnit_det_of_right_inverse h)`.
+-/
 theorem isUnit_of_mul_one {A B : Matrix n n ℂ} (h : A * B = 1) : IsUnit A :=
   (Matrix.isUnit_iff_isUnit_det A).mpr (Matrix.isUnit_det_of_right_inverse h)
 
+/- English proof (translation)
+Rewrite using `[← two_smul ℂ (1 : Matrix n n ℂ), smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem half_two : ((2 : ℂ)⁻¹) • ((1 : Matrix n n ℂ) + 1) = 1 := by
   rw [← two_smul ℂ (1 : Matrix n n ℂ), smul_smul]; norm_num
 
+/- English proof (translation)
+Rewrite using `[← two_smul ℂ A, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem half_double (A : Matrix n n ℂ) : ((2 : ℂ)⁻¹) • (A + A) = A := by
   rw [← two_smul ℂ A, smul_smul]; norm_num
 
+/- English proof (translation)
+Use `set V := (1 - X)⁻¹ with hV`. Establish `h1 : (1 - X) * V = 1` using `mul_inv_of_isUnit hu`. Establish `h2 : V * (1 - X) = 1` using `inv_mul_of_isUnit hu`. Establish `hXV : X * V = V - 1`. Establish `e` using `h1`.
+
+Rewrite `e` using `[Matrix.sub_mul, Matrix.one_mul]`. Rewrite using `[← e]`. Normalize the expressions using the abelian group laws. Establish `hg1 : (1 + X) * V + 1 = V + V`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, hXV]`.
+
+Normalize the expressions using the abelian group laws. Establish `hq : (V + V) * ((2⁻¹ : ℂ) • (1 - X)) = 1`. Rewrite using `[Matrix.mul_smul, Matrix.add_mul, h2, half_two]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `ha : (1 + Xᴴ) * H = H * (1 - X)`.
+
+Establish `e : Xᴴ * H = -(H * X)` using `eq_neg_of_add_eq_zero_left hX`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, e, Matrix.mul_sub, Matrix.mul_one, sub_eq_add_neg]`. Establish `hb : H * (1 + X) = (1 - Xᴴ) * H`. Establish `e : H * X = -(Xᴴ * H)` using `eq_neg_of_add_eq_zero_left (by rw [add_comm]; exact hX)`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, e, Matrix.sub_mul, Matrix.one_mul, sub_eq_add_neg]`.
+
+Establish `hc : (1 - X) * (1 + X) = (1 + X) * (1 - X)` using `by noncomm_ring`. Establish `hW : Vᴴ * (1 - Xᴴ) = 1`. Establish `e` using `congrArg Matrix.conjTranspose h1`. Rewrite `e` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_sub, Matrix.conjTranspose_one]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_add, Matrix.conjTranspose_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Vᴴ * (H * (((1 - X) * (1 + X)) * V)) := by rw [ha]; simp only [Matrix.mul_assoc]`. Use `_ = Vᴴ * (H * ((1 + X) * ((1 - X) * V))) := by rw [hc]; simp only [Matrix.mul_assoc]`. Use `_ = (Vᴴ * (1 - Xᴴ)) * H := by`.
+
+Rewrite using `[h1, Matrix.mul_one, hb]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [hW, Matrix.one_mul]`. Rewrite using `[hg1]`. Conclude with `isUnit_of_mul_one hq`.
+
+Rewrite using `[hg1, Matrix.inv_eq_right_inv hq, Matrix.mul_smul]`. Establish `e : ((1 + X) * V - 1) * (1 - X) = X + X`. Rewrite using `[Matrix.sub_mul, Matrix.mul_assoc, h2, Matrix.mul_one, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, half_double]`.
+-/
 theorem fwd {H X : Matrix n n ℂ} (hX : Xᴴ * H + H * X = 0) (hu : IsUnit (1 - X)) :
     ((1 + X) * (1 - X)⁻¹)ᴴ * H * ((1 + X) * (1 - X)⁻¹) = H ∧ IsUnit ((1 + X) * (1 - X)⁻¹ + 1) ∧
       ((1 + X) * (1 - X)⁻¹ - 1) * ((1 + X) * (1 - X)⁻¹ + 1)⁻¹ = X := by
@@ -68,6 +100,23 @@ theorem fwd {H X : Matrix n n ℂ} (hX : Xᴴ * H + H * X = 0) (hu : IsUnit (1 -
       rw [Matrix.sub_mul, Matrix.mul_assoc, h2, Matrix.mul_one, Matrix.one_mul]; abel
     rw [e, half_double]
 
+/- English proof (translation)
+Use `set P := (g + 1)⁻¹ with hP`. Establish `h1 : (g + 1) * P = 1` using `mul_inv_of_isUnit hu`. Establish `h2 : P * (g + 1) = 1` using `inv_mul_of_isUnit hu`. Establish `hgP : g * P = 1 - P`. Establish `e` using `h1`.
+
+Rewrite `e` using `[Matrix.add_mul, Matrix.one_mul]`. Rewrite using `[← e]`. Normalize the expressions using the abelian group laws. Establish `hX : (g - 1) * P = 1 - P - P` using `by rw [Matrix.sub_mul, Matrix.one_mul, hgP]`. Establish `hOne : (1 : Matrix n n ℂ) - (1 - P - P) = P + P` using `by abel`.
+
+Establish `hq : (P + P) * ((2⁻¹ : ℂ) • (g + 1)) = 1`. Rewrite using `[Matrix.mul_smul, Matrix.add_mul, h2, half_two]`. Rewrite using `[hX]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hQ : Pᴴ * (gᴴ + 1) = 1`.
+
+Establish `e` using `congrArg Matrix.conjTranspose h1`. Rewrite `e` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_add, Matrix.conjTranspose_one]`. Then use the resulting hypothesis. Establish `hm : H * (g + 1) + (gᴴ + 1) * H = (gᴴ + 1) * H * (g + 1)`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, hg]`. Normalize the expressions using the abelian group laws.
+
+Establish `key : Pᴴ * H + H * P = H`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, hQ, Matrix.mul_one, Matrix.one_mul]`. Use `_ = Pᴴ * ((H * (g + 1) + (gᴴ + 1) * H) * P) := by`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+
+Use `_ = (Pᴴ * (gᴴ + 1)) * H * ((g + 1) * P) := by rw [hm]; simp only [Matrix.mul_assoc]`. Use `_ = H := by rw [hQ, h1, Matrix.one_mul, Matrix.mul_one]`. Establish `key' : Pᴴ * H = H - H * P` using `eq_sub_of_add_eq key`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, key']`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[hOne]`. Conclude with `isUnit_of_mul_one hq`. Rewrite using `[hOne, Matrix.inv_eq_right_inv hq, Matrix.mul_smul]`. Establish `e : (1 + (1 - P - P)) * (g + 1) = g + g`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, h2]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e, half_double]`.
+-/
 theorem bwd {H g : Matrix n n ℂ} (hg : gᴴ * H * g = H) (hu : IsUnit (g + 1)) :
     ((g - 1) * (g + 1)⁻¹)ᴴ * H + H * ((g - 1) * (g + 1)⁻¹) = 0 ∧ IsUnit (1 - (g - 1) * (g + 1)⁻¹) ∧
       (1 + (g - 1) * (g + 1)⁻¹) * (1 - (g - 1) * (g + 1)⁻¹)⁻¹ = g := by
@@ -108,6 +157,9 @@ theorem bwd {H g : Matrix n n ℂ} (hg : gᴴ * H * g = H) (hu : IsUnit (g + 1))
 
 end UnitInverseArithmetic
 
+/- English proof (translation)
+Introduce `k r`. Use `⟨fun X hX hu => ?_, fun g hg hu => ?_⟩` and prove the remaining obligations. Conclude with `UnitInverseArithmetic.fwd hX hu`. Conclude with `UnitInverseArithmetic.bwd hg hu`.
+-/
 theorem cayley_algebraic_holds : CayAlg := by
   intro k r
   refine ⟨fun X hX hu => ?_, fun g hg hu => ?_⟩

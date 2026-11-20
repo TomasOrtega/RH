@@ -4,6 +4,15 @@ open MeasureTheory Filter Topology
 
 namespace GlobalTheory.ThK.Dbl.Contin
 
+/- English proof (translation)
+Set `K : Finset I → Submodule ℂ V` to `fun P => ⨅ i ∈ P, LinearMap.ker ((ev i).comp V.subtype)`. Establish `hK : ∀ P (v : V), v ∈ K P ↔ ∀ i ∈ P, ev i v = 0`. Introduce `P v`. Simplify using `[K, Submodule.mem_iInf]`. Take `⟨W, ⟨P, rfl⟩, hmin⟩` from `WellFounded.has_min (wellFounded_lt (α := Submodule ℂ V)) (Set.range K) ⟨K ∅, ∅, rfl⟩`.
+
+Use `⟨P, fun v hv h0 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ev i v ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hne (hsep v hv h)`. Use `hmin (K (insert i P)) ⟨_, rfl⟩ (lt_of_le_of_ne ?_ ?_)` and prove the remaining obligations. Introduce `w hw`. Rewrite `hw`, the goal using `[hK]`. Introduce `j hj`.
+
+Conclude with `hw j (Finset.mem_insert_of_mem hj)`. Introduce `heq`. Establish `: (⟨v, hv⟩ : V) ∈ K P` using `(hK P _).2 h0`. Rewrite `this` using `[← heq, hK]`. Conclude with `hi (this i (Finset.mem_insert_self _ _))`.
+-/
 theorem exists_finset_separating {M I : Type} [AddCommGroup M] [Module ℂ M]
     (V : Submodule ℂ M) [FiniteDimensional ℂ V] (ev : I → M →ₗ[ℂ] ℂ)
     (hsep : ∀ v ∈ V, (∀ i, ev i v = 0) → v = 0) :
@@ -25,6 +34,15 @@ theorem exists_finset_separating {M I : Type} [AddCommGroup M] [Module ℂ M]
     rw [← heq, hK] at this
     exact hi (this i (Finset.mem_insert_self _ _))
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_span_set']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, y, c, rfl, rfl⟩`. Use `⟨n, c, fun j => ⟨_, y j, rfl⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext h <;> simp [Prod.fst_sum, Prod.snd_sum, Finset.sum_apply]`.
+
+Introduce and unpack `⟨n, c, g, hg⟩ choose y hy using fun j => (g j).2`. Use `⟨n, y, c, ?_, ?_⟩` and prove the remaining obligations. Establish `: w = (∑ i, c i • (g i : (G → ℂ) × (G → ℂ))).1` using `by rw [hg]`. Rewrite using `[this]`. Use extensionality with `h`.
+
+Simplify using `only [Prod.fst_sum, Finset.sum_apply, Prod.smul_fst, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hy j]`. Establish `: w' = (∑ i, c i • (g i : (G → ℂ) × (G → ℂ))).2` using `by rw [hg]`. Rewrite using `[this]`.
+
+Use extensionality with `h`. Simplify using `only [Prod.snd_sum, Finset.sum_apply, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hy j]`.
+-/
 theorem inSpan_iff_mem_span {G : Type} [Mul G] (f f' w w' : G → ℂ) :
     InSpan f f' w w' ↔ (w, w') ∈ Submodule.span ℂ
       (Set.range fun y : G => ((fun h => f (h * y)), (fun h => f' (h * y)))) := by
@@ -52,6 +70,31 @@ end GlobalTheory.ThK.Dbl.Contin
 
 namespace GlobalTheory.ThK.Dbl.Contin
 
+/- English proof (translation)
+Introduce `G _ Ω Ω₁ s₀ W₀ f f' u u' hΩ hconn hs₀ hΩ₁ hne hsub hfin hu hu' hW hspan`. Use `set D : Submodule ℂ ((G → ℂ) × (G → ℂ)) := Submodule.span ℂ (Set.range fun y : G => ((fun h => f (h * y)), (fun h => f' (h * y)))) with hDdef`. Establish `hD : ∀ w w', InSpan f f' w w' ↔ (w, w') ∈ D` using `fun w w' => inSpan_iff_mem_span f f' w w'`. Use `set V : Submodule ℂ ((G → ℂ) × (G → ℂ)) := W₀.prod W₀ with hVdef`. Establish `hVr : LinearMap.range (W₀.subtype.prodMap W₀.subtype) = V`.
+
+Rewrite using `[LinearMap.range_prodMap, Submodule.range_subtype]`. Use `haveI : FiniteDimensional ℂ V := LinearEquiv.finiteDimensional (LinearEquiv.ofEq _ _ hVr)`. Set `ev : G ⊕ G → ((G → ℂ) × (G → ℂ)) →ₗ[ℂ] ℂ` to `Sum.elim (fun h => (LinearMap.proj h) ∘ₗ LinearMap.fst ℂ _ _) (fun h => (LinearMap.proj h) ∘ₗ LinearMap.snd ℂ _ _)`. Establish `hsep : ∀ v ∈ V, (∀ i, ev i v = 0) → v = 0`. Introduce `v _ h0`.
+
+Use extensionality with `x`. Simplify `h0 (Sum.inl x)` using `[ev]`. Simplify `h0 (Sum.inr x)` using `[ev]`. Take `⟨P, hP⟩` from `exists_finset_separating V ev hsep`. Set `T : ((G → ℂ) × (G → ℂ)) →ₗ[ℂ] (P → ℂ)` to `LinearMap.pi fun i => ev i`.
+
+Establish `hT : ∀ p i, T p i = ev i p` using `fun p i => rfl`. Set `S' : Submodule ℂ (P → ℂ)` to `(D ⊓ V).map T`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl S'`. Set `q : (P → ℂ) →ₗ[ℂ] C` to `Submodule.projectionOnto C S' hC.symm`. Establish `hq : ∀ x, q x = 0 ↔ x ∈ S'`.
+
+Introduce `x`. Rewrite using `[← LinearMap.mem_ker]`. Use `show x ∈ LinearMap.ker (Submodule.projectionOnto C S' hC.symm) ↔ _`. Rewrite using `[Submodule.ker_projectionOnto]`. Set `Lc : (P → ℂ) →L[ℂ] (P → ℂ)` to `LinearMap.toContinuousLinearMap (C.subtype ∘ₗ q)`.
+
+Set `F : ℂ → (P → ℂ)` to `fun s => Lc (T (u s, u' s))`. Establish `hΦ : DifferentiableOn ℂ (fun s => T (u s, u' s)) Ω`. Rewrite using `[differentiableOn_pi]`. Introduce `i`. Break down `i with ⟨i | i, _⟩` into its components or cases.
+
+Simplify `hu i` using `[hT, ev]`. Simplify `hu' i` using `[hT, ev]`. Establish `hF : DifferentiableOn ℂ F Ω` using `fun s hs => Lc.differentiableAt.comp_differentiableWithinAt s (hΦ s hs)`. Establish `hF0 : ∀ s ∈ Ω₁, F s = 0`. Introduce `s hs`.
+
+Establish `hmem : T (u s, u' s) ∈ S'` using `Submodule.mem_map_of_mem ⟨(hD _ _).1 (hspan s hs), hW s (hsub hs)⟩`. Simplify using `only [F, Lc, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype]`. Rewrite using `[(hq _).2 hmem]`. Both sides reduce to the same expression. Take `⟨z₀, hz₀⟩` from `hne`.
+
+Establish `hev : F =ᶠ[𝓝 z₀] 0` using `Filter.eventually_of_mem (hΩ₁.mem_nhds hz₀) fun s hs => hF0 s hs`. Establish `hEq` using `(hF.analyticOnNhd hΩ).eqOn_zero_of_preconnected_of_eventuallyEq_zero hconn (hsub hz₀) hev`. Establish `hFs₀ : F s₀ = 0` using `hEq hs₀`. Establish `hmem : T (u s₀, u' s₀) ∈ S'`. Rewrite using `[← hq]`.
+
+Simplify using `only [F, Lc, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype] at hFs₀`. Conclude with `Subtype.ext hFs₀`. Take `⟨k, ⟨hkD, hkV⟩, hk⟩` from `Submodule.mem_map.1 hmem`. Establish `hdiff : (u s₀, u' s₀) - k = 0`. Apply `hP _ (V.sub_mem ⟨(hW s₀ hs₀).1, (hW s₀ hs₀).2⟩ hkV)` to reduce the goal to its premises.
+
+Introduce `i hi`. Use `congrFun hk ⟨i, hi⟩` as an intermediate fact. Rewrite `this` using `[hT, hT]`. Rewrite using `[map_sub, ← this, sub_self]`. Rewrite `hdiff` using `[sub_eq_zero]`.
+
+Rewrite using `[hD, hdiff]`. Conclude with `hkD`.
+-/
 theorem main : ∀ {G : Type} [Group G] (Ω Ω₁ : Set ℂ) (s₀ : ℂ) (W₀ : Submodule ℂ (G → ℂ)) (f f' : G → ℂ) (u u' : ℂ → G → ℂ),
     IsOpen Ω → IsPreconnected Ω → s₀ ∈ Ω → IsOpen Ω₁ → Ω₁.Nonempty → Ω₁ ⊆ Ω → FiniteDimensional ℂ W₀ →
     (∀ h, DifferentiableOn ℂ (fun s => u s h) Ω) → (∀ h, DifferentiableOn ℂ (fun s => u' s h) Ω) →

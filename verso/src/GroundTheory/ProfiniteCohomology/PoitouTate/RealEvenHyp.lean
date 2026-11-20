@@ -23,6 +23,9 @@ variable [Fintype S] {N : ℕ} [NeZero N]
 
 include hS hev in
 
+/- English proof (translation)
+Take `⟨L, _, hL, rfl⟩` from `exists_gsOpenSubgroup_eq K S U`. Conclude with `gsTauBijective_gsOpenSubgroup S ιs hS hev hL W₀ hW₀ hU`.
+-/
 theorem gsTauBijective_of_le (W₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S))
     (hW₀ : ∀ σ ∈ W₀, ∀ ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ, ζ ^ (2 * N) = 1 →
       σ (ζ : maxUnramifiedOutside K.1 ℚ̄ S) = ζ)
@@ -33,6 +36,11 @@ theorem gsTauBijective_of_le (W₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ�
 set_option maxHeartbeats 1000000 in
 include hS hev in
 
+/- English proof (translation)
+Establish `hfree` using `freeOnCosets_gsRealFamily_of_le S ιr hS hev W₀ hW₀ U hU`. Use `bijective_tateCompactDualityMap_coind (gsFinFamily S ιs) (gsRealFamily S ιr) U hfree (nsmul_gsRoots S N) t h ?_` and prove the remaining obligations. Establish `: Finite (gsRoots S N)` using `(nonempty_addEquiv_gsRoots_of_mem S hS).elim fun e => Finite.of_equiv _ e.toEquiv.symm`. Establish `hτ : Function.Surjective (tateCoresTrace (gsFinFamily S ιs) (gsRealFamily S ιr) U hfree t)` using `ht.comp (surjective_tateCompactCores_three (gsFinFamily S ιs) (gsRealFamily S ιr) U hfree (gsRoots S N) (nsmul_gsRoots S N) fun M _ _ hM => subsingleton_gsTateCompactCohomology S ιr ιs (NeZero.ne N) hS M hM le_rfl)`. Establish `hb` using `gsTauBijective_of_le S ιs hS hev W₀ hW₀ U hU (tateCoresTrace (gsFinFamily S ιs) (gsRealFamily S ιr) U hfree t) hτ h`.
+
+Use `hb using 1` and compare the differences between its conclusion and the goal.
+-/
 theorem bijective_tateCompactDualityMap_coind_gs_of_even
     (t : tateCompactCohomologyRes (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 3 →+ ZMod N)
     (ht : Function.Surjective t) (W₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S))
@@ -59,6 +67,11 @@ theorem bijective_tateCompactDualityMap_coind_gs_of_even
 
 include hS hev in
 
+/- English proof (translation)
+Establish `hn0 : 2 * N ≠ 0` using `by have := NeZero.ne N; omega`. Take `⟨W₀, hW₀⟩` from `exists_openSubgroup_fixing_rootsOfUnity K S (2 * N) hn0`. Use `⟨W₀, ⟨nonempty_addEquiv_gsRoots_of_mem S hS, fun M _ _ hM => subsingleton_gsTateCompactCohomology S ιr ιs (NeZero.ne N) hS M hM le_rfl, fun U hU {r s} h hs => ?_⟩⟩` and prove the remaining obligations. Consider the cases of `s with`. Consider the case `zero => exact absurd hs (by norm_num)`.
+
+Consider the case `succ s`. Establish `: Finite (Rep.coind (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (zmodRep.{0} (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) N))` using `finite_coind U _`. Establish `: IsDiscreteRep (dualRep (gsRoots S N) (Rep.coind (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (zmodRep.{0} (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) N)))` using `isDiscreteRep_dualRep _ _`. Use `bijective_tateCompactDualityMap_coind_gs_of_even S ιr ιs hS hev t ht W₀ hW₀ U hU h using 1` and compare the differences between its conclusion and the goal.
+-/
 theorem exists_tateCompactDualityHypotheses_gs_of_even
     (t : tateCompactCohomologyRes (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 3 →+ ZMod N)
     (ht : Function.Surjective t) :
@@ -79,6 +92,9 @@ theorem exists_tateCompactDualityHypotheses_gs_of_even
 
 include hS hev in
 
+/- English proof (translation)
+The claim follows from `(exists_tateCompactDualityHypotheses_gs_of_even S ιr ιs hS hev t ht).elim fun _ H => H.bijective_tateCompactDualityMap M hM h hs`.
+-/
 theorem bijective_tateCompactDualityMap_gs_of_even
     (t : tateCompactCohomologyRes (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 3 →+ ZMod N)
     (ht : Function.Surjective t) (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S))
@@ -89,6 +105,9 @@ theorem bijective_tateCompactDualityMap_gs_of_even
 
 include hS hev in
 
+/- English proof (translation)
+Establish `: Nonempty S` using `nonempty_of_natCast_mem S 2 Nat.prime_two (mem_of_natCast_two_mem_of_even S hS hev)`. Establish `hD` using `nonempty_addEquiv_gsRoots_of_mem S hS`. Establish `ht` using `surjective_of_localToCompact_two S ιr ιs hS (gsTrace S ιr ιs N) (gsTrace_localToCompact S ιr ιs N)`. Conclude with `{ nonempty_addEquiv := hD duality := @fun M _ _ hM r s h hs => bijective_tateCompactDualityMap_gs_of_even S ιr ιs hS hev (gsTrace S ιr ιs N) ht M hM h hs finite_cohomology := fun M _ _ hM r hr => finite_cohomology_gs K S M (fun v hv => hS v (natCast_mem_of_natCard_mem v.isPrime h …`.
+-/
 theorem gsEvenTatePoitouTateHypotheses :
     TatePoitouTateHypotheses (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N)
       (gsTrace S ιr ιs N) (gsLocalInvRootsQZ S ιs N) (gsRealInvRootsQZ S ιr N) := by

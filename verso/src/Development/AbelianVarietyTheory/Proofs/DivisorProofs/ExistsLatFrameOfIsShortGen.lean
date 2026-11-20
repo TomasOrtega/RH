@@ -16,6 +16,25 @@ open GlobalTheory.HSApp
 
 namespace GlobalTheory.HSApp
 
+/- English proof (translation)
+Introduce `F V _ _ _ _ _ _ Nm M n w abelian₂ hf hw`. Take `⟨f⟩` from `hf`. Set `e` to `f.b.equivFun`. Set `w' : Matrix (Fin f.N) (Fin n) F` to `Matrix.of fun j k => e (w k) j`. Establish `hcol : w'.col = fun k => e (w k)` using `rfl`.
+
+Establish `hmemM : ∀ i, w i ∈ M` using `fun i => (hw.gen (w i)).2 (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hspanO : Submodule.span (𝓞 F) (Set.range w) = M`. Use `le_antisymm (Submodule.span_le.2 ?_) fun x hx => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hmemM i`.
+
+Establish `hz` using `(hw.gen x).1 hx`. Conclude with `Submodule.span_le_restrictScalars ℤ (𝓞 F) _ hz`. Establish `hsum : ∀ k, (∑ j, w' j k • f.b j) = w k` using `fun k => by`. Simplify using `only [w', Matrix.of_apply, e, Module.Basis.equivFun_apply, Module.Basis.sum_repr]`. Establish `hfullV : Submodule.span F (Set.range w) = ⊤`.
+
+Use `top_le_iff.1 ?_` and prove the remaining obligations. Rewrite using `[← f.isFull.2]`. Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Establish `hz` using `(hw.gen x).1 hx`. Conclude with `Submodule.span_le_restrictScalars ℤ F _ (Submodule.span_mono (le_refl _) hz)`.
+
+Use `⟨⟨f.N, n, f.b, w', f.A, ⟨?_, ?_, f.isFrame.herm, f.isFrame.conj, f.isFrame.norm⟩⟩, rfl, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hsum]`. Conclude with `hspanO`. Rewrite using `[hcol, Set.range_comp', show (⇑e '' Set.range w) = (e.toLinearMap) '' Set.range w from rfl, Submodule.span_image, hfullV, Submodule.map_top, LinearEquiv.range]`. Introduce `x hx`.
+
+Set `eO : V →ₗ[𝓞 F] (Fin f.N → F)` to `e.toLinearMap.restrictScalars (𝓞 F)`. Set `eZ : V →ₗ[ℤ] (Fin f.N → F)` to `e.toLinearMap.restrictScalars ℤ`. Establish `hO : Submodule.span (𝓞 F) (Set.range w'.col) = (Submodule.span (𝓞 F) (Set.range w)).map eO`. Rewrite using `[Submodule.map_span, hcol, Set.range_comp']`. Both sides reduce to the same expression.
+
+Establish `hZ : Submodule.span ℤ (Set.range w'.col) = (Submodule.span ℤ (Set.range w)).map eZ`. Rewrite using `[Submodule.map_span, hcol, Set.range_comp']`. Both sides reduce to the same expression. Rewrite `hx` using `[hO]`. Take `⟨y, hy, rfl⟩` from `hx`.
+
+Rewrite using `[hZ]`. Conclude with `⟨y, (hw.gen y).1 (hspanO ▸ hy), rfl⟩`. Introduce `i σ show ChowHt.frameNorm (f.A σ) (fun a => σ (e (w i) a)) ≤ abelian₂`. Simplify using `only [e, Module.Basis.equivFun_apply]`. Rewrite using `[f.isFrame.norm σ (w i)]`.
+
+Conclude with `hw.le i σ`.
+-/
 theorem exists_latFrame_of_isShortGen : ∀ (F V : Type) [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] (Nm : (F →+* ℂ) → V → ℝ) (M : Submodule (𝓞 F) V) (n : ℕ) (w : Fin n → V) (abelian₂ : ℝ), Nonempty (LatFrame Nm M) → CompHt.IsShortGen Nm M w abelian₂ → ∃ f : LatFrame Nm M, f.n = n ∧ (∀ x ∈ Submodule.span (𝓞 F) (Set.range f.w.col), x ∈ Submodule.span ℤ (Set.range f.w.col)) ∧ ∀ i σ, ChowHt.frameNorm (f.A σ) (fun a => σ (f.w.col i a)) ≤ abelian₂ := by
   intro F V _ _ _ _ _ _ Nm M n w abelian₂ hf hw
   obtain ⟨f⟩ := hf

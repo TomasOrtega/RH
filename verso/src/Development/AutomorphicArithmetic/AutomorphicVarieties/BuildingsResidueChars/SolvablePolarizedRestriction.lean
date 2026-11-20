@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
+/- English proof (translation)
+Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ l _ ι n r h`. Take `⟨F₀, i1, i2, i3, i4, i5, i6, hF, μ, c, P, hμ, hs, hc, hp⟩` from `h`. Use `letI : Algebra F₀ M := ((algebraMap K M).comp (algebraMap F₀ K)).toAlgebra`. Use `haveI : IsScalarTower F₀ K M := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower F₀ M Ω := by`.
+
+Use `IsScalarTower.of_algebraMap_eq (fun x => ?_)` and prove the remaining obligations. Simplify using `[RingHom.algebraMap_toAlgebra, IsScalarTower.algebraMap_apply F₀ K Ω, IsScalarTower.algebraMap_apply K M Ω]`. Use `⟨F₀, i1, i2, inferInstance, inferInstance, this, i6, hF, μ, c, P, hμ, hs, hc, ?_⟩` and prove the remaining obligations. Unfold `IsPairing at hp ⊢`. Introduce `t t' ht`.
+
+Establish `e1 : ∀ u : G M Ω, AlgEquiv.restrictScalars F₀ (resG K M Ω u) = AlgEquiv.restrictScalars F₀ u`. Introduce `u`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `e2 : ∀ u : G M Ω, resG F₀ M Ω u = resG F₀ K Ω (resG K M Ω u)`.
+
+Introduce `u`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `key` using `hp (resG K M Ω t) (resG K M Ω t') (by rw [e1, e1]; exact ht)`. Simplify `key` using `[e2]`.
+-/
 theorem UpperTheory.solvable_polarized_restriction :
     UpperTheory.V.Af.Sol.PolRes := by
   intro K M Ω _ _ _ _ _ _ _ _ _ _ _ l _ ι n r h

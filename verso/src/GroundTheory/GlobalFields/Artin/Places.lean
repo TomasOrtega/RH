@@ -21,6 +21,9 @@ instance : MulAction Gal(L/K) (HeightOneSpectrum (𝓞 L)) where
   mul_smul σ τ w := HeightOneSpectrum.ext (mul_smul σ τ w.asIdeal)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem asIdeal_smul (σ : Gal(L/K)) (w : HeightOneSpectrum (𝓞 L)) :
     (σ • w).asIdeal = σ • w.asIdeal :=
   rfl
@@ -50,6 +53,9 @@ def subfieldPlace (x : Gal(L/K)) : HeightOneSpectrum (𝓞 (fixedField H)) :=
   (x • w).under (𝓞 (fixedField H))
 
 omit [NumberField K] [NumberField L] [IsGalois K L] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem asIdeal_subfieldPlace (x : Gal(L/K)) :
     (subfieldPlace H w x).asIdeal = (x • w.asIdeal).under (𝓞 (fixedField H)) :=
   rfl
@@ -58,10 +64,20 @@ instance liesOver_subfieldPlace (x : Gal(L/K)) :
     (x • w.asIdeal).LiesOver (subfieldPlace H w x).asIdeal :=
   ⟨rfl⟩
 
+/- English proof (translation)
+The claim follows from `Ideal.LiesOver.tower_bot (x • w.asIdeal) _ v.asIdeal`.
+-/
 theorem subfieldPlace_liesOver [w.asIdeal.LiesOver v.asIdeal] (x : Gal(L/K)) :
     (subfieldPlace H w x).asIdeal.LiesOver v.asIdeal :=
   Ideal.LiesOver.tower_bot (x • w.asIdeal) _ v.asIdeal
 
+/- English proof (translation)
+Rewrite using `[DoubleCoset.eq, HeightOneSpectrum.ext_iff, asIdeal_subfieldPlace, asIdeal_subfieldPlace]`. Prove the components needed by the constructor for the conclusion. Introduce `hxy`. Establish `: (y • w.asIdeal).LiesOver ((x • w.asIdeal).under (𝓞 (fixedField H)))` using `⟨hxy⟩`. Take `⟨h, hh⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup ((x • w.asIdeal).under (𝓞 (fixedField H))) (x • w.asIdeal) (y • w.asIdeal) H`.
+
+Establish `hh' : (h : Gal(L/K)) • x • w.asIdeal = y • w.asIdeal` using `hh`. Use `⟨h, h.2, (y⁻¹ * h * x)⁻¹, Subgroup.inv_mem _ ?_, by group⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, hh', inv_smul_smul]`. Introduce and unpack `⟨h, hh, d, hd, rfl⟩`. Rewrite using `[mul_smul, mul_smul, MulAction.mem_stabilizer_iff.1 hd, show h • x • w.asIdeal = (⟨h, hh⟩ : H) • (x • w.asIdeal) from rfl]`.
+
+Conclude with `(Ideal.under_smul (𝓞 (fixedField H)) (x • w.asIdeal) (⟨h, hh⟩ : H)).symm`.
+-/
 theorem subfieldPlace_eq_iff (x y : Gal(L/K)) :
     subfieldPlace H w x = subfieldPlace H w y ↔
       DoubleCoset.mk H (MulAction.stabilizer Gal(L/K) w.asIdeal) x =
@@ -80,6 +96,9 @@ theorem subfieldPlace_eq_iff (x y : Gal(L/K)) :
       show h • x • w.asIdeal = (⟨h, hh⟩ : H) • (x • w.asIdeal) from rfl]
     exact (Ideal.under_smul (𝓞 (fixedField H)) (x • w.asIdeal) (⟨h, hh⟩ : H)).symm
 
+/- English proof (translation)
+Take `⟨Q, hQmax, hQ⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 L) u.asIdeal`. Establish `: Q.LiesOver v.asIdeal` using `Ideal.LiesOver.trans Q u.asIdeal v.asIdeal`. Take `⟨x, hx⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup v.asIdeal w.asIdeal Q Gal(L/K)`. Use `⟨x, HeightOneSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[asIdeal_subfieldPlace, hx, ← hQ.over]`.
+-/
 theorem exists_subfieldPlace_eq [w.asIdeal.LiesOver v.asIdeal]
     (u : HeightOneSpectrum (𝓞 (fixedField H))) [u.asIdeal.LiesOver v.asIdeal] :
     ∃ x : Gal(L/K), subfieldPlace H w x = u := by
@@ -104,6 +123,9 @@ def subfieldPlaceEquiv [w.asIdeal.LiesOver v.asIdeal] :
       exact ⟨DoubleCoset.mk _ _ x, Subtype.ext hx⟩⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subfieldPlaceEquiv_mk [w.asIdeal.LiesOver v.asIdeal] (x : Gal(L/K)) :
     (subfieldPlaceEquiv H v w (DoubleCoset.mk _ _ x) : HeightOneSpectrum (𝓞 (fixedField H))) =
       subfieldPlace H w x :=
@@ -111,6 +133,9 @@ theorem subfieldPlaceEquiv_mk [w.asIdeal.LiesOver v.asIdeal] (x : Gal(L/K)) :
 
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 
+/- English proof (translation)
+Use extensionality with `h`. Rewrite using `[Subgroup.mem_subgroupOf, mem_conj_smul_iff, MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff, mul_smul, mul_smul]`. Express the relevant statement in the definitionally equal form `(h : Gal(L/K)) • x • P = x • P ↔ x⁻¹ • (h : Gal(L/K)) • x • P = P`. Rewrite using `[inv_smul_eq_iff]`.
+-/
 theorem stabilizer_smul_eq (x : Gal(L/K)) (P : Ideal (𝓞 L)) :
     MulAction.stabilizer H (x • P) =
       (MulAut.conj x • MulAction.stabilizer Gal(L/K) P : Subgroup Gal(L/K)).subgroupOf H := by
@@ -122,6 +147,9 @@ theorem stabilizer_smul_eq (x : Gal(L/K)) (P : Ideal (𝓞 L)) :
 
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 
+/- English proof (translation)
+Use extensionality with `h`. Rewrite using `[Subgroup.mem_subgroupOf, mem_conj_smul_iff, ← Ideal.coe_mem_inertia, mem_inertia_smul_iff]`.
+-/
 theorem inertia_smul_eq (x : Gal(L/K)) (P : Ideal (𝓞 L)) :
     (x • P).inertia H =
       (MulAut.conj x • P.inertia Gal(L/K) : Subgroup Gal(L/K)).subgroupOf H := by

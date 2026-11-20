@@ -22,6 +22,17 @@ def eB (ι : Type*) (r : ℕ) : Ix ι r ≃ Fin r × (ι × Fin r) where
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.det_toMatrix (Pi.basisFun ℂ (Ix ι r)), ← Matrix.det_reindex_self (eB ι r)]`. Establish `hM : Matrix.reindex (eB ι r) (eB ι r) (LinearMap.toMatrix (Pi.basisFun ℂ (Ix ι r)) (Pi.basisFun ℂ (Ix ι r)) (LA A)) = Matrix.blockDiagonal (fun k : ι × Fin r => A k.1)`. Use extensionality with `⟨a, τ, b⟩ ⟨c, τ', d⟩`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, LinearMap.toMatrix_apply, Pi.basisFun_apply, Pi.basisFun_repr, Matrix.blockDiagonal_apply]`. Simplify using `only [eB, Equiv.coe_fn_symm_mk, LA, LinearMap.coe_mk, AddHom.coe_mk, Mt, Matrix.mul_apply, Matrix.of_apply]`.
+
+Distinguish the cases in `h : (τ, b) = (τ', d)`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj h`. Rewrite using `[if_pos rfl, Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+
+Simplify using `[Pi.single_apply, hk]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `: ((τ, k, b) : Ix ι r) ≠ (τ', c, d)`.
+
+Introduce `he`. Apply `h` to reduce the goal to its premises. Simplify using `only [Prod.mk.injEq] at he ⊢`. Conclude with `⟨he.1, he.2.2⟩`. Simplify using `[Pi.single_apply, this]`.
+
+Rewrite using `[hM, Matrix.det_blockDiagonal, Fintype.prod_prod_type]`. Simplify using `[Finset.prod_const]`.
+-/
 theorem det_LA (A : ι → Matrix (Fin r) (Fin r) ℂ) :
     LinearMap.det (LA A) = ∏ τ, (A τ).det ^ r := by
   rw [← LinearMap.det_toMatrix (Pi.basisFun ℂ (Ix ι r)), ← Matrix.det_reindex_self (eB ι r)]
@@ -51,6 +62,11 @@ theorem det_LA (A : ι → Matrix (Fin r) (Fin r) ℂ) :
   rw [hM, Matrix.det_blockDiagonal, Fintype.prod_prod_type]
   simp [Finset.prod_const]
 
+/- English proof (translation)
+Establish `hdet : LinearMap.det ((LA A).restrictScalars ℝ) = Complex.normSq (∏ τ, (A τ).det ^ r)`. Rewrite using `[LinearMap.det_restrictScalars, Algebra.norm_complex_apply, det_LA]`. Establish `hne : LinearMap.det ((LA A).restrictScalars ℝ) ≠ 0`. Rewrite using `[hdet, Ne, Complex.normSq_eq_zero]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun τ _ => pow_ne_zero _ (hA τ)`.
+
+Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (Ix ι r → ℂ))) hne`. Establish `hmeas : Measurable ((LA A).restrictScalars ℝ)` using `(LinearMap.continuous_of_finiteDimensional _).measurable`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmap, lintegral_smul_measure, hdet, abs_of_nonneg (inv_nonneg.mpr (Complex.normSq_nonneg _)), smul_eq_mul]`.
+-/
 theorem lintegral_comp_LA (A : ι → Matrix (Fin r) (Fin r) ℂ) (hA : ∀ τ, (A τ).det ≠ 0)
     {F : (Ix ι r → ℂ) → ENNReal} (hF : Measurable F) :
     ∫⁻ v, F (LA A v) = ENNReal.ofReal (Complex.normSq (∏ τ, (A τ).det ^ r))⁻¹ * ∫⁻ v, F v := by

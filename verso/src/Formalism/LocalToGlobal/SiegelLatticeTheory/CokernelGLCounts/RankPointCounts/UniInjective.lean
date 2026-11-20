@@ -16,6 +16,9 @@ variable {P : Type} [Fintype P] (ht : P → ℕ)
 def IsUni (A : (P → ℂ) →ₗ[ℂ] (P → ℂ)) : Prop :=
   ∀ (x x' : P → ℂ) p, (∀ q, ht q < ht p → x q = x' q) → A x p - x p = A x' p - x' p
 
+/- English proof (translation)
+Introduce `n x x' h q hq`. Establish `h1` using `hA x x' q (fun r hr => h r (lt_trans hr hq))`. Rewrite `h1` using `[h q hq]`. Conclude with `sub_left_injective h1`.
+-/
 theorem uni_low {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A) :
     ∀ n (x x' : P → ℂ), (∀ q, ht q < n → x q = x' q) → ∀ q, ht q < n → A x q = A x' q := by
   intro n x x' h q hq
@@ -23,6 +26,13 @@ theorem uni_low {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A) :
   rw [h q hq] at h1
   exact sub_left_injective h1
 
+/- English proof (translation)
+Introduce `x x' hxx`. Establish `key : ∀ n, ∀ q, ht q < n → x q = x' q`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro q hq`.
+
+Conclude with `absurd hq (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Introduce `q hq`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hq with h | h` into its components or cases. Conclude with `ih q h`.
+
+Establish `h1` using `hA x x' q (fun r hr => ih r (h ▸ hr))`. Rewrite `h1` using `[hxx]`. Conclude with `sub_right_injective h1`. Use function extensionality and compare the values at `q`. Conclude with `key (ht q + 1) q (Nat.lt_succ_self _)`.
+-/
 theorem uni_injective {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A) : Function.Injective A := by
   intro x x' hxx
   have key : ∀ n, ∀ q, ht q < n → x q = x' q := by
@@ -39,6 +49,17 @@ theorem uni_injective {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A
   funext q
   exact key (ht q + 1) q (Nat.lt_succ_self _)
 
+/- English proof (translation)
+Establish `hinj` using `uni_injective ht hA`. Set `e` to `LinearEquiv.ofInjectiveEndo A hinj`. Use `⟨e.symm.toLinearMap, fun x => e.apply_symm_apply x, fun x => e.symm_apply_apply x, ?_⟩` and prove the remaining obligations. Establish `low : ∀ (x x' : P → ℂ) n, (∀ q, ht q < n → A x q = A x' q) → ∀ q, ht q < n → x q = x' q`. Introduce `x x' n`.
+
+Proceed by induction on `n with`. Consider the case `zero => intro _ q hq`. Conclude with `absurd hq (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Introduce `hAx q hq`.
+
+Establish `ih'` using `ih (fun r hr => hAx r (Nat.lt_succ_of_lt hr))`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hq with h | h` into its components or cases. Conclude with `ih' q h`. Establish `h1` using `hA x x' q (fun r hr => ih' r (h ▸ hr))`. Rewrite `h1` using `[hAx q hq]`.
+
+Conclude with `sub_right_injective h1`. Introduce `y y' p hy`. Establish `e1 : A (e.symm y) = y` using `e.apply_symm_apply y`. Establish `e2 : A (e.symm y') = y'` using `e.apply_symm_apply y'`. Establish `hx : ∀ q, ht q < ht p → e.symm y q = e.symm y' q` using `low _ _ (ht p) (fun q hq => by rw [e1, e2]; exact hy q hq)`.
+
+Establish `h1` using `hA (e.symm y) (e.symm y') p hx`. Rewrite `h1` using `[e1, e2]`. Use `show e.symm y p - y p = e.symm y' p - y' p`. Take the linear combination `-h1`.
+-/
 theorem uni_inv {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A) :
     ∃ B : (P → ℂ) →ₗ[ℂ] (P → ℂ), (∀ x, A (B x) = x) ∧ (∀ x, B (A x) = x) ∧ IsUni ht B := by
   have hinj := uni_injective ht hA

@@ -11,12 +11,20 @@ namespace GlobalTheory.CM.ActRight
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((H.bar (H.bar s) : 𝓞 E) : E) = (s : E)`. Rewrite using `[H.bar_eq, H.bar_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem bar_bar (H : Host E) (s : 𝓞 E) : H.bar (H.bar s) = s := by
   apply Subtype.ext
   show ((H.bar (H.bar s) : 𝓞 E) : E) = (s : E)
   rw [H.bar_eq, H.bar_eq]
   simp
 
+/- English proof (translation)
+Establish `hl : Out.Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `key` using `(GlobalTheory.PairingFibre.lamEq_weilEq_over_ring hl (𝓞 K) A.pol A.pol A.pol A.pol (A.t.act.act (H.bar a)) (𝟙 _) (𝟙 _) (A.t.act.act a) (A.t.act.hom _) inferInstance inferInstance (A.t.act.hom a) ℂ (σ₁.comp (algebraMap (𝓞 K) K))).1`. Apply `key` to reduce the goal to its premises. Unfold `LamEq`. Rewrite using `[Category.comp_id, Category.comp_id]`.
+
+Establish `h` using `A.t.adj (H.bar a)`. Rewrite `h` using `[bar_bar]`. Then use the resulting hypothesis.
+-/
 theorem weilEq_act_adj (H : Host E) (K : Type) [Field K] [NumberField K] (σ₁ : K →+* ℂ)
     (A : PAT H (Sp (𝓞 K))) (a : 𝓞 E) :
     WeilEq A.t.PP.L (A.t.act.act (H.bar a)) (𝟙 _) A.t.PP.L (𝟙 _) (A.t.act.act a)
@@ -31,6 +39,11 @@ theorem weilEq_act_adj (H : Host E) (K : Type) [Field K] [NumberField K] (σ₁ 
   have h := A.t.adj (H.bar a)
   rwa [bar_bar] at h
 
+/- English proof (translation)
+Introduce `E _ _ _ H K _ _ σ₁ A B f g _ _ r s h n x y c hn hx hy`. Use `haveI := A.t.act.hom s`. Use `haveI := A.t.act.hom r`. Establish `hy' : (y ≫ A.t.act.act s) ^ n = 1` using `by rw [← MonObj.pow_comp, hy, MonObj.one_comp]`. Establish `hx' : (x ≫ A.t.act.act r) ^ n = 1` using `by rw [← MonObj.pow_comp, hx, MonObj.one_comp]`.
+
+Establish `h1` using `h n x (y ≫ A.t.act.act s) c hn hx hy'`. Establish `h2` using `weilEq_act_adj H K σ₁ A s n (x ≫ A.t.act.act r) y c hn hx' hy`. Rewrite using `[← Category.assoc, h1, A.t.act.mul, ← Category.assoc, h2]`. Simplify using `only [Category.comp_id]`.
+-/
 theorem weilEq_act_right : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     [NumberField K] (σ₁ : K →+* ℂ) (A B : PAT H (Sp (𝓞 K))) (f g : A.t.G ⟶ B.t.G), IsMonHom f → IsMonHom g →
     ∀ r s : 𝓞 E,

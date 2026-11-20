@@ -18,6 +18,9 @@ variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
 
 section Algebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_padic_bCris (q : ℚ_[p]) :
     algebraMap ℚ_[p] (BCris hε) q =
       algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) (algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q) :=
@@ -25,6 +28,9 @@ theorem algebraMap_padic_bCris (q : ℚ_[p]) :
 
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
+/- English proof (translation)
+The claim follows from `iotaPlus_injective (K := ℂ_[p]) (p := p) (by rw [iotaPlus_gal_smul, iotaPlus_algebraMap_padic, gal_smul_algebraMap_bdR])`.
+-/
 theorem gal_smul_algebraMap_padic_plus (σ : Gal(PadicAlgCl p/K)) (q : ℚ_[p]) :
     σ • algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q = algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q :=
   iotaPlus_injective (K := ℂ_[p]) (p := p) (by
@@ -32,6 +38,9 @@ theorem gal_smul_algebraMap_padic_plus (σ : Gal(PadicAlgCl p/K)) (q : ℚ_[p]) 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+The claim follows from `(galB_algebraMap hε σ _).trans (congrArg (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)) (gal_smul_algebraMap_padic_plus σ q))`.
+-/
 theorem galB_algebraMap_padic (σ : Gal(PadicAlgCl p/K)) (q : ℚ_[p]) :
     galB hε σ (algebraMap ℚ_[p] (BCris hε) q) = algebraMap ℚ_[p] (BCris hε) q :=
   (galB_algebraMap hε σ _).trans (congrArg (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε))
@@ -39,6 +48,9 @@ theorem galB_algebraMap_padic (σ : Gal(PadicAlgCl p/K)) (q : ℚ_[p]) :
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+The claim follows from `let _ := galBAction (K := K) hε ⟨fun σ q x => (congrArg (galB hε σ) (Algebra.smul_def q x)).trans ((map_mul (galB hε σ) _ _).trans ((congrArg (· * galB hε σ x) (galB_algebraMap_padic hε σ q)).trans (Algebra.smul_def q (galB hε σ x)).symm))⟩`.
+-/
 theorem smulCommClass_galBAction :
     letI := galBAction (K := K) hε
     SMulCommClass Gal(PadicAlgCl p/K) ℚ_[p] (BCris hε) :=
@@ -49,6 +61,9 @@ theorem smulCommClass_galBAction :
 
 include hζ in
 
+/- English proof (translation)
+The claim follows from `Function.Injective.isDomain (iotaB hε hζ) (iotaB_injective hε hζ)`.
+-/
 theorem isDomain_bCris : IsDomain (BCris hε) :=
   Function.Injective.isDomain (iotaB hε hζ) (iotaB_injective hε hζ)
 
@@ -58,16 +73,27 @@ section Invariants
 
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algClToBdRField_apply (k : PadicAlgCl p) :
     algClToBdRField p k = algebraMap 𝔹 𝔹dR (algClToBdR p k) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `(algClToBdRField p).injective`.
+-/
 theorem algClToBdRField_injective : Function.Injective (algClToBdRField p) :=
   (algClToBdRField p).injective
 
 include hζ in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Set `_` to `galBAction (K := K) hε`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨k, hk, hxk⟩` from `bCris_fixed_mem_maxUnramified hε hζ x hx`.
+
+Conclude with `⟨k, hk, hxk.symm⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Take `⟨x, hx, hxk⟩` from `exists_bCris_fixed hε hζ hk`. Conclude with `⟨x, hx, hxk⟩`.
+-/
 theorem image_iotaB_fixedPoints [FiniteDimensional ℚ_[p] K] :
     letI := galBAction (K := K) hε
     iotaB hε hζ '' MulAction.fixedPoints Gal(PadicAlgCl p/K) (BCris hε) =
@@ -85,6 +111,15 @@ theorem image_iotaB_fixedPoints [FiniteDimensional ℚ_[p] K] :
 include hζ in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Set `L : IntermediateField ℚ_[p] (PadicAlgCl p)` to `IntermediateField.adjoin ℚ_[p] {β}`. Use `haveI : FiniteDimensional ℚ_[p] L := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral β)`. Establish `hβL : β ∈ L` using `IntermediateField.subset_adjoin ℚ_[p] {β} (Set.mem_singleton β)`.
+
+Establish `hfix : ∀ σ : Gal(PadicAlgCl p/L), galB hε σ x = x` using `fun σ => by`. Establish `hσ : σ β = β` using `σ.commutes ⟨β, hβL⟩`. Apply `iotaB_injective hε hζ` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[algClToBdRField_apply, gal_smul_algebraMap_bDeRham, gal_smul_algClToBdR, hσ]`.
+
+Use `_ = iotaB hε hζ x := hx.symm`. Take `⟨k, hk, hxk⟩` from `bCris_fixed_mem_maxUnramified hε hζ x hfix`. Establish `hβk : β = k` using `algClToBdRField_injective (hx.symm.trans hxk)`. Conclude with `hβk ▸ hk.2`. Introduce `hβ`.
+
+Take `⟨y, hy⟩` from `(mem_algClInBCrisPlus (p := p)).1 (unramifiedClosure_le hβ)`. Conclude with `⟨algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) y, (iotaB_algebraMap hε hζ y).trans (congrArg _ hy)⟩`.
+-/
 theorem exists_iotaB_eq_iff {β : PadicAlgCl p} :
     (∃ x : BCris hε, iotaB hε hζ x = algClToBdRField p β) ↔ β ∈ unramifiedClosure p := by
   constructor

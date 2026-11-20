@@ -16,5 +16,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MixDensOff.part_off_sources_eq_zero | exact GlobalTheory.MixDensOff.part_off_sources_eq_zero | (intros; apply GlobalTheory.MixDensOff.part_off_sources_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.density_null_off_charts : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (ρ : AlgChart p σ D → CxPts p σ → ℝ), part ρ {y | ∀ c : AlgChart p σ D, y ∉ c.e.source} = 0 := by
   first | exact @GlobalTheory.MixDensOff.part_off_sources_eq_zero | exact GlobalTheory.MixDensOff.part_off_sources_eq_zero | (intros; apply GlobalTheory.MixDensOff.part_off_sources_eq_zero <;> assumption)

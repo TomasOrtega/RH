@@ -11,6 +11,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColSecOn
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.VB GlobalTheory.FlagZ GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.glue_homs_of_opens_cover | exact GlobalTheory.glue_homs_of_opens_cover | (intros; apply GlobalTheory.glue_homs_of_opens_cover <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.scheme_morphisms_glue_open_cover : ∀ {X Y : Scheme.{0}} {κ : Type} (U : κ → X.Opens), ⨆ k, U k = ⊤ → ∀ (f : ∀ k, (U k).toScheme ⟶ Y),
     (∀ k l, X.homOfLE (inf_le_left : U k ⊓ U l ≤ U k) ≫ f k = X.homOfLE (inf_le_right : U k ⊓ U l ≤ U l) ≫ f l) →
     ∃ g : X ⟶ Y, ∀ k, (U k).ι ≫ g = f k := by

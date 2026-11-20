@@ -4,6 +4,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 open MvPowerSeries Finsupp in
+/- English proof (translation)
+Rewrite using `[X_def, coeff_mul_monomial, mul_one]`. Use `congr 1`. Simplify using `[Finsupp.single_le_iff, Nat.one_le_iff_ne_zero]`.
+-/
 theorem coeff_mul_X_ite {k : Type} [CommRing k] {g : ℕ} (f : MvPowerSeries (Fin g) k)
     (j : Fin g) (m : Fin g →₀ ℕ) :
     coeff m (f * X j) = if m j ≠ 0 then coeff (m - single j 1) f else 0 := by
@@ -13,6 +16,31 @@ theorem coeff_mul_X_ite {k : Type} [CommRing k] {g : ℕ} (f : MvPowerSeries (Fi
   simp [Finsupp.single_le_iff, Nat.one_le_iff_ne_zero]
 
 open MvPowerSeries Finsupp in
+/- English proof (translation)
+Set `t : Matrix (Fin g) (Fin g) (MvPowerSeries (Fin g) k)` to `fun i j n => if j < i ∧ ∀ l < j, n l = 0 then coeff (n + single j 1) (r i) else 0`. Establish `ht : ∀ i j n, coeff n (t i j) = if j < i ∧ ∀ l < j, n l = 0 then coeff (n + single j 1) (r i) else 0` using `fun _ _ _ => rfl`. Use `⟨t - t.transpose, by simp [Matrix.transpose_sub], fun i => by simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use extensionality with `m`.
+
+Establish `h1 : ∀ j, coeff m (t i j * X j) = if m j ≠ 0 ∧ j < i ∧ ∀ l < j, m l = 0 then coeff m (r i) else 0`. Introduce `j`. Rewrite using `[coeff_mul_X_ite, ht]`. Distinguish the cases in `hj : m j = 0`. Simplify using `[hj]`.
+
+Establish `e : m - single j 1 + single j 1 = m` using `tsub_add_cancel_of_le (by simpa [Finsupp.single_le_iff, Nat.one_le_iff_ne_zero] using hj)`. Establish `e2 : (∀ l < j, (m - single j 1 : Fin g →₀ ℕ) l = 0) ↔ ∀ l < j, m l = 0`. Use `forall_congr' fun l => forall_congr' fun hl => ?_` and prove the remaining obligations. Simplify using `[Finsupp.single_apply, hl.ne']`. Simplify using `only [e, e2, hj, ne_eq, not_false_eq_true, if_true, true_and]`.
+
+Establish `h2 : ∀ j, coeff m (t j i * X j) = if (∀ l < i, m l = 0) ∧ j ≠ i then coeff (m + single i 1) (r j * X j) else 0`. Introduce `j`. Rewrite using `[coeff_mul_X_ite, ht, coeff_mul_X_ite]`. Distinguish the cases in `hji : j = i`. Simplify using `[hji]`.
+
+Establish `e0 : (m + single i 1 : Fin g →₀ ℕ) j = m j`. Simplify using `[Finsupp.single_apply, Ne.symm hji]`. Rewrite using `[e0]`. Distinguish the cases in `hj : m j = 0`. Simplify using `[hj]`.
+
+Establish `e : m - single j 1 + single i 1 = m + single i 1 - single j 1` using `tsub_add_eq_add_tsub (by simpa [Finsupp.single_le_iff, Nat.one_le_iff_ne_zero] using hj)`. Rewrite using `[e]`. Break down `lt_or_gt_of_ne hji with h | h` into its components or cases. Establish `: ¬ ∀ l < i, m l = 0` using `fun H => hj (H j h)`. Simplify using `[this, h.not_gt]`.
+
+Establish `e2 : (∀ l < i, (m - single j 1 : Fin g →₀ ℕ) l = 0) ↔ ∀ l < i, m l = 0`. Use `forall_congr' fun l => forall_congr' fun hl => ?_` and prove the remaining obligations. Simplify using `[Finsupp.single_apply, (hl.trans h).ne']`. Simplify using `only [e2, hj, h, hji, ne_eq, not_false_eq_true, if_true, true_and, and_true]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.sub_apply, Matrix.transpose_apply, sub_mul, map_sum, map_sub, h1, h2, Finset.sum_sub_distrib]`.
+
+Distinguish the cases in `hi : ∀ l < i, m l = 0`. Rewrite using `[Finset.sum_eq_zero (fun j _ => if_neg (fun H => H.1 (hi j H.2.1)))]`. Establish `h3` using `congrArg (coeff (m + single i 1)) hr`. Rewrite `h3` using `[map_sum, map_zero, ← Finset.add_sum_erase _ _ (Finset.mem_univ i), coeff_mul_X_ite]`. Simplify using `only [iff_true_intro hi, true_and]`.
+
+Rewrite using `[← Finset.sum_filter, Finset.filter_ne']`. Simplify using `only [Finsupp.add_apply, single_eq_same, add_tsub_cancel_right] at h3`. Rewrite `h3` using `[if_pos (by omega)]`. Take the linear combination `h3`. Simplify using `only [hi, false_and, if_false, Finset.sum_const_zero, sub_zero] push_neg at hi`.
+
+Take `⟨l, hl, hml⟩` from `hi`. Take `⟨j, hj, hmin⟩` from `WellFounded.has_min (wellFounded_lt (α := Fin g)) {j | m j ≠ 0} ⟨l, hml⟩`. Establish `hj0 : ∀ a < j, m a = 0` using `fun a ha => by`. Assume the negation of the conclusion as `h`. Conclude with `hmin a h ha`.
+
+Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[if_pos ⟨hj, lt_of_le_of_lt (not_lt.1 (hmin l hml)) hl, hj0⟩]`. Introduce `b _ hb`. Use `if_neg fun H => ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases.
+
+Conclude with `H.1 (hj0 b h)`. Conclude with `hj (H.2.2 j h)`. Simplify using the standard rewrite rules.
+-/
 theorem mvPowerSeries_X_syzygy {k : Type} [CommRing k] {g : ℕ}
     (r : Fin g → MvPowerSeries (Fin g) k) (hr : ∑ i, r i * X i = 0) :
     ∃ s : Matrix (Fin g) (Fin g) (MvPowerSeries (Fin g) k), s.transpose = -s ∧ (∀ i, s i i = 0) ∧
@@ -85,6 +113,13 @@ theorem mvPowerSeries_X_syzygy {k : Type} [CommRing k] {g : ℕ}
     · simp
 
 open MvPowerSeries Finsupp in
+/- English proof (translation)
+Introduce `h`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.1 h`. Establish `hp : ∀ s : Finset (Fin g), ∏ i ∈ s, (X i : MvPowerSeries (Fin g) k) ^ N = monomial (∑ i ∈ s, single i N) 1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih, X_pow_eq, monomial_mul_monomial, one_mul]`. Use `congrArg (coeff (∑ i : Fin g, single i N)) hc` as an intermediate fact. Rewrite `this` using `[hp, coeff_monomial_same, map_sum, Finset.sum_eq_zero]`.
+
+Conclude with `zero_ne_one this`. Introduce `i _`. Use `X_pow_dvd_iff.1 (dvd_mul_left _ _) _ ?_` and prove the remaining obligations. Simplify using `[Finsupp.finset_sum_apply, Finsupp.single_apply]`.
+-/
 theorem mvPowerSeries_prod_X_pow_notMem {k : Type} [CommRing k] [Nontrivial k] {g : ℕ} (N : ℕ) :
     ∏ i, (X i : MvPowerSeries (Fin g) k) ^ N ∉
       Ideal.span (Set.range fun i => (X i : MvPowerSeries (Fin g) k) ^ (N + 1)) := by
@@ -105,6 +140,9 @@ theorem mvPowerSeries_prod_X_pow_notMem {k : Type} [CommRing k] [Nontrivial k] {
     refine X_pow_dvd_iff.1 (dvd_mul_left _ _) _ ?_
     simp [Finsupp.finset_sum_apply, Finsupp.single_apply]
 
+/- English proof (translation)
+Introduce `k _ g x hx`. Take `rfl : x = fun i => MvPowerSeries.X i` from `funext hx`. Conclude with `⟨fun r hr => mvPowerSeries_X_syzygy r hr, fun N => mvPowerSeries_prod_X_pow_notMem N⟩`.
+-/
 theorem mvPowerSeries_variables_syzygy_socle :
     ∀ (k : Type) [Field k] (g : ℕ) (x : Fin g → MvPowerSeries (Fin g) k), (∀ i, x i = MvPowerSeries.X i) → (∀ r : Fin g → _, ∑ i, r i * x i = 0 → ∃ s : Matrix (Fin g) (Fin g) _, s.transpose = -s ∧ (∀ i, s i i = 0) ∧ r = s.mulVec x) ∧ ∀ N : ℕ, ∏ i, x i ^ N ∉ Ideal.span (Set.range fun i => x i ^ (N + 1)) := by
   intro k _ g x hx

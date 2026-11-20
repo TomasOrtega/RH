@@ -18,6 +18,19 @@ noncomputable section
 
 namespace GlobalTheory.BesUnimod
 
+/- English proof (translation)
+Introduce `D V V₀ A L ρ d o μ hμ`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨j1, j2, j3, j4, j5, j6, j7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A`. Take `⟨ν, 𝓝, hν⟩` from `GlobalTheory.Per.UnitN.exists_isUnitN D V ρ d.e (isIsoSub_e d)`. Take `⟨hνH, h𝓝, h𝓝1⟩` from `hν`.
+
+Establish `hNc : IsClosed (flagN d : Set (GA D V))` using `GlobalTheory.Mem.TrueRecord.isClosed_NFlag V (isIsoSub_e d)`. Set `μA : Measure (GA D A)` to `Measure.haar`. Establish `hHaar` using `((GlobalTheory.MixPer.jacGrp_besGrp_haar D V V₀ A L ρ d o ν 𝓝 ⟨hνH, h𝓝, h𝓝1⟩).2.2 μA inferInstance)`. Use `haveI : LocallyCompactSpace (flagN d) := hNc.locallyCompactSpace`. Use `haveI : SecondCountableTopology (flagN d) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Establish `hinj : Function.Injective fun γ : NFlagQ V d.e => (⟨γ.1.1, γ.2⟩ : GQ V)` using `fun a b h => Subtype.ext (Subtype.ext (congrArg (fun x : GQ V => (x : GA D V)) h))`. Use `haveI : Countable (NFlagQ V d.e) := hinj.countable`. Use `haveI : ν.IsMulRightInvariant := GlobalTheory.SemiHaar.rightInv_of_fd (NFlagQ V d.e) ν h𝓝 (by rw [h𝓝1]; exact ENNReal.one_ne_top)`. Use `haveI : μA.IsMulRightInvariant := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D A μA inferInstance`. Establish `hcA : Continuous (embA d o)`.
+
+Establish `h1 : Continuous (fun h : GA D A => o.emb (h, 1))`. Use `o.continuous_emb` as an intermediate fact. Use `fun_prop`. Conclude with `d.continuous_embed.comp h1`. Establish `hnA : ∀ n ∈ flagN d, ∀ h, embA d o h * n * (embA d o h)⁻¹ ∈ flagN d` using `fun n hn h => GlobalTheory.MixPer.witt_anisotropic_group_normalizes_flag_unipotent D V V₀ ρ d n hn (o.emb (h, 1))`.
+
+Establish `hR` using `GlobalTheory.SemiHaar.semiMeas_rightInv (flagN d) (embA d o) hNc hcA hnA μA ν`. Use `haveI : LocallyCompactSpace (besGrp d o) := by`. Take `⟨e, -⟩` from `GlobalTheory.SemiHaar.exists_homeo (flagN d) (embA d o) hnA hcA (GlobalTheory.BesProj.exists_continuous_proj D V V₀ A L ρ d o)`. Conclude with `e.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (besGrp d o) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Take `⟨κ, k1, k2⟩ : ∃ κ : Measure (besGrp d o), κ.IsHaarMeasure ∧ κ.IsMulRightInvariant` from `⟨_, hHaar, hR⟩`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μ κ]`. Use `infer_instance`.
+-/
 theorem besGrp_isMulRightInvariant : ∀ (D : D7) (V V₀ A L : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (o : OrthDec V₀ A L)
     (μ : Measure (besGrp d o)), μ.IsHaarMeasure → μ.IsMulRightInvariant := by
   intro D V V₀ A L ρ d o μ hμ

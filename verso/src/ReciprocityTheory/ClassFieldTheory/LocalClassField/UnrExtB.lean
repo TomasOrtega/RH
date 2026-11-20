@@ -11,10 +11,20 @@ namespace UnramifiedExtensions
 
 variable {p}
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_upper_ter_form.goal1 .. | (apply Bl.general_b_fact_upper_ter_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_upper_ter_form.goal1 <;> assumption)`.
+-/
 theorem norm_sum_le_of_le {ι : Type} (s : Finset ι) (g : ι → PadicAlgCl p) {C : ℝ} (hC : 0 ≤ C)
     (h : ∀ j ∈ s, ‖g j‖ ≤ C) : ‖∑ j ∈ s, g j‖ ≤ C := by
   first | exact Bl.general_b_fact_upper_ter_form.goal1 .. | (apply Bl.general_b_fact_upper_ter_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_upper_ter_form.goal1 <;> assumption)
 
+/- English proof (translation)
+Establish `hs : ∑ j, (b j : PadicAlgCl p) * (ω j : PadicAlgCl p) = ((∑ j, b j * ω j : Obar p) : PadicAlgCl p)` using `by push_cast; rfl`. Rewrite using `[hs]`. Use `le_antisymm (norm_le_one _) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `h0` using `(res_eq_zero_iff _).2 hlt`. Rewrite `h0` using `[map_sum]`.
+
+Set `c : ι → resK p K` to `fun j => ⟨res (b j), (mem_resK_iff K _).2 ⟨b j, hb j, rfl⟩⟩`. Establish `h1 : ∑ j, c j • IsLocalRing.residue (Obar p) (ω j) = 0`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Subfield.smul_def, smul_eq_mul, map_mul]`.
+
+Establish `h2` using `Fintype.linearIndependent_iff.1 hω c h1 i`. Establish `h3 : res (b i) = 0` using `congrArg Subtype.val h2`. Rewrite `h3` using `[hi, map_one]`. Conclude with `one_ne_zero h3`.
+-/
 theorem norm_sum_eq_one {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {ι : Type} [Fintype ι] (ω : ι → Obar p)
     (hω : LinearIndependent (resK p K) (fun i => IsLocalRing.residue (Obar p) (ω i))) (b : ι → Obar p)
     (hb : ∀ j, (b j : PadicAlgCl p) ∈ K) (i : ι) (hi : b i = 1) :
@@ -37,6 +47,15 @@ theorem norm_sum_eq_one {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {ι : Typ
 
 end UnramifiedExtensions
 
+/- English proof (translation)
+Take `⟨m, -, hm⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖(a j : PadicAlgCl p)‖) ⟨i, Finset.mem_univ i⟩`. Use `(hm i (Finset.mem_univ i)).trans ?_` and prove the remaining obligations. Distinguish the cases in `h0 : (a m : PadicAlgCl p) = 0`. Rewrite using `[h0, norm_zero]`. Conclude with `norm_nonneg _`.
+
+Establish `hpos : 0 < ‖(a m : PadicAlgCl p)‖` using `norm_pos_iff.2 h0`. Establish `hle : ∀ j, ‖(a j : PadicAlgCl p) / (a m : PadicAlgCl p)‖ ≤ 1`. Introduce `j`. Rewrite using `[norm_div, div_le_one hpos]`. Conclude with `hm j (Finset.mem_univ j)`.
+
+Set `b : ι → Obar p` to `fun j => ⟨(a j : PadicAlgCl p) / (a m : PadicAlgCl p), mem_Obar_iff.2 (hle j)⟩`. Establish `h1` using `UnramifiedExtensions.norm_sum_eq_one (K := K) ω hω b (fun j => K.div_mem (a j).2 (a m).2) m (Subtype.ext (div_self h0))`. Establish `h2 : ∑ j, (a j : PadicAlgCl p) * (ω j : PadicAlgCl p) = (a m : PadicAlgCl p) * ∑ j, (b j : PadicAlgCl p) * (ω j : PadicAlgCl p)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = (a m : PadicAlgCl p) * ((a j : PadicAlgCl p) / (a m : PadicAlgCl p) * (ω j : PadicAlgCl p))`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2, norm_mul, h1, mul_one]`.
+-/
 theorem norm_le_norm_sum {ι : Type} [Fintype ι] (ω : ι → Obar p)
     (hω : LinearIndependent (resK p K) (fun i => IsLocalRing.residue (Obar p) (ω i))) (a : ι → K) (i : ι) :
     ‖(a i : PadicAlgCl p)‖ ≤ ‖∑ j, (a j : PadicAlgCl p) * (ω j : PadicAlgCl p)‖ := by
@@ -76,6 +95,11 @@ noncomputable def comb {L : IntermediateField ℚ_[p] (PadicAlgCl p)} (hKL : K �
     apply Subtype.ext
     simp [Algebra.smul_def, mul_assoc, Finset.mul_sum]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Use function extensionality and compare the values at `i`. Establish `h1` using `norm_le_norm_sum p K ω hω a i`. Establish `h2 : ∑ j, (a j : PadicAlgCl p) * (ω j : PadicAlgCl p) = 0` using `congrArg Subtype.val ha`.
+
+Rewrite `h1` using `[h2, norm_zero]`. Conclude with `Subtype.ext (norm_le_zero_iff.1 h1)`.
+-/
 theorem comb_injective {L : IntermediateField ℚ_[p] (PadicAlgCl p)} (hKL : K ≤ L) {ι : Type} [Fintype ι]
     (ω : ι → Obar p) (hL : ∀ j, (ω j : PadicAlgCl p) ∈ L)
     (hω : LinearIndependent (resK p K) (fun i => IsLocalRing.residue (Obar p) (ω i))) :
@@ -97,6 +121,13 @@ noncomputable def resMod {L : IntermediateField ℚ_[p] (PadicAlgCl p)} (hKL : K
     rw [Subfield.smul_def, smul_eq_mul]
     exact (resK p L).mul_mem (resK_mono hKL c.2) hx
 
+/- English proof (translation)
+Establish `hfL : Finite (resK p L)` using `finite_resK L hL`. Establish `hfW : Finite (resMod hKL)` using `hfL`. Establish `hMF : Module.Finite (resK p K) (resMod hKL)` using `Module.Finite.of_finite`. Establish `hcard : Nat.card (resMod hKL) = Nat.card (resK p K) ^ Module.finrank (resK p K) (resMod hKL)` using `Module.natCard_eq_pow_finrank`. Establish `hnt : Nontrivial (resMod hKL)` using `⟨⟨⟨1, (resK p L).one_mem⟩, 0, fun h => one_ne_zero (congrArg Subtype.val h)⟩⟩`.
+
+Use `⟨Module.finrank (resK p K) (resMod hKL), Module.finrank_pos, hcard, ?_⟩` and prove the remaining obligations. Set `B` to `Module.finBasis (resK p K) (resMod hKL)`. Establish `hex : ∀ i, ∃ x : Obar p, (x : PadicAlgCl p) ∈ L ∧ res x = (B i : kbar p)` using `fun i => (mem_resK_iff L _).1 (B i).2`. Use `choose ω h1 h2 using hex`. Use `⟨ω, h1, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : (fun i => IsLocalRing.residue (Obar p) (ω i)) = (resMod hKL).subtype ∘ B`. Use function extensionality and compare the values at `i`. Conclude with `h2 i`. Rewrite using `[h3]`. Conclude with `B.linearIndependent.map' _ (Submodule.ker_subtype _)`.
+-/
 theorem exists_lifts {L : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (hL : FiniteDimensional ℚ_[p] L) (hKL : K ≤ L) :
     ∃ f : ℕ, 0 < f ∧ qK p L = qK p K ^ f ∧ ∃ ω : Fin f → Obar p, (∀ j, (ω j : PadicAlgCl p) ∈ L) ∧
@@ -119,12 +150,18 @@ theorem exists_lifts {L : IntermediateField ℚ_[p] (PadicAlgCl p)}
   rw [h3]
   exact B.linearIndependent.map' _ (Submodule.ker_subtype _)
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_fun (hK : FiniteDimensional ℚ_[p] K) (f : ℕ) : Module.finrank ℚ_[p] (Fin f → K) = f * Module.finrank ℚ_[p] K := by
   rw [Module.finrank_pi_fintype]
   simp
 
 end UnramifiedExtensions
 
+/- English proof (translation)
+Take `⟨f, hf, hq, ω, h1, h2⟩` from `UnramifiedExtensions.exists_lifts hL hKL`. Use `⟨f, hf, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[← UnramifiedExtensions.finrank_fun hK]`. Conclude with `LinearMap.finrank_le_finrank_of_injective (UnramifiedExtensions.comb_injective hKL ω h1 h2)`.
+-/
 theorem qK_le_pow_finrank (hK : FiniteDimensional ℚ_[p] K) {L : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (hL : FiniteDimensional ℚ_[p] L) (hKL : K ≤ L) :
     ∃ f : ℕ, 0 < f ∧ qK p L = qK p K ^ f ∧ f * Module.finrank ℚ_[p] K ≤ Module.finrank ℚ_[p] L := by
@@ -133,6 +170,15 @@ theorem qK_le_pow_finrank (hK : FiniteDimensional ℚ_[p] K) {L : IntermediateFi
   rw [← UnramifiedExtensions.finrank_fun hK]
   exact LinearMap.finrank_le_finrank_of_injective (UnramifiedExtensions.comb_injective hKL ω h1 h2)
 
+/- English proof (translation)
+Establish `hL : FiniteDimensional ℚ_[p] L`. Apply `Module.finite_of_finrank_pos` to reduce the goal to its premises. Rewrite using `[hdeg]`. Conclude with `Nat.mul_pos hf Module.finrank_pos`. Take `⟨f', hf', hq, ω, h1, h2⟩` from `UnramifiedExtensions.exists_lifts hL hKL`.
+
+Establish `hff : f' = f` using `Nat.pow_right_injective (one_lt_qK p K hK) (hq.symm.trans h)`. Substitute `hff` using the available equality. Establish `hsurj : Function.Surjective (UnramifiedExtensions.comb hKL ω h1)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ((UnramifiedExtensions.finrank_fun hK f').trans hdeg.symm)).1 (UnramifiedExtensions.comb_injective hKL ω h1 h2)`. Take `⟨a, ha⟩` from `hsurj ⟨x, hx⟩`. Establish `hxa : x = ∑ j, (a j : PadicAlgCl p) * (ω j : PadicAlgCl p)` using `(congrArg Subtype.val ha).symm`.
+
+Take `⟨m, -, hm⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖(a j : PadicAlgCl p)‖) ⟨⟨0, hf⟩, Finset.mem_univ _⟩`. Use `⟨a m, (a m).2, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hxa]`. Use `UnramifiedExtensions.norm_sum_le_of_le _ _ (norm_nonneg _) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hxa]`. Conclude with `norm_le_norm_sum p K ω h2 a m`.
+-/
 theorem exists_norm_eq_of_qK (hK : FiniteDimensional ℚ_[p] K) {L : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (hKL : K ≤ L) {f : ℕ} (hf : 0 < f) (hdeg : Module.finrank ℚ_[p] L = f * Module.finrank ℚ_[p] K)
     (h : qK p L = qK p K ^ f) {x : PadicAlgCl p} (hx : x ∈ L) : ∃ y ∈ K, ‖x‖ = ‖y‖ := by

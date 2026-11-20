@@ -10,6 +10,11 @@ def pdet {Ω : Type} [Field Ω] {n N : ℕ} {j0 : Fin (N + 1)} {B : Set {j // j 
     (a : {j // j ≠ j0} → B → Ω) : MvPolynomial (Fin n × {j // j ≠ j0}) Ω :=
   (Matrix.of fun i k : Fin n => ∑ j : {j // j ≠ j0}, X (i, j) * C (a j (e k))).det
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `congrArg (eval (fun q : Fin n × {j // j ≠ j0} => if q.2 = (e q.1).1 then (1 : Ω) else 0)) h0`. Rewrite `h1` using `[map_zero, pdet, RingHom.map_det]`. Establish `h2 : (eval (fun q : Fin n × {j // j ≠ j0} => if q.2 = (e q.1).1 then (1 : Ω) else 0)).mapMatrix (Matrix.of fun i k : Fin n => ∑ j : {j // j ≠ j0}, X (i, j) * C (a j (e k))) = 1`. Use extensionality with `i k`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, eval_X, eval_C, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, ha, Matrix.one_apply]`. Rewrite using `[Pi.single_apply]`. Simplify using `[e.apply_eq_iff_eq, eq_comm]`. Rewrite `h1` using `[h2, Matrix.det_one]`. Conclude with `one_ne_zero h1`.
+-/
 theorem pdet_ne {Ω : Type} [Field Ω] {n N : ℕ} {j0 : Fin (N + 1)} {B : Set {j // j ≠ j0}} (e : Fin n ≃ B)
     (a : {j // j ≠ j0} → B → Ω) (ha : ∀ b : B, a b.1 = Pi.single b 1) : pdet e a ≠ 0 := by
   classical
@@ -27,6 +32,9 @@ theorem pdet_ne {Ω : Type} [Field Ω] {n N : ℕ} {j0 : Fin (N + 1)} {B : Set {
   rw [h2, Matrix.det_one] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Rewrite using `[pdet, ← coe_eval₂Hom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i k`. Simplify using `[RingHom.mapMatrix_apply, Matrix.map_apply]`.
+-/
 theorem eval_pdet {Ω : Type} [Field Ω] {n N : ℕ} {j0 : Fin (N + 1)} {B : Set {j // j ≠ j0}} (e : Fin n ≃ B)
     (a : {j // j ≠ j0} → B → Ω) (φ : Ω →+* ℂ) (t : Fin (n + 1) × Fin (N + 1) → ℂ) :
     eval₂ φ (fun q : Fin n × {j // j ≠ j0} => t (q.1.succ, q.2.1)) (pdet e a) =
@@ -37,6 +45,13 @@ theorem eval_pdet {Ω : Type} [Field Ω] {n N : ℕ} {j0 : Fin (N + 1)} {B : Set
   ext i k
   simp [RingHom.mapMatrix_apply, Matrix.map_apply]
 
+/- English proof (translation)
+Establish `hcard : Fintype.card B ≤ Fintype.card (Fin n)` using `(Fintype.card_congr e).symm.le`. Set `f : Fin n × Fin (N + 1) → Fin (n + 1) × Fin (N + 1)` to `fun p => (p.1.succ, p.2)`. Establish `hf : Function.Injective f`. Introduce and unpack `⟨i, j⟩ ⟨i', j'⟩ h`. Simplify using `only [f, Prod.mk.injEq, Fin.succ_inj] at h`.
+
+Rewrite using `[h.1, h.2]`. Establish `ht' : ∀ Q : MvPolynomial (Fin n × Fin (N + 1)) K, Q ≠ 0 → eval₂ sg (fun p => (fun i j => t (i.succ, j)) p.1 p.2) Q ≠ 0`. Introduce `Q hQ`. Establish `h1` using `ht (rename f Q) (by simpa using (rename_injective f hf).ne hQ)`. Rewrite `h1` using `[eval₂_rename]`. Then use the resulting hypothesis.
+
+Establish `hgen : ∀ p : MvPolynomial (Fin n × {j // j ≠ j0}) Ω, p ≠ 0 → eval₂ φ (fun q => t (q.1.succ, q.2.1)) p ≠ 0` using `SCoB.gen_indep (ιB := B) (R := Fin n) sg φ hφ hy j0 u hu0 (fun i j => t (i.succ, j)) ht' hrel hcard`. Rewrite using `[← eval_pdet e a φ t]`. Conclude with `hgen _ (pdet_ne e a ha)`.
+-/
 theorem det_ne {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {n N : ℕ} (sg : K →+* ℂ)
     (φ : Ω →+* ℂ) (hφ : φ.comp (algebraMap K Ω) = sg) (j0 : Fin (N + 1)) (u : Fin (N + 1) → Ω)
     (hu0 : u j0 = 1) (B : Set {j // j ≠ j0}) [Fintype B]

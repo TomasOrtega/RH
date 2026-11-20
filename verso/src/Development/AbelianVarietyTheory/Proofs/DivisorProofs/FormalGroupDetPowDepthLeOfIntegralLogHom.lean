@@ -16,10 +16,24 @@ variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
 def linSub {d d' : ℕ} (M : Matrix (Fin d') (Fin d) C) : Fin d' → MvPowerSeries (Fin d) C :=
   fun b => ∑ a, M b a • (X a : MvPowerSeries (Fin d) C)
 
+/- English proof (translation)
+Simplify using `[linSub]`.
+-/
 theorem constantCoeff_linSub {d d' : ℕ} (M : Matrix (Fin d') (Fin d) C) (b : Fin d') :
     constantCoeff (linSub M b) = 0 := by
   simp [linSub]
 
+/- English proof (translation)
+Establish `hE : HasSubst (expOf G)` using `hasSubst_of_constantCoeff_zero (isExp_expOf G).1`. Establish `hE' : HasSubst (expOf G')` using `hasSubst_of_constantCoeff_zero (isExp_expOf G').1`. Establish `hφs : HasSubst φ` using `hasSubst_of_constantCoeff_zero hφ.1`. Establish `hL : HasSubst (linSub M)` using `hasSubst_of_constantCoeff_zero (constantCoeff_linSub M)`. Establish `hlg' : HasSubst G'.lg` using `hasSubst_of_constantCoeff_zero G'.lg_const`.
+
+Use `set ψ : Fin d' → MvPowerSeries (Fin d) C := fun c => subst (expOf G) (φ c) with hψ`. Use `set ρ : Fin d' → MvPowerSeries (Fin d) C := fun c => subst (linSub M) (expOf G' c) with hρ`. Establish `hψ0 : ∀ c, constantCoeff (ψ c) = 0` using `fun c => constantCoeff_subst_eq_zero hE (isExp_expOf G).1 (hφ.1 c)`. Establish `hρ0 : ∀ c, constantCoeff (ρ c) = 0` using `fun c => constantCoeff_subst_eq_zero hL (constantCoeff_linSub M) ((isExp_expOf G').1 c)`. Establish `hψs : HasSubst ψ` using `hasSubst_of_constantCoeff_zero hψ0`.
+
+Establish `hρs : HasSubst ρ` using `hasSubst_of_constantCoeff_zero hρ0`. Establish `key : ∀ b, subst ψ (G'.lg b) = subst ρ (G'.lg b)`. Introduce `b`. Establish `h1 : subst ψ (G'.lg b) = subst (expOf G) (subst φ (G'.lg b))` using `(subst_comp_subst_apply hφs hE (G'.lg b)).symm`. Establish `h2 : subst ρ (G'.lg b) = subst (linSub M) (subst (expOf G') (G'.lg b))` using `(subst_comp_subst_apply hE' hL (G'.lg b)).symm`.
+
+Rewrite using `[h1, h2, hφ.2.2, (isExp_expOf G').2, subst_sum_smul hE, subst_X hL]`. Simplify using `only [(isExp_expOf G).2, linSub]`. Establish `inj : ∀ c, ψ c = subst (fun b => subst ψ (G'.lg b)) (expOf G' c) ∧ ρ c = subst (fun b => subst ρ (G'.lg b)) (expOf G' c)`. Introduce `c`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[← subst_comp_subst_apply hlg' hψs, subst_lg_expOf, subst_X hψs]`. Rewrite using `[← subst_comp_subst_apply hlg' hρs, subst_lg_expOf, subst_X hρs]`. Use `show ψ c = ρ c`. Rewrite using `[(inj c).1, (inj c).2, funext key]`.
+-/
 theorem subst_expOf_hom {d d' : ℕ} {G : LogFGL v d} {G' : LogFGL v d'}
     {φ : Fin d' → MvPowerSeries (Fin d) C} {M : Matrix (Fin d') (Fin d) C} (hφ : IsIntHom G G' φ M)
     (c : Fin d') : subst (expOf G) (φ c) = subst (linSub M) (expOf G' c) := by
@@ -53,6 +67,11 @@ theorem subst_expOf_hom {d d' : ℕ} {G : LogFGL v d} {G' : LogFGL v d'}
   show ψ c = ρ c
   rw [(inj c).1, (inj c).2, funext key]
 
+/- English proof (translation)
+Establish `hE : HasSubst (expOf G)` using `hasSubst_of_constantCoeff_zero (isExp_expOf G).1`. Establish `hM : HasSubst (linSub M)` using `hasSubst_of_constantCoeff_zero (constantCoeff_linSub M)`. Establish `hL : HasSubst L` using `hasSubst_of_constantCoeff_zero hL0`. Rewrite using `[← subst_comp_subst_apply hE hL, subst_expOf_hom hφ, subst_comp_subst_apply hM hL]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `b`. Rewrite using `[linSub, subst_sum_smul hL]`. Simplify using `only [subst_X hL]`.
+-/
 theorem subst_exp_hom {τ : Type} {d d' : ℕ} {G : LogFGL v d} {G' : LogFGL v d'}
     {φ : Fin d' → MvPowerSeries (Fin d) C} {M : Matrix (Fin d') (Fin d) C} (hφ : IsIntHom G G' φ M)
     {L : Fin d → MvPowerSeries τ C} (hL0 : ∀ e, constantCoeff (L e) = 0) (c : Fin d') :
@@ -67,6 +86,17 @@ theorem subst_exp_hom {τ : Type} {d d' : ℕ} {G : LogFGL v d} {G' : LogFGL v d
   rw [linSub, subst_sum_smul hL]
   simp only [subst_X hL]
 
+/- English proof (translation)
+Introduce `C _ _ v i d d' k G G' φ M hφ u`. Establish `hX : ∀ b : Fin i, HasSubst (fun e : Fin d => (X ⟨b, e⟩ : MvPowerSeries (Σ _ : Fin i, Fin d) C))` using `fun b => hasSubst_of_constantCoeff_zero fun e => by simp`. Set `Φ : (Σ _ : Fin i, Fin d') → MvPowerSeries (Σ _ : Fin i, Fin d) C` to `fun x =>`. Substitute `(fun e : Fin d => (X ⟨x.1, e⟩ : MvPowerSeries (Σ _ : Fin i, Fin d) C)) (φ x.2)` using the available equality. Establish `hΦ : HasSubst Φ` using `hasSubst_of_constantCoeff_zero fun x => constantCoeff_subst_eq_zero (hX x.1) (fun e => by simp) (hφ.1 x.2)`.
+
+Establish `hΦi : ∀ x, MvIsInt v (Φ x)` using `fun x => ptIntSer_subst (v := v) (hX x.1) (fun e => ptIntSer_X _) (hφ.2.1 x.2)`. Establish `hL0 : ∀ (b : Fin i) (e : Fin d), constantCoeff (∑ a, u a e • (X ⟨b, a⟩ : MvPowerSeries (Σ _ : Fin i, Fin i) C)) = 0` using `fun b e => by simp`. Establish `hA : HasSubst (expAlong (fun _ : Fin i => G) (fun _ => u))` using `hasSubst_of_constantCoeff_zero fun x => constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (hL0 x.1)) (hL0 x.1) ((isExp_expOf G).1 x.2)`. Establish `hcol : (fun x => subst (expAlong (fun _ : Fin i => G) (fun _ => u)) (Φ x)) = expAlong (fun _ : Fin i => G') (fun _ a => M.mulVec (u a))`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Φ]`. Rewrite using `[subst_comp_subst_apply (hX x.1) hA]`. Simplify using `only [subst_X hA, expAlong]`. Rewrite using `[subst_exp_hom hφ (hL0 x.1)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `b`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`. Use `le_iInf fun f => iInf_le_of_le ⟨subst Φ f.1, ptIntSer_subst (v := v) hΦ hΦi f.2⟩ (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[subst_comp_subst_apply hΦ hA, hcol]`.
+-/
 theorem detDepth_le_of_isIntHom : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)),
     ∀ (i d d' k : ℕ) (G : LogFGL v d) (G' : LogFGL v d') (φ : Fin d' → MvPowerSeries (Fin d) C)
       (M : Matrix (Fin d') (Fin d) C), IsIntHom G G' φ M → ∀ u : Fin i → Fin d → C,

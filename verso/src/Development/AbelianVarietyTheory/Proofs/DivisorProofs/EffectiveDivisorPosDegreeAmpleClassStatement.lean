@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheory.CechPic GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AV.EffPos.inter_cons_pos | exact GlobalTheory.AV.EffPos.inter_cons_pos | (intros; apply GlobalTheory.AV.EffPos.inter_cons_pos <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.effectiveDivisor_pos_degree_ampleClass : ∀ (K : Type) [Field K] (A : AbVar K) (n : ℕ), A.dim = n + 1 → ∀ (c : Pic A.X.left), IsAmpleCls c → ∀ (M : LB A.X.left) (hM : M.IsLB) (s : LB.Sec M), Out.nonzeroLocus s ≠ ⊥ → Out.nonzeroLocus s ≠ ⊤ → 0 < inter A (Fin.cons (cls M hM) (fun _ : Fin n => c) : Fin (n + 1) → Pic A.X.left) := by
   first | exact @GlobalTheory.AV.EffPos.inter_cons_pos | exact GlobalTheory.AV.EffPos.inter_cons_pos | (intros; apply GlobalTheory.AV.EffPos.inter_cons_pos <;> assumption)

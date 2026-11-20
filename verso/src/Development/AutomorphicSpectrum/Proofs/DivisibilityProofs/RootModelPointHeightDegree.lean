@@ -11,6 +11,17 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+Introduce `II hII Ψ _ N M t lam s q n W hn hW`. Establish `hpos : 0 < degC W` using `GroundTheory.Heights₂.Heights.LowerBoundFree.degC_pos_of_isArithVar_one hW.1`. Use `⟨hpos, ?_⟩` and prove the remaining obligations. Establish `hl : ∀ j, IsSmoothHerm (M.line t j)`. Introduce `j`.
+
+Consider the cases of `j with`. Consider the case `none => exact M.A_smooth`. Consider the case `some r => exact M.x_smooth t r`. Establish `hupd : ∀ B : HermLine M.ι, Function.update (![M.A] : Fin 1 → HermLine M.ι) 0 B = ![B]`. Introduce `B`.
+
+Use function extensionality and compare the values at `k`. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules. Establish `hL : ∀ i, IsSmoothHerm ((![M.A] : Fin 1 → HermLine M.ι) i)`. Introduce `i`.
+
+Take `rfl : i = 0` from `Subsingleton.elim _ _`. Conclude with `M.A_smooth`. Establish `h` using `GlobalTheory.T.arith_intersection_multilinear II hII M.K M.ι W 1 ![M.A] 0 (Option (Ψ × Fin N)) (M.line t) n hW.1 hL hl`. Simplify using `only [hupd] at h`. Establish `hd : (degC W : ℝ) ≠ 0` using `by exact_mod_cast hpos.ne'`.
+
+Rewrite using `[h, RootModel.ht, mul_assoc, div_mul_cancel₀ _ hd, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hn j, mul_assoc]`.
+-/
 theorem ht_combLine_integral_multiple : ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M : RootModel Ψ N) (t : ℝ) (lam : Wt Ψ N) (s : ℝ) (q : ℕ) (n : Option (Ψ × Fin N) → ℤ) (W : Ideal (MRing M.ι)), (∀ j, (n j : ℝ) = q * M.coef lam s j) → M.IsPt W → 0 < degC W ∧ II M.K M.ι W 1 ![combLine (M.line t) n] = q * M.ht II t lam s W * degC W := by
   intro II hII Ψ _ N M t lam s q n W hn hW
   have hpos : 0 < degC W := GroundTheory.Heights₂.Heights.LowerBoundFree.degC_pos_of_isArithVar_one hW.1

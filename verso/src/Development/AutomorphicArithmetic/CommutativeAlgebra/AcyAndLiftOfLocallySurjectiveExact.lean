@@ -10,20 +10,34 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.ExistsLiftFreeToKern
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Bc
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 private theorem restriction_trans {F : Shv ℤ} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
   simp [Sec.res]
 
+/- English proof (translation)
+Simplify using `only [Sec.res, Sec.map]`. Rewrite using `[← ModuleCat.comp_apply, ← ModuleCat.comp_apply, φ.hom.naturality]`.
+-/
 private theorem res_map_of_sheaf_morphism {F G : Shv ℤ} (φ : F ⟶ G) {V U : Scheme.{0}} (k : V ⟶ U) (b : Sec F U) :
     Sec.res k (Sec.map φ b) = Sec.map φ (Sec.res k b) := by
   simp only [Sec.res, Sec.map]
   rw [← ModuleCat.comp_apply, ← ModuleCat.comp_apply, φ.hom.naturality]
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun t : F ⟶ H => (t.hom.app (op U)).hom a) h`. Simplify `h2` using `[Sec.map]`.
+-/
 private theorem map_map_eq_zero {F G H : Shv ℤ} (φ : F ⟶ G) (ψ : G ⟶ H) (h : φ ≫ ψ = 0) {U : Scheme.{0}} (a : Sec F U) :
     Sec.map ψ (Sec.map φ a) = 0 := by
   have h2 := congrArg (fun t : F ⟶ H => (t.hom.app (op U)).hom a) h
   simpa [Sec.map] using h2
 
+/- English proof (translation)
+Take `⟨S, hS, hSP⟩` from `hP`. Use `choose T hT hTR using fun (V : Scheme.{0}) (g : V ⟶ U) (H : S.arrows g) => h V g (hSP V g H)`. Use `⟨Sieve.bind S.arrows fun Y f H => T Y f H, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Scheme.etaleTopology.bind_covering hS fun Y f H => hT Y f H`. Introduce and unpack `W _ ⟨Y, k, g, H, hk, rfl⟩`.
+
+Conclude with `hTR Y g H W k hk`.
+-/
 private theorem local_bind {U : Scheme.{0}} {P R : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P)
     (h : ∀ (V : Scheme.{0}) (g : V ⟶ U), P V g → Loc V fun W k => R W (k ≫ g)) : Loc U R := by
   obtain ⟨S, hS, hSP⟩ := hP
@@ -33,6 +47,23 @@ private theorem local_bind {U : Scheme.{0}} {P R : ∀ V : Scheme.{0}, (V ⟶ U)
   · rintro W _ ⟨Y, k, g, H, hk, rfl⟩
     exact hTR Y g H W k hk
 
+/- English proof (translation)
+Introduce `Q hQ A C₁ Z i d w hi hex hloc hA hC`. Establish `hfac : Abelian.factorThruImage d ≫ Abelian.image.ι d = d` using `Abelian.image.fac d`. Establish `w1 : i ≫ Abelian.factorThruImage d = 0`. Rewrite using `[← cancel_mono (Abelian.image.ι d), Category.assoc, hfac, w, zero_comp]`. Set `S1` to `ShortComplex.mk i (Abelian.factorThruImage d) w1`.
+
+Establish `hS1ex : S1.Exact`. Set `φ : S1 ⟶ ShortComplex.mk i d w` to `{ τ₁ := 𝟙 _, τ₂ := 𝟙 _, τ₃ := Abelian.image.ι d comm₁₂ := by simp [S1] comm₂₃ := by simp [S1, hfac] }`. Conclude with `(ShortComplex.exact_iff_of_epi_of_isIso_of_mono φ).2 hex`. Establish `hS1 : S1.ShortExact` using `{ exact := hS1ex, mono_f := hi, epi_g := by dsimp [S1]; infer_instance }`. Establish `w2 : Abelian.image.ι d ≫ cokernel.π d = 0`.
+
+Rewrite using `[← cancel_epi (Abelian.factorThruImage d), ← Category.assoc, hfac, cokernel.condition, comp_zero]`. Set `S2` to `ShortComplex.mk (Abelian.image.ι d) (cokernel.π d) w2`. Establish `hS2 : S2.ShortExact` using `{ exact := ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel _) mono_f := by dsimp [S2]; infer_instance epi_g := by dsimp [S2]; infer_instance }`. Establish `hsub : ∀ U : Scheme.{0}, Q U → Subsingleton (Sec (cokernel d) U)`. Introduce `U hU`.
+
+Use `⟨fun s t => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ s : Sec (cokernel d) U, s = 0`. Introduce `s`. Establish `hl` using `((GlobalTheory.T.bigEtaleModuleSheaf_mono_epi_iff_sections ℤ (cokernel.π d)).2.2.1.1 inferInstance) U s`. Establish `hl2 : Loc U fun W k => Sec.res k s = Sec.res k (0 : Sec (cokernel d) U)`.
+
+Use `local_bind hl ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨z, hz⟩`. Take `⟨T, hT, hTz⟩` from `hloc V (hQ g hU) z`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations. Introduce and unpack `W k hk`.
+
+Take `⟨a, ha⟩` from `hTz W k hk`. Rewrite using `[restriction_trans, ← hz, res_map_of_sheaf_morphism, ← ha, map_map_eq_zero d (cokernel.π d) (cokernel.condition d)]`. Simplify using `[Sec.res]`. Conclude with `(GlobalTheory.T.etaleSheafSections_ext_and_glue ℤ (cokernel d) U).1 s 0 hl2`. Rewrite using `[hz s, hz t]`.
+
+Establish `hI : Acy Q (Abelian.image d)` using `UpperTheory.acy_right_of_shortExact Q S1 hS1 hA hC`. Establish `hK : Acy Q (cokernel d)` using `fun P hP n _ => UpperTheory.subsingleton_hypercohomology_free_of_supp_of_sections_vanish Q _ hsub P hP n`. Use `⟨UpperTheory.acy_middle_of_shortExact Q S2 hS2 hI hK, ?_⟩` and prove the remaining obligations. Introduce `P hP f`. Take `⟨h1, hh1⟩` from `UpperTheory.exists_lift_free_to_kernel_of_shortExact_vanishing_sections Q S2 hS2 hsub P hP f`.
+
+Take `⟨h2, hh2⟩` from `UpperTheory.exists_lift_free_to_middle_of_shortExact_acy Q S1 hS1 hA P hP h1`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Simplify using `[S1, S2] at hh1 hh2`. Rewrite using `[← hfac, ← Category.assoc, hh2, hh1]`.
+-/
 theorem UpperTheory.acy_and_lift_of_locally_surjective_exact :
     ∀ (Q : Scheme.{0} → Prop), (∀ {V U : Scheme.{0}}, (V ⟶ U) → Q U → Q V) → ∀ (A C₁ Z : Shv ℤ) (i : A ⟶ C₁) (d : C₁ ⟶ Z) (w : i ≫ d = 0), Mono i → (ShortComplex.mk i d w).Exact → (∀ U : Scheme.{0}, Q U → ∀ b : Sec Z U, Loc U fun V g => ∃ a : Sec C₁ V, Sec.map d a = Sec.res g b) → Acy Q A → Acy Q C₁ → Acy Q Z ∧ ∀ P : PSh, Supp Q P → ∀ f : (free ℤ).obj P ⟶ Z, ∃ h : (free ℤ).obj P ⟶ C₁, h ≫ d = f := by
   intro Q hQ A C₁ Z i d w hi hex hloc hA hC

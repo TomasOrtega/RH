@@ -21,6 +21,25 @@ namespace PositivityTheory.Rg.Rsw.L.LFixW
 set_option maxHeartbeats 1000000 in
 open U2 in
 
+/- English proof (translation)
+Take `⟨N, hN, hker, -⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D χ hχ.1`. Establish `hbad : {v : Pl D | ¬ (IsGood D.host.F D.host.E v ∧ algebraMap D.host.F (Fv D.host.F v) ((N : D.host.F)⁻¹) ∈ v.adicCompletionIntegers D.host.F)}.Finite` using `Filter.eventually_cofinite.1 ((eventually_good (F := D.host.F) (E := D.host.E)).and (eventually_int (F := D.host.F) ((N : D.host.F)⁻¹)))`. Use `⟨hbad.toFinset, fun S hS u hinf hSv hoff => ?_⟩` and prove the remaining obligations. Establish `hgood : ∀ v ∉ S, IsGood D.host.F D.host.E v ∧ algebraMap D.host.F (Fv D.host.F v) ((N : D.host.F)⁻¹) ∈ v.adicCompletionIntegers D.host.F`. Introduce `v hv`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hv (hS ((Set.Finite.mem_toFinset hbad).2 h))`. Establish `hinv : ∀ v ∈ S, cv D v ((u⁻¹ : (AE D)ˣ) : AE D) = 1`. Introduce `v hv`. Use `congrArg (cv D v) u.inv_mul` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.map_mul, RingHom.map_one, hSv v hv, mul_one]`. Conclude with `this`. Establish `hint : ∀ z : AE D, (∀ v ∈ S, cv D v z ∈ intLoc D.host.F D.host.E v) → (∀ v ∉ S, cv D v z ∈ intLoc D.host.F D.host.E v) → finPart D z ∈ intAE D`. Introduce `z h1 h2`. Use `finPart_mem z fun v => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v ∈ S`. Conclude with `h1 v hv`. Conclude with `h2 v hv`. Establish `hfu : FinUnit u` using `⟨infPart_eq_one hinf, hint _ (fun v hv => by rw [hSv v hv]; exact one_mem _) (fun v hv => (hoff v hv).1), hint _ (fun v hv => by rw [hinv v hv]; exact one_mem _) (fun v hv => (hoff v hv).2)⟩`. Establish `hy1 : ∀ v ∈ S, cv D v (cN D N * ((u : AE D) - 1)) ∈ intLoc D.host.F D.host.E v`.
+
+Introduce `v hv`. Rewrite using `[RingHom.map_mul, RingHom.map_sub, hSv v hv, RingHom.map_one, sub_self, mul_zero]`. Conclude with `zero_mem _`. Establish `hy2 : ∀ v ∉ S, cv D v (cN D N * ((u : AE D) - 1)) ∈ intLoc D.host.F D.host.E v`. Introduce `v hv`.
+
+Rewrite using `[RingHom.map_mul, RingHom.map_sub, RingHom.map_one]`. Establish `ha : cv D v (cN D N) ∈ intLoc D.host.F D.host.E v`. Rewrite using `[cv_cN]`. Conclude with `tmul_one_mem (E := D.host.E) (hgood v hv).2`. Establish `hb : cv D v (u : AE D) - 1 ∈ intLoc D.host.F D.host.E v` using `(intLoc D.host.F D.host.E v).sub_mem (hoff v hv).1 (intLoc D.host.F D.host.E v).one_mem`.
+
+Conclude with `(intLoc D.host.F D.host.E v).mul_mem ha hb`. Establish `hy3 : finPart D (u : AE D) - 1 = N • finPart D (cN D N * ((u : AE D) - 1))`. Rewrite using `[nsmul_eq_mul, ← map_natCast (finPart D) N, ← RingHom.map_mul, ← mul_assoc, natCast_mul_cN hN, one_mul, RingHom.map_sub, RingHom.map_one]`. Use `⟨hker u hfu ⟨_, hint _ hy1 hy2, hy3⟩, ?_⟩` and prove the remaining obligations. Use `show absE D.host.F D.host.E u = 1`.
+
+Rewrite using `[absE_apply]`. Establish `h1 : ∀ w, absEw D.host.F D.host.E w (unitInf D.host.F D.host.E w u) = 1` using `fun w => by`. Rewrite using `[show unitInf D.host.F D.host.E w u = 1 from Units.ext (hinf w), map_one]`. Establish `h2 : ∀ v, absEv D.host.F D.host.E v (unitFin D.host.F D.host.E v u) = 1`. Introduce `v`.
+
+Distinguish the cases in `hv : v ∈ S`. Rewrite using `[show unitFin D.host.F D.host.E v u = 1 from Units.ext (hSv v hv), map_one]`. Conclude with `absEv_eq_one (hgood v hv).1 _ (hoff v hv).1 (hoff v hv).2`. Rewrite using `[Finset.prod_eq_one fun w _ => h1 w, finprod_congr h2, finprod_one, one_mul]`.
+-/
 theorem unit_triv (D : D7) (χ : (AE D)ˣ →* Circle) (hχ : IsHeckeChar D χ) : ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S →
     ∀ u : (AE D)ˣ, (∀ w, compInf D.host.F D.host.E w (u : AE D) = 1) → (∀ v ∈ S, cv D v (u : AE D) = 1) →
     (∀ v ∉ S, cv D v (u : AE D) ∈ intLoc D.host.F D.host.E v ∧

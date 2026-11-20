@@ -9,6 +9,19 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 
 namespace GlobalTheory.CompanionTheory.GapLie
 
+/- English proof (translation)
+Introduce `V _ _ _ _ n E m hE hq`. Take `⟨ν, v, -, hv0, hw, -⟩` from `Formalism.FourierDecayAlt.P.exists_singular_maximal_vector V n E hE ⊤ (fun _ _ _ _ => Submodule.mem_top) top_ne_bot`. Establish `hc` using `Formalism.FourierDecayAlt.P.HighestWeightPolynomials.hw_cpol (m := m) hE (Qr.mem_CapSp.2 fun w => hq w v) hv0 hw`. Establish `hroot : ∀ i, ∃ a : Fin n, m i = ν a - ((a : ℕ) : ℂ)`. Introduce `i`.
+
+Establish `h1` using `hc (-m i)`. Unfold `Qr.cpol at h1`. Rewrite `h1` using `[Finset.prod_eq_zero (Finset.mem_univ i) (by ring)]`. Take `⟨a, -, ha⟩` from `Finset.prod_eq_zero_iff.1 h1.symm`. Conclude with `⟨a, by linear_combination -ha⟩`.
+
+Establish `hdom : ∀ a b : Fin n, ∃ N : ℤ, ν a - ν b = (N : ℂ)`. Introduce `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Take `⟨N, hN⟩` from `Formalism.FourierDecayAlt.P.singular_dominant V n E ν v hE hw hv0 a b h`. Conclude with `⟨N, by simpa using hN⟩`.
+
+Conclude with `⟨0, by simp [h]⟩`. Take `⟨N, hN⟩` from `Formalism.FourierDecayAlt.P.singular_dominant V n E ν v hE hw hv0 b a h`. Use `⟨-N, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `-hN`.
+
+Introduce `i j`. Take `⟨a, ha⟩` from `hroot i`. Take `⟨b, hb⟩` from `hroot j`. Take `⟨N, hN⟩` from `hdom a b`. Use `⟨N - (a : ℕ) + (b : ℕ), ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Take the linear combination `ha - hb + hN`.
+-/
 theorem capelli_params_diff_int : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] [Nontrivial V] (n : ℕ) (E : Fin n → Fin n → Module.End ℂ V) (m : Fin n → ℂ), GlRel E → (∀ w v, qdet E w v = Qr.cpol m w • v) → ∀ i j, ∃ N : ℤ, m i - m j = (N : ℂ) := by
   intro V _ _ _ _ n E m hE hq
   obtain ⟨ν, v, -, hv0, hw, -⟩ := Formalism.FourierDecayAlt.P.exists_singular_maximal_vector V n E hE ⊤

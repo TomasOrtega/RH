@@ -9,5 +9,8 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open UpperTheory.V.Z.Tf.GOne
 
+/- English proof (translation)
+The claim follows from `splitRigid_of (shareBd (logTwo extId) (crossUp extId)) (absShare (logTwo extId) (crossUp extId) partCS) antiTw`.
+-/
 theorem UpperTheory.V.Z.Tf.SR.splitRigid : UpperTheory.V.Z.Tf.SR.SplitRigid :=
   splitRigid_of (shareBd (logTwo extId) (crossUp extId)) (absShare (logTwo extId) (crossUp extId) partCS) antiTw

@@ -20,18 +20,30 @@ variable {K : Type} [Field K] {Y : Scheme.{0}} (s : Y ⟶ Sp K)
 abbrev ch (V : Y.Opens) : SecOnR s (LB.triv Y) V ≃ₗ[Γ(Y, V)] Γ(Y, V) :=
   SecOnR.chart s (LB.isLB_triv Y) PUnit.unit le_top
 
+/- English proof (translation)
+The claim follows from `SecOn.chart_restrict (LB.isLB_triv Y) PUnit.unit le_top h x`.
+-/
 theorem ch_restrict {U V : Y.Opens} (h : V ≤ U) (x : SecOnR s (LB.triv Y) U) :
     ch s V (SecOnR.restrict s (LB.triv Y) h x) = resG Y h (ch s U x) :=
   SecOn.chart_restrict (LB.isLB_triv Y) PUnit.unit le_top h x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cst_eq (V : Y.Opens) (r : K) :
     cst s V r = (s.appLE ⊤ V le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom r) := rfl
 
+/- English proof (translation)
+Rewrite using `[SecOnR.smul_def, LinearEquiv.map_smul]`. Both sides reduce to the same expression.
+-/
 theorem ch_smul (V : Y.Opens) (r : K) (x : SecOnR s (LB.triv Y) V) :
     ch s V (r • x) = cst s V r * ch s V x := by
   rw [SecOnR.smul_def, LinearEquiv.map_smul]
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Simplify using `using hx`.
+-/
 theorem resG_eq_zero {U V : Y.Opens} (e : U = V) (h : V ≤ U) (x : Γ(Y, U)) (hx : resG Y h x = 0) :
     x = 0 := by
   subst e
@@ -41,10 +53,16 @@ section Coc
 
 variable {κ : Type} [LinearOrder κ] (D : κ → Y.Opens)
 
+/- English proof (translation)
+The claim follows from `le_inf (biInf_le _ ha) (biInf_le _ hc)`.
+-/
 theorem biInf_pair_le {t : Finset κ} {a c : κ} (ha : a ∈ t) (hc : c ∈ t) :
     ⨅ j ∈ t, D j ≤ D a ⊓ D c :=
   le_inf (biInf_le _ ha) (biInf_le _ hc)
 
+/- English proof (translation)
+The claim follows from `Finset.card_pos.1 (by rw [t.2]; norm_num)`.
+-/
 theorem ne_two (t : {t : Finset κ // t.card = 1 + 1}) : t.1.Nonempty :=
   Finset.card_pos.1 (by rw [t.2]; norm_num)
 
@@ -52,11 +70,23 @@ def coc (e : ∀ i i' : κ, Γ(Y, D i ⊓ D i')) : Cube.Term (secCube s (LB.triv
   fun t => (ch s (⨅ j ∈ t.1, D j)).symm
     (resG Y (biInf_pair_le D (t.1.min'_mem (ne_two t)) (t.1.max'_mem (ne_two t))) (e _ _))
 
+/- English proof (translation)
+Substitute `ha hc` using the available equality. Both sides reduce to the same expression.
+-/
 theorem resG_e_congr (e : ∀ i i' : κ, Γ(Y, D i ⊓ D i')) {a a' c c' : κ} (ha : a = a') (hc : c = c')
     {V : Y.Opens} (h : V ≤ D a ⊓ D c) (h' : V ≤ D a' ⊓ D c') :
     resG Y h (e a c) = resG Y h' (e a' c') := by
   subst ha hc; rfl
 
+/- English proof (translation)
+Establish `hmin : t.1.min' (ne_two t) = i`. Use `le_antisymm (Finset.min'_le _ _ (by simp [ht])) (Finset.le_min' _ _ _ ?_)` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[ht]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hy`.
+
+Break down `hy with rfl | rfl` into its components or cases. Conclude with `le_rfl`. Conclude with `hii.le`. Establish `hmax : t.1.max' (ne_two t) = i'`. Use `le_antisymm (Finset.max'_le _ _ _ ?_) (Finset.le_max' _ _ (by simp [ht]))` and prove the remaining obligations.
+
+Introduce `y hy`. Rewrite `hy` using `[ht]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hy`. Break down `hy with rfl | rfl` into its components or cases. Conclude with `hii.le`.
+
+Conclude with `le_rfl`. Unfold `coc`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `resG_e_congr D e hmin hmax _ _`.
+-/
 theorem coc_pair (e : ∀ i i' : κ, Γ(Y, D i ⊓ D i')) {i i' : κ} (hii : i < i')
     (t : {t : Finset κ // t.card = 1 + 1}) (ht : t.1 = {i, i'}) :
     ch s _ (coc s D e t) = resG Y (biInf_pair_le D (by simp [ht]) (by simp [ht])) (e i i') := by
@@ -93,6 +123,11 @@ def IsCoc (e : ∀ i i' : κ, Γ(Y, D i ⊓ D i')) : Prop :=
     resG Y (le_inf (inf_le_left.trans inf_le_left) inf_le_right : D i ⊓ D i' ⊓ D i'' ≤ D i ⊓ D i'')
       (e i i'')
 
+/- English proof (translation)
+Rewrite using `[Cube.d_apply]`. Use `show ch s _ (∑ i : t.1, cubeSign t.1 i.1 • (SecOnR.restrict s (LB.triv Y) (iInf_le_iInf_of_subset D (Finset.erase_subset i.1 t.1)) (x (Cube.eraseIdx t i)) : SecOnR s (LB.triv Y) (⨅ j ∈ t.1, D j))) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`.
+
+Use `congr 1`. Conclude with `ch_restrict s _ _`.
+-/
 theorem ch_d (p : ℕ) (x : Cube.Term (secCube s (LB.triv Y) D) p)
     (t : {t : Finset κ // t.card = p + 1}) :
     ch s (⨅ j ∈ t.1, D j) (Cube.d (secCube s (LB.triv Y) D) p x t) =
@@ -108,6 +143,27 @@ theorem ch_d (p : ℕ) (x : Cube.Term (secCube s (LB.triv Y) D) p)
   congr 1
   exact ch_restrict s _ _
 
+/- English proof (translation)
+Establish `hac` using `hab.trans hbc`. Establish `ha : a ∈ t.1` using `by simp [ht]`. Establish `hb : b ∈ t.1` using `by simp [ht]`. Establish `hc : c ∈ t.1` using `by simp [ht]`. Establish `ea : t.1.erase a = {b, c}`.
+
+Rewrite using `[ht]; exact Finset.erase_insert (by simp [hab.ne, hac.ne])`. Establish `eb : t.1.erase b = {a, c}`. Rewrite using `[ht, Finset.erase_insert_of_ne hab.ne, Finset.erase_insert (by simp [hbc.ne])]`. Establish `ec : t.1.erase c = {a, b}`. Rewrite using `[ht]`.
+
+Use extensionality with `i`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h' | h' | h'⟩`. Conclude with `Or.inl h'`.
+
+Conclude with `Or.inr h'`. Conclude with `(h h').elim`. Introduce and unpack `(rfl | rfl)`. Conclude with `⟨hac.ne, Or.inl rfl⟩`. Conclude with `⟨hbc.ne, Or.inr (Or.inl rfl)⟩`.
+
+Establish `sa : cubeSign t.1 a = 1` using `cubeSign_eq_one_of_forall_le (by`. Rewrite using `[ht]`. Simplify using `[hab.le, hac.le])`. Establish `sbc : cubeSign ({b, c} : Finset κ) b = 1` using `cubeSign_eq_one_of_forall_le (by simp [hbc.le])`. Establish `sb : cubeSign t.1 b = -1`.
+
+Use `cubeSign_erase_of_lt ha hab` as an intermediate fact. Rewrite `this` using `[ea, sbc]`. Use linear arithmetic over natural numbers and integers. Establish `scc : cubeSign ({b, c} : Finset κ) c = -1`. Use `cubeSign_erase_of_lt (t := ({b, c} : Finset κ)) (by simp) hbc` as an intermediate fact.
+
+Rewrite `this` using `[Finset.erase_insert (by simp [hbc.ne]), cubeSign_singleton]`. Use linear arithmetic over natural numbers and integers. Establish `sc : cubeSign t.1 c = 1`. Use `cubeSign_erase_of_lt ha hac` as an intermediate fact. Rewrite `this` using `[ea, scc]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hu : (Finset.univ : Finset t.1) = {⟨a, ha⟩, ⟨b, hb⟩, ⟨c, hc⟩}`. Use extensionality with `⟨i, hi⟩`. Simplify using `only [Finset.mem_univ, true_iff, Finset.mem_insert, Finset.mem_singleton, Subtype.mk.injEq]`. Rewrite `hi` using `[ht]`.
+
+Simplify using `using hi`. Use `(ch s (⨅ j ∈ t.1, D j)).map_eq_zero_iff.1 ?_` and prove the remaining obligations. Rewrite using `[ch_d, hu, Finset.sum_insert (by simp [hab.ne, hac.ne]), Finset.sum_pair (by simp [hbc.ne])]`. Rewrite using `[coc_pair s D e hbc _ ea, coc_pair s D e hac _ eb, coc_pair s D e hab _ ec, sa, sb, sc]`. Establish `hV : ⨅ j ∈ t.1, D j ≤ D a ⊓ D b ⊓ D c` using `le_inf (le_inf (biInf_le _ ha) (biInf_le _ hb)) (biInf_le _ hc)`.
+
+Establish `h'` using `congrArg (resG Y hV) (he a b c)`. Simplify using `only [map_add, resG_resG] at h' ⊢`. Rewrite using `[one_smul, one_smul, neg_smul, one_smul]`. Take the linear combination `h'`.
+-/
 theorem coc_tri (e : ∀ i i' : κ, Γ(Y, D i ⊓ D i')) (he : IsCoc D e) {a b c : κ} (hab : a < b)
     (hbc : b < c) (t : {t : Finset κ // t.card = 1 + 1 + 1}) (ht : t.1 = {a, b, c}) :
     Cube.d (secCube s (LB.triv Y) D) (1 + 1) (coc s D e) t = 0 := by
@@ -168,6 +224,13 @@ section Main
 
 variable {κ : Type} [LinearOrder κ] (D : κ → Y.Opens)
 
+/- English proof (translation)
+Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `t`. Establish `h3 : t.1.card = 3` using `t.2`. Set `f` to `t.1.orderEmbOfFin h3`. Establish `ht : t.1 = {f 0, f 1, f 2}`.
+
+Use extensionality with `j`. Prove the components needed by the constructor for the conclusion. Introduce `hj`. Establish `: j ∈ Set.range f` using `by rw [Finset.range_orderEmbOfFin]; exact hj`. Take `⟨k, rfl⟩` from `this`.
+
+Apply the tactic sequence `fin_cases k <;> simp`. Introduce `hj`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hj`. Apply the tactic sequence `rcases hj with rfl | rfl | rfl <;> exact Finset.orderEmbOfFin_mem _ _ _`. Conclude with `coc_tri s D e he (f.strictMono (by decide)) (f.strictMono (by decide)) t ht`.
+-/
 theorem coc_mem (e : ∀ i i' : κ, Γ(Y, D i ⊓ D i')) (he : IsCoc D e) :
     coc s D e ∈ LinearMap.ker (Cube.d (secCube s (LB.triv Y) D) (1 + 1)) := by
   rw [LinearMap.mem_ker]
@@ -186,13 +249,24 @@ theorem coc_mem (e : ∀ i i' : κ, Γ(Y, D i ⊓ D i')) (he : IsCoc D e) :
       rcases hj with rfl | rfl | rfl <;> exact Finset.orderEmbOfFin_mem _ _ _
   exact coc_tri s D e he (f.strictMono (by decide)) (f.strictMono (by decide)) t ht
 
+/- English proof (translation)
+Substitute `e` using the available equality. Simplify using `using hx`.
+-/
 theorem resG_inj {U V : Y.Opens} (e : U = V) (h : V ≤ U) {x x' : Γ(Y, U)}
     (hx : resG Y h x = resG Y h x') : x = x' := by
   subst e
   simpa using hx
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem single_le (i : κ) : D i ≤ ⨅ j ∈ ({i} : Finset κ), D j := by simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_apply]`. Establish `key : ∀ v : ι → SecOnR s (LB.triv Y) (⨅ j ∈ t.1, D j), ch s _ (∑ b, c b • v b) = ∑ b, AbLaw.cst s (⨅ j ∈ t.1, D j) (c b) * ch s _ (v b)`. Introduce `v`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => ch_smul s _ _ _`.
+
+Conclude with `key fun b => x b t`.
+-/
 theorem ch_sum_smul {ι : Type} [Fintype ι] (c : ι → K)
     (x : ι → Cube.Term (secCube s (LB.triv Y) D) (1 + 1)) (t : {t : Finset κ // t.card = 1 + 1}) :
     ch s (⨅ j ∈ t.1, D j) ((∑ b, c b • x b) t) = ∑ b, AbLaw.cst s (⨅ j ∈ t.1, D j) (c b) * ch s _ (x b t) := by
@@ -213,16 +287,35 @@ variable {κ : Type} [LinearOrder κ] (D : κ → Y.Opens)
 def hh (y : Cube.Term (secCube s (LB.triv Y) D) (0 + 1)) (i : κ) : Γ(Y, D i) :=
   - resG Y (single_le D i) (ch s _ (y ⟨{i}, Finset.card_singleton i⟩))
 
+/- English proof (translation)
+Take `rfl : u = u'` from `Subtype.ext h`. Both sides reduce to the same expression.
+-/
 theorem y_congr (y : Cube.Term (secCube s (LB.triv Y) D) (0 + 1)) {u u' : {t : Finset κ // t.card = 0 + 1}}
     (h : u.1 = u'.1) {V : Y.Opens} (hV : V ≤ ⨅ j ∈ u.1, D j) (hV' : V ≤ ⨅ j ∈ u'.1, D j) :
     resG Y hV (ch s _ (y u)) = resG Y hV' (ch s _ (y u')) := by
   obtain rfl : u = u' := Subtype.ext h
   rfl
 
+/- English proof (translation)
+The claim follows from `rs_cst s h r`.
+-/
 theorem resG_cst {U V : Y.Opens} (h : V ≤ U) (r : K) :
     resG Y h (AbLaw.cst s U r) = AbLaw.cst s V r :=
   rs_cst s h r
 
+/- English proof (translation)
+Set `t : {t : Finset κ // t.card = 0 + 1 + 1}` to `⟨{i, i'}, Finset.card_pair hii.ne⟩`. Establish `hW : D i ⊓ D i' = ⨅ j ∈ t.1, D j` using `by show D i ⊓ D i' = ⨅ j ∈ ({i, i'} : Finset κ), D j`. Rewrite using `[Finset.iInf_insert, Finset.iInf_singleton]`. Establish `hi : i ∈ t.1` using `by simp [t]`. Establish `hi' : i' ∈ t.1` using `by simp [t]`.
+
+Establish `hle : ⨅ j ∈ t.1, D j ≤ D i ⊓ D i'` using `biInf_pair_le D hi hi'`. Apply `resG_inj hW hle` to reduce the goal to its premises. Establish `key : ch s (⨅ j ∈ t.1, D j) (Cube.d (secCube s (LB.triv Y) D) (0 + 1) y t) = ch s (⨅ j ∈ t.1, D j) ((∑ b, c b • coc s D (e b)) t)` using `by rw [hy]`. Rewrite `key` using `[ch_d, ch_sum_smul]`. Establish `hu : (Finset.univ : Finset t.1) = {⟨i, hi⟩, ⟨i', hi'⟩}`.
+
+Use extensionality with `⟨j, hj⟩`. Simplify using `only [Finset.mem_univ, true_iff, Finset.mem_insert, Finset.mem_singleton, Subtype.mk.injEq]`. Simplify `hj` using `[t]`. Rewrite `key` using `[hu, Finset.sum_pair (by simp [hii.ne])]`. Establish `si : cubeSign t.1 i = 1` using `cubeSign_eq_one_of_forall_le (by simp [t, hii.le])`.
+
+Establish `si' : cubeSign t.1 i' = -1`. Use `cubeSign_erase_of_lt (t := t.1) hi hii` as an intermediate fact. Establish `e1 : t.1.erase i = {i'}` using `Finset.erase_insert (by simp [hii.ne])`. Rewrite `this` using `[e1, cubeSign_singleton]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `ei : (Cube.eraseIdx t ⟨i, hi⟩).1 = ({i'} : Finset κ)` using `Finset.erase_insert (by simp [hii.ne])`. Establish `ei' : (Cube.eraseIdx t ⟨i', hi'⟩).1 = ({i} : Finset κ)` using `by show ({i, i'} : Finset κ).erase i' = {i}`. Rewrite using `[Finset.erase_insert_of_ne hii.ne, Finset.erase_singleton]`. Simplify using the standard rewrite rules. Rewrite `key` using `[y_congr s D y (u' := ⟨{i'}, Finset.card_singleton i'⟩) ei _ ((single_le D i').trans' (hle.trans inf_le_right)), y_congr s D y (u' := ⟨{i}, Finset.card_singleton i⟩) ei' _ ((single_le D i).trans' (hle.trans inf_le_left)), si, si']`.
+
+Establish `hc : ∀ b, ch s (⨅ j ∈ t.1, D j) (coc s D (e b) t) = resG Y hle (e b i i')` using `fun b => coc_pair s D (e b) hii t rfl`. Simplify using `only [hc] at key`. Simplify using `only [hh, map_sum, map_mul, map_sub, map_neg, resG_resG, resG_cst]`. Rewrite `key` using `[one_smul, neg_smul, one_smul]`. Take the linear combination `-key`.
+-/
 theorem pair_lt {ι : Type} [Fintype ι] (e : ι → ∀ i i' : κ, Γ(Y, D i ⊓ D i')) (c : ι → K)
     (y : Cube.Term (secCube s (LB.triv Y) D) (0 + 1))
     (hy : Cube.d (secCube s (LB.triv Y) D) (0 + 1) y = ∑ b, c b • coc s D (e b)) {i i' : κ}
@@ -269,6 +362,25 @@ theorem pair_lt {ι : Type} [Fintype ι] (e : ι → ∀ i i' : κ, Γ(Y, D i �
 
 end Pair
 
+/- English proof (translation)
+Introduce `K _ Y s g κ _ _ D hfin hrank e he`. Set `A` to `secCube s (LB.triv Y) D`. Set `z : Fin (g + 1) → LinearMap.ker (Cube.d A (1 + 1))` to `fun b => ⟨coc s D (e b), coc_mem s D (e b) (he b)⟩`. Use `haveI : Module.Finite K ((cechComplex A).homology 1) := hfin`. Establish `hnli : ¬ LinearIndependent K (fun b => cechClass A 1 (z b))`.
+
+Introduce `hli`. Establish `h1` using `hli.fintype_card_le_finrank`. Establish `h2 : Module.finrank K ((cechComplex A).homology 1) ≤ g` using `hrank`. Simplify using `only [Fintype.card_fin] at h1`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨c, hc, b0, hb0⟩` from `Fintype.not_linearIndependent_iff.1 hnli`. Establish `h0 : cechClass A 1 (∑ b, c b • z b) = 0`. Rewrite using `[map_sum]`. Simplify `hc` using `only [map_smul]`. Take `⟨y, hy⟩` from `(cechClass_succ_eq_zero_iff A 0 _).1 h0`.
+
+Establish `hy' : Cube.d A (0 + 1) y = ∑ b, c b • coc s D (e b)`. Rewrite using `[hy]`. Simplify using `[z]`. Use `⟨c, fun h => hb0 (by simp [h]), hh s D y, ?_⟩` and prove the remaining obligations. Establish `hdiag : ∀ b i, e b i i = 0`.
+
+Introduce `b i`. Establish `h` using `he b i i i`. Establish `h' : resG Y (inf_le_left : D i ⊓ D i ⊓ D i ≤ D i ⊓ D i) (e b i i) = 0` using `add_eq_right.1 h`. Conclude with `resG_eq_zero (by simp) _ _ h'`. Introduce `i i'`.
+
+Use `show ∑ b, AbLaw.cst s (D i ⊓ D i') (c b) * e b i i' = _`. Break down `lt_trichotomy i i' with h | rfl | h` into its components or cases. Conclude with `pair_lt s D e c y hy' h`. Simplify using `[hdiag]`. Establish `P` using `pair_lt s D e c y hy' h`.
+
+Establish `hanti : ∀ b, resG Y (inf_le_left : D i ⊓ D i' ⊓ D i ≤ D i ⊓ D i') (e b i i') = - resG Y (le_inf (inf_le_left.trans inf_le_right) inf_le_right : D i ⊓ D i' ⊓ D i ≤ D i' ⊓ D i) (e b i' i)`. Introduce `b`. Establish `h1` using `he b i i' i`. Rewrite `h1` using `[hdiag, map_zero]`. Conclude with `eq_neg_of_add_eq_zero_left h1`.
+
+Establish `hW : D i ⊓ D i' = D i ⊓ D i' ⊓ D i`. Use `le_antisymm (le_inf le_rfl inf_le_left) inf_le_left` and prove the remaining obligations. Apply `resG_inj hW inf_le_left` to reduce the goal to its premises. Establish `P'` using `congrArg (resG Y (le_inf (inf_le_left.trans inf_le_right) inf_le_right : D i ⊓ D i' ⊓ D i ≤ D i' ⊓ D i)) P`. Simplify using `only [map_sum, map_mul, map_sub, resG_cst, resG_resG] at P' ⊢`.
+
+Simplify using `only [hanti, mul_neg, Finset.sum_neg_distrib]`. Take the linear combination `-P'`.
+-/
 theorem exists_comb_coboundary : ∀ (K : Type) [Field K] (Y : Scheme.{0}) (s : Y ⟶ Sp K) (g : ℕ) (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens), Module.Finite K ((GlobalTheory.AbLaw.cechLB s (LB.triv Y) D).homology 1) → Module.finrank K ((GlobalTheory.AbLaw.cechLB s (LB.triv Y) D).homology 1) ≤ g → ∀ (e : Fin (g + 1) → ∀ i i' : κ, Γ(Y, D i ⊓ D i')), (∀ b i i' i'', resG Y (inf_le_left : D i ⊓ D i' ⊓ D i'' ≤ D i ⊓ D i') (e b i i') + resG Y (le_inf (inf_le_left.trans inf_le_right) inf_le_right : D i ⊓ D i' ⊓ D i'' ≤ D i' ⊓ D i'') (e b i' i'') = resG Y (le_inf (inf_le_left.trans inf_le_left) inf_le_right : D i ⊓ D i' ⊓ D i'' ≤ D i ⊓ D i'') (e b i i'')) → ∃ c : Fin (g + 1) → K, c ≠ 0 ∧ ∃ h : ∀ i, Γ(Y, D i), ∀ i i', ∑ b, (s.appLE ⊤ (D i ⊓ D i') le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (c b)) * e b i i' = resG Y inf_le_left (h i) - resG Y inf_le_right (h i') := by
   intro K _ Y s g κ _ _ D hfin hrank e he
   classical

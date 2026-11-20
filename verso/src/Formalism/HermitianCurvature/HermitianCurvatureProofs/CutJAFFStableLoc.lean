@@ -15,6 +15,9 @@ section loc
 
 variable {k r : ℕ} {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ E']
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hg, fun a ha => by simp at ha⟩`.
+-/
 theorem mem_level_zero_of_mem_group {g : B.Mat k r} (hg : g ∈ B.GV k r) : g ∈ Q.Glev k r 0 :=
   ⟨hg, fun a ha => by simp at ha⟩
 
@@ -22,12 +25,21 @@ def LocSm (g₀ : B.Mat k r) (h : B.Mat k r → E') : Prop :=
   ∃ (U : Set (B.Mat k r)) (F : B.Mat k r → E'), IsOpen U ∧ g₀ ∈ U ∧
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F U ∧ ∀ x ∈ U, x ∈ B.GV k r → h x = F x
 
+/- English proof (translation)
+The claim follows from `hh g₀ hg`.
+-/
 theorem locSm_of_ckOn {UU : Set (B.Mat k r)} {h : B.Mat k r → E'} (hh : B.CkOn ⊤ UU h) {g₀ : B.Mat k r}
     (hg : g₀ ∈ UU) : LocSm g₀ h := hh g₀ hg
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+-/
 theorem locSm_zero (g₀ : B.Mat k r) : LocSm g₀ (fun _ => (0 : E')) :=
   ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨U₁, F₁, o₁, m₁, c₁, e₁⟩` from `h1`. Take `⟨U₂, F₂, o₂, m₂, c₂, e₂⟩` from `h2`. Conclude with `⟨U₁ ∩ U₂, fun x => F₁ x + F₂ x, o₁.inter o₂, ⟨m₁, m₂⟩, (c₁.mono Set.inter_subset_left).add (c₂.mono Set.inter_subset_right), fun x hx hxG => by simp only [e₁ x hx.1 hxG, e₂ x hx.2 hxG]⟩`.
+-/
 theorem locSm_add {g₀ : B.Mat k r} {h₁ h₂ : B.Mat k r → E'} (h1 : LocSm g₀ h₁) (h2 : LocSm g₀ h₂) :
     LocSm g₀ (fun x => h₁ x + h₂ x) := by
   obtain ⟨U₁, F₁, o₁, m₁, c₁, e₁⟩ := h1
@@ -36,11 +48,17 @@ theorem locSm_add {g₀ : B.Mat k r} {h₁ h₂ : B.Mat k r → E'} (h1 : LocSm 
     (c₁.mono Set.inter_subset_left).add (c₂.mono Set.inter_subset_right),
     fun x hx hxG => by simp only [e₁ x hx.1 hxG, e₂ x hx.2 hxG]⟩
 
+/- English proof (translation)
+Take `⟨U, F, o, m, cd, e⟩` from `h1`. Conclude with `⟨U, fun x => c • F x, o, m, cd.const_smul c, fun x hx hxG => by simp only [e x hx hxG]⟩`.
+-/
 theorem locSm_smul {g₀ : B.Mat k r} {h : B.Mat k r → E'} (c : ℂ) (h1 : LocSm g₀ h) :
     LocSm g₀ (fun x => c • h x) := by
   obtain ⟨U, F, o, m, cd, e⟩ := h1
   exact ⟨U, fun x => c • F x, o, m, cd.const_smul c, fun x hx hxG => by simp only [e x hx hxG]⟩
 
+/- English proof (translation)
+Take `⟨U₁, F₁, o₁, m₁, c₁, e₁⟩` from `ha`. Take `⟨U₂, F₂, o₂, m₂, c₂, e₂⟩` from `hφ`. Use `⟨U₁ ∩ U₂, fun x => F₁ x (F₂ x), o₁.inter o₂, ⟨m₁, m₂⟩, ?_, fun x hx hxG => by simp only [e₁ x hx.1 hxG, e₂ x hx.2 hxG]⟩` and prove the remaining obligations. Establish `c₁' : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => (F₁ x).restrictScalars ℝ) (U₁ ∩ U₂)` using `((ContinuousLinearMap.restrictScalarsL ℂ E' E₂ ℝ ℝ).contDiff.comp_contDiffOn (c₁.mono Set.inter_subset_left))`. Conclude with `c₁'.clm_apply (c₂.mono Set.inter_subset_right)`.
+-/
 theorem locSm_clm {E₂ : Type*} [NormedAddCommGroup E₂] [NormedSpace ℂ E₂] {g₀ : B.Mat k r}
     {a : B.Mat k r → (E' →L[ℂ] E₂)} {φ : B.Mat k r → E'} (ha : LocSm g₀ a) (hφ : LocSm g₀ φ) :
     LocSm g₀ (fun x => a x (φ x)) := by
@@ -54,6 +72,9 @@ theorem locSm_clm {E₂ : Type*} [NormedAddCommGroup E₂] [NormedSpace ℂ E₂
       (c₁.mono Set.inter_subset_left))
   exact c₁'.clm_apply (c₂.mono Set.inter_subset_right)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simpa using locSm_zero (E' := E') g₀`. Consider the case `cons a l ih`. Simplify using `using locSm_add (h a (by simp)) (ih fun i hi => h i (by simp [hi]))`.
+-/
 theorem locSm_listSum {ι : Type*} {g₀ : B.Mat k r} (l : List ι) (φ : ι → B.Mat k r → E')
     (h : ∀ i ∈ l, LocSm g₀ (φ i)) : LocSm g₀ (fun x => (l.map fun i => φ i x).sum) := by
   induction l with
@@ -61,6 +82,11 @@ theorem locSm_listSum {ι : Type*} {g₀ : B.Mat k r} (l : List ι) (φ : ι →
   | cons a l ih =>
     simpa using locSm_add (h a (by simp)) (ih fun i hi => h i (by simp [hi]))
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons X w ih`. Establish `ih'` using `ih (fun Y hY => hw Y (by simp [hY]))`. Use `show B.CkOn ⊤ (B.GV k r) (RdV X (B.Rw w f))`.
+
+Conclude with `Formalism.FourierDecayAlt.P.B5.ckOn_RdV (m := ⊤) (hw X (by simp)) (by rw [top_add]; exact ih')`.
+-/
 theorem ckOn_Rw_top {f : B.Mat k r → E'} (hf : B.CkOn ⊤ (B.GV k r) f) (w : List (B.Mat k r))
     (hw : ∀ X ∈ w, B.inLie k r X) : B.CkOn ⊤ (B.GV k r) (B.Rw w f) := by
   induction w with
@@ -70,6 +96,9 @@ theorem ckOn_Rw_top {f : B.Mat k r → E'} (hf : B.CkOn ⊤ (B.GV k r) f) (w : L
     show B.CkOn ⊤ (B.GV k r) (RdV X (B.Rw w f))
     exact Formalism.FourierDecayAlt.P.B5.ckOn_RdV (m := ⊤) (hw X (by simp)) (by rw [top_add]; exact ih')
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, o, m, c, e⟩` from `hh g₀ hg₀.1.1 hg₀.2`. Conclude with `⟨U, F, o, m, c, fun x hx hxG => e x hx hxG.1⟩`.
+-/
 theorem locSm_smoothLev {O : Set (B.Mat k r)} {h : B.Mat k r → E'}
     (hh : ∀ g₀ ∈ B.GV k r, g₀ ∈ O → LocSm g₀ h) : Q.SmoothLev k r 0 O h := by
   intro g₀ hg₀
@@ -78,6 +107,17 @@ theorem locSm_smoothLev {O : Set (B.Mat k r)} {h : B.Mat k r → E'}
 
 end loc
 
+/- English proof (translation)
+Introduce `k r E' _ _ O J hO hJ g₀ hg₀ hg₀O`. Take `⟨U₀, F, hU₀, hgU₀, hF, hFJ⟩` from `hJ g₀ ⟨mem_level_zero_of_mem_group hg₀, hg₀O⟩`. Establish `hV : U₀ ∩ O ∈ nhds g₀` using `(hU₀.inter hO).mem_nhds ⟨hgU₀, hg₀O⟩`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hV`. Set `b : ContDiffBump g₀` to `⟨ε / 3, 2 * ε / 3, by positivity, by linarith⟩`.
+
+Establish `hts : tsupport (fun x => b x • F x) ⊆ Metric.closedBall g₀ (2 * ε / 3)` using `(tsupport_smul_subset_left _ _).trans b.tsupport_eq.subset`. Establish `hcb : Metric.closedBall g₀ (2 * ε / 3) ⊆ U₀ ∩ O` using `fun x hx => hball (Metric.closedBall_subset_ball (by linarith) hx)`. Use `⟨fun x => b x • F x, Metric.ball g₀ (ε / 3), ?_, ?_, fun x hx => (hcb (hts hx)).2, Metric.isOpen_ball, Metric.mem_ball_self (by positivity), ?_⟩` and prove the remaining obligations. Introduce `g _`. Use `⟨Set.univ, fun x => b x • F x, isOpen_univ, trivial, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations.
+
+Apply `ContDiff.contDiffOn` to reduce the goal to its premises. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ U₀`. Conclude with `((b.contDiff.contDiffOn).smul hF).contDiffAt (hU₀.mem_nhds hx)`.
+
+Establish `hx' : x ∉ tsupport (fun x => b x • F x)` using `fun h => hx (hcb (hts h)).1`. Conclude with `(contDiffAt_const (c := (0 : E'))).congr_of_eventuallyEq (notMem_tsupport_iff_eventuallyEq.1 hx')`. Conclude with `IsCompact.of_isClosed_subset (isCompact_closedBall g₀ (2 * ε / 3)) (isClosed_tsupport _) hts`. Introduce `x hx hxG`. Establish `hb : b x = 1` using `b.one_of_mem_closedBall (Metric.ball_subset_closedBall hx)`.
+
+Establish `hxU : x ∈ U₀` using `(hball (Metric.ball_subset_ball (by linarith) hx)).1`. Simplify using `only [hb, one_smul]`. Conclude with `(hFJ x hxU (mem_level_zero_of_mem_group hxG)).symm`.
+-/
 theorem extension_locality_holds : ExtLoc := by
   intro k r E' _ _ O J hO hJ g₀ hg₀ hg₀O
   obtain ⟨U₀, F, hU₀, hgU₀, hF, hFJ⟩ := hJ g₀ ⟨mem_level_zero_of_mem_group hg₀, hg₀O⟩
@@ -107,6 +147,15 @@ theorem extension_locality_holds : ExtLoc := by
     simp only [hb, one_smul]
     exact (hFJ x hxU (mem_level_zero_of_mem_group hxG)).symm
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ D Θ O hO hOP hΘ f hf hs`. Establish `hsupp : closure {g | g ∈ B.GV k r ∧ f g ≠ 0} ⊆ B.GPos D`. Introduce `x hx`. Establish `hxG : x ∈ B.GV k r` using `(Formalism.FourierDecayAlt.P.B5.GV_closed (k := k) (r := r)).closure_subset_iff.2 (fun y hy => hy.1) hx`. Establish `hxT : x ∈ tsupport f` using `closure_mono (fun y hy => hy.2) hx`.
+
+Conclude with `hOP x (hs hxT) hxG`. Prove the components needed by the constructor for the conclusion. Apply `locSm_smoothLev` to reduce the goal to its premises. Introduce `g₀ hg₀ hg₀O`. Apply `locSm_listSum` to reduce the goal to its premises.
+
+Introduce `T hT`. Conclude with `locSm_clm (locSm_of_ckOn (hΘ T hT).1 (hOP g₀ hg₀O hg₀)) (locSm_of_ckOn (ckOn_Rw_top hf T.word T.word_lie) hg₀)`. Apply `locSm_smoothLev` to reduce the goal to its premises. Introduce `g₀ hg₀ hg₀O`. Apply `locSm_listSum` to reduce the goal to its premises.
+
+Introduce `T hT`. Apply `locSm_smul` to reduce the goal to its premises. Establish `hc : B.CkOn ⊤ (B.GV k r) (fun x => T.coefAdj x (f x))` using `Formalism.FourierDecayAlt.P.B5.ckOn_coef (hΘ T hT).2 hf hsupp`. Conclude with `locSm_of_ckOn (ckOn_Rw_top hc T.word.reverse (fun X hX => T.word_lie X (List.mem_reverse.1 hX))) hg₀`.
+-/
 theorem smooth_operators_holds : SmoothOps := by
   intro k r Wp Wq _ _ _ _ _ D Θ O hO hOP hΘ f hf hs
   have hsupp : closure {g | g ∈ B.GV k r ∧ f g ≠ 0} ⊆ B.GPos D := by
@@ -132,6 +181,15 @@ theorem smooth_operators_holds : SmoothOps := by
     exact locSm_of_ckOn (ckOn_Rw_top hc T.word.reverse
       (fun X hX => T.word_lie X (List.mem_reverse.1 hX))) hg₀
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hG, hD⟩`. Use `⟨fun l hl => ?_, hG⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos l.val with h0 | hpos` into its components or cases.
+
+Establish `: l = ⟨0, by omega⟩` using `Fin.ext h0`. Rewrite using `[this]`. Rewrite using `[show Dmin S.G.k S.G.r (T v).base.z (T v).base.z' g ⟨0, by omega⟩ = 1 by`. Unfold `Dmin`. Conclude with `Matrix.det_isEmpty]`.
+
+Conclude with `one_ne_zero`. Use `hD ⟨l.val - 1, by omega⟩` as an intermediate fact. Establish `e : (⟨(l.val - 1) + 1, by omega⟩ : Fin (S.G.r + 2)) = l` using `Fin.ext (by simp; omega)`. Simplify `this` using `[e]`. Introduce and unpack `⟨hD, hG⟩`.
+
+Conclude with `⟨hG, fun a => hD ⟨a.val + 1, by omega⟩ (by have := a.isLt; simp only [Fin.val_mk]; omega)⟩`.
+-/
 theorem omP_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
     [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wq x)]
@@ -153,6 +211,9 @@ theorem omP_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : Infin
   · rintro ⟨hD, hG⟩
     exact ⟨hG, fun a => hD ⟨a.val + 1, by omega⟩ (by have := a.isLt; simp only [Fin.val_mk]; omega)⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T v`. Use `⟨?_, fun g hg hgG => ⟨hgG, hg.1⟩⟩` and prove the remaining obligations. Rewrite using `[omP_eq]`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus (T v).base.z_mem (T v).base.z'_mem`.
+-/
 theorem positive_domain_condition_holds : OmPDom := by
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T v
   refine ⟨?_, fun g hg hgG => ⟨hgG, hg.1⟩⟩

@@ -13,6 +13,13 @@ open Classical
 noncomputable section
 namespace GlobalTheory.IntGauge
 
+/- English proof (translation)
+Use `⟨{ carrier := {x | ‖x‖ ≤ 1} mul_mem' := fun {a b} ha hb => by` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, norm_mul] at *`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hb`. Use the proof step `one_mem' := by simp`. Use the proof step `add_mem' := fun {a b} ha hb => (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+
+Use the proof step `zero_mem' := by simp`. Use the proof step `neg_mem' := fun {a} ha => by simpa using ha`. Use the proof step `mem_or_inv_mem' := fun x => by`. Distinguish the cases in `h : ‖x‖ ≤ 1`. Conclude with `Or.inl h`.
+
+Use `right show ‖x⁻¹‖ ≤ 1`. Rewrite using `[norm_inv]`. Conclude with `inv_le_one_of_one_le₀ (le_of_lt (not_le.1 h)) }, fun x => Iff.rfl⟩`.
+-/
 theorem exists_ball (C : Type) [NormedField C] [IsUltrametricDist C] :
     ∃ S : ValuationSubring C, ∀ x, x ∈ S ↔ ‖x‖ ≤ 1 := by
   refine ⟨{ carrier := {x | ‖x‖ ≤ 1}
@@ -31,6 +38,9 @@ theorem exists_ball (C : Type) [NormedField C] [IsUltrametricDist C] :
                 rw [norm_inv]
                 exact inv_le_one_of_one_le₀ (le_of_lt (not_le.1 h)) }, fun x => Iff.rfl⟩
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ D C _ _ _ _ _ _ hC`. Take `⟨S, hS⟩` from `exists_ball C`. Take `⟨N, ν, hν⟩` from `GlobalTheory.ValuesExist.exists_integral_values GlobalTheory.firstFiveLaws.1 V D.toPre D.psi_even D.tau_bimult C S (fun r => (hS _).2 (hC.1 r))`. Conclude with `⟨N, ν, S, hS, hν⟩`.
+-/
 theorem exists_intN : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (D : DegData V (IsLocalRing.maximalIdeal V)), ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [CharZero C] [Algebra (FractionRing V) C], CExt V (IsLocalRing.maximalIdeal V) C → ∃ (N : NumD C) (ν : NumOf D.toPre C N), ν.IntN := by
   intro V _ _ _ _ _ D C _ _ _ _ _ _ hC
   obtain ⟨S, hS⟩ := exists_ball C

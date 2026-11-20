@@ -16,6 +16,11 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.SplitConj
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB d W v hsplit h2 n hn`. Take `⟨a, b, c, hq, hσa, hc, hb⟩` from `GlobalTheory.T.exists_integral_generator_splitPlace_cmExtension F E σ B hB v hsplit`. Take `⟨Eid, E1, E2, E3, E4⟩` from `GlobalTheory.SplitConj.exists_adelic_idem σ W v a b c hq hσa hc hb`. Take `⟨s, hs, hd, ha⟩` from `GlobalTheory.T.exists_integralSiegelParabolic_of_conjugateIdempotent F E σ B hB d W v h2 Eid E1 E2 E3 E4`. Use `⟨s, hs, GlobalTheory.SplitConj.conj_eq_sq n hn s _ _ (GlobalTheory.LatVac.liftV v 1 - 1) ?_ ?_ hd ha⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub (evFin F v), GlobalTheory.LatVac.evFin_liftV, map_one (evFin F v), sub_self]`. Establish `h2' : (2 : AE F E) * ((⅟2 : AF F) • Eid) = Eid`. Rewrite using `[Algebra.smul_def, ← mul_assoc, show (2 : AE F E) = algebraMap (AF F) (AE F E) 2 from (map_ofNat _ 2).symm, ← map_mul, mul_invOf_self, map_one, one_mul]`. Rewrite using `[map_sub (algebraMap (AF F) (AE F E)), map_one (algebraMap (AF F) (AE F E)), ← E2]`. Take the linear combination `h2'`.
+-/
 theorem conj_to_sq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (d : ℕ) (W : Spc F E d) (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → (2 : 𝓞 F) ∉ v.asIdeal →
     ∀ n ∈ GlobalTheory.InertDbl.NabD σ W v, ∃ s ∈ GlobalTheory.InertDbl.ParD σ W v, s * n * s⁻¹ = n * n := by

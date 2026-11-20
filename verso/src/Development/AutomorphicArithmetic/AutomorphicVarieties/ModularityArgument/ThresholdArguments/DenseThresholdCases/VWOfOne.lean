@@ -9,6 +9,11 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open UpperTheory.GalN.V
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Z.Bc
+/- English proof (translation)
+Introduce `hP hT hA K Ω _ _ _ _ _ _ _ _ hK l _ ι n hn r θ hθ hd hirr haut hc K' _ _ _ inst _ tow hK' hirr'`. Take `rfl : inst = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Take `⟨K'', _, _, _, _, _, hK'', h1, h2⟩` from `hT K K' Ω hK hK' l n r hirr hirr'`. Establish `h3` using `hA K K'' Ω hK hK'' l ι n hn r θ hc hθ hd h1 haut`. Rewrite `h2` using `[inf_comm]`.
+
+Establish `h4` using `hA K'' K' Ω hK'' hK' l ι n hn r θ hc hθ hd h2 h3`. Conclude with `(_root_.UpperTheory.GalN.V.automorphy_bridge_of_printed_hida hP K' Ω l ι n _).2.1.1 h4`.
+-/
 theorem UpperTheory.GalN.V.ofOne0_alt :
     _root_.UpperTheory.V.Af.HypothesesH' → Third → Across → ∀ (K Ω : Type) [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algebra ℚ Ω] [Algebra K Ω] [IsScalarTower ℚ K Ω]
     [IsAlgClosure ℚ Ω], Module.finrank ℚ K = 2 → ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ), 1 ≤ n →

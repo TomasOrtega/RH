@@ -15,6 +15,19 @@ open TopologicalSpace Opposite
 
 set_option backward.isDefEq.respectTransparency false
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hU' : IsAffineOpen U` using `hU`. Establish `htop : (⊤ : T.Opens) ≤ t ⁻¹ᵁ U` using `ht U hxU`. Establish `unit_of_top : ∀ s : Γ(T, ⊤), T.basicOpen s = ⊤ → IsUnit s`. Introduce `s hs`.
+
+Establish `h1` using `(T.toRingedSpace.isUnit_res_basicOpen s).map (T.presheaf.map (homOfLE hs.ge).op).hom`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `s = (T.presheaf.map _ ≫ T.presheaf.map _).hom s`. Rewrite using `[← Functor.map_comp, Subsingleton.elim (_ ≫ _) (𝟙 _), CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+
+Set `_` to `(S.presheaf.germ U x hxU).hom.toAlgebra`. Use `hU'.isLocalization_stalk ⟨x, hxU⟩` as an intermediate fact. Establish `hunit : ∀ y : (hU'.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl, IsUnit ((t.appLE U ⊤ htop).hom y)`. Introduce `y`. Establish `h1 : IsUnit (S.presheaf.germ U x hxU y)` using `IsLocalization.map_units (S.presheaf.stalk x) y`.
+
+Establish `h2 : x ∈ S.basicOpen (y : Γ(S, U))` using `(S.mem_basicOpen' (U := U) (y : Γ(S, U)) ⟨x, hxU⟩).mpr h1`. Apply `unit_of_top` to reduce the goal to its premises. Rewrite using `[Scheme.basicOpen_appLE]`. Conclude with `top_le_iff.mp (le_inf le_rfl (ht _ h2))`. Set `χ` to `IsLocalization.lift (M := (hU'.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl) (S := S.presheaf.stalk x) (g := (t.appLE U ⊤ htop).hom) hunit`.
+
+Establish `hχ : S.presheaf.germ U x hxU ≫ CommRingCat.ofHom χ = t.appLE U ⊤ htop` using `by ext1`. Conclude with `IsLocalization.lift_comp _`. Use `⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom χ), ?_⟩` and prove the remaining obligations. Establish `hfac : T.toSpecΓ ≫ Spec.map (t.appLE U ⊤ htop) ≫ hU'.fromSpec = t`. Establish `e1` using `Scheme.Opens.toSpecΓ_SpecMap_appLE t U ⊤ htop`.
+
+Rewrite `e1` using `[Scheme.Opens.toSpecΓ_top, Category.assoc]`. Establish `: IsIso (⊤ : T.Opens).ι` using `isIso_of_isOpenImmersion_of_opensRange_eq_top _ (by simp)`. Rewrite using `[← cancel_epi (⊤ : T.Opens).ι, reassoc_of% e1, hU'.toSpecΓ_fromSpec, Scheme.Hom.resLE_comp_ι]`. Rewrite using `[← hU'.fromSpecStalk_eq_fromSpecStalk hxU, IsAffineOpen.fromSpecStalk, Category.assoc, ← Spec.map_comp_assoc, hχ, hfac]`.
+-/
 theorem exists_lift_fromSpecStalk {S T : Scheme.{u}} (x : S) (t : T ⟶ S)
     (ht : ∀ V : S.Opens, x ∈ V → ⊤ ≤ t ⁻¹ᵁ V) :
     ∃ l : T ⟶ Spec (S.presheaf.stalk x), l ≫ S.fromSpecStalk x = t := by
@@ -79,6 +92,9 @@ def diagram : AffNhd x ⥤ Scheme.{u} where
     rw [← cancel_mono (pullback.fst p W.1.ι), pullback.lift_fst, Category.assoc, pullback.lift_fst,
       pullback.lift_fst]
 
+/- English proof (translation)
+Simplify using `only [diagram]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem diagram_map_fst {V W : AffNhd x} (i : V ⟶ W) :
     (diagram x p).map i ≫ pullback.fst p W.1.ι = pullback.fst p V.1.ι := by
   dsimp only [diagram]
@@ -104,11 +120,27 @@ def cone (h : IsPullback φ p' p (S.fromSpecStalk x)) : Cone (diagram x p) where
           simp only [Category.assoc, diagram_map_fst, pullback.lift_fst]
           exact Category.id_comp _ }
 
+/- English proof (translation)
+Simplify using `only [cone]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem cone_π_fst (h : IsPullback φ p' p (S.fromSpecStalk x)) (V : AffNhd x) :
     (cone h).π.app V ≫ pullback.fst p V.1.ι = φ := by
   dsimp only [cone]
   exact pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Take `⟨V0⟩ : Nonempty (AffNhd x)` from `IsCofiltered.nonempty`. Establish `hfst : ∀ (s : Cone (diagram x p)) (V W : AffNhd x), s.π.app V ≫ pullback.fst p V.1.ι = s.π.app W ≫ pullback.fst p W.1.ι`. Introduce `s V W`. Rewrite using `[← s.w (IsCofiltered.minToLeft V W), ← s.w (IsCofiltered.minToRight V W), Category.assoc, Category.assoc, diagram_map_fst, diagram_map_fst]`. Establish `hin : ∀ (s : Cone (diagram x p)) (W : S.Opens), x ∈ W → ⊤ ≤ (s.π.app V0 ≫ pullback.fst p V0.1.ι ≫ p) ⁻¹ᵁ W`.
+
+Introduce `s W hxW z _`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVW⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open hxW W.isOpen`. Establish `e : s.π.app V0 ≫ pullback.fst p V0.1.ι ≫ p = (s.π.app ⟨V, hxV, hV⟩ ≫ pullback.snd p (Scheme.Opens.ι V)) ≫ Scheme.Opens.ι V`. Rewrite using `[← Category.assoc, hfst s V0 ⟨V, hxV, hV⟩, Category.assoc, Category.assoc, pullback.condition]`. Express the relevant statement in the definitionally equal form `(s.π.app V0 ≫ pullback.fst p V0.1.ι ≫ p) z ∈ W`.
+
+Rewrite using `[e, Scheme.Hom.comp_apply]`. Conclude with `hVW (Scheme.Opens.range_ι V ▸ Set.mem_range_self _)`. Set `L : ∀ s : Cone (diagram x p), s.pt ⟶ X'` to `fun s => h.lift (s.π.app V0 ≫ pullback.fst p V0.1.ι) (exists_lift_fromSpecStalk x _ (hin s)).choose (by rw [(exists_lift_fromSpecStalk x _ (hin s)).choose_spec, Category.assoc])`. Use `⟨⟨L, fun s V => ?_, fun s m hm => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [L]`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, cone_π_fst, h.lift_fst]`. Conclude with `hfst s V0 V`. Rewrite using `[← cancel_mono V.1.ι]`. Simplify using `only [Category.assoc, cone, pullback.lift_snd_assoc, Scheme.Opens.fromSpecStalkOfMem_ι, h.lift_snd_assoc, (exists_lift_fromSpecStalk x _ (hin s)).choose_spec]`.
+
+Rewrite using `[← pullback.condition]`. Simplify using `only [← Category.assoc, hfst s V0 V]`. Establish `e1 : m ≫ φ = s.π.app V0 ≫ pullback.fst p V0.1.ι`. Rewrite using `[← hm V0, Category.assoc, cone_π_fst]`. Simplify using `only [L]`.
+
+Apply `h.hom_ext` to reduce the goal to its premises. Rewrite using `[e1, h.lift_fst]`. Rewrite using `[← cancel_mono (S.fromSpecStalk x)]`. Simplify using `only [Category.assoc, ← h.w, reassoc_of% e1, h.lift_fst_assoc]`.
+-/
 theorem nonempty_isLimit (h : IsPullback φ p' p (S.fromSpecStalk x)) : Nonempty (IsLimit (cone h)) := by
   obtain ⟨V0⟩ : Nonempty (AffNhd x) := IsCofiltered.nonempty
   have hfst : ∀ (s : Cone (diagram x p)) (V W : AffNhd x),
@@ -149,6 +181,15 @@ theorem nonempty_isLimit (h : IsPullback φ p' p (S.fromSpecStalk x)) : Nonempty
     · rw [← cancel_mono (S.fromSpecStalk x)]
       simp only [Category.assoc, ← h.w, reassoc_of% e1, h.lift_fst_assoc]
 
+/- English proof (translation)
+Take `⟨hc⟩` from `nonempty_isLimit h`. Establish `hcpt : ∀ V : AffNhd x, CompactSpace ((diagram x p).obj V)` using `fun V => by`. Establish `: IsAffine V.1.toScheme` using `V.2.2`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (pullback.snd p V.1.ι)`. Establish `hqs : ∀ V : AffNhd x, QuasiSeparatedSpace ((diagram x p).obj V)` using `fun V => by`.
+
+Establish `: IsAffine V.1.toScheme` using `V.2.2`. Conclude with `(quasiSeparated_iff_quasiSeparatedSpace (pullback.snd p V.1.ι)).mp inferInstance`. Set `t : diagram x p ⟶ (Functor.const (AffNhd x)).obj S` to `{ app := fun V => pullback.fst p V.1.ι ≫ p naturality := fun V W i => by dsimp`. Rewrite using `[Category.comp_id, ← Category.assoc, diagram_map_fst] }`. Establish `ht : (cone h).π ≫ t = (Functor.const _).map (a ≫ q)`.
+
+Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `V`. Simplify using `only [NatTrans.comp_app, Functor.const_map_app, t]`. Rewrite using `[← Category.assoc, cone_π_fst, ha]`. Take `⟨V, g, hg₁, hg₂⟩` from `Scheme.exists_π_app_comp_eq_of_locallyOfFinitePresentation (diagram x p) t q (cone h) hc a ht`.
+
+Conclude with `⟨V.1, V.2.1, V.2.2, (cone h).π.app V, g, cone_π_fst h V, hg₁, hg₂⟩`.
+-/
 theorem exists_spread [QuasiCompact p] [QuasiSeparated p] (h : IsPullback φ p' p (S.fromSpecStalk x))
     {Y : Scheme.{u}} (q : Y ⟶ S) [LocallyOfFinitePresentation q] (a : X' ⟶ Y) (ha : a ≫ q = φ ≫ p) :
     ∃ (V : S.Opens) (_ : x ∈ V) (_ : IsAffineOpen V) (w : X' ⟶ pullback p V.ι) (g : pullback p V.ι ⟶ Y),
@@ -185,9 +226,23 @@ def IsGenericPointHom {U S : Scheme.{u}} [IsIntegral S] (j : U ⟶ S) : Prop :=
 
 namespace IsGenericPointHom
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Iso.refl _, Category.id_comp _⟩`.
+-/
 theorem fromSpecStalk (S : Scheme.{u}) [IsIntegral S] : IsGenericPointHom (S.fromSpecStalk (genericPoint S)) :=
   ⟨Iso.refl _, Category.id_comp _⟩
 
+/- English proof (translation)
+Establish `hx : j (IsLocalRing.closedPoint K) = genericPoint S`. Establish `hr : Set.range j = {j (IsLocalRing.closedPoint K)}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`.
+
+Rewrite using `[Subsingleton.elim u (IsLocalRing.closedPoint K)]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨_, rfl⟩`. Establish `hg : IsGenericPoint (j (IsLocalRing.closedPoint K)) ⊤` using `by show closure _ = Set.univ`.
+
+Rewrite using `[← hr]`. Conclude with `j.denseRange.closure_range`. Conclude with `hg.eq (genericPoint_spec S)`. Establish `hfield : IsField ↑(S.presheaf.stalk (j (IsLocalRing.closedPoint K)))`. Rewrite using `[hx]`.
+
+Conclude with `Field.toIsField S.functionField`. Set `` to `hfield.toField`. Establish `hsurj : Function.Surjective (Scheme.stalkClosedPointTo j)`. Simplify using `only [Scheme.stalkClosedPointTo, CommRingCat.hom_comp, RingHom.coe_comp]`. Conclude with `(stalkClosedPointIso _).commRingCatIsoToRingEquiv.surjective.comp (j.stalkMap_surjective _)`.
+
+Establish `hinj : Function.Injective (Scheme.stalkClosedPointTo j)` using `(Scheme.stalkClosedPointTo j).hom.injective`. Establish `: IsIso (Scheme.stalkClosedPointTo j)` using `(ConcreteCategory.isIso_iff_bijective _).mpr ⟨hinj, hsurj⟩`. Unfold `IsGenericPointHom`. Rewrite using `[← hx]`. Conclude with `⟨asIso (Spec.map (Scheme.stalkClosedPointTo j)), Scheme.Spec_stalkClosedPointTo_fromSpecStalk j⟩`.
+-/
 theorem of_isPreimmersion {S : Scheme.{u}} [IsIntegral S] {K : Type u} [Field K] (j : Spec (.of K) ⟶ S)
     [IsPreimmersion j] [IsDominant j] : IsGenericPointHom j := by
   have hx : j (IsLocalRing.closedPoint K) = genericPoint S := by
@@ -220,6 +275,11 @@ theorem of_isPreimmersion {S : Scheme.{u}} [IsIntegral S] {K : Type u} [Field K]
   rw [← hx]
   exact ⟨asIso (Spec.map (Scheme.stalkClosedPointTo j)), Scheme.Spec_stalkClosedPointTo_fromSpecStalk j⟩
 
+/- English proof (translation)
+Establish `: IsPreimmersion (Spec.map (CommRingCat.ofHom (algebraMap R K)))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `: IsDominant (Spec.map (CommRingCat.ofHom (algebraMap R K)))`. Rewrite using `[isDominant_iff]`. Use `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).mpr ?_` and prove the remaining obligations. Introduce `r hr`.
+
+Establish `h0 : algebraMap R K r = 0` using `hr`. Rewrite `h0` using `[IsFractionRing.to_map_eq_zero_iff]`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Conclude with `of_isPreimmersion _`.
+-/
 theorem fractionField (R K : Type u) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] :
     IsGenericPointHom (Spec.map (CommRingCat.ofHom (algebraMap R K))) := by
   have : IsPreimmersion (Spec.map (CommRingCat.ofHom (algebraMap R K))) :=
@@ -236,6 +296,13 @@ theorem fractionField (R K : Type u) [CommRing R] [IsDomain R] [Field K] [Algebr
 
 variable {U S : Scheme.{u}} [IsIntegral S] {j : U ⟶ S}
 
+/- English proof (translation)
+Take `⟨e, rfl⟩` from `hj`. Establish `hgen : ∀ y : S, y ⤳ genericPoint S → y = genericPoint S` using `fun y hy => (hy.antisymm ((genericPoint_spec S).specializes trivial)).eq`. Use extensionality with `y`. Simplify using `only [Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, rfl⟩`. Apply `hgen` to reduce the goal to its premises. Establish `hy : (e.hom ≫ S.fromSpecStalk (genericPoint S)) u ∈ Set.range (S.fromSpecStalk (genericPoint S))` using `⟨e.hom u, by simp⟩`. Rewrite `hy` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Introduce and unpack `rfl`.
+
+Establish `hη : genericPoint S ∈ Set.range (S.fromSpecStalk (genericPoint S))`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `specializes_rfl`. Take `⟨u, hu⟩` from `hη`. Conclude with `⟨e.inv u, by simp [hu]⟩`.
+-/
 theorem range_eq (hj : IsGenericPointHom j) : Set.range j = {genericPoint S} := by
   obtain ⟨e, rfl⟩ := hj
   have hgen : ∀ y : S, y ⤳ genericPoint S → y = genericPoint S := fun y hy =>
@@ -255,10 +322,20 @@ theorem range_eq (hj : IsGenericPointHom j) : Set.range j = {genericPoint S} := 
     obtain ⟨u, hu⟩ := hη
     exact ⟨e.inv u, by simp [hu]⟩
 
+/- English proof (translation)
+Take `⟨e, -⟩` from `hj`. Conclude with `IsAffine.of_isIso e.hom`.
+-/
 theorem isAffine (hj : IsGenericPointHom j) : IsAffine U := by
   obtain ⟨e, -⟩ := hj
   exact IsAffine.of_isIso e.hom
 
+/- English proof (translation)
+Establish `: IsAffine U` using `hj.isAffine`. Establish `: IsLocallyNoetherian V` using `isLocallyNoetherian_of_isOpenImmersion i`. Establish `: IsReduced V` using `isReduced_of_isOpenImmersion i`. Establish `hdom : IsDominant k`. Rewrite using `[isDominant_iff, DenseRange, i.isOpenEmbedding.isInducing.dense_iff]`.
+
+Introduce `v`. Establish `hr : i '' Set.range k = {genericPoint S}`. Rewrite using `[← hj.range_eq, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hη : closure {genericPoint S} = (⊤ : Set S)` using `genericPoint_spec S`.
+
+Rewrite using `[hr, hη]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `⟨inferInstance, IsSchemeTheoreticallyDominant.of_isDominant k⟩`.
+-/
 theorem quasiCompact_and_dominant_of_comp [IsLocallyNoetherian S] {V : Scheme.{u}} {k : U ⟶ V} {i : V ⟶ S}
     [IsOpenImmersion i] (hj : IsGenericPointHom (k ≫ i)) :
     QuasiCompact k ∧ IsSchemeTheoreticallyDominant k := by
@@ -276,10 +353,22 @@ theorem quasiCompact_and_dominant_of_comp [IsLocallyNoetherian S] {V : Scheme.{u
     trivial
   exact ⟨inferInstance, IsSchemeTheoreticallyDominant.of_isDominant k⟩
 
+/- English proof (translation)
+The claim follows from `quasiCompact_and_dominant_of_comp (i := 𝟙 S) (by rwa [Category.comp_id])`.
+-/
 theorem quasiCompact_and_dominant [IsLocallyNoetherian S] (hj : IsGenericPointHom j) :
     QuasiCompact j ∧ IsSchemeTheoreticallyDominant j :=
   quasiCompact_and_dominant_of_comp (i := 𝟙 S) (by rwa [Category.comp_id])
 
+/- English proof (translation)
+Set `e` to `pullback.fst (pullback.lift f g hs) (pullback.diagonal s)`. Set `k : W ⟶ pullback (pullback.lift f g hs) (pullback.diagonal s)` to `pullback.lift w (w ≫ f) (by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_fst, pullback.diagonal_fst, Category.comp_id]`. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_snd, pullback.diagonal_snd, Category.comp_id, hw])`.
+
+Establish `hk : k ≫ e = w` using `pullback.lift_fst _ _ _`. Establish `hker : e.ker = ⊥`. Use `le_bot_iff.mp ((Scheme.Hom.le_ker_comp k e).trans ?_)` and prove the remaining obligations. Rewrite using `[hk, w.ker_eq_bot]`. Establish `: IsIso e` using `IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hker`.
+
+Establish `hc` using `pullback.condition (f := pullback.lift f g hs) (g := pullback.diagonal s)`. Establish `h₁ : e ≫ f = pullback.snd _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `h₂ : e ≫ g = pullback.snd _ _`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(cancel_epi e).mp (h₁.trans h₂.symm)`.
+-/
 private lemma hom_ext_lemma {W X Y Z : Scheme.{u}} {f g : X ⟶ Y} (s : Y ⟶ Z) [IsSeparated s]
     (hs : f ≫ s = g ≫ s) (w : W ⟶ X) [IsSchemeTheoreticallyDominant w] (hw : w ≫ f = w ≫ g) : f = g := by
   let e := pullback.fst (pullback.lift f g hs) (pullback.diagonal s)
@@ -304,6 +393,15 @@ private lemma hom_ext_lemma {W X Y Z : Scheme.{u}} {f g : X ⟶ Y} (s : Y ⟶ Z)
       _ = pullback.snd _ _ := by simp
   exact (cancel_epi e).mp (h₁.trans h₂.symm)
 
+/- English proof (translation)
+Use `⟨IsPullback.of_hasPullback _ _, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Establish `e : ∀ {A B : Over S} (g : A ⟶ B), ((Over.pullback f).map g).left ≫ pullback.fst B.hom f = pullback.fst A.hom f ≫ g.left`. Introduce `A B g`. Simplify using `only [Over.pullback_map_left]`.
+
+Conclude with `pullback.lift_fst _ _ _`. Establish `key : (lift x₀ y₀).left = (lift x y ≫ Functor.LaxMonoidal.μ (Over.pullback f) G G).left ≫ pullback.fst (G ⊗ G).hom f`. Apply `pullback.hom_ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Functor.Monoidal.μ_fst, lift_fst]`.
+
+Use `_ = _ := by simp only [Over.comp_left, Category.assoc, e]; rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Functor.Monoidal.μ_snd, lift_snd]`. Use `_ = _ := by simp only [Over.comp_left, Category.assoc, e]; rfl`. Express the relevant statement in the definitionally equal form `(lift x₀ y₀ ≫ μ).left = (lift x y ≫ (Functor.LaxMonoidal.μ (Over.pullback f) G G ≫ (Over.pullback f).map μ)).left ≫ pullback.fst G.hom f`.
+
+Rewrite using `[Over.comp_left, key]`. Simplify using `only [Over.comp_left, Category.assoc, e]`.
+-/
 private theorem isGrpPullback_pullback_fst {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G] :
     IsGrpPullback ((Over.pullback f).obj G) G f (pullback.fst G.hom f) := by
   refine ⟨IsPullback.of_hasPullback _ _, ?_⟩
@@ -335,6 +433,47 @@ private theorem isGrpPullback_pullback_fst {S S' : Scheme.{0}} (f : S' ⟶ S) (G
 
 end IsGenericPointHom
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hj`. Establish `hsq : IsPullback j e.hom (𝟙 S) (S.fromSpecStalk (genericPoint S))` using `IsPullback.of_vert_isIso ⟨by rw [Category.comp_id, he]⟩`. Establish `hpb` using `hφ.1.paste_vert hsq`. Rewrite `hpb` using `[Category.comp_id]`. Establish `ha : (f.left ≫ ψ) ≫ H.hom = φ ≫ G.hom`.
+
+Rewrite using `[Category.assoc, hψ.1.w, ← Category.assoc, Over.w f, hφ.1.w]`. Take `⟨V, hηV, hVa, w, g₀, hw, hwg, hg₀⟩` from `StalkLimit.exists_spread hpb H.hom (f.left ≫ ψ) ha`. Set `g : (Over.pullback V.ι).obj G ⟶ (Over.pullback V.ι).obj H` to `Over.homMk (pullback.lift g₀ (pullback.snd G.hom V.ι) (by rw [hg₀, pullback.condition])) (pullback.lift_snd _ _ _)`. Establish `hgl : g.left ≫ pullback.fst H.hom V.ι = g₀` using `pullback.lift_fst _ _ _`. Establish `hmon : IsMonHom g`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : U ⟶ V, k ≫ V.ι = j := by`. Use `⟨IsOpenImmersion.lift V.ι j ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Establish `hr : j u ∈ Set.range j` using `⟨u, rfl⟩`. Rewrite `hr` using `[IsGenericPointHom.range_eq ⟨e, he⟩, Set.mem_singleton_iff]`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hr ▸ hηV`. Substitute `hk` using the available equality. Take `⟨_, _⟩` from `IsGenericPointHom.quasiCompact_and_dominant_of_comp (k := k) (i := V.ι) ⟨e, he⟩`. Establish `hwk : w ≫ pullback.snd G.hom V.ι = G'.hom ≫ k`.
+
+Rewrite using `[← cancel_mono V.ι, Category.assoc, ← pullback.condition, ← Category.assoc, hw, hφ.1.w, Category.assoc]`. Establish `hsqV : IsPullback w G'.hom (pullback.snd G.hom V.ι) k` using `IsPullback.of_right (by rw [hw]; exact hφ.1) hwk (IsPullback.of_hasPullback G.hom V.ι)`. Establish `hG'V2 : ∀ (T : Over U) (x y : T ⟶ G') (x₀ y₀ : Over.mk (T.hom ≫ k) ⟶ (Over.pullback V.ι).obj G), x₀.left = x.left ≫ w → y₀.left = y.left ≫ w → (x₀ * y₀).left = (x * y).left ≫ w`. Introduce `T x y x₀ y₀ hx hy`. Set `E : Over.mk (T.hom ≫ (k ≫ V.ι)) ≅ Over.mk ((T.hom ≫ k) ≫ V.ι)` to `Over.isoMk (Iso.refl _) (by simp)`.
+
+Set `x₁ : Over.mk ((T.hom ≫ k) ≫ V.ι) ⟶ G` to `Over.homMk (x₀.left ≫ pullback.fst G.hom V.ι) (by`. Rewrite using `[Category.assoc x₀.left, pullback.condition, ← Category.assoc x₀.left]`. Conclude with `congr_arg (· ≫ V.ι) (Over.w x₀))`. Set `y₁ : Over.mk ((T.hom ≫ k) ≫ V.ι) ⟶ G` to `Over.homMk (y₀.left ≫ pullback.fst G.hom V.ι) (by`. Rewrite using `[Category.assoc y₀.left, pullback.condition, ← Category.assoc y₀.left]`.
+
+Conclude with `congr_arg (· ≫ V.ι) (Over.w y₀))`. Establish `hC : (x₁ * y₁).left = (x₀ * y₀).left ≫ pullback.fst G.hom V.ι` using `(IsGenericPointHom.isGrpPullback_pullback_fst V.ι G).2 (Over.mk (T.hom ≫ k)) x₀ y₀ x₁ y₁ rfl rfl`. Establish `hB : ((E.hom ≫ x₁) * (E.hom ≫ y₁)).left = (x * y).left ≫ φ` using `hφ.2 T x y (E.hom ≫ x₁) (E.hom ≫ y₁) (by simp [E, x₁, hx, hw]) (by simp [E, y₁, hy, hw])`. Establish `hEc : ((E.hom ≫ x₁) * (E.hom ≫ y₁)).left = (x₁ * y₁).left`. Rewrite using `[← MonObj.comp_mul]`.
+
+Simplify using `[E]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[← hC, ← hEc, hB, Category.assoc, hw]`. Rewrite using `[Category.assoc, hwk, ← Category.assoc, Over.w (x * y)]`. Conclude with `Over.w (x₀ * y₀)`.
+
+Establish `_ : Flat ((Over.pullback V.ι).obj G).hom` using `show Flat (pullback.snd G.hom V.ι) from inferInstance`. Establish `_ : Flat ((Over.pullback V.ι).obj G ⊗ (Over.pullback V.ι).obj G).hom` using `show Flat (pullback.fst ((Over.pullback V.ι).obj G).hom ((Over.pullback V.ι).obj G).hom ≫ ((Over.pullback V.ι).obj G).hom) from inferInstance`. Establish `hsnd : ∀ {A : Over V.toScheme} (u v : A ⟶ (Over.pullback V.ι).obj H), u.left ≫ pullback.snd H.hom V.ι = v.left ≫ pullback.snd H.hom V.ι` using `fun u v => (Over.w u).trans (Over.w v).symm`. Establish `hmul : μ[(Over.pullback V.ι).obj G] ≫ g = (g ⊗ₘ g) ≫ μ[(Over.pullback V.ι).obj H]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `swap`. Conclude with `hsnd _ _`. Set `GV` to `(Over.pullback V.ι).obj G`. Set `π` to `pullback.fst (GV ⊗ GV).hom k`.
+
+Set `σ` to `pullback.snd (GV ⊗ GV).hom k`. Set `T' : Over U` to `Over.mk σ`. Set `a₁ : Over.mk (σ ≫ k) ⟶ GV` to `Over.homMk (π ≫ pullback.fst GV.hom GV.hom) (by`. Rewrite using `[Category.assoc]`. Conclude with `pullback.condition)`.
+
+Set `a₂ : Over.mk (σ ≫ k) ⟶ GV` to `Over.homMk (π ≫ pullback.snd GV.hom GV.hom) (by`. Rewrite using `[Category.assoc, ← pullback.condition (f := GV.hom) (g := GV.hom)]`. Conclude with `pullback.condition)`. Establish `hl : (lift a₁ a₂).left = π`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Conclude with `congr_arg (fun u => u.left) (lift_fst a₁ a₂)`. Conclude with `congr_arg (fun u => u.left) (lift_snd a₁ a₂)`. Set `x₁ : T' ⟶ G'` to `Over.homMk (hsqV.lift a₁.left σ (Over.w a₁)) (hsqV.lift_snd _ _ _)`. Set `x₂ : T' ⟶ G'` to `Over.homMk (hsqV.lift a₂.left σ (Over.w a₂)) (hsqV.lift_snd _ _ _)`. Establish `hx₁ : x₁.left ≫ w = a₁.left` using `hsqV.lift_fst _ _ _`.
+
+Establish `hx₂ : x₂.left ≫ w = a₂.left` using `hsqV.lift_fst _ _ _`. Establish `hA : (a₁ * a₂).left = (x₁ * x₂).left ≫ w` using `hG'V2 T' x₁ x₂ a₁ a₂ hx₁.symm hx₂.symm`. Set `E : Over.mk (σ ≫ (k ≫ V.ι)) ≅ Over.mk ((σ ≫ k) ≫ V.ι)` to `Over.isoMk (Iso.refl _) (by simp)`. Set `c₁ : Over.mk ((σ ≫ k) ≫ V.ι) ⟶ H` to `Over.homMk ((a₁ ≫ g).left ≫ pullback.fst H.hom V.ι) (by`. Rewrite using `[Category.assoc (a₁ ≫ g).left, pullback.condition, ← Category.assoc (a₁ ≫ g).left]`.
+
+Conclude with `congr_arg (· ≫ V.ι) (Over.w (a₁ ≫ g)))`. Set `c₂ : Over.mk ((σ ≫ k) ≫ V.ι) ⟶ H` to `Over.homMk ((a₂ ≫ g).left ≫ pullback.fst H.hom V.ι) (by`. Rewrite using `[Category.assoc (a₂ ≫ g).left, pullback.condition, ← Category.assoc (a₂ ≫ g).left]`. Conclude with `congr_arg (· ≫ V.ι) (Over.w (a₂ ≫ g)))`. Establish `hC : (c₁ * c₂).left = ((a₁ ≫ g) * (a₂ ≫ g)).left ≫ pullback.fst H.hom V.ι` using `(IsGenericPointHom.isGrpPullback_pullback_fst V.ι H).2 (Over.mk (σ ≫ k)) (a₁ ≫ g) (a₂ ≫ g) c₁ c₂ rfl rfl`.
+
+Establish `hci : ∀ (a : Over.mk (σ ≫ k) ⟶ GV) (x : T' ⟶ G'), x.left ≫ w = a.left → (a ≫ g).left ≫ pullback.fst H.hom V.ι = (x ≫ f).left ≫ ψ`. Introduce `a x hx`. Rewrite using `[Over.comp_left, Category.assoc, hgl, ← hx, Category.assoc, hwg, Over.comp_left, Category.assoc]`. Establish `hB : ((E.hom ≫ c₁) * (E.hom ≫ c₂)).left = ((x₁ ≫ f) * (x₂ ≫ f)).left ≫ ψ` using `hψ.2 T' (x₁ ≫ f) (x₂ ≫ f) (E.hom ≫ c₁) (E.hom ≫ c₂) ((Category.id_comp _).trans (hci a₁ x₁ hx₁)) ((Category.id_comp _).trans (hci a₂ x₂ hx₂))`. Establish `hEc : ((E.hom ≫ c₁) * (E.hom ≫ c₂)).left = (c₁ * c₂).left`.
+
+Rewrite using `[← MonObj.comp_mul]`. Simplify using `[E]`. Apply `IsGenericPointHom.hom_ext_lemma H.hom (by` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc, ← Category.assoc, hsnd (μ[GV] ≫ g) ((g ⊗ₘ g) ≫ μ[(Over.pullback V.ι).obj H])]) π`. Rewrite using `[← hl]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Over.comp_left, Category.assoc, Hom.mul_def]`. Use `_ = ((x₁ ≫ f) * (x₂ ≫ f)).left ≫ ψ := by`. Rewrite using `[hA, hgl, Category.assoc, hwg, ← MonObj.mul_comp, Over.comp_left, Category.assoc]`. Use `_ = ((a₁ ≫ g) * (a₂ ≫ g)).left ≫ pullback.fst H.hom V.ι := by rw [← hB, hEc, hC]`.
+
+Use `_ = (lift a₁ a₂).left ≫ ((g ⊗ₘ g) ≫ μ[(Over.pullback V.ι).obj H]).left ≫ pullback.fst H.hom V.ι := by`. Simplify using `only [Over.comp_left, Category.assoc, Hom.mul_def, ← lift_map]`. Use `⟨?_, hmul⟩` and prove the remaining obligations. Establish `h1 : (1 : 𝟙_ (Over V.toScheme) ⟶ (Over.pullback V.ι).obj G) ≫ g = ((1 : 𝟙_ (Over V.toScheme) ⟶ (Over.pullback V.ι).obj G) ≫ g) * ((1 : 𝟙_ (Over V.toScheme) ⟶ _) ≫ g)` using `by conv_lhs => rw [← mul_one (1 : 𝟙_ (Over V.toScheme) ⟶ (Over.pullback V.ι).obj G)]`. Rewrite using `[Hom.mul_def, Hom.mul_def, Category.assoc, hmul, ← Category.assoc, lift_map]`.
+
+Establish `h2 : (1 : 𝟙_ (Over V.toScheme) ⟶ (Over.pullback V.ι).obj G) ≫ g = 1`. Simplify using `using h1.symm`. Simplify `h2` using `[Hom.one_def]`. Conclude with `⟨V, hηV, hVa, g, hmon, w, hw, by rw [hgl, hwg]⟩`.
+-/
 theorem spread_hom_generic_of_isGrpPullback {U S : Scheme.{0}} [IsIntegral S] [IsLocallyNoetherian S] {j : U ⟶ S}
     (hj : IsGenericPointHom j) {G H : Over S} [GrpObj G] [GrpObj H] [Flat G.hom] [QuasiCompact G.hom]
     [QuasiSeparated G.hom] [IsSeparated H.hom] [LocallyOfFinitePresentation H.hom] {G' H' : Over U} [GrpObj G']
@@ -479,6 +618,15 @@ open ExtUnique
 
 variable {S U : Scheme.{0}} [IsIntegral S] [AlgebraicGeometry.IsNoetherian S] {j : U ⟶ S}
 
+/- English proof (translation)
+Establish `_ : Smooth G.hom` using `hG.smooth`. Establish `_ : IsSeparated G.hom` using `hG.separated`. Establish `_ : QuasiCompact G.hom` using `hG.quasiCompact`. Establish `_ : Smooth H.hom` using `hH.smooth`. Establish `_ : IsSeparated H.hom` using `hH.separated`.
+
+Take `⟨V, hηV, -, g, hg, w, hw₁, hw₂⟩` from `spread_hom_generic_of_isGrpPullback hj hφ hψ f`. Establish `hVd : Dense (V : Set S)` using `V.isOpen.dense ⟨_, hηV⟩`. Take `⟨F, ⟨hF, hFg⟩, -⟩` from `h S hS V hVd G H hG hH g hg`. Establish `hsq : ((Over.pullback V.ι).map F).left ≫ pullback.fst H.hom V.ι = pullback.fst G.hom V.ι ≫ F.left`. Simplify using `only [Over.pullback_map_left]`.
+
+Conclude with `pullback.lift_fst _ _ _`. Establish `hex : f.left ≫ ψ = φ ≫ F.left`. Rewrite using `[← hw₂, ← hFg, hsq, ← Category.assoc, hw₁]`. Use `⟨F, ⟨hF, hex⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `F₂ ⟨-, hF₂⟩`.
+
+Take `⟨_, _⟩` from `hj.quasiCompact_and_dominant`. Establish `hpb : IsPullback G'.hom φ j G.hom` using `hφ.1.flip`. Establish `_ : IsSchemeTheoreticallyDominant φ` using `IsSchemeTheoreticallyDominant.of_isPullback hpb`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `IsGenericPointHom.hom_ext_lemma H.hom (by rw [Over.w, Over.w]) φ (hF₂.symm.trans hex)`.
+-/
 theorem generic_of_isGrpPullback (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S)
     (hj : IsGenericPointHom j) {G H : Over S} [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
     {G' H' : Over U} [GrpObj G'] [GrpObj H'] {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left}
@@ -505,6 +653,13 @@ theorem generic_of_isGrpPullback (h : SemiAbelianHomExtension) (hS : Reciprocity
   apply Over.OverMorphism.ext
   exact IsGenericPointHom.hom_ext_lemma H.hom (by rw [Over.w, Over.w]) φ (hF₂.symm.trans hex)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using `only [Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`. Introduce `hF`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.pullback_map_left, pullback.lift_fst]`. Conclude with `hF.symm`. Simplify using `only [Over.pullback_map_left, pullback.lift_snd]`.
+
+Conclude with `(Over.w f).symm`.
+-/
 private theorem pullback_map_eq_iff_fst_comp {S₀ U₀ : Scheme.{0}} {t : U₀ ⟶ S₀} {G₀ H₀ : Over S₀} (F : G₀ ⟶ H₀)
     (f : (Over.pullback t).obj G₀ ⟶ (Over.pullback t).obj H₀) :
     (Over.pullback t).map F = f ↔ f.left ≫ pullback.fst H₀.hom t = pullback.fst G₀.hom t ≫ F.left := by
@@ -520,6 +675,9 @@ private theorem pullback_map_eq_iff_fst_comp {S₀ U₀ : Scheme.{0}} {t : U₀ 
     · simp only [Over.pullback_map_left, pullback.lift_snd]
       exact (Over.w f).symm
 
+/- English proof (translation)
+Take `⟨F, ⟨hF, hFf⟩, u⟩` from `generic_of_isGrpPullback h hS hj hG hH (IsGenericPointHom.isGrpPullback_pullback_fst j G) (IsGenericPointHom.isGrpPullback_pullback_fst j H) f`. Conclude with `⟨F, ⟨hF, (pullback_map_eq_iff_fst_comp F f).2 hFf⟩, fun F' ⟨hF', e⟩ => u F' ⟨hF', (pullback_map_eq_iff_fst_comp F' f).1 e⟩⟩`.
+-/
 theorem of_isGenericPointHom (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S)
     (hj : IsGenericPointHom j) {G H : Over S} [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
     (f : (Over.pullback j).obj G ⟶ (Over.pullback j).obj H) [IsMonHom f] :
@@ -528,6 +686,13 @@ theorem of_isGenericPointHom (h : SemiAbelianHomExtension) (hS : ReciprocityTheo
     (IsGenericPointHom.isGrpPullback_pullback_fst j G) (IsGenericPointHom.isGrpPullback_pullback_fst j H) f
   exact ⟨F, ⟨hF, (pullback_map_eq_iff_fst_comp F f).2 hFf⟩, fun F' ⟨hF', e⟩ => u F' ⟨hF', (pullback_map_eq_iff_fst_comp F' f).1 e⟩⟩
 
+/- English proof (translation)
+Take `⟨E₁, ⟨h₁, c₁⟩, u₁⟩` from `generic_of_isGrpPullback h hS hj hG hH hφ hψ e.hom`. Take `⟨E₂, ⟨h₂, c₂⟩, -⟩` from `generic_of_isGrpPullback h hS hj hH hG hψ hφ e.inv`. Take `⟨FG, -, uG⟩` from `generic_of_isGrpPullback h hS hj hG hG hφ hφ (𝟙 G')`. Take `⟨FH, -, uH⟩` from `generic_of_isGrpPullback h hS hj hH hH hψ hψ (𝟙 H')`. Establish `k₁ : E₁ ≫ E₂ = 𝟙 G`.
+
+Rewrite using `[uG (E₁ ≫ E₂) ⟨inferInstance, by rw [Over.comp_left, ← Category.assoc, ← c₁, Category.assoc, ← c₂, ← Category.assoc, ← Over.comp_left, e.hom_inv_id]⟩, uG (𝟙 G) ⟨inferInstance, by simp⟩]`. Establish `k₂ : E₂ ≫ E₁ = 𝟙 H`. Rewrite using `[uH (E₂ ≫ E₁) ⟨inferInstance, by rw [Over.comp_left, ← Category.assoc, ← c₂, Category.assoc, ← c₁, ← Category.assoc, ← Over.comp_left, e.inv_hom_id]⟩, uH (𝟙 H) ⟨inferInstance, by simp⟩]`. Use `⟨⟨E₁, E₂, k₁, k₂⟩, ⟨h₁, c₁⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `E ⟨hE, cE⟩`.
+
+Conclude with `Iso.ext (u₁ E.hom ⟨hE, cE⟩)`.
+-/
 theorem generic_existsUnique_iso_of_isGrpPullback (h : SemiAbelianHomExtension)
     (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) (hj : IsGenericPointHom j)
     {G H : Over S} [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H) {G' H' : Over U}
@@ -548,6 +713,9 @@ theorem generic_existsUnique_iso_of_isGrpPullback (h : SemiAbelianHomExtension)
   rintro E ⟨hE, cE⟩
   exact Iso.ext (u₁ E.hom ⟨hE, cE⟩)
 
+/- English proof (translation)
+Take `⟨E, ⟨hE, cE⟩, u⟩` from `generic_existsUnique_iso_of_isGrpPullback h hS hj hG hH (IsGenericPointHom.isGrpPullback_pullback_fst j G) (IsGenericPointHom.isGrpPullback_pullback_fst j H) e`. Conclude with `⟨E, ⟨hE, (pullback_map_eq_iff_fst_comp E.hom e.hom).2 cE⟩, fun E' ⟨hE', c⟩ => u E' ⟨hE', (pullback_map_eq_iff_fst_comp E'.hom e.hom).1 c⟩⟩`.
+-/
 theorem generic_existsUnique_iso (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S)
     (hj : IsGenericPointHom j) {G H : Over S} [GrpObj G] [GrpObj H]
     (hG : IsSemiAbelian G) (hH : IsSemiAbelian H) (e : (Over.pullback j).obj G ≅ (Over.pullback j).obj H)
@@ -557,6 +725,9 @@ theorem generic_existsUnique_iso (h : SemiAbelianHomExtension) (hS : Reciprocity
   exact ⟨E, ⟨hE, (pullback_map_eq_iff_fst_comp E.hom e.hom).2 cE⟩,
     fun E' ⟨hE', c⟩ => u E' ⟨hE', (pullback_map_eq_iff_fst_comp E'.hom e.hom).1 c⟩⟩
 
+/- English proof (translation)
+Establish `_ : IsMonHom (Iso.refl A).hom` using `inferInstanceAs (IsMonHom (𝟙 A))`. Take `⟨E, ⟨hE, cE⟩, uE⟩` from `generic_existsUnique_iso_of_isGrpPullback h hS hj hG hH hφ hψ (Iso.refl A)`. Simplify using `only [Iso.refl_hom, Over.id_left, Category.id_comp] at cE uE`. Conclude with `⟨E, ⟨hE, cE.symm⟩, fun E' ⟨hE', cE'⟩ => uE E' ⟨hE', cE'.symm⟩⟩`.
+-/
 theorem generic_existsUnique_iso_of_extensions (h : SemiAbelianHomExtension)
     (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) (hj : IsGenericPointHom j)
     {A : Over U} [GrpObj A] {G H : Over S} [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
@@ -568,6 +739,11 @@ theorem generic_existsUnique_iso_of_extensions (h : SemiAbelianHomExtension)
   simp only [Iso.refl_hom, Over.id_left, Category.id_comp] at cE uE
   exact ⟨E, ⟨hE, cE.symm⟩, fun E' ⟨hE', cE'⟩ => uE E' ⟨hE', cE'.symm⟩⟩
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Sp`. Introduce `x`. Establish `_ : x.asIdeal.IsPrime` using `x.isPrime`. Set `_ : Algebra R ((Spec (CommRingCat.of R)).presheaf.stalk x)` to `StructureSheaf.stalkAlgebra R x`. Establish `_ : IsLocalization.AtPrime ((Spec (CommRingCat.of R)).presheaf.stalk x) x.asIdeal` using `StructureSheaf.IsLocalization.to_stalk R x`.
+
+Establish `hle : x.asIdeal.primeCompl ≤ nonZeroDivisors R` using `fun r hr => mem_nonZeroDivisors_of_ne_zero fun h0 => hr (h0 ▸ x.asIdeal.zero_mem)`. Establish `_ : IsDomain ((Spec (CommRingCat.of R)).presheaf.stalk x)` using `IsLocalization.isDomain_of_le_nonZeroDivisors _ hle`. Conclude with `⟨inferInstance, isIntegrallyClosed_of_isLocalization _ _ hle⟩`.
+-/
 theorem isNormalScheme_spec (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] :
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp R) := by
   unfold ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Sp
@@ -582,6 +758,9 @@ theorem isNormalScheme_spec (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyCl
     IsLocalization.isDomain_of_le_nonZeroDivisors _ hle
   exact ⟨inferInstance, isIntegrallyClosed_of_isLocalization _ _ hle⟩
 
+/- English proof (translation)
+The claim follows from `generic_of_isGrpPullback h (isNormalScheme_spec R) (IsGenericPointHom.fractionField R K) hG hH hφ hψ f`.
+-/
 theorem fractionField_of_isGrpPullback (h : SemiAbelianHomExtension) {R K : Type} [CommRing R] [IsDomain R]
     [IsNoetherianRing R] [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K] {G H : Over (Sp R)}
     [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H) {G' H' : Over (Sp K)} [GrpObj G']
@@ -592,12 +771,18 @@ theorem fractionField_of_isGrpPullback (h : SemiAbelianHomExtension) {R K : Type
 
 end GlobalTheory.Published.SemiAbelianHomExtension
 
+/- English proof (translation)
+The claim follows from `of_isGenericPointHom h hS (GlobalTheory.IsGenericPointHom.fromSpecStalk S) hG hH f`.
+-/
 theorem GlobalTheory.Published.SemiAbelianHomExtension.generic (h : GlobalTheory.Published.SemiAbelianHomExtension) (S : Scheme.{0}) [IsIntegral S] [AlgebraicGeometry.IsNoetherian S]
     (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) (G H : Over S) [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
     (f : (Over.pullback (S.fromSpecStalk (genericPoint S))).obj G ⟶ (Over.pullback (S.fromSpecStalk (genericPoint S))).obj H) [IsMonHom f] :
     ∃! F : G ⟶ H, IsMonHom F ∧ (Over.pullback (S.fromSpecStalk (genericPoint S))).map F = f :=
   of_isGenericPointHom h hS (GlobalTheory.IsGenericPointHom.fromSpecStalk S) hG hH f
 
+/- English proof (translation)
+The claim follows from `of_isGenericPointHom h (isNormalScheme_spec R) (GlobalTheory.IsGenericPointHom.fractionField R K) hG hH f`.
+-/
 theorem GlobalTheory.Published.SemiAbelianHomExtension.fractionField (h : GlobalTheory.Published.SemiAbelianHomExtension) (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R]
     [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K] (G H : Over (Sp R)) [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
     (f : (Over.pullback (spMap (algebraMap R K))).obj G ⟶ (Over.pullback (spMap (algebraMap R K))).obj H) [IsMonHom f] :

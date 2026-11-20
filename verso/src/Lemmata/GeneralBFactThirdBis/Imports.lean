@@ -4,6 +4,27 @@ universe u_1
 
 namespace Bl.general_b_fact_third_bis
 
+/- English proof (translation)
+Introduce `E _ _ φ n L hL hspan M hM`. Establish `hKfg : (L.restrictScalars ℤ).FG` using `hL.restrictScalars`. Establish `: Module.Finite ℤ (L.restrictScalars ℤ)` using `Module.Finite.iff_fg.mpr hKfg`. Set `g : (Fin n → E) →ₗ[ℤ] (Fin n → E)` to `(Matrix.mulVecLin M).restrictScalars ℤ`. Establish `hg : ∀ x ∈ L.restrictScalars ℤ, g x ∈ L.restrictScalars ℤ` using `fun x hx => hM x hx`.
+
+Set `f : Module.End ℤ (L.restrictScalars ℤ)` to `g.restrict hg`. Take `⟨p, hpm, hp0⟩` from `LinearMap.exists_monic_and_aeval_eq_zero ℤ f`. Establish `hpow : ∀ (k : ℕ) (x : L.restrictScalars ℤ), (((f ^ k) x : L.restrictScalars ℤ) : Fin n → E) = (M ^ k).mulVec (x : Fin n → E)`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `x`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, ← Matrix.mulVec_mulVec]`.
+
+Both sides reduce to the same expression. Establish `hzL : ∀ x ∈ L, (Polynomial.aeval M p).mulVec x = 0`. Introduce `x hx`. Establish `h` using `congrArg (fun h : Module.End ℤ (L.restrictScalars ℤ) => ((h ⟨x, hx⟩ : L.restrictScalars ℤ) : Fin n → E)) hp0`. Simplify using `only [Polynomial.aeval_eq_sum_range, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, hpow, LinearMap.zero_apply, Submodule.coe_zero] at h`.
+
+Rewrite using `[Polynomial.aeval_eq_sum_range, Matrix.sum_mulVec]`. Simplify `h` using `only [Matrix.smul_mulVec]`. Establish `hz : Polynomial.aeval M p = 0`. Establish `hlin : Matrix.mulVecLin (Polynomial.aeval M p) = 0` using `LinearMap.ext_on hspan (fun x hx => by simpa using hzL x hx)`. Use extensionality with `i j`.
+
+Use `congrFun (LinearMap.congr_fun hlin (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`. Establish `hN : Polynomial.aeval (M.map φ) p = 0`. Establish `h2` using `congrArg (φ.mapMatrix (m := Fin n)) hz`. Rewrite `h2` using `[map_zero, Polynomial.aeval_def, Polynomial.hom_eval₂]`.
+
+Rewrite using `[Polynomial.aeval_def]`. Apply the tactic sequence `convert h2 using 2 <;> first | exact RingHom.ext_int _ _ | rfl`. Establish `htr : (M.map φ).trace = φ M.trace`. Simplify using `[Matrix.trace, map_sum]`. Establish `hint : IsIntegral ℤ (φ M.trace)`.
+
+Rewrite using `[← htr, Matrix.trace_eq_sum_roots_charpoly]`. Use `IsIntegral.multiset_sum fun r hr => ?_` and prove the remaining obligations. Establish `hroot` using `(Polynomial.mem_roots'.mp hr).2`. Establish `hsp` using `Matrix.mem_spectrum_of_isRoot_charpoly hroot`. Use `⟨p, hpm, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `spectrum.subset_polynomial_aeval (M.map φ) (p.map (algebraMap ℤ ℂ)) ⟨r, hsp, rfl⟩`. Rewrite `h1` using `[Polynomial.aeval_map_algebraMap, hN]`. Break down `subsingleton_or_nontrivial (Matrix (Fin n) (Fin n) ℂ) with hs | hs` into its components or cases. Conclude with `absurd hsp (by rw [spectrum.mem_iff, not_not]; exact isUnit_of_subsingleton _)`. Rewrite `h1` using `[spectrum.zero_eq, Set.mem_singleton_iff]`.
+
+Simplify `h1` using `[Polynomial.eval_map, Polynomial.aeval_def]`. Conclude with `(isIntegral_algHom_iff φ.toIntAlgHom φ.injective).mp hint`.
+-/
 theorem goal1 :
   ∀ {E : Type u_1} [inst : Field.{u_1} E] [NumberField.{u_1} E] (φ : RingHom.{u_1, 0} E Complex) {n : Nat}
   (L : Submodule.{u_1, u_1} (NumberField.RingOfIntegers.{u_1} E) (Fin n → E)),

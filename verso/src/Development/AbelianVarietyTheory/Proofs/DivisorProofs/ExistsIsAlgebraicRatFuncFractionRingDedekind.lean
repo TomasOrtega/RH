@@ -6,6 +6,13 @@ namespace FracAlgDedekind
 
 open Order
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty (PrimeSpectrum A) with hA | hA` into its components or cases. Rewrite using `[ringKrullDim, Order.krullDim_eq_bot]`. Conclude with `bot_le`. Rewrite using `[ringKrullDim, Order.krullDim_eq_iSup_length]`. Rewrite using `[WithBot.coe_iSup (OrderTop.bddAbove _)]`.
+
+Use `iSup_le fun l => ?_` and prove the remaining obligations. Take `⟨P, -, hP, hPl⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral l.head.asIdeal (⊥ : Ideal R) (by rw [← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 h]; exact bot_le)`. Establish `: P.LiesOver l.head.asIdeal` using `⟨hPl.symm⟩`. Take `⟨L, hL, -, -⟩` from `Ideal.exists_ltSeries_of_hasGoingUp l P`. Rewrite using `[← hL]`.
+
+Conclude with `LTSeries.length_le_krullDim L`.
+-/
 theorem ringKrullDim_le_of_isIntegral {A R : Type*} [CommRing A] [CommRing R] [Algebra A R]
     [Algebra.IsIntegral A R] (h : Function.Injective (algebraMap A R)) :
     ringKrullDim A ≤ ringKrullDim R := by
@@ -22,6 +29,15 @@ theorem ringKrullDim_le_of_isIntegral {A R : Type*} [CommRing A] [CommRing R] [A
   rw [← hL]
   exact LTSeries.length_le_krullDim L
 
+/- English proof (translation)
+Take `⟨s, g, hg, hfin⟩` from `exists_finite_inj_algHom_of_fg k B`. Use `letI : Algebra (MvPolynomial (Fin s) k) B := g.toRingHom.toAlgebra`. Establish `: IsScalarTower k (MvPolynomial (Fin s) k) B` using `IsScalarTower.of_algebraMap_eq fun c => (g.commutes c).symm`. Establish `: Module.Finite (MvPolynomial (Fin s) k) B` using `hfin`. Establish `hle` using `ringKrullDim_le_of_isIntegral (A := MvPolynomial (Fin s) k) (R := B) hg`.
+
+Establish `hdim : ringKrullDim (MvPolynomial (Fin s) k) = s`. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules. Establish `hB1 : ringKrullDim B ≤ 1` using `Ring.krullDimLE_iff.1 inferInstance`. Rewrite `hle` using `[hdim]`.
+
+Establish `hs1 : s ≤ 1` using `by exact_mod_cast hle.trans hB1`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Establish `: Algebra.IsIntegral k (MvPolynomial (Fin 0) k)` using `Algebra.IsIntegral.of_surjective (Algebra.ofId k (MvPolynomial (Fin 0) k)) (MvPolynomial.C_surjective (Fin 0))`. Establish `: Algebra.IsIntegral k B` using `Algebra.IsIntegral.trans (MvPolynomial (Fin 0) k)`.
+
+Conclude with `hB ((Algebra.IsIntegral.isField_iff_isField (algebraMap k B).injective).1 (Field.toIsField k))`. Take `rfl : s = 1` from `by omega`. Set `e : MvPolynomial (Fin 1) k ≃ₐ[k] Polynomial k` to `(MvPolynomial.renameEquiv k (Equiv.equivPUnit.{1, 1} (Fin 1))).trans (MvPolynomial.pUnitAlgEquiv k)`. Use `⟨g.toRingHom.comp e.symm.toRingEquiv.toRingHom, hg.comp e.symm.injective, ?_⟩` and prove the remaining obligations. Conclude with `RingHom.Finite.comp hfin (RingHom.Finite.of_surjective _ e.symm.surjective)`.
+-/
 theorem exists_finite_inj_polynomial (k B : Type) [Field k] [CommRing B] [IsDedekindDomain B]
     [Algebra k B] [Algebra.FiniteType k B] (hB : ¬ IsField B) :
     ∃ f : Polynomial k →+* B, Function.Injective f ∧ f.Finite := by
@@ -51,6 +67,13 @@ theorem exists_finite_inj_polynomial (k B : Type) [Field k] [CommRing B] [IsDede
   refine ⟨g.toRingHom.comp e.symm.toRingEquiv.toRingHom, hg.comp e.symm.injective, ?_⟩
   exact RingHom.Finite.comp hfin (RingHom.Finite.of_surjective _ e.symm.surjective)
 
+/- English proof (translation)
+Introduce `k B _ _ _ _ _ hB`. Take `⟨f, hf, hfin⟩` from `exists_finite_inj_polynomial k B hB`. Use `letI : Algebra (Polynomial k) B := f.toAlgebra`. Establish `: Module.Finite (Polynomial k) B` using `hfin`. Establish `hφ : Function.Injective (algebraMap (Polynomial k) (FractionRing B))`.
+
+Rewrite using `[IsScalarTower.algebraMap_eq (Polynomial k) B (FractionRing B)]`. Conclude with `(IsFractionRing.injective B (FractionRing B)).comp hf`. Use `letI alg : Algebra (RatFunc k) (FractionRing B) := (IsFractionRing.lift hφ (K := RatFunc k)).toAlgebra`. Establish `: IsScalarTower (Polynomial k) (RatFunc k) (FractionRing B)` using `IsScalarTower.of_algebraMap_eq fun p => (IsFractionRing.lift_algebraMap hφ p).symm`. Establish `: FaithfulSMul (Polynomial k) B` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hf`.
+
+Establish `: Algebra.IsAlgebraic B (FractionRing B)` using `IsLocalization.isAlgebraic (FractionRing B) (nonZeroDivisors B)`. Establish `: Algebra.IsAlgebraic (Polynomial k) (FractionRing B)` using `Algebra.IsAlgebraic.trans (Polynomial k) B (FractionRing B)`. Conclude with `⟨alg, Algebra.IsAlgebraic.extendScalars (R := Polynomial k) (RatFunc.algebraMap_injective k)⟩`.
+-/
 theorem exists_isAlgebraic_ratFunc : ∀ (k B : Type) [Field k] [CommRing B] [IsDedekindDomain B]
     [Algebra k B] [Algebra.FiniteType k B], ¬ IsField B →
     ∃ _ : Algebra (RatFunc k) (FractionRing B), Algebra.IsAlgebraic (RatFunc k) (FractionRing B) := by

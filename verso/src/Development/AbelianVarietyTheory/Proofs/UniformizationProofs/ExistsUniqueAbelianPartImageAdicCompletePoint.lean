@@ -21,6 +21,15 @@ def levelHom {R W : Type} [CommRing R] [CommRing W] (f : R →+* W) (I : Ideal R
     R ⧸ I ^ n →+* W ⧸ (I.map f) ^ n :=
   Ideal.quotientMap _ f (by rw [← Ideal.map_pow]; exact Ideal.le_comap_map)
 
+/- English proof (translation)
+Establish `w : CommRingCat.ofHom f ≫ CommRingCat.ofHom (Ideal.Quotient.mk ((I.map f) ^ n)) = CommRingCat.ofHom (Ideal.Quotient.mk (I ^ n)) ≫ CommRingCat.ofHom (levelHom f I n)` using `rfl`. Establish `hk : ∀ s : PushoutCocone (CommRingCat.ofHom f) (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ n))), ∀ a ∈ (I.map f) ^ n, s.inl.hom a = 0`. Introduce `s a ha`. Rewrite `ha` using `[← Ideal.map_pow]`. Establish `: (I ^ n).map f ≤ RingHom.ker s.inl.hom`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `y hy`. Establish `h` using `congrArg (fun φ => φ.hom y) s.condition`. Express the relevant statement in the definitionally equal form `s.inl.hom (f y) = s.inr.hom (Ideal.Quotient.mk _ y) at h`. Rewrite `h` using `[Ideal.Quotient.eq_zero_iff_mem.mpr hy, map_zero]`.
+
+Conclude with `h`. Conclude with `this ha`. Use `⟨⟨w⟩, ⟨PushoutCocone.IsColimit.mk w (fun s => CommRingCat.ofHom (Ideal.Quotient.lift _ s.inl.hom (hk s))) (fun s => rfl) (fun s => ?_) (fun s m h _ => ?_)⟩⟩` and prove the remaining obligations. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises.
+
+Conclude with `congrArg CommRingCat.Hom.hom s.condition`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Conclude with `congrArg CommRingCat.Hom.hom h`.
+-/
 theorem isPushout_level {R W : Type} [CommRing R] [CommRing W] (f : R →+* W) (I : Ideal R) (n : ℕ) :
     IsPushout (CommRingCat.ofHom f) (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ n)))
       (CommRingCat.ofHom (Ideal.Quotient.mk ((I.map f) ^ n))) (CommRingCat.ofHom (levelHom f I n)) := by
@@ -48,16 +57,31 @@ theorem isPushout_level {R W : Type} [CommRing R] [CommRing W] (f : R →+* W) (
     apply Ideal.Quotient.ringHom_ext
     exact congrArg CommRingCat.Hom.hom h
 
+/- English proof (translation)
+The claim follows from `isPullback_SpecMap_of_isPushout _ _ _ _ (isPushout_level f I (e + 1))`.
+-/
 theorem isPullback_level {R W : Type} [CommRing R] [CommRing W] (f : R →+* W) (I : Ideal R) (e : ℕ) :
     IsPullback (adicLevelι (I.map f) (e + 1)) (Spec.map (CommRingCat.ofHom (levelHom f I (e + 1))))
       (Spec.map (CommRingCat.ofHom f)) (thick R I e) :=
   isPullback_SpecMap_of_isPushout _ _ _ _ (isPushout_level f I (e + 1))
 
+/- English proof (translation)
+Establish `: IsClosedImmersion (thick R I e)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `infer_instance`.
+-/
 theorem thick_mono' (R : Type) [CommRing R] (I : Ideal R) (e : ℕ) : Mono (thick R I e) := by
   have : IsClosedImmersion (thick R I e) :=
     IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective
   infer_instance
 
+/- English proof (translation)
+Establish `hw : ∀ e, (adicLevelι (I.map f) (e + 1) ≫ x) ≫ pG = Spec.map (CommRingCat.ofHom (levelHom f I (e + 1))) ≫ thick R I e` using `fun e => by`. Rewrite using `[← (isPullback_level f I e).w, Category.assoc, hx]`. Use `choose y hy hy2 using fun e => (hP e).exists_lift _ _ (hw e)`. Establish `hmono : ∀ e, Mono (fst e)` using `fun e => (MorphismProperty.monomorphisms Scheme).of_isPullback (hP e).flip (thick_mono' R I e)`. Establish `hfam : IsAdicFamily (I.map f) (fun e => y e ≫ φ e)`.
+
+Introduce `e`. Establish `: adicLevelMap (I.map f) (Nat.le_succ (e + 1)) ≫ y (e + 1) = y e ≫ τ e`. Rewrite using `[← cancel_mono (fst (e + 1)), Category.assoc, hy, adicLevelMap_ι_assoc, Category.assoc, hm, hy]`. Express the relevant statement in the definitionally equal form `_ ≫ y (e + 1) ≫ φ (e + 1) = y e ≫ φ e`. Rewrite using `[← hc e, ← Category.assoc, this, Category.assoc]`.
+
+Take `⟨g, ⟨hg, hg'⟩, hu⟩` from `existsUnique_over_of_isAdicFamily (Spec.map (CommRingCat.ofHom f)) pB hfam (fun e => by`. Rewrite using `[(isPullback_level f I e).w, ← hy2, Category.assoc, hφ, Category.assoc])`. Use `⟨g, ⟨hg, fun e Z r xe h => ?_⟩, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hr : r ≫ Spec.map (CommRingCat.ofHom f) = (xe ≫ snd e) ≫ thick R I e`. Rewrite using `[← hx, ← Category.assoc, ← h, Category.assoc, (hP e).w, Category.assoc]`.
+
+Take `⟨l, hl, -⟩` from `(isPullback_level f I e).exists_lift _ _ hr`. Establish `hxe : xe = l ≫ y e`. Rewrite using `[← cancel_mono (fst e), h, ← hl, Category.assoc, Category.assoc, hy]`. Rewrite using `[hxe, ← hl, Category.assoc, Category.assoc, hg']`. Conclude with `hu b ⟨hb.1, fun e => (hb.2 e _ _ (y e) (hy e)).symm⟩`.
+-/
 theorem existsUnique_image {R W : Type} [CommRing R] [CommRing W] [IsLocalRing W] (f : R →+* W)
     (I : Ideal R) [IsAdicComplete (I.map f) W] {G B : Scheme.{0}}
     (pG : G ⟶ Spec (CommRingCat.of R)) (pB : B ⟶ Spec (CommRingCat.of R))
@@ -96,6 +120,11 @@ theorem existsUnique_image {R W : Type} [CommRing R] [CommRing W] [IsLocalRing W
     rw [hxe, ← hl, Category.assoc, Category.assoc, hg']
   · exact hu b ⟨hb.1, fun e => (hb.2 e _ _ (y e) (hy e)).symm⟩
 
+/- English proof (translation)
+Introduce `V _ _ _ A G _ _ s t a W _ _ _ hW _ x`. Take `⟨g, ⟨hg, hg'⟩, hu⟩` from `existsUnique_image (algebraMap V W) (IsLocalRing.maximalIdeal V) G.hom a.B.hom (P := fun e => (thickObj V (IsLocalRing.maximalIdeal V) e G).left) (fun e => (fstG _ e G).left) (fun e => (thickObj V (IsLocalRing.maximalIdeal V) e G).hom) (fun e => IsPullback.of_hasPullback G.hom (t …`. Take `⟨h, -⟩` from `a.b_pb e`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w])`. Use the proof step `(fun e => by rw [← a.b_β e, ← Category.assoc, ← t.β_q e, Category.assoc])`.
+
+Use the proof step `x.left (Over.w x)`. Conclude with `⟨Over.homMk g hg, hg', fun b hb => Over.OverMorphism.ext (hu b.left ⟨Over.w b, hb⟩)⟩`.
+-/
 theorem main : AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (t : Tower s) (a : t.Alg) (W : Type) [CommRing W] [IsLocalRing W] [Algebra V W], IsAdicComplete ((IsLocalRing.maximalIdeal V).map (algebraMap V W)) W → IsLocalHom (algebraMap V W) → ∀ x : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G, ∃! b : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ a.B, (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of W)) (xe : Z ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left), xe ≫ (fstG _ e G).left = r ≫ (x).left → xe ≫ (t.l e).Q.q.left ≫ a.b e = r ≫ (b).left) := by
   intro V _ _ _ A G _ _ s t a W _ _ _ hW _ x
   obtain ⟨g, ⟨hg, hg'⟩, hu⟩ := existsUnique_image (algebraMap V W) (IsLocalRing.maximalIdeal V)

@@ -18,6 +18,9 @@ def blk {α : Type} (a w b : α → α → ℂ) : α ⊕ α → α ⊕ α → �
     | .inr q, .inl p => conj (w p q)
     | .inr p, .inr q => b p q
 
+/- English proof (translation)
+Unfold `KB.BlockPSD`. Apply the tactic sequence `constructor <;> intro h <;> convert h using 1 <;> funext x y <;>`. Apply the tactic sequence `rcases x with p | p <;> rcases y with q | q <;> rfl`.
+-/
 theorem blockPSD_iff {α : Type} (Y : Finset α) (a w b : α → α → ℂ) :
     KB.BlockPSD Y Y a w b ↔ TB.PSDOn (Y.disjSum Y) (blk a w b) := by
   unfold KB.BlockPSD

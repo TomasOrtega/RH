@@ -9,6 +9,49 @@ open Matrix
 variable {F k : Type} [Field F] [Field k] (O : ValuationSubring F) (π : O →+* k) (γ : O)
   {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `hdiv : ∀ a : O, π a = 0 ↔ ∃ c : O, a = γ * c`. Introduce `a`. Rewrite using `[← RingHom.mem_ker, hker, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`.
+
+Conclude with `⟨c, by rw [← hc, mul_comm]⟩`. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [hc, mul_comm]⟩`. Establish `hsm : ∀ (a : O) (x : ι → F), a • x = (a : F) • x` using `fun a x => rfl`. Take `⟨z, hz, rfl⟩` from `hw`.
+
+Use `set Y' := Y.map ((↑) : O → F) with hY'`. Set `cO : ι → O` to `fun i => Y i j - (if i = j then 1 else 0)`. Establish `hcO : ∀ i, (cO i : F) = (Y i j : F) - (if i = j then 1 else 0)`. Introduce `i`. Apply the tactic sequence `by_cases hij : i = j <;> simp [cO, hij]`.
+
+Establish `hcol : (Y' - 1) *ᵥ Pi.single j (1 : F) = ∑ i, (cO i : F) • Pi.single i (1 : F)`. Use extensionality with `i`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, hcO]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, hY', Matrix.one_apply]`.
+
+Establish `hint : ∀ i, ((Y' - 1) *ᵥ z) i ∈ O`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.sub_apply, Matrix.one_apply, hY', Matrix.map_apply]`. Use `_root_.sum_mem fun l _ => mul_mem (sub_mem (Y i l).2 ?_) (hz l)` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `one_mem O`. Conclude with `zero_mem O`. Apply the tactic sequence `have hentry : ∀ i, ((Y' - 1) *ᵥ (Pi.single j 1 + (γ : F) • z)) i = (cO i : F) + (γ : F) * ((Y' - 1) *ᵥ z) i := by`. Introduce `i`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hcol, Finset.sum_apply]`.
+
+Simplify using `[Pi.single_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, hW, z', hz', hv⟩ i hi`. Establish `key : ∀ v ∈ Submodule.span O (u '' s), ∃ c : O, v i = (γ : F) * c`. Introduce `v hv`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Take `⟨zb, hzb, hub⟩` from `hu b`. Use `⟨⟨zb i, hzb i⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hne : i ≠ pos b` using `fun h => hi ⟨b, hb, h.symm⟩`. Simplify using `[hub, Pi.single_apply, hne]`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c1, h1⟩` from `hx`.
+
+Take `⟨c2, h2⟩` from `hy`. Conclude with `⟨c1 + c2, by rw [Pi.add_apply, h1, h2]; push_cast; ring⟩`. Consider the case `smul a x _ hx`. Take `⟨c, h⟩` from `hx`. Use `⟨a * c, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsm, Pi.smul_apply, smul_eq_mul, h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩` from `key W hW`. Establish `hvi` using `congrFun hv i`.
+
+Apply the tactic sequence `rw [hentry i, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hc] at hvi`. Establish `hO : cO i = γ * ⟨(c : F) + z' i - ((Y' - 1) *ᵥ z) i, sub_mem (add_mem c.2 (hz' i)) (hint i)⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (cO i : F) = (γ : F) * ((c : F) + z' i - ((Y' - 1) *ᵥ z) i)`. Take the linear combination `hvi`.
+
+Establish `h0` using `(hdiv _).2 ⟨_, hO⟩`. Simplify using `only [cO, map_sub, sub_eq_zero] at h0`. Rewrite using `[h0]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `hcond`.
+
+Establish `hsel : ∀ i, i ∈ pos '' s → ∃ b, b ∈ s ∧ pos b = i` using `fun i hi => hi`. Use `choose bsel hbs hpos using hsel`. Establish `hout : ∀ i, i ∉ pos '' s → ∃ e : O, cO i = γ * e`. Introduce `i hi`. Apply `(hdiv _).1` to reduce the goal to its premises.
+
+Simplify using `only [cO, map_sub, hcond i hi]`. Apply the tactic sequence `split_ifs <;> simp`. Use `choose dsel hdsel using hout`. Use `choose zb hzb hub using hu`. Use `⟨∑ i, (if h : i ∈ pos '' s then cO i • u (bsel i h) else 0), ?_, ∑ i, ((if h : i ∈ pos '' s then 0 else (dsel i h : F) • Pi.single i (1 : F)) - (if h : i ∈ pos '' s then (cO i : F) • zb (bsel i h) else 0)) + (Y' - 1) *ᵥ z, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `_root_.sum_mem fun i _ => ?_ split_ifs with h` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨bsel i h, hbs i h, rfl⟩)`. Conclude with `Submodule.zero_mem _`. Introduce `l`. Rewrite using `[Pi.add_apply, Finset.sum_apply]`.
+
+Use `add_mem (_root_.sum_mem fun i _ => ?_) (hint l)` and prove the remaining obligations. Rewrite using `[Pi.sub_apply]`. Use `sub_mem ?_ ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `zero_mem O`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (dsel i h).2 (by rw [Pi.single_apply]; split_ifs; exacts [one_mem O, zero_mem O])`. Use `split_ifs with h`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (cO i).2 (hzb _ l)`.
+
+Conclude with `zero_mem O`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, hcol, smul_add, Finset.smul_sum, ← add_assoc, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i ∈ pos '' s`.
+
+Simplify using `only [h, dif_pos, hsm, hub, hpos i h, sub_zero, zero_sub, smul_add, smul_neg, smul_smul]`. Rewrite using `[mul_comm]`. Normalize the expressions using the abelian group laws. Simplify using `only [h, dif_neg, not_false_eq_true, sub_zero, zero_add, smul_smul]`. Rewrite using `[hdsel i h]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem clause_iff (hker : RingHom.ker π = Ideal.span {γ}) (Y : Matrix ι ι O) {β : Type} (u : β → ι → F)
     (pos : β → ι) (hu : ∀ b, ∃ z, IntVec O z ∧ u b = Pi.single (pos b) 1 + (γ : F) • z) (s : Set β)
     (w : ι → F) (j : ι) (hw : ∃ z, IntVec O z ∧ w = Pi.single j 1 + (γ : F) • z) :

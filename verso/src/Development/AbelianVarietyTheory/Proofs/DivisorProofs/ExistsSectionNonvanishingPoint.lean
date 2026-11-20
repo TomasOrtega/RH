@@ -29,6 +29,19 @@ namespace GlobalTheory
 namespace IsolatedSec
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨V, hyV, s, rfl⟩` from `F.presheaf.exists_germ_eq t`. Set `W : X.Opens` to `⟨{y}ᶜ, hy.isOpen_compl⟩`. Set `C : Bool → X.Opens` to `fun b => if b then V ⊓ U else W`. Establish `hzero : ∀ (O : X.Opens), O ≤ V ⊓ U ⊓ W → ∀ r : Γ(F, O), r = 0` using `fun O hO r => by`. Use `TopCat.Presheaf.section_ext (abSheaf F) O r 0 fun z hz => ?_` and prove the remaining obligations.
+
+Establish `hz'` using `hO hz`. Establish `hns : z ∉ support F` using `fun h => hz'.2 (hF z hz'.1.2 h)`. Conclude with `(notMem_support_iff.1 hns).elim _ _`. Take `⟨g, hg⟩` from `exists_sec_of_cover (F := F) C (fun _ => le_top) (fun z _ => by`. Distinguish the cases in `h : z = y`.
+
+Substitute `h` using the available equality. Conclude with `Opens.mem_iSup.2 ⟨true, ⟨hyV, hyU⟩⟩`. Conclude with `Opens.mem_iSup.2 ⟨false, h⟩)`. Use the proof step `(fun b => match b with`. Consider the case `true => resM F (inf_le_left : V ⊓ U ≤ V) s`.
+
+Consider the case `false => 0)`. Use the proof step `(fun k l => by`. Apply the tactic sequence `cases k <;> cases l`. Both sides reduce to the same expression. Conclude with `(hzero _ (le_inf inf_le_right inf_le_left) _).trans (hzero _ (le_inf inf_le_right inf_le_left) _).symm`.
+
+Conclude with `(hzero _ (le_inf inf_le_left inf_le_right) _).trans (hzero _ (le_inf inf_le_left inf_le_right) _).symm`. Use the proof step `rfl)`. Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `hyVU : y ∈ V ⊓ U` using `⟨hyV, hyU⟩`. Use `congrArg (F.presheaf.germ (V ⊓ U) y hyVU) (hg true)` as an intermediate fact.
+
+Simplify using `only at this`. Rewrite `this` using `[germ_resM, germ_resM]`. Conclude with `this`.
+-/
 theorem exists_germ_eq_of_isolated {F : X.Modules} {y : X} (hy : IsClosed ({y} : Set X))
     {U : X.Opens} (hyU : y ∈ U) (hF : ∀ z ∈ U, z ∈ support F → z = y)
     (t : (F.presheaf.stalk y :)) : ∃ s : Γ(F, ⊤), F.presheaf.germ ⊤ y trivial s = t := by
@@ -62,6 +75,21 @@ theorem exists_germ_eq_of_isolated {F : X.Modules} {y : X} (hy : IsClosed ({y} :
   exact this
 end IsolatedSec
 
+/- English proof (translation)
+Introduce `k _ X _ q _ L hL J x U hx hxU hJ h`. Use `set φ := toSubscheme J with hφ`. Set `S : ShortComplex X.Modules` to `ShortComplex.mk (kernel.ι φ) (cokernel.π (kernel.ι φ)) (cokernel.condition _)`. Establish `hS : S.ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Establish `hS' : (S.map (twistFunctor L)).ShortExact` using `Twist.shortExact_map hL hS`.
+
+Establish `h' : Subsingleton (coh (twist (kernel φ) L) 1)`. Conclude with `h`. Establish `hsurj` using `cohOn.app_surjective hS' ⊤ h'`. Establish `hQ : ∀ z ∈ U, z ∈ support (twist S.X₃ L) → z = x`. Introduce `z hzU hz`.
+
+Rewrite `hz` using `[support_twist hL]`. Use `mem_support_iff.1 hz` as an intermediate fact. Use `(hJ z hzU).1 (support_pushforward_subscheme_subset J ?_)` and prove the remaining obligations. Conclude with `mem_support_iff.2 (stalkLinear_injective (Abelian.factorThruCoimage φ) z).nontrivial`. Establish `hxJ : x ∈ J.support` using `(hJ x hxU).2 rfl`.
+
+Take `⟨c, hc⟩` from `exists_chart hL x`. Set `t : Γ(QCoh.structureModule X, ⊤)` to `(structureModuleSectionsEquiv ⊤).symm 1`. Establish `ht : structureModuleSectionsEquiv ⊤ t = 1` using `LinearEquiv.apply_symm_apply _ _`. Take `⟨b, hb⟩` from `IsolatedSec.exists_germ_eq_of_isolated hx hxU hQ ((stalkEquiv S.X₃ hL c hc).symm (stalkLinear S.g x ((QCoh.structureModule X).presheaf.germ ⊤ x trivial t)))`. Take `⟨a, rfl⟩` from `hsurj b`.
+
+Use `⟨secOfTwist (𝟙 _) a, basicOpen_le_nonzeroLocus _ c ((X.mem_basicOpen _ x hc).2 ?_)⟩` and prove the remaining obligations. Establish `hm : x ∈ ⊤ ⊓ L.U c` using `⟨trivial, hc⟩`. Use `replace hb := (stalkEquiv_germ hL c hc (V := ⊤) trivial _).symm.trans ((LinearEquiv.eq_symm_apply _).1 hb)`. Establish `h₁ : stalkLinear S.g x ((QCoh.structureModule X).presheaf.germ _ x hm (coord (F` using `QCoh.structureModule X) a c)) = stalkLinear S.g x ((QCoh.structureModule X).presheaf.germ ⊤ x trivial t) := (stalkLinear_germ S.g x hm _).trans hb`. Establish `h₂ : stalkLinear φ x ((QCoh.structureModule X).presheaf.germ ⊤ x trivial t - (QCoh.structureModule X).presheaf.germ _ x hm (coord (F` using `structureModule X) a c)) = 0 := by`.
+
+Rewrite using `[← Abelian.coimage.fac φ, stalkLinear_comp, LinearMap.comp_apply, map_sub]`. Conclude with `(congrArg _ (sub_eq_zero.2 h₁.symm)).trans (map_zero _)`. Establish `h₃` using `not_isUnit_of_toSubscheme_eq_zero J (y := x) hxJ _ h₂`. Rewrite `h₃` using `[map_sub, structureModuleStalkEquiv_germ]`. Use `erw [structureModuleStalkEquiv_germ] at h₃`.
+
+Rewrite `h₃` using `[ht, map_one]`. Establish `hu` using `(IsLocalRing.isUnit_or_isUnit_one_sub_self _).resolve_right h₃`. Conclude with `(congrArg IsUnit (X.presheaf.germ_res_apply (homOfLE _) x hc _)).mpr hu`.
+-/
 theorem exists_sec_mem_nonzeroLocus_of_isolated : ∀ (k : Type) [Field k] (X : Scheme.{0})
     [IsIntegral X] (q : X ⟶ Sp k), IsProjOver q → ∀ (L : LB X), L.IsLB →
     ∀ (J : X.IdealSheafData) (x : X) (U : X.Opens), IsClosed ({x} : Set X) → x ∈ U →

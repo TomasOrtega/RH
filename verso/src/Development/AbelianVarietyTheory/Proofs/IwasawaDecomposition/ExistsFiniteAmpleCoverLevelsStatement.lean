@@ -6,6 +6,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CoverFin.coverSt_fin | exact GlobalTheory.CoverFin.coverSt_fin | (intros; apply GlobalTheory.CoverFin.coverSt_fin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finite_ample_cover_levels : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q →
     ∀ Xo : ∀ l : Level H, Moduli D l, ∃ (s : Sys Xo) (M : Finset ℕ), (∀ m ∈ M, 1 ≤ m) ∧
       ∀ (l : Level H) (c : Coeff l) (hg : ∀ p : ℕ, p.Prime → l.GoodAt p),

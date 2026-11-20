@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.NoPole
 
+/- English proof (translation)
+Establish `hdet : X.det * X'.det = c ^ d`. Rewrite using `[← Matrix.det_mul, h, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Establish `hX : X.det ≠ 0`. Introduce `h0`. Rewrite `hdet` using `[h0, zero_mul]`.
+
+Conclude with `pow_ne_zero _ hc hdet.symm`. Establish `key : X.det • (X' * X) = X.det • (c • (1 : Matrix (Fin d) (Fin d) R))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul]`. Use `_ = X.adjugate * (X * X') * X := by simp only [Matrix.mul_assoc]`.
+
+Use `_ = c • (X.adjugate * X) := by rw [h, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Use `_ = X.det • (c • (1 : Matrix (Fin d) (Fin d) R)) := by`. Rewrite using `[Matrix.adjugate_mul, smul_comm]`. Use extensionality with `i j`. Use `congrFun (congrFun key i) j` as an intermediate fact.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hX this`.
+-/
 theorem mul_eq_smul_one_comm {R : Type*} [CommRing R] [IsDomain R] {d : ℕ}
     (X X' : Matrix (Fin d) (Fin d) R) (c : R) (hc : c ≠ 0)
     (h : X * X' = c • (1 : Matrix (Fin d) (Fin d) R)) : X' * X = c • (1 : Matrix (Fin d) (Fin d) R) := by
@@ -28,6 +37,9 @@ theorem mul_eq_smul_one_comm {R : Type*} [CommRing R] [IsDomain R] {d : ℕ}
   simp only [Matrix.smul_apply, smul_eq_mul] at this
   exact mul_left_cancel₀ hX this
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem map_smul_ring {R S : Type*} [CommRing R] [CommRing S] {a b : Type*} (F : R →+* S) (c : R)
     (M : Matrix a b R) : (c • M).map F = F c • M.map F := by
   ext i j; simp
@@ -36,6 +48,29 @@ end GlobalTheory.NoPole
 
 namespace GlobalTheory.NoPole
 
+/- English proof (translation)
+Set `π` to `Ideal.Quotient.mk (Ideal.span {F E ^ (2 * N)})`. Set `F'` to `π.comp F`. Set `G'` to `π.comp G`. Establish `hFE : F' E ^ (2 * N) = 0`. Establish `h0 : π (F E ^ (2 * N)) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`.
+
+Simplify `h0` using `only [F', RingHom.comp_apply, map_pow]`. Establish `hGE : G' E = π v * F' E`. Simplify using `only [G', F', RingHom.comp_apply]`. Rewrite using `[← map_mul, hv]`. Establish `hGE0 : G' E ^ (2 * N) = 0` using `by rw [hGE, mul_pow, hFE, mul_zero]`.
+
+Establish `e2 : ((ℓ : B ⧸ Ideal.span {F E ^ (2 * N)}) ^ k₀) • s.map G' = ((ℓ : B ⧸ Ideal.span {F E ^ (2 * N)}) ^ k₀) • s.map F'`. Use extensionality with `r i`. Establish `h : π ((ℓ : B) ^ k₀ * (F (s r i) - G (s r i))) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton.2 (hs r i))`. Simplify using `only [map_mul, map_sub, map_pow, map_natCast] at h`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, F', G', RingHom.comp_apply]`.
+
+Take the linear combination `(-1 : B ⧸ Ideal.span {F E ^ (2 * N)}) * h`. Establish `hd : (Matrix.diagonal fun i => G' (E ^ n i)) = Matrix.diagonal (fun i => F' E ^ n i) * Matrix.diagonal (fun i => π v ^ n i)`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[map_pow, hGE, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : X.map G' = (s.map G' * Matrix.diagonal (fun i => F' E ^ n i)) * (Matrix.diagonal (fun i => π v ^ n i) * Q.map G')`. Rewrite using `[hX, Matrix.map_add _ (map_add G'), map_smul_ring, map_pow, hGE0, zero_smul, add_zero, Matrix.map_mul, Matrix.map_mul, Matrix.diagonal_map (map_zero _), hd]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `e3 : ((ℓ : B ⧸ Ideal.span {F E ^ (2 * N)}) ^ c₂) • (s.map F' * Matrix.diagonal (fun i => F' E ^ n i)) = X.map F' * Q'.map F'`. Establish `: ((ℓ : S) ^ c₂ • (s * Matrix.diagonal fun i => E ^ n i)).map F' = (X * Q').map F'` using `by rw [hQ']`. Rewrite `this` using `[map_smul_ring, Matrix.map_mul, Matrix.map_mul, Matrix.diagonal_map (map_zero _), map_pow, map_natCast]`. Simplify `this` using `only [map_pow]`. Establish `e4 : X'.map F' * X.map F' = 0`.
+
+Rewrite using `[← Matrix.map_mul, hX'X, map_smul_ring, map_mul, map_pow F' E, hFE, mul_zero, zero_smul]`. Establish `hsuff : ((ℓ : B ⧸ Ideal.span {F E ^ (2 * N)}) ^ (k₀ + c₂)) • (X'.map F' * X.map G') = 0`. Establish `e2' : ((ℓ : B ⧸ Ideal.span {F E ^ (2 * N)}) ^ k₀) • (s.map G' * Matrix.diagonal (fun i => F' E ^ n i)) = ((ℓ : B ⧸ Ideal.span {F E ^ (2 * N)}) ^ k₀) • (s.map F' * Matrix.diagonal (fun i => F' E ^ n i))`. Rewrite using `[← Matrix.smul_mul, e2, Matrix.smul_mul]`. Rewrite using `[e1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ((ℓ : B ⧸ Ideal.span {F E ^ (2 * N)}) ^ c₂) • (X'.map F' * ((((ℓ : B ⧸ Ideal.span {F E ^ (2 * N)}) ^ k₀) • (s.map F' * Matrix.diagonal (fun i => F' E ^ n i))) * (Matrix.diagonal (fun i => π v ^ n i) * Q.map G'))) := by rw [e2']`.
+
+Use `_ = ((ℓ : B ⧸ Ideal.span {F E ^ (2 * N)}) ^ k₀) • (X'.map F' * ((((ℓ : B ⧸ Ideal.span {F E ^ (2 * N)}) ^ c₂) • (s.map F' * Matrix.diagonal (fun i => F' E ^ n i))) * (Matrix.diagonal (fun i => π v ^ n i) * Q.map G'))) := by`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by`.
+
+Rewrite using `[e3]`. Simplify using `only [← Matrix.mul_assoc, e4, Matrix.zero_mul, smul_zero]`. Introduce `i j`. Use `congrFun (congrFun hsuff i) j` as an intermediate fact. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Simplify `this` using `[Matrix.mul_apply, map_sum, F', G', π]`.
+-/
 theorem core {S B : Type*} [CommRing S] [CommRing B] {d m : ℕ} (F G : S →+* B) (E : S) (v : B)
     (ℓ N c₂ k₀ : ℕ) (s : Matrix (Fin d) (Fin m) S) (n : Fin m → ℕ) (X X' R : Matrix (Fin d) (Fin d) S)
     (Q : Matrix (Fin m) (Fin d) S) (Q' : Matrix (Fin d) (Fin m) S)
@@ -103,6 +138,15 @@ end GlobalTheory.NoPole
 
 open GlobalTheory.NoPole in
 
+/- English proof (translation)
+Introduce `l _ K bk d m N c₂ s n X X' R Q Q' hs hXX' hX hQ' B f g`. Establish `hl0 : (l : bk.S) ≠ 0`. Introduce `h0`. Establish `h1 : bk.str.symm (Ideal.Quotient.mk _ (l : bk.S)) = 0` using `by rw [h0, map_zero, map_zero]`. Rewrite `h1` using `[map_natCast, map_natCast]`.
+
+Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h1`. Establish `hc : ((l : bk.S) ^ c₂ * bk.E ^ (2 * N)) ≠ 0` using `mul_ne_zero (pow_ne_zero _ hl0) (pow_ne_zero _ bk.E_ne_zero)`. Establish `hX'X` using `mul_eq_smul_one_comm X X' _ hc hXX'`. Use `choose k hk using fun (p : Fin d × Fin m) => hs p.1 p.2 B f g`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, v * BK.hf f bk.E = BK.hf g bk.E := by`.
+
+Establish `h1` using `(GlobalTheory.T.breuilKisinPrism_homs_agree_witt_and_mod_ideal l K bk B f g).2.2`. Establish `h2` using `(GlobalTheory.T.breuilKisinPrism_homs_agree_witt_and_mod_ideal l K bk B g f).2.2`. Establish `: BK.hf g bk.E ∈ B.I` using `by rw [h2]; exact Ideal.mem_span_singleton_self _`. Rewrite `this` using `[h1]`. Conclude with `Ideal.mem_span_singleton'.1 this`.
+
+Use `⟨Finset.univ.sup k + c₂, GlobalTheory.NoPole.core (BK.hf f) (BK.hf g) bk.E v l N c₂ _ s n X X' R Q Q' ?_ hv hX'X hX hQ'⟩` and prove the remaining obligations. Introduce `r i`. Establish `hle : k (r, i) ≤ Finset.univ.sup k` using `Finset.le_sup (Finset.mem_univ _)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_assoc]`. Conclude with `Dvd.dvd.mul_left (hk (r, i)) _`.
+-/
 theorem GlobalTheory.seed_nopole : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d m N c₂ : ℕ) (s : Matrix (Fin d) (Fin m) (bk.S)) (n : Fin m → ℕ) (X X' R : Matrix (Fin d) (Fin d) (bk.S)) (Q : Matrix (Fin m) (Fin d) (bk.S)) (Q' : Matrix (Fin d) (Fin m) (bk.S)), (∀ r i, (∀ (B : Obj l ↥(OL K)) (f g : Hom bk.prism B), ∃ k : ℕ, BK.hf f bk.E ^ (2 * N) ∣ (l : B.A) ^ k * (BK.hf f (s r i) - BK.hf g (s r i)))) → X * X' = ((l : bk.S) ^ c₂ * bk.E ^ (2 * N)) • (1 : Matrix (Fin d) (Fin d) (bk.S)) → X = (s * Matrix.diagonal fun i => bk.E ^ n i) * Q + bk.E ^ (2 * N) • R → (l : bk.S) ^ c₂ • (s * Matrix.diagonal fun i => bk.E ^ n i) = X * Q' → (∀ (B : Obj l ↥(OL K)) (f g : Hom bk.prism B), ∃ k : ℕ, ∀ i j, BK.hf f bk.E ^ (2 * N) ∣ (l : B.A) ^ k * (X'.map (BK.hf f) * X.map (BK.hf g)) i j) := by
   intro l _ K bk d m N c₂ s n X X' R Q Q' hs hXX' hX hQ' B f g
   classical

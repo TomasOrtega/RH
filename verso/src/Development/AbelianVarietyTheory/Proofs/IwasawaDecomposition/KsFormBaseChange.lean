@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `LL LL' Ks _ _ _ _ _ ι hι n WK WK' hmem hsurj ⟨m, b, hbW, hKs, hspanK, hLL, hspanLL⟩`. Set `Φ : (Fin n → LL) →ₗ[Ks] (Fin n → LL')` to `{ toFun := fun x k => ι (x k) map_add' := fun x y => by ext k; simp map_smul' := fun c x => by ext k; simp [Algebra.smul_def, hι] }`. Establish `hker : LinearMap.ker Φ = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun x hx => funext fun k => ?_` and prove the remaining obligations. Establish `hk : ι (x k) = 0` using `congrFun hx k`.
+
+Simplify using `using hk`. Establish `hmn : m = n`. Establish `h` using `Module.finrank_eq_card_basis (Module.Basis.mk hLL (by rw [hspanLL]))`. Simplify using `at h`. Use linear arithmetic over natural numbers and integers.
+
+Substitute `hmn` using the available equality. Establish `hLL' : LinearIndependent LL' (Φ ∘ b)`. Establish `hu : IsUnit (Matrix.of b)` using `Matrix.linearIndependent_rows_iff_isUnit.1 hLL`. Conclude with `Matrix.linearIndependent_rows_iff_isUnit.2 (hu.map ι.mapMatrix)`. Use `⟨m, Φ ∘ b, fun i => (hmem _).1 (hbW i), hKs.map' Φ hker, ?_, hLL', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.range_comp, Submodule.span_image, hspanK]`. Use extensionality with `x'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(hmem x).1 hx`.
+
+Introduce `hx'`. Take `⟨x, hx, rfl⟩` from `hsurj x' hx'`. Conclude with `⟨x, hx, rfl⟩`. Conclude with `hLL'.span_eq_top_of_card_eq_finrank' (by simp)`.
+-/
 theorem _root_.GlobalTheory.ksForm_baseChange :
     ∀ {LL LL' Ks : Type} [Field LL] [Field LL'] [Field Ks] [Algebra Ks LL] [Algebra Ks LL']
       (ι : LL →+* LL'), (∀ y, ι (algebraMap Ks LL y) = algebraMap Ks LL' y) →

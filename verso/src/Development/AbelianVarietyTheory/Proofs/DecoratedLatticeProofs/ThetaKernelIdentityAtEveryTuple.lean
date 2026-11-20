@@ -16,6 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.KerTup
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Establish `h1 : castP (D` using `D) (rfl : S.rank = S.rank) (rfl : T.rank = T.rank) P = P := by conv_rhs => rw [← MvPolynomial.rename_id_apply P]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `GlobalTheory.T.fockPolynomialJetValue_eq_jetLinearForm_rescaled D S T s cD hcD G P`.
+-/
 theorem jetP_cast (D : D7) (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b) (s : ℂ) (cD : D.what₂.Tau → ℂ)
     (hcD : ∀ τ, cD τ ≠ 0) (G : VCx D.what₂.Tau a b → ℂ) (P : MvPolynomial (FVar D T.rank S.rank) ℂ) :
     jetP S T hS hT s G P = jetL cD G (mvZ (fun _ => 1) (fun τ => (s / cD τ) • 1) (castP hS hT P)) := by
@@ -26,24 +29,43 @@ theorem jetP_cast (D : D7) (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.r
   rw [h1]
   exact GlobalTheory.T.fockPolynomialJetValue_eq_jetLinearForm_rescaled D S T s cD hcD G P
 
+/- English proof (translation)
+Simplify using `only [jetC, derivAt0, iteratedFDeriv_zero_fun, Pi.zero_apply, ContinuousMultilinearMap.zero_apply, mul_zero]`.
+-/
 theorem jetC_zero {ι : Type} [Fintype ι] {a b : ℕ} (cD : ι → ℂ) (m : Formalism.L2.Ker.DVar ι a b →₀ ℕ) :
     jetC cD (fun _ : VCx ι a b => (0 : ℂ)) m = 0 := by
   simp only [jetC, derivAt0, iteratedFDeriv_zero_fun, Pi.zero_apply, ContinuousMultilinearMap.zero_apply, mul_zero]
 
+/- English proof (translation)
+Simplify using `only [jetP, jetC_zero, mul_zero, Finset.sum_const_zero]`.
+-/
 theorem jetP_zero (D : D7) (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b) (s : ℂ)
     (P : MvPolynomial (FVar D T.rank S.rank) ℂ) : jetP S T hS hT s (fun _ => 0) P = 0 := by
   simp only [jetP, jetC_zero, mul_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+Establish `h : (fun m => jetC cD (fun _ : VCx ι a b => (0 : ℂ)) m) = 0` using `funext fun m => jetC_zero cD m`. Simplify using `only [jetL, h, map_zero]`.
+-/
 theorem jetL_zero {ι : Type} [Fintype ι] {a b : ℕ} (cD : ι → ℂ) : jetL cD (fun _ : VCx ι a b => (0 : ℂ)) = 0 := by
   have h : (fun m => jetC cD (fun _ : VCx ι a b => (0 : ℂ)) m) = 0 := funext fun m => jetC_zero cD m
   simp only [jetL, h, map_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Matrix.reindex (finCongr hT) (finCongr hS)).symm (LinearMap.toMatrix' y), by unfold toHom rw [Equiv.apply_symm_apply, Matrix.toLin'_toMatrix']⟩`.
+-/
 theorem toHom_surj {D : D7} (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b)
     (y : (Fin a → D.host.E) →ₗ[D.host.E] Fin b → D.host.E) : ∃ z, toHom S T hS hT z = y :=
   ⟨(Matrix.reindex (finCongr hT) (finCongr hS)).symm (LinearMap.toMatrix' y), by
     unfold toHom
     rw [Equiv.apply_symm_apply, Matrix.toLin'_toMatrix']⟩
 
+/- English proof (translation)
+Establish `key : ∀ (n : ℕ) (y : Formalism.L2.Col.HomE E a b), ((n : E) • y) = ((n : 𝓞 E) • y)` using `fun n y => by`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Use `⟨fun y hy => ?_, fun y z hz => ?_⟩` and prove the remaining obligations. Establish `hx : Ξ y ≠ 0` using `fun h0 => hy (by rw [h0, map_zero, mul_zero])`. Establish `h1` using `hB.1 y hx`.
+
+Rewrite `h1` using `[Formalism.L2.Col.divLat, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[key, Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ h1`. Establish `hz' : ((cA * cB : ℕ) : E) • z ∈ Formalism.L2.Col.mulLat cB (Formalism.L2.Col.homAt SS N N')`. Rewrite using `[key, Nat.cast_mul, mul_comm, mul_smul]`.
+
+Conclude with `Submodule.mem_map.2 ⟨_, Submodule.smul_mem _ _ hz, rfl⟩`. Rewrite using `[hB.2 y _ hz']`.
+-/
 theorem supp_per_of_inBox {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {a b : ℕ}
     (SS : Finset (HeightOneSpectrum (𝓞 E))) (cA cB : ℕ) (N : Submodule (𝓞 E) (Formalism.L2.Col.Sp E a))
     (N' : Submodule (𝓞 E) (Formalism.L2.Col.Sp E b)) (Ξ : Formalism.L2.Col.HomE E a b → K)
@@ -63,10 +85,16 @@ theorem supp_per_of_inBox {E K : Type} [Field E] [NumberField E] [StarRing E] [F
       exact Submodule.mem_map.2 ⟨_, Submodule.smul_mem _ _ hz, rfl⟩
     rw [hB.2 y _ hz']
 
+/- English proof (translation)
+The claim follows from `jetP_zero D S T hS hT s P`.
+-/
 theorem jetP_zero' (D : D7) (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b) (s : ℂ)
     (P : MvPolynomial (FVar D T.rank S.rank) ℂ) : jetP S T hS hT s (0 : VCx D.what₂.Tau a b → ℂ) P = 0 :=
   jetP_zero D S T hS hT s P
 
+/- English proof (translation)
+The claim follows from `jetL_zero cD`.
+-/
 theorem jetL_zero' {ι : Type} [Fintype ι] {a b : ℕ} (cD : ι → ℂ) : jetL cD (0 : VCx ι a b → ℂ) = 0 := jetL_zero cD
 
 end GlobalTheory.KerTup
@@ -75,6 +103,39 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 open GlobalTheory.KerTup in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a Ch₀ Ch A ι ψ θ x vac c₀ kom dd w Ram rd cK hX hC i hi s hHol α γ c c' P`. Take `⟨hStd, hGram, hEmb, hcD, hDet⟩` from `GlobalTheory.T.trueColumnSteps_are_standardHermitianPairs I hI hP l Z ψ θ hX.std hX.inf`. Take `⟨hFin, Φ, hSB, hΦv, hTh⟩` from `hC.dat i hi α γ`. Take `⟨hMv, hMv', hΞ⟩` from `GlobalTheory.T.movedDatum_eq_finiteDatum_representativePair I hI hP l Z u a Ch₀ A hC.is i hi (ι i α) (ι (i + 1) γ) Φ hSB (w i α γ) hΦv c c'`. Take `⟨xg, hxg⟩` from `hDet _ (A.h i (ι i α) c)`.
+
+Take `⟨yh, hyh⟩` from `hDet _ (A.h (i + 1) (ι (i + 1) γ) c')`. Establish `hV` using `(hX.mv i hi).2 a (A.chr (i + 1)) (kom i) (hC.is.chr ⟨i, hi⟩) (hC.om i hi) (A.h i _ c) (hC.is.h i (Nat.le_of_succ_le hi) _ c).1 (A.h (i + 1) _ c') (hC.is.h (i + 1) hi _ c').1 _ _ hMv hMv' xg yh hxg hyh`. Establish `hχ` using `GlobalTheory.T.chainMove_characters_eq_rho_up_to_base I hI hP l Z u a Ch₀ A hC.is i hi _ _ c c' xg yh hxg hyh`. Take `⟨hc0, hcov, h2qd⟩` from `GlobalTheory.T.tupleLevel_pos_odd_badPrimes_prime_to_level I hI hP u a`. Take `⟨hXo, hPr, -⟩` from `base_fields_primes_ok B X`.
+
+Establish `hi' : i < B.R.m` using `hi`. Establish `hbox` using `GlobalTheory.LvT.Built.Box.inBox_xiAt B.fields (B.primes X) B.R I.Ch I.sel I.S (I.tup a) (I.cst a) (I.idx a) _ _ u i hXo hPr hI.sel_ok (hI.T_mem u) hI.g_mem (hI.idx_ok a) hi' ⟨_, _, _, _, hI.ch_tied⟩ c.1.1 c'.1.1 ((I.stp u a i).rep c.1) ((I.stp u a (i + 1)).rep c'.1)`. Establish `hLH` using `(TC.laHyp_eSmooth_true I hI hP l Z a u i hi').1`. Establish `hLa` using `(hLH.2.2.2.2.2 _ _ ⟨((I.stp u a i).rep c.1).1.1.deco.2.lat, ((I.stp u a i).rep c.1).1.1.deco.2.uni⟩ ⟨((I.stp u a (i + 1)).rep c'.1).1.1.deco.2.lat, ((I.stp u a (i + 1)).rep c'.1).1.1.deco.2.uni⟩).2`. Establish `he : B.fields.embC I.A.σ₀ = tauE (I.rec7 l Z)` using `funext hEmb`.
+
+Rewrite `hLa` using `[he, ColIn.A_AA]`. Use `set N := ((I.stp u a i).rep c.1).1.1.deco.1.N with hN`. Use `set N' := ((I.stp u a (i + 1)).rep c'.1).1.1.deco.1.N with hN'`. Establish `hΞ' : ∀ z, Φ (actO _ _ (A.h i _ c)⁻¹ (A.h (i + 1) _ c')⁻¹ (z.map fun r => A.e * incA (I.rec7 l Z) r)) = w i α γ * B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c.1.1 c'.1.1 ((I.stp u a i).rep c.1) ((I.stp u a (i + 1)).rep c'.1) (toHom _ _ (rankN (I.rec7 l Z) i (Nat.l …` using `fun z => hΞ z`. Take `⟨hsupp, hper⟩` from `supp_per_of_inBox _ _ _ _ _ _ hbox B.embLL (w i α γ)`.
+
+Establish `hth : I.th u a i c.1.1 c'.1.1 ((I.stp u a i).rep c.1) ((I.stp u a (i + 1)).rep c'.1) = thC (tauE (I.rec7 l Z)) I.A.δ (I.rec7 l Z).host.d I.A.sc ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) (ColIn.Sb I a u) N N' (levC I.sel (I.tup a) (I.cst a) u) …`. Rewrite using `[← he]`. Establish `h2 : ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) = I.A.AA` using `(ColIn.A_AA I).symm`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+
+Establish `hcore` using `fun (κ : ℂ) (E : VCx (I.rec7 l Z).what₂.Tau (B.R.N i) (B.R.N (i + 1)) → ℂ) => GlobalTheory.T.thetaKernel_splitPlaces_eq_jet_classicalTheta (I.rec7 l Z) ψ θ _ _ (B.R.N i) (B.R.N (i + 1)) (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) I.A.δ I.A.sc (hS …`. Establish `hjet` using `fun G => jetP_cast (I.rec7 l Z) _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) s I.J.cD hcD G P`. Establish `hxi0 : (∀ z, A.xi i hi (ι i α) (ι (i + 1) γ) z = 0) → ∀ y : Formalism.L2.Col.HomE B.fields.E (B.R.N i) (B.R.N (i + 1)), B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c.1.1 c'.1.1 ((I.stp u a i).rep c.1) ((I.stp u a (i + 1)).rep c'.1) y) = 0`. Introduce `hz y`. Take `⟨z, rfl⟩` from `toHom_surj _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) y`.
+
+Establish `h0` using `(GlobalTheory.T.movedDatum_eq_finiteDatum_representativePair I hI hP l Z u a Ch₀ A hC.is i hi (ι i α) (ι (i + 1) γ) Φ hSB 0 (fun z' => by simp only [hΦv z', hz z', mul_zero]) c c').2.2 z`. Establish `h1` using `(GlobalTheory.T.movedDatum_eq_finiteDatum_representativePair I hI hP l Z u a Ch₀ A hC.is i hi (ι i α) (ι (i + 1) γ) Φ hSB 1 (fun z' => by simp only [hΦv z', hz z', mul_zero]) c c').2.2 z`. Rewrite `h1` using `[h0, zero_mul, one_mul]`. Conclude with `h1.symm`. Distinguish the cases in `hm : w i α γ ≠ 0 ∧ ∃ z, A.xi i hi (ι i α) (ι (i + 1) γ) z ≠ 0`.
+
+Take `⟨hw, hxz⟩` from `hm`. Establish `hVE : xiN θ _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) I.A.δ I.A.sc (kom i (A.h i _ c, A.h (i + 1) _ c') (vac i)) = fun z => (c₀ i * (A.chr (i + 1) (A.xr i (ι i α)) : ℂ) * (A.chr (i + 1) (A.xr (i + 1) (ι (i + 1) γ)) : ℂ)⁻¹ * ((I.chIn u a).rh …`. Use `hV.trans (funext fun z => ?_)` and prove the remaining obligations. Establish `h3 : I.A.e _ _ N N' z = I.A.chiF _ _ N N' * I.J.V.thMoved _ _ N N' z` using `rfl`. Rewrite using `[h3, mul_assoc (c₀ i), hχ]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hwE : (fun z => w i α γ * ((w i α γ)⁻¹ * I.A.e _ _ N N' z)) = I.A.e _ _ N N'`. Use function extensionality and compare the values at `fun z => by rw [← mul_assoc, mul_inv_cancel₀ hw, one_mul]`. Establish `hT : jetP _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) s (thC (tauE (I.rec7 l Z)) I.A.δ (I.rec7 l Z).host.d I.A.sc ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) (ColIn.Sb I a u) N N' (levC I.sel (I.tup a) (I.c …`. Establish `h6 : thC (tauE (I.rec7 l Z)) I.A.δ (I.rec7 l Z).host.d I.A.sc ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) (ColIn.Sb I a u) N N' (levC I.sel (I.tup a) (I.cst a) u) (fun y => w i α γ * B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c. …` using `(GlobalTheory.T.classicalThetaOfDatum_smul_move _ _ _ _ _ _ _ _ _ _ _ _).trans ((congrArg (fun G => thC (tauE (I.rec7 l Z)) I.A.δ (I.rec7 l Z).host.d I.A.sc ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) (ColIn.Sb I a u) N N' (levC I.sel (I.tup a) …`.
+
+Conclude with `(congrArg (fun t => jetP _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) s t P) h6).trans (hjet _)`. Rewrite using `[hcore _ _ hVE, hC.cst i hi α γ hxz]`. Use `(congrArg (fun t => _ * (_ * t)) hT).trans ?_` and prove the remaining obligations. Establish `hT'' : jetL I.J.cD (I.th u a i c.1.1 c'.1.1 ((I.stp u a i).rep c.1) ((I.stp u a (i + 1)).rep c'.1)) (mvZ (fun _ => 1) (fun τ => (s / I.J.cD τ) • 1) (castP (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) P)) * ((I.chIn u a).rho i c.1 * (I.chIn u a).rh …` using `mul_comm _ _`. Use `Eq.trans ?_ (congrArg (fun t => _ * t) hT'')` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hΞz : (fun y => w i α γ * B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c.1.1 c'.1.1 ((I.stp u a i).rep c.1) ((I.stp u a (i + 1)).rep c'.1) y)) = fun _ => 0`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hw : w i α γ = 0`. Rewrite using `[hw, zero_mul]`.
+
+Establish `hz : ∀ z, A.xi i hi (ι i α) (ι (i + 1) γ) z = 0` using `fun z => by_contra fun h => hm ⟨hw, z, h⟩`. Rewrite using `[hxi0 hz y, mul_zero]`. Establish `hT0 : jetP _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) s (thC (tauE (I.rec7 l Z)) I.A.δ (I.rec7 l Z).host.d I.A.sc ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) (ColIn.Sb I a u) N N' (levC I.sel (I.tup a) (I. …`. Establish `h5 : thC (tauE (I.rec7 l Z)) I.A.δ (I.rec7 l Z).host.d I.A.sc ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) (ColIn.Sb I a u) N N' (levC I.sel (I.tup a) (I.cst a) u) (fun y => w i α γ * B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c. …` using `(congrArg (fun G : Formalism.L2.Col.HomE B.fields.E (B.R.N i) (B.R.N (i + 1)) → ℂ => thC (tauE (I.rec7 l Z)) I.A.δ (I.rec7 l Z).host.d I.A.sc ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) (ColIn.Sb I a u) N N' (levC I.sel (I.tup a) (I.cst a) u) G …`. Conclude with `(congrArg (fun t => jetP _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) s t P) h5).trans (jetP_zero' _ _ _ _ _ s P)`.
+
+Rewrite using `[hcore _ _ hV]`. Use `(congrArg (fun t => _ * (_ * t)) hT0).trans ?_` and prove the remaining obligations. Simplify using `only [mul_zero]`. Distinguish the cases in `hxz : ∃ z, A.xi i hi (ι i α) (ι (i + 1) γ) z ≠ 0`. Establish `hw : w i α γ = 0`.
+
+Assume the negation of the conclusion as `hw`. Conclude with `hm ⟨hw, hxz⟩`. Rewrite using `[hC.cst i hi α γ hxz, hw]`. Simplify using the standard rewrite rules. Establish `hz : ∀ z, A.xi i hi (ι i α) (ι (i + 1) γ) z = 0` using `fun z => by_contra fun h => hxz ⟨z, h⟩`.
+
+Establish `hth0 : I.th u a i c.1.1 c'.1.1 ((I.stp u a i).rep c.1) ((I.stp u a (i + 1)).rep c'.1) = 0`. Rewrite using `[hth]`. Establish `h4 : (fun y => B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c.1.1 c'.1.1 ((I.stp u a i).rep c.1) ((I.stp u a (i + 1)).rep c'.1) y)) = fun _ => 0` using `funext (hxi0 hz)`. Conclude with `(congrArg (fun G : Formalism.L2.Col.HomE B.fields.E (B.R.N i) (B.R.N (i + 1)) → ℂ => thC (tauE (I.rec7 l Z)) I.A.δ (I.rec7 l Z).host.d I.A.sc ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) (ColIn.Sb I a u) N N' (levC I.sel (I.tup a) (I.cst a) u) G …`. Establish `hL0 : A.abelian₂ i c.1 c'.1 (mvZ (fun _ => 1) (fun τ => (s / I.J.cD τ) • 1) (castP (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) P)) = 0` using `by show ((I.chIn u a).rho i c.1 * (I.chIn u a).rho' i c'.1) • jetL I.J.cD (I.th u a i c.1.1 c'.1.1 ((I.stp u a i).rep c.1) ((I.stp u a (i + 1)).rep c'.1)) (mvZ (fun _ => 1) (fun τ => (s / I.J.cD τ) • 1) (castP (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + …`.
+
+Rewrite using `[hth0, jetL_zero', LinearMap.zero_apply, smul_zero]`. Conclude with `((congrArg (fun t => cK i * t) hL0).trans (mul_zero _)).symm`.
+-/
 theorem GlobalTheory.KerTup.kernel_identity_tuple : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch₀ Ch : ℕ → Type) (A : TwDat I l Z u a Ch₀) (ι : ∀ j, Ch j → Ch₀ j) ψ θ x vac c₀ kom dd w Ram rd cK, PinX I l Z ψ θ x vac c₀ → PinColL A ι ψ θ x vac c₀ kom dd w Ram rd cK → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m) (s : ℂ), (∀ f, IsHol θ ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) ψ f → ∀ P, pureTensorO ψ θ _ _ (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) f P 0 = jetP _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) s (ColDat.xiS θ i hi f) P) → ∀ α γ (c : {c // A.chOf i c = ι i α}) (c' : {c // A.chOf (i + 1) c = ι (i + 1) γ}) P, (volLev (x i).vol (A.U i (ι i α)) : ℂ) * thetaKO (kom i) (A.h i _ c) (A.h (i + 1) _ c') (pureTensorO ψ θ _ _ (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) (comb ψ _ _ (dd i α γ) (vac i)) P) = cK i * A.abelian₂ i c.1 c'.1 (mvZ (fun _ => 1) (fun τ => (s / I.J.cD τ) • 1) (castP (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) P)) := by
   intro B X I hI hP l Z u a Ch₀ Ch A ι ψ θ x vac c₀ kom dd w Ram rd cK hX hC i hi s hHol α γ c c' P
   obtain ⟨hStd, hGram, hEmb, hcD, hDet⟩ := GlobalTheory.T.trueColumnSteps_are_standardHermitianPairs I hI hP l Z ψ θ hX.std hX.inf

@@ -31,9 +31,15 @@ structure IsTorus (a : (Fin r → ℝ) → GAd σ J) : Prop where
   onV : ∀ t, ∀ z : Fin n → E, (cT (σ : E →+* E) X * J) *ᵥ z = 0 → (cT (σ : E →+* E) Y * J) *ᵥ z = 0 →
     (matHom _ σ J (a t)).1 *ᵥ incV F z = incV F z
 
+/- English proof (translation)
+The claim follows from `mul_mem_minimal_parabolic hp hq`.
+-/
 theorem mul_mem_minPar {p q : GAd σ J} (hp : p ∈ minPar σ J X) (hq : q ∈ minPar σ J X) : p * q ∈ minPar σ J X :=
   mul_mem_minimal_parabolic hp hq
 
+/- English proof (translation)
+The claim follows from `inv_mem_minimal_parabolic h hJ hW hp`.
+-/
 theorem inv_mem_minPar (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {p : GAd σ J}
     (hp : p ∈ minPar σ J X) : p⁻¹ ∈ minPar σ J X :=
   inv_mem_minimal_parabolic h hJ hW hp
@@ -46,6 +52,9 @@ def minParSub (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X
   mul_mem' := mul_mem_minPar
   inv_mem' := inv_mem_minPar h hJ hW
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, Matrix.blockTriangular_diagonal _, ha.onX t⟩`.
+-/
 theorem IsTorus.mem {a : (Fin r → ℝ) → GAd σ J} (ha : IsTorus σ J X Y a) (t : Fin r → ℝ) : a t ∈ minPar σ J X :=
   ⟨_, Matrix.blockTriangular_diagonal _, ha.onX t⟩
 

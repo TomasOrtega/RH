@@ -27,18 +27,34 @@ section Abstract
 variable {𝔸 L G : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [FiniteDimensional ℝ 𝔸] [NormedAddCommGroup L]
   [NormedSpace ℝ L] [Group G] {σ : 𝔸 →ₗ[ℝ] 𝔸} {j : L →ₗ[ℝ] 𝔸} {s : 𝔸 → G}
 
+/- English proof (translation)
+Establish `: IsArtinianRing 𝔸` using `IsArtinianRing.of_finite ℝ 𝔸`. Conclude with `mul_eq_one_comm.1 h`.
+-/
 theorem mul_anti_of_unitary {a : 𝔸} (h : σ a * a = 1) : a * σ a = 1 := by
   have : IsArtinianRing 𝔸 := IsArtinianRing.of_finite ℝ 𝔸
   exact mul_eq_one_comm.1 h
 
 omit [FiniteDimensional ℝ 𝔸] in
+/- English proof (translation)
+Rewrite using `[H.anti, mul_assoc, ← mul_assoc (σ a), ha, one_mul, hb]`.
+-/
 theorem unitary_mul (H : IsLieData σ j s) {a b : 𝔸} (ha : σ a * a = 1) (hb : σ b * b = 1) :
     σ (a * b) * (a * b) = 1 := by
   rw [H.anti, mul_assoc, ← mul_assoc (σ a), ha, one_mul, hb]
 
+/- English proof (translation)
+Rewrite using `[H.invol, mul_anti_of_unitary ha]`.
+-/
 theorem unitary_anti (H : IsLieData σ j s) {a : 𝔸} (ha : σ a * a = 1) : σ (σ a) * σ a = 1 := by
   rw [H.invol, mul_anti_of_unitary ha]
 
+/- English proof (translation)
+Take `⟨Λ, h1, h2, -⟩` from `hl`. Introduce `u₀ hu₀`. Establish `hu₀' : σ u₀ * u₀ = 1` using `hu₀`. Establish `hm : Continuous fun u : 𝔸 => σ u₀ * u` using `continuous_const.mul continuous_id`. Establish `ht : Tendsto (fun u => σ u₀ * u) (𝓝 u₀) (𝓝 1)`.
+
+Use `hm.tendsto u₀` as an intermediate fact. Rewrite `this` using `[hu₀']`. Then use the resulting hypothesis. Establish `h4 : ContinuousAt (fun u => Λ (σ u₀ * u)) u₀` using `ContinuousAt.comp (g := Λ) (by rw [hu₀']; exact h1.continuousAt) hm.continuousAt`. Establish `h5 : ContinuousAt (fun u => φ (g * s u₀ * expMap j s (Λ (σ u₀ * u)))) u₀` using `(hφ (g * s u₀)).continuous.continuousAt.comp h4`. Establish `key : ∀ u, (σ (σ u₀ * u) * (σ u₀ * u) = 1 → NormedSpace.exp (j (Λ (σ u₀ * u))) = σ u₀ * u) → σ u * u = 1 → φ (g * s u) = φ (g * s u₀ * expMap j s (Λ (σ u₀ * u)))` using `fun u hp hu => by`.
+
+Establish `hu'` using `unitary_mul H (unitary_anti H hu₀') hu`. Rewrite using `[expMap, hp hu', mul_assoc, ← H.mul _ _ hu₀' hu', ← mul_assoc, mul_anti_of_unitary hu₀', one_mul]`. Use `h5.continuousWithinAt.congr_of_eventuallyEq ?_ (key u₀ (ht.eventually h2).self_of_nhds hu₀')` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (ht.eventually h2), self_mem_nhdsWithin] with u a b using key u a b`.
+-/
 theorem continuousOn_of_sm (H : IsLieData σ j s) (hl : HasLog σ j) {φ : G → ℂ} (hφ : Sm (expMap j s) φ) (g : G) :
     ContinuousOn (fun u => φ (g * s u)) {u | σ u * u = 1} := by
   obtain ⟨Λ, h1, h2, -⟩ := hl
@@ -74,20 +90,35 @@ open Classical in
 def toU (H : IsLieData σ j s) (a : 𝔸) : uGrp H :=
   if h : σ a * a = 1 then ⟨⟨a, σ a, mul_anti_of_unitary h, h⟩, h⟩ else 1
 
+/- English proof (translation)
+Rewrite using `[toU, dif_pos h]`.
+-/
 theorem toU_val (H : IsLieData σ j s) {a : 𝔸} (h : σ a * a = 1) : ((toU H a).1 : 𝔸) = a := by
   rw [toU, dif_pos h]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext (toU_val H k.2))`.
+-/
 theorem toU_coe (H : IsLieData σ j s) (k : uGrp H) : toU H (k.1 : 𝔸) = k :=
   Subtype.ext (Units.ext (toU_val H k.2))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.anti, H.one, H.invol, H.inj, H.skew, fun a b ha hb => Subtype.ext (Units.ext (by change ((toU H (a * b)).1 : 𝔸) = (toU H a).1 * (toU H b).1 rw [toU_val H (unitary_mul H ha hb), toU_val H ha, toU_val H hb]))⟩`.
+-/
 theorem isLieData_toU (H : IsLieData σ j s) : IsLieData σ j (toU H) :=
   ⟨H.anti, H.one, H.invol, H.inj, H.skew, fun a b ha hb => Subtype.ext (Units.ext (by
     change ((toU H (a * b)).1 : 𝔸) = (toU H a).1 * (toU H b).1
     rw [toU_val H (unitary_mul H ha hb), toU_val H ha, toU_val H hb]))⟩
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_val (H : IsLieData σ j s) : Continuous fun k : uGrp H => (k.1 : 𝔸) :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨hc.congr fun x => (toU_val H (hu x)).symm, ?_⟩)` and prove the remaining obligations. Use `(σ.continuous_of_finiteDimensional.comp hc).congr fun x => ?_` and prove the remaining obligations. Use `(Units.inv_eq_of_mul_eq_one_left ?_).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ (c x) * ((toU H (c x)).1 : 𝔸) = 1`. Rewrite using `[toU_val H (hu x), hu]`.
+-/
 theorem continuous_toU (H : IsLieData σ j s) {X : Type} [TopologicalSpace X] {c : X → 𝔸} (hc : Continuous c)
     (hu : ∀ x, σ (c x) * c x = 1) : Continuous fun x => toU H (c x) := by
   refine continuous_induced_rng.2 (Units.continuous_iff.2 ⟨hc.congr fun x => (toU_val H (hu x)).symm, ?_⟩)
@@ -96,11 +127,19 @@ theorem continuous_toU (H : IsLieData σ j s) {X : Type} [TopologicalSpace X] {c
   change σ (c x) * ((toU H (c x)).1 : 𝔸) = 1
   rw [toU_val H (hu x), hu]
 
+/- English proof (translation)
+Use `isCompact_iff_compactSpace.1 hc` as an intermediate fact. Establish `h` using `isCompact_range (continuous_toU H (c := fun a : {a | σ a * a = 1} => a.1) continuous_subtype_val fun a => a.2)`. Use `⟨by convert h; exact (Set.range_eq_univ.2 fun k => ⟨⟨k.1, k.2⟩, toU_coe H k⟩).symm⟩` and prove the remaining obligations.
+-/
 theorem compactSpace_uGrp (H : IsLieData σ j s) (hc : IsCompact {a | σ a * a = 1}) : CompactSpace (uGrp H) := by
   have := isCompact_iff_compactSpace.1 hc
   have h := isCompact_range (continuous_toU H (c := fun a : {a | σ a * a = 1} => a.1) continuous_subtype_val fun a => a.2)
   refine ⟨by convert h; exact (Set.range_eq_univ.2 fun k => ⟨⟨k.1, k.2⟩, toU_coe H k⟩).symm⟩
 
+/- English proof (translation)
+Establish `: CompleteSpace 𝔸` using `FiniteDimensional.complete ℝ 𝔸`. Set `: NormedAlgebra ℚ 𝔸` to `NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Unfold `expMap`. Rewrite using `[← H.mul _ _ (DerLinear.exp_unitary H _) (DerLinear.exp_unitary H _), ← NormedSpace.exp_add_of_commute, add_smul, map_add]`. Rewrite using `[map_smul, map_smul]`.
+
+Conclude with `((Commute.refl _).smul_left _).smul_right _`.
+-/
 theorem expMap_add (H : IsLieData σ j s) (X : L) (a b : ℝ) :
     expMap j s ((a + b) • X) = expMap j s (a • X) * expMap j s (b • X) := by
   have : CompleteSpace 𝔸 := FiniteDimensional.complete ℝ 𝔸
@@ -111,6 +150,11 @@ theorem expMap_add (H : IsLieData σ j s) (X : L) (a b : ℝ) :
   rw [map_smul, map_smul]
   exact ((Commute.refl _).smul_left _).smul_right _
 
+/- English proof (translation)
+Establish `h` using `(Sm.differentiableAt hφ (x * expMap j s (t • X)) X).hasDerivAt`. Rewrite `h` using `[← sub_self t]`. Establish `h2` using `h.comp_sub_const t t`. Rewrite `h2` using `[sub_self]`. Use `h2.congr_of_eventuallyEq (Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[mul_assoc, ← expMap_add H, add_sub_cancel]`.
+-/
 theorem hasDerivAt_sm (H : IsLieData σ j s) {φ : G → ℂ} (hφ : Sm (expMap j s) φ) (X : L) (x : G) (t : ℝ) :
     HasDerivAt (fun t : ℝ => φ (x * expMap j s (t • X))) (Der (expMap j s) X φ (x * expMap j s (t • X))) t := by
   have h := (Sm.differentiableAt hφ (x * expMap j s (t • X)) X).hasDerivAt
@@ -121,6 +165,15 @@ theorem hasDerivAt_sm (H : IsLieData σ j s) {φ : G → ℂ} (hφ : Sm (expMap 
   simp only
   rw [mul_assoc, ← expMap_add H, add_sub_cancel]
 
+/- English proof (translation)
+Use `compactSpace_uGrp H hc` as an intermediate fact. Establish `: FiniteDimensional ℝ L` using `FiniteDimensional.of_injective j H.inj`. Establish `H'` using `isLieData_toU H`. Use `GlobalTheory.T.finiteDimensional_ker_aeval_of_eigenspaces' _ _ (fun lam => ?_) p hp` and prove the remaining obligations. Use `GlobalTheory.T.finiteDimensional_eigenspace_sum_sq_invariantFields_alt (uGrp H) L _ (fun f hf => ?_) (expMap j (toU H)) (fun Y => ?_) ?_ (fun r hr => ?_) _ (derOp_add _ hl) (derOp_smul _ hl) (fun Y f x t => hasDerivAt_sm H' f.2 Y x t) ι X hX lam` and prove the remaining obligations.
+
+Use `((continuousOn_of_sm H' hl hf 1).comp_continuous (continuous_val H) fun k => k.2).congr fun k => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, one_mul, toU_coe]`. Conclude with `continuous_toU H ((DerLinear.contDiff_exp H).continuous.comp (continuous_id.smul continuous_const)) fun t => DerLinear.exp_unitary H _`. Rewrite using `[expMap, map_zero, NormedSpace.exp_zero]`. Conclude with `toU_coe H 1`.
+
+Take `⟨Λ, h1, h2, h3⟩` from `hl`. Establish `hΛ : Λ 1 = 0` using `by simpa using h3.self_of_nhds`. Establish `h4 : ∀ᶠ a in 𝓝 (1 : 𝔸), Λ a ∈ Metric.ball (0 : L) r` using `h1.continuousAt.eventually (by rw [hΛ]; exact Metric.ball_mem_nhds _ hr)`. Establish `ht : Tendsto (fun k : uGrp H => (k.1 : 𝔸)) (𝓝 1) (𝓝 1)` using `(continuous_val H).tendsto 1`. Use `filter_upwards [ht.eventually h2, ht.eventually h4] with k a b`.
+
+Conclude with `⟨_, b, by rw [expMap, a k.2, toU_coe]⟩`.
+-/
 theorem finite_ker (H : IsLieData σ j s) (hl : HasLog σ j) (hc : IsCompact {a | σ a * a = 1}) {ι : Type} [Fintype ι]
     (X : ι → L) (hX : Submodule.span ℝ (Set.range X) = ⊤) (p : Polynomial ℂ) (hp : p ≠ 0) :
     FiniteDimensional ℂ (LinearMap.ker (Polynomial.aeval
@@ -145,6 +198,11 @@ theorem finite_ker (H : IsLieData σ j s) (hl : HasLog σ j) (hc : IsCompact {a 
     filter_upwards [ht.eventually h2, ht.eventually h4] with k a b
     exact ⟨_, b, by rw [expMap, a k.2, toU_coe]⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.IntertwineAeval.intertwine_aeval`. Consider the case `exact _root_.GlobalTheory.IntertwineAeval.intertwine_aeval`. Consider the case `(apply _root_.GlobalTheory.IntertwineAeval.intertwine_aeval <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntertwineAeval.intertwine_aeval <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.IntertwineAeval.intertwine_aeval <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntertwineAeval.intertwine_aeval ..)`.
+-/
 theorem map_aeval {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] (r : M →ₗ[ℂ] N)
     {T : Module.End ℂ M} {T' : Module.End ℂ N} (h : ∀ v, r (T v) = T' (r v)) (p : Polynomial ℂ) (v : M) :
     r (Polynomial.aeval T p v) = Polynomial.aeval T' p (r v) := by
@@ -156,6 +214,9 @@ theorem map_aeval {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] 
   | (intros; apply @_root_.GlobalTheory.IntertwineAeval.intertwine_aeval <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.IntertwineAeval.intertwine_aeval ..)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `s ((k.1 : 𝔸) * (toU H _).1) = _`. Rewrite using `[toU_val H (DerLinear.exp_unitary H _), H.mul _ _ k.2 (DerLinear.exp_unitary H _), expMap]`.
+-/
 theorem s_mul_exp (H : IsLieData σ j s) (k : uGrp H) (Y : L) :
     s ((k * expMap j (toU H) Y).1 : 𝔸) = s (k.1 : 𝔸) * expMap j s Y := by
   change s ((k.1 : 𝔸) * (toU H _).1) = _
@@ -168,6 +229,9 @@ def res (H : IsLieData σ j s) (x : G) : smSub (expMap j s) →ₗ[ℂ] smSub (e
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun k => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `deriv (fun t : ℝ => φ.1 (x * s (k.1 : 𝔸) * expMap j s (t • Y))) 0 = deriv (fun t : ℝ => φ.1 (x * s ((k * expMap j (toU H) (t • Y)).1 : 𝔸))) 0`. Simplify using `only [s_mul_exp, ← mul_assoc]`.
+-/
 theorem res_derOp (H : IsLieData σ j s) (hl : HasLog σ j) (x : G) (Y : L) (φ : smSub (expMap j s)) :
     res H x (derOp H hl Y φ) = derOp (isLieData_toU H) hl Y (res H x φ) := by
   refine Subtype.ext (funext fun k => ?_)
@@ -175,6 +239,17 @@ theorem res_derOp (H : IsLieData σ j s) (hl : HasLog σ j) (x : G) (Y : L) (φ 
     deriv (fun t : ℝ => φ.1 (x * s ((k * expMap j (toU H) (t • Y)).1 : 𝔸))) 0
   simp only [s_mul_exp, ← mul_assoc]
 
+/- English proof (translation)
+Set `T : Module.End ℂ W` to `LinearMap.restrict _ hW`. Use `finite_ker H hl hc X hX T.charpoly T.charpoly_monic.ne_zero` as an intermediate fact. Establish `hm : ∀ x, res H x φ ∈ LinearMap.ker (Polynomial.aeval (∑ i, derOp (isLieData_toU H) hl (X i) * derOp (isLieData_toU H) hl (X i)) T.charpoly)` using `fun x => by`. Use `map_aeval (res H x ∘ₗ W.subtype) (T := T) (T' := ∑ i, derOp (isLieData_toU H) hl (X i) * derOp (isLieData_toU H) hl (X i)) (fun v => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `res H x ((∑ i, derOp H hl (X i) * derOp H hl (X i)) v.1) = _`.
+
+Simplify using `only [LinearMap.sum_apply, map_sum, Module.End.mul_apply, res_derOp]`. Use the proof step `rfl) T.charpoly ⟨φ, hφ⟩`. Rewrite `this` using `[LinearMap.aeval_self_charpoly, LinearMap.zero_apply, map_zero]`. Conclude with `this.symm`. Set `b` to `Module.finBasis ℂ (LinearMap.ker (Polynomial.aeval (∑ i, derOp (isLieData_toU H) hl (X i) * derOp (isLieData_toU H) hl (X i)) T.charpoly))`.
+
+Set `c` to `fun i (x : G) => b.repr ⟨_, hm x⟩ i`. Use `⟨Submodule.span ℂ (Set.range c), FiniteDimensional.span_of_finite _ (Set.finite_range c), fun u hu => ?_⟩` and prove the remaining obligations. Establish `e : (fun g => φ.1 (g * s u)) = ∑ i, (b i).1.1 (toU H u) • c i`. Use function extensionality and compare the values at `g`. Establish `h1` using `congrArg (fun y => y.1.1 (toU H u)) (b.sum_repr ⟨_, hm g⟩)`.
+
+Simplify using `only [Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul] at h1 ⊢`. Establish `h2 : (res H g φ).1 (toU H u) = φ.1 (g * s u)`. Express the relevant statement in the definitionally equal form `φ.1 (g * s ((toU H u).1 : 𝔸)) = _`. Rewrite using `[toU_val H hu]`. Rewrite using `[← h2, ← h1]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem finite_translates (H : IsLieData σ j s) (hl : HasLog σ j) (hc : IsCompact {a | σ a * a = 1}) {ι : Type}
     [Fintype ι] (X : ι → L) (hX : Submodule.span ℝ (Set.range X) = ⊤) (W : Submodule ℂ (smSub (expMap j s)))
     [FiniteDimensional ℂ W] (hW : ∀ f ∈ W, (∑ i, derOp H hl (X i) * derOp H hl (X i)) f ∈ W)
@@ -218,11 +293,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {θ : InfF D} {V : HSp D}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.definite_hermitian_eq_pm_gram_unitary_compact _ _ _ _ (hs (tauE D τ)) (by rcases hd (tauE D τ) with h | h <;> simp [h])`.
+-/
 theorem frame_at (hs : V.SigOK) (hd : V.IsDefinite) (τ : D.what₂.Tau) :
     (∃ B : Matrix (Fin V.rank) (Fin V.rank) ℂ, IsUnit B.det ∧ (gramAt D V τ = Bᴴ * B ∨ gramAt D V τ = -(Bᴴ * B))) ∧
       IsCompact (Formalism.QuantumDeterminants.UH (gramAt D V τ)) :=
   GlobalTheory.T.definite_hermitian_eq_pm_gram_unitary_compact _ _ _ _ (hs (tauE D τ)) (by rcases hd (tauE D τ) with h | h <;> simp [h])
 
+/- English proof (translation)
+Establish `h` using `isCompact_univ_pi fun τ => (frame_at hs hd τ).2`. Establish `e : {u : AlgInf V | sigInf V u * u = 1} = Set.univ.pi fun τ => Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `Set.ext fun u => (unit_iff R u).trans ⟨fun h τ _ => h τ, fun h τ => h τ trivial⟩`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem isCompact_unitary (R : RealPoints θ V) (hs : V.SigOK) (hd : V.IsDefinite) :
     IsCompact {u : AlgInf V | sigInf V u * u = 1} := by
   have h := isCompact_univ_pi fun τ => (frame_at hs hd τ).2
@@ -231,12 +312,22 @@ theorem isCompact_unitary (R : RealPoints θ V) (hs : V.SigOK) (hd : V.IsDefinit
   rw [e]
   exact h
 
+/- English proof (translation)
+Establish `hu` using `(unit_iff R fun τ => infMat D.sp.cm.sig V.gram (θ τ) g).2 fun τ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ`. Conclude with `⟨_, hu, R.2.2.1 _ (secInf_spec R hu).1 _ hg (secInf_spec R hu).2⟩`.
+-/
 theorem exists_secInf (hθ : IsInfFam θ) (R : RealPoints θ V) {g : GA D V} (hg : g ∈ GinfC V) :
     ∃ u : AlgInf V, sigInf V u * u = 1 ∧ secInf θ V u = g := by
   have hu := (unit_iff R fun τ => infMat D.sp.cm.sig V.gram (θ τ) g).2
     fun τ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ
   exact ⟨_, hu, R.2.2.1 _ (secInf_spec R hu).1 _ hg (secInf_spec R hu).2⟩
 
+/- English proof (translation)
+Take `⟨B, hB, hJ⟩` from `(frame_at hs hd τ).1`. Take `⟨X, hX, h⟩` from `GlobalTheory.T.quadraticGelfandInvariant_eq_neg_sum_sq_definite _ _ B hB hJ`. Take `⟨P, Q, hPQ, -⟩` from `GlobalTheory.UnitaryLieComplexification.glRel_and_span _ _ (R.1 τ).1 (R.1 τ).2`. Establish `h1` using `h P Q hPQ _ (fun Y => opInf R (atPlace V τ Y)) (opAt_add R τ) (opAt_smul R τ)`. Use `⟨X, hX, fun f => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← neg_eq_iff_eq_neg.2 h1, LinearMap.neg_apply, Submodule.coe_neg, neg_inj]`. Establish `e : ∀ a b (x : SmF θ V), RderC θ V τ (Matrix.single a b 1) x.1 = ((opInf R (atPlace V τ (P a b)) + Complex.I • opInf R (atPlace V τ (Q a b))) x).1` using `fun a b x => by`. Rewrite using `[RderC, conjAt, ← (hPQ _ _).1, ← (hPQ _ _).2, Rder_eq R, Rder_eq R]`. Both sides reduce to the same expression. Rewrite using `[gelf, ← (finTwoArrowEquiv _).symm.sum_comp, Fintype.sum_prod_type]`.
+
+Simplify using `only [LinearMap.sum_apply, Submodule.coe_sum, Module.End.mul_apply, ← e]`. Both sides reduce to the same expression.
+-/
 theorem gelf_one (R : RealPoints θ V) (hs : V.SigOK) (hd : V.IsDefinite) (τ : D.what₂.Tau) :
     ∃ X : Fin V.rank × Fin V.rank × Bool → LieAt V τ, Submodule.span ℝ (Set.range X) = ⊤ ∧ ∀ f : SmF θ V,
       ((∑ i, opInf R (atPlace V τ (X i)) * opInf R (atPlace V τ (X i))) f).1 = -gelf θ V τ 1 f.1 := by
@@ -254,6 +345,21 @@ theorem gelf_one (R : RealPoints θ V) (hs : V.SigOK) (hd : V.IsDefinite) (τ : 
   simp only [LinearMap.sum_apply, Submodule.coe_sum, Module.End.mul_apply, ← e]
   rfl
 
+/- English proof (translation)
+Establish `R` using `RealPts.realPoints D |>.2 θ hθ V`. Use `⟨h.toIsAutFun, ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hφ, hst⟩` from `h.zfin`. Use `choose X hX hg using gelf_one R hs hd`. Establish `: FiniteDimensional ℂ (W.comap (SmF θ V).subtype)` using `FiniteDimensional.of_injective ((SmF θ V).subtype.restrict (p := W.comap (SmF θ V).subtype) (q := W) fun _ hx => hx) fun x y hxy => by`.
+
+Establish `h'` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext h')`. Establish `key` using `finite_translates (isLieData R) (hasLog R) (isCompact_unitary R hs hd) (fun p : D.what₂.Tau × Fin V.rank × Fin V.rank × Bool => (atPlace V p.1 (X p.1 p.2) : LieN V)) ?_ (W.comap (SmF θ V).subtype) (fun f hf => ?_) (φ := ⟨φ, (smooth_iff R φ).1 h.smooth⟩) hφ`. Take `⟨M, hM, hm⟩` from `key`. Use `Submodule.finiteDimensional_of_le (S₂ := M) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, hk, rfl⟩`. Take `⟨u, hu, rfl⟩` from `exists_secInf hθ R hk`. Conclude with `hm u hu`. Rewrite using `[eq_top_iff]`. Introduce `Y _`.
+
+Establish `: Y = ∑ τ, (atPlace V τ (Y τ) : LieN V)` using `(sum_atPlace Y).symm`. Rewrite using `[this]`. Use `sum_mem fun τ _ => ?_` and prove the remaining obligations. Establish `hY : (Y τ : LieAt V τ) ∈ Submodule.span ℝ (Set.range (X τ))` using `hX τ ▸ Submodule.mem_top`. Generalize the expression as in `(Y τ : LieAt V τ) = Z at hY`.
+
+Proceed by induction on `hY using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `Submodule.subset_span ⟨(τ, i), rfl⟩`. Consider the case `zero => rw [atPlace, Pi.single_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [atPlace, Pi.single_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [atPlace, Pi.single_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Rewrite using `[Fintype.sum_prod_type, LinearMap.sum_apply]`.
+
+Use `sum_mem fun τ _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((∑ i, opInf R (atPlace V τ (X τ i)) * opInf R (atPlace V τ (X τ i))) f).1 ∈ W`. Rewrite using `[hg]`. Conclude with `neg_mem (hst τ 1 _ hf)`.
+-/
 theorem kfin_of_sm (hθ : IsInfFam θ) (hs : V.SigOK) (hd : V.IsDefinite) {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) :
     IsAutFunDef V φ := by
   classical
@@ -292,12 +398,36 @@ theorem kfin_of_sm (hθ : IsInfFam θ) (hs : V.SigOK) (hd : V.IsDefinite) {φ : 
     rw [hg]
     exact neg_mem (hst τ 1 _ hf)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons a l ih => exact hl a (by simp) _ (ih fun b hb => hl b (by simp [hb]))`.
+-/
 theorem foldr_mem {α M : Type} {S : Set M} (T : α → M → M) (l : List α) (hl : ∀ a ∈ l, ∀ f ∈ S, T a f ∈ S) {f : M}
     (hf : f ∈ S) : l.foldr (fun a f => T a f) f ∈ S := by
   induction l with
   | nil => exact hf
   | cons a l ih => exact hl a (by simp) _ (ih fun b hb => hl b (by simp [hb]))
 
+/- English proof (translation)
+Establish `R` using `RealPts.realPoints D |>.2 θ hθ V`. Establish `hfd` using `h.kfin`. Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `set M := Submodule.span ℂ {ψ : GA D V → ℂ | ∃ k ∈ GinfC V, ψ = rTr V k φ} with hM`. Establish `hφ : φ ∈ M` using `Submodule.subset_span ⟨1, one_mem _, funext fun g => by simp [rTr]⟩`.
+
+Establish `hcont : ∀ f ∈ M, Continuous f` using `fun f hf => by`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, -, rfl⟩ := hx`. Conclude with `h.cont.comp (continuous_mul_const k)`. Consider the case `zero => exact continuous_const`.
+
+Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.const_smul c`. Establish `hst : ∀ k ∈ GinfC V, ∀ f ∈ M, (fun g => f (g * k)) ∈ M` using `fun k hk f hf => by`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨k', hk', rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨k * k', mul_mem hk hk', funext fun g => by simp [rTr, mul_assoc]⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul c x _ hx => exact M.smul_mem c hx`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.T.deriv_mem_and_contDiff_of_translation_stable (GA D V) M (Σ τ, LieAt V τ) (fun i t => oneP θ V i.1 i.2.1 t) (fun i a b => by`. Simplify using `only [oneP_eq R]`. Conclude with `expMap_add (isLieData R) _ a b)`. Use the proof step `(fun i t => hst _ (GlobalTheory.PointAtPlaceHom.atTau_mem V _ _))`. Use the proof step `(fun i f hf g => by`.
+
+Use `(hcont f hf).comp (continuous_const.mul ?_)` and prove the remaining obligations. Use `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ V i.1).comp_continuous ?_ fun t => GlobalTheory.SmoothAutCheck.exp_mem_UH (R.1 i.1).2 i.2.2 t` and prove the remaining obligations. Use `(continuous_apply i.1).comp ((DerLinear.contDiff_exp (isLieData R)).continuous.comp (continuous_id.smul continuous_const : Continuous fun t : ℝ => t • (atPlace V i.1 i.2 : LieN V)))` as an intermediate fact. Use `this.congr fun t => ?_` and prove the remaining obligations. Use `(exp_algInf V _ _).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `t • (atPlace V i.1 i.2 i.1).1 = _`. Rewrite using `[atPlace, Pi.single_eq_same])`. Establish `hR : ∀ τ, ∀ X ∈ lieAt V τ, ∀ f ∈ M, Rder θ V τ X f ∈ M` using `fun τ X hX => h1 ⟨τ, X, hX⟩`. Establish `hsm : ∀ f ∈ M, f ∈ GlobalTheory.Mem.AutSpace.SmFun θ V` using `fun f hf k τs Xs hX g => h2 k (fun a => ⟨τs a, Xs a, hX a⟩) f hf g`.
+
+Use `⟨h.toIsAutFun, hsm φ hφ, ⟨M, hfd, hφ, fun τ k f hf => ?_⟩, 0, fun l hl x => ?_⟩` and prove the remaining obligations. Use `sum_mem fun idx _ => foldr_mem (S := (M : Set _)) (fun T : (GA D V → ℂ) → GA D V → ℂ => T) _ (fun T hT f hf => ?_) hf` and prove the remaining obligations. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hT`. Take `⟨m1, m2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ (Matrix.single (idx a) (idx (a + 1)) 1)`. Conclude with `add_mem (hR τ _ m1 f hf) (M.smul_mem _ (hR τ _ m2 f hf))`.
+
+Establish `hf` using `foldr_mem (S := (M : Set _)) (fun p : D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ => Rder θ V p.1 p.2) l (fun p hp => hR p.1 p.2 (hl p hp)) hφ`. Take `⟨C, hC⟩` from `(isCompact_unitary R hs hd).exists_bound_of_continuousOn (continuousOn_of_sm (isLieData R) (hasLog R) ((smooth_iff R _).1 (hsm _ hf)) x)`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `exists_secInf hθ R hg`. Rewrite using `[pow_zero, mul_one]`.
+
+Conclude with `hC u hu`.
+-/
 theorem sm_of_kfin (hθ : IsInfFam θ) (hs : V.SigOK) (hd : V.IsDefinite) {φ : GA D V → ℂ} (h : IsAutFunDef V φ) :
     IsAutFunSm θ V φ := by
   have R := RealPts.realPoints D |>.2 θ hθ V
@@ -354,6 +484,9 @@ theorem sm_of_kfin (hθ : IsInfFam θ) (hs : V.SigOK) (hd : V.IsDefinite) {φ : 
     rw [pow_zero, mul_one]
     exact hC u hu
 
+/- English proof (translation)
+Introduce `_ _ hθ _ hs hd _` and use `⟨sm_of_kfin hθ hs hd, kfin_of_sm hθ hs hd⟩`.
+-/
 theorem autFunDefIffSm : ∀ D : D7, AutFunDefIffSm D :=
   fun _ _ hθ _ hs hd _ => ⟨sm_of_kfin hθ hs hd, kfin_of_sm hθ hs hd⟩
 

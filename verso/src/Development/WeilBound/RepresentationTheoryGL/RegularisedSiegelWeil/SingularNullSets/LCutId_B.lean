@@ -16,6 +16,11 @@ namespace PositivityTheory.Rg.Rsw.L.LCutId
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Establish `e1 : ω (nb y * g) Ψ = ω g Ψ`. Rewrite using `[nb_comm hnb hy.1 hy.2.1 hg, map_mul, Module.End.mul_apply, hΨ _ (nb_mem_KAt hnb hy)]`. Establish `e2` using `hω.unip (nb y) y.1 (hnb y) (ω g Ψ) X`. Rewrite `e1` using `[map_mul, Module.End.mul_apply]`. Rewrite `e2` using `[e1]`.
+
+Conclude with `e2`.
+-/
 theorem omega_fix {W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ θ} {μ : Measure (Mx D W.rank n)}
     {ω : G D n →* Module.End ℂ (schwartzA θ W.rank n)} (hω : IsWeilSch ψ χ θ W μ ω)
     {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} (Ψ : schwartzA θ W.rank n) (hΨ : ∀ k ∈ KAt D n v, ω k Ψ = Ψ)
@@ -28,6 +33,9 @@ theorem omega_fix {W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ θ} {μ : Mea
   rw [e1] at e2
   exact e2
 
+/- English proof (translation)
+Rewrite using `[show gramQ W x = GlobalTheory.Unf.gramQ W x from rfl, GlobalTheory.Unf.FB.rat_gramQ]`. Simplify using `only [ip, mm]`. Rewrite using `[adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA W) (Formalism.L2.Theta.mt W h), ← Matrix.mul_assoc (adj (Formalism.L2.Theta.mt W h)), GlobalTheory.MixModel.mt_unitary]`.
+-/
 theorem ip_orbit (W : HSp D) (h : GA D W) (x : Matrix (Fin W.rank) (Fin n) D.host.E) :
     ip W (mm (Formalism.L2.Theta.mt W h) (rat x)) (mm (Formalism.L2.Theta.mt W h) (rat x)) = rat (gramQ W x) := by
   rw [show gramQ W x = GlobalTheory.Unf.gramQ W x from rfl, GlobalTheory.Unf.FB.rat_gramQ]
@@ -35,9 +43,17 @@ theorem ip_orbit (W : HSp D) (h : GA D W) (x : Matrix (Fin W.rank) (Fin n) D.hos
   rw [adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA W) (Formalism.L2.Theta.mt W h),
     ← Matrix.mul_assoc (adj (Formalism.L2.Theta.mt W h)), GlobalTheory.MixModel.mt_unitary]
 
+/- English proof (translation)
+Conclude with `(Matrix.rank_mul_le_right _ _).trans (Matrix.rank_mul_le_right _ _)`.
+-/
 theorem rank_gram_le (W : HSp D) (x : Matrix (Fin W.rank) (Fin n) D.host.E) : (gramQ W x).rank ≤ x.rank := by
   exact (Matrix.rank_mul_le_right _ _).trans (Matrix.rank_mul_le_right _ _)
 
+/- English proof (translation)
+Introduce `q hq a ha g`. Take `⟨m, u, b, e, hm, hu⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_levi_unip hq a ha`. Use `show (ω (q * g) Φ).1 0 = _ * _ * (ω g Φ).1 0`. Establish `e' : ω (q * g) Φ = ω m (ω u (ω g Φ))`. Rewrite using `[e, map_mul, map_mul]`.
+
+Both sides reduce to the same expression. Establish `z1 : ∀ a : Mx D n n, ((0 : Mx D B.rank n) ⬝ a : Mx D B.rank n) = 0` using `fun a => Matrix.zero_mul a`. Establish `z2 : GlobalTheory.StdUnn.inner B (0 : Mx D B.rank n) 0 = 0` using `by rw [GlobalTheory.StdUnn.inner, adj_zero, Matrix.zero_mul]`. Rewrite using `[e', hω.levi m a hm, z1, hω.unip u b hu, z2, ← hs]`. Simplify using `[halfTr]`.
+-/
 theorem law0 {B : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ θ} {μ : Measure (Mx D B.rank n)}
     {ω : G D n →* Module.End ℂ (schwartzA θ B.rank n)} (hω : IsWeilSch ψ χ θ B μ ω)
     (Φ : schwartzA θ B.rank n) (s : ℂ) (hs : (B.rank : ℂ) / 2 = s + (n : ℂ) / 2) :
@@ -52,9 +68,15 @@ theorem law0 {B : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ θ} {μ : Measure 
   rw [e', hω.levi m a hm, z1, hω.unip u b hu, z2, ← hs]
   simp [halfTr]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun η hη a => by rw [h.2 η hη a, pow_add, pow_mul, Formalism.L2.Theta.eta_sq hη a, one_pow, mul_one]⟩`.
+-/
 theorem resEta_add {χ : (AE D)ˣ →* Circle} {r : ℕ} (h : ResEta D χ r) (k : ℕ) : ResEta D χ (r + 2 * k) :=
   ⟨h.1, fun η hη a => by rw [h.2 η hη a, pow_add, pow_mul, Formalism.L2.Theta.eta_sq hη a, one_pow, mul_one]⟩
 
+/- English proof (translation)
+Establish `ht : Matrix.trace (mm x.1 (rat β.1)) = Matrix.trace (HMul.hMul (β.1.map (incA D)) x.1 : Mx D n n)` using `Matrix.trace_mul_comm _ _`. Express the relevant statement in the definitionally equal form `conj (ψ (halfTr (Matrix.trace (mm x.1 (rat β.1))))) = _`. Rewrite using `[ht, AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ.2.1 _)]`.
+-/
 theorem conj_pch {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (x : hermA D n) (β : HermE D n) :
     conj (pch ψ x.1 (rat β.1)) = ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) x.1 : Mx D n n))) := by
   have ht : Matrix.trace (mm x.1 (rat β.1)) =
@@ -63,6 +85,9 @@ theorem conj_pch {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (
   change conj (ψ (halfTr (Matrix.trace (mm x.1 (rat β.1))))) = _
   rw [ht, AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ.2.1 _)]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∫ b in 𝓖, F (nb b * g) * ψ (-halfTr ((β.1.map (incA D) * b.1).trace)) ∂lam) = _`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[conj_pch hψ]`.
+-/
 theorem fc_eq {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (lam : Measure (hermA D n)) (𝓖 : Set (hermA D n))
     (nb : hermA D n → G D n) (F : G D n → ℂ) (β : HermE D n) (g : G D n) :
     fc ψ lam 𝓖 nb F β g = ∫ x in 𝓖, F (nb x * g) * conj (pch ψ x.1 (rat β.1)) ∂lam := by
@@ -71,16 +96,29 @@ theorem fc_eq {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (lam
   funext x
   rw [conj_pch hψ]
 
+/- English proof (translation)
+The claim follows from `Complex.continuous_conj.comp (hψ.1.comp (GlobalTheory.CompanionTheory.FourierN.continuous_halfTr.comp ((continuous_subtype_val.matrix_mul continuous_const).matrix_trace)))`.
+-/
 theorem cont_conj_pch {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (β : HermE D n) :
     Continuous fun x : hermA D n => conj (pch ψ x.1 (rat β.1)) :=
   Complex.continuous_conj.comp (hψ.1.comp (GlobalTheory.CompanionTheory.FourierN.continuous_halfTr.comp
     ((continuous_subtype_val.matrix_mul continuous_const).matrix_trace)))
 
+/- English proof (translation)
+Rewrite using `[Complex.norm_conj]`. Conclude with `(hψ.2.1 _).le`.
+-/
 theorem norm_conj_pch {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (x : hermA D n) (β : HermE D n) :
     ‖conj (pch ψ x.1 (rat β.1))‖ ≤ 1 := by
   rw [Complex.norm_conj]
   exact (hψ.2.1 _).le
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D n) := Subtype.borelSpace _`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.CompanionTheory.FourierN.exists_compact_cover (D := D) (n := n)`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn hf.continuousOn`. Establish `hb : ∀ x, ‖f x * c x‖ ≤ M` using `fun x => by`.
+
+Take `⟨γ, hγ, hx⟩` from `hcov x`. Rewrite using `[norm_mul, ← hp γ hγ x]`. Combine the equalities or inequalities in the displayed calculation. Use `Measure.integrableOn_of_bounded (M := M) ?_ (hf.mul hc).aestronglyMeasurable ?_` and prove the remaining obligations. Rewrite using `[h.2.2]`.
+
+Conclude with `ENNReal.one_ne_top`. Conclude with `Eventually.of_forall hb`.
+-/
 theorem intOn {lam : Measure (hermA D n)} {𝓖 : Set (hermA D n)} (h : IsCovolOneH lam 𝓖) {f c : hermA D n → ℂ}
     (hf : Continuous f) (hp : ∀ γ ∈ ratHerm D n, ∀ x, f (γ + x) = f x) (hc : Continuous c) (hc1 : ∀ x, ‖c x‖ ≤ 1) :
     IntegrableOn (fun x => f x * c x) 𝓖 lam := by

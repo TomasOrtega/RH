@@ -7,6 +7,15 @@ open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryB
 
 namespace GlobalTheory.GoodDepth
 
+/- English proof (translation)
+Establish `hl` using `Formalism.L2.Pj.Crude.resCharOf_prime la`. Establish `hne0 : Ideal.span {((resCharOf la : ℕ) : ℤ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hl.ne_zero` after adjusting the coercions. Establish `hmax : (Ideal.span {((resCharOf la : ℕ) : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl).irreducible`.
+
+Establish `hle : Ideal.span {((resCharOf la : ℕ) : ℤ)} ≤ la.asIdeal.under ℤ`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ (𝓞 K) ((resCharOf la : ℕ) : ℤ) ∈ la.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `Formalism.L2.Pj.Crude.crv_char_mem la`.
+
+Establish `hne : la.asIdeal.under ℤ ≠ ⊤`. Introduce `h`. Apply `la.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : ℤ) ∈ la.asIdeal.under ℤ` using `by rw [h]; trivial`.
+
+Express the relevant statement in the definitionally equal form `algebraMap ℤ (𝓞 K) 1 ∈ la.asIdeal at h1`. Rewrite `h1` using `[map_one]`. Then use the resulting hypothesis. Establish `: la.asIdeal.LiesOver (Ideal.span {((resCharOf la : ℕ) : ℤ)})` using `⟨hmax.eq_of_le hne hle⟩`. Conclude with `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver la.asIdeal hne0`.
+-/
 theorem ramOverZ_ne_zero' {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     ramOverZ la ≠ 0 := by
   have hl := Formalism.L2.Pj.Crude.resCharOf_prime la
@@ -30,6 +39,11 @@ theorem ramOverZ_ne_zero' {K : Type} [Field K] [NumberField K] (la : HeightOneSp
   have : la.asIdeal.LiesOver (Ideal.span {((resCharOf la : ℕ) : ℤ)}) := ⟨hmax.eq_of_le hne hle⟩
   exact Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver la.asIdeal hne0
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Take `⟨r, hr1, hr2⟩` from `EReal.lt_iff_exists_real_btwn.1 (not_le.1 hx)`. Establish `h1 : r / e ≤ B` using `h (r / e) (by rw [mul_div_cancel₀ _ he.ne']; exact hr2.le)`. Establish `h2 : e * B < r` using `by exact_mod_cast hr1`. Rewrite `h1` using `[div_le_iff₀ he]`.
+
+Combine the linear relations using `[mul_comm e B]`.
+-/
 theorem ereal_le_mul_of_forall_le {x : EReal} {e B : ℝ} (he : 0 < e)
     (h : ∀ ν : ℝ, ((e * ν : ℝ) : EReal) ≤ x → ν ≤ B) : x ≤ ((e * B : ℝ) : EReal) := by
   by_contra hx
@@ -39,6 +53,15 @@ theorem ereal_le_mul_of_forall_le {x : EReal} {e B : ℝ} (he : 0 < e)
   rw [div_le_iff₀ he] at h1
   linarith [mul_comm e B]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw lv Xo c _ hEx la k a n B hB h`. Establish `he : (0 : ℝ) < (ramOverZ la : ℝ)`. Conclude with `Nat.pos_of_ne_zero (ramOverZ_ne_zero' la)` after adjusting the coercions. Establish `hsup : nuSup Xo c la k a n ≤ (((ramOverZ la : ℝ) * B : ℝ) : EReal)`. Unfold `nuSup`.
+
+Use `iSup_le fun T => iSup_le fun io => iSup_le fun e => iSup_le fun hO => iSup_le fun y => iSup_le fun hy => ?_` and prove the remaining obligations. Take `⟨C⟩` from `hEx T io y hy`. Conclude with `(iInf_le (fun C : IntChart T io y => nuLocC C e k a n) C).trans (ereal_le_mul_of_forall_le he (h T io e hO y hy C))`. Establish `h0 : (0 : ℝ) ≤ (ramOverZ la : ℝ) * B` using `mul_nonneg he.le hB`. Establish `hW : nuW Xo c la k a n ≤ (((ramOverZ la : ℝ) * B : ℝ) : EReal)` using `max_le (by exact_mod_cast h0) hsup`.
+
+Establish `hW0 : 0 ≤ nuW Xo c la k a n` using `le_max_left _ _`. Use `⟨ne_top_of_le_ne_top (EReal.coe_ne_top _) hW, ?_, fun hB0 => ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ he, mul_comm]`. Use `EReal.toReal_le_toReal hW (ne_bot_of_le_ne_bot EReal.zero_ne_bot hW0) (EReal.coe_ne_top _)` as an intermediate fact. Rewrite `this` using `[EReal.toReal_coe]`. Then use the resulting hypothesis.
+
+Rewrite `hW` using `[hB0, mul_zero, EReal.coe_zero]`. Conclude with `le_antisymm hW hW0`.
+-/
 theorem nuW_bound_of_charts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H) (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)], IntChartEx Xo c →
   ∀ (la : HeightOneSpectrum (𝓞 c.F)) (k : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (B : ℝ), 0 ≤ B →
   (∀ (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la T.V io e → ∀ y : IntFr Xo c T io, y.IsAlg → ∀ (C : IntChart T io y) (ν : ℝ), (((ramOverZ la : ℝ) * ν : ℝ) : EReal) ≤ nuLocC C e k a n → ν ≤ B) →

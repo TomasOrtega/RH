@@ -54,6 +54,13 @@ noncomputable def realToCompletion (w : InfinitePlace K) : ℝ →+* w.Completio
   else (InfinitePlace.Completion.ringEquivComplexOfIsComplex
     (InfinitePlace.not_isReal_iff_isComplex.mp h)).symm.toRingHom.comp Complex.ofRealHom
 
+/- English proof (translation)
+Unfold `realToCompletion`. Use `split_ifs with h`. Use `set y := (InfinitePlace.Completion.ringEquivRealOfIsReal h).symm t`. Establish `hy : InfinitePlace.Completion.extensionEmbeddingOfIsReal h y = t` using `(InfinitePlace.Completion.ringEquivRealOfIsReal h).apply_symm_apply t`. Use `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal h).norm_map_of_map_zero (map_zero _) y` as an intermediate fact.
+
+Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← this, hy, Real.norm_eq_abs]`. Establish `hc` using `InfinitePlace.not_isReal_iff_isComplex.mp h set y := (InfinitePlace.Completion.ringEquivComplexOfIsComplex hc).symm (t : ℂ)`. Establish `hy : InfinitePlace.Completion.extensionEmbedding w y = t` using `(InfinitePlace.Completion.ringEquivComplexOfIsComplex hc).apply_symm_apply t`. Use `(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) y` as an intermediate fact.
+
+Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_comp, RingHom.coe_coe, Function.comp_apply, Complex.ofRealHom_eq_coe]`. Rewrite using `[← this, hy, Complex.norm_real, Real.norm_eq_abs]`.
+-/
 theorem norm_realToCompletion (w : InfinitePlace K) (t : ℝ) :
     ‖realToCompletion w t‖ = |t| := by
   unfold realToCompletion
@@ -74,6 +81,13 @@ theorem norm_realToCompletion (w : InfinitePlace K) (t : ℝ) :
       Function.comp_apply, Complex.ofRealHom_eq_coe]
     rw [← this, hy, Complex.norm_real, Real.norm_eq_abs]
 
+/- English proof (translation)
+Unfold `realToCompletion`. Use `split_ifs with h`. Use `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal h).isEmbedding.isInducing.continuous_iff.2 ?_` and prove the remaining obligations. Establish `: (⇑(InfinitePlace.Completion.extensionEmbeddingOfIsReal h) ∘ ⇑((InfinitePlace.Completion.ringEquivRealOfIsReal h).symm.toRingHom)) = id`. Use function extensionality and compare the values at `t`.
+
+Conclude with `(InfinitePlace.Completion.ringEquivRealOfIsReal h).apply_symm_apply t`. Rewrite using `[this]`. Conclude with `continuous_id`. Establish `hc` using `InfinitePlace.not_isReal_iff_isComplex.mp h`. Use `(InfinitePlace.Completion.isometry_extensionEmbedding w).isEmbedding.isInducing.continuous_iff.2 ?_` and prove the remaining obligations.
+
+Establish `: (⇑(InfinitePlace.Completion.extensionEmbedding w) ∘ ⇑(((InfinitePlace.Completion.ringEquivComplexOfIsComplex hc).symm.toRingHom).comp Complex.ofRealHom)) = fun t : ℝ => (t : ℂ)`. Use function extensionality and compare the values at `t`. Conclude with `(InfinitePlace.Completion.ringEquivComplexOfIsComplex hc).apply_symm_apply t`. Rewrite using `[this]`. Conclude with `Complex.continuous_ofReal`.
+-/
 theorem continuous_realToCompletion (w : InfinitePlace K) : Continuous (realToCompletion w) := by
   unfold realToCompletion
   split_ifs with h
@@ -98,11 +112,19 @@ noncomputable def posUnit (w : InfinitePlace K) (c : ℝ) : {r : ℝ // 0 < r} �
     ext
     simp [Positive.val_mul, Real.mul_rpow r.2.le r'.2.le]
 
+/- English proof (translation)
+Use `show ‖realToCompletion w ((r : ℝ) ^ c)‖ = _`. Rewrite using `[norm_realToCompletion, abs_of_pos (Real.rpow_pos_of_pos r.2 c)]`.
+-/
 theorem norm_posUnit (w : InfinitePlace K) (c : ℝ) (r : {r : ℝ // 0 < r}) :
     ‖((posUnit w c r : w.Completionˣ) : w.Completion)‖ = (r : ℝ) ^ c := by
   show ‖realToCompletion w ((r : ℝ) ^ c)‖ = _
   rw [norm_realToCompletion, abs_of_pos (Real.rpow_pos_of_pos r.2 c)]
 
+/- English proof (translation)
+Establish `hv : Continuous fun r : {r : ℝ // 0 < r} => realToCompletion w ((r : ℝ) ^ c)` using `(continuous_realToCompletion w).comp (continuous_subtype_val.rpow_const fun r => Or.inl r.2.ne')`. Use `Units.continuous_iff.2 ⟨hv, ?_⟩` and prove the remaining obligations. Establish `: (fun r => (((posUnit w c r)⁻¹ : w.Completionˣ) : w.Completion)) = fun r : {r : ℝ // 0 < r} => (realToCompletion w ((r : ℝ) ^ c))⁻¹`. Use function extensionality and compare the values at `r`. Simplify using `[posUnit]`.
+
+Rewrite using `[this]`. Conclude with `hv.inv₀ fun r => (map_ne_zero _).2 (Real.rpow_pos_of_pos r.2 c).ne'`.
+-/
 theorem continuous_posUnit (w : InfinitePlace K) (c : ℝ) : Continuous (posUnit w c) := by
   have hv : Continuous fun r : {r : ℝ // 0 < r} => realToCompletion w ((r : ℝ) ^ c) :=
     (continuous_realToCompletion w).comp
@@ -137,13 +159,26 @@ variable (K) in
 noncomputable def detNorm (n : ℕ) : GroundTheory.Automorphic.AdelicGLn.AdelicGL K n →* {r : ℝ // 0 < r} :=
   (GroundTheory.Global.IdeleGroup.ideleModule K).comp (GroundTheory.Automorphic.AdelicGLn.det K n)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Global.IdeleGroup.continuous_ideleModule.comp (GroundTheory.Automorphic.AdelicGLn.continuous_det K n)`.
+-/
 theorem continuous_detNorm (n : ℕ) : Continuous (detNorm K n) :=
   GroundTheory.Global.IdeleGroup.continuous_ideleModule.comp (GroundTheory.Automorphic.AdelicGLn.continuous_det K n)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Global.IdeleGroup.continuous_infiniteEmbedding (basePlace K)).comp (continuous_posUnit (basePlace K) (1 / ((n : ℝ) * (basePlace K).mult)))`.
+-/
 theorem continuous_idelePos (n : ℕ) : Continuous (idelePos K n) :=
   (GroundTheory.Global.IdeleGroup.continuous_infiniteEmbedding (basePlace K)).comp
     (continuous_posUnit (basePlace K) (1 / ((n : ℝ) * (basePlace K).mult)))
 
+/- English proof (translation)
+Take `⟨ha1, ha2⟩` from `Units.continuous_iff.1 (continuous_idelePos (K := K) n)`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (Units.val ∘ scalarSection K n) = fun r => Matrix.diagonal fun _ : Fin n => ((idelePos K n r : GroundTheory.Global.IdeleGroup K) : NumberField.AdeleRing (NumberField.RingOfIntegers K) K)`. Use function extensionality and compare the values at `r`. Rewrite using `[Function.comp_apply, scalarSection, MonoidHom.comp_apply, Matrix.GeneralLinearGroup.coe_scalar, Matrix.scalar_apply]`.
+
+Rewrite using `[e]`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => ha1)`. Establish `e : (fun r => (((scalarSection K n r)⁻¹ : GroundTheory.Automorphic.AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) (NumberField.AdeleRing (NumberField.RingOfIntegers K) K))) = fun r => Matrix.diagonal fun _ : Fin n => (((idelePos K n r)⁻¹ : GroundTheory.Global.IdeleGroup K) : Nu …`. Use function extensionality and compare the values at `r`. Rewrite using `[scalarSection, MonoidHom.comp_apply, ← map_inv, Matrix.GeneralLinearGroup.coe_scalar, Matrix.scalar_apply]`.
+
+Rewrite using `[e]`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => ha2)`.
+-/
 theorem continuous_scalarSection (n : ℕ) : Continuous (scalarSection K n) := by
   obtain ⟨ha1, ha2⟩ := Units.continuous_iff.1 (continuous_idelePos (K := K) n)
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -165,6 +200,11 @@ theorem continuous_scalarSection (n : ℕ) : Continuous (scalarSection K n) := b
     rw [e]
     exact Continuous.matrix_diagonal (continuous_pi fun _ => ha2)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `hm : (0 : ℝ) < (basePlace K).mult` using `by exact_mod_cast InfinitePlace.mult_pos`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hdet : GroundTheory.Automorphic.AdelicGLn.det K n (scalarSection K n r) = idelePos K n r ^ n` using `by show Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin n) _) = _`. Rewrite using `[Matrix.GeneralLinearGroup.det_scalar, Fintype.card_fin]`.
+
+Establish `hpos : idelePos K n r = GroundTheory.Global.IdeleGroup.infiniteEmbedding (basePlace K) (posUnit (basePlace K) (1 / ((n : ℝ) * (basePlace K).mult)) r)` using `rfl`. Rewrite using `[detNorm, MonoidHom.comp_apply, hdet, map_pow, Positive.val_pow, hpos, GroundTheory.Global.IdeleGroup.ideleModule_infiniteEmbedding, norm_posUnit, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul r.2.le, ← Real.rpow_mul r.2.le]`. Establish `: 1 / ((n : ℝ) * (basePlace K).mult) * ((basePlace K).mult : ℕ) * (n : ℕ) = 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Real.rpow_one]`.
+-/
 theorem detNorm_scalarSection {n : ℕ} (hn : 0 < n) (r : {r : ℝ // 0 < r}) :
     detNorm K n (scalarSection K n r) = r := by
   apply Subtype.ext

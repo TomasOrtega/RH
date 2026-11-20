@@ -8,11 +8,23 @@ open MeasureTheory Filter Topology
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hn : Measurable fun z : ℂ => ‖z‖ ^ 2` using `(continuous_norm.pow 2).measurable`. Conclude with `Measurable.ite (measurableSet_lt hn.log measurable_const) (hn.mul (hn.log.pow_const 2)).inv measurable_const`.
+-/
 theorem measurable_poincareDeepWeight' : Measurable poincareDeepWeight := by
   have hn : Measurable fun z : ℂ => ‖z‖ ^ 2 := (continuous_norm.pow 2).measurable
   exact Measurable.ite (measurableSet_lt hn.log measurable_const) (hn.mul (hn.log.pow_const 2)).inv
     measurable_const
 
+/- English proof (translation)
+Establish `hρ1 : Real.exp (-(Real.exp 1 / 2)) < 1` using `Real.exp_lt_one_iff.2 (by have := Real.exp_pos 1; linarith)`. Establish `hcont0 : ContinuousAt (fun r : ℝ => -(Real.log r)⁻¹) 0`. Rewrite using `[← continuousWithinAt_compl_self, ContinuousWithinAt]`. Simplify using `using (Real.tendsto_log_nhdsNE_zero.inv_tendsto_atBot).neg`. Use `intervalIntegral.integrableOn_deriv_of_nonneg (g := fun r : ℝ => -(Real.log r)⁻¹) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Break down `eq_or_lt_of_le hx.1 with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `hcont0.continuousWithinAt`. Establish `hl : Real.log x ≠ 0` using `(Real.log_neg h (hx.2.trans_lt hρ1)).ne`.
+
+Conclude with `((Real.continuousAt_log h.ne').inv₀ hl).neg.continuousWithinAt`. Introduce `x hx`. Establish `hl : Real.log x ≠ 0` using `(Real.log_neg hx.1 (hx.2.trans hρ1)).ne`. Establish `hx0 : x ≠ 0` using `hx.1.ne'`. Establish `: HasDerivAt (fun r : ℝ => -(Real.log r)⁻¹) (-(-x⁻¹ / Real.log x ^ 2)) x` using `((Real.hasDerivAt_log hx0).inv hl).neg`.
+
+Use `this.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[neg_div, neg_neg]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Conclude with `inv_nonneg.2 (mul_nonneg (sq_nonneg _) hx.1.le)`.
+-/
 theorem integrableOn_inv_log_sq_mul :
     IntegrableOn (fun r : ℝ => ((Real.log r) ^ 2 * r)⁻¹) (Set.Ioc 0 (Real.exp (-(Real.exp 1 / 2)))) := by
   have hρ1 : Real.exp (-(Real.exp 1 / 2)) < 1 :=
@@ -38,6 +50,13 @@ theorem integrableOn_inv_log_sq_mul :
   · intro x hx
     exact inv_nonneg.2 (mul_nonneg (sq_nonneg _) hx.1.le)
 
+/- English proof (translation)
+Break down `le_or_gt r 0 with hr | hr` into its components or cases. Simplify using `[ENNReal.ofReal_of_nonpos hr]`. Rewrite using `[abs_of_pos hr] split_ifs with hc`. Establish `hl : Real.log (r ^ 2) = 2 * Real.log r` using `by rw [Real.log_pow]; norm_num`. Rewrite `hc` using `[hl]`.
+
+Establish `hlr : Real.log r < -(Real.exp 1 / 2)` using `by linarith`. Establish `hl0 : Real.log r ≠ 0` using `(hlr.trans (by have := Real.exp_pos 1; linarith)).ne`. Rewrite using `[Set.indicator_of_mem (show r ∈ Set.Ioc 0 (Real.exp (-(Real.exp 1 / 2))) from ⟨hr, ((Real.log_lt_iff_lt_exp hr).1 hlr).le⟩), ← ENNReal.ofReal_mul hr.le, hl]`. Use `le_of_eq (congrArg ENNReal.ofReal ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem ofReal_mul_poincareDeepWeight_le (r : ℝ) :
     ENNReal.ofReal r * ENNReal.ofReal (if Real.log (|r| ^ 2) < -Real.exp 1 then
         (|r| ^ 2 * Real.log (|r| ^ 2) ^ 2)⁻¹ else 0) ≤
@@ -57,6 +76,17 @@ theorem ofReal_mul_poincareDeepWeight_le (r : ℝ) :
       ring
     · simp
 
+/- English proof (translation)
+Use `set ρ := Real.exp (-(Real.exp 1 / 2))`. Use `set h : ℝ → ENNReal := (Set.Ioc 0 ρ).indicator (fun r : ℝ => ENNReal.ofReal (((Real.log r) ^ 2 * r)⁻¹ / 4)) with hh`. Establish `hm : Measurable h`. Use `Measurable.indicator ?_ measurableSet_Ioc` and prove the remaining obligations. Conclude with `ENNReal.measurable_ofReal.comp (((Real.measurable_log.pow_const 2).mul measurable_id).inv.div_const 4)`.
+
+Rewrite using `[← Complex.lintegral_comp_polarCoord_symm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[polarCoord_target]`. Use `lintegral_mono fun p => ?_` and prove the remaining obligations. Simplify using `only [poincareDeepWeight, Complex.norm_polarCoord_symm, smul_eq_mul, mul_one, hh]`.
+
+Conclude with `ofReal_mul_poincareDeepWeight_le p.1`. Use `_ = (∫⁻ r in Set.Ioi 0, h r) * ∫⁻ _ in Set.Ioo (-Real.pi) Real.pi, 1 := by`. Rewrite using `[Measure.volume_eq_prod, ← Measure.prod_restrict]`. Conclude with `lintegral_prod_mul hm.aemeasurable aemeasurable_const`. Use `_ < ⊤ := by`.
+
+Use `ENNReal.mul_lt_top ?_ ?_` and prove the remaining obligations. Use `(setLIntegral_le_lintegral _ _).trans_lt ?_` and prove the remaining obligations. Rewrite using `[hh, lintegral_indicator measurableSet_Ioc]`. Conclude with `((integrableOn_inv_log_sq_mul).div_const 4).lintegral_lt_top`. Rewrite using `[setLIntegral_one, Real.volume_Ioo]`.
+
+Conclude with `ENNReal.ofReal_lt_top`.
+-/
 theorem lintegral_poincareDeepWeight_lt_top :
     ∫⁻ z : ℂ, ENNReal.ofReal (poincareDeepWeight z) < ⊤ := by
   set ρ := Real.exp (-(Real.exp 1 / 2))
@@ -84,6 +114,17 @@ theorem lintegral_poincareDeepWeight_lt_top :
         · rw [setLIntegral_one, Real.volume_Ioo]
           exact ENNReal.ofReal_lt_top
 
+/- English proof (translation)
+Introduce `d R`. Use `set T : Set (Fin d → ℂ) := {w | ∀ i, ‖w i‖ ≤ R} with hTdef`. Establish `hT : volume T < ⊤`. Establish `hsub : T ⊆ Metric.closedBall (0 : Fin d → ℂ) |R|`. Introduce `w hw`.
+
+Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `(pi_norm_le_iff_of_nonneg (abs_nonneg R)).2 fun i => (hw i).trans (le_abs_self R)`. Conclude with `(measure_mono hsub).trans_lt measure_closedBall_lt_top`. Establish `e` using `volume_preserving_piFinSuccAbove (fun _ : Fin (d + 1) => ℂ) 0`. Establish `hpre : {z : Fin (d + 1) → ℂ | ∀ i : Fin d, ‖z i.succ‖ ≤ R} = MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) 0 ⁻¹' (Set.univ ×ˢ T)`.
+
+Use extensionality with `z`. Simplify using `[hTdef, MeasurableEquiv.piFinSuccAbove_apply, Fin.insertNthEquiv, Fin.tail]`. Establish `key` using `e.setLIntegral_comp_preimage_emb (MeasurableEquiv.measurableEmbedding _) (fun p : ℂ × (Fin d → ℂ) => ENNReal.ofReal (poincareDeepWeight p.1) * (fun _ => (1 : ENNReal)) p.2) (Set.univ ×ˢ T)`. Rewrite using `[hpre]`. Simplify using `only [mul_one] at key`.
+
+Establish `h0 : ∀ z : Fin (d + 1) → ℂ, (MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) 0 z).1 = z 0` using `fun z => rfl`. Simplify using `only [h0] at key`. Rewrite using `[key, Measure.volume_eq_prod, ← Measure.prod_restrict]`. Use `lintegral_prod_mul (μ := (volume : Measure ℂ).restrict Set.univ) (ν := (volume : Measure (Fin d → ℂ)).restrict T) (ENNReal.measurable_ofReal.comp measurable_poincareDeepWeight').aemeasurable (aemeasurable_const (b := (1 : ENNReal)))` as an intermediate fact. Simplify using `only [mul_one, Function.comp_apply] at this`.
+
+Rewrite using `[this, Measure.restrict_univ, setLIntegral_one]`. Conclude with `ENNReal.mul_lt_top lintegral_poincareDeepWeight_lt_top hT`.
+-/
 theorem TubeDeepWeightMass.proof : TubeDeepWeightMass.Statement := by
   intro d R
   set T : Set (Fin d → ℂ) := {w | ∀ i, ‖w i‖ ≤ R} with hTdef

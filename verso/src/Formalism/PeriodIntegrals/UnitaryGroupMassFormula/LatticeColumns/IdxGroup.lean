@@ -11,6 +11,9 @@ def KfBridgeStep : Prop :=
   ∀ (I : Formalism.MainNotions.S.AutInst) (hb : AdBridgeIso I) (y : I.Gf), y ∈ I.Kset →
     (splitA I.cm.sig I.J (toHA I hb (1, y))).2 ∈ Kf I.cm.sig I.J (I.L : Set (Fin I.n → I.E))
 
+/- English proof (translation)
+Unfold `finHA`. Establish `e : ((1 : X.B.I.Ginf), x * y) = ((1 : X.B.I.Ginf), x) * ((1 : X.B.I.Ginf), y)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[e, map_mul, map_mul, Prod.snd_mul]`.
+-/
 theorem finHA_mul {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x y : X.B.I.Gf) :
     finHA X hb (x * y) = finHA X hb x * finHA X hb y := by
   unfold finHA
@@ -18,6 +21,9 @@ theorem finHA_mul {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x y : X
     ext <;> simp
   rw [e, map_mul, map_mul, Prod.snd_mul]
 
+/- English proof (translation)
+Unfold `finHA`. Establish `e : ((1 : X.B.I.Ginf), x⁻¹) = ((1 : X.B.I.Ginf), x)⁻¹`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[e, map_inv, map_inv, Prod.snd_inv]`.
+-/
 theorem finHA_inv {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x : X.B.I.Gf) :
     finHA X hb x⁻¹ = (finHA X hb x)⁻¹ := by
   unfold finHA
@@ -25,11 +31,19 @@ theorem finHA_inv {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x : X.B
     ext <;> simp
   rw [e, map_inv, map_inv, Prod.snd_inv]
 
+/- English proof (translation)
+Unfold `finHA`. Establish `e : ((1 : X.B.I.Ginf), (1 : X.B.I.Gf)) = 1` using `rfl`. Rewrite using `[e, map_one, map_one, Prod.snd_one]`.
+-/
 theorem finHA_one {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) : finHA X hb 1 = 1 := by
   unfold finHA
   have e : ((1 : X.B.I.Ginf), (1 : X.B.I.Gf)) = 1 := rfl
   rw [e, map_one, map_one, Prod.snd_one]
 
+/- English proof (translation)
+Unfold `K2u levelUnitary`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨k, hk, rfl⟩, rfl⟩`. Conclude with `⟨k, hk, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`.
+
+Conclude with `⟨_, ⟨k, hk, rfl⟩, rfl⟩`.
+-/
 theorem mem_conjugate_level_iff {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word)
     (z : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) :
     z ∈ K2u X hb u ↔
@@ -64,6 +78,15 @@ def unitaryLevelIntersection {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.
     rw [finHA_inv, ← e1]
     group
 
+/- English proof (translation)
+Introduce `D X hb hK u _hM hL`. Establish `hEq : unitaryLevelClosureSubgroup X hb u = unitaryLevelIntersection X hb hK u`. Unfold `unitaryLevelClosureSubgroup`. Conclude with `Subgroup.closure_eq (unitaryLevelIntersection X hb hK u)`. Establish `hfin : ∀ y ∈ X.B.I.Kset, finHA X hb y ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))` using `fun y hy => by`.
+
+Unfold `finHA`. Conclude with `hKf X.B.I hb y hy`. Establish `hx : X.xu u ∈ X.B.I.Kset` using `X.xu_K u`. Use `⟨by rw [hEq]; rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hEq]`.
+
+Introduce `z hz`. Take `⟨k, hk, e⟩` from `(mem_conjugate_level_iff X hb u _).1 hz`. Rewrite using `[KHg, Subgroup.mem_subgroupOf, ← e]`. Establish `h1` using `hfin _ hx`. Establish `h2` using `hfin k (hL.2.1 k hk)`.
+
+Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ h1 h2) (Subgroup.inv_mem _ h1)`.
+-/
 theorem idxGroupStep_of (hKf : KfBridgeStep) : IdxGroupStep := by
   intro D X hb hK u _hM hL
 
@@ -86,6 +109,13 @@ theorem idxGroupStep_of (hKf : KfBridgeStep) : IdxGroupStep := by
   have h2 := hfin k (hL.2.1 k hk)
   exact Subgroup.mul_mem _ (Subgroup.mul_mem _ h1 h2) (Subgroup.inv_mem _ h1)
 
+/- English proof (translation)
+Introduce `I hb y hy`. Establish `hbr : IsBridge I (toHA I hb)` using `hb.choose_spec`. Establish `hmem : ((1 : I.Ginf), y) ∈ KGA I`. Use `⟨fun v a b hab => ?_, hy⟩` and prove the remaining obligations. Establish `hne : a ≠ b` using `fun hab' => hab (hab' ▸ rfl)`.
+
+Simplify using `[Formalism.MainNotions.S.uMat, Pi.one_apply, Matrix.one_apply_ne hne]`. Establish `hK : toHA I hb ((1 : I.Ginf), y) ∈ KHA I`. Rewrite using `[← h I (toHA I hb) hbr]`. Conclude with `⟨_, hmem, rfl⟩`. Rewrite using `[Kf, Subgroup.mem_iInf]`.
+
+Introduce `v`. Conclude with `hK.2 v`.
+-/
 theorem kfBridgeStep_of_adBridgeK (h : ∀ I : Formalism.MainNotions.S.AutInst, AdBridgeK I) : KfBridgeStep := by
   intro I hb y hy
   have hbr : IsBridge I (toHA I hb) := hb.choose_spec

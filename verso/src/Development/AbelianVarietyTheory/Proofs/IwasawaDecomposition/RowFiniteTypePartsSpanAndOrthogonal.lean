@@ -15,6 +15,23 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.Rw.TypesRows
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hI hP hH y Φ rep hR b`. Establish `hB` using `hP.char.base`. Establish `h0` using `hB.models.ν0`. Establish `hs` using `GlobalTheory.HilbertLevels.scaled (inv_pos.2 (GlobalTheory.HilbertLevels.nP_pos F.lv2 b)) h0.1.1 h0.2`. Take `⟨s, c, hsG, he⟩ : ∃ (s : Finset (GA D (Yc D 0))) (c : GA D (Yc D 0) → ℂ), (∀ g ∈ s, g ∈ GfC (Yc D 0)) ∧ R.e0 = ∑ g ∈ s, c g • principalLevelFrame.rtA g` from `GlobalTheory.Mem.R3.IsotIndep.gaL_finSum (Yc D 0) (R.βY 0) (R.dat0 R.triv) R.eG _`.
+
+Establish `key` using `GlobalTheory.FinTypesRows.isotL_span_orth D (Yc D 0) _ R.θ (R.MY 0) y.PY y.hF (R.βY 0) (R.dat0 (R.levR F.lv2 b)) R.e0 (ENNReal.ofReal (RealDat.nP F.lv2 b)⁻¹ • R.ν0) R.fd0 hI (D.sp.Y_sig _) hB.models.inf y.stdPsi.1 hs.1 hs.2 ⟨s, c, hsG, he⟩`. Use `set J := levS _ (R.βY 0) (R.dat0 (R.levR F.lv2 b)) with hJ`. Use `set χ := levChi _ (R.βY 0) (R.dat0 (R.levR F.lv2 b)) with hχ`. Establish `hcc : ∀ ρ : Formalism.L2.NG.FinTyp D.host.E D.R.r, (principalLevelFrame.FinTyp.conjT (principalLevelFrame.FinTyp.conjT ρ)).Iso ρ`. Introduce `ρ`.
+
+Unfold `Formalism.L2.NG.FinTyp.Iso`. Rewrite using `[principalLevelFrame.conjT_S, principalLevelFrame.conjT_S, principalLevelFrame.conjSub_conjSub]`. Conclude with `Formalism.L2.NG.IsoRep.refl _`. Establish `hspan : (⨆ π, principalLevelFrame.isotE R.θ y.PY (R.MY 0) J χ R.e0 (rep π)) = Mult.goodPart R.θ (R.MY 0) J χ R.e0`. Use `le_antisymm (iSup_le fun π => inf_le_left) ?_` and prove the remaining obligations.
+
+Rewrite using `[← key.1]`. Use `iSup_le fun ρ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : principalLevelFrame.isotL R.θ y.PY (R.MY 0) J χ R.e0 ρ = ⊥`. Rewrite using `[h0]`. Conclude with `bot_le`.
+
+Establish `he1 : principalLevelFrame.isotE R.θ y.PY (R.MY 0) J χ R.e0 (principalLevelFrame.FinTyp.conjT ρ) = principalLevelFrame.isotL R.θ y.PY (R.MY 0) J χ R.e0 ρ` using `principalLevelFrame.isotL_iso R.θ y.PY (R.MY 0) J χ R.e0 (hcc ρ)`. Establish `hocc : principalLevelFrame.FinTyp.conjT ρ ∈ y.occ F.lv2` using `⟨b, by rw [he1]; exact h0⟩`. Take `⟨π, hπ⟩` from `hR.all _ hocc`. Establish `he2 : principalLevelFrame.isotE R.θ y.PY (R.MY 0) J χ R.e0 (rep π) = principalLevelFrame.isotL R.θ y.PY (R.MY 0) J χ R.e0 ρ`. Rewrite using `[← he1]`.
+
+Conclude with `principalLevelFrame.isotL_iso R.θ y.PY (R.MY 0) J χ R.e0 (principalLevelFrame.conjT_iso hπ)`. Conclude with `le_iSup_of_le π (le_of_eq he2.symm)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `Hd.prtE show (⨆ π, (principalLevelFrame.isotE R.θ y.PY (R.MY 0) J χ R.e0 (rep π)).map (PiTensorProduct.lift : Mult.MMap (R.MY 0) ≃ₗ[ℂ] _).toLinearMap) = (Mult.goodPart R.θ (R.MY 0) J χ R.e0).map (PiTensorProduct.lift : Mult.MMap (R.MY 0) ≃ₗ[ℂ] _).toLinearMap`. Rewrite using `[← hspan, Submodule.map_iSup]`.
+
+Introduce `π π' hne x hx x' hx'`. Take `⟨u, hu, rfl⟩` from `hx`. Take `⟨u', hu', rfl⟩` from `hx'`. Establish `hni : ¬ (principalLevelFrame.FinTyp.conjT (rep π)).Iso (principalLevelFrame.FinTyp.conjT (rep π'))` using `principalLevelFrame.not_iso_conjT fun h => hne (hR.inj π π' h)`. Use `key.2 _ _ hni u hu u' hu'` as an intermediate fact.
+
+Use `show ipMT (R.MY 0) (ENNReal.ofReal (RealDat.nP F.lv2 b)⁻¹ • R.ν0) R.fd0 _ _ = 0`. Unfold `ipMT`. Apply the tactic sequence `convert this using 2 <;> exact LinearEquiv.symm_apply_apply _ _`.
+-/
 theorem parts_span_orth : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), Inputs D → Pins R F cG → Holds R F → ∀ (y : Hd R.toRealDat) (Φ : Type) (rep : Φ → Formalism.L2.NG.FinTyp D.host.E D.R.r), Reps y F.lv2 rep → ∀ b : Bool, (⨆ π, y.prtE F.lv2 b (rep π)) = (y.C F.lv2).EEc b ∧ ∀ π π', π ≠ π' → ∀ x ∈ y.prtE F.lv2 b (rep π), ∀ x' ∈ y.prtE F.lv2 b (rep π'), (y.C F.lv2).ipE b x x' = 0 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hI hP hH y Φ rep hR b
   have hB := hP.char.base

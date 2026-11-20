@@ -8,6 +8,13 @@ open GlobalTheory.FlagCls
 
 namespace GlobalTheory.FlagCls
 
+/- English proof (translation)
+Rewrite using `[UniversallyInjective.iff_diagonal, surjective_iff]`. Introduce `x`. Set `w` to `(Limits.pullback h h).fromSpecResidueField x`. Establish `e : w ≫ Limits.pullback.fst h h = w ≫ Limits.pullback.snd h h` using `H ((Limits.pullback h h).residueField x) _ _ (by`. Simplify using `only [Category.assoc, Limits.pullback.condition])`.
+
+Establish `e2 : (w ≫ Limits.pullback.fst h h) ≫ Limits.pullback.diagonal h = w`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `[e]`. Set `pt : Spec ((Limits.pullback h h).residueField x)` to `IsLocalRing.closedPoint _`.
+
+Use `⟨(w ≫ Limits.pullback.fst h h) pt, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e2, Scheme.fromSpecResidueField_apply]`.
+-/
 theorem universallyInjective_of_fieldPoints {G P : Scheme.{0}} (h : G ⟶ P)
     (H : ∀ (K : Type) [Field K] (z z' : Sp K ⟶ G), z ≫ h = z' ≫ h → z = z') :
     UniversallyInjective h := by
@@ -25,6 +32,13 @@ theorem universallyInjective_of_fieldPoints {G P : Scheme.{0}} (h : G ⟶ P)
   refine ⟨(w ≫ Limits.pullback.fst h h) pt, ?_⟩
   rw [← Scheme.Hom.comp_apply, e2, Scheme.fromSpecResidueField_apply]
 
+/- English proof (translation)
+Introduce `G Y Bg S f jG πB π hc hB hf H`. Set `h : G ⟶ Limits.pullback π πB` to `Limits.pullback.lift f jG hc.symm`. Establish `e : h ≫ Limits.pullback.fst π πB = f` using `Limits.pullback.lift_fst _ _ _`. Establish `e' : h ≫ Limits.pullback.snd π πB = jG` using `Limits.pullback.lift_snd _ _ _`. Establish `hfin : IsFinite (Limits.pullback.fst π πB)` using `inferInstance`.
+
+Establish `: IsProper (h ≫ Limits.pullback.fst π πB)` using `by rwa [e]`. Establish `: IsProper h` using `IsProper.of_comp h (Limits.pullback.fst π πB)`. Establish `: UniversallyInjective h` using `universallyInjective_of_fieldPoints h fun K _ z z' hz => H K z z' (by rw [← e, ← Category.assoc, hz, Category.assoc]) (by rw [← e', ← Category.assoc, hz, Category.assoc])`. Establish `: IsFinite h` using `IsFinite.of_isProper_of_locallyQuasiFinite h`. Rewrite using `[← e]`.
+
+Use `infer_instance`.
+-/
 theorem isFinite_of_isProper_of_fieldPoints :
     ∀ (G Y Bg S : Scheme.{0}) (f : G ⟶ Y) (jG : G ⟶ Bg) (πB : Bg ⟶ S) (π : Y ⟶ S), jG ≫ πB = f ≫ π → IsFinite πB → IsProper f → (∀ (K : Type) [Field K] (z z' : Sp K ⟶ G), z ≫ f = z' ≫ f → z ≫ jG = z' ≫ jG → z = z') → IsFinite f := by
   intro G Y Bg S f jG πB π hc hB hf H

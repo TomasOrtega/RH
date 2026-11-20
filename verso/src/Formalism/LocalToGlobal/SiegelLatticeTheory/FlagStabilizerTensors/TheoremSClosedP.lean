@@ -38,6 +38,19 @@ def CarrierP : Prop :=
 
 open Formalism.L2.SG.AdBridge Formalism.L2.SG.CntLocal Formalism.L2.SG.DataInst Formalism.L2.SG.RowsConc in
 
+/- English proof (translation)
+Take `⟨CA, C, h1, h2, h3, h5, hrest⟩` from `theoremS_rec hLMA hDIA hRIA C₄ Cthr h4`. Use `⟨CA, C, h1, h2, h3, h5, fun C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6 => ?_⟩` and prove the remaining obligations. Take `⟨k0, hk⟩` from `hrest C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6`. Use `⟨k0, fun Cg cb Cw cTf CT C0f hcb hcT => ?_⟩` and prove the remaining obligations. Take `⟨C4, hC4, CN'₀, ClN₀, hN⟩` from `hNG Cg cb Cw cTf CT C0f hcb hcT`.
+
+Use `⟨C4, CN'₀, ClN₀, hC4, fun C' Cl hC' hCl => ?_⟩` and prove the remaining obligations. Introduce `D L T hF u u' G0 de de' l i0 i0' νq X0 Lsp ϖ κ Q nc Th Cp Cf hTies hne hb0 hCar hcard hk0 hSz h16 hCf hsize hSN hDst hRB hRNS hHyp0 hStand hCT hAC hTT hϖ hFo hκ hSum hKVI hBI hLink hSplit hE hA hId hK2`. Establish `hGk : G0.k = D.R.k ∧ G0.r = D.R.rS ∧ G0.f = D.R.f`. Establish `hCar'` using `hCar`. Take `⟨Wp, Wq, i1, i2, i3, i4, i5, S, _, _, _, _, _, _, _, _, _, -, hG, -, -, -, hC, -⟩` from `hCar'`.
+
+Substitute `hG` using the available equality. Conclude with `⟨hC.2.1, hC.1, glob_f_eq S hC⟩`. Establish `hdd : ddC T.X T.Y u u' = (D.duS u : ℝ) * D.duS u' / (G0.size de (D.mem u).A.T (D.duS u)).Dstar`. Unfold `ddC`. Rewrite using `[hCT.2.2.1 u, hCT.2.2.1 u', hCT.2.2.2.1, hDst]`.
+
+Establish `hRNG` using `hN C' Cl hC' hCl D L T.X T.Y u u' hTies hHyp0 hStand hCT hAC`. Establish `hLTr : Formalism.L2.SG.Pf.LocCP.LocTied D`. Take `⟨_, _, _, _, _, _, _, h⟩` from `hCT.2.2.2.2.2.2.1`. Conclude with `h`. Rewrite `hRB`, `hRNS`, `hRNG` using `[hdd]`.
+
+Use `hk D L T.X T.hb T.Y hF u u' G0 de de' l i0 i0' νq X0 T.ψ Lsp ϖ κ Q nc Th Cp Cf (1 / 3) C4 hne ⟨T.hI hF⟩ hb0 hCar hcard hk0 hSz h16 hCf hsize hTT (Formalism.MainNotions.VanishingOnXAndXPlus.primeHyp_of_stand D u u' hStand) hLTr hϖ hFo hκ hSum hKVI hBI hLink hSplit hSN ?_ ?_ ?_ hDs …` and prove the remaining obligations. Rewrite using `[hGk.1, hGk.2.2]`. Conclude with `hRB`. Rewrite using `[hGk.1, hGk.2.2]`. Conclude with `hRNS`.
+
+Rewrite using `[hGk.1, hGk.2.1, hGk.2.2]`. Conclude with `hRNG`.
+-/
 theorem theoremS_rec2P
     (hLMA : ∀ D : D7, LocalModelAt D) (hDIA : ∀ D : D7, Formalism.L2.SG.Pf.LocCP.LocTied D → DensInputAt D) (hRIA : ∀ D : D7, RowsInputP D)
     (hNG : Formalism.L2.SG.RowsPos.RowNGP)
@@ -124,6 +137,13 @@ theorem theoremS_rec2P
 
 open Formalism.L2.SG.AdBridge Formalism.L2.SG.CntLocal Formalism.L2.SG.DataInst Formalism.L2.SG.RowsConc in
 
+/- English proof (translation)
+Take `⟨C₄, CA₀, h4, hC⟩` from `hCar`. Take `⟨CA, C, h1, h2, h3, h5, hrest⟩` from `theoremS_rec2P hLMA hDIA hRIA hNG C₄ (max Cthr CA₀) h4`. Use `⟨C₄, CA, C, h4, le_trans (le_max_left _ _) h1, h2, h3, h5, fun C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6 => ?_⟩` and prove the remaining obligations. Take `⟨k0, hk⟩` from `hrest C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6`. Take `⟨k0c, hCk⟩` from `hC CA (le_trans (le_max_right _ _) h1) h2 C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6`.
+
+Use `⟨max k0 k0c, fun Cg cb Cw cTf CT C0f hcb hcT => ?_⟩` and prove the remaining obligations. Take `⟨Cn, C'₀, Cl₀, hCn, hrow⟩` from `hk Cg cb Cw cTf CT C0f hcb hcT`. Take `⟨C'₁, Cl₁, hCc⟩` from `hCk Cg cb Cw cTf CT C0f hcb hcT`. Use `⟨Cn, max C'₀ C'₁, max Cl₀ Cl₁, hCn, fun C' Cl hC' hCl => ?_⟩` and prove the remaining obligations. Introduce `D L T hF u u' e τ i0 i0' νq X0 Lsp ϖ κ Q nc Th Cp Cf hTies hne hb0 hii hPt hNu hPT hcard hk0 hSz h16 hCf hsize hSN hDst hRB hRNS hHyp0 hStand hCT hAC hTT hϖ hFo hκ hSum hKVI hBI hLink hSplit hE hA hId hK2`.
+
+Establish `hCF` using `hCc C' Cl (le_trans (le_max_right _ _) hC') (le_trans (le_max_right _ _) hCl) D L T u u' e τ Cp Th i0 i0' νq X0 (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q hTies hne (le …`. Conclude with `hrow C' Cl (le_trans (le_max_left _ _) hC') (le_trans (le_max_left _ _) hCl) D L T hF u u' (gOf D e) (deOf D τ u) (deOf D τ u') (lOf D (deOf D τ u) (deOf D τ u')) i0 i0' νq X0 Lsp ϖ κ Q nc Th Cp Cf hTies hne hb0 hCF hcard (le_trans (le_max_left _ _) hk0) hSz h16 hCf hsize hSN hDs …`.
+-/
 theorem theoremS_rec3P
     (hLMA : ∀ D : D7, LocalModelAt D) (hDIA : ∀ D : D7, Formalism.L2.SG.Pf.LocCP.LocTied D → DensInputAt D) (hRIA : ∀ D : D7, RowsInputP D)
     (hNG : Formalism.L2.SG.RowsPos.RowNGP) (hCar : CarrierP) (Cthr : ℝ) :
@@ -226,6 +246,13 @@ def RowFormAllP : Prop :=
         (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q T.Y.M T.Y.δ i0 i0' νq κ
         (Formalism.L2.SG.Pf.Cnt.cExpl D (T.X.Fu u) (T.Y.what₂ u))
 
+/- English proof (translation)
+Introduce `Cg cb Cw cTf CT C0f hcb hcT`. Take `⟨C'₀, Cl₀, hV⟩` from `hVA Cg cb Cw cTf CT C0f hcb hcT`. Use `⟨C'₀, Cl₀, fun C' Cl h1 h2 => ?_⟩` and prove the remaining obligations. Introduce `D L T u u' X0 C Th Q i0 i0' νq Lsp ϖ κ hTies hH0 hne hSt hCT hg3 hdet hk hcong hi hPR hNu hRL hϖ`. Establish `hWD : Formalism.L2.SG.WuDecay.WuDecay T.X` using `hCT.2.2.2.2.1`.
+
+Establish `hAbs : Formalism.L2.SG.TermOp.AbsConvT (T.X.Fu u) (T.X.Fu u') T.Y.TR (T.Y.cs u) (T.Y.cs u') (T.Y.FN u) (T.Y.FN u')` using `Formalism.L2.SG.Pf.absConvC_outright D T.X T.Y u u' (Formalism.L2.SG.Closed.FoldOKC_outright D T.X T.Y u (Formalism.L2.SG.Closed.level_subgroup_properties T.X) hWD) (Formalism.L2.SG.Closed.FoldOKC_outright D T.X T.Y u' (Formalism.L2.SG.Closed.level_subgroup_properties T.X) hWD) ( …`. Take `⟨hN, hc0⟩` from `hNc D T u u' X0 C Th Q i0 i0' νq Lsp ϖ hne hSt hCT hdet hk hcong hi hPR hNu hϖ`. Establish `hP` using `Formalism.MainNotions.VanishingOnXAndXPlus.primeHyp_of_stand D u u' hSt`. Establish `hK2` using `Formalism.L2.SG.Closed.level_subgroup_properties T.X`. Establish `hV0 : 0 < T.X.volK2` using `ENNReal.toReal_pos (ne_of_gt hK2.2.2.1) (ne_of_lt hK2.2.2.2)`.
+
+Establish `hLT : Formalism.L2.SG.Pf.LocCP.LocTied D`. Take `⟨_, _, _, _, _, _, _, hL⟩` from `hCT.2.2.2.2.2.2.1`. Conclude with `hL`. Conclude with `Formalism.L2.SG.Pf.rowFormC_of_leaves3 T.X T.hb T.Y u u' X0 T.ψ _ C Th Q i0 i0' νq κ _ hRL hi hPR hNu hk hAbs (fun i => ⟨hg3 i, gUnramAll D u u' hSt i⟩) (Formalism.L2.SG.Pf.LiftedPhaseAgreement.phaseTieC_holds T.X T.Y u u' κ hP) hVP hP (Formalism.L2.SG.Pf.normRepExists_of (Formal …`.
+-/
 theorem rowFormAllP_of (hFC : FormulaC) (hVP : Formalism.L2.SG.VolPin.VolumeOddGeneric) (hVA : VIndepAtAllP) (hNc : NormalizingConstantPositiveAll) :
     RowFormAllP := by
   intro Cg cb Cw cTf CT C0f hcb hcT
@@ -253,6 +280,21 @@ theorem rowFormAllP_of (hFC : FormulaC) (hVP : Formalism.L2.SG.VolPin.VolumeOddG
     (hV C' Cl h1 h2 D L T u u' i0 i0' νq hTies hne hSt hCT hi hNu hPR hH0)
     hN hLT hV0 hc0 (hFC D T u u' Lsp hLT hSt hcong).1 (tprod_alpD_pos D hk u u')
 
+/- English proof (translation)
+Take `⟨C₄, CA, C, h4, h1, h2, h3, h5, hrest⟩` from `theoremS_rec3P hLMA hDIA hRIA hNG hCar Cthr`. Use `⟨C₄, CA, C, h4, h1, h2, h3, h5, fun C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6 => ?_⟩` and prove the remaining obligations. Take `⟨k0, hk⟩` from `hrest C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6`. Use `⟨k0, fun Cg cb Cw cTf CT C0f hcb hcT => ?_⟩` and prove the remaining obligations. Take `⟨Cn, C'₀, Cl₀, hCn, hrow⟩` from `hk Cg cb Cw cTf CT C0f hcb hcT`.
+
+Take `⟨C'₁, Cl₁, hKz⟩` from `hKpp Cg cb Cw cTf CT C0f`. Take `⟨C'₂, Cl₂, hRFc⟩` from `hRF Cg cb Cw cTf CT C0f hcb hcT`. Use `⟨Cn, max (max C'₀ C'₁) C'₂, max (max Cl₀ Cl₁) Cl₂, hCn, fun C' Cl hC' hCl => ?_⟩` and prove the remaining obligations. Introduce `D L T u u' hTies hne hb0 hSz hH0 hSt hKH hGap hLT hTF hRB hRNS`. Take `⟨e, τ, Cp, Th, Cf, hPT, hk0, hSzH, h16, hCf, hsize, hSN, hDst, hTT⟩` from `hSz`.
+
+Establish `hTh : 0 < Th` using `hSzH.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hF` using `hFX D T hGap`. Establish `hWP` using `hWu D hGap T.X`. Establish `hCT : ConcTie T.X T.Y` using `T.concTie hF (Formalism.L2.SG.Closed.level_subgroup_properties T.X) (fun u => Formalism.L2.SG.Closed.NeatKu_holds (X := T.X) (u := u) T.Y.hK) hWP.1 hWP.2 hLT hTF`. Take `⟨i0, i0', νq, X0, Lsp, ϖ, κ, Q, hii, hPt, hNu, hdet, hϖ, hκ⟩` from `hCh D T u u' hne hSt hTT hsize`.
+
+Establish `hFm` using `hFC D T u u' Lsp hLT hSt hTT`. Establish `hg3 : ∀ i, 3 ≤ D.host.g i`. Take `⟨hb16, hk32, -, -, hg1, hg2, -⟩` from `hSN`. Establish `hk : (32 : ℝ) ≤ ((gOf D e).k : ℝ)` using `by exact_mod_cast hk32`. Establish `h512 : (512 : ℝ) ≤ ((gOf D e).k : ℝ) * L.sc.b` using `by nlinarith`.
+
+Establish `h3 : (3 : ℝ) ≤ (((gOf D e).k : ℝ) * L.sc.b) ^ 8`. Establish `h1 : (1 : ℝ) ≤ ((gOf D e).k : ℝ) * L.sc.b` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Introduce `i`. Use `fin_cases i`.
+
+Use `h3.trans hg1` as an intermediate fact. Conclude with `this` after adjusting the coercions. Use `h3.trans hg2` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hAC` using `absConvTied_of_full hFo Formalism.L2.SG.Pf.fundExistsC_holds hO hA D T.X T.Y u u' hCT`.
+
+Establish `hKZ` using `hKz C' Cl (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hC') (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hCl) D L T.X T.Y u u' hKH hCT hne`. Establish `hdeg` using `Formalism.L2.SG.RowsOther.kppOff_of_termZero (T.Y.tO u u') hKZ`. Conclude with `hrow C' Cl (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hC') (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hCl) D L T hF u u' e τ i0 i0' νq X0 Lsp ϖ κ Q (Formalism.L2.SG.Pf.Cnt.cExpl D (T.X.Fu u) (T.Y.what₂ u)) Th Cp Cf hTies hne hb0 hii hPt hNu hPT (cardC_ …`.
+-/
 theorem theoremS_closedP
     (hLMA : ∀ D : D7, LocalModelAt D) (hDIA : ∀ D : D7, Formalism.L2.SG.Pf.LocCP.LocTied D → DensInputAt D) (hRIA : ∀ D : D7, RowsInputP D)
     (hNG : Formalism.L2.SG.RowsPos.RowNGP) (hKpp : KppOffC) (hCar : CarrierP) (hKE : KernelExponentAgreement)

@@ -6,12 +6,26 @@ open UpperTheory.Lit.CharWD GlobalTheory.Published
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.WeilDeligne GlobalTheory.GalOfCusp GlobalTheory.HeckeGal
 open GlobalTheory.LocLanglands GlobalTheory.Pst GlobalTheory.TripleGal UpperTheory.V.W
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `fin_cases j`. Simplify `Units.continuous_val.comp hμ` using `[GlobalTheory.TripleGal.rk1, Function.comp_def]`.
+-/
 private theorem continuous_rank_one_rep {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [Field K] [TopologicalSpace K] (μ : Γ →* Kˣ)
     (hμ : Continuous μ) : Continuous fun g => ((rk1 μ g : GL (Fin 1) K) : Matrix (Fin 1) (Fin 1) K) := by
   refine continuous_matrix fun i j => ?_
   fin_cases i; fin_cases j
   simpa [GlobalTheory.TripleGal.rk1, Function.comp_def] using Units.continuous_val.comp hμ
 
+/- English proof (translation)
+Take `⟨n, b, rfl⟩` from `x.exists_rep`. Take `rfl : n = 1` from `by simpa using hx`. Establish `hsc : ∀ f : Module.End ℂ (Fin 1 → ℂ), ∀ v, f v = f 1 0 • v` using `fun f v => by`. Establish `hv : v = v 0 • (1 : Fin 1 → ℂ)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Subsingleton.elim i 0]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Use `conv_lhs => rw [hv, map_smul]`.
+
+Simplify using `[mul_comm]`. Set `c : Weil h →* ℂ` to `{ toFun := fun σ => b.ρ σ 1 0 map_one' := by simp map_mul' := fun σ τ => by`. Rewrite using `[map_mul, Module.End.mul_apply, hsc (b.ρ σ) (b.ρ τ 1)]`. Simplify using `}`. Establish `hker : ∀ σ, b.ρ σ = 1 → c.toHomUnits σ = 1` using `fun σ hσ => by`.
+
+Use `ext`. Use `show b.ρ σ 1 0 = 1`. Simplify using `[hσ]`. Use `⟨c.toHomUnits, b.smooth.of_le hker, ParamAboveModel.eq_lpOfChar h _ hx _ _ fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[WD.eig_mk, Polynomial.mem_roots (LinearMap.charpoly_monic _).ne_zero, ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`.
+
+Conclude with `Module.End.hasEigenvalue_of_hasEigenvector (x := 1) ⟨Module.End.mem_eigenspace_iff.mpr (hsc _ _), one_ne_zero⟩`.
+-/
 private theorem exists_char {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} (x : WD h) (hx : x.lpDim = 1) :
     ∃ (η : Weil h →* ℂˣ) (hη : IsSmooth η), x = WD.lpOfChar h η hη := by
@@ -39,6 +53,23 @@ private theorem exists_char {E Ω : Type} [Field E] [NumberField E] [Field Ω] [
   exact Module.End.hasEigenvalue_of_hasEigenvector (x := 1)
     ⟨Module.End.mem_eigenspace_iff.mpr (hsc _ _), one_ne_zero⟩
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ A w ι h O _ _ _ Bw hj`. Take `⟨T⟩` from `UpperTheory.V.Loc.tiedP l`. Establish `eigW : ∀ κ ξ, WDis (UpperTheory.V.Loc.PP l) ι h Bw hj κ ξ → ∀ σ, (wdAt (UpperTheory.V.Loc.PP l) ι Bw h hj (rk1 κ)).eig σ = {ι (ξ σ : Qbar l)}`. Introduce and unpack `κ ξ ⟨-, hs, e⟩ σ`. Rewrite using `[e, eig_lpOfChar]`.
+
+Both sides reduce to the same expression. Use `⟨fun κ _ hp => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨η, hη, e⟩` from `exists_char _ (GlobalTheory.Pst.Test.lpDim_wdAt (UpperTheory.V.Loc.PP l) ι Bw h hj (rk1 κ))`. Establish `hc : (Units.map ι.toRingHom.toMonoidHom).comp ((Units.map ι.symm.toRingHom.toMonoidHom).comp η) = η`. Use extensionality with `σ`.
+
+Simplify using the standard rewrite rules. Establish `H : WDis (UpperTheory.V.Loc.PP l) ι h Bw hj κ ((Units.map ι.symm.toRingHom.toMonoidHom).comp η)` using `⟨hp, hc.symm ▸ hη, by rw [e]; congr 1; exact hc.symm⟩`. Use `⟨_, H, fun ξ H' => MonoidHom.ext fun σ => Units.ext (ι.injective ?_)⟩` and prove the remaining obligations. Conclude with `Multiset.singleton_inj.mp ((eigW _ _ H' σ).symm.trans (eigW _ _ H σ))`. Introduce `κ κ' ξ ξ' hκ hκ' H H' hp`.
+
+Establish `htw : rk1 (κ * κ') = Formalism.MainNotions.SumRepresentations.At.twGL (rk1 κ) (Matrix.GeneralLinearGroup.det.comp (rk1 κ'))`. Use extensionality with `g i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Formalism.MainNotions.SumRepresentations.At.twGL, GlobalTheory.TripleGal.rk1, mul_comm, Matrix.algebraMap_matrix_apply]`.
+
+Establish `hs : IsSmooth ((Units.map ι.toRingHom.toMonoidHom).comp (ξ * ξ'))` using `H.2.choose.of_le₂ H'.2.choose fun σ h1 h2 => by`. Rewrite `h1`, `h2`, the goal using `[MonoidHom.comp_apply]`. Rewrite using `[MonoidHom.mul_apply, map_mul, h1, h2, mul_one]`. Use `⟨hp, hs, ParamAboveModel.eq_lpOfChar h _ (GlobalTheory.Pst.Test.lpDim_wdAt _ ι Bw h hj _) _ _ fun σ => ?_⟩` and prove the remaining obligations. Rewrite `hp`, the goal using `[htw]`.
+
+Rewrite using `[GlobalTheory.TwistParamAbove.wdAt_twist l _ _ ⟨T⟩ ι F Ω A w h O Bw hj 1 _ _ (continuous_rank_one_rep κ hκ) (continuous_rank_one_rep κ' hκ') H.1 H'.1 hp, GlobalTheory.RowTie.EigTwist.eig_lpChar _ _ σ (GlobalTheory.Pst.Test.lpDim_wdAt _ ι Bw h hj _) _ (eigW _ _ H' σ), eigW _ _ H σ …`. Simplify using the standard rewrite rules. Introduce `ξ H σ set P := UpperTheory.V.Loc.PP l with hP`. Establish `hl : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Use `nontrivial_B P` as an intermediate fact.
+
+Establish `hcyc : ∀ g : Dec (F` using `F) A, (cycBar F Ω l g : Om l) = algebraMap _ _ (P.χQ (Bw.e g) : ℚ_[l]) := fun g => by`. Rewrite using `[GlobalTheory.Survey.CrystallineCharacterRatio.chi_eq_cyc P Bw.j (g : G F Ω) (Bw.e g : GQ l) (Bw.e_comm g)]`. Both sides reduce to the same expression. Establish `key` using `ParamAboveModel.mem_eig_wdAt P ι Bw h hj (cycBar F Ω l) H.1 (tInv P) (fun h0 => by simpa [h0] using tInv_mul P) (l : ℚ_[l])⁻¹ (inv_ne_zero hl) (by rw [eq_inv_smul_iff₀ hl, smul_phiB_tInv]) (fun g => P.χQ g) (fun g => Units.ne_zero _) (smul_actQ_tInv P) Bw.Kw (fun g _ => hcyc g) σ`. Establish `h2 : (cycBar F Ω l σ : Om l) = algebraMap _ _ (P.χQ (weilToGK Bw h σ) : ℚ_[l])` using `hcyc ⟨σ, Weil_le_Dec h σ.2⟩`.
+
+Rewrite `key` using `[h2, ← map_mul, mul_inv_cancel_left₀ (Units.ne_zero _), inv_zpow', neg_neg, map_zpow₀, map_natCast, alpha, zpow_mul, zpow_natCast, ← Nat.cast_pow, ← normV_eq_pow (hj.mem_placesOver h)]`. Establish `e` using `eigW _ _ H σ`. Conclude with `(ι.injective (Multiset.mem_singleton.mp (e ▸ key))).symm`.
+-/
 theorem UpperTheory.Lit.CharWD.chBasic :
     ChBasic := by
   intro F Ω _ _ _ _ _ l _ A w ι h O _ _ _ Bw hj

@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Hypo
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSubAug
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaGLRank.boundedChains_thetaGL | exact GlobalTheory.ThetaGLRank.boundedChains_thetaGL | (intros; apply GlobalTheory.ThetaGLRank.boundedChains_thetaGL <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_submodule_chain_bounded : GlobalTheory.FunPr.Hypotheses₂ → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n m : ℕ) (χ : GL (Fin n) k →* ℂˣ), IsOpen {g | χ g = 1} →
     ∃ L : ℕ, ∀ (r : ℕ) (N : Fin r → Submodule ℂ (Matrix (Fin n) (Fin m) k → ℂ)),

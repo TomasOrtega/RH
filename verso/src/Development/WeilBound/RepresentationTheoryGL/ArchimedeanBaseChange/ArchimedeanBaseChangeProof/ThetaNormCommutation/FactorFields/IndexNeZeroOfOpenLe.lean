@@ -9,6 +9,11 @@ open scoped Classical TensorProduct
 
 namespace PositivityTheory.Rg.BcB.G3.Invar2P
 
+/- English proof (translation)
+Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hK`. Establish `: Finite (K ⧸ U.subgroupOf K)` using `Subgroup.quotient_finite_of_isOpen _ (Subgroup.subgroupOf_isOpen K U hU)`. Establish `h0 : (U.subgroupOf K).index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+
+Conclude with `Nat.eq_zero_of_zero_dvd (h ▸ Subgroup.index_dvd_of_le hR)`.
+-/
 theorem index_ne_zero_of_open_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (K U : Subgroup G) (hK : IsCompact (K : Set G)) (hU : IsOpen (U : Set G)) (R : Subgroup K)
     (hR : U.subgroupOf K ≤ R) : R.index ≠ 0 := by
@@ -23,6 +28,13 @@ end PositivityTheory.Rg.BcB.G3.Invar2P
 
 namespace PositivityTheory.Rg.BcB.G3
 
+/- English proof (translation)
+Introduce `E _ _ _ hU a b w K₁ K₂ hK₁ hK₂ φ hφ y g`. Take `⟨-, -, -, -, hOa, hCa, -⟩` from `GlobalTheory.BCT.ThBasic.twist_basic E hU a w`. Take `⟨-, -, -, -, hOb, hCb, -⟩` from `GlobalTheory.BCT.ThBasic.twist_basic E hU b w`. Use `GlobalTheory.TwOrbConj.twOrb_twConj _ _ _ y g φ fun x => ?_` and prove the remaining obligations. Use `Invar2P.index_ne_zero_of_open_le ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) (K₁.prod K₂) (by rw [Subgroup.coe_prod]; exact hCa.prod hCb) (by rw [Subgroup.coe_prod]; exact hK₁.1.prod hK₂.1) _ ?_` and prove the remaining obligations.
+
+Introduce `k hk`. Rewrite `hk` using `[Subgroup.mem_subgroupOf]`. Rewrite using `[GlobalTheory.TwOrbConj.mem_rStab]`. Introduce `u`. Establish `hθk : ((thL a w).prodMap (thL b w)) (k : GLw a w × GLw b w) ∈ K₁.prod K₂` using `Subgroup.mem_prod.2 ⟨hK₁.2.2 _ (Subgroup.mem_prod.1 hk).1, hK₂.2.2 _ (Subgroup.mem_prod.1 hk).2⟩`.
+
+Establish `e : ((x * ((u * k : _) : GLw a w × GLw b w))⁻¹ * y * ((thL a w).prodMap (thL b w)) (x * ((u * k : _) : GLw a w × GLw b w))) = (k : GLw a w × GLw b w)⁻¹ * ((x * (u : GLw a w × GLw b w))⁻¹ * y * ((thL a w).prodMap (thL b w)) (x * (u : GLw a w × GLw b w))) * ((thL a w).prodMap (thL …`. Simplify using `only [Subgroup.coe_mul, map_mul, _root_.mul_inv_rev]`. Use `group`. Use `show φ _ = φ _`. Rewrite using `[e, (hφ.2 _ hθk _).2, (hφ.2 _ ((K₁.prod K₂).inv_mem hk) _).1]`.
+-/
 theorem invar2_pf : Invar2 := by
   intro E _ _ _ hU a b w K₁ K₂ hK₁ hK₂ φ hφ y g
   obtain ⟨-, -, -, -, hOa, hCa, -⟩ := GlobalTheory.BCT.ThBasic.twist_basic E hU a w

@@ -22,6 +22,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (μ : Measure G) [μ.IsHaarMeasure]
   {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H)
 
+/- English proof (translation)
+Rewrite using `[UnitaryRep.inner_integrated]`. Use `integral_congr_ae ((MemLp.coeFn_toLp (μ := μ) (f.continuous.memLp_of_hasCompactSupport (p := 1) f.hasCompactSupport)).mono fun g hg => ?_)` and prove the remaining obligations. Simplify using `only`. Conclude with `congrArg (· * ⟪w, π g u⟫_ℂ) hg`.
+-/
 theorem inner_integrated_ccToL1 (f : CompactlySupportedContinuousMap G ℂ) (w u : H) :
     ⟪w, π.integrated μ (UnitaryRep.ccToL1 μ f) u⟫_ℂ = ∫ g, f g * ⟪w, π g u⟫_ℂ ∂μ := by
   rw [UnitaryRep.inner_integrated]
@@ -30,6 +33,23 @@ theorem inner_integrated_ccToL1 (f : CompactlySupportedContinuousMap G ℂ) (w u
   dsimp only
   exact congrArg (· * ⟪w, π g u⟫_ℂ) hg
 
+/- English proof (translation)
+Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Use `set Φ : G → G → ℂ := fun x g => f₁ g * f₂ (g⁻¹ * x) * ⟪w, π x v⟫_ℂ with hΦ`. Establish `hcont : Continuous (uncurry Φ)` using `((f₁.continuous.comp continuous_snd).mul (f₂.continuous.comp (continuous_snd.inv.mul continuous_fst))).mul (continuous_const.inner ((π.continuous_orbit v).comp continuous_fst))`. Establish `hsupp : HasCompactSupport (uncurry Φ)`. Use `HasCompactSupport.intro ((f₁.hasCompactSupport.isCompact.mul f₂.hasCompactSupport.isCompact).prod f₁.hasCompactSupport.isCompact) fun p hp => ?_` and prove the remaining obligations.
+
+Take `⟨x, g⟩` from `p`. Use `show f₁ g * f₂ (g⁻¹ * x) * ⟪w, π x v⟫_ℂ = 0`. Distinguish the cases in `h1 : g ∈ tsupport f₁`. Distinguish the cases in `h2 : g⁻¹ * x ∈ tsupport f₂`. Conclude with `absurd ⟨⟨g, h1, g⁻¹ * x, h2, by simp⟩, h1⟩ hp`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport h2, mul_zero, zero_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, zero_mul, zero_mul]`. Establish `hint : Integrable (uncurry Φ) (μ.prod μ)` using `hcont.integrable_of_hasCompactSupport hsupp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inner_integrated_ccToL1]`.
+
+Both sides reduce to the same expression. Use `_ = ∫ x, ∫ g, Φ x g ∂μ ∂μ := by`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Conclude with `(integral_mul_const _ _).symm`. Use `_ = ∫ g, ∫ x, Φ x g ∂μ ∂μ := integral_integral_swap hint`.
+
+Use `_ = ∫ g, f₁ g * ∫ x, f₂ x * ⟪w, π (g * x) v⟫_ℂ ∂μ ∂μ := by`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← integral_mul_left_eq_self (fun x => Φ x g) g, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hΦ, inv_mul_cancel_left, mul_assoc]`. Use `_ = ∫ g, f₁ g * ⟪w, π g (π.integrated μ (UnitaryRep.ccToL1 μ f₂) v)⟫_ℂ ∂μ := by`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[UnitaryRep.inner_map_right, inner_integrated_ccToL1]`.
+
+Use `congr 1`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[UnitaryRep.inner_map_left, inv_inv, ← UnitaryRep.map_mul_apply]`. Use `_ = ⟪w, (π.integrated μ (UnitaryRep.ccToL1 μ f₁) ∘L π.integrated μ (UnitaryRep.ccToL1 μ f₂)) v⟫_ℂ := by`.
+
+Rewrite using `[ContinuousLinearMap.comp_apply, inner_integrated_ccToL1]`.
+-/
 theorem integrated_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     π.integrated μ (UnitaryRep.ccToL1 μ (conv μ f₁ f₂)) =
       π.integrated μ (UnitaryRep.ccToL1 μ f₁) ∘L π.integrated μ (UnitaryRep.ccToL1 μ f₂) := by
@@ -84,15 +104,24 @@ section Subspace
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   (V : Submodule ℂ H) [CompleteSpace V]
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.ext fun w => V.orthogonalProjectionOnto_mem_subspace_eq_self w`.
+-/
 theorem orthogonalProjectionOnto_comp_subtypeL :
     V.orthogonalProjectionOnto ∘L V.subtypeL = ContinuousLinearMap.id ℂ V :=
   ContinuousLinearMap.ext fun w => V.orthogonalProjectionOnto_mem_subspace_eq_self w
 
+/- English proof (translation)
+Rewrite using `[← ContinuousLinearMap.comp_assoc, orthogonalProjectionOnto_comp_subtypeL, ContinuousLinearMap.id_comp]`.
+-/
 theorem eq_orthogonalProjectionOnto_comp (T : V →L[ℂ] V) :
     T = V.orthogonalProjectionOnto ∘L (V.subtypeL ∘L T) := by
   rw [← ContinuousLinearMap.comp_assoc, orthogonalProjectionOnto_comp_subtypeL,
     ContinuousLinearMap.id_comp]
 
+/- English proof (translation)
+Establish `heq : V.subtypeL ∘L (A ∘L B) ∘L V.orthogonalProjectionOnto = (V.subtypeL ∘L A ∘L V.orthogonalProjectionOnto) ∘L (V.subtypeL ∘L B ∘L V.orthogonalProjectionOnto)` using `by conv_lhs => rw [show A ∘L B = A ∘L (V.orthogonalProjectionOnto ∘L V.subtypeL) ∘L B by`. Rewrite using `[orthogonalProjectionOnto_comp_subtypeL, ContinuousLinearMap.id_comp]]`. Simplify using `only [ContinuousLinearMap.comp_assoc]`. Rewrite using `[heq]`. Conclude with `isTraceClass_comp ((hA.comp_right V.orthogonalProjectionOnto).comp_left V.subtypeL) ((hB.comp_right V.orthogonalProjectionOnto).comp_left V.subtypeL)`.
+-/
 theorem isTraceClass_subtypeL_comp_comp {A B : V →L[ℂ] V} (hA : IsHilbertSchmidt A)
     (hB : IsHilbertSchmidt B) :
     IsTraceClass (V.subtypeL ∘L (A ∘L B) ∘L V.orthogonalProjectionOnto) := by
@@ -116,6 +145,21 @@ local notation "Γ₁" => rationalGLOne K n
 
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Set `T` to `(cuspRep μ).integrated μ (UnitaryRep.ccToL1 μ f)`. Set `T' : cuspidalL2 μ →L[ℂ] Lp ℂ 2 (quotientMeasure Γ₁ μ)` to `(cuspidalL2 μ).subtypeL ∘L T`. Establish `hT' : T' = (rightRegularRep Γ₁ μ).integrated μ (UnitaryRep.ccToL1 μ f) ∘L (cuspidalL2 μ).subtypeL` using `subtypeL_comp_integrated μ _`. Set `e : RightCosetSpace Γ₁ → StrongDual ℂ (cuspidalL2 μ)` to `fun q => (rconvCLM Γ₁ μ f (Quotient.out q)).comp (cuspidalL2 μ).subtypeL`.
+
+Establish `he : ∀ q, ‖e q‖ ≤ max B 0`. Introduce `q`. Use `ContinuousLinearMap.opNorm_le_bound _ (le_max_right _ _) fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖rconv Γ₁ μ f (w : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (Quotient.out q)‖ ≤ _`. Use `(hB w w.2 _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.coe_norm]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _)`. Establish `hout : ∀ (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (q : RightCosetSpace Γ₁), rconvQ Γ₁ μ f φ q = rconv Γ₁ μ f φ (Quotient.out q)`. Introduce `φ q`. Take `⟨a, rfl⟩` from `mk_surjective Γ₁ q`.
+
+Take `⟨γ, hγ⟩` from `(mk_eq_mk_iff (Γ := Γ₁)).1 (Quotient.out_eq (mk Γ₁ a))`. Rewrite using `[rconvQ_mk, ← hγ]`. Conclude with `(rconv_mul_left Γ₁ μ f φ γ.2 a).symm`. Establish `hae : ∀ w, T' w =ᵐ[quotientMeasure Γ₁ μ] fun q => e q w`. Introduce `w`.
+
+Establish `h1 : T' w = (rightRegularRep Γ₁ μ).integrated μ (UnitaryRep.ccToL1 μ f) (w : Lp ℂ 2 (quotientMeasure Γ₁ μ))`. Rewrite using `[hT']`. Both sides reduce to the same expression. Rewrite using `[h1]`. Use `filter_upwards [integrated_ae_eq_rconvQ Γ₁ μ f (w : Lp ℂ 2 (quotientMeasure Γ₁ μ))] with q hq`.
+
+Conclude with `hq.trans (hout _ q)`. Establish `hHS : IsHilbertSchmidt T'` using `isHilbertSchmidt_of_ae_eq_dual T' e (max B 0) he hae`. Establish `hTT : T = (cuspidalL2 μ).orthogonalProjectionOnto ∘L T'` using `eq_orthogonalProjectionOnto_comp (cuspidalL2 μ) T`. Use `show IsHilbertSchmidt T`. Rewrite using `[hTT]`.
+
+Conclude with `hHS.comp_left _`.
+-/
 theorem isHilbertSchmidt_cuspRep_of_bound (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     (B : ℝ) (hB : ∀ φ ∈ cuspidalL2 μ, ∀ x, ‖rconv Γ₁ μ f φ x‖ ≤ B * ‖φ‖) :
     IsHilbertSchmidt ((cuspRep μ).integrated μ (UnitaryRep.ccToL1 μ f)) := by
@@ -156,6 +200,9 @@ theorem isHilbertSchmidt_cuspRep_of_bound (f : CompactlySupportedContinuousMap (
   rw [hTT]
   exact hHS.comp_left _
 
+/- English proof (translation)
+The claim follows from `Exists.elim (exists_norm_rconv_le_uniform μ ν hβ hβc hβu U hU g) fun B hB => isHilbertSchmidt_cuspRep_of_bound μ _ B hB`.
+-/
 theorem isHilbertSchmidt_cuspRep (ν : Measure (ArchUnits K n)) [ν.IsHaarMeasure]
     {β : ArchMatrix K n → ℝ} (hβ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) β) (hβc : HasCompactSupport β)
     (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))
@@ -167,6 +214,9 @@ theorem isHilbertSchmidt_cuspRep (ν : Measure (ArchUnits K n)) [ν.IsHaarMeasur
   Exists.elim (exists_norm_rconv_le_uniform μ ν hβ hβc hβu U hU g) fun B hB =>
     isHilbertSchmidt_cuspRep_of_bound μ _ B hB
 
+/- English proof (translation)
+Rewrite using `[integrated_conv]`. Conclude with `isTraceClass_comp (isHilbertSchmidt_cuspRep μ ν hβ₁ hβc₁ hβu₁ U₁ hU₁ g₁) (isHilbertSchmidt_cuspRep μ ν hβ₂ hβc₂ hβu₂ U₂ hU₂ g₂)`.
+-/
 theorem isTraceClass_cuspRep_conv (ν : Measure (ArchUnits K n)) [ν.IsHaarMeasure]
     {β₁ β₂ : ArchMatrix K n → ℝ} (hβ₁ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) β₁)
     (hβ₂ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) β₂) (hβc₁ : HasCompactSupport β₁)

@@ -16,6 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Unfold.LatLoc
 
+/- English proof (translation)
+Use `⟨h.fg.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_coe]`. Establish `e1 : (⇑((f : V →ₗ[E] W).restrictScalars (𝓞 E)) : V → W) = ⇑(f : V →ₗ[E] W)` using `rfl`. Rewrite using `[e1, Submodule.span_image, h.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `f.surjective`.
+-/
 theorem isLattice_map {E V W : Type} [Field E] [NumberField E] [AddCommGroup V] [Module E V] [Module (𝓞 E) V]
     [IsScalarTower (𝓞 E) E V] [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
     (f : V ≃ₗ[E] W) (Λ : Submodule (𝓞 E) V) (h : Submodule.IsLattice E Λ) :
@@ -33,13 +36,22 @@ def cE (D : D7) : (VS D).V ≃ₗ[D.host.E] (Fin (nV D) → D.host.E) := (VS D).
 def cL (Λ : LV D) : Submodule (𝓞 D.host.E) (Fin (nV D) → D.host.E) :=
   Λ.map (((cE D) : (VS D).V →ₗ[D.host.E] _).restrictScalars (𝓞 D.host.E))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChange_eq (Z : LocDat D) (p : PlF D) (x : (VS D).V) : baseChange₂ D p x = (GlobalTheory.HL.placesOf Z).bc p (cE D x) := rfl
 
+/- English proof (translation)
+Unfold `lattice₂ GlobalTheory.HL.Places.lat cL`. Rewrite using `[Submodule.map_coe, Set.image_image]`. Both sides reduce to the same expression.
+-/
 theorem localLattice_eq (Z : LocDat D) (p : PlF D) (Λ : LV D) : lattice₂ D Z.M p Λ = (GlobalTheory.HL.placesOf Z).lat p (cL Λ) := by
   unfold lattice₂ GlobalTheory.HL.Places.lat cL
   rw [Submodule.map_coe, Set.image_image]
   rfl
 
+/- English proof (translation)
+Introduce `Λ₁ Λ₂ h`. Use `congrArg (Submodule.comap (((cE D) : (VS D).V →ₗ[D.host.E] _).restrictScalars (𝓞 D.host.E))) h` as an intermediate fact. Unfold `cL at this`. Rewrite `this` using `[Submodule.comap_map_eq_of_injective (by exact (cE D).injective), Submodule.comap_map_eq_of_injective (by exact (cE D).injective)]`. Then use the resulting hypothesis.
+-/
 theorem cL_injective : Function.Injective (cL (D := D)) := by
   intro Λ₁ Λ₂ h
   have := congrArg (Submodule.comap (((cE D) : (VS D).V →ₗ[D.host.E] _).restrictScalars (𝓞 D.host.E))) h
@@ -47,6 +59,9 @@ theorem cL_injective : Function.Injective (cL (D := D)) := by
   rwa [Submodule.comap_map_eq_of_injective (by exact (cE D).injective),
     Submodule.comap_map_eq_of_injective (by exact (cE D).injective)] at this
 
+/- English proof (translation)
+Use `(GlobalTheory.T.numberField_lattice_determined_by_local_lattices (GlobalTheory.HL.placesOf Z) (nV D) (cL Λ) (isLattice_map _ _ h)).2.2` as an intermediate fact. Simplify using `only [localLattice_eq]`. Conclude with `this`.
+-/
 theorem std_finite (Z : LocDat D) (Λ : LV D) (h : Submodule.IsLattice D.host.E Λ) :
     {p | lattice₂ D Z.M p Λ ≠ Submodule.span ((GlobalTheory.HL.placesOf Z).L p).O
       (Set.range fun i => (Pi.single i 1 : Fin (nV D) → ((GlobalTheory.HL.placesOf Z).loc p).Ep))}.Finite := by
@@ -54,6 +69,17 @@ theorem std_finite (Z : LocDat D) (Λ : LV D) (h : Submodule.IsLattice D.host.E 
   simp only [localLattice_eq]
   exact this
 
+/- English proof (translation)
+Introduce `D Z`. Use `⟨fun Λ₁ Λ₂ h₁ h₂ => ⟨?_, fun h => ?_⟩, fun Λ₀ h₀ Lp hL hfin => ?_⟩` and prove the remaining obligations. Use `((std_finite Z Λ₁ h₁).union (std_finite Z Λ₂ h₂)).subset fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`.
+
+Conclude with `hp (hc.1.trans hc.2.symm)`. Apply `cL_injective` to reduce the goal to its premises. Establish `r₁` using `(GlobalTheory.T.numberField_lattice_determined_by_local_lattices (GlobalTheory.HL.placesOf Z) (nV D) (cL Λ₁) (isLattice_map _ _ h₁)).1`. Establish `r₂` using `(GlobalTheory.T.numberField_lattice_determined_by_local_lattices (GlobalTheory.HL.placesOf Z) (nV D) (cL Λ₂) (isLattice_map _ _ h₂)).1`. Use extensionality with `x`.
+
+Rewrite using `[r₁, r₂]`. Use `forall_congr' fun p => ?_` and prove the remaining obligations. Rewrite using `[← localLattice_eq, ← localLattice_eq, h p]`. Take `⟨Γ, ⟨hΓ, hΓp⟩, -⟩` from `GlobalTheory.T.exists_unique_global_lattice_of_local_lattices (GlobalTheory.HL.placesOf Z) (nV D) Lp (fun p => hL p) (((std_finite Z Λ₀ h₀).union hfin).subset fun p hp => by`. Assume the negation of the conclusion as `hc`.
+
+Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`. Conclude with `hp (hc.2.trans hc.1))`. Use `⟨Γ.map (((cE D).symm : (Fin (nV D) → D.host.E) →ₗ[D.host.E] _).restrictScalars (𝓞 D.host.E)), isLattice_map _ _ hΓ, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[localLattice_eq, ← hΓp p]`. Use `congr 1`.
+
+Unfold `cL`. Rewrite using `[← Submodule.map_comp]`. Use `Submodule.map_id Γ` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem lattices_local_global : ∀ (D : D7) (Z : LocDat D), (∀ Λ₁ Λ₂ : LV D, Submodule.IsLattice D.host.E Λ₁ →
     Submodule.IsLattice D.host.E Λ₂ → {p | lattice₂ D Z.M p Λ₁ ≠ lattice₂ D Z.M p Λ₂}.Finite ∧
       ((∀ p, lattice₂ D Z.M p Λ₁ = lattice₂ D Z.M p Λ₂) → Λ₁ = Λ₂)) ∧

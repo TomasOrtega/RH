@@ -18,6 +18,9 @@ def upLat (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : �
   neg_mem' := fun {X} hX => ⟨fun i j h => by simp [hX.1 i j h], fun i j h => by simpa using hX.2 i j h⟩
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem _root_.GlobalTheory.BorelUMod.mem_upLat {c : Fin n → Fin n → ℤ}
     {X : Matrix (Fin n) (Fin n) L} :
     X ∈ _root_.GlobalTheory.BorelUMod.upLat L c ↔
@@ -26,6 +29,15 @@ theorem _root_.GlobalTheory.BorelUMod.mem_upLat {c : Fin n → Fin n → ℤ}
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
 
+/- English proof (translation)
+Take `⟨hX0, hXv⟩` from `hX`. Take `⟨hY0, hYv⟩` from `hY`. Use `⟨fun i j hji => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Break down `le_or_gt k i with hki | hik` into its components or cases. Rewrite using `[hX0 i k hki, zero_mul]`. Rewrite using `[hY0 k j (hji.trans hik.le), mul_zero]`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations.
+
+Break down `le_or_gt k i with hki | hik` into its components or cases. Simplify using `[hX0 i k hki]`. Break down `le_or_gt j k with hjk | hkj` into its components or cases. Simplify using `[hY0 k j hjk]`. Rewrite using `[Valuation.map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.BorelUMod.mul_mem_upLat {a b c : Fin n → Fin n → ℤ}
     (h : ∀ i j k, i < j → j < k → c i k ≤ a i j + b j k)
     {X Y : Matrix (Fin n) (Fin n) L} (hX : X ∈ _root_.GlobalTheory.BorelUMod.upLat L a)
@@ -51,6 +63,9 @@ theorem _root_.GlobalTheory.BorelUMod.mul_mem_upLat {a b c : Fin n → Fin n →
       _ ≤ WithZero.exp (-c i j) := WithZero.exp_le_exp.2 (by linarith [h i k j hik hkj])
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
+/- English proof (translation)
+Introduce `_ hX` and use `⟨hX.1, fun i j hij => (hX.2 i j hij).trans (WithZero.exp_le_exp.2 (neg_le_neg (h i j hij)))⟩`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.upLat_mono {c C : Fin n → Fin n → ℤ}
     (h : ∀ i j, i < j → c i j ≤ C i j) :
     _root_.GlobalTheory.BorelUMod.upLat L C ≤ _root_.GlobalTheory.BorelUMod.upLat L c :=
@@ -76,12 +91,18 @@ def skewJ (σ : L →+* L) (n : ℕ) : AddSubgroup (Matrix (Fin n) (Fin n) L) wh
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem _root_.GlobalTheory.BorelUMod.mem_skewJ {σ : L →+* L} {X : Matrix (Fin n) (Fin n) L} :
     X ∈ _root_.GlobalTheory.BorelUMod.skewJ σ n ↔ _root_.GlobalTheory.BorelUMod.adjJ σ X = -X :=
   Iff.rfl
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [_root_.GlobalTheory.BorelUMod.adjJ, Matrix.mul_apply, map_sum, map_mul]`. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Simplify using `[mul_comm]`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.adjJ_mul (σ : L →+* L) (X Y : Matrix (Fin n) (Fin n) L) :
     _root_.GlobalTheory.BorelUMod.adjJ σ (X * Y) =
       _root_.GlobalTheory.BorelUMod.adjJ σ Y * _root_.GlobalTheory.BorelUMod.adjJ σ X := by
@@ -92,6 +113,9 @@ theorem _root_.GlobalTheory.BorelUMod.adjJ_mul (σ : L →+* L) (X Y : Matrix (F
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.BorelUMod.adjJ]`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.adjJ_add (σ : L →+* L) (X Y : Matrix (Fin n) (Fin n) L) :
     _root_.GlobalTheory.BorelUMod.adjJ σ (X + Y) =
       _root_.GlobalTheory.BorelUMod.adjJ σ X + _root_.GlobalTheory.BorelUMod.adjJ σ Y := by
@@ -100,6 +124,9 @@ theorem _root_.GlobalTheory.BorelUMod.adjJ_add (σ : L →+* L) (X Y : Matrix (F
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.BorelUMod.adjJ]`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.adjJ_sub (σ : L →+* L) (X Y : Matrix (Fin n) (Fin n) L) :
     _root_.GlobalTheory.BorelUMod.adjJ σ (X - Y) =
       _root_.GlobalTheory.BorelUMod.adjJ σ X - _root_.GlobalTheory.BorelUMod.adjJ σ Y := by
@@ -108,6 +135,9 @@ theorem _root_.GlobalTheory.BorelUMod.adjJ_sub (σ : L →+* L) (X Y : Matrix (F
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.BorelUMod.adjJ]`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.adjJ_smul (σ : L →+* L) (a : L) (X : Matrix (Fin n) (Fin n) L) :
     _root_.GlobalTheory.BorelUMod.adjJ σ (a • X) = σ a • _root_.GlobalTheory.BorelUMod.adjJ σ X := by
   ext i j
@@ -115,6 +145,11 @@ theorem _root_.GlobalTheory.BorelUMod.adjJ_smul (σ : L →+* L) (a : L) (X : Ma
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[_root_.GlobalTheory.BorelUMod.adjJ]`. Establish `h' : j.rev ≠ i.rev` using `fun e => h (Fin.rev_injective e).symm`.
+
+Simplify using `[_root_.GlobalTheory.BorelUMod.adjJ, Matrix.one_apply, h, h']`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.adjJ_one (σ : L →+* L) :
     _root_.GlobalTheory.BorelUMod.adjJ σ (1 : Matrix (Fin n) (Fin n) L) = 1 := by
   ext i j
@@ -125,6 +160,9 @@ theorem _root_.GlobalTheory.BorelUMod.adjJ_one (σ : L →+* L) :
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.BorelUMod.adjJ, hσ]`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.adjJ_adjJ {σ : L →+* L} (hσ : ∀ x, σ (σ x) = x)
     (X : Matrix (Fin n) (Fin n) L) :
     _root_.GlobalTheory.BorelUMod.adjJ σ (_root_.GlobalTheory.BorelUMod.adjJ σ X) = X := by
@@ -134,6 +172,11 @@ theorem _root_.GlobalTheory.BorelUMod.adjJ_adjJ {σ : L →+* L} (hσ : ∀ x, �
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.LGrp.mem_GU_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Conclude with `h i j`.
+
+Introduce `h i j`. Conclude with `congrFun (congrFun h i) j`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.mem_GU_iff_adjJ (σ : L →+* L) (g : GL (Fin n) L) :
     g ∈ _root_.Formalism.UG.GU σ n ↔ (g⁻¹).val = _root_.GlobalTheory.BorelUMod.adjJ σ g.val := by
   rw [_root_.GlobalTheory.LGrp.mem_GU_iff]
@@ -145,6 +188,9 @@ theorem _root_.GlobalTheory.BorelUMod.mem_GU_iff_adjJ (σ : L →+* L) (g : GL (
     exact congrFun (congrFun h i) j
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
+/- English proof (translation)
+Use `⟨fun i j hji => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Simplify using `[_root_.GlobalTheory.BorelUMod.adjJ, hX.1 j.rev i.rev (Fin.rev_le_rev.2 hji)]`. Simplify using `only [_root_.GlobalTheory.BorelUMod.adjJ]`. Rewrite using `[hσ, ← hc i j]`. Conclude with `hX.2 j.rev i.rev (Fin.rev_lt_rev.2 hij)`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.adjJ_mem_upLat {σ : L →+* L}
     (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {c : Fin n → Fin n → ℤ}
     (hc : ∀ i j, c j.rev i.rev = c i j) {X : Matrix (Fin n) (Fin n) L}
@@ -157,6 +203,9 @@ theorem _root_.GlobalTheory.BorelUMod.adjJ_mem_upLat {σ : L →+* L}
     exact hX.2 j.rev i.rev (Fin.rev_lt_rev.2 hij)
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
+/- English proof (translation)
+Use `⟨fun i j hji => by simp [hX.1 i j hji], fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.BorelUMod.smul_mem_upLat {c : Fin n → Fin n → ℤ} {a : L}
     (ha : Valued.v a ≤ 1) {X : Matrix (Fin n) (Fin n) L}
     (hX : X ∈ _root_.GlobalTheory.BorelUMod.upLat L c) : a • X ∈ _root_.GlobalTheory.BorelUMod.upLat L c := by
@@ -173,6 +222,9 @@ def IsIdealWeight (c C : Fin n → Fin n → ℤ) : Prop :=
     ∀ i j k, i < j → j < k → C i k ≤ C i j + c j k
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ _ _ _ _ => by simp⟩`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.isWeight_zero :
     _root_.GlobalTheory.BorelUMod.IsWeight (fun _ _ : Fin n => (0 : ℤ)) :=
   ⟨fun _ _ => rfl, fun _ _ _ _ _ => by simp⟩
@@ -195,6 +247,9 @@ def unipLat {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {c : Fi
     exact adjJ_mem_upLat hσ hc.1 hu
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem _root_.GlobalTheory.BorelUMod.mem_unipLat {σ : L →+* L}
     {hσ : ∀ x, Valued.v (σ x) = Valued.v x} {c : Fin n → Fin n → ℤ}
     {hc : _root_.GlobalTheory.BorelUMod.IsWeight c} {u : (_root_.GlobalTheory.LGrp.borelU σ n).U} :
@@ -204,6 +259,19 @@ theorem _root_.GlobalTheory.BorelUMod.mem_unipLat {σ : L →+* L}
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} in
 
+/- English proof (translation)
+Take `⟨hinv, -, -, -, ⟨x, hx, hxu⟩, -⟩` from `h`. Establish `hx1 : Valued.v x ≤ 1` using `hx`. Use `⟨?_, σ x - x, hxu, by rw [map_sub, hinv]; ring⟩` and prove the remaining obligations. Establish `h2le : Valued.v (2 : L) ≤ 1`. Establish `h11 : Valued.v ((1 : L) + 1) ≤ 1` using `Valuation.map_add_le _ (le_of_eq (Valuation.map_one _)) (le_of_eq (Valuation.map_one _))`.
+
+Rewrite `h11` using `[one_add_one_eq_two]`. Then use the resulting hypothesis. Break down `h2le.lt_or_eq with h2 | h2` into its components or cases. Establish `hlt : Valued.v (2 * x) < Valued.v (σ x - x)`. Rewrite using `[hxu, Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `ht : Valued.v (x + σ x) = 1`. Establish `e : x + σ x = (σ x - x) + 2 * x` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_left _ hlt, hxu]`. Establish `ht0 : x + σ x ≠ 0`. Introduce `e`.
+
+Rewrite `ht` using `[e, Valuation.map_zero]`. Conclude with `zero_ne_one ht`. Use `⟨x / (x + σ x), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, ht, div_one]`. Conclude with `hx1`.
+
+Rewrite using `[map_div₀, map_add, hinv, add_comm (σ x) x, ← add_div, div_self ht0]`. Use `⟨1 / 2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, Valuation.map_one, h2, div_one]`. Rewrite using `[map_div₀, map_one, map_ofNat]`. Establish `h20 : (2 : L) ≠ 0`.
+
+Introduce `e`. Rewrite `h2` using `[e, Valuation.map_zero]`. Conclude with `zero_ne_one h2`. Rewrite using `[← add_div, one_add_one_eq_two, div_self h20]`.
+-/
 theorem _root_.GlobalTheory.BorelUMod.exists_trace_one {ϖ : L} {σ : L →+* L} {q : ℕ}
     (h : _root_.Formalism.UG.IsUnramInv ϖ σ q) :
     (∃ θ : L, Valued.v θ ≤ 1 ∧ θ + σ θ = 1) ∧ ∃ d : L, Valued.v d = 1 ∧ σ d = -d := by

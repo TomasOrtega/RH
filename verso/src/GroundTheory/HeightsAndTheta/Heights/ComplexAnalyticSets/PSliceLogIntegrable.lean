@@ -16,6 +16,9 @@ namespace SliceLogIntegrableProof
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h1` using `hx _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self (linForm ℓ - 1)))`. Rewrite `h1` using `[map_sub, map_one, sub_eq_zero]`. Rewrite using `[← h1]`. Simplify using `[linForm, linEval]`.
+-/
 theorem linEval_eq_one {J : Ideal (MvPolynomial (Fin n) ℂ)} {ℓ x : Fin n → ℂ}
     (hx : x ∈ zeroSet (J ⊔ Ideal.span {linForm ℓ - 1})) : linEval ℓ x = 1 := by
   have h1 := hx _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self (linForm ℓ - 1)))
@@ -23,6 +26,9 @@ theorem linEval_eq_one {J : Ideal (MvPolynomial (Fin n) ℂ)} {ℓ x : Fin n →
   rw [← h1]
   simp [linForm, linEval]
 
+/- English proof (translation)
+The claim follows from `|Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| ≤ |fsLog h u x| + |fsLog h ℓ x| := by have hℓ := linEval_eq_one hx have hx0 : x ≠ 0 := by rintro rfl simp [linEval] at hℓ have hd := (h.dualNorm_pos hx0).ne' have hfℓ : fsLog h ℓ x = -Real.log (h.dualNorm x) := by show Real.log ( …`.
+-/
 theorem abs_le (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ)} {u ℓ x : Fin n → ℂ}
     (hx : x ∈ zeroSet (J ⊔ Ideal.span {linForm ℓ - 1})) :
     |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| ≤ |fsLog h u x| + |fsLog h ℓ x| := by
@@ -47,6 +53,17 @@ end SliceLogIntegrableProof
 
 open SliceLogIntegrableProof in
 
+/- English proof (translation)
+Introduce `n e h J F u ℓ A hJ hF hu hℓ hA`. Take `⟨hprime, hdim, -⟩` from `SliceIdeal.proof n (e + 1) J F ℓ hJ hF hℓ`. Establish `hsm : SmoothNear (zeroSet (J ⊔ Ideal.span {linForm ℓ - 1})) fun x => Real.log (h.dualNorm x)`. Use `⟨{x | x ≠ 0}, isOpen_ne, fun x hx hx0 => ?_, h.contDiffOn_log_dualNorm⟩` and prove the remaining obligations. Establish `h1` using `linEval_eq_one hx`.
+
+Rewrite `h1` using `[hx0]`. Simplify using `[linEval] at h1`. Establish `hcu : Continuous fun x : Fin n → ℂ => linEval u x`. Unfold `linEval`. Use `fun_prop`.
+
+Establish `hcd : Continuous h.dualNorm`. Unfold `HermNorm.dualNorm`. Use `fun_prop`. Establish `hmeas : Measurable fun x : Fin n → ℂ => Real.log (h.dualNorm x) - Real.log ‖linEval u x‖` using `(Real.measurable_log.comp hcd.measurable).sub (Real.measurable_log.comp (continuous_norm.comp hcu).measurable)`. Establish `hm` using `(SheetSumMeasurable.proof n (e + 1) _ A _ _ hprime hdim hA hmeas fun _ => hsm).2`.
+
+Use `((hG n e h J F u ℓ A hJ hF hu hℓ hA).add (hG n e h J F ℓ ℓ A hJ hF hℓ hℓ hA)).mono' hm.aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y`. Simplify using `only [Pi.add_apply, chartAbsDens, sheetSum]`. Apply the tactic sequence `rw [finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, ← Finset.sum_add_distrib, Real.norm_eq_abs, abs_of_nonneg (Finset.sum_nonneg fun x _ => by split_ifs <;> positivity)]`. Use `Finset.sum_le_sum fun x hx => ?_` and prove the remaining obligations.
+
+Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Use `split_ifs`. Rewrite using `[abs_mul, abs_mul, abs_mul, ← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (abs_le h hx.1) (abs_nonneg _)`. Simplify using the standard rewrite rules.
+-/
 theorem SliceLogIntegrable.proof (hG : SliceFsLogIntegrable.Statement) : SliceLogIntegrable.Statement := by
   classical
   intro n e h J F u ℓ A hJ hF hu hℓ hA

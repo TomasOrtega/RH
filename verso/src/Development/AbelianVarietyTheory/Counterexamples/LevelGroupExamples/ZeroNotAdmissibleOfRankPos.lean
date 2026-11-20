@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `H.bar_eq (H.bar a)`. Establish `h2` using `H.bar_eq a`. Express the relevant statement in the definitionally equal form `((H.bar (H.bar a) : 𝓞 E) : E) = (a : E)`. Rewrite using `[h1, h2, IsCMField.complexConj_apply_apply]`.
+-/
 theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply Subtype.ext
   have h1 := H.bar_eq (H.bar a)
@@ -18,6 +21,11 @@ theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   change ((H.bar (H.bar a) : 𝓞 E) : E) = (a : E)
   rw [h1, h2, IsCMField.complexConj_apply_apply]
 
+/- English proof (translation)
+Establish `h : ∃ c, c ∈ Mfr l ∧ c - 1 ∈ l.Mb`. Take `⟨m, hm, mb, hmb, hsum⟩` from `Submodule.mem_sup.1 (l.coprime ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ l.Mb ⊔ _)`. Use `⟨mb, hmb, ?_⟩` and prove the remaining obligations. Establish `: mb - 1 = -m` using `by rw [← hsum]; ring`. Rewrite using `[this]`.
+
+Conclude with `neg_mem hm`. Unfold `cSep`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem cSep_spec (l : Level H) : cSep l ∈ Mfr l ∧ cSep l - 1 ∈ l.Mb := by
   have h : ∃ c, c ∈ Mfr l ∧ c - 1 ∈ l.Mb := by
     obtain ⟨m, hm, mb, hmb, hsum⟩ := Submodule.mem_sup.1 (l.coprime ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ l.Mb ⊔ _)
@@ -28,6 +36,11 @@ theorem cSep_spec (l : Level H) : cSep l ∈ Mfr l ∧ cSep l - 1 ∈ l.Mb := by
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Establish `: (b * (l.M : 𝓞 E)) • y = (l.M : ℤ) • (b • y)`. Rewrite using `[mul_comm, mul_smul, ← Int.cast_smul_eq_zsmul (𝓞 E)]`. Simplify using the standard rewrite rules. Rewrite using `[this, map_zsmul]`.
+
+Conclude with `Dvd.intro _ rfl`.
+-/
 theorem dvd_EF_of_mem (x y : Dw.La) {a : 𝓞 E} (ha : a ∈ Ideal.span {(l.M : 𝓞 E)}) :
     (l.M : ℤ) ∣ Dw.EF x (a • y) := by
   obtain ⟨b, rfl⟩ := Ideal.mem_span_singleton'.1 ha
@@ -36,26 +49,43 @@ theorem dvd_EF_of_mem (x y : Dw.La) {a : 𝓞 E} (ha : a ∈ Ideal.span {(l.M : 
   rw [this, map_zsmul]
   exact Dvd.intro _ rfl
 
+/- English proof (translation)
+The claim follows from `l.prod ▸ Ideal.mul_mem_mul ha hb`.
+-/
 theorem mul_mem_M {a b : 𝓞 E} (ha : a ∈ l.Mb) (hb : b ∈ Mfr l) : a * b ∈ Ideal.span {(l.M : 𝓞 E)} :=
   l.prod ▸ Ideal.mul_mem_mul ha hb
 
+/- English proof (translation)
+Take `⟨b, hb, rfl⟩` from `(Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 ha`. Establish `: H.bar ((H.bar : 𝓞 E →+* 𝓞 E) b) = b` using `bar_bar H b`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem bar_mem_Mb {a : 𝓞 E} (ha : a ∈ Mfr l) : H.bar a ∈ l.Mb := by
   obtain ⟨b, hb, rfl⟩ := (Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 ha
   have : H.bar ((H.bar : 𝓞 E →+* 𝓞 E) b) = b := bar_bar H b
   rwa [this]
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on hy (fun a ha z _ => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Rewrite using `[← mul_smul, mul_comm]`. Conclude with `dvd_EF_of_mem _ _ (mul_mem_M ha (cSep_spec l).1)`. Rewrite using `[smul_add, map_add]`. Conclude with `dvd_add hu hv`.
+-/
 theorem dvd_right (x : Dw.La) {y : Dw.La} (hy : y ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La)) :
     (l.M : ℤ) ∣ Dw.EF x (cSep l • y) := by
   refine Submodule.smul_induction_on hy (fun a ha z _ => ?_) (fun u v hu hv => ?_)
   · rw [← mul_smul, mul_comm]; exact dvd_EF_of_mem _ _ (mul_mem_M ha (cSep_spec l).1)
   · rw [smul_add, map_add]; exact dvd_add hu hv
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on hx (fun a ha z _ => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Rewrite using `[Dw.adj, ← mul_smul]`. Conclude with `dvd_EF_of_mem _ _ (mul_mem_M (bar_mem_Mb ha) (cSep_spec l).1)`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `dvd_add hu hv`.
+-/
 theorem dvd_left {x : Dw.La} (y : Dw.La) (hx : x ∈ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La)) :
     (l.M : ℤ) ∣ Dw.EF x (cSep l • y) := by
   refine Submodule.smul_induction_on hx (fun a ha z _ => ?_) (fun u v hu hv => ?_)
   · rw [Dw.adj, ← mul_smul]; exact dvd_EF_of_mem _ _ (mul_mem_M (bar_mem_Mb ha) (cSep_spec l).1)
   · rw [map_add, LinearMap.add_apply]; exact dvd_add hu hv
 
+/- English proof (translation)
+Unfold `pairL`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.dvd_sum fun b _ => ?_` and prove the remaining obligations. Establish `: Dw.EF (x0 b) (cSep l • x b) - Dw.EF (x0' b) (cSep l • x' b) = Dw.EF (x0 b - x0' b) (cSep l • x b) + Dw.EF (x0' b) (cSep l • (x b - x' b))`. Simplify using `[smul_sub]`.
+
+Rewrite using `[this]`. Conclude with `dvd_add (dvd_left _ (h0 b)) (dvd_right _ (h1 b))`.
+-/
 theorem pairL_congr {n : ℕ} (x0 x0' x x' : Fin n → Dw.La)
     (h0 : ∀ b, x0 b - x0' b ∈ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La))
     (h1 : ∀ b, x b - x' b ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La)) :
@@ -69,6 +99,15 @@ theorem pairL_congr {n : ℕ} (x0 x0' x x' : Fin n → Dw.La)
   rw [this]
   exact dvd_add (dvd_left _ (h0 b)) (dvd_right _ (h1 b))
 
+/- English proof (translation)
+Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `hA : l.A ≠ 0` using `l.A_pos.ne'`. Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Establish `hM' : l.M' ≠ 0` using `Nat.lcm_ne_zero hM hA`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp [hk] at hM'`.
+
+Establish `hdiv : l.M' / l.M = k` using `by rw [hk]; exact Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero hM)`. Unfold `zetaM`. Rewrite using `[hdiv]`. Express the relevant statement in the definitionally equal form `(zeta l.M') ^ k = _`. Unfold `zeta`.
+
+Rewrite using `[← Complex.exp_nat_mul, hk]`. Use `congr 1`. Establish `: (k : ℂ) ≠ 0` using `by exact_mod_cast hk0`. Establish `: (l.M : ℂ) ≠ 0` using `by exact_mod_cast hM`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem zetaM_coe (c : Coeff l) : ((zetaM c : c.F) : ℂ) = zeta l.M := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
   have hA : l.A ≠ 0 := l.A_pos.ne'
@@ -87,6 +126,11 @@ theorem zetaM_coe (c : Coeff l) : ((zetaM c : c.F) : ℂ) = zeta l.M := by
   push_cast
   field_simp
 
+/- English proof (translation)
+Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Use `IsPrimitiveRoot.of_map_of_injective (f := c.F.val.toRingHom) ?_ Subtype.val_injective` and prove the remaining obligations. Use `zetaM_coe c` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsPrimitiveRoot ((zetaM c : c.F) : ℂ) l.M`. Rewrite using `[this]`.
+
+Conclude with `Complex.isPrimitiveRoot_exp l.M hM`.
+-/
 theorem zetaM_prim (c : Coeff l) : IsPrimitiveRoot (zetaM c) l.M := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
   refine IsPrimitiveRoot.of_map_of_injective (f := c.F.val.toRingHom) ?_ Subtype.val_injective
@@ -95,10 +139,16 @@ theorem zetaM_prim (c : Coeff l) : IsPrimitiveRoot (zetaM c) l.M := by
   rw [this]
   exact Complex.isPrimitiveRoot_exp l.M hM
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.eq _).1 (Classical.choose_spec (Submodule.Quotient.mk_surjective _ (Submodule.Quotient.mk x : LevQ Dw l)))`.
+-/
 theorem levRep_mk (x : Dw.La) :
     levRep (Submodule.Quotient.mk x : LevQ Dw l) - x ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La) :=
   (Submodule.Quotient.eq _).1 (Classical.choose_spec (Submodule.Quotient.mk_surjective _ (Submodule.Quotient.mk x : LevQ Dw l)))
 
+/- English proof (translation)
+Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `h0 : zetaM c ≠ 0` using `(zetaM_prim c).ne_zero hM`. Use `((zetaM_prim c).zpow_eq_one_iff_dvd (a - b)).2 h` as an intermediate fact. Rewrite `this` using `[zpow_sub₀ h0, div_eq_one_iff_eq (zpow_ne_zero _ h0)]`. Conclude with `this`.
+-/
 theorem zpow_congr (c : Coeff l) {a b : ℤ} (h : (l.M : ℤ) ∣ a - b) : zetaM c ^ a = zetaM c ^ b := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
   have h0 : zetaM c ≠ 0 := (zetaM_prim c).ne_zero hM
@@ -106,10 +156,18 @@ theorem zpow_congr (c : Coeff l) {a b : ℤ} (h : (l.M : ℤ) ∣ a - b) : zetaM
   rw [zpow_sub₀ h0, div_eq_one_iff_eq (zpow_ne_zero _ h0)] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `zpow_congr c (pairL_congr _ _ _ _ (fun b => by simp) (fun b => levRep_mk (x b)))`.
+-/
 theorem levelFourierDatum_mk (c : Coeff l) {n : ℕ} (x0 x : Fin n → Dw.La) :
     x0Dat c x0 (fun b => (Submodule.Quotient.mk (x b) : LevQ Dw l)) = zetaM c ^ pairL (l := l) x0 x :=
   zpow_congr c (pairL_congr _ _ _ _ (fun b => by simp) (fun b => levRep_mk (x b)))
 
+/- English proof (translation)
+Set `f : Dw.La →ₗ[ℤ] ℤ` to `{ toFun := fun y => Dw.EF x y / m map_add' := fun a b => by rw [map_add, Int.add_ediv_of_dvd_left (h a)] map_smul' := fun k a => by`. Rewrite using `[map_zsmul]`. Simplify using `only [smul_eq_mul, RingHom.id_apply]`. Conclude with `Int.mul_ediv_assoc _ (h a) }`. Take `⟨z, hz⟩` from `Dw.unimod.2 f`.
+
+Use `⟨z, Dw.unimod.1 ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[map_zsmul, hz]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, f, LinearMap.coe_mk, AddHom.coe_mk]`. Conclude with `(Int.mul_ediv_cancel' (h y)).symm`.
+-/
 theorem exists_eq_smul_of_dvd (x : Dw.La) (m : ℕ) (hm : m ≠ 0) (h : ∀ y, (m : ℤ) ∣ Dw.EF x y) :
     ∃ z, x = (m : ℤ) • z := by
   let f : Dw.La →ₗ[ℤ] ℤ :=
@@ -124,6 +182,13 @@ theorem exists_eq_smul_of_dvd (x : Dw.La) (m : ℕ) (hm : m ≠ 0) (h : ∀ y, (
   simp only [LinearMap.smul_apply, smul_eq_mul, f, LinearMap.coe_mk, AddHom.coe_mk]
   exact (Int.mul_ediv_cancel' (h y)).symm
 
+/- English proof (translation)
+Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Take `⟨z, hz⟩` from `exists_eq_smul_of_dvd (H.bar (cSep l) • x) l.M hM (fun y => by`. Rewrite using `[Dw.adj, bar_bar]`. Conclude with `h y)`. Establish `h1 : H.bar (cSep l - 1) ∈ Mfr l` using `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) (cSep_spec l).2`.
+
+Establish `hMm : (l.M : 𝓞 E) ∈ Mfr l`. Establish `: Ideal.span {(l.M : 𝓞 E)} ≤ Mfr l` using `l.prod ▸ Ideal.mul_le_right`. Conclude with `this (Ideal.subset_span rfl)`. Establish `: x = (l.M : 𝓞 E) • z - H.bar (cSep l - 1) • x`. Rewrite using `[map_sub, map_one, sub_smul, one_smul, hz, ← Int.cast_smul_eq_zsmul (𝓞 E)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `sub_mem (Submodule.smul_mem_smul hMm trivial) (Submodule.smul_mem_smul h1 trivial)`.
+-/
 theorem mem_of_dvd {x : Dw.La} (h : ∀ y, (l.M : ℤ) ∣ Dw.EF x (cSep l • y)) :
     x ∈ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La) := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
@@ -138,6 +203,17 @@ theorem mem_of_dvd {x : Dw.La} (h : ∀ y, (l.M : ℤ) ∣ Dw.EF x (cSep l • y
   rw [this]
   exact sub_mem (Submodule.smul_mem_smul hMm trivial) (Submodule.smul_mem_smul h1 trivial)
 
+/- English proof (translation)
+Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Prove the components needed by the constructor for the conclusion. Introduce `h b`. Use `mem_of_dvd fun y => ?_` and prove the remaining obligations. Establish `h1` using `congrFun h (fun i => (Submodule.Quotient.mk ((Pi.single b y : Fin n → Dw.La) i) : LevQ Dw l))`.
+
+Rewrite `h1` using `[levelFourierDatum_mk, levelFourierDatum_mk]`. Establish `h0 : zetaM c ≠ 0` using `(zetaM_prim c).ne_zero hM`. Establish `h2 : (l.M : ℤ) ∣ pairL (l` using `l) x0 (Pi.single b y) - pairL (l := l) x0' (Pi.single b y) := by`. Rewrite using `[← (zetaM_prim c).zpow_eq_one_iff_dvd, zpow_sub₀ h0, h1, div_self (zpow_ne_zero _ h0)]`. Establish `h3 : ∀ u : Fin n → Dw.La, pairL (l` using `l) u (Pi.single b y) = Dw.EF (u b) (cSep l • y) := by`.
+
+Introduce `u`. Unfold `pairL`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `i _ hi`.
+
+Simplify using `[Pi.single_eq_of_ne hi]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3, h3]`. Simplify using `using h2`. Introduce `h`.
+
+Use function extensionality and compare the values at `q`. Conclude with `zpow_congr c (pairL_congr _ _ _ _ h (fun b => by simp))`.
+-/
 theorem levelFourierDatum_eq_iff (c : Coeff l) {n : ℕ} (x0 x0' : Fin n → Dw.La) :
     x0Dat c x0 = x0Dat c x0' ↔ ∀ b, x0 b - x0' b ∈ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La) := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
@@ -162,6 +238,13 @@ theorem levelFourierDatum_eq_iff (c : Coeff l) {n : ℕ} (x0 x0' : Fin n → Dw.
     funext q
     exact zpow_congr c (pairL_congr _ _ _ _ h (fun b => by simp))
 
+/- English proof (translation)
+Use `haveI := Dw.fin`. Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `hb : l.Mb ≠ ⊥`. Introduce `h`. Establish `: Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb` using `l.prod ▸ Ideal.mul_le_left`.
+
+Use `this (Ideal.subset_span rfl)` as an intermediate fact. Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `hM (by exact_mod_cast this)`. Use `haveI : Finite (𝓞 E ⧸ l.Mb) := Ideal.finiteQuotientOfFreeOfNeBot _ hb`. Use `haveI : Module.Finite (𝓞 E ⧸ l.Mb) (LevQ Dw l) := Module.Finite.of_restrictScalars_finite (𝓞 E) _ _`.
+
+Conclude with `Module.finite_of_finite (𝓞 E ⧸ l.Mb)`.
+-/
 theorem finite_LevQ : Finite (LevQ Dw l) := by
   haveI := Dw.fin
   have hM : l.M ≠ 0 := by have := l.three_le; omega
@@ -175,6 +258,11 @@ theorem finite_LevQ : Finite (LevQ Dw l) := by
   haveI : Module.Finite (𝓞 E ⧸ l.Mb) (LevQ Dw l) := Module.Finite.of_restrictScalars_finite (𝓞 E) _ _
   exact Module.finite_of_finite (𝓞 E ⧸ l.Mb)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (1 : 𝓞 E) ∈ l.Mb` using `by simpa using bar_mem_Mb (l := l) (a := 1) (h ▸ Submodule.mem_top)`. Establish `h2` using `mul_mem_M h1 (show (1 : 𝓞 E) ∈ Mfr l from h ▸ Submodule.mem_top)`. Rewrite `h2` using `[one_mul, ← Ideal.eq_top_iff_one, Ideal.span_singleton_eq_top]`. Establish `h3 : IsUnit (l.M : ℤ)`.
+
+Establish `: IsUnit (algebraMap ℤ (𝓞 E) (l.M : ℤ))` using `by simpa using h2`. Conclude with `(isUnit_map_iff (algebraMap ℤ (𝓞 E)) _).1 this`. Use `l.three_le` as an intermediate fact. Apply the tactic sequence `rcases Int.isUnit_iff.1 h3 with h | h <;> omega`.
+-/
 theorem Mfr_ne_top (l : Level H) : Mfr l ≠ ⊤ := by
   intro h
   have h1 : (1 : 𝓞 E) ∈ l.Mb := by simpa using bar_mem_Mb (l := l) (a := 1) (h ▸ Submodule.mem_top)

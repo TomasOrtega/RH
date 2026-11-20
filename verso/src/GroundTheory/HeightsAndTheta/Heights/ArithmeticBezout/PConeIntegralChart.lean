@@ -11,18 +11,35 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial MeasureTheory Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk IsSheet sheetDensity ptsIntegralAt pot)
 
+/- English proof (translation)
+Simplify using `[IndefiniteRowSideFullHecke.ArithBezout.hermLine, ReciprocityTheory.ChartRestriction.G.Geo.HermLine.ofMetrics, IndefiniteRowSideFullHecke.ArithBezout.pointMetric]`.
+-/
 theorem hermLine_h_eq {n : ℕ} (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S)
     (z : (Σ _ : Unit, PBlk n ()) → ℂ) :
     (IndefiniteRowSideFullHecke.ArithBezout.hermLine S hS).h z = ‖WithLp.toLp 2 (S *ᵥ fun i => z ⟨(), i⟩)‖ := by
   simp [IndefiniteRowSideFullHecke.ArithBezout.hermLine, ReciprocityTheory.ChartRestriction.G.Geo.HermLine.ofMetrics,
     IndefiniteRowSideFullHecke.ArithBezout.pointMetric]
 
+/- English proof (translation)
+Unfold `fsLog HermNorm.dualNorm`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Real.measurable_log.comp (Measurable.div (Continuous.measurable (by fun_prop)) (Continuous.measurable (by fun_prop)))`.
+-/
 theorem measurable_fsLog {n : ℕ} (h : HermNorm n) (u : Fin n → ℂ) : Measurable (fsLog h u) := by
   unfold fsLog HermNorm.dualNorm
   simp only [Matrix.mulVec, dotProduct]
   exact Real.measurable_log.comp (Measurable.div (Continuous.measurable (by fun_prop))
     (Continuous.measurable (by fun_prop)))
 
+/- English proof (translation)
+Introduce `n e S hS P u Ψ hP hu hΨ`. Rewrite using `[hA n e S hS P Ψ _ hP hΨ (measurable_fsLog _ u) (fun c z hc => FsLogSmul.proof n _ u z c hc) (hI n e _ P u hP hu)]`. Unfold `ptsIntegralAt`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Use `finsum_mem_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `chartGramDensity sheetDensity`. Distinguish the cases in `hγ : ∃ γ, IsSheet P Ψ y w γ`. Simplify using `only [dif_pos hγ]`. Establish `hev` using `hγ.choose_spec.2`.
+
+Establish `hg : fsLog (ObjectsHeight.ofPointMatrix S hS) u (fun i => hγ.choose y ⟨(), i⟩) = IndefiniteRowSideFullHecke.ArithBezout.logFormNorm S hS u (hγ.choose y)`. Rewrite using `[ObjectsHeight.ofPointMatrix_fsLog]`. Establish `hpot : (fun (j : Fin e) y' => pot (fun _ : Fin e => IndefiniteRowSideFullHecke.ArithBezout.hermLine S hS) j (hγ.choose y')) = fun _ y' => Real.log ‖WithLp.toLp 2 (S *ᵥ fun i => hγ.choose y' ⟨(), i⟩)‖`. Use function extensionality and compare the values at `j y'`. Simplify using `only [pot, hermLine_h_eq]`.
+
+Rewrite using `[hg, hpot, hB e n _ y ?_ ?_]`. Use `filter_upwards [hev] with y' hy'`. Use `differentiableAt_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `DifferentiableAt.fun_sum fun j _ => (differentiableAt_pi.1 hy'.1 ⟨(), j⟩).const_mul _`.
+
+Take `⟨i, hi⟩` from `hev.self_of_nhds.2.1.1 ()`. Introduce `h0`. Establish `h1` using `Matrix.mulVec_injective_iff_isUnit.mpr hS (h0.trans (Matrix.mulVec_zero S).symm)`. Conclude with `hi (congrFun h1 i)`. Simplify using `only [dif_neg hγ]`.
+-/
 theorem ConeIntegralChart.proof (hA : ConeChartArea.Statement) (hB : ChartGramMA.Statement)
     (hI : ConeChartIntegrable.Statement) : ConeIntegralChart.Statement := by
   intro n e S hS P u Ψ hP hu hΨ

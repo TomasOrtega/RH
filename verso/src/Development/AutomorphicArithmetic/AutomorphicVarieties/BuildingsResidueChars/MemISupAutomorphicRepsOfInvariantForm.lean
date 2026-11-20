@@ -5,6 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.AdmissibleEquivariantFormsRepresentation
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC GlobalTheory.DefU
 
+/- English proof (translation)
+Introduce `E _ _ _ n B hdef hinv φ hφ`. Use `haveI : FiniteDimensional ℂ (admitted.X φ) := hφ.kfin`. Establish `hXA : admitted.X φ ≤ autU E n` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `RU_mem_autU _ _ (mem_autU.2 hφ))`.
+
+Establish `haut : ∀ v : admitted.X φ, IsAutFormU (v : UA E n → ℂ)` using `fun v => mem_autU.1 (hXA v.2)`. Set `Z : Subrepresentation ((RU E n).comp (infU E n).subtype)` to `⟨admitted.X φ, fun g v hv => admitted.RU_mem_X φ g hv⟩`. Set `ρ : Representation ℂ (infU E n) (admitted.X φ)` to `Z.toRepresentation`. Establish `hρ : ∀ g (v : admitted.X φ), ((ρ g v : admitted.X φ) : UA E n → ℂ) = RU E n g v` using `fun _ _ => rfl`. Set `B' : admitted.X φ →ₗ⋆[ℂ] admitted.X φ →ₗ[ℂ] ℂ` to `(B.comp (admitted.X φ).subtype).compl₂ (admitted.X φ).subtype`.
+
+Establish `hx` using `UpperTheory.mem_iSup_irreducible_of_admissible_unitary (infU E n) (admitted.X φ) ρ B' (fun v hv => Subtype.ext (hdef _ (haut v) hv)) (fun g u v => hinv g _ _ (haut u) (haut v)) (fun v => ⟨⊥, fun k hk => by rw [Subgroup.mem_bot.1 hk, map_one]; rfl, inferInstance, fun w => Set.fini …`. Establish `hle : (⨆ U : {U : Submodule ℂ (admitted.X φ) // U ≠ ⊥ ∧ (∀ g, ∀ u ∈ U, ρ g u ∈ U) ∧ ∀ N ≤ U, (∀ g, ∀ u ∈ N, ρ g u ∈ N) → N = ⊥ ∨ N = U}, U.1) ≤ (⨆ σ : {σ : Submodule ℂ (UA E n → ℂ) // IsAutRepU σ}, σ.1).comap (admitted.X φ).subtype`. Use `iSup_le ?_` and prove the remaining obligations. Introduce and unpack `⟨U, h0, hst, hirr⟩ u hu`. Set `Y : Subrepresentation ρ` to `⟨U, fun g v hv => hst g v hv⟩`.
+
+Set `τ : Representation ℂ (infU E n) U` to `Y.toRepresentation`. Establish `hτ : τ.IsIrreducible`. Use `(GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨Submodule.nontrivial_iff_ne_bot.2 h0, fun N hN => ?_⟩` and prove the remaining obligations. Break down `hirr (N.map U.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `g _ ⟨w, hw, rfl⟩`.
+
+Conclude with `⟨τ g w, hN g w hw, rfl⟩) with h | h`. Use `left`. Conclude with `Submodule.map_injective_of_injective U.injective_subtype (by rw [h, Submodule.map_bot])`. Use `right`. Conclude with `Submodule.map_injective_of_injective U.injective_subtype (by rw [h, Submodule.map_top, Submodule.range_subtype])`.
+
+Conclude with `UpperTheory.admissible_equivariantForms_representation E n B hdef hinv U τ (GlobalTheory.ClassFin.span_range_eq_top_of_isIrreducible _ _ τ hτ) ((admitted.X φ).subtype ∘ₗ U.subtype) (fun v => haut v.1) (fun _ _ => rfl) ⟨u, hu⟩`. Conclude with `hle hx`.
+-/
 theorem UpperTheory.mem_iSup_automorphicReps_of_invariant_form :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (B : (UA E n → ℂ) →ₗ⋆[ℂ] (UA E n → ℂ) →ₗ[ℂ] ℂ), (∀ φ, IsAutFormU φ → B φ φ = 0 → φ = 0) → (∀ x φ ψ, IsAutFormU φ → IsAutFormU ψ → B (RU E n x φ) (RU E n x ψ) = B φ ψ) → ∀ φ : UA E n → ℂ, IsAutFormU φ → φ ∈ ⨆ σ : {σ : Submodule ℂ (UA E n → ℂ) // IsAutRepU σ}, σ.1 := by
   intro E _ _ _ n B hdef hinv φ hφ

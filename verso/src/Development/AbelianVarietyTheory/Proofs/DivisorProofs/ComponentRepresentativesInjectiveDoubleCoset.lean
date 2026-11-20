@@ -17,16 +17,25 @@ noncomputable section
 namespace GlobalTheory.RepsInj
 open Matrix GlobalTheory.AdLat GlobalTheory.UCls
 
+/- English proof (translation)
+The claim follows from `AlgEquiv.ext fun x => ((GlobalTheory.Member.latHat_eq_hat_and_gram D D.sp.X').2.2.2.2.2.1 x).symm`.
+-/
 theorem cc_eq (D : D7) : IsCMField.complexConj D.host.E = GlobalTheory.Member.cF D :=
   AlgEquiv.ext fun x => ((GlobalTheory.Member.latHat_eq_hat_and_gram D D.sp.X').2.2.2.2.2.1 x).symm
 
 section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[hermA, Pi.single_apply]`.
+-/
 theorem hermA_single (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
     hermA c G (Pi.single i 1) (Pi.single j 1) = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ G i j := by
   simp [hermA, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `only [hermA, Matrix.mul_apply, Finset.sum_mul, Matrix.mulVec_single_one, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+-/
 theorem hermA_mulVec_single (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) (g : Matrix (Fin n) (Fin n) (RA F E)) (i j : Fin n) :
     hermA c G (g *ᵥ Pi.single i 1) (g *ᵥ Pi.single j 1) =
       (gᵀ * G.map (fun x => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x) * g.map (sg (FiniteAdeleRing (𝓞 F) F) c)) i j := by
@@ -34,11 +43,19 @@ theorem hermA_mulVec_single (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) (
   rw [Finset.sum_comm]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Matrix.transpose_inj, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, ← Matrix.mul_assoc, Formalism.UG.cT]`.
+-/
 theorem transpose_form' {A : Type} [CommRing A] {m : ℕ} (s : A →+* A) (J g : Matrix (Fin m) (Fin m) A) :
     gᵀ * Jᵀ * g.map s = Jᵀ ↔ Formalism.UG.cT s g * J * g = J := by
   rw [← Matrix.transpose_inj, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose,
     Matrix.transpose_transpose, ← Matrix.mul_assoc, Formalism.UG.cT]
 
+/- English proof (translation)
+Rewrite using `[← transpose_form']`. Establish `key : gᵀ * (-Jᵀ).map (fun x => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x) * g.map (sg (FiniteAdeleRing (𝓞 F) F) c) = (-Jᵀ).map (fun x => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x)`. Use extensionality with `i j`. Rewrite using `[← hermA_mulVec_single, h.2, hermA_single, Matrix.map_apply]`. Establish `e : (-Jᵀ).map (fun x => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x) = -(JR (FiniteAdeleRing (𝓞 F) F) J)ᵀ`.
+
+Use extensionality with `i j`. Simplify using `[JR, inclR, TensorProduct.tmul_neg]`. Rewrite `key` using `[e, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`. Conclude with `key`.
+-/
 theorem unitary_of_isUA (c : E ≃ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (g : Matrix (Fin n) (Fin n) (RA F E))
     (h : IsUA c (-Jᵀ) g) :
     Formalism.UG.cT (sigR (FiniteAdeleRing (𝓞 F) F) (c : E →ₐ[F] E)) g * JR (FiniteAdeleRing (𝓞 F) F) J * g =
@@ -53,6 +70,9 @@ theorem unitary_of_isUA (c : E ≃ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (g : 
   rw [e, Matrix.mul_neg, Matrix.neg_mul, neg_inj] at key
   exact key
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField F)⟩`. Use `⟨0, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : (0 : v.adicCompletion F) = 1` using `congrArg (fun x : FiniteAdeleRing (𝓞 F) F => x v) h`. Conclude with `zero_ne_one h2`.
+-/
 theorem af_nontrivial : Nontrivial (FiniteAdeleRing (𝓞 F) F) := by
   obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 F)
   let v : HeightOneSpectrum (𝓞 F) :=
@@ -61,15 +81,28 @@ theorem af_nontrivial : Nontrivial (FiniteAdeleRing (𝓞 F) F) := by
   have h2 : (0 : v.adicCompletion F) = 1 := congrArg (fun x : FiniteAdeleRing (𝓞 F) F => x v) h
   exact zero_ne_one h2
 
+/- English proof (translation)
+The claim follows from `haveI := af_nontrivial (F := F) Algebra.TensorProduct.includeRight_injective (algebraMap F (FiniteAdeleRing (𝓞 F) F)).injective`.
+-/
 theorem incl_inj : Function.Injective (inclR (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)) :=
   haveI := af_nontrivial (F := F)
   Algebra.TensorProduct.includeRight_injective (algebraMap F (FiniteAdeleRing (𝓞 F) F)).injective
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sigR, inclR]`.
+-/
 theorem cT_map_inclR (R : Type) [CommRing R] [Algebra F R] (c : E →ₐ[F] E) (γ : Matrix (Fin n) (Fin n) E) :
     (Formalism.UG.cT (c : E →+* E) γ).map (inclR R) = Formalism.UG.cT (sigR R c) (γ.map (inclR R)) := by
   ext i j
   simp [Formalism.UG.cT, sigR, inclR]
 
+/- English proof (translation)
+Establish `hr : ratM F γ = γ.map (inclR (FiniteAdeleRing (𝓞 F) F))` using `rfl`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hu` using `h.1`. Rewrite `hu` using `[hr, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`.
+
+Use `haveI := af_nontrivial (F := F)`. Use `haveI : Nontrivial (RA F E) := (incl_inj (F := F) (E := E)).nontrivial`. Conclude with `not_isUnit_zero hu`. Establish `hu` using `unitary_of_isUA c J _ h`. Apply `Matrix.map_injective (incl_inj (F := F) (E := E))` to reduce the goal to its premises.
+
+Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cT_map_inclR]`. Conclude with `hu`.
+-/
 theorem rat_unitary (c : E ≃ₐ[F] E) (J γ : Matrix (Fin n) (Fin n) E) (h : IsUA c (-Jᵀ) (ratM F γ)) :
     γ.det ≠ 0 ∧ Formalism.UG.cT ((c : E →ₐ[F] E) : E →+* E) γ * J * γ = J := by
   have hr : ratM F γ = γ.map (inclR (FiniteAdeleRing (𝓞 F) F)) := rfl
@@ -88,6 +121,11 @@ theorem rat_unitary (c : E ≃ₐ[F] E) (J γ : Matrix (Fin n) (Fin n) E) (h : I
 
 end Gen
 
+/- English proof (translation)
+Rewrite `h` using `[cc_eq]`. Take `⟨hd, hu⟩` from `rat_unitary _ _ _ h`. Set `γu : GL (Fin V.rank) D.host.E` to `((Matrix.isUnit_iff_isUnit_det γ).2 (Ne.isUnit hd)).unit`. Establish `hU : γu ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram` using `hu`. Establish `hm : Formalism.UG.bc (inclR (F` using `D.host.F) (E := D.host.E) (AF D.host.F)) γu ∈ HR (AF D.host.F) D.sp.cm.sig V.gram := by show Formalism.UG.cT _ (γ.map (inclR (F := D.host.F) (E := D.host.E) (AF D.host.F))) * JR (AF D.host.F) V.gram * γ.map (inclR (F := D.host.F) (E := D.host.E) (AF D.host.F)) = JR (AF D.host.F) …`.
+
+Rewrite using `[← cT_map_inclR, JR, ← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `congrArg (fun M => M.map (inclR (F := D.host.F) (E := D.host.E) (AF D.host.F))) hU`. Use `⟨⟨_, hm⟩, ⟨γu, hU, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem gq_of_isUA (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E)
     (h : IsUA (IsCMField.complexConj D.host.E) (-(V.gram)ᵀ) (ratM (maximalRealSubfield D.host.E) γ)) :
     ∃ γ₀ ∈ GQ V, ((finHom V γ₀).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E)) =
@@ -105,6 +143,11 @@ theorem gq_of_isUA (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (γ : Matrix (
   ext i j
   rfl
 
+/- English proof (translation)
+Rewrite `h` using `[cc_eq]`. Establish `hu` using `unitary_of_isUA _ _ _ h.1`. Set `κu : GL (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)` to `((Matrix.isUnit_iff_isUnit_det κ).2 h.1.1).unit`. Establish `hmem : κu ∈ HR (Af D.host.F) D.sp.cm.sig V.gram` using `hu`. Take `⟨κA, hG, hf⟩` from `(GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).1 κu hmem`.
+
+Use `⟨κA, (hK κA).2 ⟨hG, ?_⟩, by rw [hf]; rfl⟩` and prove the remaining obligations. Introduce `z hz`. Rewrite `hz`, the goal using `[(GlobalTheory.Member.latHat_eq_hat_and_gram D V).1]`. Rewrite using `[hf]`. Conclude with `h.2.1 z hz`.
+-/
 theorem kf_of_isKM (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (M : ℕ) (Kf : Subgroup (GA D V)) (hK : IsLevelK V M Kf)
     (κ : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E))
     (h : IsKM (IsCMField.complexConj D.host.E) (-(V.gram)ᵀ) (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)) M κ) :
@@ -120,6 +163,17 @@ theorem kf_of_isKM (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (M : ℕ) (Kf 
   rw [hf]
   exact h.2.1 z hz
 
+/- English proof (translation)
+Introduce `D V Comp X dict Kf th M gA hK _ hD hgA k k' hE`. Take `⟨γ, hγ, κ, hκ, he⟩` from `hE`. Take `⟨γ₀, hγ₀, hγf⟩` from `gq_of_isUA D V γ hγ`. Take `⟨κA, hκA, hκf⟩` from `kf_of_isKM D V M Kf hK κ hκ`. Establish `hfin : finHom V (gA k') = finHom V (γ₀ * gA k * κA)`.
+
+Rewrite using `[map_mul, map_mul]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `he.trans (by rw [← hγf, ← hκf])`. Establish `hx : (γ₀ * gA k * κA)⁻¹ * gA k' ∈ GinfC V` using `by show finHom V _ = 1`.
+
+Rewrite using `[map_mul, map_inv, hfin, inv_mul_cancel]`. Establish `hk' : gA k' = γ₀ * gA k * κA * ((γ₀ * gA k * κA)⁻¹ * gA k')` using `by group`. Take `⟨h1, h2, ⟨x0, -, h3⟩, -⟩` from `hD`. Establish `s3 : (dict (gA k')).1 = (dict (γ₀ * gA k * κA)).1`. Take `⟨γ', -, e⟩` from `h3 (γ₀ * gA k * κA) _ hx`.
+
+Rewrite using `[hk', e]`. Establish `s2 : (dict (γ₀ * gA k * κA)).1 = (dict (γ₀ * gA k)).1`. Take `⟨γ', -, e⟩` from `h2 κA hκA (γ₀ * gA k)`. Rewrite using `[e]`. Establish `s1 : (dict (γ₀ * gA k)).1 = (dict (gA k)).1`.
+
+Take `⟨γ', -, e⟩` from `h1 γ₀ hγ₀ (gA k)`. Rewrite using `[e]`. Rewrite using `[← hgA k, ← hgA k', s3, s2, s1]`.
+-/
 theorem reps_inj : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (Comp : Type) (X : Comp → Data D.host.E V.rank)
     (dict : GA D V → Σ k, Frame (X k).Ψ V.rank) (Kf : Subgroup (GA D V))
     (th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : ℕ) (gA : Comp → GA D V),

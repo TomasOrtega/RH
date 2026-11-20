@@ -16,9 +16,17 @@ variable (p : ℕ) [CharP 𝓀[K] p]
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
+/- English proof (translation)
+The claim follows from `(Valuation.mem_integer_iff _ _).mp (intCast_mem _ n)`.
+-/
 theorem valuation_intCast_le_one (n : ℤ) : valuation K (n : K) ≤ 1 :=
   (Valuation.mem_integer_iff _ _).mp (intCast_mem _ n)
 
+/- English proof (translation)
+Establish `hres : IsLocalRing.residue 𝒪[K] (n : 𝒪[K]) = (n : 𝓀[K])` using `map_intCast _ n`. Rewrite using `[← CharP.intCast_eq_zero_iff 𝓀[K] p n, ← hres, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Use `push_cast`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Simplify using `[h]`. Introduce `h`. Conclude with `le_antisymm (valuation_intCast_le_one K n) (not_lt.mp h)`.
+-/
 theorem valuation_intCast_eq_one_iff (n : ℤ) : valuation K (n : K) = 1 ↔ ¬ (p : ℤ) ∣ n := by
   have hres : IsLocalRing.residue 𝒪[K] (n : 𝒪[K]) = (n : 𝓀[K]) := map_intCast _ n
   rw [← CharP.intCast_eq_zero_iff 𝓀[K] p n, ← hres, IsLocalRing.residue_eq_zero_iff,
@@ -35,6 +43,9 @@ variable [Fact p.Prime]
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+Use `lt_of_le_of_ne (by exact_mod_cast valuation_intCast_le_one K p) fun h => ?_` and prove the remaining obligations. Use `(valuation_intCast_eq_one_iff K p p).mp (by exact_mod_cast h)` as an intermediate fact. Conclude with `this dvd_rfl`.
+-/
 theorem valuation_p_lt_one : valuation K (p : K) < 1 := by
   refine lt_of_le_of_ne (by exact_mod_cast valuation_intCast_le_one K p) fun h => ?_
   have := (valuation_intCast_eq_one_iff K p p).mp (by exact_mod_cast h)
@@ -42,6 +53,19 @@ theorem valuation_p_lt_one : valuation K (p : K) < 1 := by
 
 variable [CharZero K]
 
+/- English proof (translation)
+Establish `hden : (q.den : K) ≠ 0` using `by exact_mod_cast q.den_ne_zero`. Establish `hq : (q : K) = (q.num : K) / (q.den : K)`. Rewrite using `[← Rat.cast_intCast, ← Rat.cast_natCast, ← Rat.cast_div, Rat.num_div_den]`. Establish `hvden : valuation K (q.den : K) ≠ 0` using `by simp`. Rewrite using `[hq, map_div₀, div_le_one₀ (zero_lt_iff.mpr hvden)]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h hp`. Establish `hnum : ¬ (p : ℤ) ∣ q.num`. Introduce `hn`. Rewrite `hn` using `[Int.natCast_dvd]`.
+
+Conclude with `Nat.not_coprime_of_dvd_of_dvd (Nat.Prime.one_lt Fact.out) hn hp q.reduced`. Establish `h1` using `(valuation_intCast_eq_one_iff K p q.num).mpr hnum`. Take `⟨m, hm⟩` from `hp`. Establish `h2 : valuation K (q.den : K) < 1`. Rewrite using `[hm, Nat.cast_mul, map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `valuation_intCast_le_one K m` after adjusting the coercions. Use `_ < 1 := by simp [valuation_p_lt_one K p]`. Rewrite `h` using `[h1]`. Conclude with `absurd h (not_le.mpr h2)`.
+
+Introduce `hp`. Establish `h1 : valuation K (q.den : K) = 1`. Use `(valuation_intCast_eq_one_iff K p q.den).mpr (by exact_mod_cast hp)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[h1]`.
+
+Conclude with `valuation_intCast_le_one K q.num`.
+-/
 theorem valuation_ratCast_le_one_iff (q : ℚ) : valuation K (q : K) ≤ 1 ↔ ¬ p ∣ q.den := by
   have hden : (q.den : K) ≠ 0 := by exact_mod_cast q.den_ne_zero
   have hq : (q : K) = (q.num : K) / (q.den : K) := by
@@ -72,6 +96,9 @@ theorem valuation_ratCast_le_one_iff (q : ℚ) : valuation K (q : K) ≤ 1 ↔ �
     rw [h1]
     exact valuation_intCast_le_one K q.num
 
+/- English proof (translation)
+The claim follows from `Valuation.isEquiv_of_val_le_one fun q => by simp [valuation_ratCast_le_one_iff K p, Rat.padicValuation_le_one_iff]`.
+-/
 theorem isEquiv_comap_ratCast :
     ((valuation K).comap (Rat.castHom K)).IsEquiv (Rat.padicValuation p) :=
   Valuation.isEquiv_of_val_le_one fun q => by
@@ -82,6 +109,13 @@ section Embedding
 noncomputable abbrev ratHom : WithVal (Rat.padicValuation p) →+* K :=
   (Rat.castHom K).comp (WithVal.equiv (Rat.padicValuation p)).toRingHom
 
+/- English proof (translation)
+Rewrite using `[ContinuousAt, map_zero]`. Use `((IsValuativeTopology.hasBasis_nhds_zero' _).tendsto_iff (IsValuativeTopology.hasBasis_nhds_zero' K)).mpr fun γ hγ => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_pow_lt₀ (valuation_p_lt_one K p) (Units.mk0 γ hγ)`. Use `set v := Rat.padicValuation p`. Use `set t : WithVal v := (WithVal.equiv v).symm ((p : ℚ) ^ n)`.
+
+Use `⟨valuation (WithVal v) t, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `[t, Nat.Prime.ne_zero Fact.out]`. Simplify using `only [Set.mem_ofPred_eq] at hx ⊢`. Establish `h1` using `(ValuativeRel.isEquiv (valuation (WithVal v)) (WithVal.valuation v)).lt_iff_lt.mp hx`. Establish `h2 : v (WithVal.equiv v x) < v ((p : ℚ) ^ n)` using `by simpa [t] using h1`.
+
+Establish `h3` using `(isEquiv_comap_ratCast K p).lt_iff_lt.mpr h2`. Simplify using `only [Valuation.comap_apply, Rat.coe_castHom] at h3`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem continuousAt_ratHom : ContinuousAt (ratHom K p) 0 := by
   rw [ContinuousAt, map_zero]
   refine ((IsValuativeTopology.hasBasis_nhds_zero' _).tendsto_iff
@@ -107,6 +141,9 @@ local instance uniformSpaceK : UniformSpace K := IsTopologicalAddGroup.rightUnif
 
 local instance isUniformAddGroupK : IsUniformAddGroup K := isUniformAddGroup_of_addCommGroup
 
+/- English proof (translation)
+The claim follows from `uniformContinuous_of_continuousAt_zero (ratHom K p) (continuousAt_ratHom K p)`.
+-/
 theorem uniformContinuous_ratHom : UniformContinuous (ratHom K p) :=
   uniformContinuous_of_continuousAt_zero (ratHom K p) (continuousAt_ratHom K p)
 
@@ -114,12 +151,18 @@ noncomputable def padicHom : ℚ_[p] →+* K :=
   IsDenseInducing.extendRingHom Padic.isUniformInducing_cast_withVal
     Padic.isDenseInducing_cast_withVal.dense (uniformContinuous_ratHom K p)
 
+/- English proof (translation)
+The claim follows from `(uniformContinuous_uniformly_extend Padic.isUniformInducing_cast_withVal Padic.isDenseInducing_cast_withVal.dense (uniformContinuous_ratHom K p)).continuous`.
+-/
 theorem continuous_padicHom : Continuous (padicHom K p) :=
   (uniformContinuous_uniformly_extend Padic.isUniformInducing_cast_withVal
     Padic.isDenseInducing_cast_withVal.dense (uniformContinuous_ratHom K p)).continuous
 
 end Uniform
 
+/- English proof (translation)
+Use `PadicInt.denseRange_intCast.induction_on x ?_ fun n => ?_` and prove the remaining obligations. Conclude with `(Valuation.isClosed_integer (v := valuation K)).preimage ((continuous_padicHom K p).comp continuous_subtype_val)`. Simplify using `using valuation_intCast_le_one K n`.
+-/
 theorem valuation_padicHom_padicInt_le_one (x : ℤ_[p]) :
     valuation K (padicHom K p (x : ℚ_[p])) ≤ 1 := by
   refine PadicInt.denseRange_intCast.induction_on x ?_ fun n => ?_
@@ -127,6 +170,19 @@ theorem valuation_padicHom_padicInt_le_one (x : ℤ_[p]) :
       ((continuous_padicHom K p).comp continuous_subtype_val)
   · simpa using valuation_intCast_le_one K n
 
+/- English proof (translation)
+Use `⟨fun hv => ?_, fun hx => valuation_padicHom_padicInt_le_one K p ⟨x, hx⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`.
+
+Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Nat.Prime.ne_zero Fact.out)`. Use `set y : ℚ_[p] := ((p : ℚ_[p]) * x)⁻¹`. Establish `hxinv : ‖x⁻¹‖ ≤ (p : ℝ) ^ (-1 : ℤ)`. Establish `: ‖x⁻¹‖ < (p : ℝ) ^ (0 : ℤ)`. Rewrite using `[norm_inv, zpow_zero]`.
+
+Conclude with `inv_lt_one_of_one_lt₀ (not_le.mp hx)`. Simplify using `using (Padic.norm_lt_pow_iff_norm_le_pow_sub_one x⁻¹ 0).mp this`. Establish `hy : ‖y‖ ≤ 1`. Establish `hp : (0 : ℝ) < p` using `by exact_mod_cast (Nat.Prime.pos Fact.out)`. Simplify using `only [y, mul_inv, norm_mul, norm_inv, Padic.norm_p, inv_inv] at hxinv ⊢`.
+
+Rewrite `hxinv` using `[zpow_neg_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hvy` using `valuation_padicHom_padicInt_le_one K p ⟨y, hy⟩`. Simplify using `only at hvy`. Establish `hone : padicHom K p x * padicHom K p y * padicHom K p p = 1`.
+
+Rewrite using `[← map_mul, ← map_mul]`. Simplify using `[y, hx0, hp0]`. Establish `hvp : valuation K (padicHom K p p) < 1`. Simplify using `using valuation_p_lt_one K p`. Use `congrArg (valuation K) hone` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_mul, map_one]`. Establish `h1 : valuation K (padicHom K p x) * valuation K (padicHom K p y) ≤ 1` using `mul_le_one' hv hvy`. Establish `h2` using `(mul_le_of_le_one_left' h1 : _ ≤ valuation K (padicHom K p p))`. Conclude with `absurd (this ▸ h2) (not_le.mpr hvp)`.
+-/
 theorem valuation_padicHom_le_one_iff (x : ℚ_[p]) :
     valuation K (padicHom K p x) ≤ 1 ↔ ‖x‖ ≤ 1 := by
   refine ⟨fun hv => ?_, fun hx => valuation_padicHom_padicInt_le_one K p ⟨x, hx⟩⟩
@@ -161,17 +217,28 @@ theorem valuation_padicHom_le_one_iff (x : ℚ_[p]) :
   have h2 := (mul_le_of_le_one_left' h1 : _ ≤ valuation K (padicHom K p p))
   exact absurd (this ▸ h2) (not_le.mpr hvp)
 
+/- English proof (translation)
+The claim follows from `Valuation.isEquiv_of_val_le_one fun x => by rw [Valuation.comap_apply, valuation_padicHom_le_one_iff] simpa using (GroundTheory.LocalField.Padic.mulValuation_le_iff_norm_le p x 1).symm`.
+-/
 theorem isEquiv_comap_padicHom :
     ((valuation K).comap (padicHom K p)).IsEquiv Padic.mulValuation :=
   Valuation.isEquiv_of_val_le_one fun x => by
     rw [Valuation.comap_apply, valuation_padicHom_le_one_iff]
     simpa using (GroundTheory.LocalField.Padic.mulValuation_le_iff_norm_le p x 1).symm
 
+/- English proof (translation)
+Rewrite using `[Valuation.Compatible.vle_iff_le (v := valuation K), Valuation.Compatible.vle_iff_le (v := Padic.mulValuation)]`. Simplify using `using (isEquiv_comap_padicHom K p).le_iff_le (x := a) (y := b)`.
+-/
 theorem padicHom_vle_iff (a b : ℚ_[p]) : padicHom K p a ≤ᵥ padicHom K p b ↔ a ≤ᵥ b := by
   rw [Valuation.Compatible.vle_iff_le (v := valuation K),
     Valuation.Compatible.vle_iff_le (v := Padic.mulValuation)]
   simpa using (isEquiv_comap_padicHom K p).le_iff_le (x := a) (y := b)
 
+/- English proof (translation)
+Set `` to `(padicHom K p).toAlgebra`. Establish `: T2Space K`. Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Use `infer_instance`.
+
+Establish `: ContinuousSMul ℚ_[p] K` using `⟨((continuous_padicHom K p).comp continuous_fst).mul continuous_snd⟩`. Conclude with `FiniteDimensional.of_locallyCompactSpace ℚ_[p]`.
+-/
 theorem finiteDimensional_padicHom :
     letI := (padicHom K p).toAlgebra
     FiniteDimensional ℚ_[p] K := by
@@ -188,6 +255,9 @@ end Embedding
 
 end CharZero
 
+/- English proof (translation)
+Set `alg` to `(CharZero.padicHom K (ringChar 𝓀[K])).toAlgebra`. Conclude with `⟨ringChar 𝓀[K], inferInstance, alg, rfl, ⟨CharZero.padicHom_vle_iff K _⟩, CharZero.finiteDimensional_padicHom K _, CharZero.continuous_padicHom K _⟩`.
+-/
 theorem exists_padic_finiteDimensional_of_charZero (K : Type*) [Field K] [ValuativeRel K]
     [TopologicalSpace K] [IsNonarchimedeanLocalField K] [CharZero K] :
     ∃ (p : ℕ) (_ : Fact p.Prime) (_ : Algebra ℚ_[p] K), p = ringChar 𝓀[K] ∧

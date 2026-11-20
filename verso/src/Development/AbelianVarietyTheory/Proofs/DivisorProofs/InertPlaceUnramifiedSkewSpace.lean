@@ -25,18 +25,39 @@ def sesq (σL : L →+* L) {n : ℕ} (J : Matrix (Fin n) (Fin n) L) (x y : Fin n
 
 variable (σL : L →+* L) {n : ℕ} (J : Matrix (Fin n) (Fin n) L)
 
+/- English proof (translation)
+Simplify using `only [sesq, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem sesq_add_left (x₁ x₂ y : Fin n → L) : sesq σL J (x₁ + x₂) y = sesq σL J x₁ y + sesq σL J x₂ y := by
   simp only [sesq, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [sesq, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem sesq_add_right (x y₁ y₂ : Fin n → L) : sesq σL J x (y₁ + y₂) = sesq σL J x y₁ + sesq σL J x y₂ := by
   simp only [sesq, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [sesq, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]`.
+-/
 theorem sesq_neg_left (x y : Fin n → L) : sesq σL J (-x) y = -sesq σL J x y := by
   simp only [sesq, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [sesq, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]`.
+-/
 theorem sesq_neg_right (x y : Fin n → L) : sesq σL J x (-y) = -sesq σL J x y := by
   simp only [sesq, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+
+Consider the case `mem y hy => exact hS x hx y hy`. Consider the case `zero => simp [sesq]`. Consider the case `add y₁ y₂ _ _ h₁ h₂ => rw [sesq_add_right]`. Conclude with `add_mem h₁ h₂`. Consider the case `neg y _ h => rw [sesq_neg_right]`.
+
+Conclude with `neg_mem h`. Consider the case `zero => intro y _`. Simplify using `[sesq]`. Consider the case `add x₁ x₂ _ _ h₁ h₂ => intro y hy`. Rewrite using `[sesq_add_left]`.
+
+Conclude with `add_mem (h₁ y hy) (h₂ y hy)`. Consider the case `neg x _ h => intro y hy`. Rewrite using `[sesq_neg_left]`. Conclude with `neg_mem (h y hy)`.
+-/
 theorem sesq_mem_of_closure (O : Subring L) (S : Set (Fin n → L))
     (hS : ∀ x ∈ S, ∀ y ∈ S, sesq σL J x y ∈ O) :
     ∀ x ∈ AddSubgroup.closure S, ∀ y ∈ AddSubgroup.closure S, sesq σL J x y ∈ O := by
@@ -53,6 +74,11 @@ theorem sesq_mem_of_closure (O : Subring L) (S : Set (Fin n → L))
   | add x₁ x₂ _ _ h₁ h₂ => intro y hy; rw [sesq_add_left]; exact add_mem (h₁ y hy) (h₂ y hy)
   | neg x _ h => intro y hy; rw [sesq_neg_left]; exact neg_mem (h y hy)
 
+/- English proof (translation)
+Simplify using `only [sesq, map_sum, map_mul, hσσ, hJ]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_skew (hσσ : ∀ x, σL (σL x) = x) (hJ : ∀ k l, σL (J k l) = -J l k) (x y : Fin n → L) :
     σL (sesq σL J x y) = -sesq σL J y x := by
   simp only [sesq, map_sum, map_mul, hσσ, hJ]
@@ -66,6 +92,9 @@ end Sesq
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [sesq, form, Pi.smul_apply, smul_eq_mul, Matrix.map_apply, map_mul, hφσ, dotProduct, Matrix.mulVec, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_smul_map {L : Type} [Field L] (σ : E →ₐ[F] E) (σL : L →+* L) (φ : E →+* L)
     (hφσ : ∀ e, σL (φ e) = φ (σ e)) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (t t' : L) (y y' : Fin n → E) :
     sesq σL (J.map φ) (t • fun i => φ (y i)) (t' • fun i => φ (y' i)) = t * σL t' * φ (form σ J y y') := by
@@ -74,6 +103,9 @@ theorem sesq_smul_map {L : Type} [Field L] (σ : E →ₐ[F] E) (σL : L →+* L
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.InertLocFrame.gram, sesq, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gram_apply {L : Type} [Field L] (σL : L →+* L) (ι : L →+ AE F E) {n : ℕ} (P : GL (Fin n) L)
     (J : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
     GlobalTheory.InertLocFrame.gram σL ι P J i j = sesq σL (GlobalTheory.InertLocFrame.tJ ι J)
@@ -85,6 +117,17 @@ def gens {L : Type} [Field L] (O : Subring L) (φ : E →+* L) {n : ℕ} (Lat : 
     Set (Fin n → L) :=
   {z | ∃ t ∈ O, ∃ y ∈ Lat, z = t • fun i => φ (y i)}
 
+/- English proof (translation)
+Take `⟨d, hd, hdv⟩` from `SetLike.not_le_iff_exists.mp hv`. Use `⟨d, hdv, GlobalTheory.InertSelfDual.mem_of_trace (F := F) _ fun a => ?_⟩` and prove the remaining obligations. Establish `hco : ∀ c : 𝓞 F, ((algebraMap (𝓞 F) (𝓞 E) c : 𝓞 E) : E) = algebraMap F E (algebraMap (𝓞 F) F c)`. Introduce `c`. Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 F) F E, IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E]`.
+
+Establish `hxd : Algebra.trace F E (e * (a : E)) ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 F)⁰ F)`. Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 F)⁰ F))]`. Introduce `b hb`. Take `⟨b', rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hb`. Rewrite using `[Algebra.traceForm_apply]`.
+
+Establish `e1 : Algebra.trace F E (e * (a : E)) * algebraMap (𝓞 F) F b' = Algebra.trace F E (((algebraMap (𝓞 F) (𝓞 E) b' * a : 𝓞 E) : E) * e)`. Rewrite using `[mul_comm, ← smul_eq_mul, ← map_smul, Algebra.smul_def]`. Use `congr 1`. Rewrite using `[show ((algebraMap (𝓞 F) (𝓞 E) b' * a : 𝓞 E) : E) = ((algebraMap (𝓞 F) (𝓞 E) b' : 𝓞 E) : E) * (a : E) from rfl, hco]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, Algebra.trace_trace]`. Conclude with `IsIntegrallyClosed.isIntegral_iff.mp (he _)`. Establish `hmem : algebraMap (𝓞 F) F d * Algebra.trace F E (e * (a : E)) ∈ (1 : FractionalIdeal (𝓞 F)⁰ F)`. Establish `h1 : algebraMap (𝓞 F) F d ∈ ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F)` using `(FractionalIdeal.mem_coeIdeal _).2 ⟨d, hd, rfl⟩`. Rewrite `h1` using `[coeIdeal_differentIdeal ℤ ℚ F (𝓞 F)]`.
+
+Establish `h2` using `FractionalIdeal.mul_mem_mul h1 hxd`. Rewrite `h2` using `[inv_mul_cancel₀ (FractionalIdeal.dual_ne_zero ℤ ℚ (one_ne_zero (α := FractionalIdeal (𝓞 F)⁰ F)))]`. Then use the resulting hypothesis. Take `⟨y, hy⟩` from `(FractionalIdeal.mem_one_iff _).1 hmem`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, mul_assoc, ← Algebra.smul_def (algebraMap (𝓞 F) F d) (e * (a : E)), map_smul, smul_eq_mul]`.
+-/
 theorem exists_mul_mem [Algebra.Unramified (𝓞 F) (𝓞 E)] (v : Pl F) (hv : ¬ differentIdeal ℤ (𝓞 F) ≤ v.asIdeal)
     (e : E) (he : ∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E ((o : E) * e))) :
     ∃ d : 𝓞 F, d ∉ v.asIdeal ∧ algebraMap F E (algebraMap (𝓞 F) F d) * e ∈ (algebraMap (𝓞 E) E).range := by
@@ -116,6 +159,91 @@ theorem exists_mul_mem [Algebra.Unramified (𝓞 F) (𝓞 E)] (v : Pl F) (hv : �
   refine ⟨y, ?_⟩
   rw [hy, mul_assoc, ← Algebra.smul_def (algebraMap (𝓞 F) F d) (e * (a : E)), map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB v w hvw n r s X hX L _ _ ϖ σL q δ ι hUI hq hδ hinj himg hmul hσ hO P hP`. Take `⟨hσσ, hσv, -⟩` from `hUI`. Take `⟨hδv, hδσ⟩` from `hδ`. Use `haveI := hB.unram`. Establish `hvd : ¬ differentIdeal ℤ (𝓞 F) ≤ v.asIdeal` using `GlobalTheory.DiffCoprimeP.not_le_differentIdeal_of_psiUnr hB.std v (hB.inert v w hvw).2.2`.
+
+Use `set a0 : AF F := GlobalTheory.LatVac.liftV v 1 with ha0`. Establish `ha0at : At (evFin F v) a0` using `GlobalTheory.LatVac.at_liftV v 1`. Establish `ha0ev : evFin F v a0 = 1` using `GlobalTheory.LatVac.evFin_liftV v 1`. Establish `hfix : ∀ z : AE F E, At (evFin F v) z → a0 • z = z` using `fun z hz => by`. Establish `h` using `hz (1 - a0) (by rw [map_sub, map_one, ha0ev, sub_self])`.
+
+Rewrite `h` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h.symm`. Establish `hι1 : ∀ x, ι x * ι 1 = ι x` using `fun x => by rw [← hmul, mul_one]`. Establish `hat_img : ∀ x, At (evFin F v) (ι x)` using `fun x => (himg _).2 ⟨x, rfl⟩`. Establish `hat_mul : ∀ z y : AE F E, At (evFin F v) z → At (evFin F v) (z * y)` using `fun z y hz u hu => by`.
+
+Rewrite using `[← smul_mul_assoc, hz u hu, zero_mul]`. Establish `hat_smul : ∀ (a : AF F) (y : AE F E), At (evFin F v) a → At (evFin F v) (a • y)` using `fun a y ha u hu => by`. Rewrite using `[smul_smul, ← smul_eq_mul, ha u hu, zero_smul]`. Take `⟨φ, hφ⟩ : ∃ φ : E →+* L, ∀ e, ι (φ e) = ι 1 * inclR (F` from `F) (AF F) e := by`. Establish `hpre : ∀ e, ι (GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F` using `F) (AF F) e)) = ι 1 * inclR (F := F) (AF F) e := fun e => GlobalTheory.InertLocFrame.pre_spec ι ((himg _).1 (hat_mul _ _ (hat_img 1)))`.
+
+Establish `h11 : ι 1 * ι 1 = ι 1` using `hι1 1`. Establish `hone : GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F` using `F) (AF F) (1 : E)) = 1 := hinj (by rw [hpre, map_one (inclR (F := F) (AF F)), mul_one])`. Establish `hzero : GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F` using `F) (AF F) (0 : E)) = 0 := hinj (by rw [hpre, map_zero (inclR (F := F) (AF F)), mul_zero, map_zero ι])`. Establish `hadd : ∀ e₁ e₂ : E, GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F` using `F) (AF F) (e₁ + e₂)) = GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F := F) (AF F) e₁) + GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F := F) (AF F) e₂) := fun e₁ e₂ => hinj (by rw [hpre, map_add ι, hpre, hpre, map_add (inclR (F := F) (AF F)), mul_add])`. Establish `hmul' : ∀ e₁ e₂ : E, GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F` using `F) (AF F) (e₁ * e₂)) = GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F := F) (AF F) e₁) * GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F := F) (AF F) e₂) := fun e₁ e₂ => hinj (by rw [hmul, hpre, hpre, hpre, map_mul (inclR (F := F) (AF F)), mul_mul_mul_comm, h11])`.
+
+Conclude with `⟨⟨⟨⟨fun e => GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F := F) (AF F) e), hone⟩, hmul'⟩, hzero, hadd⟩, hpre⟩`. Establish `hφa : ∀ e, ι (φ e) = a0 • inclR (F` using `F) (AF F) e := by`. Introduce `e`. Take `⟨x, hx⟩` from `(himg (a0 • inclR (F := F) (AF F) e)).1 (hat_smul _ _ ha0at)`. Rewrite using `[hφ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hσint : ∀ x ∈ Formalism.UG.intL L, σL x ∈ Formalism.UG.intL L` using `fun x hx => by`. Establish `h : Valued.v x ≤ 1` using `hx`. Use `show Valued.v (σL x) ≤ 1`. Rewrite using `[hσv]`.
+
+Conclude with `h`. Establish `hφσ : ∀ e, σL (φ e) = φ (σ e)` using `fun e => hinj (by`. Rewrite using `[hσ, hφa, hφa, map_smul, GlobalTheory.InertSelfDual.cA_inclR])`. Establish `hφO : ∀ o : 𝓞 E, φ (algebraMap (𝓞 E) E o) ∈ Formalism.UG.intL L` using `fun o => (hO _).2 (by`. Rewrite using `[hφa]`.
+
+Conclude with `AddSubgroup.subset_closure ⟨a0, ha0at, by rw [ha0ev]; exact one_mem _, o, rfl⟩)`. Establish `hφdual : ∀ e : E, (∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E ((o : E) * e))) → φ e ∈ Formalism.UG.intL L`. Introduce `e he`. Take `⟨d, hdv, o, ho⟩` from `exists_mul_mem v hvd e he`. Establish `hd0 : algebraMap (𝓞 F) F d ≠ 0`.
+
+Introduce `h0`. Apply `hdv` to reduce the goal to its premises. Rewrite using `[(FaithfulSMul.algebraMap_injective (𝓞 F) F) (h0.trans (map_zero _).symm)]`. Conclude with `zero_mem _`. Establish `he' : e = algebraMap F E (algebraMap (𝓞 F) F d)⁻¹ * algebraMap (𝓞 E) E o`.
+
+Rewrite using `[ho, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hd0, map_one, one_mul]`. Rewrite using `[he', map_mul]`. Use `mul_mem ?_ (hφO o)` and prove the remaining obligations. Apply `(hO _).2` to reduce the goal to its premises. Rewrite using `[hφa]`.
+
+Use `AddSubgroup.subset_closure ⟨a0 * algebraMap F (AF F) (algebraMap (𝓞 F) F d)⁻¹, fun u hu => ?_, ?_, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_mul_assoc, ha0at u hu, zero_mul]`. Rewrite using `[map_mul, ha0ev, one_mul, AlgHom.commutes, HeightOneSpectrum.mem_adicCompletionIntegers]`. Apply `le_of_eq` to reduce the goal to its premises. Establish `hvF : Valued.v (algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F d)⁻¹) = v.valuation F (algebraMap (𝓞 F) F d)⁻¹` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 F) v _`.
+
+Use `hvF.trans ?_` and prove the remaining obligations. Rewrite using `[map_inv₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.mpr hdv, inv_one]`. Apply the tactic sequence `rw [Algebra.algebraMap_eq_smul_one (A := E) (algebraMap (𝓞 F) F d)⁻¹, GlobalTheory.InertSelfDual.inclR_smul, smul_smul] first | rfl | simp`. Establish `hlift : ∀ a : AF F, At (evFin F v) a → evFin F v a ∈ v.adicCompletionIntegers F → ∃ t ∈ Formalism.UG.intL L, ι t = a • (1 : AE F E)`. Introduce `a ha hai`.
+
+Take `⟨t, ht⟩` from `(himg _).1 (hat_smul a 1 ha)`. Use `⟨t, (hO t).2 ?_, ht⟩` and prove the remaining obligations. Rewrite using `[ht]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, hai, 1, by simp⟩`. Use `set Pm : Matrix (Fin n) (Fin n) L := (P : Matrix (Fin n) (Fin n) L) with hPm`.
+
+Use `set Q : Matrix (Fin n) (Fin n) L := ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hQ`. Establish `hPQ : Pm * Q = 1` using `P.mul_inv`. Establish `hQP : Q * Pm = 1` using `P.inv_mul`. Establish `hΛ : ∀ x : Fin n → L, (fun i => ι (x i)) ∈ GlobalTheory.InertSph.latAt X v → ∀ i, (Q *ᵥ x) i ∈ Formalism.UG.intL L` using `fun x hx => (hP (Q *ᵥ x)).2 (by rwa [Matrix.mulVec_mulVec, hPQ, Matrix.one_mulVec])`. Establish `hφL : ∀ y ∈ X.L, (fun i => ι (φ (y i))) ∈ GlobalTheory.InertSph.latAt X v`.
+
+Introduce `y hy`. Establish `e : (fun i => ι (φ (y i))) = a0 • fun i => inclR (F` using `F) (AF F) (y i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[hφa]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `AddSubgroup.subset_closure ⟨a0, ha0at, by rw [ha0ev]; exact one_mem _, y, hy, rfl⟩`. Establish `hA' : ∀ x : Fin n → L, (fun i => ι (x i)) ∈ GlobalTheory.InertSph.latAt X v → x ∈ AddSubgroup.closure (gens (Formalism.UG.intL L) φ X.L)`. Establish `key : ∀ z ∈ GlobalTheory.InertSph.latAt X v, ∃ x ∈ AddSubgroup.closure (gens (Formalism.UG.intL L) φ X.L), (fun i => ι (x i)) = z`. Introduce `z hz`.
+
+Unfold `GlobalTheory.InertSph.latAt at hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hai, y, hy, rfl⟩` from `hz`. Take `⟨t, ht, hta⟩` from `hlift a ha hai`.
+
+Use `⟨t • fun i => φ (y i), AddSubgroup.subset_closure ⟨t, ht, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hmul, hφ, ← mul_assoc, hι1, hta, smul_mul_assoc, one_mul]`. Consider the case `zero => exact ⟨0, zero_mem _, by funext i; simp⟩`.
+
+Consider the case `add z₁ z₂ _ _ h₁ h₂`. Take `⟨x₁, hx₁, rfl⟩` from `h₁`. Take `⟨x₂, hx₂, rfl⟩` from `h₂`. Conclude with `⟨x₁ + x₂, add_mem hx₁ hx₂, by funext i; simp⟩`. Consider the case `neg z _ h`.
+
+Take `⟨x, hx, rfl⟩` from `h`. Conclude with `⟨-x, neg_mem hx, by funext i; simp⟩`. Introduce `x hx`. Take `⟨x', hx', e⟩` from `key _ hx`. Establish `: x' = x` using `funext fun i => hinj (congrFun e i)`.
+
+Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hsesq : ∀ x ∈ AddSubgroup.closure (gens (Formalism.UG.intL L) φ X.L), ∀ y ∈ AddSubgroup.closure (gens (Formalism.UG.intL L) φ X.L), sesq σL (X.J.map φ) x y ∈ Formalism.UG.intL L`. Use `sesq_mem_of_closure σL _ _ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, y, hy, rfl⟩ _ ⟨t', ht', y', hy', rfl⟩`. Rewrite using `[sesq_smul_map σ σL φ hφσ]`.
+
+Conclude with `mul_mem (mul_mem ht (hσint _ ht')) (hφdual _ ((hX.dual y).1 hy y' hy'))`. Establish `htJ : GlobalTheory.InertLocFrame.tJ ι X.J = X.J.map φ`. Use extensionality with `i j`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Matrix.map_apply, hφ]`.
+
+Conclude with `GlobalTheory.InertLocFrame.pre_spec ι ((himg _).1 (hat_mul _ _ (hat_img 1)))`. Use `set G := GlobalTheory.InertLocFrame.gram σL ι P X.J with hGdef`. Establish `hGe : ∀ i j, G i j = sesq σL (X.J.map φ) (fun k => Pm k i) (fun l => Pm l j)` using `fun i j => by`. Rewrite using `[hGdef, gram_apply, htJ]`. Establish `hcol : ∀ i, (fun k => Pm k i) ∈ AddSubgroup.closure (gens (Formalism.UG.intL L) φ X.L)`.
+
+Introduce `i`. Apply `hA'` to reduce the goal to its premises. Establish `h` using `(hP (Pi.single i 1)).1 (fun k => by`. Break down `eq_or_ne k i with rfl | hki` into its components or cases. Rewrite using `[Pi.single_eq_same]`.
+
+Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne hki]`. Conclude with `zero_mem _)`. Establish `e : Pm *ᵥ Pi.single i 1 = fun k => Pm k i`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite `h` using `[e]`. Conclude with `h`. Establish `hGint : ∀ i j, G i j ∈ Formalism.UG.intL L` using `fun i j => by`. Rewrite using `[hGe]`.
+
+Conclude with `hsesq _ (hcol i) _ (hcol j)`. Establish `hJskew : ∀ k l, σL (X.J.map φ k l) = -(X.J.map φ l k)` using `fun k l => by`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, hφσ, hX.skew l k, map_neg]`. Establish `hGskew : ∀ i j, σL (G j i) = -G i j` using `fun i j => by`. Rewrite using `[hGe, hGe]`.
+
+Conclude with `sesq_skew σL _ hσσ hJskew _ _`. Take `⟨k, S, T, hS, hT, hTS⟩` from `GlobalTheory.InertSelfDual.exists_formFrame σ X.J (GlobalTheory.InertSelfDual.det_ne_zero_of_skew σ B hX) X.L hX.lat (fun y hy => (hX.dual y).2 fun x hx o => by`. Take `⟨c, hc⟩` from `hy x hx`. Rewrite using `[← hc]`. Conclude with `Algebra.isIntegral_trace ((RingOfIntegers.isIntegral_coe o).mul (RingOfIntegers.isIntegral_coe c)))`.
+
+Establish `hcolL : ∀ M : Matrix (Fin n) (Fin k) E, (∀ j, (fun i => M i j) ∈ X.L) → ∀ i j, (Q * M.map φ) i j ∈ Formalism.UG.intL L`. Introduce `M hM i j`. Establish `h` using `hΛ _ (hφL _ (hM j)) i`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+
+Establish `hid : T.map φ * (X.J.map φ * (S.map φ).map σL)ᵀ = 1`. Establish `h` using `congrArg (fun M : Matrix (Fin n) (Fin n) E => M.map φ) hTS`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_one _ (map_zero φ) (map_one φ)] at h`. Establish `e : (S.map φ).map σL = (S.map σ).map φ`. Use extensionality with `i j`.
+
+Simplify using `[hφσ]`. Rewrite using `[e]`. Conclude with `h`. Establish `hSC : S.map φ = Pm * (Q * S.map φ)` using `by rw [← Matrix.mul_assoc, hPQ, Matrix.one_mul]`. Establish `hTA : T.map φ = Pm * (Q * T.map φ)` using `by rw [← Matrix.mul_assoc, hPQ, Matrix.one_mul]`.
+
+Establish `hKG : (Q * T.map φ) * ((Q * S.map φ).map σL)ᵀ * Gᵀ = 1`. Establish `hid'` using `hid`. Rewrite `hid'` using `[hSC, hTA, Matrix.map_mul]`. Rewrite using `[hGdef, GlobalTheory.InertLocFrame.gram, htJ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Q Pm, hQP, Matrix.one_mul]`. Use `_ = 1 := by rw [hid', Matrix.mul_one, hQP]`. Establish `hGK : Gᵀ * ((Q * T.map φ) * ((Q * S.map φ).map σL)ᵀ) = 1` using `mul_eq_one_comm.mp hKG`. Establish `hKint : ∀ i j, ((Q * T.map φ) * ((Q * S.map φ).map σL)ᵀ) i j ∈ Formalism.UG.intL L` using `fun i j => by`.
+
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => mul_mem (hcolL T hT i l) (by`. Rewrite using `[Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `hσint _ (hcolL S hS j l))`. Establish `hδ0 : δ ≠ 0` using `fun h => by rw [h, map_zero] at hδv; exact zero_ne_one hδv`.
+
+Establish `hδint : δ ∈ Formalism.UG.intL L` using `by show Valued.v δ ≤ 1`. Conclude with `le_of_eq hδv`. Establish `hδi : δ⁻¹ ∈ Formalism.UG.intL L` using `by show Valued.v δ⁻¹ ≤ 1`. Conclude with `le_of_eq (by rw [map_inv₀, hδv, inv_one])`. Establish `hprod : (-δ⁻¹ • Gᵀ) * (-δ • ((Q * T.map φ) * ((Q * S.map φ).map σL)ᵀ)) = 1`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, hGK, neg_mul_neg, inv_mul_cancel₀ hδ0, one_smul]`. Establish `hprod' : (-δ • ((Q * T.map φ) * ((Q * S.map φ).map σL)ᵀ)) * (-δ⁻¹ • Gᵀ) = 1`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, hKG, neg_mul_neg, mul_inv_cancel₀ hδ0, one_smul]`. Establish `hM1 : ∀ i j, (-δ⁻¹ • Gᵀ) i j ∈ Formalism.UG.intL L` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul]`.
+
+Conclude with `mul_mem (neg_mem hδi) (hGint j i)`. Establish `hM2 : ∀ i j, (-δ • ((Q * T.map φ) * ((Q * S.map φ).map σL)ᵀ)) i j ∈ Formalism.UG.intL L` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (neg_mem hδint) (hKint i j)`. Set `g1 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)` to `fun i j => ⟨_, hM1 i j⟩`.
+
+Set `g2 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)` to `fun i j => ⟨_, hM2 i j⟩`. Establish `hmap1 : (Formalism.UG.intL L).subtype.mapMatrix g1 = -δ⁻¹ • Gᵀ` using `by ext i j; rfl`. Establish `hmap2 : (Formalism.UG.intL L).subtype.mapMatrix g2 = -δ • ((Q * T.map φ) * ((Q * S.map φ).map σL)ᵀ)`. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Establish `hinjM : Function.Injective ((Formalism.UG.intL L).subtype.mapMatrix : Matrix (Fin n) (Fin n) (Formalism.UG.intL L) → Matrix (Fin n) (Fin n) L)` using `fun a b h => by`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`. Establish `h12 : g1 * g2 = 1` using `hinjM (by rw [map_mul, hmap1, hmap2, map_one]; exact hprod)`. Establish `h21 : g2 * g1 = 1` using `hinjM (by rw [map_mul, hmap1, hmap2, map_one]; exact hprod')`.
+
+Establish `hJTm : ((Formalism.UG.bc (Formalism.UG.intL L).subtype ⟨g1, g2, h12, h21⟩ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = -δ⁻¹ • Gᵀ` using `hmap1`. Use `⟨Formalism.UG.bc (Formalism.UG.intL L).subtype ⟨g1, g2, h12, h21⟩, ⟨⟨g1, g2, h12, h21⟩, rfl⟩, hJTm, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hJTm]`. Simplify using `only [Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, map_mul, map_neg, map_inv₀, hδσ, hGskew]`. Rewrite using `[inv_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_skew_unimodular : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w →
     ∀ (n r s : ℕ) (X : Spc F E n), X.IsSkew σ B r s →

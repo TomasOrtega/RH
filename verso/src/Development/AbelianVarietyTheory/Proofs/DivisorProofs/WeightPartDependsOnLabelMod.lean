@@ -13,6 +13,19 @@ namespace GlobalTheory.Poinc.GSum
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ hg hn hodd hi hE hT hP ε₁ hd D z₁ z₂ hq p _ c y h hy yy hl a a' ν ν' κ ha ha' hc`. Substitute `hy` using the available equality. Take `⟨hon, hker⟩` from `GlobalTheory.Poinc.isLab_onto_and_ker g n F W Z i D.X hg hn hodd hi hE hT D.proj D.ε D.diag p (y (cPt p)) (D.lift c y h) yy hl`. Take `⟨w, hw⟩` from `hc`. Take `⟨b, hb⟩` from `hon (QuotientAddGroup.mk w)`.
+
+Establish `hk : a - a' - D.m • b ∈ D.X.S.HH D.X.M (y (cPt p))`. Rewrite using `[← hker, AddMonoidHom.mem_ker]`. Establish `e1 : yy (a - a' - D.m • b) = yy a - yy a' - D.m • yy b`. Rewrite using `[map_sub, map_sub, map_nsmul]`. Rewrite using `[e1, ha, ha', hb, hw]`.
+
+Use `show ((QuotientAddGroup.mk (ν' + D.m • w) - QuotientAddGroup.mk ν' - D.m • QuotientAddGroup.mk w : ModN (D.X.S.r * D.X.S.N) (Fin 8 → c.T.D.toPre.X))) = 0`. Rewrite using `[← QuotientAddGroup.mk_nsmul, ← QuotientAddGroup.mk_sub, ← QuotientAddGroup.mk_sub]`. Simplify using the standard rewrite rules. Establish `hw' : wtChar D (D.X.S.TT D.X.M (y (cPt p))) a = wtChar D (D.X.S.TT D.X.M (y (cPt p))) a'`. Use extensionality with `t`.
+
+Establish `ht : eStdBilin D.X.S.g _ (t : D.X.S.Gam) (a - a' - D.m • b) = 0` using `t.2 _ hk`. Establish `hsplit : D.m • a = D.m • a' + (D.m * D.m) • b + D.m • (a - a' - D.m • b)`. Rewrite using `[mul_nsmul', ← smul_add, ← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+
+Establish `key : eStd D.X.S.g _ (t : D.X.S.Gam) (D.m • a) = eStd D.X.S.g _ (t : D.X.S.Gam) (D.m • a') + (D.m * D.m) • eStd D.X.S.g _ (t : D.X.S.Gam) b`. Rewrite using `[hsplit]`. Simplify using `only [← eStdBilin_apply, map_add, map_nsmul, ht, smul_zero, add_zero]`. Establish `hN : ZMod.castHom (dvd_mul_left D.X.S.N D.X.S.r) (ZMod D.X.S.N) ((D.m * D.m) • eStd D.X.S.g _ (t : D.X.S.Gam) b) = 0`. Rewrite using `[map_nsmul, ← sq, ← D.sq, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`.
+
+Use `show ZMod.castHom (dvd_mul_left D.X.S.N D.X.S.r) (ZMod D.X.S.N) (eStd D.X.S.g _ (t : D.X.S.Gam) (D.m • a)) = ZMod.castHom (dvd_mul_left D.X.S.N D.X.S.r) (ZMod D.X.S.N) (eStd D.X.S.g _ (t : D.X.S.Gam) (D.m • a'))`. Rewrite using `[key, map_add, hN, add_zero]`. Simplify using `only [part, hw']`.
+-/
 theorem part_eq_of_congMod : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (D : Deep X₁ ε₁) (z₁ : X₁.M.Z) (z₂ : D.X.M.Z), D.q z₂ = z₁ → ∀ (p : ℕ) [Fact p.Prime] (c : CTrait X₁ p z₁) (y : Sp (OO p) ⟶ D.X.M.Z) (h : y ≫ D.q = c.y), y (cPt p) = z₂ → ∀ yy : D.X.S.Gam →+ ModN (D.X.S.r * D.X.S.N) (Fin 8 → c.T.D.toPre.X), IsLab D.X D.ε (D.lift c y h) yy → ∀ a a' ν ν' κ, yy a = QuotientAddGroup.mk ν → yy a' = QuotientAddGroup.mk ν' → CongMod D.m ν ν' → GSum.part D z₁ z₂ a κ = GSum.part D z₁ z₂ a' κ := by
   intro g n F W Z i X₁ hg hn hodd hi hE hT hP ε₁ hd D z₁ z₂ hq p _ c y h hy yy hl a a' ν ν' κ ha ha' hc
   subst hy

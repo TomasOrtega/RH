@@ -7,6 +7,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G M _ _ ρ I H hH hρ`. Use `haveI : Finite (G ⧸ H) := Subgroup.finite_quotient_of_finiteIndex`. Set `f : G ⧸ H → M` to `fun q => if h : ∃ σ ∈ I, (σ : G ⧸ H) = q then ρ h.choose else 1`. Apply `(Set.finite_range f).subset` to reduce the goal to its premises. Introduce and unpack `_ ⟨σ, hσ, rfl⟩`.
+
+Use `⟨(σ : G ⧸ H), ?_⟩` and prove the remaining obligations. Establish `h : ∃ τ ∈ I, (τ : G ⧸ H) = σ` using `⟨σ, hσ, rfl⟩`. Simplify using `only [f, dif_pos h]`. Take `⟨hτI, hτ⟩` from `h.choose_spec`. Rewrite `hτ` using `[QuotientGroup.eq]`.
+
+Establish `h1 : ρ (h.choose⁻¹ * σ) = 1` using `hρ _ (I.mul_mem (I.inv_mem hτI) hσ) hτ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finite_image_of_map_eq_one_on_inf_finiteIndex :
     ∀ (G M : Type) [Group G] [Monoid M] (ρ : G →* M) (I H : Subgroup G), H.FiniteIndex →
       (∀ σ ∈ I, σ ∈ H → ρ σ = 1) → (ρ '' (I : Set G)).Finite := by

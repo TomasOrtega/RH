@@ -9,6 +9,9 @@ namespace GlobalTheory.BKReal
 
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
 
+/- English proof (translation)
+Introduce `n` and use `by rw [map_sub, coeff_N, coeff_smul, smul_eq_mul, ← sub_mul, norm_mul] rw [sub_eq_add_neg] refine mul_le_one₀ ?_ (norm_nonneg _) (hg n) refine (IsUltrametricDist.norm_add_le_max _ _).trans ?_ rw [norm_neg] exact max_le (IsUltrametricDist.norm_natCast_le_one K n) hc`.
+-/
 theorem N_sub_smul_mem_A {c : K} (hc : ‖c‖ ≤ 1) {g : K⟦X⟧} (hg : g ∈ A O K) :
     N K g - c • g ∈ A O K := fun n => by
   rw [map_sub, coeff_N, coeff_smul, smul_eq_mul, ← sub_mul, norm_mul]
@@ -19,6 +22,11 @@ theorem N_sub_smul_mem_A {c : K} (hc : ‖c‖ ≤ 1) {g : K⟦X⟧} (hg : g ∈
   exact
     max_le (IsUltrametricDist.norm_natCast_le_one K n) hc
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `zero => exact ⟨_, N_sub_smul_mem_A hc hg, by simp⟩`. Consider the case `succ j`. Use `⟨((j + 1 : ℕ) : K⟦X⟧) * ((e : K⟦X⟧) * X ^ e) * g + E K l e * (N K g - c • g), (A O K).add_mem ((A O K).mul_mem ((A O K).mul_mem (natCast_mem _ _) ((A O K).mul_mem (natCast_mem _ _) ((A O K).pow_mem HasU.X_mem e))) hg) ((A O K).mul_mem (E_mem l e _) (N_sub_smul_mem_A hc hg)), ?_⟩` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, Derivation.leibniz_pow, N_E, Nat.add_sub_cancel]`.
+
+Simplify using `only [smul_eq_mul, nsmul_eq_mul, smul_eq_C_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_N_sub_smul_E_pow_mul (l e : ℕ) {c : K} (hc : ‖c‖ ≤ 1) {g : K⟦X⟧} (hg : g ∈ A O K)
     (j : ℕ) : ∃ g' ∈ A O K,
       N K (E K l e ^ j * g) - c • (E K l e ^ j * g) = E K l e ^ (j - 1) * g' := by
@@ -34,6 +42,13 @@ theorem exists_N_sub_smul_E_pow_mul (l e : ℕ) {c : K} (hc : ‖c‖ ≤ 1) {g 
     push_cast
     ring
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => intro m g hg; exact ⟨g, hg, by simp⟩`. Consider the case `succ i ih`. Introduce `m g hg`. Take `⟨g₁, hg₁, h₁⟩` from `exists_N_sub_smul_E_pow_mul (O := O) l e (c := ((i + 1 : ℕ) : K)) (IsUltrametricDist.norm_natCast_le_one K _) hg m`.
+
+Take `⟨g₂, hg₂, h₂⟩` from `ih (m - 1) hg₁`. Use `⟨g₂, hg₂, ?_⟩` and prove the remaining obligations. Establish `h₃ : ∀ x : K⟦X⟧, Polynomial.aeval (N K).toLinearMap ((Polynomial.X - (i : Polynomial K)).comp (Polynomial.X - 1)) x = N K x - ((i + 1 : ℕ) : K) • x`. Introduce `x`. Rewrite using `[Polynomial.sub_comp, Polynomial.X_comp, Polynomial.natCast_comp, map_sub, map_sub, Polynomial.aeval_X, map_natCast, map_one, LinearMap.sub_apply, LinearMap.sub_apply, Module.End.natCast_apply, Module.End.one_apply, Derivation.coeFn_coe]`.
+
+Use `push_cast`. Rewrite using `[add_smul, one_smul, Nat.cast_smul_eq_nsmul]`. Normalize the expressions using the abelian group laws. Rewrite using `[descPochhammer_succ_right, Polynomial.mul_comp, map_mul (Polynomial.aeval _), Module.End.mul_apply, h₃, h₁, h₂, Nat.sub_sub, add_comm 1 i]`.
+-/
 theorem exists_aeval_comp_E_pow_mul (l e i : ℕ) : ∀ (m : ℕ) {g : K⟦X⟧}, g ∈ A O K →
     ∃ g' ∈ A O K, Polynomial.aeval (N K).toLinearMap
       ((descPochhammer K i).comp (Polynomial.X - 1)) (E K l e ^ m * g) = E K l e ^ (m - i) * g' := by
@@ -57,6 +72,11 @@ theorem exists_aeval_comp_E_pow_mul (l e i : ℕ) : ∀ (m : ℕ) {g : K⟦X⟧}
     rw [descPochhammer_succ_right, Polynomial.mul_comp, map_mul (Polynomial.aeval _), Module.End.mul_apply, h₃, h₁, h₂,
       Nat.sub_sub, add_comm 1 i]
 
+/- English proof (translation)
+Introduce `l e O K _ _ _ _ _ f h k m hh hf i hi`. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le' hi`. Take `⟨h', hh', h₁⟩` from `exists_aeval_comp_E_pow_mul (O := O) l e i m hh`. Use `⟨h', hh', ?_⟩` and prove the remaining obligations. Establish `hl : (l : K⟦X⟧) ^ k = C ((l : K) ^ k)` using `by simp`.
+
+Rewrite using `[Nat.add_sub_add_right, ← h₁, ← hf, descN, descPochhammer_succ_left, mul_comm (Polynomial.X : Polynomial K), map_mul (Polynomial.aeval _), Polynomial.aeval_X, Module.End.mul_apply, hl, ← smul_eq_C_mul, ← smul_eq_C_mul, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem exists_l_pow_mul_descN_eq_E_pow_mul : ∀ (l e : ℕ) (O K : Type) [CommRing O] [NormedField K]
     [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] (f h : K⟦X⟧) (k m : ℕ), h ∈ A O K →
     (l : K⟦X⟧) ^ k * N K f = E K l e ^ m * h → ∀ i : ℕ, 1 ≤ i →

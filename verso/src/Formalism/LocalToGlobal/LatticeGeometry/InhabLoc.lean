@@ -20,25 +20,40 @@ def ballC (C : Type) [NormedField C] [IsUltrametricDist C] : AddSubgroup C where
   zero_mem' := by simp
   neg_mem' := fun {a} ha => by simpa using ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ballC {C : Type} [NormedField C] [IsUltrametricDist C] (x : C) : x ∈ ballC C ↔ ‖x‖ ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+Establish `h1 : (1 : C) ∈ ballC C`. Rewrite using `[mem_ballC]`. Simplify using the standard rewrite rules. Simplify using `using (ballC C).zsmul_mem h1 t`.
+-/
 theorem intCast_mem_ballC {C : Type} [NormedField C] [IsUltrametricDist C] (t : ℤ) : (t : C) ∈ ballC C := by
   have h1 : (1 : C) ∈ ballC C := by
     rw [mem_ballC]
     simp
   simpa using (ballC C).zsmul_mem h1 t
 
+/- English proof (translation)
+Rewrite using `[mem_ballC, smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hv`.
+-/
 theorem smul_mem_ballC {C : Type} [NormedField C] [IsUltrametricDist C] (a v : C) (ha : ‖a‖ ≤ 1) (hv : v ∈ ballC C) :
     a • v ∈ ballC C := by
   rw [mem_ballC, smul_eq_mul, norm_mul]
   exact mul_le_one₀ ha (norm_nonneg _) hv
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h1 : (1 : C) ∈ Submodule.span C (Set.range (Int.castAddHom C))` using `Submodule.subset_span ⟨1, by simp⟩`. Simplify using `using Submodule.smul_mem _ x h1`.
+-/
 theorem span_intCast (C : Type) [Field C] : Submodule.span C (Set.range (Int.castAddHom C)) = ⊤ := by
   rw [eq_top_iff]
   intro x _
   have h1 : (1 : C) ∈ Submodule.span C (Set.range (Int.castAddHom C)) := Submodule.subset_span ⟨1, by simp⟩
   simpa using Submodule.smul_mem _ x h1
 
+/- English proof (translation)
+Use `le_antisymm (le_inf le_rfl (le_sup_of_le_left fun x hx => ?_)) inf_le_left` and prove the remaining obligations. Conclude with `AddSubgroup.subset_closure ⟨x, hx, 1, ⟨1, by simp⟩, by simp⟩`.
+-/
 theorem ballC_eq_inf {C : Type} [NormedField C] [IsUltrametricDist C] (a : C) :
     ballC C = ballC C ⊓ (Ospan (C := C) (Set.range (Int.castAddHom C)) ⊔
       (ballC C).map (DistribSMul.toAddMonoidHom C a)) := by
@@ -48,22 +63,39 @@ theorem ballC_eq_inf {C : Type} [NormedField C] [IsUltrametricDist C] (a : C) :
 def actT (C A : Type) [Field C] [Group A] : Cˣ × A →* Module.End C C :=
   (algebraMap C (Module.End C C)).toMonoidHom.comp ((Units.coeHom C).comp (MonoidHom.fst Cˣ A))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actT_apply (C A : Type) [Field C] [Group A] (g : Cˣ × A) (s : C) : actT C A g s = (g.1 : C) • s := rfl
 
 def rkB (ρ : ℕ) : Bool → ℕ
   | false => 0
   | true => min ρ 1
 
+/- English proof (translation)
+Apply the tactic sequence `cases y <;> simp [rkB]`.
+-/
 theorem rkB_le_one (ρ : ℕ) (y : Bool) : rkB ρ y ≤ 1 := by
   cases y <;> simp [rkB]
 
+/- English proof (translation)
+Apply the tactic sequence `cases y <;> simp [rkB]`.
+-/
 theorem rkB_le (ρ : ℕ) (y : Bool) : rkB ρ y ≤ ρ := by
   cases y <;> simp [rkB]
 
+/- English proof (translation)
+Use `show 0 < min ρ 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rkB_true_pos {ρ : ℕ} (h : 0 < ρ) : 0 < rkB ρ true := by
   show 0 < min ρ 1
   omega
 
+/- English proof (translation)
+Break down `r with _ | _ | k` into its components or cases. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[Nat.le_div_iff_mul_le (by norm_num)]`. Simplify using `only [Nat.add_sub_cancel]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem le_choose_two (r : ℕ) : r - 1 ≤ r * (r - 1) / 2 := by
   rcases r with _ | _ | k
   · simp
@@ -72,11 +104,43 @@ theorem le_choose_two (r : ℕ) : r - 1 ≤ r * (r - 1) / 2 := by
     simp only [Nat.add_sub_cancel]
     nlinarith
 
+/- English proof (translation)
+The claim follows from `Nat.sub_add_cancel (Nat.mul_le_mul_left _ (le_choose_two r))`.
+-/
 theorem flDim_eq (f r : ℕ) : f * (r * (r - 1) / 2) - f * (r - 1) + f * (r - 1) = f * (r * (r - 1) / 2) :=
   Nat.sub_add_cancel (Nat.mul_le_mul_left _ (le_choose_two r))
 
 open Matrix in
 
+/- English proof (translation)
+Use `choose g hg using fun i k => hint (b i) (b k)`. Set `G : Matrix (Fin n) (Fin n) ℤ` to `Matrix.of g`. Set `GR : Matrix (Fin n) (Fin n) ℝ` to `G.map (Int.castRingHom ℝ)`. Establish `hGR : ∀ i k, GR i k = β (b i) (b k)` using `fun i k => by simp [GR, G, hg]`. Establish `hq : ∀ x : Fin n → ℝ, ∑ i, ∑ k, x i * x k * β (b i) (b k) = x ⬝ᵥ (GR *ᵥ x)`.
+
+Introduce `x`. Simplify using `only [dotProduct, Matrix.mulVec, hGR, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`. Establish `hz : ∀ z : Fin n → ℤ, (fun i => (z i : ℝ)) ⬝ᵥ (GR *ᵥ fun i => (z i : ℝ)) = β (∑ i, z i • b i) (∑ i, z i • b i)`. Introduce `z`.
+
+Rewrite using `[← hq]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, zsmul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by`. Rewrite using `[hsymm (b k) (b i)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hhom : ∀ (t : ℝ) (x : Fin n → ℝ), (t • x) ⬝ᵥ (GR *ᵥ (t • x)) = t ^ 2 * (x ⬝ᵥ (GR *ᵥ x))`. Introduce `t x`. Rewrite using `[Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnnZ : ∀ z : Fin n → ℤ, 0 ≤ (fun i => (z i : ℝ)) ⬝ᵥ (GR *ᵥ fun i => (z i : ℝ))`.
+
+Introduce `z`. Rewrite using `[hz]`. Distinguish the cases in `h : (∑ i, z i • b i) = 0`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+
+Conclude with `(hpos _ h).le`. Establish `hnnQ : ∀ w : Fin n → ℚ, 0 ≤ (fun i => (w i : ℝ)) ⬝ᵥ (GR *ᵥ fun i => (w i : ℝ))`. Introduce `w`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors ℤ) Finset.univ w`. Use `choose z hz' using fun i => hd i (Finset.mem_univ i)`.
+
+Establish `hd0 : ((d : ℤ) : ℝ) ≠ 0` using `by exact_mod_cast nonZeroDivisors.coe_ne_zero d`. Establish `h1 : (fun i => (z i : ℝ)) = ((d : ℤ) : ℝ) • fun i => (w i : ℝ)`. Use function extensionality and compare the values at `i`. Establish `h2` using `congrArg (fun q : ℚ => (q : ℝ)) (hz' i)`. Simplify using `using h2`.
+
+Establish `h2` using `hnnZ z`. Rewrite `h2` using `[h1, hhom]`. Conclude with `(mul_nonneg_iff_of_pos_left (by positivity)).1 h2`. Establish `hpsd : ∀ x : Fin n → ℝ, 0 ≤ x ⬝ᵥ (GR *ᵥ x)`. Introduce `x`.
+
+Establish `hdense : DenseRange (Pi.map fun (_ : Fin n) (q : ℚ) => (q : ℝ))` using `DenseRange.piMap fun _ => Rat.denseRange_cast`. Use `hdense.induction_on x ?_ hnnQ` and prove the remaining obligations. Use `isClosed_le continuous_const ?_` and prove the remaining obligations. Simplify using `only [dotProduct, Matrix.mulVec]`. Use `fun_prop`.
+
+Establish `hdet : G.det ≠ 0`. Introduce `h0`. Take `⟨z, hz0, hGz⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `h1` using `hz z`. Establish `h2 : GR *ᵥ (fun i => (z i : ℝ)) = 0`.
+
+Use function extensionality and compare the values at `i`. Use `show (G.map (Int.castRingHom ℝ) *ᵥ ((Int.castRingHom ℝ) ∘ z)) i = 0`. Rewrite using `[← RingHom.map_mulVec, hGz]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, dotProduct_zero]`.
+
+Establish `h3 : ∑ i, z i • b i ≠ 0` using `fun h => hz0 (funext fun i => Fintype.linearIndependent_iff.1 b.linearIndependent z h i)`. Conclude with `(hpos _ h3).ne h1`. Establish `hherm : GR.IsHermitian`. Use extensionality with `i k`. Simplify using `[Matrix.conjTranspose_apply, hGR, hsymm (b k) (b i)]`.
+
+Establish `hPS : GR.PosSemidef` using `.of_dotProduct_mulVec_nonneg hherm fun x => by simpa using hpsd x`. Establish `hU : IsUnit GR`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Establish `h1 : GR.det = ((G.det : ℤ) : ℝ)` using `((Int.castRingHom ℝ).map_det G).symm`. Rewrite using `[h1]`.
+
+Conclude with `hdet` after adjusting the coercions. Establish `hPD` using `hPS.posDef_iff_isUnit.2 hU`. Rewrite using `[hq]`. Simplify using `using hPD.dotProduct_mulVec_pos hx`.
+-/
 theorem pd_of_int {Y : Type} [AddCommGroup Y] (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ)
     (hsymm : ∀ a b, β a b = β b a) (hint : ∀ a b, ∃ z : ℤ, β a b = z) (hpos : ∀ a, a ≠ 0 → 0 < β a a)
     {n : ℕ} (b : Module.Basis (Fin n) ℤ Y) (x : Fin n → ℝ) (hx : x ≠ 0) :
@@ -157,6 +221,11 @@ theorem pd_of_int {Y : Type} [AddCommGroup Y] (β : Y →ₗ[ℤ] Y →ₗ[ℤ] 
 
 variable (D : D7)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hs`. Assume the negation of the conclusion as `hk`. Use `hs.elim (fun _ => (0 : 𝓞 D.host.E)) (fun _ => 1)` as an intermediate fact. Conclude with `zero_ne_one (congrFun this ⟨0, Nat.pos_of_ne_zero hk⟩)`.
+
+Introduce and unpack `rfl infer_instance`.
+-/
 theorem subsingleton_pow (k : ℕ) : Subsingleton (Fin k → 𝓞 D.host.E) ↔ k = 0 := by
   constructor
   · intro hs
@@ -166,53 +235,86 @@ theorem subsingleton_pow (k : ℕ) : Subsingleton (Fin k → 𝓞 D.host.E) ↔ 
   · rintro rfl
     infer_instance
 
+/- English proof (translation)
+Rewrite using `[RingOfIntegers.rank, D.host.finrank_cmField]`. Simplify using `only [Ranks.f, Ranks.n]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_OE : Module.finrank ℤ (𝓞 D.host.E) = 2 * D.R.f := by
   rw [RingOfIntegers.rank, D.host.finrank_cmField]
   simp only [Ranks.f, Ranks.n]
   ring
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, finrank_OE]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_pow (k : ℕ) : Module.finrank ℤ (Fin k → 𝓞 D.host.E) = k * (2 * D.R.f) := by
   rw [Module.finrank_pi_fintype, Finset.sum_const, finrank_OE]
   simp
 
 def trZ (k : ℕ) (a b : Fin k → 𝓞 D.host.E) : ℤ := ∑ i, Algebra.trace ℤ (𝓞 D.host.E) (a i * cjO D (b i))
 
+/- English proof (translation)
+Rewrite using `[beK_apply, trZ, Int.cast_sum]`. Both sides reduce to the same expression.
+-/
 theorem trZ_cast (k : ℕ) (a b : Fin k → 𝓞 D.host.E) : ((trZ D k a b : ℤ) : ℝ) = beK D k a b := by
   rw [beK_apply, trZ, Int.cast_sum]
   rfl
 
+/- English proof (translation)
+Rewrite using `[beK_apply, beK_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => beO_symm D _ _`.
+-/
 theorem beK_symm (k : ℕ) (a b : Fin k → 𝓞 D.host.E) : beK D k a b = beK D k b a := by
   rw [beK_apply, beK_apply]
   exact Finset.sum_congr rfl fun i _ => beO_symm D _ _
 
+/- English proof (translation)
+Rewrite using `[beK_apply, beK_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => beO_bal D c c' h _ _`.
+-/
 theorem beK_bal (k : ℕ) (c c' : 𝓞 D.host.E) (h : (c' : D.host.E) = D.host.conj (c : D.host.E))
     (a b : Fin k → 𝓞 D.host.E) : beK D k (c • a) b = beK D k a (c' • b) := by
   rw [beK_apply, beK_apply]
   exact Finset.sum_congr rfl fun i _ => beO_bal D c c' h _ _
 
+/- English proof (translation)
+Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[Int.cast_add, trZ_cast, trZ_cast, trZ_cast, map_add, LinearMap.add_apply]`.
+-/
 theorem trZ_add_left (k : ℕ) (a a' b : Fin k → 𝓞 D.host.E) : trZ D k (a + a') b = trZ D k a b + trZ D k a' b := by
   apply Int.cast_injective (α := ℝ)
   rw [Int.cast_add, trZ_cast, trZ_cast, trZ_cast, map_add, LinearMap.add_apply]
 
+/- English proof (translation)
+Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[Int.cast_add, trZ_cast, trZ_cast, trZ_cast, map_add]`.
+-/
 theorem trZ_add_right (k : ℕ) (a b b' : Fin k → 𝓞 D.host.E) : trZ D k a (b + b') = trZ D k a b + trZ D k a b' := by
   apply Int.cast_injective (α := ℝ)
   rw [Int.cast_add, trZ_cast, trZ_cast, trZ_cast, map_add]
 
+/- English proof (translation)
+Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[trZ_cast, trZ_cast, beK_symm]`.
+-/
 theorem trZ_symm (k : ℕ) (a b : Fin k → 𝓞 D.host.E) : trZ D k a b = trZ D k b a := by
   apply Int.cast_injective (α := ℝ)
   rw [trZ_cast, trZ_cast, beK_symm]
 
+/- English proof (translation)
+Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[trZ_cast, trZ_cast, beK_bal D k c (integersConjugation D c) (integers_conjugation_coe D c)]`.
+-/
 theorem trZ_bal (k : ℕ) (c : 𝓞 D.host.E) (a b : Fin k → 𝓞 D.host.E) :
     trZ D k (c • a) b = trZ D k a (integersConjugation D c • b) := by
   apply Int.cast_injective (α := ℝ)
   rw [trZ_cast, trZ_cast, beK_bal D k c (integersConjugation D c) (integers_conjugation_coe D c)]
 
+/- English proof (translation)
+Establish `h : (0 : ℝ) ≤ ((trZ D k a a : ℤ) : ℝ)`. Rewrite using `[trZ_cast, beK_apply]`. Conclude with `Finset.sum_nonneg fun i _ => beO_nonneg D _`. Conclude with `h` after adjusting the coercions.
+-/
 theorem trZ_self_nonneg (k : ℕ) (a : Fin k → 𝓞 D.host.E) : 0 ≤ trZ D k a a := by
   have h : (0 : ℝ) ≤ ((trZ D k a a : ℤ) : ℝ) := by
     rw [trZ_cast, beK_apply]
     exact Finset.sum_nonneg fun i _ => beO_nonneg D _
   exact_mod_cast h
 
+/- English proof (translation)
+Simplify using `[trZ]`.
+-/
 theorem trZ_zero_rank (a b : Fin 0 → 𝓞 D.host.E) : trZ D 0 a b = 0 := by
   simp [trZ]
 
@@ -220,6 +322,11 @@ open Classical in
 
 def pU (p : ℕ) (c : CF p) : (c.C)ˣ := if h : (p : c.C) = 0 then 1 else Units.mk0 (p : c.C) h
 
+/- English proof (translation)
+Break down `h with h | rfl` into its components or cases. Establish `hp0 : (p : c.C) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `h1 : ((pU p c ^ z : (c.C)ˣ) : c.C) = (p : c.C) ^ z` using `by simp [pU, hp0]`. Establish `hl : Real.log (p : ℝ) ≠ 0` using `(Real.log_pos (by exact_mod_cast h)).ne'`. Unfold `BoundaryLocalData.vU Real.logb`.
+
+Rewrite using `[h1, norm_zpow, c.norm_p, Real.log_zpow, Real.log_inv]`. Clear the denominators using the available nonvanishing facts. Simplify using `[BoundaryLocalData.vU]`.
+-/
 theorem vU_pU_zpow (p : ℕ) (c : CF p) (z : ℤ) (h : 2 ≤ p ∨ z = 0) : BoundaryLocalData.vU p (pU p c ^ z) = z := by
   rcases h with h | rfl
   · have hp0 : (p : c.C) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
@@ -234,6 +341,9 @@ def u2 : (FractionRing ℤ_[2])ˣ :=
   Units.mk0 (algebraMap ℤ_[2] (FractionRing ℤ_[2]) 2)
     ((map_ne_zero_iff _ (IsFractionRing.injective ℤ_[2] (FractionRing ℤ_[2]))).2 two_ne_zero)
 
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hz`. Conclude with `⟨2 ^ n, by simp [u2]⟩`.
+-/
 theorem two_adic_unit_zpow_mem (z : ℤ) (hz : 0 ≤ z) :
     ((u2 ^ z : (FractionRing ℤ_[2])ˣ) : FractionRing ℤ_[2]) ∈ (algebraMap ℤ_[2] (FractionRing ℤ_[2])).range := by
   obtain ⟨n, rfl⟩ := Int.eq_ofNat_of_zero_le hz
@@ -630,12 +740,18 @@ end Model
 
 def rhoJ (r p : ℕ) : ℕ := if 2 ≤ r ∧ 2 ≤ p then 1 else 0
 
+/- English proof (translation)
+Unfold `rhoJ`. Use `split_ifs with h`. Conclude with `Or.inl h.2`. Conclude with `Or.inr rfl`.
+-/
 theorem rhoJ_p (r p : ℕ) : 2 ≤ p ∨ rhoJ r p = 0 := by
   unfold rhoJ
   split_ifs with h
   · exact Or.inl h.2
   · exact Or.inr rfl
 
+/- English proof (translation)
+Unfold `rhoJ`. Use `split_ifs with h`. Use polynomial arithmetic with `[h.1]`. Simplify using the standard rewrite rules.
+-/
 theorem rhoJ_dim (f r p : ℕ) : rhoJ r p * (2 * f) ≤ f * r := by
   unfold rhoJ
   split_ifs with h
@@ -655,25 +771,43 @@ section Facts
 
 variable (D : D7) (r j p : ℕ) (c : CF p) (ρ : ℕ)
 
+/- English proof (translation)
+Introduce `hs` and use `(Nat.pos_iff_ne_zero.1 (rkB_true_pos h)) ((subsingleton_pow D (rkB ρ true)).1 hs)`.
+-/
 theorem locT_not_good (h : 0 < ρ) : ¬ (locT D r j p c ρ).good (Z := ()) true :=
   fun hs => (Nat.pos_iff_ne_zero.1 (rkB_true_pos h)) ((subsingleton_pow D (rkB ρ true)).1 hs)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨trivial, trivial, rkB_true_pos h, trivial, trivial⟩`.
+-/
 theorem locT_isChart (h : 0 < ρ) : IsChart (locT D r j p c ρ) (Z := ()) (y := true) (e := ()) () :=
   ⟨trivial, trivial, rkB_true_pos h, trivial, trivial⟩
 
+/- English proof (translation)
+Simplify using `[rhoJ, hr, hp]`.
+-/
 theorem rhoJ_pos {r p : ℕ} (hr : 2 ≤ r) (hp : 2 ≤ p) : 0 < rhoJ r p := by
   simp [rhoJ, hr, hp]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨true, locT_not_good D r j p (cfJunk p) (rhoJ r p) (rhoJ_pos hr hp)⟩`.
+-/
 theorem junkLocalData_bad {r p : ℕ} (hr : 2 ≤ r) (hp : 2 ≤ p) :
     ∃ y : (junkLocalData D r j p).Pt (junkLocalData D r j p).Xm, ¬ (junkLocalData D r j p).good y :=
   ⟨true, locT_not_good D r j p (cfJunk p) (rhoJ r p) (rhoJ_pos hr hp)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨true, (), (), rkB_true_pos (rhoJ_pos hr hp), locT_isChart D r j p (cfJunk p) (rhoJ r p) (rhoJ_pos hr hp)⟩`.
+-/
 theorem junkLocalData_chart {r p : ℕ} (hr : 2 ≤ r) (hp : 2 ≤ p) :
     ∃ (y : (junkLocalData D r j p).DVP) (e : (junkLocalData D r j p).Ext y)
       (χ : (junkLocalData D r j p).Chart (junkLocalData D r j p).Xm y e),
       0 < (junkLocalData D r j p).dvRho y ∧ IsChart (junkLocalData D r j p) χ :=
   ⟨true, (), (), rkB_true_pos (rhoJ_pos hr hp), locT_isChart D r j p (cfJunk p) (rhoJ r p) (rhoJ_pos hr hp)⟩
 
+/- English proof (translation)
+Introduce `hx` and use `pd_of_int ((junkLocalData D r j p).be y) ((junkLocalData D r j p).be_symm y) (fun a a' => beK_int D (rkB (rhoJ r p) y) a a') ((junkLocalData D r j p).be_pos y) b x hx`.
+-/
 theorem junkLocalData_be_pd {Z : (junkLocalData D r j p).Mdl} (y : (junkLocalData D r j p).Pt Z) (n : ℕ)
     (b : Module.Basis (Fin n) ℤ ((junkLocalData D r j p).Ylat y)) (x : Fin n → ℝ) :
     x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * (junkLocalData D r j p).be y (b i) (b k) :=
@@ -682,6 +816,11 @@ theorem junkLocalData_be_pd {Z : (junkLocalData D r j p).Mdl} (y : (junkLocalDat
 
 variable {D r j p}
 
+/- English proof (translation)
+Establish `key : ∀ a : L.Ylat y, a = 0` using `fun a => by`. Assume the negation of the conclusion as `h`. Establish `h1` using `L.be_pos y a h`. Rewrite `h1` using `[B.be_tau]`. Apply the tactic sequence `have h2 : Real.log (p : ℝ) = 0 := by interval_cases p <;> simp`.
+
+Simplify using `[BoundaryLocalData.vU, Real.logb, h2] at h1`. Conclude with `⟨fun a b => by rw [key a, key b]⟩`.
+-/
 theorem good_of_le_one {L : Loc D r j p} (B : BoundaryLocalData.LocB D L) (hp : p ≤ 1) {Z : L.Mdl} (y : L.Pt Z) : L.good y := by
   have key : ∀ a : L.Ylat y, a = 0 := fun a => by
     by_contra h
@@ -692,6 +831,21 @@ theorem good_of_le_one {L : Loc D r j p} (B : BoundaryLocalData.LocB D L) (hp : 
     simp [BoundaryLocalData.vU, Real.logb, h2] at h1
   exact ⟨fun a b => by rw [key a, key b]⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hns`. Rewrite `hns` using `[Loc.good, not_subsingleton_iff_nontrivial]`. Take `⟨a, ha⟩` from `exists_ne (0 : L.Ylat y)`. Establish `htf : ∀ n : ℤ, n • a = 0 → n = 0`. Introduce `n hn`.
+
+Assume the negation of the conclusion as `h0`. Establish `h1` using `L.be_pos y a ha`. Establish `h2 : L.be y (n • a) a = 0`. Rewrite using `[hn]`. Simplify using the standard rewrite rules.
+
+Rewrite `h2` using `[map_smul, LinearMap.smul_apply, zsmul_eq_mul]`. Establish `h3 : (n : ℝ) ≠ 0` using `by exact_mod_cast h0`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `h3 h`. Conclude with `h1.ne' h`.
+
+Set `φ : 𝓞 D.host.E →ₗ[ℤ] L.Ylat y` to `(LinearMap.toSpanSingleton (𝓞 D.host.E) (L.Ylat y) a).restrictScalars ℤ`. Establish `hinj : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `e he`. Assume the negation of the conclusion as `h0`.
+
+Take `⟨d, hd⟩` from `Algebra.dvd_algebraMap_intNorm_self ℤ (𝓞 D.host.E) e`. Establish `h3 : Algebra.intNorm ℤ (𝓞 D.host.E) e • a = 0`. Establish `h4 : e • a = 0` using `he`. Rewrite using `[← algebraMap_smul (𝓞 D.host.E), hd, mul_comm, mul_smul, h4, smul_zero]`. Conclude with `(Algebra.intNorm_ne_zero.2 h0) (htf _ h3)`.
+
+Establish `h4` using `LinearMap.finrank_le_finrank_of_injective hinj`. Establish `h5` using `B.dimB_add y`. Establish `h6 : L.dP y = Module.finrank ℤ (L.Ylat y)` using `rfl`. Establish `h7 : 0 < D.R.f`. Use `D.R.ord_pos` as an intermediate fact.
+
+Simplify using `only [Ranks.f, Ranks.n]`. Use linear arithmetic over natural numbers and integers. Rewrite `h4` using `[finrank_OE]`. Apply the tactic sequence `have h8 : D.R.f * r ≤ D.R.f := by interval_cases r <;> simp`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem good_of_rank_le_one {L : Loc D r j p} (B : BoundaryLocalData.LocB D L) (hr : r ≤ 1) (y : L.Pt L.Xm) : L.good y := by
   by_contra hns
   rw [Loc.good, not_subsingleton_iff_nontrivial] at hns

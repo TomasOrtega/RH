@@ -9,6 +9,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.Per.FontaineTied
 
+/- English proof (translation)
+Introduce `l _ P AI hT K` and use `GlobalTheory.Per.FontaineAll.fontCore_of_tied l P AI hT K`.
+-/
 theorem fontCore_all_of_tied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied l P AI → ∀ K : FinExt l, Formalism.MainNotions.LocalSituation.fontCore (P.PD K) :=
   fun l _ P AI hT K => GlobalTheory.Per.FontaineAll.fontCore_of_tied l P AI hT K

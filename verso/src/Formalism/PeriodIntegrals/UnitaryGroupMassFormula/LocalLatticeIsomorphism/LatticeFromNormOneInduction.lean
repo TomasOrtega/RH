@@ -9,6 +9,17 @@ namespace PI.KLW.Ind
 
 open PI.KLW
 
+/- English proof (translation)
+Take `⟨w, hw⟩ : ∃ w, w = e0 - e` from `⟨_, rfl⟩`. Take `⟨t, htdef⟩ : ∃ t, t = hf c e0 w` from `⟨_, rfl⟩`. Establish `ht : t = 1 - hf c e0 e` using `by rw [htdef, hw, hf_sub_right, h0]`. Establish `ht0 : t ≠ 0` using `by rw [ht]; exact sub_ne_zero.mpr (Ne.symm hne)`. Establish `hct : c t = 1 - hf c e e0` using `by rw [htdef, hf_conj c hc, hw, hf_sub_left, h0]`.
+
+Establish `hww : hf c w w = t + c t`. Rewrite using `[hct, ht, hw, hf_sub_left, hf_sub_right, hf_sub_right, h0, h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hct0 : c t ≠ 0` using `(map_ne_zero c).mpr ht0`. Take `⟨γ, hγ⟩ : ∃ γ, γ = t⁻¹` from `⟨_, rfl⟩`.
+
+Establish `key : γ + c γ = γ * c γ * hf c w w`. Rewrite using `[hww, hγ, map_inv₀]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Set `φ : (ι → K) →ₗ[K] K` to `{ toFun := fun v => γ * hf c v w map_add' := fun a b => by rw [hf_add_left, mul_add] map_smul' := fun k a => by rw [hf_smul_left, RingHom.id_apply, smul_eq_mul]; ring }`.
+
+Set `σL : (ι → K) →ₗ[K] (ι → K)` to `LinearMap.id - φ.smulRight w`. Establish `hσ : ∀ v, σL v = v - (γ * hf c v w) • w` using `fun v => rfl`. Establish `iso : ∀ v v', hf c (σL v) (σL v') = hf c v v'`. Introduce `v v'`. Rewrite using `[hσ, hσ]`.
+
+Simplify using `only [hf_sub_left, hf_sub_right, hf_smul_left, hf_smul_right, map_mul]`. Rewrite using `[← hf_conj c hc v' w]`. Take the linear combination `(-(hf c v w * c (hf c v' w))) * key`. Use `⟨mkU c σL iso, mkU_unitary c σL iso, ?_⟩` and prove the remaining obligations. Rewrite using `[mkU_apply, hσ, ← htdef, hγ, inv_mul_cancel₀ ht0, one_smul, hw, sub_sub_cancel]`.
+-/
 theorem exists_refl {K : Type} [Field K] (c : K →+* K) (hc : ∀ x, c (c x) = x) {ι : Type}
     [Fintype ι] (e0 e : ι → K) (h0 : hf c e0 e0 = 1) (h1 : hf c e e = 1) (hne : hf c e0 e ≠ 1) :
     ∃ σ : (ι → K) ≃ₗ[K] (ι → K), IsUnitary c σ ∧ σ e0 = e := by
@@ -41,6 +52,11 @@ theorem exists_refl {K : Type} [Field K] (c : K →+* K) (hc : ∀ x, c (c x) = 
   refine ⟨mkU c σL iso, mkU_unitary c σL iso, ?_⟩
   rw [mkU_apply, hσ, ← htdef, hγ, inv_mul_cancel₀ ht0, one_smul, hw, sub_sub_cancel]
 
+/- English proof (translation)
+Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv w hw`. Rewrite using `[← hσ]`. Conclude with `(hL (σ v)).1 hv (σ w) hw`.
+
+Introduce `h show σ v ∈ L`. Rewrite using `[hL]`. Introduce `w hw`. Establish `h'` using `h (σ.symm w) (by show σ (σ.symm w) ∈ L; rw [LinearEquiv.apply_symm_apply]; exact hw)`. Rewrite `h'` using `[← hσ, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem unimod_preimage {K : Type} [Field K] [NumberField K] (c : K →+* K) (p : ℕ) {ι : Type}
     [Fintype ι] {σ : (ι → K) ≃ₗ[K] (ι → K)} (hσ : IsUnitary c σ) {L : Set (ι → K)}
     (hL : Unimod K c p L) : Unimod K c p (σ ⁻¹' L) := by
@@ -56,6 +72,9 @@ theorem unimod_preimage {K : Type} [Field K] [NumberField K] (c : K →+* K) (p 
     have h' := h (σ.symm w) (by show σ (σ.symm w) ∈ L; rw [LinearEquiv.apply_symm_apply]; exact hw)
     rwa [← hσ, LinearEquiv.apply_symm_apply] at h'
 
+/- English proof (translation)
+Introduce `v` and use `by obtain ⟨N, hN, h⟩ := hS (σ v) exact ⟨N, hN, by show σ _ ∈ L; rw [map_smul]; exact h⟩`.
+-/
 theorem spans_preimage {K : Type} [Field K] {ι : Type} {σ : (ι → K) ≃ₗ[K] (ι → K)}
     {L : Set (ι → K)} (hS : Spans K L) : Spans K (σ ⁻¹' L) := fun v => by
   obtain ⟨N, hN, h⟩ := hS (σ v)
@@ -74,17 +93,31 @@ def extL {K : Type} [Field K] {ι : Type} [DecidableEq ι] (i0 : ι) :
 def resL {K : Type} [Field K] {ι : Type} (i0 : ι) : (ι → K) →ₗ[K] ({i // i ≠ i0} → K) :=
   LinearMap.funLeft K K Subtype.val
 
+/- English proof (translation)
+Simplify using `[extL]`.
+-/
 theorem extL_self {K : Type} [Field K] {ι : Type} [DecidableEq ι] (i0 : ι)
     (w : {i // i ≠ i0} → K) : extL i0 w i0 = 0 := by
   simp [extL]
 
+/- English proof (translation)
+Simplify using `[extL, j.2]`.
+-/
 theorem extL_ne {K : Type} [Field K] {ι : Type} [DecidableEq ι] (i0 : ι)
     (w : {i // i ≠ i0} → K) (j : {i // i ≠ i0}) : extL i0 w j.1 = w j := by
   simp [extL, j.2]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resL_apply {K : Type} [Field K] {ι : Type} (i0 : ι) (v : ι → K) (j : {i // i ≠ i0}) :
     resL i0 v j = v j.1 := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = i0`. Substitute `h` using the available equality. Simplify using `[extL_self]`. Use `extL_ne i0 (resL i0 v) ⟨i, h⟩` as an intermediate fact.
+
+Simplify using `only at this`. Simplify using `[this, resL_apply, Pi.single_eq_of_ne h]`.
+-/
 theorem decomp {K : Type} [Field K] {ι : Type} [DecidableEq ι] (i0 : ι) (v : ι → K) :
     v = extL i0 (resL i0 v) + v i0 • Pi.single i0 1 := by
   funext i
@@ -95,12 +128,18 @@ theorem decomp {K : Type} [Field K] {ι : Type} [DecidableEq ι] (i0 : ι) (v : 
     simp only at this
     simp [this, resL_apply, Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+Unfold `hf`. Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ i0]`. Simplify using `only [extL_self, extL_ne, zero_mul, zero_add]`.
+-/
 theorem hf_ext_ext {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] [DecidableEq ι]
     (i0 : ι) (a b : {i // i ≠ i0} → K) : hf c (extL i0 a) (extL i0 b) = hf c a b := by
   unfold hf
   rw [Fintype.sum_eq_add_sum_subtype_ne _ i0]
   simp only [extL_self, extL_ne, zero_mul, zero_add]
 
+/- English proof (translation)
+Simplify using `only [hf_add_left, hf_add_right, hf_smul_left, hf_smul_right, hf_ext_ext, hf_single_right, hf_single_left, extL_self, map_zero, Pi.add_apply, Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one, zero_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hf_decomp {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] [DecidableEq ι]
     (i0 : ι) (a b : {i // i ≠ i0} → K) (x y : K) :
     hf c (extL i0 a + x • Pi.single i0 1) (extL i0 b + y • Pi.single i0 1)
@@ -110,6 +149,29 @@ theorem hf_decomp {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] 
     Pi.single_eq_same, smul_eq_mul, mul_one, zero_add]
   ring
 
+/- English proof (translation)
+Establish `hv0 : ∀ v ∈ L, Rp K p (v i0)` using `fun v hv => by`. Use `(hL v).1 hv _ he` as an intermediate fact. Rewrite `this` using `[hf_single_right]`. Then use the resulting hypothesis. Establish `hres : ∀ v ∈ L, extL i0 (resL i0 v) ∈ L` using `fun v hv => by`. Establish `e1 : extL i0 (resL i0 v) = v + (-(v i0)) • Pi.single i0 1`.
+
+Rewrite using `[neg_smul, ← sub_eq_add_neg]`. Conclude with `eq_sub_iff_add_eq.mpr (decomp i0 v).symm`. Rewrite using `[e1]`. Conclude with `add_smul_mem hL hv he (rp_neg (hv0 v hv))`. Set `L' : Set ({i // i ≠ i0} → K)` to `{a | extL i0 a ∈ L}`.
+
+Establish `hL' : Unimod K c p L'`. Introduce `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha b hb`. Rewrite using `[← hf_ext_ext c i0]`.
+
+Conclude with `(hL _).1 ha _ hb`. Introduce `h show extL i0 a ∈ L`. Rewrite using `[hL]`. Introduce `x hx`. Rewrite using `[decomp i0 x, hf_add_right, hf_smul_right, hf_single_right, extL_self, mul_zero, add_zero, hf_ext_ext]`.
+
+Conclude with `h _ (hres x hx)`. Establish `hS' : Spans K L'` using `fun a => by`. Take `⟨N, hN, h⟩` from `hS (extL i0 a)`. Conclude with `⟨N, hN, by show extL i0 _ ∈ L; rw [map_smul]; exact h⟩`. Take `⟨u', hu', hmem'⟩` from `hrec L' hL' hS'`.
+
+Set `U : (ι → K) →ₗ[K] (ι → K)` to `extL i0 ∘ₗ (u'.toLinearMap ∘ₗ resL i0) + (LinearMap.proj i0).smulRight (Pi.single i0 1)`. Establish `hU : ∀ v, U v = extL i0 (u' (resL i0 v)) + v i0 • Pi.single i0 1` using `fun v => rfl`. Establish `iso : ∀ v w, hf c (U v) (U w) = hf c v w`. Introduce `v w`. Rewrite using `[hU, hU, hf_decomp, hu']`.
+
+Use `conv_rhs => rw [decomp i0 v, decomp i0 w]`. Rewrite using `[hf_decomp]`. Use `⟨mkU c U iso, mkU_unitary c U iso, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [mkU_apply]`. Establish `hUi0 : U v i0 = v i0`.
+
+Rewrite using `[hU]`. Simplify using `[extL_self]`. Establish `hUj : ∀ j : {i // i ≠ i0}, U v j.1 = u' (resL i0 v) j` using `fun j => by`. Rewrite using `[hU, Pi.add_apply, extL_ne, Pi.smul_apply, Pi.single_eq_of_ne j.2, smul_zero, add_zero]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv i`. Distinguish the cases in `h : i = i0`. Substitute `h` using the available equality. Rewrite using `[hUi0]`. Conclude with `hv0 v hv`.
+
+Use `hUj ⟨i, h⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this]`. Conclude with `(hmem' _).1 (hres v hv) _`. Introduce `h`.
+
+Establish `h0 : Rp K p (v i0)` using `hUi0 ▸ h i0`. Establish `h1 : resL i0 v ∈ L'` using `(hmem' _).2 fun j => hUj j ▸ h j.1`. Rewrite using `[decomp i0 v]`. Conclude with `add_smul_mem hL h1 he h0`.
+-/
 theorem split_step {K : Type} [Field K] [NumberField K] (c : K →+* K) (p : ℕ) {ι : Type}
     [Fintype ι] [DecidableEq ι] (i0 : ι) (L : Set (ι → K)) (hL : Unimod K c p L)
     (hS : Spans K L) (he : Pi.single i0 (1 : K) ∈ L)
@@ -175,11 +237,29 @@ theorem split_step {K : Type} [Field K] [NumberField K] (c : K →+* K) (p : ℕ
     rw [decomp i0 v]
     exact add_smul_mem hL h1 he h0
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_subtype, Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, hk, Nat.add_sub_cancel]`.
+-/
 theorem card_ne_sub {ι : Type} [Fintype ι] [DecidableEq ι] (i0 : ι) (k : ℕ)
     (hk : Fintype.card ι = k + 1) : Fintype.card {i // i ≠ i0} = k := by
   rw [Fintype.card_subtype, Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ _),
     Finset.card_univ, hk, Nat.add_sub_cancel]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `ι _ hk L hL _`. Establish `: IsEmpty ι` using `Fintype.card_eq_zero_iff.mp hk`.
+
+Use `⟨LinearEquiv.refl K _, fun v w => rfl, fun v => ?_⟩` and prove the remaining obligations. Establish `h0` using `zero_mem_of hL`. Prove the components needed by the constructor for the conclusion. Introduce `_ i`. Conclude with `isEmptyElim i`.
+
+Introduce `_`. Rewrite using `[Subsingleton.elim v 0]` and apply the resulting hypothesis. Consider the case `succ k ih`. Introduce `ι _ hk L hL hS`. Establish `: Nonempty ι` using `Fintype.card_pos_iff.mp (by omega)`.
+
+Take `⟨i0⟩` from `‹Nonempty ι›`. Take `⟨e, heL, hee⟩` from `hN K c p ι L hK hc hp hs hL hS`. Choose the witnesses or unpack the hypotheses as in `⟨e1, he1L, he1, hne⟩ : ∃ e1 ∈ L, hf c e1 e1 = 1 ∧ hf c (Pi.single i0 1) e1 ≠ 1 := by`. Distinguish the cases in `h1 : hf c (Pi.single i0 1) e = 1`. Use `⟨-e, neg_mem_of hL heL, by rw [hf_neg_left, hf_neg_right, neg_neg, hee], ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hf_neg_right, h1]`. Evaluate the numerical expressions. Conclude with `⟨e, heL, hee, h1⟩`. Take `⟨σ, hσ, hσe⟩` from `exists_refl c hc (Pi.single i0 1) e1 (hf_single_single c i0) he1 hne`. Take `⟨u'', hu'', hmem''⟩` from `split_step c p i0 (σ ⁻¹' L) (unimod_preimage c p hσ hL) (spans_preimage hS) (by show σ _ ∈ L; rw [hσe]; exact he1L) (fun L' hL' hS' => ih _ (card_ne_sub i0 k hk) L' hL' hS')`.
+
+Use `⟨σ.symm.trans u'', unitary_trans (unitary_symm hσ) hu'', fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `hmem'' (σ.symm v)`. Establish `hm : σ.symm v ∈ σ ⁻¹' L ↔ v ∈ L` using `by show σ (σ.symm v) ∈ L ↔ v ∈ L`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Rewrite `h` using `[hm]`.
+
+Simplify `h` using `only [LinearEquiv.trans_apply]`.
+-/
 theorem latIso_card (hN : NormOne) {K : Type} [Field K] [NumberField K] (c : K →+* K) (p : ℕ)
     (hK : Module.finrank ℚ K = 2) (hc : ∀ x, c (c x) = x) (hp : p.Prime) (hs : SplitK c p) :
     ∀ (k : ℕ) (ι : Type) [Fintype ι], Fintype.card ι = k → ∀ L : Set (ι → K),
@@ -223,6 +303,9 @@ theorem latIso_card (hN : NormOne) {K : Type} [Field K] [NumberField K] (c : K �
     rw [hm] at h
     simpa only [LinearEquiv.trans_apply] using h
 
+/- English proof (translation)
+Introduce `hN K _ _ c p ι _ L hK hc hp hs hL hS`. Conclude with `latIso_card hN c p hK hc hp hs _ ι rfl L hL hS`.
+-/
 theorem lattice_from_norm_one_induction : LatticeFromNormOne := by
   intro hN K _ _ c p ι _ L hK hc hp hs hL hS
   exact latIso_card hN c p hK hc hp hs _ ι rfl L hL hS
@@ -231,6 +314,9 @@ end PI.KLW.Ind
 
 namespace PI.KLW
 
+/- English proof (translation)
+The claim follows from `Ind.lattice_from_norm_one_induction`.
+-/
 theorem lattice_from_norm_one : LatticeFromNormOne := Ind.lattice_from_norm_one_induction
 
 end PI.KLW

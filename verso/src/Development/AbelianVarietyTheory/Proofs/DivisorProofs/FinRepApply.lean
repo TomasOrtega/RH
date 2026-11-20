@@ -30,6 +30,9 @@ def homInto (σ : Representation ℂ H S) (ρ : Representation ℂ H X) (C : Sub
 def killed (ρ : Representation ℂ H X) (I : Set (MonoidAlgebra ℂ H)) : Submodule ℂ X :=
   ⨅ x ∈ I, LinearMap.ker (ρ.asAlgebraHom x)
 
+/- English proof (translation)
+Simplify using `[killed]`.
+-/
 theorem mem_killed {ρ : Representation ℂ H X} {I : Set (MonoidAlgebra ℂ H)} {v : X} :
     v ∈ killed ρ I ↔ ∀ x ∈ I, ρ.asAlgebraHom x v = 0 := by
   simp [killed]
@@ -54,6 +57,9 @@ def finRep {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) : Represen
     ext T v x
     simp [postOn_apply, LinearMap.funLeft, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finRep_apply {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (g : GfC V) (T : MMap M) (v : M.Vec) (x : GA D V) :
     finRep M g T v x = T v (x * (g : GA D V)) := rfl
 
@@ -80,6 +86,9 @@ structure IsFinIso (V V' : HSp D) (β : GL (Fin V.rank) (EAf D)) (β' : GL (Fin 
     HMul.hMul j β.val = (β' * intGL D.host.F D.host.E V'.rank u).val.submatrix id (Fin.cast h) ∧
       ∀ PP ∈ Pg, Formalism.UG.bc (resS D.host.F PP) u = 1
 
+/- English proof (translation)
+Rewrite using `[Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one] conj g := by rw [Matrix.one_mul, Matrix.mul_one]; rfl frame := ⟨rfl, 1, by rw [map_one, mul_one, Matrix.one_mul]; rfl, fun _ _ => map_one _⟩`.
+-/
 theorem IsFinIso.refl (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Pg : Finset (Pl D.host.E)) :
     IsFinIso V V β β Pg 1 (ContinuousMulEquiv.refl _) where
   isom := by rw [Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]

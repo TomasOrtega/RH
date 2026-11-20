@@ -9,6 +9,11 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.ContraPair
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hGK`. Use `⟨fun hC => ?_, fun hP => ?_⟩` and prove the remaining obligations. Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hcsd hcoh`. Establish `hd : DualIsConj π` using `(dualIsConjBy_one π).1 (GlobalTheory.T.cuspContragredientIsCMConjTwist_of_paired_invTranspose E a π 1 (hGK E a _) ((GlobalTheory.GalOfCusp.isConjDualBy_one π).2 hcsd))`. Conclude with `hC E Ω l ι a ha π hd hcoh`.
+
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hpol`. Conclude with `hP E Ω l ι a ha π χ hr ⟨hpol.sign, GlobalTheory.T.cuspContragredientIsCMConjTwist_of_paired_invTranspose E a π (GlobalTheory.GalOfCusp.compNorm E χ) (hGK E a _) hpol.dual⟩`.
+-/
 theorem galoisRepOfPolarizedCuspidal_iff_pair : GlobalTheory.Published.GelfandKazhdanDual →
     (GlobalTheory.Published.CaraianiLocalGlobalDual → GlobalTheory.Published.CaraianiLocalGlobal) ∧
     (GlobalTheory.Published.GaloisRepOfPolarizedPair → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) := by

@@ -9,6 +9,15 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Introduce `H R K _ _ _ _ _ O _ G _ G₀ _ φ hG hφ a₀`. Establish `key` using `fun c => GlobalTheory.T.abelianScheme_hom_extends_dedekind_of_isGrpPullback_alt H R K G G G₀ G₀ φ φ hG hG hφ hφ (a₀.act c) (a₀.hom c)`. Use `choose F hF hc hu using key`. Use `⟨⟨F, hF, ?_, ?_, ?_⟩, hc⟩` and prove the remaining obligations. Use `(hu 1 (𝟙 G) ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[a₀.one]`. Simplify using the standard rewrite rules. Introduce `a b`. Use `(hu (a * b) (F a ≫ F b) ?_).symm` and prove the remaining obligations. Rewrite using `[a₀.mul, Over.comp_left, Over.comp_left, Category.assoc, hc b, ← Category.assoc, hc a, Category.assoc]`.
+
+Introduce `a b`. Use `(hu (a + b) (F a * F b) ?_).symm` and prove the remaining obligations. Set `ψ : Over.mk (G₀.hom ≫ spMap (algebraMap R K)) ⟶ G` to `Over.homMk φ hφ.1.w`. Establish `h` using `hφ.2 G₀ (a₀.act a) (a₀.act b) (ψ ≫ F a) (ψ ≫ F b) (hc a).symm (hc b).symm`. Rewrite using `[a₀.add, ← h, ← MonObj.comp_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_oAct_extend_dedekind : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (R K : Type) [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (O : Type) [CommRing O] (G : Over (Sp R)) [GrpObj G] (G₀ : Over (Sp K)) [GrpObj G₀] (φ : G₀.left ⟶ G.left), IsAbelianScheme G → IsGrpPullback G₀ G (spMap (algebraMap R K)) φ → ∀ a₀ : OAct O G₀, ∃ a : OAct O G, ∀ c, (a₀.act c).left ≫ φ = φ ≫ (a.act c).left := by
   intro H R K _ _ _ _ _ O _ G _ G₀ _ φ hG hφ a₀
   have key := fun c => GlobalTheory.T.abelianScheme_hom_extends_dedekind_of_isGrpPullback_alt H R K G G G₀ G₀ φ φ hG hG hφ hφ (a₀.act c) (a₀.hom c)

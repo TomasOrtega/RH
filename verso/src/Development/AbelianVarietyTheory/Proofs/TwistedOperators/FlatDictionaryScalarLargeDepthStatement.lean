@@ -9,5 +9,8 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.FlatPlace GlobalTheory.LocMod GlobalTheory.SplitWeil
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatScal.scal | exact GlobalTheory.FlatScal.scal | (intros; apply GlobalTheory.FlatScal.scal <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flatDictionaryScalar_largeDepth : Big fun ch => ScalP ch := by
   first | exact @GlobalTheory.FlatScal.scal | exact GlobalTheory.FlatScal.scal | (intros; apply GlobalTheory.FlatScal.scal <;> assumption)

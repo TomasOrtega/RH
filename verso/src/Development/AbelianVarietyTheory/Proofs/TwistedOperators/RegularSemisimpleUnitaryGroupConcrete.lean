@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RegularSemisimpl
 
 namespace GlobalTheory.RegSSObj
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RegSS.regularSemisimple`.
+-/
 theorem regularSemisimple : GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple :=
   GlobalTheory.RegSS.regularSemisimple
 

@@ -30,6 +30,9 @@ structure LocSys {A : Type} [CommGroup A] (lam : HeightOneSpectrum (𝓞 F) → 
 def lamH (χ : Formalism.L2.Host.HChar E) (v : HeightOneSpectrum (𝓞 F)) : Eˣ →* ℂˣ :=
   ∏ P ∈ Formalism.L2.Host.aboveF (L := E) F v, χ.locK P
 
+/- English proof (translation)
+Establish `h1 : Formalism.L2.G.sgl F v 1 * Formalism.L2.G.sgl F v 1 = Formalism.L2.G.sgl F v 1` using `by rw [← Formalism.L2.G.sgl_mul, one_mul]`. Establish `h2 : Formalism.L2.G.sgl F v 1 * (1 - Formalism.L2.G.sgl F v 1) = 0` using `by rw [mul_sub, mul_one, h1, sub_self]`. Establish `h3 : (1 - Formalism.L2.G.sgl F v 1) * Formalism.L2.G.sgl F v 1 = 0` using `by rw [_root_.sub_mul, one_mul, h1, sub_self]`. Establish `h4 : (1 - Formalism.L2.G.sgl F v 1) * (1 - Formalism.L2.G.sgl F v 1) = 1 - Formalism.L2.G.sgl F v 1` using `by rw [mul_sub, mul_one, h3, sub_zero]`. Rewrite using `[add_mul, mul_add, mul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, h1, h2, h3, h4, TensorProduct.tmul_zero, TensorProduct.tmul_zero, add_zero, zero_add, one_mul]`.
+-/
 theorem local_idempotent_mul (v : HeightOneSpectrum (𝓞 F)) (a b : E) :
     (a ⊗ₜ[F] Formalism.L2.G.sgl F v 1 + (1 : E) ⊗ₜ[F] (1 - Formalism.L2.G.sgl F v 1)) * (b ⊗ₜ[F] Formalism.L2.G.sgl F v 1 + (1 : E) ⊗ₜ[F] (1 - Formalism.L2.G.sgl F v 1)) =
       ((a * b) ⊗ₜ[F] Formalism.L2.G.sgl F v 1 + (1 : E) ⊗ₜ[F] (1 - Formalism.L2.G.sgl F v 1) : AfE F E) := by
@@ -40,6 +43,9 @@ theorem local_idempotent_mul (v : HeightOneSpectrum (𝓞 F)) (a b : E) :
   rw [add_mul, mul_add, mul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul,
     Algebra.TensorProduct.tmul_mul_tmul, h1, h2, h3, h4, TensorProduct.tmul_zero, TensorProduct.tmul_zero, add_zero, zero_add, one_mul]
 
+/- English proof (translation)
+Rewrite using `[← TensorProduct.tmul_add, add_sub_cancel]`. Both sides reduce to the same expression.
+-/
 theorem locId_one (v : HeightOneSpectrum (𝓞 F)) :
     ((1 : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1 + (1 : E) ⊗ₜ[F] (1 - Formalism.L2.G.sgl F v 1) : AfE F E) = 1 := by
   rw [← TensorProduct.tmul_add, add_sub_cancel]

@@ -16,6 +16,13 @@ namespace GlobalTheory.Mum.FieldVA
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun j y hy => ?_` and prove the remaining obligations. Establish `hy' : y ∈ X.basicOpen ((Scheme.Hom.appLE (𝟙 X) _ _ (GlobalTheory.ZH.CrdMove.pow_chart_le L N (𝟙 X) j)).hom (t.f (fun _ => j 0)))` using `hy`. Rewrite `hy'` using `[Scheme.basicOpen_appLE]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨_, hy'.2⟩`.
+
+Use `iSup_le fun j y hy => ?_` and prove the remaining obligations. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => j PUnit.unit, ?_⟩` and prove the remaining obligations. Establish `hc : y ∈ (lbPow L N).U j` using `X.basicOpen_le (t.f j) hy`. Use `show y ∈ X.basicOpen ((Scheme.Hom.appLE (𝟙 X) _ _ (GlobalTheory.ZH.CrdMove.pow_chart_le L N (𝟙 X) (fun _ => j PUnit.unit))).hom (t.f (fun _ => j PUnit.unit)))`. Rewrite using `[Scheme.basicOpen_appLE]`.
+
+Conclude with `⟨Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hc PUnit.unit, hy⟩`.
+-/
 theorem nonzeroLocus_pullPow (L : LB X) (N : ℕ) (t : (lbPow L N).Sec) :
     nonzeroLocus (GlobalTheory.ZH.CrdMove.pullPow (𝟙 X) t) = nonzeroLocus t := by
   apply le_antisymm
@@ -38,6 +45,23 @@ namespace GlobalTheory.Mum
 
 open GlobalTheory.Mum.FieldVA in
 
+/- English proof (translation)
+Take `⟨m, t, hcov, hs⟩` from `GlobalTheory.ZH.CrdMove.immBy_lbPow hA K P 4 le_rfl`. Establish `hb : ∀ i, nonzeroLocus (GlobalTheory.ZH.CrdMove.pullPow (𝟙 P.A.left) (t i)) = nonzeroLocus (t i)` using `fun i => nonzeroLocus_pullPow P.L 4 (t i)`. Use `⟨m, fun i => GlobalTheory.ZH.CrdMove.pullPow (𝟙 P.A.left) (t i), ?_, fun i => ?_⟩` and prove the remaining obligations. Use `_root_.top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show y ∈ ⨆ i ∈ Set.univ, nonzeroLocus (t i) by rw [hcov]; trivial)`.
+
+Take `⟨_, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, show y ∈ nonzeroLocus (GlobalTheory.ZH.CrdMove.pullPow (𝟙 P.A.left) (t i)) by`. Rewrite using `[hb]`. Conclude with `hi⟩`. Take `⟨haff, r, hr, hsurj⟩` from `hs i (Set.mem_univ i)`.
+
+Establish `hW : (𝟙 P.A.left) ⁻¹ᵁ nonzeroLocus (GlobalTheory.ZH.CrdMove.pullPow (𝟙 P.A.left) (t i)) = nonzeroLocus (t i)`. Rewrite using `[← hb i]`. Conclude with `le_antisymm (fun y hy => hy) (fun y hy => hy)`. Establish `le1` using `hW.le`. Establish `le2` using `hW.ge`.
+
+Establish `hconst : ∀ a, resG P.A.left le1 (constFn P.A.hom (nonzeroLocus (t i)) a) = AbLaw.cst P.A.hom ((𝟙 P.A.left) ⁻¹ᵁ nonzeroLocus (GlobalTheory.ZH.CrdMove.pullPow (𝟙 P.A.left) (t i))) a`. Introduce `a`. Establish `h2 : constFn P.A.hom ((𝟙 P.A.left) ⁻¹ᵁ nonzeroLocus (GlobalTheory.ZH.CrdMove.pullPow (𝟙 P.A.left) (t i))) a = AbLaw.cst P.A.hom ((𝟙 P.A.left) ⁻¹ᵁ nonzeroLocus (GlobalTheory.ZH.CrdMove.pullPow (𝟙 P.A.left) (t i))) a` using `rfl`. Use `(fn_ext fun x hx => ?_).trans h2` and prove the remaining obligations. Rewrite using `[gs_res _ x le1 hx, gs_constFn _ _ _ _ (le1 hx), gs_constFn _ _ _ _ hx]`.
+
+Use `⟨by rw [hW]; exact haff, fun j => resG P.A.left le1 (r j), fun j c a ha hc => ?_, ?_⟩` and prove the remaining obligations. Establish `hc' : a ∈ (lbPow P.L 4).U (fun _ => c 0)` using `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hc 0`. Establish `key : ∀ s : (lbPow P.L 4).Sec, secGerm (𝟙 P.A.left) a (GlobalTheory.ZH.CrdMove.pullPow (𝟙 P.A.left) s) c = gs (𝟙 P.A.left) a ((lbPow P.L 4).U (fun _ => c 0)) (s.f (fun _ => c 0))` using `fun s => (gs_appLE (𝟙 P.A.left) _ _ _ (𝟙 P.A.left) a hc _).trans (congrArg (fun q => gs q a _ (s.f (fun _ => c 0))) (Category.id_comp _))`. Establish `hm : (𝟙 P.A.left) a ∈ nonzeroLocus (t i) ⊓ (lbPow P.L 4).U (fun _ => c 0)` using `⟨le1 ha, hc'⟩`. Establish `e` using `congrArg (gs (𝟙 P.A.left) a _) (hr j (fun _ => c 0))`.
+
+Rewrite `e` using `[gs_res _ a _ hm, gs_mul _ a _ hm, gs_res _ a _ hm, gs_res _ a _ hm]`. Rewrite using `[key, key, gs_res _ a le1 ha]`. Conclude with `e`. Establish `hρ : ∀ f, resG P.A.left le1 (resG P.A.left le2 f) = f` using `fun f => fn_ext fun x hx => by`. Rewrite using `[gs_res _ x le1 hx, gs_res _ x le2 (le1 hx)]`.
+
+Establish `hcl : Subring.closure (Set.range (constFn P.A.hom (nonzeroLocus (t i))) ∪ Set.range r) ≤ (MvPolynomial.eval₂Hom (AbLaw.cst P.A.hom ((𝟙 P.A.left) ⁻¹ᵁ nonzeroLocus (GlobalTheory.ZH.CrdMove.pullPow (𝟙 P.A.left) (t i)))) (fun j => resG P.A.left le1 (r j))).range.comap (resG P.A.left …`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `g (⟨a, rfl⟩ | ⟨j, rfl⟩)`. Conclude with `Subring.mem_comap.2 (RingHom.mem_range.2 ⟨MvPolynomial.C a, by`. Rewrite using `[MvPolynomial.eval₂Hom_C]`.
+
+Conclude with `(hconst a).symm⟩)`. Conclude with `Subring.mem_comap.2 (RingHom.mem_range.2 ⟨MvPolynomial.X j, by rw [MvPolynomial.eval₂Hom_X']⟩)`. Introduce `f`. Take `⟨p, hp⟩` from `RingHom.mem_range.1 (Subring.mem_comap.1 (hcl (hsurj ▸ Subring.mem_top (resG P.A.left le2 f))))`. Conclude with `⟨p, hp.trans (hρ f)⟩`.
+-/
 theorem veryAmpleAlong_field (hA : AmpleSt) (K : Type) [Field K] (P : PolAV (Sp K)) :
     ∃ (m : ℕ) (b : Fin (m + 1) → H0 P.L 4), VeryAmpleAlong P.A.hom (𝟙 P.A.left) P.L b := by
   obtain ⟨m, t, hcov, hs⟩ := GlobalTheory.ZH.CrdMove.immBy_lbPow hA K P 4 le_rfl

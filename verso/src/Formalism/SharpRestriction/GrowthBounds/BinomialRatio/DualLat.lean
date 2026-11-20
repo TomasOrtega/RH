@@ -19,6 +19,15 @@ def PosCoreLetterAt : Prop :=
           Module.Dual Kf ↥(dualWeyl Kf (m + 1) (m + 1) (nuOf (letterWt m d vec))),
         PosCore O Kf p m (letterWt m d vec) (m * Nat.log p d) β
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `hl : i = Fin.last m → j = Fin.last m` using `fun hi => le_antisymm (Fin.le_last j) (hi ▸ hij)`. Establish `h0 : j = 0 → i = 0` using `fun hj => le_antisymm (hj ▸ hij) (Fin.zero_le i)`. Unfold `letterWt`. Consider the cases of `vec`.
+
+Simplify using `only [Bool.false_eq_true, if_false]`. Distinguish the cases in `hj : j = Fin.last m`. Distinguish the cases in `hi : i = Fin.last m`. Simplify using `[hi, hj]`. Simplify using `[hi, hj]`.
+
+Establish `hi : i ≠ Fin.last m` using `fun hi => hj (hl hi)`. Simplify using `[hi, hj]`. Simplify using `only [if_true]`. Distinguish the cases in `hj : j = 0`. Simplify using `[hj, h0 hj]`.
+
+Distinguish the cases in `hi : i = 0`. Simplify using `[hi, hj]`. Simplify using `[hi, hj]`.
+-/
 theorem letterWt_anti (m d : ℕ) (vec : Bool) : Antitone (letterWt m d vec) := by
   intro i j hij
   have hl : i = Fin.last m → j = Fin.last m := fun hi => le_antisymm (Fin.le_last j) (hi ▸ hij)

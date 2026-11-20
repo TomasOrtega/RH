@@ -13,8 +13,17 @@ open PositivityTheory.Rg.BcN.F2
 variable (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   (ι : Type) [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hecke_algebra_structure F ι`.
+-/
 theorem hkAlg : HkAlg F ι := GlobalTheory.T.hecke_algebra_structure F ι
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finite_length_of_products F ι`.
+-/
 theorem prodFinLen : ProdFinLen F ι := GlobalTheory.T.finite_length_of_products F ι
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.subquotient_of_non_nilpotent_variant F ι`.
+-/
 theorem subOfNonNil' : SubOfNonNil' F ι := GlobalTheory.T.subquotient_of_non_nilpotent_variant F ι
 
 end PositivityTheory.Rg.BcN.F2.Final

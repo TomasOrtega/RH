@@ -17,8 +17,16 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 
 namespace GlobalTheory.TheoremBTB
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.localCondition_of_local_theorem_hypW`.
+-/
 theorem localTB : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π : D.nd.X i) (M0 h0 cB : ℕ), LocalSituation.Conclusion4 D HW F → (∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (h : Good (D.nbr i w hw).Kw 1 C.LL), EmbeddingTypeJumps.WachHypothesisLocal (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL h) ((F (D.nd.l i)).E (D.nbr i w hw).Kw 1 C.LL h).tie) → TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i → JointConditionTameBound D HW F i r π M0 h0 cB → TruncatedSeriesCountingIdentities.admTB i r π cB := GlobalTheory.T.localCondition_of_local_theorem_hypW
 
+/- English proof (translation)
+Establish `ht1 : 1 ≤ D.R.t` using `D.R.t_odd.pos`. Establish `hr1 : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `htr : 1 ≤ D.R.t * D.R.r` using `Nat.mul_pos ht1 hr1`. Apply the tactic sequence `rcases hl with h | h <;> rw [h]`. Use `D.host.qd_big.1` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `D.host.qd_big.2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem l_ge_three (D : D7) (i : D.nd.Loc) (hl : D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d) : 3 ≤ D.nd.l i := by
   have ht1 : 1 ≤ D.R.t := D.R.t_odd.pos
   have hr1 : 1 ≤ D.R.r := by unfold Ranks.r; have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega
@@ -27,6 +35,43 @@ theorem l_ge_three (D : D7) (i : D.nd.Loc) (hl : D.nd.l i = D.host.q ∨ D.nd.l 
   · have := D.host.qd_big.1; nlinarith
   · have := D.host.qd_big.2; nlinarith
 
+/- English proof (translation)
+Establish `hl : D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d` using `hQ.1.1`. Establish `hl3` using `l_ge_three D i hl`. Use `⟨by omega, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨-, hK1, -, hdegK⟩` from `h0 i hl w hw`. Use `⟨GlobalTheory.BridgeInertia.inertEq D i w hw, hK1, fun C hs Y hc hY => ?_⟩` and prove the remaining obligations.
+
+Establish `hs1 : (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs).W.s = 1` using `(HW (D.nd.l i)).W_s _ 1 _ hs`. Establish `hell : LocalSituation.ell (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs) = D.nd.l i` using `(D.loc (D.nd.l i)).PD_p _`. Use `haveI : CharZero (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs).Qp := inferInstanceAs (CharZero ℚ_[D.nd.l i])`. Use `haveI : FiniteDimensional (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs).Qp (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs).K := (D.nbr i w hw).Kw.2`. Establish `hcard : Nat.card (↥(D.nbr i w hw).Kw.1 →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1) = Module.finrank ℚ_[D.nd.l i] ↥(D.nbr i w hw).Kw.1` using `GlobalTheory.HubLoc.card_emb _ _ fun τ x => C.le ((D.nbr i w hw).LL_split τ x)`.
+
+Establish `hdeg` using `GlobalTheory.bridge_finrank_le D i w hw`. Take `⟨hv1, -⟩` from `GlobalTheory.HubLoc.padicValNat_finrank_Ks (D.nd.l i) (D.nbr i w hw).Kw`. Establish `hK0 : Module.finrank ℚ_[D.nd.l i] ↥(D.nbr i w hw).Kw.1 ≠ 0` using `Module.finrank_pos.ne'`. Establish `hgK : LocalSituation.gK (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs) = 0`. Unfold `LocalSituation.gK`.
+
+Rewrite using `[hs1, hell]`. Use `show padicValNat (D.nd.l i) (Module.finrank ℚ_[D.nd.l i] ↥(Ks (D.nbr i w hw).Kw 1)) - padicValNat (D.nd.l i) (Module.finrank ℚ_[D.nd.l i] ↥(D.nbr i w hw).Kw.1) = 0`. Establish `hpos : (D.nd.l i - 1) / 2 ≠ 0` using `by omega`. Establish `hv : padicValNat (D.nd.l i) ((D.nd.l i - 1) / 2) = 0` using `padicValNat.eq_zero_of_not_dvd fun h => by`. Use `Nat.le_of_dvd (by omega) h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hdegK, padicValNat.mul hpos hK0, hv, zero_add, Nat.sub_self]`. Establish `hvd : ∀ m : ℕ, 0 < m → LocalSituation.vdegMs (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs) m = m - 1`. Introduce `m hm`. Unfold `LocalSituation.vdegMs`.
+
+Rewrite using `[hs1, hell]`. Conclude with `hv1 m hm`. Establish `hb` using `hPar`. Unfold `EmbeddingTypeJumps.ParametersPolynomiallyBounded at hb`. Establish `hη` using `large₂.etaSz_pos`.
+
+Establish `hS` using `large₂.Sc_pos`. Establish `ht0 : (0 : ℝ) ≤ D.R.t` using `by positivity`. Establish `hfl : ∀ z : ℤ, (z : ℝ) ≤ 2 * large₂.sc.b → z ≤ (⌊2 * large₂.sc.b⌋₊ : ℤ)`. Introduce `z hz`. Break down `le_or_gt z 0 with h | h` into its components or cases.
+
+Conclude with `h.trans (Int.natCast_nonneg _)`. Establish `h2 : ((z.toNat : ℕ) : ℝ) ≤ 2 * large₂.sc.b`. Rewrite using `[show ((z.toNat : ℕ) : ℝ) = (z : ℝ) by exact_mod_cast Int.toNat_of_nonneg h.le]; exact hz`. Use `Nat.le_floor h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `ht : D.R.t ≤ ⌊2 * large₂.sc.b⌋₊`. Use `hfl (D.R.t : ℤ) (by push_cast; linarith)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `key` using `GlobalTheory.HubLoc.window_and_cTB_of_jumps_at_embeddings (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs) Y ⌊2 * large₂.sc.b⌋₊ D.R.nV (4 * D.R.n) D.R.t hs1 hcard hdeg hgK (hvd _ (by unfold LocalSituation.mN; omega)) ht (fun τ => by`. Take `⟨s, Jc, Jl, hs1', hs2', hJc, hJl, hlow, hcl, -, -, hiff⟩` from `hJump i hQ w hw C τ`.
+
+Use `⟨Jc ∪ Jl ∪ Finset.Ico (0 : ℤ) D.R.t, ?_, ?_, fun a ha => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.card_union_le Jc Jl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `_ = D.R.nV := by`.
+
+Rewrite using `[hJc, hJl, Int.card_Ico]`. Unfold `Ranks.nV Ranks.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [sub_zero, Int.toNat_natCast]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `u hu`. Simplify using `only [Finset.mem_union, Finset.mem_Ico] at hu`. Break down `hu with (hu | hu) | hu` into its components or cases. Break down `hcl with hc' | hc'` into its components or cases. Take `⟨a1, a2⟩` from `hc' u hu`.
+
+Establish `hs0 : (0 : ℝ) < s` using `by linarith`. Prove the components needed by the constructor for the conclusion. Establish `: (0 : ℤ) < s` using `by exact_mod_cast hs0`. Use linear arithmetic over natural numbers and integers. Conclude with `hfl (u + 1) (by push_cast; linarith)`.
+
+Take `⟨a1, a2⟩` from `hc' u hu`. Establish `hs0 : (0 : ℝ) < s` using `by linarith`. Prove the components needed by the constructor for the conclusion. Use `hfl (-u) (by push_cast; linarith)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `: (0 : ℤ) < s` using `by exact_mod_cast hs0`. Use linear arithmetic over natural numbers and integers. Take `⟨hb', -, -, -⟩` from `hlow u hu`. Break down `hb' with ⟨a1, a2⟩ | ⟨a1, a2⟩` into its components or cases. Prove the components needed by the constructor for the conclusion.
+
+Use `hfl (-u) (by push_cast; linarith)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `hfl (u + 1) (by push_cast; linarith)`. Prove the components needed by the constructor for the conclusion. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use `(hiff π a).1 (hY τ a ha)` as an intermediate fact.
+
+Simplify using `only [Finset.mem_union, Finset.mem_Ico]`. Use the proof step `tauto)`. Use `⟨key.1, fun e he => (key.2 e he).trans (le_of_eq ?_)⟩` and prove the remaining obligations. Rewrite using `[hell]`.
+-/
 theorem jointCond_at_qd (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (large₂ : SizeData₂ D) (ep : Bool)
     (h0 : EmbeddingTypeJumps.Conclusion0 D) (hJump : EmbeddingTypeJumps.HodgeJumpWindowsAtDistinguishedPrimes r ep large₂) (hPar : EmbeddingTypeJumps.ParametersPolynomiallyBounded large₂) (i : D.nd.Loc) (hQ : EmbeddingTypeJumps.AtQD i)
@@ -135,6 +180,25 @@ theorem jointCond_at_qd (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
   refine ⟨key.1, fun e he => (key.2 e he).trans (le_of_eq ?_)⟩
   rw [hell]
 
+/- English proof (translation)
+Use `set L := Real.log b with hLdef`. Use `set lam := Nat.log l (2 * ⌊2 * b⌋₊) with hlam`. Establish `hfl2 : 2 ≤ ⌊2 * b⌋₊` using `Nat.le_floor (by push_cast; linarith)`. Establish `hpow : l ^ lam ≤ 2 * ⌊2 * b⌋₊` using `Nat.pow_log_le_self l (by omega)`. Establish `h3pow : 3 ^ lam ≤ l ^ lam` using `Nat.pow_le_pow_left hl lam`.
+
+Establish `hfb : ((⌊2 * b⌋₊ : ℕ) : ℝ) ≤ 2 * b` using `Nat.floor_le (by linarith)`. Establish `h3R : (3 : ℝ) ^ lam ≤ 4 * b`. Establish `: ((3 ^ lam : ℕ) : ℝ) ≤ ((2 * ⌊2 * b⌋₊ : ℕ) : ℝ)` using `by exact_mod_cast h3pow.trans hpow`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hlog3 : 1 ≤ Real.log 3`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) (by have := Real.exp_one_lt_d9; linarith)`. Establish `hlog4 : Real.log 4 ≤ 3`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 4 by norm_num); linarith` as an intermediate fact.
+
+Establish `hlamL : (lam : ℝ) ≤ 4 * L`. Establish `h1 : Real.log ((3 : ℝ) ^ lam) ≤ Real.log (4 * b)` using `Real.log_le_log (by positivity) h3R`. Rewrite `h1` using `[Real.log_pow, Real.log_mul (by norm_num) (by linarith)]`. Establish `h2 : (lam : ℝ) ≤ (lam : ℝ) * Real.log 3`. Establish `: (0 : ℝ) ≤ lam` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `GlobalTheory.HubLoc.cBnum`. Rewrite using `[← hlam]`. Use `push_cast`.
+
+Establish `htR : (1 : ℝ) ≤ t` using `by exact_mod_cast ht`. Establish `hnR : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hrR : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hlam0 : (0 : ℝ) ≤ lam` using `by positivity`. Use `set P : ℝ := (t : ℝ) * (2 * n) * (r + t) with hP`.
+
+Establish `hP1 : 1 ≤ P`. Establish `: (1 : ℝ) ≤ (2 * n) * (r + t)` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA : 3 + (lam : ℝ) + 3 ≤ 10 * P * L` using `by nlinarith`. Establish `hB : 4 * (t : ℝ) + 3 * t ≤ 7 * P * L`.
+
+Establish `: (t : ℝ) ≤ P`. Establish `: (1 : ℝ) ≤ (2 * n) * (r + t)` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `hC : (t : ℝ) * (4 * n * (r + t) * (4 + 2 * lam)) ≤ 24 * P * L`.
+
+Establish `h4 : (4 : ℝ) + 2 * lam ≤ 12 * L` using `by linarith`. Establish `hq : (0 : ℝ) ≤ (t : ℝ) * (4 * n * (r + t))` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hPL : 0 ≤ P * L` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem cBnum_le (l t n r : ℕ) (b : ℝ) (hl : 3 ≤ l) (ht : 1 ≤ t) (hn : 1 ≤ n) (hr : 1 ≤ r) (hb : 1 < b)
     (hL : 1 < Real.log b) :
     (GlobalTheory.HubLoc.cBnum l ⌊2 * b⌋₊ t (4 * n * (r + t)) : ℝ) ≤
@@ -187,6 +251,15 @@ theorem cBnum_le (l t n r : ℕ) (b : ℝ) (hl : 3 ≤ l) (ht : 1 ≤ t) (hn : 1
   have hPL : 0 ≤ P * L := by positivity
   nlinarith
 
+/- English proof (translation)
+Introduce `D HW F r ρ large₂ ep h0 _h1 hW hTB hJump _hFon _hG2 _hSet hLit hPar i hQ π _hπ`. Establish `hl : D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d` using `hQ.1.1`. Use `⟨GlobalTheory.HubLoc.cBnum (D.nd.l i) ⌊2 * large₂.sc.b⌋₊ D.R.t (4 * D.R.n * D.R.nV), ?_, ?_⟩` and prove the remaining obligations. Conclude with `localTB D HW F i (r i) π _ _ _ hTB (fun w hw C h => hW i hQ w hw C h) (hLit i hQ).2.2.2.1 (jointCond_at_qd D HW F r large₂ ep h0 hJump hPar i hQ π)`. Establish `ht1 : 1 ≤ D.R.t` using `D.R.t_odd.pos`.
+
+Establish `hr1 : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hn1 : 1 ≤ D.R.n` using `by unfold Ranks.n; exact Nat.succ_le_of_lt (by positivity)`. Establish `hL0 : 0 < large₂.sc.L` using `by unfold Scale.L; exact Real.rpow_pos_of_pos (by linarith [large₂.sc.one_lt_alt]) _`. Establish `hb1 : 1 < large₂.sc.b` using `by unfold Scale.b; have := Real.add_one_lt_exp (ne_of_gt hL0); linarith`. Establish `hLb : 1 < Real.log large₂.sc.b`.
+
+Unfold `Scale.b`. Rewrite using `[Real.log_exp]`. Unfold `Scale.L`. Conclude with `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`. Establish `key` using `cBnum_le (D.nd.l i) D.R.t D.R.n D.R.r large₂.sc.b (l_ge_three D i hl) ht1 hn1 hr1 hb1 hLb`.
+
+Establish `hnV : D.R.nV = D.R.r + D.R.t` using `rfl`. Establish `hf : D.R.f = 2 * D.R.n` using `rfl`. Rewrite using `[hnV, hf]`. Conclude with `key`.
+-/
 theorem main : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (large₂ : SizeData₂ D) (ep : Bool), EmbeddingTypeJumps.Conclusion0 D → EmbeddingTypeJumps.Conclusion1 D → EmbeddingTypeJumps.admW (D := D) HW F → EmbeddingTypeJumps.admTB (D := D) HW F → EmbeddingTypeJumps.HodgeJumpWindowsAtDistinguishedPrimes r ep large₂ → EmbeddingTypeJumps.FontaineSubOfSumsAtDistinguishedPrimes r ρ → EmbeddingTypeJumps.admG2 r ρ → EmbeddingTypeJumps.iwahoriAdmissibleSet r ρ → EmbeddingTypeJumps.LiteratureHypotheses (D := D) → EmbeddingTypeJumps.ParametersPolynomiallyBounded large₂ → ∀ i : D.nd.Loc, EmbeddingTypeJumps.AtQD i → ∀ π ∈ D.nd.Zgood i, ∃ cB : ℕ, TruncatedSeriesCountingIdentities.admTB i (r i) π cB ∧ (cB : ℝ) ≤ 60 * (D.R.t : ℝ) * (D.R.f : ℝ) * ((D.R.r : ℝ) + (D.R.t : ℝ)) * Real.log large₂.sc.b := by
   intro D HW F r ρ large₂ ep h0 _h1 hW hTB hJump _hFon _hG2 _hSet hLit hPar i hQ π _hπ
   have hl : D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d := hQ.1.1

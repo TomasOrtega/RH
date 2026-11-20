@@ -11,6 +11,29 @@ open scoped ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n e h W F u' ℓ ε a b hW hF hℓ hε ha hb ha0 hab hb1`. Unfold `varInt`. Use `split_ifs with hA`. Use `swap`. Simplify using the standard rewrite rules.
+
+Establish `hAfin` using `hA.choose_spec`. Unfold `chartInt`. Establish `hint : ∀ w : (Fin n → ℂ) → ℝ, Measurable w → (∀ x, |w x| ≤ 1) → ∀ (c : Fin (e + 1) → ℝ) (ψ : Fin (e + 1) → (Fin n → ℂ) → ℝ), (∀ k (t : ℂ) x, t ≠ 0 → ψ k (t • x) = ψ k x) → (∀ k, ContDiffOn ℝ ∞ (ψ k) {x | x ≠ 0}) → Integrable (chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) hA.choose w …`. Introduce `w hw hw1 c ψ hψ hψs`. Use `Integrable.mono' (hM n e h W F ℓ hA.choose (fun _ => 1) c ψ hW hF hℓ hAfin (fun _ _ _ => rfl) continuousOn_const hψ hψs) ?_ (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Conclude with `(SheetSumMeasurable.measurable_sheetSum hAfin (fun a b => a * b) (continuous_fst.mul continuous_snd).measurable hw _).aestronglyMeasurable`. Rewrite using `[Real.norm_eq_abs]`. Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hAfin y`. Simplify using `only [chartDens, chartAbsDens, sheetSum, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun x _ => ?_)` and prove the remaining obligations.
+
+Use `split_ifs`. Simplify using `only [abs_mul, one_mul]`. Conclude with `mul_le_of_le_one_left (abs_nonneg _) (hw1 x)`. Simplify using the standard rewrite rules. Establish `h1 : ∀ w : (Fin n → ℂ) → ℝ, Measurable w → (∀ x, |w x| ≤ 1) → Integrable (chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) hA.choose w (vecCons (fsLogReg h u' ε) fun _ x => Real.log (h.dualNorm x)))`.
+
+Introduce `w hw hw1`. Establish `e1 : (fun (k : Fin (e + 1)) x => (vecCons 0 fun _ => 1 : Fin (e + 1) → ℝ) k * Real.log (h.dualNorm x) + (vecCons (fsLogReg h u' ε) fun _ _ => 0 : Fin (e + 1) → (Fin n → ℂ) → ℝ) k x) = vecCons (fsLogReg h u' ε) fun _ x => Real.log (h.dualNorm x)`. Use function extensionality and compare the values at `k x`. Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩ <;> simp`. Rewrite using `[← e1]`.
+
+Use `hint w hw hw1 _ _ (fun k t x ht => ?_) fun k => ?_` and prove the remaining obligations. Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩` into its components or cases. Conclude with `FubiniStudyLogRegularization.fsLogReg_smul h u' ε ht x`. Both sides reduce to the same expression. Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩` into its components or cases.
+
+Conclude with `FubiniStudyLogRegularization.contDiffOn_fsLogReg h u' hε`. Conclude with `contDiffOn_const`. Establish `h2 : ∀ w : (Fin n → ℂ) → ℝ, Measurable w → (∀ x, |w x| ≤ 1) → Integrable (chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) hA.choose w fun _ x => Real.log (h.dualNorm x))`. Introduce `w hw hw1`. Use `hint w hw hw1 (fun _ => 1) (fun _ _ => 0) (fun _ _ _ _ => rfl) fun _ => contDiffOn_const` as an intermediate fact.
+
+Simplify using `using this`. Establish `ha1 : ∀ x, |a x| ≤ 1` using `fun x => abs_le.2 ⟨by linarith [ha0 x], by linarith [hab x, hb1 x]⟩`. Establish `hb1' : ∀ x, |b x| ≤ 1` using `fun x => abs_le.2 ⟨by linarith [ha0 x, hab x], hb1 x⟩`. Rewrite using `[← integral_add (h1 a ha ha1) (h2 a ha ha1), ← integral_add (h1 b hb hb1') (h2 b hb hb1')]`. Use `integral_mono ((h1 a ha ha1).add (h2 a ha ha1)) ((h1 b hb hb1').add (h2 b hb hb1')) fun y => ?_` and prove the remaining obligations.
+
+Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hAfin y`. Simplify using `only [chartDens, sheetSum, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`.
+
+Take `⟨hxZ, rfl⟩` from `hx`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Use `hxZ _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))` as an intermediate fact. Simplify using `[linForm] at this`.
+
+Use `split_ifs with hs`. Establish `hpos` using `dens_sum_nonneg SheetLogNormDens.proof h u' hε hs.choose_spec hx0`. Establish `hmono` using `mul_le_mul_of_nonneg_right (hab x) hpos`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
+-/
 theorem SliceRegMassMono.proof (hM : SliceFormMass.Statement) : SliceRegMassMono.Statement := by
   intro n e h W F u' ℓ ε a b hW hF hℓ hε ha hb ha0 hab hb1
   unfold varInt

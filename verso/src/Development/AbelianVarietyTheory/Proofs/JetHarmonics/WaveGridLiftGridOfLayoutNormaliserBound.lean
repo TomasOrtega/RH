@@ -7,6 +7,13 @@ open Finset Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `KB.CutWord`. Rewrite using `[List.pairwise_iff_get]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun l hl => ?_, fun i j hij => h2 i j hij.ne⟩` and prove the remaining obligations.
+
+Take `⟨i, rfl⟩` from `List.get_of_mem hl`. Conclude with `h1 i`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i => h1 _ (List.get_mem _ _), fun i j hij => ?_⟩` and prove the remaining obligations. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases.
+
+Conclude with `h2 i j h`. Rewrite using `[abs_sub_comm]`. Conclude with `h2 j i h`.
+-/
 theorem cutWord_iff (P : M.Par) (l0 : ℕ) (w : List C.Letter) :
     KB.CutWord P l0 w ↔ (∀ l ∈ w, I.OnCut P.u P.u' l0 l.2) ∧ w.Pairwise (fun l l' => 2 < |l.2 - l'.2|) := by
   unfold KB.CutWord
@@ -26,12 +33,18 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 open Finset in
+/- English proof (translation)
+Use `abs_sub_abs_le_abs_sub (g - b) c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem two_lt_abs_sub_sub_of_five_le_of_abs_le_two {g b c : ℝ} (h : 5 ≤ |g - b|) (hc : |c| ≤ 2) :
     2 < |g - b - c| := by
   have := abs_sub_abs_le_abs_sub (g - b) c
   linarith
 
 open Finset in
+/- English proof (translation)
+Establish `hx0 : x ≠ 0` using `by intro h; rw [h, abs_zero] at hx; norm_num at hx`. Establish `hinv : |x⁻¹| ≤ 1 / 5`. Rewrite using `[abs_inv, one_div]; exact inv_anti₀ (by norm_num) hx`. Use `abs_le.1 hinv` as an intermediate fact. Apply the tactic sequence `constructor <;> nlinarith [this.1, this.2]`.
+-/
 private theorem one_add_inv_pos_and_le_of_five_le_abs {x : ℝ} (hx : 5 ≤ |x|) : 0 < 1 + x⁻¹ ∧ 1 ≤ 5 / 4 * (1 + x⁻¹) := by
   have hx0 : x ≠ 0 := by intro h; rw [h, abs_zero] at hx; norm_num at hx
   have hinv : |x⁻¹| ≤ 1 / 5 := by
@@ -40,6 +53,9 @@ private theorem one_add_inv_pos_and_le_of_five_le_abs {x : ℝ} (hx : 5 ≤ |x|)
   constructor <;> nlinarith [this.1, this.2]
 
 open Finset in
+/- English proof (translation)
+The claim follows from `| [], _ => ⟨1, one_pos, by simp, by simp [_root_.Formalism.FourierDecayAlt.Wd.qw]⟩ | l :: w, h => by obtain ⟨ρ, hρ, hρ1, hρeq⟩ := exists_qw_eq_mul_pos_real_of_five_le_dist q y w (fun l' hl' => h l' (List.mem_cons_of_mem _ hl')) obtain ⟨t, ht, hplus, hminus⟩ := h l (List.mem_cons_ …`.
+-/
 private theorem exists_qw_eq_mul_pos_real_of_five_le_dist {S : Type} (q : ℂ → ℂ) (y : ℝ) :
     ∀ u : List (_root_.Formalism.FourierDecayAlt.Wd.Letter ℂ S), (∀ l ∈ u, ∃ t : ℝ, l.pt = t ∧ (l.plus = true → 5 ≤ |y - t|) ∧
       (l.plus = false → 5 ≤ |t - 1 - y|)) →
@@ -75,6 +91,15 @@ private theorem exists_qw_eq_mul_pos_real_of_five_le_dist {S : Type} (q : ℂ �
         field_simp
 
 open Finset in
+/- English proof (translation)
+Establish `key : ∀ n : ℕ, n + 1 ≤ 5 ^ n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h1 : ∀ j, |_root_.Formalism.FourierDecayAlt.F7.lagCo y j| ≤ (1 / 5 : ℝ) ^ d`. Introduce `j`. Unfold `_root_.Formalism.FourierDecayAlt.F7.lagCo`. Rewrite using `[Finset.abs_prod]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[abs_inv, one_div]`. Conclude with `inv_anti₀ (by norm_num) (hy j i (Finset.ne_of_mem_erase hi).symm))`. Use `_ = (1 / 5) ^ d := by`. Rewrite using `[Finset.prod_const, Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin, Nat.add_sub_cancel]`. Establish `h2 : ((d : ℝ) + 1) ≤ 5 ^ d` using `by exact_mod_cast key d`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sum_abs_lagCo_le_one_of_five_separated {d : ℕ} (y : Fin (d + 1) → ℝ)
     (hy : ∀ i j, i ≠ j → 5 ≤ |y i - y j|) : ∑ j, |_root_.Formalism.FourierDecayAlt.F7.lagCo y j| ≤ 1 := by
   have key : ∀ n : ℕ, n + 1 ≤ 5 ^ n := fun n => by
@@ -98,6 +123,69 @@ private theorem sum_abs_lagCo_le_one_of_five_separated {d : ℕ} (y : Fin (d + 1
     _ ≤ 1 := by rw [div_le_one (by positivity)]; exact h2
 
 open Finset in
+/- English proof (translation)
+Unfold `_root_.Formalism.FourierDecayAlt.TBB.AdmW at hw`. Take `⟨hwcut, hwY⟩` from `hw`. Rewrite `hwcut` using `[_root_.Formalism.FourierDecayAlt.P.PBD.cutWord_iff]`. Take `⟨hwon, hwpair⟩` from `hwcut`. Set `base : _root_.Formalism.FourierDecayAlt.C.Letter → ℝ` to `fun l => if l.1 = true then l.2 else l.2 - 1`.
+
+Establish `hbase : ∀ l ∈ w, base l ∈ Y ∧ (l.2 = base l ∨ l.2 = base l + 1)`. Introduce `l hl`. Take `⟨y', hy', h | h⟩` from `hwY l hl`. Substitute `h` using the available equality. Simplify using `[base, hy']`.
+
+Substitute `h` using the available equality. Simplify using `[base, hy']`. Use `set B := (w.map base).toFinset with hB`. Use `set Y' := Y \ B with hY'`. Establish `hBcard : B.card ≤ w.length`.
+
+Rewrite using `[hB]; exact (List.toFinset_card_le _).trans (by simp)`. Establish `hY'card : K * (d + 1) ≤ Y'.card`. Establish `h1 : Y.card - B.card ≤ Y'.card` using `by rw [hY']; exact Finset.le_card_sdiff B Y`. Establish `h2 : K * (d + 1) ≤ K * (2 * P.r + 1)` using `Nat.mul_le_mul_left _ (by omega)`. Establish `h3 : K * (2 * P.r + 1) + (N - K) ≤ N * (2 * P.r + 1)`.
+
+Take `⟨m, hm⟩ : ∃ m, N = K + m` from `⟨N - K, by omega⟩`. Rewrite using `[hm, Nat.add_sub_cancel_left, Nat.add_mul]`. Establish `: m ≤ m * (2 * P.r + 1)` using `Nat.le_mul_of_pos_right m (by omega)`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨e⟩ : Nonempty (Fin K × Fin (d + 1) ↪ Y')` from `Function.Embedding.nonempty_of_card_le (by`. Simplify `hY'card)` using `[Fintype.card_prod, Fintype.card_fin]`. Set `grid : Fin K → Fin (d + 1) → ℝ` to `fun a i => (e (a, i) : ℝ)`. Establish `hgY' : ∀ a i, grid a i ∈ Y'` using `fun a i => (e (a, i)).2`. Establish `hgY : ∀ a i, grid a i ∈ Y` using `fun a i => (Finset.mem_sdiff.1 (hgY' a i)).1`.
+
+Establish `hgB : ∀ a i, grid a i ∉ B` using `fun a i => (Finset.mem_sdiff.1 (hgY' a i)).2`. Establish `hginj : ∀ a i b j, grid a i = grid b j → (a, i) = (b, j)` using `fun a i b j h => e.injective (Subtype.ext h)`. Establish `hfar : ∀ a i, ∀ l ∈ w, 5 ≤ |grid a i - base l|`. Introduce `a i l hl`. Use `hsep _ (hgY a i) _ (hbase l hl).1 ?_` and prove the remaining obligations.
+
+Introduce `h`. Apply `hgB a i` to reduce the goal to its premises. Rewrite using `[hB, List.mem_toFinset, h]`. Conclude with `List.mem_map_of_mem hl`. Unfold `_root_.Formalism.FourierDecayAlt.P.TBBx5.GridOK`.
+
+Use `⟨grid, fun a i j h => (Prod.mk.inj (hginj a i a j h)).2, hgY, ?_, ?_⟩` and prove the remaining obligations. Introduce `n`. Establish `hys : _root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n = List.ofFn fun a => grid a (n a)` using `rfl`. Establish `hpair : List.Pairwise (fun y y' => 2 < |y - y'|) (_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n)`. Rewrite using `[hys, List.pairwise_ofFn]`.
+
+Introduce `a b hab`. Establish `hne : grid a (n a) ≠ grid b (n b)` using `fun h => (ne_of_lt hab) (Prod.mk.inj (hginj _ _ _ _ h)).1`. Use `hsep _ (hgY _ _) _ (hgY _ _) hne` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : ∀ y ∈ _root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n, ∃ a, y = grid a (n a)`.
+
+Rewrite using `[hys]`. Introduce `y hy`. Take `⟨a, ha⟩` from `List.mem_ofFn.1 hy`. Conclude with `⟨a, ha.symm⟩`. Use `⟨?_, ?_, hpair⟩` and prove the remaining obligations.
+
+Rewrite using `[_root_.Formalism.FourierDecayAlt.P.PBD.cutWord_iff, _root_.Formalism.FourierDecayAlt.P.TBBx5.plusW_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Break down `List.mem_append.1 hx with hx | hx` into its components or cases. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`.
+
+Take `⟨a, rfl⟩` from `hmem y hy`. Conclude with `(hcut _ (hgY _ _)).1`. Conclude with `hwon x hx`. Rewrite using `[List.pairwise_append]`. Use `⟨?_, hwpair, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[List.pairwise_map]`. Conclude with `hpair`. Introduce `x hx l hl`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Take `⟨a, rfl⟩` from `hmem y hy`.
+
+Establish `h5` using `hfar a (n a) l hl`. Break down `(hbase l hl).2 with h | h` into its components or cases. Rewrite using `[h, show grid a (n a) - base l = grid a (n a) - base l - 0 by ring]`. Conclude with `two_lt_abs_sub_sub_of_five_le_of_abs_le_two h5 (by norm_num)`. Rewrite using `[h, show grid a (n a) - (base l + 1) = grid a (n a) - base l - 1 by ring]`.
+
+Conclude with `two_lt_abs_sub_sub_of_five_le_of_abs_le_two h5 (by norm_num)`. Rewrite using `[_root_.Formalism.FourierDecayAlt.P.PBD.cutWord_iff, _root_.Formalism.FourierDecayAlt.P.TBBx5.minusW_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Break down `List.mem_append.1 hx with hx | hx` into its components or cases.
+
+Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Take `⟨a, rfl⟩` from `hmem y hy`. Conclude with `(hcut _ (hgY _ _)).2`. Conclude with `hwon x hx`. Rewrite using `[List.pairwise_append]`.
+
+Use `⟨?_, hwpair, ?_⟩` and prove the remaining obligations. Rewrite using `[List.pairwise_map]`. Conclude with `hpair.imp fun {y y'} h => by simpa [show y + 1 - (y' + 1) = y - y' by ring] using h`. Introduce `x hx l hl`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`.
+
+Take `⟨a, rfl⟩` from `hmem y hy`. Establish `h5` using `hfar a (n a) l hl`. Break down `(hbase l hl).2 with h | h` into its components or cases. Rewrite using `[h, show grid a (n a) + 1 - base l = grid a (n a) - base l - (-1) by ring]`. Conclude with `two_lt_abs_sub_sub_of_five_le_of_abs_le_two h5 (by norm_num)`.
+
+Rewrite using `[h, show grid a (n a) + 1 - (base l + 1) = grid a (n a) - base l - 0 by ring]`. Conclude with `two_lt_abs_sub_sub_of_five_le_of_abs_le_two h5 (by norm_num)`. Establish `hposition_len : (_root_.Formalism.FourierDecayAlt.D.positionted w).length = w.length` using `by unfold _root_.Formalism.FourierDecayAlt.D.positionted; simp`. Establish `hF : ∀ y ∈ Y, y ∉ B → 0 ≤ nn y * nn (y + 1) / (_root_.Formalism.FourierDecayAlt.Wd.qw (_root_.Formalism.FourierDecayAlt.M.qC P) (_root_.Formalism.FourierDecayAlt.D.positionted w) (y : ℂ)).re ∧ nn y * nn (y + 1) / (_root_.Formalism.FourierDecayAlt.Wd.qw (_root_.Formalism.FourierDe …`. Introduce `y hy hyB`.
+
+Establish `hcond : ∀ l ∈ _root_.Formalism.FourierDecayAlt.D.positionted w, ∃ t : ℝ, l.pt = t ∧ (l.plus = true → 5 ≤ |y - t|) ∧ (l.plus = false → 5 ≤ |t - 1 - y|)`. Introduce `l hl`. Unfold `_root_.Formalism.FourierDecayAlt.D.positionted at hl`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hl`. Establish `hla : w.get a ∈ w` using `List.get_mem w a`.
+
+Establish `hfar' : 5 ≤ |y - base (w.get a)|`. Use `hsep _ hy _ (hbase _ hla).1 ?_` and prove the remaining obligations. Introduce `h`. Apply `hyB` to reduce the goal to its premises. Rewrite using `[hB, List.mem_toFinset, h]`.
+
+Conclude with `List.mem_map_of_mem hla`. Use `⟨(w.get a).2, rfl, fun hp => ?_, fun hm => ?_⟩` and prove the remaining obligations. Establish `hp' : (w.get a).1 = true` using `hp`. Establish `: base (w.get a) = (w.get a).2` using `if_pos hp'`. Rewrite `hfar'` using `[this]`.
+
+Conclude with `hfar'`. Establish `hm' : (w.get a).1 = false` using `hm`. Establish `: base (w.get a) = (w.get a).2 - 1` using `if_neg (by rw [hm']; decide)`. Rewrite `hfar'` using `[this, abs_sub_comm]`. Conclude with `hfar'`.
+
+Take `⟨ρ, hρ, hρ1, hρeq⟩` from `exists_qw_eq_mul_pos_real_of_five_le_dist (_root_.Formalism.FourierDecayAlt.M.qC P) y (_root_.Formalism.FourierDecayAlt.D.positionted w) hcond`. Rewrite `hρ1` using `[hposition_len]`. Establish `hre : (_root_.Formalism.FourierDecayAlt.Wd.qw (_root_.Formalism.FourierDecayAlt.M.qC P) (_root_.Formalism.FourierDecayAlt.D.positionted w) (y : ℂ)).re = (_root_.Formalism.FourierDecayAlt.M.qC P (y : ℂ)).re * ρ`. Rewrite using `[hρeq, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero]`. Establish `hnum : 0 < nn y * nn (y + 1)` using `mul_pos (hnn _) (hnn _)`.
+
+Establish `hqy` using `hq y hy`. Establish `hqpos : 0 < (_root_.Formalism.FourierDecayAlt.M.qC P (y : ℂ)).re`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Use polynomial arithmetic with `[sq_nonneg Λ₀]`.
+
+Rewrite using `[hre]`. Establish `hden : 0 < (_root_.Formalism.FourierDecayAlt.M.qC P (y : ℂ)).re * ρ` using `mul_pos hqpos hρ`. Use `⟨div_nonneg hnum.le hden.le, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hden]`. Establish `hpow : (5 / 4 : ℝ) ^ w.length ≤ (5 / 4) ^ N` using `pow_le_pow_right₀ (by norm_num) (by omega)`.
+
+Establish `h1 : Λ₀ ^ 2 ≤ Λ ^ 2 * ρ`. Establish `: Λ₀ ^ 2 ≤ Λ₀ ^ 2 * ((5 / 4 : ℝ) ^ w.length * ρ)` using `le_mul_of_one_le_right (sq_nonneg _) hρ1`. Use polynomial arithmetic with `[sq_nonneg Λ₀, mul_le_mul_of_nonneg_right hpow hρ.le]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hterm : ∀ n : Fin K → Fin (d + 1), √((List.map nn (_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n)).prod * (List.map (fun y => nn (y + 1)) (_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n)).prod / (List.map (fun y : ℝ => (_root_.Formalism.FourierDecayAlt.Wd.qw (_root_. …`.
+
+Introduce `n`. Establish `hys : _root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n = List.ofFn fun a => grid a (n a)` using `rfl`. Rewrite using `[hys]`. Simplify using `only [List.map_ofFn, List.prod_ofFn, Function.comp_def]`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_div_distrib]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, mul_comm, pow_mul]`. Conclude with `Real.sqrt_sq (pow_nonneg hΛ K)`. Use `le_trans (Finset.sum_le_sum fun n _ => mul_le_mul_of_nonneg_left (hterm n) (abs_nonneg _)) ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`.
+
+Repeatedly rewrite using `[Finset.abs_prod]`. Rewrite using `[← Fintype.piFinset_univ, ← Finset.prod_univ_sum (t := fun _ => Finset.univ) (f := fun a j => |_root_.Formalism.FourierDecayAlt.F7.lagCo (grid a) j|)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_grid_of_layout_lemma {P : _root_.Formalism.FourierDecayAlt.M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
     [FiniteDimensional ℂ Wq] (p : _root_.Formalism.FourierDecayAlt.KB.Pl P Wp Wq) (nn : ℝ → ℝ) (Y : Finset ℝ) (Λ Λ₀ : ℝ) (K N : ℕ)
@@ -276,6 +364,11 @@ private theorem exists_grid_of_layout_lemma {P : _root_.Formalism.FourierDecayAl
 
 open Finset in
 
+/- English proof (translation)
+Introduce `P Wp Wq _ _ _ _ _ _ p nn Y Λ Λ₀ K N hnn ⟨hsep, hcard, hcut⟩ hq hΛ hΛ₀`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.FourierDecayAlt.P.TBBx5.WaveGrid`. Introduce `j hj w hw hlen`. Conclude with `exists_grid_of_layout_lemma p nn Y Λ Λ₀ K N hnn hsep hcard hcut hq hΛ hΛ₀ _ (by omega) w hw hlen`.
+
+Unfold `_root_.Formalism.FourierDecayAlt.P.TBBx5.LiftGrid`. Introduce `b s hb hs hbs w hw hlen`. Conclude with `exists_grid_of_layout_lemma p nn Y Λ Λ₀ K N hnn hsep hcard hcut hq hΛ hΛ₀ _ (by omega) w hw hlen`.
+-/
 theorem _root_.GlobalTheory.GridsFromLayout.main : ∀ (P : _root_.Formalism.FourierDecayAlt.M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : _root_.Formalism.FourierDecayAlt.KB.Pl P Wp Wq) (nn : ℝ → ℝ) (Y : Finset ℝ) (Λ Λ₀ : ℝ) (K N : ℕ), (∀ y, 0 < nn y) → ((∀ y ∈ Y, ∀ y' ∈ Y, y ≠ y' → 5 ≤ |y - y'|) ∧ N * (2 * P.r + 1) ≤ Y.card ∧ ∀ y ∈ Y, _root_.Formalism.FourierDecayAlt.I.OnCut P.u P.u' p.l0 y ∧ _root_.Formalism.FourierDecayAlt.I.OnCut P.u P.u' p.l0 (y + 1)) → (∀ y ∈ Y, nn y * nn (y + 1) ≤ Λ₀ ^ 2 * (_root_.Formalism.FourierDecayAlt.M.qC P (y : ℂ)).re) → 0 ≤ Λ → Λ₀ ^ 2 * (5 / 4 : ℝ) ^ N ≤ Λ ^ 2 → _root_.Formalism.FourierDecayAlt.P.TBBx5.WaveGrid p nn Y Λ K N ∧ _root_.Formalism.FourierDecayAlt.P.TBBx5.LiftGrid p nn Y Λ K N := by
   intro P Wp Wq _ _ _ _ _ _ p nn Y Λ Λ₀ K N hnn ⟨hsep, hcard, hcut⟩ hq hΛ hΛ₀
   refine ⟨?_, ?_⟩

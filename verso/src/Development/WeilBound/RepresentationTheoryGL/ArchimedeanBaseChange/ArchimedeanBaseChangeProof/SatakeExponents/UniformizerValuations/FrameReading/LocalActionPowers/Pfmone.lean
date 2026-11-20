@@ -16,6 +16,11 @@ set_option linter.unusedSectionVars false
 variable {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [FirstCountableTopology Γ] [LocallyCompactSpace Γ] [MeasurableSpace Γ] [BorelSpace Γ]
   (ν : Measure Γ) [ν.IsHaarMeasure]
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Use `(continuousAt_const (y := f g)).congr ?_` and prove the remaining obligations. Establish `hm : {y : Γ | g⁻¹ * y ∈ U} ∈ 𝓝 g` using `(hU.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp [U.one_mem])`. Use `filter_upwards [hm] with y hy`. Use `hf _ hy g` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this.symm`.
+-/
 theorem cont_of_rinv {f : Γ → ℂ} {U : Subgroup Γ} (hU : IsOpen (U : Set Γ)) (hf : ∀ u ∈ U, ∀ g, f (g * u) = f g) :
     Continuous f := by
   refine continuous_iff_continuousAt.2 fun g => ?_
@@ -27,6 +32,11 @@ theorem cont_of_rinv {f : Γ → ℂ} {U : Subgroup Γ} (hU : IsOpen (U : Set Γ
   rw [mul_inv_cancel_left] at this
   exact this.symm
 
+/- English proof (translation)
+Establish `e : (fun g => ∫ h, φ₁ h * φ₂ (h⁻¹ * g) ∂ν) = fun g => ∫ h in tsupport φ₁, φ₁ h * φ₂ (h⁻¹ * g) ∂ν`. Use function extensionality and compare the values at `g`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun h hh => ?_).symm` and prove the remaining obligations. Rewrite using `[image_eq_zero_of_notMem_tsupport hh, zero_mul]`. Rewrite using `[e]`.
+
+Use `continuous_parametric_integral_of_continuous ?_ s₁.isCompact` and prove the remaining obligations. Conclude with `(h₁.comp continuous_snd).mul (h₂.comp (continuous_snd.inv.mul continuous_fst))`.
+-/
 theorem cont_convL {φ₁ φ₂ : Γ → ℂ} (h₁ : Continuous φ₁) (s₁ : HasCompactSupport φ₁) (h₂ : Continuous φ₂) :
     Continuous fun g => ∫ h, φ₁ h * φ₂ (h⁻¹ * g) ∂ν := by
   have e : (fun g => ∫ h, φ₁ h * φ₂ (h⁻¹ * g) ∂ν) = fun g => ∫ h in tsupport φ₁, φ₁ h * φ₂ (h⁻¹ * g) ∂ν := by
@@ -37,6 +47,11 @@ theorem cont_convL {φ₁ φ₂ : Γ → ℂ} (h₁ : Continuous φ₁) (s₁ : 
   refine continuous_parametric_integral_of_continuous ?_ s₁.isCompact
   exact (h₁.comp continuous_snd).mul (h₂.comp (continuous_snd.inv.mul continuous_fst))
 
+/- English proof (translation)
+Use `HasCompactSupport.intro (s₁.isCompact.mul s₂.isCompact) fun g hg => ?_` and prove the remaining obligations. Establish `: ∀ h, φ₁ h * φ₂ (h⁻¹ * g) = 0`. Introduce `h`. Distinguish the cases in `h1 : h ∈ tsupport φ₁`. Establish `h2 : h⁻¹ * g ∉ tsupport φ₂` using `fun h2 => hg (Set.mem_mul.2 ⟨h, h1, h⁻¹ * g, h2, mul_inv_cancel_left h g⟩)`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport h2, mul_zero]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, zero_mul]`. Simplify using `[this]`.
+-/
 theorem supp_convL {φ₁ φ₂ : Γ → ℂ} (s₁ : HasCompactSupport φ₁) (s₂ : HasCompactSupport φ₂) :
     HasCompactSupport fun g => ∫ h, φ₁ h * φ₂ (h⁻¹ * g) ∂ν := by
   refine HasCompactSupport.intro (s₁.isCompact.mul s₂.isCompact) fun g hg => ?_
@@ -48,6 +63,11 @@ theorem supp_convL {φ₁ φ₂ : Γ → ℂ} (s₁ : HasCompactSupport φ₁) (
     · rw [image_eq_zero_of_notMem_tsupport h1, zero_mul]
   simp [this]
 
+/- English proof (translation)
+Establish `e : (fun h => ∫ k, φ₂ k * f (h * k) ∂ν) = fun h => ∫ k in tsupport φ₂, φ₂ k * f (h * k) ∂ν`. Use function extensionality and compare the values at `h`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun k hk => ?_).symm` and prove the remaining obligations. Rewrite using `[image_eq_zero_of_notMem_tsupport hk, zero_mul]`. Rewrite using `[e]`.
+
+Use `continuous_parametric_integral_of_continuous ?_ s₂.isCompact` and prove the remaining obligations. Conclude with `(h₂.comp continuous_snd).mul (hf.comp (continuous_fst.mul continuous_snd))`.
+-/
 theorem cont_convR {φ₂ f : Γ → ℂ} (h₂ : Continuous φ₂) (s₂ : HasCompactSupport φ₂) (hf : Continuous f) :
     Continuous fun h => ∫ k, φ₂ k * f (h * k) ∂ν := by
   have e : (fun h => ∫ k, φ₂ k * f (h * k) ∂ν) = fun h => ∫ k in tsupport φ₂, φ₂ k * f (h * k) ∂ν := by
@@ -58,16 +78,33 @@ theorem cont_convR {φ₂ f : Γ → ℂ} (h₂ : Continuous φ₂) (s₂ : HasC
   refine continuous_parametric_integral_of_continuous ?_ s₂.isCompact
   exact (h₂.comp continuous_snd).mul (hf.comp (continuous_fst.mul continuous_snd))
 
+/- English proof (translation)
+The claim follows from `((cont_convL ν h₁ s₁ h₂).mul hf).integrable_of_hasCompactSupport ((supp_convL ν s₁ s₂).mul_right)`.
+-/
 theorem int_L {φ₁ φ₂ f : Γ → ℂ} (h₁ : Continuous φ₁) (s₁ : HasCompactSupport φ₁) (h₂ : Continuous φ₂)
     (s₂ : HasCompactSupport φ₂) (hf : Continuous f) :
     Integrable (fun g => (∫ h, φ₁ h * φ₂ (h⁻¹ * g) ∂ν) * f g) ν :=
   ((cont_convL ν h₁ s₁ h₂).mul hf).integrable_of_hasCompactSupport ((supp_convL ν s₁ s₂).mul_right)
 
+/- English proof (translation)
+The claim follows from `(h₁.mul (cont_convR ν h₂ s₂ hf)).integrable_of_hasCompactSupport s₁.mul_right`.
+-/
 theorem int_R {φ₁ φ₂ f : Γ → ℂ} (h₁ : Continuous φ₁) (s₁ : HasCompactSupport φ₁) (h₂ : Continuous φ₂)
     (s₂ : HasCompactSupport φ₂) (hf : Continuous f) :
     Integrable (fun h => φ₁ h * ∫ k, φ₂ k * f (h * k) ∂ν) ν :=
   (h₁.mul (cont_convR ν h₂ s₂ hf)).integrable_of_hasCompactSupport s₁.mul_right
 
+/- English proof (translation)
+Establish `hc : Continuous (Function.uncurry fun g h : Γ => φ₁ h * φ₂ (h⁻¹ * g) * f g)` using `((h₁.comp continuous_snd).mul (h₂.comp (continuous_snd.inv.mul continuous_fst))).mul (hf.comp continuous_fst)`. Establish `hs : HasCompactSupport (Function.uncurry fun g h : Γ => φ₁ h * φ₂ (h⁻¹ * g) * f g)`. Use `HasCompactSupport.intro ((s₁.isCompact.mul s₂.isCompact).prod s₁.isCompact) fun p hp => ?_` and prove the remaining obligations. Use `show φ₁ p.2 * φ₂ (p.2⁻¹ * p.1) * f p.1 = 0`. Distinguish the cases in `h1 : p.2 ∈ tsupport φ₁`.
+
+Establish `h2 : p.2⁻¹ * p.1 ∉ tsupport φ₂` using `fun h2 => hp ⟨Set.mem_mul.2 ⟨p.2, h1, p.2⁻¹ * p.1, h2, mul_inv_cancel_left p.2 p.1⟩, h1⟩`. Rewrite using `[image_eq_zero_of_notMem_tsupport h2, mul_zero, zero_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, zero_mul, zero_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Conclude with `(integral_mul_const _ _).symm`. Use `_ = ∫ h, ∫ g, φ₁ h * φ₂ (h⁻¹ * g) * f g ∂ν ∂ν := integral_integral_swap_of_hasCompactSupport hc hs`. Use `_ = ∫ h, φ₁ h * ∫ k, φ₂ k * f (h * k) ∂ν ∂ν := by`. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Establish `e1` using `integral_mul_left_eq_self (μ := ν) (fun g => φ₂ (h⁻¹ * g) * f g) h`.
+
+Simplify using `only [inv_mul_cancel_left] at e1`. Use `show ∫ g, φ₁ h * φ₂ (h⁻¹ * g) * f g ∂ν = φ₁ h * ∫ k, φ₂ k * f (h * k) ∂ν`. Rewrite using `[e1, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show φ₁ h * φ₂ (h⁻¹ * g) * f g = φ₁ h * (φ₂ (h⁻¹ * g) * f g)`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem swap_key {φ₁ φ₂ f : Γ → ℂ} (h₁ : Continuous φ₁) (s₁ : HasCompactSupport φ₁) (h₂ : Continuous φ₂)
     (s₂ : HasCompactSupport φ₂) (hf : Continuous f) :
     ∫ g, (∫ h, φ₁ h * φ₂ (h⁻¹ * g) ∂ν) * f g ∂ν = ∫ h, φ₁ h * ∫ k, φ₂ k * f (h * k) ∂ν ∂ν := by
@@ -98,12 +135,30 @@ theorem swap_key {φ₁ φ₂ f : Γ → ℂ} (h₁ : Continuous φ₁) (s₁ : 
 
 end Gen
 
+/- English proof (translation)
+Simplify using `[finH, map_mul]`.
+-/
 theorem finH_mul' {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} (g h : Hf E a b) :
     finH (g * h) = finH g * finH h := by
   simp [finH, map_mul]
 
 attribute [local instance] borelG borelF borelH
 
+/- English proof (translation)
+Introduce `E _ _ _ B A ψ ψ' U F hψ hψ' hU hF`. Use `B.hν` as an intermediate fact. Establish `: BorelSpace (Hf E B.a B.b)` using `⟨rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i X`.
+
+Take `⟨p, x₀⟩` from `i`. Establish `hfc : ∀ z, Continuous fun g => F (p, z) (X * finH g)`. Introduce `z`. Use `cont_of_rinv hU fun u hu g => ?_` and prove the remaining obligations. Rewrite using `[finH_mul', ← mul_assoc, hF _ u hu]`.
+
+Simplify using `only [convF, mulF]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[Finset.sum_mul]`. Conclude with `integral_finsetSum _ fun w _ => int_L B.ν (hψ x₀ w).1 (hψ x₀ w).2 (hψ' w z).1 (hψ' w z).2 (hfc z)`.
+
+Use `_ = ∑ w, ∑ z, ∫ g, (∫ h, ψ x₀ w h * ψ' w z (h⁻¹ * g) ∂B.ν) * F (p, z) (X * finH g) ∂B.ν := Finset.sum_comm`. Use `_ = ∑ w, ∑ z, ∫ h, ψ x₀ w h * ∫ k, ψ' w z k * F (p, z) (X * finH h * finH k) ∂B.ν ∂B.ν := by`. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[swap_key B.ν (hψ x₀ w).1 (hψ x₀ w).2 (hψ' w z).1 (hψ' w z).2 (hfc z)]`. Simplify using `only [finH_mul', mul_assoc]`.
+
+Use `_ = ∑ w, ∫ h, ψ x₀ w h * ∑ z, ∫ k, ψ' w z k * F (p, z) (X * finH h * finH k) ∂B.ν ∂B.ν := by`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[Finset.mul_sum]`. Use `(integral_finsetSum _ fun z _ => ?_).symm` and prove the remaining obligations. Use `int_R B.ν (hψ x₀ w).1 (hψ x₀ w).2 (hψ' w z).1 (hψ' w z).2 (hfc z)` as an intermediate fact.
+
+Simplify `this` using `only [finH_mul', mul_assoc]`. Introduce `hψU i u hu x`. Simplify using `only [convF]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Establish `e` using `integral_mul_left_eq_self (μ := B.ν) (fun k => ψ' i.2 z k * F (i.1, z) (x * finH k)) u`.
+
+Simplify using `only [hψU _ _ u hu, finH_mul', ← mul_assoc] at e`. Conclude with `e`.
+-/
 theorem convMul_holds : Tail.ConvMul := by
   intro E _ _ _ B A ψ ψ' U F hψ hψ' hU hF
   have := B.hν
@@ -141,6 +196,27 @@ theorem convMul_holds : Tail.ConvMul := by
     simp only [hψU _ _ u hu, finH_mul', ← mul_assoc] at e
     exact e
 
+/- English proof (translation)
+Introduce `hOff hIdem E _ _ _ κ _ S P B e hS hP U₁ U₂ L A F w₀ hU₁ hU₂ hL hD hF hw₀`. Establish `hLev : ∀ i, HasLev (F i)` using `fun i => (hF i).1`. Establish `hxy : ∀ x y : B.κ, (∀ w : P, e x w = e y w) → x = y` using `fun x y h => e.injective (funext h)`. Establish `hent : ∀ (x : B.κ) (w : Pl E), (w ∉ P → L.s w = idem (U₁ w)) → L.ent P (e x) (e x) w = idem (U₁ w)`. Introduce `x w hw`.
+
+Unfold `LM.ent`. Use `split_ifs with h`. Rewrite using `[hD w h]`. Simplify using the standard rewrite rules. Conclude with `hw h`.
+
+Establish `hP1 : ∀ (w : Pl E) (G : H E B.a B.b → ℂ), w ∈ S → HasLev G → G ∈ fixed (pairRt B.a B.b w) (U₁ w) → actP w (idem (U₁ w)) G = G` using `fun w G _ hG hfx => ((hIdem E B.a B.b w (U₁ w) G (hU₁.1 w).1 (hU₁.1 w).2 hG).1).2 hfx`. Establish `hT1 : ∀ (w : Pl E) (G : H E B.a B.b → ℂ), HasLev G → G ∈ fixed (pairRtT B.a B.b w) (U₂ w) → actT w (idem (U₂ w)) G = G` using `fun w G hG hfx => ((hIdem E B.a B.b w (U₂ w) G (hU₂.1 w).1 (hU₂.1 w).2 hG).2).2 hfx`. Use `⟨fun hw₀P hs ht i => ?_, fun hsp hs ht i => ?_⟩` and prove the remaining obligations. Establish `hne : ∀ w ∈ P, ∀ h : w ∈ S, (Sum.inl ⟨w₀, hw₀⟩ : Slot S) ≠ Sum.inl ⟨w, h⟩`. Introduce `w hwP h heq`.
+
+Establish `: w₀ = w` using `congrArg Subtype.val (Sum.inl_injective heq)`. Conclude with `hw₀P (this ▸ hwP)`. Establish `hQ : Quiet S P B e L (Sum.inl ⟨w₀, hw₀⟩) F`. Use `⟨fun w hwP hw x y hxy' => ?_, fun j hj p x y hxe => ?_⟩` and prove the remaining obligations. Rewrite using `[hD w hwP, if_neg hxy']`.
+
+Establish `hx : x = y` using `hxy x y fun w => hxe w fun h => hne w.1 w.2 h`. Substitute `hx` using the available equality. Break down `j with ⟨w, hwS⟩ | ⟨w, hwS, hwsp⟩` into its components or cases. Establish `hww : w ≠ w₀` using `fun h => hj (by subst h; rfl) show actP w (L.ent P (e x) (e x) w) (F (p, x)) = F (p, x)`. Rewrite using `[hent x w fun _ => hs w hww]`.
+
+Conclude with `hP1 w _ hwS (hLev _) ((hF _).2 w hwS).1`. Use `show actT w (L.t w) (F (p, x)) = F (p, x)`. Rewrite using `[ht w]`. Conclude with `hT1 w _ (hLev _) (((hF _).2 w hwS).2 hwsp)`. Take `⟨p, x⟩` from `i`.
+
+Conclude with `hOff E κ S P B e hS hP A L (Sum.inl ⟨w₀, hw₀⟩) F hL hLev hne hQ p x`. Establish `hne : ∀ w ∈ P, ∀ h : w ∈ S, (Sum.inr ⟨w₀, hw₀, hsp⟩ : Slot S) ≠ Sum.inl ⟨w, h⟩`. Introduce `w _ h heq`. Consider the cases of `heq`. Establish `hQ : Quiet S P B e L (Sum.inr ⟨w₀, hw₀, hsp⟩) F`.
+
+Use `⟨fun w hwP hw x y hxy' => ?_, fun j hj p x y hxe => ?_⟩` and prove the remaining obligations. Rewrite using `[hD w hwP, if_neg hxy']`. Establish `hx : x = y` using `hxy x y fun w => hxe w fun h => hne w.1 w.2 h`. Substitute `hx` using the available equality. Break down `j with ⟨w, hwS⟩ | ⟨w, hwS, hwsp⟩` into its components or cases.
+
+Use `show actP w (L.ent P (e x) (e x) w) (F (p, x)) = F (p, x)`. Rewrite using `[hent x w fun _ => hs w]`. Conclude with `hP1 w _ hwS (hLev _) ((hF _).2 w hwS).1`. Establish `hww : w ≠ w₀` using `fun h => hj (by subst h; rfl) show actT w (L.t w) (F (p, x)) = F (p, x)`. Rewrite using `[ht w hww]`.
+
+Conclude with `hT1 w _ (hLev _) (((hF _).2 w hwS).2 hwsp)`. Take `⟨p, x⟩` from `i`. Conclude with `hOff E κ S P B e hS hP A L (Sum.inr ⟨w₀, hw₀, hsp⟩) F hL hLev hne hQ p x`.
+-/
 theorem fmOneOf_holds : FmOneOf := by
   intro hOff hIdem E _ _ _ κ _ S P B e hS hP U₁ U₂ L A F w₀ hU₁ hU₂ hL hD hF hw₀
   have hLev : ∀ i, HasLev (F i) := fun i => (hF i).1

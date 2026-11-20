@@ -9,6 +9,13 @@ open MvPolynomial
 
 universe u
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hsH e he m hm hmP hmH G' hϖG' hsG' hresG' x hxP`. Establish `hGmin` using `hcomp O ϖ hϖ K ι P d hP b f g hD c s hs hsP hsH e he m hm hmP hmH G' hϖG' hsG' hresG'`. Establish `hG'supp : G' ∈ (blowUpOf P (blowUpGens s g f m e) ⊔ Ideal.span {liftForm s}).minimalPrimes ∧ IsRelevant G'`. Assume the negation of the conclusion as `h`. Unfold `divCycle at hsG'`.
+
+Rewrite `hsG'` using `[dif_neg h]`. Conclude with `lt_irrefl _ hsG'`. Establish `hsP' : liftForm (J` using `BlowUpIdx ι) s ∉ blowUpOf P (blowUpGens s g f m e) := by`. Rewrite using `[blowUpOf, RingHom.mem_ker, aeval_blowUpSubst_liftForm, Polynomial.C_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hsP`.
+
+Conclude with `hle O K ι (BlowUpIdx ι) P hP.multiProj.isPrime (blowUpGens s g f m e) G' (liftForm s) hsP' hG'supp.1 hG'supp.2 s hsP hGmin x hxP`.
+-/
 theorem ResidualContraction.proof (hle : BlowUpOrderLe.Statement.{u})
     (hcomp : ResidualContractionComponent.Statement.{u}) :
     ResidualContraction.Statement.{u} := by

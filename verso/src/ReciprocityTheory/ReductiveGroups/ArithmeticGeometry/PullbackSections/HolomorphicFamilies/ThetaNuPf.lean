@@ -13,11 +13,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_cancel {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (k : ℕ) {L1 L2 : RigLB G}
     (e : L1 = L2) (θ : LB.Sec (LB.LinComb L2.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ)))) :
     (e ▸ (e.symm ▸ θ : LB.Sec (LB.LinComb L1.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ))))) = θ := by
   subst e; rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H V _ _ _ _ _ t P _ ϖ hϖ Q hQ vK hvK tK m w _ θ θK htie`. Use `haveI := t.semi.smooth`. Use `haveI := t.semi.separated`. Use `haveI := t.semi.quasiCompact`. Set `σ' : LB.Sec (LB.LinComb P.U.LG.L (K` to `Fin 1) (fun _ => 𝟙 t.G.left) (fun _ => ((1 : ℕ) : ℤ))) := P.bundle.symm ▸ θ`.
+
+Set `s : P.U.SecK 1` to `TG.secK P.U.toUnifPre σ'`. Establish `hs` using `TG.secK_rel P.U.toUnifPre σ'`. Take `⟨Ex, hEx, -⟩` from `(P.U.expand 1 le_rfl).1 s`. Establish `hnu` using `expansion_nonneg_regular V ϖ hϖ P.D Q hQ vK hvK P.A t.G P.U 1 rfl σ' s hs Ex hEx`. Use `⟨s, Ex, fun Z r zp hzp z J J' hJ hJ' => ?_, hEx, hnu⟩` and prove the remaining obligations.
+
+Establish `hsc` using `secScal_cast (pullback.fst t.G.hom (Out.jK V)) 1 P.bundle s σ' hs`. Establish `e1` using `ReciprocityTheory.ChartRestriction.G.DVR.SectionScalarValuation.secScal_sval hsc (r ≫ iotaK m) z hJ`. Rewrite `e1` using `[Category.assoc, iotaK, pullback.lift_fst, cast_cancel 1 P.bundle θ]`. Conclude with `e1.symm.trans (htie Z r zp hzp z J J' hJ hJ')`.
+-/
 theorem thetaNu : ThetaNuSt := by
   intro E _ _ _ H V _ _ _ _ _ t P _ ϖ hϖ Q hQ vK hvK tK m w _ θ θK htie
   haveI := t.semi.smooth

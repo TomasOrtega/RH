@@ -27,10 +27,16 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 def cst {R : Type} [CommRing R] {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of R)) (z : Z) : R →+* Z.presheaf.stalk z :=
   (Z.presheaf.germ ⊤ z trivial).hom.comp (q.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)
 
+/- English proof (translation)
+The claim follows from `(gs_pull r p z ⊤ trivial _).trans (gs_eq _ z ⊤ trivial _)`.
+-/
 theorem gs_scal {R : Type} [CommRing R] {Y Z : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ Y) (z : Z) (c : R) :
     gs r z ⊤ (scal p c) = cst (r ≫ p) z c :=
   (gs_pull r p z ⊤ trivial _).trans (gs_eq _ z ⊤ trivial _)
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun t => t.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Simplify using `only [cst, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Rewrite using `[e]`.
+-/
 theorem cst_specMap {A R : Type} [CommRing A] [CommRing R] {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of R)) (z : Z)
     (f : A →+* R) (c : A) : cst (q ≫ Spec.map (CommRingCat.ofHom f)) z c = cst q z (f c) := by
   have e := congrArg (fun t => t.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))
@@ -38,6 +44,9 @@ theorem cst_specMap {A R : Type} [CommRing A] [CommRing R] {Z : Scheme.{0}} (q :
   simp only [cst, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]
   rw [e]
 
+/- English proof (translation)
+The claim follows from `(gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) c))`.
+-/
 theorem sval_secScale {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (c : Γ(Y, ⊤)) (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
     sval (SecOps.secScale c s) r z J = gs r z ⊤ c * sval s r z J :=
@@ -45,6 +54,9 @@ theorem sval_secScale {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Establish `a` using `(values_natural _ _ _ _ D.P.L (Fin 4) _ _ (𝟙 (DegPre.BF D F).left) r z J hJ).2.1 (s α)`. Establish `b` using `(values_natural _ _ _ _ D.P.L (Fin 4) _ _ (φ ▷ D.P.A).left r z J hJ).2.1 (f α)`. Establish `hJ' : Good D.P.L (r z) (fun ψ => J (r ≫ ψ))` using `fun ψ => hJ _`. Rewrite `a` using `[Category.comp_id]`. Conclude with `a.trans ((congrArg _ (h α _ _ hJ')).trans b.symm)`.
+-/
 theorem pullB_val {T : Over (Spec (CommRingCat.of R))} {φ : TF (R := R) F ⟶ T} {k : ℕ} {f : ∀ α, SecBT D T k α}
     {s : Raw D F k} (h : PullB D F φ k f s) (α : D.X) {Z : Scheme.{0}} (r : Z ⟶ (DegPre.BF D F).left) (z : Z) {J}
     (hJ : Good D.P.L z J) : sval (s α) r z J = sval (f α) (r ≫ (φ ▷ D.P.A).left) z J := by
@@ -54,6 +66,11 @@ theorem pullB_val {T : Over (Spec (CommRingCat.of R))} {φ : TF (R := R) F ⟶ T
   rw [Category.comp_id] at a
   exact a.trans ((congrArg _ (h α _ _ hJ')).trans b.symm)
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[trT, DegPre.trF]`. Rewrite using `[Category.assoc, Category.assoc, whiskerRight_snd, trT, DegPre.trF, lift_snd, lift_snd]`. Use `(MonObj.comp_mul (φ ▷ D.P.A) (snd T D.P.A) (fst T D.P.A ≫ cP D T mu)).trans ?_` and prove the remaining obligations. Rewrite using `[whiskerRight_snd, comp_cP, comp_cP]`.
+
+Both sides reduce to the same expression.
+-/
 theorem whisker_trT {T : Over (Spec (CommRingCat.of R))} (φ : TF (R := R) F ⟶ T) (mu : D.X) :
     φ ▷ D.P.A ≫ trT D (toUnit T ≫ D.c mu) = DegPre.trF D F mu ≫ φ ▷ D.P.A := by
   apply CartesianMonoidalCategory.hom_ext
@@ -63,6 +80,9 @@ theorem whisker_trT {T : Over (Spec (CommRingCat.of R))} (φ : TF (R := R) F ⟶
     rw [whiskerRight_snd, comp_cP, comp_cP]
     rfl
 
+/- English proof (translation)
+Establish `e : (DegPre.BF D F).hom = ((fst (TF (R` using `R) F) D.P.A).left ≫ jFK (R := R) F) ≫ jK R := (Over.w (fst (TF (R := R) F) D.P.A)).symm.trans (Category.assoc _ _ _).symm`. Rewrite using `[e]`. Use `(congrArg IsUnit ((cst_specMap _ z (algebraMap R (FractionRing R)) r).trans (cst_specMap _ z _ _))).mpr (IsUnit.map _ (IsUnit.map _ (Ne.isUnit ?_)))` and prove the remaining obligations. Conclude with `fun h => hr (IsFractionRing.injective R (FractionRing R) (h.trans (map_zero _).symm))`.
+-/
 theorem cst_unit {r : R} (hr : r ≠ 0) (z : (DegPre.BF D F).left) : IsUnit (cst (DegPre.BF D F).hom z r) := by
   have e : (DegPre.BF D F).hom = ((fst (TF (R := R) F) D.P.A).left ≫ jFK (R := R) F) ≫ jK R :=
     (Over.w (fst (TF (R := R) F) D.P.A)).symm.trans (Category.assoc _ _ _).symm
@@ -71,6 +91,9 @@ theorem cst_unit {r : R} (hr : r ≠ 0) (z : (DegPre.BF D F).left) : IsUnit (cst
     (IsUnit.map _ (IsUnit.map _ (Ne.isUnit ?_)))
   exact fun h => hr (IsFractionRing.injective R (FractionRing R) (h.trans (map_zero _).symm))
 
+/- English proof (translation)
+Introduce `U _ h` and use `by refine Eq.symm (Eq.trans (prod_sum₂ (K := Fin 4) (K' := Fin 4 ⊕ Fin 4) (U := U) _ (c := ∏ i, h ((trT D b).left ≫ famφT D T α i) ^ DegPre.famε k i) rfl (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (c := ∏ i, h (famφT D T α' i) ^ DegPre.famε k i) rfl (prod_neg _ _ rfl))) ?_) …`.
+-/
 theorem form_delta {T : Over (Spec (CommRingCat.of R))} (k : ℕ) (α' α : D.X) (b : T ⟶ D.P.A) :
     FormEq (famφT D T α') (DegPre.famε k) (Sum.elim (fun i => (trT D b).left ≫ famφT D T α i) (deltaφT D α' α b))
       (Sum.elim (DegPre.famε k) (DegPre.deltaε k)) := fun U _ h => by
@@ -80,11 +103,19 @@ theorem form_delta {T : Over (Spec (CommRingCat.of R))} (k : ℕ) (α' α : D.X)
       (c := ∏ i, h (famφT D T α' i) ^ DegPre.famε k i) rfl (prod_neg _ _ rfl))) ?_)
   exact (mul_comm _ _).trans (inv_mul_cancel_right _ _)
 
+/- English proof (translation)
+Use `haveI : IsNoetherianRing W := isNoetherian_of_tower V inferInstance`. Conclude with `isNoetherianRing_of_ringEquiv W (Scheme.ΓSpecIso (CommRingCat.of W)).commRingCatIsoToRingEquiv.symm`.
+-/
 theorem noeth (V W : Type) [CommRing V] [IsNoetherianRing V] [CommRing W] [Algebra V W] [Module.Finite V W] :
     IsNoetherianRing Γ((TA V W).left, ⊤) := by
   haveI : IsNoetherianRing W := isNoetherian_of_tower V inferInstance
   exact isNoetherianRing_of_ringEquiv W (Scheme.ΓSpecIso (CommRingCat.of W)).commRingCatIsoToRingEquiv.symm
 
+/- English proof (translation)
+Set `E : W ≃+* Γ((TA V W).left, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of W)).commRingCatIsoToRingEquiv.symm`. Establish `e : scal (TA V W).hom r = E (algebraMap V W r)` using `(congrArg (fun t => t.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap V W)))).symm`. Establish `hw : algebraMap V W r ∈ Ideal.jacobson (⊥ : Ideal W)`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Conclude with `map_nonunit (algebraMap V W) r hr`.
+
+Rewrite using `[e, Ideal.mem_jacobson_bot]`. Introduce `y`. Use `(Ideal.mem_jacobson_bot.1 hw (E.symm y)).map E` as an intermediate fact. Simplify using `using this`.
+-/
 theorem jac (V W : Type) [CommRing V] [IsLocalRing V] [CommRing W] [IsLocalRing W] [Algebra V W]
     [IsLocalHom (algebraMap V W)] (r : V) (hr : r ∈ IsLocalRing.maximalIdeal V) :
     scal (TA V W).hom r ∈ Ideal.jacobson (⊥ : Ideal Γ((TA V W).left, ⊤)) := by
@@ -99,12 +130,18 @@ theorem jac (V W : Type) [CommRing V] [IsLocalRing V] [CommRing W] [IsLocalRing 
   have := (Ideal.mem_jacobson_bot.1 hw (E.symm y)).map E
   simpa using this
 
+/- English proof (translation)
+The claim follows from `(sval_secScale _ _ r z hJ).trans (congrArg (· * _) (gs_scal (R := W) _ r z _))`.
+-/
 theorem sval_twist {W : Type} [CommRing W] [Algebra R W] {k : ℕ} (a : Multiplicative D.X →* Wˣ)
     (f : ∀ α, SecBT D (TA R W) k α) (α : D.X) {Z : Scheme.{0}} (r : Z ⟶ (TA R W ⊗ D.P.A).left) (z : Z) {J}
     (hJ : Good D.P.L z J) : sval (twist a f α) r z J =
       cst (R := W) (r ≫ (fst (TA R W) D.P.A).left) z (a (Multiplicative.ofAdd α)).val * sval (f α) r z J :=
   (sval_secScale _ _ r z hJ).trans (congrArg (· * _) (gs_scal (R := W) _ r z _))
 
+/- English proof (translation)
+Establish `e : (r ≫ φ ▷ D.P.A).left ≫ (fst (TA R W) D.P.A).left = (r ≫ fst _ _ ≫ φ).left`. Rewrite using `[← Over.comp_left, Category.assoc, whiskerRight_fst]`. Rewrite using `[hp Z _ z J hJ, sval_twist a f β _ z hJ, sval_twist a' g ga _ z hJ, e, pullB_val hf β _ z hJ, pullB_val hg ga _ z hJ, Category.assoc, whiskerRight_snd, Units.val_mul, map_mul, Over.comp_left _ _ _ r (φ ▷ D.P.A)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem term_val {W : Type} [CommRing W] [Algebra R W] {φ : TF (R := R) F ⟶ TA R W} {k l : ℕ}
     {f : ∀ α, SecBT D (TA R W) k α} {g : ∀ α, SecBT D (TA R W) l α} {s : Raw D F k} {s' : Raw D F l}
     (hf : PullB D F φ k f s) (hg : PullB D F φ l g s') (a a' : Multiplicative D.X →* Wˣ) {β ga α : D.X}
@@ -120,6 +157,13 @@ theorem term_val {W : Type} [CommRing W] [Algebra R W] {φ : TF (R := R) F ⟶ T
     pullB_val hg ga _ z hJ, Category.assoc, whiskerRight_snd, Units.val_mul, map_mul, Over.comp_left _ _ _ r (φ ▷ D.P.A)]
   ring
 
+/- English proof (translation)
+Establish `hγ : α + (k + l) • mu - (β + k • mu) = α - β + l • mu` using `by rw [add_nsmul]; abel`. Establish `e₁` using `term_val hf hg a a' hp' (𝟙 (DegPre.BF D F)) z hJ`. Establish `e₂` using `term_val hf hg a a' hp (𝟙 (DegPre.BF D F) ≫ DegPre.trF D F mu) z hJ`. Establish `e₃` using `ConvTermFE.conv_term_fe hG R D hB F k l s s' hs hs' mu α β (α - β) _ _ (add_sub_cancel _ _) rfl hγ u hu hc _ (𝟙 (DegPre.BF D F)) z J hJ`. Establish `e₄ : (𝟙 (DegPre.BF D F) ≫ DegPre.trF D F mu) ≫ fst _ _ ≫ φ = 𝟙 (DegPre.BF D F) ≫ fst _ _ ≫ φ`.
+
+Rewrite using `[Category.id_comp, Category.id_comp, DegPre.trF, lift_fst_assoc]`. Establish `e₅ : a (Multiplicative.ofAdd (β + k • mu)) * a' (Multiplicative.ofAdd (α + (k + l) • mu - (β + k • mu))) = a (Multiplicative.ofAdd β) * a' (Multiplicative.ofAdd (α - β))`. Rewrite using `[hγ, ofAdd_add, ofAdd_add, map_mul, map_mul, _root_.mul_mul_mul_comm, ha, _root_.mul_one]`. Establish `e₆ : (φ ▷ D.P.A).left ≫ (trT D (toUnit _ ≫ D.c mu)).left = ((𝟙 (DegPre.BF D F) ≫ DegPre.trF D F mu) ≫ φ ▷ D.P.A).left`. Rewrite using `[Category.id_comp, ← whisker_trT, Over.comp_left]`.
+
+Rewrite `e₁` using `[e₅, e₃, Category.id_comp (φ ▷ D.P.A)]`. Rewrite `e₂` using `[e₄]`. Rewrite using `[e₆, e₁, e₂]`. Conclude with `(_root_.mul_assoc _ _ _).symm`.
+-/
 theorem term_rel (hG : GlobalFnsSt) (hB : D.TauBimult) {W : Type} [CommRing W] [Algebra R W]
     {φ : TF (R := R) F ⟶ TA R W} {k l : ℕ}
     {f : ∀ α, SecBT D (TA R W) k α} {g : ∀ α, SecBT D (TA R W) l α} {s : Raw D F k} {s' : Raw D F l}
@@ -152,6 +196,17 @@ theorem term_rel (hG : GlobalFnsSt) (hB : D.TauBimult) {W : Type} [CommRing W] [
   rw [e₆, e₁, e₂]
   exact (_root_.mul_assoc _ _ _).symm
 
+/- English proof (translation)
+Introduce `hG V _ _ _ hV D hB W _ _ _ hW F _ _ φ hφ k l f g h s s' s'' a a' ha hf hg hh hs hs' hconv mu α u hu hc`. Take `⟨u₀, r₁, r₂, hu₀, -, hr₂, hrel⟩` from `GlobalTheory.UU.IntGen.main hG V D (TA V W) (k + l) α mu`. Take `⟨p, hp, hS⟩` from `hconv α`. Take `⟨p', hp', hS'⟩` from `hconv (α + (k + l) • mu)`. Use `haveI := hV.1`.
+
+Use `haveI := hW.1`. Use `haveI := hW.2.2.2.1`. Use `haveI := noeth V W`. Use `haveI := D.P.isAb.smooth`. Use `haveI := D.P.isAb.geomConnected`.
+
+Use `haveI : IsAffine (TA V W).left := inferInstanceAs (IsAffine (Spec _))`. Use `haveI : IsAffine (TF (R := V) F).left := inferInstanceAs (IsAffine (Spec _))`. Establish `hcs : ∀ (z : (DegPre.BF D F).left) (c : V), gs (φ ▷ D.P.A).left z ⊤ (scal (TA V W ⊗ D.P.A).hom c) = cst (DegPre.BF D F).hom z c` using `fun z c => by`. Rewrite using `[gs_scal, Over.w]`. Establish `hu' : ∀ (z : (DegPre.BF D F).left) (J), Good D.P.L z J → cst (DegPre.BF D F).hom z r₂ * (val u (𝟙 _) z J).val = cst (DegPre.BF D F).hom z r₁ * (val u₀ (φ ▷ D.P.A).left z J).val` using `fun z J hJ => by`.
+
+Use `hrel F φ u hu hc _ (𝟙 _) z J hJ` as an intermediate fact. Rewrite `this` using `[gs_scal, gs_scal, Category.id_comp, Category.id_comp]`. Then use the resulting hypothesis. Establish `H` using `relation_of_finite_levels V (IsLocalRing.maximalIdeal V) (TA V W) D.P.A (jac V W) _ _ D.P.L D.P.isLB _ _ _ _ _ _ _ _ _ (trT D (toUnit _ ≫ D.c mu)).left (h α) (h (α + (k + l) • mu)) u₀ (scal (TA V W ⊗ D.P.A).hom r₁) (scal (TA V W ⊗ D.P.A).hom r₂) hu₀ (form_delta _ _ _ _) (adicSum_ …`. Rewrite using `[hcs, hcs, term_rel hG hB hf hg hs hs' a a' mu α β (ha mu) (hp β) (hp' _) u hu hc z hJ, mul_left_comm, hu' z J hJ, mul_left_comm])`. Use `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).2 fun z J hJ => ?_` and prove the remaining obligations.
+
+Establish `e` using `H _ (φ ▷ D.P.A).left z J hJ`. Rewrite `e` using `[hcs, hcs, mul_left_comm, ← hu' z J hJ, mul_left_comm, ← Over.comp_left, whisker_trT, Over.comp_left]`. Rewrite using `[pullB_val hh _ _ z hJ, pullB_val hh _ _ z hJ, Category.id_comp, Category.id_comp]`. Conclude with `(cst_unit hr₂ z).mul_left_cancel e`.
+-/
 theorem conv_famFE : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ (D : DegPre V), D.TauBimult → ∀ (W : Type) [CommRing W] [IsLocalRing W] [Algebra V W], FinExt V W → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (φ : TF (R := V) F ⟶ TA V W), Function.Injective φ.left.appTop.hom → ∀ (k l : ℕ) (f : ∀ α, SecBT D (TA V W) k α) (g : ∀ α, SecBT D (TA V W) l α) (h : ∀ α, SecBT D (TA V W) (k + l) α) (s : Raw D F k) (s' : Raw D F l) (s'' : Raw D F (k + l)) (a a' : Multiplicative D.X →* Wˣ), (∀ mu : D.X, a (Multiplicative.ofAdd (k • mu)) * a' (Multiplicative.ofAdd (l • mu)) = 1) → PullB D F φ k f s → PullB D F φ l g s' → PullB D F φ (k + l) h s'' → DegPre.FamFE D F k s → DegPre.FamFE D F l s' → ConvT (IsLocalRing.maximalIdeal V) (twist a f) (twist a' g) h → DegPre.FamFE D F (k + l) s'' := by
   intro hG V _ _ _ hV D hB W _ _ _ hW F _ _ φ hφ k l f g h s s' s'' a a' ha hf hg hh hs hs' hconv mu α u hu hc
   obtain ⟨u₀, r₁, r₂, hu₀, -, hr₂, hrel⟩ := GlobalTheory.UU.IntGen.main hG V D (TA V W) (k + l) α mu

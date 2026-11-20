@@ -7,10 +7,19 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.SpectralComposition
 
 namespace Formalism.FourierDecayAlt.P.CutSE
 
+/- English proof (translation)
+The claim follows from `rDSOpR_of_parts spectral_right_group_action spectral_operator_X spectral_right_rho_action spectral_composition_zero`.
+-/
 theorem spectral_operator_R : RDSOpR := rDSOpR_of_parts spectral_right_group_action spectral_operator_X spectral_right_rho_action spectral_composition_zero
 
+/- English proof (translation)
+The claim follows from `rDSOpRv_of_parts spectral_adjoint_right_group spectral_operator_X spectral_adjoint_rho_action spectral_composition_zero`.
+-/
 theorem spectral_operator_R_adjoint : RDSOpRv := rDSOpRv_of_parts spectral_adjoint_right_group spectral_operator_X spectral_adjoint_rho_action spectral_composition_zero
 
+/- English proof (translation)
+The claim follows from `thmPActualCpt_of_R spectral_operator_R spectral_operator_R_adjoint`.
+-/
 theorem actual_compact_theorem : Formalism.FourierDecayAlt.P5.ThmPActualCpt := thmPActualCpt_of_R spectral_operator_R spectral_operator_R_adjoint
 
 end Formalism.FourierDecayAlt.P.CutSE

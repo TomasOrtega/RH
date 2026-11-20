@@ -10,6 +10,13 @@ namespace GlobalTheory.LowFilt
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `haveI : Module.Finite (𝓞 E) N := Module.Finite.of_restrictScalars_finite ℤ (𝓞 E) N`. Use `haveI : Module.IsTorsionFree (𝓞 E) N := by`. Use `Module.isTorsionFree_iff_smul_eq_zero.2 fun a x hax => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hk`. Use `push_neg at hk`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Establish `h0 : Ideal.absNorm (Ideal.span {a}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hk.1`. Establish `h1 : ((Ideal.absNorm (Ideal.span {a}) : ℕ) : ℤ) • x = 0`.
+
+Rewrite using `[natCast_zsmul, ← Nat.cast_smul_eq_nsmul (𝓞 E), ← hc, mul_smul, hax, smul_zero]`. Conclude with `hk.2 ((smul_eq_zero.1 h1).resolve_left (by exact_mod_cast h0))`. Use `haveI : Module.FinitePresentation (𝓞 E) N := Module.finitePresentation_of_finite _ _`. Conclude with `⟨inferInstance, Module.Flat.projective_of_finitePresentation⟩`.
+-/
 private theorem finite_projective_of_free_int (E : Type) [Field E] [NumberField E] (N : Type) [AddCommGroup N]
     [Module (𝓞 E) N] [Module.Free ℤ N] [Module.Finite ℤ N] :
     Module.Finite (𝓞 E) N ∧ Module.Projective (𝓞 E) N := by
@@ -28,6 +35,9 @@ private theorem finite_projective_of_free_int (E : Type) [Field E] [NumberField 
   haveI : Module.FinitePresentation (𝓞 E) N := Module.finitePresentation_of_finite _ _
   exact ⟨inferInstance, Module.Flat.projective_of_finitePresentation⟩
 
+/- English proof (translation)
+Use `letI : Field (O ⧸ I) := Ideal.Quotient.field _`. Establish `h1` using `Module.rankAtStalk_baseChange (R := O) (M := N) (S := O ⧸ I) ⊥`. Rewrite `h1` using `[Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq, Ideal.finrank_fiber_eq_finrank]`. Conclude with `h1`.
+-/
 private theorem finrank_quot_tensor {O N : Type} [CommRing O] [IsDomain O] [AddCommGroup N] [Module O N]
     [Module.Finite O N] [Module.Projective O N] (I : Ideal O) [I.IsMaximal] :
     Module.finrank (O ⧸ I) ((O ⧸ I) ⊗[O] N) = Module.finrank O N := by
@@ -36,17 +46,32 @@ private theorem finrank_quot_tensor {O N : Type} [CommRing O] [IsDomain O] [AddC
   rw [Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq, Ideal.finrank_fiber_eq_finrank] at h1
   exact h1
 
+/- English proof (translation)
+Rewrite using `[← (TensorProduct.quotTensorEquivQuotSMul N I).map_eq_zero_iff, TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, Submodule.Quotient.mk_eq_zero]`.
+-/
 private theorem one_tmul_eq_zero_iff {O N : Type} [CommRing O] [AddCommGroup N] [Module O N] (I : Ideal O) (x : N) :
     (1 : O ⧸ I) ⊗ₜ[O] x = 0 ↔ x ∈ I • (⊤ : Submodule O N) := by
   rw [← (TensorProduct.quotTensorEquivQuotSMul N I).map_eq_zero_iff,
     TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, Submodule.Quotient.mk_eq_zero]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (TensorProduct.quotTensorEquivQuotSMul N I t)`. Use `⟨x, (TensorProduct.quotTensorEquivQuotSMul N I).injective ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, hx]`.
+-/
 private theorem one_tmul_surjective {O N : Type} [CommRing O] [AddCommGroup N] [Module O N] (I : Ideal O)
     (t : (O ⧸ I) ⊗[O] N) : ∃ x : N, (1 : O ⧸ I) ⊗ₜ[O] x = t := by
   obtain ⟨x, hx⟩ := Submodule.Quotient.mk_surjective _ (TensorProduct.quotTensorEquivQuotSMul N I t)
   refine ⟨x, (TensorProduct.quotTensorEquivQuotSMul N I).injective ?_⟩
   rw [TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, hx]
 
+/- English proof (translation)
+Use `letI : Field (O ⧸ I) := Ideal.Quotient.field _`. Establish `hns : ¬ Function.Surjective (f.baseChange (O ⧸ I))` using `fun hs => hi <| eq_top_iff.2 fun x _ => by`. Take `⟨t, ht⟩` from `hs (1 ⊗ₜ x)`. Take `⟨v, rfl⟩` from `one_tmul_surjective I t`. Rewrite `ht` using `[LinearMap.baseChange_tmul, ← sub_eq_zero, ← TensorProduct.tmul_sub, one_tmul_eq_zero_iff]`.
+
+Establish `: x = f v - (f v - x)` using `by abel`. Rewrite using `[this]`. Conclude with `sub_mem (Submodule.mem_sup_left ⟨v, rfl⟩) (Submodule.mem_sup_right ht)`. Rewrite `hns` using `[← LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [finrank_quot_tensor, finrank_quot_tensor, hr]), injective_iff_map_eq_zero]`. Use `push_neg at hns`.
+
+Take `⟨t, ht, ht0⟩` from `hns`. Take `⟨v, rfl⟩` from `one_tmul_surjective I t`. Rewrite `ht` using `[LinearMap.baseChange_tmul, one_tmul_eq_zero_iff]`. Take `⟨g, hg⟩` from `Module.Projective.exists_dual_ne_zero (O ⧸ I) ht0`. Take `⟨ℓ, hℓ⟩` from `Module.projective_lifting_property I.mkQ ((g.restrictScalars O).comp (TensorProduct.mk O (O ⧸ I) P 1)) I.mkQ_surjective`.
+
+Use `⟨v, ht, ℓ, fun hv => hg ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hℓ v` as an intermediate fact. Conclude with `this.symm.trans ((Submodule.Quotient.mk_eq_zero I).2 hv)`.
+-/
 theorem exists_ker_vec_of_not_onto_mod {O P X : Type} [CommRing O] [IsDomain O] [AddCommGroup P] [Module O P]
     [Module.Finite O P] [Module.Projective O P] [AddCommGroup X] [Module O X] [Module.Finite O X]
     [Module.Projective O X] (f : P →ₗ[O] X) (hr : Module.finrank O P = Module.finrank O X) (I : Ideal O)
@@ -73,6 +98,13 @@ theorem exists_ker_vec_of_not_onto_mod {O P X : Type} [CommRing O] [IsDomain O] 
   have := LinearMap.congr_fun hℓ v
   exact this.symm.trans ((Submodule.Quotient.mk_eq_zero I).2 hv)
 
+/- English proof (translation)
+Introduce `E _ _ _ H D X _ _ _ _ y Z Z' h hr 𝔭 h𝔭 hi`. Take `⟨hZf, hZn⟩` from `sub_free_finite D Z`. Take `⟨hZf', hZn'⟩` from `sub_free_finite D Z'`. Take `⟨_, _⟩` from `finite_projective_of_free_int E Z'`. Take `⟨_, _⟩` from `finite_projective_of_free_int E X`.
+
+Establish `hrank : Module.finrank (𝓞 E) Z' = Module.finrank (𝓞 E) X`. Use `h.finrank_int_eq` as an intermediate fact. Rewrite `this` using `[GlobalTheory.finrank_int_eq_finrank_ringOfIntegers_mul E Z, GlobalTheory.finrank_int_eq_finrank_ringOfIntegers_mul E Z']`. Conclude with `(Nat.eq_of_mul_eq_mul_right Module.finrank_pos this).trans hr`. Use `exists_ker_vec_of_not_onto_mod (y.comp Z'.subtype) hrank 𝔭 h𝔭 ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]` and apply the resulting hypothesis.
+-/
 theorem IsOpp.exists_ker_vec : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (y : D.La →ₗ[𝓞 E] X) (Z Z' : Submodule (𝓞 E) D.La) (h : IsOpp D Z Z')

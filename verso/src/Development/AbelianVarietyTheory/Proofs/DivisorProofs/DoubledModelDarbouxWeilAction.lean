@@ -17,11 +17,17 @@ open GlobalTheory.DblDatum
 noncomputable section
 namespace GlobalTheory.DblDatumBox
 
+/- English proof (translation)
+Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_eq_conj (h t)]`. Both sides reduce to the same expression.
+-/
 theorem star_addChar {R : Type} [AddCommGroup R] (ψ : AddChar R ℂ) (h : ∀ t, ‖ψ t‖ = 1) (t : R) :
     star (ψ t) = ψ (-t) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_eq_conj (h t)]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, star_mul', star_addChar ψ h, dotProduct_neg]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_neg_star {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (h : ∀ t, ‖ψ t‖ = 1)
     {κ : Type} [Fintype κ] (w : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
     schr ψ (w.1, -w.2) (fun x => star (φ x)) = fun x => star (schr ψ w φ x) := by
@@ -30,6 +36,13 @@ theorem schr_neg_star {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar
   congr 2
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n d Xs W M W₂ _ co e _ _ he`. Establish `h1 : ∀ Φ₁ ∈ schA F (Fin n × Fin d), ∀ Φ₂ ∈ schA F (Fin n × Fin d), boxC Φ₁ Φ₂ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d)` using `fun Φ₁ h₁ Φ₂ h₂ => GlobalTheory.BoxSchwartz.boxFun_mem_schA_adelic F _ _ _ _ h₁ (GlobalTheory.SchAConj.star_mem_schA F _ Φ₂ h₂)`. Use `⟨h1, fun u Φ₁ h₁ Φ₂ h₂ => ?_⟩` and prove the remaining obligations. Establish `hψ : ∀ t, ‖B.ψ t‖ = 1` using `GlobalTheory.StdCharFromIsStd.norm_psi hB.std`. Rewrite using `[← he u _ (h1 Φ₁ h₁ Φ₂ h₂)]`.
+
+Use `congr 1`. Unfold `boxC`. Rewrite using `[GlobalTheory.BoxSpan.schr_boxFun]`. Establish `h2` using `schr_neg_star B.ψ hψ (M.co.e (botC u)) Φ₂`. Unfold `Darboux.rho`.
+
+Rewrite using `[← h2]`. Both sides reduce to the same expression.
+-/
 theorem box_intertwine : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W)
     (W₂ : Spc F E (d + d)), W₂.J = dblGram finSumFinEquiv W.J →

@@ -2,6 +2,9 @@ import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MultiplicationFunction
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MultiplicationNormBound
 
+/- English proof (translation)
+Introduce `X _ ν c hc hb f`. Establish `h : MeasureTheory.MemLp (fun x : X => (c x : ℂ) * f x) 2 ν` using `(MeasureTheory.Lp.memLp f).of_le ((Complex.measurable_ofReal.comp hc).aestronglyMeasurable.mul (MeasureTheory.Lp.aestronglyMeasurable f)) (Filter.Eventually.of_forall fun x => by`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hb x))`. Conclude with `h.coeFn_toLp`.
+-/
 theorem UpperTheory.Reformulated.B.MulLinearAe.mulL_ae.{u_1} :
     ∀ {X : Type u_1} [inst : MeasurableSpace X] {ν : MeasureTheory.Measure X} (c : X → ℝ) (hc : Measurable c)
       (hb : ∀ (x : X), |c x| ≤ (1 : ℝ)) (f : ↥(MeasureTheory.Lp ℂ (2 : ENNReal) ν)),

@@ -14,6 +14,15 @@ set_option maxHeartbeats 800000
 noncomputable section
 namespace GlobalTheory.XiBound
 
+/- English proof (translation)
+Distinguish the cases in `h0 : l = 0`. Conclude with `⟨1, 0, by simp [h0]⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨⟨a, d⟩, hz⟩` from `IsLocalization.surj (nonZeroDivisors O) z`. Establish `hd : (d : O) ≠ 0` using `nonZeroDivisors.coe_ne_zero d`.
+
+Take `⟨k, v, hv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd hϖ`. Take `⟨e, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`. Establish `he : e ≠ 0`. Introduce and unpack `rfl`. Rewrite `hw` using `[pow_zero, mul_one]`.
+
+Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hl (hw ▸ w.isUnit)`. Establish `hdvd : (d : O) ∣ l ^ k`. Rewrite using `[hv, hw, mul_pow, ← pow_mul]`. Conclude with `mul_dvd_mul (Units.isUnit v).dvd (pow_dvd_pow ϖ (Nat.le_mul_of_pos_left k (Nat.pos_of_ne_zero he)))`. Take `⟨t, ht⟩` from `hdvd`.
+
+Use `⟨k, a * t, ?_⟩` and prove the remaining obligations. Simplify using `only at hz`. Rewrite using `[ht, map_mul, map_mul, ← hz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pow_mul_mem {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] {l : O} (hl : l ∈ IsLocalRing.maximalIdeal O) (z : K) :
     ∃ (n : ℕ) (o : O), algebraMap O K o = algebraMap O K (l ^ n) * z := by
@@ -37,6 +46,25 @@ theorem exists_pow_mul_mem {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteVal
   rw [ht, map_mul, map_mul, ← hz]
   ring
 
+/- English proof (translation)
+Introduce `hA hR hI D X E Y hF hP i hi j b s h P hd`. Take `⟨u, c, hu, hK⟩` from `GlobalTheory.XiIntComb.xi_int_comb hA hR hI D X E Y hF hP i hi j b s h P hd`. Establish `hν : Y.Z.ν i j b ≠ 0` using `(Y.Z.scalar i j b).ne`. Establish `hFa : Faithful (Y.Z.rd i j b)` using `realRd_faithful D X.Γ X.Pl0 X.I0 X.T X.A3 _ X.R X.cG Y.S Y.YS X.geo.v₀ Y.Z.ρ Y.Z.good i j b (Y.Z.ν i j b) hν X.unif X.char.models.HW (Y.Z.vec j) ((GlobalTheory.T.rational_datum_small_field_form_hecke_scalar_unit D X E Y).1 _ (Nat.le_add_left _ _) j.2)`. Establish `hinj` using `hFa.injective`.
+
+Use `set lam : ℂ := (Y.Z.ν i j b)⁻¹ * (((D.ntw.l i : ℕ) : ℂ) ^ c * u) with hlam`. Establish `step : ∀ Q M, InRange D.ntw i Q → (∀ v ∈ Q, ((normProd s : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal) → ∀ a x, Y.Z.rd i j b x = Y.Z.ρ.xi i j b D.nexp Q M h P a → ∃ x' ∈ D.nexp.Bsup i ((j : ℕ) + 1) b, Y.Z.rd i j b x' = lam • Y.Z.rd i j b x`. Introduce `Q M hQ hs a x hx`. Take `⟨n, o, m, hm, he⟩` from `hK Q M hQ hs a`. Set `y : NX.Fm Y.S i ((j : ℕ) + 1) b` to `∑ k, ((show NX.KB Y.S i b from algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (o k)) • ((1 : NX.KB Y.S i b) ⊗ₜ[Y.S.Ks] m k) : NX.KB Y.S i b ⊗[Y.S.Ks] NX.FmK Y.S ((j : ℕ) + 1))`.
+
+Establish `hy : y ∈ NX.Bsup Y.S i ((j : ℕ) + 1) b`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Conclude with `(NX.Bsup Y.S i ((j : ℕ) + 1) b).smul_mem (o k) (Submodule.subset_span ⟨m k, hm k, rfl⟩)`. Establish `hey : evK Y.YS X.geo.v₀ Y.Z.good i j b y = ∑ k, Y.Z.ρ.eO i b (o k) • evW Y.YS X.geo.v₀ j (Subtype.val (m k))`. Use `(map_sum (evK Y.YS X.geo.v₀ Y.Z.good i j b) (fun k => ((show NX.KB Y.S i b from algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (o k)) • ((1 : NX.KB Y.S i b) ⊗ₜ[Y.S.Ks] m k) : NX.KB Y.S i b ⊗[Y.S.Ks] NX.FmK Y.S ((j : ℕ) + 1))) Finset.univ).trans (Finset.sum_congr rfl fun k _ => …` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.smul_tmul', evK_tmul, smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Set `x'` to `(Y.YS.eF i _ b (Nat.le_add_left _ _) j.2).symm y`. Use `⟨x', (Y.sup i _ b (Nat.le_add_left _ _) j.2 x').2 (by simp only [x', LinearEquiv.apply_symm_apply]; exact hy), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Y.Z.ν i j b)⁻¹ • evK Y.YS X.geo.v₀ Y.Z.good i j b (Y.YS.eF i _ b (Nat.le_add_left _ _) j.2 x') = _`.
+
+Rewrite using `[show Y.YS.eF i _ b (Nat.le_add_left _ _) j.2 x' = y from LinearEquiv.apply_symm_apply _ _, hey, ← he, hx, hlam, smul_smul]`. Distinguish the cases in `hex : ∃ μ : FractionRing (D.ntw.O i), Y.Z.ρ.e i b μ = lam`. Take `⟨μ, hμ⟩` from `hex`. Take `⟨N, o, ho⟩` from `exists_pow_mul_mem (K := FractionRing (D.ntw.O i)) (D.ntw.O_l i) μ⁻¹`. Use `⟨N, fun Q M hQ hs a x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x', hx'B, hx'⟩` from `step Q M hQ hs a x hx`. Establish `hμx : x' = μ • x` using `hinj (by rw [hx', map_smulₛₗ, hμ])`. Distinguish the cases in `hμ0 : μ = 0`. It suffices to derive a contradiction. Rewrite `hμ` using `[hμ0, map_zero, hlam]`.
+
+Establish `hl : ((D.ntw.l i : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (D.ntw.lPrime i).out.ne_zero`. Conclude with `mul_ne_zero (inv_ne_zero hν) (mul_ne_zero (pow_ne_zero _ hl) hu) hμ.symm`. Establish `: ((D.ntw.l i : D.ntw.O i) ^ N) • x = o • x'`. Rewrite using `[hμx, ← algebraMap_smul (FractionRing (D.ntw.O i)) o, ← algebraMap_smul (FractionRing (D.ntw.O i)) ((D.ntw.l i : D.ntw.O i) ^ N), smul_smul, ho, mul_assoc, inv_mul_cancel₀ hμ0, mul_one]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hx'B`. Use `⟨0, fun Q M hQ hs a x hx => ?_⟩` and prove the remaining obligations. Take `⟨x', -, hx'⟩` from `step Q M hQ hs a x hx`. Distinguish the cases in `h0 : Y.Z.rd i j b x = 0`. Rewrite using `[hinj (h0.trans (map_zero _).symm), smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Conclude with `absurd (hFa.mem_range_of_smul h0 ⟨x, rfl⟩ ⟨x', hx'⟩) hex`.
+-/
 theorem main : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.SerInt → ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), FieldOk X → (∀ (j : Fin D.R.m) hV, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin X.core X.R.toRealDat j X.core.σ₀ hV) → XiBdd Y.Z.rd := by
   intro hA hR hI D X E Y hF hP i hi j b s h P hd
   classical

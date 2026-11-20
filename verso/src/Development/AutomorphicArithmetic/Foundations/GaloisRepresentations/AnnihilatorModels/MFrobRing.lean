@@ -7,6 +7,29 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `p f hp κ _ _ A _ B Λ _ _ _ _ i hi ε₀ hε ν g hg`. Establish `hpΛ : (p : Λ) = 0`. Establish `h` using `map_natCast (algebraMap κ Λ) p`. Rewrite `h` using `[CharP.cast_eq_zero κ p, map_zero]`. Conclude with `h.symm`.
+
+Set `σ : Λ →+* Λ` to `GlobalTheory.SS.FrobField.powHom Λ p f hp hpΛ`. Establish `hσ : ∀ c, σ c = c ^ p ^ f` using `fun _ => rfl`. Establish `h0 : (p : Γ(Sp Λ, ⊤)) = 0` using `GlobalTheory.SS.FrobField.cast_zero_sp Λ hpΛ`. Establish `hfr : GlobalTheory.SS.FrobField.absFrob (Sp Λ) p f hp h0 = spMap σ` using `GlobalTheory.SS.FrobField.absFrob_spec Λ p f hp h0 σ hσ`. Establish `hmono : Mono i.left` using `(Over.forget _).map_mono i`.
+
+Establish `h1 : (1 : algPt κ Λ ⟶ A).left = spMap (algebraMap κ Λ) ≫ spMap ε₀.toRingHom ≫ i.left`. Establish `e : (1 : algPt κ Λ ⟶ A) = toUnit (algPt κ Λ) ≫ (1 : 𝟙_ (Over (Sp κ)) ⟶ A)`. Simplify using the standard rewrite rules. Establish `e2 : (toUnit (algPt κ Λ)).left = spMap (algebraMap κ Λ)`. Use `Over.w (toUnit (algPt κ Λ))` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[e, Over.comp_left, e2]`. Conclude with `congrArg (spMap (algebraMap κ Λ) ≫ ·) hε.symm`. Establish `sc : ∀ {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (u : R →+* S) (v : S →+* T), spMap v ≫ spMap u = spMap (v.comp u)`. Introduce `R S T _ _ _ u v`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `key : FrobKill p f hp g ↔ σ.comp ν.toRingHom = (σ.comp (algebraMap κ Λ)).comp ε₀.toRingHom`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `h h0`.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.SS.FrobField.absFrob (Sp Λ) p f hp h0 ≫ g.left = GlobalTheory.SS.FrobField.absFrob (Sp Λ) p f hp h0 ≫ (1 : algPt κ Λ ⟶ A).left at h2`. Rewrite `h2` using `[hfr, hg, h1]`. Simplify using `only [← Category.assoc] at h2`. Establish `h3` using `(cancel_mono i.left).1 h2`. Rewrite `h3` using `[sc, sc, sc]`.
+
+Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h3)`. Introduce `h hh`. Express the relevant statement in the definitionally equal form `GlobalTheory.SS.FrobField.absFrob (Sp Λ) p f hp hh ≫ g.left = GlobalTheory.SS.FrobField.absFrob (Sp Λ) p f hp hh ≫ (1 : algPt κ Λ ⟶ A).left`. Rewrite using `[show GlobalTheory.SS.FrobField.absFrob (Sp Λ) p f hp hh = spMap σ from hfr, hg, h1]`. Simplify using `only [← Category.assoc]`.
+
+Rewrite using `[sc, sc, sc, h]`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Use `RingHom.congr_fun h x` as an intermediate fact.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hx, map_zero] at this`. Rewrite `this` using `[hσ]`. Conclude with `this`. Introduce `h`. Use extensionality with `x`.
+
+Establish `hy : ε₀ (x - algebraMap κ B (ε₀ x)) = 0`. Simplify using the standard rewrite rules. Establish `h2` using `h _ hy`. Establish `h3 : σ (ν (x - algebraMap κ B (ε₀ x))) = 0` using `by rw [hσ]; exact h2`. Rewrite `h3` using `[map_sub, map_sub, AlgHom.commutes, sub_eq_zero]`.
+
+Simplify using `using h3`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.frobRing_of :
     FrobRing := by
   intro p f hp κ _ _ A _ B Λ _ _ _ _ i hi ε₀ hε ν g hg

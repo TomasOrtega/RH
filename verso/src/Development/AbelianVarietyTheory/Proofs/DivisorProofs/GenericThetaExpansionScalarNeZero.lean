@@ -17,6 +17,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.KeyScalarNe
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨z, hz⟩` from `hs`. Take `⟨k, hk, u⟩` from `(mem_nonzeroLocus _ _).1 hz`. Establish `hpb : IsPullback (fst T P.A).left (snd T P.A).left T.hom P.A.hom`. Rewrite using `[Over.fst_left, Over.snd_left]`.
+
+Conclude with `IsPullback.of_hasPullback _ _`. Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Take `⟨y, -, hy⟩` from `Scheme.exists_preimage_of_isPullback hpb t₀ z (Subsingleton.elim _ _)`. Establish `hle : (LPow P.A P.L ((1 : ℕ) : ℤ) T).U (fun _ => k) ≤ (snd T P.A).left ⁻¹ᵁ P.L.U k` using `LB.wchart_le P.L _ (fun _ : Fin 1 => k) 0`. Establish `hyU : y ∈ (LPow P.A P.L ((1 : ℕ) : ℤ) T).U (fun _ => k)` using `by show y ∈ LB.wchart P.L _ _`.
+
+Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show (snd T P.A).left y ∈ (P.L.U k : Set P.A.left)`. Rewrite using `[hy]`. Conclude with `hk`. Substitute `hy` using the available equality.
+
+Establish `e` using `congrArg (gs (𝟙 _) y _) (h k hle)`. Rewrite `e` using `[gs_appLE _ _ _ hle (𝟙 _) y hyU, Category.id_comp, gs_stalkMap (snd T P.A).left y _ hk]`. Establish `u'` using `u.map ((snd T P.A).left.stalkMap y).hom`. Rewrite `u'` using `[← e]`. Establish `h0 : gs (𝟙 _) y ((LPow P.A P.L ((1 : ℕ) : ℤ) T).U (fun _ => k)) ((0 : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) T)).f (fun _ => k)) = 0`.
+
+Establish `z0 : (0 : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) T)).f (fun _ => k) = 0` using `rfl`. Rewrite using `[z0, gs_eq _ y _ hyU, map_zero, map_zero]`. Rewrite `u'` using `[h0]`. Conclude with `not_isUnit_zero u'`.
+-/
 theorem polAVSectionInverseImage_ne_zero {K : Type} [Field K] (P : PolAV (Sp K)) (T : Over (Sp K)) (t₀ : T.left) (s : P.L.Sec)
     (hs : ∃ p, p ∈ nonzeroLocus s) (t : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) T)) (h : IsPolAVSectionInverseImage P T s t) :
     t ≠ 0 := by
@@ -48,6 +59,13 @@ theorem polAVSectionInverseImage_ne_zero {K : Type} [Field K] (P : PolAV (Sp K))
 
 end GlobalTheory.KeyScalarNe
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ D x G _ _ _ U w₀ hw C _ _ _ _ _ _ _ N ν th ϑ c hon hex hv`. Introduce and unpack `rfl`. Rewrite `hv` using `[zero_smul]`. Establish `h0 : ν.FamV (0 : Fam D.toPre C 1) 0`. Use `GlobalTheory.WeilValues.famV_smul ν hv 0` as an intermediate fact.
+
+Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Establish `hϑ : ϑ = 0` using `GlobalTheory.Ex.FamVal.famV_inj ν hv h0`. Take `⟨e, he⟩` from `GlobalTheory.exists_linearEquiv_expandsF GlobalTheory.allSixLaws.1.globalFns U C (k := 1) le_rfl w₀ hw.1`. Establish `ht : th = 0`. Establish `h1` using `(he th ϑ).1 hex`.
+
+Rewrite `h1` using `[hϑ]`. Conclude with `e.map_eq_zero_iff.1 h1`. Take `⟨z, -, hz⟩` from `x.th_ne (IsLocalRing.closedPoint _)`. Conclude with `GlobalTheory.KeyScalarNe.polAVSectionInverseImage_ne_zero x.P (TFK (R := V) C) (IsLocalRing.closedPoint C) x.th ⟨z, hz⟩ th hon ht`.
+-/
 theorem GlobalTheory.KeyScalarNe.scalar_ne_zero : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V],
     IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (D : DegData V (IsLocalRing.maximalIdeal V))
     (x : KeyIn (FractionRing V)) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G →

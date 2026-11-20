@@ -8,15 +8,24 @@ open scoped ComplexConjugate InnerProductSpace
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `qU`. Establish `hβ : U.betaU ≠ 0` using `Formalism.FourierDecayAlt.P.scale_matching.2.1`. Establish `hc : 0 < ‖U.betaU‖ / (2 * Real.pi)` using `div_pos (norm_pos_iff.2 hβ) (by positivity)`. Conclude with `Real.toNNReal_pos.2 hc` after adjusting the coercions.
+-/
 theorem qU_pos : 0 < qU := by
   unfold qU
   have hβ : U.betaU ≠ 0 := Formalism.FourierDecayAlt.P.scale_matching.2.1
   have hc : 0 < ‖U.betaU‖ / (2 * Real.pi) := div_pos (norm_pos_iff.2 hβ) (by positivity)
   exact_mod_cast Real.toNNReal_pos.2 hc
 
+/- English proof (translation)
+Unfold `qU`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem qU_coe (N : ℕ) : (((Real.toNNReal (‖U.betaU‖ / (2 * Real.pi)) ^ N : NNReal) : ℝ) : ℂ) = ((qU ^ N : ℝ) : ℂ) := by
   unfold qU; push_cast; rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `⟨σ, d, -, hM⟩` from `PBJ.Asm.exists_hMat a ha`. Conclude with `⟨σ, d, hM⟩`.
+-/
 theorem exists_hMat_n (a : C.LPt) (ha : ∀ b ∈ a, 1 ≤ b.1 ∧ b.2 ≠ 0) (n : ℕ) (hn : D.ptSize a = n) :
     ∃ (σ : Equiv.Perm (Fin n)) (d : Fin n → ℂ), U.hMat σ d = D.ptMatN a n := by
   subst hn
@@ -27,6 +36,29 @@ section vec
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hβ : U.betaU ≠ 0` using `Formalism.FourierDecayAlt.P.scale_matching.2.1`. Take `⟨σh, dh, hdh, hMh⟩` from `PBJ.Asm.exists_hMat H hH`. Use `⟨σh, dh, Φ0, hdh, hΦ0, ?_, ?_⟩` and prove the remaining obligations. Introduce `t c ht hc set a := H ++ [(m + 1, t), (1, c)] with ha`.
+
+Establish `hloc : D.IsLocPt a (D.ptSize H + (m + 1 + 1))`. Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 hb with hb | hb` into its components or cases. Conclude with `hH b hb`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hb`.
+
+Break down `hb with rfl | rfl` into its components or cases. Conclude with `⟨by omega, ht⟩`. Conclude with `⟨le_rfl, hc⟩`. Rewrite using `[ha, PBJ.Asm.ptSize_append]`. Simplify using `[D.ptSize]`.
+
+Take `⟨σ, d, hM⟩` from `exists_hMat_n a hloc.1 _ hloc.2`. Establish `hdb : ∀ i, PBJ.Om.dB (m + 1) t c i ≠ 0`. Introduce `i`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left j => simp only [PBJ.Om.dB, PBJ.Fub.dQ, Fin.addCases_left]`.
+
+Conclude with `ht`. Consider the case `right j => simp only [PBJ.Om.dB, PBJ.Fub.dQ, Fin.addCases_right]`. Conclude with `hc`. Establish `e1` using `PBJ.Asm.ptMatN_append H [(m + 1, t), (1, c)]`. Establish `hM' : U.hMat σ d = U.blk2 (U.hMat σh dh) 0 0 (U.hMat (PBJ.Om.σB (m + 1)) (PBJ.Om.dB (m + 1) t c))`.
+
+Rewrite using `[hM, hMh, PBJ.Om.hMat_block, ← PBJ.Asm.ptMatN_block]`. Conclude with `e1`. Rewrite using `[hV a σ d hloc hM, PBJ.fubini_head_last_part U.betaU (D.ptSize H) (m + 1 + 1) σ d σh dh (PBJ.Om.σB (m + 1)) (PBJ.Om.dB (m + 1) t c) V Φ0 hdh hdb hM' hΦ0]`. Rewrite using `[PBJ.Om.omBlock_eq U.betaU (m + 1) t c, qU_coe, smul_smul, Fintype.card_fin]`. Establish `hq : (qU ^ ((m + 1) + (Fintype.card (G.UT (m + 1)) + (m + 1))) : ℝ) ≠ 0` using `pow_ne_zero _ qU_pos.ne'`.
+
+Rewrite using `[← Complex.ofReal_mul, inv_mul_cancel₀ hq, Complex.ofReal_one, one_smul]`. Both sides reduce to the same expression. Introduce `z hz set a := H ++ [(m + 1 + 1, z)] with ha`. Establish `hloc : D.IsLocPt a (D.ptSize H + (m + 1 + 1))`. Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations.
+
+Break down `List.mem_append.1 hb with hb | hb` into its components or cases. Conclude with `hH b hb`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hb`. Break down `hb with rfl` into its components or cases. Conclude with `⟨by omega, hz⟩`.
+
+Rewrite using `[ha, PBJ.Asm.ptSize_append]`. Simplify using `[D.ptSize]`. Take `⟨σ, d, hM⟩` from `exists_hMat_n a hloc.1 _ hloc.2`. Establish `hMb : U.hMat (Fin.revPerm : Equiv.Perm (Fin (m + 1 + 1))) (fun _ => z) = D.ptMatN [(m + 1 + 1, z)] (D.ptSize [(m + 1 + 1, z)])`. Rewrite using `[PBJ.Asm.hMat_rev]`.
+
+Conclude with `(PBJ.Asm.ptMatN_long (m + 1 + 1) z).symm`. Establish `hM' : U.hMat σ d = U.blk2 (U.hMat σh dh) 0 0 (U.hMat Fin.revPerm (fun _ => z))`. Rewrite using `[hM, hMh, hMb]`. Conclude with `PBJ.Asm.ptMatN_append H [(m + 1 + 1, z)]`. Rewrite using `[hV a σ d hloc hM, PBJ.fubini_head_last_part U.betaU (D.ptSize H) (m + 1 + 1) σ d σh dh Fin.revPerm (fun _ => z) V Φ0 hdh (fun _ => hz) hM' hΦ0]`.
+
+Rewrite using `[PBJ.Om.omLong_eq U.betaU (m + 1) z, qU_coe, smul_smul]`. Establish `hq : (qU ^ Fintype.card (G.UT (m + 1 + 1)) : ℝ) ≠ 0` using `pow_ne_zero _ qU_pos.ne'`. Rewrite using `[← Complex.ofReal_mul, inv_mul_cancel₀ hq, Complex.ofReal_one, one_smul]`.
+-/
 theorem vec_om {n : ℕ} (vec : C.LPt → V) (Φ0 : G.Mat n → V) (hΦ0 : PBJ.KCls Φ0)
     (hV : ∀ (a : C.LPt) (σ : Equiv.Perm (Fin n)) (d : Fin n → ℂ), D.IsLocPt a n → U.hMat σ d = D.ptMatN a n →
       vec a = U.PhiTop (p := n) (s := 0) U.betaU σ d Φ0 fun x => x.elim0)
@@ -95,11 +127,17 @@ end vec
 
 section rho
 
+/- English proof (translation)
+Use `one_add_mul_le_pow (a := u - 1) (by linarith) n` as an intermediate fact. Simplify using `only [add_sub_cancel] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_sub_pow_le (u : ℝ) (hu0 : 0 ≤ u) (n : ℕ) : 1 - u ^ n ≤ n * (1 - u) := by
   have := one_add_mul_le_pow (a := u - 1) (by linarith) n
   simp only [add_sub_cancel] at this
   linarith
 
+/- English proof (translation)
+The claim follows from `|√(u ^ k) * √((u⁻¹) ^ N)| ≤ √((δ⁻¹) ^ N) ∧ |√(u ^ k) * √((u⁻¹) ^ N) - 1| ≤ (k + N * (δ⁻¹) ^ N) * (1 - u) := by have hu0 : 0 < u := lt_of_lt_of_le hδ hu1 have hk0 : 0 ≤ u ^ k := pow_nonneg hu0.le k have hk1 : u ^ k ≤ 1 := pow_le_one₀ hu0.le hu2 have hi1 : 1 ≤ u⁻¹ := one_le_inv₀ hu …`.
+-/
 theorem rho_fac (δ : ℝ) (hδ : 0 < δ) (k N : ℕ) (u : ℝ) (hu1 : δ ≤ u) (hu2 : u ≤ 1) :
     |√(u ^ k) * √((u⁻¹) ^ N)| ≤ √((δ⁻¹) ^ N) ∧
       |√(u ^ k) * √((u⁻¹) ^ N) - 1| ≤ (k + N * (δ⁻¹) ^ N) * (1 - u) := by
@@ -146,6 +184,9 @@ theorem rho_fac (δ : ℝ) (hδ : 0 < δ) (k N : ℕ) (u : ℝ) (hu1 : δ ≤ u)
       rw [abs_le]; constructor <;> nlinarith
     linarith
 
+/- English proof (translation)
+The claim follows from `|√((Complex.normSq c - TT) ^ k) / ‖c‖ ^ k * √((Complex.normSq c / (Complex.normSq c - TT)) ^ N)| ≤ √(((ε0 / (max dH0 1 * ‖l1‖ ^ (2 * (m + 1)) * (max MK 1) ^ 2))⁻¹) ^ N) ∧ |√((Complex.normSq c - TT) ^ k) / ‖c‖ ^ k * √((Complex.normSq c / (Complex.normSq c - TT)) ^ N) - 1| ≤ ((k : …`.
+-/
 theorem rho_bound (TT ε0 dH0 MK mK : ℝ) (hTT : 0 < TT) (hε0 : 0 < ε0) (hdH0 : 0 ≤ dH0) (hmK : 0 < mK)
     (k N m : ℕ) (l1 x y c : ℂ) (hl1 : l1 ≠ 0) (hx : x ≠ 0) (hy0 : y ≠ 0) (hc0 : c ≠ 0) (hyM : ‖y‖ ≤ MK)
     (hym : mK ≤ ‖y‖) (hnc : Complex.normSq c = ‖x‖ ^ (2 * (m + 1)) * ‖y‖ ^ 2)

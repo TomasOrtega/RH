@@ -20,6 +20,11 @@ namespace GlobalTheory.ZM.SiegPull
 
 variable {S S' : Scheme.{0}} {f : S' ⟶ S}
 
+/- English proof (translation)
+Use `LBIso.chartPull (chartPullPull A h h rfl) ⟨id, fun J x hx => ?_, fun y J J' hJ hJ' => ?_⟩ H` and prove the remaining obligations. Establish `hx'` using `(mem_pull (F := h ≫ F)).1 hx`. Conclude with `(mem_pull (F := F)).2 hx'`. Establish `a1` using `(mem_pull (F := h ≫ F)).1 hJ`. Establish `a2` using `(mem_pull (F := h ≫ F)).1 hJ'`.
+
+Rewrite using `[gm_pull_g L (h ≫ F) (𝟙 Y') y J J' hJ hJ', Category.id_comp]`. Conclude with `(gm_pull_g L F h y J J' ((mem_pull (F := F)).2 a1) ((mem_pull (F := F)).2 a2)).symm`.
+-/
 theorem lbIso_pull_comp {X Y Y' : Scheme.{0}} {L : LB X} {A : LB Y} {F : Y ⟶ X} (H : LBIso A (L.pull F))
     (h : Y' ⟶ Y) : LBIso (A.pull h) (L.pull (h ≫ F)) := by
   refine LBIso.chartPull (chartPullPull A h h rfl) ⟨id, fun J x hx => ?_, fun y J J' hJ hJ' => ?_⟩ H
@@ -30,6 +35,13 @@ theorem lbIso_pull_comp {X Y Y' : Scheme.{0}} {L : LB X} {A : LB Y} {F : Y ⟶ X
     rw [gm_pull_g L (h ≫ F) (𝟙 Y') y J J' hJ hJ', Category.id_comp]
     exact (gm_pull_g L F h y J J' ((mem_pull (F := F)).2 a1) ((mem_pull (F := F)).2 a2)).symm
 
+/- English proof (translation)
+Set `T : Over S` to `Over.mk ((G' ⊗ G').hom ≫ f)`. Establish `w₁ : ((fst G' G').left ≫ φ) ≫ G.hom = T.hom`. Rewrite using `[Category.assoc, w, ← Category.assoc, Over.w (fst G' G')]`. Both sides reduce to the same expression. Establish `w₂ : ((snd G' G').left ≫ φ) ≫ G.hom = T.hom`.
+
+Rewrite using `[Category.assoc, w, ← Category.assoc, Over.w (snd G' G')]`. Both sides reduce to the same expression. Set `x : T ⟶ G` to `Over.homMk ((fst G' G').left ≫ φ) w₁`. Set `y : T ⟶ G` to `Over.homMk ((snd G' G').left ≫ φ) w₂`. Use `⟨(lift x y).left, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem exists_isSquare {G : Over S} {G' : Over S'} {φ : G'.left ⟶ G.left} (w : φ ≫ G.hom = G'.hom ≫ f) :
     ∃ φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left, IsSquare φ φ₂ := by
   let T : Over S := Over.mk ((G' ⊗ G').hom ≫ f)
@@ -47,11 +59,17 @@ theorem exists_isSquare {G : Over S} {G' : Over S'} {φ : G'.left ⟶ G.left} (w
   · rw [← Over.comp_left, lift_snd]
     rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← Over.comp_left, tensorHom_fst, Over.comp_left]`. Rewrite using `[← Over.comp_left, tensorHom_snd, Over.comp_left]`.
+-/
 theorem isSquare_tensor {G G' : Over S} (φ : G' ⟶ G) : IsSquare φ.left (φ ⊗ₘ φ).left := by
   constructor
   · rw [← Over.comp_left, tensorHom_fst, Over.comp_left]
   · rw [← Over.comp_left, tensorHom_snd, Over.comp_left]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, h.1, ← Category.assoc, h'.1, Category.assoc]`. Rewrite using `[Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]`.
+-/
 theorem isSquare_comp {S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} {φ : G'.left ⟶ G.left}
     {ψ : G''.left ⟶ G'.left} {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} {ψ₂ : (G'' ⊗ G'').left ⟶ (G' ⊗ G').left}
     (h' : IsSquare ψ ψ₂) (h : IsSquare φ φ₂) : IsSquare (ψ ≫ φ) (ψ₂ ≫ φ₂) := by
@@ -59,6 +77,13 @@ theorem isSquare_comp {S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over
   · rw [Category.assoc, h.1, ← Category.assoc, h'.1, Category.assoc]
   · rw [Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `w : φ₂' ≫ (G ⊗ G).hom = φ₂ ≫ (G ⊗ G).hom`. Rewrite using `[← Over.w (fst G G), ← Category.assoc, h'.1, ← Category.assoc, h.1]`. Set `a : Over.mk (φ₂ ≫ (G ⊗ G).hom) ⟶ G ⊗ G` to `Over.homMk φ₂ rfl`. Set `b : Over.mk (φ₂ ≫ (G ⊗ G).hom) ⟶ G ⊗ G` to `Over.homMk φ₂' w`.
+
+Establish `hab : a = b`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ₂ ≫ (fst G G).left = φ₂' ≫ (fst G G).left`. Rewrite using `[h.1, h'.1]`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ₂ ≫ (snd G G).left = φ₂' ≫ (snd G G).left`. Rewrite using `[h.2, h'.2]`. Conclude with `congrArg (fun m => m.left) hab`.
+-/
 theorem isSquare_unique {G : Over S} {G' : Over S'} {φ φ' : G'.left ⟶ G.left}
     {φ₂ φ₂' : (G' ⊗ G').left ⟶ (G ⊗ G).left} (h : IsSquare φ φ₂) (h' : IsSquare φ' φ₂') (e : φ = φ') : φ₂ = φ₂' := by
   subst e
@@ -76,6 +101,25 @@ theorem isSquare_unique {G : Over S} {G' : Over S'} {φ φ' : G'.left ⟶ G.left
       rw [h.2, h'.2]
   exact congrArg (fun m => m.left) hab
 
+/- English proof (translation)
+Take `⟨w, hw'⟩` from `hw`. Establish `hP : PGen w`. Unfold `PGen gw`. Introduce `Y g y j j' k k' h1 h2 h3 h4`. Establish `m1 : g y ∈ (L.pull φ).U (fun _ => j)` using `(mem_pull (F := φ)).2 h1`.
+
+Establish `m2 : g y ∈ (L.pull φ).U (fun _ => j')` using `(mem_pull (F := φ)).2 h2`. Establish `hV : g y ∈ (L.pull φ).U (fun _ => j) ⊓ L'.U k ⊓ ((L.pull φ).U (fun _ => j') ⊓ L'.U k')` using `⟨⟨m1, h3⟩, ⟨m2, h4⟩⟩`. Establish `e` using `congrArg (gm g y _) (hw' (fun _ => j, k) (fun _ => j', k'))`. Unfold `LB.div at e`. Simplify using `only [map_mul, map_inv] at e`.
+
+Simplify using `only [gm_res g y _ hV] at e`. Rewrite `e` using `[gm_pull_g L φ g y (fun _ => j) (fun _ => j') m1 m2]`. Conclude with `e`. Establish `e : ∀ I : ULift (Finset (Fin 2)), (psum G' (x2 G') I.down).left ≫ φ = φ₂ ≫ (psum G (x2 G) I.down).left`. Set `T : Over S'` to `G' ⊗ G'`.
+
+Establish `hj : φ₂ ≫ (G ⊗ G).hom = T.hom ≫ f`. Rewrite using `[← Over.w (fst G G), ← Category.assoc, hs.1, Category.assoc, h.1.w, ← Category.assoc, Over.w (fst G' G')]`. Set `U : Over S` to `Over.mk (T.hom ≫ f)`. Set `j : U ⟶ G ⊗ G` to `Over.homMk φ₂ hj`. Establish `hΦ : ∀ u : T ⟶ G', (u.left ≫ φ) ≫ G.hom = U.hom` using `fun u => by`.
+
+Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w u]`. Both sides reduce to the same expression. Set `Φ : (T ⟶ G') → (U ⟶ G)` to `fun u => Over.homMk (u.left ≫ φ) (hΦ u)`. Establish `Φmul : ∀ x y, Φ (x * y) = Φ x * Φ y` using `fun x y => Over.OverMorphism.ext (h.2 T x y (Φ x) (Φ y) rfl rfl).symm`. Set `Φh : (T ⟶ G') →* (U ⟶ G)` to `MonoidHom.mk' Φ Φmul`.
+
+Establish `key : ∀ (u : T ⟶ G') (v : G ⊗ G ⟶ G), Φ u = j ≫ v → u.left ≫ φ = φ₂ ≫ v.left` using `fun u v hh => congrArg (fun m => m.left) hh`. Establish `key' : ∀ (u : T ⟶ G') (v : G ⊗ G ⟶ G), u.left ≫ φ = φ₂ ≫ v.left → Φ u = j ≫ v` using `fun u v hh => Over.OverMorphism.ext (by exact hh)`. Establish `base : ∀ k : Fin 2, Φ (x2 G' k) = j ≫ x2 G k`. Introduce `k`. Use `fin_cases k`.
+
+Conclude with `key' _ _ hs.1.symm`. Conclude with `key' _ _ hs.2.symm`. Establish `fold : ∀ l : List (Fin 2), Φ (List.foldr (fun k acc => padd G' (x2 G' k) acc) (pzero G' (G2 G')) l) = j ≫ List.foldr (fun k acc => padd G (x2 G k) acc) (pzero G (G2 G)) l`. Introduce `l`. Proceed by induction on `l with`.
+
+Consider the case `nil`. Express the relevant statement in the definitionally equal form `Φh 1 = j ≫ 1`. Rewrite using `[map_one, comp_one]`. Consider the case `cons k l ih`. Express the relevant statement in the definitionally equal form `Φ (x2 G' k * _) = j ≫ (x2 G k * _)`.
+
+Rewrite using `[Φmul, comp_mul, base k, ih]`. Introduce `I`. Conclude with `key _ _ (fold _)`. Conclude with `LBIso.chartPull (chartPullId _) (chartPullOut L _ _ φ₂ _ e) (iso_linComb hP _ _)`.
+-/
 theorem lbIso_lam_pull {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
     {φ : G'.left ⟶ G.left} {L : LB G.left} {L' : LB G'.left} (h : IsGrpPullback G' G f φ)
     (hw : LBIso L' (L.pull φ)) {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} (hs : IsSquare φ φ₂) :
@@ -133,6 +177,17 @@ theorem lbIso_lam_pull {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [
     exact key _ _ (fold _)
   exact LBIso.chartPull (chartPullId _) (chartPullOut L _ _ φ₂ _ e) (iso_linComb hP _ _)
 
+/- English proof (translation)
+Set `U : Over S` to `Over.mk ((𝟙_ (Over S')).hom ≫ f)`. Establish `hΦ : ∀ x : 𝟙_ (Over S') ⟶ G', (x.left ≫ χ) ≫ G.hom = U.hom` using `fun x => by`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w x]`. Both sides reduce to the same expression. Set `Φ : (𝟙_ (Over S') ⟶ G') → (U ⟶ G)` to `fun x => Over.homMk (x.left ≫ χ) (hΦ x)`.
+
+Establish `Φmul : ∀ x y, Φ (x * y) = Φ x * Φ y` using `fun x y => Over.OverMorphism.ext (h.2 _ x y (Φ x) (Φ y) rfl rfl).symm`. Set `Ψ : (𝟙_ (Over S) ⟶ G) → (U ⟶ G)` to `fun y => toUnit U ≫ y`. Establish `Ψmul : ∀ x y, Ψ (x * y) = Ψ x * Ψ y` using `fun x y => comp_mul _ _ _`. Establish `hT : (toUnit U).left = f`. Simplify using `[U]`.
+
+Set `F₁ : (Fin n → ℤ) →+ Additive (U ⟶ G)` to `AddMonoidHom.mk' (fun v => Additive.ofMul (Φ (l' (e v)))) (fun v w => by`. Simplify using `only [map_add, hl', Φmul]`. Use the proof step `rfl)`. Set `F₂ : (Fin n → ℤ) →+ Additive (U ⟶ G)` to `AddMonoidHom.mk' (fun v => Additive.ofMul (Ψ (l (e v)))) (fun v w => by`. Simplify using `only [map_add, hl, Ψmul]`.
+
+Use the proof step `rfl)`. Establish `hF : F₁ = F₂`. Use extensionality with `i`. Express the relevant statement in the definitionally equal form `(l' (e (Pi.single i 1))).left ≫ χ = (toUnit U).left ≫ (l (e (Pi.single i 1))).left`. Rewrite using `[hT, H i]`.
+
+Establish `key` using `congrArg (fun F : (Fin n → ℤ) →+ Additive (U ⟶ G) => (Additive.toMul (F (e.symm a))).left) hF`. Express the relevant statement in the definitionally equal form `(l' (e (e.symm a))).left ≫ χ = (toUnit U).left ≫ (l (e (e.symm a))).left at key`. Rewrite `key` using `[LinearEquiv.apply_symm_apply, hT]`. Conclude with `key`.
+-/
 theorem lev_comm_of_basis {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     {χ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f χ) {n : ℕ} {M : Type} [AddCommGroup M] (e : (Fin n → ℤ) ≃ₗ[ℤ] M)
     (l : M → (𝟙_ (Over S) ⟶ G)) (l' : M → (𝟙_ (Over S') ⟶ G')) (hl : ∀ a b, l (a + b) = l a * l b)
@@ -171,6 +226,27 @@ end GlobalTheory.ZM.SiegPull
 
 open GlobalTheory.ZM.SiegPull in
 
+/- English proof (translation)
+Introduce `g k J La _ bas bas' o B _ _ b ζ S S' s s₁ s' s₁' t c t' c' f hc ht`. Set `_` to `t.ab.comm`. Set `_` to `t'.ab.comm`. Take `⟨ψ, hψm, hψL, hψp⟩` from `hc`. Take `⟨χ, hχ, hχL, hχp, -⟩` from `ht`.
+
+Take `⟨χ₂, hχ₂⟩` from `exists_isSquare (G := t.A) (G' := t'.A) (f := f) hχ.1.w`. Establish `hLam : LBIso (abelian₂ t'.A t'.L) ((abelian₂ t.A t.L).pull χ₂)` using `lbIso_lam_pull hχ hχL hχ₂`. Establish `hLt : (abelian₂ t.A t.L).IsLB` using `DVR.linComb_isLB _ t.isLB _ _`. Establish `hLt' : (abelian₂ t'.A t'.L).IsLB` using `DVR.linComb_isLB _ t'.isLB _ _`. Establish `hhi : ψ.hom.left ≫ ψ.inv.left = 𝟙 _`.
+
+Rewrite using `[← Over.comp_left, ψ.hom_inv_id, Over.id_left]`. Establish `hih : ψ.inv.left ≫ ψ.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, ψ.inv_hom_id, Over.id_left]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, φ₂, hφ, hsq, hP, hlev⟩`.
+
+Establish `hψg : IsGrpPullback c.A t.A (𝟙 S) ψ.hom.left` using `isGrpPullback_of_iso ψ`. Establish `h1 : IsGrpPullback c'.A t.A f (φ ≫ ψ.hom.left)` using `(IsGrpPullback.comp hφ hψg).congr (Category.comp_id f) rfl`. Take `⟨e, hem, heχ⟩` from `grpPullback_iso h1 hχ`. Establish `sq1` using `isSquare_comp (isSquare_tensor e.hom) hχ₂`. Establish `sq2` using `isSquare_comp hsq (isSquare_tensor ψ.hom)`.
+
+Establish `heq : (e.hom ⊗ₘ e.hom).left ≫ χ₂ = φ₂ ≫ (ψ.hom ⊗ₘ ψ.hom).left` using `isSquare_unique sq1 sq2 heχ`. Use `⟨e, hem, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `x1` using `lbIso_pull_comp hψL φ₂`. Establish `x2` using `lbIso_pull_comp hLam (e.hom ⊗ₘ e.hom).left`. Rewrite `x2` using `[heq]`.
+
+Conclude with `LBIso.trans c'.isLB (pull_isLB c.isLB φ₂) (pull_isLB hLt' _) hP (LBIso.trans (pull_isLB c.isLB φ₂) (pull_isLB hLt _) (pull_isLB hLt' _) x1 x2.symm)`. Apply `hχ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, heχ, ← Category.assoc, hlev, Category.assoc, ← Over.comp_left, hψp i, hχp i]`. Rewrite using `[Over.w, Over.w]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨ψ', hψ'm, hψ'L, hψ'p⟩`. Establish `hψg : IsGrpPullback c.A t.A (𝟙 S) ψ.hom.left` using `isGrpPullback_of_iso ψ`. Establish `hn : IsGrpPullback c'.A t.A (f ≫ 𝟙 S) ((ψ'.hom.left ≫ χ ≫ ψ.inv.left) ≫ ψ.hom.left)` using `(IsGrpPullback.comp (isGrpPullback_of_iso ψ') hχ).congr (by rw [Category.id_comp, Category.comp_id]) (by rw [Category.assoc, Category.assoc, hih, Category.comp_id])`. Establish `hφ : IsGrpPullback c'.A c.A f (ψ'.hom.left ≫ χ ≫ ψ.inv.left)`. Use `IsGrpPullback.cancel hψg hn ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Category.assoc, Over.w ψ.inv, hχ.1.w, ← Category.assoc, Over.w ψ'.hom]`. Take `⟨φ₂, hsq⟩` from `exists_isSquare hφ.1.w`. Establish `sq1` using `isSquare_comp (isSquare_tensor ψ'.hom) hχ₂`. Establish `sq2` using `isSquare_comp hsq (isSquare_tensor ψ.hom)`. Establish `heq : (ψ'.hom ⊗ₘ ψ'.hom).left ≫ χ₂ = φ₂ ≫ (ψ.hom ⊗ₘ ψ.hom).left` using `isSquare_unique sq1 sq2 (by rw [Category.assoc, Category.assoc, hih, Category.comp_id])`.
+
+Use `⟨_, φ₂, hφ, hsq, ?_, ?_⟩` and prove the remaining obligations. Establish `x1` using `lbIso_pull_comp hψL φ₂`. Establish `x2` using `lbIso_pull_comp hLam (ψ'.hom ⊗ₘ ψ'.hom).left`. Rewrite `x2` using `[heq]`. Conclude with `LBIso.trans c'.isLB (pull_isLB hLt' _) (pull_isLB c.isLB φ₂) hψ'L (LBIso.trans (pull_isLB hLt' _) (pull_isLB hLt _) (pull_isLB c.isLB φ₂) x2 x1.symm)`.
+
+Introduce `a`. Use `lev_comm_of_basis hφ (bas.trans bas'.symm) c.lev c'.lev c.lev_add c'.lev_add (fun i => ?_) a` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(c'.lev (bas'.symm (bas (Pi.single i 1)))).left ≫ ψ'.hom.left ≫ χ ≫ ψ.inv.left = f ≫ (c.lev (bas'.symm (bas (Pi.single i 1)))).left`. Rewrite using `[← Category.assoc, ← Over.comp_left, hψ'p i, ← Category.assoc, hχp i, Category.assoc, ← hψp i, Over.comp_left, Category.assoc, hhi, Category.comp_id]`.
+-/
 theorem GlobalTheory.ZM.siegPB_iff_tSieg : ∀ (g k : ℕ) (J La : Type) [AddCommGroup La] (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] La) (bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] La) (o B : Type) [CommRing o] [CommRing B] (b : TBase o k) (ζ : B) (S S' : Scheme.{0}) (s : S ⟶ Sp o) (s₁ : S ⟶ Sp B) (s' : S' ⟶ Sp o) (s₁' : S' ⟶ Sp B) (t : TObj g k J b s) (c : SiegPre g k ζ s₁) (t' : TObj g k J b s') (c' : SiegPre g k ζ s₁') (f : S' ⟶ S), TSieg bas bas' t c → TMap t' t f → (SiegPB c' c f ↔ TSieg bas bas' t' c') := by
   intro g k J La _ bas bas' o B _ _ b ζ S S' s s₁ s' s₁' t c t' c' f hc ht
   let _ := t.ab.comm

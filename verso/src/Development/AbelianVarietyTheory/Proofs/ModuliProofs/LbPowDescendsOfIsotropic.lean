@@ -21,6 +21,23 @@ namespace GlobalTheory.ThetaSplit
 
   c : C
 
+/- English proof (translation)
+Establish `h1 : ∀ x, a 1 x = a 1 1` using `fun x => by`. Use `hc 1 1 x` as an intermediate fact. Simplify using `only [_root_.one_mul] at this`. Conclude with `(mul_right_cancel this).symm`. Use `letI : CommGroup (CocycleExt a) := { mul := fun p q => ⟨p.u * q.u * a p.c q.c, p.c * q.c⟩ one := ⟨(a 1 1)⁻¹, 1⟩ inv := fun p => ⟨p.u⁻¹ * (a p.c⁻¹ p.c)⁻¹ * (a 1 1)⁻¹, p.c⁻¹⟩ mul_assoc := fun p q r => CocycleExt.ext (by show p.u * q.u * a p.c q.c * r.u * a (p.c * q.c) r.c = p.u * ( …`.
+
+Establish `e` using `congrArg Additive.ofMul (hc p.c q.c r.c)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at e ⊢`. Take the linear combination `(norm := abel) e) (_root_.mul_assoc _ _ _)`. Use `one_mul := fun p => CocycleExt.ext (by show (a 1 1)⁻¹ * p.u * a 1 p.c = p.u`.
+
+Rewrite using `[h1 p.c, mul_comm (a 1 1)⁻¹, inv_mul_cancel_right]) (_root_.one_mul _)`. Use `mul_one := fun p => CocycleExt.ext (by show p.u * (a 1 1)⁻¹ * a p.c 1 = p.u`. Rewrite using `[hs p.c, h1 p.c, inv_mul_cancel_right]) (_root_.mul_one _)`. Use `inv_mul_cancel := fun p => CocycleExt.ext (by show p.u⁻¹ * (a p.c⁻¹ p.c)⁻¹ * (a 1 1)⁻¹ * p.u * a p.c⁻¹ p.c = (a 1 1)⁻¹`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel) (inv_mul_cancel _)`. Use `mul_comm := fun p q => CocycleExt.ext (by show p.u * q.u * a p.c q.c = q.u * p.u * a q.c p.c`. Rewrite using `[hs, mul_comm p.u]) (mul_comm _ _) }`. Set `j : U →* CocycleExt a` to `MonoidHom.mk' (fun u => ⟨u * (a 1 1)⁻¹, 1⟩) fun u v => CocycleExt.ext (by show u * v * (a 1 1)⁻¹ = u * (a 1 1)⁻¹ * (v * (a 1 1)⁻¹) * a 1 1`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel) (_root_.mul_one _).symm`. Establish `hj : Function.Injective j` using `fun u v h => mul_right_cancel (congrArg CocycleExt.u h)`. Use `letI : DivisibleBy (Additive U) ℕ := divisibleByOfSMulRightSurj _ _ fun {n} hn y => by`.
+
+Take `⟨x, hx⟩` from `hU n (Nat.pos_of_ne_zero hn) y.toMul`. Conclude with `⟨Additive.ofMul x, congrArg Additive.ofMul hx⟩`. Use `letI : DivisibleBy (Additive U) ℤ := AddGroup.divisibleByIntOfDivisibleByNat _`. Take `⟨ρ, hρ⟩` from `(Module.Baer.of_divisible (Additive U)).extension_property_addMonoidHom (MonoidHom.toAdditive j) hj (AddMonoidHom.id _)`. Set `σ : CocycleExt a →* U` to `AddMonoidHom.toMultiplicative ρ`.
+
+Establish `hσ : ∀ u, σ (j u) = u` using `fun u => DFunLike.congr_fun hρ (Additive.ofMul u)`. Use `⟨fun x => σ ⟨1, x⟩, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul σ, ← hσ (a x y), ← map_mul σ]`. Use `congrArg σ (CocycleExt.ext ?_ (_root_.mul_one _))` and prove the remaining obligations. Use `show 1 * (a x y * (a 1 1)⁻¹) * a (x * y) 1 = 1 * 1 * a x y`.
+
+Rewrite using `[hs (x * y), h1 (x * y)]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_coboundary {C U : Type} [CommGroup C] [CommGroup U]
     (hU : ∀ n : ℕ, 0 < n → ∀ y : U, ∃ x : U, x ^ n = y) (a : C → C → U) (hs : ∀ x y, a x y = a y x)
     (hc : ∀ x y z, a x y * a (x * y) z = a y z * a x (y * z)) :
@@ -74,6 +91,13 @@ theorem exists_coboundary {C U : Type} [CommGroup C] [CommGroup U]
   rw [hs (x * y), h1 (x * y)]
   simp
 
+/- English proof (translation)
+Establish `hd : DiscreteTopology X`. Establish `h` using `f.isDiscrete_preimage_singleton (IsLocalRing.closedPoint k)`. Establish `e : f ⁻¹' {IsLocalRing.closedPoint k} = Set.univ` using `Set.eq_univ_of_forall fun x => Subsingleton.elim _ _`. Conclude with `isDiscrete_univ_iff.1 ((congrArg _root_.IsDiscrete e).mp h)`. Establish `hx : IsClosed {y (IsLocalRing.closedPoint k')}` using `isClosed_discrete _`.
+
+Use `⟨pointOfClosedPoint f _ hx, pointOfClosedPoint_comp _ _ _, ?_⟩` and prove the remaining obligations. Establish `e` using `Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField k' X y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, Category.assoc, ← Category.assoc (X.fromSpecResidueField _), ← SpecMap_residueFieldIsoBase_inv f _ hx, pointOfClosedPoint]`. Use `congrArg (_ ≫ ·) ?_` and prove the remaining obligations.
+
+Rewrite using `[← Spec.map_comp_assoc, Iso.hom_inv_id, Spec.map_id, Category.id_comp]`. Use `_ = y := e`.
+-/
 theorem exists_rational {k k' : Type} [Field k] [IsAlgClosed k] [Field k'] {X : Scheme.{0}} (f : X ⟶ Sp k)
     [IsFinite f] (y : Sp k' ⟶ X) : ∃ c : Sp k ⟶ X, c ≫ f = 𝟙 _ ∧ (y ≫ f) ≫ c = y := by
   have hd : DiscreteTopology X := by
@@ -94,6 +118,9 @@ theorem exists_rational {k k' : Type} [Field k] [IsAlgClosed k] [Field k'] {X : 
         rw [← Spec.map_comp_assoc, Iso.hom_inv_id, Spec.map_id, Category.id_comp]
     _ = y := e
 
+/- English proof (translation)
+Establish `: Surjective t` using `⟨fun x => ⟨IsLocalRing.closedPoint k', Subsingleton.elim _ _⟩⟩`. Establish `: Flat t` using `inferInstance`. Conclude with `Flat.epi_of_flat_of_surjective t`.
+-/
 theorem epi_of_fields {k k' : Type} [Field k] [Field k'] (t : Sp k' ⟶ Sp k) : Epi t := by
   have : Surjective t := ⟨fun x => ⟨IsLocalRing.closedPoint k', Subsingleton.elim _ _⟩⟩
   have : Flat t := inferInstance
@@ -103,6 +130,11 @@ section Bundles
 
 variable {X Y : Scheme.{0}} {L : LB X}
 
+/- English proof (translation)
+Establish `le : ∀ j : K → (lbPow L n).ι, LB.wchart (lbPow L n) φ j ≤ LB.wchart L φ (fun k => j k PUnit.unit)` using `fun j y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (Set.mem_iInter.1 hy k) PUnit.unit`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (j : K → (lbPow L n).ι), r z ∈ LB.wchart (lbPow L n) φ j → gm r z (LB.wchart (lbPow L n) φ j) (res (le j) (t.s _) * res le_top b) = gm r z (LB.wchart L φ (fun k => j k PUnit.unit)) (t.s _) * gm r z ⊤ b` using `fun Z r z j hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ hz _) (gm_res r z _ hz _))`. Use `⟨⟨fun j => res (le j) (t.s _) * res le_top b⟩, fun i j => unit_ext fun y hy => ?_, fun Z r z J hJ => key Z r z _ (hJ.mem φ r)⟩` and prove the remaining obligations. Use `((gm_res (𝟙 Y) y _ hy _).trans (key _ _ y i hy.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb (lbPow L n) φ ε (𝟙 Y) y i j hy.1 hy.2) ((gm_res (𝟙 Y) y _ hy _).trans (key _ _ y j hy.2)))).symm)` and prove the remaining obligations. Rewrite using `[gen_trans ht (𝟙 Y) y (le i hy.1) (le j hy.2), _root_.mul_assoc]`.
+
+Use `congrArg (· * _) (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Establish `e` using `gm_linComb L (K := PUnit) (fun _ => 𝟙 X) (fun _ => (n : ℤ)) (𝟙 Y ≫ φ k) y (i k) (j k) (Set.mem_iInter.1 hy.1 k) (Set.mem_iInter.1 hy.2 k)`. Rewrite `e` using `[Fintype.prod_unique, Category.comp_id]`. Rewrite using `[hε, zpow_mul]`. Conclude with `congrArg (· ^ ε k) e.symm`.
+-/
 theorem exists_gen_lbPow (n : ℕ) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε ε' : K → ℤ}
     (hε : ∀ k, ε' k = n * ε k) (t : LB.Gen (LB.LinComb L φ ε')) (ht : t.IsGen) (b : Γ(Y, ⊤)ˣ) :
     ∃ t' : LB.Gen (LB.LinComb (lbPow L n) φ ε), t'.IsGen ∧
@@ -127,6 +159,21 @@ theorem exists_gen_lbPow (n : ℕ) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
   rw [hε, zpow_mul]
   exact congrArg (· ^ ε k) e.symm
 
+/- English proof (translation)
+Establish `ex : ∀ c c', ∃ a : Γ(S₀, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (J), Good L z J → val (v (c * c')) r z J = val (v c) r z J * val (v c') (r ≫ τ c) z J * gm (r ≫ p) z ⊤ a` using `fun c c' => by`. Take `⟨a, ha⟩` from `CommutatorPairing.exists_ratio hL (fun U _ g => by`. Use `Eq.trans ?_ (Fintype.prod_sum_type _).symm` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr]`. Use `show g (𝟙 X) ^ m * g (τ (c * c')) ^ (-m) = g (𝟙 X) ^ m * g (τ c) ^ (-m) * (g (τ c ≫ 𝟙 X) ^ m * g (τ c ≫ τ c') ^ (-m))`.
+
+Rewrite using `[Category.comp_id, hτ]`. Simplify using `only [zpow_neg, _root_.mul_assoc, inv_mul_cancel_left]) p e he hp (hv (c * c'))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (hv c) (DVR.pullGen_isGen _ _ _ _ (hv c') (τ c)))`. Conclude with `⟨a, fun Z r z J hJ => (ha Z r z J hJ).trans (congrArg (· * _) ((val_mul hJ _ _ _).trans (congrArg (val (v c) r z J * ·) (val_pull hJ _ _ _))))⟩`. Use `choose a ha using ex`.
+
+Establish `inj : ∀ u u' : Γ(S₀, ⊤)ˣ, (∀ (y : S₀) (J), Good L y J → gm (e ≫ p) y ⊤ u = gm (e ≫ p) y ⊤ u') → u = u'` using `fun u u' h => unit_ext fun y _ => by choose J hJ using fun χ : S₀ ⟶ X => exists_chart hL (χ y)`. Rewrite using `[← he]`. Conclude with `h y J hJ`. Take `⟨b, hb⟩` from `exists_coboundary hU a (fun c c' => inj _ _ fun y J hJ => by`. Establish `e₁` using `ha c c' _ e y J hJ`.
+
+Establish `e₂` using `ha c' c _ e y J hJ`. Rewrite `e₁` using `[hc c c' _ e y J hJ]`. Rewrite `e₂` using `[mul_comm c' c, e₁]`. Conclude with `mul_left_cancel e₂) (fun c c' c'' => inj _ _ fun y J hJ => by`. Establish `e₁` using `ha c c' _ e y J hJ`.
+
+Establish `e₂` using `ha (c * c') c'' _ e y J hJ`. Establish `e₃` using `ha c' c'' _ (e ≫ τ c) y J hJ`. Establish `e₄` using `ha c (c' * c'') _ e y J hJ`. Rewrite `e₂` using `[_root_.mul_assoc c]`. Rewrite `e₃` using `[Category.assoc, Category.assoc, hτp, ← hτ]`.
+
+Rewrite using `[map_mul, map_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a₁` using `congrArg Additive.ofMul e₁`. Establish `a₂` using `congrArg Additive.ofMul e₂`. Establish `a₃` using `congrArg Additive.ofMul e₃`.
+
+Establish `a₄` using `congrArg Additive.ofMul e₄`. Simplify using `only [ofMul_mul] at a₁ a₂ a₃ a₄ ⊢`. Take the linear combination `(norm := abel) a₃ + a₄ - a₁ - a₂)`. Use `⟨b, fun c c' Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[ha c c' Z r z J hJ, _root_.mul_assoc, ← map_mul, mul_comm (a c c'), hb, map_mul, _root_.mul_mul_mul_comm]`.
+-/
 theorem exists_rescale (hL : L.IsLB) {S₀ : Scheme.{0}} (p : X ⟶ S₀) (e : S₀ ⟶ X) (he : e ≫ p = 𝟙 _)
     (hp : Function.Surjective p.appTop.hom) (hU : ∀ n : ℕ, 0 < n → ∀ y : Γ(S₀, ⊤)ˣ, ∃ x : Γ(S₀, ⊤)ˣ, x ^ n = y)
     {C : Type} [CommGroup C] (τ : C → (X ⟶ X)) (hτ : ∀ c c', τ (c * c') = τ c ≫ τ c') (hτp : ∀ c, τ c ≫ p = p)
@@ -184,16 +231,28 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 abbrev transl (c : 𝟙_ (Over S) ⟶ A) : A.left ⟶ A.left := ((toUnit A ≫ c) * 𝟙 A).left
 
+/- English proof (translation)
+Rewrite using `[transl, ← Over.comp_left, MonObj.comp_mul, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, _root_.mul_assoc, mul_left_comm]`.
+-/
 theorem transl_mul [IsCommMonObj A] (c c' : 𝟙_ (Over S) ⟶ A) : transl (c * c') = transl c ≫ transl c' := by
   rw [transl, ← Over.comp_left, MonObj.comp_mul, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit,
     _root_.mul_assoc, mul_left_comm]
 
+/- English proof (translation)
+The claim follows from `Over.w _`.
+-/
 theorem transl_hom (c : 𝟙_ (Over S) ⟶ A) : transl c ≫ A.hom = A.hom := Over.w _
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← Over.comp_left, CommutatorPairing.lift_translT, comp_lift, comp_toUnit, Category.comp_id]`.
+-/
 theorem transl_lift (c : 𝟙_ (Over S) ⟶ A) : transl c ≫ (lift (toUnit A) (𝟙 A)).left =
     (lift (toUnit A) (𝟙 A)).left ≫ (Out.translT A c).left := by
   rw [← Over.comp_left, ← Over.comp_left, CommutatorPairing.lift_translT, comp_lift, comp_toUnit, Category.comp_id]
 
+/- English proof (translation)
+Substitute `hθ` using the available equality. Take `⟨v, hv, e⟩` from `exists_gen hL (K' := Fin 2) (φ' := ![𝟙 A.left, transl θ.pt]) (ε' := ![m, -m]) (fun U _ h => (CommutatorPairing.prod_theta θ.pt (toUnit A) (𝟙 A) h).trans (by rw [Fin.prod_univ_two]; rfl)) (LB.pullGen L (K := Fin 2) ![(snd _ A).left, (Out.translPt A θ.pt).left] ![m, -m] θ.φ (lift ( …`. Conclude with `⟨v, hv, fun Z r z J hJ => (e Z r z J hJ).trans (val_pull hJ _ _ _)⟩`.
+-/
 theorem exists_gen_theta {L : LB A.left} (hL : L.IsLB) {m : ℤ} (θ : Out.ThetaGrp A L m (𝟙_ (Over S)))
     {c : 𝟙_ (Over S) ⟶ A} (hθ : θ.pt = c) :
     ∃ v : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 A.left, transl c] ![m, -m]), v.IsGen ∧
@@ -206,6 +265,17 @@ theorem exists_gen_theta {L : LB A.left} (hL : L.IsLB) {m : ℤ} (θ : Out.Theta
       (lift (toUnit A) (𝟙 A)).left) (DVR.pullGen_isGen _ _ _ _ θ.isGen _)
   exact ⟨v, hv, fun Z r z J hJ => (e Z r z J hJ).trans (val_pull hJ _ _ _)⟩
 
+/- English proof (translation)
+Use `hA.comm` as an intermediate fact. Establish `: Subsingleton (𝟙_ (Over S)).left` using `inferInstanceAs (Subsingleton S)`. Establish `lifts : ∀ c, ∃ θ : Out.ThetaGrp A L n (𝟙_ (Over S)), θ.pt = i c` using `fun c => by`. Take `⟨V, hp, ⟨θ, -, H, -⟩, -⟩` from `hW c c (Classical.arbitrary S)`. Take `⟨h, e⟩` from `GlobalLift.exists_section hp`.
+
+Take `⟨θ', e', -⟩` from `CommPairing.exists_pull hL h θ`. Rewrite `e'` using `[H, ← Category.assoc, e, Category.id_comp]`. Conclude with `⟨θ', e'⟩`. Use `choose θ hθ using lifts`. Use `choose v hv ev using fun c => exists_gen_theta hL (θ c) (hθ c)`.
+
+Take `⟨b, hb⟩` from `exists_rescale hL A.hom η[A].left (Over.w _) (hG S A hA).2 hU (fun c => transl (i c)) (fun c c' => by rw [map_mul, transl_mul]) (fun c => transl_hom _) n v hv (fun c c' Z r z J hJ => by`. Establish `H` using `(GlobalLift.weilIs_iff_commIsOf hG hA hL (θ c) (θ c') 1).1 (by rw [hθ, hθ]; exact hW c c')`. Establish `e` using `(CommPairing.commIsOf_iff hL _ _ _).1 H Z (r ≫ (lift (toUnit A) (𝟙 A)).left) z J hJ`. Rewrite `e` using `[map_one, _root_.mul_one, hθ, hθ, Category.assoc, Category.assoc, ← transl_lift, ← transl_lift, ← Category.assoc, ← Category.assoc]`. Rewrite using `[ev _ _ _ z J hJ, ev _ _ _ z J hJ, ev _ _ _ z J hJ, ev _ _ _ z J hJ]`.
+
+Conclude with `e)`. Apply the tactic sequence `choose u hu eu using fun c => exists_gen_lbPow n (ε := ![1, -1]) (fun k => by fin_cases k <;> simp) (v c) (hv c) (pullU A.hom ⊤ (b c))`. Use `⟨u, hu, fun c c' => corr_of_val (DVR.linComb_isLB L hL _ _) fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `hJ' : Good L y (fun χ => J χ PUnit.unit)` using `fun χ => Set.mem_iInter.1 (hJ χ) PUnit.unit`. Establish `g : ∀ (r : A.left ⟶ A.left) (a : Γ(S, ⊤)ˣ), gm r y ⊤ (pullU A.hom ⊤ a) = gm (r ≫ A.hom) y ⊤ a` using `fun r a => gm_pull r A.hom y ⊤ trivial a`.
+
+Use `Eq.trans ?_ ((val_mul hJ _ _ _).trans (congrArg (val (u c) (𝟙 _) y J * ·) (val_pull hJ _ _ _))).symm` and prove the remaining obligations. Rewrite using `[eu _ _ _ y J hJ, eu _ _ _ y J hJ, eu _ _ _ y J hJ, g, g, g, Category.assoc, transl_hom]`. Conclude with `hb c c' _ (𝟙 _) y _ hJ'`.
+-/
 theorem exists_cocycle (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {L : LB A.left} (hL : L.IsLB)
     [Subsingleton S] [Nonempty S] (hU : ∀ n : ℕ, 0 < n → ∀ y : Γ(S, ⊤)ˣ, ∃ x : Γ(S, ⊤)ˣ, x ^ n = y) (n : ℕ)
     {C : Type} [CommGroup C] (i : C →* (𝟙_ (Over S) ⟶ A))
@@ -243,6 +313,9 @@ theorem exists_cocycle (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {L : LB A
 
 end Group
 
+/- English proof (translation)
+Set `e : Γ(Sp k, ⊤) ≃+* k` to `(Scheme.ΓSpecIso (CommRingCat.of k)).commRingCatIsoToRingEquiv`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (e y) hn`. Establish `h : e.symm x ^ n = y` using `by rw [← map_pow, hx, RingEquiv.symm_apply_apply]`. Establish `hu : IsUnit (e.symm x)` using `(isUnit_pow_iff hn.ne').1 (h ▸ y.isUnit)`. Conclude with `⟨hu.unit, Units.ext h⟩`.
+-/
 theorem units_divisible (k : Type) [Field k] [IsAlgClosed k] (n : ℕ) (hn : 0 < n) (y : Γ(Sp k, ⊤)ˣ) :
     ∃ x : Γ(Sp k, ⊤)ˣ, x ^ n = y := by
   let e : Γ(Sp k, ⊤) ≃+* k := (Scheme.ΓSpecIso (CommRingCat.of k)).commRingCatIsoToRingEquiv
@@ -251,6 +324,13 @@ theorem units_divisible (k : Type) [Field k] [IsAlgClosed k] (n : ℕ) (hn : 0 <
   have hu : IsUnit (e.symm x) := (isUnit_pow_iff hn.ne').1 (h ▸ y.isUnit)
   exact ⟨hu.unit, Units.ext h⟩
 
+/- English proof (translation)
+Set `o : Sp k ⟶ B.left` to `η[B].left`. Establish `w : x.left ≫ ψ.left = t ≫ o` using `congrArg (fun q => q.left) hx`. Take `⟨c, hc, hy⟩` from `exists_rational (pullback.snd ψ.left o) (pullback.lift x.left t w)`. Rewrite `hy` using `[pullback.lift_snd]`. Establish `ho : o ≫ B.hom = 𝟙 _` using `Over.w η[B]`.
+
+Establish `h₁ : (c ≫ pullback.fst ψ.left o) ≫ ψ.left = o`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hc, Category.id_comp]`. Use `⟨Over.homMk (c ≫ pullback.fst ψ.left o) (by show (c ≫ pullback.fst ψ.left o) ≫ A.hom = 𝟙 _` and prove the remaining obligations. Rewrite using `[← Over.w ψ, ← Category.assoc, h₁, ho]), Over.OverMorphism.ext ?_, Over.OverMorphism.ext ?_⟩`. Conclude with `h₁.trans (Category.id_comp _).symm`.
+
+Use `show x.left = t ≫ c ≫ pullback.fst ψ.left o`. Rewrite using `[← Category.assoc, hy, pullback.lift_fst]`.
+-/
 theorem exists_rational_ker {k k' : Type} [Field k] [IsAlgClosed k] [Field k'] {A B : Over (Sp k)} [GrpObj B]
     (ψ : A ⟶ B) [IsFinite ψ.left] (t : Sp k' ⟶ Sp k) (x : Over.mk t ⟶ A) (hx : x ≫ ψ = 1) :
     ∃ c : 𝟙_ (Over (Sp k)) ⟶ A, c ≫ ψ = 1 ∧ x = toUnit _ ≫ c := by
@@ -274,6 +354,15 @@ namespace GlobalTheory
 
 open ThetaSplit in
 
+/- English proof (translation)
+Introduce `hlaw hdesc k _ _ P n C B _ ψ hn hnk htor hW hψ hfin het hsurj hker`. Use `P.isAb.comm` as an intermediate fact. Use `letI : CommGroup C := { (inferInstance : Group C) with mul_comm := fun a b => Subtype.ext (mul_comm a.1 b.1) }`. Establish `hfinT : Finite {x : 𝟙_ (Over (Sp k)) ⟶ P.A // x ^ n = 1}`. Establish `h` using `(hlaw.mulN (Sp k) P n hn).2.2.2.2 k (𝟙 _) hnk`.
+
+Conclude with `Nat.finite_of_card_ne_zero (h.trans_ne (pow_ne_zero _ hn.ne'))`. Establish `: Finite C` using `Finite.of_injective (fun c : C => (⟨c.1, htor c.1 c.2⟩ : {x : 𝟙_ (Over (Sp k)) ⟶ P.A // x ^ n = 1})) fun a b h => Subtype.ext (congrArg (fun q => q.1) h)`. Take `⟨u, hu, hc⟩` from `exists_cocycle hlaw.globalFns P.isAb P.isLB (units_divisible k) n C.subtype (fun c c' => hW c.1 c.2 c'.1 c'.2)`. Use `hdesc (Sp k) P.A B ψ C C.subtype (lbPow P.L n) (DVR.linComb_isLB P.L P.isLB _ _) hψ hfin het hsurj (fun k' _ _ t => ⟨fun x => ⟨fun hx => ?_, ?_⟩, fun c h => ?_⟩) u hu hc` and prove the remaining obligations. Take `⟨c, h₁, h₂⟩` from `exists_rational_ker ψ t x hx`.
+
+Conclude with `⟨⟨c, (hker c).1 h₁⟩, h₂⟩`. Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[Category.assoc, (hker (C.subtype c)).2 c.2, MonObj.comp_one]`. Establish `: Epi t` using `epi_of_fields t`. Use `Subtype.ext (Over.OverMorphism.ext ((cancel_epi t).1 ?_))` and prove the remaining obligations.
+
+Establish `e : toUnit (Over.mk t) ≫ c.1 = toUnit (Over.mk t) ≫ (1 : 𝟙_ (Over (Sp k)) ⟶ P.A)` using `h.trans (MonObj.comp_one _).symm`. Conclude with `congrArg (fun q => q.left) e`.
+-/
 theorem lbPow_descends_of_isotropic : Out.Laws → (∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (ψ : A ⟶ B) (C : Type) [CommGroup C] [Finite C] (i : C →* (𝟙_ (Over S) ⟶ A)) (L : LB A.left), L.IsLB → IsMonHom ψ → IsFinite ψ.left → Etale ψ.left → Surjective ψ.left → (∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ S), (∀ x : Over.mk t ⟶ A, x ≫ ψ = 1 ↔ ∃ c, x = toUnit _ ≫ i c) ∧ ∀ c, toUnit (Over.mk t) ≫ i c = 1 → c = 1) → ∀ (u : ∀ c, LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 A.left, ((toUnit A ≫ i c) * 𝟙 A).left] ![1, -1])), (∀ c, (u c).IsGen) → (∀ c c', LB.Gen.Corr L _ _ _ _ (u (c * c')) (LB.mulGen L _ _ _ _ (u c) (LB.pullGen L _ _ (u c') ((toUnit A ≫ i c) * 𝟙 A).left))) → ∃ M : LB B.left, M.IsLB ∧ LBIso L (M.pull ψ.left)) → ∀ (k : Type) [Field k] [IsAlgClosed k] (P : Out.PolAV (Sp k)) (n : ℕ) (C : Subgroup (𝟙_ (Over (Sp k)) ⟶ P.A)) (B : Over (Sp k)) [GrpObj B] (ψ : P.A ⟶ B), 0 < n → (n : k) ≠ 0 → (∀ x ∈ C, x ^ n = 1) → (∀ x ∈ C, ∀ y ∈ C, Out.WeilIs P.A P.L n x y 1) → IsMonHom ψ → IsFinite ψ.left → Etale ψ.left → Surjective ψ.left → (∀ x : 𝟙_ (Over (Sp k)) ⟶ P.A, x ≫ ψ = 1 ↔ x ∈ C) → ∃ M : LB B.left, M.IsLB ∧ LBIso (lbPow P.L n) (M.pull ψ.left) := by
   intro hlaw hdesc k _ _ P n C B _ ψ hn hnk htor hW hψ hfin het hsurj hker
   have := P.isAb.comm

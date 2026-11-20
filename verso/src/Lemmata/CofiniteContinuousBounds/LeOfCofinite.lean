@@ -2,6 +2,9 @@ import Mathlib
 
 namespace Bl.CofiniteContinuousBounds
 
+/- English proof (translation)
+Establish `hd : Dense Sᶜ` using `hS.countable.dense_compl ℂ`. Establish `hc : IsClosed {x | f x ≤ g x}` using `isClosed_le hf hg`. Establish `hsub : closure Sᶜ ⊆ {x | f x ≤ g x}` using `hc.closure_subset_iff.2 (fun x hx => h x hx)`. Conclude with `hsub (hd s)`.
+-/
 private lemma le_of_cofinite {f g : ℂ → ℝ} (hf : Continuous f) (hg : Continuous g)
     {S : Set ℂ} (hS : S.Finite) (h : ∀ s, s ∉ S → f s ≤ g s) (s : ℂ) : f s ≤ g s := by
   have hd : Dense Sᶜ := hS.countable.dense_compl ℂ
@@ -10,12 +13,32 @@ private lemma le_of_cofinite {f g : ℂ → ℝ} (hf : Continuous f) (hg : Conti
   exact hsub (hd s)
 
 open Polynomial in
+/- English proof (translation)
+The claim follows from `(continuous_const.mul ((continuous_const.add continuous_norm).pow m)).mul (Polynomial.continuous q).norm`.
+-/
 private lemma cont_bound (K : ℝ) (m : ℕ) (q : ℂ[X]) :
     Continuous fun s : ℂ => K * (1 + ‖s‖) ^ m * ‖q.eval s‖ :=
   (continuous_const.mul ((continuous_const.add continuous_norm).pow m)).mul
     (Polynomial.continuous q).norm
 
 open Polynomial in
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `p q hn hq h`. Distinguish the cases in `h0 : q.natDegree = 0`. Rewrite `h0` using `[natDegree_eq_zero]`.
+
+Take `⟨c, rfl⟩` from `h0`. Establish `hc : c ≠ 0` using `fun hc => hq (by rw [hc, C_0])`. Conclude with `(isUnit_C.2 (Ne.isUnit hc)).dvd`. Establish `hdeg : 0 < q.degree`. Rewrite using `[degree_eq_natDegree hq]`.
+
+Conclude with `Nat.pos_of_ne_zero h0` after adjusting the coercions. Take `⟨a, ha⟩` from `Complex.exists_root hdeg`. Establish `hpa : IsRoot p a`. Establish `h1` using `h a`. Rewrite `h1` using `[ha.eq_zero, norm_zero, mul_zero]`.
+
+Conclude with `norm_le_zero_iff.1 h1`. Take `⟨q', eq⟩ : ∃ q', (X - C a) * q' = q` from `⟨_, mul_divByMonic_eq_iff_isRoot.2 ha⟩`. Take `⟨p', ep⟩ : ∃ p', (X - C a) * p' = p` from `⟨_, mul_divByMonic_eq_iff_isRoot.2 hpa⟩`. Establish `hq'0 : q' ≠ 0`. Introduce and unpack `h'`.
+
+Rewrite `eq` using `[h', mul_zero]`. Conclude with `hq eq.symm`. Establish `hdeg' : q'.natDegree < n`. Rewrite using `[← hn, ← eq, natDegree_mul (X_sub_C_ne_zero a) hq'0, natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hb : ∀ s, s ∉ ({a} : Set ℂ) → ‖p'.eval s‖ ≤ K * (1 + ‖s‖) ^ m * ‖q'.eval s‖`. Introduce `s hs`. Establish `hsa : s - a ≠ 0` using `sub_ne_zero.2 hs`. Establish `h1` using `h s`. Rewrite `h1` using `[← eq, ← ep, eval_mul, eval_mul, eval_sub, eval_X, eval_C, norm_mul, norm_mul]`.
+
+Establish `hpos : 0 < ‖s - a‖` using `norm_pos_iff.2 hsa`. Establish `e : K * (1 + ‖s‖) ^ m * (‖s - a‖ * ‖eval s q'‖) = ‖s - a‖ * (K * (1 + ‖s‖) ^ m * ‖eval s q'‖)` using `by ring`. Rewrite `h1` using `[e]`. Conclude with `le_of_mul_le_mul_left h1 hpos`. Establish `hall` using `le_of_cofinite (Polynomial.continuous p').norm (cont_bound K m q') (Set.finite_singleton a) hb`.
+
+Rewrite using `[← eq, ← ep]`. Conclude with `mul_dvd_mul_left _ (ih _ hdeg' p' q' rfl hq'0 hall)`.
+-/
 private lemma key (K : ℝ) (m : ℕ) (n : ℕ) : ∀ (p q : ℂ[X]), q.natDegree = n → q ≠ 0 →
     (∀ s : ℂ, ‖p.eval s‖ ≤ K * (1 + ‖s‖) ^ m * ‖q.eval s‖) → q ∣ p := by
   induction n using Nat.strong_induction_on with
@@ -54,6 +77,9 @@ private lemma key (K : ℝ) (m : ℕ) (n : ℕ) : ∀ (p q : ℂ[X]), q.natDegre
     rw [← eq, ← ep]
     exact mul_dvd_mul_left _ (ih _ hdeg' p' q' rfl hq'0 hall)
 
+/- English proof (translation)
+Introduce `p q hq K m h`. Establish `hall` using `le_of_cofinite (Polynomial.continuous p).norm (cont_bound K m q) (Polynomial.finite_setOfPred_isRoot hq) (fun s hs => h s hs)`. Conclude with `key K m q.natDegree p q rfl hq hall`.
+-/
 theorem goal1 :
   ∀ {p q : Polynomial.{0} Complex},
   Ne.{1} q 0 →

@@ -22,12 +22,66 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Substitute `hK hS` using the available equality. Take the linear combination `(-(L ^ s1 * L ^ k1)) * H`.
+-/
 theorem ring_identity_lambda_terms {R : Type} [CommRing R] (L Φ G a B J : R) (s1 s k1 E K S : ℕ) (hK : K = k1 + E)
     (hS : S = s1 + s) (H : L ^ s * Φ * G = (a * L ^ E + B * J) * G) :
     L ^ K * (L ^ s1 * G * a) - L ^ S * (Φ * (L ^ k1 * G)) = J * (-(L ^ s1 * L ^ k1 * G * B)) := by
   subst hK hS
   linear_combination (-(L ^ s1 * L ^ k1)) * H
 
+/- English proof (translation)
+Use `set A := arcOf b w S η up size with hAdef`. Use `set c' : ZMod n := c - ((A.len c : ℕ) : ZMod n) with hc'`. Establish `hl : 2 ≤ PD.p` using `PD.hp.two_le`. Establish `hp2 : PD.p ≠ 2` using `hcase.2.2`. Establish `hT₂ : IsCrys PD T₂.ρ` using `hW₂.1`.
+
+Establish `hC` using `Formalism.MainNotions.UnusedSlot80.Relay2.ctx_of W hinj hOv hP9 hH hTr hcase T₂ hT₂`. Establish `h9` using `(Formalism.MainNotions.LiftingTheory.frame_p9A W hP9 hcase T₂ hT₂).1`. Establish `hM : 2 * A.G₀ ≤ (PD.p - 1) * A.M PD.p` using `Formalism.MainNotions.UnusedSlot80.Relay2.arith_M PD.p A.G₀ A.h hl hOK.2.2.2.2.2.1`. Establish `hHc` using `hH hcase T₂ hT₂ c'`. Establish `hbd : ∀ r m, Formalism.MainNotions.LiftingTheory.Bd W r (sol k₀ r m)` using `fun r m => (hHc.2.2.2.2 d bb hbb.1 sol hbb.2).1 k₀ r m`.
+
+Establish `h4` using `hHc.2.2.2.1`. Establish `hg : ∀ r m, ∃ o : O, algebraMap O LL o = (PD.p : LL) ^ Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p r * sol k₀ r m` using `fun r m => Formalism.MainNotions.UnusedSlot80.Relay2.int_of_bd W hOv r (h4 r) _ (hbd r m)`. Use `choose g hg using hg`. Use `set M := A.M PD.p with hMdef`. Use `set JJ1 := Formalism.MainNotions.LiftingTheory.JJ W 1 (2 * A.G₀) M with hJJ1`.
+
+Establish `hdec : ∀ r, ∃ a ∈ W.AΔ, ∃ B' ∈ W.AΔ, ∀ m, ((PD.p : ℕ) : LetA O n) ^ Formalism.NOK.sigNOK PD.p (2 * A.G₀) M 1 * ((W.φA ^ 1) W.π₀) ^ r * algebraMap O (LetA O n) (g r m) = (a * ((PD.p : ℕ) : LetA O n) ^ Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p r + B' * JJ1) * algebraMap O ( …`. Introduce `r`. Take `⟨a, ha, B', hB', h⟩` from `Formalism.MainNotions.LiftingTheory.tr_trunc_int W h9 hp2 1 (2 * A.G₀) M r le_rfl`. Conclude with `⟨a, ha, B', hB', fun m => by rw [h]; rfl⟩`. Use `choose a ha B' hB' heq using hdec`.
+
+Use `set σ := A.σ PD.p with hσdef`. Use `set sg := Formalism.NOK.sigNOK PD.p (2 * A.G₀) M 1 with hsg`. Establish `hsgσ : sg ≤ σ` using `Formalism.MainNotions.UnusedSlot80.Relay2.sig_le A PD.p`. Use `set κ := Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p M with hκ`. Set `y : ℕ → Fin d → O` to `fun r m => ((PD.p : ℕ) : O) ^ (κ - Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p r) * g r m`.
+
+Establish `hy : ∀ r < M, ∀ m, algebraMap O LL (y r m) = (PD.p : LL) ^ κ * sol k₀ r m`. Introduce `r hr m`. Establish `hle` using `Formalism.MainNotions.UnusedSlot80.Relay2.Ex_mono PD.p hl hr.le`. Simplify using `only [y, map_mul, map_pow, map_natCast, hg]`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+
+Establish `hyA : ∀ r m, algebraMap O (LetA O n) (y r m) = lA W ^ (κ - Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p r) * algebraMap O (LetA O n) (g r m)`. Introduce `r m`. Simplify using `only [y, map_mul, map_pow, map_natCast]`. Both sides reduce to the same expression. Set `β : Fin d → W.DD T₂` to `fun m => ((W.φD T₂) ^ 1) (bb m)`.
+
+Establish `hβ : ∀ m, β m ∈ Pp W T₂ c' 1` using `fun m => Formalism.MainNotions.UnusedSlot80.Relay2.Pp_phi W T₂ c' 1 (hbb.1.1 m)`. Establish `hlA : lA W ∈ W.AΔ` using `Formalism.MainNotions.UnusedSlot80.Relay2.lA_mem W`. Establish `hcoef : ∀ r m, lA W ^ (σ - sg) * algebraMap O (LetA O n) (g r m) * a r ∈ W.AΔ` using `fun r m => W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.pow_mem hlA _) (W.AΔ.algebraMap_mem _)) (ha r)`. Use `set lam₀ : W.DD T₂ := ∑ r ∈ Finset.range M, ∑ m, (lA W ^ (σ - sg) * algebraMap O (LetA O n) (g r m) * a r) • β m with hl0`. Establish `hlam₀ : lam₀ ∈ Pp W T₂ c' 1`.
+
+Rewrite using `[hl0]`. Conclude with `AddSubgroup.sum_mem _ fun r _ => AddSubgroup.sum_mem _ fun m _ => Formalism.MainNotions.UnusedSlot80.Relay2.Pp_smul W T₂ c' 1 (hcoef r m) _ (hβ m)`. Use `set Z : W.DD T₂ := ∑ r ∈ Finset.range M, ∑ m, (-(lA W ^ (σ - sg) * lA W ^ (κ - Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p r) * algebraMap O (LetA O n) (g r m) * B' r)) • β m with hZdef`. Establish `hZ : Z ∈ Pp W T₂ c' 1`. Rewrite using `[hZdef]`.
+
+Conclude with `AddSubgroup.sum_mem _ fun r _ => AddSubgroup.sum_mem _ fun m _ => Formalism.MainNotions.UnusedSlot80.Relay2.Pp_smul W T₂ c' 1 (W.AΔ.neg_mem (W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.pow_mem hlA _) (W.AΔ.pow_mem hlA _)) (W.AΔ.algebraMap_mem _)) (hB' r))) _ (hβ m)`. Use `set Hh : W.DD T₂ := ∑ r ∈ Finset.range M, W.π₀ ^ r • Formalism.MainNotions.LiftingTheory.vecB W T₂ bb (y r) with hHh`. Establish `hφS : ((W.φD T₂) ^ 1) Hh = ∑ r ∈ Finset.range M, ∑ m, (((W.φA ^ 1) W.π₀) ^ r * algebraMap O (LetA O n) (y r m)) • β m`. Rewrite using `[hHh, map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Formalism.MainNotions.UnusedSlot80.Relay2.φpow_smul, map_pow, Formalism.MainNotions.LiftingTheory.vecB, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul (LetA O n) (y r m), smul_smul]`. Establish `key : lA W ^ κ • lam₀ - lA W ^ σ • ((W.φD T₂) ^ 1) Hh = JJ1 • Z`. Rewrite using `[hφS, hl0, hZdef, Finset.smul_sum, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun r hr => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, smul_smul, ← sub_smul]`. Use `congr 1`.
+
+Establish `hle` using `Formalism.MainNotions.UnusedSlot80.Relay2.Ex_mono PD.p hl (Finset.mem_range.1 hr).le`. Use `ring_identity_lambda_terms (lA W) (((W.φA ^ 1) W.π₀) ^ r) (algebraMap O (LetA O n) (g r m)) (a r) (B' r) JJ1 (σ - sg) sg (κ - Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p r) (Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p r) κ σ (by omega) (by omega) (heq r m)` as an intermediate fact. Rewrite using `[hyA]`. Take the linear combination `this`. Take `⟨x, hx, hxe⟩` from `(hbb.2 k₀).1 M κ y hy`.
+
+Rewrite `hxe` using `[smul_zero, sub_zero, ← hHh]`. Establish `hγφ : ∀ (e : ℕ) (z : W.DD T₂), W.γ T₂ (((W.φD T₂) ^ e) z) = ((W.φD T₂) ^ e) (W.γ T₂ z)` using `fun e z => Formalism.MainNotions.UnusedSlot80.Relay2.γ_φpow W T₂ W.gam e z`. Establish `hA1 : InFP W T₂ c' 1 JJ1 (W.γ T₂ (((W.φD T₂) ^ 1) Hh) - ((W.φD T₂) ^ 1) Hh)`. Rewrite using `[hγφ, ← map_sub, hxe]`. Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.phij_pi0pow W T₂ c' hC.hπ hC.Tr2 1 (2 * A.G₀) M hM hx`.
+
+Take `⟨ka, hka, -, hγπ⟩` from `gamma_pi0_eq_pi0_mul_one_add_unit_mul_q W hcase hP9`. Establish `hqA : qA W ∈ W.AΔ` using `W.AΔ.add_mem hC.hπ hlA`. Establish `hγJJ : W.γA W.gam JJ1 = JJ1 * ((1 + ka * qA W) ^ M * (1 + W.π₀ * ka) ^ (2 * A.G₀))`. Establish `hq : W.γA W.gam (Formalism.MainNotions.LiftingTheory.pk W 0) = Formalism.MainNotions.LiftingTheory.pk W 0 * (1 + W.π₀ * ka)`. Establish `e1 : Formalism.MainNotions.LiftingTheory.pk W 0 = W.π₀ + lA W` using `by simp [Formalism.MainNotions.LiftingTheory.pk, Formalism.MainNotions.LiftingTheory.qp, lA]`.
+
+Establish `e2 : W.γA W.gam (lA W) = lA W` using `by simp [lA]`. Rewrite using `[e1, map_add, e2, hγπ]`. Simplify using `only [qA]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hJJ1, Formalism.MainNotions.LiftingTheory.JJ, Finset.prod_range_one, map_mul, map_pow, hq, hγπ, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hu : (1 + ka * qA W) ^ M * (1 + W.π₀ * ka) ^ (2 * A.G₀) ∈ W.AΔ` using `W.AΔ.mul_mem (W.AΔ.pow_mem (W.AΔ.add_mem W.AΔ.one_mem (W.AΔ.mul_mem hka hqA)) _) (W.AΔ.pow_mem (W.AΔ.add_mem W.AΔ.one_mem (W.AΔ.mul_mem hC.hπ hka)) _)`. Establish `hγsm : ∀ (f : LetA O n) (z : W.DD T₂), W.γ T₂ (f • z) = W.γA W.gam f • W.γ T₂ z`. Introduce `f z`. Use `show W.γD T₂ W.gam (f • z) = W.γA W.gam f • W.γD T₂ W.gam z`.
+
+Rewrite using `[← algebraMap_smul W.EE f z, W.γD_smul, W.γE_ext, algebraMap_smul]`. Both sides reduce to the same expression. Establish `hJZ : InFP W T₂ c' 1 JJ1 (W.γ T₂ (JJ1 • Z) - JJ1 • Z)`. Rewrite using `[hγsm, hγJJ, mul_smul, ← smul_sub]`. Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_of_mem W T₂ c' 1 JJ1 (sub_mem (Formalism.MainNotions.UnusedSlot80.Relay2.Pp_smul W T₂ c' 1 hu _ (Formalism.MainNotions.UnusedSlot80.Relay2.Pp_γ W T₂ c' 1 _ hZ)) hZ)`.
+
+Establish `hkey' : lA W ^ κ • lam₀ = lA W ^ σ • ((W.φD T₂) ^ 1) Hh + JJ1 • Z`. Rewrite using `[← key]`. Normalize the expressions using the abelian group laws. Establish `hγl : InFP W T₂ c' 1 JJ1 (lA W ^ κ • (W.γ T₂ lam₀ - lam₀))`. Establish `e : lA W ^ κ • (W.γ T₂ lam₀ - lam₀) = lA W ^ σ • (W.γ T₂ (((W.φD T₂) ^ 1) Hh) - ((W.φD T₂) ^ 1) Hh) + (W.γ T₂ (JJ1 • Z) - JJ1 • Z)`.
+
+Rewrite using `[smul_sub, ← Formalism.MainNotions.UnusedSlot80.Relay2.γ_lsmul, hkey', map_add, Formalism.MainNotions.UnusedSlot80.Relay2.γ_lsmul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_add W T₂ c' 1 JJ1 (Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_lA_pow_smul W T₂ c' 1 JJ1 σ hA1) hJZ`. Establish `hsub : W.γ T₂ lam₀ - lam₀ ∈ Pp W T₂ c' 1` using `sub_mem (Formalism.MainNotions.UnusedSlot80.Relay2.Pp_γ W T₂ c' 1 _ hlam₀) hlam₀`.
+
+Take `⟨Y, hY, hYe⟩` from `Formalism.MainNotions.UnusedSlot80.Relay2.satP_JJ W hSatP hcase hC.hπ T₂ hT₂ c' 1 (2 * A.G₀) M _ hsub κ hγl`. Establish `hφ2 : ∀ z : W.DD T₂, ((W.φD T₂) ^ 2) z = ((W.φD T₂) ^ 1) (((W.φD T₂) ^ 1) z)` using `fun z => by`. Rewrite using `[show (2 : ℕ) = 1 + 1 from rfl, pow_add]`. Both sides reduce to the same expression. Establish `hφP : ∀ z ∈ Pp W T₂ c' 1, ((W.φD T₂) ^ 1) z ∈ Pp W T₂ c' 2`.
+
+Use `Formalism.MainNotions.UnusedSlot80.Relay2.Pp_ind W T₂ c' 1 (fun z => ((W.φD T₂) ^ 1) z ∈ Pp W T₂ c' 2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `(Pp W T₂ c' 2).zero_mem`. Introduce `z z' hz hz'`. Rewrite using `[map_add]`.
+
+Conclude with `(Pp W T₂ c' 2).add_mem hz hz'`. Introduce `z hz`. Rewrite using `[map_neg]`. Conclude with `(Pp W T₂ c' 2).neg_mem hz`. Introduce `f hf z hz`.
+
+Rewrite using `[Formalism.MainNotions.UnusedSlot80.Relay2.φpow_smul, ← hφ2]`. Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.Pp_gen W T₂ c' 2 (Formalism.MainNotions.UnusedSlot80.PhiPowers.φA_pow_mem_AΔ W hf 1) hz`. Use `⟨((W.φD T₂) ^ 1) lam₀, κ, Hh, ?_, ?_, ⟨y, hy, rfl⟩, 0, ?_⟩` and prove the remaining obligations. Conclude with `⟨_, hφP _ hlam₀, (one_smul _ _).symm⟩`. Use `⟨((W.φD T₂) ^ 1) Y, hφP _ hY, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hγφ, ← map_sub, hYe, Formalism.MainNotions.UnusedSlot80.Relay2.φpow_smul, pow_one W.φA]`. Use `⟨((W.φD T₂) ^ 1) Z, hφP _ hZ, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_smul, hφ2, ← Formalism.MainNotions.UnusedSlot80.Relay2.φpow_lsmul, ← Formalism.MainNotions.UnusedSlot80.Relay2.φpow_lsmul, ← map_sub, key, Formalism.MainNotions.UnusedSlot80.Relay2.φpow_smul, pow_one W.φA]`.
+-/
 theorem arc_length_three_exists_lambda_near_horizontal [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

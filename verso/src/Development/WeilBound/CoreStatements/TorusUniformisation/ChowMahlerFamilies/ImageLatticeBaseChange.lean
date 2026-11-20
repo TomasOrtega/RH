@@ -9,18 +9,44 @@ namespace PositivityTheory.Xgn.ImageLatticeBaseChange
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
+/- English proof (translation)
+Simplify using `[dotDual, AddSubgroup.mem_iInf]`.
+-/
 theorem mem_dotDual (R : Subalgebra o Ω) {m : ℕ} (L : AddSubgroup (Fin m → Ω)) (w : Fin m → Ω) :
     w ∈ dotDual R L ↔ ∀ v ∈ L, v ⬝ᵥ w ∈ R := by
   simp [dotDual, AddSubgroup.mem_iInf]
 
+/- English proof (translation)
+Simplify using `[stdLat, AddSubgroup.mem_pi]`.
+-/
 theorem mem_stdLat (R : Subalgebra o Ω) {ι : Type} (v : ι → Ω) :
     v ∈ stdLat R ι ↔ ∀ i, v i ∈ R := by
   simp [stdLat, AddSubgroup.mem_pi]
 
+/- English proof (translation)
+The claim follows from `IsBaseChange.finitePow (Fin m) (IsBaseChange.linearMap Ω C)`.
+-/
 theorem isBaseChange_bcMap (C : Type) [Field C] [Algebra Ω C] (m : ℕ) :
     IsBaseChange C (bcMap Ω C (Fin m)) :=
   IsBaseChange.finitePow (Fin m) (IsBaseChange.linearMap Ω C)
 
+/- English proof (translation)
+Establish `hb : ∀ a : Fin m → Ω, (∑ q, a q • w⁻¹ • (Pi.single q 1 : Fin m → Ω)) = fun i => a i * w⁻¹`. Introduce `a`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `⟨?_, 1, fun _ => 1, fun _ => 1, fun _ => R.one_mem, fun _ => R.one_mem, by simp, fun _ => ⟨fun q => w⁻¹ • (Pi.single q 1 : Fin m → Ω), ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `a ha e he`. Rewrite `he`, the goal using `[hL]`. Introduce `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_left_comm]`.
+
+Conclude with `R.mul_mem ha (he i)`. Establish `h` using `(Pi.basisFun Ω (Fin m)).linearIndependent.map' (LinearEquiv.smulOfNeZero Ω (Fin m → Ω) w⁻¹ (inv_ne_zero hw)).toLinearMap (LinearEquiv.ker _)`. Simplify `h` using `[Function.comp_def]`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`.
+
+Establish `hx : x = ∑ q, (w * x q) • (w⁻¹ • (Pi.single q 1 : Fin m → Ω))`. Rewrite using `[hb (fun q => w * x q)]`. Use function extensionality and compare the values at `i`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hx]`.
+
+Conclude with `Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨q, rfl⟩)`. Introduce `e`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Simplify using `only [one_pow, one_smul] at hk`.
+
+Use `⟨fun q => w * e q, fun q => ⟨0, by simpa using (hL e).1 hk q⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Use function extensionality and compare the values at `i`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨a, ha, rfl⟩`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Simplify using `only [pow_zero, one_smul]`. Rewrite using `[hb, hL]`. Introduce `i`. Take `⟨k, hk⟩` from `ha i`.
+
+Simplify using `only [one_pow, one_mul] at hk`. Clear the denominators using the available nonvanishing facts. Conclude with `hk`.
+-/
 theorem locFree_div (R : Subalgebra o Ω) {m : ℕ} {w : Ω} (hw : w ≠ 0)
     (L : AddSubgroup (Fin m → Ω)) (hL : ∀ v, v ∈ L ↔ ∀ i, w * v i ∈ R) : LocFree R m L := by
   have hb : ∀ a : Fin m → Ω, (∑ q, a q • w⁻¹ • (Pi.single q 1 : Fin m → Ω)) = fun i => a i * w⁻¹ := by
@@ -67,6 +93,23 @@ theorem locFree_div (R : Subalgebra o Ω) {m : ℕ} {w : Ω} (hw : w ≠ 0)
 
 end PositivityTheory.Xgn.ImageLatticeBaseChange
 
+/- English proof (translation)
+Establish `hb : ∀ (v : Fin m → Ω) j, bcMap Ω C (Fin m) v j = algebraMap Ω C (v j)` using `fun _ _ => rfl`. Establish `hdot : ∀ u v : Fin m → Ω, bcMap Ω C (Fin m) u ⬝ᵥ bcMap Ω C (Fin m) v = algebraMap Ω C (u ⬝ᵥ v)`. Introduce `u v`. Simplify using `only [dotProduct, hb, map_sum, map_mul]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `y hy`. Rewrite `hy` using `[PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual]`. Establish `hy' : y = ∑ i, (bcMap Ω C (Fin m) (a i) ⬝ᵥ y) • bcMap Ω C (Fin m) (γ i)`. Use function extensionality and compare the values at `j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, dotProduct, hb]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `[apply_ite]`. Use `_ = ∑ i, (∑ l, algebraMap Ω C (a i l) * y l) * algebraMap Ω C (γ i j) := by`. Repeatedly rewrite using `[← hid, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hy']`. Use `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ⟨_, hy _ (AddSubgroup.subset_closure ⟨1, RC.one_mem, _, ⟨a i, ha i, rfl⟩, (one_smul _ _).symm⟩), _, ⟨γ i, hγ i, rfl⟩, rfl⟩` and prove the remaining obligations. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨c, hc, _, ⟨g, hg, rfl⟩, rfl⟩`. Establish `hg'` using `(PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual R A g).1 hg`. Rewrite using `[SetLike.mem_coe, PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual]`. Introduce `v hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`.
+
+Consider the case `mem v hv`. Take `⟨d, hd, _, ⟨u, hu, rfl⟩, rfl⟩` from `hv`. Rewrite using `[smul_dotProduct, dotProduct_smul, hdot, smul_eq_mul, smul_eq_mul]`. Conclude with `RC.mul_mem hd (RC.mul_mem hc (hR _ (hg' u hu)))`. Consider the case `zero => simp`.
+
+Consider the case `add u v _ _ hu hv`. Rewrite using `[add_dotProduct]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu`. Rewrite using `[neg_dotProduct]`.
+
+Conclude with `neg_mem hu`.
+-/
 private theorem dotDual_spanOver_bcMap_eq {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o Ω] [Algebra o C]
     [Algebra Ω C] (R : Subalgebra o Ω) (RC : Subalgebra o C) (hR : ∀ a ∈ R, algebraMap Ω C a ∈ RC)
     {m k : ℕ} (A : AddSubgroup (Fin m → Ω)) (a γ : Fin k → Fin m → Ω) (ha : ∀ i, a i ∈ A)
@@ -112,6 +155,17 @@ private theorem dotDual_spanOver_bcMap_eq {o Ω C : Type} [CommRing o] [Field Ω
       rw [neg_dotProduct]
       exact neg_mem hu
 
+/- English proof (translation)
+Take `⟨π, hπ, hπL⟩` from `PositivityTheory.Xgn.GoodLatticeBaseChange.af_retract R D p χ h0 h1 hS`. Set `L1 : Submodule R ((Fin n → F) → Ω)` to `{ carrier := D.l1 R p add_mem' := fun ha hb => add_mem ha hb zero_mem' := zero_mem _ smul_mem' := fun c v hv => hl1.1 c c.2 v hv }`. Take `⟨k, φ, u, hφ, hsum⟩` from `GlobalTheory.CompanionTheory.Ar.Num.LocFreeProj.exists_dualBasis (L := L1) hl1`. Use `⟨k * Fintype.card F ^ n, fun i => π (u (finProdFinEquiv.symm i)), fun i j => φ (finProdFinEquiv.symm i) (linMap n χ (Pi.single j 1)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Conclude with `hπL _ (u _).2`. Introduce `i`. Rewrite using `[PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual]`. Introduce `v hv`. Establish `hv' : v = ∑ j, v j • (Pi.single j 1 : Fin n → Ω)`.
+
+Use function extensionality and compare the values at `l`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hval : v ⬝ᵥ (fun j => φ (finProdFinEquiv.symm i) (linMap n χ (Pi.single j 1))) = φ (finProdFinEquiv.symm i) (linMap n χ v)` using `by conv_rhs => rw [hv']`. Simplify using `only [map_sum, map_smul, smul_eq_mul, dotProduct]`. Rewrite using `[hval]`.
+
+Conclude with `hφ _ _ hv`. Introduce `l j`. Establish `h` using `congrArg (fun e => π e l) (hsum (linMap n χ (Pi.single j 1)))`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hπ] at h`. Rewrite using `[show (if l = j then (1 : Ω) else 0) = (Pi.single j 1 : Fin n → Ω) l by simp [Pi.single_apply], ← h]`.
+
+Conclude with `(finProdFinEquiv.symm.sum_comp (fun x => π (u x) l * φ x (linMap n χ (Pi.single j 1)))).trans (Finset.sum_congr rfl fun x _ => mul_comm _ _)`.
+-/
 private theorem exists_dual_pair_af_of_summand_locFree {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F]
     [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ)
     (χ : F → Ω) (h0 : χ 0 = 0) (h1 : χ 1 = 1) (hS : Summand (D.l1 R p) (linMap n χ).range)
@@ -150,6 +204,11 @@ private theorem exists_dual_pair_af_of_summand_locFree {o Ω : Type} [CommRing o
       (fun x => π (u x) l * φ x (linMap n χ (Pi.single j 1)))).trans
       (Finset.sum_congr rfl fun x _ => mul_comm _ _)
 
+/- English proof (translation)
+Unfold `spanOver`. Rewrite using `[AddMonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, ⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, g x.2, ⟨x.2, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨a • Prod.map f g x, ⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩`.
+-/
 private theorem map_snd_spanOver_prodMap_eq {o C : Type} [CommRing o] [Field C] [Algebra o C] (RC : Subalgebra o C)
     {X Y Xc Yc : Type} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup Xc] [Module C Xc] [AddCommGroup Yc]
     [Module C Yc] (f : X → Xc) (g : Y → Yc) (S : AddSubgroup (X × Y)) :
@@ -166,6 +225,27 @@ private theorem map_snd_spanOver_prodMap_eq {o C : Type} [CommRing o] [Field C] 
     exact ⟨a • Prod.map f g x, ⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩
 
 open PositivityTheory.Xgn.ImageLatticeBaseChange PositivityTheory.Xgn.A_graph_restrict_bc in
+/- English proof (translation)
+Introduce `o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hC hB hG hw C _ _ _ _ RC hR τ`. Take `⟨hp, hwR, ⟨c, hc, hpc⟩, h01, hχ⟩` from `hC`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Apply `hp` to reduce the goal to its premises.
+
+Rewrite using `[hpc, mul_zero]`. Take `⟨hχ0, hχ1, hχR⟩` from `hχ τ`. Take `⟨k, a, γ, ha, hγ, hid⟩` from `exists_dual_pair_af_of_summand_locFree D R p (χ τ) hχ0 hχ1 (hG.lin τ) hG.l1`. Establish `hhh : (D.bc RC).hh RC p (fun x => algebraMap Ω C (χ τ x)) = spanOver RC (bcMap Ω C (Fin n) '' D.hh R p (χ τ))`. Unfold `LieLatticeData.hh`.
+
+Rewrite using `[PositivityTheory.Xgn.GoodLatticeBaseChange.af_bc R RC D p hR (χ τ) hχ0 hχ1 (hG.lin τ)]`. Conclude with `dotDual_spanOver_bcMap_eq R RC hR (D.af R p (χ τ)) a γ ha hγ hid`. Establish `hstab : ∀ a ∈ R, ∀ v ∈ D.Del τ, a • v ∈ D.Del τ` using `fun a ha => (hB.stable τ a ha).2.1`. Establish `hfst : ∀ v, v ∈ AddSubgroup.map (AddMonoidHom.fst _ _) (D.Del τ) ↔ ∀ i, w * v i ∈ R`. Introduce `v`.
+
+Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨b, c'⟩, hbc, rfl⟩`. Use `((hB.del τ).1 b).1 ⟨c', hbc⟩` as an intermediate fact. Rewrite `this` using `[PositivityTheory.Xgn.ImageLatticeBaseChange.mem_stdLat]`.
+
+Conclude with `this`. Introduce `hv`. Take `⟨c', hc'⟩` from `((hB.del τ).1 v).2 ((PositivityTheory.Xgn.ImageLatticeBaseChange.mem_stdLat R _).2 hv)`. Conclude with `⟨(v, c'), hc', rfl⟩`. Establish `hLF` using `PositivityTheory.Xgn.ImageLatticeBaseChange.locFree_div R hw0 _ hfst`.
+
+Establish `hHle : D.hh R p (χ τ) ≤ AddSubgroup.map (AddMonoidHom.fst _ _) (D.Del τ)`. Introduce `v hv`. Rewrite using `[hfst]`. Introduce `i`. Establish `hv'` using `(PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual R _ v).1 hv`.
+
+Establish `hmem : w • (Pi.single i 1 : Fin n → Ω) ∈ D.af R p (χ τ)` using `hw τ ⟨Pi.single i 1, (PositivityTheory.Xgn.ImageLatticeBaseChange.mem_stdLat R _).2 (fun j => by`. Apply the tactic sequence `by_cases h : j = i <;> simp [h, Pi.single_apply, R.one_mem, R.zero_mem]), rfl⟩`. Use `hv' _ hmem` as an intermediate fact. Simplify `this` using `[smul_dotProduct, single_dotProduct]`. Establish `hHst : ∀ a ∈ R, ∀ v ∈ D.hh R p (χ τ), a • v ∈ D.hh R p (χ τ)`.
+
+Introduce `a ha v hv`. Unfold `LieLatticeData.hh at hv ⊢`. Rewrite `hv`, the goal using `[PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual]`. Introduce `u hu`. Rewrite using `[dotProduct_smul, smul_eq_mul]`.
+
+Conclude with `R.mul_mem ha (hv u hu)`. Establish `hg` using `(PositivityTheory.Xgn.t_graph_restrict_bc R RC hR (bcMap Ω C (Fin n)) (bcMap Ω C (Fin (s τ))) (PositivityTheory.Xgn.ImageLatticeBaseChange.isBaseChange_bcMap C n) (PositivityTheory.Xgn.ImageLatticeBaseChange.isBaseChange_bcMap C (s τ)) (D.Del τ) (D.hh R p (χ τ)) n hstab hLF hHle …`. Unfold `LieLatticeData.imH`. Rewrite using `[hhh]`. Express the relevant statement in the definitionally equal form `AddSubgroup.map _ (spanOver RC (Prod.map (bcMap Ω C (Fin n)) (bcMap Ω C (Fin (s τ))) '' ↑(D.Del τ)) ⊓ _) = _`.
+
+Rewrite using `[hg]`. Conclude with `map_snd_spanOver_prodMap_eq RC _ _ _`.
+-/
 theorem PositivityTheory.Xgn.image_lattice_base_change : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω) (χ : Sg → F → Ω), CharData R p w χ → D.Base R p w → D.Good₁ R p χ → (∀ τ, mulLat w (stdLat R _) ≤ D.af R p (χ τ)) → ∀ (C : Type) [Field C] [Algebra o C] [Algebra Ω C] [IsScalarTower o Ω C] (RC : Subalgebra o C), (∀ a ∈ R, algebraMap Ω C a ∈ RC) → ∀ τ, (D.bc RC).imH RC p τ (fun a => algebraMap Ω C (χ τ a)) = spanOver RC (bcMap Ω C _ '' D.imH R p τ (χ τ)) := by
   intro o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hC hB hG hw C _ _ _ _ RC hR τ
   obtain ⟨hp, hwR, ⟨c, hc, hpc⟩, h01, hχ⟩ := hC

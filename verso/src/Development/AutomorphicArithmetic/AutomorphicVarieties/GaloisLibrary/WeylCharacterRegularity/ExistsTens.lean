@@ -11,6 +11,13 @@ namespace UpperTheory.V.WeylC
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨d, A, B, ρ', h0, h1, hBA, h2, h3, h4⟩` from `Weyl.irrSub _ D ρ hD`. Establish `hρ' : IsReg ρ'`. Use `isReg_conj hρ B A` as an intermediate fact. Simplify `this` using `only [← h2]`. Use `⟨⟨d, ρ', hρ', h0, h4⟩, h1, fun τ u => ?_⟩` and prove the remaining obligations.
+
+Establish `h5 : ∀ i j, eOf ρ τ i j * A = A * eOf ρ' τ i j` using `fun i j => by`. Establish `e1` using `eOf_conj hρ (1 : Matrix (Fin D) (Fin D) ℂ) A τ i j`. Establish `e2` using `eOf_conj hρ' A (1 : Matrix (Fin d) (Fin d) ℂ) τ i j`. Simplify using `only [Matrix.one_mul, Matrix.mul_one, h3] at e1 e2`. Rewrite using `[← e1, e2]`.
+
+Establish `h6` using `congrArg (B * ·) (Weyl.qdetRect a D d _ _ A h5 u)`. Simplify using `only [hs, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, ← Matrix.mul_assoc, hBA] at h6`. Conclude with `h6.symm`.
+-/
 theorem exists_irr {D : ℕ} (hD : 0 < D) (ρ : GL (Fin a) (Cinf E) →* Matrix (Fin D) (Fin D) ℂ) (hρ : IsReg ρ) (s : ℂ → ℂ)
     (hs : ∀ τ u, Formalism.REAL.qdet (eOf ρ τ) u = s u • 1) :
     ∃ Ξ : AlgRep E a, Ξ.d ≤ D ∧ ∀ τ u, Formalism.REAL.qdet (eOf Ξ.mat τ) u = s u • 1 := by
@@ -28,6 +35,15 @@ theorem exists_irr {D : ℕ} (hD : 0 < D) (ρ : GL (Fin a) (Cinf E) →* Matrix 
   simp only [hs, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, ← Matrix.mul_assoc, hBA] at h6
   exact h6.symm
 
+/- English proof (translation)
+Set `e : ((E →+* ℂ) → Fin P.d) ≃ Fin (P.d ^ Fintype.card (E →+* ℂ))` to `Fintype.equivFinOfCardEq (by simp)`. Set `r` to `Matrix.reindexAlgEquiv ℂ ℂ e`. Set `ρ : GL (Fin a) (Cinf E) →* Matrix _ _ ℂ` to `(r.toAlgHom.toMonoidHom.comp piK).comp (MonoidHom.pi fun τ : E →+* ℂ => fac P N τ)`. Establish `hr` using `isReg_piK (fun τ : E →+* ℂ => isReg_fac P N τ)`. Use `exists_irr (pow_pos hP _) ρ (fun i j => hr _ _) _ fun τ u => ?_` and prove the remaining obligations.
+
+Establish `h1 : eOf ρ τ = fun i j => (r.toAlgHom.comp (intersection_update_fsHerm_neg_one τ)) (P.E i j + (if i = j then algebraMap ℂ _ (-(N : ℂ)) else 0))`. Use function extensionality and compare the values at `i j`. Establish `h2 : eOf ρ τ i j = r (eOf (fun y => piK fun t : E →+* ℂ => fac P N t y) τ i j)` using `rfl`. Rewrite using `[h2, eOf_piK (fun τ => isReg_fac P N τ) (fun τ => map_one _), Finset.sum_eq_single τ]`. Rewrite using `[eOf_fac, if_pos rfl]`.
+
+Both sides reduce to the same expression. Introduce `t _ ht`. Rewrite using `[eOf_fac, if_neg ht, map_zero]`. Simplify using the standard rewrite rules. Rewrite using `[h1, ← map_qdet, qdet_shift, hν, map_smul, map_one]`.
+
+Simplify using `only [sub_eq_add_neg]`.
+-/
 theorem exists_tens [IsTotallyComplex E] (P : Weyl.Pre a) (hP : 0 < P.d) (ν : Fin a → ℂ) (hν : P.HasWt ν) (N : ℕ) :
     ∃ Ξ : AlgRep E a, Ξ.d ≤ P.d ^ Fintype.card (E →+* ℂ) ∧
       ∀ τ u, Formalism.REAL.qdet (eOf Ξ.mat τ) u = (∏ k : Fin a, (u - N - (k : ℂ) + ν k)) • 1 := by

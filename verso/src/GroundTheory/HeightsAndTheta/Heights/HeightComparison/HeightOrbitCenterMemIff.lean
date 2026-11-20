@@ -12,6 +12,9 @@ def OrbitCenterMemIff.Statement : Prop :=
       (d : ι → ℕ), Geo.IsMultiHomog (ι := blockIdx n) F d →
       (F ∈ orbitCenter x v ↔ v (evalCone (coordVec x) F) < ∏ k, (⨆ i, v (coordVec x k i)) ^ d k)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨samplePoint_blockNonzero, (geoMultiHomog_iff _ _).mpr (isWeightedHomogeneous_chartMonomial _ _)⟩`.
+-/
 example : BlockNonzero samplePoint ∧
     Geo.IsMultiHomog (ι := blockIdx (fun _ : Unit ↦ 1)) (chartMonomial (fun _ ↦ 0) 1) 1 :=
   ⟨samplePoint_blockNonzero, (geoMultiHomog_iff _ _).mpr (isWeightedHomogeneous_chartMonomial _ _)⟩

@@ -16,17 +16,45 @@ namespace GlobalTheory.Core.Rk.SphCoef
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ hγ g => by simp only [Pi.add_apply, h.1 γ hγ g, h'.1 γ hγ g], h.2.add h'.2⟩`.
+-/
 theorem mem_l2_add {A : HSp D} {m : Measure (GA D A)} {φ ψ : GA D A → ℂ} (h : MemL2Quotient (GQ A) m φ)
     (h' : MemL2Quotient (GQ A) m ψ) : MemL2Quotient (GQ A) m (φ + ψ) :=
   ⟨fun γ hγ g => by simp only [Pi.add_apply, h.1 γ hγ g, h'.1 γ hγ g], h.2.add h'.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ hγ g => by simp only [Pi.smul_apply, h.1 γ hγ g], h.2.const_smul c⟩`.
+-/
 theorem mem_l2_smul {A : HSp D} {m : Measure (GA D A)} {φ : GA D A → ℂ} (c : ℂ) (h : MemL2Quotient (GQ A) m φ) :
     MemL2Quotient (GQ A) m (c • φ) :=
   ⟨fun γ hγ g => by simp only [Pi.smul_apply, h.1 γ hγ g], h.2.const_smul c⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, MemLp.zero⟩`.
+-/
 theorem mem_l2_zero {A : HSp D} {m : Measure (GA D A)} : MemL2Quotient (GQ A) m (0 : GA D A → ℂ) :=
   ⟨fun _ _ _ => rfl, MemLp.zero⟩
 
+/- English proof (translation)
+Introduce `hP D θ A cA L hθ m hm Sf u₁ hu₁ u₂ hu₂ par hpar hsph v hv x hx`. Establish `: m.IsMulRightInvariant` using `GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D A m hm`. Establish `h1 : MemL2Quotient (GQ A) m u₁` using `memL2_of_cusp_form hP hθ (mem_cuspForms.1 hu₁).1`. Establish `h2 : MemL2Quotient (GQ A) m u₂` using `memL2_of_cusp_form hP hθ (mem_cuspForms.1 hu₂).1`. Establish `hR : ∀ g, MemL2Quotient (GQ A) m (rTr A g u₁)` using `fun g => h1.mul_right g`.
+
+Set `p : Submodule ℂ (GA D A → ℂ)` to `{ carrier := {F | MemL2Quotient (GQ A) m (rTr A x F)} zero_mem' := mem_l2_zero add_mem' := fun ha hb => mem_l2_add ha hb smul_mem' := fun c _ hF => mem_l2_smul c hF }`. Set `ℓ₀ : p →ₗ[ℂ] ℂ` to `{ toFun := fun F => petersson A m (rTr A x F) u₂ map_add' := fun F G => petersson_add_left F.2 G.2 h2 map_smul' := fun c F => petersson_smul_left c _ _ }`. Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend ℓ₀`. Set `ρ : Representation ℂ (Gv A v) (GA D A → ℂ)` to `(GlobalTheory.PRep.rightReg ℂ (GA D A) ℂ).comp (emb D.sp.cm.sig A.gram v)`. Establish `hρ : ∀ y g, ρ y u₁ g = u₁ (g * emb D.sp.cm.sig A.gram v y)` using `fun _ _ => rfl`.
+
+Establish `htr : ∀ y, rTr A x (ρ y u₁) = rTr A (x * emb D.sp.cm.sig A.gram v y) u₁` using `fun y => funext fun g => by`. Simplify using `only [rTr, hρ, mul_assoc]`. Establish `hmem : ∀ y, ρ y u₁ ∈ p` using `fun y => by show MemL2Quotient _ _ (rTr A x (ρ y u₁))`. Rewrite using `[htr]`. Conclude with `hR _`.
+
+Establish `hval : ∀ y, ℓ (ρ y u₁) = petersson A m (rTr A (x * emb D.sp.cm.sig A.gram v y) u₁) u₂` using `fun y => by`. Establish `e` using `LinearMap.congr_fun hℓ ⟨_, hmem y⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at e`. Rewrite using `[e, ← htr]`. Both sides reduce to the same expression.
+
+Establish `hnorm : ∀ g, ‖(hR g).toL2‖ = ‖h1.toL2‖` using `fun g => by`. Establish `e1` using `(hR g).inner_toL2_eq_theta_pairing (hR g)`. Establish `e2` using `h1.inner_toL2_eq_theta_pairing h1`. Establish `e3 : pet (GQ A) m (rTr A g u₁) (rTr A g u₁) = pet (GQ A) m u₁ u₁`. Use `petersson_rTr (μ := m) h1 h1 g` as an intermediate fact.
+
+Conclude with `this`. Rewrite `e1` using `[e3, ← e2, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `e4 : ‖(hR g).toL2‖ ^ 2 = ‖h1.toL2‖ ^ 2` using `by exact_mod_cast e1`. Conclude with `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 e4`. Use `⟨⟨‖h2.toL2‖ * ‖h1.toL2‖, fun y => ?_⟩, GA D A → ℂ, inferInstance, inferInstance, ρ, u₁, ℓ, fun w h => hpar v (by simpa using hv) w h, fun k hk y => ?_, fun y => (hval y).symm⟩` and prove the remaining obligations.
+
+Use `show ‖petersson A m (rTr A (x * emb D.sp.cm.sig A.gram v y) u₁) u₂‖ ≤ _`. Rewrite using `[petersson, ← (hR _).inner_toL2_eq_theta_pairing h2, ← hnorm (x * emb D.sp.cm.sig A.gram v y)]`. Conclude with `norm_inner_le_norm _ _`. Rewrite using `[hval, hval, map_mul]`. Establish `hc : emb D.sp.cm.sig A.gram v k * x = x * emb D.sp.cm.sig A.gram v k` using `(GlobalTheory.AdelicU.commute_emb (σ := D.sp.cm.sig) (J := A.gram) k hx).eq`.
+
+Establish `e1 : rTr A (x * (emb D.sp.cm.sig A.gram v k * emb D.sp.cm.sig A.gram v y)) u₁ = rTr A (emb D.sp.cm.sig A.gram v k) (rTr A (x * emb D.sp.cm.sig A.gram v y) u₁)` using `funext fun g => by`. Simplify using `only [rTr]`. Rewrite using `[← mul_assoc x, ← hc]`. Simplify using `only [mul_assoc]`. Establish `e2 : u₂ = rTr A (emb D.sp.cm.sig A.gram v k) u₂` using `funext fun g => (hsph v hv k hk g).symm`.
+
+Rewrite using `[e1]`. Use `conv_lhs => rw [e2]`. Conclude with `petersson_rTr (hR _) h2 _`.
+-/
 theorem isSphCoef_rcoef : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D) (A : HSp D) (cA : CptF A) (L : Lat A), IsInfFam θ → ∀ (m : Measure (GA D A)), m.IsHaarMeasure → ∀ (Sf : Finset (FinPl D)), ∀ u₁ ∈ A0 θ A cA, ∀ u₂ ∈ A0 θ A cA, ∀ par : GlobalTheory.LFun.Fam D.host.E, GlobalTheory.LFun.IsParamFun D.sp.cm.sig A.gram L (Sf : Set (FinPl D)) u₁ par → SphFun A L Sf u₂ → ∀ v ∉ Sf, ∀ x : GA D A, proj D.sp.cm.sig A.gram v x = 1 → IsSphCoef A L v par fun y => rcoef m u₁ u₂ (x * emb D.sp.cm.sig A.gram v y) := by
   intro hP D θ A cA L hθ m hm Sf u₁ hu₁ u₂ hu₂ par hpar hsph v hv x hx
   have : m.IsMulRightInvariant := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D A m hm

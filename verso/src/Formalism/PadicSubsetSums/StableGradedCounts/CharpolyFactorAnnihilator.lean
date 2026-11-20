@@ -4,6 +4,29 @@ open Polynomial
 
 namespace Formalism.IrreducibleCountingLemmas.Z
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ A B γ₀ γ c cγ t P hAB hA₀ hA hB₀ hB ht hchar`. Set `gA : Module.End K A` to `γ₀.restrict hA₀`. Set `gB : Module.End K B` to `c • LinearMap.id`. Set `e : (A × B) ≃ₗ[K] V` to `Submodule.prodEquivOfIsCompl A B hAB`. Establish `hconj : e.conj (gA.prodMap gB) = γ₀`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Take `⟨⟨a, b⟩, rfl⟩` from `e.surjective v`. Rewrite using `[LinearEquiv.conj_apply]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`.
+
+Simplify using `[e, gA, gB, Submodule.coe_prodEquivOfIsCompl', hB₀ b b.2]`. Establish `hcB : gB.charpoly = (X - C c) ^ t`. Rewrite using `[← LinearMap.charpoly_toMatrix gB (Module.finBasis K B)]`. Establish `hm : LinearMap.toMatrix (Module.finBasis K B) (Module.finBasis K B) gB = Matrix.diagonal (fun _ => c)`. Simplify using `only [gB, map_smul, LinearMap.toMatrix_id]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`. Rewrite using `[hm, Matrix.charpoly_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ht]`. Establish `hPA : P = gA.charpoly`. Establish `h1 : γ₀.charpoly = gA.charpoly * gB.charpoly`.
+
+Rewrite using `[← hconj, LinearEquiv.charpoly_conj, LinearMap.charpoly_prodMap]`. Rewrite `h1` using `[hchar, hcB]`. Conclude with `mul_right_cancel₀ (pow_ne_zero _ (X_sub_C_ne_zero c)) h1`. Establish `hrestr : ∀ (p : K[X]) (a : A), (aeval γ₀ p) (a : V) = ((aeval gA p) a : V)`. Introduce `p`.
+
+Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C r => intro a`. Simplify using `[Module.algebraMap_end_apply]`. Consider the case `add p q hp hq => intro a`. Simplify using `[hp, hq]`.
+
+Consider the case `monomial n r ih`. Introduce `a`. Rewrite using `[pow_succ, ← mul_assoc, map_mul (aeval γ₀), map_mul (aeval gA), aeval_X, aeval_X, Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[show γ₀ (a : V) = ((gA a : A) : V) from rfl, ih]`. Establish `h0 : aeval gA P = 0`.
+
+Rewrite using `[hPA]`. Conclude with `LinearMap.aeval_self_charpoly gA`. Establish `hkill : ∀ w ∈ A, (aeval γ₀ P) w = 0`. Introduce `w hw`. Establish `h2` using `hrestr P ⟨w, hw⟩`.
+
+Rewrite `h2` using `[h0]`. Simplify using `using h2`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `hv : v ∈ A ⊔ B` using `by rw [hAB.sup_eq_top]; trivial`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hv`. Rewrite using `[Module.End.mul_apply, LinearMap.zero_apply, LinearMap.sub_apply, Module.algebraMap_end_apply]`. Establish `h3 : γ (a + b) - cγ • (a + b) = γ a - cγ • a`. Rewrite using `[map_add, hB b hb, smul_add]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[h3]`. Conclude with `hkill _ (A.sub_mem (hA a ha) (A.smul_mem cγ ha))`.
+-/
 theorem charpolyFactorAnnihilator : CharpolyFactorAnnihilator := by
   intro K V _ _ _ _ A B γ₀ γ c cγ t P hAB hA₀ hA hB₀ hB ht hchar
   classical

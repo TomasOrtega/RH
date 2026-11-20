@@ -10,5 +10,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.LogPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.cls_canonLB_baseChange | exact GlobalTheory.cls_canonLB_baseChange | (intros; apply GlobalTheory.cls_canonLB_baseChange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cechPicardClass_canonicalBundle_baseChange : ∀ (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R') (X X' : Scheme.{0}) (f : X ⟶ Sp R) (f' : X' ⟶ Sp R') (π : X' ⟶ X) (d : ℕ) [SmoothOfRelativeDimension d f] [SmoothOfRelativeDimension d f'] (K : CanonLB f d) (K' : CanonLB f' d), IsPullback π f' f (spMap φ) → cls K'.bundle K'.isLB = CechPic.pull π (cls K.bundle K.isLB) := by
   first | exact @GlobalTheory.cls_canonLB_baseChange | exact GlobalTheory.cls_canonLB_baseChange | (intros; apply GlobalTheory.cls_canonLB_baseChange <;> assumption)

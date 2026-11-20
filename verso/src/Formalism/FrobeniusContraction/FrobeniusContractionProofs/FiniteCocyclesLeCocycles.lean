@@ -13,10 +13,19 @@ variable {O A AA : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing AA] [
   {V : Type} [AddCommGroup V] [Module AA V] [Module A V] [IsScalarTower A AA V] [Module O V]
   [IsScalarTower O AA V] (W : WachDatum E n V)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Φ_apply (x : ZMod n → V) (j : ZMod n) : W.Φ x j = W.φ (j - 1) (x (j - 1)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Γ_apply (x : ZMod n → V) (j : ZMod n) : W.Γ x j = W.γ j (x j) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[Γ_apply, Φ_apply, Φ_apply, Γ_apply, W.comm (j - 1) (x (j - 1)), sub_add_cancel]`.
+-/
 theorem ΓΦ_comm (x : ZMod n → V) : W.Γ (W.Φ x) = W.Φ (W.Γ x) := by
   funext j
   rw [Γ_apply, Φ_apply, Φ_apply, Γ_apply, W.comm (j - 1) (x (j - 1)), sub_add_cancel]
@@ -33,12 +42,21 @@ variable {O A AA : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing AA] [
   [Module O V₂] [IsScalarTower O AA V₂]
   {W₁ : WachDatum E n V₁} {W₂ : WachDatum E n V₂} (h : Hom W₁ W₂)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fD_apply (x : ZMod n → V₁) (j : ZMod n) : h.fD x j = h.f (x j) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [fD_apply, Φ_apply, h.φ_comm]`.
+-/
 theorem fD_Φ (x : ZMod n → V₁) : h.fD (W₁.Φ x) = W₂.Φ (h.fD x) := by
   funext j
   simp only [fD_apply, Φ_apply, h.φ_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [fD_apply, Γ_apply, h.γ_comm]`.
+-/
 theorem fD_Γ (x : ZMod n → V₁) : h.fD (W₁.Γ x) = W₂.Γ (h.fD x) := by
   funext j
   simp only [fD_apply, Γ_apply, h.γ_comm]

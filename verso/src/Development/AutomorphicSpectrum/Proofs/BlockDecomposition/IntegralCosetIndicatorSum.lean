@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmSum
 
+/- English proof (translation)
+Establish `h : cosetSet t c a = (fun v => (-a) + v) ⁻¹' cosetSet t c 0`. Use extensionality with `v`. Establish `e : v - a = (-a) + v - 0` using `by abel`. Use `show Multiplicative.ofAdd (v - a) ∈ Lc t c ↔ Multiplicative.ofAdd ((-a) + v - 0) ∈ Lc t c`. Rewrite using `[e]`.
+
+Rewrite using `[h]`. Conclude with `MeasureTheory.measure_preimage_add μ (-a) _`.
+-/
 theorem measure_cosetSet_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (t : ℕ) [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)]
     (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure] (c : k) (a : Fin t → k) :
@@ -32,6 +37,15 @@ theorem measure_cosetSet_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   rw [h]
   exact MeasureTheory.measure_preimage_add μ (-a) _
 
+/- English proof (translation)
+Introduce `k _ _ _ _ t Z _ _ _ _ μ _ c hc A z`. Establish `hmem : ∀ B : Finset (Fin t → k), (fun v => ∑ a ∈ B, (cosetSet t c a).indicator (fun _ => z a) v) ∈ fibM (Fin t → k) Z`. Introduce `B`. Establish `h` using `Submodule.sum_mem (fibM (Fin t → k) Z) (t := B) (f := fun a => (cosetSet t c a).indicator (fun _ => z a)) (fun a _ => (cosetFn t hc a (z a)).2)`. Establish `e : (fun v => ∑ a ∈ B, (cosetSet t c a).indicator (fun _ => z a) v) = ∑ a ∈ B, (cosetSet t c a).indicator (fun _ => z a)`.
+
+Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `h`. Use `Finset.induction_on A ?_ ?_` and prove the remaining obligations.
+
+Establish `h` using `GlobalTheory.CompanionTheory.Rodier.SmIntEl.smInt_indicator μ (∅ : Set (Fin t → k)) (0 : Z)`. Simplify using `using h`. Introduce `a B ha ih`. Establish `e : (fun v => ∑ b ∈ insert a B, (cosetSet t c b).indicator (fun _ => z b) v) = (cosetSet t c a).indicator (fun _ => z a) + fun v => ∑ b ∈ B, (cosetSet t c b).indicator (fun _ => z b) v`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[Finset.sum_insert ha]`. Both sides reduce to the same expression. Establish `l₁ : IsLocallyConstant ((cosetSet t c a).indicator fun _ => z a)` using `(cosetFn t hc a (z a)).2.1`. Establish `c₁ : HasCompactSupport ((cosetSet t c a).indicator fun _ => z a)` using `(cosetFn t hc a (z a)).2.2`. Rewrite using `[e, GlobalTheory.CompanionTheory.Rodier.SmIntEl.smInt_add μ l₁ c₁ (hmem B).1 (hmem B).2, ih, GlobalTheory.CompanionTheory.Rodier.SmIntEl.smInt_indicator, measure_cosetSet_eq t μ c a, Finset.sum_insert ha, smul_add]`.
+-/
 theorem smInt_sum_coset : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : ℕ) {Z : Type} [AddCommGroup Z] [Module ℂ Z] [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure] (c : k), c ≠ 0 → ∀ (A : Finset (Fin t → k)) (z : (Fin t → k) → Z), smInt μ (fun v => ∑ a ∈ A, (cosetSet t c a).indicator (fun _ => z a) v) = (((μ (cosetSet t c 0)).toReal : ℝ) : ℂ) • ∑ a ∈ A, z a := by
   intro k _ _ _ _ t Z _ _ _ _ μ _ c hc A z
   classical

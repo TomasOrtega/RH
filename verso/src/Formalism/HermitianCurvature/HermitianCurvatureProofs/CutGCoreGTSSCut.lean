@@ -71,12 +71,18 @@ def GTSSPhase : Prop :=
         (∀ l ∈ Finset.Icc 1 (P.k - 1), ∀ ρ ρ' : M.Ty P, t l ρ ρ' = star (s l ρ' ρ)) →
         ∃ e' : M.Ty P → ℂ → (Wq →L[ℂ] Wp), IsFrameB P Bs e' ∧ KapF P Bs d e' ∧ NabF P Bs d e' ∧ SSF P Bs d e'
 
+/- English proof (translation)
+Unfold `fnZ`. Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `h _ q.2.2`.
+-/
 theorem fnZ_congr (P : M.Par) {f g : ℂ → ℂ} (h : ∀ ζ ∈ Ann P, f ζ = g ζ) : fnZ P f = fnZ P g := by
   unfold fnZ
   congr 1
   funext q
   exact h _ q.2.2
 
+/- English proof (translation)
+Use `show P.TT < Complex.normSq (((Real.sqrt P.TT + 1 : ℝ)) : ℂ)`. Rewrite using `[Complex.normSq_ofReal]`. Establish `h1` using `Real.sq_sqrt hTT.le`. Establish `h2` using `Real.sqrt_nonneg P.TT`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem ann_pt (P : M.Par) (hTT : 0 < P.TT) : ((Real.sqrt P.TT + 1 : ℝ) : ℂ) ∈ Ann P := by
   show P.TT < Complex.normSq (((Real.sqrt P.TT + 1 : ℝ)) : ℂ)
   rw [Complex.normSq_ofReal]
@@ -86,6 +92,15 @@ theorem ann_pt (P : M.Par) (hTT : 0 < P.TT) : ((Real.sqrt P.TT + 1 : ℝ) : ℂ)
 
 def GTSSOfCut : Prop := GTSSLocal → GTSSAdjPt → GTSSConst → GTSSPhase → GTSS
 
+/- English proof (translation)
+Introduce `hL hA hC hP`. Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk hn`. Take `⟨s, t, hst, hSL⟩` from `hL Wp Wq P Bs X d hH e he hk`. Establish `hc` using `hC Wp Wq P Bs X d hH e he hk hn s t hst hSL`. Use `choose! C D hCD using hc`.
+
+Establish `hζ0 : (((|P.TT| + 1 : ℝ)) : ℂ) ∈ Ann P` using `by show P.TT < Complex.normSq (((|P.TT| + 1 : ℝ)) : ℂ)`. Rewrite using `[Complex.normSq_ofReal]`. Use polynomial arithmetic with `[abs_nonneg P.TT, le_abs_self P.TT]`. Apply `hP Wp Wq P Bs X d hH e he hk hn C D` to reduce the goal to its premises. Introduce `l hl Φ ρ'`.
+
+Take `⟨h1, h2⟩` from `hSL l hl Φ ρ'`. Use `⟨h1.trans ?_, h2.trans ?_⟩` and prove the remaining obligations. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[fnZ_congr P (f := s l ρ' ρ) (g := fun _ => C l ρ' ρ) (fun ζ hζ => (hCD l hl ρ' ρ ζ hζ).1)]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[fnZ_congr P (f := t l ρ' ρ) (g := fun _ => D l ρ' ρ) (fun ζ hζ => (hCD l hl ρ' ρ ζ hζ).2)]`. Introduce `l hl ρ ρ'`. Establish `h` using `hA Wp Wq P Bs X d hH e he hk s t hst hSL l hl ρ ρ' _ hζ0`. Rewrite `h` using `[(hCD l hl ρ ρ' _ hζ0).2, (hCD l hl ρ' ρ _ hζ0).1]`. Conclude with `h`.
+-/
 theorem gTSS_of_cut : GTSSOfCut := by
   intro hL hA hC hP
   intro Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk hn

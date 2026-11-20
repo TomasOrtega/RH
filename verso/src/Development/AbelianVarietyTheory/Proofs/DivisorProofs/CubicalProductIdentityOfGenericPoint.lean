@@ -14,6 +14,23 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.Poinc.Sep.Frames Glob
 
 namespace GlobalTheory.Poinc.Sep.CubInt
 
+/- English proof (translation)
+Introduce `V _ _ D N b cχ hbN χt ht hgen T z J hJ`. Establish `G` using `(grep_cubProd cχ b N).mul ((SymFrame.grep_gen χt ht (𝟙 _)).pow N).inv`. Take `⟨s, hs, vs⟩` from `G.out D.P.isLB (K := PEmpty) PEmpty.elim PEmpty.elim (fun U _ h => Eq.trans (by`. Establish `hK : ∏ k : Fin 4, h (𝟙 _ ≫ ![(cχ * b).left, cχ.left, b.left, (η[D.P.A]).left] k) ^ DegPre.gtε k = (h (cχ * b).left)⁻¹ * h cχ.left * h b.left * (h (1 : 𝟙_ (Over (Spec (CommRingCat.of V))) ⟶ D.P.A).left)⁻¹`. Rewrite using `[Fin.prod_univ_four, ← SymFrame.eta_eq]`.
+
+Simplify using `[DegPre.gtε, zpow_neg, zpow_one]`. Establish `hP : ∀ i, h (cχ * b ^ i * b).left * (h (cχ * b ^ i).left)⁻¹ * (h (cχ * b).left)⁻¹ * (h (b ^ i * b).left)⁻¹ * h cχ.left * h (b ^ i).left * h b.left * (h (1 : 𝟙_ (Over (Spec (CommRingCat.of V))) ⟶ D.P.A).left)⁻¹ = (h (cχ * b ^ (i + 1)).left / h (b ^ (i + 1)).left) / (h (cχ * b ^ i) …`. Introduce `i`. Rewrite using `[_root_.mul_assoc cχ, ← pow_succ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_div]`. Normalize the expressions using the abelian group laws. Rewrite using `[Finset.prod_congr rfl (fun i _ => hP i), Finset.prod_mul_distrib, Finset.prod_range_div (fun i => h (cχ * b ^ i).left / h (b ^ i).left), Finset.prod_const, Finset.card_range, hK, hbN, pow_zero]`. Use the proof step `simp) (Fintype.prod_empty _).symm)`. Take `⟨ρ, hρ⟩` from `exists_ratio D.P.isLB rfl s (LB.oneGen D.P.L) hs (oneGen_gen _)`.
+
+Establish `hρ1 : ρ = 1`. Take `⟨z₀⟩` from `exists_pt (R := V) (F := FractionRing V)`. Take `⟨J₀, hJ₀⟩` from `exists_good' D.P.isLB z₀`. Establish `a` using `vs _ (toUnit (TF (R := V) (FractionRing V))) z₀ J₀ hJ₀`. Rewrite `a` using `[hρ _ _ z₀ J₀ hJ₀, val_one, _root_.mul_one]`.
+
+Simplify using `only [Category.comp_id] at a`. Establish `a1 : gm (toUnit (TF (R` using `V) (FractionRing V))).left z₀ ⊤ ρ = 1 := by`. Rewrite using `[a]`. Conclude with `mul_inv_eq_one.mpr (hgen z₀ J₀ hJ₀)`. Establish `c` using `gm_top_eq ρ z₀`.
+
+Rewrite `c` using `[a1, Units.val_one, cst_eq, ← map_one (cstH z₀)]`. Establish `d` using `cstH_inj z₀ c`. Rewrite `d` using `[← map_one (algebraMap V (FractionRing V))]`. Establish `e` using `IsFractionRing.injective V (FractionRing V) d`. Apply `Units.ext` to reduce the goal to its premises.
+
+Establish `hinj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom` using `(Scheme.ΓSpecIso (CommRingCat.of V)).commRingCatIsoToRingEquiv.injective`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Units.val_one, map_one]`. Conclude with `e.symm`. Establish `a` using `vs T (toUnit T) z J hJ`.
+
+Rewrite `a` using `[hρ _ _ z J hJ, val_one, _root_.mul_one, hρ1, map_one]`. Simplify using `only [Category.comp_id] at a`. Conclude with `mul_inv_eq_one.mp a.symm`.
+-/
 theorem cubProd_of_generic : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (N : ℕ) (b cχ : 𝟙_ (Over (Sp V)) ⟶ D.P.A),
     b ^ N = 1 → ∀ (χt : LB.Gen (LB.LinComb D.P.L ![(cχ * b).left, cχ.left, b.left, (η[D.P.A]).left] DegPre.gtε)),
     χt.IsGen →

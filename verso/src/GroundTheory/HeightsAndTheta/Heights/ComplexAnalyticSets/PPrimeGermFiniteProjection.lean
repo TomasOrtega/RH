@@ -8,6 +8,13 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open Topology Filter
 
+/- English proof (translation)
+Establish `key : ∀ (n : ℕ) (σ : Type) [Fintype σ], Fintype.card σ = n → ∀ (w : σ → ℂ) (P : Ideal (holGerms w)), P.IsPrime → ∃ (d : ℕ) (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)), IsFiniteGermProjection w P A`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `σ _ hn w P hP`.
+
+Distinguish the cases in `h0 : P = ⊥`. Substitute `h0` using the available equality. Conclude with `isFiniteGermProjection_bot w`. Conclude with `hStep σ w P hP h0 fun τ _ hτ v Q hQ => ih _ (hn ▸ hτ) τ rfl v Q hQ`. Introduce `σ _ w P hP`.
+
+Conclude with `key _ σ rfl w P hP`.
+-/
 theorem PrimeGermFiniteProjection.exists_of_step (hStep : PrimeGermProjectionStep.Statement) :
     ∀ (σ : Type) [Fintype σ] (w : σ → ℂ) (P : Ideal (holGerms w)), P.IsPrime →
       ∃ (d : ℕ) (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)), IsFiniteGermProjection w P A := by
@@ -24,6 +31,9 @@ theorem PrimeGermFiniteProjection.exists_of_step (hStep : PrimeGermProjectionSte
   intro σ _ w P hP
   exact key _ σ rfl w P hP
 
+/- English proof (translation)
+Introduce `σ _ w k p hp hP`. Take `⟨d, A, hA⟩` from `PrimeGermFiniteProjection.exists_of_step hStep σ w _ hP`. Conclude with `⟨d, A, hFF σ w k p d A hp hA⟩`.
+-/
 theorem PrimeGermFiniteProjection.proof (hStep : PrimeGermProjectionStep.Statement)
     (hFF : GermProjectionFunctionForm.Statement) : PrimeGermFiniteProjection.Statement := by
   intro σ _ w k p hp hP

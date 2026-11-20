@@ -7,6 +7,11 @@ namespace GlobalTheory.ExpChartExpanding
 section General
 variable {A : Type*} [NormedRing A] [NormedAlgebra ℝ A] [CompleteSpace A]
 
+/- English proof (translation)
+Establish `h1` using `(hasSum_nat_add_iff' 1).2 (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) x)`. Establish `h2` using `(hasSum_nat_add_iff' 1).2 (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) ‖x‖)`. Rewrite `h2` using `[← Real.exp_eq_exp_ℝ]`. Simplify using `only [Finset.range_one, Finset.sum_singleton, Nat.factorial_zero, Nat.cast_one, inv_one, pow_zero, one_smul] at h1 h2`. Use `HasSum.norm_le_of_bounded h1 h2 (fun k => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_smul, smul_eq_mul, Real.norm_of_nonneg (by positivity)]`. Conclude with `mul_le_mul_of_nonneg_left (norm_pow_le' x (Nat.succ_pos k)) (by positivity)`.
+-/
 theorem norm_exp_sub_one_le (x : A) : ‖NormedSpace.exp x - 1‖ ≤ Real.exp ‖x‖ - 1 := by
   have h1 := (hasSum_nat_add_iff' 1).2 (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) x)
   have h2 := (hasSum_nat_add_iff' 1).2 (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) ‖x‖)
@@ -17,6 +22,9 @@ theorem norm_exp_sub_one_le (x : A) : ‖NormedSpace.exp x - 1‖ ≤ Real.exp �
   rw [norm_smul, smul_eq_mul, Real.norm_of_nonneg (by positivity)]
   exact mul_le_mul_of_nonneg_left (norm_pow_le' x (Nat.succ_pos k)) (by positivity)
 
+/- English proof (translation)
+Use `(norm_exp_sub_one_le _).trans ?_` and prove the remaining obligations. Establish `: ‖t • E‖ ≤ s`. Rewrite using `[norm_smul, Real.norm_of_nonneg ht.1]`. Use polynomial arithmetic with `[ht.1, ht.2, norm_nonneg E]`. Combine the linear relations using `[Real.exp_le_exp.2 this]`.
+-/
 theorem norm_exp_smul_sub_one_le {E : A} (hE : ‖E‖ ≤ 1) {s t : ℝ} (ht : t ∈ Set.Icc 0 s) :
     ‖NormedSpace.exp (t • E) - 1‖ ≤ Real.exp s - 1 := by
   refine (norm_exp_sub_one_le _).trans ?_
@@ -25,6 +33,9 @@ theorem norm_exp_smul_sub_one_le {E : A} (hE : ‖E‖ ≤ 1) {s t : ℝ} (ht : 
     nlinarith [ht.1, ht.2, norm_nonneg E]
   linarith [Real.exp_le_exp.2 this]
 
+/- English proof (translation)
+The claim follows from `|t - t'| * (Real.exp s - 1) := by have key := Convex.norm_image_sub_le_of_norm_hasDerivWithin_le (𝕜 := ℝ) (f := fun u : ℝ => NormedSpace.exp (u • E) - u • E) (f' := fun u : ℝ => NormedSpace.exp (u • E) * E - E) (s := Set.Icc 0 s) (C := Real.exp s - 1) (x := t') (y := t) (fun u _ …`.
+-/
 theorem norm_exp_smul_sub_le {E : A} (hE : ‖E‖ ≤ 1) {s t t' : ℝ} (ht : t ∈ Set.Icc 0 s)
     (ht' : t' ∈ Set.Icc 0 s) :
     ‖NormedSpace.exp (t • E) - NormedSpace.exp (t' • E) - (t - t') • E‖ ≤
@@ -52,6 +63,9 @@ theorem norm_exp_smul_sub_le {E : A} (hE : ‖E‖ ≤ 1) {s t t' : ℝ} (ht : t
   simpa [Real.norm_eq_abs] using key
 
 omit [NormedAlgebra ℝ A] [CompleteSpace A] in
+/- English proof (translation)
+Establish `e : x * y = (x - 1) * y + y` using `by noncomm_ring`. Rewrite using `[e]`. Use `norm_add_le ((x - 1) * y) y` as an intermediate fact. Use `norm_mul_le (x - 1) y` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg y]`.
+-/
 theorem norm_mul_le_left {x y : A} {a : ℝ} (hx : ‖x - 1‖ ≤ a - 1) : ‖x * y‖ ≤ a * ‖y‖ := by
   have e : x * y = (x - 1) * y + y := by noncomm_ring
   rw [e]
@@ -60,6 +74,9 @@ theorem norm_mul_le_left {x y : A} {a : ℝ} (hx : ‖x - 1‖ ≤ a - 1) : ‖x
   nlinarith [norm_nonneg y]
 
 omit [NormedAlgebra ℝ A] [CompleteSpace A] in
+/- English proof (translation)
+Establish `e : y * x = y * (x - 1) + y` using `by noncomm_ring`. Rewrite using `[e]`. Use `norm_add_le (y * (x - 1)) y` as an intermediate fact. Use `norm_mul_le y (x - 1)` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg y]`.
+-/
 theorem norm_mul_le_right {x y : A} {a : ℝ} (hx : ‖x - 1‖ ≤ a - 1) : ‖y * x‖ ≤ ‖y‖ * a := by
   have e : y * x = y * (x - 1) + y := by noncomm_ring
   rw [e]
@@ -67,6 +84,9 @@ theorem norm_mul_le_right {x y : A} {a : ℝ} (hx : ‖x - 1‖ ≤ a - 1) : ‖
   have := norm_mul_le y (x - 1)
   nlinarith [norm_nonneg y]
 
+/- English proof (translation)
+The claim follows from `| 0, E, t, _, _ => by simp | m + 1, E, t, hE, ht => by rw [List.ofFn_succ, List.prod_cons] have ih := norm_prod_sub_one_le m (fun i => E i.succ) (fun i => t i.succ) (fun i => hE _) (fun i => ht _) have h0 := norm_exp_smul_sub_one_le (hE 0) (ht 0) set P := (List.ofFn fun i : Fin m …`.
+-/
 theorem norm_prod_sub_one_le {s : ℝ} : ∀ (m : ℕ) (E : Fin m → A) (t : Fin m → ℝ),
     (∀ i, ‖E i‖ ≤ 1) → (∀ i, t i ∈ Set.Icc 0 s) →
     ‖(List.ofFn fun i => NormedSpace.exp (t i • E i)).prod - 1‖ ≤ Real.exp (m * s) - 1
@@ -86,12 +106,18 @@ theorem norm_prod_sub_one_le {s : ℝ} : ∀ (m : ℕ) (E : Fin m → A) (t : Fi
     rw [e, h3]
     nlinarith [Real.exp_pos s]
 
+/- English proof (translation)
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Use polynomial arithmetic with `[abs_nonneg (d i), hE i]`.
+-/
 theorem norm_sum_smul_le {m : ℕ} (E : Fin m → A) (d : Fin m → ℝ) (hE : ∀ i, ‖E i‖ ≤ 1) :
     ‖∑ i, d i • E i‖ ≤ ∑ i, |d i| := by
   refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
   rw [norm_smul, Real.norm_eq_abs]
   nlinarith [abs_nonneg (d i), hE i]
 
+/- English proof (translation)
+The claim follows from `| 0, E, t, t', _, _, _ => by simp | m + 1, E, t, t', hE, ht, ht' => by rw [List.ofFn_succ, List.prod_cons, List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ, Fin.sum_univ_succ] have ih := norm_prod_sub_prod_sub_le m (fun i => E i.succ) (fun i => t i.succ) (fun i => t' i.succ) (fu …`.
+-/
 theorem norm_prod_sub_prod_sub_le {s : ℝ} : ∀ (m : ℕ) (E : Fin m → A) (t t' : Fin m → ℝ),
     (∀ i, ‖E i‖ ≤ 1) → (∀ i, t i ∈ Set.Icc 0 s) → (∀ i, t' i ∈ Set.Icc 0 s) →
     ‖(List.ofFn fun i => NormedSpace.exp (t i • E i)).prod -
@@ -145,6 +171,9 @@ theorem norm_prod_sub_prod_sub_le {s : ℝ} : ∀ (m : ℕ) (E : Fin m → A) (t
 
 end General
 
+/- English proof (translation)
+Simplify using `only [hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `norm_cast`.
+-/
 theorem hs_eq_trace {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : hs g = ((g * gᴴ).trace).re := by
   simp only [hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply,
     Complex.re_sum]
@@ -152,6 +181,11 @@ theorem hs_eq_trace {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : hs g = ((g * g�
   rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
   norm_cast
 
+/- English proof (translation)
+Rewrite using `[hs_eq_trace, Matrix.conjTranspose_sum, Finset.sum_mul_sum, Matrix.trace_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.trace_sum, Complex.re_sum]`. Establish `: ∀ j, ((d i • E i * (d j • E j)ᴴ).trace).re = if i = j then d i * d j else 0`. Introduce `j`.
+
+Rewrite using `[Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.trace_smul, Complex.smul_re, h]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl fun j _ => this j]`. Simplify using `[sq]`.
+-/
 theorem hs_sum_smul {n m : ℕ} (E : Fin m → Matrix (Fin n) (Fin n) ℂ)
     (h : ∀ i j, ((E i * (E j)ᴴ).trace).re = if i = j then 1 else 0) (d : Fin m → ℝ) :
     hs (∑ i, d i • E i) = ∑ i, d i ^ 2 := by
@@ -169,10 +203,26 @@ theorem hs_sum_smul {n m : ℕ} (E : Fin m → Matrix (Fin n) (Fin n) ℂ)
 section Frob
 open scoped Matrix.Norms.Frobenius
 
+/- English proof (translation)
+Rewrite using `[Matrix.frobenius_norm_def, hs, Real.sqrt_eq_rpow]`. Simplify using the standard rewrite rules.
+-/
 theorem sqrt_hs {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : Real.sqrt (hs g) = ‖g‖ := by
   rw [Matrix.frobenius_norm_def, hs, Real.sqrt_eq_rpow]
   simp
 
+/- English proof (translation)
+Establish `hE : ∀ i, ‖E i‖ ≤ 1` using `fun i => by`. Rewrite using `[← sqrt_hs, hs_eq_trace, h]`. Simplify using the standard rewrite rules. Establish `key` using `norm_prod_sub_prod_sub_le (A := Matrix (Fin n) (Fin n) ℂ) (n ^ 2) E t t' hE (fun i => (ht i).1) (fun i => (ht i).2)`. Establish `hS : ‖∑ i, (t i - t' i) • E i‖ = Real.sqrt (∑ i, (t i - t' i) ^ 2)`.
+
+Rewrite using `[← sqrt_hs, hs_sum_smul E h]`. Establish `hL : ∑ i, |t i - t' i| ≤ n * Real.sqrt (∑ i, (t i - t' i) ^ 2)`. Establish `h1` using `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun i => |t i - t' i|)`. Simplify using `only [sq_abs, Finset.card_univ, Fintype.card_fin] at h1`. Use `abs_le_of_sq_le_sq' ?_ (by positivity) |>.2` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, Real.sq_sqrt (by positivity)]`. Conclude with `h1` after adjusting the coercions. Establish `hb : Real.exp (((n ^ 2 : ℕ) : ℝ) * s) - 1 ≤ Real.exp (3 * n ^ 2 * s) - 1`. Establish `: ((n ^ 2 : ℕ) : ℝ) * s ≤ 3 * n ^ 2 * s`. Use `push_cast`.
+
+Establish `: 0 ≤ (n : ℝ) ^ 2 * s` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[Real.exp_le_exp.2 this]`. Establish `hb0 : 0 ≤ Real.exp (((n ^ 2 : ℕ) : ℝ) * s) - 1`. Establish `: 0 ≤ ((n ^ 2 : ℕ) : ℝ) * s` using `by positivity`.
+
+Combine the linear relations using `[Real.add_one_le_exp (((n ^ 2 : ℕ) : ℝ) * s)]`. Establish `k` using `key.trans (mul_le_mul hL hb hb0 (by positivity))`. Establish `fin : ∀ X Y : Matrix (Fin n) (Fin n) ℂ, X = Y → ‖X - ∑ i, (t i - t' i) • E i‖ ≤ n * Real.sqrt (∑ i, (t i - t' i) ^ 2) * (Real.exp (3 * n ^ 2 * s) - 1) → Real.sqrt (∑ i, (t i - t' i) ^ 2) * (1 - n * (Real.exp (3 * n ^ 2 * s) - 1)) ≤ Real.sqrt (hs Y)`. Introduce and unpack `X _ rfl hX`. Rewrite using `[sqrt_hs]`.
+
+Establish `tri` using `norm_sub_norm_le (∑ i, (t i - t' i) • E i) X`. Rewrite `tri` using `[norm_sub_rev, hS]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `fin _ _ rfl k`.
+-/
 theorem orderedProductExp_expanding_real_smul (n : ℕ) (E : Fin (n ^ 2) → Matrix (Fin n) (Fin n) ℂ) (s : ℝ) (hs0 : 0 ≤ s)
     (h : ∀ i j, ((E i * (E j)ᴴ).trace).re = if i = j then 1 else 0)
     (t t' : Fin (n ^ 2) → ℝ) (ht : ∀ i, t i ∈ Set.Icc 0 s ∧ t' i ∈ Set.Icc 0 s) :
@@ -215,6 +265,9 @@ theorem orderedProductExp_expanding_real_smul (n : ℕ) (E : Fin (n ^ 2) → Mat
 
 end Frob
 
+/- English proof (translation)
+Introduce `n E s hs0 h t t' ht`. Simplify using `only [Complex.coe_smul]`. Conclude with `orderedProductExp_expanding_real_smul n E s hs0 h t t' ht`.
+-/
 theorem expanding : ∀ (n : ℕ) (E : Fin (n ^ 2) → Matrix (Fin n) (Fin n) ℂ) (s : ℝ), 0 ≤ s → (∀ i j, ((E i * (E j)ᴴ).trace).re = if i = j then 1 else 0) → ∀ t t' : Fin (n ^ 2) → ℝ, (∀ i, t i ∈ Set.Icc 0 s ∧ t' i ∈ Set.Icc 0 s) → Real.sqrt (∑ i, (t i - t' i) ^ 2) * (1 - n * (Real.exp (3 * n ^ 2 * s) - 1)) ≤ Real.sqrt (hs ((List.ofFn fun i => NormedSpace.exp ((t i : ℂ) • E i)).prod - (List.ofFn fun i => NormedSpace.exp ((t' i : ℂ) • E i)).prod)) := by
   intro n E s hs0 h t t' ht
   simp only [Complex.coe_smul]

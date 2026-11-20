@@ -8,6 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.Th
 
+/- English proof (translation)
+Introduce `D V φ φ' h h' c c'`. Use `⟨?_, fun a r C hC μ 𝓕 hμ h𝓕 g => ?_, fun k r C hC μ 𝓕 hμ h𝓕 g => ?_, fun r C hC μ 𝓕 hμ h𝓕 g => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.AutFunCompare.isCuspFun_iff V (φ + φ') (h.cont.add h'.cont) fun γ hγ g => ?_).2 (add_mem ((GlobalTheory.AutFunCompare.isCuspFun_iff V φ h.cont h.left).1 c) ((GlobalTheory.AutFunCompare.isCuspFun_iff V φ' h'.cont h'.left).1 c'))` and prove the remaining obligations. Rewrite using `[Pi.add_apply, Pi.add_apply, h.left γ hγ, h'.left γ hγ]`. Simplify using `only [Pi.smul_apply]`.
+
+Rewrite using `[integral_smul, c r C hC μ 𝓕 hμ h𝓕 g, smul_zero]`. Simplify using `only [rTr, mul_assoc]`. Conclude with `c r C hC μ 𝓕 hμ h𝓕 (g * k)`. Establish `e` using `integral_conj (𝕜 := ℂ) (μ := μ.restrict 𝓕) (f := fun n : NI V C => φ ((n : GA D V) * g))`. Rewrite `e` using `[c r C hC μ 𝓕 hμ h𝓕 g, map_zero]`.
+
+Conclude with `e`.
+-/
 theorem isCuspFun_closed : ∀ (D : D7) (V : HSp D) (φ φ' : GA D V → ℂ), IsAutFun V φ → IsAutFun V φ' → IsCuspFun V φ → IsCuspFun V φ' → IsCuspFun V (φ + φ') ∧ (∀ c : ℂ, IsCuspFun V (c • φ)) ∧ (∀ k, IsCuspFun V (rTr V k φ)) ∧ IsCuspFun V (fun g => star (φ g)) := by
   intro D V φ φ' h h' c c'
   refine ⟨?_, fun a r C hC μ 𝓕 hμ h𝓕 g => ?_, fun k r C hC μ 𝓕 hμ h𝓕 g => ?_, fun r C hC μ 𝓕 hμ h𝓕 g => ?_⟩

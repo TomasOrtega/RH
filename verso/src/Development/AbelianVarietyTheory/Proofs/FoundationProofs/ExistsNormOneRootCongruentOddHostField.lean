@@ -11,6 +11,33 @@ open scoped TensorProduct
 
 namespace GlobalTheory.OddRoot
 
+/- English proof (translation)
+Establish `hu1 : u = 1 + n * z`. Rewrite `huz` using `[nsmul_eq_mul]`. Take the linear combination `huz`. Establish `huO : u ∈ intHat F E`. Rewrite using `[hu1]`.
+
+Conclude with `add_mem (one_mem _) (mul_mem (natCast_mem _ n) hz)`. Take `⟨x₁, hx₁, ⟨y₁, hy₁, hxy₁⟩, hr₁⟩` from `GlobalTheory.T.exists_integral_unit_root_norm_one_adele F E c h2 hc hP u huO hu`. Take `⟨e, f, hee, hef, hun⟩` from `exists_idem (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletionIntegers F) n`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : ∃ h, e = 2 * h := by`. Take `⟨g, hg⟩` from `(hun (-1)).exists_right_inv`.
+
+Take `⟨k, hk⟩` from `hn`. Use `⟨-(k * e * g), ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[hk]`. Move the coercions through the operations in `at hg`. Take the linear combination `(-e) * hg - (2 * k + 1) * g * hee`.
+
+Take `⟨y₀, hy₀⟩` from `(unit_of_integral (inclHat F E) (inclHat_integral F E) (e * n) hun (inclHat F E h * ⟨z, hz⟩)).exists_right_inv`. Establish `hse : sg (FiniteAdeleRing (𝓞 F) F) c (inclHat F E e : RA F E) = (inclHat F E e : RA F E)`. Express the relevant statement in the definitionally equal form `sg (FiniteAdeleRing (𝓞 F) F) c (incl F e ⊗ₜ[F] (1 : E)) = incl F e ⊗ₜ[F] (1 : E)`. Simplify using `[sg]`. Establish `hee' : (inclHat F E e : RA F E) * inclHat F E e = inclHat F E e`.
+
+Rewrite using `[← Subring.coe_mul, ← map_mul, hee]`. Establish `hef' : 1 - (inclHat F E e : RA F E) = n * inclHat F E f`. Use `congrArg (fun t => (inclHat F E t : RA F E)) hef` as an intermediate fact. Simplify using `using this`. Establish `hh' : (inclHat F E e : RA F E) = 2 * inclHat F E h`.
+
+Use `congrArg (fun t => (inclHat F E t : RA F E)) hh` as an intermediate fact. Simplify using `only [map_mul, map_ofNat] at this`. Conclude with `this`. Establish `hy₀' : (1 + (inclHat F E e : RA F E) * n * (inclHat F E h * z)) * y₀ = 1`. Use `congrArg (fun t : intHat F E => (t : RA F E)) hy₀` as an intermediate fact.
+
+Simplify using `using this`. Establish `heO` using `(inclHat F E e).2`. Establish `hfO` using `(inclHat F E f).2`. Establish `hhO` using `(inclHat F E h).2`. Establish `hy₀O` using `y₀.2`.
+
+Generalize the expression as in `(inclHat F E e : RA F E) = e' at *`. Generalize the expression as in `(inclHat F E f : RA F E) = f' at *`. Generalize the expression as in `(inclHat F E h : RA F E) = h' at *`. Generalize the expression as in `(y₀ : RA F E) = y' at *`. Establish `hx₁' : x₁ ∈ intHat F E` using `hx₁`.
+
+Establish `hy₁' : y₁ ∈ intHat F E` using `hy₁`. Take `⟨w, hw⟩ : ∃ w, w = 1 + e' * n * (h' * z)` from `⟨_, rfl⟩`. Rewrite `hy₀'` using `[← hw]`. Establish `hwO : w ∈ intHat F E`. Rewrite using `[hw]`.
+
+Conclude with `add_mem (one_mem _) (mul_mem (mul_mem heO (natCast_mem _ n)) (mul_mem hhO hz))`. Establish `h2w : 2 * (e' * w) = e' * (1 + u)`. Rewrite using `[hw, hu1]`. Take the linear combination `(-(e' * e' * n * z)) * hh' + (n * z * (e' + 1)) * hee'`. Establish `hr₀ : e' * w = u * sg (FiniteAdeleRing (𝓞 F) F) c (e' * w)`.
+
+Establish `htwo : IsUnit (2 : RA F E)`. Use `(IsUnit.mk0 (2 : F) two_ne_zero).map (algebraMap F (RA F E))` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Apply `htwo.mul_left_cancel` to reduce the goal to its premises. Use `congrArg (sg (FiniteAdeleRing (𝓞 F) F) c) h2w` as an intermediate fact.
+
+Rewrite `this` using `[map_mul _ 2, map_ofNat, map_mul _ e' (1 + u), map_add, map_one, hse]`. Take the linear combination `h2w - u * this - e' * hu`. Establish `he1` using `sub_mem (one_mem (intHat F E)) heO`. Use `⟨e' * w + (1 - e') * x₁, e' * y' + (1 - e') * y₁, add_mem (mul_mem heO hwO) (mul_mem he1 hx₁'), add_mem (mul_mem heO hy₀O) (mul_mem he1 hy₁'), ?_, ?_, e' * e' * (h' * z) + f' * (x₁ - 1), add_mem (mul_mem (mul_mem heO heO) (mul_mem hhO hz)) (mul_mem hfO (sub_mem hx₁' (one_mem _))) …` and prove the remaining obligations. Take the linear combination `e' * hy₀' + (1 - e') * hxy₁ + (w * y' - w * y₁ - x₁ * y' + x₁ * y₁) * hee'`.
+
+Rewrite using `[map_add, map_mul _ (1 - e'), map_sub, map_one, hse]`. Take the linear combination `hr₀ + (1 - e') * hr₁`. Rewrite using `[nsmul_eq_mul, hw]`. Take the linear combination `(x₁ - 1) * hef'`.
+-/
 theorem finite_root_odd (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1)
     (hP : ∀ P : Ideal (𝓞 E), P.IsMaximal → ∃ t s : 𝓞 E, (s : E) = c (t : E) ∧ t - s ∉ P) (n : ℕ)
@@ -97,6 +124,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.OddRoot
 open GlobalTheory.Member
 
+/- English proof (translation)
+Introduce `D N hN u z hz huz hu`. Establish `hP : ∀ P : Ideal (𝓞 D.host.E), P.IsMaximal → ∃ t s : 𝓞 D.host.E, (s : D.host.E) = cF D (t : D.host.E) ∧ t - s ∉ P`. Introduce `P hP`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Conclude with `⟨θ, t, ht, hθ⟩`.
+
+Establish `hc : cF D ≠ 1`. Introduce `h`. Take `⟨P, hM⟩` from `Ideal.exists_maximal (𝓞 D.host.E)`. Take `⟨t, s, hs, hts⟩` from `hP P hM`. Rewrite `hs` using `[h]`.
+
+Establish `: s = t` using `Subtype.ext hs`. Rewrite `hts` using `[this, sub_self]`. Conclude with `hts P.zero_mem`. Rewrite `hz`, the goal using `[GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers]`. Conclude with `finite_root_odd D.host.F D.host.E (cF D) D.sp.cm.deg2 hc hP N hN u z hz huz hu`.
+-/
 theorem exists_root_odd : ∀ (D : D7) (N : ℕ), Odd N → ∀ u z : (Af D.host.F ⊗[D.host.F] D.host.E), z ∈ intAE D → u - 1 = N • z → u * sigR (Af D.host.F) D.sp.cm.sig u = 1 → ∃ x y : (Af D.host.F ⊗[D.host.F] D.host.E), x ∈ intAE D ∧ y ∈ intAE D ∧ x * y = 1 ∧ x = u * sigR (Af D.host.F) D.sp.cm.sig x ∧ ∃ p ∈ intAE D, x - 1 = N • p := by
   intro D N hN u z hz huz hu
   have hP : ∀ P : Ideal (𝓞 D.host.E), P.IsMaximal →

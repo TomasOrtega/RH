@@ -8,6 +8,11 @@ open scoped Pointwise
 
 namespace GlobalTheory.HL
 
+/- English proof (translation)
+Rewrite using `[Submodule.smul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨b, rfl⟩, rfl⟩`. Use `show h (v b) ∈ _`. Rewrite using `[hv b]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations.
+
+Establish `: M a b • v a = (⟨M a b, hM a b⟩ : L.O) • v a` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem span_pointwise_le_of_int {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : LocE F E) {N m : ℕ} (v : Fin m → Fin N → E)
     (h : (Fin N → E) ≃ₗ[E] (Fin N → E)) (M : Matrix (Fin m) (Fin m) E) (hM : IsIntM L M)
@@ -22,6 +27,27 @@ theorem span_pointwise_le_of_int {F : Type} [Field F] [ValuativeRel F] [Topologi
   rw [this]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ L N m v hli g M hU hg`. Rewrite using `[MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hst a b`. Establish `hmem : g (v b) ∈ Submodule.span L.O (Set.range v)`.
+
+Rewrite using `[← hst]`. Conclude with `Submodule.smul_mem_pointwise_smul (v b) g _ (Submodule.subset_span ⟨b, rfl⟩)`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun L.O).1 hmem`. Rewrite `hc` using `[hg b]`. Establish `h0 : ∑ i, (M i b - (c i : E)) • v i = 0`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hc]`. Simplify using `[Subring.smul_def]`. Use `(Fintype.linearIndependent_iff.1 hli) _ h0 a` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`.
+
+Rewrite using `[this]`. Conclude with `(c a).2`. Introduce `hM`. Establish `hdet : M.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hU.1 i j hij)]`.
+
+Simplify using `[hU.2]`. Set `M₀ : Matrix (Fin m) (Fin m) L.O` to `fun i j => ⟨M i j, hM i j⟩`. Establish `hM₀ : M₀.map L.O.subtype = M` using `by ext i j; rfl`. Establish `hadj : IsIntM L M.adjugate`. Introduce `i j`.
+
+Establish `e` using `congrFun (congrFun (RingHom.map_adjugate L.O.subtype M₀) i) j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply] at e`. Rewrite `e` using `[hM₀]`. Rewrite using `[← e]`. Conclude with `(M₀.adjugate i j).2`.
+
+Establish `hinv : ∀ b, g⁻¹ (v b) = ∑ a, M.adjugate a b • v a`. Introduce `b`. Establish `key : g (∑ a, M.adjugate a b • v a) = v b`. Simplify using `only [map_sum, map_smul, hg, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `: ∀ c, ∑ a, (M.adjugate a b * M c a) • v c = (M * M.adjugate) c b • v c`. Introduce `c`. Rewrite using `[← Finset.sum_smul, Matrix.mul_apply]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+
+Simplify using `only [this, Matrix.mul_adjugate, hdet, one_smul]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[← key]`. Conclude with `g.symm_apply_apply _`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Conclude with `span_pointwise_le_of_int L v g M hM hg`. Introduce `x hx`. Establish `hx' : g⁻¹ • x ∈ Submodule.span L.O (Set.range v)` using `span_pointwise_le_of_int L v g⁻¹ M.adjugate hadj hinv (Submodule.smul_mem_pointwise_smul x g⁻¹ _ hx)`. Use `Submodule.smul_mem_pointwise_smul (g⁻¹ • x) g _ hx'` as an intermediate fact. Rewrite `this` using `[smul_inv_smul]`. Then use the resulting hypothesis.
+-/
 theorem unistab_iff : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) {N m : ℕ} (v : Fin m → Fin N → E), LinearIndependent E v → ∀ (g : (Fin N → E) ≃ₗ[E] (Fin N → E)) (M : Matrix (Fin m) (Fin m) E), IsUni M → (∀ b, g (v b) = ∑ a, M a b • v a) → (g ∈ MulAction.stabilizer ((Fin N → E) ≃ₗ[E] (Fin N → E)) (Submodule.span L.O (Set.range v)) ↔ IsIntM L M) := by
   intro F _ _ _ E _ _ _ L N m v hli g M hU hg
   rw [MulAction.mem_stabilizer_iff]

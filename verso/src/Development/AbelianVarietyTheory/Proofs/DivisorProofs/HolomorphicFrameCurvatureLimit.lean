@@ -19,6 +19,13 @@ namespace GlobalTheory.EigGramChart
 open GlobalTheory.LieVB (omega unitSec dUnit)
 open GlobalTheory.DRBaseEx (pairMat pairMat_mulVec_crd)
 
+/- English proof (translation)
+Rewrite using `[form_eq_sum, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[form_eq_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single τ]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[blockDiagonal'_apply_eq]`. Introduce `τ' _ h`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[blockDiagonal'_apply_ne A j k (Ne.symm h)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem form_blockDiagonal' {ι : Type} [Fintype ι] [DecidableEq ι] {m : ι → Type} [∀ τ, Fintype (m τ)]
     [∀ τ, DecidableEq (m τ)] (A : ∀ τ, Matrix (m τ) (m τ) ℂ) (v w : (Σ τ, m τ) → ℂ) :
     form (blockDiagonal' A) v w = ∑ τ, form (A τ) (fun j => v ⟨τ, j⟩) fun j => w ⟨τ, j⟩ := by
@@ -46,6 +53,9 @@ def pairAll (u : EigFrame Z σ x) {U : Z.X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (m 
     Matrix (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (Fin n) ℂ :=
   Matrix.of fun j a => pairMat u h m j.1 j.2 a
 
+/- English proof (translation)
+Use extensionality with `j a`. Use `congrFun (pairMat_mulVec_crd e u c₁ h₁ h₂ (c₂.e a) j.1) j.2` as an intermediate fact. Rewrite using `[mul_apply]`. Conclude with `this`.
+-/
 theorem pairAll_mul_tr {σ₀ : Oz →+* ℂ} {z : CxPts Z.s σ₀} (e : z.1 = x) (u : EigFrame Z σ x)
     (c₁ c₂ : Chart (omega Z.t.G) n) (h₁ : ⊤ ≤ x ⁻¹ᵁ c₁.U) (h₂ : ⊤ ≤ x ⁻¹ᵁ c₂.U) :
     pairAll u h₁ c₁.e * c₁.tr Z.s σ₀ c₂ z = pairAll u h₂ c₂.e := by
@@ -54,6 +64,11 @@ theorem pairAll_mul_tr {σ₀ : Oz →+* ℂ} {z : CxPts Z.s σ₀} (e : z.1 = x
   rw [mul_apply]
   exact this
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[← (h.met _).form_frame c₁ hz, ← hf a, ← hf b, hd σ yc z e u c₁.U W hW (f a) (f b) hz, chg_apply, form_blockDiagonal']`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `key : ∀ k, (fun i => (valR (u.v τ i) W (f k)).snd) = fun i => pairAll u hx c₁.e ⟨τ, i⟩ k` using `fun k => by`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `_ = GlobalTheory.LocM.tanEv Z.t (u.tan τ i) hx (c₁.e k)`. Rewrite using `[← hf k]`. Conclude with `(GlobalTheory.LocM.tanEv_dUnit_eq (u.tan τ i) hx hW (f k)).2.symm`. Rewrite using `[key a, key b]`.
+-/
 theorem G_eq_chg_pairAll {G : ∀ σ', EigMet Z σ'} {g : ℕ} {h : VMetric Z.s (omega Z.t.G) g} (hd : IsDualEig G h)
     (yc : CxPts (genStr Z) σ) (z : CxPts Z.s (σ.comp β)) (e : z.1 = yc.1 ≫ genι Z) (u : EigFrame Z σ (yc.1 ≫ genι Z))
     (c₁ : Chart (omega Z.t.G) g) {W : Z.t.G.left.Opens} (hW : c₁.U ≤ unitSec Z.t.G ⁻¹ᵁ W)
@@ -79,6 +94,43 @@ open GlobalTheory.LieVB (omega unitSec dUnit)
 
 open GlobalTheory.EigGramChart in
 
+/- English proof (translation)
+Introduce `D O c M Y i hi σ e ch cE U a hU hUt hhol hcont hup`. Establish `hV : IsVB (omega O.s.T.Z.t.G) (D.R.f * O.N)` using `(M.h 0).isVB`. Set `zu : V (e + 2) → CxPts O.s.T.Z.s (σ.comp (algebraMap (𝓞 O.κ.c.F) O.κ.c.F))` to `fun u => PtsOver.map (i ≫ M.b) hi _ (ch.e.symm u)`. Set `pb : Chart (omega O.s.T.Z.t.G) (D.R.f * O.N) → Chart ((Scheme.Modules.pullback i).obj ((Scheme.Modules.pullback M.b).obj (omega O.s.T.Z.t.G))) (D.R.f * O.N)` to `fun c₀ => (c₀.pull hV M.b).pull (hV.pullback M.b) i`. Set `Tc : ∀ (u : V (e + 2)) (c₀ : Chart (omega O.s.T.Z.t.G) (D.R.f * O.N)), ⊤ ≤ ((a u).1.1 ≫ genι O.s.T.Z) ⁻¹ᵁ c₀.U → Matrix (Σ τ : D.host.E →+* ℂ, Fin (O.S.Dw.mult τ)) (Fin (D.R.f * O.N)) ℂ` to `fun u c₀ h => pairAll (a u).2 h c₀.e * (pb c₀).tr (i ≫ M.q) _ cE (ch.e.symm u)`.
+
+Set `T : V (e + 2) → Matrix (Σ τ : D.host.E →+* ℂ, Fin (O.S.Dw.mult τ)) (Fin (D.R.f * O.N)) ℂ` to `fun u => if h : ⊤ ≤ ((a u).1.1 ≫ genι O.s.T.Z) ⁻¹ᵁ (hV.pick (zu u)).U then Tc u _ h else 0`. Establish `hz : ∀ u ∈ U, (zu u).1 = (a u).1.1 ≫ genι O.s.T.Z` using `fun u hu => by`. Rewrite using `[hup u hu, up_ι]`. Both sides reduce to the same expression. Establish `hmem : ∀ u (c₀ : Chart (omega O.s.T.Z.t.G) (D.R.f * O.N)), zu u ∈ ptsIn _ _ c₀.U → ch.e.symm u ∈ ptsIn (i ≫ M.q) _ (pb c₀).U` using `fun u c₀ h => h`.
+
+Establish `hK : ∀ u ∈ U, ∀ (c₀ : Chart (omega O.s.T.Z.t.G) (D.R.f * O.N)) (hc : ⊤ ≤ ((a u).1.1 ≫ genι O.s.T.Z) ⁻¹ᵁ c₀.U), T u = Tc u c₀ hc`. Introduce `u hu c₀ hc`. Establish `h0 : ⊤ ≤ ((a u).1.1 ≫ genι O.s.T.Z) ⁻¹ᵁ (hV.pick (zu u)).U` using `hz u hu ▸ hV.mem_pick (zu u)`. Establish `hzc : zu u ∈ ptsIn _ _ c₀.U`. Express the relevant statement in the definitionally equal form `⊤ ≤ (zu u).1 ⁻¹ᵁ c₀.U`.
+
+Rewrite using `[hz u hu]`. Conclude with `hc`. Express the relevant statement in the definitionally equal form `dite _ _ _ = _`. Rewrite using `[dif_pos h0]`. Express the relevant statement in the definitionally equal form `pairAll (a u).2 h0 _ * _ = pairAll (a u).2 hc _ * _`.
+
+Rewrite using `[← Chart.tr_mul' (pb (hV.pick (zu u))) (pb c₀) cE (hmem u c₀ hzc), ← Matrix.mul_assoc]`. Use `congr 1`. Establish `e1` using `Chart.tr_pull ((hV.pick (zu u)).pull hV M.b) (c₀.pull hV M.b) (hV.pullback M.b) i (rfl : i ≫ M.b ≫ O.s.T.Z.s = i ≫ M.q) (z := ch.e.symm u) (hV.mem_pick (zu u)) hzc`. Establish `e2` using `Chart.tr_pull (hV.pick (zu u)) c₀ hV M.b (rfl : M.b ≫ O.s.T.Z.s = M.b ≫ O.s.T.Z.s) (z := PtsOver.map i rfl _ (ch.e.symm u)) (hV.mem_pick (zu u)) hzc`. Rewrite `e2` using `[PtsOver.map_map]`.
+
+Rewrite using `[e1, e2]`. Conclude with `pairAll_mul_tr (z := zu u) (hz u hu) (a u).2 _ _ h0 hc`. Establish `hloc : ∀ u, ∃ (c₁ : Chart (omega O.s.T.Z.t.G) (D.R.f * O.N)) (W : O.s.T.Z.t.G.left.Opens) (hW : c₁.U ≤ unitSec O.s.T.Z.t.G ⁻¹ᵁ W) (f : Fin (D.R.f * O.N) → Γ(O.s.T.Z.t.G.left, W)), (∀ k, dUnit O.s.T.Z.t.G hW (f k) = c₁.e k) ∧ zu u ∈ ptsIn _ _ c₁.U`. Introduce `u`. Use `O.s.T.Z.t.semi` as an intermediate fact.
+
+Establish `hs` using `LieVB.sec_hom (MonObj.one (X := O.s.T.Z.t.G))`. Take `⟨U₁, W, hx, hle, chc⟩` from `GlobalTheory.Conormal.exists_isChart hs (mem_ptsIn.1 (hV.mem_pick (zu u)))`. Set `c₁ : Chart (omega O.s.T.Z.t.G) (D.R.f * O.N)` to `⟨U₁, _, (hV.pick (zu u)).isFrame.res hle⟩`. Use `choose f hf using fun k => chc.d_surjective hs (c₁.e k)`. Conclude with `⟨c₁, W, chc.le, f, hf, mem_ptsIn.2 hx⟩`.
+
+Establish `hxz : ∀ u ∈ U, ∀ (c₀ : Chart (omega O.s.T.Z.t.G) (D.R.f * O.N)), zu u ∈ ptsIn _ _ c₀.U → ⊤ ≤ ((a u).1.1 ≫ genι O.s.T.Z) ⁻¹ᵁ c₀.U` using `fun u hu c₀ h => by`. Establish `h' : ⊤ ≤ (zu u).1 ⁻¹ᵁ c₀.U` using `h`. Rewrite `h'` using `[hz u hu]`. Then use the resulting hypothesis. Establish `hG : ∀ R : ℝ, ∀ u ∈ U, ch.e.symm u ∈ ptsIn (i ≫ M.q) _ cE.U → ((((M.h R).pull M.b rfl).pull i rfl).met (σ.comp _)).G cE (ch.e.symm u) = chg (T u) (Matrix.blockDiagonal' fun τ => dualGram (eigGram (M.x.eigMetAt σ (some R)) a τ u))`. Introduce `R u hu hyE`.
+
+Take `⟨c₁, W, hW, f, hf, hz1⟩` from `hloc u`. Establish `hx1` using `hxz u hu c₁ hz1`. Rewrite using `[hK u hu c₁ hx1]`. Express the relevant statement in the definitionally equal form `((((M.h R).met _).pull M.b rfl).pull i rfl).G cE (ch.e.symm u) = _`. Rewrite using `[Met.trans _ (pb c₁) cE _ (hmem u c₁ hz1)]`.
+
+Establish `e1` using `Met.pull_G (((M.h R).met (σ.comp (algebraMap (𝓞 O.κ.c.F) O.κ.c.F))).pull M.b rfl) i rfl (c₁.pull hV M.b) (z := ch.e.symm u) hz1`. Establish `e2` using `Met.pull_G ((M.h R).met (σ.comp (algebraMap (𝓞 O.κ.c.F) O.κ.c.F))) M.b rfl c₁ (z := PtsOver.map i rfl _ (ch.e.symm u)) hz1`. Rewrite `e2` using `[PtsOver.map_map]`. Rewrite using `[e1, e2, G_eq_chg_pairAll (M.dual R) (a u).1 (zu u) (hz u hu) (a u).2 c₁ hW f hf hz1 hx1, chg_chg]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `τ`. Rewrite using `[dualGram, eigGram, transpose_nonsing_inv, transpose_transpose]`. Use `⟨T, ?_, ?_, fun R u hu => hG R u hu.1 hu.2⟩` and prove the remaining obligations. Introduce `j b u₀ hu₀`. Take `⟨c₁, W, hW, f, hf, hz1⟩` from `hloc u₀`.
+
+Set `N` to `U ∩ (ch.e.target ∩ ch.e.symm ⁻¹' (ptsIn (i ≫ M.q) (σ.comp (algebraMap (𝓞 O.κ.c.F) O.κ.c.F)) cE.U ∩ ptsIn (i ≫ M.q) (σ.comp (algebraMap (𝓞 O.κ.c.F) O.κ.c.F)) (pb c₁).U))`. Establish `hN : IsOpen N` using `hU.inter (ch.e.isOpen_inter_preimage_symm ((isOpen_ptsIn _).inter (isOpen_ptsIn _)))`. Establish `hu₀N : u₀ ∈ N` using `⟨hu₀.1, hUt hu₀.1, hu₀.2, hmem u₀ c₁ hz1⟩`. Establish `hxN : ∀ u ∈ N, ⊤ ≤ ((a u).1.1 ≫ genι O.s.T.Z) ⁻¹ᵁ c₁.U` using `fun u hu => hxz u hu.1 c₁ hu.2.2.2`. Set `g : Fin (D.R.f * O.N) → Γ(Y, cE.U ⊓ (pb c₁).U)` to `fun l => ((pb c₁).isFrame.basis inf_le_right).repr (GlobalTheory.Twist.resM _ inf_le_left (cE.e b)) l`.
+
+Set `L : V (e + 2) → ℂ` to `fun u => ∑ l, (valR ((a u).2.v j.1 j.2) W (f l)).snd * ev (i ≫ M.q) (σ.comp (algebraMap (𝓞 O.κ.c.F) O.κ.c.F)) (cE.U ⊓ (pb c₁).U) (g l) (ch.e.symm u)`. Establish `hL : DifferentiableOn ℂ L N`. Use `DifferentiableOn.fun_sum fun l _ => DifferentiableOn.mul ?_ ?_` and prove the remaining obligations. Conclude with `(hhol.2 j.1 j.2 W (f l)).mono fun u hu => ⟨hu.1, (GlobalTheory.LocM.tanEv_dUnit_eq ((a u).2.tan j.1 j.2) (hxN u hu) hW (f l)).1⟩`. Conclude with `(ch.holo _ (g l)).mono fun u hu => ⟨hu.2.1, mem_ptsIn_inf.2 hu.2.2⟩`.
+
+Establish `hTL : ∀ u ∈ N, T u j b = L u` using `fun u hu => by`. Rewrite using `[hK u hu.1 c₁ (hxN u hu)]`. Use `show (pairAll (a u).2 (hxN u hu) c₁.e * (pb c₁).tr (i ≫ M.q) _ cE (ch.e.symm u)) j b = _`. Rewrite using `[mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `GlobalTheory.LocM.tanEv _ _ _ (c₁.e l) = _`. Rewrite using `[← hf l]`. Conclude with `(GlobalTheory.LocM.tanEv_dUnit_eq ((a u).2.tan j.1 j.2) (hxN u hu) hW (f l)).2`. Conclude with `((hL.differentiableAt (hN.mem_nhds hu₀N)).congr_of_eventuallyEq (Filter.eventually_of_mem (hN.mem_nhds hu₀N) hTL)).differentiableWithinAt`.
+
+Introduce `u hu`. Establish `hpd` using `((((M.h 0).pull M.b rfl).pull i rfl).met (σ.comp (algebraMap (𝓞 O.κ.c.F) O.κ.c.F))).posDef cE (ch.e.symm u) hu.2`. Rewrite `hpd` using `[hG 0 u hu.1 hu.2]`. Establish `hinj : Function.Injective (T u).mulVec`. Introduce `v w hvw`.
+
+Assume the negation of the conclusion as `hne`. Use `(posDef_iff.1 hpd).2 (v - w) (sub_ne_zero.2 hne)` as an intermediate fact. Rewrite `this` using `[form_chg, mulVec_sub, hvw, sub_self]`. Simplify using `[form] at this`. Use `⟨hinj, ?_⟩` and prove the remaining obligations.
+
+Establish `hfin : Module.finrank ℂ (Fin (D.R.f * O.N) → ℂ) = Module.finrank ℂ ((Σ τ : D.host.E →+* ℂ, Fin (O.S.Dw.mult τ)) → ℂ)`. Rewrite using `[Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card, Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Conclude with `(GlobalTheory.DRBaseEx.sum_mult O).symm`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := Matrix.mulVecLin (T u)) hfin).1 hinj`.
+-/
 theorem GlobalTheory.EigGramChart.gram_eq_chg : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (M : DRBase O c) (Y : Scheme.{0}) (i : Y ⟶ M.B) (hi : (i ≫ M.b) ≫ O.s.T.Z.s = i ≫ M.q) (σ : O.κ.c.F →+* ℂ) (e : ℕ) (ch : AlgChart (i ≫ M.q) (σ.comp _) (e + 2)) (cE : Chart ((Scheme.Modules.pullback i).obj ((Scheme.Modules.pullback M.b).obj (GlobalTheory.LieVB.omega O.s.T.Z.t.G))) (D.R.f * O.N)) (U : Set (V (e + 2))) (a : V (e + 2) → CxFr O.s.T.Z σ), IsOpen U → U ⊆ ch.e.target → HolFam U a → ContinuousOn (fun u => (a u).1) U → (∀ u ∈ U, (a u).1 = up (i ≫ M.b) hi σ (ch.e.symm u)) → ∃ T : V (e + 2) → Matrix (Σ τ : D.host.E →+* ℂ, Fin (O.S.Dw.mult τ)) (Fin (D.R.f * O.N)) ℂ, (∀ j b, DifferentiableOn ℂ (fun u => T u j b) (U ∩ ch.e.symm ⁻¹' ptsIn _ _ cE.U)) ∧ (∀ u ∈ U ∩ ch.e.symm ⁻¹' ptsIn _ _ cE.U, Function.Bijective (T u).mulVec) ∧ ∀ R : ℝ, ∀ u ∈ U ∩ ch.e.symm ⁻¹' ptsIn _ _ cE.U, ((((M.h R).pull M.b rfl).pull i rfl).met (σ.comp _)).G cE (ch.e.symm u) = chg (T u) (Matrix.blockDiagonal' fun τ => dualGram (eigGram (M.x.eigMetAt σ (some R)) a τ u)) := by
   intro D O c M Y i hi σ e ch cE U a hU hUt hhol hcont hup
   classical

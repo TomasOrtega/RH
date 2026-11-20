@@ -4,6 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x k hK z hz`. Use `set f := algebraMap x.A x.Fr with hf`. Establish `ht : f x.t ≠ 0`. Introduce `h0`. Apply `PowerSeries.X_ne_zero (R := x.K)` to reduce the goal to its premises.
+
+Conclude with `IsFractionRing.injective x.A x.Fr (h0.trans (map_zero f).symm)`. Use `choose s₀ hs using fun i j => selScale l L G G0 h n x true (z i j) (hz i j).1 (hz i j).2`. Use `set S := Finset.univ.sup (fun p : Fin (k.g + 1) × Fin k.g => s₀ p.1 p.2) with hSdef`. Establish `hS : ∀ i j, s₀ i j ≤ S` using `fun i j => Finset.le_sup (f := fun p : Fin (k.g + 1) × Fin k.g => s₀ p.1 p.2) (Finset.mem_univ (i, j))`. Use `choose z' hz' hzz using fun i j => hs i j S (hS i j)`.
+
+Take `⟨c, hc, Ψ, hΨ, hΨe⟩` from `hK z' (fun i j => hz' i j)`. Take `⟨hΨ1, hΨ2⟩` from `selMap2 l L G G0 h n x k Ψ hΨ`. Use `⟨fun i => f (c i) * f x.t ^ S, ?_, _, hΨ1, hΨ2, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hc` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Establish `e` using `congrFun h0 i`. Break down `mul_eq_zero.1 e with e | e` into its components or cases. Conclude with `IsFractionRing.injective x.A x.Fr (e.trans (map_zero f).symm)`. Conclude with `absurd e (pow_ne_zero S ht)`.
+
+Introduce `j γ a b`. Establish `hz2 : ∀ i, f (z' i j γ a b) = f x.t ^ S * z i j γ a b` using `fun i => by`. Establish `e` using `congrArg (fun M => M a b) (hzz i j γ)`. Simplify using `using e`. Use `show f ((Ψ γ a b).ep' j) = _`.
+
+Rewrite using `[hΨe j γ a b]`. Simplify using `only [Matrix.sum_apply, Finset.sum_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, hz2]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+-/
 theorem UpperTheory.V.Pa.k2F :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n), ∀ (k : Kap x), K2 h k → EvenCocyclesLiftLaurent h k := by
   intro l _ L G G0 h n x k hK z hz

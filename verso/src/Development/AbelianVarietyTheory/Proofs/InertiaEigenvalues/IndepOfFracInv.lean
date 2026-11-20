@@ -22,6 +22,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 
 omit [Field K₀] [Algebra Qp K₀] [Algebra K₀ B] [IsScalarTower Qp K₀ B] in
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem comm_smul (b : B) (w : B ⊗[Qp] V) :
     TensorProduct.comm Qp B V (b • w) =
       AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (LinearMap.mulLeft Qp b)
@@ -31,6 +34,9 @@ theorem comm_smul (b : B) (w : B ⊗[Qp] V) :
   | tmul c v => simp [TensorProduct.smul_tmul']
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul B c w, comm_smul (LL := LL)]`. Both sides reduce to the same expression.
+-/
 theorem comm_smul₀ (c : K₀) (w : B ⊗[Qp] V) :
     TensorProduct.comm Qp B V (c • w) =
       mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c (TensorProduct.comm Qp B V w) := by

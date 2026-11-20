@@ -4,6 +4,9 @@ import Mathlib
 
 open Topology Filter
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SmoothFix.exists_nhds_fix | exact GlobalTheory.SmoothFix.exists_nhds_fix | (intros; apply GlobalTheory.SmoothFix.exists_nhds_fix <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_nhds_fix_of_continuous_coefficients : (∀ {V : Type} [AddCommGroup V] [Module ℂ V] (s : Set V),
     (∀ l : V →ₗ[ℂ] ℂ, ∃ C : ℝ, ∀ x ∈ s, ‖l x‖ ≤ C) → FiniteDimensional ℂ (Submodule.span ℂ s)) →
   ∀ {G : Type} [Group G] [TopologicalSpace G] (H : Subgroup G) {V : Type} [AddCommGroup V] [Module ℂ V]

@@ -17,6 +17,9 @@ section
 variable {Ω : Type} [Field Ω] {K : Type} [Fintype K] {ι : K → Type} [∀ b, Fintype (ι b)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ b, Fintype (ι' b)]
 
+/- English proof (translation)
+Unfold `vdeg`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem asm_vdeg_join_inl (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y' : (Σ b, ι' b) → Ω) (a : K → ℤ) :
     vdeg O (joinPt y y') (Sum.elim a (0 : K' → ℤ)) = vdeg O y a := by
   unfold vdeg
@@ -24,6 +27,9 @@ theorem asm_vdeg_join_inl (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y
   simp only [Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, mul_one]
   rfl
 
+/- English proof (translation)
+Unfold `vdeg`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem asm_vdeg_join_inr (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y' : (Σ b, ι' b) → Ω) (a : K' → ℤ) :
     vdeg O (joinPt y y') (Sum.elim (0 : K → ℤ) a) = vdeg O y' a := by
   unfold vdeg
@@ -33,6 +39,37 @@ theorem asm_vdeg_join_inr (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y
 
 end
 
+/- English proof (translation)
+Take `⟨U, hU⟩` from `hFib`. Use `⟨fun f p q => if Top.testDeg (Fin f) (p + q) p / U f p q = 0 then 1 else Top.testDeg (Fin f) (p + q) p / U f p q, fun f p q => ?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce split_ifs with h`. Conclude with `one_ne_zero`. Conclude with `h`.
+
+Introduce `_ hProp _ hG hInt E _ _ _ _ H D Xo l c Y _ T o II hY hX hII hp hq hqp a K _ J _ Ω _ _ W _ _ Dc Hd Or eb es _ _ eS eg`. Establish `hIn : PB.Inputs` using `hG.2.2.2.2.2.2.2.2.2.1`. Establish `: Nonempty (CMType H)` using `(GlobalTheory.T.cm_host_rank_bounds E H).2.1`. Establish `hT : T.Proportional` using `GlobalTheory.T.real_tower_proportional hProp hIn II hII _ _ T _ (GlobalTheory.T.good_tower_real_agreement hG E H D Xo l c Y T o II hY hX hII hp hq)`. Establish `htd : 0 < Top.testDeg (CMType H) (D.p + D.q) D.p` using `(GlobalTheory.T.test_polynomial_shift_total (CMType H) (D.p + D.q) D.p hp (by omega)).2.1`.
+
+Establish `eg' : genPt Or.𝔐.ξ₀ = genPt (o.Or 2 a).𝔐.ξ₀`. Establish `g1` using `congrArg (fun f => f (IsLocalRing.closedPoint _)) ((o.Or 2 a).g_over.symm.trans (o.Or 2 a).𝔐.fn_over)`. Rewrite using `[eg]`. Conclude with `((congrArg (fun x => (o.Fx a).ξf x) (Subsingleton.elim (α := PrimeSpectrum (o.Fx a).Ωf) _ _)).trans g1).trans (congrArg (fun x => (o.Or 2 a).𝔐.ξ₀ x) (Subsingleton.elim (α := PrimeSpectrum (o.Or 2 a).𝔐.Ω₀) _ _))`. Establish `hvol` using `hT.1 a`.
+
+Take `⟨M, 𝔐', Fl, e, hδ, hlines, eg', hprop⟩ : ∃ (M : Top.RootModel (CMType H) (D.p + D.q)) (𝔐' : HodgeCpt Y (o.S 2) M.y) (Fl : 𝔐'.Flag) (e : RootIx D → M.Ω), M.δ = Module.finrank ℚ c.F * Fl.deg ∧ Fl.RootLines M.xdeg e ∧ genPt Or.𝔐.ξ₀ = genPt 𝔐'.ξ₀ ∧ M.geoFun (Top.toA (Top.muSmall D.p …` from `⟨_, _, _, _, (o.Or 2 a).δ_eq, (o.Or 2 a).lines, eg', hT.2.1 2 a _⟩`. Take `⟨ψ₀, hψ₀⟩` from `hIso _ _ _ _ _ Or.𝔐.gen₀ 𝔐'.gen₀ eg'`. Set `ψ : 𝔐'.Ω₀ →+* Ω` to `Or.𝔐.fn.comp ψ₀.toRingHom`. Establish `hdom : GlobalTheory.CompanionTheory.Ar.Dominates Or.𝔐.ξ 𝔐'.ξ₀ Or.𝔐.f ψ`. Establish `h` using `Or.𝔐.fn_over`.
+
+Unfold `GlobalTheory.CompanionTheory.Ar.Dominates at h ⊢`. Rewrite using `[h, hψ₀, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Set `_ : Algebra 𝔐'.Ω₀ Ω` to `ψ.toAlgebra`. Set `_ : Algebra 𝔐'.Ω₀ M.Ω` to `𝔐'.fn.toAlgebra`.
+
+Establish `hdeg : Module.finrank 𝔐'.Ω₀ Ω = Or.deg`. Set `_` to `Or.𝔐.fn.toAlgebra`. Rewrite using `[← Or.cover.2]`. Conclude with `Algebra.finrank_eq_of_equiv_equiv ψ₀ (RingEquiv.refl Ω) rfl`. Take `⟨b, u, hb, -, -, -, u1, u0, hfl, hai, hd0, hd⟩` from `Fl.generic`.
+
+Take `⟨Ω₃, _, _, i, d, n₂, hi, hu, hn, hn0, hnd⟩` from `hJoin 𝔐'.Ω₀ Ω M.Ω _ _ u Fl.deg Or.deg ⟨u1, u0, hai, hd0, hd⟩ Or.cover.1 hdeg`. Establish `: CharZero Ω` using `algebraRat.charZero Ω`. Establish `: CharZero Ω₃` using `charZero_of_injective_algebraMap (algebraMap Ω Ω₃).injective`. Establish `: CharZero M.Ω` using `i.charZero`. Set `ee` to `(Fintype.equivFin (PairIx (CMType H) D.p D.q)).symm`.
+
+Take `⟨hcount, htest⟩` from `hTest hIn (CMType H) D.p D.q M Dc.n _ ee hqp Or.n_eq`. Take `⟨hM1, hM2, hM3, -⟩` from `hMap M.Ω Ω₃ i _ _ M.y _ M.birational (hcount ▸ M.arith) (hn ▸ hn0)`. Establish `hP : IsPt Ω (fun x => i (M.y x)) _` using `⟨hM1.1, hM2 Ω, hTr _ _ _ Ω Ω₃ _ d hu⟩`. Take `⟨hJ1, hJ2⟩` from `hPF hIn II hII Ω Ω₃ _ _ _ _ Dc.y (fun x => i (M.y x)) Dc.n _ (fun _ => Hd.aMu) (fun j => fibDeg M.xdeg (ee j)) Dc.birational Dc.arith hP`. Establish `hF` using `hU _ _ _ Ω Ω₃ _ _ _ _ d _ M.xdeg ee hu hP (hFL E H D l _ c Y _ _ _ _ _ 𝔐' Fl _ e b u Ω Ω₃ i hlines hb u1 u0 hfl fun a => ⟨ψ a, (RingHom.congr_fun hi a).symm⟩)`.
+
+Establish `hμ` using `hML E H D Xo l c Y _ _ _ _ _ 𝔐' Fl _ e II K J Ω W Dc Hd _ Or ψ Ω₃ (algebraMap Ω Ω₃) i hlines eb es eS hdom hi.symm`. Establish `hE` using `hEq ℚ Ω₃ _ _ _ _ _ _ _ (Fin.append (fun _ : Fin Dc.n => muDeg M.xdeg) fun j => fibDeg M.xdeg (ee j)) (Fin.append (fun _ : Fin Dc.n => Sum.elim Hd.aMu (0 : M.K → ℤ)) fun j => Sum.elim (0 : K → ℤ) (fibDeg M.xdeg (ee j))) hM1 hJ1 fun j => by`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations. Simplify `hμ` using `only [Fin.append_left, ValEq, asm_vdeg_join_inl]`. Use `⟨1, one_ne_zero, fun O _ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Fin.append_right, asm_vdeg_join_inr, map_one, one_mul]`. Establish `hG1` using `(hMap Ω Ω (RingHom.id Ω) _ _ Dc.y Dc.n Dc.birational Dc.arith (by`. Rewrite using `[show (RingHom.id Ω).fieldRange = ⊤ from RingHom.fieldRange_eq_top_iff.2 Function.surjective_id]`. Establish `: Module.Finite (⊤ : Subfield Ω) Ω` using `Module.Finite.of_surjective (Algebra.linearMap (⊤ : Subfield Ω) Ω) fun x => ⟨⟨x, trivial⟩, rfl⟩`. Conclude with `Module.finrank_pos)).2.2.2 Hd.aMu`.
+
+Rewrite `hE` using `[hM3, hJ2, hF, hG1, hn]`. Establish `hE'` using `congrArg (Int.cast : ℤ → ℝ) hE`. Move the coercions through the operations in `at hE'`. Rewrite `hE'` using `[← htest, ← hMass hG hInt E H D Xo l c Y II K J Ω W Dc Hd _ Or hII, hprop, hδ]`. Establish `hnd' : (n₂ : ℝ) * Fl.deg = d * Or.deg` using `by exact_mod_cast hnd`.
+
+Establish `hdpos : (d : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hu.2.2.2.1.ne'`. Use `c.fin` as an intermediate fact. Establish `hFpos : (0 : ℝ) < Module.finrank ℚ c.F` using `Nat.cast_pos.2 Module.finrank_pos`. Establish `hOpos : (0 : ℝ) < Or.deg` using `Nat.cast_pos.2 Or.cover.1`. Establish `key : Top.testDeg (CMType H) (D.p + D.q) D.p * Or.deg * Module.finrank ℚ c.F * T.vol a = U (Fintype.card (CMType H)) D.p D.q * degMu Hd`.
+
+Apply `mul_left_cancel₀ hdpos` to reduce the goal to its premises. Unfold `Top.testDeg`. Move the coercions through the operations in `at hE'`. Take the linear combination `hE' - (Module.finrank ℚ c.F * T.vol a * Top.degFl (Top.muSmall D.p ^ Top.dimX (CMType H) (D.p + D.q) D.p * Top.fibClass D.p : Top.RP (CMType H) (D.p + D.q))) * hnd'`. Establish `hU0 : (U (Fintype.card (CMType H)) D.p D.q : ℝ) ≠ 0` using `fun h => by`.
+
+Rewrite `key` using `[h, zero_mul]`. Conclude with `(mul_pos (mul_pos (mul_pos htd hOpos) hFpos) hvol).ne' key`. Establish `hr` using `hRel (CMType H) (D.p + D.q) D.p`. Establish `hr' : Top.testDeg (Fin (Fintype.card (CMType H))) (D.p + D.q) D.p = Top.testDeg (CMType H) (D.p + D.q) D.p`. Rewrite using `[hr]`.
+
+Simplify using `only [hr']`. Rewrite using `[if_neg (div_ne_zero htd.ne' hU0)]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-key`.
+-/
 theorem degPush_of (hEq : NumEq) (hPF : GeoPF) (hFib : FibNum) (hTr : TrdegU) (hRel : TestRelabel) (hTest : GeoTest)
     (hMap : NumMap) (hMass : MuMass) (hJoin : FieldJoin) (hIso : GenIso) (hFL : FibLink) (hML : MuLink) : DegPush := by
   classical

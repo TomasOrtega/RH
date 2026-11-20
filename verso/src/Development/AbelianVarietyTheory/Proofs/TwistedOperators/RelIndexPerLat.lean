@@ -9,6 +9,9 @@ namespace GlobalTheory.RootEx.PerIndex
 
 variable {k : Type} [Field k] [ValuativeRel k] {n : Type}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Simplify using `only [UnfoldShape.col, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem col_add (n' : Type) {c : ℕ}
     (e f : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs} → k) (i : Fin c) :
     UnfoldShape.col (n' := n') (e + f) i
@@ -17,6 +20,23 @@ theorem col_add (n' : Type) {c : ℕ}
   simp only [UnfoldShape.col, Pi.add_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Set `φ : perLat ϖ n' c (stdLat k n) →+ (Fin c → (stdLat k n).toAddSubgroup)` to `AddMonoidHom.mk' (fun e i => ⟨fun r => ((ϖ : k) ^ ((i : ℕ) + 1) • UnfoldShape.col (n' := n') e.1 i) (Sum.inl r), (mem_chainLat.1 (mem_perLat.1 e.2 i)).1⟩) (by`. Introduce `e f`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `r`.
+
+Simplify using `only [AddSubgroup.coe_add, Pi.add_apply, col_add, smul_add])`. Establish `hφ : Function.Surjective φ`. Introduce `v`. Establish `hY : ∀ i : Fin c, ((ϖ : k) ^ ((i : ℕ) + 1))⁻¹ • inX k n c (v i).1 ∈ Yle k n c ((i : ℕ) + 1)`. Introduce `i`.
+
+Rewrite using `[mem_Yle]`. Introduce `l _`. Simplify using `[inX_apply]`. Establish `hc` using `col_uncol (n' := n') hY`. Establish `hs : ∀ i : Fin c, (ϖ : k) ^ ((i : ℕ) + 1) • UnfoldShape.col (n'` using `n') (uncol n' fun i : Fin c => ((ϖ : k) ^ ((i : ℕ) + 1))⁻¹ • inX k n c (v i).1) i = inX k n c (v i).1 := by`.
+
+Introduce `i`. Rewrite using `[hc, smul_smul, mul_inv_cancel₀ (pow_ne_zero _ hϖ), one_smul]`. Use `⟨⟨uncol n' fun i : Fin c => ((ϖ : k) ^ ((i : ℕ) + 1))⁻¹ • inX k n c (v i).1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_perLat]`. Introduce `i`.
+
+Rewrite using `[hs, mem_chainLat]`. Use `⟨?_, fun l => ⟨0, ?_⟩⟩` and prove the remaining obligations. Simplify `(v i).2` using `[inX_apply]`. Simplify using `[inX_apply]`. Use function extensionality and compare the values at `i`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `r`. Conclude with `congrFun (hs i) (Sum.inl r)`. Establish `hcomap : (perLat ϖ n' c L).addSubgroupOf (perLat ϖ n' c (stdLat k n)) = (AddSubgroup.pi Set.univ fun _ : Fin c => L.toAddSubgroup.addSubgroupOf (stdLat k n).toAddSubgroup).comap φ`. Use extensionality with `e`.
+
+Rewrite using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_comap, AddSubgroup.mem_pi, mem_perLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h i _`. Conclude with `(mem_chainLat.1 (h i)).1`. Introduce `h i`.
+
+Conclude with `mem_chainLat.2 ⟨h i trivial, (mem_chainLat.1 (mem_perLat.1 e.2 i)).2⟩`. Rewrite using `[AddSubgroup.relIndex, hcomap, AddSubgroup.index_comap_of_surjective _ hφ, AddSubgroup.index_pi]`. Simplify using `[AddSubgroup.relIndex]`.
+-/
 theorem relIndex_perLat (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (n' : Type)
     [Fintype n'] [DecidableEq n'] (c : ℕ) (ϖ : 𝒪[k]) (hϖ : (ϖ : k) ≠ 0)

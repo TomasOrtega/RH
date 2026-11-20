@@ -21,6 +21,11 @@ private def rU (l L N M₀ : ℕ) (x : ZMod N) : Row M₀ :=
 private def rV (l L N M₀ : ℕ) : Row M₀ :=
   ![((topT l L N * l ^ L : ℕ) : ZMod M₀), ((N : ℕ) : ZMod M₀)]
 
+/- English proof (translation)
+Use `⟨((a / M : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Establish `hM : (M : ℚ) ≠ 0` using `by exact_mod_cast NeZero.ne M`. Rewrite using `[ZMod.val_natCast]`. Establish `h : (a : ℚ) = ((a % M : ℕ) : ℚ) + (M : ℚ) * ((a / M : ℕ) : ℚ)`. Conclude with `(Nat.mod_add_div a M).symm` after adjusting the coercions.
+
+Rewrite using `[Int.cast_natCast]`. Clear the denominators using the available nonvanishing facts. Conclude with `h`.
+-/
 private theorem nat_frac (a M : ℕ) [NeZero M] :
     ∃ j : ℤ, (a : ℚ) / (M : ℚ) = (((a : ZMod M).val : ℕ) : ℚ) / M + j := by
   refine ⟨((a / M : ℕ) : ℤ), ?_⟩
@@ -32,6 +37,11 @@ private theorem nat_frac (a M : ℕ) [NeZero M] :
   field_simp
   exact h
 
+/- English proof (translation)
+Use `fin_cases i`. Take `⟨j, hj⟩` from `nat_frac (N + x.val * topT l L N * l ^ L) M₀`. Use `⟨j, ?_⟩` and prove the remaining obligations. Simplify using `only [ixU, toQ, rU, ← h, Fin.zero_eta, Matrix.cons_val_zero]`. Rewrite using `[← hj]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Conclude with `⟨0, by simp [ixU, toQ, rU]⟩`.
+-/
 private theorem ixU_rU (l L N M₀ : ℕ) [NeZero M₀] (h : M₀ = N * l ^ L) (x : ZMod N) (i : Fin 2) :
     ∃ j : ℤ, ixU l L N x i = toQ M₀ (rU l L N M₀ x) i + j := by
   fin_cases i
@@ -41,6 +51,13 @@ private theorem ixU_rU (l L N M₀ : ℕ) [NeZero M₀] (h : M₀ = N * l ^ L) (
     rw [← hj]; push_cast; rfl
   · exact ⟨0, by simp [ixU, toQ, rU]⟩
 
+/- English proof (translation)
+Use `fin_cases i`. Take `⟨j, hj⟩` from `nat_frac (topT l L N * l ^ L) M₀`. Use `⟨j, ?_⟩` and prove the remaining obligations. Simplify using `only [ixV, toQ, rV, ← h, Fin.zero_eta, Matrix.cons_val_zero]`. Rewrite using `[← hj]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Take `⟨j, hj⟩` from `nat_frac N M₀`. Use `⟨j, ?_⟩` and prove the remaining obligations. Simplify using `only [ixV, toQ, rV, ← h, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero]`.
+
+Rewrite using `[← hj]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 private theorem ixV_rV (l L N M₀ : ℕ) [NeZero M₀] (h : M₀ = N * l ^ L) (i : Fin 2) :
     ∃ j : ℤ, ixV l L N i = toQ M₀ (rV l L N M₀) i + j := by
   fin_cases i
@@ -53,16 +70,29 @@ private theorem ixV_rV (l L N M₀ : ℕ) [NeZero M₀] (h : M₀ = N * l ^ L) (
     simp only [ixV, toQ, rV, ← h, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero]
     rw [← hj]; push_cast; rfl
 
+/- English proof (translation)
+Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).1 hc`.
+-/
 private theorem N_ne (l N : ℕ) [Fact l.Prime] (hc : Nat.Coprime l N) : (N : ZMod l) ≠ 0 := by
   rw [Ne, ZMod.natCast_eq_zero_iff]
   exact (Nat.Prime.coprime_iff_not_dvd Fact.out).1 hc
 
+/- English proof (translation)
+Introduce `h`. Establish `: ((2 : ℕ) : ZMod l) = 0` using `by exact_mod_cast h`. Rewrite `this` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 this)`.
+-/
 private theorem two_ne (l : ℕ) [Fact l.Prime] (h2 : l ≠ 2) : (2 : ZMod l) ≠ 0 := by
   intro h
   have : ((2 : ℕ) : ZMod l) = 0 := by exact_mod_cast h
   rw [ZMod.natCast_eq_zero_iff] at this
   exact h2 ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 this)
 
+/- English proof (translation)
+Establish `hN` using `mul_ne_zero (two_ne l h2) (N_ne l N hc)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (ZMod.castHom hl (ZMod l)) (congrFun h 0)` as an intermediate fact. Simplify using `only [rU, Pi.smul_apply, Matrix.cons_val_zero, smul_eq_mul, map_mul, map_natCast, map_ofNat, Pi.zero_apply, map_zero] at this`.
+
+Apply `hN` to reduce the goal to its premises. Simplify `this` using `[hL]`. Introduce `h`. Use `congrArg (ZMod.castHom hl (ZMod l)) (congrFun h 1)` as an intermediate fact. Simplify using `only [rV, Pi.smul_apply, Matrix.cons_val_zero, Matrix.cons_val_one, smul_eq_mul, map_mul, map_natCast, map_ofNat, Pi.zero_apply, map_zero] at this`.
+
+Conclude with `hN this`.
+-/
 private theorem ok_r (l L N M₀ : ℕ) [Fact l.Prime] (hl : l ∣ M₀) (hL : L ≠ 0) (h2 : l ≠ 2) (hc : Nat.Coprime l N)
     (x : ZMod N) : Ok (rU l L N M₀ x) (rV l L N M₀) := by
   have hN := mul_ne_zero (two_ne l h2) (N_ne l N hc)
@@ -79,6 +109,9 @@ private theorem ok_r (l L N M₀ : ℕ) [Fact l.Prime] (hl : l ∣ M₀) (hL : L
       Pi.zero_apply, map_zero] at this
     exact hN this
 
+/- English proof (translation)
+Use `⟨hc, ?_⟩` and prove the remaining obligations. Establish `hv : ∀ a : ℕ, (((a : ZMod M₀).val : ℕ) : ZMod l) = a` using `fun a => by`. Rewrite using `[ZMod.natCast_val, ZMod.cast_natCast hl]`. Simplify using `only [rU, rV, Matrix.cons_val_zero, Matrix.cons_val_one, hv, ZMod.val_zero]`. Simplify `N_ne l N hc` using `[hL]`.
+-/
 private theorem bas_r (l L N M₀ : ℕ) [Fact l.Prime] [NeZero M₀] (hl : l ∣ M₀) (hL : L ≠ 0) (hc : Nat.Coprime l N)
     (x : ZMod N) : Bas l N (rU l L N M₀ x) (rV l L N M₀) := by
   refine ⟨hc, ?_⟩
@@ -87,6 +120,11 @@ private theorem bas_r (l L N M₀ : ℕ) [Fact l.Prime] [NeZero M₀] (hl : l �
   simp only [rU, rV, Matrix.cons_val_zero, Matrix.cons_val_one, hv, ZMod.val_zero]
   simpa [hL] using N_ne l N hc
 
+/- English proof (translation)
+Rewrite using `[ZMod.natCast_eq_natCast_iff, h, pow_succ', ← mul_assoc]`. Apply `Nat.ModEq.mul_right'` to reduce the goal to its premises. Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Establish `hu : ((ZMod.unitOfCoprime l hc : (ZMod N)ˣ) : ZMod N) = l` using `ZMod.coe_unitOfCoprime l hc`. Simplify using `only [topT, Nat.cast_mul, ZMod.natCast_val, ZMod.cast_id', id]`.
+
+Rewrite using `[← hu, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ZMod.inv_coe_unit, ZMod.inv_coe_unit, ← Units.val_mul]`. Use `congr 1`. Use `group`.
+-/
 private theorem topT_step (l L N M₀ : ℕ) [NeZero N] (h : M₀ = N * l ^ L) (hc : Nat.Coprime l N) :
     ((topT l (L + 1) N * l ^ (L + 1) : ℕ) : ZMod M₀) = ((topT l L N * l ^ L : ℕ) : ZMod M₀) := by
   rw [ZMod.natCast_eq_natCast_iff, h, pow_succ', ← mul_assoc]
@@ -99,6 +137,11 @@ private theorem topT_step (l L N M₀ : ℕ) [NeZero N] (h : M₀ = N * l ^ L) (
   congr 1
   group
 
+/- English proof (translation)
+Use `topT_step l L N M₀ h hc` as an intermediate fact. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `only [dn, rU, Fin.zero_eta, Matrix.cons_val_zero, map_natCast]`. Rewrite using `[mul_assoc, mul_assoc, Nat.cast_add, Nat.cast_add, Nat.cast_mul x.val, Nat.cast_mul x.val, this]`.
+
+Simplify using `[dn, rU]`.
+-/
 private theorem dn_rU (l L N M₀ : ℕ) [NeZero N] (h : M₀ = N * l ^ L) (hc : Nat.Coprime l N) (x : ZMod N) :
     dn l M₀ (rU l (L + 1) N (l * M₀) x) = rU l L N M₀ x := by
   have := topT_step l L N M₀ h hc
@@ -108,6 +151,11 @@ private theorem dn_rU (l L N M₀ : ℕ) [NeZero N] (h : M₀ = N * l ^ L) (hc :
     rw [mul_assoc, mul_assoc, Nat.cast_add, Nat.cast_add, Nat.cast_mul x.val, Nat.cast_mul x.val, this]
   · simp [dn, rU]
 
+/- English proof (translation)
+Use `topT_step l L N M₀ h hc` as an intermediate fact. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `only [dn, rV, Fin.zero_eta, Matrix.cons_val_zero, map_natCast]`. Conclude with `this`.
+
+Simplify using `only [dn, rV, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero, map_natCast]`.
+-/
 private theorem dn_rV (l L N M₀ : ℕ) [NeZero N] (h : M₀ = N * l ^ L) (hc : Nat.Coprime l N) :
     dn l M₀ (rV l (L + 1) N (l * M₀)) = rV l L N M₀ := by
   have := topT_step l L N M₀ h hc
@@ -117,10 +165,16 @@ private theorem dn_rV (l L N M₀ : ℕ) [NeZero N] (h : M₀ = N * l ^ L) (hc :
     exact this
   · simp only [dn, rV, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero, map_natCast]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [h, topM]; ring, h ▸ Dvd.intro _ rfl, h ▸ Dvd.dvd.mul_left (pow_dvd_pow l (Nat.le_add_left n r)) N, hn, H.cop, H.g0⟩`.
+-/
 private theorem lev_r {l N c d : ℕ} {g : SL(2, ℤ)} (H : Hyp l N c d g) (n r M₀ : ℕ) (hn : 1 ≤ n)
     (h : M₀ = N * l ^ (r + n)) : Lev l n N M₀ (topM l n r (N * N)) g :=
   ⟨by rw [h, topM]; ring, h ▸ Dvd.intro _ rfl, h ▸ Dvd.dvd.mul_left (pow_dvd_pow l (Nat.le_add_left n r)) N, hn, H.cop, H.g0⟩
 
+/- English proof (translation)
+Establish `k : ∀ e : ℕ, Nat.Coprime e (6 * l * N) → Nat.Coprime e M₀` using `fun e he => by`. Rewrite using `[h]`. Conclude with `Nat.Coprime.mul_right (he.coprime_dvd_right (Dvd.intro_left _ rfl)) (Nat.Coprime.pow_right _ (he.coprime_dvd_right (Dvd.dvd.mul_right (Dvd.intro_left 6 rfl) N)))`. Conclude with `⟨h ▸ Nat.mul_pos (NeZero.pos N) (pow_pos (Fact.out : l.Prime).pos _), k c H.cc, k d H.cd⟩`.
+-/
 private theorem lv_r {l N c d : ℕ} [Fact l.Prime] [NeZero N] {g : SL(2, ℤ)} (H : Hyp l N c d g) (L M₀ : ℕ)
     (h : M₀ = N * l ^ L) : Lv c d M₀ := by
   have k : ∀ e : ℕ, Nat.Coprime e (6 * l * N) → Nat.Coprime e M₀ := fun e he => by
@@ -137,6 +191,9 @@ private def redLh (l r : ℕ) : (ZMod (l ^ (r + 1)))ˣ →* (ZMod (l ^ r))ˣ :=
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[(sCycZ Ω l r s).1]`. Use `congr 1`. Conclude with `((sSlD Ω ε X 1 one_pos).2.2.2.2.2.2.2 (topM l n r N) s).2.2.2.2 (l ^ r) _`.
+-/
 private theorem kap (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n r N : ℕ) [NeZero N] :
     (fun s : Ω ≃ₐ[ℚ] Ω => (redMh l n r N (cycM _ s))⁻¹) = fun s => (ReciprocityTheory.Gal.cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹ := by
   funext s
@@ -144,6 +201,9 @@ private theorem kap (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n r N : ℕ) [Ne
   congr 1
   exact ((sSlD Ω ε X 1 one_pos).2.2.2.2.2.2.2 (topM l n r N) s).2.2.2.2 (l ^ r) _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[(sCycZ Ω l r s).1, (sCycZ Ω l (r + 1) s).1, map_inv]`. Use `congr 1`. Conclude with `((sSlD Ω ε X 1 one_pos).2.2.2.2.2.2.2 (l ^ (r + 1)) s).2.2.2.2 (l ^ r) _`.
+-/
 private theorem kap' (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (r : ℕ) :
     (fun s : Ω ≃ₐ[ℚ] Ω => redLh l r (ReciprocityTheory.Gal.cycMod (F := ℚ) (Ω := Ω) l (r + 1) s)⁻¹) =
       fun s => (ReciprocityTheory.Gal.cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹ := by
@@ -152,6 +212,11 @@ private theorem kap' (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (r : ℕ) :
   congr 1
   exact ((sSlD Ω ε X 1 one_pos).2.2.2.2.2.2.2 (l ^ (r + 1)) s).2.2.2.2 (l ^ r) _
 
+/- English proof (translation)
+Substitute `hL'` using the available equality. Establish `lev` using `lev_r H n r M₀ hn h`. Establish `lv` using `lv_r H (r + n) M₀ h`. Establish `ok : Ok (rU l (r + n) N M₀ x) (rV l (r + n) N M₀)` using `ok_r l (r + n) N M₀ (h ▸ Dvd.dvd.mul_left (dvd_pow_self l (by omega)) N) (by omega) H.odd H.cop x`. Take `⟨β, hβ, hrel⟩` from `sTopRel Ω ε X l n N M₀ _ w g lev hL c d ws hws lv _ _ ok _ _ (ixU_rU l (r + n) N M₀ h x) (ixV_rV l (r + n) N M₀ h)`.
+
+Use `sBridge Ω ε X l n N M₀ _ w g lev hL _ _ ok _ (hws.coc n M₀ lv) _ β hβ hrel _ (redMh l n r (N * N))` as an intermediate fact. Rewrite `this` using `[kap X]`. Conclude with `this`.
+-/
 private theorem zeta_class_cohomology_compat (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N] (x : ZMod N) (c d w : ℕ) (g : SL(2, ℤ))
     (H : Hyp l N c d g) (ws) (hws : Laws X l c d ws) (hL : LiftsWith X l N w (cL X l N w)) (n r L M₀ : ℕ) [NeZero M₀]
     (hn : 1 ≤ n) (hL' : L = r + n) (h : M₀ = N * l ^ L) :
@@ -172,6 +237,23 @@ private theorem zeta_class_cohomology_compat (X : Tower Ω ε) (l : ℕ) [Fact l
 end UpperTheory.V.Z.Kato.Nb.one_le_level_alt
 
 open UpperTheory.V.Z.Kato.Nb.one_le_level_alt in
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l _ N _ x c d w g H ⟨ws, hws⟩ hL n r`. Establish `api` using `sCohApi Ω ε X l N w n (NeZero.pos N) _ (fun s => (ReciprocityTheory.Gal.cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹)`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `api.2.2.2.2.2.1 _ _`. Take `⟨M₀, h⟩ : ∃ M₀, M₀ = N * l ^ (r + n)` from `⟨_, rfl⟩`.
+
+Establish `h' : l * M₀ = N * l ^ (r + n + 1)` using `by rw [h]; ring`. Establish `h'' : l * M₀ = N * l ^ (r + 1 + n)` using `by rw [h]; ring`. Establish `lv` using `lv_r H _ M₀ h`. Establish `lv'` using `lv_r H _ _ h'`. Use `haveI : NeZero M₀ := ⟨lv.1.ne'⟩`.
+
+Use `haveI : NeZero (l * M₀) := ⟨lv'.1.ne'⟩`. Establish `lev` using `lev_r H n r M₀ hn h`. Establish `lev'` using `lev_r H n (r + 1) _ hn h''`. Establish `ok : Ok (rU l (r + n) N M₀ x) (rV l (r + n) N M₀)` using `ok_r l (r + n) N M₀ (h ▸ Dvd.dvd.mul_left (dvd_pow_self l (by omega)) N) (by omega) H.odd H.cop x`. Establish `ok' : Ok (rU l (r + n + 1) N (l * M₀) x) (rV l (r + n + 1) N (l * M₀))` using `ok_r l _ N _ (Dvd.intro _ rfl) (by omega) H.odd H.cop x`.
+
+Establish `A` using `zeta_class_cohomology_compat X l N x c d w g H ws hws hL n r _ M₀ hn rfl h`. Establish `B` using `zeta_class_cohomology_compat X l N x c d w g H ws hws hL n (r + 1) (r + n + 1) (l * M₀) hn (by omega) h'`. Establish `B'` using `(sCohApi Ω ε X l N w n (NeZero.pos N) _ _).2.2.2.2.2.2.1 _ (redLh l r) _ _ B`. Rewrite `B'` using `[kap' X]`. Establish `C` using `sXiCoh Ω ε X l n N M₀ _ w g lev hL _ _ ok _ (redMh l n r (N * N)) _ _ (hws.dist n l M₀ lv')`.
+
+Rewrite `C` using `[kap X]`. Use `api.1.trans B' (api.1.trans (api.2.1 _ _ fun s t => ?_) (api.1.trans C (api.1.symm A)))` and prove the remaining obligations. Establish `hd : topM l n r (N * N) ∣ topM l n (r + 1) (N * N)` using `Nat.mul_dvd_mul_right (pow_dvd_pow l (by omega)) _`. Establish `D` using `sXiDist Ω ε X l n N M₀ _ w g lev _ hd lev'.eq _ _ (bas_r l (r + n + 1) N (l * M₀) (Dvd.intro _ rfl) (by omega) H.cop x) (fun z => redMh l n r (N * N) z = t) (ws n (l * M₀) s)`. Rewrite `D` using `[dn_rU l _ N M₀ h H.cop, dn_rV l _ N M₀ h H.cop]`.
+
+Use `D using 1` and compare the differences between its conclusion and the goal. Establish `E` using `(sXiMul Ω ε X l n N (l * M₀) _ w g lev' _ _ ok' (fun _ => True)).2.2.2 (ws n (l * M₀) s)`. Rewrite using `[E _ (fun z => redMh l n r (N * N) (Units.map (ZMod.castHom hd (ZMod _)).toMonoidHom z)) t, GlobalTheory.KA.push]`. Simplify using `only [E _ (redMh l n (r + 1) (N * N))]`. Rewrite using `[Finset.sum_fiberwise_eq_sum_filter]`.
+
+Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `z`. Establish `: redLh l r (redMh l n (r + 1) (N * N) z) = redMh l n r (N * N) (Units.map (ZMod.castHom hd (ZMod _)).toMonoidHom z)`. Apply `Units.ext` to reduce the goal to its premises. Establish `e1` using `DFunLike.congr_fun (ZMod.castHom_comp (pow_dvd_pow l (Nat.le_succ r)) (Dvd.dvd.mul_right (pow_dvd_pow l (Nat.le_add_right (r + 1) n)) (N * N) : _ ∣ topM l n (r + 1) (N * N))) z.val`.
+
+Establish `e2` using `DFunLike.congr_fun (ZMod.castHom_comp (Dvd.dvd.mul_right (pow_dvd_pow l (Nat.le_add_right r n)) (N * N) : _ ∣ topM l n r (N * N)) hd) z.val`. Conclude with `e1.trans e2.symm`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, this]`.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.kato_norm_compatible_cyclotomic_tower :
     UpperTheory.V.Z.Kato.Nb.KatoClassNormCompatibleCyclotomic := by
   intro Ω _ _ _ ε X l _ N _ x c d w g H ⟨ws, hws⟩ hL n r

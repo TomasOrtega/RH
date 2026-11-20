@@ -11,6 +11,33 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.TorsLiftComplete
 
+/- English proof (translation)
+Introduce `V K _ _ _ _ n hc hn π hπ A₀ _ _ A _ _ i hA hpb s₀ hs₀`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal V) V := hc`. Use `haveI : HenselianLocalRing V := GlobalTheory.henselianLocalRing_of_henselianRing V`. Use `haveI : Smooth A.hom := hA.smooth`. Establish `hn' : IsUnit (n : Γ(Sp V, ⊤))`.
+
+Simplify using `using hn.map (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom`. Use `haveI := GlobalTheory.GrpTangent.etale_id_pow A hn'`. Set `T' : Over (Sp K)` to `𝟙_ (Over (Sp K))`. Set `T : Over (Sp V)` to `Over.mk (T'.hom ≫ spMap π)`. Establish `hwi : i ≫ A.hom = A₀.hom ≫ spMap π` using `hpb.1.w`.
+
+Establish `hpt : ∀ x : T' ⟶ A₀, (x.left ≫ i) ≫ A.hom = T.hom`. Introduce `x`. Rewrite using `[Category.assoc, hwi, ← Category.assoc, Over.w x]`. Both sides reduce to the same expression. Set `pt : (T' ⟶ A₀) → (T ⟶ A)` to `fun x => Over.homMk (x.left ≫ i) (hpt x)`.
+
+Establish `hone : pt 1 = 1`. Establish `h` using `hpb.2 T' 1 1 (pt 1) (pt 1) rfl rfl`. Rewrite `h` using `[_root_.mul_one]`. Establish `h2 : pt 1 * pt 1 = pt 1` using `Over.OverMorphism.ext h`. Conclude with `mul_eq_left.mp h2`.
+
+Establish `hpow : ∀ m : ℕ, (pt s₀) ^ m = pt (s₀ ^ m)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, hone]`. Consider the case `succ m ih`.
+
+Rewrite using `[pow_succ, pow_succ]`. Conclude with `Over.OverMorphism.ext (hpb.2 T' (s₀ ^ m) s₀ ((pt s₀) ^ m) (pt s₀) (by rw [ih]; rfl) rfl)`. Establish `hx : (pt s₀) ^ n = 1` using `by rw [hpow, hs₀, hone]`. Set `f : A.left ⟶ A.left` to `(𝟙 A ^ n).left`. Establish `hf : ∀ {Y : Over (Sp V)} (y : Y ⟶ A), y.left ≫ f = (y ^ n).left`.
+
+Introduce `Y y`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`. Establish `hone' : ∀ {Y : Over (Sp V)} , ((1 : Y ⟶ A)).left = Y.hom ≫ (η[A] : 𝟙_ (Over (Sp V)) ⟶ A).left`. Introduce `Y`. Rewrite using `[Hom.one_def, Over.comp_left]`.
+
+Use `congr 1`. Establish `hw : (s₀.left ≫ i) ≫ f = Spec.map (CommRingCat.ofHom π) ≫ (η[A] : 𝟙_ (Over (Sp V)) ⟶ A).left`. Use `hf (pt s₀)` as an intermediate fact. Rewrite `this` using `[hx, hone']`. Simplify `this` using `[pt, T, T']`.
+
+Take `⟨l, ⟨hl1, hl2⟩, huniq⟩` from `GlobalTheory.existsUnique_lift_of_etale_of_henselian f π hπ (s₀.left ≫ i) _ hw`. Establish `hls : l ≫ A.hom = (𝟙_ (Over (Sp V))).hom`. Establish `e : f ≫ A.hom = A.hom` using `Over.w (𝟙 A ^ n)`. Rewrite using `[← e, ← Category.assoc, hl2]`. Conclude with `Over.w (η[A] : 𝟙_ (Over (Sp V)) ⟶ A)`.
+
+Set `s : 𝟙_ (Over (Sp V)) ⟶ A` to `Over.homMk l hls`. Establish `hsn : ∀ s' : 𝟙_ (Over (Sp V)) ⟶ A, s' ^ n = 1 ↔ s'.left ≫ f = (η[A] : 𝟙_ (Over (Sp V)) ⟶ A).left`. Introduce `s'`. Establish `e1 : ((1 : 𝟙_ (Over (Sp V)) ⟶ A)).left = (η[A] : 𝟙_ (Over (Sp V)) ⟶ A).left`. Rewrite using `[hone']`.
+
+Conclude with `Category.id_comp _`. Rewrite using `[hf]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, e1]`.
+
+Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h, e1]`. Use `⟨s, ⟨(hsn s).2 hl2, hl1.symm⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `s' ⟨h1, h2⟩`.
+
+Conclude with `Over.OverMorphism.ext (huniq s'.left ⟨h2.symm, (hsn s').1 h1⟩)`.
+-/
 theorem existsUnique_torsion_lift : ∀ (V K : Type) [CommRing V] [IsLocalRing V] [IsNoetherianRing V] [Field K] (n : ℕ), IsAdicComplete (IsLocalRing.maximalIdeal V) V → IsUnit (n : V) → ∀ π : V →+* K, Function.Surjective π → ∀ (A₀ : Over (Sp K)) [GrpObj A₀] [IsCommMonObj A₀] (A : Over (Sp V)) [GrpObj A] [IsCommMonObj A] (i : A₀.left ⟶ A.left), IsAbelianScheme A → IsGrpPullback A₀ A (spMap π) i → ∀ s₀ : 𝟙_ (Over (Sp K)) ⟶ A₀, s₀ ^ n = 1 → ∃! s : 𝟙_ (Over (Sp V)) ⟶ A, s ^ n = 1 ∧ s₀.left ≫ i = spMap π ≫ s.left := by
   intro V K _ _ _ _ n hc hn π hπ A₀ _ _ A _ _ i hA hpb s₀ hs₀
   haveI : IsAdicComplete (IsLocalRing.maximalIdeal V) V := hc

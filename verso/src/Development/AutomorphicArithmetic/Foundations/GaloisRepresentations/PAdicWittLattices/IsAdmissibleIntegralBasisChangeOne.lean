@@ -25,26 +25,47 @@ namespace Tower
 
 variable {B : Scheme.{0}} {G : Type} [Group G] (X : Tower B G) {R : Type} [Field R] (T : Th.{u} B R)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.Δ.mul_mem a'.1 a.1, fun u hu => by simpa [mul_assoc] using a'.2 _ (a.2 u hu)⟩`.
+-/
 theorem admitted.mul {X : Tower B G} {i j m : X.ι} {h h' : G} (a : X.admitted i j h) (a' : X.admitted j m h') : X.admitted i m (h' * h) :=
   ⟨X.Δ.mul_mem a'.1 a.1, fun u hu => by simpa [mul_assoc] using a'.2 _ (a.2 u hu)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.Δ.one_mem, fun u hu => by simpa using h hu⟩`.
+-/
 theorem isAdmissibleIntegralBasisChange_one {i j : X.ι} (h : X.K i ≤ X.K j) : X.admitted i j 1 := ⟨X.Δ.one_mem, fun u hu => by simpa using h hu⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.K_le j k hk, fun _ hu => (X.K j).mul_mem ((X.K j).mul_mem hk hu) ((X.K j).inv_mem hk)⟩`.
+-/
 theorem tower_admissible_self {j : X.ι} {k : G} (hk : k ∈ X.K j) : X.admitted j j k :=
   ⟨X.K_le j k hk, fun _ hu => (X.K j).mul_mem ((X.K j).mul_mem hk hu) ((X.K j).inv_mem hk)⟩
 
+/- English proof (translation)
+The claim follows from `dif_pos a`.
+-/
 theorem pl_eq {i j : X.ι} {h : G} (a : X.admitted i j h) : X.pl T i j h = T.pull (X.tr i j h a.1 a.2) (X.tr_q ..) := dif_pos a
 
+/- English proof (translation)
+Rewrite using `[X.pl_eq T a, X.pl_eq T a', X.pl_eq T (a.mul a'), ← T.pull_comp _ _ _ _ (by rw [Category.assoc, X.tr_q, X.tr_q])]`. Simplify using `only [X.tr_mul i j m h h' a.1 a.2 a'.1 a'.2 (a.mul a').1 (a.mul a').2]`.
+-/
 theorem pl_pl {i j m : X.ι} {h h' : G} (a : X.admitted i j h) (a' : X.admitted j m h') (x : T.H (X.q m)) :
     X.pl T i j h (X.pl T j m h' x) = X.pl T i m (h' * h) x := by
   rw [X.pl_eq T a, X.pl_eq T a', X.pl_eq T (a.mul a'), ← T.pull_comp _ _ _ _ (by rw [Category.assoc, X.tr_q, X.tr_q])]
   simp only [X.tr_mul i j m h h' a.1 a.2 a'.1 a'.2 (a.mul a').1 (a.mul a').2]
 
+/- English proof (translation)
+Rewrite using `[pl_eq X T (tower_admissible_self X hk)]`. Establish `e` using `X.tr_self j k (tower_admissible_self X hk).1 (tower_admissible_self X hk).2 hk`. Simplify using `only [e, T.pull_id]`.
+-/
 theorem pl_self {j : X.ι} {k : G} (hk : k ∈ X.K j) (x : T.H (X.q j)) : X.pl T j j k x = x := by
   rw [pl_eq X T (tower_admissible_self X hk)]
   have e := X.tr_self j k (tower_admissible_self X hk).1 (tower_admissible_self X hk).2 hk
   simp only [e, T.pull_id]
 
+/- English proof (translation)
+Rewrite using `[← X.pl_pl T a (X.tower_admissible_self hk), X.pl_self T hk]`.
+-/
 theorem pl_left {i j : X.ι} {h k : G} (a : X.admitted i j h) (hk : k ∈ X.K j) (x : T.H (X.q j)) :
     X.pl T i j (k * h) x = X.pl T i j h x := by
   rw [← X.pl_pl T a (X.tower_admissible_self hk), X.pl_self T hk]

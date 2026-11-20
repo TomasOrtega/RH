@@ -27,6 +27,23 @@ open GlobalTheory.TraceLevelPf
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hW : IsWeilDatumO B.F.ψ (Vc D i) (Wc D i) _ _ ω` using `hω`. Establish `hlift` using `fun g => exists_lift_datWp hB hBo e hent g`. Use `haveI : Fintype B.G.P.H := Fintype.ofFinite _`. Establish `hQ' : (GlobalTheory.FlatVecSum.princ B).admitted τ.Q` using `hQ`. Establish `hfθ : IsThetaFunO B.F.ψ (Vc D i) (Wc D i) ((GlobalTheory.FlatVecSum.princ B).vecFlat τ)` using `GlobalTheory.GalLift.Vec.theta_of_thetaAt hB.frame.vac.1 hB.frame.vac.2.inf (Base.isThetaAt_vecAt (GlobalTheory.FlatVecSum.princ_good hB) hQ' _) hB.frame.vac.2.theta`.
+
+Establish `hsum : B.vecFlat τ = ∑ p : B.G.P.H, (((B.G.P.chi p)⁻¹ : ℂˣ) : ℂ) • ω (1, (hlift (e.symm p)).choose) ((GlobalTheory.FlatVecSum.princ B).vecFlat τ)` using `GlobalTheory.FlatVecSum.vecFlat_eq_sum_princ hB (D.sp.V_sig _) hτ hQ hω (fun p => (hlift (e.symm p)).choose) (fun p => by`. Use `lifts_of_datWp hBo e hent (hlift (e.symm p)).choose_spec` as an intermediate fact. Rewrite using `[MulEquiv.apply_symm_apply] at this)` and apply the resulting hypothesis. Use function extensionality and compare the values at `x`. Establish `hL : levelTrace R i U ψ (series B.F ω ((GlobalTheory.FlatVecSum.princ B).vecFlat τ) hh P) x = ∑ g, (if hg : g ∈ U then D.what₂.embLL (((ψ ⟨g, hg⟩)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) else 0) * series B.F ω ((GlobalTheory.FlatVecSum.princ B).vecFlat τ) hh P (x * (hlift g).choose)`.
+
+Unfold `levelTrace gaL`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`.
+
+Use `show Lev.actG0 _ _ _ _ _ x = _`. Rewrite using `[Lev.actG0]`. Use `split_ifs with hk`. Rewrite using `[GlobalTheory.CuspMult.EqCut.levChi_flag rfl rfl, inv_one]`. Conclude with `one_mul _`.
+
+Conclude with `absurd (hlift g) hk`. Establish `hR : series B.F ω (B.vecFlat τ) hh P x = ∑ p : B.G.P.H, (((B.G.P.chi p)⁻¹ : ℂˣ) : ℂ) * series B.F ω ((GlobalTheory.FlatVecSum.princ B).vecFlat τ) hh P (x * (hlift (e.symm p)).choose)`. Rewrite using `[hsum, GlobalTheory.SpecFac.series_sum hB ω _ _ _ (fun p _ => hW.om_pres _ _ hfθ)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[series_om_fin hB hW hfθ hh P x (hlift (e.symm p)).choose_spec.1]`.
+
+Rewrite using `[hL, hR]`. Use `symm`. Use `Fintype.sum_of_injective (fun p : B.G.P.H => e.symm p) (fun p q hpq => Subtype.ext (e.symm.injective hpq)) _ _ (fun g hg => ?_) (fun p => ?_)` and prove the remaining obligations. Rewrite using `[dif_neg, zero_mul]`. Introduce `hgU`.
+
+Conclude with `hg ⟨⟨e g, (hU g).2 hgU⟩, e.symm_apply_apply g⟩`. Establish `hp : e.symm p ∈ U` using `(hU _).1 (by rw [MulEquiv.apply_symm_apply]; exact p.2)`. Establish `key : ((B.G.P.chi p : ℂˣ) : ℂ) = D.what₂.embLL ((ψ ⟨e.symm p, hp⟩ : D.what₂.LLˣ) : D.what₂.LL)`. Establish `hp' : e (e.symm p) ∈ B.G.P.H` using `by rw [MulEquiv.apply_symm_apply]; exact p.2`. Use `hchi ⟨e.symm p, hp⟩ hp'` as an intermediate fact.
+
+Establish `hpe : (⟨e (e.symm p), hp'⟩ : B.G.P.H) = p` using `Subtype.ext (e.apply_symm_apply p)`. Rewrite `this` using `[hpe]`. Conclude with `this`. Rewrite using `[dif_pos hp, Units.val_inv_eq_inv_val, key, Units.val_inv_eq_inv_val, map_inv₀]`.
+-/
 theorem traceLevel_flat (R : RealDat D A Ks) (i : Fin D.R.m) (B : Base (Vc D i) (Wc D i)) (hB : B.Good) (hBo : BaseOf R i B)
     (U : Subgroup G) (ψ : U →* D.what₂.LLˣ) (e : G ≃* G0 B.G.Pg (Wc D i).rank)
     (hent : ∀ (g : G) (P : Pl D.host.E) (h : P ∈ B.G.Pg) (h' : P ∈ R.Pg) (a c : Fin (Wc D i).rank),
@@ -89,6 +106,13 @@ end GlobalTheory.TraceFlatLevel
 
 namespace GlobalTheory.BigOn.Exp.TupLe
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p j hr hm ρ hρ hpin hlev i b ψ ω hψ hQ hω h P`. Establish `hL` using `GlobalTheory.BigOn.links2_of_rows _ _ _ _ _ _ _ _ _ _ p hr hm.1`. Establish `hC : GlobalTheory.Hk3.Core (R2 p) (F2 p)` using `⟨hL.1.lev, hL.1.grp, hL.1.fam, hL.1.models, hL.1.chain, hL.1.thP⟩`. Establish `hBo : BaseOf (R2 p) j (ρ.B i j b)` using `{ baseOf_of_realPin_at (cG := p.cG) hC.lev hρ hpin i j b with }`. Use `GlobalTheory.TraceFlatLevel.traceLevel_flat (R2 p) j (ρ.B i j b) (hρ.base i j b) hBo (F2 p).P0 (F2 p).ψ0⁻¹ ((p.R.eG.trans p.cG).trans (ρ.eG i j b)) (fun g P h h' a c => ?_) (fun g => mem_level_iff hm.2.2 hlev i j b g) (fun u hu => ?_) ψ hψ hQ ω hω h P` and prove the remaining obligations.
+
+Establish `e1` using `hpin.grp i j b (p.cG (p.R.eG g)) P h h' a c`. Rewrite `e1` using `[MulEquiv.symm_apply_apply]`. Conclude with `e1`. Use `(level_chi hm.2.2 hρ hlev i j b u hu).1.trans ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀]`.
+
+Both sides reduce to the same expression.
+-/
 theorem traceSt : TraceSt := by
   intro D L hT Gi Gl Kc Y cX ex Csz p j hr hm ρ hρ hpin hlev i b ψ ω hψ hQ hω h P
   have hL := GlobalTheory.BigOn.links2_of_rows _ _ _ _ _ _ _ _ _ _ p hr hm.1

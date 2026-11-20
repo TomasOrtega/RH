@@ -21,11 +21,17 @@ namespace GlobalTheory.GalDef.RunPart
 
 open GlobalTheory.DefiniteBC
 
+/- English proof (translation)
+Unfold `spehInf`. Conclude with `List.le_sum_of_mem (List.mem_map.2 ⟨k, List.mem_range.2 hk, rfl⟩)`.
+-/
 theorem map_le_spehInf (d k : ℕ) (hk : k < d) (m : Multiset ℂ) :
     m.map (· + (((d : ℂ) - 1) / 2 - k)) ≤ spehInf d m := by
   unfold spehInf
   exact List.le_sum_of_mem (List.mem_map.2 ⟨k, List.mem_range.2 hk, rfl⟩)
 
+/- English proof (translation)
+Unfold `infOfWeight at hx`. Take `⟨k, -, rfl⟩` from `Multiset.mem_map.1 hx`. Use `⟨k, k.2, ?_⟩` and prove the remaining obligations. Simplify using `[wAt, k.2]`.
+-/
 theorem mem_infOfWeight {n : ℕ} (lam : DomWeight n) (x : ℂ) (hx : x ∈ infOfWeight lam) :
     ∃ j < n, x = (wAt lam j : ℂ) + (((n : ℂ) - 1) / 2 - (j : ℕ)) := by
   unfold infOfWeight at hx
@@ -33,6 +39,21 @@ theorem mem_infOfWeight {n : ℕ} (lam : DomWeight n) (x : ℂ) (hx : x ∈ infO
   refine ⟨k, k.2, ?_⟩
   simp [wAt, k.2]
 
+/- English proof (translation)
+Take `⟨hpt, hconst, hleft, hright⟩` from `hrun`. Establish `hval : ∀ k < d, ∃ j < n, z + (((d : ℂ) - 1) / 2 - k) = (wAt lam j : ℂ) + (((n : ℂ) - 1) / 2 - (j : ℕ))` using `fun k hk => mem_infOfWeight lam _ (Multiset.mem_of_le hle (Multiset.mem_of_le (map_le_spehInf d k hk m) (Multiset.mem_map_of_mem _ hz)))`. Establish `ht0 : 0 < t` using `by omega`. Take `⟨j0, hj0, e0⟩` from `hval 0 (by omega)`. Use `set c : ℤ := wAt lam j0 - j0 with hc`.
+
+Establish `hvalc : ∀ k < d, ∃ j < n, wAt lam j - (j : ℤ) = c - k`. Introduce `k hk`. Take `⟨j, hj, e⟩` from `hval k hk`. Use `⟨j, hj, ?_⟩` and prove the remaining obligations. Establish `: ((wAt lam j - (j : ℤ) : ℤ) : ℂ) = ((c - k : ℤ) : ℂ)`.
+
+Rewrite using `[hc]`. Use `push_cast`. Move the coercions through the operations in `at e0 e`. Take the linear combination `e0 - e`. Conclude with `this` after adjusting the coercions.
+
+Establish `hmono : ∀ i j, i ≤ j → j < n → wAt lam j ≤ wAt lam i`. Introduce `i j hij hj`. Simplify using `only [wAt, hj, dif_pos, show i < n by omega]`. Conclude with `lam.anti (Fin.mk_le_mk.2 hij)`. Establish `hB` using `fun (c' : ℤ) (h : ∀ i < t, ∃ j < n, wAt lam j - j = c' - i) => GlobalTheory.block_is_the_run n p t (wAt lam) c' hmono hpt (by omega) (by omega) hconst hleft hright h`.
+
+Establish `hcp : c = wAt lam p - p` using `hB c fun i hi => hvalc i (by omega)`. Establish `hdt : d = t`. Assume the negation of the conclusion as `hne`. Use `hB (c - 1) fun i hi => by` as an intermediate fact. Take `⟨j, hj, e⟩` from `hvalc (i + 1) (by omega)`.
+
+Conclude with `⟨j, hj, by push_cast at e; linarith⟩`. Use linear arithmetic over natural numbers and integers. Use `⟨hdt, ?_⟩` and prove the remaining obligations. Establish `hc' : (c : ℂ) = (wAt lam p : ℂ) - (p : ℕ)` using `by rw [hcp]; push_cast; ring`. Establish `: (c : ℂ) = (wAt lam j0 : ℂ) - (j0 : ℕ)` using `by rw [hc]; push_cast; ring`.
+
+Substitute `hdt` using the available equality. Move the coercions through the operations in `at e0`. Take the linear combination `e0 - this + hc'`.
+-/
 theorem entry_of_run {n t : ℕ} (lam : DomWeight n) (p : ℕ) (hn : n < 2 * t) (hrun : IsRunAt lam p t)
     (d : ℕ) (m : Multiset ℂ) (hle : spehInf d m ≤ infOfWeight lam) (htd : t ≤ d) (z : ℂ) (hz : z ∈ m) :
     d = t ∧ z = (wAt lam p : ℂ) + ((n : ℂ) - 1) / 2 - (p : ℕ) - ((t : ℂ) - 1) / 2 := by
@@ -77,6 +98,23 @@ end GlobalTheory.GalDef.RunPart
 
 open GlobalTheory.GalDef.RunPart in
 
+/- English proof (translation)
+Introduce `n t lam p hn hrun c d M hd hM hsum i hti`. Establish `hle : ∀ j, spehInf (d j) (M j) ≤ infOfWeight lam` using `fun j => by`. Rewrite using `[← hsum]`. Conclude with `Finset.single_le_sum (f := fun j => spehInf (d j) (M j)) (fun _ _ => Multiset.zero_le _) (Finset.mem_univ j)`. Take `⟨z, hz⟩` from `Multiset.exists_mem_of_ne_zero (hM i)`.
+
+Take `⟨hdi, hzv⟩` from `entry_of_run lam p hn hrun (d i) (M i) (hle i) hti z hz`. Use `set v : ℂ := (wAt lam p : ℂ) + ((n : ℂ) - 1) / 2 - (p : ℕ) - ((t : ℂ) - 1) / 2 with hv`. Establish `hall : ∀ z' ∈ M i, z' = v` using `fun z' hz' => (entry_of_run lam p hn hrun (d i) (M i) (hle i) hti z' hz').2`. Establish `hnd : ∀ j, (spehInf (d j) (M j)).Nodup` using `fun j => Multiset.nodup_of_le (hle j) (nodup_infOfWeight lam)`. Use `⟨hdi, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hnodup : (M i).Nodup` using `(Multiset.nodup_of_le (map_le_spehInf (d i) 0 (by omega) (M i)) (hnd i)).of_map _`. Rewrite `hnodup`, the goal using `[Multiset.eq_replicate.2 ⟨rfl, hall⟩]`. Establish `hc1 : Multiset.card (M i) ≤ 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Take `⟨k, hk⟩ : ∃ k, Multiset.card (M i) = k + 2` from `⟨Multiset.card (M i) - 2, by omega⟩`. Rewrite `hnodup` using `[hk, Multiset.replicate_succ, Multiset.replicate_succ, Multiset.nodup_cons]`. Conclude with `hnodup.1 (Multiset.mem_cons_self _ _)`. Establish `hc0 : Multiset.card (M i) ≠ 0` using `fun h => hM i (Multiset.card_eq_zero.1 h)`. Rewrite using `[show Multiset.card (M i) = 1 by omega, Multiset.replicate_one]`.
+
+Introduce `j hji`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨z', hz'⟩` from `Multiset.exists_mem_of_ne_zero (hM j)`. Take `⟨hdj, hz'v⟩` from `entry_of_run lam p hn hrun (d j) (M j) (hle j) hlt z' hz'`.
+
+Establish `ht0 : 0 < t` using `by omega`. Establish `hmem : ∀ k, 0 < d k → ∀ w ∈ M k, w + (((d k : ℂ) - 1) / 2 - ((0 : ℕ) : ℂ)) ∈ spehInf (d k) (M k)` using `fun k hk w hw => Multiset.mem_of_le (map_le_spehInf (d k) 0 hk (M k)) (Multiset.mem_map_of_mem _ hw)`. Establish `hpair : spehInf (d i) (M i) + spehInf (d j) (M j) ≤ infOfWeight lam`. Rewrite using `[← hsum]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hdis` using `(Multiset.nodup_add.1 (Multiset.nodup_of_le hpair (nodup_infOfWeight lam))).2.2`. Establish `h1` using `hmem i (by omega) z hz`. Establish `h2` using `hmem j (by omega) z' hz'`. Rewrite `h1` using `[hdi, hzv]`. Rewrite `h2` using `[hdj, hz'v]`.
+
+Rewrite `hdis` using `[hdi, hdj]`. Conclude with `Multiset.disjoint_left.1 hdis h1 h2`.
+-/
 theorem GlobalTheory.GalDef.spehPart_is_run : ∀ (n t : ℕ) (lam : DomWeight n) (p : ℕ), n < 2 * t → GlobalTheory.GalDef.IsRunAt lam p t →
   ∀ (c : ℕ) (d : Fin c → ℕ) (M : Fin c → Multiset ℂ), (∀ i, 1 ≤ d i) → (∀ i, M i ≠ 0) →
     ∑ i, spehInf (d i) (M i) = infOfWeight lam →

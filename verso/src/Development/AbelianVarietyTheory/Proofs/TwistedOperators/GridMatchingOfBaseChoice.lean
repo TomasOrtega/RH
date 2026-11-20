@@ -18,6 +18,13 @@ noncomputable section
 
 namespace GlobalTheory.RowLift
 
+/- English proof (translation)
+Introduce `hP D large₂ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hb CF hs`. Establish `hsc : ch.sc.cGap = 1` using `by rw [hs]`. Take `⟨G, hG, hsp, harr⟩` from `GlobalTheory.GridJoin.exists_gridPre hP.discreteSeriesUpqExists hP.discreteSeriesCover hP.harishChandraModules hS.host hS.size hS.core hsc ch.W hb.weil`. Establish `hfr : ∀ i, i ≤ D.R.m → Formalism.L2.DIV.IsFrame (G.V i 0).β (G.V i 0).Λ`. Introduce and unpack `(_ | i) hi`.
+
+Take `⟨c, h⟩` from `hS.core.lev.βY 0 (by have := D.R.two_le_m; omega)`. Conclude with `h.1`. Take `⟨c, h⟩` from `(hG.spaces.vert i 0 hi (Nat.zero_le _)).frame`. Conclude with `h.1`. Take `⟨m00, mV, hm, hν, hfd⟩` from `GlobalTheory.ColMeas.measCol_of_choice ch G hG.meas hsp hfr hb.vol`.
+
+Use `⟨GlobalTheory.GridJoin.withMeas G m00 mV G.mP G.mX, ⟨GlobalTheory.GridJoin.isSpaces_withMeas hG.spaces, GlobalTheory.GridJoin.isChars_withMeas hG.chars, GlobalTheory.GridJoin.isArrows_withMeas hG.arrows, hm, GlobalTheory.GridJoin.isData_withMeas hG.data⟩, ⟨fun i hi => (hsp.vert i …` and prove the remaining obligations.
+-/
 theorem exists_rowMatchS : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (large₂ : SizeData₂ D)
     {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A},

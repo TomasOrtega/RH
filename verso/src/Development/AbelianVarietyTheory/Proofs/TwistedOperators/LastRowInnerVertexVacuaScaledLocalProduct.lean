@@ -26,6 +26,9 @@ namespace GlobalTheory.RowKFix.LocProd
 
 open GlobalTheory.SplitFlip GlobalTheory.RowVacScalar
 
+/- English proof (translation)
+Take `⟨n, hn⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`. Establish `h : Edge.theta m j ∈ (oppositePath m).tail`. Rewrite using `[oppositePath, hn, List.range_succ_eq_map, List.map_cons, List.cons_append, List.tail_cons, ← List.range_succ_eq_map]`. Conclude with `List.mem_append_right _ (List.mem_map.2 ⟨j, List.mem_reverse.2 (List.mem_range.2 (by omega)), rfl⟩)`. Conclude with `List.mem_map.2 ⟨_, h, rfl⟩`.
+-/
 theorem mem_inner_col {m j : ℕ} (hj : j + 1 + 1 < m) : (m, j + 1) ∈ innerVertices (oppositePath m) := by
   obtain ⟨n, hn⟩ : ∃ n, m = n + 1 := ⟨m - 1, by omega⟩
   have h : Edge.theta m j ∈ (oppositePath m).tail := by
@@ -35,6 +38,9 @@ theorem mem_inner_col {m j : ℕ} (hj : j + 1 + 1 < m) : (m, j + 1) ∈ innerVer
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RowDetLocal.detIdl_eq_locIdele V g w ⟨_, hw⟩ _ (GlobalTheory.RowDetLocal.gdet_inBasis_val V h β w ⟨g, hg⟩)`.
+-/
 theorem detIdl_eq {w : Pl D.host.E} (hw : Formalism.L2.NTheta.IsIdemAt (idemAt w) w) (V : HSp D) {n : ℕ} (h : n = V.rank)
     (β : GL (Fin V.rank) (Lev.EAf D)) {g : GA D V} (hg : g ∈ GfC V) :
     detIdl (idemAt w) V g = GlobalTheory.LFun.locIdele D.host.F w (gdet (inBasis h β w (Lev.finE V g))) :=
@@ -46,6 +52,9 @@ def trCoord (w : Pl D.host.E) {a b a' b' : ℕ} (ha : a' = a) (hb : b' = b) (β 
     (y : Matrix (Fin a) (Fin b) (AE D)) : Matrix (Fin b') (Fin a') (Kw w) :=
   ((((loc w β)⁻¹).val * (y.map fun a => cpt w (toEAf D a)) * (loc w γ).val).submatrix (Fin.cast ha) (Fin.cast hb))ᵀ
 
+/- English proof (translation)
+Establish `e1 : ((HMul.hMul (Formalism.L2.Theta.mt V k⁻¹) y).map fun a => cpt w (toEAf D a)) = HMul.hMul (loc w (Lev.finE V k⁻¹)).val (y.map fun a => cpt w (toEAf D a))` using `Matrix.map_mul (f := (cpt w).comp (toEAf D))`. Establish `e2 : (Assignment.one.read (inBasis ha β w (Lev.finE V k))).val = (inBasis ha β w (Lev.finE V k⁻¹)).valᵀ`. Rewrite using `[map_inv (Lev.finE V), map_inv (inBasis ha β w)]`. Both sides reduce to the same expression. Rewrite using `[e2, trCoord, trCoord, e1, GlobalTheory.RowMoveAt.mul_sub_cast, GlobalTheory.RowMoveAt.inBasis_val, Matrix.transpose_mul]`.
+-/
 theorem trCoord_left (w : Pl D.host.E) (V : HSp D) {b a' b' : ℕ} (ha : a' = V.rank) (hb : b' = b)
     (β : GL (Fin V.rank) (Lev.EAf D)) (γ : GL (Fin b) (Lev.EAf D)) (k : GA D V) (y : Matrix (Fin V.rank) (Fin b) (AE D)) :
     trCoord w ha hb β γ (HMul.hMul (Formalism.L2.Theta.mt V k⁻¹) y) =
@@ -57,6 +66,9 @@ theorem trCoord_left (w : Pl D.host.E) (V : HSp D) {b a' b' : ℕ} (ha : a' = V.
     rw [map_inv (Lev.finE V), map_inv (inBasis ha β w)]; rfl
   rw [e2, trCoord, trCoord, e1, GlobalTheory.RowMoveAt.mul_sub_cast, GlobalTheory.RowMoveAt.inBasis_val, Matrix.transpose_mul]
 
+/- English proof (translation)
+Establish `e1 : ((HMul.hMul y (Formalism.L2.Theta.mt V k)).map fun a => cpt w (toEAf D a)) = HMul.hMul (y.map fun a => cpt w (toEAf D a)) (loc w (Lev.finE V k)).val` using `Matrix.map_mul (f := (cpt w).comp (toEAf D))`. Establish `e2 : ((Assignment.one.read (inBasis hb γ w (Lev.finE V k)))⁻¹).val = (inBasis hb γ w (Lev.finE V k)).valᵀ` using `rfl`. Rewrite using `[e2, trCoord, trCoord, e1, GlobalTheory.RowMoveAt.sub_mul_cast, GlobalTheory.RowMoveAt.inBasis_val, Matrix.transpose_mul]`.
+-/
 theorem trCoord_right (w : Pl D.host.E) (V : HSp D) {a a' b' : ℕ} (ha : a' = a) (hb : b' = V.rank)
     (β : GL (Fin a) (Lev.EAf D)) (γ : GL (Fin V.rank) (Lev.EAf D)) (k : GA D V) (y : Matrix (Fin a) (Fin V.rank) (AE D)) :
     trCoord w ha hb β γ (HMul.hMul y (Formalism.L2.Theta.mt V k)) =
@@ -67,6 +79,9 @@ theorem trCoord_right (w : Pl D.host.E) (V : HSp D) {a a' b' : ℕ} (ha : a' = a
   have e2 : ((Assignment.one.read (inBasis hb γ w (Lev.finE V k)))⁻¹).val = (inBasis hb γ w (Lev.finE V k)).valᵀ := rfl
   rw [e2, trCoord, trCoord, e1, GlobalTheory.RowMoveAt.sub_mul_cast, GlobalTheory.RowMoveAt.inBasis_val, Matrix.transpose_mul]
 
+/- English proof (translation)
+Rewrite using `[oppArgs, dif_pos ⟨hl, rfl⟩]`. Both sides reduce to the same expression.
+-/
 theorem oppArgs_theta (B : Frames G) (t : T) (w : Pl D.host.E)
     (x : ∀ i : Fin D.R.m, Mx D (G.V (.grid i D.R.m)).rank (G.V (.grid (i + 1) D.R.m)).rank)
     (y : ∀ j : Fin D.R.m, Mx D (G.V (.grid D.R.m (j + 1))).rank (G.V (.grid D.R.m j)).rank) {l : ℕ} (hl : l < D.R.m) :
@@ -79,12 +94,18 @@ abbrev kapCol (B : Frames G) (t : T) (w : Pl D.host.E) {j : ℕ} (hj : j + 1 + 1
     GL (Fin ((locGrid G t w).rank (D.R.m, j + 1))) (Kw w) :=
   inBasis (rank_vertex G t w (X := (D.R.m, j + 1)) ⟨le_rfl, by omega⟩) (B.β D.R.m (j + 1)) w (Lev.finE (G.V (.grid D.R.m (j + 1))) k)
 
+/- English proof (translation)
+Rewrite using `[movY, Function.update_self, actO, inv_inv, GlobalTheory.LatStabScalar.mt_one, Matrix.one_mul]`.
+-/
 theorem movY_two {j : ℕ} (hj : j + 1 + 1 < D.R.m) (k : GA D (G.V (.grid D.R.m (j + 1))))
     (y : ∀ j : Fin D.R.m, Mx D (G.V (.grid D.R.m (j + 1))).rank (G.V (.grid D.R.m j)).rank) (h : j + 1 < D.R.m) :
     movY G j hj k y ⟨j + 1, h⟩ = HMul.hMul (y ⟨j + 1, h⟩ : Matrix (Fin (G.V (.grid D.R.m (j + 1 + 1))).rank)
       (Fin (G.V (.grid D.R.m (j + 1))).rank) (AE D)) (Formalism.L2.Theta.mt (G.V (.grid D.R.m (j + 1))) k) := by
   rw [movY, Function.update_self, actO, inv_inv, GlobalTheory.LatStabScalar.mt_one, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[movY, Function.update_of_ne (fun h => by simp [Fin.ext_iff] at h), Function.update_self, actO, inv_one, GlobalTheory.LatStabScalar.mt_one, Matrix.mul_one]`.
+-/
 theorem movY_one {j : ℕ} (hj : j + 1 + 1 < D.R.m) (k : GA D (G.V (.grid D.R.m (j + 1))))
     (y : ∀ j : Fin D.R.m, Mx D (G.V (.grid D.R.m (j + 1))).rank (G.V (.grid D.R.m j)).rank) (h : j < D.R.m) :
     movY G j hj k y ⟨j, h⟩ = HMul.hMul (Formalism.L2.Theta.mt (G.V (.grid D.R.m (j + 1))) k⁻¹)
@@ -92,6 +113,9 @@ theorem movY_one {j : ℕ} (hj : j + 1 + 1 < D.R.m) (k : GA D (G.V (.grid D.R.m 
   rw [movY, Function.update_of_ne (fun h => by simp [Fin.ext_iff] at h), Function.update_self, actO, inv_one,
     GlobalTheory.LatStabScalar.mt_one, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[movY, Function.update_of_ne (fun h => h1 (by simpa [Fin.ext_iff] using h)), Function.update_of_ne (fun h => h2 (by simpa [Fin.ext_iff] using h))]`.
+-/
 theorem movY_other {j : ℕ} (hj : j + 1 + 1 < D.R.m) (k : GA D (G.V (.grid D.R.m (j + 1))))
     (y : ∀ j : Fin D.R.m, Mx D (G.V (.grid D.R.m (j + 1))).rank (G.V (.grid D.R.m j)).rank) {l : ℕ} (h : l < D.R.m)
     (h1 : l ≠ j + 1) (h2 : l ≠ j) : movY G j hj k y ⟨l, h⟩ = y ⟨l, h⟩ := by
@@ -100,6 +124,17 @@ theorem movY_other {j : ℕ} (hj : j + 1 + 1 < D.R.m) (k : GA D (G.V (.grid D.R.
 
 omit G in
 
+/- English proof (translation)
+Establish `hone : ∀ X : ℕ × ℕ, X ≠ (m, j + 1) → (Pi.mulSingle (m, j + 1) κ : Γ.VertexGroup) X = 1` using `fun X hX => Pi.mulSingle_eq_of_ne hX _`. Establish `hsame : (Pi.mulSingle (m, j + 1) κ : Γ.VertexGroup) (m, j + 1) = κ` using `Pi.mulSingle_eq_same _ _`. Use function extensionality and compare the values at `b`. Consider the cases of `b with`. Consider the case `ex i l`.
+
+Distinguish the cases in `h : l = m`. Establish `e1` using `hone (i, l) (by simp; omega)`. Establish `e2` using `hone (i + 1, l) (by simp; omega)`. Simplify using `only [Grid.moveArgs, Edge.src, Edge.tgt, e1, e2, map_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one, hex]`. Simplify using `only [Grid.moveArgs, hex, hex0 i l h, Matrix.mul_zero, Matrix.zero_mul]`.
+
+Consider the case `theta i l`. Distinguish the cases in `h : i = m`. Substitute `h` using the available equality. Simplify using `only [Grid.moveArgs, Edge.src, Edge.tgt]`. Distinguish the cases in `e1 : l = j + 1`.
+
+Substitute `e1` using the available equality. Rewrite using `[hsame, hone (i, j + 1 + 1) (by simp), map_one, Units.val_one, Matrix.mul_one, h2]`. Distinguish the cases in `e2 : l = j`. Substitute `e2` using the available equality. Rewrite using `[hsame, hone (i, l) (by simp), map_one, inv_one, Units.val_one, Matrix.one_mul, h1]`.
+
+Rewrite using `[hone (i, l) (by simp; omega), hone (i, l + 1) (by simp; omega), map_one, map_one, inv_one, Units.val_one, Units.val_one, Matrix.one_mul, Matrix.mul_one, hth l e1 e2]`. Simplify using `only [Grid.moveArgs, (hth0 i l h).1, (hth0 i l h).2, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem moveArgs_col {K : Type} [Field K] (Γ : Grid K) {m j : ℕ} (hj : j + 1 + 1 < m) (κ : GL (Fin (Γ.rank (m, j + 1))) K)
     (z z' : Γ.Args) (hex : ∀ i l, z' (.ex i l) = z (.ex i l)) (hex0 : ∀ i l, l ≠ m → z (.ex i l) = 0)
     (hth0 : ∀ i l, i ≠ m → z' (.theta i l) = 0 ∧ z (.theta i l) = 0)
@@ -132,6 +167,13 @@ theorem moveArgs_col {K : Type} [Field K] (Γ : Grid K) {m j : ℕ} (hj : j + 1 
           Units.val_one, Matrix.one_mul, Matrix.mul_one, hth l e1 e2]
     · simp only [Grid.moveArgs, (hth0 i l h).1, (hth0 i l h).2, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Use `moveArgs_col (locGrid G t w) hj _ _ _ (fun _ _ => rfl) (fun i l h => ?_) (fun i l h => ⟨?_, ?_⟩) (fun l h1 h2 => ?_) ?_ ?_` and prove the remaining obligations. Conclude with `dif_neg fun h' => h h'.2`. Conclude with `dif_neg fun h' => h h'.2`. Conclude with `dif_neg fun h' => h h'.2`. Distinguish the cases in `hl : l < D.R.m`.
+
+Rewrite using `[oppArgs_theta B t w x _ hl, oppArgs_theta B t w x _ hl, movY_other hj k y hl h1 h2]`. Establish `h0 : ¬ (l < D.R.m ∧ D.R.m = D.R.m)` using `fun h' => hl h'.1`. Establish `e0 : ∀ y', oppArgs t B w x y' (.theta D.R.m l) = 0` using `fun _ => dif_neg h0`. Rewrite using `[e0, e0]`. Establish `hl : j < D.R.m` using `by omega`.
+
+Rewrite using `[oppArgs_theta B t w x _ hl, oppArgs_theta B t w x _ hl, movY_one hj k y hl]`. Conclude with `trCoord_left w _ _ _ _ _ k _`. Establish `hl : j + 1 < D.R.m` using `by omega`. Rewrite using `[oppArgs_theta B t w x _ hl, oppArgs_theta B t w x _ hl, movY_two hj k y hl]`. Conclude with `trCoord_right w _ _ _ _ _ k _`.
+-/
 theorem oppArgs_movY (B : Frames G) (t : T) (w : Pl D.host.E) {j : ℕ} (hj : j + 1 + 1 < D.R.m)
     (k : GA D (G.V (.grid D.R.m (j + 1))))
     (x : ∀ i : Fin D.R.m, Mx D (G.V (.grid i D.R.m)).rank (G.V (.grid (i + 1) D.R.m)).rank)
@@ -155,6 +197,11 @@ theorem oppArgs_movY (B : Frames G) (t : T) (w : Pl D.host.E) {j : ℕ} (hj : j 
     rw [oppArgs_theta B t w x _ hl, oppArgs_theta B t w x _ hl, movY_two hj k y hl]
     exact trCoord_right w _ _ _ _ _ k _
 
+/- English proof (translation)
+Establish `h2` using `(mem_congLev.1 hk.2).2.1`. Establish `hSt : Lev.finE (G.V (.grid D.R.m (j + 1))) k ∈ St (B.β D.R.m (j + 1))` using `(GlobalTheory.LevSplit.mem_St_iff _ _ (B.isFrame_β hL le_rfl (by omega)) _).2 ⟨fun y hy => (h2 y).1 hy, fun y hy => (inv_mem h2 y).1 hy⟩`. Establish `key : ∀ {n n' : ℕ} (h : n' = n) (β x : GL (Fin n) (Lev.EAf D)), x ∈ St β → inBasis h β w x ∈ GlobalTheory.SplitWeil.KO (Kw w) (Fin n')`. Introduce and unpack `n _ rfl β x hx`. Conclude with `GlobalTheory.FunObj.inBasis_mem_KO β x hx w`.
+
+Conclude with `key _ _ _ hSt`.
+-/
 theorem kapCol_mem {μ₀ : T} (hL : L.Is μ₀) (B : Frames G) (t : T) (w : Pl D.host.E) {j : ℕ} (hj : j + 1 + 1 < D.R.m)
     {k : GA D (G.V (.grid D.R.m (j + 1)))} (hk : k ∈ latGrp G (j + 1)) : kapCol B t w hj k ∈ GlobalTheory.SplitWeil.KO (Kw w) _ := by
   have h2 := (mem_congLev.1 hk.2).2.1
@@ -167,6 +214,11 @@ theorem kapCol_mem {μ₀ : T} (hL : L.Is μ₀) (B : Frames G) (t : T) (w : Pl 
     exact GlobalTheory.FunObj.inBasis_mem_KO β x hx w
   exact key _ _ _ hSt
 
+/- English proof (translation)
+Establish `hE : ChrEq (L.mu t (i + 1)) (muBase L (i + 1) * L.xiH t)`. Establish `h1 : muBase L (i + 1) = L.C.mu0 ⟨i, hi⟩` using `dif_pos hi`. Rewrite using `[h1]`. Use `GlobalTheory.Mem.TupChar.chrEq_mul (hL.mu0 ⟨i, hi⟩) (hL.xi t)` as an intermediate fact. Conclude with `this`.
+
+Conclude with `congrArg (fun f => ((f y : ℂˣ) : ℂ)) (GlobalTheory.LFun.locChar_eq_of_chrEq hE w)`.
+-/
 theorem mu_locIdele {μ₀ : T} (hL : L.Is μ₀) (t : T) (w : Pl D.host.E) {i : ℕ} (hi : i < D.R.m) (y : (Kw w)ˣ) :
     ((L.mu t (i + 1) (GlobalTheory.LFun.locIdele D.host.F w y) : Circle) : ℂ) = (((locGrid G t w).mu (i + 1) y : ℂˣ) : ℂ) := by
   have hE : ChrEq (L.mu t (i + 1)) (muBase L (i + 1) * L.xiH t) := by
@@ -176,6 +228,17 @@ theorem mu_locIdele {μ₀ : T} (hL : L.Is μ₀) (t : T) (w : Pl D.host.E) {i :
     exact this
   exact congrArg (fun f => ((f y : ℂˣ) : ℂ)) (GlobalTheory.LFun.locChar_eq_of_chrEq hE w)
 
+/- English proof (translation)
+Establish `hs` using `isIdemAt_idemAt hL G t hw`. Establish `d1 : ∀ V : HSp D, detIdl (idemAt w) V 1 = 1` using `fun V => by`. Apply the tactic sequence `unfold detIdl; split_ifs <;> simp`. Establish `hpar : Odd (G.V (.grid D.R.m j)).rank ↔ Odd (G.V (.grid D.R.m (j + 1 + 1))).rank`. Establish `r0` using `(rank_vertex G t w (X := (D.R.m, j)) ⟨le_rfl, by omega⟩).symm`.
+
+Establish `r2` using `(rank_vertex G t w (X := (D.R.m, j + 1 + 1)) ⟨le_rfl, by omega⟩).symm`. Rewrite using `[r0, r2]`. Simplify using `only [Grid.rank, locGrid]`. Rewrite using `[show D.R.r + (j + 1 + 1) * D.R.t + D.R.m * sLen D = (D.R.r + j * D.R.t + D.R.m * sLen D) + 2 * D.R.t by ring, Nat.odd_add (n := 2 * D.R.t)]`. Conclude with `⟨fun h => ⟨fun _ => even_two_mul _, fun _ => h⟩, fun h => h.2 (even_two_mul _)⟩`.
+
+Establish `key : ∀ (a b η : (AE D)ˣ →* Circle) (n n' : ℕ), (Odd n ↔ Odd n') → ∀ x, Formalism.IndefR.Lift.attChr a η n x * (Formalism.IndefR.Lift.attChr b η n' x)⁻¹ = a x * (b x)⁻¹`. Introduce `a b η n n' h x`. Unfold `Formalism.IndefR.Lift.attChr`. Distinguish the cases in `hn : Odd n`. Rewrite using `[if_pos hn, if_pos (h.1 hn), MonoidHom.mul_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv, inv_inv, mul_mul_mul_comm, inv_mul_cancel, mul_one]`.
+
+Rewrite using `[if_neg hn, if_neg (fun h' => hn (h.2 h'))]`. Establish `hd : detIdl (idemAt w) (G.V (.grid D.R.m (j + 1))) k = GlobalTheory.LFun.locIdele D.host.F w (gdet (kapCol B t w hj k))` using `detIdl_eq hs _ _ _ hk`. Simplify using `only [splitScal, splitFacO, map_one, d1, inv_one, one_mul, mul_one]`. Rewrite using `[hd, ← Circle.coe_mul, GridData.chrT, GridData.chrS, key _ _ _ _ _ hpar, Circle.coe_mul, Circle.coe_inv]`. Simplify using `only [GridData.chr]`.
+
+Rewrite using `[mu_locIdele (G := G) hL t w (by omega), mu_locIdele (G := G) hL t w (by omega), Units.val_inv_eq_inv_val]`.
+-/
 theorem splitScal_col {μ₀ : T} (hL : L.Is μ₀) (B : Frames G) (t : T) {w : Pl D.host.E} (hw : w ∈ locPl G t) {j : ℕ}
     (hj : j + 1 + 1 < D.R.m) {k : GA D (G.V (.grid D.R.m (j + 1)))} (hk : k ∈ GfC (G.V (.grid D.R.m (j + 1)))) :
     splitScal G (.mu t D.R.m j) w 1 k * splitScal G (.mu t D.R.m (j + 1)) w k 1 =
@@ -207,6 +270,11 @@ theorem splitScal_col {μ₀ : T} (hL : L.Is μ₀) (B : Frames G) (t : T) {w : 
   dsimp only [GridData.chr]
   rw [mu_locIdele (G := G) hL t w (by omega), mu_locIdele (G := G) hL t w (by omega), Units.val_inv_eq_inv_val]
 
+/- English proof (translation)
+Establish `hm` using `D.R.two_le_m`. Establish `hp : (Pair.mu t D.R.m i : Pair T).InRange D.R.m`. Simplify using `only [Pair.InRange, Pair.big, Node.InRange]`. Use linear arithmetic over natural numbers and integers. Establish `sd : ∀ l, l ≤ D.R.m → IsSelfDualC (G.V (.grid D.R.m l)) (G.Λ (.grid D.R.m l))` using `fun l hl => (G.isV (X := .grid D.R.m l) ⟨le_rfl, hl⟩ (fun j e => by simp at e; omega)).sd`.
+
+Conclude with `GlobalTheory.LatStabScalar.om_eq_prod_splitFac (W.om_is _ hp) (sd i hi.le) (sd (i + 1) hi) (locPl G t) (fun w hw => isIdemAt_idemAt hL G t hw) (Good.under_injOn hL G t) hunr g hg.1 h hh.1 (GlobalTheory.RowMovedLat.latHat_stab_of_hatL _ g _ (mem_congLev.1 hg.2).2.1) (GlobalTheory. …`.
+-/
 theorem om_vac {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (t : T) {i : ℕ} (hi : i < D.R.m)
     (hunr : ∀ v, (∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ≠ v) →
       GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (G.chrS (.mu t D.R.m i)) v ∧ GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (G.chrT (.mu t D.R.m i)) v)
@@ -229,6 +297,13 @@ namespace GlobalTheory.RowKFix
 
 open GlobalTheory.SplitFlip GlobalTheory.RowVacScalar LocProd
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F hS hch hsh t Φ j hj k hk`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Establish `hm` using `D.R.two_le_m`. Take `⟨N, N₀, LL, LZ, -, -, -, hsh⟩` from `hsh`. Take `⟨M, hM⟩` from `exists_vol ch.G hL t`.
+
+Establish `hunr` using `fun v => (hsh t M hM (D.R.m - 2) 0 (by omega) (GlobalTheory.Unf.Inhab.nonempty_volN _).some v).2.2.2.2.2`. Use `⟨_, _, om_vac hL ch.W t (by omega) (fun v hv => hunr v hv j (by omega)) (one_mem _) hk (ch.rm.vT_is t _ _ le_rfl (by omega)), om_vac hL ch.W t (by omega) (fun v hv => hunr v hv (j + 1) (by omega)) hk (one_mem _) (ch.rm.vT_is t _ _ le_rfl (by omega)), fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hK` using `kapCol_mem hL ch.S.B t w hj hk`.
+
+Establish `hadm` using `GlobalTheory.TopLevelInv.isAdmissible_Tflip hL ch.W ch.S.B t Φ (GlobalTheory.FlipIntegrand.pde_ne_q_of_setting hS) (hch.guard t) hw _ (mem_inner_col hj) _ ((GlobalTheory.TopLevelInv.givenLevel_col t w j).symm ▸ hK)`. Establish `e` using `congrFun hadm (oppArgs t ch.S.B w x y)`. Establish `ef` using `GlobalTheory.TopLevelInv.prod_edgeFactor_col (Γ := locGrid ch.G t w) (j := j) (by show j + 1 < D.R.m; omega) (kapCol ch.S.B t w hj k) (valuation_gdet_of_mem_KO hK)`. Rewrite using `[splitScal_col hL ch.S.B t hw hj hk.1, oppArgs_movY]`. Conclude with `(congrArg (· * _) ef.symm).trans e`.
+-/
 theorem local_prod_col : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A), HidaSetting large₂ R F → ch.Is → ShapeAt ch → ∀ (t : T) (Φ : ch.G.Datum) (j : ℕ) (hj : j + 1 + 1 < D.R.m), ∀ k ∈ latGrp ch.G (j + 1), ∃ c₁ c₂ : ℂ, ch.W.om (.mu t D.R.m j) (1, k) (ch.rm.vT D.R.m j) = c₁ • ch.rm.vT D.R.m j ∧ ch.W.om (.mu t D.R.m (j + 1)) (k, 1) (ch.rm.vT D.R.m (j + 1)) = c₂ • ch.rm.vT D.R.m (j + 1) ∧ ∀ x y, c₁ * c₂ * ∏ w ∈ locPl ch.G t, Tflip ch.W ch.S.B t Φ w (oppArgs t ch.S.B w x (GlobalTheory.RowKFix.movY ch.G j hj k y)) = ∏ w ∈ locPl ch.G t, Tflip ch.W ch.S.B t Φ w (oppArgs t ch.S.B w x y) := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F hS hch hsh t Φ j hj k hk
   have hL : R.toLevCh.Is A.μ0 := hS.core.lev

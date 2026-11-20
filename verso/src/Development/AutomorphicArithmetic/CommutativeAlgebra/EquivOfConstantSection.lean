@@ -5,6 +5,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace UpperTheory.SimplicialRelations
 open SimplicialObject Simplicial
 
+/- English proof (translation)
+Set `W` to `(Augmented.whiskering PSh (Shv R)).obj (free R)`. Set `φ : A ⟶ Augmented.const.obj A.right` to `{ left := A.hom, right := 𝟙 _, w := by`. Express the relevant statement in the definitionally equal form `A.hom ≫ 𝟙 _ = A.hom ≫ (SimplicialObject.const PSh).map (𝟙 _)`. Rewrite using `[CategoryTheory.Functor.map_id] }`. Establish `h1` using `(ed.map (free R)).homotopyEquiv.quasiIso_hom`.
+
+Establish `h2` using `((Augmented.ExtraDegeneracy.const A.right).map (free R)).homotopyEquiv.quasiIso_hom`. Establish `nat` using `(AlgebraicTopology.AlternatingFaceMapComplex.ε (C := Shv R)).naturality (W.map φ)`. Establish `hp : (Augmented.point ⋙ ChainComplex.single₀ _).map (W.map φ) = 𝟙 _`. Express the relevant statement in the definitionally equal form `(ChainComplex.single₀ _).map ((free R).map (𝟙 A.right)) = 𝟙 _`. Rewrite using `[(free R).map_id, CategoryTheory.Functor.map_id]`.
+
+Rewrite `nat` using `[hp]`. Establish `nat'` using `nat.trans (Category.comp_id (AlgebraicTopology.AlternatingFaceMapComplex.ε.app (W.obj A)))`. Use `haveI : QuasiIso (AlgebraicTopology.AlternatingFaceMapComplex.ε.app (W.obj (Augmented.const.obj A.right))) := h2`. Establish `key : QuasiIso ((Augmented.drop ⋙ AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (W.map φ) ≫ AlgebraicTopology.AlternatingFaceMapComplex.ε.app (W.obj (Augmented.const.obj A.right)))`. Rewrite using `[nat']`.
+
+Conclude with `h1`. Conclude with `(quasiIso_iff_comp_right _ (AlgebraicTopology.AlternatingFaceMapComplex.ε.app (W.obj (Augmented.const.obj A.right)))).1 key`.
+-/
 private theorem qi_of_ed (R : Type) [CommRing R] (A : SimplicialObject.Augmented PSh)
     (ed : Augmented.ExtraDegeneracy A) :
     QuasiIso ((chainsN R).map (X := A.left) (Y := disc.obj A.right) A.hom) := by
@@ -33,6 +42,9 @@ variable {X M : RF} (ρ : X.Hom M) (hc : ρ.Const)
   (γ : M.Hom X) (hγ : ∀ {A : Type} [CommRing A] (m : M.obj A), ρ.app A (γ.app A m) = m)
 
 include hc in
+/- English proof (translation)
+The claim follows from `hc (hx i j)`.
+-/
 private theorem ρ_eq {A : Type} [CommRing A] {n : ℕ} {x : Fin n → X.obj A} (hx : ∀ i j, X.rel (x i) (x j)) (i j : Fin n) :
     ρ.app A (x i) = ρ.app A (x j) := hc (hx i j)
 
@@ -40,6 +52,11 @@ private def sv {A : Type} [CommRing A] {n : ℕ} (x : Fin (n + 1) → X.obj A) :
   Fin.cons (γ.app A (ρ.app A (x 0))) x
 
 include hc hr hγ in
+/- English proof (translation)
+Establish `key : ∀ k, ρ.app A (sv ρ γ x k) = ρ.app A (x 0)`. Introduce `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `[sv, hγ]`. Simplify `ρ_eq ρ hc hx k 0` using `[sv]`.
+
+Conclude with `hr ((key i).trans (key j).symm)`.
+-/
 private theorem sv_rel {A : Type} [CommRing A] {n : ℕ} {x : Fin (n + 1) → X.obj A} (hx : ∀ i j, X.rel (x i) (x j))
     (i j : Fin (n + 2)) : X.rel (sv ρ γ x i) (sv ρ γ x j) := by
   have key : ∀ k, ρ.app A (sv ρ γ x k) = ρ.app A (x 0) := by
@@ -49,6 +66,9 @@ private theorem sv_rel {A : Type} [CommRing A] {n : ℕ} {x : Fin (n + 1) → X.
     · simpa [sv] using ρ_eq ρ hc hx k 0
   exact hr ((key i).trans (key j).symm)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using `[sv, ρ.nat, γ.nat]`. Simplify using `[sv]`.
+-/
 private theorem sv_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {n : ℕ} (x : Fin (n + 1) → X.obj A) :
     sv ρ γ (fun i => X.map f (x i)) = fun i => X.map f (sv ρ γ x i) := by
   funext i
@@ -57,6 +77,11 @@ private theorem sv_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {n
   · simp [sv]
 
 include hc in
+/- English proof (translation)
+Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.succ_succAbove_zero]`. Simplify using `only [sv, Fin.cons_zero]`. Rewrite using `[ρ_eq ρ hc hx 0 (i.succAbove 0)]`. Rewrite using `[Fin.succ_succAbove_succ]`.
+
+Simplify using `[sv]`.
+-/
 private theorem sv_δ {A : Type} [CommRing A] {n : ℕ} {x : Fin (n + 2) → X.obj A} (hx : ∀ i j, X.rel (x i) (x j))
     (i j : Fin (n + 2)) : sv ρ γ x (i.succ.succAbove j) = sv ρ γ (fun k => x (i.succAbove k)) j := by
   refine Fin.cases ?_ (fun k => ?_) j
@@ -67,6 +92,11 @@ private theorem sv_δ {A : Type} [CommRing A] {n : ℕ} {x : Fin (n + 2) → X.o
     simp [sv]
 
 include hc in
+/- English proof (translation)
+Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Establish `h0 : Fin.predAbove i.succ (0 : Fin (n + 3)) = 0`. Simplify using `[Fin.predAbove]`. Establish `h1 : Fin.predAbove i (0 : Fin (n + 2)) = 0`. Simplify using `[Fin.predAbove]`.
+
+Rewrite using `[h0]`. Simplify using `[sv, h1]`. Rewrite using `[Fin.succ_predAbove_succ]`. Simplify using `[sv]`.
+-/
 private theorem sv_σ {A : Type} [CommRing A] {n : ℕ} (x : Fin (n + 1) → X.obj A) (i : Fin (n + 1)) (j : Fin (n + 3)) :
     sv ρ γ x (Fin.predAbove i.succ j) = sv ρ γ (fun k => x (Fin.predAbove i k)) j := by
   refine Fin.cases ?_ (fun k => ?_) j
@@ -125,6 +155,11 @@ private def edOf : Augmented.ExtraDegeneracy (augOf ρ hc) where
 
 end UpperTheory.SimplicialRelations
 
+/- English proof (translation)
+Introduce `hA R _ F X M ρ hc hr γ hγ n`. Establish `q : QuasiIso ((chainsN R).map (CN.proj ρ hc))` using `UpperTheory.SimplicialRelations.qi_of_ed R (UpperTheory.SimplicialRelations.augOf ρ hc) (UpperTheory.SimplicialRelations.edOf ρ hc hr γ hγ)`. Establish `q2 : QuasiIso ((chains R).map (CN.proj ρ hc))`. Express the relevant statement in the definitionally equal form `QuasiIso (HomologicalComplex.extendMap ((chainsN R).map (CN.proj ρ hc)) ComplexShape.embeddingDownNat)`. Use `infer_instance`.
+
+Conclude with `hA R ((chains R).map (CN.proj ρ hc)) F n`.
+-/
 theorem UpperTheory.equiv_of_constant_section :
     A1 → ∀ (R : Type) [CommRing R] (F : Shv R) {X M : RF} (ρ : X.Hom M) (hc : ρ.Const), (∀ {A : Type} [CommRing A] {x y : X.obj A}, ρ.app A x = ρ.app A y → X.rel x y) → ∀ γ : M.Hom X, (∀ {A : Type} [CommRing A] (m : M.obj A), ρ.app A (γ.app A m) = m) → Eqv R (CN.proj ρ hc) F := by
   intro hA R _ F X M ρ hc hr γ hγ n

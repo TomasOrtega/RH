@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBr
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsNeZeroOfEventually
 open ValuativeRel Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IrredSBVec.sb_irreducible_vec | exact GlobalTheory.IrredSBVec.sb_irreducible_vec | (intros; apply GlobalTheory.IrredSBVec.sb_irreducible_vec <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartzBruhat_vector_irreducible_translations_characters : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     {κ : Type} [Fintype κ] (ψ0 : AddChar k ℂ), Continuous ψ0 →
     (∀ x : k, (∀ y ∈ 𝒪[k], ψ0 (x * y) = 1) ↔ x ∈ 𝒪[k]) →

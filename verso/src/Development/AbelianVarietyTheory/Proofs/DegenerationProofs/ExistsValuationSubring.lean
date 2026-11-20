@@ -18,6 +18,11 @@ open GlobalTheory GlobalTheory.Ex
 namespace GlobalTheory.Ex.GoodTrait
 set_option linter.style.haveILetI false
 
+/- English proof (translation)
+Establish `h : IsUnit (((3 : ℕ) : O) * 2 + -((5 : ℕ) : O))`. Establish `: ((3 : ℕ) : O) * 2 + -((5 : ℕ) : O) = 1` using `by push_cast; norm_num`. Rewrite using `[this]`. Conclude with `isUnit_one`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h with h | h` into its components or cases.
+
+Conclude with `⟨3, by norm_num, by decide, isUnit_of_mul_isUnit_left h⟩`. Conclude with `⟨5, by norm_num, by decide, (IsUnit.neg_iff _).1 h⟩`.
+-/
 theorem exists_unit_prime (O : Type) [CommRing O] [IsLocalRing O] : ∃ n : ℕ, n.Prime ∧ Odd n ∧ IsUnit (n : O) := by
   have h : IsUnit (((3 : ℕ) : O) * 2 + -((5 : ℕ) : O)) := by
     have : ((3 : ℕ) : O) * 2 + -((5 : ℕ) : O) = 1 := by push_cast; norm_num
@@ -26,6 +31,11 @@ theorem exists_unit_prime (O : Type) [CommRing O] [IsLocalRing O] : ∃ n : ℕ,
   · exact ⟨3, by norm_num, by decide, isUnit_of_mul_isUnit_left h⟩
   · exact ⟨5, by norm_num, by decide, (IsUnit.neg_iff _).1 h⟩
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hx.exists_right_inv`. Establish `h : ‖f x‖ * ‖f y‖ = 1` using `by rw [← norm_mul, ← map_mul, hy, map_one, norm_one]`. Establish `h₁` using `hf x`. Establish `h₂` using `hf y`. Establish `h₃` using `norm_nonneg (f x)`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_eq_one_of_isUnit {W C : Type} [CommRing W] [NormedField C] (f : W →+* C) (hf : ∀ r, ‖f r‖ ≤ 1) {x : W}
     (hx : IsUnit x) : ‖f x‖ = 1 := by
   obtain ⟨y, hy⟩ := hx.exists_right_inv
@@ -35,6 +45,11 @@ theorem norm_eq_one_of_isUnit {W C : Type} [CommRing W] [NormedField C] (f : W �
   have h₃ := norm_nonneg (f x)
   nlinarith
 
+/- English proof (translation)
+Set `v` to `(NormedField.valuation (K := C)).comap f`. Use `⟨v.valuationSubring, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.mem_valuationSubring_iff]`. Conclude with `Iff.rfl`. Rewrite using `[← (Valuation.isEquiv_valuation_valuationSubring v).eq_one_iff_eq_one]`.
+
+Conclude with `NNReal.coe_inj.symm`.
+-/
 theorem exists_valuationSubring {K C : Type} [Field K] [NormedField C] [IsUltrametricDist C] (f : K →+* C) :
     ∃ S : ValuationSubring K, (∀ x, x ∈ S ↔ ‖f x‖ ≤ 1) ∧ ∀ x, S.valuation x = 1 ↔ ‖f x‖ = 1 := by
   let v := (NormedField.valuation (K := C)).comap f
@@ -44,6 +59,9 @@ theorem exists_valuationSubring {K C : Type} [Field K] [NormedField C] [IsUltram
   · rw [← (Valuation.isEquiv_valuation_valuationSubring v).eq_one_iff_eq_one]
     exact NNReal.coe_inj.symm
 
+/- English proof (translation)
+Use `⟨?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DenseRange (PrimeSpectrum.comap f)`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot f).1 hf]`. Conclude with `bot_le`.
+-/
 theorem isDominant_spMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (hf : Function.Injective f) :
     IsDominant (spMap f) := by
   refine ⟨?_⟩
@@ -53,6 +71,31 @@ theorem isDominant_spMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `h₁ h₂ h₃ h₄ h₅ h₆ h₇ E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a hO R₁ _ _ g y₁ _ _ _ hT hy W _ _ _ hW φ gam hgam χ hχ hu`. Use `haveI : IsLocalRing O' := by`. Break down `hO with ⟨h, -⟩ | ⟨h, -⟩` into its components or cases. Use `letI := h.toField`. Conclude with `inferInstance`.
+
+Conclude with `inferInstance`. Take `⟨n, hn, hodd, hnu⟩` from `exists_unit_prime O'`. Take `⟨hdvr, -, hch⟩` from `id hW`. Take `⟨C, _, _, _, _, alg, -, -, hC⟩` from `GlobalTheory.Ex.exists_complete_isAlgClosed_cExt W (FractionRing W)`. Set `iC : W →+* C` to `(algebraMap (FractionRing W) C).comp (algebraMap W _)`.
+
+Establish `hiC : Function.Injective iC` using `(algebraMap (FractionRing W) C).injective.comp (IsFractionRing.injective W _)`. Use `haveI : CharZero C := charZero_of_injective_ringHom hiC`. Take `⟨o, ho, hθ⟩` from `hT`. Use `haveI := o.charZero`. Introduce the local definition `Γ : AlgebraicClosure (FractionRing R₁) →+* C`.
+
+Use `letI : Algebra (FractionRing R₁) C := ((algebraMap (FractionRing W) C).comp gam).toAlgebra`. Use the proof step `(IsAlgClosed.lift (R := FractionRing R₁) (S := AlgebraicClosure (FractionRing R₁)) (M := C)).toRingHom`. Establish `hΓ : Γ.comp (algebraMap (FractionRing R₁) _) = (algebraMap (FractionRing W) C).comp gam`. Use `letI : Algebra (FractionRing R₁) C := ((algebraMap (FractionRing W) C).comp gam).toAlgebra`. Conclude with `RingHom.ext fun x => (IsAlgClosed.lift (R := FractionRing R₁) (S := AlgebraicClosure (FractionRing R₁)) (M := C)).commutes x`.
+
+Establish `hΓ' : ∀ r, Γ (((algebraMap (FractionRing R₁) _).comp (algebraMap R₁ _)) r) = iC (φ r)` using `fun r => by`. Use `DFunLike.congr_fun hΓ (algebraMap R₁ _ r)` as an intermediate fact. Simplify using `only [RingHom.comp_apply, hgam] at this`. Conclude with `this`. Take `⟨o', hext, hth, -⟩` from `GlobalTheory.FullExtend.main h₁ h₂ h₃ h₄ h₅ h₆ h₇ E H D _ C Γ o`.
+
+Establish `e₀ : spMap Γ ≫ spMap (algebraMap (FractionRing R₁) (AlgebraicClosure (FractionRing R₁))) ≫ y₁ = spMap (algebraMap (FractionRing W) C) ≫ spMap gam ≫ y₁`. Rewrite using `[← Category.assoc, ← spMap_comp', hΓ, spMap_comp', Category.assoc]`. Establish `bF : c.F →+* AlgebraicClosure (FractionRing R₁)` using `((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv ≫ ((spMap (algebraMap (FractionRing R₁) (AlgebraicClosure (FractionRing R₁))) ≫ y₁) ≫ pullback.snd _ _).appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of (AlgebraicClosure (FractionRing R₁)))).hom).hom`. Establish `ho'` using `(GlobalTheory.FullPoint.fullAt_existsUnique_exists_ext h₁ h₂ h₃ h₄ h₅ h₆ h₇ E H D l Xo c W₀ Y _ bF).2.2 C Γ _ o o' ho hext`. Rewrite `ho'` using `[e₀]`.
+
+Establish `e₁ : spMap gam ≫ jK R₁ = jK W ≫ spMap φ` using `(spMap_comp' (algebraMap R₁ _) gam).symm.trans ((congrArg spMap (RingHom.ext hgam)).trans (spMap_comp' φ (algebraMap W _)))`. Establish `e₂ : spMap (algebraMap (FractionRing W) (FractionRing W)) = 𝟙 _` using `Spec.map_id _`. Take `⟨M, f, χ', mp, hf, hfC, hχ', -⟩` from `GlobalTheory.Ex.UnifModel.exists_mdl h₁ h₂ h₃ h₄ h₅ h₆ h₇ E H D l Xo c W₀ Y C W hW hC (FractionRing W) (algebraMap (FractionRing W) C) (fun _ => rfl) (spMap gam ≫ y₁) (φ.comp (g.comp ((PowerSeries.C (R := O')).comp b))) (by`. Rewrite using `[e₂, Category.id_comp, Category.assoc, hy, spMap_comp', spMap_comp', spMap_comp', ← Category.assoc, e₁, Category.assoc]) o' ho'`. Take `⟨v, hv, hint⟩` from `hθ n 2 hn hodd hnu one_le_two`.
+
+Take `⟨S, hS, hS'⟩` from `exists_valuationSubring Γ`. Take `⟨a₁, -, a₃⟩` from `hint S fun r => by rw [hS, hΓ']; exact hC.1 _`. Establish `a₄` using `a₃ (by rw [hS', hΓ']; exact norm_eq_one_of_isUnit iC hC.1 hu)`. Establish `hnC : ‖(n : C)‖ = 1`. Use `norm_eq_one_of_isUnit iC hC.1 (hnu.map (φ.comp (g.comp (PowerSeries.C (R := O')))))` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis. Establish `hprop : IsProper M.t.G.hom` using `GlobalTheory.T.isProper_of_theta_unit_in_every_coset h₁ h₂ h₃ h₄ h₅ h₆ h₇ E H D C o' M n 2 hn hodd hnC le_rfl _ (hth _ _ hv) (fun x => (hS _).1 (a₁ x)) fun x => (a₄ x).imp fun h hh => (hS' _).1 hh`. Set `jC : M.W →+* C` to `(algebraMap (FractionRing M.W) C).comp (algebraMap M.W _)`. Establish `hjC : Function.Injective jC` using `(algebraMap (FractionRing M.W) C).injective.comp (IsFractionRing.injective M.W _)`. Establish `hjf : jC.comp f = iC` using `RingHom.ext hfC`.
+
+Establish `hfi : Function.Injective f` using `Function.Injective.of_comp (f := jC) (by rw [← RingHom.coe_comp, hjf]; exact hiC)`. Use `projProper _ _ _ Y.proj` as an intermediate fact. Establish `: Y.X.IsSeparated` using `⟨by rw [← terminal.comp_from Y.s]; infer_instance⟩`. Use `isDominant_spMap jC hjC` as an intermediate fact. Establish `e₃ : χ' = spMap f ≫ χ`.
+
+Use `ext_of_isDominant (spMap jC) ?_` and prove the remaining obligations. Establish `e₄ : spMap jC = jFK (R` using `M.W) C ≫ jK M.W := spMap_comp' _ _`. Establish `e₅ : spMap iC = spMap (algebraMap (FractionRing W) C) ≫ jK W` using `spMap_comp' _ _`. Rewrite using `[← Category.assoc, ← spMap_comp', hjf, e₅, e₄, Category.assoc, hχ', Category.assoc, Category.assoc, hχ]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Take `⟨x', rfl⟩` from `hf.to_isIntegral.comap_surjective hfi x`. Establish `h` using `(abLocus_pullback abLocusOne Y.t.semi mp.cart.1 x').2 fun K _ _ t _ => inferInstance`. Rewrite `h` using `[e₃]`. Conclude with `h`.
+-/
 theorem range_subset_abLocus : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → AllA fun {E} _ _ _ {H} {D} {l} {Xo} {c} {W₀} Y {O'} _ _ {b} a => ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] (g : PowerSeries O' →+* R₁) (y₁ : Sp (FractionRing R₁) ⟶ Xo.XF c), Function.Injective g → g.Finite → IsIntegrallyClosed R₁ → ThetaInt Y g y₁ → y₁ ≫ Y.j ≫ Y.s = jK R₁ ≫ spMap g ≫ spMap (PowerSeries.C (R := O')) ≫ spMap b → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (φ : R₁ →+* W) (gam : FractionRing R₁ →+* FractionRing W), (∀ r, gam (algebraMap R₁ _ r) = algebraMap W _ (φ r)) → ∀ χ : Sp W ⟶ Y.X, spMap gam ≫ y₁ ≫ Y.j = jK W ≫ χ → IsUnit (φ (g PowerSeries.X)) → Set.range χ ⊆ abLocus Y.t.G := by
   intro h₁ h₂ h₃ h₄ h₅ h₆ h₇ E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a hO R₁ _ _ g y₁ _ _ _ hT hy W _ _ _ hW φ gam hgam χ hχ hu
   haveI : IsLocalRing O' := by

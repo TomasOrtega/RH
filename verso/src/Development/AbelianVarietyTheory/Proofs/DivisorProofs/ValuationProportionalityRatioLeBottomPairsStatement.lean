@@ -13,6 +13,9 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NormSum.LemmaC.vw_le_of_bottom_pairs | exact GlobalTheory.NormSum.LemmaC.vw_le_of_bottom_pairs | (intros; apply GlobalTheory.NormSum.LemmaC.vw_le_of_bottom_pairs <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.valuation_proportionalityRatio_le_bottomPairs : ∀ (D : D7) (N : ℕ) (B : ℝ) (Q : ℕ) (S : Finset ℕ) (del_vp : ℕ → ℝ) (b : ℝ), GlobalTheory.NormSum.Inp D →
     GlobalTheory.NormSum.Exponents S del_vp b → GlobalTheory.NormSum.CoordInt D N B Q del_vp →
     ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ) (w : Formalism.PairingDivisionLocalBalance.Pl K) (p : ℕ) [Fact p.Prime],

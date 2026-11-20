@@ -22,14 +22,23 @@ abbrev ovT (R : Type) [CommRing R] (B M : Type) [CommRing B] [Algebra R B] [AddC
 abbrev ovB (R : Type) [CommRing R] (B : Type) [CommRing B] [Algebra R B] : Over (Sp R) :=
   Over.mk (spMap (algebraMap R B))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem one_left (A : Over (Sp R)) [GrpObj A] (T : Over (Sp R)) : (1 : T ⟶ A).left = T.hom ≫ η[A].left := rfl
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, hP]`. Conclude with `(GlobalTheory.Cris.spMap_comp _ _).symm`.
+-/
 theorem inl_w (A : Over (Sp R)) {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M]
     [Module Bᵐᵒᵖ M] [IsCentralScalar B M] (P : Sp B ⟶ A.left) (hP : P ≫ A.hom = spMap (algebraMap R B)) :
     (spMap (TrivSqZeroExt.inlHom B M) ≫ P) ≫ A.hom = (ovT R B M).hom := by
   rw [Category.assoc, hP]
   exact (GlobalTheory.Cris.spMap_comp _ _).symm
 
+/- English proof (translation)
+Use `show _ ≫ spMap _ = spMap _`. Rewrite using `[← GlobalTheory.Cris.spMap_comp]`. Apply the tactic sequence `congr 1 <;> ext r <;> simp`.
+-/
 theorem fst_w (B M : Type) [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M]
     [Module Bᵐᵒᵖ M] [IsCentralScalar B M] :
     spMap (TrivSqZeroExt.fstHom B B M).toRingHom ≫ (ovT R B M).hom = (ovB R B).hom := by
@@ -37,6 +46,9 @@ theorem fst_w (B M : Type) [CommRing B] [Algebra R B] [AddCommGroup M] [Module B
   rw [← GlobalTheory.Cris.spMap_comp]
   congr 1 <;> ext r <;> simp
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.Cris.spMap_comp, ← GlobalTheory.Cris.spMap_id]`. Apply the tactic sequence `congr 1 <;> ext r <;> simp`.
+-/
 theorem fst_inl (B M : Type) [CommRing B] [AddCommGroup M] [Module B M]
     [Module Bᵐᵒᵖ M] [IsCentralScalar B M] :
     spMap (TrivSqZeroExt.fstHom B B M).toRingHom ≫ spMap (TrivSqZeroExt.inlHom B M) = 𝟙 (Sp B) := by
@@ -57,6 +69,9 @@ def tau (A : Over (Sp R)) [GrpObj A] (B M : Type) [CommRing B] [Algebra R B] [Ad
       Over.homMk (U := ovT R B M) (V := A) z h.2 : ovT R B M ⟶ A)).left
   else z
 
+/- English proof (translation)
+Rewrite using `[tau, dif_pos ⟨hP, hz⟩]`.
+-/
 theorem tau_eq (A : Over (Sp R)) [GrpObj A] {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M]
     [Module Bᵐᵒᵖ M] [IsCentralScalar B M] (P : Sp B ⟶ A.left) (hP : P ≫ A.hom = spMap (algebraMap R B))
     (z : Sp (TrivSqZeroExt B M) ⟶ A.left) (hz : z ≫ A.hom = (ovT R B M).hom) :
@@ -64,6 +79,11 @@ theorem tau_eq (A : Over (Sp R)) [GrpObj A] {B M : Type} [CommRing B] [Algebra R
       Over.homMk (U := ovT R B M) (V := A) z hz : ovT R B M ⟶ A)).left := by
   rw [tau, dif_pos ⟨hP, hz⟩]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `ext`. Simplify `h` using `[eFst]`. Introduce `h`.
+
+Use `congrArg CommaMorphism.left h` as an intermediate fact. Simplify `this` using `[eFst]`.
+-/
 theorem red_iff (A : Over (Sp R)) [GrpObj A] {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M]
     [Module Bᵐᵒᵖ M] [IsCentralScalar B M] (g : ovT R B M ⟶ A) (P : Sp B ⟶ A.left)
     (hP : P ≫ A.hom = spMap (algebraMap R B)) :
@@ -73,6 +93,9 @@ theorem red_iff (A : Over (Sp R)) [GrpObj A] {B M : Type} [CommRing B] [Algebra 
   · intro h; ext; simpa [eFst] using h
   · intro h; have := congrArg CommaMorphism.left h; simpa [eFst] using this
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[one_left]`. Both sides reduce to the same expression.
+-/
 theorem unit_eq (A : Over (Sp R)) [GrpObj A] (B : Type) [CommRing B] [Algebra R B]
     (h : unitPt A B ≫ A.hom = spMap (algebraMap R B)) :
     Over.homMk (U := ovB R B) (V := A) (unitPt A B) h = 1 := by
@@ -84,11 +107,27 @@ namespace GlobalTheory.AbTan.Transl
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[unitPt, Category.assoc, Over.w η[A]]`. Conclude with `Category.comp_id _`.
+-/
 theorem unit_w (A : Over (Sp R)) [GrpObj A] (B : Type) [CommRing B] [Algebra R B] :
     unitPt A B ≫ A.hom = spMap (algebraMap R B) := by
   rw [unitPt, Category.assoc, Over.w η[A]]
   exact Category.comp_id _
 
+/- English proof (translation)
+Use `set Q : ovT R B M ⟶ A := Over.homMk (spMap (TrivSqZeroExt.inlHom B M) ≫ P) (inl_w A P hP) with hQ`. Establish `hU` using `unit_w A B`. Establish `keyQ : eFst B M ≫ Q = Over.homMk (U` using `ovB R B) (V := A) P hP := by`. Use `ext`. Simplify using `only [eFst, Q, Over.comp_left, Over.homMk_left]`.
+
+Rewrite using `[← Category.assoc, fst_inl]`. Conclude with `Category.id_comp _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨h1, h2⟩` from `hz`.
+
+Use `show Lifts A.hom P (tau A B M P z)`. Rewrite using `[tau_eq A P hP z h1]`. Use `⟨Over.w _, ?_⟩` and prove the remaining obligations. Rewrite using `[red_iff A _ P hP, MonObj.comp_mul, keyQ, (red_iff A (Over.homMk (U := ovT R B M) (V := A) z h1) (unitPt A B) hU).1 h2, unit_eq, _root_.mul_one]`. Introduce `z1 hz1 z2 hz2 he`.
+
+Take `⟨h11, -⟩` from `hz1`. Take `⟨h21, -⟩` from `hz2`. Rewrite `he` using `[tau_eq A P hP z1 h11, tau_eq A P hP z2 h21]`. Use `mul_left_cancel (Over.OverMorphism.ext he)` as an intermediate fact. Conclude with `congrArg CommaMorphism.left this`.
+
+Introduce `z' hz'`. Take `⟨h1, h2⟩` from `hz'`. Use `set Z : ovT R B M ⟶ A := Q⁻¹ * Over.homMk (U := ovT R B M) (V := A) z' h1 with hZ`. Use `⟨Z.left, ⟨Over.w Z, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[red_iff A Z (unitPt A B) hU, unit_eq, hZ, MonObj.comp_mul, GrpObj.comp_inv, keyQ, (red_iff A (Over.homMk (U := ovT R B M) (V := A) z' h1) P hP).1 h2, inv_mul_cancel]`.
+
+Use `show tau A B M P Z.left = z'`. Rewrite using `[tau_eq A P hP Z.left (Over.w Z)]`. Establish `e : Over.homMk (U` using `ovT R B M) (V := A) Z.left (Over.w Z) = Z := by ext; rfl`. Rewrite using `[← hQ, e, hZ, mul_inv_cancel_left]`. Both sides reduce to the same expression.
+-/
 theorem bijOn_tau (A : Over (Sp R)) [GrpObj A] {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M]
     [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M] (P : Sp B ⟶ A.left)
     (hP : P ≫ A.hom = spMap (algebraMap R B)) :
@@ -126,6 +165,17 @@ theorem bijOn_tau (A : Over (Sp R)) [GrpObj A] {B M : Type} [CommRing B] [Algebr
       rw [← hQ, e, hZ, mul_inv_cancel_left]
       rfl
 
+/- English proof (translation)
+Take `⟨hz1, hz2⟩` from `hz`. Establish `hβinl : β.comp (TrivSqZeroExt.inlHom B M) = (TrivSqZeroExt.inlHom B' M').comp (α : B →+* B')` using `RingHom.ext fun b => hβ.1 b`. Establish `hβT : β.comp ((TrivSqZeroExt.inlHom B M).comp (algebraMap R B)) = (TrivSqZeroExt.inlHom B' M').comp (algebraMap R B')`. Rewrite using `[← RingHom.comp_assoc, hβinl, RingHom.comp_assoc, AlgHom.comp_algebraMap]`. Establish `hβfst : (TrivSqZeroExt.fstHom B' B' M').toRingHom.comp β = (α : B →+* B').comp (TrivSqZeroExt.fstHom B B M).toRingHom`.
+
+Use extensionality with `x`. Use `conv_lhs => rw [← TrivSqZeroExt.inl_fst_add_inr_snd_eq x]`. Simplify using `[map_add, hβ.1, hβ.2]`. Set `b : ovT R B' M' ⟶ ovT R B M` to `Over.homMk (spMap β) (by show spMap β ≫ spMap _ = spMap _`. Rewrite using `[← GlobalTheory.Cris.spMap_comp, hβT])`.
+
+Use `set Z : ovT R B M ⟶ A := Over.homMk z hz1 with hZ`. Establish `hz' : (spMap β ≫ z) ≫ A.hom = (ovT R B' M').hom` using `Over.w (b ≫ Z)`. Establish `hP' : (spMap (α : B →+* B') ≫ P) ≫ A.hom = spMap (algebraMap R B')`. Rewrite using `[Category.assoc, hP, ← GlobalTheory.Cris.spMap_comp, AlgHom.comp_algebraMap]`. Use `⟨⟨hz', ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, ← GlobalTheory.Cris.spMap_comp, hβfst, GlobalTheory.Cris.spMap_comp, Category.assoc, hz2, unitPt, unitPt, ← Category.assoc, ← GlobalTheory.Cris.spMap_comp, AlgHom.comp_algebraMap]`. Rewrite using `[tau_eq A _ hP' _ hz', tau_eq A P hP z hz1]`. Establish `e1 : b ≫ (Over.homMk (U` using `ovT R B M) (V := A) (spMap (TrivSqZeroExt.inlHom B M) ≫ P) (inl_w A P hP)) = Over.homMk (U := ovT R B' M') (V := A) (spMap (TrivSqZeroExt.inlHom B' M') ≫ spMap (α : B →+* B') ≫ P) (inl_w A _ hP') := by`. Use `ext`. Simplify using `only [b, Over.comp_left, Over.homMk_left]`.
+
+Rewrite using `[← Category.assoc, ← Category.assoc, ← GlobalTheory.Cris.spMap_comp, ← GlobalTheory.Cris.spMap_comp, hβinl]`. Establish `e2 : b ≫ Z = Over.homMk (U` using `ovT R B' M') (V := A) (spMap β ≫ z) hz' := by ext; rfl`. Use `show _ = (b ≫ (_ * Z)).left`. Rewrite using `[MonObj.comp_mul, e1, e2]`.
+-/
 theorem tau_natural (A : Over (Sp R)) [GrpObj A] {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M]
     [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M] {B' M' : Type} [CommRing B'] [Algebra R B']
     [AddCommGroup M'] [Module B' M'] [Module B'ᵐᵒᵖ M'] [IsCentralScalar B' M'] (α : B →ₐ[R] B') (f : M → M')
@@ -170,6 +220,11 @@ end GlobalTheory.AbTan.Transl
 
 open GlobalTheory.AbTan.Transl in
 
+/- English proof (translation)
+Introduce `R _ A _`. Use `⟨fun B M => tau A B M, ?_, ?_⟩` and prove the remaining obligations. Introduce `B M _ _ _ _ _ _ P hP`. Conclude with `bijOn_tau A P hP`. Introduce `B M _ _ _ _ _ _ B' M' _ _ _ _ _ _ α f β hβ P hP z hz`.
+
+Conclude with `tau_natural A α f β hβ P hP z hz`.
+-/
 theorem GlobalTheory.AbTan.exists_translation : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A], ∃ τ : ∀ (B M : Type) [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M], (Sp B ⟶ A.left) → (Sp (TrivSqZeroExt B M) ⟶ A.left) → (Sp (TrivSqZeroExt B M) ⟶ A.left), (∀ (B M : Type) [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M] (P : Sp B ⟶ A.left), P ≫ A.hom = spMap (algebraMap R B) → Set.BijOn (τ B M P) {z | Lifts A.hom (unitPt A B) z} {z | Lifts A.hom P z}) ∧ ∀ (B M : Type) [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M] (B' M' : Type) [CommRing B'] [Algebra R B'] [AddCommGroup M'] [Module B' M'] [Module B'ᵐᵒᵖ M'] [IsCentralScalar B' M'] (α : B →ₐ[R] B') (f : M → M') (β : TrivSqZeroExt B M →+* TrivSqZeroExt B' M'), IsSum β α f → ∀ (P : Sp B ⟶ A.left), P ≫ A.hom = spMap (algebraMap R B) → ∀ z, Lifts A.hom (unitPt A B) z → Lifts A.hom (unitPt A B') (spMap β ≫ z) ∧ τ B' M' (spMap (α : B →+* B') ≫ P) (spMap β ≫ z) = spMap β ≫ τ B M P z := by
   intro R _ A _
   refine ⟨fun B M => tau A B M, ?_, ?_⟩

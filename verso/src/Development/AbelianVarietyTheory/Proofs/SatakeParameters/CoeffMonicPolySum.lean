@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.PtLocalEig
 
+/- English proof (translation)
+Establish `h' : IsLocalRing.residue R (a - b) = 0` using `by rw [map_sub, h, sub_self]`. Rewrite `h'` using `[IsLocalRing.residue_eq_zero_iff]`. Rewrite using `[← sub_eq_zero, ← map_sub, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Use `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 fun hu => ?_)` and prove the remaining obligations. Conclude with `mem_nonunits_iff.1 ((IsLocalRing.mem_maximalIdeal _).1 h') ((isUnit_map_iff φ _).1 hu)`.
+-/
 theorem residue_map_equiv {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
     (φ : R ≃+* R') {a b : R} (h : IsLocalRing.residue R a = IsLocalRing.residue R b) :
     IsLocalRing.residue R' (φ a) = IsLocalRing.residue R' (φ b) := by
@@ -20,6 +23,13 @@ theorem residue_map_equiv {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R
   refine (IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 fun hu => ?_)
   exact mem_nonunits_iff.1 ((IsLocalRing.mem_maximalIdeal _).1 h') ((isUnit_map_iff φ _).1 hu)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `hsub : ∀ F : Formalism.AUTREP.GAf L n → W, Function.support (fun cc : Formalism.AUTREP.GAf L n ⧸ J => if hc : ∃ x ∈ Dset, (x : Formalism.AUTREP.GAf L n ⧸ J) = cc then F (g * hc.choose) else 0) ⊆ (hfin.toFinset : Set (Formalism.AUTREP.GAf L n ⧸ J))`. Introduce `F cc hcc`. Rewrite using `[Set.Finite.coe_toFinset]`. Assume the negation of the conclusion as `hn`.
+
+Apply `hcc` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hn ⟨x, hx, rfl⟩`.
+
+Rewrite using `[Pi.add_apply, Pi.smul_apply]`. Simplify using `only [Formalism.L2.NG.heckeD]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (hsub _), finsum_eq_sum_of_support_subset _ (hsub _), finsum_eq_sum_of_support_subset _ (hsub _), Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun cc _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem heckeD_add (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) {W : Type} [AddCommGroup W]
     [Module ℂ W] (J : Subgroup (Formalism.AUTREP.GAf L n)) (Dset : Set (Formalism.AUTREP.GAf L n))
     (hfin : ((fun x : Formalism.AUTREP.GAf L n => (x : Formalism.AUTREP.GAf L n ⧸ J)) '' Dset).Finite)
@@ -46,6 +56,11 @@ theorem heckeD_add (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) 
   refine Finset.sum_congr rfl fun cc _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ClassResidueGenerators.cls_eq_of_generators`. Consider the case `exact _root_.GlobalTheory.ClassResidueGenerators.cls_eq_of_generators`. Consider the case `(apply _root_.GlobalTheory.ClassResidueGenerators.cls_eq_of_generators <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ClassResidueGenerators.cls_eq_of_generators <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ClassResidueGenerators.cls_eq_of_generators <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ClassResidueGenerators.cls_eq_of_generators ..)`.
+-/
 theorem cls_eq_of_residue : ∀ {O K V : Type} [CommRing O] [Field K] [Algebra O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V] [IsLocalRing O] (S : Set (Module.End K V)) (ψ ψ' : Algebra.adjoin O S →ₐ[O] O), (∀ a (h : a ∈ S), IsLocalRing.residue O (ψ ⟨a, Algebra.subset_adjoin h⟩) = IsLocalRing.residue O (ψ' ⟨a, Algebra.subset_adjoin h⟩)) → Formalism.L2.NCov.cls ψ = Formalism.L2.NCov.cls ψ' := by
   first
   | exact @_root_.GlobalTheory.ClassResidueGenerators.cls_eq_of_generators
@@ -55,6 +70,23 @@ theorem cls_eq_of_residue : ∀ {O K V : Type} [CommRing O] [Field K] [Algebra O
   | (intros; apply @_root_.GlobalTheory.ClassResidueGenerators.cls_eq_of_generators <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ClassResidueGenerators.cls_eq_of_generators ..)
 
+/- English proof (translation)
+Introduce `O K V _ _ _ _ _ _ _ S e he hinj hS`. Establish `key : ∀ t ∈ Algebra.adjoin O S, ∃ c : O, t e = algebraMap O K c • e`. Introduce `t ht`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact hS a ha`.
+
+Consider the case `algebraMap r => exact ⟨r, by rw [Formalism.L2.NCov.algebraMap_end_eq]; simp⟩`. Consider the case `add a b _ _ iha ihb`. Take `⟨c1, h1⟩` from `iha`. Take `⟨c2, h2⟩` from `ihb`. Conclude with `⟨c1 + c2, by rw [LinearMap.add_apply, h1, h2, map_add, add_smul]⟩`.
+
+Consider the case `mul a b _ _ iha ihb`. Take `⟨c1, h1⟩` from `iha`. Take `⟨c2, h2⟩` from `ihb`. Conclude with `⟨c1 * c2, by rw [Module.End.mul_apply, h2, map_smul, h1, smul_smul, map_mul, mul_comm]⟩`. Use `choose f hf using fun t : Algebra.adjoin O S => key t t.2`.
+
+Establish `uniq : ∀ c c' : O, algebraMap O K c • e = algebraMap O K c' • e → c = c'` using `fun c c' hcc => hinj (smul_left_injective K he hcc)`. Establish `f1 : f 1 = 1` using `uniq _ _ (by rw [← hf 1, map_one, one_smul]; rfl)`. Establish `fm : ∀ s t, f (s * t) = f s * f t` using `fun s t => uniq _ _ (by`. Rewrite using `[← hf (s * t), map_mul, mul_comm, mul_smul, ← hf s, ← map_smul, ← hf t]`. Use the proof step `rfl)`.
+
+Establish `f0 : f 0 = 0` using `uniq _ _ (by rw [← hf 0, map_zero, zero_smul]; rfl)`. Establish `fa : ∀ s t, f (s + t) = f s + f t` using `fun s t => uniq _ _ (by`. Rewrite using `[← hf (s + t), map_add, add_smul, ← hf s, ← hf t]`. Use the proof step `rfl)`. Establish `fc : ∀ r, f (algebraMap O (Algebra.adjoin O S) r) = r` using `fun r => uniq _ _ (by`.
+
+Rewrite using `[← hf]`. Use `show (algebraMap O (Module.End K V) r) e = _`. Rewrite using `[Formalism.L2.NCov.algebraMap_end_eq]`. Use the proof step `simp)`. Set `ψ : Algebra.adjoin O S →ₐ[O] O` to `{ toFun := f, map_one' := f1, map_mul' := fm, map_zero' := f0, map_add' := fa, commutes' := fc }`.
+
+Use `⟨ψ, fun t => hf t, ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).2 fun t => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mem_maxGenEigenspace]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [pow_one, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, Formalism.L2.NCov.pt]`.
+
+Rewrite using `[hf t]`. Conclude with `sub_self _`.
+-/
 theorem pt_of_eigvec : ∀ {O K V : Type} [CommRing O] [Field K] [Algebra O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V] (S : Set (Module.End K V)) (e : V), e ≠ 0 → Function.Injective (algebraMap O K) → (∀ a ∈ S, ∃ c : O, a e = algebraMap O K c • e) → ∃ ψ : Algebra.adjoin O S →ₐ[O] O, (∀ t : Algebra.adjoin O S, (t : Module.End K V) e = algebraMap O K (ψ t) • e) ∧ e ∈ Formalism.L2.NCov.W (Algebra.adjoin O S) (Formalism.L2.NCov.pt ψ) := by
   intro O K V _ _ _ _ _ _ _ S e he hinj hS
   have key : ∀ t ∈ Algebra.adjoin O S, ∃ c : O, t e = algebraMap O K c • e := by
@@ -93,6 +125,25 @@ theorem pt_of_eigvec : ∀ {O K V : Type} [CommRing O] [Field K] [Algebra O K] [
   rw [hf t]
   exact sub_self _
 
+/- English proof (translation)
+Introduce `K C _ _ φ ι _ G Mg d hd hdg`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Set `kerS : Finset G → Submodule K (ι → K)` to `fun s => ⨅ g ∈ s, LinearMap.ker (Matrix.mulVecLin (Mg g))`. Establish `hex : ∃ m, ∃ s : Finset G, Module.finrank K (kerS s) = m` using `⟨_, ∅, rfl⟩`.
+
+Take `⟨s, hs⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ s' : Finset G, Module.finrank K (kerS s) ≤ Module.finrank K (kerS s')` using `fun s' => hs ▸ Nat.find_min' hex ⟨s', rfl⟩`. Establish `hbot : kerS s = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `c hc`.
+
+Rewrite using `[Submodule.mem_bot]`. Assume the negation of the conclusion as `hc0`. Take `⟨g, hg⟩` from `hne c hc0`. Establish `hins : kerS (insert g s) = LinearMap.ker (Matrix.mulVecLin (Mg g)) ⊓ kerS s`. Simplify using `only [kerS, Finset.iInf_insert]`.
+
+Establish `hle : kerS (insert g s) ≤ kerS s` using `by rw [hins]; exact inf_le_right`. Establish `heq` using `Submodule.eq_of_le_of_finrank_le hle (hmin _)`. Establish `hc' : c ∈ kerS (insert g s)` using `heq ▸ hc`. Rewrite `hc'` using `[hins]`. Conclude with `hg (LinearMap.mem_ker.1 (Submodule.mem_inf.1 hc').1)`.
+
+Set `R : Matrix (↥s × ι) ι K` to `fun p b => Mg p.1.1 p.2 b`. Establish `hinjR : Function.Injective (Matrix.toLin' R)`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `c hc`. Rewrite using `[← hbot]`.
+
+Simplify using `only [kerS, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `g hg`. Use function extensionality and compare the values at `a`. Establish `hc' : Matrix.mulVec R c = 0` using `by rw [← Matrix.toLin'_apply]; exact LinearMap.mem_ker.1 hc`. Use `congrFun hc' (⟨g, hg⟩, a)` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, R]`. Take `⟨Ψ, hΨ⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' R) (LinearMap.ker_eq_bot.2 hinjR)`. Establish `hLR : LinearMap.toMatrix' Ψ * R = 1`. Use `congrArg LinearMap.toMatrix' hΨ` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+
+Establish `hLRC : (LinearMap.toMatrix' Ψ).map φ * R.map φ = 1`. Rewrite using `[← Matrix.map_mul, hLR, Matrix.map_one φ φ.map_zero φ.map_one]`. Establish `hRd : Matrix.mulVec (R.map φ) d = 0`. Use function extensionality and compare the values at `p`. Use `congrFun (hdg p.1.1) p.2` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec, dotProduct] at this`. Conclude with `this`. Apply `hd` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem descent : ∀ {K C : Type} [Field K] [Field C] (φ : K →+* C) {ι : Type} [Fintype ι] {G : Type} (Mg : G → Matrix ι ι K) (d : ι → C), d ≠ 0 → (∀ g, Matrix.mulVec ((Mg g).map φ) d = 0) → ∃ c : ι → K, c ≠ 0 ∧ ∀ g, Matrix.mulVec (Mg g) c = 0 := by
   intro K C _ _ φ ι _ G Mg d hd hdg
   classical
@@ -142,6 +193,11 @@ theorem descent : ∀ {K C : Type} [Field K] [Field C] (φ : K →+* C) {ι : Ty
   calc d = Matrix.mulVec ((LinearMap.toMatrix' Ψ).map φ * R.map φ) d := by rw [hLRC, Matrix.one_mulVec]
     _ = 0 := by rw [← Matrix.mulVec_mulVec, hRd, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Rewrite using `[coeff_add, coeff_X_pow, if_neg (by omega), zero_add, finset_sum_coeff]`. Rewrite using `[Finset.sum_eq_single k]`. Rewrite using `[coeff_C_mul_X_pow, if_pos rfl]`. Introduce `b hb hbk`. Rewrite using `[coeff_C_mul_X_pow, if_neg]`.
+
+Rewrite `hb` using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Introduce `hk`. Conclude with `absurd (Finset.mem_Icc.2 ⟨hk1, hk2⟩) hk`.
+-/
 theorem coeff_monic_poly_sum {R : Type} [Semiring R] (n k : ℕ) (hk1 : 1 ≤ k) (hk2 : k ≤ n) (c : ℕ → R) :
     (X ^ n + ∑ k' ∈ Finset.Icc 1 n, C (c k') * X ^ (n - k')).coeff (n - k) = c k := by
   rw [coeff_add, coeff_X_pow, if_neg (by omega), zero_add, finset_sum_coeff]
@@ -154,6 +210,13 @@ theorem coeff_monic_poly_sum {R : Type} [Semiring R] (n k : ℕ) (hk1 : 1 ≤ k)
   · intro hk
     exact absurd (Finset.mem_Icc.2 ⟨hk1, hk2⟩) hk
 
+/- English proof (translation)
+Introduce `O _ _ ι hι n q hq p lam t h1 h2 k hk1 hk2`. Use `set u : O := (-1 : O) ^ k * (q : O) ^ (k * (k - 1) / 2) with hu_def`. Establish `hu : IsUnit u` using `((isUnit_one.neg).pow k).mul (hq.pow _)`. Establish `e1 : ι (p.coeff (n - k)) = ι u * lam k`. Use `congrArg (fun P : ℂ[X] => P.coeff (n - k)) h1` as an intermediate fact.
+
+Simplify using `only [coeff_map] at this`. Rewrite using `[this, coeff_monic_poly_sum n k hk1 hk2 (fun k' => (-1) ^ k' * (q : ℂ) ^ (k' * (k' - 1) / 2) * lam k')]`. Simplify using `[u]`. Establish `e2 : IsLocalRing.residue O (p.coeff (n - k)) = IsLocalRing.residue O (u * t k)`. Use `congrArg (fun P : (IsLocalRing.ResidueField O)[X] => P.coeff (n - k)) h2` as an intermediate fact.
+
+Simplify using `only [coeff_map] at this`. Rewrite using `[this, coeff_monic_poly_sum n k hk1 hk2 (fun k' => (-1 : O) ^ k' * (q : O) ^ (k' * (k' - 1) / 2) * t k')]`. Use `⟨↑hu.unit⁻¹ * p.coeff (n - k), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, e1, ← mul_assoc, ← map_mul, hu.val_inv_mul, map_one, one_mul]`. Rewrite using `[map_mul, e2, ← map_mul, ← mul_assoc, hu.val_inv_mul, one_mul]`.
+-/
 theorem coeff_extract : ∀ {O : Type} [CommRing O] [IsLocalRing O] (ι : O →+* ℂ), Function.Injective ι → ∀ (n q : ℕ), IsUnit (q : O) → ∀ (p : O[X]) (lam : ℕ → ℂ) (t : ℕ → O), p.map ι = X ^ n + ∑ k ∈ Finset.Icc 1 n, C ((-1) ^ k * (q : ℂ) ^ (k * (k - 1) / 2) * lam k) * X ^ (n - k) → p.map (IsLocalRing.residue O) = (X ^ n + ∑ k ∈ Finset.Icc 1 n, C ((-1 : O) ^ k * (q : O) ^ (k * (k - 1) / 2) * t k) * X ^ (n - k)).map (IsLocalRing.residue O) → ∀ k, 1 ≤ k → k ≤ n → ∃ a : O, ι a = lam k ∧ IsLocalRing.residue O a = IsLocalRing.residue O (t k) := by
   intro O _ _ ι hι n q hq p lam t h1 h2 k hk1 hk2
   set u : O := (-1 : O) ^ k * (q : O) ^ (k * (k - 1) / 2) with hu_def
@@ -171,6 +234,17 @@ theorem coeff_extract : ∀ {O : Type} [CommRing O] [IsLocalRing O] (ι : O →+
   · rw [map_mul, e1, ← mul_assoc, ← map_mul, hu.val_inv_mul, map_one, one_mul]
   · rw [map_mul, e2, ← map_mul, ← mul_assoc, hu.val_inv_mul, one_mul]
 
+/- English proof (translation)
+Introduce `D i w hw`. Establish `hl : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`. Establish `hN : ¬ (D.nd.l i) ∣ normV w`. Introduce `hdvd`. Use `letI := Ideal.Quotient.field w.asIdeal`.
+
+Use `haveI : Finite (𝓞 D.host.E ⧸ w.asIdeal) := w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot`. Use `letI := Fintype.ofFinite (𝓞 D.host.E ⧸ w.asIdeal)`. Take `⟨p, hchar⟩` from `CharP.exists (𝓞 D.host.E ⧸ w.asIdeal)`. Establish `hp : p.Prime` using `CharP.char_is_prime (𝓞 D.host.E ⧸ w.asIdeal) p`. Use `haveI : Fact p.Prime := ⟨hp⟩`.
+
+Take `⟨n, -, hn⟩` from `FiniteField.card (𝓞 D.host.E ⧸ w.asIdeal) p`. Establish `hcard : normV w = p ^ (n : ℕ)` using `by rw [normV, Nat.card_eq_fintype_card, hn]`. Rewrite `hdvd` using `[hcard]`. Establish `hlp : D.nd.l i = p` using `(Nat.prime_dvd_prime_iff_eq hl hp).1 (hl.dvd_of_dvd_pow hdvd)`. Apply `hw` to reduce the goal to its premises.
+
+Use `show ((D.nd.l i : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, hlp]`. Conclude with `CharP.cast_eq_zero _ p`. Establish `hu : IsUnit ((normV w : ℕ) : ℤ_[D.nd.l i])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`.
+
+Conclude with `(Nat.Prime.coprime_iff_not_dvd hl).2 hN`. Use `hu.map (algebraMap ℤ_[D.nd.l i] (D.nd.O i))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem normV_unit : ∀ (D : D7) (i : D.nd.Loc) (w : PlE D.host), w ∉ placesOver D.host.E (D.nd.l i) → IsUnit (((normV w : ℕ) : D.nd.O i)) := by
   intro D i w hw
   classical

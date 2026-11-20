@@ -10,6 +10,9 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.BlockTwistCharacters
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[mulChi_apply, mulChi_apply, map_mul, Units.val_mul, hψ, ExponentTwist.splitCentre_eq, ExponentTwist.chiDet_aT le_rfl, add_mul, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem central_mulChi {a : ℕ} (e w : ℂ) (ψ : Sm E a)
     (hψ : ∀ (t : ℝ) m, ψ.1 (splitCentre E a t * m) = Complex.exp (e * t) * ψ.1 m) (t : ℝ) (m : GA E a) :
     (mulChi a (Model.absC E w) ψ).1 (splitCentre E a t * m) =
@@ -18,6 +21,9 @@ theorem central_mulChi {a : ℕ} (e w : ℂ) (ψ : Sm E a)
     add_mul, Complex.exp_add]
   ring
 
+/- English proof (translation)
+Use `⟨_, he, fun φ hφ t g => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ, rfl⟩` from `Submodule.mem_map.1 hφ`. Conclude with `central_mulChi e w ψ (hV ψ hψ) t g`.
+-/
 theorem centIm_tw {a : ℕ} (V : Submodule ℂ (Sm E a)) (e w : ℂ) (he : (e + w * a * (Module.finrank ℚ E : ℂ)).re = 0)
     (hV : ∀ φ ∈ V, ∀ (t : ℝ) m, φ.1 (splitCentre E a t * m) = Complex.exp (e * t) * φ.1 m) :
     SpectralAccumulation.CentIm (tw V w) := by
@@ -26,10 +32,16 @@ theorem centIm_tw {a : ℕ} (V : Submodule ℂ (Sm E a)) (e w : ℂ) (he : (e + 
   exact central_mulChi e w ψ (hV ψ hψ) t g
 
 omit [IsCMField E] in
+/- English proof (translation)
+Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Conclude with `this.ne'` after adjusting the coercions.
+-/
 theorem finrank_ne_zero' : (Module.finrank ℚ E : ℝ) ≠ 0 := by
   have : 0 < Module.finrank ℚ E := Module.finrank_pos
   exact_mod_cast this.ne'
 
+/- English proof (translation)
+Establish `hd` using `finrank_ne_zero' (E := E)`. Unfold `pE at hc`. Move the coercions through the operations in `at hc`. Clear denominators, using `at hc` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem re_of_pE {r s : ℕ} {c : ℂ} (hc : pE E (r + s) r c = 0) :
     c.re = (r : ℝ) * s * (Module.finrank ℚ E : ℝ) / 2 := by
   have hd := finrank_ne_zero' (E := E)
@@ -38,6 +50,11 @@ theorem re_of_pE {r s : ℕ} {c : ℂ} (hc : pE E (r + s) r c = 0) :
   field_simp at hc
   linarith
 
+/- English proof (translation)
+Use `centIm_tw V c _ ?_ hV` and prove the remaining obligations. Establish `h` using `re_of_pE (E := E) hc`. Establish `e1 : (c + -(s : ℂ) / 2 * r * (Module.finrank ℚ E : ℂ)).re = c.re - (s : ℝ) / 2 * r * (Module.finrank ℚ E : ℝ)`. Apply the tactic sequence `simp [Complex.add_re, Complex.mul_re, Complex.neg_re] <;> ring_nf`. Rewrite using `[e1, h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem centIm_left {r s : ℕ} (V : Submodule ℂ (Sm E r)) {c : ℂ} (hc : pE E (r + s) r c = 0)
     (hV : ∀ φ ∈ V, ∀ (t : ℝ) m, φ.1 (splitCentre E r t * m) = Complex.exp (c * t) * φ.1 m) :
     SpectralAccumulation.CentIm (tw V (-(s : ℂ) / 2)) := by
@@ -47,6 +64,11 @@ theorem centIm_left {r s : ℕ} (V : Submodule ℂ (Sm E r)) {c : ℂ} (hc : pE 
     simp [Complex.add_re, Complex.mul_re, Complex.neg_re] <;> ring_nf
   rw [e1, h]; ring
 
+/- English proof (translation)
+Use `centIm_tw V (-c) _ ?_ hV` and prove the remaining obligations. Establish `h` using `re_of_pE (E := E) hc`. Establish `e1 : (-c + (r : ℂ) / 2 * s * (Module.finrank ℚ E : ℂ)).re = -c.re + (r : ℝ) / 2 * s * (Module.finrank ℚ E : ℝ)`. Apply the tactic sequence `simp [Complex.add_re, Complex.mul_re, Complex.neg_re] <;> ring_nf`. Rewrite using `[e1, h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem centIm_right {r s : ℕ} (V : Submodule ℂ (Sm E s)) {c : ℂ} (hc : pE E (r + s) r c = 0)
     (hV : ∀ φ ∈ V, ∀ (t : ℝ) m, φ.1 (splitCentre E s t * m) = Complex.exp (-c * t) * φ.1 m) :
     SpectralAccumulation.CentIm (tw V ((r : ℂ) / 2)) := by

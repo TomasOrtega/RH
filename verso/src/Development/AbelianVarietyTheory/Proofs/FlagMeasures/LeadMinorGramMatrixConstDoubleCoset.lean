@@ -6,6 +6,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D Λ T T' F F₁ F₂ h l`. Take `⟨A, B, hA0, hA1, hB0, hB1, hZ⟩` from `Formalism.L2.SG.Pf.zhat_rel F h`. Rewrite using `[hZ]`. Conclude with `Formalism.L2.SG.Pf.leadMinor_uni A _ B hA0 hA1 hB0 hB1 l`.
+-/
 theorem leadMinorE_zhatL_dcrel :
     ∀ (D : D7) (Λ : Submodule (NumberField.RingOfIntegers D.host.E) (VS D).V) (T T' : D.host.E)
       (F : LFlag (VS D) D.R.rS T) (F₁ F₂ : LFlag (VS D) D.R.rS T'),

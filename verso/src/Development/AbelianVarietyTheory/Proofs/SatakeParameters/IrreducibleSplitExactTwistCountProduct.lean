@@ -23,20 +23,34 @@ namespace GlobalTheory.BlockSplitProd
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[unrChar_apply, mul_zpow]`.
+-/
 theorem unrChar_mul (α β : ℂˣ) : unrChar k (α * β) = unrChar k α * unrChar k β := by
   refine MonoidHom.ext fun x => ?_
   simp [unrChar_apply, mul_zpow]
 
+/- English proof (translation)
+Use `MonoidHom.ext fun g => LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[detRep, ofChar_apply, twist_apply, mul_comm, mul_left_comm, mul_assoc]`.
+-/
 theorem twist_detRep (n : Type) [Fintype n] [DecidableEq n] (ψ φ : kˣ →* ℂˣ) :
     twist (detRep n ψ) (detChar n φ) = detRep n (ψ * φ) := by
   refine MonoidHom.ext fun g => LinearMap.ext fun x => ?_
   simp [detRep, ofChar_apply, twist_apply, mul_comm, mul_left_comm, mul_assoc]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `e`.
+-/
 theorem nonempty_equiv_of_cast {n m : ℕ} (h : n = m) (x : Irr k n) (ψ : kˣ →* ℂˣ)
     (e : Nonempty ((h ▸ x : Irr k m).π.Equiv (detRep (Fin m) ψ))) :
     Nonempty (x.π.Equiv (detRep (Fin n) ψ)) := by
   subst h; exact e
 
+/- English proof (translation)
+Break down `m with _ | _ | m` into its components or cases. Conclude with `absurd h (Model.not_inSupport_zero _ _)`. Take `⟨ω, hω, ⟨φ⟩⟩` from `RankLeOne.exists_equiv_detRep k (Fin 1) _ τ.π τ.smooth τ.irr`. Establish `h1 : InSupport (detRep (Fin 1) ω) ψ` using `JacquetExact.inSupport_of_isSubquotient k _ _ _ τ.π _ ψ ((isSmooth_ofChar_iff _).2 hω.detChar) (IsSubquotient.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective) h`. Take `rfl` from `(Model.inSupport_one_iff ω ψ).1 h1`.
+
+Conclude with `⟨rfl, ⟨φ⟩⟩`. Conclude with `absurd h (Model.not_inSupport_of_isCuspidal hc ψ)`.
+-/
 theorem eq_one_of_inSupport {m : ℕ} (τ : Irr k m) (hc : IsCuspidal τ.π) {ψ : kˣ →* ℂˣ}
     (h : InSupport τ.π ψ) : m = 1 ∧ Nonempty (τ.π.Equiv (detRep (Fin m) ψ)) := by
   rcases m with _ | _ | m
@@ -49,6 +63,9 @@ theorem eq_one_of_inSupport {m : ℕ} (τ : Irr k m) (hc : IsCuspidal τ.π) {ψ
     exact ⟨rfl, ⟨φ⟩⟩
   · exact absurd h (Model.not_inSupport_of_isCuspidal hc ψ)
 
+/- English proof (translation)
+Take `⟨-, hσ, e, hsub⟩` from `hc`. Establish `h1` using `JacquetExact.inSupport_of_isSubquotient k _ _ _ π _ ψ (isSmooth_parInd _ _) hsub h`. Take `⟨a, ha⟩` from `ProdSupport.exists_inSupport_of_multiProd hG k (Fin s) (fun a => Fin (d a)) (Fin n) e _ (fun a => (σ a).π) ψ (fun a => (σ a).smooth) (fun a => (σ a).irr) h1`. Conclude with `⟨a, eq_one_of_inSupport (σ a) (hσ a).2.2 ha⟩`.
+-/
 theorem exists_eq_of_inSupport (hG : GlobalTheory.Published.GeometricLemma) {n s : ℕ} {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (d : Fin s → ℕ) (σ : ∀ a, Irr k (d a))
     (ψ : kˣ →* ℂˣ) (hc : IsCuspSupport π d (fun a => (σ a).π)) (h : InSupport π ψ) :
@@ -59,6 +76,9 @@ theorem exists_eq_of_inSupport (hG : GlobalTheory.Published.GeometricLemma) {n s
     (fun a => (σ a).π) ψ (fun a => (σ a).smooth) (fun a => (σ a).irr) h1
   exact ⟨a, eq_one_of_inSupport (σ a) (hσ a).2.2 ha⟩
 
+/- English proof (translation)
+Introduce `hB hG hU k _ _ _ _ r t s π d σ S hc hS1 hlink hr ht`. Establish `hσ` using `hc.2.1`. Take `⟨s₁, s₂, ι₁, ι₂, e₁, e₂, V₁, V₂, _, _, _, _, ρ₁, ρ₂, m1, m2, sm1, sm2, ⟨φ₁⟩, ⟨φ₂⟩, hsub⟩` from `GlobalTheory.T.isSubquotient_prod_reordered_cuspSupport hB hG hU k r t s π d σ S hc hS1 hlink hr ht`. Take `⟨π₁, π₂, h1, h2, h3⟩` from `GlobalTheory.T.irreducibleSubquotient_parabolicProductTwo_finiteLength hB k r t V₁ V₂ ρ₁ ρ₂ π sm1 sm2 ((GlobalTheory.T.parabolicInductionTensorProduct_hasFiniteLength hB k s₁ r (fun a => d (ι₁ a)) (fun a => σ (ι₁ a)) e₁).of_equiv φ₁.symm) ((GlobalTheory.T.parabolicInductionTensor …`. Conclude with `⟨π₁, π₂, s₁, s₂, ι₁, ι₂, m1, m2, ⟨π₁.irr, fun a => hσ (ι₁ a), e₁, h1.trans (IsSubquotient.of_injective φ₁.toIntertwiningMap φ₁.toLinearEquiv.injective)⟩, ⟨π₂.irr, fun b => hσ (ι₂ b), e₂, h2.trans (IsSubquotient.of_injective φ₂.toIntertwiningMap φ₂.toLinearEquiv.injective)⟩, h3⟩`.
+-/
 theorem reorder : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma →
     GlobalTheory.Published.UnlinkedProductIrreducible →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
@@ -86,6 +106,21 @@ theorem reorder : GlobalTheory.Published.BernsteinZelevinskyFiniteness → Globa
 end GlobalTheory.BlockSplitProd
 
 open GlobalTheory.BlockSplitProd in
+/- English proof (translation)
+Introduce `hB hG hU k _ _ _ _ r t χ π s d σ _ hc hcard`. Set `S : Finset (Fin s)` to `Finset.univ.filter fun a => d a = 1 ∧ ∃ α : ℂˣ, Nonempty ((σ a).π.Equiv (detRep (Fin (d a)) (χ * unrChar k α)))`. Establish `hS : S.card = t`. Rewrite using `[← hcard, ← Set.ncard_coe_finset]`. Use `congr 1`.
+
+Use extensionality with `a`. Simplify using `[S]`. Establish `hS1 : ∀ b ∈ S, d b = 1` using `fun b hb => (Finset.mem_filter.1 hb).2.1`. Establish `htot : ∑ a, d a = r + t`. Take `⟨e, -⟩` from `hc.2.2`.
+
+Simplify using `using Fintype.card_congr e`. Establish `ht : ∑ a ∈ S, d a = t`. Rewrite using `[Finset.sum_congr rfl hS1]`. Simplify using `[hS]`. Establish `hr : ∑ a ∈ Sᶜ, d a = r`.
+
+Use `Finset.sum_add_sum_compl S d` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hlink : ∀ a b, a ∉ S → b ∈ S → ∀ (h : d a = d b) (α : ℂˣ), ¬ Nonempty ((h ▸ σ a : Irr k (d b)).π.Equiv (twist (σ b).π (detChar (Fin (d b)) (unrChar k α))))`. Introduce `a b ha hb h α ⟨φ⟩`. Take `⟨hb1, β, ⟨ψ⟩⟩` from `(Finset.mem_filter.1 hb).2`.
+
+Establish `e1 : twist (detRep (Fin (d b)) (χ * unrChar k β)) (detChar (Fin (d b)) (unrChar k α)) = detRep (Fin (d b)) (χ * unrChar k (β * α))`. Rewrite using `[twist_detRep, unrChar_mul, mul_assoc]`. Establish `ψ'` using `LocGL.twistEquiv ψ (detChar (Fin (d b)) (unrChar k α))`. Rewrite `ψ'` using `[e1]`. Conclude with `ha (Finset.mem_filter.2 ⟨Finset.mem_univ _, h.trans hb1, β * α, nonempty_equiv_of_cast h (σ a) _ ⟨φ.trans ψ'⟩⟩)`.
+
+Take `⟨π₁, π₂, s₁, s₂, ι₁, ι₂, m1, m2, hc1, hc2, hsub⟩` from `reorder hB hG hU k r t s π d σ S hc hS1 hlink hr ht`. Establish `hirr` using `hU k r t s₁ s₂ π₁ π₂ (fun a => d (ι₁ a)) (fun b => d (ι₂ b)) (fun a => σ (ι₁ a)) (fun b => σ (ι₂ b)) hc1 hc2 fun a b h α => hlink _ _ (m1 a) (m2 b) h α`. Take `⟨φ⟩` from `IsSubquotient.nonempty_equiv hsub π.irr hirr`. Use `⟨π₁, π₂, ⟨φ.symm⟩, fun α hα => ?_⟩` and prove the remaining obligations. Take `⟨a, ha1, hψ⟩` from `exists_eq_of_inSupport hG π₁.π (fun a => d (ι₁ a)) (fun a => σ (ι₁ a)) _ hc1 hα`.
+
+Conclude with `m1 a (Finset.mem_filter.2 ⟨Finset.mem_univ _, ha1, α, hψ⟩)`.
+-/
 theorem GlobalTheory.BlockSplitProd.main : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.UnlinkedProductIrreducible → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (χ : kˣ →* ℂˣ) (π : Irr k (r + t)) (s : ℕ) (d : Fin s → ℕ) (σ : ∀ a, Irr k (d a)), IsSmoothChar χ → IsCuspSupport π.π d (fun a => (σ a).π) → Set.ncard {a | d a = 1 ∧ ∃ α : ℂˣ, Nonempty ((σ a).π.Equiv (detRep (Fin (d a)) (χ * unrChar k α)))} = t → ∃ (π₁ : Irr k r) (π₂ : Irr k t), Nonempty (π.π.Equiv (prod₂ π₁.π π₂.π)) ∧ ∀ α : ℂˣ, ¬ InSupport π₁.π (χ * unrChar k α) := by
   intro hB hG hU k _ _ _ _ r t χ π s d σ _ hc hcard
   classical

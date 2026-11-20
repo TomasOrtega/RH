@@ -11,6 +11,9 @@ open GlobalTheory
 
 namespace GlobalTheory.HSCore
 
+/- English proof (translation)
+Introduce `k _ Y _ hP L hL F _ hF j`. Use `isNoetherian_of_isProjOver hP` as an intermediate fact. Rewrite using `[hdim_twist_of_suppDim_le_zero k hF (Twist.isLB_lbZPow hL j) 0, chi_eq_hdim_zero_of_suppDim_le_zero k hF]`.
+-/
 theorem hdim_zero_twistZ_eq_chi_of_suppDim_le_zero : ∀ (k : Type) [Field k] (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (GlobalTheory.strHom k Y) → ∀ (L : LB Y) (hL : L.IsLB) (F : Y.Modules) [IsFiniteQC F], suppDim F ≤ 0 → ∀ j : ℤ, (GlobalTheory.hdim k (GlobalTheory.twistZ F L j) 0 : ℤ) = GlobalTheory.chi k F := by
   intro k _ Y _ hP L hL F _ hF j
   have := isNoetherian_of_isProjOver hP

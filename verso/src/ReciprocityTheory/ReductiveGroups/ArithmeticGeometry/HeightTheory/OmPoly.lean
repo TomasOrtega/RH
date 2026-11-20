@@ -18,6 +18,9 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Conclude with `⟨d.aG_frame_nonneg hd h, d.de_pres hd h, d.om_is_poly hd h⟩`.
+-/
 theorem om_poly (hd : d.AxH 𝒜) (h : d.S1) :
     0 ≤ d.aG h d.wF hd.a4.choose ∧ (∃ a b : KTp K d.D d.N, d.IsPres hd h a b) ∧
     ∃ Om : KTp K d.D d.N, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) Om = d.omE hd h ∧ Om ≠ 0 ∧

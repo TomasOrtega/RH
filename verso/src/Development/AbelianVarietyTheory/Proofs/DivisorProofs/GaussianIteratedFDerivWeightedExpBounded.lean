@@ -11,6 +11,11 @@ open scoped Nat
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Break down `j with _ | n` into its components or cases. Rewrite using `[norm_iteratedFDeriv_zero]`. Simplify using the standard rewrite rules. Rewrite using `[← norm_iteratedFDeriv_fderiv, show fderiv ℝ (id : E → E) = fun _ => ContinuousLinearMap.id ℝ E from funext fun _ => fderiv_id]`. Break down `n with _ | n` into its components or cases.
+
+Rewrite using `[norm_iteratedFDeriv_zero]`. Conclude with `(ContinuousLinearMap.norm_id_le).trans (by linarith [norm_nonneg x])`. Rewrite using `[iteratedFDeriv_const_of_ne (Nat.succ_ne_zero n)]`. Simplify using `only [Pi.zero_apply, norm_zero]`. Check the signs of the components of the expression.
+-/
 theorem norm_iteratedFDeriv_id_le_one_add' (j : ℕ) (x : E) :
     ‖iteratedFDeriv ℝ j (id : E → E) x‖ ≤ 1 + ‖x‖ := by
   rcases j with _ | n
@@ -24,6 +29,13 @@ theorem norm_iteratedFDeriv_id_le_one_add' (j : ℕ) (x : E) :
       simp only [Pi.zero_apply, norm_zero]
       positivity
 
+/- English proof (translation)
+Establish `h` using `B.norm_iteratedFDeriv_le_of_bilinear (f := id) (g := id) (N := (n : WithTop ℕ∞)) contDiff_id contDiff_id x le_rfl`. Simplify using `only [id] at h`. Use `h.trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, sq]`. Use `gcongr`. Conclude with `norm_iteratedFDeriv_id_le_one_add' i x`. Conclude with `norm_iteratedFDeriv_id_le_one_add' (n - i) x`. Use `_ = 2 ^ n * (1 + ‖x‖) ^ 2 := by`.
+
+Rewrite using `[← Finset.sum_mul]`. Use `congr 1`. Conclude with `Nat.sum_range_choose n` after adjusting the coercions.
+-/
 theorem norm_iteratedFDeriv_diag_le' (B : E →L[ℝ] E →L[ℝ] ℝ) (n : ℕ) (x : E) :
     ‖iteratedFDeriv ℝ n (fun y => B y y) x‖ ≤ ‖B‖ * (2 ^ n * (1 + ‖x‖) ^ 2) := by
   have h := B.norm_iteratedFDeriv_le_of_bilinear (f := id) (g := id) (N := (n : WithTop ℕ∞))
@@ -43,6 +55,9 @@ theorem norm_iteratedFDeriv_diag_le' (B : E →L[ℝ] E →L[ℝ] ℝ) (n : ℕ)
         congr 1
         exact_mod_cast Nat.sum_range_choose n
 
+/- English proof (translation)
+Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Establish `h` using `congrFun (iteratedDeriv_exp_const_mul i 1) y`. Simplify using `only [one_mul, one_pow] at h`. Rewrite `h` using `[show (fun s => Real.exp s) = Real.exp from rfl]`. Rewrite using `[h, Real.norm_eq_abs, abs_of_pos (Real.exp_pos y)]`.
+-/
 theorem norm_iteratedFDeriv_rexp' (i : ℕ) (y : ℝ) : ‖iteratedFDeriv ℝ i Real.exp y‖ = Real.exp y := by
   rw [norm_iteratedFDeriv_eq_norm_iteratedDeriv]
   have h := congrFun (iteratedDeriv_exp_const_mul i 1) y
@@ -50,6 +65,11 @@ theorem norm_iteratedFDeriv_rexp' (i : ℕ) (y : ℝ) : ‖iteratedFDeriv ℝ i 
   rw [show (fun s => Real.exp s) = Real.exp from rfl] at h
   rw [h, Real.norm_eq_abs, abs_of_pos (Real.exp_pos y)]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded`. Consider the case `exact _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded`. Consider the case `(apply _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded ..)`.
+-/
 theorem exists_bound_poly_mul_exp' (c : ℝ) (hc : 0 < c) (N : ℕ) :
     ∃ C, ∀ r : ℝ, 0 ≤ r → (1 + r) ^ N * Real.exp (-(c * r ^ 2)) ≤ C := by
   first
@@ -60,6 +80,23 @@ theorem exists_bound_poly_mul_exp' (c : ℝ) (hc : 0 < c) (N : ℕ) :
   | (intros; apply @_root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded ..)
 
+/- English proof (translation)
+Introduce `E _ _ c α hc hα k m`. Use `set B : E →L[ℝ] E →L[ℝ] ℝ := (-c) • innerSL ℝ with hBdef`. Establish `hBy : ∀ y : E, B y y = -(c * ‖y‖ ^ 2)` using `fun y => by`. Simplify using `[hBdef, real_inner_self_eq_norm_sq]`. Use `left`.
+
+Apply the tactic sequence `first | exact real_inner_self_eq_norm_sq y | simp [innerSL_apply, real_inner_self_eq_norm_sq] | rfl`. Establish `hfun : (fun y : E => Complex.exp (-((c * ‖y‖ ^ 2 : ℝ) : ℂ))) = Complex.ofRealLI ∘ (Real.exp ∘ fun y : E => B y y)`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply, Complex.ofRealLI_apply, hBy, Complex.ofReal_exp, Complex.ofReal_neg]`. Establish `hq : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y : E => B y y)` using `B.contDiff.clm_apply contDiff_id`.
+
+Establish `hg : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Real.exp ∘ fun y : E => B y y)` using `Real.contDiff_exp.comp hq`. Establish `hc' : 0 < c * (1 - α)` using `mul_pos hc (by linarith)`. Take `⟨C, hC⟩` from `exists_bound_poly_mul_exp' (c * (1 - α)) hc' (k + 2 * m)`. Use `⟨m ! * (2 * (‖B‖ + 1)) ^ m * C, fun x => ?_⟩` and prove the remaining obligations. Establish `hn : ((m : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `by exact_mod_cast le_top`.
+
+Rewrite using `[hfun, LinearIsometry.norm_iteratedFDeriv_comp_left _ hg.contDiffAt hn]`. Establish `hfb` using `norm_iteratedFDeriv_comp_le (g := Real.exp) (f := fun y : E => B y y) Real.contDiff_exp hq hn x (C := Real.exp (B x x)) (D := 2 * (‖B‖ + 1) * (1 + ‖x‖) ^ 2) (fun i _ => (norm_iteratedFDeriv_rexp' i _).le) (fun i hi _ => by`. Establish `hB0` using `norm_nonneg B`. Establish `hx0` using `norm_nonneg x`. Establish `a1 : ‖B‖ ≤ (‖B‖ + 1) ^ i` using `le_trans (by linarith) (le_self_pow₀ (by linarith) (by omega))`.
+
+Establish `a2 : (1 + ‖x‖) ^ 2 ≤ ((1 + ‖x‖) ^ 2) ^ i` using `le_self_pow₀ (by nlinarith) (by omega)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hfb` using `[hBy x]`. Establish `hx0` using `norm_nonneg x`. Establish `hB0` using `norm_nonneg B`.
+
+Establish `hexp : Real.exp (-(c * ‖x‖ ^ 2)) * Real.exp (c * α * ‖x‖ ^ 2) = Real.exp (-(c * (1 - α) * ‖x‖ ^ 2))`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ = m ! * (2 * (‖B‖ + 1)) ^ m * ((1 + ‖x‖) ^ (k + 2 * m) * (Real.exp (-(c * ‖x‖ ^ 2)) * Real.exp (c * α * ‖x‖ ^ 2))) := by`. Rewrite using `[show (2 * (‖B‖ + 1) * (1 + ‖x‖) ^ 2) ^ m = (2 * (‖B‖ + 1)) ^ m * (1 + ‖x‖) ^ (2 * m) by`. Rewrite using `[mul_pow, pow_mul], pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ m ! * (2 * (‖B‖ + 1)) ^ m * C := by`.
+
+Rewrite using `[hexp]`. Use `gcongr`. Conclude with `hC ‖x‖ hx0`.
+-/
 theorem weighted_bound : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] (c α : ℝ), 0 < c → α < 1 → ∀ (k m : ℕ),
     ∃ K : ℝ, ∀ y : E, ‖y‖ ^ k * ‖iteratedFDeriv ℝ m (fun y : E => Complex.exp (-((c * ‖y‖ ^ 2 : ℝ) : ℂ))) y‖ *
       Real.exp (c * α * ‖y‖ ^ 2) ≤ K := by

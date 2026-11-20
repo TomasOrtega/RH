@@ -11,6 +11,13 @@ namespace GlobalTheory.CM.Test
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Use `⟨fun x y => ((((ε : ℤ) * (D.EF (H.w0 • x) y - D.EF x y) : ℤ) : OK H) + (((ε : ℤ) * D.EF x y : ℤ) : OK H) * wK H), ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Establish `hw : ((wK H : OK H) : 𝓞 E) = H.w0` using `rfl`. Move the coercions through the operations in `[hw]`. Both sides reduce to the same expression.
+
+Introduce `h' hh'`. Use function extensionality and compare the values at `x y`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hw : ((wK H : OK H) : 𝓞 E) = H.w0` using `rfl`. Rewrite using `[hh' x y]`.
+
+Move the coercions through the operations in `[hw]`. Both sides reduce to the same expression.
+-/
 theorem existsUnique_isKForm (D : Datum H) (ε : ℤˣ) : ∃! h, IsKForm D ε h := by
   refine ⟨fun x y => ((((ε : ℤ) * (D.EF (H.w0 • x) y - D.EF x y) : ℤ) : OK H) +
     (((ε : ℤ) * D.EF x y : ℤ) : OK H) * wK H), ?_, ?_⟩
@@ -26,6 +33,13 @@ theorem existsUnique_isKForm (D : Datum H) (ε : ℤˣ) : ∃! h, IsKForm D ε h
     push_cast [hw]
     rfl
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k, H.d + 1 = 4 * k` from `⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩`. Establish `hk' : (H.d + 1) / 4 = k` using `by omega`. Rewrite using `[hk']`. Establish `hd : (H.d : 𝓞 E) = 4 * k - 1`. Establish `e : ((H.d + 1 : ℕ) : 𝓞 E) = ((4 * k : ℕ) : 𝓞 E)` using `by rw [hk]`.
+
+Move the coercions through the operations in `at e`. Take the linear combination `e`. Establish `h4 : (4 : 𝓞 E) * (H.w0 * H.w0 - (H.w0 - k)) = 0`. Take the linear combination `(2 * H.w0 - 1 + H.rt) * H.two_weight_eq_one_add_root + H.rt_sq - hd`. Establish `h40 : (4 : 𝓞 E) ≠ 0` using `by norm_num`.
+
+Break down `mul_eq_zero.mp h4 with h | h` into its components or cases. Conclude with `absurd h h40`. Take the linear combination `h`.
+-/
 theorem cm_generator_sq_quadratic_eq (H : Host E) : H.w0 * H.w0 = H.w0 - (((H.d + 1) / 4 : ℕ) : 𝓞 E) := by
   obtain ⟨k, hk⟩ : ∃ k, H.d + 1 = 4 * k := ⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩
   have hk' : (H.d + 1) / 4 = k := by omega
@@ -41,6 +55,17 @@ theorem cm_generator_sq_quadratic_eq (H : Host E) : H.w0 * H.w0 = H.w0 - (((H.d 
   · exact absurd h h40
   · linear_combination h
 
+/- English proof (translation)
+Establish `hsq : (H.bar H.rt - H.rt) * (H.bar H.rt + H.rt) = 0`. Establish `e : H.bar (H.rt ^ 2) = H.bar (-(H.d : 𝓞 E))` using `by rw [H.rt_sq]`. Rewrite `e` using `[map_pow, map_neg, map_natCast, ← H.rt_sq]`. Take the linear combination `e`. Break down `mul_eq_zero.mp hsq with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Establish `hfix : H.bar H.rt = H.rt` using `sub_eq_zero.mp h`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hc` using `H.bar_eq H.rt`. Rewrite `hc` using `[hfix]`.
+
+Establish `hconj : starRingEnd ℂ (φ (H.rt : E)) = φ (H.rt : E)`. Rewrite using `[← NumberField.IsCMField.complexEmbedding_complexConj, ← hc]`. Establish `hsqC : (φ (H.rt : E)) ^ 2 = -(H.d : ℂ)`. Rewrite using `[← map_pow]`. Establish `e : ((H.rt ^ 2 : 𝓞 E) : E) = ((-(H.d : 𝓞 E) : 𝓞 E) : E)` using `by rw [H.rt_sq]`.
+
+Move the coercions through the operations in `at e`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `him : (φ (H.rt : E)).im = 0` using `Complex.conj_eq_iff_im.mp hconj`. Establish `hre` using `congrArg Complex.re hsqC`.
+
+Simplify using `only [pow_two, Complex.mul_re, him, mul_zero, sub_zero, Complex.neg_re, Complex.natCast_re] at hre`. Establish `hd : (2 : ℝ) ≤ H.d` using `by exact_mod_cast H.d_prime.two_le`. Use polynomial arithmetic with `[mul_self_nonneg (φ (H.rt : E)).re]`. Take the linear combination `h`.
+-/
 theorem bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
   have hsq : (H.bar H.rt - H.rt) * (H.bar H.rt + H.rt) = 0 := by
     have e : H.bar (H.rt ^ 2) = H.bar (-(H.d : 𝓞 E)) := by rw [H.rt_sq]
@@ -67,6 +92,11 @@ theorem bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
     nlinarith [mul_self_nonneg (φ (H.rt : E)).re]
   · linear_combination h
 
+/- English proof (translation)
+Establish `h` using `congrArg H.bar H.two_weight_eq_one_add_root`. Simplify using `only [map_mul, map_add, map_one, map_ofNat, bar_rt] at h`. Establish `h2 : (2 : 𝓞 E) * (H.bar H.w0 - (1 - H.w0)) = 0`. Take the linear combination `h + H.two_weight_eq_one_add_root`. Establish `h20 : (2 : 𝓞 E) ≠ 0` using `by norm_num`.
+
+Break down `mul_eq_zero.mp h2 with h' | h'` into its components or cases. Conclude with `absurd h' h20`. Take the linear combination `h'`.
+-/
 theorem cmHost_bar_halfIntegerGenerator (H : Host E) : H.bar H.w0 = 1 - H.w0 := by
   have h := congrArg H.bar H.two_weight_eq_one_add_root
   simp only [map_mul, map_add, map_one, map_ofNat, bar_rt] at h
@@ -79,6 +109,11 @@ theorem cmHost_bar_halfIntegerGenerator (H : Host E) : H.bar H.w0 = 1 - H.w0 := 
 
 variable {D : Datum H} {ε : ℤˣ} {h : D.La → D.La → OK H}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `hw : ((wK H : OK H) : 𝓞 E) = H.w0` using `rfl`. Establish `hw2` using `cm_generator_sq_quadratic_eq H`. Generalize the expression as in `(H.d + 1) / 4 = c at hw2`. Establish `e1 : H.w0 • H.w0 • x = H.w0 • x - c • x`.
+
+Rewrite using `[smul_smul, hw2, sub_smul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[Subalgebra.coe_mul, hh, hh, hw, e1]`. Simplify using `only [map_sub, map_nsmul, LinearMap.sub_apply, LinearMap.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Take the linear combination `(-(((ε : ℤ) : 𝓞 E) * (D.EF x y : 𝓞 E))) * hw2`.
+-/
 theorem isHermitianForm_linear_left (hh : IsKForm D ε h) (x y : D.La) : h (H.w0 • x) y = wK H * h x y := by
   apply Subtype.ext
   have hw : ((wK H : OK H) : 𝓞 E) = H.w0 := rfl
@@ -91,11 +126,19 @@ theorem isHermitianForm_linear_left (hh : IsKForm D ε h) (x y : D.La) : h (H.w0
   push_cast
   linear_combination (-(((ε : ℤ) : 𝓞 E) * (D.EF x y : 𝓞 E))) * hw2
 
+/- English proof (translation)
+Establish `e` using `D.alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, D.alt x, D.alt y] at e`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ef_swap (D : Datum H) (x y : D.La) : D.EF y x = -D.EF x y := by
   have e := D.alt (x + y)
   simp only [map_add, LinearMap.add_apply, D.alt x, D.alt y] at e
   linarith
 
+/- English proof (translation)
+Establish `a1 : D.EF x (H.w0 • y) = D.EF x y - D.EF (H.w0 • x) y`. Establish `e` using `D.adj (1 - H.w0) x y`. Simplify using `only [map_sub, map_one, cmHost_bar_halfIntegerGenerator, sub_sub_cancel, sub_smul, one_smul, LinearMap.sub_apply] at e`. Conclude with `e.symm`. Rewrite using `[hh, hh, ef_swap D x y, ef_swap D x (H.w0 • y), a1]`.
+
+Simplify using `only [map_add, map_mul, map_intCast, cmHost_bar_halfIntegerGenerator]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isKForm_herm (hh : IsKForm D ε h) (x y : D.La) : (h y x : 𝓞 E) = H.bar (h x y) := by
   have a1 : D.EF x (H.w0 • y) = D.EF x y - D.EF (H.w0 • x) y := by
     have e := D.adj (1 - H.w0) x y
@@ -106,22 +149,40 @@ theorem isKForm_herm (hh : IsKForm D ε h) (x y : D.La) : (h y x : 𝓞 E) = H.b
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[hh, D.alt x]`. Simplify using the standard rewrite rules.
+-/
 theorem isKForm_self (hh : IsKForm D ε h) (x : D.La) :
     (h x x : 𝓞 E) = (((ε : ℤ) * D.EF (H.w0 • x) x : ℤ) : 𝓞 E) := by
   rw [hh, D.alt x]
   simp
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hh, hh, smul_comm H.w0 s x, D.adj s (H.w0 • x) y, D.adj s x y]`.
+-/
 theorem isKForm_adj (hh : IsKForm D ε h) (s : 𝓞 E) (x y : D.La) : h (s • x) y = h x (H.bar s • y) := by
   apply Subtype.ext
   rw [hh, hh, smul_comm H.w0 s x, D.adj s (H.w0 • x) y, D.adj s x y]
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨P', φ, hg, hpb, hL⟩` from `GlobalTheory.PureType.exists_baseChange hB (spMap (algebraMap (𝓞 K) K)) P`. Take `⟨v, hv⟩` from `GlobalTheory.KeyPow.exists_isLieBasis P'.A P'.smoothDim`. Conclude with `⟨⟨P', φ, ⟨hg, hpb, hL.symm⟩, v, hv⟩⟩`.
+-/
 theorem nonempty_genFib (hB : Out.PolBaseChangeSt) (P : Out.PolAV (Sp (𝓞 K))) : Nonempty (GenFib P) := by
   obtain ⟨P', φ, hg, hpb, hL⟩ := GlobalTheory.PureType.exists_baseChange hB (spMap (algebraMap (𝓞 K) K)) P
   obtain ⟨v, hv⟩ := GlobalTheory.KeyPow.exists_isLieBasis P'.A P'.smoothDim
   exact ⟨⟨P', φ, ⟨hg, hpb, hL.symm⟩, v, hv⟩⟩
 
+/- English proof (translation)
+Unfold `GenFib.IsCoord`. Establish `hfib : F.P₀.g = P.g ∧ IsGrpPullback F.P₀.A P.A (spMap (algebraMap (𝓞 K) K)) F.φ ∧ LBIso (P.L.pull F.φ) F.P₀.L` using `F.fib`. Take `⟨-, hpb, -⟩` from `hfib`. Establish `hpb' : IsPullback F.φ F.P₀.A.hom P.A.hom (spMap (algebraMap (𝓞 K) K))` using `hpb.1`. Take `⟨v', hv', hvo⟩` from `GlobalTheory.PureType.exists_tangent_over (algebraMap (𝓞 K) K) hpb hu`.
+
+Establish `huniq : ∀ w : epsR K ⟶ F.P₀.A, IsVecOver (algebraMap (𝓞 K) K) F.φ u w → w = v'`. Introduce `w hw`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hpb'.hom_ext` to reduce the goal to its premises. Conclude with `Eq.trans hw hvo.symm`.
+
+Rewrite using `[Over.w w, Over.w v']`. Establish `hb : (∀ i, IsTangent (F.v i)) ∧ ∀ w, IsTangent w → ∃! c, IsLieComb c F.v w` using `F.basis`. Take `⟨c, hc, hcu⟩` from `hb.2 v' hv'`. Use `⟨c, ⟨hu, v', hvo, hc⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `c' ⟨-, w, hw, hc'⟩`.
+
+Rewrite `hc'` using `[huniq w hw]`. Conclude with `hcu c' hc'`.
+-/
 theorem existsUnique_isCoord {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) {u : epsR (𝓞 K) ⟶ P.A} (hu : IsTangent u) :
     ∃! c, F.IsCoord u c := by
   unfold GenFib.IsCoord
@@ -143,6 +204,9 @@ theorem existsUnique_isCoord {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) {u : e
   rw [huniq w hw] at hc'
   exact hcu c' hc'
 
+/- English proof (translation)
+Unfold `GenFib.eigLat GenFib.lieLat`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `c ⟨u, hu, -⟩`. Conclude with `⟨u, hu⟩`.
+-/
 theorem eigLat_le {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) {O : Type} [CommRing O] (act : OAct O P.A)
     (τ : O →+* 𝓞 K) : F.eigLat act τ ≤ F.lieLat := by
   unfold GenFib.eigLat GenFib.lieLat
@@ -150,11 +214,25 @@ theorem eigLat_le {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) {O : Type} [CommR
   rintro c ⟨u, hu, -⟩
   exact ⟨u, hu⟩
 
+/- English proof (translation)
+Unfold `GenFib.IsDiffOf`. Introduce `u c hc`. Simplify `hc` using `only [Category.comp_id, LinearMap.id_apply]`.
+-/
 theorem isDiffOf_id {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) : F.IsDiffOf F (𝟙 _) LinearMap.id := by
   unfold GenFib.IsDiffOf
   intro u c hc
   simpa only [Category.comp_id, LinearMap.id_apply] using hc
 
+/- English proof (translation)
+Establish `hdeg : (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ)).natDegree = 2` using `by compute_degree!`. Establish `hirr : Irreducible (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ))`. Apply `Polynomial.irreducible_of_degree_le_three_of_not_isRoot` to reduce the goal to its premises. Rewrite using `[hdeg]`. Evaluate the decidable proposition.
+
+Introduce `x hx`. Simplify using `only [Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C] at hx`. Use polynomial arithmetic with `[sq_nonneg x]`. Establish `: Fact (Irreducible (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ)))` using `⟨hirr⟩`. Establish `hne : (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ)) ≠ 0` using `hirr.ne_zero`.
+
+Establish `: FiniteDimensional ℚ (AdjoinRoot (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ)))` using `(AdjoinRoot.powerBasis hne).finite`. Establish `: CharZero (AdjoinRoot (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ)))` using `charZero_of_injective_algebraMap (algebraMap ℚ _).injective`. Establish `: NumberField (AdjoinRoot (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ)))` using `⟨⟩`. Establish `hfin : Module.finrank ℚ (AdjoinRoot (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ))) = 2`. Rewrite using `[(AdjoinRoot.powerBasis hne).finrank, AdjoinRoot.powerBasis_dim, hdeg]`.
+
+Establish `hroot : AdjoinRoot.root (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ)) ^ 2 = -((7 : ℕ) : AdjoinRoot (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ)))`. Establish `h0` using `AdjoinRoot.eval₂_root (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ))`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_ofNat, map_ofNat] at h0`. Use `push_cast`. Take the linear combination `h0`.
+
+Establish `hsq : Squarefree 7` using `(Nat.prime_iff.mp (by norm_num)).squarefree`. Take `⟨M, hM, -, P, -, -, hg, -⟩` from `hC 7 (by norm_num) hsq (by norm_num) (AdjoinRoot (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ))) hfin ⟨_, hroot⟩`. Take `⟨F⟩` from `nonempty_genFib hB P`. Establish `hfib : F.P₀.g = P.g ∧ IsGrpPullback F.P₀.A P.A (spMap (algebraMap (𝓞 M) M)) F.φ ∧ LBIso (P.L.pull F.φ) F.P₀.L` using `F.fib`. Conclude with `⟨M, hM, P, F, hfib.1.trans hg⟩`.
+-/
 theorem exists_genFib_dim_one (hB : Out.PolBaseChangeSt) (hC : CMCurve) :
     ∃ (M : IntermediateField ℚ ℂ) (_ : NumberField M) (P : Out.PolAV (Sp (𝓞 M))) (F : GenFib P), F.P₀.g = 1 := by
   have hdeg : (Polynomial.X ^ 2 + Polynomial.C (7 : ℚ)).natDegree = 2 := by compute_degree!
@@ -189,6 +267,11 @@ theorem exists_genFib_dim_one (hB : Out.PolBaseChangeSt) (hC : CMCurve) :
       LBIso (P.L.pull F.φ) F.P₀.L := F.fib
   exact ⟨M, hM, P, F, hfib.1.trans hg⟩
 
+/- English proof (translation)
+Establish `h' : Nat.card (𝓞 E →+* 𝓞 K) = Module.finrank ℚ E` using `h`. Establish `hpos : 0 < Nat.card (𝓞 E →+* 𝓞 K)`. Rewrite using `[h']`. Conclude with `Module.finrank_pos`. Take `⟨τ⟩` from `(Nat.card_pos_iff.mp hpos).1`.
+
+Conclude with `⟨τ H.rt, by rw [← map_pow, H.rt_sq, map_neg, map_natCast]⟩`.
+-/
 theorem exists_root_of_splits (H : Host E) (h : Splits E K) : ∃ ρ : 𝓞 K, ρ ^ 2 = -(H.d : 𝓞 K) := by
   have h' : Nat.card (𝓞 E →+* 𝓞 K) = Module.finrank ℚ E := h
   have hpos : 0 < Nat.card (𝓞 E →+* 𝓞 K) := by
@@ -222,6 +305,25 @@ def objOfPure {ρ : 𝓞 K} (σ₁ : K →+* ℂ) (hs : Splits E K) (hρ : ρ ^ 
     | .inl _ => fun n x y c _ _ _ => by rw [OAct.one]; rfl
     | .inr i => i.elim0
 
+/- English proof (translation)
+Introduce `k _ _ β hβ τ`. Take `⟨h1, h2⟩` from `h k β hβ τ`. Establish `e1 : τ H.rt ^ 2 = -(H.d : k)` using `by rw [← map_pow, H.rt_sq, map_neg, map_natCast]`. Establish `e2 : β ρ ^ 2 = -(H.d : k)` using `by rw [← map_pow, hρ, map_neg, map_natCast]`. Establish `hτ : (τ H.rt - β ρ) * (τ H.rt + β ρ) = 0` using `by linear_combination e1 - e2`.
+
+Establish `hρ0 : ρ ≠ 0`. Introduce and unpack `rfl`. Establish `hd0 : ((H.d : ℕ) : 𝓞 K) = 0`. Establish `e` using `hρ`. Rewrite `e` using `[zero_pow two_ne_zero]`.
+
+Conclude with `neg_eq_zero.mp e.symm`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast hd0)`. Establish `h2k : (2 : k) ≠ 0`. Introduce `h0`. Establish `e : β 2 = β 0` using `by rw [map_ofNat, h0, map_zero]`.
+
+Use `hβ e` as an intermediate fact. Evaluate the numerical expressions using `at this`. Establish `hβρ : β ρ ≠ 0`. Introduce `h0`. Conclude with `hρ0 (hβ (h0.trans (map_zero β).symm))`.
+
+Establish `hne : β ρ ≠ -β ρ`. Introduce `h0`. Establish `e : (2 : k) * β ρ = 0` using `by linear_combination h0`. Break down `mul_eq_zero.mp e with e' | e'` into its components or cases. Conclude with `h2k e'`.
+
+Conclude with `hβρ e'`. Prove the components needed by the constructor for the conclusion. Introduce `hneg`. Rewrite `hneg` using `[map_neg]`. Apply `h2` to reduce the goal to its premises.
+
+Introduce `heq`. Rewrite `hneg` using `[heq]`. Conclude with `hne hneg`. Introduce `hne'`. Apply `h1` to reduce the goal to its premises.
+
+Break down `mul_eq_zero.mp hτ with h0 | h0` into its components or cases. Conclude with `sub_eq_zero.mp h0`. It suffices to derive a contradiction. Apply `hne'` to reduce the goal to its premises. Rewrite using `[map_neg]`.
+
+Conclude with `eq_neg_of_add_eq_zero_left h0`.
+-/
 theorem hasType_neg {ρ : 𝓞 K} (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) {G : Over (Sp (𝓞 K))} [GrpObj G] {act : OAct (𝓞 E) G}
     {p q : ℕ} (h : HasType H act ρ p q) : HasType H act (-ρ) q p := by
   intro k _ _ β hβ τ

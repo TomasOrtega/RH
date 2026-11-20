@@ -12,9 +12,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
   {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.div' h'.1, fun x => by rw [MonoidHom.div_apply, h.2, h'.2, div_one]⟩`.
+-/
 theorem hecke_div {χ χ' : Chr F E} (h : IsHecke F E χ) (h' : IsHecke F E χ') : IsHecke F E (χ / χ') :=
   ⟨h.1.div' h'.1, fun x => by rw [MonoidHom.div_apply, h.2, h'.2, div_one]⟩
 
+/- English proof (translation)
+Introduce `x` and use `by rw [MonoidHom.div_apply, Circle.coe_div, h, h', e] split_ifs · simp · rw [pow_add, div_eq_mul_inv, ← inv_pow, inv_neg, inv_one]`.
+-/
 theorem res_div {K : Subgroup (AF F)ˣ} {χ χ' : Chr F E} {m n k : ℕ} (h : ResEtaPow K χ m) (h' : ResEtaPow K χ' n)
     (e : k = m + n) : ResEtaPow K (χ / χ') k := fun x => by
   rw [MonoidHom.div_apply, Circle.coe_div, h, h', e]
@@ -22,16 +28,25 @@ theorem res_div {K : Subgroup (AF F)ˣ} {χ χ' : Chr F E} {m n k : ℕ} (h : Re
   · simp
   · rw [pow_add, div_eq_mul_inv, ← inv_pow, inv_neg, inv_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.base, h.geo.hV, h.geo.hW, h.geo.hM, h.chars.heckeβ, hecke_div h.chars.heckeβ h.chars.heckeα, h.chars.resβ, res_div h.chars.resβ h.chars.resα rfl, h.weil⟩`.
+-/
 theorem pairV (h : IsTriple B G X om om') :
     IsPair B G.M X.β (X.β / X.α) om (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) :=
   ⟨h.base, h.geo.hV, h.geo.hW, h.geo.hM, h.chars.heckeβ, hecke_div h.chars.heckeβ h.chars.heckeα, h.chars.resβ,
     res_div h.chars.resβ h.chars.resα rfl, h.weil⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, hecke_div h.chars.heckeα h.chars.heckeβ, h.chars.resα, res_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩`.
+-/
 theorem pairV' (h : IsTriple B G X om om') :
     IsPair B G.M' X.α (X.α / X.β) om' G.q (a' - G.q) (a + a' - (G.p + G.q)) (G.p + G.q) :=
   ⟨h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, hecke_div h.chars.heckeα h.chars.heckeβ, h.chars.resα,
     res_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_ne (0 : P)`. Take `⟨φ, hφ, rfl⟩` from `Submodule.mem_map.1 (h1 ▸ Submodule.mem_top : x ∈ (SB _).map p)`. Conclude with `⟨φ, hφ, fun h => hx (h2 h)⟩`.
+-/
 theorem occ_fin {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {o : Rep σ Y W} {v : Pl F} {P : Type} [AddCommGroup P] [Module ℂ P]
     [Nontrivial P] {p : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] P} (h1 : (SB _).map p = ⊤) (h2 : augAt o v ≤ LinearMap.ker p) :
     ∃ φ ∈ SB (Fin n × Fin d → Fv F v), φ ∉ augAt o v := by
@@ -39,10 +54,24 @@ theorem occ_fin {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {o : Rep σ Y W} {v 
   obtain ⟨φ, hφ, rfl⟩ := Submodule.mem_map.1 (h1 ▸ Submodule.mem_top : x ∈ (SB _).map p)
   exact ⟨φ, hφ, fun h => hx (h2 h)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ => by simp, fun _ _ _ _ => by simp, fun _ _ _ _ => by simp⟩`.
+-/
 theorem split_zero {W : Spc F E (a + a')} {d₁ : ℕ} (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (X : Chars F E) :
     Split2 (σ := σ) (W := W) W₁ H' X 0 0 0 :=
   ⟨fun _ _ _ _ _ _ => by simp, fun _ _ _ _ => by simp, fun _ _ _ _ => by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => exact fun a' G om om' h hp hq => (hB F E σ B a a' G X om om' h hp hq).1`. Consider the case `succ q ih`. Introduce `a' G om om' h hp hq`. Take `⟨b, rfl⟩ : ∃ b, a' = b + 2` from `⟨a' - 2, by have := h.geo.aBig; omega⟩`.
+
+Take `⟨V, V', W, h', G₁, H, H', c, om₁, om₁', h₁⟩` from `hT F E σ B a b G X om om' h (by omega)`. Take `⟨Φ₁, p1, n1⟩` from `ih b G₁ om₁ om₁' h₁ (c.ep.trans hp) (by have : G₁.q + 1 = G.q := c.eq; omega)`. Take `⟨⟨e, he⟩, he'⟩` from `hE F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV h') _ G₁.V G₁.W H' _ _ G₁.M c.eV c.hH' h₁.geo.hM`. Take `⟨Φ, p2, rfl⟩` from `Submodule.mem_map.1 ((he' e he).ge p1)`. Take `⟨C, hC0, hc⟩` from `hC F E σ B a b _ G₁ H H' c e he`.
+
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `z : G.M.I om Φ = 0` using `hS F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV h) (by omega) hn Φ (hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV h') Φ p2)`. Use `n1 (funext fun g => ?_)` and prove the remaining obligations. Take `⟨m, hm⟩` from `hL F E σ B _ _ _ _ H' _ _ _ _ h.base h'.geo.hW c.hH' g`.
+
+Use `hc X om om' om₁ om₁' h' h₁ Φ p2 0 0 (by show Split2 _ _ _ (G.M.I om Φ) 0 0` as an intermediate fact. Rewrite using `[z]`. Conclude with `split_zero _ _ _) g m hm 1`. Establish `o : om (1, 1) Φ = Φ` using `DFunLike.congr_fun (map_one om) Φ`. Use `erw [o] at this`.
+
+Conclude with `(mul_eq_zero.1 this.symm).resolve_left hC0`.
+-/
 theorem big_of (hB : NonZeroBot) (hT : TowerB) (hE : EvZero) (hC : CTBigZero) (hS : SchToPol) (hP : PolSch) (hL : LeviEx) (q : ℕ) :
     ∀ (a' : ℕ) (G : Geo σ a a') (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → G.p = 0 → G.q = q →
       ∃ Φ ∈ PolData B G.M, G.M.I om Φ ≠ 0 := by
@@ -69,6 +98,17 @@ theorem big_of (hB : NonZeroBot) (hT : TowerB) (hE : EvZero) (hC : CTBigZero) (h
     erw [o] at this
     exact (mul_eq_zero.1 this.symm).resolve_left hC0
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `zero => exact fun a G om om' h hp hq => (hB F E σ B a a' G X om om' h hp hq).2`. Consider the case `succ p ih`. Introduce `a G om om' h hp hq`. Take `⟨b, rfl⟩ : ∃ b, a = b + 2` from `⟨a - 2, by have := h.geo.aBig; have := h.geo.lt; omega⟩`.
+
+Take `⟨V, V', W, h', G₁, H, H', c, om₁, om₁', h₁⟩` from `hT F E σ B b a' G X om om' h hq (by omega)`. Take `⟨Φ₁, p1, n1⟩` from `ih b G₁ om₁ om₁' h₁ (by have : G₁.p + 1 = G.p := c.ep; omega) c.q1`. Take `⟨⟨e, he⟩, he'⟩` from `hE F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' h') _ G₁.V' G₁.W H' _ _ G₁.M' c.eV c.hH' h₁.geo.hM'`. Take `⟨Φ, p2, rfl⟩` from `Submodule.mem_map.1 ((he' e he).ge p1)`. Take `⟨C, hC0, hc⟩` from `hC F E σ B b a' _ G₁ H H' c e he`.
+
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `z : G.M'.I om' Φ = 0` using `hS F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' h) (by omega) hn Φ (hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' h') Φ p2)`. Use `n1 (funext fun g => ?_)` and prove the remaining obligations. Take `⟨m, hm⟩` from `hL F E σ B _ _ _ _ H' _ _ _ _ h.base h'.geo.hW c.hH' g`.
+
+Take `⟨fa, s1, s2⟩` from `hc X om om' om₁ om₁' h' h₁ Φ p2`. Establish `s3 : Split2 G₁.W H' X (G.M'.I om' Φ) fa 0` using `s1`. Rewrite `s3` using `[z]`. Establish `i0 : (reG G V V' W).M.I om 0 = 0` using `funext fun x => by simp [Model.I, theta, thetaSum]`. Establish `fz : fa = 0` using `congrArg Prod.fst (((hZ F E σ B _ _ (reG G V V' W) X om om' h' _ G₁.W H' _ _ c.hH').1 0 (zero_mem _)).unique (y₁ := (fa, 0)) (y₂ := (0, 0)) (by rw [i0]; exact s3) (by rw [i0]; exact split_zero _ _ _))`.
+
+Use `s2 g m hm 1` as an intermediate fact. Establish `o : om' (1, 1) Φ = Φ` using `DFunLike.congr_fun (map_one om') Φ`. Use `erw [fz, o] at this`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hC0`.
+-/
 theorem small_of (hB : NonZeroBot) (hT : TowerA) (hE : EvZero) (hC : CTSmallZero) (hS : SchToPol) (hP : PolSch) (hL : LeviEx)
     (hZ : SplitEx) (p : ℕ) :
     ∀ (a : ℕ) (G : Geo σ a a') (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → G.p = p → G.q = 0 →
@@ -100,6 +140,9 @@ theorem small_of (hB : NonZeroBot) (hT : TowerA) (hE : EvZero) (hC : CTSmallZero
     erw [fz, o] at this
     exact (mul_eq_zero.1 this.symm).resolve_left hC0
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' h`. Use `⟨fun hp => big_of hB hT hE hC hS hP hL _ a' G om om' h hp rfl, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨Φ, p1, n1⟩` from `small_of hB hA hE hC' hS hP hL hZ _ a G om om' h rfl hq`. Take `⟨Ψ, p2, e⟩` from `hO F E σ B a a' G X om om' h hq Φ p1`. Conclude with `⟨Ψ, p2, e ▸ n1⟩`.
+-/
 theorem nonZeroAn_of (hB : NonZeroBot) (hA : TowerA) (hT : TowerB) (hE : EvZero) (hC : CTBigZero) (hC' : CTSmallZero)
     (hS : SchToPol) (hP : PolSch) (hL : LeviEx) (hZ : SplitEx) (hO : ToSo) : NonZeroAn := by
   intro F E _ _ _ _ _ σ B a a' G X om om' h

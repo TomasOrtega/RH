@@ -4,20 +4,42 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ChoiceOfTops
 
 open Finset UpperTheory.BernoulliSumsFrobeniusOrbits Formalism.G0
 
+/- English proof (translation)
+Simplify using `[ind, h]`.
+-/
 private theorem ind_pos' {q : Prop} (h : q) : ind q = 1 := by simp [ind, h]
+/- English proof (translation)
+Simplify using `[ind, h]`.
+-/
 private theorem ind_neg' {q : Prop} (h : ¬ q) : ind q = 0 := by simp [ind, h]
+/- English proof (translation)
+Unfold `ind`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 private theorem ind_nonneg' (q : Prop) : 0 ≤ ind q := by
   unfold ind
   split_ifs <;> norm_num
+/- English proof (translation)
+Unfold `ind`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 private theorem ind_le_one' (q : Prop) : ind q ≤ 1 := by
   unfold ind
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun _ _ => by linarith) fun a _ => by linarith [hp a]`.
+-/
 private theorem pow_le_prod {p : ℕ → ℝ} {δ : ℝ} (hp : ∀ a, p a ≤ δ) (h1 : δ ≤ 1) (C : Finset ℕ) :
     (1 - δ) ^ C.card ≤ ∏ a ∈ C, (1 - p a) := by
   rw [← Finset.prod_const]
   exact Finset.prod_le_prod (fun _ _ => by linarith) fun a _ => by linarith [hp a]
 
+/- English proof (translation)
+Establish `key : ∀ S : Finset ℕ, exP p S (fun V => ind (V = ∅)) = ∏ a ∈ S, (1 - p a)`. Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using `[exP, ind]`. Introduce `a S ha ih`.
+
+Rewrite using `[(expectation_spec p).2.2.2.2.1 a S _ ha, ih, Finset.prod_insert ha]`. Establish `h0 : (exP p S fun T => ind (insert a T = ∅)) = 0`. Use `(expectation_spec p).1 S 0` as an intermediate fact. Simplify `this` using `[ind]`. Rewrite using `[h0, mul_zero, add_zero]`.
+
+Rewrite using `[key]`. Conclude with `pow_le_prod hp h1 C`.
+-/
 private theorem one_sub_pow_le_bernoulliExpectation_empty {p : ℕ → ℝ} {δ : ℝ} (hp : ∀ a, p a ≤ δ) (h1 : δ ≤ 1) (C : Finset ℕ) :
     (1 - δ) ^ C.card ≤ exP p C (fun V => ind (V = ∅)) := by
   have key : ∀ S : Finset ℕ, exP p S (fun V => ind (V = ∅)) = ∏ a ∈ S, (1 - p a) := by
@@ -33,6 +55,27 @@ private theorem one_sub_pow_le_bernoulliExpectation_empty {p : ℕ → ℝ} {δ 
   rw [key]
   exact pow_le_prod hp h1 C
 
+/- English proof (translation)
+Establish `hp0 : ∀ b, 0 ≤ p b` using `fun b => le_trans (by positivity) (hp b).1`. Establish `hd : 0 ≤ 1 - δ` using `by linarith`. Establish `hc0 : 0 ≤ 3 / 4 * δ * (1 - δ) ^ (u - 1)` using `by positivity`. Establish `hcard : u / 2 ≤ ((Finset.Ico a (a + u)).filter (fun x => Even x)).card`. Establish `hle : (Finset.range (u / 2)).card ≤ ((Finset.Ico a (a + u)).filter (fun x => Even x)).card`.
+
+Apply `Finset.card_le_card_of_injOn (fun i => a + a % 2 + 2 * i)` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [Finset.mem_coe, Finset.mem_range] at hi`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_Ico]`. Use `⟨⟨by omega, by omega⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.even_iff]`. Use linear arithmetic over natural numbers and integers. Introduce `i _ j _ h`. Simplify using `only at h`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `using hle`. Establish `hterm : ∀ x ∈ (Finset.Ico a (a + u)).filter (fun x => Even x), 3 / 4 * δ * (1 - δ) ^ (u - 1) ≤ ((∏ b ∈ ({x} : Finset ℕ), p b) * ∏ b ∈ Finset.Ico a (a + u) \ {x}, (1 - p b)) * ind (∃ y, ({x} : Finset ℕ) = {y} ∧ Even y)`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_filter]`. Rewrite using `[ind_pos' ⟨x, rfl, hx.2⟩, mul_one, Finset.prod_singleton]`.
+
+Establish `hc : (Finset.Ico a (a + u) \ {x}).card = u - 1`. Rewrite using `[Finset.card_sdiff, Finset.singleton_inter_of_mem hx.1]`. Simplify using the standard rewrite rules. Establish `h2` using `pow_le_prod (fun b => (hp b).2) h1 (Finset.Ico a (a + u) \ {x})`. Rewrite `h2` using `[hc]`.
+
+Conclude with `mul_le_mul (hp x).1 h2 (by positivity) (hp0 x)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hcard) hc0`. Use `_ = ∑ x ∈ (Finset.Ico a (a + u)).filter (fun x => Even x), 3 / 4 * δ * (1 - δ) ^ (u - 1) := by`.
+
+Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ∑ x ∈ (Finset.Ico a (a + u)).filter (fun x => Even x), ((∏ b ∈ ({x} : Finset ℕ), p b) * ∏ b ∈ Finset.Ico a (a + u) \ {x}, (1 - p b)) * ind (∃ y, ({x} : Finset ℕ) = {y} ∧ Even y) := Finset.sum_le_sum hterm`. Use `_ = ∑ T ∈ ((Finset.Ico a (a + u)).filter (fun x => Even x)).map ⟨fun x => {x}, Finset.singleton_injective⟩, ((∏ b ∈ T, p b) * ∏ b ∈ Finset.Ico a (a + u) \ T, (1 - p b)) * ind (∃ y, T = {y} ∧ Even y) := by`. Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression.
+
+Use `_ ≤ exP p (Finset.Ico a (a + u)) (fun V => ind (∃ x, V = {x} ∧ Even x)) := by`. Unfold `exP`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `T hT`. Rewrite `hT` using `[Finset.mem_map]`.
+
+Take `⟨x, hx, rfl⟩` from `hT`. Rewrite `hx` using `[Finset.mem_filter]`. Simplify using `using hx.1`. Introduce `T hT _`. Establish `h3 : ∀ b ∈ Finset.Ico a (a + u) \ T, 0 ≤ 1 - p b` using `fun b _ => by linarith [(hp b).2]`.
+
+Use `ind_nonneg' (∃ y, T = {y} ∧ Even y)` as an intermediate fact. Establish `h4 : 0 ≤ ∏ b ∈ T, p b` using `Finset.prod_nonneg (fun b _ => hp0 b)`. Establish `h5` using `Finset.prod_nonneg h3`. Check the signs of the components of the expression.
+-/
 private theorem le_bernoulliExpectation_singleton_even {p : ℕ → ℝ} {δ : ℝ} (hp : ∀ a, 3 / 4 * δ ≤ p a ∧ p a ≤ δ)
     (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (a u : ℕ) :
     ((u / 2 : ℕ) : ℝ) * (3 / 4 * δ) * (1 - δ) ^ (u - 1) ≤
@@ -95,6 +138,39 @@ private theorem le_bernoulliExpectation_singleton_even {p : ℕ → ℝ} {δ : �
           have h5 := Finset.prod_nonneg h3
           positivity
 
+/- English proof (translation)
+Introduce `p δ r u s hp h0 h1`. Establish `hp0 : ∀ b, 0 ≤ p b` using `fun b => le_trans (by positivity) (hp b).1`. Establish `hd : 0 ≤ 1 - δ` using `by linarith`. Use `set A : ℕ → Finset ℕ := fun j => cell r u s (j + 1) with hA`. Use `set g : ℕ → Finset ℕ → ℝ := fun j V => if Even j then ind (V = ∅) else ind (∃ x, V = {x} ∧ Even x) with hg`.
+
+Establish `hg0 : ∀ j V, 0 ≤ g j V`. Introduce `j V`. Simplify using `only [hg]`. Apply the tactic sequence `split_ifs <;> exact ind_nonneg' _`. Establish `hg1 : ∀ j V, g j V ≤ 1`.
+
+Introduce `j V`. Simplify using `only [hg]`. Apply the tactic sequence `split_ifs <;> exact ind_le_one' _`. Establish `hdisj : ∀ i ∈ Finset.range (6 * r + 1), ∀ j ∈ Finset.range (6 * r + 1), i ≠ j → Disjoint (A i) (A j)`. Introduce `i _ j _ hij`.
+
+Simplify using `only [hA, Formalism.G0.cell, Nat.add_sub_cancel]`. Conclude with `GlobalTheory.RandomTops.ico_disjoint hij`. Establish `hsub : ∀ j ∈ Finset.range (6 * r + 1), A j ⊆ Finset.Ico (s * ((6 * r + 1) * u)) ((s + 1) * ((6 * r + 1) * u))`. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_range]`.
+
+Conclude with `GlobalTheory.RandomTops.cell_subset (by omega)`. Establish `hmono : (exP p (Finset.Ico (s * ((6 * r + 1) * u)) ((s + 1) * ((6 * r + 1) * u))) fun T => ∏ j ∈ Finset.range (6 * r + 1), g j (T ∩ A j)) ≤ exP p (Finset.Ico (s * ((6 * r + 1) * u)) ((s + 1) * ((6 * r + 1) * u))) (fun T => ind (Marked T r u s))`. Apply `(expectation_spec p).2.2.2.1` to reduce the goal to its premises. Introduce `a _`. Conclude with `⟨hp0 a, le_trans (hp a).2 h1⟩`.
+
+Introduce `T _`. Distinguish the cases in `hM : Marked T r u s`. Rewrite using `[ind_pos' hM]`. Conclude with `Finset.prod_le_one (fun j _ => hg0 j _) (fun j _ => hg1 j _)`. Rewrite using `[ind_neg' hM]`.
+
+Unfold `Formalism.G0.Marked at hM`. Take `⟨c, hc⟩` from `Classical.not_forall.1 hM`. Take `⟨hc1, hc⟩` from `_root_.not_imp.1 hc`. Take `⟨hc2, hc⟩` from `_root_.not_imp.1 hc`. Take `⟨j, rfl⟩ : ∃ j, c = j + 1` from `⟨c - 1, by omega⟩`.
+
+Apply `le_of_eq` to reduce the goal to its premises. Apply `Finset.prod_eq_zero (i := j) (Finset.mem_range.2 (by omega))` to reduce the goal to its premises. Distinguish the cases in `hj : Even j`. Establish `hne : ¬ Even (j + 1)` using `Nat.not_even_iff_odd.2 hj.add_one`. Simplify using `only [hg, hA, if_pos hj]`.
+
+Apply `ind_neg'` to reduce the goal to its premises. Introduce `h`. Conclude with `hc ⟨fun _ => h, fun he => absurd he hne⟩`. Establish `hev : Even (j + 1)`. Break down `Nat.even_or_odd j with h | h` into its components or cases.
+
+Conclude with `absurd h hj`. Conclude with `h.add_one`. Establish `hno : ¬ Odd (j + 1)` using `Nat.not_odd_iff_even.2 hev`. Simplify using `only [hg, hA, if_neg hj]`. Apply `ind_neg'` to reduce the goal to its premises.
+
+Introduce `h`. Conclude with `hc ⟨fun ho => absurd ho hno, fun _ => h⟩`. Use `le_trans ?_ hmono` and prove the remaining obligations. Rewrite using `[(expectation_spec p).2.2.2.2.2.2 (Finset.range (6 * r + 1)) A g _ hdisj hsub]`. Establish `hlow : ∀ j ∈ Finset.range (6 * r + 1), (if Even j then (1 - δ) ^ u else ((u / 2 : ℕ) : ℝ) * (3 / 4 * δ) * (1 - δ) ^ (u - 1)) ≤ exP p (A j) (g j)`.
+
+Introduce `j _`. Distinguish the cases in `hj : Even j`. Rewrite using `[if_pos hj]`. Establish `hcard : (A j).card = u` using `GlobalTheory.RandomTops.cell_card (by omega)`. Use `one_sub_pow_le_bernoulliExpectation_empty (fun b => (hp b).2) h1 (A j)` as an intermediate fact.
+
+Rewrite `this` using `[hcard]`. Simplify `this` using `only [hg, if_pos hj]`. Rewrite using `[if_neg hj]`. Establish `hAj : A j = Finset.Ico (s * ((6 * r + 1) * u) + j * u) (s * ((6 * r + 1) * u) + j * u + u)`. Simplify using `only [hA, Formalism.G0.cell, Nat.add_sub_cancel]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hAj]`. Simplify `le_bernoulliExpectation_singleton_even hp h0 h1 (s * ((6 * r + 1) * u) + j * u) u` using `only [hg, if_neg hj]`. Apply the tactic sequence `have hprod := Finset.prod_le_prod (fun j _ => by split_ifs <;> positivity) hlow`.
+
+Establish `h6 : 6 * r + 1 = 2 * (3 * r) + 1` using `by ring`. Rewrite `hprod` using `[h6, GlobalTheory.RandomTops.prod_alternate]`. Rewrite using `[h6]`. Unfold `markedLow`. Rewrite `hprod`, the goal using `[← pow_mul, mul_comm u]`.
+
+Conclude with `hprod`.
+-/
 theorem UpperTheory.BernoulliSumsFrobeniusOrbits.marked_ge :
     ∀ (p : ℕ → ℝ) (δ : ℝ) (r u s : ℕ), (∀ a, 3 / 4 * δ ≤ p a ∧ p a ≤ δ) → 0 ≤ δ → δ ≤ 1 →
       markedLow δ r u ≤ exP p (Finset.Ico (s * ((6 * r + 1) * u)) ((s + 1) * ((6 * r + 1) * u))) (fun T => ind (Marked T r u s)) := by

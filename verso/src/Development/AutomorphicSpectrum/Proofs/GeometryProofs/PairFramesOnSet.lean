@@ -15,6 +15,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.LineGenerator
 
+/- English proof (translation)
+Establish `hc : ∀ i, ∃ c : Fin r → Ω, ∑ j, c j • b j = v i` using `fun i => (Submodule.mem_span_range_iff_exists_fun Ω).1 (h i)`. Use `choose c hc using hc`. Establish `hv : v = fun i => ∑ j, c i j • b j` using `funext fun i => (hc i).symm`. Establish `hsum : exteriorPower.ιMulti Ω r v = ∑ f : Fin r → Fin r, (∏ i, c i (f i)) • exteriorPower.ιMulti Ω r (fun i => b (f i))`. Rewrite using `[hv]`.
+
+Use `((exteriorPower.ιMulti Ω r (M := E)).toMultilinearMap.map_sum (fun i j => c i j • b j)).trans (Finset.sum_congr rfl fun f _ => ?_)` and prove the remaining obligations. Conclude with `(exteriorPower.ιMulti Ω r (M := E)).toMultilinearMap.map_smul_univ (fun i => c i (f i)) (fun i => b (f i))`. Establish `hmem : exteriorPower.ιMulti Ω r v ∈ Submodule.span Ω {exteriorPower.ιMulti Ω r b}`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun f _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hf : Function.Injective f`. Set `σ : Equiv.Perm (Fin r)` to `Equiv.ofBijective f (Finite.injective_iff_bijective.1 hf)`. Establish `h5 : (fun i => b (f i)) = b ∘ σ` using `rfl`. Rewrite using `[h5, (exteriorPower.ιMulti Ω r (M := E)).map_perm b σ]`. Establish `hm` using `Submodule.mem_span_singleton_self (R := Ω) (exteriorPower.ιMulti Ω r b)`.
+
+Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Rewrite using `[hs, one_smul]`. Conclude with `hm`. Rewrite using `[hs, Units.neg_smul, one_smul]`. Conclude with `neg_mem hm`.
+
+Establish `h6 : ¬ Function.Injective (fun i => b (f i))` using `fun hh => hf (Function.Injective.of_comp (f := b) hh)`. Rewrite using `[(exteriorPower.ιMulti Ω r (M := E)).map_eq_zero_of_not_injective _ h6]`. Conclude with `zero_mem _`. Take `⟨α, hα⟩` from `Submodule.mem_span_singleton.1 hmem`. Conclude with `⟨α, hα.symm⟩`.
+-/
 theorem exists_ιMulti_eq_smul {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Module Ω E] {r : ℕ}
     {v b : Fin r → E} (h : ∀ i, v i ∈ Submodule.span Ω (Set.range b)) :
     ∃ α : Ω, exteriorPower.ιMulti Ω r v = α • exteriorPower.ιMulti Ω r b := by
@@ -50,6 +61,9 @@ theorem exists_ιMulti_eq_smul {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E
   obtain ⟨α, hα⟩ := Submodule.mem_span_singleton.1 hmem
   exact ⟨α, hα.symm⟩
 
+/- English proof (translation)
+Take `⟨U, hU, e, he, hfr⟩` from `hL x hx`. Establish `h1 : v i ∈ L x` using `hv.2 ▸ Submodule.subset_span ⟨i, rfl⟩`. Rewrite `h1` using `[(hfr x hx hU).2]`. Establish `h2 : Submodule.span (regAt ξ x) (Set.range e) ≤ (Submodule.span Ω (Set.range e)).restrictScalars (regAt ξ x)` using `Submodule.span_le.2 fun _ hy => Submodule.subset_span hy`. Conclude with `he ▸ h2 h1`.
+-/
 theorem frame_mem_of_isVBOn {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {E : Type} [AddCommGroup E] [Module Ω E] {L : Lat ξ E} {T : Set (Cpt ξ)} {r : ℕ}
     {V : Submodule Ω E} {v : Fin r → E} {x : Cpt ξ} (hx : x ∈ T) (hL : L.IsVBOn T r V)
@@ -62,6 +76,9 @@ theorem frame_mem_of_isVBOn {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (
     Submodule.span_le.2 fun _ hy => Submodule.subset_span hy
   exact he ▸ h2 h1
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `exists_ιMulti_eq_smul (v := v) (b := b) fun i => hb ▸ frame_mem_of_isVBOn hx hL hv i`. Use `⟨α, ?_, hα⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `GenModel.ιMulti_ne_zero hv.1 (by rw [hα, zero_smul])`.
+-/
 theorem exists_wedge_coeff {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {E : Type} [AddCommGroup E] [Module Ω E] {L : Lat ξ E} {T : Set (Cpt ξ)} {r : ℕ}
     {V : Submodule Ω E} {v b : Fin r → E} {x : Cpt ξ} (hx : x ∈ T) (hL : L.IsVBOn T r V)
@@ -73,6 +90,11 @@ theorem exists_wedge_coeff {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (C
   rintro rfl
   exact GenModel.ιMulti_ne_zero hv.1 (by rw [hα, zero_smul])
 
+/- English proof (translation)
+Introduce `X Ω _ ξ V _ _ A B p q Vp Vq T b₁ v₁ b₂ v₂ x hx hA hB hb₁ hs₁ hb₂ hs₂ hv₁ hv₂`. Take `⟨α, hα, e₁⟩` from `exists_wedge_coeff hx hA hs₁ hv₁`. Take `⟨κ, hκ, e₂⟩` from `exists_wedge_coeff hx hB hs₂ hv₂`. Establish `hco : IsCoeffAt A B p q (exteriorPower.ιMulti Ω p b₁) (exteriorPower.ιMulti Ω q b₂) x (κ / α)` using `⟨α, κ, hα, hκ, by rw [GenModel.wedge_of_frame hv₁, e₁], by rw [GenModel.wedge_of_frame hv₂, e₂], div_mul_cancel₀ _ hα⟩`. Establish `key` using `GlobalTheory.T.wedge_line_lattice_vector_bundle X Ω ξ V A B p q Vp Vq T _ _ hA hB (GenModel.ιMulti_ne_zero hb₁) (GenModel.ιMulti_ne_zero hb₂) ⟨x, hx, _, hco⟩`.
+
+Conclude with `⟨α, κ, hα, hκ, e₁, e₂, key.2.2 x hx v₁ v₂ α κ hv₁ hv₂ e₁ e₂⟩`.
+-/
 theorem isGenAt_div : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (V : Type) [AddCommGroup V] [Module Ω V] (A B : Lat ξ V) (p q : ℕ) (Vp Vq : Submodule Ω V) (T : Set (Cpt ξ)) (b₁ v₁ : Fin p → V) (b₂ v₂ : Fin q → V) (x : Cpt ξ), x ∈ T → A.IsVBOn T p Vp → B.IsVBOn T q Vq → LinearIndependent Ω b₁ → Submodule.span Ω (Set.range b₁) = Vp → LinearIndependent Ω b₂ → Submodule.span Ω (Set.range b₂) = Vq → A.IsFrameAt v₁ x → B.IsFrameAt v₂ x → ∃ α κ : Ω, α ≠ 0 ∧ κ ≠ 0 ∧ exteriorPower.ιMulti Ω p v₁ = α • exteriorPower.ιMulti Ω p b₁ ∧ exteriorPower.ιMulti Ω q v₂ = κ • exteriorPower.ιMulti Ω q b₂ ∧ (lineLat A B p q (exteriorPower.ιMulti Ω p b₁) (exteriorPower.ιMulti Ω q b₂)).IsGenAt x (α / κ) := by
   intro X Ω _ ξ V _ _ A B p q Vp Vq T b₁ v₁ b₂ v₂ x hx hA hB hb₁ hs₁ hb₂ hs₂ hv₁ hv₂
   obtain ⟨α, hα, e₁⟩ := exists_wedge_coeff hx hA hs₁ hv₁

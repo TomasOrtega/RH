@@ -12,6 +12,9 @@ open GlobalTheory.HSApp
 
 namespace GlobalTheory.AbInterior
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y S f G m s hs`. Rewrite using `[LogKS.coe_interior]`. Conclude with `(OneArcCompare.mem_abLocus_pullback Y.t.semi m.cart.1 s).2 hs`.
+-/
 theorem mem_interior_of_mem_abLocus : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (Y : Model Xo c (RingHom.id c.F)) (S : Scheme.{0}) (f : S ⟶ Y.X) (G : SAB H S), SABMap G Y.t f → ∀ s : S, s ∈ abLocus G.G → f s ∈ (LogKS.interior Y : Set Y.X) := by
   intro E _ _ _ H Dw l Xo c Y S f G m s hs
   rw [LogKS.coe_interior]

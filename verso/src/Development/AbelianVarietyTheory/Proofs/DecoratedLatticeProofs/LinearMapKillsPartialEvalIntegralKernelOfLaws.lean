@@ -12,6 +12,9 @@ def pullSB {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ 
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullSB_apply {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) (Φ : SB Y) (x : X) :
     (pullSB e Φ).1 x = Φ.1 (e x) := rfl
 
@@ -29,11 +32,19 @@ def ofTrip (ev it : Finset (m × m')) (β : Matrix m m' k)
   Matrix.of fun r q => if h : (r, q) ∈ it then x.2.2 ⟨(r, q), h⟩
     else if h' : (r, q) ∈ ev then β r q + x.2.1 ⟨(r, q), h'⟩ else x.1 ⟨(r, q), h, h'⟩
 
+/- English proof (translation)
+Use extensionality with `r q`. Simplify using `only [ofTrip, toTrip, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem ofTrip_toTrip (ev it : Finset (m × m')) (β t : Matrix m m' k) : ofTrip ev it β (toTrip ev it β t) = t := by
   ext r q
   simp only [ofTrip, toTrip, Matrix.of_apply]
   split_ifs <;> ring
 
+/- English proof (translation)
+Take `⟨x₀, x₁, x₂⟩` from `x`. Apply the tactic sequence `refine Prod.ext ?_ (Prod.ext ?_ ?_) <;> funext i`. Establish `h` using `i.2`. Simplify using `only [toTrip, ofTrip, Matrix.of_apply, dif_neg h.1, dif_neg h.2]`. Establish `h : i.1 ∉ it` using `Finset.disjoint_left.mp hd i.2`.
+
+Simplify using `only [toTrip, ofTrip, Matrix.of_apply, dif_neg h, dif_pos i.2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [toTrip, ofTrip, Matrix.of_apply, dif_pos i.2]`.
+-/
 theorem toTrip_ofTrip (ev it : Finset (m × m')) (hd : Disjoint ev it) (β : Matrix m m' k)
     (x : (Rest ev it → k) × ({e // e ∈ ev} → k) × ({e // e ∈ it} → k)) : toTrip ev it β (ofTrip ev it β x) = x := by
   obtain ⟨x₀, x₁, x₂⟩ := x
@@ -66,6 +77,9 @@ def trip (ev it : Finset (m × m')) (hd : Disjoint ev it) (β : Matrix m m' k) :
     · exact continuous_const.add ((continuous_apply _).comp (continuous_fst.comp continuous_snd))
     · exact (continuous_apply _).comp continuous_fst
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trip_apply (ev it : Finset (m × m')) (hd : Disjoint ev it) (β t : Matrix m m' k) :
     trip ev it hd β t = toTrip ev it β t := rfl
 
@@ -79,6 +93,11 @@ open GlobalTheory.FlatFactor
 section Laws
 variable {k : Type} [Field k] {m m' : Type} [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m']
 
+/- English proof (translation)
+Rewrite using `[Matrix.sum_apply]`. Establish `: ∀ e : m × m', Matrix.single e.1 e.2 (a e) r q = if (r, q) = e then a e else 0`. Introduce and unpack `⟨x, y⟩`. Simplify using `only [Matrix.single_apply, Prod.mk.injEq]`. Apply the tactic sequence `split_ifs <;> aesop`.
+
+Repeatedly rewrite using `[this, Finset.sum_ite_eq]`.
+-/
 theorem sum_single_apply (it : Finset (m × m')) (a : m × m' → k) (r : m) (q : m') :
     (∑ e ∈ it, Matrix.single e.1 e.2 (a e)) r q = if (r, q) ∈ it then a (r, q) else 0 := by
   rw [Matrix.sum_apply]
@@ -88,6 +107,11 @@ theorem sum_single_apply (it : Finset (m × m')) (a : m × m' → k) (r : m) (q 
     split_ifs <;> aesop
   simp_rw [this, Finset.sum_ite_eq]
 
+/- English proof (translation)
+Apply the tactic sequence `refine Prod.ext ?_ (Prod.ext ?_ ?_) <;> funext i`. Establish `h` using `i.2`. Simplify using `[toTrip, sum_single_apply, h.1]`. Establish `h : i.1 ∉ it` using `Finset.disjoint_left.mp hd i.2`. Simplify using `[toTrip, sum_single_apply, h]`.
+
+Simplify using `[toTrip, sum_single_apply, i.2]`.
+-/
 theorem toTrip_add (ev it : Finset (m × m')) (hd : Disjoint ev it) (β t : Matrix m m' k) (a : {e // e ∈ it} → k) :
     toTrip ev it β (t + ∑ e ∈ it, Matrix.single e.1 e.2 (if h : e ∈ it then a ⟨e, h⟩ else 0)) =
       toTrip ev it β t + (0, 0, a) := by
@@ -98,6 +122,9 @@ theorem toTrip_add (ev it : Finset (m × m')) (hd : Disjoint ev it) (β t : Matr
     simp [toTrip, sum_single_apply, h]
   · simp [toTrip, sum_single_apply, i.2]
 
+/- English proof (translation)
+Use extensionality with `r q`. Simplify using `only [ofTrip, fill, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem ofTrip_zero (ev it : Finset (m × m')) (β : Matrix m m' k) (x₀ : Rest ev it → k) (a : {e // e ∈ it} → k) :
     ofTrip ev it β (x₀, 0, a) = fill ev it β (ofTrip ev it β (x₀, 0, 0)) a := by
   ext r q
@@ -106,6 +133,19 @@ theorem ofTrip_zero (ev it : Finset (m × m')) (β : Matrix m m' k) (x₀ : Rest
 
 end Laws
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ψ ν hψc hψ1 hν m m' _ _ _ _ M _ _ l β ev it hd h1 h2 Θ hΘ`. Set `e` to `trip (k := k) ev it hd β`. Set `l'` to `l ∘ₗ pullSB e`. Establish `hback : pullSB e (pullSB e.symm Θ) = Θ`. Use extensionality with `t`.
+
+Simplify using `[pullSB_apply]`. Establish `key` using `GlobalTheory.CoinvSB.kernel k ψ ν hψc hψ1 hν (Rest ev it) {x // x ∈ ev} {x // x ∈ it} M l' ?_ ?_ (pullSB e.symm Θ) ?_`. Simplify `key` using `[l', hback]`. Introduce `b Φ Φ' hΦ`. Use `h1 (fun e => if h : e ∈ ev then b ⟨e, h⟩ else 0) (pullSB e Φ) (pullSB e Φ') fun t => ?_` and prove the remaining obligations.
+
+Rewrite using `[pullSB_apply, pullSB_apply, hΦ]`. Use `congr 3`. Simplify using `only [e, trip_apply, toTrip, dotProduct]`. Rewrite using `[← Finset.sum_coe_sort ev]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `[i.2]`. Introduce `a Φ Φ' hΦ`. Use `h2 (fun e => if h : e ∈ it then a ⟨e, h⟩ else 0) (pullSB e Φ) (pullSB e Φ') fun t => ?_` and prove the remaining obligations. Rewrite using `[pullSB_apply, pullSB_apply, hΦ]`. Simplify using `only [e, trip_apply]`.
+
+Rewrite using `[toTrip_add ev it hd β t a]`. Introduce `x₀`. Establish `hr` using `hΘ (ofTrip ev it β (x₀, 0, 0))`. Simplify using `only [red] at hr`. Rewrite using `[← hr]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [pullSB_apply]`. Rewrite using `[← ofTrip_zero]`. Both sides reduce to the same expression.
+-/
 theorem kerRed_of_laws : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ψ ≠ 1 → ν.IsAddHaarMeasure → ∀ (m m' : Type) [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m'] (M : Type) [AddCommGroup M] [Module ℂ M] (l : SB (Matrix m m' k) →ₗ[ℂ] M) (β : Matrix m m' k) (ev it : Finset (m × m')), Disjoint ev it → (∀ (b : m × m' → k) (Θ Θ' : SB (Matrix m m' k)), (∀ t, Θ'.1 t = (ψ (∑ e ∈ ev, b e * (t e.1 e.2 - β e.1 e.2)) : ℂ) * Θ.1 t) → l Θ' = l Θ) → (∀ (a : m × m' → k) (Θ Θ' : SB (Matrix m m' k)), (∀ t, Θ'.1 t = Θ.1 (t + ∑ e ∈ it, Matrix.single e.1 e.2 (a e))) → l Θ' = l Θ) → GlobalTheory.FlatFactor.KerRed ν ev it β l := by
   intro k _ _ _ _ _ _ ψ ν hψc hψ1 hν m m' _ _ _ _ M _ _ l β ev it hd h1 h2 Θ hΘ
   let e := trip (k := k) ev it hd β

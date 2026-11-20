@@ -6,6 +6,13 @@ namespace GroundTheory.Heights₂.Heights
 
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `e hconst n δ h Z f u data hu`. Use `set K := mahlerDefect h e Z f u with hK`. Establish `hrel : ∀ W ∈ Z.support, IsRelevant W` using `fun W hW => (data.prime W hW).isRelevant`. Establish `hae : (fun v => mahlerDefect h e Z f (nrmv h v)) =ᵐ[volume.restrict (ballH h)] fun _ => K` using `by filter_upwards [h2 n h Z hrel] with v hv`. Conclude with `hconst n δ h Z f (nrmv h v) u data hv hu`.
+
+Establish `havg : ⨍ v in ballH h, mahlerDefect h e Z f (nrmv h v) = K`. Rewrite using `[average_congr hae]`. Take `⟨hpos, hfin⟩` from `h3 n h`. Conclude with `setAverage_const hpos.ne' hfin.ne K`. Establish `hmean` using `(h1 n e δ h Z f data).2`.
+
+Rewrite `hmean` using `[havg]`. Establish `hK' : K = mahler h e (specFirst f u) - cycleIntegral h Z e (fsLog h u)` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem MahlerSectionOfConst.proof (h1 : DefectAverage.Statement) (h2 : AdmissibleAENrm.Statement)
     (h3 : BallVolume.Statement) : MahlerSectionOfConst.Statement := by
   intro e hconst n δ h Z f u data hu

@@ -14,6 +14,11 @@ namespace GlobalTheory.InertiaTwoPlaces
 
 open Polynomial
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨s, t, hs, ht, hs1, e⟩` from `ReciprocityTheory.Gal.exists_den E (⊤ : ValuationSubring Ω) (x := x) ((ValuationSubring.valuation_le_one_iff _ _).mpr trivial)`. Establish `hs0 : s ≠ 0` using `by rintro rfl; simp at hs1`. Establish `h2 : σ s * σ x = σ t` using `by rw [← map_mul, e]`. Rewrite `h2` using `[h s hs, h t ht, ← e]`.
+
+Conclude with `mul_left_cancel₀ hs0 h2`.
+-/
 theorem fix_of_fix_integral {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (σ : G E Ω) (h : ∀ b : Ω, IsIntegral ℤ b → σ b = b) : σ = 1 := by
   ext x
@@ -24,6 +29,29 @@ theorem fix_of_fix_integral {E Ω : Type} [Field E] [NumberField E] [Field Ω] [
   rw [h s hs, h t ht, ← e] at h2
   exact mul_left_cancel₀ hs0 h2
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A A' P hA hA' σ hσ hσ' hne`. Assume the negation of the conclusion as `hAA`. Apply `hne` to reduce the goal to its premises. Apply `fix_of_fix_integral` to reduce the goal to its premises. Introduce `b hb`.
+
+Assume the negation of the conclusion as `hD`. Establish `hD0 : σ b - b ≠ 0` using `sub_ne_zero.mpr hD`. Use `set f0 := minpoly ℤ b with hf0`. Establish `hf0m : f0.Monic` using `minpoly.monic hb`. Establish `hf0b : Polynomial.aeval b f0 = 0` using `minpoly.aeval ℤ b`.
+
+Use `set d := f0.natDegree with hd`. Establish `hnat : ∀ n : ℕ, A'.valuation (n : Ω) ≤ 1` using `fun n => ReciprocityTheory.Gal.valuation_natCast_le_one A' n`. Choose the witnesses or unpack the hypotheses as in `⟨m, hdm, hmu⟩ : ∃ m : ℕ, d ≤ m ∧ A'.valuation (m : Ω) = 1 := by`. Distinguish the cases in `h1 : A'.valuation (d : Ω) = 1`. Conclude with `⟨d, le_rfl, h1⟩`.
+
+Use `⟨d + 1, Nat.le_succ d, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h2`. Establish `l1 : A'.valuation (d : Ω) < 1` using `lt_of_le_of_ne (hnat d) h1`. Establish `l2 : A'.valuation ((d + 1 : ℕ) : Ω) < 1` using `lt_of_le_of_ne (hnat _) h2`. Establish `: A'.valuation (((d + 1 : ℕ) : Ω) - (d : Ω)) < 1`.
+
+Rewrite using `[sub_eq_add_neg]`. Conclude with `Valuation.map_add_lt _ l2 (by rw [Valuation.map_neg]; exact l1)`. Move the coercions through the operations in `at this`. Simplify using `at this`. Use `set f1 : Polynomial ℤ := Polynomial.X ^ (m - d) * f0 with hf1`.
+
+Establish `hf1m : f1.Monic` using `(Polynomial.monic_X_pow _).mul hf0m`. Establish `hf1d : f1.natDegree = m`. Rewrite using `[hf1, (Polynomial.monic_X_pow _).natDegree_mul hf0m, Polynomial.natDegree_X_pow, ← hd]`. Use linear arithmetic over natural numbers and integers. Establish `hf1b : Polynomial.aeval b f1 = 0` using `by simp [hf1, hf0b]`.
+
+Establish `hσA : σ ∈ Dec (F` using `E) A := Ine_le_Dec A hσ`. Establish `hbD : IsIntegral ℤ (σ b - b)` using `(hb.map ((σ : Ω ≃ₐ[E] Ω).toAlgHom.restrictScalars ℤ)).sub hb`. Establish `hc : IsIntegral ℤ ((σ b - b) ^ m)` using `hbD.pow m`. Establish `hc0 : (σ b - b) ^ m ≠ 0` using `pow_ne_zero _ hD0`. Take `⟨e0, he0i, he0A, he0A'⟩` from `GlobalTheory.T.exists_integer_deep_at_one_place_unit_at_other E Ω A A' P hA hA' (Ne.symm hAA) _ hc hc0`.
+
+Take `⟨e, hei, hef, heA, heA'⟩` from `GlobalTheory.T.exists_inertiaFixed_integral_of_separating_element E Ω A A' σ hσ' e0 _ he0i he0A he0A'`. Take `⟨ys, hcard, hys, hprod⟩` from `GlobalTheory.T.exists_inertia_fixed_roots_perturbed_polynomial E Ω A' σ hσ' b e m f1 hei hef heA' hmu hf1m hf1d hf1b`. Establish `hbm : A.valuation (b ^ m - 1) ≤ 1` using `(A.valuation_le_one_iff _).mpr (ReciprocityTheory.Gal.mem_of_isIntegral_int A ((hb.pow m).sub isIntegral_one))`. Establish `h1 : A.valuation (e * (b ^ m - 1)) < A.valuation (σ b - b) ^ m`. Rewrite using `[Valuation.map_mul, ← Valuation.map_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : A.valuation (σ b - b) ^ m ≤ A.valuation ((ys.map (fun y => b - y)).prod)`. Rewrite using `[map_multiset_prod, Multiset.map_map, ← hcard]`. Rewrite using `[← Multiset.card_map (fun y => A.valuation (b - y)) ys]`. Apply `Multiset.pow_card_le_prod` to reduce the goal to its premises.
+
+Introduce `z hz`. Rewrite `hz` using `[Multiset.mem_map]`. Take `⟨y, hy, rfl⟩` from `hz`. Establish `hyf` using `(hys y hy).2`. Establish `e1 : σ b - b = σ (b - y) - (b - y)` using `by rw [map_sub, hyf]; ring`.
+
+Rewrite using `[e1, sub_eq_add_neg]`. Use `(Valuation.map_add _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_neg, GlobalTheory.T.iwasawaDecomposition_fact E Ω A σ hσA, max_self]`. Rewrite `h2` using `[← hprod]`. Conclude with `absurd h2 (not_le.mpr h1)`.
+-/
 theorem eq_of_mem_Ine_of_mem_Ine : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (A A' : ValuationSubring Ω) (P : HeightOneSpectrum (𝓞 E)),
     IsPlaceOver (F := E) A P → IsPlaceOver (F := E) A' P → ∀ σ ∈ Ine (F := E) A,

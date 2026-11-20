@@ -7,6 +7,9 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Bernste
 
 namespace PositivityTheory.Exh
 
+/- English proof (translation)
+Establish `hI : GlobalTheory.Published.IrreducibleAdmissibleGL` using `PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Establish `hU` using `PositivityTheory.Exh.lUnlinkedIrr_of_seg hZ`. Conclude with `PositivityTheory.PfEss.essSquareIntegrableSegments_main2 (PositivityTheory.Exh.langlandsExhaustionGL_of_seg hZ) PositivityTheory.Tls2.BZGL.standardFunctorsFiniteLength_top (fun k _ _ _ _ _ => PositivityTheory.Exh.lOrderFree_of hU k) (fun k _ _ _ _ _ => PositivityTheory.Exh.lSegEx …`.
+-/
 theorem essSquareIntegrableSegments_of_seg (hZ : GlobalTheory.Published.SegmentRepresentation) : GlobalTheory.Published.EssSquareIntegrableSegments := by
   have hI : GlobalTheory.Published.IrreducibleAdmissibleGL := PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top
   have hU := PositivityTheory.Exh.lUnlinkedIrr_of_seg hZ

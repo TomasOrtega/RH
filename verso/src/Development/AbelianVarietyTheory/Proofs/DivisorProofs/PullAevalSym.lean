@@ -11,6 +11,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Introduce `n n' L P`. Rewrite using `[MvPolynomial.comp_aeval_apply]`. Establish `key : (pull L).comp ((Subalgebra.center ℂ (Alt n)).val.comp (aeval sym)) = (Subalgebra.center ℂ (Alt n')).val.comp (aeval fun x : Fin n × Fin n => aeval sym (∑ c, ∑ d, C (L (coordVec c) x.1 * (starRingEnd ℂ) (L (coordVec d) x.2)) * (X (c, d) : MvPolynomial (Fin n' × Fin n') ℂ)))`. Use `MvPolynomial.algHom_ext fun x => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, aeval_X, map_sum, map_mul, aeval_C, Subalgebra.coe_val, sym, (pull_dz L _).1, (pull_dz L _).2, Finset.sum_mul_sum, AlgHom.commutes, smul_mul_smul_comm]`.
+
+Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, map_mul]`. Conclude with `congrArg (fun f => f P) key`.
+-/
 theorem pull_aeval_sym : ∀ (n n' : ℕ) (L : V n' →L[ℂ] V n) (P : MvPolynomial (Fin n × Fin n) ℂ), pull L ((aeval sym P : Ev n) : Alt n) = ((aeval sym (aeval (fun x : Fin n × Fin n => ∑ c, ∑ d, C (L (coordVec c) x.1 * (starRingEnd ℂ) (L (coordVec d) x.2)) * (X (c, d) : MvPolynomial (Fin n' × Fin n') ℂ)) P) : Ev n') : Alt n') := by
   intro n n' L P
   rw [MvPolynomial.comp_aeval_apply]

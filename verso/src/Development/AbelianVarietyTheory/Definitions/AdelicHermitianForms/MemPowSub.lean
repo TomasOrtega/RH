@@ -27,13 +27,22 @@ def dif {A : Type} [CommGroup A] (σ : A →* A) : A →* A where
 
 def fix {A : Type} [CommGroup A] (σ : A →* A) : Subgroup A := σ.eqLocus (MonoidHom.id A)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nrm_apply {A : Type} [CommGroup A] (σ : A →* A) (n : ℕ) (a : A) :
     nrm σ n a = ∏ i ∈ Finset.range n, σ^[i] a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dif_apply {A : Type} [CommGroup A] (σ : A →* A) (a : A) : dif σ a = σ a / a := rfl
 
 open NumberField IsDedekindDomain Polynomial in
 open scoped TensorProduct in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem _root_.GlobalTheory.CNorm.mem_fix {A : Type} [CommGroup A] (σ : A →* A) (a : A) :
     a ∈ _root_.GlobalTheory.CNorm.fix σ ↔ σ a = a := Iff.rfl
 
@@ -52,6 +61,9 @@ def powSub (p : ℕ) {F L : Type} [Field F] [Field L] (φ : F →+* L) : Subgrou
 
 open NumberField IsDedekindDomain Polynomial in
 open scoped TensorProduct in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem _root_.GlobalTheory.CNorm.mem_powSub (p : ℕ) {F L : Type} [Field F] [Field L] (φ : F →+* L)
     (x : Fˣ) : x ∈ _root_.GlobalTheory.CNorm.powSub p φ ↔ ∃ r : L, r ^ p = φ (x : F) := Iff.rfl
 
@@ -61,6 +73,9 @@ def kNorm (p : ℕ) {F L : Type} [Field F] [Field L] (φ : F →+* L) (δ : F) :
 
 open NumberField IsDedekindDomain Polynomial in
 open scoped TensorProduct in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, by simpa using congrArg Units.val hy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, Units.ext (by simpa using hy)⟩`.
+-/
 theorem _root_.GlobalTheory.CNorm.mem_kNorm (p : ℕ) {F L : Type} [Field F] [Field L] (φ : F →+* L)
     (δ : F) (x : Fˣ) :
     x ∈ _root_.GlobalTheory.CNorm.kNorm p φ δ ↔ ∃ y : (AdjoinRoot (X ^ p - C (φ δ) : L[X]))ˣ,

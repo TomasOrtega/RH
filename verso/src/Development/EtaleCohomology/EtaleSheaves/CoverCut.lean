@@ -21,6 +21,11 @@ def ProEqv : Prop := Hyp → ∀ (q : ℕ) (i : ℤ) (A : Type) [CommRing A] [Is
       ClopenSys y D c ι ∧ ∀ j, PB q i ((c.π.app j ≫ ι j) ≫ g)) →
   PB q i g
 
+/- English proof (translation)
+Introduce `H q i A _ _ hq P _ _ p hZ`. Take `⟨Y, k, hk, hs, hY⟩` from `hB (P := P)`. Establish `: CompactSpace Y` using `QuasiCompact.compactSpace_of_compactSpace k`. Establish `: QuasiSeparatedSpace Y` using `quasiSeparatedSpace_of_quasiSeparated k`. Use `⟨Y, k, hk, hs, hP H q i A hq (k ≫ p) fun y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨J, _, _, D, c, ι, hc, hA, hint⟩` from `hY y`. Use `⟨J, inferInstance, inferInstance, D, c, ι, hc, fun j => ?_⟩` and prove the remaining obligations. Use `hZ c.pt ((c.π.app j ≫ ι j) ≫ k) (hint j) hA` as an intermediate fact. Simplify `this` using `only [Category.assoc]`.
+-/
 theorem goal_of (hB : Build) (hP : ProEqv) : Cover := by
   intro H q i A _ _ hq P _ _ p hZ
   obtain ⟨Y, k, hk, hs, hY⟩ := hB (P := P)

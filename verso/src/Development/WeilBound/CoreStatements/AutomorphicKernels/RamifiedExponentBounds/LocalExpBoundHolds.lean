@@ -5,12 +5,18 @@ import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.GenericUnit
 
 namespace PositivityTheory.JsR
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ N V _ _ π hs hi hu hg`. Take `⟨h, δ, Δ, s, hΔ, hc, hb, hd⟩` from `PositivityTheory.RgUd.Exp.genUnitCCOf PositivityTheory.RgUd.expBound GlobalTheory.RgGu.Holds.genericUnlinkedGL_holds k N V π hs hi hu hg`. Conclude with `⟨h, δ, Δ, s, hΔ, fun j _ hω z => PositivityTheory.RgUd.UOrder.log_norm_centralChar_u (hΔ j) (hc j) hω z, hb, hd⟩`.
+-/
 theorem localExpBound_holds : LocalExpBound := by
   intro k _ _ _ _ _ N V _ _ π hs hi hu hg
   obtain ⟨h, δ, Δ, s, hΔ, hc, hb, hd⟩ := PositivityTheory.RgUd.Exp.genUnitCCOf PositivityTheory.RgUd.expBound GlobalTheory.RgGu.Holds.genericUnlinkedGL_holds
     k N V π hs hi hu hg
   exact ⟨h, δ, Δ, s, hΔ, fun j _ hω z => PositivityTheory.RgUd.UOrder.log_norm_centralChar_u (hΔ j) (hc j) hω z, hb, hd⟩
 
+/- English proof (translation)
+The claim follows from `localSpread_of_localExpBound localExpBound_holds`.
+-/
 theorem localSpread_holds : LocalSpread := localSpread_of_localExpBound localExpBound_holds
 
 end PositivityTheory.JsR

@@ -30,6 +30,13 @@ def aff {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) (u
 def affInv {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) : Fin n → ℂ :=
   ((ρ : ℂ)⁻¹ • (t - t₀)) ∘ π.symm
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using analyticAt_const`. Consider the case `add p r hp hr`. Establish `e : (fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) (p + r))) = (fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) p)) + fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) r)`. Use function extensionality and compare the values at `t`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hp.add hr`. Consider the case `mul_X p i hp`. Establish `e : (fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) (p * MvPolynomial.X i))) = (fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) p)) * fun t => q t i`.
+
+Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hp.mul (hq i)`.
+-/
 theorem analyticAt_eval {A : Type} {n : ℕ} {q : (Fin n → ℂ) → A → ℂ} {t₀ : Fin n → ℂ}
     (hq : ∀ i, AnalyticAt ℂ (fun t => q t i) t₀) (p : MvPolynomial A ℤ) :
     AnalyticAt ℂ (fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) p)) t₀ := by
@@ -49,6 +56,17 @@ theorem analyticAt_eval {A : Type} {n : ℕ} {q : (Fin n → ℂ) → A → ℂ}
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Establish `hH : (R.Hmᵀ).IsHermitian`. Use extensionality with `i j`. Conclude with `R.herm.apply j i`. Establish `hM : (R.Hmᵀ).PosDef`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos hH fun x hx => ?_` and prove the remaining obligations.
+
+Establish `h1` using `R.pos x hx`. Establish `e : star x ⬝ᵥ (R.Hmᵀ *ᵥ x) = x ⬝ᵥ R.Hm *ᵥ star x`. Rewrite using `[Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec]`. Establish `him : (star x ⬝ᵥ (R.Hmᵀ *ᵥ x)).im = 0` using `hH.im_star_dotProduct_mulVec_self x`. Rewrite using `[Complex.pos_iff]`.
+
+Conclude with `⟨by rw [e]; exact h1, him.symm⟩`. Set `C : Matrix (Fin g) (Fin m) ℂ` to `(Matrix.of u)ᵀ`. Establish `hC : Function.Injective C.mulVec` using `Matrix.mulVec_injective_iff.2 hu`. Establish `e : R.gram u = Cᴴ * R.Hmᵀ * C`. Use extensionality with `a b`.
+
+Simplify using `only [RiemLat.gram, RiemLat.ip, Matrix.of_apply, Matrix.mul_apply, dotProduct, Matrix.mulVec, Matrix.conjTranspose_apply, Matrix.transpose_apply, Pi.star_apply, C]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hp` using `(hM.conjTranspose_mul_mul_same hC).det_pos`. Rewrite `hp` using `[← e]`. Conclude with `(Complex.pos_iff.1 hp).1`.
+-/
 theorem gram_det_pos {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] (R : RiemLat E g Λ) {m : ℕ} (u : Fin m → Fin g → ℂ) (hu : LinearIndependent ℂ u) :
     0 < (R.gram u).det.re := by
@@ -77,6 +95,9 @@ theorem gram_det_pos {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ
   rw [← e] at hp
   exact (Complex.pos_iff.1 hp).1
 
+/- English proof (translation)
+Take `⟨A, _, φ, u, χ, h1, h2, -, -, -, h3⟩` from `h`. Take `⟨v', e', d'⟩` from `h3 i`. Take `⟨w', f', g'⟩` from `h3 j`. Conclude with `⟨t.PP.isLB, tan i, tan j, A, inferInstance, φ, g, u, R.Hm, χ, v', w', x i, x j, h1, h2, e', f', d', g', rfl⟩`.
+-/
 theorem hodgeInnerProduct_of_fibreLatticeVector {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
     {R : RiemLat E g Λ} {A₀ : Type} {x : A₀ → Fin g → ℂ} {v : A₀ → (epsAt z ⟶ t.G)}

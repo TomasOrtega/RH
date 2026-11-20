@@ -30,6 +30,15 @@ def powLift {φ : G} (hφK : φ ∈ (K : Subgroup G))
 
 omit [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Set `S : OpenSubgroup G` to `⟨MulAction.stabilizer G w, IsDiscreteModule.isOpen_stabilizer w⟩`. Set `M : OpenSubgroup G` to `S ⊓ K`. Establish `hMK : M ≤ K` using `inf_le_right`. Establish `hu : (K : Subgroup G) ⊓ D.deg.ker ≤ M` using `fun g hg => ⟨hw g hg, hg.1⟩`. Establish `hrel : D.relDeg K ⟨φ, hφK⟩ = Multiplicative.ofAdd 1`.
+
+Use `(ProfiniteInteger.pow_left_inj (D.inertiaDegree_ne_zero K)).1 ?_` and prove the remaining obligations. Rewrite using `[D.relDeg_pow, ← ofAdd_nsmul, nsmul_one]`. Conclude with `hdφ`. Introduce `τ hτ`. Take `⟨m, hm⟩` from `D.exists_pow_mul_mem_of_unramified hMK hu hrel ⟨τ, hτ⟩`.
+
+Establish `h1 : ∀ j : ℕ, (φ ^ j) • w = w`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, mul_smul, hφw, ih]`.
+
+Establish `h2 : ((φ ^ m)⁻¹ * τ) • w = w`. Establish `h3 : (φ ^ m)⁻¹ * τ ∈ S` using `by simpa using hm.1`. Conclude with `MulAction.mem_stabilizer_iff.1 h3`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mem_fixedModule_of_smul_eq [IsDiscreteModule G A] (K : OpenSubgroup G) {φ : G}
     (hφK : φ ∈ (K : Subgroup G)) (hdφ : D.deg φ = Multiplicative.ofAdd (inertiaDegree D.deg K : ℤ̂))
     {w : A} (hw : w ∈ fixedModule A ((K : Subgroup G) ⊓ D.deg.ker)) (hφw : φ • w = w) :
@@ -57,6 +66,9 @@ theorem mem_fixedModule_of_smul_eq [IsDiscreteModule G A] (K : OpenSubgroup G) {
 
 omit [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_normalizer_iff_map_conj_eq.1 (FrobeniusLift.mem_normalizer hLK hg)`.
+-/
 theorem map_conj_inf_ker (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal] {g : G}
     (hg : g ∈ (K : Subgroup G)) :
     ((L : Subgroup G) ⊓ D.deg.ker).map (MulAut.conj g).toMonoidHom = (L : Subgroup G) ⊓ D.deg.ker :=
@@ -64,6 +76,9 @@ theorem map_conj_inf_ker (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal
 
 omit [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Establish `: ((K : Subgroup G).subgroupOf K).Normal`. Rewrite using `[Subgroup.subgroupOf_self]`. Use `infer_instance`. Conclude with `map_conj_inf_ker le_rfl hg`.
+-/
 theorem map_conj_inf_ker_self {g : G} (hg : g ∈ (K : Subgroup G)) :
     ((K : Subgroup G) ⊓ D.deg.ker).map (MulAut.conj g).toMonoidHom =
       (K : Subgroup G) ⊓ D.deg.ker := by
@@ -74,6 +89,9 @@ theorem map_conj_inf_ker_self {g : G} (hg : g ∈ (K : Subgroup G)) :
 
 omit [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Use `smul_mem_fixedModule hy g` as an intermediate fact. Rewrite `this` using `[map_conj_inf_ker hLK hg]`. Then use the resulting hypothesis.
+-/
 theorem smul_mem_fixedModule_inf_ker (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal] {g : G}
     (hg : g ∈ (K : Subgroup G)) {y : A} (hy : y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) :
     g • y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker) := by
@@ -82,6 +100,9 @@ theorem smul_mem_fixedModule_inf_ker (hLK : L ≤ K) [((L : Subgroup G).subgroup
 
 omit [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+The claim follows from `smul_norm_of_map_eq g (map_conj_inf_ker_self hg) (map_conj_inf_ker hLK hg) y`.
+-/
 theorem smul_norm_inf_ker (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal] {g : G}
     (hg : g ∈ (K : Subgroup G)) (y : fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) :
     g • (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) y : A) =
@@ -91,6 +112,13 @@ theorem smul_norm_inf_ker (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Norma
 
 omit [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Establish `hconj : ∀ g ∈ (K : Subgroup G), ∀ x ∈ (L : Subgroup G), g * x * g⁻¹ ∈ (L : Subgroup G)`. Introduce `g hg x hx`. Use `hN.conj_mem ⟨x, hLK hx⟩ (by simpa [Subgroup.mem_subgroupOf] using hx) ⟨g, hg⟩` as an intermediate fact. Simplify `this` using `[Subgroup.mem_subgroupOf]`. Establish `hc : δ⁻¹ * ψ⁻¹ * δ * ψ ∈ (L : Subgroup G) ⊓ D.deg.ker`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : δ⁻¹ * ψ⁻¹ * δ⁻¹⁻¹ ∈ (L : Subgroup G)` using `hconj δ⁻¹ (K.inv_mem hδ.1) _ (L.inv_mem hψ)`. Rewrite `h1` using `[inv_inv]`. Conclude with `L.mul_mem h1 hψ`. Establish `hdδ : D.deg δ = 1` using `hδ.2 show D.deg (δ⁻¹ * ψ⁻¹ * δ * ψ) = 1`.
+
+Rewrite using `[map_mul, map_mul, map_mul, map_inv, map_inv, hdδ]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem smul_smul_comm (hLK : L ≤ K) [hN : ((L : Subgroup G).subgroupOf K).Normal] {δ ψ : G}
     (hδ : δ ∈ (K : Subgroup G) ⊓ D.deg.ker) (hψ : ψ ∈ (L : Subgroup G)) {y : A}
     (hy : y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) : δ • ψ • y = ψ • δ • y := by
@@ -111,6 +139,9 @@ theorem smul_smul_comm (hLK : L ≤ K) [hN : ((L : Subgroup G).subgroupOf K).Nor
   calc δ • ψ • y = (ψ * δ * (δ⁻¹ * ψ⁻¹ * δ * ψ)) • y := by rw [← mul_smul]; group
     _ = ψ • δ • y := by rw [mul_smul, hy _ hc, mul_smul]
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[FrobeniusLift.coe_field, mem_fixedModule_frobeniusClosure]`. Conclude with `⟨hgJ y hy.1, by rw [hcomm y hy.1, hy.2]⟩`.
+-/
 theorem smul_mem_field [IsDiscreteModule G A] (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal]
     (s : D.FrobeniusLift K) {g : G}
     (hgJ : ∀ y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker),
@@ -127,6 +158,9 @@ section Helpers
 
 omit [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Use `⟨fun n hn g => ?_⟩` and prove the remaining obligations. Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf]`. Establish `h` using `(Subgroup.mem_normalizer_iff.1 (FrobeniusLift.mem_normalizer (D := D) hLK g.2.1) n).1 hn`. Simplify using `using h`.
+-/
 theorem normal_inf_ker (hLK : L ≤ K) [hN : ((L : Subgroup G).subgroupOf K).Normal] :
     (((L : Subgroup G) ⊓ D.deg.ker).subgroupOf ((K : Subgroup G) ⊓ D.deg.ker)).Normal := by
   refine ⟨fun n hn g => ?_⟩
@@ -136,6 +170,9 @@ theorem normal_inf_ker (hLK : L ≤ K) [hN : ((L : Subgroup G).subgroupOf K).Nor
 
 omit [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Proceed by induction on `g with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.prod_range_succ, ih, Nat.succ_mul, Finset.prod_range_add, mul_comm D0 k]`.
+-/
 theorem prod_range_prod_range_eq {M : Type*} [CommMonoid M] (f : ℕ → M) (g D0 : ℕ) :
     ∏ i ∈ Finset.range g, ∏ j ∈ Finset.range D0, f (D0 * i + j) =
       ∏ m ∈ Finset.range (g * D0), f m := by
@@ -146,6 +183,9 @@ theorem prod_range_prod_range_eq {M : Type*} [CommMonoid M] (f : ℕ → M) (g D
 
 variable (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal]
 
+/- English proof (translation)
+Introduce `x hx`. Use `frobeniusClosure_le (s1.field L hLK).isClosed ?_ le_frobeniusClosure hx` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `Subgroup.pow_mem _ (s1.elt_mem_field hLK) k`.
+-/
 theorem field_le_field_of_pow (s1 s2 : D.FrobeniusLift K) (k : ℕ) (h2 : s2.elt = s1.elt ^ k) :
     s2.field L hLK ≤ s1.field L hLK := by
   intro x hx
@@ -153,6 +193,17 @@ theorem field_le_field_of_pow (s1 s2 : D.FrobeniusLift K) (k : ℕ) (h2 : s2.elt
   rw [h2]
   exact Subgroup.pow_mem _ (s1.elt_mem_field hLK) k
 
+/- English proof (translation)
+Establish `hmap1` using `map_frobeniusClosure D.continuous_deg (FrobeniusLift.mem_normalizer hLK s1.mem) s1.deg_eq (L := (L : Subgroup G))`. Establish `hmap2` using `map_frobeniusClosure D.continuous_deg (FrobeniusLift.mem_normalizer hLK s2.mem) s2.deg_eq (L := (L : Subgroup G))`. Rewrite `hmap2` using `[hdeg, mul_assoc]`. Establish `hf : 0 < s1.deg * inertiaDegree D.deg K` using `Nat.mul_pos s1.deg_pos (Nat.pos_of_ne_zero (D.inertiaDegree_ne_zero K))`. Establish `key` using `coe_norm_eq_prod_smul_norm D.deg (K := ((s1.field L hLK : OpenSubgroup G) : Subgroup G)) (S := ((s2.field L hLK : OpenSubgroup G) : Subgroup G)) (J := (L : Subgroup G) ⊓ D.deg.ker) (f := s1.deg * inertiaDegree D.deg K) (n := k) hk hf (fun x hx => field_le_field_of_pow hLK s1 s2 k …`.
+
+Rewrite using `[key]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `coe_norm_of_le (fun x hx => (s1.field_inf_ker hLK).le hx) _`. Introduce `x hx`.
+
+Establish `: D.deg x ∈ (frobeniusClosure D.deg L s2.elt).map D.deg` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[hmap2]`. Conclude with `this`. Introduce `x _ hx`. Establish `: D.deg x ∈ AddSubgroup.toSubgroup (multiples (k * (s1.deg * inertiaDegree D.deg K)))` using `hx`.
+
+Rewrite `this` using `[← hmap2]`. Take `⟨y, hy, hyx⟩` from `this`. Conclude with `⟨y, hy, hyx⟩`. Introduce `x hx`. Establish `: D.deg x ∈ (frobeniusClosure D.deg L s1.elt).map D.deg` using `⟨x, hx, rfl⟩`.
+
+Rewrite `this` using `[hmap1]`. Conclude with `this`. Introduce `q hq`. Establish `hqJ : q ∈ (L : Subgroup G) ⊓ D.deg.ker` using `(s1.field_inf_ker hLK).le hq`. Conclude with `⟨fun _ => hqJ, fun h => le_frobeniusClosure h⟩`.
+-/
 theorem coe_norm_field_field (s1 s2 : D.FrobeniusLift K) (k : ℕ) (hk : 0 < k)
     (h2 : s2.elt = s1.elt ^ k) (hdeg : s2.deg = k * s1.deg)
     (z : fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G)) :
@@ -194,6 +245,9 @@ theorem coe_norm_field_field (s1 s2 : D.FrobeniusLift K) (k : ℕ) (hk : 0 < k)
 
 omit [TotallyDisconnectedSpace G] [((L : Subgroup G).subgroupOf K).Normal] in
 
+/- English proof (translation)
+Establish `h : (⟨∏ i ∈ s, f i, Subgroup.prod_mem _ fun i _ => hf i⟩ : fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) = ∏ i ∈ s, ⟨f i, hf i⟩`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[h, map_prod]`. Simplify using the standard rewrite rules.
+-/
 theorem coe_norm_inf_ker_prod {ι : Type*} (s : Finset ι) (f : ι → A)
     (hf : ∀ i, f i ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) :
     (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker)
@@ -209,6 +263,9 @@ theorem coe_norm_inf_ker_prod {ι : Type*} (s : Finset ι) (f : ι → A)
 
 omit [TotallyDisconnectedSpace G] [((L : Subgroup G).subgroupOf K).Normal] in
 
+/- English proof (translation)
+Establish `h : (⟨y * z, Subgroup.mul_mem _ hy hz⟩ : fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) = ⟨y, hy⟩ * ⟨z, hz⟩` using `rfl`. Rewrite using `[h, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem coe_norm_inf_ker_mul {y z : A} (hy : y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker))
     (hz : z ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) :
     (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker)
@@ -226,6 +283,55 @@ section Key
 
 variable (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal]
 
+/- English proof (translation)
+Use `set g := (L : Subgroup G).relIndex K with hgdef`. Establish `hg : 0 < g` using `Nat.pos_of_ne_zero (Subgroup.FiniteIndex.index_ne_zero (H := (L : Subgroup G).subgroupOf K))`. Establish `hP'P : s2.field L hLK ≤ s1.field L hLK` using `field_le_field_of_pow hLK s1 s2 g h2`. Establish `hP'L : s2.field L hLK ≤ L` using `fun y hy => frobeniusClosure_le L.isClosed (by rw [h2]; exact L.pow_mem hψL g) inf_le_left hy`. Establish `hu : ((s1.field L hLK : OpenSubgroup G) : Subgroup G) ⊓ D.deg.ker ≤ s2.field L hLK` using `fun y hy => le_frobeniusClosure ((s1.field_inf_ker hLK).le hy)`.
+
+Establish `hT` using `coe_norm_field_field hLK s1 s2 g hg h2 hdeg`. Establish `hrelψ` using `s1.relDeg_field hLK`. Establish `hφJ : ∀ y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker), φ • y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `fun y hy => smul_mem_fixedModule_inf_ker hLK hφK hy`. Establish `hφjJ : ∀ (j : ℕ), ∀ y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker), φ ^ j • y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `fun j y hy => smul_mem_fixedModule_inf_ker hLK (K.pow_mem hφK j) hy`. Establish `hδJ : ∀ y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker), δ • y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `fun y hy => smul_mem_fixedModule_inf_ker hLK hδ.1 hy`.
+
+Establish `hcommφ : ∀ (i j : ℕ) (y : A), s1.elt ^ i • φ ^ j • y = φ ^ j • s1.elt ^ i • y`. Introduce `i j y`. Establish `hc : Commute (s1.elt ^ i) (φ ^ j)`. Rewrite using `[h1]`. Conclude with `(((Commute.refl φ).pow_left _).pow_left _).pow_right _`.
+
+Rewrite using `[smul_smul, smul_smul, hc.eq]`. Establish `hcommδ : ∀ (i : ℕ), ∀ y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker), s1.elt ^ i • δ • y = δ • s1.elt ^ i • y` using `fun i y hy => (smul_smul_comm hLK hδ (L.pow_mem hψL i) hy).symm`. Establish `hφP' : ∀ (j : ℕ), ∀ y ∈ fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G), φ ^ j • y ∈ fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G)`. Introduce `j y hy`. Use `smul_mem_field hLK s2 (hφjJ j) (fun z _ => ?_) hy` and prove the remaining obligations.
+
+Rewrite using `[h2]`. Conclude with `hcommφ g j z`. Establish `hδP' : ∀ y ∈ fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G), δ • y ∈ fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G)`. Introduce `y hy`. Use `smul_mem_field hLK s2 hδJ (fun z hz => ?_) hy` and prove the remaining obligations.
+
+Rewrite using `[h2]`. Conclude with `hcommδ g z hz`. Establish `hP'J : ∀ y ∈ fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G), y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `fun y hy => fixedModule_anti le_frobeniusClosure hy`. Establish `hxU : (⟨x, hx⟩ : fixedModule A ((s1.field L hLK : OpenSubgroup G) : Subgroup G)) ∈ D.units (s1.field L hLK)` using `hxu`. Rewrite `hxU` using `[D.units_eq_map_norm hax hP'P hu]`.
+
+Take `⟨x'', -, hx''⟩` from `hxU`. Establish `haU : (⟨a, ha⟩ : fixedModule A ((s1.field L hLK : OpenSubgroup G) : Subgroup G)) ∈ D.units (s1.field L hLK)` using `hau`. Rewrite `haU` using `[D.units_eq_map_norm hax hP'P hu]`. Take `⟨c, -, hc⟩` from `haU`. Establish `hxN : x = ∏ i : Fin g, s1.elt ^ (i : ℕ) • (x'' : A)`.
+
+Rewrite using `[← hT, hx'']`. Establish `haN : a = ∏ i : Fin g, s1.elt ^ (i : ℕ) • (c : A)`. Rewrite using `[← hT, hc]`. Establish `hφx'' : φ • (x'' : A) ∈ fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G)`. Simplify using `using hφP' 1 _ x''.2`.
+
+Establish `hδc : δ • (c : A) ∈ fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G)` using `hδP' _ c.2`. Use `set y' : fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G) := ⟨φ • (x'' : A), hφx''⟩ / x'' / (⟨δ • (c : A), hδc⟩ / c) with hy'def`. Establish `hNy' : norm A ((s1.field L hLK : OpenSubgroup G) : Subgroup G) ((s2.field L hLK : OpenSubgroup G) : Subgroup G) y' = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hT]`.
+
+Simplify using `only [hy'def, Subgroup.coe_div, OneMemClass.coe_one, smul_div', Finset.prod_div_distrib]`. Establish `e1 : ∏ i : Fin g, s1.elt ^ (i : ℕ) • φ • (x'' : A) = φ • x`. Rewrite using `[hxN, Finset.smul_prod']`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `using hcommφ i 1 (x'' : A)`.
+
+Establish `e2 : ∏ i : Fin g, s1.elt ^ (i : ℕ) • δ • (c : A) = δ • a`. Rewrite using `[haN, Finset.smul_prod']`. Conclude with `Finset.prod_congr rfl fun i _ => hcommδ i _ (hP'J _ c.2)`. Rewrite using `[e1, e2, ← hxN, ← haN, hrel, div_self']`. Take `⟨b, -, hb⟩` from `D.exists_units_eq_smul_div hax hP'P hu hrelψ hNy'`.
+
+Use `set Tb : A := ∏ j : Fin s1.deg, φ ^ (j : ℕ) • (b : A) with hTbdef`. Establish `hTbP' : Tb ∈ fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G)` using `Subgroup.prod_mem _ fun j _ => hφP' j _ b.2`. Establish `htele : φ • Tb / Tb = s1.elt • (b : A) / b`. Rewrite using `[hTbdef, Finset.smul_prod', h1]`. Simplify using `only [Fin.prod_univ_eq_prod_range (fun j => φ • φ ^ j • (b : A)), Fin.prod_univ_eq_prod_range (fun j => φ ^ j • (b : A))]`.
+
+Establish `hs` using `Finset.prod_range_succ (fun j => φ ^ j • (b : A)) s1.deg`. Establish `hs'` using `Finset.prod_range_succ' (fun j => φ ^ j • (b : A)) s1.deg`. Simplify using `only [pow_zero, one_smul] at hs'`. Establish `: ∏ j ∈ Finset.range s1.deg, φ • φ ^ j • (b : A) = ∏ j ∈ Finset.range s1.deg, φ ^ (j + 1) • (b : A)`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, ← pow_succ']`. Rewrite using `[this, div_eq_div_iff_mul_eq_mul, ← hs', hs, mul_comm]`. Use `set x' : A := (x'' : A) / Tb with hx'def`. Establish `hx'P' : x' ∈ fixedModule A ((s2.field L hLK : OpenSubgroup G) : Subgroup G)` using `Subgroup.div_mem _ x''.2 hTbP'`. Establish `hx'J` using `hP'J _ hx'P'`.
+
+Establish `hrel' : φ • x' = x' * (δ • (c : A) / c)`. Establish `hy'v : (y' : A) = φ • (x'' : A) / x'' / (δ • (c : A) / c)`. Simplify using `[hy'def]`. Establish `e : φ • (x'' : A) / x'' = (s1.elt • (b : A) / b) * (δ • (c : A) / c)`. Rewrite using `[← hb, hy'v, div_mul_cancel]`.
+
+Establish `e2 : φ • Tb = Tb * (s1.elt • (b : A) / b)`. Rewrite using `[← htele, mul_div_cancel]`. Rewrite using `[hx'def, smul_div', e2]`. Establish `e3 : φ • (x'' : A) = x'' * ((s1.elt • (b : A) / b) * (δ • (c : A) / c))`. Rewrite using `[← e, mul_div_cancel]`.
+
+Rewrite using `[e3, mul_div_mul_comm, mul_div_cancel_left]`. Use `set w : A := (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨x', hx'J⟩ : A) with hwdef`. Use `normal_inf_ker (D := D) hLK` as an intermediate fact. Establish `hcJ` using `hP'J _ c.2`. Establish `hwφ : φ • w = w`.
+
+Rewrite using `[hwdef, smul_norm_inf_ker hLK hφK]`. Establish `e : (⟨φ • x', smul_mem_fixedModule_inf_ker hLK hφK hx'J⟩ : fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) = ⟨x', hx'J⟩ * (⟨δ • (c : A), hδJ _ hcJ⟩ / ⟨c, hcJ⟩)`. Use `ext`. Simplify using `[hrel']`. Rewrite using `[e, map_mul, map_div, norm_smul (K := (K : Subgroup G) ⊓ D.deg.ker) (L := (L : Subgroup G) ⊓ D.deg.ker) ⟨δ, hδ⟩ ⟨(c : A), hcJ⟩ (hδJ _ hcJ), div_self', mul_one]`.
+
+Establish `hwK : w ∈ fixedModule A (K : Subgroup G)` using `mem_fixedModule_of_smul_eq K hφK hdφ (norm _ _ _ _).2 hwφ`. Establish `hbJ` using `hP'J _ b.2`. Establish `hNb` using `coe_norm_field_eq hLK s2 hφK hdφ b`. Use `⟨⟨w, fixedModule_anti hLK hwK⟩ * norm A (L : Subgroup G) ((s2.field L hLK : OpenSubgroup G) : Subgroup G) b, ?_⟩` and prove the remaining obligations. Establish `hψK : ∀ i : ℕ, s1.elt ^ i ∈ (K : Subgroup G)` using `fun i => K.pow_mem s1.mem i`.
+
+Establish `hx''eq : (x'' : A) = x' * Tb` using `by rw [hx'def, div_mul_cancel]`. Establish `hTbJ` using `hP'J _ hTbP'`. Establish `hNTb : (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨Tb, hTbJ⟩ : A) = ∏ j : Fin s1.deg, φ ^ (j : ℕ) • (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨b, hbJ⟩ : A)`. Establish `hmemj : ∀ j : Fin s1.deg, φ ^ (j : ℕ) • (b : A) ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `fun j => hφjJ j _ hbJ`. Rewrite using `[show (⟨Tb, hTbJ⟩ : fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) = ⟨∏ j : Fin s1.deg, φ ^ (j : ℕ) • (b : A), Subgroup.prod_mem _ fun j _ => hmemj j⟩ from rfl, coe_norm_inf_ker_prod Finset.univ _ hmemj]`.
+
+Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_norm_inf_ker hLK (K.pow_mem hφK j)]`. Establish `hNx : (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨x, fixedModule_anti le_frobeniusClosure hx⟩ : A) = w ^ g * ∏ i : Fin g, s1.elt ^ (i : ℕ) • (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨Tb, hTbJ⟩ : A)`. Establish `hmemi : ∀ i : Fin g, s1.elt ^ (i : ℕ) • (x'' : A) ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `fun i => smul_mem_fixedModule_inf_ker hLK (hψK i) (hP'J _ x''.2)`. Establish `e1 : (⟨x, fixedModule_anti le_frobeniusClosure hx⟩ : fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) = ⟨∏ i : Fin g, s1.elt ^ (i : ℕ) • (x'' : A), Subgroup.prod_mem _ fun i _ => hmemi i⟩` using `Subtype.ext hxN`.
+
+Rewrite using `[e1, coe_norm_inf_ker_prod Finset.univ _ hmemi]`. Establish `e2 : ∀ i : Fin g, (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨s1.elt ^ (i : ℕ) • (x'' : A), hmemi i⟩ : A) = w * s1.elt ^ (i : ℕ) • (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨Tb, hTbJ⟩ : A)`. Introduce `i`. Establish `h3` using `smul_norm_inf_ker hLK (hψK i) ⟨(x'' : A), hP'J _ x''.2⟩`. Rewrite using `[← h3]`.
+
+Establish `e4 : (⟨(x'' : A), hP'J _ x''.2⟩ : fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) = ⟨x' * Tb, Subgroup.mul_mem _ hx'J hTbJ⟩` using `Subtype.ext hx''eq`. Rewrite using `[e4, coe_norm_inf_ker_mul hx'J hTbJ, smul_mul', ← hwdef, hwK _ (hψK i)]`. Rewrite using `[Finset.prod_congr rfl fun i _ => e2 i, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[map_mul, Subgroup.coe_mul, coe_norm_of_mem hLK hwK, norm_norm (fun y hy => hP'L hy) (fun y hy => hLK hy) b, hNb, hNx, hNTb]`. Use `congr 1`.
+
+Repeatedly rewrite using `[Finset.smul_prod', smul_smul, h1, ← pow_mul, ← pow_add]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun m => φ ^ m • _) s2.deg, hdeg, ← prod_range_prod_range_eq _ g s1.deg]`. Simplify using `only [Finset.prod_range]`.
+-/
 theorem exists_norm_eq_norm_inf_ker (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
     {φ : G} (hφK : φ ∈ (K : Subgroup G))
     (hdφ : D.deg φ = Multiplicative.ofAdd (inertiaDegree D.deg K : ℤ̂))

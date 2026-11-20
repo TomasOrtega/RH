@@ -17,6 +17,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct in
 variable {E : Type} [Field E] [NumberField E] in
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun φ : E →+* K => φ.comp (algebraMap (𝓞 E) E)` using `fun φ ψ h => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h`. Establish `hdisc : IsUnit ((NumberField.discr E : ℤ) : K)` using `(Int.cast_ne_zero.mpr (NumberField.discr_ne_zero E)).isUnit`. Simplify using `using _root_.GlobalTheory.EigenSplit.isSplitting_of_isDomain (R := K) hinj (Embeddings.card E K) (RingHom.id K) hdisc`.
+-/
 theorem _root_.GlobalTheory.TraceSpread.isSplitting_embeddings (K : Type) [Field K] [IsAlgClosed K]
     [CharZero K] :
     _root_.GlobalTheory.EigenSplit.IsSplitting fun φ : E →+* K => φ.comp (algebraMap (𝓞 E) E) := by
@@ -30,6 +33,13 @@ theorem _root_.GlobalTheory.TraceSpread.isSplitting_embeddings (K : Type) [Field
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero τ).mpr fun a ha => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `haE : (a : E) ≠ 0`. Introduce `h`. Conclude with `hne (RingOfIntegers.coe_injective (h.trans (map_zero (algebraMap (𝓞 E) E)).symm))`.
+
+Take `⟨z, hz, h⟩` from `exists_integral_multiples ℤ ℚ ({(a : E)⁻¹} : Finset E)`. Set `c : 𝓞 E` to `⟨z • (a : E)⁻¹, h _ (Finset.mem_singleton_self _)⟩`. Establish `hzc : (z : 𝓞 E) = a * c`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `show ((z : 𝓞 E) : E) = (a : E) * (z • (a : E)⁻¹)`.
+
+Rewrite using `[zsmul_eq_mul, mul_left_comm, mul_inv_cancel₀ haE, _root_.mul_one]`. Simplify using the standard rewrite rules. Establish `: τ (z : 𝓞 E) = 0` using `by rw [hzc, map_mul, ha, zero_mul]`. Rewrite `this` using `[map_intCast]`. Conclude with `hz (Int.cast_eq_zero.mp this)`.
+-/
 private lemma ringOfIntegers_ringHom_injective' {K : Type} [Field K] [CharZero K]
     (τ : 𝓞 E →+* K) : Function.Injective τ := by
   refine (injective_iff_map_eq_zero τ).mpr fun a ha => ?_
@@ -51,6 +61,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct in
 variable {E : Type} [Field E] [NumberField E] in
 
+/- English proof (translation)
+Use `⟨IsFractionRing.lift (ringOfIntegers_ringHom_injective' τ), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Conclude with `IsFractionRing.lift_algebraMap (ringOfIntegers_ringHom_injective' τ) a`.
+-/
 theorem _root_.GlobalTheory.TraceSpread.exists_embedding {K : Type} [Field K] [CharZero K]
     (τ : 𝓞 E →+* K) :
     ∃ φ : E →+* K, φ.comp (algebraMap (𝓞 E) E) = τ := by
@@ -62,6 +75,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct in
 variable {E : Type} [Field E] [NumberField E] in
 
+/- English proof (translation)
+Establish `hsplit` using `_root_.GlobalTheory.TraceSpread.isSplitting_embeddings (E := E) K`. Establish `hint` using `_root_.GlobalTheory.EigenSplit.isInternal_eigenSub hsplit ρ`. Establish `hmaps : ∀ φ : E →+* K, Set.MapsTo (ρ a) (_root_.GlobalTheory.EigenSplit.eigenSub ρ (φ.comp (algebraMap (𝓞 E) E))) (_root_.GlobalTheory.EigenSplit.eigenSub ρ (φ.comp (algebraMap (𝓞 E) E)))` using `fun φ x hx => _root_.GlobalTheory.EigenSplit.apply_mem_eigenSub hx a`. Rewrite using `[LinearMap.trace_eq_sum_trace_restrict hint hmaps]`. Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations.
+
+Establish `hres : (ρ a).restrict (hmaps φ) = (φ a) • LinearMap.id`. Use extensionality with `x`. Use `show ρ a (x : V) = φ (a : E) • (x : V)`. Conclude with `(_root_.GlobalTheory.EigenSplit.mem_eigenSub.mp x.2) a`. Rewrite using `[hres, map_smul, LinearMap.trace_id, smul_eq_mul, mul_comm]`.
+-/
 theorem _root_.GlobalTheory.TraceSpread.trace_eq_sum {K : Type} [Field K] [IsAlgClosed K]
     [CharZero K] {V : Type} [AddCommGroup V] [Module K V]
     [Module.Finite K V] (ρ : 𝓞 E →+* Module.End K V) (a : 𝓞 E) :
@@ -87,6 +105,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct in
 variable {E : Type} [Field E] [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[LinearMap.trace_eq_matrix_trace R (Pi.basisFun R (Fin n)), LinearMap.trace_eq_matrix_trace K (Pi.basisFun K (Fin n)), Matrix.trace, Matrix.trace, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.diag_apply, LinearMap.toMatrix_apply, Pi.basisFun_repr, Pi.basisFun_apply]`. Establish `hc : (f ∘ (Pi.single i 1 : Fin n → R)) = Pi.single i 1`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Rewrite using `[← hc, ← h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.TraceSpread.map_trace {R K : Type} [CommRing R] [CommRing K]
     {n : ℕ} (f : R →+* K) (A : Module.End R (Fin n → R))
     (A' : Module.End K (Fin n → K)) (h : ∀ c, f ∘ A c = A' (f ∘ c)) :
@@ -109,6 +134,9 @@ variable [IsCMField E]
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Establish `h₁` using `Algebra.algebraMap_intTrace (A := ℤ) (K := ℚ) (L := E) (B := 𝓞 E) a`. Establish `h₂` using `trace_eq_sum_embeddings (K := ℚ) (L := E) K (x := (a : E))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma intTrace_cast_eq_sum_embeddings {K : Type} [Field K] [IsAlgClosed K] [CharZero K]
     (a : 𝓞 E) :
     ((Algebra.intTrace ℤ (𝓞 E) a : ℤ) : K) = ∑ φ : E →+* K, φ a := by
@@ -126,6 +154,31 @@ open scoped CategoryTheory.Obj TensorProduct in
 variable {E : Type} [Field E] [NumberField E] in
 variable [IsCMField E] in
 
+/- English proof (translation)
+Establish `hroot : ∀ τ : 𝓞 E →+* K, τ H.rt = s ∨ τ H.rt = -s`. Introduce `τ`. Apply `sq_eq_sq_iff_eq_or_eq_neg.mp` to reduce the goal to its premises. Rewrite using `[hs, ← map_pow, H.rt_sq, map_neg, map_natCast]`. Establish `hs0 : s ≠ 0`.
+
+Introduce and unpack `rfl`. Establish `hd : (H.d : K) ≠ 0` using `Nat.cast_ne_zero.mpr H.d_prime.ne_zero`. Apply `hd` to reduce the goal to its premises. Use `hs` as an intermediate fact. Rewrite `this` using `[zero_pow two_ne_zero]`.
+
+Conclude with `neg_eq_zero.mp this.symm`. Prove the components needed by the constructor for the conclusion. Introduce `hmult a`. Rewrite using `[_root_.GlobalTheory.TraceSpread.trace_eq_sum, intTrace_cast_eq_sum_embeddings, intTrace_cast_eq_sum_embeddings, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[show ((H.rt * a : 𝓞 E) : E) = (H.rt : E) * (a : E) from map_mul (algebraMap (𝓞 E) E) _ _, map_mul]`. Break down `hroot (φ.comp (algebraMap (𝓞 E) E)) with h | h` into its components or cases. Rewrite using `[(hmult _).1 h]`. Establish `h' : φ (H.rt : E) = s` using `h`. Rewrite using `[h']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hne : (φ.comp (algebraMap (𝓞 E) E)) H.rt ≠ s`. Rewrite using `[h]; intro h'; exact hs0 (by linear_combination -h' / 2)`. Rewrite using `[(hmult _).2 hne]`. Establish `h' : φ (H.rt : E) = -s` using `h`.
+
+Rewrite using `[h']`. Expand and normalize the polynomial expressions, which then agree. Introduce `hid τ`. Take `⟨φ, rfl⟩` from `_root_.GlobalTheory.TraceSpread.exists_embedding τ`. Set `c : (E →+* K) → K` to `fun ψ => 2 * s * (Module.finrank K (_root_.GlobalTheory.EigenSplit.eigenSub ρ (ψ.comp (algebraMap (𝓞 E) E))) : K) - ((p + q) * s + (p - q) * ψ (H.rt : E))`.
+
+Establish `hli` using `(linearIndependent_monoidHom (𝓞 E) K).comp (fun ψ : E →+* K => ((ψ.comp (algebraMap (𝓞 E) E) : 𝓞 E →+* K) : 𝓞 E →* K)) (fun ψ₁ ψ₂ h => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun x => DFunLike.congr_fun h x))`. Establish `hc : c φ = 0`. Use `Fintype.linearIndependent_iff.mp hli c ?_ φ` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply, Pi.zero_apply]`.
+
+Establish `h₁` using `hid a`. Rewrite `h₁` using `[_root_.GlobalTheory.TraceSpread.trace_eq_sum, intTrace_cast_eq_sum_embeddings, intTrace_cast_eq_sum_embeddings, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← sub_eq_zero, ← Finset.sum_sub_distrib]`. Use `Eq.trans (Finset.sum_congr rfl fun ψ _ => ?_) h₁` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c ψ * ψ (a : E) = _`. Rewrite using `[show ((H.rt * a : 𝓞 E) : E) = (H.rt : E) * (a : E) from map_mul (algebraMap (𝓞 E) E) _ _, map_mul]`.
+
+Simplify using `only [c]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd2 : (2 : K) * s ≠ 0` using `mul_ne_zero two_ne_zero hs0`. Simplify using `only [c, sub_eq_zero] at hc`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h' : φ (H.rt : E) = s` using `h`. Rewrite `hc` using `[h']`. Establish `hm : (Module.finrank K (_root_.GlobalTheory.EigenSplit.eigenSub ρ (φ.comp (algebraMap (𝓞 E) E))) : K) = p` using `mul_left_cancel₀ hd2 (by linear_combination hc)`. Conclude with `hm` after adjusting the coercions.
+
+Introduce `h`. Establish `h''` using `(hroot (φ.comp (algebraMap (𝓞 E) E))).resolve_left h`. Establish `h' : φ (H.rt : E) = -s` using `h''`. Rewrite `hc` using `[h']`. Establish `hm : (Module.finrank K (_root_.GlobalTheory.EigenSplit.eigenSub ρ (φ.comp (algebraMap (𝓞 E) E))) : K) = q` using `mul_left_cancel₀ hd2 (by linear_combination hc)`.
+
+Conclude with `hm` after adjusting the coercions.
+-/
 theorem _root_.GlobalTheory.TraceSpread.finrank_iff_trace (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (p q : ℕ) {K : Type} [Field K]
     [IsAlgClosed K] [CharZero K] {V : Type}
     [AddCommGroup V] [Module K V] [Module.Finite K V] (ρ : 𝓞 E →+* Module.End K V) (s : K)
@@ -210,6 +263,19 @@ end GlobalTheory.TraceSpread
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
 
+/- English proof (translation)
+Introduce `E _ _ _ H p q n R _ _ M r hr hdense K _ _ _ f M' hfM`. Set `X : 𝓞 E → R` to `fun a => 2 * r * LinearMap.trace R _ (M a) - ((p + q) * r * ((Algebra.intTrace ℤ (𝓞 E) a : ℤ) : R) + (p - q) * ((Algebra.intTrace ℤ (𝓞 E) (H.rt * a) : ℤ) : R))`. Establish `hfX : ∀ (K₁ : Type) [Field K₁] (f₁ : R →+* K₁) (M₁ : 𝓞 E →+* Module.End K₁ (Fin n → K₁)), (∀ a c, f₁ ∘ M a c = M₁ a (f₁ ∘ c)) → ∀ a, f₁ (X a) = 2 * f₁ r * LinearMap.trace K₁ _ (M₁ a) - ((p + q) * f₁ r * ((Algebra.intTrace ℤ (𝓞 E) a : ℤ) : K₁) + (p - q) * ((Algebra.intTrace ℤ (𝓞 E …`. Introduce `K₁ _ f₁ M₁ h₁ a`. Simplify using `only [X, map_sub, map_add, map_mul, map_natCast, map_intCast, map_ofNat]`.
+
+Rewrite using `[_root_.GlobalTheory.TraceSpread.map_trace f₁ (M a) (M₁ a) (h₁ a)]`. Establish `hX : ∀ a, X a = 0`. Introduce `a`. Establish `hsub : {P : PrimeSpectrum R | ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (_ : CharZero K) (f : R →+* K) (M' : 𝓞 E →+* Module.End K (Fin n → K)), RingHom.ker f = P.asIdeal ∧ (∀ a c, f ∘ M a c = M' a (f ∘ c)) ∧ ∀ τ : 𝓞 E →+* K, (τ H.rt = f r → Module.finrank K (_root_.GlobalThe …`. Introduce and unpack `P ⟨K₁, _, _, _, f₁, M₁, hker, hcomp, hmult⟩`.
+
+Rewrite using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff, SetLike.mem_coe, ← hker, RingHom.mem_ker, hfX K₁ f₁ M₁ hcomp a]`. Establish `hs : f₁ r ^ 2 = -(H.d : K₁)` using `by rw [← map_pow, hr, map_neg, map_natCast]`. Use `(_root_.GlobalTheory.TraceSpread.finrank_iff_trace H p q M₁ (f₁ r) hs).mp hmult a` as an intermediate fact. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hall` using `closure_minimal hsub (PrimeSpectrum.isClosed_zeroLocus _)`. Rewrite `hall` using `[hdense.closure_eq]`. Establish `hnil : IsNilpotent (X a)` using `nilpotent_iff_mem_prime.mpr fun J hJ => by`. Use `hall (Set.mem_univ ⟨J, hJ⟩)` as an intermediate fact. Rewrite `this` using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff]`.
+
+Conclude with `this`. Conclude with `hnil.eq_zero`. Establish `hs : f r ^ 2 = -(H.d : K)` using `by rw [← map_pow, hr, map_neg, map_natCast]`. Use `(_root_.GlobalTheory.TraceSpread.finrank_iff_trace H p q M' (f r) hs).mpr fun a => ?_` and prove the remaining obligations. Establish `h₀` using `hfX K f M' hfM a`.
+
+Rewrite `h₀` using `[hX a, map_zero]`. Take the linear combination `-h₀`.
+-/
 theorem _root_.GlobalTheory.eigenMult_of_dense : ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (p q n : ℕ) (R : Type) [CommRing R] [IsReduced R]
     (M : 𝓞 E →+* Module.End R (Fin n → R)) (r : R), r ^ 2 = -(H.d : R) →

@@ -7,6 +7,17 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.DenomBound
 
+/- English proof (translation)
+Introduce `F _ _ z l a n _ ha hn h`. Unfold `cE`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `C _`. Unfold `denomExp`.
+
+Distinguish the cases in `hz : z C = 0`. Simplify using `[hz]`. Establish `hpow : 2 ≤ a ^ n` using `le_trans ha (Nat.le_self_pow (by omega) a)`. Establish `hA : (a ^ n - 1 : ℕ) ≠ 0` using `by omega`. Establish `hAq : ((a ^ n - 1 : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast hA`.
+
+Establish `h1` using `h C`. Rewrite `h1` using `[inZl_iff, padicValRat.mul hAq hz, padicValRat.of_nat]`. Establish `h2 : (2 : ℚ) ^ finrank ℚ F ≠ 0` using `pow_ne_zero _ two_ne_zero`. Establish `h3 : padicValRat l (z C / 2 ^ finrank ℚ F) = padicValRat l (z C) - (finrank ℚ F : ℤ) * (padicValNat l 2 : ℤ)`. Rewrite using `[padicValRat.div hz h2, padicValRat.pow (q := (2:ℚ))]`.
+
+Establish `: padicValRat l (2 : ℚ) = padicValNat l 2`. Use `padicValRat.of_nat (p := l) (n := 2)` as an intermediate fact. Simplify using `using this`. Rewrite using `[this]`. Rewrite using `[h3]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem cE_le_of_inZl : ∀ {F : Type} [Field F] [NumberField F] (z : ClassGroup (𝓞 F) → ℚ) (l a n : ℕ) [Fact l.Prime], 2 ≤ a → 1 ≤ n →
     (∀ C, InZl l (((a ^ n - 1 : ℕ) : ℚ) * z C)) → cE z l ≤ finrank ℚ F * padicValNat l 2 + padicValNat l (a ^ n - 1) := by
   intro F _ _ z l a n _ ha hn h

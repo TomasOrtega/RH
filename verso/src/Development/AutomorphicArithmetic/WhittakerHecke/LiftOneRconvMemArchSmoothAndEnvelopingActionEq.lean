@@ -6,6 +6,17 @@ open MeasureTheory NumberField IsDedekindDomain
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 
+/- English proof (translation)
+Take `⟨N, φ, ψ, h, e⟩` from `dixmierMalliavin (isExpLieAlgebra K n) ν (fun g => β g) hβ β.hasCompactSupport`. Set `_` to `(isExpLieAlgebra K n).chartedSpace`. Set `a : Fin N → TI K n` to `fun i => ⟨⟨φ i, (h i).1.continuous⟩, (h i).2.1⟩`. Set `b : Fin N → TI K n` to `fun i => ⟨⟨ψ i, (h i).2.2.1.continuous⟩, (h i).2.2.2⟩`. Establish `has : ∀ i, SmoothT (a i)` using `fun i => (h i).1`.
+
+Establish `h0s : SmoothT (0 : TI K n)` using `(isExpLieAlgebra K n).mem_smoothFuns.1 (Submodule.zero_mem _)`. Establish `key : ∀ s : Finset (Fin N), SmoothT (∑ i ∈ s, conv ν (a i) (b i)) ∧ P (∑ i ∈ s, conv ν (a i) (b i)) ∧ ∀ x, (∑ i ∈ s, conv ν (a i) (b i)) x = ∑ i ∈ s, groupConv ν (φ i) (ψ i) x`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨by simpa using h0s, by simpa using h0, fun x => by simp⟩`.
+
+Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Establish `hs` using `(UpperTheory.ConvolutionTheory.Tf.lactConv K n ν (a i) (b i) (has i)).1`. Take `⟨_, -, -, -, -, -, h6, -⟩` from `UpperTheory.ConvolutionTheory.Tf.lactSpec K n _ hs`. Use `⟨(h6 _ ih.1).1, ha _ _ hs ih.1 (hc _ _ (has i)) ih.2.1, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_insert hi, CompactlySupportedContinuousMap.add_apply, ih.2.2, conv_apply]`. Both sides reduce to the same expression. Establish `eβ : β = ∑ i, conv ν (a i) (b i)`. Use extensionality with `x`. Rewrite using `[(key Finset.univ).2.2 x, ← Finset.sum_apply, ← e]`.
+
+Rewrite using `[eβ]`. Conclude with `(key Finset.univ).2.1`.
+-/
 private theorem dm_induction {K : Type} [Field K] [NumberField K] {n : ℕ}
     (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (P : TI K n → Prop) (h0 : P 0)
     (hc : ∀ β₁ β₂ : TI K n, SmoothT β₁ → P (conv ν β₁ β₂))
@@ -36,6 +47,9 @@ private theorem dm_induction {K : Type} [Field K] [NumberField K] {n : ℕ}
   rw [eβ]
   exact (key Finset.univ).2.1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.tensApply K n hn β e).2.2.1 β']`. Simplify using `only [liftOne, Pi.add_apply, rconv]`. Rewrite using `[← integral_add (integrable_rconv _ μ _ φ _) (integrable_rconv _ μ _ φ _)]`. Simplify using `only [CompactlySupportedContinuousMap.add_apply, add_mul]`.
+-/
 private theorem lift_add {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 < n)
     (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (β β' : TI K n) (e : TF K n) (φ : LL μ) :
     liftOne (rconv (rationalGLOne K n) μ (tens (β + β') e) φ) =
@@ -46,6 +60,9 @@ private theorem lift_add {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 
   rw [← integral_add (integrable_rconv _ μ _ φ _) (integrable_rconv _ μ _ φ _)]
   simp only [CompactlySupportedContinuousMap.add_apply, add_mul]
 
+/- English proof (translation)
+Use `lift_add hn μ 0 0 e φ` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+-/
 private theorem lift_zero {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 < n)
     (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (e : TF K n) (φ : LL μ) :
     liftOne (rconv (rationalGLOne K n) μ (tens (0 : TI K n) e) φ) = 0 := by
@@ -53,6 +70,17 @@ private theorem lift_zero {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0
   rw [add_zero] at this
   exact left_eq_add.1 this
 
+/- English proof (translation)
+Introduce `K _ _ n hn μ _ ν _ m _ hC β e hβ φ`. Establish `pack : ∀ (γ : TI K n) (F : archSmooth K n), liftOne (rconv (rationalGLOne K n) μ (tens γ e) φ) = F → (∀ u : UC K n, (uAct u F : AdelicGLn.AdelicGL K n → ℂ) = liftOne (rconv (rationalGLOne K n) μ (tens (lact u γ) e) φ)) → ∃ h : liftOne (rconv (rationalGLOne K n) μ (tens γ e) φ) ∈ …`. Introduce `γ F hF hu`. Use `⟨hF ▸ F.2, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu u]`.
+
+Use `congr 2`. Conclude with `Subtype.ext hF`. Use `dm_induction ν (fun γ => ∃ h : liftOne (rconv (rationalGLOne K n) μ (tens γ e) φ) ∈ archSmooth K n, ∀ u : UC K n, (uAct u ⟨_, h⟩ : AdelicGLn.AdelicGL K n → ℂ) = liftOne (rconv (rationalGLOne K n) μ (tens (lact u γ) e) φ)) ?_ ?_ ?_ β hβ` and prove the remaining obligations. Use `pack 0 0 (lift_zero hn μ e φ) fun u => ?_` and prove the remaining obligations. Establish `h0s : SmoothT (0 : TI K n)` using `(isExpLieAlgebra K n).mem_smoothFuns.1 (Submodule.zero_mem _)`.
+
+Take `⟨_, -, -, -, -, -, h6, -⟩` from `UpperTheory.ConvolutionTheory.Tf.lactSpec K n _ h0s`. Establish `h` using `(h6 0 h0s).2 u`. Rewrite `h` using `[add_zero]`. Rewrite using `[left_eq_add.1 h, lift_zero hn, map_zero, Submodule.coe_zero]`. Introduce `β₁ β₂ h₁`.
+
+Take `⟨h, hu⟩` from `(UpperTheory.ConvolutionTheory.Tf.rconvSlice K n hn μ ν m hC β₁ β₂ e φ h₁).2`. Use `⟨h, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hu u, (UpperTheory.ConvolutionTheory.Tf.lactConv K n ν β₁ β₂ h₁).2.1 u]`. Introduce and unpack `γ γ' hγ hγ' ⟨h, hu⟩ ⟨h', hu'⟩`. Use `pack _ (⟨_, h⟩ + ⟨_, h'⟩) (lift_add hn μ γ γ' e φ) fun u => ?_` and prove the remaining obligations.
+
+Take `⟨_, -, -, -, -, -, h6, -⟩` from `UpperTheory.ConvolutionTheory.Tf.lactSpec K n _ hγ`. Rewrite using `[(h6 γ' hγ').2 u, lift_add hn, map_add, Submodule.coe_add, hu u, hu' u]`.
+-/
 theorem UpperTheory.liftOne_rconv_mem_archSmooth_and_envelopingAction_eq :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure], Compat μ ν m →
           ∀ (β : TI K n) (e : TF K n), SmoothT β → ∀ φ : LL μ,

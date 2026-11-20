@@ -11,5 +11,8 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RatInv.univTorsion_ratInv | exact GlobalTheory.RatInv.univTorsion_ratInv | (intros; apply GlobalTheory.RatInv.univTorsion_ratInv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.universal_torsion_rational_symplectic_invariance : GlobalTheory.Published.BismutKoehlerTorsion → Naturality → ∀ (g : ℕ) (γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g), (∀ i l, ∃ r : ℚ, γ.mat i l = r) → ∀ s ∈ siegel g, actB γ s ∈ siegel g ∧ ∀ (v : symMat g) (T : Ext (1 + 1)), IsUnivTorsion g (actB γ s) (fderiv ℂ (actB γ) s v) T → IsUnivTorsion g s v T := by
   first | exact @GlobalTheory.RatInv.univTorsion_ratInv | exact GlobalTheory.RatInv.univTorsion_ratInv | (intros; apply GlobalTheory.RatInv.univTorsion_ratInv <;> assumption)

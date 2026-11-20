@@ -18,9 +18,15 @@ variable {K : Type} [Field K] {n : ℕ} {s : K →+* K} {J : Matrix (Fin n) (Fin
 
 def ex (Y : Matrix (Fin n) (Fin n) K) : Matrix (Fin n) (Fin n) K := 1 + Y + (2 : K)⁻¹ • (Y * Y)
 
+/- English proof (translation)
+The claim follows from `Matrix.toLin'.injective (LinearMap.ext fun u => by simpa using h u)`.
+-/
 theorem ext_mulVec {M N : Matrix (Fin n) (Fin n) K} (h : ∀ u, M *ᵥ u = N *ᵥ u) : M = N :=
   Matrix.toLin'.injective (LinearMap.ext fun u => by simpa using h u)
 
+/- English proof (translation)
+Introduce `w hw` and use `by have h1 := h w hw have h2 := h' w hw rw [GlobalTheory.CoverRadiiEq.hform_eq_dot] at * rw [mulVec_add, dotProduct_add, h1, h2, add_zero]`.
+-/
 theorem perp_add {u u' : Fin n → K} (h : u ∈ perpSet s J W) (h' : u' ∈ perpSet s J W) :
     u + u' ∈ perpSet s J W := fun w hw => by
   have h1 := h w hw
@@ -28,27 +34,50 @@ theorem perp_add {u u' : Fin n → K} (h : u ∈ perpSet s J W) (h' : u' ∈ per
   rw [GlobalTheory.CoverRadiiEq.hform_eq_dot] at *
   rw [mulVec_add, dotProduct_add, h1, h2, add_zero]
 
+/- English proof (translation)
+Introduce `w hw` and use `by have h1 := h w hw rw [GlobalTheory.CoverRadiiEq.hform_eq_dot] at * rw [mulVec_smul, dotProduct_smul, h1, smul_zero]`.
+-/
 theorem perp_smul (c : K) {u : Fin n → K} (h : u ∈ perpSet s J W) :
     c • u ∈ perpSet s J W := fun w hw => by
   have h1 := h w hw
   rw [GlobalTheory.CoverRadiiEq.hform_eq_dot] at *
   rw [mulVec_smul, dotProduct_smul, h1, smul_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_add (M N : Matrix (Fin n) (Fin n) K) : cT s (M + N) = cT s M + cT s N := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_sub (M N : Matrix (Fin n) (Fin n) K) : cT s (M - N) = cT s M - cT s N := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_smul (c : K) (M : Matrix (Fin n) (Fin n) K) : cT s (c • M) = s c • cT s M := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_zero : cT s (0 : Matrix (Fin n) (Fin n) K) = 0 := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+The claim follows from `eq_neg_of_add_eq_zero_left ((GlobalTheory.CoverRadiiEq.skew_iff s J Y).2 h.1)`.
+-/
 theorem skew_eq {Y : Matrix (Fin n) (Fin n) K} (h : InNil s J W Y) : cT s Y * J = -(J * Y) :=
   eq_neg_of_add_eq_zero_left ((GlobalTheory.CoverRadiiEq.skew_iff s J Y).2 h.1)
 
+/- English proof (translation)
+Use `⟨(GlobalTheory.CoverRadiiEq.skew_iff s J _).1 ?_, fun u => ?_, fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[cT_add, add_mul, skew_eq h, skew_eq h', mul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[add_mulVec]`. Conclude with `perp_add (h.2.1 u) (h'.2.1 u)`.
+
+Rewrite using `[add_mulVec]`. Conclude with `W.add_mem (h.2.2.1 u hu) (h'.2.2.1 u hu)`. Rewrite using `[add_mulVec, h.2.2.2 u hu, h'.2.2.2 u hu, add_zero]`.
+-/
 theorem nil_add {Y Y' : Matrix (Fin n) (Fin n) K} (h : InNil s J W Y) (h' : InNil s J W Y') :
     InNil s J W (Y + Y') := by
   refine ⟨(GlobalTheory.CoverRadiiEq.skew_iff s J _).1 ?_, fun u => ?_, fun u hu => ?_, fun u hu => ?_⟩
@@ -57,6 +86,11 @@ theorem nil_add {Y Y' : Matrix (Fin n) (Fin n) K} (h : InNil s J W Y) (h' : InNi
   · rw [add_mulVec]; exact W.add_mem (h.2.2.1 u hu) (h'.2.2.1 u hu)
   · rw [add_mulVec, h.2.2.2 u hu, h'.2.2.2 u hu, add_zero]
 
+/- English proof (translation)
+Use `⟨(GlobalTheory.CoverRadiiEq.skew_iff s J _).1 ?_, fun u => ?_, fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[cT_smul, hc, smul_mul_assoc, skew_eq h, mul_smul_comm, smul_neg, neg_add_cancel]`. Rewrite using `[smul_mulVec]`. Conclude with `perp_smul c (h.2.1 u)`. Rewrite using `[smul_mulVec]`.
+
+Conclude with `W.smul_mem c (h.2.2.1 u hu)`. Rewrite using `[smul_mulVec, h.2.2.2 u hu, smul_zero]`.
+-/
 theorem nil_smul {c : K} (hc : s c = c) {Y : Matrix (Fin n) (Fin n) K} (h : InNil s J W Y) :
     InNil s J W (c • Y) := by
   refine ⟨(GlobalTheory.CoverRadiiEq.skew_iff s J _).1 ?_, fun u => ?_, fun u hu => ?_, fun u hu => ?_⟩
@@ -65,37 +99,61 @@ theorem nil_smul {c : K} (hc : s c = c) {Y : Matrix (Fin n) (Fin n) K} (h : InNi
   · rw [smul_mulVec]; exact W.smul_mem c (h.2.2.1 u hu)
   · rw [smul_mulVec, h.2.2.2 u hu, smul_zero]
 
+/- English proof (translation)
+Simplify using `using nil_smul (c := -1) (by simp) h`.
+-/
 theorem nil_neg {Y : Matrix (Fin n) (Fin n) K} (h : InNil s J W Y) : InNil s J W (-Y) := by
   simpa using nil_smul (c := -1) (by simp) h
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `nil_add h (nil_neg h')`.
+-/
 theorem nil_sub {Y Y' : Matrix (Fin n) (Fin n) K} (h : InNil s J W Y) (h' : InNil s J W Y') :
     InNil s J W (Y - Y') := by
   rw [sub_eq_add_neg]; exact nil_add h (nil_neg h')
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨nil_add h.1 h'.1, fun u hu => by rw [add_mulVec, h.2 u hu, h'.2 u hu, add_zero]⟩`.
+-/
 theorem cen_add {Y Y' : Matrix (Fin n) (Fin n) K} (h : InCen s J W Y) (h' : InCen s J W Y') :
     InCen s J W (Y + Y') :=
   ⟨nil_add h.1 h'.1, fun u hu => by rw [add_mulVec, h.2 u hu, h'.2 u hu, add_zero]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨nil_smul hc h.1, fun u hu => by rw [smul_mulVec, h.2 u hu, smul_zero]⟩`.
+-/
 theorem cen_smul {c : K} (hc : s c = c) {Y : Matrix (Fin n) (Fin n) K} (h : InCen s J W Y) :
     InCen s J W (c • Y) :=
   ⟨nil_smul hc h.1, fun u hu => by rw [smul_mulVec, h.2 u hu, smul_zero]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨nil_sub h.1 h'.1, fun u hu => by rw [sub_mulVec, h.2 u hu, h'.2 u hu, sub_zero]⟩`.
+-/
 theorem cen_sub {Y Y' : Matrix (Fin n) (Fin n) K} (h : InCen s J W Y) (h' : InCen s J W Y') :
     InCen s J W (Y - Y') :=
   ⟨nil_sub h.1 h'.1, fun u hu => by rw [sub_mulVec, h.2 u hu, h'.2 u hu, sub_zero]⟩
 
+/- English proof (translation)
+The claim follows from `ext_mulVec fun u => by rw [← mulVec_mulVec, ← mulVec_mulVec, zero_mulVec] exact ha.2.2.2 _ (hb.2.2.1 _ (hc.2.1 u))`.
+-/
 theorem isInStabilizerNilradicalLie_triple_mul_eq_zero {a b c : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) (hb : InNil s J W b)
     (hc : InNil s J W c) : a * (b * c) = 0 :=
   ext_mulVec fun u => by
     rw [← mulVec_mulVec, ← mulVec_mulVec, zero_mulVec]
     exact ha.2.2.2 _ (hb.2.2.1 _ (hc.2.1 u))
 
+/- English proof (translation)
+The claim follows from `ext_mulVec fun u => by rw [← mulVec_mulVec, zero_mulVec] exact hZ.2 _ (hY.2.1 u)`.
+-/
 theorem cen_mul_nil {Z Y : Matrix (Fin n) (Fin n) K} (hZ : InCen s J W Z) (hY : InNil s J W Y) :
     Z * Y = 0 :=
   ext_mulVec fun u => by
     rw [← mulVec_mulVec, zero_mulVec]
     exact hZ.2 _ (hY.2.1 u)
 
+/- English proof (translation)
+Establish `h : cT s (Z * Y) * J = J * (Y * Z)`. Rewrite using `[cT_mul, mul_assoc, skew_eq hZ.1, mul_neg, ← mul_assoc, skew_eq hY, neg_mul, neg_neg, mul_assoc]`. Rewrite `h` using `[cen_mul_nil hZ hY, cT_zero, zero_mul]`. Conclude with `hJ.mul_right_eq_zero.1 h.symm`.
+-/
 theorem nil_mul_cen (hJ : IsUnit J) {Z Y : Matrix (Fin n) (Fin n) K} (hY : InNil s J W Y)
     (hZ : InCen s J W Z) : Y * Z = 0 := by
   have h : cT s (Z * Y) * J = J * (Y * Z) := by
@@ -103,6 +161,11 @@ theorem nil_mul_cen (hJ : IsUnit J) {Z Y : Matrix (Fin n) (Fin n) K} (hY : InNil
   rw [cen_mul_nil hZ hY, cT_zero, zero_mul] at h
   exact hJ.mul_right_eq_zero.1 h.symm
 
+/- English proof (translation)
+Establish `h0 : ∀ u ∈ perpSet s J W, (a * b - b * a) *ᵥ u = 0` using `fun u hu => by`. Rewrite using `[sub_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ha.2.2.2 _ (hb.2.2.1 _ hu), hb.2.2.2 _ (ha.2.2.1 _ hu), sub_zero]`. Use `⟨⟨(GlobalTheory.CoverRadiiEq.skew_iff s J _).1 ?_, fun u => ?_, fun u hu => ?_, fun u hu => ?_⟩, h0⟩` and prove the remaining obligations. Rewrite using `[cT_sub, cT_mul, cT_mul, sub_mul, mul_assoc, mul_assoc, skew_eq ha, skew_eq hb, mul_neg, mul_neg, ← mul_assoc, ← mul_assoc, skew_eq ha, skew_eq hb] noncomm_ring`. Rewrite using `[sub_eq_add_neg, add_mulVec, ← neg_mul, ← mulVec_mulVec, ← mulVec_mulVec]`.
+
+Conclude with `perp_add (ha.2.1 _) ((nil_neg hb).2.1 _)`. Rewrite using `[h0 u hu]`. Conclude with `W.zero_mem`. Rewrite using `[sub_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ha.2.2.2 u hu, hb.2.2.2 u hu, mulVec_zero, mulVec_zero, sub_zero]`.
+-/
 theorem cen_comm {a b : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) (hb : InNil s J W b) :
     InCen s J W (a * b - b * a) := by
   have h0 : ∀ u ∈ perpSet s J W, (a * b - b * a) *ᵥ u = 0 := fun u hu => by
@@ -120,8 +183,14 @@ theorem cen_comm {a b : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) (hb : InN
 
 variable [CharZero K]
 
+/- English proof (translation)
+Rewrite using `[map_inv₀, map_ofNat]`.
+-/
 theorem map_half : s (2 : K)⁻¹ = (2 : K)⁻¹ := by rw [map_inv₀, map_ofNat]
 
+/- English proof (translation)
+Establish `h1` using `isInStabilizerNilradicalLie_triple_mul_eq_zero ha ha hb`. Establish `h2` using `isInStabilizerNilradicalLie_triple_mul_eq_zero ha hb hb`. Simplify using `only [ex, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, mul_assoc, h1, h2, mul_zero, smul_zero, add_zero]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ex_mul_ex {a b : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) (hb : InNil s J W b) :
     ex a * ex b = 1 + a + b + (2 : K)⁻¹ • (a * a) + (2 : K)⁻¹ • (b * b) + a * b := by
   have h1 := isInStabilizerNilradicalLie_triple_mul_eq_zero ha ha hb
@@ -130,25 +199,40 @@ theorem ex_mul_ex {a b : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) (hb : In
     mul_zero, smul_zero, add_zero]
   abel
 
+/- English proof (translation)
+Rewrite using `[ex_mul_ex ha (nil_neg ha)]`. Simplify using `only [neg_mul, mul_neg, neg_neg]`. Use `module`.
+-/
 theorem ex_mul_ex_neg {a : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) : ex a * ex (-a) = 1 := by
   rw [ex_mul_ex ha (nil_neg ha)]
   simp only [neg_mul, mul_neg, neg_neg]
   module
 
+/- English proof (translation)
+Simplify using `using ex_mul_ex_neg (nil_neg ha)`.
+-/
 theorem ex_neg_mul_ex {a : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) : ex (-a) * ex a = 1 := by
   simpa using ex_mul_ex_neg (nil_neg ha)
 
+/- English proof (translation)
+Simplify using `only [ex, add_mul, mul_add, cen_mul_nil hZ hY, nil_mul_cen hJ hY hZ, cen_mul_nil hZ hZ.1, add_zero]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ex_add_cen (hJ : IsUnit J) {Y Z : Matrix (Fin n) (Fin n) K} (hY : InNil s J W Y)
     (hZ : InCen s J W Z) : ex (Y + Z) = ex Y + Z := by
   simp only [ex, add_mul, mul_add, cen_mul_nil hZ hY, nil_mul_cen hJ hY hZ, cen_mul_nil hZ hZ.1, add_zero]
   abel
 
+/- English proof (translation)
+Rewrite using `[ex_add_cen hJ hY hZ, ex_mul_ex hY hZ.1, nil_mul_cen hJ hY hZ, cen_mul_nil hZ hZ.1, ex]`. Simplify using `only [smul_zero, add_zero]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ex_mul_ex_cen (hJ : IsUnit J) {Y Z : Matrix (Fin n) (Fin n) K} (hY : InNil s J W Y)
     (hZ : InCen s J W Z) : ex Y * ex Z = ex (Y + Z) := by
   rw [ex_add_cen hJ hY hZ, ex_mul_ex hY hZ.1, nil_mul_cen hJ hY hZ, cen_mul_nil hZ hZ.1, ex]
   simp only [smul_zero, add_zero]
   abel
 
+/- English proof (translation)
+Rewrite using `[ex_add_cen hJ (nil_add h₀ hA) (cen_sub (cen_add h₁ h') (cen_smul map_half (cen_comm hA h₀))), mul_assoc, ex_mul_ex_cen hJ hA h', ex_mul_ex (nil_add h₀ h₁.1) (nil_add hA h'.1), ex]`. Simplify using `only [add_mul, mul_add, cen_mul_nil h₁ h₀, cen_mul_nil h₁ hA, cen_mul_nil h₁ h₁.1, cen_mul_nil h₁ h'.1, cen_mul_nil h' hA, cen_mul_nil h' h'.1, nil_mul_cen hJ h₀ h₁, nil_mul_cen hJ h₀ h', nil_mul_cen hJ hA h', add_zero]`. Use `module`.
+-/
 theorem ex_factor (hJ : IsUnit J) {Y₀ A Z₁ Z' : Matrix (Fin n) (Fin n) K} (h₀ : InNil s J W Y₀)
     (hA : InNil s J W A) (h₁ : InCen s J W Z₁) (h' : InCen s J W Z') :
     ex (Y₀ + A + (Z₁ + Z' - (2 : K)⁻¹ • (A * Y₀ - Y₀ * A))) = ex (Y₀ + Z₁) * ex A * ex Z' := by
@@ -159,6 +243,9 @@ theorem ex_factor (hJ : IsUnit J) {Y₀ A Z₁ Z' : Matrix (Fin n) (Fin n) K} (h
     nil_mul_cen hJ h₀ h', nil_mul_cen hJ hA h', add_zero]
   module
 
+/- English proof (translation)
+Establish `h : cT s (ex a) * J = J * ex (-a)`. Rewrite using `[ex, cT_add, cT_add, cT_one, cT_smul, map_half, cT_mul, add_mul, add_mul, smul_mul_assoc, mul_assoc, skew_eq ha, mul_neg, ← mul_assoc, skew_eq ha, ex]`. Simplify using `only [mul_add, neg_mul, mul_neg, neg_neg, one_mul, mul_one, mul_smul_comm, mul_assoc]`. Rewrite using `[h, mul_assoc, ex_neg_mul_ex ha, mul_one]`.
+-/
 theorem ex_unitary {a : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) : cT s (ex a) * J * ex a = J := by
   have h : cT s (ex a) * J = J * ex (-a) := by
     rw [ex, cT_add, cT_add, cT_one, cT_smul, map_half, cT_mul, add_mul, add_mul, smul_mul_assoc, mul_assoc,
@@ -166,6 +253,13 @@ theorem ex_unitary {a : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) : cT s (e
     simp only [mul_add, neg_mul, mul_neg, neg_neg, one_mul, mul_one, mul_smul_comm, mul_assoc]
   rw [h, mul_assoc, ex_neg_mul_ex ha, mul_one]
 
+/- English proof (translation)
+Establish `h : ∀ y, (ex a - 1) *ᵥ y = a *ᵥ y + (2 : K)⁻¹ • (a *ᵥ (a *ᵥ y))` using `fun y => by`. Rewrite using `[mulVec_mulVec, ← smul_mulVec, ← add_mulVec, ex]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Use `⟨fun x hx => ?_, fun y hy => ?_, fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h, ha.2.2.2 x hx]`. Simplify using the standard rewrite rules. Rewrite using `[h, ha.2.2.2 _ (ha.2.2.1 y hy)]`. Simplify using `using ha.2.2.1 y hy`. Rewrite using `[h]`.
+
+Conclude with `perp_add (ha.2.1 _) (perp_smul _ (ha.2.1 _))`.
+-/
 theorem ex_unip {a : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) :
     (∀ x ∈ W, (ex a - 1) *ᵥ x = 0) ∧ (∀ y ∈ perpSet s J W, (ex a - 1) *ᵥ y ∈ W) ∧
       ∀ y, (ex a - 1) *ᵥ y ∈ perpSet s J W := by
@@ -176,6 +270,19 @@ theorem ex_unip {a : Matrix (Fin n) (Fin n) K} (ha : InNil s J W a) :
   · rw [h, ha.2.2.2 _ (ha.2.2.1 y hy)]; simpa using ha.2.2.1 y hy
   · rw [h]; exact perp_add (ha.2.1 _) (perp_smul _ (ha.2.1 _))
 
+/- English proof (translation)
+Take `⟨N, rfl⟩ : ∃ N, g = 1 + N` from `⟨g - 1, by abel⟩`. Rewrite `h` using `[add_sub_cancel_left]`. Establish `h3 : N * (N * N) = 0` using `ext_mulVec fun u => by`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, zero_mulVec]`. Conclude with `h.1 _ (h.2.1 _ (h.2.2 u))`.
+
+Establish `hv : ∀ y, (N - (2 : K)⁻¹ • (N * N)) *ᵥ y = N *ᵥ y + (-(2 : K)⁻¹) • (N *ᵥ (N *ᵥ y))` using `fun y => by`. Rewrite using `[mulVec_mulVec, ← smul_mulVec, ← add_mulVec, neg_smul, sub_eq_add_neg]`. Establish `hinv : (1 + N) * (1 - N + N * N) = 1`. Simplify using `only [add_mul, mul_add, mul_sub, one_mul, mul_one, h3]`. Normalize the expressions using the abelian group laws.
+
+Establish `hN : cT s N * J = J * (N * N - N)`. Establish `h1 : cT s (1 + N) * J = J * (1 - N + N * N)` using `by conv_rhs => rw [← hU]`. Rewrite using `[mul_assoc, hinv, mul_one]`. Rewrite `h1` using `[cT_add, cT_one, add_mul, one_mul]`. Rewrite using `[eq_sub_of_add_eq' h1]`.
+
+Use `noncomm_ring`. Use `⟨N - (2 : K)⁻¹ • (N * N), ⟨(GlobalTheory.CoverRadiiEq.skew_iff s J _).1 ?_, fun u => ?_, fun u hu => ?_, fun u hu => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[cT_sub, cT_smul, map_half, cT_mul, sub_mul, smul_mul_assoc, mul_assoc, hN, ← mul_assoc, hN]`. Simplify using `only [mul_sub, sub_mul, mul_assoc, h3, mul_zero, mul_smul_comm]`. Use `module`.
+
+Rewrite using `[hv]`. Conclude with `perp_add (h.2.2 _) (perp_smul _ (h.2.2 _))`. Rewrite using `[hv, h.1 _ (h.2.1 u hu)]`. Simplify using `using h.2.1 u hu`. Rewrite using `[hv, h.1 u hu]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [ex, mul_sub, sub_mul, mul_assoc, h3, mul_zero, mul_smul_comm, smul_mul_assoc] module`.
+-/
 theorem exists_log {g : Matrix (Fin n) (Fin n) K} (hU : cT s g * J * g = J)
     (h : (∀ x ∈ W, (g - 1) *ᵥ x = 0) ∧ (∀ y ∈ perpSet s J W, (g - 1) *ᵥ y ∈ W) ∧
       ∀ y, (g - 1) *ᵥ y ∈ perpSet s J W) : ∃ Y, InNil s J W Y ∧ ex Y = g := by
@@ -211,6 +318,11 @@ section Complex
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h3 : Y ^ 3 = 0` using `by rw [pow_succ', pow_two, h]`. Rewrite using `[NormedSpace.exp_eq_tsum (𝕂 := ℂ)]`. Simplify using `only`. Rewrite using `[tsum_eq_sum (s := range 3)]`. Simplify using `[Finset.sum_range_succ, ex, pow_two, Nat.factorial]`.
+
+Introduce `k hk`. Establish `: 3 ≤ k` using `by simpa using hk`. Rewrite using `[pow_eq_zero_of_le this h3, smul_zero]`.
+-/
 theorem exp_eq_ex {Y : Matrix (Fin n) (Fin n) ℂ} (h : Y * (Y * Y) = 0) : NormedSpace.exp Y = ex Y := by
   have h3 : Y ^ 3 = 0 := by rw [pow_succ', pow_two, h]
   rw [NormedSpace.exp_eq_tsum (𝕂 := ℂ)]
@@ -221,6 +333,9 @@ theorem exp_eq_ex {Y : Matrix (Fin n) (Fin n) ℂ} (h : Y * (Y * Y) = 0) : Norme
     have : 3 ≤ k := by simpa using hk
     rw [pow_eq_zero_of_le this h3, smul_zero]
 
+/- English proof (translation)
+Establish `: Gi * Y * G * (Gi * Y * G) = Gi * (Y * Y) * G`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ex, this, mul_add, add_mul, mul_one, h', mul_smul_comm, smul_mul_assoc]`.
+-/
 theorem ex_conj {G Gi : Matrix (Fin n) (Fin n) ℂ} (h : G * Gi = 1) (h' : Gi * G = 1)
     (Y : Matrix (Fin n) (Fin n) ℂ) : ex (Gi * Y * G) = Gi * ex Y * G := by
   have : Gi * Y * G * (Gi * Y * G) = Gi * (Y * Y) * G := by
@@ -228,6 +343,9 @@ theorem ex_conj {G Gi : Matrix (Fin n) (Fin n) ℂ} (h : G * Gi = 1) (h' : Gi * 
       _ = _ := by rw [h]; simp only [mul_assoc, one_mul]
   simp only [ex, this, mul_add, add_mul, mul_one, h', mul_smul_comm, smul_mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[exp_eq_ex, ex_conj h h']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exp_conj {G Gi : Matrix (Fin n) (Fin n) ℂ} (h : G * Gi = 1) (h' : Gi * G = 1)
     {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Y * (Y * Y) = 0) :
     NormedSpace.exp (Gi * Y * G) = Gi * ex Y * G := by
@@ -236,9 +354,15 @@ theorem exp_conj {G Gi : Matrix (Fin n) (Fin n) ℂ} (h : G * Gi = 1) (h' : Gi *
     _ = Gi * (Y * (Y * Y)) * G := by rw [h]; simp only [mul_assoc, one_mul]
     _ = 0 := by rw [hY, mul_zero, zero_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_conj (M : Matrix (Fin n) (Fin n) ℂ) : cT (starRingEnd ℂ) M = Mᴴ := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Simplify using `[hs, Finset.mul_sum, mul_pow]`.
+-/
 theorem hs_smul (c : ℂ) (M : Matrix (Fin n) (Fin n) ℂ) : hs (c • M) = ‖c‖ ^ 2 * hs M := by
   simp [hs, Finset.mul_sum, mul_pow]
 
@@ -248,6 +372,9 @@ section Point
 
 variable (I : AutInst)
 
+/- English proof (translation)
+Unfold `normAt`. Simplify using `only [mul_smul_comm, smul_mul_assoc, hs_smul, Complex.norm_real, Real.norm_eq_abs, sq_abs, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (sq_nonneg c), Real.sqrt_sq hc]`.
+-/
 theorem normAt_smul (x : I.GA) (c : ℝ) (hc : 0 ≤ c) (D : InfinitePlace I.F → Matrix (Fin I.n) (Fin I.n) ℂ) :
     normAt I x (fun v => (c : ℂ) • D v) = c * normAt I x D := by
   unfold normAt
@@ -255,26 +382,47 @@ theorem normAt_smul (x : I.GA) (c : ℝ) (hc : 0 ≤ c) (D : InfinitePlace I.F �
     ← Finset.mul_sum]
   rw [Real.sqrt_mul (sq_nonneg c), Real.sqrt_sq hc]
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))`.
+-/
 theorem P_mul_inv (v : InfinitePlace I.F) : I.P v * (I.P v)⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))
 
+/- English proof (translation)
+The claim follows from `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))`.
+-/
 theorem inv_mul_P (v : InfinitePlace I.F) : (I.P v)⁻¹ * I.P v = 1 :=
   Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))
 
+/- English proof (translation)
+Simplify using `[uMat]`.
+-/
 theorem uMat_mul_inv {n : ℕ} {ε : Fin n → Bool} (u : Formalism.REAL.UJ ε) : uMat u * uMat u⁻¹ = 1 := by
   simp [uMat]
 
+/- English proof (translation)
+Simplify using `[uMat]`.
+-/
 theorem uMat_inv_mul {n : ℕ} {ε : Fin n → Bool} (u : Formalism.REAL.UJ ε) : uMat u⁻¹ * uMat u = 1 := by
   simp [uMat]
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, ← mul_assoc (uMat (x.1 v)), uMat_mul_inv, one_mul, P_mul_inv]`.
+-/
 theorem frame_mul (x : I.GA) (v : InfinitePlace I.F) :
     I.P v * uMat (x.1 v) * (uMat (x.1 v)⁻¹ * (I.P v)⁻¹) = 1 := by
   rw [mul_assoc, ← mul_assoc (uMat (x.1 v)), uMat_mul_inv, one_mul, P_mul_inv]
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, ← mul_assoc (I.P v)⁻¹, inv_mul_P, one_mul, uMat_inv_mul]`.
+-/
 theorem mul_frame (x : I.GA) (v : InfinitePlace I.F) :
     uMat (x.1 v)⁻¹ * (I.P v)⁻¹ * (I.P v * uMat (x.1 v)) = 1 := by
   rw [mul_assoc, ← mul_assoc (I.P v)⁻¹, inv_mul_P, one_mul, uMat_inv_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Use `(I.φ v).map_det I.J` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← this]`. Conclude with `(map_ne_zero _).2 I.J_det`.
+-/
 theorem isUnit_Jv (v : InfinitePlace I.F) : IsUnit (I.J.map (I.φ v)) := by
   rw [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
   have := (I.φ v).map_det I.J
@@ -282,6 +430,15 @@ theorem isUnit_Jv (v : InfinitePlace I.F) : IsUnit (I.J.map (I.φ v)) := by
   rw [← this]
   exact (map_ne_zero _).2 I.J_det
 
+/- English proof (translation)
+Establish `hx : (uMat (x.1 v))ᴴ * Jm (I.ε v) * uMat (x.1 v) = Jm (I.ε v)` using `(x.1 v).2`. Establish `h0 : (I.P v * uMat (x.1 v))ᴴ * I.J.map (I.φ v) * (I.P v * uMat (x.1 v)) = Jm (I.ε v)`. Rewrite using `[← hx, ← I.P_spec v, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `h1` using `frame_mul I x v`.
+
+Establish `h2` using `skew_eq hA`. Rewrite `h2` using `[cT_conj]`. Unfold `inG`. Rewrite using `[← h0]`. Generalize the expression as in `I.P v * uMat (x.1 v) = G at *`.
+
+Generalize the expression as in `uMat (x.1 v)⁻¹ * (I.P v)⁻¹ = Gi at *`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, mul_assoc]`. Use `_ = Gᴴ * (Aᴴ * I.J.map (I.φ v)) * G + Gᴴ * (I.J.map (I.φ v) * A) * G := by`. Rewrite using `[h1]`.
+
+Simplify using `only [conjTranspose_one, mul_one, mul_assoc]`. Use `_ = 0 := by rw [h2]; simp`.
+-/
 theorem inG_frame (x : I.GA) (v : InfinitePlace I.F) {W : Submodule ℂ (Fin I.n → ℂ)}
     {A : Matrix (Fin I.n) (Fin I.n) ℂ} (hA : InNil (starRingEnd ℂ) (I.J.map (I.φ v)) W A) :
     inG (I.ε v) (uMat (x.1 v)⁻¹ * (I.P v)⁻¹ * A * (I.P v * uMat (x.1 v))) := by

@@ -9,6 +9,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 
 namespace GlobalTheory.OrdLoc.NilpotentTwist
 
+/- English proof (translation)
+Establish `hI : (Ideal.span {c}).comap (algebraMap ℤ_[l] O) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem hc (Ideal.mem_span_singleton_self c) (Algebra.IsIntegral.isIntegral c)`. Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Rewrite `hn` using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Take `⟨d, hd⟩` from `hn`. Establish `hq : algebraMap ℤ_[l] ℚ_[l] n ≠ 0` using `by first`.
+
+Consider the case `exact (map_ne_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).mpr hn0`. Consider the case `exact (map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective ℤ_[l] ℚ_[l])).mpr hn0`. Establish `hu : IsUnit (algebraMap ℤ_[l] C n)`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] C]`. Conclude with `(isUnit_iff_ne_zero.mpr hq).map (algebraMap ℚ_[l] C)`.
+
+Rewrite `hu` using `[IsScalarTower.algebraMap_apply ℤ_[l] O C, hd, map_mul]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+-/
 theorem isUnit_algebraMap_of_ne_zero {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O]
     [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (C : Type) [CommRing C] [Algebra ℚ_[l] C] [Algebra O C]
     [Algebra ℤ_[l] C] [IsScalarTower ℤ_[l] O C] [IsScalarTower ℤ_[l] ℚ_[l] C] {c : O} (hc : c ≠ 0) :
@@ -28,17 +35,26 @@ theorem isUnit_algebraMap_of_ne_zero {l : ℕ} [Fact l.Prime] {O : Type} [CommRi
   rw [IsScalarTower.algebraMap_apply ℤ_[l] O C, hd, map_mul] at hu
   exact isUnit_of_mul_isUnit_left hu
 
+/- English proof (translation)
+Use `first`. Consider the case `exact hn.isUnit_add_left_of_commute ha (Commute.all _ _)`. Consider the case `exact IsNilpotent.isUnit_add_left_of_commute hn ha (Commute.all _ _)`.
+-/
 theorem isUnit_add_nil {C : Type} [CommRing C] {a n : C} (ha : IsUnit a) (hn : IsNilpotent n) : IsUnit (a + n) := by
   first
     | exact hn.isUnit_add_left_of_commute ha (Commute.all _ _)
     | exact IsNilpotent.isUnit_add_left_of_commute hn ha (Commute.all _ _)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (Commute.all _ _).isNilpotent_mul_left ht`. Consider the case `exact (Commute.all _ _).isNilpotent_mul_right ht`. Consider the case `exact ht.mul_right (Commute.all _ _)`.
+-/
 theorem nil_mul {C : Type} [CommRing C] {t : C} (ht : IsNilpotent t) (z : C) : IsNilpotent (t * z) := by
   first
     | exact (Commute.all _ _).isNilpotent_mul_left ht
     | exact (Commute.all _ _).isNilpotent_mul_right ht
     | exact ht.mul_right (Commute.all _ _)
 
+/- English proof (translation)
+Establish `h` using `y.mul_inv`. Rewrite `h`, the goal using `[hy]`. Take the linear combination `(-(L * K0 * K1 * (a * (1 + t * w) - ε))) * h`.
+-/
 theorem prod_eq {C : Type} [CommRing C] (L K0 K1 ε t w a : C) (y : Cˣ) (hy : (y : C) = a * (1 + t * w)) :
     L * (K0 * ((y : C) - ε)) * (K1 * (1 - ε * ((y⁻¹ : Cˣ) : C))) =
       (L * K0 * K1 * ((y⁻¹ : Cˣ) : C)) * ((a - ε) + t * (a * w)) ^ 2 := by
@@ -50,6 +66,27 @@ end GlobalTheory.OrdLoc.NilpotentTwist
 
 open GlobalTheory.OrdLoc.NilpotentTwist in
 
+/- English proof (translation)
+Take `⟨-, σ₀, m, hF, hm, hI⟩` from `GlobalTheory.T.chosenFrobenius_isFrobenius D`. Take `⟨-, -, -, -, hs0⟩` from `GlobalTheory.T.galoisSubgroupL_basic_properties D`. Take `⟨u, hcont, huI, hunil, v, hv⟩` from `GlobalTheory.unr_unip_char_frob t ht σ₀ hF`. Use `⟨u, hcont, huI, hunil, ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hv m`.
+
+Take `⟨-, hcc⟩` from `GlobalTheory.T.isUnit_characterDiff_at_chosenInertia D C`. Establish `huσ : u (fr D) = u (σ₀ ^ m)`. Combine the equalities or inequalities in the displayed calculation. Establish `hmat : ∀ g, (r0 D.η ((Units.map (algebraMap O C : O →* C)).comp D.Ψ * u) g).mat = Matrix.diagonal (fun i => ((((Units.map (algebraMap O C : O →* C)).comp D.Ψ g * u g) ^ wt1 i : Cˣ) : C))` using `fun g => rfl`. Establish `hdiag : (r0 D.η ((Units.map (algebraMap O C : O →* C)).comp D.Ψ * u) (s0 D)).mat = Matrix.diagonal (fun a => algebraMap O C (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ a (s0 D)))`.
+
+Rewrite using `[hmat, huI _ hs0.2.1, mul_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[MonoidHom.comp_apply, ← map_zpow, Units.coe_map]`. Both sides reduce to the same expression.
+
+Establish `h0` using `GlobalTheory.T.ordinary_derivative_entry_formula D _ hdiag 0`. Establish `h1` using `GlobalTheory.T.ordinary_derivative_entry_formula D _ hdiag 1`. Rewrite `h0`, `h1` using `[hmat, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq]`. Establish `e01 : (0 : Fin 3) + 1 = 1` using `rfl`. Establish `e12 : (1 : Fin 3) + 1 = 2` using `rfl`.
+
+Establish `w0 : wt1 (0 : Fin 3) = 1` using `rfl`. Establish `w1 : wt1 (1 : Fin 3) = 0` using `rfl`. Establish `w2 : wt1 (2 : Fin 3) = -1` using `rfl`. Rewrite `h0` using `[e01, w0, w1, zpow_one, zpow_zero, Units.val_one, mul_one]`. Rewrite `h1` using `[e12, w1, w2, zpow_zero, zpow_neg_one, Units.val_one]`.
+
+Establish `hyv : (((Units.map (algebraMap O C : O →* C)).comp D.Ψ (fr D) * u (fr D) : Cˣ) : C) = algebraMap O C (D.Ψ (fr D) : O) * (1 + t * ((m : C) * v + t * b))`. Rewrite using `[Units.val_mul, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, huσ, ← hb]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl : IsUnit (l : C)`. Establish `: IsUnit ((l : ℚ_[l]))` using `isUnit_iff_ne_zero.mpr (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`.
+
+Simplify using `using this.map (algebraMap ℚ_[l] C)`. Establish `hmu : IsUnit (m : C)`. Establish `: IsUnit ((m : ℚ_[l]))` using `isUnit_iff_ne_zero.mpr (by exact_mod_cast (show m ≠ 0 by omega))`. Simplify using `using this.map (algebraMap ℚ_[l] C)`. Establish `hk0 : IsUnit (algebraMap O C (cc D 0 * cc D 1))` using `by rw [map_mul]; exact (hcc 0).mul (hcc 1)`.
+
+Establish `hk1 : IsUnit (algebraMap O C (cc D 1 * cc D 2))` using `by rw [map_mul]; exact (hcc 1).mul (hcc 2)`. Establish `hw : IsUnit ((m : C) * v + t * b)` using `isUnit_add_nil (hmu.mul (Units.isUnit v)) (nil_mul ht b)`. Establish `ha : IsUnit (algebraMap O C (D.Ψ (fr D) : O))` using `(Units.isUnit (D.Ψ (fr D))).map (algebraMap O C)`. Unfold `GlobalTheory.OrdLoc.del`. Rewrite using `[h0, h1, prod_eq _ _ _ _ _ _ _ _ hyv, ← map_sub]`.
+
+Establish `hQ : IsUnit ((l : C) * algebraMap O C (cc D 0 * cc D 1) * algebraMap O C (cc D 1 * cc D 2) * ((((Units.map (algebraMap O C : O →* C)).comp D.Ψ (fr D) * u (fr D))⁻¹ : Cˣ) : C))` using `((hl.mul hk0).mul hk1).mul (Units.isUnit _)`. Distinguish the cases in `hc : (D.Ψ (fr D) : O) - ((cycA l l O (fr D) : Oˣ) : O) = 0`. Rewrite using `[hc, map_zero, zero_add]`. Use `⟨2, (hQ.mul ((ha.mul hw).pow 2)).unit, le_rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hn : IsUnit (algebraMap O C ((D.Ψ (fr D) : O) - ((cycA l l O (fr D) : Oˣ) : O)) + t * (algebraMap O C (D.Ψ (fr D) : O) * ((m : C) * v + t * b)))` using `isUnit_add_nil (isUnit_algebraMap_of_ne_zero (l := l) C hc) (nil_mul ht _)`. Use `⟨0, (hQ.mul (hn.pow 2)).unit, by norm_num, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, pow_zero, one_mul]`.
+-/
 theorem GlobalTheory.OrdLoc.del_unr_twist {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]
     [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (E : Type) [Field E] [Algebra ℚ_[l] E]

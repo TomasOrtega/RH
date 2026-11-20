@@ -9,6 +9,35 @@ namespace Formalism.MainNotions.UnusedSlot80.ToolsR
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc PowerSeries
 
+/- English proof (translation)
+Use `set I : Ideal A := Ideal.span {p} with hIdef`. Use `set F : PowerSeries A := g * X ^ N + C p * h with hF`. Establish `hI : I ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `hpu`.
+
+Establish `: Nontrivial (A ⧸ I)` using `Ideal.Quotient.nontrivial_iff.mpr hI`. Establish `hAnt : Nontrivial A`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hpu (isUnit_of_subsingleton p)`.
+
+Establish `hpI : Ideal.Quotient.mk I p = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self p)`. Establish `hJ : ∀ x ∈ I, ∀ y : A, IsUnit (x * y + 1)` using `fun x hx y => Ideal.mem_jacobson_bot.mp (IsAdicComplete.le_jacobson_bot I hx) y`. Establish `hmap : F.map (Ideal.Quotient.mk I) = g.map (Ideal.Quotient.mk I) * X ^ N`. Simplify using `[hF, map_C, hpI]`. Establish `hg0 : Ideal.Quotient.mk I (constantCoeff g) ≠ 0` using `(hg.map _).ne_zero`.
+
+Establish `hord : (F.map (Ideal.Quotient.mk I)).order.toNat = N`. Rewrite using `[hmap]`. Establish `hoN : (g.map (Ideal.Quotient.mk I) * X ^ N).order = (N : ℕ∞)`. Rewrite using `[order_eq_nat]`. Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coeff_mul_X_pow', if_pos le_rfl, Nat.sub_self, coeff_map, coeff_zero_eq_constantCoeff]`. Conclude with `hg0`. Rewrite using `[coeff_mul_X_pow', if_neg (by omega)]`. Rewrite using `[hoN]`. Both sides reduce to the same expression.
+
+Establish `hdiv : F.IsWeierstrassDivisorAt I`. Unfold `IsWeierstrassDivisorAt`. Rewrite using `[hord]`. Establish `hc : coeff N F = constantCoeff g * (p * (coeff N h * ↑hg.unit⁻¹) + 1)`. Establish `e : constantCoeff g * ↑hg.unit⁻¹ = 1` using `hg.mul_val_inv`.
+
+Rewrite using `[hF, map_add, coeff_mul_X_pow', if_pos le_rfl, Nat.sub_self, coeff_C_mul, coeff_zero_eq_constantCoeff]`. Take the linear combination `(-(p * coeff N h)) * e`. Rewrite using `[hc]`. Conclude with `hg.mul (hJ p (Ideal.mem_span_singleton_self p) _)`. Establish `HD` using `hdiv.isWeierstrassDivisionAt_div_mod (f := (X : PowerSeries A) ^ N)`.
+
+Use `set q := hdiv.div ((X : PowerSeries A) ^ N)`. Use `set r := hdiv.mod ((X : PowerSeries A) ^ N)`. Establish `hdeg : r.degree < (N : WithBot ℕ)`. Use `HD.degree_lt` as an intermediate fact. Rewrite `this` using `[hord]`.
+
+Conclude with `this`. Establish `heq : (X : PowerSeries A) ^ N = F * q + (r : PowerSeries A)` using `HD.eq_mul_add`. Establish `hq : IsUnit q`. Establish `h1` using `congrArg (fun x => coeff N (x.map (Ideal.Quotient.mk I))) heq`. Simplify using `only [map_add, map_mul, map_pow, map_X, coeff_X_pow_self] at h1`.
+
+Rewrite `h1` using `[hmap, ← Polynomial.polynomial_map_coe, Polynomial.coeff_coe, Polynomial.coeff_map, Polynomial.coeff_eq_zero_of_degree_lt hdeg, map_zero, add_zero, mul_assoc, mul_comm (X ^ N), ← mul_assoc, coeff_mul_X_pow', if_pos le_rfl, Nat.sub_self, ← map_mul, coeff_map, coeff_zero_eq_constan …`. Establish `h1' : Ideal.Quotient.mk I (constantCoeff g * constantCoeff q) = 1`. Rewrite using `[← map_mul constantCoeff]`. Conclude with `h1.symm`. Establish `h2 : constantCoeff g * constantCoeff q - 1 ∈ I`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, h1', map_one, sub_self]`. Establish `h3` using `hJ _ h2 1`. Rewrite `h3` using `[mul_one, sub_add_cancel]`. Rewrite using `[isUnit_iff_constantCoeff]`. Conclude with `isUnit_of_mul_isUnit_right h3`.
+
+Use `⟨Polynomial.X ^ N - r, ↑hq.unit⁻¹, Units.isUnit _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Polynomial.monic_X_pow N).sub_of_left (by rwa [Polynomial.degree_X_pow])`. Establish `hdN : (Polynomial.X ^ N - r).degree = (N : WithBot ℕ)`. Rewrite using `[Polynomial.degree_sub_eq_left_of_degree_lt (by rwa [Polynomial.degree_X_pow]), Polynomial.degree_X_pow]`. Conclude with `Polynomial.natDegree_eq_of_degree_eq_some hdN`.
+
+Introduce `k hk`. Use `HD.coeff_f_sub_r_mem (i := k) (by rw [hord]; exact hk)` as an intermediate fact. Rewrite `this` using `[map_sub, coeff_X_pow, if_neg (by omega), zero_sub, Polynomial.coeff_coe]`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_X_pow, if_neg (by omega), zero_sub]`. Conclude with `Ideal.mem_span_singleton.mp this`.
+
+Rewrite using `[Polynomial.coe_sub, Polynomial.coe_pow, Polynomial.coe_X, heq, add_sub_cancel_right, mul_assoc, IsUnit.mul_val_inv, mul_one]`.
+-/
 theorem weierP {A : Type} [CommRing A] (p : A) [IsAdicComplete (Ideal.span {p}) A]
     (hpu : ¬ IsUnit p) (N : ℕ) (g h : PowerSeries A) (hg : IsUnit (constantCoeff g)) :
     ∃ (P : Polynomial A) (u : PowerSeries A), IsUnit u ∧ P.Monic ∧ P.natDegree = N ∧
@@ -104,23 +133,38 @@ open Formalism.MainNotions.WachCoordinates
 abbrev RingP (W : LocWach PD LL O v n) : Prop :=
   Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀ (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, qP, LocWach.π₀]`.
+-/
 theorem eat_qP :
     Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ : ZMod n => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ = qP W := by
   funext i
   simp [Formalism.MainNotions.DeltaInvariantLattices.Eat, qP, LocWach.π₀]
 
+/- English proof (translation)
+The claim follows from `PD.hp.two_le`.
+-/
 theorem two_le : 2 ≤ PD.p := PD.hp.two_le
 
+/- English proof (translation)
+Unfold `pS qP`. Rewrite using `[map_add, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pS_sub (s : ℕ) : pS W s - ((PD.p : ℕ) : LetA O n) = (W.φA ^ s) W.π₀ := by
   unfold pS qP
   rw [map_add, map_natCast]
   ring
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hR.2.2.2.2.2.1`. Conclude with `⟨w, w.isUnit, by rw [hw, eat_qP]⟩`.
+-/
 theorem tools1 (hR : RingP W) :
     ∃ u : LetA O n, IsUnit u ∧ W.φA W.π₀ = u * W.π₀ * qP W ^ (PD.p - 1) := by
   obtain ⟨w, hw⟩ := hR.2.2.2.2.2.1
   exact ⟨w, w.isUnit, by rw [hw, eat_qP]⟩
 
+/- English proof (translation)
+The claim follows from `| 0 => ⟨1, by simp⟩ | s + 1 => by obtain ⟨a, ha⟩ := φpow_π₀ hR s obtain ⟨w, hw⟩ := hR.2.2.2.2.2.1 rw [eat_qP] at hw exact ⟨(w : LetA O n) * qP W ^ (PD.p - 1) * W.φA a, by rw [pow_succ', AlgHom.mul_apply, ha, map_mul, hw]; ring⟩`.
+-/
 theorem φpow_π₀ (hR : RingP W) : ∀ s : ℕ, ∃ a, (W.φA ^ s) W.π₀ = W.π₀ * a
   | 0 => ⟨1, by simp⟩
   | s + 1 => by
@@ -130,6 +174,11 @@ theorem φpow_π₀ (hR : RingP W) : ∀ s : ℕ, ∃ a, (W.φA ^ s) W.π₀ = W
     exact ⟨(w : LetA O n) * qP W ^ (PD.p - 1) * W.φA a, by
       rw [pow_succ', AlgHom.mul_apply, ha, map_mul, hw]; ring⟩
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, s = t + 1` from `⟨s - 1, by omega⟩`. Take `⟨a, ha⟩` from `φpow_π₀ hR t`. Take `⟨w, hw⟩` from `hR.2.2.2.2.2.1`. Rewrite `hw` using `[eat_qP]`. Establish `e : PD.p - 1 = (PD.p - 2) + 1` using `by have := two_le (PD := PD); omega`.
+
+Conclude with `⟨(w : LetA O n) * W.π₀ * qP W ^ (PD.p - 2) * W.φA a, by`. Rewrite using `[pow_succ', AlgHom.mul_apply, ha, map_mul, hw, e, pow_succ]`. Use the proof step `ring⟩`.
+-/
 theorem φpow_qP (hR : RingP W) (s : ℕ) (hs : 1 ≤ s) : ∃ a, (W.φA ^ s) W.π₀ = qP W * a := by
   obtain ⟨t, rfl⟩ : ∃ t, s = t + 1 := ⟨s - 1, by omega⟩
   obtain ⟨a, ha⟩ := φpow_π₀ hR t
@@ -139,6 +188,9 @@ theorem φpow_qP (hR : RingP W) (s : ℕ) (hs : 1 ≤ s) : ∃ a, (W.φA ^ s) W.
   exact ⟨(w : LetA O n) * W.π₀ * qP W ^ (PD.p - 2) * W.φA a, by
     rw [pow_succ', AlgHom.mul_apply, ha, map_mul, hw, e, pow_succ]; ring⟩
 
+/- English proof (translation)
+Rewrite using `[pS_sub]`. Take `⟨a, ha⟩` from `φpow_π₀ hR s`. Rewrite using `[ha]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem tools3 (hR : RingP W) (s : ℕ) :
     pS W s - ((PD.p : ℕ) : LetA O n) ∈ Ideal.span {W.π₀} := by
   rw [pS_sub]
@@ -146,6 +198,9 @@ theorem tools3 (hR : RingP W) (s : ℕ) :
   rw [ha]
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+Rewrite using `[pS_sub]`. Take `⟨a, ha⟩` from `φpow_qP hR s hs`. Rewrite using `[ha]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem tools4 (hR : RingP W) (s : ℕ) (hs : 1 ≤ s) :
     pS W s - ((PD.p : ℕ) : LetA O n) ∈ Ideal.span {qP W} := by
   rw [pS_sub]
@@ -153,6 +208,9 @@ theorem tools4 (hR : RingP W) (s : ℕ) (hs : 1 ≤ s) :
   rw [ha]
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hR.2.2.1`. Use `⟨(w : LetA O n) 0, (w.isUnit.map (Pi.evalRingHom (fun _ : ZMod n => PowerSeries O) 0)), ?_⟩` and prove the remaining obligations. Use `congrFun hw 0` as an intermediate fact. Simplify `this` using `[LocWach.π₀, letπ]`.
+-/
 theorem π₀_comp (hR : RingP W) :
     ∃ w : PowerSeries O, IsUnit w ∧ W.π₀₁ = w * X ^ (PD.p - 1) := by
   obtain ⟨w, hw⟩ := hR.2.2.1
@@ -160,6 +218,9 @@ theorem π₀_comp (hR : RingP W) :
   have := congrFun hw 0
   simpa [LocWach.π₀, letπ] using this
 
+/- English proof (translation)
+Take `⟨w, _, hw⟩` from `π₀_comp hR`. Establish `h2 : 2 ≤ PD.p` using `two_le`. Rewrite using `[hw, map_mul, map_pow, constantCoeff_X, zero_pow (by omega), mul_zero]`.
+-/
 theorem π₀₁_cc (hR : RingP W) : constantCoeff W.π₀₁ = 0 := by
   obtain ⟨w, _, hw⟩ := π₀_comp hR
   have h2 : 2 ≤ PD.p := two_le
@@ -167,11 +228,17 @@ theorem π₀₁_cc (hR : RingP W) : constantCoeff W.π₀₁ = 0 := by
 
 variable [IsDomain O]
 
+/- English proof (translation)
+Take `⟨w, hwu, hw⟩` from `π₀_comp hR`. Rewrite using `[hw]`. Conclude with `mul_ne_zero hwu.ne_zero (pow_ne_zero _ X_ne_zero)`.
+-/
 theorem π₀₁_ne (hR : RingP W) : W.π₀₁ ≠ 0 := by
   obtain ⟨w, hwu, hw⟩ := π₀_comp hR
   rw [hw]
   exact mul_ne_zero hwu.ne_zero (pow_ne_zero _ X_ne_zero)
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg constantCoeff h` as an intermediate fact. Simplify using `only [qP, Pi.add_apply, LocWach.π₀, Pi.natCast_apply, map_add, π₀₁_cc hR, map_natCast, zero_add, map_zero] at this`. Conclude with `hp0 this`.
+-/
 theorem q_component_ne_zero' (hR : RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) (i : ZMod n) : qP W i ≠ 0 := by
   intro h
   have := congrArg constantCoeff h
@@ -179,10 +246,16 @@ theorem q_component_ne_zero' (hR : RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) (i 
     zero_add, map_zero] at this
   exact hp0 this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `mul_left_cancel₀ (hc i) (congrFun h i)`.
+-/
 theorem cancel_comp {a b c : LetA O n} (hc : ∀ i, c i ≠ 0) (h : c * a = c * b) : a = b := by
   funext i
   exact mul_left_cancel₀ (hc i) (congrFun h i)
 
+/- English proof (translation)
+Introduce `δ hδ`. Apply `cancel_comp hc0` to reduce the goal to its premises. Establish `e` using `h δ hδ`. Rewrite `e` using `[map_mul, hc δ hδ]`. Conclude with `e`.
+-/
 theorem cancel_AΔ {a c : LetA O n} (hc : c ∈ W.AΔ) (hc0 : ∀ i, c i ≠ 0) (h : c * a ∈ W.AΔ) :
     a ∈ W.AΔ := by
   intro δ hδ
@@ -191,10 +264,18 @@ theorem cancel_AΔ {a c : LetA O n} (hc : c ∈ W.AΔ) (hc0 : ∀ i, c i ≠ 0) 
   rw [map_mul, hc δ hδ] at e
   exact e
 
+/- English proof (translation)
+Introduce `δ hδ`. Rewrite using `[← W.φA_γA, ha δ hδ]`.
+-/
 theorem φ_AΔ {a : LetA O n} (ha : a ∈ W.AΔ) : W.φA a ∈ W.AΔ := by
   intro δ hδ
   rw [← W.φA_γA, ha δ hδ]
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => simpa using ha`. Consider the case `succ s ih`. Rewrite using `[pow_succ']`. Express the relevant statement in the definitionally equal form `W.φA ((W.φA ^ s) a) ∈ W.AΔ`.
+
+Conclude with `φ_AΔ ih`.
+-/
 theorem φpow_AΔ (s : ℕ) {a : LetA O n} (ha : a ∈ W.AΔ) : (W.φA ^ s) a ∈ W.AΔ := by
   induction s with
   | zero => simpa using ha
@@ -203,9 +284,17 @@ theorem φpow_AΔ (s : ℕ) {a : LetA O n} (ha : a ∈ W.AΔ) : (W.φA ^ s) a �
     change W.φA ((W.φA ^ s) a) ∈ W.AΔ
     exact φ_AΔ ih
 
+/- English proof (translation)
+The claim follows from `W.AΔ.add_mem hR.1 (Subalgebra.natCast_mem _ _)`.
+-/
 theorem qP_AΔ (hR : RingP W) : qP W ∈ W.AΔ :=
   W.AΔ.add_mem hR.1 (Subalgebra.natCast_mem _ _)
 
+/- English proof (translation)
+Establish `hc : W.π₀ * qP W ^ (PD.p - 1) ∈ W.AΔ` using `W.AΔ.mul_mem hR.1 (W.AΔ.pow_mem (qP_AΔ hR) _)`. Use `cancel_AΔ hc (fun i => ?_) ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Pi.pow_apply]`. Conclude with `mul_ne_zero (π₀₁_ne hR) (pow_ne_zero _ (q_component_ne_zero' hR hp0 i))`. Establish `: W.π₀ * qP W ^ (PD.p - 1) * (w : LetA O n) = W.φA W.π₀` using `by rw [hw]; ring`.
+
+Rewrite using `[this]`. Conclude with `φ_AΔ hR.1`.
+-/
 theorem w_AΔ (hR : RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) {w : (LetA O n)ˣ}
     (hw : W.φA W.π₀ = (w : LetA O n) * W.π₀ * qP W ^ (PD.p - 1)) : (w : LetA O n) ∈ W.AΔ := by
   have hc : W.π₀ * qP W ^ (PD.p - 1) ∈ W.AΔ := W.AΔ.mul_mem hR.1 (W.AΔ.pow_mem (qP_AΔ hR) _)
@@ -216,6 +305,9 @@ theorem w_AΔ (hR : RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) {w : (LetA O n)ˣ}
     rw [this]
     exact φ_AΔ hR.1
 
+/- English proof (translation)
+The claim follows from `| 0 => ⟨1, W.AΔ.one_mem, isUnit_one, 0, by simp⟩ | s + 1 => by obtain ⟨v, hvΔ, hvu, r, hr⟩ := modp hR hp0 s obtain ⟨w, hw⟩ := hR.2.2.2.2.2.1 rw [eat_qP] at hw have hwΔ := w_AΔ hR hp0 hw set a := (W.φA ^ s) W.π₀ with ha have hq : (W.φA ^ s) (qP W) = a + ((PD.p : ℕ) : LetA O n) := …`.
+-/
 theorem modp (hR : RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) : ∀ s : ℕ, ∃ v ∈ W.AΔ, IsUnit v ∧
     ∃ r : LetA O n, (W.φA ^ s) W.π₀ = v * W.π₀ ^ (PD.p ^ s) + ((PD.p : ℕ) : LetA O n) * r
   | 0 => ⟨1, W.AΔ.one_mem, isUnit_one, 0, by simp⟩
@@ -255,10 +347,18 @@ theorem modp (hR : RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) : ∀ s : ℕ, ∃ 
       (w.isUnit.map (W.φA ^ s)).mul (hvu.pow _), c, ?_⟩
     linear_combination hc
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[LocWach.φA, letφ]`.
+-/
 theorem φ_const (c : PowerSeries O) : W.φA (fun _ => c) = fun _ => W.φ₀ c := by
   funext i
   simp [LocWach.φA, letφ]
 
+/- English proof (translation)
+Unfold `pS`. Proceed by induction on `s with`. Consider the case `zero => exact ⟨W.π₀₁ + ((PD.p : ℕ) : PowerSeries O), by funext i; simp [qP, LocWach.π₀]⟩`. Consider the case `succ s ih`. Take `⟨c, hc⟩` from `ih`.
+
+Conclude with `⟨W.φ₀ c, by rw [pow_succ', AlgHom.mul_apply, hc, φ_const]⟩`.
+-/
 theorem pS_const (s : ℕ) : ∃ c : PowerSeries O, pS W s = fun _ => c := by
   unfold pS
   induction s with
@@ -267,6 +367,9 @@ theorem pS_const (s : ℕ) : ∃ c : PowerSeries O, pS W s = fun _ => c := by
     obtain ⟨c, hc⟩ := ih
     exact ⟨W.φ₀ c, by rw [pow_succ', AlgHom.mul_apply, hc, φ_const]⟩
 
+/- English proof (translation)
+Use `erw [PowerSeries.constantCoeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero ha)]`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `d hd erw [map_pow, ha, zero_pow hd, smul_zero]`.
+-/
 theorem cc_subst {a : PowerSeries O} (ha : constantCoeff a = 0) (f : PowerSeries O) :
     constantCoeff (subst a f) = constantCoeff f := by
   erw [PowerSeries.constantCoeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero ha)]
@@ -275,6 +378,27 @@ theorem cc_subst {a : PowerSeries O} (ha : constantCoeff a = 0) (f : PowerSeries
   · intro d hd
     erw [map_pow, ha, zero_pow hd, smul_zero]
 
+/- English proof (translation)
+Use `set pA : LetA O n := ((PD.p : ℕ) : LetA O n) with hpA`. Take `⟨v, hvΔ, hvu, r, hr⟩` from `modp hR hp0 s`. Establish `hpS : pS W s = v * W.π₀ ^ (PD.p ^ s) + pA * (r + 1)`. Use `pS_sub (W := W) s` as an intermediate fact. Rewrite `this` using `[hr]`.
+
+Take the linear combination `this`. Establish `hpSΔ : pS W s ∈ W.AΔ` using `φpow_AΔ s (qP_AΔ hR)`. Establish `hpΔ : pA ∈ W.AΔ` using `Subalgebra.natCast_mem _ _`. Establish `hr1 : r + 1 ∈ W.AΔ`. Use `cancel_AΔ hpΔ (fun i => ?_) ?_` and prove the remaining obligations.
+
+Simplify using `only [hpA, Pi.natCast_apply]`. Conclude with `(by` after adjusting the coercions. Introduce `h`. Use `congrArg constantCoeff h` as an intermediate fact. Simplify using `only [map_natCast, map_zero] at this`.
+
+Conclude with `hp0 this : ((PD.p : ℕ) : PowerSeries O) ≠ 0)`. Establish `: pA * (r + 1) = pS W s - v * W.π₀ ^ (PD.p ^ s)` using `by rw [hpS]; ring`. Rewrite using `[this]`. Conclude with `W.AΔ.sub_mem hpSΔ (W.AΔ.mul_mem hvΔ (W.AΔ.pow_mem hR.1 _))`. Take `⟨g, hg, -⟩` from `hR.2.1 v hvΔ`.
+
+Take `⟨h, hh, -⟩` from `hR.2.1 (r + 1) hr1`. Establish `ha0 : constantCoeff (W.π₀ 0) = 0` using `π₀₁_cc hR`. Establish `hs0` using `HasSubst.of_constantCoeff_zero' ha0`. Establish `hgu : IsUnit (constantCoeff (g 0))`. Establish `hv0 : IsUnit (v 0)` using `hvu.map (Pi.evalRingHom (fun _ : ZMod n => PowerSeries O) 0)`.
+
+Rewrite `hv0` using `[hg 0]`. Use `hv0.map constantCoeff` as an intermediate fact. Rewrite `this` using `[cc_subst ha0]`. Then use the resulting hypothesis. Take `⟨P, u0, hu0, hPm, hPd, hPc, hF⟩` from `weierP ((PD.p : ℕ) : O) hpu (PD.p ^ s) (g 0) (h 0) hgu`. Use `⟨fun _ => subst (W.π₀ 0) u0, P, ?_, hPm, hPd, hPc, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Pi.isUnit_iff]`. Introduce `i`. Rewrite using `[← coe_substAlgHom hs0]`. Conclude with `hu0.map _`. Take `⟨c, hc⟩` from `pS_const (W := W) s`.
+
+Establish `h0 : pS W s 0 = subst (W.π₀ 0) ((P : PowerSeries O) * u0)`. Rewrite using `[← hF, ← coe_substAlgHom hs0]`. Establish `e : pS W s 0 = v 0 * W.π₀ 0 ^ (PD.p ^ s) + ((PD.p : ℕ) : PowerSeries O) * (r + 1) 0`. Rewrite using `[hpS]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, hg 0, hh 0, ← coe_substAlgHom hs0]`. Simplify using `[map_add, map_mul, map_pow, substAlgHom_X, map_natCast]`. Use function extensionality and compare the values at `i`. Establish `e1 : pS W s i = pS W s 0` using `by rw [hc]`. Establish `e2 : (Polynomial.aeval W.π₀ P) i = Polynomial.aeval (W.π₀ 0) P`.
+
+Conclude with `(Polynomial.aeval_algHom_apply (Pi.evalAlgHom O (fun _ : ZMod n => PowerSeries O) i) W.π₀ P).symm`. Rewrite using `[Pi.mul_apply, e1, e2, h0, subst_mul hs0, subst_coe hs0, mul_comm]`.
+-/
 theorem tools2 (hR : RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0)
     [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O] (hpu : ¬ IsUnit ((PD.p : ℕ) : O)) (s : ℕ) :
     ∃ (u : LetA O n) (P : Polynomial O), IsUnit u ∧ P.Monic ∧ P.natDegree = PD.p ^ s ∧
@@ -335,6 +459,11 @@ namespace Formalism.MainNotions.UnusedSlot80
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Introduce `l _ K LL h _`. Establish `hR : ToolsR.RingP ((HW l).W K 1 LL h.2.2)` using `ring_condition_uniformizer_polynomial D HW F h9 l K LL h`. Establish `: FiniteDimensional ℚ_[l] ↥(K0 K)` using `((D.loc l).PD K).finK₀`. Establish `: NeZero (Module.finrank ℚ_[l] ↥(K0 K))` using `⟨Module.finrank_pos.ne'⟩`. Establish `hp0` using `Formalism.MainNotions.WachCoordinates.Br.p_ne_zero_O ((HW l).W K 1 LL h.2.2)`.
+
+Establish `hpu` using `Formalism.MainNotions.WachCoordinates.Br.not_isUnit_p ((HW l).W K 1 LL h.2.2) (Formalism.MainNotions.WachCoordinates.Br.valRing_rec (D.loc l) LL)`. Establish `: IsAdicComplete (Ideal.span {((((D.loc l).PD K).p : ℕ) : ↥(OL LL))}) ↥(OL LL)`. Rewrite using `[(D.loc l).PD_p]`. Conclude with `Formalism.MainNotions.WachCoordinates.Br.complete_OL LL`. Conclude with `⟨ToolsR.tools1 hR, ToolsR.tools2 hR hp0 hpu, ToolsR.tools3 hR, ToolsR.tools4 hR⟩`.
+-/
 theorem tool_algebra_of_ring_condition (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) :
     Formalism.MainNotions.WachCoordinates.AtCaseA fun l _ K LL h => Formalism.MainNotions.WachCoordinates.ToolsAlg ((HW l).W K 1 LL h.2.2) := by
@@ -352,11 +481,17 @@ theorem tool_algebra_of_ring_condition (D : D7) (HW : HWOf D.loc) (F : FonOf D.l
 def LevCoeff (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   Formalism.MainNotions.WachCoordinates.AtCaseA fun l _ K LL h => Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration ((HW l).W K 1 LL h.2.2)
 
+/- English proof (translation)
+Introduce `l _ K LL h h5` and use `⟨tool_algebra_of_ring_condition D HW F h9 l K LL h h5, hL l K LL h h5⟩`.
+-/
 theorem tools_unramified_of_ring_condition (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) (hL : LevCoeff D HW F) :
     FiltrationPropertiesEtale D HW F Cm := fun l _ K LL h h5 =>
   ⟨tool_algebra_of_ring_condition D HW F h9 l K LL h h5, hL l K LL h h5⟩
 
+/- English proof (translation)
+Introduce `h` and use `tools_unramified_of_ring_condition D HW F Cm h.2.2 hL`.
+-/
 theorem tools_unramified_of_level_coeff (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (hL : LevCoeff D HW F) : FiltrationPropertiesTheorem D HW F Cm := fun h =>
   tools_unramified_of_ring_condition D HW F Cm h.2.2 hL

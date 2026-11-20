@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerChara
 
 open Finset UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5
 
+/- English proof (translation)
+Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [hx, hy, add_mul, Finset.sum_add_distrib]`. Consider the case `single g n`. Rewrite using `[ev_single, Finset.sum_eq_single g]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Finsupp.single_apply, hb, hb.symm]`. Simplify using the standard rewrite rules.
+-/
 private theorem ev_eq_sum {A : Type} [CommRing A] {Ω : Type} [Field Ω] [Algebra A Ω] {Γ : Type} [CommGroup Γ] [Fintype Γ]
     (χ : Γ →* Ωˣ) (z : MonoidAlgebra A Γ) :
     ev A χ z = ∑ g, algebraMap A Ω (z.coeff g) * ((χ g : Ωˣ) : Ω) := by
@@ -16,6 +21,11 @@ private theorem ev_eq_sum {A : Type} [CommRing A] {Ω : Type} [Field Ω] [Algebr
       simp [Finsupp.single_apply, hb, hb.symm]
     · simp
 
+/- English proof (translation)
+Introduce `A _ Ω _ _ Γ _ _ c ε h2 h1 χ z j`. Use `Fintype.ofFinite Γ` as an intermediate fact. Establish `hc : ((χ.1 c : Ωˣ) : Ω) = (ε : Ω)` using `χ.2`. Rewrite using `[ev_eq_sum, Finset.sum_mul, ← Equiv.sum_comp (Equiv.mulRight (rep j)⁻¹), sum_rep h2 h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hj : ((χ.1 (rep j) : Ωˣ) : Ω) ≠ 0` using `Units.ne_zero _`. Simplify using `only [mat, Matrix.of_apply, Equiv.coe_mulRight, map_add, map_mul, map_intCast, mul_assoc, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, hc, inv_mul_cancel₀ hj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.B5.sum_char_mul_quotientMatrix_eq_charEval_mul :
     ∀ {A : Type} [CommRing A] {Ω : Type} [Field Ω] [Algebra A Ω] {Γ : Type} [CommGroup Γ] [Finite Γ] (c : Γ) (ε : ℤ), c * c = 1 → c ≠ 1 → ∀ (χ : Ch Ω c ε) (z : MonoidAlgebra A Γ) (j : Qc c), ∑ i : Qc c, ((χ.1 (rep i) : Ωˣ) : Ω) * algebraMap A Ω (mat c ε z i j) = ev A χ.1 z * ((χ.1 (rep j) : Ωˣ) : Ω) := by
   intro A _ Ω _ _ Γ _ _ c ε h2 h1 χ z j

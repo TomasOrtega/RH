@@ -11,6 +11,11 @@ section Witt
 
 variable {J n₀ : ℕ} (c : Composition J)
 
+/- English proof (translation)
+Introduce `q r h`. Establish `hs : ∀ s : Fin J, (c.index s : ℕ) < c.length` using `fun s => (c.index s).isLt`. Apply the tactic sequence `rcases q with q | q | q <;> rcases r with r | r | r <;>`. Simplify using `[wittJ, levW, Matrix.one_apply] at h ⊢`. Apply the tactic sequence `all_goals first`.
+
+Consider the case `(obtain ⟨rfl, -⟩ := h; have := hs q; omega)`. Consider the case `omega`.
+-/
 theorem antiLev_wittJ {R : Type} [CommRing R] [StarRing R] (J0 : Matrix (Fin n₀) (Fin n₀) R) :
     AntiLev (levW (n₀ := n₀) c) c.length (wittJ (J := J) J0) := by
   intro q r h
@@ -33,9 +38,15 @@ abbrev Bm : Matrix (Fin I.n) (Fin I.n) I.E := (Fr.B : Matrix (Fin I.n) (Fin I.n)
 
 abbrev Bi : Matrix (Fin I.n) (Fin I.n) I.E := ((Fr.B⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E)
 
+/- English proof (translation)
+Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+-/
 theorem Bm_Bi : Bm Fr * Bi Fr = 1 := by
   rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
 
+/- English proof (translation)
+Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+-/
 theorem Bi_Bm : Bi Fr * Bm Fr = 1 := by
   rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
 
@@ -45,6 +56,9 @@ def wcE (h : Matrix (Fin I.n) (Fin I.n) I.E) : Matrix (WIdx J (nz I J)) (WIdx J 
 def unwc (A : Matrix (WIdx J (nz I J)) (WIdx J (nz I J)) I.E) : Matrix (Fin I.n) (Fin I.n) I.E :=
   Bm Fr * A.submatrix (eW Fr).symm (eW Fr).symm * Bi Fr
 
+/- English proof (translation)
+Unfold `unwc`. Rewrite using `[← submatrix_mul_equiv A B (eW Fr).symm (eW Fr).symm (eW Fr).symm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [Bi_Bm, Matrix.mul_one]; simp only [Matrix.mul_assoc]`.
+-/
 theorem unwc_mul (A B : Matrix (WIdx J (nz I J)) (WIdx J (nz I J)) I.E) :
     unwc Fr A * unwc Fr B = unwc Fr (A * B) := by
   unfold unwc
@@ -54,15 +68,24 @@ theorem unwc_mul (A B : Matrix (WIdx J (nz I J)) (WIdx J (nz I J)) I.E) :
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [Bi_Bm, Matrix.mul_one]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `unwc`. Rewrite using `[submatrix_one_equiv, Matrix.mul_one, Bm_Bi]`.
+-/
 theorem unwc_one : unwc Fr 1 = 1 := by
   unfold unwc
   rw [submatrix_one_equiv, Matrix.mul_one, Bm_Bi]
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem cT_eq (M : Matrix (Fin I.n) (Fin I.n) I.E) : Formalism.UG.cT (starRingEnd I.E) M = Mᴴ := by
   ext i j; rfl
 
 abbrev Gm : Matrix (Fin I.n) (Fin I.n) I.E := (Bm Fr)ᴴ * I.J * Bm Fr
 
+/- English proof (translation)
+Use extensionality with `r s`. Use `Fr.gram r s` as an intermediate fact. Rewrite `this` using `[cT_eq]`. Conclude with `this`.
+-/
 theorem Gm_sub : (Gm Fr).submatrix (eW Fr) (eW Fr) = wittJ (J := J) Fr.J0 := by
   ext r s
   have := Fr.gram r s

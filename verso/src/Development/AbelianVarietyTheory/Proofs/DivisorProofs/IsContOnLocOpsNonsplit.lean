@@ -13,6 +13,21 @@ open scoped Classical
 
 namespace GlobalTheory.HoweLocal
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ _ n d X W M ψ χX χW om _ _ _ _ _ _ _ _ _ hWeil v _ _ om' hom' eX heX eW heW _ _ χXv χWv _ _`. Use `IsContOn.comp ?_ (f := eX.symm.toMonoidHom.prodMap eW.symm.toMonoidHom) (heX.2.2.prodMap heW.2.2)` and prove the remaining obligations. Introduce `l _ φ hφ`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest (Fin n × Fin d) v`. Set `lift : (Fin n × Fin d → Fv F v) → (Fin n × Fin d → AF F)` to `fun t i => GlobalTheory.LatVac.liftV v (t i)`.
+
+Set `L : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ` to `(R 0)⁻¹ • l.comp (LinearMap.funLeft ℂ ℂ lift)`. Establish `hL : L ∈ (adeleClass F).adm (Fin n × Fin d)`. Introduce `g _`. Use `⟨((R 0)⁻¹ * l (fun t => g (fun i => (lift t i).2))) • ((BoundedContinuousFunction.evalCLM ℂ 0).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ)), fun f => ?_⟩` and prove the remaining obligations. Establish `e : (fun t => pureA F f g (lift t)) = f 0 • fun t => g (fun i => (lift t i).2)`.
+
+Use function extensionality and compare the values at `t`. Establish `h0 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (lift t i).1) = 0`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _`.
+
+Simplify using `only [pureA, h0, Pi.smul_apply, smul_eq_mul]`. Use `show (R 0)⁻¹ • l (fun t => pureA F f g (lift t)) = _`. Rewrite using `[e, map_smul]`. Simplify using `[smul_eq_mul, mul_comm, mul_assoc, mul_left_comm]`. Establish `hc0 : IsContOn (adeleClass F) om` using `hWeil.2.2`.
+
+Establish `hc` using `(hc0 L hL _ (hR φ hφ).2).comp ((continuous_subtype_val (p := (· ∈ UAtGrp σ X (evFin F v)))).prodMap (continuous_subtype_val (p := (· ∈ UAtGrp σ W (evFin F v)))))`. Use `hc.congr fun q => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Prod.map]`. Rewrite using `[(hom' q.1 q.2 φ hφ).2 R (hR φ hφ)]`. Establish `e : (fun t => tens (evFin F v) (om' q φ) R (lift t)) = R 0 • om' q φ`.
+
+Use function extensionality and compare the values at `t`. Establish `hz : At (evFin F v) (lift t)` using `fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `hrz : R (lift t) = R 0` using `by simpa using (hR φ hφ).1 0 _ hz`. Simplify using `only [tens, lift, GlobalTheory.LatVac.evFin_liftV, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[show (fun i => GlobalTheory.LatVac.liftV v (t i)) = lift t from rfl, hrz, mul_comm]`.
+
+Use `show (R 0)⁻¹ • l (fun t => tens (evFin F v) (om' q φ) R (lift t)) = _`. Rewrite using `[e, map_smul, smul_smul, inv_mul_cancel₀ hR0, one_smul]`.
+-/
 theorem isContOn_locOps_nonsplit : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
       IsStd ψ → (∀ i j, σ (X.J j i) = X.J i j) → X.J.det ≠ 0 → (∀ i j, σ (W.J j i) = -W.J i j) → W.J.det ≠ 0 →

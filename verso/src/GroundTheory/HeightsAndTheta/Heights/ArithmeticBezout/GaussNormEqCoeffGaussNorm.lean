@@ -13,9 +13,15 @@ namespace ObjectsHeight
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq]`.
+-/
 theorem euclid_norm_eq (v : Fin n → ℂ) : ‖WithLp.toLp 2 v‖ = √(∑ i, ‖v i‖ ^ 2) := by
   rw [EuclideanSpace.norm_eq]
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnit_iff_isUnit_det S).mp hS`.
+-/
 theorem isUnit_det_of_isUnit {S : Matrix (Fin n) (Fin n) ℂ} (hS : IsUnit S) : IsUnit S.det :=
   (Matrix.isUnit_iff_isUnit_det S).mp hS
 
@@ -25,11 +31,17 @@ def ofPointMatrix (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) : HermNorm n 
     rw [det_transpose, det_nonsing_inv]
     exact (isUnit_det_of_isUnit hS).ringInverse
 
+/- English proof (translation)
+Rewrite using `[IndefiniteRowSideFullHecke.ArithBezout.formNorm, euclid_norm_eq]`. Both sides reduce to the same expression.
+-/
 theorem ofPointMatrix_norm (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) (u : Fin n → ℂ) :
     (ofPointMatrix S hS).norm u = IndefiniteRowSideFullHecke.ArithBezout.formNorm S u := by
   rw [IndefiniteRowSideFullHecke.ArithBezout.formNorm, euclid_norm_eq]
   rfl
 
+/- English proof (translation)
+Establish `h : ((ofPointMatrix S hS).matᵀ)⁻¹ = S`. Simplify using `only [ofPointMatrix, transpose_transpose]`. Conclude with `nonsing_inv_nonsing_inv S (isUnit_det_of_isUnit hS)`. Simplify using `only [HermNorm.dualNorm, h, IndefiniteRowSideFullHecke.ArithBezout.pointMetric, euclid_norm_eq]`.
+-/
 theorem ofPointMatrix_dualNorm (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) (y : Fin n → ℂ) :
     (ofPointMatrix S hS).dualNorm y = (IndefiniteRowSideFullHecke.ArithBezout.pointMetric S hS).ρ y := by
   have h : ((ofPointMatrix S hS).matᵀ)⁻¹ = S := by
@@ -37,12 +49,20 @@ theorem ofPointMatrix_dualNorm (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) 
     exact nonsing_inv_nonsing_inv S (isUnit_det_of_isUnit hS)
   simp only [HermNorm.dualNorm, h, IndefiniteRowSideFullHecke.ArithBezout.pointMetric, euclid_norm_eq]
 
+/- English proof (translation)
+Simplify using `[fsLog, IndefiniteRowSideFullHecke.ArithBezout.logFormNorm, IndefiniteRowSideFullHecke.ArithBezout.hermLine, ReciprocityTheory.ChartRestriction.G.Geo.HermLine.ofMetrics, ofPointMatrix_dualNorm]`.
+-/
 theorem ofPointMatrix_fsLog (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) (u y : Fin n → ℂ) :
     fsLog (ofPointMatrix S hS) u y =
       IndefiniteRowSideFullHecke.ArithBezout.logFormNorm S hS u (fun p => y p.2) := by
   simp [fsLog, IndefiniteRowSideFullHecke.ArithBezout.logFormNorm, IndefiniteRowSideFullHecke.ArithBezout.hermLine,
     ReciprocityTheory.ChartRestriction.G.Geo.HermLine.ofMetrics, ofPointMatrix_dualNorm]
 
+/- English proof (translation)
+Establish `hA : IsUnit h.mat` using `(Matrix.isUnit_iff_isUnit_det _).mpr h.isUnit_det`. Use `⟨(h.matᵀ)⁻¹, (Matrix.isUnit_nonsing_inv_iff).mpr ((isUnit_transpose _).mpr hA), ?_⟩` and prove the remaining obligations. Consider the cases of `h with`. Consider the case `mk A hAdet`. Simplify using `only [ofPointMatrix, HermNorm.mk.injEq]`.
+
+Rewrite using `[nonsing_inv_nonsing_inv _ (by rw [det_transpose]; exact hAdet), transpose_transpose]`.
+-/
 theorem exists_eq_ofPointMatrix (h : HermNorm n) :
     ∃ (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S), h = ofPointMatrix S hS := by
   have hA : IsUnit h.mat := (Matrix.isUnit_iff_isUnit_det _).mpr h.isUnit_det
@@ -52,32 +72,52 @@ theorem exists_eq_ofPointMatrix (h : HermNorm n) :
     simp only [ofPointMatrix, HermNorm.mk.injEq]
     rw [nonsing_inv_nonsing_inv _ (by rw [det_transpose]; exact hAdet), transpose_transpose]
 
+/- English proof (translation)
+Simplify using `[HermNorm.std, ofPointMatrix]`.
+-/
 theorem std_eq_ofPointMatrix_one : HermNorm.std n = ofPointMatrix 1 isUnit_one := by
   simp [HermNorm.std, ofPointMatrix]
 
+/- English proof (translation)
+Rewrite using `[IndefiniteRowSideFullHecke.ArithBezout.formNorm, mulVec_mulVec, ← transpose_mul, mul_nonsing_inv S (isUnit_det_of_isUnit hS), transpose_one, one_mulVec, euclid_norm_eq]`. Both sides reduce to the same expression.
+-/
 theorem formNorm_transpose_mulVec {S : Matrix (Fin n) (Fin n) ℂ} (hS : IsUnit S) (v : Fin n → ℂ) :
     IndefiniteRowSideFullHecke.ArithBezout.formNorm S (Sᵀ *ᵥ v) = √(IndefiniteRowSideFullHecke.ArithBezout.normSq v) := by
   rw [IndefiniteRowSideFullHecke.ArithBezout.formNorm, mulVec_mulVec, ← transpose_mul,
     mul_nonsing_inv S (isUnit_det_of_isUnit hS), transpose_one, one_mulVec, euclid_norm_eq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ProbabilityTheory.cond, ProbabilityTheory.cond, Measure.map_smul, ← e.restrict_map, e.map_apply]`.
+-/
 theorem cond_map_equiv {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] (e : α ≃ᵐ β)
     (μ : Measure α) (s : Set β) : (cond μ (e ⁻¹' s)).map e = cond (μ.map e) s := by
   rw [ProbabilityTheory.cond, ProbabilityTheory.cond, Measure.map_smul, ← e.restrict_map,
     e.map_apply]
 
+/- English proof (translation)
+Rewrite using `[ProbabilityTheory.cond, ProbabilityTheory.cond, Measure.restrict_smul, Measure.smul_apply, smul_smul, smul_eq_mul, ENNReal.mul_inv (Or.inl h0) (Or.inl htop), mul_comm c⁻¹, mul_assoc, ENNReal.inv_mul_cancel h0 htop, mul_one]`.
+-/
 theorem cond_smul {α : Type*} [MeasurableSpace α] (μ : Measure α) (s : Set α)
     {c : ENNReal} (h0 : c ≠ 0) (htop : c ≠ ⊤) : cond (c • μ) s = cond μ s := by
   rw [ProbabilityTheory.cond, ProbabilityTheory.cond, Measure.restrict_smul, Measure.smul_apply, smul_smul, smul_eq_mul,
     ENNReal.mul_inv (Or.inl h0) (Or.inl htop), mul_comm c⁻¹, mul_assoc,
     ENNReal.inv_mul_cancel h0 htop, mul_one]
 
+/- English proof (translation)
+Rewrite using `[ProbabilityTheory.cond, ProbabilityTheory.cond, measure_congr h, Measure.restrict_congr_set h]`.
+-/
 theorem cond_congr_set {α : Type*} [MeasurableSpace α] (μ : Measure α) {s t : Set α}
     (h : s =ᵐ[μ] t) : cond μ s = cond μ t := by
   rw [ProbabilityTheory.cond, ProbabilityTheory.cond, measure_congr h, Measure.restrict_congr_set h]
 
 variable {k : ℕ}
 
+/- English proof (translation)
+Rewrite using `[MeasurableEquiv.map_apply_eq_iff_map_symm_apply_eq]`. Use `show Measure.pi (fun _ : Fin k × Fin n => (volume : Measure ℂ)) = _`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply, MeasurableEquiv.coe_curry_symm]`. Establish `hset : Function.uncurry ⁻¹' Set.univ.pi s = Set.univ.pi fun i : Fin k => Set.univ.pi fun j : Fin n => s (i, j)`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hset, Measure.pi_pi]`. Repeatedly rewrite using `[volume_pi, Measure.pi_pi]`. Rewrite using `[Fintype.prod_prod_type]`.
+-/
 theorem map_curry_volume :
     (volume : Measure (Fin k × Fin n → ℂ)).map (MeasurableEquiv.curry (Fin k) (Fin n) ℂ) =
       Measure.pi fun _ : Fin k => (volume : Measure (Fin n → ℂ)) := by
@@ -93,6 +133,15 @@ theorem map_curry_volume :
   simp_rw [volume_pi, Measure.pi_pi]
   rw [Fintype.prod_prod_type]
 
+/- English proof (translation)
+Break down `n with _ | m` into its components or cases. Establish `: {v : Fin 0 → ℂ | IndefiniteRowSideFullHecke.ArithBezout.normSq v = 1} = ∅`. Use extensionality with `v`. Simplify using `[IndefiniteRowSideFullHecke.ArithBezout.normSq]`. Rewrite using `[this, measure_empty]`.
+
+Set `e : (Fin (m + 1) → ℂ) ≃L[ℝ] EuclideanSpace ℂ (Fin (m + 1))` to `(PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin (m + 1) => ℂ)).symm`. Establish `: (volume.map e).IsAddHaarMeasure` using `e.isAddHaarMeasure_map _`. Establish `hset : {v : Fin (m + 1) → ℂ | IndefiniteRowSideFullHecke.ArithBezout.normSq v = 1} = e ⁻¹' Metric.sphere 0 1`. Use extensionality with `v`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, mem_sphere_zero_iff_norm]`.
+
+Establish `: ‖e v‖ = √(IndefiniteRowSideFullHecke.ArithBezout.normSq v)` using `by show ‖WithLp.toLp 2 v‖ = _`. Rewrite using `[euclid_norm_eq]`. Both sides reduce to the same expression. Rewrite using `[this, Real.sqrt_eq_one]`. Rewrite using `[hset, ← Measure.map_apply e.continuous.measurable Metric.isClosed_sphere.measurableSet]`.
+
+Conclude with `Measure.addHaar_sphere _ 0 1`.
+-/
 theorem volume_normSq_eq_one :
     (volume : Measure (Fin n → ℂ)) {v | IndefiniteRowSideFullHecke.ArithBezout.normSq v = 1} = 0 := by
   rcases n with _ | m
@@ -118,12 +167,18 @@ theorem volume_normSq_eq_one :
 def blockMul (A : Matrix (Fin n) (Fin n) ℂ) (u : Fin k × Fin n → ℂ) : Fin k × Fin n → ℂ :=
   fun p => (A *ᵥ fun j => u (p.1, j)) p.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use `show (A *ᵥ (B *ᵥ fun j => u (p.1, j))) p.2 = ((A * B) *ᵥ fun j => u (p.1, j)) p.2`. Rewrite using `[mulVec_mulVec]`.
+-/
 theorem blockMul_mul (A B : Matrix (Fin n) (Fin n) ℂ) (u : Fin k × Fin n → ℂ) :
     blockMul A (blockMul B u) = blockMul (A * B) u := by
   funext p
   show (A *ᵥ (B *ᵥ fun j => u (p.1, j))) p.2 = ((A * B) *ᵥ fun j => u (p.1, j)) p.2
   rw [mulVec_mulVec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use `show ((1 : Matrix (Fin n) (Fin n) ℂ) *ᵥ fun j => u (p.1, j)) p.2 = u p`. Rewrite using `[one_mulVec]`.
+-/
 theorem blockMul_one (u : Fin k × Fin n → ℂ) : blockMul 1 u = u := by
   funext p
   show ((1 : Matrix (Fin n) (Fin n) ℂ) *ᵥ fun j => u (p.1, j)) p.2 = u p
@@ -154,16 +209,65 @@ def blockEquiv (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) :
     rw [blockMul_mul, ← transpose_mul, nonsing_inv_mul S (isUnit_det_of_isUnit hS),
       transpose_one, blockMul_one]
 
+/- English proof (translation)
+Unfold `IndefiniteRowSideFullHecke.ArithBezout.formNorm`. Conclude with `continuous_norm.comp ((PiLp.continuous_toLp 2 _).comp (Continuous.matrix_mulVec continuous_const continuous_id))`.
+-/
 theorem continuous_formNorm (S : Matrix (Fin n) (Fin n) ℂ) :
     Continuous (IndefiniteRowSideFullHecke.ArithBezout.formNorm S) := by
   unfold IndefiniteRowSideFullHecke.ArithBezout.formNorm
   exact continuous_norm.comp ((PiLp.continuous_toLp 2 _).comp
     (Continuous.matrix_mulVec continuous_const continuous_id))
 
+/- English proof (translation)
+Unfold `IndefiniteRowSideFullHecke.ArithBezout.normSq`. Use `fun_prop`.
+-/
 theorem continuous_normSq : Continuous (IndefiniteRowSideFullHecke.ArithBezout.normSq (n := n)) := by
   unfold IndefiniteRowSideFullHecke.ArithBezout.normSq
   fun_prop
 
+/- English proof (translation)
+Establish `hN : h.norm = IndefiniteRowSideFullHecke.ArithBezout.formNorm S` using `funext hh`. Set `E` to `blockEquiv (k := k) S hS`. Set `F : (Fin k × Fin n → ℂ) ≃ᵐ (Fin k × Fin n → ℂ)` to `E.toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv`. Establish `hF : ⇑F = blockMul Sᵀ` using `rfl`. Set `Nf : (Fin k × Fin n → ℂ) → (Fin k × Fin n → ℂ)` to `fun u ij => ((IndefiniteRowSideFullHecke.ArithBezout.formNorm S fun j => u (ij.1, j) : ℝ) : ℂ)⁻¹ * u ij`.
+
+Set `R : (Fin n → ℂ) → (Fin n → ℂ)` to `fun u => (Real.sqrt (IndefiniteRowSideFullHecke.ArithBezout.normSq u))⁻¹ • u`. Set `T : (Fin k → Fin n → ℂ) → (Fin k × Fin n → ℂ)` to `fun v p => (Sᵀ *ᵥ v p.1) p.2`. Set `Bc : Set (Fin n → ℂ)` to `{u | IndefiniteRowSideFullHecke.ArithBezout.normSq u ≤ 1}`. Set `BC : Set (Fin k × Fin n → ℂ)` to `MeasurableEquiv.curry (Fin k) (Fin n) ℂ ⁻¹' Set.univ.pi fun _ => Bc`. Set `BA : Set (Fin k × Fin n → ℂ)` to `{u | ∀ i, IndefiniteRowSideFullHecke.ArithBezout.formNorm S (fun j => u (i, j)) < 1}`.
+
+Establish `hNf : Measurable Nf`. Use `measurable_pi_lambda _ fun ij => ?_` and prove the remaining obligations. Conclude with `((Complex.measurable_ofReal.comp ((continuous_formNorm S).comp (continuous_pi fun j => continuous_apply (ij.1, j))).measurable).inv).mul (measurable_pi_apply ij)`. Establish `hR : Measurable R` using `((continuous_normSq.sqrt).measurable.inv).smul measurable_id`. Establish `hT : Measurable T`.
+
+Use `(continuous_pi fun p => ?_).measurable` and prove the remaining obligations. Conclude with `(continuous_apply p.2).comp (Continuous.matrix_mulVec continuous_const (continuous_apply p.1))`. Establish `hBc : MeasurableSet Bc` using `measurableSet_le continuous_normSq.measurable measurable_const`. Establish `hBc0 : (volume : Measure (Fin n → ℂ)) Bc ≠ 0`. Establish `hO : IsOpen {u : Fin n → ℂ | IndefiniteRowSideFullHecke.ArithBezout.normSq u < 1}` using `isOpen_lt continuous_normSq continuous_const`.
+
+Establish `hne : ({u : Fin n → ℂ | IndefiniteRowSideFullHecke.ArithBezout.normSq u < 1}).Nonempty` using `⟨0, by simp [IndefiniteRowSideFullHecke.ArithBezout.normSq]⟩`. Conclude with `(lt_of_lt_of_le (hO.measure_pos volume hne) (measure_mono (Set.ofPred_subset_ofPred.mpr fun _ h => h.le))).ne'`. Establish `hBctop : (volume : Measure (Fin n → ℂ)) Bc ≠ ⊤`. Establish `hcl : IsClosed Bc` using `isClosed_le continuous_normSq continuous_const`. Establish `hbd : Bornology.IsBounded Bc`.
+
+Rewrite using `[Metric.isBounded_iff_subset_closedBall 0]`. Use `⟨1, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hv' : IndefiniteRowSideFullHecke.ArithBezout.normSq v ≤ 1` using `hv`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `i`.
+
+Establish `h1 : ‖v i‖ ^ 2 ≤ IndefiniteRowSideFullHecke.ArithBezout.normSq v` using `Finset.single_le_sum (f := fun i => ‖v i‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`. Use polynomial arithmetic with `[norm_nonneg (v i), hv']`. Conclude with `(Metric.isCompact_of_isClosed_isBounded hcl hbd).measure_lt_top.ne`. Establish `: IsProbabilityMeasure (cond (volume : Measure (Fin n → ℂ)) Bc)` using `cond_isProbabilityMeasure_of_finite hBc0 hBctop`. Establish `hB : IndefiniteRowSideFullHecke.ArithBezout.formSphereLaw S k = (cond (volume : Measure (Fin k × Fin n → ℂ)) BC).map (T ∘ (fun v i => R (v i)) ∘ MeasurableEquiv.curry (Fin k) (Fin n) ℂ)`.
+
+Establish `h1 : IndefiniteRowSideFullHecke.ArithBezout.sphereLaw n = (cond volume Bc).map R` using `rfl`. Establish `: ∀ _ : Fin k, SigmaFinite ((cond (volume : Measure (Fin n → ℂ)) Bc).map R)` using `fun _ => by`. Use `Measure.isProbabilityMeasure_map (μ := cond (volume : Measure (Fin n → ℂ)) Bc) hR.aemeasurable` as an intermediate fact. Use `infer_instance`. Establish `h2 : Measure.pi (fun _ : Fin k => IndefiniteRowSideFullHecke.ArithBezout.sphereLaw n) = (Measure.pi fun _ : Fin k => cond (volume : Measure (Fin n → ℂ)) Bc).map (fun v i => R (v i))`.
+
+Rewrite using `[h1, Measure.pi_map_pi fun _ => hR.aemeasurable]`. Establish `h3 : Measure.pi (fun _ : Fin k => cond (volume : Measure (Fin n → ℂ)) Bc) = (cond (volume : Measure (Fin k × Fin n → ℂ)) BC).map (MeasurableEquiv.curry (Fin k) (Fin n) ℂ)`. Rewrite using `[cond_map_equiv, map_curry_volume]`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[cond_apply (MeasurableSet.univ_pi fun _ => hBc), Measure.pi_pi, ← Set.pi_inter_distrib, Measure.pi_pi]`.
+
+Repeatedly rewrite using `[cond_apply hBc]`. Rewrite using `[Finset.prod_mul_distrib, ENNReal.prod_inv_distrib]`. Conclude with `fun _ _ _ _ _ => Or.inr hBctop`. Establish `hRk : Measurable fun (v : Fin k → Fin n → ℂ) i => R (v i)` using `measurable_pi_lambda _ fun i => hR.comp (measurable_pi_apply i)`. Rewrite using `[IndefiniteRowSideFullHecke.ArithBezout.formSphereLaw, h2, h3, Measure.map_map hRk (MeasurableEquiv.measurable _), Measure.map_map hT (hRk.comp (MeasurableEquiv.measurable _))]`.
+
+Establish `hA : sphereMean h k g = ∫ u, g (Nf u) ∂cond volume BA`. Unfold `sphereMean`. Rewrite using `[hN]`. Simplify using `only [MeasureTheory.average, Measure.restrict_apply_univ]`. Both sides reduce to the same expression.
+
+Establish `hc` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (Fin k × Fin n → ℂ))) (f := E.toLinearMap) E.isUnit_det'.ne_zero`. Establish `hcF : (volume : Measure (Fin k × Fin n → ℂ)).map F = ENNReal.ofReal |(LinearMap.det E.toLinearMap)⁻¹| • volume`. Establish `hFE : ⇑F = ⇑E.toLinearMap`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+
+Rewrite using `[hFE]`. Conclude with `hc`. Establish `hc0 : ENNReal.ofReal |(LinearMap.det E.toLinearMap)⁻¹| ≠ 0`. Rewrite using `[ne_eq, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `abs_pos.mpr (inv_ne_zero E.isUnit_det'.ne_zero)`.
+
+Establish `hmem : ∀ w, w ∈ F ⁻¹' BA ↔ ∀ i, IndefiniteRowSideFullHecke.ArithBezout.normSq (fun j => w (i, j)) < 1`. Introduce `w`. Simplify using `only [Set.mem_preimage, BA, Set.mem_ofPred_eq, hF]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[show (fun j => blockMul Sᵀ w (i, j)) = Sᵀ *ᵥ fun j => w (i, j) from rfl, formNorm_transpose_mulVec hS, Real.sqrt_lt' one_pos, one_pow]`.
+
+Establish `hmemC : ∀ w, w ∈ BC ↔ ∀ i, IndefiniteRowSideFullHecke.ArithBezout.normSq (fun j => w (i, j)) ≤ 1`. Introduce `w`. Simplify using `only [BC, Bc, Set.mem_preimage, Set.mem_univ_pi]`. Both sides reduce to the same expression. Establish `hnull : ∀ i : Fin k, (volume : Measure (Fin k × Fin n → ℂ)) {w | IndefiniteRowSideFullHecke.ArithBezout.normSq (fun j => w (i, j)) = 1} = 0`.
+
+Introduce `i`. Establish `h1` using `Measure.pi_eval_preimage_null (fun _ : Fin k => (volume : Measure (Fin n → ℂ))) (i := i) volume_normSq_eq_one`. Rewrite `h1` using `[← map_curry_volume, MeasurableEquiv.map_apply]`. Conclude with `h1`. Establish `hpre : F ⁻¹' BA =ᵐ[volume] BC`.
+
+Use `ae_eq_set.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.sdiff_eq_empty.mpr fun w hw => (hmemC w).mpr fun i => ((hmem w).mp hw i).le, measure_empty]`. Use `measure_mono_null (fun w hw => ?_) (measure_iUnion_null hnull)` and prove the remaining obligations. Take `⟨hC, hA'⟩` from `hw`. Rewrite `hA'` using `[hmem]`.
+
+Use `push Not at hA'`. Take `⟨i, hi⟩` from `hA'`. Conclude with `Set.mem_iUnion.mpr ⟨i, le_antisymm ((hmemC w).mp hC i) hi⟩`. Establish `hpt : ∀ w, Nf (F w) = (T ∘ (fun v i => R (v i)) ∘ MeasurableEquiv.curry (Fin k) (Fin n) ℂ) w`. Introduce `w`.
+
+Use function extensionality and compare the values at `ij`. Use `show ((IndefiniteRowSideFullHecke.ArithBezout.formNorm S (fun j => blockMul Sᵀ w (ij.1, j)) : ℝ) : ℂ)⁻¹ * blockMul Sᵀ w ij = (Sᵀ *ᵥ ((√(IndefiniteRowSideFullHecke.ArithBezout.normSq fun j => w (ij.1, j)))⁻¹ • fun j => w (ij.1, j))) ij.2`. Rewrite using `[show (fun j => blockMul Sᵀ w (ij.1, j)) = Sᵀ *ᵥ fun j => w (ij.1, j) from rfl, formNorm_transpose_mulVec hS, mulVec_smul, Pi.smul_apply, Complex.real_smul, Complex.ofReal_inv]`. Both sides reduce to the same expression. Establish `hmeas : Measurable (T ∘ (fun v i => R (v i)) ∘ MeasurableEquiv.curry (Fin k) (Fin n) ℂ)` using `hT.comp ((measurable_pi_lambda _ fun i => hR.comp (measurable_pi_apply i)).comp (MeasurableEquiv.measurable _))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcF, cond_smul _ _ hc0 ENNReal.ofReal_ne_top]`. Use `_ = ∫ u, g (Nf u) ∂(cond volume (F ⁻¹' BA)).map F := by rw [cond_map_equiv]`. Use `_ = ∫ u, g (Nf u) ∂(cond volume BC).map F := by rw [cond_congr_set _ hpre]`. Use `_ = ∫ w, g (Nf (F w)) ∂cond volume BC := integral_map F.measurable.aemeasurable (hg.comp hNf).aestronglyMeasurable`.
+
+Use `_ = ∫ w, g ((T ∘ (fun v i => R (v i)) ∘ MeasurableEquiv.curry (Fin k) (Fin n) ℂ) w) ∂cond volume BC := by`. Repeatedly rewrite using `[hpt]`. Use `_ = ∫ u, g u ∂IndefiniteRowSideFullHecke.ArithBezout.formSphereLaw S k := by`. Rewrite using `[hB, integral_map hmeas.aemeasurable hg.aestronglyMeasurable]`.
+-/
 theorem sphereMean_eq_integral (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) (h : HermNorm n)
     (hh : ∀ u, h.norm u = IndefiniteRowSideFullHecke.ArithBezout.formNorm S u) (g : (Fin k × Fin n → ℂ) → ℝ)
     (hg : Measurable g) :
@@ -318,12 +422,22 @@ theorem sphereMean_eq_integral (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) 
     _ = ∫ u, g u ∂IndefiniteRowSideFullHecke.ArithBezout.formSphereLaw S k := by
       rw [hB, integral_map hmeas.aemeasurable hg.aestronglyMeasurable]
 
+/- English proof (translation)
+The claim follows from `sphereMean_eq_integral S hS h hh _ (Real.measurable_log.comp (continuous_norm.comp (MvPolynomial.continuous_eval f)).measurable)`.
+-/
 theorem mahler_eq_chowMean (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) (h : HermNorm n)
     (hh : ∀ u, h.norm u = IndefiniteRowSideFullHecke.ArithBezout.formNorm S u) (f : MvPolynomial (Fin k × Fin n) ℂ) :
     mahler h k f = IndefiniteRowSideFullHecke.ArithBezout.chowMean S k f :=
   sphereMean_eq_integral S hS h hh _
     (Real.measurable_log.comp (continuous_norm.comp (MvPolynomial.continuous_eval f)).measurable)
 
+/- English proof (translation)
+Unfold `gaussNorm ReciprocityTheory.ChartRestriction.G.Geo.coeffGaussNorm`. Break down `f.support.eq_empty_or_nonempty with h | h` into its components or cases. Establish `: IsEmpty f.support` using `by rw [h]; infer_instance`. Simplify using `only [h, Real.iSup_of_isEmpty]`. Both sides reduce to the same expression.
+
+Establish `: Nonempty f.support` using `h.to_subtype`. Establish `hb : BddAbove (Set.range fun m : f.support => HeightOneSpectrum.adicAbv K v (f.coeff m))` using `(Set.finite_range _).bddAbove`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨m, hm, hmax⟩` from `Finset.exists_max_image f.support (fun m => HeightOneSpectrum.adicAbv K v (f.coeff m)) h`. Use `le_trans ?_ (le_ciSup hb ⟨m, hm⟩)` and prove the remaining obligations.
+
+Establish `hle : f.support.sup (fun m => (⟨HeightOneSpectrum.adicAbv K v (f.coeff m), AbsoluteValue.nonneg _ _⟩ : NNReal)) ≤ ⟨HeightOneSpectrum.adicAbv K v (f.coeff m), AbsoluteValue.nonneg _ _⟩` using `Finset.sup_le fun b hb => hmax b hb`. Conclude with `NNReal.coe_le_coe.mpr hle`. Use `ciSup_le fun m => ?_` and prove the remaining obligations. Establish `hle` using `Finset.le_sup (f := fun m => (⟨HeightOneSpectrum.adicAbv K v (f.coeff m), AbsoluteValue.nonneg _ _⟩ : NNReal)) m.2`. Conclude with `NNReal.coe_le_coe.mpr hle`.
+-/
 theorem gaussNorm_eq_coeffGaussNorm {K : Type*} [Field K] [NumberField K]
     (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) {ι : Type*} (f : MvPolynomial ι K) :
     gaussNorm v f = ReciprocityTheory.ChartRestriction.G.Geo.coeffGaussNorm (HeightOneSpectrum.adicAbv K v) f := by
@@ -350,6 +464,11 @@ theorem gaussNorm_eq_coeffGaussNorm {K : Type*} [Field K] [NumberField K]
           AbsoluteValue.nonneg _ _⟩ : NNReal)) m.2
       exact NNReal.coe_le_coe.mpr hle
 
+/- English proof (translation)
+Establish `hv : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), (FinitePlace.equivHeightOneSpectrum.symm v : FinitePlace K).val = HeightOneSpectrum.adicAbv K v` using `fun v => by`. Use extensionality with `x`. Conclude with `FinitePlace.norm_embedding v x`. Use `show _ = ∑ᶠ w : FinitePlace K, Real.log (ReciprocityTheory.ChartRestriction.G.Geo.coeffGaussNorm w.val f)`. Rewrite using `[← finsum_comp_equiv (FinitePlace.equivHeightOneSpectrum (K := K)).symm]`.
+
+Repeatedly rewrite using `[hv, gaussNorm_eq_coeffGaussNorm]`.
+-/
 theorem finsum_log_gaussNorm {K : Type*} [Field K] [NumberField K] {ι : Type*}
     (f : MvPolynomial ι K) :
     ∑ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), Real.log (gaussNorm v f) =
@@ -364,11 +483,21 @@ theorem finsum_log_gaussNorm {K : Type*} [Field K] [NumberField K] {ι : Type*}
   rw [← finsum_comp_equiv (FinitePlace.equivHeightOneSpectrum (K := K)).symm]
   simp_rw [hv, gaussNorm_eq_coeffGaussNorm]
 
+/- English proof (translation)
+The claim follows from `(finsum_log_gaussNorm f).symm`.
+-/
 theorem finGaussLog_eq {ι : Type*} (f : MvPolynomial ι ℚ) :
     IndefiniteRowSideFullHecke.ArithBezout.finGaussLog f =
       ∑ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ), Real.log (gaussNorm v f) :=
   (finsum_log_gaussNorm f).symm
 
+/- English proof (translation)
+Establish `hσ : ∀ σ : ℚ →+* ℂ, σ = Rat.castHom ℂ` using `fun σ => Subsingleton.elim _ _`. Establish `hw : Height.totalWeight ℚ = 1`. Rewrite using `[NumberField.totalWeight_eq_finrank, Module.finrank_self]`. Establish `hmult : (default : InfinitePlace ℚ).mult = 1`. Use `NumberField.totalWeight_eq_sum_mult (K := ℚ)` as an intermediate fact.
+
+Rewrite `this` using `[hw, Fintype.sum_unique]`. Conclude with `this.symm`. Unfold `chowHt IndefiniteRowSideFullHecke.ArithBezout.chowHeight ReciprocityTheory.ChartRestriction.G.Geo.chowHt ReciprocityTheory.ChartRestriction.G.Geo.chowHeightOfForm`. Rewrite using `[finsum_log_gaussNorm, Fintype.sum_subsingleton _ (Rat.castHom ℂ), Fintype.sum_unique, hmult, hw, hσ (default : InfinitePlace ℚ).embedding, Module.finrank_self, mahler_eq_chowMean S hS _ (hH _)]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.logMean, IndefiniteRowSideFullHecke.ArithBezout.chowMean]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chowHt_eq_chowHeight {e δ : ℕ} (H : ArchData ℚ n) (S : Matrix (Fin n) (Fin n) ℂ)
     (hS : IsUnit S) (hH : ∀ σ u, (H.normAt σ).norm u = IndefiniteRowSideFullHecke.ArithBezout.formNorm S u)
     (f : MvPolynomial (Fin (e + 1) × Fin n) ℚ) :
@@ -388,12 +517,20 @@ theorem chowHt_eq_chowHeight {e δ : ℕ} (H : ArchData ℚ n) (S : Matrix (Fin 
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `exists_eq_ofPointMatrix h`. Rewrite using `[show (ofPointMatrix S hS).norm = IndefiniteRowSideFullHecke.ArithBezout.formNorm S from`. Use function extensionality and compare the values at `(ofPointMatrix_norm S hS)]`. Conclude with `continuous_formNorm S`.
+-/
 theorem continuous_hermNorm (h : HermNorm n) : Continuous h.norm := by
   obtain ⟨S, hS, rfl⟩ := exists_eq_ofPointMatrix h
   rw [show (ofPointMatrix S hS).norm = IndefiniteRowSideFullHecke.ArithBezout.formNorm S from
     funext (ofPointMatrix_norm S hS)]
   exact continuous_formNorm S
 
+/- English proof (translation)
+Set `F : (Fin k × Fin n → ℂ) ≃ᵐ (Fin k × Fin n → ℂ)` to `E.toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv`. Establish `hFE : ⇑F = ⇑E.toLinearMap`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Establish `hc` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (Fin k × Fin n → ℂ))) (f := E.toLinearMap) E.isUnit_det'.ne_zero`.
+
+Establish `hc0 : ENNReal.ofReal |(LinearMap.det E.toLinearMap)⁻¹| ≠ 0`. Rewrite using `[ne_eq, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `abs_pos.mpr (inv_ne_zero E.isUnit_det'.ne_zero)`. Use `show ∫ u, G (F u) ∂cond volume (F ⁻¹' s) = _`. Rewrite using `[← integral_map F.measurable.aemeasurable hG.aestronglyMeasurable, cond_map_equiv, hFE, hc, cond_smul _ _ hc0 ENNReal.ofReal_ne_top]`.
+-/
 theorem integral_cond_linearEquiv (E : (Fin k × Fin n → ℂ) ≃ₗ[ℝ] (Fin k × Fin n → ℂ))
     (s : Set (Fin k × Fin n → ℂ)) (G : (Fin k × Fin n → ℂ) → ℝ) (hG : Measurable G) :
     ∫ u, G (E u) ∂cond volume (E ⁻¹' s) = ∫ x, G x ∂cond volume s := by
@@ -411,6 +548,9 @@ theorem integral_cond_linearEquiv (E : (Fin k × Fin n → ℂ) ≃ₗ[ℝ] (Fin
   rw [← integral_map F.measurable.aemeasurable hG.aestronglyMeasurable, cond_map_equiv, hFE, hc,
     cond_smul _ _ hc0 ENNReal.ofReal_ne_top]
 
+/- English proof (translation)
+Rewrite using `[eval_map, eval_map, eval₂_comp_left]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem eval_map_conjugate {K : Type*} [Field K] {ι : Type*} (σ : K →+* ℂ)
     (f : MvPolynomial ι K) (x : ι → ℂ) :
     eval x (f.map (ComplexEmbedding.conjugate σ)) =
@@ -420,6 +560,19 @@ theorem eval_map_conjugate {K : Type*} [Field K] {ι : Type*} (σ : K →+* ℂ)
   funext i
   simp
 
+/- English proof (translation)
+Establish `hc' : ∀ u, h'.norm u = h.norm (star u)` using `fun u => by rw [← hc, star_star]`. Set `Cj : (Fin k × Fin n → ℂ) ≃ₗ[ℝ] (Fin k × Fin n → ℂ)` to `LinearEquiv.piCongrRight fun _ => Complex.conjAe.toLinearEquiv`. Establish `hCj : ∀ u, Cj u = star u` using `fun u => rfl`. Set `N : (Fin k × Fin n → ℂ) → (Fin k × Fin n → ℂ)` to `fun u ij => ((h.norm fun j => u (ij.1, j) : ℝ) : ℂ)⁻¹ * u ij`. Set `G : (Fin k × Fin n → ℂ) → ℝ` to `fun u => Real.log ‖eval (N u) (f.map σ)‖`.
+
+Establish `hN : Measurable N`. Use `measurable_pi_lambda _ fun ij => ?_` and prove the remaining obligations. Conclude with `((Complex.measurable_ofReal.comp ((continuous_hermNorm h).comp (continuous_pi fun j => continuous_apply (ij.1, j))).measurable).inv).mul (measurable_pi_apply ij)`. Establish `hG : Measurable G` using `Real.measurable_log.comp ((continuous_norm.comp (continuous_eval _)).measurable.comp hN)`. Establish `hset : {u : Fin k × Fin n → ℂ | ∀ i, h'.norm (fun j => u (i, j)) < 1} = Cj ⁻¹' {u | ∀ i, h.norm (fun j => u (i, j)) < 1}`.
+
+Use extensionality with `u`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, hCj, hc']`. Both sides reduce to the same expression. Establish `hpt : ∀ u : Fin k × Fin n → ℂ, Real.log ‖eval (fun ij => ((h'.norm fun j => u (ij.1, j) : ℝ) : ℂ)⁻¹ * u ij) (f.map (ComplexEmbedding.conjugate σ))‖ = G (Cj u)`. Introduce `u`.
+
+Establish `hNs : N (Cj u) = star fun ij => ((h'.norm fun j => u (ij.1, j) : ℝ) : ℂ)⁻¹ * u ij`. Use function extensionality and compare the values at `ij`. Establish `h1 : h'.norm (fun j => u (ij.1, j)) = h.norm (fun j => star (u (ij.1, j)))` using `hc' _`. Simplify using `only [N, hCj, Pi.star_apply]`. Rewrite using `[← h1, star_mul', star_inv₀, Complex.star_def, Complex.conj_ofReal]`.
+
+Simplify using `only [G, hNs, eval_map_conjugate, Complex.norm_conj]`. Unfold `mahler sphereMean`. Simplify using `only [MeasureTheory.average, Measure.restrict_apply_univ]`. Use `show ∫ u, Real.log ‖eval (fun ij => ((h'.norm fun j => u (ij.1, j) : ℝ) : ℂ)⁻¹ * u ij) (f.map (ComplexEmbedding.conjugate σ))‖ ∂cond volume {u : Fin k × Fin n → ℂ | ∀ i, h'.norm (fun j => u (i, j)) < 1} = ∫ u, G u ∂cond volume {u : Fin k × Fin n → ℂ | ∀ i, h.norm (fun j => u (i, …`. Repeatedly rewrite using `[hpt, hset]`.
+
+Conclude with `integral_cond_linearEquiv Cj _ G hG`.
+-/
 theorem mahler_conjugate {K : Type*} [Field K] (h h' : HermNorm n)
     (hc : ∀ u, h'.norm (star u) = h.norm u) (σ : K →+* ℂ) (f : MvPolynomial (Fin k × Fin n) K) :
     mahler h' k (f.map (ComplexEmbedding.conjugate σ)) = mahler h k (f.map σ) := by
@@ -462,6 +615,11 @@ theorem mahler_conjugate {K : Type*} [Field K] (h h' : HermNorm n)
   simp_rw [hpt, hset]
   exact integral_cond_linearEquiv Cj _ G hG
 
+/- English proof (translation)
+Rewrite using `[← Finset.univ.sum_fiberwise (fun σ => InfinitePlace.mk σ) F]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => F w.embedding) ?_, Finset.sum_const, InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]`. Introduce `σ hσ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hσ`.
+
+Rewrite `hσ` using `[← InfinitePlace.mk_embedding w, InfinitePlace.mk_eq_iff]`. Break down `hσ with rfl | hσ` into its components or cases. Both sides reduce to the same expression. Rewrite using `[← hσ, hF]`.
+-/
 theorem sum_embeddings_eq {K : Type*} [Field K] [NumberField K] (F : (K →+* ℂ) → ℝ)
     (hF : ∀ σ, F (ComplexEmbedding.conjugate σ) = F σ) :
     ∑ σ, F σ = ∑ w : InfinitePlace K, (w.mult : ℝ) * F w.embedding := by
@@ -477,6 +635,11 @@ theorem sum_embeddings_eq {K : Type*} [Field K] [NumberField K] (F : (K →+* �
   · rfl
   · rw [← hσ, hF]
 
+/- English proof (translation)
+Establish `hsum` using `sum_embeddings_eq (fun σ => mahler (H.normAt σ) (e + 1) (f.map σ)) fun σ => mahler_conjugate _ _ (H.conj_norm σ) σ f`. Establish `hm : ∀ w : InfinitePlace K, mahler (H.normAt w.embedding) (e + 1) (f.map w.embedding) = ReciprocityTheory.ChartRestriction.G.Geo.logMean (IndefiniteRowSideFullHecke.ArithBezout.formSphereLaw (S w) (e + 1)) (MvPolynomial.map w.embedding f)` using `fun w => mahler_eq_chowMean (S w) (hS w) _ (hH w) _`. Establish `hd : (Module.finrank ℚ K : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Unfold `chowHt ReciprocityTheory.ChartRestriction.G.Geo.chowHt ReciprocityTheory.ChartRestriction.G.Geo.chowHeightOfForm`. Rewrite using `[finsum_log_gaussNorm, Finset.sum_add_distrib, hsum, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card K ℂ, NumberField.totalWeight_eq_finrank, nsmul_eq_mul]`.
+
+Repeatedly rewrite using `[hm]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chowHt_eq_chowHt_places {K : Type} [Field K] [NumberField K] {e δ : ℕ} (H : ArchData K n)
     (S : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hS : ∀ w, IsUnit (S w))
     (hH : ∀ w u, (H.normAt w.embedding).norm u = IndefiniteRowSideFullHecke.ArithBezout.formNorm (S w) u)
@@ -498,6 +661,9 @@ theorem chowHt_eq_chowHt_places {K : Type} [Field K] [NumberField K] {e δ : ℕ
   push_cast
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ S hS => ⟨ofPointMatrix_norm S hS, ofPointMatrix_dualNorm S hS, ofPointMatrix_fsLog S hS⟩, fun _ h => exists_eq_ofPointMatrix h, fun _ => std_eq_ofPointMatrix_one, fun _ _ S hS h hh => ⟨fun g hg => sphereMean_eq_integral S hS h hh g hg, fun f => mahler_eq_chowMean S hS h hh …`.
+-/
 theorem equiv :
     (∀ (n : ℕ) (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S),
       (∀ u, (ofPointMatrix S hS).norm u = IndefiniteRowSideFullHecke.ArithBezout.formNorm S u) ∧

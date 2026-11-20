@@ -15,6 +15,21 @@ section Abstract
 
 variable {R M : Type*} [Field R] [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Set `f : U.map S.mkQ →ₗ[R] M ⧸ T` to `(Submodule.factor hST).comp (U.map S.mkQ).subtype`. Establish `hrange : LinearMap.range f = U.map T.mkQ`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype, ← Submodule.map_comp, Submodule.factor_comp_mk]`. Establish `hTU' : T.map S.mkQ ≤ U.map S.mkQ` using `Submodule.map_mono hTU`. Establish `hker : LinearMap.ker f = (T.map S.mkQ).comap (U.map S.mkQ).subtype`.
+
+Use extensionality with `⟨w, hw⟩`. Simplify using `only [LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, f, LinearMap.coe_comp, Function.comp_apply]`. Take `⟨m, -, rfl⟩` from `Submodule.mem_map.1 hw`. Rewrite using `[Submodule.mkQ_apply, show Submodule.factor hST (Submodule.Quotient.mk m) = Submodule.Quotient.mk m from rfl, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hm`. Conclude with `Submodule.mem_map_of_mem hm`. Introduce `hm`. Take `⟨m', hm', he⟩` from `Submodule.mem_map.1 hm`. Establish `: m' - m ∈ S` using `(Submodule.Quotient.eq S).1 he`.
+
+Use `hST this` as an intermediate fact. Establish `h2 : m = m' - (m' - m)` using `by abel`. Rewrite using `[h2]`. Conclude with `T.sub_mem hm' this`. Establish `ek : LinearMap.ker f ≃ₗ[R] T.map S.mkQ` using `(LinearEquiv.ofEq _ _ hker).trans (Submodule.comapSubtypeEquivOfLe hTU')`.
+
+Establish `er : LinearMap.range f ≃ₗ[R] U.map T.mkQ` using `LinearEquiv.ofEq _ _ hrange`. Establish `: FiniteDimensional R (LinearMap.ker f)` using `LinearEquiv.finiteDimensional ek.symm`. Establish `: FiniteDimensional R (LinearMap.range f)` using `LinearEquiv.finiteDimensional er.symm`. Establish `hrank` using `LinearMap.rank_range_add_rank_ker f`. Establish `hfin : FiniteDimensional R (U.map S.mkQ)`.
+
+Apply `Module.rank_lt_aleph0_iff.1` to reduce the goal to its premises. Rewrite using `[← hrank]`. Conclude with `Cardinal.add_lt_aleph0 (Module.rank_lt_aleph0 R _) (Module.rank_lt_aleph0 R _)`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker f`.
+
+Rewrite `h1` using `[ek.finrank_eq, er.finrank_eq]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finiteDimensional_map_mkQ_trans {S T U : Submodule R M} (hST : S ≤ T) (hTU : T ≤ U)
     [FiniteDimensional R (T.map S.mkQ)] [FiniteDimensional R (U.map T.mkQ)] :
     FiniteDimensional R (U.map S.mkQ) ∧
@@ -61,6 +76,9 @@ end Abstract
 
 variable {k K : Type*} [Field k] [Field K] [Algebra k K] [IsFunctionField k K]
 
+/- English proof (translation)
+The claim follows from `(Place.finite_ord_ne_zero x).subset fun v (hv : x ∉ v.ring) => by have hx0 : x ≠ 0 := fun h => hv (h ▸ v.ring.zero_mem) show v.ord x ≠ 0 intro h exact hv ((v.ord_nonneg_iff hx0).1 (by rw [h]))`.
+-/
 theorem Place.finite_not_mem_ring (x : K) : {v : Place k K | x ∉ v.ring}.Finite :=
   (Place.finite_ord_ne_zero x).subset fun v (hv : x ∉ v.ring) => by
     have hx0 : x ≠ 0 := fun h => hv (h ▸ v.ring.zero_mem)
@@ -102,41 +120,65 @@ def mk (f : Place k K → K) (hf : {v : Place k K | f v ∉ v.ring}.Finite) : Re
 
 omit [IsFunctionField k K] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mk_apply (f : Place k K → K) (hf : {v : Place k K | f v ∉ v.ring}.Finite) (v : Place k K) :
     mk f hf v = f v :=
   rfl
 
 omit [IsFunctionField k K] in
+/- English proof (translation)
+The claim follows from `(show repartitions k K from a).2`.
+-/
 theorem finite_not_mem (a : Repartition k K) : {v : Place k K | a v ∉ v.ring}.Finite :=
   (show repartitions k K from a).2
 
 omit [IsFunctionField k K] in
 @[ext]
+/- English proof (translation)
+The claim follows from `DFunLike.ext _ _ h`.
+-/
 theorem ext {a b : Repartition k K} (h : ∀ v, a v = b v) : a = b :=
   DFunLike.ext _ _ h
 
 omit [IsFunctionField k K] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem add_apply (a b : Repartition k K) (v : Place k K) : (a + b) v = a v + b v :=
   rfl
 
 omit [IsFunctionField k K] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sub_apply (a b : Repartition k K) (v : Place k K) : (a - b) v = a v - b v :=
   rfl
 
 omit [IsFunctionField k K] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem neg_apply (a : Repartition k K) (v : Place k K) : (-a) v = -a v :=
   rfl
 
 omit [IsFunctionField k K] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zero_apply (v : Place k K) : (0 : Repartition k K) v = 0 :=
   rfl
 
 omit [IsFunctionField k K] in
 @[simp]
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `c • a v = _`. Rewrite using `[Algebra.smul_def]`.
+-/
 theorem smul_apply (c : k) (a : Repartition k K) (v : Place k K) :
     (c • a) v = algebraMap k K c * a v := by
   change c • a v = _
@@ -152,12 +194,21 @@ noncomputable def mul (x : K) : Repartition k K →ₗ[k] Repartition k K where
   map_smul' c a := by ext v; simp only [mk_apply, smul_apply, RingHom.id_apply]; ring
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mul_apply (x : K) (a : Repartition k K) (v : Place k K) : mul x a v = x * a v :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[_root_.mul_assoc]`.
+-/
 theorem mul_mul (x y : K) (a : Repartition k K) : mul (x * y) a = mul x (mul y a) := by
   ext v; simp [_root_.mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using the standard rewrite rules.
+-/
 theorem mul_one' (a : Repartition k K) : mul (1 : K) a = a := by
   ext v; simp
 
@@ -167,15 +218,24 @@ noncomputable def diag : K →ₗ[k] Repartition k K where
   map_smul' c x := by ext v; simp [Algebra.smul_def]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diag_apply (x : K) (v : Place k K) : diag (k := k) x v = x :=
   rfl
 
+/- English proof (translation)
+Introduce `x y h`. Take `⟨v⟩` from `Place.nonempty (k := k) (K := K)`. Use `congrArg (fun a : Repartition k K => a v) h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem diag_injective : Function.Injective (diag (k := k) (K := K)) := by
   intro x y h
   obtain ⟨v⟩ := Place.nonempty (k := k) (K := K)
   have := congrArg (fun a : Repartition k K => a v) h
   simpa using this
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using the standard rewrite rules.
+-/
 theorem mul_diag (x y : K) : mul x (diag (k := k) y) = diag (x * y) := by
   ext v; simp
 
@@ -184,12 +244,21 @@ variable (k K) in
 noncomputable def principal : Submodule k (Repartition k K) :=
   LinearMap.range (diag (k := k) (K := K))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_principal {a : Repartition k K} : a ∈ principal k K ↔ ∃ x : K, diag x = a :=
   Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨x, rfl⟩`.
+-/
 theorem diag_mem_principal (x : K) : diag x ∈ principal k K :=
   ⟨x, rfl⟩
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `ha`. Rewrite using `[mul_diag]`. Conclude with `diag_mem_principal _`.
+-/
 theorem mul_mem_principal (x : K) {a : Repartition k K} (ha : a ∈ principal k K) :
     mul x a ∈ principal k K := by
   obtain ⟨y, rfl⟩ := ha
@@ -214,27 +283,45 @@ def A (D : Divisor k K) : Submodule k (Repartition k K) where
     rw [Repartition.smul_apply, map_mul]
     exact (mul_le_of_le_one_left' ((v.valuation_le_one_iff _).2 (v.algebraMap_mem c))).trans (ha v)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_A {D : Divisor k K} {a : Repartition k K} :
     a ∈ A D ↔ ∀ v : Place k K, v.valuation (a v) ≤ WithZero.exp (D v) :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `_a ha v` and use `(ha v).trans (WithZero.exp_le_exp.2 (Finsupp.le_def.1 h v))`.
+-/
 theorem A_mono {D E : Divisor k K} (h : D ≤ E) : A D ≤ A E := fun _a ha v =>
   (ha v).trans (WithZero.exp_le_exp.2 (Finsupp.le_def.1 h v))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem diag_mem_A_iff {D : Divisor k K} {x : K} : diag x ∈ A D ↔ x ∈ L D :=
   Iff.rfl
 
 omit [IsFunctionField k K] in
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem add_single_apply_self (D : Divisor k K) (P : Place k K) :
     (D + Finsupp.single P 1 : Divisor k K) P = D P + 1 := by
   simp
 
 omit [IsFunctionField k K] in
+/- English proof (translation)
+Simplify using `[Ne.symm h]`.
+-/
 theorem add_single_apply_of_ne (D : Divisor k K) {P w : Place k K} (h : w ≠ P) :
     (D + Finsupp.single P 1 : Divisor k K) w = D w := by
   simp [Ne.symm h]
 
+/- English proof (translation)
+Rewrite using `[← P.valuation_le_one_iff, map_mul, ht]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_mem_ring_of_valuation {P : Place k K} {t z : K} {n : ℤ}
     (ht : P.valuation t = WithZero.exp (-n)) (hz : P.valuation z ≤ WithZero.exp n) :
     t * z ∈ P.ring := by
@@ -264,12 +351,24 @@ noncomputable def residueMap (D : Divisor k K) (P : Place k K) {t : K}
     rw [Repartition.smul_apply, Place.coe_algebraMap_apply]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem residueMap_apply (D : Divisor k K) (P : Place k K) {t : K}
     (ht : P.valuation t = WithZero.exp (-(D P + 1))) (a : A (D + Finsupp.single P 1)) :
     residueMap D P ht a = IsLocalRing.residue P.ring ⟨t * (a : Repartition k K) P,
       mul_mem_ring_of_valuation ht (by rw [← add_single_apply_self D P]; exact a.2 P)⟩ :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[residueMap_apply, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Express the relevant statement in the definitionally equal form `P.ring.valuation (t * (a : Repartition k K) P) < 1 ↔ _`. Rewrite using `[← P.valuation_lt_one_iff, map_mul, ht]`. Prove the components needed by the constructor for the conclusion. Introduce `h w`.
+
+Distinguish the cases in `hw : w = P`. Substitute `hw` using the available equality. Distinguish the cases in `hz : (a : Repartition k K) w = 0`. Rewrite using `[hz, map_zero]`. Conclude with `zero_le`.
+
+Rewrite `h` using `[w.valuation_eq_exp_neg_ord hz, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[w.valuation_eq_exp_neg_ord hz, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← add_single_apply_of_ne D hw]`. Conclude with `a.2 w`.
+
+Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem residueMap_eq_zero_iff (D : Divisor k K) (P : Place k K) {t : K}
     (ht : P.valuation t = WithZero.exp (-(D P + 1))) (a : A (D + Finsupp.single P 1)) :
     residueMap D P ht a = 0 ↔ (a : Repartition k K) ∈ A D := by
@@ -292,6 +391,21 @@ theorem residueMap_eq_zero_iff (D : Divisor k K) (P : Place k K) {t : K}
         ≤ WithZero.exp (-(D P + 1)) * WithZero.exp (D P) := mul_le_mul' le_rfl (h P)
       _ < 1 := by rw [← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_lt_exp]; omega
 
+/- English proof (translation)
+Introduce `r`. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective r`. Establish `ht0 : t ≠ 0`. Introduce `h`. Rewrite `ht` using `[h, map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero ht.symm`. Set `f : Place k K → K` to `Pi.single P (t⁻¹ * y)`. Establish `hf : {v : Place k K | f v ∉ v.ring}.Finite`. Use `(Set.finite_singleton P).subset fun v (hv : f v ∉ v.ring) => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hvP`.
+
+Apply `hv` to reduce the goal to its premises. Rewrite `hvP` using `[Set.mem_singleton_iff]`. Simplify using `only [f, Pi.single_apply, hvP, if_false]`. Conclude with `v.ring.zero_mem`. Set `a : Repartition k K` to `Repartition.mk f hf`.
+
+Establish `haA : a ∈ A (D + Finsupp.single P 1)`. Introduce `w`. Distinguish the cases in `hw : w = P`. Substitute `hw` using the available equality. Express the relevant statement in the definitionally equal form `w.valuation (f w) ≤ _`.
+
+Simplify using `only [f, Pi.single_eq_same]`. Rewrite using `[map_mul, map_inv₀, ht, add_single_apply_self, ← WithZero.exp_neg, neg_neg]`. Conclude with `mul_le_of_le_one_right' ((w.valuation_le_one_iff _).2 y.2)`. Express the relevant statement in the definitionally equal form `w.valuation (f w) ≤ _`. Simplify using `only [f, Pi.single_apply, hw, if_false, map_zero]`.
+
+Conclude with `zero_le`. Use `⟨⟨a, haA⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[residueMap_apply]`. Use `congr 1`. Use `ext`.
+
+Express the relevant statement in the definitionally equal form `t * f P = y`. Simplify using `only [f, Pi.single_eq_same]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem residueMap_surjective (D : Divisor k K) (P : Place k K) {t : K}
     (ht : P.valuation t = WithZero.exp (-(D P + 1))) :
     Function.Surjective (residueMap D P ht) := by
@@ -333,9 +447,45 @@ noncomputable def relSpace (D E : Divisor k K) :
   (A E ⊔ principal k K).map (A D ⊔ principal k K).mkQ
 
 omit [IsFunctionField k K] in
+/- English proof (translation)
+The claim follows from `le_add_of_nonneg_right (Finsupp.single_nonneg.2 zero_le_one)`.
+-/
 theorem le_add_single (D : Divisor k K) (P : Place k K) : D ≤ D + Finsupp.single P 1 :=
   le_add_of_nonneg_right (Finsupp.single_nonneg.2 zero_le_one)
 
+/- English proof (translation)
+Use `set E : Divisor k K := D + Finsupp.single P 1 with hE`. Take `⟨t, ht⟩` from `P.valuation_surjective (WithZero.exp (-(D P + 1)))`. Use `set ρ : A E →ₗ[k] P.ResidueField := residueMap D P ht with hρdef`. Establish `hρ : Function.Surjective ρ` using `residueMap_surjective D P ht`. Set `F : A E →ₗ[k] Repartition k K ⧸ (A D ⊔ principal k K)` to `(A D ⊔ principal k K).mkQ ∘ₗ (A E).subtype`.
+
+Establish `hDE : A D ≤ A E` using `A_mono (le_add_single D P)`. Establish `hLDE : L D ≤ L E` using `L_mono (le_add_single D P)`. Establish `hrange : relSpace D E = LinearMap.range F`. Rewrite using `[relSpace, Submodule.map_sup, LinearMap.range_comp, Submodule.range_subtype]`. Establish `: (principal k K).map (A D ⊔ principal k K).mkQ = ⊥`.
+
+Rewrite using `[eq_bot_iff, Submodule.map_le_iff_le_comap, Submodule.comap_bot, Submodule.ker_mkQ]`. Conclude with `le_sup_right`. Rewrite using `[this, sup_bot_eq]`. Establish `hker : LinearMap.ker ρ ≤ LinearMap.ker F` using `fun a ha => by`. Rewrite `ha`, the goal using `[LinearMap.mem_ker]`.
+
+Rewrite `ha` using `[hρdef, residueMap_eq_zero_iff]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := A D ⊔ principal k K) (a : Repartition k K) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.mem_sup_left ha`. Take `⟨σ, hσ⟩` from `LinearMap.exists_rightInverse_of_surjective ρ (LinearMap.range_eq_top.2 hρ)`.
+
+Set `G : P.ResidueField →ₗ[k] Repartition k K ⧸ (A D ⊔ principal k K)` to `F ∘ₗ σ`. Establish `hG : ∀ a, G (ρ a) = F a`. Introduce `a`. Establish `h0 : σ (ρ a) - a ∈ LinearMap.ker ρ`. Rewrite using `[LinearMap.mem_ker, map_sub, ← LinearMap.comp_apply, hσ, LinearMap.id_apply, sub_self]`.
+
+Establish `h1` using `hker h0`. Rewrite `h1` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `h1`. Establish `hGrange : LinearMap.range G = LinearMap.range F`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Take `⟨a, rfl⟩` from `hρ r`. Conclude with `⟨a, (hG a).symm⟩`. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `⟨ρ a, hG a⟩`. Set `ψ : L E →ₗ[k] A E` to `(diag ∘ₗ (L E).subtype).codRestrict (A E) fun x => diag_mem_A_iff.2 x.2`. Establish `hGker : LinearMap.ker G = LinearMap.range (ρ ∘ₗ ψ)`. Use extensionality with `r`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hr`. Take `⟨a, rfl⟩` from `hρ r`. Rewrite `hr` using `[LinearMap.mem_ker, hG]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := A D ⊔ principal k K) (a : Repartition k K) = 0 at hr`. Rewrite `hr` using `[Submodule.Quotient.mk_eq_zero]`.
+
+Take `⟨b, hb, c, ⟨x, rfl⟩, hbc⟩` from `Submodule.mem_sup.1 hr`. Establish `hxE : x ∈ L E`. Rewrite using `[← diag_mem_A_iff]`. Establish `: diag x = (a : Repartition k K) - b` using `by rw [← hbc]; abel`. Rewrite using `[this]`.
+
+Conclude with `(A E).sub_mem a.2 (hDE hb)`. Use `⟨⟨x, hxE⟩, ?_⟩` and prove the remaining obligations. Establish `hsplit : a = ⟨b, hDE hb⟩ + ψ ⟨x, hxE⟩` using `Subtype.ext hbc.symm`. Rewrite using `[hsplit, map_add]`. Establish `: ρ ⟨b, hDE hb⟩ = 0` using `(residueMap_eq_zero_iff D P ht _).2 hb`.
+
+Rewrite using `[this, zero_add]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `G (ρ (ψ x)) = 0`.
+
+Rewrite using `[hG]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := A D ⊔ principal k K) (diag (x : K)) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.mem_sup_right (diag_mem_principal _)`. Establish `hkerψ : LinearMap.ker (ρ ∘ₗ ψ) = (L D).comap (L E).subtype`.
+
+Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, hρdef, residueMap_eq_zero_iff]`. Both sides reduce to the same expression. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (ρ ∘ₗ ψ)`. Rewrite `h1` using `[hkerψ, (Submodule.comapSubtypeEquivOfLe hLDE).finrank_eq]`.
+
+Establish `h2` using `LinearMap.finrank_range_add_finrank_ker G`. Rewrite `h2` using `[hGker]`. Establish `hdeg : finrank k P.ResidueField = P.deg` using `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrange, ← hGrange] infer_instance`.
+
+Rewrite using `[hrange, ← hGrange]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem relSpace_add_single (D : Divisor k K) (P : Place k K) :
     FiniteDimensional k (relSpace D (D + Finsupp.single P 1)) ∧
       (finrank k (relSpace D (D + Finsupp.single P 1)) : ℤ) +
@@ -422,6 +572,29 @@ theorem relSpace_add_single (D : Divisor k K) (P : Place k K) :
   · rw [hrange, ← hGrange]
     omega
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `D E hDE hn`. Use `deg_nonneg (sub_nonneg.2 hDE)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `succ n ih`. Introduce `D E hDE hn`. Distinguish the cases in `hED : E = D`. Substitute `hED` using the available equality. Establish `: relSpace E E = ⊥` using `Submodule.mkQ_map_self _`.
+
+Rewrite using `[this]`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, D v < E v := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Conclude with `hED (le_antisymm (Finsupp.le_def.2 h) hDE)`. Use `set E' := E - Finsupp.single v 1 with hE'`. Establish `hDE' : D ≤ E'` using `Finsupp.le_def.2 fun w => by`. Rewrite using `[hE', Finsupp.coe_sub, Pi.sub_apply, Finsupp.single_apply]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Use `Finsupp.le_def.1 hDE w` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hn' : deg (E' - D) < n`. Establish `h1 : deg (E' - D) = deg (E - D) - v.deg`. Rewrite using `[hE', map_sub, map_sub, map_sub, deg_single]`. Expand and normalize the polynomial expressions, which then agree. Use `v.deg_pos` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨hfin', h'⟩` from `ih hDE' hn'`. Establish `hE : E = E' + Finsupp.single v 1` using `by rw [hE']; abel`. Take `⟨hfin1, h1⟩` from `relSpace_add_single E' v`. Rewrite `hfin1`, `h1` using `[← hE]`.
+
+Establish `hST : A D ⊔ principal k K ≤ A E' ⊔ principal k K` using `sup_le_sup_right (A_mono hDE') _`. Establish `hTU : A E' ⊔ principal k K ≤ A E ⊔ principal k K`. Use `sup_le_sup_right (A_mono ?_) _` and prove the remaining obligations. Rewrite using `[hE]`. Conclude with `le_add_single E' v`.
+
+Establish `e1 : relSpace D E' = (A E' ⊔ principal k K).map (A D ⊔ principal k K).mkQ` using `rfl`. Establish `e2 : relSpace E' E = (A E ⊔ principal k K).map (A E' ⊔ principal k K).mkQ` using `rfl`. Establish `e3 : relSpace D E = (A E ⊔ principal k K).map (A D ⊔ principal k K).mkQ` using `rfl`. Rewrite `hfin'`, `h'` using `[e1]`. Rewrite `hfin1`, `h1` using `[e2]`.
+
+Take `⟨hfin, hsum⟩` from `finiteDimensional_map_mkQ_trans hST hTU`. Rewrite using `[e3]`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`. Establish `hdeg : deg E = deg E' + v.deg` using `by rw [hE, map_add, deg_single, one_mul]`.
+
+Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem relSpace_finrank_of_le_of_deg_lt (n : ℕ) :
     ∀ {D E : Divisor k K}, D ≤ E → deg (E - D) < n →
       FiniteDimensional k (relSpace D E) ∧
@@ -481,10 +654,16 @@ instance finiteDimensional_relSpace {D E : Divisor k K} [Fact (D ≤ E)] :
     FiniteDimensional k (relSpace D E) :=
   (relSpace_finrank_of_le_of_deg_lt ((deg (E - D)).toNat + 1) (Fact.out : D ≤ E) (by omega)).1
 
+/- English proof (translation)
+The claim follows from `(relSpace_finrank_of_le_of_deg_lt ((deg (E - D)).toNat + 1) h (by omega)).1`.
+-/
 theorem finiteDimensional_relSpace_of_le {D E : Divisor k K} (h : D ≤ E) :
     FiniteDimensional k (relSpace D E) :=
   (relSpace_finrank_of_le_of_deg_lt ((deg (E - D)).toNat + 1) h (by omega)).1
 
+/- English proof (translation)
+Use `(relSpace_finrank_of_le_of_deg_lt ((deg (E - D)).toNat + 1) h (by omega)).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_relSpace {D E : Divisor k K} (h : D ≤ E) :
     (finrank k (relSpace D E) : ℤ) =
       (deg E - deg D) - ((finrank k (L E) : ℤ) - finrank k (L D)) := by

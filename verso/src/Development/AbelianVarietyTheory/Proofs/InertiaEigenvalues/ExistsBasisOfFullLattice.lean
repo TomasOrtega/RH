@@ -11,6 +11,13 @@ namespace GlobalTheory.Cyc
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `letI : Module R V := Module.compHom V (algebraMap R F)`. Use `haveI : IsScalarTower R F V := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Set `g : M →ₗ[R] V` to `{ toFun := f, map_add' := map_add f, map_smul' := hs }`. Use `haveI : IsLocalizedModule (nonZeroDivisors R) g := { map_units := fun s => by`. Establish `h0 : algebraMap R F s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`.
+
+Rewrite using `[Module.End.isUnit_iff]`. Conclude with `MulAction.bijective (β := V) (Units.mk0 _ h0 : Fˣ)`. Use `surj := fun v => by`. Take `⟨c, hc, m, hm⟩` from `hfull v`. Conclude with `⟨(m, ⟨c, mem_nonZeroDivisors_of_ne_zero hc⟩), hm⟩`.
+
+Use `exists_of_eq := fun h => ⟨1, by rw [hf h]⟩ }`. Conclude with `⟨b0.ofIsLocalizedModule F (nonZeroDivisors R) g, fun j => b0.ofIsLocalizedModule_apply F _ g j, fun m i => b0.ofIsLocalizedModule_repr_apply F _ g m i⟩`.
+-/
 theorem exists_basis_of_fullLattice {R F M V ι : Type} [CommRing R] [IsDomain R] [Field F]
     [Algebra R F] [IsFractionRing R F] [AddCommGroup M] [Module R M] [AddCommGroup V] [Module F V]
     (f : M →+ V) (hf : Function.Injective f)
@@ -35,6 +42,23 @@ theorem exists_basis_of_fullLattice {R F M V ι : Type} [CommRing R] [IsDomain R
     fun j => b0.ofIsLocalizedModule_apply F _ g j,
     fun m i => b0.ofIsLocalizedModule_repr_apply F _ g m i⟩
 
+/- English proof (translation)
+Use `letI : Module R ↥T.L.T := Module.compHom ↥T.L.T (algebraMap R O)`. Introduce `b0`. Establish `key : ∀ (c : R) (w : T.V), algebraMap R F c • w = algebraMap R O c • w`. Introduce `c w`. Rewrite using `[← algebraMap_smul LL (algebraMap R F c) w, ← algebraMap_smul LL (algebraMap R O c) w, hc]`.
+
+Establish `hfull : ∀ v : T.V, ∃ c : R, c ≠ 0 ∧ algebraMap R F c • v ∈ T.L.T`. Introduce `v`. Establish `hv : v ∈ Submodule.span LL (T.L.T : Set T.V)` using `by rw [T.L.span]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`.
+
+Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, hc, hx⟩` from `hx`. Take `⟨c', hc', hy⟩` from `hy`. Use `⟨c * c', mul_ne_zero hc hc', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, map_mul, mul_smul, key c']`. Conclude with `T.L.T.smul_mem _ hx`. Rewrite using `[map_mul, mul_smul, key c]`.
+
+Conclude with `T.L.T.smul_mem _ hy`. Consider the case `smul a x _ hx`. Take `⟨c, hc, hx⟩` from `hx`. Take `⟨c', hc', o, ho⟩` from `hden a`. Use `⟨c' * c, mul_ne_zero hc' hc, ?_⟩` and prove the remaining obligations.
+
+Use `T.L.T.smul_mem o hx` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul LL, ho, mul_smul, algebraMap_smul, smul_comm a (algebraMap R F c) x]`. Rewrite using `[map_mul, mul_smul]` and apply the resulting hypothesis. Take `⟨b, hb, hr⟩` from `exists_basis_of_fullLattice (R := R) (F := F) (T.L.T.subtype.toAddMonoidHom) Subtype.val_injective (fun c m => (key c m).symm) (fun v => by`. Take `⟨c, hc, hv⟩` from `hfull v`.
+
+Conclude with `⟨c, hc, ⟨_, hv⟩, rfl⟩) b0`. Use `⟨b, hb, hr, fun a j i => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← hr, hb, algebraMap_smul]`. Both sides reduce to the same expression. Rewrite using `[← b.sum_repr v]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hv i`. Rewrite using `[hc, key, hb]`. Conclude with `T.L.T.smul_mem _ (b0 i).2`.
+-/
 theorem exists_basis_of_locLat {R G F LL O ι : Type} [CommRing R] [IsDomain R] [Group G]
     [TopologicalSpace G] [Field F] [Field LL] [Algebra F LL] [CommRing O] [Algebra O LL]
     [TopologicalSpace LL] [Algebra R F] [IsFractionRing R F] [Algebra R O] [Fintype ι]
@@ -92,6 +116,13 @@ theorem exists_basis_of_locLat {R G F LL O ι : Type} [CommRing R] [IsDomain R] 
     rw [hc, key, hb]
     exact T.L.T.smul_mem _ (b0 i).2
 
+/- English proof (translation)
+Introduce `l _ K LL T d M A h`. Use `letI := zlMod LL T`. Take `⟨b0, hM, hA⟩` from `h`. Take `⟨b, hb, hr, ha, hv⟩` from `exists_basis_of_locLat (R := ℤ_[l]) T (fun _ => rfl) (fun a => by`. Establish `ha : IsAlgebraic ℤ_[l] a` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] ↥LL.1).2 (Algebra.IsAlgebraic.isAlgebraic a)`.
+
+Take `⟨c, hc, hint⟩` from `ha.exists_integral_multiple`. Conclude with `⟨c, hc, ⟨c • a, hint⟩, Algebra.smul_def c a⟩) b0`. Use `⟨b, fun g i j => ?_, fun a i j => ?_, fun v => ⟨fun h i => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `e : T.ρ g (b j) = ((actTZ LL T g (b0 j) : ↥T.L.T) : T.V)` using `congrArg (T.ρ g) (hb j)`. Rewrite using `[e]`.
+
+Conclude with `(hM g i j).trans (congrArg (algebraMap ℚ_[l] (PadicComplex l)) (hr (actTZ LL T g (b0 j)) i).symm)`. Conclude with `(hA a i j).trans (congrArg (algebraMap ℚ_[l] (PadicComplex l)) (ha a j i).symm)`. Conclude with `(congrArg norm (hr ⟨v, h⟩ i)).trans_le (b0.repr ⟨v, h⟩ i).2`. Conclude with `hv v fun i => ⟨⟨_, h i⟩, rfl⟩`.
+-/
 theorem exists_ratBasis_of_isMat : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (d : ℕ) (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (A : ↥(OL LL) → Matrix (Fin d) (Fin d) (PadicComplex l)), IsMat K LL T M A → ∃ b : Module.Basis (Fin d) ℚ_[l] T.V, (∀ (g : ↥(GK K)) (i j : Fin d), M (g : GQ l) i j = algebraMap ℚ_[l] (PadicComplex l) (b.repr (T.ρ g (b j)) i)) ∧ (∀ (a : ↥(OL LL)) (i j : Fin d), A a i j = algebraMap ℚ_[l] (PadicComplex l) (b.repr ((a : ↥LL.1) • b j) i)) ∧ ∀ v : T.V, v ∈ T.L.T ↔ ∀ i, ‖b.repr v i‖ ≤ 1 := by
   intro l _ K LL T d M A h
   letI := zlMod LL T

@@ -32,11 +32,17 @@ namespace GlobalTheory.HeightDefinite.Generic
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Pj.frMap_trans S T U φ ψ y z w h₁ h₂`.
+-/
 theorem frMap_comp {S T U : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] [CommRing U]
     [Algebra c.F U] (φ : S →ₐ[c.F] T) (ψ : T →ₐ[c.F] U) {y : FrPt Xo c S} {z : FrPt Xo c T} {w : FrPt Xo c U}
     (h₁ : FrMap φ y z) (h₂ : FrMap ψ z w) : FrMap (ψ.comp φ) y w :=
   Formalism.L2.Pj.frMap_trans S T U φ ψ y z w h₁ h₂
 
+/- English proof (translation)
+Take `⟨g, hg2, hg1, hg⟩` from `(GlobalTheory.Frames.frBor_iff_frChg y y' t).1 h`. Establish `hc` using `(GlobalTheory.Frames.ChgBC.frChg_baseChange E H Dw l Xo c S T φ y y' z z' g _ hg hz).1 hz'`. Conclude with `(GlobalTheory.Frames.frBor_iff_frChg z z' _).2 ⟨fun τ => (g τ).map φ, fun τ i j hij => by simp [hg2 τ i j hij], fun τ i => by simp [hg1], hc⟩`.
+-/
 theorem frBor_of_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     (φ : S →ₐ[c.F] T) {t : Ix Dw → Sˣ} {y y' : FrPt Xo c S} {z z' : FrPt Xo c T} (h : FrBor t y y')
     (hz : FrMap φ y z) (hz' : FrMap φ y' z') : FrBor (fun i => Units.map (φ : S →* T) (t i)) z z' := by
@@ -45,6 +51,9 @@ theorem frBor_of_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [A
   exact (GlobalTheory.Frames.frBor_iff_frChg z z' _).2
     ⟨fun τ => (g τ).map φ, fun τ i j hij => by simp [hg2 τ i j hij], fun τ i => by simp [hg1], hc⟩
 
+/- English proof (translation)
+Take `⟨q, χ, y₀, hy₀⟩` from `hL.test S y`. Rewrite using `[evR_eq_map_of_test_point hL hg q χ y₀ y hy₀, evR_eq_map_of_test_point hL hg q (φ.comp χ) y₀ z (frMap_comp χ φ hy₀ hyz)]`. Both sides reduce to the same expression.
+-/
 theorem evR_of_frMap (hL : EvLaws Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {g : Rul Xo c} (hg : g ∈ sec Xo c a n)
     {S T : Type} [CommRing S] [IsReduced S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     {y : FrPt Xo c S} {z : FrPt Xo c T} (hyz : FrMap φ y z) : evR Xo c g z = φ (evR Xo c g y) := by
@@ -53,6 +62,9 @@ theorem evR_of_frMap (hL : EvLaws Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : 
     evR_eq_map_of_test_point hL hg q (φ.comp χ) y₀ z (frMap_comp χ φ hy₀ hyz)]
   rfl
 
+/- English proof (translation)
+Use `IsFractionRing.of_field _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, hb0, e⟩` from `C.frac x`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, by`. Express the relevant statement in the definitionally equal form `x = a / b`. Rewrite using `[eq_div_iff hb0, e]⟩`.
+-/
 theorem isFractionRing_chart {h : GenFrEx Xo c} (C : FChart h) : IsFractionRing C.R (Om C.Z) := by
   refine IsFractionRing.of_field _ _ fun x => ?_
   obtain ⟨a, ha, b, hb, hb0, e⟩ := C.frac x
@@ -60,6 +72,17 @@ theorem isFractionRing_chart {h : GenFrEx Xo c} (C : FChart h) : IsFractionRing 
     change x = a / b
     rw [eq_div_iff hb0, e]⟩
 
+/- English proof (translation)
+Use `letI : TopologicalSpace (C.R →ₐ[c.F] CAt σ) := TopologicalSpace.induced (fun x (a : C.R) => Formalism.L2.PjFree.toC (x a)) inferInstance`. Establish `hcl : IsClosed {x | F x ≤ M}` using `isClosed_le hF continuous_const`. Use `hcl.closure_subset (mem_closure_iff_nhds.2 fun t ht => ?_)` and prove the remaining obligations. Rewrite `ht` using `[nhds_induced, Filter.mem_comap]`. Take `⟨s, hs, hst⟩` from `ht`.
+
+Rewrite `hs` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, u, hu, hIu⟩` from `hs`. Establish `hev : ∀ᶠ ε in nhdsWithin (0 : ℝ) (Set.Ioi 0), ∀ a ∈ I, Metric.ball (Formalism.L2.PjFree.toC (ψ a)) ε ⊆ u a`. Rewrite using `[Filter.eventually_all_finset]`. Introduce `a _`.
+
+Take `⟨δ, hδ, hb⟩` from `Metric.mem_nhds_iff.1 (hu a)`. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with ε hε`. Conclude with `(Metric.ball_subset_ball hε.2.le).trans hb`. Take `⟨ε, hε, hε0⟩` from `(hev.and self_mem_nhdsWithin).exists`. Use `haveI := C.sm`.
+
+Use `haveI := isFractionRing_chart C`. Set `φ : C.R →+* ℂ` to `ψ.toRingHom`. Establish `hφ : φ.comp (algebraMap c.F C.R) = σ` using `RingHom.ext fun k => ψ.commutes k`. Take `⟨P, hP, hPε⟩` from `GlobalTheory.generic_points_dense GlobalTheory.exists_algIndep_tuple_near c.F C.R (Om C.Z) σ φ hφ I ε hε0`. Set `x : C.R →ₐ[c.F] CAt σ` to `{ (P.comp (algebraMap C.R (Om C.Z)) : C.R →+* ℂ) with commutes' := fun k => RingHom.congr_fun hP k }`.
+
+Use `⟨x, hst (hIu fun a ha => hε a ha ?_), hM x P hP fun a => rfl⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_eq_norm]`. Conclude with `hPε a ha`.
+-/
 theorem le_of_generic {h : GenFrEx Xo c} (C : FChart h) (σ : c.F →+* ℂ) (F : (C.R →ₐ[c.F] CAt σ) → ℝ)
     (hF : @Continuous _ _ (TopologicalSpace.induced (fun x (a : C.R) => Formalism.L2.PjFree.toC (x a)) inferInstance) _ F)
     (M : ℝ) (hM : ∀ (x : C.R →ₐ[c.F] CAt σ) (P : Om C.Z →+* ℂ), P ∈ T0.PT (Ω := Om C.Z) σ →
@@ -105,6 +128,9 @@ abbrev pn (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ) (�
 
 include hU hx hfn
 
+/- English proof (translation)
+Take `⟨k, x, s, hs⟩` from `(hU σ hσ).2.2.1 y`. Establish `hs'` using `(GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)).2.1 _ _ _ _ _ hs hb`. Establish `T` using `(GlobalTheory.T.pointwise_norm_section_eq_flagDomain_norm E H Dw l Xo c r U hU xR fn hx hfn).2.1 σ hσ k x`. Conclude with `(T _ _ hs' a n hd g hg).trans (T _ _ hs a n hd g hg).symm`.
+-/
 theorem pn_frBor_good (hd : Dom a n) (hg : g ∈ sec Xo c a n) {σ : c.F →+* ℂ} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     {t : Ix Dw → (CAt σ)ˣ} {y y' : FrPt Xo c (CAt σ)} (hb : FrBor t y y') : pn fn σ a n g y' = pn fn σ a n g y := by
   obtain ⟨k, x, s, hs⟩ := (hU σ hσ).2.2.1 y
@@ -112,6 +138,13 @@ theorem pn_frBor_good (hd : Dom a n) (hg : g ∈ sec Xo c a n) {σ : c.F →+* �
   have T := (GlobalTheory.T.pointwise_norm_section_eq_flagDomain_norm E H Dw l Xo c r U hU xR fn hx hfn).2.1 σ hσ k x
   exact (T _ _ hs' a n hd g hg).trans (T _ _ hs a n hd g hg).symm
 
+/- English proof (translation)
+Distinguish the cases in `hσ : Formalism.L2.PjFree.GoodEmb c σ`. Conclude with `pn_frBor_good hU hx hfn hd hg hσ hb`. Establish `hσ' : Formalism.L2.PjFree.GoodEmb c ((starRingEnd ℂ).comp σ)`. Use `Formalism.L2.PjFree.goodEmb_goodOf c σ` as an intermediate fact. Unfold `Formalism.L2.PjFree.goodOf at this`.
+
+Rewrite `this` using `[if_neg hσ]`. Then use the resulting hypothesis. Establish `hL` using `(GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c).1`. Take `⟨z, hz⟩` from `hL.bc _ _ (conjAlg σ) y`. Take `⟨z', hz'⟩` from `hL.bc _ _ (conjAlg σ) y'`. Establish `T` using `(GlobalTheory.T.pointwise_norm_section_eq_flagDomain_norm E H Dw l Xo c r U hU xR fn hx hfn).2.2 σ`.
+
+Conclude with `((T _ _ hz' a n g hg).symm.trans (pn_frBor_good hU hx hfn hd hg hσ' (frBor_of_frMap _ hb hz hz'))).trans (T _ _ hz a n g hg)`.
+-/
 theorem pn_frBor (hd : Dom a n) (hg : g ∈ sec Xo c a n) {σ : c.F →+* ℂ}
     {t : Ix Dw → (CAt σ)ˣ} {y y' : FrPt Xo c (CAt σ)} (hb : FrBor t y y') : pn fn σ a n g y' = pn fn σ a n g y := by
   by_cases hσ : Formalism.L2.PjFree.GoodEmb c σ
@@ -127,6 +160,11 @@ theorem pn_frBor (hd : Dom a n) (hg : g ∈ sec Xo c a n) {σ : c.F →+* ℂ}
     exact ((T _ _ hz' a n g hg).symm.trans
       (pn_frBor_good hU hx hfn hd hg hσ' (frBor_of_frMap _ hb hz hz'))).trans (T _ _ hz a n g hg)
 
+/- English proof (translation)
+Take `rfl : sgOf P = σ` from `hP`. Establish `hL` using `(GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c).1`. Take `⟨w, hw⟩` from `hL.bc _ _ (PAlg P) C.yg`. Establish `h1` using `frMap_comp _ _ C.gen hw`. Take `rfl : x = (PAlg P).comp C.R.val` from `AlgHom.ext hxP`.
+
+Take `rfl : z = w` from `(GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c _ _ _ C.y).1 _ _ hz h1`. Rewrite using `[(GlobalTheory.T.frameNorm_conjugate_points_eq_pointwise E H Dw l Xo c r U hU xR fn hx hfn h yP hyP).2.2 C.Z P a n g hg]`. Conclude with `pn_frBor hU hx hfn hd hg (frBor_of_frMap _ C.bor (hyP C.Z P) hw)`.
+-/
 theorem pn_generic (hd : Dom a n) (hg : g ∈ sec Xo c a n) {h : GenFrEx Xo c}
     {yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P))} (hyP : ∀ Z, CBase h Z (yP Z))
     (C : FChart h) {σ : c.F →+* ℂ} (x : C.R →ₐ[c.F] CAt σ) (P : Om C.Z →+* ℂ) (hP : P ∈ T0.PT (Ω := Om C.Z) σ)
@@ -141,6 +179,13 @@ theorem pn_generic (hd : Dom a n) (hg : g ∈ sec Xo c a n) {h : GenFrEx Xo c}
   rw [(GlobalTheory.T.frameNorm_conjugate_points_eq_pointwise E H Dw l Xo c r U hU xR fn hx hfn h yP hyP).2.2 C.Z P a n g hg]
   exact pn_frBor hU hx hfn hd hg (frBor_of_frMap _ C.bor (hyP C.Z P) hw)
 
+/- English proof (translation)
+Use `letI : TopologicalSpace (C.R →ₐ[c.F] CAt σ) := TopologicalSpace.induced (fun x (b : C.R) => Formalism.L2.PjFree.toC (x b)) inferInstance`. Use `haveI := C.sm`. Establish `hL` using `(GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c).1`. Establish `hc : ∀ b : C.R, Continuous fun x : C.R →ₐ[c.F] CAt σ => Formalism.L2.PjFree.toC (x b)` using `fun b => (continuous_apply b).comp (continuous_induced_dom (f := fun (x : C.R →ₐ[c.F] CAt σ) (b : C.R) => Formalism.L2.PjFree.toC (x b)))`. Establish `hf : ∀ i, Continuous fun x => |fn σ (y x) i|` using `fun i => continuousOn_univ.1 (GlobalTheory.T.frameNorms_continuousOn_smoothChart E H Dw l Xo c r U hU xR fn hx hfn σ C.R C.y _ Set.univ (fun x => x) y (fun b => (hc b).continuousOn) (fun x _ => hy x) i)`.
+
+Establish `hne` using `(GlobalTheory.T.pointwise_norm_section_eq_flagDomain_norm E H Dw l Xo c r U hU xR fn hx hfn).1`. Establish `e : (fun x => pn fn σ a n g (y x)) = fun x => ‖Formalism.L2.PjFree.toC (x (evR Xo c g C.y))‖ * ∏ i, |fn σ (y x) i|⁻¹ ^ ex Dw a n i`. Use function extensionality and compare the values at `x`. Rewrite using `[← evR_of_frMap hL hg x (hy x)]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `(hc _).norm.mul (continuous_finsetProd _ fun i _ => ((hf i).inv₀ fun x => abs_ne_zero.2 (hne _ _ _)).pow _)`.
+-/
 theorem pn_continuous (hg : g ∈ sec Xo c a n) {h : GenFrEx Xo c} (C : FChart h) {σ : c.F →+* ℂ}
     (y : (C.R →ₐ[c.F] CAt σ) → FrPt Xo c (CAt σ)) (hy : ∀ x, FrMap x C.y (y x)) :
     @Continuous _ _ (TopologicalSpace.induced (fun x (b : C.R) => Formalism.L2.PjFree.toC (x b)) inferInstance) _
@@ -167,6 +212,23 @@ theorem pn_continuous (hg : g ∈ sec Xo c a n) {h : GenFrEx Xo c} (C : FChart h
 
 end Pin
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U hU xR fn hx hfn h yP hyP a n hd Z f hf g hg hgf hg0 σ`. Establish `hgs` using `Formalism.L2.PjFree.cusp_le_sec Xo c U a n hg`. Take `⟨hB, hS⟩` from `GlobalTheory.T.pointwiseNorm_bddAbove_iSup_eq_cuspForm_supNorm E H Dw l Xo c r U hU xR fn hx hfn a n hd g hg`. Take `⟨hL, -, -, hA⟩` from `GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c`. Establish `hv : valC h a n f Z = valC h a n g Z` using `by unfold valC; rw [hgf]`.
+
+Rewrite using `[hv, ← hS σ]`. Establish `hbdd : BddAbove (Set.range fun P : T0.PT (Ω` using `Om Z) σ => nrmC fn (yP Z) (wtZ a n) (valC h a n g Z) P) := by`. Use `⟨supR Xo c fn σ a n g, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨P, hP⟩, rfl⟩`. Take `rfl : sgOf P = σ` from `hP`.
+
+Simplify using `only`. Rewrite using `[(GlobalTheory.T.frameNorm_conjugate_points_eq_pointwise E H Dw l Xo c r U hU xR fn hx hfn h yP hyP).2.2 Z P a n g hgs]`. Conclude with `le_ciSup (hB (sgOf P)) (yP Z P)`. Establish `hnn : 0 ≤ ⨆ P : T0.PT (Ω` using `Om Z) σ, nrmC fn (yP Z) (wtZ a n) (valC h a n g Z) P := Real.iSup_nonneg fun P => mul_nonneg (norm_nonneg _) (Finset.prod_nonneg fun i _ => zpow_nonneg (abs_nonneg _) _)`. Use `⟨hbdd, Real.iSup_le (fun y => ?_) hnn⟩` and prove the remaining obligations.
+
+Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Take `⟨C, ψ, z, t, hz, hb⟩` from `hA h (CAt σ) y`. Express the relevant statement in the definitionally equal form `pn fn σ a n g y ≤ _`. Rewrite using `[pn_frBor hU hx hfn hd hgs hb]`. Distinguish the cases in `hZ : C.Z = Z`.
+
+Substitute `hZ choose w hw using fun x : C.R →ₐ[c.F] CAt σ => hL.bc _ _ x C.y` using the available equality. Take `rfl : z = w ψ` from `(GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c _ _ _ C.y).1 _ _ hz (hw ψ)`. Use `le_of_generic C σ (fun x => pn fn σ a n g (w x)) (pn_continuous hU hx hfn hgs C w hw) _ (fun x P hP hxP => ?_) ψ` and prove the remaining obligations. Rewrite using `[pn_generic hU hx hfn hd hgs hyP C x P hP hxP (hw x)]`. Conclude with `le_ciSup hbdd ⟨P, hP⟩`.
+
+Establish `h1 : evR Xo c g C.yg = 0`. Rewrite using `[hL.wt a n g hgs _ C.t _ _ (hL.test _ _) (hL.test _ _) C.bor]`. Use `hg0 C.Z hZ` as an intermediate fact. Unfold `evC at this`. Rewrite using `[this, mul_zero]`.
+
+Establish `h2 : evR Xo c g C.y = 0`. Rewrite `h1` using `[evR_of_frMap hL hgs C.R.val C.gen]`. Conclude with `Subtype.ext h1`. Establish `h3 : evR Xo c g z = 0` using `by rw [evR_of_frMap hL hgs ψ hz, h2, map_zero]`. Establish `h4 : pn fn σ a n g z = 0`.
+
+Express the relevant statement in the definitionally equal form `cabs (evR Xo c g z) * _ = 0`. Rewrite using `[h3]`. Conclude with `mul_eq_zero_of_left (norm_zero (E := ℂ)) _`. Rewrite using `[h4]`. Conclude with `hnn`.
+-/
 theorem supC_le_iSup_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) → ∀ (xR : ℝ) (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ), 0 < xR → FnPin U xR fn → ∀ (h : GenFrEx Xo c) (yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P))), (∀ Z, CBase h Z (yP Z)) → ∀ a n, Dom a n → ∀ (Z : Comp Xo c), ∀ f ∈ Formalism.L2.PjFree.cusp Xo c U a n, ∀ g ∈ Formalism.L2.PjFree.cusp Xo c U a n, evC h Z g = evC h Z f → (∀ Z', Z' ≠ Z → evC h Z' g = 0) → ∀ σ : c.F →+* ℂ, BddAbove (Set.range fun P : T0.PT (Ω := Om Z) σ => nrmC fn (yP Z) (wtZ a n) (valC h a n f Z) P) ∧ Formalism.L2.PjFree.supC Xo c U xR (Formalism.L2.PjFree.goodOf c σ) a n g ≤ ⨆ P : T0.PT (Ω := Om Z) σ, nrmC fn (yP Z) (wtZ a n) (valC h a n f Z) P := by
   intro E _ _ _ H Dw l Xo c r U hU xR fn hx hfn h yP hyP a n hd Z f hf g hg hgf hg0 σ
   have hgs := Formalism.L2.PjFree.cusp_le_sec Xo c U a n hg

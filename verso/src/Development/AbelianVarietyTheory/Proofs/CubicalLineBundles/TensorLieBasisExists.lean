@@ -16,6 +16,11 @@ namespace GlobalTheory.SerreLie
 
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `h : u 0 = GrpTangent.epsScale c ≫ v` using `Over.OverMorphism.ext (hu 0)`. Simplify using `[h]`. Introduce and unpack `rfl`.
+
+Use `⟨![GrpTangent.epsScale c ≫ v], fun i => ?_, by simp⟩` and prove the remaining obligations. Use `fin_cases i`. Both sides reduce to the same expression.
+-/
 theorem isLieComb_one_iff (c : R) (v x : epsR R ⟶ G) :
     IsLieComb ![c] ![v] x ↔ x = GrpTangent.epsScale c ≫ v := by
   constructor
@@ -37,11 +42,19 @@ def multiples (a : OAct O G) {v : epsR R ⟶ G} (hv : IsTangent v)
     simp only [Pts.hom_mk, RingHom.id_apply, Pts.hom_smul, Category.assoc, ha]
     rw [epsScale_mul_assoc, Algebra.smul_def, mul_comm])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hom_multiples (a : OAct O G) {v : epsR R ⟶ G} (hv : IsTangent v)
     (ha : ∀ c, v ≫ a.act c = GrpTangent.epsScale (algebraMap O R c) ≫ v) (r : R) :
     (multiples a hv ha r).hom = GrpTangent.epsScale r ≫ v := rfl
 
 omit [Algebra O R] in
+/- English proof (translation)
+Rewrite using `[isTangent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : (toUnit (epsR R) ≫ epsZero R) ≫ x.hom = 1` using `congrArg Pts.hom h`. Establish `h2` using `congrArg (epsZero R ≫ ·) h1`.
+
+Simplify using `only [← Category.assoc, MonObj.comp_one] at h2`. Rewrite `h2` using `[toUnit_unique (epsZero R ≫ toUnit _) (𝟙 _), Category.id_comp]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `Pts.ext (by rw [Pts.hom_pre, Category.assoc, h, MonObj.comp_one]; rfl)`.
+-/
 theorem pre_eq_zero_iff (a : OAct O G) (x : Pts a (epsR R)) :
     Pts.pre a (toUnit (epsR R) ≫ epsZero R) x = 0 ↔ IsTangent x.hom := by
   rw [isTangent_iff]
@@ -55,6 +68,9 @@ theorem pre_eq_zero_iff (a : OAct O G) (x : Pts a (epsR R)) :
     exact Pts.ext (by rw [Pts.hom_pre, Category.assoc, h, MonObj.comp_one]; rfl)
 
 omit [Algebra O R] in
+/- English proof (translation)
+Rewrite using `[← pre_eq_zero_iff, map_sub, sub_eq_zero]`. Apply `Pts.ext` to reduce the goal to its premises. Simplify using `only [Pts.hom_pre, ← Category.assoc]`. Rewrite using `[Category.assoc (toUnit _) (epsZero R) (toUnit _), toUnit_unique (epsZero R ≫ toUnit _) (𝟙 _), Category.comp_id]`.
+-/
 theorem isTangent_sub_pre (a : OAct O G) (x : Pts a (epsR R)) :
     IsTangent (x - Pts.pre a (toUnit (epsR R) ≫ epsZero R) x).hom := by
   rw [← pre_eq_zero_iff, map_sub, sub_eq_zero]
@@ -63,6 +79,15 @@ theorem isTangent_sub_pre (a : OAct O G) (x : Pts a (epsR R)) :
   rw [Category.assoc (toUnit _) (epsZero R) (toUnit _),
     toUnit_unique (epsZero R ≫ toUnit _) (𝟙 _), Category.comp_id]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (multiples a (hv.1 0) ha)` using `fun r s h => by`. Establish `h' : GrpTangent.epsScale r ≫ v = GrpTangent.epsScale s ≫ v` using `congrArg Pts.hom h`. Use `(hv.2 _ (isTangent_epsScale r (hv.1 0))).unique ((isLieComb_one_iff r v _).2 rfl) ((isLieComb_one_iff s v _).2 h')` as an intermediate fact. Conclude with `congrFun this 0`. Establish `hsur : ∀ x : Pts a (epsR R), ∃ r, multiples a (hv.1 0) ha r = (LinearMap.id - Pts.pre a (toUnit (epsR R) ≫ epsZero R) : _ →ₗ[O] _) x` using `fun x => by`.
+
+Take `⟨c, hc, -⟩` from `hv.2 _ (isTangent_sub_pre a x)`. Establish `e : c = ![c 0]` using `by ext i; fin_cases i; rfl`. Rewrite `hc` using `[e, isLieComb_one_iff]`. Conclude with `⟨c 0, Pts.ext hc.symm⟩`. Use `choose ρ hρ using hsur`.
+
+Use `⟨⟨⟨ρ, fun x y => hinj ?_⟩, fun c x => hinj ?_⟩, LinearMap.ext fun r => hinj ?_, LinearMap.ext hρ⟩` and prove the remaining obligations. Rewrite using `[map_add, hρ, hρ, hρ, map_add]`. Simplify using `only [RingHom.id_apply, map_smul, hρ]`. Express the relevant statement in the definitionally equal form `multiples a (hv.1 0) ha (ρ _) = _`. Rewrite using `[hρ, LinearMap.sub_apply, (pre_eq_zero_iff a (multiples a (hv.1 0) ha r)).2 (isTangent_epsScale r (hv.1 0)), sub_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_retraction (a : OAct O G) {v : epsR R ⟶ G} (hv : IsLieBasis ![v])
     (ha : ∀ c, v ≫ a.act c = GrpTangent.epsScale (algebraMap O R c) ≫ v) :
     ∃ ρ : Pts a (epsR R) →ₗ[O] R, ρ ∘ₗ multiples a (hv.1 0) ha = LinearMap.id ∧
@@ -88,6 +113,25 @@ theorem exists_retraction (a : OAct O G) {v : epsR R ⟶ G} (hv : IsLieBasis ![v
       (isTangent_epsScale r (hv.1 0)), sub_zero]
     rfl
 
+/- English proof (translation)
+Introduce `R _ G _ _ O _ _ M _ _ _ _ A _ _ a b t v hv ha'`. Establish `ha : ∀ c, v ≫ a.act c = GrpTangent.epsScale (algebraMap O R c) ≫ v` using `fun c => (isLieComb_one_iff _ _ _).1 (ha' c)`. Take `⟨ρ, h₁, h₂⟩` from `exists_retraction a hv ha`. Use `set j := multiples a (hv.1 0) ha with hj`. Set `Ψ : R ⊗[O] M →ₗ[O] Pts b (epsR R)` to `(t.equiv _).toLinearMap ∘ₗ j.lTensor M ∘ₗ (TensorProduct.comm O R M).toLinearMap`.
+
+Establish `hΨ : ∀ (r : R) (m : M), (Ψ (r ⊗ₜ m)).hom = GrpTangent.epsScale r ≫ v ≫ t.tmul m` using `fun r m => by`. Simplify using `[Ψ, hj, hom_multiples]`. Use `⟨fun y => (Ψ y).hom, fun y z h => ?_, fun x => ⟨fun hx => ?_, ?_⟩, fun y z => ?_, fun c y => ?_, fun m => ?_, fun φ y => ?_⟩` and prove the remaining obligations. Establish `h' : j.lTensor M (TensorProduct.comm O R M y) = j.lTensor M (TensorProduct.comm O R M z)` using `(t.equiv _).injective (Pts.ext h)`. Establish `h''` using `congrArg (ρ.lTensor M) h'`.
+
+Simplify using `only [← LinearMap.lTensor_comp_apply, h₁, LinearMap.lTensor_id, LinearMap.id_apply] at h''`. Conclude with `(TensorProduct.comm O R M).injective h''`. Take `⟨z, hz⟩` from `(t.equiv (epsR R)).surjective (Pts.mk b x)`. Establish `h0 : (Pts.pre a (toUnit (epsR R) ≫ epsZero R)).lTensor M z = 0`. Apply `(t.equiv _).injective` to reduce the goal to its premises.
+
+Rewrite using `[t.natural, hz, map_zero]`. Conclude with `(pre_eq_zero_iff b _).2 hx`. Use `⟨(TensorProduct.comm O R M).symm (ρ.lTensor M z), ?_⟩` and prove the remaining obligations. Simplify using `only [Ψ, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Rewrite using `[← LinearMap.lTensor_comp_apply, h₂, LinearMap.lTensor_sub, LinearMap.sub_apply, h0, sub_zero, LinearMap.lTensor_id, LinearMap.id_apply, hz, Pts.hom_mk]`.
+
+Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[← pre_eq_zero_iff]`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul r m`.
+
+Rewrite using `[pre_eq_zero_iff, hΨ]`. Conclude with `isTangent_epsScale r (isTangent_comp (hv.1 0) _)`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz, add_zero]`. Simplify using `only [map_add, Pts.hom_add]`. Rewrite using `[isLieComb_one_iff]`.
+
+Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul r m`. Simplify using `only [TensorProduct.smul_tmul', hΨ, smul_eq_mul]`. Rewrite using `[epsScale_mul_assoc]`.
+
+Consider the case `add y z hy hz`. Simplify using `only [smul_add, map_add, Pts.hom_add, MonObj.comp_mul] at hy hz ⊢`. Rewrite using `[hy, hz]`. Simplify using `only [hΨ, epsScale_one, Category.id_comp]`. Proceed by induction on `y with`.
+
+Consider the case `zero => simp`. Consider the case `tmul r m => simp only [LinearMap.baseChange_tmul, hΨ, Category.assoc, IsTensor.tmul_mapLeft]`. Consider the case `add y z hy hz`. Simplify using `only [map_add, Pts.hom_add, MonObj.mul_comp] at hy hz ⊢`. Rewrite using `[hy, hz]`.
+-/
 theorem exists_lie_tensor : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (O : Type) [CommRing O] [Algebra O R] (M : Type) [AddCommGroup M] [Module O M] [Module.Finite O M] [Module.Projective O M] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (a : OAct O G) (b : OAct O A) (t : IsTensor A b G a M) (v : epsR R ⟶ G), IsLieBasis ![v] → (∀ c, IsLieComb ![algebraMap O R c] ![v] (v ≫ a.act c)) → ∃ Φ : R ⊗[O] M → (epsR R ⟶ A), Function.Injective Φ ∧ (∀ x, IsTangent x ↔ x ∈ Set.range Φ) ∧ (∀ y z, Φ (y + z) = Φ y * Φ z) ∧ (∀ (c : R) y, IsLieComb ![c] ![Φ y] (Φ (c • y))) ∧ (∀ m, Φ (1 ⊗ₜ m) = v ≫ t.tmul m) ∧ ∀ (φ : M →ₗ[O] M) y, Φ (φ.baseChange R y) = Φ y ≫ t.mapLeft t φ := by
   intro R _ G _ _ O _ _ M _ _ _ _ A _ _ a b t v hv ha'
   have ha : ∀ c, v ≫ a.act c = GrpTangent.epsScale (algebraMap O R c) ≫ v :=

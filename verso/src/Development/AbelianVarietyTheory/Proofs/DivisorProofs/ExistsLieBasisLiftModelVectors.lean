@@ -19,6 +19,11 @@ noncomputable section
 
 namespace GlobalTheory.LieLift
 
+/- English proof (translation)
+Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `ex : x₀ = ρ ≫ x` using `Over.OverMorphism.ext (hx.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Establish `ey : y₀ = ρ ≫ y` using `Over.OverMorphism.ext (hy.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Rewrite using `[ex, ey, ← MonObj.comp_mul]`.
+
+Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+-/
 theorem grpPullback_self {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 S) (𝟙 G.left) := by
   refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩
   let ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T := Over.homMk (𝟙 T.left) (by simp)
@@ -27,11 +32,17 @@ theorem grpPullback_self {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullbac
   rw [ex, ey, ← MonObj.comp_mul]
   exact (Category.id_comp _).trans (Category.comp_id _).symm
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `using hw`.
+-/
 theorem isLieBasis_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n m : ℕ} (h : n = m)
     {w : Fin m → (epsR R ⟶ G)} (hw : IsLieBasis w) : IsLieBasis (fun j : Fin n => w (j.cast h)) := by
   subst h
   simpa using hw
 
+/- English proof (translation)
+Set `Fa : DualNumber K →ₐ[K] DualNumber K` to `{ F with commutes' := h₁ }`. Establish `: Fa = AlgHom.id K _` using `DualNumber.algHom_ext h₂`. Conclude with `RingHom.ext fun z => congrArg (fun q : DualNumber K →ₐ[K] DualNumber K => q z) this`.
+-/
 theorem dual_eq_id {K : Type} [Field K] (F : DualNumber K →+* DualNumber K)
     (h₁ : ∀ a, F (algebraMap K _ a) = algebraMap K _ (RingHom.id K a)) (h₂ : F DualNumber.eps = DualNumber.eps) :
     F = RingHom.id _ := by
@@ -39,6 +50,23 @@ theorem dual_eq_id {K : Type} [Field K] (F : DualNumber K →+* DualNumber K)
   have : Fa = AlgHom.id K _ := DualNumber.algHom_ext h₂
   exact RingHom.ext fun z => congrArg (fun q : DualNumber K →ₐ[K] DualNumber K => q z) this
 
+/- English proof (translation)
+Introduce `K _ G _ _ L σ σ' x x' hg' y y' M hx hx' hM`. Take `⟨φ, he, ψ, F, hφ, hψ, hmaps, hsec, hF₁, hF₂, hxv⟩` from `hx`. Take `⟨φ', -, -, F', hφ', -, -, -, hF₁', hF₂', hxv'⟩` from `hx'`. Establish `e : spMap (RingHom.id K) = 𝟙 (Sp K)` using `Spec.map_id _`. Establish `e' : spMap (RingHom.id (DualNumber K)) = 𝟙 (Sp (DualNumber K))` using `Spec.map_id _`.
+
+Establish `hF` using `dual_eq_id F hF₁ hF₂`. Establish `hF'` using `dual_eq_id F' hF₁' hF₂'`. Substitute `hF hF'` using the available equality. Establish `eD : spMap (Formalism.L2.Pj.dualMap (RingHom.id K)) = 𝟙 (Sp (DualNumber K))`. Use `Eq.trans (congrArg spMap (RingHom.ext fun z => ?_)) e'` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp [Formalism.L2.Pj.dualMap]`. Establish `eR : spMap (Chart.dualMapR (RingHom.id K)) = 𝟙 (Sp (DualNumber K))`. Use `Eq.trans (congrArg spMap (RingHom.ext fun z => ?_)) e'` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`. Establish `hw : ∀ i, (y' i).left ≫ G.hom = (epsR K).hom ≫ spMap (RingHom.id K)` using `fun i => by`.
+
+Rewrite using `[e, Category.comp_id]`. Conclude with `Over.w (y' i)`. Set `v : Fin x.P.g → (epsR K ⟶ x.P.A)` to `fun i => Over.homMk (hφ.1.lift (y' i).left (epsR K).hom (hw i)) (hφ.1.lift_snd _ _ _)`. Establish `hvφ : ∀ i, (v i).left ≫ φ = (y' i).left` using `fun i => hφ.1.lift_fst _ _ _`. Set `χ : x.P.A.left ⟶ x'.P.A.left` to `hφ'.1.lift φ x.P.A.hom hφ.1.w`.
+
+Establish `hχ : χ ≫ φ' = φ` using `hφ'.1.lift_fst _ _ _`. Establish `hχ' : χ ≫ x'.P.A.hom = x.P.A.hom ≫ spMap (RingHom.id K)`. Rewrite using `[hφ'.1.lift_snd, e, Category.comp_id]`. Establish `hn : IsGrpPullback x.P.A G (spMap (RingHom.id K) ≫ spMap (RingHom.id K)) (χ ≫ φ')`. Rewrite using `[hχ, e, Category.comp_id, ← e]`.
+
+Conclude with `hφ`. Establish `hC : IsGrpPullback x.P.A x'.P.A (spMap (RingHom.id K)) χ` using `IsGrpPullback.cancel hφ' hn hχ'`. Use `x'.P.isAb.smooth` as an intermediate fact. Establish `hvχ : ∀ j, (v j).left ≫ χ = spMap (Chart.dualMapR (RingHom.id K)) ≫ (x'.v (j.cast hg'.symm)).left`. Introduce `j`.
+
+Apply `hφ'.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hχ, hvφ, eR, Category.id_comp, hxv', e', Category.id_comp]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, hχ', ← Category.assoc, Over.w (v j), eR, Category.id_comp, Over.w (x'.v _), e, Category.comp_id]`. Establish `hv : IsLieBasis v` using `Chart.isLieBasis_baseChange (RingHom.id K) hC (isLieBasis_cast hg'.symm x'.basis) hvχ`.
+
+Use `⟨v, hv, fun i => ?_, φ, he, ψ, RingHom.id _, hφ, hψ, hmaps, hsec, hF₁, hF₂, fun i => ?_⟩` and prove the remaining obligations. Establish `h' : IsGrpPullback x.P.A G (spMap (RingHom.id K) ≫ 𝟙 (Sp K)) φ` using `by rw [Category.comp_id]; exact hφ`. Conclude with `GlobalTheory.LamT.isLieComb_of_two_pullbacks (RingHom.id K) rfl (grpPullback_self G) h' rfl (hM i) (fun j => by rw [hxv, eD, e', Category.comp_id]; rfl) (by rw [hvφ, eD, Category.comp_id, Category.id_comp])`. Rewrite using `[hvφ, e', Category.id_comp]`.
+-/
 theorem main : ∀ (K : Type) [Field K] (G : Over (Sp K)) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (σ σ' : L.L.Sec) (x x' : KeyIn K) (hg' : x'.P.g = x.P.g) (y y' : Fin x.P.g → (epsR K ⟶ G)) (M : Matrix (Fin x.P.g) (Fin x.P.g) K), KeyOn (RingHom.id K) x G L σ y → KeyOn (RingHom.id K) x' G L σ' (fun i => y' (i.cast hg')) → (∀ i, IsLieComb (M i) y (y' i)) → ∃ (v : Fin x.P.g → (epsR K ⟶ x.P.A)) (hv : IsLieBasis v), (∀ i, IsLieComb (M i) x.v (v i)) ∧ KeyOn (RingHom.id K) ⟨x.P, x.g_pos, x.rig, x.rig_gen, x.th, x.th_ne, v, hv⟩ G L σ y' := by
   intro K _ G _ _ L σ σ' x x' hg' y y' M hx hx' hM
   obtain ⟨φ, he, ψ, F, hφ, hψ, hmaps, hsec, hF₁, hF₂, hxv⟩ := hx

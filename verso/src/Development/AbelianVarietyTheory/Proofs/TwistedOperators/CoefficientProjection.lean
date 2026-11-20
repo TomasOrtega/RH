@@ -12,15 +12,32 @@ namespace GlobalTheory.SepReal.UnitaryMatrixFamily
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+The claim follows from `h.2`.
+-/
 theorem umat_mem (h : UJ ε) : umat h ∈ UJset ε := h.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem umat_mul (a b : UJ ε) : umat (a * b) = umat a * umat b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem umat_one : umat (1 : UJ ε) = 1 := rfl
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_umat : Continuous (umat : UJ ε → Matrix (Fin n) (Fin n) ℂ) :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+Establish `hJ` using `Jm_mul_self ε`. Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `hL : (Jm ε * gᴴ * Jm ε) * g = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hR : g * (Jm ε * gᴴ * Jm ε) = 1` using `mul_eq_one_comm.1 hL`.
+
+Conclude with `⟨⟨⟨g, _, hR, hL⟩, hg⟩, rfl⟩`.
+-/
 theorem exists_umat {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) : ∃ h : UJ ε, umat h = g := by
   have hJ := Jm_mul_self ε
   have hg' : gᴴ * Jm ε * g = Jm ε := hg
@@ -35,36 +52,63 @@ section Rep
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Rewrite using `[umat_one]`. Conclude with `hσ.1.1`.
+-/
 theorem rep_one (hσ : IsURepOn (UJset ε) σ) : σ (umat (1 : UJ ε)) = 1 := by
   rw [umat_one]; exact hσ.1.1
 
+/- English proof (translation)
+Rewrite using `[rep_one hσ]`. Both sides reduce to the same expression.
+-/
 theorem rep_one_apply (hσ : IsURepOn (UJset ε) σ) (x : H) : σ (umat (1 : UJ ε)) x = x := by
   rw [rep_one hσ]; rfl
 
+/- English proof (translation)
+Rewrite using `[umat_mul, hσ.1.2 _ (umat_mem a) _ (umat_mem b)]`. Both sides reduce to the same expression.
+-/
 theorem rep_mul (hσ : IsURepOn (UJset ε) σ) (a b : UJ ε) (x : H) :
     σ (umat (a * b)) x = σ (umat a) (σ (umat b) x) := by
   rw [umat_mul, hσ.1.2 _ (umat_mem a) _ (umat_mem b)]; rfl
 
+/- English proof (translation)
+The claim follows from `hσ.2.1 _ (umat_mem a) x`.
+-/
 theorem rep_norm (hσ : IsURepOn (UJset ε) σ) (a : UJ ε) (x : H) : ‖σ (umat a) x‖ = ‖x‖ :=
   hσ.2.1 _ (umat_mem a) x
 
+/- English proof (translation)
+Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ (umat a)).toLinearMap, hσ.2.1 _ (umat_mem a)⟩`. Conclude with `L.inner_map_map x y`.
+-/
 theorem rep_inner (hσ : IsURepOn (UJset ε) σ) (a : UJ ε) (x y : H) :
     ⟪σ (umat a) x, σ (umat a) y⟫_ℂ = ⟪x, y⟫_ℂ := by
   let L : H →ₗᵢ[ℂ] H := ⟨(σ (umat a)).toLinearMap, hσ.2.1 _ (umat_mem a)⟩
   exact L.inner_map_map x y
 
+/- English proof (translation)
+Rewrite using `[← rep_mul hσ, mul_inv_cancel, rep_one_apply hσ]`.
+-/
 theorem rep_inv_apply (hσ : IsURepOn (UJset ε) σ) (a : UJ ε) (x : H) :
     σ (umat a) (σ (umat a⁻¹) x) = x := by
   rw [← rep_mul hσ, mul_inv_cancel, rep_one_apply hσ]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← rep_inv_apply hσ a y]`. Conclude with `rep_inner hσ a x _`.
+-/
 theorem rep_inner_left (hσ : IsURepOn (UJset ε) σ) (a : UJ ε) (x y : H) :
     ⟪σ (umat a) x, y⟫_ℂ = ⟪x, σ (umat a⁻¹) y⟫_ℂ := by
   conv_lhs => rw [← rep_inv_apply hσ a y]
   exact rep_inner hσ a x _
 
+/- English proof (translation)
+The claim follows from `(hσ.2.2 x).comp_continuous continuous_umat umat_mem`.
+-/
 theorem rep_continuous (hσ : IsURepOn (UJset ε) σ) (x : H) : Continuous fun h : UJ ε => σ (umat h) x :=
   (hσ.2.2 x).comp_continuous continuous_umat umat_mem
 
+/- English proof (translation)
+The claim follows from `continuous_const.inner (rep_continuous hσ x)`.
+-/
 theorem coef_continuous (hσ : IsURepOn (UJset ε) σ) (x y : H) :
     Continuous fun h : UJ ε => ⟪y, σ (umat h) x⟫_ℂ :=
   continuous_const.inner (rep_continuous hσ x)
@@ -80,6 +124,17 @@ open GlobalTheory.SepReal.UnitaryMatrixFamily
 variable {n : ℕ} {ε' : Fin n → Bool} {H' K : Type} [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [CompleteSpace H']
   [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
 
+/- English proof (translation)
+Use `set m := fun h : UJ ε' => ⟪w, σ (umat h) w⟫_ℂ with hm`. Establish `hint : ∀ x : K, Integrable (fun h => star (m h) • ρ (umat h) x) (muG ε')`. Introduce `x`. Use `Integrable.mono' (hi.norm.mul_const ‖x‖) ((continuous_star.comp (coef_continuous hσ w w)).smul (rep_continuous hρ x)).aestronglyMeasurable (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_star, rep_norm hρ]`.
+
+Set `L : K →ₗ[ℂ] K` to `{ toFun := fun x => (d : ℂ) • ∫ h, star (m h) • ρ (umat h) x ∂muG ε' map_add' := fun x y => by`. Simplify using `only [map_add, smul_add]`. Rewrite using `[integral_add (hint x) (hint y), smul_add]`. Use the proof step `map_smul' := fun c x => by`. Simplify using `only [map_smul, RingHom.id_apply]`.
+
+Rewrite using `[show (fun h => star (m h) • c • ρ (umat h) x) = fun h => c • (star (m h) • ρ (umat h) x) from`. Use function extensionality and compare the values at `fun h => smul_comm _ _ _, integral_smul, smul_comm] }`. Use `⟨L.mkContinuous (‖(d : ℂ)‖ * ∫ h, ‖m h‖ ∂muG ε') fun x => ?_, fun x y => ?_⟩` and prove the remaining obligations. Use `show ‖(d : ℂ) • ∫ h, star (m h) • ρ (umat h) x ∂muG ε'‖ ≤ _`. Rewrite using `[norm_smul, mul_assoc]`.
+
+Use `gcongr`. Use `(norm_integral_le_of_norm_le (hi.norm.mul_const ‖x‖) (Filter.Eventually.of_forall fun h => ?_)).trans_eq (integral_mul_const _ _)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_star, rep_norm hρ]`. Use `show ⟪y, (d : ℂ) • ∫ h, star (m h) • ρ (umat h) x ∂muG ε'⟫_ℂ = _`. Rewrite using `[inner_smul_right, ← integral_inner (hint x)]`.
+
+Simplify using `only [inner_smul_right, hm]`.
+-/
 theorem weak_exists (σ : Mat n → (H' →L[ℂ] H')) (ρ : Mat n → (K →L[ℂ] K)) (d : ℝ) (w : H')
     (hσ : IsURepOn (UJset ε') σ) (hρ : IsURepOn (UJset ε') ρ)
     (hi : Integrable (fun h => ⟪w, σ (umat h) w⟫_ℂ) (muG ε')) :
@@ -112,6 +167,13 @@ theorem weak_exists (σ : Mat n → (H' →L[ℂ] H')) (ρ : Mat n → (K →L[�
     rw [inner_smul_right, ← integral_inner (hint x)]
     simp only [inner_smul_right, hm]
 
+/- English proof (translation)
+Use `ext_inner_left ℂ fun y => ?_` and prove the remaining obligations. Rewrite using `[hQ]`. Establish `h1 : ∀ h : UJ ε', star ⟪w, σ (umat h) w⟫_ℂ * ⟪y, ρ (umat h) (j w)⟫_ℂ = coefOn σ w (ContinuousLinearMap.adjoint j y) h * star (coefOn σ w w h)`. Introduce `h`. Rewrite using `[← hj _ (umat_mem h), ← ContinuousLinearMap.adjoint_inner_left j]`.
+
+Simplify using `only [coefOn]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h1]`. Rewrite using `[(hfd.2 w _ w w).2, inner_self_eq_norm_sq_to_K, hw, ContinuousLinearMap.adjoint_inner_left]`. Establish `hd : (d : ℂ) ≠ 0` using `by exact_mod_cast hfd.1.ne'`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+-/
 theorem fixes (σ : Mat n → (H' →L[ℂ] H')) (ρ : Mat n → (K →L[ℂ] K)) (d : ℝ) (w : H') (Q : K →L[ℂ] K)
     (hfd : IsFdeg (muG ε') σ d) (hw : ‖w‖ = 1)
     (hQ : ∀ x y, ⟪y, Q x⟫_ℂ = (d : ℂ) * ∫ h, star ⟪w, σ (umat h) w⟫_ℂ * ⟪y, ρ (umat h) x⟫_ℂ ∂muG ε')
@@ -138,6 +200,17 @@ open GlobalTheory.SepReal.UnitaryMatrixFamily
 variable {n : ℕ} {ε' : Fin n → Bool} {H' K : Type} [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [CompleteSpace H']
   [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
 
+/- English proof (translation)
+Use `set A := Finsupp.linearCombination ℂ fun g : UJ ε' => σ (umat g) w with hA`. Use `set S := (LinearMap.range A).topologicalClosure with hS`. Establish `hSc : IsClosed (S : Set H')` using `(LinearMap.range A).isClosed_topologicalClosure`. Establish `hstab : ∀ s ∈ UJset ε', ∀ v ∈ S, σ s v ∈ S`. Introduce `s hs v hv`.
+
+Take `⟨a, rfl⟩` from `exists_umat hs`. Establish `hmap : LinearMap.range A ≤ S.comap (σ (umat a)).toLinearMap`. Introduce and unpack `_ ⟨c, rfl⟩`. Use `show σ (umat a) (A c) ∈ S`. Apply `Submodule.le_topologicalClosure` to reduce the goal to its premises.
+
+Use `⟨c.mapDomain (a * ·), ?_⟩` and prove the remaining obligations. Rewrite using `[hA, Finsupp.linearCombination_mapDomain, ← ContinuousLinearMap.coe_coe, Finsupp.apply_linearCombination]`. Conclude with `congrArg (fun f => Finsupp.linearCombination ℂ f c) (funext fun g => rep_mul hσ a g w)`. Establish `hcl : IsClosed ((S.comap (σ (umat a)).toLinearMap : Submodule ℂ H') : Set H')` using `hSc.preimage (σ (umat a)).continuous`. Conclude with `Submodule.topologicalClosure_minimal _ hmap hcl hv`.
+
+Break down `hirr S hSc hstab with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hw` to reduce the goal to its premises. Establish `: w ∈ S` using `Submodule.le_topologicalClosure _ ⟨Finsupp.single 1 1, by simp [hA, rep_one_apply hσ]⟩`. Rewrite `this` using `[h]`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 this`. Establish `: Dense ((LinearMap.range A : Submodule ℂ H') : Set H')` using `(Submodule.dense_iff_topologicalClosure_eq_top).2 h`. Rewrite using `[DenseRange, ← LinearMap.coe_range]`. Conclude with `this`.
+-/
 theorem dense_orbit (σ : Mat n → (H' →L[ℂ] H')) (hσ : IsURepOn (UJset ε') σ) (hirr : IsIrredOn (UJset ε') σ)
     (w : H') (hw : w ≠ 0) : DenseRange (Finsupp.linearCombination ℂ fun g : UJ ε' => σ (umat g) w) := by
   set A := Finsupp.linearCombination ℂ fun g : UJ ε' => σ (umat g) w with hA
@@ -167,6 +240,21 @@ theorem dense_orbit (σ : Mat n → (H' →L[ℂ] H')) (hσ : IsURepOn (UJset ε
       (Submodule.dense_iff_topologicalClosure_eq_top).2 h
     rw [DenseRange, ← LinearMap.coe_range]; exact this
 
+/- English proof (translation)
+Establish `hu : w ≠ 0`. Introduce `h`. Rewrite `hw` using `[h, norm_zero]`. Conclude with `zero_ne_one hw`. Use `set A := Finsupp.linearCombination ℂ fun g : UJ ε' => σ (umat g) w with hA`.
+
+Use `set B := Finsupp.linearCombination ℂ fun g : UJ ε' => ρ (umat g) ξ with hB`. Establish `hd : DenseRange A` using `dense_orbit σ hσ hirr w hu`. Establish `hgram : ∀ g h : UJ ε', ⟪ρ (umat g) ξ, ρ (umat h) ξ⟫_ℂ = ⟪σ (umat g) w, σ (umat h) w⟫_ℂ * ⟪ξ, ξ⟫_ℂ`. Introduce `g h`. Rewrite using `[rep_inner_left hρ, rep_inner_left hσ, ← rep_mul hρ, ← rep_mul hσ, hξ]`.
+
+Establish `hn : ∀ c, ‖B c‖ = ‖ξ‖ * ‖A c‖`. Introduce `c`. Establish `h : ⟪B c, B c⟫_ℂ = ⟪A c, A c⟫_ℂ * ⟪ξ, ξ⟫_ℂ`. Simplify using `only [hA, hB, Finsupp.linearCombination_apply, Finsupp.sum, sum_inner, inner_sum, inner_smul_left, inner_smul_right, hgram, Finset.sum_mul, mul_assoc]`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`.
+
+Establish `h' : ‖B c‖ ^ 2 = (‖ξ‖ * ‖A c‖) ^ 2`. Rewrite using `[mul_pow, mul_comm]`. Conclude with `h` after adjusting the coercions. Conclude with `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h'`. Establish `hT : ∀ c, B.extendOfNorm A (A c) = B c` using `LinearMap.extendOfNorm_eq hd ⟨‖ξ‖, fun c => (hn c).le⟩`.
+
+Establish `hg : ∀ g : UJ ε', B.extendOfNorm A (σ (umat g) w) = ρ (umat g) ξ` using `fun g => by`. Simplify `hT (Finsupp.single g 1)` using `[hA, hB]`. Use `⟨B.extendOfNorm A, fun s hs a => ?_, by simpa [rep_one_apply hσ, rep_one_apply hρ] using hg 1⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `exists_umat hs`. Establish `hlin : ((B.extendOfNorm A).comp (σ (umat t))).toLinearMap ∘ₗ A = ((ρ (umat t)).comp (B.extendOfNorm A)).toLinearMap ∘ₗ A`.
+
+Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `g r`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe, ContinuousLinearMap.coe_comp', Function.comp_apply, hA, Finsupp.linearCombination_single, map_smul]`. Rewrite using `[← rep_mul hσ, hg, hg, rep_mul hρ]`. Establish `hEq : (B.extendOfNorm A).comp (σ (umat t)) = (ρ (umat t)).comp (B.extendOfNorm A)`.
+
+Apply `DFunLike.coe_injective` to reduce the goal to its premises. Use `hd.equalizer ((B.extendOfNorm A).comp (σ (umat t))).continuous ((ρ (umat t)).comp (B.extendOfNorm A)).continuous ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Conclude with `LinearMap.congr_fun hlin c`. Conclude with `DFunLike.congr_fun hEq a`.
+-/
 theorem extend (σ : Mat n → (H' →L[ℂ] H')) (ρ : Mat n → (K →L[ℂ] K)) (w : H') (ξ : K)
     (hσ : IsURepOn (UJset ε') σ) (hirr : IsIrredOn (UJset ε') σ) (hρ : IsURepOn (UJset ε') ρ) (hw : ‖w‖ = 1)
     (hξ : ∀ g : UJ ε', ⟪ξ, ρ (umat g) ξ⟫_ℂ = ⟪w, σ (umat g) w⟫_ℂ * ⟪ξ, ξ⟫_ℂ) :
@@ -218,6 +306,11 @@ open GlobalTheory.SepReal.UnitaryMatrixFamily
 variable {n : ℕ} {ε' : Fin n → Bool} {H' K : Type} [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [CompleteSpace H']
   [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
 
+/- English proof (translation)
+Establish `e : ∀ h : UJ ε', ⟪w, σ (umat (g⁻¹ * (h * k))) w⟫_ℂ = ⟪σ (umat g) w, σ (umat h) (σ (umat k) w)⟫_ℂ`. Introduce `h`. Rewrite using `[rep_inner_left hσ, ← rep_mul hσ h k, ← rep_mul hσ]`. Repeatedly rewrite using `[e]`. Establish `h2` using `(hfd.2 w w (σ (umat k) w) (σ (umat g) w)).2`.
+
+Simplify using `only [coefOn] at h2`. Rewrite using `[h2, ← inner_conj_symm (σ (umat k) w) w]`. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schur_conv (σ : Mat n → (H' →L[ℂ] H')) (d : ℝ) (w : H') (hσ : IsURepOn (UJset ε') σ)
     (hfd : IsFdeg (muG ε') σ d) (g k : UJ ε') :
     ∫ h, ⟪w, σ (umat h) w⟫_ℂ * star ⟪w, σ (umat (g⁻¹ * (h * k))) w⟫_ℂ ∂muG ε' =
@@ -232,6 +325,29 @@ theorem schur_conv (σ : Mat n → (H' →L[ℂ] H')) (d : ℝ) (w : H') (hσ : 
   simp only [RCLike.star_def]
   ring
 
+/- English proof (translation)
+Use `set m := fun h : UJ ε' => ⟪w, σ (umat h) w⟫_ℂ with hm`. Use `set c := fun k : UJ ε' => ⟪x, ρ (umat k) x⟫_ℂ with hc`. Establish `hmc : Continuous m` using `coef_continuous hσ w w`. Establish `hcc : Continuous c` using `coef_continuous hρ x x`. Establish `hleft : ∀ y, ⟪Q x, y⟫_ℂ = (d : ℂ) * ∫ h, m h * ⟪ρ (umat h) x, y⟫_ℂ ∂muG ε'`.
+
+Introduce `y`. Rewrite using `[← inner_conj_symm, hQ, map_mul, ← integral_conj]`. Simplify using `only [Complex.conj_ofReal, map_mul, hm, RCLike.star_def, RCLike.conj_conj, inner_conj_symm]`. Establish `hmid : ∀ h, ⟪ρ (umat h) x, ρ (umat g) (Q x)⟫_ℂ = (d : ℂ) * ∫ k, star (m (g⁻¹ * (h * k))) * c k ∂muG ε'`. Introduce `h`.
+
+Establish `e1` using `rep_inner_left hρ g⁻¹ (ρ (umat h) x) (Q x)`. Rewrite `e1` using `[inv_inv]`. Rewrite using `[← e1, ← rep_mul hρ, hQ]`. Use `congr 1`. Use `(integral_mul_left_eq_self _ (g⁻¹ * h)).symm.trans (integral_congr_ae (Filter.Eventually.of_forall fun k => ?_))` and prove the remaining obligations.
+
+Simplify using `only [hm, hc]`. Rewrite using `[rep_mul hρ (g⁻¹ * h) k, rep_inner hρ, mul_assoc]`. Use `set G := fun h k : UJ ε' => m h * star (m (g⁻¹ * (h * k))) * c k with hGdef`. Establish `hP : Integrable (fun p : UJ ε' × UJ ε' => m p.1 * m (g⁻¹ * (p.1 * p.2))) ((muG ε').prod (muG ε'))` using `(measurePreserving_prod_mul (muG ε') (muG ε')).integrable_comp_of_integrable (hi.mul_prod (hi.comp_mul_left g⁻¹))`. Establish `hG : Integrable (Function.uncurry G) ((muG ε').prod (muG ε'))`.
+
+Use `Integrable.mono' (hP.norm.mul_const (‖x‖ * ‖x‖)) ?_ (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Establish `: Continuous (Function.uncurry G)` using `((hmc.comp continuous_fst).mul ((continuous_star.comp hmc).comp (continuous_const.mul (continuous_fst.mul continuous_snd)))).mul (hcc.comp continuous_snd)`. Conclude with `this.aestronglyMeasurable`. Simplify using `only [Function.uncurry, hGdef, norm_mul, norm_star] gcongr`. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[rep_norm hρ]`. Establish `hswap` using `integral_integral_swap hG`. Rewrite using `[hleft]`. Repeatedly rewrite using `[hmid]`. Establish `e2 : ∀ h, m h * ((d : ℂ) * ∫ k, star (m (g⁻¹ * (h * k))) * c k ∂muG ε') = (d : ℂ) * ∫ k, G h k ∂muG ε'`.
+
+Introduce `h`. Rewrite using `[← integral_const_mul, ← integral_const_mul, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [hGdef]`. Expand and normalize the polynomial expressions, which then agree.
+
+Repeatedly rewrite using `[e2]`. Rewrite using `[integral_const_mul, hswap]`. Establish `e3 : ∀ k, ∫ h, G h k ∂muG ε' = m g * star (m k) / d * c k`. Introduce `k`. Simplify using `only [hGdef]`.
+
+Rewrite using `[integral_mul_const]`. Use `congr 1`. Conclude with `schur_conv σ d w hσ hfd g k`. Repeatedly rewrite using `[e3]`. Rewrite using `[hQ x x]`.
+
+Establish `e4 : ∀ k, m g * star (m k) / d * c k = (m g / d) * (star (m k) * c k)` using `fun k => by ring`. Repeatedly rewrite using `[e4]`. Rewrite using `[integral_const_mul]`. Establish `hd : (d : ℂ) ≠ 0` using `by exact_mod_cast hfd.1.ne'`. Simplify using `only [hm, hc]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem coef_of_Q (σ : Mat n → (H' →L[ℂ] H')) (ρ : Mat n → (K →L[ℂ] K)) (d : ℝ) (w : H') (Q : K →L[ℂ] K)
     (hσ : IsURepOn (UJset ε') σ) (hfd : IsFdeg (muG ε') σ d) (hρ : IsURepOn (UJset ε') ρ)
     (hi : Integrable (fun h => ⟪w, σ (umat h) w⟫_ℂ) (muG ε'))

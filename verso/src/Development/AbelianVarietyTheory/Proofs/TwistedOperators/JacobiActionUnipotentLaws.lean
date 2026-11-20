@@ -18,6 +18,9 @@ namespace GlobalTheory.Unf.FB.ThLawsL
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨Matrix.vecMulVec B.ζ (fun i : Fin (σ + 1) => if i.1 + 1 = σ + 1 then (1 : D.host.E) else 0), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Simplify using `only [zEll, rat, Matrix.map_apply, Matrix.vecMulVec_apply, ell, map_mul, ratV]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem zEll_rat {σ : ℕ} (B : BesL D σ) :
     ∃ z0 : Matrix (Fin B.L.rank) (Fin (σ + 1)) D.host.E, zEll B.L (σ + 1) B.ζ = rat z0 := by
   refine ⟨Matrix.vecMulVec B.ζ (fun i : Fin (σ + 1) => if i.1 + 1 = σ + 1 then (1 : D.host.E) else 0), ?_⟩
@@ -26,6 +29,27 @@ theorem zEll_rat {σ : ℕ} (B : BesL D σ) :
   congr 1
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `D ψ hψs σ J B y hy`. Establish `hψ : IsCharAF D.host.F ψ` using `hψs.1`. Establish `hx : ∀ u ∈ UX D (σ + 1), zEll B.L (σ + 1) B.ζ ⬝ u.1 = zEll B.L (σ + 1) B.ζ` using `fun u hu => zEll_mul B.L B.ζ hu`. Take `⟨hcen, hmul, hlevi, -⟩` from `GlobalTheory.JacHom.jacS_hom D ψ J.W J.W₀ B.L (σ + 1) J.d (zEll B.L (σ + 1) B.ζ) hx`. Take `⟨M, hM⟩` from `exists_bound_quasi hψ hy`.
+
+Establish `hval : ∀ n, star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n) = star (ψ (cenS J.d B.L (zEll B.L (σ + 1) B.ζ) n) * y (ptS J.d B.L (zEll B.L (σ + 1) B.ζ) n)) * star (psiFlag ψ J.d n)` using `fun n => by`. Rewrite using `[jacS_zero_apply]`. Establish `hnorm : ∀ a, ‖ψ a‖ = 1` using `hψ.2.1`. Establish `hflag1 : ∀ n, ‖psiFlag ψ J.d n‖ = 1` using `fun n => hnorm _`. Use `⟨?_, ⟨M, hM, fun n => ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) = fun n => star (ψ (cenS J.d B.L (zEll B.L (σ + 1) B.ζ) n) * y (ptS J.d B.L (zEll B.L (σ + 1) B.ζ) n)) * star (psiFlag ψ J.d n)` using `funext hval`. Rewrite using `[e]`. Conclude with `(((hψ.1.comp (continuous_cenS _ _ _)).mul (hy.2.comp (continuous_ptS _ _ _))).star).mul (continuous_psiFlag hψ.1 _).star`. Use `show ‖star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)‖ ≤ M`. Rewrite using `[hval, norm_mul, norm_star, norm_star, norm_mul, hnorm, hflag1, one_mul, mul_one]`.
+
+Conclude with `hM _`. Introduce `γ hγN hγQ n hn`. Take `⟨z0, hz0⟩` from `zEll_rat B`. Establish `hp` using `hmul γ hγN n hn`. Take `⟨g0, hg0⟩` from `ptS_rat J.d B.L z0 hγQ`.
+
+Rewrite `hg0` using `[← hz0]`. Establish `hc : ψ (cenS J.d B.L (zEll B.L (σ + 1) B.ζ) γ) = 1` using `by rw [hz0]; exact psi_cenS_rat hψ J.d B.L z0 hγQ`. Use `show star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) (γ * n) y 0) * star (psiFlag ψ J.d (γ * n)) = star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)`. Rewrite using `[hval, hval, hp.1, hp.2.1, psiFlag_mul J.d ψ hγN hn, psiFlag_rat hψ J.d hγQ, one_mul, hg0, hy.1 g0]`. Use `congr 2`.
+
+Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, add_neg_cancel_right, AddChar.map_add_eq_mul, hc, one_mul]`. Introduce `c n hn`. Establish `hc : J.d.nC c ∈ flagN J.d` using `J.d.nC_mem_NFlag c`. Use `show star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) (J.d.nC c * n) y 0) * star (psiFlag ψ J.d (J.d.nC c * n)) = _ * (star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n))`. Rewrite using `[(hmul _ hc n hn).2.2, psiFlag_mul J.d ψ hc hn, psiFlag_nC, jacS_nC]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul', one_mul, star_one]`. Expand and normalize the polynomial expressions, which then agree. Introduce `n hn u hu`. Establish `hl : J.d.levi u ∈ flagN J.d` using `J.d.levi_mem_NFlag hu`. Use `show star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) (n * J.d.levi u) y 0) * star (psiFlag ψ J.d (n * J.d.levi u)) = star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n) * _`.
+
+Rewrite using `[hlevi n hn u hu, psiFlag_mul J.d ψ hn hl, psiFlag_levi, star_mul', mul_assoc]`. Introduce `b u hu`. Establish `hb : J.d.nB b ∈ flagN J.d` using `J.d.nB_mem_NFlag b`. Establish `hl : J.d.levi u ∈ flagN J.d` using `J.d.levi_mem_NFlag hu`. Establish `hp : ptS J.d B.L (zEll B.L (σ + 1) B.ζ) (J.d.nB b) = zEll B.L (σ + 1) B.ζ ⬝ b`.
+
+Use `ptS_nB_mul_nC J.d B.L (zEll B.L (σ + 1) B.ζ) b 0` as an intermediate fact. Rewrite `this` using `[J.d.nC_zero, mul_one]`. Then use the resulting hypothesis. Establish `hc : cenS J.d B.L (zEll B.L (σ + 1) B.ζ) (J.d.nB b) = 0`. Use `hcen b 0` as an intermediate fact. Rewrite `this` using `[J.d.nC_zero, mul_one]`.
+
+Rewrite using `[this, HypDec.qS]`. Simplify using `[GlobalTheory.MixModel.symplOH_zero_right]`. Use `show star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) (J.d.nB b * J.d.levi u) y 0) * star (psiFlag ψ J.d (J.d.nB b * J.d.levi u)) = _`. Rewrite using `[hlevi _ hb u hu, psiFlag_mul J.d ψ hb hl, jacS_zero_apply, hp, hc, AddChar.map_zero_eq_one, one_mul, psiFlag_nB, one_mul, psiFlag_levi]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem th_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (J : JacL D (σ + 1)) (B : BesL D σ) (y : WO J.W₀ B.L → ℂ), GlobalTheory.Unf.FB.Quasi ψ J.W₀ B.L y → Continuous (fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) ∧ (∃ M : ℝ, (∀ w, ‖y w‖ ≤ M) ∧ ∀ n, ‖(fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) n‖ ≤ M) ∧ (∀ γ ∈ flagN J.d, γ ∈ GQ J.W → ∀ n ∈ flagN J.d, (fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) (γ * n) = (fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) n) ∧ (∀ c, ∀ n ∈ flagN J.d, (fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) (J.d.nC c * n) = star (ψ (J.d.qS B.L c (zEll B.L (σ + 1) B.ζ))) * (fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) n) ∧ (∀ n ∈ flagN J.d, ∀ u ∈ UX D (σ + 1), (fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) (n * J.d.levi u) = (fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) n * star (psiUni ψ u)) ∧ ∀ b, ∀ u ∈ UX D (σ + 1), (fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) (J.d.nB b * J.d.levi u) = star (psiUni ψ u) * star (y (zEll B.L (σ + 1) B.ζ ⬝ b)) := by
   intro D ψ hψs σ J B y hy
   have hψ : IsCharAF D.host.F ψ := hψs.1

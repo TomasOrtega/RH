@@ -23,20 +23,37 @@ variable (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (hup : ∀ b a : Fin D
 
 include hup hd
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hup i j hij)]`. Simplify using `[hd]`.
+-/
 theorem det_one : X0.det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j hij => hup i j hij)]
   simp [hd]
 
+/- English proof (translation)
+The claim follows from `Matrix.nonsing_inv_mul _ (by rw [det_one X0 hup hd]; exact isUnit_one)`.
+-/
 theorem inv_mul : X0⁻¹ * X0 = 1 := Matrix.nonsing_inv_mul _ (by rw [det_one X0 hup hd]; exact isUnit_one)
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_nonsing_inv _ (by rw [det_one X0 hup hd]; exact isUnit_one)`.
+-/
 theorem mul_inv : X0 * X0⁻¹ = 1 := Matrix.mul_nonsing_inv _ (by rw [det_one X0 hup hd]; exact isUnit_one)
 
+/- English proof (translation)
+Establish `hU : IsUnit X0.det` using `by rw [det_one X0 hup hd]; exact isUnit_one`. Establish `hbt : X0.BlockTriangular id` using `fun i j hij => hup i j hij`. Use `haveI : Invertible X0 := Matrix.invertibleOfIsUnitDet X0 hU`. Conclude with `fun b a h => Matrix.blockTriangular_inv_of_blockTriangular hbt h`.
+-/
 theorem inv_up : ∀ b a : Fin D.R.rS, a < b → X0⁻¹ b a = 0 := by
   have hU : IsUnit X0.det := by rw [det_one X0 hup hd]; exact isUnit_one
   have hbt : X0.BlockTriangular id := fun i j hij => hup i j hij
   haveI : Invertible X0 := Matrix.invertibleOfIsUnitDet X0 hU
   exact fun b a h => Matrix.blockTriangular_inv_of_blockTriangular hbt h
 
+/- English proof (translation)
+Introduce `a`. Establish `h` using `congrFun (congrFun (mul_inv X0 hup hd) a) a`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq, ← Finset.add_sum_erase _ _ (Finset.mem_univ a), hd, one_mul]`. Establish `hz : ∑ e ∈ Finset.univ.erase a, X0 a e * X0⁻¹ e a = 0`. Use `Finset.sum_eq_zero fun e he => ?_` and prove the remaining obligations.
+
+Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase he) with h1 | h1` into its components or cases. Rewrite using `[hup a e h1, zero_mul]`. Rewrite using `[inv_up X0 hup hd e a h1, mul_zero]`. Rewrite `h` using `[hz, add_zero]`. Conclude with `h`.
+-/
 theorem inv_diag : ∀ a, X0⁻¹ a a = 1 := by
   intro a
   have h := congrFun (congrFun (mul_inv X0 hup hd) a) a
@@ -49,12 +66,22 @@ theorem inv_diag : ∀ a, X0⁻¹ a a = 1 := by
   rw [hz, add_zero] at h
   exact h
 
+/- English proof (translation)
+Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, inv_mul X0 hup hd, Matrix.map_one _ f.map_zero f.map_one]`.
+-/
 theorem map_inv' {K : Type*} [Field K] (f : D.host.E →+* K) : (X0.map f)⁻¹ = X0⁻¹.map f := by
   refine Matrix.inv_eq_left_inv ?_
   rw [← Matrix.map_mul, inv_mul X0 hup hd, Matrix.map_one _ f.map_zero f.map_one]
 
 end Inv
 
+/- English proof (translation)
+Use `show (VS D).hT (xs b) (xs c) ∈ aaD D b * aaD D c`. It suffices to establish `H : ∀ y ∈ Submodule.span (𝓞 D.host.E) {y | ∃ d ∈ (aaD D c : Set D.host.E), ∃ l ∈ X.Lb, y = d • l}, (VS D).hT (xs b) y ∈ aaD D b * aaD D c from H _ (hxs c)`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Take `⟨d, hdm, l, hl, rfl⟩` from `hz`. Rewrite using `[map_smul, smul_eq_mul, mul_comm d]`. Conclude with `FractionalIdeal.mul_mem_mul (LatA.hT_aaLb_mem X (hxs b) hl) hdm`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul o x _ hx`. Rewrite using `[← algebraMap_smul D.host.E o x, map_smul, smul_eq_mul]`. Conclude with `LatA.fi_smul_mem hx o`.
+-/
 theorem gram_mem (xs : Fin D.R.rS → (VS D).V) (hxs : ∀ b, xs b ∈ aaLb X b) (b c : Fin D.R.rS) :
     Gq D xs b c ∈ aaD D b * aaD D c := by
   show (VS D).hT (xs b) (xs c) ∈ aaD D b * aaD D c

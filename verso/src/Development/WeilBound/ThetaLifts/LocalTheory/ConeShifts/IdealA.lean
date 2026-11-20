@@ -20,45 +20,88 @@ variable (F) in
 def cp (w : HeightOneSpectrum (𝓞 E)) : AE F E →+* w.adicCompletion E :=
   (evalV E w).toRingHom.comp ((finAdEquiv F E).toRingHom.comp (finTens F E))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cp_apply (w : HeightOneSpectrum (𝓞 E)) (x : AE F E) : cp F w x = finAdEquiv F E (finTens F E x) w := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem inAt_iff {𝔞 : FI E} {v : Pl F} {x : AE F E} :
     InAt 𝔞 v x ↔ ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → Valued.v (cp F w x) ≤ exp (-count E w 𝔞) := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cp_tmul (w : HeightOneSpectrum (𝓞 E)) (a : AF F) (s : E) :
     cp F w (a ⊗ₜ[F] s) = complMap rfl (evFin F (w.under (𝓞 F)) a) * algebraMap E _ s := rfl
 
+/- English proof (translation)
+The claim follows from `Algebra.smul_def a x`.
+-/
 theorem smul_eq (a : AF F) (x : AE F E) : a • x = (a ⊗ₜ[F] (1 : E)) * x := Algebra.smul_def a x
 
+/- English proof (translation)
+Rewrite using `[smul_eq, map_mul, cp_tmul, map_one, mul_one]`.
+-/
 theorem cp_smul (w : HeightOneSpectrum (𝓞 E)) (a : AF F) (x : AE F E) :
     cp F w (a • x) = complMap rfl (evFin F (w.under (𝓞 F)) a) * cp F w x := by
   rw [smul_eq, map_mul, cp_tmul, map_one, mul_one]
 
+/- English proof (translation)
+The claim follows from `evalV_singleFin_self v 1`.
+-/
 theorem ev_idem (v : Pl F) : evFin F v (idem F v) = 1 := evalV_singleFin_self v 1
 
+/- English proof (translation)
+The claim follows from `evalV_singleFin_ne h 1`.
+-/
 theorem ev_idem_ne {v u : Pl F} (h : u ≠ v) : evFin F u (idem F v) = 0 := evalV_singleFin_ne h 1
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LatVac.at_liftV v 1`.
+-/
 theorem at_idem (v : Pl F) : At (evFin F v) (idem F v) := GlobalTheory.LatVac.at_liftV v 1
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[cp_smul, ev_idem, map_one, one_mul]`.
+-/
 theorem cp_idem {w : HeightOneSpectrum (𝓞 E)} {v : Pl F} (h : w.under (𝓞 F) = v) (x : AE F E) :
     cp F w (idem F v • x) = cp F w x := by
   subst h; rw [cp_smul, ev_idem, map_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[cp_smul, ev_idem_ne h, map_zero, zero_mul]`.
+-/
 theorem cp_idem_ne {w : HeightOneSpectrum (𝓞 E)} {v : Pl F} (h : w.under (𝓞 F) ≠ v) (x : AE F E) :
     cp F w (idem F v • x) = 0 := by
   rw [cp_smul, ev_idem_ne h, map_zero, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[smul_eq, map_mul]`. Establish `: infTens F E (idem F v ⊗ₜ[F] (1 : E)) = 0` using `TensorProduct.zero_tmul _ _`. Rewrite using `[this, zero_mul]`.
+-/
 theorem inf_idem (v : Pl F) (x : AE F E) : infTens F E (idem F v • x) = 0 := by
   rw [smul_eq, map_mul]
   have : infTens F E (idem F v ⊗ₜ[F] (1 : E)) = 0 := TensorProduct.zero_tmul _ _
   rw [this, zero_mul]
 
+/- English proof (translation)
+The claim follows from `tens_ext h1 ((finAdEquiv F E).injective (FiniteAdeleRing.ext _ h2))`.
+-/
 theorem ext_cp {x y : AE F E} (h1 : infTens F E x = infTens F E y) (h2 : ∀ w, cp F w x = cp F w y) : x = y :=
   tens_ext h1 ((finAdEquiv F E).injective (FiniteAdeleRing.ext _ h2))
 
 def Lat (𝔞 : FI E) (v : Pl F) : AddSubgroup (AE F E) :=
   AddSubgroup.closure {z | ∃ a : AF F, At (evFin F v) a ∧ evFin F v a ∈ v.adicCompletionIntegers F ∧ ∃ s ∈ 𝔞, z = a ⊗ₜ[F] s}
 
+/- English proof (translation)
+Rewrite using `[inAt_iff]`. Introduce `w hw`. Substitute `hw` using the available equality. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`.
+
+Take `⟨a, -, ha, s, hs, rfl⟩` from `hz`. Rewrite using `[cp_tmul, map_mul, valued_algebraMap]`. Establish `h1 : Valued.v (complMap (rfl : w.under (𝓞 F) = _) (evFin F _ a)) ≤ 1` using `complMap_mem rfl ha`. Conclude with `(mul_le_of_le_one_left' h1).trans ((mem_iff_valuation_le h0 s).1 hs w)`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le hx hy)`. Consider the case `neg x _ hx => rwa [map_neg, Valuation.map_neg]`.
+-/
 theorem inAt_of_lat {𝔞 : FI E} (h0 : 𝔞 ≠ 0) {v : Pl F} {z : AE F E} (hz : z ∈ Lat 𝔞 v) : InAt 𝔞 v z := by
   rw [inAt_iff]
   intro w hw
@@ -73,6 +116,25 @@ theorem inAt_of_lat {𝔞 : FI E} (h0 : 𝔞 ≠ 0) {v : Pl F} {z : AE F E} (hz 
   | add x y _ _ hx hy => rw [map_add]; exact (Valuation.map_add _ _ _).trans (max_le hx hy)
   | neg x _ hx => rwa [map_neg, Valuation.map_neg]
 
+/- English proof (translation)
+Establish `h1 : (1 : E) ∈ 𝔞 * 𝔞⁻¹` using `by rw [mul_inv_cancel₀ h0]; exact FractionalIdeal.one_mem_one _`. Establish `key : idem F v • (((1 : AF F) ⊗ₜ[F] (1 : E)) * x) ∈ Lat 𝔞 v`. Use `FractionalIdeal.mul_induction_on (C := fun r => idem F v • (((1 : AF F) ⊗ₜ[F] r) * x) ∈ Lat 𝔞 v) h1 ?_ ?_` and prove the remaining obligations. Introduce `s hs t ht set y := idem F v • (((1 : AF F) ⊗ₜ[F] t) * x) with hy`. Establish `hint` using `(mem_int_iff (finTens F E y)).2 fun P => by`.
+
+Rewrite using `[← cp_apply]`. Distinguish the cases in `hP : P.under (𝓞 F) = v`. Rewrite using `[hy, cp_idem hP, map_mul, cp_tmul, map_one, map_one, one_mul, map_mul, valued_algebraMap]`. Establish `a1` using `(mem_iff_valuation_le (inv_ne_zero h0) t).1 ht P`. Rewrite `a1` using `[FractionalIdeal.count_inv, neg_neg]`.
+
+Use `(mul_le_mul' a1 (inAt_iff.1 hx P hP)).trans ?_` and prove the remaining obligations. Rewrite using `[← exp_add]`. Simplify using the standard rewrite rules. Rewrite using `[hy, cp_idem_ne hP]`. Simplify using the standard rewrite rules.
+
+Establish `e1 : extZero F E (finTens F E y) = y` using `tens_ext (by rw [infTens_extZero, hy, inf_idem]) (finTens_extZero _)`. Establish `h2 : ∀ y' ∈ AddSubgroup.closure {y : Af F ⊗[F] E | ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf F, ∃ x : 𝓞 E, y = a ⊗ₜ[F] (x : E)}, idem F v • (((1 : AF F) ⊗ₜ[F] s) * extZero F E y') ∈ Lat 𝔞 v` using `fun y' hy' => by`. Proceed by induction on `hy' using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, o, rfl⟩` from `hz`.
+
+Use `AddSubgroup.subset_closure ⟨idem F v * pairA F 0 a, GlobalTheory.VacAny.at_mul_right (at_idem v) _, ?_, s * o, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ev_idem, one_mul]`. Conclude with `ha v`. Rewrite using `[mul_comm]`. Conclude with `𝔞.val.smul_mem o hs`.
+
+Express the relevant statement in the definitionally equal form `idem F v • (((1 : AF F) ⊗ₜ[F] s) * (pairA F 0 a ⊗ₜ[F] (o : E))) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, TensorProduct.smul_tmul', smul_eq_mul]`. Consider the case `zero => rw [map_zero, mul_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add, mul_add, smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg, mul_neg, smul_neg]`. Conclude with `neg_mem hx`. Establish `h3` using `h2 _ hint`. Rewrite `h3` using `[e1, hy, mul_smul_comm, smul_smul, ← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+
+Establish `hi : idem F v * idem F v = idem F v` using `(GlobalTheory.LatVacArith.eq_liftV_of_at (at_idem v)).symm`. Rewrite `h3` using `[hi]`. Then use the resulting hypothesis. Introduce `a b ha hb`. Rewrite using `[TensorProduct.tmul_add, add_mul, smul_add]`. Conclude with `add_mem ha hb`.
+
+Rewrite `key` using `[show ((1 : AF F) ⊗ₜ[F] (1 : E)) = 1 from rfl, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem lat_of_inAt {𝔞 : FI E} (h0 : 𝔞 ≠ 0) {v : Pl F} {x : AE F E} (hx : InAt 𝔞 v x) : idem F v • x ∈ Lat 𝔞 v := by
   have h1 : (1 : E) ∈ 𝔞 * 𝔞⁻¹ := by rw [mul_inv_cancel₀ h0]; exact FractionalIdeal.one_mem_one _
   have key : idem F v • (((1 : AF F) ⊗ₜ[F] (1 : E)) * x) ∈ Lat 𝔞 v := by
@@ -112,6 +174,9 @@ theorem lat_of_inAt {𝔞 : FI E} (h0 : 𝔞 ≠ 0) {v : Pl F} {x : AE F E} (hx 
       rw [TensorProduct.tmul_add, add_mul, smul_add]; exact add_mem ha hb
   rwa [show ((1 : AF F) ⊗ₜ[F] (1 : E)) = 1 from rfl, one_mul] at key
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => inAt_iff.2 fun w hw => cp_idem hw x ▸ inAt_iff.1 (inAt_of_lat h0 h) w hw, lat_of_inAt h0⟩`.
+-/
 theorem lat_iff {𝔞 : FI E} (h0 : 𝔞 ≠ 0) {v : Pl F} {x : AE F E} : idem F v • x ∈ Lat 𝔞 v ↔ InAt 𝔞 v x :=
   ⟨fun h => inAt_iff.2 fun w hw => cp_idem hw x ▸ inAt_iff.1 (inAt_of_lat h0 h) w hw, lat_of_inAt h0⟩
 
@@ -141,19 +206,34 @@ def cj (hσ : ∀ x, σ (σ x) = x) (𝔞 : FI E) : FI E :=
 
 variable (hσ : ∀ x, σ (σ x) = x)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cj {𝔞 : FI E} {t : E} : t ∈ cj hσ 𝔞 ↔ σ t ∈ 𝔞 := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `FractionalIdeal.ext fun x => by rw [mem_cj, mem_cj, hσ]`.
+-/
 theorem cj_cj (𝔞 : FI E) : cj hσ (cj hσ 𝔞) = 𝔞 := FractionalIdeal.ext fun x => by rw [mem_cj, mem_cj, hσ]
 
+/- English proof (translation)
+Introduce `e` and use `h (FractionalIdeal.eq_zero_iff.2 fun x hx => by have : σ x ∈ cj hσ 𝔞 := (mem_cj hσ).2 (by rwa [hσ]) rw [e, FractionalIdeal.mem_zero_iff] at this exact (map_eq_zero σ).1 this)`.
+-/
 theorem cj_ne {𝔞 : FI E} (h : 𝔞 ≠ 0) : cj hσ 𝔞 ≠ 0 := fun e => h (FractionalIdeal.eq_zero_iff.2 fun x hx => by
   have : σ x ∈ cj hσ 𝔞 := (mem_cj hσ).2 (by rwa [hσ])
   rw [e, FractionalIdeal.mem_zero_iff] at this
   exact (map_eq_zero σ).1 this)
 
+/- English proof (translation)
+Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 h`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨so σ o, rfl⟩`.
+-/
 theorem mem_one_conj {x : E} (h : x ∈ (1 : FI E)) : σ x ∈ (1 : FI E) := by
   obtain ⟨o, rfl⟩ := (FractionalIdeal.mem_one_iff _).1 h
   exact (FractionalIdeal.mem_one_iff _).2 ⟨so σ o, rfl⟩
 
+/- English proof (translation)
+The claim follows from `FractionalIdeal.ext fun x => by rw [mem_cj, FractionalIdeal.mem_inv_iff h, FractionalIdeal.mem_inv_iff (cj_ne hσ h)] constructor · intro H y hy have := mem_one_conj (σ := σ) (H _ hy) rwa [map_mul, hσ, hσ] at this · intro H y hy have := mem_one_conj (σ := σ) (H (σ y) ((mem_cj hσ). …`.
+-/
 theorem cj_inv {𝔞 : FI E} (h : 𝔞 ≠ 0) : cj hσ 𝔞⁻¹ = (cj hσ 𝔞)⁻¹ := FractionalIdeal.ext fun x => by
   rw [mem_cj, FractionalIdeal.mem_inv_iff h, FractionalIdeal.mem_inv_iff (cj_ne hσ h)]
   constructor
@@ -164,6 +244,11 @@ theorem cj_inv {𝔞 : FI E} (h : 𝔞 ≠ 0) : cj hσ 𝔞⁻¹ = (cj hσ 𝔞)
     have := mem_one_conj (σ := σ) (H (σ y) ((mem_cj hσ).2 (by rwa [hσ])))
     rwa [map_mul, hσ] at this
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, h1, h2, s, hs, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨a, h1, h2, σ s, (mem_cj hσ).2 (by rwa [hσ]), rfl⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem lat_cj {𝔞 : FI E} {v : Pl F} {z : AE F E} (hz : z ∈ Lat 𝔞 v) : cA σ z ∈ Lat (cj hσ 𝔞) v := by
   induction hz using AddSubgroup.closure_induction with
   | mem z hz =>
@@ -173,11 +258,17 @@ theorem lat_cj {𝔞 : FI E} {v : Pl F} {z : AE F E} (hz : z ∈ Lat 𝔞 v) : c
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Use `lat_cj hσ (lat_of_inAt h0 h)` as an intermediate fact. Rewrite `this` using `[map_smul]`. Conclude with `(lat_iff (cj_ne hσ h0)).1 this`.
+-/
 theorem inAt_cj {𝔞 : FI E} (h0 : 𝔞 ≠ 0) {v : Pl F} {x : AE F E} (h : InAt 𝔞 v x) : InAt (cj hσ 𝔞) v (cA σ x) := by
   have := lat_cj hσ (lat_of_inAt h0 h)
   rw [map_smul] at this
   exact (lat_iff (cj_ne hσ h0)).1 this
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `inAt_cj hσ h0 h` as an intermediate fact. Rewrite `this` using `[PositivityTheory.ThK.Vac.cA_cA hσ]`. Then use the resulting hypothesis. Use `inAt_cj hσ (cj_ne hσ h0) h` as an intermediate fact. Rewrite `this` using `[cj_cj]`. Then use the resulting hypothesis.
+-/
 theorem inAt_cj_iff {𝔞 : FI E} (h0 : 𝔞 ≠ 0) {v : Pl F} {x : AE F E} : InAt 𝔞 v (cA σ x) ↔ InAt (cj hσ 𝔞) v x := by
   refine ⟨fun h => ?_, fun h => ?_⟩
   · have := inAt_cj hσ h0 h
@@ -185,13 +276,22 @@ theorem inAt_cj_iff {𝔞 : FI E} (h0 : 𝔞 ≠ 0) {v : Pl F} {x : AE F E} : In
   · have := inAt_cj hσ (cj_ne hσ h0) h
     rwa [cj_cj] at this
 
+/- English proof (translation)
+Rewrite using `[cp_apply, finTens_locIdele]`. Conclude with `finSingle_self w _`.
+-/
 theorem cp_loc_self (w : HeightOneSpectrum (𝓞 E)) (y : (w.adicCompletion E)ˣ) : cp F w (locIdele F w y : AE F E) = y := by
   rw [cp_apply, finTens_locIdele]; exact finSingle_self w _
 
+/- English proof (translation)
+Rewrite using `[cp_apply, finTens_locIdele]`. Conclude with `finSingle_ne h _`.
+-/
 theorem cp_loc_ne {w u : HeightOneSpectrum (𝓞 E)} (h : u ≠ w) (y : (w.adicCompletion E)ˣ) :
     cp F u (locIdele F w y : AE F E) = 1 := by
   rw [cp_apply, finTens_locIdele]; exact finSingle_ne h _
 
+/- English proof (translation)
+Rewrite using `[Units.coe_prod, map_prod]`. Use `split_ifs with h`. Rewrite using `[Finset.prod_eq_single_of_mem u h fun w _ hw => cp_loc_ne hw.symm _, cp_loc_self]`. Conclude with `Finset.prod_eq_one fun w hw => cp_loc_ne (fun e : u = w => h (e ▸ hw)) _`.
+-/
 theorem cp_prod (S : Finset (HeightOneSpectrum (𝓞 E))) (y : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ)
     (u : HeightOneSpectrum (𝓞 E)) : cp F u ((∏ w ∈ S, locIdele F w (y w) : (AE F E)ˣ) : AE F E) = by
       classical exact if u ∈ S then (y u : u.adicCompletion E) else 1 := by
@@ -201,10 +301,18 @@ theorem cp_prod (S : Finset (HeightOneSpectrum (𝓞 E))) (y : ∀ w : HeightOne
   · rw [Finset.prod_eq_single_of_mem u h fun w _ hw => cp_loc_ne hw.symm _, cp_loc_self]
   · exact Finset.prod_eq_one fun w hw => cp_loc_ne (fun e : u = w => h (e ▸ hw)) _
 
+/- English proof (translation)
+Rewrite using `[Units.coe_prod, map_prod]`. Conclude with `Finset.prod_eq_one fun w _ => infTens_locIdele w _`.
+-/
 theorem inf_prod (S : Finset (HeightOneSpectrum (𝓞 E))) (y : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) :
     infTens F E ((∏ w ∈ S, locIdele F w (y w) : (AE F E)ˣ) : AE F E) = 1 := by
   rw [Units.coe_prod, map_prod]; exact Finset.prod_eq_one fun w _ => infTens_locIdele w _
 
+/- English proof (translation)
+Establish `h1 : IsUnitAt w (x * (atFin w (unif w) ^ k)⁻¹)`. Use `unif_spec w` as an intermediate fact. Unfold `IsUnifAt at this`. Unfold `IsUnitAt`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, hx, this, ← exp_zsmul, smul_eq_mul, mul_neg, mul_one, mul_inv_cancel₀ exp_ne_zero]`.
+
+Use `h _ h1` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one, map_zpow]`. Conclude with `this`.
+-/
 theorem locChar_eq {ν : Chr F E} {w : HeightOneSpectrum (𝓞 E)} (h : UnrAt ν w) (x : (w.adicCompletion E)ˣ) {k : ℤ}
     (hx : Valued.v (x : w.adicCompletion E) = exp (-k)) : locChar ν w x = val ν w ^ k := by
   have h1 : IsUnitAt w (x * (atFin w (unif w) ^ k)⁻¹) := by
@@ -223,6 +331,15 @@ structure Gen (P : Finset (Pl F)) (𝔞 : FI E) (T : Finset (Pl F)) (l : (AE F E
   off : ∀ v ∉ T, idem F v • (l : AE F E) = idem F v • (1 : AE F E)
   vl : ∀ w, Valued.v (cp F w l) = exp (-count E w 𝔞)
 
+/- English proof (translation)
+Set `S` to `T.biUnion fun v => Formalism.L2.Host.aboveF (L := E) F v`. Establish `hS : ∀ w, w ∈ S ↔ w.under (𝓞 F) ∈ T` using `fun w => by simp [S, mem_aboveF]`. Establish `h1 : ∀ w ∉ S, cp F w l = 1` using `fun w hw => by`. Use `congrArg (cp F w) (h.off _ (mt (hS w).2 hw))` as an intermediate fact. Rewrite `this` using `[cp_idem rfl, cp_idem rfl, map_one]`. Then use the resulting hypothesis.
+
+Establish `e : l = ∏ w ∈ S, locIdele F w (Units.map (cp F w).toMonoidHom l)` using `Units.ext (ext_cp (h.inf.trans (inf_prod _ _).symm) fun w => by`. Rewrite using `[cp_prod]`. Use `split_ifs with hw`. Use `exacts [rfl, h1 w hw])`. Establish `h2 : ∀ w ∉ S, count E w 𝔞 = 0` using `fun w hw => by`.
+
+Use `h.vl w` as an intermediate fact. Rewrite `this` using `[h1 w hw, map_one, ← exp_zero, exp_inj]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[idealVal, finprod_eq_prod_of_mulSupport_subset (s := S) _ fun w hw => by`. Assume the negation of the conclusion as `hn; exact hw (by simp [h2 w hn])]`.
+
+Use `conv_lhs => rw [e]`. Rewrite using `[map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun w hw => locChar_eq (hν w fun hP => h.dis _ ((hS w).1 hw) hP) _ (h.vl w)`.
+-/
 theorem Gen.eq {P T : Finset (Pl F)} {𝔞 : FI E} {l : (AE F E)ˣ} (h : Gen P 𝔞 T l) {ν : Chr F E}
     (hν : UnrOff ν (P : Set (Pl F))) : Circle.toUnits (ν l) = idealVal ν 𝔞 := by
   classical
@@ -248,6 +365,13 @@ theorem Gen.eq {P T : Finset (Pl F)} {𝔞 : FI E} {l : (AE F E)ˣ} (h : Gen P �
 
 def Pr (P : Finset (Pl F)) (𝔞 : FI E) : Prop := ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∈ P → count E w 𝔞 = 0
 
+/- English proof (translation)
+Establish `hf : {w : HeightOneSpectrum (𝓞 E) | count E w 𝔞 ≠ 0}.Finite` using `FractionalIdeal.finite_factors 𝔞`. Use `⟨hf.toFinset.image fun w => w.under (𝓞 F), ∏ w ∈ hf.toFinset, locIdele F w (atFin w (unif w) ^ count E w 𝔞), fun v hv hP => ?_, inf_prod _ _, fun v hv => ext_cp (by rw [inf_idem, inf_idem]) fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 hv`. Conclude with `hf.mem_toFinset.1 hw (h w hP)`. Distinguish the cases in `hw : w.under (𝓞 F) = v`.
+
+Rewrite using `[cp_idem hw, cp_idem hw, cp_prod, if_neg fun hm => hv (Finset.mem_image.2 ⟨w, hm, hw⟩), map_one]`. Rewrite using `[cp_idem_ne hw, cp_idem_ne hw]`. Rewrite using `[cp_prod] split_ifs with hw`. Use `unif_spec w` as an intermediate fact. Unfold `IsUnifAt at this`.
+
+Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, this, ← exp_zsmul, smul_eq_mul, mul_neg, mul_one]`. Establish `: count E w 𝔞 = 0` using `by by_contra hn; exact hw (hf.mem_toFinset.2 hn)`. Simplify using `[this]`.
+-/
 theorem exists_gen {P : Finset (Pl F)} {𝔞 : FI E} (h : Pr P 𝔞) : ∃ T l, Gen P 𝔞 T l := by
   classical
   have hf : {w : HeightOneSpectrum (𝓞 E) | count E w 𝔞 ≠ 0}.Finite := FractionalIdeal.finite_factors 𝔞
@@ -266,6 +390,11 @@ theorem exists_gen {P : Finset (Pl F)} {𝔞 : FI E} (h : Pr P 𝔞) : ∃ T l, 
     · have : count E w 𝔞 = 0 := by by_contra hn; exact hw (hf.mem_toFinset.2 hn)
       simp [this]
 
+/- English proof (translation)
+Establish `a1` using `inAt_iff.1 h1 w rfl`. Establish `a2` using `inAt_iff.1 h2 w rfl`. Rewrite `a2` using `[FractionalIdeal.count_inv, neg_neg]`. Establish `a3 : Valued.v (cp F w l) * Valued.v (cp F w ((l⁻¹ : (AE F E)ˣ) : AE F E)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`.
+
+Use `le_antisymm a1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[a3, mul_one]`. Use `_ ≤ exp (-count E w 𝔞) * (Valued.v (cp F w l) * exp (count E w 𝔞)) := by gcongr`. Use `_ = _ := by rw [mul_left_comm, ← exp_add]; simp`.
+-/
 theorem vl_of_inAt {𝔞 : FI E} {l : (AE F E)ˣ} {w : HeightOneSpectrum (𝓞 E)} (h1 : InAt 𝔞 (w.under (𝓞 F)) (l : AE F E))
     (h2 : InAt 𝔞⁻¹ (w.under (𝓞 F)) ((l⁻¹ : (AE F E)ˣ) : AE F E)) : Valued.v (cp F w l) = exp (-count E w 𝔞) := by
   have a1 := inAt_iff.1 h1 w rfl
@@ -279,6 +408,15 @@ theorem vl_of_inAt {𝔞 : FI E} {l : (AE F E)ˣ} {w : HeightOneSpectrum (𝓞 E
     _ ≤ exp (-count E w 𝔞) * (Valued.v (cp F w l) * exp (count E w 𝔞)) := by gcongr
     _ = _ := by rw [mul_left_comm, ← exp_add]; simp
 
+/- English proof (translation)
+Use `⟨h.dis, ?_, fun v hv => ?_, fun w => vl_of_inAt ?_ ?_⟩` and prove the remaining obligations. Establish `: ∀ x : AE F E, infTens F E (cA σ x) = Algebra.TensorProduct.map (AlgHom.id F (Ainf F)) σ (infTens F E x)` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Express the relevant statement in the definitionally equal form `infTens F E (cA σ l) = 1`. Rewrite using `[this, h.inf, map_one]`. Use `congrArg (cA σ) (h.off v hv)` as an intermediate fact. Rewrite `this` using `[map_smul, map_smul, map_one]`. Then use the resulting hypothesis.
+
+Conclude with `inAt_cj hσ h0 (inAt_iff.2 fun u _ => (h.vl u).le)`. Rewrite using `[← cj_inv hσ h0]`. Use `inAt_cj hσ (inv_ne_zero h0) (x := ((l⁻¹ : (AE F E)ˣ) : AE F E)) (inAt_iff.2 fun u _ => le_of_eq ?_)` and prove the remaining obligations. Establish `a3 : Valued.v (cp F u l) * Valued.v (cp F u ((l⁻¹ : (AE F E)ˣ) : AE F E)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`.
+
+Rewrite `a3` using `[h.vl]`. Rewrite using `[FractionalIdeal.count_inv, neg_neg, eq_inv_of_mul_eq_one_right a3, ← exp_neg, neg_neg]`.
+-/
 theorem Gen.conj {P T : Finset (Pl F)} {𝔞 : FI E} (h0 : 𝔞 ≠ 0) {l : (AE F E)ˣ} (h : Gen P 𝔞 T l) :
     Gen P (cj hσ 𝔞) T (Units.map (cA σ : AE F E →* AE F E) l) := by
   refine ⟨h.dis, ?_, fun v hv => ?_, fun w => vl_of_inAt ?_ ?_⟩
@@ -299,6 +437,9 @@ theorem Gen.conj {P T : Finset (Pl F)} {𝔞 : FI E} (h0 : 𝔞 ≠ 0) {l : (AE 
     rw [h.vl] at a3
     rw [FractionalIdeal.count_inv, neg_neg, eq_inv_of_mul_eq_one_right a3, ← exp_neg, neg_neg]
 
+/- English proof (translation)
+Establish `hf : ∀ 𝔠 : FI E, (Function.mulSupport fun w => val ν w ^ count E w 𝔠).Finite` using `fun 𝔠 => Set.Finite.subset (FractionalIdeal.finite_factors 𝔠) fun w hw hc => hw (by simp [show count E w 𝔠 = 0 from hc])`. Unfold `idealVal`. Rewrite using `[← finprod_mul_distrib (hf 𝔞) (hf 𝔟)]`. Conclude with `finprod_congr fun w => by rw [FractionalIdeal.count_mul _ _ ha hb, zpow_add]`.
+-/
 theorem idealVal_mul (ν : Chr F E) {𝔞 𝔟 : FI E} (ha : 𝔞 ≠ 0) (hb : 𝔟 ≠ 0) :
     idealVal ν (𝔞 * 𝔟) = idealVal ν 𝔞 * idealVal ν 𝔟 := by
   have hf : ∀ 𝔠 : FI E, (Function.mulSupport fun w => val ν w ^ count E w 𝔠).Finite := fun 𝔠 =>
@@ -307,11 +448,17 @@ theorem idealVal_mul (ν : Chr F E) {𝔞 𝔟 : FI E} (ha : 𝔞 ≠ 0) (hb : �
   rw [← finprod_mul_distrib (hf 𝔞) (hf 𝔟)]
   exact finprod_congr fun w => by rw [FractionalIdeal.count_mul _ _ ha hb, zpow_add]
 
+/- English proof (translation)
+Unfold `idealVal`. Rewrite using `[← finprod_inv_distrib]`. Conclude with `finprod_congr fun w => by rw [FractionalIdeal.count_inv, zpow_neg]`.
+-/
 theorem idealVal_inv (ν : Chr F E) (𝔞 : FI E) : idealVal ν 𝔞⁻¹ = (idealVal ν 𝔞)⁻¹ := by
   unfold idealVal
   rw [← finprod_inv_distrib]
   exact finprod_congr fun w => by rw [FractionalIdeal.count_inv, zpow_neg]
 
+/- English proof (translation)
+Take `⟨T, l, hl⟩` from `exists_gen h`. Rewrite using `[← (hl.conj hσ h0).eq hν, ← hl.eq hν, hc, map_inv]`.
+-/
 theorem idealVal_cj {P : Finset (Pl F)} {𝔞 : FI E} (h0 : 𝔞 ≠ 0) (h : Pr P 𝔞) {ν : Chr F E} (hν : UnrOff ν (P : Set (Pl F)))
     (hc : ∀ z, ν (Units.map (cA σ : AE F E →* AE F E) z) = (ν z)⁻¹) : idealVal ν (cj hσ 𝔞) = (idealVal ν 𝔞)⁻¹ := by
   obtain ⟨T, l, hl⟩ := exists_gen h

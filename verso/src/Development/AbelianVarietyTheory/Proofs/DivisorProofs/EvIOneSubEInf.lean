@@ -15,14 +15,23 @@ namespace GlobalTheory.ThK.ConeEuler.SuppOne
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _`.
+-/
 theorem evI_eFin (v : Pl F) : evI F (eFin v) = 0 := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0
   exact map_zero _
 
+/- English proof (translation)
+Use `show evalV F v 0 = 0`. Conclude with `map_zero _`.
+-/
 theorem evFin_eInf (v : Pl F) : evFin F v (eInf F) = 0 := by
   show evalV F v 0 = 0
   exact map_zero _
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.LatVac.at_liftV w 1 (GlobalTheory.LatVac.liftV v 1) (by show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (GlobalTheory.AdelicU.singleFin v 1) = 0`. Conclude with `GlobalTheory.AdelicU.evalV_singleFin_ne hwv 1)`. Use `congrArg (evFin F v) h` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, map_mul, GlobalTheory.LatVac.evFin_liftV, one_mul, map_zero]`. Conclude with `this`.
+-/
 theorem evFin_eFin_ne {v w : Pl F} (hwv : w ≠ v) : evFin F v (eFin w) = 0 := by
   have h := GlobalTheory.LatVac.at_liftV w 1 (GlobalTheory.LatVac.liftV v 1) (by
     show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (GlobalTheory.AdelicU.singleFin v 1) = 0
@@ -31,9 +40,17 @@ theorem evFin_eFin_ne {v w : Pl F} (hwv : w ≠ v) : evFin F v (eFin w) = 0 := b
   rw [smul_eq_mul, map_mul, GlobalTheory.LatVac.evFin_liftV, one_mul, map_zero] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.ArchUniq.evI_eq_evIHom, map_sub, map_one, ← GlobalTheory.ArchUniq.evI_eq_evIHom, eInf, evI_realAd_one, sub_self]`.
+-/
 theorem evI_one_sub_eInf : evI F (1 - eInf F) = 0 := by
   rw [GlobalTheory.ArchUniq.evI_eq_evIHom, map_sub, map_one, ← GlobalTheory.ArchUniq.evI_eq_evIHom, eInf, evI_realAd_one, sub_self]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ε • mat g + (1 - ε) • 1 = mat (1 : UA σ J)`. Rewrite using `[GlobalTheory.StabHaar.mat_one]`. Rewrite `h` using `[smul_sub, sub_eq_zero]`.
+
+Rewrite using `[h, ← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem idemU_eq_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : AF F} (hε : ε * ε = ε) (g : UA σ J)
     (h : ε • (mat g - 1) = 0) : idemU σ J ε hε g = 1 := by
   apply Subtype.ext; apply Units.ext
@@ -42,6 +59,9 @@ theorem idemU_eq_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : AF F} (hε :
   rw [smul_sub, sub_eq_zero] at h
   rw [h, ← add_smul, add_sub_cancel, one_smul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ε • mat g + (1 - ε) • 1 = mat g`. Rewrite `h` using `[smul_sub, sub_eq_zero]`. Rewrite using `[← h, ← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem idemU_eq_self {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : AF F} (hε : ε * ε = ε) (g : UA σ J)
     (h : (1 - ε) • (mat g - 1) = 0) : idemU σ J ε hε g = g := by
   apply Subtype.ext; apply Units.ext
@@ -49,6 +69,11 @@ theorem idemU_eq_self {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : AF F} (hε 
   rw [smul_sub, sub_eq_zero] at h
   rw [← h, ← add_smul, add_sub_cancel, one_smul]
 
+/- English proof (translation)
+Use `⟨fun v hg => ⟨?_, ?_, fun w hw => ?_⟩, fun hg => ⟨?_, fun v => ?_⟩⟩` and prove the remaining obligations. Conclude with `idemU_eq_self _ g (hg _ (by rw [map_sub, map_one, eFin, GlobalTheory.LatVac.evFin_liftV, sub_self]))`. Conclude with `idemU_eq_one _ g (hg _ (evFin_eInf v))`. Conclude with `idemU_eq_one _ g (hg _ (evFin_eFin_ne hw))`. Conclude with `idemU_eq_self _ g (hg _ evI_one_sub_eInf)`.
+
+Conclude with `idemU_eq_one _ g (hg _ (evI_eFin v))`.
+-/
 theorem comp_of_supp (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (X : Spc F E n) (g : UA σ X.J) :
     (∀ v : Pl F, g ∈ UAt σ X (evFin F v) → compAt σ X.J v g = g ∧ compArch σ X.J g = 1 ∧

@@ -51,6 +51,11 @@ def congrGroup (V : HSp D) (I : NonUnitalSubring (AE D)) : Subgroup (GA D V) whe
     rw [inv_inv]
     exact ⟨(ha i j).2, (ha i j).1⟩
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `exists_piece V hf hc g⁻¹`. Establish `hpq : g₁⁻¹ = q`. Use `inv_eq_of_mul_eq_one_right (mt_inj V ?_)` and prove the remaining obligations. Rewrite using `[mt_mul, e, hq, mix_mul hf, ← mt_mul, mul_inv_cancel, mt_one, one_mul, mix_self]`. Establish `key : ∀ (M : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j, (f • M + (1 - f) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) - 1) i j = f * (M - 1) i j` using `fun M i j => by`.
+
+Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i j`. Rewrite using `[hpq, e, hq, key, key]`. Conclude with `⟨hI _ (hg i j).1, hI _ (hg i j).2⟩`.
+-/
 theorem piece_mem_congrGroup (V : HSp D) (I : NonUnitalSubring (AE D)) {f : AE D} (hf : f * f = f) (hc : cA D f = f)
     (hI : ∀ z ∈ I, f * z ∈ I) {g g₁ : GA D V} (hg : g ∈ congrGroup V I)
     (e : mt V g₁ = f • mt V g + (1 - f) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))) : g₁ ∈ congrGroup V I := by
@@ -66,6 +71,13 @@ theorem piece_mem_congrGroup (V : HSp D) (I : NonUnitalSubring (AE D)) {f : AE D
   rw [hpq, e, hq, key, key]
   exact ⟨hI _ (hg i j).1, hI _ (hg i j).2⟩
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `exists_comp D`. Rewrite using `[hΦ.int]`. Introduce `Q`. Rewrite using `[hΦ.base]`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdeleBaseChange.locMap D.host.F Q (evalV D.host.F _ (ind S)) ∈ _`.
+
+Rewrite using `[ev_ind]`. Use `split_ifs`. Rewrite using `[map_one]`. Conclude with `one_mem _`. Rewrite using `[map_zero]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem ind_mem_intAf (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (b : Ainf D.host.F) :
     finPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F b (ind S))) ∈ intAE D := by
   obtain ⟨Φ, hΦ⟩ := exists_comp D
@@ -90,12 +102,40 @@ def inertInt (D : D7) : NonUnitalSubring (AE D) where
     by rw [RingHom.map_mul]; exact GlobalTheory.HostAdeleIso.intAE_mul_mem D ha.2.1 hb.2.1,
     fun v ε h h' => by rw [← mul_assoc, ha.2.2 v ε h h', zero_mul]⟩
 
+/- English proof (translation)
+Introduce `z hz` and use `⟨by rw [RingHom.map_mul, hz.1, mul_zero], by rw [RingHom.map_mul]; exact GlobalTheory.HostAdeleIso.intAE_mul_mem D hf hz.2.1, fun v ε h h' => by rw [mul_left_comm, hz.2.2 v ε h h', mul_zero]⟩`.
+-/
 theorem mul_mem_inertInt {f : AE D} (hf : finPart D f ∈ intAE D) : ∀ z ∈ inertInt D, f * z ∈ inertInt D :=
   fun z hz => ⟨by rw [RingHom.map_mul, hz.1, mul_zero], by rw [RingHom.map_mul]; exact GlobalTheory.HostAdeleIso.intAE_mul_mem D hf hz.2.1,
     fun v ε h h' => by rw [mul_left_comm, hz.2.2 v ε h h', mul_zero]⟩
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `h1 : ∀ g : GA D V, (∀ i j, (mt V g - 1) i j = 0) → g ∈ H` using `fun g hg => by`. Establish `: g = 1` using `mt_inj V (by rw [mt_one, ← sub_eq_zero]; exact Matrix.ext hg)`. Rewrite using `[this]`. Conclude with `one_mem _`. Establish `hS : ∀ S : Finset (HeightOneSpectrum (𝓞 D.host.F)), ∀ g ∈ congrGroup V (inertInt D), SuppPl (eps S) V g → g ∈ H`.
+
+Introduce `S`. Proceed by induction on `S using Finset.cons_induction with`. Consider the case `empty`. Introduce `g hg hs`. Use `h1 g fun i j => GlobalTheory.PlaceIdem.parts_inj D _ _ (by rw [(hg i j).1.1, RingHom.map_zero]) ?_` and prove the remaining obligations.
+
+Establish `h1 : (finPart D).mapMatrix (mt V g) = 1` using `congrArg Units.val (mem_GinfC V hs)`. Establish `h2 : (finPart D).mapMatrix (mt V g - 1) = 0`. Rewrite using `[RingHom.map_sub, h1, RingHom.map_one, sub_self]`. Rewrite using `[RingHom.map_zero]`. Conclude with `congrFun (congrFun h2 i) j`.
+
+Consider the case `cons v S hv ih`. Introduce `g hK hg`. Take `⟨h1', h2'⟩` from `eps_cons S v hv`. Establish `h1'` using `congrArg (algebraMap (AF D.host.F) (AE D)) h1'`. Establish `h2'` using `congrArg (algebraMap (AF D.host.F) (AE D)) h2'`.
+
+Rewrite `h1'`, `h2'` using `[RingHom.map_mul]`. Rewrite `h2'` using `[RingHom.map_sub, RingHom.map_one]`. Establish `hi` using `alg_idem (D := D) (pl_mul_self v)`. Take `⟨g₁, e₁⟩` from `exists_piece V hi (cA_algebraMap _) g`. Establish `s₁` using `(suppF_iff V _ g₁).2 (smul_mix hi e₁)`.
+
+Establish `k₁` using `piece_mem_congrGroup V _ hi (cA_algebraMap _) (mul_mem_inertInt (ind_mem_intAf _ _)) hK e₁`. Establish `h3 : (1 - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (ind {v}))) * (1 - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (ind {v}))) = 1 - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (ind {v}))` using `by linear_combination hi`. Take `⟨g₂, e₂⟩` from `exists_piece V h3 (by rw [RingHom.map_sub, RingHom.map_one, cA_algebraMap]) g`. Establish `s₂` using `(suppF_iff V _ g₂).2 (smul_mix h3 e₂)`. Rewrite `e₂` using `[sub_sub_cancel]`.
+
+Establish `e : g = g₁ * g₂` using `mt_inj V ((mt_mul V g₁ g₂).trans (mix_split hi e₁ e₂)).symm`. Establish `k₂ : g₂ ∈ congrGroup V (inertInt D)`. Use `mul_mem (inv_mem k₁) hK` as an intermediate fact. Rewrite `this` using `[e, inv_mul_cancel_left]`. Then use the resulting hypothesis. Establish `t₁ : g₁ ∈ suppGroup V (algebraMap (AF D.host.F) (AE D) (eps (S.cons v hv)))` using `fun i j => by`.
+
+Rewrite using `[← s₁ i j, ← mul_assoc, h1']`. Establish `t : g ∈ suppGroup V (algebraMap (AF D.host.F) (AE D) (eps (S.cons v hv)))` using `hg`. Establish `t₂ : g₂ ∈ suppGroup V (algebraMap (AF D.host.F) (AE D) (eps (S.cons v hv)))`. Use `mul_mem (inv_mem t₁) t` as an intermediate fact. Rewrite `this` using `[e, inv_mul_cancel_left]`. Then use the resulting hypothesis.
+
+Establish `u₂ : SuppPl (eps S) V g₂` using `fun i j => by`. Rewrite using `[← h2', mul_assoc, s₂ i j, t₂ i j]`. Establish `m₁ : g₁ ∈ H`. Distinguish the cases in `hn : NonSplitAt D v (pairA D.host.F 0 (ind {v}))`. Conclude with `hpl v _ hn g₁ k₁ s₁`.
+
+Conclude with `h1 g₁ fun i j => (s₁ i j).symm.trans ((k₁ i j).1.2.2 v _ (isPlaceIdem v) hn)`. Rewrite using `[e]`. Conclude with `mul_mem m₁ (ih g₂ k₂ u₂)`. Introduce `g hg`. Use `choose p hp using fun S : Finset (HeightOneSpectrum (𝓞 D.host.F)) => exists_piece V (alg_idem (eps_mul_self S)) (cA_algebraMap _) g`.
+
+Use `choose q hq using fun S : Finset (HeightOneSpectrum (𝓞 D.host.F)) => exists_piece V (alg_idem (eps_mul_self S)) (cA_algebraMap _) g⁻¹`. Establish `hpq : ∀ S, (p S)⁻¹ = q S` using `fun S => by`. Use `inv_eq_of_mul_eq_one_right (mt_inj V ?_)` and prove the remaining obligations. Rewrite using `[mt_mul, hp, hq, mix_mul (alg_idem (eps_mul_self S)), ← mt_mul, mul_inv_cancel, mt_one, one_mul, mix_self]`. Establish `a1 : Tendsto (fun S => mt V (p S)) atTop (𝓝 (mt V g))` using `(tendsto_mix _).congr fun S => (hp S).symm`.
+
+Establish `a2 : Tendsto (fun S => mt V (p S)⁻¹) atTop (𝓝 (mt V g⁻¹))` using `(tendsto_mix _).congr fun S => by rw [hpq, hq]`. Establish `hlim : Tendsto p atTop (𝓝 g)` using `tendsto_HA _ _ _ a1 a2`. Use `hH.mem_of_tendsto hlim (Eventually.of_forall fun S => hS S _ ?_ ?_)` and prove the remaining obligations. Conclude with `piece_mem_congrGroup V _ (alg_idem (eps_mul_self S)) (cA_algebraMap _) (mul_mem_inertInt (ind_mem_intAf _ _)) hg (hp S)`. Conclude with `(suppF_iff V _ (p S)).2 (smul_mix (alg_idem (eps_mul_self S)) (hp S))`.
+-/
 theorem congrGroup_le (V : HSp D) (H : Subgroup (GA D V)) (hH : IsClosed (H : Set (GA D V)))
     (hpl : ∀ v ε, NonSplitAt D v ε → ∀ g ∈ congrGroup V (inertInt D), SuppPl ε V g → g ∈ H) :
     congrGroup V (inertInt D) ≤ H := by
@@ -163,10 +203,18 @@ theorem congrGroup_le (V : HSp D) (H : Subgroup (GA D V)) (hH : IsClosed (H : Se
   · exact piece_mem_congrGroup V _ (alg_idem (eps_mul_self S)) (cA_algebraMap _) (mul_mem_inertInt (ind_mem_intAf _ _)) hg (hp S)
   · exact (suppF_iff V _ (p S)).2 (smul_mix (alg_idem (eps_mul_self S)) (hp S))
 
+/- English proof (translation)
+Rewrite using `[mem_intAE_iff, ← GlobalTheory.BotClassDict.toAfE_int_iff, GlobalTheory.BotClassDict.toAfE_finQ]`. Conclude with `Iff.rfl`.
+-/
 theorem finQ_mem_iff (z : AE D) : finQ D z ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D ↔ finPart D z ∈ intAE D := by
   rw [mem_intAE_iff, ← GlobalTheory.BotClassDict.toAfE_int_iff, GlobalTheory.BotClassDict.toAfE_finQ]
   exact Iff.rfl
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot`. Establish `h1 : ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal` using `Ideal.absNorm_mem _`. Generalize the expression as in `Ideal.absNorm v.asIdeal = n at h0 h1`. Proceed by induction on `n using induction_on_primes with`. Consider the case `zero => exact absurd rfl h0`.
+
+Consider the case `one => exact absurd (Ideal.eq_top_of_isUnit_mem _ h1 (by simp)) v.isPrime.ne_top`. Consider the case `prime_mul p a hp ih`. Rewrite `h1` using `[Nat.cast_mul]`. Conclude with `(v.isPrime.mem_or_mem h1).elim (fun h => ⟨p, hp, h⟩) (ih (right_ne_zero_of_mul h0))`.
+-/
 theorem exists_prime_mem (v : HeightOneSpectrum (𝓞 D.host.F)) : ∃ q : ℕ, q.Prime ∧ (q : 𝓞 D.host.F) ∈ v.asIdeal := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot
   have h1 : ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal := Ideal.absNorm_mem _
@@ -178,6 +226,17 @@ theorem exists_prime_mem (v : HeightOneSpectrum (𝓞 D.host.F)) : ∃ q : ℕ, 
     rw [Nat.cast_mul] at h1
     exact (v.isPrime.mem_or_mem h1).elim (fun h => ⟨p, hp, h⟩) (ih (right_ne_zero_of_mul h0))
 
+/- English proof (translation)
+Introduce `x hx h1 h2`. Take `⟨Φ, hΦ⟩` from `exists_comp D`. Establish `hi : infPart D (x : AE D) = 1`. Use `congrArg (infPart D) hx` as an intermediate fact. Rewrite `this` using `[RingHom.map_mul, (place_comp hΦ hv.1).1, zero_mul, RingHom.map_sub, RingHom.map_one, eq_comm, sub_eq_zero]`. Then use the resulting hypothesis.
+
+Establish `hy : c.f (Units.map (finQ D).toMonoidHom x) = 1`. Use `c.unr _ ⟨(finQ_mem_iff _).2 h1, (finQ_mem_iff _).2 h2⟩ fun q hq hn => ?_` and prove the remaining obligations. Establish `e1 : ((Units.map (finQ D).toMonoidHom x : (Formalism.MainNotions.StandardLatticesGL3.AE D)ˣ) : Formalism.MainNotions.StandardLatticesGL3.AE D) - 1 = finQ D ((x : AE D) - 1)`. Rewrite using `[RingHom.map_sub, RingHom.map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem D q hq]`. Introduce `w η hη hw`. Establish `hne : w ≠ v`. Introduce and unpack `rfl`. Conclude with `hn ((GlobalTheory.T.inertPrime_iff_nonSplitPlaceIdempotent D q hq w ε hv.1 hw).2 hv)`.
+
+Rewrite using `[← hx, ← mul_assoc, place_orth hΦ hη hv.1 hne, zero_mul]`. Use `h x (Units.map (finQ D).toMonoidHom x) ⟨hi, by` as an intermediate fact. Rewrite using `[← GlobalTheory.BotClassDict.finAdEquiv_toAfE]`. Conclude with `congrArg _ (GlobalTheory.BotClassDict.toAfE_finQ _).symm⟩`. Rewrite `this` using `[hy, one_zpow]`.
+
+Conclude with `Circle.ext this`.
+-/
 theorem unramAt_of_hasFinPart {χ : (AE D)ˣ →* Circle} {N : ℕ} {c : HeckeU D N} {e : ℤ} (h : HasFinPart χ c e)
     {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hv : NonSplitAt D v ε) : UnramAt ε χ := by
   intro x hx h1 h2
@@ -201,6 +260,11 @@ theorem unramAt_of_hasFinPart {χ : (AE D)ˣ →* Circle} {N : ℕ} {c : HeckeU 
   rw [hy, one_zpow] at this
   exact Circle.ext this
 
+/- English proof (translation)
+Establish `e : mt V g i j = (mt V g - 1) i j + (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j`. Rewrite using `[Matrix.sub_apply, sub_add_cancel]`. Rewrite using `[e, RingHom.map_add]`. Use `add_mem ((finQ_mem_iff _).2 (hg i j).1.2.1) ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+
+Use `split_ifs`. Rewrite using `[RingHom.map_one]`. Conclude with `one_mem _`. Rewrite using `[RingHom.map_zero]`. Conclude with `zero_mem _`.
+-/
 theorem finQ_mt_mem {V : HSp D} {g : GA D V} (hg : g ∈ congrGroup V (inertInt D)) (i j : Fin V.rank) :
     finQ D (mt V g i j) ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D := by
   have e : mt V g i j = (mt V g - 1) i j + (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j := by
@@ -212,6 +276,17 @@ theorem finQ_mt_mem {V : HSp D} {g : GA D V} (hg : g ∈ congrGroup V (inertInt 
   · rw [RingHom.map_one]; exact one_mem _
   · rw [RingHom.map_zero]; exact zero_mem _
 
+/- English proof (translation)
+Establish `key : ∀ g ∈ congrGroup S (inertInt D), ∀ h ∈ congrGroup T (inertInt D), ∀ u ∈ latO S T (lsB D cc r S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) (fun _ => True), actO S T g h u ∈ latO S T (lsB D cc r S.rank : Set (Fin S.rank → D.host.E)) (std …`. Introduce `g hg h hh u hu`. Establish `h0` using `GlobalTheory.VacUnique.latO_inf S T _ _ _ hu`. Establish `h1` using `(GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice D S T hS cc r hc hr u h0).1 hu`. Use `(GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice D S T hS cc r hc hr _ ?_).2 fun i j => ?_` and prove the remaining obligations.
+
+Rewrite using `[actO, Matrix.map_mul, Matrix.map_mul, h0, Matrix.mul_zero, Matrix.zero_mul]`. Establish `e : finQ D (actO S T g h u i j) = ∑ l, (∑ k, finQ D (mt T h i k) * finQ D (u k l)) * finQ D (mt S g⁻¹ l j)`. Establish `e1 : (actO S T g h u).map (finQ D) = (mt T h).map (finQ D) * u.map (finQ D) * (mt S g⁻¹).map (finQ D)`. Rewrite using `[actO, Matrix.map_mul, Matrix.map_mul]`. Conclude with `congrFun (congrFun e1 i) j`.
+
+Rewrite using `[e, Finset.mul_sum]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Use `GlobalTheory.FinWeil.ihE_mul D cc (mul_mem (finQ_mt_mem hh i k) (finQ_mt_mem (inv_mem hg) l j)) (h1 k l)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `⟨key g hg h hh u, fun hu => ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.AdelicLatMove.actO_actO_inv S T g⁻¹ h⁻¹ u`. Rewrite `e` using `[inv_inv, inv_inv]`.
+
+Rewrite using `[← e]`. Conclude with `key _ (inv_mem hg) _ (inv_mem hh) _ hu`.
+-/
 theorem actO_mem_iff {S T : HSp D} (hS : S.gram = 1) {cc : Ideal (𝓞 D.host.K)} {r : D.host.E} (hc : cc ≠ ⊥)
     (hr : IsScale D cc r) {g : GA D S} {h : GA D T} (hg : g ∈ congrGroup S (inertInt D)) (hh : h ∈ congrGroup T (inertInt D))
     (u : WO S T) :
@@ -244,6 +319,21 @@ theorem actO_mem_iff {S T : HSp D} (hS : S.gram = 1) {cc : Ideal (𝓞 D.host.K)
   rw [← e]
   exact key _ (inv_mem hg) _ (inv_mem hh) _ hu
 
+/- English proof (translation)
+Establish `e1` using `GlobalTheory.LevelTr.finQ_mt_of_isFinPt V hV hg`. Establish `e2` using `GlobalTheory.LevelTr.finQ_mt_inv_of_isFinPt V hV hg`. Establish `one : ∀ i j, finQ D ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j` using `fun i j => by`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `RingHom.map_one _`. Conclude with `RingHom.map_zero _`. Establish `oneI : ∀ i j, (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D` using `fun i j => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `inf : ∀ k ∈ GfC V, ∀ i j, infPart D ((mt V k - 1) i j) = 0` using `fun k hk i j => by`. Establish `h1 : (infPart D).mapMatrix (mt V k) = 1` using `GlobalTheory.LevelTr.infPart_mt_of_mem_GfC V hk`. Establish `h2 : (infPart D).mapMatrix (mt V k - 1) = 0`.
+
+Rewrite using `[RingHom.map_sub, h1, RingHom.map_one, sub_self]`. Conclude with `congrFun (congrFun h2 i) j`. Establish `sp : ∀ v ε, IsPlaceIdem D v ε → ¬ NonSplitAt D v ε → g ∈ suppGroup V (1 - algebraMap (AF D.host.F) (AE D) ε)` using `fun v ε hε hn i j => by`. Take `⟨q, hq, hqv⟩` from `exists_prime_mem v`. Establish `h1` using `hs q hq (fun h => hn ((GlobalTheory.T.inertPrime_iff_nonSplitPlaceIdempotent D q hq v ε hε hqv).1 h)) i j`.
+
+Rewrite `h1` using `[← e1, Matrix.map_apply, ← one, ← RingHom.map_sub, GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem D q hq]`. Rewrite using `[sub_mul, one_mul, Matrix.sub_apply, h1 v ε hε hqv, sub_zero]`. Establish `sp' : ∀ (k : GA D V) (a : AE D), k ∈ suppGroup V (1 - a) → ∀ i j, a * (mt V k - 1) i j = 0` using `fun k a hk i j => by`. Use `hk i j` as an intermediate fact. Take the linear combination `-this`.
+
+Introduce `i j`. Use `⟨⟨inf g hg.1 i j, ?_, fun v ε hε hn => sp' _ _ (sp v ε hε hn) i j⟩, ⟨inf _ (inv_mem hg.1) i j, ?_, fun v ε hε hn => sp' _ _ (inv_mem (sp v ε hε hn)) i j⟩⟩` and prove the remaining obligations. Rewrite using `[← finQ_mem_iff, Matrix.sub_apply, RingHom.map_sub, one]`. Conclude with `sub_mem (by have := (hi i j).1; rwa [← e1] at this) (oneI i j)`. Rewrite using `[← finQ_mem_iff, Matrix.sub_apply, RingHom.map_sub, one]`.
+
+Conclude with `sub_mem (by have := (hi i j).2; rwa [← e2] at this) (oneI i j)`.
+-/
 theorem mem_congrGroup {V : HSp D} (hV : V.gram = 1) {g : GA D V} {x : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank} (hg : IsFinPt V g x)
     (hs : Formalism.MainNotions.StandardLatticesGL3.SuppInert D (x : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)))
     (hi : Formalism.MainNotions.StandardLatticesGL3.IntG D (x : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D))) : g ∈ congrGroup V (inertInt D) := by
@@ -282,6 +372,33 @@ theorem mem_congrGroup {V : HSp D} (hV : V.gram = 1) {g : GA D V} {x : Formalism
   · rw [← finQ_mem_iff, Matrix.sub_apply, RingHom.map_sub, one]
     exact sub_mem (by have := (hi i j).2; rwa [← e2] at this) (oneI i j)
 
+/- English proof (translation)
+Take `⟨hψ, hθ, gS, gT, crv, sc⟩` from `hset`. Establish `hc : cc ≠ ⊥` using `crv.1.1`. Establish `hr : r ≠ 0` using `IsScale.ne_zero hc sc`. Establish `hδ : δ ≠ 0` using `delta_ne_zero crv`. Establish `hS1 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin S.rank) D.host.E).1 * S.gram * (1 : GL (Fin S.rank) D.host.E).1 = 1`.
+
+Rewrite using `[gS]`. Simplify using `[Formalism.UG.cT]`. Establish `hT1 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin T.rank) D.host.E).1 * T.gram * (1 : GL (Fin T.rank) D.host.E).1 = 1`. Rewrite using `[gT]`. Simplify using `[Formalism.UG.cT]`.
+
+Establish `hLs : Formalism.MainNotions.StandardLatticesGL3.SD D (lsB D cc r S.rank)` using `GlobalTheory.T.invDifferentLatticeProductHermitian_isSelfDual D cc r S.rank hc sc`. Establish `hLt : Formalism.MainNotions.StandardLatticesGL3.SD D (stdL D T.rank)` using `GlobalTheory.MovedVacuum.sd_stdL D T.rank`. Take `⟨ΛS, hΛS, hSd⟩` from `GlobalTheory.MovedDict.isSelfDualC_inV S 1 hS1 _ hLs`. Take `⟨ΛT, hΛT, hTd⟩` from `GlobalTheory.MovedDict.isSelfDualC_inV T 1 hT1 _ hLt`. Establish `hone : ∀ {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), GlobalTheory.MovedDict.inV 1 L = (L : Set _)` using `fun L => by`.
+
+Use extensionality with `x`. Simplify using `[GlobalTheory.MovedDict.inV]`. Take `rfl : ΛS = lsB D cc r S.rank` from `SetLike.coe_injective (hΛS.trans (hone _))`. Take `rfl : ΛT = stdL D T.rank` from `SetLike.coe_injective (hΛT.trans (hone _))`. Use `⟨hSd, hTd, ?_⟩` and prove the remaining obligations.
+
+Take `⟨f, hf0⟩` from `GlobalTheory.VacRead.vac_exists_gram_one ψ θ hψ hθ S T gS gT _ _ hSd hTd`. Establish `hf` using `hf0`. Rewrite `hf` using `[hΛS, hΛT]`. Take `⟨Φ, hΦd, hΦ⟩` from `GlobalTheory.FockPos.vacuum_real_entire ψ θ S T 1 1 _ _ hS1 hT1 f hf`. Establish `hth` using `GlobalTheory.VacRead.theta_of_unit_vacuum ψ θ S T 1 1 hS1 hT1 δ hδ _ _ hLs hLt f hf Φ hΦd hΦ`.
+
+Establish `hLa : ∀ x ∈ Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) (stdL D S.rank) (stdL D T.rank), (fun τ i j => x τ i j / embT D τ r) ∈ Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK δ) (lsB D cc r S.rank) (stdL D T.rank)`. Introduce `x hx`. Take `⟨z, hz, rfl⟩` from `GlobalTheory.ThetaLatImage.La_sub hx`. Establish `h2` using `GlobalTheory.ThetaLatImage.pt_mem_La (δ := δ) (GlobalTheory.T.inv_smul_mem_rationalHomLatticeScaled_of_normScale D cc r S.rank T.rank hc sc z hz) 1`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `τ i j`. Rewrite using `[one_smul, GlobalTheory.ThetaLatImage.pt_apply, GlobalTheory.ThetaLatImage.pt_apply]`. Establish `ht : embT D τ r ≠ 0` using `(map_ne_zero _).2 hr`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hG` using `GlobalTheory.VacRead.th_div_scale crv sc hLa hth`. Establish `hback : ∀ Z : VC D S.rank T.rank, (δ⁻¹ • fun τ i j => (δ * embT D τ r * Z τ i j) / embT D τ r : VC D S.rank T.rank) = Z`. Introduce `Z`. Use function extensionality and compare the values at `τ i j`. Establish `ht : embT D τ r ≠ 0` using `(map_ne_zero _).2 hr`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take `⟨c, hc'⟩` from `(GlobalTheory.T.theta_space_selfDual_pair_at_most_line D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ crv _ _ _ (GlobalTheory.NormSum.VacMove.klat (tor0 D cc δ) (GlobalTheory.NormSum.VacMove.moves_one D S.rank) (GlobalTheory.NormSum.VacMove.moves_one D T.rank))).1 …`. Introduce `h0`. Apply `GlobalTheory.StepMove.vacO_ne_zero hf` to reduce the goal to its premises.
+
+Use `GlobalTheory.TwistFactorCompare.theta_eq_zero_of_real hf.2.theta fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hΦ w hw]`. Establish `e` using `congrFun h0 (fun τ i j => δ * embT D τ r * GlobalTheory.FockPos.zCo θ 1 1 w τ i j)`. Simplify using `only [Pi.zero_apply, hback] at e`. Rewrite using `[e, mul_zero])`.
+
+Establish `hR : Reads ψ θ rfl rfl cc δ r (fun Y => (fun Y' : VC D S.rank T.rank => Φ (δ⁻¹ • Y')) (fun τ i j => Y τ i j / embT D τ r)) f` using `(reads_iff crv sc _ f).2 ⟨hf.2.theta, fun w hw => by`. Rewrite using `[hΦ w hw]`. Simplify using `only [hback]⟩`. Establish `e : f₀ = c • f` using `hf₀.unique (hc' ▸ hR.smul c)`. Establish `hsm : ∀ u, heisO ψ S T u f = f → heisO ψ S T u f₀ = f₀` using `fun u hu => by`.
+
+Use function extensionality and compare the values at `w`. Use `congrFun hu w` as an intermediate fact. Rewrite using `[e]`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul] at this ⊢`. Rewrite using `[mul_left_comm, this]`.
+
+Conclude with `⟨fun u hu => hsm _ (hf0.2.lat.1 u hu), fun a ha u hu hh => hsm _ (hf0.2.lat.2 a ha u hu hh)⟩`.
+-/
 theorem latVac_of_reads {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
     {r : D.host.E} (hset : Setup ψ θ S T cc δ r) {e0 : VC D S.rank T.rank → ℂ}
     (he : e0 ∈ Th D (tor0 D cc δ) (stdL D S.rank) (stdL D T.rank)) {f₀ : WO S T → ℂ}
@@ -367,10 +484,20 @@ def stab {G X : Type} [Group G] (om : G →* Module.End ℂ (X → ℂ)) (f : X 
     conv_lhs => rw [← ha]
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+The claim follows from `isClosed_eq (continuous_pi h) continuous_const`.
+-/
 theorem isClosed_stab {G X : Type} [Group G] [TopologicalSpace G] (om : G →* Module.End ℂ (X → ℂ)) (f : X → ℂ)
     (h : ∀ w, Continuous fun p => om p f w) : IsClosed (stab om f : Set G) :=
   isClosed_eq (continuous_pi h) continuous_const
 
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT cc δ r hset e0 W χS χT om hom _ t0 _ _ he hχS hχT f₀ hf₀ x y g h hg hh sx sy ix iy`. Substitute `hS hT` using the available equality. Take `⟨sdS, sdT, hvac⟩` from `latVac_of_reads hset he.1 hf₀`. Establish `s1 : ∀ (V : HSp D) (ε : AF D.host.F), SuppPl ε V 1` using `fun V ε i j => by`. Rewrite using `[mt_one, sub_self, Matrix.zero_apply, mul_zero]`.
+
+Establish `loc : ∀ v ε, NonSplitAt D v ε → ∀ g ∈ congrGroup S (inertInt D), ∀ h ∈ congrGroup T (inertInt D), SuppPl ε S g → SuppPl ε T h → om (g, h) f₀ = f₀` using `fun v ε hv g hg h hh sg sh => GlobalTheory.VecInvInert.om_fixes_vacuum D ψ S T _ _ χS χT om hom sdS sdT (exists_isEtaTilde_unramified D) v ε hv (unramAt_of_hasFinPart hχS hv) (unramAt_of_hasFinPart hχT hv) g h sg sh (actO_mem_iff hset.gS hset.crv.1.1 hset.scale hg hh) f₀ hf₀.1 hv …`. Establish `hc` using `hom.om_cont f₀ hf₀.1`. Establish `h1 : om (g, 1) f₀ = f₀` using `congrGroup_le S (stab (om.comp (MonoidHom.inl _ _)) f₀) (isClosed_stab _ _ fun w => (hc w).comp (Continuous.prodMk_left 1)) (fun v ε hv k hk sk => loc v ε hv k hk 1 (one_mem _) sk (s1 T ε)) (mem_congrGroup hset.gS hg sx ix)`. Establish `h2 : om (1, h) f₀ = f₀` using `congrGroup_le T (stab (om.comp (MonoidHom.inr _ _)) f₀) (isClosed_stab _ _ fun w => (hc w).comp (Continuous.prodMk_right 1)) (fun v ε hv k hk sk => loc v ε hv 1 (one_mem _) k hk (s1 S ε) sk) (mem_congrGroup hset.gT hh sy iy)`. Establish `hp : (g, h) = ((g, 1) : GA D S × GA D T) * (1, h)` using `Prod.ext (mul_one _).symm (one_mul _).symm`.
+
+Rewrite using `[W.inert x y ix iy sx sy, hp, map_mul, Module.End.mul_apply, h2, h1]`. Conclude with `hf₀`.
+-/
 theorem inert_vacuum_reads : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →
   ∀ (e0 : VC D a d → ℂ) (W : WeilO D cc δ a d e0) (χS χT : (AE D)ˣ →* Circle)

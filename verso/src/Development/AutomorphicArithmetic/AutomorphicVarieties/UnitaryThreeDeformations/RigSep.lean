@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.L
 
 open NumberField Matrix IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Aut UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply']`. Take `⟨σ, -, hσ⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty (Finset.univ_nonempty (α := Equiv.Perm n)) (fun τ : Equiv.Perm n => (((Equiv.Perm.sign τ : ℤ) : K)) * ∏ i, A (τ i) i)`. Use `lt_of_le_of_lt hσ ?_` and prove the remaining obligations. Use `show ‖(((Equiv.Perm.sign σ : ℤ) : K)) * ∏ i, A (σ i) i‖ < 1`. Establish `hs : ‖(((Equiv.Perm.sign σ : ℤ) : K))‖ = 1`.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Rewrite using `[norm_mul, hs, one_mul, norm_prod, ← Finset.mul_prod_erase Finset.univ (fun i => ‖A (σ i) i‖) (Finset.mem_univ (σ.symm a))]`. Establish `hle : ∏ i ∈ Finset.univ.erase (σ.symm a), ‖A (σ i) i‖ ≤ 1` using `Finset.prod_le_one (fun i _ => norm_nonneg _) (fun i _ => h1 _ _)`. Establish `hlt : ‖A (σ (σ.symm a)) (σ.symm a)‖ < 1`. Rewrite using `[Equiv.apply_symm_apply]`.
+
+Conclude with `h2 _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem norm_det_lt_one_of_norm_le_one_of_norm_apply_lt_one {K : Type*} [NormedField K] [IsUltrametricDist K] {n : Type*} [Fintype n]
     [DecidableEq n] (A : Matrix n n K) (a : n) (h1 : ∀ i j, ‖A i j‖ ≤ 1) (h2 : ∀ j, ‖A a j‖ < 1) :
     ‖A.det‖ < 1 := by
@@ -25,6 +32,17 @@ private theorem norm_det_lt_one_of_norm_le_one_of_norm_apply_lt_one {K : Type*} 
       ≤ ‖A (σ (σ.symm a)) (σ.symm a)‖ * 1 := mul_le_mul_of_nonneg_left hle (norm_nonneg _)
     _ < 1 := by simpa using hlt
 
+/- English proof (translation)
+Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr ht`. Break down `isEmpty_or_nonempty n with hn | hn` into its components or cases. Conclude with `absurd (funext fun c => (IsEmpty.false c).elim) hv0`. Take `⟨b, hb⟩` from `Finite.exists_max (fun c => ‖v c‖)`. Establish `hvb : v b ≠ 0`.
+
+Introduce `h0`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Use `hb c` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+
+Conclude with `norm_le_zero_iff.mp this`. Establish `hrow : t * v b = ∑ c, M b c * v c`. Use `congrFun hv b` as an intermediate fact. Simplify using `[Matrix.sub_mulVec, Matrix.mulVec, dotProduct, Matrix.smul_apply, Matrix.one_apply, sub_mul, Finset.sum_sub_distrib, ite_mul, Finset.sum_ite_eq] at this`. Take the linear combination `this`.
+
+Establish `hbound : ‖t * v b‖ ≤ 1 * ‖v b‖`. Rewrite using `[hrow]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (h1 b c) (hb c) (norm_nonneg _) zero_le_one`.
+
+Rewrite `hbound` using `[norm_mul]`. Conclude with `le_of_mul_le_mul_right hbound (norm_pos_iff.mpr hvb)`.
+-/
 private theorem norm_le_one_of_det_smul_one_sub_eq_zero {K : Type*} [NormedField K] [IsUltrametricDist K] {n : Type*} [Fintype n]
     [DecidableEq n] (M : Matrix n n K) (h1 : ∀ i j, ‖M i j‖ ≤ 1) (t : K)
     (ht : (t • (1 : Matrix n n K) - M).det = 0) : ‖t‖ ≤ 1 := by
@@ -53,6 +71,43 @@ private theorem norm_le_one_of_det_smul_one_sub_eq_zero {K : Type*} [NormedField
   exact le_of_mul_le_mul_right hbound (norm_pos_iff.mpr hvb)
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `l _ M d P hM hd hdd hT i j hij u hu`. Use `set T := ((P⁻¹ : GL (Fin 3) (PadicAlgCl l)) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) * M * (P : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) with hTdef`. Establish `hsub : ∀ x y : PadicAlgCl l, ‖x - y‖ ≤ max ‖x‖ ‖y‖` using `fun x y => by`. Simplify `IsUltrametricDist.norm_add_le_max x (-y)` using `[sub_eq_add_neg, norm_neg]`. Establish `hdet : ∀ x : PadicAlgCl l, (x • (1 : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) - M).det = ∏ k, (x - T k k)`.
+
+Introduce `x`. Establish `h1 : ((P⁻¹ : GL (Fin 3) (PadicAlgCl l)) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) * (x • 1 - M) * (P : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) = x • 1 - T`. Rewrite using `[hTdef, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Units.inv_mul]`. Establish `h2 : (((P⁻¹ : GL (Fin 3) (PadicAlgCl l)) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l))).det * ((P : Matrix (Fin 3) (Fin 3) (PadicAlgCl l))).det = 1`. Rewrite using `[← Matrix.det_mul, Units.inv_mul, Matrix.det_one]`.
+
+Establish `h3 : (x • (1 : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) - T).det = ∏ k, (x • (1 : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) - T) k k`. Apply `Matrix.det_of_upperTriangular` to reduce the goal to its premises. Introduce `a b hab`. Establish `hne : a ≠ b` using `(ne_of_lt hab).symm`. Simplify using `[Matrix.sub_apply, Matrix.one_apply, hne, hT a b hab]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∏ k, (x - T k k) := by`. Rewrite using `[h1, h3]`.
+
+Simplify using `[Matrix.sub_apply, Matrix.one_apply]`. Establish `hM1 : ∀ a b, ‖M a b‖ ≤ 1`. Introduce `a b`. Establish `hdg : ‖Matrix.diagonal d a b‖ ≤ 1`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Simplify using `[hd a]`. Simplify using `[Matrix.diagonal_apply_ne _ hab]`. Use `IsUltrametricDist.norm_add_le_max (M a b - Matrix.diagonal d a b) (Matrix.diagonal d a b)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`.
+
+Conclude with `this.trans (max_le (hM a b).le hdg)`. Establish `ht1 : ∀ k, ‖T k k‖ ≤ 1` using `fun k => norm_le_one_of_det_smul_one_sub_eq_zero M hM1 (T k k) (by rw [hdet]; exact Finset.prod_eq_zero (Finset.mem_univ k) (sub_self _))`. Establish `ht2 : ∀ a, ∃ k, ‖d a - T k k‖ < 1`. Introduce `a`. Establish `hsmall : ‖(d a • (1 : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) - M).det‖ < 1`.
+
+Apply `norm_det_lt_one_of_norm_le_one_of_norm_apply_lt_one _ a` to reduce the goal to its premises. Introduce `c b`. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Use `(hsub _ _).trans (max_le ?_ (hM1 c b))` and prove the remaining obligations. Distinguish the cases in `hcb : c = b`.
+
+Substitute `hcb` using the available equality. Simplify using `[Matrix.one_apply_eq, hd a]`. Simplify using `[Matrix.one_apply_ne hcb]`. Introduce `b`. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Use `hM a a` as an intermediate fact. Rewrite `this` using `[Matrix.diagonal_apply_eq]`. Rewrite `this` using `[norm_sub_rev]`.
+
+Simplify using `using this`. Use `hM a b` as an intermediate fact. Rewrite `this` using `[Matrix.diagonal_apply_ne _ hab, sub_zero]`. Simplify `this` using `[Matrix.one_apply_ne hab]`. Rewrite `hsmall` using `[hdet, norm_prod, Fin.prod_univ_three]`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (hne 0) (hne 1)) (hne 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose φ hφ using ht2`.
+
+Establish `hinj : Function.Injective φ`. Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Establish `h` using `hdd a b hne`. Establish `: ‖d a - d b‖ ≤ max ‖d a - T (φ a) (φ a)‖ ‖d b - T (φ a) (φ a)‖`.
+
+Use `hsub (d a - T (φ a) (φ a)) (d b - T (φ a) (φ a))` as an intermediate fact. Simplify using `using this`. Rewrite `this` using `[hab]`. Use `this.trans_lt (max_lt (hab ▸ hφ a) (hφ b))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsurj` using `Finite.surjective_of_injective hinj`. Take `⟨a, rfl⟩` from `hsurj i`. Take `⟨b, rfl⟩` from `hsurj j`. Establish `hab : a ≠ b` using `fun h => hij (h ▸ rfl)`. Introduce `heq`.
+
+Establish `hclose : ‖T (φ a) (φ a) - T (φ b) (φ b)‖ < 1`. Rewrite using `[heq, show T (φ b) (φ b) * u - T (φ b) (φ b) = T (φ b) (φ b) * (u - 1) by ring, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsplit : d a - d b = (d a - T (φ a) (φ a)) + ((T (φ a) (φ a) - T (φ b) (φ b)) + (T (φ b) (φ b) - d b))` using `by ring`. Establish `h3 : ‖d a - d b‖ < 1`.
+
+Rewrite using `[hsplit]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hφ a) ?_)` and prove the remaining obligations. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hclose ?_)` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`. Conclude with `hφ b`.
+
+Use `hdd a b hab` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.rig_sep :
     ∀ {l : ℕ} [Fact l.Prime] (M : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) (d : Fin 3 → PadicAlgCl l) (P : GL (Fin 3) (PadicAlgCl l)), (∀ a b, ‖M a b - Matrix.diagonal d a b‖ < 1) → (∀ a, ‖d a‖ = 1) → (∀ a b, a ≠ b → ‖d a - d b‖ = 1) → (∀ i j, j < i → (((P⁻¹ : GL (Fin 3) (PadicAlgCl l)) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) * M * (P : Matrix (Fin 3) (Fin 3) (PadicAlgCl l))) i j = 0) → ∀ i j, i ≠ j → ∀ u : PadicAlgCl l, ‖u - 1‖ < 1 → (((P⁻¹ : GL (Fin 3) (PadicAlgCl l)) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) * M * (P : Matrix (Fin 3) (Fin 3) (PadicAlgCl l))) i i ≠ (((P⁻¹ : GL (Fin 3) (PadicAlgCl l)) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) * M * (P : Matrix (Fin 3) (Fin 3) (PadicAlgCl l))) j j * u := by
   intro l _ M d P hM hd hdd hT i j hij u hu

@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.KerProjGood
 
+/- English proof (translation)
+Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hT _ (Submodule.coe_mem _)) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[← map_sub, ← LinearMap.adjoint_inner_right]`. Establish `h` using `Submodule.sub_starProjection_mem_orthogonal (K := S) z`. Rewrite using `[inner_eq_zero_symm]`. Conclude with `h _ (hTa w hw)`.
+-/
 theorem starProjection_comm {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
     (S : Submodule ℂ V) (T : V →ₗ[ℂ] V) (hT : ∀ u ∈ S, T u ∈ S) (hTa : ∀ u ∈ S, LinearMap.adjoint T u ∈ S) (z : V) :
     (S.starProjection (T z) : V) = T (S.starProjection z) := by
@@ -29,6 +32,21 @@ end GlobalTheory.KerProjGood
 
 open GlobalTheory.KerProjGood in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hok hC _ _ hG j y hy`. Establish `hM` using `hC.base.models`. Establish `hK` using `RealDat3.kFormL_of (F := F) hM`. Establish `hJ` using `RealDat3.jIsoL_of (F := F) hM`. Use `set X := R.toCx3 F with hX`.
+
+Use `set t := A3.A.fam.μ0`. Establish `sp` using `lift_embeddings_span hK j t`. Establish `jr : ∀ (g : G) x, X.jL j t ((A3.fam3.F.L j t).r g x) = X.opLC j t (Sum.inr g) (X.jL j t x)` using `fun g x => X.jL_opL hK j t (Sum.inr g) x`. Establish `hker : ∀ (g : G), ∀ u ∈ LinearMap.ker (X.θ' j t), X.opLC j t (Sum.inr g) u ∈ LinearMap.ker (X.θ' j t)`. Introduce `g u hu`.
+
+Rewrite `hu`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `congrArg (fun f => f u) (theta_rho (r := (A3.fam3.F.L j t).r) (ρ := fun g => X.opLC j t (Sum.inr g)) sp jr (fun g x => hG.2 j t g x) g)`. Simplify using `only [LinearMap.comp_apply] at h`. Rewrite using `[h, hu, map_zero]`. Establish `hadj : ∀ g : G, LinearMap.adjoint (X.opLC j t (Sum.inr g)) = X.opLC j t (Sum.inr g⁻¹)` using `fun g => (X.opLC_adjoint hK F.cv hJ j t (Sum.inr g) (Sum.inr g⁻¹) fun f f' => csum_act_inv (hok.ok2.lifts j t).act g f f').symm`.
+
+Establish `hcomm : ∀ (g : G) z, ((LinearMap.ker (X.θ' j t)).starProjection (X.opLC j t (Sum.inr g) z) : X.FLC j t) = X.opLC j t (Sum.inr g) ((LinearMap.ker (X.θ' j t)).starProjection z)` using `fun g z => starProjection_comm _ _ (hker g) (fun u hu => by rw [hadj]; exact hker g⁻¹ u hu) z`. Establish `hrange : U2.goodL A3 X F.P0 F.ψ0 F.P1 F.ψ1 j = LinearMap.range (opV A3.fam3.base3.v0.embedding (fun g => X.opLC j t (Sum.inr g)) (goodAt (A3.fam3.F.lvlA F.P0 F.ψ0).X (A3.fam3.F.lvlA F.P0 F.ψ0).P (A3.fam3.F.lvlA F.P0 F.ψ0).ψ))` using `by show X.goodPartComplexPoints F.cv false j t = _`. Unfold `CxData.goodPartComplexPoints`. Rewrite using `[show F.cv.v0L X.zs false j t = BlockGood.goodR (A3.fam3.F.L j t) (A3.fam3.F.lvlA F.P0 F.ψ0) from rfl, goodR_eq]`. Use `conv_rhs => rw [LinearMap.range_eq_map, ← sp, Submodule.map_span]`.
+
+Use `congr 1`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨X.jL j t x, ⟨x, rfl⟩, (j_opF jr _ x).symm⟩`.
+
+Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨x, rfl⟩, j_opF jr _ x⟩`. Rewrite `hy`, the goal using `[hrange]`. Take `⟨z, rfl⟩` from `hy`. Use `⟨(LinearMap.ker (X.θ' j t)).starProjection z, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [opV, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hcomm]`. Conclude with `Finset.sum_congr rfl fun g _ => congrArg _ (hcomm g z).symm`.
+-/
 theorem GlobalTheory.kerProj_goodL : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → (∀ j t, (A3.A.fam.L j t).OkH ∧ (A3.liftI j t).InertRationalAdjoint) → R.PGEquiv F → ∀ j, ∀ y ∈ U2.goodL A3 (R.toCx3 F) F.P0 F.ψ0 F.P1 F.ψ1 j, ((LinearMap.ker ((R.toCx3 F).θ' j A3.A.fam.μ0)).starProjection y : (R.toCx3 F).FLC j A3.A.fam.μ0) ∈ U2.goodL A3 (R.toCx3 F) F.P0 F.ψ0 F.P1 F.ψ1 j := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hok hC _ _ hG j y hy
   have hM := hC.base.models

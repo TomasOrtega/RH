@@ -20,6 +20,49 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Use `set A := arcOf b w S η up size with hA`. Establish `hl5 : 5 ≤ PD.p` using `by have := hB.1; omega`. Establish `hc2 : IsCrys PD T₂.ρ` using `hW₂.1`. Take `⟨-, hqU, -⟩` from `lemG_units W hcase hP9 hc2 hO hOv hinj`. Establish `hp1U : IsUnit (algebraMap (LetA O n) W.EE (ps W 1))`.
+
+Rewrite using `[show ps W 1 = W.φA (qA W) by rw [← DFD.dfd_ps_zero, ← DFD.dfd_ps_succ]]`. Establish `e : algebraMap (LetA O n) W.EE (W.φA (qA W)) = W.φE (algebraMap (LetA O n) W.EE (qA W))` using `(W.φE_ext _).symm`. Rewrite using `[e]`. Conclude with `hqU.map W.φE`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : W.EE, algebraMap (LetA O n) W.EE (qA W ^ size (c - 1)) * s = algebraMap (LetA O n) W.EE (ps W 1 ^ (size (c - 2) + S)) := by`.
+
+Take `⟨u, hu⟩` from `hqU.pow (size (c - 1))`. Use `⟨((u⁻¹ : W.EEˣ) : W.EE) * algebraMap (LetA O n) W.EE (ps W 1 ^ (size (c - 2) + S)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow (algebraMap (LetA O n) W.EE) (qA W), ← hu, ← mul_assoc, Units.mul_inv, one_mul]`. Establish `hn2` using `hn₂ s hs`. Establish `h5 : algebraMap (LetA O n) W.EE (ps W 1 ^ size (c - 1)) * W.φE s = algebraMap (LetA O n) W.EE (ps W 2 ^ (size (c - 2) + S))`.
+
+Establish `e1 : ps W 1 ^ size (c - 1) = W.φA (qA W ^ size (c - 1))`. Rewrite using `[map_pow, ← DFD.dfd_ps_zero, ← DFD.dfd_ps_succ]`. Establish `e2 : ps W 2 ^ (size (c - 2) + S) = W.φA (ps W 1 ^ (size (c - 2) + S))`. Rewrite using `[map_pow, ← DFD.dfd_ps_succ]`. Rewrite using `[e1, e2]`.
+
+Use `congrArg W.φE hs` as an intermediate fact. Rewrite `this` using `[map_mul, W.φE_ext, W.φE_ext]`. Conclude with `this`. Establish `hsU : IsUnit s`. Establish `h` using `(hp1U.pow (size (c - 2) + S))`.
+
+Rewrite `h` using `[← map_pow, ← hs]`. Conclude with `isUnit_of_mul_isUnit_right h`. Establish `hφsU : IsUnit (W.φE s)` using `hsU.map W.φE`. Establish `hφn : W.φD T₂ (s • lam) = W.φE s • W.φD T₂ lam` using `W.φD_smul T₂ s lam`. Establish `hlet2 : (letE c : LetA O n) • W.φD T₂ (s • lam) = W.φD T₂ (s • lam)`.
+
+Establish `hfix` using `Formalism.MainNotions.LiftingTheory.wmap_Nl_fix W T₂ (c - 1) _ hn2.2`. Use `conv_rhs => rw [← hfix]`. Rewrite using `[DYB.φD_smulA W, Formalism.MainNotions.LiftingTheory.wmap_φA_letE]`. Establish `gen : ∀ a : LetA O n, a ∈ W.AΔ → ∀ x, Formalism.MainNotions.LiftingTheory.InNΔi W T₂ (c - 1) x → a • W.φD T₂ x ∈ Pp W T₂ (c - 1) 1`. Introduce `a ha x hx`.
+
+Unfold `Pp`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, x, hx, by rw [pow_one]⟩`. Take `⟨u, hu, hf₂e⟩` from `hf₂`. Establish `hf₂' : f₂ = algebraMap (LetA O n) W.EE (letE c * u) * W.φE s`. Apply `(hp1U.pow (size (c - 1))).mul_left_cancel` to reduce the goal to its premises.
+
+Rewrite using `[← map_pow (algebraMap (LetA O n) W.EE), hf₂e]`. Simplify using `only [map_mul]`. Rewrite using `[← h5]`. Expand and normalize the polynomial expressions, which then agree. Establish `hP1 : f₂ • W.φD T₂ lam = u • W.φD T₂ (s • lam)`.
+
+Rewrite using `[hf₂', mul_smul, ← hφn, algebraMap_smul, mul_comm (letE c : LetA O n) u, mul_smul, hlet2]`. Use `⟨⟨_, gen u hu _ hn2, by rw [one_smul, hP1]⟩, ?_⟩` and prove the remaining obligations. Take `⟨u', hu', hX₀e⟩` from `hX₀`. Rewrite `hX₀e` using `[DFD.dfd_ps_zero]`. Take `⟨κ', y₀, hy₀, he⟩` from `h4a`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨Λ, hΛmem, hz₀i⟩ : ∃ Λ : LetA O n, W.φA Λ ∈ Submonoid.closure {x : LetA O n | ∃ k ≥ 1, x = ps W k} ∧ Formalism.MainNotions.LiftingTheory.InNΔi W T₂ (c - 1) (Λ • y₀) := by`. Establish `HA` using `hArc hcase hl5 A hOK c hc 2 (by rw [hA]; show 1 ≤ 2; omega) (by rw [hlen]; omega)`. Take `⟨-, HT⟩` from `HA`. Take `⟨hΛ, -⟩` from `HT T₂ hW₂`. Take `⟨z₁, hz₁N, hz₁l, hz₁e⟩` from `hΛ y₀ hy₀`.
+
+Establish `ha : c - ((A.len c : ℕ) : ZMod n) + ((2 : ℕ) : ZMod n) = c - 1`. Rewrite using `[hlen]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hz₁l` using `[ha]`.
+
+Use `⟨abelian₂ W A (c - ((A.len c : ℕ) : ZMod n) + ((2 : ℕ) : ZMod n)) 2, DFD.dfd_φLam_mem W A _ 2, ?_⟩` and prove the remaining obligations. Rewrite using `[hz₁e, one_smul]`. Conclude with `⟨hz₁N, (Formalism.MainNotions.LiftingTheory.wmap_mem_Nl W T₂ (c - 1) z₁).2 ⟨z₁, ((lemGB_memNΔ W).1 hz₁N).1, hz₁l⟩⟩`. Establish `hφz : W.φD T₂ (Λ • y₀) = W.φA Λ • W.φD T₂ y₀` using `DYB.φD_smulA W T₂ Λ y₀`. Establish `h2c : lA W ^ κ' • (lA W ^ κ • W.φD T₂ lam - lA W ^ (A.σ PD.p) • ((W.φD T₂) ^ 3) Hh) = W.φA (W.φA (Formalism.MainNotions.LiftingTheory.JJ W 1 (2 * A.G₀) (A.M PD.p))) • W.φD T₂ y₀`.
+
+Use `congrArg (W.φD T₂) he` as an intermediate fact. Simplify using `only [DYB.φD_smulA, map_sub, DFD.dfd_φA_lA] at this`. Rewrite using `[DFD.dfd_φD_three]`. Conclude with `this`. Establish `hB' : size c + S ≤ (PD.p - 1) * A.M PD.p`.
+
+Establish `hty : (A.ty c).thick = true ∧ (A.ty c).size = size c`. Apply the tactic sequence `rw [hA]; unfold arcOf; dsimp only; split <;> exact ⟨rfl, rfl⟩`. Establish `hS : A.S = S` using `by rw [hA]; rfl`. Establish `hth` using `hOK.2.2.2.2.2.2.2.1 c hty.1`. Rewrite `hth` using `[hty.2, hS]`.
+
+Establish `hq1 : 0 < PD.p - 1` using `by omega`. Establish `key` using `Nat.lt_mul_div_succ (2 * A.h) hq1`. Conclude with `(lt_of_le_of_lt (by omega : size c + S ≤ 2 * A.h) key).le`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr, hJJ⟩ : ∃ r ∈ W.AΔ, W.φA (W.φA (Formalism.MainNotions.LiftingTheory.JJ W 1 (2 * A.G₀) (A.M PD.p))) = qA W ^ (size c + S) * r := by`. Take `⟨uT, huT, -, -, -, hTr2⟩` from `(hTr hcase).2.1 2 (A.M PD.p)`.
+
+Establish `hpk : ∀ k, Formalism.MainNotions.LiftingTheory.pk W k = ps W k` using `fun _ => rfl`. Simplify using `only [hpk] at hTr2`. Take `⟨t, ht⟩` from `Nat.exists_eq_add_of_le hB'`. Establish `hq : qA W ∈ W.AΔ` using `by rw [← DFD.dfd_ps_zero]; exact TypesA.ps_mem W 0`. Use `⟨uT * W.π₀ ^ A.M PD.p * qA W ^ t * ps W 1 ^ ((PD.p - 1) * A.M PD.p) * ps W 2 ^ (2 * A.G₀), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `mul_mem (mul_mem (mul_mem (mul_mem huT (pow_mem (TypesA.pi0_mem_ADelta W) _)) (pow_mem hq _)) (pow_mem (TypesA.ps_mem W 1) _)) (pow_mem (TypesA.ps_mem W 2) _)`. Establish `e0 : W.φA (W.φA W.π₀) = (W.φA ^ 2) W.π₀` using `by rw [pow_two, AlgHom.mul_apply]`. Establish `e2 : W.φA (W.φA (ps W 0)) = ps W 2` using `by rw [← DFD.dfd_ps_succ, ← DFD.dfd_ps_succ]`. Simplify using `only [Formalism.MainNotions.LiftingTheory.JJ, Finset.prod_range_one, map_mul, map_pow, hpk]`. Rewrite using `[e0, e2, hTr2, show Finset.range 2 = Finset.range (1 + 1) from rfl, Finset.prod_range_succ, Finset.prod_range_one, DFD.dfd_ps_zero, ht]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hΛA : W.φA Λ ∈ W.AΔ` using `DFD.dfd_closure_AΔ W hΛmem`. Establish `hgmem : ps W 1 ^ size (c - 1) * ps W 2 ^ (size (c - 2) + S) * W.φA Λ ∈ Submonoid.closure {x : LetA O n | ∃ k ≥ 1, x = ps W k}`. Use `mul_mem (mul_mem (pow_mem (Submonoid.subset_closure ?_) _) (pow_mem (Submonoid.subset_closure ?_) _)) hΛmem` and prove the remaining obligations. Conclude with `⟨1, le_refl _, rfl⟩`.
+
+Conclude with `⟨2, by norm_num, rfl⟩`. Establish `h6 : algebraMap (LetA O n) W.EE (letE c) • W.φD T₂ lam = W.φD T₂ lam`. Establish `e : W.φD T₂ lam = ((hφsU.unit⁻¹ : W.EEˣ) : W.EE) • W.φD T₂ (s • lam)`. Rewrite using `[hφn, smul_smul, hφsU.val_inv_mul, one_smul]`. Rewrite using `[e, smul_smul, mul_comm, ← smul_smul, algebraMap_smul, hlet2]`.
+
+Use `⟨_, hgmem, κ', (lA W ^ (κ' + κ) * W.φA Λ * u' * ps W 1 ^ size (c - 1)) • W.φD T₂ (s • lam) + (algebraMap O (LetA O n) X₀ * (ps W 1 ^ size (c - 1) * ps W 2 ^ (size (c - 2) + S) * r)) • W.φD T₂ (Λ • y₀), add_mem (gen _ ?_ _ hn2) (gen _ ?_ _ hz₀i), ?_⟩` and prove the remaining obligations. Conclude with `mul_mem (mul_mem (mul_mem (TypesA.lA_pow_mem W _) hΛA) hu') (pow_mem (TypesA.ps_mem W 1) _)`. Conclude with `mul_mem (W.AΔ.algebraMap_mem X₀) (mul_mem (mul_mem (pow_mem (TypesA.ps_mem W 1) _) (pow_mem (TypesA.ps_mem W 2) _)) hr)`. Establish `key` using `DFD.smul_sub_eq_smul_add (R := W.EE) (algebraMap (LetA O n) W.EE (lA W ^ κ')) (algebraMap (LetA O n) W.EE (lA W ^ κ)) (algebraMap (LetA O n) W.EE (lA W ^ (κ₀ + κ))) (lE W κ₀) (algebraMap (LetA O n) W.EE (lA W ^ (A.σ PD.p))) (algebraMap (LetA O n) W.EE (ps W 1 ^ size (c - 1) * ps …`. Simplify `key` using `only [mul_smul, algebraMap_smul]`.
+-/
 theorem arc_length_three_inFP_smul_phi_lambda [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

@@ -9,6 +9,25 @@ open scoped NNReal
 
 namespace GlobalTheory.AlmostEt
 
+/- English proof (translation)
+Introduce `L _ v p hp F hF hp0 hp1 G _ _ σ hσ ζ α hζ hα hαp hσα r hr`. Take `⟨t, hrt, ht1⟩` from `exists_between hr`. Establish `ht0 : 0 < t` using `lt_of_le_of_lt (zero_le') hrt`. Use `set s : ℝ≥0 := t⁻¹ with hs_def`. Establish `hs1 : 1 < s` using `by rw [hs_def]; exact one_lt_inv₀ ht0 |>.mpr ht1`.
+
+Establish `hs0 : 0 < s` using `lt_trans zero_lt_one hs1`. Establish `hrs : r * s < 1`. Rewrite using `[hs_def, ← div_eq_mul_inv]`. Conclude with `(div_lt_one ht0).mpr hrt`. Take `⟨y, hyF, hy⟩` from `GlobalTheory.T.kummer_generator_approx_critical_radius L v p hp F hF hp1 α hαp hp0 s hs1`.
+
+Establish `hz` using `GlobalTheory.T.valuation_primitiveRoot_sub_one_pow_pred_eq L v p hp ζ hζ`. Establish `hp2 : 2 ≤ p` using `hp.two_le`. Establish `hpn : p - 1 ≠ 0` using `by omega`. Use `set β := α - y with hβ_def`. Establish `hσβ : σ • β - β = (ζ - 1) * α`.
+
+Rewrite using `[hβ_def, smul_sub, hσα, hσ y hyF]`. Expand and normalize the polynomial expressions, which then agree. Establish `hζ1 : ζ ≠ 1` using `hζ.ne_one hp.one_lt`. Establish `hne : σ • β - β ≠ 0`. Rewrite using `[hσβ]`.
+
+Conclude with `mul_ne_zero (sub_ne_zero.mpr hζ1) hα`. Establish `hβ0 : β ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[h, smul_zero, sub_zero]`.
+
+Establish `hvβ : v β ≤ s * v (σ • β - β)`. Establish `h1 : v β ^ (p - 1) ≤ (s * v (σ • β - β)) ^ (p - 1)`. Rewrite using `[hσβ, map_mul, mul_pow, mul_pow, hz]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_self_pow₀ hs1.le hpn`.
+
+Use `_ = s ^ (p - 1) * (v (p : L) * v α ^ (p - 1)) := by ring`. Conclude with `le_of_pow_le_pow_left₀ hpn (zero_le') h1`. Take `⟨d, hdF, hd0, hdlo, hdhi⟩` from `GlobalTheory.T.exists_pth_power_scale_thin_shell L v p hp F hF hp0 hp1 (r * s) hrs β hβ0`. Use `⟨β * d ^ p, Subfield.mem_top _, hdhi, ?_⟩` and prove the remaining obligations. Establish `hσx : σ • (β * d ^ p) - β * d ^ p = d ^ p * (σ • β - β)`.
+
+Rewrite using `[smul_mul', smul_pow', hσ d hdF]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hσx]`. Establish `hvx : v (β * d ^ p) ≤ s * v (d ^ p * (σ • β - β))`. Rewrite using `[map_mul, map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: r * s < s * v (d ^ p * (σ • β - β))` using `lt_of_lt_of_le hdlo hvx`. Rewrite `this` using `[mul_comm]`. Conclude with `lt_of_mul_lt_mul_left this (zero_le')`.
+-/
 theorem kummer_moves : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ), p.Prime →
     ∀ F : Subfield L, ApproxRoot p v F → 0 < v (p : L) → v (p : L) < 1 →
     ∀ (G : Type) [Group G] [MulSemiringAction G L] (σ : G), (∀ x ∈ F, σ • x = x) →

@@ -82,6 +82,9 @@ variable {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} [Field Qp] [Field K₀
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, map_mul, AlgebraTensorModule.map_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem pc_actVB_mul (PD : PeriodData G Qp K₀ K B BdR) (g h : G) (x : V ⊗[Qp] B) :
     actVB PD ρ (g * h) x = actVB PD ρ g (actVB PD ρ h x) := by
   induction x using TensorProduct.induction_on with
@@ -89,6 +92,9 @@ theorem pc_actVB_mul (PD : PeriodData G Qp K₀ K B BdR) (g h : G) (x : V ⊗[Qp
   | tmul v b => simp [actVB, map_mul, AlgebraTensorModule.map_tmul]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, AlgebraTensorModule.map_tmul, PotCrysData.resH, PC.actB_eq]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem pc_actVB_res (h : PC.H) (x : V ⊗[Qp] B) :
     actVB PC.PD' (PC.resH ρ) h x = actVB PC.PD ρ (h : G) x := by
   induction x using TensorProduct.induction_on with
@@ -96,11 +102,19 @@ theorem pc_actVB_res (h : PC.H) (x : V ⊗[Qp] B) :
   | tmul v b => simp [actVB, AlgebraTensorModule.map_tmul, PotCrysData.resH, PC.actB_eq]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `only [PotCrysData.Dpcris, Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero, pc_actVB_res]`.
+-/
 theorem pc_mem_Dpcris {x : V ⊗[Qp] B} :
     x ∈ PC.Dpcris ρ ↔ ∀ h : PC.H, actVB PC.PD ρ (h : G) x = x := by
   simp only [PotCrysData.Dpcris, Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
     LinearMap.id_apply, sub_eq_zero, pc_actVB_res]
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[pc_mem_Dpcris]`. Introduce `h`. Establish `hmem : g⁻¹ * (h : G) * g ∈ PC.H`. Use `PC.normal.conj_mem (h : G) h.2 g⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+
+Establish `e : (h : G) * g = g * (g⁻¹ * (h : G) * g)` using `by group`. Rewrite using `[← pc_actVB_mul, e, pc_actVB_mul, hx ⟨_, hmem⟩]`.
+-/
 theorem pc_Dpcris_stable (g : G) {x : V ⊗[Qp] B} (hx : x ∈ PC.Dpcris ρ) :
     actVB PC.PD ρ g x ∈ PC.Dpcris ρ := by
   rw [pc_mem_Dpcris] at hx ⊢
@@ -113,16 +127,25 @@ theorem pc_Dpcris_stable (g : G) {x : V ⊗[Qp] B} (hx : x ∈ PC.Dpcris ρ) :
 
 end Stable
 
+/- English proof (translation)
+Use `intros`. Apply `pc_Dpcris_stable` to reduce the goal to its premises. Apply the tactic sequence `all_goals assumption`.
+-/
 theorem pc_dpcrisStable : DpcrisStable := by
   intros
   apply pc_Dpcris_stable
   all_goals assumption
 
+/- English proof (translation)
+Unfold `ExPC`. Use `intros`. Conclude with `⟨PotCrysData.pcOfTop _, rfl, rfl⟩`.
+-/
 theorem pc_exPC : ExPC := by
   unfold ExPC
   intros
   exact ⟨PotCrysData.pcOfTop _, rfl, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pc_dpcrisStable, pc_exPC⟩`.
+-/
 theorem dPotCrisStable_and_existsPotentiallyCrystallineData : DpcrisStable ∧ ExPC := ⟨pc_dpcrisStable, pc_exPC⟩
 
 end Formalism.WeaklyAdmissibleFiltrations

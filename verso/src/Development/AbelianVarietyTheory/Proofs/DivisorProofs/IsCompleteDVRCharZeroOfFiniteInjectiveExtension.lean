@@ -11,6 +11,13 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ _ _ ρ hR hE`. Take `⟨hdvr, -, hc0⟩` from `hR`. Take `⟨⟨hnoeth, -, hic, hcomp⟩, hinj, hfin⟩` from `hE`. Use `letI : Algebra R R' := ρ.toAlgebra`. Use `haveI : Module.Finite R R' := hfin`.
+
+Use `haveI : Algebra.IsIntegral R R' := inferInstance`. Use `haveI := hnoeth`. Use `haveI := hic`. Establish `hinj' : Function.Injective (algebraMap R R')` using `hinj`. Use `haveI : Ring.DimensionLEOne R' := Ring.DimensionLEOne.of_isIntegral R R'`.
+
+Use `haveI : IsDedekindDomain R' := { }`. Establish `hnf : ¬ IsField R'` using `fun h => IsDiscreteValuationRing.not_isField R (isField_of_isIntegral_of_isField hinj' h)`. Establish `hdvr' : IsDiscreteValuationRing R'` using `((IsDiscreteValuationRing.TFAE R' hnf).out 0 2).2 (inferInstance : IsDedekindDomain R')`. Conclude with `⟨hdvr', hcomp, charZero_of_injective_algebraMap hinj'⟩`.
+-/
 theorem cDvr_of_finExt : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R'] [IsDomain R']
     [IsLocalRing R'] (ρ : R →+* R'), GlobalTheory.LN.CDvr R → FinExt ρ → GlobalTheory.LN.CDvr R' := by
   intro R R' _ _ _ _ _ _ ρ hR hE

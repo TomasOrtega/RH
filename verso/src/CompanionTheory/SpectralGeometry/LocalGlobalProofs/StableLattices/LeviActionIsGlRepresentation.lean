@@ -14,20 +14,34 @@ open GlobalTheory.CompanionTheory.FarReg.BdProd (adL_cre)
 
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => CompanionTheory.D.LK.lift_cre φ g x`.
+-/
 theorem lift_mul_cre (φ : Module.End ℂ V) (g : Pos n) :
     (lift n φ * cre g : Module.End ℂ (Cn n V)) = cre g * lift n φ :=
   LinearMap.ext fun x => CompanionTheory.D.LK.lift_cre φ g x
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => CompanionTheory.D.LK.lift_ann φ g x`.
+-/
 theorem lift_mul_ann (φ : Module.End ℂ V) (g : Pos n) :
     (lift n φ * ann g : Module.End ℂ (Cn n V)) = ann g * lift n φ :=
   LinearMap.ext fun x => CompanionTheory.D.LK.lift_ann φ g x
 
+/- English proof (translation)
+Simplify using `only [adL, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, lift_mul_cre, mul_assoc, lift_mul_ann, mul_assoc]`.
+-/
 theorem lift_mul_adL (φ : Module.End ℂ V) (p q : Fin n) :
     (lift n φ * adL p q : Module.End ℂ (Cn n V)) = adL p q * lift n φ := by
   simp only [adL, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_
   rw [← mul_assoc, lift_mul_cre, mul_assoc, lift_mul_ann, mul_assoc]
 
+/- English proof (translation)
+Establish `h1` using `CompanionTheory.D.LK.Car.ann_cre (V := V) g k`. Establish `h2` using `CompanionTheory.D.LK.Car.ann_ann (V := V) g i`. Rewrite using `[← mul_assoc, eq_sub_of_add_eq h1, sub_mul, mul_assoc (cre k) (ann g), eq_neg_of_add_eq_zero_left h2]`. Distinguish the cases in `e : k = g`. Substitute `e` using the available equality.
+
+Simplify using `[mul_assoc]`. Establish `e' : ¬g = k` using `fun h => e h.symm`. Simplify using `[e, e', mul_assoc]`.
+-/
 theorem term_ann (k i g : Pos n) :
     (ann g * (cre k * ann i) - cre k * ann i * ann g : Module.End ℂ (Cn n V)) = if k = g then ann i else 0 := by
   have h1 := CompanionTheory.D.LK.Car.ann_cre (V := V) g k
@@ -39,6 +53,11 @@ theorem term_ann (k i g : Pos n) :
   · have e' : ¬g = k := fun h => e h.symm
     simp [e, e', mul_assoc]
 
+/- English proof (translation)
+Establish `h : (ann g * adL p q - adL p q * ann g : Module.End ℂ (Cn n V)) = ∑ i : Pos n, ∑ k : Pos n, adC p q i k • (ann g * (cre k * ann i) - cre k * ann i * ann g)`. Simplify using `only [adL, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, smul_sub, ← Finset.sum_sub_distrib]`. Rewrite using `[h]`. Simplify using `only [term_ann]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single g]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[hk]`. Simplify using the standard rewrite rules.
+-/
 theorem adL_ann (p q : Fin n) (g : Pos n) :
     (∑ i : Pos n, adC p q i g • ann i : Module.End ℂ (Cn n V)) = ann g * adL p q - adL p q * ann g := by
   have h : (ann g * adL p q - adL p q * ann g : Module.End ℂ (Cn n V)) =
@@ -54,6 +73,15 @@ theorem adL_ann (p q : Fin n) (g : Pos n) :
     simp [hk]
   · simp
 
+/- English proof (translation)
+Establish `gen : ∀ A : Module.End ℂ (Cn n V), A * adL r v - adL r v * A = ∑ i : Pos n, ∑ k : Pos n, adC r v i k • (A * (cre k * ann i) - cre k * ann i * A)`. Introduce `A`. Simplify using `only [adL, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, smul_sub, ← Finset.sum_sub_distrib]`. Establish `h1 : ∀ k i : Pos n, (adL p q * (cre k * ann i) - cre k * ann i * adL p q : Module.End ℂ (Cn n V)) = (∑ l : Pos n, adC p q k l • cre l) * ann i - cre k * ∑ m : Pos n, adC p q m i • ann m`. Introduce `k i`.
+
+Rewrite using `[← adL_cre, adL_ann]`. Use `noncomm_ring`. Rewrite using `[gen]`. Simplify using `only [h1, smul_sub, Finset.sum_sub_distrib, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, Finset.smul_sum, smul_smul, sub_smul, Finset.sum_smul]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Finset.sum_comm`. Use `(Finset.sum_congr rfl fun k _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_comm.trans ?_` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem adL_comm (p q r v : Fin n) :
     (adL p q * adL r v - adL r v * adL p q : Module.End ℂ (Cn n V)) =
       ∑ i : Pos n, ∑ l : Pos n,
@@ -85,22 +113,43 @@ def dl (a b : Fin n) : ℂ := if a = b then 1 else 0
 def cc (p q : Fin n) (s t : Fin n × Fin n) : ℂ :=
   dl q s.1 * dl t.1 p * dl t.2 s.2 - dl s.2 p * dl t.1 s.1 * dl t.2 q
 
+/- English proof (translation)
+Apply the tactic sequence `by_cases a : A <;> by_cases b : B <;> by_cases c : C <;> simp [a, b, c]`.
+-/
 theorem ite3 (A B C : Prop) [Decidable A] [Decidable B] [Decidable C] :
     (if A ∧ B ∧ C then 1 else 0 : ℂ) = (if A then 1 else 0) * (if B then 1 else 0) * (if C then 1 else 0) := by
   by_cases a : A <;> by_cases b : B <;> by_cases c : C <;> simp [a, b, c]
 
+/- English proof (translation)
+Establish `e1 : ∀ a b : Fin n × Fin n, a = b ↔ a.1 = b.1 ∧ a.2 = b.2` using `fun a b => Prod.ext_iff`. Simplify using `only [adC, cc, dl, e1 k.1, ite3]`.
+-/
 theorem adC_eq (p q : Fin n) (i k : Pos n) : adC p q i k = cc p q i.1 k.1 := by
   have e1 : ∀ a b : Fin n × Fin n, a = b ↔ a.1 = b.1 ∧ a.2 = b.2 := fun a b => Prod.ext_iff
   simp only [adC, cc, dl, e1 k.1, ite3]
 
+/- English proof (translation)
+Apply the tactic sequence `by_cases h : a = b <;> simp [dl, h]`.
+-/
 theorem ite_dl (a b : Fin n) (x : ℂ) : (if a = b then x else 0) = dl a b * x := by
   by_cases h : a = b <;> simp [dl, h]
 
+/- English proof (translation)
+Establish `e : ∀ k : Pos n, k.1 = s ↔ k = ⟨s, hs⟩` using `fun k => (Subtype.ext_iff (a1 := k) (a2 := ⟨s, hs⟩)).symm`. Simplify using `only [e, Finset.sum_ite_eq', mem_univ, if_true]`.
+-/
 theorem sum_at (f : Fin n × Fin n → ℂ) (s : Fin n × Fin n) (hs : (s.1 : ℕ) < s.2) :
     ∑ k : Pos n, (if k.1 = s then f k.1 else 0) = f s := by
   have e : ∀ k : Pos n, k.1 = s ↔ k = ⟨s, hs⟩ := fun k => (Subtype.ext_iff (a1 := k) (a2 := ⟨s, hs⟩)).symm
   simp only [e, Finset.sum_ite_eq', mem_univ, if_true]
 
+/- English proof (translation)
+Establish `a1 : ∑ k : Pos n, (if q = i.1.1 ∧ k.1 = (p, i.1.2) then 1 else 0) * f k.1 = dl q i.1.1 * f (p, i.1.2)`. Distinguish the cases in `h : q = i.1.1`. Establish `hs : (p : ℕ) < i.1.2`. Establish `: lev p < lev i.1.2` using `by rw [hpq, h]; exact hi`. Conclude with `hm.reflect_lt this`.
+
+Use `sum_at f (p, i.1.2) hs` as an intermediate fact. Simplify using `only [h, true_and, dl, if_true, one_mul, ite_mul, zero_mul] at this ⊢`. Conclude with `this`. Simplify using `[h, dl]`. Establish `a2 : ∑ k : Pos n, (if i.1.2 = p ∧ k.1 = (i.1.1, q) then 1 else 0) * f k.1 = dl i.1.2 p * f (i.1.1, q)`.
+
+Distinguish the cases in `h : i.1.2 = p`. Establish `hs : (i.1.1 : ℕ) < q`. Establish `: lev i.1.1 < lev q` using `by rw [← hpq, ← h]; exact hi`. Conclude with `hm.reflect_lt this`. Use `sum_at f (i.1.1, q) hs` as an intermediate fact.
+
+Simplify using `only [h, true_and, dl, if_true, one_mul, ite_mul, zero_mul] at this ⊢`. Conclude with `this`. Simplify using `[h, dl]`. Simplify using `only [adC, sub_mul, Finset.sum_sub_distrib, a1, a2]`.
+-/
 theorem sum_adC {lev : Fin n → ℕ} (hm : Monotone lev) {p q : Fin n} (hpq : lev p = lev q) {i : Pos n}
     (hi : inU lev i) (f : Fin n × Fin n → ℂ) :
     ∑ k : Pos n, adC p q i k * f k.1 =
@@ -125,6 +174,11 @@ theorem sum_adC {lev : Fin n → ℕ} (hm : Monotone lev) {p q : Fin n} (hpq : l
     · simp [h, dl]
   simp only [adC, sub_mul, Finset.sum_sub_distrib, a1, a2]
 
+/- English proof (translation)
+Establish `h1` using `sum_adC hm hrv hi (fun s => cc p q s l.1)`. Establish `h2` using `sum_adC hm hpq hi (fun s => cc r v s l.1)`. Simplify using `only [← adC_eq] at h1 h2`. Rewrite using `[Finset.sum_sub_distrib, h1, h2, ite_dl, ite_dl]`. Simplify using `only [adC_eq, cc]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mat_id {lev : Fin n → ℕ} (hm : Monotone lev) {p q r v : Fin n} (hpq : lev p = lev q) (hrv : lev r = lev v)
     {i : Pos n} (hi : inU lev i) (l : Pos n) :
     ∑ k : Pos n, (adC r v i k * adC p q k l - adC p q i k * adC r v k l) =
@@ -136,12 +190,26 @@ theorem mat_id {lev : Fin n → ℕ} (hm : Monotone lev) {p q r v : Fin n} (hpq 
   simp only [adC_eq, cc]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `A`. Assume the negation of the conclusion as `h`. Conclude with `hi (hx _ (CompanionTheory.D.LK.ann_ne h).2 i (mem_insert_self _ _))`.
+-/
 theorem ann_eq_zero {lev : Fin n → ℕ} {x : Cn n V} (hx : SuppIn (inU lev) x) {i : Pos n} (hi : ¬inU lev i) :
     ann i x = 0 := by
   funext A
   by_contra h
   exact hi (hx _ (CompanionTheory.D.LK.ann_ne h).2 i (mem_insert_self _ _))
 
+/- English proof (translation)
+Establish `h` using `LinearMap.congr_fun (adL_comm (V := V) p q r v) x`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite using `[h]`. Establish `e : ∀ a b : Fin n, (adL a b x : Cn n V) = ∑ i : Pos n, ∑ l : Pos n, adC a b i l • cre l (ann i x)`. Introduce `a b`.
+
+Simplify using `[adL, LinearMap.sum_apply, Module.End.mul_apply]`. Establish `t : ∀ i l : Pos n, (∑ k : Pos n, (adC r v i k * adC p q k l - adC p q i k * adC r v k l)) • cre l (ann i x) = ((if q = r then adC p v i l else 0) - (if v = p then adC r q i l else 0)) • cre l (ann i x)`. Introduce `i l`. Distinguish the cases in `hi : inU lev i`. Rewrite using `[mat_id hm hpq hrv hi]`.
+
+Rewrite using `[ann_eq_zero hx hi, map_zero, smul_zero, smul_zero]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Simplify using `only [t]`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Use `congr 1`.
+
+Use `split_ifs`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Use `split_ifs`. Rewrite using `[e]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem adL_comm_apply {lev : Fin n → ℕ} (hm : Monotone lev) {x : Cn n V} (hx : SuppIn (inU lev) x)
     {p q r v : Fin n} (hpq : lev p = lev q) (hrv : lev r = lev v) :
     adL p q (adL r v x) - adL r v (adL p q x) =
@@ -181,6 +249,13 @@ open GlobalTheory.CompanionTheory.RgCOBlock
 
 namespace GlobalTheory.CompanionTheory.RgCOBlock
 
+/- English proof (translation)
+Introduce `n lev V _ _ E hm hE x hx p q r v hpq hrv`. Establish `hA` using `LetterGl.adL_comm_apply hm hx hpq hrv`. Establish `h1 : ∀ y : Cn n V, lift n (E p q) (adL r v y) = adL r v (lift n (E p q) y)` using `fun y => LinearMap.congr_fun (LetterGl.lift_mul_adL (E p q) r v) y`. Establish `h2 : ∀ y : Cn n V, lift n (E r v) (adL p q y) = adL p q (lift n (E r v) y)` using `fun y => LinearMap.congr_fun (LetterGl.lift_mul_adL (E r v) p q) y`. Establish `hL : lift n (E p q) (lift n (E r v) x) - lift n (E r v) (lift n (E p q) x) = (if q = r then lift n (E p v) x else 0) - (if v = p then lift n (E r q) x else 0)`.
+
+Use function extensionality and compare the values at `A`. Use `LinearMap.congr_fun (hE p q r v) (x A)` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at this`. Simplify using `only [Pi.sub_apply, CompanionTheory.D.LK.lift_apply]`. Rewrite using `[this]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [lF, LinearMap.add_apply, map_add, h1, h2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hL, hA]`. Apply the tactic sequence `split_ifs <;> abel`.
+-/
 theorem lF_glRel : ∀ (n : ℕ) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V), Monotone lev → GlRel E → ∀ (x : Cn n V), SuppIn (inU lev) x → ∀ p q r v, lev p = lev q → lev r = lev v → lF E p q (lF E r v x) - lF E r v (lF E p q x) = (if q = r then lF E p v x else 0) - (if v = p then lF E r q x else 0) := by
   intro n lev V _ _ E hm hE x hx p q r v hpq hrv
   have hA := LetterGl.adL_comm_apply hm hx hpq hrv

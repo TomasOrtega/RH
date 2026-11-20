@@ -16,6 +16,11 @@ section Free
 variable {K : Type} [Field K] [NumberField K]
 
 omit [NumberField K] in
+/- English proof (translation)
+Establish `h1 : 𝔞 ^ n = Ideal.span (∏ _i : Fin n, (𝔞 : Set (𝓞 K)))`. Rewrite using `[← Ideal.prod_span]`. Simplify using the standard rewrite rules. Rewrite using `[h1, detIdeal, Ideal.span_mul_span', Ideal.span_le]`. Introduce and unpack `_ ⟨a, ha, d, ⟨v, hv, rfl⟩, rfl⟩`.
+
+Take `⟨g, hg, rfl⟩` from `(Set.mem_fintype_prod _ _).1 ha`. Establish `h` using `det_mem_detIdeal (𝔞 • E) (fun i => g i • v i) fun i => Submodule.smul_mem_smul (hg i) (hv i)`. Establish `e : (Matrix.of fun i => g i • v i).det = (∏ i, g i) * (Matrix.of v).det` using `Matrix.det_mul_column g (Matrix.of v)`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem pow_mul_detIdeal_le {n : ℕ} (𝔞 : Ideal (𝓞 K)) (E : Submodule (𝓞 K) (Fin n → 𝓞 K)) :
     𝔞 ^ n * detIdeal E ≤ detIdeal (𝔞 • E) := by
   have h1 : 𝔞 ^ n = Ideal.span (∏ _i : Fin n, (𝔞 : Set (𝓞 K))) := by
@@ -30,6 +35,15 @@ theorem pow_mul_detIdeal_le {n : ℕ} (𝔞 : Ideal (𝓞 K)) (E : Submodule (�
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Establish `hD : detIdeal E ≠ ⊥`. Establish `h` using `det_mem_detIdeal E (fun i => d • Pi.single i 1) fun i => hE _`. Establish `e : (Matrix.of fun i : Fin n => d • (Pi.single i 1 : Fin n → 𝓞 K)) = d • (1 : Matrix (Fin n) (Fin n) (𝓞 K))`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+
+Rewrite `h` using `[e, Matrix.det_smul, Matrix.det_one, mul_one]`. Introduce `h0`. Rewrite `h` using `[h0, Ideal.mem_bot]`. Conclude with `pow_ne_zero _ hd h`. Establish `h1 : E.toAddSubgroup.index = Ideal.absNorm (detIdeal E)` using `card_quotient_eq_absNorm_detIdeal n E`.
+
+Establish `h2 : (𝔞 • E).toAddSubgroup.index = Ideal.absNorm (detIdeal (𝔞 • E))` using `card_quotient_eq_absNorm_detIdeal n (𝔞 • E)`. Establish `h3` using `AddSubgroup.relIndex_mul_index (H := (𝔞 • E).toAddSubgroup) (K := E.toAddSubgroup) (fun x hx => (Submodule.smul_le_right (I := 𝔞) (N := E)) hx)`. Establish `h4` using `Ideal.absNorm_dvd_absNorm_of_le (pow_mul_detIdeal_le 𝔞 E)`. Rewrite `h4` using `[map_mul, map_pow, ← h2, ← h3, h1]`. Establish `hN : Ideal.absNorm (detIdeal E) ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.2 hD`.
+
+Establish `hA : Ideal.absNorm 𝔞 ^ n ≠ 0` using `pow_ne_zero _ (Ideal.absNorm_eq_zero_iff.not.2 h𝔞)`. Establish `h5` using `Nat.dvd_of_mul_dvd_mul_right (Nat.pos_of_ne_zero hN) h4`. Conclude with `⟨ne_zero_of_dvd_ne_zero hA h5, Nat.le_of_dvd (Nat.pos_of_ne_zero hA) h5⟩`.
+-/
 theorem relIndex_smul_free {n : ℕ} (𝔞 : Ideal (𝓞 K)) (h𝔞 : 𝔞 ≠ ⊥) (E : Submodule (𝓞 K) (Fin n → 𝓞 K))
     (d : 𝓞 K) (hd : d ≠ 0) (hE : ∀ x, d • x ∈ E) :
     (𝔞 • E).toAddSubgroup.relIndex E.toAddSubgroup ≠ 0 ∧
@@ -64,25 +78,44 @@ variable {L V : Type} [Field L] [NumberField L] [AddCommGroup V] [Module L V] [M
 def Sub (X Y : Submodule (𝓞 L) V) : Prop := ∃ c : 𝓞 L, c ≠ 0 ∧ ∀ x ∈ X, c • x ∈ Y
 
 omit [Module L V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `h`. Take `⟨d, hd, h'⟩` from `h'`. Conclude with `⟨d * c, mul_ne_zero hd hc, fun x hx => by rw [mul_smul]; exact h' _ (h x hx)⟩`.
+-/
 theorem Sub.trans {X Y Z : Submodule (𝓞 L) V} (h : Sub X Y) (h' : Sub Y Z) : Sub X Z := by
   obtain ⟨c, hc, h⟩ := h
   obtain ⟨d, hd, h'⟩ := h'
   exact ⟨d * c, mul_ne_zero hd hc, fun x hx => by rw [mul_smul]; exact h' _ (h x hx)⟩
 
 omit [Module L V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_ne_zero, fun x hx => by rw [one_smul]; exact h hx⟩`.
+-/
 theorem Sub.of_le {X Y : Submodule (𝓞 L) V} (h : X ≤ Y) : Sub X Y :=
   ⟨1, one_ne_zero, fun x hx => by rw [one_smul]; exact h hx⟩
 
 omit [Module L V] [IsScalarTower (𝓞 L) L V] [NumberField L] in
+/- English proof (translation)
+Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔞`. Conclude with `⟨a, ha0, fun x hx => h (Submodule.smul_mem_smul ha hx)⟩`.
+-/
 theorem Sub.of_smul_le {X Y : Submodule (𝓞 L) V} {𝔞 : Ideal (𝓞 L)} (h𝔞 : 𝔞 ≠ ⊥) (h : 𝔞 • X ≤ Y) : Sub X Y := by
   obtain ⟨a, ha, ha0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot h𝔞
   exact ⟨a, ha0, fun x hx => h (Submodule.smul_mem_smul ha hx)⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qo3.exists_smul_mem_of_mem_span Y hS hp`.
+-/
 theorem exists_smul_mem_of_mem_span (Y : Submodule (𝓞 L) V) {S : Set V} (hS : ∀ x ∈ S, x ∈ Y) {p : V}
     (hp : p ∈ Submodule.span L S) : ∃ b : 𝓞 L, b ≠ 0 ∧ b • p ∈ Y :=
   _root_.UpperTheory.Reformulated.B.Qo3.exists_smul_mem_of_mem_span Y hS hp
 
 omit [Module L V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hX`. Establish `h' : ∀ x : S, ∃ b : 𝓞 L, b ≠ 0 ∧ b • (x : V) ∈ Y` using `fun x => h x (Submodule.subset_span x.2)`. Use `choose g hg0 hg using h'`. Use `⟨∏ x, g x, Finset.prod_ne_zero_iff.2 fun x _ => hg0 x, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span (𝓞 L) (S : Set V) ≤ Y.comap ((∏ x, g x) • LinearMap.id)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `(∏ x, g x) • x ∈ Y`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (⟨x, hx⟩ : S)), mul_smul]`. Conclude with `Y.smul_mem _ (hg ⟨x, hx⟩)`.
+
+Conclude with `hle hy`.
+-/
 theorem Sub.of_fg {X Y : Submodule (𝓞 L) V} (hX : X.FG) (h : ∀ x ∈ X, ∃ b : 𝓞 L, b ≠ 0 ∧ b • x ∈ Y) : Sub X Y := by
   classical
   obtain ⟨S, rfl⟩ := hX
@@ -97,6 +130,11 @@ theorem Sub.of_fg {X Y : Submodule (𝓞 L) V} (hX : X.FG) (h : ∀ x ∈ X, ∃
     exact Y.smul_mem _ (hg ⟨x, hx⟩)
   exact hle hy
 
+/- English proof (translation)
+Introduce `x y h`. Establish `hL : algebraMap (𝓞 L) L c ≠ 0`. Rewrite using `[map_ne_zero_iff _ (IsFractionRing.injective (𝓞 L) L)]`. Conclude with `hc`. Simplify using `only [← algebraMap_smul L c] at h`.
+
+Conclude with `smul_right_injective V hL h`.
+-/
 theorem smul_injective {c : 𝓞 L} (hc : c ≠ 0) : Function.Injective fun x : V => c • x := by
   intro x y h
   have hL : algebraMap (𝓞 L) L c ≠ 0 := by
@@ -105,6 +143,19 @@ theorem smul_injective {c : 𝓞 L} (hc : c ≠ 0) : Function.Injective fun x : 
   simp only [← algebraMap_smul L c] at h
   exact smul_right_injective V hL h
 
+/- English proof (translation)
+Take `⟨c, hc, h1⟩` from `h1`. Take `⟨d, hd, h2⟩` from `h2`. Establish `hb' : LinearIndependent (𝓞 L) b` using `hb.restrict_scalars' (𝓞 L)`. Use `set θ : (Fin n → 𝓞 L) →ₗ[𝓞 L] V := Fintype.linearCombination (𝓞 L) b with hθ`. Establish `hθi : Function.Injective θ` using `hb'.fintypeLinearCombination_injective`.
+
+Establish `hθr : LinearMap.range θ = Submodule.span (𝓞 L) (Set.range b)` using `Fintype.range_linearCombination _ _`. Use `set μ : V →ₗ[𝓞 L] V := c • LinearMap.id with hμ`. Establish `hμi : Function.Injective μ` using `smul_injective (L := L) hc`. Use `set E := (M.map μ).comap θ with hE`. Establish `hmap : E.map θ = M.map μ`.
+
+Rewrite using `[hE, Submodule.map_comap_eq, hθr, inf_eq_right]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `h1 x hx`. Establish `hmap2 : (𝔞 • E).map θ = (𝔞 • M).map μ`. Rewrite using `[Submodule.map_smul'', Submodule.map_smul'', hmap]`.
+
+Establish `hEd : ∀ x, (c * d) • x ∈ E`. Introduce `x`. Use `⟨d • θ x, h2 _ (hθr ▸ ⟨x, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul θ, mul_smul]`. Both sides reduce to the same expression.
+
+Establish `h` using `relIndex_smul_free 𝔞 h𝔞 E (c * d) (mul_ne_zero hc hd) hEd`. Establish `e1` using `AddSubgroup.relIndex_map_map_of_injective (f := θ.toAddMonoidHom) (𝔞 • E).toAddSubgroup E.toAddSubgroup hθi`. Establish `e2` using `AddSubgroup.relIndex_map_map_of_injective (f := μ.toAddMonoidHom) (𝔞 • M).toAddSubgroup M.toAddSubgroup hμi`. Establish `e3 : ((𝔞 • E).map θ).toAddSubgroup.relIndex (E.map θ).toAddSubgroup = ((𝔞 • M).map μ).toAddSubgroup.relIndex (M.map μ).toAddSubgroup` using `by rw [hmap, hmap2]`. Establish `e4 : (𝔞 • E).toAddSubgroup.relIndex E.toAddSubgroup = (𝔞 • M).toAddSubgroup.relIndex M.toAddSubgroup` using `e1.symm.trans (e3.trans e2)`.
+
+Rewrite `h` using `[e4]`. Then use the resulting hypothesis.
+-/
 theorem relIndex_smul {n : ℕ} {b : Fin n → V} (hb : LinearIndependent L b) (𝔞 : Ideal (𝓞 L)) (h𝔞 : 𝔞 ≠ ⊥)
     {M : Submodule (𝓞 L) V} (h1 : Sub M (Submodule.span (𝓞 L) (Set.range b)))
     (h2 : Sub (Submodule.span (𝓞 L) (Set.range b)) M) :
@@ -141,6 +192,11 @@ theorem relIndex_smul {n : ℕ} {b : Fin n → V} (hb : LinearIndependent L b) (
       (𝔞 • M).toAddSubgroup.relIndex M.toAddSubgroup := e1.symm.trans (e3.trans e2)
   rwa [e4] at h
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `h`. Establish `h3` using `(relIndex_smul hb (Ideal.span {c}) (by rwa [Ne, Ideal.span_singleton_eq_bot]) h1 h2).1`. Establish `hle : Ideal.span {c} • M ≤ X`. Use `Submodule.smul_le.2 fun a ha x hx => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`.
+
+Rewrite using `[mul_smul]`. Conclude with `X.smul_mem _ (h x hx)`. Conclude with `ne_zero_of_dvd_ne_zero h3 (AddSubgroup.relIndex_dvd_of_le_left _ fun x hx => hle hx)`.
+-/
 theorem relIndex_ne_zero {n : ℕ} {b : Fin n → V} (hb : LinearIndependent L b)
     {M X : Submodule (𝓞 L) V} (h1 : Sub M (Submodule.span (𝓞 L) (Set.range b)))
     (h2 : Sub (Submodule.span (𝓞 L) (Set.range b)) M) (h : Sub M X) :
@@ -154,6 +210,13 @@ theorem relIndex_ne_zero {n : ℕ} {b : Fin n → V} (hb : LinearIndependent L b
     exact X.smul_mem _ (h x hx)
   exact ne_zero_of_dvd_ne_zero h3 (AddSubgroup.relIndex_dvd_of_le_left _ fun x hx => hle hx)
 
+/- English proof (translation)
+Establish `e1` using `AddSubgroup.relIndex_mul_relIndex (B ⊓ Y) Y X inf_le_right hYX`. Establish `e2` using `AddSubgroup.relIndex_mul_relIndex (B ⊓ Y) (B ⊓ X) X (inf_le_inf_left _ hYX) inf_le_right`. Establish `e3` using `AddSubgroup.relIndex_mul_relIndex (B ⊓ Y) (B ⊓ X) B (inf_le_inf_left _ hYX) inf_le_left`. Rewrite `e1`, `e2` using `[AddSubgroup.inf_relIndex_right]`. Rewrite `e3` using `[AddSubgroup.inf_relIndex_left B X, AddSubgroup.inf_relIndex_left B Y]`.
+
+Rewrite `e2` using `[← e1]`. Establish `h4 : (B ⊓ Y).relIndex (B ⊓ X) ≠ 0` using `left_ne_zero_of_mul (e3 ▸ h2)`. Establish `h5 : X.relIndex B ≠ 0` using `right_ne_zero_of_mul (e3 ▸ h2)`. Establish `h6 : B.relIndex X ≠ 0` using `right_ne_zero_of_mul (e2 ▸ mul_ne_zero h1 h3)`. Establish `f2` using `congrArg (fun m : ℕ => Real.log (m : ℝ)) e2`.
+
+Establish `f3` using `congrArg (fun m : ℕ => Real.log (m : ℝ)) e3`. Simplify using `only [Nat.cast_mul] at f2 f3`. Rewrite `f2` using `[Real.log_mul (Nat.cast_ne_zero.2 h4) (Nat.cast_ne_zero.2 h6), Real.log_mul (Nat.cast_ne_zero.2 h1) (Nat.cast_ne_zero.2 h3)]`. Rewrite `f3` using `[Real.log_mul (Nat.cast_ne_zero.2 h4) (Nat.cast_ne_zero.2 h5)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_relIndex_sub {G : Type} [AddCommGroup G] (X Y B : AddSubgroup G) (hYX : Y ≤ X)
     (h1 : B.relIndex Y ≠ 0) (h2 : Y.relIndex B ≠ 0) (h3 : Y.relIndex X ≠ 0) :
     Real.log (B.relIndex X : ℕ) - Real.log (X.relIndex B : ℕ) =
@@ -175,6 +238,9 @@ theorem log_relIndex_sub {G : Type} [AddCommGroup G] (X Y B : AddSubgroup G) (hY
   rw [Real.log_mul (Nat.cast_ne_zero.2 h4) (Nat.cast_ne_zero.2 h5)] at f3
   linarith
 
+/- English proof (translation)
+Establish `hY` using `(Sub.of_le hYX).trans h1`. Use `log_relIndex_sub _ _ _ (fun x hx => hYX hx) (relIndex_ne_zero hb hY h2 hY) (relIndex_ne_zero hb (Sub.of_le le_rfl) (Sub.of_le le_rfl) h2) (relIndex_ne_zero hb h1 (h2.trans (Sub.of_le hYX)) (h1.trans h2))` and prove the remaining obligations.
+-/
 theorem logIdx_of_le {n : ℕ} {b : Fin n → V} (hb : LinearIndependent L b) {X Y : Submodule (𝓞 L) V} (hYX : Y ≤ X)
     (h1 : Sub X (Submodule.span (𝓞 L) (Set.range b))) (h2 : Sub (Submodule.span (𝓞 L) (Set.range b)) Y) :
     logIdx X b = logIdx Y b + Real.log (Y.toAddSubgroup.relIndex X.toAddSubgroup : ℕ) := by
@@ -183,6 +249,11 @@ theorem logIdx_of_le {n : ℕ} {b : Fin n → V} (hb : LinearIndependent L b) {X
     (relIndex_ne_zero hb (Sub.of_le le_rfl) (Sub.of_le le_rfl) h2)
     (relIndex_ne_zero hb h1 (h2.trans (Sub.of_le hYX)) (h1.trans h2))
 
+/- English proof (translation)
+Establish `h4 : Sub (Submodule.span (𝓞 L) (Set.range b)) (𝔞 • M)` using `h2.trans (Sub.of_smul_le h𝔞 le_rfl)`. Establish `e1` using `logIdx_of_le hb (Submodule.smul_le_right (I := 𝔞) (N := M)) h1 h4`. Establish `e2` using `logIdx_of_le hb h h3 h4`. Take `⟨h5, h6⟩` from `relIndex_smul hb 𝔞 h𝔞 h1 h2`. Establish `h7 : Real.log (((𝔞 • M).toAddSubgroup.relIndex M.toAddSubgroup : ℕ) : ℝ) ≤ n * Real.log (Ideal.absNorm 𝔞)`.
+
+Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_le_log (by exact_mod_cast Nat.pos_of_ne_zero h5) (by exact_mod_cast h6)`. Establish `h8` using `Real.log_natCast_nonneg ((𝔞 • M).toAddSubgroup.relIndex F.toAddSubgroup)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logIdx_sub_le {n : ℕ} {b : Fin n → V} (hb : LinearIndependent L b) (𝔞 : Ideal (𝓞 L)) (h𝔞 : 𝔞 ≠ ⊥)
     {M F : Submodule (𝓞 L) V} (h1 : Sub M (Submodule.span (𝓞 L) (Set.range b)))
     (h2 : Sub (Submodule.span (𝓞 L) (Set.range b)) M) (h3 : Sub F (Submodule.span (𝓞 L) (Set.range b)))
@@ -201,14 +272,25 @@ section Pt
 
 variable {E Ψ : Type} [Field E] [NumberField E] (A : LinPt E L Ψ V)
 
+/- English proof (translation)
+The claim follows from `A.fg.of_le inf_le_left`.
+-/
 theorem eig_fg (s : Ψ ⊕ Ψ) : (A.eig s).FG := A.fg.of_le inf_le_left
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `exists_smul_mem_of_mem_span A.Λ (S := (A.Λ : Set V)) (fun _ h => h) (p := x) (A.span ▸ Submodule.mem_top)`. Conclude with `⟨c, hc, h, ((eigSp A.ρ (A.σ s)).restrictScalars (𝓞 L)).smul_mem c hx⟩`.
+-/
 theorem exists_smul_mem_eig (s : Ψ ⊕ Ψ) {x : V} (hx : x ∈ eigSp A.ρ (A.σ s)) :
     ∃ c : 𝓞 L, c ≠ 0 ∧ c • x ∈ A.eig s := by
   obtain ⟨c, hc, h⟩ := exists_smul_mem_of_mem_span A.Λ (S := (A.Λ : Set V)) (fun _ h => h) (p := x)
     (A.span ▸ Submodule.mem_top)
   exact ⟨c, hc, h, ((eigSp A.ρ (A.σ s)).restrictScalars (𝓞 L)).smul_mem c hx⟩
 
+/- English proof (translation)
+Use `⟨Sub.of_fg (eig_fg A s) fun x hx => ?_, Sub.of_fg (Submodule.fg_span (Set.finite_range b)) fun x hx => ?_⟩` and prove the remaining obligations. Use `exists_smul_mem_of_mem_span _ (fun y hy => Submodule.subset_span hy) ?_` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `hx.2`. Use `exists_smul_mem_eig A s ?_` and prove the remaining obligations.
+
+Rewrite using `[← hb]`. Conclude with `Submodule.span_le_restrictScalars (𝓞 L) L _ hx`.
+-/
 theorem sub_eig {s : Ψ ⊕ Ψ} {n : ℕ} {b : Fin n → V} (hb : Submodule.span L (Set.range b) = eigSp A.ρ (A.σ s)) :
     Sub (A.eig s) (Submodule.span (𝓞 L) (Set.range b)) ∧ Sub (Submodule.span (𝓞 L) (Set.range b)) (A.eig s) := by
   refine ⟨Sub.of_fg (eig_fg A s) fun x hx => ?_, Sub.of_fg (Submodule.fg_span (Set.finite_range b)) fun x hx => ?_⟩

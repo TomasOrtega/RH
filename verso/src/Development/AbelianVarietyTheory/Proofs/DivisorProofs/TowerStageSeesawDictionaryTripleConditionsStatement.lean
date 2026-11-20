@@ -21,6 +21,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StageDict.dictionary_at_stage | exact GlobalTheory.StageDict.dictionary_at_stage | (intros; apply GlobalTheory.StageDict.dictionary_at_stage <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.towerStage_seesawDictionary_tripleConditions : GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D)
     (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p q X →
     ∃ (FA : GlobalTheory.ChainFr.Fr A) (FA' : GlobalTheory.ChainFr.Fr A') (FW : GlobalTheory.ChainFr.Fr WW) (a b : D.what₂.Tau → ℚ), ∀ t : T,

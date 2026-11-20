@@ -19,6 +19,25 @@ noncomputable section
 
 namespace GlobalTheory.FockReadForms
 
+/- English proof (translation)
+Introduce `D X E Y i j b t hxi hQ y hlaw u hu z hz`. Establish `hC : GlobalTheory.Hk3.Core X.R.toRealDat X.F.lv2` using `⟨X.char.lev, X.char.grp, X.char.fam, X.char.models, X.char.chain, X.char.thP⟩`. Establish `hBo : GlobalTheory.ConjTwist.BaseOf X.R.toRealDat j (Y.Z.ρ.B i j b)` using `GlobalTheory.PinBase.baseOf_of_pin D X Y.Z.ρ Y.Z.good Y.Z.pin i j b`. Establish `hG : (Y.Z.ρ.B i j b).Good` using `Y.Z.good.base i j b`. Establish `htup : GlobalTheory.ConjTwist.IsTupOf X.R.toRealDat (Y.Z.ρ.B i j b) (Twist.triv Circle ∅) t` using `by classical`.
+
+Conclude with `⟨by rw [hxi]; exact (mul_one _).symm, by rw [hQ]; exact (Finset.union_empty _).symm⟩`. Establish `hact` using `(GlobalTheory.CoefActIo.act_ioP hC hG hBo (Twist.triv_good splitSet_empty) htup).2`. Establish `hio : Formalism.IndefR.FWT.IoExt X.R.toRealDat` using `GlobalTheory.IoExtremal.ioExt D _ _ _ _ _ X.R.toRealDat hC.lev hC.fam hC.models hC.thP`. Establish `hval : ∀ w, X.R.ioP j (PiTensorProduct.tprod ℂ u) w ∈ (Y.Z.ρ.B i j b).valSpace`. Introduce `w`.
+
+Establish `hcV : (X.R.cV j).Is` using `hC.models.cV j`. Take `⟨u', w₀, hu', -, hw⟩` from `Formalism.IndefR.FWT.IsChosenExtremalVector.io _ (Y.Z.vec j) hio`. Establish `huu : u' = u` using `funext fun ρ => Subtype.ext ((hu' ρ).trans (congrFun hu ρ).symm)`. Rewrite `hw` using `[huu]`. Establish `hT` using `Scale.io_act hC.lev hC.thP hG hBo.ψ hBo.θ hBo.sT hBo.BS hBo.BT hBo.mu0 hBo.eta (PiTensorProduct.tprod ℂ u)`.
+
+Establish `hΔ0` using `GlobalTheory.AdTh.IoExtPf.Delta_ne (D := D) j`. Break down `hcV.2.2.2.2 ((harm (Wc D j).rank (Y.Z.ρ.B i j b).w (Y.Z.ρ.B i j b).F.BS).comap (X.R.ioP j (PiTensorProduct.tprod ℂ u))) (fun h => by` into its components or cases. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D _).1 h`. Rewrite using `[map_mul, hcV.1 k hk, mul_one]`. Introduce and unpack `_ ⟨w, hw', rfl⟩`.
+
+Rewrite using `[Submodule.mem_comap, hT a ha]`. Conclude with `fockGL_mem_harm _ _ _ hw') with h | h`. Establish `h0 : w₀ ∈ (harm (Wc D j).rank (Y.Z.ρ.B i j b).w (Y.Z.ρ.B i j b).F.BS).comap (X.R.ioP j (PiTensorProduct.tprod ℂ u))`. Rewrite using `[Submodule.mem_comap, hw, ← hBo.delta]`. Conclude with `delta_mem_harm _ _`.
+
+Rewrite `h0` using `[h, Submodule.mem_bot]`. Rewrite `hw` using `[h0, map_zero]`. Conclude with `absurd hw.symm hΔ0`. Conclude with `(h ▸ Submodule.mem_top : w ∈ (harm (Wc D j).rank (Y.Z.ρ.B i j b).w (Y.Z.ρ.B i j b).F.BS).comap (X.R.ioP j (PiTensorProduct.tprod ℂ u)))`. Establish `hx : (X.R.HV j t).e y ∈ Bridge.AdForms (Bridge.ratF (Vc D j)) (X.R.cV j).coef.ρ (levEnv _ (X.R.βV j) (X.R.datVt j t)).J (levEnv _ (X.R.βV j) (X.R.datVt j t)).χ` using `(hC.models.HV j t).2.1.le (LinearMap.mem_range_self _ y)`.
+
+Rewrite using `[Base.mem_formsC]`. Use `⟨fun h => hval _, fun γ h k => ?_⟩` and prove the remaining obligations. Establish `hzc` using `Subgroup.mem_center_iff.1 hz`. Establish `e1 : Bridge.ratF (Vc D j) γ * h * (k : Bridge.Gf (Vc D j)) * z = Bridge.ratF (Vc D j) γ * (h * z) * (k : Bridge.Gf (Vc D j))`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← hzc]`. Establish `h2 : Bridge.ratF (Vc D j) γ * (h * z) * ((1 : (levEnv _ (X.R.βV j) (X.R.datVt j t)).J) : Bridge.Gf (Vc D j)) = Bridge.ratF (Vc D j) γ * (h * z)`. Rewrite using `[OneMemClass.coe_one]`. Conclude with `mul_one _`. Establish `e2 : (X.R.HV j t).e y (Bridge.ratF (Vc D j) γ * (h * z)) = (X.R.cV j).ρ (γ : GA D (Vc D j)) ((X.R.HV j t).e y (h * z))`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fockRead_mem_formsC : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (t : X.T),
     X.R.xi t = (Y.Z.ρ.B i j b).de.chi → X.R.Q t = (Y.Z.ρ.B i j b).de.Q → ∀ y : (X.R.HV j t).H,
     (∀ (h : Bridge.Gf (Vc D j)) (k : (Y.Z.ρ.B i j b).levJ (Y.Z.ρ.tw i b 0 ∅ 1)),

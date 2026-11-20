@@ -26,10 +26,18 @@ def KeyCov : Prop :=
 def HdHom : Prop :=
   ∀ (K : Type) [Field K] (k d : ℕ) (P : MvPolynomial (Fin k) K), P ∈ Hd K k d → P.IsHomogeneous d
 
+/- English proof (translation)
+Simplify using `[theta]`.
+-/
 theorem theta_X (K : Type) [Field K] (m : ℕ) (vec : Bool) (c : Fin (m + 1)) :
     theta K m vec (X c) = Nv K m vec c := by
   simp [theta]
 
+/- English proof (translation)
+Establish `h1` using `(hH K (m + 1) d P hP).sum_X_mul_pderiv`. Establish `h2` using `congrArg (theta K m vec) h1`. Simplify using `only [map_sum, map_mul, theta_X, map_nsmul] at h2`. Rewrite `h2` using `[← Nat.cast_smul_eq_nsmul K]`. Rewrite using `[← h2]`.
+
+Conclude with `Finset.sum_congr rfl (fun c _ => mul_comm _ _)`.
+-/
 theorem euler_theta (hH : HdHom) (K : Type) [Field K] (m : ℕ) (vec : Bool) (d : ℕ)
     (P : MvPolynomial (Fin (m + 1)) K) (hP : P ∈ Hd K (m + 1) d) :
     ∑ c, theta K m vec (pderiv c P) * Nv K m vec c = (d : K) • theta K m vec P := by
@@ -40,6 +48,17 @@ theorem euler_theta (hH : HdHom) (K : Type) [Field K] (m : ℕ) (vec : Bool) (d 
   rw [← h2]
   exact Finset.sum_congr rfl (fun c _ => mul_comm _ _)
 
+/- English proof (translation)
+Introduce `K _ m vec d a b P hP`. Rewrite using `[hC K m vec a b P]`. Consider the cases of `vec`. Establish `hE` using `euler_theta hH K m false d P hP`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Establish `hL : ∑ c, theta K m false (pderiv c P) * RE K (m + 1) a a (Nv K m false c) = ∑ c, theta K m false (pderiv c P) * Nv K m false c - theta K m false (pderiv a P) * Nv K m false a`. Establish `hc : ∀ c, RE K (m + 1) a a (Nv K m false c) = Nv K m false c - (if a = c then Nv K m false a else 0)`. Introduce `c`. Rewrite using `[hK K m a a c]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [hc, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hL, hE]`. Simplify using `only [TE, Bool.false_eq_true, if_true, if_false, map_sub, map_smul, map_mul, theta_X]`. Rewrite using `[mul_comm (Nv K m false a)]`.
+
+Establish `hc : ∀ c, RE K (m + 1) a b (Nv K m false c) = -(if a = c then Nv K m false b else 0)`. Introduce `c`. Rewrite using `[hK K m a b c]`. Simplify using `[hab]`. Simplify using `only [hc, mul_neg, mul_ite, mul_zero, Finset.sum_neg_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Apply the tactic sequence `simp [TE, hab, theta_X] <;> ring`. Establish `hc : ∀ c, RE K (m + 1) a b (Nv K m true c) = if c = b then Nv K m true a else 0` using `fun c => hV K m a b c`. Simplify using `only [hc, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `only [TE, if_true, map_mul, theta_X]`. Rewrite using `[mul_comm]`.
+-/
 theorem rowLetter_of (hC : ChainRule) (hV : VecX) (hK : KeyCov) (hH : HdHom) : PI.RowLetter := by
   intro K _ m vec d a b P hP
   rw [hC K m vec a b P]

@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SeeConjPg
 
+/- English proof (translation)
+Introduce `D Pg _ he PP hP PP' hP'`. Take `⟨e, he⟩` from `he`. Conclude with `GlobalTheory.ChainOnto.FlagAct.not_isConjPl_of_idemSum he PP hP PP' hP'`.
+-/
 theorem pg_places_not_isConjPl : ∀ {D : D7} (Pg : Finset (Pl D.host.E)), GlobalTheory.Core.Mi.IsTypePlaces Pg → (∃ e, IsIdemSum e Pg) → ∀ PP ∈ Pg, ∀ PP' ∈ Pg, ¬ IsConjPl (D := D) PP PP' := by
   intro D Pg _ he PP hP PP' hP'
   obtain ⟨e, he⟩ := he

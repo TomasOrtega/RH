@@ -12,16 +12,33 @@ namespace GlobalTheory.UnrWitt
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeC (z : Om l) : (z : ℂ_[l]) = algebraMap (Om l) ℂ_[l] z := rfl
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] ℂ_[l]) l, norm_algebraMap', Padic.norm_p]`.
+-/
 theorem norm_l_C : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   rw [← map_natCast (algebraMap ℚ_[l] ℂ_[l]) l, norm_algebraMap', Padic.norm_p]
 
+/- English proof (translation)
+Rewrite using `[← PadicComplex.norm_extends l (l : Om l), coeC, map_natCast, norm_l_C]`.
+-/
 theorem norm_l_Om : ‖(l : Om l)‖ = (l : ℝ)⁻¹ := by
   rw [← PadicComplex.norm_extends l (l : Om l), coeC, map_natCast, norm_l_C]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.RingBasics.mem_OC _).1 x.2`.
+-/
 theorem norm_OC_le (x : OC l) : ‖(x : ℂ_[l])‖ ≤ 1 := (GlobalTheory.RingBasics.mem_OC _).1 x.2
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℚ_[l] (y : Om l)` using `Algebra.IsIntegral.isIntegral _`. Rewrite `h` using `[← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralValue_le_one_iff (minpoly.monic hi)]`. Establish `hl : minpoly ℚ_[l] (y : Om l) ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Conclude with `fun n => ⟨⟨_, h n⟩, rfl⟩`.
+
+Take `⟨q, hq, -, hm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl (minpoly.monic hi)`. Establish `h1 : IsIntegral ℤ_[l] (y : Om l)` using `⟨q, hm, by`. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`. Conclude with `(isIntegral_algHom_iff (K.1.val.restrictScalars ℤ_[l]) K.1.val.toRingHom.injective).1 h1`.
+-/
 theorem mem_OL_of_norm_le (K : FinExt l) (y : ↥K.1) (h : ‖(y : Om l)‖ ≤ 1) : y ∈ OL K := by
   have hi : IsIntegral ℚ_[l] (y : Om l) := Algebra.IsIntegral.isIntegral _
   rw [← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralValue_le_one_iff (minpoly.monic hi)] at h
@@ -33,6 +50,21 @@ theorem mem_OL_of_norm_le (K : FinExt l) (y : ↥K.1) (h : ‖(y : Om l)‖ ≤ 
     rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
   exact (isIntegral_algHom_iff (K.1.val.restrictScalars ℤ_[l]) K.1.val.toRingHom.injective).1 h1
 
+/- English proof (translation)
+Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Use `set φ : Wq l bk.a →+* ℂ_[l] := (PadicComplexInt l).toSubring.subtype.comp ((Per.θ l).comp (wA l bk.a).toRingHom) with hφ`. Use `set π : ℂ_[l] := ((Per.θ l (bk.ev X) : OC l) : ℂ_[l]) with hπ`. Establish `hπ1 : ‖π‖ ≤ 1` using `norm_OC_le _`. Establish `h0 : bk.Ep.eval₂ φ π = 0`.
+
+Establish `h1 : Per.θ l (bk.ev bk.E) = 0`. Establish `: bk.ev bk.E ∈ RingHom.ker (Per.θ l)` using `bk.span_ev ▸ Ideal.mem_span_singleton_self _`. Conclude with `this`. Establish `h2` using `congrArg (PadicComplexInt l).toSubring.subtype h1`. Rewrite `h2` using `[BK.E, ← Polynomial.eval₂_C_X_eq_coe, Polynomial.hom_eval₂, Polynomial.hom_eval₂, Polynomial.hom_eval₂, map_zero]`.
+
+Establish `hc : (PadicComplexInt l).toSubring.subtype.comp ((Per.θ l).comp (bk.ev.comp C)) = φ` using `RingHom.ext fun w => by simp [hφ, bk.ev_C]`. Rewrite `h2` using `[hc]`. Conclude with `h2`. Establish `hcoef : ∀ i < bk.Ep.natDegree, ‖φ (bk.Ep.coeff i)‖ ≤ ‖(l : ℂ_[l])‖`. Introduce `i hi`.
+
+Take `⟨c, hc⟩` from `bk.dvd_coeff i hi`. Rewrite using `[hc, map_mul, map_natCast, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_OC_le (Per.θ l (wA l bk.a c)))`. Rewrite `h0` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, bk.monic.coeff_natDegree, map_one, one_mul]`. Establish `h3 : π ^ bk.Ep.natDegree = -∑ i ∈ Finset.range bk.Ep.natDegree, φ (bk.Ep.coeff i) * π ^ i`.
+
+Take the linear combination `h0`. Establish `h4 : ‖π‖ ^ bk.Ep.natDegree ≤ ‖(l : ℂ_[l])‖`. Rewrite using `[← norm_pow, h3, norm_neg]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`.
+
+Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (pow_le_one₀ (norm_nonneg _) hπ1)).trans (hcoef i (Finset.mem_range.1 hi))`. Rewrite `h4` using `[norm_l_C]`. Assume the negation of the conclusion as `h5`. Use `push_neg at h5`. Establish `h6` using `one_le_pow₀ (n := bk.Ep.natDegree) h5`.
+
+Establish `h7 : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_pi_lt {K : FinExt l} (bk : BK K) : ‖((Per.θ l (bk.ev X) : OC l) : ℂ_[l])‖ < 1 := by
   have hl1 : (1 : ℝ) < l := by exact_mod_cast hl.out.one_lt
   set φ : Wq l bk.a →+* ℂ_[l] := (PadicComplexInt l).toSubring.subtype.comp ((Per.θ l).comp (wA l bk.a).toRingHom) with hφ
@@ -76,6 +108,39 @@ namespace GlobalTheory.UnrWitt
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Set `r : ↥(OL K)` to `⟨⟨y, hyK⟩, mem_OL_of_norm_le K _ hy1⟩`. Take `⟨f, hf⟩` from `Ideal.Quotient.mk_surjective (bk.str r)`. Establish `hθ : (y : ℂ_[l]) = ((Per.θ l (bk.ev f) : OC l) : ℂ_[l])`. Rewrite using `[bk.θ_ev r f hf, coe_intToOC]`.
+
+Use `set z : Fq l bk.a := (constantCoeff f).coeff 0 with hz`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : (l : Wq l bk.a) ∣ constantCoeff f - WittVector.teichmuller l z := by`. Rewrite using `[← Ideal.mem_span_singleton, ← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub]`. Simplify using `[WittVector.constantCoeff_apply, hz]`. Use `set f' : bk.S := PowerSeries.mk fun p => coeff (p + 1) f`.
+
+Establish `hfe : f = X * f' + C (constantCoeff f)` using `eq_X_mul_shift_add_const f`. Establish `hc : constantCoeff f = WittVector.teichmuller l z + (l : Wq l bk.a) * u` using `by rw [← hu]; ring`. Use `set Ψ : bk.S →+* ℂ_[l] := (PadicComplexInt l).toSubring.subtype.comp ((Per.θ l).comp bk.ev) with hΨ`. Establish `hΨC : ∀ w, Ψ (C w) = ((Per.θ l (wA l bk.a w) : OC l) : ℂ_[l])` using `fun w => by simp [hΨ, bk.ev_C]`. Use `set π : ℂ_[l] := ((Per.θ l (bk.ev X) : OC l) : ℂ_[l]) with hπ`.
+
+Use `set t : ℂ_[l] := ((Per.θ l (wA l bk.a (WittVector.teichmuller l z)) : OC l) : ℂ_[l]) with ht`. Use `set A : ℂ_[l] := ((Per.θ l (wA l bk.a u) : OC l) : ℂ_[l]) with hA`. Use `set B : ℂ_[l] := ((Per.θ l (bk.ev f') : OC l) : ℂ_[l]) with hB`. Establish `hdec : (y : ℂ_[l]) = t + (l : ℂ_[l]) * A + π * B`. Establish `e1 : (y : ℂ_[l]) = Ψ f` using `hθ`.
+
+Establish `e2 : Ψ X = π` using `rfl`. Establish `e3 : Ψ f' = B` using `rfl`. Rewrite using `[e1, hfe, hc]`. Simplify using `only [map_add, map_mul, map_natCast, hΨC, e2, e3]`. Rewrite using `[ht, hA]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set rt : ↥(OL K) := bk.str.symm (Ideal.Quotient.mk _ (C (WittVector.teichmuller l z))) with hrt`. Establish `htK : t = (((rt : ↥K.1) : Om l) : ℂ_[l])`. Rewrite using `[← coe_intToOC, ← bk.θ_ev rt (C (WittVector.teichmuller l z)) (by rw [hrt, RingEquiv.apply_symm_apply]), bk.ev_C]`. Use `set yt : Om l := ((rt : ↥K.1) : Om l) with hyt`.
+
+Establish `hytK : yt ∈ K.1` using `(rt : ↥K.1).2`. Establish `hteich : (WittVector.teichmuller l z) ^ (l ^ bk.a) = WittVector.teichmuller l z`. Rewrite using `[← map_pow, Fq.pow_card]`. Establish `hyt_pow : yt ^ (l ^ bk.a) = yt`. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_pow, ← coeC, ← htK, ht, ← SubmonoidClass.coe_pow, ← map_pow, ← map_pow, hteich]`. Establish `hytU : yt ∈ MaximalUnramifiedExtension l`. Distinguish the cases in `h0 : yt = 0`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+
+Establish `hq : 1 < l ^ bk.a` using `one_lt_pow_l l bk.a`. Use `IntermediateField.subset_adjoin ℚ_[l] _ ⟨l ^ bk.a - 1, by omega, fun h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `hl.out.not_dvd_one ((Nat.dvd_sub_iff_right hq.le (dvd_pow_self l (NeZero.ne bk.a))).1 h)`. Apply `mul_right_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[← pow_succ, Nat.sub_add_cancel hq.le, hyt_pow, one_mul]`.
+
+Establish `hdK : y - yt ∈ K.1` using `sub_mem hyK hytK`. Establish `hdU : y - yt ∈ MaximalUnramifiedExtension l` using `sub_mem hyU hytU`. Establish `hdC : ((y - yt : Om l) : ℂ_[l]) = (l : ℂ_[l]) * A + π * B`. Rewrite using `[coeC, map_sub, ← coeC, ← coeC, hdec, ← htK]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hd1 : ‖y - yt‖ < 1`. Rewrite using `[← PadicComplex.norm_extends, hdC]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_l_C]`. Conclude with `(mul_le_of_le_one_right (by positivity) (norm_OC_le _)).trans_lt (inv_lt_one_of_one_lt₀ hl1)`.
+
+Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (norm_OC_le _)).trans_lt (norm_pi_lt bk)`. Establish `hd2 : ‖y - yt‖ ≤ (l : ℝ)⁻¹`. Distinguish the cases in `h0 : y - yt = 0`. Rewrite using `[h0, norm_zero]`.
+
+Check the signs of the components of the expression. Take `⟨k, hk⟩` from `Formalism.MainNotions.N.PreambleDegrees.Loc.norm_Kur_zpow hdU h0`. Rewrite `hd1`, the goal using `[hk]`. Establish `hk0 : k < 0`. Assume the negation of the conclusion as `hk0`.
+
+Use `push_neg at hk0`. Conclude with `absurd hd1 (not_lt.2 (one_le_zpow₀ hl1.le hk0))`. Combine the equalities or inequalities in the displayed calculation. Establish `hl0 : (l : Om l) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`. Use `⟨WittVector.teichmuller l z, (y - yt) / (l : Om l), div_mem hdK (natCast_mem _ l), div_mem hdU (natCast_mem _ l), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_div, norm_l_Om, div_inv_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlC : (l : ℂ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`. Rewrite using `[coeC ((y - yt) / (l : Om l)), map_div₀, map_natCast, ← coeC, hdC, hdec]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step {K : FinExt l} (bk : BK K) (y : Om l) (hyK : y ∈ K.1) (hyU : y ∈ MaximalUnramifiedExtension l) (hy1 : ‖y‖ ≤ 1) :
     ∃ (w : Wq l bk.a) (y' : Om l), y' ∈ K.1 ∧ y' ∈ MaximalUnramifiedExtension l ∧ ‖y'‖ ≤ 1 ∧
       (y : ℂ_[l]) = ((Per.θ l (wA l bk.a w) : OC l) : ℂ_[l]) + (l : ℂ_[l]) * (y' : ℂ_[l]) := by
@@ -165,6 +230,29 @@ namespace GlobalTheory.UnrWitt
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Set `N : Type` to `{y : Om l // y ∈ K.1 ∧ y ∈ MaximalUnramifiedExtension l ∧ ‖y‖ ≤ 1}`. Set `Φ : Wq l bk.a →+* ℂ_[l]` to `(PadicComplexInt l).toSubring.subtype.comp ((Per.θ l).comp (wA l bk.a).toRingHom)`. Establish `hΦ : ∀ w, Φ w = ((Per.θ l (wA l bk.a w) : OC l) : ℂ_[l])` using `fun _ => rfl`. Establish `hΦ1 : ∀ w, ‖Φ w‖ ≤ 1` using `fun w => norm_OC_le _`.
+
+Establish `hs : ∀ v : N, ∃ p : Wq l bk.a × N, ((v.1 : Om l) : ℂ_[l]) = Φ p.1 + (l : ℂ_[l]) * ((p.2.1 : Om l) : ℂ_[l])`. Introduce `v`. Take `⟨w, y', h1, h2, h3, h⟩` from `step bk v.1 v.2.1 v.2.2.1 v.2.2.2`. Conclude with `⟨(w, ⟨y', h1, h2, h3⟩), h⟩`. Use `choose g hg using hs`.
+
+Set `ys : ℕ → N` to `fun k => Nat.rec (motive := fun _ => N) ⟨y, hyK, hyU, hy1⟩ (fun _ v => (g v).2) k`. Establish `hys : ∀ k, ys (k + 1) = (g (ys k)).2` using `fun _ => rfl`. Set `s : ℕ → Wq l bk.a` to `fun k => ∑ i ∈ Finset.range k, (l : Wq l bk.a) ^ i * (g (ys i)).1`. Establish `hinv : ∀ k, (y : ℂ_[l]) = Φ (s k) + (l : ℂ_[l]) ^ k * (((ys k).1 : Om l) : ℂ_[l])`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp [s, ys]`. Consider the case `succ k ih`. Establish `h` using `hg (ys k)`. Rewrite `h` using `[← hys]`.
+
+Simplify using `only [s, Finset.sum_range_succ, map_add, map_mul, map_pow, map_natCast]`. Take the linear combination `ih + (l : ℂ_[l]) ^ k * h`. Establish `hcau : ∀ m n, m ≤ n → (l : Wq l bk.a) ^ m ∣ s n - s m`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`.
+
+Consider the case `base => simp`. Consider the case `succ n hmn ih`. Establish `e : s (n + 1) - s m = (s n - s m) + (l : Wq l bk.a) ^ n * (g (ys n)).1`. Simplify using `only [s, Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `dvd_add ih (Dvd.dvd.mul_right (pow_dvd_pow _ hmn) _)`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(l : Wq l bk.a)}) s fun {m n} hmn => by`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `(dvd_sub_comm).1 (hcau m n hmn)`.
+
+Use `⟨L, ?_⟩` and prove the remaining obligations. Rewrite using `[← hΦ]`. Establish `hbd : ∀ n : ℕ, ‖(y : ℂ_[l]) - Φ L‖ ≤ ((l : ℝ)⁻¹) ^ n`. Introduce `n`. Establish `h` using `hL n`.
+
+Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton] at h`. Take `⟨v, hv⟩` from `h`. Establish `e : (y : ℂ_[l]) - Φ L = (l : ℂ_[l]) ^ n * (Φ v + (((ys n).1 : Om l) : ℂ_[l]))`. Use `congrArg Φ hv` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_pow, map_natCast]`.
+
+Take the linear combination `hinv n + this`. Rewrite using `[e, norm_mul, norm_pow, norm_l_C]`. Use `mul_le_of_le_one_right (by positivity) ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hΦ1 v) ?_))` and prove the remaining obligations. Rewrite using `[PadicComplex.norm_extends]`. Conclude with `(ys n).2.2.2`.
+
+Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖(y : ℂ_[l]) - Φ L‖` using `norm_pos_iff.2 (sub_ne_zero.2 (Ne.symm hne))`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hpos (inv_lt_one_of_one_lt₀ hl1)`. Conclude with `absurd (hbd n) (not_le.2 hn)`.
+-/
 theorem exists_of_int {K : FinExt l} (bk : BK K) (y : Om l) (hyK : y ∈ K.1) (hyU : y ∈ MaximalUnramifiedExtension l) (hy1 : ‖y‖ ≤ 1) :
     ∃ w : Wq l bk.a, ((Per.θ l (wA l bk.a w) : OC l) : ℂ_[l]) = (y : ℂ_[l]) := by
   classical
@@ -223,6 +311,11 @@ theorem exists_of_int {K : FinExt l} (bk : BK K) (y : Om l) (hyK : y ∈ K.1) (h
   obtain ⟨n, hn⟩ := exists_pow_lt_of_lt_one hpos (inv_lt_one_of_one_lt₀ hl1)
   exact absurd (hbd n) (not_le.2 hn)
 
+/- English proof (translation)
+Introduce `l _ K bk x hxK hxU`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt ‖x‖ hl1`. Establish `h1 : ‖(l : Om l) ^ n * x‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow, norm_l_Om, inv_pow]`.
+
+Rewrite using `[inv_mul_le_iff₀ (by positivity), mul_one]`. Conclude with `hn.le`. Take `⟨w, hw⟩` from `exists_of_int bk _ (mul_mem (pow_mem (natCast_mem _ l) n) hxK) (mul_mem (pow_mem (natCast_mem _ l) n) hxU) h1`. Conclude with `⟨n, w, hw⟩`.
+-/
 theorem exists_pow_mul_eq_theta : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (x : Om l), x ∈ K.1 →
     x ∈ MaximalUnramifiedExtension l → ∃ (n : ℕ) (w : Wq l bk.a),
       ((Per.θ l (wA l bk.a w) : OC l) : ℂ_[l]) = ((((l : Om l) ^ n * x : Om l)) : ℂ_[l]) := by

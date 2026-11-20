@@ -14,6 +14,13 @@ open GlobalTheory.BlockSum (blockRep)
 open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac IsSSMat)
 open UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+Introduce `l _ P AI tied E Ω _ _ _ _ _ A O _ _ _ Bw a r hdR τ LL' τ' hτ`. Take `⟨T⟩` from `id tied`. Take `⟨L₀, r₀, hm, hd⟩` from `hdR`. Establish `l₁ : L₀.1 ≤ (supExt L₀ LL').1` using `le_sup_left`. Establish `l₂ : LL'.1 ≤ (supExt L₀ LL').1` using `le_sup_right`.
+
+Establish `hm'` using `hm.enlarge l₁`. Establish `hd'` using `(local_ext P Bw l₁ r₀).2.1.2 hd`. Establish `hτ' : IsInduced Bw τ ((IntermediateField.inclusion l₂).comp τ')` using `fun x => hτ x`. Establish `hdr' : IsDR (P.PD Bw.Kw) (Bw.repE (supExt L₀ LL') (mapRep (IntermediateField.inclusion l₁).toRingHom r₀))`. Rewrite using `[IsDR, Module.finrank_fin_fun]`.
+
+Conclude with `hd'`. Take `⟨hfin, -, hrk⟩` from `(GlobalTheory.Per.Components.components_finrank l P AI T _ (supExt L₀ LL') _ (Bw.repE (supExt L₀ LL') (mapRep (IntermediateField.inclusion l₁).toRingHom r₀))).1 ((IntermediateField.inclusion l₂).comp τ')`. Take `⟨J', h1, h2⟩` from `@GlobalTheory.HtCardProof.exists_count _ _ _ _ _ T _ _ ((mapRep (IntermediateField.inclusion l₁).toRingHom r₀).comp Bw.e.symm.toMonoidHom) ((IntermediateField.inclusion l₂).comp τ') hfin`. Conclude with `⟨J', ⟨_, _, hm', hd', _, hτ', h2⟩, h1.trans ((hrk hdr').trans (Module.finrank_fin_fun _))⟩`.
+-/
 theorem UpperTheory.Gal.Int.Div.jumpCard_of :
     JumpCard := by
   intro l _ P AI tied E Ω _ _ _ _ _ A O _ _ _ Bw a r hdR τ LL' τ' hτ

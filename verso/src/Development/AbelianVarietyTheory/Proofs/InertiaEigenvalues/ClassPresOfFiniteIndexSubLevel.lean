@@ -25,6 +25,9 @@ def dcRel (J' : Subgroup G) : Setoid G where
     trans := fun {h h' h''} ⟨γ, k, e⟩ ⟨γ₂, k₂, e₂⟩ =>
       ⟨γ₂ * γ, k * k₂, by rw [e₂, e, map_mul, Subgroup.coe_mul]; group⟩ }
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[mem_stab ι]`. Establish `h1 : (y * k)⁻¹ * ι g * (y * k) ∈ J` using `hJ hg`. Establish `e : y⁻¹ * ι g * y = k * ((y * k)⁻¹ * ι g * (y * k)) * k⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `J.mul_mem (J.mul_mem hk h1) (J.inv_mem hk)`.
+-/
 theorem stab_mono_mem {J J' : Subgroup G} (hJ : J' ≤ J) {y k : G} (hk : k ∈ J) {g : Γ}
     (hg : g ∈ stab ι J' (y * k)) : g ∈ stab ι J y := by
   rw [mem_stab ι] at hg ⊢
@@ -45,6 +48,9 @@ variable (P : ClassPres ι S σ ρ J χ) (J' : Subgroup G)
 
 def yN (c : Quotient (dcRel ι J')) : G := P.y (P.decC c.out) * (P.decK c.out : G)
 
+/- English proof (translation)
+Use `show ∃ (γ : Γ) (k : J'), c.out = ι γ * yN P J' c * (k : G)`. Use `⟨P.decG c.out, 1, ?_⟩` and prove the remaining obligations. Use `show c.out = ι (P.decG c.out) * (P.y (P.decC c.out) * (P.decK c.out : G)) * ((1 : J') : G)`. Rewrite using `[Subgroup.coe_one, mul_one, ← mul_assoc]`. Conclude with `P.dec_spec c.out`.
+-/
 theorem yN_rel (c : Quotient (dcRel ι J')) : (dcRel ι J').r (yN P J' c) c.out := by
   show ∃ (γ : Γ) (k : J'), c.out = ι γ * yN P J' c * (k : G)
   refine ⟨P.decG c.out, 1, ?_⟩
@@ -52,9 +58,17 @@ theorem yN_rel (c : Quotient (dcRel ι J')) : (dcRel ι J').r (yN P J' c) c.out 
   rw [Subgroup.coe_one, mul_one, ← mul_assoc]
   exact P.dec_spec c.out
 
+/- English proof (translation)
+The claim follows from `(Quotient.sound (yN_rel P J' c)).trans (Quotient.out_eq c)`.
+-/
 theorem mk_yN (c : Quotient (dcRel ι J')) : Quotient.mk (dcRel ι J') (yN P J' c) = c :=
   (Quotient.sound (yN_rel P J' c)).trans (Quotient.out_eq c)
 
+/- English proof (translation)
+Introduce `h`. Use `⟨Quotient.mk (dcRel ι J') h, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Quotient.exact (mk_yN P J' (Quotient.mk (dcRel ι J') h))`. Introduce and unpack `i ⟨γ, k, e⟩`. Establish `hr : (dcRel ι J').r (yN P J' i) h` using `⟨γ, k, e⟩`.
+
+Conclude with `(mk_yN P J' i).symm.trans (Quotient.sound hr)`.
+-/
 theorem reps_new : IsReps ι J' (yN P J') := by
   intro h
   refine ⟨Quotient.mk (dcRel ι J') h, ?_, ?_⟩
@@ -63,6 +77,9 @@ theorem reps_new : IsReps ι J' (yN P J') := by
     have hr : (dcRel ι J').r (yN P J' i) h := ⟨γ, k, e⟩
     exact (mk_yN P J' i).symm.trans (Quotient.sound hr)
 
+/- English proof (translation)
+Use `haveI : Finite (stab ι J (P.y (P.decC c.out))) := Finite.of_equiv _ (P.stabI (P.decC c.out)).toEquiv`. Use `Finite.of_injective (fun g : stab ι J' (yN P J' c) => (⟨(g : Γ), stab_mono_mem ι hJ (P.decK c.out).2 g.2⟩ : stab ι J (P.y (P.decC c.out)))) ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `hv` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext hv`.
+-/
 theorem stabN_finite (hJ : J' ≤ J) (c : Quotient (dcRel ι J')) : Finite (stab ι J' (yN P J' c)) := by
   haveI : Finite (stab ι J (P.y (P.decC c.out))) := Finite.of_equiv _ (P.stabI (P.decC c.out)).toEquiv
   refine Finite.of_injective
@@ -73,6 +90,13 @@ theorem stabN_finite (hJ : J' ≤ J) (c : Quotient (dcRel ι J')) : Finite (stab
   exact Subtype.ext hv
 
 include P in
+/- English proof (translation)
+Use `haveI := hfi`. Use `Finite.of_surjective (fun p : S.Cl × (J ⧸ J'.subgroupOf J) => Quotient.mk (dcRel ι J') (P.y p.1 * ((p.2.out : J) : G))) ?_` and prove the remaining obligations. Introduce `c`. Take `⟨d, γ, k, e⟩ : ∃ (d : S.Cl) (γ : Γ) (k : J), c.out = ι γ * P.y d * (k : G)` from `⟨_, _, _, P.dec_spec c.out⟩`. Take `⟨j, hj⟩` from `QuotientGroup.mk_out_eq_mul (s := J'.subgroupOf J) k`.
+
+Establish `hjJ' : ((j : J) : G) ∈ J'` using `Subgroup.mem_subgroupOf.1 j.2`. Use `⟨(d, (QuotientGroup.mk k : J ⧸ J'.subgroupOf J)), ?_⟩` and prove the remaining obligations. Use `show Quotient.mk (dcRel ι J') (P.y d * (((QuotientGroup.mk k : J ⧸ J'.subgroupOf J).out : J) : G)) = c`. Rewrite using `[hj]`. Establish `hr : (dcRel ι J').r (P.y d * ((k * (j : J) : J) : G)) c.out`.
+
+Use `⟨γ, ⟨((j : J) : G)⁻¹, J'.inv_mem hjJ'⟩, ?_⟩` and prove the remaining obligations. Use `show c.out = ι γ * (P.y d * ((k : G) * ((j : J) : G))) * ((j : J) : G)⁻¹`. Rewrite using `[e]`. Use `group`. Conclude with `(Quotient.sound hr).trans (Quotient.out_eq c)`.
+-/
 theorem cl_finite (hfi : (J'.subgroupOf J).FiniteIndex) : Finite (Quotient (dcRel ι J')) := by
   haveI := hfi
   refine Finite.of_surjective
@@ -99,6 +123,9 @@ def rhoG (y : G) (g : stab ι J' y) (x : S.V) : W :=
   (χ' (stabK ι g) : ℂ) • ρ (g : Γ) (P.coef x)
 
 include hχ' hρ in
+/- English proof (translation)
+Take `⟨x', hx'⟩` from `hρ (g : Γ) x`. Take `⟨a, ha⟩` from `hχ' (stabK ι g)`. Use `⟨a • x', ?_⟩` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, hx', ha]`. Both sides reduce to the same expression.
+-/
 theorem rhoG_rg (y : G) (g : stab ι J' y) (x : S.V) : InRg P (rhoG P J' χ' y g x) := by
   obtain ⟨x', hx'⟩ := hρ (g : Γ) x
   obtain ⟨a, ha⟩ := hχ' (stabK ι g)
@@ -119,6 +146,9 @@ def rhoGE (y : G) (g : stab ι J' y) : Module.End K S.V where
     simp only [rhoG, map_smulₛₗ, RingHom.id_apply, map_smul]
     rw [smul_comm]
 
+/- English proof (translation)
+The claim follows from `coef_cinv P (rhoG_rg P J' χ' hχ' hρ y g x)`.
+-/
 theorem coef_rhoGE (y : G) (g : stab ι J' y) (x : S.V) :
     P.coef (rhoGE P J' χ' hχ' hρ y g x) = rhoG P J' χ' y g x :=
   coef_cinv P (rhoG_rg P J' χ' hχ' hρ y g x)
@@ -145,6 +175,11 @@ namespace GlobalTheory
 
 open Formalism.IndefR.Bridge GlobalTheory.SubLevel
 
+/- English proof (translation)
+Introduce `G Γ _ _ ι W _ _ K _ _ _ σ S ρ J χ P J' hJ hfi χ' hχ' hρ`. Use `haveI : Finite (Quotient (SubLevel.dcRel ι J')) := SubLevel.cl_finite P J' hfi`. Use `letI fC : Fintype (Quotient (SubLevel.dcRel ι J')) := Fintype.ofFinite _`. Use `haveI hfS : ∀ c, Finite (stab ι J' (SubLevel.yN P J' c)) := fun c => SubLevel.stabN_finite P J' hJ c`. Use `letI fG : ∀ c, Fintype (stab ι J' (SubLevel.yN P J' c)) := fun c => Fintype.ofFinite _`.
+
+Conclude with `⟨Quotient (SubLevel.dcRel ι J'), fC, fun c => P.decC c.out, fun c => P.decK c.out, fun c => stab ι J' (SubLevel.yN P J' c), fun c => inferInstance, fG, fun c => SubLevel.rhoGN P J' χ' hχ' hρ (SubLevel.yN P J' c), { y := SubLevel.yN P J' reps := SubLevel.reps_new P J' stabI := fun …`.
+-/
 theorem classPres_subLevel : ∀ {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G) {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {K : Type} [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ) (S : CSD K) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (P : Bridge.ClassPres ι S σ ρ J χ) (J' : Subgroup G), J' ≤ J → (J'.subgroupOf J).FiniteIndex → ∀ χ' : J' →* ℂˣ, (∀ k, ∃ a : K, σ a = ((χ' k : ℂˣ) : ℂ)) → (∀ γ x, ∃ x', P.coef x' = ρ γ (P.coef x)) → ∃ (Cl : Type) (fC : Fintype Cl) (π : Cl → S.Cl) (k : Cl → J) (Gam : Cl → Type) (gG : ∀ c, Group (Gam c)) (fG : ∀ c, Fintype (Gam c)) (ρ' : ∀ c, Gam c →* Module.End K S.V) (P' : Bridge.ClassPres ι ({ S with Cl := Cl, finCl := fC, Gam := Gam, grpGam := gG, finGam := fG, ρ := ρ', Nab := fun c => S.Nab (π c), Del := fun c => S.Del (π c) } : CSD K) σ ρ J' χ'), (∀ c : Cl, P'.y c = P.y (π c) * (k c : G)) ∧ P'.coef = P.coef := by
   intro G Γ _ _ ι W _ _ K _ _ _ σ S ρ J χ P J' hJ hfi χ' hχ' hρ
   haveI : Finite (Quotient (SubLevel.dcRel ι J')) := SubLevel.cl_finite P J' hfi

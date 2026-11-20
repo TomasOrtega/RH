@@ -18,6 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} (t : SAB H X)
 
+/- English proof (translation)
+Take `⟨e, he, hφ⟩` from `grpPullback_iso h (isGrpPullback_pullback t.G x)`. Use `⟨fun m => y m ≫ e.hom, gfp_chart_iso e hy, fun cc => ?_⟩` and prove the remaining obligations. Establish `key : (tvec (x` using `fun m => y m ≫ e.hom) cc).left = (tvec (x := y) cc).left ≫ e.hom.left := by show (_ ≫ y 1 ≫ e.hom).left = (_ ≫ y 1).left ≫ e.hom.left`. Rewrite using `[Over.comp_left, Over.comp_left, Over.comp_left, Category.assoc]`. Use `show (tvec (x := fun m => y m ≫ e.hom) cc).left ≫ pullback.fst _ _ = _`.
+
+Rewrite using `[key, Category.assoc, hφ]`.
+-/
 theorem exists_univChart_pullback {A : Type} [CommRing A] (x : Sp A ⟶ X) {G₁ : Over (Spec (CommRingCat.of A))}
     [GrpObj G₁] {ψ : G₁.left ⟶ t.G.left} (h : IsGrpPullback G₁ t.G x ψ) {n : ℕ}
     {y : ∀ m : ℕ, sp (R₀ := A) (ReciprocityTheory.ChartRestriction.G.Chart.JetR A (Fin n) m) ⟶ G₁} (hy : IsUnivChart G₁ n y) :
@@ -31,6 +36,17 @@ theorem exists_univChart_pullback {A : Type} [CommRing A] (x : Sp A ⟶ X) {G₁
   show (tvec (x := fun m => y m ≫ e.hom) cc).left ≫ pullback.fst _ _ = _
   rw [key, Category.assoc, hφ]
 
+/- English proof (translation)
+Use `⟨fun j => ?_, fun S' _ φ w hw => ?_⟩` and prove the remaining obligations. Take `⟨xc, hx, hv⟩` from `exists_univChart_pullback t x h hy`. Establish `h1` using `LieLocBasis.vec_tan hx (Pi.single j 1)`. Rewrite `h1` using `[hv]`. Conclude with `h1`.
+
+Set `_ : Algebra A S'` to `φ.toAlgebra`. Take `⟨y', hy', e'⟩` from `LieChart.univChart_baseChange_of_chart (R' := S') G₁ C n y hy`. Take `⟨xc', hx', hv⟩` from `exists_univChart_pullback t (spMap φ ≫ x) ((isGrpPullback_pullback G₁ (fB A S')).comp h) hy'`. Take `⟨cc, rfl⟩` from `LieLocBasis.vec_exists hx' w hw`. Establish `hD : (fun j => spMap (dualMap φ) ≫ (tvec (x` using `y) (Pi.single j 1)).left ≫ ψ) = fun j => LieLocBasis.vec t (spMap φ ≫ x) xc' (Pi.single j 1) := by`.
+
+Use function extensionality and compare the values at `j`. Establish `h1 : (Pi.single j 1 : Fin n → S') = algebraMap A S' ∘ (Pi.single j 1 : Fin n → A)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hi]`. Rewrite using `[hv, h1, ← Category.assoc (tvec (x := y') _).left, e', Category.assoc]`. Both sides reduce to the same expression. Establish `hs : ∀ a : Fin n → S', ∑ j, a j • (Pi.single j 1 : Fin n → S') = a` using `fun a => by`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hD]`. Use `⟨cc, (LieLocBasis.comb_iff hx' _ _ _).2 (hs cc).symm, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `(hs a).symm.trans ((LieLocBasis.comb_iff hx' _ _ _).1 ha).symm`.
+-/
 theorem isTanBasis_of_chart {A : Type} [CommRing A] (x : Sp A ⟶ X) {G₁ : Over (Spec (CommRingCat.of A))}
     [GrpObj G₁] {ψ : G₁.left ⟶ t.G.left} (h : IsGrpPullback G₁ t.G x ψ) (C : ReciprocityTheory.ChartRestriction.G.Chart.Chart G₁) {n : ℕ}
     {y : ∀ m : ℕ, sp (R₀ := A) (ReciprocityTheory.ChartRestriction.G.Chart.JetR A (Fin n) m) ⟶ G₁} (hy : IsUnivChart G₁ n y) :
@@ -62,6 +78,13 @@ theorem isTanBasis_of_chart {A : Type} [CommRing A] (x : Sp A ⟶ X) {G₁ : Ove
   refine ⟨cc, (LieLocBasis.comb_iff hx' _ _ _).2 (hs cc).symm, fun a ha => ?_⟩
   exact (hs a).symm.trans ((LieLocBasis.comb_iff hx' _ _ _).1 ha).symm
 
+/- English proof (translation)
+Set `G : Over S` to `(Over.pullback ρ).obj t.G`. Establish `: Smooth G.hom`. Use `t.semi.smooth` as an intermediate fact. Use `show Smooth (pullback.snd t.G.hom ρ)`. Use `infer_instance`.
+
+Take `⟨U, hU, V, hV, e, hxU, -, hs, h⟩` from `LieChart.exists_isStandardSmooth_section G.hom (η[G]).left (Over.w η[G]) z ⊤ trivial`. Set `i : Spec (CommRingCat.of Γ(S, U)) ⟶ S` to `hU.fromSpec`. Set `G₀ : Over (Spec (CommRingCat.of Γ(S, U)))` to `(Over.pullback i).obj G`. Establish `hφ₀ : IsGrpPullback G₀ G i (pullback.fst G.hom i)` using `isGrpPullback_pullback G i`. Take `⟨C, hC⟩` from `LieChart.exists_chart_pullback G hU hV e hs h G₀ _ hφ₀`.
+
+Take `⟨n, y, hy⟩` from `LieChart.univChart_of_chart G₀ C hC`. Conclude with `⟨⟨U, hU⟩, n, _, hxU, isTanBasis_of_chart t (i ≫ ρ) (hφ₀.comp (isGrpPullback_pullback t.G ρ)) C hy⟩`.
+-/
 theorem exists_affine_isTanBasis (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0})
     (t : SAB H X) (S : Scheme.{0}) (ρ : S ⟶ X) (z : S) :
     ∃ (V : S.affineOpens) (g : ℕ) (e : Fin g → (Sp (DualNumber Γ(S, V.1)) ⟶ t.G.left)),

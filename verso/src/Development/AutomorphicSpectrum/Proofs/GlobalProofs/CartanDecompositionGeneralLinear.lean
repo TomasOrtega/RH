@@ -13,6 +13,13 @@ def dg {n : ℕ} (a : Fin n → Fˣ) : GL (Fin n) F where
   val_inv := by simp [Matrix.diagonal_mul_diagonal]
   inv_val := by simp [Matrix.diagonal_mul_diagonal]
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun i => (a i : F)) i j ∈ O`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using h₁ i`.
+
+Simplify using `[Matrix.diagonal_apply_ne _ hij, O.zero_mem]`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun i => (((a i)⁻¹ : Fˣ) : F)) i j ∈ O`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using h₂ i`.
+
+Simplify using `[Matrix.diagonal_apply_ne _ hij, O.zero_mem]`.
+-/
 theorem dg_mem (O : Subring F) {n : ℕ} (a : Fin n → Fˣ) (h₁ : ∀ i, (a i : F) ∈ O)
     (h₂ : ∀ i, (((a i)⁻¹ : Fˣ) : F) ∈ O) : dg a ∈ GLint O n := by
   refine ⟨fun i j => ?_, fun i j => ?_⟩
@@ -27,10 +34,20 @@ theorem dg_mem (O : Subring F) {n : ℕ} (a : Fin n → Fˣ) (h₁ : ∀ i, (a i
 
 variable [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Introduce `_ hg` and use `(GroundTheory.Automorphic.GLnLocal.mem_integralGL_iff F n).1 hg`.
+-/
 theorem integralGL_le (n : ℕ) :
     GroundTheory.Automorphic.GLnLocal.integralGL F n ≤ GLint 𝒪[F] n := fun _ hg =>
   (GroundTheory.Automorphic.GLnLocal.mem_integralGL_iff F n).1 hg
 
+/- English proof (translation)
+Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer]`. Use extensionality with `x`. Establish `hu : IsUnit x ↔ ValuativeRel.valuation F (x : F) = 1` using `(Valuation.integer.integers (ValuativeRel.valuation F)).isUnit_iff_valuation_eq_one`. Establish `hle : ValuativeRel.valuation F (x : F) ≤ 1` using `x.2`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hu, Ideal.mem_span_singleton']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨o, ho, e⟩` from `(h.lt_one (x : F)).1 (lt_of_le_of_ne hle hx)`. Conclude with `⟨⟨o, ho⟩, Subtype.ext (by simp [e, mul_comm])⟩`. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `((h.lt_one _).2 ⟨a, a.2, by simp [mul_comm]⟩).ne`.
+-/
 theorem irreducible_pi {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ} (h : LF 𝒪[F] ϖ nrm q)
     (hϖ : ϖ ∈ 𝒪[F]) : Irreducible (⟨ϖ, hϖ⟩ : 𝒪[F]) := by
   rw [IsDiscreteValuationRing.irreducible_iff_uniformizer]
@@ -46,6 +63,21 @@ theorem irreducible_pi {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ} (h : LF �
   · rintro ⟨a, rfl⟩
     exact ((h.lt_one _).2 ⟨a, a.2, by simp [mul_comm]⟩).ne
 
+/- English proof (translation)
+Take `rfl` from `h.O_eq`. Establish `hv : ValuativeRel.valuation F ϖ < 1` using `(h.lt_one ϖ).2 ⟨1, Subring.one_mem _, by simp⟩`. Establish `hϖ : ϖ ∈ 𝒪[F]` using `(Valuation.mem_integer_iff _ _).2 hv.le`. Take `⟨c, hc⟩` from `IsDiscreteValuationRing.associated_of_irreducible 𝒪[F] (GroundTheory.Automorphic.GLnLocal.irreducible_uniformizer F) (irreducible_pi h hϖ)`. Establish `hcF : (GroundTheory.Automorphic.GLnLocal.uniformizer F : F) * ((c : 𝒪[F]) : F) = ϖ` using `congrArg Subtype.val hc`.
+
+Set `cF : Fˣ` to `Units.map (𝒪[F]).subtype.toMonoidHom c`. Establish `hcF' : (cF : F) = ((c : 𝒪[F]) : F)` using `rfl`. Establish `hc₁ : ∀ z : ℤ, ((cF ^ z : Fˣ) : F) ∈ 𝒪[F]` using `fun z => by`. Establish `: cF ^ z = Units.map (𝒪[F]).subtype.toMonoidHom (c ^ z)` using `by simp [cF]`. Rewrite using `[this]`.
+
+Conclude with `((c ^ z : (𝒪[F])ˣ) : 𝒪[F]).2`. Establish `hϖ0 : ϖ ≠ 0` using `h.ne`. Take `⟨μ, -, k₁, hk₁, k₂, hk₂, rfl⟩` from `GroundTheory.Automorphic.Cartan.exists_eq_mul_diagPow_mul F n g`. Set `wu : Fˣ` to `Units.mk0 ϖ hϖ0`. Use `⟨k₁, integralGL_le n hk₁, dg (fun i => (cF ^ (-μ i) : Fˣ)) * k₂, (GLint 𝒪[F] n).mul_mem (dg_mem _ _ (fun i => hc₁ _) (fun i => ?_)) (integralGL_le n hk₂), μ, dg (fun i => wu ^ μ i), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← _root_.zpow_neg]`. Conclude with `hc₁ _`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun i => ((wu ^ μ i : Fˣ) : F)) = _`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[wu]`. Establish `hd : GroundTheory.Automorphic.Cartan.diagPow F n μ = dg (fun i => wu ^ μ i) * dg (fun i => (cF ^ (-μ i) : Fˣ))`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul]`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun i => (GroundTheory.Automorphic.GLnLocal.uniformizer F : F) ^ μ i) = (Matrix.diagonal fun i => ((wu ^ μ i : Fˣ) : F)) * (Matrix.diagonal fun i => ((cF ^ (-μ i) : Fˣ) : F))`.
+
+Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hcu : ((c : 𝒪[F]) : F) ≠ 0` using `by rw [← hcF']; exact cF.ne_zero`. Establish `: ((c : 𝒪[F]) : F) ^ μ i ≠ 0` using `zpow_ne_zero _ hcu`.
+
+Simplify using `only [_root_.zpow_neg, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, wu, Units.val_mk0, hcF', ← hcF, mul_zpow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hd]`. Simplify using `only [mul_assoc]`.
+-/
 theorem cartan {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ} (h : LF O ϖ nrm q)
     (n : ℕ) (g : GL (Fin n) F) :
     ∃ k₁ ∈ GLint O n, ∃ k₂ ∈ GLint O n, ∃ (e : Fin n → ℤ) (d : GL (Fin n) F),

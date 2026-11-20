@@ -9,5 +9,8 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtP
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentCharacterArgumentMulStabilizer
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col GlobalTheory.QNormal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Proof.parahoric_le_integral_gl.prCat_le_GLint | exact GlobalTheory.Proof.parahoric_le_integral_gl.prCat_le_GLint | (intros; apply GlobalTheory.Proof.parahoric_le_integral_gl.prCat_le_GLint <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.parahoric_le_integral_gl : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (sharp : Bool) (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)), P ∉ Pr.vGs → ∀ h : AutY X R j, GlobalTheory.IndefiniteRowSideFullHecke.SandwichNormalForm.NF Pr j P h → prCat (Pr := Pr) sharp j P h ≤ GLint X.E (R.N j) P := by
   first | exact @GlobalTheory.Proof.parahoric_le_integral_gl.prCat_le_GLint | exact GlobalTheory.Proof.parahoric_le_integral_gl.prCat_le_GLint | (intros; apply GlobalTheory.Proof.parahoric_le_integral_gl.prCat_le_GLint <;> assumption)

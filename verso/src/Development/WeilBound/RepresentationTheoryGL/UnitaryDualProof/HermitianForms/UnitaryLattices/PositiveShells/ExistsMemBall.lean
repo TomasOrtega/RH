@@ -23,10 +23,16 @@ def FixH (H : AddSubgroup (Fin (m + 1) → k)) (v : V) : Prop := ∀ a ∈ H, π
 
 def avgL (T : Finset (Fin (m + 1) → k)) : V →ₗ[ℂ] V := ((T.card : ℂ)⁻¹) • ∑ t ∈ T, π (colEl k m N h t)
 
+/- English proof (translation)
+Rewrite using `[avgL, LinearMap.smul_apply, LinearMap.sum_apply]`.
+-/
 theorem avgL_apply (T : Finset (Fin (m + 1) → k)) (v : V) :
     avgL h π T v = ((T.card : ℂ)⁻¹) • ∑ t ∈ T, π (colEl k m N h t) v := by
   rw [avgL, LinearMap.smul_apply, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[colEl_add, map_mul, Module.End.mul_apply]`.
+-/
 theorem pi_colEl_add (x y : Fin (m + 1) → k) (v : V) :
     π (colEl k m N h (x + y)) v = π (colEl k m N h x) (π (colEl k m N h y) v) := by
   rw [colEl_add, map_mul, Module.End.mul_apply]
@@ -46,16 +52,35 @@ def stab (v : V) : AddSubgroup (Fin (m + 1) → k) where
     conv_lhs => rw [← (show π (colEl k m N h a) v = v from ha)]
     rw [← pi_colEl_add, neg_add_cancel, colEl_zero, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+The claim follows from `(hπ v).preimage (continuous_colEl h)`.
+-/
 theorem isOpen_stab (hπ : IsSmooth π) (v : V) : IsOpen (stab h π v : Set (Fin (m + 1) → k)) :=
   (hπ v).preimage (continuous_colEl h)
 
 variable {h π}
 
+/- English proof (translation)
+Take `⟨t, ⟨ht, -⟩, -⟩` from `hT.2.2.2 0 A.zero_mem`. Conclude with `Nat.cast_ne_zero.mpr (Finset.card_ne_zero_of_mem ht)`.
+-/
 theorem IsTr.card_ne {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m + 1) → k)} (hT : IsTr A H T) :
     (T.card : ℂ) ≠ 0 := by
   obtain ⟨t, ⟨ht, -⟩, -⟩ := hT.2.2.2 0 A.zero_mem
   exact Nat.cast_ne_zero.mpr (Finset.card_ne_zero_of_mem ht)
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ A, ∃ t, t ∈ T ∧ x - t ∈ H` using `fun x hx => (hu x hx).exists`. Use `choose! r hrT hrH using key`. Establish `hfr : ∀ x ∈ A, f x = f (r x)`. Introduce `x hx`. Use `hf (r x) (x - r x) (hrH x hx)` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Conclude with `this`. Establish `huniq : ∀ x ∈ A, ∀ t ∈ T, x - t ∈ H → r x = t`. Introduce `x hx t ht hxt`. Conclude with `(hu x hx).unique ⟨hrT x hx, hrH x hx⟩ ⟨ht, hxt⟩`.
+
+Use `Finset.sum_nbij' (fun t => r (t + a)) (fun t => r (t - a)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Conclude with `hrT _ (A.add_mem (hTA t ht) ha)`. Introduce `t ht`. Conclude with `hrT _ (A.sub_mem (hTA t ht) ha)`.
+
+Introduce `t ht`. Establish `hx : t + a ∈ A` using `A.add_mem (hTA t ht) ha`. Apply `huniq _ (A.sub_mem (hTA _ (hrT _ hx)) ha) t ht` to reduce the goal to its premises. Use `H.neg_mem (hrH _ hx)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Introduce `t ht`. Establish `hx : t - a ∈ A` using `A.sub_mem (hTA t ht) ha`. Apply `huniq _ (A.add_mem (hTA _ (hrT _ hx)) ha) t ht` to reduce the goal to its premises. Use `H.neg_mem (hrH _ hx)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Introduce `t ht`. Conclude with `hfr _ (A.add_mem (hTA t ht) ha)`.
+-/
 private theorem sum_transversal_add_eq_sum_of_periodic {G M : Type*} [AddCommGroup G] [AddCommMonoid M] (A H : AddSubgroup G)
     (T : Finset G) (hTA : ∀ t ∈ T, t ∈ A) (hu : ∀ a ∈ A, ∃! t, t ∈ T ∧ a - t ∈ H) (f : G → M)
     (hf : ∀ x y, y ∈ H → f (x + y) = f x) (a : G) (ha : a ∈ A) :
@@ -91,6 +116,9 @@ private theorem sum_transversal_add_eq_sum_of_periodic {G M : Type*} [AddCommGro
   · intro t ht
     exact hfr _ (A.add_mem (hTA t ht) ha)
 
+/- English proof (translation)
+Apply `sum_transversal_add_eq_sum_of_periodic A H T hT.2.2.1 hT.2.2.2 (fun x => π (colEl k m N h x) v) _ a ha` to reduce the goal to its premises. Introduce `x y hy`. Use `beta_reduce`. Rewrite using `[pi_colEl_add, hv y hy]`.
+-/
 theorem sum_translate {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m + 1) → k)} (hT : IsTr A H T) {v : V}
     (hv : FixH h π H v) {a : Fin (m + 1) → k} (ha : a ∈ A) :
     ∑ t ∈ T, π (colEl k m N h (t + a)) v = ∑ t ∈ T, π (colEl k m N h t) v := by
@@ -99,6 +127,9 @@ theorem sum_translate {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (
   beta_reduce
   rw [pi_colEl_add, hv y hy]
 
+/- English proof (translation)
+Rewrite using `[avgL_apply, avgL_apply]`. Use `congr 1`. Rewrite using `[← sum_translate hT hv ha]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[pi_colEl_add]`.
+-/
 theorem avgL_colEl {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m + 1) → k)} (hT : IsTr A H T) {v : V}
     (hv : FixH h π H v) {a : Fin (m + 1) → k} (ha : a ∈ A) : avgL h π T (π (colEl k m N h a) v) = avgL h π T v := by
   rw [avgL_apply, avgL_apply]
@@ -107,6 +138,9 @@ theorem avgL_colEl {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m +
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [pi_colEl_add]
 
+/- English proof (translation)
+Rewrite using `[avgL_apply, map_smul, map_sum]`. Use `congr 1`. Rewrite using `[← sum_translate hT hv ha]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[add_comm, pi_colEl_add]`.
+-/
 theorem colEl_avgL {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m + 1) → k)} (hT : IsTr A H T) {v : V}
     (hv : FixH h π H v) {a : Fin (m + 1) → k} (ha : a ∈ A) : π (colEl k m N h a) (avgL h π T v) = avgL h π T v := by
   rw [avgL_apply, map_smul, map_sum]
@@ -115,11 +149,17 @@ theorem colEl_avgL {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m +
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [add_comm, pi_colEl_add]
 
+/- English proof (translation)
+Rewrite using `[avgL_apply, Finset.sum_congr rfl fun t ht => hy t (hT.2.2.1 t ht), Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hT.card_ne, one_smul]`.
+-/
 theorem avgL_of_inv {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m + 1) → k)} (hT : IsTr A H T) {y : V}
     (hy : ∀ a ∈ A, π (colEl k m N h a) y = y) : avgL h π T y = y := by
   rw [avgL_apply, Finset.sum_congr rfl fun t ht => hy t (hT.2.2.1 t ht), Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ,
     smul_smul, inv_mul_cancel₀ hT.card_ne, one_smul]
 
+/- English proof (translation)
+Establish `h1 : avgL h π T (avgL h π T' v) = avgL h π T' v` using `avgL_of_inv hT fun a ha => colEl_avgL hT' hv' ha`. Rewrite using `[← h1, avgL_apply h π T' v, map_smul, map_sum, Finset.sum_congr rfl fun t ht => avgL_colEl hT hv (hT'.2.2.1 t ht), Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hT'.card_ne, one_smul]`.
+-/
 theorem avgL_eq {A H H' : AddSubgroup (Fin (m + 1) → k)} {T T' : Finset (Fin (m + 1) → k)} {v : V} (hT : IsTr A H T)
     (hv : FixH h π H v) (hT' : IsTr A H' T') (hv' : FixH h π H' v) : avgL h π T v = avgL h π T' v := by
   have h1 : avgL h π T (avgL h π T' v) = avgL h π T' v :=
@@ -128,6 +168,11 @@ theorem avgL_eq {A H H' : AddSubgroup (Fin (m + 1) → k)} {T T' : Finset (Fin (
     Finset.sum_congr rfl fun t ht => avgL_colEl hT hv (hT'.2.2.1 t ht), Finset.sum_const,
     ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hT'.card_ne, one_smul]
 
+/- English proof (translation)
+Establish `hd : ∃ p, AvgData (1 : AddChar k Circle) h π 0 A v p` using `⟨(H, T), hT.1, hT.2.1, hv, fun a _ => by simp, hT.2.2.1, hT.2.2.2⟩`. Rewrite using `[avg, dif_pos hd]`. Take `⟨p1, p2, p3, -, p5, p6⟩` from `hd.choose_spec`. Establish `e` using `avgL_eq (h := h) (π := π) (v := v) ⟨p1, p2, p5, p6⟩ p3 hT hv`. Rewrite using `[← e, avgL_apply]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem avg_eq {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m + 1) → k)} (hT : IsTr A H T) {v : V}
     (hv : FixH h π H v) : avg (1 : AddChar k Circle) h π 0 A v = avgL h π T v := by
   have hd : ∃ p, AvgData (1 : AddChar k Circle) h π 0 A v p :=
@@ -140,6 +185,9 @@ theorem avg_eq {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m + 1) 
   refine Finset.sum_congr rfl fun t _ => ?_
   simp
 
+/- English proof (translation)
+Establish `hc` using `hT.card_ne`. Establish `e : v - avgL h π T v = ((T.card : ℂ)⁻¹) • ∑ t ∈ T, (v - π (colEl k m N h t) v)`. Rewrite using `[avgL_apply, Finset.sum_sub_distrib, smul_sub, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun t _ => sub_colEl_mem ψ h π t v)`.
+-/
 theorem avgL_sub_mem (ψ : AddChar k Circle) {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m + 1) → k)}
     (hT : IsTr A H T) (v : V) : v - avgL h π T v ∈ DerKer k ψ π m := by
   have hc := hT.card_ne
@@ -149,6 +197,15 @@ theorem avgL_sub_mem (ψ : AddChar k Circle) {A H : AddSubgroup (Fin (m + 1) →
   rw [e]
   exact Submodule.smul_mem _ _ (Submodule.sum_mem _ fun t _ => sub_colEl_mem ψ h π t v)
 
+/- English proof (translation)
+Use `⟨hT.1, hT.2.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `A.neg_mem (hT.2.2.1 s hs)`. Introduce `a ha`.
+
+Take `⟨s, ⟨hs, hsH⟩, huniq⟩` from `hT.2.2.2 (-a) (A.neg_mem ha)`. Use `⟨-s, ⟨Finset.mem_image_of_mem _ hs, ?_⟩, ?_⟩` and prove the remaining obligations. Use `H.neg_mem hsH` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Introduce and unpack `t ⟨ht, htH⟩`. Take `⟨s', hs', rfl⟩` from `Finset.mem_image.mp ht`. Establish `hH' : -a - s' ∈ H`. Use `H.neg_mem htH` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[huniq s' ⟨hs', hH'⟩]`.
+-/
 theorem IsTr.neg [DecidableEq (Fin (m + 1) → k)] {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m + 1) → k)} (hT : IsTr A H T) :
     IsTr A H (T.image Neg.neg) := by
   refine ⟨hT.1, hT.2.1, ?_, ?_⟩
@@ -169,6 +226,11 @@ theorem IsTr.neg [DecidableEq (Fin (m + 1) → k)] {A H : AddSubgroup (Fin (m + 
         abel
       rw [huniq s' ⟨hs', hH'⟩]
 
+/- English proof (translation)
+Establish `hTn` using `hT.neg`. Establish `hcard : (T.image Neg.neg).card = T.card` using `Finset.card_image_of_injective _ neg_injective`. Rewrite using `[← avgL_eq hTn hw hT hw, avgL_apply, avgL_apply, Finset.sum_image (fun x _ y _ hxy => neg_injective hxy), hcard, LinearMap.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, map_sum, map_sum, LinearMap.sum_apply]`. Simplify using `only [map_inv₀, map_natCast, smul_eq_mul]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `ew : w = π (colEl k m N h t) (π (colEl k m N h (-t)) w)`. Rewrite using `[← pi_colEl_add, add_neg_cancel, colEl_zero, map_one, Module.End.one_apply]`. Use `conv_lhs => rw [ew]`. Rewrite using `[B_colEl h hB]`.
+-/
 theorem B_avgL {s : ℝ} {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (hB : MirEq π (m + 1) h s B) {A H : AddSubgroup (Fin (m + 1) → k)}
     {T : Finset (Fin (m + 1) → k)} (hT : IsTr A H T) {v w : V} (hw : FixH h π H w) :
     B (avgL h π T v) w = B v (avgL h π T w) := by
@@ -186,6 +248,27 @@ theorem B_avgL {s : ℝ} {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (hB : MirEq π
   conv_lhs => rw [ew]
   rw [B_colEl h hB]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hA.elim_finite_subcover (fun a : A => (fun x => x - (a : G)) ⁻¹' (H : Set G)) (fun a => hH.preimage (continuous_id.sub continuous_const)) (fun x hx => Set.mem_iUnion.mpr ⟨⟨x, hx⟩, by simp [H.zero_mem]⟩)`. Use `set S' : Finset G := S.image (fun a : A => (a : G)) with hS'`. Establish `hS'A : ∀ s ∈ S', s ∈ A`. Introduce `s hs`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.mp hs`.
+
+Conclude with `a.2`. Establish `hcov : ∀ x ∈ A, ∃ s ∈ S', x - s ∈ H`. Introduce `x hx`. Use `hS hx` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe] at this`.
+
+Take `⟨a, ha, hxa⟩` from `this`. Conclude with `⟨a, Finset.mem_image_of_mem _ ha, hxa⟩`. Set `r : G → G` to `fun x => Classical.epsilon fun s => s ∈ S' ∧ x - s ∈ H`. Establish `hr : ∀ x ∈ A, r x ∈ S' ∧ x - r x ∈ H` using `fun x hx => by`. Take `⟨s, hs, hxs⟩` from `hcov x hx`.
+
+Conclude with `Classical.epsilon_spec (p := fun s => s ∈ S' ∧ x - s ∈ H) ⟨s, hs, hxs⟩`. Establish `hreq : ∀ x y, x - y ∈ H → r x = r y`. Introduce `x y hxy`. Use `show Classical.epsilon _ = Classical.epsilon _`. Use `congr 1`.
+
+Use function extensionality and compare the values at `s`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+
+Use `H.sub_mem h2 hxy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+
+Use `H.add_mem hxy h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `⟨S'.image r, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`.
+
+Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `hS'A _ (hr s (hS'A s hs)).1`. Introduce `a ha`. Take `⟨s, hs, has⟩` from `hcov a ha`. Use `⟨r a, ⟨?_, (hr a ha).2⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hreq a s has]`. Conclude with `Finset.mem_image_of_mem _ hs`. Introduce and unpack `t ⟨ht, hat⟩`. Take `⟨s', hs', rfl⟩` from `Finset.mem_image.mp ht`. Establish `h1` using `(hr s' (hS'A s' hs')).2`.
+
+Apply `hreq` to reduce the goal to its premises. Use `H.sub_mem h1 hat` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 private theorem exists_tr_lemma {G : Type*} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     (A H : AddSubgroup G) (hA : IsCompact (A : Set G)) (hH : IsOpen (H : Set G)) :
     ∃ T : Finset G, (∀ t ∈ T, t ∈ A) ∧ ∀ a ∈ A, ∃! t, t ∈ T ∧ a - t ∈ H := by
@@ -242,6 +325,9 @@ private theorem exists_tr_lemma {G : Type*} [AddCommGroup G] [TopologicalSpace G
       convert this using 1
       abel
 
+/- English proof (translation)
+Establish `hHo : IsOpen ((H₀ ⊓ A : AddSubgroup (Fin (m + 1) → k)) : Set (Fin (m + 1) → k))`. Rewrite using `[AddSubgroup.coe_inf]`. Conclude with `hH₀.inter hA.2`. Take `⟨T, hTA, hu⟩` from `exists_tr_lemma A (H₀ ⊓ A) hA.1 hHo`. Conclude with `⟨H₀ ⊓ A, T, ⟨inf_le_right, hHo, hTA, hu⟩, inf_le_left⟩`.
+-/
 theorem exists_tr {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) {H₀ : AddSubgroup (Fin (m + 1) → k)}
     (hH₀ : IsOpen (H₀ : Set (Fin (m + 1) → k))) : ∃ H T, IsTr A H T ∧ H ≤ H₀ := by
   have hHo : IsOpen ((H₀ ⊓ A : AddSubgroup (Fin (m + 1) → k)) : Set (Fin (m + 1) → k)) := by
@@ -253,10 +339,24 @@ theorem exists_tr {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) {H₀ : A
 def scl (z : kˣ) (A : AddSubgroup (Fin (m + 1) → k)) : AddSubgroup (Fin (m + 1) → k) :=
   A.map (DistribMulAction.toAddEquiv (Fin (m + 1) → k) z).toAddMonoidHom
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.mem_map_equiv`.
+-/
 theorem mem_scl (z : kˣ) (A : AddSubgroup (Fin (m + 1) → k)) (x : Fin (m + 1) → k) :
     x ∈ scl z A ↔ (z⁻¹ : kˣ) • x ∈ A :=
   AddSubgroup.mem_map_equiv
 
+/- English proof (translation)
+Establish `hc : Continuous fun x : Fin (m + 1) → k => (z⁻¹ : kˣ) • x`. Simplify using `only [Units.smul_def]`. Conclude with `continuous_const_smul _`. Use `⟨fun x hx => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_scl]`.
+
+Conclude with `hT.1 hx`. Establish `e : (scl z H : Set (Fin (m + 1) → k)) = (fun x => (z⁻¹ : kˣ) • x) ⁻¹' (H : Set (Fin (m + 1) → k))`. Use extensionality with `x`. Conclude with `mem_scl z H x`. Rewrite using `[e]`.
+
+Conclude with `hT.2.1.preimage hc`. Introduce `t ht`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp ht`. Rewrite using `[mem_scl, inv_smul_smul]`. Conclude with `hT.2.2.1 s hs`.
+
+Introduce `a ha`. Rewrite `ha` using `[mem_scl]`. Take `⟨s, ⟨hs, hsH⟩, huniq⟩` from `hT.2.2.2 _ ha`. Use `⟨z • s, ⟨Finset.mem_image_of_mem _ hs, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_scl, smul_sub, inv_smul_smul]`.
+
+Conclude with `hsH`. Introduce and unpack `t ⟨ht, htH⟩`. Take `⟨s', hs', rfl⟩` from `Finset.mem_image.mp ht`. Rewrite `htH` using `[mem_scl, smul_sub, inv_smul_smul]`. Rewrite using `[huniq s' ⟨hs', htH⟩]`.
+-/
 theorem IsTr.smul [DecidableEq (Fin (m + 1) → k)] {A H : AddSubgroup (Fin (m + 1) → k)} {T : Finset (Fin (m + 1) → k)}
     (hT : IsTr A H T) (z : kˣ) : IsTr (scl z A) (scl z H) (T.image fun t => z • t) := by
   have hc : Continuous fun x : Fin (m + 1) → k => (z⁻¹ : kˣ) • x := by
@@ -301,18 +401,32 @@ def ball (m : ℕ) (u : kˣ) : AddSubgroup (Fin (m + 1) → k) where
     rw [Valuation.map_neg]
     exact ha i
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `⟨fun hx i _ => hx i, fun hx i => hx i (Set.mem_univ i)⟩`.
+-/
 theorem coe_ball (m : ℕ) (u : kˣ) : (ball m u : Set (Fin (m + 1) → k)) = Set.univ.pi fun _ => cball u := by
   ext x
   exact ⟨fun hx i _ => hx i, fun hx i => hx i (Set.mem_univ i)⟩
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> rw [coe_ball]`. Conclude with `isCompact_univ_pi fun _ => isCompact_cball u`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball u`.
+-/
 theorem isLat_ball (m : ℕ) (u : kˣ) : IsLat (ball m u) := by
   refine ⟨?_, ?_⟩ <;> rw [coe_ball]
   · exact isCompact_univ_pi fun _ => isCompact_cball u
   · exact isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball u
 
+/- English proof (translation)
+Introduce `_ hx i` and use `(hx i).trans hu`.
+-/
 theorem ball_mono (m : ℕ) {u u' : kˣ} (hu : valuation k (u : k) ≤ valuation k (u' : k)) : ball m u ≤ ball m u' :=
   fun _ hx i => (hx i).trans hu
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_scl]`. Establish `hz : 0 < valuation k (z : k)` using `by simp [zero_lt_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Use `show valuation k (((z⁻¹ : kˣ) • x) i) ≤ valuation k (u : k) ↔ valuation k (x i) ≤ valuation k ((z * u : kˣ) : k)`.
+
+Rewrite using `[Pi.smul_apply, Units.smul_def, smul_eq_mul, Units.val_mul, map_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ hz]`.
+-/
 theorem scl_ball (m : ℕ) (z u : kˣ) : scl z (ball m u) = ball m (z * u) := by
   ext x
   rw [mem_scl]
@@ -322,6 +436,11 @@ theorem scl_ball (m : ℕ) (z u : kˣ) : scl z (ball m u) = ball m (z * u) := by
   rw [Pi.smul_apply, Units.smul_def, smul_eq_mul, Units.val_mul, map_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀,
     inv_mul_le_iff₀ hz]
 
+/- English proof (translation)
+Apply `ball_mono` to reduce the goal to its premises. Establish `hz0 : valuation k (z : k) ≠ 0` using `(Valuation.ne_zero_iff _).mpr z.ne_zero`. Establish `h1 : 1 ≤ (valuation k (z : k))⁻¹`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, Units.val_inv_eq_inv_val, map_inv₀]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_right₀ h1 htt') zero_le'`.
+-/
 theorem ball_pow_mono (m : ℕ) (z : kˣ) (hz : valuation k (z : k) < 1) (u₀ : kˣ) {t t' : ℕ} (htt' : t ≤ t') :
     ball m (z⁻¹ ^ t * u₀) ≤ ball m (z⁻¹ ^ t' * u₀) := by
   apply ball_mono
@@ -333,6 +452,13 @@ theorem ball_pow_mono (m : ℕ) (z : kˣ) (hz : valuation k (z : k) < 1) (u₀ :
   simp only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, Units.val_inv_eq_inv_val, map_inv₀]
   exact mul_le_mul_of_nonneg_right (pow_le_pow_right₀ h1 htt') zero_le'
 
+/- English proof (translation)
+Establish `hz0 : valuation k (z : k) ≠ 0` using `(Valuation.ne_zero_iff _).mpr z.ne_zero`. Establish `hu0 : 0 < valuation k (u₀ : k)` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr u₀.ne_zero)`. Establish `h1 : 1 < (valuation k (z : k))⁻¹` using `(one_lt_inv₀ (zero_lt_iff.mpr hz0)).mpr hz`. Establish `: MulArchimedean (ValueGroupWithZero k)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Establish `hi : ∀ i, ∃ t : ℕ, valuation k (x i) ≤ (valuation k (z : k))⁻¹ ^ t * valuation k (u₀ : k)`.
+
+Introduce `i`. Take `⟨t, ht⟩` from `MulArchimedean.arch (valuation k (x i) * (valuation k (u₀ : k))⁻¹) h1`. Conclude with `⟨t, (mul_inv_le_iff₀ hu0).mp ht⟩`. Use `choose t ht using hi`. Use `⟨Finset.univ.sup t, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `show valuation k (x i) ≤ valuation k ((z⁻¹ ^ Finset.univ.sup t * u₀ : kˣ) : k)`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `(ht i).trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ h1.le (Finset.le_sup (Finset.mem_univ i))) zero_le')`.
+-/
 theorem exists_mem_ball (m : ℕ) (z : kˣ) (hz : valuation k (z : k) < 1) (u₀ : kˣ) (x : Fin (m + 1) → k) :
     ∃ t : ℕ, x ∈ ball m (z⁻¹ ^ t * u₀) := by
   have hz0 : valuation k (z : k) ≠ 0 := (Valuation.ne_zero_iff _).mpr z.ne_zero
@@ -351,6 +477,9 @@ theorem exists_mem_ball (m : ℕ) (z : kˣ) (hz : valuation k (z : k) < 1) (u₀
   exact (ht i).trans (mul_le_mul_of_nonneg_right
     (pow_le_pow_right₀ h1.le (Finset.le_sup (Finset.mem_univ i))) zero_le')
 
+/- English proof (translation)
+Rewrite using `[Filter.tendsto_atTop]`. Introduce and unpack `⟨A, hA⟩`. Take `⟨T0, hT0⟩` from `hA.1.elim_directed_cover (fun t : ℕ => (ball m (z⁻¹ ^ t * u₀) : Set (Fin (m + 1) → k))) (fun t => (isLat_ball m _).2) (fun x _ => Set.mem_iUnion.mpr (exists_mem_ball m z hz u₀ x)) (Monotone.directed_le fun t t' htt' x hx => ball_pow_mono m z hz u₀ htt' hx)`. Rewrite using `[Filter.eventually_atTop]`. Conclude with `⟨T0, fun t ht x hx => ball_pow_mono m z hz u₀ ht (hT0 hx)⟩`.
+-/
 theorem tendsto_ball (m : ℕ) (z : kˣ) (hz : valuation k (z : k) < 1) (u₀ : kˣ) :
     Filter.Tendsto (fun t : ℕ => (⟨ball m (z⁻¹ ^ t * u₀), isLat_ball m _⟩ : {A : AddSubgroup (Fin (m + 1) → k) // IsLat A}))
       Filter.atTop Filter.atTop := by
@@ -370,6 +499,9 @@ section Scal
 
 variable {m N : ℕ} {h : m + 2 ≤ N} {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin N) k) V}
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite `ha` using `[mem_scl]`. Establish `e : colEl k m N h a * scalAt k (m + 1) N (by omega) z = scalAt k (m + 1) N (by omega) z * colEl k m N h ((z⁻¹ : kˣ) • a)`. Rewrite using `[scalAt_mul_colEl, Units.smul_def, smul_smul, Units.mul_inv, one_smul]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hv _ ha]`.
+-/
 theorem FixH.smul {H : AddSubgroup (Fin (m + 1) → k)} {v : V} (hv : FixH h π H v) (z : kˣ) :
     FixH h π (scl z H) (π (scalAt k (m + 1) N (by omega) z) v) := by
   intro a ha
@@ -379,6 +511,11 @@ theorem FixH.smul {H : AddSubgroup (Fin (m + 1) → k)} {v : V} (hv : FixH h π 
     rw [scalAt_mul_colEl, Units.smul_def, smul_smul, Units.mul_inv, one_smul]
   rw [← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hv _ ha]
 
+/- English proof (translation)
+Rewrite using `[avgL_apply, avgL_apply, Finset.card_image_of_injective _ (MulAction.injective z), Finset.sum_image (fun x _ y _ hxy => MulAction.injective z hxy), map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `e : π (colEl k m N h ((z : k) • t)) * π (scalAt k (m + 1) N (by omega) z) = π (scalAt k (m + 1) N (by omega) z) * π (colEl k m N h t)`. Rewrite using `[← map_mul, ← map_mul, scalAt_mul_colEl]`.
+
+Use `beta_reduce`. Rewrite using `[Units.smul_def]`. Conclude with `LinearMap.congr_fun e v`.
+-/
 theorem avgL_smul [DecidableEq (Fin (m + 1) → k)] (T : Finset (Fin (m + 1) → k)) (z : kˣ) (v : V) :
     avgL h π (T.image fun t => z • t) (π (scalAt k (m + 1) N (by omega) z) v) =
       π (scalAt k (m + 1) N (by omega) z) (avgL h π T v) := by

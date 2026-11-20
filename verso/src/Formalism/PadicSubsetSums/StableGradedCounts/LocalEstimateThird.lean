@@ -7,6 +7,13 @@ open Polynomial
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 namespace E4
 
+/- English proof (translation)
+Establish `hQ1 : Q - 1 ≠ 0` using `(sub_pos.mpr hQ).ne'`. Establish `hQ0 : Q ≠ 0` using `by positivity`. It suffices to establish `h : ∑ δ ∈ Finset.Icc 2 (M + 1), (Q ^ (δ - 1))⁻¹ = (1 - (Q ^ M)⁻¹) / (Q - 1) from h.le`. Proceed by induction on `M with`. Consider the case `zero`.
+
+Rewrite using `[show Finset.Icc 2 (0 + 1) = (∅ : Finset ℕ) by decide]`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Rewrite using `[Finset.sum_Icc_succ_top (by omega : 2 ≤ m + 1 + 1), ih, Nat.add_sub_cancel]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem geom_part (Q : ℝ) (hQ : 1 < Q) (M : ℕ) :
     ∑ δ ∈ Finset.Icc 2 (M + 1), (Q ^ (δ - 1))⁻¹ ≤ (1 - (Q ^ M)⁻¹) / (Q - 1) := by
   have hQ1 : Q - 1 ≠ 0 := (sub_pos.mpr hQ).ne'
@@ -21,6 +28,13 @@ theorem geom_part (Q : ℝ) (hQ : 1 < Q) (M : ℕ) :
     field_simp
     ring
 
+/- English proof (translation)
+Proceed by induction on `M with`. Consider the case `zero`. Rewrite using `[show Finset.Icc 2 (0 + 1) = (∅ : Finset ℕ) by decide]`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+
+Rewrite using `[Finset.sum_Icc_succ_top (by omega : 2 ≤ m + 1 + 1)]`. Establish `h1 : (0:ℝ) < ((m + 1 : ℕ) : ℝ)` using `by positivity`. Establish `h2 : (0:ℝ) < ((m + 1 + 1 : ℕ) : ℝ)` using `by positivity`. Establish `hlog` using `Real.log_le_sub_one_of_pos (div_pos h1 h2)`. Rewrite `hlog` using `[Real.log_div h1.ne' h2.ne']`.
+
+Establish `hab : ((m + 1 : ℕ) : ℝ) = ((m + 1 + 1 : ℕ) : ℝ) - 1` using `by push_cast; ring`. Establish `hdiv : ((m + 1 : ℕ) : ℝ) / ((m + 1 + 1 : ℕ) : ℝ) = 1 - (((m + 1 + 1 : ℕ) : ℝ))⁻¹`. Rewrite using `[hab, sub_div, div_self h2.ne', one_div]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem harm_part (M : ℕ) :
     ∑ δ ∈ Finset.Icc 2 (M + 1), ((δ : ℝ))⁻¹ ≤ Real.log ((M + 1 : ℕ) : ℝ) := by
   induction M with
@@ -38,6 +52,21 @@ theorem harm_part (M : ℕ) :
       rw [hab, sub_div, div_self h2.ne', one_div]
     linarith
 
+/- English proof (translation)
+Establish `hq1 : (1:ℝ) < q` using `by exact_mod_cast (by omega : 1 < q)`. Establish `hB : (0:ℝ) < (q:ℝ) - 1` using `by linarith`. Establish `hD : (0:ℝ) < δ` using `by exact_mod_cast (by omega : 0 < δ)`. Establish `hP1 : (1:ℝ) ≤ (q:ℝ) ^ (δ - 1)` using `one_le_pow₀ hq1.le`. Establish `hP0 : (q:ℝ) ^ (δ - 1) ≠ 0` using `by positivity`.
+
+Establish `hpow : (q:ℝ) ^ δ = (q:ℝ) * (q:ℝ) ^ (δ - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hA : (0:ℝ) < (q:ℝ) ^ δ - 1` using `by nlinarith`.
+
+Establish `hcast : ((q ^ δ - 1 : ℕ) : ℝ) = (q:ℝ) ^ δ - 1`. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ (by omega)), Nat.cast_pow, Nat.cast_one]`. Establish `hcast2 : ((q - 1 : ℕ) : ℝ) = (q:ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_one]`. Establish `hR : (δ:ℝ) * b ≤ δ * ((q:ℝ) - 1) + ((q:ℝ) ^ δ - 1) / ((q:ℝ) - 1)`.
+
+Establish `h' : ((δ * b : ℕ) : ℝ) ≤ ((δ * (q - 1) + (q ^ δ - 1) / (q - 1) : ℕ) : ℝ)` using `Nat.cast_le.mpr h`. Rewrite `h'` using `[Nat.cast_add, Nat.cast_mul, Nat.cast_mul, hcast2]`. Establish `h'' : (((q ^ δ - 1) / (q - 1) : ℕ) : ℝ) ≤ ((q ^ δ - 1 : ℕ) : ℝ) / ((q - 1 : ℕ) : ℝ)` using `Nat.cast_div_le`. Rewrite `h''` using `[hcast, hcast2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hstep : (b:ℝ) ≤ ((q:ℝ) - 1) + ((q:ℝ) ^ δ - 1) / ((q:ℝ) - 1) / δ`. Rewrite using `[← sub_le_iff_le_add', le_div_iff₀ hD]`. Use the polynomial consequences of the given equalities and inequalities. Establish `e1 : ((q:ℝ) ^ (δ - 1))⁻¹ * ((q:ℝ) ^ δ - 1) = (q:ℝ) - ((q:ℝ) ^ (δ - 1))⁻¹`. Rewrite using `[hpow, mul_comm (q:ℝ) ((q:ℝ) ^ (δ - 1)), mul_sub, inv_mul_cancel_left₀ hP0, mul_one]`.
+
+Establish `e2 : ((δ:ℝ))⁻¹ * ((q:ℝ) - 1)⁻¹ * ((q:ℝ) ^ δ - 1) = ((q:ℝ) ^ δ - 1) / ((q:ℝ) - 1) / δ`. Expand and normalize the polynomial expressions, which then agree. Establish `hPinv : ((q:ℝ) ^ (δ - 1))⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ hP1`. Establish `key : (b:ℝ) ≤ (((q:ℝ) ^ (δ - 1))⁻¹ + ((δ:ℝ))⁻¹ * ((q:ℝ) - 1)⁻¹) * ((q:ℝ) ^ δ - 1)`. Rewrite using `[add_mul, e1, e2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem term_le (q δ b : ℕ) (hq : 2 ≤ q) (hδ : 2 ≤ δ)
     (h : δ * b ≤ δ * (q - 1) + (q ^ δ - 1) / (q - 1)) :
     (b : ℝ) * ((q : ℝ) ^ δ - 1)⁻¹ ≤ ((q : ℝ) ^ (δ - 1))⁻¹ + ((δ : ℝ))⁻¹ * ((q : ℝ) - 1)⁻¹ := by
@@ -81,6 +110,17 @@ theorem term_le (q δ b : ℕ) (hq : 2 ≤ q) (hδ : 2 ≤ δ)
         mul_le_mul_of_nonneg_right key (inv_nonneg.mpr hA.le)
     _ = ((q:ℝ) ^ (δ - 1))⁻¹ + ((δ:ℝ))⁻¹ * ((q:ℝ) - 1)⁻¹ := mul_inv_cancel_right₀ hA.ne' _
 
+/- English proof (translation)
+Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Establish `hQ : (1 : ℝ) < (q : ℝ)` using `by exact_mod_cast (by omega : 1 < q)`. Establish `hQ1 : (0 : ℝ) < (q : ℝ) - 1` using `by linarith`. Rewrite using `[← Finset.add_sum_Ioc_eq_sum_Icc (by omega : 1 ≤ M + 1)]`. Establish `hI : Finset.Ioc 1 (M + 1) = Finset.Icc 2 (M + 1)`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_Ioc, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hI, pow_one]`. Establish `h3 : ∑ δ ∈ Finset.Icc 2 (M + 1), (b δ : ℝ) * ((q : ℝ) ^ δ - 1)⁻¹ ≤ ∑ δ ∈ Finset.Icc 2 (M + 1), (((q : ℝ) ^ (δ - 1))⁻¹ + ((δ : ℝ))⁻¹ * ((q : ℝ) - 1)⁻¹)` using `Finset.sum_le_sum fun δ hδ => term_le q δ (b δ) hq (Finset.mem_Icc.1 hδ).1 (h2 δ (Finset.mem_Icc.1 hδ).1)`.
+
+Rewrite `h3` using `[Finset.sum_add_distrib, ← Finset.sum_mul]`. Establish `h4` using `geom_part (q : ℝ) hQ M`. Establish `h5` using `harm_part M`. Establish `h6 : (1 - ((q : ℝ) ^ M)⁻¹) / ((q : ℝ) - 1) ≤ 1 / ((q : ℝ) - 1)`. Apply `div_le_div_of_nonneg_right _ hQ1.le` to reduce the goal to its premises.
+
+Establish `: 0 ≤ ((q : ℝ) ^ M)⁻¹` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h7 : (∑ δ ∈ Finset.Icc 2 (M + 1), ((δ : ℝ))⁻¹) * ((q : ℝ) - 1)⁻¹ ≤ Real.log ((M + 1 : ℕ) : ℝ) * ((q : ℝ) - 1)⁻¹` using `mul_le_mul_of_nonneg_right h5 (inv_nonneg.2 hQ1.le)`. Establish `h8 : (1 + Real.log ((M + 1 : ℕ) : ℝ)) / ((q : ℝ) - 1) = 1 / ((q : ℝ) - 1) + Real.log ((M + 1 : ℕ) : ℝ) * ((q : ℝ) - 1)⁻¹`. Rewrite using `[add_div, div_eq_mul_inv (Real.log _)]`.
+
+Rewrite using `[h8]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem arith (q N : ℕ) (hN : 1 ≤ N) (hq : 2 ≤ q) (b : ℕ → ℕ) (m : ℝ)
     (h1 : (b 1 : ℝ) * ((q : ℝ) - 1)⁻¹ ≤ m)
     (h2 : ∀ δ, 2 ≤ δ → δ * b δ ≤ δ * (q - 1) + (q ^ δ - 1) / (q - 1)) :
@@ -113,6 +153,15 @@ theorem arith (q N : ℕ) (hN : 1 ≤ N) (hq : 2 ≤ q) (b : ℕ → ℕ) (m : �
   rw [h8]
   linarith
 
+/- English proof (translation)
+Establish `hd1 : orderOf u ∣ n` using `orderOf_dvd_of_pow_eq_one hu`. Establish `hd2 : orderOf u ∣ l ^ a` using `orderOf_dvd_of_pow_eq_one hla`. Take `⟨k, _, hk'⟩` from `(Nat.dvd_prime_pow hl).mp hd2`. Break down `Nat.eq_zero_or_pos k with h0 | hpos` into its components or cases. Rewrite `hk'` using `[h0, pow_zero, orderOf_eq_one_iff]`.
+
+Take `⟨p, hp, hpn⟩` from `Nat.exists_prime_and_dvd (by omega : n ≠ 1)`. Conclude with `⟨p, Nat.mem_primeFactors.mpr ⟨hp, hpn, by omega⟩, by rw [hk', one_pow]⟩`. Establish `hln : l ^ k ∣ n`. Rewrite using `[← hk']`. Conclude with `hd1`.
+
+Establish `hl_n : l ∣ n` using `(dvd_pow_self l hpos.ne').trans hln`. Use `⟨l, Nat.mem_primeFactors.mpr ⟨hl, hl_n, by omega⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← orderOf_dvd_iff_pow_eq_one, hk']`. Apply `pow_dvd_pow` to reduce the goal to its premises. Use `haveI := Fact.mk hl`.
+
+Conclude with `(padicValNat_dvd_iff_le (by omega)).mp hln`.
+-/
 theorem exists_prime_pow_eq {M : Type} [Monoid M] (n : ℕ) (hn : 2 ≤ n) (u : M) (hu : u ^ n = 1)
     (l a : ℕ) (hl : l.Prime) (hla : u ^ (l ^ a) = 1) :
     ∃ l' ∈ n.primeFactors, u ^ (l' ^ padicValNat l' n) = 1 := by
@@ -135,6 +184,31 @@ theorem exists_prime_pow_eq {M : Type} [Monoid M] (n : ℕ) (hn : 2 ≤ n) (u : 
 
 variable {K L : Type} [Field K] [Fintype K] [Field L] [Algebra K L]
 
+/- English proof (translation)
+Use `set q := Fintype.card K with hqdef`. Use `set d := P.natDegree with hd`. Use `set n := q ^ d - 1 with hn`. Establish `hint : IsIntegral K x` using `⟨P, hm, by rwa [Polynomial.aeval_def] at hx⟩`. Establish `hmin : P = minpoly K x` using `minpoly.eq_of_irreducible_of_monic hP hx hm`.
+
+Establish `hd1 : 1 ≤ d`. Rewrite using `[hd]`. Conclude with `Polynomial.natDegree_pos_iff_degree_pos.mpr (Polynomial.degree_pos_of_irreducible hP)`. Establish `hqd : 3 ≤ q ^ d` using `le_trans hq (Nat.le_self_pow (by omega) q)`. Establish `hn2 : 2 ≤ n` using `by omega`.
+
+Establish `hxn : x ^ n = 1` using `by haveI : FiniteDimensional K (IntermediateField.adjoin K {x}) := IntermediateField.adjoin.finiteDimensional hint haveI : Finite (IntermediateField.adjoin K {x}) := Module.finite_of_finite K`. Use `letI : Fintype (IntermediateField.adjoin K {x}) := Fintype.ofFinite _`. Establish `hcard : Fintype.card (IntermediateField.adjoin K {x}) = q ^ d`. Rewrite using `[Module.card_eq_pow_finrank (K := K), IntermediateField.adjoin.finrank hint, ← hmin]`. Establish `hxE : (⟨x, IntermediateField.mem_adjoin_simple_self K x⟩ : IntermediateField.adjoin K {x}) ≠ 0`.
+
+Introduce `h0`. Conclude with `hx0 (congrArg Subtype.val h0)`. Establish `h1` using `FiniteField.pow_card_sub_one_eq_one _ hxE`. Rewrite `h1` using `[hcard]`. Establish `h2` using `congrArg (fun e : IntermediateField.adjoin K {x} => (e : L)) h1`.
+
+Simplify using `using h2`. Establish `hc0 : (c₀ : K) ≠ 0` using `c₀.ne_zero`. Establish `hcK : (c₀ : K) ^ n = 1`. Establish `h1` using `FiniteField.pow_card_pow d (c₀ : K)`. Establish `h2 : (c₀ : K) ^ n * (c₀ : K) = (c₀ : K)`.
+
+Rewrite using `[← pow_succ, hn, Nat.sub_add_cancel (by omega : 1 ≤ q ^ d)]`. Conclude with `h1`. Conclude with `mul_right_cancel₀ hc0 (h2.trans (one_mul _).symm)`. Establish `hcL : algebraMap K L (c₀ : K) ≠ 0` using `(_root_.map_ne_zero _).mpr hc0`. Establish `hcn : algebraMap K L (c₀ : K) ^ n = 1` using `by rw [← map_pow, hcK, map_one]`.
+
+Establish `aux : ∀ z : L, z ≠ 0 → z ^ n = 1 → ∃ E : ℕ, (z / Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.primeToPart l z) ^ (l ^ E) = 1`. Introduce `z hz0 hzn`. Establish `ho : 0 < orderOf z` using `orderOf_pos_iff.mpr (isOfFinOrder_iff_pow_eq_one.mpr ⟨n, by omega, hzn⟩)`. Establish `key2 : ∀ a b : ℕ, a ≡ b [MOD orderOf z] → z ^ a = z ^ b` using `fun a b hab => by`. Rewrite using `[← pow_mod_orderOf z a, ← pow_mod_orderOf z b]`.
+
+Conclude with `congrArg (fun k => z ^ k) hab`. Use `⟨(orderOf z).factorization l, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.primeToPart.eq_1]`. Establish `hcop : (l ^ (orderOf z).factorization l).Coprime (orderOf z / l ^ (orderOf z).factorization l)` using `(Nat.coprime_ordCompl hl ho.ne').pow_left _`. Establish `hmod` using `(Nat.ModEq.pow_totient hcop).mul_right' (l ^ (orderOf z).factorization l)`.
+
+Rewrite `hmod` using `[one_mul, Nat.div_mul_cancel (Nat.ordProj_dvd (orderOf z) l)]`. Rewrite using `[div_pow, ← pow_mul z, key2 _ _ hmod, div_self (pow_ne_zero _ hz0)]`. Take `⟨E1, hE1⟩` from `aux x hx0 hxn`. Take `⟨E2, hE2⟩` from `aux _ hcL hcn`. Rewrite `hE1` using `[h]`.
+
+Establish `hp0 : Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.primeToPart l (algebraMap K L (c₀ : K)) ≠ 0`. Rewrite using `[Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.primeToPart.eq_1]`. Conclude with `pow_ne_zero _ hcL`. Establish `hyE : (x / algebraMap K L (c₀ : K)) ^ (l ^ (E1 + E2)) = 1`. Rewrite using `[← div_div_div_cancel_right₀ hp0 x (algebraMap K L (c₀ : K)), div_pow, pow_add, pow_mul (x / _), hE1, one_pow, mul_comm (l ^ E1), pow_mul, hE2, one_pow, div_one]`.
+
+Establish `hyn : (x / algebraMap K L (c₀ : K)) ^ n = 1`. Rewrite using `[div_pow, hxn, hcn, div_one]`. Take `⟨l', hl', hyl'⟩` from `exists_prime_pow_eq n hn2 (x / algebraMap K L (c₀ : K)) hyn l (E1 + E2) hl hyE`. Use `⟨l', hl', ?_⟩` and prove the remaining obligations. Establish `hdiv` using `minpoly.dvd K x (p := (X ^ (l' ^ padicValNat l' n) - C ((c₀ : K) ^ (l' ^ padicValNat l' n)) : K[X])) ?_`.
+
+Rewrite `hdiv` using `[← hmin]`. Then use the resulting hypothesis. Rewrite using `[map_sub, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, map_pow, sub_eq_zero]`. Rewrite `hyl'` using `[div_pow, div_eq_one_iff_eq (pow_ne_zero _ hcL)]`. Conclude with `hyl'`.
+-/
 theorem key (P : K[X]) (hP : Irreducible P) (hm : P.Monic) (x : L) (hx : aeval x P = 0)
     (hx0 : x ≠ 0) (c₀ : Kˣ) (l : ℕ) (hl : l.Prime)
     (h : primeToPart l x = primeToPart l (algebraMap K L (c₀ : K))) (hq : 3 ≤ Fintype.card K) :
@@ -219,6 +293,25 @@ noncomputable def Bset (K : Type) [Field K] [Fintype K] (δ : ℕ) (c₀ : Kˣ) 
       monicOf c ∣ X ^ (l' ^ padicValNat l' (Fintype.card K ^ δ - 1)) -
         C ((c₀ : K) ^ (l' ^ padicValNat l' (Fintype.card K ^ δ - 1))))
 
+/- English proof (translation)
+Establish `hmon : ∀ c : Fin δ → K, (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c).Monic` using `fun c => by`. Rewrite using `[Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf.eq_1]`. Conclude with `Polynomial.monic_X_pow_add (Polynomial.degree_sum_fin_lt _)`. Establish `hdegc : ∀ c : Fin δ → K, (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c).natDegree = δ` using `fun c => by`. Rewrite using `[Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf.eq_1, Polynomial.natDegree_add_eq_left_of_degree_lt, Polynomial.natDegree_X_pow]`.
+
+Rewrite using `[Polynomial.degree_X_pow]`. Conclude with `Polynomial.degree_sum_fin_lt _`. Establish `hcoeff : ∀ (c : Fin δ → K) (j : Fin δ), (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c).coeff j = c j`. Introduce `c j`. Rewrite using `[Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf.eq_1, Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.finset_sum_coeff]`.
+
+Simplify using `[Polynomial.coeff_C_mul_X_pow, Fin.val_inj, j.isLt.ne]`. Establish `hinj : Function.Injective (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf : (Fin δ → K) → K[X])` using `fun c c' h => funext fun j => by rw [← hcoeff c j, ← hcoeff c' j, h]`. Establish `hgen : ∀ (k : ℕ) (a : K), 0 < k → δ * (Finset.univ.filter (fun c : Fin δ → K => Irreducible (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c) ∧ Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c ∣ X ^ k - C a)).card ≤ k`. Introduce `k a hk`. Establish `hF0 : (X ^ k - C a : K[X]) ≠ 0` using `Polynomial.X_pow_sub_C_ne_zero hk a`.
+
+Establish `hprod : ∏ c ∈ Finset.univ.filter (fun c : Fin δ → K => Irreducible (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c) ∧ Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c ∣ X ^ k - C a), Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.mo …`. Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises. Introduce `c hc c' hc' hne`. Establish `hi` using `(Finset.mem_filter.mp (Finset.mem_coe.mp hc)).2.1`. Establish `hi'` using `(Finset.mem_filter.mp (Finset.mem_coe.mp hc')).2.1`.
+
+Use `show IsCoprime (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c) (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c')`. Rewrite using `[hi.coprime_iff_not_dvd]`. Introduce `hdvd`. Apply `hne` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+
+Conclude with `Polynomial.eq_of_monic_of_associated (hmon c) (hmon c') (hi.associated_of_dvd hi' hdvd)`. Introduce `c hc`. Conclude with `(Finset.mem_filter.mp hc).2.2`. Establish `hdeg` using `Polynomial.natDegree_le_of_dvd hprod hF0`. Rewrite `hdeg` using `[Polynomial.natDegree_prod_of_monic _ _ (fun c _ => hmon c), Polynomial.natDegree_X_pow_sub_C]`.
+
+Simplify using `only [hdegc, Finset.sum_const, smul_eq_mul] at hdeg`. Rewrite using `[mul_comm]`. Conclude with `hdeg`. Use `set m := Fintype.card K ^ δ - 1 with hmdef`. Establish `hsub : Bset K δ c₀ ⊆ m.primeFactors.biUnion (fun l' => Finset.univ.filter (fun c : Fin δ → K => Irreducible (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c) ∧ Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf c ∣ X ^ (l' ^ padicValNat l' m) - C …`.
+
+Introduce `c hc`. Simplify using `only [Bset, Finset.mem_filter, Finset.mem_univ, true_and] at hc`. Take `⟨hirr, l', hl', hdvd⟩` from `hc`. Conclude with `Finset.mem_biUnion.mpr ⟨l', hl', Finset.mem_filter.mpr ⟨Finset.mem_univ _, hirr, hdvd⟩⟩`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]`. Use `_ ≤ ∑ l' ∈ m.primeFactors, l' ^ padicValNat l' m := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `l' hl'`. Conclude with `hgen _ _ (pow_pos (Nat.prime_of_mem_primeFactors hl').pos _)`.
+-/
 theorem count (δ : ℕ) (c₀ : Kˣ) :
     δ * (Bset K δ c₀).card ≤
       ∑ l ∈ (Fintype.card K ^ δ - 1).primeFactors, l ^ padicValNat l (Fintype.card K ^ δ - 1) := by
@@ -289,6 +382,9 @@ theorem count (δ : ℕ) (c₀ : Kˣ) :
         intro l' hl'
         exact hgen _ _ (pow_pos (Nat.prime_of_mem_primeFactors hl').pos _)
 
+/- English proof (translation)
+Rewrite using `[Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.sqWeight.eq_1, UniqueFactorizationMonoid.normalizedFactors_irreducible hP, hm.normalize_eq_self]`. Simplify using the standard rewrite rules.
+-/
 theorem sqWeight_irred (P : K[X]) (hP : Irreducible P) (hm : P.Monic) :
     sqWeight P = ((Fintype.card K : ℝ) ^ P.natDegree - 1)⁻¹ := by
   classical
@@ -296,6 +392,23 @@ theorem sqWeight_irred (P : K[X]) (hP : Irreducible P) (hm : P.Monic) :
     hm.normalize_eq_self]
   simp
 
+/- English proof (translation)
+Use `set μ : (Fin N → K) → ℝ := fun c => sqWeight (monicOf c) with hμ`. Establish `hμ0 : ∀ c, 0 ≤ μ c` using `fun c => sqWeight_nonneg _`. Establish `hsub : {c : Fin N → K | c ∈ sqSet K N ∧ ∃ l : ℕ, l.Prime ∧ l ≠ Fintype.card K ∧ ∃ x ∈ (monicOf c).rootSet L, primeToPart l x = primeToPart l (algebraMap K L (c₀ : K))} ⊆ ⋃ δ ∈ Finset.Icc 1 N, ⋃ c' ∈ Bset K δ c₀, {c : Fin N → K | c ∈ sqSet K N ∧ monicOf c' ∣ monicOf c}`. Introduce and unpack `c ⟨hc, l, hl, -, x, hx, hpt⟩`. Establish `hfx : aeval x (monicOf c) = 0` using `(mem_rootSet.1 hx).2`.
+
+Establish `hint : IsIntegral K x` using `⟨monicOf c, monicOf_monic c, hfx⟩`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Apply `((mem_sqSet c).1 hc).2` to reduce the goal to its premises. Establish `: aeval (0 : L) (monicOf c) = algebraMap K L ((monicOf c).coeff 0)`.
+
+Rewrite using `[aeval_def, eval₂_at_zero]`. Rewrite `hfx` using `[this, map_eq_zero]`. Conclude with `hfx`. Use `set P := minpoly K x with hPdef`. Establish `hPi : Irreducible P` using `minpoly.irreducible hint`.
+
+Establish `hPm : P.Monic` using `minpoly.monic hint`. Establish `hPd : P ∣ monicOf c` using `minpoly.dvd K x hfx`. Establish `hdeg : P.natDegree ≤ N`. Use `natDegree_le_of_dvd hPd (monicOf_monic c).ne_zero` as an intermediate fact. Rewrite `this` using `[monicOf_natDegree]`. Then use the resulting hypothesis.
+
+Take `⟨l', hl', hdv⟩` from `key P hPi hPm x (minpoly.aeval K x) hx0 c₀ l hl hpt hq`. Establish `hco : monicOf (fun i : Fin P.natDegree => P.coeff i) = P` using `monicOf_coeffs hPm rfl`. Simplify using `only [Set.mem_iUnion, Set.mem_ofPred_eq, exists_prop]`. Use `⟨P.natDegree, Finset.mem_Icc.2 ⟨hPi.natDegree_pos, hdeg⟩, fun i : Fin P.natDegree => P.coeff i, ?_, hc, by rw [hco]; exact hPd⟩` and prove the remaining obligations. Unfold `Bset`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[hco]`. Conclude with `⟨hPi, l', hl', hdv⟩`. Use `(wtOf_mono μ hμ0 hsub).trans ((wtOf_biUnion_le μ hμ0 _ _).trans ?_)` and prove the remaining obligations. Use `Finset.sum_le_sum fun δ hδ => ?_` and prove the remaining obligations.
+
+Use `(wtOf_biUnion_le μ hμ0 _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← nsmul_eq_mul]`. Use `Finset.sum_le_card_nsmul _ _ _ fun c' hc' => ?_` and prove the remaining obligations. Establish `hi : Irreducible (monicOf c')` using `(Finset.mem_filter.mp hc').2.1`. Rewrite using `[wtOf_eq_filter']`.
+
+Use `divisor_square_weight_sum_le square_mass_le_one K N (monicOf c') (monicOf_monic c') (by rw [monicOf_natDegree]; exact (Finset.mem_Icc.1 hδ).2) ((sqSet K N).filter (fun c => monicOf c' ∣ monicOf c)) (fun c hc => by simpa only [Finset.mem_filter] using hc)` as an intermediate fact. Rewrite `this` using `[sqWeight_irred _ hi (monicOf_monic c'), monicOf_natDegree]`. Conclude with `this`.
+-/
 theorem weight_le (N : ℕ) (c₀ : Kˣ) (hq : 3 ≤ Fintype.card K) :
     wtOf (fun c : Fin N → K => sqWeight (monicOf c)) {c | c ∈ sqSet K N ∧ ∃ l : ℕ, l.Prime ∧
         l ≠ Fintype.card K ∧ ∃ x ∈ (monicOf c).rootSet L,
@@ -351,6 +464,17 @@ theorem weight_le (N : ℕ) (c₀ : Kˣ) (hq : 3 ≤ Fintype.card K) :
 
 end E4
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ N q₁ d c₀ hN hq1 hd hne h12 hd2 hmax h16 hq1d hdd`. Establish `hq2 : 2 ≤ Fintype.card K` using `Fintype.one_lt_card`. Establish `hq17 : 17 ≤ Fintype.card K`. Use `Nat.le_of_dvd (by omega) h16` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hw` using `E4.weight_le (L := L) N c₀ (by omega)`. Rewrite `hw` using `[wtOf_eq_filter']`. Establish `c1 : ((Fintype.card K - 1 : ℕ) : ℝ) = (Fintype.card K : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]; simp`. Establish `h1 : (((E4.Bset K 1 c₀).card : ℕ) : ℝ) * ((Fintype.card K : ℝ) - 1)⁻¹ ≤ 1 / (4 * (min q₁ d : ℕ))`.
+
+Establish `hc` using `E4.count 1 c₀`. Rewrite `hc` using `[one_mul, pow_one]`. Establish `hs` using `prime_power_order_share (Fintype.card K) q₁ d hq2 hq1 hd hne h12 hd2 hmax h16 hq1d hdd`. Use `le_trans ?_ hs` and prove the remaining obligations. Rewrite using `[c1, div_eq_mul_inv]`.
+
+Apply `mul_le_mul_of_nonneg_right` to reduce the goal to its premises. Conclude with `hc` after adjusting the coercions. Apply `inv_nonneg.2` to reduce the goal to its premises. Establish `: (17 : ℝ) ≤ (Fintype.card K : ℝ)` using `by exact_mod_cast hq17`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : ∀ δ, 2 ≤ δ → δ * (E4.Bset K δ c₀).card ≤ δ * (Fintype.card K - 1) + (Fintype.card K ^ δ - 1) / (Fintype.card K - 1)` using `fun δ hδ => (E4.count δ c₀).trans (prime_power_order_count (Fintype.card K) δ hq2 (dvd_trans (by norm_num) h16) (by omega))`. Establish `ha` using `E4.arith (Fintype.card K) N hN hq2 (fun δ => (E4.Bset K δ c₀).card) _ h1 h2`. Conclude with `hw.trans ha`.
+-/
 theorem local_estimate_third : LocalEstimateIII := by
   classical
   intro K L _ _ _ _ _ N q₁ d c₀ hN hq1 hd hne h12 hd2 hmax h16 hq1d hdd

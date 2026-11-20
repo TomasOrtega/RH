@@ -26,10 +26,18 @@ section PartA
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_dualLat_iff' {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (A : Submodule (𝓞 K) V) (f : Module.Dual K V) :
     f ∈ Formalism.HN.dualLat A ↔ ∀ x ∈ A, f x ∈ Set.range (algebraMap (𝓞 K) K) := Iff.rfl
 
+/- English proof (translation)
+Introduce and unpack `f ⟨a, ha, rfl⟩`. Rewrite `ha` using `[hN]`. Take `⟨φ, hφ, rfl⟩` from `ha`. Rewrite using `[mem_dualLat_iff']`. Introduce `r hr`.
+
+Rewrite `hr` using `[hR]`. Take `⟨y, hy, rfl⟩` from `hr`. Establish `h` using `(mem_dualLat_iff' Rc (B φ)).1 (h1 φ hφ) y hy`. Simplify `h` using `[hB]`.
+-/
 theorem oneMap_of_coord (A Rr : Formalism.BasicNotions.HLat K) {d n : ℕ}
     (Nc : Submodule (𝓞 K) (Fin d → K)) (Rc : Submodule (𝓞 K) (Fin n → K))
     (eN : (Fin d → K) ≃ₗ[K] A.V) (eR : (Fin n → K) ≃ₗ[K] Rr.V)
@@ -49,6 +57,11 @@ theorem oneMap_of_coord (A Rr : Formalism.BasicNotions.HLat K) {d n : ℕ}
   have h := (mem_dualLat_iff' Rc (B φ)).1 (h1 φ hφ) y hy
   simpa [hB] using h
 
+/- English proof (translation)
+Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use extensionality with `a r`. Establish `h` using `hB (eN.symm a) (eR.symm r)`. Rewrite `h` using `[h0]`.
+
+Simplify using `using h`.
+-/
 theorem ne_zero_of_coord {V W V' W' : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
     [AddCommGroup V'] [Module K V'] [AddCommGroup W'] [Module K W']
     (eN : V' ≃ₗ[K] V) (eR : W' ≃ₗ[K] W) (Bk : V →ₗ[K] Module.Dual K W) (B : V' →ₗ[K] Module.Dual K W')
@@ -66,6 +79,15 @@ section Pos
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Unfold `Formalism.HN.opNormAt`. Rewrite using `[norm_pos_iff]`. Introduce `h0`. Apply `hB` to reduce the goal to its premises. Establish `h1` using `(LinearMap.toContinuousLinearMap).map_eq_zero_iff.mp h0`.
+
+Establish `h2` using `(Matrix.toEuclideanLin).map_eq_zero_iff.mp h1`. Establish `hD : IsUnit (Formalism.HN.dualFrame XE v).det`. Unfold `Formalism.HN.dualFrame`. Rewrite using `[Matrix.isUnit_nonsing_inv_det_iff, Matrix.det_transpose]`. Conclude with `hXE v`.
+
+Use `set M := LinearMap.toMatrix (Pi.basisFun K (Fin a)) (Pi.basisFun K (Fin n)).dualBasis B with hM`. Establish `h3 : M.map v.embedding = 0`. Establish `e : M.map v.embedding = Formalism.HN.dualFrame XE v * ((Formalism.HN.dualFrame XE v)⁻¹ * M.map v.embedding * Xc v) * (Xc v)⁻¹`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hD, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hXc v), Matrix.mul_one]`. Rewrite using `[e, h2, Matrix.mul_zero, Matrix.zero_mul]`.
+
+Establish `h4 : M = 0`. Use extensionality with `i j`. Use `congrFun (congrFun h3 i) j` as an intermediate fact. Simplify using `using this`. Conclude with `(LinearMap.toMatrix (Pi.basisFun K (Fin a)) (Pi.basisFun K (Fin n)).dualBasis).map_eq_zero_iff.mp h4`.
+-/
 theorem opNormAt_pos_of {a n : ℕ} (Xc : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ)
     (XE : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (B : (Fin a → K) →ₗ[K] Module.Dual K (Fin n → K))
     (hXc : ∀ v, IsUnit (Xc v).det) (hXE : ∀ v, IsUnit (XE v).det) (hB : B ≠ 0) (v : InfinitePlace K) :
@@ -98,6 +120,13 @@ section Kap
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `h2` using `Formalism.BasicNotions.nPl_two_mul K`. Establish `hsum : (∑ σ, g σ) = ∑ v : InfinitePlace K, 2 * Real.log (κ v)`. Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun σ : K →+* ℂ => InfinitePlace.mk σ) g]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `e1 : ∀ σ ∈ Finset.univ.filter (fun σ : K →+* ℂ => InfinitePlace.mk σ = v), g σ = Real.log (κ v)`.
+
+Introduce `σ hσ`. Rewrite using `[hg σ, (Finset.mem_filter.1 hσ).2]`. Rewrite using `[Finset.sum_congr rfl e1, Finset.sum_const, nsmul_eq_mul, InfinitePlace.card_filter_mk_eq, InfinitePlace.mult, if_neg (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v))]`. Evaluate the numerical expressions. Establish `hpos : (0 : ℝ) < (Formalism.HN.nPl K : ℝ)`.
+
+Unfold `Formalism.HN.nPl`. Conclude with `Fintype.card_pos` after adjusting the coercions. Unfold `Formalism.DivisionValues.meanLog`. Rewrite using `[hsum, ← h2, ← Finset.mul_sum]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem meanEmb_eq_meanLog [IsTotallyComplex K] (κ : InfinitePlace K → ℝ) (g : (K →+* ℂ) → ℝ)
     (hg : ∀ σ, g σ = Real.log (κ (InfinitePlace.mk σ))) :
     (∑ σ, g σ) / (Module.finrank ℚ K : ℝ) = Formalism.DivisionValues.meanLog κ := by
@@ -132,6 +161,9 @@ def WordFacts {D : D7} (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) :
   D.div.RR.muDual + D.div.h u - L.Fo ≤ L.MAIN u +
     C * (D.host.TT.card : ℝ) * L.sc.a * L.La + C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)
 
+/- English proof (translation)
+Use `⟨oneMap_of_coord (D.div.Nu u) D.div.RR Nc Rc eN eR hN hR (D.div.Bk u) B hB c1, fun hne => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[tHt, ← tH]`. Conclude with `c2 (ne_zero_of_coord eN eR (D.div.Bk u) B hB hne)`. Rewrite using `[← tMu, ← tH, ← tFo]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wordFacts_of {D : D7} (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) {d n : ℕ}
     (Nc : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL)) (Rc : Submodule (𝓞 D.what₂.LL) (Fin n → D.what₂.LL))
     (eN : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) (eR : (Fin n → D.what₂.LL) ≃ₗ[D.what₂.LL] D.div.RR.V)
@@ -158,6 +190,9 @@ section Clauses
 
 open Formalism.BasicNotions
 
+/- English proof (translation)
+Take `⟨cu, hcu, hmean⟩` from `hb`. Rewrite using `[Formalism.HN.htMap, ← hmean]`. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun v _ => Real.log_le_log (pow_pos (hpos v) 2) (hcu v).2) ?_` and prove the remaining obligations. Check the signs of the components of the expression.
+-/
 theorem htMap_le_of_bound {K : Type} [Field K] [NumberField K] {a n : ℕ} (Xc : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ)
     (XE : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (B : (Fin a → K) →ₗ[K] Module.Dual K (Fin n → K)) (h k : ℝ)
     (hb : ∃ cu : InfinitePlace K → ℝ, (∀ v, 0 < cu v ∧
@@ -176,6 +211,9 @@ def htLink (P : IndefCoreR Df0 Df1 Dc Sp Nn) (w : Dc.Mem) : ℝ :=
   Formalism.HN.htMap (Pi.basisFun D.what₂.LL (Fin (Dc.a w))) (Dc.Xc w) (Pi.basisFun D.what₂.LL (Fin P.cols.D)).dualBasis
     (Formalism.HN.dualFrame P.cols.XE) (P.cols.col.B w)
 
+/- English proof (translation)
+Use `wordFacts_of L C Cabs u (NuC (wU u)) P.cols.RR eNu eRR hNu.lat hRR.lat (P.cols.col.B (wU u)) hBk (htLink P (wU u)) P.cols.muCC (meanLog P.cols.κ) R.hu (2 * FoOfR P) R.rhs ?_ ?_ hcl.2.2.1 tHt tMu tH tFo tR` and prove the remaining obligations. Rewrite using `[hNs]`. Conclude with `hcl.1`. Introduce `hne`. Conclude with `htMap_le_of_bound _ _ _ _ _ hcl.2.1 (hPos hne)`.
+-/
 theorem wordFacts_of_clauses (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) (P : IndefCoreR Df0 Df1 Dc Sp Nn)
     (wU : D.what₂.Word → Dc.Mem) (NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a w) → D.what₂.LL))
     (eNu : (Fin (Dc.a (wU u)) → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V)
@@ -201,6 +239,9 @@ theorem wordFacts_of_clauses (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.W
   · intro hne
     exact htMap_le_of_bound _ _ _ _ _ hcl.2.1 (hPos hne)
 
+/- English proof (translation)
+Establish `hXc : ∀ v, IsUnit ((Dc.Xc (wU u)) v).det` using `fun v => Formalism.MainNotions.DIV.HookProducts.RBTie.frame_unit_of_tie _ _ _ _ v hNu.metric (D.div_good.2 u v)`. Establish `hXE : ∀ v, IsUnit (P.cols.XE v).det` using `fun v => Formalism.MainNotions.DIV.HookProducts.RBTie.frame_unit_of_tie _ _ _ _ v hRR.metric (D.div_good.1 v)`. Conclude with `wordFacts_of_clauses L C Cabs u P wU NuC eNu eRR hNu hRR hBk R Nu sg hcl hNs (fun hne v => opNormAt_pos_of _ _ _ hXc hXE hne v) (Formalism.MainNotions.DIV.HookProducts.RBTie.htMap_tie (D.div.Nu u).b (D.div.Nu u).X D.div.RR.b D.div.RR.X (Dc.Xc (wU u)) P.cols.XE eNu eRR hNu.metric …`.
+-/
 theorem wordFacts_of_face (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) (P : IndefCoreR Df0 Df1 Dc Sp Nn)
     (wU : D.what₂.Word → Dc.Mem) (NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a w) → D.what₂.LL))
     (eNu : (Fin (Dc.a (wU u)) → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V)
@@ -224,6 +265,9 @@ theorem wordFacts_of_face (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word
       hNu.metric hRR.metric (D.div_good.2 u) D.div_good.1 hXc hXE (D.div.Bk u) (P.cols.col.B (wU u)) hBk)
     (Formalism.MainNotions.DIV.HookProducts.RBTie.muDual_tie D.div.RR P.cols.RR P.cols.XE eRR hRR.lat hRR.metric D.div_good.1 hXE) tH tFo tR
 
+/- English proof (translation)
+The claim follows from `wordFacts_of_face L C Cabs u P I.wU NuC (I.eNu u) I.eRR (hT.cols.Nu u) hT.sharp.RR (hT.cols.Bk u) R Nu sg hcl hNs tH tFo tR`.
+-/
 theorem wordFacts_of_tied {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ} {A : FamIn D.what₂.LL G Pl0 T m}
     {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ} {Zs : DefSub A.fam.amb}
     {Df0' : DefSide A.fam.base} {Dc' : DefCols (A.side Ps ψs Zs)} {Sp' : SPer Dc'} {Nn' : IndefNum A.fam.base}
@@ -258,6 +302,15 @@ structure NumRecTie (Nd : NumDatum) {D : D7} (L : SizeData₂ D) (u : D.what₂.
   x : Nd.sc.x = L.sc.x
   eps : Nd.sc.eps = L.sc.eps
 
+/- English proof (translation)
+Rewrite using `[RecNums.ofNum_rhs, t.mainT, t.card, t.a, t.La, t.B0, t.Nc, t.m, t.x, t.eps]`. Establish `hx : 0 < L.sc.x` using `lt_trans zero_lt_one L.sc.one_lt_alt`. Establish `ha : 0 ≤ L.sc.a` using `le_trans zero_le_one (Formalism.MainNotions.DIV.one_le_a L)`. Establish `hT : (0 : ℝ) ≤ (D.host.TT.card : ℝ)` using `Nat.cast_nonneg _`. Establish `hm : (0 : ℝ) ≤ (D.R.m : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `hBN : 0 ≤ L.B0 + L.Nc` using `add_nonneg (Formalism.MainNotions.loss_bound_nonneg L) (Formalism.MainNotions.Nc_nonneg L)`. Establish `hp : 0 ≤ L.sc.x ^ L.sc.eps` using `Real.rpow_nonneg hx.le _`. Establish `hle : L.sc.x ^ L.sc.eps ≤ L.sc.x ^ (Cabs * L.sc.eps)` using `Real.rpow_le_rpow_of_exponent_le L.sc.one_lt_alt.le (le_mul_of_one_le_left L.sc.eps_pos.le hCabs)`. Establish `e1 : (50 * C0 + 10) * ((D.host.TT.card : ℝ) * L.sc.a * L.La) ≤ C * (D.host.TT.card : ℝ) * L.sc.a * L.La`. Establish `h0 : 0 ≤ (D.host.TT.card : ℝ) * L.sc.a * L.La` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e2 : 60 * ce * ((D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc))) ≤ C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)`. Establish `h0 : 0 ≤ (D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc))` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ hC0` to reduce the goal to its premises.
+
+Apply `mul_le_mul_of_nonneg_left _ hm` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right hle hBN`. Use `_ = C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps) := by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rhs_le_record (Nd : NumDatum) {J : Type} [Fintype J] (eJ : J ≃ Fin Nd.R.m) (δ : Code Nd) (Tl : ℕ)
     (Nc lam0 C0 ce Ch Sw C1 : ℝ) (H : Nd.NumFacts δ Nc lam0 C0 ce Ch Sw C1)
     {D : D7} (L : SizeData₂ D) (u : D.what₂.Word) (t : NumRecTie Nd L u Tl Nc) (C Cabs : ℝ)
@@ -290,6 +343,9 @@ theorem rhs_le_record (Nd : NumDatum) {J : Type} [Fintype J] (eJ : J ≃ Fin Nd.
       _ = C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps) := by ring
   linarith
 
+/- English proof (translation)
+The claim follows from `hM card := rfl a := rfl La := by simp only [NumDatum.La, SizeData₂.La, hrd] B0 := by simp only [NumDatum.B0, SizeData₂.B0, sizeBudget, bSize, Scale.b, Scale.L] Nc := rfl m := rfl x := rfl eps := rfl`.
+-/
 theorem numRecTie_ofRecord {D : D7} (L : SizeData₂ D) (Del h0 : ℕ) (u : D.what₂.Word)
     (hrd : (ofRecord D L Del h0).rd = D.host.rdE) (hM : (ofRecord D L Del h0).mainT ((D.mem u).A.T) = L.MAIN u) :
     NumRecTie (ofRecord D L Del h0) L u ((D.mem u).A.T) L.Nc where
@@ -317,6 +373,9 @@ def Compl3 (L : SizeData₂ D) (Z : DivX D) (Csz C : ℝ) : Prop :=
     (hExpl6 D L Z Csz u' + (∑ t : D.host.TT, (L.aT t : ℝ)) * Real.log ((D.mem u').A.T : ℝ))| ≤
     C * ((D.host.TT.card : ℝ) * L.sc.a * L.La + (D.R.m : ℝ) * L.B0)
 
+/- English proof (translation)
+Use `⟨fun u => (hW u).1, fun u hu => ?_, fun _ u => ?_, h5⟩` and prove the remaining obligations. Rewrite using `[← hh u]`. Conclude with `(hW u).2.1 hu`. Rewrite using `[← hh u]`. Conclude with `(hW u).2.2`.
+-/
 theorem slope_bound_of_word_facts (L : SizeData₂ D) (Z : DivX D) (N : NChoice D) (T : ThData D) (Csz C Cabs : ℝ)
     (hh : ∀ u, D.div.h u = hExpl6 D L Z Csz u) (hW : ∀ u, WordFacts L C Cabs u) (h5 : Compl3 L Z Csz C) :
     Formalism.MainNotions.LocalQuadraticParts.Conclusion1 D L Z N T Csz C Cabs := by
@@ -324,6 +383,11 @@ theorem slope_bound_of_word_facts (L : SizeData₂ D) (Z : DivX D) (N : NChoice 
   · rw [← hh u]; exact (hW u).2.1 hu
   · rw [← hh u]; exact (hW u).2.2
 
+/- English proof (translation)
+Establish `hfun : D.div.h = hExpl6 D L Z Csz` using `funext hh`. Use `⟨fun u => (hW u).1, ?_, hZ, ⟨hBR, h13⟩, hRR, fun u hu => (hW u).2.1 hu, fun u => (hW u).2.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `hH`. Introduce `u j hj`.
+
+Establish `h` using `(h11 u j hj).1`. Rewrite `h` using `[Formalism.MainNotions.DIV.prod_gTypes]`. Then use the resulting hypothesis. Introduce `u u'`. Rewrite using `[hh u, hh u']`. Conclude with `h5 u u'`.
+-/
 theorem linkDIV_at_words (L : SizeData₂ D) (Z : DivX D) (Csz C Cabs CH : ℝ)
     (hh : ∀ u, D.div.h u = hExpl6 D L Z Csz u) (hW : ∀ u, WordFacts L C Cabs u) (h5 : Compl3 L Z Csz C)
     (hH : Formalism.MainNotions.LocalQuadraticParts.FrameNumberBound D L Z Csz CH) (h11 : Formalism.MainNotions.LocalQuadraticParts.adm11 D L C) (h13 : Formalism.MainNotions.LocalQuadraticParts.adm13 D)
@@ -338,6 +402,9 @@ theorem linkDIV_at_words (L : SizeData₂ D) (Z : DivX D) (Csz C Cabs CH : ℝ)
     rw [hh u, hh u']
     exact h5 u u'
 
+/- English proof (translation)
+Rewrite using `[hh, hExpl6, meanE, meanEmb_eq_meanLog κ (fun e => Real.log (Z.kapR e)) (fun σ => by rw [hk σ]), hnum]`.
+-/
 theorem hTie_of (L : SizeData₂ D) (Z : DivX D) (Csz : ℝ) (u : D.what₂.Word) (κ : InfinitePlace D.what₂.LL → ℝ) (hu : ℝ)
     (hk : ∀ σ, Z.kapR σ = κ (InfinitePlace.mk σ))
     (hnum : hu = SZbP D L Csz u + (∑ j ∈ SizeData₂.lifts D, kernelPlaceMeanBound D L Csz u j) - ∑ j ∈ SizeData₂.lifts D, L6lo D L Csz j)
@@ -451,6 +518,9 @@ def DivisionPackage.colBr {D : D7} {L : SizeData₂ D} {Rw : DivisionRows L} {C 
   Dc := Rw.Dc P.Pk.Zs
   I := P.I
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Rw.s, Rw.hOk⟩ mu := fun w => by show D.what₂.muAt w = P.I.tup (P.Pk.core.cols.toIndefData.μ (D.plEq w)) rw [P.tied.tup.muAt w, P.tied.mu1] sharp := P.tied.sharp dcPt := P.dcPt`.
+-/
 theorem DivisionPackage.colBr_tied {D : D7} {L : SizeData₂ D} {Rw : DivisionRows L} {C Cabs : ℝ} (P : DivisionPackage Rw C Cabs) : P.colBr.Tied where
   ok := ⟨Rw.s, Rw.hOk⟩
   mu := fun w => by
@@ -459,6 +529,9 @@ theorem DivisionPackage.colBr_tied {D : D7} {L : SizeData₂ D} {Rw : DivisionRo
   sharp := P.tied.sharp
   dcPt := P.dcPt
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.G.ServJoint.val2AllAtR D L P.colBr P.colBr_tied hcut h2 u (P.Nu u) (Formalism.L2.G.ServJoint.nu_into L hN u (P.I.eNu u) (P.NuC (P.I.wU u)) (P.Nu u) (P.tied.cols.Nu u).lat (P.shift u)) w`.
+-/
 theorem DivisionPackage.val2 {D : D7} {L : SizeData₂ D} {Rw : DivisionRows L} {C Cabs : ℝ} (P : DivisionPackage Rw C Cabs) (h2 : Formalism.MainNotions.LocalQuadraticParts.adm2 D L)
     (hcut : ∀ μ, Formalism.BasicNotions.DV.Used D μ → Formalism.L2.G.ServJoint.CutUp D μ) (hN : Formalism.BasicNotions.DV.NprimeDef D L) (u : D.what₂.Word) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) :
     ∀ φ ∈ P.Nu u, ∀ F ∈ (Rw.A.side Rw.P1 Rw.ψ1 P.Pk.Zs).Mt (P.Pk.core.cols.μ w),
@@ -467,6 +540,9 @@ theorem DivisionPackage.val2 {D : D7} {L : SizeData₂ D} {Rw : DivisionRows L} 
   Formalism.L2.G.ServJoint.val2AllAtR D L P.colBr P.colBr_tied hcut h2 u (P.Nu u)
     (Formalism.L2.G.ServJoint.nu_into L hN u (P.I.eNu u) (P.NuC (P.I.wU u)) (P.Nu u) (P.tied.cols.Nu u).lat (P.shift u)) w
 
+/- English proof (translation)
+The claim follows from `wordFacts_of_tied L C Cabs u P.Pk.core P.tied (P.R u) (P.Nu u) (sgRec L u) (linkDIV_L2R_clauses Rw.A Rw.hOk Rw.hsep Rw.P0 Rw.ψ0 Rw.P1 Rw.ψ1 Rw.Dc Rw.Sp Rw.Zsc P.cf P.Cp P.CHp P.Pk (P.R u) (P.I.wU u) (P.Nu u) (sgRec L u) { toDivInputs0R := P.inp u, val2 := P.val2 h2 hcut hN u }) ( …`.
+-/
 theorem DivisionPackage.wordFacts {D : D7} {L : SizeData₂ D} {Rw : DivisionRows L} {C Cabs : ℝ} (P : DivisionPackage Rw C Cabs) (h2 : Formalism.MainNotions.LocalQuadraticParts.adm2 D L)
     (hcut : ∀ μ, Formalism.BasicNotions.DV.Used D μ → Formalism.L2.G.ServJoint.CutUp D μ) (hN : Formalism.BasicNotions.DV.NprimeDef D L) (u : D.what₂.Word) : WordFacts L C Cabs u :=
   wordFacts_of_tied L C Cabs u P.Pk.core P.tied (P.R u) (P.Nu u) (sgRec L u)
@@ -474,6 +550,15 @@ theorem DivisionPackage.wordFacts {D : D7} {L : SizeData₂ D} {Rw : DivisionRow
       (P.Nu u) (sgRec L u) { toDivInputs0R := P.inp u, val2 := P.val2 h2 hcut hN u })
     (P.shift u) (P.hTie u) P.foTie (P.rhs u)
 
+/- English proof (translation)
+Use `⟨h.1, h.2.1, h.2.2.trans ?_⟩` and prove the remaining obligations. Establish `hx1 : 1 ≤ L.sc.x` using `L.sc.one_lt_alt.le`. Establish `hx : 0 < L.sc.x` using `lt_of_lt_of_le zero_lt_one hx1`. Establish `ha : 0 ≤ L.sc.a` using `le_trans zero_le_one (Formalism.MainNotions.DIV.one_le_a L)`. Establish `hT : (0 : ℝ) ≤ (D.host.TT.card : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `hm : (0 : ℝ) ≤ (D.R.m : ℝ)` using `Nat.cast_nonneg _`. Establish `hBN : 0 ≤ L.B0 + L.Nc` using `add_nonneg (Formalism.MainNotions.loss_bound_nonneg L) (Formalism.MainNotions.Nc_nonneg L)`. Establish `hp : 0 ≤ L.sc.x ^ (Cabs * L.sc.eps)` using `Real.rpow_nonneg hx.le _`. Establish `hle : L.sc.x ^ (Cabs * L.sc.eps) ≤ L.sc.x ^ (Cabs' * L.sc.eps)` using `Real.rpow_le_rpow_of_exponent_le hx1 (mul_le_mul_of_nonneg_right hA L.sc.eps_pos.le)`. Establish `e1 : C * (D.host.TT.card : ℝ) * L.sc.a * L.La ≤ C' * (D.host.TT.card : ℝ) * L.sc.a * L.La`.
+
+Establish `h0 : 0 ≤ (D.host.TT.card : ℝ) * L.sc.a * L.La` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps) ≤ C' * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs' * L.sc.eps)`. Establish `h0 : 0 ≤ (D.R.m : ℝ) * (L.B0 + L.Nc)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem WordFacts.mono {D : D7} {L : SizeData₂ D} {C C' Cabs Cabs' : ℝ} {u : D.what₂.Word} (h : WordFacts L C Cabs u)
     (hC : C ≤ C') (hC0 : 0 ≤ C') (hA : Cabs ≤ Cabs') (hLa : 0 ≤ L.La) : WordFacts L C' Cabs' u := by
   refine ⟨h.1, h.2.1, h.2.2.trans ?_⟩
@@ -503,6 +588,11 @@ theorem WordFacts.mono {D : D7} {L : SizeData₂ D} {C C' Cabs Cabs' : ℝ} {u :
       _ = C' * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs' * L.sc.eps) := by ring
   linarith
 
+/- English proof (translation)
+Introduce `u u'`. Use `(h u u').trans (mul_le_mul_of_nonneg_right hC ?_)` and prove the remaining obligations. Establish `ha : 0 ≤ L.sc.a` using `le_trans zero_le_one (Formalism.MainNotions.DIV.one_le_a L)`. Establish `hT : (0 : ℝ) ≤ (D.host.TT.card : ℝ)` using `Nat.cast_nonneg _`. Establish `hm : (0 : ℝ) ≤ (D.R.m : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `hB` using `Formalism.MainNotions.loss_bound_nonneg L`. Check the signs of the components of the expression.
+-/
 theorem Compl3.mono {D : D7} {L : SizeData₂ D} {Z : DivX D} {Csz C C' : ℝ} (h : Compl3 L Z Csz C) (hC : C ≤ C')
     (hLa : 0 ≤ L.La) : Compl3 L Z Csz C' := by
   intro u u'
@@ -513,6 +603,9 @@ theorem Compl3.mono {D : D7} {L : SizeData₂ D} {Z : DivX D} {Csz C C' : ℝ} (
   have hB := Formalism.MainNotions.loss_bound_nonneg L
   positivity
 
+/- English proof (translation)
+Introduce `u j hj` and use `⟨(h u j hj).1.trans (mul_le_mul_of_nonneg_right hC (Formalism.MainNotions.loss_bound_nonneg L)), (h u j hj).2.trans (mul_le_mul_of_nonneg_right hC (Formalism.MainNotions.loss_bound_nonneg L))⟩`.
+-/
 theorem degree_weight_bound_mono {D : D7} {L : SizeData₂ D} {C C' : ℝ} (h : Formalism.MainNotions.LocalQuadraticParts.adm11 D L C) (hC : C ≤ C') :
     Formalism.MainNotions.LocalQuadraticParts.adm11 D L C' := fun u j hj =>
   ⟨(h u j hj).1.trans (mul_le_mul_of_nonneg_right hC (Formalism.MainNotions.loss_bound_nonneg L)),
@@ -531,6 +624,21 @@ structure BridgeRows {eps : ℝ} (Fm : FamP eps) (Rw : Σ' x0 : ℝ, ∀ x, Fm.x
   rr : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, (Fm.D x i).RRFull
   la : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, 0 ≤ (Fm.L x i).La
 
+/- English proof (translation)
+Introduce `_ hN`. Take `⟨C1, x1, h1⟩` from `B.pkg hN`. Take `⟨xa, ha⟩` from `B.adm2`. Take `⟨xo, ho⟩` from `B.cut`. Take `⟨C3, x3, h3⟩` from `B.c3`.
+
+Take `⟨xH, hH⟩` from `B.hh hN`. Take `⟨C2, x2, h2⟩` from `B.c2`. Take `⟨x5, h5⟩` from `B.c5`. Take `⟨xb, hb⟩` from `B.bu`. Take `⟨xr, hr⟩` from `B.rr`.
+
+Take `⟨xl, hl⟩` from `B.la`. Use `set M : ℝ := max x1 (max x3 (max xH (max x2 (max x5 (max xb (max xr (max xl (max xa (max xo (max Rw.1 (Fm.x1 + 1))))))))))) with hM`. Establish `g1 : x1 ≤ M` using `by rw [hM]; exact le_max_left _ _`. Establish `g3 : x3 ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `gH : xH ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`.
+
+Establish `g2 : x2 ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `g5 : x5 ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `gb : xb ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `gr : xr ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `gl : xl ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`.
+
+Establish `ga : xa ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `g0 : Fm.x1 + 1 ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, or_true]`. Establish `gw : Rw.1 ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `go : xo ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Use `⟨max (max C1 C3) (max C2 0), M, fun x hx i => ?_⟩` and prove the remaining obligations.
+
+Establish `hx1 : Fm.x1 < x` using `by linarith`. Establish `hLa` using `hl x (le_trans gl hx) i`. Establish `hC0 : (0 : ℝ) ≤ max (max C1 C3) (max C2 0)` using `le_trans (le_max_right _ _) (le_max_right _ _)`. Establish `hhx : ∀ u, (Fm.D x i).div.h u = hExpl6 (Fm.D x i) (Fm.L x i) (Fm.X x i) Fm.Csz u` using `Fm.h_eq x hx1 i`. Take `⟨P⟩` from `h1 x (le_trans g1 hx) hx1 (le_trans gw hx) i`.
+
+Conclude with `linkDIV_at_words (Fm.L x i) (Fm.X x i) Fm.Csz _ Cabs CH hhx (fun u => (P.wordFacts (ha x (le_trans ga hx) i) (ho x (le_trans go hx) i) (Fm.nprimeDef x hx1 i) u).mono (le_trans (le_max_left _ _) (le_max_left _ _)) hC0 le_rfl hLa) ((h3 x (le_trans g3 hx) i).mono (le_trans (le_max_r …`.
+-/
 theorem linkDIVt_of_rows {eps : ℝ} (Fm : FamP eps)
     (Rw : Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRows (Fm.L x i)) (Cabs CH : ℝ)
     (B : BridgeRows Fm Rw Cabs CH) : LinkDIVt Fm Cabs CH := by
@@ -572,6 +680,9 @@ theorem linkDIVt_of_rows {eps : ℝ} (Fm : FamP eps)
     (degree_weight_bound_mono (h2 x (le_trans g2 hx) i) (le_trans (le_max_left _ _) (le_max_right _ _)))
     (h5 x (le_trans g5 hx) i) (hb x (le_trans gb hx) i) (hr x (le_trans gr hx) i) (Formalism.MainNotions.WeightDegreeSizes.zero_gain_above_family Fm x hx1 i)
 
+/- English proof (translation)
+Take `⟨e1, he1, hP⟩` from `h`. Use `⟨e1, he1, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hP e he hle`. Conclude with `⟨K, fun Fm CH hc hL hT hG => linkDIVt_of_rows Fm (Rw Fm hc) Cabs CH (hK Fm CH hc hL hc hT hG)⟩`.
+-/
 theorem linkDIVt_closed (𝒟 : FamClass) (Cabs : ℝ)
     (Rw : ∀ {eps : ℝ} (Fm : FamP eps), 𝒟 Fm → Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRows (Fm.L x i))
     (h : Closed 𝒟 (fun Fm CH => ∀ hc : 𝒟 Fm, TuSize Fm → DGamSize Fm → BridgeRows Fm (Rw Fm hc) Cabs CH)) :
@@ -630,6 +741,9 @@ structure DivisionPackageFace {D : D7} {L : SizeData₂ D} (Rw : DivisionRowsFac
 
 attribute [instance] DivisionPackageFace.plF DivisionPackageFace.plD
 
+/- English proof (translation)
+The claim follows from `wordFacts_of_face L C Cabs u P.Pk.core P.wU P.NuC (P.eNu u) P.eRR (P.hNu u) P.hRR (P.hBk u) (P.R u) (P.Nu u) (sgRec L u) (linkDIV_L2R_face P.Pk (P.hZs ▸ Rw.wf0) (P.hZs ▸ Rw.wf1) (P.R u) (P.wU u) (P.Nu u) (sgRec L u) { toDivInputs0R := P.inp u, val2 := Formalism.L2.G.ServJointF.va …`.
+-/
 theorem DivisionPackageFace.wordFacts {D : D7} {L : SizeData₂ D} {Rw : DivisionRowsFace L} {C Cabs : ℝ} (P : DivisionPackageFace Rw C Cabs)
     (h2 : Formalism.MainNotions.LocalQuadraticParts.adm2 D L) (hcut : ∀ μ, Formalism.BasicNotions.DV.Used D μ → Formalism.L2.G.ServJoint.CutUp D μ)
     (hN : Formalism.BasicNotions.DV.NprimeDef D L) (u : D.what₂.Word) : WordFacts L C Cabs u :=
@@ -653,6 +767,21 @@ structure BridgeRowsF {eps : ℝ} (Fm : FamP eps) (Rw : Σ' x0 : ℝ, ∀ x, Fm.
   rr : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, (Fm.D x i).RRFull
   la : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, 0 ≤ (Fm.L x i).La
 
+/- English proof (translation)
+Introduce `_ hN`. Take `⟨C1, x1, h1⟩` from `B.pkg hN`. Take `⟨xa, ha⟩` from `B.adm2`. Take `⟨xo, ho⟩` from `B.cut`. Take `⟨C3, x3, h3⟩` from `B.c3`.
+
+Take `⟨xH, hH⟩` from `B.hh hN`. Take `⟨C2, x2, h2⟩` from `B.c2`. Take `⟨x5, h5⟩` from `B.c5`. Take `⟨xb, hb⟩` from `B.bu`. Take `⟨xr, hr⟩` from `B.rr`.
+
+Take `⟨xl, hl⟩` from `B.la`. Use `set M : ℝ := max x1 (max x3 (max xH (max x2 (max x5 (max xb (max xr (max xl (max xa (max xo (max Rw.1 (Fm.x1 + 1))))))))))) with hM`. Establish `g1 : x1 ≤ M` using `by rw [hM]; exact le_max_left _ _`. Establish `g3 : x3 ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `gH : xH ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`.
+
+Establish `g2 : x2 ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `g5 : x5 ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `gb : xb ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `gr : xr ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `gl : xl ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`.
+
+Establish `ga : xa ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `go : xo ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `gw : Rw.1 ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]`. Establish `g0 : Fm.x1 + 1 ≤ M` using `by rw [hM]; simp only [le_max_iff, le_refl, or_true]`. Use `⟨max (max C1 C3) (max C2 0), M, fun x hx i => ?_⟩` and prove the remaining obligations.
+
+Establish `hx1 : Fm.x1 < x` using `by linarith`. Establish `hLa` using `hl x (le_trans gl hx) i`. Establish `hC0 : (0 : ℝ) ≤ max (max C1 C3) (max C2 0)` using `le_trans (le_max_right _ _) (le_max_right _ _)`. Establish `hhx : ∀ u, (Fm.D x i).div.h u = hExpl6 (Fm.D x i) (Fm.L x i) (Fm.X x i) Fm.Csz u` using `Fm.h_eq x hx1 i`. Take `⟨P⟩` from `h1 x (le_trans g1 hx) hx1 (le_trans gw hx) i`.
+
+Conclude with `linkDIV_at_words (Fm.L x i) (Fm.X x i) Fm.Csz _ Cabs CH hhx (fun u => (P.wordFacts (ha x (le_trans ga hx) i) (ho x (le_trans go hx) i) (Fm.nprimeDef x hx1 i) u).mono (le_trans (le_max_left _ _) (le_max_left _ _)) hC0 le_rfl hLa) ((h3 x (le_trans g3 hx) i).mono (le_trans (le_max_r …`.
+-/
 theorem linkDIVt_of_rowsF {eps : ℝ} (Fm : FamP eps)
     (Rw : Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsFace (Fm.L x i)) (Cabs CH : ℝ)
     (B : BridgeRowsF Fm Rw Cabs CH) : LinkDIVt Fm Cabs CH := by
@@ -694,6 +823,9 @@ theorem linkDIVt_of_rowsF {eps : ℝ} (Fm : FamP eps)
     (degree_weight_bound_mono (h2 x (le_trans g2 hx) i) (le_trans (le_max_left _ _) (le_max_right _ _)))
     (h5 x (le_trans g5 hx) i) (hb x (le_trans gb hx) i) (hr x (le_trans gr hx) i) (Formalism.MainNotions.WeightDegreeSizes.zero_gain_above_family Fm x hx1 i)
 
+/- English proof (translation)
+Take `⟨e1, he1, hP⟩` from `h`. Use `⟨e1, he1, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hP e he hle`. Conclude with `⟨K, fun Fm CH hc hL hT hG => linkDIVt_of_rowsF Fm (Rw Fm hc) Cabs CH (hK Fm CH hc hL hc hT hG)⟩`.
+-/
 theorem linkDIVt_closedF (𝒟 : FamClass) (Cabs : ℝ)
     (Rw : ∀ {eps : ℝ} (Fm : FamP eps), 𝒟 Fm → Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsFace (Fm.L x i))
     (h : Closed 𝒟 (fun Fm CH => ∀ hc : 𝒟 Fm, TuSize Fm → DGamSize Fm → BridgeRowsF Fm (Rw Fm hc) Cabs CH)) :

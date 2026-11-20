@@ -30,10 +30,16 @@ def shiftF (dual : Bool) (lam : Fin n → ℝ) (s : Fin n) : Fin n → ℝ :=
 def tensSub {M : Type*} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M) : Submodule ℂ (Fin n → M) :=
   Submodule.pi Set.univ fun _ => S
 
+/- English proof (translation)
+Simplify using `[tensSub, Submodule.mem_pi]`.
+-/
 theorem tset_mem {M : Type*} [AddCommGroup M] [Module ℂ M] {S : Submodule ℂ M} {f : Fin n → M} :
     f ∈ tensSub S ↔ ∀ c, f c ∈ S := by
   simp [tensSub, Submodule.mem_pi]
 
+/- English proof (translation)
+Unfold `genSub at hv ⊢`. Rewrite `hv`, the goal using `[Submodule.mem_sInf]`. Introduce `T hT`. Conclude with `hT.2 a b v (hv T hT)`.
+-/
 theorem tset_genSub_E {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (V : Submodule ℂ M) (a b : Fin n) {v : M} (hv : v ∈ genSub E V) : E a b v ∈ genSub E V := by
   unfold genSub at hv ⊢
@@ -41,21 +47,37 @@ theorem tset_genSub_E {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n →
   intro T hT
   exact hT.2 a b v (hv T hT)
 
+/- English proof (translation)
+Unfold `actM`. Simplify using `[Matrix.single_apply, ite_smul, ite_and]`.
+-/
 theorem tset_actM_single {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (r d : Fin n) : actM E (Matrix.single r d (1 : ℂ)) = E r d := by
   unfold actM
   simp [Matrix.single_apply, ite_smul, ite_and]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Matrix.single_apply, Matrix.conjTranspose_apply, ite_and, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem tset_conj_single (k : Matrix (Fin n) (Fin n) ℂ) (r d a b : Fin n) :
     (k * Matrix.single r d (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) a b = k a r * star (k b d) := by
   simp [Matrix.mul_apply, Matrix.single_apply, Matrix.conjTranspose_apply, ite_and, ite_mul,
     Finset.sum_ite_eq, Finset.sum_ite_eq']
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hu s) b`. Simplify `h` using `[Matrix.mul_apply, Matrix.one_apply, Matrix.conjTranspose_apply]`.
+-/
 theorem tset_unit {k : Matrix (Fin n) (Fin n) ℂ} (hu : k * kᴴ = 1) (s b : Fin n) :
     ∑ d, k s d * star (k b d) = if s = b then 1 else 0 := by
   have h := congrFun (congrFun hu s) b
   simpa [Matrix.mul_apply, Matrix.one_apply, Matrix.conjTranspose_apply] using h
 
+/- English proof (translation)
+Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Establish `hb : ∀ b, ∑ d, (k s d * (k a r * star (k b d))) • X a b r = (k a r * if s = b then 1 else 0) • X a b r`. Introduce `b`. Rewrite using `[← Finset.sum_smul, ← hu s b, Finset.mul_sum]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun d _ => by ring`. Simplify using `only [hb, mul_ite, mul_one, mul_zero, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem tset_comb {H : Type*} [AddCommGroup H] [Module ℂ H] (k : Fin n → Fin n → ℂ)
     (hu : ∀ s b, ∑ d, k s d * star (k b d) = if s = b then 1 else 0) (X : Fin n → Fin n → Fin n → H)
     (s : Fin n) :
@@ -74,6 +96,13 @@ theorem tset_comb {H : Type*} [AddCommGroup H] [Module ℂ H] (k : Fin n → Fin
     exact Finset.sum_congr rfl fun d _ => by ring
   simp only [hb, mul_ite, mul_one, mul_zero, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Establish `ha : ∀ a, ∑ d, ∑ b, (star (k r d) * (k a d * star (k b s))) • X a b s = ∑ b, (star (k b s) * if a = r then 1 else 0) • X a b s`.
+
+Introduce `a`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, ← hu a r, Finset.mul_sum]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun d _ => by ring`. Simplify using `only [ha, mul_ite, mul_one, mul_zero, ite_smul, zero_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem tset_combd {H : Type*} [AddCommGroup H] [Module ℂ H] (k : Fin n → Fin n → ℂ)
     (hu : ∀ s b, ∑ d, k s d * star (k b d) = if s = b then 1 else 0) (X : Fin n → Fin n → Fin n → H)
     (r : Fin n) :
@@ -95,6 +124,13 @@ theorem tset_combd {H : Type*} [AddCommGroup H] [Module ℂ H] (k : Fin n → Fi
   rw [Finset.sum_comm]
   simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `key : ∀ a, (lam + Pi.single s (1 : ℝ) : Fin n → ℝ) a * (lam + Pi.single s (1 : ℝ) : Fin n → ℝ) a = lam a * lam a + (if a = s then 2 * lam s + 1 else 0)`. Introduce `a`. Distinguish the cases in `h : a = s`. Substitute `h` using the available equality. Rewrite using `[Pi.add_apply, Pi.single_eq_same, if_pos rfl]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Pi.add_apply, Pi.single_eq_of_ne h, if_neg h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [casVal, nsq, dot, key]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq']`.
+
+Apply the tactic sequence `simp <;> ring`.
+-/
 theorem tset_casVal_add (lam : Fin n → ℝ) (s : Fin n) :
     casVal (lam + Pi.single s 1) = casVal lam + 2 * lam s + 1 := by
   have key : ∀ a, (lam + Pi.single s (1 : ℝ) : Fin n → ℝ) a * (lam + Pi.single s (1 : ℝ) : Fin n → ℝ) a =
@@ -107,6 +143,13 @@ theorem tset_casVal_add (lam : Fin n → ℝ) (s : Fin n) :
   rw [Finset.sum_add_distrib, Finset.sum_ite_eq']
   simp <;> ring
 
+/- English proof (translation)
+Establish `key : ∀ a, (lam - Pi.single s (1 : ℝ) : Fin n → ℝ) a * (lam - Pi.single s (1 : ℝ) : Fin n → ℝ) a = lam a * lam a + (if a = s then -2 * lam s + 1 else 0)`. Introduce `a`. Distinguish the cases in `h : a = s`. Substitute `h` using the available equality. Rewrite using `[Pi.sub_apply, Pi.single_eq_same, if_pos rfl]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Pi.sub_apply, Pi.single_eq_of_ne h, if_neg h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [casVal, nsq, dot, key]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq']`.
+
+Apply the tactic sequence `simp <;> ring`.
+-/
 theorem tset_casVal_sub (lam : Fin n → ℝ) (s : Fin n) :
     casVal (lam - Pi.single s 1) = casVal lam - 2 * lam s + 1 := by
   have key : ∀ a, (lam - Pi.single s (1 : ℝ) : Fin n → ℝ) a * (lam - Pi.single s (1 : ℝ) : Fin n → ℝ) a =
@@ -144,6 +187,25 @@ def IsGKEmb (dual : Bool) (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ
     ∀ k ∈ Kset ε, ∀ x ∈ S', ∀ x' ∈ S', (x' : H) = σ k (x : H) →
       (fun c => ((ι x' c : D) : H)) = kDiag dual σ k (fun c => ((ι x c : D) : H))
 
+/- English proof (translation)
+Establish `hu` using `tset_unit (rq_K_unit hk).2`. Establish `hgen : ∀ (X : Matrix (Fin n) (Fin n) ℂ) (v : D), σ k ((actM E X v : D) : H) = ((actM E (k * X * kᴴ) ⟨σ k (v : H), hD.kStable k hk v v.2⟩ : D) : H)`. Introduce `X v`. Establish `h0` using `rq_lin hD hk v (1 / 2) (-Complex.I / 2) (rq_main_G hσ hD hk (rq_inG_S ε X) v) (rq_main_G hσ hD hk (isInLieAlgebra_I_smul_add_conjTranspose ε X) v)`. Establish `hX : (1 / 2 : ℂ) • (X - Jm ε * Xᴴ * Jm ε) + (-Complex.I / 2) • (Complex.I • (X + Jm ε * Xᴴ * Jm ε)) = X`.
+
+Rewrite using `[smul_smul, show -Complex.I / 2 * Complex.I = (1 / 2 : ℂ) by`. Rewrite using `[div_mul_eq_mul_div, neg_mul, Complex.I_mul_I]`. Use the proof step `ring, ← smul_add,`. Use `show X - Jm ε * Xᴴ * Jm ε + (X + Jm ε * Xᴴ * Jm ε) = (2 : ℂ) • X by rw [two_smul]; abel,`. Use the proof step `smul_smul]`.
+
+Evaluate the numerical expressions. Rewrite `h0` using `[hX]`. Then use the resulting hypothesis. Set `g : Fin n → D` to `fun d => ⟨σ k ((f d : D) : H), hD.kStable k hk _ (f d).2⟩`. Establish `hsingle : ∀ x y z, σ k ((E x y (f z) : D) : H) = ((∑ a, ∑ b, (k a x * star (k b y)) • E a b (g z) : D) : H)`. Introduce `x y z`.
+
+Rewrite using `[← actM_single' E x y, hgen]`. Use `congr 1`. Unfold `actM`. Apply the tactic sequence `simp only [LinearMap.sum_apply, LinearMap.smul_apply, tset_conj_single] <;> rfl`. Consider the cases of `dual`.
+
+Establish `hf' : ∀ r, f' r = ∑ d, k r d • g d`. Introduce `r`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `congrFun h r`. Simplify using `only [kDiag, cond_false] at h1`.
+
+Rewrite using `[h1, Submodule.coe_sum]`. Apply the tactic sequence `simp only [Submodule.coe_smul] <;> rfl`. Use function extensionality and compare the values at `s`. Use `show ((eeV E f' s : D) : H) = ∑ d, k s d • σ k ((eeV E f d : D) : H)`. Simplify using `only [eeV_coord, hf', map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, hsingle]`.
+
+Rewrite using `[tset_comb k hu (fun a b r => ((E a b (g r) : D) : H)) s, Finset.sum_comm]`. Establish `hf' : ∀ r, f' r = ∑ d, star (k r d) • g d`. Introduce `r`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `congrFun h r`.
+
+Simplify using `only [kDiag, cond_true] at h1`. Rewrite using `[h1, Submodule.coe_sum]`. Apply the tactic sequence `simp only [Submodule.coe_smul] <;> rfl`. Use function extensionality and compare the values at `r`. Use `show ((eeVd E f' r : D) : H) = ∑ d, star (k r d) • σ k ((eeVd E f d : D) : H)`.
+
+Simplify using `only [eeVd_coord, hf', map_sum, map_smul, map_neg, Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_neg, hsingle, smul_neg, Finset.sum_neg_distrib]`. Rewrite using `[tset_combd k hu (fun a b s => ((E a b (g s) : D) : H)) r, Finset.sum_comm]`.
+-/
 theorem tset_kV {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     {E : Fin n → Fin n → Module.End ℂ D} (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (dual : Bool) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (f f' : Fin n → D)
@@ -196,6 +258,13 @@ theorem tset_kV {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H �
       Submodule.coe_neg, hsingle, smul_neg, Finset.sum_neg_distrib]
     rw [tset_combd k hu (fun a b s => ((E a b (g s) : D) : H)) r, Finset.sum_comm]
 
+/- English proof (translation)
+Introduce `f hf`. Rewrite `hf`, the goal using `[tset_mem]`. Introduce `c`. Establish `hE : ∀ x y v, v ∈ genSub E V → E x y v ∈ genSub E V` using `fun x y v hv => tset_genSub_E E V x y hv`. Consider the cases of `dual`.
+
+Use `show ((E a b).comp (coordV c) + (if c = a then coordV b else 0) : (Fin n → D) →ₗ[ℂ] D) f ∈ genSub E V split_ifs`. Rewrite using `[LinearMap.add_apply, LinearMap.comp_apply]`. Conclude with `Submodule.add_mem _ (hE a b _ (hf c)) (hf b)`. Rewrite using `[LinearMap.add_apply, LinearMap.zero_apply, add_zero, LinearMap.comp_apply]`. Conclude with `hE a b _ (hf c)`.
+
+Use `show ((E a b).comp (coordV c) - (if c = b then coordV a else 0) : (Fin n → D) →ₗ[ℂ] D) f ∈ genSub E V split_ifs`. Rewrite using `[LinearMap.sub_apply, LinearMap.comp_apply]`. Conclude with `Submodule.sub_mem _ (hE a b _ (hf c)) (hf a)`. Rewrite using `[LinearMap.sub_apply, LinearMap.zero_apply, sub_zero, LinearMap.comp_apply]`. Conclude with `hE a b _ (hf c)`.
+-/
 theorem tensSub_stable {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D} (dual : Bool) (a b : Fin n) :
     ∀ f ∈ tensSub (genSub E V), tensF dual E a b f ∈ tensSub (genSub E V) := by
   intro f hf
@@ -216,6 +285,31 @@ theorem tensSub_stable {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule
     · rw [LinearMap.sub_apply, LinearMap.zero_apply, sub_zero, LinearMap.comp_apply]
       exact hE a b _ (hf c)
 
+/- English proof (translation)
+Establish `hg` using `hD.glRep`. Establish `hc : ∀ (r c' a' b' : Fin n) (v : D), E r c' (E a' b' v) = E a' b' (E r c' v) + ((if c' = a' then E r b' v else 0) - (if b' = r then E a' c' v else 0))`. Introduce `r c' a' b' v`. Establish `h : E r c' (E a' b' v) - E a' b' (E r c' v) = ((if c' = a' then E r b' else 0) - (if b' = r then E a' c' else 0) : Module.End ℂ D) v` using `LinearMap.congr_fun (hg r c' a' b') v`. Rewrite using `[← sub_eq_iff_eq_add', h]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hT : ∀ (a b : Fin n) (g : Fin n → D) (c : Fin n), tensV E a b g c = E a b (g c) + if c = a then g b else 0`. Apply the tactic sequence `intro a b g c; by_cases h : c = a <;> simp [tensV, coordV, h]`. Establish `hTd : ∀ (a b : Fin n) (g : Fin n → D) (c : Fin n), tensVd E a b g c = E a b (g c) - if c = b then g a else 0`. Apply the tactic sequence `intro a b g c; by_cases h : c = b <;> simp [tensVd, coordV, h]`.
+
+Establish `hEe : ∀ (g : Fin n → D) (s : Fin n), eeV E g s = ∑ r, E r s (g r)`. Introduce `g s`. Simplify using `[eeV, coordV]`. Establish `hEd : ∀ (g : Fin n → D) (r : Fin n), eeVd E g r = -∑ s, E r s (g s)`. Introduce `g r`.
+
+Simplify using `[eeVd, coordV]`. Establish `hirr : ∀ (P : Prop) [Decidable P] (g : Fin n → D), (∑ r, if P then g r else 0) = if P then ∑ r, g r else 0`. Apply the tactic sequence `intro P _ g; split_ifs <;> simp`. Use `⟨?_, ?_, fun k hk f _ f' _ h => tset_kV hσ hD dual hk f f' h⟩` and prove the remaining obligations. Introduce `f hf`.
+
+Rewrite `hf`, the goal using `[tset_mem]`. Introduce `s`. Consider the cases of `dual`. Use `show eeV E f s ∈ genSub E V`. Rewrite using `[hEe]`.
+
+Conclude with `Submodule.sum_mem _ fun r _ => tset_genSub_E E V r s (hf r)`. Use `show eeVd E f s ∈ genSub E V`. Rewrite using `[hEd]`. Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ fun r _ => tset_genSub_E E V s r (hf r))`. Introduce `a b f _`.
+
+Use function extensionality and compare the values at `c`. Consider the cases of `dual`. Use `show eeV E (tensV E a b f) c = tensV E a b (eeV E f) c`. Simplify using `only [hEe, hT]`. Establish `e1 : ∀ r, E r c (E a b (f r) + if r = a then f b else 0) = E a b (E r c (f r)) + ((if c = a then E r b (f r) else 0) - (if b = r then E a c (f r) else 0)) + (if r = a then E a c (f b) else 0)`.
+
+Introduce `r`. Rewrite using `[map_add, hc r c a b (f r)]`. Distinguish the cases in `h : r = a`. Rewrite using `[if_pos h, if_pos h, h]`. Rewrite using `[if_neg h, if_neg h, map_zero]`.
+
+Simplify using `only [e1, Finset.sum_add_distrib, Finset.sum_sub_distrib, hirr, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, reduceIte, map_sum]`. Normalize the expressions using the abelian group laws. Use `show eeVd E (tensVd E a b f) c = tensVd E a b (eeVd E f) c`. Simplify using `only [hEd, hTd]`. Establish `e2 : ∀ s, E c s (E a b (f s) - if s = b then f a else 0) = E a b (E c s (f s)) + ((if s = a then E c b (f s) else 0) - (if b = c then E a s (f s) else 0)) - (if s = b then E c b (f a) else 0)`.
+
+Introduce `s`. Rewrite using `[map_sub, hc c s a b (f s)]`. Distinguish the cases in `h : s = b`. Rewrite using `[if_pos h, if_pos h, h]`. Rewrite using `[if_neg h, if_neg h, map_zero]`.
+
+Simplify using `only [e2, Finset.sum_add_distrib, Finset.sum_sub_distrib, hirr, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, reduceIte, map_sum, map_neg]`. Distinguish the cases in `hbc : b = c`. Rewrite using `[if_pos hbc, if_pos hbc.symm]`. Normalize the expressions using the abelian group laws. Rewrite using `[if_neg hbc, if_neg (Ne.symm hbc)]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem isGKEndo_eeF {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     {E : Fin n → Fin n → Module.End ℂ D} (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (V : Submodule ℂ D) (dual : Bool) : IsGKEndo dual ε σ E (genSub E V) (eeF dual E) := by
@@ -281,10 +375,16 @@ theorem isGKEndo_eeF {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → 
       · rw [if_pos hbc, if_pos hbc.symm]; abel
       · rw [if_neg hbc, if_neg (Ne.symm hbc)]; abel
 
+/- English proof (translation)
+Use `⟨fun f hf => hf, fun a b f _ => rfl, fun k _ f _ f' _ h => h⟩` and prove the remaining obligations.
+-/
 theorem isGKEndo_one (dual : Bool) (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (E : Fin n → Fin n → Module.End ℂ D) (S : Submodule ℂ D) : IsGKEndo dual ε σ E S 1 := by
   refine ⟨fun f hf => hf, fun a b f _ => rfl, fun k _ f _ f' _ h => h⟩
 
+/- English proof (translation)
+Use `⟨fun x _ => by simp, fun x hx _ => (Submodule.mem_bot ℂ).1 hx, fun a b x _ => by simp, ?_⟩` and prove the remaining obligations. Introduce `k _ x _ x' _ _`. Use function extensionality and compare the values at `c`. Simplify using `[kDiag]`.
+-/
 theorem isGKEmb_bot (dual : Bool) (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (E : Fin n → Fin n → Module.End ℂ D) (S : Submodule ℂ D) : IsGKEmb dual ε σ E S ⊥ 0 := by
   refine ⟨fun x _ => by simp, fun x hx _ => (Submodule.mem_bot ℂ).1 hx, fun a b x _ => by simp, ?_⟩
@@ -294,6 +394,11 @@ theorem isGKEmb_bot (dual : Bool) (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fi
 
 end Ambient
 
+/- English proof (translation)
+Consider the cases of `dual`. Simplify using `only [shiftF, poleF, cond_false, poleV, tset_casVal_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [shiftF, poleF, cond_true, poleVd, tset_casVal_sub]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem casVal_shiftF (dual : Bool) (lam : Fin n → ℝ) (s : Fin n) :
     ((casVal lam + n : ℝ) : ℂ) + 2 * poleF dual lam s = ((casVal (shiftF dual lam s) : ℝ) : ℂ) := by
   cases dual

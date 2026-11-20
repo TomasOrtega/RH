@@ -19,6 +19,11 @@ open ReciprocityTheory.ChartRestriction.G.T0 in
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Set `iK : Algebra B.KO (Kp X la G.N)` to `((algebraMap (X.Kl la) (Kp X la G.N)).comp (algebraMap B.KO (X.Kl la))).toAlgebra`. Establish `: IsScalarTower B.KO (X.Kl la) (Kp X la G.N)` using `IsScalarTower.of_algebraMap_eq' rfl`. Take `⟨h1, h2⟩` from `coords_of_equiv _ (tL G la) hB.1 hB.2 E`. Use `basis_descends_loc (Kl := X.Kl la) hD e j0 v x hv hx hind hfin _ (GlobalTheory.CurveRecord.tv_indep X la G.N) (fun Z i => rzMap X la G.N (Ω Z) (gF Z) (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la G.w i)) (fun Z i => by rw [GlobalTheory.CurveRecord.rzMap_sec_eq]; simp only …` and prove the remaining obligations. Use `hE (G.th' k) Z` as an intermediate fact.
+
+Rewrite `this` using `[lwZ_alg, lwZ_alg, rzMap_emb, rzMap_emb, hgF, hθ]`. Conclude with `this`.
+-/
 theorem basis_descends_record {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : PJ D B P j)
     (la : HeightOneSpectrum (𝓞 B.KO)) {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData X ka wL wF) (hB : InBasis G la)
     {ι : Type} [Fintype ι] (Ω : ι → Type) [∀ Z, Field (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)]
@@ -67,6 +72,13 @@ open ReciprocityTheory.ChartRestriction.G.T0 in
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `⟨fun Z => AddMonoidAlgebra.single d.wF (g Z), fun Z => ⟨mem_AG.2 ⟨_, rfl⟩, by simpa using hg Z⟩, fun p hp k => ?_, fun y => ?_⟩` and prove the remaining obligations. Use `h1 (fun k => p (eδ.symm k)) (fun Z => by` as an intermediate fact. Rewrite using `[← hp Z, ← eδ.sum_comp]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hsel, ratio_single _ _ _ (hg Z), eδ.symm_apply_apply]`.
+
+Use the proof step `rfl) (eδ k)`. Conclude with `(congrArg p (eδ.symm_apply_apply k)).symm.trans this`. Take `⟨q, hq, p, hp⟩` from `h2 y`. Use `⟨q, hq, fun k => p (eδ k), fun Z => (hp Z).trans ?_⟩` and prove the remaining obligations. Rewrite using `[← eδ.sum_comp]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hsel, ratio_single _ _ _ (hg Z)]`. Both sides reduce to the same expression.
+-/
 theorem chosenForms_basis_of_value_basis {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} [Fintype (Comp Xo c)]
     (d : ReciprocityTheory.ChartRestriction.G.T0.Data c.F (Comp Xo c) (fun Z => Om Z) (WTZ E) (fun Z => AC Z)) {n : ℕ}
@@ -98,6 +110,17 @@ theorem chosenForms_basis_of_value_basis {E : Type} [Field E] [NumberField E] [I
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D T h j hj hG ka wL wF G S g0 la _ d e hD hw hb hH hB`. Establish `hT : GenFromTest (T.Q.Xo j) T.Q.c hG` using `fun Z => h.allTest j hj (Om Z) (genFr hG Z)`. Take `⟨hfg, htr⟩` from `GlobalTheory.FlagDim.fnFG_fnTrdeg_record D T.Q h.pins.2.2.2 j hj`. Establish `hA1` using `independent_differentials_ratios_cusp_forms_trdeg D T h j hj hG ka wL wF G d e hD hw hb hH.2.1.2`. Establish `hS` using `fun Z => GlobalTheory.genericSection_field (D := d.D) (d.jc Z) (d.x Z) (hfg Z) ((htr Z).trans (by rw [hD])) (hA1 Z)`.
+
+Establish `hg` using `GlobalTheory.CurveRecord.evC_ne_zero h j hj hG hT (GlobalTheory.Reg.genValInj_record D T h j hj hG) (GlobalTheory.Reg.compSplit_record D T h j hj hG) G hH.2.1 g0 hH.2.2.2`. Take `⟨⟨E, hE⟩, -⟩` from `GlobalTheory.SectionProduct.tieS D T h j hj hG ka wL wF G hT S g0 la hH hB`. Establish `hw' : ∀ i Z, d.w i Z = AddMonoidAlgebra.single (wtZ (wtA wL) wL.n) (evC hG Z (G.w (e.symm i)).1)`. Introduce `i Z`. Use `congrFun (hw (e.symm i)) Z` as an intermediate fact.
+
+Rewrite `this` using `[e.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hq : ∀ Z, evC hG Z (G.w (e.symm (d.jc Z))).1 ≠ 0`. Introduce `Z h0`. Apply `hb Z` to reduce the goal to its premises. Rewrite using `[hw', h0]`.
+
+Simplify using the standard rewrite rules. Establish `hx : ∀ Z k, d.x Z k = evC hG Z (G.w (e.symm ((d.jc Z).succAbove k))).1 / evC hG Z (G.w (e.symm (d.jc Z))).1`. Introduce `Z k`. Unfold `ReciprocityTheory.ChartRestriction.G.T0.Data.x`. Rewrite using `[hw', hw']`.
+
+Conclude with `ratio_single _ _ _ (hq Z)`. Take `⟨h0, h1, h2⟩` from `basis_descends_record (recPlus h j hj) la G hB (fun Z : Comp (T.Q.Xo j) T.Q.c => Om Z) (fun Z => formsEvR j hG hT Z) hD e d.jc (fun Z k => evC hG Z (G.w k).1) (fun Z k => formsEvR_inc h j hj hG hT Z wL (G.w k)) d.x hq hx (fun Z => (hS Z).1) (fun Z => (hS Z).2.1) g0 (fun k Z => ev …`. Establish `hdel : d.del = G.del` using `h0`. Use `⟨finCongr hdel, fun sel hsel hF => ?_⟩` and prove the remaining obligations. Conclude with `chosenForms_basis_of_value_basis d (fun k Z => evC hG Z (G.th' k).1) (fun Z => evC hG Z g0.1) hg (finCongr hdel) h1 h2 sel (fun i Z => by rw [hsel, hF]; rfl)`.
+-/
 theorem chosenForms_restrict_basis_functionField : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF) (la : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO)) [Fintype (Comp (T.Q.Xo j) T.Q.c)] (d : ReciprocityTheory.ChartRestriction.G.T0.Data T.Q.c.F (Comp (T.Q.Xo j) T.Q.c) (fun Z => Om Z) (WTZ D.host.E) (fun Z => AC Z)) (e : Fin G.N ≃ Fin (d.N + 1)), d.D = WeightFamilies.dimY D j → (∀ k, d.w (e k) = valC hG (wtA wL) wL.n (G.w k).1) → (∀ Z, d.w (d.jc Z) Z ≠ 0) → CurveHyp h j hj hG ka wL wF G S g0 → InBasis G la → ∃ eδ : Fin d.del ≃ Fin G.del, ∀ sel : Fin d.del → Fin d.np, (∀ i, d.thp (sel i) = valC hG (wtA wF) wF.n (G.th' (eδ i)).1) → d.wF = wtZ (wtA wF) wF.n → A4Selection d sel := by
   intro D T h j hj hG ka wL wF G S g0 la _ d e hD hw hb hH hB
   have hT : GenFromTest (T.Q.Xo j) T.Q.c hG := fun Z => h.allTest j hj (Om Z) (genFr hG Z)

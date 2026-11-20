@@ -186,11 +186,20 @@ def LayProp.at (QL : LayProp) (K : Ctx) : ∀ D : D7, Lay D → Prop := QL K.s K
 def AtLed (QO : ∀ D : D7, Obj D → Prop) : LayProp := fun s C cD ch _ a b _ Y =>
   ∀ p : LedPart C Y, p.L.sc = s → WtEq p.L a b → Val C cD ch p.L → CanonInst p.ta.Gx → QO p.pt.D (Obj.ofPt p.pt)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨by simp, h.1, h.2⟩, fun h => ⟨h.2.1, h.2.2⟩⟩`.
+-/
 theorem has₂_iff (B : Base) (S₁ S₂ : Finset ℂ) : Has₂ B S₁ S₂ ↔ Has B ∅ S₁ S₂ :=
   ⟨fun h => ⟨by simp, h.1, h.2⟩, fun h => ⟨h.2.1, h.2.2⟩⟩
 
+/- English proof (translation)
+The claim follows from `SetLike.coe_injective h.2.1`.
+-/
 theorem Enl.KsC_eq {B B' : Base} (h : Enl B B') : B'.KsC = B.KsC := SetLike.coe_injective h.2.1
 
+/- English proof (translation)
+The claim follows from `SetLike.coe_injective h.2.2.1`.
+-/
 theorem Enl.fixedCoefficientField_eq {B B' : Base} (h : Enl B B') : B'.fixedCoefficientFieldInComplex = B.fixedCoefficientFieldInComplex := SetLike.coe_injective h.2.2.1
 
 def TwDat.untw (B : Base) (pl : Finset ℕ) : TwDat B where
@@ -205,6 +214,9 @@ def TwDat.untw (B : Base) (pl : Finset ℕ) : TwDat B where
   off _ _ := ⟨rfl, rfl⟩
   conj _ := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Establish `h0 : 30 * B.host.condN ≠ 0` using `mul_ne_zero (by norm_num) (mul_ne_zero (mul_ne_zero B.host.QS_pos.ne' B.host.hyp.1.ne_zero) B.host.hyp.2.1.ne_zero)`. Use `(((30 * B.host.condN).divisors.finite_toSet.union (Set.finite_singleton (DC.q0H B.host))).union B.host.levelPrimes.finite_toSet).subset ?_` and prove the remaining obligations. Introduce and unpack `p (h | ⟨i, rfl⟩ | rfl | rfl | ⟨u, rfl⟩ | rfl | h)`. Use `exacts [.inl (.inl (Nat.mem_divisors.2 ⟨h, h0⟩)), .inr (B.host.g_level i), .inr B.host.pde_level.1, .inr B.host.pde_level.2, .inr (B.T_level u), .inl (.inr rfl), .inr h]`.
+-/
 theorem finite_offSet (B : Pre) : (offSet B).Finite := by
   have h0 : 30 * B.host.condN ≠ 0 :=
     mul_ne_zero (by norm_num) (mul_ne_zero (mul_ne_zero B.host.QS_pos.ne' B.host.hyp.1.ne_zero) B.host.hyp.2.1.ne_zero)
@@ -214,8 +226,18 @@ theorem finite_offSet (B : Pre) : (offSet B).Finite := by
   exacts [.inl (.inl (Nat.mem_divisors.2 ⟨h, h0⟩)), .inr (B.host.g_level i), .inr B.host.pde_level.1, .inr B.host.pde_level.2,
     .inr (B.T_level u), .inl (.inr rfl), .inr h]
 
+/- English proof (translation)
+The claim follows from `.inl (h.mul_left _)`.
+-/
 theorem mem_offSet_of_dvd_condN (B : Pre) {p : ℕ} (h : p ∣ B.host.condN) : p ∈ offSet B := .inl (h.mul_left _)
 
+/- English proof (translation)
+Simplify using `only [avPrimes, Finset.mem_filter, Finset.mem_union, Finset.mem_insert, Finset.mem_image, Finset.mem_univ, true_and] at hp`. Take `⟨(rfl | rfl | rfl | rfl | rfl | rfl | rfl | ⟨u, rfl⟩) | hp, -⟩` from `hp`. Conclude with `.inl (Dvd.dvd.mul_right (by norm_num) _)`. Conclude with `.inl (Dvd.dvd.mul_right (by norm_num) _)`. Conclude with `.inr (.inl ⟨0, rfl⟩)`.
+
+Conclude with `.inr (.inl ⟨1, rfl⟩)`. Conclude with `.inr (.inr (.inl rfl))`. Conclude with `.inr (.inr (.inr (.inl rfl)))`. Conclude with `.inr (.inr (.inr (.inr (.inr (.inl rfl)))))`. Conclude with `.inr (.inr (.inr (.inr (.inl ⟨u, X.C.A_T u⟩))))`.
+
+Establish `h : X.toD7.host.ccK = ⊤` using `X.B.ccK_top`. Rewrite `hp` using `[h, Ideal.absNorm_top]`. Simplify using `at hp`.
+-/
 theorem mem_offSet_of_mem_avPrimes (X : Stages) {p : ℕ} (hp : p ∈ avPrimes X.toD7) : p ∈ offSet X.B.toPre := by
   simp only [avPrimes, Finset.mem_filter, Finset.mem_union, Finset.mem_insert, Finset.mem_image, Finset.mem_univ,
     true_and] at hp
@@ -232,6 +254,9 @@ theorem mem_offSet_of_mem_avPrimes (X : Stages) {p : ℕ} (hp : p ∈ avPrimes X
     rw [h, Ideal.absNorm_top] at hp
     simp at hp
 
+/- English proof (translation)
+Take `⟨-, h1, -, h2⟩` from `(T.psi_tw w).2.2.2 v fun h => ((T.psi_is w).ram v).1 h hv`. Conclude with `not_mem_avRec_of_over (D := X.toD7) h1 (fun h => h2 (mem_offSet_of_mem_avPrimes X h)) (Ideal.absNorm_mem _)`.
+-/
 theorem TwDat.notMem_avRec (X : Stages) (T : TwDat X.B) (w : X.B.places.Pl) {v : HeightOneSpectrum (𝓞 X.B.host.E)}
     (hv : v ∈ T.Q w) : v ∉ AvRec X.toD7 := by
   obtain ⟨-, h1, -, h2⟩ := (T.psi_tw w).2.2.2 v fun h => ((T.psi_is w).ram v).1 h hv
@@ -241,15 +266,24 @@ section Filter
 
 variable {Δ : Pre → Type} {Sm : ∀ B : Pre, Fr B → Δ B → IntermediateField ℚ ℂ → Prop} {K : Ctx}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ _ => ∅, fun _ _ _ _ _ _ => ∅, by simp, by simp, fun _ _ _ _ _ h _ _ _ => h⟩`.
+-/
 theorem lgOn_self : LgOn Sm K fun B f δ _ => Sm B.toPre f δ B.KsC :=
   ⟨fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ _ => ∅, fun _ _ _ _ _ _ => ∅, by simp, by simp,
     fun _ _ _ _ _ h _ _ _ => h⟩
 
+/- English proof (translation)
+Take `⟨a, b, c, d, h1, h2, h3⟩` from `hp`. Conclude with `⟨a, b, c, d, h1, h2, fun B f δ T x y z u v => h B f δ T x y (h3 B f δ T x y z u v)⟩`.
+-/
 theorem LgOn.imp {p q : ∀ B : Base, Fr B.toPre → Δ B.toPre → TwDat B → Prop} (hp : LgOn Sm K p)
     (h : ∀ B f δ T, K.Over B.toPre → Sm B.toPre f δ B.KsC → p B f δ T → q B f δ T) : LgOn Sm K q := by
   obtain ⟨a, b, c, d, h1, h2, h3⟩ := hp
   exact ⟨a, b, c, d, h1, h2, fun B f δ T x y z u v => h B f δ T x y (h3 B f δ T x y z u v)⟩
 
+/- English proof (translation)
+Take `⟨a, b, c, d, h1, h2, h3⟩` from `hp`. Take `⟨a', b', c', d', h1', h2', h3'⟩` from `hq`. Use `⟨fun B f δ F => a B f δ F ∪ a' B f δ F, fun B f δ F G => b B f δ F G ∪ b' B f δ F G, fun B f δ F G l => c B f δ F G l ∪ c' B f δ F G l, fun B f δ F G X => d B f δ F G X ∪ d' B f δ F G X, fun B f δ F z hz => (Finset.mem_union.1 hz).elim (h1 B f δ F z) (h1' B f δ F z), fun B f δ F …` and prove the remaining obligations. Conclude with `h3 B f δ T hO hS ⟨fun z hz => hH.1 z (Finset.mem_union_left _ hz), fun z hz => hH.2 z (Finset.mem_union_left _ hz)⟩ (Finset.subset_union_left.trans hP) fun w v hv h => hA w v hv (Finset.mem_union_left _ h)`. Conclude with `h3' B f δ T hO hS ⟨fun z hz => hH.1 z (Finset.mem_union_right _ hz), fun z hz => hH.2 z (Finset.mem_union_right _ hz)⟩ (Finset.subset_union_right.trans hP) fun w v hv h => hA w v hv (Finset.mem_union_right _ h)`.
+-/
 theorem LgOn.inter {p q : ∀ B : Base, Fr B.toPre → Δ B.toPre → TwDat B → Prop} (hp : LgOn Sm K p) (hq : LgOn Sm K q) :
     LgOn Sm K fun B f δ T => p B f δ T ∧ q B f δ T := by
   classical
@@ -265,40 +299,69 @@ theorem LgOn.inter {p q : ∀ B : Base, Fr B.toPre → Δ B.toPre → TwDat B �
   · exact h3' B f δ T hO hS ⟨fun z hz => hH.1 z (Finset.mem_union_right _ hz), fun z hz => hH.2 z (Finset.mem_union_right _ hz)⟩
       (Finset.subset_union_right.trans hP) fun w v hv h => hA w v hv (Finset.mem_union_right _ h)
 
+/- English proof (translation)
+Take `⟨a, b, c, d, h1, h2, h3⟩` from `hp`. Conclude with `⟨fun B f _ => a B f, fun B f _ => b B f, fun B f _ => c B f, fun B f _ => d B f, fun B f _ => h1 B f, fun B f _ => h2 B f, fun B f _ T x _ => h3 B f T x⟩`.
+-/
 theorem large₂.lgOn {p : ∀ B : Base, Fr B.toPre → TwDat B → Prop} (hp : large₂ K p) : LgOn Sm K fun B f _ T => p B f T := by
   obtain ⟨a, b, c, d, h1, h2, h3⟩ := hp
   exact ⟨fun B f _ => a B f, fun B f _ => b B f, fun B f _ => c B f, fun B f _ => d B f, fun B f _ => h1 B f,
     fun B f _ => h2 B f, fun B f _ T x _ => h3 B f T x⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨large₂.lgOn, fun ⟨a, b, c, d, h1, h2, h3⟩ => ⟨fun B f => a B f (), fun B f => b B f (), fun B f => c B f (), fun B f => d B f (), fun B f => h1 B f (), fun B f => h2 B f (), fun B f T x => h3 B f () T x trivial⟩⟩`.
+-/
 theorem lg_iff_lgOn {p : ∀ B : Base, Fr B.toPre → TwDat B → Prop} :
     large₂ K p ↔ LgOn (Δ := fun _ => Unit) (fun _ _ _ _ => True) K fun B f _ T => p B f T :=
   ⟨large₂.lgOn, fun ⟨a, b, c, d, h1, h2, h3⟩ => ⟨fun B f => a B f (), fun B f => b B f (), fun B f => c B f (), fun B f => d B f (),
     fun B f => h1 B f (), fun B f => h2 B f (), fun B f T x => h3 B f () T x trivial⟩⟩
 
+/- English proof (translation)
+The claim follows from `lg_iff_lgOn.2 ((lg_iff_lgOn.1 hp).inter (lg_iff_lgOn.1 hq))`.
+-/
 theorem large₂.inter {p q : ∀ B : Base, Fr B.toPre → TwDat B → Prop} (hp : large₂ K p) (hq : large₂ K q) :
     large₂ K fun B f T => p B f T ∧ q B f T :=
   lg_iff_lgOn.2 ((lg_iff_lgOn.1 hp).inter (lg_iff_lgOn.1 hq))
 
+/- English proof (translation)
+The claim follows from `lg_iff_lgOn.2 ((lg_iff_lgOn.1 hp).imp fun B f _ T x _ => h B f T x)`.
+-/
 theorem large₂.imp {p q : ∀ B : Base, Fr B.toPre → TwDat B → Prop} (hp : large₂ K p)
     (h : ∀ B f T, K.Over B.toPre → p B f T → q B f T) : large₂ K q :=
   lg_iff_lgOn.2 ((lg_iff_lgOn.1 hp).imp fun B f _ T x _ => h B f T x)
 
+/- English proof (translation)
+The claim follows from `lgOn_self`.
+-/
 theorem lgRec_bounds : LgRec K fun B f D _ => Fld.listField D f ≤ B.KsC ∧ B.KsLeOm D := lgOn_self
 
 end Filter
 
 section Good
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem recEx_iff_recExG (QO : ∀ D : D7, Obj D → Prop) : RecEx QO ↔ RecExG (AtLed QO) := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(ChGood.level h).1`.
+-/
 theorem Ctx.Good.level {K : Ctx} {C5 c6 Cb : ℝ} (h : K.Good C5 c6 Cb) :
     K.P.H.levelPrimes = {K.P.H.g 0, K.P.H.g 1, K.P.H.pde, K.P.H.pde', DC.q0H K.P.H} := (ChGood.level h).1
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -⟩` from `K.ok.small`. Rewrite `h1` using `[h.level]`. Simplify `h1` using `[h2, h3, h4]`.
+-/
 theorem Ctx.Good.cmQuadraticForm_eq_alternatingForm {K : Ctx} {C5 c6 Cb : ℝ} (h : K.Good C5 c6 Cb) : K.q1 = DC.q0H K.P.H := by
   obtain ⟨h1, h2, h3, h4, -⟩ := K.ok.small
   rw [h.level] at h1
   simpa [h2, h3, h4] using h1
 
+/- English proof (translation)
+Take `⟨ε0, h0, h⟩` from `h`. Use `⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 a1 a2 a3 a4`. Use `⟨K0, fun C b1 b2 b3 => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C b1 b2 b3`.
+
+Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ch hch`. Conclude with `⟨x0, fun K d1 d2 d3 d4 d5 _ => h K d1 d2 d3 d4 d5⟩`.
+-/
 theorem evG_of_ev {p : Ctx → Prop} (h : Ev p) : EvG p := by
   obtain ⟨ε0, h0, h⟩ := h
   refine ⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩
@@ -311,6 +374,11 @@ theorem evG_of_ev {p : Ctx → Prop} (h : Ev p) : EvG p := by
   obtain ⟨x0, h⟩ := h ch hch
   exact ⟨x0, fun K d1 d2 d3 d4 d5 _ => h K d1 d2 d3 d4 d5⟩
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun eps C8 he _ _ h8 => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ hC _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨(n : ℝ) ^ (5 * C8 / eps), fun K h1 _ _ h4 hx => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Establish `hv : HostVal K.s C8 K.P.H` using `by rw [← hC, ← h1]; exact K.ok.val`. Establish `he'` using `hv.eps_div_le_ez`. Rewrite `he'` using `[h4]`. Establish `h0 : 0 < C8` using `by linarith`.
+
+Use `le_trans (Nat.le_floor ?_) hv.split_tie` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul (Nat.cast_nonneg _), show 5 * C8 / eps * (eps / C8 / 5) = 1 by field_simp, Real.rpow_one]`. Use `_ ≤ K.s.x ^ (eps / C8 / 5) := Real.rpow_le_rpow (by positivity) hx (by positivity)`. Use `_ ≤ K.s.x ^ (K.s.ez / 5) := Real.rpow_le_rpow_of_exponent_le K.s.one_lt_alt.le (by linarith)`.
+-/
 theorem ev_le_splitBound (n : ℕ) : Ev fun K => n ≤ K.P.H.splitBound := by
   refine ⟨1, one_pos, fun eps C8 he _ _ h8 => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ hC _ =>
     ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨(n : ℝ) ^ (5 * C8 / eps), fun K h1 _ _ h4 hx => ?_⟩⟩⟩⟩⟩
@@ -324,6 +392,11 @@ theorem ev_le_splitBound (n : ℕ) : Ev fun K => n ≤ K.P.H.splitBound := by
     _ ≤ K.s.x ^ (eps / C8 / 5) := Real.rpow_le_rpow (by positivity) hx (by positivity)
     _ ≤ K.s.x ^ (K.s.ez / 5) := Real.rpow_le_rpow_of_exponent_le K.s.one_lt_alt.le (by linarith)
 
+/- English proof (translation)
+Take `⟨ε0, h0, h⟩` from `hp`. Use `⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 C5 c6 Cb a1 a2 a3 a4`. Use `⟨K0, fun C b1 b2 b3 => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C b1 b2 b3`.
+
+Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ch hch`. Conclude with `⟨x0, fun K d1 d2 d3 d4 d5 d6 => hpq K _ _ _ d6 (h K d1 d2 d3 d4 d5 d6)⟩`.
+-/
 theorem EvG.imp {p q : Ctx → Prop} (hp : EvG p) (hpq : ∀ (K : Ctx) (C5 c6 Cb : ℝ), K.Good C5 c6 Cb → p K → q K) : EvG q := by
   obtain ⟨ε0, h0, h⟩ := hp
   refine ⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩
@@ -336,6 +409,13 @@ theorem EvG.imp {p q : Ctx → Prop} (hp : EvG p) (hpq : ∀ (K : Ctx) (C5 c6 Cb
   obtain ⟨x0, h⟩ := h ch hch
   exact ⟨x0, fun K d1 d2 d3 d4 d5 d6 => hpq K _ _ _ d6 (h K d1 d2 d3 d4 d5 d6)⟩
 
+/- English proof (translation)
+Take `⟨a, ha, hp⟩` from `hp`. Take `⟨b, hb, hq⟩` from `hq`. Use `⟨min a b, lt_min ha hb, fun e C8 C5 c6 Cb he hle h52 h8 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hp e C8 C5 c6 Cb he (hle.trans (min_le_left _ _)) h52 h8`. Take `⟨K', hK'⟩` from `hq e C8 C5 c6 Cb he (hle.trans (min_le_right _ _)) h52 h8`.
+
+Use `⟨K.sup K', fun C hC hC8 h => ?_⟩` and prove the remaining obligations. Take `⟨a1, ha1⟩` from `hK C hC hC8 ⟨fun c hc => (le_max_left _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_left _ _).trans (h.2.2.1 c hc), fun c hc => (le_max_left _ _).trans (h.2.2.2 c hc)⟩`. Take `⟨b1, hb1⟩` from `hK' C hC hC8 ⟨fun c hc => (le_max_right _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_right _ _).trans (h.2.2.1 c hc), fun c hc => (le_max_right _ _).trans (h.2.2.2 c hc)⟩`. Use `⟨max a1 b1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨a2, ha2⟩` from `ha1 cD (le_trans (le_max_left _ _) hcD)`.
+
+Take `⟨b2, hb2⟩` from `hb1 cD (le_trans (le_max_right _ _) hcD)`. Use `⟨max a2 b2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨a3, ha3⟩` from `ha2 ch (le_trans (le_max_left _ _) hch)`. Take `⟨b3, hb3⟩` from `hb2 ch (le_trans (le_max_right _ _) hch)`. Conclude with `⟨max a3 b3, fun X h1 h2 h3 h4 hx hg => ⟨ha3 X h1 h2 h3 h4 (le_trans (le_max_left _ _) hx) hg, hb3 X h1 h2 h3 h4 (le_trans (le_max_right _ _) hx) hg⟩⟩`.
+-/
 theorem EvG.inter {p q : Ctx → Prop} (hp : EvG p) (hq : EvG q) : EvG fun K => p K ∧ q K := by
   obtain ⟨a, ha, hp⟩ := hp
   obtain ⟨b, hb, hq⟩ := hq
@@ -356,22 +436,42 @@ theorem EvG.inter {p q : Ctx → Prop} (hp : EvG p) (hq : EvG q) : EvG fun K => 
   exact ⟨max a3 b3, fun X h1 h2 h3 h4 hx hg =>
     ⟨ha3 X h1 h2 h3 h4 (le_trans (le_max_left _ _) hx) hg, hb3 X h1 h2 h3 h4 (le_trans (le_max_right _ _) hx) hg⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ _ _ _ _ h => ⟨_, _, _, h⟩⟩⟩⟩⟩⟩`.
+-/
 theorem evG_good : EvG fun K => ∃ C5 c6 Cb : ℝ, K.Good C5 c6 Cb :=
   ⟨1, one_pos, fun _ _ _ _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ =>
     ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ _ _ _ _ h => ⟨_, _, _, h⟩⟩⟩⟩⟩⟩
 
+/- English proof (translation)
+The claim follows from `evG_of_ev h`.
+-/
 theorem evLgOnG_of_evLgOn {Δ : Pre → Type} {Sm : ∀ B : Pre, Fr B → Δ B → IntermediateField ℚ ℂ → Prop}
     {p : Ctx → ∀ B : Base, Fr B.toPre → Δ B.toPre → TwDat B → Prop} (h : EvLgOn Sm p) : EvLgOnG Sm p := evG_of_ev h
 
+/- English proof (translation)
+The claim follows from `evG_of_ev h`.
+-/
 theorem evLgG_of_evLg {p : Ctx → ∀ B : Base, Fr B.toPre → TwDat B → Prop} (h : EvLg p) : EvLgG p := evG_of_ev h
 
+/- English proof (translation)
+The claim follows from `evG_of_ev h`.
+-/
 theorem recAtG_of_recAt {QL : ∀ D : D7, Lay D → Prop} (h : RecAt QL) : RecAtG fun _ => QL := evG_of_ev h
 
+/- English proof (translation)
+The claim follows from `EvG.imp h fun K C5 c6 Cb hK ⟨D, Y, g1, g2, g3, g4, g5⟩ => ⟨D, Y, g1, g2, g3, g4, hQ K C5 c6 Cb D Y hK g1 g2 g3 g4 g5⟩`.
+-/
 theorem RecAtG.imp {QL QL' : ∀ (_ : Ctx) (D : D7), Lay D → Prop} (h : RecAtG QL)
     (hQ : ∀ (K : Ctx) (C5 c6 Cb : ℝ) (D : D7) (Y : Lay D), K.Good C5 c6 Cb → Over D K.P K.Lv → RecOK K.s K.C K.cD D →
       LedOK K.s K.C K.cD K.ch Y K.a K.b → LocalQuadraticParts.TWAt D Y.nch Y.xd → QL K D Y → QL' K D Y) : RecAtG QL' :=
   EvG.imp h fun K C5 c6 Cb hK ⟨D, Y, g1, g2, g3, g4, g5⟩ => ⟨D, Y, g1, g2, g3, g4, hQ K C5 c6 Cb D Y hK g1 g2 g3 g4 g5⟩
 
+/- English proof (translation)
+Take `⟨ε0, h0, h⟩` from `h`. Use `⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 a1 a2 a3 a4`. Use `⟨K0, fun C b1 b2 b3 => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C b1 b2 b3`.
+
+Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨cs, x0, hcs, h⟩` from `h ch hch`. Conclude with `⟨cs, x0, hcs, fun s P a b c d1 d2 d3 => h s P _ a b c d1 d2 d3.ok⟩`.
+-/
 theorem recExG_of_recExL {QL : ∀ D : D7, Lay D → Prop} (h : RecExL QL) : RecExG fun _ _ _ _ _ _ _ => QL := by
   obtain ⟨ε0, h0, h⟩ := h
   refine ⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩
@@ -386,13 +486,25 @@ theorem recExG_of_recExL {QL : ∀ D : D7, Lay D → Prop} (h : RecExL QL) : Rec
 
 end Good
 
+/- English proof (translation)
+Introduce `_ h _ _ _` and use `h`.
+-/
 example (K : Ctx) (D : D7) (Y : Lay D) : (AtLed fun _ O => O.L.sc = K.s).at K D Y := fun _ h _ _ _ => h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (B : Pre) : Fr B = Fld.Chars B := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.listField_le, h.ksLeOm⟩`.
+-/
 example (B : Base) (D : Fld.FieldDat B.toPre) (f : Fr B.toPre) (c M : ℕ) (h : B.FieldsOK D f c M) : RecFld B.toPre f D B.KsC :=
   ⟨h.listField_le, h.ksLeOm⟩
 
+/- English proof (translation)
+The claim follows from `Or.inl (Or.inl rfl)`.
+-/
 example (B : Base) (f : Fr B.toPre) (T : TwDat B) : (1 : HChar B.host.E) ∈ T.set f := Or.inl (Or.inl rfl)
 
 end GlobalTheory.Mem.Top

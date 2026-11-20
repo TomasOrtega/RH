@@ -13,9 +13,17 @@ section Ev
 
 variable {k : Type} [CommRing k] {d m n p : ℕ}
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun q => ha q.1 q.2`.
+-/
 theorem hasSubst_pts {a : Fin m → Pt k n d} (ha : ∀ j i, constantCoeff (a j i) = 0) :
     HasSubst (fun q : Fin m × Fin d => a q.1 q.2) := hasSubst_of_constantCoeff_zero fun q => ha q.1 q.2
 
+/- English proof (translation)
+Establish `hs` using `hasSubst_pts ha`. Establish `hsplit : f = C (constantCoeff f) + (f - C (constantCoeff f))` using `by ring`. Establish `h0 : constantCoeff (f - C (constantCoeff f)) = 0` using `by simp`. Unfold `ev`. Use `conv_lhs => rw [hsplit]`.
+
+Rewrite using `[subst_add hs, map_add, constantCoeff_subst_eq_zero hs (fun q => ha q.1 q.2) h0, add_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_ev {a : Fin m → Pt k n d} (ha : ∀ j i, constantCoeff (a j i) = 0)
     (f : PS k m d) : constantCoeff (ev a f) = constantCoeff f := by
   have hs := hasSubst_pts ha
@@ -26,22 +34,36 @@ theorem constantCoeff_ev {a : Fin m → Pt k n d} (ha : ∀ j i, constantCoeff (
   rw [subst_add hs, map_add, constantCoeff_subst_eq_zero hs (fun q => ha q.1 q.2) h0, add_zero]
   simp
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[subst_comp_subst_apply (hasSubst_pts ha) (hasSubst_pts hb)]`.
+-/
 theorem ev_ev {a : Fin m → Pt k n d} (ha : ∀ j i, constantCoeff (a j i) = 0)
     {b : Fin n → Pt k p d} (hb : ∀ j i, constantCoeff (b j i) = 0) (f : PS k m d) :
     ev b (ev a f) = ev (fun j i => ev b (a j i)) f := by
   unfold ev
   rw [subst_comp_subst_apply (hasSubst_pts ha) (hasSubst_pts hb)]
 
+/- English proof (translation)
+Unfold `ev pt`. Rewrite using `[subst_X (hasSubst_pts ha)]`.
+-/
 theorem ev_pt {a : Fin m → Pt k n d} (ha : ∀ j i, constantCoeff (a j i) = 0) (j : Fin m)
     (i : Fin d) : ev a (pt k d j i) = a j i := by
   unfold ev pt
   rw [subst_X (hasSubst_pts ha)]
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[← substAlgHom_apply (hasSubst_pts ha), map_zero]`.
+-/
 theorem ev_zero {a : Fin m → Pt k n d} (ha : ∀ j i, constantCoeff (a j i) = 0) :
     ev a (0 : PS k m d) = 0 := by
   unfold ev
   rw [← substAlgHom_apply (hasSubst_pts ha), map_zero]
 
+/- English proof (translation)
+Establish `hT : truncTotal (x.degree + 1) g = truncTotal (x.degree + 1) g'`. Use extensionality with `y`. Rewrite using `[coeff_truncTotal_eq_ite, coeff_truncTotal_eq_ite]`. Use `split_ifs with hy`. Conclude with `hgg y (Nat.lt_succ_iff.mp hy)`.
+
+Both sides reduce to the same expression. Establish `e1` using `congrArg (MvPolynomial.coeff x) (truncTotal_subst_eq_truncTotal_truncTotal_subst (k := x.degree + 1) (f := g) hA)`. Establish `e2` using `congrArg (MvPolynomial.coeff x) (truncTotal_subst_eq_truncTotal_truncTotal_subst (k := x.degree + 1) (f := g') hA)`. Rewrite `e1`, `e2` using `[coeff_truncTotal _ (Nat.lt_succ_self _)]`. Rewrite using `[e1, e2, hT]`.
+-/
 private theorem coeff_subst_congr_lemma {σ τ : Type} [Finite σ] [Finite τ] {A : σ → MvPowerSeries τ k}
     (hA : ∀ q, constantCoeff (A q) = 0) {g g' : MvPowerSeries σ k} {x : τ →₀ ℕ}
     (hgg : ∀ y : σ →₀ ℕ, y.degree ≤ x.degree → coeff y g = coeff y g') :
@@ -59,6 +81,15 @@ private theorem coeff_subst_congr_lemma {σ τ : Type} [Finite σ] [Finite τ] {
   rw [coeff_truncTotal _ (Nat.lt_succ_self _)] at e1 e2
   rw [e1, e2, hT]
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C c`. Rewrite using `[MvPolynomial.coe_C, subst_C, pderiv_C]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `r _`. Rewrite using `[pderiv_C, ← substAlgHom_apply hA, map_zero, zero_mul]`. Consider the case `add f g hf hg`. Simplify using `only [MvPolynomial.coe_add, subst_add hA, map_add, hf, hg, add_mul, Finset.sum_add_distrib]`. Consider the case `mul_X f r0 hf`.
+
+Rewrite using `[MvPolynomial.coe_mul, MvPolynomial.coe_X]`. Simplify using `only [← substAlgHom_apply hA] at hf ⊢`. Establish `hX : ∀ r, substAlgHom hA (pderiv k r (X r0 : MvPowerSeries σ k)) = if r = r0 then 1 else 0`. Introduce `r`. Use `split_ifs with hr`.
+
+Substitute `hr` using the available equality. Rewrite using `[pderiv_X_self, map_one]`. Rewrite using `[pderiv_X_of_ne (Ne.symm hr), map_zero]`. Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, map_mul, substAlgHom_X, hX, hf, mul_ite, mul_one, mul_zero, add_mul, Finset.sum_add_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.mul_sum, mul_assoc]`.
+-/
 private theorem pderiv_subst_coe_mvPolynomial_eq_sum {σ τ : Type} [Fintype σ] [DecidableEq σ]
     {A : σ → MvPowerSeries τ k} (hA : HasSubst A) (s : τ) (q : MvPolynomial σ k) :
     pderiv k s (subst A (q : MvPowerSeries σ k)) =
@@ -85,6 +116,17 @@ private theorem pderiv_subst_coe_mvPolynomial_eq_sum {σ τ : Type} [Fintype σ]
       mul_one, mul_zero, add_mul, Finset.sum_add_distrib, ite_mul, zero_mul, Finset.sum_ite_eq',
       Finset.mem_univ, if_true, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `hS : HasSubst A` using `hasSubst_of_constantCoeff_zero hA`. Use extensionality with `x`. Establish `h1 : coeff (x + Finsupp.single s 1) (subst A f) = coeff (x + Finsupp.single s 1) (subst A ((truncTotal (x.degree + 2) f : MvPolynomial σ k) : MvPowerSeries σ k))`. Apply `coeff_subst_congr_lemma hA` to reduce the goal to its premises. Introduce `z hz`.
+
+Rewrite using `[MvPolynomial.coeff_coe, coeff_truncTotal]`. Rewrite `hz` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_pderiv, h1, ← coeff_pderiv, pderiv_subst_coe_mvPolynomial_eq_sum hS]`. Simplify using `only [map_sum, MvPowerSeries.coeff_mul]`.
+
+Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Use `congr 1`. Apply `coeff_subst_congr_lemma hA` to reduce the goal to its premises. Introduce `z hz`. Establish `hxy` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hy`.
+
+Establish `h2 : y.1.degree ≤ x.degree`. Rewrite using `[← hxy, map_add]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_pderiv, coeff_pderiv, MvPolynomial.coeff_coe, coeff_truncTotal]`. Rewrite using `[map_add, Finsupp.degree_single]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem pderiv_subst_eq_sum_of_constantCoeff_eq_zero {σ τ : Type} [Fintype σ] [DecidableEq σ] [Finite τ]
     {A : σ → MvPowerSeries τ k} (hA : ∀ r, constantCoeff (A r) = 0) (f : MvPowerSeries σ k) (s : τ) :
     pderiv k s (subst A f) = ∑ r, subst A (pderiv k r f) * pderiv k s (A r) := by
@@ -113,6 +155,9 @@ private theorem pderiv_subst_eq_sum_of_constantCoeff_eq_zero {σ τ : Type} [Fin
   rw [map_add, Finsupp.degree_single]
   omega
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[pderiv_subst_eq_sum_of_constantCoeff_eq_zero (A := fun q : Fin m × Fin d => a q.1 q.2) (fun q => ha q.1 q.2), Fintype.sum_prod_type]`.
+-/
 theorem pderiv_ev {a : Fin m → Pt k n d} (ha : ∀ j i, constantCoeff (a j i) = 0)
     (f : PS k m d) (s : Fin n × Fin d) :
     pderiv k s (ev a f) = ∑ j, ∑ i, ev a (pderiv k (j, i) f) * pderiv k s (a j i) := by
@@ -120,15 +165,24 @@ theorem pderiv_ev {a : Fin m → Pt k n d} (ha : ∀ j i, constantCoeff (a j i) 
   rw [pderiv_subst_eq_sum_of_constantCoeff_eq_zero (A := fun q : Fin m × Fin d => a q.1 q.2) (fun q => ha q.1 q.2),
     Fintype.sum_prod_type]
 
+/- English proof (translation)
+Unfold `pt`. Conclude with `constantCoeff_X _`.
+-/
 theorem const_pt (j : Fin n) (i : Fin d) : constantCoeff (pt k d j i) = 0 := by
   unfold pt
   exact constantCoeff_X _
 
+/- English proof (translation)
+Use `fin_cases j`. Simplify using `using hx i`.
+-/
 theorem const_one {x : Pt k n d} (hx : ∀ i, constantCoeff (x i) = 0) (j : Fin 1) (i : Fin d) :
     constantCoeff ((![x] : Fin 1 → Pt k n d) j i) = 0 := by
   fin_cases j
   simpa using hx i
 
+/- English proof (translation)
+Use `fin_cases j`. Simplify using `using hx i`. Simplify using `using hy i`.
+-/
 theorem const_two {x y : Pt k n d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) (j : Fin 2) (i : Fin d) :
     constantCoeff ((![x, y] : Fin 2 → Pt k n d) j i) = 0 := by
@@ -136,14 +190,25 @@ theorem const_two {x y : Pt k n d} (hx : ∀ i, constantCoeff (x i) = 0)
   · simpa using hx i
   · simpa using hy i
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem const_zero (i : Fin d) : constantCoeff ((0 : Pt k n d) i) = 0 := by simp
 
+/- English proof (translation)
+Unfold `comp1`. Rewrite using `[constantCoeff_ev (const_one hx)]`. Conclude with `hφ i`.
+-/
 theorem const_comp1 {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) {x : Pt k n d}
     (hx : ∀ i, constantCoeff (x i) = 0) (i : Fin d) : constantCoeff (comp1 φ x i) = 0 := by
   unfold comp1
   rw [constantCoeff_ev (const_one hx)]
   exact hφ i
 
+/- English proof (translation)
+Establish `hz : (fun q : Fin 1 × Fin d => (![0] : Fin 1 → Pt k n d) q.1 q.2) = 0`. Use function extensionality and compare the values at `q`. Simplify using the standard rewrite rules. Unfold `ev`. Rewrite using `[hz, subst_zero_eq_C_constantCoeff]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ev_origin (f : PS k 1 d) : ev (n := n) ![0] f = C (constantCoeff f) := by
   have hz : (fun q : Fin 1 × Fin d => (![0] : Fin 1 → Pt k n d) q.1 q.2) = 0 := by
     funext q
@@ -152,6 +217,9 @@ theorem ev_origin (f : PS k 1 d) : ev (n := n) ![0] f = C (constantCoeff f) := b
   rw [hz, subst_zero_eq_C_constantCoeff]
   simp
 
+/- English proof (translation)
+Rewrite using `[ev_ev (const_one hx) hb]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem ev_ev_one {x : Pt k n d} (hx : ∀ i, constantCoeff (x i) = 0)
     {b : Fin n → Pt k p d} (hb : ∀ j i, constantCoeff (b j i) = 0) (f : PS k 1 d) :
     ev b (ev ![x] f) = ev ![fun i => ev b (x i)] f := by
@@ -161,6 +229,11 @@ theorem ev_ev_one {x : Pt k n d} (hx : ∀ i, constantCoeff (x i) = 0)
   fin_cases j
   rfl
 
+/- English proof (translation)
+Rewrite using `[ev_ev (const_two hx hy) hb]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression.
+-/
 theorem ev_ev_two {x y : Pt k n d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0)
     {b : Fin n → Pt k p d} (hb : ∀ j i, constantCoeff (b j i) = 0) (f : PS k 2 d) :
@@ -172,23 +245,41 @@ theorem ev_ev_two {x y : Pt k n d} (hx : ∀ i, constantCoeff (x i) = 0)
   · rfl
   · rfl
 
+/- English proof (translation)
+Use `fin_cases j`. Simplify using `using const_pt 0 i`. Simplify using the standard rewrite rules.
+-/
 theorem const_axis (j : Fin 2) (i : Fin d) :
     constantCoeff ((![pt k d 0, 0] : Fin 2 → Pt k 1 d) j i) = 0 := by
   fin_cases j
   · simpa using const_pt 0 i
   · simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[ev_pt const_axis]`. Both sides reduce to the same expression.
+-/
 theorem axis_pt_zero :
     (fun i => ev (n := 1) ![pt k d 0, 0] (pt k d (0 : Fin 2) i)) = pt k d 0 := by
   funext i
   rw [ev_pt const_axis]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[ev_pt const_axis]`. Both sides reduce to the same expression.
+-/
 theorem axis_pt_one : (fun i => ev (n := 1) ![pt k d 0, 0] (pt k d (1 : Fin 2) i)) = 0 := by
   funext i
   rw [ev_pt const_axis]
   rfl
 
+/- English proof (translation)
+Establish `hp0 : ∀ i, constantCoeff (pt k d (0 : Fin 2) i) = 0` using `fun i => const_pt 0 i`. Establish `hp1 : ∀ i, constantCoeff (pt k d (1 : Fin 2) i) = 0` using `fun i => const_pt 1 i`. Establish `hq0 : ∀ i, constantCoeff (pt k d (0 : Fin 1) i) = 0` using `fun i => const_pt 0 i`. Establish `hc0` using `const_comp1 hφ hp0`. Establish `hb0` using `const_comp1 hφ hq0`.
+
+Rewrite using `[ev_ev_two hc0 hp1 const_axis, ev_ev_two hq0 (fun i => const_zero i) (const_one hb0)]`. Establish `e0 : (fun i => ev (n` using `1) ![pt k d 0, 0] (comp1 φ (pt k d (0 : Fin 2)) i)) = fun i => ev (n := 1) ![comp1 φ (pt k d (0 : Fin 1))] (pt k d (0 : Fin 1) i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[ev_pt (const_one hb0)]`. Use `show ev _ (ev ![pt k d 0] (φ i)) = ev ![pt k d 0] (φ i)`.
+
+Rewrite using `[ev_ev_one hp0 const_axis, axis_pt_zero]`. Establish `e1 : (fun i => ev (n` using `1) ![pt k d 0, 0] (pt k d (1 : Fin 2) i)) = fun i => ev (n := 1) ![comp1 φ (pt k d (0 : Fin 1))] ((0 : Pt k 1 d) i) := by`. Rewrite using `[axis_pt_one]`. Use function extensionality and compare the values at `i`. Conclude with `(ev_zero (const_one hb0)).symm`.
+
+Rewrite using `[e0, e1]`.
+-/
 theorem axis_left {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) (f : PS k 2 d) :
     ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![comp1 φ (pt k d 0), pt k d 1] f) =
       ev (n := 1) ![comp1 φ (pt k d 0)] (ev (n := 1) ![pt k d 0, 0] f) := by
@@ -211,6 +302,11 @@ theorem axis_left {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) (f : P
     exact (ev_zero (const_one hb0)).symm
   rw [e0, e1]
 
+/- English proof (translation)
+Establish `hp0 : ∀ i, constantCoeff (pt k d (0 : Fin 2) i) = 0` using `fun i => const_pt 0 i`. Establish `hp1 : ∀ i, constantCoeff (pt k d (1 : Fin 2) i) = 0` using `fun i => const_pt 1 i`. Establish `hc1` using `const_comp1 hφ hp1`. Establish `e1 : (fun i => ev (n` using `1) ![pt k d 0, 0] (comp1 φ (pt k d (1 : Fin 2)) i)) = 0 := by`. Use function extensionality and compare the values at `i`.
+
+Use `show ev _ (ev ![pt k d 1] (φ i)) = 0`. Rewrite using `[ev_ev_one hp1 const_axis, axis_pt_one, ev_origin, hφ i, map_zero]`. Rewrite using `[ev_ev_two hp0 hc1 const_axis, axis_pt_zero, e1]`.
+-/
 theorem axis_right {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) (f : PS k 2 d) :
     ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 0, comp1 φ (pt k d 1)] f) =
       ev (n := 1) ![pt k d 0, 0] f := by
@@ -223,6 +319,11 @@ theorem axis_right {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) (f : 
     rw [ev_ev_one hp1 const_axis, axis_pt_one, ev_origin, hφ i, map_zero]
   rw [ev_ev_two hp0 hc1 const_axis, axis_pt_zero, e1]
 
+/- English proof (translation)
+Unfold `pt`. Distinguish the cases in `hc : j' = j ∧ i' = i`. Take `⟨rfl, rfl⟩` from `hc`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hc, pderiv_X_of_ne]`.
+
+Introduce `he`. Conclude with `hc ⟨congrArg Prod.fst he, congrArg Prod.snd he⟩`.
+-/
 theorem pderiv_pt (j j' : Fin n) (i i' : Fin d) :
     pderiv k (j, i) (pt k d j' i') = if j' = j ∧ i' = i then 1 else 0 := by
   unfold pt
@@ -233,6 +334,11 @@ theorem pderiv_pt (j j' : Fin n) (i i' : Fin d) :
     intro he
     exact hc ⟨congrArg Prod.fst he, congrArg Prod.snd he⟩
 
+/- English proof (translation)
+Use `show pderiv k (j, i) (ev ![pt k d j'] (φ l)) = _`. Rewrite using `[pderiv_ev (const_one (fun i => const_pt j' i))]`. Distinguish the cases in `hj : j' = j`. Substitute `hj` using the available equality. Simplify using `[pderiv_pt]`.
+
+Simplify using `[pderiv_pt, hj]`.
+-/
 theorem pderiv_comp1 (φ : Pt k 1 d) (j j' : Fin n) (i l : Fin d) :
     pderiv k (j, i) (comp1 φ (pt k d j') l) =
       if j' = j then ev ![pt k d j'] (pderiv k ((0 : Fin 1), i) (φ l)) else 0 := by
@@ -243,6 +349,9 @@ theorem pderiv_comp1 (φ : Pt k 1 d) (j j' : Fin n) (i l : Fin d) :
     simp [pderiv_pt]
   · simp [pderiv_pt, hj]
 
+/- English proof (translation)
+Rewrite using `[pderiv_ev (const_two (const_comp1 hφ (fun i => const_pt 0 i)) (fun i => const_pt 1 i))]`. Simplify using `[Fin.sum_univ_two, pderiv_comp1, pderiv_pt]`.
+-/
 theorem pderiv_left {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) (f : PS k 2 d)
     (i : Fin d) :
     pderiv k ((1 : Fin 2), i) (ev (n := 2) ![comp1 φ (pt k d 0), pt k d 1] f) =
@@ -250,6 +359,9 @@ theorem pderiv_left {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) (f :
   rw [pderiv_ev (const_two (const_comp1 hφ (fun i => const_pt 0 i)) (fun i => const_pt 1 i))]
   simp [Fin.sum_univ_two, pderiv_comp1, pderiv_pt]
 
+/- English proof (translation)
+Rewrite using `[pderiv_ev (const_two (fun i => const_pt 0 i) (const_comp1 hφ (fun i => const_pt 1 i)))]`. Simplify using `[Fin.sum_univ_two, pderiv_comp1, pderiv_pt]`.
+-/
 theorem pderiv_right {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) (f : PS k 2 d)
     (i : Fin d) :
     pderiv k ((1 : Fin 2), i) (ev (n := 2) ![pt k d 0, comp1 φ (pt k d 1)] f) =
@@ -258,6 +370,9 @@ theorem pderiv_right {φ : Pt k 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) (f 
   rw [pderiv_ev (const_two (fun i => const_pt 0 i) (const_comp1 hφ (fun i => const_pt 1 i)))]
   simp [Fin.sum_univ_two, pderiv_comp1, pderiv_pt]
 
+/- English proof (translation)
+Rewrite using `[ev_ev_one (fun i => const_pt 1 i) const_axis, axis_pt_one, ev_origin]`. Use `congr 1`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem axis_pderiv (φ : PS k 1 d) (i : Fin d) :
     ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1] (pderiv k ((0 : Fin 1), i) φ)) =
       C (coeff (Finsupp.single ((0 : Fin 1), i) 1) φ) := by
@@ -266,24 +381,36 @@ theorem axis_pderiv (φ : PS k 1 d) (i : Fin d) :
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]
   simp
 
+/- English proof (translation)
+Unfold `ev`. Conclude with `subst_sub (hasSubst_pts ha) f g`.
+-/
 private theorem ev_sub_of_constantCoeff_eq_zero {a : Fin m → Pt k n d}
     (ha : ∀ j i, constantCoeff (a j i) = 0) (f g : PS k m d) :
     ev a (f - g) = ev a f - ev a g := by
   unfold ev
   exact subst_sub (hasSubst_pts ha) f g
 
+/- English proof (translation)
+Unfold `ev`. Conclude with `subst_mul (hasSubst_pts ha) f g`.
+-/
 private theorem ev_mul_of_constantCoeff_eq_zero {a : Fin m → Pt k n d}
     (ha : ∀ j i, constantCoeff (a j i) = 0) (f g : PS k m d) :
     ev a (f * g) = ev a f * ev a g := by
   unfold ev
   exact subst_mul (hasSubst_pts ha) f g
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[← substAlgHom_apply (hasSubst_pts ha), map_neg, substAlgHom_apply]`.
+-/
 private theorem ev_neg_of_constantCoeff_eq_zero {a : Fin m → Pt k n d}
     (ha : ∀ j i, constantCoeff (a j i) = 0) (f : PS k m d) :
     ev a (-f) = -ev a f := by
   unfold ev
   rw [← substAlgHom_apply (hasSubst_pts ha), map_neg, substAlgHom_apply]
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[← substAlgHom_apply (hasSubst_pts ha), map_sum]`. Simplify using `only [substAlgHom_apply]`.
+-/
 private theorem ev_finset_sum_of_constantCoeff_eq_zero {a : Fin m → Pt k n d}
     (ha : ∀ j i, constantCoeff (a j i) = 0) {ι : Type} (s : Finset ι) (F : ι → PS k m d) :
     ev a (∑ j ∈ s, F j) = ∑ j ∈ s, ev a (F j) := by
@@ -291,6 +418,9 @@ private theorem ev_finset_sum_of_constantCoeff_eq_zero {a : Fin m → Pt k n d}
   rw [← substAlgHom_apply (hasSubst_pts ha), map_sum]
   simp only [substAlgHom_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[coeff_pderiv, coeff_map, coeff_map, coeff_pderiv, map_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem pderiv_map_algebraMap' {R : Type} [CommRing R] [Algebra R k] {σ : Type} (s : σ)
     (W : MvPowerSeries σ R) :
     pderiv k s (map (algebraMap R k) W) = map (algebraMap R k) (pderiv R s W) := by
@@ -298,12 +428,20 @@ private theorem pderiv_map_algebraMap' {R : Type} [CommRing R] [Algebra R k] {σ
   rw [coeff_pderiv, coeff_map, coeff_map, coeff_pderiv, map_mul]
   simp
 
+/- English proof (translation)
+Unfold `ev`. Conclude with `subst_formalExp (hasSubst_pts ha) hf`.
+-/
 private theorem ev_formalExp_of_constantCoeff_eq_zero [Algebra ℚ k]
     {a : Fin m → Pt k n d} (ha : ∀ j i, constantCoeff (a j i) = 0) {f : PS k m d}
     (hf : constantCoeff f = 0) : ev a (formalExp f) = formalExp (ev a f) := by
   unfold ev
   exact subst_formalExp (hasSubst_pts ha) hf
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[map_subst (hasSubst_pts const_axis)]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Take `⟨j, l⟩` from `q`.
+
+Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+-/
 private theorem ev_axis_map_algebraMap {R : Type} [CommRing R] [Algebra R k]
     (W : PS R 2 d) :
     ev (n := 1) ![pt k d 0, 0] (map (algebraMap R k) W) =
@@ -317,6 +455,19 @@ private theorem ev_axis_map_algebraMap {R : Type} [CommRing R] [Algebra R k]
 
 end Ev
 
+/- English proof (translation)
+Introduce `R _ d O _ _ k _ _ _ B h hh a i`. Establish `hp0 : ∀ l, constantCoeff (pt k d (0 : Fin 2) l) = 0` using `fun l => const_pt 0 l`. Establish `hp1 : ∀ l, constantCoeff (pt k d (1 : Fin 2) l) = 0` using `fun l => const_pt 1 l`. Establish `hq0 : ∀ l, constantCoeff (pt k d (0 : Fin 1) l) = 0` using `fun l => const_pt 0 l`. Establish `hact : ∀ (b : O) (l : Fin d), constantCoeff (B.actK k b l) = 0`.
+
+Introduce `b l`. Use `show constantCoeff (map (algebraMap R k) (B.A.act b l)) = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, B.A.const b l, map_zero]`. Establish `hb0` using `const_one (const_comp1 (hact a) hq0)`. Establish `hc1` using `const_two (const_comp1 (hact a) hp0) hp1`.
+
+Establish `hc2` using `const_two hp0 (const_comp1 (hact (star a)) hp1)`. Establish `hQ0 : constantCoeff (ev (n` using `2) ![comp1 (B.actK k a) (pt k d 0), pt k d 1] h - ev (n := 2) ![pt k d 0, comp1 (B.actK k (star a)) (pt k d 1)] h) = 0 := by`. Rewrite using `[map_sub, constantCoeff_ev hc1, constantCoeff_ev hc2, sub_self]`. Establish `hA : map (algebraMap R k) (B.ad a) = formalExp (ev (n` using `2) ![comp1 (B.actK k a) (pt k d 0), pt k d 1] h - ev (n := 2) ![pt k d 0, comp1 (B.actK k (star a)) (pt k d 1)] h) := hh.ad a`. Establish `hEQ : ev (n` using `1) ![pt k d 0, 0] (ev (n := 2) ![comp1 (B.actK k a) (pt k d 0), pt k d 1] h - ev (n := 2) ![pt k d 0, comp1 (B.actK k (star a)) (pt k d 1)] h) = 0 := by`.
+
+Rewrite using `[ev_sub_of_constantCoeff_eq_zero const_axis, axis_left (hact a), axis_right (hact (star a)), hh.ax1, ev_zero hb0, sub_self]`. Establish `hE : ev (n` using `1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), i) (map (algebraMap R k) (B.ad a))) = ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), i) (ev (n := 2) ![comp1 (B.actK k a) (pt k d 0), pt k d 1] h - ev (n := 2) ![pt k d 0, comp1 (B.actK k (star a)) (pt k d 1)] h)) := by`. Rewrite using `[hA, pderiv_formalExp hQ0, ev_mul_of_constantCoeff_eq_zero const_axis, ev_formalExp_of_constantCoeff_eq_zero const_axis hQ0, hEQ, formalExp_zero, one_mul]`. Establish `hsg : ∀ j, ev (n` using `1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), j) h) = -sgOf k h j := by`. Introduce `j`.
+
+Simplify using `only [sgOf, neg_neg]`. Establish `key : ev (n` using `1) ![comp1 (B.actK k a) (pt k d 0)] (sgOf k h i) - ∑ j, sgOf k h j * C (dAct k B (star a) j i) = -ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), i) (map (algebraMap R k) (B.ad a))) := by`. Rewrite using `[hE, map_sub, ev_sub_of_constantCoeff_eq_zero const_axis, pderiv_left (hact a), pderiv_right (hact (star a)), axis_left (hact a), ev_finset_sum_of_constantCoeff_eq_zero const_axis]`. Simplify using `only [ev_mul_of_constantCoeff_eq_zero const_axis, axis_right (hact (star a)), axis_pderiv, hsg, ev_neg_of_constantCoeff_eq_zero hb0, dAct, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[key, pderiv_map_algebraMap', ev_axis_map_algebraMap]`. Introduce `x`. Conclude with `RingHom.mem_range.mpr ⟨-coeff x (ev (n := 1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), i) (B.ad a))), by simp [coeff_map]⟩`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h → ∀ (a : O) (i : Fin d), IntAA (R := R) k (ev (n := 1) ![comp1 (B.actK k a) (pt k d 0)] (sgOf k h i) - ∑ j, sgOf k h j * C (dAct k B (star a) j i)) := by
   intro R _ d O _ _ k _ _ _ B h hh a i
   have hp0 : ∀ l, constantCoeff (pt k d (0 : Fin 2) l) = 0 := fun l => const_pt 0 l

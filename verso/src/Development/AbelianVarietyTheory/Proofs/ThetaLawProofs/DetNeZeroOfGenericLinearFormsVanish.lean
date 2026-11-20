@@ -5,6 +5,29 @@ namespace GlobalTheory
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `k K _ _ _ F g N T e D hT hF he hD ⟨j0, hj0⟩ ⟨c, hc, hcd⟩ hTe`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by have := j0.pos; omega⟩`. Set `η : Fin (M + 1) → F` to `fun j => ⟨e j / e j0, F.div_mem (he j) (he j0)⟩`. Set `D' : Fin g → Fin (M + 1) → F` to `fun a j => ⟨D a j, hD a j⟩`. Set `b : Fin g × Fin (M + 1) → MvPolynomial (Fin g × Fin M) F` to `fun p => Fin.insertNth (α := fun _ => MvPolynomial (Fin g × Fin M) F) j0 (-∑ l : Fin M, X (p.1, l) * C (η (j0.succAbove l))) (fun l => X (p.1, l)) p.2`.
+
+Set `χ : (Fin g × Fin (M + 1) → K) → (MvPolynomial (Fin g × Fin M) F →ₐ[F] K)` to `fun v => aeval fun q => v (q.1, j0.succAbove q.2)`. Establish `hb : ∀ v : Fin g × Fin (M + 1) → K, (∀ i, ∑ j, v (i, j) * e j = 0) → ∀ p, χ v (b p) = v p`. Introduce and unpack `v hv ⟨i, j⟩`. Use `Fin.succAboveCases j0 ?_ (fun l => ?_) j` and prove the remaining obligations. Establish `h1` using `hv i`.
+
+Rewrite `h1` using `[Fin.sum_univ_succAbove _ j0]`. Establish `h2 : v (i, j0) = -∑ l : Fin M, v (i, j0.succAbove l) * (e (j0.succAbove l) / e j0)`. Simplify using `only [← mul_div_assoc, ← Finset.sum_div]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`.
+
+Rewrite using `[h2]`. Simplify using `[b, χ, η]`. Simplify using `[b, χ]`. Set `Δ : MvPolynomial (Fin g × Fin M) F` to `(Matrix.of fun i a => ∑ j, b (i, j) * C (D' a j)).det`. Establish `hΔ : ∀ v : Fin g × Fin (M + 1) → K, (∀ i, ∑ j, v (i, j) * e j = 0) → χ v Δ = (Matrix.of fun i a => ∑ j, v (i, j) * D a j).det`.
+
+Introduce `v hv`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `i a`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, hb v hv]`.
+
+Simplify using `[χ, D']`. Establish `hΔ0 : Δ ≠ 0`. Introduce `h`. Apply `hcd` to reduce the goal to its premises. Rewrite using `[← hΔ (fun p => c p.1 p.2) hc, h, map_zero]`.
+
+Establish `htr : Algebra.trdeg k (MvPolynomial (Fin g × Fin M) F) ≤ Cardinal.mk (Fin g × Fin (M + 1))`. Establish `: FaithfulSMul F (MvPolynomial (Fin g × Fin M) F)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (MvPolynomial.C_injective _ _)`. Rewrite using `[← trdeg_add_eq k F, MvPolynomial.trdeg_of_isDomain, Cardinal.lift_id, Cardinal.mk_fintype, Cardinal.mk_fintype]`. Use `(add_le_add_left hF _).trans ?_` and prove the remaining obligations. Use `norm_cast`.
+
+Simplify using `only [Fintype.card_prod, Fintype.card_fin]`. Apply `le_of_eq` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree. Establish `hχ : Function.Injective (χ T).toRingHom`. Use `injective_of_injective_comp_aeval_of_trdeg_le (k := k) b htr _ ?_` and prove the remaining obligations.
+
+Establish `: (fun q : MvPolynomial (Fin g × Fin (M + 1)) k => (χ T).toRingHom (aeval b q)) = aeval T`. Establish `h3 : ((χ T).restrictScalars k).comp (aeval b) = aeval T`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[hb T hTe]`.
+
+Use function extensionality and compare the values at `q`. Conclude with `DFunLike.congr_fun h3 q`. Rewrite using `[this]`. Conclude with `hT`. Rewrite using `[← hΔ T hTe]`.
+
+Introduce `h`. Conclude with `hΔ0 (hχ (by simpa using h))`.
+-/
 theorem det_ne_zero_of_generic_linear_forms_vanish :
     ∀ (k K : Type) [Field k] [Field K] [Algebra k K] (F : IntermediateField k K) (g N : ℕ)
     (T : Fin g × Fin N → K) (e : Fin N → K) (D : Fin g → Fin N → K),

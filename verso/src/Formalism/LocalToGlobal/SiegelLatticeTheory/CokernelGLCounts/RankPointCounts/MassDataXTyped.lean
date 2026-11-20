@@ -28,6 +28,13 @@ def STypIdx : Prop :=
       ((glkC D.R.k (gOf p) : ℕ) : ℝ) / ((ukC D.R.k (gOf p) : ℕ) : ℝ) *
         ((X.measW u).μSv p.1 (Subtype.val ⁻¹' compSet X.B.I.cm.sig X.B.I.J (K2u X hb u) p.1)).toReal
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `p`. Establish `hT : IsTyped X.B.I.F (D.host.g 0) (D.host.g 1) p`. Unfold `typSet at hp`. Use `split_ifs at hp with hfin`. Simplify using `using hp`.
+
+Simplify using `at hp`. Unfold `gAt`. Use `split_ifs with h0`. Conclude with `h0`. Unfold `IsTyped at hT`.
+
+Conclude with `hT.resolve_left h0`.
+-/
 theorem gAt_mem {D : D7} (X : HidaSetting D) (p : TypX X) : ((gAt X p.1 : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal := by
   obtain ⟨p, hp⟩ := p
   have hT : IsTyped X.B.I.F (D.host.g 0) (D.host.g 1) p := by
@@ -57,6 +64,11 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubg
   (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
   (i0 i0' : ∀ _ : NumberField.InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
 
+/- English proof (translation)
+Introduce `hX _hP hL hL' hTF p`. Establish `hlat : ∃ L : Submodule (𝓞 X.B.I.E) (Fin X.B.I.n → X.B.I.E), Submodule.IsLattice X.B.I.E L ∧ (L : Set (Fin X.B.I.n → X.B.I.E)) = (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))` using `⟨X.B.I.L, ⟨X.B.I.L_fg, X.B.I.L_span⟩, rfl⟩`. Establish `hTyp : TypAt X p.1` using `p.2`. Use `⟨?_, hI X hb u p hX.1 (hL p.1).2.1, hI X hb u' p hX.1 (hL' p.1).2.1⟩` and prove the remaining obligations. Establish `h` using `locMassTyp X.B.I.cm.sig X.B.I.J ψ p.1 (gAt X p.1) (frameOf X u) (frameOf X u') (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) ⟨MassDataVolumesW.stepCM X, MassDataVolumesW.stepHerm X, hψ, hψs⟩ _ _ (MassDataLevelSSteps.FrameW.frameOf_isStd X u) (MassDataLevelSSteps.FrameW.frameOf_isStd X …`.
+
+Use `show MX X u u' ψ p.1 / localVolumeUnit X ψ p.1 = _`. Unfold `MX localVolumeUnit OmX`. Rewrite using `[if_pos hTyp, if_pos hTyp]`. Conclude with `h`.
+-/
 theorem inTypedC_loc (hSD : SDLocX) (hUn : UnramTypX) (hI : STypIdx) (hψ : IsCharAF X.B.I.F ψ) (hψs : IsStdChar ψ) :
     InTypedC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq := by
   intro hX _hP hL hL' hTF p
@@ -76,10 +88,16 @@ theorem inTypedC_loc (hSD : SDLocX) (hUn : UnramTypX) (hI : STypIdx) (hψ : IsCh
   rw [if_pos hTyp, if_pos hTyp]
   exact h
 
+/- English proof (translation)
+Introduce `D T u u' X0 sd C Th Q i0 i0' νq`. Conclude with `inTypedC_loc _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hSD hUn hI T.ψ_char T.ψ_std`.
+-/
 theorem typedAll_of (hSD : SDLocX) (hUn : UnramTypX) (hI : STypIdx) : Formalism.L2.SG.PoincareAmplitudeLowerBounds.TypedAll := by
   intro D T u u' X0 sd C Th Q i0 i0' νq
   exact inTypedC_loc _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hSD hUn hI T.ψ_char T.ψ_std
 
+/- English proof (translation)
+The claim follows from `typedAll_of (fun X v => Formalism.L2.SG.Pf.MassDataX.SDL.sdLocX_holds X v) (fun X v _ => Formalism.L2.SG.Pf.NcX.OmVSt.unramAt_of_cm X.B.I.cm v) hI`.
+-/
 theorem typedAll_of_idx (hI : STypIdx) : Formalism.L2.SG.PoincareAmplitudeLowerBounds.TypedAll :=
   typedAll_of (fun X v => Formalism.L2.SG.Pf.MassDataX.SDL.sdLocX_holds X v)
     (fun X v _ => Formalism.L2.SG.Pf.NcX.OmVSt.unramAt_of_cm X.B.I.cm v) hI

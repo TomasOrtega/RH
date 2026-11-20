@@ -32,6 +32,11 @@ def EmbedNonDeg : Prop := ∀ (A : Type) [CommRing A] [IsLocalRing A] {Z : Schem
 def EmbedAffine : Prop := ∀ (A : Type) [CommRing A] [IsLocalRing A] {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of A)),
   IsIntegral Z → (rA p ⊤).IsIntegral → IsAffineOpen (⊤ : Z.Opens) → Concl p
 
+/- English proof (translation)
+Introduce `A _ _ Z p hIL hZ`. Establish `hI : IsIntegral Z` using `hZ.1`. Establish `hTop` using `hT A p hIL`. Break down `hL A p hIL hZ with h | h` into its components or cases. Conclude with `hE A p hI hTop h`.
+
+Conclude with `hN A p hI hTop h`.
+-/
 theorem GeoData_of (hT : TopInt) (hL : LineOpens) (hN : EmbedNonDeg) (hE : EmbedAffine) : GeoData := by
   intro A _ _ Z p hIL hZ
   have hI : IsIntegral Z := hZ.1

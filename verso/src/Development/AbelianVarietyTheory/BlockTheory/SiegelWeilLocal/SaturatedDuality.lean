@@ -27,6 +27,11 @@ def StepDuality : Prop :=
       Formalism.HN.htQ (bas I) (frm I x) (perpIn I x S) (perpIn I x S') *
         Formalism.HN.htQ (bas I) (frm I x) S' S = 1
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 fun y hy => hy.1`. Introduce `y hy`. Use `Submodule.subset_span ⟨hy, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[(Submodule.mem_bot _).1 hs]`.
+
+Simplify using `[Formalism.UG.hform]`.
+-/
 example (I : AutInst) (x : I.GA) : perpIn I x ⊥ = lamX I x := by
   apply le_antisymm
   · exact Submodule.span_le.2 fun y hy => hy.1
@@ -35,6 +40,9 @@ example (I : AutInst) (x : I.GA) : perpIn I x ⊥ = lamX I x := by
     rw [(Submodule.mem_bot _).1 hs]
     simp [Formalism.UG.hform]
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ hy => ⟨hy.1, fun s hs => hy.2 s (h hs)⟩`.
+-/
 example (I : AutInst) (x : I.GA) (S S' : Submodule (𝓞 I.E) (Fin I.n → I.E)) (h : S ≤ S') :
     perpIn I x S' ≤ perpIn I x S :=
   Submodule.span_mono fun _ hy => ⟨hy.1, fun s hs => hy.2 s (h hs)⟩

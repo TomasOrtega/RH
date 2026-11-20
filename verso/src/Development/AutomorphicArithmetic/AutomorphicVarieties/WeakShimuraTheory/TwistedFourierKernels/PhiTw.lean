@@ -4,6 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.H5 GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T c' h K X B β₀ hb n φ φ' hφ hφ'`. Establish `hβ₀ : ∀ x, β₀ (K.V.pr x) = K.β x` using `fun x => DFunLike.congr_fun hb x`. Break down `subsingleton_or_nontrivial X.B with hs | hs` into its components or cases. Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun _ _ _ => Subsingleton.elim _ _⟩`. Use `haveI : Nontrivial X.A := ⟨⟨0, 1, fun h0 => zero_ne_one (X.inj (by simpa using h0))⟩⟩`.
+
+Establish `hd : ∀ y, (X.cp y).natDegree = 4` using `fun y => by`. Rewrite using `[← natDegree_map_eq_of_injective X.inj, X.cp_map, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hsurj : Function.Surjective K.V.pr` using `(prFacts K.V).1.surjective`. Establish `hp : ∀ x, ((W.pushCh (algebraMap c'.O X.B) (β₀ ^ n)) x : X.B) = (algebraMap c'.O X.B (β₀ x : c'.O)) ^ n`. Introduce `x`.
+
+Simplify using `[W.pushCh]`. Prove the components needed by the constructor for the conclusion. Introduce `g i hi`. Take `⟨x, rfl⟩` from `hsurj g`. Establish `e0` using `hφ.1 x`.
+
+Establish `e1` using `hφ'.1 x`. Simplify using `only [W.GDet.lam, map_mul, map_pow, map_neg, map_one]`. Rewrite using `[← coeff_map, ← coeff_map, e0, e1, coeff_scaleRoots, coeff_scaleRoots, hd, Nat.sub_sub_self hi]`. Use `erw [hp, hβ₀]`. Simplify using `only [pow_zero, mul_one, map_mul, map_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `v i g`. Take `⟨g, hg⟩` from `g`. Establish `e0` using `hφ.2 v i ⟨g, hg⟩`. Establish `e1` using `hφ'.2 v i ⟨g, hg⟩`.
+
+Use `erw [e0, e1, hp]`. Establish `hv : β₀ (K.V.pr g) = K.β g` using `hβ₀ g`. Use `erw [hv]`. Simplify using `only [pow_zero, mul_one, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Ws.H5.phiTw :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (B : W.UniversalOrdinaryDeterminantRing K.r) (β₀ : K.V.frame.G₀ →* c'.Oˣ), β₀.comp K.V.pr = K.β → ∀ (n : ℕ) (φ φ' : B.B →ₐ[c'.O] X.B), K.IsPhi X 0 B φ → K.IsPhi X n B φ' → TwMap B (φ : B.B →+* X.B) (φ' : B.B →+* X.B) (W.pushCh (algebraMap c'.O X.B) (β₀ ^ n)) := by
   intro Ω _ _ _ l _ c D T c' h K X B β₀ hb n φ φ' hφ hφ'

@@ -15,13 +15,22 @@ namespace GlobalTheory.ThetaExpandInv
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, Matrix.map_apply]`.
+-/
 theorem incM_add {m k : Type} (a b : Matrix m k E) : incM F (a + b) = incM F a + incM F b := by
   ext i j; simp [incM, Matrix.map_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply, map_mul]`.
+-/
 theorem incM_vecMulVec {m k : ℕ} (ξ : Fin m → E) (y : Fin k → E) :
     incM F (Matrix.vecMulVec ξ y) = Matrix.vecMulVec (incV F ξ) (incV F y) := by
   ext i j; simp [incM, incV, Matrix.vecMulVec_apply, map_mul]
 
+/- English proof (translation)
+Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[h1, Matrix.one_mul]`. Unfold `incM`. Rewrite using `[Matrix.map_mul, Matrix.transpose_map]`.
+-/
 theorem incM_mul_transpose {n d d₁ : ℕ} (U : Matrix (Fin n) (Fin d₁) E) (ι : Matrix (Fin d) (Fin d₁) E) :
     incM F (U * ιᵀ) = incM F (1 : Matrix (Fin n) (Fin n) E) * incM F U * (incM F ι)ᵀ := by
   have h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 :=
@@ -32,6 +41,13 @@ theorem incM_mul_transpose {n d d₁ : ℕ} (U : Matrix (Fin n) (Fin d₁) E) (�
 
 variable {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+Take `⟨y₁, z₁, h₁⟩` from `hM.rat a`. Take `⟨y₂, z₂, h₂⟩` from `hM.rat b`. Establish `h2 : ⅟(2 : AF F) = algebraMap F (AF F) (1 / 2)`. Apply `invOf_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]`.
+
+Evaluate the numerical expressions. Unfold `Darboux.rho`. Rewrite using `[incM_add, map_add, GlobalTheory.ThetaQuasiRat.schr_schr, h₁, h₂]`. Establish `hph : ψ (⅟(2 : AF F) * ((fun i => algebraMap F (AF F) (y₁ i)) ⬝ᵥ (fun i => algebraMap F (AF F) (z₂ i)) - (fun i => algebraMap F (AF F) (y₂ i)) ⬝ᵥ (fun i => algebraMap F (AF F) (z₁ i)))) = 1`. Establish `e : ⅟(2 : AF F) * ((fun i => algebraMap F (AF F) (y₁ i)) ⬝ᵥ (fun i => algebraMap F (AF F) (z₂ i)) - (fun i => algebraMap F (AF F) (y₂ i)) ⬝ᵥ (fun i => algebraMap F (AF F) (z₁ i))) = algebraMap F (AF F) (1 / 2 * (y₁ ⬝ᵥ z₂ - y₂ ⬝ᵥ z₁))`.
+
+Simplify using `only [dotProduct, map_mul, map_sub, map_sum, h2]`. Rewrite using `[e]`. Conclude with `hψ.2.1 _`. Simplify using `only [hph, one_smul]`.
+-/
 theorem rho_rat_rho_rat (M : Model σ X W) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (hM : M.IsGood ψ)
     (a b : Matrix (Fin n) (Fin d) E) (Φ : Fn F n d) :
     M.co.rho ψ (incM F a) (M.co.rho ψ (incM F b) Φ) = M.co.rho ψ (incM F (a + b)) Φ := by
@@ -52,6 +68,9 @@ theorem rho_rat_rho_rat (M : Model σ X W) {ψ : AddChar (AF F) ℂ} (hψ : IsSt
     rw [e]; exact hψ.2.1 _
   simp only [hph, one_smul]
 
+/- English proof (translation)
+Take `⟨y, z, h⟩` from `hM.rat a`. Unfold `Darboux.rho`. Rewrite using `[h]`. Conclude with `GlobalTheory.ThetaQuasiRat.thetaSum_schr_rat F ψ hψ.2.1 y z Φ`.
+-/
 theorem thetaSum_rho_rat (M : Model σ X W) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (hM : M.IsGood ψ)
     (a : Matrix (Fin n) (Fin d) E) (Φ : Fn F n d) : thetaSum F (M.co.rho ψ (incM F a) Φ) = thetaSum F Φ := by
   obtain ⟨y, z, h⟩ := hM.rat a
@@ -59,6 +78,17 @@ theorem thetaSum_rho_rat (M : Model σ X W) {ψ : AddChar (AF F) ℂ} (hψ : IsS
   rw [h]
   exact GlobalTheory.ThetaQuasiRat.thetaSum_schr_rat F ψ hψ.2.1 y z Φ
 
+/- English proof (translation)
+Establish `hrow : ∀ r : Fin d → E, ∃ (s t : E) (u : Fin d₁ → E), r = s • H'.x + H'.ι *ᵥ u + t • H'.y`. Set `S : Submodule E (Fin d → E)` to `{ carrier := {r | ∃ (s t : E) (u : Fin d₁ → E), r = s • H'.x + H'.ι *ᵥ u + t • H'.y} add_mem' := by`. Introduce and unpack `_ _ ⟨s, t, u, rfl⟩ ⟨s', t', u', rfl⟩`. Conclude with `⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add]; module⟩`. Use the proof step `zero_mem' := ⟨0, 0, 0, by simp⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨s, t, u, rfl⟩`. Conclude with `⟨c * s, c * t, c • u, by rw [Matrix.mulVec_smul]; module⟩ }`. Establish `hle : Submodule.span E (W.L : Set (Fin d → E)) ≤ S`. Use `Submodule.span_le.mpr fun z hz => ?_` and prove the remaining obligations.
+
+Take `⟨s, t, u, -, -, -, h⟩` from `hH.split z hz`. Conclude with `⟨s, t, u, h⟩`. Rewrite `hle` using `[Submodule.IsLattice.span_eq_top]`. Introduce `r`. Conclude with `hle (Submodule.mem_top (x := r))`.
+
+Use `choose s t u hu using fun i => hrow (x i)`. Use `⟨s, t, Matrix.of fun i k => u i k, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h` using `congrFun (hu i) j`. Rewrite using `[h]`.
+
+Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+-/
 theorem exists_split {d₁ : ℕ} {W₁ : Spc F E d₁} {B : Base F E} {H' : Plane E d d₁} {i₀ i₁ : ℕ}
     (hH : H'.IsAdapted σ B W W₁ i₀ i₁) (hL : W.L.IsLattice E) (x : Matrix (Fin n) (Fin d) E) :
     ∃ (s t : Fin n → E) (U : Matrix (Fin n) (Fin d₁) E),
@@ -90,6 +120,13 @@ theorem exists_split {d₁ : ℕ} {W₁ : Spc F E d₁} {B : Base F E} {H' : Pla
   congr 2
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hM₁ e₀ he hB hM hsig x Ψ hΨ`. Take `⟨r, s, r', s', -, hW⟩` from `hsig`. Establish `hψ : IsStd B.ψ` using `hB.std`. Take `⟨a, t, U, hx⟩` from `exists_split hH hW.lat x`. Establish `key : ∀ ξ : Fin n → E, thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) (M.co.rho B.ψ (incM F x) Ψ))) = thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F (ξ + t)) (incV F H'.y)) Ψ))`.
+
+Introduce `ξ`. Establish `hsum : Matrix.vecMulVec ξ H'.y + x = Matrix.vecMulVec a H'.x + (U * H'.ιᵀ + Matrix.vecMulVec (ξ + t) H'.y)`. Rewrite using `[hx, Matrix.add_vecMulVec]`. Normalize the expressions using the abelian group laws. Establish `hiso : incM F (Matrix.vecMulVec a H'.x) ∈ (iso0 n H' : Set (Matrix (Fin n) (Fin d) (AE F E)))` using `⟨incV F a, incM_vecMulVec a H'.x⟩`.
+
+Rewrite using `[← incM_vecMulVec, rho_rat_rho_rat M hψ hM, hsum, ← rho_rat_rho_rat M hψ hM, he.inv _ hiso _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ Ψ hΨ), ← rho_rat_rho_rat M hψ hM, incM_mul_transpose, he.Heisenberg₂ _ _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ Ψ hΨ), thetaSum_rho_ …`. Rewrite using `[tsum_congr key]`. Conclude with `(Equiv.addRight t).tsum_eq (fun ξ : Fin n → E => thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) Ψ)))`.
+-/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),
     H'.IsAdapted σ B W W₁ i₀ i₁ → M₁.IsGood B.ψ → ∀ (e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁), IsEv B M M₁ 1 H'.ι (iso0 n H') e₀ → B.IsGood σ → M.IsGood B.ψ → (∃ r s r' s' : ℕ, X.IsHerm σ B r s ∧ W.IsSkew σ B r' s') →

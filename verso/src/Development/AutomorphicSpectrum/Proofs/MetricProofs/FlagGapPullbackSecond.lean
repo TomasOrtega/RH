@@ -16,6 +16,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {y : (Σ k, ι k) → Φ} {Ψ : Type} {N j n : ℕ}
   {Kk : Type} [Fintype Kk] {ιk : Kk → Type} [∀ k, Fintype (ιk k)]
 
+/- English proof (translation)
+Take `⟨hbm, hcov, -, hall⟩` from `hS`. Take `⟨z₁, -, h1, h2⟩` from `hall x`. Establish `e : basePart M.blk z = basePart M.blk z₁`. Use function extensionality and compare the values at `q`. Take `⟨r, hr⟩` from `hbm.2.2.2 ⟨q.1.1, q.2⟩ (hcov _ (Or.inl q.1.2))`.
+
+Establish `h3 : z (v r) = z₁ (v r)` using `congrFun (hz.trans h1.symm) r`. Rewrite `h3` using `[hr]`. Conclude with `h3`. Rewrite using `[e]`. Conclude with `h2`.
+-/
 theorem sameOrbit_basePart {M : FlagModel y Ψ N j} {BM : BaseMetric M n} {p : Ψ × Fin N} {κ : Kk → K}
     {v : (Σ k, ιk k) → (Σ k, ι k)} {e : ℕ} {R : AnLogRes (mCoordIdeal (y ∘ v)) ⊤ e} {pr : R.X → BM.Rb.X}
     (hS : IsStepHyp M BM p κ v R pr) (x : R.X) {z : (Σ k, ι k) → ℂ} (hz : z ∘ v = R.lift x x) :
@@ -31,6 +36,9 @@ theorem sameOrbit_basePart {M : FlagModel y Ψ N j} {BM : BaseMetric M n} {p : �
   rw [e]
   exact h2
 
+/- English proof (translation)
+Take `⟨c₁, hc₁, rfl⟩` from `h₁`. Take `⟨c₂, hc₂, rfl⟩` from `h₂`. Use `⟨fun k => c₁ k / c₂ k, fun k => div_ne_zero (hc₁ k) (hc₂ k), fun q => ?_⟩` and prove the remaining obligations. Use `hc₂ q.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_base_const {L : Type} {μ : L → Type} {b₁ b₂ b : (Σ k, μ k) → ℂ} (h₁ : SameOrbit b₁ b)
     (h₂ : SameOrbit b₂ b) : ∃ c : L → ℂ, (∀ k, c k ≠ 0) ∧ ∀ q, b₁ q = c q.1 * b₂ q := by
   obtain ⟨c₁, hc₁, rfl⟩ := h₁
@@ -39,6 +47,11 @@ theorem exists_base_const {L : Type} {μ : L → Type} {b₁ b₂ b : (Σ k, μ 
   have := hc₂ q.1
   field_simp
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `hbm.2.2.2 ⟨κ k, i⟩ ⟨k, rfl⟩`. Establish `h1 : κ r.1 = κ k` using `by rw [← hbm.2.2.1 r, hr]`. Establish `h2 : r.1 = k` using `hbm.1 h1`. Take `⟨r1, m⟩` from `r`. Take `rfl : r1 = k` from `h2`.
+
+Conclude with `⟨m, hr⟩`.
+-/
 theorem exists_coord {κ : Kk → K} {v : (Σ k, ιk k) → (Σ k, ι k)} (hbm : IsBlockMap κ v) (k : Kk) (i : ι (κ k)) :
     ∃ m : ιk k, v ⟨k, m⟩ = ⟨κ k, i⟩ := by
   obtain ⟨r, hr⟩ := hbm.2.2.2 ⟨κ k, i⟩ ⟨k, rfl⟩
@@ -48,6 +61,23 @@ theorem exists_coord {κ : Kk → K} {v : (Σ k, ιk k) → (Σ k, ι k)} (hbm :
   obtain rfl : r1 = k := h2
   exact ⟨m, hr⟩
 
+/- English proof (translation)
+Establish `so` using `sameOrbit_basePart hS x hz`. Establish `so'` using `sameOrbit_basePart hS x' hz'`. Rewrite `so'` using `[← hpr]`. Take `⟨cb, hcb, hcbq⟩` from `exists_base_const so so'`. Take `⟨hbm, hcov, -, -⟩` from `hS`.
+
+Establish `e1 : ∀ r, z (v r) = R.lift x x r` using `congrFun hz`. Establish `e2 : ∀ r, z' (v r) = R.lift x' x' r` using `congrFun hz'`. Establish `ha : ∃ a : ℂ, a ≠ 0 ∧ ∀ k, M.blk p = some k → ∀ m : ι k, z ⟨k, m⟩ = a * z' ⟨k, m⟩`. Break down `hp : M.blk p with _ | k₀` into its components or cases. Conclude with `⟨1, one_ne_zero, fun k hk => by simp at hk⟩`.
+
+Take `⟨k', rfl⟩` from `hcov k₀ (Or.inr hp)`. Take `⟨i, hi⟩` from `hzm.1 (κ k')`. Take `⟨m, hm⟩` from `exists_coord hbm k' i`. Take `⟨a, ha⟩` from `hblk k' m hp`. Use `⟨a, fun h0 => hi ?_, fun k hk m' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hm, e1, ha, h0, zero_mul]`. Take `rfl : κ k' = k` from `Option.some.inj hk`. Take `⟨m'', hm''⟩` from `exists_coord hbm k' m'`. Rewrite using `[← hm'', e1, e2, ha]`. Take `⟨a, ha0, ha⟩` from `ha`.
+
+Set `c : K → ℂ` to `fun k => if h : ∀ p', M.blk p' ≠ some k then cb ⟨k, h⟩ else if M.blk p = some k then a else 1`. Establish `hc : ∀ k, c k ≠ 0` using `fun k => by`. Simplify using `only [c]`. Use `split_ifs`. Conclude with `hcb _`.
+
+Conclude with `ha0`. Conclude with `one_ne_zero`. Establish `hT` using `GlobalTheory.CompanionTheory.Ar.PB.StepW.TorusAct.main K ι Φ y z' c hc`. Establish `h1 : stepGap M BM p (fun q => c q.1 * z' q) = stepGap M BM p z'` using `GlobalTheory.T.flag_gap_torus_invariant K ι Φ y Ψ N j M n BM p z' c hc hz'm.1`. Rewrite using `[← h1]`.
+
+Use `GlobalTheory.T.flag_gap_same_base_orbit K ι Φ y Ψ N j M n BM p (pr x) z _ hb hzm (hT.2 hz'm).1 so ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Establish `: c q.1.1 = cb q.1` using `dif_pos q.1.2`. Use `show basePart M.blk z q = c q.1.1 * z' ⟨q.1.1, q.2⟩`. Rewrite using `[this, hcbq]`.
+
+Both sides reduce to the same expression. Introduce `k hk m`. Establish `: c k = a` using `(dif_neg fun h => h p hk).trans (if_pos hk)`. Use `show z ⟨k, m⟩ = c k * z' ⟨k, m⟩`. Rewrite using `[this, ha k hk]`.
+-/
 theorem stepGap_eq {M : FlagModel y Ψ N j} [Fintype Ψ] [DecidableEq Ψ] {BM : BaseMetric M n} {p : Ψ × Fin N} {κ : Kk → K}
     {v : (Σ k, ιk k) → (Σ k, ι k)} {e : ℕ} {R : AnLogRes (mCoordIdeal (y ∘ v)) ⊤ e} {pr : R.X → BM.Rb.X}
     (hS : IsStepHyp M BM p κ v R pr) {x x' : R.X} (hpr : pr x = pr x') (hb : pr x ∉ bdry BM.s)
@@ -99,6 +129,13 @@ theorem stepGap_eq {M : FlagModel y Ψ N j} [Fintype Ψ] [DecidableEq Ψ] {BM : 
     show z ⟨k, m⟩ = c k * z' ⟨k, m⟩
     rw [this, ha k hk]
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM p Kk _ ιk _ κ v e R pr hS x x' hpr hblk`. Distinguish the cases in `hb : pr x ∈ bdry BM.s`. Establish `hb' : pr x' ∈ bdry BM.s` using `hpr ▸ hb`. Rewrite using `[stepPh, stepPh, dif_neg fun h => h.1 hb, dif_neg fun h => h.1 hb']`. Establish `hb' : pr x' ∉ bdry BM.s` using `hpr ▸ hb`.
+
+Take `⟨z₁, hz₁, hv₁, -⟩` from `hS.2.2.2 x`. Take `⟨z₂, hz₂, hv₂, -⟩` from `hS.2.2.2 x'`. Establish `h1 : pr x ∉ bdry BM.s ∧ ∃ z ∈ mcPts (mCoordIdeal y), z ∘ v = R.lift x x` using `⟨hb, z₁, hz₁, hv₁⟩`. Establish `h2 : pr x' ∉ bdry BM.s ∧ ∃ z ∈ mcPts (mCoordIdeal y), z ∘ v = R.lift x' x'` using `⟨hb', z₂, hz₂, hv₂⟩`. Rewrite using `[stepPh, stepPh, dif_pos h1, dif_pos h2]`.
+
+Conclude with `stepGap_eq hS hpr hb hblk h1.2.choose_spec.1 h2.2.choose_spec.1 h1.2.choose_spec.2 h2.2.choose_spec.2`.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (p : Ψ × Fin N) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (e : ℕ) (R : AnLogRes (mCoordIdeal (y ∘ v)) ⊤ e) (pr : R.X → BM.Rb.X), IsStepHyp M BM p κ v R pr → ∀ x x', pr x = pr x' → (∀ k (m : ιk k), M.blk p = some (κ k) → ∃ a : ℂ, ∀ m' : ιk k, R.lift x x ⟨k, m'⟩ = a * R.lift x' x' ⟨k, m'⟩) → stepPh M BM p v R pr x = stepPh M BM p v R pr x' := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n BM p Kk _ ιk _ κ v e R pr hS x x' hpr hblk
   by_cases hb : pr x ∈ bdry BM.s

@@ -14,6 +14,31 @@ namespace GlobalTheory.ShFam.FlagFrames
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y σ y`. Take `⟨V₀, hV₀, φ₀, Fr₀, hy₀, hs₀, -⟩` from `EigSpread.exists_stable_eigFrame E H Dw l Xo c O β Z (Y.π y)`. Take `⟨U, hU, hy, φ, fr, t, hle, hs, hT, ht⟩` from `Spread.exists_frame_nhds E H Dw l Xo c O β Z F e Y y (Y.π ⁻¹ᵁ V₀) hy₀`. Set `ρ : Γ(gen Z, V₀) →+* Γ(Y.Y.X, U)` to `(Y.π.appLE V₀ U hle).hom`. Establish `hρ : spMap ρ ≫ (show Sp Γ(gen Z, V₀) ⟶ gen Z from hV₀.fromSpec) = (show Sp Γ(Y.Y.X, U) ⟶ Y.Y.X from hU.fromSpec) ≫ Y.π` using `IsAffineOpen.SpecMap_appLE_fromSpec Y.π hV₀ hU hle`.
+
+Establish `hφ : φ = ρ.comp φ₀` using `EigLoc.spMap_inj (by`. Rewrite using `[← hs, ← hρ, Category.assoc, hs₀]`. Conclude with `spMap_comp_spMap φ₀ ρ)`. Establish `hxρ : ((show Sp Γ(Y.Y.X, U) ⟶ Y.Y.X from hU.fromSpec) ≫ Y.π) ≫ genι Z = spMap ρ ≫ (show Sp Γ(gen Z, V₀) ⟶ gen Z from hV₀.fromSpec) ≫ genι Z`. Rewrite using `[← Category.assoc, hρ]`.
+
+Take `⟨Fr', hFr'⟩` from `Fr₀.exists_isMap ρ hφ hxρ`. Establish `hdown : ∀ p : Y.Y.pts σ, p ∈ ptsIn Y.Y.str σ U → Y.down p ∈ ptsIn (genStr Z) (embOf e σ) V₀` using `fun p hp => CxPts.mem_ptsIn.2 (hle (CxPts.mem_ptsIn.1 hp))`. Use `⟨U, t, ⟨V₀, hV₀⟩, φ₀, Fr₀, fun τ => Fr'.co fr τ, hy, hs₀, hdown, ht, fun p hp => ⟨hdown p hp, ?_⟩⟩` and prove the remaining obligations. Establish `hv` using `hdown p hp`. Establish `hpU : spMap (evHom hp) ≫ (show Sp Γ(Y.Y.X, U) ⟶ Y.Y.X from hU.fromSpec) = p.1` using `Points.specMap_valMap_fromSpec hU p.1 hp`.
+
+Establish `hpV : spMap (evHom hv) ≫ (show Sp Γ(gen Z, V₀) ⟶ gen Z from hV₀.fromSpec) = (Y.down p).1` using `Points.specMap_valMap_fromSpec hV₀ (Y.down p).1 hv`. Establish `hov : (Y.down p).1 ≫ genStr Z = spMap (embOf e σ)` using `(Y.down p).2`. Establish `hxg : (Y.down p).1 ≫ genι Z = spMap (evHom hp) ≫ ((show Sp Γ(Y.Y.X, U) ⟶ Y.Y.X from hU.fromSpec) ≫ Y.π) ≫ genι Z`. Rewrite using `[← Category.assoc, ← Category.assoc, hpU]`. Both sides reduce to the same expression.
+
+Establish `hxf : (Y.down p).1 ≫ genι Z = spMap (evHom hv) ≫ (show Sp Γ(gen Z, V₀) ⟶ gen Z from hV₀.fromSpec) ≫ genι Z`. Rewrite using `[← Category.assoc, hpV]`. Establish `hφg : embOf e σ = (evHom hp).comp φ` using `EigLoc.spMap_inj (hov.symm.trans (by`. Rewrite using `[← spMap_comp_spMap φ (evHom hp), ← hs, ← Category.assoc, ← Category.assoc, hpU]`. Use the proof step `rfl))`.
+
+Establish `hφf : embOf e σ = (evHom hv).comp φ₀` using `EigLoc.spMap_inj (hov.symm.trans (by`. Rewrite using `[← spMap_comp_spMap φ₀ (evHom hv), ← hs₀, ← Category.assoc, hpV]))`. Establish `hev : (evHom hp).comp ρ = evHom hv` using `EigLoc.spMap_inj ((cancel_mono (show Sp Γ(gen Z, V₀) ⟶ gen Z from hV₀.fromSpec)).1 (by`. Rewrite using `[hpV, ← spMap_comp_spMap ρ (evHom hp), Category.assoc, hρ, ← Category.assoc, hpU]`. Use the proof step `rfl))`.
+
+Take `⟨g, hg⟩` from `fr.exists_isMap (evHom hp) hφg hxg`. Take `⟨f, hf⟩` from `Fr₀.exists_isMap (evHom hv) hφf hxf`. Establish `hf' : Fr'.IsMap (evHom hp) f` using `fun τ i => by`. Rewrite using `[hf τ i, hFr' τ i, GradedPieces.dual_comp, hev]`. Use `⟨g, f, ?_, hf, fun τ => EigFrame.IsMap.co τ hf' hg hxg⟩` and prove the remaining obligations.
+
+Establish `hb : Var.base p ∈ U` using `CxPts.mem_ptsIn.1 hp`. Set `gm : Γ(Y.Y.X, U) →+* Y.Y.X.presheaf.stalk (Var.base p)` to `(Y.Y.X.presheaf.germ U (Var.base p) hb).hom`. Establish `hxs : stalkPt Y.Y (Var.base p) ≫ Y.π ≫ genι Z = spMap gm ≫ ((show Sp Γ(Y.Y.X, U) ⟶ Y.Y.X from hU.fromSpec) ≫ Y.π) ≫ genι Z`. Establish `h0 : stalkPt Y.Y (Var.base p) = spMap gm ≫ (show Sp Γ(Y.Y.X, U) ⟶ Y.Y.X from hU.fromSpec)` using `(Spread.spMap_germ hU hb).symm`. Rewrite using `[h0]`.
+
+Simplify using `only [Category.assoc]`. Take `⟨frs, hfrs⟩` from `fr.exists_isMap gm rfl hxs`. Establish `hgm : (Var.evStalk p).comp gm = evHom hp` using `(congrArg CommRingCat.Hom.hom (HolFrames.valR_eq_germ p.1 U hp)).symm`. Establish `hgs : frs.IsMap (Var.evStalk p) g` using `fun τ i => by`. Rewrite using `[hg τ i, hfrs τ i, GradedPieces.dual_comp, hgm]`.
+
+Establish `hxp : (Y.down p).1 ≫ genι Z = spMap (Var.evStalk p) ≫ stalkPt Y.Y (Var.base p) ≫ Y.π ≫ genι Z`. Rewrite using `[← Category.assoc, Y.spMap_evStalk p]`. Both sides reduce to the same expression. Establish `hκ : (algebraMap (Y.Y.X.presheaf.stalk (Var.base p)) Y.Y.X.functionField).comp gm = fnOf U (gen_mem hy)` using `RingHom.ext fun a => algebraMap_germ _ a`. Establish `ha : frs.Tri (algebraMap _ Y.Y.X.functionField) Y.f0 t`.
+
+Use `⟨by rw [hT.1, hxs, ← hκ, ← spMap_comp_spMap gm, Category.assoc], by rw [hT.2.1, ← hκ]; rfl, fun τ i => ?_⟩` and prove the remaining obligations. Establish `h3` using `hT.2.2 τ i`. Rewrite `h3` using `[← hκ]`. Simplify `h3` using `only [hfrs τ, GradedPieces.dual_comp]`. Establish `hφs : embOf e σ = (Var.evStalk p).comp (gm.comp φ)`.
+
+Rewrite using `[hφg, ← hgm]`. Both sides reduce to the same expression. Conclude with `(FlagCpt.adapted_of_tri (Y.spMap_evStalk p).symm ha (hgs.tri hφs hxp)).1`.
+-/
 theorem exists_frames_nhds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Y : FlagCpt Z e) (σ : F →+* ℂ) (y : Y.Y.X), ∃ (U : Y.Y.X.Opens) (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ) (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1)) (Fr : EigFrame Z φ (LogKS.chart V ≫ genι Z)) (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Γ(Y.Y.X, U)), y ∈ U ∧ LogKS.chart V ≫ genStr Z = spMap φ ∧ (∀ p : Y.Y.pts σ, p ∈ ptsIn Y.Y.str σ U → Y.down p ∈ ptsIn (genStr Z) (embOf e σ) V.1) ∧ (∀ y' ∈ U, ∀ τ i, (Y.gr τ i).IsEqn y' (t τ i)) ∧ ∀ (p : Y.Y.pts σ) (hp : p ∈ ptsIn Y.Y.str σ U), ∃ (hv : Y.down p ∈ ptsIn (genStr Z) (embOf e σ) V.1) (g f : Y.FrameAt p), Y.Adapted p t g 1 ∧ Fr.IsMap (evHom hv) f ∧ ∀ τ, f.co g τ = (A τ).map (evHom hp) := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y σ y
   obtain ⟨V₀, hV₀, φ₀, Fr₀, hy₀, hs₀, -⟩ := EigSpread.exists_stable_eigFrame E H Dw l Xo c O β Z (Y.π y)

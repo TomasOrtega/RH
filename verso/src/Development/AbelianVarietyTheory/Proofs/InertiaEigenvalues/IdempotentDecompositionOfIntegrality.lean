@@ -10,6 +10,11 @@ open Polynomial
 
 namespace GlobalTheory.JR.Et.Idem
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralPi.main`. Consider the case `exact _root_.GlobalTheory.IntegralPi.main`. Consider the case `(apply _root_.GlobalTheory.IntegralPi.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralPi.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.IntegralPi.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralPi.main ..)`.
+-/
 theorem isIntegral_of_forall {O : Type} [CommRing O] {ι : Type} [Finite ι] {R : ι → Type}
     [∀ i, CommRing (R i)] [∀ i, Algebra O (R i)] (x : ∀ i, R i) (hx : ∀ i, IsIntegral O (x i)) :
     IsIntegral O x := by
@@ -21,6 +26,11 @@ theorem isIntegral_of_forall {O : Type} [CommRing O] {ι : Type} [Finite ι] {R 
   | (intros; apply @_root_.GlobalTheory.IntegralPi.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.IntegralPi.main ..)
 
+/- English proof (translation)
+Use `isIntegral_of_forall _ fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using hz`. Rewrite using `[Pi.single_eq_of_ne h]`.
+
+Conclude with `isIntegral_zero`.
+-/
 theorem isIntegral_single {O : Type} [CommRing O] {ι : Type} [Finite ι] [DecidableEq ι] {R : ι → Type}
     [∀ i, CommRing (R i)] [∀ i, Algebra O (R i)] (i : ι) (z : R i) (hz : IsIntegral O z) :
     IsIntegral O (Pi.single i z : ∀ j, R j) := by
@@ -29,6 +39,11 @@ theorem isIntegral_single {O : Type} [CommRing O] {ι : Type} [Finite ι] [Decid
   · subst h; simpa using hz
   · rw [Pi.single_eq_of_ne h]; exact isIntegral_zero
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Rewrite using `[Pi.mul_apply, Pi.zero_apply]`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Rewrite using `[Pi.single_eq_of_ne h, mul_zero]`.
+
+Rewrite using `[Pi.single_eq_of_ne hk, zero_mul]`.
+-/
 theorem single_mul_single_of_ne {ι : Type} [DecidableEq ι] {R : ι → Type} [∀ i, MulZeroClass (R i)] {i j : ι}
     (h : i ≠ j) (a : R i) (b : R j) : (Pi.single i a : ∀ k, R k) * Pi.single j b = 0 := by
   funext k
@@ -37,6 +52,9 @@ theorem single_mul_single_of_ne {ι : Type} [DecidableEq ι] {R : ι → Type} [
   · subst hk; rw [Pi.single_eq_of_ne h, mul_zero]
   · rw [Pi.single_eq_of_ne hk, zero_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hk]`.
+-/
 theorem single_one_mul {ι : Type} [DecidableEq ι] {R : ι → Type} [∀ i, MulZeroOneClass (R i)] (i : ι)
     (x : ∀ j, R j) : (Pi.single i 1 : ∀ j, R j) * x = Pi.single i (x i) := by
   funext k
@@ -44,6 +62,27 @@ theorem single_one_mul {ι : Type} [DecidableEq ι] {R : ι → Type} [∀ i, Mu
   · subst hk; simp
   · simp [Pi.single_eq_of_ne hk]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ A hval`. Use `haveI : IsArtinianRing A.K := IsArtinianRing.of_finite F A.K`. Set `ψ : A.K ≃ₐ[F] (∀ I : MaximalSpectrum A.K, A.K ⧸ I.asIdeal)` to `(IsArtinianRing.equivPi A.K).restrictScalars F`. Take `⟨m, ⟨e⟩⟩` from `Finite.exists_equiv_fin (MaximalSpectrum A.K)`. Set `f : Fin m → A.K` to `fun i => ψ.symm (Pi.single (e.symm i) 1)`.
+
+Establish `hf : ∀ i, ψ (f i) = Pi.single (e.symm i) 1` using `fun i => ψ.apply_symm_apply _`. Use `haveI : Fintype (MaximalSpectrum A.K) := Fintype.ofFinite _`. Establish `hOK : ∀ x : (∀ I : MaximalSpectrum A.K, A.K ⧸ I.asIdeal), IsIntegral (NormedField.valuation (K` using `F)).integer x → ψ.symm x ∈ A.OK := fun x hx => (mem_OK_iff_isIntegral A _).2 (hx.map (ψ.symm.restrictScalars (NormedField.valuation (K := F)).integer))`. Use `⟨m, f, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hf, ← Pi.single_mul, mul_one]`. Introduce `i j hij`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hf, hf, map_zero]`.
+
+Conclude with `single_mul_single_of_ne (e.symm.injective.ne hij) _ _`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_one]`. Repeatedly rewrite using `[hf]`. Rewrite using `[Equiv.sum_comp e.symm (fun I => (Pi.single I 1 : ∀ J : MaximalSpectrum A.K, A.K ⧸ J.asIdeal))]`.
+
+Conclude with `Finset.univ_sum_single 1`. Introduce `i c hc h`. Rewrite `h` using `[mem_OK_iff_isIntegral]`. Use `haveI := (e.symm i).isMaximal`. Use `letI : Field (A.K ⧸ (e.symm i).asIdeal) := Ideal.Quotient.field _`.
+
+Establish `h1` using `h.map (((Pi.evalAlgHom F (fun J : MaximalSpectrum A.K => A.K ⧸ J.asIdeal) (e.symm i)).comp ψ.toAlgHom).restrictScalars (NormedField.valuation (K := F)).integer)`. Establish `h2 : (((Pi.evalAlgHom F (fun J : MaximalSpectrum A.K => A.K ⧸ J.asIdeal) (e.symm i)).comp ψ.toAlgHom).restrictScalars (NormedField.valuation (K` using `F)).integer) (algebraMap F A.K c * f i) = algebraMap F (A.K ⧸ (e.symm i).asIdeal) c := by`. Express the relevant statement in the definitionally equal form `ψ (algebraMap F A.K c * f i) (e.symm i) = _`. Rewrite using `[map_mul, AlgEquiv.commutes, hf, Pi.mul_apply, Pi.single_eq_same, mul_one, Pi.algebraMap_apply]`. Rewrite `h1` using `[h2]`.
+
+Establish `h3` using `(isIntegral_algebraMap_iff (algebraMap F (A.K ⧸ (e.symm i).asIdeal)).injective).1 h1`. Establish `h4` using `(Valuation.integer.integers (NormedField.valuation (K := F))).mem_of_integral h3`. Rewrite `h4` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Establish `h5 : ‖c‖ ≤ 1` using `by exact_mod_cast h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `i y hy haveI := (e.symm i).isMaximal`. Use `letI : Field (A.K ⧸ (e.symm i).asIdeal) := Ideal.Quotient.field _`. Use `haveI : FiniteDimensional F (A.K ⧸ (e.symm i).asIdeal) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ F (e.symm i).asIdeal).toLinearMap Ideal.Quotient.mk_surjective`. Establish `hfy : ψ (f i * y) = Pi.single (e.symm i) (ψ y (e.symm i))`. Rewrite using `[map_mul, hf, single_one_mul]`.
+
+Establish `hfy' : f i * y = ψ.symm (Pi.single (e.symm i) (ψ y (e.symm i)))`. Rewrite using `[← hfy, ψ.symm_apply_apply]`. Distinguish the cases in `hz : ψ y (e.symm i) = 0`. Conclude with `absurd (by rw [hfy', hz, Pi.single_zero, map_zero]; exact (mem_OK_iff_isIntegral A 0).2 isIntegral_zero) hy`. Break down `hval (A.K ⧸ (e.symm i).asIdeal) (ψ y (e.symm i)) hz with h | h` into its components or cases.
+
+Conclude with `absurd (by rw [hfy']; exact hOK _ (isIntegral_single _ _ h)) hy`. Use `⟨ψ.symm (Pi.single (e.symm i) (ψ y (e.symm i))⁻¹), hOK _ (isIntegral_single _ _ h), ?_⟩` and prove the remaining obligations. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, ψ.apply_symm_apply, hfy, hf, ← Pi.single_mul, inv_mul_cancel₀ hz]`.
+-/
 theorem main : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
     [Unram F E] [IsUltrametricDist F] (A : Et F E),
     (∀ (k : Type) [Field k] [Algebra F k] [FiniteDimensional F k] (y : k), y ≠ 0 →

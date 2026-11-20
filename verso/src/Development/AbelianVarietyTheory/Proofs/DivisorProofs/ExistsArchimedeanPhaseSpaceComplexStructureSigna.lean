@@ -12,6 +12,53 @@ open GlobalTheory.HoweD GlobalTheory.VacBridge
 
 namespace GlobalTheory.HoweD
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S τ JA JB d a b A C ε hcm hfr`. Use `hcm.1` as an intermediate fact. Take `⟨-, hA, hC⟩` from `hfr`. Use `choose IA hIA using fun w => frame_inv _ (A w) (Jm (P w) (Q w)) (jm_mul_self (P w) (Q w)) (hA w).1 (hA w).2`. Use `choose IC hIC using fun w => frame_inv _ (C w) (Jm (R w) (S w)) (jm_mul_self (R w) (S w)) (hC w).1 (hC w).2`.
+
+Establish `hback : ∀ w (X : Matrix α β ℂ), A w * (IA w * X * (IC w)ᵀ) * (C w)ᵀ = X`. Introduce `w X`. Establish `hCt : (IC w)ᵀ * (C w)ᵀ = 1` using `by rw [← Matrix.transpose_mul, (hIC w).2, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfwd : ∀ w (c : Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ), IA w * (A w * c * (C w)ᵀ) * (IC w)ᵀ = c`.
+
+Introduce `w c`. Establish `hCt : (C w)ᵀ * (IC w)ᵀ = 1` using `by rw [← Matrix.transpose_mul, (hIC w).1, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Set `Ψl : ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) →ₗ[ℝ] (∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ)` to `{ toFun := fun y w => IA w * (mkD d y).map (piInf (τ w)) * (IC w)ᵀ map_add' := fun y y' => by`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [mkD_add, Pi.add_apply]`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.mul_add, Matrix.add_mul]`. Use the proof step `map_smul' := fun r y => by`. Use function extensionality and compare the values at `w`. Simplify using `only [mkD_smul_real, map_smul_piInf, ext_realAd, RingHom.id_apply, Pi.smul_apply]`.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use extensionality with `i j`. Simplify using `[Complex.real_smul] }`. Establish `hΨl : ∀ y w, A w * Ψl y w * (C w)ᵀ = (mkD d y).map (piInf (τ w))` using `fun y w => hback w _`. Establish `hinj : Function.Injective Ψl`.
+
+Introduce `y y' h`. Establish `hu : mkD d y = mkD d y'` using `eq_of_at_map σ hcm τ (at_mkD d y) (at_mkD d y') fun w => by`. Rewrite using `[← hΨl, ← hΨl, h]`. Rewrite using `[← coord_mkD d y, ← coord_mkD d y', hu]`. Establish `hsurj : Function.Surjective Ψl`.
+
+Introduce `c`. Take `⟨u, hu, hM⟩` from `exists_at_map σ hcm τ (fun w => A w * c w * (C w)ᵀ)`. Use `⟨coord d u, funext fun w => ?_⟩` and prove the remaining obligations. Use `show IA w * (mkD d (coord d u)).map (piInf (τ w)) * (IC w)ᵀ = c w`. Rewrite using `[mkD_coord d hu, hM w, hfwd]`.
+
+Set `Ψ` to `LinearEquiv.ofBijective Ψl ⟨hinj, hsurj⟩`. Set `L : (∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) →ₗ[ℝ] (∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ)` to `{ toFun := fun c w => Complex.I • (Jm (P w) (Q w) * c w * Jm (R w) (S w)) map_add' := fun c c' => by`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.add_apply, Matrix.mul_add, Matrix.add_mul, smul_add]`. Use the proof step `map_smul' := fun r c => by`.
+
+Use function extensionality and compare the values at `w`. Simplify using `only [Pi.smul_apply, RingHom.id_apply, Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `smul_comm _ _ _ }`. Set `Pm : (∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) →ₗ[ℝ] (∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ)` to `{ toFun := fun c w => (if ε w = -1 then (1 : ℂ) else 0) • c w map_add' := fun c c' => by`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [Pi.add_apply, smul_add]`. Use the proof step `map_smul' := fun r c => by`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.smul_apply, RingHom.id_apply]`. Conclude with `smul_comm _ _ _ }`.
+
+Establish `hLL : ∀ c, L (L c) = -c`. Introduce `c`. Use function extensionality and compare the values at `w`. Use `show Complex.I • (Jm (P w) (Q w) * (Complex.I • (Jm (P w) (Q w) * c w * Jm (R w) (S w))) * Jm (R w) (S w)) = -c w`. Establish `key : Jm (P w) (Q w) * (Jm (P w) (Q w) * c w * Jm (R w) (S w)) * Jm (R w) (S w) = c w`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = c w := by rw [jm_mul_self, jm_mul_self, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_smul, key, Complex.I_mul_I, neg_one_smul]`. Establish `hLP : ∀ c, L (Pm c) = Pm (L c)`.
+
+Introduce `c`. Use function extensionality and compare the values at `w`. Use `show Complex.I • (Jm (P w) (Q w) * ((if ε w = -1 then (1 : ℂ) else 0) • c w) * Jm (R w) (S w)) = (if ε w = -1 then (1 : ℂ) else 0) • (Complex.I • (Jm (P w) (Q w) * c w * Jm (R w) (S w)))`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_comm]`. Set `tm : AF F` to `((fun w => if ε w = -1 then 1 else 0 : InfiniteAdeleRing F), 0)`.
+
+Establish `htm : tm * tm = tm`. Use `Prod.ext (funext fun w => ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `show (if ε w = -1 then (1 : w.Completion) else 0) * (if ε w = -1 then 1 else 0) = if ε w = -1 then 1 else 0 split_ifs <;> simp`. Use `show (0 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) * 0 = 0`. Conclude with `mul_zero _`.
+
+Establish `htt : evI F tm * evI F tm = evI F tm` using `by rw [← evI_mul, htm]`. Establish `hext : ∀ w, InfinitePlace.Completion.extensionEmbedding w (tm.1 w) = if ε w = -1 then 1 else 0`. Introduce `w`. Use `show InfinitePlace.Completion.extensionEmbedding w (if ε w = -1 then (1 : w.Completion) else 0) = _`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hΨe : ∀ y, Ψl (mulP (evI F tm) y) = Pm (Ψl y)`. Introduce `y`. Use function extensionality and compare the values at `w`. Use `show IA w * (mkD d (mulP (evI F tm) y)).map (piInf (τ w)) * (IC w)ᵀ = (if ε w = -1 then (1 : ℂ) else 0) • (IA w * (mkD d y).map (piInf (τ w)) * (IC w)ᵀ)`. Rewrite using `[mkD_mulP, map_smul_piInf, hext, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Set `J : ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) →ₗ[ℝ] ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))` to `(Ψ.symm : (∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) →ₗ[ℝ] _).comp (L.comp Ψl)`. Establish `hΨJ : ∀ y, Ψl (J y) = L (Ψl y)` using `fun y => Ψ.apply_symm_apply _`. Use `⟨J, mulP (evI F tm), mulC (evI F tm), ?_, ?_, ?_, fun y => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hΨJ, hΨJ, hLL, map_neg]`. Introduce `y`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Use `show evI F tm * (evI F tm * y.1 i) = evI F tm * y.1 i`. Rewrite using `[← mul_assoc, htt]`.
+
+Use `show evI F tm * (evI F tm * y.2 i) = evI F tm * y.2 i`. Rewrite using `[← mul_assoc, htt]`. Introduce `y`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hΨJ, hΨe, hΨe, hΨJ, hLP]`.
+
+Introduce `y x`. Simplify using `only [trPair_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show x i * (evI F tm * y.2 i) = (evI F tm * x i) * y.2 i`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `y`. Use `⟨mkD d y, mkD d (J (y - (2 : ℝ) • mulP (evI F tm) y)), mkD d (J y), Ψl y, at_mkD d _, at_mkD d _, at_mkD d _, fun w => (hΨl y w).symm, fun w => ?_, fun w => ?_, coord_mkD d _, coord_mkD d _, coord_mkD d _⟩` and prove the remaining obligations. Rewrite using `[← hΨl, hΨJ, map_sub, map_smul, hΨe] show A w * (Complex.I • (Jm (P w) (Q w) * (Ψl y w - (2 : ℝ) • ((if ε w = -1 then (1 : ℂ) else 0) • Ψl y w)) * Jm (R w) (S w))) * (C w)ᵀ = A w * ((((ε w : ℤ) : ℂ) * Complex.I) • (Jm (P w) (Q w) * Ψl y w * Jm (R w) (S w))) * (C w)ᵀ`. Use `congr 2`.
+
+Generalize the expression as in `Ψl y w = X`. Break down `Int.units_eq_one_or (ε w) with h1 | h1` into its components or cases. Rewrite using `[h1, if_neg (by decide)]`. Simplify using the standard rewrite rules. Rewrite using `[h1, if_pos rfl, one_smul, two_smul, sub_add_cancel_left]`.
+
+Simplify using `[Matrix.mul_neg, Matrix.neg_mul]`. Rewrite using `[← hΨl, hΨJ]`. Both sides reduce to the same expression.
+-/
 theorem exists_bridgeD : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (α β κ : Type) [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (P Q R S : InfinitePlace F → ℕ)
     (τ : ∀ w : InfinitePlace F, EmbOver E w) (JA : Matrix α α (AE F E)) (JB : Matrix β β (AE F E))

@@ -20,9 +20,15 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) (p : PlF D)
 
 def uFi (b : Fin (D.R.rS + 1)) : (D.s.atP p).Ep := (((uF_unit Zd p b).unit⁻¹ : (D.s.atP p).Epˣ) : (D.s.atP p).Ep)
 
+/- English proof (translation)
+The claim follows from `IsUnit.val_inv_mul (uF_unit Zd p b)`.
+-/
 theorem uFi_mul (b : Fin (D.R.rS + 1)) : uFi Zd p b * uF Zd p b = 1 :=
   IsUnit.val_inv_mul (uF_unit Zd p b)
 
+/- English proof (translation)
+Rewrite using `[mul_comm]`. Conclude with `uFi_mul Zd p b`.
+-/
 theorem mul_uFi (b : Fin (D.R.rS + 1)) : uF Zd p b * uFi Zd p b = 1 := by
   rw [mul_comm]; exact uFi_mul Zd p b
 
@@ -30,10 +36,18 @@ def Cm (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)) :
     Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep :=
   Matrix.diagonal (uFi Zd p) * ξ.map (fun x => (D.s.atP p).ιE (x : D.host.E)) * Matrix.diagonal (uF Zd p)
 
+/- English proof (translation)
+Simplify using `[Cm, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+-/
 theorem Cm_apply (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)) (c b : Fin (D.R.rS + 1)) :
     Cm Zd p ξ c b = uFi Zd p c * (D.s.atP p).ιE (ξ c b : D.host.E) * uF Zd p b := by
   simp [Cm, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
+/- English proof (translation)
+Use extensionality with `c b`. Rewrite using `[Matrix.mul_apply, Cm_apply, Matrix.mul_apply]`. Simplify using `only [Cm_apply]`. Use `push_cast`. Rewrite using `[map_sum, Finset.mul_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `uFi_mul Zd p d` as an intermediate fact. Rewrite using `[map_mul]`. Take the linear combination `(uFi Zd p c * (D.s.atP p).ιE (ξ c d : D.host.E) * (D.s.atP p).ιE (η d b : D.host.E) * uF Zd p b) * this`.
+-/
 theorem Cm_mul (ξ η : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)) :
     Cm Zd p ξ * Cm Zd p η = Cm Zd p (ξ * η) := by
   ext c b
@@ -47,6 +61,11 @@ theorem Cm_mul (ξ η : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.hos
   linear_combination (uFi Zd p c * (D.s.atP p).ιE (ξ c d : D.host.E) * (D.s.atP p).ιE (η d b : D.host.E) *
     uF Zd p b) * this
 
+/- English proof (translation)
+Use extensionality with `c b`. Rewrite using `[Cm_apply]`. Distinguish the cases in `h : c = b`. Substitute `h` using the available equality. Simplify using `[uFi_mul, mul_uFi]`.
+
+Simplify using `[Matrix.one_apply_ne h]`.
+-/
 theorem Cm_one : Cm Zd p 1 = 1 := by
   ext c b
   rw [Cm_apply]
@@ -54,6 +73,11 @@ theorem Cm_one : Cm Zd p 1 = 1 := by
   · subst h; simp [uFi_mul, mul_uFi]
   · simp [Matrix.one_apply_ne h]
 
+/- English proof (translation)
+Simplify using `only [comb, Cm_apply, locF'_eq, frameAct]`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂, smul_smul, smul_smul]`. Use `congr 1`.
+
+Use `uFi_mul Zd p c` as an intermediate fact. Take the linear combination `((D.s.atP p).ιE (ξ c b : D.host.E) * uF Zd p b) * this`.
+-/
 theorem comb_Cm {T' : D.host.E} (F' : LFlag (VS D) D.R.rS T')
     (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)) (b : Fin (D.R.rS + 1)) :
     comb (Cm Zd p ξ) (locF' Zd p F') b = uF Zd p b • baseChange₂ D p (frameAct (frame F') ξ b) := by
@@ -71,6 +95,11 @@ section admitted
 
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) (p : PlF D)
 
+/- English proof (translation)
+Take `⟨k, hk, hkb⟩` from `bt_frFac_step Zd p (Formalism.L2.SG.Pf.locDiffC_holds D Zd) c b h`. Establish `h1` using `uFi_mul Zd p c`. Establish `h2` using `sgnP'_sq p c`. Establish `e : uFi Zd p c * uF Zd p b = sgnP' D p b * k * sgnP' D p c`. Unfold `uF at h1 ⊢`.
+
+Rewrite using `[hkb]`. Take the linear combination `(sgnP' D p b * k * sgnP' D p c) * h1 - (sgnP' D p b * k * uFi Zd p c * frFac Zd.δ p c) * h2`. Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ (bt_sq_one_mem Zd p (sgnP'_sq p b)) hk) (bt_sq_one_mem Zd p (sgnP'_sq p c))`.
+-/
 theorem ratio_mem (c b : Fin (D.R.rS + 1)) (h : c ≤ b) : uFi Zd p c * uF Zd p b ∈ (Zd.M p).L.O := by
   obtain ⟨k, hk, hkb⟩ := bt_frFac_step Zd p (Formalism.L2.SG.Pf.locDiffC_holds D Zd) c b h
   have h1 := uFi_mul Zd p c
@@ -84,6 +113,13 @@ theorem ratio_mem (c b : Fin (D.R.rS + 1)) (h : c ≤ b) : uFi Zd p c * uF Zd p 
   exact Subring.mul_mem _ (Subring.mul_mem _ (bt_sq_one_mem Zd p (sgnP'_sq p b)) hk)
     (bt_sq_one_mem Zd p (sgnP'_sq p c))
 
+/- English proof (translation)
+Use `⟨fun a b hab => ?_, fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Cm_apply, h0 a b hab]`. Simplify using the standard rewrite rules. Rewrite using `[Cm_apply, h1 a]`. Simplify using `[uFi_mul]`.
+
+Rewrite using `[Cm_apply]`. Distinguish the cases in `hab : b < a`. Rewrite using `[h0 a b hab]`. Simplify using the standard rewrite rules. Rewrite using `[show uFi Zd p a * (D.s.atP p).ιE (ξ a b : D.host.E) * uF Zd p b = (uFi Zd p a * uF Zd p b) * (D.s.atP p).ιE (ξ a b : D.host.E) by ring]`.
+
+Conclude with `Subring.mul_mem _ (ratio_mem Zd p a b (not_lt.1 hab)) (bt_iota_int Zd p _)`.
+-/
 theorem Cm_props (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))
     (h0 : ∀ a b, b < a → ξ a b = 0) (h1 : ∀ a, ξ a a = 1) :
     (∀ a b, b < a → Cm Zd p ξ a b = 0) ∧ (∀ a, Cm Zd p ξ a a = 1) ∧ (∀ a b, Cm Zd p ξ a b ∈ (Zd.M p).L.O) := by
@@ -103,6 +139,11 @@ section Adm2
 
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) (p : PlF D)
 
+/- English proof (translation)
+Establish `hagree` using `(Zd.agree p).2.2.2.2.2`. Break down `hs : (D.s.atP p).split with _ | sg` into its components or cases. Rewrite `hagree` using `[hg, hs]`. Conclude with `hagree.elim`. Rewrite `hagree` using `[hg, hs]`.
+
+Conclude with `⟨sg, rfl, hagree.2, hagree.1⟩`.
+-/
 theorem typed_data (g : Loc.SplitG (Zd.M p).L) (hg : (Zd.M p).split = some g) :
     ∃ sg, (D.s.atP p).split = some sg ∧ g.q = sg.q ∧ g.e = sg.e := by
   have hagree := (Zd.agree p).2.2.2.2.2
@@ -110,6 +151,17 @@ theorem typed_data (g : Loc.SplitG (Zd.M p).L) (hg : (Zd.M p).split = some g) :
   · rw [hg, hs] at hagree; exact hagree.elim
   · rw [hg, hs] at hagree; exact ⟨sg, rfl, hagree.2, hagree.1⟩
 
+/- English proof (translation)
+Establish `hE` using `Formalism.L2.SG.Pf.locEqC_holds D Zd`. Establish `hD` using `Formalism.L2.SG.Pf.locDiffC_holds D Zd`. Establish `hFix` using `hR.2.1`. Establish `hΛfg : Λ.FG` using `hFix.1.fg`. Take `⟨sg, hs, hgq, -⟩` from `typed_data Zd p g hg`.
+
+Establish `hin : Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)` using `by rw [← D.s_split p, hs]; rfl`. Establish `hgP : ∀ P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E), P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = p.asIdeal → (gS D : 𝓞 D.host.E) ∈ P.asIdeal` using `fun P hP => (bt_g_mem_iff p P hP).2 hin`. Establish `hφ` using `bt_typed_frFac Zd hE hD p F0 Λ hΛfg hR.2.2 hFix.2.2.2 hgP`. Establish `hO` using `bt_typed_O Zd hD p F0 Λ F' (Tu D u) (Tu D u') hR.2.2 sg hs hφ`. Establish `hξ : AdmWit Λ (gS D) (lf D F0) F' (admXi D Λ (lf D F0) F')`.
+
+Unfold `admXi`. Rewrite using `[dif_pos hA]`. Conclude with `hA.choose_spec`. Establish `hMΛ` using `bt_typed_Mle Zd hE p F0 Λ F' hΛfg hFix.2.2.1 hξ hgP`. Introduce `b`.
+
+Establish `hmem : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) • ((locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).f' b - (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).f b) ∈ lattice₂ D Zd.M p Λ`. Apply `hMΛ` to reduce the goal to its premises. Rewrite using `[← hO, hgq]`. Conclude with `Submodule.subset_span (Or.inr ⟨b, rfl⟩)`. Establish `e : (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).f' b - (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).f b = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) • (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) • ((locTerm Zd p Λ (lf D F0) F …`.
+
+Rewrite using `[smul_smul, ← map_mul, mul_inv_cancel₀ (bt_q_ne Zd p g), map_one, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨_, hmem, rfl⟩`.
+-/
 theorem admissible_local_term {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u))
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
     (hR : IsRowLat D F0 Λ) (hA : IsAdmissible Λ (gS D) (lf D F0) F') (g : Loc.SplitG (Zd.M p).L)
@@ -146,6 +198,23 @@ theorem admissible_local_term {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hE` using `Formalism.L2.SG.Pf.locEqC_holds D Zd`. Establish `hD` using `Formalism.L2.SG.Pf.locDiffC_holds D Zd`. Establish `hFix` using `hR.2.1`. Establish `hΛfg : Λ.FG` using `hFix.1.fg`. Take `⟨sg, hs, hgq, -⟩` from `typed_data Zd p g hg`.
+
+Establish `hin : Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)` using `by rw [← D.s_split p, hs]; rfl`. Establish `hgP : ∀ P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E), P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = p.asIdeal → (gS D : 𝓞 D.host.E) ∈ P.asIdeal` using `fun P hP => (bt_g_mem_iff p P hP).2 hin`. Establish `hφ` using `bt_typed_frFac Zd hE hD p F0 Λ hΛfg hR.2.2 hFix.2.2.2 hgP`. Establish `hκ` using `(bt_kappa Zd p sg hs).1`. Establish `hA : IsAdmissible Λ (gS D) (lf D F0) F'` using `⟨1, hA1⟩`.
+
+Establish `hξ : AdmWit Λ (gS D) (lf D F0) F' (admXi D Λ (lf D F0) F')`. Unfold `admXi`. Rewrite using `[dif_pos hA]`. Conclude with `hA.choose_spec`. Establish `hMΛ` using `bt_typed_Mle Zd hE p F0 Λ F' hΛfg hFix.2.2.1 hξ hgP`.
+
+Establish `hXfg : (XLam Λ (lf D F0)).FG` using `bt_fg_le hΛfg inf_le_left`. Establish `hEq : lattice₂ D Zd.M p (Mplus Λ (gS D) (lf D F0) F' 1) = lattice₂ D Zd.M p (Mplus Λ (gS D) (lf D F0) F' (admXi D Λ (lf D F0) F'))` using `(hE p _ _ (bt_Mplus_fg 1 hXfg) (bt_Mplus_fg _ hXfg)).2 fun P hP => m_plus_independent (gS D) Λ (lf D F0) F' hFix.2.2.1 hFix.2.2.2 P (hgP P hP) 1 _ hA1 hξ`. Establish `hss : ∀ a, sgnP' D p a = sgnP D p a` using `fun a => by simp only [sgnP', hs]`. Establish `hgS0 : ((gS D : ℕ) : D.host.E) ≠ 0`. Establish `: gS D ≠ 0` using `by simp [gS, (D.host.g_prime 0).ne_zero, (D.host.g_prime 1).ne_zero]`.
+
+Conclude with `this` after adjusting the coercions. Introduce `b`. Use `set x : (VS D).V := ((gS D : D.host.E))⁻¹ • (frame F' b - frameAct (frame (lf D F0)) 1 b) with hxdef`. Establish `hxM : x ∈ Mplus Λ (gS D) (lf D F0) F' 1` using `Submodule.subset_span (Set.mem_union_right _ ⟨b, rfl⟩)`. Establish `hx : baseChange₂ D p x ∈ lattice₂ D Zd.M p Λ` using `hMΛ (hEq ▸ Submodule.subset_span ⟨x, hxM, rfl⟩)`.
+
+Establish `hgx : frame F' b - frame (lf D F0) b = ((gS D : ℕ) : D.host.E) • x`. Rewrite using `[hxdef, bt_frameAct_one, smul_smul, mul_inv_cancel₀ hgS0, one_smul]`. Establish `hsc : sgnP D p b * frFac Zd.δ p b * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((sg.q : (D.s.atP p).Fp)⁻¹) * (D.s.atP p).ιE ((gS D : ℕ) : D.host.E)) ∈ (Zd.M p).L.O` using `Subring.mul_mem _ (Subring.mul_mem _ (bt_sq_one_mem Zd p (localSign_sq p b)) (hφ b).1) hκ`. Establish `e : locF' Zd p F' b - (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).f b = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) • ((sgnP D p b * frFac Zd.δ p b * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((sg.q : (D.s.atP p).Fp)⁻¹) * (D.s.atP p).ιE ((gS D : ℕ) : D.ho …` using `by show (sgnP' D p b * frFac Zd.δ p b) • baseChange₂ D p (frame F' b) - (sgnP D p b * frFac Zd.δ p b) • baseChange₂ D p (frame (lf D F0) b) = _`. Rewrite using `[hss, ← smul_sub, ← map_sub, hgx, Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂, smul_smul, smul_smul, hgq]`.
+
+Use `congr 1`. Establish `hq0 : (sg.q : (D.s.atP p).Fp) ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Establish `: algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (sg.q : (D.s.atP p).Fp) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((sg.q : (D.s.atP p).Fp)⁻¹) = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hq0, map_one]`. Take the linear combination `(-(sgnP D p b * frFac Zd.δ p b * (D.s.atP p).ιE ((gS D : ℕ) : D.host.E))) * this`.
+
+Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨_, smul_mem_O Zd p hsc hx, rfl⟩`.
+-/
 theorem admissible_local_partner {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u))
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
     (hR : IsRowLat D F0 Λ) (hA1 : AdmWit Λ (gS D) (lf D F0) F' 1) (g : Loc.SplitG (Zd.M p).L)
@@ -209,6 +278,9 @@ section Main
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Rewrite using `[comb_Cm]`. Both sides reduce to the same expression.
+-/
 theorem locTerm_f'_eq (p : PlF D) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) :
     (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).f' =
@@ -217,6 +289,9 @@ theorem locTerm_f'_eq (p : PlF D) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
   rw [comb_Cm]
   rfl
 
+/- English proof (translation)
+Establish `hdet : IsUnit ξ.det` using `bt_unitri_det ξ h0 h1`. Establish `hup : IsUp ξ⁻¹` using `isUp_inv ⟨h1, fun a b hab => h0 b a hab⟩`. Use `⟨?_, ?_, fun a b hab => hup.2 b a hab, hup.1⟩` and prove the remaining obligations. Rewrite using `[Cm_mul, Matrix.nonsing_inv_mul ξ hdet, Cm_one]`. Rewrite using `[Cm_mul, Matrix.mul_nonsing_inv ξ hdet, Cm_one]`.
+-/
 theorem Cm_inv_props (p : PlF D) (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))
     (h0 : ∀ a b, b < a → ξ a b = 0) (h1 : ∀ a, ξ a a = 1) :
     Cm Zd p ξ⁻¹ * Cm Zd p ξ = 1 ∧ Cm Zd p ξ * Cm Zd p ξ⁻¹ = 1 ∧
@@ -227,6 +302,13 @@ theorem Cm_inv_props (p : PlF D) (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 
   · rw [Cm_mul, Matrix.nonsing_inv_mul ξ hdet, Cm_one]
   · rw [Cm_mul, Matrix.mul_nonsing_inv ξ hdet, Cm_one]
 
+/- English proof (translation)
+Introduce `Λ F' p hR hA1 _ hgen`. Use `set ξ := admXi D Λ (lf D F0) F' with hξdef`. Establish `hu` using `admissibility_witness_unitriangular Λ (lf D F0) F'`. Take `⟨hii, hii', hi0, hi1⟩` from `Cm_inv_props Zd p ξ hu.1 hu.2`. Take `⟨hC0, hC1, hCO⟩` from `Cm_props Zd p ξ⁻¹ hi0 hi1`.
+
+Take `⟨-, -, hCiO⟩` from `Cm_props Zd p ξ hu.1 hu.2`. Use `set t₁ : Loc.Term (Vp D p) (Zd.M p) D.R.rS := ⟨lattice₂ D Zd.M p Λ, (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).f, locF' Zd p F', (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).T, (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).T'⟩ with ht₁`. Establish `e : locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u') = chg t₁ (comb (Cm Zd p ξ⁻¹) t₁.f')` using `by show _ = (⟨_, _, comb (Cm Zd p ξ⁻¹) (locF' Zd p F'), _, _⟩ : Loc.Term (Vp D p) (Zd.M p) D.R.rS)`. Rewrite using `[← locTerm_f'_eq]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Use `gen_change (locH Zd p) t₁ (Cm Zd p ξ⁻¹) (Cm Zd p ξ) hC0 hC1 hCO hCiO hii hii' (fun g hg => ?_) hgen` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `admissible_local_term Zd p F0 Λ F' hR ⟨1, hA1⟩ g hg`.
+-/
 theorem genXiRev_holds : GenXiRev Zd u' F0 := by
   intro Λ F' p hR hA1 _ hgen
   set ξ := admXi D Λ (lf D F0) F' with hξdef
@@ -246,6 +328,13 @@ theorem genXiRev_holds : GenXiRev Zd u' F0 := by
   rw [← e]
   exact admissible_local_term Zd p F0 Λ F' hR ⟨1, hA1⟩ g hg
 
+/- English proof (translation)
+Introduce `hrows γ F' p hA1 _ hgen`. Establish `hR` using `hrows.1 γ.lam γ.mem`. Use `set ξ := admXi D γ.lam (lf D F0) F' with hξdef`. Establish `hu` using `admissibility_witness_unitriangular γ.lam (lf D F0) F'`. Take `⟨hii, hii', hi0, hi1⟩` from `Cm_inv_props Zd p ξ hu.1 hu.2`.
+
+Take `⟨-, -, hCiO⟩` from `Cm_props Zd p ξ⁻¹ hi0 hi1`. Take `⟨hC0, hC1, hCO⟩` from `Cm_props Zd p ξ hu.1 hu.2`. Use `set t₂ := locTerm Zd p γ.lam (lf D F0) F' (Tu D u) (Tu D u') with ht₂`. Establish `e : (⟨lattice₂ D Zd.M p γ.lam, (tLoc Zd p γ).f, locF' Zd p F', (tLoc Zd p γ).T, (tLoc Zd p γ).T'⟩ : Loc.Term (Vp D p) (Zd.M p) D.R.rS) = chg t₂ (comb (Cm Zd p ξ) t₂.f')` using `by show _ = (⟨_, _, comb (Cm Zd p ξ) t₂.f', _, _⟩ : Loc.Term (Vp D p) (Zd.M p) D.R.rS)`. Rewrite using `[ht₂, locTerm_f'_eq, comb_comb, hii, comb_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Use `gen_change (locH Zd p) t₂ (Cm Zd p ξ) (Cm Zd p ξ⁻¹) hC0 hC1 hCO hCiO hii' hii (fun g hg => ?_) hgen` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `admissible_local_partner Zd p F0 γ.lam F' hR hA1 g hg`.
+-/
 theorem genXi_holds : GenXi Zd u u' F0 what₂ := by
   intro hrows γ F' p hA1 _ hgen
   have hR := hrows.1 γ.lam γ.mem

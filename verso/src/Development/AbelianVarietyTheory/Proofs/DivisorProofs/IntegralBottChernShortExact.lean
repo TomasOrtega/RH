@@ -29,6 +29,13 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.CxForm GlobalTheory.BcUnique
 open scoped ContDiff Real ComplexOrder
 
+/- English proof (translation)
+Take `⟨u, w, hu, hw, e⟩` from `h`. Establish `h0` using `GlobalTheory.T.holAtlas_integral_fin_sum_compact A ![A.del u, A.dbar w] (by`. Introduce `j`. Use `fin_cases j`. Use `exacts [GlobalTheory.T.holAtlas_isForm_del A u hu, GlobalTheory.T.isForm_dbar' A w hw])`.
+
+Establish `s : (∑ j, ![A.del u, A.dbar w] j) = α - β` using `by rw [e, Fin.sum_univ_two]; rfl`. Rewrite `h0` using `[s, HolAtlas.integral_sub_of_isForm A α β hα hβ, Fin.sum_univ_two]`. Establish `s1` using `(GlobalTheory.CxFormStokesBoth.stokes M n A u hu).1`. Establish `s2` using `(GlobalTheory.CxFormStokesBoth.stokes M n A w hw).2`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] at h0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem integral_eq_of_isExact {M : Type} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [CompactSpace M] [MeasurableSpace M] [BorelSpace M] {n : ℕ} (A : HolAtlas M n) {α β : A.Fld} (hα : A.IsForm α)
     (hβ : A.IsForm β) (h : A.IsExact (α - β)) : A.integral α = A.integral β := by
@@ -43,6 +50,11 @@ theorem integral_eq_of_isExact {M : Type} [TopologicalSpace M] [T2Space M] [Seco
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] at h0
   linarith
 
+/- English proof (translation)
+Establish `h0 : A.IsForm 0`. Use `A.isForm_fn (u := fun _ => 0) (fun i => (contDiffOn_const (c := (0 : ℂ))).congr fun v _ => by simp)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[HolAtlas.fn]`.
+
+Use `HolAtlas.integral_sub_of_isForm A 0 0 h0 h0` as an intermediate fact. Rewrite `this` using `[sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem integral_zero {M : Type} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [CompactSpace M] [MeasurableSpace M] [BorelSpace M] {n : ℕ} (A : HolAtlas M n) : A.integral 0 = 0 := by
   have h0 : A.IsForm 0 := by
@@ -53,6 +65,15 @@ theorem integral_zero {M : Type} [TopologicalSpace M] [T2Space M] [SecondCountab
   rw [sub_zero] at this
   linarith
 
+/- English proof (translation)
+Take `⟨T', T₀, hsp, hInf, h0, hind⟩` from `GlobalTheory.T.exists_deformation_to_split A T hT`. Establish `hbc : A.IsForm (B.bc T)` using `(B.isRealForm T).1`. Establish `hb' : (famAtlas A).IsRealForm 1 (B.bc T')` using `B.isRealForm T'`. Establish `hf' : (famAtlas A).IsRealForm 1 (bcFld T')` using `GlobalTheory.T.bott_chern_form_real (famAtlas A) T'`. Establish `pf (t : OnePoint ℂ) (α : (famAtlas A).Fld) (hα : (famAtlas A).IsForm α) : A.IsForm ((famAtlas A).pullback A (fib t) α)` using `GlobalTheory.PullbackForm.isForm_pullback _ _ _ _ (famAtlas A) A (fib t) α (isHolo_fib A t) hα`.
+
+Establish `e1 : A.integral (B.bc T) = A.integral ((famAtlas A).pullback A (fib _root_.OnePoint.infty) (B.bc T'))` using `integral_eq_of_isExact A hbc (pf _ _ hb'.1) (B.pull T' T (fib _root_.OnePoint.infty) (isHolo_fib A _root_.OnePoint.infty) hInf)`. Establish `e2 : bcFld T = (famAtlas A).pullback A (fib _root_.OnePoint.infty) (bcFld T')` using `GlobalTheory.T.bott_chern_form_pullback (famAtlas A) A T' T (fib _root_.OnePoint.infty) (isHolo_fib A _root_.OnePoint.infty) hInf`. Establish `e3 : A.integral ((famAtlas A).pullback A (fib ((0 : ℂ) : OnePoint ℂ)) (B.bc T')) = 0`. Rewrite using `[← integral_eq_of_isExact A (B.isRealForm T₀).1 (pf _ _ hb'.1) (B.pull T' T₀ (fib _) (isHolo_fib A _) h0)]`. Establish `z : A.fn (fun _ => (0 : ℝ)) = 0` using `by funext x; simp [HolAtlas.fn]`.
+
+Establish `h0f : A.IsForm 0` using `z ▸ A.isForm_fn (u := fun _ => 0) (fun i => (contDiffOn_const (c := (0 : ℂ))).congr fun v _ => by simp)`. Rewrite using `[integral_eq_of_isExact A (B.isRealForm T₀).1 h0f (by simpa using B.split T₀ hsp), integral_zero]`. Establish `e4 : (famAtlas A).pullback A (fib ((0 : ℂ) : OnePoint ℂ)) (bcFld T') = 0`. Rewrite using `[← GlobalTheory.T.bott_chern_form_pullback (famAtlas A) A T' T₀ _ (isHolo_fib A _) h0, GlobalTheory.T.bott_chern_form_split_zero A T₀ hsp]`. Establish `key` using `GlobalTheory.T.fibre_integral_constant_family M A (B.bc T') (bcFld T') hb' hf' (fun x => by`.
+
+Take `⟨a, ha⟩` from `T'.cover x.pt`. Rewrite using `[B.ddc_bc T' a x ha, GlobalTheory.T.ddc_bott_chern_form (famAtlas A) T' hind a x ha]`. Use the proof step `simp) _root_.OnePoint.infty ((0 : ℂ) : OnePoint ℂ)`. Rewrite `key` using `[e4, e3, integral_zero, ← e1, ← e2, add_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem integral_bc_eq_neg {M : Type} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [CompactSpace M] [MeasurableSpace M] [BorelSpace M] (A : HolAtlas M 1) {r s : ℕ} (B : BottChern)
     (T : HermSeq A r s) (hT : IsInduced T) : A.integral (B.bc T) = -A.integral (bcFld T) := by
@@ -97,6 +118,9 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
+/- English proof (translation)
+Introduce `B k _ X p _ h S hS r s g G hi h₁ h₃ σ hfin`. Use `haveI : CompactSpace (CxPts p σ) := CxPts.compactSpace σ h.isProjOver`. Use `haveI : SecondCountableTopology (CxPts p σ) := CxPts.secondCountableTopology_of_isProjOver σ h.isProjOver`. Use `haveI : T2Space (CxPts p σ) := CxPts.t2Space_cxPts_of_isProjOver σ h.isProjOver`. Rewrite using `[GlobalTheory.BcUnique.integral_bc_eq_neg (h.atlas σ) B _ (GlobalTheory.T.induced_sequence_of_short_exact k X p h S hS r s g G hi h₁ h₃ σ), GlobalTheory.T.integral_bott_chern_measure k X p h S hS r s g G hi h₁ h₃ σ hfin]`.
+-/
 theorem GlobalTheory.BcUnique.integral_bc_seq : ∀ (B : CxForm.BottChern) (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (h : IsRegVar p 1) (S : ShortComplex X.Modules) (hS : S.ShortExact) (r s : ℕ) (g : VMetric p S.X₂ (r + s)) (G : g.IsCInf) (hi : VB.IsSubbundle S.f) (h₁ : VB.IsVB S.X₁ r) (h₃ : VB.IsVB S.X₃ s) (σ : k →+* ℂ), (g.met σ).bcMeas hS h₁ h₃ univ ≠ ⊤ → (h.atlas σ).integral (B.bc (h.seq hS (G.restrict hi h₁) G (G.quot hS h₁ h₃) σ)) = -((g.met σ).bcMeas hS h₁ h₃ univ).toReal := by
   intro B k _ X p _ h S hS r s g G hi h₁ h₃ σ hfin
   haveI : CompactSpace (CxPts p σ) := CxPts.compactSpace σ h.isProjOver

@@ -3,6 +3,17 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 
 open NumberField
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨M, hM, hx⟩` from `hx`.
+
+Take `⟨N, hN, hy⟩` from `hy`. Use `⟨M * N, mul_ne_zero hM hN, ?_⟩` and prove the remaining obligations. Establish `h : ((M * N : ℤ) : E) • (x + y) = N • ((M : E) • x) + M • ((N : E) • y)`. Rewrite using `[← Int.cast_smul_eq_zsmul E N, ← Int.cast_smul_eq_zsmul E M ((N : E) • y), smul_smul, smul_smul, smul_add, Int.cast_mul, mul_comm (N : E)]`. Rewrite using `[h]`.
+
+Conclude with `L.add_mem (zsmul_mem hx N) (zsmul_mem hy M)`. Consider the case `smul c x _ hx`. Take `⟨N, hN, hx⟩` from `hx`. Establish `hc : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic c)`. Take `⟨M, hM, hint⟩` from `hc.exists_integral_multiple`.
+
+Use `⟨M * N, mul_ne_zero hM hN, ?_⟩` and prove the remaining obligations. Set `a : 𝓞 E` to `⟨M • c, hint⟩`. Establish `ha : algebraMap (𝓞 E) E a = (M : E) * c`. Rewrite using `[← zsmul_eq_mul]`. Both sides reduce to the same expression.
+
+Establish `h : ((M * N : ℤ) : E) • c • x = a • ((N : E) • x)`. Rewrite using `[← algebraMap_smul E a, ha, smul_smul, smul_smul, Int.cast_mul, mul_right_comm]`. Rewrite using `[h]`. Conclude with `L.smul_mem a hx`.
+-/
 private theorem UpperTheory.Reformulated.B.ModuliIntegralCharts.exists_zsmul_mem {E V : Type} [Field E] [NumberField E]
     [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
     (L : Submodule (𝓞 E) V) {v : V} (hv : v ∈ Submodule.span E (L : Set V)) :
@@ -33,6 +44,9 @@ private theorem UpperTheory.Reformulated.B.ModuliIntegralCharts.exists_zsmul_mem
     rw [h]
     exact L.smul_mem a hx
 
+/- English proof (translation)
+Introduce `I i`. Take `⟨N, hN, h⟩` from `UpperTheory.Reformulated.B.ModuliIntegralCharts.exists_zsmul_mem I.L (v := (Pi.single i (1 : I.E) : Fin I.n → I.E)) (by rw [I.L_span]; exact Submodule.mem_top)`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← Pi.single_smul', smul_eq_mul, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Reformulated.B.ModuliIntegralCharts.single_mem :
     ∀ (I : Formalism.MainNotions.S.AutInst) (i : Fin I.n), ∃ (N : ℤ), N ≠ (0 : ℤ) ∧ Pi.single i (↑N : I.E) ∈ I.L := by
   intro I i

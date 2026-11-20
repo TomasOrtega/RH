@@ -11,10 +11,20 @@ open GlobalTheory.RawLift
 
 namespace GlobalTheory.RawLift
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℚ K`. Conclude with `(b.equivFun.toEquiv.injective).countable`.
+-/
 theorem countable_numberField_type (K : Type) [Field K] [NumberField K] : Countable K := by
   let b := Module.finBasis ℚ K
   exact (b.equivFun.toEquiv.injective).countable
 
+/- English proof (translation)
+Introduce `D W`. Use `haveI : Countable D.host.E := countable_numberField_type D.host.E`. Set `M` to `(Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)`. Use `haveI : Countable (Submodule D.host.E M) := by`. Establish `hs : Function.Surjective (fun s : Finset M => Submodule.span D.host.E (s : Set M))`.
+
+Introduce `N`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian N : N.FG)`. Conclude with `⟨s, hs⟩`. Conclude with `hs.countable`. Unfold `Lag`.
+
+Use `infer_instance`.
+-/
 theorem lag_countable : ∀ (D : D7) (W : HSp D), Countable (Lag W) := by
   intro D W
   haveI : Countable D.host.E := countable_numberField_type D.host.E

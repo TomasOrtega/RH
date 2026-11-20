@@ -4,6 +4,15 @@ open Filter Topology
 
 namespace GlobalTheory.CompanionTheory.Analysis
 
+/- English proof (translation)
+Establish `hfac : (0 : ℝ) < (D.factorial : ℝ)` using `by exact_mod_cast D.factorial_pos`. Establish `hev : ∀ᶠ n : ℕ in atTop, (0 : ℝ) < (n : ℝ) ^ D` using `by filter_upwards [eventually_ge_atTop 1] with n hn`. Establish `: (0 : ℝ) < (n : ℝ)` using `by exact_mod_cast hn`. Check the signs of the components of the expression. Rewrite using `[tendsto_order]`.
+
+Use `⟨fun a ha => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hl ((G - a) / 2) (by linarith), hev] with n hn hp`. Rewrite `hn` using `[div_le_iff₀ hfac]`. Establish `key : G - (G - a) / 2 ≤ (D.factorial : ℝ) * f n / (n : ℝ) ^ D`. Rewrite using `[le_div_iff₀ hp]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [hu ((b - G) / 2) (by linarith), hev] with n hn hp`. Rewrite `hn` using `[le_div_iff₀ hfac]`. Establish `key : (D.factorial : ℝ) * f n / (n : ℝ) ^ D ≤ G + (b - G) / 2`.
+
+Rewrite using `[div_le_iff₀ hp]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tendsto_factorial_mul_div_pow_of_eps_bounds (f : ℕ → ℝ) (G : ℝ) (D : ℕ)
     (hl : ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, (G - ε) * (n : ℝ) ^ D / (D.factorial : ℝ) ≤ f n)
     (hu : ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, f n ≤ (G + ε) * (n : ℝ) ^ D / (D.factorial : ℝ)) :

@@ -24,6 +24,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 section Lat
 
+/- English proof (translation)
+Establish `h1 : (Γ ⊓ N.comap (LinearMap.fst R P X)).FG`. Use `Submodule.fg_of_fg_map_of_fg_inf_ker (LinearMap.fst R P X) (hN.of_le ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hy.2`. Establish `: Γ ⊓ N.comap (LinearMap.fst R P X) ⊓ LinearMap.ker (LinearMap.fst R P X) = ⊥`.
+
+Use `eq_bot_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `⟨p, x⟩ ⟨⟨h, -⟩, hp⟩`. Establish `hp' : p = 0` using `hp`. Substitute `hp'` using the available equality. Rewrite using `[hΓ x h]`.
+
+Conclude with `Submodule.zero_mem _`. Rewrite using `[this]`. Conclude with `Submodule.fg_bot`. Use `(h1.map (LinearMap.snd R P X)).of_le (Submodule.span_le.2 fun x hx => ?_)` and prove the remaining obligations. Take `⟨p, hp, h⟩` from `hs x hx`.
+
+Conclude with `⟨(p, x), ⟨h, hp⟩, rfl⟩`.
+-/
 theorem fg_of_graph {R P X : Type} [CommRing R] [IsNoetherianRing R] [AddCommGroup P] [Module R P] [AddCommGroup X]
     [Module R X] {N : Submodule R P} (hN : N.FG) (Γ : Submodule R (P × X)) (hΓ : ∀ x, ((0 : P), x) ∈ Γ → x = 0)
     {s : Set X} (hs : ∀ x ∈ s, ∃ p ∈ N, (p, x) ∈ Γ) : (Submodule.span R s).FG := by
@@ -46,6 +55,13 @@ theorem fg_of_graph {R P X : Type} [CommRing R] [IsNoetherianRing R] [AddCommGro
 
 variable {K : Type} [Field K] [NumberField K] {n n' : ℕ}
 
+/- English proof (translation)
+Establish `key : (B.comap (w.toLinearMap.restrictScalars (𝓞 K))).map (e.restrictScalars (𝓞 K)) = (B.map (e'.restrictScalars (𝓞 K))).map (w.symm.toLinearMap.restrictScalars (𝓞 K))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨_, ⟨w y, hy, rfl⟩, w.symm_apply_eq.2 (he y).symm⟩`.
+
+Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Use `⟨w.symm y, by simpa using hy, w.injective ?_⟩` and prove the remaining obligations. Simplify using `[he]`. Rewrite using `[key]`. Use `⟨h.1.map _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, h.2, Submodule.map_equiv_eq_comap_symm]`. Both sides reduce to the same expression.
+-/
 theorem isLatIn_comap (w : (Fin n → K) ≃ₗ[K] (Fin n' → K)) {e : (Fin n → K) →ₗ[K] (Fin n → K)}
     {e' : (Fin n' → K) →ₗ[K] (Fin n' → K)} (he : ∀ x, w (e x) = e' (w x)) {V : Submodule K (Fin n' → K)}
     {B : Submodule (𝓞 K) (Fin n' → K)} (h : Formalism.EigenvalueLevelCeiling.IsLatIn V (B.map (e'.restrictScalars (𝓞 K)))) :
@@ -65,12 +81,18 @@ theorem isLatIn_comap (w : (Fin n → K) ≃ₗ[K] (Fin n' → K)) {e : (Fin n �
   rw [Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, h.2, Submodule.map_equiv_eq_comap_symm]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_coe, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, Submodule.span_image, h]`.
+-/
 theorem span_map_congr (e : (Fin n → K) →ₗ[K] (Fin n' → K)) {A B : Submodule (𝓞 K) (Fin n → K)}
     (h : Submodule.span K (A : Set (Fin n → K)) = Submodule.span K (B : Set (Fin n → K))) :
     Submodule.span K (A.map (e.restrictScalars (𝓞 K)) : Set (Fin n' → K)) =
       Submodule.span K (B.map (e.restrictScalars (𝓞 K)) : Set (Fin n' → K)) := by
   rw [Submodule.map_coe, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, Submodule.span_image, h]
 
+/- English proof (translation)
+Introduce and unpack `x ⟨s, hs, hx⟩`. Take `⟨t, ht, hy⟩` from `h (x := f x) ⟨s, hs, (f.restrictScalars (𝓞 K)).map_smul s x ▸ (hx : (f.restrictScalars (𝓞 K)) (s • x) ∈ A)⟩`. Conclude with `⟨t, ht, by rwa [Submodule.mem_comap, map_smul]⟩`.
+-/
 theorem localization_comap_le (v : HeightOneSpectrum (𝓞 K)) (f : (Fin n → K) →ₗ[K] (Fin n' → K))
     {A B : Submodule (𝓞 K) (Fin n' → K)} (h : localization₂ v.asIdeal A ≤ localization₂ v.asIdeal B) :
     localization₂ v.asIdeal (A.comap (f.restrictScalars (𝓞 K))) ≤ localization₂ v.asIdeal (B.comap (f.restrictScalars (𝓞 K))) := by
@@ -133,6 +155,11 @@ def KernelSpanOverClasses (U : Subgroup G) (ψ : U →* D.what₂.LLˣ) (ph : �
 
 variable {R i}
 
+/- English proof (translation)
+Introduce `ω φ hk Cl h hh`. Rewrite using `[← h2 ω φ hk Cl h hh]`. Unfold `thetaBase`. Use `congr 1`. Use extensionality with `x`.
+
+Use `⟨?_, fun hx => ⟨ω, φ, hk, hx⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨ω', φ', hk', hx⟩`. Unfold `seriesSet at hx ⊢`. Rewrite using `[h1 ω φ ω' φ' hk hk']` and apply the resulting hypothesis.
+-/
 theorem spanOverClasses_of {U : Subgroup G} {ψ : U →* D.what₂.LLˣ} {ph : ℂ} {v : HeightOneSpectrum (𝓞 D.what₂.LL)} {p : ℕ}
     (h1 : BaseKernelUnique R i v p) (h2 : KernelSpanOverClasses R i U ψ ph v p) : SpanOverClasses R i U ψ ph v p := by
   intro ω φ hk Cl h hh
@@ -145,6 +172,11 @@ theorem spanOverClasses_of {U : Subgroup G} {ψ : U →* D.what₂.LLˣ} {ph : �
   unfold seriesSet at hx ⊢
   rwa [h1 ω φ ω' φ' hk hk']
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨h1, h2, -⟩` from `hW i (sg0 D A)`. Establish `h3 : adForm R i x = 0` using `hres i _ (h2 ▸ LinearMap.mem_range_self _ _) hx`. Establish `h4 : (R.FW i).j (sg0 D A) x = 0` using `h1 (h3.trans (map_zero _).symm)`. Assume the negation of the conclusion as `h0`.
+
+Establish `h5` using `(hu i (sg0 D A)).1 1 (fun _ => x) (linearIndependent_unique_iff.2 h0)`. Conclude with `h5.ne_zero 0 h4`.
+-/
 theorem formsDetermined_of (hres : GlobalTheory.IndefiniteRowSideFullHecke.ResidueInjectivityAt.ResInjAt R) (hW : R.models_HW) (hu : R.LUnif) : FormsDetermined R i := by
   intro x hx
   obtain ⟨h1, h2, -⟩ := hW i (sg0 D A)
@@ -154,15 +186,26 @@ theorem formsDetermined_of (hres : GlobalTheory.IndefiniteRowSideFullHecke.Resid
   have h5 := (hu i (sg0 D A)).1 1 (fun _ => x) (linearIndependent_unique_iff.2 h0)
   exact h5.ne_zero 0 h4
 
+/- English proof (translation)
+Introduce `x hx`. Conclude with `⟨⟨hx.1.1, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx.1.2 PP) (hQ hP)⟩, hx.2⟩`.
+-/
 theorem levJ_le_dataLevel (t : T0) {Q : Finset (Pl D.host.E)} (hQ : Q ⊆ R.Q t) : levJ R i t ≤ dataLevel R i Q := by
   intro x hx
   exact ⟨⟨hx.1.1, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP =>
     Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx.1.2 PP) (hQ hP)⟩, hx.2⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.TransLattice.nabDelLattice _ _ _ _ _ fun τ => (GlobalTheory.dualFrLattice_holds D.what₂.LL _ 1 _ (by simp) (GlobalTheory.TauLat.tauLatLattice _ _ _ _ (labLL D) τ _ (GlobalTheory.RepsCompare.isLattice_hLat _ g))).1).1.fg`.
+-/
 theorem nabAtr_hLat_fg (g : Bridge.Gf (Vc D i)) : (nabAtr (labLL D) (lamV D i) (Bridge.hLat (Vc D i) g)).FG :=
   (GlobalTheory.TransLattice.nabDelLattice _ _ _ _ _ fun τ => (GlobalTheory.dualFrLattice_holds D.what₂.LL _ 1 _ (by simp)
     (GlobalTheory.TauLat.tauLatLattice _ _ _ _ (labLL D) τ _ (GlobalTheory.RepsCompare.isLattice_hLat _ g))).1).1.fg
 
+/- English proof (translation)
+Take `⟨e, -, h2, -, h4, -⟩` from `h`. Use `⟨fun hf => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[← h4 c]`. Conclude with `Submodule.fg_of_fg_map_injective (e.toLinearMap.restrictScalars (𝓞 D.what₂.LL)) e.injective hf`. Rewrite `hx` using `[← h4 c]`.
+
+Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨y, hy, (h2 y).symm⟩`.
+-/
 theorem coefTie_class {V : HSp D} {C : Bridge.CoefDat D V} {S : CSD D.what₂.LL} {J : Subgroup (Bridge.Gf V)} {χ : J →* ℂˣ}
     {P : Bridge.ClassPres (Bridge.ratF V) S D.what₂.embLL C.ρ J χ} {lam : D.what₂.Tau → DomWeight V.rank}
     {c0 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] C.W}
@@ -179,6 +222,11 @@ theorem coefTie_class {V : HSp D} {C : Bridge.CoefDat D V} {S : CSD D.what₂.LL
     obtain ⟨y, hy, rfl⟩ := hx
     exact ⟨y, hy, (h2 y).symm⟩
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ w, InCoefLat R i h w`. Take `⟨-, gramR, c0R, c0L, hT, -⟩` from `hex`. Use `⟨(A.MtCSD i t).Nab c, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(coefTie_class (hT.coefL i t) c).1 (nabAtr_hLat_fg _)`. Introduce and unpack `w ⟨gramR', c0R', c0L', hT', P, hP, rfl⟩`.
+
+Rewrite `hP` using `[hh]`. Conclude with `(coefTie_class (hT'.coefL i t) c).2 P hP`. Conclude with `⟨⊥, Submodule.fg_bot, fun w hw => absurd ⟨w, hw⟩ hex⟩`.
+-/
 theorem exists_coef_fg (t : T0) (c : (A.MtCSD i t).Cl) {h : GA D (Vc D i)} (hh : fin (Vc D i) h = (R.B.L i t).pres.y c) :
     ∃ N : Submodule (𝓞 D.what₂.LL) (A.MtCSD i t).V, N.FG ∧
       ∀ w, InCoefLat R i h w → ∃ P ∈ N, w = (R.B.L i t).pres.coef P := by
@@ -191,28 +239,51 @@ theorem exists_coef_fg (t : T0) (c : (A.MtCSD i t).Cl) {h : GA D (Vc D i)} (hh :
       exact (coefTie_class (hT'.coefL i t) c).2 P hP
   · exact ⟨⊥, Submodule.fg_bot, fun w hw => absurd ⟨w, hw⟩ hex⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [singleSeries, Datum.thetaKO, map_add, Pi.add_apply]`.
+-/
 theorem singleSeries_add (ω : WeilRep D i) (φ : Datum.WO (Vc D i) (Wc D i) → ℂ) (h : GA D (Vc D i)) (w w' : (R.cV i).W)
     (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) :
     singleSeries R i ω φ h (w + w') v = singleSeries R i ω φ h w v + singleSeries R i ω φ h w' v := by
   funext g
   simp only [singleSeries, Datum.thetaKO, map_add, Pi.add_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [singleSeries, Datum.thetaKO, map_smul, Pi.smul_apply]`.
+-/
 theorem singleSeries_smul (ω : WeilRep D i) (φ : Datum.WO (Vc D i) (Wc D i) → ℂ) (h : GA D (Vc D i)) (a : ℂ) (w : (R.cV i).W)
     (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) :
     singleSeries R i ω φ h (a • w) v = a • singleSeries R i ω φ h w v := by
   funext g
   simp only [singleSeries, Datum.thetaKO, map_smul, Pi.smul_apply]
 
+/- English proof (translation)
+Unfold `adForm`. Rewrite using `[map_add, map_add]`.
+-/
 theorem adForm_add (x y : Fin (R.nW i) → D.what₂.LL) : adForm R i (x + y) = adForm R i x + adForm R i y := by
   unfold adForm
   rw [map_add, map_add]
 
+/- English proof (translation)
+Unfold `adForm`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul]`. Use `congr 1`. Conclude with `RingHom.congr_fun (sgAt_mk _ R.hv0) a`.
+-/
 theorem adForm_smul (a : D.what₂.LL) (x : Fin (R.nW i) → D.what₂.LL) : adForm R i (a • x) = D.what₂.embLL a • adForm R i x := by
   unfold adForm
   rw [LinearMap.map_smulₛₗ, map_smul]
   congr 1
   exact RingHom.congr_fun (sgAt_mk _ R.hv0) a
 
+/- English proof (translation)
+Take `⟨N, hN, H⟩` from `exists_coef_fg t c hh`. Set `cf : (A.MtCSD i t).V →ₛₗ[D.what₂.embLL] (R.cV i).W` to `(R.B.L i t).pres.coef`. Set `Γ : Submodule D.what₂.LL ((A.MtCSD i t).V × (Fin (R.nW i) → D.what₂.LL))` to `{ carrier := {q | ∀ v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ, adForm R i q.2 (fun ρ => v ρ) = ph • levelTrace R i U ψ (singleSeries R i ω φ h (cf q.1) v)} add_mem' := fun {a b} ha hb v => by`. Rewrite using `[Prod.fst_add, Prod.snd_add, adForm_add, map_add, singleSeries_add, map_add, smul_add, ← ha v, ← hb v]`. Both sides reduce to the same expression.
+
+Use the proof step `zero_mem' := fun v => by`. Establish `h1` using `adForm_smul (R := R) (i := i) 0 0`. Establish `h2` using `singleSeries_smul (R := R) ω φ h 0 0 v`. Rewrite `h1` using `[zero_smul, map_zero, zero_smul]`. Rewrite `h2` using `[zero_smul, zero_smul]`.
+
+Rewrite using `[Prod.fst_zero, Prod.snd_zero, h1, map_zero, h2, map_zero, smul_zero]`. Both sides reduce to the same expression. Use the proof step `smul_mem' := fun a q hq v => by`. Rewrite using `[Prod.smul_fst, Prod.smul_snd, adForm_smul, LinearMap.map_smulₛₗ, singleSeries_smul, map_smul, smul_comm, ← hq v]`. Use `rfl }`.
+
+Use `fg_of_graph hN (Γ.restrictScalars (𝓞 D.what₂.LL)) (fun x hx => hd x fun v => ?_) ?_` and prove the remaining obligations. Establish `h2` using `singleSeries_smul (R := R) ω φ h 0 0 v`. Rewrite `h2` using `[zero_smul, zero_smul]`. Establish `h3 : adForm R i x (fun ρ => v ρ) = ph • levelTrace R i U ψ (singleSeries R i ω φ h (cf 0) v)` using `hx v`. Rewrite using `[h3, map_zero, h2, map_zero, smul_zero]`.
+
+Introduce and unpack `x ⟨w, hw, hx⟩`. Take `⟨P, hP, rfl⟩` from `H w hw`. Conclude with `⟨P, hP, hx⟩`.
+-/
 theorem seriesAt_fg (hd : FormsDetermined R i) (U : Subgroup G) (ψ : U →* D.what₂.LLˣ) (ph : ℂ) (ω : WeilRep D i)
     (φ : Datum.WO (Vc D i) (Wc D i) → ℂ) (t : T0) (c : (A.MtCSD i t).Cl) {h : GA D (Vc D i)}
     (hh : fin (Vc D i) h = (R.B.L i t).pres.y c) : (Submodule.span (𝓞 D.what₂.LL) (seriesAt R i U ψ ph ω φ h)).FG := by
@@ -243,6 +314,11 @@ theorem seriesAt_fg (hd : FormsDetermined R i) (U : Subgroup G) (ψ : U →* D.w
     obtain ⟨P, hP, rfl⟩ := H w hw
     exact ⟨P, hP, hx⟩
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ ω φ, IsBaseKernel R i v p ω φ`. Take `⟨ω, φ, hk⟩` from `hex choose h hh using fun c => (GlobalTheory.RepsCompare.existsUnique_lift (Vc D i) ((R.B.L i (R.mu v)).pres.y c)).exists`. Rewrite using `[hM ω φ hk _ h ⟨fun c => (hh c).1, fun x => ?_⟩, Submodule.span_iUnion]`. Conclude with `Submodule.fg_iSup _ fun c => seriesAt_fg hd U ψ ph ω φ _ c (hh c).2`. Take `⟨c, γ, k, e⟩` from `((R.B.L i (R.mu v)).pres.reps x).exists`.
+
+Conclude with `⟨c, γ, ⟨k, levJ_le_dataLevel (R.mu v) (Finset.filter_subset _ _) k.2⟩, by rw [(hh c).2]; exact e⟩`. Establish `: thetaBase R i U ψ ph v p = ⊥` using `Submodule.span_eq_bot.2 fun x ⟨ω, φ, hk, _⟩ => absurd ⟨ω, φ, hk⟩ hex`. Rewrite using `[this]`. Conclude with `Submodule.fg_bot`.
+-/
 theorem thetaBase_fg (hd : FormsDetermined R i) {U : Subgroup G} {ψ : U →* D.what₂.LLˣ} {ph : ℂ}
     {v : HeightOneSpectrum (𝓞 D.what₂.LL)} {p : ℕ} (hM : SpanOverClasses R i U ψ ph v p) : (thetaBase R i U ψ ph v p).FG := by
   classical

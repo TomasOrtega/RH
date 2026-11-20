@@ -20,6 +20,11 @@ def sumFun {ι κ : Type} {X : ι → Type} {Y : κ → Type} (A : ∀ i, (X i �
   | .inl i => A i
   | .inr k => B k
 
+/- English proof (translation)
+Set `Z : ι ⊕ κ → Type` to `Sum.elim X Y`. Set `C : ∀ a : ι ⊕ κ, (Z a → ℂ) →ₗ[ℂ] ℂ` to `sumFun A B`. Set `J : (α → ∀ i, X i → ℂ) → (α → ∀ k, Y k → ℂ) → α → ∀ a, Z a → ℂ` to `fun f g d a => Sum.rec (motive := fun a => Z a → ℂ) (f d) (g d) a`. Set `M : MultilinearMap ℂ (fun a => ↥(⊤ : Submodule ℂ (Z a → ℂ))) ℂ` to `(MultilinearMap.mkPiAlgebra ℂ (ι ⊕ κ) ℂ).compLinearMap fun a => C a ∘ₗ (⊤ : Submodule ℂ (Z a → ℂ)).subtype`. Establish `key` using `GlobalTheory.finsupp_sum_multilinear_eq_of_prod_eq (X := Z) (fun _ => ⊤) M τ τ (fun d a => ⟨J f g d a, trivial⟩) (fun d a => ⟨J f' g' d a, trivial⟩) (fun z => by`.
+
+Simplify using `only [Fintype.prod_sum_type]`. Conclude with `h (fun i => z (.inl i)) (fun k => z (.inr k)))`. Simplify using `only [smul_eq_mul, M, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, Fintype.prod_sum_type] at key`. Conclude with `key`.
+-/
 theorem sum_prod_functional_eq {ι κ : Type} [Fintype ι] [Fintype κ] {X : ι → Type} {Y : κ → Type}
     (A : ∀ i, (X i → ℂ) →ₗ[ℂ] ℂ) (B : ∀ k, (Y k → ℂ) →ₗ[ℂ] ℂ) {α : Type} (τ : α →₀ ℂ)
     (f f' : α → ∀ i, X i → ℂ) (g g' : α → ∀ k, Y k → ℂ)
@@ -43,11 +48,21 @@ theorem sum_prod_functional_eq {ι κ : Type} [Fintype ι] [Fintype κ] {X : ι 
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+The claim follows from `(G.isV (X := .grid D.R.m i) ⟨le_rfl, hi⟩ (fun k hk => by have := D.R.two_le_m simp only [Node.grid.injEq] at hk; omega)).sd`.
+-/
 theorem selfDual_last {i : ℕ} (hi : i ≤ D.R.m) : IsSelfDualC (G.V (.grid D.R.m i)) (G.Λ (.grid D.R.m i)) :=
   (G.isV (X := .grid D.R.m i) ⟨le_rfl, hi⟩ (fun k hk => by
     have := D.R.two_le_m
     simp only [Node.grid.injEq] at hk; omega)).sd
 
+/- English proof (translation)
+Establish `sdS` using `selfDual_last (G := G) hi.le`. Establish `sdT` using `selfDual_last (G := G) (i := i + 1) hi`. Take `⟨βT, hβT⟩` from `GlobalTheory.AdelicFrame.exists_isFrame D.host.F _ sdT.1.fg sdT.1.span_eq_top`. Take `⟨βS, hβS⟩` from `GlobalTheory.AdelicFrame.exists_isFrame D.host.F _ sdS.1.fg sdS.1.span_eq_top`. Establish `keep : ∀ {V : HSp D} (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)), Formalism.L2.DIV.IsFrame β Λ → ∀ X : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D), X ∈ congLev D.sp.cm V.gram Λ ⊤ → X ∈ Formalism.L2.DIV.St β`.
+
+Introduce `V Λ β hβ X hX`. Rewrite `hX` using `[congLev_top]`. Establish `hst` using `(Subgroup.mem_inf.1 hX).2`. Establish `hst'` using `(Subgroup.mem_inf.1 (inv_mem hX)).2`. Conclude with `(GlobalTheory.LevSplit.mem_St_iff β Λ hβ X).2 ⟨fun v hv => (hst v).1 hv, fun v hv => (hst' v).1 hv⟩`.
+
+Conclude with `GlobalTheory.StabLatInv.mem_latO_iff_actO_mem D _ _ _ _ βS βT sdS sdT hβS hβT a b (keep _ βS hβS _ ha) (keep _ βT hβT _ hb) u`.
+-/
 theorem keep_pair {i : ℕ} (hi : i < D.R.m) (a : GA D (G.V (.grid D.R.m i))) (b : GA D (G.V (.grid D.R.m (i + 1))))
     (ha : Lev.finE (G.V (.grid D.R.m i)) a ∈ G.levMax (.grid D.R.m i)) (hb : Lev.finE (G.V (.grid D.R.m (i + 1))) b ∈ G.levMax (.grid D.R.m (i + 1)))
     (u : WO (G.V (.grid D.R.m i)) (G.V (.grid D.R.m (i + 1)))) :
@@ -67,12 +82,22 @@ theorem keep_pair {i : ℕ} (hi : i < D.R.m) (a : GA D (G.V (.grid D.R.m i))) (b
     exact (GlobalTheory.LevSplit.mem_St_iff β Λ hβ X).2 ⟨fun v hv => (hst v).1 hv, fun v hv => (hst' v).1 hv⟩
   exact GlobalTheory.StabLatInv.mem_latO_iff_actO_mem D _ _ _ _ βS βT sdS sdT hβS hβT a b (keep _ βS hβS _ ha) (keep _ βT hβT _ hb) u
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨⟨p, hp⟩, hn⟩` from `(ρ.vT_is t D.R.m i le_rfl hi).2.norm`. Use `hn p hp` as an intermediate fact. Simplify using `[nrm2, h0] at this`.
+-/
 theorem vT_ne_zero {W : G.Weil} (ρ : RealMatch W) (t : T) {i : ℕ} (hi : i < D.R.m) : ρ.vT D.R.m i ≠ 0 := by
   intro h0
   obtain ⟨⟨p, hp⟩, hn⟩ := (ρ.vT_is t D.R.m i le_rfl hi).2.norm
   have := hn p hp
   simp [nrm2, h0] at this
 
+/- English proof (translation)
+Set `P : ∀ (p : Pair T) (f₀ : WO (G.pS p) (G.pT p) → ℂ), ((WO (G.pS p) (G.pT p) → ℂ) →ₗ[ℂ] (WO (G.pS p) (G.pT p) → ℂ)) → Prop` to `fun p f₀ => IsPlaceModel W.ψ (symplO _ _) (heisO W.ψ _ _) e (latO (G.pS p) (G.pT p) (G.latS p : Set _) (G.latT p : Set _) fun _ => True) 1 f₀`. Establish `hP : ∀ (p : Pair T) (f₀ f₁ f : WO (G.pS p) (G.pT p) → ℂ), IsLocVec W p e f₀ f₁ f → P p f₀ (Classical.epsilon (P p f₀)) ∧ f = Classical.epsilon (P p f₀) f₁` using `fun p f₀ f₁ f hf =>`. Establish `hs` using `Classical.epsilon_spec hf.2.1`. Use the proof step `⟨hs, hf.2.2 _ hs⟩`. Establish `key` using `sum_prod_functional_eq (X := fun n : Fin D.R.m => WO (G.pS (.chi n D.R.m : Pair T)) (G.pT (.chi n D.R.m : Pair T))) (Y := fun i : Fin D.R.m => WO (G.V (.grid D.R.m i)) (G.V (.grid D.R.m (i + 1)))) (fun n => LinearMap.proj (y n) ∘ₗ Classical.epsilon (P (.chi n D.R.m) (ρ.vX n D.R.m …`.
+
+Establish `hrow : ∀ d ∈ τ.support, ∀ n : Fin D.R.m, d.1 n (y n) = (LinearMap.proj (y n) ∘ₗ Classical.epsilon (P (.chi n D.R.m) (ρ.vX n D.R.m))) ((φ d).1 n)` using `fun d hd n => congrFun (hP _ _ _ _ ((hloc d hd).1 n)).2 _`. Use `Eq.trans (Finsupp.sum_congr fun d hd => ?_) (key.trans (Finsupp.sum_congr fun d hd => ?_))` and prove the remaining obligations. Use `congrArg _ (congrArg₂ _ (Finset.prod_congr rfl fun n _ => hrow d hd n) (Finset.prod_congr rfl fun i _ => ?_))` and prove the remaining obligations. Establish `hl` using `(hloc d hd).2 i`. Conclude with `congrFun (GlobalTheory.RowVertexInv.FactorTheta.om_theta_eq (W.om_is (.mu t D.R.m i) ⟨le_rfl, i.2⟩) hee hinf (selfDual_last i.2.le) (selfDual_last (i := i + 1) i.2) (ρ.vT_is t D.R.m i le_rfl i.2).2.theta (h i, h (i + 1)) (keep_pair i.2 _ _ (hh _) (hh _)) (GlobalTheory.RowVertexIn …`.
+
+Use `congrArg _ (congrArg₂ _ (Finset.prod_congr rfl fun n _ => (hrow d hd n).symm) (Finset.prod_congr rfl fun i _ => ?_))` and prove the remaining obligations. Conclude with `(congrFun (hP _ _ _ _ ((hloc d hd).2 i)).2 (v i)).symm`.
+-/
 theorem sum_om_eq {W : G.Weil} (ρ : RealMatch W) (t : T) {e : AE D} (hee : e * e = e) (hinf : infPart D e = 0)
     (τ : SchRow G × SchDown G t →₀ ℂ) (φ : SchRow G × SchDown G t → SchRow G × SchDown G t)
     (hloc : ∀ d ∈ τ.support, (∀ i : Fin D.R.m, IsLocVec W (.chi i D.R.m) e (ρ.vX i D.R.m) ((φ d).1 i) (d.1 i)) ∧
@@ -114,11 +139,23 @@ theorem sum_om_eq {W : G.Weil} (ρ : RealMatch W) (t : T) {e : AE D} (hee : e * 
   · refine congrArg _ (congrArg₂ _ (Finset.prod_congr rfl fun n _ => (hrow d hd n).symm) (Finset.prod_congr rfl fun i _ => ?_))
     exact (congrFun (hP _ _ _ _ ((hloc d hd).2 i)).2 (v i)).symm
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[inv_one]`. Conclude with `(Matrix.mul_one _).trans (Matrix.one_mul _)`.
+-/
 theorem actO_one_one (S T' : HSp D) (u : WO S T') : actO S T' 1 1 u = u := by
   unfold actO
   rw [inv_one]
   exact (Matrix.mul_one _).trans (Matrix.one_mul _)
 
+/- English proof (translation)
+Set `B : Fin D.R.m → Type` to `fun i => Mx D (G.V (.grid D.R.m (i + 1))).rank (G.V (.grid D.R.m i)).rank`. Distinguish the cases in `h2 : i = ⟨j + 1, by omega⟩`. Substitute `h2` using the available equality. Use `(Function.update_self (β := B) _ _ _).trans ?_` and prove the remaining obligations. Establish `e1 : (Pi.mulSingle (j + 1) k : Pts G) (j + 1) = k` using `Pi.mulSingle_eq_same _ _`.
+
+Establish `e2 : (Pi.mulSingle (j + 1) k : Pts G) (j + 1 + 1) = 1` using `Pi.mulSingle_eq_of_ne (by omega) _`. Express the relevant statement in the definitionally equal form `_ = actO _ _ ((Pi.mulSingle (j + 1) k : Pts G) (j + 1))⁻¹ ((Pi.mulSingle (j + 1) k : Pts G) (j + 1 + 1))⁻¹ _`. Rewrite using `[e1, e2, inv_one]`. Use `(Function.update_of_ne (β := B) h2 _ _).trans ?_` and prove the remaining obligations. Distinguish the cases in `h1 : i = ⟨j, by omega⟩`.
+
+Substitute `h1` using the available equality. Use `(Function.update_self (β := B) _ _ _).trans ?_` and prove the remaining obligations. Establish `e1 : (Pi.mulSingle (j + 1) k : Pts G) (j + 1) = k` using `Pi.mulSingle_eq_same _ _`. Establish `e2 : (Pi.mulSingle (j + 1) k : Pts G) j = 1` using `Pi.mulSingle_eq_of_ne (by omega) _`. Express the relevant statement in the definitionally equal form `_ = actO _ _ ((Pi.mulSingle (j + 1) k : Pts G) j)⁻¹ ((Pi.mulSingle (j + 1) k : Pts G) (j + 1))⁻¹ _`.
+
+Rewrite using `[e1, e2, inv_one]`. Use `(Function.update_of_ne (β := B) h1 _ _).trans ?_` and prove the remaining obligations. Establish `e1 : (Pi.mulSingle (j + 1) k : Pts G) i = 1` using `Pi.mulSingle_eq_of_ne (fun h => h2 (Fin.ext h)) _`. Establish `e2 : (Pi.mulSingle (j + 1) k : Pts G) (i + 1) = 1` using `Pi.mulSingle_eq_of_ne (fun h => h1 (Fin.ext (Nat.succ_injective h))) _`. Rewrite using `[e1, e2, inv_one, inv_one, actO_one_one]`.
+-/
 theorem movY_eq (j : ℕ) (hj : j + 1 + 1 < D.R.m) (k : GA D (G.V (.grid D.R.m (j + 1))))
     (y : ∀ i : Fin D.R.m, WO (G.V (.grid D.R.m i)) (G.V (.grid D.R.m (i + 1)))) (i : Fin D.R.m) :
     GlobalTheory.RowKFix.movY G j hj k y i =
@@ -145,6 +182,31 @@ theorem movY_eq (j : ℕ) (hj : j + 1 + 1 < D.R.m) (k : GA D (G.V (.grid D.R.m (
     Pi.mulSingle_eq_of_ne (fun h => h1 (Fin.ext (Nat.succ_injective h))) _
   rw [e1, e2, inv_one, inv_one, actO_one_one]
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F _ _ t Φ τ hτ j hj k hk c₁ c₂ h₁ h₂ hT y v`. Take `⟨e, he, φ, hloc, hid⟩` from `hτ`. Establish `hne : (⟨j, by omega⟩ : Fin D.R.m) ≠ ⟨j + 1, by omega⟩` using `by simp`. Set `c : Fin D.R.m → ℂ` to `fun i => (Pi.mulSingle (⟨j, by omega⟩ : Fin D.R.m) c₁ : Fin D.R.m → ℂ) i * (Pi.mulSingle (⟨j + 1, by omega⟩ : Fin D.R.m) c₂ : Fin D.R.m → ℂ) i`. Establish `hprod : ∏ i, c i = c₁ * c₂`.
+
+Simplify using `only [c]`. Rewrite using `[Finset.prod_mul_distrib, Fintype.prod_pi_mulSingle', Fintype.prod_pi_mulSingle']`. Establish `e1 : (Pi.mulSingle (j + 1) k : Pts ch.G) (j + 1) = k` using `Pi.mulSingle_eq_same _ _`. Use `sum_om_eq ch.rm t (GlobalTheory.PlaceDatum.idemSum_mul_self he) (GlobalTheory.PlaceDatum.infPart_idemSum he) τ φ hloc (Pi.mulSingle (j + 1) k) (fun i => ?_) c (fun i => ?_) (fun x z => ?_) y v` and prove the remaining obligations. Distinguish the cases in `hi : i = j + 1`.
+
+Substitute `hi` using the available equality. Rewrite using `[e1]`. Conclude with `(Subgroup.mem_inf.1 hk).2`. Rewrite using `[Pi.mulSingle_eq_of_ne hi, MonoidHom.map_one]`. Conclude with `one_mem _`.
+
+Distinguish the cases in `h2 : i = ⟨j + 1, by omega⟩`. Substitute `h2` using the available equality. Establish `e2 : (Pi.mulSingle (j + 1) k : Pts ch.G) (j + 1 + 1) = 1` using `Pi.mulSingle_eq_of_ne (by omega) _`. Establish `e3 : c ⟨j + 1, by omega⟩ = c₂` using `by simp [c, Pi.mulSingle_apply]`. Rewrite using `[e3]`.
+
+Express the relevant statement in the definitionally equal form `ch.W.om (.mu t D.R.m (j + 1)) ((Pi.mulSingle (j + 1) k : Pts ch.G) (j + 1), (Pi.mulSingle (j + 1) k : Pts ch.G) (j + 1 + 1)) _ = _`. Rewrite using `[e1, e2]`. Conclude with `h₂`. Distinguish the cases in `h1 : i = ⟨j, by omega⟩`. Substitute `h1` using the available equality.
+
+Establish `e2 : (Pi.mulSingle (j + 1) k : Pts ch.G) j = 1` using `Pi.mulSingle_eq_of_ne (by omega) _`. Establish `e3 : c ⟨j, by omega⟩ = c₁` using `by simp [c, Pi.mulSingle_apply]`. Rewrite using `[e3]`. Express the relevant statement in the definitionally equal form `ch.W.om (.mu t D.R.m j) ((Pi.mulSingle (j + 1) k : Pts ch.G) j, (Pi.mulSingle (j + 1) k : Pts ch.G) (j + 1)) _ = _`. Rewrite using `[e1, e2]`.
+
+Conclude with `h₁`. Establish `e2 : (Pi.mulSingle (j + 1) k : Pts ch.G) i = 1` using `Pi.mulSingle_eq_of_ne (fun h => h2 (Fin.ext h)) _`. Establish `e3 : (Pi.mulSingle (j + 1) k : Pts ch.G) (i + 1) = 1` using `Pi.mulSingle_eq_of_ne (fun h => h1 (Fin.ext (Nat.succ_injective h))) _`. Establish `e4 : c i = 1` using `by simp [c, Pi.mulSingle_apply, h1, h2]`. Establish `e5 : ch.W.om (.mu t D.R.m i) (1, 1) = 1` using `map_one _`.
+
+Rewrite using `[e2, e3, e4, e5, one_smul]`. Both sides reduce to the same expression. Establish `hL : (τ.sum fun d a => a * ((∏ n, (φ d).1 n (x n)) * ∏ i : Fin D.R.m, c i * (φ d).2 i (actO _ _ ((Pi.mulSingle (j + 1) k : Pts ch.G) i)⁻¹ ((Pi.mulSingle (j + 1) k : Pts ch.G) (i + 1))⁻¹ (z i)))) = c₁ * c₂ * τ.sum fun d a => a * (∏ n, (φ d).1 n (x n)) * ∏ i, (φ d).2 i (GlobalTheor …`. Rewrite using `[Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_mul_distrib, hprod, Finset.prod_congr rfl fun i _ => congrArg ((φ d).2 i) (movY_eq j hj k z i)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : (τ.sum fun d a => a * ((∏ n, (φ d).1 n (x n)) * ∏ i, (φ d).2 i (z i))) = τ.sum fun d a => a * (∏ n, (φ d).1 n (x n)) * ∏ i, (φ d).2 i (z i)` using `Finsupp.sum_congr fun d _ => (mul_assoc _ _ _).symm`. Establish `hmov : ∀ i, IsHalf e (GlobalTheory.RowKFix.movY ch.G j hj k z i) ↔ IsHalf e (z i)` using `fun i => by`. Rewrite using `[movY_eq]`.
+
+Conclude with `GlobalTheory.SchrMove.isHalf_actO_iff _ _ _`. Establish `hzero : ∀ z' : ∀ i : Fin D.R.m, WO (ch.G.V (.grid D.R.m i)) (ch.G.V (.grid D.R.m (i + 1))), ¬ ((∀ n, IsHalf e (x n)) ∧ ∀ i, IsHalf e (z' i)) → (τ.sum fun d a => a * (∏ n, (φ d).1 n (x n)) * ∏ i, (φ d).2 i (z' i)) = 0`. Introduce `z' hz'`. Use `Finset.sum_eq_zero fun d hd => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+
+Take `⟨ha, hb⟩` from `mul_ne_zero_iff.1 h0`. Conclude with `hz' ⟨fun n => ((hloc d hd).1 n).1.1 _ (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul ha) n (Finset.mem_univ _)), fun i => ((hloc d hd).2 i).1.1 _ (Finset.prod_ne_zero_iff.1 hb i (Finset.mem_univ _))⟩`. Use `hL.trans (Eq.trans ?_ hR.symm)` and prove the remaining obligations. Distinguish the cases in `hall : (∀ n, IsHalf e (x n)) ∧ ∀ i, IsHalf e (z i)`. Rewrite using `[hid x z hall.1 hall.2, hid x _ hall.1 fun i => (hmov i).2 (hall.2 i)]`.
+
+Conclude with `hT x z`. Rewrite using `[hzero z hall, hzero _ fun h => hall ⟨h.1, fun i => (hmov i).1 (h.2 i)⟩, mul_zero]`.
+-/
 theorem sum_om_single_eq : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A), HidaSetting large₂ R F → ch.Is → ∀ (t : T) (Φ : ch.G.Datum) (τ : SchRow ch.G × SchDown ch.G t →₀ ℂ), IsFlipFin t ch.S.B ch.rm Φ τ → ∀ (j : ℕ) (hj : j + 1 + 1 < D.R.m), ∀ k ∈ latGrp ch.G (j + 1), ∀ c₁ c₂ : ℂ, ch.W.om (.mu t D.R.m j) (1, k) (ch.rm.vT D.R.m j) = c₁ • ch.rm.vT D.R.m j → ch.W.om (.mu t D.R.m (j + 1)) (k, 1) (ch.rm.vT D.R.m (j + 1)) = c₂ • ch.rm.vT D.R.m (j + 1) → (∀ x y, c₁ * c₂ * ∏ w ∈ locPl ch.G t, Tflip ch.W ch.S.B t Φ w (oppArgs t ch.S.B w x (GlobalTheory.RowKFix.movY ch.G j hj k y)) = ∏ w ∈ locPl ch.G t, Tflip ch.W ch.S.B t Φ w (oppArgs t ch.S.B w x y)) → ∀ (y : RowPt ch.G) (v : ∀ i : Fin D.R.m, WO (ch.G.V (.grid D.R.m i)) (ch.G.V (.grid D.R.m (i + 1)))), (τ.sum fun d x => x * ((∏ n, d.1 n (y n)) * ∏ i : Fin D.R.m, ch.W.om (.mu t D.R.m i) ((Pi.mulSingle (j + 1) k : Pts ch.G) i, (Pi.mulSingle (j + 1) k : Pts ch.G) (i + 1)) (d.2 i) (v i))) = τ.sum fun d x => x * ((∏ n, d.1 n (y n)) * ∏ i, d.2 i (v i)) := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F _ _ t Φ τ hτ j hj k hk c₁ c₂ h₁ h₂ hT y v
   classical

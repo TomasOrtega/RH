@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC Ψ hΨ`. Establish `hm` using `hM D n V θ l s τ ε fr hC.hθ (lNZ D ψ θ l hC.hψ hC.hθ hC.hl) hC.hs hC.hfr Ψ hΨ 1`. Establish `hphi : (phiS θ τ fr (cLoc l τ) Ψ 1).1 = tens θ τ fr (fP (cLoc l τ) 1) Ψ`. Unfold `phiS`. Rewrite using `[dif_pos hm.1]`.
+
+Establish `hStd : PositivityTheory.PfSWUS.Std D n V ψ χ θ μ ω H l s ν (phiS θ τ fr (cLoc l τ) Ψ 1)` using `⟨hC.hψ, hC.hχ, hC.hη, hC.hθ, hC.hμ, hC.hω, hC.hH, hC.hl, hC.hs, hC.hν, by rw [hphi]; exact hm.2⟩`. Take `⟨h1, h2⟩` from `hT D n V ψ χ θ μ ω H l s ν _ hStd hC.hr`. Conclude with `⟨h1, fun γ hγ g => h2 γ hγ g⟩`.
+-/
 theorem gIauto_of (hT : PositivityTheory.PfSWUS.ThetaAuto) (hM : TensMem) : GIauto := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC Ψ hΨ
   have hm := hM D n V θ l s τ ε fr hC.hθ (lNZ D ψ θ l hC.hψ hC.hθ hC.hl) hC.hs hC.hfr Ψ hΨ 1

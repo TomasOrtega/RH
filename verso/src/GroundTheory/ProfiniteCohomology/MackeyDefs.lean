@@ -18,6 +18,9 @@ abbrev MackeyDoubleCoset : Type u :=
 def mackeySubgroup (x : G) : Subgroup H :=
   U.comap ((MulAut.conj x).toMonoidHom.comp ι)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_mackeySubgroup (x : G) (h : H) :
     h ∈ mackeySubgroup U ι x ↔ x * ι h * x⁻¹ ∈ U :=
   Iff.rfl
@@ -26,6 +29,9 @@ def mackeyConj (x : G) : mackeySubgroup U ι x →* U :=
   ((MulAut.conj x).toMonoidHom.comp ι).subgroupComap U
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mackeyConj_apply_coe (x : G) (h : mackeySubgroup U ι x) :
     ((mackeyConj U ι x h : U) : G) = x * ι h * x⁻¹ :=
   rfl
@@ -38,6 +44,9 @@ abbrev mackeyRep (x : G) : Rep.{u} k (mackeySubgroup U ι x) :=
 noncomputable abbrev mackeySummand (x : G) : Rep.{u} k H :=
   Rep.coind (mackeySubgroup U ι x).subtype (mackeyRep U ι N x)
 
+/- English proof (translation)
+Introduce `h' h`. Establish `e : x * ι ((mackeySubgroup U ι x).subtype h' * h) = U.subtype (mackeyConj U ι x h') * (x * ι h)`. Simplify using `[mul_assoc]`. Express the relevant statement in the definitionally equal form `f.1 (x * ι ((mackeySubgroup U ι x).subtype h' * h)) = N.ρ (mackeyConj U ι x h') _`. Rewrite using `[e, f.2]`.
+-/
 theorem mackeyProj_mem (x : G) (f : Rep.coind U.subtype N) :
     (fun h : H => f.1 (x * ι h)) ∈
       Representation.coindV (mackeySubgroup U ι x).subtype (mackeyRep U ι N x).ρ := by
@@ -60,10 +69,18 @@ noncomputable def mackeyProj (x : G) :
       rw [map_mul, mul_assoc]⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mackeyProj_hom_apply (x : G) (f : Rep.coind U.subtype N) (h : H) :
     ((mackeyProj U ι N x).hom f).1 h = f.1 (x * ι h) :=
   rfl
 
+/- English proof (translation)
+Establish `: Finite (G ⧸ U)` using `Subgroup.finite_quotient_of_finiteIndex`. Use `Finite.of_surjective (fun c : G ⧸ U => Quotient.liftOn' c (fun y => DoubleCoset.mk U ι.range y⁻¹) fun a b hab => ?_) ?_` and prove the remaining obligations. Rewrite `hab` using `[QuotientGroup.leftRel_apply]`. Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨(a⁻¹ * b)⁻¹, U.inv_mem hab, 1, ι.range.one_mem, by group⟩`.
+
+Introduce `d`. Proceed by induction on `d using Quotient.inductionOn' with`. Consider the case `h y => exact ⟨(y⁻¹ : G), by simp⟩`.
+-/
 theorem finite_mackeyDoubleCoset [U.FiniteIndex] : Finite (MackeyDoubleCoset U ι) := by
   have : Finite (G ⧸ U) := Subgroup.finite_quotient_of_finiteIndex
   refine Finite.of_surjective (fun c : G ⧸ U => Quotient.liftOn' c
@@ -82,6 +99,9 @@ variable [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace H]
 
 include hι in
 
+/- English proof (translation)
+The claim follows from `V.isOpen.preimage ((continuous_const.mul hι).mul continuous_const)`.
+-/
 theorem isOpen_mackeySubgroup (x : G) : IsOpen (mackeySubgroup (V : Subgroup G) ι x : Set H) :=
   V.isOpen.preimage ((continuous_const.mul hι).mul continuous_const)
 
@@ -89,18 +109,27 @@ def mackeyOpenSubgroup (x : G) : OpenSubgroup H :=
   ⟨mackeySubgroup (V : Subgroup G) ι x, isOpen_mackeySubgroup V hι x⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_mackeyOpenSubgroup (x : G) :
     (mackeyOpenSubgroup V hι x : Subgroup H) = mackeySubgroup (V : Subgroup G) ι x :=
   rfl
 
 include hι in
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk ((continuous_const.mul (hι.comp continuous_subtype_val)).mul continuous_const) _`.
+-/
 theorem continuous_mackeyConj (x : G) : Continuous (mackeyConj (V : Subgroup G) ι x) :=
   Continuous.subtype_mk ((continuous_const.mul (hι.comp continuous_subtype_val)).mul
     continuous_const) _
 
 include hι in
 
+/- English proof (translation)
+The claim follows from `IsDiscreteRep.res (continuous_mackeyConj V hι x) N`.
+-/
 theorem isDiscreteRep_mackeyRep (N : Rep.{u} k (V : Subgroup G)) [IsDiscreteRep N] (x : G) :
     IsDiscreteRep (mackeyRep (V : Subgroup G) ι N x) :=
   IsDiscreteRep.res (continuous_mackeyConj V hι x) N

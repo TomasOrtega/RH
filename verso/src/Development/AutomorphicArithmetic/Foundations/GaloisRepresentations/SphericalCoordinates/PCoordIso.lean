@@ -9,12 +9,20 @@ open UpperTheory.Gal.W2
 
 namespace UpperTheory.Gal.W2
 
+/- English proof (translation)
+Use `show L.rep ((y⁻¹ : GlobalTheory.LKCx.grp G β) : G.Cˣ × ℚˣ).1 (L.rep ((y : G.Cˣ × ℚˣ).1 : G.C) w) = w`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem actY_inv_left {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) {β : G.Cˣ}
     (y : GlobalTheory.LKCx.grp G β) (w : VQ D) : actY L y⁻¹ (actY L y w) = w := by
   show L.rep ((y⁻¹ : GlobalTheory.LKCx.grp G β) : G.Cˣ × ℚˣ).1 (L.rep ((y : G.Cˣ × ℚˣ).1 : G.C) w) = w
   rw [← Module.End.mul_apply, ← map_mul]
   simp
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4⟩` from `hA p D G L β y`. Set `Q₁ : VQ D →+ (Fin D.g → ℂ)` to `Q''.comp (actY L y⁻¹).toAddMonoidHom`. Establish `e : ∀ w, Q₁ (actY L y w) = Q'' w` using `fun w => by show Q'' (actY L y⁻¹ (actY L y w)) = _`. Rewrite using `[actY_inv_left]`. Take `⟨z₁, hz₁⟩` from `h4 v z hs`.
+
+Use `⟨Q₁, z₁, h3 ρ Q'' Q₁ hQ e, e, ?_, hz₁⟩` and prove the remaining obligations. Rewrite using `[hz₁]`. Conclude with `RD.equiv y Q'' Q₁ z.1 e hr`.
+-/
 private theorem perMove (hA : ActY) {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G)
     {v : InfinitePlace G.F} {t₀ : D.F →+* ℂ} {ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ} {β : G.Cˣ}
     (RD : RDic L v β ρ t₀) (hs : sh G β = β) (y : GlobalTheory.LKCx.grp G β) {Q'' : VQ D →+ (Fin D.g → ℂ)}
@@ -32,6 +40,9 @@ private theorem perMove (hA : ActY) {p : ℕ} [Fact p.Prime] {D : Datum p} {G : 
   rw [hz₁]
   exact RD.equiv y Q'' Q₁ z.1 e hr
 
+/- English proof (translation)
+Use `⟨y, ((b.1.1⁻¹ * B.toAf y * a.1.1)⁻¹, (b.1.2⁻¹ * GlobalTheory.LKCx.toP1 G B.β y * a.1.2)⁻¹), c, inv_mem h1, inv_mem h2, hc, ?_, hz⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b.1 = (B.toAf y, GlobalTheory.LKCx.toP1 G B.β y) * a.1 * _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_mul] group`. Simplify using `only [Prod.snd_mul] group`.
+-/
 private theorem same_mk {p : ℕ} [Fact p.Prime] {G : HTGroup p} {v : InfinitePlace G.F} (B : GlobalTheory.LKCx.Form G)
     (K : Subgroup G.GAf) (K' : Subgroup (Gr G 1)) (a b : GlobalTheory.LKCx.Dat G v B.β) (y : GlobalTheory.LKCx.grp G B.β) (c : ℂ)
     (hc : c ≠ 0) (h1 : b.1.1⁻¹ * B.toAf y * a.1.1 ∈ K) (h2 : b.1.2⁻¹ * GlobalTheory.LKCx.toP1 G B.β y * a.1.2 ∈ K')
@@ -46,6 +57,13 @@ private theorem same_mk {p : ℕ} [Fact p.Prime] {G : HTGroup p} {v : InfinitePl
   · simp only [Prod.snd_mul]
     group
 
+/- English proof (translation)
+Establish `key : ∀ a b : GlobalTheory.LKCx.Dat G v B.β, Relation.EqvGen (GlobalTheory.LKCx.Same G v B.β B.trivAf.choose B.trivAf.choose_spec.choose B.trivAf.choose_spec.choose_spec K K') a b → (∃ y : GlobalTheory.LKCx.grp G B.β, y • GlobalTheory.CxUnfold.OrbitSumGen.pairOfDat G v B.β B.triv …`. Introduce `a b hab`. Proceed by induction on `hab with`. Consider the case `rel x y hxy`. Take `⟨g, hg⟩` from `(GlobalTheory.CxUnfold.OrbitSumGen.same_iff_smul _ _ _ _ _ _ _ _ x y).1 hxy`.
+
+Conclude with `⟨⟨g, hg⟩, ⟨g⁻¹, by rw [← hg, inv_smul_smul]⟩⟩`. Consider the case `refl x => exact ⟨⟨1, one_smul _ _⟩, ⟨1, one_smul _ _⟩⟩`. Consider the case `symm x y _ ih => exact ⟨ih.2, ih.1⟩`. Consider the case `trans x y z _ _ ih1 ih2`. Take `⟨⟨g1, hg1⟩, ⟨h1, hh1⟩⟩` from `ih1`.
+
+Take `⟨⟨g2, hg2⟩, ⟨h2, hh2⟩⟩` from `ih2`. Conclude with `⟨⟨g2 * g1, by rw [mul_smul, hg1, hg2]⟩, ⟨h1 * h2, by rw [mul_smul, hh2, hh1]⟩⟩`. Conclude with `(GlobalTheory.CxUnfold.OrbitSumGen.same_iff_smul _ _ _ _ _ _ _ _ b a).2 (key a b (Quot.eqvGen_exact h)).2`.
+-/
 private theorem same_of_eq {p : ℕ} [Fact p.Prime] {G : HTGroup p} {v : InfinitePlace G.F} (B : GlobalTheory.LKCx.Form G)
     (K : Subgroup G.GAf) (K' : Subgroup (Gr G 1)) (a b : GlobalTheory.LKCx.Dat G v B.β)
     (h : (Quot.mk _ a : GlobalTheory.LKCx.Form.Pts v B K K') = Quot.mk _ b) :
@@ -76,6 +94,9 @@ private theorem same_of_eq {p : ℕ} [Fact p.Prime] {G : HTGroup p} {v : Infinit
 
 end UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `w`. Take `⟨m, u, hm, hmu⟩` from `hj.2.2.1 w`. Establish `key : m • Q w = m • h (Q₁ w)`. Rewrite using `[← map_nsmul Q, hmu, hQ, ← hmu, map_nsmul Q₁, map_nsmul h]`. Conclude with `smul_right_injective _ hm key`.
+-/
 private theorem ext_lemma {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} {L : Link D G} {β : G.Cˣ}
     {D' : PLat D.O D.inv} {j : D'.La →+ VQ D} (hj : IsPlace L β D' j) (Q Q₁ : VQ D →+ (Fin D.g → ℂ))
     (h : (Fin D.g → ℂ) ≃ₗ[ℂ] (Fin D.g → ℂ)) (hQ : ∀ u, Q (j u) = h (Q₁ (j u))) :
@@ -86,6 +107,25 @@ private theorem ext_lemma {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p}
     rw [← map_nsmul Q, hmu, hQ, ← hmu, map_nsmul Q₁, map_nsmul h]
   exact smul_right_injective _ hm key
 
+/- English proof (translation)
+Introduce `hF hI hA p _ D G L v t₀ ρ PD RD N hN hNp D' t P D'' t'' P'' hc hc'' q q'' a a'' j j'' ha ha''`. Take `⟨hpl, hca, hlp, Q, hQ, hQj, hr⟩` from `ha`. Take `⟨hpl'', hca'', hlp'', Q'', hQ'', hQj'', hr''⟩` from `ha''`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, h, hw, hPh⟩`.
+
+Take `⟨y, s, hs, hy, hjw⟩` from `hF p D G L _ _ D' D'' j j'' hpl hpl'' w.toLinearMap 1 one_pos (by intro u u'; rw [_root_.one_mul]; exact hw.1 u u')`. Establish `hjw' : ∀ u, j (w u) = L.rep (y : G.C) (j'' u)` using `hjw`. Establish `hrel : GlobalTheory.LKCx.Form.Rel (Quot.out q'') (Quot.out q)`. Use `⟨y, (s : ℚ)⁻¹, inv_pos.mpr hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, ← _root_.mul_assoc, ← map_mul, inv_mul_cancel₀ (ne_of_gt hs), map_one, _root_.one_mul]`.
+
+Establish `hq : q'' = q` using `(Quot.out_eq (q'' : Quot GlobalTheory.LKCx.Form.Rel)).symm.trans ((Quot.sound hrel).trans (Quot.out_eq (q : Quot GlobalTheory.LKCx.Form.Rel)))`. Substitute `hq` using the available equality. Set `yy : GlobalTheory.LKCx.grp G (Quot.out q'').β` to `⟨(y, s), hy, hs⟩`. Take `⟨Q₁, z₁, hQ₁, hQ₁y, hr₁, hz₁⟩` from `perMove hA L (RD _) (Quot.out q'').sym yy hQ'' a''.2 hr''`. Establish `hext : ∃ h' : (Fin D.g → ℂ) ≃ₗ[ℂ] (Fin D.g → ℂ), ∀ w0, Q w0 = h' (Q₁ w0)`.
+
+Use `⟨h, ext_lemma hpl Q Q₁ h ?_⟩` and prove the remaining obligations. Introduce `u`. Take `⟨u'', rfl⟩` from `w.surjective u`. Rewrite using `[hQj, hPh, ← hQj'', ← hQ₁y, hjw']`. Both sides reduce to the same expression.
+
+Take `⟨c, hc0, hac⟩` from `((RD _).uniq Q₁ Q z₁ a.2 hQ₁ hQ hr₁ hr).1 hext`. Establish `hmem` using `(hI p D G L (Quot.out q'') (PD _) N hN hNp D' t D'' t'' j j'' a.1 a''.1 N N t t'' hc hc'' hpl hpl'' hca hca'' hlp hlp'' yy).2 ⟨w, hw, hjw'⟩`. Conclude with `congrArg (Sigma.mk _) (Quot.sound (same_mk _ _ _ a'' a yy c hc0 hmem.1 hmem.2 (by rw [hac, hz₁]))).symm`. Introduce `heq`. Take `⟨hq, hh⟩` from `Sigma.mk.inj heq`.
+
+Substitute `hq` using the available equality. Take `⟨y, k, c, hk1, hk2, hc0, hk, hz⟩` from `same_of_eq _ _ _ a a'' (eq_of_heq hh)`. Establish `hmem1 : a.1.1⁻¹ * (Quot.out q).toAf y * a''.1.1 ∈ L.KN N`. Establish `e : a.1.1 = (Quot.out q).toAf y * a''.1.1 * k.1` using `congrArg Prod.fst hk`. Establish `e2 : ((Quot.out q).toAf y * a''.1.1 * k.1)⁻¹ * (Quot.out q).toAf y * a''.1.1 = k.1⁻¹` using `by group`.
+
+Rewrite using `[e, e2]`. Conclude with `inv_mem hk1`. Establish `hmem2 : a.1.2⁻¹ * GlobalTheory.LKCx.toP1 G (Quot.out q).β y * a''.1.2 ∈ KHT p G.m G.n 1 G.Fw`. Establish `e : a.1.2 = GlobalTheory.LKCx.toP1 G (Quot.out q).β y * a''.1.2 * k.2` using `congrArg Prod.snd hk`. Establish `e2 : (GlobalTheory.LKCx.toP1 G (Quot.out q).β y * a''.1.2 * k.2)⁻¹ * GlobalTheory.LKCx.toP1 G (Quot.out q).β y * a''.1.2 = k.2⁻¹` using `by group`.
+
+Rewrite using `[e, e2]`. Conclude with `inv_mem hk2`. Take `⟨w, hw, hjw⟩` from `(hI p D G L (Quot.out q) (PD _) N hN hNp D' t D'' t'' j j'' a.1 a''.1 N N t t'' hc hc'' hpl hpl'' hca hca'' hlp hlp'' y).1 ⟨hmem1, hmem2⟩`. Take `⟨Q₁, z₁, hQ₁, hQ₁y, hr₁, hz₁⟩` from `perMove hA L (RD _) (Quot.out q).sym y hQ'' a''.2 hr''`. Take `⟨h, hh'⟩` from `((RD _).uniq Q₁ Q z₁ a.2 hQ₁ hQ hr₁ hr).2 ⟨c, hc0, by rw [hz, hz₁]⟩`.
+
+Use `⟨w, h, hw, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← hQj, hjw, hh', hQ₁y, hQj'']`.
+-/
 theorem UpperTheory.Gal.W2.coordIso_of :
     UpperTheory.Gal.W2.LatForm → UpperTheory.Gal.W2.LatIso → UpperTheory.Gal.W2.ActY → UpperTheory.Gal.W2.CoordIso := by
   intro hF hI hA p _ D G L v t₀ ρ PD RD N hN hNp D' t P D'' t'' P'' hc hc'' q q'' a a'' j j'' ha ha''

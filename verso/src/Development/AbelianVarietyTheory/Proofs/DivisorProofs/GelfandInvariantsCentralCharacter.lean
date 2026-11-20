@@ -15,6 +15,31 @@ namespace GlobalTheory.GelfandOfCapelli
 open Finset Polynomial
 open GlobalTheory.Dec (gelfVal)
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).mp fun φ => ?_` and prove the remaining obligations. Use `set Q := GlobalTheory.CapelliNewton.capQ m χ with hQ`. Establish `hmin : ∀ i j : Fin (m + 1), ∃ c' : ℕ → A, ∀ w : ℂ, qminor F (Fin.succAbove j) (Fin.succAbove i) w = ∑ d ∈ range (m + 1), w ^ d • c' d`. Introduce `i j`.
+
+Take `⟨c', hc'⟩` from `GlobalTheory.qminor_polyMap A (m + 1) m F (Fin.succAbove j) (Fin.succAbove i) 0`. Conclude with `⟨c', fun w => by simpa using hc' w⟩`. Use `choose cm hcm using hmin`. Set `Rc : ℕ → A` to `fun d => ∑ i : Fin (m + 1), ∑ j : Fin (m + 1), (((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ)) : ℤ) : A) * cm i j d * epow F (N + 1) j i`. Establish `hR : ∀ w : ℂ, ∑ i : Fin (m + 1), ∑ j : Fin (m + 1), (((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ)) : ℤ) : A) * qminor F (Fin.succAbove j) (Fin.succAbove i) w * epow F (N + 1) j i = ∑ d ∈ range (m + 1), w ^ d • Rc d`.
+
+Introduce `w`. Simplify using `only [Rc, hcm, mul_sum, sum_mul, smul_sum, mul_smul_comm, smul_mul_assoc]`. Use `conv_lhs => enter [2, x]`. Rewrite using `[sum_comm]`. Rewrite using `[sum_comm]`.
+
+Set `Rp : ℂ[X]` to `∑ d ∈ range (m + 1), C (φ (Rc d)) * X ^ d`. Establish `hRp : ∀ w : ℂ, φ (∑ d ∈ range (m + 1), w ^ d • Rc d) = Rp.eval w`. Introduce `w`. Simplify using `only [Rp, eval_finset_sum, eval_mul, eval_C, eval_pow, eval_X, map_sum, map_smul, smul_eq_mul]`. Conclude with `sum_congr rfl fun d _ => mul_comm _ _`.
+
+Establish `hRpdeg : Rp.natDegree ≤ m` using `natDegree_sum_le_of_forall_le _ _ fun i hi => (natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.mp (mem_range.mp hi))`. Establish `hφa : ∀ c : ℂ, φ (algebraMap ℂ A c) = c * φ 1` using `fun c => by`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, smul_eq_mul]`. Establish `hrec : ∀ w : ℂ, (w - m) ^ (N + 1) * (Q.eval (w + 1) - Q.eval w) * φ 1 + (-1) ^ N * Rp.eval w = Q.eval w * ∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * φ (etr F k)`. Introduce `w`.
+
+Establish `h1` using `congrArg φ (GlobalTheory.T.traced_qminor_comatrix_truncated_inverse A m F hF w N)`. Rewrite `h1` using `[← GlobalTheory.T.qdet_add_one_sub_eq_sum_qminor', hR]`. Simplify using `only [hq, ← Algebra.smul_def, map_add, map_smul, smul_eq_mul, hRp] at h1`. Simplify using `only [mul_sum, map_sum, map_smul, map_sub, smul_eq_mul, hφa] at h1`. Rewrite using `[mul_sum]`.
+
+Take the linear combination `h1`. Take `⟨rs, hrs, hrsE⟩` from `GlobalTheory.T.scalar_capelli_truncated_perelomov_popov m N χ`. Set `S : ℂ[X]` to `∑ k ∈ range (N + 1), C ((-1) ^ k * (φ (etr F k) - gelfVal χ k * φ 1)) * (X - C (m : ℂ)) ^ (N - k)`. Establish `hSe : ∀ w : ℂ, S.eval w = (∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * φ (etr F k)) - φ 1 * ∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * gelfVal χ k`. Introduce `w`.
+
+Simplify using `only [S, eval_finset_sum, eval_mul, eval_C, eval_pow, eval_sub, eval_X, mul_sum, ← sum_sub_distrib]`. Conclude with `sum_congr rfl fun k _ => by ring`. Establish `hQS : Q * S = C ((-1) ^ N) * Rp + C (φ 1) * rs`. Use `Polynomial.funext fun w => ?_` and prove the remaining obligations. Establish `h2` using `hrsE w`.
+
+Rewrite `h2` using `[← GlobalTheory.CapelliNewton.capQ_eval m χ (w + 1), ← GlobalTheory.CapelliNewton.capQ_eval m χ w, ← hQ]`. Simplify using `only [eval_mul, eval_add, eval_C, hSe]`. Take the linear combination `-hrec w + φ 1 * h2`. Establish `hS0 : S = 0`. Assume the negation of the conclusion as `hne`.
+
+Establish `hd` using `(GlobalTheory.CapelliNewton.capQ_monic m χ).natDegree_mul' hne`. Rewrite `hd` using `[← hQ, hQS, GlobalTheory.CapelliNewton.capQ_natDegree]`. Establish `hle : (C ((-1 : ℂ) ^ N) * Rp + C (φ 1) * rs).natDegree ≤ m` using `(natDegree_add_le _ _).trans (max_le ((natDegree_C_mul_le _ _).trans hRpdeg) ((natDegree_C_mul_le _ _).trans hrs))`. Use linear arithmetic over natural numbers and integers. Establish `h0` using `congrArg (eval (m : ℂ)) hS0`.
+
+Simplify using `only [S, eval_zero, eval_finset_sum, eval_mul, eval_C, eval_pow, eval_sub, eval_X, sub_self] at h0`. Rewrite using `[sum_eq_single N (fun b hb hbN => by`. Rewrite using `[zero_pow (Nat.sub_ne_zero_of_lt (lt_of_le_of_ne (Nat.lt_succ_iff.mp (mem_range.mp hb)) hbN)), mul_zero])`. Use the proof step `(fun h => absurd (self_mem_range_succ N) h)] at h0`. Rewrite `h0` using `[Nat.sub_self, pow_zero, mul_one]`.
+
+Establish `hne : ((-1 : ℂ)) ^ N ≠ 0` using `pow_ne_zero _ (by norm_num)`. Rewrite using `[map_sub, hφa]`. Conclude with `mul_left_cancel₀ hne (by linear_combination h0)`.
+-/
 theorem main_succ (A : Type) [Ring A] [Algebra ℂ A] (m : ℕ) (F : Fin (m+1) → Fin (m+1) → A)
     (χ : Fin (m+1) → ℂ) (hF : GlRel F)
     (hq : ∀ w : ℂ, qdet F w = algebraMap ℂ A ((GlobalTheory.CapelliNewton.capQ m χ).eval w)) (N : ℕ) :
@@ -87,6 +112,11 @@ theorem main_succ (A : Type) [Ring A] [Algebra ℂ A] (m : ℕ) (F : Fin (m+1) �
   rw [map_sub, hφa]
   exact mul_left_cancel₀ hne (by linear_combination h0)
 
+/- English proof (translation)
+Introduce `A _ _ n F χ hF hq k`. Consider the cases of `n with`. Consider the case `zero => simp [etr, gelfVal]`. Consider the case `succ m`. Use `main_succ A m F χ hF (fun w => ?_) (k + 1)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gelfand_of_capelli : ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (F : Fin n → Fin n → A) (χ : Fin n → ℂ),
     GlRel F → (∀ u : ℂ, qdet F (u + ((n : ℂ) - 1) / 2) = algebraMap ℂ A (∏ s, (u + χ s))) →
     ∀ k : ℕ, etr F (k + 1) = algebraMap ℂ A (GlobalTheory.Dec.gelfVal χ (k + 1)) := by

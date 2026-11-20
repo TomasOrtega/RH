@@ -20,6 +20,9 @@ def gauge (n : ℕ) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g) (s : Pt 
     (Q : Pt E g) : Ext (n + n + g) :=
   frameAt n τ γ Q.1 (s (reframe τ γ Q))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frameAt_apply (n : ℕ) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g) (b : E)
     (w : Ext (n + n + g)) : frameAt n τ γ b w = frameMap n (den γ (τ b)) w := rfl
 

@@ -4,6 +4,19 @@ open scoped ENNReal NNReal Topology
 
 namespace GlobalTheory.CompanionTheory.MeasureBump
 
+/- English proof (translation)
+Establish `hmU : m U ≠ 0`. Introduce `h0`. Apply `hm` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`. Establish `huniv : (Set.univ : Set X) = U ∪ Uᶜ` using `(Set.union_compl_self U).symm`.
+
+Rewrite using `[huniv]`. Conclude with `measure_union_null h0 hc`. Use `haveI : LocallyCompactSpace U := hU.locallyCompactSpace`. Establish `hσ : IsSigmaCompact U` using `isSigmaCompact_iff_sigmaCompactSpace.2 inferInstance`. Take `⟨K, hK, hKU⟩` from `hσ`.
+
+Establish `hex : ∃ n, m (K n) ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hmU` to reduce the goal to its premises. Rewrite using `[← hKU]`.
+
+Conclude with `measure_iUnion_null hcon`. Take `⟨n, hn⟩` from `hex`. Establish `hsub : K n ⊆ U` using `hKU ▸ Set.subset_iUnion K n`. Take `⟨f, hf1, hfc, hfU, hf01⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen (hK n) hU hsub`. Use `⟨f, f.continuous, hfc, hfU, ?_⟩` and prove the remaining obligations.
+
+Establish `hI : Integrable (f : X → ℝ) m` using `hint f f.continuous hfc hfU`. Establish `hnn : 0 ≤ᵐ[m] (f : X → ℝ)` using `Filter.Eventually.of_forall fun x => (hf01 x).1`. Establish `hpos : 0 < ∫ x, f x ∂m`. Rewrite using `[integral_pos_iff_support_of_nonneg_ae hnn hI]`. Use `lt_of_lt_of_le (pos_iff_ne_zero.2 hn) (measure_mono ?_)` and prove the remaining obligations.
+
+Introduce `x hx`. Simplify using `[Function.mem_support, hf1 hx]`. Conclude with `hpos.ne'`.
+-/
 theorem exists_integral_ne_zero_of_carried_by_isOpen
     (X : Type) [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X]
     [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X] (m : Measure X) (U : Set X)

@@ -25,6 +25,13 @@ set_option genInjectivity false
 set_option genSizeOfSpec false
 set_option maxHeartbeats 2000000
 namespace GlobalTheory.HeightCounting.RatSide
+/- English proof (translation)
+Introduce `hp hs hi hL`. Establish `A` using `StepW.and (_root_.GlobalTheory.HeightCounting.RatSide.formsC_at_state_alt hL) (StepW.and (_root_.GlobalTheory.HeightCounting.ThetaSt.main_alt_alt hL) (StepW.and (_root_.GlobalTheory.HeightCounting.RatSide.HeckeAtState.heckeAtState_alt hL hp.decay hs.hkTr hs.hkRead) (StepW.and (_r …`. Use `StepW.trans A (StepW.of_all fun K B f T w _ _ H => ?_)` and prove the remaining obligations. Introduce `P x hx`. Take `⟨hF, hθ, hH, hI, hE⟩` from `H`.
+
+Take `⟨θ, θne, hlp⟩` from `hθ P x hx`. Take `⟨hL', hst, h0, hrd⟩` from `hH P x hx`. Take `⟨eig, hea, hsp⟩` from `hE P x hx θ hL' θne hlp hst h0 hrd`. Establish `hint` using `hI P x hx θ hL' hlp hst hrd`. Establish `hrc` using `GlobalTheory.Mem.RatDatRExp.rhoStab_chiInLL0 (Dof x) _ _ _ _ _ x.m.z.core x.m.z.R x.m.z.F x.m.z.cG x.m.z.geo (kKsOf x) (hkOf x) x.m.z.pins x.m.inGeo`.
+
+Conclude with `⟨⟨kKsOf x, hkOf x, { Sb := SbD (Dof x) rho := fun j a b => (hrc j a b).1 chi := fun j a b => (hrc j a b).2 ks := fun j a b => (hF P x hx j a b).1 fd := fun j a b => (hF P x hx j a b).2.1 mk_fg := fun j a b => (hF P x hx j a b).2.2 hL := hL' hs := hst hL_zero := h0 θ := θ θ_ne := …`.
+-/
 theorem sRat_of_isotInternal_alt_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → (AllSt fun _ _ _ _ _ _ x => Formalism.BasicNotions.Rows.IsotInternal (Dof x).what₂) →
     ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.RationalityStatementThirdPlaceSeries hL := by
   intro hp hs hi hL
@@ -60,6 +67,9 @@ theorem sRat_of_isotInternal_alt_alt : _root_.GlobalTheory.HeightCounting.Up.Pub
       Sb_le := overSet_SbD _
       lvl := hlp.1
       psi := hlp.2 }⟩⟩
+/- English proof (translation)
+Introduce `_` and use `_root_.GlobalTheory.HeightCounting.RatSide.sRat_of_isotInternal_alt_alt`.
+-/
 theorem sRat_of_isotInternal_inputs : GlobalTheory.Published.DiscreteSeriesUpqUnique → _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN →
     (AllSt fun _ _ _ _ _ _ x => Formalism.BasicNotions.Rows.IsotInternal (Dof x).what₂) →
     ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.RationalityStatementThirdPlaceSeries hL :=

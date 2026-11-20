@@ -29,6 +29,29 @@ def shearU (ι : Type) :
   continuous_toFun := continuous_fst.prodMk (continuous_fst.sub continuous_snd)
   continuous_invFun := continuous_fst.prodMk (continuous_fst.sub continuous_snd)
 
+/- English proof (translation)
+Introduce `g r m hS hg μ hμ hm`. Use `haveI := hμ`. Use `haveI : SigmaFinite μ := inferInstance`. Use `haveI : (μ.prod μ).IsAddHaarMeasure := inferInstance`. Take `⟨D⟩` from `exists_SD hS`.
+
+Establish `hfin : Module.finrank F E = 2` using `hS.1`. Establish `hg0 : (g : Fv F v) ≠ 0` using `natCast_ne_zero v hg`. Establish `hgO : (g : Fv F v) ∈ v.adicCompletionIntegers F` using `natCast_mem _ g`. Use `set γ : UIdx r → Fv F v := fun q => (alp v r q.1.1)⁻¹ * alp v r q.1.2 with hγ`. Establish `hγ0 : ∀ q, γ q ≠ 0` using `fun q => mul_ne_zero (inv_ne_zero (alp_ne_zero v r _)) (alp_ne_zero v r _)`.
+
+Establish `hγg0 : ∀ q, γ q * (g : Fv F v)⁻¹ ≠ 0` using `fun q => mul_ne_zero (hγ0 q) (inv_ne_zero hg0)`. Use `set A := Set.univ.pi fun q : UIdx r => {c | sc (E := E) v (γ q) * c ∈ OEv (E := E) v} with hA`. Use `set B := Set.univ.pi fun q : UIdx r => {c | sc (E := E) v (γ q * (g : Fv F v)⁻¹) * c ∈ OEv (E := E) v} with hB`. Establish `hset : deepCongruenceVolume (E` using `E) v g r = (shearU v (UIdx r)) ⁻¹' (A ×ˢ B) := by`. Use extensionality with `⟨u, u'⟩`.
+
+Simplify using `only [deepCongruenceVolume, UO, Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_prod, hA, hB, Set.mem_pi, Set.mem_univ, true_implies]`. Use `show _ ↔ (∀ q, sc (E := E) v (γ q) * u q ∈ OEv (E := E) v) ∧ ∀ q, sc (E := E) v (γ q * (g : Fv F v)⁻¹) * (u - u') q ∈ OEv (E := E) v`. Simplify using `only [Pi.sub_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, _, h3⟩`.
+
+Conclude with `⟨h1, h3⟩`. Introduce and unpack `⟨h1, h3⟩`. Use `⟨h1, fun q => ?_, h3⟩` and prove the remaining obligations. Establish `k1` using `(D.mem_sc_mul _ _).1 (h1 q)`. Establish `k3` using `(D.mem_sc_mul _ _).1 (h3 q)`.
+
+Rewrite using `[D.mem_sc_mul]`. Simplify using `only [map_sub] at k3`. Prove the components needed by the constructor for the conclusion. Establish `e1 : γ q * D.p 0 (u' q) = γ q * D.p 0 (u q) - (g : Fv F v) * (γ q * (g : Fv F v)⁻¹ * (D.p 0 (u q) - D.p 0 (u' q)))` using `by field_simp; ring`. Rewrite using `[e1]`.
+
+Conclude with `sub_mem k1.1 (mul_mem hgO k3.1)`. Establish `e1 : γ q * D.p 1 (u' q) = γ q * D.p 1 (u q) - (g : Fv F v) * (γ q * (g : Fv F v)⁻¹ * (D.p 1 (u q) - D.p 1 (u' q)))` using `by field_simp; ring`. Rewrite using `[e1]`. Conclude with `sub_mem k1.2 (mul_mem hgO k3.2)`. Establish `hbox : (shearU v (UIdx r)) ⁻¹' (Obox (E` using `E) v (UIdx r) ×ˢ Obox (E := E) v (UIdx r)) = Obox (E := E) v (UIdx r) ×ˢ Obox (E := E) v (UIdx r) := by`.
+
+Use extensionality with `⟨u, u'⟩`. Simplify using `only [Set.mem_preimage, Set.mem_prod]`. Use `show (u ∈ Obox (E := E) v (UIdx r) ∧ u - u' ∈ Obox (E := E) v (UIdx r)) ↔ _`. Simplify using `only [Obox, Set.mem_pi, Set.mem_univ, true_implies, Pi.sub_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun q => ?_⟩` and prove the remaining obligations. Use `Sd.oev_add v (h1 q) (Sd.oev_neg v (h2 q))` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨h1, fun q => Sd.oev_add v (h1 q) (Sd.oev_neg v (h2 q))⟩`. Establish `hsh` using `haar_shear (μ.prod μ) (shearU v (UIdx r)) (Obox (E := E) v (UIdx r) ×ˢ Obox (E := E) v (UIdx r)) ((obox_compact (UIdx r)).prod (obox_compact (UIdx r))) ((obox_open (UIdx r)).prod (obox_open (UIdx r))) ((obox_nonempty (UIdx r)).prod (obox_nonempty (UIdx r))) hbox (A ×ˢ B)`. Establish `hK : m ^ Fintype.card (UIdx r) = ∏ _q : UIdx r, m` using `by rw [Finset.prod_const, Finset.card_univ]`. Rewrite using `[hset, hsh, Measure.prod_prod, ENNReal.toReal_mul, hA, hB, boxScale v hfin μ γ hγ0, boxScale v hfin μ _ hγg0, hm, hK, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun q _ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hγ, absV_mul, absV_inv]`. Establish `h1` using `absV_pos v (alp_ne_zero v r q.1.1)`. Establish `h2` using `absV_pos v (alp_ne_zero v r q.1.2)`. Establish `hG` using `absV_pos v hg0`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem unipotent_volume : VolU σ v := by
   intro g r m hS hg μ hμ hm
   haveI := hμ

@@ -10,6 +10,15 @@ namespace GlobalTheory.ThK.ExpSmall
 
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hP hT c hc hcs Φ hΦ r Xf Yf hW K hK hA S s hs k hk`. Establish `hdc` using `GlobalTheory.T.witt_frame_dual_so_type F E σ hσ B a a' G X om om' hP hT c hc hcs Φ hΦ r Xf Yf hW K hK hA S s hs`. Establish `hex` using `GlobalTheory.T.witt_frame_dual_so_bound F E σ hσ B a a' G X om om' hP hT c hc hcs Φ hΦ r Xf Yf hW K hK hA S s hs hdc`. Establish `hr` using `(GlobalTheory.T.witt_rank_le_skew_signature F E σ B (a + a') G.W _ _ hT.base hT.geo.hW c hc hcs r Xf Yf hW).2`. Establish `hab` using `hT.geo.aBig`.
+
+Establish `hlt` using `hT.geo.lt`. Establish `neg : ∀ i ∈ Finset.univ.filter (fun i : Fin r => i ≤ k), (s i).re < 0`. Introduce `i hi`. Establish `hik : i ≤ k` using `(Finset.mem_filter.1 hi).2`. Take `⟨j, hj, h⟩` from `hex i (hdc k hk i hik)`.
+
+Establish `hi1 : i.val < G.p + G.q` using `lt_of_lt_of_le i.2 hr`. Establish `h1 : (j : ℝ) + 1 ≤ (G.p + G.q : ℕ)` using `by exact_mod_cast (by omega : j + 1 ≤ G.p + G.q)`. Establish `h2 : (2 * (G.p + G.q) + 1 : ℕ) < (a' : ℝ)` using `by exact_mod_cast hab`. Establish `h3 : (a' : ℝ) < a` using `by exact_mod_cast hlt`. Move the coercions through the operations in `at h1 h2`.
+
+Apply the tactic sequence `rcases h with h | h <;> rw [h] <;> linarith`. Establish `hne : (Finset.univ.filter (fun i : Fin r => i ≤ k)).Nonempty` using `⟨k, by simp⟩`. Use `Finset.sum_lt_sum_of_nonempty hne neg` as an intermediate fact. Simplify using `using this`.
+-/
 theorem cuspExp_neg : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

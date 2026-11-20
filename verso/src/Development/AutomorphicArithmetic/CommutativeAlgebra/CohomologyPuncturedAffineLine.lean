@@ -11,6 +11,9 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.SchemeRootsOfUnityEq
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry IsLocalRing GlobalTheory.EtC UpperTheory.Et LateralTheory.E.t_E2Cut LateralTheory.E.LineOneCut LateralTheory.E.StandardEtaleChartsMultivariableHensel
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 private theorem appTop_comp_apply {X Y W : Scheme.{0}} (h : Y ⟶ X) (f : X ⟶ W) (s : Γ(W, ⊤)) :
     h.appTop.hom (f.appTop.hom s) = (h ≫ f).appTop.hom s := by
   rw [Scheme.Hom.comp_appTop]
@@ -19,10 +22,16 @@ private theorem appTop_comp_apply {X Y W : Scheme.{0}} (h : Y ⟶ X) (f : X ⟶ 
 private abbrev st {A : Type} [CommRing A] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of A)) : A →+* Γ(X, ⊤) :=
   ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ f.appTop).hom
 
+/- English proof (translation)
+Conclude with `appTop_comp_apply h f _`.
+-/
 private theorem st_comp {A : Type} [CommRing A] {X Y : Scheme.{0}} (h : Y ⟶ X) (f : X ⟶ Spec (CommRingCat.of A)) (a : A) :
     h.appTop.hom (st f a) = st (h ≫ f) a := by
   exact appTop_comp_apply h f _
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨by rw [← map_pow, h1, map_one], fun a b hab => ?_, fun S' _ ψ x => ?_⟩` and prove the remaining obligations. Use `(h2 a b hab).map φ` as an intermediate fact. Simplify `this` using `only [map_sub, map_pow]`. Simplify using `using h3 S' (ψ.comp φ) x`.
+-/
 private theorem goodRoot_map_ringHom {S S₂ : Type} [CommRing S] [CommRing S₂] (φ : S →+* S₂) {q : ℕ} {ζ : S}
     (h : GoodRoot q ζ) : GoodRoot q (φ ζ) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -31,11 +40,19 @@ private theorem goodRoot_map_ringHom {S S₂ : Type} [CommRing S] [CommRing S₂
     simpa only [map_sub, map_pow] using this
   · simpa using h3 S' (ψ.comp φ) x
 
+/- English proof (translation)
+Rewrite using `[← Scheme.preimage_basicOpen_top]`. Both sides reduce to the same expression.
+-/
 private theorem notMem_basicOpen_pullback_iff_base_notMem_basicOpen {X Y : Scheme.{0}} (h : Y ⟶ X) (s : Γ(X, ⊤)) (y : Y) :
     y ∉ Y.basicOpen (h.appTop.hom s) ↔ h.base y ∉ X.basicOpen s := by
   rw [← Scheme.preimage_basicOpen_top]
   rfl
 
+/- English proof (translation)
+Unfold `mm at hy`. Use `Submodule.smul_induction_on (p := fun y => ∃ y₀, φ y₀ = y ∧ ψ y₀ = 0) hy ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Establish `hb' : b ∈ (B : Set D)` using `(Subalgebra.mem_toSubmodule B).1 hb`. Rewrite `hb'` using `[hB]`.
+
+Take `⟨b₀, rfl⟩` from `hb'`. Conclude with `⟨σ a * b₀, by rw [map_mul, ← hσ, Algebra.smul_def], by rw [map_mul, hψ a ha, zero_mul]⟩`. Introduce and unpack `x y ⟨x₀, rfl, hx0⟩ ⟨y₀, rfl, hy0⟩`. Conclude with `⟨x₀ + y₀, map_add _ _ _, by rw [map_add, hx0, hy0, add_zero]⟩`.
+-/
 private theorem exists_preimage_map_eq_zero_of_mem_mm {A D E F : Type} [CommRing A] [IsLocalRing A] [CommRing D] [Algebra A D]
     [CommRing E] [CommRing F] (B : Subalgebra A D) (φ : E →+* D) (ψ : E →+* F) (σ : A →+* E)
     (hσ : ∀ a, algebraMap A D a = φ (σ a)) (hB : (B : Set D) = Set.range φ)
@@ -51,10 +68,52 @@ private theorem exists_preimage_map_eq_zero_of_mem_mm {A D E F : Type} [CommRing
   · rintro x y ⟨x₀, rfl, hx0⟩ ⟨y₀, rfl, hy0⟩
     exact ⟨x₀ + y₀, map_add _ _ _, by rw [map_add, hx0, hy0, add_zero]⟩
 
+/- English proof (translation)
+Use `conv_rhs => rw [← Nat.mod_add_div n q, pow_add, pow_mul, h, one_pow, mul_one]`.
+-/
 private theorem pow_mod_eq_pow_of_pow_eq_one_commutative_algebra {S : Type} [CommRing S] {ζ : S} {q : ℕ} (h : ζ ^ q = 1) (n : ℕ) :
     ζ ^ (n % q) = ζ ^ n := by
   conv_rhs => rw [← Nat.mod_add_div n q, pow_add, pow_mul, h, one_pow, mul_one]
 
+/- English proof (translation)
+Unfold `LateralTheory.E.StandardEtaleChartsMultivariableHensel.Heart`. Introduce `q A _ _ hSH hq Z U V p hIL hZ ι₁ ι₂ h1 h2 hUa hVa hcov hs g`. Take `⟨hHens, hsep⟩` from `hSH`. Use `letI := hHens`. Use `haveI : NeZero q := ⟨fun h0 => by subst h0; simp at hq⟩`.
+
+Take `⟨ζ, hζ⟩` from `UpperTheory.exists_goodRoot_of_henselian_sepClosed_residue A q hq`. Distinguish the cases in `hW : Nonempty ↥(pullback (fibMap p ι₁) (fibMap p ι₂))`. Use `swap`. Use `⟨0, 0, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Conclude with `(hW ⟨x⟩).elim`. Use `haveI := h1`. Use `haveI := h2`. Take `⟨r, c, hrc, hr1, hr2⟩` from `UpperTheory.exists_fiber_pullback_square_of_open_immersions A p ι₁ ι₂`. Take `⟨hPaff, hP⟩` from `UpperTheory.isAffine_isDomain_pullback_standard_opens A p hZ ι₁ ι₂ hs`.
+
+Use `haveI := hPaff`. Take `⟨hWaff, hrsurj, hrker⟩` from `UpperTheory.closed_fiber_affine_surjective_ker_maximalIdeal A (pullback.fst ι₁ ι₂ ≫ ι₁ ≫ p) r c hrc`. Use `haveI := hWaff`. Take `⟨hdom, hinj1, hinj2, T, hTint, hTB, hTC, hB, hC⟩` from `hP ⟨r.base hW.some⟩`. Take `⟨hFUaff, -, hFUker⟩` from `UpperTheory.closed_fiber_affine_surjective_ker_maximalIdeal A (ι₁ ≫ p) (pullback.fst (ι₁ ≫ p) (cpt A)) (pullback.snd _ _) (IsPullback.of_hasPullback _ _)`.
+
+Take `⟨hFVaff, -, hFVker⟩` from `UpperTheory.closed_fiber_affine_surjective_ker_maximalIdeal A (ι₂ ≫ p) (pullback.fst (ι₂ ≫ p) (cpt A)) (pullback.snd _ _) (IsPullback.of_hasPullback _ _)`. Use `haveI := hFUaff`. Use `haveI := hFVaff`. Take `⟨ζW, hζW⟩ : ∃ z, st (r ≫ pullback.fst ι₁ ι₂ ≫ ι₁ ≫ p) ζ = z` from `⟨_, rfl⟩`. Establish `hgW : GoodRoot q ζW` using `hζW ▸ goodRoot_map_ringHom _ hζ`.
+
+Establish `eqU : (pullback.fst (fibMap p ι₁) (fibMap p ι₂)).appTop.hom (st (pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁ ≫ p) ζ) = ζW`. Rewrite using `[← hζW, st_comp, reassoc_of% hr1]`. Establish `eqV : (pullback.snd (fibMap p ι₁) (fibMap p ι₂)).appTop.hom (st (pullback.fst (ι₂ ≫ p) (cpt A) ≫ ι₂ ≫ p) ζ) = ζW`. Rewrite using `[← hζW, st_comp, ← reassoc_of% hr2, pullback.condition_assoc]`. Take `⟨w, hwq, hw⟩` from `(UpperTheory.scheme_roots_of_unity_eq_locallyConstant_powers _ q ζW hgW).1 g`.
+
+Take `⟨w', rfl⟩` from `hrsurj w`. Use `letI : Algebra A Γ(pullback ι₁ ι₂, ⊤) := (st (pullback.fst ι₁ ι₂ ≫ ι₁ ≫ p)).toAlgebra`. Use `haveI := hdom`. Establish `toKer : ∀ y, y ∈ mm (⊤ : Subalgebra A Γ(pullback ι₁ ι₂, ⊤)) → r.appTop.hom y = 0`. Introduce `y hy`.
+
+Unfold `mm at hy`. Rewrite `hy` using `[Algebra.top_toSubmodule, Ideal.smul_top_eq_map]`. Rewrite using `[← RingHom.mem_ker, hrker]`. Conclude with `hy`. Establish `hmem : w' ^ q - 1 ∈ mm (⊤ : Subalgebra A Γ(pullback ι₁ ι₂, ⊤))`.
+
+Establish `hk : w' ^ q - 1 ∈ RingHom.ker r.appTop.hom`. Rewrite using `[RingHom.mem_ker, map_sub, map_pow, hwq, map_one, sub_self]`. Rewrite `hk` using `[hrker]`. Unfold `mm`. Rewrite using `[Algebra.top_toSubmodule, Ideal.smul_top_eq_map]`.
+
+Conclude with `hk`. Take `⟨u, hu, v, hv, huq, hvq, hwuv⟩` from `UpperTheory.exists_near_root_of_unity_product_decomposition A Γ(pullback ι₁ ι₂, ⊤) T hTint hTB hTC q hq w' hmem`. Establish `hu' : u ∈ (T.B : Set _)` using `hu`. Rewrite `hu'` using `[hB]`. Take `⟨u₀, rfl⟩` from `hu'`.
+
+Establish `hv' : v ∈ (T.C : Set _)` using `hv`. Rewrite `hv'` using `[hC]`. Take `⟨v₀, rfl⟩` from `hv'`. Take `⟨e₁, he₁, he₁0⟩` from `exists_preimage_map_eq_zero_of_mem_mm T.B (pullback.fst ι₁ ι₂).appTop.hom (pullback.fst (ι₁ ≫ p) (cpt A)).appTop.hom (st (ι₁ ≫ p)) (fun a => (st_comp _ _ a).symm) hB (fun a ha => by rw [← RingHom.mem_ker, hFUker]; exact Ideal.mem_map_of_mem _ ha) _ huq`. Establish `hcomp2 : ∀ a, algebraMap A Γ(pullback ι₁ ι₂, ⊤) a = (pullback.snd ι₁ ι₂).appTop.hom (st (ι₂ ≫ p) a)`.
+
+Introduce `a`. Rewrite using `[st_comp]`. Use `show st (pullback.fst ι₁ ι₂ ≫ ι₁ ≫ p) a = _`. Rewrite using `[pullback.condition_assoc]`. Take `⟨e₂, he₂, he₂0⟩` from `exists_preimage_map_eq_zero_of_mem_mm T.C (pullback.snd ι₁ ι₂).appTop.hom (pullback.fst (ι₂ ≫ p) (cpt A)).appTop.hom (st (ι₂ ≫ p)) hcomp2 hC (fun a ha => by rw [← RingHom.mem_ker, hFVker]; exact Ideal.mem_map_of_mem _ ha) _ hvq`.
+
+Establish `hu1 : ((pullback.fst (ι₁ ≫ p) (cpt A)).appTop.hom u₀) ^ q = 1`. Establish `: e₁ = u₀ ^ q - 1` using `hinj1 (by rw [he₁, map_sub, map_pow, map_one])`. Rewrite `he₁0` using `[this, map_sub, map_pow, map_one, sub_eq_zero]`. Conclude with `he₁0`. Establish `hv1 : ((pullback.fst (ι₂ ≫ p) (cpt A)).appTop.hom v₀) ^ q = 1`.
+
+Establish `: e₂ = v₀ ^ q - 1` using `hinj2 (by rw [he₂, map_sub, map_pow, map_one])`. Rewrite `he₂0` using `[this, map_sub, map_pow, map_one, sub_eq_zero]`. Conclude with `he₂0`. Take `⟨a', ha'⟩` from `(UpperTheory.scheme_roots_of_unity_eq_locallyConstant_powers _ q _ (goodRoot_map_ringHom (st (pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁ ≫ p)) hζ)).2.1 _ hu1`. Take `⟨b', hb'⟩` from `(UpperTheory.scheme_roots_of_unity_eq_locallyConstant_powers _ q _ (goodRoot_map_ringHom (st (pullback.fst (ι₂ ≫ p) (cpt A) ≫ ι₂ ≫ p)) hζ)).2.1 _ hv1`.
+
+Use `⟨a', -b', ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `key : g x = a' ((pullback.fst (fibMap p ι₁) (fibMap p ι₂)).base x) + b' ((pullback.snd (fibMap p ι₁) (fibMap p ι₂)).base x)`. Take `⟨Px, hPx⟩` from `(UpperTheory.scheme_roots_of_unity_eq_locallyConstant_powers _ q ζW hgW).2.2.2 x`. Establish `hx1 : Ideal.Quotient.mk Px (r.appTop.hom w') = Ideal.Quotient.mk Px (ζW ^ (g x).val)` using `Ideal.Quotient.eq.2 ((hPx _).2 (hw x))`.
+
+Establish `hx2 : r.appTop.hom w' = (pullback.fst (fibMap p ι₁) (fibMap p ι₂)).appTop.hom ((pullback.fst (ι₁ ≫ p) (cpt A)).appTop.hom u₀) * (pullback.snd (fibMap p ι₁) (fibMap p ι₂)).appTop.hom ((pullback.fst (ι₂ ≫ p) (cpt A)).appTop.hom v₀)`. Establish `h0` using `toKer _ hwuv`. Rewrite `h0` using `[map_sub, sub_eq_zero, map_mul]`. Rewrite using `[h0]`. Simplify using `only [appTop_comp_apply, hr1, hr2]`.
+
+Establish `hx3 : Ideal.Quotient.mk Px ((pullback.fst (fibMap p ι₁) (fibMap p ι₂)).appTop.hom ((pullback.fst (ι₁ ≫ p) (cpt A)).appTop.hom u₀)) = Ideal.Quotient.mk Px (ζW ^ (a' ((pullback.fst (fibMap p ι₁) (fibMap p ι₂)).base x)).val)`. Use `Ideal.Quotient.eq.2 ((hPx _).2 ?_)` and prove the remaining obligations. Rewrite using `[← eqU, ← map_pow, ← map_sub, notMem_basicOpen_pullback_iff_base_notMem_basicOpen]`. Conclude with `ha' _`. Establish `hx4 : Ideal.Quotient.mk Px ((pullback.snd (fibMap p ι₁) (fibMap p ι₂)).appTop.hom ((pullback.fst (ι₂ ≫ p) (cpt A)).appTop.hom v₀)) = Ideal.Quotient.mk Px (ζW ^ (b' ((pullback.snd (fibMap p ι₁) (fibMap p ι₂)).base x)).val)`.
+
+Use `Ideal.Quotient.eq.2 ((hPx _).2 ?_)` and prove the remaining obligations. Rewrite using `[← eqV, ← map_pow, ← map_sub, notMem_basicOpen_pullback_iff_base_notMem_basicOpen]`. Conclude with `hb' _`. Establish `hfin : Ideal.Quotient.mk Px (ζW ^ (g x).val) = Ideal.Quotient.mk Px (ζW ^ (a' ((pullback.fst (fibMap p ι₁) (fibMap p ι₂)).base x) + b' ((pullback.snd (fibMap p ι₁) (fibMap p ι₂)).base x)).val)`. Rewrite using `[← hx1, hx2, map_mul, hx3, hx4, ← map_mul, ← pow_add, ZMod.val_add, pow_mod_eq_pow_of_pow_eq_one_commutative_algebra hgW.1]`.
+
+Conclude with `(UpperTheory.scheme_roots_of_unity_eq_locallyConstant_powers _ q ζW hgW).2.2.1 _ _ x ((hPx _).1 (Ideal.Quotient.eq.1 hfin))`. Simplify using `only [LocallyConstant.sub_apply, LocallyConstant.neg_apply, LocallyConstant.coe_comap, Function.comp_apply, key, sub_neg_eq_add]`.
+-/
 theorem UpperTheory.cohomology_punctured_affine_line : LateralTheory.E.StandardEtaleChartsMultivariableHensel.Heart := by
   unfold LateralTheory.E.StandardEtaleChartsMultivariableHensel.Heart
   intro q A _ _ hSH hq Z U V p hIL hZ ι₁ ι₂ h1 h2 hUa hVa hcov hs g

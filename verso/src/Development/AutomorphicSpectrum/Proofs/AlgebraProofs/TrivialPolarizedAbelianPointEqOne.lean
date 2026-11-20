@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.DimZero
 
+/- English proof (translation)
+Use `haveI := h.proper`. Use `haveI := h.geomConnected`. Use `haveI : Etale A.hom := (Etale.iff_smoothOfRelativeDimension_zero _).2 hd`. Set `e : S ⟶ A.left` to `eSec A`. Establish `he : e ≫ A.hom = 𝟙 S` using `Over.w η[A]`.
+
+Use `haveI : IsClosedImmersion e := by haveI : IsClosedImmersion (e ≫ A.hom) := by rw [he]; infer_instance`. Conclude with `IsClosedImmersion.of_comp e A.hom`. Use `haveI : MorphismProperty.HasOfPostcompProperty @IsOpenImmersion (MorphismProperty.diagonal @IsOpenImmersion) := MorphismProperty.hasOfPostcompProperty_iff_le_diagonal.mpr le_rfl`. Use `haveI : IsOpenImmersion e := MorphismProperty.of_postcomp (W := @IsOpenImmersion) (W' := MorphismProperty.diagonal @IsOpenImmersion) e A.hom (inferInstanceAs (IsOpenImmersion (pullback.diagonal A.hom))) (by rw [he]; infer_instance)`. Establish `hs : ∀ y : S, A.hom (e y) = y` using `fun y => by rw [← Scheme.Hom.comp_apply, he]; rfl`.
+
+Use `haveI : IsIso e := by`. Use `isIso_of_isOpenImmersion_of_opensRange_eq_top _ (top_unique fun a _ => ?_)` and prove the remaining obligations. Establish `hc` using `(A.hom.isConnected_preimage_singleton (A.hom a)).isPreconnected`. Establish `hcl : IsClopen (Set.range e)` using `⟨e.isClosedEmbedding.isClosed_range, e.isOpenEmbedding.isOpen_range⟩`. Conclude with `hc.subset_isClopen hcl ⟨e (A.hom a), hs _, _, rfl⟩ rfl`.
+
+Use `haveI : IsIso (e ≫ A.hom) := by rw [he]; infer_instance`. Conclude with `IsIso.of_isIso_comp_left e _`.
+-/
 theorem isIso_hom_of_relDim_zero {S : Scheme.{0}} (A : Over S) [GrpObj A] (h : IsAbelianScheme A)
     (hd : SmoothOfRelativeDimension 0 A.hom) : IsIso A.hom := by
   haveI := h.proper
@@ -36,10 +45,16 @@ theorem isIso_hom_of_relDim_zero {S : Scheme.{0}} (A : Over S) [GrpObj A] (h : I
   haveI : IsIso (e ≫ A.hom) := by rw [he]; infer_instance
   exact IsIso.of_isIso_comp_left e _
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[← cancel_mono A.hom, Over.w x, Over.w y]`.
+-/
 theorem over_hom_eq_of_mono {S : Scheme.{0}} {T A : Over S} [Mono A.hom] (x y : T ⟶ A) : x = y := by
   ext1
   rw [← cancel_mono A.hom, Over.w x, Over.w y]
 
+/- English proof (translation)
+Establish `hd : SmoothOfRelativeDimension 0 P.A.hom` using `hg ▸ P.smoothDim`. Use `haveI := isIso_hom_of_relDim_zero P.A P.isAb hd`. Conclude with `over_hom_eq_of_mono _ _`.
+-/
 theorem eq_one_of_g_eq_zero (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (P : Out.PolAV (Spec (CommRingCat.of R))) (hg : P.g = 0) (z : sp (R₀ := R) R ⟶ P.A) :
     z = 1 := by

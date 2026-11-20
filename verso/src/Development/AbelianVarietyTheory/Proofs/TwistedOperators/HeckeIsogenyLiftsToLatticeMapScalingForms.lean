@@ -13,6 +13,17 @@ noncomputable section
 
 namespace GlobalTheory.HeckeLift
 
+/- English proof (translation)
+Use `set K : ℕ := 1 + (n - m).natAbs * p with hK`. Establish `hk : 0 < K` using `by omega`. Establish `hcop : K.Coprime p`. Rewrite using `[hK]`. Use `first`.
+
+Consider the case `exact (Nat.coprime_add_mul_right_left 1 p _).2 (Nat.coprime_one_left p)`. Consider the case `exact (Nat.coprime_add_mul_left_left 1 p _).2 (Nat.coprime_one_left p)`. Consider the case `simp`. Take `⟨j, hj⟩` from `Complex.exp_eq_exp_iff_exists_int.1 (h K hk hcop)`. Establish `h0 : ((K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`.
+
+Establish `h1 : ((n - m : ℤ) : ℂ) = (((K : ℕ) : ℤ) * j : ℤ)`. Apply `mul_left_cancel₀ Complex.two_pi_I_ne_zero` to reduce the goal to its premises. Rewrite using `[Int.cast_mul, Int.cast_natCast, Int.cast_sub]`. Generalize the expression as in `((K : ℕ) : ℂ) = k at h0 hj`. Clear denominators, using `at hj` for the nonvanishing conditions.
+
+Take the linear combination `(2 * Real.pi * Complex.I) * hj`. Establish `hlt : (n - m).natAbs < K`. Establish `: (n - m).natAbs ≤ (n - m).natAbs * p` using `Nat.le_mul_of_pos_right _ hp`. Use linear arithmetic over natural numbers and integers. Establish `h2 : n - m = 0` using `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs ⟨j, Int.cast_injective h1⟩ (by`.
+
+Rewrite using `[Int.natAbs_natCast]`. Conclude with `hlt)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem int_eq_of_exp_eq_coprime {m n : ℤ} {p : ℕ} (hp : 0 < p)
     (h : ∀ k : ℕ, 0 < k → k.Coprime p → Complex.exp (-(2 * Real.pi * Complex.I) * (m : ℂ) / k) =
       Complex.exp (-(2 * Real.pi * Complex.I) * (n : ℂ) / k)) : m = n := by
@@ -39,6 +50,31 @@ theorem int_eq_of_exp_eq_coprime {m n : ℤ} {p : ℕ} (hp : 0 < p)
     rw [Int.natAbs_natCast]; exact hlt)
   omega
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo σ g ty F i j P P' p C ψ ψp hP hP' hp hC hk`. Take `⟨-, -, hfib, hact, hsurj, hker, hweil, -⟩` from `hk`. Take `⟨e, he⟩ : ∃ e : (Fin g → ℂ) → (Over.mk (F.u j P') ⟶ Xo.univ.t.G), ∀ z, e z = ψp (F.ex i P z)` from `⟨_, fun _ => rfl⟩`. Establish `hpow : ∀ (n : ℕ) z, F.ex i P (n • z) = F.ex i P z ^ n` using `fun n z => by`. Proceed by induction on `n with`.
+
+Consider the case `zero => rw [zero_smul, pow_zero]`. Conclude with `(F.ex_ker i P hP 0).2 ⟨0, map_zero P⟩`. Consider the case `succ n ih => rw [succ_nsmul, F.ex_add i P hP, ih, pow_succ]`. Establish `hp0 : 0 < p ^ 2` using `pow_pos hp.pos 2`. Establish `hkerC : ∀ z, e z = 1 → ∃ a, P a = (p ^ 2) • z` using `fun z hz => by`.
+
+Establish `hmem : F.ex i P z ∈ C` using `by rw [← hker, MonoidHom.mem_ker, ← he, hz]`. Take `⟨a, ha⟩` from `(F.ex_ker i P hP _).1 ((hpow _ z).trans (hC _ hmem))`. Conclude with `⟨a, ha⟩`. Establish `hhol : IsHolTo Set.univ (fun z => (e z).left)`. Establish `h1` using `(GlobalTheory.HolFibre.isHolTo_fibPt_and_comp _ Xo.univ.t.G _ g (F.ex i P) (GlobalTheory.ClassUniq.isHolTo_ex F i P hP)).2 _ (ψ ≫ pullback.fst _ _)`.
+
+Use `h1 using 2 with z` and compare the differences between its conclusion and the goal. Rewrite using `[← Category.assoc, hfib, he]`. Unfold `fibPt`. Conclude with `(pullback.lift_fst _ _ _).symm`. Establish `hc : {z | e z = 1}.Countable`.
+
+Use `((countable_periods hP).image fun w => ((p ^ 2 : ℕ) : ℂ)⁻¹ • w).mono fun z hz => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hkerC z hz`. Use `⟨P a, ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h0 : ((p ^ 2 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hp0.ne'`. Simplify using `only [ha, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ h0]`.
+
+Establish `hexp : IsExp (F.ex j P')` using `⟨F.ex_add j P' hP', F.ex_onto j P' hP', GlobalTheory.ClassUniq.isHolTo_ex F j P' hP', (F.ex_diff j P' hP').1, (F.ex_diff j P' hP').2⟩`. Take `⟨h, hh⟩` from `exists_linearEquiv_of_period hP' hexp (F.ex_ker j P' hP') (e₀ := e) (fun z w => by rw [he, he, he, F.ex_add i P hP, map_mul]) (fun y => by`. Take `⟨z, hz⟩` from `hsurj.comp (F.ex_onto i P hP) y`. Conclude with `⟨z, (he z).trans hz⟩) hhol hc`. Establish `hlin : ∀ (a : 𝓞 E) z, e (fun k => ty k (a : E) * z k) = e z ≫ Xo.univ.t.act.act a` using `fun a z => by`.
+
+Rewrite using `[he, he, F.ex_lin i P hP, hact]`. Establish `hcomm : ∀ (a : 𝓞 E) z, h (fun k => ty k (a : E) * z k) = fun k => ty k (a : E) * h z k` using `fun a z => by`. Use `hP'.2.2.1` as an intermediate fact. Establish `k` using `realLinear_eq_of_sub_mem_discrete (Γ := P'.range) DiscreteTopology.isDiscrete (L := (h.toLinearMap.restrictScalars ℝ) ∘ₗ LinearMap.mulLeft ℝ (fun k => ty k (a : E))) (L' := LinearMap.mulLeft ℝ (fun k => ty k (a : E)) ∘ₗ (h.toLinearMap.restrictScalars ℝ)) fun x => (F.ex_ker j P' h …`. Conclude with `DFunLike.congr_fun k z`.
+
+Establish `hmem : ∀ a, ∃ b, P' b = h (P a)` using `fun a => (F.ex_ker j P' hP' _).1 ((hh _).trans (by rw [he, (F.ex_ker i P hP _).2 ⟨a, rfl⟩, map_one]))`. Use `choose r₀ hr₀ using hmem`. Set `r₁ : (F.Di i).La →ₗ[𝓞 E] (F.Di j).La` to `{ toFun := r₀ map_add' := fun a b => hP'.2.1 (by rw [map_add, hr₀, hr₀, hr₀, map_add, map_add]) map_smul' := fun c a => hP'.2.1 (by`. Rewrite using `[hr₀, show P (c • a) = fun k => ty k (c : E) * P a k from funext (hP.1 c a), hcomm, ← hr₀]`. Conclude with `(funext (hP'.1 c (r₀ a))).symm) }`.
+
+Use `⟨r₁, h, fun a b => ?_, hr₀, fun b => ?_, fun z => (hh z).trans (he z)⟩` and prove the remaining obligations. Use `int_eq_of_exp_eq_coprime hp.pos fun k hk hcop => ?_` and prove the remaining obligations. Establish `w` using `F.ex_weil i P hP k a b (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Establish `w1` using `hweil k _ _ _ hcop w`. Establish `w'` using `F.ex_weil j P' hP' k (r₀ a) (r₀ b) (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`.
+
+Rewrite `w'` using `[hr₀, hr₀, ← map_smul h, ← map_smul h, hh, hh, he, he]`. Use `congrArg Units.val (weilIs_unique_fieldPoint _ _ _ Xo.univ.t.PP.isLB ℂ (F.u j P') k _ _ _ _ w' w1)` as an intermediate fact. Simplify using `only [Units.val_mk0, Units.val_pow_eq_pow_val] at this`. Rewrite using `[show r₁ a = r₀ a from rfl, show r₁ b = r₀ b from rfl, this, ← Complex.exp_nat_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha⟩` from `hkerC (h.symm (P' b)) (by`. Rewrite using `[← hh, h.apply_symm_apply]`. Conclude with `(F.ex_ker j P' hP' _).2 ⟨b, rfl⟩)`.
+
+Use `⟨a, hP'.2.1 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P' (r₀ a) = _`. Rewrite using `[hr₀, ha, map_nsmul, h.apply_symm_apply, map_nsmul]`.
+-/
 theorem exists_linearMap_of_isHkIsog : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ ty) (i j : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (P' : (F.Di j).La →+ (Fin g → ℂ)) (p : ℕ) (C : Subgroup (Over.mk (F.u i P) ⟶ Xo.univ.t.G)) (ψ : pullback Xo.univ.t.G.hom (F.u i P) ⟶ pullback Xo.univ.t.G.hom (F.u j P')) (ψp : (Over.mk (F.u i P) ⟶ Xo.univ.t.G) →* (Over.mk (F.u j P') ⟶ Xo.univ.t.G)), IsPeriod (F.Di i) ty P → IsPeriod (F.Di j) ty P' → p.Prime → (∀ a ∈ C, a ^ p ^ 2 = 1) → IsHkIsog p (F.u i P) (F.u j P') C ψ ψp → ∃ (gam : (F.Di i).La →ₗ[𝓞 E] (F.Di j).La) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), (∀ a b, (F.Di j).EF (gam a) (gam b) = (p : ℤ) ^ 2 * (F.Di i).EF a b) ∧ (∀ a, P' (gam a) = h (P a)) ∧ (∀ b, ∃ a, gam a = (p ^ 2) • b) ∧ ∀ z, F.ex j P' (h z) = ψp (F.ex i P z) := by
   intro E _ _ _ H Dw l Xo σ g ty F i j P P' p C ψ ψp hP hP' hp hC hk
   obtain ⟨-, -, hfib, hact, hsurj, hker, hweil, -⟩ := hk

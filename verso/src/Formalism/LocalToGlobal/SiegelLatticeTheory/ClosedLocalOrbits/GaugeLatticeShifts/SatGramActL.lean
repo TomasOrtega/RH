@@ -22,6 +22,13 @@ variable {D : D7} {X : HidaSetting D} {u u' : D.what₂.Word}
   {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)} {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)}
   {what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
+/- English proof (translation)
+Establish `hβi : β ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `(Saturated.mem_AutF.1 hβ).1.1`. Establish `hβγ : β * γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hβi hγ`. Establish `ext : ∀ {G H : LFlag (VS D) D.R.rS T}, G.fl.e = H.fl.e → G.fl.z = H.fl.z → G.zt = H.zt → G = H`. Introduce and unpack `⟨⟨e, z, _, _, _, _⟩, zt⟩ ⟨⟨e', z', _, _, _, _⟩, zt'⟩ he hz hzt`. Simplify using `only at he hz hzt`.
+
+Substitute `he hz hzt` using the available equality. Both sides reduce to the same expression. Establish `h1 : mapLF (β * γ) F = ⟨mapFlag (β * γ) hβγ F.fl, (β * γ) F.zt⟩`. Simplify using `only [mapLF, dif_pos hβγ]`. Establish `h2 : mapLF γ F = ⟨mapFlag γ hγ F.fl, γ F.zt⟩`.
+
+Simplify using `only [mapLF, dif_pos hγ]`. Rewrite using `[h1, h2]`. Conclude with `ext rfl rfl rfl`.
+-/
 theorem mapLF_mul_act {Λ : Submodule (𝓞 D.host.E) (VS D).V} {β γ : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hβ : β ∈ Saturated.AutF Λ (lf D F0)) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) {T : D.host.E}
     (F : LFlag (VS D) D.R.rS T) :
@@ -50,6 +57,11 @@ def actC (hPD : Saturated.PDIso D) {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V}
     by rw [Formalism.L2.SG.Pf.gmap_mul, p.2.2.2.1]; exact (Saturated.mem_AutF.1 hβ).1.2,
     by rw [mapLF_mul_act hβ p.2.2.1]; exact Saturated.pd_act hPD ⟨β, hβ⟩ p.2.2.2.2⟩
 
+/- English proof (translation)
+Unfold `GRel at h ⊢`. Take `⟨n, hn, n', hn', hq⟩` from `h`. Use `⟨β * n * β⁻¹, nlam_conj hβ hn, n', hn', ?_⟩` and prove the remaining obligations. Use `show β * q.1.2 = β * n * β⁻¹ * (β * p.1.2) * n'`. Rewrite using `[hq]`.
+
+Simplify using `only [mul_assoc, inv_mul_cancel_left]`.
+-/
 theorem grel_actC (hPD : Saturated.PDIso D) {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} (x0 : X.B.I.GA)
     (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hx : RatLink X x0 β) (hβ : β ∈ Saturated.AutF Λ (lf D F0))
     {p q : GCar X u u' F0 F0' Λ Λ'} (h : GRel X u u' F0 F0' Λ Λ' p q) :
@@ -68,11 +80,19 @@ def actQ (hPD : Saturated.PDIso D) {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V}
     GQ X u u' F0 F0' Λ Λ' → GQ X u u' F0 F0' Λ Λ' :=
   Quot.map (actC F0 F0' hPD x0 β hx hβ) (fun _ _ h => grel_actC hPD x0 β hx hβ h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actQ_mk (hPD : Saturated.PDIso D) {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} (x0 : X.B.I.GA)
     (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hx : RatLink X x0 β) (hβ : β ∈ Saturated.AutF Λ (lf D F0))
     (p : GCar X u u' F0 F0' Λ Λ') :
     actQ F0 F0' hPD x0 β hx hβ (Quot.mk _ p) = Quot.mk _ (actC F0 F0' hPD x0 β hx hβ p) := rfl
 
+/- English proof (translation)
+Proceed by induction on `c using Quot.ind with`. Consider the case `mk p`. Rewrite using `[actQ_mk, actQ_mk]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show (x1 * (x0 * p.1.1), β1 * (β * p.1.2)) = p.1`. Rewrite using `[← mul_assoc, ← mul_assoc, e1, e2, one_mul, one_mul]`.
+-/
 theorem actQ_comp (hPD : Saturated.PDIso D) {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} (x0 x1 : X.B.I.GA)
     (β β1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hx : RatLink X x0 β) (hx1 : RatLink X x1 β1)
     (hβ : β ∈ Saturated.AutF Λ (lf D F0)) (hβ1 : β1 ∈ Saturated.AutF Λ (lf D F0))
@@ -93,20 +113,36 @@ def phiT (hPD : Saturated.PDIso D) (x0 : X.B.I.GA) (β : (VS D).V ≃ₗ[D.host.
   if h : β ∈ Saturated.AutF t.lam (lf D F0) then
     ⟨t.lam, t.mem, t.lam', t.mem', actQ F0 F0' hPD x0 β hx h t.cls⟩ else t
 
+/- English proof (translation)
+Simplify using `only [phiT, dif_pos h]`.
+-/
 theorem phiT_pos (hPD : Saturated.PDIso D) (x0 : X.B.I.GA) (β : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hx : RatLink X x0 β) (t : GTerm X u u' F0 F0' what₂ rows') (h : β ∈ Saturated.AutF t.lam (lf D F0)) :
     phiT what₂ rows' hPD x0 β hx t = ⟨t.lam, t.mem, t.lam', t.mem', actQ F0 F0' hPD x0 β hx h t.cls⟩ := by
   simp only [phiT, dif_pos h]
 
+/- English proof (translation)
+Unfold `phiT`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem phiT_position (hPD : Saturated.PDIso D) (x0 : X.B.I.GA) (β : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hx : RatLink X x0 β) (t : GTerm X u u' F0 F0' what₂ rows') :
     positionT (phiT what₂ rows' hPD x0 β hx t) = positionT t := by
   unfold phiT
   split_ifs <;> rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by simpa using Saturated.inv_mem_AutF' h, Saturated.inv_mem_AutF'⟩`.
+-/
 theorem autF_inv_iff {Λ : Submodule (𝓞 D.host.E) (VS D).V} {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} :
     β⁻¹ ∈ Saturated.AutF Λ (lf D F0) ↔ β ∈ Saturated.AutF Λ (lf D F0) := ⟨fun h => by simpa using Saturated.inv_mem_AutF' h, Saturated.inv_mem_AutF'⟩
 
+/- English proof (translation)
+Establish `hb1 : β1 = β⁻¹` using `eq_inv_of_mul_eq_one_left e2`. Distinguish the cases in `h : β ∈ Saturated.AutF t.lam (lf D F0)`. Establish `h1 : β1 ∈ Saturated.AutF t.lam (lf D F0)`. Rewrite using `[hb1]`. Conclude with `Saturated.inv_mem_AutF' h`.
+
+Rewrite using `[phiT_pos hPD x0 β hx t h]`. Rewrite using `[phiT_pos hPD x1 β1 hx1 (⟨t.lam, t.mem, t.lam', t.mem', actQ F0 F0' hPD x0 β hx h t.cls⟩ : GTerm X u u' F0 F0' what₂ rows') h1]`. Rewrite using `[actQ_comp hPD x0 x1 β β1 hx hx1 h h1 e1 e2]`. Establish `h1 : β1 ∉ Saturated.AutF t.lam (lf D F0)`. Rewrite using `[hb1, autF_inv_iff]`.
+
+Conclude with `h`. Simplify using `only [phiT, dif_neg h, dif_neg h1]`.
+-/
 theorem phiT_comp (hPD : Saturated.PDIso D) (x0 x1 : X.B.I.GA) (β β1 : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hx : RatLink X x0 β) (hx1 : RatLink X x1 β1) (e1 : x1 * x0 = 1) (e2 : β1 * β = 1)
     (t : GTerm X u u' F0 F0' what₂ rows') :
@@ -138,6 +174,11 @@ section FC
 
 variable {D : D7} {X : HidaSetting D} {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Take `⟨x, n, hxn, rfl, hn, hn'⟩` from `hy`. Use `⟨x0 * x * x0⁻¹, β * n * β⁻¹, Formalism.L2.SG.Pf.ratLink_mul X (Formalism.L2.SG.Pf.ratLink_mul X hx hxn) (Formalism.L2.SG.Pf.ratLink_inv X hx), ?_, nlam_conj hβ hn, ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.fst_mul, Prod.fst_mul, Prod.fst_inv]`. Establish `e : (β * γ)⁻¹ * (β * n * β⁻¹) * (β * γ) = γ⁻¹ * n * γ` using `by group`. Rewrite using `[e]`.
+
+Conclude with `hn'`.
+-/
 theorem roset_conj {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {x0 : X.B.I.GA} {β : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hx : RatLink X x0 β) (hβ : β ∈ Saturated.AutF Λ (lf D (X.Fu u))) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     {y : X.B.I.Ginf} (hy : y ∈ ROset X (X.Fu u) (X.Fu u') Λ Λ' γ) :
@@ -150,6 +191,11 @@ theorem roset_conj {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {x0 : X.B.I.GA}
   · have e : (β * γ)⁻¹ * (β * n * β⁻¹) * (β * γ) = γ⁻¹ * n * γ := by group
     rw [e]; exact hn'
 
+/- English proof (translation)
+Take `⟨x, n, hxn, rfl, hn, hn'⟩` from `hy`. Establish `hβi : β⁻¹ ∈ Saturated.AutF Λ (lf D (X.Fu u))` using `Saturated.inv_mem_AutF' hβ`. Use `⟨x0⁻¹ * x * x0, β⁻¹ * n * β, Formalism.L2.SG.Pf.ratLink_mul X (Formalism.L2.SG.Pf.ratLink_mul X (Formalism.L2.SG.Pf.ratLink_inv X hx) hxn) hx, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.fst_mul, Prod.fst_mul, Prod.fst_inv]`. Use `nlam_conj hβi hn` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv]`. Conclude with `this`. Establish `e : γ⁻¹ * (β⁻¹ * n * β) * γ = (β * γ)⁻¹ * n * (β * γ)` using `by group`. Rewrite using `[e]`. Conclude with `hn'`.
+-/
 theorem roset_conj' {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {x0 : X.B.I.GA} {β : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hx : RatLink X x0 β) (hβ : β ∈ Saturated.AutF Λ (lf D (X.Fu u))) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     {y : X.B.I.Ginf} (hy : y ∈ ROset X (X.Fu u) (X.Fu u') Λ Λ' (β * γ)) :
@@ -165,6 +211,15 @@ theorem roset_conj' {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {x0 : X.B.I.GA
   · have e : γ⁻¹ * (β⁻¹ * n * β) * γ = (β * γ)⁻¹ * n * (β * γ) := by group
     rw [e]; exact hn'
 
+/- English proof (translation)
+Introduce `D X u u' Λ Λ' x0 β γ hx hβ Ω hΩ`. Take `⟨hm, hcov, huniq⟩` from `hΩ`. Use `⟨?_, fun x => ?_, fun x hx' s hs hsx => ?_⟩` and prove the remaining obligations. Conclude with `(measurable_const_mul x0.1⁻¹) hm`. Take `⟨s, hs, hsx⟩` from `hcov (x0.1⁻¹ * x)`.
+
+Use `⟨x0.1 * s * x0.1⁻¹, roset_conj hx hβ γ hs, ?_⟩` and prove the remaining obligations. Use `show x0.1⁻¹ * (x0.1 * s * x0.1⁻¹ * x) ∈ Ω`. Establish `e : x0.1⁻¹ * (x0.1 * s * x0.1⁻¹ * x) = s * (x0.1⁻¹ * x)` using `by group`. Rewrite using `[e]`. Conclude with `hsx`.
+
+Establish `hs'` using `roset_conj' hx hβ γ hs`. Establish `h1 : x0.1⁻¹ * s * x0.1 * (x0.1⁻¹ * x) ∈ Ω`. Establish `e : x0.1⁻¹ * s * x0.1 * (x0.1⁻¹ * x) = x0.1⁻¹ * (s * x)` using `by group`. Rewrite using `[e]`. Conclude with `hsx`.
+
+Use `huniq _ hx' _ hs' h1` as an intermediate fact. Establish `e2 : s = x0.1 * (x0.1⁻¹ * s * x0.1) * x0.1⁻¹` using `by group`. Rewrite using `[e2, this]`. Use `group`.
+-/
 theorem fundConj_holds : FundConj := by
   intro D X u u' Λ Λ' x0 β γ hx hβ Ω hΩ
   obtain ⟨hm, hcov, huniq⟩ := hΩ
@@ -192,6 +247,13 @@ open Formalism.L2.SG.TermDef Formalism.L2.SG.FourParts
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {Λ : Submodule (𝓞 E) S.V}
   {r : ℕ} {T T' : E} {F : LFlag S r T}
 
+/- English proof (translation)
+Use `⟨⟨(Formalism.HermitianLatticesTheory.isom S.hT).mul_mem ((Formalism.HermitianLatticesTheory.isom S.hT).mul_mem hβ hm.1.1) ((Formalism.HermitianLatticesTheory.isom S.hT).inv_mem hβ), by rw [Formalism.L2.SG.Pf.gmap_mul, Formalism.L2.SG.Pf.gmap_mul, Formalism.L2.SG.Pf.gmap_inv hΛ, h …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ (Formalism.L2.SG.TermOp.mapFlag β hβ F₁.fl).Xa (j + 1) at hx`. Express the relevant statement in the definitionally equal form `_ ∈ (Formalism.L2.SG.TermOp.mapFlag β hβ F₁.fl).Xa j`. Rewrite `hx`, the goal using `[Formalism.L2.SG.Pf.xa_mapFlag]`. Take `⟨y, hy, rfl⟩` from `hx`.
+
+Use `⟨m y - y, hm.2.1 j y hy, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.L2.SG.Pf.le_mul_app, Formalism.L2.SG.Pf.le_inv_app, map_sub]`. Express the relevant statement in the definitionally equal form `x ∈ orth S (Formalism.L2.SG.TermOp.mapFlag β hβ F₁.fl).X at hx`. Express the relevant statement in the definitionally equal form `_ ∈ (Formalism.L2.SG.TermOp.mapFlag β hβ F₁.fl).X`. Rewrite `hx`, the goal using `[Formalism.L2.SG.Pf.x_mapFlag]`.
+
+Establish `hy` using `Formalism.L2.SG.Pf.orth_map β hβ _ x hx`. Use `⟨m (β.symm x) - β.symm x, hm.2.2 _ hy, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.L2.SG.Pf.le_mul_app, Formalism.L2.SG.Pf.le_inv_app, map_sub]`.
+-/
 theorem nlam_mapL {β m : S.V ≃ₗ[E] S.V} (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) (hΛ : Formalism.HermitianLatticesTheory.gmap β Λ = Λ)
     {F₁ : LFlag S r T'} (hm : m ∈ NLam Λ F₁) : β * m * β⁻¹ ∈ NLam Λ (Saturated.mapL β hβ F₁) := by
   refine ⟨⟨(Formalism.HermitianLatticesTheory.isom S.hT).mul_mem ((Formalism.HermitianLatticesTheory.isom S.hT).mul_mem hβ hm.1.1) ((Formalism.HermitianLatticesTheory.isom S.hT).inv_mem hβ),
@@ -210,10 +272,16 @@ theorem nlam_mapL {β m : S.V ≃ₗ[E] S.V} (hβ : β ∈ Formalism.HermitianLa
     refine ⟨m (β.symm x) - β.symm x, hm.2.2 _ hy, ?_⟩
     simp [Formalism.L2.SG.Pf.le_mul_app, Formalism.L2.SG.Pf.le_inv_app, map_sub]
 
+/- English proof (translation)
+Establish `hl` using `(Saturated.mem_AutF.1 hβ).2.1 (Fin.last r)`. Rewrite `hl` using `[Formalism.L2.SG.Pf.frame_last_td]`. Then use the resulting hypothesis.
+-/
 theorem isometry_fix_flagAnisotropicVector_of_fix_frame {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) : β F.fl.z = F.fl.z := by
   have hl := (Saturated.mem_AutF.1 hβ).2.1 (Fin.last r)
   rwa [Formalism.L2.SG.Pf.frame_last_td] at hl
 
+/- English proof (translation)
+Take `⟨n, hn, m, hm, hf, hz⟩` from `h`. Establish `hβA` using `(Saturated.mem_AutF.1 hβ).1`. Use `⟨β * n * β⁻¹, nlam_conj hβ hn, β * m * β⁻¹, nlam_mapL hβA.1 hβA.2 hm, fun a => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Saturated.act, Saturated.frame_mapL, hf a, Formalism.L2.SG.Pf.le_mul_app, Formalism.L2.SG.Pf.le_inv_app, LinearEquiv.symm_apply_apply]`. Simplify using `only [Saturated.act, Saturated.mapL, hz, Formalism.L2.SG.Pf.le_mul_app, Formalism.L2.SG.Pf.le_inv_app, LinearEquiv.symm_apply_apply]`.
+-/
 theorem dcrel_act {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) {F₁ F₂ : LFlag S r T'}
     (h : DCRel Λ F F₁ F₂) : DCRel Λ F (Saturated.act ⟨β, hβ⟩ F₁) (Saturated.act ⟨β, hβ⟩ F₂) := by
   obtain ⟨n, hn, m, hm, hf, hz⟩ := h
@@ -224,6 +292,11 @@ theorem dcrel_act {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) {F
   · simp only [Saturated.act, Saturated.mapL, hz, Formalism.L2.SG.Pf.le_mul_app, Formalism.L2.SG.Pf.le_inv_app,
       LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨n, hn, he, hz⟩` from `h`. Use `⟨β * n * β⁻¹, nlam_conj hβ hn, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show β (n (β⁻¹ (F.fl.e a))) = β (F₁.fl.e a)`. Rewrite using `[inv_fix (fix_e hβ a), he a]`. Use `show β (n (β⁻¹ F.fl.z)) - β F₁.fl.z ∈ Xsp F`.
+
+Rewrite using `[inv_fix (isometry_fix_flagAnisotropicVector_of_fix_frame hβ), ← map_sub, fix_xsp hβ _ hz]`. Conclude with `hz`.
+-/
 theorem idF_act {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) {F₁ : LFlag S r T'} (h : IsIdF Λ F F₁) :
     IsIdF Λ F (Saturated.act ⟨β, hβ⟩ F₁) := by
   obtain ⟨n, hn, he, hz⟩ := h
@@ -236,18 +309,29 @@ theorem idF_act {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) {F�
 
 variable {P : LFlag S r T' → Prop}
 
+/- English proof (translation)
+The claim follows from `const_of_mk (fun z : Carrier P => mk Λ F P ⟨Saturated.act ⟨β, hβ⟩ z.1, hP z⟩) (fun a b hab => Quot.sound (dcrel_act hβ hab)) h`.
+-/
 theorem mk_act {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F)
     (hP : ∀ x : Carrier P, P (Saturated.act ⟨β, hβ⟩ x.1)) {x y : Carrier P} (h : mk Λ F P x = mk Λ F P y) :
     mk Λ F P ⟨Saturated.act ⟨β, hβ⟩ x.1, hP x⟩ = mk Λ F P ⟨Saturated.act ⟨β, hβ⟩ y.1, hP y⟩ :=
   const_of_mk (fun z : Carrier P => mk Λ F P ⟨Saturated.act ⟨β, hβ⟩ z.1, hP z⟩)
     (fun a b hab => Quot.sound (dcrel_act hβ hab)) h
 
+/- English proof (translation)
+Take `⟨F₁, ⟨h₁, hmk⟩, hid⟩` from `h`. Conclude with `⟨Saturated.act ⟨β, hβ⟩ F₁, ⟨hP ⟨F₁, h₁⟩, mk_act hβ hP hmk⟩, idF_act hβ hid⟩`.
+-/
 theorem idT_act {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F)
     (hP : ∀ x : Carrier P, P (Saturated.act ⟨β, hβ⟩ x.1)) {x : Carrier P} (h : IsIdT Λ F P (mk Λ F P x)) :
     IsIdT Λ F P (mk Λ F P ⟨Saturated.act ⟨β, hβ⟩ x.1, hP x⟩) := by
   obtain ⟨F₁, ⟨h₁, hmk⟩, hid⟩ := h
   exact ⟨Saturated.act ⟨β, hβ⟩ F₁, ⟨hP ⟨F₁, h₁⟩, mk_act hβ hP hmk⟩, idF_act hβ hid⟩
 
+/- English proof (translation)
+Establish `key : ∀ x : S.V, β⁻¹ (β x) = x` using `fun x => β.symm_apply_apply x`. Establish `ext : ∀ {G H : LFlag S r T'}, G.fl.e = H.fl.e → G.fl.z = H.fl.z → G.zt = H.zt → G = H`. Introduce and unpack `⟨⟨e, z, _, _, _, _⟩, zt⟩ ⟨⟨e', z', _, _, _, _⟩, zt'⟩ he hz hzt`. Simplify using `only at he hz hzt`. Substitute `he hz hzt` using the available equality.
+
+Both sides reduce to the same expression. Conclude with `ext (funext fun a => key _) (key _) (key _)`.
+-/
 theorem act_inv_act {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) (F₁ : LFlag S r T') :
     Saturated.act ⟨β⁻¹, Saturated.inv_mem_AutF' hβ⟩ (Saturated.act ⟨β, hβ⟩ F₁) = F₁ := by
   have key : ∀ x : S.V, β⁻¹ (β x) = x := fun x => β.symm_apply_apply x
@@ -264,6 +348,29 @@ section SMC
 
 open Formalism.L2.SG.TermDef Formalism.L2.SG.FourParts
 
+/- English proof (translation)
+Introduce `D X Y u u' t t' β hβ hl hl' hnn S hS ht`. Take `⟨n, hn, n', hn', he⟩` from `hnn`. Take `⟨lam2, mem2, lam2', mem2', cls2⟩` from `t'`. Simplify using `only at hl hl'`. Substitute `hl hl'` using the available equality.
+
+Use `set t' : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') := ⟨t.lam, mem2, t.lam', mem2', cls2⟩ with ht'`. Establish `hβA` using `(Saturated.mem_AutF.1 hβ).1`. Establish `hβγ : β * t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hβA.1 t.rep.2.2.1`. Establish `hdc : DCRel t.lam (lf D (X.Fu u)) (mapLF (β * t.lin) (lf D (X.Fu u'))) (mapLF t'.lin (lf D (X.Fu u')))` using `Formalism.L2.SG.Pf.dcrel_of (lf D (X.Fu u)) (lf D (X.Fu u')) hβγ t'.rep.2.2.1 ((Formalism.L2.SG.Pf.gmap_mul _ _ _).trans ((congrArg (Formalism.HermitianLatticesTheory.gmap β) t.rep.2.2.2.1).trans hβA.2)) hn hn' he`. Establish `hP : ∀ x : Carrier (PD D t.lam (lf D (X.Fu u)) u'), PD D t.lam (lf D (X.Fu u)) u' (Saturated.act ⟨β, hβ⟩ x.1)` using `fun x => Saturated.pd_act (hPD D) ⟨β, hβ⟩ x.2`.
+
+Set `x : Carrier (PD D t.lam (lf D (X.Fu u)) u')` to `⟨t.frame, t.rep.2.2.2.2⟩`. Set `c1 : Carrier (PD D t.lam (lf D (X.Fu u)) u')` to `⟨Saturated.act ⟨β, hβ⟩ x.1, hP x⟩`. Establish `hdc' : DCRel t.lam (lf D (X.Fu u)) c1.1 (mapLF t'.lin (lf D (X.Fu u')))`. Establish `e : c1.1 = mapLF (β * t.lin) (lf D (X.Fu u'))` using `(mapLF_mul_act hβ t.rep.2.2.1 (lf D (X.Fu u'))).symm`. Use `e ▸ hdc`.
+
+Establish `hc : t.toTerm.cls = mk t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') x` using `rfl`. Establish `hc' : t'.toTerm.cls = mk t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') c1` using `(Quot.sound (r := Rel t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u')) (a := c1) (b := ⟨mapLF t'.lin (lf D (X.Fu u')), t'.rep.2.2.2.2⟩) hdc').symm`. Establish `hΛ` using `(Y.rowsOK u).1 t.lam t.mem`. Establish `hTF` using `Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) t.lam hΛ`. Establish `hG : t'.G = t.G`.
+
+Establish `a1 : Gt t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') (mk t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') c1) = Gval (lf D (X.Fu u)) c1.1` using `Gt_mk hTF.1 c1`. Establish `a2 : Gt t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') (mk t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') x) = Gval (lf D (X.Fu u)) x.1` using `Gt_mk hTF.1 x`. Establish `a3 : Gval (lf D (X.Fu u)) c1.1 = Gval (lf D (X.Fu u)) x.1` using `Saturated.gval_act ⟨β, hβ⟩ x.1`. Conclude with `(congrArg (Gt t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u')) hc').trans (a1.trans (a3.trans a2.symm))`. Establish `hGt : Formalism.L2.SG.TermOp.Gt t' = Formalism.L2.SG.TermOp.Gt t`.
+
+Unfold `Formalism.L2.SG.TermOp.Gt`. Rewrite using `[hG]`. Establish `hsat` using `Saturated.sat_gen (hGen D) hTF.2.2.2.1`. Establish `hgen : t.generic → t'.generic`. Introduce `h`.
+
+Use `hsat.1 ⟨β, hβ⟩ x (hP x) h` as an intermediate fact. Conclude with `cast (congrArg (fun c => IsGen t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') (gS D) c) hc').symm this`. Establish `hngen : ¬ t.generic → ¬ t'.generic`. Introduce `h`. Use `hsat.2 ⟨β, hβ⟩ x (hP x) h` as an intermediate fact.
+
+Conclude with `cast (congrArg (fun c => ¬ IsGen t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') (gS D) c) hc').symm this`. Establish `hid : t'.isId → t.isId`. Introduce `h`. Establish `h' : IsIdT t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') (mk t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') c1)` using `cast (congrArg (fun c => IsIdT t.lam (lf D (X.Fu u)) (PD D t.lam (lf D (X.Fu u)) u') c) hc') h`. Establish `hβi : β⁻¹ ∈ Saturated.AutF t.lam (lf D (X.Fu u))` using `Saturated.inv_mem_AutF' hβ`.
+
+Establish `hPi : ∀ y : Carrier (PD D t.lam (lf D (X.Fu u)) u'), PD D t.lam (lf D (X.Fu u)) u' (Saturated.act ⟨β⁻¹, hβi⟩ y.1)` using `fun y => Saturated.pd_act (hPD D) ⟨β⁻¹, hβi⟩ y.2`. Establish `h2` using `idT_act hβi hPi h'`. Establish `e : (⟨Saturated.act ⟨β⁻¹, hβi⟩ c1.1, hPi c1⟩ : Carrier (PD D t.lam (lf D (X.Fu u)) u')) = x` using `Subtype.ext (act_inv_act hβ x.1)`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+
+Break down `hS with rfl | rfl | rfl` into its components or cases. Express the relevant statement in the definitionally equal form `Formalism.L2.SG.TermOp.Gt t ≠ 0 ∧ t.generic at ht show Formalism.L2.SG.TermOp.Gt t' ≠ 0 ∧ t'.generic`. Rewrite using `[hGt]`. Conclude with `⟨ht.1, hgen ht.2⟩`. Express the relevant statement in the definitionally equal form `Formalism.L2.SG.TermOp.Gt t ≠ 0 ∧ ¬ t.generic at ht show Formalism.L2.SG.TermOp.Gt t' ≠ 0 ∧ ¬ t'.generic`.
+
+Rewrite using `[hGt]`. Conclude with `⟨ht.1, hngen ht.2⟩`. Express the relevant statement in the definitionally equal form `Formalism.L2.SG.TermOp.Gt t = 0 ∧ ¬ t.isId at ht show Formalism.L2.SG.TermOp.Gt t' = 0 ∧ ¬ t'.isId`. Rewrite using `[hGt]`. Conclude with `⟨ht.1, fun h => ht.2 (hid h)⟩`.
+-/
 theorem sMemLeft_holds (hGen : ∀ D : D7, Saturated.GenIso (VS D) D.R.rS (gS D))
     (hPD : ∀ D : D7, Saturated.PDIso D) : SMemLeft := by
   intro D X Y u u' t t' β hβ hl hl' hnn S hS ht
@@ -344,6 +451,9 @@ open Matrix
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Apply `X.bas.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Establish `hi` using `congrArg X.ιE (congrFun h i)`. Simplify `hi` using `only [HidaSetting.crd, crdOf, RingEquiv.apply_symm_apply]`.
+-/
 theorem crd_inj {y y' : (VS D).V} (h : X.crd y = X.crd y') : y = y' := by
   apply X.bas.repr.injective
   ext i
@@ -353,6 +463,11 @@ theorem crd_inj {y y' : (VS D).V} (h : X.crd y = X.crd y') : y = y' := by
 def linM (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : (VS D).V →ₗ[D.host.E] (VS D).V :=
   Matrix.toLin X.bas X.bas (M.map X.ιE)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h` using `LinearMap.toMatrix_mulVec_repr X.bas X.bas (linM X M) y`. Simplify using `only [linM, LinearMap.toMatrix_toLin] at h`. Simplify using `only [HidaSetting.crd, crdOf, linM]`. Rewrite using `[← h]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem crd_linM (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y : (VS D).V) :
     X.crd (linM X M y) = M *ᵥ X.crd y := by
   funext i
@@ -373,9 +488,17 @@ def linGL (M : GL (Fin X.B.I.n) X.B.I.E) : (VS D).V ≃ₗ[D.host.E] (VS D).V :=
       rw [LinearMap.comp_apply, crd_linM, crd_linM, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel,
         Units.val_one, Matrix.one_mulVec]; rfl))
 
+/- English proof (translation)
+The claim follows from `crd_linM X _ y`.
+-/
 theorem crd_linGL (M : GL (Fin X.B.I.n) X.B.I.E) (y : (VS D).V) :
     X.crd (linGL X M y) = (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd y := crd_linM X _ y
 
+/- English proof (translation)
+Use `haveI := Formalism.L2.SG.Pf.Level.af_ntriv X.B.I.F`. Establish `hinj : Function.Injective (Formalism.UG.inclE (F` using `X.B.I.F) (E := X.B.I.E) (Af X.B.I.F)) := by first`. Consider the case `exact Algebra.TensorProduct.includeLeft_injective (S := X.B.I.F) (RingHom.injective _)`. Consider the case `exact Algebra.TensorProduct.includeLeft_injective (R := X.B.I.F) (RingHom.injective _)`. Consider the case `exact Algebra.TensorProduct.includeLeft_injective (RingHom.injective _)`.
+
+Use function extensionality and compare the values at `i`. Conclude with `hinj (congrFun h i)`.
+-/
 theorem incl_inj {a b : Fin X.B.I.n → X.B.I.E} (h : incl X.B.I a = incl X.B.I b) : a = b := by
   haveI := Formalism.L2.SG.Pf.Level.af_ntriv X.B.I.F
   have hinj : Function.Injective (Formalism.UG.inclE (F := X.B.I.F) (E := X.B.I.E) (Af X.B.I.F)) := by
@@ -386,8 +509,34 @@ theorem incl_inj {a b : Fin X.B.I.n → X.B.I.E} (h : incl X.B.I a = incl X.B.I 
   funext i
   exact hinj (congrFun h i)
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.PoincareInHH.Cut.fmat_mul X a b`.
+-/
 theorem fmat_mul (a b : X.B.I.Gf) : X.B.I.fmat (a * b) = X.B.I.fmat a * X.B.I.fmat b := Formalism.L2.SG.PoincareInHH.Cut.fmat_mul X a b
 
+/- English proof (translation)
+Introduce `D X w rs c Λ hΛ γ hk`. Take `⟨M, hM, h1, h2⟩ : (γ : X.B.I.GA) ∈ X.B.I.GFset` from `(Subgroup.mem_inf.1 γ.2).1`. Establish `hH : (γ : X.B.I.GA).2 ∈ Hfin X w` using `(Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.2).2).2`. Set `β` to `linGL X M`. Establish `hcrd : ∀ y, X.crd (β y) = (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd y` using `crd_linGL X M`.
+
+Establish `hfix : ∀ y, X.crd y ∈ fixSet X w → β y = y`. Introduce `y hy`. Apply `crd_inj X` to reduce the goal to its premises. Rewrite using `[hcrd]`. Apply `incl_inj X` to reduce the goal to its premises.
+
+Rewrite using `[← Formalism.L2.SG.Pf.incl_mulVec X, ← h2]`. Conclude with `hH _ hy`. Use `⟨β, ⟨M, hM, h1, h2, hcrd⟩, ⟨⟨fun x y => ?_, ?_⟩, fun a => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Formalism.L2.SG.PoincareInHH.Cut.hform_crd, ← Formalism.L2.SG.PoincareInHH.Cut.hform_crd, hcrd, hcrd, Formalism.L2.SG.PoincareInHH.Cut.hform_mulVec _ _ _ hM]`. Use extensionality with `y`.
+
+Rewrite using `[Saturated.mem_gmap_iff]`. Use `set H : X.B.I.Gf := (c.h (c.base Λ) : X.B.I.Gf) * X.xu w`. Establish `hb` using `c.base_lam Λ hΛ`. Establish `key : ∀ z, (z ∈ Λ ↔ X.B.I.fmat H⁻¹ *ᵥ incl X.B.I (X.crd z) ∈ X.B.I.Lf)`. Introduce `z`.
+
+Use `c.lat_eq (c.base Λ) z` as an intermediate fact. Rewrite `this` using `[hb]`. Conclude with `this`. Establish `hk' : kB c Λ γ = H⁻¹ * (γ : X.B.I.GA).2 * H` using `rfl`. Establish `e : X.B.I.fmat H⁻¹ *ᵥ incl X.B.I (X.crd y) = X.B.I.fmat (kB c Λ γ) *ᵥ (X.B.I.fmat H⁻¹ *ᵥ incl X.B.I (X.crd (β.symm y)))`.
+
+Establish `ey : y = β (β.symm y)` using `(β.apply_symm_apply y).symm`. Use `conv_lhs => rw [ey]`. Rewrite using `[hcrd, ← Formalism.L2.SG.Pf.incl_mulVec X, ← h2, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← fmat_mul X, ← fmat_mul X, hk']`. Use `congr 2`. Use `group`.
+
+Rewrite using `[key y, key (β.symm y), e]`. Use `set v := X.B.I.fmat H⁻¹ *ᵥ incl X.B.I (X.crd (β.symm y)) with hv`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.K_mv X.B.I hk h`.
+
+Introduce `h`. Use `Formalism.L2.SG.Pf.unitaryCongruence.K_mv X.B.I (Formalism.L2.SG.Pf.unitaryCongruence.K_inv X.B.I hk) h` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← fmat_mul X, inv_mul_cancel, show X.B.I.fmat 1 = 1 by simp [AutInst.fmat], Matrix.one_mulVec]`. Then use the resulting hypothesis. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Use `show β ((lf D (X.Fu w)).fl.fvec (Fin.last _)) = (lf D (X.Fu w)).fl.fvec (Fin.last _)`.
+
+Unfold `FlagG.fvec`. Rewrite using `[Fin.snoc_last]`. Express the relevant statement in the definitionally equal form `β (X.Fu w).z = (X.Fu w).z`. Rewrite using `[X.flagZVector w]`. Conclude with `hfix _ (Or.inr rfl)`.
+
+Use `show β ((lf D (X.Fu w)).fl.fvec (Fin.castSucc i)) = (lf D (X.Fu w)).fl.fvec (Fin.castSucc i)`. Unfold `FlagG.fvec`. Rewrite using `[Fin.snoc_castSucc]`. Express the relevant statement in the definitionally equal form `β ((X.Fu w).e i) = (X.Fu w).e i`. Rewrite using `[X.Fu_e w]`.
+
+Conclude with `hfix _ (Or.inl (Or.inl ⟨i, rfl⟩))`. Use `show β (X.Fu w).z = (X.Fu w).z`. Rewrite using `[X.flagZVector w]`. Conclude with `hfix _ (Or.inr rfl)`.
+-/
 theorem betaLift_holds : BetaLift := by
   intro D X w rs c Λ hΛ γ hk
   obtain ⟨M, hM, h1, h2⟩ : (γ : X.B.I.GA) ∈ X.B.I.GFset := (Subgroup.mem_inf.1 γ.2).1
@@ -472,6 +621,9 @@ def piUe (w : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ Hinf X w) : X.Vpi w �
     norm_map' := (LinearMap.isometryOfInner (X.piU w s).toLinearMap
       (fun x y => (X.piU_rep w).2.2.1 s hsS x y)).norm_map }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piUe_apply (w : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ Hinf X w) (v : X.Vpi w) :
     piUe w s hs v = X.piU w s v := rfl
 
@@ -485,6 +637,9 @@ variable {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [Fini
 def hsL (P : Wp ≃ₗᵢ[ℂ] Wp) : Formalism.L2.SG.PackageTie.HS Wq Wp ≃ₗᵢ[ℂ] Formalism.L2.SG.PackageTie.HS Wq Wp :=
   LinearIsometryEquiv.piLpCongrRight 2 (fun _ => P)
 
+/- English proof (translation)
+Use `first`. Consider the case `ext i`. Simplify using `[hsL, Formalism.L2.SG.PackageTie.hsEmb]`. Consider the case `simp [hsL, Formalism.L2.SG.PackageTie.hsEmb]`. Consider the case `rfl`.
+-/
 theorem hsL_emb (P : Wp ≃ₗᵢ[ℂ] Wp) (A : Wq →L[ℂ] Wp) :
     hsL P (Formalism.L2.SG.PackageTie.hsEmb A) =
       Formalism.L2.SG.PackageTie.hsEmb ((P.toContinuousLinearEquiv : Wp →L[ℂ] Wp).comp A) := by
@@ -500,6 +655,11 @@ section OOL
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Establish `h1m : (1 : X.B.I.Ginf) ∈ X.SinfU w` using `hinf_le_sinf X w 1 (Hinf X w).one_mem`. Establish `h1 : ∀ x, X.Wu w x = X.psiInfU w 1 • X.Wu w x` using `fun x => by`. Establish `e : X.Wu w (1 * x) = X.psiInfU w 1 • X.piU w 1 (X.Wu w x)` using `(X.Wu_spec w).1 1 h1m x`. Rewrite `e` using `[one_mul, (X.piU_rep w).1, ContinuousLinearMap.one_apply]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hne`.
+
+Establish `h0 : ∀ x, X.Wu w x = 0` using `fun x => by`. Establish `h2 : (1 - X.psiInfU w 1) • X.Wu w x = 0` using `by rw [sub_smul, one_smul, ← h1 x, sub_self]`. Conclude with `(smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (Ne.symm hne))`. Use `(X.Wu_spec w).2.2.2.2` as an intermediate fact. Simplify using `[h0] at this`.
+-/
 theorem psiInfU_one' (w : D.what₂.Word) : X.psiInfU w 1 = 1 := by
   have h1m : (1 : X.B.I.Ginf) ∈ X.SinfU w := hinf_le_sinf X w 1 (Hinf X w).one_mem
   have h1 : ∀ x, X.Wu w x = X.psiInfU w 1 • X.Wu w x := fun x => by
@@ -512,6 +672,11 @@ theorem psiInfU_one' (w : D.what₂.Word) : X.psiInfU w 1 = 1 := by
   have := (X.Wu_spec w).2.2.2.2
   simp [h0] at this
 
+/- English proof (translation)
+Establish `h1 : X.Wu w (s * x) = X.psiInfU w s • X.piU w s (X.Wu w x)` using `(X.Wu_spec w).1 s (hinf_le_sinf X w s hs) x`. Establish `hp : X.psiInfU w s = 1`. Use `Formalism.L2.SG.PoincareInHH.Cut.psiInf_mul_H X w 1 s hs` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[this, psiInfU_one']`.
+
+Rewrite using `[h1, hp, one_smul]`.
+-/
 theorem wu_left (w : D.what₂.Word) {s : X.B.I.Ginf} (hs : s ∈ Hinf X w) (x : X.B.I.Ginf) :
     X.Wu w (s * x) = X.piU w s (X.Wu w x) := by
   have h1 : X.Wu w (s * x) = X.psiInfU w s • X.piU w s (X.Wu w x) :=
@@ -522,12 +687,22 @@ theorem wu_left (w : D.what₂.Word) {s : X.B.I.Ginf} (hs : s ∈ Hinf X w) (x :
     rw [this, psiInfU_one']
   rw [h1, hp, one_smul]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [rk1, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, map_smul]`.
+-/
 theorem rankOne_map_left_eq_comp {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] (A : V →L[ℂ] V) (v : V) (w : V') :
     rk1 (A v) w = A.comp (rk1 v w) := by
   ext x
   simp only [rk1, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, map_smul]
 
+/- English proof (translation)
+Introduce `D X u u' s hs Ω y _`. Use `FiniteDimensional.complete ℂ (X.Vpi u)` as an intermediate fact. Set `L : (X.Vpi u' →L[ℂ] X.Vpi u) ≃L[ℂ] (X.Vpi u' →L[ℂ] X.Vpi u)` to `(ContinuousLinearEquiv.refl ℂ (X.Vpi u')).arrowCongr (piUe u s hs).toContinuousLinearEquiv`. Establish `hL : ∀ f, L f = (X.piU u s).comp f` using `fun f => by`. Use extensionality with `ξ`.
+
+Both sides reduce to the same expression. Unfold `OO`. Rewrite using `[← Set.image_mul_left, Formalism.L2.SG.TermOp.Vanish.setIntegral_image_mul]`. Establish `hpt : ∀ x, rk1 (X.Wu u (s * x)) (X.Wu u' ((s * y)⁻¹ * (s * x))) = L (rk1 (X.Wu u x) (X.Wu u' (y⁻¹ * x)))`. Introduce `x`.
+
+Establish `e : (s * y)⁻¹ * (s * x) = y⁻¹ * x` using `by group`. Rewrite using `[e, wu_left X u hs, rankOne_map_left_eq_comp, hL]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[ContinuousLinearEquiv.integral_comp_comm, hL]`.
+-/
 theorem ooLeft_holds : OOLeft := by
   intro D X u u' s hs Ω y _
   have := FiniteDimensional.complete ℂ (X.Vpi u)
@@ -550,16 +725,55 @@ section Main
 
 open Formalism.L2.SG.Pf.SatGramRep
 
+/- English proof (translation)
+Unfold `FundOf`. Rewrite using `[dif_pos (hF t)]`. Conclude with `(hF t).choose_spec`.
+-/
 theorem fundOf_spec {D : D7} {X : HidaSetting D} {u u' : D.what₂.Word}
     {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)} {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)}
     {what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (hF : FundExists X u u' F0 F0' what₂ rows')
     (t : GTerm X u u' F0 F0' what₂ rows') : IsSFund X.B.I (ROinf t) (FundOf t) := by
   unfold FundOf; rw [dif_pos (hF t)]; exact (hF t).choose_spec
 
+/- English proof (translation)
+Unfold `kOf`. Rewrite using `[Prod.snd_mul]`. Use `group`.
+-/
 theorem kOf_mul {D : D7} {X : HidaSetting D} (u u' : D.what₂.Word) (a b : X.B.I.Gf) (x0 x : X.B.I.GA) :
     kOf X u u' a b (x0 * x) = ((a * X.xu u)⁻¹ * x0.2 * (a * X.xu u)) * kOf X u u' a b x := by
   unfold kOf; rw [Prod.snd_mul]; group
 
+/- English proof (translation)
+Introduce `D X Y u u' hOI _ _ S hS q b hb`. Take `⟨γ, hk, rfl⟩` from `hb`. Establish `hk' : kB (Y.cs u) q.1.1 γ ∈ X.B.I.Kset` using `hk`. Take `⟨β, hx, hβ⟩` from `hB D X u (Y.what₂ u) (Y.cs u) q.1.1 q.1.2 γ hk'`. Establish `hs : (γ : X.B.I.GA).1 ∈ Hinf X u` using `(Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.2).2).1`.
+
+Establish `hF` using `Formalism.L2.SG.Pf.fundExistsC_holds D X Y u u'`. Establish `key : ∀ t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'), positionT t = q → ∃ hβt : β ∈ Saturated.AutF t.lam (lf D (X.Fu u)), t.lam = q.1.1 ∧ phiT (Y.what₂ u) (Y.what₂ u') (hPD D) (γ : X.B.I.GA) β hx t = ⟨t.lam, t.mem, t.lam', t.mem', actQ (X.Fu u) (X.Fu u') (hPD D) ( …`. Introduce `t ht`. Establish `hl : t.lam = q.1.1` using `congrArg (fun r => (r.1 : Submodule (𝓞 D.host.E) (VS D).V)) ht`. Establish `hβt : β ∈ Saturated.AutF t.lam (lf D (X.Fu u))` using `hl ▸ hβ`.
+
+Conclude with `⟨hβt, hl, phiT_pos (hPD D) _ β hx t hβt⟩`. Establish `hcls : ∀ (t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) (hβt : β ∈ Saturated.AutF t.lam (lf D (X.Fu u))), actQ (X.Fu u) (X.Fu u') (hPD D) (γ : X.B.I.GA) β hx hβt t.cls = Quot.mk _ (actC (X.Fu u) (X.Fu u') (hPD D) (γ : X.B.I.GA) β hx hβt t.rep)`. Introduce `t hβt`. Use `conv_lhs => rw [← Quot.out_eq t.cls]`. Both sides reduce to the same expression.
+
+Establish `memS : ∀ t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'), positionT t = q → (t ∈ S ↔ phiT (Y.what₂ u) (Y.what₂ u') (hPD D) (γ : X.B.I.GA) β hx t ∈ S)`. Introduce `t ht`. Take `⟨hβt, -, he⟩` from `key t ht`. Rewrite using `[he]`. Use `set t' : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') := ⟨t.lam, t.mem, t.lam', t.mem', actQ (X.Fu u) (X.Fu u') (hPD D) (γ : X.B.I.GA) β hx hβt t.cls⟩`.
+
+Take `⟨n, hn, n', hn', e⟩` from `grel_rep t' _ (hcls t hβt)`. Establish `e' : β * t.lin = n * t'.lin * n'` using `e`. Prove the components needed by the constructor for the conclusion. Use `hSM D X Y u u' t t' β hβt rfl rfl ⟨n⁻¹, Formalism.L2.SG.Pf.nlam_inv hn, n'⁻¹, Formalism.L2.SG.Pf.nlam_inv hn', ?_⟩ S hS` and prove the remaining obligations. Rewrite using `[e']`.
+
+Use `group`. Establish `hβi : β⁻¹ ∈ Saturated.AutF t'.lam (lf D (X.Fu u))` using `Saturated.inv_mem_AutF' hβt`. Use `hSM D X Y u u' t' t β⁻¹ hβi rfl rfl ⟨β⁻¹ * n * β, ?_, n', hn', ?_⟩ S hS` and prove the remaining obligations. Use `nlam_conj hβi hn` as an intermediate fact. Simplify using `using this`.
+
+Establish `: t.lin = β⁻¹ * (n * t'.lin * n')` using `by rw [← e']; group`. Rewrite using `[this]`. Use `group`. Use `⟨phiE (Y.what₂ u) (Y.what₂ u') (hPD D) (γ : X.B.I.GA) β hx, hsL (piUe u (γ : X.B.I.GA).1 hs), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t show (t ∈ S ∧ positionT t = q) ↔ (phiT _ _ _ _ β hx t ∈ S ∧ positionT (phiT _ _ _ _ β hx t) = q)`.
+
+Establish `hsl : positionT (phiT (Y.what₂ u) (Y.what₂ u') (hPD D) (γ : X.B.I.GA) β hx t) = positionT t` using `phiT_position (hPD D) _ β hx t`. Rewrite using `[hsl]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(memS t h2).1 h1, h2⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(memS t h2).2 h1, h2⟩`. Introduce `t _ ht`. Take `⟨hβt, hl, he⟩` from `key t ht`. Use `show iotaOf Y.TR (Y.cs u) (Y.cs u') (phiT _ _ _ _ β hx t) = _`.
+
+Rewrite using `[he]`. Set `t' : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')` to `⟨t.lam, t.mem, t.lam', t.mem', actQ (X.Fu u) (X.Fu u') (hPD D) (γ : X.B.I.GA) β hx hβt t.cls⟩`. Rewrite using `[iotaOf_of_mk (hIR D X Y u u') t' (actC (X.Fu u) (X.Fu u') (hPD D) (γ : X.B.I.GA) β hx hβt t.rep) (hcls t hβt)]`. Rewrite using `[iotaOf_of_mk (hIR D X Y u u') t t.rep (Quot.out_eq t.cls).symm]`. Establish `hIL'` using `hIL D X Y u u' t γ (hl ▸ hk')`.
+
+Establish `hb' : kB (Y.cs u) q.1.1 γ = kB (Y.cs u) t.lam γ` using `by rw [hl]`. Establish `e1 : levi Y.TR (kOf X u u' ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) ((γ : X.B.I.GA) * t.rep.1.1)) = levi Y.TR (kB (Y.cs u) q.1.1 γ) * levi Y.TR (kBB Y u u' t.lam t.lam' t.rep.1.1)`. Rewrite using `[kOf_mul, hb']`. Conclude with `hIL'`. Conclude with `e1`.
+
+Introduce `t _ ht`. Take `⟨hβt, hl, he⟩` from `key t ht`. Use `show Formalism.L2.SG.PackageTie.hsEmb (ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') (phiT _ _ _ _ β hx t)) = hsL (piUe u (γ : X.B.I.GA).1 hs) (Formalism.L2.SG.PackageTie.hsEmb (ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t))`. Rewrite using `[he]`. Set `t' : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')` to `⟨t.lam, t.mem, t.lam', t.mem', actQ (X.Fu u) (X.Fu u') (hPD D) (γ : X.B.I.GA) β hx hβt t.cls⟩`.
+
+Establish `hft` using `fundOf_spec hF t`. Establish `hΩ` using `hFC D X u u' t.lam t.lam' (γ : X.B.I.GA) β t.lin hx hβt (FundOf t) hft`. Rewrite using `[ampN_of_mk (Y.FN u) (Y.FN u') (hAR D X Y u u') hF hOI t' (actC (X.Fu u) (X.Fu u') (hPD D) (γ : X.B.I.GA) β hx hβt t.rep) (hcls t hβt) _ hΩ]`. Rewrite using `[hsL_emb]`. Use `congrArg (fun A => Formalism.L2.SG.PackageTie.hsEmb A) ?_` and prove the remaining obligations.
+
+Establish `hU : ((piUe u (γ : X.B.I.GA).1 hs).toContinuousLinearEquiv : X.Vpi u →L[ℂ] X.Vpi u) = X.piU u (γ : X.B.I.GA).1`. Use extensionality with `v`. Both sides reduce to the same expression. Establish `hOO` using `hOL D X u u' _ hs (FundOf t) t.rep.1.1.1 hft.1`. Establish `hCL'` using `hCL D X Y u u' t.lam t.lam' t.mem t.mem' γ (hl ▸ hk') t.rep`.
+
+Establish `eκ : chiN X (kOf X u u' ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) ((γ : X.B.I.GA) * t.rep.1.1)) = chiN X (kBB Y u u' t.lam t.lam' t.rep.1.1)`. Rewrite using `[kOf_mul]`. Conclude with `hCL'`. Establish `eO : ((γ : X.B.I.GA) * t.rep.1.1).1 = (γ : X.B.I.GA).1 * t.rep.1.1.1` using `Prod.fst_mul _ _`. Simplify using `only [t']`.
+
+Simplify using `only [actC]`. Rewrite using `[eκ, eO, hOO, hU]`. Unfold `ampN OOt GTerm.pt kBB`. Rewrite using `[ContinuousLinearMap.comp_smul, ContinuousLinearMap.comp_smul]`.
+-/
 theorem left_action_three_families (hPD : ∀ D : D7, Saturated.PDIso D) (hB : BetaLift) (hSM : SMemLeft) (hIL : IotaLeft)
     (hCL : ChiNLeft) (hOL : OOLeft) (hFC : FundConj) (hIR : IotaRepC) (hAR : AmpRepNC) : LeftActC' := by
   intro D X Y u u' hOI _ _ S hS q b hb

@@ -6,6 +6,17 @@ open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.GJMat
 open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
+/- English proof (translation)
+Establish `hD` using `isAddFundamentalDomain_fundamentalSet F`. Set `φ : F → AdeleRing.principalSubgroup (𝓞 F) F` to `fun ξ => ⟨rt ξ, ξ, rfl⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`.
+
+Conclude with `AdeleRing.algebraMap_injective (𝓞 F) F (congrArg Subtype.val h)`. Introduce and unpack `⟨_, ξ, rfl⟩`. Conclude with `⟨ξ, rfl⟩`. Use `haveI : Countable F := Finsupp.Countable.of_moduleFinite (R := ℚ)`. Use `haveI : Countable (AdeleRing.principalSubgroup (𝓞 F) F) := hφ.2.countable`.
+
+Rewrite using `[hD.lintegral_eq_tsum'' (fun b => f b * w b), ← lintegral_tsum]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← (Equiv.ofBijective φ hφ).tsum_eq]`. Establish `h1 : ∀ ξ : F, f ((Equiv.ofBijective φ hφ ξ) +ᵥ x) * w ((Equiv.ofBijective φ hφ ξ) +ᵥ x) = f x * w (rt ξ + x)`. Introduce `ξ`.
+
+Express the relevant statement in the definitionally equal form `f (rt ξ + x) * w (rt ξ + x) = _`. Rewrite using `[hinv]`. Simplify using `only [h1]`. Rewrite using `[ENNReal.tsum_mul_left, hsum, mul_one]`. Introduce `γ`.
+
+Conclude with `((hf.mul hw).comp (measurable_const_add (γ : A F))).aemeasurable`.
+-/
 private theorem oneVar {F : Type} [Field F] [NumberField F] (f w : A F → ℝ≥0∞) (hf : Measurable f) (hw : Measurable w)
     (hinv : ∀ (ξ : F) b, f (rt ξ + b) = f b) (hsum : ∀ b, ∑' ξ : F, w (rt ξ + b) = 1) :
     ∫⁻ b, f b * w b ∂(adeleMeasure F) = ∫⁻ b in fundamentalSet F, f b ∂(adeleMeasure F) := by
@@ -31,6 +42,15 @@ private theorem oneVar {F : Type} [Field F] [NumberField F] (f w : A F → ℝ�
   · intro γ
     exact ((hf.mul hw).comp (measurable_const_add (γ : A F))).aemeasurable
 
+/- English proof (translation)
+Introduce `F _ _ M₀ β u hβ hu hinv`. Use `haveI := M₀.prob`. Establish `hnU : Measurable (nU : A F → G1 F)` using `M.continuous_nU.measurable`. Establish `hmD : Measurable (mD : IdeleGroup F → G1 F)` using `M.continuous_mD.measurable`. Establish `hy : Measurable fun p : IdeleGroup F × G1 F => mD p.1 * p.2` using `(hmD.comp measurable_fst).mul measurable_snd`.
+
+Establish `hI : Measurable fun p : IdeleGroup F × G1 F => ∫⁻ b in fundamentalSet F, u (nU b * (mD p.1 * p.2)) ∂(adeleMeasure F)` using `Measurable.lintegral_prod_right' (ν := (adeleMeasure F).restrict (fundamentalSet F)) (f := fun q : (IdeleGroup F × G1 F) × A F => u (nU q.2 * (mD q.1.1 * q.1.2))) (hu.comp ((hnU.comp measurable_snd).mul (hy.comp measurable_fst)))`. Establish `hJ : Measurable fun p : IdeleGroup F × G1 F => M.wt p.1 * ∫⁻ b in fundamentalSet F, u (nU b * (mD p.1 * p.2)) ∂(adeleMeasure F)` using `(M.measurable_wt.comp measurable_fst).mul hI`. Rewrite using `[M₀.iwasawa (fun g => u g * β g) (hu.mul hβ.1), M.J0, Meas.ν, lintegral_prod_symm _ hJ.aemeasurable]`. Use `lintegral_congr fun k => lintegral_congr fun a => ?_` and prove the remaining obligations. Establish `hsh : ∀ (ξ : F) (b : A F) (y : G1 F), nU (rt ξ + b) * y = nU (rt ξ) * (nU b * y)`.
+
+Introduce `ξ b y`. Rewrite using `[M.nU_add, mul_assoc]`. Establish `hmy : ∀ v : G1 F → ℝ≥0∞, Measurable v → Measurable fun b : A F => v (nU b * (mD a * k))` using `fun v hv => hv.comp (hnU.mul_const _)`. Establish `key` using `oneVar (fun b => u (nU b * (mD a * k))) (fun b => β (nU b * (mD a * k))) (hmy u hu) (hmy β hβ.1) (fun ξ b => by simp only [hsh, hinv]) (fun b => by simp only [hsh]; exact hβ.2 _)`. Simplify using `only [mul_assoc (nU _) (mD a) k]`.
+
+Rewrite using `[lintegral_mul_const (f := fun b => u (nU b * (mD a * k)) * β (nU b * (mD a * k))) _ ((hmy u hu).mul (hmy β hβ.1)), key, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.M.wtInt :
     ∀ (F : Type) [Field F] [NumberField F] (M₀ : Meas F) (β u : G1 F → ℝ≥0∞), M.NWt β → Measurable u → (∀ (ξ : F) g, u (nU (rt ξ) * g) = u g) → ∫⁻ g, u g * β g ∂M₀.μ = M.J0 M₀ fun g => ∫⁻ b in fundamentalSet F, u (nU b * g) ∂(adeleMeasure F) := by
   intro F _ _ M₀ β u hβ hu hinv

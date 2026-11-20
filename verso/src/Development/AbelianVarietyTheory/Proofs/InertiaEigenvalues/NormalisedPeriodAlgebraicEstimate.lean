@@ -3,6 +3,19 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixMulEntry
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ n _ _ σ r M Mi Z a s t ha hs ht hσ hMMi hr hZ hM hD hrt i j`. Use `set D := Mi - Z with hDdef`. Use `set C := M * Z with hCdef`. Establish `hC1 : C = 1 - M * D`. Rewrite using `[hCdef, hDdef, Matrix.mul_sub, hMMi]`.
+
+Normalize the expressions using the abelian group laws. Establish `hCσ : C.map σ = M.map σ * Z`. Rewrite using `[hCdef, Matrix.map_mul, hZ]`. Establish `hrC : r * C.map σ = C` using `by rw [hCσ, ← Matrix.mul_assoc, hr]`. Establish `hX : C.map σ - 1 = -((M * D).map σ)`.
+
+Rewrite using `[hC1, Matrix.map_sub σ (map_sub σ), Matrix.map_one σ (map_zero σ) (map_one σ)]`. Normalize the expressions using the abelian group laws. Establish `hkey : σ (-C i j) - (-C i j) - (r - 1) i j = ((r - 1) * (C.map σ - 1)) i j`. Establish `h2 : ((r - 1) * (C.map σ - 1)) = C - C.map σ - (r - 1)`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, hrC, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[h2]`. Simplify using `[Matrix.sub_apply, Matrix.map_apply, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hMD : ∀ i j, ‖(M * D) i j‖ ≤ a * s` using `GlobalTheory.T.norm_mul_apply_le_of_ultrametric E n M D a s ha hs hM hD`.
+
+Establish `hXb : ∀ i j, ‖(C.map σ - 1) i j‖ ≤ a * s`. Introduce `i j`. Rewrite using `[hX, Matrix.neg_apply, norm_neg, Matrix.map_apply, hσ]`. Conclude with `hMD i j`. Rewrite using `[hkey]`.
+
+Conclude with `GlobalTheory.T.norm_mul_apply_le_of_ultrametric E n (r - 1) (C.map σ - 1) t (a * s) ht (mul_nonneg ha hs) hrt hXb i j`.
+-/
 theorem normalisedPeriod_algebraic_estimate :
     ∀ (E : Type) [NormedField E] [IsUltrametricDist E] (n : Type) [Fintype n] [DecidableEq n]
       (σ : E →+* E) (r M Mi Z : Matrix n n E) (a s t : ℝ), 0 ≤ a → 0 ≤ s → 0 ≤ t →

@@ -19,10 +19,16 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R R' : Type} [CommRing 
 abbrev tm (E : Type) [Field E] [Algebra F E] (φ : R →ₐ[F] R') : R ⊗[F] E →+* R' ⊗[F] E :=
   (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map φ (AlgHom.id F E) (1 ⊗ₜ a) = 1 ⊗ₜ a`. Simplify using the standard rewrite rules.
+-/
 theorem tm_inclR (φ : R →ₐ[F] R') (a : E) : tm E φ (inclR (F := F) R a) = inclR (F := F) R' a := by
   change Algebra.TensorProduct.map φ (AlgHom.id F E) (1 ⊗ₜ a) = 1 ⊗ₜ a
   simp
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => rfl`.
+-/
 theorem tm_sigR (φ : R →ₐ[F] R') (σ : E →ₐ[F] E) (z : R ⊗[F] E) :
     tm E φ (sigR R σ z) = sigR R' σ (tm E φ z) := by
   induction z using TensorProduct.induction_on with
@@ -30,6 +36,13 @@ theorem tm_sigR (φ : R →ₐ[F] R') (σ : E →ₐ[F] E) (z : R ⊗[F] E) :
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul a b => rfl
 
+/- English proof (translation)
+Establish `e1 : (X.map (inclR (F` using `F) R)).map (tm E φ) = X.map (inclR (F := F) R') := by`. Use extensionality with `k l`. Conclude with `tm_inclR φ _`. Establish `e2 : (diagonal (Function.update (1 : Fin r → R ⊗[F] E) i a)).map (tm E φ) = diagonal (Function.update 1 i (tm E φ a))`. Rewrite using `[diagonal_map (map_zero _)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Function.update_of_ne hj]`. Use `congrFun (congrFun h k) l` as an intermediate fact. Rewrite `this` using `[← e1, ← e2, ← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `this`.
+-/
 theorem tm_mat {n r : ℕ} (φ : R →ₐ[F] R') (A : Matrix (Fin n) (Fin n) (R ⊗[F] E)) (X : Matrix (Fin n) (Fin r) E)
     (i : Fin r) (a : R ⊗[F] E)
     (h : A.map (tm E φ) * X.map (inclR (F := F) R') =
@@ -51,6 +64,9 @@ theorem tm_mat {n r : ℕ} (φ : R →ₐ[F] R') (A : Matrix (Fin n) (Fin n) (R 
   rw [← e1, ← e2, ← Matrix.map_mul, ← Matrix.map_mul] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_mulVec, tm_inclR]`. Establish `e : (tm E φ) ∘ (fun k => inclR (F` using `F) R (z k)) = fun k => inclR (F := F) R' (z k) :=`. Use function extensionality and compare the values at `fun k => tm_inclR φ _`. Rewrite using `[e, h]`.
+-/
 theorem tm_vec {n : ℕ} (φ : R →ₐ[F] R') (A : Matrix (Fin n) (Fin n) (R ⊗[F] E)) (z : Fin n → E)
     (h : A.map (tm E φ) *ᵥ (fun k => inclR (F := F) R' (z k)) = fun k => inclR (F := F) R' (z k)) (k : Fin n) :
     tm E φ ((A *ᵥ (fun k => inclR (F := F) R (z k))) k) = tm E φ (inclR (F := F) R (z k)) := by
@@ -61,6 +77,23 @@ theorem tm_vec {n : ℕ} (φ : R →ₐ[F] R') (A : Matrix (Fin n) (Fin n) (R �
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y v x e i h1 h2 h3`. Establish `mv : (matHom _ σ J (emb σ J v x)).1.map (tm E (evFin F v)) = (matHom _ σ J x).1` using `congrArg (fun g => (matHom _ σ J g).1) (proj_emb_self σ J v x)`. Establish `mu : ∀ u, u ≠ v → (matHom _ σ J (emb σ J v x)).1.map (tm E (evFin F u)) = 1` using `fun u hu => congrArg (fun g => (matHom _ σ J g).1) (proj_emb_ne σ J hu x)`. Establish `mw : ∀ w, (matHom _ σ J (emb σ J v x)).1.map (tm E (evInf F w)) = 1` using `fun w => congrArg (fun g => (matHom _ σ J g).1) (projArch_emb σ J w v x)`. Establish `ev : ∀ e : (Fv F v ⊗[F] E)ˣ, tm E (evFin F v) (GlobalTheory.Doubling.ideleAt F E v e).1 = e.1` using `fun e => congrArg Units.val (GlobalTheory.Doubling.unitFin_ideleAt_self v e)`.
+
+Establish `eu : ∀ u, u ≠ v → ∀ e : (Fv F v ⊗[F] E)ˣ, tm E (evFin F u) (GlobalTheory.Doubling.ideleAt F E v e).1 = 1` using `fun u hu e => congrArg Units.val (GlobalTheory.Doubling.unitFin_ideleAt_ne hu e)`. Establish `ew : ∀ w, ∀ e : (Fv F v ⊗[F] E)ˣ, tm E (evInf F w) (GlobalTheory.Doubling.ideleAt F E v e).1 = 1` using `fun w e => congrArg Units.val (GlobalTheory.Doubling.unitInf_ideleAt w v e)`. Use `⟨?_, ?_, fun z hz1 hz2 => ?_⟩` and prove the remaining obligations. Use extensionality with `k l`. Use `GlobalTheory.Doubling.adele_ext (fun w => tm_mat (evInf F w) _ X i _ ?_ k l) fun u => tm_mat (evFin F u) _ X i _ ?_ k l` and prove the remaining obligations.
+
+Rewrite using `[mw, ew]`. Simplify using the standard rewrite rules. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[mv, ev]`.
+
+Conclude with `h1`. Rewrite using `[mu u hu, eu u hu]`. Simplify using the standard rewrite rules. Use extensionality with `k l`. Use `GlobalTheory.Doubling.adele_ext (fun w => tm_mat (evInf F w) _ Y i _ ?_ k l) fun u => tm_mat (evFin F u) _ Y i _ ?_ k l` and prove the remaining obligations.
+
+Rewrite using `[mw, tm_sigR, ← map_inv, ew]`. Simplify using the standard rewrite rules. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[mv, tm_sigR, ← map_inv, ev]`.
+
+Conclude with `h2`. Rewrite using `[mu u hu, tm_sigR, ← map_inv, eu u hu]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `k`. Use `GlobalTheory.Doubling.adele_ext (fun w => tm_vec (evInf F w) _ z ?_ k) fun u => tm_vec (evFin F u) _ z ?_ k` and prove the remaining obligations.
+
+Rewrite using `[mw]`. Simplify using the standard rewrite rules. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[mv]`.
+
+Conclude with `h3 z hz1 hz2`. Rewrite using `[mu u hu]`. Simplify using the standard rewrite rules.
+-/
 theorem isPositionCentre_emb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E)
     (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) (e : (Fv F v ⊗[F] E)ˣ) (i : Fin r),
     (matHom _ σ J x).1 * X.map (inclR (F := F) (Fv F v)) =

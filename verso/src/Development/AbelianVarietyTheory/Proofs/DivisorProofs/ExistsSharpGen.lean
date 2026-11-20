@@ -23,6 +23,9 @@ def powBase {d m : ℕ} (hm : m ≠ 0) (hd : d ≠ 0) : TBase (cycAway (d * m)) 
     rw [Units.val_pow_eq_pow_val, map_pow, cycBase_ζ]
     exact (isPrimitiveRoot_map (mul_ne_zero hd hm) β).pow (Nat.pos_of_ne_zero (mul_ne_zero hd hm)) (mul_comm d m)
 
+/- English proof (translation)
+The claim follows from `Units.val_pow_eq_pow_val _ _`.
+-/
 theorem powBase_ζ {d m : ℕ} (hm : m ≠ 0) (hd : d ≠ 0) :
     ((powBase hm hd).ζ : cycAway (d * m)) = zetaAway (d * m) ^ m :=
   Units.val_pow_eq_pow_val _ _
@@ -42,6 +45,15 @@ def lowerOn {h N d : ℕ} {B : Type} [CommRing B] {ζ' ζ : B} {S : Scheme.{0}} 
   geom K _ _ x β z hx hz := (SiegLower.lower C (n := N) (d := d) rfl h0 (RingHom.id B) hζ).geom K x β z
     (by rw [show spMap (RingHom.id B) = 𝟙 _ from Spec.map_id _, Category.comp_id]; exact hx) hz
 
+/- English proof (translation)
+Use `c.ab.smooth` as an intermediate fact. Use `c.ab.geomConnected` as an intermediate fact. Use `choose n W hW hd using H1.exists_dim c.A.hom`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension h)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top W (top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hW y⟩) fun y => ?_` and prove the remaining obligations.
+
+Set `κ` to `S.residueField (c.A.hom y)`. Set `K` to `AlgebraicClosure κ`. Set `x : Sp K ⟶ S` to `spMap (algebraMap κ K) ≫ S.fromSpecResidueField (c.A.hom y)`. Establish `hK : (k : K) ≠ 0`. Use `map_natCast (Spec.preimage (x ≫ s)).hom k` as an intermediate fact.
+
+Rewrite using `[← this]`. Conclude with `(hu.map _).ne_zero`. Establish `hp` using `(isGrpPullback_pullback c.A x).1`. Take `⟨y', hy', -⟩` from `Scheme.exists_preimage_of_isPullback hp y (default : PrimeSpectrum K) (Scheme.fromSpecResidueField_apply _ _).symm`. Establish `: Smooth ((Over.pullback x).obj c.A).hom` using `by change Smooth (pullback.snd c.A.hom x); infer_instance`.
+
+Establish `: ConnectedSpace ((Over.pullback x).obj c.A).left` using `GeometricallyConnected.geometrically_connectedSpace (f := c.A.hom) x _ _ hp`. Take `⟨d, hd'⟩` from `exists_dim_of_preconnected ((Over.pullback x).obj c.A).hom y'`. Establish `e : n y = h` using `(H1.dim_base hp (hd y) hd' y' (by rw [hy']; exact hW y)).trans (SiegDim.dim_geometric_fibre c hk hζ hK x hd')`. Use `hd y` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem smoothDim {h k : ℕ} {o : Type} [CommRing o] {ζ : o} {S : Scheme.{0}} {s : S ⟶ Sp o}
     (c : SiegPre h k ζ s) (hk : 2 ≤ k) (hζ : IsUnit ζ) (hu : IsUnit (k : o)) : SmoothOfRelativeDimension h c.A.hom := by
   have := c.ab.smooth

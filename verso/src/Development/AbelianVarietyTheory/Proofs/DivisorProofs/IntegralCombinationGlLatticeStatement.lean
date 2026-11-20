@@ -7,6 +7,9 @@ open ValuativeRel
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SBInvSpan.span_translates_of_invariant | exact GlobalTheory.SBInvSpan.span_translates_of_invariant | (intros; apply GlobalTheory.SBInvSpan.span_translates_of_invariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_combination_gl_lattice : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ),
     (∀ (X : Matrix (Fin n) (Fin d) k) (c : k), c ≠ 0 → ∃ h : GL (Fin d) k, ∀ Y : Matrix (Fin n) (Fin d) k,
       (∃ (A : Matrix (Fin n) (Fin n) k) (B : Matrix (Fin n) (Fin d) k), (∀ i j, A i j ∈ 𝒪[k]) ∧ (∀ i j, B i j ∈ 𝒪[k]) ∧ Y = A * X + c • B) ↔

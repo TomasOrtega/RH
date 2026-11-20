@@ -22,12 +22,20 @@ open ReciprocityTheory.ChartRestriction.G.Chart (prodPts)
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {T T' T'' : Over (Sp R)}
 
+/- English proof (translation)
+Take `⟨b', v'⟩` from `(isPull_iff _ _ _).1 h'`. Use `(isPull_iff _ _ _).2 ⟨by rw [b', ((isPull_iff _ _ _).1 h).1, Category.assoc], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(v' χ y J hJ).trans ((val_corr hJ (h.2 χ) _).trans (val_pull hJ _ _ _))`.
+-/
 theorem isPull_comp {k : T' ⟶ T} {k' : T'' ⟶ T'} {g : GtPt D T} {g' : GtPt D T'} {g'' : GtPt D T''}
     (h : GtPt.IsPull k.left g g') (h' : GtPt.IsPull k'.left g' g'') : GtPt.IsPull (k' ≫ k).left g g'' := by
   obtain ⟨b', v'⟩ := (isPull_iff _ _ _).1 h'
   refine (isPull_iff _ _ _).2 ⟨by rw [b', ((isPull_iff _ _ _).1 h).1, Category.assoc], fun χ y J hJ => ?_⟩
   exact (v' χ y J hJ).trans ((val_corr hJ (h.2 χ) _).trans (val_pull hJ _ _ _))
 
+/- English proof (translation)
+Establish `key : ∀ {g : GtPt D T}, g.IsAdd g g → g.b = 1 ∧ ∀ χ y J, Good D.P.L y J → cv g χ y J = 1` using `fun {g} h => by`. Take `⟨b, v⟩` from `(TorusModel.isAdd_iff _ _ _).1 h`. Establish `hb : g.b = 1` using `mul_eq_left.1 b.symm`. Use `⟨hb, fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `C : IsCub (th D (T` using `T) y J) := isCub_cubV D.cub hJ`.
+
+Establish `e` using `v χ y J hJ`. Establish `e₁ : th D y J (cP D _ χ) g.b g.b = 1` using `by rw [hb, C.s01, C.face]`. Rewrite `e` using `[e₁, _root_.mul_one]`. Conclude with `mul_eq_left.1 e.symm`. Conclude with `pt_ext ((key h).1.trans (key h').1.symm) fun χ y J hJ => ((key h).2 χ y J hJ).trans ((key h').2 χ y J hJ).symm`.
+-/
 theorem eq_of_idem {g g' : GtPt D T} (h : g.IsAdd g g) (h' : g'.IsAdd g' g') : g = g' := by
   have key : ∀ {g : GtPt D T}, g.IsAdd g g → g.b = 1 ∧ ∀ χ y J, Good D.P.L y J → cv g χ y J = 1 := fun {g} h => by
     obtain ⟨b, v⟩ := (TorusModel.isAdd_iff _ _ _).1 h
@@ -40,6 +48,9 @@ theorem eq_of_idem {g g' : GtPt D T} (h : g.IsAdd g g) (h' : g'.IsAdd g' g') : g
     exact mul_eq_left.1 e.symm
   exact pt_ext ((key h).1.trans (key h').1.symm) fun χ y J hJ => ((key h).2 χ y J hJ).trans ((key h').2 χ y J hJ).symm
 
+/- English proof (translation)
+The claim follows from `pt_ext hb fun χ y J hJ => gen_unique' D.P.isLB (fun _ _ _ => by rw [hb]) D.P.A.hom (1 : 𝟙_ _ ⟶ D.P.A).left (Over.w (1 : 𝟙_ _ ⟶ D.P.A)) (hG _ _ D.P.isAb).2 (g.isGen χ) (g'.isGen χ) (fun z I hI => (((isPull_iff _ _ _).1 h).2 χ z I hI).symm.trans (((isPull_iff _ _ _).1 h').2 χ z I h …`.
+-/
 theorem eq_of_origin (hG : GlobalFnsSt) {g g' : GtPt D D.P.A} (hb : g.b = g'.b) {o : GtPt D (𝟙_ _)}
     (h : GtPt.IsPull (1 : 𝟙_ _ ⟶ D.P.A).left g o) (h' : GtPt.IsPull (1 : 𝟙_ _ ⟶ D.P.A).left g' o) : g = g' :=
   pt_ext hb fun χ y J hJ => gen_unique' D.P.isLB (fun _ _ _ => by rw [hb]) D.P.A.hom (1 : 𝟙_ _ ⟶ D.P.A).left
@@ -48,6 +59,13 @@ theorem eq_of_origin (hG : GlobalFnsSt) {g g' : GtPt D D.P.A} (hb : g.b = g'.b) 
 
 variable {n : ℕ} {s : ∀ T : Over (Sp R), (T ⟶ D.P.A) → GtPt D T}
 
+/- English proof (translation)
+Use `oa.onB.hom a` as an intermediate fact. Establish `id₁ : ∀ T, (s T 1).IsAdd (s T 1) (s T 1)` using `fun T => by simpa using hs.2.1 T 1 1`. Establish `u : smulPt hG oa a (s _ (𝟙 _)) = s _ (oa.onB.act a)`. Use `eq_of_origin hG ?_ (o := s _ 1) ?_ ?_` and prove the remaining obligations. Rewrite using `[smulPt_b, hs.1, hs.1, MonObj.pow_comp, Category.id_comp]`.
+
+Establish `e` using `smulPt_pull hG oa a (1 : 𝟙_ _ ⟶ D.P.A) (hs.2.2 _ _ (1 : 𝟙_ _ ⟶ D.P.A) (𝟙 _))`. Rewrite `e` using `[Category.comp_id]`. Rewrite `e` using `[eq_of_idem (smulPt_add hG oa a (id₁ _)) (id₁ _)]`. Then use the resulting hypothesis. Establish `e` using `hs.2.2 _ _ (1 : 𝟙_ _ ⟶ D.P.A) (oa.onB.act a)`. Rewrite `e` using `[MonObj.one_comp]`. Then use the resulting hypothesis.
+
+Establish `e` using `smulPt_pull hG oa a b (hs.2.2 _ _ b (𝟙 _))`. Rewrite `e` using `[u, Category.comp_id]`. Conclude with `isPull_unique e (hs.2.2 _ _ b _)`.
+-/
 theorem smulPt_split (hG : GlobalFnsSt) {O : Type} [CommRing O] [StarRing O] [Module O D.X] (oa : D.OAct O)
     (hs : IsSplit D n s) (a : O) (b : T ⟶ D.P.A) : smulPt hG oa a (s T b) = s T (b ≫ oa.onB.act a) := by
   have := oa.onB.hom a
@@ -64,6 +82,11 @@ theorem smulPt_split (hG : GlobalFnsSt) {O : Type} [CommRing O] [StarRing O] [Mo
   rw [u, Category.comp_id] at e
   exact isPull_unique e (hs.2.2 _ _ b _)
 
+/- English proof (translation)
+Establish `e` using `smulPt_pull hG oa a (epsScale t) hν`. Rewrite `e` using `[smulPt_split hG oa hs, hw]`. Establish `e₁` using `isPull_comp (hs.2.2 _ _ (epsScale r) w) e`. Take `⟨g, hg⟩` from `ConstLie.exists_isPull (epsScale r) ν`. Establish `e₂` using `isPull_comp hν hg`.
+
+Establish `c : epsScale r ≫ epsScale t = epsScale t ≫ epsScale r`. Simplify `(epsScale_mul_assoc r t (𝟙 _)).trans ((congrArg (fun q => epsScale q ≫ 𝟙 _) (_root_.mul_comm r t)).trans (epsScale_mul_assoc t r (𝟙 _)).symm)` using `only [Category.comp_id]`. Rewrite `e₂` using `[c]`. Rewrite using `[isPull_unique e₁ e₂]` and apply the resulting hypothesis.
+-/
 theorem isPull_smulPt_split (hG : GlobalFnsSt) {O : Type} [CommRing O] [StarRing O] [Module O D.X] (oa : D.OAct O)
     (hs : IsSplit D n s) (a : O) (t r : R) {w : epsR R ⟶ D.P.A} (hw : w ≫ oa.onB.act a = epsScale r ≫ w)
     {ν : GtPt D (epsR R)} (hν : GtPt.IsPull (epsScale t).left (s _ w) ν) :
@@ -79,6 +102,13 @@ theorem isPull_smulPt_split (hG : GlobalFnsSt) {O : Type} [CommRing O] [StarRing
   rw [c] at e₂
   rwa [isPull_unique e₁ e₂]
 
+/- English proof (translation)
+Take `⟨u, p, hu, h₀, ha, rfl⟩` from `h`. Use `(Chart.isLieComb_iff _ _ _).1 ⟨fun i => (u i).b, fun i => (hu i).1, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (m : ℕ) (u : Fin m → (epsR R ⟶ D.P.A)) (p : Fin (m + 1) → (epsR R ⟶ D.P.A)), (∀ i : Fin m, p i.succ = p i.castSucc * u i) → p (Fin.last m) = p 0 * (List.ofFn u).prod` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => intro u p _`.
+
+Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `u p h`. Establish `e` using `ih (fun i => u i.succ) (fun i => p i.succ) (fun i => h i.succ)`. Rewrite using `[List.ofFn_succ, List.prod_cons, ← _root_.mul_assoc]`.
+
+Conclude with `e.trans (congrArg (· * _) (h 0))`. Establish `e` using `key m (fun i => (u i).b) (fun i => (p i).b) fun i => (ha i).1`. Establish `e₀ : (p 0).b = 1` using `h₀.1`. Simplify `e` using `only [e₀, _root_.one_mul]`.
+-/
 theorem b_of_gtComb {m : ℕ} {cf : Fin m → R} {e : Fin m → GtPt D (epsR R)} {ν : GtPt D (epsR R)}
     (h : GtComb cf e ν) : ν.b = prodPts cf fun i => (e i).b := by
   obtain ⟨u, p, hu, h₀, ha, rfl⟩ := h
@@ -96,6 +126,11 @@ theorem b_of_gtComb {m : ℕ} {cf : Fin m → R} {e : Fin m → GtPt D (epsR R)}
   have e₀ : (p 0).b = 1 := h₀.1
   simpa only [e₀, _root_.one_mul] using e
 
+/- English proof (translation)
+Use `ConstTan.isLocalRing_dual K` as an intermediate fact. Take `⟨I, hI⟩` from `ConstFam.exists_good' D.P.isLB (cpt (DualNumber K))`. Establish `e` using `TorusType.val_tangent ht h.1 hφ x (RingHom.id _) _ hI`. Rewrite `e` using `[(val_corr hI (h.2 x) _).trans (val_one _)]`. Establish `e'` using `toStkA_injective ((map_one _).trans e)`.
+
+Simplify using `using (congrArg TrivSqZeroExt.snd e').symm`.
+-/
 theorem dlog_eq_zero {K : Type} [Field K] {D : DegPre K} {ν : GtPt D (epsR K)} (ht : GtTanR ν) (h : ν.IsZero)
     {φ : D.X → K} (hφ : ∀ x, DlogTan ν x (φ x)) (x : D.X) : φ x = 0 := by
   have := ConstTan.isLocalRing_dual K
@@ -107,6 +142,9 @@ theorem dlog_eq_zero {K : Type} [Field K] {D : DegPre K} {ν : GtPt D (epsR K)} 
 
 end Points
 
+/- English proof (translation)
+Establish `mem : ∀ {x : V} {u : Fin n → V}, x ∈ Submodule.span K (Set.range u) ↔ ∃ cf : Fin n → K, x = ∑ j, cf j • u j` using `fun {x u} => (Submodule.mem_span_range_iff_exists_fun K).trans (exists_congr fun _ => eq_comm)`. Use `FiniteDimensional.span_of_finite K (Set.finite_range u')` as an intermediate fact. Establish `e : Submodule.span K (Set.range u) = Submodule.span K (Set.range u')` using `Submodule.eq_of_le_of_finrank_le (Submodule.span_le.2 (Set.range_subset_iff.2 fun k => mem.2 (h k))) ((finrank_range_le_card u').trans (finrank_span_eq_card hu).ge)`. Take `⟨cf, hcf⟩` from `mem.1 (e ▸ mem.2 hw)`. Conclude with `⟨cf, hcf, fun cf' h' => funext (Fintype.linearIndependent_iffₛ.1 hu _ _ (h'.symm.trans hcf))⟩`.
+-/
 theorem existsUnique_comb {K V : Type} [Field K] [AddCommGroup V] [Module K V] {n : ℕ} {u u' : Fin n → V}
     (hu : LinearIndependent K u) (h : ∀ k, ∃ cf : Fin n → K, u k = ∑ j, cf j • u' j) {w : V}
     (hw : ∃ cf : Fin n → K, w = ∑ j, cf j • u' j) : ∃! cf : Fin n → K, w = ∑ k, cf k • u k := by
@@ -134,6 +172,11 @@ section Ring
 variable {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] {b : O →+* A}
   {a : ArcIn Dw l β A b} {χ : Sp (PowerSeries A) ⟶ Y.X} (W : Wit Y a χ) (hG : Out.GlobalFnsSt)
 
+/- English proof (translation)
+Use `letI := H.starRing`. Take `⟨g, hg, hp⟩` from `ConstLie.exists_tr W hG hv`. Establish `hν'` using `TorusModel.isSmulPt_smulPt hG a.oa x ν`. Generalize the expression as in `TorusModel.smulPt hG a.oa x ν = ν' at p hν'`. Take `⟨g', hg'⟩` from `ConstLie.exists_tr_down hG W.spec.1 W.spec.2.1 W.e.toAddEquiv W.spec.2.2.2.2.1 (ConstLie.cstE A) (LieCombBaseChange.dualMap_over _) ν'`.
+
+Establish `s` using `ConstLie.Tr.smul hG W.spec.1 W.spec.2.1 W.e.surjective W.P.oD a.oa (fun x y => W.e.map_smul x y) W.spec.2.2.2.1 x (LieCombBaseChange.dualMap_over _) hg hg' hν'`. Set `k : epsR (PowerSeries A) ⟶ epsR (PowerSeries A)` to `Over.homMk (spMap (epsScaleR (PowerSeries.C (R := A) r))) (LieCombBaseChange.epsScale_over _)`. Establish `p'` using `ConstLie.Tr.cancel W.spec.1 W.e.surjective hg (TorusType.tr_comp (T₁ := epsR A) hg' (GrpTangent.epsScale r) p) k (LieCombBaseChange.dualMap_epsScale _ _).symm`. Conclude with `congrArg (fun q => q.left) ((ConstLie.main hG E H Dw l Xo c O β Y A b a χ W ν').1.unique (ConstLie.lieImg_of_tr W hg' (hp.smul hG W.P.lin x s)) (ConstLie.lieImg_of_tr W hg' (hp.pull k p')))`.
+-/
 theorem eig_of_isPull {ν : Out.GtPt a.D₀ (epsR A)} {v : epsR (PowerSeries A) ⟶ W.t.G} (hv : LieImg W ν v) (x : 𝓞 E)
     (r : A) (p : letI := H.starRing;
       Out.GtPt.IsPull (GrpTangent.epsScale r).left ν (TorusModel.smulPt hG a.oa x ν)) :
@@ -156,6 +199,9 @@ theorem eig_of_isPull {ν : Out.GtPt a.D₀ (epsR A)} {v : epsR (PowerSeries A) 
 
 include hG in
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `ConstLie.exists_gtComb (D := a.D₀) (m := 0) Fin.elim0 Fin.elim0`. Establish `h₀` using `(ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y A b a χ W 0 _ _ o Fin.elim0 1 (fun j => j.elim0) ho).2 ⟨Fin.elim0, fun j => j.elim0, by simp⟩`. Take `rfl : ν = o` from `ConstLie.eq_of_red W hG h h₀ rfl`. Take `⟨_, p, _, h0, _, h⟩` from `ho`. Conclude with `h ▸ h0`.
+-/
 theorem isZero_of_lieImg {ν : Out.GtPt a.D₀ (epsR A)} (h : LieImg W ν 1) : ν.IsZero := by
   obtain ⟨o, ho⟩ := ConstLie.exists_gtComb (D := a.D₀) (m := 0) Fin.elim0 Fin.elim0
   have h₀ := (ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y A b a χ W 0 _ _ o Fin.elim0 1
@@ -169,6 +215,15 @@ end Ring
 variable {K : Type} [Field K] [Algebra c.F K] {a : ArcIn Dw l (RingHom.id c.F) K (algebraMap c.F K)}
   {χ : Sp (PowerSeries K) ⟶ Y.X} (W : Wit Y (a.restrict β) χ)
 
+/- English proof (translation)
+Set `` to `H.starRing`. Set `j` to `(algebraMap K F).comp (algebraMap c.F K)`. Establish `hinj : Function.Injective fun τ : E →+* ℂ => embK c τ` using `fun τ τ' h => (EigenSplit.isSplitting_complex E).injective (RingHom.ext fun a => (embK_coe c τ a).symm.trans ((congrArg _ (RingHom.congr_fun h a)).trans (embK_coe c τ' a)))`. Establish `hσ : EigenSplit.IsSplitting fun τ : E →+* ℂ => j.comp (embK c τ)` using `EigenSplit.isSplitting_of_isDomain hinj (NumberField.Embeddings.card E ℂ) j (by`. Simplify using `using (EigenSplit.isUnit_discr_of_charZero (E := E) c.F).map j)`.
+
+Take `⟨n, hn, hs⟩` from `(a.geom F ⟨_, HostModel.sqrtNegDisc_mem_coeffField c⟩ ⟨_, HostModel.zeta_A_mem_coeff c⟩ rfl rfl (algebraMap K F) (IsScalarTower.algebraMap_eq _ _ _)).1 (j.comp (embK c τ))`. Establish `hc : j.comp (embK c τ) H.rt = algebraMap K F (algebraMap c.F K ⟨_, HostModel.sqrtNegDisc_mem_coeffField c⟩) ↔ τ (H.rt : E) = H.rt0` using `j.injective.eq_iff.trans (Subtype.ext_iff.trans (by rw [embK_coe c]))`. Establish `hm : Dw.mult τ = n + Module.finrank (𝓞 E) W.P.D.toPre.X`. Rewrite using `[← W.e.finrank_eq, Datum.mult]`. Conclude with `(if_congr hc.symm rfl rfl).trans hs.symm`.
+
+Rewrite using `[hm]`. Use `lieMult_level W.P.U.toUnifPre W.P.lin _ (fun x hx => ?_) hσ τ (j.injective.comp ((embF c τ).injective.comp RingOfIntegers.coe_injective)) ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Simplify using the standard rewrite rules. Use `(LiePull.lieMult_pull _ _ _ _ _ _ _ (ofRingAct a.oa.onB.toRingAct) _ W.spec.1 W.spec.2.2.2.1 F _ _ _).2 ?_` and prove the remaining obligations.
+
+Use `hn using 1` and compare the differences between its conclusion and the goal. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem lieMult_arc (F : Type) [Field F] [IsAlgClosed F] [Algebra K F] [Algebra (FractionRing K) F]
     [IsScalarTower K (FractionRing K) F] (τ : E →+* ℂ) :
     LieMult W.t.act (spMap ((algebraMap K F).comp PowerSeries.constantCoeff))
@@ -201,6 +256,27 @@ theorem lieMult_arc (F : Type) [Field F] [IsAlgClosed F] [Algebra K F] [Algebra 
     ext x
     simp
 
+/- English proof (translation)
+Take `⟨g, e₀, v, M, hev, hv, hu, hM⟩` from `ConstLie.exists_const_basis hG E H Dw l Xo c O β Y K _ _ χ W`. Establish `lin` using `ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y K _ _ χ W`. Use `W.t.semi.smooth` as an intermediate fact. Set `F` to `AlgebraicClosure (FractionRing K)`. Use `flat_of_injective K (PowerSeries K) PowerSeries.C_injective` as an intermediate fact.
+
+Set `ρ : (E →+* ℂ) → 𝓞 E → K` to `fun τ x => algebraMap c.F K (embK c τ x)`. Set `M' : 𝓞 E → Matrix (Fin g) (Fin g) (PowerSeries K)` to `fun x => (M x).map (PowerSeries.C (R := K))`. Establish `hM' : ∀ x i, IsLieComb (M' x i) v (v i ≫ W.t.act.act x)` using `hM`. Use `choose u hu using fun τ k => (hu _ (ht τ k)).exists`. Establish `img : ∀ τ k, LieImg W (e τ k) (prodPts (fun j => PowerSeries.C (R` using `K) (u τ k j)) v) := fun τ k => (lin g _ e₀ _ v _ (fun i => (hev i).2) (hu τ k)).2 ((Chart.isLieComb_iff _ _ _).2 rfl)`.
+
+Establish `p0 : prodPts 0 v = 1`. Simplify `(prodPts_prodPts hv.1 (m := 0) Fin.elim0 Fin.elim0).symm` using `[prodPts]`. Establish `eig : ∀ τ k x, u τ k ᵥ* M x = ρ τ x • u τ k` using `fun τ k x => funext fun i => PowerSeries.C_injective (R := K) (((PowerSeries.C (R := K)).map_vecMul (M x) (u τ k) i).trans ((congrFun ((eig_iff hv hM' _ _ _).1 (he τ k _ (img τ k) x)) i).trans (map_mul _ _ _).symm))`. Establish `ind : ∀ τ, LinearIndependent K (u τ)` using `fun τ => Fintype.linearIndependent_iff.2 fun cf h => by`. Take `⟨k₀, h₀, hk⟩` from `hi τ`.
+
+Take `⟨ν, hν⟩` from `ConstLie.exists_gtComb cf (e τ)`. Establish `z : ν.IsZero` using `isZero_of_lieImg W hG ((lin _ cf (e τ) ν _ 1 (img τ) hν).2 (by`. Rewrite using `[Chart.isLieComb_iff, prodPts_prodPts hv.1, ← p0]`. Use `congrArg (prodPts · v) (funext fun j => ?_)` and prove the remaining obligations. Use `congrArg (PowerSeries.C (R := K)) (congrFun h j)` as an intermediate fact.
+
+Simplify `this.symm))` using `[Finset.sum_apply]`. Establish `hk'` using `hk cf ((b_of_gtComb hν).symm.trans z.1)`. Rewrite `h` using `[Finset.sum_eq_single k₀ (fun k _ hk => by rw [hk' k hk, zero_smul]) (by simp)]`. Introduce `k`. Distinguish the cases in `hkk : k = k₀`.
+
+Substitute `hkk` using the available equality. Use `(smul_eq_zero.1 h).resolve_right fun h₁ => h₀ (isZero_of_lieImg W hG ?_)` and prove the remaining obligations. Use `img τ k` as an intermediate fact. Rewrite `this` using `[h₁, show (fun j => PowerSeries.C (R := K) ((0 : Fin g → K) j)) = 0 from funext fun _ => map_zero _, p0]`. Then use the resulting hypothesis. Conclude with `hk' k hkk`.
+
+Establish `key : ∀ τ (w : Fin g → PowerSeries K), (∀ x, w ᵥ* M' x = PowerSeries.C (R` using `K) (ρ τ x) • w) → ∃! cf : Fin (Dw.mult τ) → PowerSeries K, w = ∑ k, cf k • (fun j => PowerSeries.C (R := K) (u τ k j)) := by`. Introduce `τ`. Take `⟨n, u', hu₁, hu'⟩` from `(commonEigenvectors_flat_baseChange K (𝓞 E) g 0 M (ρ τ)).2`. Establish `flat` using `(commonEigenvectors_flat_baseChange K (𝓞 E) g n M (ρ τ)).1 K u' hu₁ (by simpa using hu')`. Establish `hm : ∀ x, (M' x).map ((algebraMap K F).comp PowerSeries.constantCoeff) = (M x).map (algebraMap K F)` using `fun x => by ext i j; simp [M']`.
+
+Take `rfl` from `card_eq_of_lieMult hv hM' _ (lieMult_arc W F τ) (fun k j => algebraMap K F (u' k j)) (fun k x => by`. Rewrite using `[hm]`. Conclude with `vecMul_map _ (hu₁ k x))`. Use the proof step `(fun w hw => flat F w fun i => (congrArg (w ᵥ* ·) (hm i)).symm.trans (hw i))`. Conclude with `(commonEigenvectors_flat_baseChange K (𝓞 E) g _ M (ρ τ)).1 K (u τ) (eig τ) (by`.
+
+Simplify using `using fun w hw => existsUnique_comb (ind τ) (fun k => (hu' _ (eig τ k)).exists) (hu' w hw).exists)`. Use the proof step `(PowerSeries K)`. Use `⟨_, img, fun τ => ⟨fun k => ⟨isTangent_prodPts hv.1 _, he τ k _ (img τ k)⟩, fun w hw he => ?_⟩⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `exists_prodPts hv hw`. Use `(existsUnique_congr fun cf => ?_).1 (key τ d fun x => (eig_iff hv hM' _ _ _).1 (he x))` and prove the remaining obligations.
+
+Rewrite using `[Chart.isLieComb_iff, prodPts_prodPts hv.1, (prodPts_injective hv).eq_iff]`.
+-/
 theorem arcLieBasis_of_indep (hG : Out.GlobalFnsSt) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K))
     (ht : ∀ τ k, GtTanR (e τ k))
     (he : ∀ τ k v, LieImg W (e τ k) v → ∀ x : 𝓞 E, (v ≫ W.t.act.act x).left =
@@ -272,6 +348,9 @@ open scoped LaurentSeries
 open GlobalTheory.LieEigen
 open ReciprocityTheory.ChartRestriction.G.Chart (prodPts)
 
+/- English proof (translation)
+Take `⟨w', h', hc⟩` from `hL.2.2.1 m`. Use `Eq.trans (Over.OverMorphism.ext (ho.2.2.2.1.1.1.hom_ext ?_ ((Over.w w).trans (Over.w w').symm))) ((Chart.isLieComb_iff _ _ _).1 hc)` and prove the remaining obligations. Unfold `LamLetters.IsLetter at hw h'`. Generalize the expression as in `L.src m = q at hw h'`. Apply the tactic sequence `cases q <;> exact hw.trans h'.symm`.
+-/
 theorem letter_eq {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : Level H} {c : Coeff l} {n₁ n₂ f : ℕ} {o : LamObj c n₁ n₂} {La : ℝ} (ho : LamObjGood o f La) {L : LamLetters o}
     (hL : L.IsGood) {m : Fin o.xB.P.g} {w : epsR o.K₁ ⟶ o.xB.P.A} (hw : L.IsLetter m w) :
@@ -283,6 +362,31 @@ theorem letter_eq {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRing (
   generalize L.src m = q at hw h'
   cases q <;> exact hw.trans h'.symm
 
+/- English proof (translation)
+Introduce `hK E _ _ _ H Dw l Xo c K₁ _ _ _ a e th jj n' La c₁ s O _ β Y χ W`. Use `letI := H.starRing`. Establish `hG` using `hK.laws.globalFns`. Take `⟨pl, pa, pt, -, -⟩` from `pairE_properties E a.D₀.X s.ξ`. Establish `hn : (n' : K₁) ≠ 0` using `Nat.cast_ne_zero.2 s.n_pos.ne'`.
+
+Use `arcLieBasis_of_indep W hG e s.tan (fun τ k v hv x => ?_) fun τ => ?_` and prove the remaining obligations. Consider the cases of `hk : s.kind τ k with`. Consider the case `none`. Use `TorusType.main hG E H Dw l Xo c O β Y K₁ _ (a.restrict β) χ W (AddMonoidHom.mk' (fun y => labK c K₁ τ (cc (pairE s.ξ y))) fun y y' => ?_) ((algebraMap c.F K₁).comp (embK c τ)) (e τ k) v (fun x y => ?_) (s.tan τ k) (s.xi τ k hk).1 (s.xi τ k hk).2 hv x` and prove the remaining obligations. Use `(congrArg (fun q => labK c K₁ τ (cc q)) (pa y y')).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[cc, map_add, map_add]`. Both sides reduce to the same expression. Use `(congrArg (fun q => labK c K₁ τ (cc q)) (pl (H.bar x) y)).trans ?_` and prove the remaining obligations. Rewrite using `[H.bar_eq, cc, map_mul, map_mul, IsCMField.complexConj_apply_apply]`. Both sides reduce to the same expression.
+
+Consider the case `some m`. Take `⟨w, hw, hp⟩` from `s.eta τ k m hk`. Establish `hm` using `((s.full τ).2.2 m).1 ⟨k, hk⟩`. Take `⟨w', h₁, h₂⟩` from `LetterEigen.letter_eigen E H l c _ _ _ _ La s.good s.L s.L_good (s.L.e.symm m).1 (s.L.e.symm m).2 w (by rw [Sigma.eta, Equiv.apply_symm_apply]; exact hw) x`. Rewrite `h₁` using `[hm]`.
+
+Use `eig_of_isPull W hG hv x _ (isPull_smulPt_split hG a.oa s.split x _ _ ?_ hp)` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `h₁`. Use `Over.OverMorphism.ext (s.good.2.2.2.1.1.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Use `Eq.trans ?_ (h₂.trans (congrArg (· ≫ s.φB) ?_))` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans (congrArg (w.left ≫ ·) (s.act x))`.
+
+Rewrite using `[List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, _root_.mul_one]`. Conclude with `hu 0`. Take `⟨hinj, ⟨k₀, hk₀⟩, -⟩` from `s.full τ`. Use `⟨k₀, fun hz => s.ξ_ne (LinearMap.ext fun y => ?_), fun cf h k hk => ?_⟩` and prove the remaining obligations. Establish `h₀` using `dlog_eq_zero (s.tan τ k₀) hz (s.xi τ k₀ hk₀).2 y`.
+
+Rewrite `h₀` using `[map_eq_zero, cc, map_eq_zero]`. Use `pt y` as an intermediate fact. Rewrite `this` using `[h₀, map_zero]`. Conclude with `this.symm` after adjusting the coercions. Establish `p0 : prodPts 0 s.v = 1`.
+
+Simplify `(prodPts_prodPts s.basis.1 (m := 0) Fin.elim0 Fin.elim0).symm` using `[prodPts]`. Set `U : Matrix (Fin a.D₀.P.g) (Fin a.D₀.P.g) K₁` to `s.L.U`. Establish `hb : ∀ k, (e τ k).b = prodPts ((s.kind τ k).elim 0 U) s.v` using `fun k => by`. Consider the cases of `hk : s.kind τ k with`. Consider the case `none => exact (s.xi τ k hk).1.trans p0.symm`.
+
+Consider the case `some m`. Take `⟨w, hw, hp⟩` from `s.eta τ k m hk`. Establish `e₁ : w = prodPts (U m) s.v` using `letter_eq s.good s.L_good hw`. Establish `e₂ : (e τ k).b = GrpTangent.epsScale (n' : K₁)⁻¹ ≫ (s.sB _ w).b` using `Over.OverMorphism.ext hp.1`. Rewrite using `[e₂, s.split.1, GrpTangent.pow_eq_epsScale_comp (e₁ ▸ isTangent_prodPts s.basis.1 _), GrpTangent.epsScale_mul_assoc, inv_mul_cancel₀ hn, GrpTangent.epsScale_one, Category.id_comp]`.
+
+Conclude with `e₁`. Rewrite `h` using `[funext hb, prodPts_prodPts s.basis.1, ← p0]`. Establish `h₁ : ∑ k, cf k • (s.kind τ k).elim 0 U = 0` using `prodPts_injective s.basis h`. Establish `hU : LinearIndependent K₁ U.row` using `Matrix.linearIndependent_rows_of_det_ne_zero (Ind.lamInd E H l c (fun _ => rfl) _ _ _ _ La s.good s.L s.L_good)`. Establish `ne : ∀ k : {k // k ≠ k₀}, ∃ m, s.kind τ k = some m` using `fun k => Option.ne_none_iff_exists'.1 fun h => k.2 (hinj (h.trans hk₀.symm))`.
+
+Use `choose m hm using ne`. Establish `hi` using `hU.comp m fun k k' h => Subtype.ext (hinj ((hm k).trans (h ▸ (hm k').symm)))`. Use `Fintype.linearIndependent_iff.1 hi (fun k => cf k) ?_ ⟨k, hk⟩` and prove the remaining obligations. Establish `z : cf k₀ • (s.kind τ k₀).elim 0 U = 0` using `by rw [hk₀]; exact smul_zero _`. Rewrite `h₁` using `[Fintype.sum_eq_add_sum_subtype_ne _ k₀, z, zero_add]`.
+
+Use `Eq.trans (Finset.sum_congr rfl fun k _ => ?_) h₁` and prove the remaining obligations. Rewrite using `[hm]`. Both sides reduce to the same expression.
+-/
 theorem main : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (a : ArcIn Dw l (RingHom.id c.F) K₁ (algebraMap c.F K₁)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K₁)) (th : a.D₀.P.L.Sec) (jj : ℤ) (n' : ℕ) (La c₁ : ℝ) (s : CMIn a e th jj n' La c₁) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (χ : Sp (PowerSeries K₁) ⟶ Y.X) (W : Wit Y (a.restrict β) χ), ArcLieBasis W e := by
   intro hK E _ _ _ H Dw l Xo c K₁ _ _ _ a e th jj n' La c₁ s O _ β Y χ W
   letI := H.starRing

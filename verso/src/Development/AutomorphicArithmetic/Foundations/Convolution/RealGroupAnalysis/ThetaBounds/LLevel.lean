@@ -15,6 +15,9 @@ noncomputable section
 
 namespace UpperTheory.ConvolutionTheory.R2.Ff.TubeLevelLattice
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qi19.tube T hT h1 hinv hg hc`.
+-/
 private theorem tube {G X : Type*} [Group G] [TopologicalSpace G] [ContinuousInv G] [TopologicalSpace X]
     (T : G → X → X) (hT : Continuous fun p : G × X => T p.1 p.2) (h1 : ∀ w, T 1 w = w)
     (hinv : ∀ k w, T k⁻¹ (T k w) = w) {g : X → ℂ} (hg : IsLocallyConstant g) (hc : HasCompactSupport g) :
@@ -25,30 +28,57 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 private def eI (K : Type) [Field K] [NumberField K] : A K := (1, 0)
 
+/- English proof (translation)
+The claim follows from `Prod.ext (map_one (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E))) (map_zero (AdeleBaseChange.finiteAdeleMap F E))`.
+-/
 private theorem am_eI : am E (eI F) = eI E :=
   Prod.ext (map_one (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E)))
     (map_zero (AdeleBaseChange.finiteAdeleMap F E))
 
+/- English proof (translation)
+The claim follows from `one_mul x.1`.
+-/
 private theorem eI_fst (K : Type) [Field K] [NumberField K] (x : A K) : (eI K * x).1 = x.1 :=
   one_mul x.1
 
+/- English proof (translation)
+The claim follows from `zero_mul x.2`.
+-/
 private theorem eI_snd (K : Type) [Field K] [NumberField K] (x : A K) : (eI K * x).2 = 0 :=
   zero_mul x.2
 
+/- English proof (translation)
+Use `GlobalTheory.HenQ.finGL_apply k a b` as an intermediate fact. Rewrite using `[this]`. Simplify using `[GlobalTheory.HenQ.sFin_fst]`.
+-/
 private theorem fin_fst (k : GL (Fin 2) (Af E)) (a b : Fin 2) :
     ((finGL E 2 k).val a b).1 = ((1 : Matrix (Fin 2) (Fin 2) (A E)) a b).1 := by
   have := GlobalTheory.HenQ.finGL_apply k a b
   rw [this]
   simp [GlobalTheory.HenQ.sFin_fst]
 
+/- English proof (translation)
+The claim follows from `Prod.ext (by rw [eI_fst, eI_fst, h]) (by rw [eI_snd, eI_snd])`.
+-/
 private theorem eI_mul (x y : A E) (h : x.1 = y.1) : eI E * x = eI E * y :=
   Prod.ext (by rw [eI_fst, eI_fst, h]) (by rw [eI_snd, eI_snd])
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `eI_mul _ _ (fin_fst k a b)`.
+-/
 private theorem eI_fin (k : GL (Fin 2) (Af E)) :
     eI E • (finGL E 2 k).val = eI E • (1 : Matrix (Fin 2) (Fin 2) (A E)) := by
   ext a b
   exact eI_mul _ _ (fin_fst k a b)
 
+/- English proof (translation)
+Establish `hb : D.bar (eI E) = eI E` using `by rw [← am_eI (F := F), D.bar_am]`. Establish `h1` using `eI_fin k`. Use extensionality with `a b`. Establish `h2` using `congrFun (congrFun h1 b) a`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at h2 ⊢`.
+
+Rewrite using `[D.conjTransposeGal_apply]`. Establish `h3` using `congrArg D.bar h2`. Rewrite `h3` using `[map_mul, map_mul, hb]`. Rewrite using `[h3]`. Establish `: D.bar ((1 : Matrix (Fin 2) (Fin 2) (A E)) b a) = (1 : Matrix (Fin 2) (Fin 2) (A E)) a b`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Establish `hba : b ≠ a` using `fun h => hab h.symm`. Simplify using `[Matrix.one_apply, hab, hba]`.
+
+Rewrite using `[this]`.
+-/
 private theorem eI_star (D : Dat F E) (k : GL (Fin 2) (Af E)) :
     eI E • D.star2 (finGL E 2 k).val = eI E • (1 : Matrix (Fin 2) (Fin 2) (A E)) := by
   have hb : D.bar (eI E) = eI E := by rw [← am_eI (F := F), D.bar_am]
@@ -67,6 +97,9 @@ private theorem eI_star (D : Dat F E) (k : GL (Fin 2) (Af E)) :
       simp [Matrix.one_apply, hab, hba]
   rw [this]
 
+/- English proof (translation)
+Apply `D.herm_injective` to reduce the goal to its premises. Rewrite using `[D.herm_act, D.herm_smul, am_eI]`. Rewrite using `[Matrix.mul_smul, ← Matrix.smul_mul, eI_fin, Matrix.smul_mul, one_mul, Matrix.smul_mul, ← Matrix.mul_smul, eI_star, Matrix.mul_smul, mul_one]`.
+-/
 private theorem act_eI (D : Dat F E) (k : GL (Fin 2) (Af E)) (v : V4 F) :
     D.act (finGL E 2 k) (eI F • v) = eI F • v := by
   apply D.herm_injective
@@ -74,6 +107,9 @@ private theorem act_eI (D : Dat F E) (k : GL (Fin 2) (Af E)) (v : V4 F) :
   rw [Matrix.mul_smul, ← Matrix.smul_mul, eI_fin, Matrix.smul_mul, one_mul, Matrix.smul_mul,
     ← Matrix.mul_smul, eI_star, Matrix.mul_smul, mul_one]
 
+/- English proof (translation)
+Establish `h` using `congrFun (act_eI D k v) i`. Rewrite `h` using `[D.act_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h`. Use `congrArg Prod.fst h` as an intermediate fact. Rewrite `this` using `[eI_fst, eI_fst]`. Then use the resulting hypothesis.
+-/
 private theorem act_fst (D : Dat F E) (k : GL (Fin 2) (Af E)) (v : V4 F) (i : Fin 4) :
     (D.act (finGL E 2 k) v i).1 = (v i).1 := by
   have h := congrFun (act_eI D k v) i
@@ -84,11 +120,22 @@ private theorem act_fst (D : Dat F E) (k : GL (Fin 2) (Af E)) (v : V4 F) (i : Fi
 
 private def io (w : Fin 4 → Af F) : V4 F := fun i => (0, w i)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_const.prodMk (continuous_apply i)`.
+-/
 private theorem continuous_io : Continuous (io (F := F)) :=
   continuous_pi fun i => continuous_const.prodMk (continuous_apply i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem finPart_io (w : Fin 4 → Af F) : finPartPi (io w) = w := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (v i).1 = (eI F * v i).1 + 0`. Rewrite using `[eI_fst, add_zero]`. Use `show (v i).2 = (eI F * v i).2 + (v i).2`.
+
+Rewrite using `[eI_snd, zero_add]`.
+-/
 private theorem split (v : V4 F) : v = eI F • v + io (finPartPi v) := by
   funext i
   refine Prod.ext ?_ ?_
@@ -100,6 +147,11 @@ private theorem split (v : V4 F) : v = eI F • v + io (finPartPi v) := by
 private def TT (D : Dat F E) (k : GL (Fin 2) (Af E)) (w : Fin 4 → Af F) : Fin 4 → Af F :=
   finPartPi (D.act (finGL E 2 k) (io w))
 
+/- English proof (translation)
+Use `conv_lhs => rw [split v]`. Rewrite using `[D.act_add, act_eI]`. Use function extensionality and compare the values at `i`. Use `show (eI F * v i).2 + _ = _`. Rewrite using `[eI_snd, zero_add]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem finPart_act (D : Dat F E) (k : GL (Fin 2) (Af E)) (v : V4 F) :
     finPartPi (D.act (finGL E 2 k) v) = TT D k (finPartPi v) := by
   conv_lhs => rw [split v]
@@ -114,6 +166,23 @@ end UpperTheory.ConvolutionTheory.R2.Ff.TubeLevelLattice
 end
 
 open UpperTheory.ConvolutionTheory.R2.Ff.TubeLevelLattice in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W φ`. Take `⟨ρ, -, -, -, -, hfin⟩` from `actCont F E D`. Establish `hT : Continuous fun p : GL (Fin 2) (Af E) × (Fin 4 → Af F) => TT D p.1 p.2` using `continuous_finPartPi.comp (D.continuous_act' (hfin.comp continuous_fst) (continuous_io.comp continuous_snd))`. Establish `h1 : ∀ w, TT D 1 w = w` using `fun w => by`. Simplify using `only [TT, map_one, D.act_one, finPart_io]`.
+
+Establish `hinv : ∀ k w, TT D k⁻¹ (TT D k w) = w` using `fun k w => by`. Establish `e` using `finPart_act D k⁻¹ (D.act (finGL E 2 k) (io w))`. Rewrite `e` using `[map_inv, D.act_inv_act, finPart_io]`. Conclude with `e.symm`. Establish `key : ∀ f ∈ schwartzBruhatPi F (Fin 4), ∀ᶠ k in 𝓝 (1 : GL (Fin 2) (Af E)), ∀ v, f (D.act (finGL E 2 k)⁻¹ v) = f v`.
+
+Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ₀, g, hg, rfl⟩` from `hG`. Take `⟨hlc, hcs⟩` from `(mem_finiteSchwartzBruhatPi F).1 hg`.
+
+Establish `ht : Tendsto (fun k : GL (Fin 2) (Af E) => k⁻¹) (𝓝 1) (𝓝 1)`. Simplify using `using (continuous_inv (G := GL (Fin 2) (Af E))).tendsto 1`. Use `filter_upwards [ht.eventually (tube (TT D) hT h1 hinv hlc hcs)] with k hk v`. Establish `e1 : infPartPi (D.act (finGL E 2 k)⁻¹ v) = infPartPi v`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [infPartPi, ← map_inv, act_fst]`. Establish `e2 : finPartPi (D.act (finGL E 2 k)⁻¹ v) = TT D k⁻¹ (finPartPi v)`. Rewrite using `[← map_inv, finPart_act]`. Simplify using `only [schwartzBruhatTensorPi, e1, e2, hk]`. Consider the case `zero => exact Eventually.of_forall fun _ _ => rfl`.
+
+Consider the case `add G H _ _ hG hH => filter_upwards [hG, hH] with k h h' v`. Simplify using `only [Pi.add_apply, h, h']`. Consider the case `smul c G _ hG => filter_upwards [hG] with k h v`. Simplify using `only [Pi.smul_apply, h]`. Establish `hab : ∀ᶠ k in 𝓝 (1 : GL (Fin 2) (Af E)), ab (nu F (finGL E 2 k)) = 1`.
+
+Establish `hU : (KLev E 2 1 : Set (GL (Fin 2) (Af E))) ∈ 𝓝 (1 : GL (Fin 2) (Af E))` using `(isOpen_KLev le_rfl).mem_nhds (one_mem _)`. Use `filter_upwards [hU] with k hk`. Set `f : GL (Fin 2) (Af E) →* {r : ℝ // 0 < r}` to `(IdeleGroup.ideleModule F).comp ((ideleNorm F E).comp ((Matrix.GeneralLinearGroup.det).comp (finGL E 2)))`. Use `GroundTheory.Automorphic.Reduction.eq_one_of_isCompact (isCompact_KLev le_rfl) f (continuous_ab.comp (continuous_nu.comp hfin)) hk` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+
+Use `filter_upwards [key φ.1 φ.2, hab] with k h₁ h₂`. Use `Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Rewrite using `[W.L_apply, h₁, h₂]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.lLevel :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), LLevel W := by
   intro F E _ _ _ _ _ _ _ D W φ

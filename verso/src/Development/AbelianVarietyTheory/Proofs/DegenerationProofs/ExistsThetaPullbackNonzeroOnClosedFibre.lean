@@ -19,6 +19,11 @@ namespace GlobalTheory.ZH.ThetaFibre
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {M : RatModel o Ω}
   {U₀ : M.Z.Opens} {EE : M.Lat S.J}
 
+/- English proof (translation)
+Establish `hT : S.TT M z ≤ S.HH M z` using `(hB.free z).2 ▸ (hB.free z).1.1`. Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega)⟩`. Use `Fintype.ofFinite (S.TT M z)` as an intermediate fact. Establish `e : ((S.proj (S.TT M z) 0).map (algebraMap o Ω)).mulVec v = algebraMap o (M.O z) (Ring.inverse (Nat.card (S.TT M z) : o)) • ∑ t : S.TT M z, ((S.ρ t).map (algebraMap o Ω)).mulVec v`. Use extensionality with `i`.
+
+Simplify using `[ThetaSys.proj, finsum_eq_sum_of_fintype, Matrix.mulVec, dotProduct, Matrix.sum_apply, Algebra.smul_def (A := Ω), Finset.mul_sum, Finset.sum_mul, _root_.mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun t _ => hB.stab z _ (hT t.2) v hv)`.
+-/
 theorem proj_mulVec_mem (hB : BaseFacts S M U₀ EE) (z : M.Z) {v : S.J → Ω} (hv : v ∈ EE.E z) :
     ((S.proj (S.TT M z) 0).map (algebraMap o Ω)).mulVec v ∈ EE.E z := by
   have hT : S.TT M z ≤ S.HH M z := (hB.free z).2 ▸ (hB.free z).1.1
@@ -34,6 +39,9 @@ theorem proj_mulVec_mem (hB : BaseFacts S M U₀ EE) (z : M.Z) {v : S.J → Ω} 
   rw [e]
   exact Submodule.smul_mem _ _ (Submodule.sum_mem _ fun t _ => hB.stab z _ (hT t.2) v hv)
 
+/- English proof (translation)
+Use `hB.zero z hz _ (proj_mulVec_mem hB z hv) ?_ j` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, GlobalTheory.ThetaBound.proj_mul_proj S _ _ le_rfl (hB.free z).1.1 (hB.free z).1 0 0 fun _ => rfl]`.
+-/
 theorem proj_mulVec_regular (hB : BaseFacts S M U₀ EE) {z : M.Z} (hz : IsClosed ({z} : Set M.Z))
     {v : S.J → Ω} (hv : v ∈ EE.E z) (j : S.J) :
     ((S.proj (S.TT M z) 0).map (algebraMap o Ω)).mulVec v j ∈ M.O z := by
@@ -41,6 +49,13 @@ theorem proj_mulVec_regular (hB : BaseFacts S M U₀ EE) {z : M.Z} (hz : IsClose
   rw [Matrix.mulVec_mulVec, ← Matrix.map_mul,
     GlobalTheory.ThetaBound.proj_mul_proj S _ _ le_rfl (hB.free z).1.1 (hB.free z).1 0 0 fun _ => rfl]
 
+/- English proof (translation)
+Establish `e : algebraMap o (M.O z) (S.proj (S.TT M z) 0 j i) = ∑ k, a k * ⟨_, proj_mulVec_regular hB hz (hBm k) j⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : ∑ m, algebraMap o Ω (S.proj (S.TT M z) 0 j m) * (1 : Matrix S.J S.J Ω) i m = algebraMap o Ω (S.proj (S.TT M z) 0 j i)`. Simplify using `[Matrix.one_apply]`. Simplify using `only [Subalgebra.coe_algebraMap, AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_mul, Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.mul_sum]`.
+
+Rewrite using `[← h1, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← ha, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[e, map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun k _ => by rw [map_mul, h0, zero_mul]`.
+-/
 theorem proj_col_eq_zero (hB : BaseFacts S M U₀ EE) {z : M.Z} (hz : IsClosed ({z} : Set M.Z))
     {K : Type} [Field K] (y : M.O z →+* K) (B : Matrix S.J S.J Ω) (hBm : ∀ k, B k ∈ EE.E z)
     (a : S.J → M.O z) (i : S.J) (ha : ∀ j, ∑ k, (a k : Ω) * B k j = (1 : Matrix S.J S.J Ω) i j)
@@ -61,6 +76,17 @@ theorem proj_col_eq_zero (hB : BaseFacts S M U₀ EE) {z : M.Z} (hz : IsClosed (
   rw [e, map_sum]
   exact Finset.sum_eq_zero fun k _ => by rw [map_mul, h0, zero_mul]
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ M U₀ EE hB Q hbig hgeo z hz`. Assume the negation of the conclusion as `hne`. Establish `hzc : z ∈ ⨆ l, Q.W l` using `by rw [Q.cover]; trivial`. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hzc`. Take `⟨K, _, x, hx, hind⟩` from `GlobalTheory.T.thetaSections_independent_on_closed_fibre hL o Ω S ρ M U₀ EE hB Q hbig hgeo l z hl hz`.
+
+Establish `hc : (fun k => valF x (Q.W l) (Q.c l ρ.i₀ k)) = 0`. Use `hind _ fun g j hg hgx => ?_` and prove the remaining obligations. Distinguish the cases in `hj : ⊤ ≤ g ⁻¹ᵁ (Q.O1.pull (Q.P.hom ⁻¹ᵁ Q.W l).ι).U j`. Establish `hw : Crd (Q.O1.pull (Q.P.hom ⁻¹ᵁ Q.W l).ι) (Q.σ l) g (fun i => valF g _ ((Q.σ l i).f j))` using `⟨j, 1, hj, fun i => by rw [Units.val_one, _root_.one_mul]; rfl⟩`. Establish `hr` using `Q.rel l K g _ hw`.
+
+Rewrite `hr` using `[hgx]`. Assume the negation of the conclusion as `h0`. Establish `hu` using `(CrdCalc.crd_isUnit_iff ρ.i₀ hr).1 (isUnit_iff_ne_zero.2 h0)`. Use `hne ⟨(g ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι) (IsLocalRing.closedPoint K), hu (Set.mem_univ _), hg ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hm : x (IsLocalRing.closedPoint K) ∈ Set.range x` using `⟨_, rfl⟩`.
+
+Rewrite `hm` using `[hx]`. Rewrite `hm` using `[← hgx]`. Conclude with `hm`. Conclude with `Finset.sum_eq_zero fun i _ => mul_eq_zero_of_right _ (dif_neg hj)`. Take `⟨j, hj⟩` from `GlobalTheory.proj_zero_pullback_ne_zero hL o Ω S ρ K ((RatModel.valHom x z hx).comp (algebraMap o (M.O z))) _ (hB.free z).1`.
+
+Use `hj (proj_col_eq_zero hB hz (RatModel.valHom x z hx) (Q.B l) (fun k => by rw [Q.basis l z hl]; exact Submodule.subset_span ⟨k, rfl⟩) (fun k => ⟨_, RatModel.valF_mem_O hl (Q.c l ρ.i₀ k)⟩) ρ.i₀ (fun j => congrFun (congrFun (Q.c_inv l) ρ.i₀) j) (fun k => ?_) j)` and prove the remaining obligations. Rewrite using `[RatModel.valHom_apply, RatModel.val_valF (by rw [hx]; exact Set.singleton_subset_iff.2 hl)]`. Conclude with `congrFun hc k`.
+-/
 theorem exists_mem_nonzeroLocus_fibre : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE), S.Big → ρ.HasGeo → ∀ z : M.Z, IsClosed ({z} : Set M.Z) → ∃ x ∈ nonzeroLocus (Q.st ρ.i₀), x ∈ Q.G ∧ Q.P.hom x = z := by
   intro hL o Ω _ _ _ _ S ρ M U₀ EE hB Q hbig hgeo z hz
   by_contra hne

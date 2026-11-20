@@ -32,51 +32,91 @@ variable (F E) in
 
 def finTens : AF F ⊗[F] E →+* Af F ⊗[F] E := (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Conclude with `e.injective (Prod.ext ((he x).1.trans (h1.trans (he y).1.symm)) ((he x).2.trans (h2.trans (he y).2.symm)))`.
+-/
 theorem tens_ext {x y : AF F ⊗[F] E} (h1 : infTens F E x = infTens F E y) (h2 : finTens F E x = finTens F E y) :
     x = y := by
   obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv F E
   exact e.injective (Prod.ext ((he x).1.trans (h1.trans (he y).1.symm)) ((he x).2.trans (h2.trans (he y).2.symm)))
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a x => exact TensorProduct.zero_tmul _ _`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, add_zero]`.
+-/
 theorem infTens_extZero (y : Af F ⊗[F] E) : infTens F E (extZero F E y) = 0 := by
   induction y using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero]
   | tmul a x => exact TensorProduct.zero_tmul _ _
   | add a b ha hb => rw [map_add, map_add, ha, hb, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 theorem finTens_extZero (y : Af F ⊗[F] E) : finTens F E (extZero F E y) = y := by
   induction y using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero]
   | tmul a x => rfl
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_locIdele (w : HeightOneSpectrum (𝓞 E)) (y : (w.adicCompletion E)ˣ) :
     (locIdele F w y : AF F ⊗[F] E) = 1 - extZero F E 1 + extZero F E ((finAdEquiv F E).symm (Neutral.B1.finiteSingle E w y)) := rfl
 
+/- English proof (translation)
+Rewrite using `[coe_locIdele, map_add, map_sub, map_one, infTens_extZero, infTens_extZero, sub_zero, add_zero]`.
+-/
 theorem infTens_locIdele (w : HeightOneSpectrum (𝓞 E)) (y : (w.adicCompletion E)ˣ) :
     infTens F E (locIdele F w y) = 1 := by
   rw [coe_locIdele, map_add, map_sub, map_one, infTens_extZero, infTens_extZero, sub_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[coe_locIdele, map_add (finTens F E), map_sub, map_one, finTens_extZero, finTens_extZero, sub_self, zero_add, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem finTens_locIdele (w : HeightOneSpectrum (𝓞 E)) (y : (w.adicCompletion E)ˣ) :
     finAdEquiv F E (finTens F E (locIdele F w y)) = (GlobalTheory.CMVal.single w y : (Af E)ˣ) := by
   rw [coe_locIdele, map_add (finTens F E), map_sub, map_one, finTens_extZero, finTens_extZero, sub_self, zero_add,
     RingEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (tens_ext (h1.trans (infTens_locIdele w y).symm) ((finAdEquiv F E).injective (h2.trans (finTens_locIdele w y).symm)))`.
+-/
 theorem eq_locIdele {w : HeightOneSpectrum (𝓞 E)} {y : (w.adicCompletion E)ˣ} {x : (AF F ⊗[F] E)ˣ}
     (h1 : infTens F E x = 1) (h2 : finAdEquiv F E (finTens F E x) = (GlobalTheory.CMVal.single w y : (Af E)ˣ)) :
     x = locIdele F w y :=
   Units.ext (tens_ext (h1.trans (infTens_locIdele w y).symm)
     ((finAdEquiv F E).injective (h2.trans (finTens_locIdele w y).symm)))
 
+/- English proof (translation)
+Conclude with `Function.update_self (β := fun u : HeightOneSpectrum (𝓞 E) => u.adicCompletion E) w y fun _ => 1`.
+-/
 theorem finSingle_self (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) : Neutral.B1.finiteSingle E w y w = y := by
   classical
   exact Function.update_self (β := fun u : HeightOneSpectrum (𝓞 E) => u.adicCompletion E) w y fun _ => 1
 
+/- English proof (translation)
+Conclude with `Function.update_of_ne (β := fun u : HeightOneSpectrum (𝓞 E) => u.adicCompletion E) h y fun _ => 1`.
+-/
 theorem finSingle_ne {w u : HeightOneSpectrum (𝓞 E)} (h : u ≠ w) (y : w.adicCompletion E) :
     Neutral.B1.finiteSingle E w y u = 1 := by
   classical
   exact Function.update_of_ne (β := fun u : HeightOneSpectrum (𝓞 E) => u.adicCompletion E) h y fun _ => 1
 
+/- English proof (translation)
+Set `c` to `(Algebra.TensorProduct.comm F (Af F) E).toRingEquiv`. Establish `h : ∀ x a, ((toFinAd F E).comp c.symm.toRingHom) (x ⊗ₜ[F] a) = algebraMap E _ x * GlobalTheory.AdeleBaseChange.adMap F E a` using `fun x a => (toFinAd_tmul a x).trans (mul_comm _ _)`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `: finAdEquiv F E y ∈ Formalism.UG.intAd E`.
+
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, rfl⟩` from `hy`. Rewrite using `[show finAdEquiv F E (a ⊗ₜ[F] (x : E)) = _ from toFinAd_tmul a (x : E)]`. Conclude with `mul_mem (GlobalTheory.AdeleBaseChange.adMap_int ha) (GlobalTheory.AdeleBaseChange.algebraMap_int_mem x)`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
+
+Conclude with `neg_mem hx`. Conclude with `this`. Introduce `hy`. Establish `h1 : c y ∈ Formalism.L2.DIV.RInt F E` using `GlobalTheory.AdeleBaseChange.mem_int_of_map h (by`. Express the relevant statement in the definitionally equal form `toFinAd F E (c.symm (c y)) ∈ _`.
+
+Rewrite using `[c.symm_apply_apply]`. Conclude with `hy)`. Take `⟨m, g, hg⟩` from `Module.Finite.exists_fin (R := ℤ) (M := 𝓞 E)`. Take `⟨r, hr, e⟩` from `Formalism.UG.P.levelaf_decomp g hg h1`. Rewrite using `[← c.symm_apply_apply y, e, map_sum]`.
+
+Conclude with `sum_mem fun i _ => AddSubgroup.subset_closure ⟨r i, hr i, g i, rfl⟩`.
+-/
 theorem mem_int_iff (y : Af F ⊗[F] E) :
     y ∈ AddSubgroup.closure {y : Af F ⊗[F] E | ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf F, ∃ x : 𝓞 E, y = a ⊗ₜ[F] (x : E)} ↔
       ∀ P, Valued.v (finAdEquiv F E y P) ≤ 1 := by
@@ -105,15 +145,24 @@ theorem mem_int_iff (y : Af F ⊗[F] E) :
     rw [← c.symm_apply_apply y, e, map_sum]
     exact sum_mem fun i _ => AddSubgroup.subset_closure ⟨r i, hr i, g i, rfl⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AdeleBaseChange.continuous_symm_finite F E _ mem_int_iff`.
+-/
 theorem continuous_finAdEquiv_symm : Continuous (finAdEquiv F E).symm :=
   GlobalTheory.AdeleBaseChange.continuous_symm_finite F E _ mem_int_iff
 
+/- English proof (translation)
+Take `⟨e, he, -, hc⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Use `(hc.comp (Continuous.prodMk_right 0)).congr fun y => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, RingEquiv.symm_apply_eq]`. Conclude with `Prod.ext ((he _).1.trans (infTens_extZero y)).symm ((he _).2.trans (finTens_extZero y)).symm`.
+-/
 theorem continuous_extZero : Continuous (extZero F E) := by
   obtain ⟨e, he, -, hc⟩ := GlobalTheory.AdSplit.exists_adele_equiv F E
   refine (hc.comp (Continuous.prodMk_right 0)).congr fun y => ?_
   rw [Function.comp_apply, RingEquiv.symm_apply_eq]
   exact Prod.ext ((he _).1.trans (infTens_extZero y)).symm ((he _).2.trans (finTens_extZero y)).symm
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Establish `h : Continuous fun y : w.adicCompletion E => 1 - extZero F E 1 + extZero F E ((finAdEquiv F E).symm (Neutral.B1.finiteSingle E w y))` using `continuous_const.add (continuous_extZero.comp (continuous_finAdEquiv_symm.comp (GlobalTheory.Mem.Chr.Determ.continuous_finSingle w)))`. Conclude with `Units.continuous_iff.2 ⟨h.comp Units.continuous_val, h.comp Units.continuous_coe_inv⟩`.
+-/
 theorem continuous_locIdele (w : HeightOneSpectrum (𝓞 E)) : Continuous (locIdele F w) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _
@@ -123,12 +172,25 @@ theorem continuous_locIdele (w : HeightOneSpectrum (𝓞 E)) : Continuous (locId
       (GlobalTheory.Mem.Chr.Determ.continuous_finSingle w)))
   exact Units.continuous_iff.2 ⟨h.comp Units.continuous_val, h.comp Units.continuous_coe_inv⟩
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp (h.comp (continuous_locIdele w))`.
+-/
 theorem continuous_locChar {χ : (AF F ⊗[F] E)ˣ →* Circle} (h : Continuous χ) (w : HeightOneSpectrum (𝓞 E)) :
     Continuous fun x => (locChar χ w x : ℂ) := continuous_subtype_val.comp (h.comp (continuous_locIdele w))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finAdEquiv_tmul (a : Af F) (x : E) (w : HeightOneSpectrum (𝓞 E)) :
     finAdEquiv F E (a ⊗ₜ[F] x) w = complMap rfl (a (w.under (𝓞 F))) * algebraMap E _ x := rfl
 
+/- English proof (translation)
+Use `Units.ext (tens_ext ?_ ((finAdEquiv F E).injective (FiniteAdeleRing.ext _ fun u => ?_)))` and prove the remaining obligations. Rewrite using `[Units.coe_prod, map_prod, Finset.prod_eq_one fun w _ => infTens_locIdele w _]`. Both sides reduce to the same expression. Rewrite using `[Units.coe_prod, map_prod, map_prod]`. Simplify using `only [finTens_locIdele]`.
+
+Use `Eq.trans ?_ (map_prod (evalV E u) _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `complMap rfl (Neutral.B1.finiteSingle F v (algebraMap F _ (a : F)) (u.under (𝓞 F))) * algebraMap E _ 1 = ∏ w ∈ aboveF (L := E) F v, Neutral.B1.finiteSingle E w (algebraMap E _ (algebraMap F E a)) u`. Rewrite using `[map_one, mul_one]`. Distinguish the cases in `h : u.under (𝓞 F) = v`. Rewrite using `[Finset.prod_eq_single_of_mem u (mem_aboveF.2 h) fun w _ hw => finSingle_ne hw.symm _, finSingle_self]`.
+
+Substitute `h` using the available equality. Rewrite using `[finSingle_self, complMap_algebraMap]`. Rewrite using `[finSingle_ne h, map_one]`. Conclude with `(Finset.prod_eq_one fun w hw => finSingle_ne (fun e : u = w => h (e ▸ mem_aboveF.1 hw)) _).symm`.
+-/
 theorem ideleMap_localIdele (v : HeightOneSpectrum (𝓞 F)) (a : Fˣ) :
     ideleMap F E (localIdele F v (atFin v a)) = ∏ w ∈ aboveF (L := E) F v, locIdele F w (atFin w (upF F a)) := by
   refine Units.ext (tens_ext ?_ ((finAdEquiv F E).injective (FiniteAdeleRing.ext _ fun u => ?_)))
@@ -157,6 +219,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {c : (AE D)ˣ →* Circle}
 
+/- English proof (translation)
+Establish `key : ∀ y, IsUnitAt w y → finPart D (locIdele D.host.F w y : (AE D)ˣ) ∈ intAE D` using `fun y hy => (mem_int_iff _).2 fun P => by`. Rewrite using `[show finAdEquiv D.host.F D.host.E (finPart D (locIdele D.host.F w y : (AE D)ˣ)) = Neutral.B1.finiteSingle _ w y from finTens_locIdele w y]`. Distinguish the cases in `e : P = w`. Substitute `e` using the available equality. Rewrite using `[finSingle_self]`.
+
+Conclude with `hy.le`. Rewrite using `[finSingle_ne e, map_one]`. Introduce `y hy`. Establish `h1` using `h _ (infTens_locIdele w y) (key y hy) (by`. Rewrite using `[← map_inv]`.
+
+Use `key _ ?_` and prove the remaining obligations. Unfold `IsUnitAt at hy ⊢`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hy, inv_one])`. Conclude with `(congrArg Circle.toUnits h1).trans (map_one _)`.
+-/
 theorem unrAt_of_unramEverywhere (h : UnramEverywhere D c) (w : HeightOneSpectrum (𝓞 D.host.E)) : UnrAt c w := by
   have key : ∀ y, IsUnitAt w y → finPart D (locIdele D.host.F w y : (AE D)ˣ) ∈ intAE D := fun y hy =>
     (mem_int_iff _).2 fun P => by
@@ -179,6 +248,15 @@ variable {χ : HChar D.host.E}
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨e, he, h0, h1, h2⟩` from `GlobalTheory.PlaceIdem.exists_isPlIdem D (finAdEquiv D.host.F D.host.E) (fun x => (toFinAd_tmul 1 x).trans (by rw [map_one, one_mul])) mem_int_iff (fun a k P n ha => by`. Rewrite using `[finAdEquiv_tmul, map_one, mul_one, ← complMap_algebraMap (rfl : P.under (𝓞 D.host.F) = _), ← map_sub]`. Conclude with `GlobalTheory.AdeleBaseChange.locMap_valued P n _ ha) w`. Establish `key : ∀ k : D.host.Eˣ, locU he.1 k = locIdele D.host.F w (atFin w k)` using `fun k => by`. Use `eq_locIdele ?_ (FiniteAdeleRing.ext _ fun P => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `infPart D (1 + e * (incA D k - 1)) = 1`. Rewrite using `[RingHom.map_add, RingHom.map_mul, h0, zero_mul, add_zero, RingHom.map_one]`. Establish `e1 : finAdEquiv D.host.F D.host.E (finPart D (incA D k)) = algebraMap D.host.E _ (k : D.host.E)` using `(toFinAd_tmul 1 (k : D.host.E)).trans (by rw [map_one, one_mul])`. Express the relevant statement in the definitionally equal form `finAdEquiv D.host.F D.host.E (finPart D (1 + e * (incA D k - 1))) P = Neutral.B1.finiteSingle D.host.E w (algebraMap D.host.E _ (k : D.host.E)) P`. Rewrite using `[RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, RingEquiv.map_add, RingEquiv.map_mul, RingEquiv.map_sub, RingEquiv.map_one, e1]`.
+
+Express the relevant statement in the definitionally equal form `1 + finAdEquiv D.host.F D.host.E (finPart D e) P * (algebraMap D.host.E _ (k : D.host.E) - 1) = _`. Distinguish the cases in `hP : P = w`. Substitute `hP` using the available equality. Rewrite using `[h1, finSingle_self, one_mul, add_sub_cancel]`. Rewrite using `[h2 P hP, finSingle_ne hP, zero_mul, add_zero]`.
+
+Use `MonoidHom.ext fun x => Units.ext (congrFun ((GlobalTheory.Mem.Chr.Determ.denseRange_atFin w).equalizer (continuous_locChar h.1.1 w) (Units.continuous_val.comp (χ.2.1.comp (GlobalTheory.Mem.Chr.Determ.continuous_localIdele w))) (funext fun k => ?_)) x)` and prove the remaining obligations. Use `h.2 w e he k (locU he.1 k) rfl` as an intermediate fact. Rewrite `this` using `[key]`. Conclude with `this`.
+-/
 theorem locChar_eq_of_chrEq (h : ChrEq c χ) (w : HeightOneSpectrum (𝓞 D.host.E)) : locChar c w = χ.loc w := by
   obtain ⟨e, he, h0, h1, h2⟩ := GlobalTheory.PlaceIdem.exists_isPlIdem D (finAdEquiv D.host.F D.host.E)
     (fun x => (toFinAd_tmul 1 x).trans (by rw [map_one, one_mul])) mem_int_iff (fun a k P n ha => by
@@ -206,20 +284,32 @@ theorem locChar_eq_of_chrEq (h : ChrEq c χ) (w : HeightOneSpectrum (𝓞 D.host
   rw [key] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[UnrAt, locChar_eq_of_chrEq h]`. Both sides reduce to the same expression.
+-/
 theorem unrAt_iff_of_chrEq (h : ChrEq c χ) (w : HeightOneSpectrum (𝓞 D.host.E)) : UnrAt c w ↔ χ.UnrAt w := by
   rw [UnrAt, locChar_eq_of_chrEq h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[val, locChar_eq_of_chrEq h]`. Both sides reduce to the same expression.
+-/
 theorem val_eq_of_chrEq (h : ChrEq c χ) (w : HeightOneSpectrum (𝓞 D.host.E)) : val c w = χ.val w := by
   rw [val, locChar_eq_of_chrEq h]
   rfl
 
+/- English proof (translation)
+The claim follows from `funext fun w => by by_cases hu : χ.UnrAt w · rw [charFam_of_unrAt ((unrAt_iff_of_chrEq h w).2 hu), heckeFam_of_unrAt hu, val_eq_of_chrEq h] · rw [heckeFam_of_not_unrAt hu] exact if_neg (mt (unrAt_iff_of_chrEq h w).1 hu)`.
+-/
 theorem charFam_eq_of_chrEq (h : ChrEq c χ) : charFam c = heckeFam χ := funext fun w => by
   by_cases hu : χ.UnrAt w
   · rw [charFam_of_unrAt ((unrAt_iff_of_chrEq h w).2 hu), heckeFam_of_unrAt hu, val_eq_of_chrEq h]
   · rw [heckeFam_of_not_unrAt hu]
     exact if_neg (mt (unrAt_iff_of_chrEq h w).1 hu)
 
+/- English proof (translation)
+The claim follows from `funext fun s => by rw [charL, charFam_eq_of_chrEq h] rfl`.
+-/
 theorem charL_eq_of_chrEq (h : ChrEq c χ) (S : Set (HeightOneSpectrum (𝓞 D.host.F))) :
     charL c S = heckeL (above D.host.E S) χ := funext fun s => by
   rw [charL, charFam_eq_of_chrEq h]
@@ -233,10 +323,16 @@ open GlobalTheory.QuadSymbol (normGroup mem_normGroup_iff_form)
 
 variable {v : HeightOneSpectrum (𝓞 F)} {w w' : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`.
+-/
 theorem valued_alg (v : HeightOneSpectrum (𝓞 F)) (x : F) :
     Valued.v (algebraMap F (v.adicCompletion F) x) = v.valuation F x :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal` using `⟨rfl⟩`. Rewrite using `[← HeightOneSpectrum.valuation_liesOver E (w.under (𝓞 F)) w x, Ideal.ramificationIdx'_eq_ramificationIdx _ _ (w.under (𝓞 F)).ne_bot]`.
+-/
 theorem valuation_up (h : w.under (𝓞 F) = v) (x : F) :
     w.valuation E (algebraMap F E x) = v.valuation F x ^ w.asIdeal.ramificationIdx (𝓞 F) := by
   subst h
@@ -244,6 +340,11 @@ theorem valuation_up (h : w.under (𝓞 F) = v) (x : F) :
   rw [← HeightOneSpectrum.valuation_liesOver E (w.under (𝓞 F)) w x,
     Ideal.ramificationIdx'_eq_ramificationIdx _ _ (w.under (𝓞 F)).ne_bot]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `v.valuation_surjective F (Valued.v a)`. Establish `h0 : Valued.v a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Establish `hk'` using `(valued_alg v k).trans hk`. Establish `hk0 : algebraMap F (Fv F v) k ≠ 0` using `(Valuation.ne_zero_iff _).1 (hk' ▸ h0)`. Establish `h1 : Valued.v (complMap h (a / algebraMap F _ k)) ≤ 1` using `complMap_mem h ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (by rw [map_div₀, hk', div_self h0]))`.
+
+Establish `h2 : Valued.v (complMap h (algebraMap F _ k / a)) ≤ 1` using `complMap_mem h ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (by rw [map_div₀, hk', div_self h0]))`. Rewrite `h1`, `h2` using `[map_div₀, map_div₀, complMap_algebraMap, valued_alg, valuation_up h, hk]`. Conclude with `le_antisymm ((div_le_one₀ (zero_lt_iff.2 (pow_ne_zero _ h0))).1 h1) ((div_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ((map_ne_zero _).2 ha)))).1 h2)`.
+-/
 theorem valued_complMap (h : w.under (𝓞 F) = v) {a : Fv F v} (ha : a ≠ 0) :
     Valued.v (complMap h a) = Valued.v a ^ w.asIdeal.ramificationIdx (𝓞 F) := by
   obtain ⟨k, hk⟩ := v.valuation_surjective F (Valued.v a)
@@ -258,25 +359,45 @@ theorem valued_complMap (h : w.under (𝓞 F) = v) {a : Fv F v} (ha : a ≠ 0) :
   exact le_antisymm ((div_le_one₀ (zero_lt_iff.2 (pow_ne_zero _ h0))).1 h1)
     ((div_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ((map_ne_zero _).2 ha)))).1 h2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => HeightOneSpectrum.ext h, fun h => h ▸ rfl⟩`.
+-/
 theorem comap_eq_iff : w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal ↔ w.under (𝓞 F) = v :=
   ⟨fun h => HeightOneSpectrum.ext h, fun h => h ▸ rfl⟩
 
+/- English proof (translation)
+Simplify using `only [IsSplit, comap_eq_iff]`.
+-/
 theorem isSplit_iff : IsSplit (E := E) v ↔
     ∃ w w' : HeightOneSpectrum (𝓞 E), w ≠ w' ∧ w.under (𝓞 F) = v ∧ w'.under (𝓞 F) = v := by
   simp only [IsSplit, comap_eq_iff]
 
+/- English proof (translation)
+Simplify using `only [IsUnram, comap_eq_iff]`.
+-/
 theorem isUnram_iff : IsUnram (E := E) v ↔
     ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → w.asIdeal.ramificationIdx (𝓞 F) = 1 := by
   simp only [IsUnram, comap_eq_iff]
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext (v.isMaximal.eq_of_le (Ideal.comap_ne_top _ w.isPrime.ne_top) (Ideal.map_le_iff_le_comap.1 (le_of_eq h))).symm`.
+-/
 theorem under_eq_of_isInertAt (h : IsInertAt F E v w) : w.under (𝓞 F) = v :=
   HeightOneSpectrum.ext (v.isMaximal.eq_of_le (Ideal.comap_ne_top _ w.isPrime.ne_top)
     (Ideal.map_le_iff_le_comap.1 (le_of_eq h))).symm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Conclude with `hv (isSplit_iff.2 ⟨w, w', hne, h, h'⟩)`.
+-/
 theorem eq_of_not_isSplit (hv : ¬ IsSplit (E := E) v) (h : w.under (𝓞 F) = v) (h' : w'.under (𝓞 F) = v) : w = w' := by
   by_contra hne
   exact hv (isSplit_iff.2 ⟨w, w', hne, h, h'⟩)
 
+/- English proof (translation)
+Use `isUnram_iff.2 fun u hu => ?_` and prove the remaining obligations. Take `rfl` from `eq_of_not_isSplit (not_isSplit_of_isInertAt h) hu (under_eq_of_isInertAt h)`. Establish `: u.asIdeal.LiesOver v.asIdeal` using `⟨hu ▸ rfl⟩`. Establish `h' : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal = u.asIdeal` using `h`. Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal _ v.ne_bot]`.
+
+Assume the negation of the conclusion as `hne`. Use `(Ideal.ramificationIdx'_ne_one_iff h'.le).1 hne` as an intermediate fact. Rewrite `this` using `[h']`. Conclude with `absurd this (not_le_of_gt (Ideal.pow_lt_self _ u.ne_bot u.isPrime.ne_top 2 le_rfl))`.
+-/
 theorem isUnram_of_isInertAt (h : IsInertAt F E v w) : IsUnram (E := E) v := by
   refine isUnram_iff.2 fun u hu => ?_
   obtain rfl := eq_of_not_isSplit (not_isSplit_of_isInertAt h) hu (under_eq_of_isInertAt h)
@@ -288,6 +409,13 @@ theorem isUnram_of_isInertAt (h : IsInertAt F E v w) : IsUnram (E := E) v := by
   rw [h'] at this
   exact absurd this (not_le_of_gt (Ideal.pow_lt_self _ u.ne_bot u.isPrime.ne_top 2 le_rfl))
 
+/- English proof (translation)
+Establish `: Algebra.IsQuadraticExtension F E` using `{ finrank_eq_two' := h2 }`. Establish `hcard : Nat.card (E ≃ₐ[F] E) = 2` using `by rw [IsGalois.card_aut_eq_finrank, h2]`. Establish `: Nontrivial (E ≃ₐ[F] E)` using `Finite.one_lt_card_iff_nontrivial.1 (by omega)`. Take `⟨σ, hσ1⟩` from `exists_ne (1 : E ≃ₐ[F] E)`. Establish `hσ2 : σ * σ = 1`.
+
+Use `pow_card_eq_one' (x := σ)` as an intermediate fact. Rewrite `this` using `[hcard, pow_two]`. Then use the resulting hypothesis. Take `⟨δ, b, hδ, hb0, hb, hb1⟩` from `GlobalTheory.QuadNormBase.exists_basis F E (σ : E →ₐ[F] E) h2 (fun x => DFunLike.congr_fun hσ2 x) (by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Conclude with `hσ1 (AlgEquiv.ext h))`. Conclude with `⟨σ, δ, b, hσ1, fun h => hδ (h ▸ IsSquare.zero), hb0, hb, hb1⟩`.
+-/
 theorem exists_conj_basis (h2 : Module.finrank F E = 2) :
     ∃ (σ : E ≃ₐ[F] E) (δ : F) (b : Module.Basis (Fin 2) F E), σ ≠ 1 ∧ δ ≠ 0 ∧ b 0 = 1 ∧ σ (b 1) = -b 1 ∧
       b 1 * b 1 = algebraMap F E δ := by
@@ -309,6 +437,17 @@ section Basis
 
 variable {σ : E ≃ₐ[F] E} {δ : F} {b : Module.Basis (Fin 2) F E}
 
+/- English proof (translation)
+Take `⟨w, w', hne, h, h'⟩` from `isSplit_iff.1 hv`. Take `⟨y, hy⟩` from `(finAdEquiv F E).surjective (Neutral.B1.finiteSingle E w' 0)`. Establish `e1` using `finAdEquiv_apply h y`. Establish `e2` using `finAdEquiv_apply h' y`. Rewrite `e1` using `[hy, finSingle_ne hne]`.
+
+Rewrite `e2` using `[hy, finSingle_self]`. Generalize the expression as in `Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E) y = z at e1 e2`. Establish `h6` using `(Algebra.TensorProduct.basis (Fv F v) b).sum_repr z`. Simplify using `only [Fin.sum_univ_two, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, h0] at h6`. Generalize the expression as in `(Algebra.TensorProduct.basis (Fv F v) b).repr z 0 = p at h6`.
+
+Generalize the expression as in `(Algebra.TensorProduct.basis (Fv F v) b).repr z 1 = q at h6`. Substitute `h6` using the available equality. Rewrite `e1`, `e2` using `[map_add, toCompl_tmul, toCompl_tmul, map_one, mul_one]`. Establish `hq : q ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `e1`, `e2` using `[map_zero, zero_mul, add_zero]`. Rewrite `e1` using `[(map_eq_zero _).1 e2.symm, map_zero]`. Conclude with `one_ne_zero e1`. Use `⟨p / q, (complMap h').injective ?_⟩` and prove the remaining obligations. Establish `hq' : complMap h' q ≠ 0` using `(map_ne_zero _).2 hq`.
+
+Rewrite using `[complMap_algebraMap, ← h1, map_mul, map_mul, map_div₀, eq_neg_of_add_eq_zero_left e2.symm]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem isSquare_of_isSplit (h0 : b 0 = 1) (h1 : b 1 * b 1 = algebraMap F E δ) (hv : IsSplit (E := E) v) :
     IsSquare (algebraMap F (Fv F v) δ) := by
   obtain ⟨w, w', hne, h, h'⟩ := isSplit_iff.1 hv
@@ -335,6 +474,15 @@ theorem isSquare_of_isSplit (h0 : b 0 = 1) (h1 : b 1 * b 1 = algebraMap F E δ) 
   rw [complMap_algebraMap, ← h1, map_mul, map_mul, map_div₀, eq_neg_of_add_eq_zero_left e2.symm]
   field_simp
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, algebraMap E (w.adicCompletion E) (b 1) = complMap h s := by`. Take `⟨s, hs⟩` from `hs`. Establish `e` using `congrArg (complMap h) hs`. Rewrite `e` using `[complMap_algebraMap, ← h1, map_mul, map_mul]`. Break down `mul_self_eq_mul_self_iff.1 e with e | e` into its components or cases.
+
+Conclude with `⟨s, e⟩`. Conclude with `⟨-s, by rw [map_neg, e]⟩`. Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer E`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, algebraMap E (w.adicCompletion E) π = complMap h a := by`. Use `⟨algebraMap F _ (b.repr π 0) + algebraMap F _ (b.repr π 1) * s, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← b.sum_repr π]`. Rewrite using `[Fin.sum_univ_two, h0, Algebra.smul_def, Algebra.smul_def, mul_one, map_add, map_mul, hs, map_add, map_mul, complMap_algebraMap, complMap_algebraMap]`. Rewrite `hπ` using `[← valued_alg, ha]`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hπ` using `[map_zero, map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Rewrite `hπ` using `[valued_complMap h ha0, ← WithZero.exp_log (x := Valued.v a) ((Valuation.ne_zero_iff _).2 ha0), ← WithZero.exp_nsmul, WithZero.exp_inj, nsmul_eq_mul]`. Use `Int.eq_one_or_neg_one_of_mul_eq_neg_one hπ` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ramificationIdx_eq_one_of_isSquare (h0 : b 0 = 1) (h1 : b 1 * b 1 = algebraMap F E δ)
     (hs : IsSquare (algebraMap F (Fv F v) δ)) (h : w.under (𝓞 F) = v) : w.asIdeal.ramificationIdx (𝓞 F) = 1 := by
   obtain ⟨s, hs⟩ : ∃ s, algebraMap E (w.adicCompletion E) (b 1) = complMap h s := by
@@ -360,6 +508,11 @@ theorem ramificationIdx_eq_one_of_isSquare (h0 : b 0 = 1) (h1 : b 1 * b 1 = alge
   have := Int.eq_one_or_neg_one_of_mul_eq_neg_one hπ
   omega
 
+/- English proof (translation)
+Take `⟨u, hu, -⟩` from `GlobalTheory.Mem.Chr.existsUnique_conjPl σ.toRingEquiv w`. Take `rfl` from `eq_of_not_isSplit hv (((GlobalTheory.Mem.Chr.under_eq_iff_conjPl σ h2 hσ w u).2 (Or.inr hu)).trans h) h`. Establish `e : u.valuation E (σ (algebraMap F E p + algebraMap F E q * b 1)) = _` using `hu _`. Rewrite using `[← valuation_up h, pow_two (u.valuation E _)]`. Use `nth_rw 1 [← e]`.
+
+Rewrite using `[← map_mul (u.valuation E), map_add σ, map_mul σ, hb, σ.commutes, σ.commutes, map_sub, map_mul, ← h1, map_pow, map_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem valuation_form (h2 : Module.finrank F E = 2) (hσ : σ ≠ 1) (hb : σ (b 1) = -b 1)
     (h1 : b 1 * b 1 = algebraMap F E δ) (hv : ¬ IsSplit (E := E) v) (h : w.under (𝓞 F) = v) (p q : F) :
     v.valuation F (p ^ 2 - δ * q ^ 2) ^ w.asIdeal.ramificationIdx (𝓞 F) =
@@ -377,10 +530,18 @@ theorem valuation_form (h2 : Module.finrank F E = 2) (hσ : σ ≠ 1) (hb : σ (
 
 end Basis
 
+/- English proof (translation)
+Take `⟨σ, δ, b, -, -, h0, -, h1⟩` from `exists_conj_basis h2`. Conclude with `isUnram_iff.2 fun w h => ramificationIdx_eq_one_of_isSquare h0 h1 (isSquare_of_isSplit h0 h1 hv) h`.
+-/
 theorem isUnram_of_isSplit (h2 : Module.finrank F E = 2) (hv : IsSplit (E := E) v) : IsUnram (E := E) v := by
   obtain ⟨σ, δ, b, -, -, h0, -, h1⟩ := exists_conj_basis h2
   exact isUnram_iff.2 fun w h => ramificationIdx_eq_one_of_isSquare h0 h1 (isSquare_of_isSplit h0 h1 hv) h
 
+/- English proof (translation)
+Take `⟨σ, δ, b, -, hδ, h0, -, h1⟩` from `exists_conj_basis h2`. Take `⟨s, hs⟩` from `isSquare_of_isSplit h0 h1 hv`. Use `haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap (algebraMap F (Fv F v)).injective`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hδ ((map_eq_zero _).1 (hs.trans (mul_zero _)))`. Use `(mem_normGroup_iff_form b h0 h1).2 ⟨(x + 1) / 2, (x - 1) / (2 * s), ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_normGroup_of_isSplit (h2 : Module.finrank F E = 2) (hv : IsSplit (E := E) v) (x : (Fv F v)ˣ) :
     x ∈ normGroup F E (Fv F v) := by
   obtain ⟨σ, δ, b, -, hδ, h0, -, h1⟩ := exists_conj_basis h2
@@ -396,6 +557,15 @@ theorem mem_normGroup_of_isSplit (h2 : Module.finrank F E = 2) (hv : IsSplit (E 
 
 open scoped WithZeroTopology in
 
+/- English proof (translation)
+Take `⟨σ, δ, b, hσ, -, h0, hb, h1⟩` from `exists_conj_basis h2`. Take `⟨w, h⟩` from `(GlobalTheory.QNorm.places_over F E).2.1 v`. Rewrite using `[mem_normGroup_iff_form b h0 h1]`. Introduce and unpack `⟨p, q, e⟩`. Establish `hd` using `HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 F) (K := F) v`.
+
+Establish `ho : IsOpen ({WithZero.exp (-1 : ℤ)} : Set (WithZero (Multiplicative ℤ)))` using `WithZeroTopology.isOpen_iff.2 (Or.inl WithZero.exp_ne_zero.symm)`. Establish `hc : Continuous fun z : Fv F v × Fv F v => Valued.v (z.1 ^ 2 - algebraMap F (Fv F v) δ * z.2 ^ 2)` using `(Valued.continuous_valuation_of_surjective (v.valuedAdicCompletion_surjective F)).comp (by fun_prop)`. Take `⟨⟨p', q'⟩, hz⟩` from `(hd.prodMap hd).exists_mem_open (ho.preimage hc) ⟨(p, q), by`. Express the relevant statement in the definitionally equal form `Valued.v (p ^ 2 - algebraMap F (Fv F v) δ * q ^ 2) = _`. Rewrite using `[← e]`.
+
+Conclude with `hx⟩`. Use `replace hz : Valued.v (algebraMap F (Fv F v) p' ^ 2 - algebraMap F (Fv F v) δ * algebraMap F (Fv F v) q' ^ 2) = WithZero.exp (-1 : ℤ) := hz`. Rewrite `hz` using `[← map_pow, ← map_pow, ← map_mul, ← map_sub, valued_alg]`. Establish `h3` using `congrArg WithZero.log (valuation_form h2 hσ hb h1 hv h p' q')`. Rewrite `h3` using `[isUnram_iff.1 hu w h, pow_one, hz, WithZero.log_exp, WithZero.log_pow, nsmul_eq_mul]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_mem_normGroup_of_inert (h2 : Module.finrank F E = 2) (hv : ¬ IsSplit (E := E) v)
     (hu : IsUnram (E := E) v) {x : (Fv F v)ˣ} (hx : IsUnifAt v x) : x ∉ normGroup F E (Fv F v) := by
   obtain ⟨σ, δ, b, hσ, -, h0, hb, h1⟩ := exists_conj_basis h2
@@ -418,6 +588,11 @@ theorem not_mem_normGroup_of_inert (h2 : Module.finrank F E = 2) (hv : ¬ IsSpli
   rw [isUnram_iff.1 hu w h, pow_one, hz, WithZero.log_exp, WithZero.log_pow, nsmul_eq_mul] at h3
   omega
 
+/- English proof (translation)
+Distinguish the cases in `hv : IsSplit (E := E) v`. Conclude with `mem_normGroup_of_isSplit h2 hv x`. Establish `: Algebra.IsQuadraticExtension F E` using `{ finrank_eq_two' := h2 }`. Establish `h` using `(GlobalTheory.QuadSymbol.localCharacters F E).1 v x (atFin v (unif v))`. Rewrite using `[GlobalTheory.QuadSymbol.eta_eq_neg_one_iff.2 (not_mem_normGroup_of_inert h2 hv hu (unif_spec v)), GlobalTheory.QuadSymbol.eta_eq_neg_one_iff.2 (not_mem_normGroup_of_inert h2 hv hu (by`.
+
+Use `unif_spec v` as an intermediate fact. Unfold `IsUnifAt at this ⊢`. Rewrite `h` using `[Units.val_mul, map_mul, hx, one_mul, this]))]`. Conclude with `GlobalTheory.QuadSymbol.eta_eq_one_iff.1 (by simpa using h.symm)`.
+-/
 theorem mem_normGroup_of_isUnram (h2 : Module.finrank F E = 2) (hu : IsUnram (E := E) v) {x : (Fv F v)ˣ}
     (hx : IsUnitAt v x) : x ∈ normGroup F E (Fv F v) := by
   by_cases hv : IsSplit (E := E) v
@@ -431,6 +606,23 @@ theorem mem_normGroup_of_isUnram (h2 : Module.finrank F E = 2) (hu : IsUnram (E 
       rw [Units.val_mul, map_mul, hx, one_mul, this]))] at h
   exact GlobalTheory.QuadSymbol.eta_eq_one_iff.1 (by simpa using h.symm)
 
+/- English proof (translation)
+Take `⟨σ, δ, b, hσ, hδ, h0, hb, h1⟩` from `exists_conj_basis h2`. Establish `hv : ¬ IsSplit (E` using `E) v := fun h => hu (isUnram_of_isSplit h2 h)`. Choose the witnesses or unpack the hypotheses as in `⟨w, h, he⟩ : ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v ∧ w.asIdeal.ramificationIdx (𝓞 F) ≠ 1 := by`. Simplify `hu` using `only [isUnram_iff, not_forall, exists_prop]`. Take `⟨z, hz0, hz⟩` from `GlobalTheory.QNorm.exists_local_nonnorm F v _ ((map_ne_zero (algebraMap F (Fv F v))).2 hδ) fun hs => he (ramificationIdx_eq_one_of_isSquare h0 h1 hs h)`.
+
+Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer E`. Establish `h3` using `valuation_form h2 hσ hb h1 hv h (b.repr π 0) (b.repr π 1)`. Establish `h4 : algebraMap F E (b.repr π 0) + algebraMap F E (b.repr π 1) * b 1 = π` using `by conv_rhs => rw [← b.sum_repr π]`. Rewrite using `[Fin.sum_univ_two, h0, Algebra.smul_def, Algebra.smul_def, mul_one]`. Rewrite `h3` using `[h4, hπ]`.
+
+Use `set N := b.repr π 0 ^ 2 - δ * b.repr π 1 ^ 2 with hN`. Use `w.isPrime` as an intermediate fact. Establish `he0 : 0 < w.asIdeal.ramificationIdx (𝓞 F)` using `Ideal.ramificationIdx_pos _ _`. Establish `hN0 : v.valuation F N ≠ 0` using `fun h0 => by`. Rewrite `h3` using `[h0, zero_pow he0.ne']`.
+
+Conclude with `pow_ne_zero 2 WithZero.exp_ne_zero h3.symm`. Establish `hN1 : v.valuation F N = WithZero.exp (-1 : ℤ)`. Establish `h5` using `congrArg WithZero.log h3`. Rewrite `h5` using `[WithZero.log_pow, WithZero.log_pow, WithZero.log_exp, nsmul_eq_mul, nsmul_eq_mul]`. Rewrite using `[← WithZero.exp_log hN0]`.
+
+Use `congr 1`. Establish `h6 : (2 : ℤ) ≤ w.asIdeal.ramificationIdx (𝓞 F)` using `by omega`. Generalize the expression as in `WithZero.log (v.valuation F N) = m at h5`. Move the coercions through the operations in `at h5`. Establish `h7 : m < 0`.
+
+Assume the negation of the conclusion as `h8`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Set `n : (Fv F v)ˣ` to `atFin v (Units.mk0 N ((Valuation.ne_zero_iff _).1 hN0))`. Establish `hn : n ∈ normGroup F E (Fv F v)` using `(mem_normGroup_iff_form b h0 h1).2 ⟨algebraMap F _ (b.repr π 0), algebraMap F _ (b.repr π 1), by`.
+
+Rewrite using `[← map_pow (algebraMap F _), ← map_pow (algebraMap F _), ← map_mul, ← map_sub]`. Use the proof step `rfl⟩`. Establish `hnv : Valued.v (n : Fv F v) = WithZero.exp (-1 : ℤ)` using `(valued_alg v N).trans hN1`. Use `⟨Units.mk0 z hz0 * n ^ WithZero.log (Valued.v z), ?_, fun hm => hz ?_⟩` and prove the remaining obligations. Unfold `IsUnitAt`.
+
+Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hnv, ← WithZero.exp_zsmul, Units.val_mk0]`. Use `nth_rw 1 [← WithZero.exp_log (x := Valued.v z) ((Valuation.ne_zero_iff _).2 hz0)]`. Rewrite using `[← WithZero.exp_add]`. Simplify using the standard rewrite rules. Conclude with `(mem_normGroup_iff_form b h0 h1).1 ((Subgroup.mul_mem_cancel_right _ (zpow_mem hn _)).1 hm)`.
+-/
 theorem exists_unit_not_mem_normGroup (h2 : Module.finrank F E = 2) (hu : ¬ IsUnram (E := E) v) :
     ∃ x : (Fv F v)ˣ, IsUnitAt v x ∧ x ∉ normGroup F E (Fv F v) := by
   obtain ⟨σ, δ, b, hσ, hδ, h0, hb, h1⟩ := exists_conj_basis h2
@@ -486,6 +678,11 @@ open GlobalTheory.IdeleNormChar (normSign signToCircle finComp infComp)
 
 variable {v : HeightOneSpectrum (𝓞 F)} {w w' : HeightOneSpectrum (𝓞 E)} {η : (AF F)ˣ →* Circle}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∏ᶠ u : HeightOneSpectrum (𝓞 F), GlobalTheory.QuadSymbol.eta F E _ (finComp (localIdele F v x) u)) * ∏ u : InfinitePlace F, GlobalTheory.QuadSymbol.eta F E _ (infComp (localIdele F v x) u) = _`. Rewrite using `[finprod_eq_single _ v fun u hu => by`. Rewrite using `[show finComp (localIdele F v x) u = 1 from Units.ext (finSingle_ne hu _)]`. Conclude with `GlobalTheory.QuadSymbol.eta_eq_one_iff.2 (one_mem _),`. Use the proof step `Finset.prod_eq_one (f := fun u : InfinitePlace F => GlobalTheory.QuadSymbol.eta F E _ (infComp (localIdele F v x) u)) fun u _ => GlobalTheory.QuadSymbol.eta_eq_one_iff.2 (by`.
+
+Rewrite using `[show infComp (localIdele F v x) u = 1 from Units.ext rfl]`. Conclude with `one_mem _), mul_one,`. Use `show finComp (localIdele F v x) v = x from Units.ext (finSingle_self v _)]`.
+-/
 theorem normSign_localIdele [Algebra.IsQuadraticExtension F E] (x : (Fv F v)ˣ) :
     normSign E (localIdele F v x) = GlobalTheory.QuadSymbol.eta F E (Fv F v) x := by
   change (∏ᶠ u : HeightOneSpectrum (𝓞 F), GlobalTheory.QuadSymbol.eta F E _ (finComp (localIdele F v x) u)) *
@@ -499,6 +696,9 @@ theorem normSign_localIdele [Algebra.IsQuadraticExtension F E] (x : (Fv F v)ˣ) 
         exact one_mem _), mul_one,
     show finComp (localIdele F v x) v = x from Units.ext (finSingle_self v _)]
 
+/- English proof (translation)
+Use `GlobalTheory.IdeleNormChar.eq_signToCircle_comp _ η (fun a ha => ?_) h.2.2.2` and prove the remaining obligations. Take `⟨t, x, hx⟩` from `(GlobalTheory.IdeleNormChar.normSign_eq_one_iff E a).1 ha`. Rewrite using `[← div_mul_cancel a (GlobalTheory.QuadSymbol.toUnits F (AdeleRing (𝓞 F) F) t), map_mul, ← hx, h.2.2.1 x, one_mul]`. Conclude with `h.2.1 t`.
+-/
 theorem IsEta.eq_normSign [Algebra.IsQuadraticExtension F E] (h : IsEta F E η) :
     η = signToCircle.comp (normSign E) := by
   refine GlobalTheory.IdeleNormChar.eq_signToCircle_comp _ η (fun a ha => ?_) h.2.2.2
@@ -506,12 +706,18 @@ theorem IsEta.eq_normSign [Algebra.IsQuadraticExtension F E] (h : IsEta F E η) 
   rw [← div_mul_cancel a (GlobalTheory.QuadSymbol.toUnits F (AdeleRing (𝓞 F) F) t), map_mul, ← hx, h.2.2.1 x, one_mul]
   exact h.2.1 t
 
+/- English proof (translation)
+Establish `: Algebra.IsQuadraticExtension F E` using `{ finrank_eq_two' := h2 }`. Express the relevant statement in the definitionally equal form `Circle.toUnits (η (localIdele F v x)) = 1`. Rewrite using `[h.eq_normSign, MonoidHom.comp_apply, normSign_localIdele, GlobalTheory.QuadSymbol.eta_eq_one_iff.2 hx, map_one, map_one]`.
+-/
 theorem IsEta.loc_of_mem (h2 : Module.finrank F E = 2) (h : IsEta F E η) {x : (Fv F v)ˣ}
     (hx : x ∈ normGroup F E (Fv F v)) : (toHChar η h.isHeckeF).loc v x = 1 := by
   have : Algebra.IsQuadraticExtension F E := { finrank_eq_two' := h2 }
   change Circle.toUnits (η (localIdele F v x)) = 1
   rw [h.eq_normSign, MonoidHom.comp_apply, normSign_localIdele, GlobalTheory.QuadSymbol.eta_eq_one_iff.2 hx, map_one, map_one]
 
+/- English proof (translation)
+Establish `: Algebra.IsQuadraticExtension F E` using `{ finrank_eq_two' := h2 }`. Express the relevant statement in the definitionally equal form `Circle.toUnits (η (localIdele F v x)) = -1`. Rewrite using `[h.eq_normSign, MonoidHom.comp_apply, normSign_localIdele, GlobalTheory.QuadSymbol.eta_eq_neg_one_iff.2 hx]`. Conclude with `Units.ext (congrArg (fun z : Circle => (z : ℂ)) (if_neg (by decide) : (if (-1 : ℤˣ) = 1 then (1 : Circle) else -1) = -1))`.
+-/
 theorem IsEta.loc_of_not_mem (h2 : Module.finrank F E = 2) (h : IsEta F E η) {x : (Fv F v)ˣ}
     (hx : x ∉ normGroup F E (Fv F v)) : (toHChar η h.isHeckeF).loc v x = -1 := by
   have : Algebra.IsQuadraticExtension F E := { finrank_eq_two' := h2 }
@@ -520,6 +726,9 @@ theorem IsEta.loc_of_not_mem (h2 : Module.finrank F E = 2) (h : IsEta F E η) {x
   exact Units.ext (congrArg (fun z : Circle => (z : ℂ)) (if_neg (by decide) :
     (if (-1 : ℤˣ) = 1 then (1 : Circle) else -1) = -1))
 
+/- English proof (translation)
+Use `⟨fun hu => ?_, fun hu x hx => h.loc_of_mem h2 (mem_normGroup_of_isUnram h2 hu hx)⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hv`. Take `⟨x, hx, hn⟩` from `exists_unit_not_mem_normGroup h2 hv`. Use `congrArg Units.val ((hu x hx).symm.trans (h.loc_of_not_mem h2 hn))` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+-/
 theorem IsEta.unrAt_iff (h2 : Module.finrank F E = 2) (h : IsEta F E η) :
     (toHChar η h.isHeckeF).UnrAt v ↔ IsUnram (E := E) v := by
   refine ⟨fun hu => ?_, fun hu x hx => h.loc_of_mem h2 (mem_normGroup_of_isUnram h2 hu hx)⟩
@@ -528,6 +737,9 @@ theorem IsEta.unrAt_iff (h2 : Module.finrank F E = 2) (h : IsEta F E η) :
   have := congrArg Units.val ((hu x hx).symm.trans (h.loc_of_not_mem h2 hn))
   norm_num at this
 
+/- English proof (translation)
+Unfold `etaU`. Use `split_ifs with hv`. Conclude with `h.loc_of_mem h2 (mem_normGroup_of_isSplit h2 hv _)`. Conclude with `h.loc_of_not_mem h2 (not_mem_normGroup_of_inert h2 hv hu (unif_spec v))`.
+-/
 theorem IsEta.val_eq (h2 : Module.finrank F E = 2) (h : IsEta F E η) (hu : IsUnram (E := E) v) :
     (toHChar η h.isHeckeF).val v = etaU E v := by
   unfold etaU
@@ -535,13 +747,24 @@ theorem IsEta.val_eq (h2 : Module.finrank F E = 2) (h : IsEta F E η) (hu : IsUn
   · exact h.loc_of_mem h2 (mem_normGroup_of_isSplit h2 hv _)
   · exact h.loc_of_not_mem h2 (not_mem_normGroup_of_inert h2 hv hu (unif_spec v))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.pow k, fun a => by rw [MonoidHom.pow_apply, h.2 a, one_pow]⟩`.
+-/
 theorem IsHeckeF.pow (h : IsHeckeF F η) (k : ℕ) : IsHeckeF F (η ^ k) :=
   ⟨h.1.pow k, fun a => by rw [MonoidHom.pow_apply, h.2 a, one_pow]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem loc_pow (χ : HChar F) (k : ℕ) (x : (Fv F v)ˣ) : (χ ^ k).loc v x = χ.loc v x ^ k := rfl
 
 variable {μ : (AF F ⊗[F] E)ˣ →* Circle} {k : ℕ}
 
+/- English proof (translation)
+Take `⟨⟨η, hη⟩, h⟩` from `h`. Establish `h1` using `congrArg Circle.toUnits (h η hη (localIdele F v (atFin v (unif v))))`. Rewrite `h1` using `[ideleMap_localIdele, map_prod, map_prod, map_pow]`. Rewrite using `[← hη.val_eq h2 hv]`. Use `Eq.trans (Finset.prod_congr rfl fun w hw => ?_) h1` and prove the remaining obligations.
+
+Establish `hw` using `mem_aboveF.1 hw`. Use `((hμ w hw).locChar_eq_val ?_).symm` and prove the remaining obligations. Use `(valued_alg w (algebraMap F E (unif v : Fˣ))).trans ?_` and prove the remaining obligations. Rewrite using `[valuation_up hw, isUnram_iff.1 hv w hw, pow_one, ← valued_alg]`. Conclude with `unif_spec v`.
+-/
 theorem ResEta.prod_val (h2 : Module.finrank F E = 2) (h : ResEta F E μ k) (hv : IsUnram (E := E) v)
     (hμ : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → UnrAt μ w) :
     ∏ w ∈ aboveF (L := E) F v, val μ w = etaU E v ^ k := by
@@ -556,6 +779,13 @@ theorem ResEta.prod_val (h2 : Module.finrank F E = 2) (h : ResEta F E μ k) (hv 
   rw [valuation_up hw, isUnram_iff.1 hv w hw, pow_one, ← valued_alg]
   exact unif_spec v
 
+/- English proof (translation)
+Establish `hv : IsSplit (E` using `E) v := isSplit_iff.2 ⟨w, w', hne, hw, hw'⟩`. Take `⟨σ, -, -, hσ, -⟩` from `exists_conj_basis h2`. Establish `hc` using `((GlobalTheory.Mem.Chr.under_eq_iff_conjPl σ h2 hσ w w').1 (hw'.trans hw.symm)).resolve_left hne.symm`. Establish `key : ∀ u : HeightOneSpectrum (𝓞 E), u.under (𝓞 F) = v → u = w ∨ u = w'` using `fun u hu => ((GlobalTheory.Mem.Chr.under_eq_iff_conjPl σ h2 hσ w u).1 (hu.trans hw.symm)).imp_right fun h1 => (GlobalTheory.Mem.Chr.existsUnique_conjPl _ w).unique h1 hc`. Establish `e : aboveF (L` using `E) F v = {w, w'} := by`.
+
+Use extensionality with `u`. Rewrite using `[mem_aboveF, Finset.mem_insert, Finset.mem_singleton]`. Apply the tactic sequence `exact ⟨key u, by rintro (rfl | rfl) <;> assumption⟩`. Use `h.prod_val h2 (isUnram_of_isSplit h2 hv) fun u hu => by` as an intermediate fact. Apply the tactic sequence `rcases key u hu with rfl | rfl <;> assumption`.
+
+Rewrite `this` using `[e, Finset.prod_pair hne, etaU, if_pos hv, one_pow]`. Then use the resulting hypothesis.
+-/
 theorem ResEta.val_mul_val (h2 : Module.finrank F E = 2) (h : ResEta F E μ k) (hne : w ≠ w')
     (hw : w.under (𝓞 F) = v) (hw' : w'.under (𝓞 F) = v) (hu : UnrAt μ w) (hu' : UnrAt μ w') :
     val μ w * val μ w' = 1 := by
@@ -574,6 +804,11 @@ theorem ResEta.val_mul_val (h2 : Module.finrank F E = 2) (h : ResEta F E μ k) (
     rcases key u hu with rfl | rfl <;> assumption
   rwa [e, Finset.prod_pair hne, etaU, if_pos hv, one_pow] at this
 
+/- English proof (translation)
+Establish `hv` using `not_isSplit_of_isInertAt hw`. Establish `key : ∀ u : HeightOneSpectrum (𝓞 E), u.under (𝓞 F) = v → u = w` using `fun u hu => eq_of_not_isSplit hv hu (under_eq_of_isInertAt hw)`. Establish `e : aboveF (L` using `E) F v = {w} := by`. Use extensionality with `u`. Rewrite using `[mem_aboveF, Finset.mem_singleton]`.
+
+Conclude with `⟨key u, fun h => h ▸ under_eq_of_isInertAt hw⟩`. Use `h.prod_val h2 (isUnram_of_isInertAt hw) fun u h1 => key u h1 ▸ hu` as an intermediate fact. Rewrite `this` using `[e, Finset.prod_singleton, etaU, if_neg hv]`. Then use the resulting hypothesis.
+-/
 theorem ResEta.val_of_isInertAt (h2 : Module.finrank F E = 2) (h : ResEta F E μ k) (hw : IsInertAt F E v w)
     (hu : UnrAt μ w) : val μ w = (-1) ^ k := by
   have hv := not_isSplit_of_isInertAt hw

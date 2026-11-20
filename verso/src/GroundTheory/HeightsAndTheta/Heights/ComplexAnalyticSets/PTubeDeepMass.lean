@@ -13,11 +13,17 @@ open scoped ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hn : Measurable fun z : ℂ => ‖z‖ ^ 2` using `(continuous_norm.pow 2).measurable`. Conclude with `Measurable.ite (measurableSet_lt hn.log measurable_const) (hn.mul (hn.log.pow_const 2)).inv measurable_const`.
+-/
 theorem measurable_poincareDeepWeight : Measurable poincareDeepWeight := by
   have hn : Measurable fun z : ℂ => ‖z‖ ^ 2 := (continuous_norm.pow 2).measurable
   exact Measurable.ite (measurableSet_lt hn.log measurable_const) (hn.mul (hn.log.pow_const 2)).inv
     measurable_const
 
+/- English proof (translation)
+The claim follows from `|(Metric.closedBall 0 R).indicator (fun x => tubeWeight P (A *ᵥ x)) x * ReciprocityTheory.AnForm.maDens (fun k => vecCons (fun x => logAbsSq P (A *ᵥ x) ^ 2 / 2) (fun _ => euclPot) k ∘ s) y| = (Metric.closedBall (0 : Fin n → ℂ) R).indicator (fun _ => (1 : ℝ)) x * ∑ I : Fin d → Fin …`.
+-/
 theorem tubeDeep_term (hR : TubeDeepRankOne.Statement) {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin (d + 1)) (Fin n) ℂ} {P : MvPolynomial (Fin (d + 1)) ℂ} {R : ℝ} {y : Fin (d + 1) → ℂ}
     {x : Fin n → ℂ} {s : (Fin (d + 1) → ℂ) → Fin n → ℂ} (hx : x ∈ fibre J A y) (hs : IsSheetAt J A x s)
@@ -54,6 +60,19 @@ theorem tubeDeep_term (hR : TubeDeepRankOne.Statement) {n d : ℕ} {J : Ideal (M
     field_simp
   · simp [Set.indicator_of_notMem hxR]
 
+/- English proof (translation)
+Introduce `n d J A P R hJ hdim hA hP`. Establish `hc0 : 0 ≤ (2 / Real.pi) ^ (d + 1)` using `by positivity`. Use `set g : (Fin (d + 1) → ℂ) → ℝ := fun z => (2 / Real.pi) ^ (d + 1) * poincareDeepWeight (z 0) with hg`. Apply the tactic sequence `have hg0 : ∀ z, 0 ≤ g z := fun z => mul_nonneg hc0 (by unfold poincareDeepWeight; split_ifs <;> positivity)`. Establish `hgm : Measurable g` using `measurable_const.mul (measurable_poincareDeepWeight.comp (measurable_pi_apply 0))`.
+
+Establish `hl : Measurable (logAbsSq P)` using `((continuous_norm.comp (MvPolynomial.continuous_eval P)).pow 2).measurable.log`. Establish `hF : ∀ y, {y | logAbsSq P y < -Real.exp 1}.indicator (tubeDens J A P R (fun _ => euclPot)) y = sheetSum J A (fun x s => (Metric.closedBall (0 : Fin n → ℂ) R).indicator (fun _ => (1 : ℝ)) x * ∑ I : Fin d → Fin n, ‖deepJacDet P s I y‖ ^ 2 * g (deepMap P s I y)) y`. Introduce `y`. Distinguish the cases in `hy : logAbsSq P y < -Real.exp 1`. Rewrite using `[Set.indicator_of_mem (show y ∈ {y | logAbsSq P y < -Real.exp 1} from hy), tubeDens, chartAbsDens, sheetSum, sheetSum]`.
+
+Use `finsum_congr fun x => finsum_congr fun hx => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `tubeDeep_term hR hx h.choose_spec hy`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show y ∉ {y | logAbsSq P y < -Real.exp 1} from hy)]`.
+
+Establish `hw0 : ∀ (s : (Fin (d + 1) → ℂ) → Fin n → ℂ) (I : Fin d → Fin n), g (deepMap P s I y) = 0`. Introduce `s I`. Simplify using `only [hg, deepMap, Matrix.cons_val_zero, poincareDeepWeight]`. Conclude with `mul_eq_zero_of_right _ (if_neg hy)`. Simplify using `[sheetSum, hw0]`.
+
+Take `⟨N, hN⟩` from `hC n d J A P R hJ hdim hA`. Use `⟨((measurable_tubeDens hA P R _).indicator (measurableSet_lt hl measurable_const)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hnn : ∀ y, 0 ≤ {y | logAbsSq P y < -Real.exp 1}.indicator (tubeDens J A P R (fun _ => euclPot)) y` using `fun y => Set.indicator_nonneg (fun y _ => tubeDens_nonneg J A P R _ y) y`. Use `show ∫⁻ y, ‖{y | logAbsSq P y < -Real.exp 1}.indicator (tubeDens J A P R (fun _ => euclPot)) y‖ₑ < ⊤`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `congrArg _ (lintegral_congr fun z => ENNReal.ofReal_mul hc0)`. Use `_ < ⊤ := ENNReal.mul_lt_top (ENNReal.natCast_lt_top N) (ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hW d R))`.
+-/
 theorem TubeDeepMass.proof (hR : TubeDeepRankOne.Statement) (hC : TubeDeepAreaCount.Statement)
     (hW : TubeDeepWeightMass.Statement) : TubeDeepMass.Statement := by
   intro n d J A P R hJ hdim hA hP

@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.RowVal
 
+/- English proof (translation)
+Establish `h : ∀ u, heisO ψ S T u (a • f) = a • heisO ψ S T u f` using `fun u => by`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `comb`.
+
+Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun u _ => by rw [h, smul_comm]`.
+-/
 theorem comb_smul_heis {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T →₀ ℂ) (a : ℂ) (f : WO S T → ℂ) :
     comb ψ S T c (a • f) = a • comb ψ S T c f := by
   have h : ∀ u, heisO ψ S T u (a • f) = a • heisO ψ S T u f := fun u => by
@@ -24,6 +29,13 @@ theorem comb_smul_heis {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (
   rw [Finset.smul_sum]
   exact Finset.sum_congr rfl fun u _ => by rw [h, smul_comm]
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨v, hv, κ, z, hz, hcol⟩` from `GlobalTheory.T.exists_columnUnitVacuaFamily_moved large₂ F hS ch hIs`. Use `choose κ' hκ' using fun i : Fin D.R.m => GlobalTheory.T.lastRow_moved_vacuum_eq_unit_mul_chosen large₂ F hS ch hIs i i.2`. Use `⟨v, hv, κ, fun i => if h : i < D.R.m then κ' ⟨i, h⟩ else 1, z, hz, fun t a β τ c hSum hExp hC d hd => ⟨fun j => ?_, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `hvec` using `((hSum.vec β τ hExp d hd).1 j)`.
+
+Take `⟨e, -, hd1, -⟩` from `hExp`. Establish `hz1` using `((hd1 d hd).1 j).2.2`. Rewrite using `[GlobalTheory.T.movedFiniteDatum_eq_heisenbergCombination_vacuum large₂ F hS ch hIs t (.top t j) (show DefPair D.R.m (Pair.top t (j : ℕ) : Pair T) from j.2) (d.1 j) ((c d).1 j) hz1 hvec ((hC d hd).1 j), hcol t j j.2, comb_smul_heis]`. Establish `hvec` using `((hSum.vec β τ hExp d hd).2 i)`. Take `⟨e, -, hd1, -⟩` from `hExp`.
+
+Establish `hz1` using `((hd1 d hd).2 i).2.2`. Rewrite using `[GlobalTheory.T.movedFiniteDatum_eq_heisenbergCombination_vacuum large₂ F hS ch hIs t (.chi i D.R.m) (show DefPair D.R.m (Pair.chi (i : ℕ) D.R.m : Pair T) from ⟨i.2, rfl⟩) (d.2 i) ((c d).2 i) hz1 hvec ((hC d hd).2 i), hκ' i, comb_smul_heis]`. Simplify using `only [dif_pos i.2, combR]`.
+-/
 theorem movedAt_big : Big fun ch => MovedAt ch := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs _ => ?_⟩⟩
   obtain ⟨v, hv, κ, z, hz, hcol⟩ := GlobalTheory.T.exists_columnUnitVacuaFamily_moved large₂ F hS ch hIs

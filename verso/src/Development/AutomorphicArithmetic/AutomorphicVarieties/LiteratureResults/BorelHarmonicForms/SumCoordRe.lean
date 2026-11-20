@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.NotI
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h` using `congrArg Multiplicative.toAdd (GlobalTheory.GKCoh.Tests.prod_coord (M := Multiplicative ℂ) Multiplicative.ofAdd z)`. Simplify using `only [toAdd_prod, toAdd_mul, toAdd_ofAdd, Complex.add_conj] at h`. Rewrite using `[h, Finset.mul_sum, Complex.ofReal_sum]`.
+-/
 private theorem sum_coord_re {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (z : Cinf E) :
     ∑ τ : E →+* ℂ, coord τ z = ((2 * ∑ w : InfinitePlace E, (z w).re : ℝ) : ℂ) := by
   have h := congrArg Multiplicative.toAdd
@@ -14,6 +17,13 @@ private theorem sum_coord_re {E : Type} [Field E] [NumberField E] [IsTotallyComp
   simp only [toAdd_prod, toAdd_mul, toAdd_ofAdd, Complex.add_conj] at h
   rw [h, Finset.mul_sum, Complex.ofReal_sum]
 
+/- English proof (translation)
+Introduce `E _ _ _ a _ r`. Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E (r / (2 * ((a : ℝ) * Fintype.card (InfinitePlace E))))`. Use `⟨_, ⟨_, hν⟩, fun X φ => ?_⟩` and prove the remaining obligations. Rewrite using `[lie_mulChi, GlobalTheory.CuspRep.AlgExpo.dchi_eq_sum]`. Simplify using `only [(GlobalTheory.CuspRep.InfType.expo_of_infType E _).2.1 _ hν, ← Finset.mul_sum]`.
+
+Rewrite using `[sum_coord_re, ← Complex.ofReal_mul]`. Establish `e : ell E a X = (∑ w : InfinitePlace E, ((Matrix.of X).trace w).re) / ((a : ℝ) * Fintype.card (InfinitePlace E))`. Simplify using `[ell, Matrix.trace]`. Rewrite using `[e]`. Use `congr 4`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Lit.Bor.twEx :
     UpperTheory.V.Lit.Bor.TwEx := by
   intro E _ _ _ a _ r

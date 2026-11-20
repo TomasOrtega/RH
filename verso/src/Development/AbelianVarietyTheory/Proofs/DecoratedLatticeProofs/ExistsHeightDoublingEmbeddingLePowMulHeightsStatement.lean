@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Cont.HeightIo.height_io_bound | exact GlobalTheory.Cont.HeightIo.height_io_bound | (intros; apply GlobalTheory.Cont.HeightIo.height_io_bound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_height_doublingEmbedding_le_pow_mul_heights : ∀ (D : D7) (V : HSp D), ∃ (C : ℝ) (c : ℕ), ∀ g₁ g₂ : GA D V,
     GlobalTheory.Grow.height (dblSp V) (io V (g₁, g₂)) ≤ C * (GlobalTheory.Grow.height V g₁ * GlobalTheory.Grow.height V g₂) ^ c := by
   first | exact @GlobalTheory.Cont.HeightIo.height_io_bound | exact GlobalTheory.Cont.HeightIo.height_io_bound | (intros; apply GlobalTheory.Cont.HeightIo.height_io_bound <;> assumption)

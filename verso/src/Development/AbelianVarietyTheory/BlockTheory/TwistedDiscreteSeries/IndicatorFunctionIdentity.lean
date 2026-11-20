@@ -12,6 +12,9 @@ open GlobalTheory.SplitWeil GlobalTheory.LatPair
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
+/- English proof (translation)
+Establish `e : (stdLat k n : Set (n → k)) = Set.univ.pi fun _ => (𝒪[k] : Set k)`. Use extensionality with `x`. Simplify using `[mem_stdLat]`. Rewrite using `[e]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_int k`.
+-/
 private lemma isOpen_stdLat : IsOpen (stdLat k n : Set (n → k)) := by
   have e : (stdLat k n : Set (n → k)) = Set.univ.pi fun _ => (𝒪[k] : Set k) := by
     ext x
@@ -19,6 +22,11 @@ private lemma isOpen_stdLat : IsOpen (stdLat k n : Set (n → k)) := by
   rw [e]
   exact isOpen_set_pi Set.finite_univ fun _ _ => isOpen_int k
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `exists_smul_lat (stdLat k n) L`. Establish `e : ((g • stdLat k n : Submodule 𝒪[k] (n → k)) : Set (n → k)) = (fun x => (g⁻¹ : GL n k).val *ᵥ x) ⁻¹' (stdLat k n : Set (n → k))`. Use extensionality with `x`. Conclude with `mem_smul_iff`. Rewrite using `[e]`.
+
+Conclude with `isOpen_stdLat.preimage (Continuous.matrix_mulVec continuous_const continuous_id)`.
+-/
 theorem isOpen_lat (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] : IsOpen (L : Set (n → k)) := by
   obtain ⟨g, rfl⟩ := exists_smul_lat (stdLat k n) L
   have e : ((g • stdLat k n : Submodule 𝒪[k] (n → k)) : Set (n → k)) =
@@ -28,6 +36,15 @@ theorem isOpen_lat (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] : IsOpen (L
   rw [e]
   exact isOpen_stdLat.preimage (Continuous.matrix_mulVec continuous_const continuous_id)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H i j`. Establish `h1 : (Pi.single j 1 : n' → k) ∈ stdLat k n'`. Rewrite using `[mem_stdLat]`. Introduce `l`.
+
+Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `h2` using `mem_stdLat.1 (H _ h1) i`.
+
+Simplify `h2` using `[Matrix.mulVec_single_one]`. Introduce `H y hy`. Rewrite `hy`, the goal using `[mem_stdLat]`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Conclude with `sum_mem fun j _ => mul_mem (H i j) (hy j)`.
+-/
 theorem maps_std_iff (x : Matrix n n' k) :
     (∀ y ∈ stdLat k n', x *ᵥ y ∈ stdLat k n) ↔ ∀ i j, x i j ∈ 𝒪[k] := by
   constructor
@@ -47,6 +64,13 @@ theorem maps_std_iff (x : Matrix n n' k) :
     simp only [Matrix.mulVec, dotProduct]
     exact sum_mem fun j _ => mul_mem (H i j) (hy j)
 
+/- English proof (translation)
+Establish `key : ∀ y : n' → k, ((h⁻¹ : GL n k).val * x * g.val) *ᵥ y = (h⁻¹ : GL n k) • (x *ᵥ (g • y))`. Introduce `y`. Simplify using `only [Units.smul_def, Matrix.smul_eq_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Prove the components needed by the constructor for the conclusion. Introduce `H y hy`.
+
+Rewrite using `[key, ← mem_smul_iff]`. Conclude with `H _ (Submodule.smul_mem_pointwise_smul y g S hy)`. Introduce `H y hy`. Rewrite `hy`, the goal using `[mem_smul_iff]`. Establish `h1` using `H _ hy`.
+
+Rewrite `h1` using `[key, smul_inv_smul]`. Conclude with `h1`.
+-/
 theorem maps_smul_iff (g : GL n' k) (h : GL n k) (S : Submodule 𝒪[k] (n' → k)) (L : Submodule 𝒪[k] (n → k))
     (x : Matrix n n' k) :
     (∀ y ∈ g • S, x *ᵥ y ∈ h • L) ↔ ∀ y ∈ S, ((h⁻¹ : GL n k).val * x * g.val) *ᵥ y ∈ L := by
@@ -63,6 +87,11 @@ theorem maps_smul_iff (g : GL n' k) (h : GL n k) (S : Submodule 𝒪[k] (n' → 
     rw [key, smul_inv_smul] at h1
     exact h1
 
+/- English proof (translation)
+Establish `e : {x : Matrix n n' k | ∀ i j, x i j ∈ 𝒪[k]} = Set.univ.pi fun _ : n => Set.univ.pi fun _ : n' => (𝒪[k] : Set k)`. Use extensionality with `x`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i (Set.mem_univ _) j (Set.mem_univ _)⟩`. Establish `hc : IsClosed (𝒪[k] : Set k)` using `(𝒪[k]).toAddSubgroup.isClosed_of_isOpen (isOpen_int k)`. Rewrite using `[e]`.
+
+Conclude with `⟨isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_int k, isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_int k, isClosed_set_pi fun _ _ => isClosed_set_pi fun _ _ => hc⟩`.
+-/
 private lemma isCompact_isOpen_isClosed_integral_matrices : IsCompact {x : Matrix n n' k | ∀ i j, x i j ∈ 𝒪[k]} ∧
     IsOpen {x : Matrix n n' k | ∀ i j, x i j ∈ 𝒪[k]} ∧ IsClosed {x : Matrix n n' k | ∀ i j, x i j ∈ 𝒪[k]} := by
   have e : {x : Matrix n n' k | ∀ i j, x i j ∈ 𝒪[k]} =
@@ -75,6 +104,11 @@ private lemma isCompact_isOpen_isClosed_integral_matrices : IsCompact {x : Matri
     isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_int k,
     isClosed_set_pi fun _ _ => isClosed_set_pi fun _ _ => hc⟩
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `exists_smul_lat (stdLat k n') S`. Take `⟨h, rfl⟩` from `exists_smul_lat (stdLat k n) L`. Use `⟨g, h, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(∀ y ∈ g • stdLat k n', x *ᵥ y ∈ h • stdLat k n) ↔ ∀ i j, ((h⁻¹ : GL n k).val * x * g.val) i j ∈ 𝒪[k]`.
+
+Rewrite using `[maps_smul_iff, maps_std_iff]`.
+-/
 private lemma exists_sideMul_preimage_integral (S : Submodule 𝒪[k] (n' → k)) (L : Submodule 𝒪[k] (n → k)) [S.IsLattice k]
     [L.IsLattice k] : ∃ (g : GL n' k) (h : GL n k), {x : Matrix n n' k | ∀ y ∈ S, x *ᵥ y ∈ L} =
       (sideMul g h) ⁻¹' {x : Matrix n n' k | ∀ i j, x i j ∈ 𝒪[k]} := by
@@ -86,12 +120,22 @@ private lemma exists_sideMul_preimage_integral (S : Submodule 𝒪[k] (n' → k)
     ∀ i j, ((h⁻¹ : GL n k).val * x * g.val) i j ∈ 𝒪[k]
   rw [maps_smul_iff, maps_std_iff]
 
+/- English proof (translation)
+Take `⟨g, h, e⟩` from `exists_sideMul_preimage_integral S L`. Rewrite using `[e]`. Conclude with `⟨(sideMul g h).isCompact_preimage.2 isCompact_isOpen_isClosed_integral_matrices.1, isCompact_isOpen_isClosed_integral_matrices.2.1.preimage (sideMul g h).continuous⟩`.
+-/
 theorem hom_lat (S : Submodule 𝒪[k] (n' → k)) (L : Submodule 𝒪[k] (n → k)) [S.IsLattice k] [L.IsLattice k] :
     IsCompact {x : Matrix n n' k | ∀ y ∈ S, x *ᵥ y ∈ L} ∧ IsOpen {x : Matrix n n' k | ∀ y ∈ S, x *ᵥ y ∈ L} := by
   obtain ⟨g, h, e⟩ := exists_sideMul_preimage_integral S L
   rw [e]
   exact ⟨(sideMul g h).isCompact_preimage.2 isCompact_isOpen_isClosed_integral_matrices.1, isCompact_isOpen_isClosed_integral_matrices.2.1.preimage (sideMul g h).continuous⟩
 
+/- English proof (translation)
+Establish `key : Maps P Q z ↔ Maps P Q x`. Rewrite using `[maps_iff_hasVal, maps_iff_hasVal]`. Use `forall_congr' fun y => forall_congr' fun a => imp_congr_right fun hy => ?_` and prove the remaining obligations. Establish `hd : Q.HasVal ((z - x) *ᵥ y) 0` using `Pair.mem_ker.1 (hz y hy.mem)`. Rewrite `hd` using `[Matrix.sub_mulVec]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h1`. Simplify using `using h1.sub hd`. Introduce `h1`. Simplify using `using h1.add hd`.
+
+Unfold `phiOne`. Distinguish the cases in `hx : Maps P Q x`. Rewrite using `[if_pos (key.2 hx), if_pos hx]`. Rewrite using `[if_neg (mt key.1 hx), if_neg hx]`.
+-/
 private lemma phiOne_congr_of_sub_mulVec_mem_ker {P : Pair k n'} {Q : Pair k n} {x z : Matrix n n' k}
     (hz : ∀ y ∈ P.lat, (z - x) *ᵥ y ∈ Q.ker) : phiOne P Q z = phiOne P Q x := by
   have key : Maps P Q z ↔ Maps P Q x := by
@@ -109,12 +153,24 @@ private lemma phiOne_congr_of_sub_mulVec_mem_ker {P : Pair k n'} {Q : Pair k n} 
   · rw [if_pos (key.2 hx), if_pos hx]
   · rw [if_neg (mt key.1 hx), if_neg hx]
 
+/- English proof (translation)
+Take `⟨g, h, e⟩` from `exists_sideMul_preimage_integral S L`. Rewrite using `[e]`. Conclude with `isCompact_isOpen_isClosed_integral_matrices.2.2.preimage (sideMul g h).continuous`.
+-/
 private lemma isClosed_setOf_mulVec_mem (S : Submodule 𝒪[k] (n' → k)) (L : Submodule 𝒪[k] (n → k)) [S.IsLattice k]
     [L.IsLattice k] : IsClosed {x : Matrix n n' k | ∀ y ∈ S, x *ᵥ y ∈ L} := by
   obtain ⟨g, h, e⟩ := exists_sideMul_preimage_integral S L
   rw [e]
   exact isCompact_isOpen_isClosed_integral_matrices.2.2.preimage (sideMul g h).continuous
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `IsLocallyConstant (phiOne P Q) ∧ HasCompactSupport (phiOne P Q)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hH0 : {d : Matrix n n' k | ∀ y ∈ P.lat, d *ᵥ y ∈ Q.ker} ∈ nhds (0 : Matrix n n' k)`.
+
+Use `(hom_lat P.lat Q.ker).2.mem_nhds ?_` and prove the remaining obligations. Introduce `y _`. Rewrite using `[Matrix.zero_mulVec]`. Conclude with `zero_mem _`. Establish `ht : Filter.Tendsto (fun z : Matrix n n' k => z - x) (nhds x) (nhds 0)`.
+
+Simplify using `using (continuous_sub_right x).tendsto x`. Use `filter_upwards [ht hH0] with z hz`. Conclude with `phiOne_congr_of_sub_mulVec_mem_ker hz`. Use `HasCompactSupport.intro' (hom_lat P.lat Q.lat).1 (isClosed_setOf_mulVec_mem P.lat Q.lat) fun x hx => ?_` and prove the remaining obligations. Unfold `phiOne`.
+
+Rewrite using `[if_neg]`. Introduce and unpack `⟨hm, -⟩`. Conclude with `hx hm`.
+-/
 theorem phiOne_mem (P : Pair k n') (Q : Pair k n) : phiOne P Q ∈ SB (Matrix n n' k) := by
   change IsLocallyConstant (phiOne P Q) ∧ HasCompactSupport (phiOne P Q)
   refine ⟨?_, ?_⟩
@@ -137,6 +193,11 @@ theorem phiOne_mem (P : Pair k n') (Q : Pair k n) : phiOne P Q ∈ SB (Matrix n 
 
 def phiOneSB (P : Pair k n') (Q : Pair k n) : SB (Matrix n n' k) := ⟨phiOne P Q, phiOne_mem P Q⟩
 
+/- English proof (translation)
+Set `M : Matrix n n 𝒪[k]` to `fun i j => ⟨u.val i j, hu i j⟩`. Establish `e : u.val = (𝒪[k]).subtype.mapMatrix M`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e, ← RingHom.map_det]`.
+
+Conclude with `(M.det).2`.
+-/
 private lemma det_mem_of_integral_entries {u : GL n k} (hu : ∀ i j, u.val i j ∈ 𝒪[k]) : u.val.det ∈ 𝒪[k] := by
   let M : Matrix n n 𝒪[k] := fun i j => ⟨u.val i j, hu i j⟩
   have e : u.val = (𝒪[k]).subtype.mapMatrix M := by
@@ -145,6 +206,17 @@ private lemma det_mem_of_integral_entries {u : GL n k} (hu : ∀ i j, u.val i j 
   rw [e, ← RingHom.map_det]
   exact (M.det).2
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `exists_smul_lat (stdLat k n) L`. Take `⟨u, hu⟩ : ∃ u : GL n k, u = g⁻¹ * h * g` from `⟨_, rfl⟩`. Establish `hfix : u • stdLat k n = stdLat k n`. Rewrite using `[hu, mul_smul, mul_smul, hh, inv_smul_smul]`. Establish `hint : ∀ w : GL n k, w • stdLat k n = stdLat k n → ∀ i j, w.val i j ∈ 𝒪[k]`.
+
+Introduce `w hw`. Use `(maps_std_iff w.val).1 ?_` and prove the remaining obligations. Introduce `y hy`. Establish `h1 : w • y ∈ w • stdLat k n` using `Submodule.smul_mem_pointwise_smul y w _ hy`. Rewrite `h1` using `[hw]`.
+
+Conclude with `h1`. Establish `h1` using `det_mem_of_integral_entries (hint u hfix)`. Establish `h2` using `det_mem_of_integral_entries (hint u⁻¹ (by rw [inv_smul_eq_iff, hfix]))`. Establish `hdet : Matrix.GeneralLinearGroup.det u = Matrix.GeneralLinearGroup.det h`. Rewrite using `[hu, map_mul, map_mul, map_inv, mul_comm _ (Matrix.GeneralLinearGroup.det g), mul_inv_cancel_left]`.
+
+Rewrite using `[← hdet, Matrix.GeneralLinearGroup.val_det_apply]`. Establish `hp : u.val.det * (u⁻¹ : GL n k).val.det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]`. Establish `v1` using `(Valuation.mem_integer_iff _ _).1 h1`. Establish `v2` using `(Valuation.mem_integer_iff _ _).1 h2`.
+
+Establish `v3 : valuation k u.val.det * valuation k (u⁻¹ : GL n k).val.det = 1`. Rewrite using `[← map_mul, hp, map_one]`. Use `le_antisymm v1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem valuation_det_of_fix (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] {h : GL n k} (hh : h • L = L) :
     valuation k ((Matrix.GeneralLinearGroup.det h : kˣ) : k) = 1 := by
   obtain ⟨g, rfl⟩ := exists_smul_lat (stdLat k n) L
@@ -184,6 +256,13 @@ def IsEquivTheta (μ : kˣ →* ℂˣ) (π' : Representation ℂ (GL n' k) V') (
 variable {μ : kˣ →* ℂˣ} {π' : Representation ℂ (GL n' k) V'} {π : Representation ℂ (GL n k) V}
   {θ : V' →ₗ[ℂ] SB (Matrix n n' k) →ₗ[ℂ] V}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∀ h : GL n k, h • Q₀ = Q₀ → π h (θ v (phiOneSB P₀ Q₀)) = θ v (phiOneSB P₀ Q₀)`. Introduce `h hh`. Establish `hv : valuation k ((Matrix.GeneralLinearGroup.det h : kˣ) : k) = 1` using `valuation_det_of_fix Q₀.lat (by rw [← Pair.smul_lat, hh])`. Establish `hfun : (phiOneSB P₀ Q₀).1 = om μ 1 h (phiOneSB P₀ Q₀).1`. Use function extensionality and compare the values at `x`.
+
+Establish `e1 : phiOne P₀ Q₀ x = phiOne P₀ Q₀ ((h⁻¹ : GL n k).val * x * (1 : GL n' k).val)`. Rewrite using `[← phiOne_smul (1 : GL n' k) h, one_smul, hh]`. Express the relevant statement in the definitionally equal form `phiOne P₀ Q₀ x = om μ 1 h (phiOne P₀ Q₀) x`. Rewrite using `[e1]`. Simplify using `only [om, map_one, Units.val_one, hμ _ hv, inv_one, nabs_one, nabs_eq_one_of_valuation_eq_one hv, Real.one_rpow, Complex.ofReal_one, one_mul]`.
+
+Establish `h1` using `hθ 1 h v _ _ hfun`. Simplify using `using h1.symm`.
+-/
 theorem theta_mem (hμ : IsUnram μ) (hθ : IsEquivTheta μ π' π θ) (P₀ : Pair k n') (Q₀ : Pair k n) (v : V') :
     θ v (phiOneSB P₀ Q₀) ∈ levelVec π Q₀ := by
   change ∀ h : GL n k, h • Q₀ = Q₀ → π h (θ v (phiOneSB P₀ Q₀)) = θ v (phiOneSB P₀ Q₀)
@@ -210,6 +289,9 @@ def K (hμ : IsUnram μ) (hθ : IsEquivTheta μ π' π θ) (P₀ : Pair k n') (Q
     EqForm π' →ₗ[ℂ] EqForm π :=
   (evalEquiv π Q₀).symm.toLinearMap ∘ₗ kerVec hμ hθ P₀ Q₀ ∘ₗ (evalEquiv π' P₀).toLinearMap
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `formOf π Q₀ (kerVec hμ hθ P₀ Q₀ (evalEquiv π' P₀ φ)) (h • Q₀) = _`. Rewrite using `[formOf_smul]`. Both sides reduce to the same expression.
+-/
 theorem K_apply (hμ : IsUnram μ) (hθ : IsEquivTheta μ π' π θ) (P₀ : Pair k n') (Q₀ : Pair k n) (φ : EqForm π')
     (h : GL n k) : (K hμ hθ P₀ Q₀ φ).1 (h • Q₀) = π h (θ (φ.1 P₀) (phiOneSB P₀ Q₀)) := by
   change formOf π Q₀ (kerVec hμ hθ P₀ Q₀ (evalEquiv π' P₀ φ)) (h • Q₀) = _
@@ -255,10 +337,16 @@ def OperatorRules : Prop :=
 
 def KernelsCommute : Prop := IndicatorIdentity ∧ OperatorRules
 
+/- English proof (translation)
+Simplify using `using K_apply hμ hθ P₀ Q₀ φ 1`.
+-/
 example (hμ : IsUnram μ) (hθ : IsEquivTheta μ π' π θ) (P₀ : Pair k n') (Q₀ : Pair k n) (φ : EqForm π') :
     (K hμ hθ P₀ Q₀ φ).1 Q₀ = θ (φ.1 P₀) (phiOneSB P₀ Q₀) := by
   simpa using K_apply hμ hθ P₀ Q₀ φ 1
 
+/- English proof (translation)
+Rewrite using `[scal, ← Complex.ofReal_pow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _)]`. Rewrite using `[show ((t : ℝ) + 1) / 2 * (2 : ℕ) = ((t + 1 : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 example (t : ℕ) : scal k t ^ 2 = (resCard k : ℂ) ^ (t + 1) := by
   rw [scal, ← Complex.ofReal_pow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _)]
   rw [show ((t : ℝ) + 1) / 2 * (2 : ℕ) = ((t + 1 : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]

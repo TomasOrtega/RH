@@ -18,16 +18,25 @@ def awaySMulHom (h : ∀ σ : G, IsUnit (algebraMap R (Localization.Away t) (σ 
 
 variable {t} (h : ∀ σ : G, IsUnit (algebraMap R (Localization.Away t) (σ • t)))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ x`.
+-/
 theorem awaySMulHom_algebraMap (σ : G) (x : R) :
     awaySMulHom t h σ (algebraMap R (Localization.Away t) x) =
       algebraMap R (Localization.Away t) (σ • x) :=
   IsLocalization.lift_eq _ x
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Submonoid.powers t)` to reduce the goal to its premises. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, awaySMulHom_algebraMap, one_smul, RingHom.comp_apply, RingHom.id_apply]`.
+-/
 theorem awaySMulHom_one : awaySMulHom t h (1 : G) = RingHom.id _ := by
   apply IsLocalization.ringHom_ext (Submonoid.powers t)
   refine RingHom.ext fun x => ?_
   rw [RingHom.comp_apply, awaySMulHom_algebraMap, one_smul, RingHom.comp_apply, RingHom.id_apply]
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Submonoid.powers t)` to reduce the goal to its premises. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, awaySMulHom_algebraMap, mul_smul, RingHom.comp_apply, RingHom.comp_apply, awaySMulHom_algebraMap, awaySMulHom_algebraMap]`.
+-/
 theorem awaySMulHom_mul (σ τ : G) :
     awaySMulHom t h (σ * τ) = (awaySMulHom t h σ).comp (awaySMulHom t h τ) := by
   apply IsLocalization.ringHom_ext (Submonoid.powers t)
@@ -48,6 +57,11 @@ def awayMulSemiringAction : MulSemiringAction G (Localization.Away t) where
   smul_one σ := map_one (awaySMulHom t h σ)
   smul_mul σ := map_mul (awaySMulHom t h σ)
 
+/- English proof (translation)
+Establish `e : f.comp (awaySMulHom t h σ) = (awaySMulHom t h σ).comp f`. Apply `IsLocalization.ringHom_ext (Submonoid.powers t)` to reduce the goal to its premises. Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[awaySMulHom_algebraMap, hf, hf, awaySMulHom_algebraMap, hF]`.
+
+Conclude with `congrArg (fun g => g x) e`.
+-/
 theorem awaySMulHom_comm (f : Localization.Away t →+* Localization.Away t) (F : R →+* R)
     (hf : ∀ x, f (algebraMap R (Localization.Away t) x) = algebraMap R (Localization.Away t) (F x))
     (hF : ∀ (σ : G) x, F (σ • x) = σ • F x) (σ : G) (x : Localization.Away t) :
@@ -71,9 +85,15 @@ def chiCris (σ : Gal(PadicAlgCl p/K)) : ACris ℂ_[p] p :=
   algebraMap (AInf ℂ_[p] p) (ACris ℂ_[p] p)
     (IsPerfectoidField.padicIntToWitt p (cycloChar K σ : ℤ_[p]))
 
+/- English proof (translation)
+The claim follows from `((cycloChar K σ).isUnit.map (IsPerfectoidField.padicIntToWitt p)).map _`.
+-/
 theorem isUnit_chiCris (σ : Gal(PadicAlgCl p/K)) : IsUnit (chiCris σ) :=
   ((cycloChar K σ).isUnit.map (IsPerfectoidField.padicIntToWitt p)).map _
 
+/- English proof (translation)
+Apply `iota_injective (K := ℂ_[p]) (p := p)` to reduce the goal to its premises. Rewrite using `[iota_gal_smul, iota_periodT, map_mul, iota_periodT, chiCris, iota_padicInt, gal_smul_fontaineT]`.
+-/
 theorem gal_smul_periodT (σ : Gal(PadicAlgCl p/K)) {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) :
     σ • periodT hε = chiCris σ * periodT hε := by
   apply iota_injective (K := ℂ_[p]) (p := p)
@@ -83,11 +103,17 @@ theorem gal_smul_periodT (σ : Gal(PadicAlgCl p/K)) {ε : 𝒪♭} (hε : PreTil
 variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
 
 omit hp in
+/- English proof (translation)
+Rewrite using `[h, map_mul]`. Conclude with `(hc.map f).mul ht`.
+-/
 theorem isUnit_map_of_eq_mul {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) {x c t : A}
     (h : x = c * t) (hc : IsUnit c) (ht : IsUnit (f t)) : IsUnit (f x) := by
   rw [h, map_mul]
   exact (hc.map f).mul ht
 
+/- English proof (translation)
+The claim follows from `isUnit_map_of_eq_mul (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)) ((gal_smul_algebraMap_plus σ _).trans ((congrArg (algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p)) (gal_smul_periodT σ hε)).trans (map_mul _ _ _))) ((isUnit_chiCris σ).map _) (IsLocalization.Away.algebraMap_isUnit (S …`.
+-/
 theorem isUnit_gal_smul_periodT (σ : Gal(PadicAlgCl p/K)) :
     IsUnit (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)
       (σ • algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p) (periodT hε))) :=
@@ -103,22 +129,37 @@ def galB (σ : Gal(PadicAlgCl p/K)) : BCris hε →+* BCris hε :=
 def galBAction : MulSemiringAction Gal(PadicAlgCl p/K) (BCris hε) :=
   awayMulSemiringAction (isUnit_gal_smul_periodT hε)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galBAction_smul (σ : Gal(PadicAlgCl p/K)) (x : BCris hε) :
     (galBAction hε).smul σ x = galB hε σ x :=
   rfl
 
+/- English proof (translation)
+The claim follows from `awaySMulHom_one _`.
+-/
 theorem galB_one : galB hε (1 : Gal(PadicAlgCl p/K)) = RingHom.id (BCris hε) :=
   awaySMulHom_one _
 
+/- English proof (translation)
+The claim follows from `awaySMulHom_mul _ σ τ`.
+-/
 theorem galB_mul (σ τ : Gal(PadicAlgCl p/K)) :
     galB hε (σ * τ) = (galB hε σ).comp (galB hε τ) :=
   awaySMulHom_mul _ σ τ
 
+/- English proof (translation)
+The claim follows from `awaySMulHom_algebraMap (isUnit_gal_smul_periodT hε) σ x`.
+-/
 theorem galB_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : BCrisPlus ℂ_[p] p) :
     galB hε σ (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) x) =
       algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) (σ • x) :=
   awaySMulHom_algebraMap (isUnit_gal_smul_periodT hε) σ x
 
+/- English proof (translation)
+The claim follows from `awaySMulHom_comm (isUnit_gal_smul_periodT hε) (phiB hε) (phiPlus ℂ_[p] p) (phiB_algebraMap hε) phiPlus_gal_smul σ x`.
+-/
 theorem phiB_galB (σ : Gal(PadicAlgCl p/K)) (x : BCris hε) :
     phiB hε (galB hε σ x) = galB hε σ (phiB hε x) :=
   awaySMulHom_comm (isUnit_gal_smul_periodT hε) (phiB hε) (phiPlus ℂ_[p] p)

@@ -33,9 +33,15 @@ def SUJ (ε : Fin n → Bool) : Subgroup (UJ ε) where
     rw [Matrix.det_mul, ha', mul_one, Matrix.det_one] at h
     exact h
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_toM (ε : Fin n → Bool) : Continuous (fun g : UJ ε => toM g) :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `isClosed_eq (continuous_toM ε).matrix_det continuous_const`.
+-/
 theorem isClosed_SUJ (ε : Fin n → Bool) : IsClosed (SUJ ε : Set (UJ ε)) :=
   isClosed_eq (continuous_toM ε).matrix_det continuous_const
 
@@ -74,6 +80,13 @@ def muKS (ε : Fin n → Bool) : Measure (KSU ε) := Measure.haarMeasure ⊤
 def cartanH {m : ℕ} (ι κ : Fin m → Fin n) (t : Fin m → ℝ) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun a b => ∑ i, if (a = κ i ∧ b = ι i) ∨ (a = ι i ∧ b = κ i) then ((t i : ℝ) : ℂ) else 0
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [cartanH, conjTranspose_apply, of_apply, star_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : (b = κ i ∧ a = ι i) ∨ (b = ι i ∧ a = κ i)`. Establish `h2 : (a = κ i ∧ b = ι i) ∨ (a = ι i ∧ b = κ i)`.
+
+Break down `h1 with ⟨h, h'⟩ | ⟨h, h'⟩` into its components or cases. Use `exacts [Or.inr ⟨h', h⟩, Or.inl ⟨h', h⟩]`. Rewrite using `[if_pos h1, if_pos h2, Complex.star_def, Complex.conj_ofReal]`. Establish `h2 : ¬((a = κ i ∧ b = ι i) ∨ (a = ι i ∧ b = κ i))`. Introduce and unpack `(⟨h, h'⟩ | ⟨h, h'⟩)`.
+
+Use `exacts [h1 (Or.inr ⟨h', h⟩), h1 (Or.inl ⟨h', h⟩)]`. Rewrite using `[if_neg h1, if_neg h2, star_zero]`.
+-/
 theorem cartanH_conjTranspose {m : ℕ} (ι κ : Fin m → Fin n) (t : Fin m → ℝ) :
     (cartanH ι κ t)ᴴ = cartanH ι κ t := by
   ext a b
@@ -89,6 +102,13 @@ theorem cartanH_conjTranspose {m : ℕ} (ι κ : Fin m → Fin n) (t : Fin m →
       exacts [h1 (Or.inr ⟨h', h⟩), h1 (Or.inl ⟨h', h⟩)]
     rw [if_neg h1, if_neg h2, star_zero]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Jm, mul_diagonal, diagonal_mul, Matrix.neg_apply, cartanH, of_apply]`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : (a = κ i ∧ b = ι i) ∨ (a = ι i ∧ b = κ i)`.
+
+Rewrite using `[if_pos h1]`. Establish `hab : ε a ≠ ε b`. Break down `h1 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Use `exacts [fun h => hs i i h.symm, hs i i]`. Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε a) with ha | ha <;>`.
+
+Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε b) with hb | hb <;> simp [ha, hb] at hab ⊢`. Rewrite using `[if_neg h1]`. Simplify using the standard rewrite rules.
+-/
 theorem cartanH_anti {m : ℕ} {ε : Fin n → Bool} {ι κ : Fin m → Fin n} (hs : ∀ i j, ε (ι i) ≠ ε (κ j))
     (t : Fin m → ℝ) : cartanH ι κ t * Jm ε = -(Jm ε * cartanH ι κ t) := by
   ext a b
@@ -105,6 +125,9 @@ theorem cartanH_anti {m : ℕ} {ε : Fin n → Bool} {ι κ : Fin m → Fin n} (
   · rw [if_neg h1]
     simp
 
+/- English proof (translation)
+The claim follows from `(mem_cartanP_iff ε _).2 ⟨cartanH_conjTranspose ι κ t, cartanH_anti hs t⟩`.
+-/
 theorem cartanH_inP {m : ℕ} {ε : Fin n → Bool} {ι κ : Fin m → Fin n} (hs : ∀ i j, ε (ι i) ≠ ε (κ j))
     (t : Fin m → ℝ) : inP ε (cartanH ι κ t) :=
   (mem_cartanP_iff ε _).2 ⟨cartanH_conjTranspose ι κ t, cartanH_anti hs t⟩
@@ -139,6 +162,11 @@ section Entries
 
 variable {m : ℕ} {ε : Fin n → Bool} {ι κ : Fin m → Fin n}
 
+/- English proof (translation)
+Simplify using `only [cartanH, of_apply]`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[if_pos (Or.inl ⟨rfl, rfl⟩)]`. Introduce `j _ hji`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `(⟨h1, _⟩ | ⟨h1, _⟩)`. Conclude with `hji (hκ h1).symm`. Conclude with `hsg j i (by rw [h1])`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem cartanH_κι (hκ : Function.Injective κ) (hsg : ∀ i j, ε (ι i) ≠ ε (κ j)) (t : Fin m → ℝ) (i : Fin m) :
     cartanH ι κ t (κ i) (ι i) = t i := by
   simp only [cartanH, of_apply]
@@ -152,6 +180,11 @@ theorem cartanH_κι (hκ : Function.Injective κ) (hsg : ∀ i j, ε (ι i) ≠
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Simplify using `only [cartanH, of_apply]`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[if_pos (Or.inr ⟨rfl, rfl⟩)]`. Introduce `j _ hji`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `(⟨h1, _⟩ | ⟨h1, _⟩)`. Conclude with `hsg i j (by rw [h1])`. Conclude with `hji (hι h1).symm`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem cartanH_ικ (hι : Function.Injective ι) (hsg : ∀ i j, ε (ι i) ≠ ε (κ j)) (t : Fin m → ℝ) (i : Fin m) :
     cartanH ι κ t (ι i) (κ i) = t i := by
   simp only [cartanH, of_apply]

@@ -6,6 +6,9 @@ open Polynomial
 
 namespace GlobalTheory.InertNorm
 
+/- English proof (translation)
+Rewrite using `[IsAdicComplete.map_algebraMap_iff]`. Establish `: IsHausdorff I R` using `IsHausdorff.of_le_jacobson I R (IsAdicComplete.le_jacobson_bot I)`. Establish `: IsPrecomplete I R` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isPrecomplete_finite_module I R`. Conclude with `⟨⟩`.
+-/
 theorem isAdicComplete_map_of_finite {O : Type} [CommRing O] [IsNoetherianRing O] (I : Ideal O)
     [IsAdicComplete I O] (R : Type) [CommRing R] [Algebra O R] [Module.Finite O R] :
     IsAdicComplete (I.map (algebraMap O R)) R := by
@@ -14,6 +17,9 @@ theorem isAdicComplete_map_of_finite {O : Type} [CommRing O] [IsNoetherianRing O
   have : IsPrecomplete I R := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isPrecomplete_finite_module I R
   exact ⟨⟩
 
+/- English proof (translation)
+Establish `: Module.Finite O (R ⧸ I.map (algebraMap O R))` using `inferInstance`. Establish `: Module.Finite (O ⧸ I) (R ⧸ I.map (algebraMap O R))` using `Module.Finite.of_restrictScalars_finite O (O ⧸ I) _`. Conclude with `Module.finite_of_finite (O ⧸ I)`.
+-/
 theorem finite_quotient_map_of_finite {O : Type} [CommRing O] (I : Ideal O) [Finite (O ⧸ I)]
     (R : Type) [CommRing R] [Algebra O R] [Module.Finite O R] :
     Finite (R ⧸ I.map (algebraMap O R)) := by
@@ -22,6 +28,25 @@ theorem finite_quotient_map_of_finite {O : Type} [CommRing O] (I : Ideal O) [Fin
     Module.Finite.of_restrictScalars_finite O (O ⧸ I) _
   exact Module.finite_of_finite (O ⧸ I)
 
+/- English proof (translation)
+Introduce `O _ _ I _ _ c hcc hcI hω f hf hfc hf0`. Establish `: Module.Finite O (AdjoinRoot f)` using `(AdjoinRoot.powerBasis' hf).finite`. Set `J : Ideal (AdjoinRoot f)` to `I.map (algebraMap O (AdjoinRoot f))`. Establish `: IsAdicComplete J (AdjoinRoot f)` using `isAdicComplete_map_of_finite I (AdjoinRoot f)`. Establish `: Finite (AdjoinRoot f ⧸ J)` using `finite_quotient_map_of_finite I (AdjoinRoot f)`.
+
+Establish `hev : f.eval₂ ((AdjoinRoot.of f).comp c) (AdjoinRoot.root f) = 0`. Rewrite using `[← Polynomial.eval₂_map, hfc, AdjoinRoot.eval₂_root]`. Set `c' : AdjoinRoot f →+* AdjoinRoot f` to `AdjoinRoot.lift ((AdjoinRoot.of f).comp c) (AdjoinRoot.root f) hev`. Establish `hc'mk : ∀ p : Polynomial O, c' (AdjoinRoot.mk f p) = AdjoinRoot.mk f (p.map c)`. Introduce `p`.
+
+Simplify using `only [c', AdjoinRoot.lift_mk]`. Rewrite using `[← Polynomial.eval₂_map, ← AdjoinRoot.aeval_eq, Polynomial.aeval_def, AdjoinRoot.algebraMap_eq]`. Establish `hc'of : ∀ x : O, c' (algebraMap O (AdjoinRoot f) x) = algebraMap O (AdjoinRoot f) (c x)`. Introduce `x`. Simplify using `only [AdjoinRoot.algebraMap_eq, c', AdjoinRoot.lift_of, RingHom.comp_apply]`.
+
+Establish `hcomp : c.comp c = RingHom.id O` using `RingHom.ext hcc`. Establish `hinv : ∀ y, c' (c' y) = y`. Introduce `y`. Proceed by induction on `y using AdjoinRoot.induction_on with`. Consider the case `ih p => rw [hc'mk, hc'mk, Polynomial.map_map, hcomp, Polynomial.map_id]`.
+
+Establish `hJ : ∀ y ∈ J, c' y ∈ J`. Establish `: J ≤ J.comap c'`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Simplify using `only [Ideal.mem_comap, hc'of]`.
+
+Conclude with `Ideal.mem_map_of_mem _ (hcI x hx)`. Conclude with `fun y hy => this hy`. Establish `hω' : ∃ ω, IsUnit (ω - c' ω)`. Take `⟨ω, hu⟩` from `hω`. Use `⟨algebraMap O (AdjoinRoot f) ω, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hc'of, ← map_sub]`. Conclude with `hu.map _`. Establish `hroot : c' (AdjoinRoot.root f) = AdjoinRoot.root f` using `AdjoinRoot.lift_root _`. Establish `hunit : IsUnit (AdjoinRoot.root f)`. Establish `h0 : (f - Polynomial.C (f.coeff 0)).coeff 0 = 0` using `by simp`.
+
+Take `⟨q, hq⟩` from `Polynomial.X_dvd_iff.mpr h0`. Establish `hm : AdjoinRoot.root f * AdjoinRoot.mk f q = -AdjoinRoot.of f (f.coeff 0)`. Use `congrArg (AdjoinRoot.mk f) hq` as an intermediate fact. Rewrite `this` using `[map_sub, AdjoinRoot.mk_self, map_mul, AdjoinRoot.mk_X, AdjoinRoot.mk_C, zero_sub]`. Conclude with `this.symm`.
+
+Conclude with `isUnit_of_mul_isUnit_left (hm ▸ (hf0.map (AdjoinRoot.of f)).neg)`. Take `⟨x, hx⟩` from `GlobalTheory.T.exists_norm_eq_fixed_unit_henselian (AdjoinRoot f) J c' hinv hJ hω' (AdjoinRoot.root f) hroot hunit`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective x`. Use `⟨p, ?_⟩` and prove the remaining obligations. Rewrite using `[← AdjoinRoot.mk_eq_zero, map_sub, map_mul, ← hc'mk, hx, AdjoinRoot.mk_X, sub_self]`.
+-/
 theorem exists_dvd_mul_map_sub_X : ∀ (O : Type) [CommRing O] [IsNoetherianRing O] (I : Ideal O) [IsAdicComplete I O] [Finite (O ⧸ I)] (c : O →+* O), (∀ x, c (c x) = x) → (∀ x ∈ I, c x ∈ I) → (∃ ω, IsUnit (ω - c ω)) → ∀ f : Polynomial O, f.Monic → f.map c = f → IsUnit (f.coeff 0) → ∃ p : Polynomial O, f ∣ p * p.map c - Polynomial.X := by
   intro O _ _ I _ _ c hcc hcI hω f hf hfc hf0
   have : Module.Finite O (AdjoinRoot f) := (AdjoinRoot.powerBasis' hf).finite

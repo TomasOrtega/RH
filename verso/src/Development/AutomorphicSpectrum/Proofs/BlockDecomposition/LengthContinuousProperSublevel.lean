@@ -13,6 +13,9 @@ namespace GlobalTheory.CompanionTheory.SobGL
 def lgArg {n : ℕ} (p : Mat n × Mat n) : ℝ :=
   1 + ∑ a, ∑ b, (‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2)
 
+/- English proof (translation)
+Unfold `lgArg`. Use `continuous_const.add (continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => ?_)` and prove the remaining obligations. Establish `h1 : Continuous fun p : Mat n × Mat n => p.1 a b` using `(continuous_id.matrix_elem a b).comp continuous_fst`. Establish `h2 : Continuous fun p : Mat n × Mat n => p.2 a b` using `(continuous_id.matrix_elem a b).comp continuous_snd`. Conclude with `(h1.norm.pow 2).add (h2.norm.pow 2)`.
+-/
 theorem lgArg_continuous {n : ℕ} : Continuous (lgArg (n := n)) := by
   unfold lgArg
   refine continuous_const.add (continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => ?_)
@@ -22,12 +25,18 @@ theorem lgArg_continuous {n : ℕ} : Continuous (lgArg (n := n)) := by
     (continuous_id.matrix_elem a b).comp continuous_snd
   exact (h1.norm.pow 2).add (h2.norm.pow 2)
 
+/- English proof (translation)
+Unfold `lgArg`. Establish `: 0 ≤ ∑ a, ∑ b, (‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2)` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_lgArg {n : ℕ} (p : Mat n × Mat n) : 1 ≤ lgArg p := by
   unfold lgArg
   have : 0 ≤ ∑ a, ∑ b, (‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2) :=
     Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => by positivity
   linarith
 
+/- English proof (translation)
+Unfold `lgArg`. Establish `h1 : ‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2 ≤ ∑ b, (‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2)` using `Finset.single_le_sum (f := fun b => ‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2) (fun b _ => by positivity) (Finset.mem_univ b)`. Establish `h2 : ∑ b, (‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2) ≤ ∑ a, ∑ b, (‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2)` using `Finset.single_le_sum (f := fun a => ∑ b, (‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2)) (fun a _ => Finset.sum_nonneg fun b _ => by positivity) (Finset.mem_univ a)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem entry_sq_le_lgArg {n : ℕ} (p : Mat n × Mat n) (a b : Fin n) :
     ‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2 ≤ lgArg p := by
   unfold lgArg
@@ -39,8 +48,16 @@ theorem entry_sq_le_lgArg {n : ℕ} (p : Mat n × Mat n) (a b : Fin n) :
       (fun a _ => Finset.sum_nonneg fun b _ => by positivity) (Finset.mem_univ a)
   linarith
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lg_eq_log_lgArg {n : ℕ} (y : Mat n) : lg y = Real.log (lgArg (y, y⁻¹)) := rfl
 
+/- English proof (translation)
+Establish `hdet : ContinuousOn (fun y : Mat n => (y.det)⁻¹) (GLs n)` using `(continuous_id.matrix_det).continuousOn.inv₀ fun y hy => hy`. Establish `hadj : Continuous fun y : Mat n => y.adjugate` using `continuous_id.matrix_adjugate`. Establish `: (fun y : Mat n => y⁻¹) = fun y => (y.det)⁻¹ • y.adjugate`. Use function extensionality and compare the values at `y`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
+
+Rewrite using `[this]`. Conclude with `hdet.smul hadj.continuousOn`.
+-/
 theorem continuousOn_matInv {n : ℕ} : ContinuousOn (fun y : Mat n => y⁻¹) (GLs n) := by
   have hdet : ContinuousOn (fun y : Mat n => (y.det)⁻¹) (GLs n) :=
     (continuous_id.matrix_det).continuousOn.inv₀ fun y hy => hy
@@ -51,6 +68,9 @@ theorem continuousOn_matInv {n : ℕ} : ContinuousOn (fun y : Mat n => y⁻¹) (
   rw [this]
   exact hdet.smul hadj.continuousOn
 
+/- English proof (translation)
+Establish `hp : ContinuousOn (fun y : Mat n => (y, y⁻¹)) (GLs n)` using `continuousOn_id.prodMk continuousOn_matInv`. Establish `h` using `lgArg_continuous.comp_continuousOn hp`. Conclude with `ContinuousOn.log h fun y _ => (lt_of_lt_of_le one_pos (one_le_lgArg (y, y⁻¹))).ne'`.
+-/
 theorem continuousOn_lg {n : ℕ} : ContinuousOn (lg (n := n)) (GLs n) := by
   have hp : ContinuousOn (fun y : Mat n => (y, y⁻¹)) (GLs n) :=
     continuousOn_id.prodMk continuousOn_matInv
@@ -59,12 +79,20 @@ theorem continuousOn_lg {n : ℕ} : ContinuousOn (lg (n := n)) (GLs n) := by
 
 def pairOf {n : ℕ} (y : G n) : Mat n × Mat n := (y.val, (y⁻¹ : G n).val)
 
+/- English proof (translation)
+Establish `h` using `(Units.isEmbedding_embedProduct (M := Mat n)).isInducing`. Establish `h2 : Topology.IsInducing (fun p : Mat n × (Mat n)ᵐᵒᵖ => (p.1, p.2.unop))` using `((Homeomorph.refl (Mat n)).prodCongr MulOpposite.opHomeomorph.symm).isInducing`. Conclude with `h2.comp h`.
+-/
 theorem pairOf_isInducing {n : ℕ} : Topology.IsInducing (pairOf (n := n)) := by
   have h := (Units.isEmbedding_embedProduct (M := Mat n)).isInducing
   have h2 : Topology.IsInducing (fun p : Mat n × (Mat n)ᵐᵒᵖ => (p.1, p.2.unop)) :=
     ((Homeomorph.refl (Mat n)).prodCongr MulOpposite.opHomeomorph.symm).isInducing
   exact h2.comp h
 
+/- English proof (translation)
+Establish `h : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => Metric.closedBall (0 : ℂ) r)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `e : {m : Fin n → Fin n → ℂ | ∀ a b, ‖m a b‖ ≤ r} = Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => Metric.closedBall (0 : ℂ) r`. Use extensionality with `m`. Simplify using `[Set.mem_pi]`. Establish `h' : IsCompact {m : Fin n → Fin n → ℂ | ∀ a b, ‖m a b‖ ≤ r}` using `e ▸ h`.
+
+Conclude with `h'`.
+-/
 theorem isCompact_entryBox {n : ℕ} (r : ℝ) : IsCompact {m : Mat n | ∀ a b, ‖m a b‖ ≤ r} := by
   have h : IsCompact (Set.pi Set.univ fun _ : Fin n =>
       Set.pi Set.univ fun _ : Fin n => Metric.closedBall (0 : ℂ) r) :=
@@ -76,6 +104,25 @@ theorem isCompact_entryBox {n : ℕ} (r : ℝ) : IsCompact {m : Mat n | ∀ a b,
   have h' : IsCompact {m : Fin n → Fin n → ℂ | ∀ a b, ‖m a b‖ ≤ r} := e ▸ h
   exact h'
 
+/- English proof (translation)
+Rewrite using `[pairOf_isInducing.isCompact_iff]`. Establish `hset : pairOf '' {y : G n | lg y.val ≤ R} = {p : Mat n × Mat n | p.1 * p.2 = 1 ∧ p.2 * p.1 = 1 ∧ lgArg p ≤ Real.exp R}`. Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Use `⟨by simp [pairOf], by simp [pairOf], ?_⟩` and prove the remaining obligations. Establish `hinv : (y⁻¹ : G n).val = y.val⁻¹` using `Matrix.coe_units_inv y`. Establish `hy' : Real.log (lgArg (pairOf y)) ≤ R`. Establish `: lg y.val = Real.log (lgArg (pairOf y))`. Rewrite using `[lg_eq_log_lgArg, pairOf, hinv]`.
+
+Rewrite using `[← this]`. Conclude with `hy`. Establish `hpos : 0 < lgArg (pairOf y)` using `lt_of_lt_of_le one_pos (one_le_lgArg _)`. Conclude with `(Real.log_le_iff_le_exp hpos).1 hy'`. Introduce and unpack `⟨h1, h2, h3⟩`.
+
+Use `⟨⟨p.1, p.2, h1, h2⟩, ?_, ?_⟩` and prove the remaining obligations. Use `set y : G n := ⟨p.1, p.2, h1, h2⟩ with hy`. Establish `hinv : (y⁻¹ : G n).val = y.val⁻¹` using `Matrix.coe_units_inv y`. Establish `hpy : pairOf y = p` using `rfl`. Establish `: lg y.val = Real.log (lgArg p)`.
+
+Rewrite using `[lg_eq_log_lgArg, ← hinv, ← hpy]`. Both sides reduce to the same expression. Establish `hpos : 0 < lgArg p` using `lt_of_lt_of_le one_pos (one_le_lgArg _)`. Use `show lg y.val ≤ R`. Rewrite using `[this]`.
+
+Conclude with `(Real.log_le_iff_le_exp hpos).2 h3`. Both sides reduce to the same expression. Rewrite using `[hset]`. Establish `hbox : IsCompact ({m : Mat n | ∀ a b, ‖m a b‖ ≤ Real.sqrt (Real.exp R)} ×ˢ {m : Mat n | ∀ a b, ‖m a b‖ ≤ Real.sqrt (Real.exp R)})` using `(isCompact_entryBox _).prod (isCompact_entryBox _)`. Use `hbox.of_isClosed_subset ?_ ?_` and prove the remaining obligations.
+
+Establish `c1 : IsClosed {p : Mat n × Mat n | p.1 * p.2 = 1}` using `isClosed_eq (continuous_fst.matrix_mul continuous_snd) continuous_const`. Establish `c2 : IsClosed {p : Mat n × Mat n | p.2 * p.1 = 1}` using `isClosed_eq (continuous_snd.matrix_mul continuous_fst) continuous_const`. Establish `c3 : IsClosed {p : Mat n × Mat n | lgArg p ≤ Real.exp R}` using `isClosed_le lgArg_continuous continuous_const`. Conclude with `c1.inter (c2.inter c3)`. Introduce and unpack `p ⟨-, -, h3⟩`.
+
+Establish `hb : ∀ a b, ‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2 ≤ Real.exp R` using `fun a b => (entry_sq_le_lgArg p a b).trans h3`. Use `⟨fun a b => Real.le_sqrt_of_sq_le ?_, fun a b => Real.le_sqrt_of_sq_le ?_⟩` and prove the remaining obligations. Use `hb a b` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg ‖p.2 a b‖]`. Use `hb a b` as an intermediate fact.
+
+Use polynomial arithmetic with `[sq_nonneg ‖p.1 a b‖]`.
+-/
 theorem isCompact_lg_le {n : ℕ} (R : ℝ) : IsCompact {y : G n | lg y.val ≤ R} := by
   rw [pairOf_isInducing.isCompact_iff]
   have hset : pairOf '' {y : G n | lg y.val ≤ R} =
@@ -122,6 +169,9 @@ theorem isCompact_lg_le {n : ℕ} (R : ℝ) : IsCompact {y : G n | lg y.val ≤ 
     · have := hb a b; nlinarith [sq_nonneg ‖p.2 a b‖]
     · have := hb a b; nlinarith [sq_nonneg ‖p.1 a b‖]
 
+/- English proof (translation)
+Introduce `_` and use `⟨continuousOn_lg, isCompact_lg_le⟩`.
+-/
 theorem lg_continuousOn_and_isCompact :
     ∀ n : ℕ, ContinuousOn (lg (n := n)) (GLs n) ∧ ∀ R : ℝ, IsCompact {y : G n | lg y.val ≤ R} :=
   fun _ => ⟨continuousOn_lg, isCompact_lg_le⟩

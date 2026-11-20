@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Introduce `n A G κ κ' _ _ _ _ _ _ D f f' hker ⟨ρ, hρ, hD⟩`. Take `⟨U, -, hU⟩` from `UpperTheory.V.AlgebraTools.Det.irrOpenDet D ⊤`. Set `p : PrimeSpectrum A` to `⟨RingHom.ker f, RingHom.ker_isPrime f⟩`. Establish `hp : p ∈ U` using `(hU κ f ρ p rfl hD).2 hρ`. Take `⟨ρ', -, hρ', -⟩` from `UpperTheory.V.CA.groupDet_exists_semisimple_representation (D.map f')`.
+
+Conclude with `⟨ρ', (hU κ' f' ρ' p hker hρ'.symm).1 hp, hρ'.symm⟩`.
+-/
 theorem UpperTheory.V.CA.stable_field :
     ∀ {n : ℕ} {A G κ κ' : Type} [CommRing A] [Group G] [Field κ] [IsAlgClosed κ] [Field κ'] [IsAlgClosed κ'] (D : GDet n A G) (f : A →+* κ) (f' : A →+* κ'), RingHom.ker f = RingHom.ker f' → (∃ ρ : G →* Matrix (Fin n) (Fin n) κ, UpperTheory.V.U3.MatIrr ⊤ ρ ∧ D.map f = GDet.ofRep ρ) → ∃ ρ : G →* Matrix (Fin n) (Fin n) κ', UpperTheory.V.U3.MatIrr ⊤ ρ ∧ D.map f' = GDet.ofRep ρ := by
   intro n A G κ κ' _ _ _ _ _ _ D f f' hker ⟨ρ, hρ, hD⟩

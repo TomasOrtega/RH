@@ -16,13 +16,24 @@ namespace GlobalTheory.OneSpace
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexEmbedding_complexConj E τ x`.
+-/
 theorem emb_cc (τ : E →+* ℂ) (x : E) : τ (FD.cc x) = starRingEnd ℂ (τ x) :=
   IsCMField.complexEmbedding_complexConj E τ x
 
+/- English proof (translation)
+Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+-/
 theorem rt_sq' (H : Host E) : (H.rt : E) ^ 2 = -(H.d : E) := by
   have := congrArg (algebraMap (𝓞 E) E) H.rt_sq
   simpa using this
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ConjNegSquareNat.conj_eq_neg_of_sq_eq_neg_nat`. Consider the case `exact _root_.GlobalTheory.ConjNegSquareNat.conj_eq_neg_of_sq_eq_neg_nat`. Consider the case `(apply _root_.GlobalTheory.ConjNegSquareNat.conj_eq_neg_of_sq_eq_neg_nat <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ConjNegSquareNat.conj_eq_neg_of_sq_eq_neg_nat <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ConjNegSquareNat.conj_eq_neg_of_sq_eq_neg_nat <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ConjNegSquareNat.conj_eq_neg_of_sq_eq_neg_nat ..)`.
+-/
 theorem conj_of_sq {z : ℂ} {d : ℕ} (hd : 0 < d) (h : z ^ 2 = -(d : ℂ)) :
     starRingEnd ℂ z = -z := by
   first
@@ -33,15 +44,24 @@ theorem conj_of_sq {z : ℂ} {d : ℕ} (hd : 0 < d) (h : z ^ 2 = -(d : ℂ)) :
   | (intros; apply @_root_.GlobalTheory.ConjNegSquareNat.conj_eq_neg_of_sq_eq_neg_nat <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ConjNegSquareNat.conj_eq_neg_of_sq_eq_neg_nat ..)
 
+/- English proof (translation)
+Rewrite using `[← map_pow, rt_sq']`. Simplify using the standard rewrite rules.
+-/
 theorem emb_rt_sq (H : Host E) (τ : E →+* ℂ) : τ (H.rt : E) ^ 2 = -(H.d : ℂ) := by
   rw [← map_pow, rt_sq']; simp
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[emb_cc, map_neg]`. Conclude with `conj_of_sq H.d_prime.pos (emb_rt_sq H τ)`.
+-/
 theorem cc_rt (H : Host E) : FD.cc (H.rt : E) = -(H.rt : E) := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [emb_cc, map_neg]
   exact conj_of_sq H.d_prime.pos (emb_rt_sq H τ)
 
+/- English proof (translation)
+Introduce `h`. Use `rt_sq' H` as an intermediate fact. Rewrite `this` using `[h]`. Establish `h2 : (H.d : E) = 0` using `by simpa using this`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast h2)`.
+-/
 theorem rt_ne (H : Host E) : (H.rt : E) ≠ 0 := by
   intro h
   have := rt_sq' H
@@ -49,6 +69,9 @@ theorem rt_ne (H : Host E) : (H.rt : E) ≠ 0 := by
   have h2 : (H.d : E) = 0 := by simpa using this
   exact H.d_prime.ne_zero (by exact_mod_cast h2)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [FD.gram, FD.hermC, FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gram_eq {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (Q : Matrix (Fin r) (Fin r) ℂ) :
     FD.gram τ G Q = Qᵀ * G.map τ * Q.map (starRingEnd ℂ) := by
   ext a b
@@ -56,6 +79,9 @@ theorem gram_eq {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (Q :
     Matrix.map_apply, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[gram_eq, det_mul, det_mul, det_transpose]`. Establish `h1 : (G.map τ).det = τ G.det` using `(RingHom.map_det τ G).symm`. Establish `h2 : (Q.map (starRingEnd ℂ)).det = starRingEnd ℂ Q.det` using `(RingHom.map_det _ Q).symm`. Rewrite using `[h1, h2, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_gram {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (Q : Matrix (Fin r) (Fin r) ℂ) :
     (FD.gram τ G Q).det = ((‖Q.det‖ ^ 2 : ℝ) : ℂ) * τ G.det := by
   rw [gram_eq, det_mul, det_mul, det_transpose]
@@ -64,6 +90,11 @@ theorem det_gram {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (Q 
   rw [h1, h2, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]
   ring
 
+/- English proof (translation)
+Take `⟨Q, hQ, h⟩` from `h`. Use `⟨Q.map (starRingEnd ℂ), ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : (Q.map (starRingEnd ℂ)).det = starRingEnd ℂ Q.det` using `(RingHom.map_det _ Q).symm`. Rewrite using `[h2]`. Simplify using `using hQ`.
+
+Use extensionality with `a b`. Use `congrArg (starRingEnd ℂ) (congrFun (congrFun h a) b)` as an intermediate fact. Simplify using `only [FD.gram, FD.hermC, FD.col, Matrix.of_apply, Matrix.map_apply, map_sum, map_mul, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj, Matrix.diagonal_apply] at this ⊢`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem gram_conj {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (p : ℕ)
     (h : ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧
       FD.gram (ComplexEmbedding.conjugate τ) G Q =
@@ -82,6 +113,9 @@ theorem gram_conj {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (p
     rw [this]
     split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h1 : IsCMField.complexConj E G.det = (G.map (IsCMField.complexConj E)).det` using `RingHom.map_det (IsCMField.complexConj E).toRingEquiv.toRingHom G`. Establish `h2 : G.map (IsCMField.complexConj E) = Gᵀ`. Use extensionality with `a b`. Conclude with `h a b`. Rewrite using `[FD.cc, h1, h2, det_transpose]`.
+-/
 theorem cc_det {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (h : ∀ a b, FD.cc (G a b) = G b a) :
     FD.cc G.det = G.det := by
   have h1 : IsCMField.complexConj E G.det = (G.map (IsCMField.complexConj E)).det :=
@@ -91,6 +125,11 @@ theorem cc_det {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (h : ∀ a b, FD.cc (G a
     exact h a b
   rw [FD.cc, h1, h2, det_transpose]
 
+/- English proof (translation)
+Introduce `hi`. Establish `h1` using `emb_cc τ ξ`. Rewrite `h1` using `[h, map_neg]`. Establish `h2` using `congrArg Complex.re h1`. Simplify using `at h2`.
+
+Apply `h0` to reduce the goal to its premises. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply the tactic sequence `apply Complex.ext <;> simp [hi]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem im_ne (τ : E →+* ℂ) {ξ : E} (h : FD.cc ξ = -ξ) (h0 : ξ ≠ 0) : (τ ξ).im ≠ 0 := by
   intro hi
   have h1 := emb_cc τ ξ
@@ -109,6 +148,47 @@ namespace GlobalTheory
 
 open GlobalTheory.OneSpace
 
+/- English proof (translation)
+Introduce `hL hH E _ _ _ H D D' r ξ Gm φ hp hq hξ hM`. Establish `hr : r = D'.p + D'.q`. Rewrite using `[hp, hq]`. Conclude with `(GlobalTheory.HermModel.rank_integral_selfDual E H D r ξ Gm φ hξ hM).1`. Distinguish the cases in `h0 : ξ = 0`.
+
+Take `⟨Gm', ψ, hinj, hspan, -, -, -⟩` from `GlobalTheory.exists_herm_coord_of_datum E H D' (H.rt : E) (cc_rt H) (rt_ne H) r hr`. Take `⟨-, hs, hG, hdet, hEF⟩` from `hM`. Establish `hz : ∀ x : D.La, x = 0`. Introduce `x`. Apply `D.unimod.1` to reduce the goal to its premises.
+
+Use extensionality with `y`. Use `hEF x y` as an intermediate fact. Rewrite `this` using `[h0, zero_mul, map_zero]`. Rewrite using `[map_zero, LinearMap.zero_apply]`. Conclude with `this` after adjusting the coercions.
+
+Establish `hz' : ∀ v : Fin r → E, v = 0`. Introduce `v`. Establish `hv : v ∈ Submodule.span E (Set.range φ)` using `hs ▸ Submodule.mem_top`. Establish `: Submodule.span E (Set.range φ) ≤ ⊥`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hz x, map_zero]`. Conclude with `Submodule.zero_mem _`. Conclude with `(Submodule.mem_bot E).1 (this hv)`. Use `⟨ψ, hinj, hspan, hG, hdet, fun x y => ?_⟩` and prove the remaining obligations.
+
+Establish `: x = 0` using `hinj ((hz' _).trans (hz' _).symm)`. Rewrite using `[this, h0]`. Simplify using the standard rewrite rules. Take `⟨Gm', ψ, hM'⟩` from `GlobalTheory.exists_herm_coord_of_datum E H D' ξ hξ h0 r hr`. Establish `hsΨ : ∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 → ∃ p0 : ℕ, (∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ FD.gram τ Gm Q = Matrix.diagonal fun a : Fin r => ((FD.sgn p0 (a : ℕ) : ℝ) : ℂ)) ∧ (∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ FD.gram τ Gm' Q = Matrix.diagonal fun a : Fin r => (( …`.
+
+Introduce `τ hτ`. Establish `s1` using `GlobalTheory.T.signature_hermitian_model_of_datum E H D r ξ Gm φ hξ hM τ hτ`. Establish `s2` using `GlobalTheory.T.signature_hermitian_model_of_datum E H D' r ξ Gm' ψ hξ hM' τ hτ`. Rewrite `s2` using `[hp, hq]`. Break down `lt_or_gt_of_ne (im_ne τ hξ h0) with h | h` into its components or cases.
+
+Conclude with `⟨_, s1.2 h, s2.2 h⟩`. Conclude with `⟨_, s1.1 h, s2.1 h⟩`. Establish `hs : ∀ τ : E →+* ℂ, ∃ p0 : ℕ, (∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ FD.gram τ Gm Q = Matrix.diagonal fun a : Fin r => ((FD.sgn p0 (a : ℕ) : ℝ) : ℂ)) ∧ (∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ FD.gram τ Gm' Q = Matrix.diagonal fun a : Fin r => ((FD.sgn p0 (a : ℕ) : ℝ) : …`. Introduce `τ`. Establish `h1 : τ (H.rt : E) ^ 2 = H.rt0 ^ 2` using `by rw [emb_rt_sq, H.sqrt_neg_disc_sq]`.
+
+Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. Conclude with `hsΨ τ h`. Take `⟨p0, a, b⟩` from `hsΨ (ComplexEmbedding.conjugate τ) (by`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, conj_of_sq H.d_prime.pos (emb_rt_sq H τ), h, neg_neg])`. Conclude with `⟨p0, gram_conj τ _ _ a, gram_conj τ _ _ b⟩`.
+
+Establish `hI` using `GlobalTheory.DetIdeal.det_ideal E H D D' r ξ Gm φ Gm' ψ hξ hM hM'`. Take `⟨-, -, hG, hdet, -⟩` from `hM`. Take `⟨hinj, hspan, hG', hdet', hEF⟩` from `hM'`. Establish `hx : Gm'.det / Gm.det ∈ maximalRealSubfield E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff, map_div₀]`.
+
+Establish `e1` using `cc_det Gm hG`. Establish `e2` using `cc_det Gm' hG'`. Rewrite `e1`, `e2` using `[FD.cc]`. Rewrite using `[e1, e2]`. Use `set x : maximalRealSubfield E := ⟨Gm'.det / Gm.det, hx⟩ with hxdef`.
+
+Establish `hx0 : x ≠ 0`. Introduce `h`. Conclude with `div_ne_zero hdet' hdet (congrArg Subtype.val h)`. Establish `hloc` using `GlobalTheory.local_norm_of_ideal_norm E H x hx0 hI`. Establish `hreal : ∀ σ : maximalRealSubfield E →+* ℝ, ∃ a b : ℝ, σ x = a ^ 2 - σ (-(H.d : maximalRealSubfield E)) * b ^ 2`.
+
+Introduce `σ`. Set `τ : E →+* ℂ` to `ComplexEmbedding.lift E (Complex.ofRealHom.comp σ)`. Establish `hτ : τ (Gm'.det / Gm.det) = (σ x : ℂ)` using `ComplexEmbedding.lift_algebraMap_apply E (Complex.ofRealHom.comp σ) x`. Take `⟨p0, ⟨Q, hQ, e⟩, ⟨Q', hQ', e'⟩⟩` from `hs τ`. Establish `e2` using `congrArg Matrix.det (e.trans e'.symm)`.
+
+Rewrite `e2` using `[det_gram, det_gram]`. Establish `n1 : τ Gm.det ≠ 0` using `by simpa using hdet`. Establish `n2 : ((‖Q'.det‖ : ℝ) : ℂ) ≠ 0` using `by simpa using hQ'`. Use `⟨‖Q.det‖ / ‖Q'.det‖, 0, ?_⟩` and prove the remaining obligations. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+
+Rewrite using `[← hτ, map_div₀]`. Move the coercions through the operations in `at e2 ⊢`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-e2`. Take `⟨a, b, hab⟩` from `hH (maximalRealSubfield E) (-(H.d : maximalRealSubfield E)) x (by simpa using H.d_prime.ne_zero) hx0 hreal hloc`.
+
+Establish `hz : ∃ z : E, Gm'.det = z * FD.cc z * Gm.det`. Use `⟨(a : E) + (b : E) * (H.rt : E), ?_⟩` and prove the remaining obligations. Establish `e1 : FD.cc ((a : E) + (b : E) * (H.rt : E)) = (a : E) - (b : E) * (H.rt : E)`. Establish `c` using `cc_rt H`. Rewrite `c`, the goal using `[FD.cc]`.
+
+Rewrite using `[map_add, map_mul, c, IsCMField.complexConj_apply_eq_self, IsCMField.complexConj_apply_eq_self]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Gm'.det / Gm.det = (a : E) ^ 2 + (H.d : E) * (b : E) ^ 2`. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[e1, (div_eq_iff hdet).1 e2]`. Use `rt_sq' H` as an intermediate fact. Take the linear combination `(b : E) ^ 2 * Gm.det * this`. Take `⟨γ, hγ⟩` from `hL E r Gm Gm' hG hG' hdet hdet' hs hz`. Set `g : (Fin r → E) ≃ₗ[E] (Fin r → E)` to `Matrix.toLin'OfInv γ.inv_mul γ.mul_inv`.
+
+Establish `hg : ∀ v, g v = (γ : Matrix (Fin r) (Fin r) E) *ᵥ v` using `fun v => rfl`. Use `⟨(g.toLinearMap.restrictScalars (𝓞 E)).comp ψ, g.injective.comp hinj, ?_, hG, hdet, ?_⟩` and prove the remaining obligations. Establish `: Set.range ((g.toLinearMap.restrictScalars (𝓞 E)).comp ψ) = g.toLinearMap '' Set.range ψ`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, Submodule.span_image, hspan, Submodule.map_top, LinearEquiv.range]`. Introduce `u v`. Rewrite using `[hEF, ← hγ, ← hg, ← hg]`. Both sides reduce to the same expression.
+-/
 theorem model_in_same_space : (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G G' : Matrix (Fin r) (Fin r) E), (∀ a b, FD.cc (G a b) = G b a) → (∀ a b, FD.cc (G' a b) = G' b a) → G.det ≠ 0 → G'.det ≠ 0 → (∀ τ : E →+* ℂ, ∃ p0 : ℕ, (∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ FD.gram τ G Q = Matrix.diagonal fun a : Fin r => ((FD.sgn p0 (a : ℕ) : ℝ) : ℂ)) ∧ (∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ FD.gram τ G' Q = Matrix.diagonal fun a : Fin r => ((FD.sgn p0 (a : ℕ) : ℝ) : ℂ))) → (∃ z : E, G'.det = z * FD.cc z * G.det) → ∃ γ : GL (Fin r) E, ∀ x y, FD.herm G ((γ : Matrix (Fin r) (Fin r) E) *ᵥ x) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ y) = FD.herm G' x y) → (∀ (F : Type) [Field F] [NumberField F] (δ x : F), δ ≠ 0 → x ≠ 0 → (∀ σ : F →+* ℝ, ∃ a b : ℝ, σ x = a ^ 2 - σ δ * b ^ 2) → (∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), ∃ a b : v.adicCompletion F, algebraMap F (v.adicCompletion F) x = a ^ 2 - algebraMap F (v.adicCompletion F) δ * b ^ 2) → ∃ a b : F, x = a ^ 2 - δ * b ^ 2) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D D' : Datum H) (r : ℕ) (ξ : E) (Gm : Matrix (Fin r) (Fin r) E) (φ : D.La →ₗ[𝓞 E] (Fin r → E)), D'.p = D.p → D'.q = D.q → FD.cc ξ = -ξ → (Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ (∀ a b, FD.cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((D.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * FD.herm Gm (φ x) (φ y))) → ∃ φ' : D'.La →ₗ[𝓞 E] (Fin r → E), (Function.Injective φ' ∧ Submodule.span E (Set.range φ') = ⊤ ∧ (∀ a b, FD.cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((D'.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * FD.herm Gm (φ' x) (φ' y))) := by
   intro hL hH E _ _ _ H D D' r ξ Gm φ hp hq hξ hM
   have hr : r = D'.p + D'.q := by

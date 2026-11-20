@@ -13,6 +13,13 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.UnramTorsPull
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A G _ _ hG U W hW V _ _ _ φ hV hφ hcl n hn hnu j`. Take `⟨hdvr, -, -⟩` from `(GlobalTheory.LN.cDvr_iff V).1 hV`. Use `letI : Algebra (FractionRing R) (AlgebraicClosure (FractionRing V)) := ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp (IsLocalization.map (FractionRing V) φ (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective φ hφ) : FractionRing R →+* FractionRing V)) …`. Establish `hc : ∀ r, algebraMap (FractionRing R) (AlgebraicClosure (FractionRing V)) (algebraMap R _ r) = algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V)) (algebraMap V _ (φ r))` using `fun r => by show algebraMap (FractionRing V) _ (IsLocalization.map _ _ _ (algebraMap R _ r)) = _`. Rewrite using `[IsLocalization.map_eq]`.
+
+Establish `hk : IsUnit ((n ^ j : ℕ) : V)` using `by rw [Nat.cast_pow]; exact hnu.pow j`. Take `⟨T₁, h₁, hb⟩` from `GlobalTheory.T.quotientPoints_firstCoordinate_unramified_subring R D.toPre V φ hV hc (n ^ j) hk`. Take `⟨T', h₂, hQ⟩` from `GlobalTheory.T.torsionPairs_fixed_over_unramified_extension R hR D W hW V φ hV hφ hcl hc (n ^ j) hk T₁ h₁ hb`. Establish `hT` using `h₁.trans h₂`. Establish `hmem` using `hT.mem`.
+
+Take `⟨hdvr', f, hf, hirr⟩` from `hT`. Use `⟨T', hdvr', f, hf, hirr, fun σ hσ x hx => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.torsion_fixed_of_quotientClasses_fixed R hR D A G hG U V φ hc (n ^ j) (Nat.one_le_pow _ _ (by omega)) σ (fun v => hσ _ (hmem v)) (hQ σ hσ) x hx`.
+-/
 theorem torsion_fixed_unramified : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → Unif (maximalIdeal R) D A G → ∀ W : (Sp R).Opens, (∀ y, PsiUnitOn D.toPre y W) → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (φ : R →+* V), GlobalTheory.LN.CDvr V → Function.Injective φ → spMap φ (closedPoint V) ∈ W → ∀ n : ℕ, 2 ≤ n → IsUnit (n : V) → ∀ j : ℕ, ∃ (T' : Subring (AlgebraicClosure (FractionRing V))) (_ : IsDiscreteValuationRing T') (f : V →+* T'), (∀ v : V, (f v : AlgebraicClosure (FractionRing V)) = algebraMap (FractionRing V) _ (algebraMap V _ v)) ∧ (∀ π, Irreducible π → Irreducible (f π)) ∧ ∀ σ : AlgebraicClosure (FractionRing V) ≃+* AlgebraicClosure (FractionRing V), (∀ z ∈ T', σ z = z) → ∀ x : TF (R := V) (AlgebraicClosure (FractionRing V)) ⟶ (Over.pullback (spMap φ)).obj G, x ^ (n ^ j) = 1 → spMap σ.toRingHom ≫ x.left = x.left := by
   intro R _ _ _ hR D A G _ _ hG U W hW V _ _ _ φ hV hφ hcl n hn hnu j
   obtain ⟨hdvr, -, -⟩ := (GlobalTheory.LN.cDvr_iff V).1 hV

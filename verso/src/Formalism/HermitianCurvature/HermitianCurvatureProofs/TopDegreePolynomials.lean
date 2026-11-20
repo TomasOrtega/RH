@@ -9,6 +9,9 @@ section
 variable {R M : Type} [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module ℂ M] [Module R M]
   [IsScalarTower ℂ R M]
 
+/- English proof (translation)
+Unfold `evR`. Rewrite using `[Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le ha), Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← Algebra.commutes, mul_smul, algebraMap_smul]`.
+-/
 theorem evR_smul (P : R[X]) (a : ℕ) (ha : P.natDegree ≤ a) (Y : ℝ) (X : M) :
     evR P Y • X = ∑ i ∈ range (a + 1), ((Y : ℂ) ^ i) • (P.coeff i • X) := by
   unfold evR
@@ -18,6 +21,9 @@ theorem evR_smul (P : R[X]) (a : ℕ) (ha : P.natDegree ≤ a) (Y : ℝ) (X : M)
 
 end
 
+/- English proof (translation)
+Take `⟨P, hd, hc, hP⟩` from `h`. Take `⟨P', hd', hc', hP'⟩` from `h'`. Conclude with `⟨P - P', (natDegree_sub_le_of_le hd hd').trans (by simp), by rw [coeff_sub, hc, hc'], fun Y => by simp only [eval_sub, hP, hP']⟩`.
+-/
 theorem isTop_sub {W W' : ℝ → ℂ} {d : ℕ} {c c' : ℂ} (h : IsTopCoeff W d c)
     (h' : IsTopCoeff W' d c') : IsTopCoeff (fun Y => W Y - W' Y) d (c - c') := by
   obtain ⟨P, hd, hc, hP⟩ := h
@@ -25,17 +31,28 @@ theorem isTop_sub {W W' : ℝ → ℂ} {d : ℕ} {c c' : ℂ} (h : IsTopCoeff W 
   exact ⟨P - P', (natDegree_sub_le_of_le hd hd').trans (by simp), by rw [coeff_sub, hc, hc'],
     fun Y => by simp only [eval_sub, hP, hP']⟩
 
+/- English proof (translation)
+Take `⟨P, hd, hc, hP⟩` from `h`. Conclude with `⟨C k * P, (natDegree_C_mul_le _ _).trans hd, by rw [coeff_C_mul, hc], fun Y => by simp only [eval_mul, eval_C, hP]⟩`.
+-/
 theorem isTop_const_mul {W : ℝ → ℂ} {d : ℕ} {c : ℂ} (k : ℂ) (h : IsTopCoeff W d c) :
     IsTopCoeff (fun Y => k * W Y) d (k * c) := by
   obtain ⟨P, hd, hc, hP⟩ := h
   exact ⟨C k * P, (natDegree_C_mul_le _ _).trans hd, by rw [coeff_C_mul, hc],
     fun Y => by simp only [eval_mul, eval_C, hP]⟩
 
+/- English proof (translation)
+Rewrite using `[Monic.natDegree_mul (monic_X_pow i) ((monic_X_add_C h).pow j), natDegree_X_pow, Monic.natDegree_pow (monic_X_add_C h), natDegree_X_add_C, mul_one]`.
+-/
 theorem natDegree_mono (h : ℂ) (i j : ℕ) :
     ((X : ℂ[X]) ^ i * (X + C h) ^ j).natDegree = i + j := by
   rw [Monic.natDegree_mul (monic_X_pow i) ((monic_X_add_C h).pow j), natDegree_X_pow,
     Monic.natDegree_pow (monic_X_add_C h), natDegree_X_add_C, mul_one]
 
+/- English proof (translation)
+Establish `hm : ((X : ℂ[X]) ^ i * (X + C h) ^ j).Monic` using `(monic_X_pow i).mul ((monic_X_add_C h).pow j)`. Use `split_ifs with hij`. Take `⟨rfl, rfl⟩` from `hij`. Use `hm.coeff_natDegree` as an intermediate fact. Rewrite `this` using `[natDegree_mono]`. Then use the resulting hypothesis.
+
+Apply `coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises. Rewrite using `[natDegree_mono]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem coeff_mono (h : ℂ) (a b i j : ℕ) (hi : i ≤ a) (hj : j ≤ b) :
     ((X : ℂ[X]) ^ i * (X + C h) ^ j).coeff (a + b) = if i = a ∧ j = b then 1 else 0 := by
   have hm : ((X : ℂ[X]) ^ i * (X + C h) ^ j).Monic := (monic_X_pow i).mul ((monic_X_add_C h).pow j)
@@ -53,6 +70,21 @@ namespace Formalism.FourierDecayAlt.P
 
 open Finset Polynomial Formalism.FourierDecayAlt.F7 Formalism.FourierDecayAlt.P.TopDegreePolynomials
 
+/- English proof (translation)
+Introduce `R M _ _ _ _ _ _ Ξ P₁ P₂ a b h X X' ha hb`. Use `⟨∑ i ∈ range (a + 1), ∑ j ∈ range (b + 1), C (Ξ (P₁.coeff i • X) (P₂.coeff j • X')) * ((Polynomial.X : ℂ[X]) ^ i * (Polynomial.X + C (h : ℂ)) ^ j), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `natDegree_sum_le_of_forall_le _ _ fun i hi => ?_` and prove the remaining obligations. Use `natDegree_sum_le_of_forall_le _ _ fun j hj => ?_` and prove the remaining obligations. Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[natDegree_mono]`. Use `Finset.mem_range.mp hi` as an intermediate fact. Use `Finset.mem_range.mp hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[finsetSum_coeff]`.
+
+Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[finsetSum_coeff, Finset.sum_eq_single b]`. Rewrite using `[coeff_C_mul, coeff_mono _ _ _ _ _ le_rfl le_rfl]`. Simplify using the standard rewrite rules. Introduce `j hj hjb`.
+
+Rewrite using `[coeff_C_mul, coeff_mono _ _ _ _ _ le_rfl (Nat.lt_succ_iff.mp (Finset.mem_range.mp hj))]`. Simplify using `[hjb]`. Introduce `hb'`. Conclude with `absurd (Finset.mem_range.mpr (Nat.lt_succ_self b)) hb'`. Introduce `i hi hia`.
+
+Rewrite using `[finsetSum_coeff]`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul, coeff_mono _ _ _ _ _ (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)) (Nat.lt_succ_iff.mp (Finset.mem_range.mp hj))]`. Simplify using `[hia]`. Introduce `ha'`.
+
+Conclude with `absurd (Finset.mem_range.mpr (Nat.lt_succ_self a)) ha'`. Introduce `Y`. Simplify using `only []`. Rewrite using `[evR_smul P₁ a ha, evR_smul P₂ b hb, map_sum Ξ, LinearMap.sum_apply, eval_finsetSum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum, eval_finsetSum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul Ξ, LinearMap.smul_apply, map_smulₛₗ]`. Simplify using `only [eval_mul, eval_C, eval_pow, eval_X, eval_add, smul_eq_mul, map_pow, map_add, Complex.conj_ofReal, Complex.ofReal_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairing_top_degree : Formalism.FourierDecayAlt.F7.PairTop := by
   intro R M _ _ _ _ _ _ Ξ P₁ P₂ a b h X X' ha hb
   refine ⟨∑ i ∈ range (a + 1), ∑ j ∈ range (b + 1),
@@ -91,12 +123,24 @@ theorem pairing_top_degree : Formalism.FourierDecayAlt.F7.PairTop := by
       map_add, Complex.conj_ofReal, Complex.ofReal_add]
     ring
 
+/- English proof (translation)
+Introduce `R M _ _ _ _ _ _ Ξ A B Av Bv s Y Y' X X'`. Simplify using `[pair2, act2, vec, Formalism.YangianSpanCharacter.T.J, Formalism.YangianSpanCharacter.T.Uinv, Fin.sum_univ_two, Matrix.mul_apply, add_smul, mul_smul, algebraMap_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem j_pairing_formula : Formalism.FourierDecayAlt.F7.JPairing := by
   intro R M _ _ _ _ _ _ Ξ A B Av Bv s Y Y' X X'
   simp [pair2, act2, vec, Formalism.YangianSpanCharacter.T.J, Formalism.YangianSpanCharacter.T.Uinv, Fin.sum_univ_two, Matrix.mul_apply, add_smul,
     mul_smul, algebraMap_smul]
   ring
 
+/- English proof (translation)
+Introduce `R M _ _ _ _ _ _ Ξ n A B Av Bv s X X' hS hSv`. Take `⟨hA, hAn, hB⟩` from `hS`. Take `⟨hAv, hAvn, hBv⟩` from `hSv`. Establish `cA : A.coeff n = 1` using `by rw [← hAn]; exact hA.coeff_natDegree`. Establish `cAv : Av.coeff n = 1` using `by rw [← hAvn]; exact hAv.coeff_natDegree`.
+
+Establish `cB : B.coeff n = 0` using `coeff_eq_zero_of_degree_lt hB`. Establish `cBv : Bv.coeff n = 0` using `coeff_eq_zero_of_degree_lt hBv`. Establish `dB : B.natDegree ≤ n` using `natDegree_le_of_degree_le hB.le`. Establish `dBv : Bv.natDegree ≤ n` using `natDegree_le_of_degree_le hBv.le`. Establish `h1` using `pairing_top_degree R M Ξ (B + C (algebraMap ℂ R s) * A) Av n n 1 X X' (natDegree_add_le_of_degree_le dB ((natDegree_C_mul_le _ _).trans hAn.le)) hAvn.le`.
+
+Establish `h2` using `pairing_top_degree R M Ξ A Bv n n 1 X X' hAn.le dBv`. Establish `h3` using `isTop_sub h1 h2`. Rewrite using `[two_mul]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `Y`.
+
+Rewrite using `[j_pairing_formula R M Ξ A B Av Bv s Y (Y + 1) X X']`. Simplify using `[evR, eval_add, eval_C_mul]`. Simplify using `[cA, cAv, cB, cBv, algebraMap_smul]`.
+-/
 theorem plane_wave_top_degree : Formalism.FourierDecayAlt.F7.PlaneWaveTop := by
   intro R M _ _ _ _ _ _ Ξ n A B Av Bv s X X' hS hSv
   obtain ⟨hA, hAn, hB⟩ := hS
@@ -118,6 +162,17 @@ theorem plane_wave_top_degree : Formalism.FourierDecayAlt.F7.PlaneWaveTop := by
     simp [evR, eval_add, eval_C_mul]
   · simp [cA, cAv, cB, cBv, algebraMap_smul]
 
+/- English proof (translation)
+Introduce `R M _ _ _ _ _ _ Ξ n s A B Av Bv A₀ A₀v e t t' h X X' _ he ht ht' hA hAn hAv hAvn hA₀ hA₀n hA₀v hA₀vn hB hBv`. Establish `cA : A.coeff (n + s) = 1` using `by rw [← hAn]; exact hA.coeff_natDegree`. Establish `cAv : Av.coeff (n + s) = 1` using `by rw [← hAvn]; exact hAv.coeff_natDegree`. Establish `cA₀ : A₀.coeff n = 1` using `by rw [← hA₀n]; exact hA₀.coeff_natDegree`. Establish `cA₀v : A₀v.coeff n = 1` using `by rw [← hA₀vn]; exact hA₀v.coeff_natDegree`.
+
+Establish `h1` using `isTop_const_mul (e * t⁻¹) (pairing_top_degree R M Ξ A₀ Av n (n + s) h X X' hA₀n.le hAvn.le)`. Establish `h2` using `isTop_const_mul (e * t'⁻¹) (pairing_top_degree R M Ξ A A₀v (n + s) n h X X' hAn.le hA₀vn.le)`. Establish `e1 : n + (n + s) = 2 * n + s` using `by ring`. Establish `e2 : n + s + n = 2 * n + s` using `by ring`. Rewrite `h1` using `[e1]`.
+
+Rewrite `h2` using `[e2]`. Establish `h3` using `isTop_sub h1 h2`. Establish `hce : (starRingEnd ℂ) e = e`. Apply the tactic sequence `rcases he with rfl | rfl <;> simp`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `Y`. Use `j_pairing_formula R M Ξ A B Av Bv 0 Y (Y + h) X X'` as an intermediate fact. Establish `hU : Formalism.YangianSpanCharacter.T.Uinv (A` using `R) (0 : ℂ) = 1 := by`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.Uinv]`. Rewrite `this` using `[hU, mul_one]`.
+
+Rewrite using `[this, map_zero, zero_mul, add_zero, hB, hBv, map_smul Ξ, LinearMap.smul_apply, LinearMap.map_smulₛₗ (Ξ (evR A Y • X))]`. Simplify using `[hce]`. Simplify using `[cA, cAv, cA₀, cA₀v]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lift_top_degree : Formalism.FourierDecayAlt.F7.LiftTop := by
   intro R M _ _ _ _ _ _ Ξ n s A B Av Bv A₀ A₀v e t t' h X X' _ he ht ht' hA hAn hAv hAvn
     hA₀ hA₀n hA₀v hA₀vn hB hBv

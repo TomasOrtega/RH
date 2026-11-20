@@ -3,6 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 
 namespace GlobalTheory.UT
 
+/- English proof (translation)
+Establish `hx : ∀ i, x i ∈ Submodule.span R (↑(S.image x) : Set E)` using `fun i => by`. Distinguish the cases in `h : i ∈ S`. Conclude with `Submodule.subset_span (by simpa using ⟨i, h, rfl⟩)`. Rewrite using `[hS i h]`. Conclude with `Submodule.zero_mem _`.
+
+Use `⟨Submodule.span R ↑(S.image x), ⟨_, rfl⟩, Submodule.sum_mem _ fun i _ => hx i, hx, fun n => ⟨S, fun T hT => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_subset hT (fun i _ h => hS i h), sub_self]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem sumI_of_finite {R : Type} [CommRing R] (I : Ideal R) {E Ix : Type} [AddCommGroup E] [Module R E] (x : Ix → E)
     (S : Finset Ix) (hS : ∀ i, i ∉ S → x i = 0) : SumI I x (∑ i ∈ S, x i) := by
   classical

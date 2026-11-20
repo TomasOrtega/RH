@@ -6,6 +6,17 @@ namespace GlobalTheory.VolPow
 
 open MeasureTheory ValuativeRel Matrix Topology in
 open scoped Pointwise in
+/- English proof (translation)
+Use `haveI : Fact q.Prime := ⟨hq⟩`. Use `haveI : CompactSpace H := isCompact_iff_compactSpace.1 hH.2`. Use `set K' := K.subgroupOf H`. Establish `hK' : IsOpen (K' : Set H)` using `hK.preimage continuous_subtype_val`. Use `haveI : Finite (H ⧸ K') := Subgroup.quotient_finite_of_isOpen K' hK'`.
+
+Use `haveI : K'.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Use `set N := K'.normalCore`. Establish `hNo : IsOpen (N : Set H)` using `N.isOpen_of_isClosed_of_finiteIndex (K'.normalCore_isClosed (K'.isClosed_of_isOpen hK'))`. Use `haveI : Finite (H ⧸ N) := Subgroup.finite_quotient_of_finiteIndex`. Establish `hp : IsPGroup q (H ⧸ N)`.
+
+Introduce `x`. Proceed by induction on `x using QuotientGroup.induction_on with | H u => ?_`. Establish `hU : (Subtype.val '' (N : Set H)) ∈ 𝓝 (1 : G)` using `(hH.1.isOpenMap_subtype_val _ hNo).mem_nhds ⟨1, N.one_mem, rfl⟩`. Take `⟨m, hm⟩` from `hpow (u : G) _ hU`. Take `⟨v, hv, hvu⟩` from `hm`.
+
+Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Establish `e : v = u ^ (q ^ m)` using `Subtype.ext (by rw [hvu]; simp)`. Rewrite using `[← e]` and apply the resulting hypothesis. Take `⟨a, ha⟩` from `IsPGroup.iff_card.1 hp`.
+
+Establish `hdvd : K'.index ∣ q ^ a`. Rewrite using `[← ha]`. Conclude with `Subgroup.index_dvd_of_le (Subgroup.normalCore_le K')`. Take `⟨b, -, hb⟩` from `(Nat.dvd_prime_pow hq).1 hdvd`. Conclude with `⟨inferInstance, b, hb⟩`.
+-/
 private lemma finiteIndex_and_index_subgroupOf_eq_pow {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (q : ℕ) (hq : q.Prime)
     (hpow : ∀ u : G, ∀ U ∈ 𝓝 (1 : G), ∃ m : ℕ, u ^ (q ^ m) ∈ U) {H K : Subgroup G}
@@ -41,6 +52,23 @@ private lemma finiteIndex_and_index_subgroupOf_eq_pow {G : Type} [Group G] [Topo
 
 open MeasureTheory ValuativeRel Matrix Topology in
 open scoped Pointwise in
+/- English proof (translation)
+Use `set K' := K.subgroupOf H`. Use `letI : Fintype (H ⧸ K') := Subgroup.fintypeQuotientOfFiniteIndex`. Establish `hcover : (H : Set G) = ⋃ c : H ⧸ K', ((Quotient.out c : H) : G) • (K : Set G)`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg`. Use `Set.mem_iUnion.2 ⟨(QuotientGroup.mk (⟨g, hg⟩ : H) : H ⧸ K'), ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `QuotientGroup.mk_out_eq_mul K' (⟨g, hg⟩ : H)`. Use `Set.mem_smul_set.2 ⟨((y⁻¹ : K') : H), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_subgroupOf.1 (y⁻¹).2`.
+
+Rewrite using `[smul_eq_mul, hy]`. Simplify using the standard rewrite rules. Introduce `hg`. Take `⟨c, hc⟩` from `Set.mem_iUnion.1 hg`. Take `⟨y, hy, rfl⟩` from `Set.mem_smul_set.1 hc`.
+
+Conclude with `H.mul_mem (Quotient.out c).2 (hKH hy)`. Establish `hdisj : Pairwise (fun c d : H ⧸ K' => Disjoint (((Quotient.out c : H) : G) • (K : Set G)) (((Quotient.out d : H) : G) • (K : Set G)))`. Introduce `c d hcd`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `g hgc hgd`.
+
+Take `⟨y, hy, rfl⟩` from `Set.mem_smul_set.1 hgc`. Take `⟨z, hz, hzy⟩` from `Set.mem_smul_set.1 hgd`. Apply `hcd` to reduce the goal to its premises. Rewrite using `[← Quotient.out_eq c, ← Quotient.out_eq d]`. Apply `(QuotientGroup.eq (s := K')).2` to reduce the goal to its premises.
+
+Rewrite using `[Subgroup.mem_subgroupOf]`. Establish `e : (((Quotient.out c : H)⁻¹ * Quotient.out d : H) : G) = y * z⁻¹`. Simplify using `only [smul_eq_mul] at hzy`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, hzy]`.
+
+Use `group`. Rewrite using `[e]`. Conclude with `K.mul_mem hy (K.inv_mem hz)`. Rewrite using `[hcover, measure_iUnion hdisj (fun c => (hK.smul _).measurableSet), tsum_fintype]`. Simplify using `only [measure_smul]`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Subgroup.index, Nat.card_eq_fintype_card]`.
+-/
 private lemma measure_eq_index_subgroupOf_mul_measure {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
     [μ.IsMulLeftInvariant] {H K : Subgroup G} (hKH : K ≤ H) (hK : IsOpen (K : Set G))
@@ -89,6 +117,15 @@ private lemma measure_eq_index_subgroupOf_mul_measure {G : Type} [Group G] [Topo
 open MeasureTheory ValuativeRel Matrix Topology in
 open scoped Pointwise in
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ μ _ q hq hpow H₁ H₂ h₁ h₂`. Establish `hK : IsOpen ((H₁ ⊓ H₂ : Subgroup G) : Set G)` using `h₁.1.inter h₂.1`. Take `⟨hf₁, b₁, hb₁⟩` from `finiteIndex_and_index_subgroupOf_eq_pow q hq hpow (K := H₁ ⊓ H₂) h₁ hK`. Take `⟨hf₂, b₂, hb₂⟩` from `finiteIndex_and_index_subgroupOf_eq_pow q hq hpow (K := H₁ ⊓ H₂) h₂ hK`. Establish `e₁` using `measure_eq_index_subgroupOf_mul_measure μ (H := H₁) inf_le_left hK`.
+
+Establish `e₂` using `measure_eq_index_subgroupOf_mul_measure μ (H := H₂) inf_le_right hK`. Establish `hcpt : IsCompact ((H₁ ⊓ H₂ : Subgroup G) : Set G)` using `h₁.2.of_isClosed_subset ((H₁ ⊓ H₂).isClosed_of_isOpen hK) (fun x hx => (inf_le_left : H₁ ⊓ H₂ ≤ H₁) hx)`. Establish `hpos : 0 < (μ (H₁ ⊓ H₂ : Subgroup G)).toReal` using `ENNReal.toReal_pos (hK.measure_ne_zero μ ⟨1, (H₁ ⊓ H₂).one_mem⟩) hcpt.measure_lt_top.ne`. Use `⟨(b₁ : ℤ) - b₂, ?_⟩` and prove the remaining obligations. Rewrite using `[e₁, e₂, hb₁, hb₂, ENNReal.toReal_mul, ENNReal.toReal_mul]`.
+
+Simplify using `only [ENNReal.toReal_pow, ENNReal.toReal_natCast]`. Establish `hq0 : (q : ℝ) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Rewrite using `[zpow_sub₀ hq0, zpow_natCast, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.VolPow.vol_div_eq_zpow : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (q : ℕ), q.Prime → (∀ u : G, ∀ U ∈ 𝓝 (1 : G), ∃ m : ℕ, u ^ (q ^ m) ∈ U) → ∀ H₁ H₂ : Subgroup G, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsCO H₁ → _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsCO H₂ → ∃ z : ℤ, (μ H₁).toReal / (μ H₂).toReal = (q : ℝ) ^ z := by
   intro G _ _ _ _ _ μ _ q hq hpow H₁ H₂ h₁ h₂
   have hK : IsOpen ((H₁ ⊓ H₂ : Subgroup G) : Set G) := h₁.1.inter h₂.1

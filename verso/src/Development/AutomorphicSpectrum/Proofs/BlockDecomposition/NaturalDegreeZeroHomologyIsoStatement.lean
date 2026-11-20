@@ -3,6 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NaturalDegreeZe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CubeResApply
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.CompanionTheory.Hodge.Nerve
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hodge.DimShift.homology_nonempty_iso | exact GlobalTheory.CompanionTheory.Hodge.DimShift.homology_nonempty_iso | (intros; apply GlobalTheory.CompanionTheory.Hodge.DimShift.homology_nonempty_iso <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.natural_degree_zero_homology_iso : ∀ {R : Type} [CommRing R] {𝒜 : Type 1} [Category.{0} 𝒜] [HasZeroMorphisms 𝒜]
     (T₁ T₂ : 𝒜 ⥤ CochainComplex (ModuleCat.{0} R) ℕ) [T₁.PreservesZeroMorphisms] [T₂.PreservesZeroMorphisms]
     (ε : ∀ G, (T₁.obj G).X 0 ≅ (T₂.obj G).X 0),

@@ -16,6 +16,25 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 
 local instance fintypeResidueStable : Fintype 𝓀[F] := Fintype.ofFinite _
 
+/- English proof (translation)
+Set `D : Finset (Σ S : Finset (Fin n), Pairs S → 𝓀[F])` to `((Finset.univ : Finset (Fin n)).powersetCard r).sigma fun _ => Finset.univ`. Set `e : (Σ S : Finset (Fin n), Pairs S → 𝓀[F]) → GL (Fin n) F ⧸ integralGL F n` to `fun x => ((gMat x.1 x.2 : GL (Fin n) F) : GL (Fin n) F ⧸ integralGL F n)`. Establish `hinj : Set.InjOn e D`. Introduce and unpack `⟨S, c⟩ _ ⟨S', c'⟩ _ h`. Establish `hq : ((gMat S c : GL (Fin n) F) : GL (Fin n) F ⧸ integralGL F n) = (gMat S' c' : GL (Fin n) F)` using `h`.
+
+Rewrite `hq` using `[QuotientGroup.eq]`. Establish `hS : S = S'`. Establish `h1` using `GroundTheory.Automorphic.Iwasawa.iwasawaExponent_mul_of_mem_integralGL F n (gMat S c) hq`. Rewrite `h1` using `[mul_inv_cancel_left, GroundTheory.Automorphic.Spherical.iwasawaExponent_gMat, GroundTheory.Automorphic.Spherical.iwasawaExponent_gMat]`. Use extensionality with `i`.
+
+Establish `h2` using `congrFun h1 i`. Simplify using `only [lamS] at h2`. Apply the tactic sequence `split_ifs at h2 <;> simp_all`. Substitute `hS` using the available equality. Establish `hc : c = c'` using `GroundTheory.Automorphic.Spherical.gMat_injective S h`.
+
+Substitute `hc` using the available equality. Both sides reduce to the same expression. Establish `hsupp : (Function.support fun q : GL (Fin n) F ⧸ integralGL F n => (minusculeSet F n r).indicator (fun _ => (1 : ℂ)) q.out • Φ q.out) ⊆ (D.image e : Set _)`. Introduce `q hq`. Rewrite `hq` using `[Function.mem_support]`.
+
+Establish `hmem : q.out ∈ minusculeSet F n r`. Assume the negation of the conclusion as `hn`. Apply `hq` to reduce the goal to its premises. Rewrite using `[Set.indicator_of_notMem hn, zero_smul]`. Take `⟨S, hS, c, hc⟩` from `GroundTheory.Automorphic.Spherical.exists_gMat hmem`.
+
+Use `Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨⟨S, c⟩, ?_, ?_⟩)` and prove the remaining obligations. Conclude with `Finset.mem_sigma.mpr ⟨Finset.mem_powersetCard.mpr ⟨Finset.subset_univ _, hS⟩, Finset.mem_univ _⟩`. Use `show ((gMat S c : GL (Fin n) F) : GL (Fin n) F ⧸ integralGL F n) = q`. Rewrite using `[hc, QuotientGroup.out_eq']`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_image hinj, Finset.sum_sigma]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `S hS`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c _`. Establish `hSc : S.card = r` using `(Finset.mem_powersetCard.mp hS).2`.
+
+Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (integralGL F n) (gMat S c)`. Establish `hmem : gMat S c * (k : GL (Fin n) F) ∈ minusculeSet F n r`. Use `GroundTheory.Automorphic.Spherical.mul_mem_minusculeSet (GroundTheory.Automorphic.Spherical.gMat_mem_minusculeSet S c) (one_mem (integralGL F n)) k.2` as an intermediate fact. Rewrite `this` using `[one_mul, hSc]`. Then use the resulting hypothesis. Use `show (minusculeSet F n r).indicator (fun _ => (1 : ℂ)) (((gMat S c : GL (Fin n) F) : GL (Fin n) F ⧸ integralGL F n).out) • Φ (((gMat S c : GL (Fin n) F) : GL (Fin n) F ⧸ integralGL F n).out) = Φ (gMat S c)`.
+
+Rewrite using `[hk, Set.indicator_of_mem hmem, one_smul, hΦ _ _ k.2]`.
+-/
 theorem finsum_cosets {W : Type} [AddCommGroup W] [Module ℂ W] (Φ : GL (Fin n) F → W)
     (hΦ : ∀ g, ∀ k ∈ integralGL F n, Φ (g * k) = Φ g) (r : ℕ) :
     ∑ᶠ c : GL (Fin n) F ⧸ integralGL F n,
@@ -71,6 +90,17 @@ theorem finsum_cosets {W : Type} [AddCommGroup W] [Module ℂ W] (Φ : GL (Fin n
       Φ (((gMat S c : GL (Fin n) F) : GL (Fin n) F ⧸ integralGL F n).out) = Φ (gMat S c)
   rw [hk, Set.indicator_of_mem hmem, one_smul, hΦ _ _ k.2]
 
+/- English proof (translation)
+Apply `GroundTheory.Automorphic.Spherical.mem_integralGL_of_forall_mem` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[GroundTheory.Automorphic.Spherical.coe_unipC, Matrix.add_apply]`. Use `add_mem ?_ (GroundTheory.Automorphic.Spherical.cMat_mem c i j)` and prove the remaining obligations. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq]`. Conclude with `one_mem _`. Rewrite using `[Matrix.one_apply_ne h]`. Conclude with `zero_mem _`.
+
+Establish `hdet : (↑(unipC (F` using `F) S c) : Matrix (Fin n) (Fin n) F).det = 1 := by`. Rewrite using `[GroundTheory.Automorphic.Spherical.coe_unipC, Matrix.det_of_upperTriangular]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, GroundTheory.Automorphic.Spherical.cMat_apply_of_not c (by simp), add_zero]`.
+
+Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Establish `hne : i ≠ j` using `fun h => by subst h; exact lt_irrefl _ hij'`. Use `show (1 : Matrix (Fin n) (Fin n) F) i j + cMat S c i j = 0`. Rewrite using `[Matrix.one_apply_ne hne, GroundTheory.Automorphic.Spherical.cMat_apply_of_not (i := i) (j := j) c (by`.
+
+Introduce and unpack `⟨-, -, h⟩`. Conclude with `absurd h (not_lt.mpr hij'.le)), add_zero]`. Rewrite using `[hdet, map_one]`.
+-/
 theorem unipC_mem_integralGL (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
     unipC S c ∈ integralGL F n := by
   apply GroundTheory.Automorphic.Spherical.mem_integralGL_of_forall_mem
@@ -98,19 +128,37 @@ theorem unipC_mem_integralGL (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
 def revCompl (S : Finset (Fin n)) : Finset (Fin n) :=
   Finset.univ.filter fun i => Fin.rev i ∉ S
 
+/- English proof (translation)
+Simplify using `[revCompl]`.
+-/
 theorem mem_revCompl {S : Finset (Fin n)} {i : Fin n} : i ∈ revCompl S ↔ Fin.rev i ∉ S := by
   simp [revCompl]
 
+/- English proof (translation)
+Use extensionality with `i`. Rewrite using `[mem_revCompl, mem_revCompl, Fin.rev_rev, not_not]`.
+-/
 theorem revCompl_revCompl (S : Finset (Fin n)) : revCompl (revCompl S) = S := by
   ext i
   rw [mem_revCompl, mem_revCompl, Fin.rev_rev, not_not]
 
+/- English proof (translation)
+Establish `h : revCompl S = (S.map Fin.revPerm.toEmbedding)ᶜ`. Use extensionality with `i`. Rewrite using `[mem_revCompl, Finset.mem_compl, Finset.mem_map_equiv, Fin.revPerm_symm, Fin.revPerm_apply]`. Rewrite using `[h, Finset.card_compl, Finset.card_map, Fintype.card_fin]`.
+-/
 theorem card_revCompl (S : Finset (Fin n)) : (revCompl S).card = n - S.card := by
   have h : revCompl S = (S.map Fin.revPerm.toEmbedding)ᶜ := by
     ext i
     rw [mem_revCompl, Finset.mem_compl, Finset.mem_map_equiv, Fin.revPerm_symm, Fin.revPerm_apply]
   rw [h, Finset.card_compl, Finset.card_map, Fintype.card_fin]
 
+/- English proof (translation)
+Set `f : Pairs S → Pairs (revCompl S)` to `fun p =>`. Set `q : {p : Fin n × Fin n // p.1 ∈ S ∧ p.2 ∉ S ∧ p.1 < p.2}` to `p`. Use the proof step `(⟨(Fin.rev q.1.2, Fin.rev q.1.1), by`. Take `⟨h1, h2, h3⟩` from `q.2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show Fin.rev q.1.2 ∈ revCompl S`. Rewrite using `[mem_revCompl, Fin.rev_rev]`. Conclude with `h2`. Use `show Fin.rev q.1.1 ∉ revCompl S`. Rewrite using `[mem_revCompl, Fin.rev_rev, not_not]`.
+
+Conclude with `h1`. Use `show Fin.rev q.1.2 < Fin.rev q.1.1`. Conclude with `Fin.rev_lt_rev.mpr h3⟩ :`. Use the proof step `{p : Fin n × Fin n // p.1 ∈ revCompl S ∧ p.2 ∉ revCompl S ∧ p.1 < p.2})`. Use `Fintype.card_le_of_injective f ?_` and prove the remaining obligations.
+
+Introduce `p p' h`. Establish `h'` using `congrArg (fun x : Pairs (revCompl S) => (x : {p : Fin n × Fin n // p.1 ∈ revCompl S ∧ p.2 ∉ revCompl S ∧ p.1 < p.2}).1) h`. Simplify using `only [f, Prod.mk.injEq, Fin.rev_inj] at h'`. Conclude with `Subtype.ext (Prod.ext h'.2 h'.1)`.
+-/
 theorem card_pairs_le (S : Finset (Fin n)) :
     Fintype.card (Pairs S) ≤ Fintype.card (Pairs (revCompl S)) := by
   let f : Pairs S → Pairs (revCompl S) := fun p =>
@@ -132,6 +180,11 @@ theorem card_pairs_le (S : Finset (Fin n)) :
   simp only [f, Prod.mk.injEq, Fin.rev_inj] at h'
   exact Subtype.ext (Prod.ext h'.2 h'.1)
 
+/- English proof (translation)
+Establish `h1` using `card_pairs_le S`. Establish `h2` using `card_pairs_le (revCompl S)`. Rewrite `h2` using `[revCompl_revCompl]`. Establish `hc : Fintype.card (Pairs (revCompl S)) = Fintype.card (Pairs S)` using `le_antisymm h2 h1`. Unfold `kappa`.
+
+Conclude with `(Nat.card_congr ((Fintype.equivOfCardEq hc).arrowCongr (Equiv.refl _)))`.
+-/
 theorem kappa_revCompl (S : Finset (Fin n)) : kappa F (revCompl S) = kappa F S := by
   have h1 := card_pairs_le S
   have h2 := card_pairs_le (revCompl S)
@@ -143,6 +196,9 @@ theorem kappa_revCompl (S : Finset (Fin n)) : kappa F (revCompl S) = kappa F S :
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ (GL (Fin n) F) V}
   {B : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ} {v : V}
 
+/- English proof (translation)
+Establish `ha' : ρ a v = v` using `hv a ha`. Establish `hb' : ρ b v = v` using `hv b hb`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hb']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coeff_mul_mul (hU : Unit' ρ B) (hv : ∀ g ∈ integralGL F n, ρ g v = v)
     {a b : GL (Fin n) F} (ha : a ∈ integralGL F n) (hb : b ∈ integralGL F n) (g : GL (Fin n) F) :
     B v (ρ (a * g * b) v) = B v (ρ g v) := by
@@ -152,6 +208,9 @@ theorem coeff_mul_mul (hU : Unit' ρ B) (hv : ∀ g ∈ integralGL F n, ρ g v =
   calc B v (ρ a (ρ g v)) = B (ρ a v) (ρ a (ρ g v)) := by rw [ha']
     _ = B v (ρ g v) := hU.2.2 a v (ρ g v)
 
+/- English proof (translation)
+Establish `h` using `coeff_mul_mul hU hv (unipC_mem_integralGL S c) (one_mem _) (torusPow F n (lamS S))`. Rewrite `h` using `[mul_one]`. Conclude with `h`.
+-/
 theorem coeff_gMat (hU : Unit' ρ B) (hv : ∀ g ∈ integralGL F n, ρ g v = v) (S : Finset (Fin n))
     (c : Pairs S → 𝓀[F]) :
     B v (ρ (gMat S c) v) = B v (ρ (torusPow F n (lamS S)) v) := by
@@ -159,6 +218,19 @@ theorem coeff_gMat (hU : Unit' ρ B) (hv : ∀ g ∈ integralGL F n, ρ g v = v)
   rw [mul_one] at h
   exact h
 
+/- English proof (translation)
+Set `P : Matrix (Fin n) (Fin n) F` to `(Fin.revPerm : Equiv.Perm (Fin n)).toPEquiv.toMatrix`. Establish `hPP : P * P = 1`. Simplify using `only [P]`. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans]`. Establish `hrr : (Fin.revPerm : Equiv.Perm (Fin n)).trans Fin.revPerm = Equiv.refl _`.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[hrr, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]`. Set `w : GL (Fin n) F` to `⟨P, P, hPP, hPP⟩`. Establish `hw : w ∈ integralGL F n`.
+
+Apply `GroundTheory.Automorphic.Spherical.mem_integralGL_of_forall_mem` to reduce the goal to its premises. Introduce `i j show P i j ∈ _`. Simplify using `only [P, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`. Use `show (ValuativeRel.valuation F) P.det = 1`. Establish `hdet : P.det = ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤ) : F)` using `Matrix.det_permutation _`. Rewrite using `[hdet]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n))) with h | h <;>`.
+
+Simplify using `[h]`. Establish `hconj : torusPow F n (lamS (revCompl S)) = w * torusPow F n (lamS Sᶜ) * w⁻¹`. Use extensionality with `i j`. Rewrite using `[Units.val_mul, Units.val_mul, GroundTheory.Automorphic.Iwasawa.coe_torusPow, GroundTheory.Automorphic.Iwasawa.coe_torusPow]`. Use `show (Matrix.diagonal _ : Matrix (Fin n) (Fin n) F) i j = (P * Matrix.diagonal _ * P : Matrix (Fin n) (Fin n) F) i j`.
+
+Rewrite using `[PEquiv.mul_toMatrix_toPEquiv, PEquiv.toMatrix_toPEquiv_mul]`. Simplify using `only [Matrix.diagonal_apply, Fin.revPerm_symm, Fin.revPerm_apply, Fin.rev_inj, lamS, mem_revCompl, Finset.mem_compl]`. Apply the tactic sequence `all_goals simp [Matrix.submatrix_apply, Matrix.diagonal_apply, Fin.rev_inj]`. Rewrite using `[hconj, coeff_mul_mul hU hv hw (inv_mem hw)]`.
+-/
 theorem coeff_revCompl (hU : Unit' ρ B) (hv : ∀ g ∈ integralGL F n, ρ g v = v)
     (S : Finset (Fin n)) :
     B v (ρ (torusPow F n (lamS (revCompl S))) v) = B v (ρ (torusPow F n (lamS Sᶜ)) v) := by
@@ -196,12 +268,24 @@ theorem coeff_revCompl (hU : Unit' ρ B) (hv : ∀ g ∈ integralGL F n, ρ g v 
     all_goals simp [Matrix.submatrix_apply, Matrix.diagonal_apply, Fin.rev_inj]
   rw [hconj, coeff_mul_mul hU hv hw (inv_mem hw)]
 
+/- English proof (translation)
+Conclude with `(finsum_cosets (fun g => ρ g v) (fun g k hk => by rw [map_mul, Module.End.mul_apply, hH.1 k hk]) r).symm.trans (hH.2 r hr)`.
+-/
 theorem sum_eig {z : Fin n → ℂˣ} (hH : Heig ρ v z) {r : ℕ} (hr : r ≤ n) :
     ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, ∑ c : Pairs S → 𝓀[F], ρ (gMat S c) v =
       (sqrtQ F ^ (r * (n - r)) * evalAt z (esymmL n r)) • v := by
   exact (finsum_cosets (fun g => ρ g v)
     (fun g k hk => by rw [map_mul, Module.End.mul_apply, hH.1 k hk]) r).symm.trans (hH.2 r hr)
 
+/- English proof (translation)
+Establish `h` using `sum_eig hH (le_refl n)`. Establish `hS : (Finset.univ : Finset (Fin n)).powersetCard n = {Finset.univ}`. Use `Finset.powersetCard_self (Finset.univ : Finset (Fin n))` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Then use the resulting hypothesis. Rewrite `h` using `[hS, Finset.sum_singleton, Nat.sub_self, mul_zero, pow_zero, one_mul]`.
+
+Use `haveI hempty : IsEmpty (Pairs (Finset.univ : Finset (Fin n))) := ⟨fun p => (show {p : Fin n × Fin n // p.1 ∈ (Finset.univ : Finset (Fin n)) ∧ p.2 ∉ (Finset.univ : Finset (Fin n)) ∧ p.1 < p.2} from p).2.2.1 (Finset.mem_univ _)⟩`. Establish `hone : ∀ c : Pairs (Finset.univ : Finset (Fin n)) → 𝓀[F], gMat Finset.univ c = torusPow F n (lamS Finset.univ)`. Introduce `c`. Establish `hu : unipC (F` using `F) Finset.univ c = 1 := by`. Use extensionality with `i j`.
+
+Rewrite using `[GroundTheory.Automorphic.Spherical.coe_unipC, Matrix.add_apply, GroundTheory.Automorphic.Spherical.cMat_apply_of_not c (by simp), add_zero, Units.val_one]`. Use `show unipC Finset.univ c * torusPow F n (lamS Finset.univ) = _`. Rewrite using `[hu, one_mul]`. Simplify using `only [hone, Finset.sum_const, Finset.card_univ] at h`. Establish `hcard : Fintype.card (Pairs (Finset.univ : Finset (Fin n)) → 𝓀[F]) = 1`.
+
+Rewrite using `[Fintype.card_fun, Fintype.card_eq_zero (α := Pairs (Finset.univ : Finset (Fin n))), pow_zero]`. Rewrite `h` using `[hcard, one_smul]`. Conclude with `h`.
+-/
 theorem rho_central {z : Fin n → ℂˣ} (hH : Heig ρ v z) :
     ρ (torusPow F n (lamS (Finset.univ : Finset (Fin n)))) v = evalAt z (esymmL n n) • v := by
   have h := sum_eig hH (le_refl n)
@@ -227,12 +311,22 @@ theorem rho_central {z : Fin n → ℂˣ} (hH : Heig ρ v z) :
   rw [hcard, one_smul] at h
   exact h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [lamS, Pi.add_apply, Pi.neg_apply, Finset.mem_compl, Finset.mem_univ, if_true]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem lamS_compl (S : Finset (Fin n)) :
     lamS Sᶜ = -lamS S + lamS (Finset.univ : Finset (Fin n)) := by
   funext i
   simp only [lamS, Pi.add_apply, Pi.neg_apply, Finset.mem_compl, Finset.mem_univ, if_true]
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `hmul : ∀ l₁ l₂ : Fin n → ℤ, torusPow F n (l₁ + l₂) = torusPow F n l₁ * torusPow F n l₂`. Introduce `l₁ l₂`. Unfold `torusPow`. Rewrite using `[← map_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[_root_.zpow_add]`. Establish `hc` using `rho_central hH`. Establish `hinv : ρ (torusPow F n (lamS S)) (ρ (torusPow F n (lamS S))⁻¹ v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+
+Rewrite using `[lamS_compl, hmul, GroundTheory.Automorphic.Iwasawa.torusPow_neg, map_mul, Module.End.mul_apply, hc, map_smul, map_smul, smul_eq_mul, hU.1 v]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coeff_compl {z : Fin n → ℂˣ} (hU : Unit' ρ B) (hH : Heig ρ v z) (S : Finset (Fin n)) :
     B v (ρ (torusPow F n (lamS Sᶜ)) v) =
       evalAt z (esymmL n n) * starRingEnd ℂ (B v (ρ (torusPow F n (lamS S)) v)) := by
@@ -255,6 +349,13 @@ theorem coeff_compl {z : Fin n → ℂˣ} (hU : Unit' ρ B) (hH : Heig ρ v z) (
         (hU.2.2 _ v _).symm
     _ = B (ρ (torusPow F n (lamS S)) v) v := by rw [hinv]
 
+/- English proof (translation)
+Establish `h` using `congrArg (B v) (sum_eig hH hr)`. Rewrite `h` using `[map_sum, map_smul, smul_eq_mul]`. Rewrite using `[← h]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `S _`.
+
+Rewrite using `[map_sum]`. Simplify using `only [coeff_gMat hU hH.1]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `congr 1`. Unfold `kappa`.
+
+Rewrite using `[Nat.card_eq_fintype_card]`.
+-/
 theorem sum_kappa {z : Fin n → ℂˣ} (hU : Unit' ρ B) (hH : Heig ρ v z) {r : ℕ} (hr : r ≤ n) :
     ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r,
         (kappa F S : ℂ) * B v (ρ (torusPow F n (lamS S)) v) =
@@ -271,6 +372,9 @@ theorem sum_kappa {z : Fin n → ℂˣ} (hU : Unit' ρ B) (hH : Heig ρ v z) {r 
   unfold kappa
   rw [Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Rewrite using `[map_pow]`. Use `congr 1`. Unfold `sqrtQ`. Conclude with `Complex.conj_ofReal _`.
+-/
 theorem conj_sqrtQ_pow (k : ℕ) : starRingEnd ℂ (sqrtQ F ^ k) = sqrtQ F ^ k := by
   rw [map_pow]
   congr 1
@@ -281,6 +385,25 @@ end GlobalTheory.CompanionTheory.SatakeStable
 
 open GlobalTheory.CompanionTheory.SatakeStable in
 
+/- English proof (translation)
+Unfold `liftZP_unit`. Introduce `F _ _ _ _ n V _ _ ρ B hU v z hv0 hH r hr`. Establish `hA` using `sum_kappa hU hH hr`. Establish `hB` using `sum_kappa hU hH (Nat.sub_le n r)`. Establish `hsum : ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, (kappa F S : ℂ) * (evalAt z (esymmL n n) * starRingEnd ℂ (B v (ρ (torusPow F n (lamS S)) v))) = sqrtQ F ^ ((n - r) * (n - (n - r))) * evalAt z (esymmL n (n - r)) * B v v`.
+
+Rewrite using `[← hB]`. Use `Finset.sum_nbij' revCompl revCompl ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `S hS`. Rewrite `hS`, the goal using `[Finset.mem_powersetCard]`. Conclude with `⟨Finset.subset_univ _, by rw [card_revCompl, hS.2]⟩`.
+
+Introduce `T hT`. Rewrite `hT`, the goal using `[Finset.mem_powersetCard]`. Conclude with `⟨Finset.subset_univ _, by rw [card_revCompl, hT.2, Nat.sub_sub_self hr]⟩`. Introduce `S _`. Conclude with `revCompl_revCompl S`.
+
+Introduce `T _`. Conclude with `revCompl_revCompl T`. Introduce `S _`. Rewrite using `[kappa_revCompl, coeff_revCompl hU hH.1, coeff_compl hU hH]`. Establish `hL : ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, (kappa F S : ℂ) * (evalAt z (esymmL n n) * starRingEnd ℂ (B v (ρ (torusPow F n (lamS S)) v))) = evalAt z (esymmL n n) * starRingEnd ℂ (∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, (kappa F S : ℂ) * B v (ρ (torusPow …`.
+
+Rewrite using `[map_sum, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `S _`. Rewrite using `[map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hsum` using `[hL, hA, map_mul, map_mul, conj_sqrtQ_pow, hU.1 v v]`. Establish `hk : (n - r) * (n - (n - r)) = r * (n - r)` using `by rw [Nat.sub_sub_self hr, mul_comm]`. Rewrite `hsum` using `[hk]`. Establish `hsq : sqrtQ F ≠ 0`. Establish `hq : qF F ≠ 0` using `Nat.card_pos.ne'`.
+
+Unfold `sqrtQ`. Simplify using `using hq`. Establish `hb : B v v ≠ 0`. Introduce `h`. Establish `h'` using `hU.2.1 v hv0`.
+
+Rewrite `h'` using `[h, Complex.zero_re]`. Conclude with `lt_irrefl 0 h'`. Establish `key : (starRingEnd ℂ (evalAt z (esymmL n r)) * evalAt z (esymmL n n) - evalAt z (esymmL n (n - r))) * (sqrtQ F ^ (r * (n - r)) * B v v) = 0`. Take the linear combination `hsum`. Break down `mul_eq_zero.mp key with h | h` into its components or cases.
+
+Conclude with `sub_eq_zero.mp h`. Conclude with `absurd h (mul_ne_zero (pow_ne_zero _ hsq) hb)`.
+-/
 theorem GlobalTheory.CompanionTheory.SatakeStable.l11 : liftZP_unit := by
   unfold liftZP_unit
   intro F _ _ _ _ n V _ _ ρ B hU v z hv0 hH r hr

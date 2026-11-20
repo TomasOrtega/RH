@@ -3,6 +3,21 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionQuotie
 import Development.AutomorphicArithmetic.DivisorFrames.ExistsComplexPointPrime
 import Development.AutomorphicArithmetic.DivisorFrames.ExistsPrimeNonDivisible
 
+/- English proof (translation)
+Introduce `K A _ _ _ _ _ _ σ m ε hε a b ha H`. Use `haveI : IsIntegrallyClosed A := GlobalTheory.isIntegrallyClosed_of_smooth K A`. Use `haveI : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing K A`. Assume the negation of the conclusion as `hn`. Take `⟨P, t, c, j₀, hP, -, ht, hc0, h⟩` from `UpperTheory.exists_prime_non_divisible A m b a ha (not_forall.1 hn)`.
+
+Take `⟨ψ, hψσ, hψP, hψc⟩` from `UpperTheory.exists_complex_point_prime K A σ m ε hε P hP c j₀ hc0`. Take `⟨ι, -, d, B, φ, hB, hφσ, hd, hcov, hne⟩` from `GlobalTheory.T.exists_countable_holomorphic_families_smooth K A σ`. Take `⟨i, z₀, hz₀, hψ⟩` from `hcov ψ hψσ`. Take `⟨n, hn0, M, hM⟩` from `H _ _ _ (hB i) (hφσ i) (hd i) z₀ hz₀`. Establish `hc : ∀ u, ContinuousAt (fun z => φ i z u) z₀` using `fun u => (hd i u).continuousOn.continuousAt ((hB i).mem_nhds hz₀)`.
+
+Establish `hcs : ContinuousAt (fun z => ∑ j, ε j * φ i z (c j)) z₀` using `tendsto_finset_sum _ fun j _ => (continuousAt_const.mul (hc (c j)))`. Establish `hr0 : φ i z₀ t = 0`. Rewrite using `[hψ]`. Conclude with `hψP t ht`. Establish `hs0 : ∑ j, ε j * φ i z₀ (c j) ≠ 0` using `by rw [hψ]; exact hψc`.
+
+Establish `hlt : ∀ᶠ z in nhds z₀, M * ‖φ i z t‖ ^ n < ‖∑ j, ε j * φ i z (c j)‖ ^ n`. Use `ContinuousAt.eventually_lt (continuousAt_const.mul ((hc t).norm.pow n)) (hcs.norm.pow n) ?_` and prove the remaining obligations. Simplify using `only [hr0, norm_zero, zero_pow hn0, mul_zero]`. Conclude with `pow_pos (norm_pos_iff.2 hs0) n`. Take `⟨z, hz, h1, h2⟩` from `((hne i z₀ hz₀ a ha).and_eventually (hM.and hlt)).exists`.
+
+Establish `h0 : φ i z a * ∑ j, ε j * φ i z (c j) = (∑ j, ε j * φ i z (b j)) * φ i z t`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← map_mul, h j, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : ‖φ i z a‖ ^ n * ‖∑ j, ε j * φ i z (c j)‖ ^ n = ‖∑ j, ε j * φ i z (b j)‖ ^ n * ‖φ i z t‖ ^ n`. Rewrite using `[← mul_pow, ← mul_pow, ← norm_mul, ← norm_mul, h0]`. Establish `h4 : 0 < ‖φ i z a‖ ^ n` using `pow_pos (norm_pos_iff.2 hz) n`. Establish `h5` using `mul_le_mul_of_nonneg_right h1 (pow_nonneg (norm_nonneg (φ i z t)) n)`. Establish `h6` using `mul_lt_mul_of_pos_left h2 h4`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem UpperTheory.holomorphic_family_nonvanishing :
     ∀ (K A : Type) [Field K] [NumberField K] [CommRing A] [IsDomain A] [Algebra K A] [Algebra.Smooth K A] (σ : K →+* ℂ) (m : ℕ) (ε : Fin m → ℂ), (∀ a : Fin m → K, ∑ j, σ (a j) * ε j = 0 → a = 0) → ∀ (a : A) (b : Fin m → A), a ≠ 0 → (∀ (d : ℕ) (B : Set (Fin d → ℂ)) (φ : (Fin d → ℂ) → (A →+* ℂ)), IsOpen B → (∀ z ∈ B, (φ z).comp (algebraMap K A) = σ) → (∀ u : A, DifferentiableOn ℂ (fun z => φ z u) B) → ∀ z₀ ∈ B, ∃ n : ℕ, n ≠ 0 ∧ ∃ M : ℝ, ∀ᶠ z in nhds z₀, ‖∑ j, ε j * φ z (b j)‖ ^ n ≤ M * ‖φ z a‖ ^ n) → ∀ j, a ∣ b j := by
   intro K A _ _ _ _ _ _ σ m ε hε a b ha H

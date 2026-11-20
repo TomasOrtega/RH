@@ -8,6 +8,11 @@ open scoped GlobalTheory.Idele
 
 namespace GlobalTheory.CompanionTheory.EllipticDict
 
+/- English proof (translation)
+Introduce `K _ _ _ I`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, rfl⟩`.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem idealLattice_toAddSubgroup_eq_idealSub :
     ∀ {K : Type} [Field K] [NumberField K] [Algebra K ℂ] (I : FractionalIdeal (𝓞 K)⁰ K),
       (GroundTheory.Global.Elliptic.idealLattice (algebraMap K ℂ) I).toAddSubgroup =

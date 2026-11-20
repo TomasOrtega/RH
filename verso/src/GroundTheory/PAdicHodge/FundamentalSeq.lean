@@ -26,6 +26,9 @@ def fixedSubspace (φ : B →+* B) (hφ : ∀ q : k, φ (algebraMap k B q) = alg
     simp only [Set.mem_ofPred_eq] at hx ⊢
     rw [Algebra.smul_def, map_mul, hφ, hx]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixedSubspace {φ : B →+* B} {hφ : ∀ q : k, φ (algebraMap k B q) = algebraMap k B q}
     {x : B} : x ∈ fixedSubspace φ hφ ↔ φ x = x :=
   Iff.rfl
@@ -35,6 +38,9 @@ def imageSubspace : Submodule k E :=
 
 variable {k D E}
 
+/- English proof (translation)
+Rewrite using `[imageSubspace, LinearMap.mem_range, RingHom.mem_range]`. Both sides reduce to the same expression.
+-/
 theorem mem_imageSubspace {z : E} : z ∈ imageSubspace k D E ↔ z ∈ (algebraMap D E).range := by
   rw [imageSubspace, LinearMap.mem_range, RingHom.mem_range]
   rfl
@@ -57,6 +63,11 @@ def fixedToQuot (φ : B →+* B) (hφ : ∀ q : k, φ (algebraMap k B q) = algeb
     fixedSubspace φ hφ →ₗ[k] E ⧸ imageSubspace k D E :=
   (imageSubspace k D E).mkQ ∘ₗ linearOfRingHom ι hι ∘ₗ (fixedSubspace φ hφ).subtype
 
+/- English proof (translation)
+Use `⟨fun a b h => (algebraMap k B).injective (congrArg Subtype.val h), fun x => ?_, fun z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (ι (x : B)) = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, mem_imageSubspace, hker x x.2]`. Conclude with `⟨fun ⟨q, hq⟩ => ⟨q, Subtype.ext hq.symm⟩, fun ⟨q, hq⟩ => ⟨q, (congrArg Subtype.val hq).symm⟩⟩`. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ z`.
+
+Take `⟨x, hφx, hx⟩` from `hsurj z`. Use `⟨⟨x, hφx⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (ι x) = Submodule.Quotient.mk z`. Rewrite using `[Submodule.Quotient.eq, mem_imageSubspace]`. Conclude with `hx`.
+-/
 theorem exact_fixedIncl_fixedToQuot [Nontrivial B] (φ : B →+* B)
     (hφ : ∀ q : k, φ (algebraMap k B q) = algebraMap k B q) (ι : B →+* E)
     (hι : ∀ q : k, ι (algebraMap k B q) = algebraMap k E q)
@@ -90,6 +101,9 @@ variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `have := isDomain_bCris hε hζ exact_fixedIncl_fixedToQuot (phiB hε) (phiB_algebraMap_padic' hε) (iotaB hε hζ) (iotaB_algebraMap_padic hε hζ) (fun _ hx => iotaB_mem_range_iff hε hζ hx) (exists_phiB_eq_iotaB_sub_mem hε hζ)`.
+-/
 theorem fundamental_exact_sequence :
     Function.Injective (fixedIncl (phiB hε) (phiB_algebraMap_padic' hε)) ∧
       Function.Exact (fixedIncl (phiB hε) (phiB_algebraMap_padic' hε))

@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Loc
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
+/- English proof (translation)
+Use `filter_upwards [Filter.eventually_ge_atTop d.totient] with n hn`. Take `⟨k, hk⟩` from `Nat.dvd_factorial (Nat.totient_pos.2 (Nat.pos_of_ne_zero hd)) hn`. Rewrite using `[hk, pow_mul]`. Simplify using `using (Nat.ModEq.pow_totient h).pow k`.
+-/
 private theorem pt_modEq_one (l d : ℕ) (hd : d ≠ 0) (h : l.Coprime d) :
     ∀ᶠ n : ℕ in Filter.atTop, l ^ n.factorial ≡ 1 [MOD d] := by
   filter_upwards [Filter.eventually_ge_atTop d.totient] with n hn
@@ -9,10 +12,20 @@ private theorem pt_modEq_one (l d : ℕ) (hd : d ≠ 0) (h : l.Coprime d) :
   rw [hk, pow_mul]
   simpa using (Nat.ModEq.pow_totient h).pow k
 
+/- English proof (translation)
+Use `filter_upwards [Filter.eventually_ge_atTop a] with n hn`. Conclude with `pow_dvd_pow _ (hn.trans (Nat.self_le_factorial n))`.
+-/
 private theorem pt_dvd (l a : ℕ) : ∀ᶠ n : ℕ in Filter.atTop, l ^ a ∣ l ^ n.factorial := by
   filter_upwards [Filter.eventually_ge_atTop a] with n hn
   exact pow_dvd_pow _ (hn.trans (Nat.self_le_factorial n))
 
+/- English proof (translation)
+Establish `h0 : orderOf x ≠ 0` using `(orderOf_pos x).ne'`. Take `⟨a, d, hnd, hod⟩` from `Nat.exists_eq_pow_mul_and_not_dvd h0 l hl.one_lt.ne'`. Establish `hcop : l.Coprime d` using `(Nat.Prime.coprime_iff_not_dvd hl).2 hnd`. Establish `hd : d ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `h0 (by simpa using hod)`. Take `⟨N, hN⟩` from `Filter.eventually_atTop.1 ((pt_modEq_one l d hd hcop).and (pt_dvd l a))`. Use `⟨x ^ l ^ N.factorial, ?_⟩` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop N] with n hn`. Rewrite using `[pow_eq_pow_iff_modEq, hod, ← Nat.modEq_and_modEq_iff_modEq_mul (Nat.Coprime.pow_left a hcop)]`.
+
+Take `⟨h1, h2⟩` from `hN n hn`. Take `⟨h1', h2'⟩` from `hN N le_rfl`. Conclude with `⟨(Nat.modEq_zero_iff_dvd.2 h2).trans (Nat.modEq_zero_iff_dvd.2 h2').symm, h1.trans h1'.symm⟩`.
+-/
 private theorem pt_const (l : ℕ) (hl : l.Prime) {H : Type} [Group H] [Finite H] (x : H) :
     ∃ y, ∀ᶠ n : ℕ in Filter.atTop, x ^ l ^ n.factorial = y := by
   have h0 : orderOf x ≠ 0 := (orderOf_pos x).ne'
@@ -29,6 +42,17 @@ private theorem pt_const (l : ℕ) (hl : l.Prime) {H : Type} [Group H] [Finite H
   obtain ⟨h1', h2'⟩ := hN N le_rfl
   exact ⟨(Nat.modEq_zero_iff_dvd.2 h2).trans (Nat.modEq_zero_iff_dvd.2 h2').symm, h1.trans h1'.symm⟩
 
+/- English proof (translation)
+Take `⟨g', -, hg'⟩ : ∃ g' ∈ Set.univ, ClusterPt g' (Filter.map (fun n : ℕ => g ^ l ^ n.factorial) Filter.atTop)` from `isCompact_univ.exists_clusterPt (Filter.le_principal_iff.2 Filter.univ_mem)`. Use `⟨g', ?_⟩` and prove the remaining obligations. Rewrite using `[(nhds_basis_opens g').tendsto_right_iff]`. Introduce and unpack `V ⟨hgV, hVo⟩`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one (hVo.preimage (continuous_mul_left g')) (by simpa using hgV)`.
+
+Use `haveI : H.toSubgroup.Normal := H.isNormal'`. Use `haveI : Finite (Γ ⧸ H.toSubgroup) := H.toSubgroup.quotient_finite_of_isOpen H.isOpen'`. Take `⟨y, hy⟩` from `pt_const l hl (QuotientGroup.mk (s := H.toSubgroup) g)`. Establish `hnh : ∀ᶠ z in nhds g', g'⁻¹ * z ∈ H.toSubgroup`. Establish `hc : Continuous (fun z : Γ => g'⁻¹ * z)` using `continuous_const.mul continuous_id`.
+
+Use `hc.continuousAt.preimage_mem_nhds (H.isOpen'.mem_nhds ?_)` and prove the remaining obligations. Use `show g'⁻¹ * g' ∈ H.toSubgroup`. Rewrite using `[inv_mul_cancel]`. Conclude with `H.toSubgroup.one_mem`. Establish `hfr` using `hg'.frequently hnh`.
+
+Rewrite `hfr` using `[Filter.frequently_map]`. Take `⟨n, hn1, hn2⟩` from `(hfr.and_eventually hy).exists`. Establish `hy' : y = QuotientGroup.mk g'`. Rewrite using `[← hn2, ← QuotientGroup.mk_pow, eq_comm, QuotientGroup.eq]`. Conclude with `hn1`.
+
+Use `filter_upwards [hy] with m hm`. Rewrite `hm` using `[hy', ← QuotientGroup.mk_pow, QuotientGroup.eq]`. Use `hH (H.toSubgroup.inv_mem hm)` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem pt_exists (l : ℕ) (hl : l.Prime) (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (g : Γ) :
     ∃ g', Filter.Tendsto (fun n : ℕ => g ^ l ^ n.factorial) Filter.atTop (nhds g') := by
@@ -59,6 +83,19 @@ private theorem pt_exists (l : ℕ) (hl : l.Prime) (Γ : Type) [Group Γ] [Topol
   have := hH (H.toSubgroup.inv_mem hm)
   simpa using this
 
+/- English proof (translation)
+Establish `hXi : ∀ i : ℕ, ∀ a b, (X ^ i - 1 : Matrix ι ι R) a b ∈ J`. Introduce `i`. Establish `h0 : (Ideal.Quotient.mk J).mapMatrix (X - 1) = 0`. Use extensionality with `a b`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `hX a b`. Establish `h1 : (Ideal.Quotient.mk J).mapMatrix X = 1`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h0`. Establish `h2 : (Ideal.Quotient.mk J).mapMatrix (X ^ i - 1) = 0`.
+
+Rewrite using `[map_sub, map_pow, h1, one_pow, map_one, sub_self]`. Introduce `a b`. Use `congrFun (congrFun h2 a) b` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `this`.
+
+Establish `hgeom : X ^ l - 1 = (X - 1) * ((l : Matrix ι ι R) + ∑ i ∈ Finset.range l, (X ^ i - 1))`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_one, add_sub_cancel, mul_geom_sum]`. Introduce `a b`. Rewrite using `[hgeom, Matrix.mul_apply]`. Use `Ideal.sum_mem _ (fun c _ => ?_)` and prove the remaining obligations.
+
+Establish `hW : ((l : Matrix ι ι R) + ∑ i ∈ Finset.range l, (X ^ i - 1)) c b ∈ I`. Rewrite using `[Matrix.add_apply, Matrix.sum_apply]`. Use `I.add_mem ?_ (I.sum_mem fun i _ => hJ (hXi i c b))` and prove the remaining obligations. Apply the tactic sequence `by_cases hcb : c = b <;> simp [hcb, hl, Matrix.natCast_apply]`. Rewrite using `[mul_comm ((X - 1) a c)]`.
+
+Conclude with `Ideal.mul_mem_mul hW (hX a c)`.
+-/
 private theorem pt_step {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι] (I J : Ideal R) (hJ : J ≤ I) (l : ℕ)
     (hl : (l : R) ∈ I) (X : Matrix ι ι R) (hX : ∀ a b, (X - 1) a b ∈ J) : ∀ a b, (X ^ l - 1) a b ∈ I * J := by
   classical
@@ -89,6 +126,11 @@ private theorem pt_step {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι]
   rw [mul_comm ((X - 1) a c)]
   exact Ideal.mul_mem_mul hW (hX a c)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hX`. Consider the case `succ k ih`. Introduce `a b`. Establish `h` using `pt_step I (I ^ (k + 1)) (Ideal.pow_le_self (Nat.succ_ne_zero k)) l hl (X ^ l ^ k) ih a b`.
+
+Rewrite `h` using `[← pow_mul, ← pow_succ]`. Rewrite using `[pow_succ' I (k + 1)]`. Conclude with `h`.
+-/
 private theorem pt_pow {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι] (I : Ideal R) (l : ℕ)
     (hl : (l : R) ∈ I) (X : Matrix ι ι R) (hX : ∀ a b, (X - 1) a b ∈ I) (k : ℕ) :
     ∀ a b, (X ^ l ^ k - 1) a b ∈ I ^ (k + 1) := by
@@ -101,6 +143,37 @@ private theorem pt_pow {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι] 
     rw [pow_succ' I (k + 1)]
     exact h
 
+/- English proof (translation)
+Introduce `l _ Γ _ _ _ _ _ _ g`. Establish `hl : l.Prime` using `Fact.out`. Use `⟨pt_exists l hl Γ g, ?_⟩` and prove the remaining obligations. Introduce `g' hlim O _ _ _ _ ι _ _ rbar m hcop hgm R _ _ _ ρ`. Establish `hm0 : m ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hl.one_lt.ne' (Nat.coprime_zero_right l |>.1 hcop)`. Establish `key : ∀ {M : Type} [Monoid M] (x : M) (k : ℕ), x ^ m = 1 → k ≡ 1 [MOD m] → x ^ k = x`. Introduce `M _ x k hx hk`. Establish `hk' : k % orderOf x = 1 % orderOf x` using `Nat.ModEq.of_dvd (orderOf_dvd_of_pow_eq_one hx) hk`.
+
+Rewrite using `[← pow_mod_orderOf, hk', pow_mod_orderOf, pow_one]`. Establish `hcong` using `pt_modEq_one l m hm0 hcop`. Establish `hloc : ∀ N : ℕ, ∀ᶠ n : ℕ in Filter.atTop, (Ideal.Quotient.mk (maximalIdeal R ^ N)).mapMatrix (ρ.hom (g ^ l ^ n.factorial)) = (Ideal.Quotient.mk (maximalIdeal R ^ N)).mapMatrix (ρ.hom g')`. Introduce `N`. Establish `h1 : ∀ᶠ y in nhds g', ∀ a b, Ideal.Quotient.mk (maximalIdeal R ^ N) (ρ.hom y a b) = Ideal.Quotient.mk (maximalIdeal R ^ N) (ρ.hom g' a b)`.
+
+Simplify using `only [Filter.eventually_all]`. Introduce `a b`. Conclude with `(ρ.cont a b N).eventually_eq g'`. Use `filter_upwards [hlim.eventually h1] with n hn`. Use extensionality with `a b`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `hn a b`. Establish `hres : ∀ x y : R, Ideal.Quotient.mk (maximalIdeal R ^ 1) x = Ideal.Quotient.mk (maximalIdeal R ^ 1) y → res O R x = res O R y`. Introduce `x y h`. Rewrite `h` using `[Ideal.Quotient.eq, pow_one]`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `(res_eq_zero_iff O R _).2 h`. Establish `hA : rbar g' = rbar g`. Take `⟨n, hn1, hn2⟩` from `((hloc 1).and hcong).exists`. Use extensionality with `a b`.
+
+Rewrite using `[← ρ.red g' a b]`. Establish `e1` using `congrFun (congrFun hn1 a) b`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply] at e1`. Rewrite using `[← hres _ _ e1, ρ.red, map_pow, key (rbar g) _ hgm hn2]`. Establish `hlM : ((l : ℕ) : R) ∈ maximalIdeal R`.
+
+Rewrite using `[← res_eq_zero_iff O R, map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`. Establish `hX : ∀ a b, ((ρ.hom g) ^ m - 1) a b ∈ maximalIdeal R`. Introduce `a b`. Rewrite using `[← res_eq_zero_iff O R, Matrix.sub_apply, map_sub, ← map_pow, ρ.red, map_pow, hgm]`.
+
+Apply the tactic sequence `by_cases hab : a = b <;> simp [hab, Matrix.one_apply]`. Establish `hB : ∀ N : ℕ, ∀ a b, ((ρ.hom g') ^ m - 1) a b ∈ maximalIdeal R ^ N`. Introduce `N`. Establish `hfin : ∀ᶠ n : ℕ in Filter.atTop, N ≤ n.factorial + 1` using `by filter_upwards [Filter.eventually_ge_atTop N] with n hn`. Conclude with `hn.trans ((Nat.self_le_factorial n).trans (Nat.le_succ _))`.
+
+Take `⟨n, hn1, hn2⟩` from `((hloc N).and hfin).exists`. Establish `hp` using `pt_pow (maximalIdeal R) l hlM _ hX n.factorial`. Establish `hq : (Ideal.Quotient.mk (maximalIdeal R ^ N)).mapMatrix (((ρ.hom g) ^ m) ^ l ^ n.factorial) = 1`. Rewrite using `[← sub_eq_zero, ← map_one ((Ideal.Quotient.mk (maximalIdeal R ^ N)).mapMatrix), ← map_sub]`. Use extensionality with `a b`.
+
+Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_le_pow_right hn2 (hp a b)`. Establish `e : (ρ.hom (g ^ l ^ n.factorial)) ^ m = ((ρ.hom g) ^ m) ^ l ^ n.factorial`. Rewrite using `[map_pow, ← pow_mul, ← pow_mul, mul_comm]`. Establish `hr : (Ideal.Quotient.mk (maximalIdeal R ^ N)).mapMatrix ((ρ.hom g') ^ m) = 1`.
+
+Rewrite using `[map_pow, ← hn1, ← map_pow, e]`. Conclude with `hq`. Introduce `a b`. Establish `h2 : (Ideal.Quotient.mk (maximalIdeal R ^ N)).mapMatrix ((ρ.hom g') ^ m - 1) = 0`. Rewrite using `[map_sub, hr, map_one, sub_self]`.
+
+Use `congrFun (congrFun h2 a) b` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `this`. Use `⟨hA, ?_⟩` and prove the remaining obligations. Establish `hbot : ⨅ i : ℕ, maximalIdeal R ^ i = ⊥` using `Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal R).ne_top`.
+
+Rewrite using `[← sub_eq_zero]`. Use extensionality with `a b`. Establish `hmem : ((ρ.hom g') ^ m - 1) a b ∈ ⨅ i : ℕ, maximalIdeal R ^ i` using `Ideal.mem_iInf.2 (fun N => hB N a b)`. Rewrite `hmem` using `[hbot, Ideal.mem_bot]`. Rewrite using `[Matrix.zero_apply]`.
+
+Conclude with `hmem`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.primeTo :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] [T2Space Γ] (g : Γ), (∃ g', Filter.Tendsto (fun n : ℕ => g ^ l ^ n.factorial) Filter.atTop (nhds g')) ∧ ∀ g', Filter.Tendsto (fun n : ℕ => g ^ l ^ n.factorial) Filter.atTop (nhds g') → ∀ (O : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CharP (ResidueField O) l] (ι : Type) [Fintype ι] [DecidableEq ι] (rbar : Γ →* Matrix ι ι (ResidueField O)) (m : ℕ), l.Coprime m → rbar g ^ m = 1 → ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (ρ : Lift O rbar R), rbar g' = rbar g ∧ ρ.hom g' ^ m = 1 := by
   intro l _ Γ _ _ _ _ _ _ g

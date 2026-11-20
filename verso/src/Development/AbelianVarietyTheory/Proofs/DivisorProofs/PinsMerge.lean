@@ -51,6 +51,9 @@ def comap {Tp Tp' : Type} {tup : Tp → T0} (O : OMDat C R i Tp tup) (f : Tp' �
   thAd := fun t => O.thAd (f t)
   Plc := fun t => O.Plc (f t)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.lift, fun t => h.tuple (f t), h.act, fun t => h.bad (f t), fun t => h.reps (f t), fun t => h.ep (f t), h.io, fun t => h.w (f t), fun t => h.cov (f t), h.cxi.imp fun _ hc => ⟨hc.1, fun t => hc.2 (f t)⟩, fun t => h.model₂ (f t)⟩`.
+-/
 theorem pins_comap {Tp Tp' : Type} {tup : Tp → T0} {O : OMDat C R i Tp tup} (f : Tp' → Tp) {κ : WeightFamilies.Wt D ((i : ℕ) + 1)}
     {v₀ ι x₀} (h : O.Pins κ v₀ ι x₀) : (comap O f).Pins κ v₀ ι x₀ :=
   ⟨h.lift, fun t => h.tuple (f t), h.act, fun t => h.bad (f t), fun t => h.reps (f t), fun t => h.ep (f t), h.io,
@@ -92,6 +95,9 @@ def merge : OMDat C R i J tup where
   thAd := fun j => thAdOf R i (tup j) (h j) c0₃ v₀
   Plc := fun j x => ∃ x₀, Place R i (tup j) (h j) c0₃ (jVx R i (tup j) x₀) x
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hr`. Conclude with `⟨h1, h2, h3, h4, by rw [h5, map_inv₀, map_natCast], h6⟩`.
+-/
 theorem repsR_map {K K' : Type} [Field K] [Field K'] (j : K →+* K') {t : T0} {Cl : Type} {h : Cl → GA D (Vc D i)} {bad J' Lh gam}
     {vol : K} (hr : RepsR R i t h bad J' Lh gam vol) : RepsR R i t h bad J' Lh gam (j vol) := by
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := hr
@@ -99,6 +105,11 @@ theorem repsR_map {K K' : Type} [Field K] [Field K'] (j : K →+* K') {t : T0} {
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hu0 : ∀ j, u j ≠ 0` using `fun j h0 => by`. Take `⟨m, hm, e⟩` from `hc0`. Rewrite `e` using `[← hu j, h0]`. Simplify using `[hm.ne'] at e`. Use `⟨hlift, fun j => ⟨?_, ((hsrc j).tuple ()).B, ((hsrc j).tuple ()).xi, ((hsrc j).tuple ()).phi, ((hsrc j).tuple ()).half⟩, ⟨hact, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ h₃ _ _ hact).1⟩, fun j => (hsrc j).bad (), fun j => (hsrc j).reps (), fun j => ⟨fun k => congrArg ( …` and prove the remaining obligations.
+
+Take `⟨J', hr⟩` from `hh j`. Conclude with `⟨h j, J', repsR_map _ hr, GlobalTheory.RationalValues.placeEx_of_char R F hR i jL₃ (inC c₃) hlift (tup j) (h j), thAdIs_thAdOf R i (tup j) (h j) c0₃ hR.models.HV hr.2.2.1 hr.2.2.2.2.2.1 v₀, fun _ => Iff.rfl⟩`. Use `(cXiVal_iff _ _ _ _ _ _ _ _ _).2 ⟨c0, hc0, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu j]`. Conclude with `GlobalTheory.T.unfolding_frame_delta_change D _ _ _ _ _ _ _ _ (hs j) _ _ _ (u j) _ _ _ _ _ _ ((hsrc j).cov ()).1.2.2.2.2.2.2.2.1 (hcs j)`.
+-/
 theorem pins_merge {F : Face D A} (hR : R.Char F) {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {ι x₀}
     (hsrc : ∀ j, (src j).Pins κ v₀ ι x₀)
     (hlift : ThPinsR R i jL₃ (inC c₃) v₀ c0₃ ι C.Q.l.M (Mfr C.Q.l) lev)

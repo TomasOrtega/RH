@@ -3,6 +3,9 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Fra
 
 namespace Formalism.BasicNotions
 
+/- English proof (translation)
+Establish `h : 2 ≤ D.R.e` using `D.host.two_le_e`. Establish `h4 : 2 ^ 2 ≤ 2 ^ D.R.e` using `Nat.pow_le_pow_right (by norm_num) h`. Establish `h5 : 2 ^ D.R.e ≤ D.R.ord` using `D.R.toFrame.two_pow_le_ord`. Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem D7.eight_le_f (D : D7) : 8 ≤ D.R.f := by
   have h : 2 ≤ D.R.e := D.host.two_le_e
   have h4 : 2 ^ 2 ≤ 2 ^ D.R.e := Nat.pow_le_pow_right (by norm_num) h
@@ -10,6 +13,15 @@ theorem D7.eight_le_f (D : D7) : 8 ≤ D.R.f := by
   unfold Ranks.f Ranks.n
   omega
 
+/- English proof (translation)
+Establish `hf` using `D.eight_le_f`. Establish `h1 : D.R.f * D.R.r * (D.R.r + 1) ≤ T.nWn` using `T.nW_lo.1`. Establish `h2 : 8 * D.R.r ^ 2 ≤ T.nWn`. Use `le_trans ?_ h1` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : 2 * T.nWn ≤ T.TO`. Use `T.TO_nW` as an intermediate fact. Establish `h' : 2 * T.nWn ≤ (T.Dp + 2) * T.nWn` using `Nat.mul_le_mul_right _ (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `h4 : 128 * D.R.r ^ 4 ≤ T.TO * T.nWn`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h5 : D.R.r ≤ T.nP`. Rewrite using `[T.nP_eq]`. Establish `: D.R.r ≤ 8 * D.R.f * D.R.r` using `Nat.le_mul_of_pos_left _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h6` using `T.split`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ParamsT.t_ge_fourth_power_rank {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) :
     128 * D.R.r ^ 4 ≤ D.R.t := by
   have hf := D.eight_le_f
@@ -34,6 +46,11 @@ theorem ParamsT.t_ge_fourth_power_rank {D : D7} {L : SizeData₂ D} {P : Paramet
   have h6 := T.split
   omega
 
+/- English proof (translation)
+Establish `h : ((128 * D.R.r ^ 4 : ℕ) : ℝ) ≤ (D.R.t : ℝ)` using `by exact_mod_cast T.t_ge_fourth_power_rank`. Move the coercions through the operations in `at h`. Break down `Nat.eq_zero_or_pos D.R.r with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : (1 : ℝ) ≤ (D.R.r : ℝ)` using `by exact_mod_cast h0`. Establish `h2 : (D.R.r : ℝ) ^ ((7 : ℝ) / 2) ≤ (D.R.r : ℝ) ^ ((4 : ℕ) : ℝ)` using `Real.rpow_le_rpow_of_exponent_le h1 (by norm_num)`. Rewrite `h2` using `[Real.rpow_natCast]`. Establish `h3 : (0 : ℝ) ≤ (D.R.r : ℝ) ^ 4` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ParamsT.t_ge_80 {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) :
     80 * (D.R.r : ℝ) ^ ((7 : ℝ) / 2) ≤ (D.R.t : ℝ) := by
   have h : ((128 * D.R.r ^ 4 : ℕ) : ℝ) ≤ (D.R.t : ℝ) := by exact_mod_cast T.t_ge_fourth_power_rank
@@ -47,6 +64,9 @@ theorem ParamsT.t_ge_80 {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} 
     have h3 : (0 : ℝ) ≤ (D.R.r : ℝ) ^ 4 := by positivity
     linarith
 
+/- English proof (translation)
+Establish `h` using `T.t_ge_fourth_power_rank`. Establish `h1 : D.R.r ^ 2 ≤ D.R.r ^ 4` using `Nat.pow_le_pow_right hr (by norm_num)`. Establish `h2 : 1 ≤ D.R.r ^ 2` using `Nat.one_le_pow _ _ hr`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ParamsT.two_rank_sq_lt_t {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) (hr : 0 < D.R.r) :
     2 * D.R.r ^ 2 + 2 < D.R.t := by
   have h := T.t_ge_fourth_power_rank
@@ -54,6 +74,11 @@ theorem ParamsT.two_rank_sq_lt_t {D : D7} {L : SizeData₂ D} {P : ParameterChoi
   have h2 : 1 ≤ D.R.r ^ 2 := Nat.one_le_pow _ _ hr
   omega
 
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) ≤ L.sc.L`. Unfold `Scale.L`. Conclude with `Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le`. Establish `h2` using `P.k_ge_m2L`. Establish `h3 : (0 : ℝ) ≤ (D.R.m : ℝ) ^ 2` using `by positivity`.
+
+Establish `h4 : (D.R.m : ℝ) ^ 2 ≤ (D.R.k : ℝ)` using `by nlinarith`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem ParameterChoice'.m_sq_le_k {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) : D.R.m ^ 2 ≤ D.R.k := by
   have h1 : (1 : ℝ) ≤ L.sc.L := by
     unfold Scale.L
@@ -63,6 +88,11 @@ theorem ParameterChoice'.m_sq_le_k {D : D7} {L : SizeData₂ D} (P : ParameterCh
   have h4 : (D.R.m : ℝ) ^ 2 ≤ (D.R.k : ℝ) := by nlinarith
   exact_mod_cast h4
 
+/- English proof (translation)
+Establish `h` using `P.m_sq_le_k`. Establish `h2` using `D.R.two_le_m`. Establish `h3 : 2 * D.R.m ≤ D.R.m ^ 2`. Combine the equalities or inequalities in the displayed calculation. Unfold `Ranks.sigW Ranks.r`.
+
+Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ParameterChoice'.three_q_le {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (j : ℕ) (hj : 1 ≤ j) :
     3 * (D.R.sigW j).2 + 1 ≤ D.R.r := by
   have h := P.m_sq_le_k
@@ -78,18 +108,30 @@ def D7.NodeGap (D : D7) (h : ℝ) : Prop :=
   ∀ (u : D.what₂.Word) (τ : D.what₂.Tau) (j : ℕ) (hj : j + 1 < D.R.m),
     h ≤ (((D.hcW u τ).b ⟨j + 1, hj⟩ - (D.hcW u τ).b ⟨j, by omega⟩ : ℚ) : ℝ)
 
+/- English proof (translation)
+Introduce `u τ j hj` and use `le_trans hle (H u τ j hj)`.
+-/
 theorem D7.NodeGap.mono {D : D7} {h h' : ℝ} (H : D.NodeGap h) (hle : h' ≤ h) : D.NodeGap h' :=
   fun u τ j hj => le_trans hle (H u τ j hj)
 
+/- English proof (translation)
+Introduce `u τ j hj`. Rewrite using `[D.hcW_b u τ]`. Conclude with `(P.nodes_gap τ j hj).1`.
+-/
 theorem ParameterChoice'.nodeGap_ge_heightBound {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) : D.NodeGap (LevelStarExponents.h0 L) := by
   intro u τ j hj
   rw [D.hcW_b u τ]
   exact (P.nodes_gap τ j hj).1
 
+/- English proof (translation)
+The claim follows from `P.nodeGap_ge_heightBound.mono P.h0_ge.2.2.2.2.1`.
+-/
 theorem ParameterChoice'.nodeGap_ge_cubic_rank {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) :
     D.NodeGap (4 * (D.R.N D.R.m : ℝ) ^ 3 + 2 * D.R.t + 6) :=
   P.nodeGap_ge_heightBound.mono P.h0_ge.2.2.2.2.1
 
+/- English proof (translation)
+Establish `h1 : ((128 * D.R.r ^ 4 : ℕ) : ℝ) ≤ (D.R.t : ℝ)` using `by exact_mod_cast T.t_ge_fourth_power_rank`. Move the coercions through the operations in `at h1`. Establish `h2` using `P.h0_ge.2.2.2.2.1`. Establish `h3 : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ParamsT.heightBound_ge_fourth_power_rank {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) :
     256 * (D.R.r : ℝ) ^ 4 ≤ LevelStarExponents.h0 L := by
   have h1 : ((128 * D.R.r ^ 4 : ℕ) : ℝ) ≤ (D.R.t : ℝ) := by exact_mod_cast T.t_ge_fourth_power_rank
@@ -98,6 +140,9 @@ theorem ParamsT.heightBound_ge_fourth_power_rank {D : D7} {L : SizeData₂ D} {P
   have h3 : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ) ^ 3 := by positivity
   linarith
 
+/- English proof (translation)
+The claim follows from `P.nodeGap_ge_heightBound.mono T.heightBound_ge_fourth_power_rank`.
+-/
 theorem ParamsT.nodeGap_ge_fourth_power_rank {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) :
     D.NodeGap (256 * (D.R.r : ℝ) ^ 4) :=
   P.nodeGap_ge_heightBound.mono T.heightBound_ge_fourth_power_rank

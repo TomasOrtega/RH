@@ -34,10 +34,16 @@ private def dgU {R : Type} [CommRing R] (u : Rˣ) : GL (Fin 2) R :=
 private def tw {R : Type} [CommRing R] (h : SL(2, R)) (u : Rˣ) : GL (Fin 2) R :=
   Matrix.SpecialLinearGroup.toGL h * dgU u
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> simp [tw, dgU, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem twist_column_zero {R : Type} [CommRing R] (h : SL(2, R)) (u : Rˣ) (i : Fin 2) :
     ((tw h u : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) i 0 = h i 0 := by
   fin_cases i <;> simp [tw, dgU, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> simp [tw, dgU, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+-/
 private theorem twist_column_one {R : Type} [CommRing R] (h : SL(2, R)) (u : Rˣ) (i : Fin 2) :
     ((tw h u : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) i 1 = (u : R) * h i 1 := by
   fin_cases i <;> simp [tw, dgU, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
@@ -51,6 +57,11 @@ private abbrev kg {K : Type} [Field K] [CharZero K] (ζ : K) (l L N : ℕ) (c d 
   cmul (smF c (w + 1) (N * l ^ L) ζ (rowT N l L γ 0 v).1 (rowT N l L γ 0 v).2)
     (smF d 1 (N * l ^ L) ζ (rowT N l L γ 1 v').1 (rowT N l L γ 1 v').2)
 
+/- English proof (translation)
+Establish `h1 : ∀ a, ∑ b ∈ B, ∑ c ∈ C, ∑ e ∈ D, f a b c e = ∑ c ∈ C, ∑ e ∈ D, ∑ b ∈ B, f a b c e` using `fun a => by`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_comm`. Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `h2 : ∀ c, ∑ a ∈ A, ∑ e ∈ D, ∑ b ∈ B, f a b c e = ∑ e ∈ D, ∑ a ∈ A, ∑ b ∈ B, f a b c e` using `fun c => Finset.sum_comm`. Repeatedly rewrite using `[h2]`. Conclude with `Finset.sum_comm`.
+-/
 private theorem swap4 {V α β γ δ : Type} [AddCommMonoid V] (A : Finset α) (B : Finset β) (C : Finset γ) (D : Finset δ)
     (f : α → β → γ → δ → V) :
     ∑ a ∈ A, ∑ b ∈ B, ∑ c ∈ C, ∑ e ∈ D, f a b c e = ∑ e ∈ D, ∑ c ∈ C, ∑ a ∈ A, ∑ b ∈ B, f a b c e := by
@@ -63,6 +74,27 @@ private theorem swap4 {V α β γ δ : Type} [AddCommMonoid V] (A : Finset α) (
   simp_rw [h2]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `hcop : ¬ l ∣ N` using `hP.cop`. Establish `hroots` using `UpperTheory.isPrimitiveRoot_eOm_and_pow_compatible ε l N`. Take `⟨hpr, hzN, -⟩` from `hroots`. Use `set ζ : Ω := eOm ε (1 / ((N * l ^ (m + n) : ℕ) : ℚ)) with hζdef`. Establish `hζN : ζ ^ N = zt ε l (m + n)` using `hzN (m + n)`.
+
+Establish `hζ1 : ζ ^ (N * l ^ (m + n)) = 1` using `(hpr (m + n)).pow_eq_one`. Establish `hzt1 : zt ε l (m + n) ^ (l ^ (m + n)) = 1` using `by rw [← hζN, ← pow_mul, hζ1]`. Use `set A := Finset.univ.filter (fun a : (ZMod (l ^ (m + n)))ˣ => (a : ZMod (l ^ (m + n))).val ≡ 1 [MOD l ^ m]) with hA`. Use `set Fy := Finset.univ.filter (fun y => redTop l n m N y = z) with hFy`. Use `set r : ℕ := l ^ (m + n) * i with hr`.
+
+Set `Ψ : SL(2, ℤ) → Ω` to `fun g => ∑ a ∈ A, ∑ y ∈ Fy, τ a (repM (topM l n m (N * N)) y (kz ζ l (m + n) N x c d w g r))`. Set `Φ : SL(2, ZMod (l ^ (m + n))) → Ω` to `fun h => (Nat.totient (N * N)) • ∑ a ∈ A, kg ζ l (m + n) N (c : ℤ) (d : ℤ) w ((x.val : ℤ) * a₀ * (topT l (m + n) N : ℤ), 0) (a₀ * (topT l (m + n) N : ℤ), 0) (tw h (a * z)) r`. Establish `hΨ : ∀ g ∈ CongruenceSubgroup.Gamma0 N, ((en g 0 0 : ℤ) : ZMod N) = ((en (gm 1) 0 0 : ℤ) : ZMod N) → ∀ h : SL(2, ZMod (l ^ (m + n))), h 0 0 = (en g 0 0 : ℤ) → h 0 1 = ((N : ℤ) * en g 0 1 : ℤ) → (N : ZMod (l ^ (m + n))) * h 1 0 = (en g 1 0 : ℤ) → h 1 1 = (en g 1 1 : ℤ) → Ψ g = Φ h`. Introduce `g hg hga h h00 h01 h10 h11`. Use `show ∑ a ∈ A, ∑ y ∈ Fy, _ = (Nat.totient (N * N)) • ∑ a ∈ A, _`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hy : ∀ y ∈ Fy, τ a (repM (topM l n m (N * N)) y (kz ζ l (m + n) N x c d w g r)) = kg ζ l (m + n) N (c : ℤ) (d : ℤ) w ((x.val : ℤ) * a₀ * (topT l (m + n) N : ℤ), 0) (a₀ * (topT l (m + n) N : ℤ), 0) (tw h (a * z)) r`. Introduce `y hy`. Establish `hyz : redTop l n m N y = z` using `(Finset.mem_filter.1 hy).2`.
+
+Set `s : Ω →+* Ω` to `(τ a).toRingEquiv.toRingHom.comp (repM (Ω := Ω) (topM l n m (N * N)) y).toRingEquiv.toRingHom`. Establish `hs : s (ζ ^ N) = (ζ ^ N) ^ (((a * z : (ZMod (l ^ (m + n)))ˣ) : ZMod (l ^ (m + n))).val)`. Rewrite using `[hζN]`. Use `show τ a (repM (topM l n m (N * N)) y (zt ε l (m + n))) = _`. Rewrite using `[UpperTheory.repM_apply_zt_eq_pow_redTop ε l n m N y, hyz, map_pow, hτ a, ← pow_mul, Units.val_mul, ZMod.val_mul, ← pow_eq_pow_mod _ hzt1]`.
+
+Conclude with `UpperTheory.gamma0_diamond_action_eq ζ l (m + n) N x c d w a₀ s (((a * z : (ZMod (l ^ (m + n)))ˣ) : ZMod (l ^ (m + n)))) hcop hζ1 hs g hg (hga.trans ha₀.symm) (tw h (a * z)) (by rw [twist_column_zero, h00]) (by rw [twist_column_one, h01]) (by rw [twist_column_zero, h10]) (by rw [ …`. Rewrite using `[Finset.sum_congr rfl hy, Finset.sum_const, hFy, UpperTheory.card_fiber_reduction_eq_totient l n m N hcop z]`. Establish `hcount` using `hμ Φ Ψ hΨ`. Establish `hT : ∀ γ ∈ R, ∀ b : ℕ, (fun γ => ∑ r₀ : (ZMod l)ˣ, Ψ (gm r₀ * liftSL _ γ)) (γ * Tm (topMu l n m N) b) = (fun γ => ∑ r₀ : (ZMod l)ˣ, Ψ (gm r₀ * liftSL _ γ)) γ`. Introduce `γ _ b`.
+
+Use `Finset.sum_congr rfl fun r₀ _ => ?_` and prove the remaining obligations. Establish `hk` using `UpperTheory.cmul_smF_invariant_of_congruent_mul_T_pow ζ l (m + n) N x c d w (topMu l n m N) (NeZero.pos N) (Fact.out : l.Prime).pos hζ1 ⟨N, by unfold topMu; ring⟩ b (gm r₀ * liftSL _ γ) (gm r₀ * liftSL _ (γ * Tm (topMu l n m N) b)) (by simp only [map_mul, GlobalTheory.K4.map_lift …`. Use `show ∑ a ∈ A, ∑ y ∈ Fy, _ = ∑ a ∈ A, ∑ y ∈ Fy, _`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun t => τ a (repM (topM l n m (N * N)) y t)) hk`.
+
+Establish `hG` using `UpperTheory.sum_levelSubgroupMod_eq_smul_sum_reps N l (topMu l n m N) R hR Ω (fun γ => ∑ r₀ : (ZMod l)ˣ, Ψ (gm r₀ * liftSL _ γ)) hT`. Establish `htw` using `UpperTheory.congruence_action_invariant l (m + n) m hm (by omega) z tw twist_column_zero twist_column_one Ω (kg ζ l (m + n) N (c : ℤ) (d : ℤ) w ((x.val : ℤ) * a₀ * (topT l (m + n) N : ℤ), 0) (a₀ * (topT l (m + n) N : ℤ), 0) · r)`. Rewrite using `[← htw]`. Establish `hl : ∑ a ∈ A, τ a (∑ y ∈ Fy, ∑ r₀ : (ZMod l)ˣ, ∑ γ ∈ R, repM (topM l n m (N * N)) y (kz ζ l (m + n) N x c d w (gm r₀ * liftSL _ γ) r)) = ∑ γ ∈ R, ∑ r₀ : (ZMod l)ˣ, Ψ (gm r₀ * liftSL _ γ)`. Simplify using `only [map_sum]`.
+
+Conclude with `swap4 A Fy Finset.univ R _`. Establish `hΦ : ∑ h ∈ Finset.univ.filter (fun h : SL(2, ZMod (l ^ (m + n))) => ¬ l ∣ (h 0 0).val ∧ ¬ l ∣ (h 1 0).val), Φ h = (Nat.totient (N * N)) • ∑ h ∈ Finset.univ.filter (fun h : SL(2, ZMod (l ^ (m + n))) => ¬ l ∣ (h 0 0).val ∧ ¬ l ∣ (h 1 0).val), ∑ a ∈ A, kg ζ l (m + n) N (c : ℤ) (d : …`. Rewrite using `[Finset.smul_sum]`. Rewrite using `[hl, ← nsmul_eq_mul, ← hG, Finset.sum_comm, hcount, hΦ]`. Simplify using `only [nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sum_key {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (l : ℕ) [Fact l.Prime]
     (N : ℕ) [NeZero N] (c d w : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)) (hP : Par l N c d gm) (x : ZMod N) (a₀ : ℤ) (ha₀ : (a₀ : ZMod N) = ((en (gm 1) 0 0 : ℤ) : ZMod N)) (m n : ℕ) (hm : 1 ≤ m)
     (R : Finset SL(2, ZMod (topMu l n m N))) (hR : IsReps N l (topMu l n m N) R) (z : (ZMod (l ^ (m + n)))ˣ)
@@ -137,6 +169,65 @@ private theorem sum_key {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
 
 end UpperTheory.Kd.L
 
+/- English proof (translation)
+Introduce `l _ N _ w hw`. Take `⟨μ, hμ0, hμ⟩` from `UpperTheory.Kd.L.count l N`. Establish `hN0 : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne N)`. Establish `hNN : 0 < N * N` using `Nat.mul_pos (NeZero.pos N) (NeZero.pos N)`. Use `⟨-((N : ℚ) * (Nat.totient (N * N) : ℚ) * (μ : ℚ)), neg_ne_zero.2 (mul_ne_zero (mul_ne_zero hN0 (Nat.cast_ne_zero.2 (Nat.totient_pos.2 hNN).ne')) (Nat.cast_ne_zero.2 hμ0.ne')), (w + 1) ^ 2 * l, ?_⟩` and prove the remaining obligations.
+
+Introduce `Ω _ _ _ _ ε c d gm hP x m n hm R hR z`. Establish `hl : l.Prime` using `Fact.out`. Establish `hNl : N * l ∣ topMu l n m N`. Establish `h1 : l ∣ l ^ (m + n)` using `dvd_pow_self l (by omega)`. Take `⟨e, he⟩` from `h1`.
+
+Conclude with `⟨e * N, by unfold topMu; rw [he]; ring⟩`. Establish `hreps` using `(UpperTheory.Kd.L.reps l N c d gm hP (topMu l n m N) hNl).2`. Establish `hcond : ∀ (r₀ : (ZMod l)ˣ) (γ : SL(2, ZMod (topMu l n m N))), γ ∈ R → ¬ (l : ℤ) ∣ en (gm r₀ * liftSL _ γ) 0 0 ∧ ¬ (l : ℤ) ∣ en (gm r₀ * liftSL _ γ) 1 0` using `fun r₀ γ hγ => (hreps γ (hR.1 hγ) r₀).2.2.2`. Take `⟨inat, iadd, imul, igal⟩` from `UpperTheory.inZl_closed_add_mul_and_cyclotomic_galois_stable ε l (m + n)`. Establish `hi0 : InZl ε l (m + n) (0 : Ω)` using `by simpa using inat 0`.
+
+Establish `isum : ∀ {α : Type} (s : Finset α) (f : α → Ω), (∀ a ∈ s, InZl ε l (m + n) (f a)) → InZl ε l (m + n) (∑ a ∈ s, f a)` using `fun s f h => Finset.sum_induction f _ iadd hi0 h`. Establish `irep : ∀ (y : (ZMod (topM l n m (N * N)))ˣ) (F : Ω), InZl ε l (m + n) F → InZl ε l (m + n) (repM (topM l n m (N * N)) y F)` using `fun y F h => igal _ _ (UpperTheory.repM_apply_zt_eq_pow_redTop ε l n m N y) F h`. Establish `iN3 : InZl ε l (m + n) ((N : Ω) ^ 3)` using `by have h := inat (N ^ 3); rwa [Nat.cast_pow] at h`. Establish `hEE : ∀ (r₀ : (ZMod l)ˣ) (γ : SL(2, ZMod (topMu l n m N))), γ ∈ R → ∀ r : ℚ, r.den = 1 → InZl ε l (m + n) (EE ε l (m + n) N x c d (gm r₀ * liftSL _ γ) r)`. Introduce `r₀ γ hγ r hden`.
+
+Break down `lt_or_ge r 0 with hr | hr` into its components or cases. Establish `h0 : EE ε l (m + n) N x c d (gm r₀ * liftSL _ γ) r = 0`. Simplify using `[EE, coefQ, not_le.2 hr]`. Rewrite using `[h0]`. Conclude with `hi0`.
+
+Establish `h1 : (r.num : ℚ) = r` using `Rat.coe_int_num_of_den_eq_one hden`. Establish `h2 : 0 ≤ r.num` using `Rat.num_nonneg.2 hr`. Establish `h3 : r = ((r.num.toNat : ℕ) : ℚ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3]`.
+
+Conclude with `(UpperTheory.Kd.L.inzl ε l N c d gm hP x (m + n) n w hw (by omega) _ (hcond r₀ γ hγ).1 (hcond r₀ γ hγ).2 _).1`. Prove the components needed by the constructor for the conclusion. Introduce `r`. Unfold `Fsum`. Use `split_ifs with hden`.
+
+Conclude with `imul _ _ iN3 (isum _ _ fun y _ => isum _ _ fun r₀ _ => isum _ _ fun γ hγ => imul _ _ (inat _) (irep y _ (hEE r₀ γ hγ r hden)))`. Conclude with `hi0`. Introduce `hL i F' hNT β t a₀ ha₀ hβ hβN ht`. Establish `hlarge : (w + 1) ^ 2 * l ≤ l ^ (m + n)` using `hL.trans (Nat.lt_pow_self hl.one_lt).le`. Establish `hex : ∀ (r₀ : (ZMod l)ˣ) (γ : SL(2, ZMod (topMu l n m N))), γ ∈ R → ∃ E : Ω, InZl ε l (m + n) E ∧ (ex l n w (gm r₀ * liftSL _ γ) : Ω) * EE ε l (m + n) N x c d (gm r₀ * liftSL _ γ) (i : ℚ) = (l : Ω) ^ ((m + n) * w) * kz (eOm ε (1 / ((N * l ^ (m + n) : ℕ) : ℚ))) l (m + n) N x c d w …` using `fun r₀ γ hγ => (UpperTheory.Kd.L.inzl ε l N c d gm hP x (m + n) n w hw (by omega) _ (hcond r₀ γ hγ).1 (hcond r₀ γ hγ).2 i).2 hlarge`.
+
+Use `choose! E hE using hex`. Use `set ζ : Ω := eOm ε (1 / ((N * l ^ (m + n) : ℕ) : ℚ)) with hζdef`. Use `set S1 : Ω := ∑ y ∈ Finset.univ.filter (fun y => redTop l n m N y = z), ∑ r₀ : (ZMod l)ˣ, ∑ γ ∈ R, repM (topM l n m (N * N)) y (kz ζ l (m + n) N x c d w (gm r₀ * liftSL _ γ) (l ^ (m + n) * i)) with hS1`. Use `set S2 : Ω := ∑ y ∈ Finset.univ.filter (fun y => redTop l n m N y = z), ∑ r₀ : (ZMod l)ˣ, ∑ γ ∈ R, repM (topM l n m (N * N)) y (E r₀ γ) with hS2`. Establish `hF : Fsum ε l n m N x c d w gm R z (i : ℚ) = (N : Ω) ^ 3 * ((l : Ω) ^ ((m + n) * w) * S1 + (l : Ω) ^ n * S2)`.
+
+Unfold `Fsum`. Rewrite using `[if_pos (by simp)]`. Use `congr 1`. Simplify using `only [hS1, hS2, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun r₀ _ => Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `(hE r₀ γ hγ).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_natCast]`. Use `_ = _ := by rw [h1, map_add, map_mul, map_mul, map_pow, map_pow, map_natCast]`. Establish `hS2Z : InZl ε l (m + n) S2` using `isum _ _ fun y _ => isum _ _ fun r₀ _ => isum _ _ fun γ hγ => irep y _ (hE r₀ γ hγ).1`.
+
+Establish `hE0 : InZl ε l (m + n) ((N : Ω) ^ 3 * S2)` using `imul _ _ iN3 hS2Z`. Take `⟨E', hNT', hE'Z, -⟩` from `GlobalTheory.T.exists_unique_normalizedCyclotomicTrace ε l (m + n) m hm (by omega) _ hE0`. Take `⟨τ, hτ, hsum⟩` from `hNT`. Take `⟨τ', hτ', hsum'⟩` from `hNT'`. Rewrite `hsum`, `hsum'` using `[Nat.add_sub_cancel_left]`.
+
+Establish `hkey` using `sum_key ε l N c d w gm hP x a₀ ha₀ m n hm R hR z τ hτ μ (fun Φ Ψ h => hμ c d gm hP n m hm Ω Φ Ψ h) i`. Establish `hterm : ∀ a, τ a ((N : Ω) ^ 3 * ((l : Ω) ^ ((m + n) * w) * S1 + (l : Ω) ^ n * S2)) = (N : Ω) ^ 3 * (l : Ω) ^ ((m + n) * w) * τ a S1 + (l : Ω) ^ n * τ' a ((N : Ω) ^ 3 * S2)`. Introduce `a`. Rewrite using `[← IsNTr.apply_eq_of_mem_adjoin hE0.mem_adjoin ((hτ a).trans (hτ' a).symm)]`. Simplify using `only [map_mul, map_add, map_pow, map_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hB : (l : Ω) ^ (m + n) = (l : Ω) ^ n * (l : Ω) ^ m` using `by rw [add_comm, pow_add]`. Establish `hln : (l : Ω) ^ n ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hl.ne_zero)`. Establish `hprim` using `(UpperTheory.isPrimitiveRoot_eOm_and_pow_compatible ε l N).1 (m + n)`. Establish `hzm` using `(UpperTheory.isPrimitiveRoot_eOm_and_pow_compatible ε l N).2.2 m n`.
+
+Establish `hl0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`. Use `set T : Ω := ∑ a ∈ Finset.univ.filter (fun a : (ZMod (l ^ (m + n)))ˣ => (a : ZMod (l ^ (m + n))).val ≡ 1 [MOD l ^ m]), τ a S1 with hT`. Establish `key4 : (l : Ω) ^ n * F' = (N : Ω) ^ 3 * (l : Ω) ^ ((m + n) * w) * T + (l : Ω) ^ n * ((l : Ω) ^ n * E')`. Establish `h1 : ∑ a ∈ Finset.univ.filter (fun a : (ZMod (l ^ (m + n)))ˣ => (a : ZMod (l ^ (m + n))).val ≡ 1 [MOD l ^ m]), τ a ((N : Ω) ^ 3 * ((l : Ω) ^ ((m + n) * w) * S1 + (l : Ω) ^ n * S2)) = (N : Ω) ^ 3 * (l : Ω) ^ ((m + n) * w) * T + (l : Ω) ^ n * ∑ a ∈ Finset.univ.filter (fun a : (ZMod …`. Rewrite using `[Finset.sum_congr rfl fun a _ => hterm a, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`.
+
+Rewrite using `[hsum, hF, h1, ← hsum']`. Use `set z₀ : ZMod (l ^ m) := (((z : ZMod (l ^ (m + n))).val : ℕ) : ZMod (l ^ m)) with hz₀`. Establish `hcp : Nat.Coprime (l ^ (m + n)) N` using `Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd hl).2 hP.cop)`. Establish `htop : (l : ℤ) ^ n * (topT l (m + n) N : ℤ) ≡ t [ZMOD N]`. Establish `h1 : (l : ZMod N) ^ (m + n) * (topT l (m + n) N : ZMod N) = 1`.
+
+Unfold `topT`. Rewrite using `[ZMod.natCast_zmod_val]`. Establish `h` using `ZMod.coe_mul_inv_eq_one (l ^ (m + n)) hcp`. Simplify using `using h`. Establish `h2 : (l : ZMod N) ^ m * (t : ZMod N) = 1`.
+
+Establish `h` using `(ZMod.intCast_eq_intCast_iff _ _ N).2 ht`. Move the coercions through the operations in `at h`. Conclude with `h`. Apply `(ZMod.intCast_eq_intCast_iff _ _ N).1` to reduce the goal to its premises. Use `push_cast`.
+
+Rewrite `h1` using `[pow_add]`. Take the linear combination `(-((l : ZMod N) ^ n * (topT l (m + n) N : ZMod N))) * h2 + (t : ZMod N) * h1`. Establish `e1 : (l : ℤ) ^ n * ((x.val : ℤ) * a₀ * (topT l (m + n) N : ℤ)) ≡ (x.val : ℤ) * a₀ * t [ZMOD N]`. Establish `h` using `htop.mul_left ((x.val : ℤ) * a₀)`. Rewrite `h` using `[show (x.val : ℤ) * a₀ * ((l : ℤ) ^ n * (topT l (m + n) N : ℤ)) = (l : ℤ) ^ n * ((x.val : ℤ) * a₀ * (topT l (m + n) N : ℤ)) by ring]`. Then use the resulting hypothesis.
+
+Establish `e3 : (l : ℤ) ^ n * (a₀ * (topT l (m + n) N : ℤ)) ≡ a₀ * t [ZMOD N]`. Establish `h` using `htop.mul_left a₀`. Rewrite `h` using `[show a₀ * ((l : ℤ) ^ n * (topT l (m + n) N : ℤ)) = (l : ℤ) ^ n * (a₀ * (topT l (m + n) N : ℤ)) by ring]`. Then use the resulting hypothesis. Establish `e0 : (l : ℤ) ^ n * (0 : ℤ) ≡ 0 [ZMOD N]` using `by rw [mul_zero]`. Establish `hnd : ∀ e : ℕ, Nat.Coprime e (6 * l * N) → ¬ (l : ℤ) ∣ (e : ℤ)`.
+
+Introduce `e he h`. Establish `h' : l ∣ e` using `Int.natCast_dvd_natCast.1 h`. Establish `h2 : l ∣ Nat.gcd e (6 * l * N)` using `Nat.dvd_gcd h' ⟨6 * N, by ring⟩`. Rewrite `h2` using `[he.gcd_eq_one]`. Conclude with `hl.one_lt.ne' (Nat.dvd_one.1 h2)`.
+
+Establish `down` using `UpperTheory.pieceT_level_raise_eq_vp l N m (w + 2) (c : ℤ) (d : ℤ) z₀ (NeZero.pos N) hP.cop hm (by omega) (hnd c hP.cc) (hnd d hP.dc) n ζ ((x.val : ℤ) * a₀ * (topT l (m + n) N : ℤ), 0) (a₀ * (topT l (m + n) N : ℤ), 0) ((x.val : ℤ) * a₀ * t, 0) (a₀ * t, 0) hprim e1 e0 e3 e0 (l ^ ( …`. Establish `hzm' : ζ ^ (l ^ n) = eOm ε (1 / ((N : ℚ) * (l : ℚ) ^ m))` using `hzm`. Establish `hζm1 : (ζ ^ (l ^ n)) ^ (N * l ^ m) = 1`. Rewrite using `[← pow_mul, show l ^ n * (N * l ^ m) = N * l ^ (m + n) by rw [pow_add]; ring]`. Conclude with `hprim.pow_eq_one`.
+
+Establish `hunit : IsUnit z₀`. Establish `hd : l ^ m ∣ l ^ (m + n)` using `pow_dvd_pow l (by omega)`. Establish `h` using `z.isUnit.map (ZMod.castHom hd (ZMod (l ^ m)))`. Rewrite `h` using `[ZMod.castHom_apply, ← ZMod.natCast_val]`. Then use the resulting hypothesis. Establish `hβ' : (β : ZMod (l ^ m)) = z₀` using `(ZMod.natCast_eq_natCast_iff _ _ _).2 hβ`.
+
+Establish `beta` using `UpperTheory.pieceT_det_fiber_eq_pieceT_root_pow l N m (w + 2) (c : ℤ) (d : ℤ) ((x.val : ℤ) * a₀ * t) (a₀ * t) (ζ ^ (l ^ n)) β z₀ (NeZero.pos N) hm hζm1 hunit hβ' (l ^ m * i)`. Establish `hvp : ∀ f : ℕ → Ω, vp (l ^ n) f (l ^ (m + n) * i) = f (l ^ m * i)`. Introduce `f`. Establish `hdiv : l ^ (m + n) * i = l ^ n * (l ^ m * i)` using `by rw [pow_add]; ring`. Rewrite using `[hdiv]`.
+
+Unfold `vp`. Rewrite using `[if_pos (dvd_mul_right _ _), Nat.mul_div_cancel_left _ (pow_pos hl.pos n)]`. Rewrite `down` using `[hvp]`. Use `set Ks : Ω := ∑ γ ∈ ((unitSet l (m + n)).filter fun γ : GL (Fin 2) (ZMod (l ^ (m + n))) => (((γ : Matrix (Fin 2) (Fin 2) (ZMod (l ^ (m + n)))).det.val : ℕ) : ZMod (l ^ m)) = z₀), kg ζ l (m + n) N (c : ℤ) (d : ℤ) w ((x.val : ℤ) * a₀ * (topT l (m + n) N : ℤ), 0) (a₀ * (topT l (m + …`. Establish `key2 : pieceT N l (m + n) m (w + 2) (1 : DirichletCharacter Ω (l ^ m)) (c : ℤ) (d : ℤ) ((x.val : ℤ) * a₀ * (topT l (m + n) N : ℤ), 0) (a₀ * (topT l (m + n) N : ℤ), 0) ζ ((unitSet l (m + n)).filter fun γ : GL (Fin 2) (ZMod (l ^ (m + n))) => (((γ : Matrix (Fin 2) (Fin 2) (ZMod (l ^ …` using `UpperTheory.twistedEisensteinPiece_trivialCharacter_eq l N (m + n) m w (c : ℤ) (d : ℤ) ((x.val : ℤ) * a₀ * (topT l (m + n) N : ℤ), 0) (a₀ * (topT l (m + n) N : ℤ), 0) ζ z₀ hm (by omega) (l ^ (m + n) * i)`.
+
+Establish `hk' : ((topMu l n m N : ℕ) : Ω) * T = (μ : Ω) * (Nat.totient (N * N) : Ω) * Ks` using `hkey`. Establish `key1 : (l : Ω) ^ (m + n) * (N : Ω) ^ 2 * T = (μ : Ω) * (Nat.totient (N * N) : Ω) * Ks`. Rewrite using `[← hk']`. Unfold `topMu`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `key3 : (l : Ω) ^ (((m + n : ℕ) : ℤ) * ((w : ℤ) - 2)) * ((l : Ω) ^ (m + n)) ^ 2 = (l : Ω) ^ ((m + n) * w)`. Rewrite using `[← pow_mul, ← zpow_natCast (l : Ω) ((m + n) * 2), ← zpow_add₀ hl0, ← zpow_natCast (l : Ω) ((m + n) * w)]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨E', hE'Z, ?_⟩` and prove the remaining obligations. Establish `hQ : toQ (l ^ m) (pieceT N l m m (w + 2) (1 : DirichletCharacter Ω (l ^ m)) (c : ℤ) (d : ℤ) ((x.val : ℤ) * a₀ * t, 0) (a₀ * t, 0) (eOm ε (1 / ((N : ℚ) * (l : ℚ) ^ m)) ^ β) ((unitSet l m).filter fun γ => (γ : Matrix (Fin 2) (Fin 2) (ZMod (l ^ m))).det = 1)) i = pieceT N l (m + n) …`. Rewrite using `[down, beta, hzm']`. Both sides reduce to the same expression.
+
+Rewrite using `[hQ]`. Apply `mul_left_cancel₀ hln` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `key4 - (N : Ω) * (Nat.totient (N * N) : Ω) * (μ : Ω) * (pieceT N l (m + n) m (w + 2) (1 : DirichletCharacter Ω (l ^ m)) (c : ℤ) (d : ℤ) ((x.val : ℤ) * a₀ * (topT l (m + n) N : ℤ), 0) (a₀ * (topT l (m + n) N : ℤ), 0) ζ ((unitSet l (m + n)).filter fun γ : GL (Fin 2) (ZMod (l ^ (m + …`.
+-/
 theorem UpperTheory.Kd.L.arith :
     ∀ (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N] (w : ℕ), 1 ≤ w → ∃ κ : ℚ, κ ≠ 0 ∧ ∃ L₀ : ℕ, ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)), Par l N c d gm → ∀ (x : ZMod N) (m n : ℕ), 1 ≤ m → ∀ R, IsReps N l (topMu l n m N) R → ∀ (z : (ZMod (l ^ (m + n)))ˣ), (∀ r : ℚ, InZl ε l (m + n) (Fsum ε l n m N x c d w gm R z r)) ∧ (L₀ ≤ m + n → ∀ (i : ℕ) (F' : Ω), IsNT ε l (m + n) m (Fsum ε l n m N x c d w gm R z (i : ℚ)) F' → ∀ (β : ℕ) (t a : ℤ), (a : ZMod N) = ((en (gm 1) 0 0 : ℤ) : ZMod N) → β ≡ (z : ZMod (l ^ (m + n))).val [MOD l ^ m] → (β : ZMod N) = 1 → (l : ℤ) ^ m * t ≡ 1 [ZMOD N] → ∃ E : Ω, InZl ε l m E ∧ F' = (κ : Ω) * (l : Ω) ^ m * toQ (l ^ m) (pieceT N l m m (w + 2) (1 : DirichletCharacter Ω (l ^ m)) (c : ℤ) (d : ℤ) ((x.val : ℤ) * a * t, 0) (a * t, 0) (eOm ε (1 / ((N : ℚ) * (l : ℚ) ^ m)) ^ β) ((unitSet l m).filter fun γ => (γ : Matrix (Fin 2) (Fin 2) (ZMod (l ^ m))).det = 1)) i + (l : Ω) ^ n * E) := by
   intro l _ N _ w hw

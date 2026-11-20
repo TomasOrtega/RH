@@ -17,6 +17,9 @@ namespace GlobalTheory.HermPlaneCompl
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {B : Base F E} {n n₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {H : Plane E n n₁} {i₀ i₁ r s : ℕ}
 
+/- English proof (translation)
+Establish `hJ' : ∀ i j, σ (J i j) = J j i` using `fun i j => hJ j i`. Simplify using `only [form, Matrix.mulVec, dotProduct, map_sum, map_mul, GlobalTheory.AdaptedPlaneBasis.sigma_sigma h, hJ', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap_herm (h : IsCMExt F E σ) {k : ℕ} {J : Matrix (Fin k) (Fin k) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin k → E) : form σ J y x = σ (form σ J x y) := by
   have hJ' : ∀ i j, σ (J i j) = J j i := fun i j => hJ j i
@@ -26,6 +29,11 @@ theorem form_swap_herm (h : IsCMExt F E σ) {k : ℕ} {J : Matrix (Fin k) (Fin k
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `i j`. Establish `hσσ` using `GlobalTheory.AdaptedPlaneBasis.sigma_sigma hB.cm`. Rewrite using `[← hH.gram]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, hσσ, hX.herm, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_compl (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ i₁) :
     ∀ i j, σ (X₁.J j i) = X₁.J i j := by
   intro i j
@@ -37,6 +45,19 @@ theorem herm_compl (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hH : H.IsAdapted
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Use `set f : (Fin n₁ → E) →ₗ[E] (Fin n → E) := Matrix.toLin' H.ι with hf`. Establish `htop : Submodule.span E {H.x} ⊔ Submodule.span E {H.y} ⊔ LinearMap.range f = ⊤`. Establish `hl` using `hX.lat`. Rewrite using `[eq_top_iff, ← hl.span_eq_top, Submodule.span_le]`. Introduce `z hz`.
+
+Take `⟨s, t, u, -, -, -, rfl⟩` from `hH.split z hz`. Use `Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)))`. Conclude with `Submodule.mem_sup_right ⟨u, by simp [hf, Matrix.toLin'_apply]⟩`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)))`.
+
+Establish `h1 : ∀ v : Fin n → E, Module.finrank E (Submodule.span E {v}) ≤ 1` using `fun v => by`. Simplify using `using finrank_span_le_card ({v} : Set (Fin n → E))`. Establish `hle : n ≤ 1 + 1 + Module.finrank E (LinearMap.range f)`. Establish `e1` using `Submodule.finrank_add_le_finrank_add_finrank (Submodule.span E {H.x} ⊔ Submodule.span E {H.y}) (LinearMap.range f)`. Establish `e2` using `Submodule.finrank_add_le_finrank_add_finrank (Submodule.span E {H.x}) (Submodule.span E {H.y})`.
+
+Rewrite `e1` using `[htop, finrank_top, Module.finrank_fin_fun]`. Use `h1 H.x` as an intermediate fact. Use `h1 H.y` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hrk` using `LinearMap.finrank_range_add_finrank_ker f`.
+
+Rewrite `hrk` using `[Module.finrank_fin_fun]`. Establish `hker : LinearMap.ker f = ⊥`. Apply `Submodule.finrank_eq_zero.mp` to reduce the goal to its premises. Use `hH.rank` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective f hker`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `: H.ι = LinearMap.toMatrix' f` using `by simp [hf]`. Rewrite using `[this, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`.
+-/
 theorem leftInverse (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ i₁) :
     ∃ P : Matrix (Fin n₁) (Fin n) E, P * H.ι = 1 := by
   set f : (Fin n₁ → E) →ₗ[E] (Fin n → E) := Matrix.toLin' H.ι with hf
@@ -72,6 +93,23 @@ theorem leftInverse (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ 
   have : H.ι = LinearMap.toMatrix' f := by simp [hf]
   rw [this, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]
 
+/- English proof (translation)
+Use `set τ : E →+* ℂ := (B.emb w).1 with hτ`. Establish `hcm : ∀ z : E, τ (σ z) = star (τ z)` using `fun z => hB.cm.2.2.2 τ z`. Use `set J' : Matrix (Fin n) (Fin n) ℂ := X.J.map τ with hJ'`. Use `set Xv : Fin n → ℂ := fun i => τ (H.x i) with hXv`. Use `set Y0 : Fin n → ℂ := fun i => τ (H.y i) with hY0`.
+
+Use `set ι' : Matrix (Fin n) (Fin n₁) ℂ := H.ι.map τ with hι'`. Establish `hform : ∀ a b : Fin n → E, τ (form σ X.J a b) = (fun i => τ (a i)) ⬝ᵥ J' *ᵥ star (fun i => τ (b i))`. Introduce `a b`. Establish `hs : (star fun i => τ (b i)) = τ ∘ fun i => σ (b i)` using `by ext i; simp [hcm]`. Rewrite using `[hs, form, RingHom.map_dotProduct]`.
+
+Use `show (τ ∘ a) ⬝ᵥ _ = (τ ∘ a) ⬝ᵥ _`. Use `congr 1`. Use extensionality with `i`. Conclude with `RingHom.map_mulVec τ X.J _ i`. Establish `hXX : Xv ⬝ᵥ J' *ᵥ star Xv = 0` using `by rw [← hform, hH.xx, map_zero]`.
+
+Establish `hYY : Y0 ⬝ᵥ J' *ᵥ star Y0 = 0` using `by rw [← hform, hH.yy, map_zero]`. Establish `hXY : Xv ⬝ᵥ J' *ᵥ star Y0 = 1` using `by rw [← hform, hH.xy, map_one]`. Establish `hMh : J'ᴴ = J'`. Use extensionality with `i j`. Establish `h2 : star (τ (X.J j i)) = τ (X.J i j)` using `by rw [← hcm, hX.herm]`.
+
+Rewrite using `[Matrix.conjTranspose_apply, hJ', Matrix.map_apply, Matrix.map_apply, h2]`. Establish `hιv : ∀ b : Fin n → E, (∀ u, form σ X.J (H.ι *ᵥ u) b = 0) → ι'ᵀ *ᵥ (J' *ᵥ star (fun i => τ (b i))) = 0`. Introduce `b hb`. Use extensionality with `j`. Establish `h1` using `congrArg τ (hb (Pi.single j 1))`.
+
+Rewrite `h1` using `[map_zero, hform, Matrix.mulVec_single_one]`. Rewrite using `[Pi.zero_apply, ← h1]`. Simplify using `[Matrix.mulVec, hι', dotProduct]`. Establish `hιX : ι'ᵀ *ᵥ (J' *ᵥ star Xv) = 0` using `hιv H.x fun u => (hH.orth u).1`. Establish `hιY : ι'ᵀ *ᵥ (J' *ᵥ star Y0) = 0` using `hιv H.y fun u => (hH.orth u).2`.
+
+Establish `hPι : P.map τ * ι' = 1`. Rewrite using `[hι', ← Matrix.map_mul, hP, Matrix.map_one _ (map_zero τ) (map_one τ)]`. Establish `hc` using `GlobalTheory.PlaneSig.hasSig_complement_plane n n₁ J' Xv Y0 ι' (P.map τ) r s hH.rank hMh hXX hYY hXY hιX hιY hPι (hX.sig w)`. Establish `hg : ι'ᵀ * J' * ι'.map star = X₁.J.map τ`. Establish `hs : ι'.map star = (H.ι.map σ).map τ` using `by ext i j; simp [hι', hcm]`.
+
+Rewrite using `[hs, hι', hJ', ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hH.gram]`. Rewrite `hc` using `[hg]`. Then use the resulting hypothesis.
+-/
 theorem hasSig_compl (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ i₁)
     (P : Matrix (Fin n₁) (Fin n) E) (hP : P * H.ι = 1) (w : InfinitePlace F) :
     HasSig (X₁.J.map (B.emb w).1) (r - 1) (s - 1) := by
@@ -115,6 +153,11 @@ theorem hasSig_compl (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hH : H.IsAdapt
     rw [hs, hι', hJ', ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hH.gram]
   rwa [hg] at hc
 
+/- English proof (translation)
+Establish `hL : X₁.L = X.L.comap ((Matrix.mulVecLin H.ι).restrictScalars (𝓞 E))`. Use extensionality with `u`. Rewrite using `[hH.low u]`. Both sides reduce to the same expression. Rewrite using `[hL]`.
+
+Conclude with `isLattice_comap_mulVecLin_of_leftInverse E n n₁ X.L H.ι P hP hX.lat`.
+-/
 theorem isLattice_compl (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ i₁)
     (P : Matrix (Fin n₁) (Fin n) E) (hP : P * H.ι = 1) : X₁.L.IsLattice E := by
   have hL : X₁.L = X.L.comap ((Matrix.mulVecLin H.ι).restrictScalars (𝓞 E)) := by
@@ -124,6 +167,15 @@ theorem isLattice_compl (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i
   rw [hL]
   exact isLattice_comap_mulVecLin_of_leftInverse E n n₁ X.L H.ι P hP hX.lat
 
+/- English proof (translation)
+Introduce `y`. Establish `hg : ∀ a b, form σ X₁.J a b = form σ X.J (H.ι *ᵥ a) (H.ι *ᵥ b)`. Introduce `a b`. Rewrite using `[← hH.gram]`. Conclude with `GlobalTheory.AdaptedPlaneDual.form_gram σ X.J H.ι a b`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite using `[hg]`. Conclude with `(hX.dual (H.ι *ᵥ y)).1 ((hH.low y).1 hy) _ ((hH.low x).1 hx)`. Introduce `h`.
+
+Rewrite using `[hH.low, hX.dual]`. Introduce `z hz`. Take `⟨s', t, u, -, -, hu, rfl⟩` from `hH.split z hz`. Establish `h0 : form σ X.J (H.ι *ᵥ y) (s' • H.x + H.ι *ᵥ u + t • H.y) = form σ X₁.J y u`. Rewrite using `[GlobalTheory.AdaptedPlaneDual.form_add_right, GlobalTheory.AdaptedPlaneDual.form_add_right, GlobalTheory.AdaptedPlaneDual.form_smul_right, GlobalTheory.AdaptedPlaneDual.form_smul_right, (hH.orth y).1, (hH.orth y).2, hg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0]`. Conclude with `h u hu`.
+-/
 theorem dual_compl (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ i₁) :
     ∀ y, y ∈ X₁.L ↔ ∀ x ∈ X₁.L, IsIntegral ℤ (form σ X₁.J y x) := by
   intro y
@@ -146,6 +198,13 @@ theorem dual_compl (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ i
     rw [h0]
     exact h u hu
 
+/- English proof (translation)
+Use `set τ : E →+* ℂ := (B.emb w).1 with hτ`. Establish `hL : P.map τ * H.ι.map τ = 1`. Rewrite using `[← Matrix.map_mul, hP, Matrix.map_one _ (map_zero τ) (map_one τ)]`. Establish `key` using `GlobalTheory.CartanRestrict.isCartan_restrict hL (hX.cartan w) (hH.cartan w).1`. Establish `hc : (H.ι.map σ).map τ = (H.ι.map τ).map star`.
+
+Use extensionality with `i j`. Simplify using `using hB.cm.2.2.2 τ (H.ι i j)`. Establish `hg : X₁.J.map τ = (H.ι.map τ)ᵀ * X.J.map τ * (H.ι.map τ).map star`. Rewrite using `[← hH.gram, Matrix.map_mul, Matrix.map_mul, hc, Matrix.transpose_map]`. Rewrite using `[hg]`.
+
+Conclude with `key`.
+-/
 theorem cartan_compl (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ i₁)
     (P : Matrix (Fin n₁) (Fin n) E) (hP : P * H.ι = 1) (w : InfinitePlace F) :
     IsCartan (X₁.J.map (B.emb w).1) (X₁.θ w) := by
@@ -170,6 +229,49 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open GlobalTheory.AdaptedPlaneBasis in
 
+/- English proof (translation)
+Introduce `v`. Use `set τ := B.τ v`. Establish `hcm` using `hB.cm`. Establish `hsk : ∀ j : Fin n₁, skip i₀ i₁ j < n` using `fun j => by`. Use `skip_le i₀ i₁ j` as an intermediate fact.
+
+Use `hH.rank` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Set `sk : Fin n₁ → Fin n` to `fun j => ⟨skip i₀ i₁ j, hsk j⟩`. Establish `skinj : Function.Injective sk`. Introduce `j k e`.
+
+Establish `e' : skip i₀ i₁ j = skip i₀ i₁ k` using `congrArg Fin.val e`. Break down `lt_trichotomy j.1 k.1 with h | h | h` into its components or cases. Conclude with `absurd e' (skip_lt h).ne`. Conclude with `Fin.ext h`. Conclude with `absurd e' (skip_lt h).ne'`.
+
+Set `S : Matrix (Fin n) (Fin n₁) (Fv F v)` to `fun i j => if i = sk j then 1 else 0`. Establish `hSsk : ∀ (u : Fin n₁ → Fv F v) j, (S *ᵥ u) (sk j) = u j` using `fun u j => by`. Simplify using `only [S, Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+
+Introduce `k _ hk`. Rewrite using `[if_neg (fun e => hk (skinj e).symm), zero_mul]`. Simplify using the standard rewrite rules. Establish `hSoff : ∀ (u : Fin n₁ → Fv F v) i, (∀ j, i ≠ sk j) → (S *ᵥ u) i = 0` using `fun u i hi => by`. Simplify using `only [S, Matrix.mulVec, dotProduct]`.
+
+Conclude with `Finset.sum_eq_zero fun j _ => by rw [if_neg (hi j), zero_mul]`. Establish `hSint : ∀ u : Fin n₁ → Fv F v, (∀ i, (S *ᵥ u) i ∈ v.1.adicCompletionIntegers F) ↔ ∀ j, u j ∈ v.1.adicCompletionIntegers F` using `fun u => by`. Use `⟨fun h j => hSsk u j ▸ h (sk j), fun h i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : ∃ j, i = sk j`. Take `⟨j, rfl⟩` from `hi`.
+
+Rewrite using `[hSsk]`. Conclude with `h j`. Use `push_neg at hi`. Rewrite using `[hSoff u i hi]`. Conclude with `zero_mem _`.
+
+Establish `hcol : (X.bas v).1 * S = H.ι.map τ * (X₁.bas v).1`. Use `Matrix.ext fun r j => ?_` and prove the remaining obligations. Rewrite using `[← (hH.bas v (sk j)).2.2 j rfl r, Matrix.mul_apply, Finset.sum_eq_single (sk j)]`. Simplify using `[S]`. Introduce `i _ hi`.
+
+Simplify using `[S, hi]`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective (Matrix.toLin' H.ι)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`.
+
+Rewrite `hu` using `[Matrix.toLin'_apply]`. Establish `hu' : H.ι.map τ *ᵥ (fun i => τ (u i)) = 0`. Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec (τ : E →+* Fv F v) H.ι u i` as an intermediate fact. Rewrite `this` using `[hu, Pi.zero_apply, map_zero]`.
+
+Conclude with `this.symm`. Use `set w := ((X₁.bas v)⁻¹).1 *ᵥ (fun i => τ (u i)) with hw`. Establish `h1 : (X.bas v).1 *ᵥ (S *ᵥ w) = 0`. Rewrite using `[Matrix.mulVec_mulVec, hcol, hw, Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, hu']`. Establish `h2 : S *ᵥ w = 0`.
+
+Use `congrArg (((X.bas v)⁻¹).1 *ᵥ ·) h1` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec]`. Establish `h3 : w = 0` using `funext fun j => by rw [← hSsk w j, h2]; rfl`. Establish `h4 : (fun i => τ (u i)) = 0`. Use `congrArg ((X₁.bas v).1 *ᵥ ·) h3` as an intermediate fact.
+
+Simplify using `only [hw, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec, Matrix.mulVec_zero] at this`. Conclude with `this`. Use function extensionality and compare the values at `i`. Conclude with `τ.toRingHom.injective (by simpa using congrFun h4 i)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' H.ι) (LinearMap.ker_eq_bot.2 hinj)`.
+
+Set `dl : (Fin n → E) → (Fin n → E) →ₗ[E] E` to `fun c => { toFun := fun z => z ⬝ᵥ c map_add' := fun a b => add_dotProduct a b c map_smul' := fun a b => by simp [smul_dotProduct] }`. Set `cy : Fin n → E` to `X.J *ᵥ fun i => σ (H.y i)`. Set `cx : Fin n → E` to `X.J *ᵥ fun i => σ (H.x i)`. Set `Q : (Fin n → E) →ₗ[E] (Fin n → E)` to `LinearMap.id - (dl cy).smulRight H.x - (dl cx).smulRight H.y`. Establish `hQ : ∀ z, Q z = z - form σ X.J z H.y • H.x - form σ X.J z H.x • H.y` using `fun z => rfl`.
+
+Set `f` to `g ∘ₗ Q`. Establish `hf1 : ∀ u, f (H.ι *ᵥ u) = u` using `fun u => by`. Simplify using `only [f, LinearMap.comp_apply, hQ, (hH.orth u).1, (hH.orth u).2, zero_smul, sub_zero]`. Use `congrArg (fun φ => φ u) hg` as an intermediate fact. Simplify `this` using `[Matrix.toLin'_apply]`.
+
+Establish `hyx : form σ X.J H.y H.x = 1` using `by rw [form_swap_herm hcm hX.herm, hH.xy, map_one]`. Establish `hf2 : ∀ z ∈ X.L, f z ∈ X₁.L` using `fun z hz => by`. Take `⟨a, b, u, -, -, hu, rfl⟩` from `hH.split z hz`. Establish `fl : ∀ p q c : Fin n → E, form σ X.J (p + q) c = form σ X.J p c + form σ X.J q c` using `fun p q c => add_dotProduct _ _ _`. Establish `fs : ∀ (t : E) (p c : Fin n → E), form σ X.J (t • p) c = t * form σ X.J p c` using `fun t p c => smul_dotProduct _ _ _`.
+
+Establish `e : Q (a • H.x + H.ι *ᵥ u + b • H.y) = H.ι *ᵥ u`. Rewrite using `[hQ, fl, fl, fl, fl, fs, fs, fs, fs, hH.xx, hH.xy, hH.yy, hyx, (hH.orth u).1, (hH.orth u).2]`. Simplify using `only [mul_zero, mul_one, zero_add, add_zero]`. Use `module`. Simplify using `only [f, LinearMap.comp_apply, e]`.
+
+Use `congrArg (fun φ => φ u) hg` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Matrix.toLin'_apply, LinearMap.id_apply] at this`. Rewrite using `[this]`. Conclude with `hu`. Set `P : Matrix (Fin n₁) (Fin n) E` to `LinearMap.toMatrix' f`.
+
+Establish `hP : ∀ z, P *ᵥ z = f z` using `fun z => LinearMap.toMatrix'_mulVec f z`. Establish `hPι : P * H.ι = 1` using `Matrix.toLin'.injective (LinearMap.ext fun u => by`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_one, LinearMap.id_apply, ← Matrix.mulVec_mulVec, hP, hf1])`. Establish `hK : ∀ z, z ∈ splitLat τ X₁.L ↔ H.ι.map τ *ᵥ z ∈ splitLat τ X.L` using `fun z => by`. Use `⟨fun hz => mulVec_mem_splitLat τ H.ι (fun x hx => (hH.low x).1 hx) hz, fun hz => ?_⟩` and prove the remaining obligations.
+
+Use `mulVec_mem_splitLat τ P (fun x hx => (hP x).symm ▸ hf2 x hx) hz` as an intermediate fact. Establish `e : P.map τ * H.ι.map τ = 1`. Rewrite using `[show P.map τ * H.ι.map τ = (P * H.ι).map (τ : E →+* Fv F v) from (Matrix.map_mul).symm, hPι]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite `this` using `[Matrix.mulVec_mulVec, e, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+
+Introduce `u`. Rewrite using `[hK, Matrix.mulVec_mulVec, ← hcol, ← Matrix.mulVec_mulVec, ← hX.bas v (S *ᵥ u), hSint]`.
+-/
 theorem isSplitBasis_compl (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ i₁) :
     ∀ v : B.P, IsSplitBasis (B.τ v) X₁.L (X₁.bas v) := by
   intro v
@@ -272,6 +374,9 @@ theorem isSplitBasis_compl (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hH : H.I
   intro u
   rw [hK, Matrix.mulVec_mulVec, ← hcol, ← Matrix.mulVec_mulVec, ← hX.bas v (S *ᵥ u), hSint]
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `leftInverse hX hH`. Conclude with `⟨herm_compl hB hX hH, hasSig_compl hB hX hH P hP, isLattice_compl hX hH P hP, dual_compl hX hH, cartan_compl hB hX hH P hP, isSplitBasis_compl hB hX hH⟩`.
+-/
 theorem isHerm_compl (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ i₁) :
     X₁.IsHerm σ B (r - 1) (s - 1) := by
   obtain ⟨P, hP⟩ := leftInverse hX hH

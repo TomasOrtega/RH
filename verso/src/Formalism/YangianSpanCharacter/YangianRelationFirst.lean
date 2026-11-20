@@ -10,14 +10,41 @@ import Formalism.YangianSpanCharacter.YangianRTTProofs.TransposeJTransposeReal
 
 namespace Formalism.YangianSpanCharacter.Final
 
+/- English proof (translation)
+The claim follows from `Formalism.YangianSpanCharacter.P.planeWaveIntertwining`.
+-/
 theorem T_PlaneWave : Formalism.YangianSpanCharacter.T.PlaneWave := Formalism.YangianSpanCharacter.P.planeWaveIntertwining
+/- English proof (translation)
+The claim follows from `Formalism.YangianSpanCharacter.P.unipotentSymplectic`.
+-/
 theorem T_UJU : Formalism.YangianSpanCharacter.T.UJU := Formalism.YangianSpanCharacter.P.unipotentSymplectic
+/- English proof (translation)
+The claim follows from `Formalism.YangianSpanCharacter.P.isWeylTripleShiftModel`.
+-/
 theorem T_WeylModel : Formalism.YangianSpanCharacter.T.WeylModel := Formalism.YangianSpanCharacter.P.isWeylTripleShiftModel
+/- English proof (translation)
+The claim follows from `Formalism.YangianSpanCharacter.P.isLaxFamilyConstantModel`.
+-/
 theorem Y_ModHypModel : Formalism.YangianSpanCharacter.Y.ModHypModel := Formalism.YangianSpanCharacter.P.isLaxFamilyConstantModel
+/- English proof (translation)
+The claim follows from `Formalism.YangianSpanCharacter.P.gamma_ratio_identity`.
+-/
 theorem E_GGRatio : Formalism.YangianSpanCharacter.E.GGRatio := Formalism.YangianSpanCharacter.P.gamma_ratio_identity
+/- English proof (translation)
+The claim follows from `Formalism.YangianSpanCharacter.P.gamma_product_identity`.
+-/
 theorem E_GGProd : Formalism.YangianSpanCharacter.E.GGProd := Formalism.YangianSpanCharacter.P.gamma_product_identity
+/- English proof (translation)
+The claim follows from `Formalism.YangianSpanCharacter.P.transpose_j_transpose_real`.
+-/
 theorem B_TJTReal : Formalism.YangianSpanCharacter.B.TJTReal := Formalism.YangianSpanCharacter.P.transpose_j_transpose_real
+/- English proof (translation)
+The claim follows from `Formalism.YangianSpanCharacter.P.twisted_j_transpose_real`.
+-/
 theorem B_TvJTsReal : Formalism.YangianSpanCharacter.B.TvJTsReal := Formalism.YangianSpanCharacter.P.twisted_j_transpose_real
+/- English proof (translation)
+The claim follows from `Formalism.YangianSpanCharacter.P.rtt_real`.
+-/
 theorem B_RTTReal : Formalism.YangianSpanCharacter.B.RTTReal := Formalism.YangianSpanCharacter.P.rtt_real
 
 end Formalism.YangianSpanCharacter.Final

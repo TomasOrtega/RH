@@ -14,6 +14,9 @@ namespace SectionsLatticeFS
 
 open ProjScheme
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Via.ofComplex φ).symm (fibreEquiv φ hpV he (fibreMk L φ 1 (germM hpU s))) = φ r`. Rewrite using `[hr, fibreEquiv_fibreMk, mul_one, RingEquiv.symm_apply_apply]`.
+-/
 lemma fibreEquivComplex_value_eq {X : Scheme.{u}} {L : X.Modules} {p : X}
     (φ : locRing X p →+* ℂ) {U V : X.Opens} (hpU : p ∈ U) (hpV : p ∈ V)
     {e : ((preMod X).obj L).obj (op V)} (he : IsBasisOn ((preMod X).obj L) V e)
@@ -22,6 +25,21 @@ lemma fibreEquivComplex_value_eq {X : Scheme.{u}} {L : X.Modules} {p : X}
   change (Via.ofComplex φ).symm (fibreEquiv φ hpV he (fibreMk L φ 1 (germM hpU s))) = φ r
   rw [hr, fibreEquiv_fibreMk, mul_one, RingEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `A _ N n ρ U s x hx hx'`. Take `⟨j, hj⟩ : ∃ j, x.1.rep j ≠ 0` from `⟨_, rep_chartIndex_ne_zero x.1⟩`. Take `⟨c, hc⟩` from `exists_rep_conj x.1`. Establish `hcj : (CP.conj x.1).rep j = (c : ℂ) * starRingEnd ℂ (x.1.rep j)`. Rewrite using `[hc, Pi.smul_apply, smul_eq_mul, CP.conjVec_apply]`.
+
+Establish `hj' : ((self A N).conjPoint ρ x).1.rep j ≠ 0`. Express the relevant statement in the definitionally equal form `(CP.conj x.1).rep j ≠ 0`. Rewrite using `[hcj]`. Conclude with `mul_ne_zero c.ne_zero ((map_ne_zero _).mpr hj)`. Establish `hpj` using `point_mem_stdOpen x hj`.
+
+Take `⟨r, hr⟩` from `(bijective_smul_germ hpj (isBasisOn_frame (A := A) j n)).2 (germM hx s)`. Take `⟨V, -, hpV, f, rfl⟩` from `TopCat.Presheaf.exists_le_germ_eq (X := (self A N).X.toTopCat) (self A N).X.sheaf.obj r hx`. Establish `key : ∀ (q : (self A N).X) (_ : q = (self A N).point x) (φ : locRing (self A N).X q →+* ℂ) (hqU : q ∈ U) (hqj : q ∈ ProjSpace.stdOpen A N j) (hqV : q ∈ V), fibreEquivComplex φ hqj (isBasisOn_frame (A` using `A) j n) (value φ hqU s) = φ (germR hqV f) := by`. Introduce `q hq φ hqU hqj hqV`. Substitute `hq` using the available equality.
+
+Conclude with `fibreEquivComplex_value_eq φ hqU hqj _ s _ hr.symm`. Establish `hV' : (self A N).point ((self A N).conjPoint ρ x) ∈ V`. Rewrite using `[point_conjPoint]`. Conclude with `hpV`. Establish `hj''` using `point_mem_stdOpen _ hj'`.
+
+Rewrite using `[h A N n _ _ j hj', h A N n ρ x j hj]`. Unfold `sectionValue`. Rewrite using `[key _ (point_conjPoint _ x) _ hx' hj'' hV', key _ rfl _ hx hpj hpV, evalAtPoint_conjPoint_germ _ x hpV hV', Complex.norm_conj]`. Establish `hn : norm2 (CP.conj x.1).rep = ‖(c : ℂ)‖ * norm2 x.1.rep`. Rewrite using `[hc, euclideanNorm_smul]`.
+
+Use `congr 1`. Simplify using `[norm2, normSq2, CP.conjVec_apply]`. Establish `hc0 : 0 < ‖(c : ℂ)‖` using `norm_pos_iff.mpr c.ne_zero`. Express the relevant statement in the definitionally equal form `_ * ‖(CP.conj x.1).rep j‖ ^ n / norm2 (CP.conj x.1).rep ^ n = _`. Rewrite using `[hn, hcj, norm_mul, Complex.norm_conj, mul_pow, mul_pow]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem FSNormConj.proof (h : FSIndex.Statement.{u}) : FSNormConj.Statement.{u} := by
   intro A _ N n ρ U s x hx hx'
   obtain ⟨j, hj⟩ : ∃ j, x.1.rep j ≠ 0 := ⟨_, rep_chartIndex_ne_zero x.1⟩

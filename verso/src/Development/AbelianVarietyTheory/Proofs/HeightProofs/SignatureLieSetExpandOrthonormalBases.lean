@@ -7,6 +7,9 @@ noncomputable section
 namespace GlobalTheory.TypeSum.CasBasis.Expand
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_def]`. Use `conv_rhs => rw [← List.map_get_finRange l]`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression.
+-/
 theorem sum_get {α M : Type*} [AddCommMonoid M] (l : List α) (f : α → M) :
     ∑ i : Fin l.length, f (l.get i) = (l.map f).sum := by
   rw [Fin.sum_univ_def]
@@ -14,15 +17,24 @@ theorem sum_get {α M : Type*} [AddCommMonoid M] (l : List α) (f : α → M) :
   rw [List.map_map]
   rfl
 
+/- English proof (translation)
+Simplify using `[trace, mul_apply, single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem trace_mul_unitE (U : Mx n) (a b : Fin n) : trace (U * unitE a b) = U b a := by
   simp [trace, mul_apply, single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [List.flatMap_cons, List.sum_append, ih]`.
+-/
 theorem sum_flatMap {α M : Type*} [AddCommMonoid M] (l : List α) (f : α → List M) :
     (l.flatMap f).sum = (l.map fun a => (f a).sum).sum := by
   induction l with
   | nil => simp
   | cons a l ih => simp [List.flatMap_cons, List.sum_append, ih]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Simplify using `only [List.filter_cons, List.map_cons, List.sum_cons]`. Apply the tactic sequence `cases hc : c a <;> cases hd : d a <;> simp [← ih] <;> abel`.
+-/
 theorem filter_split {α M : Type*} [AddCommMonoid M] (l : List α) (c d : α → Bool) (F : α → M) :
     ((l.filter fun p => c p && (d p == true)).map F).sum + ((l.filter fun p => c p && (d p == false)).map F).sum =
       (l.map fun p => if c p then F p else 0).sum := by
@@ -32,22 +44,36 @@ theorem filter_split {α M : Type*} [AddCommMonoid M] (l : List α) (c d : α �
     simp only [List.filter_cons, List.map_cons, List.sum_cons]
     cases hc : c a <;> cases hd : d a <;> simp [← ih] <;> abel
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => rw [List.map_cons, List.sum_cons, ih, List.map_cons, List.sum_cons, neg_add]`.
+-/
 theorem sum_map_neg' {α M : Type*} [AddCommGroup M] (l : List α) (f : α → M) :
     (l.map fun x => -f x).sum = -(l.map f).sum := by
   induction l with
   | nil => simp
   | cons a l ih => rw [List.map_cons, List.sum_cons, ih, List.map_cons, List.sum_cons, neg_add]
 
+/- English proof (translation)
+Simplify using `[List.product, List.map_flatMap, sum_flatMap, List.map_map, Fin.sum_univ_def, Function.comp_def]`.
+-/
 theorem sum_product_list {M : Type*} [AddCommMonoid M] (G : Fin n × Fin n → M) :
     ((List.product (List.finRange n) (List.finRange n)).map G).sum = ∑ a, ∑ b, G (a, b) := by
   simp [List.product, List.map_flatMap, sum_flatMap, List.map_map, Fin.sum_univ_def, Function.comp_def]
 
 variable {ε : Fin n → Bool}
 
+/- English proof (translation)
+Establish `h` using `(mem_lieSet_iff_entry.mp hU) a a`. Apply the tactic sequence `rcases ha : ε a <;> simp [ha] at h <;> have h2 := congrArg Complex.re h <;> simp at h2 <;> linarith`.
+-/
 theorem diag_re {U : Mx n} (hU : U ∈ lieSet ε) (a : Fin n) : (U a a).re = 0 := by
   have h := (mem_lieSet_iff_entry.mp hU) a a
   rcases ha : ε a <;> simp [ha] at h <;> have h2 := congrArg Complex.re h <;> simp at h2 <;> linarith
 
+/- English proof (translation)
+Establish `h1` using `(mem_lieSet_iff_entry.mp hU) a b`. Rewrite `h1` using `[h]`. Establish `: (starRingEnd ℂ) (U b a) = -U a b`. Apply the tactic sequence `rcases hb : ε b <;> simp [hb] at h1 <;> first | linear_combination h1 | linear_combination -h1`. Establish `h3` using `congrArg (starRingEnd ℂ) this`.
+
+Simplify using `at h3`. Simplify `h3` using `[Complex.star_def]`.
+-/
 theorem entry_same {U : Mx n} (hU : U ∈ lieSet ε) {a b : Fin n} (h : ε a = ε b) : U b a = -star (U a b) := by
   have h1 := (mem_lieSet_iff_entry.mp hU) a b
   rw [h] at h1
@@ -57,6 +83,9 @@ theorem entry_same {U : Mx n} (hU : U ∈ lieSet ε) {a b : Fin n} (h : ε a = �
   simp at h3
   simpa [Complex.star_def] using h3
 
+/- English proof (translation)
+Establish `h1` using `(mem_lieSet_iff_entry.mp hU) a b`. Establish `: star (U b a) = U a b`. Apply the tactic sequence `rcases ha : ε a <;> rcases hb : ε b <;> simp_all <;> first | linear_combination h1 | linear_combination -h1`. Establish `h3` using `congrArg star this`. Simplify using `using h3`.
+-/
 theorem entry_opp {U : Mx n} (hU : U ∈ lieSet ε) {a b : Fin n} (h : ε a ≠ ε b) : U b a = star (U a b) := by
   have h1 := (mem_lieSet_iff_entry.mp hU) a b
   have : star (U b a) = U a b := by
@@ -66,6 +95,9 @@ theorem entry_opp {U : Mx n} (hU : U ∈ lieSet ε) {a b : Fin n} (h : ε a ≠ 
 
 abbrev tm (U X : Mx n) : Mx n := (trace (U * X)).re • X
 
+/- English proof (translation)
+Establish `h` using `diag_re hU a`. Simplify using `only [tm, Matrix.mul_smul, trace_smul, trace_mul_unitE, ← Complex.coe_smul, smul_smul, ← neg_smul]`. Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp [h]`.
+-/
 theorem tm_diag {U : Mx n} (hU : U ∈ lieSet ε) (a : Fin n) :
     tm U (Complex.I • unitE a a) = -(U a a • unitE a a) := by
   have h := diag_re hU a
@@ -73,6 +105,9 @@ theorem tm_diag {U : Mx n} (hU : U ∈ lieSet ε) (a : Fin n) :
   congr 1
   apply Complex.ext <;> simp [h]
 
+/- English proof (translation)
+Establish `hba` using `entry_same hU h`. Simplify using `only [tm, Matrix.mul_smul, Matrix.mul_sub, Matrix.mul_add, trace_smul, trace_sub, trace_add, trace_mul_unitE, ← Complex.coe_smul, hba]`. Apply the tactic sequence `match_scalars <;> simp only [smul_eq_mul] <;> apply Complex.ext <;>`. Apply the tactic sequence `simp [invSqrtTwo, Complex.mul_re, Complex.mul_im, Complex.inv_re, Complex.inv_im] <;> field_simp`. Apply the tactic sequence `all_goals (try rw [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]) <;> ring`.
+-/
 theorem tm_same {U : Mx n} (hU : U ∈ lieSet ε) {a b : Fin n} (h : ε a = ε b) :
     tm U (invSqrtTwo • (unitE a b - unitE b a)) + tm U ((invSqrtTwo * Complex.I) • (unitE a b + unitE b a)) =
       -(U a b • unitE a b + U b a • unitE b a) := by
@@ -83,6 +118,9 @@ theorem tm_same {U : Mx n} (hU : U ∈ lieSet ε) {a b : Fin n} (h : ε a = ε b
     simp [invSqrtTwo, Complex.mul_re, Complex.mul_im, Complex.inv_re, Complex.inv_im] <;> field_simp
   all_goals (try rw [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]) <;> ring
 
+/- English proof (translation)
+Establish `hba` using `entry_opp hU h`. Simplify using `only [tm, Matrix.mul_smul, Matrix.mul_sub, Matrix.mul_add, trace_smul, trace_sub, trace_add, trace_mul_unitE, ← Complex.coe_smul, hba]`. Apply the tactic sequence `match_scalars <;> simp only [smul_eq_mul] <;> apply Complex.ext <;>`. Apply the tactic sequence `simp [invSqrtTwo, Complex.mul_re, Complex.mul_im, Complex.inv_re, Complex.inv_im] <;> field_simp`. Apply the tactic sequence `all_goals (try rw [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]) <;> ring`.
+-/
 theorem tm_opp {U : Mx n} (hU : U ∈ lieSet ε) {a b : Fin n} (h : ε a ≠ ε b) :
     tm U (invSqrtTwo • (unitE a b + unitE b a)) + tm U ((invSqrtTwo * Complex.I) • (unitE a b - unitE b a)) =
       U a b • unitE a b + U b a • unitE b a := by
@@ -95,6 +133,13 @@ theorem tm_opp {U : Mx n} (hU : U ∈ lieSet ε) {a b : Fin n} (h : ε a ≠ ε 
 
 abbrev pairTerm (U : Mx n) (p : Fin n × Fin n) : Mx n := U p.1 p.2 • unitE p.1 p.2 + U p.2 p.1 • unitE p.2 p.1
 
+/- English proof (translation)
+Use extensionality with `r t`. Simplify using `only [Matrix.add_apply, Matrix.sum_apply, apply_ite (fun M : Mx n => M r t), pairTerm, Matrix.smul_apply, single_apply, smul_eq_mul, Matrix.zero_apply]`. Simplify using `[ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Break down `lt_trichotomy r t with h | rfl | h` into its components or cases. Apply the tactic sequence `rw [Finset.sum_eq_single r (fun x _ hx => Finset.sum_eq_zero fun y _ => by split_ifs <;> grind) (by simp), Finset.sum_eq_single t (fun y _ hy => by split_ifs <;> grind) (by simp)]`.
+
+Simplify using `[h, h.ne, not_lt.mpr h.le]`. Simplify using `only [lt_self_iff_false, if_true]`. Apply the tactic sequence `rw [Finset.sum_eq_zero fun x _ => Finset.sum_eq_zero fun y _ => by split_ifs <;> grind]`. Simplify using the standard rewrite rules. Apply the tactic sequence `rw [Finset.sum_eq_single t (fun x _ hx => Finset.sum_eq_zero fun y _ => by split_ifs <;> grind) (by simp), Finset.sum_eq_single r (fun y _ hy => by split_ifs <;> grind) (by simp)]`.
+
+Simplify using `[h, h.ne, h.ne', not_lt.mpr h.le]`.
+-/
 theorem decomp (U : Mx n) :
     U = ∑ a, U a a • unitE a a + ∑ a, ∑ b, if a < b then pairTerm U (a, b) else 0 := by
   ext r t
@@ -112,12 +157,20 @@ theorem decomp (U : Mx n) :
       Finset.sum_eq_single r (fun y _ hy => by split_ifs <;> grind) (by simp)]
     simp [h, h.ne, h.ne', not_lt.mpr h.le]
 
+/- English proof (translation)
+The claim follows from `(filter_split _ (fun p : Fin n × Fin n => decide (p.1 < p.2)) (fun p : Fin n × Fin n => ε p.1 == ε p.2) (pairTerm U)).trans (by rw [sum_product_list]; simp)`.
+-/
 theorem pairs_split (U : Mx n) :
     ((pairs ε true).map (pairTerm U)).sum + ((pairs ε false).map (pairTerm U)).sum =
       ∑ a, ∑ b, if a < b then pairTerm U (a, b) else 0 :=
   (filter_split _ (fun p : Fin n × Fin n => decide (p.1 < p.2)) (fun p : Fin n × Fin n => ε p.1 == ε p.2)
     (pairTerm U)).trans (by rw [sum_product_list]; simp)
 
+/- English proof (translation)
+Rewrite using `[show (∑ i, tm U (kB ε i)) = ((kList ε).map (tm U)).sum from sum_get _ _]`. Simplify using `only [kList, List.map_append, List.sum_append, List.map_map, List.map_flatMap, sum_flatMap, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero, Function.comp_def, tm_diag hU]`. Rewrite using `[List.map_congr_left (g := fun p => -pairTerm U p) (fun p hp => by`. Establish `hs : ε p.1 = ε p.2`. Simplify using `[pairs] at hp`.
+
+Conclude with `hp.2.2`. Conclude with `tm_same hU hs), Fin.sum_univ_def, sum_map_neg', sum_map_neg', neg_add]`.
+-/
 theorem sum_k {U : Mx n} (hU : U ∈ lieSet ε) :
     ∑ i, tm U (kB ε i) = -(∑ a, U a a • unitE a a + ((pairs ε true).map (pairTerm U)).sum) := by
   rw [show (∑ i, tm U (kB ε i)) = ((kList ε).map (tm U)).sum from sum_get _ _]
@@ -129,6 +182,11 @@ theorem sum_k {U : Mx n} (hU : U ∈ lieSet ε) :
       exact hp.2.2
     exact tm_same hU hs), Fin.sum_univ_def, sum_map_neg', sum_map_neg', neg_add]
 
+/- English proof (translation)
+Rewrite using `[show (∑ b, tm U (pB ε b)) = ((pList ε).map (tm U)).sum from sum_get _ _]`. Simplify using `only [pList, List.map_flatMap, sum_flatMap, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Rewrite using `[List.map_congr_left (g := pairTerm U) (fun p hp => by`. Establish `hs : ε p.1 ≠ ε p.2`. Simplify using `[pairs] at hp`.
+
+Conclude with `hp.2.2`. Conclude with `tm_opp hU hs)]`.
+-/
 theorem sum_p {U : Mx n} (hU : U ∈ lieSet ε) :
     ∑ b, tm U (pB ε b) = ((pairs ε false).map (pairTerm U)).sum := by
   rw [show (∑ b, tm U (pB ε b)) = ((pList ε).map (tm U)).sum from sum_get _ _]
@@ -145,6 +203,11 @@ namespace GlobalTheory.TypeSum.CasBasis
 
 open Expand in
 
+/- English proof (translation)
+Introduce `n ε U hU`. Establish `h1` using `sum_p hU`. Establish `h2` using `sum_k hU`. Simplify using `only [tm] at h1 h2`. Rewrite using `[h1, h2, sub_neg_eq_add]`.
+
+Use `conv_lhs => rw [decomp U]`. Rewrite using `[← pairs_split (ε := ε)]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lieSet_expand_bases : ∀ (n : ℕ) (ε : Fin n → Bool), ∀ U ∈ lieSet ε,
     U = ∑ b, (trace (U * pB ε b)).re • pB ε b - ∑ i, (trace (U * kB ε i)).re • kB ε i := by
   intro n ε U hU

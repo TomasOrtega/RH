@@ -4,6 +4,13 @@ namespace GlobalTheory.NatMulMem
 
 open NumberField
 
+/- English proof (translation)
+Take `⟨y, hy, hint⟩` from `IsAlgebraic.exists_integral_multiple (R := ℤ) (z := c) ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic c))`. Use `⟨y.natAbs, Int.natAbs_pos.mpr hy, ?_⟩` and prove the remaining obligations. Rewrite `hint` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `: ((y.natAbs : ℕ) : E) = ((y : ℤ) : E)` using `by conv_rhs => rw [h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hint`. Establish `: ((y.natAbs : ℕ) : E) = -((y : ℤ) : E)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, neg_mul]`. Conclude with `hint.neg`.
+-/
 lemma exists_nat_mul_mem {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ m : ℕ, 0 < m ∧ IsIntegral ℤ ((m : E) * c) := by
   obtain ⟨y, hy, hint⟩ :=
@@ -21,6 +28,19 @@ lemma exists_nat_mul_mem {E : Type} [Field E] [NumberField E] (c : E) :
       simp
     rw [this, neg_mul]; exact hint.neg
 
+/- English proof (translation)
+Introduce `hspan`. Set `S : Submodule E (Fin n → E)` to `{ carrier := {x | ∃ d : ℕ, 0 < d ∧ d • x ∈ L} add_mem' := by`. Introduce and unpack `x y ⟨a, ha, hx⟩ ⟨b, hb, hy⟩`. Use `⟨a * b, Nat.mul_pos ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+
+Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.toAddSubmonoid.nsmul_mem hx b`. Rewrite using `[mul_smul]`. Conclude with `L.toAddSubmonoid.nsmul_mem hy a`.
+
+Use the proof step `zero_mem' := ⟨1, one_pos, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨a, ha, hx⟩`. Take `⟨m, hm, hint⟩` from `exists_nat_mul_mem c`. Use `⟨m * a, Nat.mul_pos hm ha, ?_⟩` and prove the remaining obligations.
+
+Set `r : RingOfIntegers E` to `⟨(m : E) * c, hint⟩`. Establish `key : (m * a) • (c • x) = r • (a • x)`. Use function extensionality and compare the values at `i`. Establish `hr : algebraMap (RingOfIntegers E) E r = (m : E) * c` using `rfl`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, Algebra.smul_def r, hr]`.
+
+Simplify using `only [nsmul_eq_mul, smul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `L.smul_mem r hx }`. Establish `hle : Submodule.span E (L : Set (Fin n → E)) ≤ S` using `Submodule.span_le.mpr (fun y hy => ⟨1, one_pos, by simpa using hy⟩)`.
+
+Introduce `x`. Establish `hx : x ∈ S` using `hle (hspan ▸ Submodule.mem_top)`. Conclude with `hx`.
+-/
 theorem main {E : Type} [Field E] {n : ℕ} [NumberField E]
     (L : Submodule (RingOfIntegers E) (Fin n → E)) :
     Submodule.span E (L : Set (Fin n → E)) = ⊤ →

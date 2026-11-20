@@ -20,6 +20,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 end PositivityTheory.ThKW.LagrangianIntegralFactorisation
 end
 open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.LagrangianIntegralFactorisation in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd`. Take `⟨m, hmc, hmC, hmr⟩` from `_root_.PositivityTheory.ThKW.PhaseFourierInjectivity.levi_k F E σ B hB nT JT hT`. Take `⟨α, hαc, hαq, hlaw⟩` from `core (V := WOF F E nS (nT + nT) → ℂ) (IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ) (fun a b f g hf hg => GlobalTheory.WeilPartsF.theta_add (GlobalTheory.WeilPartsF.theta_smul a hf) (GlobalTheory.WeilPartsF.theta_smul b hg)) (ωd.comp (MonoidHom.inr _ …`. Rewrite using `[mtF_mul, Matrix.mul_assoc, hb, ← Matrix.mul_assoc, ha, Matrix.mul_assoc, Units.val_mul])`. Use the proof step `(fun a s ha => by show mtF σ _ a⁻¹ * _ = _ * (s⁻¹).1`.
+
+Establish `e : dC (AF F ⊗[F] E) nT = mtF σ _ a⁻¹ * (dC (AF F ⊗[F] E) nT * s.1)`. Rewrite using `[← ha, ← Matrix.mul_assoc, mtF_inv_mul, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = mtF σ _ a⁻¹ * (dC (AF F ⊗[F] E) nT * s.1) * (s⁻¹).1 := by`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = dC (AF F ⊗[F] E) nT * (s⁻¹).1 := by rw [← e])`. Use the proof step `(mfac F E nS) (mfac_one nS) (mfac_pos nS) (mfac_mul nS)`. Use the proof step `(fun h t hr f hf => _root_.PositivityTheory.ThKW.PhaseFourierInjectivity.norm_law_k F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd h t hr f hf)`. Use `m hmc hmC`.
+
+Use the proof step `(fun f hf => _root_.PositivityTheory.ThKW.PhaseFourierInjectivity.cont_k F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd f hf)`. Use the proof step `(GQF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) : Set _)`. Use the proof step `(fun γ hγ t hr f hf => _root_.PositivityTheory.ThKW.PhaseFourierInjectivity.rat_k F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd γ hγ t hr f hf)`. Use the proof step `(fun k hk => by`. Take `⟨M, t, h1, h2⟩` from `PositivityTheory.ThKW.PhaseFourierInjectivity.conj_pow F E σ nT JT hT k hk`.
+
+Conclude with `⟨M, t, h1, fun n hn => h2 n (by rw [Units.val_one, Matrix.mul_one] at hn; exact hn)⟩)`. Conclude with `⟨α, hαc, fun a => hαq _ (hmr a), fun h t hr f hf => hlaw h t hr f hf⟩`.
+-/
 theorem PositivityTheory.ThKW.fundamental_domain_plancherel_global : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

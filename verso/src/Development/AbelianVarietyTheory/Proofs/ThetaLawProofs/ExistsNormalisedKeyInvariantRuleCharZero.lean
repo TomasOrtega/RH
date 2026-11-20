@@ -32,11 +32,17 @@ def HasValue (g n : ℕ) (ka : KeyIn ℂ → ℂˣ) (a₀ : ℂ) : Prop :=
     charHalf x.P.g a b → c₀ ≠ 0 → Mx.det ≠ 0 → NormalAt x τ Mx a b c₀ →
     (ka x : ℂ) = a₀ * (Mx.det ^ 4 / c₀ ^ 8) ^ n
 
+/- English proof (translation)
+Take `⟨_, _, _, hg, -⟩` from `h`. Conclude with `hg`.
+-/
 theorem dim_of_keyPB {R R' : Type} [CommRing R] [CommRing R'] {x' : KeyIn R'} {x : KeyIn R} {f : R →+* R'}
     (h : KeyPB x' x f) : x'.P.g = x.P.g := by
   obtain ⟨_, _, _, hg, -⟩ := h
   exact hg
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => a₀, differentiableOn_const _, fun x hx τ hn => by simpa using h x τ 1 _ _ 1 hx ⟨fun i => hab.1 _, fun i => hab.2 _⟩ one_ne_zero (by simp) hn⟩`.
+-/
 theorem HasValue.holo {g n : ℕ} {ka : KeyIn ℂ → ℂˣ} {a₀ : ℂ} (h : HasValue g n ka a₀) (a b : Fin g → ℂ)
     (hab : charHalf g a b) : ∃ U : Matrix (Fin g) (Fin g) ℂ → ℂ, Key.IsHoloSiegel g U ∧
       ∀ (x : KeyIn ℂ) (h : x.P.g = g) (τ : Matrix (Fin x.P.g) (Fin x.P.g) ℂ),
@@ -45,6 +51,21 @@ theorem HasValue.holo {g n : ℕ} {ka : KeyIn ℂ → ℂˣ} {a₀ : ℂ} (h : H
   ⟨fun _ => a₀, differentiableOn_const _, fun x hx τ hn => by
     simpa using h x τ 1 _ _ 1 hx ⟨fun i => hab.1 _, fun i => hab.2 _⟩ one_ne_zero (by simp) hn⟩
 
+/- English proof (translation)
+Take `⟨hH, hF, hU, -⟩` from `hka`. Establish `hex : ∀ (R : Type) [CommRing R] (x : KeyIn R), ∃ y, IsKeyPow y x 2` using `fun R _ x => exists_isKeyPow R x 2 (by norm_num)`. Use `choose sq hsq using hex`. Establish `hdim : ∀ {R : Type} [CommRing R] {x y : KeyIn R}, x.P.g = g → IsKeyPow y x 2 → y.P.g = 2 * g` using `fun hx hy => hx ▸ hy.dim_eq`. Establish `indep : ∀ (K : Type) [Field K] [CharZero K] (x y : KeyIn K), x.P.g = g → IsKeyPow y x 2 → (ka K (sq K x) : K) = ka K y` using `fun K _ _ x y hx hy => hF K K (RingHom.id K) y (sq K x) (hdim hx hy) (keyPB_of_isKeyPow K K (RingHom.id K) x y x (sq K x) 2 (GlobalTheory.keyPB_id K x) hy (hsq K x))`.
+
+Establish `hval : HasValue g (2 * c) (fun x => ka ℂ (sq ℂ x)) a₀`. Introduce `x τ Mx a b c₀ hx hab hc hM hn₀`. Take `⟨n, rfl⟩` from `exists_int_half hab.1`. Take `⟨n', rfl⟩` from `exists_int_half hab.2`. Establish `hy` using `hsq ℂ x`.
+
+Take `⟨e, τ', M', hd, hn⟩` from `normalAt_pow x _ 2 τ Mx (fun i => (n i : ℝ) / 2) (fun i => (n' i : ℝ) / 2) c₀ hy hn₀`. Take `⟨sp, hsp, hlaw⟩` from `exists_thetaLaw_zero_of_even hinv _ _ _ (even_dot_double e n n')`. Take `⟨M'', c', hc', hq, hn'⟩` from `GlobalTheory.SpMove.normalAt_spAct (sq ℂ x) τ' M' (c₀ ^ 2) sp _ _ 0 0 hsp hlaw (pow_ne_zero _ hc) (by simpa using hn)`. Establish `hq' : M''.det ^ 4 / c' ^ 8 = (Mx.det ^ 4 / c₀ ^ 8) ^ 2` using `by rw [hq, hd]; ring`. Establish `hM'' : M''.det ≠ 0` using `fun h => by`.
+
+Rewrite `hq'` using `[h]`. Conclude with `pow_ne_zero 2 (div_ne_zero (pow_ne_zero 4 hM) (pow_ne_zero 8 hc)) (by rw [← hq']; simp)`. Use `ha (sq ℂ x) _ M'' c' (hdim hx hy) hc' hM'' (by simpa [Pi.zero_def] using hn')` as an intermediate fact. Rewrite `this` using `[hq', ← pow_mul]`. Conclude with `this`.
+
+Use `⟨fun K _ _ x => ka K (sq K x), ⟨?_, ?_, ?_, hval.holo⟩, hval⟩` and prove the remaining obligations. Introduce `K _ _ P hg rig hr th hth v hv th' hth' v' hv' a Mx hP h₁ h₂`. Establish `hy` using `hsq K ⟨P, hg, rig, hr, th, hth, v, hv⟩`. Take `⟨t, ht, w, hw, M', hp, ht', hw', hd⟩` from `GlobalTheory.PowChange.isKeyPow_change K P hg rig hr th hth v hv th' hth' v' hv' a Mx 2 _ h₁ h₂ hy`. Establish `key` using `hH K _ (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).g_pos _ (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).rig_gen _ (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).th_ne _ (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).basis t ht w hw (a ^ 2) M' (hdim hP hy) ht' hw'`.
+
+Simplify using `only`. Rewrite using `[indep K ⟨P, hg, rig, hr, th', hth', v', hv'⟩ _ hP hp]`. Rewrite `key` using `[hd, ← pow_mul, ← pow_mul]`. Rewrite using `[show 8 * (2 * c) = 2 * (8 * c) by ring, show 4 * (2 * c) = 2 * (4 * c) by ring]`. Conclude with `key`.
+
+Introduce `K K' _ _ _ _ f x x' hx h`. Conclude with `hF K K' f _ _ (hdim hx (hsq K x)) (keyPB_of_isKeyPow K K' f x _ x' _ 2 h (hsq K x) (hsq K' x'))`. Introduce `R K _ _ _ _ _ _ _ x xK hx hM h`. Take `⟨u, hu, hu'⟩` from `hU R K (sq R x) (sq K xK) (hdim hx (hsq R x)) hM (keyPB_of_isKeyPow R K _ x _ xK _ 2 h (hsq R x) (hsq K xK))`. Conclude with `⟨u, hu, fun k _ _ r xk hr hk => hu' k r (sq k xk) hr (keyPB_of_isKeyPow R k r x _ xk _ 2 hk (hsq R x) (hsq k xk))⟩`.
+-/
 theorem exists_rule_sq (hinv : Key.Chi.InversionStatement) {g c M : ℕ}
     {ka : ∀ (K : Type) [Field K] [CharZero K], KeyIn K → Kˣ} (hka : KaRuleK (2 * g) c M ka) {a₀ : ℂ}
     (ha : ∀ (x : KeyIn ℂ) (τ Mx : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (c₀ : ℂ), x.P.g = 2 * g → c₀ ≠ 0 → Mx.det ≠ 0 →
@@ -98,6 +119,13 @@ theorem exists_rule_sq (hinv : Key.Chi.InversionStatement) {g c M : ℕ}
     exact ⟨u, hu, fun k _ _ r xk hr hk =>
       hu' k r (sq k xk) hr (keyPB_of_isKeyPow R k r x _ xk _ 2 hk (hsq R x) (hsq k xk))⟩
 
+/- English proof (translation)
+Take `⟨x, hx, hxv⟩` from `GlobalTheory.T.exists_ellipticKeyData_value_eq_discriminant hT S W`. Take `⟨y, hy⟩` from `exists_isKeyPow S x g hg`. Take `⟨x', hx'⟩` from `exists_keyPB_ring x s`. Take `⟨z, hz⟩` from `exists_isKeyPow ℂ x' g hg`. Take `⟨⟨τ, Mx, a, b, c, hab, hc, hM, hn₀⟩, -⟩` from `GlobalTheory.KeyNormalExists.exists_normalAt hT x'`.
+
+Establish `hΔ` using `hxv s x' τ Mx a b c hx' hab hc hn₀`. Take `⟨m, rfl⟩` from `exists_int_half hab.1`. Take `⟨m', rfl⟩` from `exists_int_half hab.2`. Take `⟨e, τ', M', hd, hn⟩` from `normalAt_pow x' z g τ Mx (fun i => (m i : ℝ) / 2) (fun i => (m' i : ℝ) / 2) c hz hn₀`. Use `⟨y, z, by rw [hy.dim_eq, hx, Nat.mul_one], keyPB_of_isKeyPow S ℂ s x y x' z g hx' hy hz, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h z τ' M' _ _ _ (by rw [hz.dim_eq, dim_of_keyPB hx', hx, Nat.mul_one]) ⟨fun i => hab.1 _, fun i => hab.2 _⟩ (pow_ne_zero _ hc) (by rw [hd]; exact pow_ne_zero _ hM) hn, ← hΔ, hd, pow_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_test (hT : ThetaUnifAV) {g n : ℕ} (hg : 1 ≤ g) {ka : KeyIn ℂ → ℂˣ} {a₀ : ℂ} (h : HasValue g n ka a₀)
     {S : Type} [CommRing S] (W : WeierstrassCurve S) [W.IsElliptic] (s : S →+* ℂ) :
     ∃ (y : KeyIn S) (z : KeyIn ℂ), y.P.g = g ∧ KeyPB z y s ∧ (ka z : ℂ) = a₀ * s W.Δ ^ (g * n) := by
@@ -117,6 +145,19 @@ theorem exists_test (hT : ThetaUnifAV) {g n : ℕ} (hg : 1 ≤ g) {ka : KeyIn �
   congr 2
   ring
 
+/- English proof (translation)
+Take `⟨-, hF, hU, -⟩` from `hka`. Set `S` to `Localization.Away W.Δ`. Establish `hext : ∀ {T : Type} [CommRing T] (f f' : S →+* T), f = f'` using `fun f f' => IsLocalization.ringHom_ext (Submonoid.powers W.Δ) (RingHom.ext_int _ _)`. Establish `hlift : ∀ {T : Type} [CommRing T], IsUnit (W.Δ : T) → Nonempty (S →+* T)` using `fun {T} _ hu => ⟨IsLocalization.Away.lift (g := Int.castRingHom T) W.Δ hu⟩`. Use `haveI : (W.map (algebraMap ℤ S)).IsElliptic := ⟨by rw [WeierstrassCurve.map_Δ]; exact IsLocalization.Away.algebraMap_isUnit W.Δ⟩`.
+
+Establish `hQ : (W.Δ : ℚ) ≠ 0` using `Int.cast_ne_zero.2 hW`. Take `⟨i⟩` from `hlift (T := ℚ) hQ.isUnit`. Take `⟨y, z, hy, hz, hv⟩` from `exists_test hT hg h (W.map (algebraMap ℤ S)) ((Rat.castHom ℂ).comp i)`. Take `⟨yQ, hyQ⟩` from `exists_keyPB_ring y i`. Establish `hyQg : yQ.P.g = g` using `(dim_of_keyPB hyQ).trans hy`.
+
+Rewrite `hv` using `[hF ℚ ℂ (Rat.castHom ℂ) yQ z hyQg (GlobalTheory.KeyCancel.keyPB_cancel _ _ _ y yQ z _ _ hyQ hz), WeierstrassCurve.map_Δ, eq_intCast (algebraMap ℤ S), map_intCast, eq_ratCast]`. Establish `hC : (W.Δ : ℂ) ≠ 0` using `Int.cast_ne_zero.2 hW`. Use `⟨(ka ℚ yQ : ℚ) / (W.Δ : ℚ) ^ (g * n), div_ne_zero (Units.ne_zero _) (pow_ne_zero _ hQ), ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[hv, mul_div_cancel_right₀ _ (pow_ne_zero _ hC)]`.
+
+Introduce `R K _ _ _ _ _ _ _ hM hΔ`. Take `⟨j⟩` from `hlift hΔ`. Take `⟨yR, hyR⟩` from `exists_keyPB_ring y j`. Take `⟨yK, hyK⟩` from `exists_keyPB_ring yQ (Rat.castHom K)`. Establish `hyK'` using `GlobalTheory.keyPB_trans _ _ _ y yQ yK _ _ hyQ hyK`.
+
+Rewrite `hyK'` using `[hext ((Rat.castHom K).comp i) ((algebraMap R K).comp j)]`. Take `⟨u, hu, -⟩` from `hU R K yR yK ((dim_of_keyPB hyR).trans hy) hM (GlobalTheory.KeyCancel.keyPB_cancel _ _ _ y yR yK _ _ hyR hyK')`. Rewrite `hu` using `[hF ℚ K _ yQ yK hyQg hyK, eq_ratCast]`. Establish `hK : (W.Δ : K) ≠ 0` using `Int.cast_ne_zero.2 hW`. Use `⟨u * hΔ.unit⁻¹ ^ (g * n), ?_⟩` and prove the remaining obligations.
+
+Establish `e : algebraMap R K (hΔ.unit⁻¹ : Rˣ) = (W.Δ : K)⁻¹`. Rewrite using `[map_units_inv, IsUnit.unit_spec, map_intCast]`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, e, ← hu, Rat.cast_div, Rat.cast_pow, Rat.cast_intCast, inv_pow, div_eq_mul_inv]`.
+-/
 theorem const_rat_unit (hT : ThetaUnifAV) {g n M : ℕ} (hg : 1 ≤ g)
     {ka : ∀ (K : Type) [Field K] [CharZero K], KeyIn K → Kˣ} (hka : KaRuleK g n M ka) {a₀ : ℂ}
     (h : HasValue g n (ka ℂ) a₀) (W : WeierstrassCurve ℤ) (hW : W.Δ ≠ 0) :
@@ -158,6 +199,17 @@ theorem const_rat_unit (hT : ThetaUnifAV) {g n M : ℕ} (hg : 1 ≤ g)
     rw [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, e, ← hu, Rat.cast_div, Rat.cast_pow,
       Rat.cast_intCast, inv_pow, div_eq_mul_inv]
 
+/- English proof (translation)
+Take `⟨hH, hF, hU, -⟩` from `hka`. Set `κ : ∀ (K : Type) [Field K] [CharZero K], KeyIn K → Kˣ` to `fun K _ _ x => ka K x * (Units.mk0 (r : K) (Rat.cast_ne_zero.2 hr))⁻¹`. Establish `hκ : ∀ (K : Type) [Field K] [CharZero K] (x : KeyIn K), (κ K x : K) = ka K x * (r : K)⁻¹` using `fun K _ _ x => by simp [κ]`. Establish `hval : HasValue g n (κ ℂ) 1` using `fun x τ Mx a b c₀ h₁ h₂ h₃ h₄ h₅ => by`. Establish `: (r : ℂ) ≠ 0` using `Rat.cast_ne_zero.2 hr`.
+
+Rewrite using `[hκ, h x τ Mx a b c₀ h₁ h₂ h₃ h₄ h₅]`. Clear the denominators using the available nonvanishing facts. Use `⟨κ, ⟨?_, ?_, ?_, hval.holo⟩, hval⟩` and prove the remaining obligations. Introduce `K _ _ P hg rig hrig th hth v hv th' hth' v' hv' a Mx hP h₁ h₂`. Rewrite using `[hκ, hκ, ← _root_.mul_assoc, ← _root_.mul_assoc, hH K P hg rig hrig th hth v hv th' hth' v' hv' a Mx hP h₁ h₂]`.
+
+Introduce `K K' _ _ _ _ f x x' hx hp`. Rewrite using `[hκ, hκ, hF K K' f x x' hx hp, map_mul, map_inv₀, map_ratCast]`. Introduce `R K _ _ _ _ _ _ _ x xK hx hM hp`. Take `⟨u, hu₁, hu₂⟩` from `hU R K x xK hx hM hp`. Take `⟨w, hw⟩` from `hu R K hM`.
+
+Establish `hw' : (w : R) * (r.den : R) = (r.num : R)` using `IsFractionRing.injective R K (by`. Rewrite using `[map_mul, hw, map_natCast, map_intCast]`. Conclude with `Rat.mul_den_eq_num r)` after adjusting the coercions. Use `⟨u * w⁻¹, ?_, fun k _ _ ρ xk hρ hk => ?_⟩` and prove the remaining obligations. Rewrite using `[hκ, hu₁, Units.val_mul, map_mul, map_units_inv, hw]`.
+
+Establish `e : ρ w = (r : k)`. Use `congrArg ρ hw'` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_intCast]`. Rewrite using `[Rat.cast_def, eq_div_iff (Nat.cast_ne_zero.2 r.den_ne_zero), this]`. Rewrite using `[hκ, hu₂ k ρ xk hρ hk, Units.val_mul, map_mul, map_units_inv, e]`.
+-/
 theorem rule_div {g n M : ℕ} {ka : ∀ (K : Type) [Field K] [CharZero K], KeyIn K → Kˣ} (hka : KaRuleK g n M ka)
     {r : ℚ} (hr : r ≠ 0) (h : HasValue g n (ka ℂ) r)
     (hu : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K]
@@ -192,6 +244,15 @@ theorem rule_div {g n M : ℕ} {ka : ∀ (K : Type) [Field K] [CharZero K], KeyI
         rw [Rat.cast_def, eq_div_iff (Nat.cast_ne_zero.2 r.den_ne_zero), this]
       rw [hκ, hu₂ k ρ xk hρ hk, Units.val_mul, map_mul, map_units_inv, e]
 
+/- English proof (translation)
+Introduce `hL hT hinv hP hA g c M hg hR`. Take `⟨ka, hka⟩` from `GlobalTheory.KeyGalDesc.exists_kaRuleK hL.polBaseChange _ _ _ hR`. Take `⟨a₀, ha⟩` from `GlobalTheory.KeyConst.exists_const hT hinv hP hA _ c M ka (by omega) hka`. Take `⟨kb, hkb, hv⟩` from `exists_rule_sq hinv hka ha`. Take `⟨r, hr, rfl, h₃⟩` from `const_rat_unit hT hg hkb hv (WeierstrassCurve.ofJ0 ℤ) (by rw [WeierstrassCurve.ofJ0_Δ]; norm_num)`.
+
+Take `⟨r', -, e, h₂⟩` from `const_rat_unit hT hg hkb hv (WeierstrassCurve.ofJ1728 ℤ) (by rw [WeierstrassCurve.ofJ1728_Δ]; norm_num)`. Take `rfl : r' = r` from `Rat.cast_injective e`. Take `⟨κ, hκ, hκv⟩` from `rule_div hkb hr hv fun R K _ _ _ _ _ _ _ hM => by`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (3 : R) with h | h` into its components or cases. Use `h₃ R K hM ?_` and prove the remaining obligations.
+
+Rewrite using `[WeierstrassCurve.ofJ0_Δ]`. Use `(h.pow 3).neg using 1` and compare the differences between its conclusion and the goal. Evaluate the numerical expressions. Use `h₂ R K hM ?_` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.ofJ1728_Δ]`.
+
+Use `(h.pow 6).neg using 1` and compare the differences between its conclusion and the goal. Evaluate the numerical expressions. Conclude with `⟨κ, hκ, fun x τ Mx a b c₀ h₁ h₂ h₃ h₄ h₅ => by`. Rewrite using `[hκv x τ Mx a b c₀ h₁ h₂ h₃ h₄ h₅, _root_.one_mul]⟩`.
+-/
 theorem exists_normalised_rule : Out.Laws → ThetaUnifAV → Key.Chi.InversionStatement → Key.PhHoloStatement → GlobalTheory.TorusAlgebraic → ∀ (g c M : ℕ), 1 ≤ g → KaRule (2 * g) c M → ∃ κ, KaRuleK g (2 * c) M κ ∧ ∀ (x : KeyIn ℂ) (τ Mx : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c₀ : ℂ), x.P.g = g → charHalf x.P.g a b → c₀ ≠ 0 → Mx.det ≠ 0 → NormalAt x τ Mx a b c₀ → (κ ℂ x : ℂ) = (Mx.det ^ 4 / c₀ ^ 8) ^ (2 * c) := by
   intro hL hT hinv hP hA g c M hg hR
   obtain ⟨ka, hka⟩ := GlobalTheory.KeyGalDesc.exists_kaRuleK hL.polBaseChange _ _ _ hR

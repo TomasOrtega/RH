@@ -3,10 +3,16 @@ import Mathlib
 namespace ZbYha7
 
 open scoped ComplexOrder in
+/- English proof (translation)
+The claim follows from `(RCLike.pos_iff.mp (hA.dotProduct_mulVec_pos hx)).1`.
+-/
 private lemma pos {I : Type} [Fintype I] (A : Matrix I I ℂ) (hA : A.PosDef) (x : I → ℂ) (hx : x ≠ 0) :
     0 < RCLike.re (star x ⬝ᵥ A.mulVec x) :=
   (RCLike.pos_iff.mp (hA.dotProduct_mulVec_pos hx)).1
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, star_smul, smul_dotProduct]`. Simplify using `only [smul_eq_mul, RCLike.star_def, Complex.conj_ofReal]`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul]`. Simplify using `[Complex.re_ofReal_mul, sq]`.
+-/
 private lemma scale {I : Type} [Fintype I] (A : Matrix I I ℂ) (x : I → ℂ) (r : ℝ) :
     RCLike.re (star ((r : ℂ) • x) ⬝ᵥ A.mulVec ((r : ℂ) • x)) = r ^ 2 * RCLike.re (star x ⬝ᵥ A.mulVec x) := by
   rw [Matrix.mulVec_smul, dotProduct_smul, star_smul, smul_dotProduct]
@@ -14,6 +20,9 @@ private lemma scale {I : Type} [Fintype I] (A : Matrix I I ℂ) (x : I → ℂ) 
   rw [← mul_assoc, ← Complex.ofReal_mul]
   simp [Complex.re_ofReal_mul, sq]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Matrix.mulVec]`. Use `fun_prop`.
+-/
 private lemma cont {I : Type} [Fintype I] (A : Matrix I I ℂ) :
     Continuous fun x : I → ℂ => RCLike.re (star x ⬝ᵥ A.mulVec x) := by
   simp only [dotProduct, Matrix.mulVec]
@@ -21,6 +30,21 @@ private lemma cont {I : Type} [Fintype I] (A : Matrix I I ℂ) :
 
 end ZbYha7
 
+/- English proof (translation)
+Introduce `I inst _ A hA`. Use `set f : (I → ℂ) → ℝ := fun x => RCLike.re (star x ⬝ᵥ A.mulVec x) with hf`. Establish `hpos : ∀ x : I → ℂ, x ≠ 0 → 0 < f x` using `fun x hx => by`. Conclude with `ZbYha7.pos A hA x hx`. Establish `hS : ∃ l : ℝ, 0 < l ∧ ∀ y ∈ Metric.sphere (0 : I → ℂ) 1, l ≤ f y`.
+
+Distinguish the cases in `hne : (Metric.sphere (0 : I → ℂ) 1).Nonempty`. Take `⟨y0, hy0, hmin⟩` from `(isCompact_sphere (0 : I → ℂ) 1).exists_isMinOn hne (ZbYha7.cont A).continuousOn`. Use `⟨f y0, hpos y0 ?_, fun y hy => hmin hy⟩` and prove the remaining obligations. Introduce `h`. Rewrite `hy0` using `[h]`.
+
+Simplify using `at hy0`. Conclude with `⟨1, one_pos, fun y hy => (hne ⟨y, hy⟩).elim⟩`. Take `⟨l, hl, hlS⟩` from `hS`. Use `⟨l, hl, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`.
+
+Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Use `set y : I → ℂ := ((‖x‖⁻¹ : ℝ) : ℂ) • x with hy`. Establish `hyS : y ∈ Metric.sphere (0 : I → ℂ) 1`.
+
+Rewrite using `[mem_sphere_zero_iff_norm, hy, norm_smul]`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hn)]`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `hlS y hyS`. Establish `hxy : x = ((‖x‖ : ℝ) : ℂ) • y`.
+
+Rewrite using `[hy, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hn.ne', Complex.ofReal_one, one_smul]`. Establish `h2 : f x = ‖x‖ ^ 2 * f y` using `by conv_lhs => rw [hxy]`. Conclude with `ZbYha7.scale A y ‖x‖`. Express the relevant statement in the definitionally equal form `l * ‖x‖ ^ 2 ≤ f x`. Rewrite using `[h2, mul_comm l]`.
+
+Conclude with `mul_le_mul_of_nonneg_left h1 (by positivity)`.
+-/
 theorem UpperTheory.Reformulated.B.Yha7.main :
     ∀ {I : Type} [inst : Fintype I] [DecidableEq I] (A : Matrix I I Complex),
       @Matrix.PosDef I Complex Complex.instRing Complex.partialOrder Complex.instStarRing A →

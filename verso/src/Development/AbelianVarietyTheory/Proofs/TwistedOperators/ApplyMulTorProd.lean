@@ -25,6 +25,9 @@ def conjL {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} : Frame Ψ 
     change conj ((c : ℂ) * Z τ a b) = (c : ℂ) * conj (Z τ a b)
     rw [map_mul, Complex.conj_ofReal]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_conjL {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} (Z : Frame Ψ r) (τ : Ψ) :
     mat (conjL Z) τ = (mat Z τ).map (starRingEnd ℂ) := rfl
 
@@ -32,6 +35,11 @@ def toLieC (C : Ctx S T) (R : GlobalTheory.SmoothForms.RealPoints C.θ T) (B : C
     Frame C.X.Ψ T.rank →ₗ[ℝ] GlobalTheory.SmoothForms.LieN T :=
   (GlobalTheory.HolRead.AdExt.toLie R B (fun ρ => C.m.e ρ)).comp conjL
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Use `congrArg det (hB ρ)` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, h0, mul_zero, sgnM, det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun c _ => ?_) this.symm` and prove the remaining obligations.
+
+Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem isUnit_det_B (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Tau) : IsUnit (B ρ).det := by
   rw [isUnit_iff_ne_zero]
   intro h0
@@ -41,6 +49,9 @@ theorem isUnit_det_B (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Ta
   unfold sgn
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `h : ∀ M : Matrix (Fin n) (Fin n) ℂ, M.map (starRingEnd ℂ) = Mᴴᵀ` using `fun M => by`. Use extensionality with `i j`. Simplify using `[conjTranspose_apply]`. Rewrite using `[h, h, Matrix.exp_transpose, Matrix.exp_conjTranspose]`.
+-/
 theorem exp_map_conj {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     (NormedSpace.exp A).map (starRingEnd ℂ) = NormedSpace.exp (A.map (starRingEnd ℂ)) := by
   have h : ∀ M : Matrix (Fin n) (Fin n) ℂ, M.map (starRingEnd ℂ) = Mᴴᵀ := fun M => by
@@ -66,6 +77,9 @@ def trCL (V : HSp D) (m : D.what₂.Tau → ℤ) : GlobalTheory.SmoothForms.LieN
   cont := continuous_finset_sum _ fun ρ _ =>
     continuous_const.mul ((continuous_subtype_val.comp (continuous_apply ρ)).matrix_trace)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trCL_apply (V : HSp D) (m : D.what₂.Tau → ℤ) (Y : GlobalTheory.SmoothForms.LieN V) : trCL V m Y = trLin V m Y := rfl
 
 end GlobalTheory.AdSpan.ConjHol
@@ -74,6 +88,13 @@ namespace GlobalTheory.AdSpan.ConjHol
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Unfold `torProd`. It suffices to establish `H : ∀ l : List D.what₂.Tau, l.Nodup → ∀ g, ψ (g * (l.map fun ρ => torAt θ V B ρ (s ρ)).prod) = cexp (((∑ ρ ∈ l.toFinset, ∑ a, (w ρ a : ℝ) * s ρ a : ℝ) : ℂ) * I) * ψ g by`. Use `H (Finset.univ : Finset D.what₂.Tau).toList (Finset.nodup_toList _) g` as an intermediate fact. Rewrite `this` using `[Finset.toList_toFinset]`. Then use the resulting hypothesis. Introduce `l hl`.
+
+Proceed by induction on `l with`. Consider the case `nil => intro g`. Simplify using the standard rewrite rules. Consider the case `cons ρ l ih`. Introduce `g`.
+
+Rewrite `hl` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, ← mul_assoc, ih hl.2, h, List.toFinset_cons, Finset.sum_insert (by simpa using hl.1), ← mul_assoc, ← Complex.exp_add, ← add_mul]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem apply_mul_torProd (θ : InfFam D) (V : HSp D) (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (w : D.what₂.Tau → Fin V.rank → ℤ) (ψ : GA D V → ℂ)
     (h : ∀ (ρ : D.what₂.Tau) (t : Fin V.rank → ℝ) (g : GA D V),
@@ -97,6 +118,11 @@ theorem apply_mul_torProd (θ : InfFam D) (V : HSp D) (B : D.what₂.Tau → Mat
     push_cast
     ring
 
+/- English proof (translation)
+Establish `R : GlobalTheory.SmoothForms.RealPoints C.θ T` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 C.θ C.inf T`. Use function extensionality and compare the values at `σ i j`. Take `⟨ρ, rfl⟩` from `C.m.e.surjective σ`. Establish `e1 : C.mvB (a * k) B ρ = C.mvB a B ρ * (mat b (C.m.e ρ)).map (starRingEnd ℂ)`. Establish `hm : compAt C.θ ρ (Formalism.L2.Theta.mt T (a * k)) = compAt C.θ ρ (Formalism.L2.Theta.mt T a) * compAt C.θ ρ (Formalism.L2.Theta.mt T k)` using `R.2.2.2.1 a k ρ`.
+
+Simplify using `only [Ctx.mvB]`. Rewrite using `[hm, hk]`. Simplify using `only [Matrix.mul_assoc, nonsing_inv_mul _ (isUnit_det_B C hB ρ), Matrix.mul_one]`. Simplify using `only [Ctx.xB, rmul, mat, Equiv.symm_apply_apply, e1, Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply, map_sum, map_mul, Complex.conj_conj]`.
+-/
 theorem xB_mvB_mul (C : Ctx S T) (B : C.Bas) (hB : C.IsB B) (a k : GA D T) (b : Frame C.X.Ψ T.rank)
     (hk : ∀ ρ, compAt C.θ ρ (Formalism.L2.Theta.mt T k) = B ρ * (mat b (C.m.e ρ)).map (starRingEnd ℂ) * (B ρ)⁻¹) :
     C.xB (C.mvB (a * k) B) = rmul (C.xB (C.mvB a B)) b := by

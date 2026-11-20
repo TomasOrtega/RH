@@ -5,10 +5,19 @@ noncomputable section
 
 namespace PositivityTheory.KB.SplitAffineSpectral.NormTraceLemmas
 
+/- English proof (translation)
+Introduce `_ _ _ _ pr s hs u hu q f hf _ x hx hv` and use `colKill pr s hs u hu q f hf x hx hv`.
+-/
 theorem colKillP : ColKillP := fun _ _ _ _ pr s hs u hu q f hf _ x hx hv => colKill pr s hs u hu q f hf x hx hv
 
+/- English proof (translation)
+The claim follows from `e2VanishingFirstColumn_of_colKillP colKillP`.
+-/
 theorem e2z : E2VanishingFirstColumn := e2VanishingFirstColumn_of_colKillP colKillP
 
+/- English proof (translation)
+The claim follows from `e2VanishingOtherColumns_of_colKillP colKillP`.
+-/
 theorem e2s : E2VanishingOtherColumns := e2VanishingOtherColumns_of_colKillP colKillP
 
 end PositivityTheory.KB.SplitAffineSpectral.NormTraceLemmas

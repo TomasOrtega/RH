@@ -10,6 +10,11 @@ open GlobalTheory.HSApp
 
 namespace GlobalTheory.CompHS
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y X K _ z hO`. Take `⟨a, h⟩` from `GlobalTheory.CompHS.exists_chartFr z hO`. Take `⟨k, hz⟩` from `GlobalTheory.FlagMod.exists_chart_of_isLocalRing X.F.cover z`. Take `⟨Q, hQ⟩` from `h k hz`. Use `⟨algebraMap c.F K, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (algebraMap c.F K).toAlgebra = a` using `Algebra.algebra_ext _ _ fun _ => rfl`. Rewrite using `[e]`. Conclude with `⟨Q, (FlagCover.eq_ptY hQ.lies).symm⟩`.
+-/
 theorem exists_frPt_of_flagOpen : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (K : Type) [Field K] (z : Sp K ⟶ X.YY), ⊤ ≤ z ⁻¹ᵁ flagOpen X → ∃ io : c.F →+* K, letI := io.toAlgebra; ∃ P : FrPt Xo c K, X.ptY P = z := by
   intro E _ _ _ H Dw l Xo c Y X K _ z hO
   obtain ⟨a, h⟩ := GlobalTheory.CompHS.exists_chartFr z hO

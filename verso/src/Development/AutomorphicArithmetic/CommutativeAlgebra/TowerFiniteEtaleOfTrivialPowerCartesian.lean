@@ -7,6 +7,31 @@ open AlgebraicGeometry CategoryTheory Limits
 open UpperTheory.Gal.Int.Geo
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `h0 hpc p _ D G L E _ _ gb w q _ r 𝔴 𝔫 S k T N c a hN C`. Take `⟨ρ, e0, hop, hcl, htr⟩` from `h0 p D G L E gb w q r 𝔴 𝔫 S k T N c a hN C`. Establish `hx : (1 : G.GAf) ∈ T.X.Δ` using `T.X.Δ.one_mem`. Establish `hN' : (N : ℕ) = S.N₀ * c`. Unfold `Site.Num at hN`.
+
+Conclude with `hN.1`. Establish `hsub : ∀ (n m : ℕ) (g : G.GAf), L.CongOne (n * m) g → L.CongOne n g`. Introduce `n m g hg`. Unfold `GlobalTheory.LKGeo.Link.CongOne at hg ⊢`. Introduce `v hv`.
+
+Take `⟨u, hu, huv⟩` from `hg v hv`. Conclude with `⟨m • u, AddSubgroup.nsmul_mem _ hu m, by rw [huv, mul_smul]⟩`. Take `⟨hy, htr'⟩ : ∃ hy, T.X.tr (T.lev N) _ 1 hx hy ≫ ρ = _` from `⟨_, htr hx (by`. Introduce `u hu`. Rewrite using `[one_mul, inv_one, mul_one]`.
+
+Rewrite `hu`, the goal using `[T.3]`. Rewrite `hu` using `[hN']`. Use `show u ∈ L.KN S.N₀`. Unfold `GlobalTheory.LKGeo.Link.KN at hu ⊢`. Conclude with `⟨hsub _ _ _ hu.1, hsub _ _ _ hu.2⟩)⟩`.
+
+Establish `hG` using `S.mπ.3`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback at hG`. Establish `hpb` using `hG.1`. Take `⟨hP1, hP2, -⟩` from `hpc S.Y.X S.M.X S.M.X S.Y.univ.A S.M.univ.A S.M.univ.A S.π (𝟙 _) S.mπ.φ (𝟙 _) hpb.w (by simp) k`. Establish `hPB` using `hP1 hpb`.
+
+Establish `hfinP : IsFinite (GlobalTheory.KS.powMap S.π S.mπ.φ hpb.w k)` using `MorphismProperty.of_isPullback (P := @IsFinite) hPB.flip S.20`. Establish `hetP : Etale (GlobalTheory.KS.powMap S.π S.mπ.φ hpb.w k)` using `MorphismProperty.of_isPullback (P := @Etale) hPB.flip S.21`. Establish `hcomm : (GlobalTheory.KS.pow S.Y.univ.A k).hom ≫ S.Y.s = GlobalTheory.KS.powMap S.π S.mπ.φ hpb.w k ≫ (GlobalTheory.KS.pow S.M.univ.A k).hom ≫ S.M.s`. Rewrite using `[← Category.assoc, hP2, Category.assoc, S.18]`. Establish `eY : S.pi T C ≫ (GlobalTheory.KS.pow S.Y.univ.A k).hom ≫ S.Y.s = T.X.q (T.lev N) ≫ gen (Ow w) E`.
+
+Rewrite using `[hcomm, ← Category.assoc, ← htr', Category.assoc, e0, ← Category.assoc, T.X.10]`. Use `⟨eY, ?_⟩` and prove the remaining obligations. Establish `h1 : ((GlobalTheory.KS.pow S.Y.univ.A k).hom ≫ S.Y.s) ≫ 𝟙 _ = GlobalTheory.KS.powMap S.π S.mπ.φ hpb.w k ≫ (GlobalTheory.KS.pow S.M.univ.A k).hom ≫ S.M.s`. Rewrite using `[Category.comp_id, hcomm]`. Establish `h2 : gen (Ow w) E ≫ 𝟙 _ = 𝟙 _ ≫ gen (Ow w) E`.
+
+Rewrite using `[Category.comp_id, Category.id_comp]`. Set `hm` to `pullback.map ((GlobalTheory.KS.pow S.Y.univ.A k).hom ≫ S.Y.s) (gen (Ow w) E) ((GlobalTheory.KS.pow S.M.univ.A k).hom ≫ S.M.s) (gen (Ow w) E) (GlobalTheory.KS.powMap S.π S.mπ.φ hpb.w k) (𝟙 _) (𝟙 _) h1 h2`. Establish `h3 : gen (Ow w) E = 𝟙 _ ≫ gen (Ow w) E` using `(Category.id_comp _).symm`. Establish `hmF : IsFinite hm` using `MorphismProperty.pullback_map (P := @IsFinite) hfinP inferInstance hcomm h3`. Use `haveI := hetP`.
+
+Establish `hmU : FormallyUnramified hm` using `MorphismProperty.pullback_map (P := @FormallyUnramified) inferInstance inferInstance hcomm h3`. Establish `hkey : pullback.lift (S.pi T C) (T.X.q (T.lev N)) eY ≫ hm = T.X.tr _ _ 1 hx hy ≫ pullback.lift ρ _ e0`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, Category.assoc, pullback.lift_fst, htr']`. Simplify using `only [hm, pullback.lift_fst_assoc, pullback.map, pullback.lift_fst]`.
+
+Rewrite using `[Category.assoc, pullback.lift_snd, Category.assoc, pullback.lift_snd, T.X.10]`. Simplify using `only [hm, pullback.map, pullback.lift_snd, pullback.lift_snd_assoc, Category.comp_id]`. Use `haveI := hop`. Use `haveI := hcl`. Use `haveI := T.X.13 _ _ hx hy`.
+
+Use `haveI := T.X.14 _ _ hx hy`. Establish `hcomp : IsFinite (pullback.lift (S.pi T C) (T.X.q (T.lev N)) eY ≫ hm) ∧ Etale (pullback.lift (S.pi T C) (T.X.q (T.lev N)) eY ≫ hm)`. Rewrite using `[hkey]`. Conclude with `⟨inferInstance, inferInstance⟩`. Use `haveI := hcomp.1`.
+
+Use `haveI := hcomp.2`. Conclude with `⟨IsFinite.of_comp _ hm, Etale.of_comp _ hm⟩`.
+-/
 theorem UpperTheory.tower_finiteEtale_of_trivial_powerCartesian :
     PiZero → PowCart → PiFet := by
   intro h0 hpc p _ D G L E _ _ gb w q _ r 𝔴 𝔫 S k T N c a hN C

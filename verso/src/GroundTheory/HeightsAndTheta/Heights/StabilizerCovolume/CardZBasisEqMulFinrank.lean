@@ -21,11 +21,17 @@ def towerZBasis {M : Type} [AddCommGroup M] [Module (𝓞 Em) M] {ρ : ℕ} {v :
   ((RingOfIntegers.basis Em).smulTower' (Basis.span hv)).reindex
     (Equiv.prodCongr (Equiv.refl _) (equivReindex Em).symm)
 
+/- English proof (translation)
+Simplify using `[towerZBasis, Basis.smulTower'_apply, Basis.span_apply]`.
+-/
 theorem towerZBasis_apply {M : Type} [AddCommGroup M] [Module (𝓞 Em) M] {ρ : ℕ} {v : Fin ρ → M}
     (hv : LinearIndependent (𝓞 Em) v) (p : Fin ρ × (Em →+* ℂ)) :
     (towerZBasis hv p : M) = RingOfIntegers.basis Em (equivReindex Em p.2) • v p.1 := by
   simp [towerZBasis, Basis.smulTower'_apply, Basis.span_apply]
 
+/- English proof (translation)
+Establish `h` using `congrArg Subtype.val ((towerZBasis hv).sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Rewrite using `[← h]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem mem_span_towerZBasis {M : Type} [AddCommGroup M] [Module (𝓞 Em) M] {ρ : ℕ} {v : Fin ρ → M}
     (hv : LinearIndependent (𝓞 Em) v) {x : M} (hx : x ∈ Submodule.span (𝓞 Em) (Set.range v)) :
     x ∈ Submodule.span ℤ (Set.range fun p => (towerZBasis hv p : M)) := by
@@ -34,6 +40,19 @@ theorem mem_span_towerZBasis {M : Type} [AddCommGroup M] [Module (𝓞 Em) M] {�
   rw [← h]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Take `⟨-, hvI, hli, hidx⟩` from `hv`. Use `set J := Submodule.span (𝓞 Em) (Set.range v)`. Use `set t : Fin ρ × (Em →+* ℂ) → Fin N → Em := fun p => (towerZBasis hli p : Fin N → Em)`. Establish `hJI : J ≤ I` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hvI a)`. Establish `htZ : LinearIndependent ℤ t` using `(towerZBasis hli).linearIndependent.map' J.subtype.toAddMonoidHom.toIntLinearMap (LinearMap.ker_eq_bot.2 Subtype.val_injective)`.
+
+Establish `htQ : LinearIndependent ℚ t` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 htZ`. Establish `hbQ : LinearIndependent ℚ b` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hb.1`. Establish `hIQ : ∀ x ∈ I, x ∈ Submodule.span ℚ (Set.range b)` using `fun x hx => Submodule.span_le_restrictScalars ℤ ℚ _ ((hb.2 x).1 hx)`. Establish `hspan : Submodule.span ℚ (Set.range t) = Submodule.span ℚ (Set.range b)`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `hIQ _ (hJI (towerZBasis hli p).2)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Establish `hbk : b k ∈ I` using `(hb.2 (b k)).2 (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hmem : J.toAddSubgroup.relIndex I.toAddSubgroup • b k ∈ J` using `AddSubgroup.nsmul_relIndex_mem J.toAddSubgroup (K := I.toAddSubgroup) hbk`. Establish `hmemQ : J.toAddSubgroup.relIndex I.toAddSubgroup • b k ∈ Submodule.span ℚ (Set.range t)` using `Submodule.span_le_restrictScalars ℤ ℚ _ (mem_span_towerZBasis hli hmem)`. Establish `hk : b k = ((J.toAddSubgroup.relIndex I.toAddSubgroup : ℚ))⁻¹ • (J.toAddSubgroup.relIndex I.toAddSubgroup • b k)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hidx), one_smul]`.
+
+Rewrite using `[hk]`. Conclude with `Submodule.smul_mem _ _ hmemQ`. Establish `h1` using `finrank_span_eq_card htQ`. Establish `h2` using `finrank_span_eq_card hbQ`. Rewrite `h1` using `[hspan, h2]`.
+
+Rewrite `h1` using `[Fintype.card_fin]`. Rewrite using `[h1, Fintype.card_prod, Fintype.card_fin, NumberField.Embeddings.card]`.
+-/
 theorem card_zBasis_eq_mul_finrank {N : ℕ} {I : Submodule (𝓞 Em) (Fin N → Em)} {ρ : ℕ} {v : Fin ρ → Fin N → Em}
     (hv : IsNzFamily I ρ v) {m : ℕ} {b : Fin m → Fin N → Em} (hb : IsZBasis I b) :
     m = ρ * finrank ℚ Em := by
@@ -73,6 +92,23 @@ theorem card_zBasis_eq_mul_finrank {N : ℕ} {I : Submodule (𝓞 Em) (Fin N →
 
 open Classical in
 
+/- English proof (translation)
+Establish `hli` using `hv.2.2.1`. Use `set J := Submodule.span (𝓞 Em) (Set.range v)`. Establish `hJI : J.toAddSubgroup ≤ I.toAddSubgroup` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hv.2.1 a)`. Establish `hm : Fintype.card (Fin m) = Fintype.card (Fin ρ × (Em →+* ℂ))`. Rewrite using `[Fintype.card_fin, card_zBasis_eq_mul_finrank hv hb, Fintype.card_prod, Fintype.card_fin, NumberField.Embeddings.card]`.
+
+Set `e : Fin m ≃ Fin ρ × (Em →+* ℂ)` to `Fintype.equivOfCardEq hm`. Establish `hspanI : Submodule.span ℤ (Set.range b) = I.toAddSubgroup.toIntSubmodule`. Use extensionality with `x`. Conclude with `(hb.2 x).symm`. Set `B₂ : Basis (Fin ρ × (Em →+* ℂ)) ℤ I.toAddSubgroup.toIntSubmodule` to `((Basis.span hb.1).map (LinearEquiv.ofEq _ _ hspanI)).reindex e`.
+
+Establish `hB₂ : ∀ k, (B₂ k : Fin N → Em) = b (e.symm k)`. Introduce `k`. Simplify using `only [B₂, Basis.reindex_apply, Basis.map_apply, LinearEquiv.coe_ofEq_apply, Basis.span_apply]`. Set `eJ : J ≃+ J.toAddSubgroup.toIntSubmodule` to `{ toFun := fun x => ⟨x, x.2⟩, invFun := fun x => ⟨x, x.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_add' := fun _ _ => rfl }`. Set `B₁ : Basis (Fin ρ × (Em →+* ℂ)) ℤ J.toAddSubgroup.toIntSubmodule` to `(towerZBasis hli).map eJ.toIntLinearEquiv`.
+
+Establish `hidx` using `AddSubgroup.relIndex_eq_natAbs_det J.toAddSubgroup I.toAddSubgroup hJI B₁ B₂`. Rewrite `hidx` using `[Basis.det_apply]`. Use `set M := B₂.toMatrix fun i => (⟨B₁ i, hJI (SetLike.coe_mem _)⟩ : I.toAddSubgroup.toIntSubmodule)`. Establish `hexp : ∀ p, (towerZBasis hli p : Fin N → Em) = ∑ k, M k p • b (e.symm k)`. Introduce `p`.
+
+Establish `h` using `congrArg Subtype.val (B₂.sum_repr ⟨B₁ p, hJI (SetLike.coe_mem _)⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hB₂] at h`. Establish `hB₁ : (B₁ p : Fin N → Em) = towerZBasis hli p` using `rfl`. Rewrite using `[← hB₁, ← h]`. Both sides reduce to the same expression.
+
+Establish `hgram : (Matrix.of fun p q => f (towerZBasis hli p : Fin N → Em) (towerZBasis hli q : Fin N → Em)) = (M.map (Int.cast : ℤ → ℝ))ᵀ * (Matrix.of fun k l => f (b k) (b l)).submatrix e.symm e.symm * M.map (Int.cast : ℤ → ℝ)`. Use extensionality with `p q`. Rewrite using `[Matrix.of_apply, hexp p, hexp q]`. Simplify using `only [map_sum, map_zsmul, AddMonoidHom.finset_sum_apply, AddMonoidHom.coe_smul, Pi.smul_apply]`. Simplify using `only [zsmul_eq_mul, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply, Matrix.of_apply, Finset.sum_mul, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hc : (M.map (Int.cast : ℤ → ℝ)).det = (M.det : ℝ)`. Use `(Int.castRingHom ℝ).map_det M` as an intermediate fact. Simplify using `using this.symm`.
+
+Rewrite using `[hgram, det_mul, det_mul, det_transpose, det_submatrix_equiv_self, hidx, Nat.cast_natAbs, Int.cast_abs, sq_abs, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_gram_tower_eq {N : ℕ} (f : (Fin N → Em) →+ (Fin N → Em) →+ ℝ) {I : Submodule (𝓞 Em) (Fin N → Em)}
     {ρ : ℕ} {v : Fin ρ → Fin N → Em} (hv : IsNzFamily I ρ v) {m : ℕ} {b : Fin m → Fin N → Em}
     (hb : IsZBasis I b) :
@@ -143,6 +179,17 @@ def gramLieAll (z : (Σ k, ι k) → ℂ) {ρ : ℕ} (v : Fin ρ → Fin D.N →
     (fun τ => (D.herm.gramLie (D.j_le.trans (Nat.sub_le _ _)) (D.per z τ) τ v).map (starRingEnd ℂ))
     (D.herm.embEquiv.symm σ)
 
+/- English proof (translation)
+Establish `hJI : Submodule.span (𝓞 Em) (Set.range v) ≤ I` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hv a)`. Rewrite using `[D.hodgeInner_of_iso hz hI (hJI (towerZBasis hli p).2) (hJI (towerZBasis hli q).2)]`. Simplify using `only [towerZBasis_apply, HermDatum.lieComp_smul]`. Use `set ωp := ((RingOfIntegers.basis Em (equivReindex Em p.2) : 𝓞 Em) : Em)`. Use `set ωq := ((RingOfIntegers.basis Em (equivReindex Em q.2) : 𝓞 Em) : Em)`.
+
+Use `set G := fun τ => D.herm.gramLie (D.j_le.trans (Nat.sub_le _ _)) (D.per z τ) τ v`. Establish `hw : ∀ τ, ∑ c, conj (D.herm.emb τ ωp * D.herm.lieComp (D.j_le.trans (Nat.sub_le _ _)) (D.per z τ) τ (v p.1) c) * (D.herm.emb τ ωq * D.herm.lieComp (D.j_le.trans (Nat.sub_le _ _)) (D.per z τ) τ (v q.1) c) = conj (D.herm.emb τ ωp) * D.herm.emb τ ωq * G τ p.1 q.1`. Introduce `τ`. Simplify using `only [G, HermDatum.gramLie, Matrix.of_apply, Finset.mul_sum, map_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hw]`. Rewrite using `[← D.herm.embEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [gramLieAll, Equiv.symm_apply_apply]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, HermDatum.embEquiv_inl, HermDatum.embEquiv_inr, RingHom.comp_apply, Matrix.map_apply, Complex.star_def, Complex.conj_conj]`.
+
+Use `push_cast`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[show ∀ w : ℂ, (2 : ℂ) * (w.re : ℂ) = w + conj w from fun w => by rw [Complex.add_conj]; push_cast; ring]`. Simplify using `only [map_mul, Complex.conj_conj, G]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hodgeInner_tower {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Submodule (𝓞 Em) (Fin D.N → Em)}
     (hI : D.herm.IsIso I) {ρ : ℕ} {v : Fin ρ → Fin D.N → Em} (hv : ∀ a, v a ∈ I)
     (hli : LinearIndependent (𝓞 Em) v) (p q : Fin ρ × (Em →+* ℂ)) :
@@ -178,6 +225,11 @@ theorem hodgeInner_tower {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Submo
 
 open Classical in
 
+/- English proof (translation)
+Use extensionality with `⟨a, τ⟩ ⟨b, τ'⟩`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Complex.ofRealHom_eq_coe, D.hodgeInner_tower hz hI hv hli]`. Simplify using `only [mul_apply, conjTranspose_apply, kroneckerMap_apply, one_apply, transpose_apply, blockDiagonal_apply, Fintype.sum_prod_type, basisMatrix_apply']`. Simplify using `only [ite_mul, one_mul, zero_mul, mul_ite, mul_zero, star_zero, apply_ite star, Finset.sum_ite_eq', Finset.mem_univ, if_true, Complex.star_def]`. Rewrite using `[Fintype.sum_eq_single b fun x hx ↦ by simp [hx]]`.
+
+Simplify using `only [if_true]`.
+-/
 theorem gram_tower {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Submodule (𝓞 Em) (Fin D.N → Em)}
     (hI : D.herm.IsIso I) {ρ : ℕ} {v : Fin ρ → Fin D.N → Em} (hv : ∀ a, v a ∈ I)
     (hli : LinearIndependent (𝓞 Em) v) :
@@ -198,6 +250,9 @@ theorem gram_tower {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Submodule (
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `|(discr Em : ℝ)| ^ ρ * ∏ τ, ((D.herm.gramLie (D.j_le.trans (Nat.sub_le _ _)) (D.per z τ) τ v).det.re) ^ 2 := by classical apply Complex.ofReal_injective have hG := congrArg Matrix.det (D.gram_tower hz hI hv hli) rw [← RingHom.map_det, Complex.ofRealHom_eq_coe] at hG rw [hG, det_m …`.
+-/
 theorem det_gram_tower {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Submodule (𝓞 Em) (Fin D.N → Em)}
     (hI : D.herm.IsIso I) {ρ : ℕ} {v : Fin ρ → Fin D.N → Em} (hv : ∀ a, v a ∈ I)
     (hli : LinearIndependent (𝓞 Em) v) :
@@ -232,6 +287,9 @@ theorem det_gram_tower {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Submodu
   linear_combination
     (∏ τ, ((D.herm.gramLie (D.j_le.trans (Nat.sub_le _ _)) (D.per z τ) τ v).det.re : ℂ) ^ 2) * key
 
+/- English proof (translation)
+The claim follows from `|(discr Em : ℝ)| ^ ((ρ : ℝ) / 2) := by classical unfold covolZ rw [dif_pos hex] have hb := hex.choose_spec.choose_spec have h1 := det_gram_tower_eq (D.hodgeAdd z) hv hb simp only [hodgeAdd_apply] at h1 rw [D.det_gram_tower hz hI hv.2.1 hv.2.2.1] at h1 have hidx : ((Submodule.span …`.
+-/
 theorem covolZ_eq_of_family {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Submodule (𝓞 Em) (Fin D.N → Em)}
     (hI : D.herm.IsIso I) {ρ : ℕ} {v : Fin ρ → Fin D.N → Em} (hv : IsNzFamily I ρ v)
     (hex : ∃ m, ∃ b : Fin m → Fin D.N → Em, IsZBasis I b) :

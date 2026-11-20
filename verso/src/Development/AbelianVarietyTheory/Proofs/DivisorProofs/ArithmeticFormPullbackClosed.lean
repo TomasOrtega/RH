@@ -22,6 +22,11 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.PullArForm
 
+/- English proof (translation)
+Establish `e : swap.comp (pull L') = (pull L).comp (swap (n` using `m)) := by`. Use `ExteriorAlgebra.hom_ext (LinearMap.ext fun u => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, AlgHom.comp_apply, swap, pull, ExteriorAlgebra.map_apply_ι]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `rcases i with b | b <;>`. Simplify using `[LinearMap.funLeft_apply, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, hL]`. Conclude with `congrArg (fun φ : Alt m →ₐ[ℂ] Alt n => φ α) e`.
+-/
 theorem swap_pull_conj {n m : ℕ} (L L' : V n →L[ℂ] V m)
     (hL : ∀ b a, L' (coordVec b) a = conj (L (coordVec b) a)) (α : Alt m) :
     swap (pull L' α) = pull L (swap α) := by
@@ -35,6 +40,11 @@ theorem swap_pull_conj {n m : ℕ} (L L' : V n →L[ℂ] V m)
       simp [LinearMap.funLeft_apply, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, hL]
   exact congrArg (fun φ : Alt m →ₐ[ℂ] Alt n => φ α) e
 
+/- English proof (translation)
+Establish `h1 : spMap σ' = spMap (starRingEnd ℂ) ≫ spMap σ`. Rewrite using `[← x'.2, e, Category.assoc, x.2]`. Establish `h2 : spMap (starRingEnd ℂ) ≫ spMap σ = spMap ((starRingEnd ℂ).comp σ)`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `h3` using `Spec.map_injective (h1.trans h2)`. Conclude with `congrArg CommRingCat.Hom.hom h3`.
+-/
 theorem emb_eq_conj {k : Type} [CommRing k] {Y : Scheme.{0}} {q : Y ⟶ Sp k} {σ σ' : k →+* ℂ} (x : CxPts q σ)
     (x' : CxPts q σ') (e : x'.1 = spMap (starRingEnd ℂ) ≫ x.1) : σ' = (starRingEnd ℂ).comp σ := by
   have h1 : spMap σ' = spMap (starRingEnd ℂ) ≫ spMap σ := by
@@ -44,6 +54,43 @@ theorem emb_eq_conj {k : Type} [CommRing k] {Y : Scheme.{0}} {q : Y ⟶ Sp k} {�
   have h3 := Spec.map_injective (h1.trans h2)
   exact congrArg CommRingCat.Hom.hom h3
 
+/- English proof (translation)
+Introduce `hκ`. Use `haveI := h.isIntegral`. Establish `hol : ∀ σ, (h.atlas σ).IsHolo (h'.atlas σ) (Points.PtsOver.map f hf (spMap σ))` using `fun σ => GlobalTheory.T.points_map_holomorphic k X p D h σ Y q D' h' f hf`. Establish `loc : ∀ σ (x : (h'.atlas σ).Pt) (c : AlgChart p σ D) (hc : Points.PtsOver.map f hf (spMap σ) x.pt ∈ c.e.source), h.pullFld h' f hf κ σ x = pull (fderiv ℂ (c.e ∘ Points.PtsOver.map f hf (spMap σ) ∘ x.ch.symm) x.crd) (κ σ ⟨(c, _), hc⟩)` using `fun σ x c hc => GlobalTheory.T.holAtlas_pullback_eq_chart_expression _ _ _ _ (h.atlas σ) (h'.atlas σ) _ (κ σ) (hol σ) (hκ.1 σ).1 x c hc`. Use `⟨⟨fun σ => ⟨GlobalTheory.T.holAtlas_isForm_pullback_holomorphic _ _ _ _ _ _ _ _ (hol σ) (hκ.1 σ).1, fun x => ?_⟩, ?_⟩, fun σ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `(h.atlas σ).cover (Points.PtsOver.map f hf (spMap σ) x.pt)`. Rewrite using `[loc σ x c hc]`. Conclude with `⟨GlobalTheory.T.pullback_preserves_form_type _ _ _ _ _ _ ((hκ.1 σ).2 _).1, GlobalTheory.T.pullback_preserves_real_form _ _ _ _ ((hκ.1 σ).2 _).2⟩`. Introduce `σ σ' x x' e hch`. Take `rfl` from `emb_eq_conj x.pt x'.pt e`.
+
+Use `set F := Points.PtsOver.map f hf (spMap σ) with hFdef`. Use `set F' := Points.PtsOver.map f hf (spMap ((starRingEnd ℂ).comp σ)) with hF'def`. Take `⟨c, hc⟩` from `(h.atlas σ).cover (F x.pt)`. Express the relevant statement in the definitionally equal form `AlgChart p σ D at c`. Set `cP : CxPts p σ ≃ₜ CxPts p ((starRingEnd ℂ).comp σ)` to `ConjChart.conjPts p rfl`.
+
+Set `cQ : CxPts q σ ≃ₜ CxPts q ((starRingEnd ℂ).comp σ)` to `ConjChart.conjPts q rfl`. Set `c' : AlgChart p ((starRingEnd ℂ).comp σ) D` to `ConjChart.conjChart rfl c`. Establish `conjPoint_val : ∀ y, (cP y).1 = spMap (starRingEnd ℂ) ≫ y.1` using `fun _ => rfl`. Establish `cQ_val : ∀ y, (cQ y).1 = spMap (starRingEnd ℂ) ≫ y.1` using `fun _ => rfl`. Establish `c'_apply : ∀ y, c'.e (cP y) = ConjChart.conjCoord D (c.e y)` using `fun y => by`.
+
+Express the relevant statement in the definitionally equal form `ConjChart.conjCoord D (c.e (cP.symm (cP y))) = _`. Rewrite using `[Homeomorph.symm_apply_apply]`. Establish `c'_src : ∀ y, cP y ∈ c'.e.source ↔ y ∈ c.e.source` using `fun y => by`. Express the relevant statement in the definitionally equal form `cP.symm (cP y) ∈ c.e.source ↔ _`. Rewrite using `[Homeomorph.symm_apply_apply]`.
+
+Establish `hFc : ∀ z, F' (cQ z) = cP (F z)` using `fun z => Subtype.ext (by`. Rewrite using `[Points.PtsOver.map_val, conjPoint_val, Points.PtsOver.map_val, cQ_val, Category.assoc])`. Establish `hx' : x'.pt = cQ x.pt` using `Subtype.ext e`. Establish `hc' : F' x'.pt ∈ c'.e.source` using `by rw [hx', hFc, c'_src]; exact hc`. Rewrite using `[loc _ x' c' hc', loc σ x c hc]`.
+
+Establish `hκc` using `hκ.2 σ ((starRingEnd ℂ).comp σ) ⟨(c, F x.pt), hc⟩ ⟨(c', F' x'.pt), hc'⟩ (by change (F' x'.pt).1 = _; rw [hx', hFc]; rfl) (fun z _ z' _ ez a => by`. Take `rfl : z' = cP z` from `Subtype.ext ez`. Express the relevant statement in the definitionally equal form `c'.e (cP z) a = _`. Rewrite using `[c'_apply]`. Use the proof step `rfl)`.
+
+Establish `hv : ConjChart.conjCoord D' x'.crd = x.crd`. Use extensionality with `a`. Use `hch x.pt x.2 x'.pt x'.2 e a` as an intermediate fact. Simplify using `[ConjChart.conjCoord, this]`. Establish `hdiff : DifferentiableAt ℂ (c.e ∘ F ∘ x.ch.symm) x.crd`.
+
+Establish `hs : IsOpen (x.ch.target ∩ x.ch.symm ⁻¹' (F ⁻¹' c.e.source))` using `x.ch.isOpen_inter_preimage_symm (c.e.open_source.preimage (hol σ).1)`. Use `((hol σ).2 x.1.1 c).differentiableAt (hs.mem_nhds ⟨x.ch.map_source x.2, ?_⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F (x.ch.symm x.crd) ∈ c.e.source`. Rewrite using `[x.ch.left_inv x.2]`. Conclude with `hc`.
+
+Establish `heq : (c'.e ∘ F' ∘ x'.ch.symm) =ᶠ[𝓝 x'.crd] fun w => ConjChart.conjCoord D ((c.e ∘ F ∘ x.ch.symm) (ConjChart.conjCoord D' w))`. Establish `hS : IsOpen (F' ⁻¹' c'.e.source ∩ cQ.symm ⁻¹' x.ch.source)` using `(c'.e.open_source.preimage (hol _).1).inter (x.ch.open_source.preimage cQ.symm.continuous)`. Establish `hN` using `x'.ch.isOpen_inter_preimage_symm hS`. Establish `hmem : x'.crd ∈ x'.ch.target ∩ x'.ch.symm ⁻¹' (F' ⁻¹' c'.e.source ∩ cQ.symm ⁻¹' x.ch.source)`. Use `⟨x'.ch.map_source x'.2, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `x'.ch.symm (x'.ch x'.pt) ∈ F' ⁻¹' c'.e.source ∩ cQ.symm ⁻¹' x.ch.source`. Rewrite using `[x'.ch.left_inv x'.2]`. Use `⟨hc', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cQ.symm x'.pt ∈ x.ch.source`. Rewrite using `[hx', Homeomorph.symm_apply_apply]`.
+
+Conclude with `x.2`. Use `filter_upwards [hN.mem_nhds hmem] with w hw`. Take `⟨hwt, hw1, hw2⟩` from `hw`. Establish `hz'src : x'.ch.symm w ∈ x'.ch.source` using `x'.ch.map_target hwt`. Generalize the expression as in `hzz : x'.ch.symm w = z' at hw1 hw2 hz'src`.
+
+Take `⟨z, rfl⟩ : ∃ z, z' = cQ z` from `⟨cQ.symm z', (cQ.apply_symm_apply z').symm⟩`. Establish `hzs : z ∈ x.ch.source`. Establish `: cQ.symm (cQ z) ∈ x.ch.source` using `hw2`. Rewrite `this` using `[Homeomorph.symm_apply_apply]`. Then use the resulting hypothesis. Establish `hwz : x'.ch (cQ z) = w` using `by rw [← hzz, x'.ch.right_inv hwt]`.
+
+Establish `hxz : x.ch z = ConjChart.conjCoord D' w`. Use extensionality with `a`. Use `hch z hzs (cQ z) hz'src rfl a` as an intermediate fact. Rewrite `this` using `[hwz]`. Simplify using `[ConjChart.conjCoord, this]`.
+
+Establish `hsymm : x.ch.symm (ConjChart.conjCoord D' w) = z` using `by rw [← hxz, x.ch.left_inv hzs]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hsymm, hzz, hFc, c'_apply]`. Establish `hT : ∀ b a, fderiv ℂ (c'.e ∘ F' ∘ x'.ch.symm) x'.crd (coordVec b) a = conj (fderiv ℂ (c.e ∘ F ∘ x.ch.symm) x.crd (coordVec b) a)` using `fun b a => by`. Use `GlobalTheory.T.conjugate_chart_derivative _ _ _ _ x'.crd (by rw [hv]; exact hdiff) heq b a` as an intermediate fact.
+
+Rewrite `this` using `[hv]`. Then use the resulting hypothesis. Rewrite using `[swap_pull_conj _ _ hT]`. Conclude with `(congrArg (pull _) hκc).trans (map_smul _ _ _)`. Establish `hF` using `(hκ.1 σ).1`. Take `⟨hd, hdb⟩` from `GlobalTheory.T.holAtlas_isForm_del_dbar_smooth _ _ _ (κ σ) hF`.
+
+Take `⟨e1, e2⟩` from `GlobalTheory.T.del_dbar_comm_pullback_of_smooth_del_dbar _ _ _ _ (h.atlas σ) (h'.atlas σ) _ (κ σ) (hol σ) hF hd hdb`. Establish `z : (h.atlas σ).pullback (h'.atlas σ) (Points.PtsOver.map f hf (spMap σ)) 0 = 0`. Use function extensionality and compare the values at `x`. Conclude with `map_zero _`. Use `⟨fun h0 => ?_, fun h0 => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(h'.atlas σ).del ((h.atlas σ).pullback _ _ _) = 0`. Rewrite using `[e1, h0, z]`. Express the relevant statement in the definitionally equal form `(h'.atlas σ).dbar ((h.atlas σ).pullback _ _ _) = 0`. Rewrite using `[e2, h0, z]`.
+-/
 theorem pullFld_isArForm (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (D D' : ℕ)
     (h : IsRegVar p D) (h' : IsRegVar q D') (f : Y ⟶ X) (hf : f ≫ p = q) (j : ℕ) (κ : h.Fld) :
     h.IsArForm j κ → h'.IsArForm j (h.pullFld h' f hf κ) ∧ ∀ σ,

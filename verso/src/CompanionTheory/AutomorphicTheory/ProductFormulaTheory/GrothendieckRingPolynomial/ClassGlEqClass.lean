@@ -9,11 +9,21 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace CompanionTheory.Groth
 
+/- English proof (translation)
+Unfold `cl0`. Rewrite using `[dif_pos h]`.
+-/
 theorem GrothendieckClassGeneralLinear.class_gl_eq_class {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ}
     {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (h : HasFiniteLength π) :
     clsGL π h = cl0 π := by
   unfold cl0; rw [dif_pos h]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ Z hZ`. Establish `hk : Steps k` using `H k`. Establish `: Fact (Assoc k)` using `⟨hk.2.2.1⟩`. Establish `: Fact (Comm k)` using `⟨hk.2.2.2.1⟩`. Establish `: Fact (One k)` using `⟨hk.2.2.2.2.1⟩`.
+
+Set `e : MvPolynomial (Segment k) ℤ ≃+* R k` to `RingEquiv.ofBijective _ (phiZ_bijective hk h1 h2 Z hZ)`. Establish `he : ∀ p, e p = phiOf (k` using `k) (fun Δ => ⟨Δ.len * Δ.d, Z Δ⟩) p := fun _ => rfl`. Use `⟨toR.trans e.symm.toAddEquiv, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show e.symm (toR (GrothGL.unit k)) = 1`. Rewrite using `[toR_unit, map_one]`.
+
+Introduce `r t V W _ _ _ _ π₁ π₂ h₁ h₂ hs₁ hs₂ h show e.symm (toR (clsGL (prod₂ π₁ π₂) h)) = e.symm (toR (clsGL π₁ h₁)) * e.symm (toR (clsGL π₂ h₂))`. Rewrite using `[GrothendieckClassGeneralLinear.class_gl_eq_class, GrothendieckClassGeneralLinear.class_gl_eq_class, GrothendieckClassGeneralLinear.class_gl_eq_class, (hk.2.1 r t V W π₁ π₂ h₁ h₂ hs₁ hs₂).2, toR_mulR, map_mul]`. Introduce `Δ show e.symm (toR (Finsupp.single ⟨Δ.len * Δ.d, Z Δ⟩ 1)) = MvPolynomial.X Δ`. Rewrite using `[RingEquiv.symm_apply_eq, he, phiOf_X]`. Both sides reduce to the same expression.
+-/
 theorem groth_of_steps (H : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
       Cls k ∧ MulCls k ∧ Assoc k ∧ Comm k ∧ One k ∧ ProdList k ∧ Tri k ∧ MultOne k ∧ JCls k ∧ JSeg k ∧ AltSum k)
     (h1 : TriAut) (h2 : UniTri) : GlobalTheory.Published.GrothendieckRingPolynomial := by

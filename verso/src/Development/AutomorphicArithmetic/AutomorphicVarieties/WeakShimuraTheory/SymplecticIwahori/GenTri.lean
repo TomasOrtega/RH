@@ -7,20 +7,37 @@ section Gen
 
 variable {R K H : Type} [CommRing R] [CommRing K] [Group H] (f : R →+* K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem gt_rep (r : H →* M4 R) (g : H) : mapRep f r g = f.mapMatrix (r g) := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private theorem gt_smul (a : R) (Y : M4 R) : f.mapMatrix (a • Y) = f a • f.mapMatrix Y := by
   ext i j
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [adj_apply, RingHom.mapMatrix_apply, Matrix.map_apply, map_zsmul]`.
+-/
 private theorem gt_adj (Y : M4 R) : adj (f.mapMatrix Y) = f.mapMatrix (adj Y) := by
   ext i j
   simp only [adj_apply, RingHom.mapMatrix_apply, Matrix.map_apply, map_zsmul]
 
+/- English proof (translation)
+Unfold `IsGSp at *`. Rewrite using `[gt_adj, ← map_mul, h, gt_smul, map_one]`.
+-/
 private theorem gt_gsp {ν : R} {Y : M4 R} (h : IsGSp ν Y) : IsGSp (f ν) (f.mapMatrix Y) := by
   unfold IsGSp at *
   rw [gt_adj, ← map_mul, h, gt_smul, map_one]
 
+/- English proof (translation)
+Unfold `prj`. Establish `h : ∀ p : R[X], aeval (f.mapMatrix Y) (p.map f) = f.mapMatrix (aeval Y p)`. Introduce `p`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [Polynomial.map_add, map_add, map_add, map_add, hp, hq]`.
+
+Consider the case `monomial n a`. Rewrite using `[Polynomial.map_monomial, aeval_monomial, aeval_monomial, map_mul, map_pow, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, gt_smul, map_one]`. Rewrite using `[← h, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`.
+-/
 private theorem gt_prj (c : Fin 4 → R) (Y : M4 R) (i : Fin 4) :
     prj (fun a => f (c a)) (f.mapMatrix Y) i = f.mapMatrix (prj c Y i) := by
   unfold prj
@@ -34,6 +51,11 @@ private theorem gt_prj (c : Fin 4 → R) (Y : M4 R) (i : Fin 4) :
   rw [← h, Polynomial.map_prod]
   simp only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]
 
+/- English proof (translation)
+Rewrite using `[gt_rep, RingHom.mapMatrix_apply, Matrix.charpoly_map, h.charpoly, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Use `stable g i j hij := by`. Rewrite using `[gt_rep, gt_rep, gt_prj f (fun a => ps a s₀), gt_prj f (fun a => ps a s₀), ← map_mul, ← map_mul, h.stable g i j hij, map_zero]`. Use `inert s hs i := by`.
+
+Rewrite using `[gt_rep, gt_rep, gt_prj f (fun a => ps a s₀), ← map_one f.mapMatrix, ← gt_smul, ← map_sub, ← map_mul, ← map_mul, h.inert s hs i, map_zero]`.
+-/
 private theorem gt_ord {I : Subgroup H} {ps : Fin 4 → H → R} {s₀ : H} {r : H →* M4 R} (h : Ord I ps s₀ r) :
     Ord I (fun i g => f (ps i g)) s₀ (mapRep f r) where
   charpoly := by
@@ -46,10 +68,20 @@ private theorem gt_ord {I : Subgroup H} {ps : Fin 4 → H → R} {s₀ : H} {r :
     rw [gt_rep, gt_rep, gt_prj f (fun a => ps a s₀), ← map_one f.mapMatrix, ← gt_smul, ← map_sub, ← map_mul,
       ← map_mul, h.inert s hs i, map_zero]
 
+/- English proof (translation)
+Rewrite using `[gt_prj, ← map_mul, RingHom.mapMatrix_apply, AddMonoidHom.map_trace]`.
+-/
 private theorem gt_tr (c : Fin 4 → R) (Y Z : M4 R) (i : Fin 4) :
     (prj (fun a => f (c a)) (f.mapMatrix Y) i * f.mapMatrix Z).trace = f (prj c Y i * Z).trace := by
   rw [gt_prj, ← map_mul, RingHom.mapMatrix_apply, AddMonoidHom.map_trace]
 
+/- English proof (translation)
+Establish `h : prj c (Matrix.diagonal c) i = Matrix.diagonal fun b => ∏ j ∈ Finset.univ.erase i, (c b - c j)`. Unfold `prj`. Establish `h1` using `aeval_algHom_apply (Matrix.diagonalAlgHom (n := Fin 4) (α := R) R) c (∏ j ∈ Finset.univ.erase i, (X - C (c j)))`. Rewrite `h1` using `[Matrix.diagonalAlgHom_apply, Matrix.diagonalAlgHom_apply]`. Rewrite using `[h1]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `b`. Simplify using `[map_prod]`. Rewrite using `[h, Matrix.diagonal_mul_diagonal, Matrix.trace_diagonal, Finset.sum_eq_single i]`. Introduce `b _ hb`.
+
+Rewrite using `[Finset.prod_eq_zero (i := b) (by simp [hb]) (sub_self _), zero_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem gt_tr_diag (c a : Fin 4 → R) (i : Fin 4) :
     (prj c (Matrix.diagonal c) i * Matrix.diagonal a).trace = (∏ j ∈ Finset.univ.erase i, (c i - c j)) * a i := by
   have h : prj c (Matrix.diagonal c) i = Matrix.diagonal fun b => ∏ j ∈ Finset.univ.erase i, (c b - c j) := by
@@ -68,6 +100,9 @@ private theorem gt_tr_diag (c a : Fin 4 → R) (i : Fin 4) :
 
 end Gen
 
+/- English proof (translation)
+Use `⟨Y.charpoly, Y.charpoly_monic, ?_⟩` and prove the remaining obligations. Establish `e : (a * (algebraMap B K).mapMatrix Y * b).charpoly = ((algebraMap B K).mapMatrix Y).charpoly`. Rewrite using `[Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, mul_eq_one_comm.1 hab, Matrix.one_mul]`. Rewrite using `[eval₂_eq_eval_map, ← Matrix.charpoly_map, ← RingHom.mapMatrix_apply, ← e, Matrix.charpoly_of_upperTriangular _ (fun i j h => hM i j h), eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`.
+-/
 private theorem gt_int {B K : Type} [CommRing B] [Field K] [Algebra B K] (Y : M4 B) {a b : M4 K} (hab : a * b = 1)
     (hM : IsUp (a * (algebraMap B K).mapMatrix Y * b)) (i : Fin 4) :
     IsIntegral B ((a * (algebraMap B K).mapMatrix Y * b) i i) := by
@@ -78,6 +113,21 @@ private theorem gt_int {B K : Type} [CommRing B] [Field K] [Algebra B K] (Y : M4
     Matrix.charpoly_of_upperTriangular _ (fun i j h => hM i j h), eval_prod]
   exact Finset.prod_eq_zero (Finset.mem_univ i) (by simp)
 
+/- English proof (translation)
+Introduce `O B H _ _ _ _ _ _ _ I ps s₀ ν ρ x hs hinj hrev hν hG hρ hx`. Establish `hB : Function.Injective (algebraMap O B)` using `fun a b e => by simpa using congrArg x e`. Establish `hF` using `IsFractionRing.injective B (FractionRing B)`. Take `⟨h, h1, h2, h3, h4⟩` from `genFlag I (fun i g => algebraMap B (FractionRing B) (algebraMap O B (ps i g))) s₀ (algebraMap B (FractionRing B) (algebraMap O B ν)) (mapRep (algebraMap B (FractionRing B)) ρ) hs (fun a b e => hinj (hB (hF e))) (fun i => by rw [← map_mul, ← map_mul, hrev]) ((map_ne_zero_iff _ hF) …`. Establish `key : ∀ g i, ∃ q : B[X], Dist (maximalIdeal B) q ∧ aeval ((adj h * mapRep (algebraMap B (FractionRing B)) ρ g * h) i i - algebraMap B (FractionRing B) (algebraMap O B (ps i g))) q = 0 ∧ (g ∈ I → q = X)`.
+
+Introduce `g i`. Distinguish the cases in `hg : g ∈ I`. Use `⟨X, ⟨monic_X, fun n hn => ?_⟩, by rw [h3 g hg, sub_self, aeval_X], fun _ => rfl⟩` and prove the remaining obligations. Rewrite `hn` using `[natDegree_X, Nat.lt_one_iff]`. Rewrite using `[hn, coeff_X_zero]`.
+
+Conclude with `zero_mem _`. Set `d : O` to `∏ j ∈ Finset.univ.erase i, (ps i s₀ - ps j s₀)`. Set `t : B` to `(prj (fun a => algebraMap O B (ps a s₀)) (ρ s₀) i * ρ g).trace`. Establish `hd : d ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j hj => sub_ne_zero.2 fun e => (Finset.mem_erase.1 hj).1 (hinj e).symm`. Establish `hxt : x t = d * ps i g`.
+
+Establish `e1` using `gt_tr (x : B →+* O) (fun a => algebraMap O B (ps a s₀)) (ρ s₀) (ρ g) i`. Establish `e2 : ∀ g, (x : B →+* O).mapMatrix (ρ g) = Matrix.diagonal fun i => ps i g` using `fun g => Matrix.ext (hx g)`. Simplify using `only [e2, RingHom.coe_coe, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply] at e1`. Rewrite `e1` using `[gt_tr_diag]`. Conclude with `e1.symm`.
+
+Establish `hint : IsIntegral B ((adj h * mapRep (algebraMap B (FractionRing B)) ρ g * h) i i)` using `gt_int (ρ g) (adj_mul_self h1) (h2 g) i`. Establish `hk : algebraMap B (FractionRing B) (algebraMap O B d) * (adj h * mapRep (algebraMap B (FractionRing B)) ρ g * h) i i = algebraMap B _ t`. Rewrite using `[← gt_tr (algebraMap B (FractionRing B)), map_prod, map_prod]`. Simplify using `only [map_sub]`. Conclude with `h4 i g`.
+
+Take `⟨q, hq, h0⟩` from `nearPoly x d (t - algebraMap O B (d * ps i g)) ((adj h * mapRep (algebraMap B (FractionRing B)) ρ g * h) i i - algebraMap B _ (algebraMap O B (ps i g))) hd (by rw [map_sub, hxt, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]) (hint.sub isIntegral_algebraMap …`. Conclude with `⟨q, hq, h0, fun e => absurd e hg⟩`. Use `choose q hq h0 hI using key`. Use `⟨h, fun g i => (q g i).comp (X - C (algebraMap O B (ps i g))), ⟨h1, fun g => ⟨h2 g, fun i => ?_⟩⟩, fun g i => ⟨_, hq g i, rfl⟩, fun s hs i => by simp only [hI s i hs, X_comp]⟩` and prove the remaining obligations. Rewrite using `[← aeval_def, aeval_comp, map_sub, aeval_X, aeval_C]`.
+
+Conclude with `h0 g i`.
+-/
 theorem UpperTheory.V.Ws.Pp.genTri :
     ∀ {O B H : Type} [CommRing O] [IsDomain O] [CommRing B] [IsDomain B] [HenselianLocalRing B] [Algebra O B] [Group H] (I : Subgroup H) (ps : Fin 4 → H → O) (s₀ : H) (ν : O) (ρ : H →* M4 B) (x : B →ₐ[O] O), s₀ ∈ I → Function.Injective (fun i => ps i s₀) → (∀ i, ps i s₀ * ps i.rev s₀ = ν) → ν ≠ 0 → IsGSp (algebraMap O B ν) (ρ s₀) → Ord I (fun i g => algebraMap O B (ps i g)) s₀ ρ → (∀ g a b, x (ρ g a b) = Matrix.diagonal (fun i => ps i g) a b) → ∃ (h : M4 (FractionRing B)) (P : H → Fin 4 → B[X]), SpTri (fun g => ρ g) P (algebraMap B (FractionRing B)) h ∧ (∀ g i, ∃ q, Dist (maximalIdeal B) q ∧ P g i = q.comp (X - C (algebraMap O B (ps i g)))) ∧ ∀ s ∈ I, ∀ i, P s i = X - C (algebraMap O B (ps i s)) := by
   intro O B H _ _ _ _ _ _ _ I ps s₀ ν ρ x hs hinj hrev hν hG hρ hx

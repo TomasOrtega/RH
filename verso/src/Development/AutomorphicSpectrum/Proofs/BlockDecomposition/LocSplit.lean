@@ -5,6 +5,25 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 
 namespace GlobalTheory.CompanionTheory.LocSplitProof
 
+/- English proof (translation)
+Introduce `U hU P hP`. Take `⟨S, hS, hSP⟩` from `hP`. Rewrite `hS` using `[Scheme.etaleTopology, Scheme.mem_grothendieckTopology_iff]`. Take `⟨𝒰, h𝒰⟩` from `hS`. Establish `hsurj : Surjective (Limits.Sigma.desc 𝒰.f)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨i, y, hy⟩` from `𝒰.exists_eq x`. Use `⟨(Limits.Sigma.ι 𝒰.X i) y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Limits.Sigma.ι_desc, hy]`.
+
+Establish `het : Etale (Limits.Sigma.desc 𝒰.f)`. Use `𝒰.sigma.map_prop ⟨⟩` as an intermediate fact. Simplify `this` using `[Scheme.Cover.sigma_f]`. Take `⟨s, hs⟩` from `hU _ (Limits.Sigma.desc 𝒰.f) het hsurj`. Establish `hlc : IsLocallyConstant (fun u : U => ((sigmaMk 𝒰.X).symm (s u)).1)`.
+
+Introduce `t`. Establish `hfst : IsOpen (Sigma.fst ⁻¹' t : Set (Σ i, 𝒰.X i))`. Rewrite using `[isOpen_sigma_iff]`. Introduce `i`. Distinguish the cases in `hi : i ∈ t`.
+
+Use `isOpen_univ` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[hi]`. Use `isOpen_empty` and compare the differences between its conclusion and the goal. Use `ext`.
+
+Simplify using `[hi]`. Conclude with `hfst.preimage ((sigmaMk 𝒰.X).symm.continuous.comp s.continuous)`. Use `⟨𝒰.I₀, ⟨fun u => ((sigmaMk 𝒰.X).symm (s u)).1, hlc⟩, ?_⟩` and prove the remaining obligations. Introduce `V g a hg`. Establish `hrange : Set.range (g ≫ s) ⊆ Set.range (Limits.Sigma.ι 𝒰.X a)`.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Establish `h1 : ((sigmaMk 𝒰.X).symm (s (g v))).1 = a` using `hg v`. Break down `hq : (sigmaMk 𝒰.X).symm (s (g v)) with ⟨i, y⟩` into its components or cases. Rewrite `h1` using `[hq]`. Substitute `h1` using the available equality.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h2 : sigmaMk 𝒰.X ⟨i, y⟩ = s (g v)` using `by rw [← hq]; simp`. Rewrite `h2` using `[sigmaMk_mk]`. Rewrite using `[h2, Scheme.Hom.comp_apply]`. Take `⟨l, hl⟩ : ∃ l, l ≫ Limits.Sigma.ι 𝒰.X a = g ≫ s` from `⟨_, IsOpenImmersion.lift_fac (Limits.Sigma.ι 𝒰.X a) (g ≫ s) hrange⟩`.
+
+Establish `hgl : g = l ≫ 𝒰.f a`. Establish `h3 : l ≫ 𝒰.f a = l ≫ Limits.Sigma.ι 𝒰.X a ≫ Limits.Sigma.desc 𝒰.f` using `by simp`. Rewrite using `[h3, ← Category.assoc, hl, Category.assoc, hs, Category.comp_id]`. Rewrite using `[hgl]`. Conclude with `hSP V _ (S.downward_closed (h𝒰 _ _ (Presieve.ofArrows.mk a)) l)`.
+-/
 theorem locSplit : CrystallineSemistableComparison.E.LocSplit := by
   intro U hU P hP
   obtain ⟨S, hS, hSP⟩ := hP

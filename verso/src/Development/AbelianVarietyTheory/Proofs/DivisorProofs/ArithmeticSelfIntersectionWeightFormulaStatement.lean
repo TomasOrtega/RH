@@ -17,6 +17,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.Points ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChIntPull.chInt_pull_eq_zero | exact GlobalTheory.ChIntPull.chInt_pull_eq_zero | (intros; apply GlobalTheory.ChIntPull.chInt_pull_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_self_intersection_weight_formula : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'] (ρ : X ⟶ Sp k')
     (hρ : ρ ≫ spMap (algebraMap k k') = p), IsArithVar (spMap (algebraMap k k')) 0 →

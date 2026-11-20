@@ -17,6 +17,25 @@ namespace GlobalTheory.ExtGlue
 
 open GlobalTheory.GroupGlue
 
+/- English proof (translation)
+Establish `: IsOpenImmersion q₁` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hq.flip inferInstance`. Establish `: IsOpenImmersion q₂` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hq inferInstance`. Establish `: IsOpenImmersion φ₁` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) h₁.flip inferInstance`. Establish `: IsOpenImmersion φ₂` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) h₂.flip inferInstance`. Establish `: IsOpenImmersion (pushout.inl φ₁ φ₂)` using `inferInstanceAs (IsOpenImmersion (colimit.ι (span φ₁ φ₂) WalkingSpan.left))`.
+
+Establish `: IsOpenImmersion (pushout.inr φ₁ φ₂)` using `inferInstanceAs (IsOpenImmersion (colimit.ι (span φ₁ φ₂) WalkingSpan.right))`. Establish `hc : ∀ z : (pushout φ₁ φ₂ : Scheme.{0}), z ∈ Set.range (pushout.inl φ₁ φ₂) ∨ z ∈ Set.range (pushout.inr φ₁ φ₂)`. Introduce `z`. Take `⟨i, x, hx⟩` from `Scheme.IsLocallyDirected.ι_jointly_surjective (span φ₁ φ₂) z`. Break down `i with _ | _ | _` into its components or cases.
+
+Use `Or.inl ⟨φ₁ x, Eq.trans ?_ hx⟩` and prove the remaining obligations. Conclude with `congrArg (fun g => g x) (colimit.w (span φ₁ φ₂) WalkingSpan.Hom.fst)`. Conclude with `Or.inl ⟨x, hx⟩`. Conclude with `Or.inr ⟨x, hx⟩`. Set `π : pushout φ₁ φ₂ ⟶ Y` to `pushout.desc (G₁.hom ≫ f₁) (G₂.hom ≫ f₂) (by`.
+
+Rewrite using `[h₁.w_assoc, h₂.w_assoc, hq.w])`. Establish `p1 : pushout.inl φ₁ φ₂ ≫ π = G₁.hom ≫ f₁` using `pushout.inl_desc _ _ _`. Establish `p2 : pushout.inr φ₁ φ₂ ≫ π = G₂.hom ≫ f₂` using `pushout.inr_desc _ _ _`. Establish `e1 (x : G₁.left) : π (pushout.inl φ₁ φ₂ x) = f₁ (G₁.hom x)` using `congrArg (fun g => g x) p1`. Establish `e2 (x : G₂.left) : π (pushout.inr φ₁ φ₂ x) = f₂ (G₂.hom x)` using `congrArg (fun g => g x) p2`.
+
+Establish `e3 (w : G₀.left) : pushout.inl φ₁ φ₂ (φ₁ w) = pushout.inr φ₁ φ₂ (φ₂ w)` using `congrArg (fun g => g w) (pushout.condition (f := φ₁) (g := φ₂))`. Use `⟨Over.mk π, pushout.inl φ₁ φ₂, pushout.inr φ₁ φ₂, (IsOpenImmersion.isPullback _ _ _ _ p1 ?_).flip, (IsOpenImmersion.isPullback _ _ _ _ p2 ?_).flip, pushout.condition⟩` and prove the remaining obligations. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`.
+
+Break down `hc x with hx | ⟨x, rfl⟩` into its components or cases. Conclude with `hx`. Take `⟨w, -, hw⟩` from `Scheme.exists_preimage_of_isPullback hq y (G₂.hom x) (hy.trans (e2 x))`. Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback h₂ x w hw.symm`. Conclude with `⟨φ₁ z, e3 z⟩`.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨G₁.hom y, (e1 y).symm⟩`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`.
+
+Break down `hc x with ⟨x, rfl⟩ | hx` into its components or cases. Take `⟨w, hw, -⟩` from `Scheme.exists_preimage_of_isPullback hq (G₁.hom x) y (hy.trans (e1 x)).symm`. Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback h₁ x w hw.symm`. Conclude with `⟨φ₂ z, (e3 z).symm⟩`. Conclude with `hx`.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨G₂.hom y, (e2 y).symm⟩`.
+-/
 theorem exists_scheme_two {Y Y₀ Y₁ Y₂ : Scheme.{0}} {f₁ : Y₁ ⟶ Y} {f₂ : Y₂ ⟶ Y} [IsOpenImmersion f₁]
     [IsOpenImmersion f₂] {q₁ : Y₀ ⟶ Y₁} {q₂ : Y₀ ⟶ Y₂} (hq : IsPullback q₁ q₂ f₁ f₂)
     {G₁ : Over Y₁} {G₂ : Over Y₂} {G₀ : Over Y₀} {φ₁ : G₀.left ⟶ G₁.left} {φ₂ : G₀.left ⟶ G₂.left}
@@ -71,6 +90,29 @@ theorem exists_scheme_two {Y Y₀ Y₁ Y₂ : Scheme.{0}} {f₁ : Y₁ ⟶ Y} {f
     · rintro ⟨y, rfl⟩
       exact ⟨G₂.hom y, (e2 y).symm⟩
 
+/- English proof (translation)
+Take `⟨G, ψ₁, ψ₂, p₁, p₂, hφ⟩` from `exists_scheme_two hq h₁.1 h₂.1`. Establish `m₂ : Mono ψ₂`. Establish `: IsOpenImmersion ψ₂` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) p₂.flip inferInstance`. Use `infer_instance`. Establish `base : ∀ {S : Scheme.{0}} {u : S ⟶ Y₁} {v : S ⟶ Y₂} (a : Over.mk u ⟶ G₁) (b : Over.mk v ⟶ G₂), a.left ≫ ψ₁ = b.left ≫ ψ₂ → ∃ w : S ⟶ Y₀, w ≫ q₁ = u ∧ w ≫ q₂ = v`.
+
+Introduce `S u v a b h`. Establish `e₁ : a.left ≫ G₁.hom = u` using `Over.w a`. Establish `e₂ : b.left ≫ G₂.hom = v` using `Over.w b`. Establish `e : u ≫ f₁ = v ≫ f₂`. Rewrite using `[← e₁, ← e₂, Category.assoc, Category.assoc, ← p₁.w, ← p₂.w, reassoc_of% h]`.
+
+Conclude with `⟨hq.lift u v e, hq.lift_fst _ _ _, hq.lift_snd _ _ _⟩`. Establish `common : ∀ {S : Scheme.{0}} (w : S ⟶ Y₀) (a : Over.mk (w ≫ q₁) ⟶ G₁) (b : Over.mk (w ≫ q₂) ⟶ G₂), a.left ≫ ψ₁ = b.left ≫ ψ₂ → ∃ c : Over.mk w ⟶ G₀, a.left = c.left ≫ φ₁ ∧ b.left = c.left ≫ φ₂`. Introduce `S w a b h`. Use `⟨Over.homMk (h₁.1.lift a.left w (Over.w a)) (h₁.1.lift_snd _ _ _), (h₁.1.lift_fst _ _ _).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono ψ₂, ← h, Category.assoc, ← hφ]`.
+
+Conclude with `(h₁.1.lift_fst_assoc _ _ _ _).symm`. Establish `cm : ∀ {S : Scheme.{0}} {u : S ⟶ Y₁} {v : S ⟶ Y₂} (a a' : Over.mk u ⟶ G₁) (b b' : Over.mk v ⟶ G₂), a.left ≫ ψ₁ = b.left ≫ ψ₂ → a'.left ≫ ψ₁ = b'.left ≫ ψ₂ → (a * a').left ≫ ψ₁ = (b * b').left ≫ ψ₂`. Introduce `S u v a a' b b' h h'`. Take `⟨w, rfl, rfl⟩` from `base a b h`. Take `⟨c, c₁, c₂⟩` from `common w a b h`.
+
+Take `⟨c', c₁', c₂'⟩` from `common w a' b' h'`. Establish `e₁ : (a * a').left = (c * c').left ≫ φ₁` using `h₁.2 _ c c' a a' c₁ c₁'`. Establish `e₂ : (b * b').left = (c * c').left ≫ φ₂` using `h₂.2 _ c c' b b' c₂ c₂'`. Rewrite using `[e₁, e₂, Category.assoc, Category.assoc, hφ]`. Set `T : Bool → Scheme.{0}` to `fun i => Bool.rec Y₁ Y₂ i`.
+
+Set `t : ∀ i, T i ⟶ Y` to `fun i => Bool.rec (motive := fun i => T i ⟶ Y) f₁ f₂ i`. Establish `ht : ∀ i, IsOpenImmersion (t i)` using `fun i => by`. Consider the cases of `i`. Use `exacts [o₁, o₂]`. Set `𝒰 : Y.OpenCover` to `Scheme.Cover.mkOfCovers Bool T t (fun x => by`.
+
+Break down `hcov x with ⟨y, hy⟩ | ⟨y, hy⟩` into its components or cases. Conclude with `⟨false, y, hy⟩`. Conclude with `⟨true, y, hy⟩)`. Set `H : ∀ i : 𝒰.I₀, Over (𝒰.X i)` to `fun i => Bool.rec (motive := fun i => Over (T i)) G₁ G₂ i`. Use `letI iH : ∀ i : 𝒰.I₀, GrpObj (H i) := fun i => Bool.rec (motive := fun i => GrpObj (H i)) i₁ i₂ i`.
+
+Set `ψ : ∀ i : 𝒰.I₀, (H i).left ⟶ G.left` to `fun i => Bool.rec (motive := fun i => (H i).left ⟶ G.left) ψ₁ ψ₂ i`. Establish `hψ : ∀ i, IsPullback (ψ i) (H i).hom G.hom (𝒰.f i)`. Introduce and unpack `(_ | _)`. Use `exacts [p₁, p₂]`. Establish `same : ∀ (i : 𝒰.I₀) {S : Scheme.{0}} {u v : S ⟶ 𝒰.X i} (a : Over.mk u ⟶ H i) (b : Over.mk v ⟶ H i), a.left ≫ ψ i = b.left ≫ ψ i → u = v` using `fun i S u v a b h => by`.
+
+Rewrite using `[← cancel_mono (𝒰.f i), base_eq hψ a, base_eq hψ b, h]`. Establish `hm : MulCompat ψ`. Establish `d : ∀ (i : 𝒰.I₀) (S : Scheme.{0}) (u v : S ⟶ 𝒰.X i) (a a' : Over.mk u ⟶ H i) (b b' : Over.mk v ⟶ H i), a.left ≫ ψ i = b.left ≫ ψ i → a'.left ≫ ψ i = b'.left ≫ ψ i → (a * a').left ≫ ψ i = (b * b').left ≫ ψ i`. Introduce `i S u v a a' b b' h h'`. Take `rfl` from `same i a b h`.
+
+Rewrite using `[pt_ext hψ h, pt_ext hψ h']`. Introduce and unpack `(_ | _) (_ | _) S u v a a' b b' h h'`. Conclude with `d _ S u v a a' b b' h h'`. Conclude with `cm a a' b b' h h'`. Conclude with `(cm b b' a a' h.symm h'.symm).symm`.
+
+Conclude with `d _ S u v a a' b b' h h'`. Take `⟨iG, hG⟩` from `exists_grpObj hm hψ`. Conclude with `⟨G, iG, ψ₁, ψ₂, isSemiAbelian_of_charts hG (by rintro (_ | _); exacts [s₁, s₂]), hG false, hG true, hφ⟩`.
+-/
 theorem exists_semiAbelian_two {Y Y₀ Y₁ Y₂ : Scheme.{0}} {f₁ : Y₁ ⟶ Y} {f₂ : Y₂ ⟶ Y} [o₁ : IsOpenImmersion f₁]
     [o₂ : IsOpenImmersion f₂] {q₁ : Y₀ ⟶ Y₁} {q₂ : Y₀ ⟶ Y₂} (hq : IsPullback q₁ q₂ f₁ f₂)
     (hcov : ∀ y : Y, y ∈ Set.range f₁ ∨ y ∈ Set.range f₂)
@@ -139,12 +181,18 @@ theorem exists_semiAbelian_two {Y Y₀ Y₁ Y₂ : Scheme.{0}} {f₁ : Y₁ ⟶ 
   obtain ⟨iG, hG⟩ := exists_grpObj hm hψ
   exact ⟨G, iG, ψ₁, ψ₂, isSemiAbelian_of_charts hG (by rintro (_ | _); exacts [s₁, s₂]), hG false, hG true, hφ⟩
 
+/- English proof (translation)
+Substitute `w` using the available equality. Conclude with `⟨_, ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor f g h⟩`.
+-/
 theorem exists_factor {S S' S'' : Scheme.{0}} {G : Over S} [GrpObj G] {G'' : Over S''} [GrpObj G'']
     (f : S' ⟶ S) (g : S'' ⟶ S') {k : S'' ⟶ S} (w : g ≫ f = k) {F : G''.left ⟶ G.left}
     (h : IsGrpPullback G'' G k F) : ∃ e, IsGrpPullback G'' ((Over.pullback f).obj G) g e := by
   subst w
   exact ⟨_, ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor f g h⟩
 
+/- English proof (translation)
+Use `⟨(hj.denseRange.preimage f.isOpenEmbedding.isOpenMap).mono ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨x, hx⟩`. Take `⟨z, -, hz⟩` from `Scheme.exists_preimage_of_isPullback h x y hx`. Conclude with `⟨z, hz⟩`.
+-/
 theorem isDominant_of_isPullback {X X₁ Y Y₁ : Scheme.{0}} {k : X₁ ⟶ X} {j₁ : X₁ ⟶ Y₁} {j : X ⟶ Y} {f : Y₁ ⟶ Y}
     [IsOpenImmersion f] (hj : IsDominant j) (h : IsPullback k j₁ j f) : IsDominant j₁ := by
   refine ⟨(hj.denseRange.preimage f.isOpenEmbedding.isOpenMap).mono ?_⟩
@@ -152,12 +200,24 @@ theorem isDominant_of_isPullback {X X₁ Y Y₁ : Scheme.{0}} {k : X₁ ⟶ X} {
   obtain ⟨z, -, hz⟩ := Scheme.exists_preimage_of_isPullback h x y hx
   exact ⟨z, hz⟩
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian Y` using `isLocallyNoetherian_of_isOpenImmersion f`. Establish `: TopologicalSpace.NoetherianSpace Y` using `f.isOpenEmbedding.isInducing.noetherianSpace`. Conclude with `{}`.
+-/
 theorem isNoetherian_of_isOpenImmersion {Y S : Scheme.{0}} [AlgebraicGeometry.IsNoetherian S] (f : Y ⟶ S)
     [IsOpenImmersion f] : AlgebraicGeometry.IsNoetherian Y := by
   have : IsLocallyNoetherian Y := isLocallyNoetherian_of_isOpenImmersion f
   have : TopologicalSpace.NoetherianSpace Y := f.isOpenEmbedding.isInducing.noetherianSpace
   exact {}
 
+/- English proof (translation)
+Take `⟨G₁, i₁, e₁, s₁, g₁⟩` from `h₁`. Take `⟨G₂, i₂, e₂, s₂, g₂⟩` from `h₂`. Set `j₀ : X₁ ⟶ pullback f₁ f₂` to `pullback.lift j₁ (k ≫ j₂) (by rw [Category.assoc, w])`. Establish `w₁ : j₀ ≫ pullback.fst f₁ f₂ = j₁` using `pullback.lift_fst _ _ _`. Establish `w₂ : j₀ ≫ pullback.snd f₁ f₂ = k ≫ j₂` using `pullback.lift_snd _ _ _`.
+
+Establish `: IsOpenImmersion (j₀ ≫ pullback.fst f₁ f₂)` using `by rw [w₁]; infer_instance`. Establish `: IsOpenImmersion j₀` using `IsOpenImmersion.of_comp j₀ (pullback.fst f₁ f₂)`. Establish `: IsDominant (j₀ ≫ pullback.fst f₁ f₂)` using `by rw [w₁]; infer_instance`. Establish `: IsDominant j₀` using `IsDominant.of_comp_of_isOpenImmersion j₀ (pullback.fst f₁ f₂)`. Use `isNoetherian_of_isOpenImmersion (pullback.fst f₁ f₂)` as an intermediate fact.
+
+Use `GlobalTheory.IsNormalScheme.of_pred hn` as an intermediate fact. Establish `hn₀` using `GlobalTheory.IsNormalScheme.of_isOpenImmersion (pullback.fst f₁ f₂)`. Take `⟨a₁, ha₁⟩` from `exists_factor _ _ w₁ g₁`. Take `⟨a₂, ha₂⟩` from `exists_factor _ _ w₂ ((isGrpPullback_pullback A k).comp g₂)`. Take `⟨E, ⟨hE, -⟩, -⟩` from `GlobalTheory.semiAbelianHomExtension_holds.existsUnique_iso_of_extensions (GlobalTheory.IsNormalScheme.pred _) (IsSemiAbelian.pullback _ G₁ s₁) (IsSemiAbelian.pullback _ G₂ s₂) ha₁ ha₂`.
+
+Take `⟨G, iG, ψ₁, ψ₂, s, -, g, -⟩` from `exists_semiAbelian_two (IsPullback.of_hasPullback f₁ f₂) hcov s₁ s₂ (isGrpPullback_pullback G₁ _) (((ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_of_iso E).comp (isGrpPullback_pullback G₂ _)).congr (Category.id_comp _) rfl)`. Conclude with `⟨G, iG, e₂ ≫ ψ₂, s, g₂.comp g⟩`.
+-/
 theorem hasExt_two {X X₁ Y Y₁ Y₂ : Scheme.{0}} [AlgebraicGeometry.IsNoetherian Y₁]
     (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y₁) {f₁ : Y₁ ⟶ Y} {f₂ : Y₂ ⟶ Y} [IsOpenImmersion f₁]
     [IsOpenImmersion f₂] (hcov : ∀ y : Y, y ∈ Set.range f₁ ∨ y ∈ Set.range f₂) {j₂ : X ⟶ Y₂} {k : X₁ ⟶ X}
@@ -185,6 +245,25 @@ theorem hasExt_two {X X₁ Y Y₁ Y₂ : Scheme.{0}} [AlgebraicGeometry.IsNoethe
       (Category.id_comp _) rfl)
   exact ⟨G, iG, e₂ ≫ ψ₂, s, g₂.comp g⟩
 
+/- English proof (translation)
+Introduce `X S _ hn j _ hj A _ hA hloc`. Use `choose U hU hE using hloc`. Use `GlobalTheory.IsNormalScheme.of_pred hn` as an intermediate fact. Establish `key : ∀ t : Finset S, ∃ (Y : Scheme.{0}) (f : Y ⟶ S) (_ : IsOpenImmersion f) (i : X ⟶ Y), i ≫ f = j ∧ HasExt i A ∧ ∀ s ∈ t, (U s : Set S) ⊆ Set.range f`. Introduce `t`.
+
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨X, j, inferInstance, 𝟙 X, Category.id_comp _, ⟨A, inferInstance, _, isSemiAbelian_of_isAbelianScheme A hA, @ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_of_iso _ A A _ _ (Iso.refl A) (inferInstanceAs (IsMonHom (𝟙 A)))⟩, by simp⟩`. Consider the case `insert s t _ ih`. Take `⟨Y, f, _, i, hi, hext, ht⟩` from `ih`.
+
+Set `W : S.Opens` to `U s ⊔ f.opensRange`. Establish `r₂ : Set.range f ⊆ Set.range W.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `fun y hy => Or.inr hy`. Set `f₁ : (U s).toScheme ⟶ W.toScheme` to `S.homOfLE le_sup_left`.
+
+Set `f₂ : Y ⟶ W.toScheme` to `IsOpenImmersion.lift W.ι f r₂`. Establish `w₁ : f₁ ≫ W.ι = (U s).ι` using `Scheme.homOfLE_ι _ _`. Establish `w₂ : f₂ ≫ W.ι = f` using `IsOpenImmersion.lift_fac _ _ _`. Establish `: IsOpenImmersion (f₂ ≫ W.ι)` using `by rw [w₂]; infer_instance`. Establish `: IsOpenImmersion f₂` using `IsOpenImmersion.of_comp f₂ W.ι`.
+
+Use `isNoetherian_of_isOpenImmersion (U s).ι` as an intermediate fact. Establish `: IsDominant (j ∣_ U s)` using `isDominant_of_isPullback hj (isPullback_morphismRestrict j (U s)).flip`. Use `⟨W, W.ι, inferInstance, i ≫ f₂, by rw [Category.assoc, w₂, hi], ?_, ?_⟩` and prove the remaining obligations. Use `hasExt_two (f₁ := f₁) (GlobalTheory.IsNormalScheme.pred _) ?_ ?_ (hE s) hext` and prove the remaining obligations. Introduce and unpack `⟨y, hy | ⟨z, hz⟩⟩`.
+
+Conclude with `Or.inl ⟨⟨y, hy⟩, W.ι.isOpenEmbedding.injective (congrArg (fun g => g ⟨y, hy⟩) w₁)⟩`. Conclude with `Or.inr ⟨z, W.ι.isOpenEmbedding.injective ((congrArg (fun g => g z) w₂).trans hz)⟩`. Rewrite using `[← cancel_mono W.ι]`. Simplify using `only [Category.assoc, w₁, w₂, hi, morphismRestrict_ι]`. Introduce `s' hs'`.
+
+Break down `Finset.mem_insert.1 hs' with rfl | hs'` into its components or cases. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `fun y hy => Or.inl hy`. Conclude with `(ht s' hs').trans r₂`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun s : S => (U s : Set S)) (fun s => (U s).isOpen) (fun s _ => Set.mem_iUnion.2 ⟨s, hU s⟩)`.
+
+Take `⟨Y, f, _, i, hi, ⟨G, iG, e, s, g⟩, hf⟩` from `key t`. Establish `: Surjective f` using `⟨fun y => by`. Take `⟨s, hs, hy⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Conclude with `hf s hs hy⟩`. Establish `: IsIso f` using `(isIso_iff_isOpenImmersion_and_surjective f).2 ⟨inferInstance, inferInstance⟩`.
+
+Take `⟨a, ha⟩` from `exists_factor (inv f) j (k := i) (by rw [← hi]; simp) g`. Conclude with `⟨_, inferInstance, a, IsSemiAbelian.pullback _ G s, ha⟩`.
+-/
 theorem hasExt_of_locally : ∀ (X S : Scheme.{0}) [AlgebraicGeometry.IsNoetherian S], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S → ∀ (j : X ⟶ S) [IsOpenImmersion j], IsDominant j → ∀ (A : Over X) [GrpObj A], IsAbelianScheme A → (∀ s : S, ∃ U : S.Opens, s ∈ U ∧ HasExt (j ∣_ U) ((Over.pullback (j ⁻¹ᵁ U).ι).obj A)) → HasExt j A := by
   intro X S _ hn j _ hj A _ hA hloc
   classical

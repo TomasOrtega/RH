@@ -15,6 +15,21 @@ noncomputable section
 
 namespace GlobalTheory.RealMult.Obj
 
+/- English proof (translation)
+Establish `hp` using `h'.grp.1`. Set `ψ : X''.A.left ⟶ X'.A.left` to `hp.lift χ (X''.A.hom ≫ b') (by rw [h.grp.1.w, Category.assoc])`. Establish `hψ : ψ ≫ φ = χ` using `hp.lift_fst _ _ _`. Establish `hw : ψ ≫ X'.A.hom = X''.A.hom ≫ b'` using `hp.lift_snd _ _ _`. Use `⟨ψ, ⟨IsGrpPullback.cancel h'.grp (by rw [hψ]; exact h.grp) hw, fun a ↦ ?_, ?_⟩, hψ⟩` and prove the remaining obligations.
+
+Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ, h.act, Category.assoc, h'.act, ← Category.assoc, hψ]`. Establish `e₁ : (X''.rm.act a).left ≫ X''.A.hom = X''.A.hom` using `Over.w (X''.rm.act a)`. Establish `e₂ : (X'.rm.act a).left ≫ X'.A.hom = X'.A.hom` using `Over.w (X'.rm.act a)`. Rewrite using `[Category.assoc, hw, ← Category.assoc, e₁, Category.assoc, e₂, hw]`.
+
+Take `⟨φ₂'', hsq'', hP''⟩` from `h.pol`. Take `⟨φ₂', hsq', hP'⟩` from `h'.pol`. Set `ψ₂ : (G2 X''.A).left ⟶ (G2 X'.A).left` to `(lift (pushPt hw (fst X''.A X''.A)) (pushPt hw (snd X''.A X''.A))).left`. Establish `hsq : IsSquare ψ ψ₂`. Prove the components needed by the constructor for the conclusion.
+
+Express the relevant statement in the definitionally equal form `(lift (pushPt hw (fst X''.A X''.A)) (pushPt hw (snd X''.A X''.A)) ≫ fst X'.A X'.A).left = _`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(lift (pushPt hw (fst X''.A X''.A)) (pushPt hw (snd X''.A X''.A)) ≫ snd X'.A X'.A).left = _`. Rewrite using `[lift_snd]`.
+
+Both sides reduce to the same expression. Establish `hcomp : ψ₂ ≫ φ₂' = φ₂''`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ψ₂ ≫ φ₂' ≫ (fst X.A X.A).left = φ₂'' ≫ (fst X.A X.A).left`. Rewrite using `[hsq'.1, ← Category.assoc, hsq.1, Category.assoc, hψ, hsq''.1]`.
+
+Express the relevant statement in the definitionally equal form `ψ₂ ≫ φ₂' ≫ (snd X.A X.A).left = φ₂'' ≫ (snd X.A X.A).left`. Rewrite using `[hsq'.2, ← Category.assoc, hsq.2, Category.assoc, hψ, hsq''.2]`. Use `⟨ψ₂, hsq, fun c ↦ ?_⟩` and prove the remaining obligations. Establish `hX` using `X.isLB c`. Establish `hX'` using `X'.isLB c`.
+
+Use `(GlobalTheory.CechPic.cls_eq_iff (X''.isLB c) (pull_isLB hX' ψ₂)).1 ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.CechPic.cls_eq_iff (X''.isLB c) (pull_isLB hX φ₂'')).2 (hP'' c), GlobalTheory.CechPic.cls_pull hX' ψ₂, GlobalTheory.CechPic.cls_pull hX φ₂'', ← hcomp, GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.cls_pull hX φ₂' (pull_isLB hX φ₂'), ← (GlobalTheory.CechPic …`.
+-/
 theorem IsPullBy.exists_of_comp {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' S'' : Scheme.{0}}
     {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {X'' : Obj F 𝔠 S''}
     {b : S' ⟶ S} {b' : S'' ⟶ S'} {φ : X'.A.left ⟶ X.A.left} {χ : X''.A.left ⟶ X.A.left}

@@ -13,6 +13,15 @@ section Abstract
 
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
 
+/- English proof (translation)
+Establish `hcl : IsClosed (Γ : Set G)` using `Subgroup.isClosed_of_discrete`. Establish `hKK : IsCompact (K * K⁻¹)` using `hK.mul hK.inv`. Establish `hfin : (((↑) : Γ → G) ⁻¹' (K * K⁻¹)).Finite` using `(hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hKK).finite_of_discrete`. Use `⟨hfin.toFinset.card, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ γ₀ : Γ, γ₀⁻¹ • x ∈ K`.
+
+Take `⟨γ₀, h₀⟩` from `h`. Establish `hs : ∑' γ : Γ, K.indicator (fun _ => (1 : ℝ≥0∞)) (γ⁻¹ • x) = ∑ γ ∈ hfin.toFinset.image (fun δ => γ₀ * δ⁻¹), K.indicator (fun _ => (1 : ℝ≥0∞)) (γ⁻¹ • x)`. Use `tsum_eq_sum fun γ hγ => Set.indicator_of_notMem (fun hx => hγ ?_) _` and prove the remaining obligations. Use `Finset.mem_image.2 ⟨γ⁻¹ * γ₀, ?_, by group⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`.
+
+Use `⟨_, hx, _, Set.inv_mem_inv.2 h₀, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Rewrite using `[hs]`. Use `le_trans (Finset.sum_le_card_nsmul _ _ 1 fun γ _ => Set.indicator_apply_le' (fun _ => le_rfl) (fun _ => zero_le_one)) ?_` and prove the remaining obligations.
+
+Simplify using `only [nsmul_eq_mul, mul_one, Nat.cast_le]`. Conclude with `Finset.card_image_le`. Use `push_neg at h`. Simplify using `only [Set.indicator_of_notMem (h _), tsum_zero, zero_le]`.
+-/
 theorem exists_bound_orbit (Γ : Subgroup G) [DiscreteTopology Γ] {K : Set G} (hK : IsCompact K) :
     ∃ N : ℕ, ∀ x : G, ∑' γ : Γ, K.indicator (fun _ => (1 : ℝ≥0∞)) (γ⁻¹ • x) ≤ N := by
   classical
@@ -41,6 +50,15 @@ theorem exists_bound_orbit (Γ : Subgroup G) [DiscreteTopology Γ] {K : Set G} (
 
 variable [MeasurableSpace G] [BorelSpace G] [SecondCountableTopology G]
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_bound_orbit Γ hK`. Use `⟨N, fun f hf hinv => ?_⟩` and prove the remaining obligations. Establish `hKm` using `hK.measurableSet`. Rewrite using `[← lintegral_indicator hKm, h𝓕.lintegral_eq_tsum', ← lintegral_tsum, ← lintegral_const_mul _ hf]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations.
+
+Establish `: ∀ γ : Γ, K.indicator f (γ⁻¹ • x) = K.indicator (fun _ => (1 : ℝ≥0∞)) (γ⁻¹ • x) * f x`. Introduce `γ`. Distinguish the cases in `h : γ⁻¹ • x ∈ K`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem h, one_mul]`. Conclude with `hinv _ (γ⁻¹).2 x`.
+
+Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem h, zero_mul]`. Simplify using `only [this]`. Rewrite using `[ENNReal.tsum_mul_right]`. Conclude with `mul_le_mul_left (hN x) _`. Introduce `γ`.
+
+Conclude with `((hf.indicator hKm).comp (measurable_const_mul ((γ⁻¹ : Γ) : G))).aemeasurable`.
+-/
 theorem exists_lintegral_le (Γ : Subgroup G) [DiscreteTopology Γ] [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant]
     {𝓕 : Set G} (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {K : Set G} (hK : IsCompact K) :
     ∃ N : ℕ, ∀ f : G → ℝ≥0∞, Measurable f → (∀ γ ∈ Γ, ∀ g, f (γ * g) = f g) →
@@ -62,6 +80,11 @@ theorem exists_lintegral_le (Γ : Subgroup G) [DiscreteTopology Γ] [Countable �
   · intro γ
     exact ((hf.indicator hKm).comp (measurable_const_mul ((γ⁻¹ : Γ) : G))).aemeasurable
 
+/- English proof (translation)
+Establish `hmeas : Measurable fun p : G × X => ‖h (j p.2 * p.1)‖ₑ` using `hh.enorm.measurable.comp ((hj.comp measurable_snd).mul measurable_fst)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae (hm.mono fun z hz => ?_)` and prove the remaining obligations. Establish `e` using `(measurePreserving_mul_left μ (j z)).setLIntegral_comp_emb (MeasurableEquiv.mulLeft (j z)).measurableEmbedding (fun x => ‖h x‖ₑ) Ω`. Use `(le_of_eq e).trans (lintegral_mono_set ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `⟨_, hz, _, hg, rfl⟩`. Use `_ = _ := by rw [lintegral_const, mul_comm]`.
+-/
 theorem lintegral_average_le (μ : Measure G) [μ.IsMulLeftInvariant] [SFinite μ] {X : Type} [MeasurableSpace X]
     (m : Measure X) [IsFiniteMeasure m] {j : X → G} (hj : Measurable j) {K Ω : Set G}
     (hΩ : IsCompact Ω) (hm : ∀ᵐ z ∂m, j z ∈ K) {h : G → ℂ} (hh : Continuous h) :
@@ -79,6 +102,37 @@ theorem lintegral_average_le (μ : Measure G) [μ.IsMulLeftInvariant] [SFinite �
         exact ⟨_, hz, _, hg, rfl⟩
     _ = _ := by rw [lintegral_const, mul_comm]
 
+/- English proof (translation)
+Establish `hms : m.restrict s = m` using `Measure.restrict_eq_self_of_ae_mem hm`. Establish `hint : ∀ h : G → ℂ, Continuous h → ∀ g, Integrable (fun z => h (j z * g)) m`. Introduce `h hh g`. Rewrite using `[← hms]`. Conclude with `(hh.comp (hj.mul continuous_const)).continuousOn.integrableOn_compact hs`.
+
+Establish `hspan : ∀ H ∈ Submodule.span ℂ {z | ∃ u : G, z = ρ u F₀}, ∃ h : G → ℂ, Continuous h ∧ (∀ γ ∈ Γ, ∀ g, h (γ * g) = h g) ∧ (∀ g, ∫ z, h (j z * g) ∂m = 0) ∧ ∀ᵐ x ∂μ.restrict 𝓕, H (π x) = h x`. Introduce `H hH`. Proceed by induction on `hH using Submodule.span_induction with`. Consider the case `mem H hH`. Take `⟨u, rfl⟩` from `hH`.
+
+Use `⟨fun x => φ (x * u), hφ.comp (continuous_id.mul continuous_const), fun γ hγ g => ?_, fun g => ?_, ae_restrict_of_ae ?_⟩` and prove the remaining obligations. Simplify using `only [mul_assoc, hφΓ γ hγ]`. Simplify using `only [mul_assoc, hφ0]`. Use `filter_upwards [hρ u F₀, (measurePreserving_mul_right μ u).quasiMeasurePreserving.ae hF₀] with x h1 h2`. Rewrite using `[h1, h2]`.
+
+Consider the case `zero`. Use `⟨0, continuous_const, fun _ _ _ => rfl, fun g => by simp, ?_⟩` and prove the remaining obligations. Conclude with `ae_of_ae_map hπ.aemeasurable (Lp.coeFn_zero ℂ 2 _)`. Consider the case `add H H' _ _ h1 h2`. Take `⟨h, hc, hi, h0, ha⟩` from `h1`.
+
+Take `⟨h', hc', hi', h0', ha'⟩` from `h2`. Use `⟨h + h', hc.add hc', fun γ hγ g => by simp only [Pi.add_apply, hi γ hγ, hi' γ hγ], fun g => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Rewrite using `[integral_add (hint h hc g) (hint h' hc' g), h0, h0', add_zero]`. Use `filter_upwards [ae_of_ae_map hπ.aemeasurable (Lp.coeFn_add H H'), ha, ha'] with x e1 e2 e3`.
+
+Rewrite using `[e1, Pi.add_apply, Pi.add_apply, e2, e3]`. Consider the case `smul a H _ h1`. Take `⟨h, hc, hi, h0, ha⟩` from `h1`. Use `⟨a • h, hc.const_smul a, fun γ hγ g => by simp only [Pi.smul_apply, hi γ hγ], fun g => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply]`.
+
+Rewrite using `[integral_smul, h0, smul_zero]`. Use `filter_upwards [ae_of_ae_map hπ.aemeasurable (Lp.coeFn_smul a H), ha] with x e1 e2`. Rewrite using `[e1, Pi.smul_apply, Pi.smul_apply, e2]`. Take `⟨Ω, hΩ, hg₀⟩` from `exists_compact_mem_nhds g₀`. Establish `hK : IsCompact (j '' s)` using `hs.image hj`.
+
+Take `⟨N, hN⟩` from `exists_lintegral_le Γ μ h𝓕 (hK.mul hΩ)`. Use `set c : ℝ≥0∞ := m Set.univ * (N * μ 𝓕 ^ (1 / (1 : ℝ≥0∞).toReal - 1 / (2 : ℝ≥0∞).toReal)) with hc`. Establish `hc' : c ≠ ⊤`. Use `ENNReal.mul_ne_top (measure_ne_top _ _) (ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) ?_)` and prove the remaining obligations. Use `ENNReal.rpow_ne_top_of_nonneg ?_ hfin` and prove the remaining obligations.
+
+Evaluate the numerical expressions. Establish `hbd : ∀ H ∈ (Submodule.span ℂ {z | ∃ u : G, z = ρ u F₀} : Set (Lp ℂ 2 ((μ.restrict 𝓕).map π))), ∫⁻ g in Ω, ‖∫ z, ψ (j z * g) ∂m‖ₑ ∂μ ≤ c * ‖F - H‖ₑ`. Introduce `H hH`. Take `⟨h, hh, hi, h0, ha⟩` from `hspan H hH`. Establish `hd : Continuous (ψ - h)` using `hψ.sub hh`.
+
+Establish `e1 : ∀ g, ∫ z, ψ (j z * g) ∂m = ∫ z, (ψ - h) (j z * g) ∂m`. Introduce `g`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[integral_sub (hint ψ hψ g) (hint h hh g), h0, sub_zero]`. Simplify using `only [e1]`.
+
+Use `(lintegral_average_le μ m hj.measurable hΩ (K := j '' s) (hm.mono fun z hz => Set.mem_image_of_mem j hz) hd).trans ?_` and prove the remaining obligations. Rewrite using `[hc, mul_assoc, mul_assoc]`. Use `mul_le_mul_right ((hN _ hd.enorm.measurable fun γ hγ g => ?_).trans (mul_le_mul_right ?_ _)) _` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, hψΓ γ hγ, hi γ hγ]`. Rewrite using `[← eLpNorm_one_eq_lintegral_enorm]`.
+
+Use `(eLpNorm_le_eLpNorm_mul_rpow_measure_univ (q := 2) one_le_two hd.aestronglyMeasurable).trans ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply_univ, mul_comm, Lp.enorm_def, eLpNorm_map_measure (Lp.aestronglyMeasurable _) hπ.aemeasurable]`. Use `le_of_eq (congrArg _ (eLpNorm_congr_ae ?_))` and prove the remaining obligations. Use `filter_upwards [ae_of_ae_map hπ.aemeasurable (Lp.coeFn_sub F H), ha, ae_restrict_of_ae hF] with x e1 e2 e3`. Rewrite using `[Function.comp_apply, e1, Pi.sub_apply, Pi.sub_apply, e2, e3]`.
+
+Establish `hz : ∫⁻ g in Ω, ‖∫ z, ψ (j z * g) ∂m‖ₑ ∂μ = 0`. Establish `hcont : Continuous fun H : Lp ℂ 2 ((μ.restrict 𝓕).map π) => c * ‖F - H‖ₑ` using `(ENNReal.continuous_const_mul hc').comp (continuous_const.sub continuous_id).enorm`. Establish `: ∫⁻ g in Ω, ‖∫ z, ψ (j z * g) ∂m‖ₑ ∂μ ≤ c * ‖F - F‖ₑ` using `closure_minimal (t := {H | ∫⁻ g in Ω, ‖∫ z, ψ (j z * g) ∂m‖ₑ ∂μ ≤ c * ‖F - H‖ₑ}) hbd (isClosed_le continuous_const hcont) hcl`. Simplify using `using this`. Establish `hC : Continuous fun g => ∫ z, ψ (j z * g) ∂m`.
+
+Use `continuous_parametric_integral_of_continuous (μ := m) (f := fun g z => ψ (j z * g)) (hψ.comp ((hj.comp continuous_snd).mul continuous_fst)) hs` as an intermediate fact. Rewrite `this` using `[hms]`. Then use the resulting hypothesis. Rewrite `hz` using `[lintegral_eq_zero_iff hC.enorm.measurable]`. Establish `hz' : (fun g => ∫ z, ψ (j z * g) ∂m) =ᵐ[μ.restrict (interior Ω)] fun _ => 0`. Use `ae_restrict_of_ae_restrict_of_subset interior_subset (hz.mono fun g hg => ?_)` and prove the remaining obligations.
+
+Simplify using `using hg`. Conclude with `Measure.eqOn_open_of_ae_eq hz' isOpen_interior hC.continuousOn continuousOn_const (mem_interior_iff_mem_nhds.2 hg₀)`.
+-/
 theorem average_eq_zero_of_mem_closure [LocallyCompactSpace G] (Γ : Subgroup G) [DiscreteTopology Γ] [Countable Γ]
     (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {𝓕 : Set G} (h𝓕 : IsFundamentalDomain Γ 𝓕 μ)
     (hfin : μ 𝓕 ≠ ⊤) {Q : Type} [MeasurableSpace Q] {π : G → Q} (hπ : Measurable π)
@@ -181,6 +235,15 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D θ V hθ μ 𝓕 ρ hP hρ φ ψ F₀ F hφ hφ0 hF₀ hψ hF hcl ξ hξ ν 𝓖 hν h𝓖 g`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨ν₀, 𝓖₀, hν₀, h𝓖₀, hc⟩` from `(GlobalTheory.T.transvectionSubgroup_cocompact_haar_fundamentalDomain D θ V hθ ξ hξ).1`. Establish `hZ : IsClosed (ZI V ξ : Set (GA D V))` using `(GlobalTheory.T.adelicTransvectionSubgroup_eq_adeles_closed D θ V hθ ξ hξ).2.1`. Use `haveI : LocallyCompactSpace (ZI V ξ) := hZ.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+
+Use `haveI : Countable ((GQ V).subgroupOf (ZI V ξ)) := Function.Injective.countable (f := fun x : (GQ V).subgroupOf (ZI V ξ) => (⟨x.1.1, x.2⟩ : GQ V)) fun x y h => Subtype.ext (Subtype.ext (congrArg (fun t : GQ V => (t : GA D V)) h))`. Use `haveI : SecondCountableTopology (ZI V ξ) := TopologicalSpace.Subtype.secondCountableTopology (ZI V ξ : Set (GA D V))`. Establish `h₁ : IsFundamentalDomain ((GQ V).subgroupOf (ZI V ξ)) 𝓖₀ ν` using `h𝓖₀.mono (Measure.absolutelyContinuous_isHaarMeasure ν ν₀)`. Use `haveI := hP.haar`. Use `haveI := hP.right`.
+
+Use `haveI : IsFiniteMeasure (ν.restrict 𝓖₀) := isFiniteMeasure_restrict.2 ((measure_mono subset_closure).trans_lt hc.measure_lt_top).ne`. Rewrite using `[h𝓖.setIntegral_eq h₁ (f := fun z : ZI V ξ => ψ ((z : GA D V) * g)) fun γ z => by`. Use `hψ.left γ.1.1 γ.2 (z.1 * g)` as an intermediate fact. Rewrite `this` using `[← mul_assoc]`. Conclude with `this]`.
+
+Conclude with `average_eq_zero_of_mem_closure (GQ V) μ hP.fd hP.fin (π := autMk V) measurable_quotient_mk'' (fun u H => ρ u H) hρ.val (ν.restrict 𝓖₀) continuous_subtype_val hc ((ae_restrict_mem₀ h₁.nullMeasurableSet).mono fun z hz => subset_closure hz) hφ.cont hφ.left (hφ0 ξ hξ ν 𝓖₀ hν h₁) hF₀ …`.
+-/
 theorem zcusp_of_mem_closure : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (ρ : GA D V →* (Lp ℂ 2 (nuQ V μ 𝓕) →L[ℂ] Lp ℂ 2 (nuQ V μ 𝓕))), FinPair V μ 𝓕 → IsReg V μ 𝓕 ρ → ∀ (φ ψ : GA D V → ℂ) F₀ F, IsAutFun V φ → ZCusp V φ → Repr V μ 𝓕 F₀ φ → IsAutFun V ψ → Repr V μ 𝓕 F ψ → F ∈ closure (Submodule.span ℂ {z | ∃ u : GA D V, z = ρ u F₀} : Set (Lp ℂ 2 (nuQ V μ 𝓕))) → ZCusp V ψ := by
   intro D θ V hθ μ 𝓕 ρ hP hρ φ ψ F₀ F hφ hφ0 hF₀ hψ hF hcl ξ hξ ν 𝓖 hν h𝓖 g
   obtain ⟨i1, i2, i3, i4, i5, i6, i7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V

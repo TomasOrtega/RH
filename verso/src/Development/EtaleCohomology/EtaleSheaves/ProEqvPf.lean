@@ -28,6 +28,11 @@ def Glue : Prop := MV → Hyp → ∀ (q : ℕ) (i : ℤ) (A : Type) [CommRing A
     ∃ (U : Scheme.{0}) (u : U ⟶ Y), IsOpenImmersion u ∧ IsClosedImmersion u ∧ y ∈ Set.range u ∧ Hit q i n g z u) →
   Function.Bijective (pull _ (sch.map (pullback.fst g (cpt A))) (tw q i) n)
 
+/- English proof (translation)
+Introduce `H q i A _ _ hq Y _ _ g hY n`. Use `hG hM H q i A hq g n (fun x hx y => ?_) (fun z y => ?_)` and prove the remaining obligations. Take `⟨J, _, _, D, c, ι, hc, hp⟩` from `hY y`. Take `⟨j, hj⟩` from `(hS hC H q i A hq g y D c ι hc hp n).1 x hx`. Conclude with `⟨_, ι j, (hc.2.1 j).1, (hc.2.1 j).2.1, (hc.2.1 j).2.2, hj⟩`.
+
+Take `⟨J, _, _, D, c, ι, hc, hp⟩` from `hY y`. Take `⟨j, hj⟩` from `(hS hC H q i A hq g y D c ι hc hp n).2 z`. Conclude with `⟨_, ι j, (hc.2.1 j).1, (hc.2.1 j).2.1, (hc.2.1 j).2.2, hj⟩`.
+-/
 theorem ProEqv_of (hC : Cont) (hM : MV) (hS : PiLocalization₂) (hG : Glue) : ProEqv := by
   intro H q i A _ _ hq Y _ _ g hY n
   refine hG hM H q i A hq g n (fun x hx y => ?_) (fun z y => ?_)

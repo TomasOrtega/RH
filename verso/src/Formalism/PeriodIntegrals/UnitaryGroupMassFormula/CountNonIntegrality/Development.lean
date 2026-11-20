@@ -27,6 +27,11 @@ def IntG : Prop :=
         F' ∈ EZ (Tn u') F0 Λ Z → ∀ p (g : Loc.SplitG (M p).L), (M p).split = some g →
           ∀ a b, ZZP (M := M) δ u u' p Z a b ∈ (M p).R
 
+/- English proof (translation)
+Introduce `D δ M hA u u' hT F0 what₂ hR Λ hΛ Z F' hF' p a b`. Break down `hs : (M p).split with _ | g` into its components or cases. Establish `h1` using `hL D δ M hA u u' hT F0 what₂ hR Λ hΛ Z F' hF' p hs a b`. Simplify using `only [ZZP, Loc.HermSp.ZZplusOf, Loc.Model.R, hs]`. Conclude with `h1`.
+
+Conclude with `hG D δ M hA u u' hT F0 what₂ hR Λ hΛ Z F' hF' p g hs a b`.
+-/
 theorem intOnEZ_of (hL : IntL) (hG : IntG) : IntOnEZ := by
   intro D δ M hA u u' hT F0 what₂ hR Λ hΛ Z F' hF' p a b
   rcases hs : (M p).split with _ | g
@@ -35,6 +40,9 @@ theorem intOnEZ_of (hL : IntL) (hG : IntG) : IntOnEZ := by
     exact h1
   · exact hG D δ M hA u u' hT F0 what₂ hR Λ hΛ Z F' hF' p g hs a b
 
+/- English proof (translation)
+The claim follows from `notIntAll_of (intOnEZ_of hL hG)`.
+-/
 theorem notIntAll_of_LG (hL : IntL) (hG : IntG) : PI.CntLocalParts.NotIntAll :=
   notIntAll_of (intOnEZ_of hL hG)
 

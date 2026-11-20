@@ -7,6 +7,9 @@ open Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.HV U
 
 namespace UpperTheory.V.SmallClassNumbers
 
+/- English proof (translation)
+The claim follows from `have hK := UpperTheory.V.ZK.lemmaK_litN_alt hH.litN have h3 := UpperTheory.V.HV.Core0.automorphyUnramified_of_litN_of_gdEnd hH.litN (UpperTheory.V.Z.Win.Dn.ends0_alt hH).1 have hC := UpperTheory.V.HV.Core0.cohInp_alt hH.litN hK have hE := unlEnd3E (UpperTheory.V.Z.J.linkedUnlE_al …`.
+-/
 theorem corGK_of (hH : UpperTheory.V.Af.HypothesesH') : U3.CorGK :=
   have hK := UpperTheory.V.ZK.lemmaK_litN_alt hH.litN
   have h3 := UpperTheory.V.HV.Core0.automorphyUnramified_of_litN_of_gdEnd hH.litN (UpperTheory.V.Z.Win.Dn.ends0_alt hH).1
@@ -17,13 +20,22 @@ theorem corGK_of (hH : UpperTheory.V.Af.HypothesesH') : U3.CorGK :=
       (UpperTheory.V.Z.J.rigIUE_alt hC hH (UpperTheory.V.HV.DescentVanishingReductions.adjoint_lifting_of_cohomology hH) hE)
       (UpperTheory.V.Z.Win.RR.rigII_a_alt hC hH (UpperTheory.V.HV.DescentVanishingReductions.adjoint_lifting_of_cohomology hH)) (UpperTheory.V.Z.J.admissible_typeI_even_level_alt hC hH hE) h3))
 
+/- English proof (translation)
+The claim follows from `have O : UpperTheory.LiteratureTheorems.OpenImageCondition := UpperTheory.LiteratureTheorems.OpenImageCondition.mk UpperTheory.Gal.Int.galoisLocalGlobalStrong_recParameter ⟨UpperTheory.One.Join.local_inputs_from_literature O, UpperTheory.One.Join.automorphic_inputs_from_literatur …`.
+-/
 theorem litN : GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis :=
   have O : UpperTheory.LiteratureTheorems.OpenImageCondition := UpperTheory.LiteratureTheorems.OpenImageCondition.mk UpperTheory.Gal.Int.galoisLocalGlobalStrong_recParameter
   ⟨UpperTheory.One.Join.local_inputs_from_literature O, UpperTheory.One.Join.automorphic_inputs_from_literature O UpperTheory.BaseChangeIdentities.baseChangeN UpperTheory.Gal.Int.galoisLocalGlobalStrong_recParameter,
     UpperTheory.LiteratureTheorems.galois_cohomology_from_literature O, UpperTheory.One.Join.cm_abelian_inputs_from_literature O⟩
 
+/- English proof (translation)
+The claim follows from `corGK_of (UpperTheory.V.HV.DescentVanishingReductions.published_hypotheses_from_patching_alt litN UpperTheory.V.Z.Tf.SR.descWeak)`.
+-/
 theorem corGK : U3.CorGK := corGK_of (UpperTheory.V.HV.DescentVanishingReductions.published_hypotheses_from_patching_alt litN UpperTheory.V.Z.Tf.SR.descWeak)
 
+/- English proof (translation)
+The claim follows from `bound_of corGK`.
+-/
 theorem bound : Bound := bound_of corGK
 
 end UpperTheory.V.SmallClassNumbers

@@ -10,6 +10,9 @@ open scoped TensorProduct
 variable {D : D7} {u : D.what₂.Word} {A : AtTTied u} {i : ℕ} {hi : i ≤ D.R.m}
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Take `⟨γ, η, κ, _, heq, _, _, _, htr⟩` from `h v c z hz`. Use `⟨γ, κ, fun g hg s s' hs => ?_⟩` and prove the remaining obligations. Rewrite using `[htr g hg]`. Conclude with `AdFun_transport K.lev (embT D) g hg γ.1 γ.2 (K.y c * η) _ κ heq _ _ hs`.
+-/
 theorem UpTie.explicit {P : LvTied u A i hi} {K : ClsTied u i hi} {W : ValTied u A.eV i hi K} (h : UpTie P K W)
     (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (z : ↥(Ld D u i hi c)) (hz : (D.fm u).fv i v c (P.pr v c z) = 1) :
     ∃ (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi)) (κ : K.lev.U), ∀ g ∈ AdFun K.lev (embT D), ∀ s s',
@@ -22,6 +25,9 @@ theorem UpTie.explicit {P : LvTied u A i hi} {K : ClsTied u i hi} {W : ValTied u
   exact AdFun_transport K.lev (embT D) g hg γ.1 γ.2 (K.y c * η) _ κ heq _ _ hs
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Take `⟨γ, η, κ, _, heq, _, _, htr⟩` from `h v c g hg0`. Use `⟨γ, κ, fun f hf s s' hs => ?_⟩` and prove the remaining obligations. Rewrite using `[htr f hf]`. Conclude with `AdFun_transport K.lev (embT D) f hf γ.1 γ.2 (K.y c * η) _ κ heq _ _ hs`.
+-/
 theorem DnTie.explicit {P : LvTied u A i hi} {K : ClsTied u i hi} {W : ValTied u A.eV i hi K} (h : DnTie P K W)
     (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk i v c)) (hg0 : g ≠ 0) :
     ∃ (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi)) (κ : K.lev.U), ∀ f ∈ AdFun K.lev (embT D), ∀ s s',
@@ -35,6 +41,11 @@ theorem DnTie.explicit {P : LvTied u A i hi} {K : ClsTied u i hi} {W : ValTied u
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `v c z hz`. Take `⟨γ, η, κ, h1, h2, h3, h4, h5, h6⟩` from `h v c z hz`. Use `⟨γ, η, κ, h1, h2, h3, h4, h5, fun g hg => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Take `⟨y', hy'⟩` from `exists_isTr' (embT D) γ.1 (W.eY s)`.
+
+Establish `hs : IsTr (atInf (embT D) γ.1.1) (W.eY (W.eY.symm y')) (W.eY s)`. Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `hy'`. Rewrite using `[h6 _ s _ hs]`. Conclude with `(AdFun_transport K.lev (embT D) g hg γ.1 γ.2 (K.y c * η) _ κ h2 _ _ hs).symm`.
+-/
 theorem UpNatTie.upTie {P : LvTied u A i hi} {K : ClsTied u i hi} {W : ValTied u A.eV i hi K} (h : UpNatTie P K W) :
     UpTie P K W := by
   intro v c z hz
@@ -49,6 +60,11 @@ theorem UpNatTie.upTie {P : LvTied u A i hi} {K : ClsTied u i hi} {W : ValTied u
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `v c g hg0`. Take `⟨γ, η, κ, h1, h2, h3, h4, h5⟩` from `h v c g hg0`. Use `⟨γ, η, κ, h1, h2, h3, h4, fun f hf => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Take `⟨y', hy'⟩` from `exists_isTr' (embT D) γ.1 (W.eY s)`.
+
+Establish `hs : IsTr (atInf (embT D) γ.1.1) (W.eY (W.eY.symm y')) (W.eY s)`. Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `hy'`. Rewrite using `[h5 _ s _ hs]`. Conclude with `(AdFun_transport K.lev (embT D) f hf γ.1 γ.2 (K.y c * η) _ κ h2 _ _ hs).symm`.
+-/
 theorem DnNatTie.dnTie {P : LvTied u A i hi} {K : ClsTied u i hi} {W : ValTied u A.eV i hi K} (h : DnNatTie P K W) :
     DnTie P K W := by
   intro v c g hg0

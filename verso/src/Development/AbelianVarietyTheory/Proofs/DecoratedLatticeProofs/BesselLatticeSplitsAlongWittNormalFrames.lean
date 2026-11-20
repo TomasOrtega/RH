@@ -27,20 +27,41 @@ open GlobalTheory.FinPl GlobalTheory.SeeSaw.SplitLat
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff, map_mul, hc, one_mul]`.
+-/
 theorem mul_mem_iff {c : k} (hc : valuation k c = 1) (y : k) : c * y ∈ 𝒪[k] ↔ y ∈ 𝒪[k] := by
   rw [Valuation.mem_integer_iff, Valuation.mem_integer_iff, map_mul, hc, one_mul]
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Rewrite `h` using `[map_zero]`. Conclude with `zero_ne_one h`.
+-/
 theorem ne_zero_of_val {x : k} (h : valuation k x = 1) : x ≠ 0 := by
   rintro rfl
   rw [map_zero] at h
   exact zero_ne_one h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (q.int_iff c).2 h.2, FrameLat.sec_mem_intAt q c⟩`.
+-/
 theorem sec_mem_intAt_iff (q : SplitPt D k) (c : k) : q.sec c ∈ intAt D (· = q.v) ↔ c ∈ 𝒪[k] :=
   ⟨fun h => (q.int_iff c).2 h.2, FrameLat.sec_mem_intAt q c⟩
 
+/- English proof (translation)
+Rewrite using `[show (ofSplit q).pr x = q.pr (incA D x) from rfl, q.sec_pr, mul_comm]`.
+-/
 theorem sec_pr_eq (q : SplitPt D k) (x : D.host.E) : q.sec ((ofSplit q).pr x) = incA D x * q.e := by
   rw [show (ofSplit q).pr x = q.pr (incA D x) from rfl, q.sec_pr, mul_comm]
 
+/- English proof (translation)
+Establish `h1` using `(hU.1 q.e (FrameLat.e_mem_intAt q)).1`. Establish `h2` using `(hU.1 q.e (FrameLat.e_mem_intAt q)).2`. Rewrite `h1`, `h2` using `[← sec_pr_eq, sec_mem_intAt_iff]`. Establish `e : (ofSplit q).pr D.host.xi0⁻¹ = ((ofSplit q).xi)⁻¹`. Rewrite using `[← GlobalTheory.SliceModel.prH_apply, map_inv₀]`.
+
+Both sides reduce to the same expression. Rewrite `h2` using `[e, Valuation.mem_integer_iff, map_inv₀]`. Rewrite `h1` using `[Valuation.mem_integer_iff]`. Establish `hne : valuation k (ofSplit q).xi ≠ 0`. Rewrite using `[Ne, Valuation.zero_iff]`.
+
+Conclude with `GlobalTheory.LocMod.Witness.xi_ne (ofSplit q)`. Conclude with `le_antisymm h1 (by`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `(one_lt_inv₀ (zero_lt_iff.2 hne)).2 hlt` as an intermediate fact.
+
+Conclude with `absurd h2 (not_le.2 this))`.
+-/
 theorem val_xi (q : SplitPt D k) (hU : q.UnitAA) : valuation k (ofSplit q).xi = 1 := by
   have h1 := (hU.1 q.e (FrameLat.e_mem_intAt q)).1
   have h2 := (hU.1 q.e (FrameLat.e_mem_intAt q)).2
@@ -65,6 +86,9 @@ open GlobalTheory.FinPl GlobalTheory.SeeSaw.SplitLat
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h` using `(FrameLat.idem_iff q (y i)).1 (hy i)`. Simplify using `only [Pi.add_apply, q.sec_pr, map_mul, cA_cA]`. Rewrite using `[← add_mul, h]`.
+-/
 theorem eq_sec_add_csec (q : SplitPt D k) {n : ℕ} {y : Fin n → AE D} (hy : ∀ i, y i ∈ idAt D (· = q.v)) :
     y = (fun i => q.sec (q.pr (y i))) + (fun i => cA D (q.sec (q.pr (cA D (y i))))) := by
   funext i
@@ -72,6 +96,11 @@ theorem eq_sec_add_csec (q : SplitPt D k) {n : ℕ} {y : Fin n → AE D} (hy : �
   simp only [Pi.add_apply, q.sec_pr, map_mul, cA_cA]
   rw [← add_mul, h]
 
+/- English proof (translation)
+Establish `hs : ∀ i, y i ∈ idAt D (· = q.v)` using `fun i => FrameLat.latV_supp hy i`. Rewrite `hy`, the goal using `[eq_sec_add_csec q hs]`. Establish `hy'` using `(FrameLat.decomp hL (fun i => q.pr (y i)) (fun i => q.pr (cA D (y i)))).1 hy`. Use `(FrameLat.decomp hL' (fun i => q.pr (y i)) (fun i => q.pr (cA D (y i)))).2 ⟨(h _).1 hy'.1, ?_⟩` and prove the remaining obligations. Establish `hd` using `(FrameLat.csec_mem_iff hL (fun i => q.pr (cA D (y i)))).1 hy'.2`.
+
+Conclude with `(FrameLat.csec_mem_iff hL' (fun i => q.pr (cA D (y i)))).2 fun x hx => hd x ((h x).2 hx)`.
+-/
 theorem mem_of_sec_iff (q : SplitPt D k) {S : HSp D} {L L' : Lat S} (hL : IsSelfDualC S L) (hL' : IsSelfDualC S L')
     (h : ∀ u : Fin S.rank → k, (fun i => q.sec (u i)) ∈ latV S L (· = q.v) ↔ (fun i => q.sec (u i)) ∈ latV S L' (· = q.v))
     {y : Fin S.rank → AE D} (hy : y ∈ latV S L (· = q.v)) : y ∈ latV S L' (· = q.v) := by
@@ -82,6 +111,11 @@ theorem mem_of_sec_iff (q : SplitPt D k) {S : HSp D} {L L' : Lat S} (hL : IsSelf
   have hd := (FrameLat.csec_mem_iff hL (fun i => q.pr (cA D (y i)))).1 hy'.2
   exact (FrameLat.csec_mem_iff hL' (fun i => q.pr (cA D (y i)))).2 fun x hx => hd x ((h x).2 hx)
 
+/- English proof (translation)
+Establish `h : ∀ u : Fin S.rank → k, (fun i => q.sec (u i)) ∈ latV S L (· = q.v) ↔ (fun i => q.sec (u i)) ∈ latV S L' (· = q.v)`. Introduce `u`. Establish `e : F.β *ᵥ (F.γ *ᵥ u) = u` using `by rw [Matrix.mulVec_mulVec, F.βγ, Matrix.one_mulVec]`. Use `(h1 (F.γ *ᵥ u)).symm.trans (h2 (F.γ *ᵥ u))` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+
+Conclude with `AddSubgroup.ext fun _ => ⟨mem_of_sec_iff q hL hL' h, mem_of_sec_iff q hL' hL fun u => (h u).symm⟩`.
+-/
 theorem latV_eq_of_frame (q : SplitPt D k) {S : HSp D} {L L' : Lat S} (hL : IsSelfDualC S L) (hL' : IsSelfDualC S L')
     {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k S.rank Y) (h1 : IntIn q S F L) (h2 : IntIn q S F L') :
     latV S L (· = q.v) = latV S L' (· = q.v) := by
@@ -96,15 +130,26 @@ theorem latV_eq_of_frame (q : SplitPt D k) {S : HSp D} {L L' : Lat S} (hL : IsSe
 def besselNormalFrameAuxiliaryColumnIndex (ρ : ℕ) : Fin ρ ⊕ (Unit ⊕ Fin ρ) → Fin (2 * ρ + 1) :=
   Sum.elim (fun i => ⟨i.val, by omega⟩) (Sum.elim (fun _ => ⟨ρ, by omega⟩) fun i => ⟨2 * ρ - i.val, by omega⟩)
 
+/- English proof (translation)
+Use `(Fintype.bijective_iff_injective_and_card _).2 ⟨?_, by simp; ring⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (a | a | a) (b | b | b) h <;> simp [besselNormalFrameAuxiliaryColumnIndex, Fin.ext_iff] at h ⊢ <;> first | exact h | omega`.
+-/
 theorem besselNormalFrameAuxiliaryColumnIndex_bijective (ρ : ℕ) : Function.Bijective (besselNormalFrameAuxiliaryColumnIndex ρ) := by
   refine (Fintype.bijective_iff_injective_and_card _).2 ⟨?_, by simp; ring⟩
   rintro (a | a | a) (b | b | b) h <;> simp [besselNormalFrameAuxiliaryColumnIndex, Fin.ext_iff] at h ⊢ <;> first | exact h | omega
 
+/- English proof (translation)
+Rewrite using `[← (Equiv.ofBijective _ (besselNormalFrameAuxiliaryColumnIndex_bijective ρ)).sum_comp, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Simplify using `[besselNormalFrameAuxiliaryColumnIndex, add_assoc]`.
+-/
 theorem sum_divisible_eq_sum_mul {M : Type} [AddCommMonoid M] (ρ : ℕ) (f : Fin (2 * ρ + 1) → M) :
     ∑ j, f j = ∑ i : Fin ρ, f ⟨i.val, by omega⟩ + f ⟨ρ, by omega⟩ + ∑ i : Fin ρ, f ⟨2 * ρ - i.val, by omega⟩ := by
   rw [← (Equiv.ofBijective _ (besselNormalFrameAuxiliaryColumnIndex_bijective ρ)).sum_comp, Fintype.sum_sum_type, Fintype.sum_sum_type]
   simp [besselNormalFrameAuxiliaryColumnIndex, add_assoc]
 
+/- English proof (translation)
+Use `⟨fun h => ⟨fun i => h _, h _, fun i => h _⟩, fun ⟨h1, h2, h3⟩ j => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(besselNormalFrameAuxiliaryColumnIndex_bijective ρ).2 j`. Break down `x with (a | a | a)` into its components or cases. Conclude with `h1 a`. Conclude with `h2`.
+
+Conclude with `h3 a`.
+-/
 theorem forall_fin_odd_iff_lower_middle_upperReversed (ρ : ℕ) (p : Fin (2 * ρ + 1) → Prop) :
     (∀ j, p j) ↔ (∀ i : Fin ρ, p ⟨i.val, by omega⟩) ∧ p ⟨ρ, by omega⟩ ∧ ∀ i : Fin ρ, p ⟨2 * ρ - i.val, by omega⟩ := by
   refine ⟨fun h => ⟨fun i => h _, h _, fun i => h _⟩, fun ⟨h1, h2, h3⟩ j => ?_⟩
@@ -122,6 +167,13 @@ open GlobalTheory.FinPl GlobalTheory.SeeSaw.SplitLat
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `set P := GlobalTheory.SliceModel.prH (ofSplit q) with hP`. Establish `m : ∀ {a b c : ℕ} (X : Matrix (Fin a) (Fin b) D.host.E) (Y : Matrix (Fin b) (Fin c) D.host.E), X.map P * Y.map P = (X * Y).map P` using `fun X Y => Matrix.map_mul.symm`. Establish `z : ∀ {a b : ℕ}, (0 : Matrix (Fin a) (Fin b) D.host.E).map P = 0` using `Matrix.map_zero _ (map_zero P)`. Establish `o : ∀ {a : ℕ}, (1 : Matrix (Fin a) (Fin a) D.host.E).map P = 1` using `Matrix.map_one _ (map_zero P) (map_one P)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `rat d.qX *ᵥ _ = _`. Rewrite using `[GlobalTheory.CoreFrameLat.rat_mulVec_sec, ← hP, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, m, m, m, GlobalTheory.SeeSaw.SplitLat.qX_i₀, GlobalTheory.SeeSaw.SplitLat.qX_e, GlobalTheory.SeeSaw.SplitLat.qX_e']`. Simplify using `only [z, o, Matrix.zero_mulVec, Matrix.one_mulVec, zero_add, add_zero]`. Express the relevant statement in the definitionally equal form `rat d.qY *ᵥ _ = _`. Rewrite using `[GlobalTheory.CoreFrameLat.rat_mulVec_sec, ← hP, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, m, m, m, GlobalTheory.SeeSaw.SplitLat.qY_i₀, GlobalTheory.SeeSaw.SplitLat.qY_e, GlobalTheory.SeeSaw.SplitLat.qY_e']`.
+
+Simplify using `only [z, o, Matrix.zero_mulVec, Matrix.one_mulVec, zero_add, add_zero]`. Express the relevant statement in the definitionally equal form `rat d.q0 *ᵥ _ = _`. Rewrite using `[GlobalTheory.CoreFrameLat.rat_mulVec_sec, ← hP, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, m, m, m, GlobalTheory.SeeSaw.SplitLat.wittDecomposition_coreProj_mul_core_eq_one, GlobalTheory.SeeSaw.SplitLat.wittDecompositio …`. Simplify using `only [z, o, Matrix.zero_mulVec, Matrix.one_mulVec, zero_add, add_zero]`.
+-/
 theorem proj_sec (q : SplitPt D k) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (w : Fin S₀.rank → k) (a b : Fin ρ → k) :
     (d.pX *ᵥ fun i => q.sec ((d.i₀.map (GlobalTheory.SliceModel.prH (ofSplit q)) *ᵥ w +
         d.e.map (GlobalTheory.SliceModel.prH (ofSplit q)) *ᵥ a + d.e'.map (GlobalTheory.SliceModel.prH (ofSplit q)) *ᵥ b) i)) =
@@ -159,10 +211,16 @@ open GlobalTheory.FinPl GlobalTheory.SeeSaw.SplitLat
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[line_splitL, GlobalTheory.SeeSaw.idV_one_eq_intAt, sec_mem_intAt_iff]`.
+-/
 theorem lineX_sec (q : SplitPt D k) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (M : Lat S₀) (i : Fin ρ) (c : k) :
     colMul d.jX i (q.sec c) ∈ latV S (splitL d M fun _ => 1) (· = q.v) ↔ c ∈ 𝒪[k] := by
   rw [line_splitL, GlobalTheory.SeeSaw.idV_one_eq_intAt, sec_mem_intAt_iff]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FinPl.MonoIdele.line_splitL_jY, GlobalTheory.SeeSaw.idV_one_eq_intAt, sec_mem_intAt_iff]`.
+-/
 theorem lineY_sec (q : SplitPt D k) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (M : Lat S₀) (i : Fin ρ) (c : k) :
     colMul d.jY i (q.sec c) ∈ latV S (splitL d M fun _ => 1) (· = q.v) ↔ c ∈ 𝒪[k] := by
   rw [GlobalTheory.FinPl.MonoIdele.line_splitL_jY, GlobalTheory.SeeSaw.idV_one_eq_intAt, sec_mem_intAt_iff]
@@ -177,6 +235,33 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨rfl, h1, h2, h3, h4⟩` from `hB`. Introduce `y`. Establish `hPa : ∀ x, GlobalTheory.SliceModel.prH (ofSplit q) x = (ofSplit q).pr x` using `fun x => GlobalTheory.SliceModel.prH_apply _ x`. Use `set P := GlobalTheory.SliceModel.prH (ofSplit q) with hP`. Set `ca : Fin ρ → k` to `fun i => s * (ofSplit q).xi ^ (ρ - i.val)`.
+
+Set `cb : Fin ρ → k` to `fun i => s * (-(ofSplit q).hz B / (ofSplit q).xi) * (-1 / (ofSplit q).xi) ^ (ρ - 1 - i.val)`. Set `a : Fin ρ → k` to `fun i => ca i * y (Sum.inr ⟨i.val, by omega⟩)`. Set `b : Fin ρ → k` to `fun i => cb i * y (Sum.inr ⟨2 * ρ - i.val, by omega⟩)`. Set `y₀ : n ⊕ Unit → k` to `Sum.elim (fun x => y (Sum.inl x)) fun _ => y (Sum.inr ⟨ρ, by omega⟩)`. Establish `hca : ∀ i, valuation k (ca i) = 1` using `fun i => by simp [ca, hs, hxi]`.
+
+Establish `hcb : ∀ i, valuation k (cb i) = 1` using `fun i => by simp [cb, hs, hxi, hz, map_div₀]`. Establish `c1 : ∀ r x, FV.β r (Sum.inl x) = (B.d.i₀.map P * F₀.β) r (Sum.inl x)`. Introduce `r x`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `((B.d.i₀ * B.o.iA).map P * FA.β) r x = _`.
+
+Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[hC.1]`. Both sides reduce to the same expression. Establish `c2 : ∀ r, FV.β r (Sum.inr ⟨ρ, by omega⟩) = (B.d.i₀.map P * F₀.β) r (Sum.inr ())`.
+
+Introduce `r`. Rewrite using `[h3 _ rfl, Matrix.mul_apply, ← hPa, Matrix.mulVec, dotProduct, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[hC.2, map_mul, Matrix.map_apply]`. Simplify using `only [hPa]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `c3 : ∀ r (i : Fin ρ), FV.β r (Sum.inr ⟨i.val, by omega⟩) = ca i * (B.d.e.map P) r i`. Introduce `r i`. Rewrite using `[h2 i _ rfl]`. Simplify using `[ca, hPa]`.
+
+Establish `c4 : ∀ r (i : Fin ρ), FV.β r (Sum.inr ⟨2 * ρ - i.val, by omega⟩) = cb i * (B.d.e'.map P) r i`. Introduce `r i; rw [h4 i _ (by simp; omega)]; simp [cb, hPa]`. Establish `hdec : FV.β *ᵥ y = B.d.i₀.map P *ᵥ (F₀.β *ᵥ y₀) + B.d.e.map P *ᵥ a + B.d.e'.map P *ᵥ b`. Rewrite using `[Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `r`.
+
+Simplify using `only [Pi.add_apply, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fintype.sum_unique]`. Rewrite using `[sum_divisible_eq_sum_mul ρ]`. Establish `ea : ∑ i : Fin ρ, B.d.e.map P r i * a i = ∑ i : Fin ρ, FV.β r (Sum.inr ⟨i.val, by omega⟩) * y (Sum.inr ⟨i.val, by omega⟩)` using `Finset.sum_congr rfl fun i _ => by rw [c3]; simp only [a]; ring`. Establish `eb : ∑ i : Fin ρ, B.d.e'.map P r i * b i = ∑ i : Fin ρ, FV.β r (Sum.inr ⟨2 * ρ - i.val, by omega⟩) * y (Sum.inr ⟨2 * ρ - i.val, by omega⟩)` using `Finset.sum_congr rfl fun i _ => by rw [c4]; simp only [b]; ring`. Rewrite using `[ea, eb]`.
+
+Simplify using `only [c1, c2, y₀, Sum.elim_inl, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpr` using `proj_sec q B.d (F₀.β *ᵥ y₀) a b`. Establish `hpX : B.d.pX *ᵥ (fun i => q.sec ((FV.β *ᵥ y) i)) = fun i => q.sec (a i)` using `by rw [hdec]; exact hpr.1`. Establish `hpY : B.d.pY *ᵥ (fun i => q.sec ((FV.β *ᵥ y) i)) = fun i => q.sec (b i)` using `by rw [hdec]; exact hpr.2.1`.
+
+Establish `hp0 : B.d.p0 *ᵥ (fun i => q.sec ((FV.β *ᵥ y) i)) = fun i => q.sec ((F₀.β *ᵥ y₀) i)` using `by rw [hdec]; exact hpr.2.2`. Establish `lX : ∀ i, colMul B.d.jX i (q.sec (a i)) ∈ latV B.V (splitL B.d M fun _ => 1) (· = q.v) ↔ y (Sum.inr ⟨i.val, by omega⟩) ∈ 𝒪[k]` using `fun i => (lineX_sec q B.d M i (a i)).trans (mul_mem_iff (hca i) _)`. Establish `lY : ∀ i, colMul B.d.jY i (q.sec (b i)) ∈ latV B.V (splitL B.d M fun _ => 1) (· = q.v) ↔ y (Sum.inr ⟨2 * ρ - i.val, by omega⟩) ∈ 𝒪[k]` using `fun i => (lineY_sec q B.d M i (b i)).trans (mul_mem_iff (hcb i) _)`. Establish `hf` using `forall_fin_odd_iff_lower_middle_upperReversed ρ (fun j => y (Sum.inr j) ∈ 𝒪[k])`. Rewrite using `[monoAt_splitL B.d M _ q.v, hpX, hpY, hp0, ← hM y₀]`.
+
+Establish `e1 : (∀ i, colMul B.d.jX i ((fun i => q.sec (a i)) i) ∈ latV B.V (splitL B.d M fun _ => 1) (· = q.v)) ↔ ∀ i : Fin ρ, y (Sum.inr ⟨i.val, by omega⟩) ∈ 𝒪[k]` using `forall_congr' lX`. Establish `e2 : (∀ i, colMul B.d.jY i ((fun i => q.sec (b i)) i) ∈ latV B.V (splitL B.d M fun _ => 1) (· = q.v)) ↔ ∀ i : Fin ρ, y (Sum.inr ⟨2 * ρ - i.val, by omega⟩) ∈ 𝒪[k]` using `forall_congr' lY`. Establish `e3 : (∀ i, y₀ i ∈ 𝒪[k]) ↔ (∀ x, y (Sum.inl x) ∈ 𝒪[k]) ∧ y (Sum.inr ⟨ρ, by omega⟩) ∈ 𝒪[k]` using `⟨fun h => ⟨fun x => h (Sum.inl x), h (Sum.inr ())⟩, fun h m => by`. Break down `m with x | u` into its components or cases. Conclude with `h.1 x`.
+
+Conclude with `h.2⟩`. Rewrite using `[e1, e2, e3, Sum.forall, hf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hl, ha, hr, hb⟩`. Conclude with `⟨ha, hb, hl, hr⟩`.
+
+Introduce and unpack `⟨ha, hb, hl, hr⟩`. Conclude with `⟨hl, ha, hr, hb⟩`.
+-/
 theorem intIn_splitL (q : SplitPt D k) {ρ : ℕ} (B : BesLev D ρ) {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (s : k)
     (FA : GlobalTheory.LocMod.Frame k B.A.rank n) (F₀ : GlobalTheory.LocMod.Frame k B.V₀.rank (n ⊕ Unit))
     (FV : GlobalTheory.LocMod.Frame k B.V.rank (n ⊕ Fin c)) (M : Lat B.V₀)
@@ -255,6 +340,15 @@ theorem intIn_splitL (q : SplitPt D k) {ρ : ℕ} (B : BesLev D ρ) {n : Type} [
 
 end GlobalTheory.MonoBes
 
+/- English proof (translation)
+Introduce `D ψ hψ a y βT PP l FY sc hN hx N M hsdN hIntN hsdM hIntM j ρ h`. Establish `hs` using `l.hs`. Establish `hj : j ≤ l.s + 1` using `by omega`. Establish `hc : j + (2 * ρ + 1) = l.s + 1` using `by omega`. Establish `hjm : j < D.R.m` using `by omega`.
+
+Establish `hsc` using `hN.1 j`. Establish `hxi` using `GlobalTheory.MonoBes.val_xi l.q l.unit`. Establish `hhz` using `hN.2.2.1 j ρ h`. Establish `hB` using `hN.2.2.2.1 j ρ h (2 * ρ + 1) hc`. Take `⟨F₀, hF₀⟩` from `GlobalTheory.LocMod.Witness.exists_core (ofSplit l.q) ((y.bes j ρ h).lev (a.x j).vol) (GlobalTheory.MonoBes.ne_zero_of_val hsc) (l.FX j hj)`.
+
+Establish `hM₀` using `hIntM j ρ h hj F₀ hF₀`. Establish `hL'` using `GlobalTheory.SeeSaw.SplitLat.isSelfDualC_splitL ((y.bes j ρ h).lev (a.x j).vol).d (fun _ => one_ne_zero) (hsdM j ρ h)`. Establish `hint` using `GlobalTheory.MonoBes.intIn_splitL l.q ((y.bes j ρ h).lev (a.x j).vol) (sc j) (l.FX j hj) F₀ (FY j (2 * ρ + 1) hc) (M j ρ h) hsc hxi hhz hF₀ hB hM₀`. Establish `heq` using `GlobalTheory.MonoBes.latV_eq_of_frame l.q (hsdN j hjm) hL' (FY j _ hc) (hIntN j _ hc) hint`. Rewrite using `[← l.under]`.
+
+Conclude with `GlobalTheory.LocCongr.monoAt_congr heq.symm rfl (GlobalTheory.SeeSaw.SplitLat.monoAt_splitL ((y.bes j ρ h).lev (a.x j).vol).d (M j ρ h) _ l.q.v)`.
+-/
 theorem GlobalTheory.MonoBes.besLat_monoAt : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ {a : XGeo D} (y : YRat a) {βT : GL (Fin D.sp.X'.rank) (Lev.EAf D)} {PP : Pl D.host.E} (l : LocX a βT PP) (FY : FYFam l) (sc : ℕ → l.k), IsNormalFr l y FY sc → (∀ j, j ≤ D.R.m → (a.x j).Is) → ∀ (N : ∀ j, GlobalTheory.FinPl.Lat (Yc D j)) (M : ∀ j ρ (h : j + 2 * ρ + 2 = D.R.m), GlobalTheory.FinPl.Lat (y.bes j ρ h).V₀), (∀ j, j < D.R.m → IsSelfDualC (Yc D j) (N j)) → (∀ j c (hc : j + c = l.s + 1), IntIn l.q (Yc D j) (FY j c hc) (N j)) → (∀ j ρ h, IsSelfDualC (y.bes j ρ h).V₀ (M j ρ h)) → (∀ j ρ h (hj : j ≤ l.s + 1) (F₀ : Frame l.k ((y.bes j ρ h).lev (a.x j).vol).V₀.rank (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Unit)), (ofSplit l.q).IsCoreFrame ((y.bes j ρ h).lev (a.x j).vol) (sc j) (l.FX j hj) F₀ → IntIn l.q _ F₀ (M j ρ h)) → ∀ j ρ (h : j + 2 * ρ + 2 = D.R.m), GlobalTheory.FinPl.MonoAt ((y.bes j ρ h).lev (a.x j).vol).d (N j) (M j ρ h) (PP.under (𝓞 D.host.F)) := by
   intro D ψ hψ a y βT PP l FY sc hN hx N M hsdN hIntN hsdM hIntM j ρ h
   have hs := l.hs

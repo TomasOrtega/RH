@@ -18,6 +18,9 @@ set_option autoImplicit false in
 open KaehlerDifferential in
 variable (k K L : Type) [Field k] [Field K] [Field L] [Algebra k K] [Algebra k L] [Algebra K L]
   [IsScalarTower k K L] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.W1.map1 _root_.GlobalTheory.CechDR.ι1`. Conclude with `ExteriorAlgebra.ι_sq_zero _`.
+-/
 theorem _root_.GlobalTheory.W1.kaehlerOneFormsToExtensionDeRham_mul_self (ω : Ω[K⁄k]) :
     _root_.GlobalTheory.W1.map1 k K L ω * _root_.GlobalTheory.W1.map1 k K L ω = 0 := by
   unfold _root_.GlobalTheory.W1.map1 _root_.GlobalTheory.CechDR.ι1

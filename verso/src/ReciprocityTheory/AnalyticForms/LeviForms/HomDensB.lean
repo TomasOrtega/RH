@@ -6,16 +6,25 @@ open Polynomial Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[cf_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Simplify using `[Finset.sum_range_succ]`.
+-/
 theorem cf_mul_zero {α β γ : Type*} [Fintype β] (P : Matrix α β ℂ[X]) (Q : Matrix β γ ℂ[X]) :
     cf 0 (P * Q) = cf 0 P * cf 0 Q := by
   rw [cf_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
   simp [Finset.sum_range_succ]
 
+/- English proof (translation)
+Rewrite using `[cf_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Simplify using `[Finset.sum_range_succ]`.
+-/
 theorem cf_mul_one {α β γ : Type*} [Fintype β] (P : Matrix α β ℂ[X]) (Q : Matrix β γ ℂ[X]) :
     cf 1 (P * Q) = cf 0 P * cf 1 Q + cf 1 P * cf 0 Q := by
   rw [cf_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
   simp [Finset.sum_range_succ]
 
+/- English proof (translation)
+Rewrite using `[cf_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Simplify using `[Finset.sum_range_succ]`.
+-/
 theorem cf_mul_two {α β γ : Type*} [Fintype β] (P : Matrix α β ℂ[X]) (Q : Matrix β γ ℂ[X]) :
     cf 2 (P * Q) = cf 0 P * cf 2 Q + cf 1 P * cf 1 Q + cf 2 P * cf 0 Q := by
   rw [cf_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
@@ -24,9 +33,19 @@ theorem cf_mul_two {α β γ : Type*} [Fintype β] (P : Matrix α β ℂ[X]) (Q 
 def zMat (N : ℕ) (z : Pairs N → ℂ) : Matrix (Fin N) (Fin N) ℂ :=
   ∑ p : Pairs N, Matrix.single p.1.2 p.1.1 (z p)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cellMat_eq (N : ℕ) (z : Pairs N → ℂ) :
     cellMat N z = ∑ k ∈ Finset.range N, ((k.factorial : ℂ)⁻¹) • zMat N z ^ k := rfl
 
+/- English proof (translation)
+Simplify using `only [zMat, Matrix.sum_apply, Matrix.single_apply]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨(j, i), h⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hb (Subtype.ext (Prod.ext h2 h1))`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `h (by rw [← h1, ← h2]; exact p.2)`.
+-/
 theorem zMat_apply (N : ℕ) (z : Pairs N → ℂ) (i j : Fin N) :
     zMat N z i j = if h : j < i then z ⟨(j, i), h⟩ else 0 := by
   simp only [zMat, Matrix.sum_apply, Matrix.single_apply]
@@ -43,26 +62,43 @@ theorem zMat_apply (N : ℕ) (z : Pairs N → ℂ) (i j : Fin N) :
     rintro ⟨h1, h2⟩
     exact h (by rw [← h1, ← h2]; exact p.2)
 
+/- English proof (translation)
+Rewrite using `[zMat_apply, dif_neg (not_lt.2 h)]`.
+-/
 theorem zMat_eq_zero_of_le {N : ℕ} (z : Pairs N → ℂ) {i j : Fin N} (h : i ≤ j) :
     zMat N z i j = 0 := by
   rw [zMat_apply, dif_neg (not_lt.2 h)]
 
+/- English proof (translation)
+Break down `le_total i j with h | h` into its components or cases. Rewrite using `[zMat_eq_zero_of_le z h, zero_mul]`. Rewrite using `[zMat_eq_zero_of_le z h, mul_zero]`.
+-/
 theorem zMat_mul_swap (N : ℕ) (z : Pairs N → ℂ) (i j : Fin N) :
     zMat N z i j * zMat N z j i = 0 := by
   rcases le_total i j with h | h
   · rw [zMat_eq_zero_of_le z h, zero_mul]
   · rw [zMat_eq_zero_of_le z h, mul_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[zMat_apply, Matrix.smul_apply, zMat_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem zMat_smul (N : ℕ) (z : Pairs N → ℂ) (c : ℂ) : zMat N (c • z) = c • zMat N z := by
   ext i j
   rw [zMat_apply, Matrix.smul_apply, zMat_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[← zMat_smul]`. Use `congr 1`.
+-/
 theorem zMat_real_smul (N : ℕ) (z : Pairs N → ℂ) (s : ℝ) :
     zMat N (s • z) = (s : ℂ) • zMat N z := by
   rw [← zMat_smul]
   congr 1
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[zMat_apply, dif_neg]`. Both sides reduce to the same expression. Introduce `h`. Use `Fin.lt_iff_val_lt_val.1 h` as an intermediate fact.
+
+Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem zMat_of_le_one {N : ℕ} (z : Pairs N → ℂ) (hN : N ≤ 1) : zMat N z = 0 := by
   ext i j
   rw [zMat_apply, dif_neg]
@@ -72,19 +108,31 @@ theorem zMat_of_le_one {N : ℕ} (z : Pairs N → ℂ) (hN : N ≤ 1) : zMat N z
   have := i.isLt
   omega
 
+/- English proof (translation)
+Rewrite using `[pow_two, Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => zMat_mul_swap N z i k`.
+-/
 theorem zsq_diag (N : ℕ) (z : Pairs N → ℂ) (i : Fin N) : (zMat N z ^ 2) i i = 0 := by
   rw [pow_two, Matrix.mul_apply]
   exact Finset.sum_eq_zero fun k _ => zMat_mul_swap N z i k
 
+/- English proof (translation)
+Rewrite using `[← conjTranspose_pow, conjTranspose_apply, zsq_diag, star_zero]`.
+-/
 theorem zhsq_diag (N : ℕ) (z : Pairs N → ℂ) (i : Fin N) : ((zMat N z)ᴴ ^ 2) i i = 0 := by
   rw [← conjTranspose_pow, conjTranspose_apply, zsq_diag, star_zero]
 
+/- English proof (translation)
+Rewrite using `[mul_comm, coeff_C_mul_X_pow]`.
+-/
 theorem coeff_X_pow_mul_C (a : ℂ) (k n : ℕ) : (X ^ k * C a).coeff n = if n = k then a else 0 := by
   rw [mul_comm, coeff_C_mul_X_pow]
 
 def cpP (N : ℕ) (A : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ[X] :=
   ∑ k ∈ Finset.range N, (X ^ k : ℂ[X]) • ((((k.factorial : ℂ)⁻¹) • A ^ k).map C)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cpP, cf_apply, Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, finsetSum_coeff, coeff_X_pow_mul_C]`. Rewrite using `[Finset.sum_ite_eq]`. Apply the tactic sequence `by_cases h : n < N <;> simp [h]`.
+-/
 theorem cf_cpP (N n : ℕ) (A : Matrix (Fin N) (Fin N) ℂ) :
     cf n (cpP N A) = if n < N then ((n.factorial : ℂ)⁻¹) • A ^ n else 0 := by
   ext i j
@@ -93,11 +141,17 @@ theorem cf_cpP (N n : ℕ) (A : Matrix (Fin N) (Fin N) ℂ) :
   rw [Finset.sum_ite_eq]
   by_cases h : n < N <;> simp [h]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Conclude with `Subsingleton.elim _ _`. Rewrite using `[cf_cpP, if_pos hN]`. Simplify using the standard rewrite rules.
+-/
 theorem coeffMatrix_zero_truncExpPoly (N : ℕ) (A : Matrix (Fin N) (Fin N) ℂ) : cf 0 (cpP N A) = 1 := by
   rcases Nat.eq_zero_or_pos N with rfl | hN
   · exact Subsingleton.elim _ _
   · rw [cf_cpP, if_pos hN]; simp
 
+/- English proof (translation)
+Rewrite using `[cf_cpP]`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Conclude with `(hA (by omega)).symm`.
+-/
 theorem coeffMatrix_one_truncExpPoly (N : ℕ) (A : Matrix (Fin N) (Fin N) ℂ) (hA : N ≤ 1 → A = 0) :
     cf 1 (cpP N A) = A := by
   rw [cf_cpP]
@@ -105,6 +159,9 @@ theorem coeffMatrix_one_truncExpPoly (N : ℕ) (A : Matrix (Fin N) (Fin N) ℂ) 
   · simp
   · exact (hA (by omega)).symm
 
+/- English proof (translation)
+Rewrite using `[cf_cpP]`. Use `split_ifs`. Conclude with `⟨_, rfl⟩`. Conclude with `⟨0, by simp⟩`.
+-/
 theorem coeffMatrix_two_truncExpPoly (N : ℕ) (A : Matrix (Fin N) (Fin N) ℂ) : ∃ c : ℂ, cf 2 (cpP N A) = c • A ^ 2 := by
   rw [cf_cpP]
   split_ifs
@@ -114,10 +171,16 @@ theorem coeffMatrix_two_truncExpPoly (N : ℕ) (A : Matrix (Fin N) (Fin N) ℂ) 
 def gP (N : ℕ) (hd : Fin N → ℝ) (v : Pairs N → ℂ) : Matrix (Fin N) (Fin N) ℂ[X] :=
   cpP N (zMat N v)ᴴ * ((diagonal fun k => (hd k : ℂ)).map C * cpP N (zMat N v))
 
+/- English proof (translation)
+Rewrite using `[gP, cf_mul_zero, cf_mapC_mul, coeffMatrix_zero_truncExpPoly, coeffMatrix_zero_truncExpPoly, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem coeffMatrix_zero_gramPoly (N : ℕ) (hd : Fin N → ℝ) (v : Pairs N → ℂ) :
     cf 0 (gP N hd v) = diagonal fun k => (hd k : ℂ) := by
   rw [gP, cf_mul_zero, cf_mapC_mul, coeffMatrix_zero_truncExpPoly, coeffMatrix_zero_truncExpPoly, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `h1` using `coeffMatrix_one_truncExpPoly N (zMat N v) (fun h => zMat_of_le_one v h)`. Establish `h2` using `coeffMatrix_one_truncExpPoly N (zMat N v)ᴴ (fun h => by rw [zMat_of_le_one v h, conjTranspose_zero])`. Rewrite using `[gP, cf_mul_one, cf_mapC_mul, cf_mapC_mul, coeffMatrix_zero_truncExpPoly, coeffMatrix_zero_truncExpPoly, h1, h2, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem coeffMatrix_one_gramPoly (N : ℕ) (hd : Fin N → ℝ) (v : Pairs N → ℂ) :
     cf 1 (gP N hd v) = (diagonal fun k => (hd k : ℂ)) * zMat N v +
       (zMat N v)ᴴ * diagonal fun k => (hd k : ℂ) := by
@@ -126,6 +189,11 @@ theorem coeffMatrix_one_gramPoly (N : ℕ) (hd : Fin N → ℝ) (v : Pairs N →
   rw [gP, cf_mul_one, cf_mapC_mul, cf_mapC_mul, coeffMatrix_zero_truncExpPoly, coeffMatrix_zero_truncExpPoly, h1, h2, Matrix.one_mul,
     Matrix.mul_one]
 
+/- English proof (translation)
+Establish `h1` using `coeffMatrix_one_truncExpPoly N (zMat N v) (fun h => zMat_of_le_one v h)`. Establish `h2` using `coeffMatrix_one_truncExpPoly N (zMat N v)ᴴ (fun h => by rw [zMat_of_le_one v h, conjTranspose_zero])`. Take `⟨c1, e1⟩` from `coeffMatrix_two_truncExpPoly N (zMat N v)`. Take `⟨c2, e2⟩` from `coeffMatrix_two_truncExpPoly N (zMat N v)ᴴ`. Rewrite using `[gP, cf_mul_two, cf_mapC_mul, cf_mapC_mul, cf_mapC_mul, coeffMatrix_zero_truncExpPoly, coeffMatrix_zero_truncExpPoly, h1, h2, e1, e2]`.
+
+Simplify using `only [Matrix.one_mul, Matrix.mul_one, Matrix.add_apply, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, Matrix.diagonal_mul, Matrix.mul_diagonal, zsq_diag, zhsq_diag, mul_zero, zero_mul, zero_add, add_zero]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.diagonal_mul, conjTranspose_apply]`.
+-/
 theorem coeffMatrix_two_gramPoly_diag (N : ℕ) (hd : Fin N → ℝ) (v : Pairs N → ℂ) (i : Fin N) :
     cf 2 (gP N hd v) i i = ∑ k, star (zMat N v k i) * ((hd k : ℂ) * zMat N v k i) := by
   have h1 := coeffMatrix_one_truncExpPoly N (zMat N v) (fun h => zMat_of_le_one v h)
@@ -153,22 +221,37 @@ def Gn (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → 
     Matrix (Fin m) (Fin m) ℂ[X] :=
   tL (Zm N m hm v)ᴴ * Gm N hd m hm v * tL (Zm N m hm v)
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [tL, cf_apply, h, Matrix.one_apply, coeff_X_mul_C, coeff_one]`.
+-/
 theorem coeffMatrix_zero_unipotentLine {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) : cf 0 (tL A) = 1 := by
   ext i j
   by_cases h : i = j <;> simp [tL, cf_apply, h, Matrix.one_apply, coeff_X_mul_C, coeff_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [tL, cf_apply, h, Matrix.one_apply, coeff_X_mul_C, coeff_one]`.
+-/
 theorem coeffMatrix_one_unipotentLine {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) : cf 1 (tL A) = -A := by
   ext i j
   by_cases h : i = j <;> simp [tL, cf_apply, h, Matrix.one_apply, coeff_X_mul_C, coeff_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [tL, cf_apply, h, Matrix.one_apply, coeff_X_mul_C, coeff_one]`.
+-/
 theorem coeffMatrix_two_unipotentLine {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) : cf 2 (tL A) = 0 := by
   ext i j
   by_cases h : i = j <;> simp [tL, cf_apply, h, Matrix.one_apply, coeff_X_mul_C, coeff_one]
 
+/- English proof (translation)
+The claim follows from `Fin.le_iff_val_le_val.2 (by simpa using Fin.le_iff_val_le_val.1 h)`.
+-/
 theorem castLE_le {N m : ℕ} (hm : m ≤ N) {i j : Fin m} (h : i ≤ j) :
     Fin.castLE hm i ≤ Fin.castLE hm j :=
   Fin.le_iff_val_le_val.2 (by simpa using Fin.le_iff_val_le_val.1 h)
 
+/- English proof (translation)
+Rewrite using `[det_of_isLowerTriangular]`. Conclude with `Finset.prod_eq_one fun i _ => by simp [tL, Zm, zMat_eq_zero_of_le v le_rfl]`. Introduce `i j hij`. Establish `hij' : i < j` using `OrderDual.toDual_lt_toDual.1 hij`. Simplify using `[tL, Zm, Matrix.one_apply, hij'.ne, zMat_eq_zero_of_le v (castLE_le hm hij'.le)]`.
+-/
 theorem det_tL_lower (N m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) : (tL (Zm N m hm v)).det = 1 := by
   rw [det_of_isLowerTriangular]
   · exact Finset.prod_eq_one fun i _ => by simp [tL, Zm, zMat_eq_zero_of_le v le_rfl]
@@ -176,6 +259,9 @@ theorem det_tL_lower (N m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) : (tL (Zm 
     have hij' : i < j := OrderDual.toDual_lt_toDual.1 hij
     simp [tL, Zm, Matrix.one_apply, hij'.ne, zMat_eq_zero_of_le v (castLE_le hm hij'.le)]
 
+/- English proof (translation)
+Rewrite using `[det_of_isUpperTriangular]`. Conclude with `Finset.prod_eq_one fun i _ => by simp [tL, Zm, zMat_eq_zero_of_le v le_rfl]`. Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Simplify using `[tL, Zm, Matrix.one_apply, hij'.ne', zMat_eq_zero_of_le v (castLE_le hm hij'.le)]`.
+-/
 theorem det_tL_upper (N m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) :
     (tL (Zm N m hm v)ᴴ).det = 1 := by
   rw [det_of_isUpperTriangular]
@@ -184,16 +270,25 @@ theorem det_tL_upper (N m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) :
     have hij' : j < i := hij
     simp [tL, Zm, Matrix.one_apply, hij'.ne', zMat_eq_zero_of_le v (castLE_le hm hij'.le)]
 
+/- English proof (translation)
+Rewrite using `[Gn, det_mul, det_mul, det_tL_upper, det_tL_lower, one_mul, mul_one]`.
+-/
 theorem det_Gn (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) :
     (Gn N hd m hm v).det = (Gm N hd m hm v).det := by
   rw [Gn, det_mul, det_mul, det_tL_upper, det_tL_lower, one_mul, mul_one]
 
+/- English proof (translation)
+Use `show (cf 0 (gP N hd v)).submatrix _ _ = _`. Rewrite using `[coeffMatrix_zero_gramPoly, submatrix_diagonal _ _ (Fin.castLE_injective hm)]`. Both sides reduce to the same expression.
+-/
 theorem coeffMatrix_zero_gramPolyMinor (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) :
     cf 0 (Gm N hd m hm v) = diagonal fun a => (hd (Fin.castLE hm a) : ℂ) := by
   show (cf 0 (gP N hd v)).submatrix _ _ = _
   rw [coeffMatrix_zero_gramPoly, submatrix_diagonal _ _ (Fin.castLE_injective hm)]
   rfl
 
+/- English proof (translation)
+Use `show cf 1 (gP N hd v) _ _ = _`. Rewrite using `[coeffMatrix_one_gramPoly]`. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal, conjTranspose_apply]`.
+-/
 theorem coeffMatrix_one_gramPolyMinor_apply (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ)
     (a b : Fin m) : cf 1 (Gm N hd m hm v) a b =
       (hd (Fin.castLE hm a) : ℂ) * zMat N v (Fin.castLE hm a) (Fin.castLE hm b) +
@@ -202,10 +297,18 @@ theorem coeffMatrix_one_gramPolyMinor_apply (N : ℕ) (hd : Fin N → ℝ) (m : 
   rw [coeffMatrix_one_gramPoly]
   simp [Matrix.diagonal_mul, Matrix.mul_diagonal, conjTranspose_apply]
 
+/- English proof (translation)
+Rewrite using `[Gn, cf_mul_zero, cf_mul_zero, coeffMatrix_zero_unipotentLine, coeffMatrix_zero_unipotentLine, Matrix.one_mul, Matrix.mul_one, coeffMatrix_zero_gramPolyMinor]`.
+-/
 theorem coeffMatrix_zero_reducedGramPolyMinor (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) :
     cf 0 (Gn N hd m hm v) = diagonal fun a => (hd (Fin.castLE hm a) : ℂ) := by
   rw [Gn, cf_mul_zero, cf_mul_zero, coeffMatrix_zero_unipotentLine, coeffMatrix_zero_unipotentLine, Matrix.one_mul, Matrix.mul_one, coeffMatrix_zero_gramPolyMinor]
 
+/- English proof (translation)
+Establish `e : cf 1 (Gn N hd m hm v) = cf 1 (Gm N hd m hm v) - (Zm N m hm v)ᴴ * cf 0 (Gm N hd m hm v) - cf 0 (Gm N hd m hm v) * Zm N m hm v`. Simplify using `only [Gn, cf_mul_zero, cf_mul_one, coeffMatrix_zero_unipotentLine, coeffMatrix_one_unipotentLine]`. Use `noncomm_ring`. Rewrite using `[e, coeffMatrix_zero_gramPolyMinor]`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.sub_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, coeffMatrix_one_gramPolyMinor_apply, conjTranspose_apply, Zm, submatrix_apply, Matrix.zero_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeffMatrix_one_reducedGramPolyMinor (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) :
     cf 1 (Gn N hd m hm v) = 0 := by
   have e : cf 1 (Gn N hd m hm v) = cf 1 (Gm N hd m hm v) - (Zm N m hm v)ᴴ * cf 0 (Gm N hd m hm v) -
@@ -218,6 +321,11 @@ theorem coeffMatrix_one_reducedGramPolyMinor (N : ℕ) (hd : Fin N → ℝ) (m :
     conjTranspose_apply, Zm, submatrix_apply, Matrix.zero_apply]
   ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `k` using `zMat_mul_swap N v (Fin.castLE hm a) (Fin.castLE hm b)`. Establish `k' : star (zMat N v (Fin.castLE hm b) (Fin.castLE hm a)) * star (zMat N v (Fin.castLE hm a) (Fin.castLE hm b)) = 0`. Rewrite using `[← star_mul, k, star_zero]`.
+
+Simplify using `only [conjTranspose_apply, Zm, submatrix_apply, coeffMatrix_one_gramPolyMinor_apply]`. Take the linear combination `(hd (Fin.castLE hm a) : ℂ) * k'`.
+-/
 theorem conjTranspose_mul_coeffMatrix_one_diag (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) (a : Fin m) :
     ((Zm N m hm v)ᴴ * cf 1 (Gm N hd m hm v)) a a =
       ∑ b : Fin m, star (zMat N v (Fin.castLE hm b) (Fin.castLE hm a)) *
@@ -231,6 +339,9 @@ theorem conjTranspose_mul_coeffMatrix_one_diag (N : ℕ) (hd : Fin N → ℝ) (m
   simp only [conjTranspose_apply, Zm, submatrix_apply, coeffMatrix_one_gramPolyMinor_apply]
   linear_combination (hd (Fin.castLE hm a) : ℂ) * k'
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `k` using `zMat_mul_swap N v (Fin.castLE hm a) (Fin.castLE hm b)`. Simplify using `only [Zm, submatrix_apply, coeffMatrix_one_gramPolyMinor_apply]`. Take the linear combination `(hd (Fin.castLE hm a) : ℂ) * k`.
+-/
 theorem coeffMatrix_one_mul_diag (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) (a : Fin m) :
     (cf 1 (Gm N hd m hm v) * Zm N m hm v) a a =
       ∑ b : Fin m, star (zMat N v (Fin.castLE hm b) (Fin.castLE hm a)) *
@@ -241,6 +352,9 @@ theorem coeffMatrix_one_mul_diag (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : 
   simp only [Zm, submatrix_apply, coeffMatrix_one_gramPolyMinor_apply]
   linear_combination (hd (Fin.castLE hm a) : ℂ) * k
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_diagonal, conjTranspose_apply, Zm, submatrix_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conjTranspose_mul_diagonal_mul_diag (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) (a : Fin m) :
     ((Zm N m hm v)ᴴ * (diagonal fun a => (hd (Fin.castLE hm a) : ℂ)) * Zm N m hm v) a a =
       ∑ b : Fin m, star (zMat N v (Fin.castLE hm b) (Fin.castLE hm a)) *
@@ -250,6 +364,11 @@ theorem conjTranspose_mul_diagonal_mul_diag (N : ℕ) (hd : Fin N → ℝ) (m : 
   simp only [Matrix.mul_diagonal, conjTranspose_apply, Zm, submatrix_apply]
   ring
 
+/- English proof (translation)
+Establish `e : cf 2 (Gn N hd m hm v) = cf 2 (Gm N hd m hm v) - (Zm N m hm v)ᴴ * cf 1 (Gm N hd m hm v) - cf 1 (Gm N hd m hm v) * Zm N m hm v + (Zm N m hm v)ᴴ * cf 0 (Gm N hd m hm v) * Zm N m hm v`. Simplify using `only [Gn, cf_mul_zero, cf_mul_one, cf_mul_two, coeffMatrix_zero_unipotentLine, coeffMatrix_one_unipotentLine, coeffMatrix_two_unipotentLine]`. Use `noncomm_ring`. Rewrite using `[e, coeffMatrix_zero_gramPolyMinor, Matrix.add_apply, Matrix.sub_apply, Matrix.sub_apply, conjTranspose_mul_coeffMatrix_one_diag, coeffMatrix_one_mul_diag, conjTranspose_mul_diagonal_mul_diag]`. Establish `h2 : cf 2 (Gm N hd m hm v) a a = cf 2 (gP N hd v) (Fin.castLE hm a) (Fin.castLE hm a)`.
+
+Both sides reduce to the same expression. Rewrite using `[h2, coeffMatrix_two_gramPoly_diag]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeffMatrix_two_reducedGramPolyMinor_apply (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) (a : Fin m) :
     cf 2 (Gn N hd m hm v) a a =
       ∑ k, star (zMat N v k (Fin.castLE hm a)) * ((hd k : ℂ) * zMat N v k (Fin.castLE hm a)) -
@@ -266,6 +385,9 @@ theorem coeffMatrix_two_reducedGramPolyMinor_apply (N : ℕ) (hd : Fin N → ℝ
   rw [h2, coeffMatrix_two_gramPoly_diag]
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cpP, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← coe_evalRingHom, map_sum]`. Simplify using `[mul_assoc]`.
+-/
 theorem eval_cpP (N : ℕ) (A : Matrix (Fin N) (Fin N) ℂ) (t : ℂ) :
     (cpP N A).map (eval t) = ∑ k ∈ Finset.range N, (t ^ k * ((k.factorial : ℂ)⁻¹)) • A ^ k := by
   ext i j
@@ -273,6 +395,9 @@ theorem eval_cpP (N : ℕ) (A : Matrix (Fin N) (Fin N) ℂ) (t : ℂ) :
   rw [← coe_evalRingHom, map_sum]
   simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `det_coeff_zero_one_of_coeffMatrix_one (Gn N hd m hm v) (coeffMatrix_one_reducedGramPolyMinor N hd m hm v)`. Rewrite `h0`, `h1` using `[det_Gn]`. Rewrite using `[h0, coeffMatrix_zero_reducedGramPolyMinor, det_diagonal, Complex.ofReal_prod]`. Conclude with `⟨rfl, h1⟩`.
+-/
 theorem det_gramPolyMinor_coeff_zero_one (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) :
     (Gm N hd m hm v).det.coeff 0 = ((∏ a : Fin m, hd (Fin.castLE hm a) : ℝ) : ℂ) ∧
       (Gm N hd m hm v).det.coeff 1 = 0 := by
@@ -281,6 +406,9 @@ theorem det_gramPolyMinor_coeff_zero_one (N : ℕ) (hd : Fin N → ℝ) (m : ℕ
   rw [h0, coeffMatrix_zero_reducedGramPolyMinor, det_diagonal, Complex.ofReal_prod]
   exact ⟨rfl, h1⟩
 
+/- English proof (translation)
+Rewrite using `[← det_Gn, coeff2_det_of (Gn N hd m hm v) (fun a => (hd (Fin.castLE hm a) : ℂ)) (fun a => by exact_mod_cast hd0 _) (coeffMatrix_zero_reducedGramPolyMinor N hd m hm v) (coeffMatrix_one_reducedGramPolyMinor N hd m hm v)]`. Simplify using `only [coeffMatrix_two_reducedGramPolyMinor_apply]`.
+-/
 theorem coeff2_Gm (N : ℕ) (hd : Fin N → ℝ) (hd0 : ∀ k, hd k ≠ 0) (m : ℕ) (hm : m ≤ N)
     (v : Pairs N → ℂ) :
     (Gm N hd m hm v).det.coeff 2 = (∏ a : Fin m, (hd (Fin.castLE hm a) : ℂ)) *

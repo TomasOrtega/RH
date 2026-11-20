@@ -5,14 +5,23 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnS
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC LateralTheory.CohomologicalPurity LateralTheory.CohomologicalPurity.TubeCut UpperTheory.Et.Prd
 
+/- English proof (translation)
+Conclude with `(FunctorToTypes.naturality (j.app _) g.op z).symm`.
+-/
 private theorem map_res' {E E' : Spc} (j : E ⟶ E') {p : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (z : Sx E p U) :
     (z.map j).res g = (z.res g).map j := by
   exact (FunctorToTypes.naturality (j.app _) g.op z).symm
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.congr_hom (NatTrans.congr_app (j.naturality (SimplexCategory.δ i).op) (op U)) z).symm`.
+-/
 private theorem map_face' {E E' : Spc} (j : E ⟶ E') {p : ℕ} {U : Scheme.{0}} (z : Sx E (p + 1) U) (i : Fin (p + 2)) :
     (z.map j).face i = (z.face i).map j :=
   (ConcreteCategory.congr_hom (NatTrans.congr_app (j.naturality (SimplexCategory.δ i).op) (op U)) z).symm
 
+/- English proof (translation)
+Take `rfl : t = M` from `by omega`. Take `rfl : s = N` from `by omega`. Conclude with `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values R hm α U).1 x`.
+-/
 private theorem ev_delta_zero {R : Type} [CommRing R] {E : Spc} {I : Cx R} {N M s t : ℤ} (hm : N + 1 = M)
     (α : Cochain ((chains R).obj E) I N) (U : Scheme.{0}) (x : Sx E 0 U)
     (ht : -((0 : ℕ) : ℤ) + M = t) (hs : -((0 : ℕ) : ℤ) + N = s) :
@@ -21,10 +30,36 @@ private theorem ev_delta_zero {R : Type} [CommRing R] {E : Spc} {I : Cx R} {N M 
   obtain rfl : s = N := by omega
   exact (GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values R hm α U).1 x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem fam_smul_apply {R : Type} [CommRing R] {E : Spc} {Z : Sub E} {p : ℕ} {M : Shv R} (u : ℤˣ) (a : Fam Z p M)
     (U : Scheme.{0}) (z : Sx E p U) : (u • a).1 U z = u • a.1 U z := by
   rfl
 
+/- English proof (translation)
+Introduce `R _ E E' j Z K m n N hN`. Establish `ev_nat` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E') (I := K) (n := N)).2.1`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`. Set `x : (famDC Z K m).Tot` to `fun p s => if h : -(p : ℤ) + N = s + m then (⟨fun U z => ev γ p (s + m) h U (z.map j), ⟨fun V U g z => (ev_nat γ p (s + m) h V U g (z.map j)).trans (by rw [map_res']), fun U z hz => hγ p (s + m) h U z hz⟩⟩ : Fam Z p (K.X (s + m))) else 0`.
+
+Use `⟨x, fun p s hps => ?_, fun p s h U z => ?_⟩` and prove the remaining obligations. Establish `h : ¬ (-(p : ℤ) + N = s + m)` using `by omega`. Conclude with `dif_neg h`. Conclude with `congrArg (fun a : Fam Z p (K.X (s + m)) => (a : (U : Scheme.{0}) → Sx E p U → Sec (K.X (s + m)) U) U z) (dif_pos h)`. Introduce `γ x x' hx hx' cx cx'`.
+
+Use function extensionality and compare the values at `p s`. Distinguish the cases in `hps : (p : ℤ) + s = n`. Establish `h : -(p : ℤ) + N = s + m` using `by omega`. Express the relevant statement in the definitionally equal form `(x p s : Fam Z p (K.X (s + m))) = x' p s`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `U z`. Conclude with `(cx p s h U z).trans (cx' p s h U z).symm`. Rewrite using `[hx p s hps, hx' p s hps]`. Introduce `γ x cx p s h U z`. Break down `p with _ | p` into its components or cases.
+
+Establish `h0 : -((0 : ℕ) : ℤ) + N = (s - 1) + m` using `by omega`. Rewrite using `[ev_delta_zero (s := s - 1 + m) rfl γ U (z.map j) h h0, ← cx 0 (s - 1) h0 U z]`. Both sides reduce to the same expression. Establish `hs : -((p + 1 : ℕ) : ℤ) + N = (s - 1) + m` using `by omega`. Establish `hp : -(p : ℤ) + N = s + m` using `by omega`.
+
+Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values R (rfl : N + 1 = N + 1) γ U).2 p (s - 1 + m) (s + m) hs h (z.map j), ← cx (p + 1) (s - 1) hs U z]`. Simplify using `only [map_face']`. Rewrite using `[Finset.sum_congr rfl (fun i _ => by rw [← cx p s hp U (z.face i)])]`. Establish `eN : (N + 1).negOnePow = (n + 1).negOnePow * m.negOnePow`. Rewrite using `[← Int.negOnePow_add]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `e2` using `fam_smul_apply (n + 1).negOnePow (Fam.δ Z p (K.X (s + m)) m.negOnePow (x p s : Fam Z p (K.X (s + m)))) U z`. Rewrite using `[eN, mul_smul]`. Use `show Sec.map (K.d (s - 1 + m) (s + m)) ((x (p + 1) (s - 1) : Fam Z (p + 1) (K.X (s - 1 + m))).1 U z) + ((n + 1).negOnePow • Fam.δ Z p (K.X (s + m)) m.negOnePow (x p s : Fam Z p (K.X (s + m)))).1 U z = _`.
+
+Rewrite using `[e2]`. Both sides reduce to the same expression. Introduce `γ γ' x x' cx cx' p s h U z`. Rewrite using `[((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E') (I := K) (n := N)).1 γ γ' p (s + m) h U (z.map j)).2.1, ← cx p s h U z, ← cx' p s h U z]`. Both sides reduce to the same expression.
+
+Introduce `x hx p s hps`. Break down `p with _ | p` into its components or cases. Establish `h1 : ((0 : ℕ) : ℤ) + (s - 1) ≠ n` using `by omega show (Fam.map Z 0 (K.d (s - 1 + m) (s + m))) (x 0 (s - 1)) = 0`. Rewrite using `[hx 0 (s - 1) h1]`. Conclude with `map_zero _`.
+
+Establish `h1 : ((p + 1 : ℕ) : ℤ) + (s - 1) ≠ n` using `by omega`. Establish `h2 : (p : ℤ) + s ≠ n` using `by omega`. Use `show (Fam.map Z (p + 1) (K.d (s - 1 + m) (s + m))) (x (p + 1) (s - 1)) + (n + 1).negOnePow • (Fam.δ Z p (K.X (s + m)) m.negOnePow) (x p s) = 0`. Rewrite using `[hx _ _ h1, hx _ _ h2]`. Use `show (Fam.map Z (p + 1) (K.d (s - 1 + m) (s + m))) (0 : Fam Z (p + 1) (K.X (s - 1 + m))) + (n + 1).negOnePow • (Fam.δ Z p (K.X (s + m)) m.negOnePow) (0 : Fam Z p (K.X (s + m))) = 0`.
+
+Rewrite using `[map_zero, map_zero, smul_zero, add_zero]`.
+-/
 theorem UpperTheory.supportDoubleComplex_total_represents_vanishing_cochain :
     ∀ (R : Type) [CommRing R] {E E' : Spc} (j : E ⟶ E') (Z : Sub E) (K : Cx R) (m n N : ℤ), n + m = N →
     (∀ γ : Cochain ((chains R).obj E') K N, (∀ (p : ℕ) (s : ℤ) h (U : Scheme.{0}) (z : Sx E p U), Z.mem p U z → ev γ p s h U (z.map j) = 0) → ∃ x : (famDC Z K m).Tot, (famDC Z K m).Deg n x ∧ Comp j γ x) ∧

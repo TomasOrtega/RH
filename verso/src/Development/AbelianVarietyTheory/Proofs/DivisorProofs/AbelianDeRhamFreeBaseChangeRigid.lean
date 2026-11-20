@@ -11,6 +11,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hH`. Take `⟨⟨hfree, -, hbc⟩, hcrys⟩` from `GlobalTheory.Published.abelianDeRhamStructure_crystallineDeRham_of_hypotheses GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations hH`. Establish `hF : GlobalTheory.Published.AbelianDeRham.Free` using `GlobalTheory.AbelianPrim.abelianDeRham_free hfree`. Conclude with `⟨hF, hbc, GlobalTheory.Published.AbelianDeRham.rigid_of_free_of_crystallineDeRham hF hcrys⟩`.
+-/
 theorem abelianDeRham_free_baseChange_rigid : GlobalTheory.Published.AbelianHodgeDeRham →
     GlobalTheory.Published.AbelianDeRham.Free ∧ GlobalTheory.Published.AbelianDeRham.BaseChange ∧
       GlobalTheory.Published.AbelianDeRham.Rigid := by

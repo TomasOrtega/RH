@@ -16,6 +16,13 @@ namespace GlobalTheory.StdUnn
 
 open Matrix GlobalTheory.Doubling
 
+/- English proof (translation)
+Establish `hx : (Pi.single (Fin.castAdd n j) 1 : Fin (n + n) → AE D) ∈ upperHalf D n`. Rewrite using `[upperHalf, LinearMap.mem_ker]`. Use function extensionality and compare the values at `k`. Rewrite using `[LinearMap.funLeft_apply, Pi.zero_apply, finSumFinEquiv_apply_right]`. Conclude with `Pi.single_eq_of_ne (fun h => by`.
+
+Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at this`. Use the proof step `omega) _`. Establish `h1` using `(hg (Pi.single (Fin.castAdd n j) 1)).1 hx`. Rewrite `h1` using `[upperHalf, LinearMap.mem_ker]`.
+
+Establish `h2` using `congrFun h1 i`. Rewrite `h2` using `[LinearMap.funLeft_apply, Pi.zero_apply, finSumFinEquiv_apply_right, mulVec_single_one]`. Conclude with `h2`.
+-/
 theorem chart_lowerLeft_zero {D : D7} {n : ℕ} {g : G D n} (hg : g ∈ P D n) (i j : Fin n) :
     mat g (Fin.natAdd n i) (Fin.castAdd n j) = 0 := by
   have hx : (Pi.single (Fin.castAdd n j) 1 : Fin (n + n) → AE D) ∈ upperHalf D n := by
@@ -38,6 +45,11 @@ namespace GlobalTheory.StdUnn
 
 open Matrix GlobalTheory.Doubling
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `congrFun (congrFun (hκ p) (Fin.castAdd A.rank i)) (Fin.castAdd A.rank j)`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_add] at h`. Simplify using `only [Matrix.mul_apply, leviMat, blkA, toBlocks₁₁, toBlocks₁₂, Matrix.of_apply, submatrix_apply, add_mul, Finset.sum_add_distrib, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right]`. Simplify using `only [Tm, rat, Matrix.map_apply, submatrix_apply, id, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, fromCols_apply_inl, fromCols_apply_inr, dblDec, stackRows, fromRows_apply_inl, fromRows_apply_inr, chart_lowerLeft_zero hp, mul_zero, Finset.sum_const_zero, …`.
+
+Simplify using `only [Matrix.add_apply, Matrix.of_apply, add_mul, Finset.sum_add_distrib, rat, Matrix.map_apply]`. Conclude with `h.symm`.
+-/
 theorem chart_levi_mul {D : D7} {A : HSp D} {μ : D.host.E} {κ : GA D (dblSp A) ≃* G D A.rank}
     (hκ : IsChart A μ κ) (p : GA D (dblSp A)) (hp : κ p ∈ P D A.rank) :
     leviMat finSumFinEquiv (mt (dblSp A) p) * rat A.gram⁻¹ = rat A.gram⁻¹ * blkA (mat (κ p)) := by
@@ -58,6 +70,13 @@ namespace GlobalTheory.StdUnn
 
 open Matrix GlobalTheory.Doubling
 
+/- English proof (translation)
+Introduce `D A μ hμ κ hκ p a ha`. Establish `hP : κ p ∈ P D A.rank` using `(GlobalTheory.T.mem_doublingSiegelParabolic_iff_chart_mem_siegelUnn D A μ hμ κ hκ p).1 p.2`. Establish `h1` using `congrArg Matrix.det (chart_levi_mul hκ p hP)`. Rewrite `h1` using `[ha, Matrix.det_mul, Matrix.det_mul]`. Establish `hu : IsUnit (rat (D` using `D) A.gram⁻¹).det := by`.
+
+Rewrite using `[rat, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Use `IsUnit.map _ (isUnit_iff_ne_zero.2 ?_)` and prove the remaining obligations. Rewrite using `[Matrix.det_nonsing_inv]`. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero (gram_det_ne A)`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(leviMat finSumFinEquiv (mt (dblSp A) (p : GA D (dblSp A)))).det = a.1.det`. Conclude with `hu.mul_left_cancel (by rw [mul_comm]; exact h1)`.
+-/
 theorem chart_aP_eq_det : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank,
     IsChart A μ κ → ∀ (p : siegel A) (a : GL (Fin A.rank) (AE D)), blkA (mat (κ p)) = a.1 →
       aP A p = Matrix.GeneralLinearGroup.det a := by

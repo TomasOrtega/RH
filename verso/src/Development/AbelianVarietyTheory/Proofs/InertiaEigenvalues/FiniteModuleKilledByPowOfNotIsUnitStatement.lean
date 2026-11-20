@@ -18,6 +18,9 @@ open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.finite_module_killed_by_pow_of_not_isUnit | exact GlobalTheory.finite_module_killed_by_pow_of_not_isUnit | (intros; apply GlobalTheory.finite_module_killed_by_pow_of_not_isUnit <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_pow_smul_eq_zero_of_finite_of_not_isUnit : ∀ (O : Type) [CommRing O] [IsLocalRing O] (lam : O), ¬ IsUnit lam →
     ∀ (X : Type) [AddCommGroup X] [Module O X] [Finite X], ∃ a : ℕ, ∀ x : X, lam ^ a • x = 0 := by
   first | exact @GlobalTheory.finite_module_killed_by_pow_of_not_isUnit | exact GlobalTheory.finite_module_killed_by_pow_of_not_isUnit | (intros; apply GlobalTheory.finite_module_killed_by_pow_of_not_isUnit <;> assumption)

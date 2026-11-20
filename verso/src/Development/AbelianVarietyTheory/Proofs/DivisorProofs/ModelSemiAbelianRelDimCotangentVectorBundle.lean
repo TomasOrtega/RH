@@ -13,6 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ModelRelDim
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y`. Use `Y.t.semi` as an intermediate fact. Establish `hsm : Smooth Y.t.G.hom` using `Y.t.semi.smooth`. Establish `: IsIso (spMap (RingHom.id c.F))`. Unfold `spMap`.
+
+Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Use `infer_instance`. Establish `: IsDominant Y.jQ` using `⟨Y.jQ_dense⟩`. Establish `hdom : IsDominant (Y.jQ ≫ pullback.fst Y.s (spMap (RingHom.id c.F)))` using `inferInstance`. Establish `hg : SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) Y.t.G.hom` using `GlobalTheory.smoothOfRelativeDimension_of_isPullback_isDominant _ _ _ _ _ Y.t.G.hom Y.oF.t.G.hom Y.m.φ _ Y.m.cart.1 hdom hsm (GlobalTheory.ObjDim.smoothOfRelativeDimension Y.oF)`.
+
+Conclude with `⟨hg, GlobalTheory.LieVB.isVB_omega Y.t.G _⟩`.
+-/
 theorem relDim_and_isVB_omega : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) Y.t.G.hom ∧ GlobalTheory.VB.IsVB (GlobalTheory.LieVB.omega Y.t.G) (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) := by
   intro E _ _ _ H Dw l Xo c Y
   have := Y.t.semi

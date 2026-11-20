@@ -11,6 +11,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LogDR
 
+/- English proof (translation)
+Unfold `inter`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.inf_insert]`.
+
+Simplify using `only [Finset.mem_insert, forall_eq_or_imp]`. Rewrite using `[← ih]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_inter_iff {X : Scheme.{0}} [IsIntegral X] {ι : Type} (U : ι → X.Opens) (s : Finset ι) (y : X) :
     y ∈ inter U s ↔ ∀ i ∈ s, y ∈ U i := by
   classical
@@ -23,6 +28,9 @@ theorem mem_inter_iff {X : Scheme.{0}} [IsIntegral X] {ι : Type} (U : ι → X.
     rw [← ih]
     exact Iff.rfl
 
+/- English proof (translation)
+Introduce `G r hr a b hH`. Conclude with `GlobalTheory.T.cech_log_forms_frobenius_lift p (suppAll E) 𝒜.U 𝒜.x (inter 𝒜.U) G (p • G + ∑ c, r c • E c) hn 𝒜.gen (fun i => ((𝒜.chart i).chart _ (𝒜.gen i)).coord) (fun s _ y => mem_inter_iff 𝒜.U s y) hL (GlobalTheory.T.roundedTwist_localEquation_chart p 𝒜 G r hr).1 (fun q s η hη …`.
+-/
 theorem decomp_of_isLifted (p : ℕ) [Fact p.Prime] {X : Scheme.{0}} [IsIntegral X] [CharP X.functionField p]
     {C : Type} [Fintype C] {E : C → CartierDiv X} {n : ℕ} {ι : Type} [LinearOrder ι] (𝒜 : SncAtlas E n ι)
     (hn : n < p) (hL : IsLifted p (suppAll E) 𝒜.U 𝒜.x) : Decomp p 𝒜 := by

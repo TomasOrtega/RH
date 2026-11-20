@@ -11,6 +11,9 @@ open Formalism.MainNotions.G Formalism.BasicNotions Finset
 
 variable (p : ℕ) [hp : Fact p.Prime]
 
+/- English proof (translation)
+The claim follows from `restTwoSums_of (p := p) (fun K' _ _ vp hvp μ h0 h1 n => sx_mu_alt (p := p) (K' := K') vp hvp μ h0 h1 n) (fun n' B hev a b hab => sx_dual (p := p) B hev a b hab) (fun n' r0 r1 K' _ R s x hx => sx_frob_sum (p := p) R s x hx) (fun a => frobenius_congruence_witt (p := p) a)`.
+-/
 theorem restTwoSums : TwoSumsCondition p :=
   restTwoSums_of (p := p)
     (fun K' _ _ vp hvp μ h0 h1 n => sx_mu_alt (p := p) (K' := K') vp hvp μ h0 h1 n)
@@ -18,20 +21,35 @@ theorem restTwoSums : TwoSumsCondition p :=
     (fun n' r0 r1 K' _ R s x hx => sx_frob_sum (p := p) R s x hx)
     (fun a => frobenius_congruence_witt (p := p) a)
 
+/- English proof (translation)
+The claim follows from `gcCondition_of_twoSums (p := p) (restTwoSums p)`.
+-/
 theorem restGc : RestGc p :=
   gcCondition_of_twoSums (p := p) (restTwoSums p)
 
 variable {p}
 
+/- English proof (translation)
+The claim follows from `restGcA_of (X := X) (restGc p)`.
+-/
 theorem restGcA (X : Sys p) : RestGcA X :=
   restGcA_of (X := X) (restGc p)
 
+/- English proof (translation)
+The claim follows from `th_restGcV_of (X := X) (restGc p)`.
+-/
 theorem th_restGcV (X : Sys p) : ea_RestGcV X :=
   th_restGcV_of (X := X) (restGc p)
 
+/- English proof (translation)
+The claim follows from `baseChange_preserves_unitary_of D X Y hA (restBeta p) (restGc p)`.
+-/
 theorem theta_kernel_expansion (D : Formalism.BasicNotions.D7) (X : Sys p) (Y : Pend X) (hA : admitted D X Y) : Conclusion1 D X Y :=
   baseChange_preserves_unitary_of D X Y hA (restBeta p) (restGc p)
 
+/- English proof (translation)
+The claim follows from `expansion_all_places_of_computation D X Y hA (restBeta p) (restGcA X)`.
+-/
 theorem expansions_multiply (D : Formalism.BasicNotions.D7) (X : Sys p) (Y : Pend X) (hA : admitted D X Y) : ExpansionsMultiply D X Y :=
   expansion_all_places_of_computation D X Y hA (restBeta p) (restGcA X)
 

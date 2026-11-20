@@ -7,12 +7,22 @@ open GlobalTheory.BCT
 
 namespace PositivityTheory.Rg.BcN.F2.LocOpPf
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.P6.r20a.PositivityTheory.Rg.BcN.F2.LocOpPf.finsum_quot_le hST u hu hrel hfin`.
+-/
 theorem finsum_quot_le {H : Type} [Group H] {S T : Subgroup H} (hST : S ≤ T) (u : H → ℂ)
     (hu : ∀ x, ∀ t ∈ T, u (x * t) = u x) (hrel : S.relIndex T ≠ 0)
     (hfin : (Function.support fun q : H ⧸ S => u q.out).Finite) :
     ∑ᶠ q : H ⧸ S, u q.out = (S.relIndex T : ℂ) * ∑ᶠ q : H ⧸ T, u q.out :=
   _root_.UpperTheory.Reformulated.B.P6.r20a.PositivityTheory.Rg.BcN.F2.LocOpPf.finsum_quot_le hST u hu hrel hfin
 
+/- English proof (translation)
+Establish `hS0 : S ≤ rStab u ⊓ K` using `le_inf hSu hSK`. Establish `hmul` using `Subgroup.relIndex_mul_relIndex S (rStab u ⊓ K) K hS0 inf_le_right`. Establish `h1 : S.relIndex (rStab u ⊓ K) ≠ 0`. Introduce `h`. Rewrite `hmul` using `[h, zero_mul]`.
+
+Conclude with `hrel hmul.symm`. Establish `h2 : (rStab u ⊓ K).relIndex K ≠ 0`. Introduce `h`. Rewrite `hmul` using `[h, mul_zero]`. Conclude with `hrel hmul.symm`.
+
+Establish `hu : ∀ x, ∀ t ∈ rStab u ⊓ K, u (x * t) = u x` using `fun x t ht => ht.1 x`. Rewrite using `[finsum_quot_le hS0 u hu h1 hfin, hint, ← hmul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hinteq {H : Type} [Group H] (K S : Subgroup H) (u : H → ℂ) (hSK : S ≤ K) (hSu : S ≤ rStab u)
     (hrel : S.relIndex K ≠ 0) (hfin : (Function.support fun q : H ⧸ S => u q.out).Finite) :
     hint K u = ((S.relIndex K : ℂ))⁻¹ * ∑ᶠ q : H ⧸ S, u q.out := by

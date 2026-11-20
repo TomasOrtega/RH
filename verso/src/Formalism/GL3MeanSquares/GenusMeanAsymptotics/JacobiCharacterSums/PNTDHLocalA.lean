@@ -9,6 +9,13 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Rewrite using `[norm_prod]`. Establish `h1 : ∀ p ∈ M.primeFactors, ‖1 - (p : ℂ) ^ (-s)‖ ≤ (p : ℝ)`. Introduce `p hp`. Establish `hp'` using `Nat.prime_of_mem_primeFactors hp`. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp'.two_le`.
+
+Establish `hn : ‖(p : ℂ) ^ (-s)‖ ≤ 1`. Rewrite using `[Complex.norm_natCast_cpow_of_pos hp'.pos]`. Apply `Real.rpow_le_one_of_one_le_of_nonpos (by linarith)` to reduce the goal to its premises. Simplify using `using hs`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.le_of_dvd (NeZero.pos M) (Nat.prod_primeFactors_dvd M)` after adjusting the coercions.
+-/
 lemma dhl_prod_le (M : ℕ) [NeZero M] (s : ℂ) (hs : 0 ≤ s.re) :
     ‖∏ p ∈ M.primeFactors, (1 - (p : ℂ) ^ (-s))‖ ≤ M := by
   rw [norm_prod]
@@ -28,6 +35,19 @@ lemma dhl_prod_le (M : ℕ) [NeZero M] (s : ℂ) (hs : 0 ≤ s.re) :
     _ ≤ M := by
         exact_mod_cast Nat.le_of_dvd (NeZero.pos M) (Nat.prod_primeFactors_dvd M)
 
+/- English proof (translation)
+Establish `hM : (1 : ℝ) ≤ M` using `by exact_mod_cast NeZero.one_le`. Establish `hs0` using `norm_nonneg s`. Distinguish the cases in `h1 : s = 1`. Substitute `h1` using the available equality. Use `dhl_prod_le M 1 (by simp)` as an intermediate fact.
+
+Simplify using `only [Function.update_self]`. Establish `e : ∏ p ∈ M.primeFactors, (1 - (p : ℂ)⁻¹) = ∏ p ∈ M.primeFactors, (1 - (p : ℂ) ^ (-(1 : ℂ)))`. Use `Finset.prod_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Rewrite using `[cpow_neg_one]`. Rewrite using `[e]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[norm_one]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[DirichletCharacter.LFunctionTrivChar₁, Function.update_of_ne h1, DirichletCharacter.LFunctionTrivChar_eq_mul_riemannZeta h1, norm_mul, norm_mul]`. Establish `hP` using `dhl_prod_le M s (by linarith)`.
+
+Establish `hz` using `Formalism.ZF.growthBound s (by linarith) h1`. Establish `hpos : 0 < ‖s - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr h1)`. Establish `hle : ‖s - 1‖ ≤ 1 + ‖s‖`. Use `norm_sub_le s 1` as an intermediate fact. Rewrite `this` using `[norm_one]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : 1 / s.re ≤ 2`. Rewrite using `[div_le_iff₀ (by linarith)]; linarith`. Establish `hz2 : ‖s - 1‖ * ‖riemannZeta s‖ ≤ 4 * (1 + ‖s‖) ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma dhl_triv_growth (M : ℕ) [NeZero M] (s : ℂ) (hs : 1 / 2 ≤ s.re) :
     ‖DirichletCharacter.LFunctionTrivChar₁ M s‖ ≤ 4 * M * (1 + ‖s‖) ^ 2 := by
   have hM : (1 : ℝ) ≤ M := by exact_mod_cast NeZero.one_le
@@ -63,6 +83,13 @@ lemma dhl_triv_growth (M : ℕ) [NeZero M] (s : ℂ) (hs : 1 / 2 ≤ s.re) :
       _ ≤ M * (4 * (1 + ‖s‖) ^ 2) := by gcongr
       _ = 4 * M * (1 + ‖s‖) ^ 2 := by ring
 
+/- English proof (translation)
+Establish `h` using `congrFun (iter_deriv_inv_linear_sub k (1 : ℂ) 1) s`. Establish `e : (fun z : ℂ => 1 / (z - 1)) = fun x : ℂ => (1 * x - 1)⁻¹`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite using `[iteratedDeriv_eq_iterate, e, h]`.
+
+Establish `hk : (k.factorial : ℂ) ≠ 0` using `by exact_mod_cast k.factorial_ne_zero`. Establish `hs' : s - 1 ≠ 0` using `sub_ne_zero.mpr hs`. Establish `e2 : (1 * s - 1) ^ (-1 - (k : ℤ)) = ((s - 1) ^ (k + 1))⁻¹`. Rewrite using `[one_mul, show (-1 - (k : ℤ)) = -((k + 1 : ℕ) : ℤ) by push_cast; ring, zpow_neg, zpow_natCast]`. Rewrite using `[e2, one_pow]`.
+
+Establish `h1 : ((-1 : ℂ) ^ k) * ((-1 : ℂ) ^ k) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`.
+-/
 lemma dhl_pole (k : ℕ) (s : ℂ) (hs : s ≠ 1) :
     (-1 : ℂ) ^ k / (k.factorial : ℂ) * iteratedDeriv k (fun z : ℂ => 1 / (z - 1)) s
       = 1 / (s - 1) ^ (k + 1) := by
@@ -80,6 +107,11 @@ lemma dhl_pole (k : ℕ) (s : ℂ) (hs : s ≠ 1) :
   field_simp
   linear_combination h1
 
+/- English proof (translation)
+Establish `hl : 1 ≤ Real.log X`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Combine the linear relations using `[Real.exp_one_lt_d9]`. Establish `hk : 0 ≤ Real.log K` using `Real.log_nonneg hK`. Rewrite using `[Real.log_mul (by linarith) (by positivity), Real.log_pow]`.
+
+Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma dhl_log (K X : ℝ) (hK : 1 ≤ K) (hX : 3 ≤ X) :
     Real.log (K * X ^ 2) ≤ (Real.log K + 2) * Real.log X := by
   have hl : 1 ≤ Real.log X := by

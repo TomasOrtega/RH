@@ -17,6 +17,13 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type u} [
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
+/- English proof (translation)
+Establish `e : I = Ideal.span {g | ∃ f ∈ I, ∃ b, g = weightedHomogeneousComponent (blockWeight ι) b f}`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Conclude with `Ideal.sum_mem _ fun b _ => Ideal.subset_span ⟨f, hf, b, rfl⟩`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `g ⟨f, hf, b, rfl⟩`. Conclude with `hI f hf b`. Rewrite using `[e]`. Use `Ideal.homogeneous_span _ _ fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨f, -, b, rfl⟩` from `hx`. Conclude with `⟨b, weightedHomogeneousComponent_isWeightedHomogeneous b f⟩`.
+-/
 theorem isHomogeneous_of_isMultiHomogIdeal {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I) :
     I.IsHomogeneous (weightedHomogeneousSubmodule F (blockWeight ι)) := by
   classical
@@ -35,6 +42,9 @@ theorem isHomogeneous_of_isMultiHomogIdeal {I : Ideal (MRing ι F)} (hI : IsMult
   obtain ⟨f, -, b, rfl⟩ := hx
   exact ⟨b, weightedHomogeneousComponent_isWeightedHomogeneous b f⟩
 
+/- English proof (translation)
+Establish `h2 : (Ideal.span {s}).IsHomogeneous (weightedHomogeneousSubmodule F (blockWeight ι))` using `Ideal.homogeneous_span _ _ fun x hx => ⟨c, (Set.mem_singleton_iff.mp hx) ▸ hs⟩`. Introduce `f hf b`. Conclude with `weightedHomogeneousComponent_mem_of_mem (h := (isHomogeneous_of_isMultiHomogIdeal hI).sup h2) (hp := hf) (m := b)`.
+-/
 theorem isMultiHomogIdeal_sup_span {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I)
     {s : MRing ι F} {c : K → ℕ} (hs : IsMultiHomog s c) :
     IsMultiHomogIdeal (I ⊔ Ideal.span {s}) := by
@@ -47,6 +57,9 @@ theorem isMultiHomogIdeal_sup_span {I : Ideal (MRing ι F)} (hI : IsMultiHomogId
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Ideal.mem_colon_span_singleton]`. Conclude with `⟨fun h => (hP.mem_or_mem h).resolve_right hs, fun h => P.mul_mem_right s h⟩`.
+-/
 theorem colon_span_eq_of_isPrime {P : Ideal (MRing ι F)} (hP : P.IsPrime) {s : MRing ι F}
     (hs : s ∉ P) : P.colon (Ideal.span {s}) = P := by
   ext x
@@ -55,6 +68,9 @@ theorem colon_span_eq_of_isPrime {P : Ideal (MRing ι F)} (hP : P.IsPrime) {s : 
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Use `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor le_sup_left) (Ideal.Quotient.factor_surjective le_sup_left) (r := Ideal.Quotient.mk P s) ?_ ?_` and prove the remaining obligations. Conclude with `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span rfl)`.
+-/
 theorem ringKrullDim_sup_span_add_one_le {P : Ideal (MRing ι F)} [P.IsPrime] {s : MRing ι F}
     (hs : s ∉ P) :
     ringKrullDim (MRing ι F ⧸ (P ⊔ Ideal.span {s})) + 1 ≤ ringKrullDim (MRing ι F ⧸ P) := by
@@ -64,6 +80,13 @@ theorem ringKrullDim_sup_span_add_one_le {P : Ideal (MRing ι F)} [P.IsPrime] {s
   · rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]
     exact Ideal.mem_sup_right (Ideal.subset_span rfl)
 
+/- English proof (translation)
+Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top`.
+
+It suffices to derive a contradiction. Establish `e : ((⊤ : ℕ∞) : WithBot ℕ∞) + 1 = ((⊤ : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[← WithBot.coe_one, ← WithBot.coe_add, top_add]`. Rewrite `h` using `[e, ← WithBot.coe_natCast, WithBot.coe_le_coe]`. Conclude with `absurd h (not_le.mpr (ENat.natCast_lt_top n))`.
+
+Consider the case `coe a`. Establish `: a + 1 ≤ n` using `by exact_mod_cast h`. Conclude with `(show a < n by omega)` after adjusting the coercions.
+-/
 theorem lt_of_add_one_le_natCast {x : WithBot ℕ∞} {n : ℕ} (h : x + 1 ≤ n) : x < n := by
   induction x using WithBot.recBotCoe with
   | bot => exact WithBot.bot_lt_coe _
@@ -81,6 +104,49 @@ theorem lt_of_add_one_le_natCast {x : WithBot ℕ∞} {n : ℕ} (h : x + 1 ≤ n
 
 end Lemmas
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `I _ hlt p hp hp0`. It suffices to derive a contradiction. Establish `hsub : Subsingleton (MRing ι F ⧸ I)`.
+
+Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_subsingleton_iff_nontrivial]`. Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := MRing ι F ⧸ I)`. Conclude with `absurd hlt (not_lt.mpr (by simpa using h0))`. Establish `hz : ∀ m, hilbFn I m = 0`.
+
+Introduce `m`. Unfold `hilbFn`. Use `split_ifs`. Rewrite using `[Module.finrank_zero_of_subsingleton, Nat.cast_zero]`. Both sides reduce to the same expression.
+
+Establish `: EventuallyPoly (hilbFn I) 0` using `Filter.Eventually.of_forall fun m => by simp [hz]`. Conclude with `hp0 (hU K _ p 0 hp this)`. Consider the case `succ n ih`. Establish `prime : ∀ P : Ideal (MRing ι F), P.IsPrime → IsMultiHomogIdeal P → ringKrullDim (MRing ι F ⧸ P) < (n + 1 : ℕ) → ∀ p : MvPolynomial K ℚ, EventuallyPoly (hilbFn P) p → p ≠ 0 → ((p.totalDegree + Fintype.card K : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ P)`. Introduce `P hPp hPh hlt p hp hp0`.
+
+Distinguish the cases in `hrel : IsRelevant P`. Use `swap`. It suffices to derive a contradiction. Establish `: EventuallyPoly (hilbFn P) 0` using `(hZ F K ι P hrel).mono fun m hm => by simp [hm]`. Conclude with `hp0 (hU K _ p 0 hp this)`.
+
+Establish `hge` using `hD F K ι P ⟨hPp, hPh, hrel⟩`. Use `choose i hi using hrel`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, ringKrullDim (MRing ι F ⧸ P) = N := by`. Generalize the expression as in `ringKrullDim (MRing ι F ⧸ P) = x at hge hlt`. Proceed by induction on `x using WithBot.recBotCoe with`.
+
+Consider the case `bot => exact absurd hge (not_le.mpr (WithBot.bot_lt_coe _))`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top => exact absurd hlt (by simp)`. Consider the case `coe a => exact ⟨a, rfl⟩`.
+
+Establish `hKN : Fintype.card K ≤ N` using `by rw [hN] at hge; exact_mod_cast hge`. Establish `hdiff : ∀ k, ∃ q : MvPolynomial K ℚ, (q = 0 ∨ q.totalDegree < N - Fintype.card K) ∧ EventuallyPoly (diffStep (Pi.single k 1) (hilbFn P)) q`. Introduce `k`. Establish `hs : IsMultiHomog (X ⟨k, i k⟩ : MRing ι F) (Pi.single k 1)` using `isWeightedHomogeneous_X _ _ _`. Establish `hJ` using `isMultiHomogIdeal_sup_span hPh hs`.
+
+Take `⟨q, hq⟩` from `h1 F K ι _ hJ`. Use `⟨q, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq0 : q = 0`. Conclude with `Or.inl hq0`. Use `right`.
+
+Establish `hdrop` using `ringKrullDim_sup_span_add_one_le (P := P) (hi k)`. Rewrite `hdrop` using `[hN]`. Establish `hNn : N ≤ n`. Rewrite `hlt` using `[hN]`. Establish `: N < n + 1` using `by exact_mod_cast hlt`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hltJ` using `lt_of_add_one_le_natCast (hdrop.trans (by exact_mod_cast hNn))`. Establish `hb` using `ih _ hJ hltJ q hq hq0`. Establish `h' : ((q.totalDegree + Fintype.card K : ℕ) : WithBot ℕ∞) + 1 ≤ N`. Use `le_trans ?_ hdrop` and prove the remaining obligations.
+
+Use `gcongr`. Establish `h'' : q.totalDegree + Fintype.card K + 1 ≤ N` using `by exact_mod_cast h'`. Use linear arithmetic over natural numbers and integers. Use `hq.mono fun m hm => ?_` and prove the remaining obligations. Establish `e` using `h2 F K ι P hPh (Pi.single k 1) _ hs m`.
+
+Rewrite `e` using `[colon_span_eq_of_isPrime hPp (hi k)]`. Establish `ec : (fun k' => ((Pi.single k 1 : K → ℕ) k' : ℤ)) = (Pi.single k 1 : K → ℤ)`. Use function extensionality and compare the values at `k'`. Apply the tactic sequence `by_cases h : k' = k <;> simp [h]`. Rewrite `e` using `[ec]`.
+
+Simplify using `only [diffStep]`. Rewrite using `[e]`. Conclude with `hm`. Take `⟨p', hp'deg, hp'⟩` from `h3 K (hilbFn P) (N - Fintype.card K) hdiff`. Establish `hpp'` using `hU K _ p p' hp hp'`.
+
+Substitute `hpp'` using the available equality. Rewrite using `[hN]`. Conclude with `(show p.totalDegree + Fintype.card K ≤ N by omega)` after adjusting the coercions. Introduce `I hI hlt p hp hp0`. Take `⟨r, Q, c, hQ, hsum, -, -⟩` from `h4 F K ι I hI`.
+
+Use `choose pj hpj using fun j => h1 F K ι (Q j) (hQ j).2.1`. Use `choose q hq hqdeg hq0 using fun j => hS K _ (pj j) (fun k => (c j k : ℤ)) (hpj j)`. Establish `hsumP : EventuallyPoly (hilbFn I) (∑ j, q j)`. Establish `hall : ∀ᶠ m in Filter.atTop, ∀ j, (hilbFn (Q j) (m - fun k => (c j k : ℤ)) : ℚ) = eval (fun k => (m k : ℚ)) (q j)` using `Filter.eventually_all.mpr hq`. Use `filter_upwards [hall, hsum] with m hm hm'`.
+
+Rewrite using `[hm', map_sum]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun j _ => hm j`. Establish `hpq` using `hU K _ p _ hp hsumP`. Establish `hDQ : ∀ j, q j ≠ 0 → (((q j).totalDegree + Fintype.card K : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ I)`.
+
+Introduce `j hj`. Establish `hpj0 : pj j ≠ 0` using `fun h => hj (hq0 j h)`. Establish `hle : ringKrullDim (MRing ι F ⧸ Q j) ≤ ringKrullDim (MRing ι F ⧸ I)` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor (hQ j).2.2) (Ideal.Quotient.factor_surjective _)`. Establish `hb` using `prime (Q j) (hQ j).1 (hQ j).2.1 (hle.trans_lt hlt) (pj j) (hpj j) hpj0`. Use `le_trans ?_ (hb.trans hle)` and prove the remaining obligations.
+
+Use `hqdeg j` as an intermediate fact. Conclude with `(show (q j).totalDegree + Fintype.card K ≤ (pj j).totalDegree + Fintype.card K by omega)` after adjusting the coercions. Use `set T := Finset.univ.filter fun j => q j ≠ 0 with hT`. Establish `hpT : p = ∑ j ∈ T, q j` using `by rw [hpq, hT, Finset.sum_filter_ne_zero]`. Establish `hTne : T.Nonempty`.
+
+Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `h0`. Rewrite `hpT` using `[h0, Finset.sum_empty]`. Conclude with `hp0 hpT`. Take `⟨j, hjT, hjmax⟩` from `Finset.exists_max_image T (fun j => (q j).totalDegree) hTne`.
+
+Establish `hdeg : p.totalDegree ≤ (q j).totalDegree`. Rewrite using `[hpT]`. Conclude with `totalDegree_finsetSum_le hjmax`. Use `le_trans ?_ (hDQ j (Finset.mem_filter.mp hjT).2)` and prove the remaining obligations. Conclude with `(show p.totalDegree + Fintype.card K ≤ (q j).totalDegree + Fintype.card K by omega)` after adjusting the coercions.
+-/
 theorem totalDegree_add_card_le_ringKrullDim (h1 : HilbEventuallyPoly.Statement.{u})
     (h2 : HilbExactDivide.Statement.{u}) (h3 : PolyOfDiffs.Statement)
     (h4 : PrimeFiltration.Statement.{u}) (hU : EventuallyPolyUnique.Statement)
@@ -209,6 +275,15 @@ theorem totalDegree_add_card_le_ringKrullDim (h1 : HilbEventuallyPoly.Statement.
     exact_mod_cast (show p.totalDegree + Fintype.card K ≤ (q j).totalDegree + Fintype.card K by
       omega)
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ I hI`. Use `⟨fun _ p hp hp0 => ?_, fun hrel => hZ F K ι I hrel⟩` and prove the remaining obligations. Establish `key` using `fun n => totalDegree_add_card_le_ringKrullDim h1 h2 h3 h4 hU hS hZ hD F K ι n I hI`. Unfold `relDim`. Generalize the expression as in `hx : ringKrullDim (MRing ι F ⧸ I) = x at key`.
+
+Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot`. Use `key 0 (WithBot.bot_lt_coe _) p hp hp0` as an intermediate fact. Conclude with `absurd this (not_le.mpr (WithBot.bot_lt_coe _))`. Consider the case `coe a`.
+
+Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top => exact WithBot.coe_le_coe.mpr le_top`. Consider the case `coe N`. Use `key (N + 1) (by exact_mod_cast Nat.lt_succ_self N) p hp hp0` as an intermediate fact. Establish `hle : p.totalDegree + Fintype.card K ≤ N` using `by exact_mod_cast this`.
+
+Use `show ((p.totalDegree : ℕ) : WithBot (WithTop ℤ)) ≤ (((N : ℤ) - Fintype.card K : ℤ) : WithTop ℤ)`. Establish `: (p.totalDegree : ℤ) ≤ (N : ℤ) - Fintype.card K` using `by omega`. Conclude with `this` after adjusting the coercions.
+-/
 theorem HilbDegreeBound.proof (h1 : HilbEventuallyPoly.Statement.{u})
     (h2 : HilbExactDivide.Statement.{u}) (h3 : PolyOfDiffs.Statement)
     (h4 : PrimeFiltration.Statement.{u}) (hU : EventuallyPolyUnique.Statement)

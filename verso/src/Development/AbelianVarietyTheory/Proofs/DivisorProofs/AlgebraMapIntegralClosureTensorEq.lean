@@ -25,6 +25,9 @@ instance (S L D : Type) [CommRing S] [Field L] [Algebra S L] [CommRing D] [Algeb
   IsScalarTower.of_algebraMap_eq fun s =>
     ((tensorIntegralClosureInclusion S L D).commutes s).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_integralClosure_tensor_eq (S L D : Type) [CommRing S] [Field L]
     [Algebra S L] [CommRing D] [Algebra S D] :
     algebraMap (integralClosure S L) (integralClosure D (TensorProduct S D L)) =

@@ -15,9 +15,15 @@ section alg
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[Ux3.block_index_first_val]`. Both sides reduce to the same expression.
+-/
 theorem eI_eB' (a : Fin r) : eI k r a = eB k r 0 (Sum.inl (Sum.inl a)) := by
   ext; rw [Ux3.block_index_first_val]; rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [blkU, Matrix.submatrix_apply, C2.uMap, Matrix.of_apply]`. Rewrite using `[dif_pos (by simp), fvec_low z b.castSucc (by simp), herm_bvec_esI', mulVec_bvec_apply]`. Both sides reduce to the same expression.
+-/
 theorem blkU_uMap (z : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) :
     blkU (C2.uMap k r z g) = Matrix.of fun a b => g (eI k r a) (eI k r b) := by
   ext a b
@@ -25,15 +31,26 @@ theorem blkU_uMap (z : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) :
   rw [dif_pos (by simp), fvec_low z b.castSucc (by simp), herm_bvec_esI', mulVec_bvec_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[eI_eB', eI_eB', U.muP, Ux3.rn_eq, Ux3.block3_mul, Ux3.block3_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem muP_Rn_blk (W : Matrix (Fin r) (Fin r) ℂ) (y : U.RC k r 0) (a b : Fin r) :
     (U.muP k r 0 W * U.Rn k r 0 y) (eI k r a) (eI k r b) = W a b := by
   rw [eI_eB', eI_eB', U.muP, Ux3.rn_eq, Ux3.block3_mul, Ux3.block3_apply]
   simp
 
+/- English proof (translation)
+Rewrite using `[blkU_uMap]`. Use extensionality with `a b`. Conclude with `muP_Rn_blk W y a b`.
+-/
 theorem blkU_uMap_muP_Rn (z : Fin (2 * r + k + 1) → ℂ) (W : Matrix (Fin r) (Fin r) ℂ) (y : U.RC k r 0) :
     blkU (C2.uMap k r z (U.muP k r 0 W * U.Rn k r 0 y)) = W := by
   rw [blkU_uMap]; ext a b; exact muP_Rn_blk W y a b
 
+/- English proof (translation)
+Unfold `B.xiTau psi B.lam`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal, one_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xiTau_one {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (S : B.RealPlaceData k r Wp Wq) (p : B.SS k r) :
     B.xiTau S (1, 1) p = psi k r S.z cStd (Matrix.of p.1.2) * star (psi k r S.z' cStd (Matrix.of p.2.2)) := by
@@ -43,6 +60,11 @@ theorem xiTau_one {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ 
   simp only [map_mul, Complex.conj_I, Complex.conj_ofReal, one_mul]
   push_cast; ring
 
+/- English proof (translation)
+Use `split_ifs with h`. Rewrite using `[eI_eB', eI_eB', U.muP, Ux3.block3_apply]`. Simplify using the standard rewrite rules. Rewrite using `[eI_eB', mulVec_eB, U.muP]`. Simplify using `only [Ux3.block3_apply]`.
+
+Simplify using `only [Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inl, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, add_zero]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hz _ (Or.inl (by rw [Ux3.block_index_first_val]; exact c.isLt)), mul_zero]`.
+-/
 theorem leviElement_superdiagonal_entry (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (W : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
     (if h : a.val + 1 < r then (U.muP k r 0 W) (eI k r a) (eI k r ⟨a.val + 1, h⟩)
       else (U.muP k r 0 W *ᵥ z) (eI k r a)) = (if h : a.val + 1 < r then W a ⟨a.val + 1, h⟩ else 0) := by
@@ -55,6 +77,9 @@ theorem leviElement_superdiagonal_entry (z : Fin (2 * r + k + 1) → ℂ) (hz : 
     refine Finset.sum_eq_zero fun c _ => ?_
     rw [hz _ (Or.inl (by rw [Ux3.block_index_first_val]; exact c.isLt)), mul_zero]
 
+/- English proof (translation)
+Establish `hell : ell k r z (U.muP k r 0 W) = C2.simpleUp W`. Unfold `ell C2.simpleUp`. Apply the tactic sequence `exact Finset.sum_congr rfl fun a _ => leviElement_superdiagonal_entry z hz W a`. Unfold `psi C2.psiC`. Rewrite using `[hell]`.
+-/
 theorem psi_muP (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : ℂ) (W : Matrix (Fin r) (Fin r) ℂ) :
     psi k r z c (U.muP k r 0 W) = C2.psiC c (C2.simpleUp W) := by
   have hell : ell k r z (U.muP k r 0 W) = C2.simpleUp W := by
@@ -63,6 +88,15 @@ theorem psi_muP (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : ℂ) (W
   unfold psi C2.psiC
   rw [hell]
 
+/- English proof (translation)
+Unfold `C2.simpleUp`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Use `set b : Fin m := ⟨a.val + 1, h⟩`.
+
+Establish `hab : a ≠ b` using `by intro e; have := congrArg Fin.val e; simp [b] at this`. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add a b hab]`. Rewrite using `[hA.2 a, hB.2 b, one_mul, mul_one, add_comm]`. Introduce `c ⟨hca, hcb⟩`. Distinguish the cases in `hc : c < a`.
+
+Rewrite using `[hA.1 a c hc, zero_mul]`. Establish `hc' : b < c`. Establish `h1 : a < c` using `lt_of_le_of_ne (not_lt.1 hc) (Ne.symm hca)`. Rewrite `h1`, the goal using `[Fin.lt_def]`. Establish `: c.val ≠ a.val + 1` using `fun e => hcb (Fin.ext e)`.
+
+Simplify using `[b]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hB.1 c b hc', mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem simpleUp_mul {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) (hB : B ∈ C2.UTset m) :
     C2.simpleUp (A * B) = C2.simpleUp A + C2.simpleUp B := by
   unfold C2.simpleUp
@@ -84,6 +118,13 @@ theorem simpleUp_mul {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2
         rw [hB.1 c b hc', mul_zero]
   · simp
 
+/- English proof (translation)
+Establish `hAi` using `Formalism.FourierDecayAlt.P.C2x2.ut_inv hA`. Establish `hdet : IsUnit A.det` using `by rw [StabilizerDisintegration.UC.det_UT hA]; exact isUnit_one`. Establish `h` using `simpleUp_mul hA hAi`. Rewrite `h` using `[Matrix.mul_nonsing_inv _ hdet]`. Establish `h1 : C2.simpleUp (1 : Matrix (Fin m) (Fin m) ℂ) = 0`.
+
+Unfold `C2.simpleUp`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h'`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `e`.
+
+Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Both sides reduce to the same expression. Rewrite `h` using `[h1]`. Take the linear combination `(-1 : ℂ) * h`.
+-/
 theorem simpleUp_inv {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) :
     C2.simpleUp A⁻¹ = -C2.simpleUp A := by
   have hAi := Formalism.FourierDecayAlt.P.C2x2.ut_inv hA
@@ -99,6 +140,9 @@ theorem simpleUp_inv {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.U
   rw [h1] at h
   linear_combination (-1 : ℂ) * h
 
+/- English proof (translation)
+Unfold `U.gaXi U.ZjH`. Rewrite using `[Dx2.SL.zj_zero]`. Both sides reduce to the same expression.
+-/
 theorem gaXi_zero (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (ξ : U.Xi k r 0 0 σ) (γ : B.Mat k 0) :
     U.gaXi k 0 σ d ξ (fun a => a.elim0) γ =
       (U.Rn k r 0 ξ.1.1)⁻¹ * U.mMap k r 0 (U.headH σ d ξ.2.2.1 ξ.2.2.2) γ * U.Rn k r 0 ξ.1.2 := by
@@ -106,6 +150,9 @@ theorem gaXi_zero (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (ξ : U.Xi k r 0
   rw [Dx2.SL.zj_zero]
   rfl
 
+/- English proof (translation)
+Unfold `U.psiStar U.psiH`. Simplify using `only [Dx2.SL.cornerA_zero, Dx2.SL.cornerB_zero, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem psiStar_zero (σ : Equiv.Perm (Fin r)) (z z' : Fin (2 * (r + 0 + 0) + k + 1) → ℂ) (ξ : U.Xi k r 0 0 σ) :
     U.psiStar k 0 σ z z' ξ = psi k r z cStd (U.Rn k r 0 ξ.1.1) * star (psi k r z' cStd (U.Rn k r 0 ξ.1.2)) *
       G.psi U.betaU (U.subS (U.wP σ * U.lowW σ ξ.2.2.1 * (U.wP σ)⁻¹) + U.supS (G.upper ξ.2.2.2)) := by
@@ -113,11 +160,29 @@ theorem psiStar_zero (σ : Equiv.Perm (Fin r)) (z z' : Fin (2 * (r + 0 + 0) + k 
   simp only [Dx2.SL.cornerA_zero, Dx2.SL.cornerB_zero, add_zero]
   rfl
 
+/- English proof (translation)
+Use `B2x5.normSq_det_GV hy` as an intermediate fact. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `this` using `[h0, Complex.normSq_zero]`. Conclude with `zero_ne_one this`.
+-/
 theorem gv_unit {ρ : ℕ} {y : B.Mat k ρ} (hy : y ∈ B.GV k ρ) : IsUnit y.det := by
   have := B2x5.normSq_det_GV hy
   refine isUnit_iff_ne_zero.2 fun h0 => ?_
   rw [h0, Complex.normSq_zero] at this; exact zero_ne_one this
 
+/- English proof (translation)
+Use `set y1 := midB r 0 (Matrix.of h) with hy1def`. Use `set y1' := midB r 0 (Matrix.of h') with hy1def'`. Establish `hy1 : y1 ∈ UWset k 0 z0` using `uw_mid r 0 z0 _ hh`. Establish `hy1' : y1' ∈ UWset k 0 z0'` using `uw_mid r 0 z0' _ hh'`. Establish `hH : (Matrix.of h : B.Mat k (r + 0)) = U.embG k r 0 y1`.
+
+Rewrite using `[← Dx2.Tower.lev_eq_embG, uw_block r 0 z0 _ hh]`. Establish `hH' : (Matrix.of h' : B.Mat k (r + 0)) = U.embG k r 0 y1'`. Rewrite using `[← Dx2.Tower.lev_eq_embG, uw_block r 0 z0' _ hh']`. Establish `u1` using `gv_unit hy1.1`. Establish `uE : IsUnit (U.embG k r 0 y1).det`.
+
+Rewrite using `[← Dx2.Tower.lev_eq_embG]`. Conclude with `gv_unit (Dx2.Tower.lev_GV r 0 y1 hy1.1)`. Establish `uE' : IsUnit (U.embG k r 0 y1').det`. Rewrite using `[← Dx2.Tower.lev_eq_embG]`. Conclude with `gv_unit (Dx2.Tower.lev_GV r 0 y1' hy1'.1)`.
+
+Establish `uV : IsUnit (G.upper V).det` using `Dx2.SL.isUnit_up V`. Establish `uRn : IsUnit (U.Rn k r 0 y).det`. Use `Matrix.isUnit_det_of_right_inverse (B := U.Rn k r 0 (-y)) ?_` and prove the remaining obligations. Conclude with `PBM.rn_mul_neg y`. Establish `hM1 : (U.muP k r 0 (G.upper V))⁻¹ * U.mMap k r 0 Z γ0 * U.muP k r 0 (G.upper V') = U.mMap k r 0 ((G.upper V)ᴴ * Z * G.upper V') γ0`.
+
+Rewrite using `[leviElement_inv _ uV, BigCellDiagonalMap.leviElement_mul_mMap _ _ _ ((G.upper V).isUnit_nonsing_inv_det uV), Ux4.mMap_mul_muP, Matrix.conjTranspose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ (by rw [Matrix.det_conjTranspose]; exact uV.star)]`. Unfold `B.sgs`. Simplify using `only [psiR, Matrix.of.apply_symm_apply]`. Rewrite using `[hH, hH']`. Use `set E := U.embG k r 0 y1`.
+
+Use `set E' := U.embG k r 0 y1'`. Establish `e1 : (U.Rn k r 0 (rnAct y1⁻¹ y))⁻¹ = E⁻¹ * (U.Rn k r 0 y)⁻¹ * E`. Rewrite using `[← embG_conj_Rn y1 hy1.1 y, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ uE, Matrix.mul_assoc]`. Establish `e2 : U.mMap k r 0 ((G.upper V)ᴴ * Z * G.upper V') (y1⁻¹ * γ0 * y1') = E⁻¹ * U.mMap k r 0 ((G.upper V)ᴴ * Z * G.upper V') γ0 * E'` using `(embG_conj_mMap y1 y1' u1 _ γ0).symm`. Establish `e3 : U.Rn k r 0 (rnAct y1'⁻¹ y') = E'⁻¹ * U.Rn k r 0 y' * E'` using `(embG_conj_Rn y1' hy1'.1 y').symm`.
+
+Rewrite using `[e1, e2, e3, ← hM1, Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ uE, Matrix.mul_nonsing_inv_cancel_left _ _ uE']`.
+-/
 theorem sgs_formula (z0 z0' : Fin (2 * 0 + k + 1) → ℂ) (h h' : Mt k r)
     (hh : Matrix.of h ∈ UWset k (r + 0) (liftVec k r 0 z0)) (hh' : Matrix.of h' ∈ UWset k (r + 0) (liftVec k r 0 z0'))
     (V V' : G.UT r → ℂ) (y y' : U.RC k r 0) (Z : Matrix (Fin r) (Fin r) ℂ) (γ0 : B.Mat k 0) :
@@ -161,10 +226,16 @@ theorem sgs_formula (z0 z0' : Fin (2 * 0 + k + 1) → ℂ) (h h' : Mt k r)
   rw [e1, e2, e3, ← hM1, Matrix.mul_inv_rev]
   simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ uE, Matrix.mul_nonsing_inv_cancel_left _ _ uE']
 
+/- English proof (translation)
+The claim follows from `(Dx2.Rad.low_mem w0 d0 hd0 x0).2`.
+-/
 theorem conjS_UT {w0 : Equiv.Perm (Fin r)} {d0 : Fin r → ℂ} (hd0 : ∀ a, d0 a ≠ 0) (x0 : C2.Lstidx w0 → ℂ) :
     (C2.monoP w0 d0)⁻¹ * StabilizerDisintegration.lowS w0 x0 * C2.monoP w0 d0 ∈ C2.UTset r :=
   (Dx2.Rad.low_mem w0 d0 hd0 x0).2
 
+/- English proof (translation)
+Establish `hP` using `Formalism.FourierDecayAlt.P.C2x2.isUnit_det_monomialMatrix w0 d0 hd0`. Rewrite using `[StabilizerDisintegration.UC.upper_fSp, StabilizerDisintegration.UC.upper_utc (Formalism.FourierDecayAlt.P.C2x2.ut_mul (conjS_UT hd0 x0) (StabilizerDisintegration.UC.upper_mem V')), Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hP]`.
+-/
 theorem orbit_split {w0 : Equiv.Perm (Fin r)} {d0 : Fin r → ℂ} (hd0 : ∀ a, d0 a ≠ 0) (x0 : C2.Lstidx w0 → ℂ)
     (y2 : C2.LPidx w0 → ℂ) (V' : G.UT r → ℂ) :
     (G.upper (StabilizerDisintegration.UC.fSp w0 (x0, y2)))ᴴ * C2.monoP w0 d0 * G.upper V' =
@@ -175,6 +246,13 @@ theorem orbit_split {w0 : Equiv.Perm (Fin r)} {d0 : Fin r → ℂ} (hd0 : ∀ a,
     Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_conjTranspose]
   simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hP]
 
+/- English proof (translation)
+Establish `hZH : IsUnit Zᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hZ.star`. Establish `hYH : IsUnit Yᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hY.star`. Unfold `U.mMap U.muP`. Rewrite using `[Ux3.block3_mul]`. Use `congr 1`.
+
+Simplify using `only [Matrix.mul_zero, zero_add, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (G.wMat r), Ux3.wMat_mul_self, Matrix.one_mul]`. Apply the tactic sequence `all_goals try simp only [Matrix.zero_mul, Matrix.mul_zero, zero_add, add_zero]`. Conclude with `Matrix.nonsing_inv_mul _ hγ`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hZH]`.
+
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem mMap_mul_mMap {ρ : ℕ} (Z Y : Matrix (Fin r) (Fin r) ℂ) (hZ : IsUnit Z.det) (hY : IsUnit Y.det)
     (γ : B.Mat k ρ) (hγ : IsUnit γ.det) :
     U.mMap k r ρ Zᴴ γ⁻¹ * U.mMap k r ρ Y γ = U.muP k r ρ (Z⁻¹ * Y) := by
@@ -191,6 +269,9 @@ theorem mMap_mul_mMap {ρ : ℕ} (Z Y : Matrix (Fin r) (Fin r) ℂ) (hZ : IsUnit
       Matrix.nonsing_inv_nonsing_inv _ hZH]
     simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hQH : IsUnit (Qᴴ)⁻¹.det`. Rewrite using `[Matrix.det_nonsing_inv, Matrix.det_conjTranspose]`. Conclude with `(hQ.star).ringInverse`. Rewrite using `[mMap_inv Z γ0 hZ hγ0, Matrix.mul_assoc, BigCellDiagonalMap.leviElement_mul_mMap _ _ _ hQ, mMap_mul_mMap Z _ hZ (by rw [Matrix.det_mul]; exact hQH.mul hZ) γ0 hγ0, Matrix.mul_assoc]`.
+-/
 theorem conj_muP (Z : Matrix (Fin r) (Fin r) ℂ) (hZ : IsUnit Z.det) (γ0 : B.Mat k 0) (hγ0 : IsUnit γ0.det)
     (Q : Matrix (Fin r) (Fin r) ℂ) (hQ : IsUnit Q.det) :
     (U.mMap k r 0 Z γ0)⁻¹ * U.muP k r 0 Q * U.mMap k r 0 Z γ0 = U.muP k r 0 (Z⁻¹ * (Qᴴ)⁻¹ * Z) := by
@@ -199,6 +280,11 @@ theorem conj_muP (Z : Matrix (Fin r) (Fin r) ℂ) (hZ : IsUnit Z.det) (γ0 : B.M
   rw [mMap_inv Z γ0 hZ hγ0, Matrix.mul_assoc, BigCellDiagonalMap.leviElement_mul_mMap _ _ _ hQ,
     mMap_mul_mMap Z _ hZ (by rw [Matrix.det_mul]; exact hQH.mul hZ) γ0 hγ0, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `uQ : IsUnit Q.det` using `by rw [StabilizerDisintegration.UC.det_UT hQ]; exact isUnit_one`. Establish `hN : ∀ A : Matrix (Fin r) (Fin r) ℂ, A ∈ C2.UTset r → U.muP k r 0 A ∈ Formalism.QuantumDeterminants.Nset k (r + 0)` using `fun A hA => BigCellDiagonalMap.leviElement_nset A ⟨fun i j hij => hA.1 i j hij, hA.2⟩`. Establish `hρ : U.muP k r 0 Q ∈ C6.Rset (U.mMap k r 0 Z γ0)`. Use `⟨hN Q hQ, ?_⟩` and prove the remaining obligations. Rewrite using `[conj_muP Z hZ γ0 hγ0 Q uQ]`.
+
+Conclude with `hN _ hQ'`. Establish `h` using `hrel.2 _ hρ`. Rewrite `h` using `[conj_muP Z hZ γ0 hγ0 Q uQ, psi_muP S.z S.z_mem, psi_muP S.z' S.z'_mem]`. Conclude with `h`.
+-/
 theorem relevance_U {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (S : B.RealPlaceData k r Wp Wq) (Z : Matrix (Fin r) (Fin r) ℂ) (hZ : IsUnit Z.det)
     (γ0 : B.Mat k 0) (hγ0 : IsUnit γ0.det) (hrel : C6.IsRelevant S (U.mMap k r 0 Z γ0))

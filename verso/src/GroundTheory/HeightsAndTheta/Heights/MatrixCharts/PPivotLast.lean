@@ -10,6 +10,11 @@ open Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `d S hS x`. Establish `h1` using `MCCusp.sq_le_inv_diag_mul_qf hS x (Fin.last d)`. Establish `h2` using `hPI d S hS`. Establish `hpos : 0 < S⁻¹ (Fin.last d) (Fin.last d)` using `hS.inv.diag_pos`. Establish `hp : 0 < pivot S d`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `mul_nonpos_of_nonneg_of_nonpos hpos.le hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem PivotLast.proof (hPI : PivotInvDiag.Statement) : PivotLast.Statement := by
   intro d S hS x
   have h1 := MCCusp.sq_le_inv_diag_mul_qf hS x (Fin.last d)

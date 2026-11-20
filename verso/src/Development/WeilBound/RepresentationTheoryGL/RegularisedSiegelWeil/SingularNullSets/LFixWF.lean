@@ -21,10 +21,18 @@ def UnitTriv (D : D7) (χ : (AE D)ˣ →* Circle) (S : Finset (Pl D)) : Prop :=
     (∀ v ∉ S, cv D v (u : AE D) ∈ intLoc D.host.F D.host.E v ∧
       cv D v ((u⁻¹ : (AE D)ˣ) : AE D) ∈ intLoc D.host.F D.host.E v) → χ u = 1 ∧ absA D u = 1
 
+/- English proof (translation)
+Use `congrFun (congrFun (adj_adj (D := D) (Matrix.of fun (_ : Fin 1) (_ : Fin 1) => z)) 0) 0` as an intermediate fact. Simplify `this` using `[adj]`.
+-/
 theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
   have := congrFun (congrFun (adj_adj (D := D) (Matrix.of fun (_ : Fin 1) (_ : Fin 1) => z)) 0) 0
   simpa [adj] using this
 
+/- English proof (translation)
+Set `M' : Matrix (Fin n) (Fin n) (intLoc D.host.F D.host.E v)` to `fun i j => ⟨M i j, h i j⟩`. Establish `h1` using `(intLoc D.host.F D.host.E v).subtype.map_det M'`. Establish `e : (intLoc D.host.F D.host.E v).subtype.mapMatrix M' = M` using `by ext i j; rfl`. Rewrite `h1` using `[e]`. Rewrite using `[← h1]`.
+
+Conclude with `(M'.det).2`.
+-/
 theorem det_mem_intLoc {v : Pl D} {M : Matrix (Fin n) (Fin n) (Fv D.host.F v ⊗[D.host.F] D.host.E)}
     (h : ∀ i j, M i j ∈ intLoc D.host.F D.host.E v) : M.det ∈ intLoc D.host.F D.host.E v := by
   let M' : Matrix (Fin n) (Fin n) (intLoc D.host.F D.host.E v) := fun i j => ⟨M i j, h i j⟩
@@ -34,6 +42,9 @@ theorem det_mem_intLoc {v : Pl D} {M : Matrix (Fin n) (Fin n) (Fv D.host.F v ⊗
   rw [← h1]
   exact (M'.det).2
 
+/- English proof (translation)
+Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne h, map_zero]`.
+-/
 theorem map_one_entry {R : Type} [CommRing R] (f : AE D →+* R) (k j : Fin n) :
     f ((1 : Mx D n n) k j) = (1 : Matrix (Fin n) (Fin n) R) k j := by
   by_cases h : k = j
@@ -42,6 +53,33 @@ theorem map_one_entry {R : Type} [CommRing R] (f : AE D →+* R) (k j : Fin n) :
 
 variable {S : Finset (Pl D)} {e : AE D}
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hM`. Establish `hll : ∀ i j, a.1 i j = mat g (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j))` using `fun i j => by`. Rewrite using `[ha, block_matrix_apply_inl_inl_alt]`. Establish `hrr : ∀ i j, (a⁻¹).1 i j = cA D (mat g (finSumFinEquiv (Sum.inr j)) (finSumFinEquiv (Sum.inr i)))` using `fun i j => by`. Rewrite using `[ha, block_matrix_apply_inr_inr_alt]`.
+
+Use `show _ = cA D (cA D ((a⁻¹).1 i j))`. Rewrite using `[cA_cA]`. Establish `hinf : ∀ w i j, compInf D.host.F D.host.E w (a.1 i j) = (1 : Matrix (Fin n) (Fin n) _) i j` using `fun w i j => by`. Rewrite using `[hll, LFixTh.kOff_inf hg, one_ll]`. Establish `hat : ∀ v ∈ S, ∀ i j, cv D v (a.1 i j) = (1 : Matrix (Fin n) (Fin n) _) i j` using `fun v hv i j => by`.
+
+Rewrite using `[hll, LFixTh.kOff_at hg hv, one_ll]`. Establish `hint : ∀ i j, IntS S (a.1 i j)` using `fun i j v hv => by rw [hll]; exact (LFixTh.kOff_int hg hv _ _).1`. Establish `hint' : ∀ i j, IntS S ((a⁻¹).1 i j)` using `fun i j => by`. Rewrite using `[hrr]`. Conclude with `IntS.cA (fun v hv => (LFixTh.kOff_int hg hv _ _).1)`.
+
+Establish `hone : ∀ k j, IntS S ((1 : Mx D n n) k j)` using `fun k j v _ => by`. Rewrite using `[map_one_entry]`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq]`.
+
+Conclude with `one_mem _`. Rewrite using `[Matrix.one_apply_ne h]`. Conclude with `zero_mem _`. Establish `hoff : ∀ k j, OffS S (a.1 k j - (1 : Mx D n n) k j)` using `fun k j => ⟨fun w => by rw [RingHom.map_sub, hinf, map_one_entry, sub_self], fun v hv => by rw [RingHom.map_sub, hat v hv, map_one_entry, sub_self], (hint k j).add (hone k j).neg⟩`. Use `set u := Matrix.GeneralLinearGroup.det a with hudef`.
+
+Establish `hu : (u : AE D) = a.1.det` using `Matrix.GeneralLinearGroup.val_det_apply a`. Establish `hu' : ((u⁻¹ : (AE D)ˣ) : AE D) = (a⁻¹).1.det`. Rewrite using `[hudef, ← map_inv]`. Conclude with `Matrix.GeneralLinearGroup.val_det_apply _`. Establish `hmap : ∀ {R : Type} [CommRing R] (f : AE D →+* R), (∀ i j, f (a.1 i j) = (1 : Matrix (Fin n) (Fin n) R) i j) → f a.1.det = 1`.
+
+Introduce `R _ f hf`. Rewrite using `[RingHom.map_det]`. Establish `: f.mapMatrix a.1 = 1` using `by ext i j; exact hf i j`. Rewrite using `[this, Matrix.det_one]`. Take `⟨hχu, habs⟩` from `hU u (fun w => by rw [hu]; exact hmap _ (hinf w)) (fun v hv => by rw [hu]; exact hmap _ (hat v hv)) (fun v hv => ⟨by rw [hu, RingHom.map_det]; exact det_mem_intLoc fun i j => hint i j v hv, by rw [hu', RingHom.map_det]; exact det_mem_intLoc fun i j => hint' i j v hv⟩)`.
+
+Establish `hxa : ∀ x : Mx D V.rank n, IntOff S (x * a.1) ↔ IntOff S x`. Introduce `x`. Rewrite using `[intOff_iff, intOff_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`.
+
+Establish `ex : x = (x * a.1) * (a⁻¹).1`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Rewrite using `[ex]`. Conclude with `intS_mul h hint' i j`. Introduce `h i j`.
+
+Conclude with `intS_mul h hint i j`. Establish `hexa : ∀ x : Mx D V.rank n, e • (x * a.1) = e • x`. Introduce `x`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, Matrix.mul_apply, Finset.mul_sum]`.
+
+Establish `: ∀ k, e * (x i k * a.1 k j) = e * (x i k * (1 : Mx D n n) k j)`. Introduce `k`. Establish `h0` using `idem_mul_offS he (hoff k j)`. Take the linear combination `(x i k) * h0`. Repeatedly rewrite using `[this, ← Finset.mul_sum, ← Matrix.mul_apply, Matrix.mul_one]`.
+
+Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[hω.levi g a ha Ψ x]`. Express the relevant statement in the definitionally equal form `(χ u : ℂ) * npow (absA D u) ((V.rank : ℂ) / 2) * Ψ.1 (x * a.1) = Ψ.1 x`. Rewrite using `[hχu, habs]`. Simplify using `only [npow, NNReal.coe_one, Complex.ofReal_one, Complex.one_cpow, Circle.coe_one, one_mul]`.
+
+Rewrite using `[hΨ (x * a.1), hΨ x, hxa, hexa]`.
+-/
 theorem fixM (V : HSp D) {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} (hω : IsWeilSch ψ χ θ V μ ω)
     (he : IsIdem S e) (hU : UnitTriv D χ S) {g : G D n} (hg : g ∈ KOff D n S) (hM : IsM g)

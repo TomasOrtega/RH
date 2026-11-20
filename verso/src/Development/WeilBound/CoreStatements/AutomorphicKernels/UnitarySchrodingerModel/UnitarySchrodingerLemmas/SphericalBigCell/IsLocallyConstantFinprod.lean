@@ -23,6 +23,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteD
   {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ}
   (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ)
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `X`. Establish `hS` using `Filter.eventually_cofinite.1 (hae.and (eventually_mem_latV b X))`. Set `O : Set (Af F)` to `{x | ∀ v, x v ∈ v.adicCompletionIntegers F}`. Establish `hOo : IsOpen O` using `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`.
+
+Set `U : Set (Fin n → Fin M → Af F ⊗[F] E)` to `{Y | ∀ a i k, crd b (Af F) ((Y - X) a i) k ∈ O}`. Establish `hUo : IsOpen U`. Establish `e : U = ⋂ a, ⋂ i, ⋂ k, (fun Y : Fin n → Fin M → Af F ⊗[F] E => crd b (Af F) ((Y - X) a i) k) ⁻¹' O`. Use extensionality with `Y`. Simplify using `[U]`.
+
+Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => hOo.preimage ((continuous_crd b (Af F) k).comp ((continuous_apply i).comp ((continuous_apply a).comp (continuous_id.sub continuous_const))))`. Establish `hXU : X ∈ U`. Introduce `a i k v`. Simplify using `only [sub_self, crd, Pi.zero_apply, map_zero, Finsupp.zero_apply]`.
+
+Conclude with `zero_mem (v.adicCompletionIntegers F)`. Establish `hfin : ∀ Y ∈ U, ∏ᶠ v, Φv v (projV v Y) = ∏ v ∈ hS.toFinset, Φv v (projV v Y)`. Introduce `Y hY`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `v hv`.
+
+Rewrite using `[Set.Finite.coe_toFinset]`. Introduce `h`. Apply `hv` to reduce the goal to its premises. Establish `hYX : projV v (Y - X) ∈ latV b v`. Introduce `a i k`.
+
+Use `crd_projV b (Y - X) v a i k` as an intermediate fact. Simplify using `only [crd] at this`. Rewrite using `[this]`. Conclude with `hY a i k v`. Establish `hmem : projV v Y ∈ latV b v`.
+
+Establish `e : projV v Y = projV v (Y - X) + projV v X`. Rewrite using `[← projV_add]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `latV_add b v hYX h.2`.
+
+Use `show Φv v (projV v Y) = 1`. Rewrite using `[h.1, Set.indicator_of_mem hmem]`. Both sides reduce to the same expression. Establish `hloc : ∀ᶠ Y in nhds X, ∀ v ∈ hS.toFinset, Φv v (projV v Y) = Φv v (projV v X)` using `(Filter.eventually_all_finset _).2 fun v _ => ((hSB v).1.comp_continuous (continuous_projV_fin b v)).eventually_eq X`. Use `filter_upwards [hUo.mem_nhds hXU, hloc] with Y hY hY'`.
+
+Rewrite using `[hfin Y hY, hfin X hXU]`. Conclude with `Finset.prod_congr rfl hY'`.
+-/
 theorem isLocallyConstant_finprod (hSB : ∀ v, IsSB (Φv v))
     (hae : ∀ᶠ v in Filter.cofinite, Φv v = (latV b v).indicator 1) :
     IsLocallyConstant (fun X : Fin n → Fin M → Af F ⊗[F] E => ∏ᶠ v, Φv v (projV v X)) := by
@@ -76,6 +95,9 @@ theorem isLocallyConstant_finprod (hSB : ∀ v, IsSB (Φv v))
   rw [hfin Y hY, hfin X hXU]
   exact Finset.prod_congr rfl hY'
 
+/- English proof (translation)
+Take `⟨hSB, hae, hprod⟩ : IsPureFin b Φf Φv` from `h`. Establish `e : Φf = fun X => ∏ᶠ v, Φv v (projV v X)` using `funext hprod`. Substitute `e` using the available equality. Conclude with `⟨isLocallyConstant_finprod b Φv hSB hae, hasCompactSupport_finprod b Φv hSB hae⟩`.
+-/
 theorem isSB_of_isPureFin (Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ)
     (h : HeckeCharacterZeroLocus.SiegelWeilU.IsPureFin b Φf Φv) : IsLocallyConstant Φf ∧ HasCompactSupport Φf := by
   obtain ⟨hSB, hae, hprod⟩ : IsPureFin b Φf Φv := h
@@ -93,6 +115,9 @@ def transpH (A : Type) [TopologicalSpace A] (r n : ℕ) : (Fin r → Fin n → A
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional D.host.F D.host.E := Module.Finite.of_basis bs`. Take `⟨h1, h2⟩` from `isSB_of_isPureFin bs gv _ h`. Conclude with `⟨h1.comp_continuous (transpH _ r n).continuous, h2.comp_homeomorph (transpH _ r n)⟩`.
+-/
 theorem mem_SB_of_isPureFin {D : D7} {r n d : ℕ} (bs : Module.Basis (Fin d) D.host.F D.host.E)
     (g : (Fin r → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ)
     (gv : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F),

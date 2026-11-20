@@ -23,17 +23,26 @@ section Lemmas
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `((hU.2.1 k).2 _).2 (by have hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0 := hσ exact (congrArg σ (Subtype.ext τ.2)).trans hσ0)`.
+-/
 theorem relab_mem {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf V) (τ : Psi H) (k : V.Comp) :
     relab c σ τ.1 ∈ (V.X k).Ψ :=
   ((hU.2.1 k).2 _).2 (by
     have hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0 := hσ
     exact (congrArg σ (Subtype.ext τ.2)).trans hσ0)
 
+/- English proof (translation)
+Rewrite using `[modelWt_congr V hσ hU h, modelWt_add V hG (even_wtOf _ _), modelWt_flatWt V hσ hU τ k hτ]`.
+-/
 theorem modelWt_shift {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf V) (τ : Psi H)
     {G G' : WTZ E} (hG : Even G.2) (h : exZ Dw G' = exZ Dw (G + wtOf Dw (flatWt Dw τ) 0)) (k : V.Comp)
     (hτ : relab c σ τ.1 ∈ (V.X k).Ψ) : modelWt V G' k = modelWt V G k + modelFlat r ⟨_, hτ⟩ := by
   rw [modelWt_congr V hσ hU h, modelWt_add V hG (even_wtOf _ _), modelWt_flatWt V hσ hU τ k hτ]
 
+/- English proof (translation)
+Use extensionality with `f`. Simplify using `only [cuspOn, Submodule.mem_inf, mem_cuspW, h]`. Use `and_congr_left fun _ => and_congr_right fun _ => forall₂_congr fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[modelWt_congr (U σ) hσ (hU σ hσ) h]`.
+-/
 theorem cuspOn_congr {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (Z : Comp Xo c)
     {G G' : WTZ E} (h : exZ Dw G = exZ Dw G') : cuspOn U Z G = cuspOn U Z G' := by
   ext f
@@ -41,6 +50,17 @@ theorem cuspOn_congr {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hU : ∀ σ, G
   refine and_congr_left fun _ => and_congr_right fun _ => forall₂_congr fun σ hσ => ?_
   rw [modelWt_congr (U σ) hσ (hU σ hσ) h]
 
+/- English proof (translation)
+Establish `hR` using `GlobalTheory.reading_linearIndependent_and_injective GlobalTheory.abelianSchemeLaws_all.1.secBaseChange _ H Dw l Xo c σ r (Formalism.L2.PjFree.Unf.ofPj (U σ)) (hL.unf σ hσ) a n`. Simplify using `only [Formalism.L2.PjFree.rdU_ofPj] at hR`. Establish `hoff : ∀ f ∈ suppOn Z, ∀ k y, (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∉ framesOn (U σ) Z → rdU (U σ) f k y = 0` using `fun f hf k y hz => rdU_eq_zero (U σ) hf hz`. Use `⟨fun m b hb hs hli => ?_, fun f hf hs hne => ?_⟩` and prove the remaining obligations. Establish `h0 : LinearIndependent ℂ (fun i => rdU (U σ) (b i))` using `hR.1 m b hb hli`.
+
+Rewrite `h0`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `w hw`. Use `h0 w ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+
+Distinguish the cases in `hz : (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∈ framesOn (U σ) Z`. Rewrite `hz` using `[hk]`. Take `⟨rfl, hy⟩` from `hz`. Use `congrFun hw ⟨y, hy⟩` as an intermediate fact. Simplify `this` using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+
+Conclude with `Finset.sum_eq_zero fun i _ => by rw [hoff _ (hs i) k y hz, mul_zero]`. Assume the negation of the conclusion as `hall push_neg at hall`. Use `hne (hR.2 f hf fun k y hy => ?_)` and prove the remaining obligations. Distinguish the cases in `hz : (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∈ framesOn (U σ) Z`. Rewrite `hz` using `[hk]`.
+
+Take `⟨rfl, hy'⟩` from `hz`. Conclude with `hall ⟨y, hy'⟩`. Conclude with `hoff f hs k y hz`.
+-/
 theorem res_indep {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} (hL : Laws U x) (Z : Comp Xo c)
     (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) (k0 : (U σ).Comp)
     (hk : framesOn (U σ) Z = {z | z.1 = k0 ∧ z.2 ∈ ((U σ).X z.1).dom}) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
@@ -75,6 +95,15 @@ theorem res_indep {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} (hL : La
       exact hall ⟨y, hy'⟩
     · exact hoff f hs k y hz
 
+/- English proof (translation)
+Establish `hdet : Differentiable ℂ (fun y : Frame X.Ψ r => (mat y τ).det)`. Establish `e : (fun y : Frame X.Ψ r => (mat y τ).det) = fun y => ∑ p : Equiv.Perm (Fin r), ((Equiv.Perm.sign p : ℤ) : ℂ) * ∏ i, y τ (p i) i`. Use function extensionality and compare the values at `y`. Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `fun_prop`. Establish `hne : ∀ y ∈ X.dom, (mat y τ).det ≠ 0` using `fun y hy => (hy τ).1`.
+
+Use `⟨⟨fun y => horizGen τ y, ?_, fun y => rfl⟩, ⟨fun y => (horizGen τ y)⁻¹, ?_, fun y => rfl⟩, fun y hy => inv_ne_zero (hne y hy)⟩` and prove the remaining obligations. Conclude with `(hdet.differentiableOn).inv hne`. Establish `: (fun y => (horizGen τ y)⁻¹) = fun y : Frame X.Ψ r => (mat y τ).det`. Use function extensionality and compare the values at `y`. Simplify using `[horizGen]`.
+
+Rewrite using `[this]`. Conclude with `hdet.differentiableOn`.
+-/
 theorem horizGen_mem (X : Data E r) (τ : X.Ψ) :
     (fun y : ↥X.dom => horizGen τ y.1) ∈ holAlg X ∧ (fun y : ↥X.dom => (horizGen τ y.1)⁻¹) ∈ holAlg X ∧
       ∀ y ∈ X.dom, horizGen τ y ≠ 0 := by
@@ -96,6 +125,11 @@ theorem horizGen_mem (X : Data E r) (τ : X.Ψ) :
       funext y; simp [horizGen]
     rw [this]; exact hdet.differentiableOn
 
+/- English proof (translation)
+Establish `h1` using `(mem_cuspW.1 hf).2 σ hσ`. Establish `h2 : ∀ P ∈ holSub (U σ).X (modelWt (U σ) G), DifferentiableOn ℂ (P k) ((U σ).X k).dom`. Introduce `P hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem P hP => exact (hP k).1.1.1`.
+
+Consider the case `zero => exact differentiableOn_const 0`. Consider the case `add P Q _ _ hP hQ => exact hP.add hQ`. Consider the case `smul a P _ hP => exact (differentiableOn_const a).mul hP`. Conclude with `⟨rdU (U σ) f k, h2 _ h1, fun y => rfl⟩`.
+-/
 theorem resRd_mem_holAlg {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (σ : c.F →+* ℂ) (hσ : GoodEmb c σ)
     (hT : AllTest Xo c) (k : (U σ).Comp) (G : WTZ E) (f : Rul Xo c) (hf : f ∈ cuspW Xo c U G) :
     resRd (U σ) hT k f ∈ holAlg ((U σ).X k) := by
@@ -111,6 +145,33 @@ theorem resRd_mem_holAlg {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (σ : c.F �
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U x hL Z τ`. Take `⟨a, n, hD, h2, hn, f0, hf0, hf0ne⟩` from `GlobalTheory.T.exists_nonzero_cuspForm_parallelWeight_each_component E H Dw l Xo c r U x hL Z`. Take `⟨a', hD', h1', hex⟩` from `GlobalTheory.T.exists_dominant_weight_shift_flatLineDet E H Dw a n τ hD h2`. Establish `h1 : ∀ ρ i, i < Dw.mult ρ → 1 ≤ a (ρ, i)` using `fun ρ i hi => le_trans (by norm_num) (h2 ρ i hi)`. Establish `hT : AllTest Xo c` using `GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c`.
+
+Establish `hEv : Even (wtZ a n).2`. Take `⟨m, hm⟩` from `hD.2`. Conclude with `⟨m, by simp [wtZ, hm]⟩`. Establish `hVV' : cuspOn U Z (wtZ a' n) = cuspOn U Z (wtZ a n + wtOf Dw (flatWt Dw τ) 0)` using `cuspOn_congr hL.unf Z hex`. Establish `hsec : ∀ (b : (E →+* ℂ) × ℕ → ℕ), cuspOn U Z (wtZ b n) ≤ sec Xo c b n` using `fun b f hf => by`.
+
+Use `cuspW_le_secZ (U := U) (wtZ b n) (cuspOn_le U Z _ hf)` as an intermediate fact. Rewrite `this` using `[AllWt.exZ_wtZ, secZ_nat]`. Then use the resulting hypothesis. Establish `hsupp : ∀ (G : WTZ E), cuspOn U Z G ≤ suppOn Z` using `fun G => inf_le_right`. Establish `pk : ∀ σ, GoodEmb c σ → ∃ (k0 : (U σ).Comp) (hτ : relab c σ τ.1 ∈ ((U σ).X k0).Ψ), framesOn (U σ) Z = {z | z.1 = k0 ∧ z.2 ∈ ((U σ).X z.1).dom} ∧ (∀ f ∈ cuspOn U Z (wtZ a n), (fun y : ↥((U σ).X k0).dom => horizGen ⟨_, hτ⟩ y.1) * resRd (U σ) hT k0 f ∈ Submodule.span ℂ (resRd (U σ) …`. Introduce `σ hσ`.
+
+Take `⟨k0, hk⟩` from `framesOn_eq_model E H Dw l Xo c r U x hL Z σ hσ`. Establish `hτ` using `relab_mem (U σ) hσ (hL.unf σ hσ) τ k0`. Establish `hw` using `modelWt_shift (U σ) hσ (hL.unf σ hσ) τ hEv hex k0 hτ`. Use `⟨k0, hτ, hk, fun f hf => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.horizontalGenerator_zpow_mul_cuspForm_mem_span E H Dw l Xo c r U x hL Z σ hσ k0 hk ⟨_, hτ⟩ 1 a a' n hD hD' h1' hn (by rw [hw, one_smul]) f hf` as an intermediate fact.
+
+Apply the tactic sequence `convert this using 1 <;> first | rfl | (funext y; simp [resRd_apply])`. Use `GlobalTheory.T.horizontalGenerator_zpow_mul_cuspForm_mem_span E H Dw l Xo c r U x hL Z σ hσ k0 hk ⟨_, hτ⟩ (-1) a' a n hD' hD h1 hn (by rw [hw, neg_one_smul, add_neg_cancel_right]) f hf` as an intermediate fact. Apply the tactic sequence `convert this using 1 <;> first | rfl | (funext y; simp [resRd_apply])`. Take `⟨σ0, hσ0⟩ : ∃ σ, GoodEmb c σ` from `⟨_, goodEmb_goodOf c c.F.val.toRingHom⟩`. Use `haveI : FiniteDimensional c.F (cuspOn U Z (wtZ a n)) := (GlobalTheory.T.cuspForms_component_finiteDimensional_and_spanned E H Dw l Xo c r U x hL Z σ0 hσ0 a n hD h1 hn).1`.
+
+Use `haveI : FiniteDimensional c.F (cuspOn U Z (wtZ a' n)) := (GlobalTheory.T.cuspForms_component_finiteDimensional_and_spanned E H Dw l Xo c r U x hL Z σ0 hσ0 a' n hD' h1' hn).1`. Establish `hprod : ∀ f ∈ cuspOn U Z (wtZ a n), ∀ g ∈ cuspOn U Z (wtZ a' n), f * g ∈ sec Xo c (a + a') (n + n) ⊓ suppOn Z`. Introduce `f hf g hg`. Establish `e : exZ Dw (wtZ (a + a') (n + n)) = exZ Dw (wtZ a n) + exZ Dw (wtZ a' n)`. Rewrite using `[wtZ_add]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `exZ_add _ _ i`. Establish `hm` using `mul_mem_secZ (cuspW_le_secZ (U := U) _ (cuspOn_le U Z _ hf)) (cuspW_le_secZ (U := U) _ (cuspOn_le U Z _ hg))`. Rewrite `hm` using `[← e, AllWt.exZ_wtZ, secZ_nat]`. Use `⟨hm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Conclude with `mul_mem_suppOn g (hsupp _ hf)`. Take `⟨k0, hτ0, hk0, hA0, -⟩` from `pk σ0 hσ0`. Take `⟨T, hT0, hTc⟩` from `GlobalTheory.T.exists_rational_multiplier_of_complex_multiplier c.F (Rul Xo c) (↥((U σ0).X k0).dom → ℂ) σ0 (resRd (U σ0) hT k0) (resRd_smul (U σ0) hT k0) (cuspOn U Z (wtZ a n)) (cuspOn U Z (wtZ a' n)) (fun m b hb hli => by`. Establish `hb' : ∀ i, b i ∈ sec Xo c (a + a') (n + n) ⊓ suppOn Z` using `fun i => (Submodule.mul_le.2 hprod) (hb i)`.
+
+Conclude with `(res_indep hL Z σ0 hσ0 k0 hk0 (a + a') (n + n)).1 m b (fun i => (hb' i).1) (fun i => (hb' i).2) hli)`. Use the proof step `(fun y => horizGen ⟨_, hτ0⟩ y.1) hA0 ⟨f0, hf0, fun h0 => by`. Take `⟨y, hy⟩` from `(res_indep hL Z σ0 hσ0 k0 hk0 a n).2 f0 (hsec a hf0) (hsupp _ hf0) hf0ne`. Use `congrFun h0 y` as an intermediate fact. Simplify using `only [Pi.mul_apply, resRd_apply, Pi.zero_apply, mul_eq_zero] at this`.
+
+Break down `this with h | h` into its components or cases. Conclude with `(horizGen_mem _ _).2.2 y.1 y.2 h`. Conclude with `hy h⟩`. Use `⟨wtZ a n, f0, T ⟨f0, hf0⟩, hEv, hf0, hVV' ▸ (T ⟨f0, hf0⟩).2, hf0ne, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨k1, hτ, hk, hA, hA'⟩` from `pk σ hσ`.
+
+Take `⟨y0, -⟩` from `(res_indep hL Z σ hσ k1 hk a n).2 f0 (hsec a hf0) (hsupp _ hf0) hf0ne`. Use `haveI := GlobalTheory.T.holomorphicRestrictionSubalgebraFrameDomain_isDomain E r ((U σ).X k1) ⟨y0.1, y0.2⟩`. Take `⟨hh, hh', hne⟩` from `horizGen_mem ((U σ).X k1) ⟨_, hτ⟩`. Take `⟨α, hα, hαT⟩` from `GlobalTheory.T.commuting_multiplier_eq_const_smul_generator_alt c.F (Rul Xo c) (↥((U σ).X k1).dom → ℂ) σ (resRd (U σ) hT k1) (resRd_smul _ _ _) (holAlg ((U σ).X k1)) (cuspOn U Z (wtZ a n)) (cuspOn U Z (wtZ a' n)) (fun f hf => resRd_mem_holAlg σ hσ hT k1 _ f (cuspOn_le U Z _ hf)) …`. Use `⟨α, hα, fun k hτk y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hy` using `[hk]`. Take `⟨rfl, hyd⟩` from `hy`. Establish `e` using `congrFun (hαT ⟨f0, hf0⟩) ⟨y, hyd⟩`. Simplify using `only [resRd_apply, Pi.smul_apply, Pi.mul_apply, smul_eq_mul] at e`. Rewrite using `[e]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flat_pair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
     (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (τ : Psi H), ∃ (G : WTZ E) (f g : Rul Xo c), Even G.2 ∧

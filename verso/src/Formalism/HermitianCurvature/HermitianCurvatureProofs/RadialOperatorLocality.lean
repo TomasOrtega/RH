@@ -5,6 +5,9 @@ noncomputable section
 
 namespace Formalism.FourierDecayAlt.P.CutSE
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D Θ f₁ f₂ h g hg`. Establish `hO` using `Formalism.FourierDecayAlt.P.SmoothnessOnGoodSet.isOpen_OmPlus (k := k) (r := r) D.z D.z'`. Establish `h' : ∀ x ∈ B.GV k r, x ∈ Q.OmPlus k r D.z D.z' → f₁ x = f₂ x` using `fun x hx hxO => h x ⟨hx, hxO⟩`. Conclude with `⟨Formalism.FourierDecayAlt.P.CutMP.JA.LocOp.opApply_congr_GV Θ hO h' g hg.1 hg.2, Formalism.FourierDecayAlt.P.CutMP.JA.LocOp.opAdj_congr_GV Θ hO h' g hg.1 hg.2⟩`.
+-/
 theorem radial_operator_locality : RDOpLocal := by
   intro k r Wp Wq _ _ _ _ _ _ D Θ f₁ f₂ h g hg
   have hO := Formalism.FourierDecayAlt.P.SmoothnessOnGoodSet.isOpen_OmPlus (k := k) (r := r) D.z D.z'

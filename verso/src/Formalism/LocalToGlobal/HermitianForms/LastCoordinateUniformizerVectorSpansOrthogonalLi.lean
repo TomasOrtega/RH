@@ -17,6 +17,11 @@ def sgHC (R : Ranks) (h : HCParam R) (i : ℕ) : ℚ :=
 
 variable (D : D7)
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Establish `h` using `D.sp.X'_rank`. Establish `h2` using `D.R.m_add_three_le_k`. Rewrite using `[h]`. Unfold `Ranks.rankX' Ranks.r Ranks.N`.
+
+Rewrite using `[Nat.mul_add, Nat.mul_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rankP : letI := D.host.cmStar; D.sp.X'.rank = D.R.N D.R.m - 1 := by
   letI := D.host.cmStar
   have h := D.sp.X'_rank

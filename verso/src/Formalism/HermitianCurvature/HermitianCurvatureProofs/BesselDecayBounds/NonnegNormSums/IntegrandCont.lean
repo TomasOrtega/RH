@@ -33,6 +33,11 @@ def BeConvAt (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp �
   (∀ u ∈ smoothVecs (k := k) (r := r) σ, ∀ v : H, VDK σ w0 v →
     ContinuousOn (fun x => be z c π μW μN σ (σ x u) v) (UH (Hpk k r)))
 
+/- English proof (translation)
+Establish `hmem : ∀ᵐ p ∂(μW.prod μN), p ∈ (fun p : Mt k r × Mt k r => (Matrix.of p.1 * Matrix.of p.2 : Mx k r)) ⁻¹' UH (Hpk k r)` using `by filter_upwards [hM.1] with p hp`. Conclude with `hG.1 _ hp.1.1 _ hp.2.1`. Establish `hT : MeasurableSet ((fun p : Mt k r × Mt k r => (Matrix.of p.1 * Matrix.of p.2 : Mx k r)) ⁻¹' UH (Hpk k r))` using `(isClosed_UH.preimage continuous_matrix_mul).measurableSet`. Establish `hcoT : ContinuousOn (fun p : Mt k r × Mt k r => ⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ) ((fun p : Mt k r × Mt k r => (Matrix.of p.1 * Matrix.of p.2 : Mx k r)) ⁻¹' UH (Hpk k r))` using `continuousOn_const.inner ((hcont w).comp continuous_matrix_mul.continuousOn (fun p hp => hp))`. Establish `h` using `hcoT.aestronglyMeasurable (μ := μW.prod μN) hT`.
+
+Rewrite `h` using `[Measure.restrict_eq_self_of_ae_mem hmem]`. Then use the resulting hypothesis.
+-/
 theorem coef_aesm (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (μW μN : Measure (Mt k r))
     (σ : Mx k r → (H →L[ℂ] H)) (hG : GrpF k r z) (hM : MeasF z π μW μN)
     (hcont : ∀ w : H, ContinuousOn (fun g => σ g w) (UH (Hpk k r))) (v w : H) :
@@ -49,6 +54,11 @@ theorem coef_aesm (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[�
   have h := hcoT.aestronglyMeasurable (μ := μW.prod μN) hT
   rwa [Measure.restrict_eq_self_of_ae_mem hmem] at h
 
+/- English proof (translation)
+Establish `h1 : (Formalism.FourierDecayAlt.B.gN P * Formalism.FourierDecayAlt.B.gN Q) ^ (1 - a) ≤ Formalism.FourierDecayAlt.B.gN R ^ (1 - a)` using `Real.rpow_le_rpow_of_nonpos hR hle (by linarith)`. Rewrite `h1` using `[Real.mul_rpow hP.le hQ.le]`. Establish `h2 : Formalism.FourierDecayAlt.B.gN P ^ (a - 1) * Formalism.FourierDecayAlt.B.gN P ^ (1 - a) = 1`. Rewrite using `[← Real.rpow_add hP]`. Put the polynomial expressions in normal form.
+
+Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, h2, one_mul]`. Use `_ ≤ Formalism.FourierDecayAlt.B.gN P ^ (a - 1) * Formalism.FourierDecayAlt.B.gN R ^ (1 - a) := mul_le_mul_of_nonneg_left h1 (Real.rpow_nonneg hP.le _)`.
+-/
 theorem gN_rpow_le {a : ℝ} (ha : 1 ≤ a) {P Q R : Mx k r} (hP : 0 < Formalism.FourierDecayAlt.B.gN P) (hQ : 0 < Formalism.FourierDecayAlt.B.gN Q)
     (hR : 0 < Formalism.FourierDecayAlt.B.gN R) (hle : Formalism.FourierDecayAlt.B.gN R ≤ Formalism.FourierDecayAlt.B.gN P * Formalism.FourierDecayAlt.B.gN Q) :
     Formalism.FourierDecayAlt.B.gN Q ^ (1 - a) ≤ Formalism.FourierDecayAlt.B.gN P ^ (a - 1) * Formalism.FourierDecayAlt.B.gN R ^ (1 - a) := by
@@ -70,15 +80,30 @@ instance fcMx : FirstCountableTopology (Mx k r) :=
 
 def finv (k r : ℕ) (a : ℝ) (x : Mx k r) : ℝ := Formalism.FourierDecayAlt.B.gN (Hpk k r * xᴴ * Hpk k r) ^ (a - 1)
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : Mx k r => Hpk k r * xᴴ * Hpk k r)` using `(continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const`. Conclude with `(Formalism.FourierDecayAlt.P.B6.gN_continuous.comp hc).rpow_const (fun _ => Or.inr (by linarith))`.
+-/
 theorem finv_cont (a : ℝ) (ha : 1 ≤ a) : Continuous (finv k r a) := by
   have hc : Continuous (fun x : Mx k r => Hpk k r * xᴴ * Hpk k r) :=
     (continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const
   exact (Formalism.FourierDecayAlt.P.B6.gN_continuous.comp hc).rpow_const (fun _ => Or.inr (by linarith))
 
+/- English proof (translation)
+Unfold `finv`. Rewrite using `[uh_inv_eq hx]`.
+-/
 theorem finv_eq (a : ℝ) {x : Mx k r} (hx : x ∈ UH (Hpk k r)) : Formalism.FourierDecayAlt.B.gN x⁻¹ ^ (a - 1) = finv k r a x := by
   unfold finv
   rw [uh_inv_eq hx]
 
+/- English proof (translation)
+Establish `hS` using `sum_nonneg_norms σ Ws u`. Establish `hs : Matrix.of p.1 * Matrix.of p.2 ∈ UH (Hpk k r)` using `hG.1 _ hp.1.1 _ hp.2.1`. Establish `hsx : Matrix.of p.1 * Matrix.of p.2 * x ∈ UH (Hpk k r)` using `hG.1 _ hs _ hxG`. Take `⟨hxi1, -, hxi⟩` from `hG.2.1 x hxG`. Establish `hle : Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ≤ Formalism.FourierDecayAlt.B.gN x⁻¹ * Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2 * x)`.
+
+Use `Formalism.FourierDecayAlt.P.B6.gN_mul_le (k := k) (r := r) (Matrix.of p.1 * Matrix.of p.2 * x) x⁻¹` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc _ x, hxi1, Matrix.mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht` using `gN_rpow_le ha (Formalism.FourierDecayAlt.P.B6.gN_pos (k := k) (r := r) hxi) (Formalism.FourierDecayAlt.P.B6.gN_pos (k := k) (r := r) hsx) (Formalism.FourierDecayAlt.P.B6.gN_pos (k := k) (r := r) hs) hle`. Rewrite `ht` using `[finv_eq a hxG]`.
+
+Establish `h1 : ‖beF z c π σ (σ x u) v p‖ ≤ ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2) (σ x u)⟫_ℂ‖` using `norm_beF_le z c π σ (σ x u) v hG hπ p hp.1`. Establish `h2 : σ (Matrix.of p.1 * Matrix.of p.2) (σ x u) = σ (Matrix.of p.1 * Matrix.of p.2 * x) u`. Rewrite using `[hσ.2.1 _ hs _ hxG]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`.
+
+Establish `h3` using `hb u hu _ hsx`. Establish `h4` using `mul_le_mul_of_nonneg_left ht (mul_nonneg hC hS)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bound_trans (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ) (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (ha : 1 ≤ a)
     {u v : H} (hu : u ∈ smoothVecs (k := k) (r := r) σ) {C : ℝ} {Ws : List (List (Mx k r))} (hC : 0 ≤ C)
@@ -110,6 +135,13 @@ theorem bound_trans (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r →
   calc ‖beF z c π σ (σ x u) v p‖ ≤ _ := h1.trans (h3.trans h4)
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `hs : Matrix.of p.1 * Matrix.of p.2 ∈ UH (Hpk k r)` using `hG.1 _ hp.1.1 _ hp.2.1`. Establish `hg : ContinuousOn (fun x : Mx k r => (⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * x) u⟫_ℂ * star (psi k r z c (Matrix.of p.2))) • π (Matrix.of p.1)⁻¹) (UH (Hpk k r))`. Establish `hm' : Continuous (fun x : Mx k r => Matrix.of p.1 * Matrix.of p.2 * x)` using `continuous_const.matrix_mul continuous_id`. Establish `hm : ContinuousOn (fun x : Mx k r => Matrix.of p.1 * Matrix.of p.2 * x) (UH (Hpk k r))` using `hm'.continuousOn`. Establish `hin : ContinuousOn (fun x : Mx k r => σ (Matrix.of p.1 * Matrix.of p.2 * x) u) (UH (Hpk k r))` using `(hcont u).comp hm (fun x hx => hG.1 _ hs _ hx)`.
+
+Establish `hv : ContinuousOn (fun _ : Mx k r => v) (UH (Hpk k r))` using `continuousOn_const`. Establish `h1 : ContinuousOn (fun x : Mx k r => ⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * x) u⟫_ℂ) (UH (Hpk k r))` using `hv.inner hin`. Establish `h2 : ContinuousOn (fun _ : Mx k r => star (psi k r z c (Matrix.of p.2))) (UH (Hpk k r))` using `continuousOn_const`. Establish `h3 : ContinuousOn (fun _ : Mx k r => π (Matrix.of p.1)⁻¹) (UH (Hpk k r))` using `continuousOn_const`. Conclude with `(h1.mul h2).smul h3`.
+
+Use `hg.congr (fun y hy => ?_)` and prove the remaining obligations. Unfold `beF`. Use `beta_reduce`. Rewrite using `[hσ.2.1 _ hs _ hy]`. Both sides reduce to the same expression.
+-/
 theorem integrand_cont (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (σ : Mx k r → (H →L[ℂ] H)) (hG : GrpF k r z) (hσ : SigU σ)
     (hcont : ∀ w : H, ContinuousOn (fun g => σ g w) (UH (Hpk k r))) (u v : H) (p : Mt k r × Mt k r)
@@ -137,6 +169,13 @@ theorem integrand_cont (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r 
   rw [hσ.2.1 _ hs _ hy]
   rfl
 
+/- English proof (translation)
+Introduce `x0 hx0`. Take `⟨C, Ws, hC, -, hb⟩` from `ptB_nonneg hv`. Establish `hS` using `sum_nonneg_norms σ Ws u`. Establish `hev : ∀ᶠ x in 𝓝[UH (Hpk k r)] x0, finv k r a x < finv k r a x0 + 1` using `Filter.Eventually.filter_mono nhdsWithin_le_nhds ((finv_cont a ha).continuousAt.eventually_lt continuousAt_const (lt_add_one _))`. Establish `key` using `continuousWithinAt_of_dominated (μ := μW.prod μN) (s := UH (Hpk k r)) (x₀ := x0) (F := fun x p => beF z c π σ (σ x u) v p) (bound := fun p => C * (Ws.map fun W => ‖dsigW σ W u‖).sum * (finv k r a x0 + 1) * Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (1 - a)) …`.
+
+Use `(bound_trans z c π σ a hG hσ hπ ha hu hC hb hxG p hp).trans ?_` and prove the remaining obligations. Establish `hg0 : 0 ≤ Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (1 - a)` using `Real.rpow_nonneg (Formalism.FourierDecayAlt.P.B6.gN_nonneg _) _`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hx.le (mul_nonneg hC hS)) hg0)`. Use the proof step `(hgr.const_mul _)`. Use the proof step `(by filter_upwards [hM.1] with p hp`.
+
+Conclude with `integrand_cont z c π σ hG hσ hcont u v p hp x0 hx0)`. Conclude with `key`.
+-/
 theorem cont_trans (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ)
     (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hM : MeasF z π μW μN)
@@ -170,6 +209,15 @@ theorem cont_trans (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → 
       exact integrand_cont z c π σ hG hσ hcont u v p hp x0 hx0)
   exact key
 
+/- English proof (translation)
+Establish `hP : PtDec σ a (VDK σ w0)`. Introduce `v hv`. Break down `hv with hv | hv` into its components or cases. Conclude with `ptDec_DD hG hσ ha (hI3 w0 hw0) v hv`. Conclude with `hI3 v hv`.
+
+Establish `hD : DecayOn μW μN σ (VDK σ w0)` using `decayOn_of_pt z π μW μN σ a hG hM hcont hgr hP`. Establish `hst : ∀ g ∈ UH (Hpk k r), ∀ v ∈ smoothVecs (k` using `k) (r := r) σ, σ g v ∈ smoothVecs (k := k) (r := r) σ := fun g hg v hv => Formalism.MainNotions.LeviCoordinates.smooth_vectors_translate_unitary hσ.2.1 hv hg`. Use `⟨int_on z c π μW μN σ hG hπ hM hD, cont_on z c π μW μN σ hG hπ hM hD, equiv_on z c π μW μN σ hG hσ hπ hψ hM hD, ?_, herm_on z c π μW μN σ hG hσ hπ hψ hM hD, fun u hu v hv => cont_trans z c π μW μN σ a hG hσ hπ hM hcont hgr ha hu (hP v hv)⟩` and prove the remaining obligations. Introduce `h hh m hm u hu v hv`. Establish `hhm : h * m ∈ UH (Hpk k r)` using `hG.1 _ hh.1 _ hm.1`.
+
+Establish `e1` using `herm_on z c π μW μN σ hG hσ hπ hψ hM hD u hu (σ (h * m) v) (hst _ hhm v hv)`. Establish `e2` using `equiv_on z c π μW μN σ hG hσ hπ hψ hM hD h hh m hm v hv u hu`. Establish `e3` using `herm_on z c π μW μN σ hG hσ hπ hψ hM hD u hu v hv`. Rewrite `e1` using `[e2, ← e3]`. Establish `e4` using `congrArg ContinuousLinearMap.adjoint e1`.
+
+Rewrite `e4` using `[ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.adjoint_adjoint]`. Conclude with `e4`.
+-/
 theorem beConv_of (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ) {w0 : H}
     (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)
@@ -199,6 +247,9 @@ theorem beConv_of (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (
     ContinuousLinearMap.adjoint_adjoint] at e4
   exact e4
 
+/- English proof (translation)
+The claim follows from `beConv_of z c π μW μN σ a hG hσ hπ hψ hM hcont ha hgr hI3 (Formalism.MainNotions.DoubleDerivativeSmoothness.kfinHpk_of_lowUnitH hw0)`.
+-/
 theorem beConv_of_low (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ) {w0 : H}
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}

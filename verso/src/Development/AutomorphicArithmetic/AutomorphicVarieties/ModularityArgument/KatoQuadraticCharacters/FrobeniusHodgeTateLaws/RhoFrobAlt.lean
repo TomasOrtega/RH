@@ -3,6 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UntwistedReprese
 
 open UpperTheory.V.Z.Kato.Joint
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ ι e S A W g χ hN _ hatt ρ hρ`. Establish `h : ∀ s, (ρ s : Matrix (Fin 2) (Fin 2) (Formalism.ConjugateSelfDual.Qbar l)) = _` using `fun s => (hρ s).trans (GlobalTheory.RhoAdm.untw_val' e W χ s).symm`. Use `⟨?_, fun V hV => GlobalTheory.RhoAdm.untw_irr e W χ hN.irr V fun s v hv => ?_⟩` and prove the remaining obligations. Take `⟨S0, hS0⟩` from `GlobalTheory.RhoAdm.frob_trace_det ι e W g χ hatt`. Use `⟨S0, fun q hq hqS s hs => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h s]`. Conclude with `hS0 q hq hqS s hs`. Rewrite using `[← h s]`. Conclude with `hV s v hv`.
+-/
 theorem UpperTheory.V.Z.Kato.Joint.rhoFrob :
     UpperTheory.V.Z.Kato.Joint.RhoFrob := by
   intro l _ Ω _ _ _ ι e S A W g χ hN _ hatt ρ hρ

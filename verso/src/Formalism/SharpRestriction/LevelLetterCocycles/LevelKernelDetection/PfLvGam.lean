@@ -10,6 +10,9 @@ section GrdComm
 
 variable {LL Ks D : Type} [Field LL] [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
 
+/- English proof (translation)
+Apply `HahnModule.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `cf (grd τ b (grd σ a f)) i = cf (grd σ a (grd τ b f)) i`. Rewrite using `[SlopeTestRemainingChoices.cf_grd, SlopeTestRemainingChoices.cf_grd, SlopeTestRemainingChoices.cf_grd, SlopeTestRemainingChoices.cf_grd, map_smul, map_smul, smul_smul, smul_smul, SlopeTestRemainingChoices.tD_comm σ τ h, mul_comm]`.
+-/
 theorem Pf_LvGam_grd_comm (σ τ : Ks ≃ₐ[LL] Ks) (a b : LLˣ) (h : ∀ x, σ (τ x) = τ (σ x))
     (f : Amb LL Ks D) : grd τ b (grd σ a f) = grd σ a (grd τ b f) := by
   apply HahnModule.ext
@@ -29,6 +32,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {O : Type} [CommRing O] [Algebra O LL] [TopologicalSpace LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ζ`. Use `show x (powR LL PD.p s (redU PD.p s j.1) (powR LL PD.p s (redU PD.p s uZ) ζ)) = x (powR LL PD.p s (redU PD.p s uZ) (powR LL PD.p s (redU PD.p s j.1) ζ))`. Rewrite using `[powR_powR, powR_powR, mul_comm]`.
+-/
 theorem Pf_LvGam_στ (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) (s : ℕ) (j : DeltaT PD.p) (x : KsW W s) :
     (levW W uZ ιZ s).σ ((levW W uZ ιZ s).τ j x) = (levW W uZ ιZ s).τ j ((levW W uZ ιZ s).σ x) := by
   funext ζ
@@ -36,6 +42,9 @@ theorem Pf_LvGam_στ (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) (s : ℕ) (
     x (powR LL PD.p s (redU PD.p s uZ) (powR LL PD.p s (redU PD.p s j.1) ζ))
   rw [powR_powR, powR_powR, mul_comm]
 
+/- English proof (translation)
+Introduce `s f hf j`. Use `show grd ((levW W uZ ιZ s).τ j) ((levW W uZ ιZ s).a j) (grd (levW W uZ ιZ s).σ (levW W uZ ιZ s).u f) = grd (levW W uZ ιZ s).σ (levW W uZ ιZ s).u f`. Rewrite using `[Pf_LvGam_grd_comm _ _ _ _ (Pf_LvGam_στ uZ ιZ s j)]`. Conclude with `congrArg (grd (levW W uZ ιZ s).σ (levW W uZ ιZ s).u) (hf j)`.
+-/
 theorem gamInv_holds (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) (T : LocLat G Qp LL O) (c : ZMod n) :
     ∀ (s : ℕ) (f : Amb LL (KsW W s) (Dc W T c)), (levW W uZ ιZ s).Inv f →
       (levW W uZ ιZ s).Inv ((levW W uZ ιZ s).γ f) := by
@@ -45,11 +54,25 @@ theorem gamInv_holds (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) (T : LocLat 
   rw [Pf_LvGam_grd_comm _ _ _ _ (Pf_LvGam_στ uZ ιZ s j)]
   exact congrArg (grd (levW W uZ ιZ s).σ (levW W uZ ιZ s).u) (hf j)
 
+/- English proof (translation)
+Rewrite using `[HahnSeries.ofPowerSeries_apply, HahnSeries.embDomain_of_notMem_range]`. Simplify using the standard rewrite rules.
+-/
 theorem Pf_LvGam_coeff_neg {Ks : Type} [CommRing Ks] (x : PowerSeries Ks) (k : ℕ) :
     (HahnSeries.ofPowerSeries ℤ Ks x).coeff (Int.negSucc k) = 0 := by
   rw [HahnSeries.ofPowerSeries_apply, HahnSeries.embDomain_of_notMem_range]
   simp
 
+/- English proof (translation)
+Introduce `s a`. Use `HahnSeries.ext (funext fun i => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap LL (KsW W s) (((levW W uZ ιZ s).u ^ i : LLˣ) : LL) * (levW W uZ ιZ s).σ ((HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s a)).coeff i) = _`. Break down `i with k | k` into its components or cases. Rewrite using `[Int.ofNat_eq_natCast, HahnSeries.ofPowerSeries_apply_coeff, HahnSeries.ofPowerSeries_apply_coeff]`.
+
+Use function extensionality and compare the values at `ζ`. Establish `hprim : IsPrimitiveRoot (ζ : LL) (PD.p ^ (s + 1))` using `(mem_primitiveRoots (pos_pow PD.p s)).1 ζ.2`. Establish `hv : ((s + 1 : ℕ) : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ W.gamK : O) - (((redU PD.p s uZ : (ZMod (PD.p ^ (s + 1)))ˣ) : ZMod (PD.p ^ (s + 1))).val : LL))`. Rewrite using `[hK]`. Conclude with `huZ (s + 1)`.
+
+Establish `hL` using `lev_Γ W.gamK c ζ ((powR LL PD.p s (redU PD.p s uZ) ζ : Rs LL PD.p s) : LL) (s + 1) _ hprim hv rfl (fun _ => (baseIdOf hR).ι a)`. Establish `hR1 : PowerSeries.coeff k (rhoL hR c s ((baseIdOf hR).Bs.γ a)) ζ = PowerSeries.coeff k (W.lev c ζ (W.γA W.gamK (fun _ => (baseIdOf hR).ι a)))`. Rewrite using `[rhoL, RingHom.comp_apply, coeff_psPi]`. Use `show PowerSeries.coeff k (W.lev c ζ (fun _ => (baseIdOf hR).ι ((baseIdOf hR).Bs.γ a))) = _`. Rewrite using `[(baseIdOf hR).ι_γ a]`.
+
+Both sides reduce to the same expression. Establish `hL1 : PowerSeries.coeff k (rhoL hR c s a) (powR LL PD.p s (redU PD.p s uZ) ζ) = PowerSeries.coeff k (W.lev c ((powR LL PD.p s (redU PD.p s uZ) ζ : Rs LL PD.p s) : LL) (fun _ => (baseIdOf hR).ι a))`. Rewrite using `[rhoL, RingHom.comp_apply, coeff_psPi]`. Both sides reduce to the same expression. Rewrite using `[hR1, hL, PowerSeries.coeff_rescale, ← hL1, hK]`.
+
+Use `show (((levW W uZ ιZ s).u ^ (k : ℤ) : LLˣ) : LL) * PowerSeries.coeff k (rhoL hR c s a) (powR LL PD.p s (redU PD.p s uZ) ζ) = _`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression. Rewrite using `[Pf_LvGam_coeff_neg, Pf_LvGam_coeff_neg, map_zero, mul_zero]`.
+-/
 theorem gamRho_holds (hR : Ring9 W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) (c : ZMod n)
     (lev_Γ : ∀ (g : W.Gam) (i : ZMod n) (ζ ζ' : LL) (j a : ℕ),
       IsPrimitiveRoot ζ (PD.p ^ j) → (j : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ g : O) - (a : LL)) →

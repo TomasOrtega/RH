@@ -2,6 +2,35 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ Δ hL s ε hs x`. Use `haveI := hL.frac`. Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `hstar : ∀ y : Lsq K Δ, IsIntegral O y → IsIntegral O (star y)`. Introduce `y hy`.
+
+Set `f : Lsq K Δ →ₐ[O] Lsq K Δ` to `{ starRingEnd (Lsq K Δ) with commutes' := fun r => by show star (algebraMap O (Lsq K Δ) r) = algebraMap O (Lsq K Δ) r`. Rewrite using `[IsScalarTower.algebraMap_apply O K (Lsq K Δ)]`. Apply the tactic sequence `ext <;> simp }`. Conclude with `hy.map f`. Establish `hdown : ∀ c : K, IsIntegral O (algebraMap K (Lsq K Δ) c) → c ∈ (algebraMap O K).range`.
+
+Introduce `c hc`. Establish `hc' : IsIntegral O c` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom O K (Lsq K Δ)) (algebraMap K (Lsq K Δ)).injective).mp hc`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hc'`. Conclude with `⟨y, hy⟩`. Establish `hεne : algebraMap O K (ε : O) ≠ 0` using `(map_ne_zero_iff _ hinj).mpr ε.ne_zero`.
+
+Establish `hΔs : Δ * s ^ 2 ≠ 0` using `by rw [hs]; exact hεne`. Establish `hΔ : Δ ≠ 0` using `left_ne_zero_of_mul hΔs`. Establish `hs0 : s ≠ 0` using `fun h => hΔs (by simp [h])`. Establish `hfwd : IsIntegral O x → x.re ∈ (algebraMap O K).range ∧ ∃ b : O, x.im = s * algebraMap O K b`. Introduce `hxi`.
+
+Establish `hsx` using `hstar x hxi`. Establish `htr : x + star x = algebraMap K (Lsq K Δ) (2 * x.re)`. Apply the tactic sequence `ext <;> simp <;> ring`. Establish `hnm : x * star x = algebraMap K (Lsq K Δ) (x.re * x.re - Δ * x.im * x.im)`. Apply the tactic sequence `ext <;> simp <;> ring`.
+
+Take `⟨t, ht⟩` from `hdown _ (htr ▸ hxi.add hsx)`. Take `⟨n, hn⟩` from `hdown _ (hnm ▸ hxi.mul hsx)`. Take `⟨u, hu⟩` from `hL.two.exists_left_inv`. Establish `hu2 : algebraMap O K u * 2 = 1`. Use `congrArg (algebraMap O K) hu` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_ofNat, map_one]`. Then use the resulting hypothesis. Establish `hre : algebraMap O K (u * t) = x.re`. Rewrite using `[map_mul, ht, ← mul_assoc, hu2, one_mul]`. Use `⟨⟨u * t, hre⟩, ?_⟩` and prove the remaining obligations. Establish `hεK : algebraMap O K ((ε⁻¹ : Oˣ) : O) * algebraMap O K (ε : O) = 1`.
+
+Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `he' : algebraMap O K ((ε⁻¹ : Oˣ) : O) = (Δ * s ^ 2)⁻¹`. Rewrite using `[hs]`. Conclude with `eq_inv_of_mul_eq_one_left hεK`. Establish `hb2 : (x.im / s) ^ 2 = algebraMap O K (((ε⁻¹ : Oˣ) : O) * ((u * t) * (u * t) - n))`.
+
+Rewrite using `[map_mul, map_sub, map_mul, he', hre, hn]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hbi : IsIntegral O (x.im / s)`. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations.
+
+Rewrite using `[hb2]`. Conclude with `isIntegral_algebraMap`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hbi`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hbwd : (x.re ∈ (algebraMap O K).range ∧ ∃ b : O, x.im = s * algebraMap O K b) → IsIntegral O x`. Introduce and unpack `⟨⟨a, ha⟩, b, hb⟩`. Establish `hω : IsIntegral O (algebraMap K (Lsq K Δ) s * ω)`. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations.
+
+Establish `hsq : (algebraMap K (Lsq K Δ) s * ω) ^ 2 = algebraMap O (Lsq K Δ) ε`. Rewrite using `[IsScalarTower.algebraMap_apply O K (Lsq K Δ), ← hs, sq]`. Use `ext`. Simplify using `only [re_mul, im_mul, algebraMap_re, algebraMap_im, omega_re, omega_im]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [re_mul, im_mul, algebraMap_re, algebraMap_im, omega_re, omega_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsq]`. Conclude with `isIntegral_algebraMap`. Establish `hxe : x = algebraMap O (Lsq K Δ) a + algebraMap O (Lsq K Δ) b * (algebraMap K (Lsq K Δ) s * ω)`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply O K (Lsq K Δ) a, IsScalarTower.algebraMap_apply O K (Lsq K Δ) b, ha]`. Apply the tactic sequence `ext <;> simp [hb] <;> ring`. Rewrite using `[hxe]`. Conclude with `isIntegral_algebraMap.add (isIntegral_algebraMap.mul hω)`. Conclude with `⟨⟨hfwd, hbwd⟩, hstar x⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.descent :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ : K), IsLoc O Δ → ∀ (s : K) (ε : Oˣ), Δ * s ^ 2 = algebraMap O K ε →
     ∀ x : Lsq K Δ, (IsInt O x ↔ x.re ∈ (algebraMap O K).range ∧ ∃ b : O, x.im = s * algebraMap O K b) ∧ (IsInt O x → IsInt O (star x)) := by

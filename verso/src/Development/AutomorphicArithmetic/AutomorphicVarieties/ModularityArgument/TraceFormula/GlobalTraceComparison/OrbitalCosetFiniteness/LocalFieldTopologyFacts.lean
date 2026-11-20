@@ -11,6 +11,25 @@ open scoped Classical
 
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Th
 
+/- English proof (translation)
+Establish `R` using `hRing (GLw a w × GLw b w) (K2 a b w) hO hC`. Establish `L` using `hLin (GLw a w × GLw b w) (K2 a b w) hO hC (th2 a b w) hk y hy`. Establish `W` using `hTw (GLw a w × GLw b w) (K2 a b w) hO hC (th2 a b w) hc hi hk y hy`. Establish `V` using `cvHecke (GLw a w × GLw b w) (K2 a b w) hO hC`. Establish `X : ∀ x, IsHecke (K2 a b w) (fn2 a b w x)` using `exHecke2 E a b w`.
+
+Establish `H1 : IsHecke (K2 a b w) ((K2 a b w : Set (GLw a w × GLw b w)).indicator 1)` using `X .one`. Proceed by induction on `he with`. Consider the case `one`. Introduce `h hh`. Establish `e1 : cv (K2 a b w) h (fn2 a b w .one) = h` using `(R h h h hh hh hh).2.1`.
+
+Rewrite using `[e1]`. Consider the case `step c p`. Introduce `h hh`. Establish `HT : IsHecke (K2 a b w) (gen2 a b w (Fin.last a, Fin.last b))` using `X (.gen _)`. Establish `HP : IsHecke (K2 a b w) (gen2 a b w p)` using `X (.gen _)`.
+
+Establish `HR : IsHecke (K2 a b w) (gen2 a b w (p.1.rev, p.2.rev))` using `X (.gen _)`. Establish `HPθ` using `(W _ _ HP HP).1`. Establish `HhT` using `V h _ hh HT`. Establish `HTP` using `V _ _ HT HP`. Establish `e1 : cv (K2 a b w) h (fn2 a b w (dEx p)) = fun y => cv (K2 a b w) h (cv (K2 a b w) (gen2 a b w (Fin.last a, Fin.last b)) (gen2 a b w p)) y + (-1) * cv (K2 a b w) h (gen2 a b w (p.1.rev, p.2.rev)) y`.
+
+Use `(R h _ _ hh HTP HR).2.2.2 1 (-1)` as an intermediate fact. Simplify using `only [one_mul] at this`. Conclude with `this`. Establish `e2 : cv (K2 a b w) h (cv (K2 a b w) (gen2 a b w (Fin.last a, Fin.last b)) (gen2 a b w p)) = cv (K2 a b w) (gen2 a b w p) (cv (K2 a b w) h (gen2 a b w (Fin.last a, Fin.last b)))`. Rewrite using `[← (R h _ _ hh HT HP).1]`.
+
+Conclude with `hComm E a b w _ _ HhT HP`. Establish `e3 : twOrb (th2 a b w) (K2 a b w) y (cv (K2 a b w) (gen2 a b w p) (cv (K2 a b w) h (gen2 a b w (Fin.last a, Fin.last b)))) = twOrb (th2 a b w) (K2 a b w) y (cv (K2 a b w) h (gen2 a b w (p.1.rev, p.2.rev)))`. Rewrite using `[(W _ _ HP HhT).2, (R h _ _ hh HT HPθ).1, hGen E hUnr a b w hw p]`. Establish `e4 : twOrb (th2 a b w) (K2 a b w) y (cv (K2 a b w) h (fn2 a b w (dEx p))) = 0`. Rewrite using `[e1, L _ _ (-1) (V h _ hh HTP) (V h _ hh HR), e2, e3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e5 : cv (K2 a b w) h (fn2 a b w (.add .one (.smul c (dEx p)))) = fun y => h y + c * cv (K2 a b w) h (fn2 a b w (dEx p)) y`. Use `(R h _ _ hh H1 (X (dEx p))).2.2.2 1 c` as an intermediate fact. Rewrite `this` using `[(R h h h hh hh hh).2.1]`. Simplify using `only [one_mul] at this`.
+
+Conclude with `this`. Rewrite using `[e5, L _ _ c hh (V h _ hh (X _)), e4, mul_zero, add_zero]`. Consider the case `@mul x z _ _ ihx ihz`. Introduce `h hh`. Establish `e1 : cv (K2 a b w) h (fn2 a b w (.mul x z)) = cv (K2 a b w) (cv (K2 a b w) h (fn2 a b w x)) (fn2 a b w z)` using `((R h _ _ hh (X x) (X z)).1).symm`.
+
+Rewrite using `[e1, ihz _ (V h _ hh (X x)), ihx h hh]`.
+-/
 private theorem orbit_unitary_compact_open {E : Type} [Field E] [NumberField E] [IsCMField E]
     (hTw : TwSwap) (hLin : TwLin) (hRing : CvRing) (hComm : CvComm2) (hGen : GenTw)
     (hUnr : GlobalTheory.BCT.Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (a b : ℕ)
@@ -74,6 +93,15 @@ private theorem orbit_unitary_compact_open {E : Type} [Field E] [NumberField E] 
       ((R h _ _ hh (X x) (X z)).1).symm
     rw [e1, ihz _ (V h _ hh (X x)), ihx h hh]
 
+/- English proof (translation)
+Introduce `hTw hLin hRing hComm hTh hGen E _ _ _ hUnr w hw a b e he Q₁ Q₂ s₁ s₂`. Take `⟨hc, hi, hk, hfin⟩` from `hTh E hUnr a b w hw`. Establish `hO : IsOpen (K2 a b w : Set (GLw a w × GLw b w))` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).1.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).1`. Establish `hC : IsCompact (K2 a b w : Set (GLw a w × GLw b w))` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2`. Establish `H1 : IsHecke (K2 a b w) ((K2 a b w : Set (GLw a w × GLw b w)).indicator 1)` using `exHecke2 E a b w .one`.
+
+Establish `HE : IsHecke (K2 a b w) (fn2 a b w e)` using `exHecke2 E a b w e`. Unfold `stTw2 clSum`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Distinguish the cases in `hS : q.rep ∈ {y : GLw a w × GLw b w | (nrmL a w y.1).val.charpoly = Q₁ ∧ (nrmL b w y.2).val.charpoly = Q₂}`. Rewrite using `[if_pos hS, if_pos hS]`.
+
+Establish `h1 : (nrmL a w q.rep.1).val.charpoly = Q₁` using `hS.1`. Establish `h2 : (nrmL b w q.rep.2).val.charpoly = Q₂` using `hS.2`. Establish `hy` using `hfin q.rep (h1 ▸ s₁) (h2 ▸ s₂)`. Establish `key` using `orbit_unitary_compact_open hTw hLin hRing hComm hGen hUnr w hw a b hc hi hk hO hC q.rep hy he _ H1`. Rewrite `key` using `[((hRing _ (K2 a b w) hO hC) _ _ _ HE HE HE).2.2.1]`.
+
+Conclude with `congrArg _ key`. Rewrite using `[if_neg hS, if_neg hS]`.
+-/
 theorem stUnit_of :
     TwSwap → TwLin → CvRing → CvComm2 → Th2 → GenTw → UpperTheory.V.Z.Tf.GlobalTraceComparison.StUnit := by
   intro hTw hLin hRing hComm hTh hGen E _ _ _ hUnr w hw a b e he Q₁ Q₂ s₁ s₂

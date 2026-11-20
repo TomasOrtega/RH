@@ -41,6 +41,9 @@ def IsPolarisation (q : ℕ) (ψ : ConeFn H) : Prop :=
     IsCuspLattice E q X → IsCuspLattice E q X₁ → ∀ r : X →+ X₁, Function.Surjective r → IsSemilinearOverK H r →
       ∀ (β : PosForm H X) (β₁ : PosForm H X₁), (∀ y z, β.form y z = β₁.form (r y) (r z)) → ψ X β = ψ X₁ β₁
 
+/- English proof (translation)
+Take `⟨-, ℓ, h1, -⟩` from `h.1 X hX β`. Rewrite `h1` using `[e, map_zero]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem IsPolarisation.zero {q : ℕ} {ψ : ConeFn H} (h : IsPolarisation q ψ) {X : Type} [AddCommGroup X]
     [Module (𝓞 E) X] (hX : IsCuspLattice E q X) {β : PosForm H X} (e : β.1 = 0) : ψ X β = 0 := by
   obtain ⟨-, ℓ, h1, -⟩ := h.1 X hX β
@@ -74,6 +77,9 @@ def IsRelAmpleIdeal {Z X : Scheme.{0}} (ρ : Z ⟶ X) (I : Z.IdealSheafData) : P
 def idealAlong {X : Scheme.{0}} (J : X.IdealSheafData) {R : Type} [CommRing R] (χ : Sp R ⟶ X) : Ideal R :=
   ((J.comap χ).ideal ⟨⊤, isAffineOpen_top _⟩).map (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom
 
+/- English proof (translation)
+Simplify using `[idealAlong, Ideal.map_top]`.
+-/
 example {X : Scheme.{0}} {R : Type} [CommRing R] (χ : Sp R ⟶ X) : idealAlong ⊤ χ = ⊤ := by
   simp [idealAlong, Ideal.map_top]
 

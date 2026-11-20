@@ -16,6 +16,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 
 namespace GlobalTheory.OrdPull
 
+/- English proof (translation)
+Use `letI : Algebra A B := e.toRingHom.toAlgebra`. Set `e' : A ≃ₐ[A] B` to `{ e with commutes' := fun _ => rfl }`. Unfold `Ring.ord`. Rewrite using `[← Module.length_eq_of_surjective (S := A) (R := B) e.surjective]`. Conclude with `(Ideal.quotientEquivAlg (Ideal.span {a}) (Ideal.span {e a}) e' (by rw [Ideal.map_span, Set.image_singleton]; rfl)).toLinearEquiv.length_eq.symm`.
+-/
 theorem ord_ringEquiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (a : A) :
     Ring.ord B (e a) = Ring.ord A a := by
   letI : Algebra A B := e.toRingHom.toAlgebra
@@ -25,12 +28,22 @@ theorem ord_ringEquiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (a 
   exact (Ideal.quotientEquivAlg (Ideal.span {a}) (Ideal.span {e a}) e'
     (by rw [Ideal.map_span, Set.image_singleton]; rfl)).toLinearEquiv.length_eq.symm
 
+/- English proof (translation)
+Rewrite using `[← ord_ringEquiv (IsLocalization.algEquiv p.primeCompl (Localization.AtPrime p) A).toRingEquiv]`. Conclude with `congrArg _ ((IsLocalization.algEquiv p.primeCompl (Localization.AtPrime p) A).commutes a).symm`.
+-/
 theorem ord_isLocalization {R : Type} [CommRing R] (p : Ideal R) [p.IsPrime] (A : Type) [CommRing A] [Algebra R A]
     [IsLocalization.AtPrime A p] (a : R) :
     Ring.ord A (algebraMap R A a) = Ring.ord (Localization.AtPrime p) (algebraMap R _ a) := by
   rw [← ord_ringEquiv (IsLocalization.algEquiv p.primeCompl (Localization.AtPrime p) A).toRingEquiv]
   exact congrArg _ ((IsLocalization.algEquiv p.primeCompl (Localization.AtPrime p) A).commutes a).symm
 
+/- English proof (translation)
+Use `letI := Localization.AtPrime.algebraOfLiesOver (Q.under R) Q`. Rewrite using `[Ideal.inertiaDeg_def]`. Use `haveI : IsLocalization.AtPrime (Localization.AtPrime Q) (Q.under R) := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M (Localization.AtPrime Q) Q`. Establish `hs : Function.Surjective (algebraMap (Localization.AtPrime (Q.under R)) (Localization.AtPrime Q))`. Establish `h` using `(IsLocalization.algEquiv (Q.under R).primeCompl (Localization.AtPrime (Q.under R)) (Localization.AtPrime Q)).surjective`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Use `RingHom.congr_fun (f := algebraMap _ _) (g := (IsLocalization.algEquiv (Q.under R).primeCompl (Localization.AtPrime (Q.under R)) (Localization.AtPrime Q)).toRingEquiv.toRingHom) (IsLocalization.ringHom_ext (Q.under R).primeCompl ?_) x` and prove the remaining obligations. Use extensionality with `r`. Simplify using `[← IsScalarTower.algebraMap_apply]`.
+
+Use `Module.finrank_of_bijective_algebraMap ⟨RingHom.injective _, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨x, rfl⟩` from `hs y`. Conclude with `⟨IsLocalRing.residue _ x, rfl⟩`.
+-/
 theorem inertiaDeg_isLocalization {R : Type} [CommRing R] (M : Submonoid R) (A : Type) [CommRing A] [Algebra R A]
     [IsLocalization M A] (Q : Ideal A) [Q.IsPrime] : Q.inertiaDeg R = 1 := by
   letI := Localization.AtPrime.algebraOfLiesOver (Q.under R) Q
@@ -52,6 +65,9 @@ theorem inertiaDeg_isLocalization {R : Type} [CommRing R] (M : Submonoid R) (A :
   obtain ⟨x, rfl⟩ := hs y
   exact ⟨IsLocalRing.residue _ x, rfl⟩
 
+/- English proof (translation)
+Use `letI := TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨z, hz⟩`. Use `haveI : IsLocalization.AtPrime (X.presheaf.stalk z) (hV.primeIdealOf ⟨z, hz⟩).asIdeal := hV.isLocalization_stalk ⟨z, hz⟩`. Rewrite using `[← Scheme.algebraMap_germ_eq_germToFunctionField X hz a, ord_algebraMap h1 ((map_ne_zero_iff _ (germ_injective_of_isIntegral X z hz)).2 ha), ← ord_isLocalization _ (X.presheaf.stalk z)]`. Both sides reduce to the same expression.
+-/
 theorem ord_germ_eq (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (V : X.Opens) [Nonempty V]
     (hV : IsAffineOpen V) (z : X) (hz : z ∈ V) (h1 : Order.coheight z = 1) (a : Γ(X, V)) (ha : a ≠ 0) :
     Scheme.ord (X.germToFunctionField V a) z =
@@ -64,6 +80,9 @@ theorem ord_germ_eq (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (V :
     ← ord_isLocalization _ (X.presheaf.stalk z)]
   rfl
 
+/- English proof (translation)
+Use `letI : Algebra Γ(X, V) Γ(Y, g ⁻¹ᵁ V) := (g.app V).hom.toAlgebra`. Use `haveI : Module.Finite Γ(X, V) Γ(Y, g ⁻¹ᵁ V) := hf`. Establish `h2 : genericPoint Y ∈ g ⁻¹ᵁ V` using `gen_mem (Classical.arbitrary (g ⁻¹ᵁ V)).2`. Rewrite using `[GlobalTheory.T.residueDegree_eq_inertiaDeg_affine_chart X Y g V hV hU _ h2, hU.primeIdealOf_genericPoint, genericPoint_eq_bot_of_affine]`. Conclude with `GlobalTheory.T.inertiaDeg_bot_eq_finrank_finite_domain _ _ hi`.
+-/
 theorem residueDegree_genericPoint_eq_finrank (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (g : Y ⟶ X)
     (V : X.Opens) [Nonempty V] [Nonempty (g ⁻¹ᵁ V)] (hV : IsAffineOpen V) (hU : IsAffineOpen (g ⁻¹ᵁ V))
     (hf : (g.app V).hom.Finite) (hi : Function.Injective (g.app V).hom) :
@@ -75,6 +94,27 @@ theorem residueDegree_genericPoint_eq_finrank (X Y : Scheme.{0}) [IsIntegral X] 
   rw [GlobalTheory.T.residueDegree_eq_inertiaDeg_affine_chart X Y g V hV hU _ h2, hU.primeIdealOf_genericPoint, genericPoint_eq_bot_of_affine]
   exact GlobalTheory.T.inertiaDeg_bot_eq_finrank_finite_domain _ _ hi
 
+/- English proof (translation)
+Set `A` to `Localization.AtPrime p`. Set `M` to `Algebra.algebraMapSubmonoid S p.primeCompl`. Set `B` to `Localization M`. Establish `hM : M ≤ nonZeroDivisors S`. Introduce and unpack `_ ⟨r, hr, rfl⟩`.
+
+Conclude with `mem_nonZeroDivisors_of_ne_zero ((map_ne_zero_iff _ hi).2 fun h => hr (h ▸ p.zero_mem))`. Use `haveI : IsDomain B := IsLocalization.isDomain_localization hM`. Use `haveI : Module.Finite A B := Module.Finite.of_isLocalization R S p.primeCompl`. Establish `hiAB : Function.Injective (algebraMap A B)` using `localizationAlgebra_injective A B hi`. Establish `hd : ringKrullDim A = 1`.
+
+Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height p A, hp]`. Both sides reduce to the same expression. Establish `haA : algebraMap R A a ≠ 0` using `(map_ne_zero_iff _ (IsLocalization.injective A p.primeCompl_le_nonZeroDivisors)).2 ha`. Establish `hr : Module.finrank A B = Module.finrank R S`. Rewrite using `[IsLocalization.finrank_eq A p.primeCompl p.primeCompl_le_nonZeroDivisors]`.
+
+Conclude with `IsLocalizedModule.finrank_eq p.primeCompl (IsScalarTower.toAlgHom R S B).toLinearMap p.primeCompl_le_nonZeroDivisors`. Rewrite using `[← hr, ← GlobalTheory.T.finsum_ord_mul_inertiaDeg_eq_finrank_mul_ord' A B hiAB hd _ haA]`. Establish `hc : ∀ Q : Ideal B, (Q.comap (algebraMap S B)).comap (algebraMap R S) = (Q.comap (algebraMap A B)).comap (algebraMap R A)` using `fun Q => by`. Rewrite using `[Ideal.comap_comap, Ideal.comap_comap, ← IsScalarTower.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`. Use `symm`.
+
+Use `finsum_mem_eq_of_bijOn (PrimeSpectrum.comap (algebraMap S B)) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `Q hQ`. Express the relevant statement in the definitionally equal form `(Q.asIdeal.comap (algebraMap S B)).comap (algebraMap R S) = p`. Rewrite using `[hc, show Q.asIdeal.comap (algebraMap A B) = _ from hQ]`. Conclude with `Localization.AtPrime.under_maximalIdeal`.
+
+Conclude with `(PrimeSpectrum.localization_comap_injective B M).injOn`. Introduce `q hq`. Establish `hq' : q.asIdeal.comap (algebraMap R S) = p` using `hq`. Establish `: q ∈ Set.range (PrimeSpectrum.comap (algebraMap S B))`. Rewrite using `[PrimeSpectrum.localization_comap_range B M]`.
+
+Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨r, hr, rfl⟩ h`. Conclude with `hr (hq' ▸ h)`. Take `⟨Q, rfl⟩` from `this`. Use `⟨Q, ?_, rfl⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Q.asIdeal.comap (algebraMap A B) = _`. Use `(IsLocalization.orderEmbedding p.primeCompl A).injective ?_` and prove the remaining obligations. Conclude with `(hc _).symm.trans (hq'.trans Localization.AtPrime.under_maximalIdeal.symm)`. Introduce `Q hQ haveI : IsLocalization.AtPrime (Localization.AtPrime Q.asIdeal) (Q.asIdeal.under S) := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M _ Q.asIdeal`. Establish `e1` using `ord_isLocalization (Q.asIdeal.under S) (Localization.AtPrime Q.asIdeal) (algebraMap R S a)`.
+
+Establish `e2 : algebraMap B (Localization.AtPrime Q.asIdeal) (algebraMap A B (algebraMap R A a)) = algebraMap S _ (algebraMap R S a)`. Rewrite using `[← IsScalarTower.algebraMap_apply R A B, IsScalarTower.algebraMap_apply R S B, ← IsScalarTower.algebraMap_apply S B]`. Establish `e3` using `Ideal.inertiaDeg_tower (R := R) (Q.asIdeal.under S) Q.asIdeal`. Establish `e4` using `Ideal.inertiaDeg_tower (R := R) (Q.asIdeal.under A) Q.asIdeal`. Rewrite `e3` using `[inertiaDeg_isLocalization M B, mul_one]`.
+
+Rewrite `e4` using `[inertiaDeg_isLocalization p.primeCompl A, one_mul]`. Rewrite using `[e2, e1, ← e4, e3]`. Both sides reduce to the same expression.
+-/
 theorem sum_ord_inertiaDeg (R S : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRing S] [IsDomain S]
     [Algebra R S] [Module.Finite R S] (hi : Function.Injective (algebraMap R S)) (p : Ideal R) [p.IsPrime]
     (hp : p.height = 1) (a : R) (ha : a ≠ 0) :
@@ -137,6 +177,11 @@ theorem sum_ord_inertiaDeg (R S : Type) [CommRing R] [IsDomain R] [IsNoetherianR
     rw [e2, e1, ← e4, e3]
     rfl
 
+/- English proof (translation)
+Use extensionality with `s`. Rewrite using `[Ideal.mem_comap, ← ReciprocityTheory.AnForm.R.evaluation_eq_zero_iff_mem_primeIdealOf hU w hw, ← ReciprocityTheory.AnForm.R.evaluation_eq_zero_iff_mem_primeIdealOf hV (g w) hw]`. Establish `e` using `Scheme.evaluation_naturality_apply g w hw s`. Establish `h` using `map_eq_zero_iff (g.residueFieldMap w).hom (g.residueFieldMap w).hom.injective (x := X.evaluation V (g w) hw s)`. Rewrite `h` using `[e]`.
+
+Conclude with `h`.
+-/
 theorem comap_primeIdealOf {X Y : Scheme.{0}} (g : Y ⟶ X) {V : X.Opens} (hV : IsAffineOpen V)
     (hU : IsAffineOpen (g ⁻¹ᵁ V)) (w : Y) (hw : w ∈ g ⁻¹ᵁ V) :
     (hU.primeIdealOf ⟨w, hw⟩).asIdeal.comap (g.app V).hom = (hV.primeIdealOf ⟨g w, hw⟩).asIdeal := by
@@ -149,6 +194,11 @@ theorem comap_primeIdealOf {X Y : Scheme.{0}} (g : Y ⟶ X) {V : X.Opens} (hV : 
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Use `haveI : IsAffine V := hV`. Use `⟨isAffine_of_isAffineHom (g ∣_ V), ?_⟩` and prove the remaining obligations. Establish `h1` using `IsFinite.finite_app (g ∣_ V) ⊤ (isAffineOpen_top _)`. Rewrite `h1` using `[morphismRestrict_app]`. Establish `h2 : (g.app (V.ι ''ᵁ ⊤)).hom.Finite` using `(RingHom.finite_respectsIso.cancel_right_isIso _ _).1 h1`.
+
+Rewrite `h2` using `[V.ι_image_top]`. Then use the resulting hypothesis.
+-/
 theorem finite_app {X Y : Scheme.{0}} (g : Y ⟶ X) {V : X.Opens} (hV : IsAffineOpen V)
     [IsFinite (g ∣_ V)] : IsAffineOpen (g ⁻¹ᵁ V) ∧ (g.app V).hom.Finite := by
   haveI : IsAffine V := hV
@@ -158,6 +208,9 @@ theorem finite_app {X Y : Scheme.{0}} (g : Y ⟶ X) {V : X.Opens} (hV : IsAffine
   have h2 : (g.app (V.ι ''ᵁ ⊤)).hom.Finite := (RingHom.finite_respectsIso.cancel_right_isIso _ _).1 h1
   rwa [V.ι_image_top] at h2
 
+/- English proof (translation)
+Rewrite using `[idealHeight_eq_coheight Γ(X, V) (hV.primeIdealOf ⟨z, hz⟩), ← coheight_eq_of_isOpenImmersion (x := hV.primeIdealOf ⟨z, hz⟩) hV.fromSpec]`. Establish `h₃ : hV.fromSpec.base (hV.primeIdealOf ⟨z, hz⟩) = z` using `hV.fromSpec_primeIdealOf ⟨z, hz⟩`. Rewrite using `[h₃, h]`.
+-/
 theorem height_primeIdealOf {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) (z : X) (hz : z ∈ V)
     (h : Order.coheight z = 1) : (hV.primeIdealOf ⟨z, hz⟩).asIdeal.height = 1 := by
   rw [idealHeight_eq_coheight Γ(X, V) (hV.primeIdealOf ⟨z, hz⟩),
@@ -165,12 +218,18 @@ theorem height_primeIdealOf {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V)
   have h₃ : hV.fromSpec.base (hV.primeIdealOf ⟨z, hz⟩) = z := hV.fromSpec_primeIdealOf ⟨z, hz⟩
   rw [h₃, h]
 
+/- English proof (translation)
+Establish `e` using `Scheme.ord_mul (x := x) (div_ne_zero hu hv) hv`. Rewrite `e` using `[div_mul_cancel₀ u hv]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_div {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {u v : X.functionField}
     (hu : u ≠ 0) (hv : v ≠ 0) (x : X) : Scheme.ord (u / v) x = Scheme.ord u x - Scheme.ord v x := by
   have e := Scheme.ord_mul (x := x) (div_ne_zero hu hv) hv
   rw [div_mul_cancel₀ u hv] at e
   omega
 
+/- English proof (translation)
+Establish `h1 : genericPoint X ∈ V` using `gen_mem (Classical.arbitrary V).2`. Establish `h2 : genericPoint Y ∈ g ⁻¹ᵁ V` using `gen_mem (Classical.arbitrary (g ⁻¹ᵁ V)).2`. Use `TrueGeo.SmallSec.fnMap_fnOf g hsp h1 h2 a` as an intermediate fact. Conclude with `this`.
+-/
 theorem fnMap_germ {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (g : Y ⟶ X)
     (hsp : g (genericPoint Y) ⤳ genericPoint X) (V : X.Opens) [Nonempty V] [Nonempty (g ⁻¹ᵁ V)] (a : Γ(X, V)) :
     TrueGeo.SmallSec.fnMap g hsp (X.germToFunctionField V a) = Y.germToFunctionField (g ⁻¹ᵁ V) (g.app V a) := by
@@ -179,6 +238,41 @@ theorem fnMap_germ {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (g : Y ⟶ X
   have := TrueGeo.SmallSec.fnMap_fnOf g hsp h1 h2 a
   exact this
 
+/- English proof (translation)
+Use `haveI : Nonempty V := ⟨⟨z, hzV⟩⟩`. Take `⟨hU, hfinR⟩` from `finite_app g hV`. Establish `hηU : genericPoint Y ∈ g ⁻¹ᵁ V` using `by show g (genericPoint Y) ∈ V`. Rewrite using `[hη]`. Conclude with `gen_mem hzV`.
+
+Use `haveI : Nonempty (g ⁻¹ᵁ V) := ⟨⟨_, hηU⟩⟩`. Use `letI : Algebra Γ(X, V) Γ(Y, g ⁻¹ᵁ V) := (g.app V).hom.toAlgebra`. Use `haveI : Module.Finite Γ(X, V) Γ(Y, g ⁻¹ᵁ V) := hfinR`. Use `haveI : IsNoetherianRing Γ(X, V) := IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Establish `hinj : Function.Injective (algebraMap Γ(X, V) Γ(Y, g ⁻¹ᵁ V))`.
+
+Introduce `a b h`. Apply `X.germToFunctionField_injective V` to reduce the goal to its premises. Apply `(TrueGeo.SmallSec.fnMap g hsp).injective` to reduce the goal to its premises. Rewrite using `[fnMap_germ, fnMap_germ]`. Conclude with `congrArg _ h`.
+
+Establish `hP` using `height_primeIdealOf hV z hzV hz`. Establish `key : ∀ a : Γ(X, V), a ≠ 0 → ∑ᶠ w ∈ g ⁻¹' {z}, Scheme.ord (TrueGeo.SmallSec.fnMap g hsp (X.germToFunctionField V a)) w * (g.residueDegree w : ℤ) = (g.residueDegree (genericPoint Y) : ℤ) * Scheme.ord (X.germToFunctionField V a) z`. Introduce `a ha`. Establish `ha' : g.app V a ≠ 0` using `fun h => ha (hinj (by rw [map_zero]; exact h))`. Rewrite using `[ord_germ_eq X V hV z hzV hz a ha, residueDegree_genericPoint_eq_finrank X Y g V hV hU hfinR hinj, ← sum_ord_inertiaDeg Γ(X, V) Γ(Y, g ⁻¹ᵁ V) hinj _ hP a ha]`.
+
+Use `finsum_mem_eq_of_bijOn (fun w => if hw : w ∈ g ⁻¹ᵁ V then hU.primeIdealOf ⟨w, hw⟩ else hU.primeIdealOf ⟨_, hηU⟩) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : w ∈ g ⁻¹ᵁ V` using `by show g w ∈ V`. Rewrite using `[show g w = z from hw]`. Conclude with `hzV`.
+
+Simplify using `only [Set.mem_setOf_eq, dif_pos hw']`. Conclude with `(comap_primeIdealOf g hV hU w hw').trans (congrArg (fun x => (hV.primeIdealOf x).asIdeal) (Subtype.ext hw))`. Introduce `w₁ hw₁ w₂ hw₂ h`. Establish `h₁ : w₁ ∈ g ⁻¹ᵁ V` using `by show g w₁ ∈ V`. Rewrite using `[show g w₁ = z from hw₁]`.
+
+Conclude with `hzV`. Establish `h₂ : w₂ ∈ g ⁻¹ᵁ V` using `by show g w₂ ∈ V`. Rewrite using `[show g w₂ = z from hw₂]`. Conclude with `hzV`. Simplify using `only [dif_pos h₁, dif_pos h₂] at h`.
+
+Establish `e₁` using `hU.fromSpec_primeIdealOf ⟨w₁, h₁⟩`. Establish `e₂` using `hU.fromSpec_primeIdealOf ⟨w₂, h₂⟩`. Rewrite `e₁` using `[h]`. Conclude with `e₁.symm.trans e₂`. Introduce `Q hQ`.
+
+Establish `hQU : hU.fromSpec Q ∈ g ⁻¹ᵁ V`. Rewrite using `[← SetLike.mem_coe, ← hU.range_fromSpec]`. Conclude with `⟨Q, rfl⟩`. Establish `hQ' : hU.primeIdealOf ⟨_, hQU⟩ = Q` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf ⟨_, hQU⟩)`. Establish `hgw : g (hU.fromSpec Q) = z`.
+
+Establish `c` using `comap_primeIdealOf g hV hU _ hQU`. Rewrite `c` using `[hQ']`. Establish `c2 : hV.primeIdealOf ⟨g (hU.fromSpec Q), hQU⟩ = hV.primeIdealOf ⟨z, hzV⟩` using `PrimeSpectrum.ext (c.symm.trans hQ)`. Establish `d1` using `hV.fromSpec_primeIdealOf ⟨g (hU.fromSpec Q), hQU⟩`. Establish `d2` using `hV.fromSpec_primeIdealOf ⟨z, hzV⟩`.
+
+Rewrite `d1` using `[c2]`. Conclude with `d1.symm.trans d2`. Use `⟨hU.fromSpec Q, hgw, ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hQU]`. Conclude with `hQ'`.
+
+Introduce `w hw`. Establish `hw' : w ∈ g ⁻¹ᵁ V` using `by show g w ∈ V`. Rewrite using `[show g w = z from hw]`. Conclude with `hzV`. Establish `hd : (if hw : w ∈ g ⁻¹ᵁ V then hU.primeIdealOf ⟨w, hw⟩ else hU.primeIdealOf ⟨_, hηU⟩) = hU.primeIdealOf ⟨w, hw'⟩` using `dif_pos hw'`.
+
+Use `beta_reduce`. Rewrite using `[hd, fnMap_germ, ord_germ_eq Y (g ⁻¹ᵁ V) hU w hw' (hcod w hw) _ ha', GlobalTheory.T.residueDegree_eq_inertiaDeg_affine_chart X Y g V hV hU w hw']`. Both sides reduce to the same expression. Use `haveI := functionField_isFractionRing_of_isAffineOpen X V hV`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := Γ(X, V)) f`.
+
+Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hB : algebraMap Γ(X, V) X.functionField b ≠ 0` using `(map_ne_zero_iff _ (X.germToFunctionField_injective V)).2 hb0`. Establish `hA : algebraMap Γ(X, V) X.functionField a ≠ 0`. Introduce `h`. Apply `hf` to reduce the goal to its premises.
+
+Rewrite using `[h, zero_div]`. Establish `ha0 : a ≠ 0` using `by rintro rfl; exact hA (map_zero _)`. Establish `hFA : TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField a) ≠ 0` using `(map_ne_zero _).2 hA`. Establish `hFB : TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField b) ≠ 0` using `(map_ne_zero _).2 hB`. Rewrite using `[map_div₀, ord_div hA hB]`.
+
+Establish `e : ∀ w, Scheme.ord (TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField a) / TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField b)) w * (g.residueDegree w : ℤ) = Scheme.ord (TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField a)) w * (g.re …`. Introduce `w`. Rewrite using `[ord_div hFA hFB, sub_mul]`. Repeatedly rewrite using `[e]`. Establish `hs` using `finsum_mem_sub_distrib (f := fun w => Scheme.ord (TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField a)) w * (g.residueDegree w : ℤ)) (g := fun w => Scheme.ord (TrueGeo.SmallSec.fnMap g hsp (algebraMap Γ(X, V) X.functionField b)) w * (g.residueDegree w : ℤ)) hfin`.
+
+Rewrite using `[hs]`. Establish `ka` using `key a ha0`. Establish `kb` using `key b hb0`. Rewrite using `[mul_sub]`. Conclude with `congrArg₂ (· - ·) ka kb`.
+-/
 theorem sum_ord_fnMap {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X]
     [IsLocallyNoetherian Y] (g : Y ⟶ X) (hη : g (genericPoint Y) = genericPoint X)
     (hsp : g (genericPoint Y) ⤳ genericPoint X) (z : X) (hz : Order.coheight z = 1)
@@ -291,6 +385,9 @@ theorem sum_ord_fnMap {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocall
   rw [mul_sub]
   exact congrArg₂ (· - ·) ka kb
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ _ _ p q hp hq g hg hη hdeg z hz f hf`. Take `⟨hfin, hcod, V, hV, hzV, hgV⟩` from `GlobalTheory.T.genericallyFinite_finite_near_codimOne_point k X Y p q hp hq g hg hη hdeg z hz`. Conclude with `sum_ord_fnMap g hη _ z hz hfin hcod V hV hzV f hf`.
+-/
 theorem sum_ord_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X] [IsLocallyNoetherian Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k), IsAmb p → IsAmb q → ∀ (g : Y ⟶ X) (hg : g ≫ p = q) (hη : g (genericPoint Y) = genericPoint X), g.residueDegree (genericPoint Y) ≠ 0 → ∀ z : X, Order.coheight z = 1 → ∀ f : X.functionField, f ≠ 0 → ∑ᶠ w ∈ g ⁻¹' {z}, Scheme.ord (TrueGeo.SmallSec.fnMap g (hη ▸ specializes_rfl : g (genericPoint Y) ⤳ genericPoint X) f) w * (g.residueDegree w : ℤ) = (g.residueDegree (genericPoint Y) : ℤ) * Scheme.ord f z := by
   intro k _ X Y _ _ _ _ p q hp hq g hg hη hdeg z hz f hf
   obtain ⟨hfin, hcod, V, hV, hzV, hgV⟩ := GlobalTheory.T.genericallyFinite_finite_near_codimOne_point k X Y p q hp hq g hg hη hdeg z hz

@@ -10,6 +10,9 @@ open Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `d k S M hM`. Use extensionality with `i j`. Simplify using `only [intGram, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply, Fin.sum_univ_castSucc, hM, Int.cast_zero, zero_mul, mul_zero, add_zero]`.
+-/
 theorem IntGramSubLast.proof : IntGramSubLast.Statement := by
   intro d k S M hM
   ext i j

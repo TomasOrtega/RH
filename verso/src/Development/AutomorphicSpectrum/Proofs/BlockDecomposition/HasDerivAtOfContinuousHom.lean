@@ -2,6 +2,21 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.CharDeriv
 
+/- English proof (translation)
+Introduce `χ hc h0 hadd`. Establish `hP : ∀ x : ℝ, HasDerivAt (fun y : ℝ => ∫ s in (0 : ℝ)..y, χ s) (χ x) x` using `fun x => intervalIntegral.integral_hasDerivAt_right (hc.intervalIntegrable _ _) (hc.stronglyMeasurableAtFilter _ _) hc.continuousAt`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hI⟩ : ∃ δ : ℝ, (∫ s in (0 : ℝ)..δ, χ s) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Establish `hz : (fun y : ℝ => ∫ s in (0 : ℝ)..y, χ s) = fun _ => (0 : ℂ)` using `funext h`. Establish `h1` using `hP 0`. Rewrite `h1` using `[hz]`. Establish `h2` using `h1.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`. Rewrite `h2` using `[h0]`.
+
+Conclude with `one_ne_zero h2`. Establish `key : ∀ t : ℝ, χ t = ((∫ s in (0 : ℝ)..(t + δ), χ s) - ∫ s in (0 : ℝ)..t, χ s) / (∫ s in (0 : ℝ)..δ, χ s)`. Introduce `t`. Rewrite using `[eq_div_iff hI, ← intervalIntegral.integral_const_mul]`. Establish `h1 : (∫ s in (0 : ℝ)..δ, χ t * χ s) = ∫ u in t..(t + δ), χ u`.
+
+Establish `h2` using `intervalIntegral.integral_comp_add_left (a := 0) (b := δ) (fun u => χ u) t`. Rewrite `h2` using `[add_zero]`. Rewrite using `[← h2]`. Conclude with `intervalIntegral.integral_congr fun s _ => (hadd t s).symm`. Rewrite using `[h1]`.
+
+Conclude with `(intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable _ _) (hc.intervalIntegrable _ _)).symm`. Use `⟨(χ δ - 1) / (∫ s in (0 : ℝ)..δ, χ s), fun t => ?_⟩` and prove the remaining obligations. Establish `hD : HasDerivAt (fun y : ℝ => ((∫ s in (0 : ℝ)..(y + δ), χ s) - ∫ s in (0 : ℝ)..y, χ s) / (∫ s in (0 : ℝ)..δ, χ s)) ((χ (t + δ) - χ t) / (∫ s in (0 : ℝ)..δ, χ s)) t`. Establish `h3 : HasDerivAt (fun y : ℝ => ∫ s in (0 : ℝ)..(y + δ), χ s) (χ (t + δ)) t`. Simplify using `using (hP (t + δ)).comp_add_const t δ`.
+
+Conclude with `(h3.sub (hP t)).div_const _`. Establish `hval : (χ δ - 1) / (∫ s in (0 : ℝ)..δ, χ s) * χ t = (χ (t + δ) - χ t) / (∫ s in (0 : ℝ)..δ, χ s)`. Rewrite using `[hadd t δ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval]`.
+
+Conclude with `hD.congr_of_eventuallyEq (Filter.Eventually.of_forall key)`.
+-/
 theorem hasDerivAt_of_continuous_hom :
     ∀ (χ : ℝ → ℂ), Continuous χ → χ 0 = 1 → (∀ s t, χ (s + t) = χ s * χ t) →
       ∃ c : ℂ, ∀ t, HasDerivAt χ (c * χ t) t := by

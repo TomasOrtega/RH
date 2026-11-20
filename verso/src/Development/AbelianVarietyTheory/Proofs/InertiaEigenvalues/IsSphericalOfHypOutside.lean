@@ -15,6 +15,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.SphHyp
 
+/- English proof (translation)
+Introduce `L _ _ _ n a S hS J χ hlev B hB f hfiso hfT hf0 s hsB σ hσ`. Take `⟨i, T₀, hi, hic, -, -, -⟩` from `id hσ`. Establish `hrt : ∀ κ, TrivOutside {s.v} κ → ∀ h : s.loc n κ ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring, NG.rt L n κ f = (((1 : (Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring) →* ℂˣ) ⟨s.loc n κ, h⟩ : …`. Introduce `κ hκ h`. Establish `hU` using `(GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff s hκ).1 h`.
+
+Establish `hκB : TrivOutside Bᶜ κ` using `fun w hw => hκ w (by`. Introduce `hm`. Rewrite `hm` using `[Set.mem_singleton_iff]`. Rewrite `hw` using `[hm]`. Conclude with `hsB (by simpa using hw))`.
+
+Take `⟨hJ, hχ⟩` from `hB κ hκB`. Establish `hκJ` using `hJ.2 hU`. Rewrite using `[hfT.2 ⟨κ, hκJ⟩, hχ hκJ]`. Simplify using the standard rewrite rules. Take `⟨u, hu0, hu⟩` from `GlobalTheory.LocVec.main L n a S hS s σ hσ i hi hic (Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring) 1 (fun g hg => hg) (by simp) f hfiso hf0 hrt`.
+
+Establish `key : ∀ y, i y ∈ Formalism.UG.Ov L s.w → Valued.v y ≤ 1` using `fun y hy => (GlobalTheory.CuspRep.ParLaws.valuation_le_one_iff s.v y).1 (GlobalTheory.SphLoc.le_one_of_map i.toRingHom hi ((GlobalTheory.CuspRep.ParLaws.valuation_le_one_iff s.w _).2 hy))`. Establish `hfix : ∀ g ∈ KO (s.w.adicCompletion L) (Fin n), σ.ρ g u = u`. Introduce `g hg`. Rewrite `hg` using `[GlobalTheory.SmGL.SphCompletion.KO_completion s.w n, GlobalTheory.HeckeScalarSph.mem_GLint_iff]`. Set `g'` to `Matrix.GeneralLinearGroup.map i.symm.toRingHom g`.
+
+Establish `hg' : g' ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring`. Rewrite using `[GlobalTheory.HeckeScalarSph.mem_GLint_iff]`. Use `⟨fun p q => ?_, fun p q => ?_⟩` and prove the remaining obligations. Use `show Valued.v (i.symm (g.1 p q)) ≤ 1`. Conclude with `key _ (by rw [RingEquiv.apply_symm_apply]; exact hg.1 p q)`.
+
+Rewrite using `[← map_inv] show Valued.v (i.symm ((g⁻¹).1 p q)) ≤ 1`. Conclude with `key _ (by rw [RingEquiv.apply_symm_apply]; exact hg.2 p q)`. Establish `e : Matrix.GeneralLinearGroup.map i.toRingHom g' = g` using `Units.ext (Matrix.ext fun p q => i.apply_symm_apply _)`. Use `hu g' hg'` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Simplify using `using this`. Establish `hsph : IsSpherical σ.ρ`. Introduce `h`. Apply `hu0` to reduce the goal to its premises. Establish `hm : u ∈ fixed σ.ρ (KO (s.w.adicCompletion L) (Fin n))` using `fun g => by`.
+
+Simplify using `using hfix g.1 g.2`. Rewrite `hm` using `[h]`. Conclude with `hm`. Conclude with `GlobalTheory.BCOffT.isSpherical_of_equiv (equivRep σ) hsph`.
+-/
 theorem isSpherical_of_hypOutside : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W)), NG.IsIrrRep a.ρ S → ∀ (J : Subgroup (GAf L n)) (χ : J →* ℂˣ), (∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1) → ∀ (B : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))), NG.HypOutside J χ B → ∀ f ∈ NG.isoTyp a.ρ S, f ∈ NG.TypeSp a.ρ J χ → f ≠ 0 → ∀ (s : SplitPlace L), s.v ∉ B → ∀ (σ : IrrRep (GL (Fin n) (s.w.adicCompletion L))), IsLocS S s σ → IsSpherical (GlobalTheory.LocLanglands.cls σ).rep := by
   intro L _ _ _ n a S hS J χ hlev B hB f hfiso hfT hf0 s hsB σ hσ
   classical

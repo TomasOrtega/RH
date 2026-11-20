@@ -18,16 +18,29 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Conclude with `Formalism.MainNotions.LiftingTheory.wmap_φD_smul W T a x`.
+-/
 theorem lemGAla_φ_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
   exact Formalism.MainNotions.LiftingTheory.wmap_φD_smul W T a x
 
+/- English proof (translation)
+Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm, ← smul_smul, hx.1]`. Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_γD_smul, ha δ hδ, hx.2 δ hδ]`.
+-/
 theorem lemGAla_dl_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) {i : ZMod n} {a : LetA O n}
     (ha : a ∈ W.AΔ) {x : W.DD T} (hx : Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x) : Formalism.MainNotions.CrystallineLiftingInputs.DL W T i (a • x) := by
   refine ⟨?_, fun δ hδ => ?_⟩
   · rw [smul_smul, mul_comm, ← smul_smul, hx.1]
   · rw [Formalism.MainNotions.LiftingTheory.wmap_γD_smul, ha δ hδ, hx.2 δ hδ]
 
+/- English proof (translation)
+Establish `step : ∀ (j : ZMod n) (y : W.DD T), Formalism.MainNotions.CrystallineLiftingInputs.DL W T j y → Formalism.MainNotions.CrystallineLiftingInputs.DL W T (j + 1) (W.φD T y)`. Introduce `j y hy`. Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Establish `h` using `Formalism.MainNotions.LiftingTheory.wmap_φA_letE W (j + 1)`. Rewrite `h` using `[add_sub_cancel_right]`.
+
+Rewrite using `[← h, ← Formalism.MainNotions.LiftingTheory.wmap_φD_smul, hy.1]`. Rewrite using `[← W.φγ_comm, hy.2 δ hδ]`. Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`.
+
+Rewrite using `[Nat.cast_succ, ← add_assoc, pow_succ']`. Conclude with `step _ _ ih`.
+-/
 theorem lemGAla_dl_φpow (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) {i : ZMod n} {x : W.DD T}
     (hx : Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x) (k : ℕ) :
     Formalism.MainNotions.CrystallineLiftingInputs.DL W T (i + (k : ZMod n)) (((W.φD T) ^ k) x) := by
@@ -45,6 +58,15 @@ theorem lemGAla_dl_φpow (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) {i : Z
     rw [Nat.cast_succ, ← add_assoc, pow_succ']
     exact step _ _ ih
 
+/- English proof (translation)
+Take `⟨cc, r, s, hser, hrem, rfl⟩` from `hz`. Establish `hzero : Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c + (j : ZMod n)) 0` using `⟨by simp, fun δ hδ => by simp⟩`. Establish `hsub : ∀ a b : W.DD T, Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c + (j : ZMod n)) a → Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c + (j : ZMod n)) b → Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c + (j : ZMod n)) (a - b)` using `fun a b ha hb => ⟨by rw [smul_sub, ha.1, hb.1], fun δ hδ => by rw [map_sub, ha.2 δ hδ, hb.2 δ hδ]⟩`. Establish `hadd : ∀ a b : W.DD T, Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c + (j : ZMod n)) a → Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c + (j : ZMod n)) b → Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c + (j : ZMod n)) (a + b)` using `fun a b ha hb => ⟨by rw [smul_add, ha.1, hb.1], fun δ hδ => by rw [map_add, ha.2 δ hδ, hb.2 δ hδ]⟩`. Establish `hsmem : ∀ y, s y ∈ W.AΔ`.
+
+Introduce `y`. Take `⟨⟨⟨a, ha⟩, -⟩, hps⟩` from `hrem y`. Establish `hr : r y ∈ W.AΔ`. Rewrite using `[ha]`. Conclude with `Subalgebra.sum_mem _ fun k _ => Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (Subalgebra.pow_mem _ hπ _)`.
+
+Use `Formalism.MainNotions.UnusedSlot80.SatW.mem_AΔ_of_p_pow W hO (Formalism.MainNotions.CrystallineLiftingInputs.eY PD.p y) ?_` and prove the remaining obligations. Rewrite using `[hps]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (Subalgebra.natCast_mem _ _) _) hr`. Establish `hw' : Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c + (j : ZMod n)) (((PD.p : ℕ) : O) ^ σ • ((W.φD T) ^ j) w)`. Rewrite using `[← algebraMap_smul (LetA O n)]`.
+
+Conclude with `lemGAla_dl_smul W T (Subalgebra.algebraMap_mem _ _) (lemGAla_dl_φpow W T hw j)`. Use `hsub _ _ hw' ?_` and prove the remaining obligations. Conclude with `Finset.sum_induction _ (Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c + (j : ZMod n))) hadd hzero (fun y _ => lemGAla_dl_smul W T (hsmem y) (lemGAla_dl_φpow W T (hser.2.1 y).1 j))`.
+-/
 theorem lemGAla_dl_trunc (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
     (hO : ∀ c : O, ((PD.p : ℕ) : O) * c = 0 → c = 0) (hπ : W.π₀ ∈ W.AΔ) {c : ZMod n}
     {j M X σ : ℕ} {w z : W.DD T} (hw : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c w)
@@ -74,6 +96,15 @@ theorem lemGAla_dl_trunc (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
   exact Finset.sum_induction _ (Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c + (j : ZMod n))) hadd hzero
     (fun y _ => lemGAla_dl_smul W T (hsmem y) (lemGAla_dl_φpow W T (hser.2.1 y).1 j))
 
+/- English proof (translation)
+Introduce `p hp`. Establish `hqΔ : Formalism.MainNotions.LiftingTheory.qp W ∈ W.AΔ` using `W.AΔ.add_mem hπ (Subalgebra.natCast_mem _ _)`. Unfold `Formalism.MainNotions.CrystallineLiftingInputs.pullJ at hp ⊢`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨y, ⟨hyN, hyD⟩, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨Formalism.MainNotions.LiftingTheory.qp W ^ k • W.φD T y, ⟨hgen y hyN hyD, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `lemGAla_dl_smul W T (pow_mem hqΔ k) (by simpa using lemGAla_dl_φpow W T hyD 1)`. Simplify using `only [pow_one, Formalism.MainNotions.LiftingTheory.pk]`.
+
+Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_φD_smul, map_pow, pow_two]`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul a x _ hx`. Rewrite using `[smul_smul, mul_comm, ← smul_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem pullback_level_two_to_one (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (c : ZMod n) (k : ℕ)
     (hπ : W.π₀ ∈ W.AΔ)
     (hgen : ∀ x, x ∈ W.N T → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x →
@@ -98,6 +129,13 @@ theorem pullback_level_two_to_one (W : LocWach PD LL O v n) (T : LocLat G Qp LL 
     rw [smul_smul, mul_comm, ← smul_smul]
     exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Introduce `p hp`. Unfold `Formalism.MainNotions.CrystallineLiftingInputs.pullJ at hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, ⟨hyN, hyD⟩, rfl⟩` from `hx`.
+
+Simplify using `using hgen y hyN hyD`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`.
+
+Rewrite using `[smul_smul, mul_comm, ← smul_smul]`. Conclude with `(W.N T).smul_mem a hx`.
+-/
 theorem lemGAla_pull1N (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (c : ZMod n) (k : ℕ)
     (hgen : ∀ x, x ∈ W.N T → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x →
       Formalism.MainNotions.LiftingTheory.qp W ^ k • W.φD T x ∈ W.N T) :
@@ -114,6 +152,11 @@ theorem lemGAla_pull1N (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (c : ZMo
     rw [smul_smul, mul_comm, ← smul_smul]
     exact (W.N T).smul_mem a hx
 
+/- English proof (translation)
+Introduce `x hxN hxD`. Establish `hxl : x ∈ W.Nl T c`. Establish `h` using `Formalism.MainNotions.LiftingTheory.liftb_letE_mem W T c hxN`. Rewrite `h` using `[hxD.1]`. Then use the resulting hypothesis. Establish `h` using `h5.1 (c + 1) x (by rwa [add_sub_cancel_right])`.
+
+Conclude with `(Formalism.MainNotions.LiftingTheory.lifta_Qq W hR hs T _ _).1 h`.
+-/
 theorem q_pow_smul_frobenius_mem' (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (hR : Formalism.MainNotions.LiftingTheory.lifta_Ring W)
     (hs : W.s = 1) {M h : ZMod n → ℕ} (h5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T M h) (c : ZMod n) :
     ∀ x, x ∈ W.N T → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x →
@@ -125,6 +168,13 @@ theorem q_pow_smul_frobenius_mem' (W : LocWach PD LL O v n) (T : LocLat G Qp LL 
   have h := h5.1 (c + 1) x (by rwa [add_sub_cancel_right])
   exact (Formalism.MainNotions.LiftingTheory.lifta_Qq W hR hs T _ _).1 h
 
+/- English proof (translation)
+Establish `h2 : 2 ∣ n` using `even_iff_two_dvd.1 hn`. Establish `key : ∀ x : ZMod n, (((x.val : ℕ)) : ZMod 2) = ZMod.castHom h2 (ZMod 2) x`. Introduce `x`. Simplify using `[ZMod.castHom_apply, ZMod.natCast_val]`. Establish `h1 : (((i.val + d : ℕ)) : ZMod 2) = 1`.
+
+Rewrite using `[← ZMod.natCast_mod, hi]`. Both sides reduce to the same expression. Rewrite using `[← Nat.dvd_iff_mod_eq_zero, ← CharP.cast_eq_zero_iff (ZMod 2) 2]`. Move the coercions through the operations in `at h1 ⊢`. Rewrite using `[key (i - 1), map_sub, map_one, ← key i]`.
+
+Take the linear combination `h1`.
+-/
 theorem lemGAla_parity {n : ℕ} [NeZero n] (hn : Even n) (d : ℕ) (i : ZMod n) (hi : (i.val + d) % 2 = 1) :
     ((i - 1).val + d) % 2 = 0 := by
   have h2 : 2 ∣ n := even_iff_two_dvd.1 hn
@@ -139,6 +189,51 @@ theorem lemGAla_parity {n : ℕ} [NeZero n] (hn : Even n) (d : ℕ) (i : ZMod n)
   rw [key (i - 1), map_sub, map_one, ← key i]
   linear_combination h1
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hset i hi y hyN hyD`. Establish `hsetc` using `hset`. Take `⟨hA, hp11, hn, ⟨hdom, -, -⟩, ⟨ζ, hζ⟩, hsur, -, -, hbig, -⟩` from `hset`. Use `haveI := hdom`. Establish `hs : W.s = 1` using `hA.2.1`.
+
+Establish `hc2 : IsCrys PD T₂.ρ` using `hsur.2.1`. Establish `hO : ∀ c : O, ((PD.p : ℕ) : O) * c = 0 → c = 0`. Introduce `c hc`. Use `haveI : NeZero PD.p := ⟨by omega⟩`. Establish `hpL : ((PD.p : ℕ) : LL) ≠ 0` using `hζ.neZero'.out`.
+
+Establish `hpO : ((PD.p : ℕ) : O) ≠ 0` using `fun h => hpL (by rw [← map_natCast (algebraMap O LL), h, map_zero])`. Conclude with `(mul_eq_zero.1 hc).resolve_left hpO`. Establish `hfin : finrank K₀ K = 1`. Establish `e` using `LinearEquiv.ofBijective (Algebra.linearMap K₀ K) hA.1`. Rewrite using `[← e.finrank_eq, finrank_self]`.
+
+Take `⟨-, -, h9f⟩` from `h9 T₂ hc2 hs hA.2.2`. Take `⟨-, hmod⟩` from `h9f hfin`. Take `⟨-, hγN⟩` from `hmod`. Establish `hyΔ : y ∈ W.NΔ T₂` using `⟨hyN, hyD.2⟩`. Take `⟨y', hy'Δ, hy'⟩` from `hγN y hyΔ`.
+
+Establish `hInI : Formalism.MainNotions.CrystallineLiftingInputs.InI W T₂ (i - 2) y`. Use `⟨hyD, ⟨0, ?_⟩, ⟨y', hy'Δ.1, hy'Δ.2, by rw [pow_one]; exact hy'⟩⟩` and prove the remaining obligations. Use `first`. Consider the case `exact hyN`. Consider the case `(simp only [LocWach.InvN]; simpa using hyN)`.
+
+Consider the case `(unfold LocWach.InvN; simpa [Formalism.MainNotions.DeltaInvariantLattices.invN, Formalism.MainNotions.DeltaInvariantLattices.smulA] using hyN)`. Establish `hqΔ : Formalism.MainNotions.LiftingTheory.qp W ∈ W.AΔ` using `W.AΔ.add_mem hR.πΔ (Subalgebra.natCast_mem _ _)`. Use `set H := hpar n b S + η with hH`. Take `⟨hex, hcl, -⟩` from `(hT2 hA hp11 2 1 (2 * H) (lemG_sig PD.p H) (Or.inr ⟨rfl, rfl, rfl⟩)).1 T₂ hc2 (i - 2)`. Take `⟨la, hla⟩` from `hex y hInI`.
+
+Take `⟨hdiff, p0, hp0, hγla⟩` from `hcl y la hInI hla`. Establish `h5T` using `h5 T₂ _ _ hc2 (hJ d T₁ T₂ F b S η m hsetc)`. Establish `hpar1 : ((i - 1).val + d) % 2 = 0` using `lemGAla_parity hn d i hi`. Establish `hM1 : MiW d b S η (i - 1) = b (i - 1) + S` using `by simp [MiW, hpar1]`. Establish `hMi : MiW d b S η i = η` using `by simp [MiW, hi]`.
+
+Establish `hgen1 : ∀ x, x ∈ W.N T₂ → Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ (i - 2) x → Formalism.MainNotions.LiftingTheory.qp W ^ (b (i - 1) + S) • W.φD T₂ x ∈ W.N T₂`. Introduce `x hx hxD`. Establish `h` using `q_pow_smul_frobenius_mem' W T₂ hR hs h5T (i - 2) x hx hxD`. Rewrite `h` using `[show i - 2 + 1 = i - 1 by ring, hM1]`. Then use the resulting hypothesis. Establish `hgen2 : ∀ x, x ∈ W.N T₂ → Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ (i - 1) x → Formalism.MainNotions.LiftingTheory.qp W ^ η • W.φD T₂ x ∈ W.N T₂`.
+
+Introduce `x hx hxD`. Establish `h` using `q_pow_smul_frobenius_mem' W T₂ hR hs h5T (i - 1) x hx hxD`. Rewrite `h` using `[sub_add_cancel, hMi]`. Then use the resulting hypothesis. Establish `hla_mem : la ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T₂ (i - 2) 2`. Establish `hgenp : ((PD.p : ℕ) : O) ^ lemG_sig PD.p H • ((W.φD T₂) ^ 2) y ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T₂ (i - 2) 2`.
+
+Rewrite using `[← algebraMap_smul (LetA O n)]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Unfold `Formalism.MainNotions.CrystallineLiftingInputs.pullJ`. Conclude with `Submodule.subset_span ⟨y, ⟨hyN, hyD⟩, rfl⟩`. Establish `h` using `Submodule.add_mem _ hdiff hgenp`.
+
+Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hpull : Formalism.MainNotions.LiftingTheory.pk W 1 ^ (b (i - 1) + S) • la ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T₂ (i - 1) 1`. Establish `h` using `pullback_level_two_to_one W T₂ (i - 2) (b (i - 1) + S) hR.πΔ hgen1 la hla_mem`. Rewrite `h` using `[show i - 2 + 1 = i - 1 by ring]`. Then use the resulting hypothesis. Establish `hDLi : Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ i la`.
+
+Establish `h` using `lemGAla_dl_trunc W T₂ hO hR.πΔ hyD hla`. Simplify using `using h`. Establish `hp0' : Formalism.MainNotions.LiftingTheory.pk W 1 ^ (b (i - 1) + S) • p0 ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T₂ (i - 1) 1`. Establish `h` using `pullback_level_two_to_one W T₂ (i - 2) (b (i - 1) + S) hR.πΔ hgen1 p0 hp0`. Rewrite `h` using `[show i - 2 + 1 = i - 1 by ring]`. Then use the resulting hypothesis.
+
+Establish `hN1` using `lemGAla_pull1N W T₂ (i - 1) η hgen2 _ hp0'`. Establish `hle : ⌈aR PD.p H⌉₊ + b i + η ≤ 2 * H`. Establish `hbi : b i ≤ hpar n b S` using `le_trans (Finset.le_sup (f := b) (Finset.mem_univ i)) (Nat.le_add_right _ _)`. Establish `hb` using `hbig i`. Break down `le_or_gt 0 (aR PD.p H) with h0 | h0` into its components or cases.
+
+Establish `hc` using `Nat.ceil_lt_add_one h0`. Establish `hbi' : (b i : ℝ) ≤ (hpar n b S : ℝ)` using `by exact_mod_cast hbi`. Establish `hreal : ((⌈aR PD.p H⌉₊ : ℕ) : ℝ) + (b i : ℝ) + (η : ℝ) ≤ 2 * ((hpar n b S : ℝ) + η)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hH]`.
+
+Conclude with `hreal` after adjusting the coercions. Establish `hc : ⌈aR PD.p H⌉₊ = 0` using `Nat.ceil_eq_zero.2 h0.le`. Rewrite using `[hc, hH]`. Use linear arithmetic over natural numbers and integers. Take `⟨t, ht⟩` from `Nat.exists_eq_add_of_le hle`.
+
+Use `set a := W.π₀ * Formalism.MainNotions.LiftingTheory.qp W ^ (⌈aR PD.p H⌉₊ + b i) with ha_def`. Establish `haΔ : a ∈ W.AΔ` using `W.AΔ.mul_mem hR.πΔ (W.AΔ.pow_mem hqΔ _)`. Establish `hpkΔ : Formalism.MainNotions.LiftingTheory.pk W 1 ^ (b (i - 1) + S) ∈ W.AΔ` using `W.AΔ.pow_mem (Formalism.MainNotions.UnusedSlot80.PhiPowers.φA_pow_mem_AΔ (W := W) hqΔ 1) _`. Establish `hcancel : ∀ x x' : W.DD T₂, a • x = a • x' → x = x'`. Introduce `x x' h`.
+
+Rewrite `h` using `[ha_def, mul_comm, ← smul_smul, ← smul_smul]`. Establish `h1` using `(Formalism.MainNotions.LiftingTheory.lifta_qpow_bij W hR T₂ _).1 h`. Take `⟨u, hu⟩` from `hR.πU`. Conclude with `Formalism.MainNotions.LiftingTheory.lifta_π₀_cancel W T₂ (↑u⁻¹ : W.EE) (by rw [← hu]; exact u.mul_inv) x x' h1`. Use `set w := Formalism.MainNotions.LiftingTheory.pk W 1 ^ (b (i - 1) + S) • (W.γ T₂ la - la) with hw_def`.
+
+Establish `hγDL : Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ i (W.γ T₂ la)`. Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Formalism.MainNotions.WachCoordinates.Br.γA_letE W W.gam i]`. Rewrite using `[← Formalism.MainNotions.LiftingTheory.liftb_γ_smul, hDLi.1]`. Use `show W.γD T₂ δ (W.γD T₂ W.gam la) = W.γD T₂ W.gam la`.
+
+Rewrite using `[← W.γD_mul, mul_comm, W.γD_mul, hDLi.2 δ hδ]`. Establish `hwDL : Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ i w`. Use `lemGAla_dl_smul W T₂ hpkΔ ⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, hγDL.1, hDLi.1]`. Rewrite using `[map_sub, hγDL.2 δ hδ, hDLi.2 δ hδ]`.
+
+Use `set z := Formalism.MainNotions.LiftingTheory.qp W ^ t • (Formalism.MainNotions.LiftingTheory.qp W ^ η • (Formalism.MainNotions.LiftingTheory.pk W 1 ^ (b (i - 1) + S) • p0)) with hz_def`. Establish `hzN : z ∈ W.N T₂` using `Submodule.smul_mem _ _ hN1`. Establish `hz_eq : a • z = w`. Rewrite using `[hw_def, hγla, hz_def, ha_def, Formalism.MainNotions.CrystallineLiftingInputs.fMX, ht]`. Simplify using `only [smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨la, hla, hDLi, hpull, z, hzN, ⟨hcancel _ _ ?_, fun δ hδ => hcancel _ _ ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm, ← smul_smul, hz_eq, hwDL.1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hw_def, ← hz_eq]`.
+-/
 theorem lemGA_la_of [NeZero n] (W : LocWach PD LL O v n) (hT2 : Formalism.MainNotions.CrystallineLiftingInputs.TTool2 W)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W) (hR : Formalism.MainNotions.LiftingTheory.lifta_Ring W)
     (hJ : ∀ (d : ℕ) (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L) (b : ZMod n → ℕ) (S η m : ℕ),

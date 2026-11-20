@@ -9,6 +9,55 @@ namespace PI.UnitaryGroupMassFormula.UJClassFin
 
 open PI.UJClassFin
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ M J L _h1 _h2 h3 h4 h5`. Take `⟨k, hk, hkL⟩` from `low_nat L h5`. Take `⟨u, hu, huL⟩` from `up_nat L h4`. Take `⟨dJ, hdJ, hdJi⟩` from `mat_den J`. Establish `hJdet : J.det ≠ 0`.
+
+Introduce `h0`. Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Establish `hu'` using `(Matrix.isUnit_iff_isUnit_det _).1 (posDefOfDefiniteSignature_holds M _ (h3 τ)).isUnit`. Establish `e : (J.map τ).det = τ J.det` using `(RingHom.map_det τ J).symm`. Rewrite `hu'` using `[e, h0, map_zero]`.
+
+Conclude with `not_isUnit_zero hu'`. Take `⟨dI, hdI, hdIi⟩` from `mat_den J⁻¹`. Use `⟨u * u * dJ, k * (dI * (u * u * dJ) * k), k * u, by positivity, by positivity, by positivity, fun h => ?_⟩` and prove the remaining obligations. Use `set D := u * u * dJ with hDdef`. Use `set g' := finMat σ J h⁻¹ with hg'def`.
+
+Use `set g := finMat σ J h with hgdef`. Establish `hgg' : g * g' = 1` using `by rw [hgdef, hg'def, ← finMat_mul, mul_inv_cancel, finMat_one]`. Establish `hg'g : g' * g = 1` using `by rw [hgdef, hg'def, ← finMat_mul, inv_mul_cancel, finMat_one]`. Establish `hU : cT (sigR (Af F) σ) g * JR (Af F) J * g = JR (Af F) J` using `finMat_unitary σ J h`. Establish `hvs : ∀ (c : E) (x : Fin M → E), vinc (F` using `F) (c • x) = inclR (F := F) (Af F) c • vinc (F := F) x := by`.
+
+Introduce `c x`. Use function extensionality and compare the values at `i`. Simplify using `[vinc, map_mul]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx e he`.
+
+Use `show g'.mulVec (vinc ((((k * u : ℕ) : E) * e) • x)) ∈ latHat F E L`. Establish `hw : g'.mulVec (vinc x) ∈ latHat F E L` using `hx`. Rewrite using `[hvs, Matrix.mulVec_smul]`. Establish `: inclR (F` using `F) (Af F) (((k * u : ℕ) : E) * e) • g'.mulVec (vinc x) = k • (fun i => inclR (F := F) (Af F) e * (u • (g'.mulVec (vinc x)) i)) := by`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, nsmul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `low_vec L hkL fun i => Oh_mul (incl_mem_Oh he) (up_Oh L huL hw i)`. Take `⟨m, hm, hmO⟩` from `den_mat g'`.
+
+Use `⟨k * m, Nat.mul_pos hk hm, fun i e he => ?_⟩` and prove the remaining obligations. Use `show g'.mulVec (vinc (Pi.single i (((k * m : ℕ) : E) * e))) ∈ latHat F E L`. Establish `hv : vinc (F` using `F) (Pi.single i (((k * m : ℕ) : E) * e)) = Pi.single i (inclR (F := F) (Af F) (((k * m : ℕ) : E) * e)) := by`. Use function extensionality and compare the values at `l`. Use `show inclR (F := F) (Af F) ((Pi.single i (((k * m : ℕ) : E) * e) : Fin M → E) l) = _`.
+
+Rewrite using `[Pi.single_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hv, mulVec_single']`. Establish `: (fun l => g' l i * inclR (F` using `F) (Af F) (((k * m : ℕ) : E) * e)) = k • (fun l => (m • g' l i) * inclR (F := F) (Af F) e) := by`. Use function extensionality and compare the values at `l`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, nsmul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `low_vec L hkL fun l => Oh_mul (hmO l i) (incl_mem_Oh he)`. Introduce `x hx y hy`.
+
+Establish `hX : g'.mulVec (vinc x) ∈ latHat F E L` using `hx`. Establish `hY : g'.mulVec (vinc y) ∈ latHat F E L` using `hy`. Establish `e1 : hermA σ J (vinc (F` using `F) x) (vinc y) = hermA σ J (g'.mulVec (vinc x)) (g'.mulVec (vinc y)) := by`. Rewrite using `[← hermA_unitary σ J g hU (g'.mulVec (vinc x)) (g'.mulVec (vinc y)), Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hgg', Matrix.one_mulVec, Matrix.one_mulVec]`. Establish `e2 : D • hermA σ J (g'.mulVec (vinc x)) (g'.mulVec (vinc y)) ∈ Oh F E` using `hermA_Oh σ J hdJi (up_Oh L huL hX) (up_Oh L huL hY)`.
+
+Apply `oh_inter (F := F)` to reduce the goal to its premises. Rewrite using `[map_mul, map_natCast, ← nsmul_eq_mul, ← hermA_vinc, e1]`. Conclude with `e2`. Introduce `y hy`. Use `set Z := g'.mulVec (vinc (F := F) y) with hZdef`.
+
+Establish `d1 : ∀ W ∈ latHat F E (abelian₂ σ J L h), D • hermA σ J W (vinc y) ∈ Oh F E`. Introduce `W hW`. Proceed by induction on `hW using AddSubgroup.closure_induction with`. Consider the case `mem W hW`. Take `⟨a, ha, x, hx, rfl⟩` from `hW`.
+
+Establish `e3 : (fun i => a ⊗ₜ[F] x i) = (a ⊗ₜ[F] (1 : E)) • vinc (F` using `F) x := by`. Use function extensionality and compare the values at `i`. Simplify using `[vinc, inclR, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[e3, hermA_smul_left, hermA_vinc]`. Establish `e4 : D • (sigR (Af F) σ (a ⊗ₜ[F] (1 : E)) * inclR (F` using `F) (Af F) (PI.HermLatFin.herm (σ : E →+* E) J x y)) = sigR (Af F) σ (a ⊗ₜ[F] (1 : E)) * inclR (F := F) (Af F) ((D : E) * PI.HermLatFin.herm (σ : E →+* E) J x y) := by`.
+
+Rewrite using `[nsmul_eq_mul, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4]`. Conclude with `Oh_mul (sigR_Oh σ (tmul_mem_Oh ha isIntegral_one)) (incl_mem_Oh (hy x hx))`. Consider the case `zero => rw [hermA_zero_left, smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add W W' _ _ h1 h2 => rw [hermA_add_left, smul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg W _ h1 => rw [hermA_neg_left, smul_neg]`. Conclude with `neg_mem h1`.
+
+Establish `hRD` using `rational_points_dense F E σ M J L h4 h5 h`. Establish `d2 : ∀ V ∈ latHat F E L, D • hermA σ J V Z ∈ Oh F E`. Introduce `V hV`. Establish `hgV : g.mulVec V ∈ latHat F E (abelian₂ σ J L h)` using `(hRD (g.mulVec V)).1 (by rwa [← hg'def, Matrix.mulVec_mulVec, hg'g, Matrix.one_mulVec])`. Use `d1 _ hgV` as an intermediate fact.
+
+Establish `e5 : vinc (F` using `F) y = g.mulVec Z := by`. Rewrite using `[hZdef, Matrix.mulVec_mulVec, hgg', Matrix.one_mulVec]`. Rewrite `this` using `[e5, hermA_unitary σ J g hU]`. Then use the resulting hypothesis. Establish `d3 : ∀ i, (D * k) • ((JR (Af F) J).mulVec Z) i ∈ Oh F E`. Introduce `i`.
+
+Establish `hV : (Pi.single i (k • (1 : Af F ⊗[F] E)) : Fin M → Af F ⊗[F] E) ∈ latHat F E L` using `single_mem L hkL one_mem_Oh i`. Use `d2 _ hV` as an intermediate fact. Rewrite `this` using `[hermA_single_left, map_nsmul, map_one]`. Establish `e6 : (D * k) • ((JR (Af F) J).mulVec Z) i = D • ((k • (1 : Af F ⊗[F] E)) * ((JR (Af F) J).mulVec Z) i)`. Rewrite using `[smul_mul_assoc, one_mul, mul_smul]`.
+
+Rewrite using `[e6]`. Conclude with `this`. Establish `hJinv : (J⁻¹).map (inclR (F` using `F) (Af F)) * JR (Af F) J = 1 := by`. Rewrite using `[JR, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (Ne.isUnit hJdet)]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Establish `d4 : ∀ l, (dI * D * k) • Z l ∈ Oh F E`. Introduce `l`. Establish `hZ : Z = ((J⁻¹).map (inclR (F` using `F) (Af F))).mulVec ((JR (Af F) J).mulVec Z) := by`. Rewrite using `[Matrix.mulVec_mulVec, hJinv, Matrix.one_mulVec]`. Establish `e7 : (dI * D * k) • Z l = ∑ i, (inclR (F` using `F) (Af F) ((dI : E) * J⁻¹ l i)) * ((D * k) • ((JR (Af F) J).mulVec Z) i) := by conv_lhs => rw [hZ]`.
+
+Rewrite using `[Matrix.mulVec, dotProduct, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, nsmul_eq_mul, Nat.cast_mul, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e7]`.
+
+Conclude with `AddSubgroup.sum_mem _ fun i _ => Oh_mul (incl_mem_Oh (hdIi l i)) (d3 i)`. Use `show g'.mulVec (vinc (((k * (dI * D * k) : ℕ) : E) • y)) ∈ latHat F E L`. Establish `hv : vinc (F` using `F) (((k * (dI * D * k) : ℕ) : E) • y) = (k * (dI * D * k)) • vinc (F := F) y := by`. Use function extensionality and compare the values at `i`. Simplify using `[vinc, map_mul, map_natCast, nsmul_eq_mul]`.
+
+Rewrite using `[hv, Matrix.mulVec_smul, mul_smul]`. Conclude with `low_vec L hkL fun l => d4 l`.
+-/
 theorem adelic_bounds : AdelBounds := by
   intro F E _ _ _ _ _ _ σ M J L _h1 _h2 h3 h4 h5
   classical

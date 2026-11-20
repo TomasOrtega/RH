@@ -6,6 +6,9 @@ open Formalism.GaloisCohomology
 
 namespace UpperTheory.V.Win
 
+/- English proof (translation)
+The claim follows from `have hA : Two.TowerBound := fun l _ L _ _ R h => PropA.aBound_of_isTower hP hF hT l L R h thmBab_of hK (Two.fixedIn hFW hA) (Two.twoIn hFW hA)`.
+-/
 theorem thmBab_of_lemmaK (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK)
     (hFW : Published.FerreroWashington) (hK : ∃ CK : ℝ, LemmaK CK) : ∃ K : BConst, ∀ Ct : ℝ, 1 ≤ Ct → ThmBab K Ct :=
   have hA : Two.TowerBound := fun l _ L _ _ R h => PropA.aBound_of_isTower hP hF hT l L R h

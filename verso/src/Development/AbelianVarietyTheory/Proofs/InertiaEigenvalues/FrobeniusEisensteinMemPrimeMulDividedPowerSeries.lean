@@ -8,6 +8,23 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.CrysPrism
 
+/- English proof (translation)
+Introduce `l hl a e _ _ O K _ _ _ _ _ _ _ _ _ t`. Establish `hlp : l.Prime` using `hl.out`. Establish `hl0 : (l : K) ≠ 0`. Establish `h : (l : K) = algebraMap ℚ_[l] K (l : ℚ_[l])` using `by simp`. Rewrite using `[h]`.
+
+Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hlp.ne_zero)`. Establish `hle : l * e ≠ 0` using `Nat.mul_ne_zero hlp.ne_zero (NeZero.ne e)`. Establish `hf : frobS l a (eis l a e) = X ^ (l * e) + (l : (Wq l a)⟦X⟧)`. Simplify using `[eis, pow_mul]`. Use `⟨fun _ => 1 + C (l : K)⁻¹ * X ^ (l * e), ⟨fun n => if n = 0 then 1 else if n = l * e then (((l - 1).factorial : ℕ) : Wq l a) else 0, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `r`. Rewrite using `[Filter.eventually_cofinite]`. Use `(Set.finite_le_nat (l * e)).subset fun n hn => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_setOf_eq, not_le] at h`.
+
+Apply `hn` to reduce the goal to its premises. Simplify using `only [show n ≠ 0 by omega, show n ≠ l * e by omega, if_false]`. Conclude with `dvd_zero _`. Introduce `τ n`. Rewrite using `[map_add, coeff_one, coeff_C_mul, coeff_X_pow]`.
+
+Distinguish the cases in `h0 : n = 0`. Substitute `h0` using the available equality. Simplify using `[hle.symm]`. Distinguish the cases in `h1 : n = l * e`. Substitute `h1` using the available equality.
+
+Establish `hfac : (l : K)⁻¹ * (l.factorial : K) = ((l - 1).factorial : K)`. Rewrite using `[← Nat.mul_factorial_pred hlp.ne_zero, Nat.cast_mul, ← mul_assoc, inv_mul_cancel₀ hl0, one_mul]`. Simplify using `only [h0, hle, if_false, if_true, zero_add, mul_one, map_natCast]`. Rewrite using `[Nat.mul_div_cancel _ (Nat.pos_of_ne_zero (NeZero.ne e)), mul_comm, hfac]`. Simplify using `[h0, h1]`.
+
+Use function extensionality and compare the values at `τ`. Use extensionality with `n`. Rewrite using `[inclS_apply, coeff_toAc, hf, Pi.mul_apply, Pi.natCast_apply, ← map_natCast (C : K →+* K⟦X⟧), coeff_C_mul, map_add (coeff n) (X ^ (l * e)) (l : (Wq l a)⟦X⟧), map_add (coeff n) (1 : K⟦X⟧), coeff_one, coeff_C_mul, coeff_X_pow, coeff_X_pow, ← map_natCast (C : Wq l a →+* (Wq l a)⟦X⟧) …`. Distinguish the cases in `h0 : n = 0`. Substitute `h0` using the available equality.
+
+Simplify using `[hle.symm]`. Distinguish the cases in `h1 : n = l * e`. Substitute `h1` using the available equality. Simplify using `[h0, hl0]`. Simplify using `[h0, h1]`.
+-/
 theorem frobS_eis_mem : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O]
     [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K]
     [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O),

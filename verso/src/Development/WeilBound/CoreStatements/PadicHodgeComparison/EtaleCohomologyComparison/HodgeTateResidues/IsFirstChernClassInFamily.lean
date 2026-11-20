@@ -52,6 +52,9 @@ def subPair {A : C ⥤ CommAlgCat.{w} R} (S S' S'' : SubF (modF A))
 
 end Gen
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Conclude with `dividedPowerFiltration_mul δ k 1 ih (Ideal.subset_span ⟨[(1, z)], by simpa using hz, by simp, by simp [δ.dpow_one hz]⟩)`.
+-/
 theorem pow_mem_pdP {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {z : B} (hz : z ∈ J) (k : ℕ) : z ^ k ∈ Pb.pdP δ k := by
   induction k with
   | zero => exact Ideal.subset_span ⟨[], by simp, by simp, by simp⟩
@@ -59,6 +62,9 @@ theorem pow_mem_pdP {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J)
     rw [pow_succ]
     exact dividedPowerFiltration_mul δ k 1 ih (Ideal.subset_span ⟨[(1, z)], by simpa using hz, by simp, by simp [δ.dpow_one hz]⟩)
 
+/- English proof (translation)
+Rewrite using `[mul_comm, ← h]`. Conclude with `dividedPowerFiltration_mul δ r k hx (pow_mem_pdP δ hz k)`.
+-/
 theorem dividedPowerFiltration_pow_mul {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {z x : B} (hz : z ∈ J) {r k r' : ℕ} (h : r + k = r')
     (hx : x ∈ Pb.pdP δ r) : z ^ k * x ∈ Pb.pdP δ r' := by
   rw [mul_comm, ← h]; exact dividedPowerFiltration_mul δ r k hx (pow_mem_pdP δ hz k)
@@ -97,9 +103,15 @@ def TT (P : PAlg l ⥤ Type) (r n : ℕ) : SubF (modF (AcrEl P n)) where
            smul_mem' := fun a _ hx => (Pb.pdP (B.DD false T.1.obj n) r).mul_mem_left (T.1.obj.cris n a) hx }
   map_mem φ _ hx := Pb.dividedPowerFiltration_map (B.dd_map false φ.1.hom n) r hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_TT {P : PAlg l ⥤ Type} {r n : ℕ} {T : El P} {x : T.1.obj.Acr n} :
     x ∈ (TT P r n).S T ↔ x ∈ Pb.pdP (B.DD false T.1.obj n) r := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_pdS {b : Base} {L : b.Fun} {Λ : Type} [CommRing Λ] {c : Λ →+* b.R} {r : ℕ} {T : Thick L} {x : T.B} :
     x ∈ (B.pdS L c r).S T ↔ x ∈ Pb.pdP T.δ r := Iff.rfl
 

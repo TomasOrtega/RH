@@ -14,6 +14,9 @@ def pushP {R : Type} [CommRing R] {A B : CommRingCat.{0}} (β : A ⟶ B) (F : Sh
     ((Spec A).Etale)ᵒᵖ ⥤ AddCommGrpCat.{1} :=
   (tot β).op ⋙ F.obj ⋙ forget₂ (ModuleCat.{1} (ULift.{1} R)) AddCommGrpCat.{1}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {R : Type} [CommRing R] {A B : CommRingCat.{0}} (β : A ⟶ B) (F : Shv R) (V : (Spec A).Etale) :
   (pushP β F).obj (op V) = AddCommGrpCat.of (F.obj.obj (op (pullback V.hom (Spec.map β)))) := rfl
 

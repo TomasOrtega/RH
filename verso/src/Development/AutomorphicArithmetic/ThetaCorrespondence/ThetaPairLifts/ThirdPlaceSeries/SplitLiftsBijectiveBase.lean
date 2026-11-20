@@ -15,28 +15,49 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Point
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
+/- English proof (translation)
+The claim follows from `h.prim.unif`.
+-/
 theorem lUnif_of_rows_alt (p : PtAt ex Csz) (h : p.PointConditions') : (R2 p).LUnif := h.prim.unif
+/- English proof (translation)
+Establish `hR` using `complex_data_conditions_base_level_of_primitive_links h.ok h.sep p.charW h.prim`. Establish `h5` using `hR.lifts0.1`. Rewrite `h5` using `[GlobalTheory.CharRealise.toCx3_eq_one p.R p.F p.phsOne]`. Conclude with `h5`.
+-/
 theorem split_lifts_bijective_of_split_data (p : PtAt ex Csz) (h : p.PointConditions') : ((R2 p).toCx (F2 p)).H5 (F2 p).cr false := by
   have hR := complex_data_conditions_base_level_of_primitive_links h.ok h.sep p.charW h.prim
   have h5 := hR.lifts0.1
   rw [GlobalTheory.CharRealise.toCx3_eq_one p.R p.F p.phsOne] at h5
   exact h5
+/- English proof (translation)
+Establish `hR` using `complex_data_conditions_base_level_of_primitive_links h.ok h.sep p.charW h.prim`. Establish `hr` using `hR.ratTh`. Rewrite `hr` using `[GlobalTheory.CharRealise.toCx3_eq_one p.R p.F p.phsOne]`. Conclude with `hr`.
+-/
 theorem rat_theta_of_split_data (p : PtAt ex Csz) (h : p.PointConditions') : ((R2 p).toCx (F2 p)).RATth (F2 p).cr false := by
   have hR := complex_data_conditions_base_level_of_primitive_links h.ok h.sep p.charW h.prim
   have hr := hR.ratTh
   rw [GlobalTheory.CharRealise.toCx3_eq_one p.R p.F p.phsOne] at hr
   exact hr
+/- English proof (translation)
+Establish `hR` using `complex_data_conditions_base_level_of_primitive_links h.ok h.sep p.charW h.prim`. Establish `hv` using `hR.proviso0`. Rewrite `hv` using `[GlobalTheory.CharRealise.toCx3_eq_one p.R p.F p.phsOne]`. Conclude with `hv`.
+-/
 theorem level_proviso_of_split_data (p : PtAt ex Csz) (h : p.PointConditions') : (lv ((F2 p).fc ((R2 p).toCx (F2 p)).zs) false).Proviso := by
   have hR := complex_data_conditions_base_level_of_primitive_links h.ok h.sep p.charW h.prim
   have hv := hR.proviso0
   rw [GlobalTheory.CharRealise.toCx3_eq_one p.R p.F p.phsOne] at hv
   exact hv
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_root_.GlobalTheory.BigOn.SplitRows.split_lifts_bijective_of_split_data p h, _root_.GlobalTheory.BigOn.SplitRows.rat_theta_of_split_data p h, _root_.GlobalTheory.BigOn.SplitRows.level_proviso_of_split_data p h⟩`.
+-/
 theorem base_links_of_split_data (p : PtAt ex Csz) (h : p.PointConditions') : BaseLinks (R2 p) (F2 p) :=
   ⟨_root_.GlobalTheory.BigOn.SplitRows.split_lifts_bijective_of_split_data p h, _root_.GlobalTheory.BigOn.SplitRows.rat_theta_of_split_data p h, _root_.GlobalTheory.BigOn.SplitRows.level_proviso_of_split_data p h⟩
+/- English proof (translation)
+Establish `hR` using `complex_data_conditions_base_level_of_primitive_links h.ok h.sep p.charW h.prim`. Conclude with `⟨(indefiniteDataAtBaseLevel hR).D_pos, fun j => (indefiniteDataAtBaseLevel hR).dW_eq (hR.wf false) j⟩`.
+-/
 theorem rank_conditions_of_split_data (p : PtAt ex Csz) (h : p.PointConditions') : RankRows (S2 p) := by
   have hR := complex_data_conditions_base_level_of_primitive_links h.ok h.sep p.charW h.prim
   exact ⟨(indefiniteDataAtBaseLevel hR).D_pos, fun j => (indefiniteDataAtBaseLevel hR).dW_eq (hR.wf false) j⟩
 end Point
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ p h` and use `⟨_root_.GlobalTheory.BigOn.SplitRows.lUnif_of_rows_alt p h, _root_.GlobalTheory.BigOn.SplitRows.base_links_of_split_data p h, _root_.GlobalTheory.BigOn.SplitRows.rank_conditions_of_split_data p h⟩`.
+-/
 theorem uniform_and_base_links_and_rank_of_split_data : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D)
     (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Csz : ℝ) (p : PtAt ex Csz),
     p.PointConditions' → (R2 p).LUnif ∧ BaseLinks (R2 p) (F2 p) ∧ RankRows (S2 p) :=

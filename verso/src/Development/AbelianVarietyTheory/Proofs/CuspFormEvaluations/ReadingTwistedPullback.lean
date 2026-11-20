@@ -9,6 +9,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AnVal
 
+/- English proof (translation)
+Introduce `S A _ _ L x0 g Φ ψ m hm a b α s s' θ p v hψ ht hs hα j' z pt h1 h2 hj'`. Take `⟨hmz, j, hj, hv⟩` from `hα z`. Express the relevant statement in the definitionally equal form `(vtfQ A (Φ.e z)).left ≫ m.left = _ at hmz`. Express the relevant statement in the definitionally equal form `⊤ ≤ (vtfQ A (Φ.e z)).left ⁻¹ᵁ _ at hj`. Express the relevant statement in the definitionally equal form `valAt' (vtfQ A (Φ.e z)).left _ _ = _ at hv`.
+
+Establish `h0 : ⊤ ≤ (Φ.e z).left ⁻¹ᵁ L.L.U (j 0)`. Rewrite using `[← vtfQ_snd A (Φ.e z)]`. Introduce `q hq`. Conclude with `LB.wchart_le L.L ![(snd (Over.mk x0) A).left, m.left] j 0 (hj hq)`. Establish `h1' : ⊤ ≤ (Φ.e (p z)).left ⁻¹ᵁ L.L.U (j 1)`.
+
+Rewrite using `[← hmz]`. Introduce `q hq`. Conclude with `LB.wchart_le L.L ![(snd (Over.mk x0) A).left, m.left] j 1 (hj hq)`. Establish `e1 : ((vtfQ A (Φ.e z)).left ≫ ψ.left) ≫ (snd (Over.mk x0) A).left = (Φ.e (p z)).left`. Rewrite using `[Category.assoc, ← Over.comp_left, hm, hmz]`.
+
+Establish `e2 : ((vtfQ A (Φ.e z)).left ≫ ψ.left) ≫ (fst (Over.mk x0) A).left = 𝟙 (Sp ℂ)`. Rewrite using `[Category.assoc, ← Over.comp_left, hψ]`. Conclude with `vtfQ_fst A (Φ.e z)`. Establish `hr` using `hs (j 1) (p z) _ e1 e2 h1'`. Establish `tw` using `vtf_twist A L.L ht (vtfQ A (Φ.e z)).left j hj`.
+
+Establish `hne` using `Φ.fr_ne (j 1) (p z) h1'`. Rewrite using `[vtf_pt_uniq A (Φ.e z) pt h1 h2]`. Use `vtf_read A L.L s' (Φ.e z) (fun i => Φ.fr i z) (fun i i' h => Φ.fr_g i i' z h) (j 0) j' h0 hj' _ ?_` and prove the remaining obligations. Use `tw.trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) hv hr).trans ?_` and prove the remaining obligations.
+
+Establish `hz : Φ.fr (j 1) (p z) ^ b ≠ 0` using `zpow_ne_zero _ hne`. Rewrite using `[zpow_neg]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem AnFr.rd_twistPull : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), ∀ (ψ : Over.mk x0 ⊗ A ⟶ Over.mk x0 ⊗ A) (m : Over.mk x0 ⊗ A ⟶ A) (hm : ψ ≫ snd (Over.mk x0) A = m) (a b : ℤ) (α : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(snd (Over.mk x0) A).left, m.left] ![a, -b])) (s : LB.Sec (LPow A L.L b (Over.mk x0))) (s' : LB.Sec (LPow A L.L a (Over.mk x0))) (θ : (Fin g → ℂ) → ℂ) (p : (Fin g → ℂ) → Fin g → ℂ) (v : (Fin g → ℂ) → ℂ), ψ ≫ fst (Over.mk x0) A = fst (Over.mk x0) A → IsTwistPull A L.L ψ m hm a b α s s' → Φ.Rd b s θ → (∀ z, (ptSecT A (Φ.e z)).left ≫ m.left = (Φ.e (p z)).left ∧ ∃ j : Fin 2 → L.L.ι, ⊤ ≤ (ptSecT A (Φ.e z)).left ⁻¹ᵁ LB.wchart L.L ![(snd (Over.mk x0) A).left, m.left] j ∧ valAt' (ptSecT A (Φ.e z)).left (LB.wchart L.L ![(snd (Over.mk x0) A).left, m.left] j) (α.s j).val = v z * (Φ.fr (j 0) z ^ a * Φ.fr (j 1) (p z) ^ (-b))) → Φ.Rd a s' (fun z => v z * θ (p z)) := by
   intro S A _ _ L x0 g Φ ψ m hm a b α s s' θ p v hψ ht hs hα j' z pt h1 h2 hj'
   obtain ⟨hmz, j, hj, hv⟩ := hα z

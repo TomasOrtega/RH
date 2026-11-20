@@ -11,6 +11,9 @@ open GlobalTheory GlobalTheory.AbLaw
 
 namespace GlobalTheory.Cohom
 
+/- English proof (translation)
+Introduce `_ _ _ f M _ _ _ D hM hc h` and use `(cechComplex_exactAt_succ_iff (secCube f M D) 0).1 (CechOne.exactAt_one_of_h1Zero f hM hc h)`.
+-/
 theorem exact_cech_one_of_h1Zero :
     ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (M : LB Y) (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens), M.IsLB → ⨆ i, D i = ⊤ → FirstCohomologyVanishes M → Function.Exact (Cube.d (secCube f M D) 1) (Cube.d (secCube f M D) 2) :=
   fun _ _ _ f M _ _ _ D hM hc h =>

@@ -10,6 +10,9 @@ open CategoryTheory
 
 namespace GlobalTheory.ShFam.DeKeyTrue
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem pn_cast_met {D : D7} {Y : GlobalTheory.ProjVar.Var D.what₂.LL} {σ : D.what₂.LL →+* ℂ} {Δ Δ' : Y.Dv} (e : Δ = Δ')
     (m : (cxSt D.what₂.LL).Met Y σ Δ) (f : (cxSt D.what₂.LL).FnC Y σ) (p : Y.pts σ) :
     (geoTrue D.what₂.LL).pn Y σ Δ' (e ▸ m) f p = (cxSt D.what₂.LL).pn Y σ Δ m f p := by

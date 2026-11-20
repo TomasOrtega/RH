@@ -29,6 +29,13 @@ def mapO (S T : HSp D) : Matrix (Fin S.rank) (Fin T.rank) (AE D) ≃ₗ[AE D] WO
   map_add' u v := by simp only [toO, transpose_add, Matrix.add_mul]
   map_smul' c u := by simp only [toO, transpose_smul, Matrix.smul_mul, RingHom.id_apply]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `e : u = liftV v (1 : Fv D.host.F v) • (mapO S T).symm (mapO S T u)`. Rewrite using `[LinearEquiv.symm_apply_apply, GlobalTheory.BigDatLat.smul_eq_of_at hu.1]`. Rewrite using `[e]`. Use `GlobalTheory.BigDat.map_mem_of_closure ((DistribMulAction.toAddMonoidHom _ (liftV v (1 : Fv D.host.F v))).comp (mapO S T).symm.toLinearMap.toAddMonoidHom) ?_ hu.2` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩`. Establish `e2 : (mapO S T).symm (Matrix.of fun i j => (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j)) = pairA D.host.F 0 α • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (vecMulVec (star s) (a • t))`. Use extensionality with `p q`. Use `(GlobalTheory.BigDat.divG_gen S (pairA D.host.F 0 α) a s t q p).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.BigDat.smul_incM_apply, vecMulVec_apply, mul_comm]`.
+
+Both sides reduce to the same expression. Conclude with `(congrArg (fun z => liftV v (1 : Fv D.host.F v) • z ∈ latAtV Xs Ws v) e2).mpr (GlobalTheory.BigDat.one_smul_gen_mem _ _ v hα (hLS s hs) (hLT _ (GlobalTheory.BigDat.smul_mem_scLat_of_mem ha ht)))`.
+-/
 theorem localLattice_le_latticeAtPlace {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {Xs : Spc D.host.F D.host.E S.rank} {Ws : Spc D.host.F D.host.E T.rank}
     (hLS : ∀ s ∈ ΛS, star s ∈ Xs.L) (hLT : ∀ y ∈ GlobalTheory.SkewLat.scLat D.host.AA ΛT, y ∈ Ws.L) (v : Pl D.host.F) :
@@ -51,6 +58,11 @@ theorem localLattice_le_latticeAtPlace {S T : HSp D} {ΛS : Submodule (𝓞 D.ho
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Take `⟨t1, -, t3, t4, -⟩` from `th_laws Mo hψ hθ hJ hJW hM`. Take `⟨co', hco'⟩` from `exists_co Mo hJ hJW`. Establish `hB : ∀ x y, sy Xs Ws x y = symplO (sgn ε M) X (mapO (sgn ε M) X x) (mapO (sgn ε M) X y)` using `fun x y => by`. Rewrite using `[GlobalTheory.ThetaTransform.symplO_eq_symp (ξ := 1) rfl (one_smul _ _), co'.form, hco', hco']`.
+
+Use `(Mo.co.form x y).trans ?_` and prove the remaining obligations. Establish `h1` using `(mapO (sgn ε M) X).symm_apply_apply x`. Establish `h2` using `(mapO (sgn ε M) X).symm_apply_apply y`. Conclude with `congrArg₂ (fun x y => (Mo.co.e x).1 ⬝ᵥ (Mo.co.e y).2 - (Mo.co.e y).1 ⬝ᵥ (Mo.co.e x).2) h1.symm h2.symm`. Conclude with `exists_pure (mapO (sgn ε M) X) Mo hS hT hψ hBs hX hW hM hB (localLattice_le_latticeAtPlace hLS hLT) t1 t3 ((t4 vac).1 hth) hv0 hv pl hpl a ha hη Z A A' hA hA' co hco hcoa hcos I hI hf hΦ φ hφ hφv hκ hloc`.
+-/
 theorem exists_pure_pair (ε : Bool) (M X : HSp D) {k : ℕ} (hk : k = X.rank) {Xs : Spc D.host.F D.host.E M.rank}
     {Ws : Spc D.host.F D.host.E k} (Mo : Model D.sp.cm.sig Xs Ws) (hJ : Xs.J = GlobalTheory.RealDict.sgE (D := D) ε • M.gram)
     (hJW : Ws.J = D.host.xi0 • (X.gramᵀ).submatrix (finCongr hk) (finCongr hk))

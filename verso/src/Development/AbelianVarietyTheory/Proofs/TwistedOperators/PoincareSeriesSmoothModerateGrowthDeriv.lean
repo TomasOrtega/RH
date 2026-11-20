@@ -23,12 +23,18 @@ namespace GlobalTheory.PoinDer
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.norm_levelIndicatorCoefficientTest_le_decay D θ hθ V S M K v hv b hb`.
+-/
 theorem termBound (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (v : ∀ τ, M.H τ) (hv : KDecay M v) (b : ∀ τ, M.H τ)
     (hb : ∀ τ, b τ ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ x : GA D V, ‖coef θ M K v b x‖ ≤ C * ∏ τ, ((1 + hsn (cmp θ τ x)) ^ (2 * V.rank ^ 2 + 1))⁻¹ :=
   GlobalTheory.T.norm_levelIndicatorCoefficientTest_le_decay D θ hθ V S M K v hv b hb
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.coefficientPoincareSeries_summable_majorant`.
+-/
 theorem sumBound : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (Λ : Lat V), IsSelfDualC V Λ →
     ∀ (𝔪 : Ideal (𝓞 D.host.E)) (c : GA D V), ∃ (C₀ : ℝ) (A : ℕ), ∀ (u : GA D V → ℝ) (C : ℝ), (∀ x, 0 ≤ u x) →
     (∀ x, Lev.finE V x ∉ congLev D.sp.cm V.gram Λ 𝔪 → u x = 0) →
@@ -36,6 +42,9 @@ theorem sumBound : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D)
     Summable (fun γ : GQ V => u (c * (γ : GA D V) * g)) ∧ ∑' γ : GQ V, u (c * (γ : GA D V) * g) ≤ C * C₀ * height V g ^ A :=
   GlobalTheory.T.coefficientPoincareSeries_summable_majorant
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hasDerivAt_levelIndicatorCoefficientTest_oneParam D hHC θ hθ V S M K v b τ hb X hX x`.
+-/
 theorem termDeriv (hHC : GlobalTheory.Published.HarishChandraModules) (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D}
     {S : D.what₂.Tau → SPar} (M : DSModel V S) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (v b : ∀ τ, M.H τ)
     (τ : D.what₂.Tau) (hb : b τ ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ)
@@ -44,18 +53,65 @@ theorem termDeriv (hHC : GlobalTheory.Published.HarishChandraModules) (θ : InfF
       (coef θ M K v (Function.update b τ (dRep (M.rep τ) X (b τ))) x) 0 :=
   GlobalTheory.T.hasDerivAt_levelIndicatorCoefficientTest_oneParam D hHC θ hθ V S M K v b τ hb X hX x
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.decayWeight_oneParamTranslate_le_const_mul D θ hθ V τ X hX N`.
+-/
 theorem onePDecay (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau)
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (N : ℕ) :
     ∃ L : ℝ, 0 ≤ L ∧ ∀ (x : GA D V) (t : ℝ), |t| < 1 →
       ∏ τ', ((1 + hsn (cmp θ τ' (x * oneP θ V τ X t))) ^ N)⁻¹ ≤ L * ∏ τ', ((1 + hsn (cmp θ τ' x)) ^ N)⁻¹ :=
   GlobalTheory.T.decayWeight_oneParamTranslate_le_const_mul D θ hθ V τ X hX N
 
+/- English proof (translation)
+Establish `h : finHom V (oneP θ V τ X t) = 1` using `GlobalTheory.PointAtPlaceHom.atTau_mem V τ _`. Use `show (Formalism.UG.bc (Lev.swapAE D)).comp (finHom V) (x * oneP θ V τ X t) = (Formalism.UG.bc (Lev.swapAE D)).comp (finHom V) x`. Rewrite using `[map_mul, MonoidHom.comp_apply (Formalism.UG.bc (Lev.swapAE D)) (finHom V) (oneP θ V τ X t), h, map_one, mul_one]`.
+-/
 theorem finE_mul_oneP (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (x : GA D V) (t : ℝ) :
     Lev.finE V (x * oneP θ V τ X t) = Lev.finE V x := by
   have h : finHom V (oneP θ V τ X t) = 1 := GlobalTheory.PointAtPlaceHom.atTau_mem V τ _
   show (Formalism.UG.bc (Lev.swapAE D)).comp (finHom V) (x * oneP θ V τ X t) = (Formalism.UG.bc (Lev.swapAE D)).comp (finHom V) x
   rw [map_mul, MonoidHom.comp_apply (Formalism.UG.bc (Lev.swapAE D)) (finHom V) (oneP θ V τ X t), h, map_one, mul_one]
 
+/- English proof (translation)
+Introduce `hHC D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c a`. Take `⟨C₀, A, hB⟩` from `sumBound D θ hθ V Λ hΛ 𝔪 c`. Use `set K := congLev D.sp.cm V.gram Λ 𝔪 with hK`. Establish `hsum : ∀ b : ∀ τ, M.H τ, (∀ τ, b τ ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ) → ∃ C : ℝ, ∀ g, Summable (fun γ : GQ V => ‖coef θ M K v b (c * (γ : GA D V) * g)‖) ∧ ∑' γ : GQ V, ‖coef θ M K v b (c * (γ : GA D V) * g)‖ ≤ C * height V g ^ A`. Introduce `b hb`.
+
+Take `⟨C, hC0, hC⟩` from `termBound θ hθ M K v hv b hb`. Use `⟨C * C₀, fun g => ?_⟩` and prove the remaining obligations. Use `hB (fun x => ‖coef θ M K v b x‖) C (fun _ => norm_nonneg _) (fun x hx => ?_) hC g` and prove the remaining obligations. Simplify using `only [coef, if_neg hx, norm_zero]`. Establish `grow : ∀ b : ∀ τ, M.H τ, (∀ τ, b τ ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ) → ModGrowthExp V A (poin θ M K v c b)`.
+
+Introduce `b hb`. Take `⟨C, hC⟩` from `hsum b hb`. Conclude with `⟨C, fun g => (norm_tsum_le_tsum_norm (hC g).1).trans (hC g).2⟩`. Establish `der : ∀ b : ∀ τ, M.H τ, (∀ τ, b τ ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ) → ∀ τ, ∀ X ∈ lieAt V τ, ∀ g, HasDerivAt (fun t : ℝ => poin θ M K v c b (g * oneP θ V τ X t)) (poin θ M K v c (Function.update b τ (dRep (M.rep τ) X (b τ))) g) 0`. Introduce `b hb τ X hX g`.
+
+Use `set b' := Function.update b τ (dRep (M.rep τ) X (b τ)) with hb'd`. Establish `hb' : ∀ τ', b' τ' ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ'`. Introduce `τ'`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality.
+
+Rewrite using `[hb'd, Function.update_self]`. Conclude with `GlobalTheory.GKUnif.dRep_mem_kFin hHC M τ' hX (hb τ')`. Rewrite using `[hb'd, Function.update_of_ne h]`. Conclude with `hb τ'`. Take `⟨C', hC'0, hC'⟩` from `termBound θ hθ M K v hv b' hb'`.
+
+Take `⟨L, hL0, hL⟩` from `onePDecay θ hθ V τ hX (2 * V.rank ^ 2 + 1)`. Use `set u : GA D V → ℝ := fun x => if Lev.finE V x ∈ K then C' * L * ∏ τ', ((1 + hsn (cmp θ τ' x)) ^ (2 * V.rank ^ 2 + 1))⁻¹ else 0 with hu`. Establish `hprod : ∀ x : GA D V, 0 ≤ ∏ τ', ((1 + hsn (cmp θ τ' x)) ^ (2 * V.rank ^ 2 + 1))⁻¹` using `fun x => Finset.prod_nonneg fun τ' _ => inv_nonneg.2 (pow_nonneg (by unfold hsn; positivity) _)`. Establish `hu0 : ∀ x, 0 ≤ u x` using `fun x => by`. Simplify using `only [hu]`.
+
+Use `split_ifs`. Conclude with `mul_nonneg (mul_nonneg hC'0 hL0) (hprod x)`. Conclude with `le_rfl`. Establish `huK : ∀ x, Lev.finE V x ∉ K → u x = 0` using `fun x hx => by simp only [hu, if_neg hx]`. Establish `huC : ∀ x, u x ≤ (C' * L) * ∏ τ', ((1 + hsn (cmp θ τ' x)) ^ (2 * V.rank ^ 2 + 1))⁻¹` using `fun x => by`.
+
+Simplify using `only [hu]`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `mul_nonneg (mul_nonneg hC'0 hL0) (hprod x)`. Establish `hbd : ∀ (x : GA D V) (y : ℝ), y ∈ Set.Ioo (-1 : ℝ) 1 → ‖coef θ M K v b' (x * oneP θ V τ X y)‖ ≤ u x`.
+
+Introduce `x y hy`. Distinguish the cases in `hx : Lev.finE V x ∈ K`. Establish `h1` using `hC' (x * oneP θ V τ X y)`. Establish `h2` using `hL x y (abs_lt.2 ⟨hy.1, hy.2⟩)`. Simplify using `only [hu, if_pos hx]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: coef θ M K v b' (x * oneP θ V τ X y) = 0`. Simplify using `only [coef, finE_mul_oneP, if_neg hx]`. Rewrite using `[this, norm_zero]`. Conclude with `hu0 x`.
+
+Establish `hS` using `(hB u (C' * L) hu0 huK huC g).1`. Take `⟨Cb, hCb⟩` from `hsum b hb`. Establish `key` using `hasDerivAt_tsum_of_isPreconnected (g := fun (γ : GQ V) (s : ℝ) => coef θ M K v b (c * (γ : GA D V) * g * oneP θ V τ X s)) (g' := fun (γ : GQ V) (s : ℝ) => coef θ M K v b' (c * (γ : GA D V) * g * oneP θ V τ X s)) (t := Set.Ioo (-1 : ℝ) 1) (y₀ := 0) (y := 0) hS isOpen_Ioo isPreconn …`. Simplify using `only [GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one] at key`. Use `key.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+
+Simplify using `only [poin, mul_assoc]`. Use `⟨?_, ⟨A, fun l hl => ?_⟩, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.Mem.DerClosed.mem_smFun_of_closed D θ hθ V {φ | ∃ b : ∀ τ, M.H τ, (∀ τ, b τ ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ) ∧ φ = poin θ M K v c b} ?_ ?_ _ ⟨_, fun τ => (a τ).2, rfl⟩` and prove the remaining obligations. Introduce and unpack `φ ⟨b, hb, rfl⟩`. Conclude with `(((GlobalTheory.T.coefficientPoincareSeries_isAutomorphic D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c).1 fun τ => ⟨b τ, hb τ⟩).1).cont`.
+
+Introduce and unpack `φ ⟨b, hb, rfl⟩ τ X hX`. Use `⟨_, ⟨Function.update b τ (dRep (M.rep τ) X (b τ)), fun τ' => ?_, rfl⟩, der b hb τ X hX⟩` and prove the remaining obligations. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `GlobalTheory.GKUnif.dRep_mem_kFin hHC M τ' hX (hb τ')`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hb τ'`. Establish `claim : ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → ∃ b : ∀ τ, M.H τ, (∀ τ, b τ ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ) ∧ l.foldr (fun p f => Rder θ V p.1 p.2 f) (poin θ M K v c fun τ => a τ) = poin θ M …`. Introduce `l`.
+
+Proceed by induction on `l with`. Consider the case `nil => exact fun _ => ⟨fun τ => a τ, fun τ => (a τ).2, rfl⟩`. Consider the case `cons p l ih`. Introduce `hl'`. Take `⟨b, hb, e⟩` from `ih fun q hq => hl' q (List.mem_cons_of_mem _ hq)`.
+
+Establish `hX : p.2 ∈ lieAt V p.1` using `hl' p List.mem_cons_self`. Use `⟨Function.update b p.1 (dRep (M.rep p.1) p.2 (b p.1)), fun τ' => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : τ' = p.1`. Rewrite using `[h, Function.update_self]`. Conclude with `GlobalTheory.GKUnif.dRep_mem_kFin hHC M p.1 hX (hb p.1)`.
+
+Rewrite using `[Function.update_of_ne h]`. Conclude with `hb τ'`. Rewrite using `[List.foldr_cons, e]`. Use function extensionality and compare the values at `g`. Conclude with `(der b hb p.1 p.2 hX g).deriv`.
+
+Take `⟨b, hb, e⟩` from `claim l hl`. Rewrite using `[e]`. Conclude with `grow b hb`. Introduce `τ X hX w hw`. Use function extensionality and compare the values at `g`.
+
+Establish `e : (fun τ' => (Function.update a τ w τ' : M.H τ')) = Function.update (fun τ' => (a τ' : M.H τ')) τ (dRep (M.rep τ) X (a τ))`. Use function extensionality and compare the values at `τ'`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using `[hw]`.
+
+Simplify using `[Function.update_of_ne h]`. Rewrite using `[e]`. Conclude with `((der (fun τ' => a τ') (fun τ' => (a τ').2) τ X hX g).deriv).symm`.
+-/
 theorem poin_smooth_growth_deriv : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → 𝔪 ≠ ⊥ → ∀ (v : ∀ τ, M.H τ), KDecay M v → ∀ c : GA D V, ∀ a : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KVec M, (poin θ M (congLev D.sp.cm V.gram Λ 𝔪) v c fun τ => a τ) ∈ GlobalTheory.Mem.AutSpace.SmFun θ V ∧ UnifModGrowth V θ (poin θ M (congLev D.sp.cm V.gram Λ 𝔪) v c fun τ => a τ) ∧ ∀ τ, ∀ X ∈ lieAt V τ, ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ, (w : M.H τ) = dRep (M.rep τ) X (a τ) → (poin θ M (congLev D.sp.cm V.gram Λ 𝔪) v c fun τ' => Function.update a τ w τ') = Rder θ V τ X (poin θ M (congLev D.sp.cm V.gram Λ 𝔪) v c fun τ => a τ) := by
   intro hHC D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c a
   obtain ⟨C₀, A, hB⟩ := sumBound D θ hθ V Λ hΛ 𝔪 c

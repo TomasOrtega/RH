@@ -30,6 +30,9 @@ def ea_ball (K' : Type) [NormedField K'] [IsUltrametricDist K'] : Subring K' whe
     rw [norm_neg]
     exact ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem ea_mem_ball {K' : Type} [NormedField K'] [IsUltrametricDist K'] {x : K'} : x ∈ ea_ball K' ↔ ‖x‖ ≤ 1 := Iff.rfl
 
 variable {p : ℕ} [hp : Fact p.Prime] {X : Sys p}
@@ -50,6 +53,13 @@ attribute [instance] ea_NormExt.nf ea_NormExt.um ea_NormExt.a0 ea_NormExt.ac ea_
 
 def ea_RestNorm (Y : Pend X) : Prop := Nonempty (ea_NormExt Y)
 
+/- English proof (translation)
+Introduce `a b _ hab`. Rewrite using `[← E.ball, map_mul, map_pow, map_zpow₀, map_natCast, norm_mul, norm_pow, norm_zpow, E.norm_p]`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `h1 : ‖algebraMap Y.Kc E.K' x‖ ^ b ≤ ((p : ℝ) ^ (-g)) ^ b` using `pow_le_pow_left₀ (norm_nonneg _) h b`.
+
+Establish `h2 : ((p : ℝ) ^ (-g)) ^ b = (p : ℝ) ^ (-g * b)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp0.le]`. Establish `h3 : ((p : ℝ)⁻¹) ^ (-a) = (p : ℝ) ^ (a : ℝ)`. Rewrite using `[inv_zpow, zpow_neg, inv_inv, Real.rpow_intCast]`. Rewrite using `[h3]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h2]`. Conclude with `mul_le_mul_of_nonneg_right h1 (Real.rpow_nonneg hp0.le _)`. Use `_ = (p : ℝ) ^ (-g * b + a) := by rw [Real.rpow_add hp0]`. Use `_ ≤ 1 := Real.rpow_le_one_of_one_le_of_nonpos hp1.le (by linarith)`.
+-/
 theorem ea_geC_of_norm (Y : Pend X) (E : ea_NormExt Y) {x : Y.Kc} {g : ℝ}
     (h : ‖algebraMap Y.Kc E.K' x‖ ≤ (p : ℝ) ^ (-g)) : Y.geC x g := by
   intro a b _ hab
@@ -68,6 +78,15 @@ theorem ea_geC_of_norm (Y : Pend X) (E : ea_NormExt Y) {x : Y.Kc} {g : ℝ}
     _ = (p : ℝ) ^ (-g * b + a) := by rw [Real.rpow_add hp0]
     _ ≤ 1 := Real.rpow_le_one_of_one_le_of_nonpos hp1.le (by linarith)
 
+/- English proof (translation)
+Unfold `Rp`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `x (⟨y, rfl⟩ | hx)`. Use `show ‖algebraMap (K0 p) E.K' (algebraMap (WW p) (K0 p) y)‖ ≤ 1`. Rewrite using `[IsScalarTower.algebraMap_apply (K0 p) Y.Kc E.K']`.
+
+Conclude with `(E.ball _).2 (Y.witt_mem_integers_Cp y)`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Use `show ‖E.vp‖ ≤ 1`. Establish `hn : p ^ 2 - 1 ≠ 0`.
+
+Use `hp.out.two_le` as an intermediate fact. Establish `: 4 ≤ p ^ 2` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ‖E.vp‖ ^ (p ^ 2 - 1) ≤ 1`. Rewrite using `[← norm_pow, E.vp_pow, E.norm_p]`.
+
+Establish `: (1 : ℝ) ≤ p` using `by exact_mod_cast hp.out.one_lt.le`. Conclude with `inv_le_one_of_one_le₀ this`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hn).1 h1`.
+-/
 theorem ea_Rp_le_ball (Y : Pend X) (E : ea_NormExt Y) : Rp p E.K' E.vp ≤ ea_ball E.K' := by
   unfold Rp
   rw [Subring.closure_le]
@@ -88,6 +107,11 @@ theorem ea_Rp_le_ball (Y : Pend X) (E : ea_NormExt Y) : Rp p E.K' E.vp ≤ ea_ba
       exact inv_le_one_of_one_le₀ this
     exact (pow_le_one_iff_of_nonneg (norm_nonneg _) hn).1 h1
 
+/- English proof (translation)
+Introduce `U hU I n`. Take `⟨E⟩` from `hNm`. Take `⟨u, hu, hcls⟩` from `hS (hA.1 p) hA.2.2.2.1 v j U hU E.K' (ea_ball E.K') E.vp E.vp_pow (ea_Rp_le_ball Y E) fun x hx => (E.ball x).2 hx`. Establish `h1` using `hK E.K' E.vp u _ E.vp_pow E.norm_p hu hcls I n`. Rewrite `h1` using `[ea_applyD_map, MvPolynomial.coeff_map]`.
+
+Conclude with `ea_geC_of_norm Y E h1`.
+-/
 theorem ea_lowN (D : Formalism.BasicNotions.D7) (Y : Pend X) (hNm : ea_RestNorm Y) (hS : ea_RestSU X Y) (hA : admitted D X Y) (v : X.Pl)
     (j : ℕ) (P : X.ColCh j → MvPolynomial (X.ZA j) (MvPolynomial (X.FrI j) ℤ)) (g : ℝ)
     (hK : ∀ (K' : Type) [NormedField K'] [IsUltrametricDist K'] [Algebra (K0 p) K'] (vp : K')
@@ -110,6 +134,9 @@ theorem ea_lowN (D : Formalism.BasicNotions.D7) (Y : Pend X) (hNm : ea_RestNorm 
 instance ea_neZero (X : Sys p) (v : X.Pl) : NeZero (X.G.P.n' v / 2) :=
   ⟨by have := (X.std v).two_le; omega⟩
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `(X.std v).even`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ea_hn (X : Sys p) (v : X.Pl) : X.G.P.n' v = 2 * (X.G.P.n' v / 2) := by
   obtain ⟨k, hk⟩ := (X.std v).even
   omega
@@ -134,6 +161,9 @@ def ea_colN (X : Sys p) (v : X.Pl) (j : ℕ) (s : ea_S X v) : ℕ := (X.nuv v (j
 def ea_hts (X : Sys p) (v : X.Pl) (j : ℕ) (s : ea_S X v) (c : Fin (ea_colN X v j s)) : ℕ :=
   X.colHt v (j + 1) ((ea_e X v).symm s) c.val
 
+/- English proof (translation)
+The claim follows from `ea_colH_le j _ _`.
+-/
 theorem ea_hp (X : Sys p) (v : X.Pl) (j : ℕ) (s : ea_S X v) (c : Fin (ea_colN X v j s)) :
     ea_hts X v j s c ≤ NN X.G.P.m X.t j := ea_colH_le j _ _
 
@@ -191,10 +221,18 @@ def ea_BrNum (X : Sys p) : Prop :=
     ∑ s ∈ ea_TT X v \ Formalism.InvariantFactorPaths.G7.oddT (ea_TT X v),
       (Formalism.InvariantFactorPaths.G7.alG (ea_TT X v) (ea_colN X v j) (ea_hts X v j) s : ℝ) = X.alEven v
 
+/- English proof (translation)
+Use `(X.std v).five_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ea_two_lt (X : Sys p) (v : X.Pl) : 2 < p := by
   have := (X.std v).five_le
   omega
 
+/- English proof (translation)
+Introduce `hA v j hj`. Use `ea_lowN D Y hNm hS hA v j (fun I => X.PIv j I v) _ ?_` and prove the remaining obligations. Introduce `K' _ _ _ vp u F hvp hnp hu hcls I n`. Use `charZero_K' p K'` as an intermediate fact. Break down `hJ v j K' F I n with h0 | ⟨n', h1⟩` into its components or cases.
+
+Rewrite using `[h0, norm_zero]`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg p) _`. Rewrite using `[h1, ← (hN v j hj).1]`. Conclude with `Formalism.InvariantFactorPaths.G7.kernel_a_one_generic K' p _ _ _ _ vp _ (ea_TT X v) _ _ (ea_hp X v j) (ea_Ic X v j I) (ea_two_lt X v) hnp hvp (fun s => hu _) (hC v j K' vp u F hcls) n'`.
+-/
 theorem ea_A1U (D : Formalism.BasicNotions.D7) (Y : Pend X) (hNm : ea_RestNorm Y) (hS : ea_RestSU X Y) (hJ : ea_BrJet X)
     (hC : ea_BrClass X) (hN : ea_BrNum X) : EntryBoundOfHypotheses X Y D := by
   intro hA v j hj
@@ -208,6 +246,11 @@ theorem ea_A1U (D : Formalism.BasicNotions.D7) (Y : Pend X) (hNm : ea_RestNorm Y
     exact Formalism.InvariantFactorPaths.G7.kernel_a_one_generic K' p _ _ _ _ vp _ (ea_TT X v) _ _ (ea_hp X v j) (ea_Ic X v j I)
       (ea_two_lt X v) hnp hvp (fun s => hu _) (hC v j K' vp u F hcls) n'
 
+/- English proof (translation)
+Introduce `hA v j hj`. Use `ea_lowN D Y hNm hS hA v j (fun I => X.PIv j I v) _ ?_` and prove the remaining obligations. Introduce `K' _ _ _ vp u F hvp hnp hu hcls I n`. Use `charZero_K' p K'` as an intermediate fact. Break down `hJ v j K' F I n with h0 | ⟨n', h1⟩` into its components or cases.
+
+Rewrite using `[h0, norm_zero]`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg p) _`. Rewrite using `[h1, ← (hN v j hj).2.1, ← (hN v j hj).2.2]`. Conclude with `Formalism.InvariantFactorPaths.G7.kernel_a_two_generic K' p _ _ _ _ vp _ (ea_TT X v) _ _ (ea_hp X v j) (ea_Ic X v j I) (ea_two_lt X v) hnp hvp (fun s => hu _) (hC v j K' vp u F hcls) n'`.
+-/
 theorem ea_A2U (D : Formalism.BasicNotions.D7) (Y : Pend X) (hNm : ea_RestNorm Y) (hS : ea_RestSU X Y) (hJ : ea_BrJet X)
     (hC : ea_BrClass X) (hN : ea_BrNum X) : PlacewiseLowerBoundEvenShift X Y D := by
   intro hA v j hj
@@ -221,6 +264,13 @@ theorem ea_A2U (D : Formalism.BasicNotions.D7) (Y : Pend X) (hNm : ea_RestNorm Y
     exact Formalism.InvariantFactorPaths.G7.kernel_a_two_generic K' p _ _ _ _ vp _ (ea_TT X v) _ _ (ea_hp X v j) (ea_Ic X v j I)
       (ea_two_lt X v) hnp hvp (fun s => hu _) (hC v j K' vp u F hcls) n'
 
+/- English proof (translation)
+Introduce `hA v j hj i hi`. Use `ea_lowN D Y hNm hS hA v j (fun I => PIvS X j I (fun _ => i) v) _ ?_` and prove the remaining obligations. Introduce `K' _ _ _ vp u F hvp hnp hu hcls I n`. Use `charZero_K' p K'` as an intermediate fact. Break down `hSc v j i K' F I n with h0 | h2` into its components or cases.
+
+Rewrite using `[h0, norm_zero]`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg p) _`. Rewrite using `[h2]`. Break down `hJ v j K' F I n with h0 | ⟨n', h1⟩` into its components or cases. Rewrite using `[h0, mul_zero, norm_zero]`.
+
+Conclude with `Real.rpow_nonneg (Nat.cast_nonneg p) _`. Rewrite using `[h1, ← (hN v j hj).2.1]`. Conclude with `Formalism.InvariantFactorPaths.G7.kernel_b_generic K' p _ _ _ i _ vp _ (ea_TT X v) _ _ (ea_hp X v j) (ea_Ic X v j I) (ea_two_lt X v) hnp (Finset.mem_Icc.1 hi).1 hvp (fun s => hu _) (hC v j K' vp u F hcls) n'`.
+-/
 theorem ea_BU (D : Formalism.BasicNotions.D7) (Y : Pend X) (hNm : ea_RestNorm Y) (hS : ea_RestSU X Y) (hJ : ea_BrJet X)
     (hSc : ea_BrScale X) (hC : ea_BrClass X) (hN : ea_BrNum X) : RestBU X Y D := by
   intro hA v j hj i hi

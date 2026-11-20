@@ -13,12 +13,20 @@ section SlopeTestRemainingChoices
 
 variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {n : ℕ}
 
+/- English proof (translation)
+Unfold `CaseU.cmp`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 private theorem cmp_eq {w : Plc L} (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : UA L n) :
     CaseU.cmp n w ((away l L n).rangeRestrict x) = cLoc w x := by
   unfold CaseU.cmp
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal`. Rewrite using `[cmp_eq h]`. Conclude with `hx`. Unfold `CaseU.cmp`. Rewrite using `[dif_neg h]`.
+
+Conclude with `P.one_mem`.
+-/
 private theorem cmp_mem {w : Plc L} (x : UA L n) (P : Subgroup (GLw n w)) (hx : cLoc w x ∈ P) :
     CaseU.cmp n w ((away l L n).rangeRestrict x) ∈ P := by
   by_cases h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal
@@ -28,11 +36,19 @@ private theorem cmp_mem {w : Plc L} (x : UA L n) (P : Subgroup (GLw n w)) (hx : 
     rw [dif_neg h]
     exact P.one_mem
 
+/- English proof (translation)
+Introduce `h` and use `by refine s.St_l u.1 u.2 ((s.hA u.1 _).1 ?_) have h1 := (s.hw u.1 _).2 h simpa using h1`.
+-/
 private theorem st_away (s : HidaSetting l L Ω) (u : s.St) : ((l : ℕ) : 𝓞 L) ∉ (s.w u).asIdeal := fun h => by
   refine s.St_l u.1 u.2 ((s.hA u.1 _).1 ?_)
   have h1 := (s.hw u.1 _).2 h
   simpa using h1
 
+/- English proof (translation)
+Establish `h1 : ∀ τ : L →+* ℂ, cEmb τ k = 1` using `fun τ => by`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (coord τ) (cInf k) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hk, map_one]`. Express the relevant statement in the definitionally equal form `PiTensorProduct.mapMonoidHom (fun y : Emb l (fun v : V.frame.Vl => s.w v.1) => GlobalTheory.Branching.sqRep ℂ n (lam y.res) (cEmb (ι.toRingHom.comp y.res) k)) = 1`. Simplify using `only [h1, map_one]`.
+
+Conclude with `map_one _`.
+-/
 private theorem inf_one {s : HidaSetting l L Ω} (V : s.Lev) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) {k : UA L n} (hk : k ∈ finU L n) :
     infRep (V := V) ι lam k = 1 := by
   have h1 : ∀ τ : L →+* ℂ, cEmb τ k = 1 := fun τ => by
@@ -43,6 +59,13 @@ private theorem inf_one {s : HidaSetting l L Ω} (V : s.Lev) (ι : Qbar l ≃+* 
   simp only [h1, map_one]
   exact map_one _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`. Establish `e1 : ∀ j, RU L n x (toForm ι e (F j) ℓ) g = ℓ (infRep ι lam g⁻¹ (e (F j (((away l L n).rangeRestrict g, fun v : V.frame.Vl => cLoc (s.w v.1) g) * ((away l L n).rangeRestrict x, 1)))))` using `fun j => by`. Express the relevant statement in the definitionally equal form `toForm ι e (F j) ℓ (g * x) = _`. Unfold `toForm`.
+
+Rewrite using `[mul_inv_rev, map_mul, inf_one V ι lam (inv_mem hx), one_mul]`. Simplify using `only [map_mul, hl, mul_one, Prod.mk_mul_mk]`. Establish `e2 : ∀ g, F i g = ∑ j, a j • F j (g * ((away l L n).rangeRestrict x, 1))` using `fun g => funext fun k => by`. Rewrite using `[← h g k, Finset.sum_apply]`. Both sides reduce to the same expression.
+
+Simplify using `only [Pi.smul_apply, e1]`. Unfold `toForm`. Rewrite using `[e2]`. Simplify using `only [map_sum, map_smul]`.
+-/
 private theorem key {s : HidaSetting l L Ω} (V : s.Lev) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) {d m : ℕ}
     (e : (Fin d → ℂ) ≃ₗ[ℂ] ⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res))
     (F : Fin m → Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ) {x : UA L n} (hx : x ∈ finU L n)
@@ -67,6 +90,11 @@ private theorem key {s : HidaSetting l L Ω} (V : s.Lev) (ι : Qbar l ≃+* ℂ)
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n _ V Q c ι m τ₀ lam d e ξ _ F hF x hx hl k hk h0 hS hQ i ℓ`. Set `u : Ub n s` to `⟨(away l L n).rangeRestrict x, Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun u => cmp_mem x _ (hk u ▸ k.2 u trivial), cmp_mem x _ h0⟩⟩`. Establish `hu : u ∈ UQ n Q` using `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun w => Subgroup.mem_iInf.2 fun hw => cmp_mem x _ (hS w hw), Subgroup.mem_iInf.2 fun q => Subgroup.mem_bot.1 (cmp_mem (l := l) x ⊥ (Subgroup.mem_bot.2 (hQ q)))⟩`. Establish `hk' : toKT n s u = k` using `Subtype.ext (funext fun a => (cmp_eq (st_away s a) x).trans (hk a).symm)`. Establish `h1` using `hF.2 u hu`.
+
+Rewrite using `[← hk']`. Conclude with `key V ι lam e F hx hl _ i (fun g b => congrFun (congrFun (congrFun h1 i) g) b) ℓ`.
+-/
 theorem UpperTheory.V.Hi.partUR2Fix :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l) (ι : Qbar l ≃+* ℂ) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O)

@@ -15,6 +15,9 @@ open GlobalTheory.Doubling (absE)
 noncomputable section
 namespace GlobalTheory.OuterFubini
 
+/- English proof (translation)
+Establish `h1 : ∀ᵐ x ∂ν, ∫ y, ∫ z, f x y z ∂μ₂ ∂μ₁ = ∫ q, f x q.1 q.2 ∂(μ₁.prod μ₂)` using `by filter_upwards [hf.prod_right_ae] with x hx`. Conclude with `(integral_prod (fun q : β × γ => f x q.1 q.2) hx).symm`. Rewrite using `[integral_congr_ae h1, integral_integral_swap (f := fun x (q : β × γ) => f x q.1 q.2) hf]`. Conclude with `integral_prod (fun q : β × γ => ∫ x, f x q.1 q.2 ∂ν) hf.integral_prod_right`.
+-/
 theorem iter_swap {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
     (ν : Measure α) (μ₁ : Measure β) (μ₂ : Measure γ) [SFinite ν] [SFinite μ₁] [SFinite μ₂]
     (f : α → β → γ → ℂ) (hf : Integrable (fun p : α × β × γ => f p.1 p.2.1 p.2.2) (ν.prod (μ₁.prod μ₂))) :
@@ -25,6 +28,13 @@ theorem iter_swap {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β] [
   rw [integral_congr_ae h1, integral_integral_swap (f := fun x (q : β × γ) => f x q.1 q.2) hf]
   exact integral_prod (fun q : β × γ => ∫ x, f x q.1 q.2 ∂ν) hf.integral_prod_right
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
+
+Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`.
+
+Conclude with `⟨inferInstance, Units.isClosedEmbedding_embedProduct.locallyCompactSpace, Units.isEmbedding_embedProduct.secondCountableTopology⟩`.
+-/
 theorem ideles_lcsc (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     IsTopologicalGroup (AE F E)ˣ ∧ LocallyCompactSpace (AE F E)ˣ ∧ SecondCountableTopology (AE F E)ˣ := by
   haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _
@@ -40,6 +50,15 @@ theorem ideles_lcsc (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
   exact ⟨inferInstance, Units.isClosedEmbedding_embedProduct.locallyCompactSpace,
     Units.isEmbedding_embedProduct.secondCountableTopology⟩
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h h₁`. Take `⟨_, _, _, _⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ b G₁.V'.J`. Use `haveI : BorelSpace (UA σ G₁.V'.J) := ⟨rfl⟩`. Use `haveI := hT₁.geo.hM'.haar`. Use `haveI : SigmaCompactSpace (UA σ G₁.V'.J) := sigmaCompactSpace_of_locallyCompact_secondCountable`.
+
+Use `haveI : SFinite G₁.M'.μ := @instSFiniteOfSigmaFinite _ _ _ (MeasureTheory.SigmaFinite.of_isFiniteMeasureOnCompacts G₁.M'.μ)`. Take `⟨_, _, _⟩` from `ideles_lcsc F E`. Use `haveI : SigmaCompactSpace (AE F E)ˣ := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SFinite μ := @instSFiniteOfSigmaFinite _ _ _ (MeasureTheory.SigmaFinite.of_isFiniteMeasureOnCompacts μ)`. Take `⟨K₀, -, -, hK₀, hc, -, -⟩` from `GlobalTheory.T.theta_stabilizer_exists hKP.base F E σ B (b + 2) G.V' G.q (b + 2 - G.q) hT.base hT.geo.hV'`.
+
+Establish `hKK : (K : Set (UA σ G.V'.J)) = K₀`. Use extensionality with `g`. Conclude with `(hK g).trans (hK₀ g).symm`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp (hKK ▸ hc)`. Use `haveI : IsFiniteMeasure μK := CompactSpace.isFiniteMeasure`.
+
+Use `haveI : SFinite μK := @instSFiniteOfSigmaFinite _ _ _ (IsFiniteMeasure.toSigmaFinite μK)`. Establish `hint : Integrable (fun p : UA σ G₁.V'.J × K × (AE F E)ˣ => theta om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' p.2.2) (om' (p.2.1.1, h) Φ'))) p.1 h₁ * (X.ν p.2.2 : ℂ) * ((absE F E p.2.2 : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1)) ((G₁.M'.μ.restrict G₁.M'.dom).prod (μK.prod μ))` using `⟨GlobalTheory.T.haar_stabilizer_period_case_b hKP F E σ B a b G G₁ H H' hC e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h h₁, GlobalTheory.T.haar_stabilizer_period_case_b_second hKP F E σ B a b G G₁ H H' hC e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h h₁⟩`. Rewrite using `[iter_swap _ _ _ (fun (g : UA σ G₁.V'.J) (k : K) (l : (AE F E)ˣ) => theta om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))) g h₁ * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1)) hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => integral_congr_ae (Filter.Eventually.of_forall fun l => ?_))` and prove the remaining obligations. Simplify using `only [Model.I, integral_mul_const]`.
+-/
 theorem outer : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

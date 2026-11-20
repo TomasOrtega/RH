@@ -16,6 +16,15 @@ variable (k K L : Type) [Field k] [Field K] [Field L] [Algebra k K] [Algebra k L
 private noncomputable abbrev beta : L ⊗[K] Ω[K⁄k] →ₗ[L] L ⊗[K] DR k K :=
   LinearMap.baseChange L (ι1 (R := k) (B := K))
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Rewrite using `[map_add, add_mul, mul_add]`. Combine the equalities or inequalities in the displayed calculation.
+
+Consider the case `tmul a ω`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add c d hc hd`. Rewrite using `[map_add, add_mul, mul_add]`.
+
+Combine the equalities or inequalities in the displayed calculation. Consider the case `tmul b ω'`. Simplify using `only [beta, LinearMap.baseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[mul_comm b a, ← TensorProduct.tmul_add]`. Establish `: ι1 (R` using `k) (B := K) ω * ι1 (R := k) (B := K) ω' + ι1 (R := k) (B := K) ω' * ι1 (R := k) (B := K) ω = 0 := ExteriorAlgebra.ι_add_mul_swap ω ω'`.
+
+Rewrite using `[this, TensorProduct.tmul_zero]`.
+-/
 private theorem beta_anti (x y : L ⊗[K] Ω[K⁄k]) :
     beta k K L x * beta k K L y + beta k K L y * beta k K L x = 0 := by
   induction x using TensorProduct.induction_on with
@@ -41,6 +50,11 @@ private theorem beta_anti (x y : L ⊗[K] Ω[K⁄k]) :
         ExteriorAlgebra.ι_add_mul_swap ω ω'
       rw [this, TensorProduct.tmul_zero]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Rewrite using `[map_add, add_mul, mul_add, mul_add, ha, hb, zero_add, add_zero]`. Conclude with `beta_anti k K L a b`.
+
+Consider the case `tmul a ω`. Simplify using `only [beta, LinearMap.baseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `: ι1 (R` using `k) (B := K) ω * ι1 (R := k) (B := K) ω = 0 := ExteriorAlgebra.ι_sq_zero ω`. Rewrite using `[this, TensorProduct.tmul_zero]`.
+-/
 private theorem beta_sq (x : L ⊗[K] Ω[K⁄k]) : beta k K L x * beta k K L x = 0 := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -57,11 +71,19 @@ variable [Algebra.FormallyEtale K L]
 private noncomputable def phi : Ω[L⁄k] →ₗ[L] L ⊗[K] DR k K :=
   beta k K L ∘ₗ (KaehlerDifferential.isBaseChange_of_formallyEtale k K L).equiv.symm.toLinearMap
 
+/- English proof (translation)
+The claim follows from `beta_sq k K L _`.
+-/
 private theorem phi_sq (x : Ω[L⁄k]) : phi k K L x * phi k K L x = 0 := beta_sq k K L _
 
 private noncomputable def psi : DR k L →ₐ[L] L ⊗[K] DR k K :=
   ExteriorAlgebra.lift L ⟨phi k K L, phi_sq k K L⟩
 
+/- English proof (translation)
+Establish `key : ((psi k K L).restrictScalars K).comp (GlobalTheory.W1.mapDR k K L) = Algebra.TensorProduct.includeRight`. Apply `ExteriorAlgebra.hom_ext` to reduce the goal to its premises. Use `LinearMap.ext fun η ↦ ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, AlgHom.comp_apply, AlgHom.restrictScalars_apply, Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[GlobalTheory.W1.mapDR, ExteriorAlgebra.lift_ι_apply]`.
+
+Simplify using `only [GlobalTheory.W1.map1, LinearMap.comp_apply, LinearMap.restrictScalars_apply]`. Rewrite using `[psi, ExteriorAlgebra.lift_ι_apply]`. Simplify using `only [phi, LinearMap.comp_apply, LinearEquiv.coe_coe, IsBaseChange.equiv_symm_apply, beta, LinearMap.baseChange_tmul]`. Conclude with `congrArg (fun f ↦ f ω) key`.
+-/
 private theorem psi_mapDR (ω : DR k K) : psi k K L (GlobalTheory.W1.mapDR k K L ω) = 1 ⊗ₜ ω := by
   have key : ((psi k K L).restrictScalars K).comp (GlobalTheory.W1.mapDR k K L) =
       Algebra.TensorProduct.includeRight := by
@@ -79,6 +101,11 @@ private theorem psi_mapDR (ω : DR k K) : psi k K L (GlobalTheory.W1.mapDR k K L
 end UpperTheory.DeRhamTrace
 
 open UpperTheory.DeRhamTrace in
+/- English proof (translation)
+Introduce `k K L _ _ _ _ _ _ _ _ _`. Use `haveI : Algebra.FormallyEtale K L := Algebra.FormallyEtale.of_isSeparable K L`. Set `Tr : (L ⊗[K] DR k K) →ₗ[K] DR k K` to `(TensorProduct.lid K (DR k K)).toLinearMap ∘ₗ LinearMap.rTensor (DR k K) (Algebra.trace K L)`. Use `⟨(Tr.restrictScalars k) ∘ₗ ((psi k K L).toLinearMap.restrictScalars k), ?_⟩` and prove the remaining obligations. Introduce `b ω`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[map_smul, psi_mapDR, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Simplify using `[Tr]`.
+-/
 theorem UpperTheory.exists_deRhamTrace_of_separable :
     ∀ (k K L : Type) [Field k] [Field K] [Field L] [Algebra k K] [Algebra k L] [Algebra K L] [IsScalarTower k K L] [FiniteDimensional K L] [Algebra.IsSeparable K L], ∃ T : DR k L →ₗ[k] DR k K, GlobalTheory.W1.IsTrDR k K L T := by
   intro k K L _ _ _ _ _ _ _ _ _

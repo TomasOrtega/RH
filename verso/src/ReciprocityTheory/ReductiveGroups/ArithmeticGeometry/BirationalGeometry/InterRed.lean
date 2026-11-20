@@ -7,6 +7,9 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo
 
 open MvPolynomial ReciprocityTheory.AnForm.M
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Both sides reduce to the same expression.
+-/
 theorem isMultiHomog_X {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     (q : Σ k, ι k) :
     IsMultiHomog (X q : MRing ι) (fun k => ∑ i, (Finsupp.single q 1 : (Σ k, ι k) →₀ ℕ) ⟨k, i⟩) := by
@@ -15,12 +18,18 @@ theorem isMultiHomog_X {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintyp
   subst hm
   rfl
 
+/- English proof (translation)
+Use `⟨{X q}, ?_, rfl⟩` and prove the remaining obligations. Introduce and unpack `f rfl`. Conclude with `⟨_, isMultiHomog_X q⟩`.
+-/
 theorem isMultiHomogIdeal_span_X {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     (q : Σ k, ι k) : IsMultiHomogIdeal (Ideal.span {(X q : MRing ι)}) := by
   refine ⟨{X q}, ?_, rfl⟩
   rintro f rfl
   exact ⟨_, isMultiHomog_X q⟩
 
+/- English proof (translation)
+Take `⟨⟨k⟩, ⟨-, -, hrel⟩, -, -⟩` from `id hP`. Take `⟨i, hi⟩` from `hrel k`. Take `⟨J', -, -, -, hR⟩` from `hE K ι P (Ideal.span {(X ⟨k, i⟩ : MRing ι)}) e hP (isMultiHomogIdeal_span_X _) (fun h => hi (h (Ideal.mem_span_singleton_self _)))`. Conclude with `⟨J', hR⟩`.
+-/
 theorem exists_anLogRes (hE : ResExistsStatement) {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} {e : ℕ} (hP : IsArithVar P (e + 1)) :
     ∃ J : Ideal (MRing ι), Nonempty (AnLogRes P J e) := by
@@ -30,11 +39,17 @@ theorem exists_anLogRes (hE : ResExistsStatement) {K : Type} [Fintype K] {ι : K
     (isMultiHomogIdeal_span_X _) (fun h => hi (h (Ideal.mem_span_singleton_self _)))
   exact ⟨J', hR⟩
 
+/- English proof (translation)
+Introduce `K _ ι _ P e Ψ Ψ' L A s hP hΨ hΨ' hL hA hs`. Take `⟨J, ⟨R⟩⟩` from `exists_anLogRes hE hP`. Rewrite using `[hB K ι P J e R Ψ L A s hP hΨ hL hA hs, hB K ι P J e R Ψ' L A s hP hΨ' hL hA hs]`.
+-/
 theorem ptsIndep_of (hE : ResExistsStatement) (hB : ResBridgeStatement) : PtsIndepStatement := by
   intro K _ ι _ P e Ψ Ψ' L A s hP hΨ hΨ' hL hA hs
   obtain ⟨J, ⟨R⟩⟩ := exists_anLogRes hE hP
   rw [hB K ι P J e R Ψ L A s hP hΨ hL hA hs, hB K ι P J e R Ψ' L A s hP hΨ' hL hA hs]
 
+/- English proof (translation)
+Establish `hex : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ), IsGoodProj P Ψ` using `⟨Ψ, hΨ⟩`. Unfold `ptsIntegral`. Rewrite using `[dif_pos hex]`. Conclude with `ptsIndep_of hE hB K ι P e _ _ L A s hP hex.choose_spec hΨ hL hA hs`.
+-/
 theorem ptsIntegral_eq_at (hE : ResExistsStatement) (hB : ResBridgeStatement) {K : Type}
     [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} {e : ℕ}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {L : Fin e → HermLine ι}
@@ -46,6 +61,9 @@ theorem ptsIntegral_eq_at (hE : ResExistsStatement) (hB : ResBridgeStatement) {K
   rw [dif_pos hex]
   exact ptsIndep_of hE hB K ι P e _ _ L A s hP hex.choose_spec hΨ hL hA hs
 
+/- English proof (translation)
+Take `⟨Ψ, hΨ⟩` from `hG K ι P e hP`. Rewrite using `[ptsIntegral_eq_at hE hB hP hΨ hL hA hs]`. Conclude with `hB K ι P J e R Ψ L A s hP hΨ hL hA hs`.
+-/
 theorem ptsIntegral_eq_mInt (hE : ResExistsStatement) (hB : ResBridgeStatement)
     (hG : GoodProjExistsStatement) {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J e) {L : Fin e → HermLine ι}
@@ -57,12 +75,18 @@ theorem ptsIntegral_eq_mInt (hE : ResExistsStatement) (hB : ResBridgeStatement)
   rw [ptsIntegral_eq_at hE hB hP hΨ hL hA hs]
   exact hB K ι P J e R Ψ L A s hP hΨ hL hA hs
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j z`. Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨i, rfl⟩ <;> simp [pot]`.
+-/
 private theorem fin_cons_log_h_pot_eq_pot_fin_cons {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {n : ℕ} (C : HermLine ι) (L : Fin n → HermLine ι) :
     (Fin.cons (fun z => Real.log (C.h z)) (pot L) : Fin (n + 1) → ((Σ k, ι k) → ℂ) → ℝ) =
       pot (Fin.cons C L : Fin (n + 1) → HermLine ι) := by
   funext j z
   rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨i, rfl⟩ <;> simp [pot]
 
+/- English proof (translation)
+Introduce `j`. Break down `Fin.eq_zero_or_eq_succ j with rfl | ⟨i, rfl⟩` into its components or cases. Simplify using `using hC`. Simplify using `using hL i`.
+-/
 private theorem isSmoothHerm_fin_cons {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {n : ℕ} {C : HermLine ι} {L : Fin n → HermLine ι}
     (hC : IsSmoothHerm C) (hL : ∀ j, IsSmoothHerm (L j)) :
     ∀ j, IsSmoothHerm ((Fin.cons C L : Fin (n + 1) → HermLine ι) j) := by
@@ -71,6 +95,9 @@ private theorem isSmoothHerm_fin_cons {K : Type*} [Fintype K] {ι : K → Type*}
   · simpa using hC
   · simpa using hL i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨i, rfl⟩ <;> simp`.
+-/
 private theorem potOf_fin_cons_eq_fin_cons_potOf {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {P J : Ideal (MRing ι)} {e n : ℕ} (R : AnLogRes P J e)
     (C : HermLine ι) (L : Fin n → HermLine ι) :
     (fun j => potOf R ((Fin.cons C L : Fin (n + 1) → HermLine ι) j)) =
@@ -78,6 +105,9 @@ private theorem potOf_fin_cons_eq_fin_cons_potOf {K : Type*} [Fintype K] {ι : K
   funext j
   rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨i, rfl⟩ <;> simp
 
+/- English proof (translation)
+Take `⟨-, ⟨hPr, -, -⟩, -, -⟩` from `id hP`. Establish `hg : (fun z => Real.log (C.h z)) = logNorm C.inv 1` using `funext fun z => (logNorm_inv_one C z).symm`. Use `(congrArg₂ (fun (φ : Fin (n + 1) → ((Σ k, ι k) → ℂ) → ℝ) (g : ((Σ k, ι k) → ℂ) → ℝ) => ptsIntegral P φ g) (fin_cons_log_h_pot_eq_pot_fin_cons C' L) hg).trans ?_` and prove the remaining obligations. Use `(ptsIntegral_eq_mInt hE hB hG R hP (isSmoothHerm_fin_cons hC' hL) (isSmoothHerm_inv hC) (isSectionOn_inv_one hPr hC0)).trans ?_` and prove the remaining obligations. Conclude with `mInt_congr R.A (fun j y hy => (congrArg (fun Φ => ReciprocityTheory.AnForm.M.locDens R.A Φ j y) (potOf_fin_cons_eq_fin_cons_potOf R C' L)).trans (locDens_cons_congr R.A _ (fun j y hy => potOf_germ R hC'0 j y hy) j y hy)) (fun x => logNorm_inv_one C _)`.
+-/
 theorem pointsIntegral_degree_zero_eq_mongeAmpereIntegral (hE : ResExistsStatement) (hB : ResBridgeStatement)
     (hG : GoodProjExistsStatement) {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P J : Ideal (MRing ι)} {n : ℕ} (R : AnLogRes P J (n + 1)) {L : Fin n → HermLine ι}
@@ -97,6 +127,9 @@ theorem pointsIntegral_degree_zero_eq_mongeAmpereIntegral (hE : ResExistsStateme
       (locDens_cons_congr R.A _ (fun j y hy => potOf_germ R hC'0 j y hy) j y hy))
     (fun x => logNorm_inv_one C _)
 
+/- English proof (translation)
+Introduce `K _ ι _ P n L C C' hP hL hC hC' hC0 hC'0`. Take `⟨J, ⟨R⟩⟩` from `exists_anLogRes hE (e := n + 1) hP`. Conclude with `(pointsIntegral_degree_zero_eq_mongeAmpereIntegral hE hB hG R hP hL hC hC' hC0 hC'0).trans ((hBP R.A _ _ (smooth_diag R hC hC0) (smooth_diag R hC' hC'0) _ (fun i => hPot K ι P J (n + 1) R (L i) (hL i))).trans (pointsIntegral_degree_zero_eq_mongeAmpereIntegral hE hB hG R hP hL hC' …`.
+-/
 theorem stokes_of (hE : ResExistsStatement) (hB : ResBridgeStatement)
     (hG : GoodProjExistsStatement) (hBP : ReciprocityTheory.AnForm.M.ByPartsSymmStatement)
     (hPot : PotOfPotentialStatement) : ReciprocityTheory.ChartRestriction.G.Geo.StokesStatement := by
@@ -107,6 +140,9 @@ theorem stokes_of (hE : ResExistsStatement) (hB : ResBridgeStatement)
       (fun i => hPot K ι P J (n + 1) R (L i) (hL i))).trans
       (pointsIntegral_degree_zero_eq_mongeAmpereIntegral hE hB hG R hP hL hC' hC hC'0 hC0).symm)
 
+/- English proof (translation)
+The claim follows from `stokes_of hE hB hG hBP potOfPotential`.
+-/
 theorem stokes_of' (hE : ResExistsStatement) (hB : ResBridgeStatement)
     (hG : GoodProjExistsStatement) (hBP : ReciprocityTheory.AnForm.M.ByPartsSymmStatement) :
     ReciprocityTheory.ChartRestriction.G.Geo.StokesStatement :=
@@ -126,6 +162,21 @@ def ResDivPushStatement : Prop :=
       ∑ᶠ (W') (_ : W' ∈ divSupp P s ∧ IsHorizontal W'),
         (multAt (P ⊔ Ideal.span {s}) W' : ℝ) * ptsIntegral W' (pot L) (fun z => Real.log (B.h z))
 
+/- English proof (translation)
+Introduce `K _ ι _ P n L A B s hP hL hA hBs hB0 hs`. Take `⟨-, ⟨hPr, -, -⟩, -, -⟩` from `id hP`. Take `⟨a, -, hsa, hsP⟩` from `id hs`. Establish `hJ : IsMultiHomogIdeal (Ideal.span {s})`. Use `⟨{s}, ?_, rfl⟩` and prove the remaining obligations.
+
+Introduce and unpack `f rfl`. Conclude with `⟨a, hsa⟩`. Establish `hJP : ¬ Ideal.span {s} ≤ P` using `fun h => hsP (h (Ideal.mem_span_singleton_self s))`. Take `⟨J, hJs, -, -, ⟨R⟩⟩` from `hE K ι P (Ideal.span {s}) (n + 1) hP hJ hJP`. Establish `hzero : ∀ z ∈ mcPts P, eval z (map (Int.castRingHom ℂ) s) = 0 → z ∈ mcPts J`.
+
+Introduce `z hz h0`. Simplify using `only [mcPts, Set.mem_ofPred_eq] at hz ⊢`. Use `⟨hz.1, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Ideal.mem_span_singleton'.mp (hJs hf)`. Rewrite using `[map_mul, map_mul, h0, mul_zero]`.
+
+Take `⟨r, m, W, hsnc⟩` from `R.snc s a hsP hsa hzero`. Establish `hsnc' : ReciprocityTheory.AnForm.M.IsSNC R.A (potOf R A) (fun x y => eval (R.lift x y) (map (Int.castRingHom ℂ) s)) m W` using `hsnc`. Establish `hLA : ReciprocityTheory.AnForm.M.IsPotential R.A (potOf R A)` using `isPotential_potOf R hA`. Establish `hsec` using `isSection_lift R hs`. Establish `hΦ : ∀ i, ReciprocityTheory.AnForm.M.IsPotential R.A (potOf R (L i))` using `fun i => isPotential_potOf R (hL i)`.
+
+Establish `hv : R.A.Smooth (fun x => Real.log (B.h (R.lift x x)))` using `smooth_diag R hBs hB0`. Use `choose BW hBW using hInd R.A (potOf R A) _ m W hLA hsec hsnc'`. Establish `hPLe` using `hPL R.A (potOf R A) _ m W BW hLA hsec hsnc' hBW _ hv (fun i => potOf R (L i)) hΦ`. Establish `hPu` using `hPush K ι P J n R L A B s r m W BW hP hL hA hBs hB0 hs hsnc' hBW`. Establish `e2 : ReciprocityTheory.AnForm.M.mInt R.A (fun j => potOf R ((Fin.cons B L : Fin (n + 1) → HermLine ι) j)) (fun x => logNorm A s (R.lift x x)) = ReciprocityTheory.AnForm.M.mInt R.A (Fin.cons (ReciprocityTheory.AnForm.M.LocPot.ofFun fun x => Real.log (B.h (R.lift x x))) fun i => po …` using `mInt_congr R.A (fun j y hy => (congrArg (fun Φ => ReciprocityTheory.AnForm.M.locDens R.A Φ j y) (potOf_fin_cons_eq_fin_cons_potOf R B L)).trans (locDens_cons_congr R.A _ (fun j y hy => potOf_germ R hB0 j y hy) j y hy)) (fun x => (logNormSec_lift R A s x).symm)`.
+
+Establish `hgB : (fun z => Real.log (B.h z)) = logNorm B.inv 1` using `funext fun z => (logNorm_inv_one B z).symm`. Establish `e3 : ReciprocityTheory.AnForm.M.mInt R.A (Fin.cons (potOf R A) fun i => potOf R (L i)) (fun x => Real.log (B.h (R.lift x x))) = ptsIntegral P (Fin.cons (fun z => Real.log (A.h z)) (pot L)) (fun z => Real.log (B.h z))`. Use `Eq.symm ((congrArg₂ (fun (φ : Fin (n + 1) → ((Σ k, ι k) → ℂ) → ℝ) (g : ((Σ k, ι k) → ℂ) → ℝ) => ptsIntegral P φ g) (fin_cons_log_h_pot_eq_pot_fin_cons A L) hgB).trans ((ptsIntegral_eq_mInt hE hB hG R hP (isSmoothHerm_fin_cons hA hL) (isSmoothHerm_inv hBs) (isSectionOn_inv_one hPr …` and prove the remaining obligations. Conclude with `mInt_congr R.A (fun j y _ => congrArg (fun Φ => ReciprocityTheory.AnForm.M.locDens R.A Φ j y) (potOf_fin_cons_eq_fin_cons_potOf R A L)) (fun x => logNorm_inv_one B _)`. Use `((congrArg (fun (φ : Fin (n + 1) → ((Σ k, ι k) → ℂ) → ℝ) => ptsIntegral P φ (logNorm A s)) (fin_cons_log_h_pot_eq_pot_fin_cons B L)).trans ((ptsIntegral_eq_mInt hE hB hG R hP (isSmoothHerm_fin_cons hBs hL) hA hs).trans (e2.trans hPLe))).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg₂ (· - ·) hPu e3`.
+-/
 theorem arithmeticPoincareLelong_of (hE : ResExistsStatement) (hB : ResBridgeStatement)
     (hG : GoodProjExistsStatement) (hPL : ReciprocityTheory.AnForm.M.PoincareLelongStatement)
     (hInd : ReciprocityTheory.AnForm.M.SNCInducedAtlasStatement) (hPush : ResDivPushStatement) :

@@ -14,6 +14,9 @@ variable {K L : Type*} [Field K] [Field L] [Algebra K L] [ValuativeRel L]
 
 abbrev unitVal (u : 𝒪[L]ˣ) : L := ((u : 𝒪[L]) : L)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Units.ext (Subtype.ext h)`.
+-/
 theorem unitVal_injective : Function.Injective (unitVal (L := L)) :=
   fun _ _ h => Units.ext (Subtype.ext h)
 
@@ -23,6 +26,9 @@ variable (V : Subgroup 𝒪[L]ˣ)
 def stableSMul (σ : Gal(L/K)) (u : V) : V :=
   ⟨(hV σ u u.2).choose, (hV σ u u.2).choose_spec.1⟩
 
+/- English proof (translation)
+The claim follows from `(hV σ u u.2).choose_spec.2 @[instance_reducible]`.
+-/
 theorem unitVal_stableSMul (σ : Gal(L/K)) (u : V) :
     unitVal (stableSMul V hV σ u : 𝒪[L]ˣ) = σ (unitVal u) :=
   (hV σ u u.2).choose_spec.2
@@ -49,6 +55,9 @@ def stableUnitsAction : MulDistribMulAction Gal(L/K) V where
     rw [unitVal_stableSMul]
     simp [unitVal]))
 
+/- English proof (translation)
+The claim follows from `(hV σ u u.2).choose_spec.2`.
+-/
 theorem unitVal_smul (σ : Gal(L/K)) (u : V) :
     letI := stableUnitsAction V hV
     unitVal ((σ • u : V) : 𝒪[L]ˣ) = σ (unitVal u) :=
@@ -82,14 +91,23 @@ abbrev lat (s : ℕ) : Submodule 𝒪[K] L := normalLattice D.π D.θ s
 abbrev k : ℕ := D.r + 1
 
 omit [FiniteDimensional K L] in
+/- English proof (translation)
+The claim follows from `normalLattice_antitone _ _ h`.
+-/
 theorem lat_antitone {s t : ℕ} (h : s ≤ t) : D.lat t ≤ D.lat s := normalLattice_antitone _ _ h
 
+/- English proof (translation)
+The claim follows from `mul_mem_normalLattice_succ D.π D.θ D.mul_mem (Nat.lt_of_lt_of_le (Nat.lt_succ_self _) hs) hx hy`.
+-/
 theorem mul_mem_lat {s t : ℕ} (hs : D.k ≤ s) {x y : L} (hx : x ∈ D.lat s) (hy : y ∈ D.lat t) :
     x * y ∈ D.lat (t + 1) :=
   mul_mem_normalLattice_succ D.π D.θ D.mul_mem (Nat.lt_of_lt_of_le (Nat.lt_succ_self _) hs) hx hy
 
 variable [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeExtension K L]
 
+/- English proof (translation)
+The claim follows from `exists_unit_one_add D.irreducible D.linearIndependent D.integer D.mul_mem (Nat.lt_of_lt_of_le (Nat.lt_succ_self _) hs) hx`.
+-/
 theorem exists_unit {s : ℕ} (hs : D.k ≤ s) {x : L} (hx : x ∈ D.lat s) :
     ∃ u : 𝒪[L]ˣ, unitVal u = 1 + x ∧ unitVal u⁻¹ - 1 ∈ D.lat s :=
   exists_unit_one_add D.irreducible D.linearIndependent D.integer D.mul_mem
@@ -115,11 +133,22 @@ def units (j : ℕ) : Subgroup 𝒪[L]ˣ where
     rw [← this]
     exact hvi
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_units {j : ℕ} {u : 𝒪[L]ˣ} : u ∈ D.units j ↔ unitVal u - 1 ∈ D.lat (D.k + j) := Iff.rfl
 
+/- English proof (translation)
+Introduce `_ _ h _ hu` and use `D.lat_antitone (by omega) hu`.
+-/
 theorem units_antitone : Antitone D.units := fun _ _ h _ hu =>
   D.lat_antitone (by omega) hu
 
+/- English proof (translation)
+Establish `hx : σ (unitVal u - 1) ∈ D.lat (D.k + j)` using `algEquiv_mem_normalLattice _ _ σ hu`. Take `⟨w, hw, -⟩` from `D.exists_unit (Nat.le_add_right _ j) hx`. Use `⟨w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_units, hw, add_sub_cancel_left]`. Conclude with `hx`.
+
+Rewrite using `[hw, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_mem_units_eq (j : ℕ) (σ : Gal(L/K)) {u : 𝒪[L]ˣ} (hu : u ∈ D.units j) :
     ∃ w ∈ D.units j, unitVal w = σ (unitVal u) := by
   have hx : σ (unitVal u - 1) ∈ D.lat (D.k + j) := algEquiv_mem_normalLattice _ _ σ hu
@@ -135,6 +164,9 @@ end NormalLatticeData
 variable [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace L]
   [IsNonarchimedeanLocalField L] [ValuativeExtension K L] [IsGalois K L]
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Take `⟨θ, hθ, hθO⟩` from `exists_normalBasis_integer (L := L) hπ`. Take `⟨r, hr⟩` from `exists_pow_smul_mul_mem_normalLattice π θ hπ hθ`. Conclude with `⟨⟨π, hπ, θ, hθ, hθO, r, hr⟩⟩`.
+-/
 theorem NormalLatticeData.nonempty : Nonempty (NormalLatticeData K L) := by
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
   obtain ⟨θ, hθ, hθO⟩ := exists_normalBasis_integer (L := L) hπ
@@ -152,6 +184,9 @@ namespace NormalLatticeData
 
 variable (D : NormalLatticeData K L)
 
+/- English proof (translation)
+Introduce `σ _ hu` and use `D.exists_mem_units_eq 0 σ hu @[instance_reducible]`.
+-/
 theorem units_zero_stable :
     ∀ σ : Gal(L/K), ∀ u ∈ D.units 0, ∃ w ∈ D.units 0, unitVal w = σ (unitVal u) :=
   fun σ _ hu => D.exists_mem_units_eq 0 σ hu
@@ -164,22 +199,43 @@ attribute [local instance] action
 
 abbrev val (x : D.units 0) : L := unitVal (x : 𝒪[L]ˣ)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext (unitVal_injective h)`.
+-/
 theorem val_injective : Function.Injective D.val :=
   fun _ _ h => Subtype.ext (unitVal_injective h)
 
+/- English proof (translation)
+Simplify using `[val, unitVal]`.
+-/
 theorem val_one : D.val 1 = 1 := by simp [val, unitVal]
 
+/- English proof (translation)
+Simplify using `[val, unitVal]`.
+-/
 theorem val_mul (x y : D.units 0) : D.val (x * y) = D.val x * D.val y := by
   simp [val, unitVal]
 
+/- English proof (translation)
+Rewrite using `[← val_mul, mul_inv_cancel, val_one]`.
+-/
 theorem val_mul_val_inv (x : D.units 0) : D.val x * D.val x⁻¹ = 1 := by
   rw [← val_mul, mul_inv_cancel, val_one]
 
+/- English proof (translation)
+The claim follows from `unitVal_smul (D.units 0) D.units_zero_stable σ x`.
+-/
 theorem val_smul (σ : Gal(L/K)) (x : D.units 0) : D.val (σ • x) = σ (D.val x) :=
   unitVal_smul (D.units 0) D.units_zero_stable σ x
 
+/- English proof (translation)
+The claim follows from `x.2`.
+-/
 theorem val_sub_one_mem (x : D.units 0) : D.val x - 1 ∈ D.lat D.k := x.2
 
+/- English proof (translation)
+Establish `e : D.val x * z = z + (D.val x - 1) * z` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem hz (D.lat_antitone (Nat.le_succ t) (D.mul_mem_lat le_rfl (D.val_sub_one_mem x) hz))`.
+-/
 theorem val_mul_mem (x : D.units 0) {t : ℕ} {z : L} (hz : z ∈ D.lat t) : D.val x * z ∈ D.lat t := by
   have e : D.val x * z = z + (D.val x - 1) * z := by ring
   rw [e]
@@ -193,11 +249,24 @@ def filt : StableFiltration Gal(L/K) (D.units 0) where
     rw [val_smul, ← map_one σ, ← map_sub]
     exact algEquiv_mem_normalLattice _ _ σ hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_filt {j : ℕ} {x : D.units 0} : x ∈ D.filt.F j ↔ D.val x - 1 ∈ D.lat (D.k + j) :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Subgroup.subgroupOf_self _`.
+-/
 theorem filt_zero : D.filt.F 0 = ⊤ := Subgroup.subgroupOf_self _
 
+/- English proof (translation)
+Rewrite using `[mem_filt]`. Establish `e1 : D.val (x / y) - 1 = D.val y⁻¹ * (D.val x - D.val y)`. Rewrite using `[div_eq_mul_inv, val_mul]`. Take the linear combination `D.val_mul_val_inv y`. Establish `e2 : D.val x - D.val y = D.val y * (D.val (x / y) - 1)`.
+
+Rewrite using `[div_eq_mul_inv, val_mul]`. Take the linear combination `(-D.val x) * D.val_mul_val_inv y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[e2]`.
+
+Conclude with `D.val_mul_mem y h`. Introduce `h`. Rewrite using `[e1]`. Conclude with `D.val_mul_mem y⁻¹ h`.
+-/
 theorem div_mem_filt_iff {j : ℕ} {x y : D.units 0} :
     x / y ∈ D.filt.F j ↔ D.val x - D.val y ∈ D.lat (D.k + j) := by
   rw [mem_filt]
@@ -215,6 +284,15 @@ theorem div_mem_filt_iff {j : ℕ} {x y : D.units 0} :
     rw [e1]
     exact D.val_mul_mem y⁻¹ h
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨z, hz, hlim⟩` from `exists_limit_normalLattice D.π D.θ D.irreducible D.linearIndependent (s := D.k) (fun n => D.val (x n) - 1) (fun n => D.val_sub_one_mem (x n)) (fun N => by`. Take `⟨M, hM⟩` from `hx N`. Use `⟨M, fun m hm n hn => ?_⟩` and prove the remaining obligations. Use `D.div_mem_filt_iff.mp (hM m hm n hn)` as an intermediate fact.
+
+Rewrite using `[sub_sub_sub_cancel_right])` and apply the resulting hypothesis. Take `⟨w, hw, -⟩` from `D.exists_unit le_rfl hz`. Establish `hw0 : w ∈ D.units 0`. Rewrite using `[mem_units, hw, add_sub_cancel_left]`. Conclude with `hz`.
+
+Use `⟨⟨w, hw0⟩, fun N => ?_⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `hlim N`. Use `⟨M, fun n hn => D.div_mem_filt_iff.mpr ?_⟩` and prove the remaining obligations. Establish `e : D.val (x n) - D.val ⟨w, hw0⟩ = (D.val (x n) - 1) - z`. Simplify using `only [val, hw]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hM n hn`.
+-/
 theorem filt_complete : FiltrationComplete D.filt.F := by
   intro x hx
   obtain ⟨z, hz, hlim⟩ := exists_limit_normalLattice D.π D.θ D.irreducible D.linearIndependent
@@ -236,6 +314,9 @@ theorem filt_complete : FiltrationComplete D.filt.F := by
   rw [e]
   exact hM n hn
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h0 : D.val x - 1 = 0` using `eq_zero_of_forall_mem_normalLattice D.π D.θ D.irreducible D.linearIndependent (s := D.k) fun N => hx N`. Conclude with `D.val_injective (by rw [val_one]; exact sub_eq_zero.mp h0)`.
+-/
 theorem filt_separated : FiltrationSeparated D.filt.F := by
   intro x hx
   have h0 : D.val x - 1 = 0 := eq_zero_of_forall_mem_normalLattice D.π D.θ D.irreducible
@@ -253,12 +334,18 @@ variable {K L : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel L] [ValuativeExtension K L]
   [FiniteDimensional K L] in
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply 𝒪[K] K L, AlgEquiv.commutes]`.
+-/
 theorem algEquiv_algebraMap_integer (τ : Gal(L/K)) (c : 𝒪[K]) :
     τ (algebraMap 𝒪[K] L c) = algebraMap 𝒪[K] L c := by
   rw [IsScalarTower.algebraMap_apply 𝒪[K] K L, AlgEquiv.commutes]
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel L] [ValuativeExtension K L]
   [FiniteDimensional K L] in
+/- English proof (translation)
+The claim follows from `(map_sum (QuotientAddGroup.mk' N) g univ).symm`.
+-/
 theorem quotient_mk_sum {N : AddSubgroup L} {ι : Type*} [Fintype ι] (g : ι → L) :
     ∑ i, (g i : L ⧸ N) = ((∑ i, g i : L) : L ⧸ N) :=
   (map_sum (QuotientAddGroup.mk' N) g univ).symm
@@ -285,15 +372,24 @@ def grHom (j : ℕ) : D.filt.F j →* Multiplicative (L ⧸ D.Q j) where
     rw [e]
     exact D.mul_mem_lat (Nat.le_add_right _ _) (D.mem_filt.mp x.2) (D.mem_filt.mp y.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem grHom_toAdd {j : ℕ} (x : D.filt.F j) :
     (D.grHom j x).toAdd = ((D.val x - 1 : L) : L ⧸ D.Q j) := rfl
 
+/- English proof (translation)
+Rewrite using `[← toAdd_eq_zero, grHom_toAdd, QuotientAddGroup.eq_zero_iff, Submodule.mem_toAddSubgroup, mem_filt]`. Both sides reduce to the same expression.
+-/
 theorem grHom_eq_one_iff {j : ℕ} (x : D.filt.F j) :
     D.grHom j x = 1 ↔ (x : D.units 0) ∈ D.filt.F (j + 1) := by
   rw [← toAdd_eq_zero, grHom_toAdd, QuotientAddGroup.eq_zero_iff, Submodule.mem_toAddSubgroup,
     mem_filt]
   rfl
 
+/- English proof (translation)
+Rewrite using `[StableFiltration.coe_smul_F, val_smul]`.
+-/
 theorem val_coe_smul_F {j : ℕ} (σ : Gal(L/K)) (y : D.filt.F j) :
     D.val ((σ • y : D.filt.F j) : D.units 0) = σ (D.val y) := by
   rw [StableFiltration.coe_smul_F, val_smul]
@@ -301,10 +397,18 @@ theorem val_coe_smul_F {j : ℕ} (σ : Gal(L/K)) (y : D.filt.F j) :
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeExtension K L]
   [FiniteDimensional K L] in
 
+/- English proof (translation)
+Establish `: D.π ^ (D.k + j) • (1 : Gal(L/K)) D.θ ∈ D.lat (D.k + j)` using `Submodule.subset_span ⟨1, rfl⟩`. Simplify using `using Submodule.smul_mem _ c this`.
+-/
 theorem smul_theta_mem (j : ℕ) (c : 𝒪[K]) : c • D.π ^ (D.k + j) • D.θ ∈ D.lat (D.k + j) := by
   have : D.π ^ (D.k + j) • (1 : Gal(L/K)) D.θ ∈ D.lat (D.k + j) := Submodule.subset_span ⟨1, rfl⟩
   simpa using Submodule.smul_mem _ c this
 
+/- English proof (translation)
+Take `⟨w, hw, -⟩` from `D.exists_unit (Nat.le_add_right _ _) (D.smul_theta_mem j c)`. Establish `hw0 : w ∈ D.units 0`. Rewrite using `[mem_units, hw, add_sub_cancel_left]`. Conclude with `D.lat_antitone (Nat.le_add_right _ _) (D.smul_theta_mem j c)`. Use `⟨⟨w, hw0⟩, ?_, hw⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_filt]`. Use `show unitVal w - 1 ∈ _`. Rewrite using `[hw, add_sub_cancel_left]`. Conclude with `D.smul_theta_mem j c`.
+-/
 theorem exists_mem_filt (j : ℕ) (c : 𝒪[K]) :
     ∃ y : D.units 0, y ∈ D.filt.F j ∧ D.val y = 1 + c • D.π ^ (D.k + j) • D.θ := by
   obtain ⟨w, hw, -⟩ := D.exists_unit (Nat.le_add_right _ _) (D.smul_theta_mem j c)
@@ -317,6 +421,21 @@ theorem exists_mem_filt (j : ℕ) (c : 𝒪[K]) :
   rw [hw, add_sub_cancel_left]
   exact D.smul_theta_mem j c
 
+/- English proof (translation)
+Rewrite using `[D.filt.subsingleton_tateZero_gr_iff]`. Introduce `x hx hinv`. Take `⟨c, hc⟩` from `(mem_normalLattice_iff D.π D.θ).mp (D.mem_filt.mp hx)`. Establish `hdiv : ∀ σ : Gal(L/K), D.π ^ 1 ∣ c σ - c 1`. Introduce `σ`.
+
+Establish `h1` using `D.div_mem_filt_iff.mp (hinv σ)`. Rewrite `h1` using `[← add_assoc]`. Establish `e : D.val (σ • x) - D.val x = D.π ^ (D.k + j) • ∑ τ, (c (σ⁻¹ * τ) - c τ) • τ D.θ`. Rewrite using `[← smul_sum_sub_smul_sum, ← algEquiv_smul_sum, hc, val_smul, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[e]`. Establish `h2` using `(smul_sum_mem_normalLattice_add_iff D.π D.θ D.irreducible.ne_zero D.linearIndependent (D.k + j) 1 _).mp h1 σ`. Rewrite `h2` using `[inv_mul_cancel]`. Use `dvd_neg.mpr h2` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+
+Take `⟨y, hy, hyv⟩` from `D.exists_mem_filt j (c 1)`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Set `x' : D.filt.F j` to `⟨x, hx⟩`. Set `y' : D.filt.F j` to `⟨y, hy⟩`. Establish `e1 : x / tateNorm Gal(L/K) (D.units 0) y = ((x' / tateNorm Gal(L/K) (D.filt.F j) y' : D.filt.F j) : D.units 0)`.
+
+Rewrite using `[Subgroup.coe_div, D.filt.coe_tateNorm_F]`. Rewrite using `[e1, ← grHom_eq_one_iff, map_div, div_eq_one]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[grHom_toAdd, tateNorm_apply, map_prod, toAdd_prod]`. Repeatedly rewrite using `[grHom_toAdd, val_coe_smul_F]`.
+
+Rewrite using `[quotient_mk_sum, QuotientAddGroup.eq_iff_sub_mem, Submodule.mem_toAddSubgroup]`. Establish `e2 : D.val x' - 1 - ∑ σ : Gal(L/K), (σ (D.val y') - 1) = D.π ^ (D.k + j) • ∑ σ, (c σ - c 1) • σ D.θ` using `by show D.val x - 1 - ∑ σ : Gal(L/K), (σ (D.val y) - 1) = _`. Rewrite using `[← hc, hyv]`. Simplify using `only [Algebra.smul_def, map_add, map_one, map_mul, map_pow, map_sub, algEquiv_algebraMap_integer, add_sub_cancel_left, Finset.mul_sum, ← sum_sub_distrib]`. Use `sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `(smul_sum_mem_normalLattice_add_iff D.π D.θ D.irreducible.ne_zero D.linearIndependent (D.k + j) 1 _).mpr hdiv`.
+-/
 theorem subsingleton_tateZero_gr (j : ℕ) : Subsingleton (TateZero Gal(L/K) (D.filt.gr j)) := by
   rw [D.filt.subsingleton_tateZero_gr_iff]
   intro x hx hinv
@@ -358,6 +477,27 @@ theorem subsingleton_tateZero_gr (j : ℕ) : Subsingleton (TateZero Gal(L/K) (D.
   exact (smul_sum_mem_normalLattice_add_iff D.π D.θ D.irreducible.ne_zero D.linearIndependent
     (D.k + j) 1 _).mpr hdiv
 
+/- English proof (translation)
+Rewrite using `[D.filt.subsingleton_tateNegOne_gr_iff]`. Introduce `x hx hN`. Take `⟨c, hc⟩` from `(mem_normalLattice_iff D.π D.θ).mp (D.mem_filt.mp hx)`. Set `x' : D.filt.F j` to `⟨x, hx⟩`. Establish `hN' : ((tateNorm Gal(L/K) (D.filt.F j) x' : D.filt.F j) : D.units 0) ∈ D.filt.F (j + 1)`.
+
+Rewrite using `[D.filt.coe_tateNorm_F]` and apply the resulting hypothesis. Rewrite `hN'` using `[← grHom_eq_one_iff, ← toAdd_eq_zero, tateNorm_apply, map_prod, toAdd_prod]`. Rewrite `hN'` using `[grHom_toAdd, val_coe_smul_F]`. Rewrite `hN'` using `[quotient_mk_sum, QuotientAddGroup.eq_zero_iff, Submodule.mem_toAddSubgroup]`. Establish `e : ∑ σ : Gal(L/K), (σ (D.val x') - 1) = D.π ^ (D.k + j) • ∑ τ, (∑ σ : Gal(L/K), c (σ⁻¹ * τ)) • τ D.θ`.
+
+Establish `h1 : ∀ σ : Gal(L/K), σ (D.val x') - 1 = σ (D.val x' - 1)` using `fun σ => by`. Rewrite using `[map_sub, map_one]`. Repeatedly rewrite using `[h1]`. Use `show ∑ σ : Gal(L/K), σ (D.val x - 1) = _`. Repeatedly rewrite using `[← hc, algEquiv_smul_sum, ← smul_sum]`.
+
+Rewrite using `[sum_comm]`. Repeatedly rewrite using `[sum_smul]`. Rewrite `hN'` using `[e]`. Establish `hdiv` using `(smul_sum_mem_normalLattice_add_iff D.π D.θ D.irreducible.ne_zero D.linearIndependent (D.k + j) 1 _).mp hN' 1`. Establish `hsumc : ∑ σ : Gal(L/K), c (σ⁻¹ * 1) = ∑ σ, c σ`.
+
+Repeatedly rewrite using `[mul_one]`. Conclude with `Fintype.sum_equiv (Equiv.inv _) _ _ (fun _ => rfl)`. Rewrite `hdiv` using `[hsumc, pow_one]`. Take `⟨e0, he0⟩` from `hdiv`. Use `choose m hm hmv using fun τ => D.exists_mem_filt j (c τ)`.
+
+Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Set `m' : Gal(L/K) → D.filt.F j` to `fun τ => ⟨m τ, hm τ⟩`. Establish `e1 : x / augMap Gal(L/K) (D.units 0) m = ((x' / augMap Gal(L/K) (D.filt.F j) m' : D.filt.F j) : D.units 0)`. Rewrite using `[Subgroup.coe_div, D.filt.coe_augMap_F]`. Rewrite using `[e1, ← grHom_eq_one_iff, map_div, div_eq_one]`.
+
+Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[grHom_toAdd, augMap_apply, map_prod, toAdd_prod]`. Repeatedly rewrite using `[map_div, toAdd_div, grHom_toAdd, val_coe_smul_F, ← QuotientAddGroup.mk_sub]`. Rewrite using `[quotient_mk_sum, QuotientAddGroup.eq_iff_sub_mem, Submodule.mem_toAddSubgroup]`. Establish `e2 : D.val x' - 1 - ∑ τ : Gal(L/K), (τ (D.val (m' τ)) - 1 - (D.val (m' τ) - 1)) = e0 • D.π ^ (D.k + j + 1) • D.θ` using `by show D.val x - 1 - ∑ τ : Gal(L/K), (τ (D.val (m τ)) - 1 - (D.val (m τ) - 1)) = _`.
+
+Rewrite using `[← hc]`. Repeatedly rewrite using `[hmv]`. Establish `he0' : ∑ τ, algebraMap 𝒪[K] L (c τ) = algebraMap 𝒪[K] L D.π * algebraMap 𝒪[K] L e0`. Rewrite using `[← map_sum, he0, map_mul]`. Simplify using `only [Algebra.smul_def, map_add, map_one, map_mul, map_pow, algEquiv_algebraMap_integer, add_sub_cancel_left, Finset.mul_sum, sum_sub_distrib]`.
+
+Establish `h3 : ∑ τ : Gal(L/K), algebraMap 𝒪[K] L (c τ) * (algebraMap 𝒪[K] L D.π ^ (D.k + j) * D.θ) = (∑ τ, algebraMap 𝒪[K] L (c τ)) * (algebraMap 𝒪[K] L D.π ^ (D.k + j) * D.θ)`. Rewrite using `[Finset.sum_mul]`. Rewrite using `[h3, he0']`. Put the polynomial expressions in normal form. Rewrite using `[e2]`.
+
+Establish `: D.π ^ (D.k + j + 1) • (1 : Gal(L/K)) D.θ ∈ D.lat (D.k + j + 1)` using `Submodule.subset_span ⟨1, rfl⟩`. Simplify using `using Submodule.smul_mem _ e0 this`.
+-/
 theorem subsingleton_tateNegOne_gr (j : ℕ) : Subsingleton (TateNegOne Gal(L/K) (D.filt.gr j)) := by
   rw [D.filt.subsingleton_tateNegOne_gr_iff]
   intro x hx hN
@@ -429,6 +569,9 @@ omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel L] [Topol
   [IsNonarchimedeanLocalField L] [ValuativeExtension K L] [FiniteDimensional K L] [IsGalois K L] in
 open scoped Pointwise in
 
+/- English proof (translation)
+Rewrite using `[normalLattice, ← Set.smul_set_range, Submodule.span_smul]`.
+-/
 theorem normalLattice_eq_smul_span (π : 𝒪[K]) (θ : L) (s : ℕ) :
     normalLattice π θ s = π ^ s • Submodule.span 𝒪[K] (Set.range fun σ : Gal(L/K) => σ θ) := by
   rw [normalLattice, ← Set.smul_set_range, Submodule.span_smul]
@@ -436,6 +579,9 @@ theorem normalLattice_eq_smul_span (π : 𝒪[K]) (θ : L) (s : ℕ) :
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel L]
   [TopologicalSpace L] [IsNonarchimedeanLocalField L] [ValuativeExtension K L] in
 
+/- English proof (translation)
+Use `(basisOfLinearIndependentOfCardEqFinrank hθ (Fintype.card_eq_nat_card.trans (IsGalois.card_aut_eq_finrank K L))).span_eq` as an intermediate fact. Simplify `this` using `[coe_basisOfLinearIndependentOfCardEqFinrank]`.
+-/
 theorem span_conjugates_eq_top {θ : L} (hθ : LinearIndependent K fun σ : Gal(L/K) => σ θ) :
     Submodule.span K (Set.range fun σ : Gal(L/K) => σ θ) = ⊤ := by
   have := (basisOfLinearIndependentOfCardEqFinrank hθ
@@ -446,6 +592,9 @@ namespace NormalLatticeData
 
 variable (D : NormalLatticeData K L)
 
+/- English proof (translation)
+Establish `h : (D.units j : Set 𝒪[L]ˣ) = (fun u : 𝒪[L]ˣ => unitVal u - 1) ⁻¹' (D.lat (D.k + j) : Set L)` using `rfl`. Rewrite using `[h]`. Conclude with `(isOpen_normalLattice D.π D.θ D.irreducible D.linearIndependent _).preimage ((continuous_subtype_val.comp Units.continuous_val).sub continuous_const)`.
+-/
 theorem isOpen_units (j : ℕ) : IsOpen (D.units j : Set 𝒪[L]ˣ) := by
   have h : (D.units j : Set 𝒪[L]ˣ) =
       (fun u : 𝒪[L]ˣ => unitVal u - 1) ⁻¹' (D.lat (D.k + j) : Set L) := rfl
@@ -457,6 +606,9 @@ attribute [local instance] action
 
 omit [TopologicalSpace L] [IsNonarchimedeanLocalField L] [IsGalois K L] in
 
+/- English proof (translation)
+The claim follows from `subsingleton_tate_of_complete D.filt D.filt_zero D.filt_complete D.filt_separated D.subsingleton_tateZero_gr D.subsingleton_tateNegOne_gr`.
+-/
 theorem subsingleton_tate :
     Subsingleton (TateZero Gal(L/K) (D.units 0)) ∧ Subsingleton (TateNegOne Gal(L/K) (D.units 0)) :=
   subsingleton_tate_of_complete D.filt D.filt_zero D.filt_complete D.filt_separated
@@ -466,6 +618,9 @@ end NormalLatticeData
 
 open scoped Pointwise in
 
+/- English proof (translation)
+Take `⟨D⟩` from `NormalLatticeData.nonempty K L`. Use `⟨D.π, D.θ, D.k, D.irreducible, D.linearIndependent, span_conjugates_eq_top D.linearIndependent, D.integer, D.units 0, D.units_zero_stable, fun u => ?_, D.isOpen_units 0, D.subsingleton_tate⟩` and prove the remaining obligations. Rewrite using `[← normalLattice_eq_smul_span]`. Conclude with `Iff.rfl`.
+-/
 theorem exists_openSubgroup_units_tateTrivial :
     ∃ (π : 𝒪[K]) (θ : L) (k : ℕ), Irreducible π ∧ (LinearIndependent K fun σ : Gal(L/K) => σ θ) ∧
       Submodule.span K (Set.range fun σ : Gal(L/K) => σ θ) = ⊤ ∧

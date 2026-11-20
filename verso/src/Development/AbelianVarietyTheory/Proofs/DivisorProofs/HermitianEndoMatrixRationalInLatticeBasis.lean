@@ -17,6 +17,41 @@ def imFormLeft {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (w : Fin g → ℂ) :
   map_smul' r z := by
     simp [smul_dotProduct, Complex.smul_im]
 
+/- English proof (translation)
+Introduce `g n e H₁ H₂ hpos h1 h2 γ hγ`. Use `set T := LinearMap.toMatrix e e (γ.restrictScalars ℝ) with hT`. Set `A₁ : Matrix (Fin n) (Fin n) ℝ` to `fun k l => (e k ⬝ᵥ H₁ *ᵥ star (e l)).im`. Set `A₂ : Matrix (Fin n) (Fin n) ℝ` to `fun k l => (e k ⬝ᵥ H₂ *ᵥ star (e l)).im`. Establish `hγe : ∀ l, γ (e l) = ∑ m, T m l • e m`.
+
+Introduce `l`. Use `e.sum_repr (γ (e l))` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[hT, LinearMap.toMatrix_apply]`. Establish `key : A₁ * T = A₂`.
+
+Use extensionality with `k l`. Rewrite using `[mul_apply]`. Use `show _ = (e k ⬝ᵥ H₂ *ᵥ star (e l)).im`. Rewrite using `[hγ, hγe l]`. Use `map_sum (imFormRight H₁ (e k)) (fun m : Fin n => T m l • e m) (Finset.univ : Finset (Fin n))` as an intermediate fact.
+
+Simplify using `only [map_smul, smul_eq_mul] at this`. Express the relevant statement in the definitionally equal form `_ = imFormRight H₁ (e k) _`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Both sides reduce to the same expression. Establish `hdet : A₁.det ≠ 0`. Introduce `h0`. Take `⟨x, hx0, hx⟩` from `(Matrix.exists_mulVec_eq_zero_iff).2 h0`. Use `set v := ∑ l, x l • e l with hv`.
+
+Establish `hk : ∀ k, imFormRight H₁ (e k) v = 0`. Introduce `k`. Use `congrFun hx k` as an intermediate fact. Rewrite using `[hv, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+
+Simplify using `only [mulVec, dotProduct, Pi.zero_apply] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+
+Establish `hu : ∀ u, imFormLeft H₁ v u = 0`. Introduce `u`. Rewrite using `[← e.sum_repr u, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+
+Use `hk k` as an intermediate fact. Simplify using `only [imFormRight, imFormLeft, LinearMap.coe_mk, AddHom.coe_mk] at this ⊢`. Rewrite using `[this, smul_zero]`. Establish `hre : (v ⬝ᵥ H₁ *ᵥ star v).re = 0`. Use `hu (Complex.I • v)` as an intermediate fact.
+
+Simplify using `only [imFormLeft, LinearMap.coe_mk, AddHom.coe_mk, smul_dotProduct, smul_eq_mul, Complex.mul_im, Complex.I_re, Complex.I_im] at this`. Simplify using `using this`. Establish `hv0 : v = 0`. Assume the negation of the conclusion as `hne`. Use `hpos v hne` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Apply `hx0` to reduce the goal to its premises. Establish `: e.equivFun.symm x = 0` using `by rw [Module.Basis.equivFun_symm_apply]; exact hv0`. Conclude with `e.equivFun.symm.injective (by rw [this, map_zero])`. Use `choose m₁ hm₁ using h1`.
+
+Use `choose m₂ hm₂ using h2`. Set `A₁q : Matrix (Fin n) (Fin n) ℚ` to `fun k l => (m₁ k l : ℚ)`. Set `A₂q : Matrix (Fin n) (Fin n) ℚ` to `fun k l => (m₂ k l : ℚ)`. Establish `hA₁ : A₁q.map (Rat.castHom ℝ) = A₁`. Use extensionality with `k l`.
+
+Use `show ((m₁ k l : ℚ) : ℝ) = _`. Rewrite using `[Rat.cast_intCast, hm₁]`. Establish `hA₂ : A₂q.map (Rat.castHom ℝ) = A₂`. Use extensionality with `k l`. Use `show ((m₂ k l : ℚ) : ℝ) = _`.
+
+Rewrite using `[Rat.cast_intCast, hm₂]`. Establish `hdetq : IsUnit A₁q.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Apply `hdet` to reduce the goal to its premises.
+
+Use `(Rat.castHom ℝ).map_det A₁q` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Rewrite using `[← hA₁]`. Conclude with `this.symm`. Establish `hdetR : IsUnit A₁.det` using `isUnit_iff_ne_zero.2 hdet`.
+
+Use `⟨A₁q⁻¹ * A₂q, ?_⟩` and prove the remaining obligations. Establish `h3 : A₁ * (A₁q⁻¹ * A₂q).map (Rat.castHom ℝ) = A₂`. Use `congrArg (fun M => M.map (Rat.castHom ℝ)) (Matrix.mul_nonsing_inv_cancel_left A₁q A₂q hdetq)` as an intermediate fact. Rewrite `this` using `[Matrix.map_mul, hA₁, hA₂]`. Conclude with `this`.
+
+Establish `h4 : (A₁q⁻¹ * A₂q).map (Rat.castHom ℝ) = T`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using h4`.
+-/
 theorem herm_endo_matrix_rat : ∀ (g n : ℕ) (e : Module.Basis (Fin n) ℝ (Fin g → ℂ)) (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ),
     (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ H₁.mulVec (star z)).re) →
     (∀ k l, ∃ m : ℤ, (m : ℝ) = (e k ⬝ᵥ H₁.mulVec (star (e l))).im) →

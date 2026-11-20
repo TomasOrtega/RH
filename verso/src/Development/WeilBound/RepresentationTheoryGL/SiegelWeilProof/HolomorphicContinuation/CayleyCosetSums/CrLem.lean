@@ -5,6 +5,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.HSt
 
+/- English proof (translation)
+The claim follows from `CR.crLem_of locSec fib CR.cra2`.
+-/
 theorem crLem : CRLem := CR.crLem_of locSec fib CR.cra2
 
 end PositivityTheory.Rg.Sw.HSt

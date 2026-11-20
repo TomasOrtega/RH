@@ -10,10 +10,18 @@ open GlobalTheory.HermFrame GlobalTheory.GoodMetric
 
 namespace GlobalTheory.CurvatureSesquilinearExpansion
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[Pi.single_apply]`.
+-/
 theorem eq_sum_coordVec {n : ℕ} (v : V n) : v = ∑ a, v.ofLp a • coordVec a := by
   ext j
   simp [Pi.single_apply]
 
+/- English proof (translation)
+Establish `s1 (z : V n) (f : Fin n → V n) : F (∑ a, f a) z = ∑ a, F (f a) z` using `map_sum (AddMonoidHom.mk' (fun x => F x z) fun x y => h1 x y z) f Finset.univ`. Establish `s2 (x : V n) (f : Fin n → V n) : F x (∑ a, f a) = ∑ a, F x (f a)` using `map_sum (AddMonoidHom.mk' (fun z => F x z) fun y z => h3 x y z) f Finset.univ`. Use `conv_lhs => rw [eq_sum_coordVec ξ, eq_sum_coordVec η, s1]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[s2]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[h2, h4, mul_assoc]`.
+-/
 theorem sesq_expand {n : ℕ} (F : V n → V n → ℂ)
     (h1 : ∀ x y z, F (x + y) z = F x z + F y z) (h2 : ∀ (c : ℂ) x z, F (c • x) z = c * F x z)
     (h3 : ∀ x y z, F x (y + z) = F x y + F x z)
@@ -29,6 +37,17 @@ theorem sesq_expand {n : ℕ} (F : V n → V n → ℂ)
   refine Finset.sum_congr rfl fun b _ => ?_
   rw [h2, h4, mul_assoc]
 
+/- English proof (translation)
+Establish `m1 (x y w : V n) : mddbar G z (x + y) w = mddbar G z x w + mddbar G z y w`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `m2 (c : ℂ) (x w : V n) : mddbar G z (c • x) w = c • mddbar G z x w`. Use extensionality with `a b`.
+
+Simplify using the standard rewrite rules. Establish `m3 (x y w : V n) : mddbar G z x (y + w) = mddbar G z x y + mddbar G z x w`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `m4 (c : ℂ) (x w : V n) : mddbar G z x (c • w) = conj c • mddbar G z x w`.
+
+Use extensionality with `a b`. Simplify using the standard rewrite rules. Use `sesq_expand (fun ξ η => curv G z ξ η i j) ?_ ?_ ?_ ?_ ξ η` and prove the remaining obligations. Introduce `x y w`. Simplify using `only [curv_eq h hu, mdel_add_vec, m1, transpose_add, Matrix.mul_add, Matrix.sub_apply, Matrix.add_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `c x w`. Simplify using `only [curv_eq h hu, mdel_smul_vec, m2, transpose_smul, Matrix.mul_smul, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y w`.
+
+Simplify using `only [curv_eq h hu, mdbar_add_vec, m3, transpose_add, Matrix.mul_add, Matrix.add_mul, Matrix.sub_apply, Matrix.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c x w`. Simplify using `only [curv_eq h hu, mdbar_smul_vec, m4, transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem curv_expand {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] {G : V n → Matrix r r ℂ} {z : V n}
     (h : MContDiffAt 2 G z) (hu : IsUnit (G z).det) (ξ η : V n) (i j : r) :
     curv G z ξ η i j =
@@ -59,6 +78,13 @@ theorem curv_expand {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] {G : V n �
       Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Introduce `d1 n n' r _ _ G φ w hφ hG hu`. Establish `h2 : MContDiffAt 2 G (φ w)` using `hG.of_le (by norm_cast)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [d1, curvPoly, AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, aeval_X, aeval_C, algebraMap_eq, curv_comp_holo h2 hu hφ, Finset.mul_sum]`. Use `symm`.
+
+Rewrite using `[Finset.sum_congr rfl fun a _ => Finset.sum_comm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun a _ => Finset.sum_comm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[curv_expand h2 hu (fderiv ℂ φ w (coordVec c))]`.
+
+Simplify using `only [map_sum, map_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem curvPoly_pullback : (let d1 : {n n' : ℕ} → (ReciprocityTheory.L2DbarEstimates.V n' →L[ℂ] ReciprocityTheory.L2DbarEstimates.V n) → MvPolynomial (Fin n × Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n' × Fin n') ℂ := @(fun {n n' : ℕ} (L : ReciprocityTheory.L2DbarEstimates.V n' →L[ℂ] ReciprocityTheory.L2DbarEstimates.V n) ↦ MvPolynomial.aeval fun (x : Fin n × Fin n) ↦ ∑ c : Fin n', ∑ d : Fin n', (MvPolynomial.C : (fun (x : Fin n) ↦ ℂ) (Prod.fst x) → MvPolynomial (Fin n' × Fin n') ((fun (x : Fin n) ↦ ℂ) (Prod.fst x))) (WithLp.ofLp ((L : ReciprocityTheory.L2DbarEstimates.V n' → ReciprocityTheory.L2DbarEstimates.V n) (GlobalTheory.GoodMetric.coordVec c)) (Prod.fst x) * (starRingEnd ℂ : ℂ → ℂ) (WithLp.ofLp ((L : ReciprocityTheory.L2DbarEstimates.V n' → ReciprocityTheory.L2DbarEstimates.V n) (GlobalTheory.GoodMetric.coordVec d)) (Prod.snd x))) * MvPolynomial.X (c, d)); ∀ {n n' : ℕ} {r : Type} [inst : Fintype r] [inst_1 : DecidableEq r] {G : ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ} {φ : ReciprocityTheory.L2DbarEstimates.V n' → ReciprocityTheory.L2DbarEstimates.V n} {w : ReciprocityTheory.L2DbarEstimates.V n'}, ContDiffAt ℂ (2 : WithTop ℕ∞) φ w → GlobalTheory.HermFrame.MContDiffAt ((⊤ : ℕ∞) : WithTop ℕ∞) G (φ w) → IsUnit (Matrix.det (G (φ w))) → GlobalTheory.GoodMetric.curvPoly (fun (x : ReciprocityTheory.L2DbarEstimates.V n') ↦ G (φ x)) w = (AlgHom.mapMatrix (d1 (fderiv ℂ φ w)) : Matrix r r (MvPolynomial (Fin n × Fin n) ℂ) → Matrix r r (MvPolynomial (Fin n' × Fin n') ℂ)) (GlobalTheory.GoodMetric.curvPoly G (φ w))) := by
   intro d1 n n' r _ _ G φ w hφ hG hu
   have h2 : MContDiffAt 2 G (φ w) := hG.of_le (by norm_cast)

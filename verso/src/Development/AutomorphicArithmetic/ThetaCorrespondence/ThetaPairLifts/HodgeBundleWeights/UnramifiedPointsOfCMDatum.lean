@@ -7,6 +7,19 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnramifiedPointsGoo
 section
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 namespace GlobalTheory.UnramCM
+/- English proof (translation)
+Introduce `hP E _ _ _ H Dw l Xo c hpq hcase hg`. Use `UnramPts.of_index_one fun Z w hw => ?_` and prove the remaining obligations. Establish `hch : ∃ q : ℕ, q.Prime ∧ ((q : ℕ) : 𝓞 c.F) ∈ w.asIdeal` using `by haveI := w.isMaximal haveI : Finite (𝓞 c.F ⧸ w.asIdeal) := Ring.HasFiniteQuotients.finiteQuotient w.ne_bot`. Use `letI := Ideal.Quotient.field w.asIdeal`. Use `⟨ringChar (𝓞 c.F ⧸ w.asIdeal), CharP.char_is_prime (𝓞 c.F ⧸ w.asIdeal) _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`. Take `⟨q, hq, hqw⟩` from `hch`. Establish `hqB : q ∉ badPrimes H l` using `fun h => hw q h hqw`. Establish `hM : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`.
+
+Establish `h3 : 3 ≤ l.M'` using `le_trans l.three_le (Nat.le_of_dvd (Nat.pos_of_ne_zero hM) (Nat.dvd_lcm_left _ _))`. Establish `hqd : ¬ q ∣ 2 * l.M' * H.d` using `fun h => hqB <| by`. Establish `hD : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (discr_ne_zero E)`. Establish `hne : 2 * H.d * (discr E).natAbs * l.M' ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero two_ne_zero H.d_prime.ne_zero) hD) hM`. Rewrite using `[badPrimes, Nat.mem_primeFactors_of_ne_zero hne]`.
+
+Use `⟨hq, ?_⟩` and prove the remaining obligations. Establish `: 2 * l.M' * H.d ∣ 2 * H.d * (discr E).natAbs * l.M'` using `⟨(discr E).natAbs, by ring⟩`. Conclude with `h.trans this`. Take `⟨F', _, hdisc, hcurve⟩` from `_root_.GlobalTheory.T.unramified_curve_field_existence hP E H l.M' q h3 hq hqd`. Set `K : IntermediateField ℚ ℂ` to `c.F ⊔ F'`.
+
+Use `haveI : FiniteDimensional ℚ K := IntermediateField.finiteDimensional_sup _ _`. Use `haveI : NumberField K := ⟨⟩`. Establish `hle : c.F ≤ K` using `le_sup_left`. Establish `hK : GlobalTheory.CompRat.CurveOver H K l.M'` using `fun τ hτ => hcurve τ fun x hx => hτ x (le_sup_right (a := c.F) hx)`. Take `⟨𝔭, h𝔭⟩` from `GlobalTheory.T.compositum_intermediateField_exists_place_valuation_eq c.F F' K hle rfl q hq hdisc w hqw`.
+
+Use `letI : Algebra c.F K := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_framedPoint_liesOn_component_cmCurve_field E H Dw l Xo c hpq hcase K hle hK Z`. Conclude with `GlobalTheory.T.exists_integralFramedPoint_completion_index_one E H Dw l Xo c hpq hg Z K y hy w 𝔭 h𝔭`.
+-/
 theorem unramified_points_of_CMDatum : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (Dw.p = 0 ∨ Dw.q = 0 ∨ (3 ≤ Dw.p + Dw.q ∧ (∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0))) → (∀ p : ℕ, p.Prime → l.GoodAt p) → UnramPts Xo c (badPrimes H l) := by
   intro hP E _ _ _ H Dw l Xo c hpq hcase hg
   refine UnramPts.of_index_one fun Z w hw => ?_
@@ -47,6 +60,9 @@ end
 section
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.UnramCM.unramified_points_of_CMDatum | exact _root_.GlobalTheory.UnramCM.unramified_points_of_CMDatum | (intros; apply _root_.GlobalTheory.UnramCM.unramified_points_of_CMDatum <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cm_points_unramified : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (Dw.p = 0 ∨ Dw.q = 0 ∨ (3 ≤ Dw.p + Dw.q ∧ (∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0))) → (∀ p : ℕ, p.Prime → l.GoodAt p) → UnramPts Xo c (badPrimes H l) := by
   first | exact @_root_.GlobalTheory.UnramCM.unramified_points_of_CMDatum | exact _root_.GlobalTheory.UnramCM.unramified_points_of_CMDatum | (intros; apply _root_.GlobalTheory.UnramCM.unramified_points_of_CMDatum <;> assumption)
 end

@@ -13,6 +13,9 @@ namespace GlobalTheory.QNorm
 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.QNorm.locSq _root_.GlobalTheory.QNorm.finSq`. Simplify using `[_root_.GlobalTheory.QNorm.mem_sqSub]`.
+-/
 private lemma mem_locSq_iff' (F : Type) [Field F] [NumberField F]
     (S : Finset (HeightOneSpectrum (𝓞 F))) (x : Fˣ) :
     x ∈ _root_.GlobalTheory.QNorm.locSq F S ↔
@@ -23,6 +26,9 @@ private lemma mem_locSq_iff' (F : Type) [Field F] [NumberField F]
 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
+/- English proof (translation)
+Take `⟨r, hr⟩` from `h`. Establish `hne : σ (x : F) ≠ 0` using `(map_ne_zero σ).mpr x.ne_zero`. Conclude with `lt_of_le_of_ne (by rw [hr]; exact mul_self_nonneg r) (Ne.symm hne)`.
+-/
 private lemma pos_of_isSquare_real_embedding_unit {F : Type} [Field F] (σ : F →+* ℝ) (x : Fˣ)
     (h : IsSquare (σ (x : F))) : 0 < σ (x : F) := by
   obtain ⟨r, hr⟩ := h
@@ -31,6 +37,11 @@ private lemma pos_of_isSquare_real_embedding_unit {F : Type} [Field F] (σ : F �
 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
+/- English proof (translation)
+Take `⟨y, hy⟩` from `h`. Establish `hv : Valued.v (algebraMap F (v.adicCompletion F) x) = v.valuation F x` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Establish `hy0 : Valued.v y ≠ 0`. Introduce `h0`. Rewrite `hv` using `[hy, map_mul, h0, zero_mul]`.
+
+Conclude with `((Valuation.ne_zero_iff _).mpr hx) hv.symm`. Use `⟨WithZero.log (Valued.v y), ?_⟩` and prove the remaining obligations. Rewrite using `[← hv, hy, map_mul, two_mul, WithZero.exp_add, WithZero.exp_log hy0]`.
+-/
 private lemma exists_valuation_eq_exp_two_mul_of_isSquare_completion (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (x : F) (hx : x ≠ 0)
     (h : IsSquare (algebraMap F (v.adicCompletion F) x)) :
@@ -48,6 +59,65 @@ private lemma exists_valuation_eq_exp_two_mul_of_isSquare_completion (F : Type) 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 
+/- English proof (translation)
+Introduce `F _ _ δ σ₀ hδ H v₀`. Take `⟨S₀, hS₀, hδS₀, -⟩` from `_root_.GlobalTheory.QNorm.exists_adm_mem_sUnits_local_norm_mem_sUnits_sup_normSub F δ hδ`. Use `set S := insert v₀ S₀ with hSdef`. Establish `hv₀S : v₀ ∈ S` using `Finset.mem_insert_self _ _`. Establish `hS : _root_.GlobalTheory.QNorm.admitted F S` using `hS₀.mono (Finset.subset_insert _ _)`.
+
+Establish `hδS : δ ∈ _root_.GlobalTheory.QNorm.sUnits F S`. Rewrite `hδS₀`, the goal using `[_root_.GlobalTheory.QNorm.mem_sUnits]`. Introduce `v hv`. Conclude with `hδS₀ v fun h => hv (Finset.mem_insert_of_mem h)`. Take `⟨T, hST, hcard, hTsq, hpat⟩` from `_root_.GlobalTheory.QNorm.exists_auxiliary_places F δ S hS hδS hδ`.
+
+Establish `htop` using `_root_.GlobalTheory.QNorm.sUnits_union_sup_finSq_eq_top F S T hS hST hpat`. Use `set U := _root_.GlobalTheory.QNorm.sUnits F (S ∪ T) with hU`. Use `set M := _root_.GlobalTheory.QNorm.locSq F S with hM`. Establish `hgoodU : ∀ u ∈ U, ∀ v, v ∉ S → IsSquare (algebraMap F (v.adicCompletion F) (δ : F)) ∨ ∃ n : ℤ, v.valuation F (u : F) = WithZero.exp (2 * n)`. Introduce `u hu v hv`.
+
+Distinguish the cases in `hvT : v ∈ T`. Conclude with `Or.inl (hTsq v hvT)`. Use `right`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[hU, _root_.GlobalTheory.QNorm.mem_sUnits]`.
+
+Rewrite using `[hu v (by simp [hv, hvT])]`. Simplify using the standard rewrite rules. Establish `hinf : M ⊓ U = _root_.GlobalTheory.QNorm.sqs U ⊓ U`. Use extensionality with `y`. Simplify using `only [Subgroup.mem_inf]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hyM, hyU⟩`. Conclude with `⟨_root_.GlobalTheory.QNorm.mem_sqs_sUnits_of_isSquare F (S ∪ T) y hyU (_root_.GlobalTheory.QNorm.isSquare_of_mem_locSq F S T hS htop y hyU hyM), hyU⟩`. Introduce and unpack `⟨hysq, hyU⟩`. Conclude with `⟨_root_.GlobalTheory.QNorm.sqs_le_locSq F U S hysq, hyU⟩`.
+
+Establish `hrel : M.relIndex U = 2 ^ ((S ∪ T).card + Fintype.card (InfinitePlace F))`. Rewrite using `[← Subgroup.inf_relIndex_right, hinf, Subgroup.inf_relIndex_right, _root_.GlobalTheory.QNorm.relIndex_sqs_sUnits]`. Take `⟨hM0, hMle⟩` from `_root_.GlobalTheory.QNorm.index_locSq_le F S`. Establish `hidx` using `_root_.GlobalTheory.QNorm.index_eq_relIndex_mul_index_sup U M`. Establish `hunion : (S ∪ T).card = S.card + T.card` using `Finset.card_union_of_disjoint hST`.
+
+Rewrite `hidx` using `[hrel, hunion]`. Establish `hsup0 : (U ⊔ M).index ≠ 0`. Introduce `h0`. Rewrite `hidx` using `[h0, mul_zero]`. Conclude with `hM0 hidx`.
+
+Establish `hle2 : (U ⊔ M).index ≤ 2`. Establish `h4 : (4 : ℕ) ^ (S.card + Fintype.card (InfinitePlace F)) = 2 ^ (S.card + T.card + Fintype.card (InfinitePlace F)) * 2`. Rewrite using `[show (4 : ℕ) = 2 ^ 2 by norm_num, ← pow_mul, ← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h : 2 ^ (S.card + T.card + Fintype.card (InfinitePlace F)) * (U ⊔ M).index ≤ 2 ^ (S.card + T.card + Fintype.card (InfinitePlace F)) * 2`. Rewrite using `[← hidx, ← h4]`. Conclude with `hMle`. Conclude with `Nat.le_of_mul_le_mul_left h (by positivity)`. Apply the tactic sequence `obtain ⟨xs, hxs0, hxsS, hxsσ⟩ := _root_.GlobalTheory.QNorm.exists_approx_mod_squares F S (fun _ => 1) (fun σ => if σ = σ₀ then -1 else 1) (fun _ => one_ne_zero) (fun σ => by split_ifs <;> norm_num)`.
+
+Simplify using `only [mul_one] at hxsS`. Establish `hxsσ₀ : σ₀ xs < 0`. Establish `h` using `hxsσ σ₀`. Rewrite `h` using `[if_pos rfl]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hxsσ' : ∀ σ, σ ≠ σ₀ → 0 < σ xs` using `fun σ hσ => by`. Establish `h` using `hxsσ σ`. Rewrite `h` using `[if_neg hσ, mul_one]`. Then use the resulting hypothesis. Use `set X : Fˣ := Units.mk0 xs hxs0 with hX`. Establish `hXnot : X ∉ U ⊔ M`.
+
+Introduce `hXmem`. Take `⟨y, hyU, z, hzM, hyz⟩` from `Subgroup.mem_sup.mp hXmem`. Rewrite `hzM` using `[hM, mem_locSq_iff']`. Establish `hy : (y : F) = xs / z`. Rewrite using `[eq_div_iff z.ne_zero, ← Units.val_mul, hyz, hX, Units.val_mk0]`.
+
+Establish `hzpos : ∀ σ : F →+* ℝ, 0 < σ (z : F)` using `fun σ => pos_of_isSquare_real_embedding_unit σ z (hzM.2 σ)`. Establish `hpos` using `H y y.ne_zero (fun v => by`. Distinguish the cases in `hv : v ∈ S`. Use `right`. Apply `exists_valuation_eq_exp_two_mul_of_isSquare_completion F v _ y.ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[hy, map_div₀]`. Conclude with `(hxsS v hv).div (hzM.1 v hv)`. Conclude with `hgoodU y hyU v hv) (fun σ hσ => by`. Rewrite using `[hy, map_div₀]`. Conclude with `div_pos (hxsσ' σ hσ) (hzpos σ))`.
+
+Rewrite `hpos` using `[hy, map_div₀]`. Use `(div_pos_iff_of_pos_right (hzpos σ₀)).mp hpos` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hidx2 : (U ⊔ M).index = 2`. Establish `hne1 : (U ⊔ M).index ≠ 1`.
+
+Introduce `h1`. Conclude with `hXnot (Subgroup.index_eq_one.mp h1 ▸ Subgroup.mem_top X)`. Use linear arithmetic over natural numbers and integers. Take `⟨ϖ, hϖ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer F v₀`. Establish `hϖ0 : ϖ ≠ 0`.
+
+Introduce `h0`. Rewrite `hϖ` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`. Take `⟨xa, hxa0, hxaS, -⟩` from `_root_.GlobalTheory.QNorm.exists_approx_mod_squares F S (fun v => if v = v₀ then algebraMap F (v.adicCompletion F) ϖ else 1) (fun _ => 1) (fun v => by split_ifs`. Conclude with `(map_ne_zero _).mpr hϖ0`.
+
+Conclude with `one_ne_zero)`. Use the proof step `(fun _ => one_ne_zero)`. Establish `hav₀ : ∃ n : ℤ, v₀.valuation F xa = WithZero.exp (2 * n + 1)`. Establish `h` using `hxaS v₀ hv₀S`. Rewrite `h` using `[if_pos rfl, ← map_mul]`.
+
+Take `⟨n, hn⟩` from `exists_valuation_eq_exp_two_mul_of_isSquare_completion F v₀ (xa * ϖ) (mul_ne_zero hxa0 hϖ0) h`. Establish `hva : v₀.valuation F xa ≠ 0` using `(Valuation.ne_zero_iff _).mpr hxa0`. Rewrite `hn` using `[map_mul, hϖ, ← WithZero.exp_log hva, ← WithZero.exp_add]`. Establish `h'` using `WithZero.exp_injective hn`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← WithZero.exp_log hva]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `haS : ∀ v ∈ S, v ≠ v₀ → IsSquare (algebraMap F (v.adicCompletion F) xa)` using `fun v hv hne => by`. Establish `h` using `hxaS v hv`.
+
+Rewrite `h` using `[if_neg hne, mul_one]`. Then use the resulting hypothesis. Use `set A : Fˣ := Units.mk0 xa hxa0 with hA`. Choose the witnesses or unpack the hypotheses as in `⟨B, hBmem, hBv₀, hBS⟩ : ∃ B : Fˣ, B ∈ U ⊔ M ∧ (∃ n : ℤ, v₀.valuation F (B : F) = WithZero.exp (2 * n + 1)) ∧ ∀ v ∈ S, v ≠ v₀ → IsSquare (algebraMap F (v.adicCompletion F) (B : F)) := by`. Distinguish the cases in `hAmem : A ∈ U ⊔ M`. Conclude with `⟨A, hAmem, hav₀, haS⟩`.
+
+Use `⟨A * X, (Subgroup.mul_mem_iff_of_index_two hidx2).mpr (iff_of_false hAmem hXnot), ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `exists_valuation_eq_exp_two_mul_of_isSquare_completion F v₀ xs hxs0 (hxsS v₀ hv₀S)`. Take `⟨n, hn⟩` from `hav₀`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, hA, hX, Units.val_mk0, Units.val_mk0, map_mul, hn, hm, ← WithZero.exp_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `v hv hne`. Rewrite using `[Units.val_mul, hA, hX, Units.val_mk0, Units.val_mk0, map_mul]`. Conclude with `(haS v hv hne).mul (hxsS v hv)`.
+
+Take `⟨u, huU, m, hmM, hum⟩` from `Subgroup.mem_sup.mp hBmem`. Rewrite `hmM` using `[hM, mem_locSq_iff']`. Establish `hum' : (u : F) * m = B` using `by rw [← Units.val_mul, hum]`. Establish `hu : (u : F) = B / m` using `by rw [eq_div_iff m.ne_zero, hum']`. Use `⟨u, u.ne_zero, ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨n, hn⟩` from `hBv₀`. Take `⟨k, hk⟩` from `exists_valuation_eq_exp_two_mul_of_isSquare_completion F v₀ m m.ne_zero (hmM.1 v₀ hv₀S)`. Establish `hvu : v₀.valuation F (u : F) ≠ 0` using `(Valuation.ne_zero_iff _).mpr u.ne_zero`. Establish `h` using `congrArg (v₀.valuation F) hum'`. Rewrite `h` using `[map_mul, hn, hk, ← WithZero.exp_log hvu, ← WithZero.exp_add]`.
+
+Establish `h'` using `WithZero.exp_injective h`. Use `⟨n - k, ?_⟩` and prove the remaining obligations. Rewrite using `[← WithZero.exp_log hvu]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `v hne`. Distinguish the cases in `hv : v ∈ S`. Use `right`. Apply `exists_valuation_eq_exp_two_mul_of_isSquare_completion F v _ u.ne_zero` to reduce the goal to its premises. Rewrite using `[hu, map_div₀]`.
+
+Conclude with `(hBS v hv hne).div (hmM.1 v hv)`. Conclude with `hgoodU u huU v hv`.
+-/
 theorem _root_.GlobalTheory.QNorm.exists_odd_order_at_even_elsewhere : ∀ (F : Type) [Field F] [NumberField F] (δ : Fˣ)
     (σ₀ : F →+* ℝ), ¬ IsSquare (δ : F) →
     (∀ t : F, t ≠ 0 → (∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F),

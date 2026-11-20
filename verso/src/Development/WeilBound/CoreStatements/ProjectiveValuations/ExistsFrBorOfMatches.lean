@@ -19,6 +19,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.GeometryOfNumbersTheory Formalism.BasicNotions MonObj GlobalTheory GlobalTheory.CechPic GlobalTheory.Vanishing GlobalTheory.HermTools GlobalTheory.Adelic GlobalTheory.CovTop GlobalTheory.HSApp in
 
+/- English proof (translation)
+Substitute `e` using the available equality. Set `z' : Sp (CAt σ) ⟶ T.X.YY` to `spMap ψ ≫ q`. Establish `ex : spMap ψ ≫ (x ≫ genι T.Y) = z' ≫ T.X.π`. Rewrite using `[← hx]`. Conclude with `(Category.assoc _ _ _).symm`.
+
+Establish `hxy : GlobalTheory.FlagMod.frX y ≫ T.Y.j = z' ≫ T.X.π`. Combine the equalities or inequalities in the displayed calculation. Use `_ = spMap ψ ≫ (x ≫ genι T.Y) := (congrArg (· ≫ genι T.Y) hm.1).trans (Category.assoc _ _ _)`. Use `_ = z' ≫ T.X.π := ex`. Take `⟨Q, hQ⟩` from `T.X.top.exists_chartFr (GlobalTheory.FlagMod.frX_snd y) hxy.symm k hz'`.
+
+Establish `hv : ∀ τ j, GlobalTheory.FlagMod.frVec T.Y y hxy τ j = GlobalTheory.FlagMod.frVec T.Y Q hQ.over τ j` using `fun τ j => by`. Rewrite using `[hQ.frVec_eq rfl hQ.over τ]`. Use `(GlobalTheory.FlagMod.toModel_eq_iff _ _ _ _ _).2 ?_` and prove the remaining obligations. Take `⟨w, h1, h2, h3⟩` from `hm.2 τ j`. Use `⟨w, h1, h2, h3.trans ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hfr τ j, ← T.X.F.tanPull_vecAt k ψ q hz hz' hx rfl ex]`. Both sides reduce to the same expression. Establish `eQ : y.x = Q.x`. Rewrite using `[← GlobalTheory.FlagMod.frX_fst, ← GlobalTheory.FlagMod.frX_fst, GlobalTheory.FlagMod.xF_ext (Y := T.Y) (GlobalTheory.FlagMod.frX_snd y) (GlobalTheory.FlagMod.frX_snd Q) (hxy.trans hQ.over.symm)]`. Take `⟨u0, hu0⟩` from `GlobalTheory.CompHS.BridgeValue.exists_gen_unit Q y eQ`.
+
+Set `t : Ix D → (CAt σ)ˣ` to `fun ix => ix.elim u0 fun _ => 1`. Use `⟨Q, t, hQ, GlobalTheory.FlagMod.frBor_of_frVec (T.X.F.inM hz' rfl) hQ.over hxy t (fun _ => 1) (fun _ => Matrix.blockTriangular_one) (fun _ i => Matrix.one_apply_eq i) (fun τ j => ?_) (fun _ => hu0), fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[hv τ j]`. Use `((Fintype.sum_eq_single j fun j' hj' => ?_).trans ?_).symm` and prove the remaining obligations. Use `show (1 : Matrix (Fin (D.mult τ)) (Fin (D.mult τ)) (CAt σ)) j' j • _ = 0`.
+
+Rewrite using `[Matrix.one_apply_ne hj', zero_smul]`. Use `show (1 : Matrix (Fin (D.mult τ)) (Fin (D.mult τ)) (CAt σ)) j j • _ = _`. Rewrite using `[Matrix.one_apply_eq, one_smul]`.
+-/
 theorem exists_frBor_of_matches (T : TorFlag Xo c) {A : Type} [CommRing A] (q : Sp A ⟶ T.X.YY) (k : T.X.F.J)
     (hz : ⊤ ≤ q ⁻¹ᵁ T.X.F.U k) {φ : c.F →+* A} {x : Sp A ⟶ gen T.Y} (hx : q ≫ T.X.π = x ≫ genι T.Y)
     (fr : EigFrame T.Y φ (x ≫ genι T.Y))
@@ -57,6 +70,11 @@ theorem exists_frBor_of_matches (T : TorFlag Xo c) {A : Type} [CommRing A] (q : 
   · show (1 : Matrix (Fin (D.mult τ)) (Fin (D.mult τ)) (CAt σ)) j j • _ = _
     rw [Matrix.one_apply_eq, one_smul]
 
+/- English proof (translation)
+Establish `e : GlobalTheory.AllWt.ptF y' = GlobalTheory.AllWt.ptF y`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `(pullback.lift_fst _ _ _).trans (h.1.trans (pullback.lift_fst _ _ _).symm)`. Conclude with `(pullback.lift_snd _ _ _).trans (pullback.lift_snd _ _ _).symm`. Use `⟨e ▸ hm.1, fun τ i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, h.2 τ i]`. Conclude with `hm.2 τ i`.
+-/
 theorem matches_of_sameLie {Z : Model Xo c (RingHom.id c.F)} {A : Type} [CommRing A] {φ : c.F →+* A} {x : Sp A ⟶ gen Z}
     {fr : EigFrame Z φ (x ≫ genι Z)} {ψ : A →+* ℂ} {y y' : FrPt Xo c (CAt σ)} (hm : Matches fr ψ y)
     (h : SameLie y' y) : Matches fr ψ y' := by
@@ -68,6 +86,9 @@ theorem matches_of_sameLie {Z : Model Xo c (RingHom.id c.F)} {A : Type} [CommRin
   rw [e, h.2 τ i]
   exact hm.2 τ i
 
+/- English proof (translation)
+Establish `: (∏ ix, t ix ^ e ix) = t none ^ e none`. Rewrite using `[Fintype.prod_option, Finset.prod_eq_one fun s _ => by rw [h, one_zpow], mul_one]`. Conclude with `(congrArg (fun u : (CAt σ)ˣ => toC u.val) this).trans (@Units.val_zpow_eq_zpow_val ℂ _ (t none) (e none))`.
+-/
 theorem chr_of_some {e : Ix D → ℤ} {t : Ix D → (CAt σ)ˣ} (h : ∀ s, t (some s) = 1) :
     chr e t = toC (t none).val ^ e none := by
   classical
@@ -75,6 +96,13 @@ theorem chr_of_some {e : Ix D → ℤ} {t : Ix D → (CAt σ)ˣ} (h : ∀ s, t (
     rw [Fintype.prod_option, Finset.prod_eq_one fun s _ => by rw [h, one_zpow], mul_one]
   exact (congrArg (fun u : (CAt σ)ˣ => toC u.val) this).trans (@Units.val_zpow_eq_zpow_val ℂ _ (t none) (e none))
 
+/- English proof (translation)
+Establish `hπ : (0 : ℝ) < 2 * Real.pi` using `by positivity`. Establish `hne : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `t₁ : Tendsto (fun u : ℂ => Complex.log u / (2 * Real.pi * Complex.I)) (𝓝[≠] 0) imTop`. Use `tendsto_comap_iff.2 ?_` and prove the remaining obligations. Establish `h₁ : Tendsto (fun u : ℂ => ‖u‖) (𝓝[≠] 0) (𝓝[>] 0)` using `tendsto_norm_nhdsNE_zero`.
+
+Establish `h₂` using `(tendsto_neg_atBot_atTop.comp (Real.tendsto_log_nhdsGT_zero.comp h₁)).atTop_div_const hπ`. Use `h₂.congr fun u => ?_` and prove the remaining obligations. Establish `e : (2 * Real.pi * Complex.I : ℂ) = ((2 * Real.pi : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Simplify using `only [Function.comp_apply]`. Rewrite using `[e, ← div_div (Complex.log u), Complex.div_I, Complex.neg_im, Complex.mul_I_im, Complex.div_ofReal_re, Complex.log_re, neg_div]`.
+
+Use `(h.comp t₁).congr' (eventually_mem_nhdsWithin.mono fun u hu => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, eTwoPi]`. Rewrite using `[mul_div_cancel₀ _ hne, Complex.exp_log hu]`.
+-/
 theorem tendsto_punctured {f : ℂ → ℂ} (h : Tendsto (fun w => f (eTwoPi w)) imTop (𝓝 0)) :
     Tendsto f (𝓝[≠] 0) (𝓝 0) := by
   have hπ : (0 : ℝ) < 2 * Real.pi := by positivity
@@ -93,6 +121,19 @@ theorem tendsto_punctured {f : ℂ → ℂ} (h : Tendsto (fun w => f (eTwoPi w))
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Set `A : Type` to `Γ(T.X.YY, W)`. Set `K : Type` to `FractionRing A`. Use `letI : Algebra c.F K := ((algebraMap A K).comp φ).toAlgebra`. Set `z : Sp K ⟶ T.X.YY` to `spMap (algebraMap A K) ≫ GlobalTheory.FlagMod.tau hW`.
+
+Establish `hO : ⊤ ≤ z ⁻¹ᵁ flagOpen T.X`. Introduce `s _`. Set `η : PrimeSpectrum A` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hs : spMap (algebraMap A K) s = η`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations.
+
+Set `s' : PrimeSpectrum K` to `s`. Establish `h0 : s'.asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`. Use `show Ideal.comap (algebraMap A K) s'.asIdeal = ⊥`. Rewrite using `[h0]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective A K)`.
+
+Take `⟨p, hpW, hpO⟩` from `(dense_flagOpen T.X).inter_open_nonempty W W.isOpen ⟨_, GlobalTheory.FlagMod.tau_le hW le_rfl (Set.mem_univ η)⟩`. Take `⟨p', rfl⟩ : p ∈ Set.range hW.fromSpec` from `hW.range_fromSpec.ge hpW`. Establish `hsp : η ⤳ (p' : PrimeSpectrum A)` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Use `show GlobalTheory.FlagMod.tau hW (spMap (algebraMap A K) s) ∈ flagOpen T.X`. Rewrite using `[hs]`.
+
+Conclude with `(hsp.map (GlobalTheory.FlagMod.tau hW).continuous).mem_open (flagOpen T.X).isOpen hpO`. Establish `hr : Set.range (z ≫ T.X.π) ⊆ Set.range T.Y.j`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `hO (Set.mem_univ s)`. Establish `hf` using `IsOpenImmersion.lift_fac T.Y.j (z ≫ T.X.π) hr`.
+
+Use `GlobalTheory.ChartEigFrame.exists_eigFrame_vecAt E H D l Xo c _ _ T.Y T.X A K φ rfl _ k hz (IsOpenImmersion.lift T.Y.j (z ≫ T.X.π) hr) ?_ hf.symm` and prove the remaining obligations. Rewrite using `[← openImmersion_comp_structure_eq_generic T.Y, ← Category.assoc, hf, Category.assoc, Category.assoc]`. Conclude with `(congrArg (_ ≫ ·) hφ).trans (Spec.map_comp _ _).symm`.
+-/
 theorem exists_eigFrame_tau (T : TorFlag Xo c) {W : T.X.YY.Opens} (hW : IsAffineOpen W) [IsDomain Γ(T.X.YY, W)]
     {φ : c.F →+* Γ(T.X.YY, W)} (hφ : GlobalTheory.FlagMod.tau hW ≫ flagStr T.X = spMap φ) (k : T.X.F.J)
     (hz : ⊤ ≤ GlobalTheory.FlagMod.tau hW ⁻¹ᵁ T.X.F.U k) {x' : Sp Γ(T.X.YY, W) ⟶ T.Y.X} (hx : GlobalTheory.FlagMod.tau hW ≫ T.X.π = x') :
@@ -130,6 +171,55 @@ theorem exists_eigFrame_tau (T : TorFlag Xo c) {W : T.X.YY.Opens} (hW : IsAffine
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨-, g1, g2, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H D l Xo c (CAt σ)`. Set `A : Type` to `Γ(T.X.YY, W)`. Set `q : Sp A ⟶ T.X.YY` to `GlobalTheory.FlagMod.tau hW`. Set `φ : c.F →+* A` to `(GlobalTheory.FlagMod.ev (q ≫ flagStr T.X) ⊤ le_top).comp (toΓ c.F)`. Establish `hφ : q ≫ flagStr T.X = spMap φ` using `(GlobalTheory.FlagMod.spMap_ev_top _).symm`.
+
+Establish `hz : ⊤ ≤ q ⁻¹ᵁ T.X.F.U i` using `GlobalTheory.FlagMod.tau_le hW hWi`. Establish `hxc : (q ≫ T.X.π) ≫ T.Y.s = spMap φ ≫ spMap (RingHom.id c.F)` using `((Category.assoc _ _ _).trans hφ).trans ((Category.comp_id _).symm.trans (congrArg (_ ≫ ·) (Spec.map_id _).symm))`. Set `x : Sp A ⟶ gen T.Y` to `pullback.lift _ _ hxc`. Establish `hx : q ≫ T.X.π = x ≫ genι T.Y` using `(pullback.lift_fst _ _ _).symm`. Establish `hxs : x ≫ genStr T.Y = spMap φ` using `pullback.lift_snd _ _ _`.
+
+Take `⟨fr, hfr⟩` from `exists_eigFrame_tau T hW hφ i hz hx`. Establish `hb0 : (0 : ℂ) ∈ Metric.ball (0 : ℂ) ρ` using `Metric.mem_ball_self hρ`. Set `ψ : ℂ → (A →+* ℂ)` to `fun u => if hu : u ∈ Metric.ball (0 : ℂ) ρ then GlobalTheory.FlagMod.ev (s u).1 W (hsW u hu) else GlobalTheory.FlagMod.ev (s 0).1 W (hsW 0 hb0)`. Establish `hψ : ∀ u (hu : u ∈ Metric.ball (0 : ℂ) ρ), ψ u = GlobalTheory.FlagMod.ev (s u).1 W (hsW u hu)` using `fun u hu => dif_pos hu`. Establish `hψq : ∀ u ∈ Metric.ball (0 : ℂ) ρ, spMap (ψ u) ≫ q = (s u).1` using `fun u hu => by`.
+
+Rewrite using `[hψ u hu]`. Conclude with `GlobalTheory.FlagMod.spMap_ev (s u).1 hW _`. Establish `hφu : ∀ u ∈ Metric.ball (0 : ℂ) ρ, (ψ u).comp φ = σ` using `fun u hu => by`. Establish `e₁ : spMap ((ψ u).comp φ) = spMap (ψ u) ≫ spMap φ` using `Spec.map_comp _ _`. Rewrite `e₁` using `[← hφ, ← Category.assoc, hψq u hu, (s u).2]`.
+
+Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e₁)`. Establish `key : ∀ u ∈ Metric.ball (0 : ℂ) ρ, ∀ p : Sp ℂ, (s u).1 p ∈ flagOpen T.X ↔ (spMap (ψ u) ≫ x) p ∉ genBd T.Y`. Introduce `u hu p`. Use `GlobalTheory.LogKS.isIso_fst T.Y` as an intermediate fact. Establish `e : (s u).1 p ∈ flagOpen T.X ↔ genι T.Y ((spMap (ψ u) ≫ x) p) ∈ Set.range T.Y.j`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, ← hx, ← Category.assoc, hψq u hu]`. Conclude with `Iff.rfl`. Rewrite using `[e, mem_genBd, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`.
+
+Conclude with `⟨a, (genι T.Y).isOpenEmbedding.injective (by rw [← ha]; rfl)⟩`. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, by rw [← ha]; rfl⟩`. Establish `hb : IsBdArc T.Y σ φ x ψ ρ`. Use `⟨⟨⟨hρ, fun f => (hsd f).congr fun u hu => ?_⟩, hxs, hφu⟩, fun p => ?_, fun u hu hne p => (key u hu p).1 (h1 u hu hne (Set.mem_univ p))⟩` and prove the remaining obligations.
+
+Rewrite using `[hψ u hu]`. Conclude with `(ev_eq (hsW u hu) f).symm`. Assume the negation of the conclusion as `hp`. Use `h0 (mem_ptsIn.2 ?_)` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum ℂ) (IsLocalRing.closedPoint ℂ) p]`.
+
+Conclude with `(key 0 hb0 p).2 hp`. Establish `hy' : ∀ u : ℂ, u ∈ Metric.ball (0 : ℂ) ρ ∧ u ≠ 0 → ∃ y : FrPt Xo c (CAt σ), Matches fr (ψ u) y` using `fun u hu => GlobalTheory.ShFam.BdArc.exists_matches E H D l Xo c c.F (RingHom.id c.F) T.Y σ _ φ x fr (ψ u) hxs (hφu u hu.1) (hb.2.2 u hu.1 hu.2)`. Establish `hr : ((ρ / 2 : ℝ) : ℂ) ∈ Metric.ball (0 : ℂ) ρ ∧ ((ρ / 2 : ℝ) : ℂ) ≠ 0`. Use `⟨?_, by exact_mod_cast (half_pos hρ).ne'⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff, Complex.norm_real, Real.norm_of_nonneg (half_pos hρ).le]`.
+
+Conclude with `half_lt_self hρ`. Establish `: Nonempty (FrPt Xo c (CAt σ))` using `⟨(hy' _ hr).choose⟩`. Use `choose! y hy using hy'`. Establish `hm : ∀ u ∈ Metric.ball (0 : ℂ) ρ, u ≠ 0 → Matches fr (ψ u) (y u)` using `fun u hu hne => hy u ⟨hu, hne⟩`. Take `⟨k', T₀, M₀, γ₀, xx, hT, hO₀, hL⟩` from `GlobalTheory.T.exists_holomorphicFrameOrbit_lift_of_arc E H D l Xo c _ _ T.Y σ r V A φ x fr ψ ρ y hσ hU hb.1 hm`.
+
+Establish `hne0 : ∀ w, eTwoPi w ≠ 0` using `fun w => Complex.exp_ne_zero _`. Establish `hi : ∀ u ∈ Metric.ball (0 : ℂ) ρ, ⊤ ≤ zOf (s u) ⁻¹ᵁ T.X.F.U i` using `fun u hu => ptsIn_mono hWi (hsW u hu)`. Establish `hfb : ∀ w (hw : T₀ < w.im), ∃ (hd : xx w ∈ (V.X k').dom) (Q : FrPt Xo c (CAt σ)) (t : Ix D → (CAt σ)ˣ), T.X.F.ChartFr i (zOf (s (eTwoPi w))) (hi _ (hT w hw)) Q ∧ FrBor t Q (V.un k' ⟨_, hd⟩) ∧ ∀ s, t (some s) = 1`. Introduce `w hw`. Take `⟨hd, hl⟩` from `hL w hw`.
+
+Conclude with `⟨hd, exists_frBor_of_matches T q i hz hx fr hfr (ψ _) (matches_of_sameLie (hm _ (hT w hw) (hne0 w)) hl) (hψq _ (hT w hw)) _⟩`. Establish `hev : ∀ᶠ w in imTop, T₀ < w.im` using `(tendsto_comap (f := Complex.im)).eventually (eventually_gt_atTop _)`. Use `tendsto_punctured ?_` and prove the remaining obligations. Distinguish the cases in `hk : k' = k`. Use `swap`.
+
+Use `tendsto_const_nhds.congr' (hev.mono fun w hw => (hZ i _ fun x' hx' e => hk ?_).symm)` and prove the remaining obligations. Take `⟨hd, Q, t, hQ, ht, -⟩` from `hfb w hw`. Establish `e' : T.X.ptY (V.un k ⟨x', hx'⟩) = zOf (s (eTwoPi w))` using `e`. Establish `hlx : T.X.F.Lies (zOf (s (eTwoPi w))) (V.un k ⟨x', hx'⟩)` using `e' ▸ T.X.lies_ptY _`. Take `⟨t', ht'⟩` from `hQ.exists_frBor hlx`.
+
+Take `⟨γ, -, β, -, h'⟩` from `(hU.2.2.2.1 k' k _ _).1 ⟨_, g1 _ _ _ _ _ (g2 _ _ _ ht) ht'⟩`. Conclude with `(Sigma.mk.inj h').1.symm`. Substitute `hk` using the available equality. Take `⟨M, γ, hO, hγ⟩` from `GlobalTheory.T.exists_holomorphicFrameOrbit_unipotent_order_two E r _ T₀ M₀ γ₀ xx hO₀`. Establish `hne : γ ≠ 1`.
+
+Introduce and unpack `rfl`. Take `⟨x₀, hx₀, x', a1, a2⟩` from `GlobalTheory.T.trivial_monodromy_orbit_converges_symmetric_domain E r _ T₀ M xx hO`. Conclude with `GlobalTheory.T.boundary_arc_lift_not_converges_symmetric_domain E H D l Xo c _ _ T.Y σ r V A φ x fr ψ ρ y k' T₀ xx hσ hU hb hm hL x₀ hx₀ x' a1 a2`. Take `⟨ξ, c', hξ, hc', ht⟩` from `GlobalTheory.T.holomorphicFrameOrbit_isotropic_vector_short E r _ T₀ M γ xx hO hγ hne`. Take `⟨m, v, Lp, Lm, hlim⟩` from `GlobalTheory.T.exists_arcLift_periods_tendsto_span E H D l Xo c _ _ T.Y σ r V A φ x fr ψ ρ y k' T₀ M γ xx hσ hU hb.1 hm hO hL`.
+
+Take `⟨C', B, hn⟩` from `GlobalTheory.T.period_frame_limits_of_orbit E r _ T₀ M γ xx (laU V a n k') m v Lp Lm hO (fun τ j => ⟨fun h => by`. Simplify using `only [laU, if_pos h]; positivity, fun h => by simp only [laU, if_neg (not_le.2 h)]; omega⟩) hlim`. Establish `hp` using `tendsto_cusp hP hO.2.2.2.1 hξ hc' ht hn`. Take `⟨S, rfl⟩` from `hK`. Set `f : Γ(T.X.YY, W)` to `resG T.X.YY (le_inf le_top hWi : W ≤ ⊤ ⊓ T.X.F.U i) (S.loc i)`.
+
+Establish `hcont : ContinuousAt (fun u => ev _ σ W f (s u)) 0` using `((hsd f).differentiableAt (Metric.ball_mem_nhds 0 hρ)).continuousAt`. Establish `he0 : Tendsto eTwoPi imTop (𝓝 0)`. Use `tendsto_zero_iff_norm_tendsto_zero.2 ?_` and prove the remaining obligations. Use `Real.tendsto_exp_neg_atTop_nhds_zero.comp ((tendsto_comap (f := Complex.im)).const_mul_atTop (show 0 < 2 * Real.pi by positivity))` as an intermediate fact. Use `this.congr fun w => ?_` and prove the remaining obligations.
+
+Simplify using `[eTwoPi, Complex.norm_exp]`. Use `set N : ℝ := ‖ev _ σ W f (s 0)‖ + 1 with hN`. Establish `hN0 : 0 < N` using `by positivity`. Establish `hbd : ∀ᶠ w in imTop, ‖ev _ σ W f (s (eTwoPi w))‖ < N` using `(hcont.tendsto.comp he0).norm.eventually (gt_mem_nhds (lt_add_one _))`. Use `set μ : ℝ := min 1 (c₀ / N) with hμ`.
+
+Establish `hμ0 : 0 < μ` using `lt_min one_pos (div_pos hc₀ hN0)`. Establish `hlim0` using `hp.norm.mul_const (μ ^ n)⁻¹`. Rewrite `hlim0` using `[norm_zero, zero_mul]`. Use `squeeze_zero_norm' ?_ hlim0` and prove the remaining obligations. Use `filter_upwards [hev, hbd] with w hw hw'`.
+
+Take `⟨hd, Q, t, hQ, ht, ht1⟩` from `hfb w hw`. Establish `hu` using `hT w hw`. Establish `e₁ : P (xx w) = chr (fun i => (ex D a n i : ℤ)) t * h i (s (eTwoPi w))` using `hR (xx w) hd i _ (hi _ hu) Q t (GlobalTheory.FlagMod.FlagCover.eq_ptY (hQ.lies.frBor ht)).symm hQ ht`. Establish `: _root_.IsReduced (CAt σ)` using `(inferInstance : _root_.IsReduced ℂ)`. Establish `e₂ : toC (evR Xo c (ruleTop T.X e' S) (V.un k' ⟨_, hd⟩)) = chr e' t * ev _ σ W f (s (eTwoPi w))`.
+
+Use `(congrArg toC (evR_ruleTop (z := zOf (s (eTwoPi w))) S (h1 _ hu (hne0 w)) hQ ht)).trans (congrArg (chr e' t * ·) ?_)` and prove the remaining obligations. Establish `hm' : s (eTwoPi w) ∈ ptsIn (flagStr T.X) σ (⊤ ⊓ T.X.F.U i)` using `ptsIn_mono (le_inf le_top hWi) (hsW _ hu)`. Conclude with `(ev_eq hm' (S.loc i)).symm.trans (ev_res (le_inf le_top hWi : W ≤ ⊤ ⊓ T.X.F.U i) (hsW _ hu) (S.loc i)).symm`. Rewrite `e₁`, `e₂` using `[chr_of_some ht1]`. Use `set τ : ℂ := toC (t none).val`.
+
+Establish `a₁ : ‖P (xx w)‖ = ‖τ‖ ^ n * ‖h i (s (eTwoPi w))‖`. Rewrite using `[e₁, norm_mul, norm_zpow]`. Conclude with `congrArg (· * _) (zpow_natCast _ _)`. Establish `a₂ : c₀ ≤ ‖τ‖ ^ 8 * N`. Use `(hlow ⟨_, hd⟩).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[e₂, he', norm_mul, norm_zpow, show ((8 : ℤ)) = ((8 : ℕ) : ℤ) from rfl, zpow_natCast]`. Conclude with `mul_le_mul_of_nonneg_left hw'.le (by positivity)`. Establish `a₃ : μ ≤ ‖τ‖`. Break down `le_total 1 ‖τ‖ with h' | h'` into its components or cases. Conclude with `(min_le_left _ _).trans h'`.
+
+Use `(min_le_right _ _).trans ((div_le_iff₀ hN0).2 (a₂.trans ?_))` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (pow_le_of_le_one (norm_nonneg _) h' (by norm_num)) hN0.le`. Rewrite using `[a₁, ← div_eq_mul_inv, le_div_iff₀ (pow_pos hμ0 n), mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hμ0.le a₃ n) (norm_nonneg _)`.
+-/
 theorem tendsto_arc_reads {V : Unf Xo c σ r} (hσ : GoodEmb c σ) (hU : IsUnf V) (T : TorFlag Xo c)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {k : V.Comp} {P : Frame (V.X k).Ψ r → ℂ}
     (hP : P ∈ (V.X k).SS (laU V a n k))

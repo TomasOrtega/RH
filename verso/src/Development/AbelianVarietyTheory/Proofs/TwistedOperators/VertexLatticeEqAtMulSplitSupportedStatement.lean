@@ -17,6 +17,9 @@ open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MovedSplitEq.eqAt_latAt_mul | exact GlobalTheory.MovedSplitEq.eqAt_latAt_mul | (intros; apply GlobalTheory.MovedSplitEq.eqAt_latAt_mul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.vertexLattice_eqAt_mul_splitSupported : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {W : G.Weil}
     (S : GridChoice W Set.univ) (X : Node), DefNode D.R.m X → ∀ (q : ℕ), q.Prime → ∀ e : Formalism.L2.Theta.AE D, IsSplitIdem D e →
     GlobalTheory.MovedKappaEx.OffPrime e q → ∀ g y : FinPt G X, SuppAt e (G.V X) g.1 →

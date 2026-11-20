@@ -10,6 +10,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KeyVals.PolOpen.polOnAb_affine | exact GlobalTheory.KeyVals.PolOpen.polOnAb_affine | (intros; apply GlobalTheory.KeyVals.PolOpen.polOnAb_affine <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.principalPolarisationOnAbLocus_restrict_affineOpen : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (W : S.Opens) (hW : IsAffineOpen W),
     IsOpen (abLocus G) → PolOnAb G L.L → PolOnAb (KeyVals.bG G hW.fromSpec) (KeyVals.bL L hW.fromSpec).L := by
   first | exact @GlobalTheory.KeyVals.PolOpen.polOnAb_affine | exact GlobalTheory.KeyVals.PolOpen.polOnAb_affine | (intros; apply GlobalTheory.KeyVals.PolOpen.polOnAb_affine <;> assumption)

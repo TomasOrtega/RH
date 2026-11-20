@@ -46,47 +46,79 @@ variable {F} {k : ℕ}
 def cls (p : QkPt D F k) : (D.X × GtMod oa F) ⧸ LinearMap.range (relMap hB oa F k) :=
   Submodule.Quotient.mk (p.y, p.g)
 
+/- English proof (translation)
+Rewrite using `[equiv_iff hB, cls, cls, eq_comm, Submodule.Quotient.eq]`. Use `exists_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[eq_sub_iff_add_eq', Prod.ext_iff]`. Conclude with `and_congr eq_comm eq_comm`.
+-/
 theorem equiv_iff_cls (p q : QkPt D F k) : QkPt.Equiv D F p q ↔ cls hB oa p = cls hB oa q := by
   rw [equiv_iff hB, cls, cls, eq_comm, Submodule.Quotient.eq]
   refine exists_congr fun z => ?_
   rw [eq_sub_iff_add_eq', Prod.ext_iff]
   exact and_congr eq_comm eq_comm
 
+/- English proof (translation)
+Rewrite using `[TorusExt.qkAdd_iff hB, equiv_iff_cls hB oa]`. Both sides reduce to the same expression.
+-/
 theorem add_iff_cls (p p' q : QkPt D F k) :
     Geo.Tor.QkAdd p p' q ↔ cls hB oa p + cls hB oa p' = cls hB oa q := by
   rw [TorusExt.qkAdd_iff hB, equiv_iff_cls hB oa]; rfl
 
+/- English proof (translation)
+Rewrite using `[TorusExt.qkAct_iff hB globalFns_holds, equiv_iff_cls hB oa]`. Both sides reduce to the same expression.
+-/
 theorem act_iff_cls (a : O) (p q : QkPt D F k) : QkAct oa a p q ↔ a • cls hB oa p = cls hB oa q := by
   rw [TorusExt.qkAct_iff hB globalFns_holds, equiv_iff_cls hB oa]; rfl
 
+/- English proof (translation)
+Rewrite using `[equiv_iff hB]`. Use `exists_congr fun z => and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[qkZero, qkMk_y, zero_add]`. Rewrite using `[qkZero, qkMk_g, zero_add, isIota_iff_eq hB]`.
+-/
 theorem zero_iff_equiv (p : QkPt D F k) : TateUniformizationInput.QkZero p ↔ QkPt.Equiv D F (qkZero hB F k) p := by
   rw [equiv_iff hB]
   refine exists_congr fun z => and_congr ?_ ?_
   · rw [qkZero, qkMk_y, zero_add]
   · rw [qkZero, qkMk_g, zero_add, isIota_iff_eq hB]
 
+/- English proof (translation)
+Rewrite using `[zero_iff_equiv hB, equiv_iff_cls hB oa, eq_comm]`. Both sides reduce to the same expression.
+-/
 theorem zero_iff_cls (p : QkPt D F k) : TateUniformizationInput.QkZero p ↔ cls hB oa p = 0 := by
   rw [zero_iff_equiv hB, equiv_iff_cls hB oa, eq_comm]; rfl
 
 variable {F' : Type} [Field F'] [Algebra (FractionRing R) F'] (f : F →+* F')
   (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F')
 
+/- English proof (translation)
+Rewrite using `[← equiv_iff_cls, ArcExt.equiv_qkExt_iff]`.
+-/
 theorem equiv_iff_ext (p q : QkPt D F k) :
     QkPt.Equiv D F p q ↔ cls hB oa (qkExt hB f hf p) = cls hB oa (qkExt hB f hf q) := by
   rw [← equiv_iff_cls, ArcExt.equiv_qkExt_iff]
 
+/- English proof (translation)
+Rewrite using `[← DegActCompare.qkAdd_iff, TorusExt.qkAdd_iff hB, equiv_iff_ext hB oa f hf, qkExt_qkAdd]`. Both sides reduce to the same expression.
+-/
 theorem add_iff_ext (p p' q : QkPt D F k) : TorusGraphMaps.QkAdd p p' q ↔
     cls hB oa (qkExt hB f hf p) + cls hB oa (qkExt hB f hf p') = cls hB oa (qkExt hB f hf q) := by
   rw [← DegActCompare.qkAdd_iff, TorusExt.qkAdd_iff hB, equiv_iff_ext hB oa f hf, qkExt_qkAdd]; rfl
 
+/- English proof (translation)
+Rewrite using `[← DegActCompare.qkAct_iff, TorusExt.qkAct_iff hB globalFns_holds, equiv_iff_ext hB oa f hf, qkExt_qkSmul]`. Both sides reduce to the same expression.
+-/
 theorem act_iff_ext (a : O) (p q : QkPt D F k) :
     TorusGraphMaps.QkSmul oa a p q ↔ a • cls hB oa (qkExt hB f hf p) = cls hB oa (qkExt hB f hf q) := by
   rw [← DegActCompare.qkAct_iff, TorusExt.qkAct_iff hB globalFns_holds, equiv_iff_ext hB oa f hf, qkExt_qkSmul]; rfl
 
+/- English proof (translation)
+Establish `e : qkExt hB f hf (qkZero hB F k) = qkZero hB F' k` using `qk_ext rfl (map_zero (gtExt D f hf))`. Rewrite using `[zero_iff_equiv hB, equiv_iff_ext hB oa f hf, e, eq_comm]`. Both sides reduce to the same expression.
+-/
 theorem zero_iff_ext (p : QkPt D F k) : TateUniformizationInput.QkZero p ↔ cls hB oa (qkExt hB f hf p) = 0 := by
   have e : qkExt hB f hf (qkZero hB F k) = qkZero hB F' k := qk_ext rfl (map_zero (gtExt D f hf))
   rw [zero_iff_equiv hB, equiv_iff_ext hB oa f hf, e, eq_comm]; rfl
 
+/- English proof (translation)
+Introduce `T σ y J hJ`. Establish `e` using `h T (σ ≫ extMap f hf) y J hJ`. Establish `v : ∀ (g : GtPtF D F) χ, val ((gtExt D f hf g).s χ) σ.left y J = val (g.s χ) (σ ≫ extMap f hf).left y J` using `fun g χ => (val_corr hJ (((eq_gtExt_iff f hf g _).1 rfl).2 χ) _).trans (val_pull hJ _ _ _)`. Establish `w : gs σ.left y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F')).inv.hom (f z)) = gs (σ ≫ extMap f hf).left y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom z)`. Use `Eq.trans (congrArg (gs σ.left y ⊤) ?_) (gs_pull σ.left (spMap f) y ⊤ trivial _)` and prove the remaining obligations.
+
+Conclude with `congrArg (fun g => g.hom z) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Simplify using `only [qkExt, qkMk_y, qkMk_g]`. Rewrite using `[v, v, w, gtExt_b, gtExt_b, ← Category.assoc, ← Category.assoc]`. Conclude with `e`.
+-/
 theorem isRatio_ext {p p' : QkPt D F k} {z : F} (h : QkPairing.IsRatio p p' z) :
     QkPairing.IsRatio (qkExt hB f hf p) (qkExt hB f hf p') (f z) := by
   intro T σ y J hJ
@@ -101,6 +133,9 @@ theorem isRatio_ext {p p' : QkPt D F k} {z : F} (h : QkPairing.IsRatio p p' z) :
   rw [v, v, w, gtExt_b, gtExt_b, ← Category.assoc, ← Category.assoc]
   exact e
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `QkPairing.exists_ratio p p'`. Take `rfl` from `QkPairing.weil_unique globalFns_holds abelianSchemeLaws_all.2.secTwist hB hk p p' h (QkPairing.weil_of_ratio globalFns_holds p p' hu)`. Conclude with `QkPairing.weil_of_ratio globalFns_holds _ _ (ζ := Units.map f.toMonoidHom u) (isRatio_ext hB f hf hu)`.
+-/
 theorem weil_ext (k : ℕ) (hk : 1 ≤ k) (p p' : QkPt D F k) (z : F) (h : WeilQkIs D F k p p' z) :
     WeilQkIs D F' k (qkExt hB f hf p) (qkExt hB f hf p') (f z) := by
   obtain ⟨u, hu⟩ := QkPairing.exists_ratio p p'
@@ -110,6 +145,9 @@ theorem weil_ext (k : ℕ) (hk : 1 ≤ k) (p p' : QkPt D F k) (z : F) (h : WeilQ
 
 end Classes
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero f).2 fun x hx => by_contra fun h0 => ?_` and prove the remaining obligations. Use `Ideal.comap_ne_bot_of_algebraic_mem (I := RingHom.ker f) h0 hx (h x) (eq_bot_iff.2 fun n hn => ?_)` and prove the remaining obligations. Establish `: f (n : A) = 0` using `hn`. Rewrite `this` using `[map_intCast]`. Conclude with `Int.cast_eq_zero.1 this`.
+-/
 theorem injective_of_isAlgebraic {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [CharZero B]
     (h : ∀ x : A, IsAlgebraic ℤ x) (f : A →+* B) : Function.Injective f := by
   refine (injective_iff_map_eq_zero f).2 fun x hx => by_contra fun h0 => ?_
@@ -118,6 +156,17 @@ theorem injective_of_isAlgebraic {A B : Type} [CommRing A] [IsDomain A] [CommRin
   rw [map_intCast] at this
   exact Int.cast_eq_zero.1 this
 
+/- English proof (translation)
+Set `σ : 𝓞 E →+* k` to `τ.comp (H.bar : 𝓞 E →+* 𝓞 E)`. Set `_` to `σ.toAlgebra`. Establish `hσ : Function.Injective σ` using `injective_of_isAlgebraic (fun x => Algebra.IsAlgebraic.isAlgebraic x) σ`. Establish `: FaithfulSMul (𝓞 E) k` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hσ`. Establish `: Module.Finite (𝓞 E) X` using `.of_restrictScalars_finite ℤ _ _`.
+
+Set `e : TateUniformizationInput.torusLieEigen H X k τ ≃ₗ[k] (X →ₗ[𝓞 E] k)` to `{ toFun := fun v => ⟨⟨v.1, map_add v.1⟩, fun a x => by`. Use `v.2 (H.bar a) x` as an intermediate fact. Rewrite `this` using `[TorusGraphMaps.bar_bar]`. Conclude with `this⟩`. Use `invFun := fun v => ⟨v.toAddMonoidHom, fun a x => by`.
+
+Use `(v.map_smul _ _).trans ?_` and prove the remaining obligations. Use `show τ (H.bar (H.bar a)) * _ = _`. Rewrite using `[TorusGraphMaps.bar_bar]`. Use the proof step `rfl⟩`. Use the proof step `map_add' := fun _ _ => rfl`.
+
+Use the proof step `map_smul' := fun _ _ => rfl`. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`. Rewrite using `[e.finrank_eq, (LinearMap.liftBaseChangeEquiv k).finrank_eq]`. Use `Subspace.dual_finrank_eq.trans ?_` and prove the remaining obligations.
+
+Conclude with `(TensorProduct.isBaseChange (𝓞 E) X k).finrank_eq`.
+-/
 theorem finrank_torusLieEigen {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Type)
     [AddCommGroup X] [Module (𝓞 E) X] (k : Type) [Field k] [CharZero k] [Module.Finite ℤ X] (τ : 𝓞 E →+* k) :
     Module.finrank k (TateUniformizationInput.torusLieEigen H X k τ) = Module.finrank (𝓞 E) X := by
@@ -152,6 +201,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : Datum H} {P : DegPre R} [Modu
 
 open Classical in
 
+/- English proof (translation)
+Establish `e : spMap ((algebraMap (FractionRing R) F).comp (algebraMap R _)) = DegPre.jFR (R` using `R) F := by`. Rewrite using `[DegPre.jFR, jFK, jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Simplify using `only [TateUniformizationInput.GtLieMult, finrank_torusLieEigen]`. Rewrite using `[e]`.
+
+Distinguish the cases in `h : τ H.rt = ρ`. Rewrite using `[if_pos h]`. Conclude with `⟨fun k => ⟨fun _ => k, fun k' => absurd h k'⟩, fun k => k.1 h⟩`. Rewrite using `[if_neg h]`. Conclude with `⟨fun k => ⟨fun k' => absurd k' h, fun _ => k⟩, fun k => k.2 h⟩`.
+-/
 theorem det_iff [CharZero F] (ρ : F) :
     (letI := H.starRing
       ∀ τ : 𝓞 E →+* F, ∃ n, LieMult (ofRingAct oa.onB.toRingAct)
@@ -188,10 +242,16 @@ def toQTateIso (I : TateIsoQ D P oa F) : TateUniformizationInput.QTateIso D oa F
 def evNat (J : TateUniformizationInput.QTateIso D oa F) (n : ℕ) (a : D.La) : QkPt P F n :=
   if h : 0 < n then J.ev ⟨n, h⟩ a else qkZero hB F n
 
+/- English proof (translation)
+The claim follows from `funext fun _ => dif_pos h`.
+-/
 theorem evNat_pos (J : TateUniformizationInput.QTateIso D oa F) {n : ℕ} (h : 0 < n) : evNat hB J n = J.ev ⟨n, h⟩ :=
   funext fun _ => dif_pos h
 
 include hB in
+/- English proof (translation)
+Use `letI := H.starRing`. Establish `k` using `(add_iff_cls hB oa _ _ _).1 (J.add n (a - b) b)`. Rewrite `k` using `[sub_add_cancel]`. Rewrite using `[equiv_iff_cls hB oa, ← k, add_eq_right, ← zero_iff_cls, J.ker]`. Conclude with `exists_congr fun e => sub_eq_iff_eq_add'`.
+-/
 theorem equiv_ev_iff (J : TateUniformizationInput.QTateIso D oa F) (n : ℕ+) (a b : D.La) :
     QkPt.Equiv P F (J.ev n a) (J.ev n b) ↔ ∃ e, a = b + (n : ℕ) • e := by
   letI := H.starRing
@@ -218,8 +278,14 @@ def ofQTateIso (J : TateUniformizationInput.QTateIso D oa F) : TateIsoQ D P oa F
 def SameIso (I : TateIsoQ D P oa F) (J : TateUniformizationInput.QTateIso D oa F) : Prop :=
   ∀ n : ℕ+, I.ζ n = J.ζ n ∧ I.ev n = J.ev n
 
+/- English proof (translation)
+Introduce `_` and use `⟨rfl, rfl⟩`.
+-/
 theorem sameIso_to (I : TateIsoQ D P oa F) : SameIso I (toQTateIso hB I) := fun _ => ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Introduce `n` and use `⟨dif_pos n.pos, evNat_pos hB J n.pos⟩`.
+-/
 theorem sameIso_of (J : TateUniformizationInput.QTateIso D oa F) : SameIso (ofQTateIso hB J) J := fun n =>
   ⟨dif_pos n.pos, evNat_pos hB J n.pos⟩
 
@@ -230,6 +296,9 @@ def evLin (I : TateIsoQ D P oa F) {n : ℕ} (h : 0 < n) : letI := H.starRing
     map_add' := fun a b => ((add_iff_cls hB oa _ _ _).1 (I.add n h a b)).symm
     map_smul' := fun x a => ((act_iff_cls hB oa _ _ _).1 (I.lin n h x a)).symm }
 
+/- English proof (translation)
+Use `letI := H.starRing`. Rewrite using `[← map_zero (evLin hB I h)]`. Use `(equiv_iff_cls hB oa _ _).symm.trans ((I.ker n h a 0).trans ?_)` and prove the remaining obligations. Simplify using `only [zero_add]`.
+-/
 theorem evLin_eq_zero (I : TateIsoQ D P oa F) {n : ℕ} (h : 0 < n) (a : D.La) :
     evLin hB I h a = 0 ↔ ∃ e, a = n • e := by
   letI := H.starRing
@@ -237,6 +306,9 @@ theorem evLin_eq_zero (I : TateIsoQ D P oa F) {n : ℕ} (h : 0 < n) (a : D.La) :
   refine (equiv_iff_cls hB oa _ _).symm.trans ((I.ker n h a 0).trans ?_)
   simp only [zero_add]
 
+/- English proof (translation)
+The claim follows from `letI := H.starRing (I.onto n h p).imp fun _ k => (equiv_iff_cls hB oa _ _).1 k`.
+-/
 theorem evLin_onto (I : TateIsoQ D P oa F) {n : ℕ} (h : 0 < n) (p : QkPt P F n) :
     ∃ a, evLin hB I h a = (letI := H.starRing; cls hB oa p) :=
   letI := H.starRing
@@ -250,16 +322,27 @@ variable (D : Datum H) (l : Level H)
 
 abbrev halfLat : Submodule (𝓞 E) D.La := l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)
 
+/- English proof (translation)
+Rewrite using `[l.prod, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `only [Submodule.mem_top, true_and, Nat.cast_smul_eq_nsmul]`. Conclude with `exists_congr fun _ => eq_comm`.
+-/
 theorem mem_mul_iff (a : D.La) :
     a ∈ (l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) • (⊤ : Submodule (𝓞 E) D.La) ↔ ∃ e, a = l.M • e := by
   rw [l.prod, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]
   simp only [Submodule.mem_top, true_and, Nat.cast_smul_eq_nsmul]
   exact exists_congr fun _ => eq_comm
 
+/- English proof (translation)
+Take `⟨x, hx, y, hy, e⟩` from `Submodule.mem_sup.1 (l.coprime ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ l.Mb ⊔ _)`. Conclude with `⟨y, hy, by rw [← e, add_sub_cancel_right]; exact hx⟩`.
+-/
 theorem exists_split : ∃ m : 𝓞 E, m ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ∧ 1 - m ∈ l.Mb := by
   obtain ⟨x, hx, y, hy, e⟩ := Submodule.mem_sup.1 (l.coprime ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ l.Mb ⊔ _)
   exact ⟨y, hy, by rw [← e, add_sub_cancel_right]; exact hx⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `k`. Establish `e` using `add_mem (Submodule.smul_mem_smul hm' (Submodule.mem_top (x := a))) (Submodule.smul_mono_left (Ideal.mul_le_inf.trans inf_le_left) k)`. Rewrite `e` using `[← add_smul, sub_add_cancel, one_smul]`. Then use the resulting hypothesis. Introduce `k`.
+
+Rewrite using `[_root_.mul_comm, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hm k`.
+-/
 theorem smul_mem_iff {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {I J : Ideal A} {m : A} (hm : m ∈ J)
     (hm' : 1 - m ∈ I) (a : M) : m • a ∈ (I * J) • (⊤ : Submodule A M) ↔ a ∈ I • (⊤ : Submodule A M) := by
   constructor
@@ -281,6 +364,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : Datum H} {l : Level H} {P : D
 
 include hB in
 
+/- English proof (translation)
+Use `letI := H.starRing`. Take `⟨m, hm, hm'⟩` from `exists_split l`. Establish `k : ∀ lv : TateUniformizationInput.QLevel D l oa F, QkPt.Equiv P F (lv.eta (m • v)) (lv.eta v)` using `fun lv => by`. Establish `a` using `(add_iff_cls hB oa _ _ _).1 (lv.eta_add ((1 - m) • v) (m • v))`. Rewrite `a` using `[(zero_iff_cls hB oa _).1 ((lv.eta_ker _).2 (Submodule.smul_mem_smul hm' Submodule.mem_top)), zero_add, ← add_smul, sub_add_cancel, one_smul]`.
+
+Conclude with `(equiv_iff_cls hB oa _ _).2 a`. Conclude with `equiv_trans hB (equiv_symm hB (k lv)) (equiv_trans hB (h _ (Submodule.smul_mem_smul hm Submodule.mem_top)) (k lv'))`.
+-/
 theorem eta_equiv (lv lv' : TateUniformizationInput.QLevel D l oa F)
     (h : ∀ v ∈ halfLat D l, QkPt.Equiv P F (lv.eta v) (lv'.eta v)) (v : D.La) :
     QkPt.Equiv P F (lv.eta v) (lv'.eta v) := by
@@ -296,6 +384,17 @@ theorem eta_equiv (lv lv' : TateUniformizationInput.QLevel D l oa F)
 
 variable (f : F →+* F') (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F')
 
+/- English proof (translation)
+Use `letI := H.starRing`. Establish `M0 : 0 < l.M` using `(TateUniformizationInput.levelM l).pos`. Take `⟨m, hm, hm'⟩` from `exists_split l`. Establish `eA : ∀ a, cls hB oa (qkExt hB f hf (etaA a)) = evLin hB I l.A_pos a` using `fun a => (equiv_iff_cls hB oa _ _).1 (hA a)`. Establish `kill : ∀ x ∈ l.Mb, ∀ a ∈ halfLat D l, evLin hB I M0 (x • a) = 0` using `fun x hx a ha => by`.
+
+Rewrite using `[evLin_eq_zero, ← mem_mul_iff, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hx ha`. Set `eta' : D.La → QkPt P F l.M` to `fun a => if a ∈ halfLat D l then eta a else eta (m • a)`. Establish `eM : ∀ a, cls hB oa (qkExt hB f hf (eta' a)) = m • evLin hB I M0 a` using `fun a => by`. Distinguish the cases in `ha : a ∈ halfLat D l`.
+
+Establish `k` using `kill _ hm' a ha`. Rewrite `k` using `[map_smul, sub_smul, one_smul, sub_eq_zero]`. Simplify using `only [eta', if_pos ha]`. Conclude with `((equiv_iff_cls hB oa _ _).1 (hM a ha)).trans k`. Simplify using `only [eta', if_neg ha]`.
+
+Rewrite using `[← map_smul]`. Conclude with `(equiv_iff_cls hB oa _ _).1 (hM _ (Submodule.smul_mem_smul hm Submodule.mem_top))`. Use `⟨{ eta := eta', etaA := etaA eta_add := fun a a' => (add_iff_ext hB oa f hf _ _ _).2 (by rw [eM, eM, eM, map_add, smul_add]) eta_lin := fun x a => (act_iff_ext hB oa f hf _ _ _).2 (by rw [eM, eM, map_smul, smul_comm]) eta_ker := fun a => ?_ eta_onto := fun p hp => ?_ etaA_add := …` and prove the remaining obligations. Rewrite using `[zero_iff_ext hB oa f hf, eM, ← map_smul, evLin_eq_zero, ← mem_mul_iff]`. Conclude with `smul_mem_iff hm hm' a`.
+
+Take `⟨a, k⟩` from `evLin_onto hB I M0 (qkExt hB f hf p)`. Take `⟨q, h₁, h₂⟩` from `hp _ hm'`. Establish `e` using `((act_iff_ext hB oa f hf _ _ _).1 h₁).trans ((zero_iff_ext hB oa f hf _).1 h₂)`. Rewrite `e` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `⟨a, (equiv_iff_ext hB oa f hf _ _).2 (by rw [eM, k, ← e])⟩`.
+-/
 theorem exists_level (I : TateIsoQ D P oa F') (eta : D.La → QkPt P F l.M) (etaA : D.La → QkPt P F l.A)
     (hA : ∀ a, QkPt.Equiv P F' (qkExt hB f hf (etaA a)) (I.ev l.A a))
     (hM : ∀ a ∈ halfLat D l, QkPt.Equiv P F' (qkExt hB f hf (eta a)) (I.ev l.M a)) :
@@ -339,6 +438,11 @@ theorem exists_level (I : TateIsoQ D P oa F') (eta : D.La → QkPt P F l.M) (eta
 
 omit [Module (𝓞 E) P.X] in
 
+/- English proof (translation)
+Use `DegActCompare.qkExt_unique h ?_` and prove the remaining obligations. Establish `h₁` using `(TorusExt.qkExt_iff hB f hf p _).2 rfl`. Establish `h₂` using `(TorusExt.qkExt_iff hB g hg (qkExt hB f hf p) _).2 rfl`. Establish `e : spMap (g.comp f) = spMap g ≫ spMap f` using `by rw [spMap, spMap, spMap, ← Spec.map_comp]; rfl`. Use `⟨rfl, by rw [h₂.2.1, h₁.2.1, e, Category.assoc], fun χ => corr_of_val P.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations.
+
+Use `(val_corr hJ (h₂.2.2 χ) _).trans ((val_pull hJ _ _ _).trans ((val_corr hJ (h₁.2.2 χ) _).trans ((val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))))` and prove the remaining obligations. Rewrite using `[e, Category.assoc]`.
+-/
 theorem qkExt_qkExt {F'' : Type} [Field F''] [Algebra (FractionRing R) F''] (g : F' →+* F'')
     (hg : g.comp (algebraMap (FractionRing R) F') = algebraMap (FractionRing R) F'') {k : ℕ} {p : QkPt P F k}
     {q : QkPt P F'' k} (h : QkExt (g.comp f) p q) : q = qkExt hB g hg (qkExt hB f hf p) := by
@@ -360,6 +464,19 @@ variable {D : Datum H} {l : Level H} {c : Coeff l} {O : Type} [CommRing O] {β :
 
 open Classical in
 
+/- English proof (translation)
+Use `letI := H.starRing`. Substitute `hf` using the available equality. Establish `hB` using `x.tau_bimult`. Use `x.charZero` as an intermediate fact. Set `i : AlgebraicClosure (FractionRing O') →+* F` to `(IsAlgClosed.lift : AlgebraicClosure (FractionRing O') →ₐ[FractionRing O'] F)`.
+
+Establish `hi₀ : ∀ y, i (algebraMap (FractionRing O') _ y) = algebraMap (FractionRing O') F y` using `fun y => (IsAlgClosed.lift : AlgebraicClosure (FractionRing O') →ₐ[FractionRing O'] F).commutes y`. Establish `hi : i.comp (algebraMap (FractionRing O') _) = algebraMap (FractionRing O') F` using `RingHom.ext hi₀`. Prove the components needed by the constructor for the conclusion. Introduce `σ`. Take `⟨τ, rfl⟩` from `DetExtend.exists_factor i σ`.
+
+Take `⟨n, h₁, h₂⟩` from `(det_iff _).2 x.det τ`. Use `x.P.P.isAb.smooth` as an intermediate fact. Rewrite `h₂` using `[x.gam_rt r hr]`. Use `⟨n, ?_, h₂.trans (if_congr ?_ rfl rfl)⟩` and prove the remaining obligations. Establish `e : spMap ((algebraMap (FractionRing O') F).comp (algebraMap O' _)) = spMap i ≫ spMap ((algebraMap (FractionRing O') (AlgebraicClosure (FractionRing O'))).comp (algebraMap O' _))`.
+
+Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← RingHom.comp_assoc, hi]`. Rewrite using `[e]`. Conclude with `(DetExtend.lieMult_extend i _ _ τ n).2 h₁`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← hi₀, i.injective.eq_iff]`. Take `⟨J, hζ, hA, hM⟩` from `x.induced`.
+
+Establish `key : ∀ (n : ℕ+) (p : QkPt x.P (FractionRing O') n) (a : D.La), TorusGraphMaps.QkMap (Algebra.ofId (FractionRing O') _) p (J.ev n a) → ∀ q, QkExt (algebraMap _ F) p q → QkPt.Equiv x.P F q (qkExt hB i hi ((ofQTateIso hB J).ev n a))` using `fun n p a h q hq => by`. Establish `h₀ : (algebraMap (FractionRing O') (AlgebraicClosure (FractionRing O'))).comp (algebraMap (FractionRing O') (FractionRing O')) = algebraMap _ _` using `RingHom.ext fun _ => rfl`. Rewrite `hq` using `[← hi]`. Rewrite using `[qkExt_qkExt hB _ h₀ i hi hq, (sameIso_of hB J n).2]`. Conclude with `qkExt_congr hB i hi ((DegActCompare.forall_qkExt_iff hB _ _ _).2 h _ ((TorusExt.qkExt_iff hB _ h₀ _ _).2 rfl))`.
+
+Use `⟨ArcExt.tateExt i hi hB abelianSchemeLaws_all.1 (ofQTateIso hB J) (weil_ext hB i hi), ?_, fun a => key (TateUniformizationInput.levelA l) _ a (hA a), fun a ha => key (TateUniformizationInput.levelM l) _ a (hM a ha)⟩` and prove the remaining obligations. Use `show i ((ofQTateIso hB J).ζ (TateUniformizationInput.levelA l)) = _`. Rewrite using `[(sameIso_of hB J _).1, hζ, x.gam_zeta z hz, hi₀, RingHom.comp_apply]`.
+-/
 theorem geom_of_input (x : TateUniformizationInput.ArcInput D c β O' b) (F : Type) [Field F] [IsAlgClosed F]
     [Algebra (FractionRing O') F] (r z : O) (hr : ((β r : c.F) : ℂ) = H.rt0) (hz : ((β z : c.F) : ℂ) = zeta l.A)
     (f : O' →+* F) (hf : f = (algebraMap (FractionRing O') F).comp (algebraMap O' _)) : letI := H.starRing
@@ -422,6 +539,13 @@ def toArcIn (x : TateUniformizationInput.ArcInput D c β O' b) : ArcIn D l β O'
   etaA := x.lev.etaA
   geom F _ _ _ r z hr hz f hf := geom_of_input x F r z hr hz f hf
 
+/- English proof (translation)
+Establish `: CharZero (FractionRing O')` using `(gam.charZero_iff gam.injective).1 inferInstance`. Establish `hB` using `a.bimult`. Take `⟨h₁, I, hζ, hA, hM⟩` from `a.geom (AlgebraicClosure (FractionRing O')) r z hr hz _ rfl`. Establish `er : TateUniformizationInput.coeffRt c = β r` using `Subtype.ext hr.symm`. Establish `ez : TateUniformizationInput.coeffZeta c = β z` using `Subtype.ext hz.symm`.
+
+Establish `h₀ : (algebraMap (FractionRing O') (AlgebraicClosure (FractionRing O'))).comp (algebraMap (FractionRing O') (FractionRing O')) = algebraMap _ _` using `RingHom.ext fun _ => rfl`. Rewrite using `[er, ez, hg, hg]`. Use `⟨(det_iff _).1 h₁, ?_⟩` and prove the remaining obligations. Take `⟨lv, e₁, e₂⟩` from `exists_level hB _ h₀ I a.eta a.etaA (fun v => hA v _ ((TorusExt.qkExt_iff hB _ h₀ _ _).2 rfl)) (fun v hv => hM v hv _ ((TorusExt.qkExt_iff hB _ h₀ _ _).2 rfl))`. Use `⟨lv, e₁, e₂, toQTateIso hB I, hζ, fun v => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e₁]`. Conclude with `(DegActCompare.forall_qkExt_iff hB _ _ _).1 (hA v)`. Rewrite using `[e₂ v hv]`. Conclude with `(DegActCompare.forall_qkExt_iff hB _ _ _).1 (hM v hv)`.
+-/
 theorem exists_level_of_arcIn (a : ArcIn D l β O' b) (gam : c.F →+* FractionRing O')
     (hg : ∀ x, gam (β x) = algebraMap O' (FractionRing O') (b x)) (r z : O) (hr : ((β r : c.F) : ℂ) = H.rt0)
     (hz : ((β z : c.F) : ℂ) = zeta l.A) :
@@ -467,12 +591,18 @@ def coreOfArcIn (a : ArcIn D l β O' b) : Core D l O' :=
 def coreOfInput (x : TateUniformizationInput.ArcInput D c β O' b) : Core D l O' :=
   { P := x.P, ac := x.ac, be := x.be, eta := fun v => x.lev.eta v, etaA := x.lev.etaA }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem core_toArcIn (x : TateUniformizationInput.ArcInput D c β O' b) : coreOfArcIn (toArcIn x) = coreOfInput x := rfl
 
 def GoodBase (β : O →+* c.F) (b : O →+* O') : Prop :=
   TateUniformizationInput.IsFracImage β ∧ (∃ r, ((β r : c.F) : ℂ) = H.rt0) ∧ (∃ z, ((β z : c.F) : ℂ) = zeta l.A) ∧
     ∃ gam : c.F →+* FractionRing O', ∀ x, gam (β x) = algebraMap O' (FractionRing O') (b x)
 
+/- English proof (translation)
+Take `⟨hf, ⟨r, hr⟩, ⟨z, hz⟩, gam, hg⟩` from `h`. Take `⟨hd, lv, e₁, e₂, hI⟩` from `exists_level_of_arcIn a gam hg r z hr hz`. Use `⟨{ frac := hf, gam := gam, gam_over := hg, P := a.D₀, psi_even := a.even, tau_bimult := a.bimult ac := a.oa, nontriv := a.nontriv psi_gen := fun y => (DegActCompare.psiUnitOn_iff _ y isOpen_univ).1 (a.gen y) through := (DegActCompare.psiW0_host_iff H a.oa).1 a.w0 be := a.be, be_s …` and prove the remaining obligations. Establish `e : (fun v : halfLat D l => lv.eta v) = fun v : halfLat D l => a.eta v` using `funext fun v => e₂ v v.2`. Simplify using `only [coreOfInput, coreOfArcIn, e₁, e]`.
+-/
 theorem exists_input (h : GoodBase β b) (a : ArcIn D l β O' b) :
     ∃ x : TateUniformizationInput.ArcInput D c β O' b, coreOfInput x = coreOfArcIn a := by
   obtain ⟨hf, ⟨r, hr⟩, ⟨z, hz⟩, gam, hg⟩ := h
@@ -486,6 +616,13 @@ theorem exists_input (h : GoodBase β b) (a : ArcIn D l β O' b) :
   have e : (fun v : halfLat D l => lv.eta v) = fun v : halfLat D l => a.eta v := funext fun v => e₂ v v.2
   simp only [coreOfInput, coreOfArcIn, e₁, e]
 
+/- English proof (translation)
+Set `_` to `β.toAlgebra`. Use `hβ.isDomain β` as an intermediate fact. Use `c.fin` as an intermediate fact. Establish `: FaithfulSMul O c.F` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hβ`. Establish `: IsFractionRing O c.F` using `IsFractionRing.of_field O c.F fun x => by`.
+
+Take `⟨a, s, hs, e⟩` from `hf x`. Conclude with `⟨a, s, eq_div_of_mul_eq hs e⟩`. Establish `hb : Function.Injective b` using `injective_of_isAlgebraic (fun x => by`. Establish `h : IsAlgebraic ℤ (β x)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ c.F).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Conclude with `(isAlgebraic_algHom_iff β.toIntAlgHom hβ).1 h) b`.
+
+Conclude with `⟨IsFractionRing.lift (g := (algebraMap O' (FractionRing O')).comp b) ((IsFractionRing.injective O' _).comp hb), fun x => IsFractionRing.lift_algebraMap _ x⟩`.
+-/
 theorem exists_gam (hβ : Function.Injective β) (hf : TateUniformizationInput.IsFracImage β) [CharZero O'] (b : O →+* O') :
     ∃ gam : c.F →+* FractionRing O', ∀ x, gam (β x) = algebraMap O' (FractionRing O') (b x) := by
   let _ := β.toAlgebra
@@ -502,14 +639,25 @@ theorem exists_gam (hβ : Function.Injective β) (hf : TateUniformizationInput.I
   exact ⟨IsFractionRing.lift (g := (algebraMap O' (FractionRing O')).comp b)
     ((IsFractionRing.injective O' _).comp hb), fun x => IsFractionRing.lift_algebraMap _ x⟩
 
+/- English proof (translation)
+Take `⟨r, z, hr, hz⟩` from `ArcInTest.exists_values c W`. Conclude with `⟨TateUniformizationInput.isFracImage_V W, ⟨r, hr⟩, ⟨z, hz⟩, exists_gam Subtype.val_injective (TateUniformizationInput.isFracImage_V W) b⟩`.
+-/
 theorem goodBase_V (W : ValuationSubring ℂ) [CharZero O'] (b : c.V W →+* O') : GoodBase (c.V W).subtype b := by
   obtain ⟨r, z, hr, hz⟩ := ArcInTest.exists_values c W
   exact ⟨TateUniformizationInput.isFracImage_V W, ⟨r, hr⟩, ⟨z, hz⟩, exists_gam Subtype.val_injective (TateUniformizationInput.isFracImage_V W) b⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => ⟨x, 1, one_ne_zero, _root_.mul_one x⟩, ⟨TateUniformizationInput.coeffRt c, rfl⟩, ⟨TateUniformizationInput.coeffZeta c, rfl⟩, (algebraMap O' _).comp b, fun _ => rfl⟩`.
+-/
 theorem goodBase_id (b : c.F →+* O') : GoodBase (RingHom.id c.F) b :=
   ⟨fun x => ⟨x, 1, one_ne_zero, _root_.mul_one x⟩, ⟨TateUniformizationInput.coeffRt c, rfl⟩, ⟨TateUniformizationInput.coeffZeta c, rfl⟩,
     (algebraMap O' _).comp b, fun _ => rfl⟩
 
+/- English proof (translation)
+Use `⟨ArcInTest.nonempty_int D c, ⟨fun x => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, s, hs, e⟩` from `x.frac (TateUniformizationInput.coeffRt c)`. Establish `e' : H.rt0 * (s : ℂ) = (a : ℂ)` using `by simpa [TateUniformizationInput.coeffRt_val] using congrArg (fun y : c.F => (y : ℂ)) e`. Establish `h₁ : ((a ^ 2 : ℤ) : ℂ) = ((-(H.d : ℤ) * s ^ 2 : ℤ) : ℂ)`. Use `push_cast`.
+
+Rewrite using `[← e', mul_pow, H.sqrt_neg_disc_sq]`. Establish `h₂ : a ^ 2 = -(H.d : ℤ) * s ^ 2` using `Int.cast_injective h₁`. Establish `h₃ : s ≠ 0` using `fun h => hs (by rw [h, map_zero])`. Establish `h₄ : (0 : ℤ) < H.d` using `Int.natCast_pos.2 H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg a, mul_pos h₄ (sq_pos_of_ne_zero h₃)]`.
+-/
 theorem differ_over_int (D : Datum H) (c : Coeff l) :
     Nonempty (ArcIn D l (Int.castRingHom c.F) c.F (Int.castRingHom c.F)) ∧
       IsEmpty (TateUniformizationInput.ArcInput D c (Int.castRingHom c.F) c.F (Int.castRingHom c.F)) := by
@@ -526,6 +674,9 @@ theorem differ_over_int (D : Datum H) (c : Coeff l) :
 
 end Main
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ _ _ => ⟨fun hB => ⟨fun I => ⟨_, sameIso_to hB I⟩, fun J => ⟨_, sameIso_of hB J⟩, fun _ => eta_equiv hB⟩, fun _ => det_iff⟩, fun _ _ _ _ _ => ⟨fun _ _ _ _ => ⟨fun x => ⟨toArcIn x, rfl, HEq.rfl⟩, fun h => Set.ext fun _ => ⟨fun ⟨a, e⟩ => (exists_input h a).imp fun …`.
+-/
 theorem typings_agree (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) :
     (∀ (R : Type) [CommRing R] [IsDomain R] (P : DegPre R) [Module (𝓞 E) P.X]
       (oa : letI := H.starRing; P.OAct (𝓞 E)) (F : Type) [Field F] [Algebra (FractionRing R) F],

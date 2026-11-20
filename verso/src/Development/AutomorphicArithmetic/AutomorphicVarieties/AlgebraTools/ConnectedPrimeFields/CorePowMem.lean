@@ -8,6 +8,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos M with rfl | hM` into its components or cases. Conclude with `⟨0, by simp⟩`. Establish `hx' : x ∈ (b ^ M ⊔ c ^ M).radical`. Rewrite using `[Ideal.radical_sup, Ideal.radical_pow _ hM.ne', Ideal.radical_pow _ hM.ne', ← Ideal.radical_sup]`. Conclude with `hx`.
+
+Conclude with `hx'`.
+-/
 private theorem UpperTheory.V.AlgebraTools.Conn.core_pow_mem {R : Type} [CommRing R] (b c : Ideal R) (x : R)
     (hx : x ∈ (b ⊔ c).radical) (M : ℕ) : ∃ K, x ^ K ∈ b ^ M ⊔ c ^ M := by
   rcases Nat.eq_zero_or_pos M with rfl | hM
@@ -18,6 +23,13 @@ private theorem UpperTheory.V.AlgebraTools.Conn.core_pow_mem {R : Type} [CommRin
       exact hx
     exact hx'
 
+/- English proof (translation)
+Use `haveI := hP`. Establish `hmem : ∀ n : ℕ, algebraMap R (Localization.AtPrime P) r ∈ (maximalIdeal (Localization.AtPrime P)) ^ n`. Introduce `n`. Take `⟨K, hK⟩` from `h n`. Establish `h1 : algebraMap R (Localization.AtPrime P) (y ^ K * r) ∈ (maximalIdeal (Localization.AtPrime P)) ^ n`.
+
+Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hK`. Establish `hu : IsUnit (algebraMap R (Localization.AtPrime P) (y ^ K))` using `IsLocalization.map_units (Localization.AtPrime P) (⟨y ^ K, P.primeCompl.pow_mem hy K⟩ : P.primeCompl)`. Rewrite `h1` using `[map_mul]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).mp h1`.
+
+Establish `h0 : algebraMap R (Localization.AtPrime P) r = 0`. Establish `hb` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal (Localization.AtPrime P)) (maximalIdeal.isMaximal _).ne_top`. Rewrite using `[← Ideal.mem_bot, ← hb, Ideal.mem_iInf]`. Conclude with `hmem`. Conclude with `IsLocalization.injective (Localization.AtPrime P) (Ideal.primeCompl_le_nonZeroDivisors P) (h0.trans (map_zero _).symm)`.
+-/
 private theorem UpperTheory.V.AlgebraTools.Conn.core_krull {R : Type} [CommRing R] [IsDomain R]
     [IsNoetherianRing R] (P : Ideal R) (hP : P.IsPrime) (y r : R) (hy : y ∉ P)
     (h : ∀ n : ℕ, ∃ K : ℕ, y ^ K * r ∈ P ^ n) : r = 0 := by
@@ -44,6 +56,27 @@ private theorem UpperTheory.V.AlgebraTools.Conn.core_krull {R : Type} [CommRing 
     (h0.trans (map_zero _).symm)
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `A R _ _ _ _ _ _ _ _ I _ J u v b c P Q y z hJ hJI hreg hIJ hbc hu hv hP hQ hbP hcQ hIP hIQ hy hz hyP hzQ`. Use `haveI : IsNoetherianRing R := IsNoetherianRing.of_finite A R`. Take `⟨a, ha⟩` from `UpperTheory.V.AlgebraTools.Conn.limit (R := R) I J u v b c hJ hJI hreg hIJ hbc (IsNoetherian.noetherian b) (IsNoetherian.noetherian c) hu hv`. Take `⟨d, r, hd, hr⟩` from `UpperTheory.V.AlgebraTools.Conn.bidual (M := R) a`. Take `⟨k, hk⟩` from `UpperTheory.V.AlgebraTools.Conn.formsAR (M := R) I`.
+
+Establish `key : ∀ w : A, algebraMap A R w ∈ (b ⊔ c).radical → ∀ n : ℕ, ∃ N, n ≤ N ∧ ∃ K : ℕ, ∃ β ∈ b ^ N, ∃ γ ∈ c ^ N, β + γ = (algebraMap A R w) ^ K ∧ algebraMap A R d * β - (algebraMap A R w) ^ K * r ∈ (I.map (algebraMap A R)) ^ n`. Introduce `w hw n`. Take `⟨N, hnN, hN⟩` from `ha (n + k)`. Take `⟨K, hK⟩` from `core_pow_mem b c _ hw N`. Take `⟨β, hβ, γ, hγ, hβγ⟩` from `Submodule.mem_sup.mp hK`.
+
+Use `⟨N, le_trans (Nat.le_add_right n k) hnN, K, β, hβ, γ, hγ, hβγ, ?_⟩` and prove the remaining obligations. Establish `hforms : ∀ l : Module.Dual A R, l (d • β - w ^ K • r) ∈ I ^ (n + k)`. Introduce `l`. Establish `h1` using `hN (w ^ K) β γ hβ hγ (by rw [map_pow, hβγ]) l`. Establish `h2 : l (d • β - w ^ K • r) = d * (l β - w ^ K * a l)`.
+
+Rewrite using `[map_sub, map_smul, map_smul, hr, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `Ideal.mul_mem_left _ _ h1`. Establish `h4 : d • β - w ^ K • r ∈ Ideal.map (algebraMap A R) (I ^ n)`.
+
+Establish `h3` using `hk n _ hforms`. Rewrite `h3` using `[Ideal.smul_top_eq_map]`. Conclude with `h3`. Rewrite using `[← Ideal.map_pow]`. Simplify `h4` using `[Algebra.smul_def]`.
+
+Establish `hr0 : r = 0`. Use `core_krull P hP (algebraMap A R y) r hyP fun n => ?_` and prove the remaining obligations. Take `⟨N, hnN, K, β, hβ, γ, hγ, -, hdiff⟩` from `key y hy n`. Use `⟨K, ?_⟩` and prove the remaining obligations. Establish `hβP : β ∈ P ^ n` using `Ideal.pow_right_mono hbP n (Ideal.pow_le_pow_right hnN hβ)`.
+
+Establish `hd' : algebraMap A R d * β - (algebraMap A R y) ^ K * r ∈ P ^ n` using `Ideal.pow_right_mono hIP n hdiff`. Establish `he : (algebraMap A R y) ^ K * r = algebraMap A R d * β - (algebraMap A R d * β - (algebraMap A R y) ^ K * r)` using `by ring`. Rewrite using `[he]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ hβP) hd'`. Establish `hdr : algebraMap A R d - r = 0`.
+
+Use `core_krull Q hQ (algebraMap A R z) _ hzQ fun n => ?_` and prove the remaining obligations. Take `⟨N, hnN, K, β, hβ, γ, hγ, hβγ, hdiff⟩` from `key z hz n`. Use `⟨K, ?_⟩` and prove the remaining obligations. Establish `hγQ : γ ∈ Q ^ n` using `Ideal.pow_right_mono hcQ n (Ideal.pow_le_pow_right hnN hγ)`. Establish `hd' : algebraMap A R d * β - (algebraMap A R z) ^ K * r ∈ Q ^ n` using `Ideal.pow_right_mono hIQ n hdiff`.
+
+Establish `he : (algebraMap A R z) ^ K * (algebraMap A R d - r) = (algebraMap A R d * β - (algebraMap A R z) ^ K * r) + algebraMap A R d * γ`. Rewrite using `[← hβγ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `Ideal.add_mem _ hd' (Ideal.mul_mem_left _ _ hγQ)`.
+
+Rewrite `hdr` using `[hr0, sub_zero]`. Conclude with `hd (FaithfulSMul.algebraMap_injective A R (hdr.trans (map_zero _).symm))`.
+-/
 theorem UpperTheory.V.AlgebraTools.Conn.core :
     ∀ {A R : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A] [CommRing R] [IsDomain R] [Algebra A R] [Module.Finite A R]
       [FaithfulSMul A R] (I : Ideal A) [IsAdicComplete I A] (J : ℕ → Ideal A) (u v : A) (b c P Q : Ideal R) (y z : A),

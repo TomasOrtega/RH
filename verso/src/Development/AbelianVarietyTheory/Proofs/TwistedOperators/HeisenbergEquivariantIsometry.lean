@@ -24,6 +24,9 @@ def derS (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) : 𝓢(V, ℂ) :=
   LineDeriv.lineDerivOpCLM ℂ 𝓢(V, ℂ) a f -
     (2 * Real.pi * Complex.I) • SchwartzMap.smulLeftCLM ℂ (fun x => ((L x : ℝ) : ℂ)) f
 
+/- English proof (translation)
+Rewrite using `[heisS, SchwartzMap.smulLeftCLM_apply_apply (by`. Rewrite using `[GlobalTheory.LinPhaseSeminorm.phase_eq]`. Conclude with `GlobalTheory.LinPhaseSeminorm.hasTemperateGrowth_phase L c t),`. Use the proof step `SchwartzMap.compSubConstCLM_apply, smul_eq_mul, sub_neg_eq_add]`.
+-/
 theorem heisS_apply (a : V) (L : V →L[ℝ] ℝ) (c t : ℝ) (f : 𝓢(V, ℂ)) (x : V) :
     heisS a L c t f x =
       Complex.exp (-(2 * Real.pi * Complex.I) * ((t * L x + t ^ 2 * c : ℝ) : ℂ)) * f (x + t • a) := by
@@ -31,6 +34,9 @@ theorem heisS_apply (a : V) (L : V →L[ℝ] ℝ) (c t : ℝ) (f : 𝓢(V, ℂ))
       rw [GlobalTheory.LinPhaseSeminorm.phase_eq]; exact GlobalTheory.LinPhaseSeminorm.hasTemperateGrowth_phase L c t),
     SchwartzMap.compSubConstCLM_apply, smul_eq_mul, sub_neg_eq_add]
 
+/- English proof (translation)
+Establish `hL : Function.HasTemperateGrowth (fun x => ((L x : ℝ) : ℂ))` using `(Complex.ofRealCLM.comp L).hasTemperateGrowth`. Rewrite using `[derS, SchwartzMap.sub_apply, SchwartzMap.smul_apply, SchwartzMap.smulLeftCLM_apply_apply hL, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem derS_apply (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) (x : V) :
     derS a L f x = fderiv ℝ f x a - 2 * Real.pi * Complex.I * ((L x : ℝ) : ℂ) * f x := by
   have hL : Function.HasTemperateGrowth (fun x => ((L x : ℝ) : ℂ)) :=
@@ -39,6 +45,21 @@ theorem derS_apply (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) (x : V) :
     LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv, smul_eq_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use `set P : 𝓢(V, ℂ) →L[ℂ] 𝓢(V, ℂ) := SchwartzMap.smulLeftCLM ℂ (fun x => ((L x : ℝ) : ℂ)) with hP`. Use `set d := LineDeriv.lineDerivOpCLM ℂ 𝓢(V, ℂ) a f with hd`. Take `⟨C3, hC3⟩` from `GlobalTheory.LinPhaseSeminorm.seminorm_smulLeft_phase_le L c k n`. Use `choose C1 hC1 using fun m => GlobalTheory.SchwartzTranslate.seminorm_translate_sub_le a f k m`. Take `⟨C2, hC2⟩` from `GlobalTheory.LinearPhase.seminorm_phase_sub_le L c d k n`.
+
+Take `⟨C0, hC0⟩` from `GlobalTheory.LinearPhase.seminorm_phase_sub_le L c f k n`. Use `set p := SchwartzMap.seminorm ℂ k n (E := V) (F := ℂ) with hp`. Use `⟨|C3| * ∑ m ∈ Finset.range (n + 1), |C1 m| + |C2| + 2 * Real.pi * p (P d) + |C0|, fun t ht => ?_⟩` and prove the remaining obligations. Use `set M : 𝓢(V, ℂ) →L[ℂ] 𝓢(V, ℂ) := SchwartzMap.smulLeftCLM ℂ (fun x => Complex.exp (-(2 * Real.pi * Complex.I) * ((t * L x + t ^ 2 * c : ℝ) : ℂ))) with hM`. Use `set X := SchwartzMap.compSubConstCLM ℂ (-(t • a)) f - f - (t : ℂ) • d with hX`.
+
+Use `set Y := M d - d + ((t : ℂ) * (2 * Real.pi * Complex.I)) • P d with hY`. Use `set Z := M f - f + ((t : ℂ) * (2 * Real.pi * Complex.I)) • P f with hZ`. Establish `e : heisS a L c t f - f - (t : ℂ) • derS a L f = M X + (t : ℂ) • Y - ((t : ℂ) ^ 2 * (2 * Real.pi * Complex.I)) • P d + Z`. Rewrite using `[heisS, derS, ← hM, ← hP, ← hd, hX, hY, hZ, map_sub, map_sub, map_smul]`. Use `module`.
+
+Rewrite using `[e]`. Establish `t1 : p (M X) ≤ |C3| * (∑ m ∈ Finset.range (n + 1), |C1 m|) * t ^ 2`. Use `(hC3 t ht X).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `t2 : p ((t : ℂ) • Y) ≤ |C2| * t ^ 2`.
+
+Rewrite using `[map_smul_eq_mul, Complex.norm_real, Real.norm_eq_abs]`. Establish `h2` using `hC2 t ht`. Combine the equalities or inequalities in the displayed calculation. Establish `t3 : p (((t : ℂ) ^ 2 * (2 * Real.pi * Complex.I)) • P d) = 2 * Real.pi * p (P d) * t ^ 2`. Rewrite using `[map_smul_eq_mul]`.
+
+Simplify using `only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, Complex.norm_ofNat, Complex.norm_I, abs_of_pos Real.pi_pos, sq_abs]`. Expand and normalize the polynomial expressions, which then agree. Establish `t4 : p Z ≤ |C0| * t ^ 2` using `(hC0 t ht).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (sq_nonneg _))`. Establish `tri : p (M X + (t : ℂ) • Y - ((t : ℂ) ^ 2 * (2 * Real.pi * Complex.I)) • P d + Z) ≤ p (M X) + p ((t : ℂ) • Y) + p (((t : ℂ) ^ 2 * (2 * Real.pi * Complex.I)) • P d) + p Z`. Use `(map_add_le_add p _ _).trans (add_le_add ?_ le_rfl)` and prove the remaining obligations.
+
+Use `(map_sub_le_add p _ _).trans (add_le_add ?_ le_rfl)` and prove the remaining obligations. Conclude with `map_add_le_add p _ _`. Rewrite `tri` using `[t3]`. Use polynomial arithmetic with `[t1, t2, t4, tri]`.
+-/
 theorem seminorm_heisS_sub_le (a : V) (L : V →L[ℝ] ℝ) (c : ℝ) (f : 𝓢(V, ℂ)) (k n : ℕ) :
     ∃ C : ℝ, ∀ t : ℝ, |t| ≤ 1 →
       SchwartzMap.seminorm ℂ k n (heisS a L c t f - f - (t : ℂ) • derS a L f) ≤ C * t ^ 2 := by
@@ -95,6 +116,11 @@ section L2
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V]
   [BorelSpace V]
 
+/- English proof (translation)
+Take `⟨k, C, hC0, hC⟩` from `SchwartzMap.norm_toLp_le_seminorm ℂ ℂ 2 μ`. Use `choose K hK using fun p : ℕ × ℕ => seminorm_heisS_sub_le a L c f p.1 p.2`. Use `⟨C * ∑ p ∈ Finset.Iic (k, 0), |K p|, fun t ht => ?_⟩` and prove the remaining obligations. Use `(hC _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ hC0` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Seminorm.finset_sup_apply_le (Finset.sum_nonneg fun _ _ => by positivity) fun p hp => ?_` and prove the remaining obligations. Use `((hK p t ht).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (sq_nonneg t))).trans ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun q => |K q| * t ^ 2) (fun _ _ => by positivity) hp`.
+-/
 theorem toLp_heisS_sub_le (μ : Measure V) [μ.HasTemperateGrowth] (a : V) (L : V →L[ℝ] ℝ) (c : ℝ)
     (f : 𝓢(V, ℂ)) : ∃ K : ℝ, ∀ t : ℝ, |t| ≤ 1 →
       ‖(heisS a L c t f - f - (t : ℂ) • derS a L f).toLp 2 μ‖ ≤ K * t ^ 2 := by
@@ -109,12 +135,44 @@ theorem toLp_heisS_sub_le (μ : Measure V) [μ.HasTemperateGrowth] (a : V) (L : 
   refine ((hK p t ht).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (sq_nonneg t))).trans ?_
   exact Finset.single_le_sum (f := fun q => |K q| * t ^ 2) (fun _ _ => by positivity) hp
 
+/- English proof (translation)
+Rewrite using `[SchwartzMap.norm_toLp' (by norm_num) (by norm_num), ENNReal.toReal_ofNat]`. Simplify using `only [Real.rpow_two]`. Rewrite using `[Real.sqrt_eq_rpow, one_div]`.
+-/
 theorem norm_toLp_two (μ : Measure V) [μ.HasTemperateGrowth] (u : 𝓢(V, ℂ)) :
     ‖u.toLp 2 μ‖ = Real.sqrt (∫ x, ‖u x‖ ^ 2 ∂μ) := by
   rw [SchwartzMap.norm_toLp' (by norm_num) (by norm_num), ENNReal.toReal_ofNat]
   simp only [Real.rpow_two]
   rw [Real.sqrt_eq_rpow, one_div]
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ μ _ β T hT w w' hw f g hg x`. Use `haveI : μ.HasTemperateGrowth := MeasureTheory.Measure.IsAddHaarMeasure.instHasTemperateGrowth`. Set `Lf : V × V → (V →L[ℝ] ℝ)` to `fun p => LinearMap.toContinuousLinearMap (β.flip p.2)`. Establish `hLf : ∀ p y, Lf p y = β y p.2` using `fun p y => rfl`. Establish `hheis : ∀ (p : V × V) (F : 𝓢(V, ℂ)) (t : ℝ), ⇑(heisS p.1 (Lf p) (β p.1 p.2 / 2) t F) = GlobalTheory.GaussLine.heisFun β (t • p).1 (t • p).2 ⇑F`.
+
+Introduce `p F t`. Use function extensionality and compare the values at `y`. Rewrite using `[heisS_apply, GlobalTheory.GaussLine.heisFun_apply, hLf, Prod.smul_fst, Prod.smul_snd]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul]`. Use `congr 3`.
+
+Put the polynomial expressions in normal form. Establish `hder : ∀ (p : V × V) (F : 𝓢(V, ℂ)) y, derS p.1 (Lf p) F y = GlobalTheory.GaussLine.dHeis β p ⇑F y`. Introduce `p F y`. Rewrite using `[derS_apply, GlobalTheory.GaussLine.dHeis, hLf]`. Establish `hgS : g = derS w.1 (Lf w) f`.
+
+Use extensionality with `y`. Rewrite using `[hg, hder]`. Use `set G := derS w'.1 (Lf w') (T f) with hG`. Use `set c := β w.1 w.2 / 2`. Use `set c' := β w'.1 w'.2 / 2`.
+
+Establish `hHT : ∀ t : ℝ, T (heisS w.1 (Lf w) c t f) = heisS w'.1 (Lf w') c' t (T f)` using `fun t => DFunLike.coe_injective ((hw t f _ (hheis w f t)).trans (hheis w' (T f) t).symm)`. Take `⟨K, hK⟩` from `toLp_heisS_sub_le μ w.1 (Lf w) c f`. Take `⟨K', hK'⟩` from `toLp_heisS_sub_le μ w'.1 (Lf w') c' (T f)`. Use `set ℓ := SchwartzMap.toLpCLM ℂ ℂ 2 μ with hℓ`. Establish `hiso : ∀ u, ‖ℓ (T u)‖ = ‖ℓ u‖`.
+
+Introduce `u`. Rewrite using `[hℓ, SchwartzMap.toLpCLM_apply, SchwartzMap.toLpCLM_apply, norm_toLp_two, norm_toLp_two, hT]`. Establish `key : ∀ t : ℝ, 0 < t → t ≤ 1 → ‖ℓ (T g - G)‖ ≤ (K + K') * t`. Introduce `t ht0 ht1`. Establish `hta : |t| ≤ 1` using `by rw [abs_of_pos ht0]; exact ht1`.
+
+Establish `e1 : (t : ℂ) • (T g - G) = (heisS w'.1 (Lf w') c' t (T f) - T f - (t : ℂ) • G) - T (heisS w.1 (Lf w) c t f - f - (t : ℂ) • g)`. Rewrite using `[map_sub, map_sub, map_smul, hHT, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `h1 : ‖ℓ ((t : ℂ) • (T g - G))‖ = t * ‖ℓ (T g - G)‖`. Rewrite using `[map_smul, norm_smul, Complex.norm_real, Real.norm_of_nonneg ht0.le]`.
+
+Establish `h2 : ‖ℓ ((t : ℂ) • (T g - G))‖ ≤ K' * t ^ 2 + K * t ^ 2`. Rewrite using `[e1, map_sub]`. Use `(norm_sub_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Use `hK' t hta` as an intermediate fact. Rewrite using `[hℓ, SchwartzMap.toLpCLM_apply]`.
+
+Conclude with `this`. Rewrite using `[hiso, hgS, hℓ, SchwartzMap.toLpCLM_apply]`. Conclude with `hK t hta`. Rewrite `h2` using `[h1]`. Establish `h3 : t * ‖ℓ (T g - G)‖ ≤ t * ((K + K') * t)` using `by nlinarith`.
+
+Conclude with `le_of_mul_le_mul_left h3 ht0`. Establish `ha : ‖ℓ (T g - G)‖ = 0`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖ℓ (T g - G)‖` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm hne)`. Use `set a := ‖ℓ (T g - G)‖`.
+
+Use `set M := |K + K'| + 1 with hMdef`. Establish `hM : 0 < M` using `by positivity`. Use `set t := min 1 (a / (2 * M)) with htdef`. Establish `ht0 : 0 < t` using `lt_min one_pos (by positivity)`. Establish `h1` using `key t ht0 (min_le_left _ _)`.
+
+Establish `h2 : t ≤ a / (2 * M)` using `min_le_right _ _`. Establish `h3 : (K + K') * t ≤ M * t` using `mul_le_mul_of_nonneg_right ((le_abs_self _).trans (by linarith)) ht0.le`. Establish `h4 : M * t ≤ M * (a / (2 * M))` using `mul_le_mul_of_nonneg_left h2 hM.le`. Establish `h5 : M * (a / (2 * M)) = a / 2` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h0 : (T g - G).toLp 2 μ = (0 : 𝓢(V, ℂ)).toLp 2 μ`. Use `norm_eq_zero.1 ha` as an intermediate fact. Rewrite `this` using `[hℓ, SchwartzMap.toLpCLM_apply]`. Rewrite using `[this]`. Conclude with `((map_zero ℓ).symm.trans (SchwartzMap.toLpCLM_apply))`.
+
+Establish `h00 : T g - G = 0` using `SchwartzMap.injective_toLp 2 μ h0`. Use `congrArg (fun u : 𝓢(V, ℂ) => u x) (sub_eq_zero.1 h00)` as an intermediate fact. Rewrite using `[this, hG, hder]`.
+-/
 theorem map_dHeis_of_isometry : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ)
     (T : SchwartzMap V ℂ →ₗ[ℂ] SchwartzMap V ℂ), (∀ f, ∫ x, ‖T f x‖ ^ 2 ∂μ = ∫ x, ‖f x‖ ^ 2 ∂μ) →
     ∀ w w' : V × V, (∀ (s : ℝ) (f g : SchwartzMap V ℂ), ⇑g = GlobalTheory.GaussLine.heisFun β (s • w).1 (s • w).2 ⇑f →

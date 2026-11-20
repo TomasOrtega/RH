@@ -6,6 +6,11 @@ open scoped LaurentSeries PowerSeries TensorProduct
 
 namespace GlobalTheory.RedFun
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.RelationExtension.exists_extension`. Consider the case `exact _root_.GlobalTheory.RelationExtension.exists_extension`. Consider the case `(apply _root_.GlobalTheory.RelationExtension.exists_extension <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RelationExtension.exists_extension <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.RelationExtension.exists_extension <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RelationExtension.exists_extension ..)`.
+-/
 theorem exists_extend_of_dense {A E F : Type} [CommRing A] [CommRing E] [CommRing F] (ι : A →+* E) (f : A →+* F)
     (π P : A) (hf : IsUnit (f π)) (hP : f P = 0)
     (hd : ∀ e : E, ∃ (a : A) (m : ℕ) (y : E), e * ι π ^ m = ι a + ι P * y)
@@ -19,6 +24,29 @@ theorem exists_extend_of_dense {A E F : Type} [CommRing A] [CommRing E] [CommRin
   | (intros; apply @_root_.GlobalTheory.RelationExtension.exists_extension <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.RelationExtension.exists_extension ..)
 
+/- English proof (translation)
+Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W k _ _ lam hsurj hker hp`. Set `f : ZMod n → (LetA O n →+* k⸨X⸩)` to `fun i => (algebraMap k⟦X⟧ k⸨X⸩).comp ((PowerSeries.map (algebraMap O k)).comp (Pi.evalRingHom (fun _ => O⟦X⟧) i))`. Establish `hf : ∀ i (a : LetA O n), f i a = algebraMap k⟦X⟧ k⸨X⸩ (PowerSeries.map (algebraMap O k) (a i))` using `fun _ _ => rfl`. Establish `hX : ∀ i, f i letπ = algebraMap k⟦X⟧ k⸨X⸩ PowerSeries.X` using `fun i => by`. Rewrite using `[hf, letπ, PowerSeries.map_X]`.
+
+Establish `hu : IsUnit (algebraMap k⟦X⟧ k⸨X⸩ PowerSeries.X)` using `IsLocalization.map_units k⸨X⸩ (⟨PowerSeries.X, Submonoid.mem_powers _⟩ : Submonoid.powers (PowerSeries.X : k⟦X⟧))`. Establish `hP : ∀ i, f i (PD.p : LetA O n) = 0` using `fun i => by`. Rewrite using `[map_natCast, ← map_natCast (algebraMap k k⸨X⸩), hp, map_zero]`. Establish `hd : ∀ e : W.EE, ∃ (a : LetA O n) (m : ℕ) (y : W.EE), e * algebraMap (LetA O n) W.EE letπ ^ m = algebraMap (LetA O n) W.EE a + algebraMap (LetA O n) W.EE (PD.p : LetA O n) * y`. Introduce `e`.
+
+Take `⟨a, m, h⟩` from `W.EE_dense e 1`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 h`. Use `⟨a, m, y, ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[map_pow, pow_one]`. Rewrite using `[map_natCast]`.
+
+Take the linear combination `-hy`. Establish `hs : ∀ (a : LetA O n) (y : W.EE), algebraMap (LetA O n) W.EE a = algebraMap (LetA O n) W.EE (PD.p : LetA O n) * y → ∃ b, a = (PD.p : LetA O n) * b`. Introduce `a y h`. Use `W.EE_sat a 1 (Ideal.mem_span_singleton'.2 ⟨y, by rw [h, map_natCast, pow_one, mul_comm]⟩)` as an intermediate fact. Simplify using `using this`.
+
+Use `choose p hpa using fun i => exists_extend_of_dense (algebraMap (LetA O n) W.EE) (f i) letπ (PD.p : LetA O n) (by rw [hX]; exact hu) (hP i) hd hs`. Take `⟨u, hπ⟩` from `W.EE_π.exists_right_inv`. Use `⟨p, fun i a => hpa i a, fun i c => ?_, fun i e he => ?_⟩` and prove the remaining obligations. Take `⟨⟨s, ⟨_, m, rfl⟩⟩, h⟩` from `IsLocalization.surj (Submonoid.powers (PowerSeries.X : k⟦X⟧)) c`. Take `⟨t, rfl⟩` from `PowerSeries.map_surjective _ hsurj s`.
+
+Use `⟨algebraMap (LetA O n) W.EE (fun _ => t) * u ^ m, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (p i) hπ`. Rewrite `h1` using `[map_mul, hpa, hX, map_one]`. Simplify using `only [map_pow] at h`. Rewrite using `[map_mul, hpa, hf, map_pow, ← h, mul_assoc, ← mul_pow, h1, one_pow, mul_one]`.
+
+Take `⟨a, m, y, h⟩` from `hd e`. Establish `h1` using `congrArg (p i) h`. Rewrite `h1` using `[map_mul, he, zero_mul, map_add, map_mul, hpa, hpa, hP, zero_mul, add_zero, hf]`. Establish `h2 : PowerSeries.map (algebraMap O k) (a i) = 0` using `(IsFractionRing.injective k⟦X⟧ k⸨X⸩) (by rw [map_zero]; exact h1.symm)`. Establish `h3 : ∀ j, ∃ d, PowerSeries.coeff j (a i) = lam * d` using `fun j => (hker _).1 (by`.
+
+Use `congrArg (PowerSeries.coeff j) h2` as an intermediate fact. Simplify using `using this)`. Use `choose d hd' using h3`. Take `⟨c, hc⟩` from `(hker (PD.p : O)).1 (by rw [map_natCast, hp])`. Establish `h4 : letE i * a = algebraMap O (LetA O n) lam * (letE i * fun _ => PowerSeries.mk d)`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Use extensionality with `l`. Simplify using `[letE, hd']`.
+
+Simplify using `[letE, hj]`. Establish `h5 : (PD.p : LetA O n) = algebraMap O (LetA O n) lam * algebraMap O (LetA O n) c`. Rewrite using `[← map_mul, ← hc, map_natCast]`. Establish `h6` using `congrArg (algebraMap (LetA O n) W.EE) h4`. Rewrite `h` using `[h5]`.
+
+Simplify using `only [map_mul] at h h6`. Rewrite using `[IsScalarTower.algebraMap_apply O (LetA O n) W.EE]`. Establish `h7 : algebraMap (LetA O n) W.EE letπ ^ m * u ^ m = 1` using `by rw [← mul_pow, hπ, one_pow]`. Use `⟨(algebraMap (LetA O n) W.EE (letE i) * algebraMap (LetA O n) W.EE (fun _ => PowerSeries.mk d) + algebraMap (LetA O n) W.EE (letE i) * algebraMap (LetA O n) W.EE (algebraMap O (LetA O n) c) * y) * u ^ m, ?_⟩` and prove the remaining obligations. Take the linear combination `(algebraMap (LetA O n) W.EE (letE i) * u ^ m) * h + u ^ m * h6 - (algebraMap (LetA O n) W.EE (letE i) * e) * h7`.
+-/
 theorem exists_letter_reduction : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n) {k : Type} [Field k] [Algebra O k] (lam : O), Function.Surjective (algebraMap O k) → (∀ x, algebraMap O k x = 0 ↔ lam ∣ x) → ((PD.p : ℕ) : k) = 0 → ∃ p : ZMod n → (W.EE →+* k⸨X⸩), (∀ i (a : LetA O n), p i (algebraMap (LetA O n) W.EE a) = ((PowerSeries.map (algebraMap O k) (a i) : k⟦X⟧) : k⸨X⸩)) ∧ (∀ i, Function.Surjective (p i)) ∧ ∀ i e, p i e = 0 → ∃ e', algebraMap (LetA O n) W.EE (letE i) * e = algebraMap O W.EE lam * e' := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W k _ _ lam hsurj hker hp
   let f : ZMod n → (LetA O n →+* k⸨X⸩) := fun i =>

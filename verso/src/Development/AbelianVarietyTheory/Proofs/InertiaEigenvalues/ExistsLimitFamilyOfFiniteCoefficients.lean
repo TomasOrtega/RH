@@ -4,6 +4,13 @@ open scoped BigOperators
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `_ : TopologicalSpace R` to `⊥`. Establish `: DiscreteTopology R` using `⟨rfl⟩`. Take `⟨G, hG⟩ : ∃ G : I → (σ →₀ ℕ) → R, MapClusterPt G Filter.atTop F` from `exists_clusterPt_of_compactSpace _`. Use `⟨G, fun N M₀ => ?_⟩` and prove the remaining obligations. Establish `hnhds : ∀ᶠ H in nhds G, ∀ x, ∀ m ∈ {m : σ →₀ ℕ | m.degree ≤ N}, H x m = G x m`.
+
+Use `Filter.eventually_all.2 fun x => ?_` and prove the remaining obligations. Use `((Finsupp.finite_of_degree_le N).eventually_all).2 fun m _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun H : I → (σ →₀ ℕ) → R => H x m` using `(continuous_apply m).comp (continuous_apply x)`. Conclude with `hc.continuousAt.eventually (isOpen_discrete {G x m} |>.mem_nhds rfl)`. Take `⟨M, hM, hFM⟩` from `Filter.frequently_atTop.1 (hG.frequently hnhds) M₀`.
+
+Conclude with `⟨M, hM, fun x m hm => hFM x m hm⟩`.
+-/
 theorem exists_limit_family_of_finite_coefficients (σ I R : Type) [Finite σ] [Finite I] [Finite R]
     (F : ℕ → I → (σ →₀ ℕ) → R) :
     ∃ G : I → (σ →₀ ℕ) → R, ∀ N M₀ : ℕ, ∃ M, M₀ ≤ M ∧

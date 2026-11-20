@@ -11,6 +11,17 @@ section
 open UpperTheory.V.Af.Bc
 open scoped Pointwise
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `(exists_isPlaceOver Ω w : ∃ B : ValuationSubring Ω, IsPlaceOver B w)`. Establish `hB' : IsPlaceOver B (w.under (𝓞 F))` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply F K Ω]`. Conclude with `hB (algebraMap (𝓞 F) (𝓞 K) x)`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) hB' hA`.
+
+Establish `hm : ∀ x, x ∈ B ↔ g x ∈ g • B` using `fun x => ValuationSubring.smul_mem_pointwise_smul_iff.symm`. Establish `hv : ∀ y, (g • B).valuation (g y) < 1 ↔ B.valuation y < 1` using `fun y => by`. Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, ← hm, ← hm, map_eq_zero_iff _ g.injective]`. Establish `hD : ∀ s ∈ Dec (F` using `K) B, g * res F Ω K s * g⁻¹ ∈ Dec (F := F) (g • B) := fun s hs => by`. Establish `h1 : res F Ω K s • B = B` using `hs`.
+
+Use `show (g * res F Ω K s * g⁻¹) • g • B = g • B`. Rewrite using `[mul_smul, mul_smul, inv_smul_smul, h1]`. Establish `hD' : ∀ s ∈ Dec (F` using `F) (g • B), g⁻¹ * s * g ∈ Dec (F := F) B := fun s hs => by`. Establish `h1 : s • g • B = g • B` using `hs`. Use `show (g⁻¹ * s * g) • B = B`.
+
+Rewrite using `[mul_smul, mul_smul, h1, inv_smul_smul]`. Use `⟨B, g, hB, hD', hD, fun s hs => ⟨hD s hs.1, fun x hx => ?_⟩⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `g.surjective x`. Establish `e : (g * res F Ω K s * g⁻¹) (g y) = g (s y)` using `by show g (s (g.symm (g y))) = _`. Rewrite using `[AlgEquiv.symm_apply_apply]`.
+
+Rewrite using `[e, ← map_sub, hv]`. Conclude with `hs.2 y ((B.valuation_le_one_iff _).2 ((hm y).2 (((g • B).valuation_le_one_iff _).1 hx)))`.
+-/
 private theorem move {F K Ω : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω] [Algebra F K]
     [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω]
     (w : HeightOneSpectrum (𝓞 K)) {A : ValuationSubring Ω} (hA : IsPlaceOver A (w.under (𝓞 F))) :
@@ -42,19 +53,39 @@ private theorem move {F K Ω : Type} [Field F] [NumberField F] [Field K] [Number
   rw [e, ← map_sub, hv]
   exact hs.2 y ((B.valuation_le_one_iff _).2 ((hm y).2 (((g • B).valuation_le_one_iff _).1 hx)))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 L) _ ∈ w.asIdeal ↔ _`. Rewrite using `[map_natCast]`.
+-/
 private theorem nat_mem_under {F L : Type} [Field F] [NumberField F] [Field L] [NumberField L] [Algebra F L] (l : ℕ)
     (w : HeightOneSpectrum (𝓞 L)) : ((l : ℕ) : 𝓞 F) ∈ (w.under (𝓞 F)).asIdeal ↔ ((l : ℕ) : 𝓞 L) ∈ w.asIdeal := by
   change algebraMap (𝓞 F) (𝓞 L) _ ∈ w.asIdeal ↔ _
   rw [map_natCast]
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`.
+-/
 private theorem char_conj {Γ C : Type} [Group Γ] [CommGroup C] (χ : Γ →* C) (g s : Γ) : χ (g * s * g⁻¹) = χ s := by
   rw [map_mul, map_mul, map_inv, mul_inv_cancel_comm]
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`.
+-/
 private theorem rep_conj {Γ C : Type} [Group Γ] [Group C] (r : Γ →* C) (P : C) (g s : Γ) :
     P * r g * r s * (P * r g)⁻¹ = P * r (g * s * g⁻¹) * P⁻¹ := by
   rw [map_mul, map_mul, map_inv]
   group
 
+/- English proof (translation)
+Take `⟨χ, hχ, ⟨P, hP⟩, hκ⟩` from `hκ`. Take `⟨B, g, hB, hD', hD, hI⟩` from `move w hA`. Set `d : ↥(Dec (F` to `K) B) →* ↥(Dec (F := F) A) := (((MulAut.conj g).toMonoidHom.comp (res F Ω K)).comp (Dec (F := K) B).subtype).codRestrict _ fun s => hD s s.2`. Establish `hd : ∀ s, (d s : G F Ω) = g * res F Ω K s * g⁻¹` using `fun _ => rfl`. Use `⟨B, d, hB, ⟨fun i => (χ i).comp (res F Ω K), fun i s hs => hχ i _ hs, ⟨P * r g, fun s => ?_⟩, fun i s hs => ?_⟩, fun s => ?_, fun H s => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.comp_apply, rep_conj]`. Conclude with `hP (d s)`. Establish `h` using `hκ i (d s) (hI s hs)`. Rewrite `h` using `[hd, char_conj, char_conj]`. Conclude with `h`.
+
+Rewrite using `[hd, char_conj]`. Both sides reduce to the same expression. Take `⟨t, ht⟩` from `H (hD' s s.2)`. Establish `htD : t ∈ Dec (F` using `K) B := by`. Establish `h1 : res F Ω K t • B = B`.
+
+Rewrite using `[ht]`. Conclude with `hD' s s.2`. Conclude with `h1`. Use `⟨⟨t, htD⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`.
+
+Use `show g * res F Ω K t * g⁻¹ = s`. Rewrite using `[ht]`. Use `group`.
+-/
 private theorem flag_move {F K Ω : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω] [Algebra F K]
     [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω]
     {l : ℕ} [Fact l.Prime] {n M : ℕ} {m : Fin n → ℤ} {r : G F Ω →* GL (Fin n) (Qbar l)}
@@ -93,6 +124,13 @@ private theorem flag_move {F K Ω : Type} [Field F] [NumberField F] [Field K] [N
 
 end
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ _ _ l _ n M m r hM`. Use `⟨fun hdec H w hw => ?_, fun hm H w hw => ?_⟩` and prove the remaining obligations. Take `⟨A, hA, κ, hκ, hu⟩` from `H (w.under (𝓞 ℚ)) ((nat_mem_under l w).2 hw)`. Take `⟨B, d, hB, hF, hc, hs⟩` from `flag_move w hA hκ`. Establish `hv : B.valuation (l : Ω) < 1`.
+
+Simplify using `using (hB _).2 hw`. Use `⟨B, hB, _, hF, fun i j e => hu i j (MonoidHom.ext fun s => ?_)⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hs (hdec B hv) s`. Establish `h1` using `DFunLike.congr_fun e t`. Express the relevant statement in the definitionally equal form `κ i (d t) = κ j (d t) * cycBar K Ω l t at h1`.
+
+Express the relevant statement in the definitionally equal form `κ i (d t) = κ j (d t) * cycBar ℚ Ω l (d t)`. Rewrite using `[hc, h1]`. Take `⟨A, hA, κ, hκ⟩` from `(Lev.LevelF.of_level H).above (w.under (𝓞 ℚ)) ((nat_mem_under l w).2 hw)`. Take `⟨B, d, hB, hF, -, -⟩` from `flag_move w hA hκ`. Conclude with `⟨B, hB, _, hF, Lev.unlGap K Ω l n M hM m _ w hw B hB _ hF hm⟩`.
+-/
 theorem UpperTheory.V.Th.unlRes :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (n M : ℕ) (m : Fin n → ℤ) (r : G ℚ Ω →* GL (Fin n) (Qbar l)), 1 ≤ M → ((∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → Dec (F := ℚ) A ≤ (AlgEquiv.restrictScalarsHom ℚ : G K Ω →* G ℚ Ω).range) → Unl l M m r → Unl l M m (r.comp (AlgEquiv.restrictScalarsHom ℚ : G K Ω →* G ℚ Ω))) ∧ ((∀ i j, m i ≠ m j + 1) → Af.Level l M m r → Unl l M m (r.comp (AlgEquiv.restrictScalarsHom ℚ : G K Ω →* G ℚ Ω))) := by
   intro K Ω _ _ _ _ _ _ _ l _ n M m r hM

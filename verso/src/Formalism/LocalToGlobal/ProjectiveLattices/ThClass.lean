@@ -58,6 +58,11 @@ def ThLaTot (nab : NabV Xo c) (w : Cl → (Fin n → LevQ Dw l) → c.F) (La : C
   ∀ (k : Cl) (v : Vs) (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S),
     ∃! t : S, thLaValAt Xo c nab (w k) (La k) (Nc k) (io v) y t
 
+/- English proof (translation)
+Use `⟨fun p y => evR Xo c xi y * ∑ k, algebraMap c.F p.R (vol * ((gam k : c.F))⁻¹ * ep k) * (h k (x k) p.R y).choose, ?_, ?_⟩` and prove the remaining obligations. Introduce `p y`. Conclude with `⟨fun k => (h k (x k) p.R y).choose, fun k => (h k (x k) p.R y).choose_spec.1, rfl⟩`. Introduce `f' hf'`. Use function extensionality and compare the values at `p y`.
+
+Take `⟨vc, hvc, hv⟩` from `hf' p y`. Rewrite using `[hv]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[(h k (x k) p.R y).choose_spec.2 (vc k) (hvc k)]`.
+-/
 theorem existsUnique_thCls (nab : NabV Xo c) (w : Cl → (Fin n → LevQ Dw l) → c.F) (La : Cl → GenLat E n)
     (Nc : Cl → ℕ) (gam : Cl → ℕ) (vol : c.F) (ep : Cl → c.F) (io : Vs →ₗ[c.F] MvPolynomial (LtN Dw n) c.F) (xi : Rul Xo c)
     (h : ThLaTot Xo c nab w La Nc io) (x : Cl → Vs) :

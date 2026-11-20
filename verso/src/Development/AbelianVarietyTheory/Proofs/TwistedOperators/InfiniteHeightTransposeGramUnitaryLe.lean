@@ -18,6 +18,15 @@ namespace GlobalTheory.HtInfKapX
 
 open GlobalTheory.AdelicU (htInf htOf normInf opNorm compInf)
 
+/- English proof (translation)
+Unfold `GlobalTheory.AdelicU.opNorm`. Use `ContinuousLinearMap.opNNNorm_le_bound _ _ fun x => ?_` and prove the remaining obligations. Set `c : EuclideanSpace ℂ m → EuclideanSpace ℂ n` to `fun z => WithLp.toLp 2 fun i => z (e i)`. Set `c' : EuclideanSpace ℂ n → EuclideanSpace ℂ m` to `fun z => WithLp.toLp 2 fun j => z (e.symm j)`. Establish `hc : ∀ z, ‖c z‖₊ = ‖z‖₊` using `fun z => by`.
+
+Simplify using `only [EuclideanSpace.nnnorm_eq, c]`. Use `congr 1`. Conclude with `Equiv.sum_comp e (fun j => ‖z j‖₊ ^ 2)`. Establish `hc' : ∀ z, ‖c' z‖₊ = ‖z‖₊` using `fun z => by`. Simplify using `only [EuclideanSpace.nnnorm_eq, c']`.
+
+Use `congr 1`. Conclude with `Equiv.sum_comp e.symm (fun j => ‖z j‖₊ ^ 2)`. Establish `h : Matrix.toEuclideanCLM (n` using `m) (𝕜 := ℂ) (reindex e e y) x = c' (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) y (c x)) := by`. Use extensionality with `j`. Express the relevant statement in the definitionally equal form `∑ k, y (e.symm j) (e.symm k) * x k = ∑ i, y (e.symm j) i * x (e i)`.
+
+Rewrite using `[← Equiv.sum_comp e]`. Simplify using the standard rewrite rules. Rewrite using `[h, hc', ← hc x]`. Conclude with `ContinuousLinearMap.le_opNNNorm _ _`.
+-/
 theorem opNorm_reindex_le {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] (e : n ≃ m)
     (y : Matrix n n ℂ) : opNorm (reindex e e y) ≤ opNorm y := by
   unfold GlobalTheory.AdelicU.opNorm
@@ -41,6 +50,9 @@ theorem opNorm_reindex_le {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [
   rw [h, hc', ← hc x]
   exact ContinuousLinearMap.le_opNNNorm _ _
 
+/- English proof (translation)
+Use `le_antisymm (opNorm_reindex_le e y) ?_` and prove the remaining obligations. Establish `h : reindex e.symm e.symm (reindex e e y) = y` using `by ext; simp`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem opNorm_reindex {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] (e : n ≃ m)
     (y : Matrix n n ℂ) : opNorm (reindex e e y) = opNorm y := by
   refine le_antisymm (opNorm_reindex_le e y) ?_
@@ -51,6 +63,9 @@ theorem opNorm_reindex {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [Dec
 variable (F : Type) [Field F] [NumberField F] {E : Type} [Field E] [NumberField E] [Algebra F E]
   (w : NumberField.InfinitePlace F)
 
+/- English proof (translation)
+Unfold `GlobalTheory.AdelicU.normInf`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[reindex_apply, ← Matrix.submatrix_map, ← reindex_apply, opNorm_reindex]`.
+-/
 theorem normInf_reindex {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] (e : n ≃ m)
     (y : Matrix n n (w.Completion ⊗[F] E)) : normInf F w (reindex e e y) = normInf F w y := by
   unfold GlobalTheory.AdelicU.normInf
@@ -58,6 +73,9 @@ theorem normInf_reindex {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [De
   funext τ
   rw [reindex_apply, ← Matrix.submatrix_map, ← reindex_apply, opNorm_reindex]
 
+/- English proof (translation)
+Establish `key : ∀ y, normInf F w ((Matrix.reindexAlgEquiv (w.Completion ⊗[F] E) (w.Completion ⊗[F] E) e) y) = normInf F w y` using `fun y => by rw [Matrix.reindexAlgEquiv_apply, normInf_reindex]`. Use `show GlobalTheory.AdelicU.htOf (normInf F w) _ = GlobalTheory.AdelicU.htOf (normInf F w) _`. Rewrite using `[GlobalTheory.AdelicU.htOf, GlobalTheory.AdelicU.htOf, ← map_inv, Units.coe_map, Units.coe_map]`. Conclude with `congrArg₂ _ rfl (congrArg₂ _ (key _) (key _))`.
+-/
 theorem htInf_reindex {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] (e : n ≃ m)
     (g : (Matrix n n (w.Completion ⊗[F] E))ˣ) :
     htInf F w (Units.map (Matrix.reindexAlgEquiv (w.Completion ⊗[F] E) (w.Completion ⊗[F] E) e).toMonoidHom g) =
@@ -68,6 +86,9 @@ theorem htInf_reindex {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [Deci
   rw [GlobalTheory.AdelicU.htOf, GlobalTheory.AdelicU.htOf, ← map_inv, Units.coe_map, Units.coe_map]
   exact congrArg₂ _ rfl (congrArg₂ _ (key _) (key _))
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem bc_reindex {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n m : Type} [Fintype n] [DecidableEq n]
     [Fintype m] [DecidableEq m] (e : n ≃ m) (g : (Matrix n n A)ˣ) :
     Formalism.UG.bc φ (Units.map (Matrix.reindexAlgEquiv A A e).toMonoidHom g) =
@@ -75,6 +96,11 @@ theorem bc_reindex {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n m 
   ext i j
   rfl
 
+/- English proof (translation)
+Introduce `D θ hθ X d e J hJ`. Use `⟨1, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `le_of_eq ?_` and prove the remaining obligations. Establish `key : ∀ w, GlobalTheory.AdelicU.htInf D.host.F w (Formalism.UG.bc (GlobalTheory.AdelicU.compInf D.host.F D.host.E w) (kapX X e hJ h).1) = GlobalTheory.AdelicU.htInf D.host.F w (Formalism.UG.bc (GlobalTheory.AdelicU.compInf D.host.F D.host.E w) (Formalism.L2.Theta.matHom X h))` using `fun w => by show GlobalTheory.AdelicU.htInf D.host.F w (Formalism.UG.bc _ (Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e).toMonoidHom (Formalism.L2.Theta.matHom X h))) = _`.
+
+Rewrite using `[bc_reindex, htInf_reindex]`. Simplify using `only [key]`. Conclude with `(Function.Bijective.prod_comp (GlobalTheory.CMTypePlaces.places_bijective D) _).symm.trans (Finset.prod_congr rfl fun τ _ => GlobalTheory.Grow.htInf_eq_infHt X hθ τ h)`.
+-/
 theorem htInf_kapX_le : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E} (hJ : J = D.host.xi0 • reindex e e X.gramᵀ), ∃ C : NNReal, ∀ h : GA D X, ∏ w, GlobalTheory.AdelicU.htInf D.host.F w (Formalism.UG.bc (GlobalTheory.AdelicU.compInf D.host.F D.host.E w) (kapX X e hJ h).1) ≤ C * ∏ τ, GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.infHt θ X τ h := by
   intro D θ hθ X d e J hJ
   refine ⟨1, fun h => ?_⟩

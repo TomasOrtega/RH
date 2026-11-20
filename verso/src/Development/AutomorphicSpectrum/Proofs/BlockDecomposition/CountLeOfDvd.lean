@@ -12,15 +12,37 @@ variable {E : Type*} [AddCommGroup E] [Module ℂ E]
 def dd (n : ℕ) (v : ℕ → E) (ψ : E →ₗ[ℂ] ℂ) : ℂ[X] :=
   ∑ j ∈ Finset.range (n + 1), C (ψ (v j)) * X ^ (n - j)
 
+/- English proof (translation)
+Simplify using `[dd, add_mul, Finset.sum_add_distrib]`.
+-/
 lemma dd_add (n : ℕ) (v : ℕ → E) (ψ ψ' : E →ₗ[ℂ] ℂ) : dd n v (ψ + ψ') = dd n v ψ + dd n v ψ' := by
   simp [dd, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[dd, Finset.mul_sum, mul_assoc]`.
+-/
 lemma dd_smul (n : ℕ) (v : ℕ → E) (a : ℂ) (ψ : E →ₗ[ℂ] ℂ) : dd n v (a • ψ) = C a * dd n v ψ := by
   simp [dd, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[dd]`.
+-/
 lemma dd_zero (n : ℕ) (v : ℕ → E) : dd n v (0 : E →ₗ[ℂ] ℂ) = 0 := by
   simp [dd]
 
+/- English proof (translation)
+Establish `key : X * dd n v ψ = (∑ j ∈ Finset.range (n + 1), C (ψ (v (j + 1))) * X ^ (n - j)) + C (ψ x) * X ^ (n + 1)`. Establish `h1` using `Finset.sum_range_succ (fun j => (C (ψ (v j)) : ℂ[X]) * X ^ (n + 1 - j)) (n + 1)`. Establish `h2` using `Finset.sum_range_succ' (fun j => (C (ψ (v j)) : ℂ[X]) * X ^ (n + 1 - j)) (n + 1)`. Rewrite `h2` using `[h1]`. Simplify using `only [hn, map_zero, zero_mul, add_zero, h0, Nat.sub_zero, Nat.add_sub_add_right] at h2`.
+
+Rewrite using `[← h2, dd, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `: n + 1 - j = (n - j) + 1` using `by have := Finset.mem_range.1 hj; omega`. Rewrite using `[this, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hG : (S.map (fun t => X - C t)).prod = (∑ j ∈ Finset.range (n + 1), C (((-1 : ℂ) ^ (j + 1)) * S.esymm (j + 1)) * X ^ (n - j)) + X ^ (n + 1)`. Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, hS, Finset.sum_range_succ']`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Nat.add_sub_add_right, map_mul, map_pow, map_neg, map_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[Multiset.esymm]`. Rewrite using `[key, hG, dd, mul_add, Finset.mul_sum, add_sub_right_comm, ← Finset.sum_sub_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Establish `h` using `congrArg ψ (hrec j (by have := Finset.mem_range.1 hj; omega))`. Simplify using `only [map_sub, map_smul, smul_eq_mul] at h`. Establish `h' : ψ (v (j + 1)) = ψ (T (v j)) + (-1 : ℂ) ^ (j + 1) * S.esymm (j + 1) * ψ x`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h']`. Simplify using `only [LinearMap.comp_apply, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma dd_step (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : Module.End ℂ E) (v : ℕ → E) (x : E)
     (h0 : v 0 = x) (hn : v (n + 1) = 0)
     (hrec : ∀ j ≤ n, v (j + 1) - T (v j) = (((-1 : ℂ) ^ (j + 1)) * S.esymm (j + 1)) • x) (ψ : E →ₗ[ℂ] ℂ) :
@@ -53,6 +75,13 @@ lemma dd_step (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : M
   simp only [LinearMap.comp_apply, map_add, map_mul]
   ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro ψ`. Simplify using `[Module.End.one_eq_id]`. Consider the case `succ k ih`. Introduce `ψ`.
+
+Establish `e : ψ ∘ₗ (T ^ (k + 1)) = (ψ ∘ₗ (T ^ k)) ∘ₗ T`. Rewrite using `[pow_succ]`. Both sides reduce to the same expression. Establish `: X ^ (k + 1) * dd n v ψ - dd n v (ψ ∘ₗ (T ^ (k + 1))) = X * (X ^ k * dd n v ψ - dd n v (ψ ∘ₗ (T ^ k))) + (X * dd n v (ψ ∘ₗ (T ^ k)) - dd n v ((ψ ∘ₗ (T ^ k)) ∘ₗ T))`. Rewrite using `[e]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, dd_step S n hS T v x h0 hn hrec]`. Conclude with `dvd_add (Dvd.dvd.mul_left (ih ψ) _) (Dvd.intro_left _ rfl)`.
+-/
 lemma dd_pow (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : Module.End ℂ E) (v : ℕ → E) (x : E)
     (h0 : v 0 = x) (hn : v (n + 1) = 0)
     (hrec : ∀ j ≤ n, v (j + 1) - T (v j) = (((-1 : ℂ) ^ (j + 1)) * S.esymm (j + 1)) • x) (k : ℕ) :
@@ -70,6 +99,15 @@ lemma dd_pow (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : Mo
     rw [this, dd_step S n hS T v x h0 hn hrec]
     exact dvd_add (Dvd.dvd.mul_left (ih ψ) _) (Dvd.intro_left _ rfl)
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p r hp hr`. Establish `: (p + r) * dd n v ψ - dd n v (ψ ∘ₗ (aeval T (p + r))) = (p * dd n v ψ - dd n v (ψ ∘ₗ (aeval T p))) + (r * dd n v ψ - dd n v (ψ ∘ₗ (aeval T r)))`. Rewrite using `[map_add, LinearMap.comp_add, dd_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `dvd_add hp hr`. Consider the case `monomial k a`. Establish `e : ψ ∘ₗ (aeval T (monomial k a)) = a • (ψ ∘ₗ (T ^ k))`. Rewrite using `[aeval_monomial]`.
+
+Use extensionality with `y`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Establish `: monomial k a * dd n v ψ - dd n v (ψ ∘ₗ (aeval T (monomial k a))) = C a * (X ^ k * dd n v ψ - dd n v (ψ ∘ₗ (T ^ k)))`. Rewrite using `[e, dd_smul, ← C_mul_X_pow_eq_monomial]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `Dvd.dvd.mul_left (dd_pow S n hS T v x h0 hn hrec k ψ) _`.
+-/
 lemma dd_aeval (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : Module.End ℂ E) (v : ℕ → E) (x : E)
     (h0 : v 0 = x) (hn : v (n + 1) = 0)
     (hrec : ∀ j ≤ n, v (j + 1) - T (v j) = (((-1 : ℂ) ^ (j + 1)) * S.esymm (j + 1)) • x) (p : ℂ[X])
@@ -92,6 +130,9 @@ lemma dd_aeval (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (T : 
     rw [this]
     exact Dvd.dvd.mul_left (dd_pow S n hS T v x h0 hn hrec k ψ) _
 
+/- English proof (translation)
+Establish `h` using `dd_aeval S n hS T v x h0 hn hrec (minpoly ℂ T) ψ`. Rewrite `h` using `[minpoly.aeval, LinearMap.comp_zero, dd_zero, sub_zero]`. Then use the resulting hypothesis.
+-/
 lemma dvd_minpoly_mul [FiniteDimensional ℂ E] (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1)
     (T : Module.End ℂ E) (v : ℕ → E) (x : E)
     (h0 : v 0 = x) (hn : v (n + 1) = 0)
@@ -101,6 +142,13 @@ lemma dvd_minpoly_mul [FiniteDimensional ℂ E] (S : Multiset ℂ) (n : ℕ) (hS
   have h := dd_aeval S n hS T v x h0 hn hrec (minpoly ℂ T) ψ
   rwa [minpoly.aeval, LinearMap.comp_zero, dd_zero, sub_zero] at h
 
+/- English proof (translation)
+Establish `hG : (S.map (fun t => X - C t)).prod.roots = S` using `roots_multiset_prod_X_sub_C S`. Establish `hcount : S.count z = rootMultiplicity z (S.map (fun t => X - C t)).prod`. Rewrite using `[← count_roots, hG]`. Establish `h1 : (X - C z) ^ (S.count z) ∣ (S.map (fun t => X - C t)).prod`. Rewrite using `[hcount]`.
+
+Conclude with `pow_rootMultiplicity_dvd _ _`. Establish `h2` using `h1.trans (dvd_minpoly_mul S n hS T v x h0 hn hrec ψ)`. Establish `hcop : IsCoprime (X - C z) (minpoly ℂ T)`. Rewrite using `[(irreducible_X_sub_C z).coprime_iff_not_dvd, dvd_iff_isRoot]`. Conclude with `fun h => hz (Module.End.hasEigenvalue_of_isRoot h)`.
+
+Conclude with `(hcop.pow_left).dvd_of_dvd_mul_left h2`.
+-/
 lemma pow_dvd_dd [FiniteDimensional ℂ E] (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1)
     (T : Module.End ℂ E) (v : ℕ → E) (x : E)
     (h0 : v 0 = x) (hn : v (n + 1) = 0)
@@ -118,6 +166,19 @@ lemma pow_dvd_dd [FiniteDimensional ℂ E] (S : Multiset ℂ) (n : ℕ) (hS : Mu
     exact fun h => hz (Module.End.hasEigenvalue_of_isRoot h)
   exact (hcop.pow_left).dvd_of_dvd_mul_left h2
 
+/- English proof (translation)
+Use `set G := (S.map (fun t => X - C t)).prod with hGdef`. Establish `hGroots : G.roots = S` using `roots_multiset_prod_X_sub_C S`. Establish `hG0 : G ≠ 0` using `(monic_multiset_prod_of_monic _ _ (fun t _ => monic_X_sub_C t)).ne_zero`. Establish `hcount : ∀ w, S.count w = rootMultiplicity w G` using `fun w => by rw [← count_roots, hGroots]`. Establish `h1 : (X - C z) ^ (S.count z) ∣ G`.
+
+Rewrite using `[hcount]`. Conclude with `pow_rootMultiplicity_dvd _ _`. Establish `h2 : (X - C z) ^ (S.count z) ∣ C c * G.comp (C q * X)`. Establish `: C c * G.comp (C q * X) = C d * (X * f) + C c * G` using `by rw [hrel]; ring`. Rewrite using `[this]`.
+
+Conclude with `dvd_add (Dvd.dvd.mul_left (Dvd.dvd.mul_left hf _) _) (Dvd.dvd.mul_left h1 _)`. Establish `h3 : (X - C z) ^ (S.count z) ∣ G.comp (C q * X)` using `((isUnit_C.mpr (isUnit_iff_ne_zero.mpr hc)).dvd_mul_left).1 h2`. Take `⟨H, hH⟩` from `h3`. Establish `h4 : G = (C q⁻¹ * (X - C (q * z))) ^ (S.count z) * H.comp (C q⁻¹ * X)`. Establish `e1 : (G.comp (C q * X)).comp (C q⁻¹ * X) = G`.
+
+Rewrite using `[comp_assoc]`. Establish `: (C q * X : ℂ[X]).comp (C q⁻¹ * X) = X`. Simplify using `only [mul_comp, C_comp, X_comp]`. Rewrite using `[← mul_assoc, ← C_mul, mul_inv_cancel₀ hq, C_1, one_mul]`. Rewrite using `[this, comp_X]`.
+
+Establish `e2 : (X - C z : ℂ[X]).comp (C q⁻¹ * X) = C q⁻¹ * (X - C (q * z))`. Simplify using `only [sub_comp, X_comp, C_comp, mul_sub, ← C_mul]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hq, one_mul]`. Rewrite using `[← e1, hH, mul_comp, pow_comp, e2]`. Establish `h5 : (X - C (q * z)) ^ (S.count z) ∣ G`.
+
+Rewrite using `[h4, mul_pow, mul_assoc]`. Use `((isUnit_C.mpr (isUnit_iff_ne_zero.mpr (inv_ne_zero hq))).pow _).dvd_mul_left.2 ?_` and prove the remaining obligations. Conclude with `Dvd.intro _ rfl`. Rewrite using `[hcount (q * z)]`. Conclude with `(le_rootMultiplicity_iff hG0).2 h5`.
+-/
 lemma count_le_of_dvd (S : Multiset ℂ) (q c d z : ℂ) (hq : q ≠ 0) (hc : c ≠ 0) (f : ℂ[X])
     (hf : (X - C z) ^ (S.count z) ∣ f)
     (hrel : C d * (X * f) = C c * (((S.map (fun t => X - C t)).prod).comp (C q * X) - (S.map (fun t => X - C t)).prod)) :
@@ -153,6 +214,13 @@ lemma count_le_of_dvd (S : Multiset ℂ) (q c d z : ℂ) (hq : q ≠ 0) (hc : c 
   rw [hcount (q * z)]
   exact (le_rootMultiplicity_iff hG0).2 h5
 
+/- English proof (translation)
+Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, hS, ← coe_compRingHom_apply, map_sum, ← Finset.sum_sub_distrib, Finset.sum_range_succ, dd, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [coe_compRingHom_apply]`. Establish `hlast : ((-1 : ℂ[X]) ^ (n + 1) * (C (S.esymm (n + 1)) * X ^ (n + 1 - (n + 1)))).comp (C q * X) - (-1 : ℂ[X]) ^ (n + 1) * (C (S.esymm (n + 1)) * X ^ (n + 1 - (n + 1))) = 0`. Simplify using the standard rewrite rules. Rewrite using `[hlast, add_zero, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j ≤ n` using `by have := Finset.mem_range.1 hj; omega`. Establish `e : n + 1 - j = (n - j) + 1` using `by omega`. Establish `h` using `congrArg (C : ℂ → ℂ[X]) (hp j hj')`. Simplify using `only [map_mul, map_sub, map_pow, map_neg, map_one] at h`.
+
+Simplify using `only [mul_comp, pow_comp, neg_comp, one_comp, C_comp, X_comp]`. Rewrite `h`, the goal using `[e]`. Rewrite using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma rel_of_pair (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (q c d : ℂ) (v : ℕ → E)
     (φ : E →ₗ[ℂ] ℂ)
     (hp : ∀ j ≤ n, d * φ (v j) = (q ^ (n + 1 - j) - 1) * (((-1 : ℂ) ^ j) * S.esymm j) * c) :
@@ -176,6 +244,59 @@ lemma rel_of_pair (S : Multiset ℂ) (n : ℕ) (hS : Multiset.card S = n + 1) (q
   calc C d * (X * (C (φ (v j)) * X ^ (n - j))) = (C d * C (φ (v j))) * X ^ (n - j + 1) := by ring
     _ = _ := by rw [h]; ring
 
+/- English proof (translation)
+Introduce `q n hq V _ _ B W U Z S hpos hcard h0S hZ0 hUW hZW hexp hZtop hrec hpair z hz`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (by omega : q ≠ 0)`. Establish `hqR : (0 : ℝ) < q` using `by exact_mod_cast (by omega : 0 < q)`. Take `⟨s, hsdef⟩ : ∃ s : ℂ, s = (q : ℂ) ^ (((2 : ℕ) : ℂ)⁻¹)` from `⟨_, rfl⟩`. Establish `hs2 : s ^ 2 = q` using `by rw [hsdef]; exact Complex.cpow_nat_inv_pow _ (by norm_num)`.
+
+Establish `hs0 : s ≠ 0`. Introduce `h; rw [h] at hs2; exact hq0 (by simpa using hs2.symm)`. Establish `hsn : ‖s‖ ^ 2 = q`. Rewrite using `[← norm_pow, hs2]`. Simplify using the standard rewrite rules.
+
+Establish `hpow : ∀ j ≤ n + 1, (q : ℂ) ^ (((j : ℂ) * (((n + 1 : ℕ) : ℂ) - j)) / 2) = s ^ (j * (n + 1 - j))`. Introduce `j hj`. Establish `: ((j : ℂ) * (((n + 1 : ℕ) : ℂ) - j)) / 2 = ((j * (n + 1 - j) : ℕ) : ℂ) * (((2 : ℕ) : ℂ)⁻¹)`. Rewrite using `[Nat.cast_mul, Nat.cast_sub hj]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.cpow_nat_mul, ← hsdef]`. Take `⟨b, hbdef⟩ : ∃ b : ℕ → ℂ, ∀ j, b j = (-1) ^ j * s ^ (j * (j - 1)) * (s ^ (n * j))⁻¹` from `⟨_, fun _ => rfl⟩`. Establish `hbtop : ∀ j ≤ n + 1, b j * s ^ (j * (n + 1 - j)) = (-1) ^ j`. Introduce `j hj`.
+
+Establish `e : j * (j - 1) + j * (n + 1 - j) = n * j`. Take `⟨i, hi⟩` from `Nat.exists_eq_add_of_le hj`. Consider the cases of `j with`. Consider the case `zero => simp`. Consider the case `succ j`.
+
+Establish `: n + 1 - (j + 1) = i` using `by omega`. Establish `hn' : n = j + i` using `by omega`. Rewrite using `[this, hn']`. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hbdef, mul_assoc, mul_assoc, mul_comm (s ^ (n * j))⁻¹, ← mul_assoc (s ^ (j * (j - 1))), ← pow_add, e]`. Rewrite using `[mul_inv_cancel₀ (pow_ne_zero _ hs0), mul_one]`. Establish `hbrec : ∀ j, b (j + 1) = -((s ^ n)⁻¹ * b j * (q : ℂ) ^ j)`. Introduce `j`. Establish `e : (j + 1) * (j + 1 - 1) = j * (j - 1) + 2 * j`.
+
+Consider the cases of `j with`. Consider the case `zero => simp`. Consider the case `succ j => simp only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hbdef, hbdef, e, pow_add, ← hs2, ← pow_mul, Nat.mul_succ, pow_add s (n * j) n, mul_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨Ee, hEe⟩ : ∃ Ee : Submodule ℂ V, Ee = Submodule.span ℂ (Z '' (Finset.range (n + 1) : Set ℕ))` from `⟨_, rfl⟩`. Establish `: FiniteDimensional ℂ Ee`. Rewrite using `[hEe]`. Conclude with `FiniteDimensional.span_of_finite ℂ ((Finset.finite_toSet _).image _)`.
+
+Establish `hEmem : ∀ j ≤ n + 1, Z j ∈ Ee`. Introduce `j hj`. Break down `Nat.lt_or_ge j (n + 1) with h | h` into its components or cases. Rewrite using `[hEe]; exact Submodule.subset_span ⟨j, by simpa using h, rfl⟩`. Establish `: j = n + 1` using `by omega`.
+
+Rewrite using `[this, hZtop]`. Conclude with `Ee.zero_mem`. Establish `hEW : ∀ y ∈ Ee, y ∈ W`. Introduce `y hy`. Establish `: Ee ≤ W`.
+
+Rewrite using `[hEe, Submodule.span_le]`. Introduce and unpack `_ ⟨j, _, rfl⟩`. Conclude with `hZW j`. Conclude with `this hy`. Establish `hEU : ∀ y ∈ Ee, U y ∈ Ee`.
+
+Establish `: Ee ≤ Ee.comap U` using `by conv_lhs => rw [hEe]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hj' : j ≤ n` using `by simpa using hj`. Use `show U (Z j) ∈ Ee`.
+
+Rewrite using `[hrec j hj']`. Conclude with `Ee.smul_mem _ (Ee.sub_mem (Ee.smul_mem _ (hEmem 0 (by omega))) (hEmem _ (by omega)))`. Conclude with `fun y hy => this hy`. Take `⟨T, hT⟩ : ∃ T : Module.End ℂ Ee, ∀ y : Ee, ((T y : Ee) : V) = (s ^ n)⁻¹ • U y` from `⟨(s ^ n)⁻¹ • U.restrict hEU, fun y => rfl⟩`. Take `⟨Zs, hZs⟩ : ∃ Zs : ℕ → Ee, ∀ j ≤ n + 1, ((Zs j : Ee) : V) = Z j` from `⟨fun j => if h : j ≤ n + 1 then ⟨Z j, hEmem j h⟩ else 0, fun j hj => by simp [hj]⟩`.
+
+Take `⟨φ, hφ⟩ : ∃ φ : Ee →ₗ[ℂ] ℂ, ∀ y : Ee, φ y = B y (Z 0)` from `⟨{ toFun := fun y => B y (Z 0), map_add' := by simp, map_smul' := by simp }, fun _ => rfl⟩`. Establish `h0 : (fun j => b j • Zs j) 0 = Zs 0` using `by simp [hbdef]`. Establish `hn : (fun j => b j • Zs j) (n + 1) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hZs (n + 1) le_rfl, hZtop]`.
+
+Establish `hrec' : ∀ j ≤ n, (fun j => b j • Zs j) (j + 1) - T ((fun j => b j • Zs j) j) = (((-1 : ℂ) ^ (j + 1)) * S.esymm (j + 1)) • Zs 0`. Introduce `j hj`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `hbtop (j + 1) (by omega)`. Establish `h2` using `hbrec j`.
+
+Simplify using `only [map_smul, Submodule.coe_sub, Submodule.coe_smul, hT, hZs (j + 1) (by omega), hZs j (by omega), hZs 0 (by omega), hrec j hj, hpow (j + 1) (by omega)]`. Establish `key : ∀ w : V, b j • (s ^ n)⁻¹ • (q : ℂ) ^ j • w = (-b (j + 1)) • w`. Introduce `w`. Rewrite using `[smul_smul, smul_smul, h2]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, ← h1]`. Use `module`. Establish `hzE : ¬ T.HasEigenvalue z`. Introduce `h`.
+
+Take `⟨y, hy⟩` from `h.exists_hasEigenvector`. Establish `hy1` using `congrArg (Subtype.val) hy.apply_eq_smul`. Rewrite `hy1` using `[hT]`. Establish `hy0 : (y : V) ≠ 0` using `fun h => hy.2 (Subtype.ext h)`. Establish `hUy : U y = (s ^ n * z) • (y : V)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_inv_cancel₀ (pow_ne_zero _ hs0), one_smul]`. Use `_ = _ := by rw [hy1, Submodule.coe_smul, smul_smul]`. Establish `hr` using `hpos y hy0`. Establish `h1` using `hexp y (hEW y y.2)`.
+
+Establish `h2 : (B ((s ^ n * z) • (y : V)) ((s ^ n * z) • (y : V))).re = ‖s ^ n * z‖ ^ 2 * (B y y).re`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[← mul_assoc, mul_comm ((starRingEnd ℂ) _), Complex.mul_conj, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq]`. Rewrite `h1` using `[hUy, h2]`. Establish `h3` using `le_of_mul_le_mul_right h1 hr`.
+
+Establish `h4 : ‖s ^ n * z‖ ^ 2 = (q : ℝ) ^ n * ‖z‖ ^ 2`. Rewrite using `[norm_mul, norm_pow, mul_pow, ← pow_mul, mul_comm n 2, pow_mul, hsn]`. Establish `hz2 : ‖z‖ ^ 2 < (q : ℝ)⁻¹`. Use `pow_lt_pow_left₀ hz (norm_nonneg z) two_ne_zero` as an intermediate fact. Rewrite `this` using `[← Real.rpow_natCast ((q : ℝ) ^ (-(1 / 2) : ℝ)), ← Real.rpow_mul hqR.le]`.
+
+Evaluate the numerical expressions using `at this`. Rewrite `this` using `[Real.rpow_neg_one]`. Simplify using `using this`. Establish `h5 : (q : ℝ) ^ ((n : ℝ) - 1) = (q : ℝ) ^ n * (q : ℝ)⁻¹`. Rewrite using `[Real.rpow_sub_one hqR.ne', Real.rpow_natCast, div_eq_mul_inv]`.
+
+Rewrite `h3` using `[h4, h5]`. Conclude with `absurd h3 (not_le.2 (mul_lt_mul_of_pos_left hz2 (pow_pos hqR n)))`. Establish `hc : B (Z 0) (Z 0) ≠ 0`. Introduce `h`. Use `hpos _ hZ0` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Simplify using `at this`. Use `count_le_of_dvd S q (B (Z 0) (Z 0)) ((q : ℂ) ^ (n + 1) - 1) z hq0 hc (dd n (fun j => b j • Zs j) φ) (pow_dvd_dd S n hcard T _ (Zs 0) h0 hn hrec' φ z hzE) (rel_of_pair S n hcard q _ _ _ φ ?_)` and prove the remaining obligations. Introduce `j hj`. Establish `hp` using `hpair j (by omega)`.
+
+Rewrite `hp` using `[hpow j (by omega)]`. Use `show _ * φ (b j • Zs j) = _`. Rewrite using `[map_smul, hφ, hZs j (by omega), smul_eq_mul, ← hbtop j (by omega)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gapPoly : PositivityTheory.Rg.Rs.GapPoly := by
   intro q n hq V _ _ B W U Z S hpos hcard h0S hZ0 hUW hZW hexp hZtop hrec hpair z hz
   have hq0 : (q : ℂ) ≠ 0 := by exact_mod_cast (by omega : q ≠ 0)

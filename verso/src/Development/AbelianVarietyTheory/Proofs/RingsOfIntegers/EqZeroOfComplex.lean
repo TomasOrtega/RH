@@ -18,6 +18,9 @@ open GlobalTheory.PlaceInt
 
 namespace GlobalTheory.CoverRoot
 
+/- English proof (translation)
+Use `ReciprocityTheory.ChartRestriction.G.TB.detAlg_holds K p.n p.I p.rad r fun L _ _ _ ψ => ?_` and prove the remaining obligations. Use `letI : Algebra K ℂ := σ.toAlgebra`. Set `e : L →ₐ[K] ℂ` to `IsAlgClosed.lift`. Establish `h2 : e (ψ r) = 0` using `h (e.comp ψ)`. Conclude with `(map_eq_zero_iff e e.injective).mp h2`.
+-/
 theorem eq_zero_of_complex {K : Type} [Field K] (σ : K →+* ℂ) (p : TRing K) (r : p.R)
     (h : ∀ χ : p.R →ₐ[K] CAt σ, χ r = 0) : r = 0 := by
   refine ReciprocityTheory.ChartRestriction.G.TB.detAlg_holds K p.n p.I p.rad r fun L _ _ _ ψ => ?_
@@ -26,6 +29,13 @@ theorem eq_zero_of_complex {K : Type} [Field K] (σ : K →+* ℂ) (p : TRing K)
   have h2 : e (ψ r) = 0 := h (e.comp ψ)
   exact (map_eq_zero_iff e e.injective).mp h2
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c n d Cls _ _ δ gdet h`. Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hWD` using `(GlobalTheory.Frames.algebraic_laws hL.secBaseChange E H Dw d.l₂ d.Xo₂ d.c₂).2.2.1`. Establish `hnat` using `h.1.1`. Use `⟨Nat.card Cls, Nat.card_pos, fun k _ _ y₂ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨p, φ, y', hy⟩` from `GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw d.l₂ d.Xo₂ d.c₂ k y₂`. Establish `key : d.cδ p y' ^ Nat.card Cls - 1 = 0`. Use `eq_zero_of_complex d.c₂.F.val.toRingHom p _ fun χ => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw d.l₂ d.Xo₂ d.c₂ _ _ χ y'`. Establish `e1 : evR d.Xo₂ d.c₂ d.cδ z = χ (d.cδ p y')` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.evalAt_eq_of _ _ hWD d.cδ hnat p χ y' z hz`.
+
+Establish `e2` using `h.2 z`. Rewrite using `[map_sub, map_pow, map_one, ← e1, e2, ← map_pow, if_neg (by simp), ← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one, map_one, sub_self]`. Establish `e3 : evR d.Xo₂ d.c₂ d.cδ y₂ = φ (d.cδ p y')` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.evalAt_eq_of _ _ hWD d.cδ hnat p φ y' y₂ hy`. Rewrite using `[e3, ← map_pow, sub_eq_zero.mp key, map_one]`.
+-/
 theorem value_pow_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (Cls : Type) [CommGroup Cls] [Finite Cls] (δ : Cls →* d.c₂.Fˣ) (gdet : FrPt d.Xo₂ d.c₂ (CAt d.c₂.F.val.toRingHom) → Cls), CMP Xo c d _ Cls δ gdet false → ∃ m₀ : ℕ, 0 < m₀ ∧ ∀ (k : Type) [Field k] [Algebra d.c₂.F k] (y₂ : FrPt d.Xo₂ d.c₂ k), evR d.Xo₂ d.c₂ d.cδ y₂ ^ m₀ = 1 := by
   intro E _ _ _ H Dw l Xo c n d Cls _ _ δ gdet h
   have hL : Laws := GlobalTheory.firstFiveLaws.1

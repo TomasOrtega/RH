@@ -23,6 +23,9 @@ section Pts
 
 variable {S : Type} [CommRing S] (d : ℕ)
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [AlgHom.comp_apply, jetSubstP, jetCopy, jetMap_mk, MvPolynomial.aeval_X]`.
+-/
 theorem subst_copy (m : ℕ) {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S) (i : Fin 2) :
     (jetSubstP m (fun p : Fin 2 × Fin d => φ p.1 p.2)).comp (jetCopy d m i) =
       jetSubstP m (fun p : Fin 1 × Fin d => φ i p.2) := by
@@ -30,6 +33,9 @@ theorem subst_copy (m : ℕ) {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (F
   intro p
   simp only [AlgHom.comp_apply, jetSubstP, jetCopy, jetMap_mk, MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[jetSubstP, jetCopy, jetMap_mk]`.
+-/
 theorem substX (m : ℕ) {n : ℕ} (k : Fin n) :
     jetSubstP m (fun p : Fin 1 × Fin d => (MvPolynomial.X (k, p.2) : MvPolynomial (Fin n × Fin d) S)) =
       jetCopy d m k := by
@@ -40,18 +46,27 @@ theorem substX (m : ℕ) {n : ℕ} (k : Fin n) :
 def jetRen (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') : Jet S (Fin n × Fin d) m →ₐ[S] Jet S (Fin n' × Fin d) m :=
   jetMap (fun q : Fin n × Fin d => MvPolynomial.X (r q.1, q.2)) fun _ => X_mem_orig _
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [AlgHom.comp_apply, jetRen, jetCopy, jetMap_mk, MvPolynomial.aeval_X]`.
+-/
 theorem ren_copy (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') (i : Fin n) :
     (jetRen (S := S) d m r).comp (jetCopy d m i) = jetCopy d m (r i) := by
   apply jet_hom_ext
   intro p
   simp only [AlgHom.comp_apply, jetRen, jetCopy, jetMap_mk, MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `only [jetRen, jetCopy, jetMap_mk, MvPolynomial.aeval_X]`.
+-/
 theorem ren_one (m : ℕ) {n' : ℕ} (r : Fin 1 → Fin n') : jetRen (S := S) d m r = jetCopy d m (r 0) := by
   apply jet_hom_ext
   rintro ⟨i, j⟩
   obtain rfl : i = 0 := Subsingleton.elim _ _
   simp only [jetRen, jetCopy, jetMap_mk, MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Establish `hr : (MvPolynomial.aeval fun q : Fin n × Fin d => (MvPolynomial.X (r q.1, q.2) : MvPolynomial (Fin n' × Fin d) S)) = MvPolynomial.rename fun p : Fin n × Fin d => (r p.1, p.2)` using `MvPolynomial.algHom_ext fun q => by simp`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [jetSubstP, jetRen, AlgHom.comp_apply, jetMap_mk, MvPolynomial.aeval_X, map_sub, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, psIn, MvPolynomial.constantCoeff_rename, hr, MvPolynomial.rename_C]`.
+-/
 theorem subst_psIn (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') (g : Fin d → MvPowerSeries (Fin n × Fin d) S) :
     jetSubstP m (fun p : Fin 1 × Fin d => psIn d m r (g p.2)) =
       (jetRen d m r).comp (jetSubstP m (fun p : Fin 1 × Fin d => psTrunc m (g p.2))) := by
@@ -64,6 +79,9 @@ theorem subst_psIn (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') (g : Fin d → 
 
 end Pts
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `i`. Establish `h0 : (Ideal.Quotient.mk (orig S κ ^ (0 + 1)) (MvPolynomial.X i) : Jet S κ 0) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (by simpa using X_mem_orig (R := S) i)`. Rewrite using `[h0, map_zero, map_zero]`.
+-/
 theorem jetSubstP_zero_eq {S κ κ' : Type} [CommRing S] (φ ψ : κ → MvPolynomial κ' S) :
     (jetSubstP 0 φ : Jet S κ 0 →ₐ[S] Jet S κ' 0) = jetSubstP 0 ψ := by
   apply jet_hom_ext
@@ -77,17 +95,26 @@ variable {S : Type} [CommRing S] {x0 : Sp S ⟶ X0} {d : ℕ} {x : ∀ m, jOG x0
 variable {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S}
   {κ : Type} [Fintype κ] {tg : κ → (Sp (DualNumber S) ⟶ t.G.left)} {uvec : κ → Fin d → S}
 
+/- English proof (translation)
+Rewrite using `[jptG, ← Category.assoc, homAt_comp, subst_copy]`.
+-/
 theorem pt_sub (m : ℕ) {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S) (i : Fin 2) :
     homAt x0 (jetSubstP m (fun p : Fin 2 × Fin d => φ p.1 p.2)) ≫ jptG t x0 d x m i =
       homAt x0 (jetSubstP m (fun p : Fin 1 × Fin d => φ i p.2)) ≫ x m := by
   rw [jptG, ← Category.assoc, homAt_comp, subst_copy]
 
+/- English proof (translation)
+Rewrite using `[substX]`. Apply the tactic sequence `try rfl`.
+-/
 theorem pt_X (m : ℕ) {n : ℕ} (k : Fin n) :
     homAt x0 (jetSubstP m (fun p : Fin 1 × Fin d => (MvPolynomial.X (k, p.2) : MvPolynomial (Fin n × Fin d) S))) ≫ x m =
       jptG t x0 d x m k := by
   rw [substX]
   try rfl
 
+/- English proof (translation)
+Establish `hk : ∀ i, homAt x0 (jetRen d m r) ≫ jptG t x0 d x m i = jptG t x0 d x m (r i)` using `fun i => by`. Rewrite using `[jptG, jptG, ← Category.assoc, homAt_comp, ren_copy]`. Rewrite using `[subst_psIn, ← homAt_comp, Category.assoc, hch.law m, MonObj.comp_mul, hk, hk]`.
+-/
 theorem pt_law (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (r : Fin 2 → Fin n) :
     homAt x0 (jetSubstP m (fun p : Fin 1 × Fin d => psIn d m r (F p.2))) ≫ x m =
       jptG t x0 d x m (r 0) * jptG t x0 d x m (r 1) := by
@@ -95,12 +122,18 @@ theorem pt_law (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (r : 
     rw [jptG, jptG, ← Category.assoc, homAt_comp, ren_copy]
   rw [subst_psIn, ← homAt_comp, Category.assoc, hch.law m, MonObj.comp_mul, hk, hk]
 
+/- English proof (translation)
+Rewrite using `[subst_psIn, ← homAt_comp, Category.assoc, ← hch.act m a, ← Category.assoc, ren_one]`. Apply the tactic sequence `try rfl`.
+-/
 theorem pt_act (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (r : Fin 1 → Fin n) (a : 𝓞 E) :
     homAt x0 (jetSubstP m (fun p : Fin 1 × Fin d => psIn d m r (act a p.2))) ≫ x m =
       jptG t x0 d x m (r 0) ≫ t.act.act a := by
   rw [subst_psIn, ← homAt_comp, Category.assoc, ← hch.act m a, ← Category.assoc, ren_one]
   try rfl
 
+/- English proof (translation)
+Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations. Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 theorem pe_pt (m : ℕ) {n : ℕ} (σ : Jet S (Fin 2 × Fin d) m →ₐ[S] Jet S (Fin n × Fin d) m) (I : ULift.{0} (Finset (Fin 2))) :
     (homAt x0 σ).left ≫ cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)] I =
       (psum t.G ![homAt x0 σ ≫ jptG t x0 d x m (0 : Fin 2), homAt x0 σ ≫ jptG t x0 d x m (1 : Fin 2)] I.down).left := by
@@ -109,6 +142,11 @@ theorem pe_pt (m : ℕ) {n : ℕ} (σ : Jet S (Fin 2 × Fin d) m →ₐ[S] Jet S
   refine congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)
   fin_cases i <;> rfl
 
+/- English proof (translation)
+Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations. Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Use `show lift a b ≫ fst t.G t.G = a`.
+
+Conclude with `lift_fst _ _`. Use `show lift a b ≫ (snd t.G t.G ≫ t.act.act c) = b ≫ t.act.act c`. Conclude with `lift_snd_assoc _ _ _`.
+-/
 theorem wl_pt {T : Over X0} (a b : T ⟶ t.G) (c : 𝓞 E) (I : ULift.{0} (Finset (Fin 2))) :
     (lift a b).left ≫ cφG t ![fst t.G t.G, snd t.G t.G ≫ t.act.act c] I =
       (psum t.G ![a, b ≫ t.act.act c] I.down).left := by
@@ -121,6 +159,11 @@ theorem wl_pt {T : Over X0} (a b : T ⟶ t.G) (c : 𝓞 E) (I : ULift.{0} (Finse
   · show lift a b ≫ (snd t.G t.G ≫ t.act.act c) = b ≫ t.act.act c
     exact lift_snd_assoc _ _ _
 
+/- English proof (translation)
+Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations. Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Use `show lift a b ≫ (fst t.G t.G ≫ t.act.act c) = a ≫ t.act.act c`.
+
+Conclude with `lift_fst_assoc _ _ _`. Use `show lift a b ≫ snd t.G t.G = b`. Conclude with `lift_snd _ _`.
+-/
 theorem wl_pt' {T : Over X0} (a b : T ⟶ t.G) (c : 𝓞 E) (I : ULift.{0} (Finset (Fin 2))) :
     (lift a b).left ≫ cφG t ![fst t.G t.G ≫ t.act.act c, snd t.G t.G] I =
       (psum t.G ![a ≫ t.act.act c, b] I.down).left := by
@@ -133,6 +176,11 @@ theorem wl_pt' {T : Over X0} (a b : T ⟶ t.G) (c : 𝓞 E) (I : ULift.{0} (Fins
   · show lift a b ≫ snd t.G t.G = b
     exact lift_snd _ _
 
+/- English proof (translation)
+Establish `hj : (Algebra.ofId S (Jet S (Fin 1 × Fin d) 0)).comp jetAug = AlgHom.id S _`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Rewrite using `[AlgHom.comp_apply, jetAug_X, map_zero, AlgHom.id_apply]`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem.2 (by simpa using X_mem_orig (R := S) p)).symm`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[homAt_comp, hj, homAt_id]`. Use `_ = homAt x0 (Algebra.ofId S (Jet S (Fin 1 × Fin d) 0)) ≫ 1 := by rw [Category.assoc, hch.zero 0]`. Use `_ = 1 := map_one (preHom _)`.
+-/
 theorem frame_origin_jet_one (hch : IsChartG t x0 d F act tg uvec x) : x 0 = 1 := by
   have hj : (Algebra.ofId S (Jet S (Fin 1 × Fin d) 0)).comp jetAug = AlgHom.id S _ := by
     apply jet_hom_ext
@@ -145,6 +193,9 @@ theorem frame_origin_jet_one (hch : IsChartG t x0 d F act tg uvec x) : x 0 = 1 :
     _ = homAt x0 (Algebra.ofId S (Jet S (Fin 1 × Fin d) 0)) ≫ 1 := by rw [Category.assoc, hch.zero 0]
     _ = 1 := map_one (preHom _)
 
+/- English proof (translation)
+Establish `hc : (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _).comp (jetCopy d (m + 1) i) = (jetCopy d m i).comp (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] _)`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Both sides reduce to the same expression. Rewrite using `[jptG, jptG, ← Category.assoc, homAt_comp, hc, ← homAt_comp, Category.assoc, hch.trunc m]`.
+-/
 theorem jpt_trunc' (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (i : Fin n) :
     homAt x0 (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _) ≫ jptG t x0 d x (m + 1) i = jptG t x0 d x m i := by
   have hc : (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _).comp (jetCopy d (m + 1) i) =
@@ -154,12 +205,34 @@ theorem jpt_trunc' (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (
     rfl
   rw [jptG, jptG, ← Category.assoc, homAt_comp, hc, ← homAt_comp, Category.assoc, hch.trunc m]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, Category.id_comp, comp_lift, jpt_trunc' hch, jpt_trunc' hch]`.
+-/
 theorem pair_trunc (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) :
     (ρn x0 d 2 m).left ≫ (lift (jptG t x0 d x (m + 1) (0 : Fin 2)) (jptG t x0 d x (m + 1) (1 : Fin 2))).left =
       𝟙 _ ≫ (lift (jptG t x0 d x m (0 : Fin 2)) (jptG t x0 d x m (1 : Fin 2))).left := by
   rw [← Over.comp_left, Category.id_comp, comp_lift, jpt_trunc' hch, jpt_trunc' hch]
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Establish `hL` using `t.PP.isLB`. Establish `hpe : ∀ m {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S), (peG t x0 d x e m φ).IsGen` using `fun m n φ => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ (heg m) _`. Establish `hXX : ∀ (m : ℕ) {n : ℕ} (k : Fin n) (j : Fin d), (MvPolynomial.X (k, j) : MvPolynomial (Fin n × Fin d) S) - MvPolynomial.X (k, j) ∈ orig S (Fin n × Fin d) ^ (m + 1)` using `fun m n k j => by simp`. Take `⟨ad, had⟩` from `exists_series t x0 d (n := 2) _ _ _ _ (fun m => LB.mulGen t.PP.L _ _ _ _ (LB.pullGen t.PP.L _ _ wL (lift (jptG t x0 d x m (0 : Fin 2)) (jptG t x0 d x m (1 : Fin 2))).left) (peG t x0 d x e m ![fun j => psIn d m ![0] (act a j), fun j => MvPolynomial.X ((1 : Fin 2), j)])) (fun m => …`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, wl_pt, wl_pt', pe_pt, pt_sub, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, pt_X, pt_act hch, zpow_neg, Finset.prod_inv_distrib]`.
+
+Simplify using `only [inv_mul_cancel_right])`. Use the proof step `(fun m y J hJ => (val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) ((val_pull hJ _ _ _).trans ((congrArg (fun r => val wL r y J) (pair_trunc hch m)).trans (val_pull hJ _ _ _).symm)) (pe_trunc t x0 d htr (fun m => ![fun j => psIn d m ![0] (act a j), fun j => MvPolynomial.X ((1 …`. Use the proof step `(fun m y J hJ => pe_trunc t x0 d htr (fun m => ![fun j => MvPolynomial.X ((0 : Fin 2), j), fun j => psIn d m ![1] (act (H.bar a) j)]) (fun m i j => by fin_cases i; exacts [hXX m _ j, psIn_succ_sub m _ _]) m y J hJ)`. Establish `hx0 : x 0 = 1` using `frame_origin_jet_one hch`. Establish `hj0 : ∀ {n : ℕ} (i : Fin n), jptG t x0 d x 0 i = 1` using `fun i => by`.
+
+Rewrite using `[jptG, hx0]`. Conclude with `map_one (preHom _)`. Establish `hadc : MvPowerSeries.constantCoeff ad = 1`. Take `⟨u, hu, hc⟩` from `had 0`. Establish `hU : unitΓ u = 1`.
+
+Use `unit_ext (V := ⊤) fun y _ => ?_` and prove the remaining obligations. Use `choose I hI using fun χ : (jOG x0 d 0 2).left ⟶ t.G.left => exists_chart hL (χ y)`. Establish `e1` using `(val_corr hI hc (𝟙 _)).trans (val_scale t _ _ _ _ _ y I hI)`. Establish `hl : (𝟙 _ ≫ (lift (jptG t x0 d x 0 (0 : Fin 2)) (jptG t x0 d x 0 (1 : Fin 2))).left) = ((𝟙 _ ≫ (toUnit (jOG x0 d 0 2)).left) ≫ (zz t).left)`. Rewrite using `[Category.id_comp, Category.id_comp, ← Over.comp_left, comp_lift, hj0, hj0]`.
+
+Both sides reduce to the same expression. Establish `hA1 : val (LB.pullGen t.PP.L _ _ wL (lift (jptG t x0 d x 0 (0 : Fin 2)) (jptG t x0 d x 0 (1 : Fin 2))).left) (𝟙 _) y I = 1`. Use `(val_pull hI _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hl]`. Conclude with `hwL0 _ _ y I hI`.
+
+Establish `hAB : val (peG t x0 d x e 0 ![fun j => psIn d 0 ![0] (act a j), fun j => MvPolynomial.X ((1 : Fin 2), j)]) (𝟙 _) y I = val (peG t x0 d x e 0 ![fun j => MvPolynomial.X ((0 : Fin 2), j), fun j => psIn d 0 ![1] (act (H.bar a) j)]) (𝟙 _) y I` using `(val_pull hI _ _ _).trans ((congrArg (fun σ => val (e 0) (𝟙 _ ≫ (homAt x0 σ).left) y I) (jetSubstP_zero_eq _ _)).trans (val_pull hI _ _ _).symm)`. Rewrite `e1` using `[val_mul hI, hA1, hAB, _root_.one_mul]`. Rewrite using `[map_one]`. Conclude with `(right_eq_mul.1 e1)`. Establish `hu1 : (u : Jet S (Fin 2 × Fin d) 0) = 1`.
+
+Apply `toΓ_injective` to reduce the goal to its premises. Rewrite using `[map_one]`. Conclude with `congrArg Units.val hU`. Use `show MvPowerSeries.coeff 0 ad = 1`. Rewrite using `[← coeff_psTrunc 0 ad 0 le_rfl]`.
+
+Establish `h0` using `hu.symm.trans hu1`. Rewrite `h0` using `[psJet, ← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`. Establish `h1` using `coeff_eq_zero_of_mem h0 (e := 0) (by simp)`. Rewrite `h1` using `[MvPolynomial.coeff_sub, sub_eq_zero, MvPolynomial.coeff_one, if_pos rfl]`. Conclude with `h1`.
+
+Conclude with `⟨ad, hadc, had⟩`.
+-/
 theorem exists_ad_one (hch : IsChartG t x0 d F act tg uvec x) (e : ∀ m, FrTyG t x0 d x m)
     (heg : ∀ m, (e m).IsGen) (htr : FrTrunc t x0 d x e) (a : 𝓞 E)
     (wL : LB.Gen (LB.LinComb t.PP.L
@@ -245,6 +318,9 @@ theorem exists_ad_one (hch : IsChartG t x0 d F act tg uvec x) (e : ∀ m, FrTyG 
 
 end GlobalTheory.FrameAdjSeries
 
+/- English proof (translation)
+Introduce `E _ _ _ H X0 t S _ x0 d F act κ _ tg uvec x _ _ hch e heg htr _`. Use `choose wL hwLg hwL0 using fun a => Formalism.MainNotions.ModuliIntegralCharts.H1.GermB.exists_wL t a`. Use `choose ad hadc had using fun a => GlobalTheory.FrameAdjSeries.exists_ad_one hch e heg htr a (wL a) (hwLg a) (hwL0 a)`. Conclude with `⟨ad, hadc, fun a => ⟨wL a, hwLg a, had a⟩⟩`.
+-/
 theorem GlobalTheory.FrameAdjSeries.exists_ad :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ) (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S) (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (κ : Type) [Fintype κ] (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) (uvec : κ → Fin d → S) (x : ∀ m, jOG x0 d m 1 ⟶ t.G), (∀ j, MvPowerSeries.constantCoeff (F j) = 0) → (∀ a j, MvPowerSeries.constantCoeff (act a j) = 0) → IsChartG t x0 d F act tg uvec x → ∀ e : ∀ m, FrTyG t x0 d x m, (∀ m, (e m).IsGen) → FrTrunc t x0 d x e → FrAxes t x0 d x e → ∃ ad : 𝓞 E → PS S 2 d, (∀ a, MvPowerSeries.constantCoeff (ad a) = 1) ∧ ∀ a : 𝓞 E, ∃ wL : LB.Gen (LB.LinComb t.PP.L (Sum.elim (cφG t ![fst t.G t.G, snd t.G t.G ≫ t.act.act (H.bar a)]) (cφG t ![fst t.G t.G ≫ t.act.act a, snd t.G t.G])) (Sum.elim (cε 2) fun I => -cε 2 I)), wL.IsGen ∧ ∀ m, ∃ u : (Jet S (Fin 2 × Fin d) m)ˣ, (u : Jet S (Fin 2 × Fin d) m) = psJet m (ad a) ∧ LB.Gen.Corr t.PP.L _ _ _ _ (LB.mulGen t.PP.L _ _ _ _ (LB.pullGen t.PP.L _ _ wL (lift (jptG t x0 d x m (0 : Fin 2)) (jptG t x0 d x m (1 : Fin 2))).left) (peG t x0 d x e m ![fun j => psIn d m ![0] (act a j), fun j => X ((1 : Fin 2), j)])) (scaleGenG t _ _ (unitΓ u) (peG t x0 d x e m ![fun j => X ((0 : Fin 2), j), fun j => psIn d m ![1] (act (H.bar a) j)])) := by
   intro E _ _ _ H X0 t S _ x0 d F act κ _ tg uvec x _ _ hch e heg htr _

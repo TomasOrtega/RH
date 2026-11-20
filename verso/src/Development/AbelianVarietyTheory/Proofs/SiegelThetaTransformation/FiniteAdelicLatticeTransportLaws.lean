@@ -20,10 +20,20 @@ def Onto (F : Type) [Field F] [NumberField F] [Algebra F E] (m : Matrix (Fin n) 
     (L L' : Submodule (𝓞 E) (Fin n → E)) : Prop :=
   ∀ u, u ∈ hat F (L' : Set (Fin n → E)) ↔ ∃ u₀ ∈ hat F (L : Set (Fin n → E)), u = m *ᵥ u₀
 
+/- English proof (translation)
+Introduce `_ hz` and use `mulVec_mem_hat (L := L') (fun x hx => h x hx) hz`.
+-/
 theorem into_of_fv {m : Matrix (Fin n) (Fin n) (RA F E)} {L L' : Submodule (𝓞 E) (Fin n → E)}
     (h : ∀ x ∈ L, m *ᵥ fv F x ∈ hat F (L' : Set (Fin n → E))) : Into F m L L' :=
   fun _ hz => mulVec_mem_hat (L := L') (fun x hx => h x hx) hz
 
+/- English proof (translation)
+Establish `h' : m' * m = 1` using `mul_eq_one_comm.1 h`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨fun z hz => (H _).2 ⟨z, hz, rfl⟩, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `(H _).1 hz`.
+
+Rewrite using `[Matrix.mulVec_mulVec, h', Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce and unpack `⟨H, H'⟩ u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Conclude with `⟨m' *ᵥ u, H' u hu, by rw [Matrix.mulVec_mulVec, h, Matrix.one_mulVec]⟩`.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `H u hu`.
+-/
 theorem onto_iff {m m' : Matrix (Fin n) (Fin n) (RA F E)} (h : m * m' = 1)
     {L L' : Submodule (𝓞 E) (Fin n → E)} : Onto F m L L' ↔ Into F m L L' ∧ Into F m' L' L := by
   have h' : m' * m = 1 := mul_eq_one_comm.1 h
@@ -40,12 +50,22 @@ theorem onto_iff {m m' : Matrix (Fin n) (Fin n) (RA F E)} (h : m * m' = 1)
       exact H u hu
 
 omit [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[fv, Matrix.mulVec, dotProduct, TensorProduct.tmul_sum]`.
+-/
 theorem map_mulVec_fv (P : Matrix (Fin n) (Fin n) E) (x : Fin n → E) :
     (P.map fun c => ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] c : RA F E)) *ᵥ fv F x = fv F (P *ᵥ x) := by
   funext i
   simp [fv, Matrix.mulVec, dotProduct, TensorProduct.tmul_sum]
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `haveI : Nontrivial (FiniteAdeleRing (𝓞 F) F) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField F)⟩`. Use `⟨0, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : (0 : v.adicCompletion F) = 1` using `congrArg (fun x : FiniteAdeleRing (𝓞 F) F => x v) h`.
+
+Conclude with `zero_ne_one h2`. Establish `hinj : Function.Injective (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E)` using `Algebra.TensorProduct.includeRight_injective (algebraMap F (FiniteAdeleRing (𝓞 F) F)).injective`. Use function extensionality and compare the values at `i`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Pi.zero_apply, map_zero]`.
+
+Conclude with `congrFun h i`.
+-/
 theorem fv_eq_zero {x : Fin n → E} (h : fv F x = 0) : x = 0 := by
   haveI : Nontrivial (FiniteAdeleRing (𝓞 F) F) := by
     obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 F)
@@ -61,6 +81,13 @@ theorem fv_eq_zero {x : Fin n → E} (h : fv F x = 0) : x = 0 := by
   rw [Pi.zero_apply, map_zero]
   exact congrFun h i
 
+/- English proof (translation)
+Establish `hm : ((g : Matrix (Fin n) (Fin n) E).map fun c => ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] c : RA F E)) * (((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).map fun c => ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] c : RA F E)) = 1`. Use `Matrix.map_mul (L := (g : Matrix (Fin n) (Fin n) E)) (M := ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) (f := (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E).toRingHom)` as an intermediate fact. Rewrite `this` using `[Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `this.symm`. Use `(onto_iff hm).2 ⟨into_of_fv fun x hx => ?_, into_of_fv ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mulVec_fv]`. Conclude with `fv_mem_hat ⟨x, hx, rfl⟩`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[map_mulVec_fv]`. Use `fv_mem_hat ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ((g : Matrix (Fin n) (Fin n) E) *ᵥ x) ∈ L`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]` and apply the resulting hypothesis.
+-/
 theorem onto_mapL (g : GL (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) :
     Onto F ((g : Matrix (Fin n) (Fin n) E).map fun c => ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] c : RA F E))
       L (mapL g L) := by
@@ -81,6 +108,19 @@ theorem onto_mapL (g : GL (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) :
     change ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ((g : Matrix (Fin n) (Fin n) E) *ᵥ x) ∈ L
     rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Take `⟨-, -, -, h4⟩` from `hat_rational_points_and_approx F E n L hL hs`. Set `P : Matrix (Fin n) (Fin n) E` to `LinearMap.toMatrix' (LinearMap.pi fun _ => φ)`. Establish `hP : ∀ x, P *ᵥ x = fun _ => φ x` using `fun x => by`.
+
+Simplify using `only [P, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Establish `hz : ∀ z ∈ hat F (L' : Set (Fin n → E)), (P.map fun c => ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] c : RA F E)) *ᵥ z = 0`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+
+Consider the case `mem z hz`. Take `⟨a, -, x, hx, rfl⟩` from `hz`. Establish `hx0 : φ x = 0` using `hφ (Submodule.subset_span hx)`. Rewrite using `[gen_eq, Matrix.mulVec_smul, map_mulVec_fv, hP, hx0]`. Conclude with `(congrArg _ fv_zero).trans (smul_zero _)`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, hx, hy, add_zero]`. Consider the case `neg x _ hx => rw [Matrix.mulVec_neg, hx, neg_zero]`. Apply `hφ0` to reduce the goal to its premises. Establish `key : ∀ x, (fun _ : Fin n => φ x) = 0`.
+
+Introduce `x`. Take `⟨d, hd, hdx⟩` from `h4 (m' *ᵥ fv F x)`. Establish `h1` using `hz _ (H _ hdx)`. Rewrite `h1` using `[Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec (fv F x) m m', h, Matrix.one_mulVec, map_mulVec_fv, hP]`. Conclude with `fv_eq_zero (F := F) (nsmul_cancel hd (h1.trans (smul_zero d).symm))`.
+
+Use `(Pi.basisFun E (Fin n)).ext fun i => ?_` and prove the remaining obligations. Conclude with `congrFun (key _) i`.
+-/
 theorem span_eq_top_of_into {m m' : Matrix (Fin n) (Fin n) (RA F E)} (h : m * m' = 1)
     {L L' : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG) (hs : Submodule.span E (L : Set (Fin n → E)) = ⊤)
     (H : Into F m L L') : Submodule.span E (L' : Set (Fin n → E)) = ⊤ := by
@@ -113,6 +153,9 @@ theorem span_eq_top_of_into {m m' : Matrix (Fin n) (Fin n) (RA F E)} (h : m * m'
   refine (Pi.basisFun E (Fin n)).ext fun i => ?_
   exact congrFun (key _) i
 
+/- English proof (translation)
+Establish `: 𝔞 • L ≤ pre m (𝔞 • L')`. Use `Submodule.smul_le.2 fun a ha x hx => ?_` and prove the remaining obligations. Rewrite using `[mem_pre, show a • x = (a : E) • x from rfl, fv_smul, Matrix.mulVec_smul]`. Conclude with `Scale.smul_mem_hat (fun y hy => Submodule.smul_mem_smul ha hy) (H _ (fv_mem_hat hx))`. Conclude with `into_of_fv this`.
+-/
 theorem into_smul {m : Matrix (Fin n) (Fin n) (RA F E)} {L L' : Submodule (𝓞 E) (Fin n → E)}
     (H : Into F m L L') (𝔞 : Ideal (𝓞 E)) : Into F m (𝔞 • L) (𝔞 • L') := by
   have : 𝔞 • L ≤ pre m (𝔞 • L') := by
@@ -121,6 +164,17 @@ theorem into_smul {m : Matrix (Fin n) (Fin n) (RA F E)} {L L' : Submodule (𝓞 
     exact Scale.smul_mem_hat (fun y hy => Submodule.smul_mem_smul ha hy) (H _ (fv_mem_hat hx))
   exact into_of_fv this
 
+/- English proof (translation)
+Use `into_of_fv fun v hv => ?_` and prove the remaining obligations. Establish `hI : ((𝔟 : FractionalIdeal (𝓞 E)⁰ E)) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 hb`. Establish `key : ∀ c ∈ (𝔟 : FractionalIdeal (𝓞 E)⁰ E) * (𝔟 : FractionalIdeal (𝓞 E)⁰ E)⁻¹, m *ᵥ fv F (c • v) ∈ hat F (idq 𝔞 𝔟 L' : Set (Fin n → E))`. Introduce `c hc`. Use `FractionalIdeal.mul_induction_on hc ?_ ?_` and prove the remaining obligations.
+
+Introduce `a ha c hc`. Take `⟨b, hb, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ha`. Rewrite using `[mul_comm, mul_smul, fv_smul, Matrix.mulVec_smul]`. Use `Scale.smul_mem_hat ?_ (into_smul H 𝔞 _ (fv_mem_hat (hv b hb)))` and prove the remaining obligations. Introduce `y hy b' hb'`.
+
+Establish `hbc : algebraMap (𝓞 E) E b' * c ∈ (𝔟 : FractionalIdeal (𝓞 E)⁰ E) * (𝔟 : FractionalIdeal (𝓞 E)⁰ E)⁻¹` using `FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal _).2 ⟨b', hb', rfl⟩) hc`. Rewrite `hbc` using `[mul_inv_cancel₀ hI, FractionalIdeal.mem_one_iff]`. Take `⟨r, hr⟩` from `hbc`. Establish `: b' • c • y = r • y`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E b' • c • y = algebraMap (𝓞 E) E r • y`.
+
+Rewrite using `[smul_smul, hr]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ r hy`. Introduce `x y hx hy`. Rewrite using `[add_smul, fv_add, Matrix.mulVec_add]`.
+
+Conclude with `add_mem hx hy`. Use `key 1 (by rw [mul_inv_cancel₀ hI]; exact FractionalIdeal.one_mem_one _)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+-/
 theorem into_idq {m : Matrix (Fin n) (Fin n) (RA F E)} {L L' : Submodule (𝓞 E) (Fin n → E)}
     (H : Into F m L L') (𝔞 𝔟 : Ideal (𝓞 E)) (hb : 𝔟 ≠ ⊥) : Into F m (idq 𝔞 𝔟 L) (idq 𝔞 𝔟 L') := by
   refine into_of_fv fun v hv => ?_
@@ -150,6 +204,13 @@ theorem into_idq {m : Matrix (Fin n) (Fin n) (RA F E)} {L L' : Submodule (𝓞 E
   have := key 1 (by rw [mul_inv_cancel₀ hI]; exact FractionalIdeal.one_mem_one _)
   rwa [one_smul] at this
 
+/- English proof (translation)
+Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Establish `hb' : algebraMap (𝓞 E) E b ≠ 0` using `fun h => hb0 (RingOfIntegers.coe_injective (by simpa using h))`. Establish `hinj : Function.Injective (b • (LinearMap.id : (Fin n → E) →ₗ[𝓞 E] (Fin n → E)))`. Introduce `x y hxy`. Conclude with `smul_right_injective _ hb' hxy`.
+
+Use `Submodule.fg_of_fg_map_injective _ hinj ?_` and prove the remaining obligations. Establish `hle : (idq 𝔞 𝔟 L).map (b • (LinearMap.id : (Fin n → E) →ₗ[𝓞 E] (Fin n → E))) ≤ L`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Submodule.smul_le_right (hx b hb)`. Establish `: IsNoetherian (𝓞 E) L` using `isNoetherian_of_fg_of_noetherian _ hL`.
+
+Conclude with `(isNoetherian_submodule.1 this) _ hle`.
+-/
 theorem idq_fg {L : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG) (𝔞 𝔟 : Ideal (𝓞 E)) (hb : 𝔟 ≠ ⊥) :
     (idq 𝔞 𝔟 L).FG := by
   obtain ⟨b, hb, hb0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hb
@@ -164,6 +225,11 @@ theorem idq_fg {L : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG) (𝔞 𝔟 : I
   have : IsNoetherian (𝓞 E) L := isNoetherian_of_fg_of_noetherian _ hL
   exact (isNoetherian_submodule.1 this) _ hle
 
+/- English proof (translation)
+Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot ha`. Establish `ha' : algebraMap (𝓞 E) E a ≠ 0` using `fun h => ha0 (RingOfIntegers.coe_injective (by simpa using h))`. Rewrite using `[eq_top_iff, ← hs, Submodule.span_le]`. Introduce `x hx`. Establish `h1 : algebraMap (𝓞 E) E a • x ∈ idq 𝔞 𝔟 L` using `fun b _ => Submodule.smul_mem _ b (Submodule.smul_mem_smul ha hx)`.
+
+Use `(Submodule.span E (idq 𝔞 𝔟 L : Set (Fin n → E))).smul_mem (algebraMap (𝓞 E) E a)⁻¹ (Submodule.subset_span h1)` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ ha', one_smul]`. Then use the resulting hypothesis.
+-/
 theorem idq_span {L : Submodule (𝓞 E) (Fin n → E)} (hs : Submodule.span E (L : Set (Fin n → E)) = ⊤)
     (𝔞 𝔟 : Ideal (𝓞 E)) (ha : 𝔞 ≠ ⊥) : Submodule.span E (idq 𝔞 𝔟 L : Set (Fin n → E)) = ⊤ := by
   obtain ⟨a, ha, ha0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot ha
@@ -176,6 +242,15 @@ theorem idq_span {L : Submodule (𝓞 E) (Fin n → E)} (hs : Submodule.span E (
     (Submodule.subset_span h1)
   rwa [smul_smul, inv_mul_cancel₀ ha', one_smul] at this
 
+/- English proof (translation)
+Establish `h' : m' * m = 1` using `mul_eq_one_comm.1 h`. Prove the components needed by the constructor for the conclusion. Take `⟨Λ, -, h2, h3, h4⟩` from `exists_lattice_latOf F E n L ⟨m, m', h, h'⟩ hL hs`. Use `⟨Λ, ⟨h2, h3⟩, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, h4]`.
+
+Conclude with `⟨fun ⟨z, hz, e⟩ => ⟨z, hz, e.symm⟩, fun ⟨z, hz, e⟩ => ⟨z, hz, e.symm⟩⟩`. Introduce `L' hL' H`. Take `⟨H1, H2⟩` from `(onto_iff h).1 H`. Establish `hs'` using `span_eq_top_of_into h hL hs H1`. Use `⟨hs', (onto_iff h').2 ⟨H2, H1⟩, fun L'' hL'' K => ?_, fun m₂ L'' K u => ?_, fun 𝔞 𝔟 ha hb => ⟨(onto_iff h).2 ⟨into_smul H1 𝔞, into_smul H2 𝔞⟩, (onto_iff h).2 ⟨into_idq H1 𝔞 𝔟 hb, into_idq H2 𝔞 𝔟 hb⟩, idq_fg hL 𝔞 𝔟 hb, idq_span hs 𝔞 𝔟 ha⟩⟩` and prove the remaining obligations.
+
+Establish `hs''` using `span_eq_top_of_into h hL hs ((onto_iff h).1 K).1`. Use extensionality with `v`. Rewrite using `[← (hat_rational_points_and_approx F E n L'' hL'' hs'').1, ← (hat_rational_points_and_approx F E n L' hL' hs').1, K, H]`. Rewrite using `[K]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨z, hz, rfl⟩` from `(H w).1 hw`. Conclude with `⟨z, hz, Matrix.mulVec_mulVec _ _ _⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨m *ᵥ z, H1 z hz, (Matrix.mulVec_mulVec _ _ _).symm⟩`.
+-/
 theorem onto_laws (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
     (hs : Submodule.span E (L : Set (Fin n → E)) = ⊤) (m m' : Matrix (Fin n) (Fin n) (RA F E)) (h : m * m' = 1) :
     (∃ L' : Submodule (𝓞 E) (Fin n → E), (L'.FG ∧ Submodule.span E (L' : Set (Fin n → E)) = ⊤) ∧ Onto F m L L') ∧
@@ -220,6 +295,9 @@ open ReciprocityTheory.ChartRestriction.G.I2 (polyDeriv)
 open scoped TensorProduct ComplexConjugate Real Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce and unpack `D k L ⟨hL, hs⟩`. Use `⟨(GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E k L hL hs).1, fun u => ?_, fun ga => GlobalTheory.Ker.Mov.onto_mapL (F := D.host.F) ga L, fun m m' h => GlobalTheory.Ker.Mov.onto_laws (F := D.host.F) L hL hs m m' h⟩` and prove the remaining obligations. Simplify using `only [Matrix.one_mulVec, exists_eq_right']`.
+-/
 theorem GlobalTheory.Ker.isMov_laws : ∀ (D : D7) (k : ℕ) (L : Lt D.host.E k), (L.FG ∧ Submodule.span D.host.E (L : Set (Fin k → D.host.E)) = ⊤) → (∀ v, toAf v ∈ hatV L ↔ v ∈ L) ∧ IsMov 1 L L ∧ (∀ ga : GL (Fin k) D.host.E, IsMov ((ga : Matrix (Fin k) (Fin k) D.host.E).map fun x => (1 : Af D.host.F) ⊗ₜ[D.host.F] x) L (mapL ga L)) ∧ ∀ m m' : Matrix (Fin k) (Fin k) (AfE D), m * m' = 1 → (∃ L' : Lt D.host.E k, (L'.FG ∧ Submodule.span D.host.E (L' : Set (Fin k → D.host.E)) = ⊤) ∧ IsMov m L L') ∧ ∀ L' : Lt D.host.E k, L'.FG → IsMov m L L' → Submodule.span D.host.E (L' : Set (Fin k → D.host.E)) = ⊤ ∧ IsMov m' L' L ∧ (∀ L'' : Lt D.host.E k, L''.FG → IsMov m L L'' → L'' = L') ∧ (∀ m₂ (L'' : Lt D.host.E k), IsMov m₂ L' L'' → IsMov (m₂ * m) L L'') ∧ ∀ 𝔞 𝔟 : Ideal (𝓞 D.host.E), 𝔞 ≠ ⊥ → 𝔟 ≠ ⊥ → IsMov m (𝔞 • L) (𝔞 • L') ∧ IsMov m (idq 𝔞 𝔟 L) (idq 𝔞 𝔟 L') ∧ (idq 𝔞 𝔟 L).FG ∧ Submodule.span D.host.E (idq 𝔞 𝔟 L : Set (Fin k → D.host.E)) = ⊤ := by
   rintro D k L ⟨hL, hs⟩
   refine ⟨(GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E k L hL hs).1, fun u => ?_,

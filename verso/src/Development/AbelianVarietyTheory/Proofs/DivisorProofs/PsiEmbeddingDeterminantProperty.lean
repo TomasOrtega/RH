@@ -10,6 +10,19 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 
 namespace GlobalTheory.DetInv
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ τ₀`. Take `⟨-, -, ψ, -, hψ, -⟩` from `GlobalTheory.DetInv.psi_phi_tensor p O Λ`. Take `⟨κ₀, κ, hlin⟩` from `GlobalTheory.T.psi_determinant_valuation_bound p C v O hv ε hε Λ ψ hψ τ₀`. Take `⟨hfin, -⟩` from `GlobalTheory.card_ringHom_to_integers_eq_finrank p C v O hv Λ`. Take `⟨-, -, -, -, hθν, -, -⟩` from `GlobalTheory.AinfXi.ainf_local_xi_order p C v O hv ε hε`.
+
+Use `set t : ℝ := Real.log (v (algebraMap O C (WittVector.fontaineTheta O p (nu ε)))) with ht`. Use `⟨κ₀, fun σ => κ σ - if σ = τ₀ then t else 0, ?_⟩` and prove the remaining obligations. Introduce `γ hγ N h hh D ι lam hι hlam hlat`. Take `⟨Δ, c, hΔ, hord, hc⟩` from `GlobalTheory.T.psi_determinant_element_property p C v O hv ε hε Λ ψ hψ N h hh D ((γ : O →+* O).comp τ₀) ι lam hι hlat`. Take `⟨Δ', c', hΔ', hord', hc'⟩` from `GlobalTheory.T.psi_determinant_rank_property p C v O hv ε hε Λ ψ hψ γ hγ N Δ D.lieRank c hΔ hord`.
+
+Establish `key` using `hlin N Δ' _ c' hΔ' hord'`. Rewrite `key` using `[hc' τ₀, hc]`. Establish `hv0 : v lam ≠ 0` using `(Valuation.ne_zero_iff v).mpr hlam`. Establish `hθ0 : algebraMap O C (WittVector.fontaineTheta O p (nu ε)) ≠ 0`. Introduce `h0`.
+
+Apply `hθν` to reduce the goal to its premises. Apply `hv.hom_inj` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`. Establish `hvθ : v (algebraMap O C (WittVector.fontaineTheta O p (nu ε))) ≠ 0` using `(Valuation.ne_zero_iff v).mpr hθ0`. Establish `hlog : Real.log ((v lam * v (algebraMap O C (WittVector.fontaineTheta O p (nu ε))) ^ D.lieRank ((γ : O →+* O).comp τ₀) : NNReal) : ℝ) = Real.log (v lam) + (D.lieRank ((γ : O →+* O).comp τ₀) : ℝ) * t`.
+
+Rewrite using `[NNReal.coe_mul, NNReal.coe_pow, Real.log_mul, Real.log_pow]`. Conclude with `hv0` after adjusting the coercions. Conclude with `pow_ne_zero _ (by exact_mod_cast hvθ)`. Rewrite `key` using `[hlog]`. Use `haveI := hfin`.
+
+Use `letI := Fintype.ofFinite (Λ →+* O)`. Rewrite `key`, the goal using `[finsum_eq_sum_of_fintype]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem detConst_linear_isom : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ τ₀ : Λ →+* O, ∃ (κ₀ : ℝ) (κ : (Λ →+* O) → ℝ), ∀ (γ : O ≃+* O), IsIsom C v γ → ∀ (N h : ℕ), h = Module.finrank ℤ_[p] Λ * N → ∀ (D : Datum ε h Λ) ι (lam : C), IsIota C D ((γ : O →+* O).comp τ₀) N ι → lam ≠ 0 → ι '' (detLattice C (actT D) ((γ : O →+* O).comp τ₀) N : Set (detLine C (actT D) ((γ : O →+* O).comp τ₀) N)) = (fun w => lam • w) '' (detLattice C (actH D) ((γ : O →+* O).comp τ₀) N : Set (detLine C (actH D) ((γ : O →+* O).comp τ₀) N)) → Real.log (v lam) = N * κ₀ + ∑ᶠ σ, (D.lieRank ((γ : O →+* O).comp σ) : ℝ) * κ σ := by
   classical
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ τ₀

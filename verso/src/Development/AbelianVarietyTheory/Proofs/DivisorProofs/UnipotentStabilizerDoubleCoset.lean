@@ -14,6 +14,11 @@ open Formalism.UG (cT)
 
 namespace GlobalTheory.EisCT
 
+/- English proof (translation)
+Unfold `unipRad at hν`. Proceed by induction on `hν using Subgroup.closure_induction with`. Consider the case `mem g hg`. Establish `h` using `hg.2.1`. Rewrite `h` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`.
+
+Conclude with `h`. Consider the case `one => simp`. Consider the case `mul a b _ _ ha hb => rw [map_mul, Units.val_mul, ← Matrix.mul_assoc, ha, hb]`. Consider the case `inv a _ ha => conv_lhs => rw [← ha]`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.mul_one]`.
+-/
 theorem form_mul_of_mem_unipRad {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {r : ℕ} (C : Matrix (Fin n) (Fin r) E)
     {ν : GAd σ J} (hν : ν ∈ unipRad σ J C) :
@@ -30,6 +35,17 @@ theorem form_mul_of_mem_unipRad {F E : Type} [Field F] [NumberField F] [Field E]
     conv_lhs => rw [← ha]
     rw [Matrix.mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y _ _ hW w _ hw ν hν t hp horth`. Take `⟨l, hl⟩` from `hp`. Establish `hxy : cT (σ : E →+* E) (col0 X) * J * col0 Y = 1`. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hW.xy 0) 0`.
+
+Rewrite using `[Subsingleton.elim i j]`. Simplify using `only [Matrix.one_apply_eq] at h ⊢`. Rewrite using `[← h]`. Simplify using `[Matrix.mul_apply, cT, col0]`. Establish `hwi : (matHom _ σ J w⁻¹).1 * adMat F (col0 X) = adMat F (col0 Y)`.
+
+Rewrite using `[← hw, ← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul]`. Establish `ht : t⁻¹ = ν⁻¹ * w⁻¹ * (w * ν * t⁻¹)` using `by group`. Establish `hνi` using `form_mul_of_mem_unipRad σ J (col0 X) (inv_mem hν)`. Unfold `OrthL at horth`. Rewrite `horth` using `[ht, map_mul, map_mul, Units.val_mul, Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, hl, Matrix.mul_smul, Matrix.mul_assoc, hwi, Matrix.mul_smul, ← Matrix.mul_assoc, hνi]`.
+
+Unfold `adMat at horth`. Rewrite `horth` using `[← Matrix.map_mul, hxy]`. Establish `h0` using `congrFun (congrFun horth 0) 0`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.one_apply_eq, map_one, smul_eq_mul, mul_one, Matrix.zero_apply] at h0`. Use `haveI : Nontrivial (AF F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`.
+
+Use `haveI : Nontrivial (AF F ⊗[F] E) := inferInstance`. Conclude with `l.ne_zero h0`.
+-/
 theorem not_orthL_of_stabL_swap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),
     IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y →

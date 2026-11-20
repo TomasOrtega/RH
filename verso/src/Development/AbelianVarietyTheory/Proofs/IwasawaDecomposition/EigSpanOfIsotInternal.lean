@@ -17,6 +17,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HeightCounting.RatSide
 
+/- English proof (translation)
+Introduce `hL`. Use `(StepW.and (eigAd_of_rowEig hL) GlobalTheory.HeckeField.Gap.rowEig_mem_fixedField).trans (StepW.of_all fun K B f T w _ _ H => ?_)` and prove the remaining obligations. Introduce `P x hx hL' h3 h5`. Use `⟨fun j σ k Pl => if h : ∃ c : ↥(Dof x).LL0, (Dof x).what₂.embLL (c : (Dof x).what₂.LL) = hkNorm x.m.z.R (idxOf (Dof x) j) k Pl * GlobalTheory.EigRows.rowEig x.r.Y (idxOf (Dof x) j) σ Pl (GlobalTheory.EigRows.diagLab (Dof x).R.r k) then h.choose else 0, H.1 P x hx _ ?_⟩` and prove the remaining obligations. Introduce `i σ k Pl α Rr hk hg h0`.
+
+Establish `t2` using `H.2 P x hL' h3 h5 i σ k Pl α Rr hk h0`. Establish `hI` using `congrArg (fun i' : Fin (Dof x).R.m => hkNorm x.m.z.R i' k Pl * GlobalTheory.EigRows.rowEig x.r.Y i' σ Pl (GlobalTheory.EigRows.diagLab (Dof x).R.r k)) (NX.idxOf_succ (Dof x) i)`. Establish `hex : ∃ c : ↥(Dof x).LL0, (Dof x).what₂.embLL (c : (Dof x).what₂.LL) = hkNorm x.m.z.R (idxOf (Dof x) (i.1 + 1)) k Pl * GlobalTheory.EigRows.rowEig x.r.Y (idxOf (Dof x) (i.1 + 1)) σ Pl (GlobalTheory.EigRows.diagLab (Dof x).R.r k)`. Set `⟨c, hc⟩` to `t2`. Use the proof step `⟨c, hc.trans hI.symm⟩`.
+
+Use `Eq.trans ?_ (hex.choose_spec.trans hI)` and prove the remaining obligations. Simplify using `only [dif_pos hex]`.
+-/
 theorem exists_eigAd_of_state : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), LA hL x → ∀ hL' : ∀ j, ℕ → PlE (Dof x).host → Module.End (Dof x).what₂.LL ((SOf x).WL j), StabC (SOf x) hL' → HeckeRd x.m.z.R x.m.z.cG (kKsOf x) (hkOf x) (SbD (Dof x)) hL' → ∃ eig : ℕ → (Dof x).what₂.FT → ℕ → PlE (Dof x).host → ↥(Dof x).LL0, EigAd x.r.Y (SbD (Dof x)) eig := by
   intro hL
   refine (StepW.and (eigAd_of_rowEig hL) GlobalTheory.HeckeField.Gap.rowEig_mem_fixedField).trans (StepW.of_all fun K B f T w _ _ H => ?_)
@@ -37,6 +44,9 @@ theorem exists_eigAd_of_state : ∀ hL : GlobalTheory.Published.LocalLanglandsGL
   refine Eq.trans ?_ (hex.choose_spec.trans hI)
   simp only [dif_pos hex]
 
+/- English proof (translation)
+Introduce `hN hIso hL`. Use `(StepW.and (StepW.and (exists_eigAd_of_state hL) (GlobalTheory.T.stable_hecke_level_character hL)) (StepW.and (GlobalTheory.T.good_fiber_types_all hN hL) hIso)).trans (StepW.of_all fun K B f T w _ _ H => ?_)` and prove the remaining obligations. Introduce `P x hx θ hL' h1 h2 h3 h4 h5`. Take `⟨eig, he⟩` from `H.1.1 P x hx hL' h3 h5`. Conclude with `⟨eig, he, H.1.2 P x hx (H.2.2 P x) (GlobalTheory.EigRows.occGood_of_all _ (H.2.1 P x hx)) θ hL' h1 h2 h3 h4 h5 eig he⟩`.
+-/
 theorem eig_span_of_isotInternal : PrN → (AllSt fun _ _ _ _ _ _ x => Formalism.BasicNotions.Rows.IsotInternal (Dof x).what₂) → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), LA hL x → ∀ (θ : ∀ kk : Fin 2, Multiplicative (ZMod ((Dof x).host.g kk)) →* (↥(Dof x).LL0)ˣ) (hL' : ∀ j, ℕ → PlE (Dof x).host → Module.End (Dof x).what₂.LL ((SOf x).WL j)), (∀ kk, θ kk ≠ 1) → LvlPsi x.m.z.R x.m.z.F x.m.z.cG θ → StabC (SOf x) hL' → (∀ j Pl, hL' j 0 Pl = 1) → HeckeRd x.m.z.R x.m.z.cG (kKsOf x) (hkOf x) (SbD (Dof x)) hL' → ∃ eig : ℕ → (Dof x).what₂.FT → ℕ → PlE (Dof x).host → ↥(Dof x).LL0, EigAd x.r.Y (SbD (Dof x)) eig ∧ SpanC (SOf x) (SbD (Dof x)) θ hL' eig := by
   intro hN hIso hL
   refine (StepW.and (StepW.and (exists_eigAd_of_state hL) (GlobalTheory.T.stable_hecke_level_character hL)) (StepW.and (GlobalTheory.T.good_fiber_types_all hN hL) hIso)).trans
@@ -45,6 +55,9 @@ theorem eig_span_of_isotInternal : PrN → (AllSt fun _ _ _ _ _ _ x => Formalism
   obtain ⟨eig, he⟩ := H.1.1 P x hx hL' h3 h5
   exact ⟨eig, he, H.1.2 P x hx (H.2.2 P x) (GlobalTheory.EigRows.occGood_of_all _ (H.2.1 P x hx)) θ hL' h1 h2 h3 h4 h5 eig he⟩
 
+/- English proof (translation)
+Introduce `_ hN _ hIso` and use `eig_span_of_isotInternal hN hIso`.
+-/
 theorem eig_span_of_state : GlobalTheory.Published.DiscreteSeriesUpqUnique → PrN → SerN → (AllSt fun _ _ _ _ _ _ x => Formalism.BasicNotions.Rows.IsotInternal (Dof x).what₂) → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), LA hL x → ∀ (θ : ∀ kk : Fin 2, Multiplicative (ZMod ((Dof x).host.g kk)) →* (↥(Dof x).LL0)ˣ) (hL' : ∀ j, ℕ → PlE (Dof x).host → Module.End (Dof x).what₂.LL ((SOf x).WL j)), (∀ kk, θ kk ≠ 1) → LvlPsi x.m.z.R x.m.z.F x.m.z.cG θ → StabC (SOf x) hL' → (∀ j Pl, hL' j 0 Pl = 1) → HeckeRd x.m.z.R x.m.z.cG (kKsOf x) (hkOf x) (SbD (Dof x)) hL' → ∃ eig : ℕ → (Dof x).what₂.FT → ℕ → PlE (Dof x).host → ↥(Dof x).LL0, EigAd x.r.Y (SbD (Dof x)) eig ∧ SpanC (SOf x) (SbD (Dof x)) θ hL' eig :=
   fun _ hN _ hIso => eig_span_of_isotInternal hN hIso
 

@@ -7,6 +7,11 @@ open scoped TensorProduct ENNReal NNReal Matrix Classical
 
 namespace GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm x n h`. Establish `h1` using `GlobalTheory.T.idele_module_conjugation_invariant F E σ hcm x`. Establish `h2` using `GlobalTheory.T.idele_module_base_change_sq F E σ hcm n`. Establish `hu : (ofF n : (AF F ⊗[F] E)ˣ) = Units.map (sigR (AF F) σ).toMonoidHom x * x` using `Units.ext h`. Rewrite `h2` using `[hu, map_mul, map_mul]`.
+
+Establish `h3 : ((IdeleGroup.ideleModule E (GroundTheory.BlockD.ThmBHecke.ideleEquiv F E (Units.map (sigR (AF F) σ).toMonoidHom x)) : ℝ)) * (IdeleGroup.ideleModule E (GroundTheory.BlockD.ThmBHecke.ideleEquiv F E x) : ℝ) = md n ^ 2` using `h2`. Rewrite `h3` using `[h1]`. Establish `hp : 0 < (IdeleGroup.ideleModule E (GroundTheory.BlockD.ThmBHecke.ideleEquiv F E x) : ℝ)` using `(IdeleGroup.ideleModule E (GroundTheory.BlockD.ThmBHecke.ideleEquiv F E x)).2`. Establish `hq : 0 < md n` using `(IdeleGroup.ideleModule F n).2`. Use polynomial arithmetic with `[sq_nonneg ((IdeleGroup.ideleModule E (GroundTheory.BlockD.ThmBHecke.ideleEquiv F E x) : ℝ) - md n)]`.
+-/
 theorem ideleModule_eq_md_of_isNm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (x : (AF F ⊗[F] E)ˣ) (n : (AF F)ˣ), IsNm σ x n → (IdeleGroup.ideleModule E (GroundTheory.BlockD.ThmBHecke.ideleEquiv F E x) : ℝ) = md n := by
   intro F E _ _ _ _ _ σ hcm x n h
   have h1 := GlobalTheory.T.idele_module_conjugation_invariant F E σ hcm x

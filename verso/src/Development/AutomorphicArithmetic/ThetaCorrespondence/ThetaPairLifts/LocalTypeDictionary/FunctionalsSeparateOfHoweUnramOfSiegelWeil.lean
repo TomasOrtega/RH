@@ -14,6 +14,9 @@ variable {e : Option (Fin n) ≃ Fin (n + 1)} {ε : Fin (n + 1) → Bool} {lam :
 end UpperTheory.Lit.Branch
 end
 namespace UpperTheory.Lit
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Lit.real_functionals_separate_of_hypothesis P hH hSW realInputE_holds`.
+-/
 theorem functionalsSeparate_of_howeUnram_of_siegelWeil (P : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hH : GlobalTheory.Hk3.HoweUnram)
     (hSW : GlobalTheory.Published.SiegelWeilUnitaryConvergent) : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate :=
   _root_.UpperTheory.Lit.real_functionals_separate_of_hypothesis P hH hSW realInputE_holds

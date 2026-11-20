@@ -19,6 +19,9 @@ section Generic
 
 variable {G Γ W : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `⟨h.1, h.2.1, fun x x' => ?_⟩` and prove the remaining obligations. Rewrite using `[h.2.2]`. Conclude with `Bridge.adInnerIndep_holds ι ρ J χ' hρ hχ I I' y y' hy hy' _ (h.2.1 ▸ LinearMap.mem_range_self _ x) _ (h.2.1 ▸ LinearMap.mem_range_self _ x')`.
+-/
 private theorem is_move (ι : Γ →* G) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ χ' : J →* ℂˣ) (e : χ' = χ)
     (hρ : ∀ γ x x', inner ℂ (ρ γ x) (ρ γ x') = inner ℂ x x') (hχ : ∀ k, ‖(χ k : ℂ)‖ = 1)
     {I I' : Type} [Fintype I] [Fintype I'] (y : I → G) (y' : I' → G) (hy : Bridge.IsReps ι J y) (hy' : Bridge.IsReps ι J y')
@@ -30,6 +33,9 @@ private theorem is_move (ι : Γ →* G) (ρ : Γ →* Module.End ℂ W) (J : Su
   exact Bridge.adInnerIndep_holds ι ρ J χ' hρ hχ I I' y y' hy hy' _ (h.2.1 ▸ LinearMap.mem_range_self _ x) _
     (h.2.1 ▸ LinearMap.mem_range_self _ x')
 
+/- English proof (translation)
+Establish `hfin` using `Fintype.ofFinite H`. Establish `h1 : (χ u) ^ (Fintype.card H) = 1` using `by rw [← map_pow, pow_card_eq_one, map_one]`. Establish `h2 : ‖((χ u : ℂˣ) : ℂ)‖ ^ (Fintype.card H) = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) Fintype.card_ne_zero).1 h2`.
+-/
 private theorem norm_units_of_finite {H : Type} [Group H] [Finite H] (χ : H →* ℂˣ) (u : H) : ‖((χ u : ℂˣ) : ℂ)‖ = 1 := by
   have hfin := Fintype.ofFinite H
   have h1 : (χ u) ^ (Fintype.card H) = 1 := by rw [← map_pow, pow_card_eq_one, map_one]
@@ -43,6 +49,11 @@ section Free
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hf : ∀ PP : Pl D.host.E, Finite (kP PP)ˣ` using `fun PP => Finite.of_injective _ Units.val_injective`. Use `show ‖((levFn β (flag1L L) (Formalism.UG.bc (swapAE D) k.1.1) : ℂˣ) : ℂ)‖ = 1`. Generalize the expression as in `Formalism.UG.bc (swapAE D) k.1.1 = x`. Unfold `levFn`. Simplify using `only [Units.val_mul, norm_mul, Units.coe_prod, norm_prod]`.
+
+Rewrite using `[show ext1 (flag1L L).P.H (flag1L L).P.chi (rTup β (flag1L L) x) = 1 from subgroupCharExtension_one_apply _ _]`. Simplify using `[norm_units_of_finite]`.
+-/
 private theorem norm_chi (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank)
     (k : (levEnv V β L).J) : ‖((levEnv V β L).χ k : ℂ)‖ = 1 := by
   have hf : ∀ PP : Pl D.host.E, Finite (kP PP)ˣ := fun PP => Finite.of_injective _ Units.val_injective
@@ -65,6 +76,13 @@ private def MV (V : HSp D) (c : CoefA V) (β : GL (Fin V.rank) (Lev.EAf D)) (L :
 private def RP (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank)
     {I : Type} (y : I → Bridge.Gf V) : Prop := Bridge.IsReps (Bridge.ratF V) (levEnv V β L).J y
 
+/- English proof (translation)
+Use `⟨?_, h.2⟩` and prove the remaining obligations. Use `is_move (Bridge.ratF V) c.coef.ρ (levEnv V β (datC V hr Pg ∅ chi xi)).J _ (levEnv V β (datC V hr Pg ∅ chi' xi')).χ ?_ (fun γ => hc.2.1 γ.1) (norm_chi V β _) y y' hy hy' H h.1` and prove the remaining obligations. Use `ext1 k`. Use `show levFn β (flag1L (datC V hr Pg ∅ chi' xi')) (Formalism.UG.bc (swapAE D) k.1.1) = levFn β (flag1L (datC V hr Pg ∅ chi xi)) (Formalism.UG.bc (swapAE D) k.1.1)`. Generalize the expression as in `Formalism.UG.bc (swapAE D) k.1.1 = x`.
+
+Unfold `levFn`. Use `congr 1`. Use `congr 1`. Use `Finset.prod_congr rfl fun PP hP => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `show (chi' PP)⁻¹ _ = (chi PP)⁻¹ _`.
+
+Rewrite using `[hchi PP hP]`. Both sides reduce to the same expression.
+-/
 private theorem mv_move (V : HSp D) (c : CoefA V) (hc : c.Is) (β : GL (Fin V.rank) (Lev.EAf D)) (hr : D.R.r ≤ V.rank)
     (Pg : Finset (Pl D.host.E)) (chi xi chi' xi' : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (hchi : ∀ PP ∈ Pg, chi' PP = chi PP)
     {I I' : Type} [Fintype I] [Fintype I'] (y : I → Bridge.Gf V) (y' : I' → Bridge.Gf V)
@@ -92,6 +110,27 @@ section Comparison₂
 
 variable {B B' : Base} {C : Cols B} {C' : Cols B'} {a : Late B C} {a' : Late B' C'}
 
+/- English proof (translation)
+Substitute `hQ hQ'` using the available equality. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use the proof step `( (`.
+
+Establish `e : @Eq (type_of% (V')) ((by with_unfolding_all exact ((V) :))) (V')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (V')) (V') (((V))) (((hV)))).symm : _))`. Use `clear (hV)`. Substitute `e))` using the available equality. Take `⟨W₁, ρ₁⟩` from `c'`. Name the introduced variables `nW' iW' _`.
+
+Simplify using `only at c1 c2 c3 c4`. Use the proof step `( (`. Establish `e : @Eq (type_of% (W₁)) ((by with_unfolding_all exact ((c.W) :))) (W₁)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (W₁)) (W₁) (((c.W))) (((c1)))).symm : _))`. Use `clear (c1)`. Substitute `e))` using the available equality.
+
+Use the proof step `( (`. Establish `e : @Eq (type_of% (nW')) ((by with_unfolding_all exact ((c.nW) :))) (nW')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (nW')) (nW') (((c.nW))) (((c3)))).symm : _))`. Use `clear (c3)`. Substitute `e))` using the available equality. Use the proof step `( (`.
+
+Establish `e : @Eq (type_of% (iW')) ((by with_unfolding_all exact ((c.iW) :))) (iW')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (iW')) (iW') (((c.iW))) (((c4)))).symm : _))`. Use `clear (c4)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (ρ₁)) ((by with_unfolding_all exact ((c.ρ) :))) (ρ₁)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (ρ₁)) (ρ₁) (((c.ρ))) (((c2)))).symm : _))`.
+
+Use `clear (c2)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (β')) ((by with_unfolding_all exact ((β) :))) (β')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (β')) (β') (((β))) (((hβ)))).symm : _))`. Use `clear (hβ)`.
+
+Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (Pg')) ((by with_unfolding_all exact ((Pg) :))) (Pg')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (Pg')) (Pg') (((Pg))) (((hPg)))).symm : _))`. Use `clear (hPg)`. Substitute `e))` using the available equality.
+
+Use the proof step `( (`. Establish `e : @Eq (type_of% (H')) ((by with_unfolding_all exact ((H) :))) (H')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (H')) (H') (((H))) (((hH)))).symm : _))`. Use `clear (hH)`. Substitute `e))` using the available equality. Use the proof step `( (`.
+
+Establish `e : @Eq (type_of% (ν')) ((by with_unfolding_all exact ((ν) :))) (ν')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (ν')) (ν') (((ν))) (((hν)))).symm : _))`. Use `clear (hν)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (fd')) ((by with_unfolding_all exact ((fd) :))) (fd')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (fd')) (fd') (((fd))) (((hfd)))).symm : _))`.
+
+Use `clear (hfd)`. Substitute `e))` using the available equality. Establish `e : ∀ PP : Pl a.D.host.E, PP ∈ Pg → HEq (chi' ((by with_unfolding_all exact (PP :)))) (chi PP)` using `fun PP hm => hchi ((by with_unfolding_all exact (PP :))) PP ((by with_unfolding_all exact ((HEq.refl PP) :))) hm`. Conclude with `(by with_unfolding_all exact ((mv_move V c hc β hr Pg chi xi ((by with_unfolding_all exact (chi' :))) ((by with_unfolding_all exact (xi' :))) (fun PP hm => eq_of_heq ((by with_unfolding_all exact ((e PP hm) :)))) y (I' := I') ((by with_unfolding_all exact (y' :))) hy ((by with_un …`.
+-/
 private theorem mv_of (hP : B'.toPre = B.toPre) {V : HSp a.D} {V' : HSp a'.D} (hV : HEq V' V) {c : CoefA V} {c' : CoefA V'}
     (c1 : HEq c'.W c.W) (c2 : HEq c'.ρ c.ρ) (c3 : HEq c'.nW c.nW) (c4 : HEq c'.iW c.iW) (hc : c.Is)
     {β : GL (Fin V.rank) (Lev.EAf a.D)} {β' : GL (Fin V'.rank) (Lev.EAf a'.D)} (hβ : HEq β' β)
@@ -154,6 +193,13 @@ private theorem mv_of (hP : B'.toPre = B.toPre) {V : HSp a.D} {V' : HSp a'.D} (h
     fun PP hm => hchi ((by with_unfolding_all exact (PP :))) PP ((by with_unfolding_all exact ((HEq.refl PP) :))) hm
   exact (by with_unfolding_all exact ((mv_move V c hc β hr Pg chi xi ((by with_unfolding_all exact (chi' :))) ((by with_unfolding_all exact (xi' :))) (fun PP hm => eq_of_heq ((by with_unfolding_all exact ((e PP hm) :)))) y (I' := I') ((by with_unfolding_all exact (y' :))) hy ((by with_unfolding_all exact (hy' :))) H ν fd h0) :))
 
+/- English proof (translation)
+Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Establish `e : @Eq (type_of% i') ((by with_unfolding_all exact (i :))) i'` using `(by with_unfolding_all exact ((Fin.ext h : @Eq (type_of% i') ((by with_unfolding_all exact (i :))) i') :))`. Use `clear h`.
+
+Substitute `e` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (β')) ((by with_unfolding_all exact ((β) :))) (β')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (β')) (β') (((β))) (((hβ)))).symm : _))`. Use `clear (hβ)`. Substitute `e))` using the available equality.
+
+Conclude with `(by with_unfolding_all exact ((HEq.refl (β i)) :))`.
+-/
 private theorem beta_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i')
     {β : ∀ i, GL (Fin (Vc a.D i).rank) (Lev.EAf a.D)} {β' : ∀ i, GL (Fin (Vc a'.D i).rank) (Lev.EAf a'.D)} (hβ : HEq β' β) :
     HEq (β' i') (β i) := by
@@ -174,6 +220,9 @@ variable {G G' : Type} [iG : Group G] [Fintype G] [iG' : Group G'] [Fintype G'] 
   {Ks Ks' : Type} [Field Ks] [NumberField Ks] [Algebra Ks a.D.what₂.LL] [Field Ks'] [NumberField Ks'] [Algebra Ks' a'.D.what₂.LL]
   {R : RealDat a.D A Ks} {R' : RealDat a'.D A' Ks'}
 
+/- English proof (translation)
+The claim follows from `mv_of hP (LiftExt.vc_heq hP h) c1 c2 c3 c4 (hm.cV i) (beta_heq hP h hβ) (r_le_V i) (r_le_V i') hPg hQ hQ' hchi (xi := R.xiR t) (xi' := R'.xiR t') (y := (R.B.L i t).pres.y) (y' := (R'.B.L i' t').pres.y) (R.B.L i t).pres.reps (R'.B.L i' t').pres.reps hHV hν hfd ⟨hm.HV i t, hm.νV i …`.
+-/
 private theorem modV_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i') {t : T0} {t' : T0'}
     (hβ : HEq R'.βV R.βV) (hPg : HEq R'.Pg R.Pg) (hQ : R.Q t = ∅) (hQ' : R'.Q t' = ∅)
     (c1 : HEq (R'.cV i').W (R.cV i).W) (c2 : HEq (R'.cV i').ρ (R.cV i).ρ) (c3 : HEq (R'.cV i').nW (R.cV i).nW)
@@ -196,6 +245,11 @@ end GlobalTheory.Mem.R3.Rw.ModVExt
 end
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Ks _ _ _ Xg tr z Wt' R' hE _ hS hL i'`. Use `letI := z.alg`. Establish `hP : B'.toPre = B.toPre` using `hE.1`. Establish `hm` using `LiftExt.m_eq (a := Z) (a' := Z') hP`. Set `i : Fin (w.st Z).toD7.R.m` to `Fin.cast hm i'`.
+
+Establish `h : (i : ℕ) = i'` using `rfl`. Use `obt ⟨⟨-, -, -, -, -, -, hβ, -, -, hPg, -, -, h1, -⟩, h2⟩ := hS`. Use `obt ⟨c1, c2, c3, c4, -⟩ := h1 i i' h`. Use `obt ⟨-, -, hHV, -, -, hν, hfd⟩ := h2 i i' h`. Conclude with `ModVExt.modV_of (a := Z) (a' := Z') (R := z.R.toRealDat) (R' := R'.toRealDat) hP h hβ hPg hL.2.2.2 hL.2.2.1 c1 c2 c3 c4 (hL.1 i i' h).2 hHV hν hfd z.pins.char.base.models`.
+-/
 theorem _root_.GlobalTheory.T.referenceTuple_hilbertModel_definiteForms_enlarged : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (w'.st Z').toD7.what₂.LL] {Xg : Finset (Gc B' w'.px → B'.LL)} {tr : TrI B' w'.px}

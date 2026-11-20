@@ -12,6 +12,13 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 noncomputable section
 namespace GlobalTheory.ParIdx
 
+/- English proof (translation)
+Use `first`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `@_root_.GlobalTheory.ParahoricConjugateOpen.relIndex_conj_parahoric`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `_root_.GlobalTheory.ParahoricConjugateOpen.relIndex_conj_parahoric`.
+
+Consider the case `exact @_root_.GlobalTheory.ParahoricConjugateOpen.relIndex_conj_parahoric`. Consider the case `exact _root_.GlobalTheory.ParahoricConjugateOpen.relIndex_conj_parahoric`. Consider the case `(apply _root_.GlobalTheory.ParahoricConjugateOpen.relIndex_conj_parahoric <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ParahoricConjugateOpen.relIndex_conj_parahoric <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.ParahoricConjugateOpen.relIndex_conj_parahoric <;> first | assumption | infer_instance)`.
+
+Consider the case `(intros; exact _root_.GlobalTheory.ParahoricConjugateOpen.relIndex_conj_parahoric ..)`.
+-/
 theorem relIndex_parahoric_conj_mtor : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ϖ : kˣ),
     valuation k (ϖ : k) = uniformizer k →
     ∀ (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (e : D → ℤ),

@@ -15,6 +15,21 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 
 namespace GlobalTheory.InertPlaces
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F h t P`. Establish `hSb : (R.Sb : Set (Pl D.host.E)) = R.Pg` using `by rw [h.allPl]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, hQ, rfl⟩`. Take `⟨hfix, hoff⟩` from `(h.inert.tie.okI t Q).1 hQ`.
+
+Rewrite `hfix` using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq]`. Establish `hf : Formalism.DivisionValues.conjPl (R.plI Q) = R.plI Q` using `HeightOneSpectrum.ext hfix`. Use `⟨fun PP hPP => ⟨fun he => hoff ?_, fun hc => hoff ?_⟩, hf⟩` and prove the remaining obligations. Break down `hPP with hm | hm` into its components or cases. Conclude with `Or.inl (by rw [hSb, ← he]; exact hm)`.
+
+Conclude with `Or.inr (by rw [← he]; exact hm)`. Establish `e1` using `GlobalTheory.SplitHeckeAdj.eq_conj_of_isConjPl hc`. Establish `e2 : PP = R.plI Q`. Rewrite using `[← Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl PP, ← e1, hf]`. Break down `hPP with hm | hm` into its components or cases.
+
+Conclude with `Or.inl (by rw [hSb, ← e2]; exact hm)`. Conclude with `Or.inr (by rw [← e2]; exact hm)`. Introduce and unpack `⟨hg, hf⟩`. Establish `hnS : P ∉ (R.Sb : Set (Pl D.host.E))`. Rewrite using `[hSb]`.
+
+Introduce `hm`. Conclude with `(hg P (Or.inl hm)).1 rfl`. Establish `hio : Formalism.IndefR.Bridge.InertOff P (R.Sb : Set (Pl D.host.E))`. Use `⟨?_, hnS⟩` and prove the remaining obligations. Rewrite using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq, hf]`.
+
+Take `⟨Q, hQ⟩` from `h.inert.onto P hio`. Use `⟨Q, (h.inert.tie.okI t Q).2 ⟨?_, ?_⟩, hQ⟩` and prove the remaining obligations. Rewrite using `[hQ]`. Conclude with `hio.1`. Rewrite using `[hQ]`.
+
+Introduce and unpack `(hm | hm)`. Conclude with `hnS hm`. Conclude with `(hg P (Or.inr hm)).1 rfl`.
+-/
 theorem inert_places_iff : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → ∀ (t : T) (P : Pl D.host.E), (∃ Q ∈ A3.okI t, R.plI Q = P) ↔ (Good R.toRealDat t P ∧ conjPl P = P) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F h t P
   have hSb : (R.Sb : Set (Pl D.host.E)) = R.Pg := by rw [h.allPl]

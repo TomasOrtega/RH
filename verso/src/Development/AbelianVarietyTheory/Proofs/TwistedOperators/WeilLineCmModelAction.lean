@@ -39,6 +39,13 @@ namespace GlobalTheory.SchwartzSlope
 open Filter Topology
 open scoped SchwartzMap RealInnerProductSpace
 
+/- English proof (translation)
+Establish `key : ∀ u : GlobalTheory.RealWeil.Sch l, ∫ x, ‖u x‖ ^ 2 = (∫⁻ x, ‖u x‖ₑ ^ 2).toReal`. Introduce `u`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun x => ‖u x‖ ^ 2) (Eventually.of_forall fun x => sq_nonneg ‖u x‖) ((by fun_prop : Continuous fun x => ‖u x‖ ^ 2).aestronglyMeasurable)]`. Use `congr 1`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ofReal_norm_eq_enorm, ENNReal.ofReal_pow (norm_nonneg _)]`. Establish `fin : ∀ u : GlobalTheory.RealWeil.Sch l, ∫⁻ x, ‖u x‖ₑ ^ 2 ≠ ⊤`. Introduce `u`. Rewrite using `[GlobalTheory.MetaplecticScalarDeriv.lintegral_sq_eq]`. Conclude with `ENNReal.pow_ne_top (Lp.eLpNorm_ne_top _)`.
+
+Rewrite `h` using `[key, key]`. Conclude with `(ENNReal.toReal_eq_toReal_iff' (fin f) (fin g)).1 h`.
+-/
 theorem lintegral_of_integral (l : Type) [Fintype l] (f g : GlobalTheory.RealWeil.Sch l)
     (h : ∫ x, ‖f x‖ ^ 2 = ∫ x, ‖g x‖ ^ 2) : ∫⁻ x, ‖f x‖ₑ ^ 2 = ∫⁻ x, ‖g x‖ₑ ^ 2 := by
   have key : ∀ u : GlobalTheory.RealWeil.Sch l, ∫ x, ‖u x‖ ^ 2 = (∫⁻ x, ‖u x‖ₑ ^ 2).toReal := by
@@ -55,6 +62,21 @@ theorem lintegral_of_integral (l : Type) [Fintype l] (f g : GlobalTheory.RealWei
   rw [key, key] at h
   exact (ENNReal.toReal_eq_toReal_iff' (fin f) (fin g)).1 h
 
+/- English proof (translation)
+Take `⟨hs, hgrp, h0⟩` from `GlobalTheory.T.symplectic_and_flow_of_intertwining_unitary l A T hT hT0 hI hiso`. Establish `hT0' : T 0 = LinearMap.id` using `LinearMap.ext hT0`. Establish `hTadd : ∀ s t, T (s + t) = T s ∘ₗ T t` using `fun s t => LinearMap.ext (hT s t)`. Establish `hiso' : ∀ t h, ∫⁻ x, ‖T t h x‖ₑ ^ 2 = ∫⁻ x, ‖h x‖ₑ ^ 2` using `fun t h => lintegral_of_integral l _ _ (hiso t h)`. Choose the witnesses or unpack the hypotheses as in `⟨X, hsp, hB⟩ : ∃ X : Matrix (l ⊕ l) (l ⊕ l) ℝ, X ∈ LieAlgebra.Symplectic.sp l ℝ ∧ ∀ t w, NormedSpace.exp (t • X) *ᵥ w = A t w := by`.
+
+Consider the cases of `isEmpty_or_nonempty l with`. Consider the case `inl hl => exact ⟨0, zero_mem _, fun t w => Subsingleton.elim _ _⟩`. Consider the case `inr hl`. Set `M : ℝ → Matrix (l ⊕ l) (l ⊕ l) ℝ` to `fun t => LinearMap.toMatrix' (A t)`. Establish `hM : ∀ t w, M t *ᵥ w = A t w` using `fun t w => LinearMap.toMatrix'_mulVec (A t) w`.
+
+Establish `hMc : Continuous M`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [M, LinearMap.toMatrix'_apply]`. Conclude with `(continuous_apply i).comp (hA _)`. Establish `hM0 : M 0 = 1`.
+
+Establish `: A 0 = LinearMap.id` using `LinearMap.ext h0`. Simplify using `only [M, this, LinearMap.toMatrix'_id]`. Establish `hMm : ∀ s t, M (s + t) = M s * M t`. Introduce `s t`. Establish `: A (s + t) = (A s).comp (A t)` using `LinearMap.ext (hgrp s t)`.
+
+Simplify using `only [M, this, LinearMap.toMatrix'_comp]`. Take `⟨X, hX⟩` from `GlobalTheory.T.continuous_matrix_oneParameterGroup_eq_exp _ M hMc hM0 hMm`. Establish `hsp : X ∈ LieAlgebra.Symplectic.sp l ℝ`. Use `GlobalTheory.T.mem_symplecticLieAlgebra_of_exp_smul_mem_symplecticGroup l X fun t => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `GlobalTheory.exists_symplecticGroup_of_sympl l (A t) (hs t)`.
+
+Establish `e : Matrix.toLin' (N : Matrix (l ⊕ l) (l ⊕ l) ℝ) = A t` using `LinearMap.ext fun w => by`. Rewrite using `[Matrix.toLin'_apply, hN]`. Establish `e2 : (N : Matrix (l ⊕ l) (l ⊕ l) ℝ) = M t`. Simplify using `only [M, ← e, LinearMap.toMatrix'_toLin']`. Rewrite using `[← hX t, ← e2]`.
+
+Conclude with `N.2`. Conclude with `⟨X, hsp, fun t w => by rw [← hX, hM]⟩`. Take `⟨a, ha⟩` from `GlobalTheory.T.schwartz_one_parameter_group_formula hP l X hsp T hT0' hTadd (fun t w h h₁ hh => by rw [hI t w h h₁ hh, hB]) hiso' hpt`. Conclude with `fun f => ⟨_, ha f⟩`.
+-/
 theorem coordSlope (hP : GlobalTheory.FunPr.Hypotheses₂) (l : Type) [Fintype l] [DecidableEq l]
     (A : ℝ → (l ⊕ l → ℝ) →ₗ[ℝ] (l ⊕ l → ℝ)) (T : ℝ → GlobalTheory.RealWeil.Sch l →ₗ[ℂ] GlobalTheory.RealWeil.Sch l)
     (hA : ∀ w, Continuous fun t => A t w) (hT : ∀ s t f, T (s + t) f = T s (T t f)) (hT0 : ∀ f, T 0 f = f)
@@ -102,6 +124,29 @@ theorem coordSlope (hP : GlobalTheory.FunPr.Hypotheses₂) (l : Type) [Fintype l
 
 open GlobalTheory.ArchUniq GlobalTheory.RealWeil in
 
+/- English proof (translation)
+Take `⟨C, φ, hp, hq⟩` from `SchrTransport.coords P hPp (Module.finrank ℝ V) rfl`. Establish `hS` using `SchrTransport.schr_coords P C φ hp hq`. Set `toE : 𝓢(V, ℂ) →L[ℂ] Sch (Fin (Module.finrank ℝ V))` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) C.symm`. Set `toV : Sch (Fin (Module.finrank ℝ V)) →L[ℂ] 𝓢(V, ℂ)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) C`. Establish `htoE : ∀ g, ⇑(toE g) = ⇑g ∘ ⇑C.symm` using `fun g => rfl`.
+
+Establish `htoV : ∀ h, ⇑(toV h) = ⇑h ∘ ⇑C` using `fun h => rfl`. Establish `hVE : ∀ g, toV (toE g) = g` using `fun g => by ext x; simp [htoE, htoV]`. Establish `hEV : ∀ h, toE (toV h) = h` using `fun h => by ext x; simp [htoE, htoV]`. Set `T' : ℝ → Sch (Fin (Module.finrank ℝ V)) →ₗ[ℂ] Sch (Fin (Module.finrank ℝ V))` to `fun t => toE.toLinearMap ∘ₗ T t ∘ₗ toV.toLinearMap`. Set `A' : ℝ → (Fin (Module.finrank ℝ V) ⊕ Fin (Module.finrank ℝ V) → ℝ) →ₗ[ℝ] (Fin (Module.finrank ℝ V) ⊕ Fin (Module.finrank ℝ V) → ℝ)` to `fun t => φ.toLinearMap ∘ₗ A t ∘ₗ φ.symm.toLinearMap`.
+
+Establish `hT' : ∀ t h, T' t h = toE (T t (toV h))` using `fun t h => rfl`. Take `⟨k, hk, hint⟩` from `SchrTransport.haar_coords μ C`. Establish `c1 : ∀ w, Continuous fun t => A' t w`. Introduce `w`. Conclude with `(φ.toLinearMap.continuous_of_finiteDimensional).comp (hAc (φ.symm w))`.
+
+Establish `c2 : ∀ s t f, T' (s + t) f = T' s (T' t f)`. Introduce `s t h`. Simplify using `only [hT', hVE, hTadd]`. Establish `c3 : ∀ f, T' 0 f = f`. Introduce `h`.
+
+Simplify using `[hT', hT0, hEV]`. Establish `c4 : ∀ t w (f f₁ : Sch (Fin (Module.finrank ℝ V))), ⇑f₁ = rhoFun w ⇑f → ⇑(T' t f₁) = rhoFun (A' t w) ⇑(T' t f)`. Introduce `t w f f₁ hf`. Establish `e1 : ⇑(toV f₁) = schrF P (φ.symm w) ⇑(toV f)`. Use function extensionality and compare the values at `x`.
+
+Use `congrFun (hS (φ.symm w) ⇑f) x` as an intermediate fact. Simplify using `only [Function.comp_apply, LinearEquiv.apply_symm_apply] at this`. Simplify using `only [htoV, Function.comp_apply, hf]`. Conclude with `this.symm`. Establish `e2` using `hTi t _ _ _ e1`.
+
+Rewrite using `[hT' t f₁, hT' t f, htoE, htoE, e2]`. Take `⟨G, hG⟩ : ∃ G : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) → ℂ, ⇑(T t (toV f)) = G ∘ ⇑C` from `⟨⇑(T t (toV f)) ∘ ⇑C.symm, by ext x; simp⟩`. Establish `hGC : (G ∘ ⇑C) ∘ ⇑C.symm = G` using `by funext x; simp`. Rewrite using `[hG, hS, hGC]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[A']`. Establish `c5 : ∀ t f, ∫ x, ‖T' t f x‖ ^ 2 = ∫ x, ‖f x‖ ^ 2`. Introduce `t h`. Establish `e` using `hTl2 t (toV h)`. Rewrite `e` using `[hint, hint]`.
+
+Simplify using `only [htoV, Function.comp_apply, ContinuousLinearEquiv.apply_symm_apply] at e`. Conclude with `mul_left_cancel₀ hk.ne' e`. Establish `c6 : ∀ f y, Continuous fun t => T' t f y`. Introduce `h y`. Conclude with `hTc (toV h) (C.symm y)`.
+
+Establish `hlim` using `coordSlope hP (Fin (Module.finrank ℝ V)) A' T' c1 c2 c3 c4 c5 c6`. Introduce `f`. Take `⟨g, hg⟩` from `hlim (toE f)`. Use `⟨toV g, ?_⟩` and prove the remaining obligations. Establish `e : (fun t : ℝ => t⁻¹ • (T t f - f)) = fun t : ℝ => (toV.restrictScalars ℝ) (t⁻¹ • (T' t (toE f) - toE f))`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[map_smul, map_sub]`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', hT', hVE]`. Rewrite using `[e]`. Conclude with `((toV.restrictScalars ℝ).continuous.tendsto g).comp hg`.
+-/
 theorem slope (hP : GlobalTheory.FunPr.Hypotheses₂) (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (P : V → V → ℝ) (hPp : IsPairing P)
     (A : ℝ → (V × V) →ₗ[ℝ] (V × V)) (T : ℝ → 𝓢(V, ℂ) →ₗ[ℂ] 𝓢(V, ℂ))
@@ -172,6 +217,11 @@ theorem slope (hP : GlobalTheory.FunPr.Hypotheses₂) (V : Type) [NormedAddCommG
   rw [e]
   exact ((toV.restrictScalars ℝ).continuous.tendsto g).comp hg
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ n d X W M ψ χX χW om hCM hψ hW γ hγ T hT hadd h0`. Take `⟨A, hAc, hA⟩` from `GlobalTheory.T.archimedeanLine_intertwines_realSchrodinger M ψ χX χW om hψ hW γ hγ T hT`. Use `haveI : BorelSpace (Fin n × Fin d → mixedEmbedding.mixedSpace F) := Pi.borelSpace`. Set `μ : Measure (Fin n × Fin d → mixedEmbedding.mixedSpace F)` to `Measure.addHaar`. Establish `hiso : ∀ t f, ∫ x, ‖T t f x‖ ^ 2 ∂μ = ∫ x, ‖f x‖ ^ 2 ∂μ` using `fun t f => GlobalTheory.T.weil_representation_integral_action M ψ χX χW om hW μ inferInstance (γ (Multiplicative.ofAdd t)) f (T t f) (hT t f)`.
+
+Take `⟨hc1, -⟩` from `GlobalTheory.T.archimedeanOneParameterFamily_continuous M ψ χX χW om hW γ hγ T hT`. Conclude with `slope hP (Fin n × Fin d → mixedEmbedding.mixedSpace F) μ _ (GlobalTheory.ArchUniq.Coord.isPairing_trP (F := F) (Fin n × Fin d)) A T hAc hadd h0 hA hiso hc1`.
+-/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}
     (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E)

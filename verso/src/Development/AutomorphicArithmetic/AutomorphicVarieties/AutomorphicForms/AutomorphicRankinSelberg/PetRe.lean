@@ -3,12 +3,36 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 open UpperHalfPlane hiding I
 open UpperTheory.V.Af UpperTheory.V.Sd
 
+/- English proof (translation)
+Simplify using `only [petersson]`. Rewrite using `[zpow_natCast, Complex.conj_mul', ← Complex.ofReal_pow, ← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.ofReal_re, Complex.sq_norm]`.
+-/
 private lemma pet_re (k : ℕ) (f : ℍ → ℂ) (z : ℍ) :
     (petersson (k : ℤ) f f z).re = Complex.normSq (f z) * z.im ^ k := by
   simp only [petersson]
   rw [zpow_natCast, Complex.conj_mul', ← Complex.ofReal_pow, ← Complex.ofReal_pow, ← Complex.ofReal_mul,
     Complex.ofReal_re, Complex.sq_norm]
 
+/- English proof (translation)
+Introduce `hTB hTT hCE hCP hTE hLB hNP hPC hCmp k L _ hk χ ψ g h hap hχ`. Assume the negation of the conclusion as `hne`. Establish `hne' : χ * ψ⁻¹ ≠ 1` using `fun e => hne (mul_inv_eq_one.mp e)`. Take `⟨G, hG⟩` from `hCE L (χ * ψ⁻¹) (petersson (k : ℤ) h.f g.f) (hPC k L χ ψ g.f h.f g.char h.char)`. Establish `hNF` using `hNP k L g.f h.f`.
+
+Take `⟨hP1, hP2, -⟩` from `hCP L _ _ G hG`. Take `⟨C, hC⟩` from `hTB L G (hP1 hNF) (hP2 hne')`. Establish `hchar0` using `hPC k L χ χ g.f g.f g.char g.char`. Simplify using `only [mul_inv_cancel] at hchar0`. Take `⟨G0, hG0⟩` from `hCE L 1 (petersson (k : ℤ) g.f g.f) hchar0`.
+
+Establish `hNF0` using `hNP k L g.f g.f`. Take `⟨hQ1, -, hQ3⟩` from `hCP L _ _ G0 hG0`. Establish `hfz : ∃ z, g.f z ≠ 0`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+
+Establish `h0 : (⇑g.f : ℍ → ℂ) = 0` using `funext hall`. Use `g.one` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `[UpperTheory.V.Af.coef, UpperHalfPlane.qExpansion_zero] at this`. Take `⟨z0, hz0⟩` from `hfz`.
+
+Establish `hpos : ∃ z, 0 < (petersson (k : ℤ) g.f g.f z).re`. Use `⟨z0, ?_⟩` and prove the remaining obligations. Rewrite using `[pet_re]`. Conclude with `mul_pos (Complex.normSq_pos.mpr hz0) (pow_pos z0.im_pos k)`. Establish `hnn : ∀ z, 0 ≤ (petersson (k : ℤ) g.f g.f z).re`.
+
+Introduce `z`. Rewrite using `[pet_re]`. Conclude with `mul_nonneg (Complex.normSq_nonneg _) (pow_nonneg z.im_pos.le k)`. Take `⟨hR1, hR2⟩` from `hQ3 rfl hnn hpos`. Take `⟨s, hs, hM⟩` from `hTT L G0 (hQ1 hNF0) hR1 hR2 (56 * C + 1)`.
+
+Establish `hs1 : (1 : ℝ) ≤ s` using `hs.1.le`. Establish `e1` using `hTE L _ _ G hG hNF (hP1 hNF) s hs`. Establish `e0` using `hTE L _ _ G0 hG0 hNF0 (hQ1 hNF0) s hs`. Take `⟨-, hL1, -⟩` from `hLB L (χ * ψ⁻¹) s hs1`. Take `⟨-, -, hL0⟩` from `hLB L 1 s hs1`.
+
+Establish `hCs` using `hC s hs`. Establish `hcmp` using `hCmp k L hk χ ψ g h hap hχ s hs`. Establish `h2 : ‖(2 : ℂ)‖ = 2` using `by simp`. Rewrite `hCs` using `[e1, norm_mul, norm_mul, h2]`. Establish `hre` using `Complex.re_le_norm (Rs.TT L G0 s)`.
+
+Establish `hnorm : ‖Rs.TT L G0 s‖ = ‖Rs.Lps (1 : DirichletCharacter ℂ L) s‖ * (2 * ‖Rs.stripI (petersson (k : ℤ) g.f g.f) s‖)`. Rewrite using `[e0, norm_mul, norm_mul, h2]`. Establish `hA` using `norm_nonneg (Rs.stripI (petersson (k : ℤ) h.f g.f) s)`. Establish `hB` using `norm_nonneg (Rs.stripI (petersson (k : ℤ) g.f g.f) s)`. Establish `hX : ‖Rs.stripI (petersson (k : ℤ) h.f g.f) s‖ ≤ 2 * C` using `by nlinarith`.
+
+Establish `hY : ‖Rs.Lps (1 : DirichletCharacter ℂ L) s‖ * (2 * ‖Rs.stripI (petersson (k : ℤ) g.f g.f) s‖) ≤ 2 * (2 * (7 * (2 * C)))`. Apply `mul_le_mul hL0 _ (by positivity) (by norm_num)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.V.Af.Rs.core :
     UpperTheory.V.Af.Rs.TBdd → UpperTheory.V.Af.Rs.TTop → UpperTheory.V.Af.Rs.ClsEx → UpperTheory.V.Af.Rs.ClsProp → UpperTheory.V.Af.Rs.TEq → UpperTheory.V.Af.Rs.LBd → UpperTheory.V.Af.Rs.NicePet → UpperTheory.V.Af.Rs.PetChar → UpperTheory.V.Af.Rs.Cmp → UpperTheory.V.Af.Rs.Core := by
   intro hTB hTT hCE hCP hTE hLB hNP hPC hCmp k L _ hk χ ψ g h hap hχ

@@ -11,27 +11,48 @@ noncomputable section
 namespace GlobalTheory.Mem.SRe.ConvStep
 variable {D : D7}
 
+/- English proof (translation)
+Use `show ((1 : X.B.I.Gf) : GL _ _) ∈ Formalism.UG.stabGL X.B.I.Lf`. Rewrite using `[OneMemClass.coe_one]`. Conclude with `(Formalism.UG.stabGL X.B.I.Lf).one_mem`.
+-/
 theorem kset_one (X : HidaSetting D) : (1 : X.B.I.Gf) ∈ X.B.I.Kset := by
   show ((1 : X.B.I.Gf) : GL _ _) ∈ Formalism.UG.stabGL X.B.I.Lf
   rw [OneMemClass.coe_one]
   exact (Formalism.UG.stabGL X.B.I.Lf).one_mem
 
+/- English proof (translation)
+Use `show ((x * y : X.B.I.Gf) : GL _ _) ∈ Formalism.UG.stabGL X.B.I.Lf`. Rewrite using `[Subgroup.coe_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem kset_mul (X : HidaSetting D) {x y : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hy : y ∈ X.B.I.Kset) :
     x * y ∈ X.B.I.Kset := by
   show ((x * y : X.B.I.Gf) : GL _ _) ∈ Formalism.UG.stabGL X.B.I.Lf
   rw [Subgroup.coe_mul]
   exact mul_mem hx hy
 
+/- English proof (translation)
+Use `show ((x⁻¹ : X.B.I.Gf) : GL _ _) ∈ Formalism.UG.stabGL X.B.I.Lf`. Rewrite using `[Subgroup.coe_inv]`. Conclude with `inv_mem hx`.
+-/
 theorem kset_inv (X : HidaSetting D) {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) : x⁻¹ ∈ X.B.I.Kset := by
   show ((x⁻¹ : X.B.I.Gf) : GL _ _) ∈ Formalism.UG.stabGL X.B.I.Lf
   rw [Subgroup.coe_inv]
   exact inv_mem hx
 
+/- English proof (translation)
+Establish `h` using `hr.2.1 1 (kset_one X) 1 (kset_one X)`. Rewrite `h` using `[one_mul]`. Conclude with `mul_left_cancel (a := red 1) (by rw [mul_one]; exact h.symm)`.
+-/
 theorem red_one (X : HidaSetting D) {red : X.B.I.Gf → G0g D.nd} (hr : IsRedHom X red) : red 1 = 1 := by
   have h := hr.2.1 1 (kset_one X) 1 (kset_one X)
   rw [one_mul] at h
   exact mul_left_cancel (a := red 1) (by rw [mul_one]; exact h.symm)
 
+/- English proof (translation)
+Establish `hsi : s⁻¹ ∈ X.B.I.Kset` using `kset_inv X hs`. Establish `hinv : red s⁻¹ = (red s)⁻¹`. Establish `h1` using `hr.2.1 s⁻¹ hsi s hs`. Rewrite `h1` using `[inv_mul_cancel, red_one X hr]`. Conclude with `eq_inv_of_mul_eq_one_left h1.symm`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hrx⟩`. Establish `hk : s⁻¹ * x ∈ X.B.I.Kset` using `kset_mul X hsi hx`. Use `(hr.2.2.2 _ hk).1 ?_` and prove the remaining obligations. Rewrite using `[hr.2.1 _ hsi _ hx, hinv, hrx, inv_mul_cancel]`.
+
+Introduce `hk`. Establish `hkK : s⁻¹ * x ∈ X.B.I.Kset` using `hk.1`. Establish `hr1 : red (s⁻¹ * x) = 1` using `(hr.2.2.2 _ hkK).2 hk`. Establish `h2` using `kset_mul X hs hkK`. Rewrite `h2` using `[mul_inv_cancel_left]`.
+
+Use `⟨h2, ?_⟩` and prove the remaining obligations. Establish `h3` using `hr.2.1 _ hs _ hkK`. Rewrite `h3` using `[mul_inv_cancel_left, hr1, mul_one]`. Conclude with `h3`.
+-/
 theorem fibre_iff (X : HidaSetting D) {red : X.B.I.Gf → G0g D.nd} (hr : IsRedHom X red) {s : X.B.I.Gf}
     (hs : s ∈ X.B.I.Kset) (x : X.B.I.Gf) :
     (x ∈ X.B.I.Kset ∧ red x = red s) ↔ s⁻¹ * x ∈ X.B.I.Kg X.B.g := by
@@ -55,12 +76,21 @@ theorem fibre_iff (X : HidaSetting D) {red : X.B.I.Gf → G0g D.nd} (hr : IsRedH
     rw [mul_inv_cancel_left, hr1, mul_one] at h3
     exact h3
 
+/- English proof (translation)
+Rewrite using `[X.g_eq]`. Conclude with `Nat.one_le_iff_ne_zero.2 (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)`.
+-/
 theorem one_le_g (X : HidaSetting D) : 1 ≤ X.B.g := by
   rw [X.g_eq]
   exact Nat.one_le_iff_ne_zero.2 (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)
 
+/- English proof (translation)
+The claim follows from `X.B.I.topf_open X.B.g (one_le_g X)`.
+-/
 theorem kg_open (X : HidaSetting D) : IsOpen (X.B.I.Kg X.B.g) := X.B.I.topf_open X.B.g (one_le_g X)
 
+/- English proof (translation)
+Establish `hne : (X.B.I.Kg X.B.g).Nonempty` using `⟨1, by`. Use `⟨kset_one X, fun y _ => ⟨0, zero_mem _, ?_⟩⟩` and prove the remaining obligations. Simplify using `[Formalism.MainNotions.S.AutInst.fmat]⟩`. Use `⟨(kg_open X).measure_pos X.B.μf hne, ?_⟩` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (measure_mono fun x hx => hx.1) (PI.WAU.Cpt.isCompact_Kset X.B.I).measure_lt_top`.
+-/
 theorem kg_pos_fin (X : HidaSetting D) : 0 < X.B.μf (X.B.I.Kg X.B.g) ∧ X.B.μf (X.B.I.Kg X.B.g) < ⊤ := by
   have hne : (X.B.I.Kg X.B.g).Nonempty := ⟨1, by
     refine ⟨kset_one X, fun y _ => ⟨0, zero_mem _, ?_⟩⟩
@@ -68,6 +98,11 @@ theorem kg_pos_fin (X : HidaSetting D) : 0 < X.B.μf (X.B.I.Kg X.B.g) ∧ X.B.μ
   refine ⟨(kg_open X).measure_pos X.B.μf hne, ?_⟩
   exact lt_of_le_of_lt (measure_mono fun x hx => hx.1) (PI.WAU.Cpt.isCompact_Kset X.B.I).measure_lt_top
 
+/- English proof (translation)
+Establish `e : {x | x ∈ X.B.I.Kset ∧ red x = red s} = (fun x => s⁻¹ * x) ⁻¹' (X.B.I.Kg X.B.g)`. Use extensionality with `x`. Conclude with `fibre_iff X hr hs x`. Rewrite using `[e]`. Use `⟨((kg_open X).preimage (continuous_mul_left s⁻¹)).measurableSet, ?_⟩` and prove the remaining obligations.
+
+Conclude with `measure_preimage_mul X.B.μf s⁻¹ _`.
+-/
 theorem fibre_meas (X : HidaSetting D) {red : X.B.I.Gf → G0g D.nd} (hr : IsRedHom X red) {s : X.B.I.Gf}
     (hs : s ∈ X.B.I.Kset) :
     MeasurableSet {x | x ∈ X.B.I.Kset ∧ red x = red s} ∧
@@ -79,6 +114,23 @@ theorem fibre_meas (X : HidaSetting D) {red : X.B.I.Gf → G0g D.nd} (hr : IsRed
   exact measure_preimage_mul X.B.μf s⁻¹ _
 
 open scoped InnerProductSpace in
+/- English proof (translation)
+Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `x`. Rewrite using `[hT.2 x y, inner_sum]`. Simplify using `only [inner_smul_right]`. Use `set V : ℝ := (X.B.μf (X.B.I.Kg X.B.g)).toReal with hV`.
+
+Establish `hVpos : 0 < V` using `ENNReal.toReal_pos (kg_pos_fin X).1.ne' (kg_pos_fin X).2.ne`. Establish `hV0 : (V : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hVpos.ne'`. Set `Fb : G0g D.nd → Set X.B.I.Gf` to `fun γ => {z | z ∈ X.B.I.Kset ∧ red z = γ}`. Establish `hFb : ∀ γ, MeasurableSet (Fb γ) ∧ X.B.μf (Fb γ) = X.B.μf (X.B.I.Kg X.B.g)`. Introduce `γ`.
+
+Use `fibre_meas X hr (hs0 γ).1` as an intermediate fact. Rewrite `this` using `[(hs0 γ).2]`. Conclude with `this`. Set `cf : G0g D.nd → ℂ` to `fun γ => a γ / (V : ℂ) * ⟪x, X.B.R (1, s0 γ) y⟫_ℂ`. Establish `hpt : ∀ g : X.B.I.Gf, (if g ∈ X.B.I.Kset then a (red g) / (V : ℂ) else 0) * ⟪x, X.B.R (1, g) y⟫_ℂ = ∑ γ, (Fb γ).indicator (fun _ => cf γ) g`.
+
+Introduce `g`. Distinguish the cases in `hg : g ∈ X.B.I.Kset`. Rewrite using `[if_pos hg, Finset.sum_eq_single (red g)]`. Rewrite using `[Set.indicator_of_mem (show g ∈ Fb (red g) from ⟨hg, rfl⟩), hy g hg]`. Introduce `b _ hb`.
+
+Conclude with `Set.indicator_of_notMem (fun hm => hb hm.2.symm) _`. Introduce `h1`. Conclude with `absurd (Finset.mem_univ _) h1`. Rewrite using `[if_neg hg, zero_mul]`. Use `symm`.
+
+Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Conclude with `Set.indicator_of_notMem (fun hm => hg hm.1) _`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt)]`. Rewrite using `[integral_finset_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_indicator_const _ (hFb γ).1, measureReal_def, (hFb γ).2, ← hV]`. Simplify using `only [cf, Complex.real_smul]`. Clear the denominators using the available nonvanishing facts. Introduce `γ _`. Use `(integrable_indicator_iff (hFb γ).1).2 ?_` and prove the remaining obligations.
+
+Use `integrableOn_const ?_` and prove the remaining obligations. Rewrite using `[(hFb γ).2]`. Conclude with `(kg_pos_fin X).2.ne`.
+-/
 theorem top_expand [Fintype (G0g D.nd)] (X : HidaSetting D) {red : X.B.I.Gf → G0g D.nd} (hr : IsRedHom X red)
     (s0 : G0g D.nd → X.B.I.Gf) (hs0 : ∀ γ, s0 γ ∈ X.B.I.Kset ∧ red (s0 γ) = γ) (a : G0g D.nd → ℂ)
     (Top : L2X X →L[ℂ] L2X X)
@@ -125,6 +177,17 @@ theorem top_expand [Fintype (G0g D.nd)] (X : HidaSetting D) {red : X.B.I.Gf → 
     refine integrableOn_const ?_
     rw [(hFb γ).2]; exact (kg_pos_fin X).2.ne
 
+/- English proof (translation)
+Introduce `k hk`. Set `a : G0g D.nd → ℂ` to `fun γ => if γ = red k then 1 else 0`. Set `s1 : G0g D.nd → X.B.I.Gf` to `Function.update s0 (red k) k`. Establish `hs1 : ∀ γ, s1 γ ∈ X.B.I.Kset ∧ red (s1 γ) = γ`. Introduce `γ`.
+
+Distinguish the cases in `hγ : γ = red k`. Substitute `hγ` using the available equality. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> simp [s1, hk]`. Simplify using `only [s1, Function.update_of_ne hγ]`. Conclude with `hs0 γ`.
+
+Establish `red_sum : ∀ s : G0g D.nd → X.B.I.Gf, (∑ γ, star (a γ) • star (X.B.R (1, s γ) (star f)) : L2X X) = star (X.B.R (1, s (red k)) (star f))`. Introduce `s`. Rewrite using `[Finset.sum_eq_single (red k)]`. Simplify using `[a]`. Introduce `b _ hb`.
+
+Simplify using `[a, hb]`. Introduce `h1`. Conclude with `absurd (Finset.mem_univ _) h1`. Establish `e1` using `GlobalTheory.Mem.SRe.evalAct_intertwines D G' Pl0 T A Ks R F X h t v₀ σ red hB S hS f hf hGQ a s1 hs1`. Establish `e0` using `GlobalTheory.Mem.SRe.evalAct_intertwines D G' Pl0 T A Ks R F X h t v₀ σ red hB S hS f hf hGQ a s0 hs0`.
+
+Rewrite `e1`, `e0` using `[red_sum]`. Establish `e2` using `Lp.ext (e1.trans e0.symm)`. Establish `e3` using `congrArg star e2`. Simplify using `only [star_star, s1, Function.update_self] at e3`. Conclude with `e3`.
+-/
 theorem R_star_fibre [Fintype (G0g D.nd)] {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G' Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat D A Ks) (F : Face D A) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)

@@ -20,6 +20,23 @@ noncomputable section
 
 namespace GlobalTheory.ThetaIntAdm
 
+/- English proof (translation)
+Set `q : Seminorm ℂ S` to `Seminorm.of (fun f => ∫ x, ‖T x f‖ ∂μ) (fun f g => by`. Establish `hf` using `(hint f).norm`. Establish `hg` using `(hint g).norm`. Establish `hfg` using `(hint (f + g)).norm`. Rewrite using `[← integral_add hf hg]`.
+
+Conclude with `integral_mono hfg (hf.add hg) fun x => by simp only [map_add]; exact norm_add_le _ _)`. Use the proof step `(fun c f => by`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (Eventually.of_forall fun x => by simp [map_smul, norm_mul]))`. Establish `hq : ∀ f, q f = ∫ x, ‖T x f‖ ∂μ` using `fun f => rfl`.
+
+Establish `hlsc : LowerSemicontinuous q`. Rewrite using `[lowerSemicontinuous_iff_isClosed_preimage]`. Introduce `c`. Apply `IsSeqClosed.isClosed` to reduce the goal to its premises. Introduce `y y₀ hy hlim`.
+
+Establish `hc : 0 ≤ c` using `le_trans (apply_nonneg _ _) (hy 0)`. Use `show q y₀ ≤ c`. Rewrite using `[hq, integral_norm_eq_lintegral_enorm (hint y₀).aestronglyMeasurable]`. Apply `ENNReal.toReal_le_of_le_ofReal hc` to reduce the goal to its premises. Establish `hpt : ∀ x, Tendsto (fun n => ‖T x (y n)‖ₑ) atTop (𝓝 ‖T x y₀‖ₑ)` using `fun x => ((T x).continuous.enorm.continuousAt.tendsto).comp hlim`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `(hpt x).liminf_eq.symm`. Use `_ ≤ liminf (fun n => ∫⁻ x, ‖T x (y n)‖ₑ ∂μ) atTop := lintegral_liminf_le' fun n => (hint (y n)).aestronglyMeasurable.enorm`.
+
+Use `_ ≤ liminf (fun _ : ℕ => ENNReal.ofReal c) atTop := by`. Use `liminf_le_liminf (Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Use `show ∫⁻ x, ‖T x (y n)‖ₑ ∂μ ≤ ENNReal.ofReal c`. Rewrite using `[← ofReal_integral_norm_eq_lintegral_enorm (hint (y n))]`. Conclude with `ENNReal.ofReal_le_ofReal (hy n)`.
+
+Use `_ = ENNReal.ofReal c := liminf_const _`. Establish `hqc : Continuous q` using `Seminorm.continuous_of_lowerSemicontinuous _ hlsc`. Set `L : S →ₗ[ℂ] ℂ` to `{ toFun := fun f => ∫ x, T x f ∂μ map_add' := fun f g => by simp only [map_add]; exact integral_add (hint f) (hint g) map_smul' := fun c f => by simp only [map_smul, smul_eq_mul, RingHom.id_apply]; exact integral_const_mul c _ }`. Establish `hL0 : ContinuousAt L 0`. Rewrite using `[ContinuousAt, map_zero]`.
+
+Use `squeeze_zero_norm (a := fun f => q f) (fun f => ?_) ?_` and prove the remaining obligations. Conclude with `norm_integral_le_integral_norm _`. Use `hqc.tendsto 0` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Conclude with `⟨⟨L, continuous_of_continuousAt_zero L.toAddMonoidHom hL0⟩, fun f => rfl⟩`.
+-/
 theorem exists_clm_integral {S Ω : Type} [AddCommGroup S] [Module ℂ S] [TopologicalSpace S] [IsTopologicalAddGroup S]
     [FirstCountableTopology S] [BarrelledSpace ℂ S] [MeasurableSpace Ω] (μ : Measure Ω) (T : Ω → S →L[ℂ] ℂ)
     (hint : ∀ f, Integrable (fun x => T x f) μ) : ∃ L : S →L[ℂ] ℂ, ∀ f, L f = ∫ x, T x f ∂μ := by
@@ -73,6 +90,21 @@ end GlobalTheory.ThetaIntAdm
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (theta)
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X Y M ψ χX χY om hW hC`. Take `⟨l₀, hl₀, hl₀e⟩` from `GlobalTheory.T.exists_admitted_form_eq_adelicThetaDistribution F (Fin n × Fin d)`. Establish `hS` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hW`. Establish `pres : ∀ p, ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d), om p Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d)` using `hS.pres`. Establish `adm : ∀ p, ∀ l ∈ (GlobalTheory.WeilM.adeleClass F).adm (Fin n × Fin d), l ∘ₗ om p ∈ (GlobalTheory.WeilM.adeleClass F).adm (Fin n × Fin d)` using `hS.adm`.
+
+Establish `th : ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d), ∀ g, theta om Φ g 1 = l₀ (om (g, 1) Φ)` using `fun Φ hΦ g => (hl₀e _ (pres _ Φ hΦ)).symm`. Set `fI : GlobalTheory.WeilM.schA F (Fin n × Fin d) →ₗ[ℂ] ℂ` to `{ toFun := fun Φ => M.I om Φ.1 1 map_add' := fun Φ Ψ => by`. Establish `e : (fun g => theta om (Φ + Ψ).1 g 1) = fun g => theta om Φ.1 g 1 + theta om Ψ.1 g 1`. Use function extensionality and compare the values at `g`. Rewrite using `[th _ (Φ + Ψ).2, th _ Φ.2, th _ Ψ.2, Submodule.coe_add, map_add, map_add]`.
+
+Use `show ∫ g in M.dom, theta om (Φ + Ψ).1 g 1 ∂M.μ = ∫ g in M.dom, theta om Φ.1 g 1 ∂M.μ + ∫ g in M.dom, theta om Ψ.1 g 1 ∂M.μ`. Rewrite using `[e]`. Conclude with `integral_add (hC _ Φ.2 1) (hC _ Ψ.2 1)`. Use the proof step `map_smul' := fun c Φ => by`. Establish `e : (fun g => theta om (c • Φ).1 g 1) = fun g => c * theta om Φ.1 g 1`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[th _ (c • Φ).2, th _ Φ.2, Submodule.coe_smul, map_smul, map_smul, smul_eq_mul]`. Use `show ∫ g in M.dom, theta om (c • Φ).1 g 1 ∂M.μ = c • ∫ g in M.dom, theta om Φ.1 g 1 ∂M.μ`. Rewrite using `[e, smul_eq_mul]`. Conclude with `integral_const_mul c _ }`.
+
+Take `⟨l, hl⟩` from `LinearMap.exists_extend fI`. Establish `hlΦ : ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d), l Φ = M.I om Φ 1` using `fun Φ hΦ => LinearMap.congr_fun hl ⟨Φ, hΦ⟩`. Use `⟨l, ?_, hlΦ⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Establish `mem : ∀ f : SchwartzMap (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ, GlobalTheory.WeilM.pureA F f g₀ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d)` using `fun f => Submodule.subset_span ⟨f, g₀, hg₀, rfl⟩`.
+
+Use `choose T hT using fun x : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ X.J => adm (x, 1) l₀ hl₀ g₀ hg₀`. Establish `eT : ∀ f : SchwartzMap (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ, (fun x => T x f) = fun x => theta om (GlobalTheory.WeilM.pureA F f g₀) x 1` using `fun f => by`. Use function extensionality and compare the values at `x`. Rewrite using `[← hT x f, th _ (mem f)]`. Both sides reduce to the same expression.
+
+Use `haveI := GlobalTheory.T.schwartzMap_barrelledSpace' (Fin n × Fin d → mixedEmbedding.mixedSpace F)`. Take `⟨L, hL⟩` from `GlobalTheory.ThetaIntAdm.exists_clm_integral (M.μ.restrict M.dom) T (fun f => by rw [eT f]; exact hC _ (mem f) 1)`. Use `⟨L, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[hlΦ _ (mem f), hL, eT f]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {Y : Spc F E d} (M : Model σ X Y)
     (ψ : AddChar (AF F) ℂ) (χX χY : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : Rep σ X Y), M.IsWeil ψ χX χY om →
     (∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d), M.Conv om Φ) →

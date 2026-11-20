@@ -12,6 +12,9 @@ namespace GroundTheory.Heights₂.Heights.Inter
 
 open MvPolynomial Matrix Filter Topology ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
+/- English proof (translation)
+Unfold `mixedDisc`. Rewrite using `[Finset.sum_eq_zero, mul_zero]`. Introduce `S _`. Establish `hS : (∑ k ∈ S, A k) *ᵥ u = 0` using `Finset.sum_induction _ (fun M => M *ᵥ u = 0) (fun M N hM hN => by rw [add_mulVec, hM, hN, add_zero]) (zero_mulVec u) fun k _ => hA k`. Rewrite using `[Matrix.exists_mulVec_eq_zero_iff.mp ⟨u, hu, hS⟩, mul_zero]`.
+-/
 theorem mixedDisc_eq_zero_of_mulVec {D : ℕ} {A : Fin D → Matrix (Fin D) (Fin D) ℂ} {u : Fin D → ℂ} (hu : u ≠ 0)
     (hA : ∀ k, A k *ᵥ u = 0) : mixedDisc A = 0 := by
   unfold mixedDisc
@@ -22,6 +25,13 @@ theorem mixedDisc_eq_zero_of_mulVec {D : ℕ} {A : Fin D → Matrix (Fin D) (Fin
       (zero_mulVec u) fun k _ => hA k
   rw [Matrix.exists_mulVec_eq_zero_iff.mp ⟨u, hu, hS⟩, mul_zero]
 
+/- English proof (translation)
+Use `set F : (Fin n → ℂ) → (Σ k, ι k) → ℂ := fun y' p => γ y' (v p) with hF`. Establish `hγa : AnalyticAt ℂ γ y` using `sheet_analyticAt osgood hγ`. Establish `hFa : AnalyticAt ℂ F y` using `analyticAt_pi_iff.mpr fun p => analyticAt_coord hγa (v p)`. Establish `hFy : ∀ k, ∃ i, F y ⟨k, i⟩ ≠ 0` using `blocks_ne_zero_restrict hv hγ.2.self_of_nhds.2.1.1`. Establish `hFQ : ∀ᶠ y' in 𝓝 y, F y' ∈ mcPts (imageZ v P')` using `by filter_upwards [hγ.2] with y' h`.
+
+Use `⟨blocks_ne_zero_restrict hv h.2.1.1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h0` using `h.2.1.2 _ (Ideal.mem_comap.mp hf)`. Rewrite `h0` using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_rename, eval_rename]`. Conclude with `h0`. Take `⟨x, hx, c, hxc⟩` from `hR K ι (imageZ v P') d n F y hQ (by omega) hFa hFQ`.
+
+Establish `hpot : ∀ j, (fun y' => Real.log ((L' j).h (γ y'))) = fun y' => Real.log ((L j).h (F y'))` using `fun j => funext fun y' => by rw [(hLL j).2]`. Simplify using `only [maDensity, hpot]`. Rewrite using `[mixedDisc_eq_zero_of_mulVec (u := star x) (star_ne_zero.mpr hx) fun j => hE K ι (L j) n F y x c (hL j) hFa hFy hxc]`. Simplify using the standard rewrite rules.
+-/
 theorem pointForm_holds.maDensity_eq_zero (hR : pointFormRank_holds.Statement) (hE : pointFormEuler_holds.Statement)
     {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
@@ -50,6 +60,13 @@ theorem pointForm_holds.maDensity_eq_zero (hR : pointFormRank_holds.Statement) (
     fun j => hE K ι (L j) n F y x c (hL j) hFa hFy hxc]
   simp
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v P' d n L L' g hv _ hQ hdn hL hLL`. Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Establish `h0 : ∀ y w, sheetDensity P' hΨ.choose (fun j z => Real.log ((L' j).h z)) g y w = 0`.
+
+Introduce `y w`. Unfold `sheetDensity`. Use `split_ifs with hγ`. Conclude with `mul_eq_zero_of_right _ (pointForm_holds.maDensity_eq_zero hR hE hv hQ hdn hL hLL hγ.choose_spec)`. Both sides reduce to the same expression.
+
+Simplify using `[h0]`. Both sides reduce to the same expression.
+-/
 theorem pointForm_holds.proof (hR : pointFormRank_holds.Statement) (hE : pointFormEuler_holds.Statement) : pointForm_holds.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' d n L L' g hv _ hQ hdn hL hLL
   classical

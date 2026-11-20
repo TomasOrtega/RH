@@ -25,14 +25,23 @@ def FC (a : IdF A) (k : ℕ) : AddSubgroup (CH.Cn (CH.modF A) k) where
   zero_mem' := fun s => (a.S _).zero_mem
   neg_mem' := fun {f} hf s => (a.S _).neg_mem (hf s)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_FC {a : IdF A} {k : ℕ} {f : CH.Cn (CH.modF A) k} :
     f ∈ FC a k ↔ ∀ s, vl f s ∈ a.S (s.obj (Fin.last k)) := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `a.map_mem _ (mem_FC.1 hf (hg.functor ⋙ s))`.
+-/
 theorem term_mem {a : IdF A} {p n : ℕ} {f : CH.Cn (CH.modF A) p} (hf : f ∈ FC a p)
     (s : ComposableArrows C n) (g : Fin (p + 1) → Fin (n + 1)) (hg : Monotone g) :
     (show A.obj (s.obj (Fin.last n)) from CH.term (CH.modF A) s f g hg) ∈ a.S (s.obj (Fin.last n)) :=
   a.map_mem _ (mem_FC.1 hf (hg.functor ⋙ s))
 
+/- English proof (translation)
+Use `mem_FC.2 fun s => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∑ i : Fin (k + 2), (-1 : ℤ) ^ (i : ℕ) • (show A.obj (s.obj (Fin.last (k + 1))) from (A.map (toLast i s)).hom (f (face i s)))) ∈ a.S _`. Conclude with `Ideal.sum_mem _ fun i _ => zsmul_mem (a.map_mem _ (mem_FC.1 hf (face i s))) _`.
+-/
 theorem d_mem {a : IdF A} {k : ℕ} {f : CH.Cn (CH.modF A) k} (hf : f ∈ FC a k) :
     CH.d (CH.modF A) k f ∈ FC a (k + 1) := by
   refine mem_FC.2 fun s => ?_
@@ -44,6 +53,9 @@ def IsBd (Fil : ℤ → IdF A) : ∀ m : ℕ, CH.Cn (CH.modF A) m → Prop
   | 0, g => g = 0
   | n + 1, g => ∃ H : CH.Cn (CH.modF A) n, H ∈ FC (Fil ((n + 1 : ℕ) : ℤ)) n ∧ g = CH.d (CH.modF A) n H
 
+/- English proof (translation)
+Simplify using `only [map_sub, map_add, LinearMap.sub_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem bil {R M N P : Type*} [CommRing R] [AddCommGroup M] [AddCommGroup N] [AddCommGroup P] [Module R M] [Module R N]
     [Module R P] (μ : M →ₗ[R] N →ₗ[R] P) (L B g : M) (l b t : N) (B' x y : P) :
     μ L l - B' - (x + y) = μ (L - B - g) l + (μ g l - x) + (μ B b - B') + (μ B t - y) + μ B (l - (b + t)) := by
@@ -58,11 +70,17 @@ variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {F
 
 def fc {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) : CH.Cn (CH.modF Φ.A) j := fun s => E.form σ I x s
 
+/- English proof (translation)
+The claim follows from `mem_FC.2 fun s => hF.mul r r' _ (term_mem hf s _ _) (term_mem hg s _ _)`.
+-/
 theorem cup_mem (hF : IsFil Φ Fil) {p q n : ℕ} (h : p + q = n) {r r' : ℕ} {f : CH.Cn (CH.modF Φ.A) p}
     {g : CH.Cn (CH.modF Φ.A) q} (hf : f ∈ FC (Fil r) p) (hg : g ∈ FC (Fil r') q) :
     (CH.mulP Φ.A).cupC h f g ∈ FC (Fil ((r + r' : ℕ) : ℤ)) n :=
   mem_FC.2 fun s => hF.mul r r' _ (term_mem hf s _ _) (term_mem hg s _ _)
 
+/- English proof (translation)
+Use `mem_FC.2 fun s => ?_` and prove the remaining obligations. Establish `hx : x ∈ (Fil ((0 : ℕ) : ℤ)).S E.D`. Rewrite using `[hF.top _ (by simp)]; trivial`. Conclude with `prod_mem hF _ (fun k => ga_mem E σ hF (I k) s k.castSucc k.succ (Fin.castSucc_lt_succ (i := k)).le) ((Fil _).map_mem (σ _) hx)`.
+-/
 theorem fc_mem (hF : IsFil Φ Fil) {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) :
     fc E σ I x ∈ FC (Fil (j : ℤ)) j := by
   refine mem_FC.2 fun s => ?_
@@ -71,6 +89,11 @@ theorem fc_mem (hF : IsFil Φ Fil) {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj
   exact prod_mem hF _ (fun k => ga_mem E σ hF (I k) s k.castSucc k.succ (Fin.castSucc_lt_succ (i := k)).le)
       ((Fil _).map_mem (σ _) hx)
 
+/- English proof (translation)
+Use `mem_FC.2 fun s => ?_` and prove the remaining obligations. Establish `hx : x ∈ (Fil ((0 : ℕ) : ℤ)).S E.D`. Rewrite using `[hF.top _ (by simp)]; trivial`. Establish `h` using `d_form_mem E σ hF hc j 0 I x hx s`. Establish `e : ((j : ℤ) + ((0 : ℕ) : ℤ)) + 1 = ((j + 1 : ℕ) : ℤ)` using `by push_cast; ring`.
+
+Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem d_fc_mem (hF : IsFil Φ Fil) (hc : E.GrConst Fil) {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) :
     CH.d (CH.modF Φ.A) j (fc E σ I x) ∈ FC (Fil ((j + 1 : ℕ) : ℤ)) (j + 1) := by
   refine mem_FC.2 fun s => ?_
@@ -81,6 +104,13 @@ theorem d_fc_mem (hF : IsFil Φ Fil) (hc : E.GrConst Fil) {j : ℕ} (I : Fin j �
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Φ.A.map (s.map (homOfLE (Fin.le_last (g (Fin.last j)))))).hom (E.form σ I x (hg.functor ⋙ s)) = _`. Unfold `Frame.form`. Rewrite using `[map_mul, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Establish `e : (hg.functor ⋙ s).map (homOfLE (Fin.le_last k.succ)) ≫ s.map (homOfLE (Fin.le_last (g (Fin.last j)))) = s.map (homOfLE (Fin.le_last (g k.succ)))`. Express the relevant statement in the definitionally equal form `s.map _ ≫ s.map _ = _`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression. Use `(map_map (Φ := Φ) ((hg.functor ⋙ s).map (homOfLE (Fin.le_last k.succ))) (s.map (homOfLE (Fin.le_last (g (Fin.last j))))) _).trans ?_` and prove the remaining obligations.
+
+Unfold `ga`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem term_fc {j n : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (s : ComposableArrows C n)
     (g : Fin (j + 1) → Fin (n + 1)) (hg : Monotone g) :
     (show Φ.A.obj (s.obj (Fin.last n)) from CH.term (CH.modF Φ.A) s (fc E σ I x) g hg) =
@@ -101,10 +131,28 @@ theorem term_fc {j n : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (s : Compos
   rw [e]
   rfl
 
+/- English proof (translation)
+The claim follows from `mem_FC.2 fun s => hF.anti h _ (mem_FC.1 hf s)`.
+-/
 theorem FC_anti (hF : IsFil Φ Fil) {r r' : ℤ} (h : r ≤ r') {k : ℕ} {f : CH.Cn (CH.modF Φ.A) k}
     (hf : f ∈ FC (Fil r') k) : f ∈ FC (Fil r) k :=
   mem_FC.2 fun s => hF.anti h _ (mem_FC.1 hf s)
 
+/- English proof (translation)
+Use `mem_FC.2 fun s => ?_` and prove the remaining obligations. Use `set f : Fin (j + 1) → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun k => ga E σ (Fin.snoc (α := fun _ => Fin d) I i k) s k.castSucc k.succ (Fin.castSucc_lt_succ (i := k)).le with hf`. Use `set X := (Φ.A.map (σ (s.obj (Fin.last (j + 1))))).hom x with hX`. Use `set Y := (Φ.A.map (σ (s.obj (Fin.last (j + 1))))).hom y with hY`. Use `set W := (Φ.A.map (s.map (homOfLE (Fin.le_last (CH.front (rfl : j + 1 = j + 1) (Fin.last j)))))).hom ((Φ.A.map (σ _)).hom x) with hW`.
+
+Establish `h1 : (show Φ.A.obj (s.obj (Fin.last (j + 1))) from CH.term (CH.modF Φ.A) s (fc E σ I x) (CH.front (rfl : j + 1 = j + 1)) (CH.front_mono _)) = (∏ k : Fin j, f k.castSucc) * W`. Rewrite using `[term_fc]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [hf, Fin.snoc_castSucc]`.
+
+Conclude with `ga_congr E σ _ s _ _ (by simp [CH.front]) (by simp [CH.front])`. Establish `h2 : (show Φ.A.obj (s.obj (Fin.last (j + 1))) from CH.term (CH.modF Φ.A) s (fc E σ ![i] y) (CH.back (rfl : j + 1 = j + 1)) (CH.back_mono _)) = f (Fin.last j) * Y`. Rewrite using `[term_fc, Fin.prod_univ_one]`. Use `congr 1`. Simplify using `only [hf, Fin.snoc_last]`.
+
+Conclude with `ga_congr E σ _ s _ _ (by simp [CH.back]) (by simp [CH.back])`. Use `(map_map (Φ := Φ) _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[sec_last E σ s _ (by apply Fin.ext; simp [CH.back])]`. Establish `h3 : vl (fc E σ (Fin.snoc (α` using `fun _ => Fin d) I i) (x * y)) s = (∏ k, f k) * (X * Y) := by`. Express the relevant statement in the definitionally equal form `E.form σ _ _ s = _`.
+
+Unfold `Frame.form`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `hx : x ∈ (Fil ((0 : ℕ) : ℤ)).S E.D`. Rewrite using `[hF.top _ (by simp)]; trivial`.
+
+Establish `hWX : W - X ∈ (Fil ((1 : ℕ) : ℤ)).S _`. Establish `h` using `hc 0 (σ _ ≫ s.map (homOfLE (Fin.le_last (CH.front (rfl : j + 1 = j + 1) (Fin.last j))))) (σ (s.obj (Fin.last (j + 1)))) hx`. Rewrite `h` using `[← map_map]`. Simplify using `using h`. Establish `key : vl ((CH.mulP Φ.A).cupC (rfl : j + 1 = j + 1) (fc E σ I x) (fc E σ ![i] y) - fc E σ (Fin.snoc (α` using `fun _ => Fin d) I i) (x * y)) s = (∏ k, f k) * ((W - X) * Y) := by`.
+
+Express the relevant statement in the definitionally equal form `(show Φ.A.obj (s.obj (Fin.last (j + 1))) from CH.term (CH.modF Φ.A) s (fc E σ I x) (CH.front (rfl : j + 1 = j + 1)) (CH.front_mono _)) * (show Φ.A.obj (s.obj (Fin.last (j + 1))) from CH.term (CH.modF Φ.A) s (fc E σ ![i] y) (CH.back (rfl : j + 1 = j + 1)) (CH.back_mono _)) - vl (f …`. Rewrite using `[h1, h2, h3, Fin.prod_univ_castSucc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `prod_mem hF f (fun k => ga_mem E σ hF _ s _ _ _) (q := 1) (Ideal.mul_mem_right _ _ hWX)`.
+-/
 theorem cup_fc (hF : IsFil Φ Fil) (hc : E.GrConst Fil) {j : ℕ} (I : Fin j → Fin d) (i : Fin d) (x y : Φ.A.obj E.D) :
     (CH.mulP Φ.A).cupC (rfl : j + 1 = j + 1) (fc E σ I x) (fc E σ ![i] y) -
       fc E σ (Fin.snoc (α := fun _ => Fin d) I i) (x * y) ∈ FC (Fil ((j + 1 + 1 : ℕ) : ℤ)) (j + 1) := by
@@ -155,6 +203,13 @@ theorem cup_fc (hF : IsFil Φ Fil) (hc : E.GrConst Fil) {j : ℕ} (I : Fin j →
 
 def h0 (h : ∀ T : C, Φ.A.obj T) : CH.Cn (CH.modF Φ.A) 0 := fun s => h (s.obj (Fin.last 0))
 
+/- English proof (translation)
+Establish `e0 : ∀ p : Fin 2, p = Fin.last 1 → (Φ.A.map (u.map (homOfLE (Fin.le_last p)))).hom (h (u.obj p)) = h (u.obj (Fin.last 1))`. Introduce and unpack `p rfl`. Establish `: (homOfLE (Fin.le_last (Fin.last 1)) : Fin.last 1 ⟶ Fin.last 1) = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[this, u.map_id, Φ.A.map_id]`. Both sides reduce to the same expression.
+
+Establish `e1 : ∀ p : Fin 2, p = 0 → (Φ.A.map (u.map (homOfLE (Fin.le_last p)))).hom (h (u.obj p)) = (Φ.A.map (u.map (homOfLE (Fin.zero_le (Fin.last 1))))).hom (h (u.obj 0))`. Introduce and unpack `p rfl`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (show Φ.A.obj (u.obj (Fin.last 1)) from (Φ.A.map (u.map (homOfLE (Fin.le_last (i.succAbove (Fin.last 0)))))).hom (h (u.obj (i.succAbove (Fin.last 0))))) = _`. Rewrite using `[Fin.sum_univ_two]`.
+
+Express the relevant statement in the definitionally equal form `(-1 : ℤ) ^ 0 • (Φ.A.map (u.map (homOfLE (Fin.le_last ((0 : Fin 2).succAbove (Fin.last 0)))))).hom (h (u.obj ((0 : Fin 2).succAbove (Fin.last 0)))) + (-1 : ℤ) ^ 1 • (Φ.A.map (u.map (homOfLE (Fin.le_last ((1 : Fin 2).succAbove (Fin.last 0)))))).hom (h (u.obj ((1 : Fin 2).succAbove …`. Rewrite using `[e0 _ (by decide), e1 _ (by decide)]`. Simplify using `[sub_eq_add_neg]`.
+-/
 theorem cech_d_h0_eval (h : ∀ T : C, Φ.A.obj T) (u : ComposableArrows C 1) :
     vl (CH.d (CH.modF Φ.A) 0 (h0 h)) u = h (u.obj (Fin.last 1)) -
       (Φ.A.map (u.map (homOfLE (Fin.zero_le (Fin.last 1))))).hom (h (u.obj 0)) := by
@@ -178,6 +233,13 @@ theorem cech_d_h0_eval (h : ∀ T : C, Φ.A.obj T) (u : ComposableArrows C 1) :
   rw [e0 _ (by decide), e1 _ (by decide)]
   simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Consider the cases of `m with`. Consider the case `zero`. Establish `hg0 : g = 0` using `hg`. Substitute `hg0` using the available equality. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Consider the case `succ n`. Take `⟨H, hH, rfl⟩` from `hg`. Use `⟨(CH.mulP Φ.A).cupC (rfl : n + 1 = n + 1) H l, cup_mem hF rfl hH hl, ?_⟩` and prove the remaining obligations. Rewrite using `[CrystallineSemistableComparison.P.leibniz]`.
+
+Rewrite using `[sub_add_cancel_left]`. Conclude with `neg_mem (zsmul_mem (cup_mem hF (r := n + 1) (r' := 1 + 1) (by omega) hH hdl) _)`.
+-/
 theorem bd_cup (hF : IsFil Φ Fil) (m : ℕ) (g : CH.Cn (CH.modF Φ.A) m) (hg : IsBd Fil m g)
     (l : CH.Cn (CH.modF Φ.A) 1) (hl : l ∈ FC (Fil ((1 : ℕ) : ℤ)) 1)
     (hdl : CH.d (CH.modF Φ.A) 1 l ∈ FC (Fil ((1 + 1 : ℕ) : ℤ)) (1 + 1)) :
@@ -196,6 +258,9 @@ theorem bd_cup (hF : IsFil Φ Fil) (m : ℕ) (g : CH.Cn (CH.modF Φ.A) m) (hg : 
     rw [sub_add_cancel_left]
     exact neg_mem (zsmul_mem (cup_mem hF (r := n + 1) (r' := 1 + 1) (by omega) hH hdl) _)
 
+/- English proof (translation)
+Use `⟨(-1 : ℤ) ^ m • (CH.mulP Φ.A).cupC (add_zero m) B h, zsmul_mem (cup_mem hF _ hB hh) _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, CrystallineSemistableComparison.P.leibniz, smul_add, smul_smul, ← mul_pow]`. Establish `e : ((-1 : ℤ) * -1) ^ m = 1` using `by simp`. Rewrite using `[e, one_smul, sub_add_cancel_right]`. Conclude with `neg_mem (zsmul_mem (cup_mem hF (r := m + 1) (r' := 1) (by omega) hdB hh) _)`.
+-/
 theorem b_cup_dh (hF : IsFil Φ Fil) (m : ℕ) (B : CH.Cn (CH.modF Φ.A) m) (hB : B ∈ FC (Fil (m : ℤ)) m)
     (hdB : CH.d (CH.modF Φ.A) m B ∈ FC (Fil ((m + 1 : ℕ) : ℤ)) (m + 1))
     (h : CH.Cn (CH.modF Φ.A) 0) (hh : h ∈ FC (Fil ((1 : ℕ) : ℤ)) 0) :
@@ -208,6 +273,9 @@ theorem b_cup_dh (hF : IsFil Φ Fil) (m : ℕ) (B : CH.Cn (CH.modF Φ.A) m) (hB 
   rw [e, one_smul, sub_add_cancel_right]
   exact neg_mem (zsmul_mem (cup_mem hF (r := m + 1) (r' := 1) (by omega) hdB hh) _)
 
+/- English proof (translation)
+Set `e : (Fin m → Fin d) × Fin d ≃ (Fin (m + 1) → Fin d)` to `{ toFun := fun p => Fin.snoc (α := fun _ => Fin d) p.1 p.2 invFun := fun I => (Fin.init I, I (Fin.last m)) left_inv := fun p => by simp right_inv := fun I => by simp }`. Rewrite using `[← e.sum_comp, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+-/
 theorem sum_snoc {M : Type*} [AddCommMonoid M] (m : ℕ) (F : (Fin (m + 1) → Fin d) → M) :
     ∑ I, F I = ∑ I : Fin m → Fin d, ∑ i : Fin d, F (Fin.snoc (α := fun _ => Fin d) I i) := by
   let e : (Fin m → Fin d) × Fin d ≃ (Fin (m + 1) → Fin d) :=
@@ -218,6 +286,33 @@ theorem sum_snoc {M : Type*} [AddCommMonoid M] (m : ℕ) (F : (Fin (m + 1) → F
   rw [← e.sum_comp, Fintype.sum_prod_type]
   rfl
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `ℓ c h _ _`. Use `⟨0, rfl, ?_⟩` and prove the remaining obligations.
+
+Establish `e : cupListC Φ.A ℓ - ∑ I : Fin 0 → Fin d, fc E σ I (∏ k, c k (I k)) - 0 = 0`. Use function extensionality and compare the values at `s`. Rewrite using `[sub_zero, Fintype.sum_unique, Pi.sub_apply]`. Express the relevant statement in the definitionally equal form `(1 : Φ.A.obj (s.obj (Fin.last 0))) - E.form σ _ _ s = 0`. Simplify using `[Frame.form]`.
+
+Conclude with `sub_eq_zero.2 (map_one (Φ.A.map (σ (s.obj 0))).hom).symm`. Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `succ m ih`. Introduce `ℓ c h hh he`.
+
+Take `⟨g, hg, hr⟩` from `ih (fun i => ℓ i.castSucc) (fun i => c i.castSucc) (fun i => h i.castSucc) (fun k => hh _) (fun k => he _)`. Use `set l := ℓ (Fin.last m) with hl_def`. Use `set b : CH.Cn (CH.modF Φ.A) 1 := ∑ i, fc E σ ![i] (c (Fin.last m) i) with hb_def`. Use `set t := CH.d (CH.modF Φ.A) 0 (h (Fin.last m)) with ht_def`. Use `set B : CH.Cn (CH.modF Φ.A) m := ∑ I : Fin m → Fin d, fc E σ I (∏ k, c k.castSucc (I k)) with hB_def`.
+
+Use `set L := cupListC Φ.A fun i => ℓ (Fin.castSucc i) with hL_def`. Establish `hfe : l - (b + t) ∈ FC (Fil ((1 + 1 : ℕ) : ℤ)) 1` using `he (Fin.last m)`. Establish `ht : t ∈ FC (Fil ((1 : ℕ) : ℤ)) 1` using `d_mem (hh _)`. Establish `hb : b ∈ FC (Fil ((1 : ℕ) : ℤ)) 1` using `sum_mem fun i _ => fc_mem E σ hF ![i] _`. Establish `hl : l ∈ FC (Fil ((1 : ℕ) : ℤ)) 1`.
+
+Use `add_mem (FC_anti hF (r := ((1 : ℕ) : ℤ)) (by simp) hfe) (add_mem hb ht)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hdb : CH.d (CH.modF Φ.A) 1 b ∈ FC (Fil ((1 + 1 : ℕ) : ℤ)) (1 + 1)`. Rewrite using `[hb_def, map_sum]`. Conclude with `sum_mem fun i _ => d_fc_mem E σ hF hc ![i] _`.
+
+Establish `hdl : CH.d (CH.modF Φ.A) 1 l ∈ FC (Fil ((1 + 1 : ℕ) : ℤ)) (1 + 1)`. Establish `e : l = (l - (b + t)) + (b + t)` using `by abel`. Rewrite using `[e, map_add, map_add, ht_def, CH.d_d, add_zero]`. Conclude with `add_mem (d_mem hfe) hdb`. Establish `hB : B ∈ FC (Fil (m : ℤ)) m` using `sum_mem fun I _ => fc_mem E σ hF I _`.
+
+Establish `hdB : CH.d (CH.modF Φ.A) m B ∈ FC (Fil ((m + 1 : ℕ) : ℤ)) (m + 1)`. Rewrite using `[hB_def, map_sum]`. Conclude with `sum_mem fun I _ => d_fc_mem E σ hF hc I _`. Take `⟨H₁, hH₁, hc₁⟩` from `bd_cup hF m g hg l hl hdl`. Take `⟨H₂, hH₂, hc₂⟩` from `b_cup_dh hF m B hB hdB (h (Fin.last m)) (hh _)`.
+
+Use `⟨CH.d (CH.modF Φ.A) m (H₁ + H₂), ⟨H₁ + H₂, add_mem hH₁ hH₂, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hcup : cupListC Φ.A ℓ = (CH.mulP Φ.A).cupC (rfl : m + 1 = m + 1) L l` using `rfl`. Rewrite using `[hcup, map_add, bil _ L B g l b t]`. Use `add_mem (add_mem (add_mem (add_mem ?_ hc₁) ?_) hc₂) ?_` and prove the remaining obligations. Conclude with `cup_mem hF rfl hr hl`.
+
+Establish `e : (CH.mulP Φ.A).cupC (rfl : m + 1 = m + 1) B b - ∑ I : Fin (m + 1) → Fin d, fc E σ I (∏ k, c k (I k)) = ∑ I : Fin m → Fin d, ∑ i : Fin d, ((CH.mulP Φ.A).cupC (rfl : m + 1 = m + 1) (fc E σ I (∏ k, c k.castSucc (I k))) (fc E σ ![i] (c (Fin.last m) i)) - fc E σ (Fin.snoc (α` using `fun _ => Fin d) I i) ((∏ k, c k.castSucc (I k)) * c (Fin.last m) i)) := by`. Establish `e1 : ∑ I : Fin (m + 1) → Fin d, fc E σ I (∏ k, c k (I k)) = ∑ I : Fin m → Fin d, ∑ i : Fin d, fc E σ (Fin.snoc (α` using `fun _ => Fin d) I i) ((∏ k, c k.castSucc (I k)) * c (Fin.last m) i) := by`. Rewrite using `[sum_snoc]`. Use `Finset.sum_congr rfl fun I _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Establish `e2 : (CH.mulP Φ.A).cupC (rfl : m + 1 = m + 1) B b = ∑ I : Fin m → Fin d, ∑ i : Fin d, (CH.mulP Φ.A).cupC (rfl : m + 1 = m + 1) (fc E σ I (∏ k, c k.castSucc (I k))) (fc E σ ![i] (c (Fin.last m) i))`. Rewrite using `[hB_def, LinearMap.map_sum₂]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hb_def, map_sum]`. Rewrite using `[e1, e2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Rewrite using `[e]`.
+
+Conclude with `sum_mem fun I _ => sum_mem fun i _ => cup_fc E σ hF hc I i _ _`. Conclude with `cup_mem hF (r := m) (r' := 1 + 1) rfl hB hfe`.
+-/
 theorem near (hF : IsFil Φ Fil) (hc : E.GrConst Fil) : ∀ (m : ℕ) (ℓ : Fin m → CH.Cn (CH.modF Φ.A) 1)
     (c : Fin m → Fin d → Φ.A.obj E.D) (h : Fin m → CH.Cn (CH.modF Φ.A) 0),
     (∀ k, h k ∈ FC (Fil ((1 : ℕ) : ℤ)) 0) →
@@ -295,6 +390,13 @@ theorem near (hF : IsFil Φ Fil) (hc : E.GrConst Fil) : ∀ (m : ℕ) (ℓ : Fin
       exact sum_mem fun I _ => sum_mem fun i _ => cup_fc E σ hF hc I i _ _
     · exact cup_mem hF (r := m) (r' := 1 + 1) rfl hB hfe
 
+/- English proof (translation)
+Establish `hw : w ∈ (Fil ((0 : ℕ) : ℤ)).S E.D`. Rewrite using `[hF.top _ (by simp)]; trivial`. Establish `e : vl (CH.d (CH.modF Φ.A) n H) s * (Φ.A.map (σ _)).hom w - vl (CH.d (CH.modF Φ.A) n (fun u => (show Φ.A.obj (u.obj (Fin.last n)) from H u) * (Φ.A.map (σ _)).hom w)) s = ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • ((show Φ.A.obj (s.obj (Fin.last (n + 1))) from (Φ.A.map (toLast i s)). …`. Express the relevant statement in the definitionally equal form `(∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (show Φ.A.obj (s.obj (Fin.last (n + 1))) from (Φ.A.map (toLast i s)).hom (H (face i s)))) * (Φ.A.map (σ _)).hom w - (∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (show Φ.A.obj (s.obj (Fin.last (n + 1))) from (Φ.A.map (toLast i s)).hom ((show Φ. …`. Rewrite using `[Finset.sum_mul, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_map, smul_mul_assoc, ← smul_sub, mul_sub]`. Rewrite using `[e]`. Use `Ideal.sum_mem _ fun i _ => zsmul_mem ?_ _` and prove the remaining obligations. Establish `h1 : (show Φ.A.obj (s.obj (Fin.last (n + 1))) from (Φ.A.map (toLast i s)).hom (H (face i s))) ∈ (Fil ((n + 1 : ℕ) : ℤ)).S _` using `(Fil _).map_mem _ (mem_FC.1 hH (face i s))`.
+
+Establish `h2 : (Φ.A.map (σ _)).hom w - (Φ.A.map (σ _ ≫ toLast i s)).hom w ∈ (Fil ((1 : ℕ) : ℤ)).S _`. Establish `h` using `hc 0 (σ (s.obj (Fin.last (n + 1)))) (σ _ ≫ toLast i s) hw`. Simplify using `using h`. Conclude with `hF.mul (n + 1) 1 _ h1 h2`.
+-/
 theorem d_mul (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (w : Φ.A.obj E.D) {n : ℕ} {H : CH.Cn (CH.modF Φ.A) n}
     (hH : H ∈ FC (Fil ((n + 1 : ℕ) : ℤ)) n) (s : ComposableArrows C (n + 1)) :
     vl (CH.d (CH.modF Φ.A) n H) s * (Φ.A.map (σ _)).hom w -
@@ -324,6 +426,9 @@ theorem d_mul (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (w : Φ.A.obj E.D) {n : �
     simpa using h
   exact hF.mul (n + 1) 1 _ h1 h2
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `E.form σ I (w * x) s = E.form σ I x s * _`. Unfold `Frame.form`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_mul {j : ℕ} (I : Fin j → Fin d) (w x : Φ.A.obj E.D) (s : ComposableArrows C j) :
     E.form σ I (w * x) s = vl (fc E σ I x) s * (Φ.A.map (σ _)).hom w := by
   change E.form σ I (w * x) s = E.form σ I x s * _
@@ -333,6 +438,31 @@ theorem form_mul {j : ℕ} (I : Fin j → Fin d) (w x : Φ.A.obj E.D) (s : Compo
 
 end Fr
 
+/- English proof (translation)
+Introduce `hJ hl w r hr x hx`. Substitute `hr` using the available equality. Establish `hh : ∀ k, h0 (h k) ∈ FC (Fil ((1 : ℕ) : ℤ)) 0` using `fun k => mem_FC.2 fun s => by`. Use `hJ k (s.obj (Fin.last 0))` as an intermediate fact. Rewrite `this` using `[← hF.one]`.
+
+Rewrite using `[Nat.cast_one]`. Conclude with `this`. Establish `he : ∀ k, ℓ k - (∑ i, fc E σ ![i] (c k i) + CH.d (CH.modF Φ.A) 0 (h0 (h k))) ∈ FC (Fil ((1 + 1 : ℕ) : ℤ)) 1` using `fun k => mem_FC.2 fun u => by`. Establish `e : vl (ℓ k - (∑ i, fc E σ ![i] (c k i) + CH.d (CH.modF Φ.A) 0 (h0 (h k)))) u = (show Φ.A.obj (u.obj (Fin.last 1)) from ℓ k u) - (∑ i, E.form σ ![i] (c k i) u + (h k (u.obj (Fin.last 1)) - (Φ.A.map (u.map (homOfLE (Fin.zero_le (Fin.last 1))))).hom (h k (u.obj 0))))`. Rewrite using `[← cech_d_h0_eval]`.
+
+Express the relevant statement in the definitionally equal form `_ - (vl (∑ i, fc E σ ![i] (c k i)) u + _) = _`. Use `congr 2`. Rewrite using `[vl, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `hl k u`. Take `⟨g, hg, hn⟩` from `near E σ hF hc m ℓ c (fun k => h0 (h k)) hh he`. Establish `hz : ∀ u, (∑ I : Fin m → Fin d, E.form σ I (w * ∏ k, c k (I k)) u) = vl (∑ I : Fin m → Fin d, fc E σ I (∏ k, c k (I k))) u * (Φ.A.map (σ _)).hom w`. Introduce `u`. Rewrite using `[vl, Finset.sum_apply]`.
+
+Express the relevant statement in the definitionally equal form `_ = (∑ I : Fin m → Fin d, vl (fc E σ I (∏ k, c k (I k))) u) * _`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun I _ => form_mul E σ I w _ u`. Consider the cases of `m with`. Consider the case `zero`.
+
+Establish `hg0 : g = 0` using `hg`. Substitute `hg0` using the available equality. Use `rep_congr hx fun u => ?_` and prove the remaining obligations. Rewrite using `[hz]`. Establish `e` using `mem_FC.1 hn u`.
+
+Establish `e' : vl (cupListC Φ.A ℓ - ∑ I : Fin 0 → Fin d, fc E σ I (∏ k, c k (I k)) - 0) u = vl (cupListC Φ.A ℓ) u - vl (∑ I : Fin 0 → Fin d, fc E σ I (∏ k, c k (I k))) u`. Rewrite using `[sub_zero]`. Both sides reduce to the same expression. Rewrite `e` using `[e']`. Rewrite using `[← sub_mul]`.
+
+Establish `e2 : (((0 : ℕ) : ℤ) + 1) = ((0 + 1 : ℕ) : ℤ)` using `by simp`. Rewrite using `[e2]`. Conclude with `Ideal.mul_mem_right _ _ e`. Consider the case `succ n`. Take `⟨H, hH, rfl⟩` from `hg`.
+
+Use `set Y : ∀ u : ComposableArrows C n, Φ.A.obj (u.obj (Fin.last n)) := fun u => (Φ.A.map (σ _)).hom w with hY`. Set `H' : CH.Cn (CH.modF Φ.A) n` to `fun u => (show Φ.A.obj (u.obj (Fin.last n)) from H u) * (Φ.A.map (σ _)).hom w`. Establish `hH' : -H' ∈ FC (Fil ((n + 1 : ℕ) : ℤ)) n` using `neg_mem (mem_FC.2 fun u => Ideal.mul_mem_right _ _ (mem_FC.1 hH u))`. Establish `h1` using `rep_add hx (rep_d (b := Fil (((n + 1 : ℕ) : ℤ) + 1)) (-H') (mem_FC.1 hH'))`. Rewrite `h1` using `[add_zero]`.
+
+Use `rep_congr h1 fun u => ?_` and prove the remaining obligations. Rewrite using `[hz]`. Establish `e1` using `mem_FC.1 hn u`. Establish `e2` using `d_mul E σ hF hc w hH u`. Establish `e3` using `(Fil _).S _ |>.add_mem (Ideal.mul_mem_right ((Φ.A.map (σ _)).hom w) _ e1) e2`.
+
+Establish `e4 : ((n + 1 + 1 : ℕ) : ℤ) = ((n + 1 : ℕ) : ℤ) + 1` using `by push_cast; ring`. Rewrite `e3` using `[e4]`. Use `e3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_neg]`. Express the relevant statement in the definitionally equal form `_ + (-vl (CH.d (CH.modF Φ.A) n H') u) - _ = _`.
+
+Express the relevant statement in the definitionally equal form `_ = (vl (cupListC Φ.A ℓ) u - vl (∑ I : Fin (n + 1) → Fin d, fc E σ I (∏ k, c k (I k))) u - vl (CH.d (CH.modF Φ.A) n H) u) * _ + (vl (CH.d (CH.modF Φ.A) n H) u * _ - vl (CH.d (CH.modF Φ.A) n H') u)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cup_rep {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Fil : ℤ → IdF Φ.A}  {d : ℕ}
     (hF : IsFil Φ Fil) (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (hc : E.GrConst Fil)
     (m : ℕ) (ℓ : Fin m → CH.Cn (CH.modF Φ.A) 1) (c : Fin m → Fin d → Φ.A.obj E.D) (h : Fin m → ∀ T : C, Φ.A.obj T) :

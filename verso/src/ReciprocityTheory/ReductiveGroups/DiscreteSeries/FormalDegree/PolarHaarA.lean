@@ -12,9 +12,15 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Conclude with `isOpen_univ.measure_ne_zero (muK ε) Set.univ_nonempty`.
+-/
 lemma fdph_muK_univ_ne_zero (ε : Fin n → Bool) : muK ε Set.univ ≠ 0 := by
   exact isOpen_univ.measure_ne_zero (muK ε) Set.univ_nonempty
 
+/- English proof (translation)
+Conclude with `(isCompact_univ.measure_lt_top (μ := muK ε)).ne`.
+-/
 lemma fdph_muK_univ_ne_top (ε : Fin n → Bool) : muK ε Set.univ ≠ ⊤ := by
   exact (isCompact_univ.measure_lt_top (μ := muK ε)).ne
 
@@ -28,6 +34,11 @@ instance fdph_dk_openPos (ε : Fin n → Bool) : Measure.IsOpenPosMeasure (dk ε
   unfold dk
   exact Measure.isOpenPosMeasure_smul _ (ENNReal.inv_ne_zero.mpr (fdph_muK_univ_ne_top ε))
 
+/- English proof (translation)
+Unfold `shc`. Use `split_ifs with h`. Conclude with `one_pos`. Break down `lt_or_gt_of_ne h with h' | h'` into its components or cases. Conclude with `div_pos_of_neg_of_neg (Real.sinh_neg_iff.mpr h') h'`.
+
+Conclude with `div_pos (Real.sinh_pos_iff.mpr h') h'`.
+-/
 lemma fdph_shc_pos (u : ℝ) : 0 < shc u := by
   unfold shc
   split_ifs with h
@@ -36,6 +47,9 @@ lemma fdph_shc_pos (u : ℝ) : 0 < shc u := by
     · exact div_pos_of_neg_of_neg (Real.sinh_neg_iff.mpr h') h'
     · exact div_pos (Real.sinh_pos_iff.mpr h') h'
 
+/- English proof (translation)
+Unfold `Jac`. Conclude with `Finset.prod_pos fun a _ => Finset.prod_pos fun b _ => fdph_shc_pos _`.
+-/
 lemma fdph_jac_pos {ε : Fin n → Bool} (z : PCoord ε → ℂ) : 0 < Jac z := by
   unfold Jac
   exact Finset.prod_pos fun a _ => Finset.prod_pos fun b _ => fdph_shc_pos _
@@ -66,8 +80,22 @@ def fdphPhi (ε : Fin n → Bool) (kz : KG ε × (PCoord ε → ℂ)) : UJ ε :=
     mul_eq_one_comm.mp (left_inv_of_inUJ ε _ (polarM_inUJ kz)), left_inv_of_inUJ ε _ (polarM_inUJ kz)⟩,
     polarM_inUJ kz⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma fdph_toM_phi (ε : Fin n → Bool) (kz : KG ε × (PCoord ε → ℂ)) : toM (fdphPhi ε kz) = polarM kz := rfl
 
+/- English proof (translation)
+Unfold `fdphPhi`. Establish `hexp : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => NormedSpace.exp M)`. Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := NormedAlgebra.restrictScalars ℚ ℂ _`.
+
+Conclude with `NormedSpace.exp_continuous`. Establish `htoMK : Continuous (fun k : KG ε => toMK k)` using `by fun_prop`. Establish `hpmat : Continuous (fun z : PCoord ε → ℂ => pmat z)`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Distinguish the cases in `h : b < a ∧ ε a ≠ ε b`.
+
+Simplify using `only [pmat, dif_pos h]`. Conclude with `continuous_apply _`. Distinguish the cases in `h' : a < b ∧ ε b ≠ ε a`. Simplify using `only [pmat, dif_neg h, dif_pos h']`. Conclude with `(continuous_apply _).star`.
+
+Simplify using `only [pmat, dif_neg h, dif_neg h']`. Conclude with `continuous_const`. Establish `hpol : Continuous (fun kz : KG ε × (PCoord ε → ℂ) => polarM kz)`. Unfold `polarM`. Conclude with `(htoMK.comp continuous_fst).matrix_mul (hexp.comp (hpmat.comp continuous_snd))`.
+
+Apply `Continuous.subtype_mk` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨hpol, (continuous_const.matrix_mul hpol.matrix_conjTranspose).matrix_mul continuous_const⟩`.
+-/
 lemma fdph_phi_continuous (ε : Fin n → Bool) : Continuous (fdphPhi ε) := by
   unfold fdphPhi
   have hexp : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => NormedSpace.exp M) := by
@@ -94,6 +122,11 @@ lemma fdph_phi_continuous (ε : Fin n → Bool) : Continuous (fdphPhi ε) := by
   rw [Units.continuous_iff]
   exact ⟨hpol, (continuous_const.matrix_mul hpol.matrix_conjTranspose).matrix_mul continuous_const⟩
 
+/- English proof (translation)
+Use extensionality with `kz`. Simplify using `only [Set.mem_preimage, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hgeq⟩`. Establish `hge : g = fdphPhi ε kz` using `Subtype.ext (Units.ext (hgeq.trans (fdph_toM_phi ε kz).symm))`.
+
+Rewrite using `[← hge]`. Conclude with `hg`. Introduce `h`. Conclude with `⟨fdphPhi ε kz, h, fdph_toM_phi ε kz⟩`.
+-/
 lemma fdph_preimage (ε : Fin n → Bool) (S : Set (UJ ε)) :
     Set.preimage (β := Fin n → Fin n → ℂ) polarM (Set.image (β := Fin n → Fin n → ℂ) (fun g : UJ ε => toM g) S) =
       fdphPhi ε ⁻¹' S := by
@@ -108,6 +141,11 @@ lemma fdph_preimage (ε : Fin n → Bool) (S : Set (UJ ε)) :
   · intro h
     exact ⟨fdphPhi ε kz, h, fdph_toM_phi ε kz⟩
 
+/- English proof (translation)
+Establish `hC : IsClosedEmbedding (Y` using `Fin n → Fin n → ℂ) (fun g : UJ ε => toM g) := isClosedEmbedding_toM ε`. Establish `hE : MeasurableEmbedding (β` using `Fin n → Fin n → ℂ) (fun g : UJ ε => toM g) := hC.measurableEmbedding`. Establish `hPc : Continuous (Y` using `Fin n → Fin n → ℂ) (polarM (ε := ε)) := (polarM_isClosedEmbedding ε).continuous`. Establish `hP : Measurable (β` using `Fin n → Fin n → ℂ) (polarM (ε := ε)) := hPc.measurable`. Unfold `muPolar muPolarMat`.
+
+Rewrite using `[hE.comap_apply, Measure.map_apply hP (hE.measurableSet_image' hS), fdph_preimage]`.
+-/
 lemma fdph_apply (ε : Fin n → Bool) {S : Set (UJ ε)} (hS : MeasurableSet S) :
     muPolar ε S = ((dk ε).prod (fdphNu ε)) (fdphPhi ε ⁻¹' S) := by
   have hC : IsClosedEmbedding (Y := Fin n → Fin n → ℂ) (fun g : UJ ε => toM g) := isClosedEmbedding_toM ε
@@ -117,6 +155,15 @@ lemma fdph_apply (ε : Fin n → Bool) {S : Set (UJ ε)} (hS : MeasurableSet S) 
   unfold muPolar muPolarMat
   rw [hE.comap_apply, Measure.map_apply hP (hE.measurableSet_image' hS), fdph_preimage]
 
+/- English proof (translation)
+Establish `hL : (muPolar ε).IsMulLeftInvariant`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `e : (fun x : UJ ε => g * x) = (fun x => x⁻¹) ∘ ((fun x => x * g⁻¹) ∘ (fun x => x⁻¹))`. Use function extensionality and compare the values at `x`. Simplify using `[_root_.mul_inv_rev]`.
+
+Rewrite using `[e, ← Measure.map_map measurable_inv ((measurable_mul_const _).comp measurable_inv), ← Measure.map_map (measurable_mul_const _) measurable_inv, hI, hR g⁻¹, hI]`. Establish `hF : IsFiniteMeasureOnCompacts (muPolar ε)`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[fdph_apply ε hK.isClosed.measurableSet, ← fdph_preimage]`. Conclude with `((polarM_isClosedEmbedding ε).isCompact_preimage (hK.image (continuous_toM ε))).measure_lt_top`.
+
+Establish `hO : Measure.IsOpenPosMeasure (muPolar ε)`. Use `⟨fun U hU hne => ?_⟩` and prove the remaining obligations. Rewrite using `[fdph_apply ε hU.measurableSet]`. Take `⟨g, hg⟩` from `hne`. Take `⟨kz, hkz⟩` from `polarM_surj (toM g) g.2`.
+
+Establish `: fdphPhi ε kz = g` using `(isClosedEmbedding_toM ε).injective (by rw [fdph_toM_phi]; exact hkz)`. Conclude with `(hU.preimage (fdph_phi_continuous ε)).measure_ne_zero _ ⟨kz, by rw [Set.mem_preimage, this]; exact hg⟩`. Conclude with `{ toIsFiniteMeasureOnCompacts := hF, toIsMulLeftInvariant := hL, toIsOpenPosMeasure := hO }`.
+-/
 theorem fdph_isHaar_of (ε : Fin n → Bool)
     (hR : ∀ g : UJ ε, Measure.map (fun x => x * g) (muPolar ε) = muPolar ε)
     (hI : Measure.map (fun x : UJ ε => x⁻¹) (muPolar ε) = muPolar ε) : (muPolar ε).IsHaarMeasure := by

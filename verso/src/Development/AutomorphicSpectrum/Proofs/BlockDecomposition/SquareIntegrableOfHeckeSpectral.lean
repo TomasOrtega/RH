@@ -17,6 +17,17 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 
 namespace GlobalTheory.CompanionTheory.SqIntHecke
 
+/- English proof (translation)
+Use `Fintype.ofFinite ι` as an intermediate fact. Establish `hu : (⋃ p : ι × κ, A p.1 p.2) = Set.univ`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_univ, iff_true]`. Take `⟨i, j, h⟩` from `hcov x`.
+
+Conclude with `⟨(i, j), h⟩`. Establish `h1 : ∫⁻ x, ‖F x‖ₑ ^ (2 : ℝ) ∂μ ≤ ∑' p : ι × κ, ∫⁻ x in A p.1 p.2, ‖F x‖ₑ ^ (2 : ℝ) ∂μ` using `by conv_lhs => rw [← setLIntegral_univ, ← hu]`. Conclude with `lintegral_iUnion_le _ _`. Establish `h2 : ∀ p : ι × κ, ∫⁻ x in A p.1 p.2, ‖F x‖ₑ ^ (2 : ℝ) ∂μ ≤ ENNReal.ofReal (b p.1 p.2 ^ 2 * w p.1 p.2) * E`. Introduce and unpack `⟨i, j⟩`.
+
+Establish `h3 : ∫⁻ x in A i j, ‖F x‖ₑ ^ (2 : ℝ) ∂μ ≤ ∫⁻ x in A i j, ENNReal.ofReal (b i j ^ 2) ∂μ`. Use `setLIntegral_mono measurable_const fun x hx => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.rpow_two, ← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ (norm_nonneg _) (hF i j x hx) 2)`. Use `h3.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[setLIntegral_const, ENNReal.ofReal_mul (sq_nonneg _), mul_assoc]`. Use `gcongr`. Conclude with `hμ i j`. Use `(h1.trans (ENNReal.tsum_le_tsum h2)).trans_lt ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_right, ENNReal.tsum_prod (f := fun i j => ENNReal.ofReal (b i j ^ 2 * w i j))]`.
+
+Use `ENNReal.mul_lt_top ?_ hE` and prove the remaining obligations. Rewrite using `[tsum_fintype]`. Use `ENNReal.sum_lt_top.2 fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun j => mul_nonneg (sq_nonneg _) (hw i j)) (hsum i)]`. Conclude with `ENNReal.ofReal_lt_top`.
+-/
 theorem lintegral_sq_lt_top_of_cover {X ι κ : Type*} [MeasurableSpace X] (μ : Measure X) (F : X → ℝ) [Finite ι]
     [Countable κ] (A : ι → κ → Set X) (hcov : ∀ x, ∃ i j, x ∈ A i j) (b w : ι → κ → ℝ) (hw : ∀ i j, 0 ≤ w i j)
     (E : ENNReal) (hE : E < ⊤) (hF : ∀ i j, ∀ x ∈ A i j, ‖F x‖ ≤ b i j)
@@ -52,6 +63,11 @@ theorem lintegral_sq_lt_top_of_cover {X ι κ : Type*} [MeasurableSpace X] (μ :
   rw [← ENNReal.ofReal_tsum_of_nonneg (fun j => mul_nonneg (sq_nonneg _) (hw i j)) (hsum i)]
   exact ENNReal.ofReal_lt_top
 
+/- English proof (translation)
+Establish `h1 : ∏ j, (q ^ e j) ^ g j = q ^ (∑ j, g j * e j)`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [← pow_mul, mul_comm]`. Establish `h2 : ∏ j, (ρ j ^ 2) ^ g j = (∏ j, ρ j ^ g j) ^ 2`. Rewrite using `[← Finset.prod_pow]`.
+
+Conclude with `Finset.prod_congr rfl fun j _ => by rw [← pow_mul, ← pow_mul, mul_comm]`. Simplify using `only [mul_pow _ _ (g _)]`. Rewrite using `[Finset.prod_mul_distrib, h1, h2, mul_pow C, mul_assoc, mul_comm (q ^ _)]`.
+-/
 theorem sq_mul_pow_eq {r : ℕ} (q : ℝ) (e g : Fin r → ℕ) (ρ : Fin r → ℝ) (C : ℝ) :
     (C * ∏ j, ρ j ^ g j) ^ 2 * q ^ (∑ j, g j * e j) = C ^ 2 * ∏ j, (q ^ e j * ρ j ^ 2) ^ g j := by
   have h1 : ∏ j, (q ^ e j) ^ g j = q ^ (∑ j, g j * e j) := by
@@ -63,6 +79,33 @@ theorem sq_mul_pow_eq {r : ℕ} (q : ℝ) (e g : Fin r → ℕ) (ρ : Fin r → 
   simp only [mul_pow _ _ (g _)]
   rw [Finset.prod_mul_distrib, h1, h2, mul_pow C, mul_assoc, mul_comm (q ^ _)]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N V _ _ π hs hi ha hu hH`. Unfold `IsSqIntCoeff CoeffLp`. Introduce `_ _ μ hμ v l hl`. Establish `hcen : ∀ z ∈ Subgroup.center (GL (Fin N) k), ∀ w, ‖l (π z w)‖ = ‖l w‖`. Introduce `z hz w`.
+
+Rewrite `hz` using `[Matrix.GeneralLinearGroup.center_eq_range_scalar]`. Take `⟨t, rfl⟩` from `hz`. Take `⟨c, hc⟩` from `GlobalTheory.T.admissible_irreducible_central_scalar k N V π hs hi ha t`. Rewrite using `[hc, map_smul, norm_smul, hu t c hc, one_mul]`. Establish `hF : ∀ g : GL (Fin N) k, ‖l (π (QuotientGroup.mk g : AdGL k N).out v)‖ = ‖l (π g v)‖`.
+
+Introduce `g`. Take `⟨z, hz⟩` from `QuotientGroup.mk_out_eq_mul (Subgroup.center (GL (Fin N) k)) g`. Rewrite using `[hz, Subgroup.mem_center_iff.1 z.2 g, map_mul, Module.End.mul_apply, hcen _ z.2]`. Use `⟨fun q => ‖l (π q.out v)‖, hF, ?_, ?_⟩` and prove the remaining obligations. Use `Continuous.aestronglyMeasurable ((QuotientGroup.isQuotientMap_mk _).continuous_iff.2 ?_)` and prove the remaining obligations.
+
+Rewrite using `[show (fun q : AdGL k N => ‖l (π q.out v)‖) ∘ QuotientGroup.mk = fun g => ‖l (π g v)‖ from funext hF]`. Conclude with `((SqIntBridge.isLocallyConstant_orbit hs v).comp fun w => ‖l w‖).continuous`. Rewrite using `[show ENNReal.ofReal 2 = 2 by simp, eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `only [ENNReal.toReal_ofNat]`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases.
+
+Establish `: Subsingleton (GL (Fin 0) k)` using `inferInstance`. Establish `h1 : Subsingleton (AdGL k 0)` using `inferInstance`. Establish `h2 : μ Set.univ < ⊤` using `isCompact_univ.measure_lt_top`. Use `lintegral_sq_lt_top_of_cover μ _ (fun _ _ : Unit => Set.univ) (fun _ => ⟨(), (), trivial⟩) (fun _ _ => ‖l (π (1 : AdGL k 0).out v)‖) (fun _ _ => 1) (fun _ _ => zero_le_one) _ h2 ?_ (by simp) (fun _ => (hasSum_fintype _).summable)` and prove the remaining obligations. Introduce `_ _ x _`.
+
+Rewrite using `[Subsingleton.elim x 1, norm_norm]`. Take `⟨m1, hm1, hK1⟩` from `GlobalTheory.T.congruence_subgroup_basis_nhds k N _ (hs v) (by simp)`. Take `⟨m2, hm2, hK2⟩` from `GlobalTheory.T.congruence_subgroup_basis_nhds k N _ hl (by simp [Module.End.one_eq_id])`. Establish `hm : 1 ≤ max m1 m2` using `hm1.trans (le_max_left _ _)`. Take `⟨m, hmm⟩ : ∃ m, m = max m1 m2` from `⟨_, rfl⟩`.
+
+Rewrite `hm` using `[← hmm]`. Establish `hv : v ∈ fixed π (Zls.Km k N m)`. Introduce and unpack `⟨x, hx⟩`. Establish `: π x v = v` using `hK1 (GlobalTheory.T.congruence_subgroup_antitone k N m1 m (hmm ▸ le_max_left _ _) hx)`. Simplify using `using this`.
+
+Establish `hlK : ∀ x ∈ Zls.Km k N m, l ∘ₗ π x = l` using `fun x hx => hK2 (GlobalTheory.T.congruence_subgroup_antitone k N m2 m (hmm ▸ le_max_right _ _) hx)`. Take `⟨s, hsK, hcov⟩` from `GlobalTheory.T.cartan_decomposition_congruence k N m hm hN`. Establish `key : ∀ p : s, ∃ (C : ℝ) (ρ : Fin (N - 1) → ℝ), (∀ j, 0 ≤ ρ j) ∧ (∀ j : Fin (N - 1), (Nat.card 𝓀[k] : ℝ) ^ (((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) * ρ j ^ 2 < 1) ∧ ∀ g : Fin (N - 1) → ℕ, ∀ x ∈ Zls.Km k N m, ∀ y ∈ Zls.Km k N m, ‖l (π (p.1.1 * x * Zls.diagPow k N (Zls.lamOf g) * y * …`. Introduce and unpack `⟨p, hp⟩`. Take `⟨h1, h2⟩` from `hsK p hp`.
+
+Take `⟨hf, hli, heq⟩` from `GlobalTheory.T.matrix_coefficient_cartan_translate k N V π m v hv l hlK p.1 p.2 h1 h2`. Take `⟨C, ρ, hρ0, hρ1, hb⟩` from `GlobalTheory.T.matrix_coefficient_hecke_decay k N V π hs ha hH m hm (π p.2 v) hf (l ∘ₗ π p.1) hli`. Use `⟨C, ρ, hρ0, hρ1, fun g x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[heq _ x hx y hy]`. Conclude with `hb g`.
+
+Use `choose C ρ hρ0 hρ1 hbound using key`. Use `lintegral_sq_lt_top_of_cover μ _ (fun (p : s) (g : Fin (N - 1) → ℕ) => (QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' {h | ∃ x ∈ Zls.Km k N m, ∃ y ∈ Zls.Km k N m, h = p.1.1 * x * Zls.diagPow k N (Zls.lamOf g) * y * p.1.2}) ?_ (fun p g => C p * ∏ j, ρ p j ^ g j) (fun _ g => (Nat. …` and prove the remaining obligations. Introduce `x`. Take `⟨h, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨p, hp, g, a, ha', b, hb, z, hz, rfl⟩` from `hcov h`.
+
+Conclude with `⟨⟨p, hp⟩, g, _, ⟨a, ha', b, hb, rfl⟩, (QuotientGroup.mk_mul_of_mem _ hz).symm⟩`. Introduce and unpack `p g _ ⟨h, ⟨a, ha', b, hb, rfl⟩, rfl⟩ show ‖‖l (π (QuotientGroup.mk _ : AdGL k N).out v)‖‖ ≤ _`. Rewrite using `[norm_norm, hF]`. Conclude with `hbound p g a ha' b hb`. Introduce `p g`.
+
+Take `⟨h1, h2⟩` from `hsK p.1 p.2`. Use `(GlobalTheory.T.double_coset_volume_le k N μ hμ m hm p.1.1 p.1.2 h1 h2 g).trans_eq ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`. Introduce `p`. Establish `h` using `GlobalTheory.CompanionTheory.Summability.summable_prod_pow_multiIndex (N - 1) (fun j => (Nat.card 𝓀[k] : ℝ) ^ (((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) * ρ p j ^ 2) (fun j => by positivity) (hρ1 p)`.
+
+Conclude with `(h.mul_left (C p ^ 2)).congr fun g => (sq_mul_pow_eq _ _ g _ _).symm`.
+-/
 theorem isSqIntCoeff_of_heckeSpectral : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → π.IsIrreducible → IsAdmissible π → Zls.UnitaryCentral π →

@@ -75,75 +75,285 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Separ
 
 namespace UpperTheory.Gal.Gen
 
+/- English proof (translation)
+The claim follows from `hB_pf`.
+-/
 theorem hB_holds : HB := hB_pf
+/- English proof (translation)
+The claim follows from `detLow_pf`.
+-/
 theorem detLow_holds : DetLow := detLow_pf
+/- English proof (translation)
+The claim follows from `fixVec_pf`.
+-/
 theorem fixVec_holds : FixVec := fixVec_pf
+/- English proof (translation)
+The claim follows from `flag_pf fixVec_holds`.
+-/
 theorem flag_holds : Flag := flag_pf fixVec_holds
+/- English proof (translation)
+The claim follows from `triMat_pf flag_holds`.
+-/
 theorem triMat_holds : TriMat := triMat_pf flag_holds
+/- English proof (translation)
+The claim follows from `groupDet_pf triMat_holds detLow_holds`.
+-/
 theorem groupDet_holds : GroupDet := groupDet_pf triMat_holds detLow_holds
+/- English proof (translation)
+The claim follows from `alg_pf hB_holds groupDet_holds`.
+-/
 theorem alg_holds : Alg := alg_pf hB_holds groupDet_holds
+/- English proof (translation)
+The claim follows from `codim_pf`.
+-/
 theorem codim_holds : Codim := codim_pf
+/- English proof (translation)
+The claim follows from `hS_pf`.
+-/
 theorem hS_holds : HS := hS_pf
+/- English proof (translation)
+The claim follows from `rFormula_pf`.
+-/
 theorem rFormula_holds : RFormula := rFormula_pf
+/- English proof (translation)
+The claim follows from `rConj_pf rFormula_holds`.
+-/
 theorem rConj_holds : RConj := rConj_pf rFormula_holds
+/- English proof (translation)
+The claim follows from `wtPos_pf`.
+-/
 theorem wtPos_holds : WtPos := wtPos_pf
+/- English proof (translation)
+The claim follows from `meanVal_pf`.
+-/
 theorem meanVal_holds : MeanVal := meanVal_pf
+/- English proof (translation)
+The claim follows from `densCont_pf`.
+-/
 theorem densCont_holds : DensCont := densCont_pf
+/- English proof (translation)
+The claim follows from `halfInt_pf wtPos_holds meanVal_holds densCont_holds`.
+-/
 theorem halfInt_holds : HalfInt := halfInt_pf wtPos_holds meanVal_holds densCont_holds
+/- English proof (translation)
+The claim follows from `nullZero_pf`.
+-/
 theorem nullZero_holds : NullZero := nullZero_pf
+/- English proof (translation)
+The claim follows from `injAE_pf nullZero_holds`.
+-/
 theorem injAE_holds : InjAE := injAE_pf nullZero_holds
+/- English proof (translation)
+The claim follows from `densSymm`.
+-/
 theorem densSymm_holds : DensSymm := densSymm
+/- English proof (translation)
+The claim follows from `rDens_pf rFormula_holds densSymm_holds`.
+-/
 theorem rDens_holds : RDens := rDens_pf rFormula_holds densSymm_holds
+/- English proof (translation)
+The claim follows from `rInt_pf injAE_holds rDens_holds halfInt_holds densCont_holds`.
+-/
 theorem rInt_holds : RInt := rInt_pf injAE_holds rDens_holds halfInt_holds densCont_holds
+/- English proof (translation)
+The claim follows from `starEx_pf`.
+-/
 theorem starEx_holds : StarEx := starEx_pf
+/- English proof (translation)
+The claim follows from `symEx_pf`.
+-/
 theorem symEx_holds : SymEx := symEx_pf
+/- English proof (translation)
+The claim follows from `small_pf symEx_holds starEx_holds nullZero_holds densCont_holds`.
+-/
 theorem small_holds : Small := small_pf symEx_holds starEx_holds nullZero_holds densCont_holds
+/- English proof (translation)
+The claim follows from `gammaEig_pf`.
+-/
 theorem gammaEig_holds : GammaEig := gammaEig_pf
+/- English proof (translation)
+The claim follows from `gammaInt_pf rInt_holds densCont_holds`.
+-/
 theorem gammaInt_holds : GammaInt := gammaInt_pf rInt_holds densCont_holds
+/- English proof (translation)
+The claim follows from `gammaConj_pf rConj_holds`.
+-/
 theorem gammaConj_holds : GammaConj := gammaConj_pf rConj_holds
+/- English proof (translation)
+The claim follows from `repsEx_pf`.
+-/
 theorem repsEx_holds : RepsEx := repsEx_pf
+/- English proof (translation)
+The claim follows from `planch_pf gammaInt_holds gammaConj_holds gammaEig_holds injAE_holds densCont_holds`.
+-/
 theorem planch_holds : Planch := planch_pf gammaInt_holds gammaConj_holds gammaEig_holds injAE_holds densCont_holds
+/- English proof (translation)
+The claim follows from `combine_pf`.
+-/
 theorem combine_holds : Combine := combine_pf
+/- English proof (translation)
+The claim follows from `restrict_pf`.
+-/
 theorem restrict_holds : Restrict := restrict_pf
+/- English proof (translation)
+The claim follows from `algC_pf alg_holds`.
+-/
 theorem algC_holds : AlgC := algC_pf alg_holds
+/- English proof (translation)
+The claim follows from `locOp_pf repsEx_holds planch_holds`.
+-/
 theorem locOp_holds : LocOp := locOp_pf repsEx_holds planch_holds
+/- English proof (translation)
+The claim follows from `satEx_pf`.
+-/
 theorem satEx_holds : SatEx := satEx_pf
+/- English proof (translation)
+The claim follows from `globOp_pf locOp_holds`.
+-/
 theorem globOp_holds : GlobOp := globOp_pf locOp_holds
+/- English proof (translation)
+The claim follows from `neglAt_pf globOp_holds small_holds`.
+-/
 theorem neglAt_holds : NeglAt := neglAt_pf globOp_holds small_holds
+/- English proof (translation)
+The claim follows from `congSub_pf`.
+-/
 theorem congSub_holds : CongSub := congSub_pf
+/- English proof (translation)
+The claim follows from `tower_pf congSub_holds`.
+-/
 theorem tower_holds : Tower := tower_pf congSub_holds
+/- English proof (translation)
+The claim follows from `levFacts_pf`.
+-/
 theorem levFacts_holds : LevFacts := levFacts_pf
+/- English proof (translation)
+The claim follows from `locComm_pf`.
+-/
 theorem locComm_holds : LocComm := locComm_pf
+/- English proof (translation)
+The claim follows from `ratFin_pf`.
+-/
 theorem ratFin_holds : RatFin := ratFin_pf
+/- English proof (translation)
+The claim follows from `ellGrp_pf`.
+-/
 theorem ellGrp_holds : EllGrp := ellGrp_pf
+/- English proof (translation)
+The claim follows from `ell_pf ellGrp_holds`.
+-/
 theorem ell_holds : Ell := ell_pf ellGrp_holds
+/- English proof (translation)
+The claim follows from `wBound_pf`.
+-/
 theorem wBound_holds : WBound := wBound_pf
+/- English proof (translation)
+The claim follows from `countCore_pf hS_holds wBound_holds`.
+-/
 theorem countCore_holds : CountCore := countCore_pf hS_holds wBound_holds
+/- English proof (translation)
+The claim follows from `cover_pf levFacts_holds locComm_holds`.
+-/
 theorem cover_holds : Cover := cover_pf levFacts_holds locComm_holds
+/- English proof (translation)
+The claim follows from `sep_pf levFacts_holds locComm_holds ratFin_holds`.
+-/
 theorem sep_holds : Sep := sep_pf levFacts_holds locComm_holds ratFin_holds
+/- English proof (translation)
+The claim follows from `partFacts_pf`.
+-/
 theorem partFacts_holds : PartFacts := partFacts_pf
+/- English proof (translation)
+The claim follows from `count_pf countCore_holds cover_holds sep_holds partFacts_holds`.
+-/
 theorem count_holds : Count := count_pf countCore_holds cover_holds sep_holds partFacts_holds
+/- English proof (translation)
+The claim follows from `countGen_pf count_holds neglAt_holds`.
+-/
 theorem countGen_holds : CountGen := countGen_pf count_holds neglAt_holds
+/- English proof (translation)
+The claim follows from `stepCore_pf algC_holds codim_holds partFacts_holds`.
+-/
 theorem stepCore_holds : StepCore := stepCore_pf algC_holds codim_holds partFacts_holds
+/- English proof (translation)
+The claim follows from `smoothAt_pf`.
+-/
 theorem smoothAt_holds : SmoothAt := smoothAt_pf
+/- English proof (translation)
+The claim follows from `step_pf smoothAt_holds tower_holds levFacts_holds ell_holds countGen_holds stepCore_holds partFacts_holds`.
+-/
 theorem step_holds : Step := step_pf smoothAt_holds tower_holds levFacts_holds ell_holds countGen_holds stepCore_holds partFacts_holds
+/- English proof (translation)
+The claim follows from `denseGen_pf step_holds partFacts_holds`.
+-/
 theorem denseGen_holds : DenseGen := denseGen_pf step_holds partFacts_holds
+/- English proof (translation)
+The claim follows from `toPolyX_pf partFacts_holds`.
+-/
 theorem toPolyX_holds : ToPolyX := toPolyX_pf partFacts_holds
+/- English proof (translation)
+The claim follows from `kappa_pf`.
+-/
 theorem kappa_holds : Kappa := kappa_pf
+/- English proof (translation)
+The claim follows from `denomBdd_pf`.
+-/
 theorem denomBdd_holds : DenomBdd := denomBdd_pf
+/- English proof (translation)
+The claim follows from `degLe_pf`.
+-/
 theorem degLe_holds : DegLe := degLe_pf
+/- English proof (translation)
+The claim follows from `blockBound_pf`.
+-/
 theorem blockBound_holds : BlockBound := blockBound_pf
+/- English proof (translation)
+The claim follows from `detBound_pf`.
+-/
 theorem detBound_holds : DetBound := detBound_pf
+/- English proof (translation)
+The claim follows from `sizeLe_pf`.
+-/
 theorem sizeLe_holds : SizeLe := sizeLe_pf
+/- English proof (translation)
+The claim follows from `rhoBound_pf degLe_holds blockBound_holds detBound_holds sizeLe_holds`.
+-/
 theorem rhoBound_holds : RhoBound := rhoBound_pf degLe_holds blockBound_holds detBound_holds sizeLe_holds
+/- English proof (translation)
+The claim follows from `latFacts_pf`.
+-/
 theorem latFacts_holds : LatFacts := latFacts_pf
+/- English proof (translation)
+The claim follows from `levelEx_pf`.
+-/
 theorem levelEx_holds : LevelEx := levelEx_pf
+/- English proof (translation)
+The claim follows from `frameW_pf kappa_holds denomBdd_holds rhoBound_holds latFacts_holds levelEx_holds`.
+-/
 theorem frameW_holds : FrameW := frameW_pf kappa_holds denomBdd_holds rhoBound_holds latFacts_holds levelEx_holds
+/- English proof (translation)
+The claim follows from `maxCpt_pf`.
+-/
 theorem maxCpt_holds : MaxCpt := maxCpt_pf
+/- English proof (translation)
+The claim follows from `powNhds_pf`.
+-/
 theorem powNhds_holds : PowNhds := powNhds_pf
+/- English proof (translation)
+The claim follows from `kerOpen_pf powNhds_holds`.
+-/
 theorem kerOpen_holds : KerOpen := kerOpen_pf powNhds_holds
+/- English proof (translation)
+The claim follows from `charSum_pf`.
+-/
 theorem charSum_holds : CharSum := charSum_pf
+/- English proof (translation)
+The claim follows from `twistPart_pf`.
+-/
 theorem twistPart_holds : TwistPart := twistPart_pf
+/- English proof (translation)
+The claim follows from `tyStep_pf levFacts_holds ell_holds kerOpen_holds charSum_holds twistPart_holds`.
+-/
 theorem tyStep_holds : TyStep := tyStep_pf levFacts_holds ell_holds kerOpen_holds charSum_holds twistPart_holds
 
 end UpperTheory.Gal.Gen

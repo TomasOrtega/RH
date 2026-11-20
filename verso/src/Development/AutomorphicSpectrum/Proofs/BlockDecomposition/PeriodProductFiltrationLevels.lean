@@ -9,6 +9,17 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.LTPer
 
+/- English proof (translation)
+Introduce `l _ ι s t i₀ hi₀ u hprod h0 μ hμ`. Establish `hmax : IsLocalRing.maximalIdeal (Formalism.Per6.BdRp l) = Ideal.span {GroundTheory.PAdicHodge.tBdR l}` using `GroundTheory.PAdicHodge.maximalIdeal_eq_span_fontaineT GroundTheory.PAdicHodge.untilt_epsilon GroundTheory.PAdicHodge.untilt_frobeniusEquiv_symm_epsilon_ne_one`. Establish `htirr : Irreducible (GroundTheory.PAdicHodge.tBdR l)` using `IsDiscreteValuationRing.irreducible_iff_uniformizer _ |>.2 hmax`. Establish `hFB : ∀ k, FB l k = Ideal.span {GroundTheory.PAdicHodge.tBdR l ^ k}` using `fun k => by`. Rewrite using `[FB, ker_thB_eq, hmax, Ideal.span_singleton_pow]`.
+
+Establish `hnot : ¬ (GroundTheory.PAdicHodge.tBdR l ^ 2 ∣ ∏ μ ∈ s, t μ)`. Rewrite using `[hprod, pow_two]`. Introduce `h`. Establish `h1 : GroundTheory.PAdicHodge.tBdR l ∣ (u : Formalism.Per6.BdRp l)` using `(mul_dvd_mul_iff_left htirr.ne_zero).1 h`. Conclude with `htirr.not_isUnit (isUnit_of_dvd_unit h1 u.isUnit)`.
+
+Establish `hi : GroundTheory.PAdicHodge.tBdR l ∣ t i₀`. Establish `: t i₀ ∈ FB l 1`. Rewrite using `[FB, pow_one, RingHom.mem_ker]`. Conclude with `h0`. Rewrite `this` using `[hFB, pow_one]`.
+
+Conclude with `Ideal.mem_span_singleton.1 this`. Use `⟨fun e hm => hnot ?_, fun hne hm => hnot ?_⟩` and prove the remaining obligations. Substitute `e` using the available equality. Rewrite `hm` using `[hFB]`. Conclude with `(Ideal.mem_span_singleton.1 hm).trans (Finset.dvd_prod_of_mem t hμ)`.
+
+Rewrite `hm` using `[hFB, pow_one]`. Establish `hd` using `Ideal.mem_span_singleton.1 hm`. Establish `hμ' : μ ∈ s.erase i₀` using `Finset.mem_erase.2 ⟨hne, hμ⟩`. Rewrite using `[← Finset.mul_prod_erase s t hi₀, ← Finset.mul_prod_erase (s.erase i₀) t hμ', pow_two, ← mul_assoc]`. Conclude with `(mul_dvd_mul hi hd).mul_right _`.
+-/
 theorem prod_eq_t_mul_unit_count : ∀ {l : ℕ} [Fact l.Prime] {ι : Type} (s : Finset ι) (t : ι → Formalism.Per6.BdRp l) (i₀ : ι), i₀ ∈ s →
     ∀ u : (Formalism.Per6.BdRp l)ˣ, ∏ μ ∈ s, t μ = GroundTheory.PAdicHodge.tBdR l * (u : Formalism.Per6.BdRp l) →
       thB l (t i₀) = 0 →

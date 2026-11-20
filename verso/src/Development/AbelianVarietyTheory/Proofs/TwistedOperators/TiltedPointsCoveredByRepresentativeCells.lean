@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.RowVal
 
+/- English proof (translation)
+Rewrite using `[Reps.elt, onColumn_apply]`. Simplify using `only [dif_pos hi]`.
+-/
 theorem eltAt {k : Type} [Field k] {Gr : GlobalTheory.SplitFlip.Grid k} {hs : 1 ≤ Gr.s} {J : Gr.Level} (ρ : Reps hs J)
     (β : Cosets hs J) (i : ℕ) (hi : i < Gr.m - 2) : ρ.elt β (Gr.m, i + 1) = ρ.rep ⟨i, hi⟩ (β ⟨i, hi⟩) := by
   rw [Reps.elt, onColumn_apply]
@@ -25,6 +28,27 @@ theorem eltAt {k : Type} [Field k] {Gr : GlobalTheory.SplitFlip.Grid k} {hs : 1 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `big_mono (fun {D} _ _ _ _ _ _ _ _ _ _ _ ch h => ?_) (Big.and GlobalTheory.T.rowTest_mem_latticeStabilizer_of_localMatrices GlobalTheory.T.exists_periodGroup_point_lifting_rowGroup_localElements)` and prove the remaining obligations. Take `⟨h5, h7⟩` from `h`. Introduce `s t b hb p hp`. Establish `hidx : ∀ i : ℕ, i < D.R.m - 2 → i + 1 ∈ idx D` using `fun i hi => by`. Simplify using `only [idx, List.mem_range'_1]`.
+
+Use linear arithmetic over natural numbers and integers. Use `choose r hr a ha δ x g hδ hx k hk hpe using hp`. Set `β : CosFam ch.G t` to `fun w i => DoubleCoset.mk _ _ ((sgnAt ch.G t s w.1 (i + 1))⁻¹ * g (i + 1) (hidx i i.2) (by have h : (i : ℕ) < D.R.m - 2 := i.2; omega) w)`. Use `⟨β, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hj1 : 1 ≤ j ∧ j < 1 + (D.R.m - 2)` using `by simpa [idx, List.mem_range'_1] using hj`.
+
+Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Establish `hi : i < D.R.m - 2` using `by omega`. Establish `hjm : i + 1 ≤ D.R.m` using `by omega`. Establish `hj' : i + 1 < D.R.m` using `by omega`. Take `⟨-, hb2⟩` from `hb β`.
+
+Take `⟨δ', r', hδ', hr', hfin, a₀, ha₀, hab⟩` from `hb2 (i + 1) hj hjm`. Establish `key : ∀ w : locPl ch.G t, ∃ l : GL (Fin ((locGrid ch.G t w.1).rank (D.R.m, i + 1))) (Kw w.1), l ∈ rowR (G` using `locGrid ch.G t w.1) one_le_sLen (j := i + 1) hj' ∧ ∃ κ ∈ givenLevel ch.G t w.1 (D.R.m, i + 1), (repsAt ch.G t w.1).elt (β w) (D.R.m, i + 1) = l * ((sgnAt ch.G t s w.1 (i + 1))⁻¹ * g (i + 1) hj hjm w) * κ := by`. Introduce `w`. Establish `e1 : (repsAt ch.G t w.1).elt (β w) (D.R.m, i + 1) = (repsAt ch.G t w.1).rep ⟨i, hi⟩ (β w ⟨i, hi⟩)` using `eltAt (repsAt ch.G t w.1) (β w) i hi`. Establish `e2` using `(repsAt ch.G t w.1).mk_rep ⟨i, hi⟩ (β w ⟨i, hi⟩)`.
+
+Rewrite using `[e1]`. Take `⟨l, hl, κ, hκ, e⟩` from `(DoubleCoset.eq _ _ _ _).1 e2.symm`. Conclude with `⟨l, hl, κ, hκ, e⟩`. Use `choose l hl κ hκ hrep using key`. Take `⟨y, hy, hyR⟩` from `h7 s t (i + 1) hj hjm hj' (δ (i + 1) hj hjm) (hδ _ _ _) (fun w => (l w)⁻¹) fun w => inv_mem (hl w)`.
+
+Establish `h1` using `GlobalTheory.T.hasLocalLatticeMatrices_mul t ch.S.B hjm y r' _ _ hy hr'`. Establish `h2` using `GlobalTheory.T.hasLocalLatticeMatrices_inv t ch.S.B hjm (y * r') _ h1`. Establish `hz` using `GlobalTheory.T.hasLocalLatticeMatrices_mul t ch.S.B hjm ((y * r')⁻¹) (x (i + 1) hj hjm) _ _ h2 (hx (i + 1) hj hjm)`. Establish `hfun : (fun w => ((sgnAt ch.G t s w.1 (i + 1) * (l w)⁻¹ * (sgnAt ch.G t s w.1 (i + 1))⁻¹) * (sgnAt ch.G t s w.1 (i + 1) * (repsAt ch.G t w.1).elt (β w) (D.R.m, i + 1)))⁻¹ * g (i + 1) hj hjm w) = fun w => (κ w)⁻¹`. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[hrep w]`. Use `group`. Rewrite `hz` using `[hfun]`. Use `set z := (y * r')⁻¹ * x (i + 1) hj hjm with hzdef`. Establish `hzl : z ∈ latGrp ch.G (i + 1)` using `h5 t (i + 1) (by omega) hjm _ _ hz fun w => inv_mem (hκ w)`.
+
+Establish `htilt : δ (i + 1) hj hjm = δ'` using `GlobalTheory.T.isRowFlagTilt_unique ch.G hj' _ _ (hδ _ _ _) hδ'`. Establish `hyf : y ∈ GfC _` using `GlobalTheory.T.mem_finitePoints_of_hasLocalLatticeMatrices t ch.S.B hjm _ _ hy`. Use `set Y := δ (i + 1) hj hjm * y * (δ (i + 1) hj hjm)⁻¹ with hY`. Establish `hYf : Y ∈ GfC _`. Rewrite `hyf`, the goal using `[GfC, MonoidHom.mem_ker]`.
+
+Rewrite using `[hY, map_mul, map_mul, hyf, mul_one, map_inv, mul_inv_cancel]`. Establish `hcomm : a (i + 1) hj hjm * Y = Y * a (i + 1) hj hjm` using `(GlobalTheory.AdelicSplit.adelic_split D _).2.2.1 _ (ha _ _ _) _ hYf`. Use `⟨r (i + 1) hj hjm * Y, mul_mem (hr _ _ _) hyR, a (i + 1) hj hjm * a₀, mul_mem (ha _ _ _) ha₀, z * k (i + 1) hj hjm, mul_mem hzl (hk _ _ _), ?_⟩` and prove the remaining obligations. Establish `hxz : x (i + 1) hj hjm = y * r' * z` using `by rw [hzdef, mul_inv_cancel_left]`. Rewrite using `[hpe (i + 1) hj hjm, hxz, show r (i + 1) hj hjm * Y * (a (i + 1) hj hjm * a₀) * b β (i + 1) * (z * k (i + 1) hj hjm) = r (i + 1) hj hjm * (a (i + 1) hj hjm * Y) * (a₀ * b β (i + 1)) * z * k (i + 1) hj hjm by`.
+
+Rewrite using `[hcomm]`. Simplify using `only [mul_assoc], hab, ← htilt, hY]`. Simplify using `only [mul_assoc, inv_mul_cancel_left]`.
+-/
 theorem cover_at : Big fun ch => ∀ s, CoverAt ch s := by
   refine big_mono (fun {D} _ _ _ _ _ _ _ _ _ _ _ ch h => ?_) (Big.and GlobalTheory.T.rowTest_mem_latticeStabilizer_of_localMatrices GlobalTheory.T.exists_periodGroup_point_lifting_rowGroup_localElements)
   obtain ⟨h5, h7⟩ := h

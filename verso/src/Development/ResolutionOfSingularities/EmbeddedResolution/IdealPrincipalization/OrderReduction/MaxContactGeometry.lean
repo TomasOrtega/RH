@@ -34,8 +34,14 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace OrderReductionCorrectness
 
+/- English proof (translation)
+The claim follows from `EmbeddedResolution.blowupLiftEqOnControlledTransform`.
+-/
 theorem blowupLiftEqOnControlledTransform : BlowupLiftEqOnControlledTransform.{u} := EmbeddedResolution.blowupLiftEqOnControlledTransform
 
+/- English proof (translation)
+The claim follows from `smoothSubschemeIdealIsRadical`.
+-/
 theorem le_of_support_subset_of_smooth : ∀ (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (Z : X.IdealSheafData),
     AlgebraicGeometry.Smooth (Z.subschemeι ≫ p) →
@@ -43,6 +49,9 @@ theorem le_of_support_subset_of_smooth : ∀ (k : Type u) [Field k] (X : Scheme.
       (((Z.support : Set ↥X)) ⊆ ((J.support : Set ↥X))) → J ≤ Z :=
   smoothSubschemeIdealIsRadical
 
+/- English proof (translation)
+Introduce `T hT s i hi`. Establish `: AlgebraicGeometry.IsNoetherian (s.schemeAt i)` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hT s i hi`. Use `infer_instance`.
+-/
 theorem isLocallyNoetherian_schemeAt : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible → ∀ (s : T.SequenceOfBlowups) (i : ℕ),
     i ≤ s.length → AlgebraicGeometry.IsLocallyNoetherian (s.schemeAt i) := by
   intro T hT s i hi
@@ -50,6 +59,11 @@ theorem isLocallyNoetherian_schemeAt : ∀ (T : MarkedIdealWithBoundary.{u}), T.
     MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hT s i hi
   infer_instance
 
+/- English proof (translation)
+Introduce `T hT Y q f _ hq _ _ hbal`. Substitute `hq` using the available equality. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hT.smooth`. Use `isDerivBalanced_of_pow_le T.base (f ≫ T.structMap) ?_` and prove the remaining obligations. Introduce `i hi`.
+
+Rewrite using `[derivIdealSheafIterate_comap T.base T.structMap f i T.ideal, ← Scheme.IdealSheafData.comap_pow, ← Scheme.IdealSheafData.comap_pow]`. Conclude with `Scheme.IdealSheafData.comap_mono f (IsDerivBalanced.derivIdealSheafIterate_pow_le T.base T.structMap hbal hi)`.
+-/
 theorem isBalanced_comap_of_smooth : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible → ∀ (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme)
     [AlgebraicGeometry.Smooth h], h ≫ T.structMap = q →
@@ -66,6 +80,11 @@ theorem isBalanced_comap_of_smooth : ∀ (T : MarkedIdealWithBoundary.{u}), T.Is
     ← Scheme.IdealSheafData.comap_pow, ← Scheme.IdealSheafData.comap_pow]
   exact Scheme.IdealSheafData.comap_mono f (IsDerivBalanced.derivIdealSheafIterate_pow_le T.base T.structMap hbal hi)
 
+/- English proof (translation)
+Introduce `k _ _ X X₁ p _ _ π Z E hZ hπ _ _ _ A μ hμ hA A₁ hA₁`. Establish `hct : A₁ = controlledTransform π Z A μ hπ hA` using `eq_controlledTransform_of_mul_eq_comap π Z A μ hπ hA A₁ hA₁`. Establish `key` using `comap_derivIdealSheafIterate_le_exceptionalIdeal_pow_mul k p π Z E hZ hπ A μ hA (μ - 1) (Nat.sub_le μ 1)`. Establish `hsub : μ - (μ - 1) = 1` using `by omega`. Rewrite `key` using `[hsub, pow_one]`.
+
+Simplify using `only [maxContactIdeal_eq_derivIdealSheafIterate]`. Rewrite using `[hct]`. Conclude with `key`.
+-/
 theorem maxContactIdealComapLeControlled : MaxContactIdealComapLeControlled.{u} := by
   intro k _ _ X X₁ p _ _ π Z E hZ hπ _ _ _ A μ hμ hA A₁ hA₁
   have hct : A₁ = controlledTransform π Z A μ hπ hA :=
@@ -78,9 +97,19 @@ theorem maxContactIdealComapLeControlled : MaxContactIdealComapLeControlled.{u} 
   rw [hct]
   exact key
 
+/- English proof (translation)
+The claim follows from `existsMaxContactControlledTransforms_of_comapLeControlled maxContactIdealComapLeControlled`.
+-/
 theorem existsMaxContactControlledTransforms : ExistsMaxContactControlledTransforms.{u} :=
   existsMaxContactControlledTransforms_of_comapLeControlled maxContactIdealComapLeControlled
 
+/- English proof (translation)
+Introduce `T s i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ x hx`. Rewrite `hx` using `[s.ideal_zero, orderAtLeastLocus_comap_iso_hom_eq_preimage]`.
+
+Rewrite using `[SequenceOfBlowups.projectionToBase_zero]`. Conclude with `hx`. Consider the case `succ n ih`. Introduce `hn x hx`. Establish `hn' : n < s.length` using `hn`.
+
+Establish `h1 : (s.transitionMapSucc n).base x ∈ orderAtLeastLocus (s.ideal n) T.mult` using `OrderLocusBlowup.orderAtLeastLocus_subset_preimage_of_isBlowupAlongIdealSheaf (s.transitionMapSucc n) (s.center n) (s.isBlowupAlongIdealSheaf_blowupMorphism n hn') (s.ideal n) (s.ideal (n + 1)) T.mult (s.ideal_succ n hn') (s.center_order n hn') hx`. Establish `h2` using `ih (le_of_lt hn') _ h1`. Rewrite using `[MarkedSequenceOfBlowups.projectionToBase_succ_apply]`. Conclude with `h2`.
+-/
 theorem projectionToBase_mem_orderAtLeastLocus_of_mem_ideal :
     ∀ (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ), i ≤ s.length → ∀ x : ↥(s.schemeAt i),
       x ∈ orderAtLeastLocus (s.ideal i) T.mult →
@@ -103,6 +132,9 @@ theorem projectionToBase_mem_orderAtLeastLocus_of_mem_ideal :
       rw [MarkedSequenceOfBlowups.projectionToBase_succ_apply]
       exact h2
 
+/- English proof (translation)
+Introduce `T hT s i hi x hx`. Conclude with `projectionToBase_mem_orderAtLeastLocus_of_mem_ideal T s i (le_of_lt hi) x (s.center_order i hi hx)`.
+-/
 theorem projectionToBase_mem_orderAtLeastLocus_of_mem_center : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible → ∀ (s : T.SequenceOfBlowups) (i : ℕ),
     i < s.length → ∀ x : ↥(s.schemeAt i),
       x ∈ (((s.center i).support : Set ↥(s.schemeAt i))) →
@@ -110,6 +142,9 @@ theorem projectionToBase_mem_orderAtLeastLocus_of_mem_center : ∀ (T : MarkedId
   intro T hT s i hi x hx
   exact projectionToBase_mem_orderAtLeastLocus_of_mem_ideal T s i (le_of_lt hi) x (s.center_order i hi hx)
 
+/- English proof (translation)
+Introduce `X' X φ s' s hpb hne hran`. Conclude with `hpb.isStrictPullback_of_support_comap_center_nonempty (support_comap_center_nonempty_of_mem_range φ s hne hran)`.
+-/
 theorem isStrictPullback_of_isPullback_of_center_nonempty : ∀ (X' X : Scheme.{u}) (φ : X' ⟶ X) (s' : SequenceOfBlowups X')
     (s : SequenceOfBlowups X), IsPullbackBlowupSequence φ s' s →
     (∀ i : ℕ, i < s.length → (((s.center i).support : Set ↥(s.schemeAt i))).Nonempty) →

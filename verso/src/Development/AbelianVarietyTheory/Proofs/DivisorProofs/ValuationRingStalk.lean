@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.ProjHol
 
+/- English proof (translation)
+Establish `: Smooth f` using `SmoothOfRelativeDimension.smooth 1 f`. Establish `: GlobalTheory.IsNormalScheme X` using `GlobalTheory.isNormalScheme_of_smooth f`. Use `LocallyOfFiniteType.isLocallyNoetherian f` as an intermediate fact. Establish `h : Order.coheight x ≤ 1` using `by simpa using GlobalTheory.AffineCover.coheight_le_of_smooth f hf x`. Break down `h.eq_or_lt with h | h` into its components or cases.
+
+Use `GlobalTheory.IsNormalScheme.isDiscreteValuationRing_stalk h infer_instance` as an intermediate fact. Establish `h0 : Order.coheight x = 0` using `by simpa using h`. Establish `: Ring.KrullDimLE 0 (X.presheaf.stalk x)` using `krullDimLE_of_coheight_le h0.le`. Use `letI := (Ring.KrullDimLE.isField_of_isDomain (R := X.presheaf.stalk x)).toField`. Conclude with `ValuationRing.of_field _`.
+-/
 theorem valuationRing_stalk {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X] (f : X ⟶ Sp K)
     [hf : SmoothOfRelativeDimension 1 f] (x : X) : ValuationRing (X.presheaf.stalk x) := by
   have : Smooth f := SmoothOfRelativeDimension.smooth 1 f
@@ -27,6 +32,17 @@ theorem valuationRing_stalk {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X]
     letI := (Ring.KrullDimLE.isField_of_isDomain (R := X.presheaf.stalk x)).toField
     exact ValuationRing.of_field _
 
+/- English proof (translation)
+Set `A` to `W.toAffine.CoordinateRing`. Set `B` to `Localization.Away (v k)`. Establish `hu : IsUnit (algebraMap A B (v k))` using `IsLocalization.Away.algebraMap_isUnit (v k)`. Establish `hv : Ideal.span (Set.range (algebraMap A B ∘ v)) = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨k, rfl⟩) hu`. Establish `h1 : IsOpenImmersion (spMap (algebraMap A B))` using `IsOpenImmersion.of_isLocalization (v k)`.
+
+Establish `: IsDomain B` using `IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors hk)`. Use `isProper_str K N` as an intermediate fact. Establish `: (PSpace K N).IsSeparated` using `⟨by`. Rewrite using `[← Limits.terminal.comp_from (PSpace.str K N)]`. Use the proof step `infer_instance⟩`.
+
+Take `⟨ψ, h₁, h₂⟩` from `GlobalTheory.TorusConst.exists_extension (valuationRing_stalk (toSpec W)) (spMap (algebraMap A B) ≫ chartZ W) (toSpec W) (PSpace.str K N) (GlobalTheory.ProjSpace.pt ((algebraMap A B).comp (algebraMap K A)) _ hv) (by`. Rewrite using `[GlobalTheory.ProjSpace.pt_str, Category.assoc, GlobalTheory.WeierstrassCurve.chartZ_toSpec, ← Spec.map_comp]`. Use the proof step `rfl)`. Use `⟨ψ, h₂, fun e he hv' => ?_⟩` and prove the remaining obligations. Set `e' : B →+* K` to `IsLocalization.Away.lift (v k) (IsUnit.mk0 _ he)`.
+
+Establish `h3 : e'.comp (algebraMap A B) = e` using `IsLocalization.Away.lift_comp _ _`. Establish `h4 : spMap e = spMap e' ≫ spMap (algebraMap A B)`. Rewrite using `[← Spec.map_comp, ← h3]`. Both sides reduce to the same expression. Rewrite using `[h4, Category.assoc, ← Category.assoc (spMap (algebraMap A B)), h₁, GlobalTheory.ProjSpace.spMap_pt]`.
+
+Use `congr 1`. Rewrite using `[← RingHom.comp_assoc, h3]`. Conclude with `funext fun j => RingHom.congr_fun h3 (v j)`.
+-/
 theorem exists_extend {K : Type} [Field K] (W : WeierstrassCurve K) [W.IsElliptic] {N : ℕ}
     (v : Fin (N + 1) → W.toAffine.CoordinateRing) (k : Fin (N + 1)) (hk : v k ≠ 0) :
     ∃ ψ : scheme W ⟶ PSpace K N, ψ ≫ PSpace.str K N = toSpec W ∧

@@ -7,6 +7,11 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigi
 
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V.Published PositivityTheory.RgJS UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.T Filter
 
+/- English proof (translation)
+Use `Set.Finite.preimage' (f := fun w : HeightOneSpectrum (𝓞 E) => w.under (𝓞 F)) hS fun v _ => ?_` and prove the remaining obligations. Establish `h` using `Ideal.finite_factors (R := 𝓞 E) (I := v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E))) (by`. Introduce `h`. Conclude with `v.ne_bot ((Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)).1 h))`. Use `h.subset fun w hw => ?_` and prove the remaining obligations.
+
+Establish `e : w.under (𝓞 F) = v` using `hw`. Rewrite using `[Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← e]`. Conclude with `le_rfl`.
+-/
 private theorem above_finite {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {S : Set (HeightOneSpectrum (𝓞 F))} (hS : S.Finite) :
     {w : HeightOneSpectrum (𝓞 E) | w.under (𝓞 F) ∈ S}.Finite := by
@@ -20,6 +25,23 @@ private theorem above_finite {F E : Type} [Field F] [NumberField F] [Field E] [N
   rw [Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← e]
   exact le_rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ _ σ hσ hl n hn hL Λ t h`. Simplify using `only [OffAll, OffFam, not_forall, not_and_or, not_not] at h`. Take `⟨S, hS, h⟩` from `h`. Establish `hT` using `above_finite (E := E) hS`. Break down `h with ⟨b, hb⟩ | ⟨b, Λ', t', hb, h⟩` into its components or cases.
+
+Take `⟨P, hP⟩` from `famSat E n b _ hT Λ t hb`. Use `⟨Fin b.r, inferInstance, b.d, P, b.pos, by simpa using b.two, ?_⟩` and prove the remaining obligations. Conclude with `hT.eventually_cofinite_notMem.mono hP`. Establish `ht : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∉ S → t w = bcSat t' w`. Introduce `w hw`.
+
+Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises. Use `right`. Conclude with `⟨w, hw, hc⟩`. Take `⟨π, hπ⟩` from `famSat F n b S hS Λ' t' hb`.
+
+Establish `hlt : ∀ i, b.d i < n`. Introduce `i`. Use `haveI : Nontrivial (Fin b.r) := Fin.nontrivial_iff_two_le.2 b.two`. Take `⟨j, hj⟩` from `exists_ne i`. Use `lt_of_lt_of_eq ?_ b.sum` and prove the remaining obligations.
+
+Conclude with `Finset.single_lt_sum hj (Finset.mem_univ _) (Finset.mem_univ _) (b.pos j) fun k _ _ => Nat.zero_le _`. Use `choose κ fκ m P hm hne hP using fun i => hL (b.d i) (b.pos i) (hlt i) (π i)`. Establish `hsum` using `R.liftSum F E hl (Fin b.r) κ b.d (fun a => m a.1 a.2) π (fun a => P a.1 a.2) hP`. Use `⟨Σ i, κ i, inferInstance, fun a => m a.1 a.2, fun a => P a.1 a.2, fun a => hm a.1 a.2, ?_, ?_⟩` and prove the remaining obligations. Use `b.two.trans ?_` and prove the remaining obligations.
+
+Use `Fintype.card_le_of_surjective (Sigma.fst : (Σ i, κ i) → Fin b.r) fun i => ⟨⟨i, (hne i).some⟩, rfl⟩` as an intermediate fact. Simplify using `using this`. Establish `hN` using `(places F E hl).2.2.2.2.1 filter_upwards [hsum, hT.eventually_cofinite_notMem] with w hw hwS`. Take `⟨B, ⟨B1, hB1, e1⟩, hB'⟩` from `hw (resDeg F w) (hN w)`. Take `⟨C, ⟨C1, hC1, e2⟩, e⟩` from `hπ _ hwS`.
+
+Establish `e3 : B = C`. Rewrite using `[e1, e2]`. Conclude with `Finset.sum_congr rfl fun i _ => (hB1 i).unique (hC1 i)`. Use `⟨_, hB', ?_⟩` and prove the remaining obligations. Rewrite using `[ht w hwS, bcSat, e, e3, Multiset.map_map, Multiset.map_map]`.
+
+Conclude with `Multiset.map_congr rfl fun a _ => by simp`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.famParts :
     UpperTheory.ConvolutionTheory.T.FamParts := by
   intro F E _ _ _ _ _ _ _ _ σ hσ hl n hn hL Λ t h

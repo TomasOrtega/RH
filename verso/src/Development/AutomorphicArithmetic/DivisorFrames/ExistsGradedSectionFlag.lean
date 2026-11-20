@@ -8,6 +8,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.LineNorm GlobalTheory.BcLie GlobalTheory.CovTest GlobalTheory.Mean4O GlobalTheory.Cartier GlobalTheory.TrueCx
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `ht : ⊤ ≤ Y.X.fromSpecStalk (genericPoint Y.X) ⁻¹ᵁ (j ⁻¹ᵁ W)` using `hW`. Establish `: (Y.X.fromSpecStalk (genericPoint Y.X)).appLE (j ⁻¹ᵁ W) ⊤ ht ≫ (Scheme.ΓSpecIso (Y.X.presheaf.stalk (genericPoint Y.X))).hom = Y.X.presheaf.germ _ _ h`. Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app h]`. Simplify using `only [Category.assoc]`. Establish `e : (Spec (Y.X.presheaf.stalk (genericPoint Y.X))).presheaf.map (homOfLE (le_top : Y.X.fromSpecStalk (genericPoint Y.X) ⁻¹ᵁ (j ⁻¹ᵁ W) ≤ ⊤)).op ≫ (Spec (Y.X.presheaf.stalk (genericPoint Y.X))).presheaf.map (homOfLE ht).op = 𝟙 _`.
+
+Rewrite using `[← Functor.map_comp]`. Conclude with `CategoryTheory.Functor.map_id _ _`. Rewrite using `[reassoc_of% e, Iso.inv_hom_id, Category.comp_id]`. Establish `e2` using `Scheme.Hom.comp_appLE (genericPt Y) j W ⊤ hW`. Unfold `evalPt`.
+
+Rewrite using `[e2]`. Conclude with `congrArg (fun q => q.hom (j.app W a)) this`.
+-/
 private theorem evalPt_gen {F : Type} [Field F] {Y : Var F} {X : Scheme.{0}} (j : Y.X ⟶ X) (W : X.Opens)
     (hW : ⊤ ≤ (genericPt Y ≫ j) ⁻¹ᵁ W) (h : genericPoint Y.X ∈ j ⁻¹ᵁ W) (a : Γ(X, W)) :
     evalPt (genericPt Y ≫ j) W hW a = Cartier.fnOf (j ⁻¹ᵁ W) h (j.app W a) := by
@@ -26,6 +33,13 @@ private theorem evalPt_gen {F : Type} [Field F] {Y : Var F} {X : Scheme.{0}} (j 
   rw [e2]
   exact congrArg (fun q => q.hom (j.app W a)) this
 
+/- English proof (translation)
+Establish `l : ((VB.det L 1).pull j).U k ⊓ ((VB.det L 1).pull j).U k' ≤ j ⁻¹ᵁ ((VB.det L 1).U (k PUnit.unit) ⊓ (VB.det L 1).U (k' PUnit.unit))` using `fun x hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩`. Establish `hp : (((VB.det L 1).pull j).g k k').val = resG Y.X l (j.app _ ((VB.det L 1).g (k PUnit.unit) (k' PUnit.unit)).val)`. Establish `: ((VB.det L 1).pull j).g k k' = res l (pullU j _ ((VB.det L 1).g (k PUnit.unit) (k' PUnit.unit)))`. Express the relevant statement in the definitionally equal form `∏ _k : PUnit, _ = _`. Conclude with `(Fintype.prod_unique _).trans (zpow_one _)`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hW` using `gen_le j (y := genericPoint Y.X) (U := (VB.det L 1).U (k PUnit.unit) ⊓ (VB.det L 1).U (k' PUnit.unit)) (l h)`. Rewrite using `[hp, fnOf_resG, ← evalPt_gen j _ hW, trAt_eq _ _ hW, map_apply]`. Use `congr 1`.
+
+Use `(IsFrame.val_detUnit _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.det_apply, det_fin_one]`. Both sides reduce to the same expression.
+-/
 private theorem fnOf_pull_g {F : Type} [Field F] {Y : Var F} {X : Scheme.{0}} (j : Y.X ⟶ X) (L : X.Modules)
     (k k' : ((VB.det L 1).pull j).ι)
     (h : genericPoint Y.X ∈ ((VB.det L 1).pull j).U k ⊓ ((VB.det L 1).pull j).U k') :
@@ -49,6 +63,13 @@ private theorem fnOf_pull_g {F : Type} [Field F] {Y : Var F} {X : Scheme.{0}} (j
   rw [Module.Basis.det_apply, det_fin_one]
   rfl
 
+/- English proof (translation)
+Establish `hσ : Function.Involutive (pos (r` using `r) dual) := pos_pos dual`. Establish `h1` using `Matrix.det_permute hσ.toPerm B`. Establish `h2 : (B.submatrix (pos dual) id).det = ∏ a, B (pos dual a) a` using `Matrix.det_of_upperTriangular fun a b h => hT a b h`. Introduce `h0`. Establish `h3 : (B.submatrix (pos dual) id).det = 0`.
+
+Rewrite using `[h2]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) h0`. Establish `h4` using `h1.symm.trans h3`. Break down `mul_eq_zero.1 h4 with h | h` into its components or cases. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign hσ.toPerm) with e | e <;> simp [e] at h`.
+
+Conclude with `hB.ne_zero h`.
+-/
 private theorem diag_ne_zero {K : Type} [Field K] {r : ℕ} (dual : Bool) (B : Matrix (Fin r) (Fin r) K)
     (hB : IsUnit B.det) (hT : IsTri (B.submatrix (pos dual) id)) (i : Fin r) : B (pos dual i) i ≠ 0 := by
   have hσ : Function.Involutive (pos (r := r) dual) := pos_pos dual
@@ -63,6 +84,11 @@ private theorem diag_ne_zero {K : Type} [Field K] {r : ℕ} (dual : Bool) (B : M
   · rcases Int.units_eq_one_or (Equiv.Perm.sign hσ.toPerm) with e | e <;> simp [e] at h
   · exact hB.ne_zero h
 
+/- English proof (translation)
+Rewrite using `[mul_apply, Finset.sum_eq_single i]`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases. Rewrite using `[show B (pos dual i) b = 0 from hB i b h, zero_mul]`. Rewrite using `[hT b i h, mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem mul_diag {K : Type} [CommRing K] {r : ℕ} (dual : Bool) (B T : Matrix (Fin r) (Fin r) K)
     (hB : IsTri (B.submatrix (pos dual) id)) (hT : IsTri T) (i : Fin r) :
     (B * T) (pos dual i) i = B (pos dual i) i * T i i := by
@@ -73,11 +99,27 @@ private theorem mul_diag {K : Type} [CommRing K] {r : ℕ} (dual : Bool) (B T : 
     · rw [hT b i h, mul_zero]
   · simp
 
+/- English proof (translation)
+Rewrite using `[← trAt_mul c c' c'' h h' h'', mul_apply, Fin.sum_univ_one]`.
+-/
 private theorem trAt_one_mul {K : Type} [CommRing K] {X : Scheme.{0}} {L : X.Modules} {x : Sp K ⟶ X} (c c' c'' : Chart L 1)
     (h : ⊤ ≤ x ⁻¹ᵁ c.U) (h' : ⊤ ≤ x ⁻¹ᵁ c'.U) (h'' : ⊤ ≤ x ⁻¹ᵁ c''.U) :
     trAt x c c' 0 0 * trAt x c' c'' 0 0 = trAt x c c'' 0 0 := by
   rw [← trAt_mul c c' c'' h h' h'', mul_apply, Fin.sum_univ_one]
 
+/- English proof (translation)
+Introduce `F _ Y X j M r dual A fl i hA hF`. Take `⟨ch₀, hx₀, had₀⟩` from `(UpperTheory.exists_adapted_flag_charts X M r fl).1 (j (genericPoint Y.X))`. Establish `h₀` using `gen_le j hx₀`. Take `⟨t₀, ht₀⟩` from `had₀ i`. Establish `hf₀` using `(UpperTheory.exists_adapted_flag_charts X M r fl).2 ch₀ had₀ i t₀ ht₀`.
+
+Set `gc₀ : Chart (fl.gr i) 1` to `⟨ch₀.U, _, hf₀⟩`. Establish `hu : A ch₀ (pos dual i) i ≠ 0` using `diag_ne_zero dual _ (hA.1 ch₀ h₀) (hF ch₀ had₀ h₀) i`. Establish `hne (c : Chart (fl.gr i) 1) (h : ⊤ ≤ (genericPt Y ≫ j) ⁻¹ᵁ c.U) : trAt (genericPt Y ≫ j) c gc₀ 0 0 * (A ch₀ (pos dual i) i)⁻¹ ≠ 0`. Use `isUnit_det_trAt c gc₀ h h₀` as an intermediate fact. Rewrite `this` using `[det_fin_one]`.
+
+Conclude with `mul_ne_zero this.ne_zero (inv_ne_zero hu)`. Set `s₀ : Chart (fl.gr i) 1 → Y.Fnˣ` to `fun c => if h : ⊤ ≤ (genericPt Y ≫ j) ⁻¹ᵁ c.U then Units.mk0 _ (hne c h) else 1`. Establish `hs₀ (c : Chart (fl.gr i) 1) (h : ⊤ ≤ (genericPt Y ≫ j) ⁻¹ᵁ c.U) : (s₀ c : Y.Fn) = trAt (genericPt Y ≫ j) c gc₀ 0 0 * (A ch₀ (pos dual i) i)⁻¹`. Simplify using `only [s₀, dif_pos h, Units.val_mk0]`. Use `⟨fun k => s₀ (k PUnit.unit), fun k k' h => ?_, fun ch had h t ht hf => ?_⟩` and prove the remaining obligations.
+
+Establish `h₁ : ⊤ ≤ (genericPt Y ≫ j) ⁻¹ᵁ Chart.U (F` using `fl.gr i) (r := 1) (k PUnit.unit) := gen_le j (y := genericPoint Y.X) (Set.mem_iInter.1 h.1 PUnit.unit)`. Establish `h₂ : ⊤ ≤ (genericPt Y ≫ j) ⁻¹ᵁ Chart.U (F` using `fl.gr i) (r := 1) (k' PUnit.unit) := gen_le j (y := genericPoint Y.X) (Set.mem_iInter.1 h.2 PUnit.unit)`. Use `(hs₀ _ h₁).trans (Eq.trans ?_ (congrArg₂ (· * ·) (fnOf_pull_g j (fl.gr i) k k' h) (hs₀ _ h₂)).symm)` and prove the remaining obligations. Rewrite using `[← mul_assoc, trAt_one_mul _ _ _ h₁ h₂ h₀]`. Set `gc : Chart (fl.gr i) 1` to `⟨ch.U, _, hf⟩`.
+
+Take `⟨hT, hd⟩` from `UpperTheory.flag_chart_transition_triangular X M r fl ch₀ ch had₀ had`. Establish `hW` using `le_inf_pre h₀ h`. Establish `hT' : IsTri (trAt (genericPt Y ≫ j) ch₀ ch)` using `fun a b hab => by`. Rewrite using `[trAt_eq _ _ hW, map_apply, hT a b hab, map_zero]`. Establish `hd' : trAt (genericPt Y ≫ j) ch₀ ch i i = trAt (genericPt Y ≫ j) gc₀ gc 0 0`.
+
+Rewrite using `[trAt_eq _ _ hW, trAt_eq gc₀ gc hW, map_apply, map_apply, ← hd i t₀ t ht₀ ht hf₀ hf]`. Express the relevant statement in the definitionally equal form `(s₀ gc : Y.Fn) * _ = 1`. Rewrite using `[hs₀ gc h, hA.2 ch₀ ch h₀ h, mul_diag dual _ _ (hF ch₀ had₀ h₀) hT', hd', mul_assoc, inv_mul_cancel_left₀ hu, trAt_one_mul gc gc₀ gc h h₀ h, trAt_self gc h, one_apply_eq]`.
+-/
 theorem UpperTheory.exists_graded_section_flag :
     ∀ (F : Type) [Field F] (Y : Var F) (X : Scheme.{0}) (j : Y.X ⟶ X) (M : X.Modules) (r : ℕ) (dual : Bool) (A : Chart M r → Matrix (Fin r) (Fin r) Y.Fn) (fl : Vert.Flag M r) (i : Fin r), IsCo (genericPt Y ≫ j) A → IsFlag (genericPt Y ≫ j) dual A fl → ∃ s, IsGrSec j dual A fl i s := by
   intro F _ Y X j M r dual A fl i hA hF

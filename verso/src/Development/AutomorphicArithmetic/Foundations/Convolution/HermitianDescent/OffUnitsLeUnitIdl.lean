@@ -29,6 +29,23 @@ open GlobalTheory.ConsEta (unitDir infSign conjQuot)
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨p, hp, hmp, hs⟩` from `GlobalTheory.LargeSplitPrime.exists_splitsCompl E (∑ w ∈ hS.toFinset, Ideal.absNorm w.asIdeal)`. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `hsplit : ∀ w : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ w.asIdeal → IsSplitAt w`. Introduce `w hw`. Establish `hv : (p : 𝓞 (maximalRealSubfield E)) ∈ (w.under (𝓞 (maximalRealSubfield E))).asIdeal` using `by show algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) (p : 𝓞 (maximalRealSubfield E)) ∈ w.asIdeal`.
+
+Rewrite using `[map_natCast]` and apply the resulting hypothesis. Take `⟨a, b, hab, ha, hb⟩` from `GlobalTheory.SplitPlace.isSplit_of_norm h2 hp (fun u hu => hs u.asIdeal u.isMaximal hu) _ hv`. Distinguish the cases in `h : a = w`. Conclude with `⟨b, fun e => hab (h.trans e.symm), HeightOneSpectrum.ext hb⟩`. Conclude with `⟨a, h, HeightOneSpectrum.ext ha⟩`.
+
+Use `haveI hPmax : (Ideal.span {(p : ℤ)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Establish `hinj : Function.Injective (algebraMap ℤ (𝓞 E))` using `(algebraMap ℤ (𝓞 E)).injective_int`. Take `⟨Q, hQmax, hQ⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 E) (Ideal.span {(p : ℤ)}) (by rw [(RingHom.injective_iff_ker_eq_bot _).mp hinj]; exact bot_le)`. Establish `hpQ : (p : 𝓞 E) ∈ Q`. Establish `: (p : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 E))` using `hQ ▸ Ideal.subset_span rfl`.
+
+Simplify using `using this`. Establish `hp0 : (p : 𝓞 E) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Set `w₁ : HeightOneSpectrum (𝓞 E)` to `⟨Q, hQmax.isPrime, fun h => hp0 (by rw [h] at hpQ; simpa using hpQ)⟩`. Use `⟨w₁, hsplit w₁ hpQ, fun w hw heq => ?_⟩` and prove the remaining obligations. Establish `hlt : Ideal.absNorm w.asIdeal < p` using `lt_of_le_of_lt (Finset.single_le_sum (f := fun w : HeightOneSpectrum (𝓞 E) => Ideal.absNorm w.asIdeal) (fun _ _ => Nat.zero_le _) (hS.mem_toFinset.2 hw)) hmp`.
+
+Establish `hpw : (p : 𝓞 E) ∈ w.asIdeal`. Establish `hv : (p : 𝓞 (maximalRealSubfield E)) ∈ (w₁.under (𝓞 (maximalRealSubfield E))).asIdeal` using `by show algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) (p : 𝓞 (maximalRealSubfield E)) ∈ w₁.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hpQ`. Rewrite `hv` using `[← heq]`.
+
+Establish `: algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) (p : 𝓞 (maximalRealSubfield E)) ∈ w.asIdeal` using `hv`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hN : ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 E) ∈ w.asIdeal` using `Ideal.absNorm_mem _`. Establish `hN0 : 0 < Ideal.absNorm w.asIdeal` using `Nat.pos_of_ne_zero (fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.mp h))`. Establish `hcop : Nat.Coprime p (Ideal.absNorm w.asIdeal)` using `(Nat.Prime.coprime_iff_not_dvd hp).mpr (fun h => absurd (Nat.le_of_dvd hN0 h) (not_le.mpr hlt))`.
+
+Take `⟨a, b, hab⟩` from `(Nat.isCoprime_iff_coprime.mpr hcop).map (Int.castRingHom (𝓞 E))`. Apply `w.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Use `Ideal.add_mem _ (Ideal.mul_mem_left _ _ ?_) (Ideal.mul_mem_left _ _ ?_)` and prove the remaining obligations. Simplify using `using hpw`.
+
+Simplify using `using hN`.
+-/
 private theorem exists_split_avoid (S : Set (HeightOneSpectrum (𝓞 E))) (hS : S.Finite) :
     ∃ w₀ : HeightOneSpectrum (𝓞 E), IsSplitAt w₀ ∧
       ∀ w ∈ S, w.under (𝓞 (maximalRealSubfield E)) ≠ w₀.under (𝓞 (maximalRealSubfield E)) := by
@@ -84,6 +101,11 @@ private noncomputable def offUnits (w₀ : HeightOneSpectrum (𝓞 E)) : Subgrou
     w.under (𝓞 (maximalRealSubfield E)) ≠ w₀.under (𝓞 (maximalRealSubfield E)) ∧
       Valued.v (u : w.adicCompletion E) = 1 ∧ x = localIdele E w u}
 
+/- English proof (translation)
+Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨w, u, -, hu, rfl⟩ v`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[Neutral.B1.localIdele_snd_self]`.
+
+Conclude with `hu`. Rewrite using `[((Neutral.B1.localIdele_isSupportedAt E w u).2 v hv)]`. Conclude with `map_one _`.
+-/
 private theorem offUnits_le_unitIdl (w₀ : HeightOneSpectrum (𝓞 E)) : offUnits w₀ ≤ GlobalTheory.Mem.Chr.unitIdl E := by
   refine (Subgroup.closure_le _).2 ?_
   rintro x ⟨w, u, -, hu, rfl⟩ v
@@ -92,6 +114,11 @@ private theorem offUnits_le_unitIdl (w₀ : HeightOneSpectrum (𝓞 E)) : offUni
     rw [Neutral.B1.localIdele_snd_self]; exact hu
   · rw [((Neutral.B1.localIdele_isSupportedAt E w u).2 v hv)]; exact map_one _
 
+/- English proof (translation)
+Establish `key : offUnits w₀ ≤ (conjQuot E w₀).ker`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨w', a, hunder, -, rfl⟩`. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker]`. Establish `hne : w' ≠ w₀` using `fun h => hunder (h ▸ rfl)`.
+
+Establish `h1 : Units.map (GlobalTheory.IdeleNormChar.finEval w₀) (localIdele E w' a) = 1` using `Units.ext ((Neutral.B1.localIdele_isSupportedAt E w' a).2 w₀ hne.symm)`. Establish `h2 : Units.map (GlobalTheory.IdeleNormChar.finEval w₀) (ideleConj (maximalRealSubfield E) E (localIdele E w' a)) = 1` using `GlobalTheory.ConsEta.finEval_ideleMap_localIdele (F := maximalRealSubfield E) (alg := (conj (maximalRealSubfield E) E).toRingEquiv.toRingHom.toAlgebra) (fun x => (conj (maximalRealSubfield E) E).commutes x) w₀ w' hunder a`. Simplify using `only [conjQuot, MonoidHom.comp_apply, MonoidHom.div_apply, MonoidHom.id_apply, _root_.map_div, h1, h2, div_one]`. Conclude with `key hu`.
+-/
 private theorem conjQuot_off (w₀ : HeightOneSpectrum (𝓞 E)) {u : Ideles E} (hu : u ∈ offUnits w₀) :
     conjQuot E w₀ u = 1 := by
   have key : offUnits w₀ ≤ (conjQuot E w₀).ker := by
@@ -115,20 +142,32 @@ private noncomputable def dirAt (w : InfinitePlace E) : Ideles E →* ℂˣ :=
 
 private noncomputable def psi (e : InfinitePlace E → ℤ) : Ideles E →* ℂˣ := ∏ w, dirAt w ^ e w
 
+/- English proof (translation)
+Rewrite using `[psi, MonoidHom.finset_prod_apply]`. Both sides reduce to the same expression.
+-/
 private theorem psi_apply (e : InfinitePlace E → ℤ) (x : Ideles E) : psi e x = ∏ w, dirAt w x ^ e w := by
   rw [psi, MonoidHom.finset_prod_apply]
   rfl
 
+/- English proof (translation)
+Use `GlobalTheory.ConsEta.continuous_unitDir.comp ((Continuous.units_map _ ?_).comp (Continuous.units_map _ ?_))` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous`. Conclude with `(continuous_apply w).comp continuous_fst`.
+-/
 private theorem continuous_dirAt (w : InfinitePlace E) : Continuous (dirAt (E := E) w) := by
   refine GlobalTheory.ConsEta.continuous_unitDir.comp ((Continuous.units_map _ ?_).comp (Continuous.units_map _ ?_))
   · exact (InfinitePlace.Completion.isometry_extensionEmbedding w).continuous
   · exact (continuous_apply w).comp continuous_fst
 
+/- English proof (translation)
+Establish `: ⇑(psi e) = fun x => ∏ w, dirAt w x ^ e w` using `funext (psi_apply e)`. Rewrite using `[this]`. Conclude with `continuous_finset_prod _ fun w _ => (continuous_dirAt w).zpow _`.
+-/
 private theorem continuous_psi (e : InfinitePlace E → ℤ) : Continuous (psi e) := by
   have : ⇑(psi e) = fun x => ∏ w, dirAt w x ^ e w := funext (psi_apply e)
   rw [this]
   exact continuous_finset_prod _ fun w _ => (continuous_dirAt w).zpow _
 
+/- English proof (translation)
+Rewrite using `[psi_apply, Units.coe_prod, norm_prod]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, norm_zpow]`. Establish `: ‖((dirAt w x : ℂˣ) : ℂ)‖ = 1` using `GlobalTheory.ConsEta.norm_unitDir _`. Rewrite using `[this, one_zpow]`.
+-/
 private theorem norm_psi (e : InfinitePlace E → ℤ) (x : Ideles E) : ‖((psi e x : ℂˣ) : ℂ)‖ = 1 := by
   rw [psi_apply, Units.coe_prod, norm_prod]
   refine Finset.prod_eq_one fun w _ => ?_
@@ -136,6 +175,11 @@ private theorem norm_psi (e : InfinitePlace E → ℤ) (x : Ideles E) : ‖((psi
   have : ‖((dirAt w x : ℂˣ) : ℂ)‖ = 1 := GlobalTheory.ConsEta.norm_unitDir _
   rw [this, one_zpow]
 
+/- English proof (translation)
+Establish `key : offUnits w₀ ≤ (psi e).ker`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨w, a, -, -, rfl⟩`. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker, psi_apply]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations.
+
+Establish `: Units.map (GlobalTheory.IdeleNormChar.infEval v) (localIdele E w a) = 1` using `Units.ext rfl`. Simplify using `only [dirAt, MonoidHom.comp_apply, this, map_one, one_zpow]`. Conclude with `key hu`.
+-/
 private theorem psi_off (e : InfinitePlace E → ℤ) (w₀ : HeightOneSpectrum (𝓞 E)) {u : Ideles E}
     (hu : u ∈ offUnits w₀) : psi e u = 1 := by
   have key : offUnits w₀ ≤ (psi e).ker := by
@@ -147,6 +191,13 @@ private theorem psi_off (e : InfinitePlace E → ℤ) (w₀ : HeightOneSpectrum 
     simp only [dirAt, MonoidHom.comp_apply, this, map_one, one_zpow]
   exact key hu
 
+/- English proof (translation)
+Rewrite using `[psi_apply, infSign, MonoidHom.finset_prod_apply]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hv` using `IsTotallyReal.isReal (w.comap (algebraMap (maximalRealSubfield E) E))`. Establish `hs : dirAt w (ideleMap (maximalRealSubfield E) E b) = Units.map (Int.castRingHom ℂ).toMonoidHom (if 0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal hv ((GlobalTheory.IdeleNormChar.infComp b (w.comap (algebraMap (maximalRealSubfield E) E)) : _) : _) then 1 else -1)`. Use `GlobalTheory.EtaInfSign.unitDir_ofReal _ ?_ _ ?_` and prove the remaining obligations.
+
+Introduce `h'`. Conclude with `(GlobalTheory.IdeleNormChar.infComp b _).ne_zero ((InfinitePlace.Completion.extensionEmbeddingOfIsReal hv).injective (by rw [map_zero]; exact h'))`. Conclude with `GlobalTheory.EtaInfSign.extensionEmbedding_completionMap E w _`. Express the relevant statement in the definitionally equal form `dirAt w _ ^ e w = dirAt w _`. Rewrite using `[hs]`.
+
+Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[← map_zpow, (he w).neg_one_zpow]`.
+-/
 private theorem psi_ideleMap (e : InfinitePlace E → ℤ) (he : ∀ v, Odd (e v))
     (b : Ideles (maximalRealSubfield E)) :
     psi e (ideleMap (maximalRealSubfield E) E b) = infSign E (ideleMap (maximalRealSubfield E) E b) := by
@@ -167,6 +218,13 @@ private theorem psi_ideleMap (e : InfinitePlace E → ℤ) (he : ∀ v, Odd (e v
   · simp
   · rw [← map_zpow, (he w).neg_one_zpow]
 
+/- English proof (translation)
+Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `hu : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) (w.under (𝓞 (maximalRealSubfield E))) := by`. Distinguish the cases in `hs : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) (w.under (𝓞 (maximalRealSubfield E)))`. Conclude with `GlobalTheory.LFun.isUnram_of_isSplit h2 hs`. Use `GlobalTheory.LFun.isUnram_iff.2 fun u hu => ?_` and prove the remaining obligations.
+
+Take `rfl` from `GlobalTheory.LFun.eq_of_not_isSplit hs hu rfl`. Use `u.isPrime` as an intermediate fact. Conclude with `Algebra.isUnramifiedAt_iff_of_isDedekindDomain.1 hw`. Introduce `x hx`. Establish `hn` using `GlobalTheory.LFun.mem_normGroup_of_isUnram h2 hu hx`.
+
+Express the relevant statement in the definitionally equal form `Units.map _ (GlobalTheory.IdeleNormChar.normSign E (localIdele _ _ x)) = 1`. Rewrite using `[GlobalTheory.LFun.normSign_localIdele, GlobalTheory.QuadSymbol.eta_eq_one_iff.2 hn, map_one]`.
+-/
 private theorem quadChar_unr (w : HeightOneSpectrum (𝓞 E))
     (hw : Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) :
     (GlobalTheory.GalOfCusp.quadChar E).UnrAt (w.under (𝓞 (maximalRealSubfield E))) := by
@@ -183,6 +241,11 @@ private theorem quadChar_unr (w : HeightOneSpectrum (𝓞 E))
   change Units.map _ (GlobalTheory.IdeleNormChar.normSign E (localIdele _ _ x)) = 1
   rw [GlobalTheory.LFun.normSign_localIdele, GlobalTheory.QuadSymbol.eta_eq_one_iff.2 hn, map_one]
 
+/- English proof (translation)
+Establish `hs : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 (maximalRealSubfield E)) = v` using `fun v => by`. Use `v.isPrime` as an intermediate fact. Take `⟨⟨P, hP, hP'⟩⟩` from `(inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 E)))`. Conclude with `⟨⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, HeightOneSpectrum.ext hP'.over.symm⟩`. Use `GlobalTheory.Mem.LocTriv.eq_one_of_local (maximalRealSubfield E) (GlobalTheory.GalOfCusp.quadChar E).1 (GlobalTheory.GalOfCusp.quadChar E).2.1 (GlobalTheory.Mem.Chr.finPartI (maximalRealSubfield E) b) (GlobalTheory.Mem.Chr.finPartI_mem_unitIdl.2 hb) (fun w => by rw [GlobalTheory. …` and prove the remaining obligations.
+
+Introduce `v x hx`. Rewrite `hx` using `[GlobalTheory.Mem.Chr.finPartI_snd]`. Establish `hxu : Valued.v (x : v.adicCompletion (maximalRealSubfield E)) = 1` using `by rw [hx]; exact hb v`. Take `⟨w, rfl⟩` from `hs v`. Conclude with `quadChar_unr w (hU w) x hxu`.
+-/
 private theorem quadChar_finPart (hU : GlobalTheory.BCT.Unr E) (b : Ideles (maximalRealSubfield E))
     (hb : b ∈ GlobalTheory.Mem.Chr.unitIdl (maximalRealSubfield E)) :
     (GlobalTheory.GalOfCusp.quadChar E).1 (GlobalTheory.Mem.Chr.finPartI (maximalRealSubfield E) b) = 1 := by
@@ -200,6 +263,11 @@ private theorem quadChar_finPart (hU : GlobalTheory.BCT.Unr E) (b : Ideles (maxi
   obtain ⟨w, rfl⟩ := hs v
   exact quadChar_unr w (hU w) x hxu
 
+/- English proof (translation)
+Rewrite using `[infSign, MonoidHom.finset_prod_apply]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Establish `: Units.map (GlobalTheory.IdeleNormChar.infEval w) (ideleMap (maximalRealSubfield E) E (GlobalTheory.Mem.Chr.finPartI _ b)) = 1`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap (maximalRealSubfield E) E 1) w = 1`.
+
+Rewrite using `[map_one]`. Both sides reduce to the same expression. Simplify using `only [MonoidHom.comp_apply, this, map_one]`.
+-/
 private theorem infSign_finPart (b : Ideles (maximalRealSubfield E)) :
     infSign E (ideleMap (maximalRealSubfield E) E (GlobalTheory.Mem.Chr.finPartI _ b)) = 1 := by
   rw [infSign, MonoidHom.finset_prod_apply]
@@ -211,6 +279,13 @@ private theorem infSign_finPart (b : Ideles (maximalRealSubfield E)) :
     rw [map_one]; rfl
   simp only [MonoidHom.comp_apply, this, map_one]
 
+/- English proof (translation)
+Use `set f := GlobalTheory.Mem.Chr.finPartI (maximalRealSubfield E) b`. Establish `h1 : ∀ v, ((b * f⁻¹ : Ideles _) : AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)).2 v = 1`. Introduce `v`. Establish `e : f⁻¹ = GlobalTheory.Mem.Chr.finPartI (maximalRealSubfield E) b⁻¹` using `(map_inv _ b).symm`. Rewrite using `[e]`.
+
+Conclude with `congrArg (fun z : AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) => z.2 v) b.mul_inv`. Establish `h2` using `GlobalTheory.T.quadraticHeckeCharCM_eq_ideleInfiniteSign_finiteTrivial E _ h1`. Establish `h3` using `quadChar_finPart hU b hb`. Establish `e1 : (GlobalTheory.GalOfCusp.quadChar E).1 b = (GlobalTheory.GalOfCusp.quadChar E).1 (b * f⁻¹) * (GlobalTheory.GalOfCusp.quadChar E).1 f`. Rewrite using `[← map_mul, inv_mul_cancel_right]`.
+
+Establish `e2 : infSign E (ideleMap (maximalRealSubfield E) E b) = infSign E (ideleMap (maximalRealSubfield E) E (b * f⁻¹)) * infSign E (ideleMap (maximalRealSubfield E) E f)`. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel_right]`. Rewrite using `[e1, e2, h2, h3, infSign_finPart, mul_one]`.
+-/
 private theorem eta_eq_infSign (hU : GlobalTheory.BCT.Unr E) (b : Ideles (maximalRealSubfield E))
     (hb : b ∈ GlobalTheory.Mem.Chr.unitIdl (maximalRealSubfield E)) :
     (GlobalTheory.GalOfCusp.quadChar E).1 b = infSign E (ideleMap (maximalRealSubfield E) E b) := by
@@ -235,6 +310,9 @@ private noncomputable def opn (w₀ : HeightOneSpectrum (𝓞 E)) (V : Subgroup 
   GlobalTheory.Mem.Chr.unitIdl E ⊓ (GlobalTheory.Mem.Chr.unitIdl E).comap (ideleConj (maximalRealSubfield E) E) ⊓
     V.comap (conjQuot E w₀)
 
+/- English proof (translation)
+Establish `hC : Continuous (ideleConj (maximalRealSubfield E) E)` using `@GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_ideleMap E E _ _ _ _ (conj (maximalRealSubfield E) E).toRingEquiv.toRingHom.toAlgebra`. Conclude with `(GlobalTheory.Mem.UnitOpen.isOpen_unitIdl.inter (GlobalTheory.Mem.UnitOpen.isOpen_unitIdl.preimage hC)).inter (hV.preimage (GlobalTheory.ConsEta.continuous_conjQuot w₀))`.
+-/
 private theorem isOpen_opn (w₀ : HeightOneSpectrum (𝓞 E)) (V : Subgroup (w₀.adicCompletion E)ˣ)
     (hV : IsOpen (V : Set (w₀.adicCompletion E)ˣ)) : IsOpen (opn w₀ V : Set (Ideles E)) := by
   have hC : Continuous (ideleConj (maximalRealSubfield E) E) :=
@@ -242,6 +320,27 @@ private theorem isOpen_opn (w₀ : HeightOneSpectrum (𝓞 E)) (V : Subgroup (w�
   exact (GlobalTheory.Mem.UnitOpen.isOpen_unitIdl.inter (GlobalTheory.Mem.UnitOpen.isOpen_unitIdl.preimage hC)).inter
     (hV.preimage (GlobalTheory.ConsEta.continuous_conjQuot w₀))
 
+/- English proof (translation)
+Take `⟨⟨hx1, hx2⟩, hx3⟩` from `hx`. Establish `hu1` using `offUnits_le_unitIdl w₀ hu`. Establish `hCu` using `GlobalTheory.T.cmExtensionIdeleConj_mem_finiteUnitIdeles E u hu1`. Use `set C := ideleConj (maximalRealSubfield E) E with hCdef`. Use `set I := ideleMap (maximalRealSubfield E) E b with hI`.
+
+Use `set c : Eˣ →* Eˣ := Units.map (conj (maximalRealSubfield E) E).toRingEquiv.toRingHom.toMonoidHom with hc`. Establish `hCx : C (diagUnits E k * I * u) = diagUnits E (c k) * I * C u`. Rewrite using `[map_mul, map_mul, hI, GlobalTheory.T.cmExtensionIdeleConj_ideleMap_maxRealSubfield]`. Use `congr 2`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleConj_principalIdele (maximalRealSubfield E) E k`.
+
+Use `set x := diagUnits E k * I * u with hxdef`. Use `set t : Eˣ := k / c k with ht`. Establish `hdt : diagUnits E t = (x / C x) * (u / C u)⁻¹`. Rewrite using `[hCx, hxdef, ht, _root_.map_div]`. Conclude with `GlobalTheory.ConsEta.commGroup_div_eq_mul_div_mul_inv_div _ _ _ _ _`.
+
+Establish `htu : diagUnits E t ∈ GlobalTheory.Mem.Chr.unitIdl E`. Rewrite using `[hdt]`. Conclude with `mul_mem (div_mem hx1 hx2) (inv_mem (div_mem hu1 hCu))`. Establish `hnorm : ∀ φ : E →+* ℂ, ‖φ (t : E)‖ = 1`. Introduce `φ`.
+
+Establish `h0 : φ (k : E) ≠ 0` using `by simp`. Establish `e : φ ((c k : Eˣ) : E) = starRingEnd ℂ (φ k)` using `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.embedding_conj (maximalRealSubfield E) E φ k`. Rewrite using `[ht, Units.val_div_eq_div_val, map_div₀, e, norm_div, Complex.norm_conj, div_self (norm_ne_zero_iff.2 h0)]`. Establish `htor` using `GlobalTheory.T.exists_pow_eq_one_of_principal_unitIdele_norm_one E t htu hnorm`. Establish `hcqu` using `conjQuot_off w₀ hu`.
+
+Establish `hmem : Units.map (algebraMap E (w₀.adicCompletion E)).toMonoidHom t ∈ V`. Establish `e1 : Units.map (algebraMap E (w₀.adicCompletion E)).toMonoidHom t = Units.map (GlobalTheory.IdeleNormChar.finEval w₀) (diagUnits E t)` using `Units.ext rfl`. Establish `e2 : conjQuot E w₀ x = Units.map (GlobalTheory.IdeleNormChar.finEval w₀) (x / C x)` using `rfl`. Establish `e3 : conjQuot E w₀ u = Units.map (GlobalTheory.IdeleNormChar.finEval w₀) (u / C u)` using `rfl`. Rewrite using `[e1, hdt, map_mul, map_inv, ← e2, ← e3, hcqu, inv_one, mul_one]`.
+
+Conclude with `hx3`. Establish `ht1` using `hV t htor hmem`. Establish `hck : c k = k` using `(div_eq_one.1 ht1).symm`. Establish `hkF : (k : E) ∈ maximalRealSubfield E`. Use `(IsCMField.complexConj_eq_self_iff E _).1 ?_` and prove the remaining obligations.
+
+Conclude with `congrArg Units.val hck`. Use `set k' : (maximalRealSubfield E)ˣ := Units.mk0 ⟨(k : E), hkF⟩ (fun h => k.ne_zero (congrArg Subtype.val h)) with hk'`. Establish `hdk : diagUnits E k = ideleMap (maximalRealSubfield E) E (diagUnits (maximalRealSubfield E) k')`. Use `(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap_principalIdele (maximalRealSubfield E) E k').trans ?_ |>.symm` and prove the remaining obligations. Conclude with `congrArg (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.principalIdele E) (Units.ext rfl)`.
+
+Use `set b' := diagUnits (maximalRealSubfield E) k' * b with hb'`. Establish `hxb : x = ideleMap (maximalRealSubfield E) E b' * u`. Rewrite using `[hxdef, hdk, hb', map_mul]`. Establish `hηb : (GlobalTheory.GalOfCusp.quadChar E).1 b = (GlobalTheory.GalOfCusp.quadChar E).1 b'`. Rewrite using `[hb', map_mul, (GlobalTheory.GalOfCusp.quadChar E).2.2 k', one_mul]`.
+
+Establish `hb'E : ideleMap (maximalRealSubfield E) E b' ∈ GlobalTheory.Mem.Chr.unitIdl E`. Establish `: ideleMap (maximalRealSubfield E) E b' = x * u⁻¹` using `by rw [hxb, mul_inv_cancel_right]`. Rewrite using `[this]`. Conclude with `mul_mem hx1 (inv_mem hu1)`. Rewrite using `[hηb, eta_eq_infSign hU b' (GlobalTheory.T.mem_finiteUnitIdeles_of_map_maxRealSubfield E b' hb'E), hxb, (psi e).map_mul _ u, psi_off e w₀ hu, mul_one, psi_ideleMap e he]`.
+-/
 private theorem consistent (hU : GlobalTheory.BCT.Unr E) (w₀ : HeightOneSpectrum (𝓞 E)) (V : Subgroup (w₀.adicCompletion E)ˣ)
     (hV : ∀ t : Eˣ, (∃ n : ℕ, 0 < n ∧ t ^ n = 1) →
       Units.map (algebraMap E (w₀.adicCompletion E)).toMonoidHom t ∈ V → t = 1)
@@ -299,11 +398,17 @@ private theorem consistent (hU : GlobalTheory.BCT.Unr E) (w₀ : HeightOneSpectr
   rw [hηb, eta_eq_infSign hU b' (GlobalTheory.T.mem_finiteUnitIdeles_of_map_maxRealSubfield E b' hb'E), hxb, (psi e).map_mul _ u, psi_off e w₀ hu, mul_one,
     psi_ideleMap e he]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `‖((Units.map (Int.castRingHom ℂ).toMonoidHom (GlobalTheory.IdeleNormChar.normSign E b) : ℂˣ) : ℂ)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (GlobalTheory.IdeleNormChar.normSign E b) with h | h <;> rw [h] <;> simp`.
+-/
 private theorem quadChar_norm (b : Ideles (maximalRealSubfield E)) :
     ‖(((GlobalTheory.GalOfCusp.quadChar E).1 b : ℂˣ) : ℂ)‖ = 1 := by
   change ‖((Units.map (Int.castRingHom ℂ).toMonoidHom (GlobalTheory.IdeleNormChar.normSign E b) : ℂˣ) : ℂ)‖ = 1
   rcases Int.units_eq_one_or (GlobalTheory.IdeleNormChar.normSign E b) with h | h <;> rw [h] <;> simp
 
+/- English proof (translation)
+Establish `h : pFin E (infId E z).val = (1 : Af E)`. Express the relevant statement in the definitionally equal form `(1 - 0 + 0 : Af E) = 1`. Simplify using the standard rewrite rules. Conclude with `congrArg (fun a : FiniteAdeleRing (𝓞 E) E => a w) h`.
+-/
 private theorem infId_snd (z : (Cinf E)ˣ) (w : HeightOneSpectrum (𝓞 E)) :
     ((infId E z : Ideles E) : AdeleRing (𝓞 E) E).2 w = 1 := by
   have h : pFin E (infId E z).val = (1 : Af E) := by
@@ -311,6 +416,9 @@ private theorem infId_snd (z : (Cinf E)ˣ) (w : HeightOneSpectrum (𝓞 E)) :
     simp
   exact congrArg (fun a : FiniteAdeleRing (𝓞 E) E => a w) h
 
+/- English proof (translation)
+Establish `h1 : pInf E (infId E z).val = z.val`. Express the relevant statement in the definitionally equal form `(infEq E).symm (1 - infEq E 1 + infEq E z.val) = _`. Simplify using the standard rewrite rules. Conclude with `congrFun h1 v`.
+-/
 private theorem ext_infId (z : (Cinf E)ˣ) (v : InfinitePlace E) :
     InfinitePlace.Completion.extensionEmbedding v (((infId E z : Ideles E) : AdeleRing (𝓞 E) E).1 v) = z.1 v := by
   have h1 : pInf E (infId E z).val = z.val := by
@@ -318,6 +426,15 @@ private theorem ext_infId (z : (Cinf E)ˣ) (v : InfinitePlace E) :
     simp
   exact congrFun h1 v
 
+/- English proof (translation)
+Establish `hsnd : ((infId E z : Ideles E) : AdeleRing (𝓞 E) E).2 = 1` using `FiniteAdeleRing.ext _ (infId_snd z)`. Establish `hC : ∀ w, ((ideleConj (maximalRealSubfield E) E (infId E z) : Ideles E) : AdeleRing (𝓞 E) E).2 w = 1` using `fun w => by`. Establish `e : ((ideleConj (maximalRealSubfield E) E (infId E z) : Ideles E) : AdeleRing (𝓞 E) E).2 = @GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap E E _ _ _ _ (conj (maximalRealSubfield E) E).toRingEquiv.toRingHom.toAlgebra ((infId E z : Ideles E) : Ade …` using `rfl`. Rewrite using `[e, hsnd, map_one]`. Both sides reduce to the same expression.
+
+Establish `h1 : Units.map (GlobalTheory.IdeleNormChar.finEval w₀) (infId E z) = 1` using `Units.ext (infId_snd z w₀)`. Establish `h2 : Units.map (GlobalTheory.IdeleNormChar.finEval w₀) (ideleConj (maximalRealSubfield E) E (infId E z)) = 1` using `Units.ext (hC w₀)`. Establish `h3 : conjQuot E w₀ (infId E z) = 1`. Simplify using `only [conjQuot, MonoidHom.comp_apply, MonoidHom.div_apply, MonoidHom.id_apply, _root_.map_div, h1, h2, div_one]`. Use `⟨⟨fun w => ?_, fun w => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show Valued.v (((infId E z : Ideles E) : AdeleRing (𝓞 E) E).2 w) = 1`. Rewrite using `[infId_snd, map_one]`. Use `show Valued.v (((ideleConj (maximalRealSubfield E) E (infId E z) : Ideles E) : AdeleRing (𝓞 E) E).2 w) = 1`. Rewrite using `[hC, map_one]`. Use `show conjQuot E w₀ (infId E z) ∈ V`.
+
+Rewrite using `[h3]`. Conclude with `one_mem _`.
+-/
 private theorem infId_mem (w₀ : HeightOneSpectrum (𝓞 E)) (V : Subgroup (w₀.adicCompletion E)ˣ) (z : (Cinf E)ˣ) :
     infId E z ∈ opn w₀ V := by
   have hsnd : ((infId E z : Ideles E) : AdeleRing (𝓞 E) E).2 = 1 := FiniteAdeleRing.ext _ (infId_snd z)
@@ -341,6 +458,11 @@ private theorem infId_mem (w₀ : HeightOneSpectrum (𝓞 E)) (V : Subgroup (w�
     rw [h3]
     exact one_mem _
 
+/- English proof (translation)
+Rewrite using `[psi_apply, Units.coe_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(InfinitePlace.Completion.extensionEmbedding v (((infId E z : Ideles E) : AdeleRing (𝓞 E) E).1 v)) / (‖InfinitePlace.Completion.extensionEmbedding v (((infId E z : Ideles E) : AdeleRing (𝓞 E) E).1 v)‖ : ℂ) = _`.
+
+Rewrite using `[ext_infId]`.
+-/
 private theorem psi_infId (e : InfinitePlace E → ℤ) (z : (Cinf E)ˣ) :
     ((psi e (infId E z) : ℂˣ) : ℂ) = ∏ v, (z.1 v / (‖z.1 v‖ : ℂ)) ^ e v := by
   rw [psi_apply, Units.coe_prod]
@@ -354,6 +476,19 @@ private theorem psi_infId (e : InfinitePlace E → ℤ) (z : (Cinf E)ˣ) :
 end UpperTheory.ConvolutionTheory.D.MultiplierQuotient
 
 open UpperTheory.ConvolutionTheory.D.MultiplierQuotient in
+/- English proof (translation)
+Introduce `E _ _ _ hU S hS e he`. Take `⟨w₀, hw₀, hSw⟩` from `exists_split_avoid S hS`. Take `⟨V, hVo, hV⟩` from `GlobalTheory.T.exists_isOpen_subgroup_adicUnits_no_rootsOfUnity E w₀`. Set `α : Eˣ × (Neutral.B1.Ideles (maximalRealSubfield E) × offUnits w₀) →* Neutral.B1.Ideles E` to `(Neutral.B1.diagUnits E).coprod ((GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E).coprod (offUnits w₀).subtype)`. Set `a : Eˣ × (Neutral.B1.Ideles (maximalRealSubfield E) × offUnits w₀) →* ℂˣ` to `(GlobalTheory.GalOfCusp.quadChar E).1.comp ((MonoidHom.fst _ _).comp (MonoidHom.snd _ _))`.
+
+Establish `hα : ∀ y, α y = Neutral.B1.diagUnits E y.1 * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E y.2.1 * (y.2.2 : Neutral.B1.Ideles E)` using `fun y => by`. Simplify using `only [α, MonoidHom.coprod_apply, Subgroup.coe_subtype, mul_assoc]`. Take `⟨χ, hχc, hχu, hχU, hχα⟩` from `GlobalTheory.exists_unitary_char_of_open_subgroup_and_hom (Neutral.B1.Ideles E) _ (opn w₀ V) (isOpen_opn w₀ V hVo) α a (psi e) (continuous_psi e) (norm_psi e) (fun y => quadChar_norm y.2.1) (fun y hy => by`. Rewrite `hy`, the goal using `[hα]`. Conclude with `consistent hU w₀ V hV e he y.1 y.2.1 y.2.2 y.2.2.2 hy)`.
+
+Establish `hk : ∀ k : Eˣ, χ (Neutral.B1.diagUnits E k) = 1` using `fun k => by`. Establish `h` using `hχα (k, 1, 1)`. Rewrite `h` using `[hα]`. Simplify `h` using `[a]`. Set `μ : HChar E` to `⟨χ, hχc, hk⟩`.
+
+Establish `hres : ∀ x, μ.1 (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E x) = (GlobalTheory.GalOfCusp.quadChar E).1 x` using `fun x => by`. Establish `h` using `hχα (1, x, 1)`. Rewrite `h` using `[hα]`. Simplify `h` using `[a]`. Establish `hoff : ∀ (w : HeightOneSpectrum (𝓞 E)) (u : (w.adicCompletion E)ˣ), w.under (𝓞 (maximalRealSubfield E)) ≠ w₀.under (𝓞 (maximalRealSubfield E)) → Valued.v (u : w.adicCompletion E) = 1 → μ.1 (Neutral.B1.localIdele E w u) = 1` using `fun w u hw hu => by`.
+
+Establish `h` using `hχα (1, 1, ⟨_, Subgroup.subset_closure ⟨w, u, hw, hu, rfl⟩⟩)`. Rewrite `h` using `[hα]`. Simplify `h` using `[a]`. Establish `hns : ∀ (w : HeightOneSpectrum (𝓞 E)) (u : (w.adicCompletion E)ˣ), ¬ IsSplitAt w → Valued.v (u : w.adicCompletion E) = 1 → μ.1 (Neutral.B1.localIdele E w u) = 1` using `fun w u hw hu => hoff w u (fun h => hw (GlobalTheory.ConsEta.isSplitAt_of_under_eq hw₀ h)) hu`. Use `⟨μ, ⟨hχu, hres, GlobalTheory.T.heckeCharCM_eta_local_eq_neg_one_pow_val_inert E hU μ hres hns, he, fun z => ?_⟩, fun w hw x hx => hoff w x (hSw w hw) hx⟩` and prove the remaining obligations.
+
+Establish `h` using `hχU _ (infId_mem w₀ V z)`. Express the relevant statement in the definitionally equal form `((χ (infId E z) : ℂˣ) : ℂ) = _`. Rewrite using `[h, psi_infId]`.
+-/
 theorem UpperTheory.ConvolutionTheory.D.muEx :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E],
     (∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) →

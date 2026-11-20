@@ -14,6 +14,11 @@ section Lat
 
 variable {E : Type} [Field E] [NumberField E] {r : ℕ}
 
+/- English proof (translation)
+Use `(traceForm_nondegenerate ℚ E).1 z fun n => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, ← (integralBasis E).sum_repr n, Finset.mul_sum, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, integralBasis_apply, mul_comm z]`. Use `h (RingOfIntegers.basis E i)` as an intermediate fact.
+
+Rewrite `this` using `[RingOfIntegers.coe_eq_algebraMap]`. Rewrite using `[this, smul_zero]`.
+-/
 theorem eq_zero_of_trace_int {z : E} (h : ∀ c : 𝓞 E, Algebra.trace ℚ E ((c : E) * z) = 0) : z = 0 := by
   refine (traceForm_nondegenerate ℚ E).1 z fun n => ?_
   rw [Algebra.traceForm_apply, ← (integralBasis E).sum_repr n, Finset.mul_sum, map_sum]
@@ -23,6 +28,9 @@ theorem eq_zero_of_trace_int {z : E} (h : ∀ c : 𝓞 E, Algebra.trace ℚ E ((
   rw [RingOfIntegers.coe_eq_algebraMap] at this
   rw [this, smul_zero]
 
+/- English proof (translation)
+Simplify using `[Algebra.smul_def]`.
+-/
 theorem smul_coord (x : 𝓞 E) (w : Fin r → E) (a : Fin r) : (x • w) a = (x : E) * w a := by
   simp [Algebra.smul_def]
 
@@ -32,15 +40,24 @@ section Herm
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Simplify using `only [herm, smul_coord, Finset.mul_sum, mul_assoc]`.
+-/
 theorem herm_smul_left (G : Matrix (Fin r) (Fin r) E) (c : 𝓞 E) (u w : Fin r → E) :
     herm G (c • u) w = (c : E) * herm G u w := by
   simp only [herm, smul_coord, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [herm, smul_coord, Finset.mul_sum, cc, map_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations.
+-/
 theorem herm_smul_right (G : Matrix (Fin r) (Fin r) E) (c : 𝓞 E) (u w : Fin r → E) :
     herm G u (c • w) = cc (c : E) * herm G u w := by
   simp only [herm, smul_coord, Finset.mul_sum, cc, map_mul]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+The claim follows from `Matrix.mulVec_smul γ c u`.
+-/
 theorem herm_mulVec_smul (G : Matrix (Fin r) (Fin r) E) (γ : Matrix (Fin r) (Fin r) E) (c : 𝓞 E) (u : Fin r → E) :
     γ *ᵥ (c • u) = c • (γ *ᵥ u) := Matrix.mulVec_smul γ c u
 

@@ -10,12 +10,44 @@ open GroundTheory.Automorphic.CuspidalSpectrum GroundTheory.Automorphic.ArchWhit
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 open scoped ComplexConjugate Classical InnerProductSpace
 
+/- English proof (translation)
+The claim follows from `((C.Φ n).symm.toHomeomorph.measurableEmbedding).integral_map F`.
+-/
 private theorem int_map {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] (C : Co K ι) (n : ℕ)
     [MeasurableSpace (unitaryGroup (Fin n) ℂ)] [BorelSpace (unitaryGroup (Fin n) ℂ)]
     (ν : Measure (ι → unitaryGroup (Fin n) ℂ)) (F : archCompact K n → ℂ) :
     ∫ k, F k ∂(Measure.map (C.Φ n).symm ν) = ∫ y, F ((C.Φ n).symm y) ∂ν :=
   ((C.Φ n).symm.toHomeomorph.measurableEmbedding).integral_map F
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ C μ₂ _ τ₁ τ₂ _ μ e n q n' q' x h4 hE`. Take `⟨hκ₂, hκ₄, -, -, -, -, -, -, -, hlv, hcomm, -⟩` from `coLaws K ι C`. Establish `hb` using `blkLaws (K := K)`. Establish `hmul` using `hb.2.1`. Establish `he : ∀ k, C.e e ((C.Φ (2 + 2)).symm k) = ∏ i, e i (k i)`.
+
+Introduce `k`. Simplify using `only [Co.e, ContinuousMulEquiv.apply_symm_apply]`. Establish `hp : ∀ (a : ι → ℕ) (b : ι → ℤ) k, C.p a b ((C.Φ 2).symm k) = ∏ i, T (a i) (b i) (k i)`. Introduce `a b k`. Simplify using `only [Co.p, ContinuousMulEquiv.apply_symm_apply]`.
+
+Establish `ha : ∀ a b : ι → U4, arc1 ((C.Φ (2 + 2)).symm (a * b)) = arc1 ((C.Φ (2 + 2)).symm a) * arc1 ((C.Φ (2 + 2)).symm b)`. Introduce `a b`. Simplify using `[arc1, map_mul]`. Establish `h1 : (arc1 ((C.Φ 2).symm (1 : ι → U2)) : G1 K 2) = 1` using `by simp [arc1, map_one]`. Use `⟨⟨hκ₄ μ h4, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hE.idem.cont.comp (C.Φ (2 + 2)).continuous`. Introduce `k`. Use `hE.idem.star (C.Φ (2 + 2) k)` as an intermediate fact. Simplify using `only [Co.e, map_inv]`. Conclude with `this`.
+
+Introduce `k`. Use `hE.idem.idem (C.Φ (2 + 2) k)` as an intermediate fact. Rewrite using `[Co.κ₄, int_map]`. Simplify using `only [Co.e, map_mul, map_inv, ContinuousMulEquiv.apply_symm_apply]`. Conclude with `this`.
+
+Introduce `f hf hfix h`. Establish `hc : ∀ L : G1 K (2 + 2), Continuous fun k : ι → U4 => f (L * fin1 h * arc1 ((C.Φ (2 + 2)).symm k))`. Introduce `L`. Use `hf.cont.comp (continuous_const.mul ?_)` and prove the remaining obligations. Conclude with `continuous_archP.comp (continuous_subtype_val.comp (C.Φ (2 + 2)).symm.continuous)`.
+
+Establish `hr : ∀ L : G1 K (2 + 2), RFix (Measure.pi fun _ : ι => μ) (fun k => ∏ i, e i (k i)) fun k : ι → U4 => f (L * fin1 h * arc1 ((C.Φ (2 + 2)).symm k))`. Introduce `L g`. Use `hfix (L * fin1 h * arc1 ((C.Φ (2 + 2)).symm g))` as an intermediate fact. Rewrite `this` using `[Co.κ₄, int_map]`. Simplify using `only [he] at this`.
+
+Simplify using `only [ha, ← mul_assoc]`. Conclude with `this`. Use `⟨fun m₂ g => ?_, fun m₁ g => ?_⟩` and prove the remaining obligations. Use `(hE.fix _ (hc (lv g m₂ 0)) (hr (lv g m₂ 0)) 1).1` as an intermediate fact. Simplify using `only [one_mul] at this`.
+
+Express the relevant statement in the definitionally equal form `∫ k, C.p n q k * f (lv (g * arc1 k) m₂ 0 * arc1 ((C.Φ (2 + 2)).symm x) * fin1 h) ∂C.κ₂ = _`. Rewrite using `[Co.κ₂, int_map]`. Simplify using `only [hp]`. Establish `e1 : ∀ m : ι → U2, lv (g * arc1 ((C.Φ 2).symm m)) m₂ 0 * arc1 ((C.Φ (2 + 2)).symm x) * fin1 h = lv g m₂ 0 * fin1 h * arc1 ((C.Φ (2 + 2)).symm ((fun i => bd (m i) 1) * x))`. Introduce `m`.
+
+Establish `hl` using `hlv m 1`. Rewrite `hl` using `[h1]`. Establish `h2 : lv (g * arc1 ((C.Φ 2).symm m)) m₂ 0 = lv g m₂ 0 * arc1 ((C.Φ (2 + 2)).symm fun i => bd (m i) 1)`. Use `hmul g m₂ (arc1 ((C.Φ 2).symm m)) 1 0 0` as an intermediate fact. Rewrite `this` using `[hl, mul_one, add_zero]`.
+
+Conclude with `this.symm`. Rewrite using `[h2, ha, mul_assoc (lv g m₂ 0), mul_assoc (lv g m₂ 0), mul_assoc (lv g m₂ 0), ← ha, (hcomm _ _ h).eq]`. Simplify using `only [e1]`. Rewrite using `[this, mul_assoc (lv g m₂ 0), mul_assoc (lv g m₂ 0), (hcomm _ _ h).eq]`. Use `(hE.fix _ (hc (lv m₁ g 0)) (hr (lv m₁ g 0)) 1).2` as an intermediate fact.
+
+Simplify using `only [one_mul] at this`. Express the relevant statement in the definitionally equal form `∫ k, C.p n' q' k * f (lv m₁ (g * arc1 k) 0 * arc1 ((C.Φ (2 + 2)).symm x) * fin1 h) ∂C.κ₂ = _`. Rewrite using `[Co.κ₂, int_map]`. Simplify using `only [hp]`. Establish `e1 : ∀ m : ι → U2, lv m₁ (g * arc1 ((C.Φ 2).symm m)) 0 * arc1 ((C.Φ (2 + 2)).symm x) * fin1 h = lv m₁ g 0 * fin1 h * arc1 ((C.Φ (2 + 2)).symm ((fun i => bd 1 (m i)) * x))`.
+
+Introduce `m`. Establish `hl` using `hlv 1 m`. Rewrite `hl` using `[h1]`. Establish `h2 : lv m₁ (g * arc1 ((C.Φ 2).symm m)) 0 = lv m₁ g 0 * arc1 ((C.Φ (2 + 2)).symm fun i => bd 1 (m i))`. Use `hmul m₁ g 1 (arc1 ((C.Φ 2).symm m)) 0 0` as an intermediate fact.
+
+Rewrite `this` using `[hl, mul_one, add_zero]`. Conclude with `this.symm`. Rewrite using `[h2, ha, mul_assoc (lv m₁ g 0), mul_assoc (lv m₁ g 0), mul_assoc (lv m₁ g 0), ← ha, (hcomm _ _ h).eq]`. Simplify using `only [e1]`. Rewrite using `[this, mul_assoc (lv m₁ g 0), mul_assoc (lv m₁ g 0), (hcomm _ _ h).eq]`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.lineVal :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (ι : Type) [Fintype ι] (C : Co K ι) (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)), Pair μ₂ τ₁ τ₂ →
       ∀ (μ : Measure U4) (e : ι → U4 → ℂ) n q n' q' (x : ι → U4), Haar4 μ → ExtP μ e n q n' q' x →

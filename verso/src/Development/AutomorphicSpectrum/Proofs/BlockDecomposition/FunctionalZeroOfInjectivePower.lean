@@ -7,6 +7,27 @@ open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.Spherical
 
 namespace GlobalTheory.CompanionTheory.SatPow
 
+/- English proof (translation)
+Introduce `V _ _ _ A hA l v j₀ h`. Set `U : Submodule ℂ V` to `Submodule.span ℂ (Set.range fun i : ℕ => (A ^ (i + j₀)) v)`. Establish `hUl : U ≤ LinearMap.ker l`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `LinearMap.mem_ker.mpr (h (i + j₀) (Nat.le_add_left j₀ i))`. Establish `hle : U ≤ U.comap A`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `e : A ((A ^ (i + j₀)) v) = (A ^ ((i + 1) + j₀)) v`.
+
+Rewrite using `[show i + 1 + j₀ = (i + j₀) + 1 by omega, pow_succ', Module.End.mul_apply]`. Use `show A ((A ^ (i + j₀)) v) ∈ U`. Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨i + 1, rfl⟩`. Establish `hAU : ∀ u ∈ U, A u ∈ U` using `fun u hu => hle hu`.
+
+Set `B : U →ₗ[ℂ] U` to `A.restrict hAU`. Establish `hBi : Function.Injective B`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hA` to reduce the goal to its premises.
+
+Use `congrArg Subtype.val hxy` as an intermediate fact. Simplify `this` using `[B, LinearMap.restrict_apply]`. Establish `hBs : Function.Surjective B` using `LinearMap.injective_iff_surjective.mp hBi`. Establish `pull : ∀ x : V, A x ∈ U → x ∈ U`. Introduce `x hx`.
+
+Take `⟨u, hu⟩` from `hBs ⟨A x, hx⟩`. Establish `hux : A u = A x` using `congrArg Subtype.val hu`. Rewrite using `[← hA hux]`. Conclude with `u.2`. Establish `key : ∀ k : ℕ, (A ^ (j₀ - k)) v ∈ U`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Establish `e0 : (A ^ (j₀ - 0)) v = (A ^ (0 + j₀)) v` using `by rw [Nat.sub_zero, Nat.zero_add]`. Rewrite using `[e0]`.
+
+Conclude with `Submodule.subset_span ⟨0, rfl⟩`. Consider the case `succ k ih`. Break down `Nat.eq_zero_or_pos (j₀ - k) with h0 | hpos` into its components or cases. Establish `e1 : j₀ - (k + 1) = j₀ - k` using `by omega`. Rewrite using `[e1]`.
+
+Conclude with `ih`. Establish `e : j₀ - k = (j₀ - (k + 1)) + 1` using `by omega`. Establish `e2 : (A ^ (j₀ - k)) v = A ((A ^ (j₀ - (k + 1))) v)`. Rewrite using `[e, pow_succ', Module.End.mul_apply]`. Rewrite `ih` using `[e2]`.
+
+Conclude with `pull _ ih`. Establish `hv : v ∈ U`. Establish `h1` using `key j₀`. Rewrite `h1` using `[Nat.sub_self, pow_zero, Module.End.one_apply]`. Then use the resulting hypothesis. Conclude with `LinearMap.mem_ker.mp (hUl hv)`.
+-/
 theorem functional_eq_zero_of_late_iterates :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (A : V →ₗ[ℂ] V), Function.Injective A → ∀ (l : V →ₗ[ℂ] ℂ) (v : V) (j₀ : ℕ), (∀ j ≥ j₀, l ((A ^ j) v) = 0) → l v = 0 := by
   intro V _ _ _ A hA l v j₀ h

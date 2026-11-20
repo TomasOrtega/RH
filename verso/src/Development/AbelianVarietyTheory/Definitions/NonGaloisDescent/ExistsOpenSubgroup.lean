@@ -18,6 +18,9 @@ variable {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 
 omit [IsAlgClosure E Ω] in
 
+/- English proof (translation)
+Take `⟨V, hV, rfl⟩` from `isOpen_induced_iff.mp hS`. Take `⟨K, hK, hKV⟩` from `(krullTopology_mem_nhds_one_iff E Ω V).mp (hV.mem_nhds h1)`. Conclude with `⟨K.fixingSubgroup, K.fixingSubgroup_isOpen, fun σ hσ => hKV hσ⟩`.
+-/
 theorem exists_open_subgroup {S : Set (Ine (F := E) A)} (hS : IsOpen S) (h1 : 1 ∈ S) :
     ∃ U : Subgroup (G E Ω), IsOpen (U : Set (G E Ω)) ∧ ∀ σ : Ine (F := E) A, (σ : G E Ω) ∈ U → σ ∈ S := by
   obtain ⟨V, hV, rfl⟩ := isOpen_induced_iff.mp hS
@@ -27,6 +30,11 @@ theorem exists_open_subgroup {S : Set (Ine (F := E) A)} (hS : IsOpen S) (h1 : 1 
 def IsTm (χ : Ine (F := E) A →* ℂˣ) : Prop :=
   IsOpen {σ | χ σ = 1} ∧ ∀ σ : Ine (F := E) A, (σ : G E Ω) ∈ Wild E A → χ σ = 1
 
+/- English proof (translation)
+Set `K : Subgroup (Ine (F` to `E) A) := χ.ker`. Establish `hK : IsClosed ((K.map (Ine (F` using `E) A).subtype : Subgroup (G E Ω)) : Set (G E Ω)) := (isClosed_Ine A).isClosedEmbedding_subtypeVal.isClosedMap _ (K.isClosed_of_isOpen hχ.1)`. Establish `hle : Subgroup.closure (insert γ (Wild E A : Set (G E Ω))) ≤ K.map (Ine (F` using `E) A).subtype := by`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `u (rfl | hu)`.
+
+Conclude with `⟨⟨u, hγ.1⟩, h1, rfl⟩`. Conclude with `⟨⟨u, Wild_le_Ine hu⟩, hχ.2 _ hu, rfl⟩`. Take `⟨u, hu, e⟩` from `closure_minimal (SetLike.coe_subset_coe.mpr hle) hK (hγ.2 σ.2)`. Rewrite using `[← Subtype.ext (a1 := u) (a2 := σ) e]` and apply the resulting hypothesis.
+-/
 theorem IsTm.eq_one {χ : Ine (F := E) A →* ℂˣ} (hχ : IsTm χ) {γ : G E Ω} (hγ : TameGenAt A γ)
     (h1 : χ ⟨γ, hγ.1⟩ = 1) (σ : Ine (F := E) A) : χ σ = 1 := by
   let K : Subgroup (Ine (F := E) A) := χ.ker
@@ -42,11 +50,39 @@ theorem IsTm.eq_one {χ : Ine (F := E) A →* ℂˣ} (hχ : IsTm χ) {γ : G E �
   rwa [← Subtype.ext (a1 := u) (a2 := σ) e]
 
 omit [IsAlgClosure E Ω] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subgroup.isOpen_mono (H₁ := χ.ker ⊓ χ'.ker) (H₂ := ψ.ker) (fun σ hσ => hle σ hσ.1 hσ.2) (h.1.inter h'.1), fun σ hσ => hle σ (h.2 σ hσ) (h'.2 σ hσ)⟩`.
+-/
 theorem IsTm.of_le {χ χ' ψ : Ine (F := E) A →* ℂˣ} (h : IsTm χ) (h' : IsTm χ')
     (hle : ∀ σ, χ σ = 1 → χ' σ = 1 → ψ σ = 1) : IsTm ψ :=
   ⟨Subgroup.isOpen_mono (H₁ := χ.ker ⊓ χ'.ker) (H₂ := ψ.ker) (fun σ hσ => hle σ hσ.1 hσ.2) (h.1.inter h'.1),
     fun σ hσ => hle σ (h.2 σ hσ) (h'.2 σ hσ)⟩
 
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Take `⟨ϖ, h1, h2⟩` from `SetLike.exists_of_lt (Ideal.pow_lt_self w.asIdeal w.ne_bot w.isPrime.ne_top 2 le_rfl)`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap E Ω (ϖ : E)) hm`. Establish `h0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hx` using `[zero_pow hm.ne', eq_comm, map_eq_zero, RingOfIntegers.coe_eq_zero_iff]`. Conclude with `h2 (hx ▸ zero_mem _)`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Set `` to `φ.toAlgebra`. Establish `: Algebra.IsAlgebraic E Ω` using `IsAlgClosure.isAlgebraic`.
+
+Set `ι : Ω →+* ℂ` to `(IsAlgClosed.lift (R := E) (M := ℂ) (S := Ω)).toRingHom`. Establish `hpow : ∀ u : G E Ω, (u x / x) ^ m = 1` using `fun u => by`. Rewrite using `[div_pow, ← map_pow, hx, AlgEquiv.commutes, ← hx, div_self (pow_ne_zero _ h0)]`. Establish `hfix : ∀ (σ : Ine (F` using `E) A) (ζ : Ω), ζ ^ m = 1 → (σ : G E Ω) ζ = ζ := fun σ ζ hζ => by`. Establish `hv : A.valuation ζ = 1`.
+
+Use `congrArg A.valuation hζ` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le hm.ne').mp this`. Establish `hζ0 : ζ ≠ 0` using `by rintro rfl; simp at hv`. Establish `h3 : A.valuation ((σ : G E Ω) ζ - ζ) < 1` using `σ.2.2 ζ hv.le`.
+
+Establish `h4 : (σ : G E Ω) ζ / ζ = 1` using `LabModel.eq_one_of_cong h hw hc (by rw [div_pow, ← map_pow, hζ, map_one, div_one]) (by`. Rewrite using `[show (σ : G E Ω) ζ / ζ - 1 = ((σ : G E Ω) ζ - ζ) / ζ by field_simp, map_div₀, hv, div_one]`. Conclude with `h3)`. Conclude with `(div_eq_one_iff_eq hζ0).mp h4`. Set `χ : Ine (F` to `E) A →* ℂˣ := MonoidHom.toHomUnits { toFun := fun σ => ι ((σ : G E Ω) x / x) map_one' := by simp [div_self h0] map_mul' := fun σ σ' => by`.
+
+Establish `h2` using `hfix σ _ (hpow σ')`. Establish `h3 : (σ : G E Ω) x ≠ 0` using `(_root_.map_ne_zero _).2 h0`. Rewrite using `[← map_mul, ← h2, map_div₀ (σ : G E Ω)]`. Use `congr 1`. Use `show (σ : G E Ω) ((σ' : G E Ω) x) / x = _`.
+
+Clear denominators, using `}` for the nonvanishing conditions. Establish `hχv : ∀ σ, (χ σ : ℂ) = ι ((σ : G E Ω) x / x)` using `fun _ => rfl`. Establish `hker : ∀ (σ : Ine (F` using `E) A) (n : ℕ), χ σ ^ n = 1 ↔ (σ : G E Ω) (x ^ n) = x ^ n := fun σ n => by`. Rewrite using `[Units.ext_iff, Units.val_pow_eq_pow_val, hχv, Units.val_one, ← map_pow, map_eq_one_iff ι ι.injective, div_pow, div_eq_one_iff_eq (pow_ne_zero _ h0), map_pow]`. Establish `hχ : IsTm χ`.
+
+Use `⟨?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `(isOpen_setOf_apply (F := E) x fun t => t = x).preimage (continuous_subtype_val (p := fun σ => σ ∈ Ine (F := E) A))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `σ`. Simplify using `using hker σ 1`.
+
+Use `(hker σ 1).mpr (by` as an intermediate fact. Rewrite using `[pow_one]`. Conclude with `(div_eq_one_iff_eq h0).mp (LabModel.eq_one_of_cong h hw hc (hpow σ) (hσ x h0)))`. Simplify using `using this`. Establish `hm1 : χ ⟨γ, hγ.1⟩ ^ m = 1` using `(hker _ m).mpr (by rw [hx, AlgEquiv.commutes])`.
+
+Establish `hord : orderOf (χ ⟨γ, hγ.1⟩) = m`. Use `orderOf_eq_of_pow_and_pow_div_prime hm hm1 fun p hp hpm e => ?_` and prove the remaining obligations. Take `⟨σ, hσ, hσx⟩` from `GlobalTheory.InertiaMovesRoot.exists_mem_Ine_apply_ne E Ω A w h p hp ϖ h1 h2 (x ^ (m / p)) (by rw [← pow_mul, Nat.div_mul_cancel hpm, hx])`. Establish `h5 : IsTm (χ ^ (m / p))` using `hχ.of_le hχ fun σ e _ => by simp [e]`. Conclude with `hσx ((hker ⟨σ, hσ⟩ _).mp (by simpa using h5.eq_one hγ (by simpa using e) ⟨σ, hσ⟩))`.
+
+Establish `hprim : IsPrimitiveRoot ((χ ⟨γ, hγ.1⟩ : ℂˣ) : ℂ) m`. Rewrite using `[IsPrimitiveRoot.coe_units_iff, ← hord]`. Conclude with `IsPrimitiveRoot.orderOf _`. Establish `: NeZero m` using `⟨hm.ne'⟩`. Take `⟨i, -, hi⟩` from `hprim.eq_pow_of_pow_eq_one hz`.
+
+Conclude with `⟨χ ^ i, hχ.of_le hχ fun σ e _ => by simp [e], by simpa using hi⟩`.
+-/
 theorem exists_isTm {g : ℕ} [Fact g.Prime] (h : IsPlaceOver A w) (hw : normV w = g) {γ : G E Ω}
     (hγ : TameGenAt A γ) {m : ℕ} (hm : 0 < m) (hc : m.Coprime g) {z : ℂ} (hz : z ^ m = 1) :
     ∃ χ : Ine (F := E) A →* ℂˣ, IsTm χ ∧ (χ ⟨γ, hγ.1⟩ : ℂ) = z := by
@@ -121,6 +157,11 @@ section Om
 
 variable (D : D7)
 
+/- English proof (translation)
+Use `choose γ₀ hγ₀ using fun w : PlE D.host => GlobalTheory.MemTame.exists_tameGenAt D.host.E D.nd.Om w _ (D.nd.plOm.2 w)`. Use `⟨fun k => Function.extend (D.naut.plGw k) (D.ntypes.tg k) γ₀, fun k v => (D.naut.plGw_inj k).extend_apply _ _ v, fun k w _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ v, D.naut.plGw k v = w`. Take `⟨v, rfl⟩` from `h`. Simplify using `only [(D.naut.plGw_inj k).extend_apply]`.
+
+Conclude with `D.ntypes.tg_gen k v`. Simplify using `only [Function.extend_apply' _ _ _ h]`. Conclude with `hγ₀ w`.
+-/
 theorem exists_genFam : ∃ γ, GenFam D γ := by
   choose γ₀ hγ₀ using fun w : PlE D.host =>
     GlobalTheory.MemTame.exists_tameGenAt D.host.E D.nd.Om w _ (D.nd.plOm.2 w)
@@ -133,10 +174,22 @@ theorem exists_genFam : ∃ γ, GenFam D γ := by
   · simp only [Function.extend_apply' _ _ _ h]
     exact hγ₀ w
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) hw`.
+-/
 theorem normV_eq {k : Fin 2} {w : PlE D.host} (hw : w ∈ placesOver D.host.E (D.host.g k)) :
     normV w = D.host.g k :=
   GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) hw
 
+/- English proof (translation)
+Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Use `IntermediateField.adjoin.finiteDimensional hint` as an intermediate fact. Set `K` to `IntermediateField.adjoin (ZMod g) {x}`. Establish `: Finite K` using `Module.finite_of_finite (ZMod g)`. Use `Fintype.ofFinite K` as an intermediate fact.
+
+Set `y : K` to `⟨x, IntermediateField.mem_adjoin_simple_self _ x⟩`. Establish `hy : y ≠ 0` using `fun e => hx (congrArg Subtype.val e)`. Establish `: CharP K g` using `charP_of_injective_algebraMap (algebraMap (ZMod g) K).injective g`. Take `⟨n, -, hn⟩` from `FiniteField.card K g`. Establish `h1 : 1 < Fintype.card K` using `Fintype.one_lt_card`.
+
+Use `⟨Fintype.card K - 1, by omega, ?_, ?_⟩` and prove the remaining obligations. Establish `: (Fintype.card K - 1).Coprime (Fintype.card K)` using `(Nat.coprime_self_sub_left h1.le).mpr (Nat.coprime_one_left _)`. Use `this.coprime_dvd_right ?_` and prove the remaining obligations. Rewrite using `[hn]`. Conclude with `dvd_pow_self _ n.ne_zero`.
+
+Conclude with `congrArg Subtype.val (FiniteField.pow_card_sub_one_eq_one y hy)`.
+-/
 theorem exists_order {g : ℕ} [Fact g.Prime] {x : Fbar g} (hx : x ≠ 0) :
     ∃ m : ℕ, 0 < m ∧ m.Coprime g ∧ x ^ m = 1 := by
   have hint : IsIntegral (ZMod g) x := Algebra.IsIntegral.isIntegral x
@@ -158,6 +211,23 @@ theorem exists_order {g : ℕ} [Fact g.Prime] {x : Fbar g} (hx : x ≠ 0) :
 
 open Classical in
 
+/- English proof (translation)
+Establish `key : ∀ (k : Fin 2) (w : PlE D.host) (x : Fb (D.host.g k) (D.host.g_prime k)), ∃ χ : Ine (F` using `D.host.E) (D.nd.plOm.1 w) →* ℂˣ, IsTm χ ∧ (∀ hw : w ∈ placesOver D.host.E (D.host.g k), x ≠ 0 → (χ ⟨γ k w, (hγ.2 k w hw).1⟩ : ℂ) = D.ntypes.teichC k x) ∧ (w ∉ placesOver D.host.E (D.host.g k) → χ = 1) := by`. Introduce `k w x`. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Distinguish the cases in `h : w ∈ placesOver D.host.E (D.host.g k) ∧ x ≠ 0`. Take `⟨m, hm, hc, hx⟩` from `exists_order h.2`.
+
+Take `⟨χ, h1, h2⟩` from `exists_isTm (D.nd.plOm.2 w) (normV_eq D h.1) (hγ.2 k w h.1) hm hc (z := D.ntypes.teichC k x) (by rw [← map_pow, hx, map_one])`. Conclude with `⟨χ, h1, fun _ _ => h2, fun e => absurd h.1 e⟩`. Conclude with `⟨1, ⟨by convert isOpen_univ using 1; ext; simp, fun _ _ => rfl⟩, fun a b => absurd ⟨a, b⟩ h, fun _ => rfl⟩`. Use `choose χ h1 h2 h3 using key`. Set `om : ∀ k : Fin 2, PlE D.host → Fb (D.host.g k) (D.host.g_prime k) → GE D.nd → ℂ` to `fun k w x σ => if h : σ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w) then χ k w x ⟨σ, h⟩ else 1`.
+
+Establish `e : ∀ k w x σ (h : σ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 w)), om k w x σ = χ k w x ⟨σ, h⟩ := fun k w x σ h => dif_pos h`. Establish `hv : ∀ k : Fin 2, ∀ w ∈ placesOver D.host.E (D.host.g k), ∀ x, x ≠ 0 → om k w x (γ k w) = D.ntypes.teichC k x` using `fun k w hw x hx => by`. Rewrite using `[e _ _ _ _ (hγ.2 k w hw).1, h2 k w x hw hx]`. Use `⟨⟨om, fun k w x _ => ?_, fun k w x _ σ hσ σ' hσ' => ?_, fun k w x y hx hy σ hσ => ?_, fun k w _ x _ σ hσ => ?_, fun k w x _ => ?_, fun k w hw x y hx hy hxy => ?_, fun k v x hx => ?_⟩, hv⟩` and prove the remaining obligations. Rewrite using `[e _ _ _ _ (one_mem _)]`.
+
+Conclude with `congrArg Units.val (map_one (χ k w x))`. Rewrite using `[e _ _ _ _ (mul_mem hσ hσ'), e _ _ _ _ hσ, e _ _ _ _ hσ', ← Units.val_mul, ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[e _ _ _ _ hσ, e _ _ _ _ hσ, e _ _ _ _ hσ, ← Units.val_mul]`. Distinguish the cases in `hw : w ∈ placesOver D.host.E (D.host.g k)`.
+
+Establish `t1 : IsTm (χ k w x * χ k w y)` using `(h1 k w x).of_le (h1 k w y) fun σ a b => by simp [a, b]`. Establish `t2 : IsTm (χ k w (x * y) / (χ k w x * χ k w y))` using `(h1 k w (x * y)).of_le t1 fun σ a b => by rw [MonoidHom.div_apply, a, b, div_one]`. Use `t2.eq_one (hγ.2 k w hw) (by` as an intermediate fact. Rewrite using `[MonoidHom.div_apply, div_eq_one, MonoidHom.mul_apply, Units.ext_iff, Units.val_mul, h2 k w _ hw (mul_ne_zero hx hy), h2 k w _ hw hx, h2 k w _ hw hy, map_mul]) ⟨σ, hσ⟩`. Rewrite `this` using `[MonoidHom.div_apply, div_eq_one, MonoidHom.mul_apply]`.
+
+Rewrite using `[this]`. Simplify using `[h3 k w _ hw]`. Rewrite using `[e _ _ _ _ (Wild_le_Ine hσ), (h1 k w x).2 ⟨σ, Wild_le_Ine hσ⟩ hσ]`. Both sides reduce to the same expression. Take `⟨U, hU, hle⟩` from `exists_open_subgroup (h1 k w x).1 (map_one _)`.
+
+Use `⟨U, hU, fun σ hσ hσ' => ?_⟩` and prove the remaining obligations. Rewrite using `[e _ _ _ _ hσ', show χ k w x ⟨σ, hσ'⟩ = 1 from hle ⟨σ, hσ'⟩ hσ]`. Both sides reduce to the same expression. Use `⟨γ k w, (hγ.2 k w hw).1, ?_⟩` and prove the remaining obligations. Rewrite using `[hv k w hw x hx, hv k w hw y hy]`.
+
+Conclude with `fun a => hxy (D.ntypes.teichC_inj k x y hx hy a)`. Rewrite using `[← hγ.1 k v]`. Conclude with `hv k _ (D.naut.plGw_over k v) x hx`.
+-/
 theorem exists_tameOm (γ : Fin 2 → PlE D.host → GE D.nd) (hγ : GenFam D γ) :
     ∃ Ω : TameOm D, ∀ k : Fin 2, ∀ w ∈ placesOver D.host.E (D.host.g k), ∀ x, x ≠ 0 →
       Ω.om k w x (γ k w) = D.ntypes.teichC k x := by
@@ -211,6 +281,9 @@ theorem exists_tameOm (γ : Fin 2 → PlE D.host → GE D.nd) (hγ : GenFam D γ
   · rw [← hγ.1 k v]
     exact hv k _ (D.naut.plGw_over k v) x hx
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `exists_genFam D`. Take `⟨Ω, -⟩` from `exists_tameOm D γ hγ`. Conclude with `⟨Ω⟩`.
+-/
 theorem nonempty_tameOm : Nonempty (TameOm D) := by
   obtain ⟨γ, hγ⟩ := exists_genFam D
   obtain ⟨Ω, -⟩ := exists_tameOm D γ hγ
@@ -224,6 +297,15 @@ variable {D : D7} (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
 
 include T in
 
+/- English proof (translation)
+Introduce `k w _ L`. Establish `key : ∀ (x : WD (E` using `D.host.E) (A := D.nd.plOm.1 w) (w := w) (D.nd.plOm.2 w)) (n : ℕ), x.lpDim = n → ∃ ρ : ↥(Ine (F := D.host.E) (D.nd.plOm.1 w)) →* GL (Fin n) ℂ, (∃ U : Subgroup (GE D.nd), IsOpen (U : Set (GE D.nd)) ∧ ∀ σ : ↥(Ine (F := D.host.E) (D.nd.plOm.1 w)), (σ : GE D.nd) ∈ U → ρ σ = 1) ∧ ∀ σ : …`. Introduce `x n hn`. Proceed by induction on `x using WD.ind with`. Consider the case `hP m a`.
+
+Rewrite `hn` using `[WD.lpDim_mk, Module.finrank_fin_fun]`. Substitute `hn` using the available equality. Set `f : ↥(Ine (F` to `D.host.E) (D.nd.plOm.1 w)) →* Matrix (Fin m) (Fin m) ℂ := ((LinearMap.toMatrixAlgEquiv' : Module.End ℂ (Fin m → ℂ) ≃ₐ[ℂ] _) : _ →* _).comp (a.ρ.comp (ineIncl (D.nd.plOm.2 w)))`. Establish `hf : ∀ σ, f σ = LinearMap.toMatrix' (a.ρ (ineIncl (D.nd.plOm.2 w) σ))` using `fun _ => rfl`. Take `⟨U, hU, hle⟩` from `exists_open_subgroup a.smooth (by simp)`.
+
+Use `⟨f.toHomUnits, ⟨U, hU, fun σ hσ => Units.ext ?_⟩, fun σ => ?_⟩` and prove the remaining obligations. Establish `: a.ρ (ineIncl (D.nd.plOm.2 w) σ) = 1` using `hle σ hσ`. Rewrite using `[MonoidHom.coe_toHomUnits, hf, this]`. Conclude with `LinearMap.toMatrix'_id`. Rewrite using `[WD.inePol_of_mem_Ine _ σ.2, WD.charPol_mk, MonoidHom.coe_toHomUnits, hf, ← LinearMap.toMatrix_eq_toMatrix', LinearMap.charpoly_toMatrix]`.
+
+Take `⟨ρ, h1, h2⟩` from `key (T.e w L) _ (T.dim w L)`. Conclude with `⟨ρ, h1, fun σ => (T.inePol w L σ σ.2).trans (h2 σ)⟩`.
+-/
 theorem ineRep_of_tie : IneRep D := by
   intro k w _ L
   have key : ∀ (x : WD (E := D.host.E) (A := D.nd.plOm.1 w) (w := w) (D.nd.plOm.2 w)) (n : ℕ), x.lpDim = n →
@@ -256,11 +338,17 @@ def LabAll (γ : Fin 2 → PlE D.host → GE D.nd) : Prop :=
     haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
     D.naut.items₂ k w a = WD.lab (D.ntypes.teichC k) (γ k w) (T.e w a)
 
+/- English proof (translation)
+Rewrite using `[WD.tame_iff_inePol, T.dim]`. Conclude with `⟨fun h σ hσ => by rw [← T.inePol w L σ (Wild_le_Ine hσ)]; exact h σ (Wild_le_Ine hσ) hσ, fun h σ hσ hσ' => by rw [T.inePol w L σ hσ]; exact h σ hσ'⟩`.
+-/
 theorem tameLP_iff {w : PlE D.host} (L : D.naut.LP w) : TameLP D L ↔ (T.e w L).tame := by
   rw [WD.tame_iff_inePol, T.dim]
   exact ⟨fun h σ hσ => by rw [← T.inePol w L σ (Wild_le_Ine hσ)]; exact h σ (Wild_le_Ine hσ) hσ,
     fun h σ hσ hσ' => by rw [T.inePol w L σ hσ]; exact h σ hσ'⟩
 
+/- English proof (translation)
+Introduce `k w hw L`. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Rewrite using `[h k w hw, tameLP_iff T, ← T.dim]`. Conclude with `⟨WD.lab_monic _ _ _, WD.natDegree_lab_eq_iff (TeichmullerInertiaLabelCondition.of_tameGenAt (normV_eq D hw) (hγ.2 k w hw) (D.ntypes.teichC_inj k)) _⟩`.
+-/
 theorem labDepth_of_tie {γ} (hγ : GenFam D γ) (h : LabAll T γ) : LabDepth D := by
   intro k w hw L
   have : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -268,6 +356,9 @@ theorem labDepth_of_tie {γ} (hγ : GenFam D γ) (h : LabAll T γ) : LabDepth D 
   exact ⟨WD.lab_monic _ _ _, WD.natDegree_lab_eq_iff
     (TeichmullerInertiaLabelCondition.of_tameGenAt (normV_eq D hw) (hγ.2 k w hw) (D.ntypes.teichC_inj k)) _⟩
 
+/- English proof (translation)
+Use `⟨γ, hγ, fun k w hw L hL => ?_⟩` and prove the remaining obligations. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Rewrite `hL` using `[h k w hw, ← T.dim]`. Rewrite using `[h k w hw, T.inePol w L _ (hγ.2 k w hw).1]`. Conclude with `WD.inePol_eq_of_natDegree_lab _ _ _ hL`.
+-/
 theorem labGen_of_tie {γ} (hγ : GenFam D γ) (h : LabAll T γ) : LabGen D := by
   refine ⟨γ, hγ, fun k w hw L hL => ?_⟩
   have : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -303,6 +394,13 @@ def noBC {R : Ranks} {H : Formalism.BasicNotions.Host R} {what₂ : Rows.Data R}
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `: IsEmpty (ndLab D.nd D.nd.lab D.nd.lab_monic).Loc` using `hE`. Take `⟨γ, hγ⟩` from `exists_genFam D`. Set `A` to `wdAut (ndLab D.nd D.nd.lab D.nd.lab_monic) D.naut D.ntypes.teichC γ`. Set `D' : D7` to `setAut D hE D.nd.lab D.nd.lab_monic A (noBC hE A) D.ntypes.tg_mem D.ntypes.tg_gen (fun k v L hL => by`. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`.
+
+Use `WD.inePol_eq_of_natDegree_lab (D.ntypes.teichC k) (γ k (D.naut.plGw k v)) L hL` as an intermediate fact. Conclude with `(congrArg (WD.inePol L) (hγ.1 k v).symm).trans this)`. Set `T : GlobalTheory.RowTie.WDTie D'.nd D'.naut` to `tie (ndLab D.nd D.nd.lab D.nd.lab_monic) D.naut D.ntypes.teichC γ`. Establish `hγ' : GenFam D' γ` using `hγ`. Establish `hl : LabAll T γ` using `fun _ _ _ _ => rfl`.
+
+Conclude with `⟨D', ⟨T⟩, ineRep_of_tie T, labDepth_of_tie T hγ' hl, labGen_of_tie T hγ' hl⟩`.
+-/
 theorem exists_ties (D : D7) (hE : IsEmpty D.nd.Loc) :
     ∃ D' : D7, Nonempty (GlobalTheory.RowTie.WDTie D'.nd D'.naut) ∧ IneRep D' ∧ LabDepth D' ∧ LabGen D' := by
   have : IsEmpty (ndLab D.nd D.nd.lab D.nd.lab_monic).Loc := hE
@@ -327,6 +425,11 @@ variable {D : D7}
 
 def io (i : D.nd.Loc) : KK D.nd i →+* ℂ := (D.naut.iotaQC i).toRingHom.comp (D.naut.iotaQ i)
 
+/- English proof (translation)
+Use `iInf_eq_top.mpr fun f => eq_top_iff.mpr fun v _ => Module.End.mem_eigenspace_iff.mpr ?_` and prove the remaining obligations. Establish `hf : f = algebraMap (D.nd.O i) (D.nd.T i) ((f : D.nd.X i → D.nd.O i) x)` using `Subtype.ext (funext fun y => by rw [Subsingleton.elim y x]; rfl)`. Use `conv_lhs => rw [hf, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, LinearMap.baseChange_smul]`. Rewrite using `[algebraMap_smul, LinearMap.smul_apply]`. Use `congr 1`.
+
+Conclude with `LinearMap.congr_fun (LinearMap.baseChange_id) v`.
+-/
 theorem heckeEig_eq_top (i : D.nd.Loc) [Subsingleton (D.nd.X i)] (x : D.nd.X i) :
     heckeEig (D.nd.T i) (D.nd.act i) x = ⊤ := by
   refine iInf_eq_top.mpr fun f => eq_top_iff.mpr fun v _ => Module.End.mem_eigenspace_iff.mpr ?_
@@ -337,6 +440,27 @@ theorem heckeEig_eq_top (i : D.nd.Loc) [Subsingleton (D.nd.X i)] (x : D.nd.X i) 
   congr 1
   exact LinearMap.congr_fun (LinearMap.baseChange_id) v
 
+/- English proof (translation)
+Establish `hs : Subsingleton (D.nd.X i)` using `⟨fun a b => by`. Take `⟨P, hP⟩` from `D.naut.pt_surj i a`. Take `⟨Q, hQ⟩` from `D.naut.pt_surj i b`. Rewrite `hP`, `hQ` using `[hx]`. Conclude with `Option.some_injective _ (hP.symm.trans hQ)⟩`.
+
+Establish `htop : typeSum D i (some x) = ⊤`. Rewrite using `[← D.naut.typeV_top i, typeSum]`. Simplify using `[hx]`. Set `b` to `Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (D.nd.mu i) (D.nd.j i))`. Take `⟨hli, hsp⟩` from `D.what₂.jMt_basis _ _ b`.
+
+Establish `: Finite (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.nd.mu i) (D.nd.j i)))` using `hli.finite`. Set `` to `Fintype.ofFinite (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.nd.mu i) (D.nd.j i)))`. Set `bC` to `Basis.mk hli hsp.ge`. Establish `hdim : Fintype.card (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.nd.mu i) (D.nd.j i))) = finrank (KK D.nd i) (TensorProduct (D.nd.O i) (KK D.nd i) (D.nd.Mt i))`. Establish `h1` using `D.naut.eig_dim i x`.
+
+Rewrite `h1` using `[NData.mult, heckeMult, heckeEig_eq_top, finrank_top]`. Rewrite using `[h1, ← finrank_eq_card_basis bC, ← finrank_top ℂ, ← htop]`. Both sides reduce to the same expression. Establish `hspan : ⊤ ≤ Submodule.span (KK D.nd i) (Set.range fun s => D.nd.prMt i (b s))`. Rewrite using `[← D.nd.prMt_span i, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[← b.sum_repr y, map_sum]`. Conclude with `Submodule.sum_mem _ fun s _ => by`. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)`.
+
+Set `bK` to `basisOfTopLeSpanOfCardEqFinrank _ hspan hdim`. Establish `hbK : ∀ s, bK s = D.nd.prMt i (b s)` using `fun s => congrFun (coe_basisOfTopLeSpanOfCardEqFinrank _ hspan hdim) s`. Set `Φ : TensorProduct (D.nd.O i) (KK D.nd i) (D.nd.Mt i) →+ D.what₂.Mt (D.nd.mu i) (D.nd.j i)` to `{ toFun := fun v => ∑ s, io i (bK.repr v s) • bC s map_zero' := by simp map_add' := fun u v => by simp [add_smul, Finset.sum_add_distrib] }`. Establish `hΦ : ∀ v, Φ v = ∑ s, io i (bK.repr v s) • bC s` using `fun _ => rfl`. Use `⟨⟨Φ, (injective_iff_map_eq_zero Φ).mpr fun v hv => ?_, fun k v => ?_, fun y u _ => ?_, fun y => ?_⟩⟩` and prove the remaining obligations.
+
+Use `Fintype.linearIndependent_iff.mp bC.linearIndependent _ ((hΦ v).symm.trans hv)` as an intermediate fact. Use `bK.repr.injective (Finsupp.ext fun s => ?_)` and prove the remaining obligations. Simplify using `using this s`. Rewrite using `[hΦ, hΦ, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, mul_smul]`. Both sides reduce to the same expression. Rewrite using `[Subsingleton.elim y x, htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `h1 : D.nd.prMt i y = ∑ s, D.nd.embK i (b.repr y s) • bK s` using `by conv_lhs => rw [← b.sum_repr y, map_sum]`.
+
+Simplify using `only [map_smulₛₗ, hbK]`. Establish `h2 : D.what₂.jMt _ _ y = Φ (D.nd.prMt i y)`. Rewrite using `[hΦ]`. Use `conv_lhs => rw [← b.sum_repr y, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smulₛₗ, h1, bK.repr_sum_self, Basis.mk_apply]`. Use `congr 1`. Conclude with `(D.naut.iota_LL i _).symm`. Rewrite using `[h2, sub_self]`. Conclude with `zero_mem _`.
+-/
 theorem nonempty_sec (i : D.nd.Loc) (x : D.nd.X i) (hx : ∀ P, D.naut.ptV i P = some x) : Nonempty (Sec D i) := by
   have hs : Subsingleton (D.nd.X i) := ⟨fun a b => by
     obtain ⟨P, hP⟩ := D.naut.pt_surj i a
@@ -394,11 +518,21 @@ theorem nonempty_sec (i : D.nd.Loc) (x : D.nd.X i) (hx : ∀ P, D.naut.ptV i P =
     rw [h2, sub_self]
     exact zero_mem _
 
+/- English proof (translation)
+Take `⟨x⟩` from `D.nd.neX i`. Take `⟨u, -, hu⟩` from `(Submodule.ne_bot_iff _).mp (D.nd.eig_ne i x)`. Conclude with `fun h => hu (S.inj (by simp [h]))`.
+-/
 theorem sec_ne_zero {i : D.nd.Loc} (S : Sec D i) : S.Φ ≠ 0 := by
   obtain ⟨x⟩ := D.nd.neX i
   obtain ⟨u, -, hu⟩ := (Submodule.ne_bot_iff _).mp (D.nd.eig_ne i x)
   exact fun h => hu (S.inj (by simp [h]))
 
+/- English proof (translation)
+Use `⟨⟨fun i => (Algebra.ofId _ _).comp (a i), fun i z f => Algebra.commutes (a i z) (D.nd.act i f), fun i z x y h => ?_⟩⟩` and prove the remaining obligations. Establish `h0 : typeSum D i none = ⊥` using `by simp [typeSum, hpt]`. Establish `h1 : ∀ y, D.what₂.jMt _ _ y = (S i).Φ (D.nd.prMt i y)` using `fun y => by`. Use `(S i).split y` as an intermediate fact. Rewrite `this` using `[h0, Submodule.mem_bot, sub_eq_zero]`. Then use the resulting hypothesis.
+
+Apply `(S i).inj` to reduce the goal to its premises. Establish `h2 : LinearMap.baseChange (KK D.nd i) (((Algebra.ofId _ (Module.End (D.nd.O i) (D.nd.Mt i))).comp (a i)) z) (D.nd.prMt i x) = algebraMap _ (KK D.nd i) (a i z) • D.nd.prMt i x`. Rewrite using `[AlgHom.comp_apply, Algebra.ofId_apply, Algebra.algebraMap_eq_smul_one, LinearMap.baseChange_smul, algebraMap_smul, LinearMap.smul_apply]`. Use `congr 1`. Conclude with `LinearMap.congr_fun (LinearMap.baseChange_id) _`.
+
+Rewrite using `[h2, (S i).semi, ← h1, ← h1, h, ha]`. Both sides reduce to the same expression.
+-/
 theorem nonempty_cenO (S : ∀ i, Sec D i) (hpt : ∀ i P, D.naut.ptV i P ≠ none)
     (a : ∀ i, ↥(Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd))) →ₐ[D.nd.O i] D.nd.O i)
     (ha : ∀ i z F, D.ntypes.onMt (D.nd.mu i) (D.nd.j i)
@@ -424,6 +558,11 @@ def omOf (P : PairedCharacterCondition.Pend D) : TameOm D :=
 
 def cenOf (P : PairedCharacterCondition.Pend D) : CenO D := ⟨P.zO, P.zO_comm, P.zO_act⟩
 
+/- English proof (translation)
+Establish `h : (fun i PI k v => {τ | ∃ F ∈ D.naut.typeV i PI, D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v ((P.lz k).idem τ)) F ≠ 0}) = P.kty`. Use function extensionality and compare the values at `i PI k v`. Use extensionality with `τ`. Conclude with `(P.kty_spec i PI k v τ).symm`. Consider the cases of `P`.
+
+Simplify using `only [GlobalTheory.PendOf.mk, omOf, cenOf]`. Use `congr 1`.
+-/
 theorem mk_of (P : PairedCharacterCondition.Pend D) : GlobalTheory.PendOf.mk P.lz P.eSer_eq P.eSer_LL P.zetaPrimitiveRoot (omOf P) P.inertiaCharpoly_eigenvalues P.inertiaCharpoly_character (cenOf P)
     P.zL_stable P.prMt_type P.Par_surj = P := by
   have h : (fun i PI k v => {τ | ∃ F ∈ D.naut.typeV i PI, D.ntypes.onMt (D.nd.mu i) (D.nd.j i)

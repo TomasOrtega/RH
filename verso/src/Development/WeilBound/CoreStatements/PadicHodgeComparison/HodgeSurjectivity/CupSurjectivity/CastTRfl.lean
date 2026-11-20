@@ -13,8 +13,16 @@ open Pb HT
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem castT_rfl {M : Model l K} {i : ℕ} (x : M.T i) : castT rfl x = x := rfl
 
+/- English proof (translation)
+Rewrite using `[Finset.smul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Simplify using `only [zsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dfac {C : Type*} [CommRing C] {m m' : ℕ} (f : Fin m → C) (g : Fin m' → C) (F : Fin m → C) (G : Fin m' → C)
     (z : ℤ) : ∑ s, ∑ s', f s * g s' * (z • (F s * G s')) = (z • ∑ s, f s * F s) * ∑ s', g s' * G s' := by
   rw [Finset.smul_sum, Finset.sum_mul]
@@ -24,6 +32,11 @@ theorem dfac {C : Type*} [CommRing C] {m m' : ℕ} (f : Fin m → C) (g : Fin m'
   simp only [zsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `L` using `hC K S.P.gen S.P.q`. Establish `LM` using `hC K M.gen M.q`. Simplify using `only [th, LinearMap.comp_apply, LinearMap.flip_apply, cupL_apply]`. Rewrite using `[L.2.1 hp rfl (rfl : f + a' = f + a') (by omega : e + (f + a') = A + a') hT rfl (rfl : j + n = j + n) (by omega : i + (j + n) = T + n)]`. Rewrite using `[L.2.2.1 (rfl : f + a' = f + a') (add_comm a' f) (rfl : j + n = j + n) (add_comm n j)]`.
+
+Rewrite using `[← cupL_apply hC S.P.q (by omega : e + (f + a') = A + a') (by omega : i + (j + n) = T + n), map_zsmul, cupL_apply]`. Rewrite using `[← L.2.1 h₁ h₂ (add_comm a' f) (by omega) g₁ g₂ (add_comm n j) (by omega)]`. Rewrite using `[← LM.2.2.2.2.1 S.P.gen S.P.q (Model.genMap S.p₁ S.h₁) (Model.genMap_q S.p₁ S.h₁) h₁ g₁ u x]`. Rewrite using `[map_zsmul, map_zsmul]`.
+-/
 theorem r1 (hC : CupLaws) {M : Model l K} {D : ℕ} (S : Sq M D) {a' n : ℕ} (x : Hdg M.q a' n) {A β T : ℕ}
     (sl : Hdg S.P.q (A + a') (T + n) →ₗ[K] Hdg M.q β n) (ψ : Module.Dual K (Hdg M.q β n))
     {e f i j : ℕ} (hp : e + f = A) (hT : i + j = T) (u : Hdg M.q e i) (v : Hdg M.q f j)
@@ -41,6 +54,23 @@ theorem r1 (hC : CupLaws) {M : Model l K} {D : ℕ} (S : Sq M D) {a' n : ℕ} (x
   rw [← LM.2.2.2.2.1 S.P.gen S.P.q (Model.genMap S.p₁ S.h₁) (Model.genMap_q S.p₁ S.h₁) h₁ g₁ u x]
   rw [map_zsmul, map_zsmul]
 
+/- English proof (translation)
+Substitute `hij` using the available equality. Establish `hfin : ∀ a k, FiniteDimensional K (Hdg M.q a k)` using `fun a k => (P.fin M hM a k).1`. Set `b : ∀ a, Module.Basis (Fin (Module.finrank K (Hdg M.q a i))) K (Hdg M.q a i)` to `fun a => Module.finBasis K _`. Set `b' : ∀ a, Module.Basis (Fin (Module.finrank K (Hdg M.q a j))) K (Hdg M.q a j)` to `fun a => Module.finBasis K _`. Rewrite using `[castT_rfl, cupK P hM S X Y Z hZ b b' A]`.
+
+Establish `tz : ∀ p : (Finset.HasAntidiagonal.antidiagonal A : Finset (ℕ × ℕ)), (p.1.1 + a', i + n) ≠ (α, i + j) → ∀ s s', th hC S sl ψ (S.pl₁ a' n x) (cupH S.P.q (Finset.HasAntidiagonal.mem_antidiagonal.1 p.2) rfl (S.pl₁ p.1.1 i (b p.1.1 s)) (S.pl₂ p.1.2 j (b' p.1.2 s'))) = 0`. Introduce `p hne s s'`. Establish `hp` using `Finset.HasAntidiagonal.mem_antidiagonal.1 p.2`. Rewrite using `[r1 hC S x sl ψ _ rfl _ _ rfl rfl (by omega) (by omega), hsl.2 _ _ _ _ _ _ hne, map_zero, smul_zero]`. Establish `allz : (∀ p : (Finset.HasAntidiagonal.antidiagonal A : Finset (ℕ × ℕ)), (p.1.1 + a', i + n) ≠ (α, i + j)) → ∑ p : (Finset.HasAntidiagonal.antidiagonal A : Finset (ℕ × ℕ)), ∑ s, ∑ s', P.h M p.1.1 i (M.toV _ X) ((b p.1.1).coord s) * P.h M p.1.2 j (M.toV _ Y) ((b' p.1.2).coord s') * …` using `fun h => Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun s _ => Finset.sum_eq_zero fun s' _ => by`.
+
+Rewrite using `[tz p (h p) s s', map_zero, mul_zero]`. Distinguish the cases in `hj : j = n`. Substitute `hj` using the available equality. Rewrite using `[dif_pos rfl, castT_rfl]`. Distinguish the cases in `hα : a' ≤ α`.
+
+Establish `hmem : (α - a', β) ∈ (Finset.HasAntidiagonal.antidiagonal A : Finset (ℕ × ℕ))` using `Finset.HasAntidiagonal.mem_antidiagonal.2 (by simp only; omega)`. Rewrite using `[Finset.sum_eq_single ⟨(α - a', β), hmem⟩]`. Establish `key : ∀ s s', th hC S sl ψ (S.pl₁ a' j x) (cupH S.P.q (Finset.HasAntidiagonal.mem_antidiagonal.1 hmem) rfl (S.pl₁ (α - a') i (b (α - a') s)) (S.pl₂ β j (b' β s'))) = ((-1 : ℤ) ^ (j * j)) • (Fx hC x φ' i (b (α - a') s) * ψ (b' β s'))`. Introduce `s s'`. Rewrite using `[r1 hC S x sl ψ _ rfl _ _ (Nat.sub_add_cancel hα) rfl hA rfl, hsl.1, map_smul, smul_eq_mul]`.
+
+Rewrite using `[Fx, dif_pos (And.intro hα rfl)]`. Simplify using `only [LinearMap.comp_apply, LinearMap.flip_apply, cupL_apply]`. Simplify using `only [key, map_zsmul, map_mul]`. Rewrite using `[dfac, kap, bsum (kC K) _ (fun k φ => P.lin' M _ _ k _ φ) (b (α - a')), bsum (kC K) _ (fun k φ => P.lin' M _ _ k _ φ) (b' β)]`. Introduce `p _ hne`.
+
+Use `Finset.sum_eq_zero fun s _ => Finset.sum_eq_zero fun s' _ => ?_` and prove the remaining obligations. Rewrite using `[tz p ?_ s s', map_zero, mul_zero]`. Introduce `h`. Establish `hp` using `Finset.HasAntidiagonal.mem_antidiagonal.1 p.2`. Establish `h1 : p.1.1 + a' = α` using `(Prod.ext_iff.1 h).1`.
+
+Conclude with `hne (Subtype.ext (Prod.ext (by simp only; omega) (by simp only; omega)))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[allz fun p h => hα (by have := (Prod.ext_iff.1 h).1; simp only at this; omega)]`. Simplify using `[kap, Fx, hα]`.
+
+Rewrite using `[dif_neg hj]`. Conclude with `allz fun p h => hj (by have := (Prod.ext_iff.1 h).2; simp only at this; omega)`.
+-/
 theorem t1 (hC : CupLaws) (P : HTPre l K) {M : Model l K} (hM : M.Sm) {D : ℕ} (S : Sq M D) {a' n : ℕ} (x : Hdg M.q a' n)
     {α β A t : ℕ} (hA : α + β = A + a') (φ' : Module.Dual K (Hdg M.q α t)) (ψ : Module.Dual K (Hdg M.q β n))
     (sl : Hdg S.P.q (A + a') (t + n) →ₗ[K] Hdg M.q β n) (hsl : IsSl S hA φ' sl)

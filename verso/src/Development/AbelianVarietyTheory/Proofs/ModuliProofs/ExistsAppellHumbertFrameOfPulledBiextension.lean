@@ -51,6 +51,33 @@ def combUnif {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUn
     rw [hp] at a1 a2 ⊢
     rw [u.fr_compat _ _ _ ((le_preimage_inf _ _ _).2 ⟨a1, a2⟩), mul_zpow]
 
+/- English proof (translation)
+Introduce `_ _ _ _ P u Hm χ Ef w F F' ⟨hH, hpos, hχ, hfr⟩ hE hw hFF hadj`. Establish `hv : ValueRules` using `GlobalTheory.valAt'_rules`. Establish `hF : ∀ l ∈ u.Λ, F l ∈ u.Λ` using `fun l hl => by`. Establish `h0` using `hw 0`. Rewrite `h0` using `[map_zero, ex_zero]`.
+
+Rewrite using `[← u.ker, hw, (u.ker l).2 hl, ← h0]`. Establish `hsc` using `fun l m => semicharacter_rule hv P.isLB u hH χ hfr l m _ (hE l m)`. Establish `hχ0 : ∀ l, χ l ≠ 0` using `fun l h => by simpa [h] using hχ l`. Set `Y : Fin 2 → (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ)` to `![LinearMap.id, F]`. Establish `hy : ∀ k z, u.ex z ≫ (![𝟙 P.A, w] : Fin 2 → _) k = u.ex (Y k z)`.
+
+Introduce `k z`. Use `fin_cases k`. Conclude with `Category.comp_id _`. Conclude with `(hw z).symm`. Set `p : ULift.{0} (Finset (Fin 2)) → (Fin P.g → ℂ) → (Fin P.g → ℂ)` to `fun I z => ∑ k ∈ I.down, Y k z`.
+
+Establish `hpd : ∀ I, Differentiable ℂ (p I)` using `fun I => Differentiable.fun_sum fun k _ => (LinearMap.toContinuousLinearMap (Y k)).differentiable`. Establish `hps : ∀ (I : ULift.{0} (Finset (Fin 2))) z, (u.ex z).left ≫ (psum P.A ![𝟙 P.A, w] I.down).left = (u.ex (p I z)).left` using `fun I z => by`. Rewrite using `[← Over.comp_left, comp_psum u (u.ex z) _ (fun k => Y k z) (fun k => hy k z)]`. Use `⟨combUnif u _ p hpd _ hps, fun l : u.Λ => (-1) ^ Ef l ⟨F l, hF l l.2⟩, rfl, rfl, ⟨hH, hpos, fun l => by simp [norm_zpow], ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `(l : u.Λ) j z hz`.
+
+Establish `hc : ∀ I, ⊤ ≤ (u.ex (p I z)).left ⁻¹ᵁ P.L.U (j I)` using `fun I => by`. Rewrite using `[← hps]`. Conclude with `(le_preimage_wchart (u.ex z).left P.L _ j).1 hz I`. Express the relevant statement in the definitionally equal form `∏ I, u.fr (j I) (p I z) ^ ((-1 : ℤ) ^ (2 - I.down.card)) = (-1) ^ Ef l ⟨F l, hF l l.2⟩ * Complex.exp (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l) * ∏ I, u.fr (j I) (p I (z + l)) ^ ((-1 : ℤ) ^ (2 - I.down.card))`. Rewrite using `[prod_finset_fin_two fun I => u.fr (j ⟨I⟩) (p ⟨I⟩ z) ^ ((-1 : ℤ) ^ (2 - I.card)), prod_finset_fin_two fun I => u.fr (j ⟨I⟩) (p ⟨I⟩ (z + l)) ^ ((-1 : ℤ) ^ (2 - I.card))]`.
+
+Establish `p0 : ∀ x, p ⟨∅⟩ x = 0` using `fun x => by simp [p]`. Establish `p1 : ∀ x, p ⟨{0}⟩ x = x` using `fun x => by simp [p, Y]`. Establish `p2 : ∀ x, p ⟨{1}⟩ x = F x` using `fun x => by simp [p, Y]`. Establish `p3 : ∀ x, p ⟨{0, 1}⟩ x = x + F x` using `fun x => by simp [p, Y]`. Establish `c1` using `hc ⟨{0}⟩`.
+
+Establish `c2` using `hc ⟨{1}⟩`. Establish `c3` using `hc ⟨{0, 1}⟩`. Rewrite `c1` using `[p1]`. Rewrite `c2` using `[p2]`. Rewrite `c3` using `[p3]`.
+
+Establish `e1` using `hfr l _ _ c1`. Establish `e2` using `hfr ⟨F l, hF l l.2⟩ _ _ c2`. Establish `e3` using `hfr (l + ⟨F l, hF l l.2⟩) _ _ c3`. Rewrite `e3` using `[hsc]`. Establish `k2 : ({0, 1} : Finset (Fin 2)).card = 2` using `by decide`.
+
+Establish `s3 : z + F z + ((l + ⟨F l, hF l l.2⟩ : u.Λ) : Fin P.g → ℂ) = z + l + F (z + l)`. Simplify using `only [Submodule.coe_add, map_add]`. Normalize the expressions using the abelian group laws. Rewrite `e3` using `[s3]`. Establish `hsum : ∀ x y, hermForm Hm x (F y) + hermForm Hm (F x) y = hermForm Hm x y` using `fun x y => by`.
+
+Rewrite using `[hadj, ← herm_add_right]`. Conclude with `congrArg _ (LinearMap.congr_fun hFF y)`. Express the relevant statement in the definitionally equal form `_ = _ * Complex.exp (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l) * _ at e1`. Express the relevant statement in the definitionally equal form `_ = _ * Complex.exp (Real.pi * hermForm Hm (F z) (F l) + Real.pi / 2 * hermForm Hm (F l) (F l)) * u.fr _ (F z + F l) at e2`. Express the relevant statement in the definitionally equal form `_ = _ * Complex.exp (Real.pi * hermForm Hm (z + F z) (l + F l) + Real.pi / 2 * hermForm Hm (l + F l) (l + F l)) * _ at e3`.
+
+Rewrite `e2` using `[← map_add]`. Establish `hx : Real.pi * hermForm Hm (z + F z) (l + F l) + Real.pi / 2 * hermForm Hm (l + F l) (l + F l) = (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l) + (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l) + (Real.pi * hermForm Hm (F z) (F l) + Real.pi / 2 * hermForm …`. Simplify using `only [herm_add_left, herm_add_right]`. Take the linear combination `(Real.pi : ℂ) * hsum z l + (Real.pi / 2 : ℂ) * hsum l l`. Rewrite `e3` using `[hx, Complex.exp_add, Complex.exp_add (_ + _) (_ + _)]`.
+
+Simplify using `only [p0, p1, p2, p3, k2, Finset.card_empty, Finset.card_singleton]`. Rewrite using `[e1, e2, e3]`. Establish `n1` using `hχ0 l`. Establish `n2` using `hχ0 ⟨F l, hF l l.2⟩`. Evaluate the numerical expressions.
+
+Clear the denominators using the available nonvanishing facts. Introduce `(l : u.Λ) a b ha hb`. Take `rfl : a = l` from `Subtype.ext ha`. Take `rfl : b = ⟨F a, hF a a.2⟩` from `Subtype.ext hb`. Both sides reduce to the same expression.
+-/
 theorem exists_appellHumbert_frame :
     Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (Ef : LinearMap.BilinForm ℤ u.Λ) (w : P.A ⟶ P.A) (F F' : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ)), u.IsAH Hm χ → (∀ a b : u.Λ, (Ef a b : ℝ) = (hermForm Hm a b).im) → (∀ z, u.ex (F z) = u.ex z ≫ w) → F + F' = LinearMap.id → (∀ z z', hermForm Hm (F z) z' = hermForm Hm z (F' z')) → ∃ (u₁ : HolUnif P.A (cubeLB P.A ![𝟙 P.A, w] P.L) P.g) (χ₁ : u₁.Λ → ℂ), u₁.ex = u.ex ∧ u₁.Λ = u.Λ ∧ u₁.IsAH Hm χ₁ ∧ ∀ (l : u₁.Λ) (a b : u.Λ), (a : Fin P.g → ℂ) = l → (b : Fin P.g → ℂ) = F l → χ₁ l = (-1) ^ Ef a b := by
   intro _ _ _ _ P u Hm χ Ef w F F' ⟨hH, hpos, hχ, hfr⟩ hE hw hFF hadj

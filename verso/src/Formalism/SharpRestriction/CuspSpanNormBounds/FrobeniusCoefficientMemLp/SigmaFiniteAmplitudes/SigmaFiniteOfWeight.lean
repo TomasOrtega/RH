@@ -15,6 +15,13 @@ section Gen
 
 variable {Y : Type*} [MeasurableSpace Y]
 
+/- English proof (translation)
+Use `Measure.sigmaFinite_of_countable (S := insert {y | W y = 0} (Set.range fun n : ℕ => {y | ((n : ℝ≥0∞) + 1)⁻¹ ≤ W y})) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(Set.countable_range _).insert _`. Introduce `s hs`. Break down `hs with rfl | ⟨n, rfl⟩` into its components or cases. Rewrite using `[hW0]`.
+
+Conclude with `ENNReal.zero_lt_top`. Combine the equalities or inequalities in the displayed calculation. Apply `Set.eq_univ_of_forall` to reduce the goal to its premises. Introduce `y`. Distinguish the cases in `h : W y = 0`.
+
+Conclude with `Set.mem_sUnion.2 ⟨_, Set.mem_insert _ _, h⟩`. Take `⟨n, hn⟩` from `ENNReal.exists_inv_nat_lt h`. Use `Set.mem_sUnion.2 ⟨_, Set.mem_insert_of_mem _ ⟨n, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ((n : ℝ≥0∞) + 1)⁻¹ ≤ W y`. Conclude with `le_trans (ENNReal.inv_le_inv.2 le_self_add) hn.le`.
+-/
 theorem sigmaFinite_of_weight (ν : Measure Y) (W : Y → ℝ≥0∞) (hWm : Measurable W) (hWi : ∫⁻ y, W y ∂ν < ⊤)
     (hW0 : ν {y | W y = 0} = 0) : SigmaFinite ν := by
   refine Measure.sigmaFinite_of_countable
@@ -44,6 +51,9 @@ def mStab (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (q : Pai
 def qG (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (q : Mt k r × Mt k r) : Mt k r :=
   Matrix.of.symm (γ⁻¹ * Matrix.of q.2 * γ * Matrix.of q.1)
 
+/- English proof (translation)
+Unfold `mStab stabAct`. Establish `c1 : Continuous (fun q : PairSp k r × Mt k r => (Matrix.of.symm (of q.2 * of q.1.1.2) : Mt k r))` using `continuous_snd.matrix_mul continuous_fst.fst.snd`. Establish `c2 : Continuous (fun q : PairSp k r × Mt k r => (Matrix.of.symm (γ⁻¹ * of q.2 * γ * of q.1.2.2) : Mt k r))` using `((continuous_const.matrix_mul continuous_snd).matrix_mul continuous_const).matrix_mul continuous_fst.snd.snd`. Conclude with `(measurable_fst.fst.fst.prodMk c1.measurable).prodMk (measurable_fst.snd.fst.prodMk c2.measurable)`.
+-/
 theorem measurable_mStab (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (mStab (k := k) (r := r) γ) := by
   unfold mStab stabAct
@@ -55,6 +65,9 @@ theorem measurable_mStab (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)
       continuous_fst.snd.snd
   exact (measurable_fst.fst.fst.prodMk c1.measurable).prodMk (measurable_fst.snd.fst.prodMk c2.measurable)
 
+/- English proof (translation)
+Conclude with `((continuous_const.matrix_mul continuous_snd).matrix_mul continuous_const).matrix_mul continuous_fst`.
+-/
 theorem continuous_qG (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Continuous (qG (k := k) (r := r) γ) := by
   exact ((continuous_const.matrix_mul continuous_snd).matrix_mul continuous_const).matrix_mul continuous_fst
@@ -64,6 +77,9 @@ section Cell
 variable (L : LocBessel k r) {μG : Measure (Mt k r)} {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   {μR νR : Measure (Mt k r)} {ν : Measure (PairSp k r)}
 
+/- English proof (translation)
+Use `haveI : SigmaFinite μR := hμR.1`. Use extensionality with `s hs`. Establish `hf : Measurable (s.indicator (1 : PairSp k r → ℝ≥0∞))` using `measurable_one.indicator hs`. Rewrite using `[← lintegral_indicator_one (μ := pairMeas L) hs, ← lintegral_indicator_one (μ := (ν.prod μR).map (mStab γ)) hs, hOQ _ hf, lintegral_map hf (measurable_mStab γ), lintegral_prod (fun q => s.indicator 1 (mStab γ q)) (hf.comp (measurable_mStab γ)).aemeasurable]`. Both sides reduce to the same expression.
+-/
 theorem pairMeas_eq_map (hμR : IsHaarOn (RStab k r γ) μR) (hOQ : IsOrbQuot L γ μR ν) :
     pairMeas L = (ν.prod μR).map (mStab γ) := by
   haveI : SigmaFinite μR := hμR.1
@@ -75,6 +91,13 @@ theorem pairMeas_eq_map (hμR : IsHaarOn (RStab k r γ) μR) (hOQ : IsOrbQuot L 
     lintegral_prod (fun q => s.indicator 1 (mStab γ q)) (hf.comp (measurable_mStab γ)).aemeasurable]
   rfl
 
+/- English proof (translation)
+Introduce `f hf`. Rewrite using `[hQ f hf]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hc : Measurable (fun y : Mt k r => fun i j => (γ⁻¹ * Matrix.of y * γ) i j)`. Establish `: Continuous (fun y : Mt k r => (Matrix.of.symm (γ⁻¹ * Matrix.of y * γ) : Mt k r))` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+
+Conclude with `this.measurable`. Establish `hm : Measurable (fun s : Mt k r => f (fun i j => (of s * of x) i j))`. Establish `: Continuous (fun s : Mt k r => (Matrix.of.symm (of s * of x) : Mt k r))` using `continuous_id.matrix_mul continuous_const`. Conclude with `hf.comp this.measurable`. Rewrite using `[lintegral_map hm hc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem unfold_G (hμR : IsHaarOn (RStab k r γ) μR)
     (hQ : PI.BesselPeriodGGP.IsQuotMeas μG (μR.map (fun x => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)) νR) :
     ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, ∫⁻ a, f (qG γ (x, a)) ∂μR ∂νR := by
@@ -92,12 +115,18 @@ theorem unfold_G (hμR : IsHaarOn (RStab k r γ) μR)
   rw [lintegral_map hm hc]
   rfl
 
+/- English proof (translation)
+Establish `: SigmaFinite μR` using `hμR.1`. Conclude with `map_of_unfold μG νR μR (qG γ) (continuous_qG γ).measurable (unfold_G hμR hQ)`.
+-/
 theorem muG_eq_map (hμR : IsHaarOn (RStab k r γ) μR)
     (hQ : PI.BesselPeriodGGP.IsQuotMeas μG (μR.map (fun x => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)) νR) :
     μG = (νR.prod μR).map (qG γ) := by
   have : SigmaFinite μR := hμR.1
   exact map_of_unfold μG νR μR (qG γ) (continuous_qG γ).measurable (unfold_G hμR hQ)
 
+/- English proof (translation)
+Establish `: SigmaFinite μR` using `hμR.1`. Establish `: SigmaFinite μG` using `hμG.1`. Conclude with `sigmaFinite_of_unfold μG νR μR hμR.2.1 (qG γ) (continuous_qG γ).measurable (unfold_G hμR hQ)`.
+-/
 theorem sigmaFinite_nuR (hμG : IsHaarOn (UH (Hpk k r)) μG) (hμR : IsHaarOn (RStab k r γ) μR)
     (hQ : PI.BesselPeriodGGP.IsQuotMeas μG (μR.map (fun x => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)) νR) :
     SigmaFinite νR := by

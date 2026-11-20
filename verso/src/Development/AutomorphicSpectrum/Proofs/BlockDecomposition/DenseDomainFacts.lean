@@ -12,6 +12,9 @@ open PositivityTheory.RgTw (Mat G)
 open PositivityTheory.RgBcC
 open PositivityTheory.RgBcC.Fc
 
+/- English proof (translation)
+Use `letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (n := Fin n) (R := ℂ) (α := ℂ)`. Use `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℂ _`. Conclude with `Units.isOpenEmbedding_val`.
+-/
 theorem val_emb (n : ℕ) : IsOpenEmbedding (Units.val : G n → Mat n) := by
   letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)
   letI := Matrix.linftyOpNormedAlgebra (n := Fin n) (R := ℂ) (α := ℂ)
@@ -20,9 +23,17 @@ theorem val_emb (n : ℕ) : IsOpenEmbedding (Units.val : G n → Mat n) := by
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`.
+-/
 theorem val_mem {n : ℕ} (y : G n) : y.val ∈ GLs n :=
   ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
+/- English proof (translation)
+Establish `he` using `val_emb n`. Use `continuous_of_tsupport fun x h => ?_` and prove the remaining obligations. Take `⟨u, -, rfl⟩` from `hs.tsupport_extend_zero_subset he.continuous h`. Rewrite using `[← he.continuousAt_iff]`. Establish `: Function.extend (Units.val : G n → Mat n) b 0 ∘ Units.val = b`.
+
+Use function extensionality and compare the values at `fun y => he.injective.extend_apply _ _ _`. Rewrite using `[this]`. Conclude with `hb.continuousAt`.
+-/
 theorem continuous_extend {n : ℕ} {V : Type} [NormedAddCommGroup V] {b : G n → V} (hb : Continuous b)
     (hs : HasCompactSupport b) : Continuous (Function.extend (Units.val : G n → Mat n) b 0) := by
   have he := val_emb n
@@ -34,6 +45,11 @@ theorem continuous_extend {n : ℕ} {V : Type} [NormedAddCommGroup V] {b : G n �
   rw [this]
   exact hb.continuousAt
 
+/- English proof (translation)
+Establish `he` using `val_emb n`. Take `⟨f, hf, hd, hsu⟩` from `(continuous_extend hb hs).exists_contDiff_approx ⊤ (ε := fun _ => δ) continuous_const fun _ => hδ`. Use `⟨f, hf, fun y => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `hd y.val` as an intermediate fact. Rewrite `this` using `[show Function.extend (Units.val : G n → Mat n) b 0 y.val = b y from he.injective.extend_apply _ _ _]`.
+
+Rewrite using `[dist_comm]`. Conclude with `this.le`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hsu (Function.mem_support.2 hne)`. Conclude with `hy (hs.tsupport_extend_zero_subset he.continuous (subset_tsupport _ h1))`.
+-/
 theorem exists_smooth {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {b : G n → V}
     (hb : Continuous b) (hs : HasCompactSupport b) {δ : ℝ} (hδ : 0 < δ) :
     ∃ f : Mat n → V, ContDiff ℝ ∞ f ∧ (∀ y : G n, dist (b y) (f y.val) ≤ δ) ∧
@@ -49,6 +65,11 @@ theorem exists_smooth {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace �
     have h1 := hsu (Function.mem_support.2 hne)
     exact hy (hs.tsupport_extend_zero_subset he.continuous (subset_tsupport _ h1))
 
+/- English proof (translation)
+Establish `he` using `val_emb n`. Establish `hc : IsCompact ((Units.val : G n → Mat n) '' K)` using `hK.image he.continuous`. Establish `hsub : (Units.val : G n → Mat n) '' K ⊆ GLs n`. Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `val_mem u`.
+
+Establish `hcont : ContinuousOn (lg : Mat n → ℝ) ((Units.val : G n → Mat n) '' K)` using `((hL n).2.2.2.1.continuousOn).mono hsub`. Take `⟨R, hR⟩` from `(hc.image_of_continuousOn hcont).bddAbove`. Use `⟨R, fun y _ hy => hf y fun hm => ?_⟩` and prove the remaining obligations. Conclude with `absurd (hR ⟨y, hm, rfl⟩) (not_le.2 hy)`.
+-/
 theorem cpt_of {n : ℕ} {V : Type} [Zero V] (hL : LgFacts) {K : Set (G n)} (hK : IsCompact K) {f : Mat n → V}
     (hf : ∀ y, y ∉ (Units.val : G n → Mat n) '' K → f y = 0) : Cpt f := by
   have he := val_emb n
@@ -61,6 +82,25 @@ theorem cpt_of {n : ℕ} {V : Type} [Zero V] (hL : LgFacts) {K : Set (G n)} (hK 
   refine ⟨R, fun y _ hy => hf y fun hm => ?_⟩
   exact absurd (hR ⟨y, hm, rfl⟩) (not_le.2 hy)
 
+/- English proof (translation)
+Introduce `n _ _ μ _ V _ _ hL`. Use `haveI : SecondCountableTopology (Mat n) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Use `haveI : LocallyCompactSpace (Mat n) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Use `haveI : SecondCountableTopology (G n) := (val_emb n).isInducing.secondCountableTopology`. Use `haveI : LocallyCompactSpace (G n) := (val_emb n).locallyCompactSpace`.
+
+Introduce `x`. Use `(mem_closure_iff_nhds_basis Metric.nhds_basis_closedBall).2 fun ε hε => ?_` and prove the remaining obligations. Establish `hp : (2 : ℝ≥0∞) ≠ ⊤` using `by norm_num`. Establish `hε2 : 0 < ε / 2` using `by positivity`. Take `⟨b, hbs, hbd, hbc, hbm⟩` from `(Lp.memLp x).exists_hasCompactSupport_eLpNorm_sub_le hp (ε := ENNReal.ofReal (ε / 2)) (by simpa using hε2)`.
+
+Use `set K := tsupport b with hKdef`. Establish `hKc : IsCompact K` using `hbs`. Use `set m : ℝ≥0∞ := μ K ^ (1 / (2 : ℝ≥0∞).toReal) with hm`. Establish `hmt : m ≠ ⊤` using `ENNReal.rpow_ne_top_of_nonneg (by positivity) hKc.measure_lt_top.ne`. Use `set c : ℝ := (ε / 2) / (m.toReal + 1) with hc`.
+
+Establish `hm0 : 0 ≤ m.toReal` using `ENNReal.toReal_nonneg`. Establish `hcpos : 0 < c` using `by positivity`. Take `⟨f, hf, hd, hz⟩` from `exists_smooth hbc hbs hcpos`. Establish `hcf : Continuous fun y : G n => f y.val` using `hf.continuous.comp Units.continuous_val`. Establish `hsupp : Function.support (fun y : G n => f y.val) ⊆ K`.
+
+Introduce `y hy`. Assume the negation of the conclusion as `hyK`. Conclude with `hy (hz _ fun ⟨u, hu, he⟩ => hyK (Units.ext he ▸ hu))`. Establish `hcs : HasCompactSupport fun y : G n => f y.val` using `HasCompactSupport.of_support_subset_isCompact hKc hsupp`. Establish `hg : MemLp (fun y : G n => f y.val) 2 μ` using `hcf.memLp_of_hasCompactSupport hcs`.
+
+Establish `hbg : eLpNorm (b - fun y : G n => f y.val) 2 μ ≤ ENNReal.ofReal (ε / 2)`. Use `(eLpNorm_sub_le_of_dist_bdd μ hp hKc.measurableSet hcpos.le hd (subset_tsupport b) hsupp).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ENNReal.ofReal c * m ≤ _`. Use `conv_lhs => rw [← ENNReal.ofReal_toReal hmt]`. Rewrite using `[← ENNReal.ofReal_mul hcpos.le]`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[hc, div_mul_eq_mul_div, div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨hg.toLp _, ⟨f, hf.contDiffOn, cpt_of hL hKc hz, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [cls]`.
+
+Rewrite using `[dif_pos hg]`. Rewrite using `[Metric.mem_closedBall, dist_comm, Lp.dist_def, ← ENNReal.le_ofReal_iff_toReal_le ((Lp.memLp x).sub (Lp.memLp (hg.toLp _))).eLpNorm_ne_top hε.le]`. Establish `h1 : eLpNorm (⇑x - ⇑(hg.toLp _)) 2 μ = eLpNorm (⇑x - fun y : G n => f y.val) 2 μ` using `eLpNorm_congr_ae (by filter_upwards [hg.coeFn_toLp] with y hy; simp [hy])`. Rewrite using `[h1]`. Establish `h2 : (⇑x - fun y : G n => f y.val) = (⇑x - b) + (b - fun y : G n => f y.val)`.
+
+Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[h2]`. Use `(eLpNorm_add_le ((Lp.memLp x).aestronglyMeasurable.sub hbm.aestronglyMeasurable) (hbm.aestronglyMeasurable.sub hg.aestronglyMeasurable) (by norm_num)).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem denseD : DenseD := by
   intro n _ _ μ _ V _ _ hL
   haveI : SecondCountableTopology (Mat n) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))

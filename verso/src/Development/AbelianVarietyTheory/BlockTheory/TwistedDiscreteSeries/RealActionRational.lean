@@ -44,10 +44,16 @@ def RealActionFock : Prop :=
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A),
     R.Char F → ∀ (i : Fin D.R.m) (t : T), RealActionAt R i t
 
+/- English proof (translation)
+The claim follows from `(hR.models.HV i t).2.1`.
+-/
 example (R : RealDat D A Ks) (F : Face D A) (hR : R.Char F) (i : Fin D.R.m) (t : T) :
     LinearMap.range (R.HV i t).e = levelForms R i t :=
   (hR.models.HV i t).2.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (x : (R.HV i t).H) (e : LowT (R.MW i (sg0 D A)))
     (g : GA D (Wc D i)) (h : GA D (Vc D i)) :
     integrand R i t ((R.HV i t).e x) e g h = thetaKO (R.ωP i t) h g (R.ptP i t (R.ioP i e (R.extV i t x h))) :=

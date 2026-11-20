@@ -20,6 +20,13 @@ namespace GlobalTheory.FramedPointCoeffs
 
 open ReciprocityTheory.ChartRestriction.G.PullbackSections Formalism.L2.Pj MonObj
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z S _ _ P σ a a' w ha ha'`. Establish `hw : Formalism.L2.Pj.IsTanAtG Z.t (GlobalTheory.AllWt.ptF P ≫ Z.j) w` using `GlobalTheory.ShFam.Pad.Guard.comb_tan ((frameOf Z P).tan σ) ha`. Establish `hv : ∀ i, IsEigV (actR (x0` using `GlobalTheory.AllWt.ptF P ≫ Z.j) (S := S) Z.t.act) (embK c σ) (GlobalTheory.EigLetters.tvG ((frameOf Z P).tan σ i)) := by`. Introduce `i b`. Apply `tanM_ext` to reduce the goal to its premises.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(frameOf Z P).eig σ i b`. Establish `h1` using `(GlobalTheory.EigLetters.combG_iff ((frameOf Z P).v σ) ((frameOf Z P).tan σ) a hw).1 ha`. Establish `h2 : IsEigV (actR (x0` using `GlobalTheory.AllWt.ptF P ≫ Z.j) (S := S) Z.t.act) (embK c σ) (GlobalTheory.EigLetters.tvG hw) := by`. Rewrite using `[h1]`.
+
+Conclude with `GlobalTheory.EigLetters.eig_combG σ _ hv a`. Establish `he : ∀ b : 𝓞 E, w ≫ (Z.t.act.act b).left = spMap (epsMul (algebraMap c.F S (embK c σ b))) ≫ w`. Introduce `b`. Conclude with `congrArg (fun V => (tv V).left) (h2 b)`. Conclude with `((frameOf Z P).basis σ w hw he).unique ha ha'`.
+-/
 theorem coeffs_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F)
     (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (S : Type) [Field S] [Algebra c.F S] (P : FrPt Xo c S) (σ : E →+* ℂ)

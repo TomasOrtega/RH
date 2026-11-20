@@ -19,6 +19,11 @@ namespace GlobalTheory.KSExist
 
 open FrameLift
 
+/- English proof (translation)
+Use `choose ub hub using fun σ k => exists_lift hπ (T := epsR S) (y.u σ k) (y.tan σ k).1`. Use `⟨ub, hub, fun σ k => (tan_iff hπ _).1 (by rw [hub]; exact y.tan σ k), fun σ k z => ?_, fun σ w ht he => ?_⟩` and prove the remaining obligations. Use `(eig_iff hπ (ha z) _ _).1 ?_` and prove the remaining obligations. Rewrite using `[hub]`. Conclude with `y.eig σ k z`.
+
+Establish `e : y.u σ = fun i => (ub σ i).left ≫ π` using `funext fun i => (hub σ i).symm`. Take `⟨cf, hcf, -⟩` from `y.basis σ (w.left ≫ π) ((tan_iff hπ w).2 ht) (fun z => (eig_iff hπ (ha z) w _).2 (he z))`. Rewrite `hcf` using `[e]`. Conclude with `⟨cf, isLieComb_of_isCombAt hπ _ cf w hcf⟩`.
+-/
 theorem exists_frame_of_isGrpPullback_ring {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S]
     (y : FrPt Xo c S) {A : Over (Sp S)} [GrpObj A] {π : A.left ⟶ Xo.univ.t.G.left}

@@ -11,6 +11,15 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.
 
 namespace UpperTheory.V.J
 
+/- English proof (translation)
+Introduce `h`. Apply `hp` to reduce the goal to its premises. Use extensionality with `n`. Establish `h1` using `congrArg (MvPowerSeries.coeff (Finsupp.single i n)) h`. Establish `h2 : ∀ k, MvPowerSeries.coeff (Finsupp.single i n) (p.coeff k • (MvPowerSeries.X i : MvPowerSeries (Fin d) O) ^ k) = if k = n then p.coeff k else 0`.
+
+Introduce `k`. Rewrite using `[MvPowerSeries.coeff_smul, MvPowerSeries.coeff_X_pow]`. Distinguish the cases in `hk : k = n`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `: Finsupp.single i n ≠ Finsupp.single i k` using `fun e => hk (Finsupp.single_injective i e).symm`. Simplify using `[hk, this]`. Rewrite `h1` using `[Polynomial.aeval_eq_sum_range, map_sum]`. Simplify using `only [h2] at h1`. Rewrite `h1` using `[Finset.sum_ite_eq', map_zero]`.
+
+Use `split_ifs at h1 with hn`. Simplify using `using h1`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by simpa [Nat.lt_succ_iff] using hn)]`. Simplify using the standard rewrite rules.
+-/
 private theorem aeval_X_ne {O : Type} [CommRing O] {d : ℕ} (i : Fin d) {p : Polynomial O} (hp : p ≠ 0) :
     Polynomial.aeval (MvPowerSeries.X i : MvPowerSeries (Fin d) O) p ≠ 0 := by
   classical
@@ -35,6 +44,11 @@ private theorem aeval_X_ne {O : Type} [CommRing O] {d : ℕ} (i : Fin d) {p : Po
   · rw [Polynomial.coeff_eq_zero_of_natDegree_lt (by simpa [Nat.lt_succ_iff] using hn)]
     simp
 
+/- English proof (translation)
+Take `⟨d, φ, hφ, -, -, hd⟩` from `(UpperTheory.V.CA.cl_nn O C hC).1 hinj`. Break down `Nat.eq_zero_or_pos d with rfl | hpos` into its components or cases. Conclude with `UpperTheory.V.CA.cl_norm0 O C hC (by simpa using hd) hinj`. It suffices to derive a contradiction. Take `⟨p, hp, h0⟩` from `halg (φ (MvPowerSeries.X ⟨0, hpos⟩))`.
+
+Apply `aeval_X_ne (⟨0, hpos⟩ : Fin d) hp` to reduce the goal to its premises. Apply `hφ` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algHom_apply, h0, map_zero]`.
+-/
 private theorem fin_of_alg (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] (C : Type) [CommRing C] [Algebra O C] [IsLocalRing C] [IsDomain C]
     (hC : UpperTheory.V.CA.IsCL O C) (hinj : Function.Injective (algebraMap O C))
@@ -48,10 +62,20 @@ private theorem fin_of_alg (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValua
     apply hφ
     rw [← Polynomial.aeval_algHom_apply, h0, map_zero]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.NormLeOneOfIntegral.norm_le_one_of_int hA hx`.
+-/
 private theorem norm_le_one_of_int {A K : Type} [CommRing A] [NormedField K] [IsUltrametricDist K] [Algebra A K]
     (hA : ∀ a : A, ‖algebraMap A K a‖ ≤ 1) {x : K} (hx : IsIntegral A x) : ‖x‖ ≤ 1 :=
   _root_.UpperTheory.Reformulated.B.NormLeOneOfIntegral.norm_le_one_of_int hA hx
 
+/- English proof (translation)
+Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `p ⟨hle, hp⟩`. Establish `hq : (p.comap (algebraMap O C)).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hne : p.comap (algebraMap O C) ≠ ⊥` using `fun h => ht (by`. Establish `h1 : t ∈ p.comap (algebraMap O C)` using `hle (Ideal.mem_span_singleton_self _)`.
+
+Conclude with `(Ideal.mem_bot).1 (h ▸ h1))`. Use `haveI : IsPrincipalIdealRing O := IsDiscreteValuationRing.toIsPrincipalIdealRing`. Establish `hmax : (p.comap (algebraMap O C)).IsMaximal` using `IsPrime.to_maximal_ideal hne`. Establish `hpm : p.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap p hmax`. Rewrite using `[IsLocalRing.eq_maximalIdeal hpm]`.
+
+Conclude with `ha`.
+-/
 private theorem mem_rad {O C : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing C]
     [IsLocalRing C] [Algebra O C] [Algebra.IsIntegral O C] {t : O} (ht : t ≠ 0) {a : C}
     (ha : a ∈ maximalIdeal C) : a ∈ (Ideal.span {algebraMap O C t}).radical := by
@@ -69,6 +93,9 @@ private theorem mem_rad {O C : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
 
 end UpperTheory.V.J
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.CoPoint.coPt`.
+-/
 theorem UpperTheory.V.J.coPt :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] (R : Type) [CommRing R] [Algebra c.O R] [IsCO c.O R] (y : R →ₐ[c.O] Qbar l),
         Module.Finite c.O y.range ∧ (∀ a, ‖y a‖ ≤ 1) ∧ ∀ a ∈ maximalIdeal R, ‖y a‖ < 1 :=

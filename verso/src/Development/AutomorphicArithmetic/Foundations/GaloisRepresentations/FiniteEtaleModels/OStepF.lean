@@ -26,6 +26,31 @@ open UpperTheory.Gal.Int.Geo
 namespace UpperTheory.Gal.FiniteEtaleModels.O
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `p _ D G L hSc E _ _ gb w q _ r 𝔴 𝔫 S k T N₀ κ 𝔟₁ 𝔟₂ X₁ X₂ hle M₁ M₂ c₁ c₂ a₁ a₂ hN₁ hN₂ hM C₁ C₂ W`. Take `⟨hM₁, hg₁⟩` from `hN₁`. Take `⟨hM₂, hg₂⟩` from `hN₂`. Take `⟨t, ht⟩` from `hM`. Establish `hM₁' : (M₁ : ℕ) = N₀ * κ * c₁` using `hM₁`.
+
+Establish `hM₂' : (M₂ : ℕ) = N₀ * c₂` using `hM₂`. Establish `hpos : 0 < (M₁ : ℕ)` using `by have := M₁.2.1; omega`. Take `⟨h3, hcq₂, -, -, -⟩` from `X₂.lev`. Take `⟨-, hcq₁, -, -, -⟩` from `X₁.lev`. Establish `hN₀pos : 0 < N₀` using `by omega`.
+
+Establish `hd : N₀ ∣ N₀ * κ` using `dvd_mul_right N₀ κ`. Take `⟨ε, hdvd, hεid⟩` from `hEps (𝓞 D.F) 𝔟₁ 𝔟₂ a₁ a₂ M₁ M₂ t hpos ht hle hg₁ hg₂`. Take `⟨τ, m, hτ, hfin, het, hml⟩` from `hDown p D hSc.m1 hSc.a1 E gb w q r 𝔴 𝔫 S N₀ κ 𝔟₁ 𝔟₂ X₁ X₂ ε hεid`. Establish `hcart : IsGrpPullback (T.M M₁).univ.A (X₁.Y.univ.forget N₀ hd hcq₁).A C₁.j C₁.m.φ` using `C₁.m.cart`. Establish `hsq : Geo.Tor.IsSquare C₁.m.φ C₁.m.φ₂` using `C₁.m.sq`.
+
+Establish `hact : ∀ x, Over.Hom.left ((T.M M₁).univ.act.act x) ≫ C₁.m.φ = C₁.m.φ ≫ Over.Hom.left ((X₁.Y.univ.forget N₀ hd hcq₁).act.act x)` using `C₁.m.act`. Establish `hpol : LBIso (T.M M₁).univ.P ((X₁.Y.univ.forget N₀ hd hcq₁).P.pull C₁.m.φ₂)` using `C₁.m.pol`. Establish `heF : ∀ y : D.La, Over.Hom.left ((T.M M₁).univ.eta ((c₁ * κ) • y)) ≫ C₁.m.φ = C₁.j ≫ Over.Hom.left ((X₁.Y.univ.forget N₀ hd hcq₁).eta y)`. Introduce `y`. Rewrite using `[Obj.forget_eta, Nat.mul_div_cancel_left κ hN₀pos, mul_smul]`.
+
+Conclude with `C₁.m.eta (κ • y)`. Take `⟨nF, hnFφ⟩ : ∃ n : @QMap q _ (datAt S.atq S.sp) (Ow w) E _ _ _ S.b gb _ _ X₁.Y.s (T.M M₁).s _ _ (T.M M₁).univ (X₁.Y.univ.forget N₀ hd hcq₁) C₁.j (c₁ * κ), n.φ = C₁.m.φ` from `⟨⟨C₁.m.φ, C₁.m.φ₂, hcart, hsq, hact, hpol, heF⟩, rfl⟩`. Take `⟨nA, hnA⟩` from `(hComp q (datAt S.atq S.sp) (Ow w) E S.b gb (M₁ : ℕ) N₀ (c₁ * κ) (T.M M₁).X X₁.Y.X X₂.Y.X (T.M M₁).s X₁.Y.s X₂.Y.s (T.M M₁).univ (X₁.Y.univ.forget N₀ hd hcq₁) X₂.Y.univ C₁.j τ).1 nF m`. Take `⟨n₂, hn₂⟩` from `(hComp q (datAt S.atq S.sp) (Ow w) E S.b gb (M₂ : ℕ) N₀ c₂ (T.M M₂).X X₂.Y.X X₂.Y.X (T.M M₂).s X₂.Y.s X₂.Y.s (T.M M₂).univ X₂.Y.univ X₂.Y.univ C₂.j (𝟙 _)).2.2.2 (T.M M₁).X (T.M M₁).s W.o W.π W.φ C₂.m`. Take `⟨hiso, hpol'⟩` from `hUnit p D G L E gb 1 (T.M M₁).X (T.M M₁).s M₁ M₂ (T.M M₁).univ W.o W.ψ W.trans (one_mem _)`.
+
+Establish `hex : ∀ (n : ℕ) (x : D.La), ∃ v ∈ LaHat D, (L.actG 1) (inAf D x) = inAf D x + n • v` using `fun n x => ⟨0, zero_mem _, by simp⟩`. Establish `heta₁ : ∀ y : D.La, (T.M M₁).univ.eta ((c₁ * κ) • y) ≫ W.ψ = W.o.eta (c₂ • y)` using `fun y => hEta p D G L E gb 1 (T.M M₁).X (T.M M₁).s M₁ M₂ (T.M M₁).univ W.o W.ψ W.trans N₀ (c₁ * κ) c₂ (by rw [hM₁']; ring) hM₂' y y (hex N₀ y)`. Take `⟨nB, hnB⟩` from `hIso q (datAt S.atq S.sp) (Ow w) E S.b gb (M₂ : ℕ) (M₁ : ℕ) N₀ c₂ (c₁ * κ) (T.M M₁).X X₂.Y.X (T.M M₁).s X₂.Y.s (T.M M₁).univ W.o X₂.Y.univ (W.π ≫ C₂.j) W.ψ hiso W.trans.1 W.trans.2.1 hpol' heta₁ n₂`. Establish `heq : ∀ y : D.La, (T.M M₁).univ.eta ((algebraMap (𝓞 D.F) D.O) ((t : 𝓞 D.F) * a₂) • y) = (T.M M₁).univ.eta ((algebraMap (𝓞 D.F) D.O) (a₁ * ε) • y)`. Introduce `y`.
+
+Take `⟨z, hz⟩` from `hdvd`. Establish `e1 : (algebraMap (𝓞 D.F) D.O) (a₁ * ε) • y = (algebraMap (𝓞 D.F) D.O) ((t : 𝓞 D.F) * a₂) • y + (M₁ : ℕ) • ((algebraMap (𝓞 D.F) D.O) z • y)`. Establish `h' : a₁ * ε = (t : 𝓞 D.F) * a₂ + ((M₁ : ℕ) : 𝓞 D.F) * z` using `by linear_combination hz`. Rewrite using `[h', map_add, add_smul, map_mul (algebraMap (𝓞 D.F) D.O) ((M₁ : ℕ) : 𝓞 D.F) z, mul_smul, map_natCast, Nat.cast_smul_eq_nsmul]`. Establish `h1` using `(T.M M₁).univ.eta_add ((algebraMap (𝓞 D.F) D.O) ((t : 𝓞 D.F) * a₂) • y) ((M₁ : ℕ) • ((algebraMap (𝓞 D.F) D.O) z • y))`.
+
+Establish `h2` using `(T.M M₁).univ.eta_ker ((algebraMap (𝓞 D.F) D.O) z • y)`. Rewrite using `[e1]`. Use `(h1.trans ?_).symm` and prove the remaining obligations. Conclude with `(congrArg (_ * ·) h2).trans (_root_.mul_one _)`. Establish `hkey : ∀ y : D.La, (T.M M₁).univ.eta ((algebraMap (𝓞 D.F) D.O) ((t : 𝓞 D.F) * a₂) • y) ≫ W.ψ = W.o.eta ((algebraMap (𝓞 D.F) D.O) a₂ • y)`.
+
+Introduce `y`. Establish `h'` using `hEta p D G L E gb 1 (T.M M₁).X (T.M M₁).s M₁ M₂ (T.M M₁).univ W.o W.ψ W.trans M₂ t 1 ht (_root_.mul_one _).symm ((algebraMap (𝓞 D.F) D.O) a₂ • y) ((algebraMap (𝓞 D.F) D.O) a₂ • y) (hex _ _)`. Rewrite using `[map_mul, mul_smul, map_natCast, Nat.cast_smul_eq_nsmul, h', one_smul]`. Establish `lvA : ∀ y : D.La, Over.Hom.left ((T.M M₁).univ.eta ((algebraMap (𝓞 D.F) D.O) ((t : 𝓞 D.F) * a₂) • y)) ≫ nA.φ = (C₁.j ≫ τ) ≫ Over.Hom.left (X₂.Y.lv y)`. Introduce `y`.
+
+Rewrite using `[heq, hnA, hnFφ, map_mul, mul_smul]`. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ m.φ) (C₁.lv _))).trans ((Category.assoc _ _ _).trans ((congrArg (C₁.j ≫ ·) (hml y)).trans (Category.assoc _ _ _).symm))`. Establish `lvB : ∀ y : D.La, Over.Hom.left ((T.M M₁).univ.eta ((algebraMap (𝓞 D.F) D.O) ((t : 𝓞 D.F) * a₂) • y)) ≫ nB.φ = (W.π ≫ C₂.j) ≫ Over.Hom.left (X₂.Y.lv y)`. Introduce `y`. Rewrite using `[hnB, hn₂, ← Category.assoc, ← Over.comp_left, hkey, ← Category.assoc]`.
+
+Conclude with `(congrArg (· ≫ C₂.m.φ) (W.φ.eta _)).trans ((Category.assoc _ _ _).trans ((congrArg (W.π ≫ ·) (C₂.lv y)).trans (Category.assoc _ _ _).symm))`. Take `⟨CA, hCAj, hCAm⟩ : ∃ C : @Cls q _ (datAt S.atq S.sp) (Ow w) E _ _ _ S.b gb (T.M M₁).X (T.M M₁).s (M₁ : ℕ) N₀ 𝔟₂ X₂.Y (algebraMap (Ow w) E) (T.M M₁).univ (c₁ * κ) ((t : 𝓞 D.F) * a₂), C.j = C₁.j ≫ τ ∧ C.m.φ = nA.φ` from `⟨⟨C₁.j ≫ τ, (Category.assoc _ _ _).trans ((congrArg (C₁.j ≫ ·) hτ).trans C₁.ov), nA, lvA⟩, rfl, rfl⟩`. Take `⟨CB, hCBj, hCBm⟩ : ∃ C : @Cls q _ (datAt S.atq S.sp) (Ow w) E _ _ _ S.b gb (T.M M₁).X (T.M M₁).s (M₁ : ℕ) N₀ 𝔟₂ X₂.Y (algebraMap (Ow w) E) (T.M M₁).univ (c₁ * κ) ((t : 𝓞 D.F) * a₂), C.j = W.π ≫ C₂.j ∧ C.m.φ = nB.φ` from `⟨⟨W.π ≫ C₂.j, (Category.assoc _ _ _).trans ((congrArg (W.π ≫ ·) C₂.ov).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ spMap _) W.ov))), nB, lvB⟩, rfl, rfl⟩`. Establish `hgen : IsGen ((t : 𝓞 D.F) * a₂) (M₁ : ℕ) 𝔟₂`. Rewrite using `[ht]`.
+
+Conclude with `(hGen (𝓞 D.F) 𝔟₂ M₂ (by have := M₂.2.1; omega)).2 a₂ t hg₂`. Take `⟨hj, hφ⟩` from `(hCls q (datAt S.atq S.sp) (Ow w) E S.b gb (algebraMap (Ow w) E) S.mat (M₁ : ℕ) N₀ (c₁ * κ) ((t : 𝓞 D.F) * a₂) 𝔟₂ (by rw [hM₁']; ring) hpos h3 hcq₂ hgen X₂.Y (T.M M₁).X (T.M M₁).s (T.M M₁).univ).2 CA CB`. Rewrite `hj` using `[hCAj, hCBj]`. Rewrite `hφ` using `[hCAm, hCBm, hnA, hnB, hn₂, hnFφ]`. Conclude with `⟨⟨τ, hτ, m.φ, m.cart.1.w⟩, ⟨hj, hφ⟩, hfin, het, m.cart.1⟩`.
+-/
 private theorem stepF_of (hGen : GenEx) (hComp : QComp) (hIso : QIso) (hCls : ClsEx) (hEta : TrEta) (hUnit : TrUnit)
     (hEps : EpsEx) (hDown : DownEx) : UpperTheory.Gal.FiniteEtaleModels.StepF := by
   intro p _ D G L hSc E _ _ gb w q _ r 𝔴 𝔫 S k T N₀ κ 𝔟₁ 𝔟₂ X₁ X₂ hle M₁ M₂ c₁ c₂ a₁ a₂ hN₁ hN₂ hM C₁ C₂ W
@@ -122,6 +147,9 @@ private theorem stepF_of (hGen : GenEx) (hComp : QComp) (hIso : QIso) (hCls : Cl
   rw [hCAm, hCBm, hnA, hnB, hn₂, hnFφ] at hφ
   exact ⟨⟨τ, hτ, m.φ, m.cart.1.w⟩, ⟨hj, hφ⟩, hfin, het, m.cart.1⟩
 
+/- English proof (translation)
+The claim follows from `stepF_of UpperTheory.exists_generic_moduli_point UpperTheory.quotient_map_comp UpperTheory.quotient_moduli_iso (UpperTheory.isogeny_class_exists_of_quotient UpperTheory.quotient_moduli_object_exists UpperTheory.quotient_map_comp (UpperTheory.quotient_unique_of_comp UpperTheory.qu …`.
+-/
 theorem stepF : UpperTheory.Gal.FiniteEtaleModels.StepF :=
   stepF_of UpperTheory.exists_generic_moduli_point UpperTheory.quotient_map_comp UpperTheory.quotient_moduli_iso
     (UpperTheory.isogeny_class_exists_of_quotient UpperTheory.quotient_moduli_object_exists UpperTheory.quotient_map_comp (UpperTheory.quotient_unique_of_comp UpperTheory.quotient_map_comp) (UpperTheory.quotient_level_of_lattice_generation UpperTheory.lattice_generation))

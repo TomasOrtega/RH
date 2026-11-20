@@ -16,19 +16,31 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 section SlopeTestRemainingChoices
 
+/- English proof (translation)
+Unfold `kOf`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem kOf_spec (σ : K →+* ℂ) {z : ℂ} (h : ∃ a : K, σ a = z) : σ (kOf σ z) = z := by
   unfold kOf
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+The claim follows from `σ.injective (kOf_spec σ ⟨a, rfl⟩)`.
+-/
 theorem kOf_of (σ : K →+* ℂ) (a : K) : kOf σ (σ a) = a :=
   σ.injective (kOf_spec σ ⟨a, rfl⟩)
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[kMat, kOf_spec σ (h i k)]`.
+-/
 theorem kMat_map (σ : K →+* ℂ) {m n : ℕ} {M : Matrix (Fin m) (Fin n) ℂ} (h : IsRat σ M) :
     (kMat σ M).map σ = M := by
   ext i k
   simp [kMat, kOf_spec σ (h i k)]
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `only [kMat, Matrix.map_apply, Matrix.one_apply]`. Use `split_ifs`. Simplify using `using kOf_of σ 1`. Simplify using `using kOf_of σ 0`.
+-/
 theorem kMat_one (σ : K →+* ℂ) (n : ℕ) : kMat σ (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   ext i k
   simp only [kMat, Matrix.map_apply, Matrix.one_apply]
@@ -36,28 +48,48 @@ theorem kMat_one (σ : K →+* ℂ) (n : ℕ) : kMat σ (1 : Matrix (Fin n) (Fin
   · simpa using kOf_of σ 1
   · simpa using kOf_of σ 0
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[cpt, Matrix.mulVec, dotProduct, map_sum]`.
+-/
 theorem cpt_mulVec (σ : K →+* ℂ) {m n : ℕ} (M : Matrix (Fin m) (Fin n) K) (x : Fin n → K) :
     cpt σ (M.mulVec x) = (M.map σ).mulVec (cpt σ x) := by
   ext i
   simp [cpt, Matrix.mulVec, dotProduct, map_sum]
 
+/- English proof (translation)
+Introduce `x y h`. Use function extensionality and compare the values at `i`. Conclude with `σ.injective (congrFun h i)`.
+-/
 theorem cpt_injective (σ : K →+* ℂ) {n : ℕ} : Function.Injective (cpt σ (n := n)) := by
   intro x y h
   funext i
   exact σ.injective (congrFun h i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[cpt]`.
+-/
 theorem cpt_add (σ : K →+* ℂ) {n : ℕ} (x y : Fin n → K) : cpt σ (x + y) = cpt σ x + cpt σ y := by
   funext i
   simp [cpt]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lin_apply {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} (v : Fin n → E) (y : Fin n → ℂ) :
     lin v y = ∑ i, y i • v i := rfl
 
+/- English proof (translation)
+Simplify using `[lin, Fintype.linearCombination_apply, Pi.single_apply]`.
+-/
 theorem lin_single {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} (v : Fin n → E) (k : Fin n) :
     lin v (Pi.single k 1) = v k := by
   classical
   simp [lin, Fintype.linearCombination_apply, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `y z hyz`. Establish `h0 : ∑ i, (y - z) i • v i = 0`. Use `sub_eq_zero.2 hyz` as an intermediate fact. Simplify `this` using `[lin, Fintype.linearCombination_apply, sub_smul, Finset.sum_sub_distrib]`. Use function extensionality and compare the values at `i`.
+
+Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 h (y - z) h0 i)`.
+-/
 theorem lin_injective {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} {v : Fin n → E}
     (h : LinearIndependent ℂ v) : Function.Injective (lin v) := by
   intro y z hyz
@@ -67,6 +99,9 @@ theorem lin_injective {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} {v : 
   funext i
   exact sub_eq_zero.1 (Fintype.linearIndependent_iff.1 h (y - z) h0 i)
 
+/- English proof (translation)
+Use `Fintype.linearIndependent_iff.2 fun g hg i => ?_` and prove the remaining obligations. Establish `h1 : lin v g = lin v 0`. Simplify using `[lin, Fintype.linearCombination_apply, hg]`. Conclude with `congrFun (h h1) i`.
+-/
 theorem li_of_lin_injective {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} {v : Fin n → E}
     (h : Function.Injective (lin v)) : LinearIndependent ℂ v := by
   refine Fintype.linearIndependent_iff.2 fun g hg i => ?_
@@ -74,6 +109,9 @@ theorem li_of_lin_injective {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ}
     simp [lin, Fintype.linearCombination_apply, hg]
   exact congrFun (h h1) i
 
+/- English proof (translation)
+Establish `h' : ∃ y, f y = e` using `LinearMap.mem_range.1 h`. Unfold `solve`. Rewrite using `[dif_pos h']`. Conclude with `h'.choose_spec`.
+-/
 theorem solve_spec {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} (f : (Fin n → ℂ) →ₗ[ℂ] E) {e : E}
     (h : e ∈ LinearMap.range f) : f (solve f e) = e := by
   have h' : ∃ y, f y = e := LinearMap.mem_range.1 h
@@ -81,6 +119,13 @@ theorem solve_spec {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} (f : (Fi
   rw [dif_pos h']
   exact h'.choose_spec
 
+/- English proof (translation)
+Establish `hy : y = ∑ k, y k • Pi.single k (1 : ℂ)`. Use extensionality with `i`. Simplify using `[Pi.single_apply]`. Establish `hm : (relMat f g).mulVec y = ∑ k, y k • solve f (g (Pi.single k 1))`. Use extensionality with `i`.
+
+Simplify using `[relMat, Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[hm, map_sum]`. Simplify using `only [map_smul, solve_spec f (h _)]`. Use `conv_rhs => rw [hy]`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_smul]`.
+-/
 theorem relMat_spec {E : Type} [AddCommGroup E] [Module ℂ E] {D n : ℕ} (f : (Fin D → ℂ) →ₗ[ℂ] E)
     (g : (Fin n → ℂ) →ₗ[ℂ] E) (h : ∀ k, g (Pi.single k 1) ∈ LinearMap.range f) (y : Fin n → ℂ) :
     f ((relMat f g).mulVec y) = g y := by
@@ -97,6 +142,9 @@ theorem relMat_spec {E : Type} [AddCommGroup E] [Module ℂ E] {D n : ℕ} (f : 
   rw [map_sum]
   simp only [map_smul]
 
+/- English proof (translation)
+Use extensionality with `i k`. Establish `hs : solve f (f (Pi.single k 1)) = Pi.single k 1` using `hf (solve_spec f (LinearMap.mem_range_self f _))`. Simplify using `only [relMat, Matrix.of_apply, hs, Matrix.one_apply, Pi.single_apply]`.
+-/
 theorem relMat_self {E : Type} [AddCommGroup E] [Module ℂ E] {D : ℕ} (f : (Fin D → ℂ) →ₗ[ℂ] E)
     (hf : Function.Injective f) : relMat f f = 1 := by
   classical
@@ -105,6 +153,9 @@ theorem relMat_self {E : Type} [AddCommGroup E] [Module ℂ E] {D : ℕ} (f : (F
     hf (solve_spec f (LinearMap.mem_range_self f _))
   simp only [relMat, Matrix.of_apply, hs, Matrix.one_apply, Pi.single_apply]
 
+/- English proof (translation)
+Establish `hspec` using `relMat_spec f g (fun k => hr ▸ LinearMap.mem_range_self g _)`. Use `⟨fun y y' h => hg ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hspec y, ← hspec y', h]`. Take `⟨y, hy⟩` from `LinearMap.mem_range.1 (hr ▸ LinearMap.mem_range_self f x : f x ∈ LinearMap.range g)`. Conclude with `⟨y, hf (by rw [hspec y, hy])⟩`.
+-/
 theorem relMat_bij {E : Type} [AddCommGroup E] [Module ℂ E] {D n : ℕ} (f : (Fin D → ℂ) →ₗ[ℂ] E)
     (g : (Fin n → ℂ) →ₗ[ℂ] E) (hf : Function.Injective f) (hg : Function.Injective g)
     (hr : LinearMap.range g = LinearMap.range f) : Function.Bijective (relMat f g).mulVec := by
@@ -114,6 +165,11 @@ theorem relMat_bij {E : Type} [AddCommGroup E] [Module ℂ E] {D n : ℕ} (f : (
   · obtain ⟨y, hy⟩ := LinearMap.mem_range.1 (hr ▸ LinearMap.mem_range_self f x : f x ∈ LinearMap.range g)
     exact ⟨y, hf (by rw [hspec y, hy])⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective M.mulVec`. Introduce `x y hxy`. Apply `cpt_injective σ` to reduce the goal to its premises. Apply `h.1` to reduce the goal to its premises. Rewrite using `[← cpt_mulVec, ← cpt_mulVec, hxy]`.
+
+Establish `hmn : m = n`. Establish `e` using `(LinearEquiv.ofBijective (M.map σ).mulVecLin h).finrank_eq`. Simplify using `using e.symm`. Substitute `hmn` using the available equality. Conclude with `⟨hinj, (Matrix.mulVecLin M).injective_iff_surjective.1 hinj⟩`.
+-/
 theorem bij_of_map (σ : K →+* ℂ) {m n : ℕ} (M : Matrix (Fin m) (Fin n) K)
     (h : Function.Bijective (M.map σ).mulVec) : Function.Bijective M.mulVec := by
   have hinj : Function.Injective M.mulVec := by
@@ -127,6 +183,9 @@ theorem bij_of_map (σ : K →+* ℂ) {m n : ℕ} (M : Matrix (Fin m) (Fin n) K)
   subst hmn
   exact ⟨hinj, (Matrix.mulVecLin M).injective_iff_surjective.1 hinj⟩
 
+/- English proof (translation)
+Simplify using `only [lin_apply, sum_inner, inner_sum, inner_smul_left, inner_smul_right, dotProduct, Matrix.mulVec, Matrix.gram_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.star_apply, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem inner_lin_lemma {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {n : ℕ}
     (w : Fin n → E) (a b : Fin n → ℂ) :
     star a ⬝ᵥ (Matrix.gram ℂ w *ᵥ b) = ⟪lin w a, lin w b⟫_ℂ := by
@@ -137,6 +196,11 @@ private theorem inner_lin_lemma {E : Type} [NormedAddCommGroup E] [InnerProductS
   simp only [Pi.star_apply, Complex.star_def]
   ring
 
+/- English proof (translation)
+Establish `hmet` using `(frameOfSpec n _ (Matrix.posDef_gram_of_linearIndependent hli)).2`. Establish `hmet' : ((X v)⁻¹)ᴴ * (X v)⁻¹ = Matrix.gram ℂ w` using `by rw [hX]; exact hmet`. Establish `hva : ∀ z : Fin n → K, Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v z = cpt v.embedding z` using `fun z => by`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt, cpt]`.
+
+Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[hva, hva]`. Express the relevant statement in the definitionally equal form `star ((X v)⁻¹ *ᵥ cpt v.embedding x) ⬝ᵥ ((X v)⁻¹ *ᵥ cpt v.embedding y) = _`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hmet', inner_lin_lemma]`.
+-/
 theorem majAt_gram {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {n : ℕ}
     (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (v : InfinitePlace K) (w : Fin n → E)
     (hli : LinearIndependent ℂ w) (hX : X v = frameOf (Matrix.gram ℂ w)) (x y : Fin n → K) :
@@ -151,10 +215,20 @@ theorem majAt_gram {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {
   change star ((X v)⁻¹ *ᵥ cpt v.embedding x) ⬝ᵥ ((X v)⁻¹ *ᵥ cpt v.embedding y) = _
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hmet', inner_lin_lemma]
 
+/- English proof (translation)
+The claim follows from `(frameOfSpec n _ (Matrix.posDef_gram_of_linearIndependent hli)).1`.
+-/
 theorem frame_gram_unit {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {n : ℕ} (w : Fin n → E)
     (hli : LinearIndependent ℂ w) : IsUnit (frameOf (Matrix.gram ℂ w)).det :=
   (frameOfSpec n _ (Matrix.posDef_gram_of_linearIndependent hli)).1
 
+/- English proof (translation)
+Establish `hc' : (0 : ℂ) < (c : ℂ)` using `Complex.zero_lt_real.2 hc`. Establish `hmet` using `(frameOfSpec n _ ((Matrix.posDef_gram_of_linearIndependent hli).smul hc')).2`. Establish `hmet' : ((X v)⁻¹)ᴴ * (X v)⁻¹ = (c : ℂ) • Matrix.gram ℂ w` using `by rw [hX]; exact hmet`. Establish `hva : ∀ z : Fin n → K, Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v z = cpt v.embedding z` using `fun z => by`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Formalism.HermitianLatticesTheory.vecAt, cpt]`. Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[hva, hva]`. Express the relevant statement in the definitionally equal form `star ((X v)⁻¹ *ᵥ cpt v.embedding x) ⬝ᵥ ((X v)⁻¹ *ᵥ cpt v.embedding y) = _`. Establish `hsm : ((c : ℂ) • Matrix.gram ℂ w) *ᵥ cpt v.embedding y = (c : ℂ) • (Matrix.gram ℂ w *ᵥ cpt v.embedding y)`.
+
+Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hmet', hsm, dotProduct_smul, smul_eq_mul, inner_lin_lemma]`.
+-/
 theorem majAt_gram_smul {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {n : ℕ}
     (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (v : InfinitePlace K) (w : Fin n → E)
     (hli : LinearIndependent ℂ w) (c : ℝ) (hc : 0 < c) (hX : X v = frameOf ((c : ℂ) • Matrix.gram ℂ w))
@@ -177,10 +251,18 @@ theorem majAt_gram_smul {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hmet', hsm,
     dotProduct_smul, smul_eq_mul, inner_lin_lemma]
 
+/- English proof (translation)
+The claim follows from `(frameOfSpec n _ ((Matrix.posDef_gram_of_linearIndependent hli).smul (Complex.zero_lt_real.2 hc))).1`.
+-/
 theorem frame_gram_smul_unit {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {n : ℕ} (w : Fin n → E)
     (hli : LinearIndependent ℂ w) (c : ℝ) (hc : 0 < c) : IsUnit (frameOf ((c : ℂ) • Matrix.gram ℂ w)).det :=
   (frameOfSpec n _ ((Matrix.posDef_gram_of_linearIndependent hli).smul (Complex.zero_lt_real.2 hc))).1
 
+/- English proof (translation)
+Establish `hv : Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v (y + z) = Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v y + Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v z`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[hv, Matrix.mulVec_add]`.
+
+Simplify using `[mul_add, Finset.sum_add_distrib]`.
+-/
 theorem majAt_add_right {n : ℕ} (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (v : InfinitePlace K)
     (x y z : Fin n → K) : Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v x (y + z) =
       Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v x y + Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v x z := by
@@ -192,6 +274,11 @@ theorem majAt_add_right {n : ℕ} (X : InfinitePlace K → Matrix (Fin n) (Fin n
   rw [hv, Matrix.mulVec_add]
   simp [mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `hv : Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v 0 = 0`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[hv, Matrix.mulVec_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem majAt_zero_left {n : ℕ} (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (v : InfinitePlace K)
     (y : Fin n → K) : Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v 0 y = 0 := by
   have hv : Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v 0 = 0 := by
@@ -201,6 +288,13 @@ theorem majAt_zero_left {n : ℕ} (X : InfinitePlace K → Matrix (Fin n) (Fin n
   rw [hv, Matrix.mulVec_zero]
   simp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `hv : Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v 0 = 0`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`.
+
+Simplify using `only [Finset.sum_empty]`. Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[hv, Matrix.mulVec_zero]`. Simplify using the standard rewrite rules. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, majAt_add_right, ih]`.
+-/
 theorem majAt_sum_right {n : ℕ} (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (v : InfinitePlace K)
     (x : Fin n → K) {ι : Type} (s : Finset ι) (y : ι → Fin n → K) :
     Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v x (∑ q ∈ s, y q) =
@@ -225,6 +319,9 @@ section Parts
 variable {Bs : DefBase K} (Df : DefSide Bs) (t : Bs.Tup) (hi : iSupIndep (Df.Qp t)) (ht : (⨆ p, Df.Qp t p) = ⊤)
 
 include hi ht in
+/- English proof (translation)
+Establish `hc : IsCompl (Df.Qp t q) (⨆ (p' : Bs.Ix) (_ : p' ≠ q), Df.Qp t p')` using `⟨hi q, codisjoint_iff.2 (by rw [← iSup_split_single (Df.Qp t) q]; exact ht)⟩`. Conclude with `⟨hc, by unfold partPr; rw [dif_pos hc]⟩`.
+-/
 theorem partPr_eq (q : Bs.Ix) :
     ∃ hc : IsCompl (Df.Qp t q) (⨆ (p' : Bs.Ix) (_ : p' ≠ q), Df.Qp t p'),
       partPr Df t q = LinearMap.toMatrix' ((Df.Qp t q).subtype ∘ₗ Submodule.projectionOnto _ _ hc) := by
@@ -233,12 +330,18 @@ theorem partPr_eq (q : Bs.Ix) :
   exact ⟨hc, by unfold partPr; rw [dif_pos hc]⟩
 
 include hi ht in
+/- English proof (translation)
+Take `⟨hc, heq⟩` from `partPr_eq Df t hi ht q`. Rewrite using `[heq, LinearMap.toMatrix'_mulVec]`. Conclude with `Submodule.coe_mem _`.
+-/
 theorem partPr_mem (q : Bs.Ix) (y : Fin (Df.dQ t) → K) : (partPr Df t q).mulVec y ∈ Df.Qp t q := by
   obtain ⟨hc, heq⟩ := partPr_eq Df t hi ht q
   rw [heq, LinearMap.toMatrix'_mulVec]
   exact Submodule.coe_mem _
 
 include hi ht in
+/- English proof (translation)
+Take `⟨hc, heq⟩` from `partPr_eq Df t hi ht p`. Rewrite using `[heq, LinearMap.toMatrix'_mulVec, LinearMap.comp_apply]`. Use `Submodule.projectionOnto_apply_left hc ⟨x, hx⟩` as an intermediate fact. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem partPr_self {p : Bs.Ix} {x : Fin (Df.dQ t) → K} (hx : x ∈ Df.Qp t p) : (partPr Df t p).mulVec x = x := by
   obtain ⟨hc, heq⟩ := partPr_eq Df t hi ht p
   rw [heq, LinearMap.toMatrix'_mulVec, LinearMap.comp_apply]
@@ -247,6 +350,11 @@ theorem partPr_self {p : Bs.Ix} {x : Fin (Df.dQ t) → K} (hx : x ∈ Df.Qp t p)
   rfl
 
 include hi ht in
+/- English proof (translation)
+Take `⟨hc, heq⟩` from `partPr_eq Df t hi ht q`. Rewrite using `[heq, LinearMap.toMatrix'_mulVec, LinearMap.comp_apply]`. Establish `hx' : x ∈ ⨆ (p' : Bs.Ix) (_ : p' ≠ q), Df.Qp t p'` using `(le_biSup (fun p' => Df.Qp t p') (Ne.symm hq)) hx`. Use `Submodule.linearProjOfIsCompl_apply_right hc ⟨x, hx'⟩` as an intermediate fact. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem partPr_other {p q : Bs.Ix} {x : Fin (Df.dQ t) → K} (hx : x ∈ Df.Qp t p) (hq : q ≠ p) :
     (partPr Df t q).mulVec x = 0 := by
   obtain ⟨hc, heq⟩ := partPr_eq Df t hi ht q
@@ -258,6 +366,13 @@ theorem partPr_other {p q : Bs.Ix} {x : Fin (Df.dQ t) → K} (hx : x ∈ Df.Qp t
   rfl
 
 include hi ht in
+/- English proof (translation)
+Set `T : (Fin (Df.dQ t) → K) →ₗ[K] (Fin (Df.dQ t) → K)` to `(∑ q, (partPr Df t q).mulVecLin) - LinearMap.id`. Establish `hT : ∀ z, T z = ∑ q, (partPr Df t q).mulVec z - z`. Introduce `z`. Simplify using `[T, LinearMap.sum_apply]`. Establish `hle : (⨆ p, Df.Qp t p) ≤ LinearMap.ker T`.
+
+Use `iSup_le fun p x hx => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, hT, Finset.sum_eq_single p]`. Rewrite using `[partPr_self Df t hi ht hx, sub_self]`. Introduce `q _ hq`. Conclude with `partPr_other Df t hi ht hx hq`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ p) h`. Establish `hy : y ∈ LinearMap.ker T` using `hle (ht ▸ Submodule.mem_top)`. Rewrite `hy` using `[LinearMap.mem_ker, hT]`. Conclude with `sub_eq_zero.1 hy`.
+-/
 theorem sum_partPr_mulVec (y : Fin (Df.dQ t) → K) : ∑ q, (partPr Df t q).mulVec y = y := by
   classical
   let T : (Fin (Df.dQ t) → K) →ₗ[K] (Fin (Df.dQ t) → K) :=
@@ -277,6 +392,17 @@ theorem sum_partPr_mulVec (y : Fin (Df.dQ t) → K) : ∑ q, (partPr Df t q).mul
   rw [LinearMap.mem_ker, hT] at hy
   exact sub_eq_zero.1 hy
 
+/- English proof (translation)
+Establish `hi` using `hW.Qp_indep`. Establish `ht` using `hW.Qp_top`. Establish `hdet : ∀ v, IsUnit ((Df.XQ Bs.μ0) v).det` using `fun v => (hW.XQ_quot Bs.μ0 v).1`. Establish `hsum : ∑ q, partPr Df Bs.μ0 q = 1`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.sum_mulVec, Matrix.one_mulVec]`. Conclude with `sum_partPr_mulVec Df Bs.μ0 hi ht z`. Establish `hmul : ∀ q q', q ≠ q' → partPr Df Bs.μ0 q * partPr Df Bs.μ0 q' = 0`. Introduce `q q' hqq'`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Matrix.zero_mulVec]`. Conclude with `partPr_other Df Bs.μ0 hi ht (partPr_mem Df Bs.μ0 hi ht q' z) hqq'`. Establish `key` using `weightFramePart K _ Bs.Ix (partPr Df Bs.μ0) (fun p v => κ v * ∏ j, lam j p v) (Df.XQ Bs.μ0) hdet (fun p v => mul_pos (hκ v) (Finset.prod_pos fun j _ => hlam j p v)) hsum hmul v (fun q q' hqq' x' y' => horth q q' hqq' _ (partPr_mem Df Bs.μ0 hi ht q x') _ (partPr_mem Df Bs.μ0 hi ht …`.
+
+Establish `hrow : rowXE Df Y κ lam v = weightFrame (partPr Df Bs.μ0) (fun p v => κ v * ∏ j, lam j p v) (Df.XQ Bs.μ0) v`. Simplify using `[rowXE, rowFrame, spliceFrame, pushFrame, Function.update_of_ne hv]`. Establish `hmaj : Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K _) (rowXE Df Y κ lam) v x y = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K _) (weightFrame (partPr Df Bs.μ0) (fun p v => κ v * ∏ j, lam j p v) (Df.XQ Bs.μ0)) v x y`. Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[hrow]`.
+
+Rewrite using `[hmaj, key]`.
+-/
 theorem rowXE_part (hW : Df.WF) (Y : Matrix (Fin (Df.dQ Bs.μ0)) (Fin (Df.dQ Bs.μ0)) ℂ) (hY : IsUnit Y.det)
     (κ : InfinitePlace K → ℝ) (hκ : ∀ v, 0 < κ v) (lam : Bs.J → Bs.Ix → InfinitePlace K → ℝ)
     (hlam : ∀ j p v, 0 < lam j p v) (v : InfinitePlace K) (hv : v ≠ Bs.v0)
@@ -316,6 +442,11 @@ theorem rowXE_part (hW : Df.WF) (Y : Matrix (Fin (Df.dQ Bs.μ0)) (Fin (Df.dQ Bs.
 
 end Parts
 
+/- English proof (translation)
+Apply `LinearMap.pi_ext` to reduce the goal to its premises. Introduce `i x`. Simplify using `only [lin, Fintype.linearCombination_apply, Pi.single_apply, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← map_smul]`. Use `congr 1`.
+
+Use extensionality with `j`. Simplify using `[Pi.single_apply]`.
+-/
 theorem lin_basis {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} (f : (Fin n → ℂ) →ₗ[ℂ] E) :
     lin (fun i => f (Pi.single i 1)) = f := by
   classical
@@ -332,26 +463,44 @@ namespace CxData
 
 variable {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Ep (p : Bs.Ix) (y : Fin ((lv (fc X.zs) b).dQ Bs.μ0) → K) :
     y ∈ X.Ep cr b p ↔ X.iC cr b Bs.μ0 (cpt Bs.v0.embedding y) ∈ X.EEp p := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_WpK (j : Bs.J) (p : Bs.Ix) (y : Fin (X.dW b j) → K) :
     y ∈ X.WpK b j p ↔ X.w0C b j (cpt Bs.v0.embedding y) ∈ X.Wp j p := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[cpt_mulVec, rowMat, kMat_map _ (hr t), rowMatC]`. Conclude with `relMat_spec _ _ (fun k => (h2.2.1 t).2 ▸ LinearMap.mem_range_self _ _) _`.
+-/
 theorem key_row (h2 : X.H2 cr b) (hr : X.RATmu cr b) (t : Bs.Tup) (x : Fin ((lv (fc X.zs) b).dQ t) → K) :
     X.iC cr b Bs.μ0 (cpt Bs.v0.embedding ((X.rowMat cr b t).mulVec x)) = X.iC cr b t (cpt Bs.v0.embedding x) := by
   rw [cpt_mulVec, rowMat, kMat_map _ (hr t), rowMatC]
   exact relMat_spec _ _ (fun k => (h2.2.1 t).2 ▸ LinearMap.mem_range_self _ _) _
 
+/- English proof (translation)
+Use `bij_of_map Bs.v0.embedding _ ?_` and prove the remaining obligations. Rewrite using `[rowMat, kMat_map _ (hr t), rowMatC]`. Conclude with `relMat_bij _ _ h2.1 (h2.2.1 t).1 (h2.2.1 t).2`.
+-/
 theorem rowMat_bij (h2 : X.H2 cr b) (hr : X.RATmu cr b) (t : Bs.Tup) :
     Function.Bijective (X.rowMat cr b t).mulVec := by
   refine bij_of_map Bs.v0.embedding _ ?_
   rw [rowMat, kMat_map _ (hr t), rowMatC]
   exact relMat_bij _ _ h2.1 (h2.2.1 t).1 (h2.2.1 t).2
 
+/- English proof (translation)
+Rewrite using `[rowMat, rowMatC, relMat_self _ h2.1, kMat_one]`.
+-/
 theorem rowMat_base (h2 : X.H2 cr b) : X.rowMat cr b Bs.μ0 = 1 := by
   rw [rowMat, rowMatC, relMat_self _ h2.1, kMat_one]
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `he j x x`. Rewrite `h1` using `[hx, inner_zero_left]`. Establish `hn' : ((X.nP b : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Conclude with `inner_self_eq_zero.1 ((mul_eq_zero.1 h1.symm).resolve_left hn')`.
+-/
 theorem eW_inj (he : X.EWnorm b) (hn : 0 < X.nP b) (j : Bs.J) : Function.Injective (X.eW b j) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
   have h1 := he j x x
@@ -359,17 +508,26 @@ theorem eW_inj (he : X.EWnorm b) (hn : 0 < X.nP b) (j : Bs.J) : Function.Injecti
   have hn' : ((X.nP b : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hn.ne'
   exact inner_self_eq_zero.1 ((mul_eq_zero.1 h1.symm).resolve_left hn')
 
+/- English proof (translation)
+Rewrite using `[w0C, LinearMap.coe_comp]`. Conclude with `(X.eW_inj b he hn j).comp (lin_injective (hk j Bs.v0).1)`.
+-/
 theorem principal_form_injective (hk : X.KForm b) (he : X.EWnorm b) (hn : 0 < X.nP b) (j : Bs.J) :
     Function.Injective (X.w0C b j) := by
   rw [w0C, LinearMap.coe_comp]
   exact (X.eW_inj b he hn j).comp (lin_injective (hk j Bs.v0).1)
 
+/- English proof (translation)
+Rewrite using `[cpt_mulVec, liftMat, kMat_map _ (hr j t), liftMatC]`. Conclude with `relMat_spec _ _ (fun k => (h5 j t).2 ▸ LinearMap.mem_range_self _ _) _`.
+-/
 theorem key_lift (h5 : X.H5 cr b) (hr : X.RATth cr b) (j : Bs.J) (t : Bs.Tup)
     (x : Fin ((lv (fc X.zs) b).dZ j t) → K) :
     X.w0C b j (cpt Bs.v0.embedding ((X.liftMat cr b j t).mulVec x)) = X.tC cr b j t (cpt Bs.v0.embedding x) := by
   rw [cpt_mulVec, liftMat, kMat_map _ (hr j t), liftMatC]
   exact relMat_spec _ _ (fun k => (h5 j t).2 ▸ LinearMap.mem_range_self _ _) _
 
+/- English proof (translation)
+Use `bij_of_map Bs.v0.embedding _ ?_` and prove the remaining obligations. Rewrite using `[liftMat, kMat_map _ (hr j t), liftMatC]`. Conclude with `relMat_bij _ _ (X.principal_form_injective b hk he hn j) (h5 j t).1 (h5 j t).2`.
+-/
 theorem liftMat_bij (hk : X.KForm b) (he : X.EWnorm b) (hn : 0 < X.nP b) (h5 : X.H5 cr b) (hr : X.RATth cr b)
     (j : Bs.J) (t : Bs.Tup) :
     Function.Bijective (X.liftMat cr b j t).mulVec := by
@@ -377,6 +535,9 @@ theorem liftMat_bij (hk : X.KForm b) (he : X.EWnorm b) (hn : 0 < X.nP b) (h5 : X
   rw [liftMat, kMat_map _ (hr j t), liftMatC]
   exact relMat_bij _ _ (X.principal_form_injective b hk he hn j) (h5 j t).1 (h5 j t).2
 
+/- English proof (translation)
+Establish `hli : LinearIndependent ℂ fun i => X.iC cr b Bs.μ0 (Pi.single i 1)`. Apply `li_of_lin_injective` to reduce the goal to its premises. Rewrite using `[lin_basis]`. Conclude with `h2.1`. Conclude with `frame_gram_smul_unit _ hli _ (inv_pos.2 hn)`.
+-/
 theorem gramE_unit (h2 : X.H2 cr b) (hn : 0 < X.nP b) : IsUnit (frameOf (X.gramE cr b)).det := by
   have hli : LinearIndependent ℂ fun i => X.iC cr b Bs.μ0 (Pi.single i 1) := by
     apply li_of_lin_injective
@@ -386,6 +547,15 @@ theorem gramE_unit (h2 : X.H2 cr b) (hn : 0 < X.nP b) : IsUnit (frameOf (X.gramE
 
 variable {Y : CxCol (fc := fc) X} {C CH : ℝ}
 
+/- English proof (translation)
+Establish `hi` using `(hW b).Qp_indep`. Establish `ht` using `(hW b).Qp_top`. Establish `hsum : ∑ q, partPr (lv (fc X.zs) b) Bs.μ0 q = 1`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.sum_mulVec, Matrix.one_mulVec]`. Conclude with `sum_partPr_mulVec _ Bs.μ0 hi ht z`. Establish `hdet : ∀ v, IsUnit (((lv (fc X.zs) b).XQ Bs.μ0) v).det` using `fun v => ((hW b).XQ_quot Bs.μ0 v).1`. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = Bs.v0`.
+
+Substitute `hv` using the available equality. Simplify using `only [XE, rowXE, rowFrame, spliceFrame, Function.update_self]`. Conclude with `X.gramE_unit cr b (hL.h2 b) (hL.h4pos.2.2 b)`. Establish `h` using `(weightFrameSpec K _ Bs.Ix (partPr (lv (fc X.zs) b) Bs.μ0) (fun p v => X.κ v * ∏ j, X.lam j Bs.μ0 p v) ((lv (fc X.zs) b).XQ Bs.μ0) hdet (fun p v => mul_pos (hL.h4pos.1 v) (Finset.prod_pos fun j _ => hL.h4pos.2.1 j Bs.μ0 p v)) hsum v).1`. Simplify `h` using `[XE, rowXE, rowFrame, spliceFrame, pushFrame, Function.update_of_ne hv]`.
+
+Simplify using `[XE, rowXE, rowFrame, spliceFrame]`.
+-/
 theorem XE_spec (hL : X.CxLinks cr Y C CH) (hW : ∀ b, (lv (fc X.zs) b).WF) :
     (∀ v, IsUnit (X.XE cr b v).det) ∧ X.XE cr b Bs.v0 = frameOf (X.gramE cr b) := by
   classical
@@ -408,6 +578,17 @@ theorem XE_spec (hL : X.CxLinks cr Y C CH) (hW : ∀ b, (lv (fc X.zs) b).WF) :
       simpa [XE, rowXE, rowFrame, spliceFrame, pushFrame, Function.update_of_ne hv] using h
   · simp [XE, rowXE, rowFrame, spliceFrame]
 
+/- English proof (translation)
+Introduce `x hx y`. Use `show Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin ((lv (fc X.zs) b).dQ Bs.μ0))) (X.XE cr b) v ((X.rowMat cr b t).mulVec x) ((X.rowMat cr b t).mulVec y) = (((X.κ v * ∏ j, X.lam j t p v : ℝ)) : ℂ) * Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin ((lv (fc …`. Establish `hxE : (X.rowMat cr b t).mulVec x ∈ X.Ep cr b p` using `hx`. Distinguish the cases in `hv : v = Bs.v0`. Substitute `hv` using the available equality.
+
+Establish `hli : LinearIndependent ℂ fun i => X.iC cr b Bs.μ0 (Pi.single i 1)`. Apply `li_of_lin_injective` to reduce the goal to its premises. Rewrite using `[lin_basis]`. Conclude with `(hL.h2 b).1`. Establish `hX0 : X.XE cr b Bs.v0 = frameOf ((((X.nP b)⁻¹ : ℝ) : ℂ) • Matrix.gram ℂ fun i => X.iC cr b Bs.μ0 (Pi.single i 1))` using `(X.XE_spec cr b hL hW).2`.
+
+Rewrite using `[majAt_gram_smul _ _ _ hli _ (inv_pos.2 (hL.h4pos.2.2 b)) hX0, lin_basis, key_row X cr b (hL.h2 b) (hL.ratMu b), key_row X cr b (hL.h2 b) (hL.ratMu b)]`. Establish `hin : X.iC cr b t (cpt Bs.v0.embedding x) ∈ X.EEp p`. Rewrite using `[← key_row X cr b (hL.h2 b) (hL.ratMu b)]`. Conclude with `(mem_Ep X cr b p _).1 hxE`. Rewrite using `[(hL.h4 b) t p x hin y]`.
+
+Establish `hn' : ((X.nP b : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hL.h4pos.2.2 b).ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `ht : t = Bs.μ0` using `htv.resolve_right hv`. Substitute `ht` using the available equality.
+
+Rewrite `hxE`, the goal using `[X.rowMat_base cr b (hL.h2 b)]`. Rewrite using `[Matrix.one_mulVec, Matrix.one_mulVec]`. Rewrite `hxE` using `[Matrix.one_mulVec]`. Establish `hxQ : x ∈ (lv (fc X.zs) b).Qp Bs.μ0 p` using `((hL.h3 b) p x).2 ((mem_Ep X cr b p x).1 hxE)`. Conclude with `rowXE_part (lv (fc X.zs) b) (hW b) (frameOf (X.gramE cr b)) (X.gramE_unit cr b (hL.h2 b) (hL.h4pos.2.2 b)) X.κ hL.h4pos.1 (fun j p v => X.lam j Bs.μ0 p v) (fun j p v => hL.h4pos.2.1 j Bs.μ0 p v) v hv (hL.partsOrth b v hv) p x hxQ y`.
+-/
 theorem scal_rows (hL : X.CxLinks cr Y C CH) (hW : ∀ b, (lv (fc X.zs) b).WF) (t : Bs.Tup) (v : InfinitePlace K)
     (htv : t = Bs.μ0 ∨ v = Bs.v0) (p : Bs.Ix) :
     IsScalarOn ((lv (fc X.zs) b).XQ t) (X.data cr b).XE v ((X.data cr b).ι t) ((X.data cr b).Qpart t p)
@@ -446,6 +627,17 @@ theorem scal_rows (hL : X.CxLinks cr Y C CH) (hW : ∀ b, (lv (fc X.zs) b).WF) (
       X.κ hL.h4pos.1 (fun j p v => X.lam j Bs.μ0 p v) (fun j p v => hL.h4pos.2.1 j Bs.μ0 p v) v hv
       (hL.partsOrth b v hv) p x hxQ y
 
+/- English proof (translation)
+Introduce `x hx y`. Use `show Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin (X.dW b j))) (X.XW b j) v ((X.liftMat cr b j t).mulVec x) ((X.liftMat cr b j t).mulVec y) = ((X.lam j t p v : ℝ) : ℂ) * Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin ((lv (fc X.zs) b).dZ j t))) ((lv (f …`. Establish `hxW : (X.liftMat cr b j t).mulVec x ∈ X.WpK b j p` using `hx`. Establish `hin : X.tC cr b j t (cpt Bs.v0.embedding x) ∈ X.Wp j p`. Rewrite using `[← key_lift X cr b (hL.h5 b) (hL.ratTh b)]`.
+
+Conclude with `(mem_WpK X b j p _).1 hxW`. Distinguish the cases in `hv : v = Bs.v0`. Substitute `hv` using the available equality. Establish `hX0 : X.XW b j Bs.v0 = frameOf (Matrix.gram ℂ (X.bW b j Bs.v0))` using `rfl`. Rewrite using `[majAt_gram _ _ _ ((hL.kForm b) j Bs.v0).1 hX0]`.
+
+Establish `hw : ∀ z, lin (X.bW b j Bs.v0) z = X.wC b j Bs.v0 z` using `fun z => rfl`. Rewrite using `[hw, hw]`. Establish `hE` using `(hL.ewNorm b) j (X.wC b j Bs.v0 (cpt Bs.v0.embedding ((X.liftMat cr b j t).mulVec x))) (X.wC b j Bs.v0 (cpt Bs.v0.embedding ((X.liftMat cr b j t).mulVec y)))`. Establish `hw0 : ∀ z, X.eW b j (X.wC b j Bs.v0 z) = X.w0C b j z` using `fun z => rfl`. Rewrite `hE` using `[hw0, hw0, key_lift X cr b (hL.h5 b) (hL.ratTh b), key_lift X cr b (hL.h5 b) (hL.ratTh b), (hL.thmA b) j t p x hin y]`.
+
+Establish `hn' : ((X.nP b : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hL.h4pos.2.2 b).ne'`. Move the coercions through the operations in `at hE ⊢`. Apply `mul_left_cancel₀ hn'` to reduce the goal to its premises. Rewrite using `[← hE]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `ht : t = Bs.μ0` using `htv.resolve_right hv`. Substitute `ht` using the available equality. Establish `hX0 : X.XW b j v = frameOf (Matrix.gram ℂ (X.bW b j v))` using `rfl`. Rewrite using `[majAt_gram _ _ _ ((hL.kForm b) j v).1 hX0]`. Conclude with `(hL.galD b) j v hv p x hin y`.
+-/
 theorem scal_lifts (hL : X.CxLinks cr Y C CH) (j : Bs.J) (t : Bs.Tup) (v : InfinitePlace K)
     (htv : t = Bs.μ0 ∨ v = Bs.v0) (p : Bs.Ix) :
     IsScalarOn ((lv (fc X.zs) b).XT j t) ((X.data cr b).XW j) v ((X.data cr b).θ j t) ((X.data cr b).Zpart j t p)
@@ -527,6 +719,9 @@ def cxPkg {Bs : DefBase K} {A : DefAmb Bs} {fc : DefSub A → DefFace Bs} (cr : 
                   l1e := hL.l1e }
         extra := { untw := hL.untw, level := ⟨rfl, rfl, rfl⟩, passage := hL.passage, fun0 := hL.fun0 } } }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl⟩`.
+-/
 theorem cxPkg_spec {Bs : DefBase K} {A : DefAmb Bs} {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (X : CxData A)
     (Y : CxData.CxCol (fc := fc) X) (C CH : ℝ) (hL : X.CxLinks cr Y C CH) (hW : ∀ b, (lv (fc X.zs) b).WF) :
     (cxPkg cr X Y C CH hL hW).Zs = X.zs ∧ (cxPkg cr X Y C CH hL hW).core.base.toIndefData = X.data cr false ∧
@@ -534,10 +729,16 @@ theorem cxPkg_spec {Bs : DefBase K} {A : DefAmb Bs} {fc : DefSub A → DefFace B
       (cxPkg cr X Y C CH hL hW).core.cols.col = X.colOf cr Y ∧ (cxPkg cr X Y C CH hL hW).core.base.μ = X.μ :=
   ⟨rfl, rfl, rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨cxPkg cr X Y C CH hL hW⟩`.
+-/
 theorem cxToPkg {Bs : DefBase K} {A : DefAmb Bs} {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (X : CxData A)
     (Y : CxData.CxCol (fc := fc) X) (C CH : ℝ) (hL : X.CxLinks cr Y C CH) (hW : ∀ b, (lv (fc X.zs) b).WF) :
     Nonempty (IndefPkg A fc C CH) := ⟨cxPkg cr X Y C CH hL hW⟩
 
+/- English proof (translation)
+Conclude with `⟨cxPkg cr X Y C CH hL hW, hQ⟩`.
+-/
 theorem cx_exists_Q {Bs : DefBase K} {A : DefAmb Bs} {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (X : CxData A)
     (Y : CxData.CxCol (fc := fc) X) (C CH : ℝ) (hL : X.CxLinks cr Y C CH) (hW : ∀ b, (lv (fc X.zs) b).WF)
     (Q : DefSub A → (HeightOneSpectrum (𝓞 K) → Bs.Tup) → Prop) (hQ : Q X.zs X.μ) :

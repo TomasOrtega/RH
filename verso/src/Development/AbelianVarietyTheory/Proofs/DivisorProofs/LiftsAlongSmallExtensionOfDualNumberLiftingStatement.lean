@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DualOpen.smallLift_of_tanLift | exact GlobalTheory.DualOpen.smallLift_of_tanLift | (intros; apply GlobalTheory.DualOpen.smallLift_of_tanLift <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.liftsAlong_smallExtension_of_dualNumber_lifting : ∀ (S : Scheme.{0}) [IsAffine S] (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (U : Over S) [Smooth U.hom] (M : LB (A ⊗ U).left), Fam A M → Inj A M → TanLift A M → SmallLift A M := by
   first | exact @GlobalTheory.DualOpen.smallLift_of_tanLift | exact GlobalTheory.DualOpen.smallLift_of_tanLift | (intros; apply GlobalTheory.DualOpen.smallLift_of_tanLift <;> assumption)

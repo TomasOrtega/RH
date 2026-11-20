@@ -15,6 +15,19 @@ open GlobalTheory.MumFam GlobalTheory.MumProd GlobalTheory.ProdUnif
 
 namespace GlobalTheory.ProdUnif
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U k hR hk Λ _ b σ hcard hσ`. Take `⟨β, -, hβ⟩` from `GlobalTheory.GenericSectionBasis.exists_secK_basis GlobalTheory.abelianSchemeLaws_all.1.secBaseChange R I D A G U k hk`. Use `choose C hC using fun l => (hβ (σ l)).exists`. Establish `hCc : ∀ l, GlobalTheory.UnifPowAdm.IsComb (pullback.snd G.hom (jK R)) (σ l) (C l) β` using `fun l jj => hC l jj`. Set `Φ : (Λ → FractionRing R) →ₗ[FractionRing R] (Fin (k ^ A.g) → FractionRing R)` to `{ toFun := fun c a => ∑ l, c l * C l a map_add' := fun c d => by funext a; simp [add_mul, Finset.sum_add_distrib] map_smul' := fun r c => by`.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_assoc _ _ _ }`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `c hc`. Take `⟨s, hs⟩` from `GlobalTheory.UnifPowAdm.exists_isComb (pullback.snd G.hom (jK R)) c σ`. Establish `h1` using `hs.trans hCc`. Establish `hz : ∀ a, ∑ l, c l * C l a = 0` using `fun a => congrFun hc a`. Establish `h0 : ∀ jj, s.f jj = 0` using `fun jj => by`.
+
+Rewrite using `[h1 jj]`. Simplify using `[hz]`. Establish `hE` using `GlobalTheory.UnifPowAdm.expands_comb U k hσ hs`. Establish `h2` using `GlobalTheory.ExpZero.main R I D A G U k hR s _ h0 hE`. Conclude with `funext fun l => Fintype.linearIndependent_iff.1 b.linearIndependent c h2 l`.
+
+Establish `hsurj : Function.Surjective Φ`. Rewrite using `[← LinearMap.injective_iff_surjective_of_finrank_eq_finrank]` and apply the resulting hypothesis. Simplify using `[hcard]`. Use `GlobalTheory.UnifPowAdm.expBij_of_basis U k hR b σ hσ fun s => ?_` and prove the remaining obligations. Take `⟨d, hd, -⟩` from `hβ s`.
+
+Take `⟨c, rfl⟩` from `hsurj d`. Take `⟨s', hs'⟩` from `GlobalTheory.UnifPowAdm.exists_isComb (pullback.snd G.hom (jK R)) c σ`. Establish `e : s' = s` using `(hs'.trans hCc).unique fun jj => hd jj`. Conclude with `⟨c, e ▸ hs'⟩`.
+-/
 theorem expBij_of_basis_card : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (k : ℕ), AdmBase R I → 1 ≤ k → ∀ (Λ : Type) [Fintype Λ] (b : Module.Basis Λ (FractionRing R) (Fam D.toPre (FractionRing R) k)) (σ : Λ → U.SecK k), Fintype.card Λ = k ^ A.g → (∀ l, U.Expands k (σ l) (b l)) → U.ExpBij k := by
   intro R _ _ I D A G _ _ U k hR hk Λ _ b σ hcard hσ
   classical

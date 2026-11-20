@@ -24,19 +24,34 @@ structure Extends (f : Per.Ainf l →+* Per.Ainf l) (F : Per.Acris l →+* Per.A
     algebraMap (Per.Acris0 l) (Per.Acris l) ⟨Per.extP f s, mem _ s.2⟩
   alg : ∀ a : Per.Ainf l, F (algebraMap (Per.Ainf l) (Per.Acris l) a) = algebraMap (Per.Ainf l) (Per.Acris l) (f a)
 
+/- English proof (translation)
+Unfold `frob`. Apply the tactic sequence `first | exact (fun h => ⟨h.mem, h.env, h.alg⟩) (FrobeniusExtendsCris.Bridge.CrisMaps.frob_extends ..)`.
+-/
 theorem frob_extends (l : ℕ) [Fact l.Prime] : Extends (Per.φA l) (frob l) := by
   unfold frob; first | exact (fun h => ⟨h.mem, h.env, h.alg⟩) (FrobeniusExtendsCris.Bridge.CrisMaps.frob_extends ..)
 
+/- English proof (translation)
+Unfold `gal`. Apply the tactic sequence `first | exact (fun h => ⟨h.mem, h.env, h.alg⟩) (FrobeniusExtendsStructure.Bridge.CrisMaps.gal_extends ..)`.
+-/
 theorem gal_extends (g : Per.Gq l) : Extends (Per.σA g) (gal g) := by
   unfold gal; first | exact (fun h => ⟨h.mem, h.env, h.alg⟩) (FrobeniusExtendsStructure.Bridge.CrisMaps.gal_extends ..)
 
+/- English proof (translation)
+Apply the tactic sequence `unfold frob gal; first | exact @FrobeniusGalois.Bridge.CrisMaps.frob_gal | exact FrobeniusGalois.Bridge.CrisMaps.frob_gal .. | (intros; apply FrobeniusGalois.Bridge.CrisMaps.frob_gal <;> assumption)`.
+-/
 theorem frob_gal (g : Per.Gq l) (x : Per.Acris l) : frob l (gal g x) = gal g (frob l x) := by
   unfold frob gal; first | exact @FrobeniusGalois.Bridge.CrisMaps.frob_gal | exact FrobeniusGalois.Bridge.CrisMaps.frob_gal .. | (intros; apply FrobeniusGalois.Bridge.CrisMaps.frob_gal <;> assumption)
 
+/- English proof (translation)
+Apply the tactic sequence `unfold frob; first | exact @FrobeniusPeriodAlgebraMap.Bridge.CrisMaps.φB_algebraMap | exact FrobeniusPeriodAlgebraMap.Bridge.CrisMaps.φB_algebraMap .. | (intros; apply FrobeniusPeriodAlgebraMap.Bridge.CrisMaps.φB_algebraMap <;> assumption)`.
+-/
 theorem φB_algebraMap (l : ℕ) [Fact l.Prime] (x : Per.Acris l) :
     Per.φB l (algebraMap (Per.Acris l) (Per.Bcris l) x) = algebraMap (Per.Acris l) (Per.Bcris l) (frob l x) := by
   unfold frob; first | exact @FrobeniusPeriodAlgebraMap.Bridge.CrisMaps.φB_algebraMap | exact FrobeniusPeriodAlgebraMap.Bridge.CrisMaps.φB_algebraMap .. | (intros; apply FrobeniusPeriodAlgebraMap.Bridge.CrisMaps.φB_algebraMap <;> assumption)
 
+/- English proof (translation)
+Apply the tactic sequence `unfold gal; first | exact @CrisFrobeniusAlgebraMap.Bridge.CrisMaps.σB_algebraMap | exact CrisFrobeniusAlgebraMap.Bridge.CrisMaps.σB_algebraMap .. | (intros; apply CrisFrobeniusAlgebraMap.Bridge.CrisMaps.σB_algebraMap <;> assumption)`.
+-/
 theorem σB_algebraMap (g : Per.Gq l) (x : Per.Acris l) :
     Per.σB g (algebraMap (Per.Acris l) (Per.Bcris l) x) = algebraMap (Per.Acris l) (Per.Bcris l) (gal g x) := by
   unfold gal; first | exact @CrisFrobeniusAlgebraMap.Bridge.CrisMaps.σB_algebraMap | exact CrisFrobeniusAlgebraMap.Bridge.CrisMaps.σB_algebraMap .. | (intros; apply CrisFrobeniusAlgebraMap.Bridge.CrisMaps.σB_algebraMap <;> assumption)

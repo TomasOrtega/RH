@@ -15,9 +15,15 @@ def coef {E : Type} {g : ℕ} (h : Pt E g → ℂ) (n : Fin g → ℤ) (b : E) :
   ∫ x in Set.Icc (0 : Fin g → ℝ) 1, h (b, fun i => (x i : ℂ)) *
     cexp (-(2 * π * I) * ∑ i, (n i : ℂ) * (x i : ℂ))
 
+/- English proof (translation)
+Simplify using `only [ch, Pi.add_apply, mul_add, Finset.sum_add_distrib, ← Complex.exp_add]`.
+-/
 theorem ch_add {g : ℕ} (n : Fin g → ℤ) (z w : Fin g → ℂ) : ch n (z + w) = ch n z * ch n w := by
   simp only [ch, Pi.add_apply, mul_add, Finset.sum_add_distrib, ← Complex.exp_add]
 
+/- English proof (translation)
+Establish `: ∑ j, (n j : ℂ) * (Pi.single i (1 : ℂ) : Fin g → ℂ) j = n i`. Simplify using `[Pi.single_apply]`. Rewrite using `[ch, this, ← Complex.exp_int_mul_two_pi_mul_I (n i)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ch_single {g : ℕ} (n : Fin g → ℤ) (i : Fin g) : ch n (Pi.single i 1) = 1 := by
   classical
   have : ∑ j, (n j : ℂ) * (Pi.single i (1 : ℂ) : Fin g → ℂ) j = n i := by

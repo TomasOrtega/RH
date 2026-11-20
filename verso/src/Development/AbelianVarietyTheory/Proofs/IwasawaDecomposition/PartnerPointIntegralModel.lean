@@ -28,6 +28,13 @@ section Lift
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
+/- English proof (translation)
+Take `⟨w, ⟨hw, -⟩, -⟩` from `Z.bij ↥C.S P.fK P.y P.y_over u hu`. Establish `: IsProper Z.s` using `projProper _ _ Z.s ⟨Z.n, Z.I.subschemeι, inferInstance, rfl⟩`. Establish `hpr : IsProper (Y Z.i).s` using `projProper _ _ _ (Y Z.i).proj`. Use `GlobalTheory.LocM.Cht.isFractionRing_ball ↥C.S` as an intermediate fact. Establish `hs : w ≫ Z.s = spMap ((intO ↥C.S).subtype.comp P.alg)`.
+
+Rewrite using `[← Z.π_s, ← Category.assoc, hw, ← P.ext, Category.assoc, P.yt_over, GlobalTheory.EtaVal.spMap_comp_spMap]`. Establish `hE : ValuativeCriterion.Existence Z.s` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed Z.s) : (ValuativeCriterion.Existence ⊓ @QuasiCompact : MorphismProperty Scheme) Z.s).1`. Set `S : ValuativeCommSq Z.s` to `{ R := ↥(intO ↥C.S) K := ↥C.S i₁ := w i₂ := spMap P.alg commSq := ⟨by rw [hs, spMap_comp]; rfl⟩ }`. Take `⟨⟨l⟩⟩` from `hE S`. Establish `hl : spMap (intO ↥C.S).subtype ≫ l.l = w` using `l.fac_left`.
+
+Establish `hr : l.l ≫ Z.s = spMap P.alg` using `l.fac_right`. Use `⟨l.l, GlobalTheory.EtaVal.point_ext_of_injective (intO ↥C.S).subtype Subtype.val_injective (Y Z.i).s _ _ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hl, hw, P.ext]`. Rewrite using `[Category.assoc, Z.π_s, hr, P.yt_over]`.
+-/
 theorem exists_lift (Z : Mdl Y i₀) {C : SCF p} (P : PointsOfFlagModel.PtC (Y Z.i) C) (u : Vecs Dw (Y Z.i).t ↥C.S)
     (hu : IsFrame (c := Z.i.c) (Y Z.i).t P.fK (P.y ≫ (Y Z.i).j) u) :
     ∃ z : Sp ↥(intO ↥C.S) ⟶ Z.X, z ≫ Z.π = P.yt := by
@@ -68,6 +75,23 @@ section Place
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `hint : ∀ x : 𝓞 K, ∃ v : T.V, algebraMap T.V T.Fr v = s x` using `fun x => by`. Establish `h : IsIntegral T.V (s (x : K))` using `(RingOfIntegers.isIntegral_coe x).map_of_comp_eq (Int.castRingHom T.V) s (RingHom.ext_int _ _)`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 h`. Use `choose f₀ hf₀ using hint`. Establish `hinj` using `IsFractionRing.injective T.V T.Fr`.
+
+Set `f : 𝓞 K →+* T.V` to `{ toFun := f₀ map_one' := hinj (by simp [hf₀]) map_mul' := fun x y => hinj (by simp [hf₀]) map_zero' := hinj (by simp [hf₀]) map_add' := fun x y => hinj (by simp [hf₀]) }`. Establish `hf : ∀ x, algebraMap T.V T.Fr (f x) = s x` using `hf₀`. Establish `hpP : ((p : ℕ) : 𝓞 K) ∈ Ideal.comap f (maximalIdeal T.V)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hpm`.
+
+Establish `hne : Ideal.comap f (maximalIdeal T.V) ≠ ⊥` using `fun h => by`. Rewrite `hpP` using `[h, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hpP)`. Set `la : HeightOneSpectrum (𝓞 K)` to `⟨Ideal.comap f (maximalIdeal T.V), Ideal.comap_isPrime _ _, hne⟩`. Take `⟨hdvr, -⟩` from `isDiscreteValuationRing_and_finite_residueField_valuationSubringAtPrime K la (Ring.HasFiniteQuotients.finiteQuotient la.ne_bot)`.
+
+Set `V₀` to `la.valuationSubringAtPrime K`. Use `haveI : IsLocalization la.asIdeal.primeCompl V₀ := Localization.subalgebra.isLocalization_ofField K la.asIdeal.primeCompl la.asIdeal.primeCompl_le_nonZeroDivisors`. Establish `hunit : ∀ y : la.asIdeal.primeCompl, IsUnit (f y)` using `fun y => IsLocalRing.notMem_maximalIdeal.1 fun h => y.2 h`. Set `o : V₀ →+* T.V` to `IsLocalization.lift (M := la.asIdeal.primeCompl) hunit`. Establish `ho : ∀ a : 𝓞 K, o (algebraMap (𝓞 K) V₀ a) = f a` using `fun a => IsLocalization.lift_eq hunit a`.
+
+Establish `e : s.comp V₀.subtype = (algebraMap T.V T.Fr).comp o` using `IsLocalization.ringHom_ext la.asIdeal.primeCompl (RingHom.ext fun a => by`. Simplify using `only [RingHom.comp_apply, ho, hf]`. Use the proof step `rfl)`. Establish `hloc : IsLocalHom o` using `⟨fun a ha => by`. Take `⟨⟨x, y⟩, hxy⟩` from `IsLocalization.surj la.asIdeal.primeCompl a`.
+
+Establish `h1 : o a * f y = f x`. Use `congrArg o hxy` as an intermediate fact. Simplify `this` using `[ho]`. Establish `h2 : IsUnit (f x)` using `h1 ▸ ha.mul (hunit y)`. Establish `h3 : x ∉ la.asIdeal` using `fun h => h (by exact h2)`.
+
+Establish `h4 : IsUnit (algebraMap (𝓞 K) V₀ x)` using `IsLocalization.map_units V₀ (⟨x, h3⟩ : la.asIdeal.primeCompl)`. Rewrite `h4` using `[← hxy]`. Conclude with `isUnit_of_mul_isUnit_left h4⟩`. Take `⟨r, hr, hv⟩` from `GlobalTheory.PlaceExtField.exists_index (V := V₀) (K' := K) (V' := T.V) (K'' := T.Fr) o s (fun v => RingHom.congr_fun e v)`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V₀`.
+
+Establish `h1` using `GlobalTheory.PlaceCompletion.overLa_one_of_irreducible (la := la) (V := V₀) (K' := K) (RingHom.id K) (RingHom.id V₀) (fun x => rfl) hπ hπ`. Use `⟨la, r, ⟨hr, fun a => ?_⟩, hpP⟩` and prove the remaining obligations. Establish `h2` using `h1.2 a`. Simplify using `only [RingHom.id_apply, Nat.cast_one, one_mul] at h2`. Rewrite using `[hv, h2]`.
+-/
 theorem exists_overLa (T : CDVR) (s : K →+* T.Fr) {p : ℕ} (hp : p.Prime) (hpm : (p : T.V) ∈ maximalIdeal T.V) :
     ∃ (la : HeightOneSpectrum (𝓞 K)) (e : ℕ), OverLa la T.V s e ∧ ((p : ℕ) : 𝓞 K) ∈ la.asIdeal := by
   have hint : ∀ x : 𝓞 K, ∃ v : T.V, algebraMap T.V T.Fr v = s x := fun x => by

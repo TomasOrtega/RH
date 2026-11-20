@@ -10,6 +10,9 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+The claim follows from `nonempty_level_of_torsion_basis torsion_free_rank_two`.
+-/
 theorem nonempty_level_of_isAlgClosed :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ) (K : Type) [Field K] [IsAlgClosed K],
     (N : K) ≠ 0 → ∀ X : Obj F 𝔠 (Sp K), Nonempty (X.Level N) :=

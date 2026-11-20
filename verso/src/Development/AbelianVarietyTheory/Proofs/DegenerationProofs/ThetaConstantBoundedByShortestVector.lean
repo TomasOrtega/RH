@@ -22,22 +22,64 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.Torus
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω}
 
+/- English proof (translation)
+Take `⟨j, -, hj⟩` from `ρ.r_eq`. Rewrite using `[hj, ρ.N_eq]`. Conclude with `ρ.n_odd.pow.mul ρ.n_odd.pow.pow`.
+-/
 theorem odd_level (ρ : S.Real) : Odd (S.r * S.N) := by
   obtain ⟨j, -, hj⟩ := ρ.r_eq
   rw [hj, ρ.N_eq]
   exact ρ.n_odd.pow.mul ρ.n_odd.pow.pow
 
+/- English proof (translation)
+The claim follows from `congrArg LB.Gen.mk (funext fun j => zpow_one (τ.s j))`.
+-/
 theorem powFrame_one {B : Scheme.{0}} {A T : Over B} {L : LB A.left} (x : T ⟶ A)
     (τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => 1))) :
     powFrame A L x τ 1 = τ :=
   congrArg LB.Gen.mk (funext fun j => zpow_one (τ.s j))
 
+/- English proof (translation)
+The claim follows from `QuotientAddGroup.eq.2 ⟨χ, by simp⟩`.
+-/
 theorem mk_add_smul {X : Type} [AddCommGroup X] (m : ℕ) (χ y : X) :
     (QuotientAddGroup.mk y : X ⧸ (nsmulAddMonoidHom m : X →+ X).range) = QuotientAddGroup.mk (m • χ + y) :=
   QuotientAddGroup.eq.2 ⟨χ, by simp⟩
 
 attribute [local instance] gtGroup in
 
+/- English proof (translation)
+Take `⟨H, h₁, h₂, h₃, h₄⟩` from `hyps hL hL₂`. Use `charZero u` as an intermediate fact. Establish `hm` using `odd_level ρ`. Establish `hA : AdmBase u.V (IsLocalRing.maximalIdeal u.V)` using `⟨inferInstance, inferInstance, inferInstance, u.complete⟩`. Establish `hB` using `u.D.tau_bimult`.
+
+Take `⟨ϖ, hϖ, Q, hQ, v, hv, lam, hlam, v₁, v₂, hq⟩` from `exists_val u`. Take `⟨x, hx, xadd, xinj, xonto⟩` from `GlobalTheory.T.uniformised_model_labelled_torsion_points o Ω S ρ p y₀ u`. Take `⟨rig, e, hrig, he, hsec⟩` from `GlobalTheory.T.exists_frames_on_uniformisedModel_fibre o Ω S ρ p y₀ u x hx`. Take `⟨t, ht⟩` from `hsec 1 ρ.th₁`. Take `⟨w₀, hw₀⟩` from `EvalZero.exists_normW u.U.toUnifPre rig hrig`.
+
+Take `⟨th, ϑ, hE, hP, hgen⟩` from `exists_prim_generator H h₁ h₂ h₃ h₄ u.V u.complete ϖ hϖ u.D Q hQ _ v hv u.A u.G u.semi u.U w₀ hw₀.1`. Establish `key` using `val_theta H h₁ h₂ h₃ h₄ u.V u.complete ϖ hϖ u.D Q hQ _ v hv u.A u.G u.semi u.U w₀ rig hw₀ th ϑ hE hP _ hm (isUnit_level u h)`. Take `⟨f, f₁, f₂, f₃, -⟩` from `GlobalTheory.TorsionIso.torsion_eq H u.V _ hA u.D u.A u.G u.semi u.U (PadicAlgCl p) _ hm.pos`. Take `⟨r, hr⟩` from `hgen t`. Take `⟨sc, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (PadicAlgCl p))).inv).2 r`.
+
+Establish `tv : ∀ a z J, Good u.A.L z J → cst (R` using `u.V) (PadicAlgCl p) z sc * @id ((TF (R := u.V) (PadicAlgCl p)).left.presheaf.stalk z) (sA th (ptSecT u.A.A (x a)).left z J) = cst (R := u.V) (PadicAlgCl p) z (y₀ ⟨S.th a, S.th_mem a⟩) * @id ((TF (R := u.V) (PadicAlgCl p)).left.presheaf.stalk z) (val (powFrame u.A.A u.A.L (x a) (e …`. Establish `b` using `ρ.th_val a`. Rewrite `b` using `[← powFrame_one (ρ.pt a) (ρ.fr a)]`. Conclude with `b) z J hJ)`. Establish `ex : ∀ a, ∃ q, QkToAkU u.U.toUnifPre (PadicAlgCl p) (S.r * S.N) q (x a) ∧ l.yy a = QuotientAddGroup.mk q.y` using `fun a => by`.
+
+Take `⟨q, hq⟩` from `f₂ (x a) (he a).1`. Conclude with `⟨q, (f₁ _ _).2 hq.symm, l.yy_eq a q _ ((f₁ _ _).2 hq.symm) (hx a)⟩`. Distinguish the cases in `h0 : sc = 0`. Establish `z0 : ∀ a, y₀ ⟨S.th a, S.th_mem a⟩ = 0` using `fun a => by`. Take `⟨z⟩` from `CoefBasic.exists_pt (R := u.V) (F := PadicAlgCl p)`.
+
+Take `⟨J, hJ⟩` from `CoefBasic.exists_good' (Z := (TFK (R := u.V) (PadicAlgCl p)).left) u.A.isLB z`. Use `tv a z J hJ` as an intermediate fact. Rewrite `this` using `[h0, CoefBasic.cst_eq, CoefBasic.cst_eq, map_zero, zero_mul]`. Conclude with `CoefBasic.cstH_inj (R := u.V) z (((Units.mul_left_eq_zero _).1 this.symm).trans (map_zero _).symm)`. Use `⟨0, le_rfl, fun a => ?_, fun a hne => absurd rfl hne, fun n _ _ a ha => ⟨a, ha, by simp, by simp [z0]⟩⟩` and prove the remaining obligations.
+
+Take `⟨q, -, hq⟩` from `ex a`. Conclude with `⟨q.y, hq, by simp [z0]⟩`. Establish `hsc : 0 < ‖sc‖` using `norm_pos_iff.2 h0`. Establish `tv' : ∀ a z J, Good u.A.L z J → sA th (ptSecT u.A.A (x a)).left z J = @id ((TFK (R` using `u.V) (PadicAlgCl p)).left.presheaf.stalk z) (cst (R := u.V) (PadicAlgCl p) z (sc⁻¹ * y₀ ⟨S.th a, S.th_mem a⟩)) * (val (powFrame u.A.A u.A.L (x a) (e a) ((1 : ℕ) : ℤ)) (𝟙 _) z J).val := fun a z J hJ => by`. Establish `b` using `congrArg (CoefBasic.cstH (R := u.V) z sc⁻¹ * ·) (tv a z J hJ)`.
+
+Simplify using `only [CoefBasic.cst_eq, ← _root_.mul_assoc, ← map_mul, inv_mul_cancel₀ h0, map_one, _root_.one_mul] at b`. Rewrite using `[CoefBasic.cst_eq]`. Conclude with `b`. Establish `nz : ∀ a, v (sc⁻¹ * y₀ ⟨S.th a, S.th_mem a⟩) = 0 ↔ ‖y₀ ⟨S.th a, S.th_mem a⟩‖ = ‖sc‖` using `fun a => by`. Use `(v₁ _ 0).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_inv, Rat.cast_zero, mul_zero, neg_zero, Real.exp_zero, inv_mul_eq_one₀ hsc.ne', eq_comm]`. Use `⟨‖sc‖, hsc.le, fun a => ?_, fun a _ ha => ?_, fun n hn hnm a ha => ?_⟩` and prove the remaining obligations. Take `⟨q, hq₁, hq₂⟩` from `ex a`. Take `⟨_, ⟨χ, rfl⟩, hχ⟩` from `Int.exists_least_of_bdd (P := fun k => ∃ χ, Q ((S.r * S.N) • χ + q.y) = k) ⟨0, by`. Introduce and unpack `_ ⟨χ, rfl⟩`.
+
+Distinguish the cases in `c : (S.r * S.N) • χ + q.y = 0`. Rewrite using `[c, QForm.Q_zero hϖ u.D hQ]`. Conclude with `zero_le_one.trans (QForm.Q_pos hϖ u.D hQ c)⟩ ⟨_, 0, rfl⟩`. Use `⟨_, hq₂.trans (mk_add_smul _ χ _), ?_⟩` and prove the remaining obligations. Establish `b` using `(v₂ _ _).1 (((key q _ hq₁).1 _ _ (he a) (tv' a)).1 ((Q ((S.r * S.N) • χ + q.y) : ℚ) / ((S.r * S.N) ^ 2 : ℕ)) fun χ' => div_le_div_of_nonneg_right (Int.cast_le.2 (hχ _ ⟨χ', rfl⟩)) (Nat.cast_nonneg _))`.
+
+Rewrite `b` using `[norm_mul, norm_inv, inv_mul_le_iff₀ hsc]`. Use `b.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hq]`. Use `push_cast`. Rewrite using `[mul_div_assoc]`.
+
+Take `⟨q, hq₁, hq₂⟩` from `ex a`. Take `⟨z, hz⟩` from `((key q _ hq₁).1 _ _ (he a) (tv' a)).2 ((nz a).2 ha)`. Conclude with `hq₂.trans ((QuotientAddGroup.eq_zero_iff _).2 ⟨z, hz.symm⟩)`. Take `⟨q, hq₁, hq₂⟩` from `ex a`. Take `⟨z, hz⟩` from `(QuotientAddGroup.eq_zero_iff _).1 (hq₂.symm.trans ha)`.
+
+Establish `hz' : (S.r * S.N) • z = q.y` using `hz`. Set `q₀ : QkPt u.D.toPre (PadicAlgCl p) (S.r * S.N)` to `qkMk hB 0 (q.g + iota hB _ (-z)) (by`. Rewrite using `[smul_add, qk_nsmul hB, ← map_nsmul, ← map_add, smul_neg, hz', add_neg_cancel])`. Establish `e₀ : f q = f q₀` using `(f₃ _ _).2 ((equiv_iff hB _ _).2 ⟨-z, by`. Rewrite using `[smul_neg, hz', add_neg_cancel]`.
+
+Use the proof step `rfl, rfl⟩)`. Take `⟨q', x', hy', hx', hpow, hval⟩` from `(key q₀ (x a) ((f₁ _ _).2 (((f₁ _ _).1 hq₁).trans e₀))).2 n hn hnm rfl`. Take `⟨a', rfl⟩` from `xonto x' (hx' w₀ hw₀.1).1`. Use `u.A.isAb.comm` as an intermediate fact. Set `X : Multiplicative S.Gam →* (TFK (R` to `u.V) (PadicAlgCl p) ⟶ u.A.A) := MonoidHom.mk' (fun a => x a.toAdd) fun a b => xadd _ _`.
+
+Use `⟨a', (l.yy_eq a' q' _ hx' (hx a')).trans (by rw [hy']; rfl), xinj ?_, (nz a').1 (hval _ _ (he a') (tv' a'))⟩` and prove the remaining obligations. Establish `b : X ((Multiplicative.ofAdd a' * (Multiplicative.ofAdd a)⁻¹) ^ n) = X 1`. Rewrite using `[map_pow, map_mul, map_inv, map_one]`. Conclude with `hpow`. Rewrite using `[sub_eq_add_neg]`.
+
+Conclude with `b`.
+-/
 theorem exists_scale (hL : Laws) (hL₂ : Laws2) {ρ : S.Real} {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p}
     (u : ρ.UTest p y₀) (l : u.Lab) (h : ∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) :
     ∃ sc : ℝ, 0 ≤ sc ∧
@@ -135,11 +177,19 @@ theorem exists_scale (hL : Laws) (hL₂ : Laws2) {ρ : S.Real} {p : ℕ} [Fact p
     rw [sub_eq_add_neg]
     exact b
 
+/- English proof (translation)
+Establish `: NeZero (S.r * S.N)` using `⟨(odd_level ρ).pos.ne'⟩`. Conclude with `le_ciSup (f := fun x => ‖y₀ ⟨S.th x, S.th_mem x⟩‖) (Set.finite_range _).bddAbove a`.
+-/
 theorem norm_le_delta {p : ℕ} [Fact p.Prime] (ρ : S.Real) (y₀ : S.R →+* PadicAlgCl p) (a : S.Gam) :
     ‖y₀ ⟨S.th a, S.th_mem a⟩‖ ≤ S.delta y₀ := by
   have : NeZero (S.r * S.N) := ⟨(odd_level ρ).pos.ne'⟩
   exact le_ciSup (f := fun x => ‖y₀ ⟨S.th x, S.th_mem x⟩‖) (Set.finite_range _).bddAbove a
 
+/- English proof (translation)
+Introduce `hL hL₂ _ o Ω _ _ _ _ S ρ p _ y₀ u l h a _`. Take `⟨sc, -, h₁, -, h₃⟩` from `exists_scale hL hL₂ u l h`. Establish `h2 : 2 ≤ S.r * S.N` using `S.N_ge.trans (Nat.le_mul_of_pos_left _ S.r_pos)`. Take `⟨a', -, -, ha'⟩` from `h₃ _ h2 dvd_rfl 0 (zero_mem _)`. Take `⟨w, hw, b⟩` from `h₁ a`.
+
+Conclude with `⟨w, hw, b.trans (mul_le_mul_of_nonneg_right (ha' ▸ norm_le_delta ρ y₀ a') (Real.exp_pos _).le)⟩`.
+-/
 theorem main : Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → (∀ x, y₀ ⟨S.th x, S.th_mem x⟩ ≠ 0 → ∃ w : u.D.toPre.X, l.yy x = QuotientAddGroup.mk w ∧ ‖y₀ ⟨S.th x, S.th_mem x⟩‖ ≤ S.delta y₀ * Real.exp (-(l.q w / ((S.r * S.N : ℕ) : ℝ) ^ 2))) := by
   intro hL hL₂ _ o Ω _ _ _ _ S ρ p _ y₀ u l h a _
   obtain ⟨sc, -, h₁, -, h₃⟩ := exists_scale hL hL₂ u l h

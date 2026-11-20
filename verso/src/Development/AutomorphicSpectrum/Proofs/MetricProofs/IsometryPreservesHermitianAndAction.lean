@@ -9,26 +9,65 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.PeriodIso
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip, star_add, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem ip_add_left' (R : RiemLat E g Λ) (x x' y : Fin g → ℂ) : R.ip (x + x') y = R.ip x y + R.ip x' y := by
   simp [RiemLat.ip, star_add, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip, add_dotProduct]`.
+-/
 theorem ip_add_right' (R : RiemLat E g Λ) (x y y' : Fin g → ℂ) : R.ip x (y + y') = R.ip x y + R.ip x y' := by
   simp [RiemLat.ip, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip, star_smul, Matrix.mulVec_smul, dotProduct_smul]`.
+-/
 theorem ip_smul_left' (R : RiemLat E g Λ) (c : ℂ) (x y : Fin g → ℂ) :
     R.ip (c • x) y = star c * R.ip x y := by
   simp [RiemLat.ip, star_smul, Matrix.mulVec_smul, dotProduct_smul]
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip, smul_dotProduct]`.
+-/
 theorem ip_smul_right' (R : RiemLat E g Λ) (c : ℂ) (x y : Fin g → ℂ) : R.ip x (c • y) = c * R.ip x y := by
   simp [RiemLat.ip, smul_dotProduct]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem real_smul_eq' (r : ℝ) (x : Fin g → ℂ) : r • x = (r : ℂ) • x := by
   ext i
   simp
 
+/- English proof (translation)
+The claim follows from `R.im y x`.
+-/
 theorem ip_period_im (R : RiemLat E g Λ) (x y : Λ) : (R.ip (R.P x) (R.P y)).im = R.form y x :=
   R.im y x
 
+/- English proof (translation)
+Set `D : (Fin g → ℂ) → (Fin g → ℂ) → ℂ` to `fun z w => R'.ip (φ z) (φ w) - R.ip z w`. Establish `hl : ∀ z z' w, D (z + z') w = D z w + D z' w` using `fun z z' w => by`. Simplify using `only [D, map_add, ip_add_left']`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : ∀ z w w', D z (w + w') = D z w + D z w'` using `fun z w w' => by`.
+
+Simplify using `only [D, map_add, ip_add_right']`. Expand and normalize the polynomial expressions, which then agree. Establish `hcl : ∀ (c : ℂ) z w, D (c • z) w = star c * D z w` using `fun c z w => by`. Simplify using `only [D, map_smul, ip_smul_left']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hcr : ∀ (c : ℂ) z w, D z (c • w) = c * D z w` using `fun c z w => by`. Simplify using `only [D, map_smul, ip_smul_right']`. Expand and normalize the polynomial expressions, which then agree. Establish `h0l : ∀ w, D 0 w = 0` using `fun w => by`. Simplify using `[D, RiemLat.ip]`.
+
+Establish `h0r : ∀ z, D z 0 = 0` using `fun z => by`. Simplify using `[D, RiemLat.ip]`. Establish `base : ∀ l l', (D (R.P l) (R.P l')).im = 0` using `fun l l' => by`. Simplify using `only [D, Complex.sub_im]`. Rewrite using `[← hP, ← hP, ip_period_im, ip_period_im, hf, sub_self]`.
+
+Establish `s1 : ∀ l w, (D (R.P l) w).im = 0` using `fun l w => by`. Establish `hw : w ∈ Submodule.span ℝ (Set.range R.P)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w h`. Take `⟨l', rfl⟩` from `h`.
+
+Conclude with `base l l'`. Consider the case `zero => simp [h0r]`. Consider the case `add w w' _ _ h h' => simp [hr, h, h']`. Consider the case `smul r w _ h`. Rewrite using `[real_smul_eq', hcr]`.
+
+Simplify using `[h]`. Establish `s2 : ∀ z w, (D z w).im = 0` using `fun z w => by`. Establish `hz : z ∈ Submodule.span ℝ (Set.range R.P)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z h`.
+
+Take `⟨l, rfl⟩` from `h`. Conclude with `s1 l w`. Consider the case `zero => simp [h0l]`. Consider the case `add z z' _ _ h h' => simp [hl, h, h']`. Consider the case `smul r z _ h`.
+
+Rewrite using `[real_smul_eq', hcl]`. Simplify using `[h]`. Establish `s3 : (D x y).re = 0`. Establish `h` using `s2 x (Complex.I • y)`. Rewrite `h` using `[hcr]`.
+
+Simplify using `using h`. Establish `s4 : D x y = 0` using `Complex.ext s3 (s2 x y)`. Conclude with `sub_eq_zero.mp s4`.
+-/
 theorem isometry_of_periods (R R' : RiemLat E g Λ) (hs : Submodule.span ℝ (Set.range R.P) = ⊤)
     (γ : Λ ≃ₗ[𝓞 E] Λ) (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ))
     (hf : ∀ x y, R'.form (γ x) (γ y) = R.form x y) (hP : ∀ x, R'.P (γ x) = φ (R.P x))
@@ -82,6 +121,11 @@ theorem isometry_of_periods (R R' : RiemLat E g Λ) (hs : Submodule.span ℝ (Se
   have s4 : D x y = 0 := Complex.ext s3 (s2 x y)
   exact sub_eq_zero.mp s4
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span ℝ (Set.range R.P)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨l, rfl⟩` from `h`. Rewrite using `[← R.act, ← hP, ← hP, map_smul, R'.act]`.
+
+Consider the case `zero => simp`. Consider the case `add x x' _ _ h h' => simp [h, h']`. Consider the case `smul r x _ h`. Rewrite using `[real_smul_eq', map_smul, map_smul, h, map_smul, map_smul]`.
+-/
 theorem commutes_of_periods (R R' : RiemLat E g Λ) (hs : Submodule.span ℝ (Set.range R.P) = ⊤)
     (γ : Λ ≃ₗ[𝓞 E] Λ) (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hP : ∀ x, R'.P (γ x) = φ (R.P x))
     (a : 𝓞 E) (x : Fin g → ℂ) : φ (R.B a x) = R'.B a (φ x) := by
@@ -95,6 +139,9 @@ theorem commutes_of_periods (R R' : RiemLat E g Λ) (hs : Submodule.span ℝ (Se
   | smul r x _ h =>
     rw [real_smul_eq', map_smul, map_smul, h, map_smul, map_smul]
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ R R' γ φ hf hP`. Establish `hs` using `(GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R).2.1`. Conclude with `⟨isometry_of_periods R R' hs γ φ hf hP, commutes_of_periods R R' hs γ φ hP⟩`.
+-/
 theorem isometry_and_commutes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ]
     [Module (𝓞 E) Λ] (R R' : RiemLat E g Λ) (γ : Λ ≃ₗ[𝓞 E] Λ) (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)),
     (∀ x y, R'.form (γ x) (γ y) = R.form x y) → (∀ x, R'.P (γ x) = φ (R.P x)) →

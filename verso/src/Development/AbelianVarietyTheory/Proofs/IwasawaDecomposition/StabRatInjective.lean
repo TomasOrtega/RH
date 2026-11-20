@@ -21,6 +21,15 @@ def stabRat (d : DecoSet X.E n ST SG) : MulAction.stabilizer (FormG Λ) d →* a
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_one]`. Introduce `g hg`. Establish `hγ : (g.1.1 : Sp X.E n ≃ₗ[X.E] Sp X.E n) = 1` using `congrArg Subtype.val hg`. Establish `hbe` using `congrArg (fun e : DecoSet X.E n ST SG => e.1.be) ((MulAction.mem_stabilizer_iff).1 g.2)`. Establish `hM : ∀ w : SG, ((g.1.2 : GLG X.E n SG) w : Matrix (Fin n) (Fin n) (𝓞 X.E ⧸ w.1.asIdeal)) = 1`.
+
+Introduce `w`. Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations. Take `⟨x, -, hx⟩` from `d.2.be_surj w (Pi.single i 1)`. Establish `e` using `congrFun (congrFun hbe w) x`. Express the relevant statement in the definitionally equal form `((g.1.2 : GLG X.E n SG) w : Matrix (Fin n) (Fin n) _).mulVec (d.1.be w ((g.1.1 : Sp X.E n ≃ₗ[X.E] Sp X.E n).symm x)) = d.1.be w x at e`.
+
+Rewrite `e` using `[hγ]`. Express the relevant statement in the definitionally equal form `((g.1.2 : GLG X.E n SG) w : Matrix (Fin n) (Fin n) _).mulVec (d.1.be w x) = d.1.be w x at e`. Rewrite `e` using `[hx]`. Rewrite using `[e, Matrix.one_mulVec]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Prod.ext` to reduce the goal to its premises. Conclude with `Subtype.ext hγ`. Conclude with `Subtype.ext (funext fun w => Units.ext (hM w))`.
+-/
 theorem stabRat_injective (d : DecoSet X.E n ST SG) : Function.Injective (stabRat Λ d) := by
   rw [injective_iff_map_eq_one]
   intro g hg
@@ -42,6 +51,9 @@ theorem stabRat_injective (d : DecoSet X.E n ST SG) : Function.Injective (stabRa
   · exact Subtype.ext hγ
   · exact Subtype.ext (funext fun w => Units.ext (hM w))
 
+/- English proof (translation)
+The claim follows from `Subgroup.card_dvd_of_injective (stabRat Λ d) (stabRat_injective Λ d)`.
+-/
 theorem card_stab_dvd (d : DecoSet X.E n ST SG) :
     Nat.card (MulAction.stabilizer (FormG Λ) d) ∣ Nat.card (autO d.1.N) :=
   Subgroup.card_dvd_of_injective (stabRat Λ d) (stabRat_injective Λ d)
@@ -53,6 +65,9 @@ section Fam
 variable {B : Base} {px : PreX B.toPre} (I : TC B px) (hX : B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc B px → B.LL))
   (tr : TrI B px)
 
+/- English proof (translation)
+Use `⟨fun t c => ?_, fun j t c => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_eq_nat_card]`. Conclude with `(card_stab_dvd _ (Quotient.out c)).trans (dvd_DGam (posStar_of_ok hX) B.R (pred_mem_gamRanks B.R) (Quotient.out c).2.lat (Quotient.out c).2.uni)`. Rewrite using `[Fintype.card_eq_nat_card]`. Conclude with `(card_stab_dvd _ (Quotient.out c)).trans (dvd_DGam (posStar_of_ok hX) B.R (nV_mem_gamRanks B.R) (Quotient.out c).2.lat (Quotient.out c).2.uni)`.
+-/
 theorem gamDvd_DGam :
     (∀ (t : TupU I U) (c : ((famC I hX U Xg tr).A.fam.R t).S.Cl),
       Fintype.card (((famC I hX U Xg tr).A.fam.R t).S.Gam c) ∣ DGam B.fields.E B.R) ∧
@@ -66,6 +81,9 @@ theorem gamDvd_DGam :
     exact (card_stab_dvd _ (Quotient.out c)).trans
       (dvd_DGam (posStar_of_ok hX) B.R (nV_mem_gamRanks B.R) (Quotient.out c).2.lat (Quotient.out c).2.uni)
 
+/- English proof (translation)
+The claim follows from `gamDvd_DGam I hX U Xg tr`.
+-/
 theorem gamDvd (l : I.Laws) (Z : Later B (I.cols l)) :
     (∀ (t : TupU I U) (c : ((famC I hX U Xg tr).A.fam.R t).S.Cl),
       Fintype.card (((famC I hX U Xg tr).A.fam.R t).S.Gam c) ∣ ((I.rec7 l Z).mem (I.rec7 l Z).u₀).C.DGam) ∧
@@ -73,6 +91,11 @@ theorem gamDvd (l : I.Laws) (Z : Later B (I.cols l)) :
       Fintype.card (((famC I hX U Xg tr).A.fam.L j t).S.Gam c) ∣ ((I.rec7 l Z).mem (I.rec7 l Z).u₀).C.DGam :=
   gamDvd_DGam I hX U Xg tr
 
+/- English proof (translation)
+Establish `e : (Y.toD7.mem Y.toD7.u₀).C.DGam = DGam Y.B.fields.E Y.B.R`. Establish `e1 : ∀ u, (Y.toD7.mem u).C.DGam = (Y.C.mem u).C.DGam` using `fun _ => rfl`. Rewrite using `[e1, hC]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `gamDvd_DGam I hX U Xg tr`.
+-/
 theorem gamDvd_stages (Y : Stages) {px : PreX Y.B.toPre} (I : TC Y.B px) (l : I.Laws) (hC : Y.C = I.cols l) (hX : Y.B.fields.Ok)
     (U : Set I.ι) (Xg : Finset (Gc Y.B px → Y.B.LL)) (tr : TrI Y.B px) :
     (∀ (t : TupU I U) (c : ((famC I hX U Xg tr).A.fam.R t).S.Cl),

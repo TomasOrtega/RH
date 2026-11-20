@@ -17,9 +17,17 @@ abbrev inst : Formalism.MainNotions.S.AutInst := Formalism.L2.SG.InstExistsPf.in
 def iota : GA D (D.sp.Y 0) ≃ₜ* (inst D).GA :=
   (Formalism.L2.SG.AdBridge.toHA (inst D) (Formalism.L2.SG.Closed.adelic_isomorphism_statement (inst D)).1).symm
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.AdBridge.toHA_isBridge (inst D) (Formalism.L2.SG.Closed.adelic_isomorphism_statement (inst D)).1`.
+-/
 theorem iota_symm_isBridge : Formalism.L2.SG.AdBridge.IsBridge (inst D) (iota D).symm :=
   Formalism.L2.SG.AdBridge.toHA_isBridge (inst D) (Formalism.L2.SG.Closed.adelic_isomorphism_statement (inst D)).1
 
+/- English proof (translation)
+Establish `hS` using `Formalism.L2.SG.Closed.adelic_isomorphism_statement (inst D)`. Establish `hb` using `Formalism.L2.SG.AdBridge.toHA_isBridge (inst D) hS.1`. Establish `hGF` using `hS.2.1 _ hb`. Establish `hg : Formalism.L2.SG.AdBridge.toHA (inst D) hS.1 (iota D g) = g` using `(Formalism.L2.SG.AdBridge.toHA (inst D) hS.1).apply_symm_apply g`. Rewrite using `[← (Formalism.L2.SG.AdBridge.toHA (inst D) hS.1).injective.mem_set_image (a := iota D g) (s := (inst D).GFset), hGF, hg]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem iota_rat (g : GA D (D.sp.Y 0)) : g ∈ GQ (D.sp.Y 0) ↔ iota D g ∈ (inst D).GFset := by
   have hS := Formalism.L2.SG.Closed.adelic_isomorphism_statement (inst D)
   have hb := Formalism.L2.SG.AdBridge.toHA_isBridge (inst D) hS.1

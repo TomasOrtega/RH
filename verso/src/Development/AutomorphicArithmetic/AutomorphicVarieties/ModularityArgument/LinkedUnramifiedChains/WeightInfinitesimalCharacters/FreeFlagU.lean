@@ -9,6 +9,13 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `PH F Ω _ _ _ _ _ _ l _ hl ι n hn r hr ⟨π, hreg, hcsd, hatt⟩ A hA ψ m k hflag hm hk hine hgen`. Establish `P` using `PH.toClassicalTheorems`. Establish `hpol : GlobalTheory.ContraPair.PolarizedPair π (quadChar F ^ n)` using `⟨fun v => by`. Establish `e : (quadChar F ^ n).locInf v (-1) = (quadChar F).locInf v (-1) ^ n` using `rfl`. Rewrite using `[e, quadChar_locInf],`.
+
+Use `by rw [map_pow, compNorm_quadChar, one_pow]; exact (GlobalTheory.ContraPair.dualIsConjBy_one π).2 hcsd⟩`. Take `⟨w, h, hw⟩` from `(Formalism.VB.Cmp.exists_over_above_iff (K := F) A l).2 hA`. Take `⟨⟨σ, hσ⟩, -⟩` from `locCompC P F n π w`. Take `⟨rc, hrc⟩` from `P.exists_rec h`. Establish `hc` using `(compatCsd PH F Ω l ι n hn r π hr hreg hcsd hatt w σ hσ A h rc hrc).2`.
+
+Apply the tactic sequence `exact purLocS P F Ω l hl ι n r hr w A h hw (rc (algNorm σ)) (fun O _ _ _ Bw hj => ⟨(hc O Bw hj).1, by first | exact Lev.SsCmp.of_eq (hc O Bw hj).2 | exact (hc O Bw hj).2⟩) (temper P F Ω n hn π hreg ⟨_, hpol⟩ w A h rc hrc σ hσ) ψ m k hflag hm hk hine (Or.inl hgen)`.
+-/
 theorem UpperTheory.V.Z.J.freeFlagU :
     Af.HypothesesH → ∀ (F Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 →
         ∀ (ι : Qbar l ≃+* ℂ) (n : ℕ), 1 ≤ n → ∀ r : G F Ω →* GL (Fin n) (Qbar l), Continuous r → Af.IsAutCsd ι r →

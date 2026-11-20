@@ -16,6 +16,11 @@ namespace GlobalTheory.GKExtFields
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Unfold `Formalism.L2.Theta.dRep DSModel.rep`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `h1 : t • ((M.fr τ)⁻¹ * X * M.fr τ) = (M.fr τ)⁻¹ * (t • X) * M.fr τ`.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[h1, Matrix.exp_conj' _ _ (M.fr_unit τ)]`. Use `congr 2`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`.
+-/
 theorem dRep_rep_conj (M : DSModel V S) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (w : M.H τ) :
     dRep (M.rep τ) ((M.fr τ)⁻¹ * X * M.fr τ) w = dRep (M.σ τ) X w := by
   have hd : IsUnit (M.fr τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
@@ -29,6 +34,9 @@ theorem dRep_rep_conj (M : DSModel V S) (τ : D.what₂.Tau) (X : Matrix (Fin V.
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_assoc,
     Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih => simp only [List.map_cons, List.foldr_cons, ih, dRep_rep_conj]`.
+-/
 theorem foldr_dRep_conj (M : DSModel V S) (τ : D.what₂.Tau) (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ))
     (w : M.H τ) :
     (l.map fun X => (M.fr τ)⁻¹ * X * M.fr τ).foldr (dRep (M.rep τ)) w = l.foldr (dRep (M.σ τ)) w := by
@@ -36,6 +44,13 @@ theorem foldr_dRep_conj (M : DSModel V S) (τ : D.what₂.Tau) (l : List (Matrix
   | nil => rfl
   | cons X l ih => simp only [List.map_cons, List.foldr_cons, ih, dRep_rep_conj]
 
+/- English proof (translation)
+Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hX' : Xᴴ * Formalism.REAL.Jm (M.ε τ) + Formalism.REAL.Jm (M.ε τ) * X = 0` using `hX`. Use `show ((M.fr τ)⁻¹ * X * M.fr τ)ᴴ * gramAt D V τ + gramAt D V τ * ((M.fr τ)⁻¹ * X * M.fr τ) = 0`. Rewrite using `[← M.fr_gram τ]`. Establish `h1 : ∀ Z : Matrix (Fin V.rank) (Fin V.rank) ℂ, ((M.fr τ)⁻¹)ᴴ * ((M.fr τ)ᴴ * Z) = Z` using `fun Z => by`.
+
+Rewrite using `[← Matrix.mul_assoc, ← conjTranspose_mul, Matrix.mul_nonsing_inv _ hd, conjTranspose_one, Matrix.one_mul]`. Establish `h2 : ∀ Z : Matrix (Fin V.rank) (Fin V.rank) ℂ, M.fr τ * ((M.fr τ)⁻¹ * Z) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]`. Establish `h3 : (M.fr τ)ᴴ * (Xᴴ * Formalism.REAL.Jm (M.ε τ) + Formalism.REAL.Jm (M.ε τ) * X) * M.fr τ = 0`. Rewrite using `[hX']`.
+
+Simplify using the standard rewrite rules. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, h1, h2]`. Simplify `h3` using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+-/
 theorem conj_mem_lieAt (M : DSModel V S) (τ : D.what₂.Tau) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ GlobalTheory.SmoothGlob.lieSet (M.ε τ)) : (M.fr τ)⁻¹ * X * M.fr τ ∈ lieAt V τ := by
   have hd : IsUnit (M.fr τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
@@ -51,6 +66,25 @@ theorem conj_mem_lieAt (M : DSModel V S) (τ : D.what₂.Tau) {X : Matrix (Fin V
   simp only [conjTranspose_mul, Matrix.mul_assoc, h1, h2]
   simpa only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc] using h3
 
+/- English proof (translation)
+Introduce `D θ V S M E _ _ _ _ _ _ p ι N π hp hfin hπ T hTe hTc`. Use `⟨fun τ g hg v w hw => ?_, fun τ v x => ?_⟩` and prove the remaining obligations. Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hg' : M.fr τ * g * (M.fr τ)⁻¹ ∈ Formalism.MainNotions.S.UJset (M.ε τ)` using `GlobalTheory.GardingVec.conj_mem (M.fr_unit τ) (M.fr_gram τ) hg`. Rewrite using `[hTe τ _ hg' v w hw, hπ τ _ hg']`.
+
+Establish `he : (GlobalTheory.ChainFr.Fr.ofModel M).elt θ τ (M.fr τ * g * (M.fr τ)⁻¹) = atTau θ V τ g` using `by show atTau θ V τ ((M.fr τ)⁻¹ * (M.fr τ * g * (M.fr τ)⁻¹) * M.fr τ) = atTau θ V τ g`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.mul_one]`. Rewrite using `[he]`. Set `f : M.sm τ →ₗ[ℂ] ℂ` to `(LinearMap.proj x).comp (ι.comp (T.toLinearMap v τ))`.
+
+Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend f`. Establish `hℓw : ∀ w : M.sm τ, ℓ w = ι (T (Function.update v τ w)) x` using `fun w => by`. Use `LinearMap.congr_fun hℓ w` as an intermediate fact. Simplify `this` using `[f, MultilinearMap.toLinearMap_apply]`. Use `⟨ℓ, ?_, hℓw⟩` and prove the remaining obligations.
+
+Take `⟨L, C, hL, hC⟩` from `hTc τ 0 v`. Use `⟨L.map (List.map fun X => (M.fr τ)⁻¹ * X * M.fr τ), GlobalTheory.Grow.height V x ^ N * C, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Introduce `l hl X hX`. Take `⟨l₀, hl₀, rfl⟩` from `List.mem_map.1 hl`. Take `⟨X₀, hX₀, rfl⟩` from `List.mem_map.1 hX`.
+
+Conclude with `GlobalTheory.GKExtFields.conj_mem_lieAt M τ (hL l₀ hl₀ X₀ hX₀)`. Establish `hmem : w ∈ M.sm τ` using `Submodule.subset_span hw`. Establish `hw' : ℓ w = ι (T (Function.update v τ ⟨w, hmem⟩)) x` using `hℓw ⟨w, hmem⟩`. Rewrite using `[hw']`. Use `set y := T (Function.update v τ ⟨w, hmem⟩)`.
+
+Establish `hpos : 0 < GlobalTheory.Grow.height V x ^ N` using `pow_pos (GlobalTheory.Grow.height_pos V x) N`. Establish `hsz : p 0 y = (GlobalTheory.Size.growthSize V N (ι y)).toReal`. Rewrite using `[hp]`. Simplify using `[GlobalTheory.Size.growthSob]`. Establish `hne : GlobalTheory.Size.growthSize V N (ι y) ≠ ⊤`.
+
+Use `hfin y 0` as an intermediate fact. Simplify `this` using `[GlobalTheory.Size.growthSob]`. Establish `hb : ‖ι y x‖ ≤ GlobalTheory.Grow.height V x ^ N * p 0 y`. Establish `h1 : ENNReal.ofReal (‖ι y x‖ / GlobalTheory.Grow.height V x ^ N) ≤ GlobalTheory.Size.growthSize V N (ι y)` using `le_iSup (fun g => ENNReal.ofReal (‖ι y g‖ / GlobalTheory.Grow.height V g ^ N)) x`. Rewrite `h1` using `[ENNReal.ofReal_le_iff_le_toReal hne, div_le_iff₀ hpos, ← hsz]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : ((L.map (List.map fun X => (M.fr τ)⁻¹ * X * M.fr τ)).map fun l => ‖l.foldr (dRep (M.rep τ)) w‖).sum = GlobalTheory.SmoothGlob.sobNorm (M.σ τ) L (⟨w, hmem⟩ : M.sm τ)`. Unfold `GlobalTheory.SmoothGlob.sobNorm`. Rewrite using `[List.map_map]`. Use `congr 1`.
+
+Use `List.map_congr_left fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, GlobalTheory.GKExtFields.foldr_dRep_conj]`. Rewrite using `[hs, mul_assoc]`. Conclude with `hb.trans (mul_le_mul_of_nonneg_left (hC ⟨w, hmem⟩) hpos.le)`.
+-/
 theorem multMap_fields : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (E : Type) [AddCommGroup E] [Module ℂ E] [UniformSpace E] [IsUniformAddGroup E] [CompleteSpace E] [T2Space E] (p : ℕ → Seminorm ℂ E) (ι : E →ₗ[ℂ] (GA D V → ℂ)) (N : ℕ) (π : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ → (E →L[ℂ] E)), (∀ d x, p d x = (GlobalTheory.Size.growthSob θ V d N (ι x)).toReal) → (∀ x d, GlobalTheory.Size.growthSob θ V d N (ι x) ≠ ⊤) → (∀ τ, ∀ g ∈ Formalism.MainNotions.S.UJset (M.ε τ), ∀ x, ι (π τ g x) = rTr V ((GlobalTheory.ChainFr.Fr.ofModel M).elt θ τ g) (ι x)) → ∀ T : MultilinearMap ℂ (fun τ : D.what₂.Tau => M.sm τ) E, (∀ τ, ∀ g ∈ Formalism.MainNotions.S.UJset (M.ε τ), ∀ (v : M.Vec) (w : M.sm τ), (w : M.H τ) = M.σ τ g (v τ) → T (Function.update v τ w) = π τ g (T v)) → (∀ τ (i : ℕ) (v : M.Vec), ∃ (L : List (List (Matrix (Fin V.rank) (Fin V.rank) ℂ))) (C : ℝ), (∀ l ∈ L, ∀ X ∈ l, X ∈ GlobalTheory.SmoothGlob.lieSet (M.ε τ)) ∧ ∀ w : M.sm τ, p i (T (Function.update v τ w)) ≤ C * GlobalTheory.SmoothGlob.sobNorm (M.σ τ) L w) → (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ (v : M.Vec) (w : M.sm τ), (w : M.H τ) = M.rep τ g (v τ) → ι (T (Function.update v τ w)) = rTr V (atTau θ V τ g) (ι (T v))) ∧ ∀ τ (v : M.Vec) (x : GA D V), ∃ ℓ : M.H τ →ₗ[ℂ] ℂ, Sobolev₂ (lieAt V τ) (M.rep τ) ℓ ∧ ∀ w : M.sm τ, ℓ w = ι (T (Function.update v τ w)) x := by
   intro D θ V S M E _ _ _ _ _ _ p ι N π hp hfin hπ T hTe hTc
   refine ⟨fun τ g hg v w hw => ?_, fun τ v x => ?_⟩

@@ -5,6 +5,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ExponentialTriangular.P
 
 namespace PI.ET
 
+/- English proof (translation)
+The claim follows from `expTri_of specExists hsEq hH abelSq euclTri`.
+-/
 theorem expTri_of_horn (hH : Horn) : PI.ExpTri :=
   expTri_of specExists hsEq hH abelSq euclTri
 

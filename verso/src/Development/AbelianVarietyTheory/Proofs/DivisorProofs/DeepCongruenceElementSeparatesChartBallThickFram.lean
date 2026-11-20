@@ -30,6 +30,9 @@ def scl (X : Data E r) (s : X.Ψ → ℝ) : (X.Ψ → Fin r → ℂ) →ₗ[ℝ]
     simp only [Pi.smul_apply, RingHom.id_apply]
     exact smul_comm ((s τ : ℝ) : ℂ) c (u τ)
 
+/- English proof (translation)
+Unfold `MajorantOperators.gI`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `show (X.Hf x τ (((s τ : ℝ) : ℂ) • u τ) (((t τ : ℝ) : ℂ) • v τ)).re = _`. Rewrite using `[UnipotentCoefficientShift.Hf_smul_left, UnipotentCoefficientShift.Hf_smul_right, Complex.conj_ofReal, ← mul_assoc, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`.
+-/
 theorem gI_scl (X : Data E r) (x : Frame X.Ψ r) (s t : X.Ψ → ℝ) (u v : X.Ψ → Fin r → ℂ) :
     MajorantOperators.gI x (scl X s u) (scl X t v) = ∑ τ, s τ * t τ * (X.Hf x τ (u τ) (v τ)).re := by
   unfold MajorantOperators.gI
@@ -41,6 +44,9 @@ theorem gI_scl (X : Data E r) (x : Frame X.Ψ r) (s t : X.Ψ → ℝ) (u v : X.�
 def Qf (X : Data E r) (x : Frame X.Ψ r) (v : Fin r → E) : ℝ :=
   ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v)
 
+/- English proof (translation)
+Use `csInf_le ⟨0, ?_⟩ ⟨w, hw, hw0, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, -, -, rfl⟩`. Conclude with `Finset.sum_nonneg fun τ _ => mul_nonneg (TwoSidedBoostBounds.c_pos X τ).le (MajorantOperators.maj_nonneg hx τ _)`.
+-/
 theorem firstMinimumSq_le_weightedMajorantQuadraticForm (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {w : Fin r → E}
     (hw : w ∈ X.Λ) (hw0 : w ≠ 0) : X.firstMinimumSq x ≤ Qf X x w := by
   refine csInf_le ⟨0, ?_⟩ ⟨w, hw, hw0, rfl⟩
@@ -48,6 +54,9 @@ theorem firstMinimumSq_le_weightedMajorantQuadraticForm (X : Data E r) {x : Fram
   exact Finset.sum_nonneg fun τ _ =>
     mul_nonneg (TwoSidedBoostBounds.c_pos X τ).le (MajorantOperators.maj_nonneg hx τ _)
 
+/- English proof (translation)
+Rewrite using `[UnipotentCoefficientShift.Hf_smul_right, UnipotentCoefficientShift.Hf_smul_left, Data.Hf_eq_jp, X.hermC_jp_jp hx, ← Data.Hf_eq_jp, X.Hf_self hx, show (starRingEnd ℂ) 2 = 2 from map_ofNat _ 2]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Hf_refl_self (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (a : Fin r → ℂ) :
     (X.Hf x τ ((2 : ℂ) • X.jp x τ a) ((2 : ℂ) • X.jp x τ a)).re = 4 * X.maj x τ a := by
   rw [UnipotentCoefficientShift.Hf_smul_right, UnipotentCoefficientShift.Hf_smul_left, Data.Hf_eq_jp, X.hermC_jp_jp hx,
@@ -55,6 +64,35 @@ theorem Hf_refl_self (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : 
   simp
   ring
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `ShortVectors.exists_basis X.Λ X.Λ_fg X.Λ_span`. Establish `hcard : Fintype.card X.Ψ = fdeg E` using `QuadraticCoefficientForms.card_Psi (X := X)`. Establish `hfr : finrank ℝ (X.Ψ → Fin r → ℂ) = 2 * fdeg E * r`. Rewrite using `[Module.finrank_pi_fintype, ← hcard]`. Simplify using `[Module.finrank_pi_fintype]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨θ, hθ⟩` from `ThickPoint.exists_euclidean_real hfr (ThickPoint.majForm X x hx) ⟨fun u v => MajorantOperators.gI_comm hx u v⟩ (fun u => by`. Rewrite using `[ThickPoint.majForm_apply, MajorantOperators.gI_self hx]`. Conclude with `Finset.sum_nonneg fun τ _ => MajorantOperators.maj_nonneg hx τ _)`. Establish `hc : ∀ τ : X.Ψ, 0 < X.c τ` using `fun τ => TwoSidedBoostBounds.c_pos X τ`.
+
+Set `sc : X.Ψ → ℝ` to `fun τ => √(X.c τ)`. Set `si : X.Ψ → ℝ` to `fun τ => (√(X.c τ))⁻¹`. Establish `hss : ∀ τ, sc τ * si τ = 1` using `fun τ => mul_inv_cancel₀ (Real.sqrt_pos.2 (hc τ)).ne'`. Establish `hsc : ∀ τ, sc τ * sc τ = X.c τ` using `fun τ => Real.mul_self_sqrt (hc τ).le`. Establish `hsi : ∀ τ, si τ * si τ = (X.c τ)⁻¹` using `fun τ => by`.
+
+Simplify using `only [si, ← mul_inv, Real.mul_self_sqrt (hc τ).le]`. Set `φ : (Fin r → E) →+ EuclideanSpace ℝ (Fin (2 * fdeg E * r))` to `((θ.comp (scl X sc)).toAddMonoidHom).comp (ThickPoint.embHom X)`. Set `ψ : (Fin r → E) →+ EuclideanSpace ℝ (Fin (2 * fdeg E * r))` to `((θ.comp (scl X si)).toAddMonoidHom).comp (ThickPoint.reflHom X x)`. Establish `hφψ : ∀ u w, inner ℝ (φ u) (ψ w) = (ThickPoint.traceFormOf X.Gm u w : ℝ)`. Introduce `u w`.
+
+Use `show inner ℝ (θ (scl X sc _)) (θ (scl X si _)) = _`. Rewrite using `[hθ, ThickPoint.majForm_apply, gI_scl, ← ThickPoint.pair_eq X x hx u w]`. Unfold `MajorantOperators.gI`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hss, one_mul]`.
+
+Establish `hφ : ∀ u, ‖φ u‖ ^ 2 = Qf X x u`. Introduce `u`. Rewrite using `[← real_inner_self_eq_norm_sq]`. Use `show inner ℝ (θ (scl X sc _)) (θ (scl X sc _)) = _`. Rewrite using `[hθ, ThickPoint.majForm_apply, gI_scl]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hsc]`. Use `show X.c τ * (X.Hf x τ (Data.emb τ.1 u) (Data.emb τ.1 u)).re = _`. Rewrite using `[X.Hf_self hx, Complex.ofReal_re]`. Establish `hψ : ∀ w, ‖ψ ((-X.ξ0) • w)‖ ^ 2 = Qf X x w`.
+
+Introduce `w`. Rewrite using `[← real_inner_self_eq_norm_sq]`. Use `show inner ℝ (θ (scl X si _)) (θ (scl X si _)) = _`. Rewrite using `[hθ, ThickPoint.majForm_apply, gI_scl]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsi]`. Use `show (X.c τ)⁻¹ * (X.Hf x τ ((2 : ℂ) • X.jp x τ (Data.emb τ.1 ((-X.ξ0) • w))) ((2 : ℂ) • X.jp x τ (Data.emb τ.1 ((-X.ξ0) • w)))).re = _`. Rewrite using `[Hf_refl_self X hx]`. Establish `he : Data.emb τ.1 ((-X.ξ0) • w) = (τ.1 (-X.ξ0)) • Data.emb τ.1 w`. Use function extensionality and compare the values at `a`.
+
+Simplify using `[Data.emb]`. Rewrite using `[he, UnipMove.DeltaValuation.maj_smul, Complex.normSq_eq_norm_sq, map_neg, norm_neg]`. Establish `hcτ : X.c τ = 2 * ‖τ.1 X.ξ0‖` using `rfl`. Establish `h0` using `hc τ`. Rewrite `h0`, the goal using `[hcτ]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨v, hv, hli, hle⟩` from `ThickPoint.transference_pair b (ThickPoint.traceFormOf X.Gm) (ThickPoint.traceFormOf_isSymm X.Gm_herm) (ThickPoint.traceFormOf_nondegenerate X.Gm_herm X.Gm_det) φ ψ hφψ (√(X.firstMinimumSq x)) (Real.sqrt_pos.2 hl) (by`. Introduce `u hu hk`. Establish `hξ : -X.ξ0 ≠ 0` using `neg_ne_zero.2 X.ξ0_ne`.
+
+Take `⟨w, rfl⟩ : ∃ w, u = (-X.ξ0) • w` from `⟨(-X.ξ0)⁻¹ • u, by rw [smul_smul, mul_inv_cancel₀ hξ, one_smul]⟩`. Establish `hw0 : w ≠ 0` using `by rintro rfl; exact hu (smul_zero _)`. Establish `hw : w ∈ X.Λ`. Use `(hsd w).2 fun y hy => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 ((hb y).2 hy)`.
+
+Use `choose k hk using hk`. Use `⟨∑ j, c j * k j, ?_⟩` and prove the remaining obligations. Rewrite using `[← HermitianTraceFormVanishing.herm_smul_left, ← ThickPoint.traceFormOf_apply, map_sum]`. Simplify using `only [map_zsmul, hk]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Real.sq_sqrt hl.le, hψ]`. Conclude with `firstMinimumSq_le_weightedMajorantQuadraticForm X hx hw hw0)`. Conclude with `⟨v, fun i => (hb _).1 (hv i), hli, φ, hφ, hle⟩`.
+-/
 theorem exists_short (X : Data E r) (x : Frame X.Ψ r) (hx : x ∈ X.dom)
     (hsd : EqCovol.IsSelfDualTr X) (hl : 0 < X.firstMinimumSq x) :
     ∃ v : Fin (2 * fdeg E * r) → Fin r → E, (∀ i, v i ∈ X.Λ) ∧ LinearIndependent ℚ v ∧
@@ -138,6 +176,11 @@ theorem exists_short (X : Data E r) (x : Frame X.Ψ r) (hx : x ∈ X.dom)
       exact firstMinimumSq_le_weightedMajorantQuadraticForm X hx hw hw0)
   exact ⟨v, fun i => (hb _).1 (hv i), hli, φ, hφ, hle⟩
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.ChartGraph.maj_cpt_le_two E r X x z' hx hz' τ (Data.emb τ.1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v))).2`. Establish `h2` using `(GlobalTheory.ChartGraph.maj_cpt_le_two E r X x z hx hz τ (Data.emb τ.1 v)).1`. Establish `e1 : X.maj (cpt X x z') τ (Data.emb τ.1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v)) = X.maj (cpt X x z) τ (Data.emb τ.1 v)`. Rewrite using `[← GlobalTheory.ChartMult.maj_rmul_any X _ hb, ← heq, GlobalTheory.ChartMult.emb_mulVec', GlobalTheory.MajInv.maj_lact X hγ]`. Rewrite `h1` using `[e1]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem maj_le_four (X : Data E r) {x : Frame X.Ψ r} (hx : ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x)
     {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ) {z z' : V (nd X)}
     (hz : (r : ℝ) ^ 2 * ‖z‖ ≤ 1 / 100) (hz' : (r : ℝ) ^ 2 * ‖z'‖ ≤ 1 / 100)
@@ -155,6 +198,9 @@ theorem maj_le_four (X : Data E r) {x : Frame X.Ψ r} (hx : ReciprocityTheory.Ch
   rw [e1] at h1
   linarith
 
+/- English proof (translation)
+Unfold `Qf`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (maj_le_four X hx hγ hz hz' hb heq τ v) (TwoSidedBoostBounds.c_pos X τ).le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Qf_le_four (X : Data E r) {x : Frame X.Ψ r} (hx : ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x)
     {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ) {z z' : V (nd X)}
     (hz : (r : ℝ) ^ 2 * ‖z‖ ≤ 1 / 100) (hz' : (r : ℝ) ^ 2 * ‖z'‖ ≤ 1 / 100)
@@ -168,6 +214,11 @@ theorem Qf_le_four (X : Data E r) {x : Frame X.Ψ r} (hx : ReciprocityTheory.Cha
     (TwoSidedBoostBounds.c_pos X τ).le
   linarith
 
+/- English proof (translation)
+Unfold `Qf`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `he : Data.emb τ.1 (M • w) = ((M : ℝ) : ℂ) • Data.emb τ.1 w`. Use function extensionality and compare the values at `a`.
+
+Simplify using `[Data.emb, nsmul_eq_mul]`. Rewrite using `[he, UnipotentCoefficientShift.maj_smul hx]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Qf_nsmul (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (M : ℕ) (w : Fin r → E) :
     Qf X x (M • w) = (M : ℝ) ^ 2 * Qf X x w := by
   unfold Qf
@@ -178,6 +229,41 @@ theorem Qf_nsmul (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (M : ℕ) 
   rw [he, UnipotentCoefficientShift.maj_smul hx]
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ r X M x hsd hx hM γ hγ hcong z z' hz hz' b hb heq`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Conclude with `Units.ext (Matrix.ext fun i => i.elim0)`. Establish `hdom : x ∈ X.dom` using `ReciprocityTheory.ChartRestriction.G.AR.Up.ModeHalfA.dom_of_orth X hx`. Establish `hr' : (0 : ℝ) < r` using `by exact_mod_cast hr`.
+
+Establish `hsm : ∀ w : V (nd X), ‖w‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → (r : ℝ) ^ 2 * ‖w‖ ≤ 1 / 100`. Introduce `w hw`. Combine the equalities or inequalities in the displayed calculation. Establish `hcard : (X.Ψ.card : ℝ) = fdeg E`. Rewrite using `[← QuadraticCoefficientForms.card_Psi (X := X), Fintype.card_coe]`.
+
+Establish `hf : (1 : ℝ) ≤ fdeg E`. Use `QuadraticCoefficientForms.card_Psi_pos (X := X)` as an intermediate fact. Rewrite `this` using `[QuadraticCoefficientForms.card_Psi (X := X)]`. Conclude with `this` after adjusting the coercions. Use `set P : ℝ := (fdeg E : ℝ) * r with hP`.
+
+Establish `hP1 : 1 ≤ P`. Establish `: (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Use the polynomial consequences of the given equalities and inequalities. Rewrite `hM` using `[hcard]`. Establish `hP4 : 1 ≤ P ^ 4` using `one_le_pow₀ hP1`.
+
+Establish `hla : 0 < X.firstMinimumSq x`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg M) h` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨v, hvΛ, hli, φ, hφ, hvs⟩` from `exists_short X x hdom hsd hla`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, (γ : Matrix (Fin r) (Fin r) E) *ᵥ v i ≠ v i := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+
+Apply `hne` to reduce the goal to its premises. Establish `hcv : Fintype.card (Fin (2 * fdeg E * r)) = finrank ℚ (Fin r → E)`. Rewrite using `[Fintype.card_fin, Module.finrank_pi_fintype, ShortVectors.finrank_eq]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hfN : 0 < fdeg E`. Use `QuadraticCoefficientForms.card_Psi_pos (X := X)` as an intermediate fact. Rewrite `this` using `[QuadraticCoefficientForms.card_Psi (X := X)]`. Then use the resulting hypothesis. Use `haveI : Nonempty (Fin (2 * fdeg E * r)) := ⟨⟨0, by positivity⟩⟩`. Set `B` to `basisOfLinearIndependentOfCardEqFinrank hli hcv`.
+
+Establish `hlin : (Matrix.mulVecLin (γ : Matrix (Fin r) (Fin r) E)).restrictScalars ℚ = LinearMap.id` using `B.ext fun j => by`. Simplify using `[B, hall j]`. Use `Units.ext (Matrix.toLin'.injective (LinearMap.ext fun y => ?_))` and prove the remaining obligations. Use `LinearMap.congr_fun hlin y` as an intermediate fact. Simplify using `using this`.
+
+Take `⟨w, hwΛ, hw⟩` from `hcong (v i) (hvΛ i)`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Rewrite `hw` using `[smul_zero, sub_eq_zero]`. Conclude with `hi hw`.
+
+Establish `h1 : (M : ℝ) ^ 2 * X.firstMinimumSq x ≤ ‖φ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v i - v i)‖ ^ 2`. Rewrite using `[hφ, hw, Qf_nsmul X hdom]`. Conclude with `mul_le_mul_of_nonneg_left (firstMinimumSq_le_weightedMajorantQuadraticForm X hdom hwΛ hw0) (by positivity)`. Establish `h2 : ‖φ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v i)‖ ≤ 2 * ‖φ (v i)‖`. Establish `h` using `Qf_le_four X hx hγ (hsm z hz) (hsm z' hz') hb heq (v i)`.
+
+Rewrite `h` using `[← hφ, ← hφ]`. Establish `: ‖φ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v i)‖ ^ 2 ≤ (2 * ‖φ (v i)‖) ^ 2`. Rewrite using `[mul_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).1 this`.
+
+Establish `h3 : ‖φ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v i - v i)‖ ≤ 3 * ‖φ (v i)‖`. Rewrite using `[map_sub]`. Use `norm_sub_le (φ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v i)) (φ (v i))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : ‖φ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v i - v i)‖ ^ 2 ≤ 9 * ‖φ (v i)‖ ^ 2`.
+
+Use `pow_le_pow_left₀ (norm_nonneg _) h3 2` as an intermediate fact. Rewrite `this` using `[mul_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5` using `hvs i`. Establish `hK : (((2 * fdeg E * r : ℕ) : ℝ) ^ 2 / √(X.firstMinimumSq x)) ^ 2 = 16 * P ^ 4 / X.firstMinimumSq x`.
+
+Rewrite using `[div_pow, Real.sq_sqrt hla.le, hP]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h5` using `[hK]`. Establish `h6 : (M : ℝ) ^ 2 * X.firstMinimumSq x ≤ 9 * (16 * P ^ 4 / X.firstMinimumSq x)` using `by linarith`.
+
+Establish `h7 : ((M : ℝ) * X.firstMinimumSq x) ^ 2 ≤ 144 * P ^ 4`. Use `mul_le_mul_of_nonneg_right h6 hla.le` as an intermediate fact. Rewrite `this` using `[mul_assoc 9, div_mul_cancel₀ _ hla.ne']`. Use the polynomial consequences of the given equalities and inequalities. Establish `h8 : (100 * P ^ 4) ^ 2 ≤ ((M : ℝ) * X.firstMinimumSq x) ^ 2` using `pow_le_pow_left₀ (by positivity) hM 2`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem deep_cong_chart_sep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (M : ℕ) (x : Frame X.Ψ r), GlobalTheory.EqCovol.IsSelfDualTr X → ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x → 100 * ((X.Ψ.card : ℝ) * r) ^ 4 ≤ (M : ℝ) * X.firstMinimumSq x → ∀ γ : GL (Fin r) E, IsUStab X.Gm X.Λ γ → (∀ v ∈ X.Λ, ∃ w ∈ X.Λ, (γ : Matrix (Fin r) (Fin r) E).mulVec v - v = M • w) → ∀ z z' : ReciprocityTheory.L2DbarEstimates.V (ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X), ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → ‖z'‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → ∀ b ∈ Bor X.Ψ r, lact γ (ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z) = rmul (ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z') b → γ = 1 := by
   intro E _ _ _ r X M x hsd hx hM γ hγ hcong z z' hz hz' b hb heq
   classical

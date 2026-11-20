@@ -16,6 +16,27 @@ namespace GlobalTheory.Poinc.FibLat
 
 open GlobalTheory.NonlocalTrait in
 
+/- English proof (translation)
+Introduce `Y _ _ G _ _ hG w w' hsp hne`. Set `s' : Sp (Y.presheaf.stalk w') ⟶ Y` to `Y.fromSpecStalk w'`. Set `g : Y.presheaf.stalk w' →+* Y.presheaf.stalk w` to `(Y.presheaf.stalkSpecializes hsp).hom`. Establish `hgs : spMap g ≫ s' = Y.fromSpecStalk w` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp`. Establish `hg : ¬ IsLocalHom g`.
+
+Introduce `hl`. Apply `hne` to reduce the goal to its premises. Establish `h1 : (spMap g) (closedPoint (Y.presheaf.stalk w)) = closedPoint (Y.presheaf.stalk w')` using `Spec_closedPoint`. Combine the equalities or inequalities in the displayed calculation. Set `GR` to `(Over.pullback s').obj G`.
+
+Establish `hGR : IsSemiAbelian GR` using `IsSemiAbelian.pullback _ G hG`. Take `⟨V, _, _, hV, ψ, Ω, _, α, β, hψ, hβ, e, ⟨E⟩⟩` from `GlobalTheory.exists_trait_nonlocal_torusExtension (Y.presheaf.stalk w') GR hGR (Y.presheaf.stalk w) g hg`. Set `alg` to `algebraMap V (FractionRing V)`. Set `ξ : Sp V ⟶ Y` to `spMap ψ ≫ s'`. Set `G₁` to `(Over.pullback ξ).obj G`.
+
+Establish `h₁ : IsGrpPullback G₁ G ξ (pullback.fst G.hom ξ)` using `isGrpPullback_pullback G ξ`. Establish `hG₁ : IsSemiAbelian G₁` using `IsSemiAbelian.pullback _ G hG`. Set `GK` to `(Over.pullback (spMap (alg.comp ψ))).obj GR`. Establish `hK : IsGrpPullback GK G (spMap alg ≫ ξ) _` using `((isGrpPullback_pullback GR (spMap (alg.comp ψ))).comp (isGrpPullback_pullback G s')).congr (by rw [spMap_comp', Category.assoc]) rfl`. Set `ψ' : GK.left ⟶ G₁.left` to `h₁.1.lift _ (GK.hom ≫ spMap alg) (by rw [hK.1.w, Category.assoc])`.
+
+Establish `hψ' : IsGrpPullback GK G₁ (spMap alg) ψ'` using `h₁.cancel (hK.congr rfl (h₁.1.lift_fst _ _ _).symm) (h₁.1.lift_snd _ _ _)`. Use `letI := E.addCommGroup`. Use `haveI := E.free`. Use `haveI := E.finite`. Use `haveI := E.i_hom`.
+
+Take `⟨j, hj, ej⟩` from `GlobalTheory.TorusPart.extend_torus_hom_dvr V G₁ hG₁ GK ψ' hψ' ⟨E⟩ (FractionRing V) (RingHom.id _) GK ψ' hψ' E.X E.i E.i_hom`. Use `haveI : IsLocalHom ψ := hψ`. Establish `hαl : IsLocalHom α` using `⟨fun x hx => isUnit_iff_ne_zero.2 fun h0 => by simp [h0] at hx⟩`. Establish `hβl : IsLocalHom β` using `⟨fun x hx => by`. Assume the negation of the conclusion as `hn`.
+
+Rewrite `hx` using `[hβ x ((mem_maximalIdeal x).2 hn)]`. Conclude with `not_isUnit_zero hx⟩`. Establish `key : spMap α ≫ spMap alg ≫ ξ = spMap β ≫ Y.fromSpecStalk w`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ξ, spMap_comp', Category.assoc]`.
+
+Use `_ = spMap (β.comp g) ≫ s' := by rw [e]`. Use `_ = spMap β ≫ Y.fromSpecStalk w := by rw [spMap_comp', Category.assoc, hgs]`. Use `⟨V, inferInstance, inferInstance, hV, ξ, G₁, inferInstance, inferInstance, pullback.fst G.hom ξ, E.X, inferInstance, inferInstance, inferInstance, j, GK, inferInstance, ψ', hψ', ?_, ?_, h₁, hj, ?_⟩` and prove the remaining obligations. Establish `h1 : (spMap ψ) (closedPoint V) = closedPoint (Y.presheaf.stalk w')` using `Spec_closedPoint`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h1 : (spMap α) (closedPoint Ω) = closedPoint (FractionRing V)` using `Spec_closedPoint`. Establish `h2 : (spMap β) (closedPoint Ω) = closedPoint (Y.presheaf.stalk w)` using `Spec_closedPoint`. Combine the equalities or inequalities in the displayed calculation. Establish `: GlobalTheory.TorusPart.pullTorus hψ' j = E.i` using `ej`. Rewrite using `[this]`.
+
+Conclude with `isTorPart_torusExtension E`.
+-/
 theorem exists_trait_torusPart : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (G : Over Y) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ w w' : Y, w ⤳ w' → w ≠ w' → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (ξ : Sp V ⟶ Y) (G₁ : Over (Sp V)) (_ : GrpObj G₁) (_ : IsCommMonObj G₁) (φ₁ : G₁.left ⟶ G.left) (X₁ : Type) (_ : AddCommGroup X₁) (_ : Module.Free ℤ X₁) (_ : Module.Finite ℤ X₁) (j : splitTorus (Sp V) X₁ ⟶ G₁) (GK : Over (Sp (FractionRing V))) (_ : GrpObj GK) (ψ : GK.left ⟶ G₁.left) (hψ : IsGrpPullback GK G₁ (spMap (algebraMap V (FractionRing V))) ψ), ξ (closedPoint V) = w' ∧ (spMap (algebraMap V (FractionRing V)) ≫ ξ) (closedPoint (FractionRing V)) = w ∧ IsGrpPullback G₁ G ξ φ₁ ∧ IsMonHom j ∧ IsTorPart (pullTorus hψ j) := by
   intro Y _ _ G _ _ hG w w' hsp hne
   let s' : Sp (Y.presheaf.stalk w') ⟶ Y := Y.fromSpecStalk w'

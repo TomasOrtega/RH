@@ -30,6 +30,9 @@ structure SqIn (σ : K →+* ℂ) : Prop where
 
 variable {G μ₀}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => let ⟨δ, t0, b⟩ := h.norms a ⟨δ, t0, fun ij => let ⟨P, P', c⟩ := b ij; ⟨P, P', c.1, hσ c.2.1, hσ c.2.2⟩⟩, fun i j s c x y a b d e => hσ (h.toric i j s c x y a b d e)⟩`.
+-/
 theorem SqIn.mono {σ : K →+* ℂ} {σ' : K' →+* ℂ} (h : SqIn G μ₀ σ) (hσ : Set.range σ ⊆ Set.range σ') : SqIn G μ₀ σ' :=
   ⟨fun a => let ⟨δ, t0, b⟩ := h.norms a
     ⟨δ, t0, fun ij => let ⟨P, P', c⟩ := b ij; ⟨P, P', c.1, hσ c.2.1, hσ c.2.2⟩⟩,
@@ -65,6 +68,9 @@ structure SlopeTestRemainingChoices (p : PtAt ex Csz) {CF : ℝ} (G : Grid p CF)
 def SlopeTestRemainingChoices.ch {p : PtAt ex Csz} {CF : ℝ} {G : Grid p CF} {W : G.Weil} {n : ℕ} (a : SlopeTestRemainingChoices p G W n) : Choice p.R.toRealDat :=
   ⟨⟨1, CF, p.Z.b⟩, G, W, a.M, a.ρ, a.ξ, a.cv, a.rm, a.S, a.rp, n, a.e, a.c⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem SlopeTestRemainingChoices.atScale {p : PtAt ex Csz} {CF : ℝ} {G : Grid p CF} {W : G.Weil} {n : ℕ} (a : SlopeTestRemainingChoices p G W n) :
     a.ch.AtScale CF p.Z.b := rfl
 

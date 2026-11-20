@@ -15,11 +15,17 @@ set_option linter.unreachableTactic false
 
 def invSqrtTwoComplex : ℂ := (((Real.sqrt 2)⁻¹ : ℝ) : ℂ)
 
+/- English proof (translation)
+Unfold `invSqrtTwoComplex`. Rewrite using `[← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (by norm_num)]`. Evaluate the numerical expressions.
+-/
 lemma obj_s_sq : invSqrtTwoComplex * invSqrtTwoComplex = 1 / 2 := by
   unfold invSqrtTwoComplex
   rw [← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (by norm_num)]
   norm_num
 
+/- English proof (translation)
+Unfold `invSqrtTwoComplex`. Conclude with `Complex.conj_ofReal _`.
+-/
 lemma obj_s_star : star invSqrtTwoComplex = invSqrtTwoComplex := by
   unfold invSqrtTwoComplex; exact Complex.conj_ofReal _
 
@@ -32,10 +38,26 @@ def cayleyCoeffSecondDiagonal (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ :=
 def obj_PU (k r : ℕ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := fun i j =>
   (if j = i then cayleyCoeffFirstDiagonal k r i else 0) + (if i = sig k r j then cayleyCoeffSecondDiagonal k r i else 0)
 
+/- English proof (translation)
+Unfold `obj_PU cayleyCoeffFirstDiagonal cayleyCoeffSecondDiagonal`. Apply the tactic sequence `split_ifs <;> simp [obj_s_star]`.
+-/
 lemma obj_PU_star (k r : ℕ) (i j : Fin (2 * r + k + 1)) : star (obj_PU k r i j) = obj_PU k r i j := by
   unfold obj_PU cayleyCoeffFirstDiagonal cayleyCoeffSecondDiagonal
   split_ifs <;> simp [obj_s_star]
 
+/- English proof (translation)
+Establish `hJ : Formalism.REAL.Jm (epsK k r) = diagonal (dK k r)` using `rfl`. Establish `hs` using `obj_s_sq`. Rewrite using `[hJ, mul_apply]`. Simplify using `only [mul_diagonal, conjTranspose_apply, obj_PU_star]`. Unfold `obj_PU`.
+
+Simplify using `only [add_mul, mul_add, Finset.sum_add_distrib, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Hpk_eq]`. Establish `hi` using `i.isLt`. Establish `hs'` using `sig_val k r i`. Distinguish the cases in `hji : j = i`.
+
+Substitute `hji` using the available equality. Simplify using `only [Fin.ext_iff]`. Simplify using `only [cayleyCoeffFirstDiagonal, cayleyCoeffSecondDiagonal, dK, epsK, sgn, decide_eq_true_eq]`. Apply the tactic sequence `split_ifs at * <;> first | (exfalso; omega) | (linear_combination (0 : ℂ) * hs) | (linear_combination (2 : ℂ) * hs) | (linear_combination hs) | (linear_combination (-2 : ℂ) * hs) | (linear_combination (-1 : ℂ) * hs) | (norm_num; done)`. Distinguish the cases in `hjs : j = sig k r i`.
+
+Substitute `hjs` using the available equality. Simplify using `only [sig_sig]`. Establish `hji' : ¬ (sig k r i).val = i.val` using `fun h => hji (Fin.ext h)`. Simplify using `only [Fin.ext_iff]`. Simplify using `only [cayleyCoeffFirstDiagonal, cayleyCoeffSecondDiagonal, dK, epsK, sgn, decide_eq_true_eq]`.
+
+Apply the tactic sequence `split_ifs at * <;> first | (exfalso; omega) | (linear_combination (0 : ℂ) * hs) | (linear_combination (2 : ℂ) * hs) | (linear_combination hs) | (linear_combination (-2 : ℂ) * hs) | (linear_combination (-1 : ℂ) * hs) | (norm_num; done)`. Establish `h1 : ¬ i = j` using `fun h => hji h.symm`. Establish `h2 : ¬ i = sig k r j` using `fun h => hjs ((eq_sig_iff k r i j).1 h)`. Establish `h3 : ¬ sig k r j = sig k r i` using `fun h => hji ((sig_inj k r j i).1 h)`. Rewrite using `[if_neg h1, if_neg hjs, if_neg h2, if_neg h3, if_neg hjs]`.
+
+Evaluate the numerical expressions.
+-/
 lemma obj_PJP_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     ((obj_PU k r)ᴴ * Formalism.REAL.Jm (epsK k r) * obj_PU k r) i j = Hpk k r i j := by
   have hJ : Formalism.REAL.Jm (epsK k r) = diagonal (dK k r) := rfl
@@ -66,6 +88,17 @@ lemma obj_PJP_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
       rw [if_neg h1, if_neg hjs, if_neg h2, if_neg h3, if_neg hjs]
       norm_num
 
+/- English proof (translation)
+Establish `hs` using `obj_s_sq`. Rewrite using `[mul_apply]`. Simplify using `only [conjTranspose_apply, obj_PU_star]`. Unfold `obj_PU`. Simplify using `only [add_mul, mul_add, Finset.sum_add_distrib, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Rewrite using `[one_apply]`. Establish `hi` using `i.isLt`. Establish `hs'` using `sig_val k r i`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality.
+
+Simplify using `only [Fin.ext_iff]`. Simplify using `only [cayleyCoeffFirstDiagonal, cayleyCoeffSecondDiagonal]`. Apply the tactic sequence `split_ifs at * <;> first | (exfalso; omega) | (linear_combination (0 : ℂ) * hs) | (linear_combination (2 : ℂ) * hs) | (linear_combination hs) | (linear_combination (-2 : ℂ) * hs) | (linear_combination (-1 : ℂ) * hs) | (norm_num; done)`. Distinguish the cases in `hjs : j = sig k r i`. Substitute `hjs` using the available equality.
+
+Simplify using `only [sig_sig]`. Establish `hji' : ¬ (sig k r i).val = i.val` using `fun h => hji (Fin.ext h)`. Simplify using `only [Fin.ext_iff]`. Simplify using `only [cayleyCoeffFirstDiagonal, cayleyCoeffSecondDiagonal]`. Apply the tactic sequence `split_ifs at * <;> first | (exfalso; omega) | (linear_combination (0 : ℂ) * hs) | (linear_combination (2 : ℂ) * hs) | (linear_combination hs) | (linear_combination (-2 : ℂ) * hs) | (linear_combination (-1 : ℂ) * hs) | (norm_num; done)`.
+
+Establish `h1 : ¬ i = j` using `fun h => hji h.symm`. Establish `h2 : ¬ i = sig k r j` using `fun h => hjs ((eq_sig_iff k r i j).1 h)`. Establish `h3 : ¬ sig k r j = sig k r i` using `fun h => hji ((sig_inj k r j i).1 h)`. Rewrite using `[if_neg h1, if_neg hjs, if_neg h2, if_neg h3, if_neg h1]`. Evaluate the numerical expressions.
+-/
 lemma obj_PP_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     ((obj_PU k r)ᴴ * obj_PU k r) i j = (1 : Matrix _ _ ℂ) i j := by
   have hs := obj_s_sq
@@ -95,6 +128,11 @@ lemma obj_PP_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
       rw [if_neg h1, if_neg hjs, if_neg h2, if_neg h3, if_neg h1]
       norm_num
 
+/- English proof (translation)
+Establish `h1 : (obj_PU k r)ᴴ * obj_PU k r = 1` using `by ext i j; exact obj_PP_apply k r i j`. Establish `hu : obj_PU k r ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Conclude with `h1`. Use `⟨⟨?_, by ext i j; exact obj_PJP_apply k r i j⟩, hu⟩` and prove the remaining obligations.
+
+Conclude with `⟨⟨obj_PU k r, (obj_PU k r)ᴴ, mul_eq_one_comm.1 h1, h1⟩, rfl⟩`.
+-/
 lemma obj_PU_cayley (k r : ℕ) : IsCayleyU k r (epsK k r) (obj_PU k r) := by
   have h1 : (obj_PU k r)ᴴ * obj_PU k r = 1 := by ext i j; exact obj_PP_apply k r i j
   have hu : obj_PU k r ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ := by
@@ -102,6 +140,25 @@ lemma obj_PU_cayley (k r : ℕ) : IsCayleyU k r (epsK k r) (obj_PU k r) := by
   refine ⟨⟨?_, by ext i j; exact obj_PJP_apply k r i j⟩, hu⟩
   exact ⟨⟨obj_PU k r, (obj_PU k r)ᴴ, mul_eq_one_comm.1 h1, h1⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hK : (Finset.univ.filter fun i : Fin (2 * r + k + 1) => epsK k r i = true).card = k + r`. Establish `hf : (Finset.univ.filter fun i : Fin (2 * r + k + 1) => epsK k r i = true) = Finset.univ.filter fun i : Fin (2 * r + k + 1) => (i : ℕ) < r + k`. Use extensionality with `i`. Simplify using `[epsK]`. Rewrite using `[hf, Fin.card_filter_val_lt]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hcard : Fintype.card {i // epsK k r i = true} = Fintype.card {i // ε i = true}`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype, hK, hc]`. Set `e0 : {i // epsK k r i = true} ≃ {i // ε i = true}` to `Fintype.equivOfCardEq hcard`. Set `π : Equiv.Perm (Fin (2 * r + k + 1))` to `e0.extendSubtype`.
+
+Establish `hπ : ∀ l, ε (π l) = epsK k r l`. Introduce `l`. Distinguish the cases in `hl : epsK k r l = true`. Rewrite using `[hl]`. Conclude with `e0.extendSubtype_mem l hl`.
+
+Use `e0.extendSubtype_not_mem l hl` as an intermediate fact. Simplify using `only [Bool.not_eq_true] at this hl`. Rewrite using `[hl]`. Conclude with `this`. Take `⟨⟨_, hP⟩, hU⟩` from `obj_PU_cayley k r`.
+
+Establish `hU' : (obj_PU k r)ᴴ * obj_PU k r = 1` using `(Matrix.mem_unitaryGroup_iff').1 hU`. Set `P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ` to `fun i j => obj_PU k r (π.symm i) j`. Establish `hsum : ∀ (d : Fin (2 * r + k + 1) → ℂ) a b, (Pᴴ * diagonal d * P) a b = ((obj_PU k r)ᴴ * diagonal (fun l => d (π l)) * obj_PU k r) a b`. Introduce `d a b`. Rewrite using `[mul_apply, mul_apply]`.
+
+Simplify using `only [mul_diagonal, conjTranspose_apply]`. Rewrite using `[← Equiv.sum_comp π]`. Simplify using `[P]`. Establish `h1 : Pᴴ * P = 1`. Use `fun a b => hsum (fun _ => 1) a b` as an intermediate fact.
+
+Use extensionality with `a b`. Establish `h2` using `this a b`. Simplify using `only [Matrix.diagonal_one, Matrix.mul_one] at h2`. Rewrite using `[h2, hU']`. Use `⟨P, ⟨⟨⟨P, Pᴴ, mul_eq_one_comm.1 h1, h1⟩, rfl⟩, ?_⟩, (Matrix.mem_unitaryGroup_iff').2 h1⟩` and prove the remaining obligations.
+
+Use extensionality with `a b`. Establish `hJ : Formalism.REAL.Jm ε = diagonal (fun a => if ε a then (1 : ℂ) else -1)` using `rfl`. Rewrite using `[hJ, hsum, ← hP]`. Establish `hJ' : Formalism.REAL.Jm (epsK k r) = diagonal (fun l => if ε (π l) then (1 : ℂ) else -1)` using `by show diagonal _ = _`. Use `congr 1`.
+
+Use function extensionality and compare the values at `l`. Rewrite using `[hπ]`. Rewrite using `[hJ']`.
+-/
 theorem obj_cayleyU_of_card (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool)
     (hc : (Finset.univ.filter fun i => ε i = true).card = k + r) : ∃ P, IsCayleyU k r ε P := by
   classical
@@ -146,6 +203,13 @@ theorem obj_cayleyU_of_card (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool)
     congr 1; funext l; rw [hπ]
   rw [hJ']
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero`. Establish `: ((Finset.range (2 * 0 + k + 1)).filter fun i => i < k - 1 ∨ (i - (k - 1)) % 2 = 0) = Finset.range k`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`. Simplify using the standard rewrite rules. Consider the case `succ r ih`. Establish `e : 2 * (r + 1) + k + 1 = (2 * r + k + 1) + 1 + 1` using `by ring`.
+
+Rewrite using `[e, Finset.range_add_one, Finset.range_add_one, Finset.filter_insert, Finset.filter_insert, if_neg (by omega), if_pos (by omega), Finset.card_insert_of_notMem (by simp), ih]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma obj_count (k r : ℕ) (hk : 1 ≤ k) :
     ((Finset.range (2 * r + k + 1)).filter fun i => i < k - 1 ∨ (i - (k - 1)) % 2 = 0).card = k + r := by
   induction r with
@@ -159,11 +223,19 @@ lemma obj_count (k r : ℕ) (hk : 1 ≤ k) :
       if_neg (by omega), if_pos (by omega), Finset.card_insert_of_notMem (by simp), ih]
     ring
 
+/- English proof (translation)
+Rewrite using `[Finset.card_filter, Finset.card_filter]`. Conclude with `Fin.sum_univ_eq_sum_range (fun i => if p i then 1 else 0) n`.
+-/
 lemma obj_card_fin (n : ℕ) (p : ℕ → Prop) [DecidablePred p] :
     (Finset.univ.filter fun i : Fin n => p i.val).card = ((Finset.range n).filter p).card := by
   rw [Finset.card_filter, Finset.card_filter]
   exact Fin.sum_univ_eq_sum_range (fun i => if p i then 1 else 0) n
 
+/- English proof (translation)
+Establish `hk : 1 ≤ R.k` using `by have := R.m_add_three_le_k; omega`. Rewrite using `[← obj_count R.k R.rS hk, ← obj_card_fin]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, epsSH, epsS, Fin.val_cast]`.
+
+Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+-/
 theorem obj_epsSH_card (R : Formalism.BasicNotions.Ranks) :
     (Finset.univ.filter fun i => epsSH R i = true).card = R.k + R.rS := by
   have hk : 1 ≤ R.k := by have := R.m_add_three_le_k; omega
@@ -173,22 +245,59 @@ theorem obj_epsSH_card (R : Formalism.BasicNotions.Ranks) :
   simp only [Finset.mem_filter, Finset.mem_univ, true_and, epsSH, epsS, Fin.val_cast]
   split_ifs with h <;> simp [h]
 
+/- English proof (translation)
+The claim follows from `obj_cayleyU_of_card _ _ _ (obj_epsSH_card D.R)`.
+-/
 theorem obj_cayleyU_rows (D : Formalism.BasicNotions.D7) : ∃ P, IsCayleyU D.R.k D.R.rS (epsSH D.R) P :=
   obj_cayleyU_of_card _ _ _ (obj_epsSH_card D.R)
 
+/- English proof (translation)
+Unfold `lamSH lamS`. Simplify using `only [Fin.val_cast]`. Rewrite using `[dif_pos h]`.
+-/
 lemma obj_lamSH_lo (R : Formalism.BasicNotions.Ranks) (P : Formalism.BasicNotions.HCParam R) (i : Fin (2 * R.rS + R.k + 1)) (h : i.val < R.k - 1) :
     lamSH R P i = (P.v ⟨i.val, h⟩ : ℝ) := by
   unfold lamSH lamS; simp only [Fin.val_cast]; rw [dif_pos h]
 
+/- English proof (translation)
+Unfold `lamSH lamS`. Simplify using `only [Fin.val_cast]`. Rewrite using `[dif_neg h, dif_pos h']`.
+-/
 lemma obj_lamSH_hi (R : Formalism.BasicNotions.Ranks) (P : Formalism.BasicNotions.HCParam R) (i : Fin (2 * R.rS + R.k + 1)) (h : ¬ i.val < R.k - 1)
     (h' : i.val - (R.k - 1) < R.m) : lamSH R P i = -(P.b ⟨i.val - (R.k - 1), h'⟩ : ℝ) := by
   unfold lamSH lamS; simp only [Fin.val_cast]; rw [dif_neg h, dif_pos h']
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `R.m_even`. Establish `h2` using `R.two_le_m`. Simplify using `only [Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma obj_m_eq (R : Formalism.BasicNotions.Ranks) : R.m = 2 * R.rS + 2 := by
   obtain ⟨t, ht⟩ := R.m_even
   have h2 := R.two_le_m
   simp only [Formalism.BasicNotions.Ranks.rS]; omega
 
+/- English proof (translation)
+Establish `hm` using `obj_m_eq R`. Establish `hk3` using `R.m_add_three_le_k`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `i`.
+
+Establish `hi` using `i.isLt`. Distinguish the cases in `h1 : i.val + 1 < R.k - 1`. Rewrite using `[obj_lamSH_lo R P i.succ (by simpa using h1), obj_lamSH_lo R P i.castSucc (by simp; omega)]`. Establish `a` using `P.u_gt_v ⟨i.val + 1, h1⟩`. Establish `b` using `P.v_gt_u ⟨i.val, by omega⟩`.
+
+Establish `c` using `lt_trans a b`. Simplify using `only [Fin.val_succ, Fin.val_castSucc]`. Conclude with `c` after adjusting the coercions. Distinguish the cases in `h2 : i.val < R.k - 1`. Establish `e : i.val + 1 = R.k - 1` using `by omega`.
+
+Rewrite using `[obj_lamSH_hi R P i.succ (by simpa using h1) (by simp; omega), obj_lamSH_lo R P i.castSucc (by simpa using h2)]`. Establish `a` using `P.u_last_gt (by omega) (by omega)`. Establish `b` using `P.v_gt_u ⟨i.val, h2⟩`. Establish `e1 : (⟨i.val + 1, by omega⟩ : Fin R.k) = ⟨R.k - 1, by omega⟩` using `Fin.ext e`. Rewrite `b` using `[e1]`.
+
+Establish `c` using `lt_trans a b`. Establish `e2 : (⟨(i.succ).val - (R.k - 1), by simp; omega⟩ : Fin R.m) = ⟨0, by omega⟩`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[e2]`. Simplify using `only [Fin.val_castSucc]`. Conclude with `c` after adjusting the coercions. Rewrite using `[obj_lamSH_hi R P i.succ (by simpa using h1) (by simp; omega), obj_lamSH_hi R P i.castSucc (by simpa using h2) (by simp; omega)]`. Establish `hj : i.val - (R.k - 1) < R.m` using `by omega`.
+
+Establish `hj1 : i.val - (R.k - 1) + 1 < R.m` using `by omega`. Establish `a` using `P.gap_be ⟨i.val - (R.k - 1), hj⟩`. Establish `b` using `P.gap_eb ⟨i.val - (R.k - 1), hj⟩ hj1`. Establish `e2 : (⟨(i.succ).val - (R.k - 1), by simp; omega⟩ : Fin R.m) = ⟨i.val - (R.k - 1) + 1, hj1⟩`. Apply `Fin.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[e2]`. Simplify using `only [Fin.val_castSucc]`. Establish `t0 : (0 : ℚ) ≤ (R.t : ℚ)` using `Nat.cast_nonneg _`.
+
+Establish `c : P.b ⟨i.val - (R.k - 1), hj⟩ < P.b ⟨i.val - (R.k - 1) + 1, hj1⟩` using `by linarith`. Establish `c' : (P.b ⟨i.val - (R.k - 1), hj⟩ : ℝ) < (P.b ⟨i.val - (R.k - 1) + 1, hj1⟩ : ℝ)` using `by exact_mod_cast c`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a`. Take `⟨q, hq⟩` from `R.k_even`.
+
+Establish `hn : (((2 * R.rS + R.k + 1 : ℕ) : ℝ) - 1) / 2 = ((R.rS + q : ℕ) : ℝ)`. Rewrite using `[hq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ha` using `a.isLt`.
+
+Distinguish the cases in `h : a.val < R.k - 1`. Take `⟨z, hz⟩` from `P.v_int ⟨a.val, h⟩`. Use `⟨z - (R.rS + q : ℕ), ?_⟩` and prove the remaining obligations. Rewrite using `[obj_lamSH_lo R P a h, hn, hz]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨z, hz⟩` from `P.b_int ⟨a.val - (R.k - 1), by omega⟩`. Use `⟨-z - (R.rS + q : ℕ), ?_⟩` and prove the remaining obligations. Rewrite using `[obj_lamSH_hi R P a h (by omega), hn, hz]; push_cast; ring`.
+-/
 theorem obj_isHCParam_lamSH (R : Formalism.BasicNotions.Ranks) (P : Formalism.BasicNotions.HCParam R) : IsHCParam (lamSH R P) := by
   have hm := obj_m_eq R
   have hk3 := R.m_add_three_le_k
@@ -244,6 +353,19 @@ theorem obj_isHCParam_lamSH (R : Formalism.BasicNotions.Ranks) (P : Formalism.Ba
       refine ⟨-z - (R.rS + q : ℕ), ?_⟩
       rw [obj_lamSH_hi R P a h (by omega), hn, hz]; push_cast; ring
 
+/- English proof (translation)
+Establish `hk3` using `R.m_add_three_le_k`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (i : ℕ) (h : i + 1 < R.k), P.u ⟨i + 1, h⟩ < P.u ⟨i, by omega⟩`. Introduce `i h`. Conclude with `lt_trans (P.v_gt_u ⟨i, by omega⟩) (P.u_gt_v ⟨i, by omega⟩)`.
+
+Establish `anti : ∀ (d i : ℕ) (h : i + d + 1 < R.k), P.u ⟨i + d + 1, h⟩ < P.u ⟨i, by omega⟩`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro i h`. Conclude with `key i h`.
+
+Consider the case `succ d ih => intro i h; exact lt_trans (key (i + d + 1) h) (ih i (by omega))`. Introduce `a b hab`. Establish `hab' : a.val < b.val` using `hab`. Use `anti (b.val - a.val - 1) a.val (by have := b.isLt; omega)` as an intermediate fact. Establish `e : (⟨a.val + (b.val - a.val - 1) + 1, by have` using `b.isLt; omega⟩ : Fin R.k) = b := by`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[e]`. Use `show ((P.u b : ℚ) : ℝ) < ((P.u a : ℚ) : ℝ)`.
+
+Conclude with `this` after adjusting the coercions. Introduce `a`. Take `⟨q, hq⟩` from `R.k_even`. Take `⟨z, hz⟩` from `P.u_half a`. Use `⟨z + 1 - q, ?_⟩` and prove the remaining obligations.
+
+Use `show ((P.u a : ℚ) : ℝ) - ((R.k : ℝ) - 1) / 2 = _`. Rewrite using `[hz, hq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem obj_isHCParam_u (R : Formalism.BasicNotions.Ranks) (P : Formalism.BasicNotions.HCParam R) : IsHCParam (fun i => ((P.u i : ℚ) : ℝ)) := by
   have hk3 := R.m_add_three_le_k
   refine ⟨?_, ?_⟩
@@ -270,6 +392,15 @@ theorem obj_isHCParam_u (R : Formalism.BasicNotions.Ranks) (P : Formalism.BasicN
     show ((P.u a : ℚ) : ℝ) - ((R.k : ℝ) - 1) / 2 = _
     rw [hz, hq]; push_cast; ring
 
+/- English proof (translation)
+Establish `hm` using `obj_m_eq R`. Establish `hk3` using `R.m_add_three_le_k`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Rewrite using `[obj_lamSH_lo R P ⟨i, by omega⟩ (by show i < R.k - 1; omega)]`.
+
+Establish `a` using `P.u_gt_v ⟨i, by omega⟩`. Establish `b` using `P.v_gt_u ⟨i, by omega⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Conclude with `a` after adjusting the coercions.
+
+Use `beta_reduce`. Conclude with `b` after adjusting the coercions. Introduce `h`. Rewrite using `[obj_lamSH_hi R P ⟨R.k - 1, by omega⟩ (by show ¬ R.k - 1 < R.k - 1; omega) (by show R.k - 1 - (R.k - 1) < R.m; omega)]`. Establish `a` using `P.u_last_gt h (by omega)`.
+
+Establish `e2 : (⟨R.k - 1 - (R.k - 1), by omega⟩ : Fin R.m) = ⟨0, by omega⟩` using `by apply Fin.ext; simp`. Rewrite using `[e2]`. Use `beta_reduce`. Conclude with `a` after adjusting the coercions.
+-/
 theorem obj_interlace (R : Formalism.BasicNotions.Ranks) (P : Formalism.BasicNotions.HCParam R) :
     InterlaceS (by omega : R.k ≤ 2 * R.rS + R.k + 1) (fun i => ((P.u i : ℚ) : ℝ)) (lamSH R P) := by
   have hm := obj_m_eq R
@@ -292,6 +423,11 @@ theorem obj_interlace (R : Formalism.BasicNotions.Ranks) (P : Formalism.BasicNot
 
 open Formalism.MainNotions.CayleySignature in
 
+/- English proof (translation)
+Apply `obj_cayleyU_of_card` to reduce the goal to its premises. Establish `e : (Finset.univ.filter fun i => eps48 k r i = true) = Finset.univ.filter (fun i : Fin (2 * r + k + 1) => i.val < k - 1 ∨ (i.val - (k - 1)) % 2 = 0)`. Apply `Finset.filter_congr` to reduce the goal to its premises. Introduce `i _`. Unfold `eps48`.
+
+Apply the tactic sequence `by_cases h : i.val < k - 1 <;> simp [h]`. Rewrite using `[e, obj_card_fin (2 * r + k + 1) (fun i => i < k - 1 ∨ (i - (k - 1)) % 2 = 0), obj_count k r hk]`.
+-/
 theorem exists_isCayleyU_eps48 (k r : ℕ) (hk : 1 ≤ k) : ∃ P, IsCayleyU k r (eps48 k r) P := by
   apply obj_cayleyU_of_card
   have e : (Finset.univ.filter fun i => eps48 k r i = true) =
@@ -311,18 +447,63 @@ def halfIntegerHighParameter (k : ℕ) : Fin k → ℝ := fun i => (k : ℝ) - (
 def integerHighParameter (k : ℕ) : Fin (k - 1) → ℝ := fun i => (k : ℝ) - (i.val : ℝ)
 def evenlySpacedLowParameter (k r : ℕ) (C : ℝ) : Fin (2 * r + 2) → ℝ := fun j => (j.val : ℝ) * (gapScaleForNumericSetting k r C : ℝ)
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.CayleySignature.lam48 integerHighParameter evenlySpacedLowParameter`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 lemma lambda_numeric_setting_eq (k r : ℕ) (C : ℝ) (i : Fin (2 * r + k + 1)) :
     Formalism.MainNotions.CayleySignature.lam48 k r (integerHighParameter k) (evenlySpacedLowParameter k r C) i =
       if i.val < k - 1 then (k : ℝ) - (i.val : ℝ) else -(((i.val - (k - 1) : ℕ) : ℝ) * (gapScaleForNumericSetting k r C : ℝ)) := by
   unfold Formalism.MainNotions.CayleySignature.lam48 integerHighParameter evenlySpacedLowParameter
   split_ifs <;> rfl
 
+/- English proof (translation)
+Establish `: 0 < gapScaleForNumericSetting k r C` using `by unfold gapScaleForNumericSetting; omega`. Conclude with `this` after adjusting the coercions.
+-/
 lemma gap_scale_numeric_setting_pos (k r : ℕ) (C : ℝ) : (0 : ℝ) < (gapScaleForNumericSetting k r C : ℝ) := by
   have : 0 < gapScaleForNumericSetting k r C := by unfold gapScaleForNumericSetting; omega
   exact_mod_cast this
 
 open Formalism.MainNotions.CayleySignature in
 
+/- English proof (translation)
+Establish `hG` using `gap_scale_numeric_setting_pos k r C`. Take `⟨q, hq⟩` from `he`. Establish `hgap : ∀ (j : Fin (2 * r + 2)) (hj : j.val + 1 < 2 * r + 2), evenlySpacedLowParameter k r C ⟨j.val + 1, hj⟩ - evenlySpacedLowParameter k r C j = (gapScaleForNumericSetting k r C : ℝ)`. Introduce `j hj`. Unfold `evenlySpacedLowParameter`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hGc : (gapScaleForNumericSetting k r C : ℝ) = (⌈|C| * (rk48 k r : ℝ) ^ 3⌉₊ : ℝ) + 2 * ((rk48 k r + (2 * r + 2) * thresholdForNumericSetting k r : ℕ) : ℝ) ^ 3 + (thresholdForNumericSetting k r : ℝ) + 4`. Unfold `gapScaleForNumericSetting`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hceil : |C| * (rk48 k r : ℝ) ^ 3 ≤ (⌈|C| * (rk48 k r : ℝ) ^ 3⌉₊ : ℝ)` using `Nat.le_ceil _`. Establish `hceil0 : (0 : ℝ) ≤ (⌈|C| * (rk48 k r : ℝ) ^ 3⌉₊ : ℝ)` using `Nat.cast_nonneg _`. Establish `hM0 : (0 : ℝ) ≤ 2 * ((rk48 k r + (2 * r + 2) * thresholdForNumericSetting k r : ℕ) : ℝ) ^ 3` using `by positivity`. Establish `ht0 : (0 : ℝ) ≤ (thresholdForNumericSetting k r : ℝ)` using `Nat.cast_nonneg _`.
+
+Use `⟨bvec (wI k r (Fin.last k)), fun _ => 1, halfIntegerHighParameter k, integerHighParameter k, evenlySpacedLowParameter k r C, ⟨hk, ⟨q, hq⟩, ?_, ?_, fun _ => one_ne_zero, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Unfold `bvec wI`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `h`.
+
+Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Unfold `Tz`. Rewrite using `[herm_bvec, Hpk_eq, if_pos, sgn, if_pos]`.
+
+Evaluate the numerical expressions. Simplify using `[wI]`. Apply the tactic sequence `rw [sig_mid] <;> simp [wI]`. Introduce `a b hab`. Establish `: (a.val : ℝ) < (b.val : ℝ)` using `by exact_mod_cast hab`.
+
+Unfold `halfIntegerHighParameter`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a`. Use `⟨(q : ℤ) - a.val + 1, ?_⟩` and prove the remaining obligations. Establish `hkq : (k : ℝ) = (q : ℝ) + q` using `by exact_mod_cast hq`.
+
+Unfold `halfIntegerHighParameter`. Use `push_cast`. Take the linear combination `(1 / 2 : ℝ) * hkq`. Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `i`.
+
+Establish `hi` using `i.isLt`. Rewrite using `[lambda_numeric_setting_eq, lambda_numeric_setting_eq]`. Simplify using `only [Fin.val_succ, Fin.val_castSucc]`. Use `split_ifs with h1 h2 h2`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Establish `e : i.val + 1 - (k - 1) = 0` using `by omega`. Rewrite using `[e]`. Establish `: (i.val : ℝ) < (k : ℝ)` using `by exact_mod_cast (by omega : i.val < k)`.
+
+Simplify using `only [Nat.cast_zero, zero_mul, neg_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : i.val + 1 - (k - 1) = (i.val - (k - 1)) + 1` using `by omega`. Rewrite using `[e]`. Use `push_cast`.
+
+Establish `: (((i.val - (k - 1) : ℕ) : ℝ) + 1) * (gapScaleForNumericSetting k r C : ℝ) = ((i.val - (k - 1) : ℕ) : ℝ) * (gapScaleForNumericSetting k r C : ℝ) + (gapScaleForNumericSetting k r C : ℝ)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a`. Establish `hn : (((2 * r + k + 1 : ℕ) : ℝ) - 1) / 2 = ((r + q : ℕ) : ℝ)` using `by rw [hq]; push_cast; ring`. Rewrite using `[lambda_numeric_setting_eq, hn]`.
+
+Use `split_ifs with h`. Use `⟨(k : ℤ) - a.val - (r + q : ℕ), ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨-(((a.val - (k - 1) : ℕ) : ℤ) * (gapScaleForNumericSetting k r C : ℤ)) - (r + q : ℕ), ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Unfold `halfIntegerHighParameter integerHighParameter`. Use `⟨by simp only []; linarith, by simp only []; push_cast; linarith⟩` and prove the remaining obligations.
+
+Introduce `h`. Unfold `halfIntegerHighParameter evenlySpacedLowParameter`. Establish `: ((k - 1 : ℕ) : ℝ) = (k : ℝ) - 1` using `by rw [Nat.cast_sub hk]; simp`. Simplify using `only [this]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i s`. Rewrite using `[lambda_numeric_setting_eq]`. Unfold `halfIntegerHighParameter`. Use `split_ifs with h`.
+
+Use `⟨(s.val : ℤ) - i.val, ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(k : ℤ) - i.val + ((s.val - (k - 1) : ℕ) : ℤ) * (gapScaleForNumericSetting k r C : ℤ), ?_⟩` and prove the remaining obligations. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨thresholdForNumericSetting k r, ⟨rk48 k r + 900, by unfold thresholdForNumericSetting; ring⟩, by unfold thresholdForNumericSetting; omega, by unfold thresholdForNumericSetting; omega, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Rewrite using `[hgap j hj, hGc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `j hj`. Rewrite using `[hgap j hj, hGc]`. Establish `: C * (rk48 k r : ℝ) ^ 3 ≤ |C| * (rk48 k r : ℝ) ^ 3` using `mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem numeric_setting_with_gap_satisfiable (k r : ℕ) (hk : 1 ≤ k) (he : Even k) (C : ℝ) :
     ∃ z c u v b, RealPlaceNumericalSetting k r z c u v b ∧ GapC C k r b := by
   have hG := gap_scale_numeric_setting_pos k r C

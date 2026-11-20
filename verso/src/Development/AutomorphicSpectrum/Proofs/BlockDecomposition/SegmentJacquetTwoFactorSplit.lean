@@ -7,6 +7,9 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 
 namespace GlobalTheory.CompanionTheory.SegJacquet
 
+/- English proof (translation)
+Introduce `k _ _ _ _ Δ N V _ _ π hJ hπ x hd hpos hne`. Assume the negation of the conclusion as `hno`. Conclude with `hne ((hJ Δ π hπ 2 x hd hpos).2 hno)`.
+-/
 theorem exists_isTopCut_two_of_jhMult_ne_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (Δ : Segment k) (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V), Zc.LSegJacquet k → IsLSeg Δ π →

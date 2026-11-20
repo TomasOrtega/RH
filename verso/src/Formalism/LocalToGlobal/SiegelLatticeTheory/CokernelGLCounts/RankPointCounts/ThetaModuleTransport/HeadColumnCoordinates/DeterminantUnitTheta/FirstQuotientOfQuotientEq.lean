@@ -14,9 +14,19 @@ section Basic
 
 variable (hs : M.split = some g) (Z : M.Mat (r + 1)) (TT : M.R)
 
+/- English proof (translation)
+Conclude with `QuotientAddGroup.eq_iff_sub_mem`.
+-/
 theorem quotientMk_eq_iff_sub_mem_LL (x y : Fin (r + 1) → M.R) : mk1 hs Z TT x = mk1 hs Z TT y ↔ x - y ∈ LL hs Z TT := by
   exact QuotientAddGroup.eq_iff_sub_mem
 
+/- English proof (translation)
+Rewrite using `[quotientMk_eq_iff_sub_mem_LL]`. Rewrite `h` using `[Submodule.Quotient.eq]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun M.R).mp h`. Rewrite using `[LL, AddMonoidHom.mem_range]`. Use `⟨Fin.snoc (α := fun _ => M.R) c 0, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [llMap, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Fin.snoc_last, map_zero, mul_zero, zero_smul, sub_zero]`. Rewrite using `[← hc]`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Fin.sum_univ_castSucc]`.
+
+Simplify using `[Fin.snoc_castSucc, mul_comm]`.
+-/
 theorem firstQuotient_of_quotient_eq {x y : Fin (r + 1) → M.R}
     (h : (Submodule.Quotient.mk x : MbMod Z.Z) = Submodule.Quotient.mk y) : mk1 hs Z TT x = mk1 hs Z TT y := by
   rw [quotientMk_eq_iff_sub_mem_LL]
@@ -31,6 +41,13 @@ theorem firstQuotient_of_quotient_eq {x y : Fin (r + 1) → M.R}
   rw [Fin.sum_univ_castSucc]
   simp [Fin.snoc_castSucc, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [llMap, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul]`. Use `congr 1`. Unfold `bCls`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`.
+
+Establish `hsum : Z.Z.mulVec w - w (Fin.last r) • (fun i => Z.Z i (Fin.last r)) = ∑ a : Fin r, w a.castSucc • (fun i => Z.Z i a.castSucc)`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.sub_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [mul_comm]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem mk_llMap (w : Fin (r + 1) → M.R) :
     (Submodule.Quotient.mk (llMap hs Z TT w) : MbMod Z.Z) =
       w (Fin.last r) • bCls Z.Z - (TT * dgR hs (trO hs (w (Fin.last r)))) • eCl Z.Z := by
@@ -51,6 +68,13 @@ theorem mk_llMap (w : Fin (r + 1) → M.R) :
 
 end Basic
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq]`. Apply `ker_fact hs T T' TT hTT Zh Z hZ hu hG` to reduce the goal to its premises. Establish `e : mk1 hs Z TT (x - y) = mk1 hs Z TT x - mk1 hs Z TT y` using `map_sub (QuotientAddGroup.mk' (LL hs Z TT)) x y`. Rewrite using `[e, h1, sub_self]`. Establish `e2 : laG (ZZm g Zh T T') (x - y) = laG (ZZm g Zh T T') x - laG (ZZm g Zh T T') y`.
+
+Unfold `laG`. Establish `hfun : (fun i => ((x - y) i : E)) = (fun i => (x i : E)) - (fun i => (y i : E))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[hfun, Matrix.mulVec_sub, Pi.sub_apply]`.
+
+Rewrite using `[e2, h2, sub_self]`.
+-/
 theorem mk_eq_of (hs : M.split = some g) (T T' : F) (TT : M.R) (hTT : g.e (TT : E) = (T, T'))
     (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (Z : M.Mat (r + 1))
     (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T') (hu : IsUnit Zh.det)
@@ -79,6 +103,9 @@ variable (hs : M.split = some g) {Z₁ Z₂ : M.Mat (r + 1)} (TT : M.R)
 def liftG (γ : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (v : Fin (r + 1) → M.R) : Fin (r + 1) → M.R :=
   Classical.choose (Submodule.Quotient.mk_surjective _ (γ (Submodule.Quotient.mk v)))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (Submodule.Quotient.mk_surjective _ (γ (Submodule.Quotient.mk v)))`.
+-/
 theorem liftG_spec (γ : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (v : Fin (r + 1) → M.R) :
     (Submodule.Quotient.mk (liftG γ v) : MbMod Z₂.Z) = γ (Submodule.Quotient.mk v) := Classical.choose_spec (Submodule.Quotient.mk_surjective _ (γ (Submodule.Quotient.mk v)))
 
@@ -94,6 +121,11 @@ def thF (γ : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) : (Fin (r + 1) → M.R) →
     apply firstQuotient_of_quotient_eq
     rw [liftG_spec, Submodule.Quotient.mk_add, Submodule.Quotient.mk_add, liftG_spec, liftG_spec, map_add]
 
+/- English proof (translation)
+Introduce `l hl`. Take `⟨m, rfl⟩` from `hl`. Rewrite using `[AddMonoidHom.mem_ker]`. Use `show mk1 hs Z₂ TT (liftG γ (llMap hs Z₁ TT m)) = 0`. Rewrite using `[firstQuotient_of_quotient_eq hs Z₂ TT (y := llMap hs Z₂ TT m) ?_, (firstQuotient_eq_zero_iff hs Z₂ TT _).mpr ⟨m, rfl⟩]`.
+
+Rewrite using `[liftG_spec, mk_llMap, mk_llMap, map_sub, map_smul, map_smul, hb, he]`.
+-/
 theorem thF_ker (γ : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (hb : γ (bCls Z₁.Z) = bCls Z₂.Z)
     (he : γ (eCl Z₁.Z) = eCl Z₂.Z) : LL hs Z₁ TT ≤ (thF hs TT γ).ker := by
   intro l hl
@@ -107,6 +139,9 @@ def thOf (γ : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (hb : γ (bCls Z₁.Z) = b
     (he : γ (eCl Z₁.Z) = eCl Z₂.Z) : DD1 hs Z₁ TT →+ DD1 hs Z₂ TT :=
   QuotientAddGroup.lift (LL hs Z₁ TT) (thF hs TT γ) (thF_ker hs TT γ hb he)
 
+/- English proof (translation)
+Use `show thF hs TT γ v = mk1 hs Z₂ TT w`. Apply `firstQuotient_of_quotient_eq` to reduce the goal to its premises. Rewrite using `[liftG_spec, h]`.
+-/
 theorem thOf_spec (γ : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (hb : γ (bCls Z₁.Z) = bCls Z₂.Z)
     (he : γ (eCl Z₁.Z) = eCl Z₂.Z) {v w : Fin (r + 1) → M.R}
     (h : γ (Submodule.Quotient.mk v) = Submodule.Quotient.mk w) :
@@ -140,6 +175,9 @@ def thEquiv (γ : IsoMbe Z₁.Z Z₂.Z) : DD1 hs Z₁ TT ≃+ DD1 hs Z₂ TT :=
         rw [hw, LinearEquiv.apply_symm_apply]
     map_add' := map_add _ }
 
+/- English proof (translation)
+The claim follows from `thOf_spec hs TT γ.1.toLinearMap γ.2.1 γ.2.2 h`.
+-/
 theorem thEquiv_spec (γ : IsoMbe Z₁.Z Z₂.Z) {v w : Fin (r + 1) → M.R}
     (h : γ.1 (Submodule.Quotient.mk v) = Submodule.Quotient.mk w) :
     thEquiv hs TT γ (mk1 hs Z₁ TT v) = mk1 hs Z₂ TT w := thOf_spec hs TT γ.1.toLinearMap γ.2.1 γ.2.2 h

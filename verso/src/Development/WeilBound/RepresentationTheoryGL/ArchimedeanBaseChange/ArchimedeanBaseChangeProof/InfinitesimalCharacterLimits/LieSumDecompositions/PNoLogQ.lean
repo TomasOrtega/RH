@@ -37,6 +37,11 @@ def piQ : Pa V I →ₐ[ℂ] Module.End ℂ (V ⧸ I.comap V.subtype) where
     ext v
     rfl
 
+/- English proof (translation)
+Introduce `v hv`. Establish `e` using `LinearMap.congr_fun h (Submodule.Quotient.mk ⟨v, hv⟩)`. Rewrite `e` using `[LinearMap.zero_apply]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (T.1.restrict T.2.1 ⟨v, hv⟩) = 0 at e`. Rewrite `e` using `[Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `e`.
+-/
 theorem piQ_eq_zero {T : Pa V I} (h : piQ V I T = 0) : ∀ v ∈ V, T.1 v ∈ I := by
   intro v hv
   have e := LinearMap.congr_fun h (Submodule.Quotient.mk ⟨v, hv⟩)
@@ -45,6 +50,9 @@ theorem piQ_eq_zero {T : Pa V I} (h : piQ V I T = 0) : ∀ v ∈ V, T.1 v ∈ I 
   rw [Submodule.Quotient.mk_eq_zero] at e
   exact e
 
+/- English proof (translation)
+Use extensionality with `v`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (T.1.restrict T.2.1 v) = Submodule.Quotient.mk (c • v)`. Rewrite using `[Submodule.Quotient.eq]`. Conclude with `h v.1 v.2`.
+-/
 theorem piQ_eq_algebraMap {T : Pa V I} (c : ℂ) (h : ∀ v ∈ V, T.1 v - c • v ∈ I) : piQ V I T = algebraMap ℂ _ c := by
   ext v
   change Submodule.Quotient.mk (T.1.restrict T.2.1 v) = Submodule.Quotient.mk (c • v)
@@ -57,8 +65,14 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 def Sl (N : ℕ) : Subalgebra ℂ (Module.End ℂ (Sm E N)) := Algebra.adjoin ℂ (Set.range (lie E N))
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨X, rfl⟩`.
+-/
 theorem lie_mem_Sl {N : ℕ} (X : Lie E N) : lie E N X ∈ Sl (E := E) N := Algebra.subset_adjoin ⟨X, rfl⟩
 
+/- English proof (translation)
+Establish `h1 : lieS E N i j (atEmb τ 1) ∈ Sl (E` using `E) N := by rw [lieS_apply]; exact lie_mem_Sl _`. Establish `h2 : lieS E N i j (atEmb τ Complex.I) ∈ Sl (E` using `E) N := by rw [lieS_apply]; exact lie_mem_Sl _`. Establish `e : Eop τ i j = (1 / 2 : ℂ) • (lieS E N i j (atEmb τ 1) - Complex.I • lieS E N i j (atEmb τ Complex.I))` using `rfl`. Rewrite using `[e]`. Conclude with `Subalgebra.smul_mem _ (Subalgebra.sub_mem _ h1 (Subalgebra.smul_mem _ h2 _)) _`.
+-/
 theorem Eop_mem_Sl {N : ℕ} (τ : E →+* ℂ) (i j : Fin N) : Eop τ i j ∈ Sl (E := E) N := by
   have h1 : lieS E N i j (atEmb τ 1) ∈ Sl (E := E) N := by rw [lieS_apply]; exact lie_mem_Sl _
   have h2 : lieS E N i j (atEmb τ Complex.I) ∈ Sl (E := E) N := by rw [lieS_apply]; exact lie_mem_Sl _
@@ -66,6 +80,11 @@ theorem Eop_mem_Sl {N : ℕ} (τ : E →+* ℂ) (i j : Fin N) : Eop τ i j ∈ S
   rw [e]
   exact Subalgebra.smul_mem _ (Subalgebra.sub_mem _ h1 (Subalgebra.smul_mem _ h2 _)) _
 
+/- English proof (translation)
+Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `S.add_mem ?_ (hX _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `S.algebraMap_mem _`.
+
+Conclude with `S.zero_mem`.
+-/
 theorem qdet_mem {A : Type} [Ring A] [Algebra ℂ A] (S : Subalgebra ℂ A) {n : ℕ} (X : Fin n → Fin n → A)
     (hX : ∀ i j, X i j ∈ S) (u : ℂ) : Formalism.REAL.qdet X u ∈ S := by
   refine S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)
@@ -75,6 +94,11 @@ theorem qdet_mem {A : Type} [Ring A] [Algebra ℂ A] (S : Subalgebra ℂ A) {n :
   · exact S.algebraMap_mem _
   · exact S.zero_mem
 
+/- English proof (translation)
+Establish `hle : Sl (E` using `E) N ≤ Subalgebra.centralizer ℂ {cap (a := N) τ u} := by`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨X, rfl⟩`. Use `(Subalgebra.mem_centralizer_iff ℂ).2 ?_` and prove the remaining obligations. Introduce and unpack `y rfl`.
+
+Conclude with `(GlobalTheory.SpehInfChar.cap_commute_act τ u (.lie X)).eq`. Conclude with `(Subalgebra.mem_centralizer_iff ℂ).1 (hle hT) _ rfl`.
+-/
 theorem Sl_comm_cap {N : ℕ} (τ : E →+* ℂ) (u : ℂ) {T : Module.End ℂ (Sm E N)} (hT : T ∈ Sl N) :
     Commute (cap τ u) T := by
   have hle : Sl (E := E) N ≤ Subalgebra.centralizer ℂ {cap (a := N) τ u} := by
@@ -85,6 +109,11 @@ theorem Sl_comm_cap {N : ℕ} (τ : E →+* ℂ) (u : ℂ) {T : Module.End ℂ (
     exact (GlobalTheory.SpehInfChar.cap_commute_act τ u (.lie X)).eq
   exact (Subalgebra.mem_centralizer_iff ℂ).1 (hle hT) _ rfl
 
+/- English proof (translation)
+Establish `hle : Sl (E` using `E) N ≤ Subalgebra.centralizer ℂ {JFinTr.ltr h} := by`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨X, rfl⟩`. Use `(Subalgebra.mem_centralizer_iff ℂ).2 ?_` and prove the remaining obligations. Introduce and unpack `y rfl`.
+
+Conclude with `(JFinTr.ltr_lie h X).eq`. Conclude with `(Subalgebra.mem_centralizer_iff ℂ).1 (hle hT) _ rfl`.
+-/
 theorem Sl_comm_ltr {N : ℕ} (h : GA E N) {T : Module.End ℂ (Sm E N)} (hT : T ∈ Sl N) :
     Commute (JFinTr.ltr h) T := by
   have hle : Sl (E := E) N ≤ Subalgebra.centralizer ℂ {JFinTr.ltr h} := by

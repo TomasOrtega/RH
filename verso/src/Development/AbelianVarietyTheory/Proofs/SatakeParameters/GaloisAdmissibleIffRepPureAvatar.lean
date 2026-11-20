@@ -10,6 +10,9 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.ConjugateSelf
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
+/- English proof (translation)
+Establish `h : x ∈ (NormedField.valuation (K` using `K)).integer := (Valuation.integer.integers (NormedField.valuation (K := K))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem norm_le_one_of_isIntegral {K : Type} [NormedField K] [IsUltrametricDist K] {x : K} (hx : IsIntegral ℤ x) :
     ‖x‖ ≤ 1 := by
   have h : x ∈ (NormedField.valuation (K := K)).integer :=
@@ -17,6 +20,17 @@ theorem norm_le_one_of_isIntegral {K : Type} [NormedField K] [IsUltrametricDist 
   rw [Valuation.mem_integer_iff] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `hle : ∀ x : 𝓞 H.E, ‖τ (x : H.E)‖ ≤ 1` using `fun x => norm_le_one_of_isIntegral (map_isIntegral_int τ (RingOfIntegers.isIntegral_coe x))`. Set `I : Ideal (𝓞 H.E)` to `{ carrier := {x | ‖τ (x : H.E)‖ < 1} zero_mem' := by simp add_mem' := fun {x y} hx hy => by`. Express the relevant statement in the definitionally equal form `‖τ ((x + y : 𝓞 H.E) : H.E)‖ < 1`. Rewrite using `[show ((x + y : 𝓞 H.E) : H.E) = x + y from rfl, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hx hy)`.
+
+Use the proof step `smul_mem' := fun c x hx => by`. Express the relevant statement in the definitionally equal form `‖τ ((c * x : 𝓞 H.E) : H.E)‖ < 1`. Rewrite using `[show ((c * x : 𝓞 H.E) : H.E) = c * x from rfl, map_mul, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hle c) (norm_nonneg _) hx }`. Establish `hI : ∀ x : 𝓞 H.E, x ∈ I ↔ ‖τ (x : H.E)‖ < 1` using `fun x => Iff.rfl`.
+
+Establish `hl : ((N.l i : ℕ) : 𝓞 H.E) ∈ I`. Rewrite using `[hI, show (((N.l i : ℕ) : 𝓞 H.E) : H.E) = (N.l i : ℕ) by simp, map_natCast, ← map_natCast (algebraMap ℚ_[N.l i] (PadicAlgCl (N.l i))), PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`. Establish `hP : I.IsPrime`. Use `⟨fun h => ?_, fun {x y} h => ?_⟩` and prove the remaining obligations.
+
+Use `(hI 1).1 (h ▸ Submodule.mem_top)` as an intermediate fact. Simplify using `at this`. Rewrite `h` using `[hI, show ((x * y : 𝓞 H.E) : H.E) = x * y from rfl, map_mul, norm_mul]`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_or, hI, hI, not_lt, not_lt]`.
+
+Conclude with `absurd h (not_lt.2 (one_le_mul_of_one_le_of_one_le hn.1 hn.2))`. Use `⟨⟨I, hP, fun h => ?_⟩, hl, fun x => (hI x).symm⟩` and prove the remaining obligations. Rewrite `hl` using `[h, Ideal.mem_bot]`. Conclude with `(N.lPrime i).out.ne_zero (by exact_mod_cast hl)`.
+-/
 theorem exists_inducesW (i : N.Loc) (τ : H.E →+* Qbar (N.l i)) :
     ∃ w ∈ placesOver H.E (N.l i), InducesW N i τ w := by
   have hle : ∀ x : 𝓞 H.E, ‖τ (x : H.E)‖ ≤ 1 := fun x =>

@@ -4,6 +4,11 @@ import Formalism.LocalRingCardinality.DataRows
 import Formalism.LocalRingCardinality.DataArith
 import Formalism.LocalRingCardinality.DataForms
 
+/- English proof (translation)
+Introduce `D u i x`. Establish `hx : x ∈ Submodule.span D.what₂.LL (((D.fm u).lat i).L : Set ((D.fm u).lat i).V)`. Rewrite using `[((D.fm u).lat_good i).2.2]`. Conclude with `Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (NumberField.RingOfIntegers D.what₂.LL)) D.what₂.LL _ x hx`.
+
+Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨t.1, nonZeroDivisors.ne_zero t.2, ht⟩`.
+-/
 theorem UpperTheory.Reformulated.B.ExistsIdealDenominator.exists_denI :
     ∀ {D : Formalism.BasicNotions.D7} (u : D.what₂.Word) (i : ℕ) (x : ((D.fm u).lat i).V),
     ∃ (d : NumberField.RingOfIntegers D.what₂.LL),

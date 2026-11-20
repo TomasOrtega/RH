@@ -18,6 +18,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.LargePkg
 
+/- English proof (translation)
+Introduce `h'`. Unfold `InPsi at h h'`. Rewrite `h'` using `[ComplexEmbedding.conjugate_coe_eq, h]`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h'`. Establish `e` using `H.sqrt_neg_disc_sq`.
+
+Rewrite `e` using `[hr]`. Establish `e4 : r ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast e`. Establish `: (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg r]`.
+-/
 theorem not_inPsi_conj {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     {τ : E →+* ℂ} (h : InPsi H τ) : ¬ InPsi H (ComplexEmbedding.conjugate τ) := by
   intro h'
@@ -30,6 +35,13 @@ theorem not_inPsi_conj {E : Type} [Field E] [NumberField E] [IsCMField E] (H : R
   have : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
   nlinarith [sq_nonneg r]
 
+/- English proof (translation)
+Take `⟨I, J, fI, fJ, X, F, hn, hrk, hval⟩` from `hS`. Use `⟨{ R := { C := C, V := V, hVl := hV, I := I, J := J, X := X, F := F, hn := hn } Z := Z, hZ := hZ, ga := fun z g a => gap (rk z g a) (b z g a), K := K, s := s, nW := nW, T := 1, ν := ν T_one := le_rfl, w_nonneg := hw, supp := ?_, first := ?_, what₂ := hrows, val := hval }, rfl⟩` and prove the remaining obligations. Introduce `z hz g a k hk`. Take `⟨h1, h2⟩` from `(GlobalTheory.RowAt.gap_sums (rk z g a) (b z g a) (hb z g a)).1 k hk`. Conclude with `⟨h1, h2.trans_eq (hrk z hz g a).2.symm, h2.trans (hK z g a)⟩`.
+
+Introduce `z _ g a`. Take `⟨h1, h2⟩` from `GlobalTheory.RowAt.gap_sums (rk z g a) (b z g a) (hb z g a)`. Break down `Nat.eq_zero_or_pos (rk z g a) with h | h` into its components or cases. Use `le_of_eq_of_le (Finset.sum_eq_zero fun k _ => ?_) (Nat.zero_le _)` and prove the remaining obligations. Assume the negation of the conclusion as `hk`.
+
+Use `h1 k hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `le_of_eq_of_le ((h2 K (hK z g a)).1 0 h) (h0 z g a h)`.
+-/
 theorem pkg_of_supply (P : RF.Par) (l : ℕ) {C : Type} [Field C] (V : VF C) (hV : V.l = l) (Z : Finset P.Pl)
     (hZ : RF.IsReps P Z) (hw : ∀ z, 0 ≤ P.w z) (big : P.Pl → Fin 2 → ZMod P.d → Prop)
     (rk : P.Pl → Fin 2 → ZMod P.d → ℕ) (b : P.Pl → Fin 2 → ZMod P.d → ℕ → ℕ) (K s nW : ℕ) (ν : ℝ)
@@ -53,6 +65,25 @@ theorem pkg_of_supply (P : RF.Par) (l : ℕ) {C : Type} [Field C] (V : VF C) (hV
       omega
     · exact le_of_eq_of_le ((h2 K (hK z g a)).1 0 h) (h0 z g a h)
 
+/- English proof (translation)
+Establish `hk` using `N.R.m_add_three_le_k`. Establish `hp' : Dw.p = N.R.k + j - 1` using `hp`. Establish `hq' : Dw.q = N.R.m - j` using `hq`. Set `lab : Lab E Z d` to `⟨fun o => tau o.1, N.R.k - 1, j, N.R.m - j, fun _ g s => g = sel s⟩`. Establish `hconj : ∀ z s, tau z 1 s = ComplexEmbedding.conjugate (tau z 0 s)`.
+
+Introduce `z s`. Rewrite using `[htau, htau]`. Generalize the expression as in `sel s = g`. Use `fin_cases g`. Simplify using the standard rewrite rules.
+
+Establish `: ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => by`. Use extensionality with `x`. Simplify using the standard rewrite rules. Simplify using `[this]`. Establish `hA : LabArith V io ι lab` using `{ inj := hbij.1 conj := fun o s => hconj o.1 s frob := fun o g s x => hfrob o.1 g s x sep := fun x x' hx => (GlobalTheory.T.cmEmbeddings_integral_and_distinct_mod_maximal E H lv c T io C V ι hι hunr).2 _ _ fun h => hx (hbij.1 h) unr := fun o g => GlobalTheory.T.exists_idempotent_ …`.
+
+Establish `hR : lab.RankOK Dw`. Introduce `o`. Use `⟨fun g s => ?_, fun g s h => ?_, fun g s h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 - g = sel s ↔ ¬ g = sel s`. Generalize the expression as in `sel s = g'`.
+
+Use `revert g g'`. Evaluate the decidable proposition. Express the relevant statement in the definitionally equal form `Dw.mult (tau o.1 g s) = N.R.k - 1 + j`. Rewrite using `[htau, if_pos (show g = sel s from h), Datum.mult]`. Conclude with `(if_pos (hpsi _)).trans (by omega)`.
+
+Express the relevant statement in the definitionally equal form `Dw.mult (tau o.1 g s) = N.R.m - j`. Rewrite using `[htau, if_neg (show ¬ g = sel s from h), Datum.mult]`. Conclude with `(if_neg (not_inPsi_conj H (hpsi _))).trans hq'`. Establish `h1` using `GlobalTheory.T.rowData_supplied_at_pairs_of_places hU E H Dw lv Xo c hstar T io y C3 C V ι hι k Y hY hy hunr Z d lab hA hbij.2 hR (show N.R.m - j < N.R.k - 1 by omega) (fun _ => hsel) a ha nW ν hν`. Establish `hm : lab.j + lab.j' = N.R.m` using `show j + (N.R.m - j) = N.R.m by omega`.
+
+Rewrite `h1` using `[hm]`. Establish `h2` using `GlobalTheory.RowAt.supply_extend C V d (RPl N.R) Z (N.R.k - 1) N.R.m (fun _ g s => g = sel s) (fun z g s => Dw.mult (tau z g s)) (fun z g s => gap (Dw.mult (tau z g s)) fun i => a (tau z g s, i)) nW ν hne h1`. Establish `hcard : Z.card ≤ N.R.f`. Use `(Finset.card_le_univ Z).trans_eq ?_` and prove the remaining obligations. Simplify using `[Ranks.f_eq_ord, Formalism.HC.Frame.card_A]`.
+
+Use `pkg_of_supply (parAt N j d pos) V.l V rfl Z hZ hw (fun _ g s => g = sel s) (fun z g s => Dw.mult (tau z g s)) (fun z g s i => a (tau z g s, i)) N.R.r s nW ν ?_ ?_ ?_ ?_ h2` and prove the remaining obligations. Introduce `z g s`. Unfold `Datum.mult Ranks.r`. Apply the tactic sequence `split_ifs <;> omega`. Introduce `z g s i i' h h'`.
+
+Conclude with `ha (tau z g s) ⟨i, h.trans_lt h'⟩ ⟨i', h'⟩ h`. Introduce `z g s h`. Conclude with `hs _ h`. Conclude with `(Nat.mul_le_mul_left _ hcard).trans hrows`.
+-/
 theorem pkg_of_labels (hU : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {lv : Level H}
     {Xo : Moduli Dw lv} {c : Coeff lv} [StarRing (𝓞 E)] (hstar : ∀ x : 𝓞 E, star x = H.bar x)
@@ -123,6 +154,15 @@ theorem pkg_of_labels (hU : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.Char
     exact hs _ h
   · exact (Nat.mul_le_mul_left _ hcard).trans hrows
 
+/- English proof (translation)
+Introduce `hU E _ _ _ H Dw lv Xo c _ hstar N j pl a hj1 hjm hT hp hq ha la h2 hlq hld hM _ T io e hO y hy C3 nW ν hν hphi hw s hs hrows`. Take `⟨C, _, _, V, ι, hV, hι, hac, hcpl, hla, hunit, hnu⟩` from `GlobalTheory.T.exists_closedComplete_field_over_place E H Dw lv Xo c la T io e hO`. Take `⟨Y, hY⟩` from `GlobalTheory.ChartBaseChange.exists_baseChange E H Dw lv Xo c T io y C3 C V ι hι hac hcpl (hV ▸ ne_two_of_not_small h2) (GlobalTheory.QuadTrace.cmHost_idempotent_trace_eq_one E H hstar) lv.M (hunit _ hM)`. Establish `hν'` using `hnu y C3 lv.M a nW ν hν`. Rewrite `h2`, `hlq`, `hld`, `hphi`, `hs`, the goal using `[← hV]`.
+
+Establish `hunr` using `hT.unr V.l V.l_prime h2 hlq hld`. Establish `hpsi : ∀ z, InPsi H (pl z)` using `fun z => (hT.psi _).2 ⟨z, rfl⟩`. Distinguish the cases in `hin : Inert N V.l`. Take `⟨Z, hZ, hne, hev, hbij, hfr⟩` from `GlobalTheory.T.realPlaceLabelling_inert_frobenius_not_conj E H lv c N pl hT la T io C V ι hι hV hla hin hphi j`. Use `⟨N.ordP V.l, inferInstance, N.pos V.l, pkg_of_labels hU hstar N j pl a hj1 hjm hpsi hp hq ha hy C3 V ι hι Y hY hunr nW ν hν' (N.ordP V.l) (N.pos V.l) RF.bg (Or.inl ⟨hev, fun s => ?_⟩) (tauIn N pl V.l) (fun _ _ _ => rfl) Z hZ hne hbij (fun z g => (hfr z g).1) hw s hs hrows⟩` and prove the remaining obligations.
+
+Unfold `RF.bg`. Apply the tactic sequence `split_ifs with h <;> simp [h]`. Establish `hsp : N.cls V.l = PrimeClass.splitK`. Unfold `Inert NumDatum.cls primeClass at *`. Rewrite `hin`, the goal using `[if_neg h2, if_neg hlq, if_neg hld]`.
+
+Apply the tactic sequence `split_ifs at hin ⊢ <;> simp_all`. Take `⟨d, _, pos, Z, hZ, hne, hbij, hfr⟩` from `GlobalTheory.T.cmType_frobenius_orbits_label_at_split_prime E H lv c N pl hT la T io C V ι hι hV hla hsp j`. Conclude with `⟨d, inferInstance, pos, pkg_of_labels hU hstar N j pl a hj1 hjm hpsi hp hq ha hy C3 V ι hι Y hY hunr nW ν hν' d pos (fun _ => 0) (Or.inr fun _ => rfl) (tauSp N pl pos) (fun _ _ _ => rfl) Z hZ hne hbij hfr hw s hs hrows⟩`.
+-/
 theorem pkgZero : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H) (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)], PkgZeroSt Xo c := by
   intro hU E _ _ _ H Dw lv Xo c _ hstar N j pl a hj1 hjm hT hp hq ha la h2 hlq hld hM _ T io e hO y hy C3 nW ν hν
     hphi hw s hs hrows

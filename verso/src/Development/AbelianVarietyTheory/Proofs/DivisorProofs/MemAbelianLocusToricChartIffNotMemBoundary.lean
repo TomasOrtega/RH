@@ -18,6 +18,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChartAbLocus
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y k _ m d ξ t φ hbd p`. Rewrite using `[← hbd, mem_genBd_iff, not_not, ← abLocus_pullback abLocusOne Y.t.semi φ.cart.1 p]`. Both sides reduce to the same expression.
+-/
 theorem mem_abLocus_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (k : Type) [Field k] (m d : ℕ) (ξ : Sp (ChartRing k m d) ⟶ gen Y) (t : SAB H (Sp (ChartRing k m d))), SABMap t Y.t (ξ ≫ genι Y) → (∀ p : Sp (ChartRing k m d), ξ p ∈ genBd Y ↔ ∏ i, bdParam k m d i ∈ p.asIdeal) → ∀ p : Sp (ChartRing k m d), p ∈ abLocus t.G ↔ ∏ i, bdParam k m d i ∉ p.asIdeal := by
   intro E _ _ _ H Dw l Xo c Y k _ m d ξ t φ hbd p
   rw [← hbd, mem_genBd_iff, not_not, ← abLocus_pullback abLocusOne Y.t.semi φ.cart.1 p]

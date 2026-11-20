@@ -59,9 +59,15 @@ namespace PotentialCharts
 
 variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X} (P : PotentialCharts A)
 
+/- English proof (translation)
+The claim follows from `subset_closure.trans (P.closure_inner j)`.
+-/
 theorem inner_subset_mid (j : Fin P.N) : P.inner j ⊆ P.mid j :=
   subset_closure.trans (P.closure_inner j)
 
+/- English proof (translation)
+The claim follows from `subset_closure.trans (P.closure_mid j)`.
+-/
 theorem mid_subset_source (j : Fin P.N) : P.mid j ⊆ (P.chart j).source :=
   subset_closure.trans (P.closure_mid j)
 
@@ -294,18 +300,32 @@ def HodgeDerivative.Statement : Prop :=
 
 section Inhabitants
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨upperSemicontinuousOn_const, fun _ _ _ => ⟨circleIntegrable_const _ _ _, by rw [Real.circleAverage_const]⟩⟩`.
+-/
 theorem isPsh_const {D : ℕ} (U : Set (Fin D → ℂ)) (c : ℝ) : IsPsh U (fun _ => c) :=
   ⟨upperSemicontinuousOn_const, fun _ _ _ =>
     ⟨circleIntegrable_const _ _ _, by rw [Real.circleAverage_const]⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.mono hVU, fun z w hz => h.2 z w fun ζ hζ => hVU (hz ζ hζ)⟩`.
+-/
 theorem isPsh_mono {D : ℕ} {U V : Set (Fin D → ℂ)} {u : (Fin D → ℂ) → ℝ} (h : IsPsh U u)
     (hVU : V ⊆ U) : IsPsh V u :=
   ⟨h.1.mono hVU, fun z w hz => h.2 z w fun ζ hζ => hVU (hz ζ hζ)⟩
 
+/- English proof (translation)
+The claim follows from `isPsh_mono (ReciprocityTheory.AnForm.A.isPshInhabit_thm D).1 (Set.subset_univ _)`.
+-/
 theorem isPsh_normSq_ball (D : ℕ) :
     IsPsh (ball (0 : Fin D → ℂ) 2) (fun z => ∑ j, ‖z j‖ ^ 2) :=
   isPsh_mono (ReciprocityTheory.AnForm.A.isPshInhabit_thm D).1 (Set.subset_univ _)
 
+/- English proof (translation)
+Establish `hc : Continuous ρ.toFun` using `ρ.contDiff.continuous`. Establish `hs : HasCompactSupport ρ.toFun` using `HasCompactSupport.intro (isCompact_closedBall (0 : Fin D → ℂ) 1) fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `hx (ball_subset_closedBall (ρ.support_subset (Function.mem_support.mpr h)))`. Take `⟨C, hC⟩` from `hc.bounded_above_of_compact_support hs`.
+
+Conclude with `⟨C, fun w => (le_abs_self _).trans (by simpa [Real.norm_eq_abs] using hC w)⟩`.
+-/
 theorem mollifier_exists_bound {D : ℕ} (ρ : Mollifier D) : ∃ b : ℝ, ∀ w, ρ.toFun w ≤ b := by
   have hc : Continuous ρ.toFun := ρ.contDiff.continuous
   have hs : HasCompactSupport ρ.toFun :=
@@ -315,6 +335,9 @@ theorem mollifier_exists_bound {D : ℕ} (ρ : Mollifier D) : ∃ b : ℝ, ∀ w
   obtain ⟨C, hC⟩ := hc.bounded_above_of_compact_support hs
   exact ⟨C, fun w => (le_abs_self _).trans (by simpa [Real.norm_eq_abs] using hC w)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isOpen_ball, isPsh_normSq_ball D, closedBall_subset_ball (by norm_num), by norm_num, le_rfl, by norm_num⟩`.
+-/
 theorem polyMaxOscillation_hyp (D : ℕ) :
     IsOpen (ball (0 : Fin D → ℂ) 2) ∧ IsPsh (ball (0 : Fin D → ℂ) 2) (fun z => ∑ j, ‖z j‖ ^ 2) ∧
       closedBall (0 : Fin D → ℂ) 1 ⊆ ball 0 2 ∧ (0 : ℝ) < 1 / 4 ∧ (1 : ℝ) ≤ 1 ∧
@@ -322,6 +345,9 @@ theorem polyMaxOscillation_hyp (D : ℕ) :
   ⟨isOpen_ball, isPsh_normSq_ball D, closedBall_subset_ball (by norm_num), by norm_num, le_rfl,
     by norm_num⟩
 
+/- English proof (translation)
+Take `⟨ρ⟩` from `ReciprocityTheory.AnForm.A.mollifierInhabit_thm D`. Take `⟨b, hb⟩` from `mollifier_exists_bound ρ`. Conclude with `⟨ρ, b, isOpen_ball, isPsh_normSq_ball D, by norm_num, closedBall_subset_ball (by norm_num), hb⟩`.
+-/
 theorem mollifiedLowerBound_hyp (D : ℕ) : ∃ (ρ : Mollifier D) (b : ℝ),
     IsOpen (ball (0 : Fin D → ℂ) 2) ∧ IsPsh (ball (0 : Fin D → ℂ) 2) (fun z => ∑ j, ‖z j‖ ^ 2) ∧
       (0 : ℝ) < 1 / 2 ∧ closedBall (0 : Fin D → ℂ) (2 * (1 / 2)) ⊆ ball 0 2 ∧
@@ -334,6 +360,9 @@ theorem mollifiedLowerBound_hyp (D : ℕ) : ∃ (ρ : Mollifier D) (b : ℝ),
 def pointChart : OpenPartialHomeomorph Unit (Fin 0 → ℂ) :=
   (Homeomorph.homeomorphOfUnique Unit (Fin 0 → ℂ)).toOpenPartialHomeomorph
 
+/- English proof (translation)
+Establish `: f = fun _ => 0` using `funext fun _ => Subsingleton.elim _ _`. Rewrite using `[this]`. Conclude with `analyticOnNhd_const`.
+-/
 theorem analyticOnNhd_fin_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (f : E → (Fin 0 → ℂ)) (s : Set E) : AnalyticOnNhd ℂ f s := by
   have : f = fun _ => 0 := funext fun _ => Subsingleton.elim _ _
@@ -346,9 +375,15 @@ def pointAtlas : FinHolAtlas 0 Unit where
   cover _ := ⟨0, by simp [pointChart]⟩
   holo _ _ := analyticOnNhd_fin_zero _ _
 
+/- English proof (translation)
+Introduce `_` and use `⟨analyticOnNhd_fin_zero _ _, analyticOnNhd_fin_zero _ _⟩`.
+-/
 theorem pointChart_compat : IsCompatChart pointAtlas pointChart :=
   fun _ => ⟨analyticOnNhd_fin_zero _ _, analyticOnNhd_fin_zero _ _⟩
 
+/- English proof (translation)
+Introduce `_` and use `analyticOnNhd_const`.
+-/
 theorem holoOn_zero {D : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas D X) (W : Set X) :
     A.HoloOn W (fun _ => (0 : ℂ)) :=
   fun _ => analyticOnNhd_const
@@ -399,11 +434,17 @@ def pointBounded : BoundedPshData pointAtlas where
   bdd := ⟨0, fun _ => by simp⟩
   u_psh _ := by simpa [pointCharts] using isPsh_const _ (0 : ℝ)
 
+/- English proof (translation)
+Rewrite using `[Subsingleton.elim w 0]`. Simplify using `only [levi, smul_zero, map_zero, _root_.zero_apply]`. Evaluate the numerical expressions.
+-/
 theorem levi_fin_zero (φ : (Fin 0 → ℂ) → ℝ) (z w : Fin 0 → ℂ) : levi φ z w = 0 := by
   rw [Subsingleton.elim w 0]
   simp only [levi, smul_zero, map_zero, _root_.zero_apply]
   norm_num
 
+/- English proof (translation)
+The claim follows from `contDiffOn_const bounds _ _ _ := ⟨by norm_num, le_rfl⟩ eq_zero _ _ _ := rfl eq_neg_one _ := ⟨Set.univ, isClosed_univ, subset_rfl, fun x hx => absurd (Set.mem_univ x) hx.2⟩ levi_ge _ _ _ _ w := by rw [levi_fin_zero]; simp [Subsingleton.elim w 0]`.
+-/
 theorem pointCutoff : pointCharts.IsCutoffFamily (fun _ _ => 0) 1 where
   smooth _ _ := contDiffOn_const
   bounds _ _ _ := ⟨by norm_num, le_rfl⟩
@@ -411,6 +452,9 @@ theorem pointCutoff : pointCharts.IsCutoffFamily (fun _ _ => 0) 1 where
   eq_neg_one _ := ⟨Set.univ, isClosed_univ, subset_rfl, fun x hx => absurd (Set.mem_univ x) hx.2⟩
   levi_ge _ _ _ _ w := by rw [levi_fin_zero]; simp [Subsingleton.elim w 0]
 
+/- English proof (translation)
+Take `⟨ρ⟩` from `ReciprocityTheory.AnForm.A.mollifierInhabit_thm 0`. Use `⟨ρ, pointCutoff, by norm_num, by norm_num, fun _ _ _ y _ => ?_, fun j k _ _ => ?_⟩` and prove the remaining obligations. Simplify using `[pointReg, pointCharts, pointChart]`. Take `rfl : j = k` from `Subsingleton.elim (α := Fin 1) j k`. Simplify using the standard rewrite rules.
+-/
 theorem glueRegularised_hyp : ∃ ρ : Mollifier 0,
     pointReg.IsCutoffFamily (fun _ _ => 0) 1 ∧ (0 : ℝ) < 1 ∧ (0 : ℝ) < 1 ∧
     (∀ j, ∀ x ∈ closure (pointReg.mid j), closedBall (pointReg.chart j x) 1 ⊆ (pointReg.chart j).target) ∧
@@ -422,11 +466,17 @@ theorem glueRegularised_hyp : ∃ ρ : Mollifier 0,
   · obtain rfl : j = k := Subsingleton.elim (α := Fin 1) j k
     simp
 
+/- English proof (translation)
+Establish `hπ : (Real.pi : ℝ) ≠ 0` using `Real.pi_ne_zero`. Simplify using `[Complex.div_im, Complex.normSq_apply]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem im_div_two_pi_I (z : ℂ) : (z / (2 * Real.pi * Complex.I)).im = -z.re / (2 * Real.pi) := by
   have hπ : (Real.pi : ℝ) ≠ 0 := Real.pi_ne_zero
   simp [Complex.div_im, Complex.normSq_apply]
   field_simp
 
+/- English proof (translation)
+Establish `h : (fun w : Fin n → ℂ => w k / c + d) = fun w => (c⁻¹ • ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin n => ℂ) k) w + d := by`. Use function extensionality and compare the values at `w`. Simplify using `[div_eq_inv_mul]`. Rewrite using `[h]`. Conclude with `((c⁻¹ • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) k).analyticAt w).add analyticAt_const`.
+-/
 theorem analyticAt_coord_div_add {n : ℕ} (k : Fin n) (c d : ℂ) (w : Fin n → ℂ) :
     AnalyticAt ℂ (fun w : Fin n → ℂ => w k / c + d) w := by
   have h : (fun w : Fin n → ℂ => w k / c + d) =
@@ -437,6 +487,9 @@ theorem analyticAt_coord_div_add {n : ℕ} (k : Fin n) (c d : ℂ) (w : Fin n �
   exact ((c⁻¹ • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) k).analyticAt w).add
     analyticAt_const
 
+/- English proof (translation)
+Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+-/
 theorem two_pi_I_ne_zero : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := by
   simp [Real.pi_ne_zero, Complex.I_ne_zero]
 
@@ -492,6 +545,11 @@ def periodTwo : PeriodPolydisc 1 1 2 where
     ext p q
     fin_cases p <;> fin_cases q <;> simp [diagonal_apply, add_div, div_self two_pi_I_ne_zero] <;> ring
 
+/- English proof (translation)
+Use `⟨⟨fun p q => analyticOnNhd_const, fun w _ => ?_⟩, ?_, fun i => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext p q fin_cases p <;> fin_cases q <;>`. Simplify using `[PeriodPolydisc.tau0, periodTwo, diagonal_apply, div_self two_pi_I_ne_zero]`. Introduce `h`. Use `congrFun h 1` as an intermediate fact.
+
+Simplify using `at this`. Apply the tactic sequence `ext k fin_cases k <;> simp [periodTwo, diagonal_map, mulVec, dotProduct, Fin.sum_univ_two]`.
+-/
 theorem periodTwo_kernel_hyp :
     periodTwo.IsTau0Ext (fun _ => diagonal ![Complex.I, Complex.I]) ∧ (![0, 1] : Fin 2 → ℝ) ≠ 0 ∧
       ∀ i, (periodTwo.B i).map (Int.cast : ℤ → ℝ) *ᵥ ![0, 1] = 0 := by
@@ -505,6 +563,9 @@ theorem periodTwo_kernel_hyp :
   · ext k
     fin_cases k <;> simp [periodTwo, diagonal_map, mulVec, dotProduct, Fin.sum_univ_two]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => analyticOnNhd_const, fun _ _ => by simp [Matrix.rank_one]⟩`.
+-/
 theorem identity_frame_hyp (n g : ℕ) :
     (∀ p q, AnalyticOnNhd ℂ (fun _ : Fin n → ℂ => (1 : Matrix (Fin g) (Fin g) ℂ) p q) (ball 0 1)) ∧
       ∀ _z ∈ ball (0 : Fin n → ℂ) 1, (1 : Matrix (Fin g) (Fin g) ℂ).rank = g :=

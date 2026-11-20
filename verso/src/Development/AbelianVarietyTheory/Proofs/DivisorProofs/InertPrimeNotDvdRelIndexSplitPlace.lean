@@ -24,9 +24,15 @@ open GlobalTheory.SplitScalar
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[← realIdem_mul_of_real h, RingHom.map_mul, cA_realIdem, RingHom.map_mul, finPart_realIdem, zero_mul]`.
+-/
 theorem finPart_cA_eq_zero {a : AE D} (h : finPart D a = 0) : finPart D (cA D a) = 0 := by
   rw [← realIdem_mul_of_real h, RingHom.map_mul, cA_realIdem, RingHom.map_mul, finPart_realIdem, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[TensorProduct.add_tmul, TensorProduct.smul_tmul', Algebra.algebraMap_eq_smul_one x, TensorProduct.smul_tmul, Algebra.smul_def x t]`.
+-/
 theorem tmul_split {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (β : Af F) (x : F) (k : ℕ) (t : E) :
     (algebraMap F (Af F) x + k • β) ⊗ₜ[F] t =
@@ -34,20 +40,41 @@ theorem tmul_split {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E
   rw [TensorProduct.add_tmul, TensorProduct.smul_tmul', Algebra.algebraMap_eq_smul_one x,
     TensorProduct.smul_tmul, Algebra.smul_def x t]
 
+/- English proof (translation)
+Rewrite using `[map_add, map_nsmul]`.
+-/
 theorem map_add_nsmul {A B : Type} [Ring A] [Ring B] (f : A →+* B) (k : ℕ) (a s : A) :
     f (a + k • s) = f a + k • f s := by rw [map_add, map_nsmul]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem zero_eq_map_add_nsmul_zero {E A B : Type} [Ring E] [Ring A] [Ring B] (g : E →+* A) (f : A →+* B) (k : ℕ) :
     0 = f (g 0 + k • 0) := by simp
 
+/- English proof (translation)
+Rewrite using `[← map_add, map_add g, smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+-/
 theorem add_nsmul_residue_add {E A B : Type} [Ring E] [Ring A] [Ring B] (g : E →+* A) (f : A →+* B) (k : ℕ) (r r' : E)
     (s s' : A) : f (g r + k • s) + f (g r' + k • s') = f (g (r + r') + k • (s + s')) := by
   rw [← map_add, map_add g, smul_add]; congr 1; abel
 
+/- English proof (translation)
+Rewrite using `[← map_neg, map_neg g, smul_neg, neg_add]`.
+-/
 theorem neg_nsmul_residue {E A B : Type} [Ring E] [Ring A] [Ring B] (g : E →+* A) (f : A →+* B) (k : ℕ) (r : E)
     (s : A) : -f (g r + k • s) = f (g (-r) + k • (-s)) := by
   rw [← map_neg, map_neg g, smul_neg, neg_add]
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, t, rfl⟩` from `hw`. Take `⟨x, β, hβ, hx⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat D.host.F k hk).2 α hα`. Use `⟨algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x * t, pairA D.host.F 0 β ⊗ₜ[D.host.F] (t : D.host.E), AddSubgroup.subset_closure ⟨β, hβ, t, rfl⟩, AddSubgroup.subset_closure ⟨β, hβ, GlobalTheory.FinWeil.sgO D t, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.FinWeil.coe_sgO, ← GlobalTheory.SplitIdem.star_eq_conj]`. Both sides reduce to the same expression. Rewrite using `[hx]`. Use `Eq.trans ?_ (map_add_nsmul (finPart D) k _ _).symm` and prove the remaining obligations. Conclude with `tmul_split β (x : D.host.F) k (t : D.host.E)`.
+
+Consider the case `zero => exact ⟨0, 0, by rw [RingHom.map_zero]; exact zero_mem _, by rw [RingHom.map_zero, RingHom.map_zero]; exact zero_mem _, zero_eq_map_add_nsmul_zero (incA D) (finPart D) k⟩`. Consider the case `add x x' _ _ h h'`. Take `⟨r, s, h1, h2, rfl⟩` from `h`. Take `⟨r', s', h1', h2', rfl⟩` from `h'`. Use `⟨r + r', s + s', by rw [RingHom.map_add]; exact add_mem h1 h1', by rw [RingHom.map_add, RingHom.map_add]; exact add_mem h2 h2', ?_⟩` and prove the remaining obligations.
+
+Conclude with `add_nsmul_residue_add (incA D) (finPart D) k _ _ s s'`. Consider the case `neg x _ h`. Take `⟨r, s, h1, h2, rfl⟩` from `h`. Use `⟨-r, -s, by rw [RingHom.map_neg]; exact neg_mem h1, by rw [RingHom.map_neg, RingHom.map_neg]; exact neg_mem h2, ?_⟩` and prove the remaining obligations. Conclude with `neg_nsmul_residue (incA D) (finPart D) k _ s`.
+-/
 theorem approx {k : ℕ} (hk : 0 < k) {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) :
     ∃ (r : 𝓞 D.host.E) (s : AE D), finPart D s ∈ intAE D ∧ finPart D (cA D s) ∈ intAE D ∧
       z = finPart D (incA D (r : D.host.E) + k • s) := by
@@ -78,6 +105,17 @@ theorem approx {k : ℕ} (hk : 0 < k) {z : Af D.host.F ⊗[D.host.F] D.host.E} (
       by rw [RingHom.map_neg, RingHom.map_neg]; exact neg_mem h2, ?_⟩
     exact neg_nsmul_residue (incA D) (finPart D) k _ s
 
+/- English proof (translation)
+Set `I : Ideal O` to `{ carrier := {a | ι a • y ∈ Λ} add_mem' := fun {a b} ha hb => by show ι (a + b) • y ∈ Λ`. Rewrite using `[map_add, add_smul]`. Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := by show ι 0 • y ∈ Λ`. Rewrite using `[map_zero, zero_smul]`.
+
+Conclude with `zero_mem _`. Use the proof step `smul_mem' := fun c a ha => by show ι (c * a) • y ∈ Λ`. Rewrite using `[map_mul, mul_smul]`. Conclude with `hΛ c _ ha }`. Assume the negation of the conclusion as `hy`.
+
+Establish `hI : I ≠ ⊤` using `fun h => by`. Establish `: (1 : O) ∈ I` using `by rw [h]; trivial`. Conclude with `hy (by simpa [I] using this)`. Take `⟨P, hPm, hIP⟩` from `Ideal.exists_le_maximal I hI`. Establish `hqI : (q : O) ∈ I` using `by show ι (q : O) • y ∈ Λ`.
+
+Rewrite using `[map_natCast, Nat.cast_smul_eq_nsmul]`. Conclude with `hq`. Establish `hr` using `hP P hPm (hIP hqI) (hIP h2)`. Use `add_mem (hIP h1 : 1 - r ∈ P) hr` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`.
+
+Conclude with `hPm.ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+-/
 theorem core_mem {O A M : Type} [CommRing O] [CommRing A] [AddCommGroup M] [Module A M] (ι : O →+* A)
     (Λ : AddSubgroup M) (hΛ : ∀ r : O, ∀ u ∈ Λ, ι r • u ∈ Λ) (q : ℕ) (y : M) (hq : q • y ∈ Λ) (r r' : O)
     (h1 : ι (1 - r) • y ∈ Λ) (h2 : ι r' • y ∈ Λ)
@@ -106,6 +144,9 @@ theorem core_mem {O A M : Type} [CommRing O] [CommRing A] [AddCommGroup M] [Modu
   rw [sub_add_cancel] at this
   exact hPm.ne_top ((Ideal.eq_top_iff_one _).2 this)
 
+/- English proof (translation)
+Establish `: b * e = f * e - s * e * q`. Rewrite `h` using `[nsmul_eq_mul]`. Take the linear combination `-h`. Rewrite using `[smul_smul, this, sub_smul, mul_smul (s * e), mul_smul s, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem wachExpansion_smul_compatible {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (q : ℕ) (e f b s : A) (x : M)
     (h : (f - (b + q • s)) * e = 0) : b • e • x = (f * e) • x - s • e • q • x := by
   have : b * e = f * e - s * e * q := by
@@ -113,6 +154,11 @@ theorem wachExpansion_smul_compatible {A M : Type} [CommRing A] [AddCommGroup M]
     linear_combination -h
   rw [smul_smul, this, sub_smul, mul_smul (s * e), mul_smul s, Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Establish `hqe : e • q • x ∈ Λ` using `hΛ e he _ hx`. Use `core_mem ι Λ (fun a => hΛ _ (hι a)) q (e • x) (by rw [smul_comm]; exact hqe) r r' ?_ ?_ hP` and prove the remaining obligations. Rewrite using `[map_sub, map_one, sub_smul, one_smul, wachExpansion_smul_compatible q e e _ s x h1, hee, sub_sub_cancel]`. Conclude with `hΛ s hs _ hqe`. Rewrite using `[wachExpansion_smul_compatible q e f _ s' x h2, mul_comm, hef, zero_smul, zero_sub]`.
+
+Conclude with `neg_mem (hΛ _ hs' _ hqe)`.
+-/
 theorem core_split {O A M : Type} [CommRing O] [CommRing A] [AddCommGroup M] [Module A M] (ι : O →+* A)
     (Λ : AddSubgroup M) (p : A → Prop) (hΛ : ∀ a, p a → ∀ u ∈ Λ, a • u ∈ Λ) (hι : ∀ r, p (ι r)) (q : ℕ) (x : M)
     (hx : q • x ∈ Λ) (e f s s' : A) (he : p e) (hs : p s) (hs' : p s') (hee : e * e = e) (hef : e * f = 0)
@@ -125,6 +171,11 @@ theorem core_split {O A M : Type} [CommRing O] [CommRing A] [AddCommGroup M] [Mo
   · rw [wachExpansion_smul_compatible q e f _ s' x h2, mul_comm, hef, zero_smul, zero_sub]
     exact neg_mem (hΛ _ hs' _ hqe)
 
+/- English proof (translation)
+Establish `hne : P ≠ ⊥` using `fun h => by`. Rewrite `hqP` using `[h, Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast hqP)`. Establish `hc` using `hin P hP.isPrime hne hqP`. Rewrite `hr` using `[← hc]`.
+
+Conclude with `Ideal.smul_mem_pointwise_smul_iff.1 hr`.
+-/
 theorem mem_of_inert {q : ℕ} (hq : q.Prime) (hin : Formalism.MainNotions.StandardLatticesGL3.InertQ D q) (r : 𝓞 D.host.E)
     (P : Ideal (𝓞 D.host.E)) (hP : P.IsMaximal) (hqP : (q : 𝓞 D.host.E) ∈ P) (hr : GlobalTheory.FinWeil.sgO D r ∈ P) :
     r ∈ P := by
@@ -135,13 +186,24 @@ theorem mem_of_inert {q : ℕ} (hq : q.Prime) (hin : Formalism.MainNotions.Stand
   rw [← hc] at hr
   exact Ideal.smul_mem_pointwise_smul_iff.1 hr
 
+/- English proof (translation)
+The claim follows from `adele_ext (by rw [RingHom.map_mul, infPart_splitIdem he, mul_zero, RingHom.map_zero]) (by rw [RingHom.map_mul, ha, zero_mul, RingHom.map_zero])`.
+-/
 theorem mul_splitIdem_eq_zero {e : AE D} (he : IsSplitIdem D e) {a : AE D} (ha : finPart D a = 0) : a * e = 0 :=
   adele_ext (by rw [RingHom.map_mul, infPart_splitIdem he, mul_zero, RingHom.map_zero])
     (by rw [RingHom.map_mul, ha, zero_mul, RingHom.map_zero])
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, fun _ => one_mem _, a, rfl⟩`.
+-/
 theorem finPart_incA_mem (a : 𝓞 D.host.E) : finPart D (incA D (a : D.host.E)) ∈ intAE D :=
   AddSubgroup.subset_closure ⟨1, fun _ => one_mem _, a, rfl⟩
 
+/- English proof (translation)
+Establish `heI : finPart D e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, he.1])`. Take `⟨r, s, hs, hs', hz⟩` from `approx hq.pos heI`. Establish `h0 : finPart D (e - (incA D (r : D.host.E) + q • s)) = 0` using `by rw [RingHom.map_sub, ← hz, sub_self]`. Establish `h0'` using `finPart_cA_eq_zero h0`. Rewrite `h0'` using `[RingHom.map_sub, map_add_nsmul, GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.SplitIdem.star_eq_conj, ← GlobalTheory.FinWeil.coe_sgO]`.
+
+Conclude with `core_split ((incA D).comp (algebraMap (𝓞 D.host.E) D.host.E)) Λ (fun a => finPart D a ∈ intAE D) hΛ finPart_incA_mem q x hx e (cA D e) s (cA D s) heI hs hs' he.1 he.2.1 r (GlobalTheory.FinWeil.sgO D r) (mul_splitIdem_eq_zero he h0) (mul_splitIdem_eq_zero he h0') (mem_of_inert hq …`.
+-/
 theorem split_mem {S T : HSp D} {e : AE D} (he : IsSplitIdem D e) {Λ : AddSubgroup (WO S T)}
     (hΛ : ∀ a : AE D, finPart D a ∈ intAE D → ∀ u ∈ Λ, a • u ∈ Λ) {q : ℕ} (hq : q.Prime)
     (hin : Formalism.MainNotions.StandardLatticesGL3.InertQ D q) {x : WO S T} (hx : q • x ∈ Λ) : e • x ∈ Λ := by
@@ -156,6 +218,13 @@ theorem split_mem {S T : HSp D} {e : AE D} (he : IsSplitIdem D e) {Λ : AddSubgr
     finPart_incA_mem q x hx e (cA D e) s (cA D s) heI hs hs' he.1 he.2.1 r (GlobalTheory.FinWeil.sgO D r)
     (mul_splitIdem_eq_zero he h0) (mul_splitIdem_eq_zero he h0') (mem_of_inert hq hin r)
 
+/- English proof (translation)
+Introduce `hdvd`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Use `haveI : Finite (Λ' ⧸ Λ.addSubgroupOf Λ') := Nat.finite_of_card_ne_zero h0`. Take `⟨g, hg⟩` from `exists_prime_addOrderOf_dvd_card' (G := Λ' ⧸ Λ.addSubgroupOf Λ') q hdvd`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective g`.
+
+Establish `hqx : q • (x : M) ∈ Λ`. Establish `h` using `addOrderOf_nsmul_eq_zero (QuotientAddGroup.mk x : Λ' ⧸ Λ.addSubgroupOf Λ')`. Rewrite `h` using `[hg, ← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `h`. Establish `h2 : (QuotientAddGroup.mk x : Λ' ⧸ Λ.addSubgroupOf Λ') = 0` using `(QuotientAddGroup.eq_zero_iff _).2 (h x x.2 hqx)`.
+
+Rewrite `hg` using `[h2, addOrderOf_zero]`. Conclude with `hq.one_lt.ne hg`.
+-/
 theorem not_dvd_of_saturated {M : Type} [AddCommGroup M] (Λ Λ' : AddSubgroup M) (h0 : Λ.relIndex Λ' ≠ 0)
     {q : ℕ} (hq : q.Prime) (h : ∀ x ∈ Λ', q • x ∈ Λ → x ∈ Λ) : ¬ q ∣ Λ.relIndex Λ' := by
   intro hdvd
@@ -172,11 +241,17 @@ theorem not_dvd_of_saturated {M : Type} [AddCommGroup M] (Λ Λ' : AddSubgroup M
   rw [h2, addOrderOf_zero] at hg
   exact hq.one_lt.ne hg
 
+/- English proof (translation)
+Establish `h` using `add_mem (add_mem h1 h2) h3`. Rewrite `h` using `[← add_smul, ← add_smul, add_sub_cancel, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_parts {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (Λ : AddSubgroup M) (e f : A) (x : M)
     (h1 : e • x ∈ Λ) (h2 : f • x ∈ Λ) (h3 : (1 - (e + f)) • x ∈ Λ) : x ∈ Λ := by
   have h := add_mem (add_mem h1 h2) h3
   rwa [← add_smul, ← add_smul, add_sub_cancel, one_smul] at h
 
+/- English proof (translation)
+Introduce `D S T e he Λ Λ' hΛ _ _ h1 h0 q hq hin`. Conclude with `not_dvd_of_saturated Λ Λ' h0 hq fun x hx hqx => mem_of_parts Λ e (cA D e) x (split_mem he hΛ hq hin hqx) (split_mem (isSplitIdem_conj he) hΛ hq hin hqx) (h1 x hx)`.
+-/
 theorem not_dvd_relIndex : ∀ (D : D7) (S T : HSp D) (e : AE D), IsSplitIdem D e → ∀ Λ Λ' : AddSubgroup (WO S T), (∀ a : AE D, finPart D a ∈ intAE D → ∀ u ∈ Λ, a • u ∈ Λ) → (∀ a : AE D, finPart D a ∈ intAE D → ∀ u ∈ Λ', a • u ∈ Λ') → (∀ u ∈ Λ', u.map (infPart D) = 0) → (∀ u ∈ Λ', (1 - (e + cA D e)) • u ∈ Λ) → Λ.relIndex Λ' ≠ 0 → ∀ q : ℕ, q.Prime → Formalism.MainNotions.StandardLatticesGL3.InertQ D q → ¬ q ∣ Λ.relIndex Λ' := by
   intro D S T e he Λ Λ' hΛ _ _ h1 h0 q hq hin
   exact not_dvd_of_saturated Λ Λ' h0 hq fun x hx hqx => mem_of_parts Λ e (cA D e) x

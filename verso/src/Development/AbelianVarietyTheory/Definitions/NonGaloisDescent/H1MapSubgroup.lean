@@ -15,6 +15,9 @@ section Maps
 variable {Γ O Λ : Type} [Group Γ] [CommRing O] [CommRing Λ] [Algebra O Λ] {r : ℕ} (ρ : Γ →* GL (Fin r) O) (κ : Γ →* Λˣ)
   {B B' : Type} [AddCommGroup B] [Module Λ B] [AddCommGroup B'] [Module Λ B']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[repOn, matAct, map_sum, Finset.smul_sum]`.
+-/
 theorem repOn_map (f : B →ₗ[Λ] B') (g : Γ) (m : Fin r → B) :
     f.compLeft (Fin r) (repOn ρ κ B g m) = repOn ρ κ B' g (f.compLeft (Fin r) m) := by
   funext a

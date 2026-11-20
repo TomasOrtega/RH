@@ -18,6 +18,13 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 
 variable {V : Type} [CommRing V] [IsDomain V]
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Establish `htop : LB.wchart L (fun _ : PUnit => x) j = ⊤` using `eq_top_iff.2 fun y hy => Set.mem_iInter.2 fun _ => hj hy`. Establish `hK : (⊤ : (Spec (CommRingCat.of (FractionRing V))).Opens) ≤ LB.wchart L (fun _ : PUnit => jK V ≫ x) j` using `fun y _ => by`. Establish `hy : (jK V).base y ∈ LB.wchart L (fun _ : PUnit => x) j` using `by rw [htop]; trivial`. Conclude with `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`.
+
+Take `⟨c, hc, eV, hce⟩` from `genHasVal_top L (fun _ : PUnit => x) (fun _ => ε) t hn j htop hK`. Establish `e : valF (𝟙 (Sp (FractionRing V))) _ (t.s j).val = c * algebraMap V (FractionRing V) (eV : V)`. Rewrite using `[← hce]`. Conclude with `(dif_pos hK).trans rfl`. Rewrite using `[e]`.
+
+Conclude with `hasVal_mul_unit hc eV`.
+-/
 theorem hasVal_valF {ϖ : V} [IsDiscreteValuationRing V] {X : Scheme.{0}} (L : LB X)
     (x : Spec (CommRingCat.of V) ⟶ X) (x' : Spec (CommRingCat.of (FractionRing V)) ⟶ X) (hx : x' = jK V ≫ x)
     (ε : ℤ) (t : LB.Gen (LB.LinComb L (K := PUnit) (fun _ => x') (fun _ => ε))) {n : ℤ}
@@ -43,6 +50,11 @@ variable {F : Type} [NormedField F] [Algebra (FractionRing V) F]
 
 omit [IsDomain V] in
 include hle in
+/- English proof (translation)
+Establish `h1` using `(hle _).2 ⟨(w : V), rfl⟩`. Establish `h2` using `(hle _).2 ⟨((w⁻¹ : Vˣ) : V), rfl⟩`. Establish `h3 : ‖algebraMap (FractionRing V) F (algebraMap V (FractionRing V) (w : V))‖ * ‖algebraMap (FractionRing V) F (algebraMap V (FractionRing V) ((w⁻¹ : Vˣ) : V))‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, norm_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_unit (w : Vˣ) : ‖algebraMap (FractionRing V) F (algebraMap V (FractionRing V) (w : V))‖ = 1 := by
   have h1 := (hle _).2 ⟨(w : V), rfl⟩
   have h2 := (hle _).2 ⟨((w⁻¹ : Vˣ) : V), rfl⟩
@@ -54,11 +66,19 @@ theorem norm_unit (w : Vˣ) : ‖algebraMap (FractionRing V) F (algebraMap V (Fr
     _ ≤ _ * 1 := mul_le_mul_of_nonneg_left h2 (norm_nonneg _)
     _ = _ := mul_one _
 
+/- English proof (translation)
+The claim follows from `norm_pos_iff.2 ((map_ne_zero _).2 ((map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hϖ.ne_zero))`.
+-/
 theorem norm_pos_of_irreducible {ϖ : V} (hϖ : Irreducible ϖ) :
     0 < ‖algebraMap (FractionRing V) F (algebraMap V (FractionRing V) ϖ)‖ :=
   norm_pos_iff.2 ((map_ne_zero _).2 ((map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hϖ.ne_zero))
 
 include hle in
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h0 : algebraMap V (FractionRing V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hϖ.ne_zero`. Take `⟨w, hw⟩` from `(hle (algebraMap V (FractionRing V) ϖ)⁻¹).1 (by`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ (not_lt.1 h))`.
+
+Use `hϖ.not_isUnit (IsUnit.of_mul_eq_one w (IsFractionRing.injective V (FractionRing V) ?_))` and prove the remaining obligations. Rewrite using `[map_mul, hw, mul_inv_cancel₀ h0, map_one]`.
+-/
 theorem norm_lt_one_of_irreducible {ϖ : V} (hϖ : Irreducible ϖ) :
     ‖algebraMap (FractionRing V) F (algebraMap V (FractionRing V) ϖ)‖ < 1 := by
   by_contra h
@@ -71,6 +91,9 @@ theorem norm_lt_one_of_irreducible {ϖ : V} (hϖ : Irreducible ϖ) :
   rw [map_mul, hw, mul_inv_cancel₀ h0, map_one]
 
 include hle in
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hc`. Rewrite using `[map_mul, norm_mul, norm_unit hle, _root_.mul_one, map_zpow₀, norm_zpow, neg_mul, neg_neg, ← Real.rpow_def_of_pos (norm_pos_of_irreducible hϖ), Real.rpow_intCast]`.
+-/
 theorem norm_of_hasVal {ϖ : V} (hϖ : Irreducible ϖ) {c : FractionRing V} {n : ℤ} (hc : HasVal ϖ c n) :
     ‖algebraMap (FractionRing V) F c‖ =
       Real.exp (-(-Real.log ‖algebraMap (FractionRing V) F (algebraMap V (FractionRing V) ϖ)‖ * n)) := by
@@ -78,6 +101,9 @@ theorem norm_of_hasVal {ϖ : V} (hϖ : Irreducible ϖ) {c : FractionRing V} {n :
   rw [map_mul, norm_mul, norm_unit hle, _root_.mul_one, map_zpow₀, norm_zpow, neg_mul, neg_neg,
     ← Real.rpow_def_of_pos (norm_pos_of_irreducible hϖ), Real.rpow_intCast]
 
+/- English proof (translation)
+Use `Filter.tendsto_atTop.2 fun b => Filter.eventually_cofinite.2 ((D.psi_tendsto b.toNat).subset fun χ hχ hin => hχ ?_)` and prove the remaining obligations. Conclude with `(Int.self_le_toNat b).trans (genHasVal_ge_of_in hϖ D.toPre.P.L D.toPre.P.isLB (D.toPre.c χ).left (D.toPre.xK χ) (QForm.ptK_eq D.toPre χ) (-1) (D.toPre.psi χ) b.toNat hin (hQ χ))`.
+-/
 theorem tendsto_val [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ)
     (D : DegData V (IsLocalRing.maximalIdeal V)) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q) :
     Filter.Tendsto Q Filter.cofinite Filter.atTop := by
@@ -85,6 +111,13 @@ theorem tendsto_val [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ)
   exact (Int.self_le_toNat b).trans (genHasVal_ge_of_in hϖ D.toPre.P.L D.toPre.P.isLB (D.toPre.c χ).left (D.toPre.xK χ)
     (QForm.ptK_eq D.toPre χ) (-1) (D.toPre.psi χ) b.toNat hin (hQ χ))
 
+/- English proof (translation)
+Establish `h0` using `QForm.Q_zero hϖ D hQ`. Establish `hd : HasConstSecondDiff fun χ => a * (Q χ : ℝ)`. Use `(hasConstSecondDiff_iff _).2 fun b m ν => ?_` and prove the remaining obligations. Establish `h` using `QForm.bOf_add_left hϖ D hQ b m ν`. Simplify using `only [QForm.bOf] at h`.
+
+Establish `h' : Q (b + m + ν) - Q (b + m) - Q (b + ν) + Q b = Q (m + ν) - Q m - Q ν + Q 0` using `by rw [h0]; linarith`. Establish `h''` using `congrArg (fun z : ℤ => a * (z : ℝ)) h'`. Move the coercions through the operations in `at h''`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hd.quadraticMap fun χ => by rw [QForm.Q_neg hϖ D hQ], fun χ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[h0]`.
+-/
 theorem exists_quadraticMap [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ)
     (D : DegData V (IsLocalRing.maximalIdeal V)) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q) (a : ℝ) :
     ∃ q : QuadraticMap ℤ D.toPre.X ℝ, ∀ χ, q χ = a * Q χ := by
@@ -100,6 +133,11 @@ theorem exists_quadraticMap [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreduci
   refine ⟨hd.quadraticMap fun χ => by rw [QForm.Q_neg hϖ D hQ], fun χ => ?_⟩
   simp [h0]
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ p _ y₀ u`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible u.V`. Use `choose Q hQ using QForm.exists_QVal hϖ u.D`. Take `⟨q, hq⟩` from `exists_quadraticMap hϖ u.D hQ (-Real.log ‖algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) ϖ)‖)`. Use `⟨q, ?_, fun χ j hj => ?_⟩` and prove the remaining obligations.
+
+Use `Filter.Tendsto.congr (fun χ => (hq χ).symm) (Filter.Tendsto.const_mul_atTop ?_ ?_)` and prove the remaining obligations. Conclude with `neg_pos.2 (Real.log_neg (norm_pos_of_irreducible hϖ) (norm_lt_one_of_irreducible u.norm_le hϖ))`. Conclude with `tendsto_intCast_atTop_atTop.comp (tendsto_val hϖ u.D hQ)`. Rewrite using `[hq]`. Conclude with `norm_of_hasVal u.norm_le hϖ (hasVal_valF u.D.toPre.P.L _ _ (QForm.ptK_eq u.D.toPre χ) (-1) _ (hQ χ) j hj)`.
+-/
 theorem main : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀), ∃ q : QuadraticMap ℤ u.D.toPre.X ℝ, Filter.Tendsto q Filter.cofinite Filter.atTop ∧ ∀ χ, u.PsiNorm χ (Real.exp (-q χ)) := by
   intro o Ω _ _ _ _ S ρ p _ y₀ u
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible u.V

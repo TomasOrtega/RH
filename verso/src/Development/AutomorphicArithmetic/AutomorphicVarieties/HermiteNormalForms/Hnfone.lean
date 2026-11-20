@@ -5,6 +5,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms
 open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `L _ _ N I hI`. Establish `hr0 : (I : 𝓞 L) ≠ 0` using `Nat.cast_ne_zero.mpr hI.ne'`. Establish `hcardQ : Nat.card (𝓞 L ⧸ Ideal.span {(I : 𝓞 L)}) = I ^ Module.finrank ℚ L`. Establish `h1` using `Ideal.absNorm_span_singleton (I : 𝓞 L)`. Rewrite `h1` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Rewrite using `[h1, ← map_natCast (algebraMap ℤ (𝓞 L)) I, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]`. Simplify using the standard rewrite rules. Use `haveI : Finite (𝓞 L ⧸ Ideal.span {(I : 𝓞 L)}) := Nat.finite_of_card_ne_zero (by rw [hcardQ]; exact pow_ne_zero _ hI.ne')`. Use `letI : Fintype (𝓞 L ⧸ Ideal.span {(I : 𝓞 L)}) := Fintype.ofFinite _`. Establish `hB : ∀ A : Matrix (Fin N) (Fin N) (𝓞 L), A.det ≠ 0 ∧ nrmDet A = I → ∃ B, A * B = (I : 𝓞 L) • 1 ∧ B * A = (I : 𝓞 L) • 1`.
+
+Introduce `A hA`. Take `⟨_, B, h1, h2⟩` from `scinv L N A hA.1`. Rewrite `h1`, `h2` using `[hA.2]`. Conclude with `⟨B, h1, h2⟩`. Set `key : Matrix (Fin N) (Fin N) (𝓞 L) → Matrix (Fin N) (Fin N) (𝓞 L ⧸ Ideal.span {(I : 𝓞 L)})` to `fun A => if h : A.det ≠ 0 ∧ nrmDet A = I then (Classical.choose (hB A h)).map (Ideal.Quotient.mk _) else 0`.
+
+Set `rep : Matrix (Fin N) (Fin N) (𝓞 L ⧸ Ideal.span {(I : 𝓞 L)}) → Matrix (Fin N) (Fin N) (𝓞 L)` to `fun k => if h : ∃ A, (A.det ≠ 0 ∧ nrmDet A = I) ∧ key A = k then Classical.choose h else 0`. Use `⟨Finset.univ.image rep, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.card_image_le.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.card_univ]`. Express the relevant statement in the definitionally equal form `Fintype.card (Fin N → Fin N → 𝓞 L ⧸ Ideal.span {(I : 𝓞 L)}) = _`.
+
+Rewrite using `[Fintype.card_fun, Fintype.card_fun, Fintype.card_fin, ← Nat.card_eq_fintype_card, hcardQ, dd, ← pow_mul, ← pow_mul, mul_assoc]`. Introduce `A hdet hnrm`. Establish `hA : A.det ≠ 0 ∧ nrmDet A = I` using `⟨hdet, hnrm⟩`. Establish `hex : ∃ A', (A'.det ≠ 0 ∧ nrmDet A' = I) ∧ key A' = key A` using `⟨A, hA, rfl⟩`. Establish `hrep : rep (key A) = Classical.choose hex` using `dif_pos hex`.
+
+Take `⟨hA'P, hA'k⟩` from `Classical.choose_spec hex`. Take `⟨h1, h2⟩` from `Classical.choose_spec (hB A hA)`. Take `⟨h1', h2'⟩` from `Classical.choose_spec (hB _ hA'P)`. Establish `hkk : (Classical.choose (hB _ hA'P)).map (Ideal.Quotient.mk (Ideal.span {(I : 𝓞 L)})) = (Classical.choose (hB A hA)).map (Ideal.Quotient.mk _)`. Establish `keyeq : ∀ (M : Matrix (Fin N) (Fin N) (𝓞 L)) (h : M.det ≠ 0 ∧ nrmDet M = I), key M = (Classical.choose (hB M h)).map (Ideal.Quotient.mk _)` using `fun M h => dif_pos h`.
+
+Conclude with `(keyeq _ hA'P).symm.trans (hA'k.trans (keyeq A hA))`. Establish `hent : ∀ i j, ∃ x, Classical.choose (hB A hA) i j - Classical.choose (hB _ hA'P) i j = (I : 𝓞 L) * x`. Introduce `i j`. Establish `h` using `congrFun (congrFun hkk i) j`. Simplify using `only [Matrix.map_apply] at h`.
+
+Rewrite `h` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h`. Conclude with `⟨-c, by rw [mul_neg, ← hc, neg_sub]⟩`. Use `choose X hX using hent`. Take `⟨g, hg⟩` from `hnfeq (𝓞 L) N (I : 𝓞 L) hr0 A (Classical.choose hex) _ _ (Matrix.of X) h1 h2 h1' h2' (by ext i j; simp [hX])`.
+
+Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, Finset.mem_image]`. Conclude with `⟨key A, Finset.mem_univ _, hrep⟩`.
+-/
 theorem UpperTheory.V.KT.hnfone :
     ∀ (L : Type) [Field L] [NumberField L] (N : ℕ) (I : ℕ), 0 < I →
     ∃ S : Finset (Matrix (Fin N) (Fin N) (𝓞 L)), S.card ≤ I ^ (dd L N * N) ∧ ∀ A : Matrix (Fin N) (Fin N) (𝓞 L), A.det ≠ 0 → nrmDet A = I →

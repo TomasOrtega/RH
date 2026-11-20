@@ -12,6 +12,11 @@ section SlopeTestRemainingChoices
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `h : ¬ l ∣ 27`. Introduce `h`. Establish `h3 : l ∣ 3` using `hp.dvd_of_dvd_pow (show l ∣ 3 ^ 3 by simpa using h)`. Use `Nat.le_of_dvd (by norm_num) h3` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `using red_norm_natCast l h`.
+-/
 theorem norm_twentySeven_padicComplex_eq_one (h5 : 5 ≤ l) : ‖(27 : ℂ_[l])‖ = 1 := by
   have hp : l.Prime := Fact.out
   have h : ¬ l ∣ 27 := by
@@ -21,6 +26,11 @@ theorem norm_twentySeven_padicComplex_eq_one (h5 : 5 ≤ l) : ‖(27 : ℂ_[l])�
     omega
   simpa using red_norm_natCast l h
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `h : ¬ l ∣ 1728`. Introduce `h`. Establish `h' : l ∣ 2 ^ 6 * 3 ^ 3` using `by simpa using h`. Break down `(hp.dvd_mul).1 h' with h2 | h3` into its components or cases.
+
+Use `Nat.le_of_dvd (by norm_num) (hp.dvd_of_dvd_pow h2)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Nat.le_of_dvd (by norm_num) (hp.dvd_of_dvd_pow h3)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `using red_norm_natCast l h`.
+-/
 theorem norm_1728_eq_one (h5 : 5 ≤ l) : ‖(1728 : ℂ_[l])‖ = 1 := by
   have hp : l.Prime := Fact.out
   have h : ¬ l ∣ 1728 := by
@@ -33,12 +43,55 @@ theorem norm_1728_eq_one (h5 : 5 ≤ l) : ‖(1728 : ℂ_[l])‖ = 1 := by
       omega
   simpa using red_norm_natCast l h
 
+/- English proof (translation)
+Conclude with `natCast_mem (MaximalUnramifiedExtension l) 27` after adjusting the coercions.
+-/
 theorem twentySeven_mem_Kur : (27 : ℂ_[l]) ∈ MaximalUnramifiedExtension l := by
   exact_mod_cast natCast_mem (MaximalUnramifiedExtension l) 27
 
+/- English proof (translation)
+Conclude with `natCast_mem (MaximalUnramifiedExtension l) 1728` after adjusting the coercions.
+-/
 theorem ofNat_1728_mem_Kur : (1728 : ℂ_[l]) ∈ MaximalUnramifiedExtension l := by
   exact_mod_cast natCast_mem (MaximalUnramifiedExtension l) 1728
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `hx : (0 : ℝ) < (l : ℝ)` using `by exact_mod_cast hp.pos`. Establish `hl0 : (l : ℂ_[l]) ≠ 0`. Introduce `h`. Use `red_norm_l l` as an intermediate fact.
+
+Rewrite `this` using `[h, norm_zero]`. Conclude with `(inv_ne_zero hx.ne') this.symm`. Establish `h27 : (27 : ℂ_[l]) ≠ 0`. Introduce `h`. Use `norm_twentySeven_padicComplex_eq_one l h5` as an intermediate fact.
+
+Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `h1728 : (1728 : ℂ_[l]) ≠ 0`. Introduce `h`. Use `norm_1728_eq_one l h5` as an intermediate fact.
+
+Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hJs : J - 1728 = 1728 * 27 * b ^ 2 / (a ^ 3 - 27 * b ^ 2)`. Rewrite using `[hJe]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hJs0 : J - 1728 ≠ 0`. Rewrite using `[hJs]`. Conclude with `div_ne_zero (mul_ne_zero (mul_ne_zero h1728 h27) (pow_ne_zero _ hb)) hD`. Use `set c : ℂ_[l] := 27 * J / (J - 1728) with hc`.
+
+Establish `hcab : c = a ^ 3 / b ^ 2`. Rewrite using `[hc, hJs, hJe]`. Clear the denominators using the available nonvanishing facts. Establish `hc27 : c - 27 = 27 * 1728 / (J - 1728)`. Rewrite using `[hc]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `set t : ℂ_[l] := (l : ℂ_[l]) ^ (m - n) with ht`. Establish `ht0 : t ≠ 0` using `zpow_ne_zero _ hl0`. Use `set X : ℝ := (l : ℝ) ^ m with hX`.
+
+Use `set Y : ℝ := (l : ℝ) ^ n with hY`. Establish `hX0 : 0 < X` using `zpow_pos hx _`. Establish `hY0 : 0 < Y` using `zpow_pos hx _`. Establish `hm' : ‖J‖ = X ^ 3`. Rewrite using `[hm, mul_comm, zpow_mul]`.
+
+Use `norm_cast`. Establish `hn' : ‖J - 1728‖ = Y ^ 2`. Rewrite using `[hn, mul_comm, zpow_mul]`. Use `norm_cast`. Establish `htn : ‖t‖ = Y / X`.
+
+Rewrite using `[ht, norm_zpow, red_norm_l, inv_zpow', neg_sub, zpow_sub₀ hx.ne']`. Establish `hcn : ‖c‖ = X ^ 3 / Y ^ 2`. Rewrite using `[hc, norm_div, norm_mul, norm_twentySeven_padicComplex_eq_one l h5, hm', hn', one_mul]`. Establish `hc27n : ‖c - 27‖ = 1 / Y ^ 2`. Rewrite using `[hc27, norm_div, norm_mul, norm_twentySeven_padicComplex_eq_one l h5, norm_1728_eq_one l h5, hn', one_mul]`.
+
+Establish `hdisc : (t ^ 2 * c) ^ 3 - 27 * (t ^ 3 * c) ^ 2 = t ^ 6 * c ^ 2 * (c - 27)` using `by ring`. Establish `hdn : ‖(t ^ 2 * c) ^ 3 - 27 * (t ^ 3 * c) ^ 2‖ = 1`. Rewrite using `[hdisc, norm_mul, norm_mul, norm_pow, norm_pow, htn, hcn, hc27n]`. Clear the denominators using the available nonvanishing facts. Establish `hg2 : ‖t ^ 2 * c‖ ≤ 1`.
+
+Establish `h : ‖t ^ 2 * c‖ ^ 3 = ‖J‖`. Rewrite using `[norm_mul, norm_pow, htn, hcn, hm']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← pow_le_one_iff_of_nonneg (norm_nonneg _) (three_ne_zero)]`. Rewrite using `[h]`.
+
+Conclude with `hJ1`. Establish `hg3 : ‖t ^ 3 * c‖ ≤ 1`. Establish `h : ‖t ^ 3 * c‖ ^ 2 = ‖J - 1728‖`. Rewrite using `[norm_mul, norm_pow, htn, hcn, hn']`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[← pow_le_one_iff_of_nonneg (norm_nonneg _) (two_ne_zero)]`. Rewrite using `[h]`. Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hJ1 ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`.
+
+Conclude with `(norm_1728_eq_one l h5).le`. Establish `htK : t ∈ MaximalUnramifiedExtension l` using `zpow_mem (natCast_mem (MaximalUnramifiedExtension l) l) _`. Establish `hcK : c ∈ MaximalUnramifiedExtension l` using `div_mem (mul_mem (twentySeven_mem_Kur l) hJ) (sub_mem hJ (ofNat_1728_mem_Kur l))`. Take `⟨lam, hlam⟩` from `IsAlgClosed.exists_pow_nat_eq (t * a / b) (show 0 < 2 by norm_num)`. Establish `hlam0 : lam ≠ 0`.
+
+Introduce `h`. Rewrite `hlam` using `[h]`. Establish `: t * a / b ≠ 0` using `div_ne_zero (mul_ne_zero ht0 ha) hb`. Conclude with `this (by rw [← hlam]; simp)`. Use `⟨t ^ 2 * c, t ^ 3 * c, mul_mem (pow_mem htK _) hcK, mul_mem (pow_mem htK _) hcK, hg2, hg3, hdn, lam, hlam0, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: lam ^ 4 = (lam ^ 2) ^ 2` using `by ring`. Rewrite using `[this, hlam, hcab]`. Clear the denominators using the available nonvanishing facts. Establish `: lam ^ 6 = (lam ^ 2) ^ 3` using `by ring`. Rewrite using `[this, hlam, hcab]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem model_generic (h5 : 5 ≤ l) (a b J : ℂ_[l]) (ha : a ≠ 0) (hb : b ≠ 0)
     (hD : a ^ 3 - 27 * b ^ 2 ≠ 0) (hJe : J = 1728 * a ^ 3 / (a ^ 3 - 27 * b ^ 2))
     (hJ : J ∈ MaximalUnramifiedExtension l) (hJ1 : ‖J‖ ≤ 1) (m n : ℤ) (hm : ‖J‖ = (l : ℝ) ^ (3 * m))
@@ -125,6 +178,31 @@ theorem model_generic (h5 : 5 ≤ l) (a b J : ℂ_[l]) (ha : a ≠ 0) (hb : b �
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `hD0 : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 ≠ 0` using `discNeZero L`. Establish `hD : (ι L.g₂) ^ 3 - 27 * (ι L.g₃) ^ 2 ≠ 0`. Introduce `h`. Apply `hD0` to reduce the goal to its premises. Apply `ι.injective` to reduce the goal to its premises.
+
+Establish `e27 : ι 27 = 27` using `map_ofNat ι 27`. Simplify `h` using `[e27]`. Establish `hJe : ι (jInv L) = 1728 * (ι L.g₂) ^ 3 / ((ι L.g₂) ^ 3 - 27 * (ι L.g₃) ^ 2)`. Establish `e27 : ι 27 = 27` using `map_ofNat ι 27`. Establish `e1728 : ι 1728 = 1728` using `map_ofNat ι 1728`.
+
+Simplify using `[jInv, e27, e1728]`. Establish `h1728 : (1728 : ℂ_[l]) ≠ 0`. Introduce `h`. Use `norm_1728_eq_one l h5` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`.
+
+Conclude with `zero_ne_one this`. Distinguish the cases in `ha : ι L.g₂ = 0`. Establish `hb : ι L.g₃ ≠ 0`. Introduce `hb`. Apply `hD` to reduce the goal to its premises.
+
+Rewrite using `[ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨lam, hlam⟩` from `IsAlgClosed.exists_pow_nat_eq (ι L.g₃)⁻¹ (show 0 < 6 by norm_num)`. Establish `hlam0 : lam ≠ 0`. Introduce `h`.
+
+Rewrite `hlam` using `[h]`. Conclude with `inv_ne_zero hb (by rw [← hlam]; simp)`. Use `⟨0, 1, zero_mem _, one_mem _, by simp, by simp, ?_, lam, hlam0, by rw [ha]; simp, ?_⟩` and prove the remaining obligations. Establish `: (0 : ℂ_[l]) ^ 3 - 27 * 1 ^ 2 = -27` using `by ring`. Rewrite using `[this, norm_neg, norm_twentySeven_padicComplex_eq_one l h5]`.
+
+Rewrite using `[hlam, inv_mul_cancel₀ hb]`. Distinguish the cases in `hb : ι L.g₃ = 0`. Take `⟨lam, hlam⟩` from `IsAlgClosed.exists_pow_nat_eq (ι L.g₂)⁻¹ (show 0 < 4 by norm_num)`. Establish `hlam0 : lam ≠ 0`. Introduce `h`.
+
+Rewrite `hlam` using `[h]`. Conclude with `inv_ne_zero ha (by rw [← hlam]; simp)`. Use `⟨1, 0, one_mem _, zero_mem _, by simp, by simp, ?_, lam, hlam0, ?_, by rw [hb]; simp⟩` and prove the remaining obligations. Establish `: (1 : ℂ_[l]) ^ 3 - 27 * 0 ^ 2 = 1` using `by ring`. Rewrite using `[this, norm_one]`.
+
+Rewrite using `[hlam, inv_mul_cancel₀ ha]`. Establish `hJ0 : ι (jInv L) ≠ 0`. Rewrite using `[hJe]`. Conclude with `div_ne_zero (mul_ne_zero h1728 (pow_ne_zero _ ha)) hD`. Establish `hJ1728 : ι (jInv L) ≠ 1728`.
+
+Rewrite using `[hJe]`. Introduce `h`. Rewrite `h` using `[div_eq_iff hD]`. Establish `h' : (1728 : ℂ_[l]) * (27 * (ι L.g₃) ^ 2) = 0` using `by linear_combination h`. Establish `h27 : (27 : ℂ_[l]) ≠ 0`.
+
+Introduce `h`. Use `norm_twentySeven_padicComplex_eq_one l h5` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Conclude with `mul_ne_zero h1728 (mul_ne_zero h27 (pow_ne_zero _ hb)) h'`.
+
+Take `⟨m, hm⟩` from `h3 hJ0`. Take `⟨n, hn⟩` from `h2 hJ1728`. Conclude with `model_generic l h5 _ _ _ ha hb hD hJe hJ hJ1 m n hm hn`.
+-/
 theorem model_of_valDiv (L : PeriodPair) (l : ℕ) [Fact l.Prime] (h5 : 5 ≤ l) (ι : ℂ ≃+* ℂ_[l])
     (hJ : ι (jInv L) ∈ MaximalUnramifiedExtension l) (hJ1 : ‖ι (jInv L)‖ ≤ 1)
     (h3 : ι (jInv L) ≠ 0 → ∃ m : ℤ, ‖ι (jInv L)‖ = (l : ℝ) ^ (3 * m))

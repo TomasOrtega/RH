@@ -18,6 +18,9 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.LocGen
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `j z hz`. Establish `h1 : AnalyticAt ℂ (fun v => ∏ k, ((c k ∘ (A.chart j).symm) v) ^ d k) z` using `Finset.analyticAt_fun_prod _ fun k _ => (hc k j z hz).zpow (h0 k _ hz.2)`. Conclude with `(hf j z hz).mul h1`.
+-/
 theorem holoOn_mul_prod_zpow {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {U : Set X} {κ : Type}
     [Fintype κ] {f : X → ℂ} {c : κ → X → ℂ} (d : κ → ℤ) (hf : A.HoloOn U f) (hc : ∀ k, A.HoloOn U (c k))
     (h0 : ∀ k, ∀ y ∈ U, c k y ≠ 0) : A.HoloOn U fun y => f y * ∏ k, c k y ^ d k := by
@@ -26,6 +29,9 @@ theorem holoOn_mul_prod_zpow {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinH
     Finset.analyticAt_fun_prod _ fun k _ => (hc k j z hz).zpow (h0 k _ hz.2)
   exact (hf j z hz).mul h1
 
+/- English proof (translation)
+Introduce `j z hz`. Establish `hs : (A.chart j).symm z ∈ ψ.source` using `hV hz.2`. Establish `h1 : AnalyticAt ℂ (g ∘ (ψ ∘ (A.chart j).symm)) z` using `AnalyticAt.comp (g := g) (f := ψ ∘ (A.chart j).symm) (hg _ (ψ.map_source hs)) ((hψ j).1 z ⟨hz.1, hs⟩)`. Conclude with `h1`.
+-/
 theorem holoOn_comp_chart {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} (hψ : IsCompatChart A ψ) {g : (Fin e → ℂ) → ℂ}
     (hg : AnalyticOnNhd ℂ g ψ.target) {V : Set X} (hV : V ⊆ ψ.source) : A.HoloOn V fun w => g (ψ w) := by
@@ -40,11 +46,19 @@ def mixPt (k₀ : K) (z₀ z₁ : (Σ k, ι k) → ℂ) : (Σ o : Option K, ι (
   | ⟨some k, m⟩ => z₀ ⟨k, m⟩
   | ⟨none, m⟩ => z₁ ⟨k₀, m⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Take `⟨k, m⟩` from `q`. Both sides reduce to the same expression.
+-/
 theorem fstPt_mixPt (k₀ : K) (z₀ z₁ : (Σ k, ι k) → ℂ) : fstPt k₀ (mixPt k₀ z₀ z₁) = z₀ := by
   funext q
   obtain ⟨k, m⟩ := q
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Take `⟨k, m⟩` from `q`. Distinguish the cases in `e : k = k₀`. Substitute `e` using the available equality. Express the relevant statement in the definitionally equal form `mixPt k z₀ z₁ (v₁ k ⟨k, m⟩) = _`.
+
+Rewrite using `[v₁_self]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `mixPt k₀ z₀ z₁ (v₁ k₀ ⟨k, m⟩) = _`. Rewrite using `[v₁_ne (p := ⟨k, m⟩) e]`. Conclude with `(h ⟨k, m⟩ e).symm`.
+-/
 theorem sndPt_mixPt {k₀ : K} {z₀ z₁ : (Σ k, ι k) → ℂ} (h : ∀ q : Σ k, ι k, q.1 ≠ k₀ → z₁ q = z₀ q) :
     sndPt k₀ (mixPt k₀ z₀ z₁) = z₁ := by
   funext q
@@ -58,6 +72,9 @@ theorem sndPt_mixPt {k₀ : K} {z₀ z₁ : (Σ k, ι k) → ℂ} (h : ∀ q : �
     rw [v₁_ne (p := ⟨k, m⟩) e]
     exact (h ⟨k, m⟩ e).symm
 
+/- English proof (translation)
+Introduce `o`. Consider the cases of `o with`. Consider the case `none => exact h₁ k₀`. Consider the case `some k => exact h₀ k`.
+-/
 theorem mixPt_blocks {k₀ : K} {z₀ z₁ : (Σ k, ι k) → ℂ} (h₀ : ∀ k, ∃ i, z₀ ⟨k, i⟩ ≠ 0)
     (h₁ : ∀ k, ∃ i, z₁ ⟨k, i⟩ ≠ 0) : ∀ o, ∃ i, mixPt k₀ z₀ z₁ ⟨o, i⟩ ≠ 0 := by
   intro o
@@ -65,6 +82,13 @@ theorem mixPt_blocks {k₀ : K} {z₀ z₁ : (Σ k, ι k) → ℂ} (h₀ : ∀ k
   | none => exact h₁ k₀
   | some k => exact h₀ k
 
+/- English proof (translation)
+Establish `hC : (∏ o, ‖c o‖ ^ A.a o) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun o _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc o))`. Establish `hP : ‖∏ o, c o ^ A.a o‖ = ∏ o, ‖c o‖ ^ A.a o`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_congr rfl fun o _ => norm_zpow _ _`. Establish `hN : ‖f * (∏ o, c o ^ A.a o) * t‖ = (∏ o, ‖c o‖ ^ A.a o) * ‖t * f‖`.
+
+Rewrite using `[norm_mul, norm_mul, norm_mul, hP]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : A.h z = (∏ o, ‖c o‖ ^ A.a o) * A.h zz`. Rewrite using `[hz]`. Conclude with `A.smul c zz hc`.
+
+Establish `hp : A.h zz ≠ 0` using `(A.pos zz hzz).ne'`. Establish `hn : ‖t * f‖ ≠ 0` using `norm_ne_zero_iff.2 (mul_ne_zero ht hf)`. Rewrite using `[hN, hA, Real.log_mul hC hn, Real.log_mul hC hp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_norm_sub {k₀ : K} (A : HermLine fun o : Option K => ι (o.getD k₀)) {c : Option K → ℂ}
     (hc : ∀ o, c o ≠ 0) {z zz : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (hz : z = fun p => c p.1 * zz p)
     (hzz : ∀ o, ∃ i, zz ⟨o, i⟩ ≠ 0) {f t : ℂ} (hf : f ≠ 0) (ht : t ≠ 0) :
@@ -85,6 +109,11 @@ theorem log_norm_sub {k₀ : K} (A : HermLine fun o : Option K => ι (o.getD k�
   rw [hN, hA, Real.log_mul hC hn, Real.log_mul hC hp]
   ring
 
+/- English proof (translation)
+Take `⟨c, hc0, hzc⟩` from `h`. Establish `e₀ : basePart M.blk z = fun q : Σ k, baseIdx ι M.blk k => (fun k : NonPluckerBlocks M.blk => c k.1) q.1 * basePart M.blk z' q`. Rewrite using `[hzc]`. Both sides reduce to the same expression. Rewrite using `[e₀, GlobalTheory.CompanionTheory.Ar.PB.StepW.TorusAct.mCoordIdeal_torus (K := NonPluckerBlocks M.blk) (ι := baseIdx ι M.blk) (fun k : NonPluckerBlocks M.blk => c k.1) (fun k => hc0 k.1) (basePart M.blk z')]`.
+
+Conclude with `hG`.
+-/
 theorem goodAt_of_orbit {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ} {Ψ : Type} {N j : ℕ} (M : FlagModel y Ψ N j)
     {F : FrameData ι Ψ N M.Ω M.blk} {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z')
     (hG : M.GoodAt F (mCoordIdeal (basePart M.blk z'))) : M.GoodAt F (mCoordIdeal (basePart M.blk z)) := by
@@ -96,6 +125,35 @@ theorem goodAt_of_orbit {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ} {Ψ : T
     (fun k : NonPluckerBlocks M.blk => c k.1) (fun k => hc0 k.1) (basePart M.blk z')]
   exact hG
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb τ a b k₀ ca cb hb hj hk hca hcb RW pr hW x`. Take `⟨ψ, kb, σ, i₀, F, H, hx, hC⟩` from `hW.2.2 x`. Take `⟨V, z₀, z₁, c, hVo, hxV, hVs, hVU, hz₀h, hch, hc0, hL⟩` from `GlobalTheory.T.flag_adjacent_twisted_resolution_alt K ι Φ y Ψ N j M n e Rb τ a b k₀ ca cb hb hj hk hca hcb RW pr hW x ψ kb σ i₀ F H hx hC`. Establish `hFr : M.IsFrame F` using `hC.2.1`. Establish `hsrc` using `hC.2.2.2.2.2`.
+
+Establish `hfacts : ∀ w ∈ V, basePart M.blk (z₀ w) ∈ mcPts (mCoordIdeal M.x) ∧ (∀ k, ∃ i, z₀ w ⟨k, i⟩ ≠ 0) ∧ (∀ k, ∃ i, z₁ w ⟨k, i⟩ ≠ 0) ∧ basePart M.blk (z₁ w) = basePart M.blk (z₀ w) ∧ M.GoodAt F (mCoordIdeal (basePart M.blk (z₀ w)))`. Introduce `w hw`. Take `⟨ho₀, ho₁, -, hoff, -, -⟩` from `hL w hw`. Take `⟨h1, -, h3, h4⟩` from `PtBase.main K ι Φ y Ψ N j M n e Rb τ a k₀ ca cb RW pr hk hW w (z₀ w) (z₁ w) ho₀ ho₁`. Use `⟨h1, h3, h4, ?_, goodAt_of_orbit M ho₀ (hsrc w (hVs hw)).2.1⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `q`. Conclude with `hoff ⟨q.1.1, q.2⟩ fun e' => q.1.2 (τ, a) (hk.trans (congrArg some (Eq.symm e')))`. Establish `hdata : ∀ w ∈ V, ψ w i₀ ≠ 0 → IsPtData M τ a k₀ ca cb RW w (z₀ w) (z₁ w) F (H τ (ψ w)) (ψ w i₀)`. Introduce `w hw h0`. Take `⟨ho₀, ho₁, hex, -⟩` from `hL w hw`.
+
+Establish `hH` using `(hsrc w (hVs hw)).1 τ`. Conclude with `⟨hFr, (hfacts w hw).2.2.2.2, ho₀, ho₁, hH.1, hH.2, h0, fun i => (hex τ i).1, fun i => by`. Simplify using `using (hex τ i).2⟩`. Take `⟨V', hV'o, hxV', hV'V, hfh, hf0⟩` from `GlobalTheory.T.holomorphic_frame_metric_near_point K ι Φ y Ψ N j M e RW.X RW.A V x (fun w => basePart M.blk (z₀ w)) (fun w => H τ (ψ w)) F τ a hVo hxV (fun q => hz₀h ⟨q.1.1, q.2⟩) (fun w hw => (hfacts w hw).1) (fun w hw => (hfacts w hw).2.2.2.2) (fun r s => holoOn_comp_chart RW.A …`. Take `⟨f, hfh, hf0, hfd⟩ : ∃ f : RW.X → ℂ, RW.A.HoloOn V' f ∧ (∀ w ∈ V', f w ≠ 0) ∧ ∀ w, f w = ∏ i : Fin N, (if IsProperStep N j i then 1 else valAt M.x (F.υ (τ, i)) (basePart M.blk (z₀ w)) * (if (i : ℕ) + 1 = j then (if (a : ℕ) < j then minorIJ (H τ (ψ w)) (wIdx N j) (wIdx N j) else 1 …` from `⟨_, hfh, hf0, fun _ => rfl⟩`.
+
+Use `⟨ψ, kb, σ, i₀, V', fun w => f w * ∏ o, c o w ^ aDeg M τ a k₀ o, ⟨F, H, hC⟩, hV'o, hxV', hV'V.trans hVs, hV'V.trans hVU, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `holoOn_mul_prod_zpow RW.A _ hfh (fun o j' => (hch o j').mono (Set.inter_subset_inter_right _ (Set.preimage_mono hV'V))) fun o w hw => hc0 o w (hV'V hw)`. Introduce `w hw`. Conclude with `mul_ne_zero (hf0 w hw) (Finset.prod_ne_zero_iff.2 fun o _ => zpow_ne_zero _ (hc0 o w (hV'V hw)))`. Introduce `w hw`.
+
+Establish `hwV` using `hV'V hw`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Take `⟨ho₀, ho₁, hex, hoff, -, -⟩` from `hL w hwV`. Establish `hbase` using `(hfacts w hwV).2.2.2.1`.
+
+Establish `hz : z₁ w = z₀ w`. Use function extensionality and compare the values at `q`. Take `⟨k, m⟩` from `q`. Distinguish the cases in `e' : k = k₀`. Substitute `e'` using the available equality.
+
+Establish `h1` using `(hex τ a).1.2 k hk m`. Establish `h2` using `(hex τ a).2.2 k hk m`. Rewrite `h2` using `[if_pos rfl, h0, Matrix.single_zero, add_zero, mul_one, hbase]`. Conclude with `h2.trans h1.symm`. Conclude with `hoff ⟨k, m⟩ e'`.
+
+Rewrite `ho₁` using `[hz]`. Conclude with `orbit_trans (orbit_symm ho₀) ho₁`. Introduce `hs`. Assume the negation of the conclusion as `h0`. Conclude with `GlobalTheory.T.flag_adjacent_twisted_resolution K ι Φ y Ψ N j M n e Rb τ a b k₀ ca cb hb hj hk hca hcb RW pr hW w _ _ _ _ _ (hdata w hwV h0) hs`.
+
+Introduce `w hw h0 z₀' z₁' F' h' t' hD`. Establish `hwV` using `hV'V hw`. Take `⟨ho₀, ho₁, -, hoff, hl0, hl1⟩` from `hL w hwV`. Take `⟨hmc, hn₀, hn₁, hbase, hG⟩` from `hfacts w hwV`. Take `⟨hF', hG', hp₀, hp₁, hB', hd', ht', he₀', he₁'⟩` from `hD`.
+
+Establish `hd` using `hdata w hwV h0`. Establish `hind` using `GlobalTheory.T.flag_adjacent_two_frames_orbit K ι Φ y Ψ N j M τ a b k₀ ca cb hb hj hk hca hcb F F' (z₀ w) (z₁ w) z₀' z₁' (H τ (ψ w)) h' (ψ w i₀) t' hmc hn₀ hn₁ hbase hFr hF' hG hG' (orbit_trans ho₀ (orbit_symm hp₀)) (orbit_trans ho₁ (orbit_symm hp₁)) hd.2.2.2.2.1 hd.2.2.2.2.2.1 h …`. Rewrite using `[← hind]`. Establish `hlift : RW.lift x w = fun p => c p.1 w * mixPt k₀ (z₀ w) (z₁ w) p`. Use function extensionality and compare the values at `p`.
+
+Take `⟨o, m⟩` from `p`. Consider the cases of `o with`. Consider the case `none => exact hl1 m`. Consider the case `some k => exact hl0 ⟨k, m⟩`. Establish `hzz` using `mixPt_blocks (k₀ := k₀) hn₀ hn₁`.
+
+Establish `hnorm` using `log_norm_sub (potA M τ a k₀) (c := fun o => c o w) (fun o => hc0 o w hwV) hlift hzz (hf0 w hw) h0`. Establish `hcombo` using `GlobalTheory.T.twisted_metric_log_formula K ι Φ y Ψ N j M τ a k₀ hk _ hzz`. Rewrite `hcombo` using `[fstPt_mixPt, sndPt_mixPt hoff]`. Establish `e₁ : Real.log ‖(f w * ∏ o, c o w ^ aDeg M τ a k₀ o) * ψ w i₀‖ - Real.log ((potA M τ a k₀).h (RW.lift x w)) = _` using `hnorm`. Use `e₁.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hcombo, normRhs, ← hfd w]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → ∀ (RW : AnLogRes (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) ⊤ e) (pr : RW.X → Rb.X), IsWAtlas M Rb τ a k₀ ca cb RW pr → ∀ x, ∃ ψ kb σ i₀ V u, IsLocSec M Rb τ a k₀ ca cb RW pr x ψ kb σ i₀ V u := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb τ a b k₀ ca cb hb hj hk hca hcb RW pr hW x
   obtain ⟨ψ, kb, σ, i₀, F, H, hx, hC⟩ := hW.2.2 x

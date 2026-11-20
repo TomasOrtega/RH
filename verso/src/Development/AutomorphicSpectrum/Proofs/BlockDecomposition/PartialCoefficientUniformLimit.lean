@@ -10,6 +10,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.FJLim
 
+/- English proof (translation)
+Introduce `hPc D n ρ p hn M m ψ hψ b₀ ι l Fs A hAc hAinv hFs hunif hadd g φ hφ`. Use `haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩`. Take `⟨hcont, hbd⟩` from `hPc D n ρ p hn M m ψ hψ b₀`. Take `⟨C, hC, -, hCb⟩` from `hbd g`. Establish `hφc : Integrable (fun y => conj (φ y)) m.μ` using `Complex.conjCLE.toContinuousLinearMap.integrable_comp hφ`.
+
+Establish `hint : ∀ F : G D n → ℂ, Continuous F → LeftInv (GF D n) F → Integrable (fun y => pc M m ψ b₀ F (M.sh y * g) * conj (φ y)) m.μ`. Introduce `F hF hinv`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hF.continuousOn`. Establish `hc : Continuous fun y => pc M m ψ b₀ F (M.sh y * g)` using `(hcont F hF hinv).comp (M.sh_cont.mul continuous_const)`. Conclude with `hφc.bdd_mul hc.aestronglyMeasurable (Eventually.of_forall fun y => hCb F hF hinv B hB y)`.
+
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Use `set N : ℝ := ∫ y, ‖φ y‖ ∂m.μ with hN`. Establish `hN0 : 0 ≤ N` using `integral_nonneg fun _ => norm_nonneg _`. Establish `hδ : 0 < ε / (N + 1)` using `by positivity`.
+
+Use `filter_upwards [hFs, hadd, hunif C hC _ hδ] with i hi hai hui`. Establish `hsub : Continuous (Fs i - A)` using `hi.1.sub hAc`. Establish `hsinv : LeftInv (GF D n) (Fs i - A)` using `fun γ hγ x => by`. Simplify using `only [Pi.sub_apply, hi.2 γ hγ x, hAinv γ hγ x]`. Establish `hpt : ∀ y, ‖pc M m ψ b₀ (Fs i) (M.sh y * g) - pc M m ψ b₀ A (M.sh y * g)‖ ≤ ε / (N + 1)`.
+
+Introduce `y`. Rewrite using `[← hai y g]`. Conclude with `hCb _ hsub hsinv _ (fun c hc => by simpa using hui c hc) y`. Establish `hdiff : FJ M m ψ b₀ (Fs i) g φ - FJ M m ψ b₀ A g φ = ∫ y, (pc M m ψ b₀ (Fs i) (M.sh y * g) - pc M m ψ b₀ A (M.sh y * g)) * conj (φ y) ∂m.μ`. Unfold `FJ`.
+
+Rewrite using `[← integral_sub (hint _ hi.1 hi.2) (hint _ hAc hAinv)]`. Simplify using `only [sub_mul]`. Establish `hle : ‖FJ M m ψ b₀ (Fs i) g φ - FJ M m ψ b₀ A g φ‖ ≤ ε / (N + 1) * N`. Rewrite using `[hdiff, hN, ← integral_const_mul]`. Use `norm_integral_le_of_norm_le (hφ.norm.const_mul _) (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (hpt y) (norm_nonneg _)`. Rewrite using `[dist_eq_norm]`. Use `lt_of_le_of_lt hle ?_` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem fj_tendsto : PcBound → ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (b₀ : HermE D ρ) {ι : Type} (l : Filter ι) (Fs : ι → G D n → ℂ) (A : G D n → ℂ), Continuous A → LeftInv (GF D n) A → (∀ᶠ i in l, Continuous (Fs i) ∧ LeftInv (GF D n) (Fs i)) → (∀ C : Set (G D n), IsCompact C → ∀ ε : ℝ, 0 < ε → ∀ᶠ i in l, ∀ c ∈ C, ‖Fs i c - A c‖ ≤ ε) → (∀ᶠ i in l, ∀ (y : Mx D ρ p) (g : G D n), pc M m ψ b₀ (Fs i - A) (M.sh y * g) = pc M m ψ b₀ (Fs i) (M.sh y * g) - pc M m ψ b₀ A (M.sh y * g)) → ∀ (g : G D n) (φ : Mx D ρ p → ℂ), Integrable φ m.μ → Tendsto (fun i => FJ M m ψ b₀ (Fs i) g φ) l (𝓝 (FJ M m ψ b₀ A g φ)) := by
   intro hPc D n ρ p hn M m ψ hψ b₀ ι l Fs A hAc hAinv hFs hunif hadd g φ hφ
   haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩

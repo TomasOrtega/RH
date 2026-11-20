@@ -34,8 +34,14 @@ def absFin (l : (AE F E)ˣ) : ℝ≥0 := ∏ᶠ v, GlobalTheory.Doubling.absEv F
 
 variable {F E}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem absE_eq (l : (AE F E)ˣ) : absE F E l = absInf F E l * absFin F E l := rfl
 
+/- English proof (translation)
+Simplify using `[absInf, h]`.
+-/
 theorem absInf_eq_one {b : (AE F E)ˣ} (h : ∀ w, GlobalTheory.Doubling.unitInf F E w b = 1) : absInf F E b = 1 := by
   simp [absInf, h]
 

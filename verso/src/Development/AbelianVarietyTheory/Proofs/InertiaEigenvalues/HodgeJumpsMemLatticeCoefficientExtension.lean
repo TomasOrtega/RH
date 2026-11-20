@@ -11,6 +11,9 @@ open GlobalTheory.BaseCoef
 
 namespace GlobalTheory.BaseCoef
 
+/- English proof (translation)
+Use `⟨IntermediateField.inclusion (bot_le : (⊥ : IntermediateField ℚ_[l] _) ≤ LL.1), ?_⟩` and prove the remaining obligations. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `IntermediateField.mem_bot.1 (show x.1 ∈ (⊥ : IntermediateField ℚ_[l] _) from x.2)`. Establish `hx : x = algebraMap ℚ_[l] _ c` using `Subtype.ext hc.symm`. Rewrite using `[hx, AlgHom.commutes, AlgHom.commutes]`.
+-/
 theorem bot_emb_factor {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l} (hL : LL.1 ≤ LL'.1)
     (τ' : ↥(Formalism.MainNotions.ElementDenominator.qlExt l).1 →ₐ[ℚ_[l]] ↥LL'.1) :
     ∃ τ : ↥(Formalism.MainNotions.ElementDenominator.qlExt l).1 →ₐ[ℚ_[l]] ↥LL.1, τ' = (incl hL).comp τ := by
@@ -23,6 +26,11 @@ theorem bot_emb_factor {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l} (hL : LL.1 �
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `l _ Pl K' h hN hF hS LL LL' hL T k b hb U H τ' a ha`. Take `⟨τ, rfl⟩` from `bot_emb_factor hL τ'`. Use `H τ a ?_` and prove the remaining obligations. Establish `e1` using `Formalism.MainNotions.N.K.Norm.isJumpV_congr (pc Pl h hN hF hS).PD b.equivFun (Formalism.MainNotions.UnusedSlot80.BCW.matOf_equiv b T.ρ) τ a`. Establish `e2` using `Formalism.MainNotions.N.GlobalTheory.coefficient_jump_general (pc Pl h hN hF hS).PD (incl hL) (Formalism.MainNotions.UnusedSlot80.BCW.matOf b T.ρ) τ a`.
+
+Conclude with `e1.2 (e2.2 ha)`.
+-/
 theorem jumpsInV_extLat : ∀ (l : ℕ) [Fact l.Prime] (Pl : LocPrime l) (K' : FinExt l) (h : (Formalism.MainNotions.ElementDenominator.qlExt l).1 ≤ K'.1) (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex) (hS : ∀ (g : Gl l) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'), (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)).actB g (algebraMap ↥(K0 K') Pl.R.B c) = algebraMap ↥(K0 K') Pl.R.B c') (LL LL' : FinExt l) (hL : LL.1 ≤ LL'.1) (T : LocLat (Gl l) ℚ_[l] ↥LL.1 ↥(OL LL)) (k : ℕ) (b : Module.Basis (Fin k) ↥LL.1 T.V) (hb : IsLatBasis T b) (U : Set ℤ), (∀ τ, JumpsInV (pc Pl h hN hF hS).PD T.ρ τ U) → ∀ τ, JumpsInV (pc Pl h hN hF hS).PD (extLat hL T b hb).ρ τ U := by
   intro l _ Pl K' h hN hF hS LL LL' hL T k b hb U H τ' a ha
   obtain ⟨τ, rfl⟩ := bot_emb_factor hL τ'

@@ -15,6 +15,11 @@ variable {N j : ℕ}
 def Pres (S : Set (Fin N)) (Y : Matrix (Fin N) (Fin N) ℂ) : Prop :=
   ∀ c b : Fin N, b ∈ S → c ∉ S → Y c b = 0
 
+/- English proof (translation)
+Introduce `c b hb hc`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Distinguish the cases in `hm : m ∈ S`. Rewrite using `[hX c m hm hc, zero_mul]`.
+
+Rewrite using `[hY m b hb hm, mul_zero]`.
+-/
 theorem pres_mul {S : Set (Fin N)} {X Y : Matrix (Fin N) (Fin N) ℂ} (hX : Pres S X) (hY : Pres S Y) :
     Pres S (X * Y) := by
   intro c b hb hc
@@ -24,6 +29,11 @@ theorem pres_mul {S : Set (Fin N)} {X Y : Matrix (Fin N) (Fin N) ℂ} (hX : Pres
   · rw [hX c m hm hc, zero_mul]
   · rw [hY m b hb hm, mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `c b hb hc`. Rewrite using `[pow_zero, Matrix.one_apply_ne]`. Introduce and unpack `rfl`.
+
+Conclude with `hc hb`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `pres_mul ih hY`.
+-/
 theorem pres_pow {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S Y) (n : ℕ) :
     Pres S (Y ^ n) := by
   induction n with
@@ -33,16 +43,29 @@ theorem pres_pow {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S
     rintro rfl; exact hc hb
   | succ n ih => rw [pow_succ]; exact pres_mul ih hY
 
+/- English proof (translation)
+Introduce `c b hb hc`. Rewrite using `[Matrix.smul_apply, hY c b hb hc, smul_zero]`.
+-/
 theorem pres_smul {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S Y) (z : ℂ) :
     Pres S (z • Y) := by
   intro c b hb hc
   rw [Matrix.smul_apply, hY c b hb hc, smul_zero]
 
+/- English proof (translation)
+Introduce `c b hb hc`. Rewrite using `[Matrix.neg_apply, hY c b hb hc, neg_zero]`.
+-/
 theorem pres_neg {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S Y) : Pres S (-Y) := by
   intro c b hb hc
   rw [Matrix.neg_apply, hY c b hb hc, neg_zero]
 
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+Introduce `c b hb hc`. Establish `h` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) Y`. Establish `h1` using `Pi.hasSum.1 h c`. Establish `h2` using `Pi.hasSum.1 h1 b`. Establish `h3 : HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹ • Y ^ n) c b) 0`.
+
+Establish `: (fun n : ℕ => ((n.factorial : ℂ)⁻¹ • Y ^ n) c b) = fun _ => 0`. Use function extensionality and compare the values at `n`. Rewrite using `[Matrix.smul_apply, pres_pow hY n c b hb hc, smul_zero]`. Rewrite using `[this]`. Conclude with `hasSum_zero`.
+
+Conclude with `h2.unique h3`.
+-/
 theorem pres_exp {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S Y) :
     Pres S (NormedSpace.exp Y) := by
   intro c b hb hc
@@ -55,6 +78,9 @@ theorem pres_exp {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S
     rw [this]; exact hasSum_zero
   exact h2.unique h3
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding .. | (apply GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (intros; apply GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (apply @GlobalTheory.EmbeddingSum.sum_eq_sum_co …`.
+-/
 theorem sum_emb (e : Fin j ↪ Fin N) (f : Fin N → ℂ) (hf : ∀ c, c ∉ Set.range e → f c = 0) :
     ∑ c, f c = ∑ a, f (e a) := by
   first | exact GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding .. | (apply GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (intros; apply GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (apply @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (intros; apply @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (apply @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> first | assumption | infer_instance) | exact @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding N j e f hf | exact @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding N j e f | exact @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding N j e | exact @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding N j | exact @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding N
@@ -62,6 +88,9 @@ theorem sum_emb (e : Fin j ↪ Fin N) (f : Fin N → ℂ) (hf : ∀ c, c ∉ Set
 def sub (e : Fin j ↪ Fin N) (E : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin j) (Fin j) ℂ :=
   Matrix.of fun a b => E (e a) (e b)
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `sum_emb e _ fun c hc => by rw [hE c (e b) ⟨b, rfl⟩ hc, mul_zero]`.
+-/
 theorem sub_right (e : Fin j ↪ Fin N) (row : Fin j → Fin N) (h E : Matrix (Fin N) (Fin N) ℂ)
     (hE : Pres (Set.range e) E) :
     (Matrix.of fun a b => (h * E) (row a) (e b)) = (Matrix.of fun a b => h (row a) (e b)) * sub e E := by
@@ -69,6 +98,9 @@ theorem sub_right (e : Fin j ↪ Fin N) (row : Fin j → Fin N) (h E : Matrix (F
   rw [Matrix.of_apply, Matrix.mul_apply, Matrix.mul_apply]
   exact sum_emb e _ fun c hc => by rw [hE c (e b) ⟨b, rfl⟩ hc, mul_zero]
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `sum_emb e _ fun c hc => by rw [hE (e a) c hc (fun h' => h' ⟨a, rfl⟩), zero_mul]`.
+-/
 theorem sub_left (e : Fin j ↪ Fin N) (col : Fin j → Fin N) (h E : Matrix (Fin N) (Fin N) ℂ)
     (hE : Pres (Set.range e)ᶜ E) :
     (Matrix.of fun a b => (E * h) (e a) (col b)) = sub e E * (Matrix.of fun a b => h (e a) (col b)) := by
@@ -83,6 +115,9 @@ section DetExp
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`. Set `L : Matrix n n ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Conclude with `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`.
+-/
 theorem hasDerivAt_exp_entry (X : Matrix n n ℂ) (i j : n) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp (t • X)) i j) (X i j) 0 := by
   have h := hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)
@@ -90,6 +125,9 @@ theorem hasDerivAt_exp_entry (X : Matrix n n ℂ) (i j : n) :
   let L : Matrix n n ℂ →L[ℝ] ℂ := LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)
   exact L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.b110.goal1 .. | (apply Bl.b110.goal1 <;> assumption) | (intros; apply Bl.b110.goal1 <;> assumption) | (apply @Bl.b110.goal1 <;> assumption) | (intros; apply @Bl.b110.goal1 <;> assumption) | (apply @Bl.b110.goal1 <;> first | assumption | infer_instance) | exact @B …`.
+-/
 theorem hasDerivAt_det_of_one (A : ℝ → Matrix n n ℂ) (A' : Matrix n n ℂ) (h0 : A 0 = 1)
     (h : ∀ i j, HasDerivAt (fun t => A t i j) (A' i j) 0) :
     HasDerivAt (fun t => (A t).det) A'.trace 0 := by
@@ -97,6 +135,19 @@ theorem hasDerivAt_det_of_one (A : ℝ → Matrix n n ℂ) (A' : Matrix n n ℂ)
 
 end DetExp
 
+/- English proof (translation)
+Establish `hd : ∀ t, HasDerivAt φ (φ t * c) t`. Introduce `t`. Establish `h1' : HasDerivAt (fun s => φ (s - t)) c t`. Establish `h00` using `h0`. Rewrite `h00` using `[← sub_self t]`.
+
+Conclude with `h00.comp_sub_const t t`. Establish `h2` using `h1'.const_mul (φ t)`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show φ s = φ t * φ (s - t)`. Rewrite using `[← hmul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Set `ψ : ℝ → ℂ` to `fun t => φ t * Complex.exp (-((t : ℂ) * c))`. Establish `hψ : ∀ t, HasDerivAt ψ 0 t`. Introduce `t`.
+
+Establish `e0 : HasDerivAt (fun t : ℝ => -((t : ℂ) * c)) (-(1 * c)) t`. Establish `h` using `((hasDerivAt_id t).ofReal_comp.mul_const c).fun_neg`. Simplify using `using h`. Establish `e1` using `e0.cexp`. Establish `h3` using `(hd t).fun_mul e1`.
+
+Establish `h4 : φ t * c * Complex.exp (-((t : ℂ) * c)) + φ t * (Complex.exp (-((t : ℂ) * c)) * -(1 * c)) = 0` using `by ring`. Rewrite `h3` using `[h4]`. Conclude with `h3`. Establish `hc` using `is_const_of_deriv_eq_zero (fun t => (hψ t).differentiableAt) (fun t => (hψ t).deriv) t 0`. Simplify using `only [ψ, h1, Complex.ofReal_zero, zero_mul, neg_zero, Complex.exp_zero, mul_one] at hc`.
+
+Rewrite `hc` using `[Complex.exp_neg]`. Conclude with `eq_of_mul_inv_eq_one hc`.
+-/
 theorem mul_hom_exp (φ : ℝ → ℂ) (c : ℂ) (hmul : ∀ s t, φ (s + t) = φ s * φ t) (h1 : φ 0 = 1)
     (h0 : HasDerivAt φ c 0) (t : ℝ) : φ t = Complex.exp (t * c) := by
   have hd : ∀ t, HasDerivAt φ (φ t * c) t := by

@@ -12,6 +12,11 @@ open PI.ClassNumImQ.ZetaNonvanishing₂.Loc (om om_coe basis coeff_unique)
 
 variable {d : ℕ} {K : Type} [Field K] [NumberField K] {b : K}
 
+/- English proof (translation)
+Establish `hb : b ^ 2 = -(d : K)` using `hq.2.2.2.1`. Establish `hmK : (d : K) + 1 = 4 * (m : K)`. Establish `h` using `congrArg (Int.cast : ℤ → K) hm`. Move the coercions through the operations in `at h`. Conclude with `h`.
+
+Establish `ho' : algebraMap (𝓞 K) K (om hq) = (1 + b) / 2` using `om_coe hq`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `hc : ∀ y : 𝓞 K, (y : K) = algebraMap (𝓞 K) K y` using `fun _ => rfl`. Rewrite using `[hc, hc, map_mul, map_sub, map_intCast, ho']`. Take the linear combination `(1 / 4 : K) * hb - (1 / 4 : K) * hmK`.
+-/
 theorem om_sq (hq : PI.ClassNumImQ.QuadData d K b) (m : ℤ) (hm : (d : ℤ) + 1 = 4 * m) :
     om hq * om hq = om hq - (m : 𝓞 K) := by
   have hb : b ^ 2 = -(d : K) := hq.2.2.2.1
@@ -25,6 +30,11 @@ theorem om_sq (hq : PI.ClassNumImQ.QuadData d K b) (m : ℤ) (hm : (d : ℤ) + 1
   rw [hc, hc, map_mul, map_sub, map_intCast, ho']
   linear_combination (1 / 4 : K) * hb - (1 / 4 : K) * hmK
 
+/- English proof (translation)
+Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h : ((s : ℤ) : 𝓞 K) + ((t : ℤ) : 𝓞 K) * om hq = ((0 : ℤ) : 𝓞 K) + ((0 : ℤ) : 𝓞 K) * om hq`. Simplify using `only [zsmul_eq_mul, mul_one] at hst`. Simplify using `using hst`.
+
+Conclude with `coeff_unique hq h`.
+-/
 theorem li (hq : PI.ClassNumImQ.QuadData d K b) : LinearIndependent ℤ ![(1 : 𝓞 K), om hq] := by
   rw [LinearIndependent.pair_iff]
   intro s t hst
@@ -33,6 +43,11 @@ theorem li (hq : PI.ClassNumImQ.QuadData d K b) : LinearIndependent ℤ ![(1 : �
     simpa using hst
   exact coeff_unique hq h
 
+/- English proof (translation)
+Introduce `x _`. Take `⟨m, n, rfl⟩` from `basis hq x`. Establish `h1 : (1 : 𝓞 K) ∈ Submodule.span ℤ (Set.range ![(1 : 𝓞 K), om hq])` using `Submodule.subset_span ⟨0, rfl⟩`. Establish `h2 : om hq ∈ Submodule.span ℤ (Set.range ![(1 : 𝓞 K), om hq])` using `Submodule.subset_span ⟨1, rfl⟩`. Use `add_mem (Submodule.smul_mem _ m h1) (Submodule.smul_mem _ n h2)` as an intermediate fact.
+
+Simplify `this` using `[zsmul_eq_mul]`.
+-/
 theorem sp (hq : PI.ClassNumImQ.QuadData d K b) :
     ⊤ ≤ Submodule.span ℤ (Set.range ![(1 : 𝓞 K), om hq]) := by
   intro x _
@@ -44,6 +59,9 @@ theorem sp (hq : PI.ClassNumImQ.QuadData d K b) :
 
 def bw (hq : PI.ClassNumImQ.QuadData d K b) : Module.Basis (Fin 2) ℤ (𝓞 K) := Module.Basis.mk (li hq) (sp hq)
 
+/- English proof (translation)
+Establish `hx : ((u : 𝓞 K) + (v : 𝓞 K) * om hq) = u • (bw hq) 0 + v • (bw hq) 1`. Simplify using `[bw, Module.Basis.mk_apply, zsmul_eq_mul]`. Rewrite using `[hx, map_add, map_zsmul, map_zsmul, Module.Basis.repr_self, Module.Basis.repr_self]`. Simplify using `[Finsupp.single_apply]`.
+-/
 theorem bw_repr (hq : PI.ClassNumImQ.QuadData d K b) (u v : ℤ) :
     (bw hq).repr ((u : 𝓞 K) + (v : 𝓞 K) * om hq) 0 = u ∧ (bw hq).repr ((u : 𝓞 K) + (v : 𝓞 K) * om hq) 1 = v := by
   have hx : ((u : 𝓞 K) + (v : 𝓞 K) * om hq) = u • (bw hq) 0 + v • (bw hq) 1 := by
@@ -51,6 +69,67 @@ theorem bw_repr (hq : PI.ClassNumImQ.QuadData d K b) (u v : ℤ) :
   rw [hx, map_add, map_zsmul, map_zsmul, Module.Basis.repr_self, Module.Basis.repr_self]
   simp [Finsupp.single_apply]
 
+/- English proof (translation)
+Establish `hω : om hq * om hq = om hq - (m : 𝓞 K)` using `om_sq hq m hm`. Establish `hN0 : Ideal.absNorm cc ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hcc`. Establish `hNmem : ((Ideal.absNorm cc : ℕ) : 𝓞 K) ∈ cc` using `Ideal.absNorm_mem cc`.
+
+Establish `hP1 : ∃ n : ℕ, 0 < n ∧ ∃ r : ℤ, ((r : 𝓞 K) + (n : 𝓞 K) * om hq) ∈ cc` using `⟨Ideal.absNorm cc, Nat.pos_of_ne_zero hN0, 0, by simpa using cc.mul_mem_right (om hq) hNmem⟩`. Take `⟨g, ⟨hg, r₀, hx₀⟩, hgmin⟩ : ∃ g : ℕ, (0 < g ∧ ∃ r : ℤ, ((r : 𝓞 K) + (g : 𝓞 K) * om hq) ∈ cc) ∧ ∀ n < g, ¬ (0 < n ∧ ∃ r : ℤ, ((r : 𝓞 K) + (n : 𝓞 K) * om hq) ∈ cc)` from `⟨Nat.find hP1, Nat.find_spec hP1, fun n hn => Nat.find_min hP1 hn⟩`. Establish `claim1 : ∀ r s : ℤ, ((r : 𝓞 K) + (s : 𝓞 K) * om hq) ∈ cc → (g : ℤ) ∣ s`. Introduce `r s hx`. Establish `hgz : (0 : ℤ) < g` using `by exact_mod_cast hg`.
+
+Establish `ht0 : 0 ≤ s % g` using `Int.emod_nonneg _ hgz.ne'`. Establish `ht1 : s % g < g` using `Int.emod_lt_of_pos _ hgz`. Establish `hs' : s = s % (g : ℤ) + (g : ℤ) * (s / (g : ℤ))`. Conclude with `(EuclideanDomain.mod_add_div s (g : ℤ)).symm`. Establish `hsK : ((s : ℤ) : 𝓞 K) = ((s % g : ℤ) : 𝓞 K) + ((g : ℤ) : 𝓞 K) * ((s / g : ℤ) : 𝓞 K)`.
+
+Conclude with `congrArg (Int.cast : ℤ → 𝓞 K) hs'` after adjusting the coercions. Establish `hmem : ((r - s / g * r₀ : ℤ) : 𝓞 K) + ((s % g : ℤ) : 𝓞 K) * om hq ∈ cc`. Establish `h` using `cc.sub_mem hx (cc.mul_mem_left ((s / g : ℤ) : 𝓞 K) hx₀)`. Use `h using 1` and compare the differences between its conclusion and the goal. Move the coercions through the operations in `at hsK ⊢`.
+
+Take the linear combination `(-(om hq)) * hsK`. Assume the negation of the conclusion as `hndvd`. Establish `ht_pos : 0 < s % g`. Break down `ht0.lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd (Int.dvd_of_emod_eq_zero h.symm) hndvd`. Establish `e : (((s % g).toNat : ℕ) : 𝓞 K) = ((s % g : ℤ) : 𝓞 K)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg ht0]`. Conclude with `hgmin (s % g).toNat (by omega) ⟨by omega, r - s / g * r₀, by rw [e]; exact hmem⟩`. Establish `hP2 : ∃ n : ℕ, 0 < n ∧ (n : 𝓞 K) ∈ cc` using `⟨_, Nat.pos_of_ne_zero hN0, hNmem⟩`.
+
+Take `⟨A, ⟨hA, hAmem⟩, hAmin⟩ : ∃ A : ℕ, (0 < A ∧ (A : 𝓞 K) ∈ cc) ∧ ∀ n < A, ¬ (0 < n ∧ (n : 𝓞 K) ∈ cc)` from `⟨Nat.find hP2, Nat.find_spec hP2, fun n hn => Nat.find_min hP2 hn⟩`. Establish `claim2 : ∀ r : ℤ, ((r : ℤ) : 𝓞 K) ∈ cc → (A : ℤ) ∣ r`. Introduce `r hr`. Establish `hAz : (0 : ℤ) < A` using `by exact_mod_cast hA`. Establish `ht0 : 0 ≤ r % A` using `Int.emod_nonneg _ hAz.ne'`.
+
+Establish `ht1 : r % A < A` using `Int.emod_lt_of_pos _ hAz`. Establish `hr' : r = r % (A : ℤ) + (A : ℤ) * (r / (A : ℤ))`. Conclude with `(EuclideanDomain.mod_add_div r (A : ℤ)).symm`. Establish `hrK : ((r : ℤ) : 𝓞 K) = ((r % A : ℤ) : 𝓞 K) + ((A : ℤ) : 𝓞 K) * ((r / A : ℤ) : 𝓞 K)`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 K) hr'` after adjusting the coercions.
+
+Establish `hmem : ((r % A : ℤ) : 𝓞 K) ∈ cc`. Establish `h` using `cc.sub_mem hr (cc.mul_mem_left ((r / A : ℤ) : 𝓞 K) hAmem)`. Use `h using 1` and compare the differences between its conclusion and the goal. Move the coercions through the operations in `at hrK ⊢`. Take the linear combination `(-1 : 𝓞 K) * hrK`.
+
+Assume the negation of the conclusion as `hndvd`. Establish `ht_pos : 0 < r % A`. Break down `ht0.lt_or_eq with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (Int.dvd_of_emod_eq_zero h.symm) hndvd`.
+
+Establish `e : (((r % A).toNat : ℕ) : 𝓞 K) = ((r % A : ℤ) : 𝓞 K)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg ht0]`. Conclude with `hAmin (r % A).toNat (by omega) ⟨by omega, by rw [e]; exact hmem⟩`. Establish `hgA : (g : ℤ) ∣ (A : ℤ)` using `claim1 0 A (by simpa using cc.mul_mem_right (om hq) hAmem)`. Establish `hgr : (g : ℤ) ∣ r₀`.
+
+Establish `h` using `cc.mul_mem_left (om hq) hx₀`. Establish `h2 : ((-(g * m) : ℤ) : 𝓞 K) + ((r₀ + g : ℤ) : 𝓞 K) * om hq ∈ cc`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Take the linear combination `(-(g : 𝓞 K)) * hω`.
+
+Establish `h3` using `claim1 _ _ h2`. Establish `h4 : (g : ℤ) ∣ (r₀ + g) - g` using `dvd_sub h3 (dvd_refl _)`. Simplify using `using h4`. Establish `hgA' : g ∣ A` using `by exact_mod_cast hgA`. Take `⟨a, rfl⟩` from `hgA'`.
+
+Establish `ha : 0 < a` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hA)`. Take `⟨k, rfl⟩` from `hgr`. Establish `hmemiff : ∀ x : 𝓞 K, x ∈ cc ↔ ∃ u v : ℤ, x = (g : 𝓞 K) * ((u : 𝓞 K) * a + (v : 𝓞 K) * ((k : 𝓞 K) + om hq))`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Take `⟨r, s, rfl⟩` from `basis hq x`. Take `⟨v, rfl⟩` from `claim1 r s hx`. Establish `hr : ((r - v * (g * k) : ℤ) : 𝓞 K) ∈ cc`. Establish `h` using `cc.sub_mem hx (cc.mul_mem_left ((v : ℤ) : 𝓞 K) hx₀)`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u, hu⟩` from `claim2 _ hr`. Use `⟨u, v, ?_⟩` and prove the remaining obligations.
+
+Establish `hr2 : r = (g : ℤ) * a * u + v * (g * k)`. Move the coercions through the operations in `at hu`. Take the linear combination `hu`. Rewrite using `[hr2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨u, v, rfl⟩`. Establish `h` using `cc.add_mem (cc.mul_mem_left ((u : ℤ) : 𝓞 K) hAmem) (cc.mul_mem_left ((v : ℤ) : 𝓞 K) hx₀)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdiv : (a : ℤ) ∣ k * k + k + m`. Establish `h` using `cc.mul_mem_left (om hq) hx₀`. Take `⟨u, v, huv⟩` from `(hmemiff _).1 h`. Establish `e1 : ((g * (-m) : ℤ) : 𝓞 K) + ((g * (k + 1) : ℤ) : 𝓞 K) * om hq = ((g * (u * a + v * k) : ℤ) : 𝓞 K) + ((g * v : ℤ) : 𝓞 K) * om hq`.
+
+Move the coercions through the operations in `at huv ⊢`. Take the linear combination `huv - (g : 𝓞 K) * hω`. Take `⟨e2, e3⟩` from `coeff_unique hq e1`. Establish `hg0 : (g : ℤ) ≠ 0` using `by exact_mod_cast hg.ne'`. Establish `e4 : -m = u * a + v * k` using `mul_left_cancel₀ hg0 e2`.
+
+Establish `e5 : k + 1 = v` using `mul_left_cancel₀ hg0 e3`. Substitute `e5` using the available equality. Conclude with `⟨-u, by linear_combination (-1 : ℤ) * e4⟩`. Use `set w : Fin 2 → cc := ![⟨((g * a : ℕ) : 𝓞 K), hAmem⟩, ⟨((g * k : ℤ) : 𝓞 K) + (g : 𝓞 K) * om hq, hx₀⟩] with hw`. Establish `hli : LinearIndependent ℤ w`.
+
+Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h` using `congrArg Subtype.val hst`. Simplify using `[zsmul_eq_mul] at h`. Establish `e : ((s * (g * a) + t * (g * k) : ℤ) : 𝓞 K) + ((t * g : ℤ) : 𝓞 K) * om hq = ((0 : ℤ) : 𝓞 K) + ((0 : ℤ) : 𝓞 K) * om hq`.
+
+Move the coercions through the operations in `at h ⊢`. Take the linear combination `h`. Take `⟨e1, e2⟩` from `coeff_unique hq e`. Establish `hg0 : (g : ℤ) ≠ 0` using `by exact_mod_cast hg.ne'`. Establish `ha0 : (a : ℤ) ≠ 0` using `by exact_mod_cast ha.ne'`.
+
+Establish `ht : t = 0`. Break down `mul_eq_zero.mp e2 with h5 | h5` into its components or cases. Conclude with `h5`. Conclude with `absurd h5 hg0`. Substitute `ht` using the available equality.
+
+Use `⟨?_, rfl⟩` and prove the remaining obligations. Establish `h6 : s * (g * a) = 0` using `by simpa using e1`. Break down `mul_eq_zero.mp h6 with h7 | h7` into its components or cases. Conclude with `h7`. Conclude with `absurd h7 (mul_ne_zero hg0 ha0)`.
+
+Establish `hsp : ⊤ ≤ Submodule.span ℤ (Set.range w)`. Introduce and unpack `⟨y, hy⟩ -`. Take `⟨u, v, rfl⟩` from `(hmemiff y).1 hy`. Establish `h1 : w 0 ∈ Submodule.span ℤ (Set.range w)` using `Submodule.subset_span (Set.mem_range_self 0)`. Establish `h2 : w 1 ∈ Submodule.span ℤ (Set.range w)` using `Submodule.subset_span (Set.mem_range_self 1)`.
+
+Establish `h3` using `Submodule.add_mem _ (Submodule.smul_mem _ u h1) (Submodule.smul_mem _ v h2)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hw, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hbI0 : ((Module.Basis.mk hli hsp 0 : cc) : 𝓞 K) = ((g * a : ℤ) : 𝓞 K) + ((0 : ℤ) : 𝓞 K) * om hq`. Simplify using `[hw]`. Establish `hbI1 : ((Module.Basis.mk hli hsp 1 : cc) : 𝓞 K) = ((g * k : ℤ) : 𝓞 K) + ((g : ℤ) : 𝓞 K) * om hq`. Simplify using `[hw]`. Establish `hdet` using `Ideal.natAbs_det_basis_change (bw hq) cc (Module.Basis.mk hli hsp)`.
+
+Establish `hdet2 : (bw hq).det (Subtype.val ∘ Module.Basis.mk hli hsp) = ((g * a : ℤ)) * g`. Rewrite using `[Module.Basis.det_apply, Matrix.det_fin_two]`. Simplify using `only [Module.Basis.toMatrix_apply, Function.comp_apply]`. Rewrite using `[hbI0, hbI1, (bw_repr hq _ _).1, (bw_repr hq _ _).2, (bw_repr hq _ _).1, (bw_repr hq _ _).2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hnorm : Ideal.absNorm cc = g ^ 2 * a`. Rewrite using `[← hdet, hdet2]`. Rewrite using `[show ((g * a : ℤ)) * g = ((g ^ 2 * a : ℕ) : ℤ) by push_cast; ring]`. Conclude with `Int.natAbs_cast _`. Conclude with `⟨g, a, k, hg, ha, hdiv, hmemiff, hnorm⟩`.
+-/
 theorem hnf (hq : PI.ClassNumImQ.QuadData d K b) (m : ℤ) (hm : (d : ℤ) + 1 = 4 * m) (cc : Ideal (𝓞 K)) (hcc : cc ≠ ⊥) :
     ∃ (g a : ℕ) (k : ℤ), 0 < g ∧ 0 < a ∧ (a : ℤ) ∣ k * k + k + m ∧
       (∀ x : 𝓞 K, x ∈ cc ↔ ∃ u v : ℤ, x = (g : 𝓞 K) * ((u : 𝓞 K) * a + (v : 𝓞 K) * ((k : 𝓞 K) + om hq))) ∧
@@ -214,12 +293,29 @@ theorem hnf (hq : PI.ClassNumImQ.QuadData d K b) (m : ℤ) (hm : (d : ℤ) + 1 =
     exact Int.natAbs_cast _
   exact ⟨g, a, k, hg, ha, hdiv, hmemiff, hnorm⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cmL_omega1_eq (a₁ : ℕ) (b₁ : ℤ) (d₁ : ℕ) (ha₁ : 0 < a₁) (hd₁ : 0 < d₁) (l₁ : ℂ) (hl₁ : l₁ ≠ 0) :
     (Formalism.L2.Th1.H.cmL a₁ b₁ d₁ ha₁ hd₁ l₁ hl₁).ω₁ = l₁ * a₁ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cmL_omega2_eq (a₁ : ℕ) (b₁ : ℤ) (d₁ : ℕ) (ha₁ : 0 < a₁) (hd₁ : 0 < d₁) (l₁ : ℂ) (hl₁ : l₁ ≠ 0) :
     (Formalism.L2.Th1.H.cmL a₁ b₁ d₁ ha₁ hd₁ l₁ hl₁).ω₂ = l₁ * Formalism.L2.Th1.F.cmTheta b₁ d₁ := rfl
 
+/- English proof (translation)
+Establish `ho' : algebraMap (𝓞 K) K (om hq) = (1 + b) / 2` using `om_coe hq`. Establish `hψ : ∀ y : 𝓞 K, φ (y : K) = (φ.comp (algebraMap (𝓞 K) K)) y` using `fun _ => rfl`. Establish `hω : (φ.comp (algebraMap (𝓞 K) K)) (om hq) = (1 + Complex.I * (Real.sqrt d : ℂ)) / 2`. Rewrite using `[RingHom.comp_apply, ho', map_div₀, map_add, map_one, hφ, map_ofNat]`. Establish `key : ∀ u v : ℤ, δ * φ ((((g : 𝓞 K) * ((u : 𝓞 K) * a + (v : 𝓞 K) * ((k : 𝓞 K) + om hq))) : 𝓞 K) : K) = (u : ℂ) * ((g : ℂ) * δ * a) + (v : ℂ) * ((g : ℂ) * δ * Formalism.L2.Th1.F.cmTheta (2 * k + 1) d)`.
+
+Introduce `u v`. Rewrite using `[hψ]`. Simplify using `only [map_mul, map_add, map_intCast, map_natCast, hω, Formalism.L2.Th1.F.cmTheta]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨c, hc, rfl⟩`. Take `⟨u, v, rfl⟩` from `(hmem c).1 hc`. Rewrite using `[key u v]`.
+
+Use `show _ ∈ (Formalism.L2.Th1.H.cmL a (2 * k + 1) d ha hd ((g : ℂ) * δ) hl).lattice`. Rewrite using `[PeriodPair.mem_lattice]`. Conclude with `⟨u, v, by rw [cmL_omega1_eq, cmL_omega2_eq]⟩`. Introduce `x hx`. Take `⟨u, v, rfl⟩` from `PeriodPair.mem_lattice.mp hx`.
+
+Rewrite using `[cmL_omega1_eq, cmL_omega2_eq, ← key u v]`. Conclude with `AddSubgroup.subset_closure ⟨_, (hmem _).2 ⟨u, v, rfl⟩, rfl⟩`.
+-/
 theorem lat_eq (hq : PI.ClassNumImQ.QuadData d K b) (φ : K →+* ℂ) (hφ : φ b = Complex.I * (Real.sqrt d : ℂ))
     (hd : 0 < d) (cc : Ideal (𝓞 K)) (g a : ℕ) (k : ℤ) (ha : 0 < a)
     (hmem : ∀ x : 𝓞 K, x ∈ cc ↔ ∃ u v : ℤ, x = (g : 𝓞 K) * ((u : 𝓞 K) * a + (v : 𝓞 K) * ((k : 𝓞 K) + om hq)))
@@ -250,6 +346,9 @@ theorem lat_eq (hq : PI.ClassNumImQ.QuadData d K b) (φ : K →+* ℂ) (hφ : φ
     rw [cmL_omega1_eq, cmL_omega2_eq, ← key u v]
     exact AddSubgroup.subset_closure ⟨_, (hmem _).2 ⟨u, v, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hdiv`. Conclude with `⟨c, by linear_combination (-4 : ℤ) * hc - hm⟩`.
+-/
 theorem form_eq (m k : ℤ) (a : ℕ) (hm : (d : ℤ) + 1 = 4 * m) (hdiv : (a : ℤ) ∣ k * k + k + m) :
     ∃ c₀ : ℤ, 4 * (a : ℤ) * c₀ = (2 * k + 1) ^ 2 + d := by
   obtain ⟨c, hc⟩ := hdiv
@@ -266,6 +365,11 @@ section Host
 
 variable {R : Ranks}
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨r, s, hrs⟩` from `(IntermediateField.mem_adjoin_simple_iff ℚ (y : E)).mp y.2`. Rewrite using `[IntermediateField.mem_adjoin_simple_iff]`. Use `⟨r, s, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : ∀ p : Polynomial ℚ, ((Polynomial.aeval (IntermediateField.AdjoinSimple.gen ℚ x) p : IntermediateField.adjoin ℚ ({x} : Set E)) : E) = Polynomial.aeval x p` using `fun p => by`. Simplify using `[Polynomial.aeval_def, Polynomial.eval₂_eq_sum_range]`. Rewrite using `[hrs, ← h1 r, ← h1 s]`. Both sides reduce to the same expression.
+-/
 theorem adjGen_top' {E : Type*} [Field E] [Algebra ℚ E] (x : E) :
     IntermediateField.adjoin ℚ {IntermediateField.AdjoinSimple.gen ℚ x} = ⊤ := by
   rw [eq_top_iff]
@@ -281,12 +385,24 @@ theorem adjGen_top' {E : Type*} [Field E] [Algebra ℚ E] (x : E) :
   rw [hrs, ← h1 r, ← h1 s]
   rfl
 
+/- English proof (translation)
+Take `⟨-, hdp, -, hd16, -⟩` from `H.hyp`. Use `⟨hdp, by omega, by omega, ?_, adjGen_top' H.sqd⟩` and prove the remaining obligations. Conclude with `Subtype.ext H.sqd_sq`.
+-/
 theorem quadK (H : Host R) :
     PI.ClassNumImQ.QuadData H.d ↥H.K (IntermediateField.AdjoinSimple.gen ℚ (H.sqd)) := by
   obtain ⟨-, hdp, -, hd16, -⟩ := H.hyp
   refine ⟨hdp, by omega, by omega, ?_, adjGen_top' H.sqd⟩
   exact Subtype.ext H.sqd_sq
 
+/- English proof (translation)
+Take `⟨-, hdp, -, hd16, -⟩` from `H.hyp`. Establish `hq` using `quadK H`. Take `⟨m, hm⟩ : ∃ m : ℤ, (H.d : ℤ) + 1 = 4 * m` from `⟨((H.d : ℤ) + 1) / 4, by omega⟩`. Take `⟨g, a, k, hg, ha, hdiv, hmem, hnorm⟩` from `CurveGen.hnf hq m hm cc hcc`. Take `⟨c₀, hc₀⟩` from `CurveGen.form_eq m k a hm hdiv`.
+
+Establish `hd : 0 < H.d` using `hdp.pos`. Establish `hl : (g : ℂ) * δ ≠ 0` using `mul_ne_zero (by exact_mod_cast hg.ne') hδ`. Establish `hφ : (H.φ₀.comp (algebraMap H.K H.E)) (IntermediateField.AdjoinSimple.gen ℚ H.sqd) = Complex.I * (Real.sqrt H.d : ℂ)`. Conclude with `Formalism.L2.Ker.phi_b H`. Establish `hodd' : Odd (g ^ 2 * a)` using `hnorm ▸ hodd`.
+
+Establish `hcm : CmOK a (2 * k + 1) c₀ H.d`. Unfold `Formalism.L2.Th1.H.CmOK`. Conclude with `⟨hc₀, (Nat.odd_mul.mp hodd').2, by omega, hdp⟩`. Use `⟨a, g, 2 * k + 1, c₀, ha, hd, hl, hcm, hnorm, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨u, v, rfl⟩` from `(hmem x).1 hx`. Conclude with `Ideal.mem_span_singleton.mpr ⟨_, rfl⟩`. Conclude with `CurveGen.lat_eq hq (H.φ₀.comp (algebraMap H.K H.E)) hφ hd cc g a k ha hmem δ hl`.
+-/
 theorem tie_host (H : Host R) (cc : Ideal (𝓞 H.K)) (δ : ℂ) (hcc : cc ≠ ⊥) (hodd : Odd (Ideal.absNorm cc)) (hδ : δ ≠ 0) :
     ∃ (a₀ g : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < H.d) (hl : (g : ℂ) * δ ≠ 0),
       CmOK a₀ b₀ c₀ H.d ∧ Ideal.absNorm cc = g ^ 2 * a₀ ∧ cc ≤ Ideal.span {(g : 𝓞 H.K)} ∧
@@ -314,6 +430,9 @@ theorem tie_host (H : Host R) (cc : Ideal (𝓞 H.K)) (δ : ℂ) (hcc : cc ≠ �
 
 end Host
 
+/- English proof (translation)
+Introduce `D cc δ hcc hodd hδ`. Conclude with `tie_host D.host cc δ hcc hodd hδ`.
+-/
 theorem curve_lattice_compatible : CurveTie := by
   intro D cc δ hcc hodd hδ
   exact tie_host D.host cc δ hcc hodd hδ
@@ -325,6 +444,13 @@ namespace Formalism.L2.KerInert
 open Formalism.MainNotions Formalism.FrobeniusOrbits
 open Formalism.L2.Th1.H (cmL CmOK)
 
+/- English proof (translation)
+Introduce `hδ`. Substitute `hδ` using the available equality. Take `⟨h1, h2, -⟩ : _ ∧ _ ∧ _` from `B.t0`. Establish `hle : TaylorLogMetric.lamOf D cc 0 ≤ ⊥` using `by show AddSubgroup.closure _ ≤ ⊥`. Rewrite using `[AddSubgroup.closure_le]`.
+
+Introduce and unpack `w ⟨c, -, rfl⟩`. Simplify using the standard rewrite rules. Establish `h0 : 2 * (B.ω₀ / 2) = 0` using `AddSubgroup.mem_bot.mp (hle h1)`. Establish `h00 : B.ω₀ / 2 = 0` using `(mul_eq_zero.mp h0).resolve_left two_ne_zero`. Apply `h2` to reduce the goal to its premises.
+
+Rewrite using `[h00, mul_zero]`. Conclude with `AddSubgroup.zero_mem _`.
+-/
 theorem delta_ne_of_base {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Formalism.L2.Ker.Base D cc δ) : δ ≠ 0 := by
   intro hδ
   subst hδ

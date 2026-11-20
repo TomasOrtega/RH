@@ -8,6 +8,19 @@ open scoped TensorProduct NNReal ENNReal
 
 namespace GlobalTheory.GaugeEx
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Establish `hme : MeasurableEmbedding e` using `e.measurableEmbedding`. Establish `hmu : MeasurableEmbedding (fun z : R => (u : R) * z)` using `(Homeomorph.smul u : R ≃ₜ R).measurableEmbedding`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hφ hc _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, hme.map_apply]`.
+
+Establish `: e ⁻¹' (q₂ ⁻¹' {id b} ∩ Set.univ)ᶜ = (q ⁻¹' {id ((u⁻¹ : Rˣ) * b)} ∩ Set.univ)ᶜ`. Use extensionality with `v`. Simplify using `[hq, Units.eq_inv_mul_iff_mul_eq]`. Rewrite using `[this, h1, smul_zero]`. Establish `h2'` using `h2 (φ ∘ e) (hφ.comp e.measurable)`.
+
+Simplify using `only [Measure.restrict_univ, Function.comp] at h2' ⊢`. Establish `hL : ∫⁻ v, φ v ∂μ = (a : ℝ≥0∞) * ∫⁻ v, φ (e v) ∂μ` using `by conv_lhs => rw [hμ]`. Rewrite using `[lintegral_smul_measure, hme.lintegral_map, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[hL, h2']`. Use `conv_rhs => rw [hν]`.
+
+Rewrite using `[lintegral_smul_measure, hmu.lintegral_map]`. Simplify using `only [lintegral_smul_measure, hme.lintegral_map, Units.inv_mul_cancel_left, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← mul_assoc, ← ENNReal.coe_mul]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+
+Take `⟨h4, h5⟩` from `h3 (φ ∘ e) (hφ.comp e.continuous) (hc.comp_homeomorph e) (Set.subset_univ _)`. Establish `hmem : ∀ b ∈ {c : R | IsUnit c}, ((u⁻¹ : Rˣ) : R) * b ∈ {c : R | IsUnit c}` using `fun b hb => (Units.isUnit _).mul hb`. Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hme.integrable_map_iff.2 (h4 _ (hmem b hb))).smul_measure_nnreal`. Simplify using `only [integral_smul_nnreal_measure, hme.integral_map]`.
+
+Conclude with `(h5.comp (continuous_const.mul continuous_id).continuousOn hmem).const_smul _`.
+-/
 theorem isFibreFamily_transport {V R : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
     [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [MeasurableSpace R] [BorelSpace R]
     (μ : Measure V) (ν : Measure R) (q q₂ : V → R) (e : V ≃ₜ V) (u : Rˣ) (a d : ℝ≥0) (hd : d ≠ 0)
@@ -47,11 +60,19 @@ theorem isFibreFamily_transport {V R : Type} [TopologicalSpace V] [MeasurableSpa
     · simp only [integral_smul_nnreal_measure, hme.integral_map]
       exact (h5.comp (continuous_const.mul continuous_id).continuousOn hmem).const_smul _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[lrAct, Matrix.one_apply]`.
+-/
 theorem lrAct_one_right {S : Type} [CommRing S] {n M : ℕ} (g : Matrix (Fin M) (Fin M) S)
     (X : Fin n → Fin M → S) : lrAct g 1 X = fun a => g.mulVec (X a) := by
   funext a
   simp [lrAct, Matrix.one_apply]
 
+/- English proof (translation)
+Use `⟨{ toFun := fun X a => g.mulVec (X a) invFun := fun X a => g⁻¹.mulVec (X a) left_inv := fun X => ?_ right_inv := fun X => ?_ continuous_toFun := continuous_pi fun a => continuous_const.matrix_mulVec (continuous_apply a) continuous_invFun := continuous_pi fun a => continuous_const …` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul g hg]`. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv g hg]`.
+
+Use function extensionality and compare the values at `X`. Rewrite using `[lrAct_one_right]`. Both sides reduce to the same expression.
+-/
 theorem exists_homeomorph_lrAct {S : Type} [CommRing S] [TopologicalSpace S] [IsTopologicalRing S]
     {n M : ℕ} (g : Matrix (Fin M) (Fin M) S) (hg : IsUnit g.det) :
     ∃ e : (Fin n → Fin M → S) ≃ₜ (Fin n → Fin M → S), ⇑e = lrAct g 1 := by
@@ -71,6 +92,13 @@ theorem exists_homeomorph_lrAct {S : Type} [CommRing S] [TopologicalSpace S] [Is
     rw [lrAct_one_right]
     rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ R _ _ _ _ _ _ _ _ _ hR M J J₂ lam ν β c m g hlam hν hg hc hq hfib`. Take `⟨fib, hfib, rfl⟩` from `hfib`. Take `⟨hA, hred, -⟩` from `GlobalTheory.T.tensor_niceRing_artinian_reduced_openUnits F E R hR`. Establish `hμ` using `GlobalTheory.T.vectorTupleProductMeasure_two_sided_action (R ⊗[F] E) hA hred lam hlam 1 M g 1 hg (by simp)`. Rewrite `hμ` using `[Matrix.det_one, (modu_basic (R ⊗[F] E)).2.2.1, one_pow, mul_one, pow_one]`.
+
+Take `⟨e, he⟩` from `exists_homeomorph_lrAct (n := 1) g hg`. Take `⟨hpos, hν'⟩` from `(modu_basic R).1 c hc`. Take `⟨u, rfl⟩` from `hc`. Rewrite `hμ`, the goal using `[← he]`. Use `⟨_, isFibreFamily_transport _ ν _ _ e u _ _ hpos.ne' hμ (hν' ν hν) (fun X => ?_) fib hfib, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he, lrAct_one_right]`. Conclude with `hq _`. Simplify using `only [Units.inv_mul_cancel_left]`.
+-/
 theorem fibAt_similitude : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R], Nice R → ∀ (M : ℕ) (J J₂ : Matrix (Fin M) (Fin M) E) (lam : Measure (R ⊗[F] E)) (ν : Measure R) (β c : R) (m : Measure (Fin 1 → Fin M → R ⊗[F] E)) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)), lam.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsUnit g.det → IsUnit c → (∀ z, qR R σ J₂ (g.mulVec z) = c * qR R σ J z) → FibAt R σ J (tupMeas lam 1 M) ν β m → FibAt R σ J₂ (tupMeas lam 1 M) ν (c * β) ((modu (R ⊗[F] E) g.det * (modu R c)⁻¹) • m.map (lrAct g 1)) := by
   intro F E _ _ _ _ _ σ R _ _ _ _ _ _ _ _ _ hR M J J₂ lam ν β c m g hlam hν hg hc hq hfib
   obtain ⟨fib, hfib, rfl⟩ := hfib

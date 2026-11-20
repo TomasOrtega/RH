@@ -17,6 +17,13 @@ namespace PositivityTheory.Xgn.FrameRatioConstant
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨-, A, hA, A', hA', -⟩` from `GlobalTheory.CompanionTheory.Ar.LocFn.FrameChange.eigFrame_change _ F Xo.univ.t.G (under y) _ Xo.univ.t.act _ _ _ v v' hf.2.2.1 hf'.2.2.1`. Take `⟨-, B, hB, -⟩` from `GlobalTheory.CompanionTheory.Ar.LocFn.FrameChange.eigFrame_change _ F Xo.univ.t.G (under y) _ Xo.univ.t.act _ _ _ w w' hf.2.2.2 hf'.2.2.2`. Establish `hd : A.det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hA'` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`. Establish `e` using `h.chg F β y v w v' w' A B hf hf' hA hB`. Establish `e'` using `h'.chg F β y v w v' w' A B hf hf' hA hB`. Apply `mul_right_cancel₀ hd` to reduce the goal to its premises.
+
+Rewrite using `[e', hr, _root_.mul_assoc, _root_.mul_assoc, e]`.
+-/
 theorem ratio_frames {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ φ' : FrameFn Xo c} (h : IsLineFn U τ φ)
     (h' : IsLineFn U τ φ') {F : Type} [Field F] {β : c.F →+* F} {y : Sp F ⟶ Xo.XF c} {v v' : Vecs y D.p}
     {w w' : Vecs y D.q} (hf : IsFramed U τ β y v w) (hf' : IsFramed U τ β y v' w') {r : F}
@@ -35,6 +42,13 @@ theorem ratio_frames {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ φ' : FrameFn Xo
   apply mul_right_cancel₀ hd
   rw [e', hr, _root_.mul_assoc, _root_.mul_assoc, e]
 
+/- English proof (translation)
+Take `⟨k, _, β₀, y₀, v₀, w₀, f, j, h₀, hβ, hj, rfl, up⟩` from `PositivityTheory.Xgn.framed_point_specialization E H D l Xo c U τ F β y v w hf`. Establish `n0` using `h.ne k β₀ y₀ v₀ w₀ h₀`. Establish `n0'` using `h'.ne k β₀ y₀ v₀ w₀ h₀`. Use `⟨k, inferInstance, β₀, f, j, φ' k y₀ v₀ w₀ / φ k y₀ v₀ w₀, div_ne_zero n0' n0, hβ, hj, ?_, ?_⟩` and prove the remaining obligations. Take `⟨v', w', hf', ev, ew⟩` from `up F f`.
+
+Rewrite `hf'` using `[hβ]`. Use `ratio_frames h h' hf' hf ?_` and prove the remaining obligations. Rewrite using `[h.nat k F f β₀ y₀ v₀ w₀ _ v' w' h₀ rfl ev ew, h'.nat k F f β₀ y₀ v₀ w₀ _ v' w' h₀ rfl ev ew, ← map_mul, div_mul_cancel₀ _ n0]`. Introduce `j' hj'`. Take `⟨v', w', hf', ev, ew⟩` from `up ℂ j'`.
+
+Rewrite `hf'` using `[hj']`. Establish `e` using `hκ _ v' w' hf'`. Rewrite `e` using `[h.nat k ℂ j' β₀ y₀ v₀ w₀ _ v' w' h₀ rfl ev ew, h'.nat k ℂ j' β₀ y₀ v₀ w₀ _ v' w' h₀ rfl ev ew]`. Rewrite using `[map_div₀, e, mul_div_cancel_right₀ _ ((map_ne_zero j').2 n0)]`.
+-/
 theorem ratio_spec {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ φ' : FrameFn Xo c} {κ : ℂ} (h : IsLineFn U τ φ)
     (h' : IsLineFn U τ φ')
     (hκ : ∀ y v w, IsFramed U τ (algebraMap c.F ℂ) y v w → φ' ℂ y v w = κ * φ ℂ y v w)
@@ -63,6 +77,17 @@ theorem ratio_spec {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ φ' : FrameFn Xo c
 end PositivityTheory.Xgn.FrameRatioConstant
 
 open PositivityTheory.Xgn.FrameRatioConstant in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c U τ φ φ' κ _ h h' hκ`. Distinguish the cases in `hex : ∃ (F : Type) (_ : Field F) (β : c.F →+* F) (y : Sp F ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q), IsFramed U τ β y v w`. Take `⟨F₀, _, β₁, y₁, v₁, w₁, hf₁⟩` from `hex`. Take `⟨k, _, β₀, -, j, r, hr, -, hj, -, hall⟩` from `ratio_spec h h' hκ hf₁`. Establish `hjr` using `hall j hj`.
+
+Establish `hmem : κ ∈ c.F`. Use `PositivityTheory.Xgn.mem_of_fixed_by_automorphisms c.F κ c.fin fun g hg => ?_` and prove the remaining obligations. Use `hall (g.toRingHom.comp j) (by` as an intermediate fact. Rewrite using `[RingHom.comp_assoc, hj]`. Use extensionality with `a`.
+
+Conclude with `hg a a.2)`. Rewrite `this` using `[RingHom.comp_apply, hjr]`. Conclude with `this`. Use `⟨⟨κ, hmem⟩, fun h0 => ?_, fun F _ βF y v w hf => ?_⟩` and prove the remaining obligations. Establish `: κ = 0` using `congrArg Subtype.val h0`.
+
+Conclude with `(map_ne_zero j).2 hr (hjr.trans this)`. Take `⟨k', _, β₀', f, j', r', -, hβ, hj', e, hall'⟩` from `ratio_spec h h' hκ hf`. Establish `: r' = β₀' ⟨κ, hmem⟩` using `j'.injective (by`. Rewrite using `[hall' j' hj']`. Conclude with `(DFunLike.congr_fun hj' ⟨κ, hmem⟩).symm)`.
+
+Rewrite using `[e, this, ← hβ]`. Both sides reduce to the same expression. Conclude with `⟨1, one_ne_zero, fun F _ βF y v w hf => absurd ⟨F, inferInstance, βF, y, v, w, hf⟩ hex⟩`.
+-/
 theorem PositivityTheory.Xgn.frame_ratio_constant_rational : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ φ' : FrameFn Xo c) (κ : ℂ), τ (H.rt : E) = H.rt0 → IsLineFn U τ φ → IsLineFn U τ φ' → (∀ y v w, IsFramed U τ (algebraMap c.F ℂ) y v w → φ' ℂ y v w = κ * φ ℂ y v w) → ∃ x : c.F, x ≠ 0 ∧ ∀ (F : Type) [Field F] (βF : c.F →+* F) y v w, IsFramed U τ βF y v w → φ' F y v w = βF x * φ F y v w := by
   intro E _ _ _ H D l Xo c U τ φ φ' κ _ h h' hκ
   by_cases hex : ∃ (F : Type) (_ : Field F) (β : c.F →+* F) (y : Sp F ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q),

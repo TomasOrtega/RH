@@ -13,6 +13,11 @@ section General
 variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Take `⟨s, hs, hsx⟩` from `h x hx`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, ← Submodule.map_smul'']`.
+
+Conclude with `Submodule.mem_map_of_mem hsx`.
+-/
 theorem locLe_map (w : HeightOneSpectrum (𝓞 K)) (F : ℕ) (M N : Submodule (𝓞 K) V)
     (f : V →ₗ[𝓞 K] V) (h : LocLe w F M N) : LocLe w F (M.map f) (N.map f) := by
   intro y hy
@@ -22,11 +27,21 @@ theorem locLe_map (w : HeightOneSpectrum (𝓞 K)) (F : ℕ) (M N : Submodule (�
   rw [← map_smul, ← Submodule.map_smul'']
   exact Submodule.mem_map_of_mem hsx
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hM, Submodule.map_top]`.
+-/
 theorem span_map_eq (φ : V →ₗ[K] V) (M : Submodule (𝓞 K) V) (hM : Submodule.span K (M : Set V) = ⊤) :
     Submodule.span K ((M.map (φ.restrictScalars (𝓞 K)) : Submodule (𝓞 K) V) : Set V) =
       LinearMap.range φ := by
   rw [Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hM, Submodule.map_top]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_mono (Submodule.smul_le_right (I := w.asIdeal ^ F) (N := N))`. Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`. Establish `hbF : b ^ F ∈ w.asIdeal ^ F` using `Ideal.pow_mem_pow hb F`. Establish `hbF0 : (algebraMap (𝓞 K) K (b ^ F)) ≠ 0`.
+
+Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 K) K)]`. Conclude with `pow_ne_zero F hb0`. Rewrite using `[Submodule.span_le]`. Introduce `n hn`. Establish `h1 : (b ^ F) • n ∈ ((w.asIdeal ^ F) • N : Submodule (𝓞 K) V)` using `Submodule.smul_mem_smul hbF hn`.
+
+Establish `h2 : n = (algebraMap (𝓞 K) K (b ^ F))⁻¹ • ((algebraMap (𝓞 K) K (b ^ F)) • n)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hbF0, one_smul]`. Rewrite using `[SetLike.mem_coe, h2, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+-/
 theorem span_pow_smul (w : HeightOneSpectrum (𝓞 K)) (F : ℕ) (N : Submodule (𝓞 K) V) :
     Submodule.span K ((((w.asIdeal ^ F) • N : Submodule (𝓞 K) V)) : Set V) =
       Submodule.span K (N : Set V) := by
@@ -45,6 +60,11 @@ theorem span_pow_smul (w : HeightOneSpectrum (𝓞 K)) (F : ℕ) (N : Submodule 
     rw [SetLike.mem_coe, h2, algebraMap_smul]
     exact Submodule.smul_mem _ _ (Submodule.subset_span h1)
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `⟨x, hx.symm⟩`.
+
+Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, ← Module.End.mul_apply, he, sub_self]`.
+-/
 theorem ker_one_sub (e : Module.End K V) (he : e * e = e) :
     LinearMap.ker (1 - e) = LinearMap.range e := by
   ext x
@@ -57,6 +77,29 @@ theorem ker_one_sub (e : Module.End K V) (he : e * e = e) :
 
 end General
 
+/- English proof (translation)
+Introduce `K _ _ _ _ A e n hP`. Take `⟨hG, -, he, -, -⟩` from `hP`. Take `⟨-, hAfg, hAsp⟩` from `hG`. Introduce `Th hTh`. Take `⟨hTfg, hTsp⟩` from `hTh`.
+
+Establish `hker : LinearMap.ker (1 - e) = LinearMap.range e` using `ker_one_sub e he`. Establish `hsp : Submodule.span K (A.L : Set A.V) = Submodule.span K (Th : Set A.V)` using `by rw [hAsp, hTsp]`. Use `set φ : A.V →ₗ[𝓞 K] A.V := (1 - e : Module.End K A.V).restrictScalars (𝓞 K) with hφ`. Use `set φA := A.L.map φ with hφA`. Use `set φT := Th.map φ with hφT`.
+
+Establish `fgA : φA.FG` using `hAfg.map φ`. Establish `fgT : φT.FG` using `hTfg.map φ`. Establish `spA : Submodule.span K (φA : Set A.V) = LinearMap.range (1 - e)` using `span_map_eq (1 - e) A.L hAsp`. Establish `spT : Submodule.span K (φT : Set A.V) = LinearMap.range (1 - e)` using `span_map_eq (1 - e) Th hTsp`. Establish `rkA : Formalism.HN.rkK φA = dimE A (1 - e)`.
+
+Unfold `Formalism.HN.rkK dimE`. Rewrite using `[spA]`. Establish `rkT : Formalism.HN.rkK φT = dimE A (1 - e)`. Unfold `Formalism.HN.rkK dimE`. Rewrite using `[spT]`.
+
+Establish `hex : ∀ w, idxAt w A.L Th = idxAt w (cutE A e A.L) (cutE A e Th) + idxAt w φA φT`. Introduce `w`. Establish `h3` using `(hI K A.V w A.L Th hAfg hTfg hsp).2.2.1 A.V (1 - e)`. Rewrite `h3` using `[hker]`. Conclude with `h3`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w F hL`. Establish `h4` using `(hI K A.V w φA φT fgA fgT (spA.trans spT.symm)).2.2.2.1 F (locLe_map w F Th A.L φ hL)`. Rewrite `h4` using `[rkA]`. Use `hex w` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `w F hL set P : Submodule (𝓞 K) A.V := (w.asIdeal ^ F) • φT with hPdef`. Establish `fgP : P.FG` using `Submodule.FG.of_le fgT Submodule.smul_le_right`. Establish `spP : Submodule.span K (P : Set A.V) = LinearMap.range (1 - e)`. Rewrite using `[hPdef, span_pow_smul, spT]`.
+
+Establish `hLP : LocLe w 0 P φA`. Use `locLe_map w 0 ((w.asIdeal ^ F) • Th) A.L φ hL` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `this`. Establish `h2` using `(hI K A.V w φA P fgA fgP (spA.trans spP.symm)).2.1 φT fgT (spT.trans spP.symm)`.
+
+Establish `h4` using `(hI K A.V w φA P fgA fgP (spA.trans spP.symm)).2.2.2.1 0 hLP`. Establish `h5` using `(hI K A.V w φT φT fgT fgT rfl).2.2.2.2.1 F`. Rewrite `h5` using `[rkT]`. Establish `hanti : idxAt w P φT = - idxAt w φT P`. Unfold `idxAt`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `hex w` as an intermediate fact. Move the coercions through the operations in `at h4`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x hx`.
+
+Take `⟨hxT, y, hy⟩` from `hx`. Use `⟨x, hxT, ?_⟩` and prove the remaining obligations. Use `show e x = x`. Rewrite using `[← hy, ← Module.End.mul_apply, he]`.
+-/
 theorem projC_of (hI : PI.Dv.IdxCalc) : PI.Dv.ProjC := by
   intro K _ _ _ _ A e n hP
   obtain ⟨hG, -, he, -, -⟩ := hP

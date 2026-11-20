@@ -6,6 +6,13 @@ open ReciprocityTheory.Ty.Fin GlobalTheory.CompanionTheory.TyFin.ColStep
 
 namespace GlobalTheory.CompanionTheory.TyFin.Orth
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hx]`. Establish `hbij : Function.Bijective (fun t : K => -(t * x))`.
+
+Use `⟨fun a b h => ?_, fun b => ⟨-(b * x⁻¹), ?_⟩⟩` and prove the remaining obligations. Conclude with `mul_right_cancel₀ hx (neg_injective h)`. Simplify using `[hx]`. Establish `h1 : (∑ t : K, (ψ₀ (t * x))⁻¹) = ∑ t : K, ψ₀ (-(t * x))` using `Finset.sum_congr rfl fun t _ => (AddChar.map_neg_eq_inv ψ₀ (t * x)).symm`. Rewrite using `[h1, hbij.sum_comp (fun u => ψ₀ u)]`.
+
+Conclude with `AddChar.sum_eq_zero_of_ne_one hψ`.
+-/
 theorem sum_inv_addChar_mul_left (K : Type) [Field K] [Fintype K] [DecidableEq K]
     (ψ₀ : AddChar K ℂ) (hψ : ψ₀ ≠ 1) (x : K) :
     (∑ t : K, (ψ₀ (t * x))⁻¹) = if x = 0 then (Fintype.card K : ℂ) else 0 := by
@@ -22,6 +29,15 @@ theorem sum_inv_addChar_mul_left (K : Type) [Field K] [Fintype K] [DecidableEq K
     rw [h1, hbij.sum_comp (fun u => ψ₀ u)]
     exact AddChar.sum_eq_zero_of_ne_one hψ
 
+/- English proof (translation)
+Establish `h1 : ∀ r : Fin j → K, (ψ₀ (∑ i, r i * x i))⁻¹ = ∏ i, (ψ₀ (r i * x i))⁻¹`. Introduce `r`. Establish `hs : ∀ s : Finset (Fin j), ψ₀ (∑ i ∈ s, r i * x i) = ∏ i ∈ s, ψ₀ (r i * x i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`. Rewrite using `[hs, Finset.prod_inv_distrib]`. Establish `h2 : (∑ r : Fin j → K, ∏ i, (ψ₀ (r i * x i))⁻¹) = ∏ i, ∑ t : K, (ψ₀ (t * x i))⁻¹`.
+
+Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Repeatedly rewrite using `[h1]`. Rewrite using `[h2]`. Repeatedly rewrite using `[sum_inv_addChar_mul_left K ψ₀ hψ]`. Distinguish the cases in `hx : x = 0`.
+
+Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hx]`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)`.
+-/
 theorem sum_inv_addChar_dot (K : Type) [Field K] [Fintype K] [DecidableEq K] (j : ℕ)
     (ψ₀ : AddChar K ℂ) (hψ : ψ₀ ≠ 1) (x : Fin j → K) :
     (∑ r : Fin j → K, (ψ₀ (∑ i, r i * x i))⁻¹)
@@ -48,6 +64,9 @@ theorem sum_inv_addChar_dot (K : Type) [Field K] [Fintype K] [DecidableEq K] (j 
     obtain ⟨i, hi⟩ := Function.ne_iff.mp hx
     exact Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)
 
+/- English proof (translation)
+Introduce `K _ _ _ j ψ₀ hψ x` and use `sum_inv_addChar_dot K j ψ₀ hψ x`.
+-/
 theorem orth : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (j : ℕ) (ψ₀ : AddChar K ℂ),
     ψ₀ ≠ 1 → ∀ x : Fin j → K,
     (∑ r : Fin j → K, (ψ₀ (∑ i, r i * x i))⁻¹) = if x = 0 then (Fintype.card K : ℂ) ^ j else 0 :=

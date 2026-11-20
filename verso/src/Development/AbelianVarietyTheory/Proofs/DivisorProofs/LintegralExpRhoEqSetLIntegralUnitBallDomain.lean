@@ -13,6 +13,15 @@ open scoped ENNReal Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hT : Measurable (GlobalTheory.UpCoordCompare.toEntries X)` using `(GlobalTheory.UpCoordCompare.contDiff_toEntries X).continuous.measurable`. Establish `hf : Measurable fun z => ENNReal.ofReal (Real.exp (-(s * rhF X x0.1 z)))` using `ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp ((GlobalTheory.PoleDbar.measurable_rhF X x0.1).const_mul s).neg)`. Establish `hd : Measurable fun z => ENNReal.ofReal (density X x0 z)`. Establish `e : (fun z => ENNReal.ofReal (density X x0 z)) = (fun z => ENNReal.ofReal (densF X x0.1 z)) ∘ GlobalTheory.UpCoordCompare.toEntries X`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [Function.comp_apply, GlobalTheory.UpCoordCompare.densF_toEntries]`. Rewrite using `[e]`. Conclude with `(OntoC.measurable_densF X x0.1).comp hT`. Establish `hOm : MeasurableSet (Om X)`. Establish `: Om X = GlobalTheory.UpCoordCompare.toEntries X ⁻¹' OmF X x0.1`.
+
+Use extensionality with `z`. Conclude with `(GlobalTheory.UpCoordCompare.toEntries_mem_OmF_iff X x0 z).symm`. Rewrite using `[this]`. Conclude with `hT (ExF.isOpen_OmF X x0.1).measurableSet`. Rewrite using `[← GlobalTheory.UpCoordCompare.map_mu X x0, lintegral_map hf hT, mu, lintegral_withDensity_eq_lintegral_mul_non_measurable _ hd (Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]`.
+
+Use `setLIntegral_congr_fun hOm fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, GlobalTheory.UpCoordCompare.rhF_toEntries X x0 hz]`.
+-/
 theorem lintegral_exp_muF_eq_setLIntegral_Om (E : Type) [Field E] [NumberField E] [IsCMField E]
     (r : ℕ) (X : Data E r) (x0 : Base X) (s : ℝ) :
     ∫⁻ z, ENNReal.ofReal (Real.exp (-(s * rhF X x0.1 z))) ∂muF X x0.1 =

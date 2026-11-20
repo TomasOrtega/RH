@@ -25,6 +25,9 @@ def colSum {N : ℕ} (l : ℕ) (u : GL (Fin N) k) : k :=
 def headScalar (a b : ℕ) (t : kˣ) : GL (Fin (a + b)) k :=
   emb₂ k (stdSum (rfl : a + b = a + b)) (Matrix.GeneralLinearGroup.scalar (Fin a) t, 1)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+-/
 theorem one_mem (N m : ℕ) : (1 : GL (Fin N) k) ∈ colSet k N m ∧ (1 : GL (Fin N) k) ∈ cornerSet k N m :=
   ⟨fun _ _ _ => rfl, fun _ _ _ => rfl⟩
 
@@ -42,6 +45,11 @@ def IsHermPair {G : Type} [Group G] (π : Representation ℂ G V) (σ : Represen
   ∃ C : V →ₗ[ℂ] W →ₗ⋆[ℂ] ℂ, (∀ g v w, C (π g v) (σ g w) = C v w) ∧ (∀ v, (∀ w, C v w = 0) → v = 0) ∧
     ∀ w, (∀ v, C v w = 0) → w = 0
 
+/- English proof (translation)
+Take `⟨B, -, h2, h3⟩` from `h`. Apply the tactic sequence `refine ⟨B, h3, fun v hv => ?_, fun v hv => ?_⟩ <;>`. Assume the negation of the conclusion as `h0`. Use `h2 v h0` as an intermediate fact. Rewrite `this` using `[hv v]`.
+
+Simplify using `at this`.
+-/
 theorem isHermPair_self {G : Type} [Group G] {π : Representation ℂ G V} (h : IsUnitarisable π) : IsHermPair π π := by
   obtain ⟨B, -, h2, h3⟩ := h
   refine ⟨B, h3, fun v hv => ?_, fun v hv => ?_⟩ <;>
@@ -56,6 +64,9 @@ def IsAvg {X : Type} [AddCommGroup X] (u : Representation ℂ (Multiplicative X)
     (∀ (x : L) v, E (u (Multiplicative.ofAdd (x : X)) v) = χ x • E v) ∧
     ∀ v, v - E v ∈ Submodule.span ℂ {w | ∃ (x : L) (y : V), w = u (Multiplicative.ofAdd (x : X)) y - χ x • y}
 
+/- English proof (translation)
+Establish `h : ∀ (x : (⊥ : AddSubgroup X)) v, u (Multiplicative.ofAdd (x : X)) v = v` using `fun x v => by`. Rewrite using `[AddSubgroup.mem_bot.1 x.2]`. Simplify using the standard rewrite rules. Conclude with `⟨fun x v => by simp [h], fun x v => by simp [h], fun v => by simp⟩`.
+-/
 theorem isAvg_bot {X : Type} [AddCommGroup X] (u : Representation ℂ (Multiplicative X) V) :
     IsAvg u ⊥ (fun _ => 1) 1 := by
   have h : ∀ (x : (⊥ : AddSubgroup X)) v, u (Multiplicative.ofAdd (x : X)) v = v := fun x v => by

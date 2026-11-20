@@ -4,6 +4,27 @@ open scoped ComplexOrder
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `σ _ _ S T x y t f p q m n hS hT hA hp hq hm hn w u`. Use `set A : Matrix σ σ ℂ := 1 - (t ^ 2) • (T * S) with hAdef`. Establish `hKA : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hA`. Establish `hAK : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hA`. Establish `hAv : ∀ v : σ → ℂ, A *ᵥ v = v - (t ^ 2) • T *ᵥ (S *ᵥ v)`.
+
+Introduce `v`. Rewrite using `[hAdef, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, Matrix.mulVec_mulVec]`. Establish `hAp : A *ᵥ p = (t * f) • (y + t • T *ᵥ x)`. Establish `h1 : p = t • (f • y + T *ᵥ (t • (f • x + S *ᵥ p)))` using `by rw [← hq]; exact hp`. Rewrite using `[hAv]`.
+
+Rewrite `h1` using `[Matrix.mulVec_smul, Matrix.mulVec_add, Matrix.mulVec_smul]`. Rewrite using `[sub_eq_iff_eq_add]`. Use `h1.trans ?_` and prove the remaining obligations. Use `module`. Establish `hpw : p = (t * f) • w`.
+
+Establish `: p = A⁻¹ *ᵥ (A *ᵥ p)` using `by rw [Matrix.mulVec_mulVec, hKA, Matrix.one_mulVec]`. Rewrite using `[this, hAp, Matrix.mulVec_smul]`. Establish `hqu : q = (t * f) • u`. Rewrite using `[hq, hpw, Matrix.mulVec_smul]`. Simplify using `only [u]`.
+
+Use `module`. Establish `hAw : A *ᵥ w = y + t • T *ᵥ x`. Simplify using `only [w]`. Rewrite using `[Matrix.mulVec_mulVec, hAK, Matrix.one_mulVec]`. Establish `hw : w = y + t • T *ᵥ u`.
+
+Rewrite `hAw` using `[hAv, sub_eq_iff_eq_add]`. Use `hAw.trans ?_` and prove the remaining obligations. Simplify using `only [u]`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul]`. Use `module`.
+
+Establish `hAm : A * m = (t * f) • (1 : Matrix σ σ ℂ) + t • vecMulVec (y + t • T *ᵥ x) q`. Establish `h1 : m = (t * f) • (1 : Matrix σ σ ℂ) + t • vecMulVec y q + t • (T * (t • vecMulVec x q + t • (S * m)))` using `by rw [← hn]; exact hm`. Rewrite `h1` using `[Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_vecMulVec, ← Matrix.mul_assoc]`. Rewrite using `[hAdef, Matrix.sub_mul, Matrix.one_mul, Matrix.smul_mul, sub_eq_iff_eq_add, Matrix.add_vecMulVec, Matrix.smul_vecMulVec]`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Use `module`. Establish `hmK : m = (t * f) • A⁻¹ + t • vecMulVec w q`. Establish `: m = A⁻¹ * (A * m)` using `by rw [← Matrix.mul_assoc, hKA, Matrix.one_mul]`. Rewrite using `[this, hAm, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_vecMulVec]`. Establish `htr : (S * m * Tᵀ).trace = (t * f) * (T * S * A⁻¹).trace + t * ((S *ᵥ w) ⬝ᵥ (T *ᵥ q))`.
+
+Rewrite using `[hmK, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.trace_add, Matrix.trace_smul, Matrix.trace_smul, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.trace_vecMulVec, Matrix.vecMul_transpose, hT, Matrix.trace_mul_comm …`. Establish `huw : u ⬝ᵥ w = x ⬝ᵥ y + t * (x ⬝ᵥ T *ᵥ u) + t * (y ⬝ᵥ S *ᵥ w) + t ^ 2 * ((S *ᵥ w) ⬝ᵥ (T *ᵥ u))`. Establish `h1 : u ⬝ᵥ w = (x + t • S *ᵥ w) ⬝ᵥ (y + t • T *ᵥ u)` using `by rw [← hw]`. Rewrite using `[h1]`. Simplify using `only [add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul]`.
+
+Rewrite using `[dotProduct_comm (S *ᵥ w) y]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[htr, huw, hqu, hpw]`. Simplify using `only [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussian_pairing_moment_algebra : ∀ (σ : Type) [Fintype σ] [DecidableEq σ] (S T : Matrix σ σ ℂ) (x y : σ → ℂ) (t f : ℂ) (p q : σ → ℂ) (m n : Matrix σ σ ℂ), Sᵀ = S → Tᵀ = T → IsUnit (1 - (t ^ 2) • (T * S)).det → p = t • (f • y + T *ᵥ q) → q = t • (f • x + S *ᵥ p) → m = (t * f) • (1 : Matrix σ σ ℂ) + t • vecMulVec y q + t • (T * n) → n = t • vecMulVec x q + t • (S * m) → let w : σ → ℂ := (1 - (t ^ 2) • (T * S))⁻¹ *ᵥ (y + t • T *ᵥ x); let u : σ → ℂ := x + t • S *ᵥ w; f * (x ⬝ᵥ y) + x ⬝ᵥ T *ᵥ q + y ⬝ᵥ S *ᵥ p + (S * m * Tᵀ).trace = f * (u ⬝ᵥ w + t * (T * S * (1 - (t ^ 2) • (T * S))⁻¹).trace) := by
   intro σ _ _ S T x y t f p q m n hS hT hA hp hq hm hn w u
   set A : Matrix σ σ ℂ := 1 - (t ^ 2) • (T * S) with hAdef

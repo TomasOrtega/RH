@@ -13,6 +13,11 @@ open UniversalEnvelopingAlgebra
 
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (mkAlgHom ℂ L)`. Introduce `z`. Take `⟨t, rfl⟩` from `Quot.exists_rep z`. Conclude with `⟨t, rfl⟩`. Rewrite using `[← (AlgHom.range_eq_top _).mpr hs, ← Algebra.map_top, ← TensorAlgebra.adjoin_range_ι, AlgHom.map_adjoin, ← Set.range_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem adjoin_range_ι_eq_top (L : Type) [LieRing L] [LieAlgebra ℂ L] :
     Algebra.adjoin ℂ (Set.range (ι ℂ : L → UniversalEnvelopingAlgebra ℂ L)) = ⊤ := by
   have hs : Function.Surjective (mkAlgHom ℂ L) := by
@@ -23,6 +28,9 @@ theorem adjoin_range_ι_eq_top (L : Type) [LieRing L] [LieAlgebra ℂ L] :
     AlgHom.map_adjoin, ← Set.range_comp]
   rfl
 
+/- English proof (translation)
+Establish `: Algebra.adjoin ℂ (Set.range (ι ℂ : L → UniversalEnvelopingAlgebra ℂ L)) ≤ S.comap f` using `Algebra.adjoin_le (by rintro _ ⟨x, rfl⟩; exact h x)`. Rewrite `this` using `[adjoin_range_ι_eq_top]`. Conclude with `this Algebra.mem_top`.
+-/
 theorem mem_of_ι_mem {L C : Type} [LieRing L] [LieAlgebra ℂ L] [Ring C] [Algebra ℂ C]
     (f : UniversalEnvelopingAlgebra ℂ L →ₐ[ℂ] C) (S : Subalgebra ℂ C)
     (h : ∀ x, f (ι ℂ x) ∈ S) (a : UniversalEnvelopingAlgebra ℂ L) : f a ∈ S := by
@@ -31,6 +39,13 @@ theorem mem_of_ι_mem {L C : Type} [LieRing L] [LieAlgebra ℂ L] [Ring C] [Alge
   rw [adjoin_range_ι_eq_top] at this
   exact this Algebra.mem_top
 
+/- English proof (translation)
+Establish `h1 : ∀ y, f a ∈ Subalgebra.centralizer ℂ {g (ι ℂ y)}` using `fun y => mem_of_ι_mem f _ (fun x => by`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ rfl`. Conclude with `((h x y).eq).symm) a`. Establish `h2 : g b ∈ Subalgebra.centralizer ℂ {f a}` using `mem_of_ι_mem g _ (fun y => by`.
+
+Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ rfl`. Use `h1 y` as an intermediate fact. Rewrite `this` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(this _ rfl).symm) b`.
+
+Rewrite `h2` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `h2 _ rfl`.
+-/
 theorem commute_of_ι {L₁ L₂ C : Type} [LieRing L₁] [LieAlgebra ℂ L₁] [LieRing L₂]
     [LieAlgebra ℂ L₂] [Ring C] [Algebra ℂ C]
     (f : UniversalEnvelopingAlgebra ℂ L₁ →ₐ[ℂ] C) (g : UniversalEnvelopingAlgebra ℂ L₂ →ₐ[ℂ] C)
@@ -81,9 +96,15 @@ noncomputable def bwdLie (p₁ : M →ₗ⁅ℂ⁆ L₁) (p₂ : M →ₗ⁅ℂ�
         TensorProduct.sub_tmul, TensorProduct.tmul_sub]
       abel }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bwdLie_apply (p₁ : M →ₗ⁅ℂ⁆ L₁) (p₂ : M →ₗ⁅ℂ⁆ L₂) (x : M) :
     bwdLie p₁ p₂ x = ι ℂ (p₁ x) ⊗ₜ[ℂ] 1 + 1 ⊗ₜ[ℂ] ι ℂ (p₂ x) := rfl
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+-/
 theorem fwd_tmul (j₁ : L₁ →ₗ⁅ℂ⁆ M) (j₂ : L₂ →ₗ⁅ℂ⁆ M) (hc : ∀ x y, ⁅j₁ x, j₂ y⁆ = 0) (a b) :
     fwd j₁ j₂ hc (a ⊗ₜ b) = lift ℂ ((ι ℂ).comp j₁) a * lift ℂ ((ι ℂ).comp j₂) b :=
   Algebra.TensorProduct.lift_tmul _ _ _ _ _
@@ -114,10 +135,16 @@ noncomputable def decomp (j₁ : L₁ →ₗ⁅ℂ⁆ M) (j₂ : L₂ →ₗ⁅�
           bwdLie_apply, h12, h22, map_zero,
           TensorProduct.zero_tmul, zero_add])
 
+/- English proof (translation)
+Rewrite using `[decomp, AlgEquiv.ofAlgHom_apply, fwd_tmul, map_one, mul_one]`.
+-/
 theorem decomp_left (j₁ : L₁ →ₗ⁅ℂ⁆ M) (j₂ : L₂ →ₗ⁅ℂ⁆ M) (p₁ p₂ hc h11 h21 h12 h22 hs) (a) :
     decomp j₁ j₂ p₁ p₂ hc h11 h21 h12 h22 hs (a ⊗ₜ 1) = lift ℂ ((ι ℂ).comp j₁) a := by
   rw [decomp, AlgEquiv.ofAlgHom_apply, fwd_tmul, map_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[decomp, AlgEquiv.ofAlgHom_apply, fwd_tmul, map_one, one_mul]`.
+-/
 theorem decomp_right (j₁ : L₁ →ₗ⁅ℂ⁆ M) (j₂ : L₂ →ₗ⁅ℂ⁆ M) (p₁ p₂ hc h11 h21 h12 h22 hs) (b) :
     decomp j₁ j₂ p₁ p₂ hc h11 h21 h12 h22 hs (1 ⊗ₜ b) = lift ℂ ((ι ℂ).comp j₂) b := by
   rw [decomp, AlgEquiv.ofAlgHom_apply, fwd_tmul, map_one, one_mul]
@@ -130,6 +157,9 @@ open DirectSum
 
 variable {σ : Type} [DecidableEq σ] (L : σ → Type) [∀ i, LieRing (L i)] [∀ i, LieAlgebra ℂ (L i)]
 
+/- English proof (translation)
+The claim follows from `toModule_lof ℂ (φ := fun i => (f i : L i →ₗ[ℂ] N)) i x`.
+-/
 theorem toLieAlgebra_of {N : Type} [LieRing N] [LieAlgebra ℂ N] (f : ∀ i, L i →ₗ⁅ℂ⁆ N) (hf)
     (i : σ) (x : L i) : toLieAlgebra N f hf (of L i x) = f i x :=
   toModule_lof ℂ (φ := fun i => (f i : L i →ₗ[ℂ] N)) i x
@@ -141,9 +171,15 @@ noncomputable def inclRest (a : σ) : (⨁ k : {i // i ≠ a}, L k.1) →ₗ⁅�
 noncomputable def projRestAt (a i : σ) : L i →ₗ⁅ℂ⁆ ⨁ k : {i // i ≠ a}, L k.1 :=
   if h : i = a then 0 else lieAlgebraOf ℂ {i // i ≠ a} (fun k => L k.1) ⟨i, h⟩
 
+/- English proof (translation)
+Rewrite using `[projRestAt, dif_pos rfl]`. Both sides reduce to the same expression.
+-/
 theorem projRestAt_self (a : σ) (x : L a) : projRestAt L a a x = 0 := by
   rw [projRestAt, dif_pos rfl]; rfl
 
+/- English proof (translation)
+Rewrite using `[projRestAt, dif_neg h]`. Both sides reduce to the same expression.
+-/
 theorem projRestAt_ne (a i : σ) (h : i ≠ a) (x : L i) :
     projRestAt L a i x = of (fun k : {i // i ≠ a} => L k.1) ⟨i, h⟩ x := by
   rw [projRestAt, dif_neg h]; rfl
@@ -158,16 +194,28 @@ noncomputable def projRest (a : σ) : (⨁ i, L i) →ₗ⁅ℂ⁆ ⨁ k : {i //
     exact lie_of_of_ne (fun k : {i // i ≠ a} => L k.1) (i := ⟨i, hi⟩) (j := ⟨j, hj⟩)
       (fun h => hij (congrArg Subtype.val h)) x y)
 
+/- English proof (translation)
+The claim follows from `toLieAlgebra_of (fun k : {i // i ≠ a} => L k.1) _ _ k x`.
+-/
 theorem inclRest_of (a : σ) (k : {i // i ≠ a}) (x : L k.1) :
     inclRest L a (of (fun k : {i // i ≠ a} => L k.1) k x) = of L k.1 x :=
   toLieAlgebra_of (fun k : {i // i ≠ a} => L k.1) _ _ k x
 
+/- English proof (translation)
+The claim follows from `toLieAlgebra_of L _ _ i x`.
+-/
 theorem projRest_of (a i : σ) (x : L i) : projRest L a (of L i x) = projRestAt L a i x :=
   toLieAlgebra_of L _ _ i x
 
+/- English proof (translation)
+The claim follows from `of_eq_same a x`.
+-/
 theorem comp_of_same (a : σ) (x : L a) : lieAlgebraComponent ℂ σ L a (of L a x) = x :=
   of_eq_same a x
 
+/- English proof (translation)
+The claim follows from `of_eq_of_ne i a x h.symm`.
+-/
 theorem comp_of_ne (a i : σ) (h : i ≠ a) (x : L i) :
     lieAlgebraComponent ℂ σ L a (of L i x) = 0 :=
   of_eq_of_ne i a x h.symm
@@ -209,10 +257,32 @@ noncomputable def splitOff (a : σ) :
 
 end Sum
 
+/- English proof (translation)
+The claim follows from `UniversalEnvelopingAlgebra.hom_ext ℂ (LieHom.ext h)`.
+-/
 theorem algHom_ext_ι {L C : Type} [LieRing L] [LieAlgebra ℂ L] [Ring C] [Algebra ℂ C]
     {f g : UniversalEnvelopingAlgebra ℂ L →ₐ[ℂ] C} (h : ∀ x, f (ι ℂ x) = g (ι ℂ x)) : f = g :=
   UniversalEnvelopingAlgebra.hom_ext ℂ (LieHom.ext h)
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n IH`. Introduce `σ _ _ hn L _ _ m hm`. Break down `isEmpty_or_nonempty σ with he | ⟨⟨a⟩⟩` into its components or cases. Rewrite using `[Set.iUnion_of_empty, Algebra.adjoin_empty]`.
+
+Use `le_antisymm (fun z _ => ?_) bot_le` and prove the remaining obligations. Use `mem_of_ι_mem (AlgHom.id ℂ _) ⊥ (fun x => ?_) z` and prove the remaining obligations. Establish `hx : x = 0` using `DFinsupp.ext fun i => isEmptyElim i`. Rewrite using `[hx, map_zero, map_zero]`. Conclude with `zero_mem _`.
+
+Set `m' : ∀ k : {i // i ≠ a}, UniversalEnvelopingAlgebra ℂ (L k.1) →ₐ[ℂ] UniversalEnvelopingAlgebra ℂ (⨁ k : {i // i ≠ a}, L k.1)` to `fun k => lift ℂ ((ι ℂ).comp (DirectSum.lieAlgebraOf ℂ {i // i ≠ a} (fun k => L k.1) k))`. Establish `hm' : ∀ k x, m' k (ι ℂ x) = ι ℂ (DirectSum.of (fun k : {i // i ≠ a} => L k.1) k x)` using `fun k x => lift_ι_apply _ _ _`. Establish `hlt : Fintype.card {i // i ≠ a} < n` using `hn ▸ Fintype.card_subtype_lt (x := a) (fun h => h rfl)`. Establish `IH'` using `IH _ hlt {i // i ≠ a} rfl (fun k => L k.1) m' hm'`. Set `J : UniversalEnvelopingAlgebra ℂ (⨁ k : {i // i ≠ a}, L k.1) →ₐ[ℂ] UniversalEnvelopingAlgebra ℂ (⨁ i, L i)` to `lift ℂ ((ι ℂ).comp (inclRest L a))`.
+
+Establish `hJ : ∀ k u, J (m' k u) = m k.1 u` using `fun k u => by`. Establish `: J.comp (m' k) = m k.1` using `algHom_ext_ι fun x => by`. Rewrite using `[AlgHom.comp_apply, hm', hm, lift_ι_apply, LieHom.comp_apply, inclRest_of]`. Conclude with `AlgHom.congr_fun this u`. Establish `hE1 : ∀ u, splitOff L a (u ⊗ₜ 1) = m a u` using `fun u => by`.
+
+Establish `: lift ℂ ((ι ℂ).comp (DirectSum.lieAlgebraOf ℂ σ L a)) = m a` using `algHom_ext_ι fun x => by rw [hm, lift_ι_apply]; rfl`. Rewrite using `[← this]`. Conclude with `decomp_left _ _ _ _ _ _ _ _ _ _ u`. Establish `hE2 : ∀ b, splitOff L a (1 ⊗ₜ b) = J b` using `fun b => decomp_right _ _ _ _ _ _ _ _ _ _ b`. Rewrite using `[GlobalTheory.CenterTensor.center_eq_adjoin _ _ _ (splitOff L a)]`.
+
+Simplify using `only [hE1, hE2]`. Use `le_antisymm (Algebra.adjoin_le (Set.union_subset ?_ ?_)) (Algebra.adjoin_le (Set.iUnion_subset fun i => ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `Algebra.subset_adjoin (Set.mem_iUnion.2 ⟨a, u, hu, rfl⟩)`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+
+Rewrite `hb` using `[IH']`. Use `(Subalgebra.mem_comap _ J b).1 (Algebra.adjoin_le (S := Subalgebra.comap J _) ?_ hb)` and prove the remaining obligations. Introduce `y hy`. Take `⟨k, u, hu, rfl⟩` from `Set.mem_iUnion.1 hy`. Conclude with `Algebra.subset_adjoin (Set.mem_iUnion.2 ⟨k.1, u, hu, (hJ k u).symm⟩)`.
+
+Introduce and unpack `_ ⟨u, hu, rfl⟩`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Conclude with `Algebra.subset_adjoin (Or.inl ⟨u, hu, rfl⟩)`. Use `Algebra.subset_adjoin (Or.inr ⟨m' ⟨i, h⟩ u, ?_, hJ ⟨i, h⟩ u⟩)` and prove the remaining obligations.
+
+Rewrite using `[IH']`. Conclude with `Algebra.subset_adjoin (Set.mem_iUnion.2 ⟨⟨i, h⟩, u, hu, rfl⟩)`.
+-/
 theorem center_directSum_card (n : ℕ) : ∀ (σ : Type) [Fintype σ] [DecidableEq σ],
     Fintype.card σ = n → ∀ (L : σ → Type) [∀ i, LieRing (L i)] [∀ i, LieAlgebra ℂ (L i)]
     (m : ∀ i, UniversalEnvelopingAlgebra ℂ (L i) →ₐ[ℂ] UniversalEnvelopingAlgebra ℂ (⨁ i, L i)),
@@ -270,6 +340,9 @@ theorem center_directSum_card (n : ℕ) : ∀ (σ : Type) [Fintype σ] [Decidabl
         rw [IH']
         exact Algebra.subset_adjoin (Set.mem_iUnion.2 ⟨⟨i, h⟩, u, hu, rfl⟩)
 
+/- English proof (translation)
+Introduce `σ _ _ L _ _ m hm` and use `center_directSum_card _ σ rfl L m hm`.
+-/
 theorem center_directSum : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (L : ι → Type) [∀ i, LieRing (L i)] [∀ i, LieAlgebra ℂ (L i)] (m : ∀ i, UniversalEnvelopingAlgebra ℂ (L i) →ₐ[ℂ] UniversalEnvelopingAlgebra ℂ (⨁ i, L i)), (∀ i x, m i (UniversalEnvelopingAlgebra.ι ℂ x) = UniversalEnvelopingAlgebra.ι ℂ (DirectSum.of L i x : ⨁ i, L i)) → Subalgebra.center ℂ (UniversalEnvelopingAlgebra ℂ (⨁ i, L i)) = Algebra.adjoin ℂ (⋃ i, m i '' (Subalgebra.center ℂ (UniversalEnvelopingAlgebra ℂ (L i)) : Set _)) :=
   fun σ _ _ L _ _ m hm => center_directSum_card _ σ rfl L m hm
 

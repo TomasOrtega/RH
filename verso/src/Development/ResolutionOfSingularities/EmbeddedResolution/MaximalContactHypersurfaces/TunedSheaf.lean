@@ -18,6 +18,9 @@ variable {X : Scheme.{u}}
 def OrderLE (I : X.IdealSheafData) (m : ℕ) : Prop :=
   ∀ x : X, orderAt I x ≤ (m : ℕ∞)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem orderLE_iff (I : X.IdealSheafData) (m : ℕ) :
     OrderLE I m ↔ ∀ x : X, orderAt I x ≤ (m : ℕ∞) := Iff.rfl
 
@@ -27,20 +30,35 @@ structure MaxOrderEq (I : X.IdealSheafData) (m : ℕ) : Prop where
 
 def lcmUpTo (m : ℕ) : ℕ := (List.range' 1 m).foldr Nat.lcm 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lcmUpTo_eq_foldr (m : ℕ) : lcmUpTo m = (List.range' 1 m).foldr Nat.lcm 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lcmUpTo_one : lcmUpTo 1 = 1 := rfl
 
 def tuningExponent (m : ℕ) : ℕ := if m ≤ 1 then 1 else (m - 1) * lcmUpTo m
 
+/- English proof (translation)
+Unfold `tuningExponent`. Conclude with `if_pos h`.
+-/
 theorem tuningExponent_of_le_one {m : ℕ} (h : m ≤ 1) : tuningExponent m = 1 := by
   unfold tuningExponent
   exact if_pos h
 
+/- English proof (translation)
+Unfold `tuningExponent`. Conclude with `if_neg (by omega)`.
+-/
 theorem tuningExponent_of_two_le {m : ℕ} (h : 2 ≤ m) : tuningExponent m = (m - 1) * lcmUpTo m := by
   unfold tuningExponent
   exact if_neg (by omega)
 
+/- English proof (translation)
+The claim follows from `tuningExponent_of_le_one le_rfl`.
+-/
 theorem tuningExponent_one : tuningExponent 1 = 1 := tuningExponent_of_le_one le_rfl
 
 noncomputable def tunedSheaf (k : Type u) [CommRing k] [IsNoetherianRing k] {X : Scheme.{u}}
@@ -49,6 +67,9 @@ noncomputable def tunedSheaf (k : Type u) [CommRing k] [IsNoetherianRing k] {X :
   ⨆ c : {c : ℕ → ℕ // s ≤ ∑ j ∈ Finset.range m, (m - j) * c j},
     ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tunedSheaf_eq_iSup (k : Type u) [CommRing k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData)
     (m s : ℕ) :
@@ -61,6 +82,9 @@ noncomputable def balancedTunedSheaf (k : Type u) [CommRing k] [IsNoetherianRing
     (m : ℕ) : X.IdealSheafData :=
   tunedSheaf k p I m (tuningExponent m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem balancedTunedSheaf_eq (k : Type u) [CommRing k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData)
     (m : ℕ) : balancedTunedSheaf k p I m = tunedSheaf k p I m (tuningExponent m) := rfl
@@ -129,6 +153,9 @@ def CoSupportTunedSheafEqAndOrderLE : Prop :=
     ∀ s : ℕ, 1 ≤ s →
       orderAtLeastLocus (tunedSheaf k p I m s) s = orderAtLeastLocus I m ∧ OrderLE (tunedSheaf k p I m s) s
 
+/- English proof (translation)
+The claim follows from `(h k X p I m hm hmax s hs).2`.
+-/
 theorem CoSupportTunedSheafEqAndOrderLE.orderLE (h : CoSupportTunedSheafEqAndOrderLE.{u}) (k : Type u) [Field k]
     [CharZero k] [IsNoetherianRing k] (X : Scheme.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p] (I : X.IdealSheafData) (m : ℕ)

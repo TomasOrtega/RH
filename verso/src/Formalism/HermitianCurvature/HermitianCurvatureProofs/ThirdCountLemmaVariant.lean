@@ -4,6 +4,11 @@ open Formalism.FourierDecayAlt
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `k r N M dl Dl hk hN hM h1 h2`. Unfold `C7.Nprime C7.nOf at *`. Establish `hn : 2 ≤ k + 2 * r + 1` using `by omega`. Establish `b2 : 2 * M * Dl ≤ 2 * (3 * (N + 1)) * ((r + 1) * (2 * (k + 2 * r + 1) + 2))` using `Nat.mul_le_mul (Nat.mul_le_mul_left 2 hM) h2`. Establish `b3 : 2 * (3 * (N + 1)) * ((r + 1) * (2 * (k + 2 * r + 1) + 2)) ≤ 6 * (r + 1) * (3 * (N + 1)) * (k + 2 * r + 1)`.
+
+Establish `e1 : 2 * (3 * (N + 1)) * ((r + 1) * (2 * (k + 2 * r + 1) + 2)) = (6 * (r + 1) * (N + 1)) * (2 * (k + 2 * r + 1) + 2)` using `by ring`. Establish `e2 : 6 * (r + 1) * (3 * (N + 1)) * (k + 2 * r + 1) = (6 * (r + 1) * (N + 1)) * (3 * (k + 2 * r + 1))` using `by ring`. Rewrite using `[e1, e2]; exact Nat.mul_le_mul_left _ (by omega)`. Establish `a2 : 1 ≤ (r + 1) * (k + 2 * r + 1)` using `Nat.one_le_iff_ne_zero.mpr (by positivity)`. Use `⟨Nat.mul_le_mul (Nat.mul_le_mul_left 2 hM) h1, b2.trans b3, by nlinarith, by nlinarith⟩` and prove the remaining obligations.
+-/
 theorem hermitian_curvature_degree_count : C7.DegreeCount2 := by
   intro k r N M dl Dl hk hN hM h1 h2
   unfold C7.Nprime C7.nOf at *
@@ -20,6 +25,13 @@ theorem hermitian_curvature_degree_count : C7.DegreeCount2 := by
   have a2 : 1 ≤ (r + 1) * (k + 2 * r + 1) := Nat.one_le_iff_ne_zero.mpr (by positivity)
   refine ⟨Nat.mul_le_mul (Nat.mul_le_mul_left 2 hM) h1, b2.trans b3, by nlinarith, by nlinarith⟩
 
+/- English proof (translation)
+Introduce `k r N d D hk h1 h2`. Unfold `C7.Dstar C7.Nprime C7.nOf at *`. Establish `hn : 2 ≤ k + 2 * r + 1` using `by omega`. Establish `h3 : 3 * (r + 1) * d ≤ 3 * (r + 1) * ((N + 1) * (k + 2 * r + 1))` using `Nat.mul_le_mul_left _ h1`. Prove the components needed by the constructor for the conclusion.
+
+Establish `e1 : (N + 1) * (r + 1) * (2 * (k + 2 * r + 1) + 2) + 3 * (r + 1) * ((N + 1) * (k + 2 * r + 1)) = ((r + 1) * (N + 1)) * (5 * (k + 2 * r + 1) + 2)` using `by ring`. Establish `e2 : 6 * (r + 1) * (N + 1) * (k + 2 * r + 1) = ((r + 1) * (N + 1)) * (6 * (k + 2 * r + 1))` using `by ring`. Establish `h4 : ((r + 1) * (N + 1)) * (5 * (k + 2 * r + 1) + 2) ≤ ((r + 1) * (N + 1)) * (6 * (k + 2 * r + 1))` using `Nat.mul_le_mul_left _ (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `e2 : 6 * (r + 1) * (N + 1) * (k + 2 * r + 1) = ((r + 1) * (k + 2 * r + 1)) * (6 * (N + 1))` using `by ring`.
+
+Establish `e3 : 5 * (r + 1) * (3 * (N + 1) + 1) * (k + 2 * r + 1) = ((r + 1) * (k + 2 * r + 1)) * (5 * (3 * (N + 1) + 1))` using `by ring`. Rewrite using `[e2, e3]; exact Nat.mul_le_mul_left _ (by omega)`.
+-/
 theorem third_count_lemma_variant : C7.LetterProductDoubleDegreeCount := by
   intro k r N d D hk h1 h2
   unfold C7.Dstar C7.Nprime C7.nOf at *

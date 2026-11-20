@@ -29,6 +29,41 @@ namespace GlobalTheory.BiRoot
 
 open GlobalTheory.ProdUnifSq GlobalTheory.TorusRM
 
+/- English proof (translation)
+Introduce `g Λ hΛ Hm χ θ hH hθ hθ0 hχ hfac`. Establish `hint : ∀ w : Fin g → ℂ, ∀ l ∈ Λ, ∃ n : ℤ, (w ⬝ᵥ Hm.mulVec (star l)).im = n`. Introduce `w`. Use `GlobalTheory.ThetaLiouville.im_form_mem_int g Λ hΛ Hm hH w (fun z => θ (z + w) * (θ z)⁻¹) ((hθ.comp (differentiable_id.add_const w)).mul (hθ.inv hθ0)) (fun z => mul_ne_zero (hθ0 _) (inv_ne_zero (hθ0 _))) ?_` and prove the remaining obligations. Introduce `l hl z`.
+
+Establish `e1` using `hfac ⟨l, hl⟩ (z + w)`. Establish `e2` using `hfac ⟨l, hl⟩ z`. Simplify using `only at e1 e2 ⊢`. Rewrite using `[show z + l + w = z + w + l by abel, e1, e2, add_dotProduct]`. Establish `hE : Complex.exp (Real.pi * (z ⬝ᵥ Hm.mulVec (star l) + w ⬝ᵥ Hm.mulVec (star l)) + Real.pi / 2 * (l ⬝ᵥ Hm.mulVec (star l))) = Complex.exp (Real.pi * (w ⬝ᵥ Hm.mulVec (star l))) * Complex.exp (Real.pi * (z ⬝ᵥ Hm.mulVec (star l)) + Real.pi / 2 * (l ⬝ᵥ Hm.mulVec (star l)))`.
+
+Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hE]`. Establish `n1` using `hθ0 z`.
+
+Establish `n2 : χ ⟨l, hl⟩ ≠ 0` using `fun h => by have := hχ ⟨l, hl⟩; rw [h, norm_zero] at this; exact zero_ne_one this`. Establish `n3` using `Complex.exp_ne_zero (Real.pi * (z ⬝ᵥ Hm.mulVec (star l)) + Real.pi / 2 * (l ⬝ᵥ Hm.mulVec (star l)))`. Clear the denominators using the available nonvanishing facts. Establish `him : ∀ w : Fin g → ℂ, ∀ l ∈ Λ, (w ⬝ᵥ Hm.mulVec (star l)).im = 0`. Introduce `w l hl`.
+
+Use `set a := (w ⬝ᵥ Hm.mulVec (star l)).im with ha`. Establish `ht : (0 : ℝ) < 2 * (|a| + 1)` using `by positivity`. Take `⟨n, hn⟩` from `hint (((1 / (2 * (|a| + 1)) : ℝ) : ℂ) • w) l hl`. Rewrite `hn` using `[smul_dotProduct, smul_eq_mul, Complex.im_ofReal_mul, ← ha]`. Establish `hlt : |(n : ℝ)| < 1`.
+
+Rewrite using `[← hn, abs_mul, abs_of_pos (by positivity), one_div, inv_mul_lt_iff₀ ht]`. Combine the linear relations using `[abs_nonneg a]`. Establish `hn0 : n = 0`. Establish `: |n| < 1` using `by exact_mod_cast hlt`. Conclude with `Int.abs_lt_one_iff.1 this`.
+
+Rewrite `hn` using `[hn0, Int.cast_zero]`. Establish `hne : (1 / (2 * (|a| + 1)) : ℝ) ≠ 0` using `by positivity`. Conclude with `(mul_eq_zero.1 hn).resolve_left hne`. Establish `hzero : ∀ w : Fin g → ℂ, ∀ l ∈ Λ, w ⬝ᵥ Hm.mulVec (star l) = 0`. Introduce `w l hl`.
+
+Establish `h2` using `him (Complex.I • w) l hl`. Rewrite `h2` using `[smul_dotProduct, smul_eq_mul, Complex.I_mul_im]`. Conclude with `Complex.ext h2 (him w l hl)`. Establish `hHm : Hm = 0`. Use extensionality with `k j`.
+
+Set `φ : (Fin g → ℂ) →ₗ[ℝ] ℂ` to `{ toFun := fun v => (Hm.mulVec (star v)) k map_add' := fun v v' => by simp [Matrix.mulVec_add] map_smul' := fun c v => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[show star (c • v) = c • star v by`. Use function extensionality and compare the values at `i`. Simplify using `[Complex.real_smul, Complex.conj_ofReal]]`.
+
+Rewrite using `[Matrix.mulVec_smul]`. Use `rfl }`. Establish `hφ : ∀ v ∈ (Λ : Set (Fin g → ℂ)), φ v = 0`. Introduce `v hv`. Use `hzero (Pi.single k 1) v hv` as an intermediate fact.
+
+Simplify `this` using `[φ, single_one_dotProduct]`. Establish `hall : φ (Pi.single j 1) = 0`. Establish `hmem : Pi.single j (1 : ℂ) ∈ Submodule.span ℝ (Λ : Set (Fin g → ℂ))` using `by rw [hΛ]; trivial`. Conclude with `LinearMap.eqOn_span' (f := φ) (g := 0) hφ hmem`. Simplify `hall` using `[φ, Matrix.mulVec_single_one]`.
+
+Use `⟨hHm, ?_⟩` and prove the remaining obligations. Substitute `hHm` using the available equality. Establish `hper : ∀ (l : Λ) z, θ (z + l) = χ l * θ z` using `fun l z => by simpa using hfac l z`. Establish `hnorm : ∀ l ∈ Λ, ∀ z, ‖θ (z + l)‖ = ‖θ z‖` using `fun l hl z => by`. Rewrite using `[hper ⟨l, hl⟩ z, norm_mul, hχ, _root_.one_mul]`.
+
+Take `⟨s, b, hfin, hbΛ⟩` from `GlobalTheory.ThetaLiouville.exists_basis_in Λ hΛ`. Use `haveI : Fintype s := Fintype.ofFinite s`. Establish `hspan : ∀ x ∈ Submodule.span ℤ (Set.range b), x ∈ Λ`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `hbΛ i`. Consider the case `zero => exact Λ.zero_mem`. Consider the case `add x y _ _ hx hy => exact Λ.add_mem hx hy`. Consider the case `smul n x _ hx => exact Λ.toAddSubgroup.zsmul_mem hx n`.
+
+Establish `hcpt : IsCompact (closure (ZSpan.fundamentalDomain b))` using `(ZSpan.fundamentalDomain_isBounded b).isCompact_closure`. Take `⟨C, hC⟩` from `hcpt.exists_bound_of_continuousOn hθ.continuous.continuousOn`. Establish `hbd : Bornology.IsBounded (Set.range θ)`. Rewrite using `[isBounded_iff_forall_norm_le]`. Use `⟨C, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨z, rfl⟩`. Establish `hz : z = ZSpan.fract b z + (ZSpan.floor b z : Fin g → ℂ)`. Rewrite using `[ZSpan.fract_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[hz, hnorm _ (hspan _ (ZSpan.floor b z).2)]`.
+
+Conclude with `hC _ (subset_closure (ZSpan.fract_mem_fundamentalDomain b z))`. Introduce `l`. Establish `hc : θ (0 + l) = θ 0` using `hθ.apply_eq_apply_of_bounded hbd _ _`. Rewrite `hc` using `[hper l 0]`. Conclude with `(mul_eq_right₀ (hθ0 0)).1 hc`.
+-/
 theorem ahFactor_trivial_of_theta : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ →
     ∀ (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : Λ → ℂ) (θ : (Fin g → ℂ) → ℂ), Hm.IsHermitian → Differentiable ℂ θ →
     (∀ z, θ z ≠ 0) → (∀ l, ‖χ l‖ = 1) →
@@ -126,6 +161,17 @@ theorem ahFactor_trivial_of_theta : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g →
   rw [hper l 0] at hc
   exact (mul_eq_right₀ (hθ0 0)).1 hc
 
+/- English proof (translation)
+Introduce `B _ N n u hN ht`. Take `⟨t, ht⟩` from `ht`. Establish `hch : ∀ z, ∃ j, ⊤ ≤ (u.ex z).left ⁻¹ᵁ N.U j` using `fun z => ahFactor_im_int_chart N hN (u.ex z).left`. Use `choose J hJ using hch`. Establish `hv : ∀ j j' z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ N.U j → ⊤ ≤ (u.ex z).left ⁻¹ᵁ N.U j' → valAt' (u.ex z).left _ (t.s j).val / u.fr j z = valAt' (u.ex z).left _ (t.s j').val / u.fr j' z`.
+
+Introduce `j j' z hj hj'`. Conclude with `TransFrame.gen_div_eq _ _ t ht j j' hj hj' _ _ (u.fr_compat j j' z ((GlobalTheory.top_le_preimage_inf _ _ _).2 ⟨hj, hj'⟩)) (u.fr_ne _ z hj')`. Use `⟨fun z => valAt' (u.ex z).left _ (t.s (J z)).val / u.fr (J z) z, fun z => ?_, fun z => ?_, fun l hl i z hi => ?_⟩` and prove the remaining obligations. Take `⟨ho, hd⟩` from `u.hol _ (t.s (J z)).val`. Establish `hn` using `ho.mem_nhds (hJ z)`.
+
+Establish `hq` using `(hd.differentiableAt hn).mul (((u.fr_hol (J z)).differentiableAt hn).inv (u.fr_ne _ z (hJ z)))`. Use `hq.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hn] with y hy`. Simplify using `only [Pi.mul_apply, Pi.inv_apply, ← div_eq_mul_inv]`. Conclude with `hv (J y) (J z) y (hJ y) hy`.
+
+Conclude with `div_ne_zero (TransFrame.unitValue_ne_zero _ _ (hJ z) _) (u.fr_ne _ z (hJ z))`. Establish `hzl : u.ex (z + l) = u.ex z` using `by rw [u.ex_add, (u.ker l).2 hl, _root_.mul_one]`. Establish `hi' : ⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ N.U i` using `by rw [hzl]; exact hi`. Use `show valAt' (u.ex (z + l)).left _ (t.s (J (z + l))).val / u.fr (J (z + l)) (z + l) * u.fr i (z + l) = valAt' (u.ex z).left _ (t.s (J z)).val / u.fr (J z) z * u.fr i z`. Rewrite using `[hv (J (z + l)) i (z + l) (hJ _) hi', hv (J z) i z (hJ z) hi, hzl]`.
+
+Establish `n1` using `u.fr_ne i (z + l) hi'`. Establish `n2` using `u.fr_ne i z hi`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_theta_of_gen : ∀ (B : Over (Sp ℂ)) [GrpObj B] (N : LB B.left) (n : ℕ) (u : HolUnif B N n), N.IsLB →
     (∃ t : N.Gen, t.IsGen) → ∃ θ : (Fin n → ℂ) → ℂ, Differentiable ℂ θ ∧ (∀ z, θ z ≠ 0) ∧
       ∀ l ∈ u.Λ, ∀ (i : N.ι) (z : Fin n → ℂ), ⊤ ≤ (u.ex z).left ⁻¹ᵁ N.U i →
@@ -158,6 +204,13 @@ theorem exists_theta_of_gen : ∀ (B : Over (Sp ℂ)) [GrpObj B] (N : LB B.left)
     have n2 := u.fr_ne i z hi
     field_simp
 
+/- English proof (translation)
+Introduce `A A' _ _ L L' g g' u u' f F Hm Hm' χ hF hH hid hex hlat`. Set `v : HolUnif A (L'.pull f.left) g` to `GlobalTheory.linCombUnif u u' (fun _ : PUnit => f) (fun _ => F) (fun _ => 1) (fun _ z => hex z)`. Use `⟨v, fun l => χ ⟨F l, hlat l l.2⟩, rfl, rfl, ⟨hH, fun l => hF.2.1 _, fun l j z hz => ?_⟩, fun l h => rfl⟩` and prove the remaining obligations. Establish `hl : (u'.ex (F z)).left = (u.ex z).left ≫ f.left` using `by rw [hex z]; rfl`. Establish `hc : ⊤ ≤ (u'.ex (F z)).left ⁻¹ᵁ L'.U (j PUnit.unit)`.
+
+Rewrite using `[hl]`. Conclude with `(GlobalTheory.CubeValues.le_preimage_wchart (u.ex z).left L' (fun _ : PUnit => f.left) j).1 hz PUnit.unit`. Establish `e` using `hF.2.2 ⟨F l, hlat l l.2⟩ (j PUnit.unit) (F z) hc`. Use `show ∏ k : PUnit, u'.fr (j k) (F z) ^ (1 : ℤ) = _ * ∏ k : PUnit, u'.fr (j k) (F (z + l)) ^ (1 : ℤ)`. Simplify using `only [Finset.univ_unique, Finset.prod_singleton, zpow_one, map_add]`.
+
+Rewrite using `[e, hid, hid]`.
+-/
 theorem exists_pull_isFactorAH : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (L : LB A.left) (L' : LB A'.left) (g g' : ℕ)
     (u : HolUnif A L g) (u' : HolUnif A' L' g') (f : A ⟶ A') (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ))
     (Hm : Matrix (Fin g') (Fin g') ℂ) (Hm' : Matrix (Fin g) (Fin g) ℂ) (χ : u'.Λ → ℂ),
@@ -179,6 +232,9 @@ theorem exists_pull_isFactorAH : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A
   simp only [Finset.univ_unique, Finset.prod_singleton, zpow_one, map_add]
   rw [e, hid, hid]
 
+/- English proof (translation)
+Introduce `g Hm z l`. Simplify using `only [dotProduct, Matrix.mulVec, Fin.sum_univ_add, Matrix.submatrix_apply, halfL_apply, halfR_apply, Pi.star_apply, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dot_blocks : ∀ (g : ℕ) (Hm : Matrix (Fin (g + g)) (Fin (g + g)) ℂ) (z l : Fin (g + g) → ℂ),
     z ⬝ᵥ Hm.mulVec (star l) =
       halfL g z ⬝ᵥ (Hm.submatrix (Fin.castAdd g) (Fin.castAdd g)).mulVec (star (halfL g l)) +
@@ -190,6 +246,11 @@ theorem dot_blocks : ∀ (g : ℕ) (Hm : Matrix (Fin (g + g)) (Fin (g + g)) ℂ)
     Pi.star_apply, mul_add, Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Introduce `n e Hm z l`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.submatrix_apply, Function.comp_apply, Pi.star_apply]`. Rewrite using `[← Equiv.sum_comp e.symm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.apply_symm_apply]`.
+
+Use `congr 1`. Rewrite using `[← Equiv.sum_comp e.symm]`. Simplify using `only [Equiv.apply_symm_apply]`.
+-/
 theorem dot_comp_equiv : ∀ (n : ℕ) (e : Fin n ≃ Fin n) (Hm : Matrix (Fin n) (Fin n) ℂ) (z l : Fin n → ℂ),
     (z ∘ e) ⬝ᵥ Hm.mulVec (star (l ∘ e)) = z ⬝ᵥ (Hm.submatrix e.symm e.symm).mulVec (star l) := by
   intro n e Hm z l
@@ -201,6 +262,9 @@ theorem dot_comp_equiv : ∀ (n : ℕ) (e : Fin n ≃ Fin n) (Hm : Matrix (Fin n
   rw [← Equiv.sum_comp e.symm]
   simp only [Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[← Fintype.sum_equiv Equiv.ulift.symm (fun I : Finset (Fin 2) => f ⟨I⟩) f (fun _ => rfl)]`. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} from by decide]`. Rewrite using `[Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_finset_fin_two_four_terms (f : ULift.{0} (Finset (Fin 2)) → ℂ) :
     ∑ I, f I = f ⟨∅⟩ + f ⟨{0}⟩ + f ⟨{1}⟩ + f ⟨{0, 1}⟩ := by
   rw [← Fintype.sum_equiv Equiv.ulift.symm (fun I : Finset (Fin 2) => f ⟨I⟩) f (fun _ => rfl)]
@@ -209,6 +273,19 @@ theorem sum_finset_fin_two_four_terms (f : ULift.{0} (Finset (Fin 2)) → ℂ) :
     Finset.sum_singleton]
   ring
 
+/- English proof (translation)
+Introduce `g Hm c z l h11 h22 h21 hc`. Establish `hB : ∀ x y : Fin (g + g) → ℂ, LamAdd.B Hm x y = LamAdd.B (Hm.submatrix (Fin.castAdd g) (Fin.natAdd g)) (halfL g x) (halfR g y) + LamAdd.B (Hm.submatrix (Fin.castAdd g) (Fin.natAdd g)) (halfR g x) (halfL g y)`. Introduce `x y`. Unfold `LamAdd.B`. Rewrite using `[dot_blocks, h11, h22, h21]`.
+
+Simplify using the standard rewrite rules. Establish `hB0 : ∀ x : Fin g → ℂ, LamAdd.B (Hm.submatrix (Fin.castAdd g) (Fin.natAdd g)) x 0 = 0` using `fun x => by simp [LamAdd.B]`. Establish `hd : ∀ x y : Fin (g + g) → ℂ, x ⬝ᵥ Hm.mulVec (star y) = LamAdd.B Hm x y` using `fun _ _ => rfl`. Rewrite `hc` using `[hB, hB, halfL_append, halfR_append, halfL_append, halfR_append]`. Simplify using `only [hB0, LamAdd.B_zero_left, add_zero, zero_add] at hc`.
+
+Rewrite using `[hd, hd, hB, hB]`. Unfold `LamAdd.Q`. Rewrite using `[sum_finset_fin_two_four_terms]`. Establish `c0 : ∀ v, LamAdd.cmap g ⟨∅⟩ v = 0` using `fun v => by simp [LamAdd.cmap]`. Establish `c1 : ∀ v, LamAdd.cmap g ⟨{0}⟩ v = halfL g v` using `fun v => by simp [LamAdd.cmap]`.
+
+Establish `c2 : ∀ v, LamAdd.cmap g ⟨{1}⟩ v = halfR g v` using `fun v => by simp [LamAdd.cmap]`. Establish `c3 : ∀ v, LamAdd.cmap g ⟨{0, 1}⟩ v = halfL g v + halfR g v` using `fun v => by simp [LamAdd.cmap]`. Establish `e0 : LamAdd.ε ⟨∅⟩ = 1` using `by decide`. Establish `e1 : LamAdd.ε ⟨{0}⟩ = -1` using `by decide`. Establish `e2 : LamAdd.ε ⟨{1}⟩ = -1` using `by decide`.
+
+Establish `e3 : LamAdd.ε ⟨{0, 1}⟩ = 1` using `by decide`. Rewrite using `[c0, c0, c1, c1, c2, c2, c3, c3, e0, e1, e2, e3]`. Simplify using `only [LamAdd.B_add_left, LamAdd.B_add_right, LamAdd.B_zero_left, hB0]`. Establish `key : (Real.pi : ℂ) * (LamAdd.B (Hm.submatrix (Fin.castAdd g) (Fin.natAdd g)) (halfL g z) (halfR g l) + LamAdd.B (Hm.submatrix (Fin.castAdd g) (Fin.natAdd g)) (halfR g z) (halfL g l)) + Real.pi / 2 * (LamAdd.B (Hm.submatrix (Fin.castAdd g) (Fin.natAdd g)) (halfL g l) (halfR g l) …` using `by ring`. Rewrite using `[key, Complex.exp_add, ← _root_.mul_assoc, hc, ← Complex.exp_add]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem factor_eq_lamExp : ∀ (g : ℕ) (Hm : Matrix (Fin (g + g)) (Fin (g + g)) ℂ) (c : ℂ) (z l : Fin (g + g) → ℂ),
     Hm.submatrix (Fin.castAdd g) (Fin.castAdd g) = 0 → Hm.submatrix (Fin.natAdd g) (Fin.natAdd g) = 0 →
     Hm.submatrix (Fin.natAdd g) (Fin.castAdd g) = Hm.submatrix (Fin.castAdd g) (Fin.natAdd g) →
@@ -256,6 +333,13 @@ namespace GlobalTheory.BiRoot
 
 open GlobalTheory.ProdUnifSq GlobalTheory.TorusRM
 
+/- English proof (translation)
+Take `⟨θ, hθ, hθ0, hper⟩` from `exists_theta_of_gen B N n v hN ht`. Use `ahFactor_trivial_of_theta n v.Λ v.full H ψ θ hv.1 hθ hθ0 hv.2.1 fun l z => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `ahFactor_im_int_chart N hN (v.ex z).left`. Establish `hzl : v.ex (z + l) = v.ex z` using `by rw [v.ex_add, (v.ker l).2 l.2, _root_.mul_one]`. Establish `hi' : ⊤ ≤ (v.ex (z + l)).left ⁻¹ᵁ N.U i` using `by rw [hzl]; exact hi`.
+
+Establish `e1` using `hper l l.2 i z hi`. Establish `e2` using `hv.2.2 l i z hi`. Establish `hne` using `v.fr_ne i (z + l) hi'`. Rewrite `e1` using `[e2]`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises.
+
+Take the linear combination `e1`.
+-/
 theorem trivial_factor {B : Over (Sp ℂ)} [GrpObj B] {N : LB B.left} {n : ℕ} (v : HolUnif B N n)
     {H : Matrix (Fin n) (Fin n) ℂ} {ψ : v.Λ → ℂ} (hN : N.IsLB) (hv : IsFactorAH v H ψ)
     (ht : ∃ t : N.Gen, t.IsGen) : H = 0 ∧ ∀ l, ψ l = 1 := by
@@ -300,23 +384,38 @@ def inr (g : ℕ) : (Fin g → ℂ) →ₗ[ℂ] (Fin (g + g) → ℂ) where
 def swapE (g : ℕ) : Fin (g + g) ≃ Fin (g + g) :=
   finSumFinEquiv.symm.trans ((Equiv.sumComm _ _).trans finSumFinEquiv)
 
+/- English proof (translation)
+Simplify using `only [swapE, Equiv.trans_apply, finSumFinEquiv_symm_apply_castAdd, Equiv.sumComm_apply, Sum.swap_inl, finSumFinEquiv_apply_right]`.
+-/
 theorem swapE_castAdd (g : ℕ) (k : Fin g) : swapE g (Fin.castAdd g k) = Fin.natAdd g k := by
   simp only [swapE, Equiv.trans_apply, finSumFinEquiv_symm_apply_castAdd, Equiv.sumComm_apply, Sum.swap_inl,
     finSumFinEquiv_apply_right]
 
+/- English proof (translation)
+Simplify using `only [swapE, Equiv.trans_apply, finSumFinEquiv_symm_apply_natAdd, Equiv.sumComm_apply, Sum.swap_inr, finSumFinEquiv_apply_left]`.
+-/
 theorem swapE_natAdd (g : ℕ) (k : Fin g) : swapE g (Fin.natAdd g k) = Fin.castAdd g k := by
   simp only [swapE, Equiv.trans_apply, finSumFinEquiv_symm_apply_natAdd, Equiv.sumComm_apply, Sum.swap_inr,
     finSumFinEquiv_apply_left]
 
+/- English proof (translation)
+The claim follows from `Equiv.ext fun q => by rw [Equiv.symm_apply_eq] refine Fin.addCases (fun k => ?_) (fun k => ?_) q · rw [swapE_castAdd, swapE_natAdd] · rw [swapE_natAdd, swapE_castAdd]`.
+-/
 theorem swapE_symm (g : ℕ) : (swapE g).symm = swapE g := Equiv.ext fun q => by
   rw [Equiv.symm_apply_eq]
   refine Fin.addCases (fun k => ?_) (fun k => ?_) q
   · rw [swapE_castAdd, swapE_natAdd]
   · rw [swapE_natAdd, swapE_castAdd]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [halfL_apply, halfR_apply, Function.comp_apply, swapE_castAdd]`.
+-/
 theorem halfL_swap (g : ℕ) (z : Fin (g + g) → ℂ) : halfL g (z ∘ swapE g) = halfR g z := by
   funext k; simp only [halfL_apply, halfR_apply, Function.comp_apply, swapE_castAdd]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [halfL_apply, halfR_apply, Function.comp_apply, swapE_natAdd]`.
+-/
 theorem halfR_swap (g : ℕ) (z : Fin (g + g) → ℂ) : halfR g (z ∘ swapE g) = halfL g z := by
   funext k; simp only [halfL_apply, halfR_apply, Function.comp_apply, swapE_natAdd]
 
@@ -326,6 +425,49 @@ namespace GlobalTheory.BiRoot
 
 open GlobalTheory.ProdUnifSq GlobalTheory.TorusRM
 
+/- English proof (translation)
+Introduce `A _ _ g hA hg P hP h0A hA0 hsym`. Take `⟨L₀, ⟨u₀⟩⟩` from `GlobalTheory.HomDescentQb.exists_holUnif A g hA hg`. Take `⟨M₀, u₁, H₀, χ₀, hM₀, -, -, hAH⟩` from `GlobalTheory.AHExists.exists_isAH A g hA L₀ u₀`. Establish `hp : IsProjOver A.hom` using `GlobalTheory.ProjSpace.isProjOver_of_relAmple (GlobalTheory.LefschetzAmple.relAmple_of_isAH g A hA M₀ u₁ H₀ χ₀ hM₀ hAH)`. Establish `hPP : IsProjOver (A ⊗ A).hom` using `GlobalTheory.ProjSpace.isProjOver_pullback hp hp`.
+
+Establish `hAA : IsAbelianScheme (A ⊗ A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Take `⟨uP, Hm, χ, hexP, hF⟩` from `GlobalTheory.exists_isFactorAH_frame_of_unif (A ⊗ A) hAA _ (g + g) (sqUnif A u₁) P hP`. Establish `hmemP : ∀ v, v ∈ uP.Λ ↔ v ∈ sqLat u₁.Λ` using `fun v => by`. Rewrite using `[← uP.ker, hexP]`. Conclude with `(sqUnif A u₁).ker v`.
+
+Establish `hexS : ∀ v, uP.ex v = lift (u₁.ex (halfL g v)) (u₁.ex (halfR g v))` using `fun v => by`. Rewrite using `[hexP]`. Both sides reduce to the same expression. Establish `ex0 : u₁.ex 0 = 1` using `(u₁.ker 0).2 (Submodule.zero_mem _)`. Establish `hinl : ∀ l ∈ u₁.Λ, inl g l ∈ uP.Λ` using `fun l hl => (hmemP _).2 ((mem_sqLat _ _).2 ⟨by rw [show inl g l = Fin.append l 0 from rfl, halfL_append]; exact hl, by rw [show inl g l = Fin.append l 0 from rfl, halfR_append]; exact Submodule.zero_mem _⟩)`.
+
+Establish `hinr : ∀ l ∈ u₁.Λ, inr g l ∈ uP.Λ` using `fun l hl => (hmemP _).2 ((mem_sqLat _ _).2 ⟨by rw [show inr g l = Fin.append 0 l from rfl, halfL_append]; exact Submodule.zero_mem _, by rw [show inr g l = Fin.append 0 l from rfl, halfR_append]; exact hl⟩)`. Establish `hx1` using `exists_pull_isFactorAH A (A ⊗ A) M₀ P g (g + g) u₁ uP (lift (𝟙 A) 1) (inl g) Hm (Hm.submatrix (Fin.castAdd g) (Fin.castAdd g)) χ hF (hF.1.submatrix _) (fun z l => by`. Rewrite using `[dot_blocks]`. Simplify using `[inl, halfL_append, halfR_append])`. Use the proof step `(fun z => by`.
+
+Rewrite using `[hexS]`. Use `show lift (u₁.ex (halfL g (Fin.append z 0))) (u₁.ex (halfR g (Fin.append z 0))) = _`. Rewrite using `[halfL_append, halfR_append, ex0, comp_lift, Category.comp_id, comp_one])`. Use `hinl`. Take `⟨v₁, χ₁, -, hv₁Λ, hv₁, hχ₁⟩` from `hx1`.
+
+Take `⟨H11, c11⟩` from `trivial_factor v₁ (LB.isLB_linComb hP _ _) hv₁ hA0`. Establish `hx2` using `exists_pull_isFactorAH A (A ⊗ A) M₀ P g (g + g) u₁ uP (lift 1 (𝟙 A)) (inr g) Hm (Hm.submatrix (Fin.natAdd g) (Fin.natAdd g)) χ hF (hF.1.submatrix _) (fun z l => by`. Rewrite using `[dot_blocks]`. Simplify using `[inr, halfL_append, halfR_append])`. Use the proof step `(fun z => by`.
+
+Rewrite using `[hexS]`. Use `show lift (u₁.ex (halfL g (Fin.append 0 z))) (u₁.ex (halfR g (Fin.append 0 z))) = _`. Rewrite using `[halfL_append, halfR_append, ex0, comp_lift, Category.comp_id, comp_one])`. Use `hinr`. Take `⟨v₂, χ₂, -, hv₂Λ, hv₂, hχ₂⟩` from `hx2`.
+
+Take `⟨BorelApproximation, c22⟩` from `trivial_factor v₂ (LB.isLB_linComb hP _ _) hv₂ h0A`. Establish `hx3` using `exists_pull_isFactorAH (A ⊗ A) (A ⊗ A) P P (g + g) (g + g) uP uP (lift (snd A A) (fst A A)) (LinearMap.funLeft ℂ ℂ (swapE g)) Hm (Hm.submatrix (swapE g).symm (swapE g).symm) χ hF (hF.1.submatrix _) (fun z l => dot_comp_equiv (g + g) (swapE g) Hm z l) (fun z => by`. Rewrite using `[hexS, hexS, comp_lift, lift_fst, lift_snd]`. Use `show lift (u₁.ex (halfL g (z ∘ swapE g))) (u₁.ex (halfR g (z ∘ swapE g))) = _`. Rewrite using `[halfL_swap, halfR_swap])`.
+
+Use the proof step `(fun l hl => by`. Rewrite `hl`, the goal using `[hmemP, mem_sqLat]`. Use `show halfL g (l ∘ swapE g) ∈ u₁.Λ ∧ halfR g (l ∘ swapE g) ∈ u₁.Λ`. Rewrite using `[halfL_swap, halfR_swap]`. Conclude with `⟨hl.2, hl.1⟩)`.
+
+Take `⟨vs, χs, hvsex, -, hvs, -⟩` from `hx3`. Establish `hd` using `GlobalTheory.AHBundle.isFactorAH_divUnif uP vs hvsex hF hvs`. Take `⟨Hsym, -⟩` from `trivial_factor _ (LB.isLB_div (LB.isLB_linComb hP _ _) hP) hd hsym`. Rewrite `Hsym` using `[sub_eq_zero]`. Establish `H21 : Hm.submatrix (Fin.natAdd g) (Fin.castAdd g) = Hm.submatrix (Fin.castAdd g) (Fin.natAdd g)`.
+
+Use extensionality with `i j`. Use `congrFun (congrFun Hsym (Fin.castAdd g i)) (Fin.natAdd g j)` as an intermediate fact. Simplify using `only [Matrix.submatrix_apply, swapE_symm, swapE_castAdd, swapE_natAdd] at this`. Simplify `this` using `only [Matrix.submatrix_apply]`. Establish `hH12 : (Hm.submatrix (Fin.castAdd g) (Fin.natAdd g)).IsHermitian`.
+
+Use `Matrix.IsHermitian.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_apply, Matrix.submatrix_apply, hF.1.apply]`. Conclude with `congrFun (congrFun H21 i) j`. Establish `hint : ∀ l ∈ u₁.Λ, ∀ l' ∈ u₁.Λ, ∃ n : ℤ, (l ⬝ᵥ (Hm.submatrix (Fin.castAdd g) (Fin.natAdd g)).mulVec (star l')).im = n`. Introduce `l hl l' hl'`.
+
+Take `⟨n, hn⟩` from `ahFactor_im_int (g + g) (A ⊗ A) P uP Hm χ hP hF (inl g l) (hinl l hl) (inr g l') (hinr l' hl')`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn, dot_blocks]`. Simplify using `[inl, inr, halfL_append, halfR_append]`. Take `⟨M, uM, χM, hM, hexM, hFM⟩` from `GlobalTheory.AHBundle.exists_lb_of_hermitian_int g A hA M₀ u₁ H₀ χ₀ hM₀ hAH _ hH12 hint`.
+
+Establish `hexL : (LamAdd.lamUnif u₁ uM hexM).ex = uP.ex` using `by rw [LamAdd.lamUnif_ex, hexP]`. Establish `hG` using `GlobalTheory.HolUnifSec.hasGen_of_periodic (A ⊗ A) hAA hPP (LB.div (abelian₂ A M) P) (LB.isLB_div (LB.isLB_linComb hM _ _) hP) (g + g) (GlobalTheory.SameFactor.divUnif uP (LamAdd.lamUnif u₁ uM hexM) hexL) (fun _ => 1) (differentiable_const _) (fun _ => one_ne_zero) ?_`. Conclude with `⟨M, hM, hG⟩`. Introduce `l hl p z hz`. Establish `hl' : l ∈ uP.Λ` using `hl`.
+
+Take `⟨hz1, hz2⟩` from `(GlobalTheory.top_le_preimage_inf _ _ _).1 hz`. Establish `hzl : uP.ex (z + l) = uP.ex z` using `by rw [uP.ex_add, (uP.ker l).2 hl', _root_.mul_one]`. Establish `hsq` using `(hmemP l).1 hl'`. Establish `e1` using `LamAdd.lam_shift u₁ uM hexM hM hFM p.1 z l hsq (by rw [hexL]; exact hz1)`. Establish `e2` using `hF.2.2 ⟨l, hl'⟩ p.2 z hz2`.
+
+Establish `hsq1 : halfL g l ∈ u₁.Λ` using `hsq.1`. Establish `hsq2 : halfR g l ∈ u₁.Λ` using `hsq.2`. Establish `ha : inl g (halfL g l) ∈ uP.Λ` using `hinl _ hsq1`. Establish `hb : inr g (halfR g l) ∈ uP.Λ` using `hinr _ hsq2`. Establish `hab : inl g (halfL g l) + inr g (halfR g l) = l`.
+
+Rewrite using `[← append_halves l]`. Use `show Fin.append (halfL g (Fin.append (halfL g l) (halfR g l))) 0 + Fin.append 0 (halfR g (Fin.append (halfL g l) (halfR g l))) = _`. Rewrite using `[halfL_append, halfR_append]`. Use function extensionality and compare the values at `q`. Apply the tactic sequence `refine Fin.addCases (fun k => ?_) (fun k => ?_) q <;>`.
+
+Simplify using `only [Fin.append_left, Fin.append_right, Pi.add_apply, Pi.zero_apply, add_zero, zero_add]`. Establish `χa : LamAdd.ext uP.Λ χ (inl g (halfL g l)) = 1`. Rewrite using `[LamAdd.ext_of_mem _ _ ha]`. Establish `hm : halfL g l ∈ v₁.Λ` using `by rw [hv₁Λ]; exact hsq1`. Conclude with `(hχ₁ ⟨halfL g l, hm⟩ ha).symm.trans (c11 _)`.
+
+Establish `χb : LamAdd.ext uP.Λ χ (inr g (halfR g l)) = 1`. Rewrite using `[LamAdd.ext_of_mem _ _ hb]`. Establish `hm : halfR g l ∈ v₂.Λ` using `by rw [hv₂Λ]; exact hsq2`. Conclude with `(hχ₂ ⟨halfR g l, hm⟩ hb).symm.trans (c22 _)`. Establish `hs` using `LamAdd.semichar hP hF (inl g (halfL g l)) (inr g (halfR g l)) ha hb`.
+
+Rewrite `hs` using `[χa, χb, _root_.one_mul, _root_.one_mul, hab, LamAdd.ext_of_mem _ _ hl']`. Establish `e3` using `factor_eq_lamExp g Hm (χ ⟨l, hl'⟩) z l H11 BorelApproximation H21 hs`. Establish `n1` using `uP.fr_ne p.2 (z + l) (by rw [hzl]; exact hz2)`. Use `show 1 * ((LamAdd.lamUnif u₁ uM hexM).fr p.1 (z + l) * (uP.fr p.2 (z + l))⁻¹) = 1 * ((LamAdd.lamUnif u₁ uM hexM).fr p.1 z * (uP.fr p.2 z)⁻¹)`. Rewrite using `[e1, e2, e3]`.
+
+Establish `n2` using `Complex.exp_ne_zero (LamAdd.Q (Hm.submatrix (Fin.castAdd g) (Fin.natAdd g)) z l)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_lbIso_lam_of_birigid_symm : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → ∀ P : LB (G2 A).left, P.IsLB →
     (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) →

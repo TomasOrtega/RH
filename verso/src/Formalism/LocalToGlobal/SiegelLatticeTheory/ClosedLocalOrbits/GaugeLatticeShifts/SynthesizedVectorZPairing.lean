@@ -27,9 +27,15 @@ structure Frm (e p : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (w : Fin k →
 
 variable {ε}
 
+/- English proof (translation)
+Rewrite using `[UnitaryIsometries.hJ_conj, h, map_zero]`.
+-/
 theorem hJ_swap0 {x y : Fin n → ℂ} (h : hJ ε x y = 0) : hJ ε y x = 0 := by
   rw [UnitaryIsometries.hJ_conj, h, map_zero]
 
+/- English proof (translation)
+Rewrite using `[UnitaryIsometries.hJ_conj, h]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem hJ_swapδ {ι : Type*} [DecidableEq ι] {x y : ι → Fin n → ℂ} (h : ∀ a b, hJ ε (x a) (y b) = if a = b then 1 else 0)
     (a b : ι) : hJ ε (y b) (x a) = if a = b then 1 else 0 := by
   rw [UnitaryIsometries.hJ_conj, h]
@@ -43,19 +49,31 @@ section Coord
 
 variable {e p : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {w : Fin k → Fin n → ℂ} {T : ℝ}
 
+/- English proof (translation)
+Simplify using `only [syn, UnitaryIsometries.hJ_add_right, UnitaryIsometries.hJ_smul_right, UnitaryIsometries.hJ_sum_right]`.
+-/
 theorem hJ_syn (x : Fin n → ℂ) (α β : Fin r → ℂ) (γ : ℂ) (δ : Fin k → ℂ) :
     hJ ε x (syn e p z w T α β γ δ) = ∑ a, α a * hJ ε x (e a) + ∑ a, β a * hJ ε x (p a) +
       (-γ / (T : ℂ)) * hJ ε x z + ∑ j, δ j * hJ ε x (w j) := by
   simp only [syn, UnitaryIsometries.hJ_add_right, UnitaryIsometries.hJ_smul_right, UnitaryIsometries.hJ_sum_right]
 
+/- English proof (translation)
+Rewrite using `[hJ_syn]`. Simplify using `[hJ_swapδ F.ep, F.pp, F.pz, F.pw]`.
+-/
 theorem syn_p (F : Frm ε e p z w T) (c : Fin r) α β γ δ : hJ ε (p c) (syn e p z w T α β γ δ) = α c := by
   rw [hJ_syn]
   simp [hJ_swapδ F.ep, F.pp, F.pz, F.pw]
 
+/- English proof (translation)
+Rewrite using `[hJ_syn]`. Simplify using `[F.ee, F.ep, F.ez, F.ew]`.
+-/
 theorem syn_e (F : Frm ε e p z w T) (c : Fin r) α β γ δ : hJ ε (e c) (syn e p z w T α β γ δ) = β c := by
   rw [hJ_syn]
   simp [F.ee, F.ep, F.ez, F.ew]
 
+/- English proof (translation)
+Rewrite using `[hJ_syn]`. Establish `hT : (T : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 F.T_ne`. Simplify using `only [fun a => hJ_swap0 (F.ez a), fun a => hJ_swap0 (F.pz a), F.zz, F.zw, mul_zero, Finset.sum_const_zero, zero_add, add_zero]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem synthesized_vector_z_pairing (F : Frm ε e p z w T) α β γ δ : hJ ε z (syn e p z w T α β γ δ) = γ := by
   rw [hJ_syn]
   have hT : (T : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 F.T_ne
@@ -63,6 +81,9 @@ theorem synthesized_vector_z_pairing (F : Frm ε e p z w T) α β γ δ : hJ ε 
     Finset.sum_const_zero, zero_add, add_zero]
   field_simp
 
+/- English proof (translation)
+Rewrite using `[hJ_syn]`. Simplify using `[fun a => hJ_swap0 (F.ew a c), fun a => hJ_swap0 (F.pw a c), hJ_swap0 (F.zw c), F.ww]`.
+-/
 theorem syn_w (F : Frm ε e p z w T) (c : Fin k) α β γ δ : hJ ε (w c) (syn e p z w T α β γ δ) = δ c := by
   rw [hJ_syn]
   simp [fun a => hJ_swap0 (F.ew a c), fun a => hJ_swap0 (F.pw a c), hJ_swap0 (F.zw c), F.ww]
@@ -72,6 +93,9 @@ def crd (e p : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (w : Fin k → Fin n
   (LinearMap.pi fun a => hJL ε (p a)).prod ((LinearMap.pi fun a => hJL ε (e a)).prod
     ((hJL ε z).prod (LinearMap.pi fun j => hJL ε (w j))))
 
+/- English proof (translation)
+Use extensionality with `c`. Conclude with `syn_p F c α β γ δ`. Conclude with `syn_e F c α β γ δ`. Conclude with `synthesized_vector_z_pairing F α β γ δ`. Conclude with `syn_w F c α β γ δ`.
+-/
 theorem crd_syn (F : Frm ε e p z w T) α β γ δ :
     crd (ε := ε) e p z w (syn e p z w T α β γ δ) = (α, β, γ, δ) := by
   ext c
@@ -80,6 +104,11 @@ theorem crd_syn (F : Frm ε e p z w T) α β γ δ :
   · exact synthesized_vector_z_pairing F α β γ δ
   · exact syn_w F c α β γ δ
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective (crd (ε` using `ε) e p z w) := fun c => ⟨syn e p z w T c.1 c.2.1 c.2.2.1 c.2.2.2, crd_syn F _ _ _ _⟩`. Establish `hfin : Module.finrank ℂ (Fin n → ℂ) = Module.finrank ℂ ((Fin r → ℂ) × (Fin r → ℂ) × ℂ × (Fin k → ℂ))`. Simplify using `only [Module.finrank_prod, Module.finrank_fin_fun, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers. Establish `hinj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfin).2 hsurj`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[crd_syn F]`. Both sides reduce to the same expression.
+-/
 theorem recon (F : Frm ε e p z w T) (hdim : n = 2 * r + 1 + k) (v : Fin n → ℂ) :
     v = syn e p z w T (fun a => hJ ε (p a) v) (fun a => hJ ε (e a) v) (hJ ε z v) (fun j => hJ ε (w j) v) := by
   have hsurj : Function.Surjective (crd (ε := ε) e p z w) := fun c =>

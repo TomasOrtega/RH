@@ -23,6 +23,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 abbrev reductionYZero (W : RealPack ex) (h : GA D (D.sp.Y 0)) : Formalism.L2.DIV.G0 (pk W).Pg D.R.r :=
   Formalism.L2.DIV.rTup ((pk W).βY 0) ((pk W).dat0 (lvP W)) (finE (Yc D 0) h)
 
+/- English proof (translation)
+Establish `h2` using `hh.2`. Establish `h3` using `(Formalism.L2.DIV.mem_lev.1 h2).2`. Use `⟨h3, ?_⟩` and prove the remaining obligations. Simplify using `only [rChi, Formalism.IndefR.Lev.levChi, Formalism.L2.DIV.levFn]`. Rewrite using `[Formalism.L2.DIV.extendOne_of_mem _ h3]`.
+
+Simplify using `[Formalism.IndefR.Links.LevCh.dat0, Formalism.IndefR.Lev.datY]`. Both sides reduce to the same expression.
+-/
 theorem rChi_eq_chi (W : RealPack ex) {h : GA D (D.sp.Y 0)} (hh : h ∈ rJ W) :
     ∃ hg : reductionYZero W h ∈ (lvP W).H, rChi W h = (((lvP W).chi ⟨_, hg⟩ : ℂˣ) : ℂ) := by
   have h2 := hh.2

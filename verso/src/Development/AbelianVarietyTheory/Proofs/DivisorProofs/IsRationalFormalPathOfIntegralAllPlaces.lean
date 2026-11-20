@@ -18,10 +18,16 @@ set_option autoImplicit false
 
 namespace GlobalTheory.Nef
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ ha => PowerSeries.isUnit_iff_constantCoeff.2 ha⟩`.
+-/
 private theorem isLocalHom_constantCoeff_ps (O : Type) [CommRing O] [IsLocalRing O] :
     IsLocalHom (PowerSeries.constantCoeff (R := O)) :=
   ⟨fun _ ha => PowerSeries.isUnit_iff_constantCoeff.2 ha⟩
 
+/- English proof (translation)
+Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Use `show PowerSeries.constantCoeff (PowerSeries.rescale u (PowerSeries.map p.O.subtype a)) = _`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, pow_zero, _root_.one_mul, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Both sides reduce to the same expression.
+-/
 private theorem constantCoeff_comp_sc {k E : Type} [Field k] [Field E] [Algebra k E] (p : Place k E) (u : E) :
     (PowerSeries.constantCoeff (R := E)).comp (sc p u) = p.O.subtype.comp (PowerSeries.constantCoeff (R := p.O)) := by
   refine RingHom.ext fun a => ?_
@@ -30,14 +36,37 @@ private theorem constantCoeff_comp_sc {k E : Type} [Field k] [Field E] [Algebra 
     PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[spMap, spMap, spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 private theorem spMap_comp_spMap {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (g : B →+* D) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [spMap, spMap, spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem evAt_eq_of_eq {R : Type} [CommRing R] {X : Scheme.{0}} {a b : Sp R ⟶ X} (e : a = b) {U : X.Opens}
     (h : ⊤ ≤ a ⁻¹ᵁ U) (h' : ⊤ ≤ b ⁻¹ᵁ U) : evAt a h = evAt b h' := by
   subst e; rfl
 
+/- English proof (translation)
+Introduce `k K E _ _ _ _ _ _ _ _ _ _ C _ x hx G _ ξ u hu0 hfin hpos hloc`. Use `choose b ζ hb hpath hξ using hloc`. Establish `hFF : IsFF k E` using `(GlobalTheory.T.functionFieldOneVariable_transcendental_finite_and_ext k K (GlobalTheory.T.isFunctionFieldOfOneVariable_of_genericPointOfCurve k K C x hx)).2 E`. Choose the witnesses or unpack the hypotheses as in `⟨p₀, -⟩ : ∃ p, ord p (u p) ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Rewrite `hpos` using `[finsum_eq_zero_of_forall_eq_zero hc]`. Conclude with `lt_irrefl _ hpos`. Apply `GlobalTheory.T.isRationalFormalPath_of_rationalExpansions E G.left ξ` to reduce the goal to its premises. Introduce `U _ h f`.
+
+Use `set V : C.Opens := unitSec G ⁻¹ᵁ U with hV`. Establish `hVne : (V : Set C).Nonempty`. Set `q : Sp E` to `IsLocalRing.closedPoint E`. Use `⟨(spMap p₀.O.subtype ≫ b p₀) q, ?_⟩` and prove the remaining obligations. Establish `h2 : spMap (PowerSeries.constantCoeff (R` using `E)) ≫ ξ = spMap p₀.O.subtype ≫ b p₀ ≫ unitSec G := by`.
+
+Rewrite using `[hξ p₀, ← Category.assoc, spMap_comp_spMap, constantCoeff_comp_sc, ← spMap_comp_spMap, Category.assoc, (hpath p₀).zero]`. Establish `h3 : (spMap (PowerSeries.constantCoeff (R` using `E)) ≫ ξ) q ∈ U := h trivial`. Rewrite `h3` using `[h2]`. Conclude with `h3`. Establish `hfinb` using `GlobalTheory.T.finite_places_centre_outside_open k K E C x hx V hVne`.
+
+Establish `hUp : ∀ p, ⊤ ≤ (spMap (sc p (u p)) ≫ ζ p) ⁻¹ᵁ U` using `fun p => hξ p ▸ h`. Use `choose e ψ he0 he1 heq using fun p => GlobalTheory.T.exists_bounded_denominator_along_valuationPath k E p (u p) G.left (ζ p) U (hUp p) f`. Establish `key : ∀ p, ⊤ ≤ (b p) ⁻¹ᵁ V → ⊤ ≤ (ζ p) ⁻¹ᵁ U`. Introduce `p hp`. Use `haveI := isLocalHom_constantCoeff_ps p.O`.
+
+Rewrite using `[GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk.2.2.2.1 (PowerSeries p.O) G.left (ζ p) U]`. Rewrite using `[← (IsLocalRing.comap_closedPoint (PowerSeries.constantCoeff (R := p.O)) : spMap (PowerSeries.constantCoeff (R := p.O)) (IsLocalRing.closedPoint p.O) = _)]`. Use `show (spMap (PowerSeries.constantCoeff (R := p.O)) ≫ ζ p) (IsLocalRing.closedPoint p.O) ∈ U`. Rewrite using `[(hpath p).zero]`. Conclude with `hp trivial`.
+
+Use `GlobalTheory.T.isRational_powerSeries_of_adelicIntegral_positiveRadius k E hFF (evAt ξ h f) u e ψ hu0 hfin hpos he0 ?_ ?_` and prove the remaining obligations. Use `hfinb.subset fun p hp => ⟨b p, hb p, fun hbV => hp ?_⟩` and prove the remaining obligations. Rewrite using `[he1 p (key p hbV), map_one]`. Conclude with `isUnit_one`. Introduce `p`.
+
+Rewrite using `[evAt_eq_of_eq (hξ p) h (hUp p)]`. Conclude with `heq p`.
+-/
 theorem isRatPath_of_integral_at_places : ∀ (k K E : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k K] [Field E] [Algebra k E] [Algebra K E] [IsScalarTower k K E] [FiniteDimensional K E] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] (x : Sp K ⟶ C), IsGenOver k x →
   ∀ (G : Over C) [GrpObj G] (ξ : Sp (PowerSeries E) ⟶ G.left) (u : Place k E → E), (∀ p, u p ≠ 0) → {p | ord p (u p) ≠ 0}.Finite → 0 < ∑ᶠ p, ord p (u p) → (∀ p : Place k E, ∃ (b : Sp p.O ⟶ C) (ζ : Sp (PowerSeries p.O) ⟶ G.left), spMap p.O.subtype ≫ b = spMap (algebraMap K E) ≫ x ∧ IsPath G 2 b ζ ∧ ξ = spMap (sc p (u p)) ≫ ζ) → IsRatPath ξ := by
   intro k K E _ _ _ _ _ _ _ _ _ _ C _ x hx G _ ξ u hu0 hfin hpos hloc

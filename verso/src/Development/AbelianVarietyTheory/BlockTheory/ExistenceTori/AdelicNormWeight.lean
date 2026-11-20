@@ -28,6 +28,9 @@ instance : CommRing (AdE E) := inferInstanceAs (CommRing (AdF E ⊗[maximalRealS
 def adConj : (AdF E ⊗[maximalRealSubfield E] E) →ₐ[maximalRealSubfield E] (AdF E ⊗[maximalRealSubfield E] E) :=
   Algebra.TensorProduct.map (AlgHom.id _ _) (IsCMField.complexConj E).toAlgHom
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [adConj]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+-/
 theorem adConj_adConj (x : AdF E ⊗[maximalRealSubfield E] E) : adConj E (adConj E x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -164,8 +167,14 @@ def RepsExist (H : Host E) (n : ℕ) : Prop :=
     Covers S (2 * q₁ * H.d * M) →
       ∃ (k : ℕ) (h : Fin k → UA E n) (N : Fin k → ℕ), Admissible H q₁ M S J h N
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `rfl`.
+-/
 example (S : Finset (Plc E)) : TrivOn S (1 : UA E n) := fun _ _ _ _ => rfl
 
+/- English proof (translation)
+Simplify using `[stab]`.
+-/
 example (J : Subgroup (UA E n)) (h γ : UA E n) : γ ∈ stab J h ↔ γ ∈ ratPts E n ∧ h⁻¹ * γ * h ∈ J := by
   simp [stab]
 
@@ -299,6 +308,9 @@ def ClassSumDownInCusp (cusp : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submod
     (∀ z, IsOfFinOrder (δ z)) → CMP Xo c d σ₂ Cls₂ δ gdet₂ inv → IntoHarm c a io →
       f ∈ sec Xo c a n → IsClassSumRuleDown Xo c d vol J h N ep cξ ph phδ io x f → f ∈ cusp a n
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Simplify using `[fourierSum]`.
+-/
 example {n : ℕ} : fourierSum (Dw := Dw) c (0 : (Fin n → ConjQ Dw l) → c.F) = 0 := by
   funext q
   simp [fourierSum]

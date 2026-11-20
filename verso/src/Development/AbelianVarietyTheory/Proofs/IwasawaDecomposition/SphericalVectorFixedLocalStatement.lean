@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InfOfNodupAl
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceLocalComponentExistsUniqueClassStatement
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeckeFrob.locPol_eq | exact GlobalTheory.HeckeFrob.locPol_eq | (intros; apply GlobalTheory.HeckeFrob.locPol_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.spherical_vector_fixed_local : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E)
     (w : PlE D.host) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)),
     IsConjPl D.host w s.w → IsUnif D.host.E s.v ϖ → ∀ J : Subgroup (GAf D.host.E D.R.nV),

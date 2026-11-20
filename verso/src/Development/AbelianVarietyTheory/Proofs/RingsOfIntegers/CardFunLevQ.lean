@@ -12,6 +12,9 @@ open ReciprocityTheory.ChartRestriction.G.TB (dAct dLin)
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l n`. Rewrite using `[Nat.card_fun, (GlobalTheory.card_levQ E H Dw l).2, Nat.card_eq_fintype_card, Fintype.card_fin, ← pow_mul]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.PlaceInt.card_fun_levQ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (n : ℕ), Nat.card (Fin n → LevQ Dw l) = l.M ^ (Module.finrank ℚ E / 2 * (Dw.p + Dw.q) * n) := by
   intro E _ _ _ H Dw l n
   rw [Nat.card_fun, (GlobalTheory.card_levQ E H Dw l).2, Nat.card_eq_fintype_card, Fintype.card_fin, ← pow_mul]

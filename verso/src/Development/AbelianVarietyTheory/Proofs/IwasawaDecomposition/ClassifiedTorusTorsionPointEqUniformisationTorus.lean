@@ -20,6 +20,31 @@ noncomputable section
 
 namespace GlobalTheory.TorusTorsionPoint
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t P N g₀ x₀ hform A A' _ _ a ha f t₀ m₀ τ z hz g hg h hpull`. Establish `ha' : ∀ x ∈ maximalIdeal R, (f.comp a) x = 0` using `fun x hx => by`. Rewrite using `[RingHom.comp_apply, ha x hx, map_zero]`. Establish `hρ` using `GlobalTheory.TorusPart.map_pow_one_eq_zero ha`. Establish `hρ'` using `GlobalTheory.TorusPart.map_pow_one_eq_zero ha'`.
+
+Establish `eR : (z ≫ GlobalTheory.TorusPart.PELUnif.torus P ha m₀).left ≫ m₀.φ = (z.left ≫ GlobalTheory.SplitTorus.bcMap (GlobalTheory.TorusPart.thickPt 0 hρ) P.D.toPre.X ≫ (P.U.gt 0).i.left) ≫ pullback.fst t.G.hom (thick R (maximalIdeal R) 0)`. Rewrite using `[Over.comp_left, Category.assoc]`. Establish `k` using `GlobalTheory.TorusPart.gtTorus_left (P.U.gt 0) hρ m₀.cart`. Conclude with `(congrArg (z.left ≫ ·) k).trans (by simp only [Category.assoc])`. Establish `hN : (h.left ≫ x₀.left) ≫ t.G.hom = GlobalTheory.TorusPart.thickPt 0 hρ' ≫ thick R (maximalIdeal R) 0`.
+
+Rewrite using `[GlobalTheory.TorusPart.thickPt_thick, Category.assoc, Over.w x₀, Over.w h]`. Both sides reduce to the same expression. Set `y₁ : Sp A' ⟶ (thickObj R (maximalIdeal R) 0 t.G).left` to `pullback.lift (h.left ≫ x₀.left) (GlobalTheory.TorusPart.thickPt 0 hρ') hN`. Set `y₂ : Sp A' ⟶ (thickObj R (maximalIdeal R) 0 t.G).left` to `z.left ≫ GlobalTheory.SplitTorus.bcMap (GlobalTheory.TorusPart.thickPt 0 hρ) P.D.toPre.X ≫ (P.U.gt 0).i.left`. Establish `e₁ : h.left ≫ x₀.left = y₁ ≫ pullback.fst t.G.hom (thick R (maximalIdeal R) 0)` using `(pullback.lift_fst _ _ _).symm`.
+
+Establish `hP` using `(GlobalTheory.TorsionFormCompare.formalEq_iff P.U.toUnifPre x₀ g₀).1 hform`. Establish `hc` using `hP 0 (Sp A') h.left y₁ e₁.symm`. Take `⟨hb, hv⟩` from `(GlobalTheory.FormalPoint.hasCoords_iff _ 0 g₀ h.left y₁).1 hc`. It suffices to establish `hy : y₁ = y₂ by rw [eR, e₁, hy]`. Use `GlobalTheory.TorusCoord.ext_of_val (P.U.gt 0) y₁ y₂ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hb, ← hpull.1, (hg 0).1, GlobalTheory.TorusCoord.pG_left]`. Establish `hk : (P.U.gt 0).i.left ≫ (P.U.gt 0).q.left = (splitTorus _ P.D.toPre.X).hom ≫ eSec (thickObj R (maximalIdeal R) 0 P.D.toPre.P.A)`. Use `congrArg Over.Hom.left (P.U.gt 0).isKernel.w` as an intermediate fact. Rewrite `this` using `[Over.comp_left, Over.comp_left]`. Conclude with `this`.
+
+Establish `hE : eSec (thickObj R (maximalIdeal R) 0 P.D.toPre.P.A) ≫ pullback.fst P.D.toPre.P.A.hom (thick R (maximalIdeal R) 0) = thick R (maximalIdeal R) 0 ≫ eSec P.D.toPre.P.A` using `GlobalTheory.UnitValue.eSec_pullback_fst _ _`. Establish `hz' : z.left ≫ (splitTorus (Sp A) P.D.toPre.X).hom = spMap f` using `Over.w z`. Establish `hfa : spMap f ≫ spMap a = spMap (f.comp a)`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Simplify using `only [y₂, Category.assoc]`. Rewrite using `[reassoc_of% hk, hE, ← Category.assoc (GlobalTheory.SplitTorus.bcMap _ _), GlobalTheory.SplitTorus.bcMap_hom, Category.assoc, reassoc_of% (GlobalTheory.TorusPart.thickPt_thick hρ), reassoc_of% hz', reassoc_of% hfa]`. Both sides reduce to the same expression. Introduce `χ w J hJ`. Rewrite using `[hv χ w J hJ]`.
+
+Establish `l₁ : val (g₀.s χ) h.left w J = gm (𝟙 _) w ⊤ (unitOn (τ (Multiplicative.ofAdd χ)))`. Establish `c₁` using `val_corr hJ (hpull.2 χ) (𝟙 _)`. Rewrite `c₁` using `[val_pull hJ, Category.id_comp]`. Conclude with `c₁.symm.trans (GlobalTheory.TorusTorsion.TorusVal.val_eq (hg χ) (𝟙 _) hJ)`. Rewrite using `[l₁]`.
+
+Set `Z₀ : Over (Spec (CommRingCat.of (R ⧸ maximalIdeal R ^ (0 + 1))))` to `Over.mk ((z.left ≫ GlobalTheory.SplitTorus.bcMap (GlobalTheory.TorusPart.thickPt 0 hρ) P.D.toPre.X) ≫ (splitTorus _ P.D.toPre.X).hom)`. Set `τ' : Z₀ ⟶ splitTorus _ P.D.toPre.X` to `Over.homMk (z.left ≫ GlobalTheory.SplitTorus.bcMap (GlobalTheory.TorusPart.thickPt 0 hρ) P.D.toPre.X) rfl`. Establish `k` using `GlobalTheory.TorusCoord.val_t_act (P.U.gt 0) τ' 1 χ (𝟙 Z₀.left) w J hJ`. Establish `k₁ : 𝟙 Z₀.left ≫ (τ' ≫ (P.U.gt 0).i * 1).left = y₂`. Rewrite using `[_root_.mul_one, Category.id_comp, Over.comp_left]`.
+
+Simplify using `only [τ', y₂, Over.homMk_left, Category.assoc]`. Establish `k₂ : val ((P.U.gt 0).t χ) (𝟙 Z₀.left ≫ (1 : Z₀ ⟶ thickObj R (maximalIdeal R) 0 t.G).left) w J = 1`. Establish `e : (1 : Z₀ ⟶ thickObj R (maximalIdeal R) 0 t.G).left = Z₀.hom ≫ eSec (thickObj R (maximalIdeal R) 0 t.G)`. Rewrite using `[Hom.one_def, Over.comp_left]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, Category.id_comp, ← val_pull hJ, val_corr hJ ((P.U.gt 0).t_unit χ), val_one]`. Establish `k₃ : GlobalTheory.splitTorusPointsEquiv _ P.D.toPre.X Z₀ τ' (Multiplicative.ofAdd χ) = unitOn (τ (Multiplicative.ofAdd χ))`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[← hz χ, GlobalTheory.splitTorusPointsEquiv_val, GlobalTheory.UU.chV_val, GlobalTheory.SplitTorus.charUnit_val, GlobalTheory.SplitTorus.charUnit_val]`. Simplify using `only [τ', Over.homMk_left, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, GlobalTheory.SplitTorus.bcMap_appTop_chi]`.
+
+Rewrite `k` using `[k₁, k₂, k₃, _root_.mul_one]`. Conclude with `k.symm`.
+-/
 theorem eq_torus_of_classify : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (N : Over (Sp R)) (g₀ : GtPt P.D.toPre N) (x₀ : N ⟶ t.G), FormalEq P.U.toUnifPre x₀ g₀ → ∀ (A A' : Type) [CommRing A] [CommRing A'] (a : R →+* A) (ha : ∀ x ∈ maximalIdeal R, a x = 0) (f : A →+* A') (t₀ : SAB H (Sp A)) (m₀ : SABMap t₀ t (spMap a)) (τ : Multiplicative P.D.toPre.X →* A'ˣ) (z : Over.mk (spMap f) ⟶ splitTorus (Sp A) P.D.toPre.X), (∀ χ, GlobalTheory.UU.chV z χ = unitOn (τ (Multiplicative.ofAdd χ))) → ∀ (g : GtPt P.D.toPre (Over.mk (spMap (f.comp a)))), (∀ χ, TorusVal g χ (unitOn (τ (Multiplicative.ofAdd χ)))) → ∀ (h : Over.mk (spMap (f.comp a)) ⟶ N), GtPt.IsPull h.left g₀ g → h.left ≫ x₀.left = (z ≫ GlobalTheory.TorusPart.PELUnif.torus P ha m₀).left ≫ m₀.φ := by
   intro E _ _ _ H R _ _ _ t P N g₀ x₀ hform A A' _ _ a ha f t₀ m₀ τ z hz g hg h hpull
   have ha' : ∀ x ∈ maximalIdeal R, (f.comp a) x = 0 := fun x hx => by

@@ -16,12 +16,21 @@ section Inv
 
 variable {N : Subgroup G} [N.Normal]
 
+/- English proof (translation)
+The claim follows from `hP.2.1.discreteTopology`.
+-/
 theorem inv_disc {A : TRep R G} [DiscreteTopology A.V] {Q : TRep R (G ⧸ N)} {P : Pair Q A}
     (hP : IsInvRep A N Q P) : DiscreteTopology Q.V := hP.2.1.discreteTopology
 
+/- English proof (translation)
+The claim follows from `(hP.2.2 _).1 ⟨q, rfl⟩`.
+-/
 theorem inv_mem {A : TRep R G} {Q : TRep R (G ⧸ N)} {P : Pair Q A} (hP : IsInvRep A N Q P) (q : Q.V) :
     ∀ g ∈ N, A.rho g (P.u q) = P.u q := (hP.2.2 _).1 ⟨q, rfl⟩
 
+/- English proof (translation)
+Establish `h` using `P.equiv g q`. Rewrite `h` using `[hP.1]`. Conclude with `h`.
+-/
 theorem inv_equiv {A : TRep R G} {Q : TRep R (G ⧸ N)} {P : Pair Q A} (hP : IsInvRep A N Q P) (g : G)
     (q : Q.V) : P.u (Q.rho (g : G ⧸ N) q) = A.rho g (P.u q) := by
   have h := P.equiv g q
@@ -35,6 +44,9 @@ def invLin {A B : TRep R G} {QA : TRep R (G ⧸ N)} {PA : Pair QA A} {QB : TRep 
     ((a.comp PA.u).codRestrict (LinearMap.range PB.u) fun q => (hB.2.2 _).2 fun g hg => by
       rw [LinearMap.comp_apply, ← ha, inv_mem hA q g hg])
 
+/- English proof (translation)
+Unfold `invLin`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.ofInjective_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem invLin_spec {A B : TRep R G} {QA : TRep R (G ⧸ N)} {PA : Pair QA A} {QB : TRep R (G ⧸ N)}
     {PB : Pair QB B} (hA : IsInvRep A N QA PA) (hB : IsInvRep B N QB PB) (a : A.V →ₗ[R] B.V)
     (ha : ∀ g m, a (A.rho g m) = B.rho g (a m)) (q : QA.V) : PB.u (invLin hA hB a ha q) = a (PA.u q) := by
@@ -51,11 +63,17 @@ def invPair {A B : TRep R G} {QA : TRep R (G ⧸ N)} {PA : Pair QA A} {QB : TRep
     apply hB.2.1.injective
     rw [inv_equiv hB, invLin_spec, invLin_spec, inv_equiv hA, ha]
 
+/- English proof (translation)
+The claim follows from `invLin_spec hA hB a ha q`.
+-/
 theorem invPair_u {A B : TRep R G} {QA : TRep R (G ⧸ N)} {PA : Pair QA A} {QB : TRep R (G ⧸ N)}
     {PB : Pair QB B} [DiscreteTopology A.V] (hA : IsInvRep A N QA PA) (hB : IsInvRep B N QB PB)
     (a : A.V →ₗ[R] B.V) (ha : ∀ g m, a (A.rho g m) = B.rho g (a m)) (q : QA.V) :
     PB.u ((invPair hA hB a ha).u q) = a (PA.u q) := invLin_spec hA hB a ha q
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Use `show PB.u ((invPair hA hB a ha).u (x.1 fun i => (invPair hA hB a ha).φ (PB.φ (g i)))) = a (PA.u (x.1 fun i => PA.φ (g i)))`. Rewrite using `[invPair_u, hA.1, hB.1]`. Both sides reduce to the same expression.
+-/
 theorem invPair_comm {A B : TRep R G} {QA : TRep R (G ⧸ N)} {PA : Pair QA A} {QB : TRep R (G ⧸ N)}
     {PB : Pair QB B} [DiscreteTopology A.V] (hA : IsInvRep A N QA PA) (hB : IsInvRep B N QB PB)
     (a : A.V →ₗ[R] B.V) (ha : ∀ g m, a (A.rho g m) = B.rho g (a m)) (hac : Continuous a) (n : ℕ)
@@ -67,6 +85,23 @@ theorem invPair_comm {A B : TRep R G} {QA : TRep R (G ⧸ N)} {PA : Pair QA A} {
   rw [invPair_u, hA.1, hB.1]
   rfl
 
+/- English proof (translation)
+Establish `hsub : ∀ {X : Type u} (f f' : Fin 0 → X), f = f'` using `fun f f' => Subsingleton.elim _ _`. Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero _).2 fun z hz => ?_` and prove the remaining obligations. Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Rewrite `hz` using `[InflationRestrictionInvariants.H_mk, InflationRestrictionInvariants.mk_eq_zero_iff]`.
+
+Establish `h0 : P.hom.f 0 x = 0` using `hz`. Establish `hx0 : x = 0`. Use `Subtype.ext (funext fun f => ?_)` and prove the remaining obligations. Establish `: P.u (x.1 fun i => P.φ (![] i)) = 0` using `congrArg (fun y : A.coch.X 0 => y.1 ![]) h0`. Apply `hP.2.1.injective` to reduce the goal to its premises.
+
+Use `(show P.u (x.1 f) = P.u 0 from ?_)` and prove the remaining obligations. Rewrite using `[map_zero, hsub f (fun i => P.φ (![] i))]`. Conclude with `this`. Rewrite using `[InflationRestrictionInvariants.mk_eq_zero_iff]`. Substitute `hx0` using the available equality.
+
+Conclude with `Submodule.zero_mem _`. Introduce `z`. Take `⟨⟨y, hy⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Establish `hy' : A.coch.d 0 y = 0` using `hy`. Establish `hinvG : ∀ a, A.rho a (y.1 ![]) = y.1 ![]` using `fun a => by`.
+
+Use `congrArg (fun w : A.coch.X 1 => w.1 (InflationRestrictionInvariants.e1 a)) hy'` as an intermediate fact. Simplify using `only [InflationRestrictionInvariants.zeroDifferential_val] at this`. Conclude with `sub_eq_zero.1 this`. Take `⟨q, hq⟩` from `(hP.2.2 (y.1 ![])).2 fun g _ => hinvG g`. Establish `hdq : Q.coch.d 0 (InflationRestrictionInvariants.const0 Q q) = 0`.
+
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[InflationRestrictionInvariants.oneCochain_apply_fin_one, InflationRestrictionInvariants.zeroDifferential_val]`. Use `show Q.rho (g 0) q - q = 0`. Take `⟨a, ha⟩` from `QuotientGroup.mk_surjective (g 0)`. Rewrite using `[← ha, sub_eq_zero]`.
+
+Apply `hP.2.1.injective` to reduce the goal to its premises. Rewrite using `[inv_equiv hP, hq, hinvG]`. Use `⟨Submodule.Quotient.mk ⟨InflationRestrictionInvariants.const0 Q q, hdq⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[InflationRestrictionInvariants.H_mk]`. Use `congr 1`.
+
+Use `Subtype.ext (Subtype.ext (funext fun f => ?_))` and prove the remaining obligations. Use `show P.u q = y.1 f`. Rewrite using `[hq, hsub f ![]]`.
+-/
 theorem deg0 (A : TRep R G) (Q : TRep R (G ⧸ N)) (P : Pair Q A) (hP : IsInvRep A N Q P) :
     Bijective (P.hom.H 0) := by
   have hsub : ∀ {X : Type u} (f f' : Fin 0 → X), f = f' := fun f f' => Subsingleton.elim _ _
@@ -129,6 +164,9 @@ def evC (M : TRep R G) [DiscreteTopology M.V] {QC : TRep R (G ⧸ N)} {PC : Pair
       rw [map_one, map_one, map_one]
       rfl }
 
+/- English proof (translation)
+Use `show (PC.u (QC.rho (g : G ⧸ N) q)).1 1 = _`. Rewrite using `[inv_equiv hC]`. Use `show (PC.u q).1 (1 * g) = _`. Rewrite using `[one_mul]`.
+-/
 theorem evC_rho (M : TRep R G) [DiscreteTopology M.V] {QC : TRep R (G ⧸ N)} {PC : Pair QC (CG M)}
     (hC : IsInvRep (CG M) N QC PC) (q : QC.V) (g : G) :
     (evC M hC).u (QC.rho (g : G ⧸ N) q) = (PC.u q).1 g := by
@@ -137,6 +175,17 @@ theorem evC_rho (M : TRep R G) [DiscreteTopology M.V] {QC : TRep R (G ⧸ N)} {P
   show (PC.u q).1 (1 * g) = _
   rw [one_mul]
 
+/- English proof (translation)
+Use `inv_disc hC` as an intermediate fact. Establish `: DiscreteTopology (Mbot (N` using `N) M).V := ‹DiscreteTopology M.V›`. Use `cmap_disc (G ⧸ N) (Mbot (N := N) M).V` as an intermediate fact. Set `j : QC.V → C(G ⧸ N, (Mbot (N` to `N) M).V) := fun q => ⟨fun y => (evC M hC).u (QC.rho y q), (evC M hC).u_cont.comp (QC.cont.comp (f := fun y => (y, q)) (continuous_id.prodMk continuous_const))⟩`. Establish `hj : ∀ q (g : G), j q (g : G ⧸ N) = (PC.u q).1 g` using `evC_rho M hC`.
+
+Use `⟨rfl, j, emb_disc _ fun q q' h => ?_, fun c g => rfl, fun f _ => ?_⟩` and prove the remaining obligations. Apply `hC.2.1.injective` to reduce the goal to its premises. Use `Subtype.ext (ContinuousMap.ext fun g => ?_)` and prove the remaining obligations. Rewrite using `[← hj, ← hj, h]`. Set `F : (CG M).V` to `⟨f.comp ⟨QuotientGroup.mk, continuous_quot_mk⟩, fun x g => by`.
+
+Establish `hx : x = 1` using `Subtype.ext (Subgroup.mem_bot.1 x.2)`. Substitute `hx` using the available equality. Use `show f ((((1 : (⊥ : Subgroup G)) : G) * g : G) : G ⧸ N) = M.rho 1 (f (g : G ⧸ N))`. Rewrite using `[map_one, Subgroup.coe_one, one_mul]`. Use the proof step `rfl⟩`.
+
+Take `⟨q, hq⟩` from `(hC.2.2 F).2 fun n hn => Subtype.ext (ContinuousMap.ext fun h => by show f ((h * n : G) : G ⧸ N) = f (h : G ⧸ N)`. Rewrite using `[QuotientGroup.mk_mul_of_mem h hn])`. Use `⟨q, ContinuousMap.ext fun y => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective y`. Rewrite using `[hj, hq]`.
+
+Both sides reduce to the same expression.
+-/
 theorem QC_coind (M : TRep R G) [DiscreteTopology M.V] {QC : TRep R (G ⧸ N)} {PC : Pair QC (CG M)}
     (hC : IsInvRep (CG M) N QC PC) : IsCoind (⊥ : Subgroup (G ⧸ N)) (Mbot M) QC (evC M hC) := by
   have := inv_disc hC
@@ -164,6 +213,11 @@ theorem QC_coind (M : TRep R G) [DiscreteTopology M.V] {QC : TRep R (G ⧸ N)} {
     rw [hj, hq]
     rfl
 
+/- English proof (translation)
+Establish `hq` using `shapiro_holds R (G ⧸ N) (⊥ : Subgroup (G ⧸ N)) (Mbot M) QC (evC M hC) (QC_coind M hC) ⟨fun _ => 1, continuous_const, fun x g => by`. Establish `hx : x = 1` using `Subtype.ext (Subgroup.mem_bot.1 x.2)`. Rewrite using `[hx, one_mul]⟩`. Establish `: Subsingleton (⊥ : Subgroup (G ⧸ N))` using `⟨fun a b => Subtype.ext ((Subgroup.mem_bot.1 a.2).trans (Subgroup.mem_bot.1 b.2).symm)⟩`. Use `(hq (m + 1)).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zero]`. Conclude with `FiniteLevelCohomology.H_succ_trivial _ m _`.
+-/
 theorem QC_acyc (M : TRep R G) [DiscreteTopology M.V] {QC : TRep R (G ⧸ N)} {PC : Pair QC (CG M)}
     (hC : IsInvRep (CG M) N QC PC) (m : ℕ) (z : QC.H (m + 1)) : z = 0 := by
   have hq := shapiro_holds R (G ⧸ N) (⊥ : Subgroup (G ⧸ N)) (Mbot M) QC (evC M hC) (QC_coind M hC)

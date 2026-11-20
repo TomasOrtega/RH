@@ -14,6 +14,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AlgUniq
 
+/- English proof (translation)
+Establish `w₁ : (fst G G).left ≫ G.hom = (G ⊗ G).hom` using `Over.w _`. Establish `w₂ : (snd G G).left ≫ G.hom = (G ⊗ G).hom` using `Over.w _`. Establish `v₁ : (fst A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `v₂ : (snd A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `h₁` using `h.1`.
+
+Establish `h₂` using `h.2`. Use `⟨⟨by rw [← w₁, reassoc_of% h₁, hA.w, reassoc_of% v₁]⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => pullback.lift (hA.lift (s.fst ≫ (fst G G).left) s.snd (by rw [Category.assoc, w₁, s.condition])) (hA.lift (s.fst ≫ (snd G G).left) s.snd (by rw [Category.assoc, w₂, s.condition])) (by rw [ …` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst G G).left = _ ≫ (fst G G).left`. Rewrite using `[Category.assoc, h₁, ← Category.assoc]`.
+
+Conclude with `(congrArg (· ≫ a) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Express the relevant statement in the definitionally equal form `_ ≫ (snd G G).left = _ ≫ (snd G G).left`. Rewrite using `[Category.assoc, h₂, ← Category.assoc]`. Conclude with `(congrArg (· ≫ a) (pullback.lift_snd _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Rewrite using `[← v₁, ← Category.assoc]`.
+
+Conclude with `(congrArg (· ≫ A.hom) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_snd _ _ _ _)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ (pullback.lift_fst _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (fst A A).left = _`. Apply `hA.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₁]`. Rewrite using `[IsPullback.lift_snd, ← h2, Category.assoc, v₁]`. Use `Eq.trans ?_ (pullback.lift_snd _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (snd A A).left = _`. Apply `hA.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₂]`. Rewrite using `[IsPullback.lift_snd, ← h2, Category.assoc, v₂]`.
+-/
 theorem isPullback_square {S S' : Scheme.{0}} {G : Over S} {A : Over S'} {f : S' ⟶ S}
     {a : A.left ⟶ G.left} (hA : IsPullback a A.hom G.hom f)
     {φ₂ : (A ⊗ A).left ⟶ (G ⊗ G).left} (h : Geo.Tor.IsSquare a φ₂) :
@@ -51,6 +64,9 @@ theorem isPullback_square {S S' : Scheme.{0}} {G : Over S} {A : Over S'} {f : S'
       · rw [IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₂]
       · rw [IsPullback.lift_snd, ← h2, Category.assoc, v₂]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `LBIso.symm (LBIso.chartPull (chartPullLinComb L a (fun _ : PUnit => b) (fun _ => b ≫ a) (fun _ => 1) (𝟙 _) fun _ => (Category.id_comp _).symm) (chartPullId _) (PolBaseChange.lbIso_refl (pull_isLB hL _)))`.
+-/
 theorem lbIso_pull_comp {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a : Y ⟶ X) (b : Z ⟶ Y)
     (c : Z ⟶ X) (e : b ≫ a = c) : LBIso (L.pull c) ((L.pull a).pull b) := by
   subst e
@@ -58,6 +74,11 @@ theorem lbIso_pull_comp {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a : Y ⟶
       (fun _ => b ≫ a) (fun _ => 1) (𝟙 _) fun _ => (Category.id_comp _).symm)
       (chartPullId _) (PolBaseChange.lbIso_refl (pull_isLB hL _)))
 
+/- English proof (translation)
+Establish `h₁` using `h.1`. Establish `h₂` using `h.2`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst G' G').left = _ ≫ (fst G' G').left`. Rewrite using `[Category.assoc, ← Over.comp_left, tensorHom_fst, Over.comp_left, reassoc_of% h₁, hg, h'.1]`.
+
+Express the relevant statement in the definitionally equal form `_ ≫ (snd G' G').left = _ ≫ (snd G' G').left`. Rewrite using `[Category.assoc, ← Over.comp_left, tensorHom_snd, Over.comp_left, reassoc_of% h₂, hg, h'.2]`.
+-/
 theorem square_comp {S S' : Scheme.{0}} {G G' : Over S} {A : Over S'} {a : A.left ⟶ G.left}
     {a' : A.left ⟶ G'.left} {g : G ⟶ G'} (hg : a ≫ g.left = a')
     {φ₂ : (A ⊗ A).left ⟶ (G ⊗ G).left} {φ₂' : (A ⊗ A).left ⟶ (G' ⊗ G').left}
@@ -70,6 +91,11 @@ theorem square_comp {S S' : Scheme.{0}} {G G' : Over S} {A : Over S'} {a : A.lef
   · change _ ≫ (snd G' G').left = _ ≫ (snd G' G').left
     rw [Category.assoc, ← Over.comp_left, tensorHom_snd, Over.comp_left, reassoc_of% h₂, hg, h'.2]
 
+/- English proof (translation)
+Introduce `H R _ _ I hI Y _ β B B' _ _ hB hB' hp b b' hb hβ hb' hβ'`. Use `hB.proper` as an intermediate fact. Use `hB'.proper` as an intermediate fact. Take `⟨g, hg, hu⟩` from `H.exists_iso hI (fun e => (hb e).1) hβ (fun e => (hb' e).1) hβ'`. Take `⟨k, hk, hk', -⟩` from `GlobalTheory.T.grpHom_algebraisation_of_reductions H R I hI B B' hB.proper hB'.proper Y Y β β b b' hb hβ hb' hβ' (fun e => 𝟙 _) (fun e => inferInstance) (fun e => by rw [Over.id_left, Over.id_left, Category.comp_id, Category.id_comp])`.
+
+Establish `hkg : k = g.hom` using `hu k fun e => by rw [hk', Over.id_left, Category.id_comp]`. Use `⟨g, hkg ▸ hk, hg, hu, fun M M' hM hM' h => ?_, fun P P' b₂ b₂' hP hP' hs hs' h => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.lineBundle_iso_of_iso_on_all_reductions R I hI B hB.smooth hp hB.geomConnected Y b (fun e => (hb e).1) M _ hM (pull_isLB hM' _) fun e => (h e).trans (pull_isLB hM _) (pull_isLB hM' _) (pull_isLB (pull_isLB hM' _) _) (lbIso_pull_comp hM' _ _ _ (hg e))`. Establish `hBB` using `AbelianSchemeGerms.isAbelianScheme_tensor B B hB hB`. Conclude with `GlobalTheory.T.lineBundle_iso_of_iso_on_all_reductions R I hI (B ⊗ B) hBB.smooth (isProjBy_tensor R B B hp hp) hBB.geomConnected (fun e => Y e ⊗ Y e) b₂ (fun e => isPullback_square (hb e).1 (hs e)) P _ hP (pull_isLB hP' _) fun e => (h e).trans (pull_isLB hP _) (pull_isLB hP' _) ( …`.
+-/
 theorem exists_iso_algebraisation : GlobalTheory.Published.FormalAlgebraisation.Morphisms → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) [∀ e, GrpObj (Y e)] (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left) (B B' : Over (Spec (CommRingCat.of R))) [GrpObj B] [GrpObj B'], IsAbelianScheme B → IsAbelianScheme B' → IsProjBy B.hom → ∀ (b : ∀ e, (Y e).left ⟶ B.left) (b' : ∀ e, (Y e).left ⟶ B'.left), (∀ e, IsGrpPullback (Y e) B (thick R I e) (b e)) → (∀ e, β e ≫ b (e + 1) = b e) → (∀ e, IsGrpPullback (Y e) B' (thick R I e) (b' e)) → (∀ e, β e ≫ b' (e + 1) = b' e) → ∃ g : B ≅ B', IsMonHom g.hom ∧ (∀ e, b e ≫ g.hom.left = b' e) ∧ (∀ g' : B ⟶ B', (∀ e, b e ≫ g'.left = b' e) → g' = g.hom) ∧ (∀ (M : LB B.left) (M' : LB B'.left), M.IsLB → M'.IsLB → (∀ e, LBIso (M.pull (b e)) (M'.pull (b' e))) → LBIso M (M'.pull g.hom.left)) ∧ ∀ (P : LB (B ⊗ B).left) (P' : LB (B' ⊗ B').left) (b₂ : ∀ e, (Y e ⊗ Y e).left ⟶ (B ⊗ B).left) (b₂' : ∀ e, (Y e ⊗ Y e).left ⟶ (B' ⊗ B').left), P.IsLB → P'.IsLB → (∀ e, Geo.Tor.IsSquare (b e) (b₂ e)) → (∀ e, Geo.Tor.IsSquare (b' e) (b₂' e)) → (∀ e, LBIso (P.pull (b₂ e)) (P'.pull (b₂' e))) → LBIso P (P'.pull (g.hom ⊗ₘ g.hom).left) := by
   intro H R _ _ I hI Y _ β B B' _ _ hB hB' hp b b' hb hβ hb' hβ'
   have := hB.proper

@@ -46,6 +46,9 @@ def multAt (J W : Ideal (MRingOver R ι)) : ℕ :=
     (Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (MRingOver R ι ⧸ J))).toNat
   else 0
 
+/- English proof (translation)
+The claim follows from `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P ⊔ Ideal.span {s})).subset fun _ hW => hW.1`.
+-/
 theorem divSupp_finite [IsNoetherianRing R] (P : Ideal (MRingOver R ι)) (s : MRingOver R ι) : (divSupp P s).Finite :=
   (Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P ⊔ Ideal.span {s})).subset fun _ hW => hW.1
 

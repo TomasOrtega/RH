@@ -21,6 +21,9 @@ variable {k r : ℕ} {H E : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ
 
 def cf (σ : B.Mat k r → (H →L[ℂ] H)) (x₀ : E) (a b : H) (g : B.Mat k r) : E := ⟪a, σ g b⟫_ℂ • x₀
 
+/- English proof (translation)
+The claim follows from `| [], _, g, hg => hf g hg | X :: v, hv, g, hg => by have hv' : LieW G v := fun Y hY => hv Y (List.mem_cons_of_mem _ hY) have hX := hv X List.mem_cons_self change deriv (fun t : ℝ => B.Rw v f (g * ex X t)) 0 = _ have e : (fun t : ℝ => B.Rw v f (g * ex X t)) = fun t => ⟪a, σ g (σ ( …`.
+-/
 theorem rw_cf (h : RepOn G σ) (x₀ : E) (a : H) {b : H} (hb : IsSm G σ b) {f : B.Mat k r → E}
     (hf : ∀ g ∈ G, f g = cf σ x₀ a b g) :
     ∀ {v : List (B.Mat k r)}, LieW G v → ∀ g ∈ G, B.Rw v f g = cf σ x₀ a (dsW σ v b) g
@@ -38,6 +41,9 @@ theorem rw_cf (h : RepOn G σ) (x₀ : E) (a : H) {b : H} (hb : IsSm G σ b) {f 
     let L : H →L[ℝ] E := (((innerSL ℂ a).comp (σ g)).smulRight x₀).restrictScalars ℝ
     exact (L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1).deriv
 
+/- English proof (translation)
+The claim follows from `| [], _, g, hg => hf g hg | X :: u, hu, g, hg => by have hu' : LieW G u := fun Y hY => hu Y (List.mem_cons_of_mem _ hY) have hX := hu X List.mem_cons_self change deriv (fun t : ℝ => u.foldr B.LdV f (NormedSpace.exp (-((t : ℂ) • X)) * g)) 0 = _ have e : (fun t : ℝ => u.foldr B.LdV …`.
+-/
 theorem lw_cf (h : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v‖) (x₀ : E) {a : H}
     (ha : IsSm G σ a) (b : H) {f : B.Mat k r → E} (hf : ∀ g ∈ G, f g = cf σ x₀ a b g) :
     ∀ {u : List (B.Mat k r)}, LieW G u → ∀ g ∈ G,
@@ -65,6 +71,11 @@ theorem lw_cf (h : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v�
 
 end Deriv
 
+/- English proof (translation)
+Introduce `hK k r ε μ φ E _ _ T hφ g₀ hg₀`. Take `⟨H, _, _, _, σ, v, w, hμ, hσ, hv, -, he⟩` from `hφ`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hK k r ε μ H σ hμ hσ v hv g₀ hg₀`. Use `⟨U, fun x => (((innerSL ℂ w).smulRight T).restrictScalars ℝ) (F x), hU, hgU, (((innerSL ℂ w).smulRight T).restrictScalars ℝ).contDiff.comp_contDiffOn hF, fun g hg hgG => ?_⟩` and prove the remaining obligations. Establish `e` using `hfF g hg hgG`.
+
+Simplify using `only at e`. Simplify using `[he g hgG, e]`.
+-/
 theorem capelli_coefficient_smooth : CoefSmooth := by
   intro hK k r ε μ φ E _ _ T hφ g₀ hg₀
   obtain ⟨H, _, _, _, σ, v, w, hμ, hσ, hv, -, he⟩ := hφ
@@ -75,6 +86,25 @@ theorem capelli_coefficient_smooth : CoefSmooth := by
   simp only at e
   simp [he g hgG, e]
 
+/- English proof (translation)
+Introduce `hK k r ε A h hD μ φ E _ _ x₀ m hφ hgap`. Establish `hsm` using `capelli_coefficient_smooth hK k r ε μ φ E x₀ hφ`. Take `⟨H, _, _, _, σ, v, w, hμ, hσ, hv, hw, he⟩` from `hφ`. Take `⟨P, ⟨⟨hP, hPJ⟩, -⟩, -, -, ⟨⟨h1, hm⟩, hiso, -⟩, -⟩` from `id hσ`. Take `⟨hc1, -⟩` from `conj_facts hP hPJ`.
+
+Establish `hG : PI.IsMatGroup (B.GV k r)` using `PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group k r`. Establish `hrep : RepOn (B.GV k r) σ` using `repOn_of_conj hP hPJ h1 hm`. Establish `hiso' : ∀ g ∈ B.GV k r, ∀ v, ‖σ g v‖ = ‖v‖` using `fun g hg v => by`. Take `⟨b, hb, rfl⟩` from `hc1 g hg`. Conclude with `hiso b hb v`.
+
+Establish `good : ∀ {x : H}, PI.UpqRep.IsKFinHpk (k` using `k) (r := r) σ x → IsSm (B.GV k r) σ x ∧ ∃ (T' : Submodule ℂ H) (C : ℝ), GoodSub (B.GV k r) (B.GV k r ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _)) σ T' ∧ 0 ≤ C ∧ ∀ W : List (B.Mat k r), LieW (B.GV k r) W → (∀ X ∈ W, ‖X‖ ≤ 1) → W.length ≤ m → dsW σ W x ∈ T' ∧ ‖dsW σ W x …`. Introduce and unpack `x ⟨S, hS, hxS, hSK⟩`. Establish `hT : GoodSub (B.GV k r) (B.GV k r ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _)) σ S` using `⟨hS, fun v hv => hK k r ε μ H σ hμ hσ v ⟨S, hS, hv, hSK⟩, hSK⟩`. Conclude with `⟨hT.sm x hxS, hT.words hG hrep inter_subset_left hxS m⟩`. Take `⟨hvs, Tv, Cv, hTv, hCv, hWv⟩` from `good hv`.
+
+Take `⟨hws, Tw, Cw, hTw, hCw, hWw⟩` from `good hw`. Use `hTv.fin` as an intermediate fact. Use `hTw.fin` as an intermediate fact. Establish `hkf : ∀ a ∈ Tv ⊔ Tw, PI.UpqRep.IsKFinHpk (k` using `k) (r := r) σ a := by`. Introduce `a ha`.
+
+Use `⟨Tv ⊔ Tw, inferInstance, ha, fun g hg x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hTv.stab g hg y hy) (hTw.stab g hg z hz)`. Take `⟨C', hC', hb⟩` from `coef_bound_uniform (G := B.GV k r) (σ := σ) (T := Tv ⊔ Tw) (ρ := fun g => (B.gN g ^ A)⁻¹) (fun g _ => inv_nonneg.2 (Real.rpow_nonneg (Real.sqrt_nonneg _) _)) (fun a ha b hb => by`.
+
+Take `⟨C, hd⟩` from `hD μ H σ hμ hσ hgap b a (hkf b hb) (hkf a ha)`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hp : 0 < B.gN g ^ A` using `Real.rpow_pos_of_pos (lt_of_lt_of_le one_pos (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hg)) A`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hp, mul_comm]`. Conclude with `hd g hg)`.
+
+Use `⟨C' * Cw * Cv * ‖x₀‖, fun g₀ hg₀ => ?_, fun u v' hu hv' huv g hg => ?_⟩` and prove the remaining obligations. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hsm g₀ hg₀`. Conclude with `⟨U, F, hU, hgU, hF.of_le (by exact_mod_cast le_top), hfF⟩`. Establish `hlie : ∀ W : List (B.Mat k r), (∀ X ∈ W, B.unitLie k r X) → LieW (B.GV k r) W ∧ ∀ X ∈ W, ‖X‖ ≤ 1` using `fun W hW => ⟨fun X hX t => ex_mem_of_lie (hW X hX).1 t, fun X hX => (Matrix.norm_le_iff zero_le_one).2 (hW X hX).2⟩`. Take `⟨hu1, hu2⟩` from `hWw u (hlie u hu).1 (hlie u hu).2 (by omega)`.
+
+Take `⟨hv1, hv2⟩` from `hWv v' (hlie v' hv').1 (hlie v' hv').2 (by omega)`. Establish `e : B.dLR u v' (fun g => φ g • x₀) g = cf σ x₀ (dsW σ u w) (dsW σ v' v) g` using `lw_cf hrep hiso' x₀ hws _ (rw_cf hrep x₀ w hvs (fun g hg => by rw [he g hg]; rfl) (hlie v' hv').1) (hlie u hu).1 g hg`. Rewrite using `[e, cf, norm_smul]`. Establish `hp : 0 < B.gN g ^ A` using `Real.rpow_pos_of_pos (lt_of_lt_of_le one_pos (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hg)) A`. Establish `h2` using `hb _ (Submodule.mem_sup_right hu1) _ (Submodule.mem_sup_left hv1) g hg`.
+
+Establish `h5 : 0 ≤ (B.gN g ^ A)⁻¹` using `inv_nonneg.2 hp.le`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h2.trans (by gcongr)`. Use `_ = (B.gN g ^ A * (B.gN g ^ A)⁻¹) * (C' * Cw * Cv * ‖x₀‖) := by ring`. Use `_ = _ := by rw [mul_inv_cancel₀ hp.ne', one_mul]`.
+-/
 theorem capelli_coefficient_continuity : CoefCC := by
   intro hK k r ε A h hD μ φ E _ _ x₀ m hφ hgap
   have hsm := capelli_coefficient_smooth hK k r ε μ φ E x₀ hφ

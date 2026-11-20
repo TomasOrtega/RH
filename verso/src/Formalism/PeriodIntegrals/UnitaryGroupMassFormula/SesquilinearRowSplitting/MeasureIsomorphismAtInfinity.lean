@@ -5,6 +5,39 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 
 namespace PI.SRW
 
+/- English proof (translation)
+Introduce `E _ _ _ S r T aa F0 Λ hC f hF`. Establish `hE` using `first_dual_reduction E S r T aa F0 Λ hC`. Establish `hFd` using `second_dual_reduction E S r T aa F0 Λ hC f hF`. Take `⟨_, _, _, _, _, hne, _, ⟨x, hx⟩⟩` from `hC`. Take `⟨x', hx'⟩ : ∃ x' : 𝓞 E, (x' : E) = star (x : E)` from `⟨RingOfIntegers.mapRingHom (starRingEnd E) x, rfl⟩`.
+
+Establish `herm : ∀ u v, star (S.hT u v) = S.hT v u` using `fun u v => by`. Rewrite using `[← starRingEnd_apply]`. Conclude with `LinearMap.isSymm_def.1 S.herm u v`. Establish `hfe : ∀ c a, S.hT (f c) (F0.e a) = if a = c then 1 else 0` using `fun c a => by`. Rewrite using `[← herm, hF.1 a c]`.
+
+Apply the tactic sequence `by_cases h : a = c <;> simp [h]`. Establish `addm : ∀ {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} {u v : E}, u ∈ I → v ∈ I → u + v ∈ I` using `fun hu hv => FractionalIdeal.mem_coe.1 (Submodule.add_mem _ (FractionalIdeal.mem_coe.2 hu) (FractionalIdeal.mem_coe.2 hv))`. Establish `negm : ∀ {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} {u : E}, u ∈ I → -u ∈ I` using `fun hu => FractionalIdeal.mem_coe.1 (Submodule.neg_mem _ (FractionalIdeal.mem_coe.2 hu))`. Establish `zerom : ∀ {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E}, (0 : E) ∈ I` using `FractionalIdeal.mem_coe.1 (Submodule.zero_mem _)`. Establish `summ : ∀ {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (g : Fin r → E), (∀ k, g k ∈ I) → ∑ k, g k ∈ I` using `fun g hg => FractionalIdeal.mem_coe.1 (Submodule.sum_mem _ (fun k _ => FractionalIdeal.mem_coe.2 (hg k)))`.
+
+Establish `intm : ∀ {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (o : 𝓞 E) {t : E}, t ∈ I → (o : E) * t ∈ I`. Introduce `I o t ht`. Establish `h1` using `Submodule.smul_mem (I : Submodule (𝓞 E) E) o (FractionalIdeal.mem_coe.2 ht)`. Rewrite `h1` using `[Algebra.smul_def]`. Conclude with `FractionalIdeal.mem_coe.1 h1`.
+
+Establish `hff : ∀ k b, S.hT (f k) (f b) ∈ aa k * aa b`. Introduce `k b`. Establish `hle : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) (S.hT (f k) (f b)) * (aa b)⁻¹ ≤ aa k`. Rewrite using `[FractionalIdeal.mul_le]`. Introduce `i hi j hj`.
+
+Take `⟨z, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hi`. Establish `h1 : S.hT (f k) (j • f b) ∈ aa k` using `hF.2.2 k _ (hFd b j hj)`. Rewrite `h1` using `[map_smul, smul_eq_mul]`. Rewrite using `[smul_mul_assoc, mul_comm (S.hT (f k) (f b)) j]`. Conclude with `FractionalIdeal.mem_coe.1 (Submodule.smul_mem _ z (FractionalIdeal.mem_coe.2 h1))`.
+
+Establish `h2 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) (S.hT (f k) (f b)) * (aa b)⁻¹ * aa b ≤ aa k * aa b` using `by gcongr`. Rewrite `h2` using `[mul_assoc, inv_mul_cancel₀ (hne b), mul_one]`. Conclude with `h2 (FractionalIdeal.mem_spanSingleton_self _ _)`. Establish `hprod : ∀ k b (t s : E), t ∈ aa k * aa b → s ∈ (aa k)⁻¹ → t * s ∈ aa b`. Introduce `k b t s ht hs`.
+
+Establish `h1` using `FractionalIdeal.mul_mem_mul ht hs`. Rewrite `h1` using `[mul_comm (aa k) (aa b), mul_assoc, mul_inv_cancel₀ (hne k), mul_one]`. Then use the resulting hypothesis. Set `c : Fin r → Fin r → E` to `fun a b => if a < b then -S.hT (f a) (f b) else if a = b then -(S.hT (f b) (f b) * (x : E)) else 0`. Set `f' : Fin r → S.V` to `fun b => f b + ∑ k, c k b • F0.e k`. Establish `hc_mem : ∀ k b, star (c k b) ∈ aa k * aa b`.
+
+Introduce `k b`. Simplify using `only [c]`. Use `split_ifs with h1 h2`. Rewrite using `[star_neg, herm]`. Conclude with `negm (by rw [mul_comm]; exact hff b k)`.
+
+Substitute `h2` using the available equality. Rewrite using `[star_neg, star_mul', herm, ← hx', mul_comm (S.hT (f k) (f k)) (x' : E)]`. Conclude with `negm (intm x' (hff k k))`. Rewrite using `[star_zero]`. Conclude with `zerom`.
+
+Establish `hsum : ∀ a b, S.hT (f a) (f b) + c a b + star (c b a) = 0`. Introduce `a b`. Break down `lt_trichotomy a b with hab | hab | hab` into its components or cases. Establish `h1 : ¬ b < a` using `not_lt.2 hab.le`. Establish `h2 : b ≠ a` using `hab.ne'`.
+
+Simplify using `[c, hab, h1, h2]`. Substitute `hab` using the available equality. Simplify using `only [c, lt_irrefl, ↓reduceIte]`. Rewrite using `[star_neg, star_mul', herm]`. Establish `h3 : S.hT (f a) (f a) * (x : E) + S.hT (f a) (f a) * star (x : E) = S.hT (f a) (f a)`.
+
+Rewrite using `[← mul_add, hx, mul_one]`. Take the linear combination `-h3`. Establish `h1 : ¬ a < b` using `not_lt.2 hab.le`. Establish `h2 : a ≠ b` using `hab.ne'`. Simplify using `[c, hab, h1, h2, herm]`.
+
+Use `⟨f', ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a b`. Simplify using `[f', map_sum, F0.e_iso, hF.1]`. Introduce `b`. Simplify using `[f', map_sum, F0.z_orth, hF.2.1]`.
+
+Introduce `b l hl`. Establish `hexp : S.hT (f' b) l = S.hT (f b) l + ∑ k, star (c k b) * S.hT (F0.e k) l`. Simplify using `[f', map_sum, starRingEnd_apply]`. Rewrite using `[hexp]`. Conclude with `addm (hF.2.2 b l hl) (summ _ (fun k => hprod k b _ _ (hc_mem k b) (hE k l hl)))`.
+
+Introduce `a b`. Establish `h` using `hsum a b`. Simplify using `[f', map_sum, hfe, hF.1, F0.e_iso, Finset.sum_ite_eq', starRingEnd_apply]`. Take the linear combination `h`.
+-/
 theorem measure_isomorphism_at_infinity : IsoStep := by
   intro E _ _ _ S r T aa F0 Λ hC f hF
   have hE := first_dual_reduction E S r T aa F0 Λ hC

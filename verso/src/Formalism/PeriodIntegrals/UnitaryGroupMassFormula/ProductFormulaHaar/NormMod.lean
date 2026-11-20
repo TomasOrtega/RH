@@ -16,20 +16,34 @@ section
 
 variable {K : Type} [Field K] [TopologicalSpace K] [IsTopologicalRing K] [LocallyCompactSpace K]
 
+/- English proof (translation)
+Unfold `modF`. Rewrite using `[dif_pos rfl]`.
+-/
 theorem modF_zero : modF K 0 = 0 := by
   unfold modF
   rw [dif_pos rfl]
 
+/- English proof (translation)
+Unfold `modF`. Rewrite using `[dif_neg h]`.
+-/
 theorem modF_of_ne {a : K} (h : a ≠ 0) :
     modF K a = ((distribHaarChar K (Units.mk0 a h) : NNReal) : ℝ) := by
   unfold modF
   rw [dif_neg h]
 
+/- English proof (translation)
+Rewrite using `[modF_of_ne h]`. Establish `hu : IsUnit (distribHaarChar K (Units.mk0 a h))` using `(Group.isUnit (Units.mk0 a h)).map (distribHaarChar K)`. Conclude with `NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr hu.ne_zero)`.
+-/
 theorem modF_pos {a : K} (h : a ≠ 0) : 0 < modF K a := by
   rw [modF_of_ne h]
   have hu : IsUnit (distribHaarChar K (Units.mk0 a h)) := (Group.isUnit (Units.mk0 a h)).map (distribHaarChar K)
   exact NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr hu.ne_zero)
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `[modF_zero]`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality.
+
+Simplify using `[modF_zero]`. Rewrite using `[modF_of_ne (mul_ne_zero ha hb), modF_of_ne ha, modF_of_ne hb]`. Establish `hu : Units.mk0 (a * b) (mul_ne_zero ha hb) = Units.mk0 a ha * Units.mk0 b hb` using `by ext; simp`. Rewrite using `[hu, map_mul, NNReal.coe_mul]`.
+-/
 theorem modF_mul (a b : K) : modF K (a * b) = modF K a * modF K b := by
   by_cases ha : a = 0
   · subst ha; simp [modF_zero]
@@ -40,12 +54,20 @@ theorem modF_mul (a b : K) : modF K (a * b) = modF K a * modF K b := by
     ext; simp
   rw [hu, map_mul, NNReal.coe_mul]
 
+/- English proof (translation)
+Rewrite using `[modF_of_ne one_ne_zero]`. Establish `hu : Units.mk0 (1 : K) one_ne_zero = 1` using `by ext; simp`. Rewrite using `[hu, map_one, NNReal.coe_one]`.
+-/
 theorem modF_one : modF K 1 = 1 := by
   rw [modF_of_ne one_ne_zero]
   have hu : Units.mk0 (1 : K) one_ne_zero = 1 := by
     ext; simp
   rw [hu, map_one, NNReal.coe_one]
 
+/- English proof (translation)
+Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using `[modF_zero]`. Establish `hm : modF K (a / b) * modF K b = modF K a`. Rewrite using `[← modF_mul, div_mul_cancel₀ a hb]`.
+
+Rewrite using `[eq_div_iff (modF_pos hb).ne']`. Conclude with `hm`.
+-/
 theorem modF_div (a b : K) : modF K (a / b) = modF K a / modF K b := by
   by_cases hb : b = 0
   · subst hb; simp [modF_zero]

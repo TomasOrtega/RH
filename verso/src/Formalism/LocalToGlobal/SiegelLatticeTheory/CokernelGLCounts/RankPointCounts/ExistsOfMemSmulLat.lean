@@ -15,6 +15,13 @@ section G
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.Loc.HermSp.smulLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Conclude with `⟨l, hl, rfl⟩`.
+
+Consider the case `zero => exact ⟨0, abelian₂.zero_mem, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨l, hl, rfl⟩` from `hy`. Take `⟨m, hm, rfl⟩` from `hz`. Conclude with `⟨l + m, abelian₂.add_mem hl hm, by simp [smul_add]⟩`.
+
+Consider the case `smul a y _ hy`. Take `⟨l, hl, rfl⟩` from `hy`. Conclude with `⟨a • l, abelian₂.smul_mem a hl, smul_comm a c l⟩`.
+-/
 theorem exists_of_mem_smulLat {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
     {c : E} {abelian₂ : Submodule M.L.O V} {x : V} (hx : x ∈ H.smulLat c abelian₂) : ∃ l ∈ abelian₂, x = c • l := by
   unfold Formalism.MainNotions.S.Loc.HermSp.smulLat at hx
@@ -39,6 +46,31 @@ def Lemma0G (M : Model F E) (r : ℕ) : Prop :=
         H.mkW t.f' ⟨w, mem_perp_isotropicSpan_of_mem_framePerp' H hw⟩ ∈ H.Lset t.abelian₂ t.f' ∧
         (H.mkW t.f' ⟨w, mem_perp_isotropicSpan_of_mem_framePerp' H hw⟩, H.mkW t.f ⟨w, mem_perp_isotropicSpan_of_mem_framePerp H hw⟩) ∈ H.iotaGraph g t))
 
+/- English proof (translation)
+Introduce `g hg V _ _ H t hgen w hw`. Prove the components needed by the constructor for the conclusion. Introduce `hwL`. Use `⟨⟨⟨w, mem_perp_isotropicSpan_of_mem_framePerp H hw⟩, hwL, rfl⟩, ⟨⟨w, mem_perp_isotropicSpan_of_mem_framePerp' H hw⟩, hwL, rfl⟩, ?_⟩` and prove the remaining obligations. Use `⟨⟨w, mem_perp_isotropicSpan_of_mem_framePerp' H hw⟩, ⟨w, mem_perp_isotropicSpan_of_mem_framePerp H hw⟩, hwL, hwL, ?_, rfl⟩` and prove the remaining obligations.
+
+Simplify using `only [sub_self]`. Conclude with `Submodule.zero_mem _`. Introduce and unpack `⟨-, -, x', x, hx'L, hxL, hxx, hp⟩`. Simplify using `only [Prod.mk.injEq] at hp`. Take `⟨hp1, hp2⟩` from `hp`.
+
+Simplify using `only [HermSp.mkW, Submodule.mkQ_apply] at hp1 hp2`. Establish `ha' : w - (x' : V) ∈ H.X t.f'`. Simplify `(Submodule.Quotient.eq _).1 hp1` using `[Submodule.mem_comap]`. Establish `ha : w - (x : V) ∈ H.X t.f`. Simplify `(Submodule.Quotient.eq _).1 hp2` using `[Submodule.mem_comap]`.
+
+Take `⟨α', hα'⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 ha'`. Take `⟨α, hα⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 ha`. Take `⟨l, hl, hxl⟩` from `exists_of_mem_smulLat H hxx`. Establish `hq0 : (g.q : F) ≠ 0` using `fun h0 => g.q_irr.ne_zero (by exact_mod_cast h0)`. Establish `hqqi : algebraMap F E (g.q : F) * algebraMap F E ((g.q : F)⁻¹) = 1`.
+
+Rewrite using `[← map_mul, mul_inv_cancel₀ hq0, map_one]`. Establish `hqiq : algebraMap F E ((g.q : F)⁻¹) * algebraMap F E (g.q : F) = 1`. Rewrite using `[mul_comm, hqqi]`. Establish `hMM : H.MMfam t = Sum.elim t.f (fun a => algebraMap F E ((g.q : F)⁻¹) • (t.f' a - t.f a))`. Simplify using `only [HermSp.MMfam, hg]`.
+
+Take `⟨-, hli, hprim⟩` from `hgen.2`. Rewrite `hli`, `hprim` using `[hMM]`. Set `γ : Fin (r + 1) ⊕ Fin (r + 1) → E` to `Sum.elim (Fin.snoc (fun i => algebraMap F E ((g.q : F)⁻¹) * (α' i - α i)) 0) (Fin.snoc α' 0)`. Establish `hsum : ∑ j, γ j • Sum.elim t.f (fun a => algebraMap F E ((g.q : F)⁻¹) • (t.f' a - t.f a)) j = l`. Establish `key : algebraMap F E (g.q : F) • ∑ j, γ j • Sum.elim t.f (fun a => algebraMap F E ((g.q : F)⁻¹) • (t.f' a - t.f a)) j = algebraMap F E (g.q : F) • l`.
+
+Rewrite using `[← hxl, Fintype.sum_sum_type]`. Simplify using `only [γ, Sum.elim_inl, Sum.elim_inr, Fin.sum_univ_castSucc, Fin.snoc_castSucc, Fin.snoc_last, zero_smul, add_zero, smul_add, Finset.smul_sum]`. Establish `e1 : (x : V) - x' = (w - x') - (w - x)` using `by abel`. Rewrite using `[e1, ← hα', ← hα, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, ← mul_assoc, hqqi, one_mul, smul_comm (algebraMap F E (g.q : F)) (α' i), smul_smul (algebraMap F E (g.q : F)), hqqi, one_smul, sub_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hqiq, one_smul]`. Use `_ = l := by rw [mul_smul, key, ← mul_smul, hqiq, one_smul]`.
+
+Establish `hlO` using `hprim l hl ((Submodule.mem_span_range_iff_exists_fun E).2 ⟨γ, hsum⟩)`. Take `⟨β, hβ⟩` from `(Submodule.mem_span_range_iff_exists_fun M.L.O).1 hlO`. Establish `hβ' : ∑ j, (β j : E) • Sum.elim t.f (fun a => algebraMap F E ((g.q : F)⁻¹) • (t.f' a - t.f a)) j = l`. Simplify `hβ` using `only [Subring.smul_def]`. Establish `hzero` using `Fintype.linearIndependent_iff.1 hli (fun j => (β j : E) - γ j) (by`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib, hβ', hsum, sub_self])`. Establish `hmem : ∀ i : Fin r, α' i ∈ M.L.O`. Introduce `i`. Use `hzero (Sum.inr i.castSucc)` as an intermediate fact. Simplify using `only [γ, Sum.elim_inr, Fin.snoc_castSucc, sub_eq_zero] at this`.
+
+Rewrite using `[← this]`. Conclude with `(β _).2`. Establish `hf'L` using `hgen.1.2.2.1.1.1`. Establish `hw' : w = (x' : V) + ∑ i, α' i • t.f' i.castSucc` using `by rw [hα']; abel`. Rewrite using `[hw']`.
+
+Use `t.abelian₂.add_mem hx'L (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Use `t.abelian₂.smul_mem (⟨α' i, hmem i⟩ : M.L.O) (hf'L i.castSucc)` as an intermediate fact. Simplify `this` using `only [Subring.smul_def]`.
+-/
 theorem lemma0G_holds (M : Model F E) (r : ℕ) : Lemma0G M r := by
   intro g hg V _ _ H t hgen w hw
   constructor

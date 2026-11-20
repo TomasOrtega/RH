@@ -37,6 +37,25 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 noncomputable section
 namespace GlobalTheory.ThetaFrameSpec
 
+/- English proof (translation)
+Take `⟨R₀, P₀, φ, hfg, hg, hφ, hiso⟩` from `GlobalTheory.KeyTf.exists_polAV_finiteType_subring S x.P`. Use `haveI : IsNoetherianRing R₀ := Algebra.FiniteType.isNoetherianRing ℤ R₀`. Take `⟨r, hr, hnear⟩` from `GlobalTheory.KeyNear.main hL R₀ P₀ (hg ▸ x.g_pos) (PrimeSpectrum.comap R₀.subtype (IsLocalRing.closedPoint S))`. Establish `hru : IsUnit (r : S)`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hr ((IsLocalRing.mem_maximalIdeal _).2 h)`. Take `⟨R₁, h₁, hF₁, hfg₁⟩` from `GlobalTheory.KeyTf.exists_finiteType_subring_adjoin S R₀ {((hru.unit⁻¹ : Sˣ) : S)} hfg`. Establish `hm : ((hru.unit⁻¹ : Sˣ) : S) ∈ R₁` using `hF₁ (by simp)`. Take `⟨y, π, hyg, hπ, hπiso⟩` from `hnear R₁ (Subring.inclusion h₁) (IsUnit.of_mul_eq_one ⟨_, hm⟩ (Subtype.ext hru.mul_val_inv))`. Establish `hcomp : spMap R₁.subtype ≫ spMap (Subring.inclusion h₁) = spMap R₀.subtype`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Set `ψ : x.P.A.left ⟶ y.P.A.left` to `hπ.1.lift φ (x.P.A.hom ≫ spMap R₁.subtype) (by rw [Category.assoc, hcomp]; exact hφ.1.w)`. Establish `hψ₁ : ψ ≫ π = φ` using `hπ.1.lift_fst _ _ _`. Establish `hψ₂ : ψ ≫ y.P.A.hom = x.P.A.hom ≫ spMap R₁.subtype` using `hπ.1.lift_snd _ _ _`.
+
+Establish `hψ : IsGrpPullback x.P.A y.P.A (spMap R₁.subtype) ψ` using `hπ.cancel (by rw [hcomp, hψ₁]; exact hφ) hψ₂`. Establish `hψiso : LBIso x.P.L (y.P.L.pull ψ)` using `LBIso.trans x.P.isLB (pull_isLB P₀.isLB φ) (pull_isLB y.P.isLB ψ) hiso (GlobalTheory.GenSpread.lbIso_pull_of_lbIso hπiso ψ hψ₁.symm).symm`. Take `⟨rig, hrig, th, hth, v, hv, hpb⟩` from `GlobalTheory.KeyTf.exists_keyPB_on R₁ S R₁.subtype y x.P ψ x.g_pos (hg.symm.trans hyg.symm) hψ hψiso`. Take `⟨a, t, ht, hta, hid⟩` from `(GlobalTheory.KeyOnPol.main hL S).2 ⟨x.P, x.g_pos, rig, hrig, th, hth, v, hv⟩ x.rig x.rig_gen x.th x.th_ne x.v x.basis`. Use `haveI := x.P.isAb.comm`.
+
+Use `choose M hM using fun i => (hv.2 (x.v i) (x.basis.1 i)).exists`. Establish `hdet : IsUnit (Matrix.det (Matrix.of M))` using `((GlobalTheory.LieComb.lieComb_algebra S x.P.A x.P.g v hv.1).2.2.2.2 (Matrix.of M) x.v hv hM).1 x.basis`. Take `⟨R₂, h₂, hF₂, hfg₂⟩` from `GlobalTheory.KeyTf.exists_finiteType_subring_adjoin S R₁ ({u, (a : S), ((a⁻¹ : Sˣ) : S), ((hdet.unit⁻¹ : Sˣ) : S)} ∪ Finset.univ.image fun p : Fin x.P.g × Fin x.P.g => M p.1 p.2) hfg₁`. Establish `m₁ : u ∈ R₂` using `hF₂ (by simp)`. Establish `m₂ : (a : S) ∈ R₂` using `hF₂ (by simp)`.
+
+Establish `m₃ : ((a⁻¹ : Sˣ) : S) ∈ R₂` using `hF₂ (by simp)`. Establish `m₄ : ((hdet.unit⁻¹ : Sˣ) : S) ∈ R₂` using `hF₂ (by simp)`. Establish `m₅ : ∀ i k, M i k ∈ R₂` using `fun i k => hF₂ (by`. Simplify using `only [Finset.coe_union, Finset.coe_image, Set.mem_union]`. Conclude with `Or.inr ⟨(i, k), by simp, rfl⟩)`.
+
+Take `⟨y₂, hy₂⟩` from `exists_keyPB_ring y (Subring.inclusion h₂)`. Establish `hpb₂` using `GlobalTheory.KeyCancel.keyPB_cancel _ _ _ _ _ _ (Subring.inclusion h₂) R₂.subtype hy₂ hpb`. Set `a₂ : R₂ˣ` to `⟨⟨a, m₂⟩, ⟨_, m₃⟩, Subtype.ext a.mul_inv, Subtype.ext a.inv_mul⟩`. Set `M₂ : Matrix (Fin x.P.g) (Fin x.P.g) R₂` to `Matrix.of fun i k => ⟨M i k, m₅ i k⟩`. Establish `hdet₂ : IsUnit M₂.det`.
+
+Use `IsUnit.of_mul_eq_one ⟨_, m₄⟩ (Subtype.ext ?_)` and prove the remaining obligations. Establish `e : (M₂.det : S) = (Matrix.of M).det` using `R₂.subtype.map_det M₂`. Use `show (M₂.det : S) * _ = 1`. Rewrite using `[e]`. Conclude with `hdet.mul_val_inv`.
+
+Take `⟨y₃, hy₃⟩` from `GlobalTheory.KeyScaleLift.exists_keyPB_scale R₂ S R₂.subtype y₂ ⟨x.P, x.g_pos, rig, hrig, th, hth, v, hv⟩ a₂ M₂ hpb₂ hdet₂`. Conclude with `⟨R₂, y₃, m₁, hfg₂, GlobalTheory.keyPB_trans _ _ _ _ _ _ R₂.subtype (RingHom.id S) (hy₃ t ht x.v x.basis hta hM) hid⟩`.
+-/
 theorem key_descends (hL : Out.Laws) (S : Type) [CommRing S] [IsDomain S] [IsLocalRing S] [IsNoetherianRing S]
     (x : KeyIn S) (u : S) :
     ∃ (R : Subring S) (y : KeyIn R), u ∈ R ∧ Algebra.FiniteType ℤ R ∧ KeyPB x y R.subtype := by
@@ -92,6 +111,13 @@ theorem key_descends (hL : Out.Laws) (S : Type) [CommRing S] [IsDomain S] [IsLoc
   obtain ⟨y₃, hy₃⟩ := GlobalTheory.KeyScaleLift.exists_keyPB_scale R₂ S R₂.subtype y₂ ⟨x.P, x.g_pos, rig, hrig, th, hth, v, hv⟩ a₂ M₂ hpb₂ hdet₂
   exact ⟨R₂, y₃, m₁, hfg₂, GlobalTheory.keyPB_trans _ _ _ _ _ _ R₂.subtype (RingHom.id S) (hy₃ t ht x.v x.basis hta hM) hid⟩
 
+/- English proof (translation)
+Take `⟨E, _, _, _, ρ, e, hft, hρ, he⟩` from `GlobalTheory.KeyCx.exists_dominant_component R g`. Take `⟨Q, hQ, hle, hT, hdim⟩` from `GlobalTheory.LineThrough.exists_prime_dimensionLEOne_avoiding E e (ρ '' {0}ᶜ) ((Set.to_countable _).image _) (by`. Introduce and unpack `⟨r, hr, h⟩`. Conclude with `hr (hρ (h.trans (map_zero ρ).symm)))`. Take `⟨E', _, _, _, ρ', e', hs, hρ', he'⟩` from `GlobalTheory.CurveNorm.exists_smooth_normalisation (E ⧸ Q) (Ideal.Quotient.liftₐ Q e fun a ha => hle ha)`.
+
+Use `⟨E', inferInstance, inferInstance, inferInstance, (ρ'.toRingHom.comp (Ideal.Quotient.mk Q)).comp ρ, e', hs, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `h`. Use `hT _ ⟨r, h, rfl⟩ (Ideal.Quotient.eq_zero_iff_mem.1 (hρ' ?_))` and prove the remaining obligations.
+
+Rewrite using `[map_zero]`. Conclude with `hr`. Rewrite using `[← he]`. Use extensionality with `r`. Conclude with `AlgHom.congr_fun he' (Ideal.Quotient.mk Q (ρ r))`.
+-/
 theorem exists_smooth_through (R : Type) [CommRing R] [IsDomain R] [Algebra.FiniteType ℤ R] [Countable R]
     (g : R →+* ℂ) :
     ∃ (E : Type) (_ : CommRing E) (_ : IsDomain E) (_ : Algebra ℂ E) (ρ : R →+* E) (e : E →ₐ[ℂ] ℂ),
@@ -116,10 +142,18 @@ def IsVal (x : KeyIn ℂ) (t : ℂ) : Prop :=
   ∃ (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ),
     charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x τ M a b c ∧ t = M.det ^ 4 / c ^ 8
 
+/- English proof (translation)
+Take `⟨τ, M, a, b, c, h₁, h₂, -, h₃⟩` from `(GlobalTheory.KeyNormalExists.exists_normalAt hT x).1`. Conclude with `⟨_, τ, M, a, b, c, h₁, h₂, h₃, rfl⟩`.
+-/
 theorem exists_isVal (hT : ThetaUnifAV) (x : KeyIn ℂ) : ∃ t, IsVal x t := by
   obtain ⟨τ, M, a, b, c, h₁, h₂, -, h₃⟩ := (GlobalTheory.KeyNormalExists.exists_normalAt hT x).1
   exact ⟨_, τ, M, a, b, c, h₁, h₂, h₃, rfl⟩
 
+/- English proof (translation)
+Take `⟨σ, σ', h⟩` from `GlobalTheory.EmbC.exists_comp_eq R g g' hg hg'`. Take `⟨z, hz⟩` from `exists_keyPB_ring x σ`. Take `⟨s, hs⟩` from `exists_isVal hT z`. Establish `hz' : KeyPB z x' σ'` using `GlobalTheory.KeyCancel.keyPB_cancel _ _ _ _ _ _ g' σ' hx' (h ▸ GlobalTheory.keyPB_trans _ _ _ _ _ _ g σ hx hz)`. Use `σ'.injective ((hE σ' x' z t' s hz' ht' hs).symm.trans ((hE σ x z _ s hz ht hs).trans ?_))` and prove the remaining obligations.
+
+Conclude with `RingHom.congr_fun h u`.
+-/
 theorem isVal_injective (hT : ThetaUnifAV)
     (hE : ∀ (f : ℂ →+* ℂ) (x x' : KeyIn ℂ) (t t' : ℂ), KeyPB x' x f → IsVal x t → IsVal x' t' → t' = f t)
     {R : Type} [CommRing R] [IsDomain R] (y : KeyIn R) (g g' : R →+* ℂ) (hg : Function.Injective g)
@@ -133,6 +167,23 @@ theorem isVal_injective (hT : ThetaUnifAV)
   refine σ'.injective ((hE σ' x' z t' s hz' ht' hs).symm.trans ((hE σ x z _ s hz ht hs).trans ?_))
   exact RingHom.congr_fun h u
 
+/- English proof (translation)
+Introduce `hL hT hI hN hE S _ _ _ _ x₀ f f' u x x' τ M a b c τ' M' a' b' c' hf hx hx' hab hab' hc hc' hn hn' hu`. Take `⟨N, hN, hK⟩` from `hN`. Take `⟨R, y, huR, hfg, hy⟩` from `key_descends hL S x₀ u`. Use `haveI : Countable R := by`. Take `⟨n, p, hp⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 hfg`.
+
+Use `haveI : Countable (MvPolynomial (Fin n) ℤ) := by`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Conclude with `MvPolynomial.cardinalMk_le_max_lift.trans (by simp)`. Conclude with `hp.countable`. Take `⟨E, _, _, _, ρ, e, hs, hρ, he⟩` from `exists_smooth_through R (f'.comp R.subtype)`.
+
+Take `⟨z, hz⟩` from `exists_keyPB_ring y ρ`. Take `⟨κ, hκ⟩` from `GlobalTheory.KeySmoothBase.exists_unit_of_smooth hT hL.polBaseChange N hK ℂ E z`. Use `choose w hw using fun s : E →ₐ[ℂ] ℂ => exists_keyPB_ring z s.toRingHom`. Use `choose t ht using fun s : E →ₐ[ℂ] ℂ => exists_isVal hT (w s)`. Establish `hxy : KeyPB x y (f.comp R.subtype)` using `GlobalTheory.keyPB_trans _ _ _ _ _ _ _ _ hy hx`.
+
+Establish `gen : ∀ s : E →ₐ[ℂ] ℂ, (∀ r ∈ ρ '' {0}ᶜ, s r ≠ 0) → t s = s (ρ ⟨u, huR⟩)` using `fun s h => isVal_injective hT hE y (f.comp R.subtype) (s.toRingHom.comp ρ) (hf.comp Subtype.val_injective) ((injective_iff_map_eq_zero _).2 fun r hr => by_contra fun h' => h _ ⟨r, h', rfl⟩ hr) ⟨u, huR⟩ hxy (GlobalTheory.keyPB_trans _ _ _ _ _ _ _ _ hz (hw s)) ⟨τ, M, a, b, c, hab, …`. Establish `hc₀ : (ρ '' {0}ᶜ).Countable` using `(Set.to_countable _).image _`. Establish `h₀ : (0 : E) ∉ ρ '' {0}ᶜ`. Introduce and unpack `⟨r, hr, h⟩`. Conclude with `hr (hρ (h.trans (map_zero ρ).symm))`.
+
+Establish `hpow : ρ ⟨u, huR⟩ ^ N z.P.g = κ`. Assume the negation of the conclusion as `h`. Take `⟨s, hs⟩` from `GlobalTheory.exists_algHom_ne_zero_of_countable E (insert (ρ ⟨u, huR⟩ ^ N z.P.g - κ) (ρ '' {0}ᶜ)) (hc₀.insert _) (by`. Introduce and unpack `(h' | h')`. Use `exacts [h (sub_eq_zero.1 h'.symm), h₀ h'])`.
+
+Use `hs _ (Set.mem_insert _ _) ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_pow, ← gen s fun r hr => hs r (Set.mem_insert_of_mem _ hr), hκ s.toRingHom (w s) (t s) (hw s) (ht s)]`. Conclude with `sub_self _`. Establish `hunit : IsUnit (ρ ⟨u, huR⟩)` using `(isUnit_pow_iff (Nat.one_le_iff_ne_zero.1 (hN z.P.g))).1 (hpow ▸ κ.isUnit)`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.exists_algHom_ne_zero_of_countable E _ hc₀ h₀`.
+
+Establish `key` using `GlobalTheory.RootConst.value_eq_unit_of_pow_eq hL hT hI E z (N z.P.g) hunit.unit t s₀ (hN _) (fun s => ⟨w s, hw s, ht s⟩) (fun s => by`. Rewrite using `[hκ s.toRingHom (w s) (t s) (hw s) (ht s), ← map_pow, IsUnit.unit_spec, hpow]`. Use the proof step `rfl)`. Use the proof step `(gen s₀ hs₀) e`. Establish `hwe : KeyPB (w e) y (f'.comp R.subtype)` using `he ▸ GlobalTheory.keyPB_trans _ _ _ _ _ _ _ _ hz (hw e)`.
+
+Establish `hid : KeyPB x' (w e) (RingHom.id ℂ)` using `GlobalTheory.KeyCancel.keyPB_cancel _ _ _ _ _ _ _ (RingHom.id ℂ) hwe (GlobalTheory.keyPB_trans _ _ _ _ _ _ R.subtype f' hy hx')`. Use `(hE _ _ _ (t e) _ hid (ht e) ⟨τ', M', a', b', c', hab', hc', hn', rfl⟩).trans (key.trans ?_)` and prove the remaining obligations. Conclude with `RingHom.congr_fun he ⟨u, huR⟩`.
+-/
 theorem value_specialises : Out.Laws → ThetaUnifAV → Key.Chi.InversionStatement → (∃ N : ℕ → ℕ, (∀ g, 1 ≤ N g) ∧ KeyRule N 1 charHalf) → (∀ (f : ℂ →+* ℂ) (x x' : KeyIn ℂ) (t t' : ℂ), KeyPB x' x f → (∃ (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x τ M a b c ∧ t = M.det ^ 4 / c ^ 8) → (∃ (τ M : Matrix (Fin x'.P.g) (Fin x'.P.g) ℂ) (a b : Fin x'.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x' τ M a b c ∧ t' = M.det ^ 4 / c ^ 8) → t' = f t) → (∀ (S : Type) [CommRing S] [IsDomain S] [IsLocalRing S] [IsPrincipalIdealRing S] (x₀ : KeyIn S) (f f' : S →+* ℂ) (u : S) (x x' : KeyIn ℂ) (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ) (τ' M' : Matrix (Fin x'.P.g) (Fin x'.P.g) ℂ) (a' b' : Fin x'.P.g → ℂ) (c' : ℂ), Function.Injective f → KeyPB x x₀ f → KeyPB x' x₀ f' → charHalf _ a b → charHalf _ a' b' → c ≠ 0 → c' ≠ 0 → NormalAt x τ M a b c → NormalAt x' τ' M' a' b' c' → M.det ^ 4 / c ^ 8 = f u → M'.det ^ 4 / c' ^ 8 = f' u) := by
   intro hL hT hI hN hE S _ _ _ _ x₀ f f' u x x' τ M a b c τ' M' a' b' c' hf hx hx' hab hab' hc hc' hn hn' hu
   obtain ⟨N, hN, hK⟩ := hN

@@ -17,6 +17,9 @@ def OrbitFiniteSum.Statement : Prop :=
         ∑ᶠ v : FinitePlace (coordField x),
           (finiteTerm A v (coordVec x) - Real.log (v (evalCone (coordVec x) s)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨samplePoint_blockNonzero, isSectionOn_chartMonomial _ _ _ (fun _ ↦ by simp [samplePoint]) 1 (fun _ ↦ rfl)⟩`.
+-/
 example : BlockNonzero samplePoint ∧
     Geo.IsSectionOn (orbitIdeal samplePoint) (HermLine.standard _).toGeo
       (chartMonomial (fun _ ↦ 0) 1) :=

@@ -11,6 +11,11 @@ section TruncEval
 
 variable {S : Type*} [CommRing S] [Algebra ℚ S]
 
+/- English proof (translation)
+Establish `hdvd : Polynomial.X ^ n ∣ P - trunc n (P : ℚ⟦X⟧)`. Rewrite using `[Polynomial.X_pow_dvd_iff]`. Introduce `d hd`. Rewrite using `[Polynomial.coeff_sub, coeff_trunc, if_pos hd, Polynomial.coeff_coe, sub_self]`. Take `⟨Q, hQ⟩` from `hdvd`.
+
+Establish `h` using `congrArg (Polynomial.aeval s) hQ`. Rewrite `h` using `[map_sub, map_mul, map_pow, Polynomial.aeval_X, hs, zero_mul, sub_eq_zero]`. Conclude with `h.symm`.
+-/
 theorem aeval_trunc_coe_of_pow_eq_zero {n : ℕ} {s : S} (hs : s ^ n = 0) (P : Polynomial ℚ) :
     Polynomial.aeval s (trunc n (P : ℚ⟦X⟧)) = Polynomial.aeval s P := by
   have hdvd : Polynomial.X ^ n ∣ P - trunc n (P : ℚ⟦X⟧) := by
@@ -39,9 +44,17 @@ def truncEval {n : ℕ} (s : S) (hs : s ^ n = 0) : ℚ⟦X⟧ →ₐ[ℚ] S wher
     rw [Algebra.algebraMap_eq_smul_one, map_smul, map_smul, ← Polynomial.coe_one,
       aeval_trunc_coe_of_pow_eq_zero hs, map_one, ← Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem truncEval_apply {n : ℕ} (s : S) (hs : s ^ n = 0) (f : ℚ⟦X⟧) :
     truncEval s hs f = Polynomial.aeval s (trunc n f) := rfl
 
+/- English proof (translation)
+Break down `n with _ | n` into its components or cases. Establish `: Subsingleton S` using `subsingleton_of_zero_eq_one (by simpa using hs.symm)`. Conclude with `Subsingleton.elim _ _`. Rewrite using `[truncEval_apply, Polynomial.aeval_eq_sum_range' (natDegree_trunc_lt f n)]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[coeff_trunc, if_pos (Finset.mem_range.1 hi), Algebra.smul_def]`. Use the proof step `@[simp]`.
+-/
 theorem truncEval_eq_sum {n : ℕ} (s : S) (hs : s ^ n = 0) (f : ℚ⟦X⟧) :
     truncEval s hs f = ∑ i ∈ Finset.range n, algebraMap ℚ S (coeff i f) * s ^ i := by
   rcases n with _ | n
@@ -52,6 +65,11 @@ theorem truncEval_eq_sum {n : ℕ} (s : S) (hs : s ^ n = 0) (f : ℚ⟦X⟧) :
     rw [coeff_trunc, if_pos (Finset.mem_range.1 hi), Algebra.smul_def]
 
 @[simp]
+/- English proof (translation)
+Break down `n with _ | _ | n` into its components or cases. Establish `: Subsingleton S` using `subsingleton_of_zero_eq_one (by simpa using hs.symm)`. Conclude with `Subsingleton.elim _ _`. Rewrite `hs` using `[pow_one]`. Rewrite using `[truncEval_eq_sum, Finset.sum_range_one, coeff_zero_X, map_zero, zero_mul, hs]`.
+
+Rewrite using `[truncEval_apply, trunc_X, Polynomial.aeval_X]`.
+-/
 theorem truncEval_X {n : ℕ} (s : S) (hs : s ^ n = 0) : truncEval s hs X = s := by
   rcases n with _ | _ | n
   · have : Subsingleton S := subsingleton_of_zero_eq_one (by simpa using hs.symm)
@@ -60,6 +78,13 @@ theorem truncEval_X {n : ℕ} (s : S) (hs : s ^ n = 0) : truncEval s hs X = s :=
     rw [truncEval_eq_sum, Finset.sum_range_one, coeff_zero_X, map_zero, zero_mul, hs]
   · rw [truncEval_apply, trunc_X, Polynomial.aeval_X]
 
+/- English proof (translation)
+Establish `hpoly : (ψ.comp (Polynomial.coeToPowerSeries.algHom ℚ)) = Polynomial.aeval s`. Apply `Polynomial.algHom_ext` to reduce the goal to its premises. Simplify using `[hψ]`. Use extensionality with `f`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : X ^ n ∣ f - (trunc n f : ℚ⟦X⟧) := by`.
+
+Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Rewrite using `[map_sub, Polynomial.coeff_coe, coeff_trunc, if_pos hm, sub_self]`. Establish `h1 : ψ f = ψ (trunc n f : ℚ⟦X⟧)`. Use `congrArg ψ hh` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, map_mul, map_pow, hψ, hs, zero_mul, sub_eq_zero]`. Conclude with `this`. Rewrite using `[h1, truncEval_apply]`. Conclude with `congrArg (fun F : Polynomial ℚ →ₐ[ℚ] S => F (trunc n f)) hpoly`.
+-/
 theorem truncEval_unique {n : ℕ} (ψ : ℚ⟦X⟧ →ₐ[ℚ] S) (s : S) (hs : s ^ n = 0) (hψ : ψ X = s) :
     ψ = truncEval s hs := by
   have hpoly : (ψ.comp (Polynomial.coeToPowerSeries.algHom ℚ)) = Polynomial.aeval s := by
@@ -83,12 +108,18 @@ section SeriesEval
 
 variable {B : Type*} [CommRing B] (I : Ideal B)
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus (inferInstance : IsHausdorff I B) (x - y) fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, sub_zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `h n`.
+-/
 theorem eq_of_forall_sub_mem_pow [IsHausdorff I B] {x y : B} (h : ∀ n, x - y ∈ I ^ n) : x = y := by
   rw [← sub_eq_zero]
   refine IsHausdorff.haus (inferInstance : IsHausdorff I B) (x - y) fun n => ?_
   rw [SModEq.sub_mem, sub_zero, smul_eq_mul, Ideal.mul_top]
   exact h n
 
+/- English proof (translation)
+Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow hz n`.
+-/
 theorem pow_mk_eq_zero {z : B} (hz : z ∈ I) (n : ℕ) :
     (Ideal.Quotient.mk (I ^ n) z) ^ n = 0 := by
   rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]
@@ -96,6 +127,9 @@ theorem pow_mk_eq_zero {z : B} (hz : z ∈ I) (n : ℕ) :
 
 variable [Algebra ℚ B]
 
+/- English proof (translation)
+Apply `truncEval_unique` to reduce the goal to its premises. Rewrite using `[AlgHom.comp_apply, truncEval_X]`. Both sides reduce to the same expression.
+-/
 theorem factorₐ_comp_truncEval {z : B} (hz : z ∈ I) {m n : ℕ} (hle : m ≤ n) :
     (Ideal.Quotient.factorₐ ℚ (Ideal.pow_le_pow_right hle)).comp
         (truncEval (Ideal.Quotient.mk (I ^ n) z) (pow_mk_eq_zero I hz n)) =
@@ -113,6 +147,9 @@ def seriesEval (z : B) (hz : z ∈ I) : ℚ⟦X⟧ →ₐ[ℚ] B :=
 
 variable {I}
 
+/- English proof (translation)
+Establish `h` using `IsAdicComplete.mk_liftAlgHom I (fun n => truncEval (Ideal.Quotient.mk (I ^ n) z) (pow_mk_eq_zero I hz n)) (fun hle => factorₐ_comp_truncEval I hz hle) n f`. Rewrite using `[seriesEval, h, truncEval_eq_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, ← Ideal.Quotient.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem mk_seriesEval {z : B} (hz : z ∈ I) (f : ℚ⟦X⟧) (n : ℕ) :
     Ideal.Quotient.mk (I ^ n) (seriesEval I z hz f) =
       Ideal.Quotient.mk (I ^ n) (∑ i ∈ Finset.range n, algebraMap ℚ B (coeff i f) * z ^ i) := by
@@ -123,10 +160,18 @@ theorem mk_seriesEval {z : B} (hz : z ∈ I) (f : ℚ⟦X⟧) (n : ℕ) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_mul, map_pow, ← Ideal.Quotient.algebraMap_eq, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq.1 (mk_seriesEval hz f n)`.
+-/
 theorem seriesEval_sub_sum_mem {z : B} (hz : z ∈ I) (f : ℚ⟦X⟧) (n : ℕ) :
     seriesEval I z hz f - ∑ i ∈ Finset.range n, algebraMap ℚ B (coeff i f) * z ^ i ∈ I ^ n :=
   Ideal.Quotient.eq.1 (mk_seriesEval hz f n)
 
+/- English proof (translation)
+Set `_` to `I.adicTopology`. Rewrite using `[(Ideal.hasBasis_nhds_adic I (seriesEval I z hz f)).tendsto_right_iff]`. Introduce `n _`. Use `filter_upwards [Filter.eventually_ge_atTop n] with N hN`. Use `⟨_, Ideal.pow_le_pow_right hN (neg_mem (seriesEval_sub_sum_mem hz f N)), ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Use the proof step `@[simp]`.
+-/
 theorem tendsto_seriesEval {z : B} (hz : z ∈ I) (f : ℚ⟦X⟧) :
     @Filter.Tendsto ℕ B (fun n => ∑ i ∈ Finset.range n, algebraMap ℚ B (coeff i f) * z ^ i)
       Filter.atTop (@nhds B I.adicTopology (seriesEval I z hz f)) := by
@@ -138,6 +183,11 @@ theorem tendsto_seriesEval {z : B} (hz : z ∈ I) (f : ℚ⟦X⟧) :
   simp
 
 @[simp]
+/- English proof (translation)
+Use `eq_of_forall_sub_mem_pow I fun n => ?_` and prove the remaining obligations. Use `Ideal.pow_le_pow_right (Nat.le_add_right n 2) ?_` and prove the remaining obligations. Establish `h` using `seriesEval_sub_sum_mem hz X (n + 2)`. Rewrite `h` using `[Finset.sum_range_succ', Finset.sum_range_succ', Finset.sum_eq_zero, coeff_zero_X, coeff_one_X, map_zero, map_one, zero_mul, add_zero, pow_one, one_mul, zero_add]`. Then use the resulting hypothesis. Introduce `i _`.
+
+Rewrite using `[coeff_X, if_neg (by omega), map_zero, zero_mul]`.
+-/
 theorem seriesEval_X {z : B} (hz : z ∈ I) : seriesEval I z hz X = z := by
   refine eq_of_forall_sub_mem_pow I fun n => ?_
   refine Ideal.pow_le_pow_right (Nat.le_add_right n 2) ?_
@@ -147,12 +197,20 @@ theorem seriesEval_X {z : B} (hz : z ∈ I) : seriesEval I z hz X = z := by
   intro i _
   rw [coeff_X, if_neg (by omega), map_zero, zero_mul]
 
+/- English proof (translation)
+Establish `h` using `seriesEval_sub_sum_mem hz f 1`. Rewrite `h` using `[Finset.sum_range_one, coeff_zero_eq_constantCoeff_apply, hf, map_zero, zero_mul, sub_zero, pow_one]`. Then use the resulting hypothesis.
+-/
 theorem seriesEval_mem {z : B} (hz : z ∈ I) {f : ℚ⟦X⟧} (hf : constantCoeff f = 0) :
     seriesEval I z hz f ∈ I := by
   have h := seriesEval_sub_sum_mem hz f 1
   rwa [Finset.sum_range_one, coeff_zero_eq_constantCoeff_apply, hf, map_zero, zero_mul, sub_zero,
     pow_one] at h
 
+/- English proof (translation)
+Establish `hS` using `HasSubst.of_constantCoeff_zero' hg`. Establish `key : seriesEval I w hw = (seriesEval I z hz).comp (substAlgHom hS)`. Use `IsAdicComplete.algHom_ext I fun n => ?_` and prove the remaining obligations. Establish `hwn : (Ideal.Quotient.mkₐ ℚ (I ^ n) w) ^ n = 0` using `pow_mk_eq_zero I hw n`. Rewrite using `[truncEval_unique ((Ideal.Quotient.mkₐ ℚ (I ^ n)).comp (seriesEval I w hw)) _ hwn (by rw [AlgHom.comp_apply, seriesEval_X]), truncEval_unique ((Ideal.Quotient.mkₐ ℚ (I ^ n)).comp ((seriesEval I z hz).comp (substAlgHom hS))) _ hwn (by`.
+
+Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, coe_substAlgHom, subst_X hS, hgw])]`. Rewrite using `[key, AlgHom.comp_apply, coe_substAlgHom]`.
+-/
 theorem seriesEval_subst {z : B} (hz : z ∈ I) {g : ℚ⟦X⟧} (hg : constantCoeff g = 0) {w : B}
     (hw : w ∈ I) (hgw : seriesEval I z hz g = w) (f : ℚ⟦X⟧) :
     seriesEval I w hw f = seriesEval I z hz (f.subst g) := by
@@ -169,6 +227,9 @@ theorem seriesEval_subst {z : B} (hz : z ∈ I) {g : ℚ⟦X⟧} (hg : constantC
 
 omit [IsAdicComplete I B] in
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, RingHom.map_rat_algebraMap]`.
+-/
 theorem map_partialSum {B' : Type*} [CommRing B'] [Algebra ℚ B'] (F : B →+* B') (z : B)
     (f : ℚ⟦X⟧) (n : ℕ) :
     F (∑ i ∈ Finset.range n, algebraMap ℚ B (coeff i f) * z ^ i) =
@@ -177,6 +238,11 @@ theorem map_partialSum {B' : Type*} [CommRing B'] [Algebra ℚ B'] (F : B →+* 
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_mul, map_pow, RingHom.map_rat_algebraMap]
 
+/- English proof (translation)
+Use `eq_of_forall_sub_mem_pow I' fun n => ?_` and prove the remaining obligations. Establish `h1 : F (seriesEval I z hz f - ∑ i ∈ Finset.range n, algebraMap ℚ B (coeff i f) * z ^ i) ∈ I' ^ n`. Use `Ideal.mem_map_of_mem F (seriesEval_sub_sum_mem hz f n)` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hF n this`.
+
+Establish `h2` using `seriesEval_sub_sum_mem hFz f n`. Rewrite `h1` using `[map_sub, map_partialSum]`. Use `sub_mem h1 h2` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem map_seriesEval {B' : Type*} [CommRing B'] [Algebra ℚ B'] {I' : Ideal B'}
     [IsAdicComplete I' B'] (F : B →+* B') (hF : I.map F ≤ I') {z : B} (hz : z ∈ I)
     (hFz : F z ∈ I') (f : ℚ⟦X⟧) : F (seriesEval I z hz f) = seriesEval I' (F z) hFz f := by
@@ -195,6 +261,11 @@ end SeriesEval
 
 section Log
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[add_mul, one_mul, map_add, coeff_one]`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[coeff_succ_X_mul, coeff_mk, coeff_mk, if_neg (Nat.succ_ne_zero n)]`.
+
+Simplify using `[pow_succ]`.
+-/
 theorem one_add_X_mul_geom : (1 + X : ℚ⟦X⟧) * mk (fun n => algebraMap ℚ ℚ ((-1) ^ n)) = 1 := by
   ext n
   rw [add_mul, one_mul, map_add, coeff_one]
@@ -203,6 +274,17 @@ theorem one_add_X_mul_geom : (1 + X : ℚ⟦X⟧) * mk (fun n => algebraMap ℚ 
   · rw [coeff_succ_X_mul, coeff_mk, coeff_mk, if_neg (Nat.succ_ne_zero n)]
     simp [pow_succ]
 
+/- English proof (translation)
+Establish `hg : constantCoeff ((1 + X) ^ k - 1 : ℚ⟦X⟧) = 0` using `by simp`. Establish `hS` using `HasSubst.of_constantCoeff_zero' hg`. Apply `derivative.ext` to reduce the goal to its premises. Use `set G : ℚ⟦X⟧ := mk (fun n => algebraMap ℚ ℚ ((-1) ^ n)) with hG`. Establish `hsub : ((1 + X : ℚ⟦X⟧) ^ k) * G.subst ((1 + X) ^ k - 1 : ℚ⟦X⟧) = 1`.
+
+Establish `h` using `congrArg (substAlgHom hS) one_add_X_mul_geom`. Rewrite `h` using `[map_mul, map_one, map_add, map_one, coe_substAlgHom, subst_X hS, add_sub_cancel]`. Conclude with `h`. Rewrite using `[derivative_subst hS, deriv_log, ← hG]`. Establish `hd : d⁄dX ℚ ((k : ℚ⟦X⟧) * log ℚ) = (k : ℚ⟦X⟧) * G`.
+
+Rewrite using `[Derivation.leibniz, deriv_log, ← hG, Derivation.map_natCast, smul_zero, add_zero, smul_eq_mul]`. Rewrite using `[hd, map_sub, derivative_pow, derivative_one, sub_zero, map_add, derivative_one, derivative_X, zero_add, mul_one]`. Establish `hne : ((1 + X : ℚ⟦X⟧) ^ k) ≠ 0`. Use `pow_ne_zero _ fun h => ?_` and prove the remaining obligations. Use `congrArg constantCoeff h` as an intermediate fact.
+
+Simplify using `at this`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Break down `k with _ | k` into its components or cases. Simplify using the standard rewrite rules. Establish `h1 : (1 + X : ℚ⟦X⟧) * G = 1` using `one_add_X_mul_geom`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h0 : MvPowerSeries.constantCoeff ((1 + X) ^ k - 1 : ℚ⟦X⟧) = 0` using `hg`. Use `constantCoeff_subst_eq_zero h0 (log ℚ) constantCoeff_log` as an intermediate fact. Rewrite using `[map_mul, constantCoeff_log, mul_zero]`. Conclude with `this`.
+-/
 theorem log_subst_one_add_X_pow_sub_one (k : ℕ) :
     (log ℚ).subst ((1 + X) ^ k - 1 : ℚ⟦X⟧) = (k : ℚ⟦X⟧) * log ℚ := by
   have hg : constantCoeff ((1 + X) ^ k - 1 : ℚ⟦X⟧) = 0 := by simp
@@ -245,6 +327,11 @@ variable (I) in
 def logOnePlus (z : B) (hz : z ∈ I) : B :=
   seriesEval I z hz (log ℚ)
 
+/- English proof (translation)
+Establish `hs : ∑ i ∈ Finset.Ico 1 n, algebraMap ℚ B ((-1) ^ (i + 1) / i) * z ^ i = ∑ i ∈ Finset.range n, algebraMap ℚ B (coeff i (log ℚ)) * z ^ i`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot (Nat.succ_pos n), coeff_log, if_pos rfl, map_zero, zero_mul, zero_add]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[coeff_log, if_neg (by have := (Finset.mem_Ico.1 hi).1; omega), Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite using `[hs]`. Conclude with `seriesEval_sub_sum_mem hz (log ℚ) n`.
+-/
 theorem logOnePlus_sub_sum_mem {z : B} (hz : z ∈ I) (n : ℕ) :
     logOnePlus I z hz - ∑ i ∈ Finset.Ico 1 n, algebraMap ℚ B ((-1) ^ (i + 1) / i) * z ^ i ∈
       I ^ n := by
@@ -260,9 +347,17 @@ theorem logOnePlus_sub_sum_mem {z : B} (hz : z ∈ I) (n : ℕ) :
   rw [hs]
   exact seriesEval_sub_sum_mem hz (log ℚ) n
 
+/- English proof (translation)
+The claim follows from `seriesEval_mem hz constantCoeff_log`.
+-/
 theorem logOnePlus_mem {z : B} (hz : z ∈ I) : logOnePlus I z hz ∈ I :=
   seriesEval_mem hz constantCoeff_log
 
+/- English proof (translation)
+Use `set h : ℚ⟦X⟧ := mk fun n => coeff (n + 1) (log ℚ)`. Establish `hlog : log ℚ = X * h` using `by conv_lhs => rw [eq_X_mul_shift_add_const (log ℚ)]`. Rewrite using `[constantCoeff_log, map_zero, add_zero]`. Use `⟨seriesEval I z hz h, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `seriesEval_sub_sum_mem hz h 1`.
+
+Rewrite `h1` using `[Finset.sum_range_one, pow_zero, mul_one, pow_one, coeff_mk, zero_add, coeff_one_log, map_one]`. Then use the resulting hypothesis. Rewrite using `[logOnePlus, hlog, map_mul, seriesEval_X]`.
+-/
 theorem logOnePlus_eq_mul {z : B} (hz : z ∈ I) : ∃ u, u - 1 ∈ I ∧ logOnePlus I z hz = z * u := by
   set h : ℚ⟦X⟧ := mk fun n => coeff (n + 1) (log ℚ)
   have hlog : log ℚ = X * h := by
@@ -274,6 +369,9 @@ theorem logOnePlus_eq_mul {z : B} (hz : z ∈ I) : ∃ u, u - 1 ∈ I ∧ logOne
       map_one] at h1
   · rw [logOnePlus, hlog, map_mul, seriesEval_X]
 
+/- English proof (translation)
+Establish `hg : constantCoeff ((1 + X) ^ k - 1 : ℚ⟦X⟧) = 0` using `by simp`. Rewrite using `[logOnePlus, seriesEval_subst hz hg hk (by simp), log_subst_one_add_X_pow_sub_one, map_mul, map_natCast, logOnePlus]`.
+-/
 theorem logOnePlus_pow {z : B} (hz : z ∈ I) (k : ℕ) (hk : (1 + z) ^ k - 1 ∈ I) :
     logOnePlus I ((1 + z) ^ k - 1) hk = k * logOnePlus I z hz := by
   have hg : constantCoeff ((1 + X) ^ k - 1 : ℚ⟦X⟧) = 0 := by simp

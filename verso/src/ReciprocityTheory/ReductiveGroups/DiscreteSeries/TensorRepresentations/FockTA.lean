@@ -11,6 +11,11 @@ section Gen
 
 variable {n : ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `h3` using `(hC j b u v).2.2`. Establish `hne : ¬(j = u ∧ b = v)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hjb huv`. Rewrite `h3` using `[if_neg hne]`.
+
+Establish `h` using `LinearMap.congr_fun h3 y`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, LinearMap.zero_apply] at h`. Conclude with `eq_neg_of_add_eq_zero_left h`.
+-/
 theorem fockT_cm_cp {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm) {ε : Fin n → Bool}
     {j b u v : Fin n} (hjb : ¬(ε j = true ∧ ε b = false)) (huv : ε u = true ∧ ε v = false) (y : W) :
     cm j b (cp u v y) = -(cp u v (cm j b y)) := by
@@ -23,12 +28,28 @@ theorem fockT_cm_cp {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR c
   simp only [LinearMap.add_apply, Module.End.mul_apply, LinearMap.zero_apply] at h
   exact eq_neg_of_add_eq_zero_left h
 
+/- English proof (translation)
+Establish `h` using `LinearMap.congr_fun (hC j b w z).2.1 y`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, LinearMap.zero_apply] at h`. Conclude with `eq_neg_of_add_eq_zero_left h`.
+-/
 theorem fockT_cm_cm {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm) (j b w z : Fin n) (y : W) :
     cm j b (cm w z y) = -(cm w z (cm j b y)) := by
   have h := LinearMap.congr_fun (hC j b w z).2.1 y
   simp only [LinearMap.add_apply, Module.End.mul_apply, LinearMap.zero_apply] at h
   exact eq_neg_of_add_eq_zero_left h
 
+/- English proof (translation)
+Establish `hEc : ∀ a c y, cm j b (E a c y) = E a c (cm j b y)` using `fun a c y => by`. Establish `h` using `LinearMap.congr_fun (hK a c j b).2 y`. Simplify using `only [Module.End.mul_apply] at h`. Conclude with `h.symm`. Establish `hx0` using `hx j b hjb`.
+
+Establish `hE0 : ∀ a c, cm j b (E a c x) = 0` using `fun a c => by rw [hEc, hx0, map_zero]`. Establish `hcpcm : ∀ u v w z, ε u = true ∧ ε v = false → cm j b (cp u v (cm w z x)) = 0`. Introduce `u v w z huv`. Rewrite using `[fockT_cm_cp hC hjb huv, fockT_cm_cm hC, hx0]`. Simplify using the standard rewrite rules.
+
+Use `⟨hE0, fun a c => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [diagE, LinearMap.add_apply, map_add, hE0, zero_add, sgE] split_ifs with h1 h2`. Simplify using `only [LinearMap.sum_apply, map_sum, Module.End.mul_apply]`. Use `Finset.sum_eq_zero fun y hy => hcpcm _ _ _ _ ⟨h1.1, ?_⟩` and prove the remaining obligations. Simplify `hy` using `[minusIdx]`.
+
+Simplify using `only [LinearMap.neg_apply, LinearMap.sum_apply, map_neg, map_sum, Module.End.mul_apply]`. Use `neg_eq_zero.mpr (Finset.sum_eq_zero fun i hi => hcpcm _ _ _ _ ⟨?_, h2.2⟩)` and prove the remaining obligations. Simplify `hi` using `[plusIdx]`. Simplify using the standard rewrite rules. Simplify using `only [dOp, LinearMap.sum_apply, map_sum, Module.End.mul_apply]`.
+
+Use `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun a ha => ?_` and prove the remaining obligations. Rewrite using `[hEc, fockT_cm_cp hC hjb ⟨by simpa [plusIdx] using hi, by simpa [minusIdx] using ha⟩, hx0]`. Simplify using the standard rewrite rules. Simplify using `only [dOp', LinearMap.neg_apply, LinearMap.sum_apply, map_neg, map_sum, Module.End.mul_apply]`. Use `neg_eq_zero.mpr (Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun a _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hEc, fockT_cm_cm hC, hx0]`. Simplify using the standard rewrite rules.
+-/
 theorem fockT_stable_gen {E cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm)
     (hK : CommutesCAR E cp cm) (ε : Fin n → Bool) {j b : Fin n} (hjb : ¬(ε j = true ∧ ε b = false))
     {x : W} (hx : ∀ j b, ¬(ε j = true ∧ ε b = false) → cm j b x = 0) :
@@ -63,6 +84,9 @@ theorem fockT_stable_gen {E cp cm : Fin n → Fin n → Module.End ℂ W} (hC : 
     rw [hEc, fockT_cm_cm hC, hx0]
     simp
 
+/- English proof (translation)
+Simplify using `only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fockT_anti_sum {R : Type*} [Ring R] {ι κ : Type*} (s : Finset ι) (t : Finset κ) (G : R)
     (A B : ι → κ → R) (hA : ∀ i k, G * A i k = A i k * G) (hB : ∀ i k, G * B i k = -(B i k * G)) :
     G * ∑ i ∈ s, ∑ k ∈ t, A i k * B i k = -((∑ i ∈ s, ∑ k ∈ t, A i k * B i k) * G) := by
@@ -77,6 +101,9 @@ section FockLemmas
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `x using CliffordAlgebra.left_induction with`. Consider the case `algebraMap r => simp [CliffordAlgebra.contractLeft_algebraMap]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, neg_add]`. Consider the case `ι_mul x m hx`. Simplify using `only [map_mul, CliffordAlgebra.involute_ι, neg_mul, map_neg, CliffordAlgebra.contractLeft_ι_mul, hx, map_sub, map_smul, mul_neg]`.
+-/
 theorem fock_contractLeft_involute (d : Module.Dual ℂ (Fin n × Fin n → ℂ)) (x : Fock n) :
     CliffordAlgebra.contractLeft d (CliffordAlgebra.involute x) =
       -CliffordAlgebra.involute (CliffordAlgebra.contractLeft d x) := by
@@ -87,17 +114,26 @@ theorem fock_contractLeft_involute (d : Module.Dual ℂ (Fin n × Fin n → ℂ)
     simp only [map_mul, CliffordAlgebra.involute_ι, neg_mul, map_neg, CliffordAlgebra.contractLeft_ι_mul,
       hx, map_sub, map_smul, mul_neg]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => CliffordAlgebra.involute_involute x`.
+-/
 theorem fock_inv_sq :
     (CliffordAlgebra.involute : Fock n →ₐ[ℂ] Fock n).toLinearMap *
       (CliffordAlgebra.involute : Fock n →ₐ[ℂ] Fock n).toLinearMap = 1 :=
   LinearMap.ext fun x => CliffordAlgebra.involute_involute x
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[cpFock, CliffordAlgebra.involute_ι]`.
+-/
 theorem fock_inv_cp (i a : Fin n) :
     (CliffordAlgebra.involute : Fock n →ₐ[ℂ] Fock n).toLinearMap * cpFock i a =
       -(cpFock i a * (CliffordAlgebra.involute : Fock n →ₐ[ℂ] Fock n).toLinearMap) := by
   refine LinearMap.ext fun x => ?_
   simp [cpFock, CliffordAlgebra.involute_ι]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[cmFock, fock_contractLeft_involute]`.
+-/
 theorem fock_inv_cm (i a : Fin n) :
     (CliffordAlgebra.involute : Fock n →ₐ[ℂ] Fock n).toLinearMap * cmFock i a =
       -(cmFock i a * (CliffordAlgebra.involute : Fock n →ₐ[ℂ] Fock n).toLinearMap) := by

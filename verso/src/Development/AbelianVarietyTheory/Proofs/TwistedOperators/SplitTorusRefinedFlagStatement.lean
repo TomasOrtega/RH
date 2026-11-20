@@ -17,5 +17,8 @@ open PI.DSInfCharCap (actU Egl)
 open GlobalTheory.RealInd.Stages Finset GlobalTheory.FlagMeas Formalism.REAL
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealInd.Stages.isSplit_of_refine | exact GlobalTheory.RealInd.Stages.isSplit_of_refine | (intros; apply GlobalTheory.RealInd.Stages.isSplit_of_refine <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.split_torus_refined_flag : ∀ {n a b : ℕ} {ε : Fin n → Bool} {j : Fin a → ℕ} {W : Flag n a} {W' : Flag n b} {β : Fin b → Fin a} {p : Fin (a + 1) → Fin (b + 1)}, IsIsoFlag ε j W → IsIsoFlag ε (fun _ => 1) W' → (∀ i, W' (p i) = W i) → W' (Fin.last b) = W (Fin.last a) → (∀ l i, β l = i ↔ p i.castSucc ≤ l.castSucc ∧ l.castSucc < p i.succ) → ∀ {x : Fin a → ℝ} {t : UJ ε}, IsSplit ε W x t → IsSplit ε W' (x ∘ β) t := by
   first | exact @GlobalTheory.RealInd.Stages.isSplit_of_refine | exact GlobalTheory.RealInd.Stages.isSplit_of_refine | (intros; apply GlobalTheory.RealInd.Stages.isSplit_of_refine <;> assumption)

@@ -18,6 +18,39 @@ noncomputable section
 
 namespace GlobalTheory.CenAvg
 
+/- English proof (translation)
+Introduce `D hB ψ θ A S A' x y z hx hy hz k₀ k₀' hk₀ hk₀' χ C hv hs ⟨φ₀, hφ₀, hc₀, hne⟩`. Take `⟨χA, χS, ha⟩` from `hk₀.weil`. Take `⟨χS', χA', hb⟩` from `hk₀'.weil`. Take `⟨i1, -, i3, i4, i5, -⟩` from `GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D A`. Set `Z : Subgroup (GA D A)` to `GinfC A ⊓ Subgroup.center (GA D A)`.
+
+Establish `hcl : IsClosed (Subgroup.center (GA D A) : Set (GA D A))`. Establish `: (Subgroup.center (GA D A) : Set (GA D A)) = ⋂ g, {a | g * a = a * g}`. Use extensionality with `a`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_center_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[this]`.
+
+Conclude with `isClosed_iInter fun g => isClosed_eq (continuous_const.mul continuous_id) (continuous_id.mul continuous_const)`. Use `haveI : CompactSpace Z := isCompact_iff_compactSpace.mp ((GlobalTheory.T.isCompact_realPoints_of_definiteHermitianSpaceData D A x hx).inter_right hcl)`. Set `ν : Measure Z` to `GlobalTheory.haarProb Z`. Take `⟨h₀, hh₀⟩` from `Function.ne_iff.1 hne`. Establish `hh : φ₀ h₀ ≠ 0` using `hh₀`.
+
+Establish `hmul : ∀ a b : Z, χ (a * b : Z) = χ a * χ b`. Introduce `a b`. Apply `mul_right_cancel₀ hh` to reduce the goal to its premises. Rewrite using `[← hc₀ _ (a * b).2.1 (a * b).2.2, Subgroup.coe_mul, ← mul_assoc, hc₀ _ b.2.1 b.2.2, hc₀ _ a.2.1 a.2.2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hone : χ 1 = 1`. Apply `mul_right_cancel₀ hh` to reduce the goal to its premises. Rewrite using `[← hc₀ _ (one_mem _) (one_mem _), mul_one, one_mul]`. Establish `hcont : Continuous fun a : Z => χ a`. Establish `: (fun a : Z => χ a) = fun a : Z => φ₀ (h₀ * a) / φ₀ h₀`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[hc₀ _ a.2.1 a.2.2, mul_div_cancel_right₀ _ hh]`. Rewrite using `[this]`. Conclude with `(hφ₀.2.comp (continuous_const.mul continuous_subtype_val)).div_const _`. Establish `hj : ∀ a : Z, (a : GA D A) ∈ GinfC A` using `fun a => a.2.1`.
+
+Establish `hC` using `GlobalTheory.FrComb.biTheta_of_vac hx.sd hy.sd hz.sd hv hs`. Use `⟨avg k₀.om ν Subtype.val (fun a => χ a) C, fun a => χ a⁻¹, isBiVac_avg ν ha hb hB continuous_subtype_val hj hcont hC hv, (isBiTheta_avg ν ha hb hB continuous_subtype_val hj hcont hC).smooth, fun a ha1 ha2 v => ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Rewrite using `[om_avg ν ha hb hB continuous_subtype_val hj hcont hC]`. Set `a' : Z` to `⟨a, ha1, ha2⟩`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, avg]`. Rewrite using `[← integral_const_mul, ← integral_mul_left_eq_self (μ := ν) (fun b : Z => χ a⁻¹ * (χ b * k₀.om (b, 1) (fun u' => C u' v) u)) a']`. Use `congr 1`. Use function extensionality and compare the values at `b`. Establish `e : χ a⁻¹ * χ a = 1`.
+
+Use `hmul a'⁻¹ a'` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel]`. Conclude with `this.symm.trans hone`. Rewrite using `[hmul, ← mul_assoc, ← mul_assoc]`. Express the relevant statement in the definitionally equal form `_ = χ a⁻¹ * χ a * χ b * k₀.om (a * b, 1) (fun u' => C u' v) u`.
+
+Rewrite using `[e, one_mul]`. Introduce `k k' hk hk' hag φ hφ hcφ`. Take `⟨χA₁, χS₁, ha₁⟩` from `hk.weil`. Take `⟨χS₁', χA₁', hb₁⟩` from `hk'.weil`. Establish `eavg : avg k₀.om ν Subtype.val (fun a => χ a) C = avg k.om ν Subtype.val (fun a => χ a) C`.
+
+Use function extensionality and compare the values at `u v`. Simplify using `only [avg]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[hag a a.2.1 1 (GinfC S).one_mem _ (hv.left v).1]`.
+
+Rewrite using `[eavg]`. Establish `hG` using `GlobalTheory.FrComb.biTheta_combL ha₁.std (GlobalTheory.FrComb.biTheta_combR ha₁.std hC hk'.fin) hk.fin`. Rewrite using `[biComb_avg ν ha₁ hb₁ hB continuous_subtype_val hj hcont hC hk.fin hk'.fin]`. Express the relevant statement in the definitionally equal form `IsBiTheta ψ A S A' (biComb ψ A S A' k.c k'.c C) at hG`. Generalize the expression as in `biComb ψ A S A' k.c k'.c C = G at hG`.
+
+Use function extensionality and compare the values at `h₂`. Unfold `biLift`. Use `congr 1`. Use function extensionality and compare the values at `h₁`. Establish `hF : IsContAut A fun h => φ h * k'.om (h₁, h₂) (fun v => k.om (h, h₁) (fun u => G u v) 0) 0`.
+
+Use `⟨fun γ hγ g => ?_, hφ.2.mul ?_⟩` and prove the remaining obligations. Establish `: ∀ v, k.om (γ * g, h₁) (fun u => G u v) 0 = k.om (g, h₁) (fun u => G u v) 0` using `fun v => by`. Rewrite using `[← ha₁.om_aut γ hγ 1 (one_mem _) _ (ha₁.om_pres (g, h₁) _ (GlobalTheory.FrComb.slice_left hG v)), ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Simplify using `only [this, hφ.1 γ hγ g]`. Conclude with `(hB ψ A S A' _ _ _ _ _ _ ha₁ hb₁ G hG).2.2.2.comp (show Continuous fun h : GA D A => ((h, h₁), (h₁, h₂), (0 : WO A S), (0 : WO S A')) from (continuous_id.prodMk continuous_const).prodMk continuous_const)`.
+
+Rewrite using `[← integral_mean ν hx.cpt x.vol continuous_subtype_val hF]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[ker_avg ν ha₁ hb₁ hB continuous_subtype_val hj hcont hG, ← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[hcφ _ a.2.1 a.2.2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_central_average_uniform : ∀ (D : D7), BiAct D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A S A' : HSp D)
     (x : DefSp A) (y : DefSp S) (z : DefSp A'), x.Is → y.Is → z.Is → ∀ (k₀ : KerDat A S) (k₀' : KerDat S A'), k₀.Is ψ θ x y →
     k₀'.Is ψ θ y z → ∀ (χ : GA D A → ℂ) (C : WO A S → WO S A' → ℂ), IsBiVac ψ A S A' x.L y.L z.L C → IsBiSmooth C →
@@ -118,6 +151,13 @@ end GlobalTheory.CenAvg
 
 namespace GlobalTheory.SeeSaw
 
+/- English proof (translation)
+Introduce `D hBi hCF hLS ψ θ hθ A S A' x y z hx hy hz k₀ k₀' hk₀ hk₀' χ C hC hsm`. Distinguish the cases in `h0 : ∃ φ₀ : GA D A → ℂ, IsContAut A φ₀ ∧ HasCen A χ φ₀ ∧ φ₀ ≠ 0`. Take `⟨C₁, χ₁, hC₁, hs₁, he₁, heq₁⟩` from `GlobalTheory.CenAvg.exists_central_average_uniform D hBi ψ θ A S A' x y z hx hy hz k₀ k₀' hk₀ hk₀' χ C hC hsm h0`. Take `⟨χ₃, h₃⟩` from `GlobalTheory.T.realCentre_acts_by_character_on_isotypic_slices D hBi hCF hLS ψ θ hθ A S A' x y z hx hy hz k₀ k₀' hk₀ hk₀' χ₁ C₁ hC₁ he₁`. Take `⟨C₂, χ₂, hC₂, he₂, hf₂, heq₂⟩` from `GlobalTheory.T.exists_uniform_isotypic_average_real_centre D hBi hCF hLS ψ θ hθ A S A' x y z hx hy hz k₀ k₀' hk₀ hk₀' χ₁ χ₃ C₁ hC₁ hs₁ he₁ h₃`.
+
+Take `⟨n, P, P', hp⟩` from `GlobalTheory.T.centralEigen_realDatum_finite_sum_fockProducts D hCF ψ θ hθ A S A' x y z hx hy hz k₀ k₀' hk₀ hk₀' χ₁ χ₂ C₂ hC₂ he₂ hf₂`. Use `⟨n, P, P', fun k k' hk hk' hv hv' hag hag' φ hφ hcen => ?_⟩` and prove the remaining obligations. Rewrite using `[heq₁ k k' hk hk' hag φ hφ hcen, heq₂ k k' hk hk' hag hag' φ hφ, GlobalTheory.T.doubleLift_fockSum_eq_sum_iteratedLifts D hBi hCF hLS ψ θ hθ A S A' x y z hx hy hz k k' hk hk' n P P' C₂ (by rw [hv, hv']; exact hp) φ hφ]`. Use `⟨0, Fin.elim0, Fin.elim0, fun k k' _ _ _ _ _ _ φ hφ hcen => ?_⟩` and prove the remaining obligations. Establish `e : φ = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `h0 ⟨φ, hφ, hcen, hne⟩`. Substitute `e` using the available equality. Use function extensionality and compare the values at `h₂`. Simplify using `[biLift]`.
+-/
 theorem fockRed_uniform : ∀ D : D7, BiAct D → CenFock D → LiftSum D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (A S A' : HSp D) (x : DefSp A) (y : DefSp S) (z : DefSp A'), x.Is → y.Is → z.Is → ∀ (k₀ : KerDat A S) (k₀' : KerDat S A'), k₀.Is ψ θ x y → k₀'.Is ψ θ y z → ∀ (χ : GA D A → ℂ) (C : WO A S → WO S A' → ℂ), IsBiVac ψ A S A' x.L y.L z.L C → IsBiSmooth C → ∃ (n : ℕ) (P : Fin n → PolF D S.rank A.rank) (P' : Fin n → PolF D A'.rank S.rank), ∀ (k : KerDat A S) (k' : KerDat S A'), k.Is ψ θ x y → k'.Is ψ θ y z → k.vac = k₀.vac → k'.vac = k₀'.vac → (∀ a ∈ GinfC A, ∀ b ∈ GinfC S, ∀ f, IsThetaFunO ψ A S f → k.om (a, b) f = k₀.om (a, b) f) → (∀ a ∈ GinfC S, ∀ b ∈ GinfC A', ∀ f, IsThetaFunO ψ S A' f → k'.om (a, b) f = k₀'.om (a, b) f) → ∀ φ, IsContAut A φ → HasCen A χ φ → biLift k.om k'.om x.vol y.vol φ (biComb ψ A S A' k.c k'.c C) = ∑ i, k'.lift ψ θ y z (P' i) (k.lift ψ θ x y (P i) φ) := by
   intro D hBi hCF hLS ψ θ hθ A S A' x y z hx hy hz k₀ k₀' hk₀ hk₀' χ C hC hsm
   by_cases h0 : ∃ φ₀ : GA D A → ℂ, IsContAut A φ₀ ∧ HasCen A χ φ₀ ∧ φ₀ ≠ 0

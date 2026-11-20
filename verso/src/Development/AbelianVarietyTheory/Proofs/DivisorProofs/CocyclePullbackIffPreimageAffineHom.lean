@@ -43,11 +43,17 @@ section Lemmas
 variable {R R' : Type} [CommRing R] [CommRing R'] {X X' : Scheme.{0}} {φ : X' ⟶ X} [IsAffineHom φ]
   {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {σ : R →+* R'}
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s') _ b) x`.
+-/
 theorem pairToPre_pull1_pairRes (x : HO1 s') :
     (pairToPre φ s').pull1 ((pairRes φ s').pull1 x) = (preRes φ s').pull1 x := by
   rw [← CoefMap.pullCohomologyOne_comp]
   exact CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s') _ b) x
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`. Conclude with `CoefMap.pullCohomologyTwo_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s') _ b) x`.
+-/
 theorem pairToPre_pull2_pairRes (x : HO2 s') :
     (pairToPre φ s').pull2 ((pairRes φ s').pull2 x) = (preRes φ s').pull2 x := by
   rw [← CoefMap.pullCohomologyTwo_comp]
@@ -56,11 +62,17 @@ theorem pairToPre_pull2_pairRes (x : HO2 s') :
 def preIncl : pairSnd φ ⋙ preAff φ ⟶ pairFst φ where
   app p := (homOfLE p.unop.2).op
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ preIncl (fun _ _ ↦ rfl) x`.
+-/
 theorem preToPairRes_pull1_preRes (x : HO1 s') :
     (preToPairRes φ s').pull1 ((preRes φ s').pull1 x) = (pairRes φ s').pull1 x := by
   rw [← CoefMap.pullCohomologyOne_comp]
   exact CoefMap.pullCohomologyOne_eq_of_natTrans _ _ preIncl (fun _ _ ↦ rfl) x
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`. Conclude with `CoefMap.pullCohomologyTwo_eq_of_natTrans _ _ preIncl (fun _ _ ↦ rfl) x`.
+-/
 theorem preToPairRes_pull2_preRes (x : HO2 s') :
     (preToPairRes φ s').pull2 ((preRes φ s').pull2 x) = (pairRes φ s').pull2 x := by
   rw [← CoefMap.pullCohomologyTwo_comp]
@@ -68,22 +80,42 @@ theorem preToPairRes_pull2_preRes (x : HO2 s') :
 
 variable (h : φ ≫ s = s' ≫ spMap σ)
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ congrArg _ (mp_id (OAff s) _ b)) y`.
+-/
 theorem pairToPre_pull1_pairPull (y : HO1 s) :
     (pairToPre φ s').pull1 ((pairPull h).pull1 y) = (preCoef h).pull1 y := by
   rw [← CoefMap.pullCohomologyOne_comp]
   exact CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ congrArg _ (mp_id (OAff s) _ b)) y
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`. Conclude with `CoefMap.pullCohomologyTwo_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ congrArg _ (mp_id (OAff s) _ b)) y`.
+-/
 theorem pairToPre_pull2_pairPull (y : HO2 s) :
     (pairToPre φ s').pull2 ((pairPull h).pull2 y) = (preCoef h).pull2 y := by
   rw [← CoefMap.pullCohomologyTwo_comp]
   exact CoefMap.pullCohomologyTwo_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ congrArg _ (mp_id (OAff s) _ b)) y
 
+/- English proof (translation)
+The claim follows from `congrArg (fun t ↦ t.hom b) (φ.appLE_map _ (homOfLE q.unop.2).op)`.
+-/
 theorem preToPairRes_preα (q : (Pair φ)ᵒᵖ) (b : (OAff s).obj ((pairSnd φ).obj q)) :
     (preToPairRes φ s').α q (preα φ s s' ((pairSnd φ).obj q) b) = (pairPull h).α q b :=
   congrArg (fun t ↦ t.hom b) (φ.appLE_map _ (homOfLE q.unop.2).op)
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `R R' _ _ X X' s s' σ φ h _`. Use `⟨fun f x ↦ ⟨?_, ?_⟩, fun v z ↦ ⟨?_, ?_⟩, fun y ↦ ?_, fun y ↦ ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, hc, hx⟩`. Use `⟨(pairToPre φ s').pullbackOneCocycle c, fun U V a ↦ hc _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← CoefMap.pullCohomologyOne_class, hx, pairToPre_pull1_pairRes]`.
+
+Introduce and unpack `⟨c, hc, hx⟩`. Use `⟨(preToPairRes φ s').pullbackOneCocycle c, fun p q a ↦ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CoefMap.pullCocycleOne_apply, hc]`. Conclude with `preToPairRes_preα h q _`. Rewrite using `[← CoefMap.pullCohomologyOne_class, hx, preToPairRes_pull1_preRes]`.
+
+Introduce and unpack `⟨c, hc, hx⟩`. Use `⟨(pairToPre φ s').pullbackTwoCocycle c, fun U V W a b ↦ hc _ _ _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← CoefMap.pullCohomologyTwo_class, hx, pairToPre_pull2_pairRes]`. Introduce and unpack `⟨c, hc, hx⟩`. Use `⟨(preToPairRes φ s').pullbackTwoCocycle c, fun p q r a b ↦ ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[CoefMap.pullCocycleTwo_apply, hc]`. Conclude with `preToPairRes_preα h r _`. Rewrite using `[← CoefMap.pullCohomologyTwo_class, hx, preToPairRes_pull2_preRes]`. Establish `e` using `congrArg (pairToPre φ s').pull1 (isPullO_pullHO1 h y)`. Rewrite `e` using `[pairToPre_pull1_pairPull, pairToPre_pull1_pairRes]`.
+
+Conclude with `e.symm`. Establish `e : (pairRes φ s').pull2 (pullHO2 h y) = (pairPull h).pull2 y` using `(LinearEquiv.ofBijective (pairRes φ s').pull2 (pairRes_pull2_bijective φ s')).apply_symm_apply _`. Establish `e'` using `congrArg (pairToPre φ s').pull2 e`. Rewrite `e'` using `[pairToPre_pull2_pairPull, pairToPre_pull2_pairRes]`. Conclude with `e'`.
+-/
 theorem red_iff_pre : ∀ (R R' : Type) [CommRing R] [CommRing R'] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (σ : R →+* R') (φ : X' ⟶ X) (h : φ ≫ s = s' ≫ spMap σ) [IsAffineHom φ], (∀ (f : C1 (OAff s)) (x : HO1 s'), Red1 h f x ↔ ∃ c : Z1 (OPre φ s'), (∀ U V (a : U ⟶ V), c.1 U V a = preα φ s s' V (f U V a)) ∧ GlobalTheory.CatCoh.H1.mk _ c = (preRes φ s').pull1 x) ∧ (∀ (v : C2 (OAff s)) (z : HO2 s'), Red2 h v z ↔ ∃ c : Z2 (OPre φ s'), (∀ U V W (a : U ⟶ V) (b : V ⟶ W), c.1 U V W a b = preα φ s s' W (v U V W a b)) ∧ GlobalTheory.CatCoh.H2.mk _ c = (preRes φ s').pull2 z) ∧ (∀ y, (preRes φ s').pull1 (pullHO1 h y) = (preCoef h).pull1 y) ∧ ∀ y, (preRes φ s').pull2 (pullHO2 h y) = (preCoef h).pull2 y := by
   intro R R' _ _ X X' s s' σ φ h _
   refine ⟨fun f x ↦ ⟨?_, ?_⟩, fun v z ↦ ⟨?_, ?_⟩, fun y ↦ ?_, fun y ↦ ?_⟩

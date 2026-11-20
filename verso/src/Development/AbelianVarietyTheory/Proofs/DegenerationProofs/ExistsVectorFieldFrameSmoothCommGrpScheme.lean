@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.SS.InvFrame
 
+/- English proof (translation)
+Establish `hs` using `span_flip_eq_top_iff_linearIndependent.2 h`. Take `⟨f, hf, -, hli⟩` from `Submodule.exists_fun_fin_finrank_span_eq F (Set.range (flip D))`. Establish `e : Module.finrank F (Submodule.span F (Set.range (flip D))) = n`. Rewrite using `[hs, finrank_top, Module.finrank_fin_fun]`. Use `choose t ht using hf`.
+
+Use `⟨fun j => t (j.cast e.symm), ?_⟩` and prove the remaining obligations. Establish `h2` using `hli.comp (Fin.cast e.symm) (Fin.cast_injective _)`. Use `((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_cols_iff_isUnit.1 ?_)).ne_zero` and prove the remaining obligations. Establish `e2 : (Matrix.of fun i j : Fin n => D i (t (j.cast e.symm))).col = f ∘ Fin.cast e.symm`. Use function extensionality and compare the values at `fun j => ht _`.
+
+Rewrite using `[e2]`. Conclude with `h2`.
+-/
 theorem exists_det_ne_zero {F S : Type} [Field F] {n : ℕ} (D : Fin n → S → F) (h : LinearIndependent F D) :
     ∃ t : Fin n → S, (Matrix.of fun i j => D i (t j)).det ≠ 0 := by
   have hs := span_flip_eq_top_iff_linearIndependent.2 h
@@ -34,6 +41,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp epsR IsTangent IsLieComb I
 open TrivSqZeroExt (inl inr)
 open GlobalTheory.SqZero GlobalTheory.KS GlobalTheory.KS.InvField
 
+/- English proof (translation)
+Establish `ht : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `hU.fromSpec_preimage_self.ge`. Establish `ht' : ⊤ ≤ (Spec.map φ ≫ hU.fromSpec) ⁻¹ᵁ U` using `fun q _ => ht (x := Spec.map φ q) trivial`. Rewrite using `[pbT_of_le _ ht']`. Establish `h1 : hU.fromSpec.appLE U ⊤ ht = (Scheme.ΓSpecIso Γ(X, U)).inv`. Rewrite using `[Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`.
+
+Conclude with `(congrArg _ (CategoryTheory.Functor.map_id _ _)).trans (Category.comp_id _)`. Establish `h2 : (Spec.map φ ≫ hU.fromSpec).appLE U ⊤ ht' ≫ (Scheme.ΓSpecIso T).hom = φ`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (Spec.map φ) _ U ⊤ ⊤ ht le_top, h1, Category.assoc, Iso.inv_comp_eq, ← Scheme.ΓSpecIso_naturality]`. Use `congr 1`. Conclude with `congrArg (fun q => q.hom f) h2`.
+-/
 theorem value_fromSpec {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {T : CommRingCat.{0}}
     (φ : Γ(X, U) ⟶ T) (f : Γ(X, U)) :
     (Scheme.ΓSpecIso T).hom.hom (pbT (Spec.map φ ≫ hU.fromSpec) f ⊤) = φ.hom f := by
@@ -49,6 +61,9 @@ theorem value_fromSpec {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {T :
     congr 1
   exact congrArg (fun q => q.hom f) h2
 
+/- English proof (translation)
+Establish `h : (𝟙 (Sp T) : Sp T ⟶ Sp T).appLE ⊤ ⊤ (fun _ _ => trivial) = 𝟙 _` using `(Scheme.Hom.appLE_eq_app (𝟙 (Sp T)) (U := ⊤)).trans rfl`. Rewrite using `[constFn, h]`. Conclude with `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso (.of T)).inv_hom_id`.
+-/
 theorem value_constFn_id {T : Type} [CommRing T] (a : T) :
     (Scheme.ΓSpecIso (.of T)).hom.hom (constFn (𝟙 (Sp T)) ⊤ a) = a := by
   have h : (𝟙 (Sp T) : Sp T ⟶ Sp T).appLE ⊤ ⊤ (fun _ _ => trivial) = 𝟙 _ :=
@@ -58,6 +73,21 @@ theorem value_constFn_id {T : Type} [CommRing T] (a : T) :
 
 variable {K : Type} [Field K] {G : Over (Spec (CommRingCat.of K))} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Take `⟨χ, hχ, hfst⟩` from `exists_chart_pt_of_nil j (TrivSqZeroExt.fstHom K F (Fin n → F)) (fun a => ⟨inl a, rfl⟩) (fun a ha => ⟨2, by`. Rewrite using `[pow_two]`. Conclude with `mul_eq_zero_of_sq (ker_fst_sq (R := K) (S := F) (Fin n → F)) ha ha⟩)`. Use the proof step `(lieExp v (fun i => inr (Pi.single i 1)) (fun _ => TrivSqZeroExt.inr_mul_inr _ _ _) * (spMap ((TrivSqZeroExt.inlAlgHom K F (Fin n → F)).comp u) ≫ j)) u (by`. Rewrite using `[MonObj.comp_mul, comp_lieExp, lieExp_eq_one hv.1 _ (fun i => by rfl), one_mul, ← Category.assoc, spMap_comp]`.
+
+Use the proof step `rfl)`. Establish `hfst : ∀ a, (χ a).fst = u a` using `AlgHom.congr_fun hfst`. Set `φ : (Fin n → F) → (S →ₐ[K] DualNumber F)` to `fun c => (vecTo (inlS K F) (fun i => inr (c i)) (fun _ _ => TrivSqZeroExt.inr_mul_inr _ _ _)).comp χ`. Establish `hφ : ∀ c, spMap (φ c) ≫ j = tanExp v c * (spMap ((inlS K F).comp u) ≫ j)` using `fun c => by`. Rewrite using `[← spMap_comp, Category.assoc, ← hχ, MonObj.comp_mul, comp_lieExp, ← Category.assoc, spMap_comp]`.
+
+Use `congr 1`. Conclude with `lieExp_congr _ (fun i => vecTo_single _ _ _ i) _ _`. Use `congr 2`. Conclude with `AlgHom.ext fun a => by simp [vecTo_apply]`. Establish `hφ1 : ∀ c a, (φ c a).fst = u a` using `fun c a => by`.
+
+Simplify using `[φ, vecTo_apply, TrivSqZeroExt.fst_sum, hfst]`. Establish `hφ2 : ∀ c a, (φ c a).snd = ∑ k, c k * (χ a).snd k` using `fun c a => by`. Simplify using `[φ, vecTo_apply, TrivSqZeroExt.snd_sum, mul_comm]`. Use `⟨fun k a => (χ a).snd k, Fintype.linearIndependent_iff.2 fun c hc k => ?_, fun k => ⟨φ (Pi.single k 1), ?_, fun a => ?_⟩⟩` and prove the remaining obligations. Establish `: φ c = φ 0` using `AlgHom.ext fun a => TrivSqZeroExt.ext (by rw [hφ1, hφ1]) (by`.
+
+Rewrite using `[hφ2, hφ2]`. Simplify using `using congrFun hc a)`. Establish `h3` using `mul_right_cancel ((hφ c).symm.trans (this ▸ hφ 0))`. Establish `h4` using `(expBij (DualNumber F) hv _ (ker_fst_sq (R := K) (S := F) F)).1 _ _ (fun _ => rfl) (fun _ => rfl) _ _ h3`. Conclude with `TrivSqZeroExt.inr_injective (congrFun h4 k)`.
+
+Rewrite using `[hφ]`. Use `congr 1`. Use `(Finset.prod_eq_single k (fun i _ hi => epsTo_zero_comp ((isTan_iff _).2 (hv.1 i)) _ (by simp [Pi.single_eq_of_ne hi]) _) (by simp)).trans ?_` and prove the remaining obligations. Use `congr 3`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hφ2]`. Simplify using `[Pi.single_apply]`.
+-/
 theorem exists_independent [Smooth G.hom] {n : ℕ} {v : Fin n → (epsR K ⟶ G)} (hv : IsLieBasis v)
     {S F : Type} [CommRing S] [Algebra K S] [Field F] [Algebra K F] (j : sp (R₀ := K) S ⟶ G)
     [IsOpenImmersion j.left] (u : S →ₐ[K] F) :
@@ -104,6 +134,19 @@ theorem exists_independent [Smooth G.hom] {n : ℕ} {v : Fin n → (epsR K ⟶ G
 
 omit [IsCommMonObj G] in
 
+/- English proof (translation)
+Set `w : sp (R₀` to `K) (DualNumber F) ⟶ epsR K ⊗ G := lift (spMap (epsTo K (inr 1 : DualNumber F) (TrivSqZeroExt.inr_mul_inr _ _ _))) (spMap ((inlS K F).comp u) ≫ j)`. Establish `e1 : w.left ≫ ((fst (epsR K) G ≫ v) * snd (epsR K) G).left = Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ hU.fromSpec`. Rewrite using `[← Over.comp_left, MonObj.comp_mul, lift_fst_assoc, lift_snd, ← hφ, Over.comp_left, hj]`. Both sides reduce to the same expression. Establish `e2 : w.left ≫ (snd (epsR K) G).left = Spec.map (CommRingCat.ofHom ((inlS K F).comp u).toRingHom) ≫ hU.fromSpec`.
+
+Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left, hj]`. Both sides reduce to the same expression. Establish `e3 : w.left ≫ (fst (epsR K) G).left = 𝟙 _ ≫ ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (epsTo K (inr 1 : DualNumber F) (TrivSqZeroExt.inr_mul_inr _ _ _)).toRingHom`. Rewrite using `[← Over.comp_left, lift_fst, Category.id_comp]`. Both sides reduce to the same expression.
+
+Establish `hw : ⊤ ≤ w.left ⁻¹ᵁ ((snd (epsR K) G).left ⁻¹ᵁ U)`. Rewrite using `[← Scheme.Hom.comp_preimage, e2]`. Conclude with `fun q _ => hU.fromSpec_preimage_self.ge (x := Spec.map _ q) trivial`. Establish `key : ∀ f : Γ(G.left, U), ((Scheme.ΓSpecIso (.of (DualNumber F))).hom.hom (pbT w.left (pbT ((fst (epsR K) G ≫ v) * snd (epsR K) G).left f ((snd (epsR K) G).left ⁻¹ᵁ U)) ⊤) : DualNumber F) = inl (u f) + inr 1 * inl (u (dd U f))` using `fun f => by`. Rewrite using `[hd U f, pbT_add, pbT_mul, pbT_pbT _ _ le_rfl hw, pbT_pbT _ _ le_rfl hw, pbT_constFn _ _ hw, e2, e3, constFn_spMap, map_add, map_mul]`.
+
+Use `congrArg₂ _ (value_fromSpec hU _ _) (congrArg₂ _ ?_ (value_fromSpec hU _ _))` and prove the remaining obligations. Use `Eq.trans ?_ (epsTo_eps (R := K) (inr 1 : DualNumber F) (TrivSqZeroExt.inr_mul_inr _ _ _))` and prove the remaining obligations. Conclude with `value_constFn_id _`. Distinguish the cases in `h : (snd (epsR K) G).left ⁻¹ᵁ U ≤ ((fst (epsR K) G ≫ v) * snd (epsR K) G).left ⁻¹ᵁ U`. Use `key f` as an intermediate fact.
+
+Rewrite `this` using `[pbT_pbT _ _ h hw, e1]`. Establish `h5` using `congrArg TrivSqZeroExt.snd ((value_fromSpec hU _ f).symm.trans this)`. Simplify using `using h5`. Use `key 1` as an intermediate fact. Rewrite `this` using `[show pbT ((fst (epsR K) G ≫ v) * snd (epsR K) G).left (1 : Γ(G.left, U)) ((snd (epsR K) G).left ⁻¹ᵁ U) = 0 from dif_neg h, pbT_zero, map_zero]`.
+
+Simplify using `using congrArg TrivSqZeroExt.fst this`.
+-/
 theorem value_invDer {v : epsR K ⟶ G} {dd : ∀ W : G.left.Opens, Γ(G.left, W) → Γ(G.left, W)} (hd : IsInvDer v dd)
     {U : G.left.Opens} (hU : IsAffineOpen U) [Algebra K Γ(G.left, U)] (j : sp (R₀ := K) Γ(G.left, U) ⟶ G)
     (hj : j.left = hU.fromSpec) {F : Type} [Field F] [Algebra K F] (u : Γ(G.left, U) →ₐ[K] F)
@@ -145,6 +188,15 @@ theorem value_invDer {v : epsR K ⟶ G} {dd : ∀ W : G.left.Opens, Γ(G.left, W
       ((snd (epsR K) G).left ⁻¹ᵁ U) = 0 from dif_neg h, pbT_zero, map_zero] at this
     simpa using congrArg TrivSqZeroExt.fst this
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `G.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Use `letI : Algebra K Γ(G.left, U) := (Spec.preimage (hU.fromSpec ≫ G.hom)).hom.toAlgebra`. Set `j : sp (R₀` to `K) Γ(G.left, U) ⟶ G := Over.homMk hU.fromSpec (Spec.map_preimage _).symm`. Establish `: IsOpenImmersion j.left` using `inferInstanceAs (IsOpenImmersion hU.fromSpec)`.
+
+Take `⟨p, rfl⟩ : x ∈ Set.range hU.fromSpec` from `by rw [hU.range_fromSpec]; exact hx`. Use `PrimeSpectrum.isPrime p` as an intermediate fact. Set `u : Γ(G.left, U) →ₐ[K] (PrimeSpectrum.asIdeal p).ResidueField` to `IsScalarTower.toAlgHom _ _ _`. Take `⟨δ, hδ, hφ⟩` from `exists_independent hv j u`. Take `⟨t, ht⟩` from `exists_det_ne_zero δ hδ`.
+
+Use `⟨U, t, ?_⟩` and prove the remaining obligations. Establish `h1 : u (jac D U t) ≠ 0`. Rewrite using `[jac, AlgHom.map_det]`. Use `(congrArg Matrix.det (Matrix.ext fun i k => ?_)).trans_ne ht` and prove the remaining obligations. Take `⟨φ, h2, h3⟩` from `hφ i`.
+
+Conclude with `(value_invDer (hd i) hU j rfl u φ h2 (t k)).symm.trans (h3 _)`. Establish `h2 : p ∈ hU.fromSpec ⁻¹ᵁ G.left.basicOpen (jac D U t)`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Conclude with `fun h => h1 (Ideal.algebraMap_residueField_eq_zero.2 h)`. Conclude with `h2`.
+-/
 theorem exists_mem_basicOpen [Smooth G.hom] {n : ℕ} {v : Fin n → (epsR K ⟶ G)} (hv : IsLieBasis v)
     (D : Fin n → VF G) (hd : ∀ i, IsInvDer (v i) fun W f => (D i).D W f) (x : G.left) :
     ∃ (U : G.left.Opens) (t : Fin n → Γ(G.left, U)), x ∈ G.left.basicOpen (jac D U t) := by
@@ -178,6 +230,15 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.SS
 
+/- English proof (translation)
+Introduce `K _ A _ _ g hg`. Establish `: Smooth A.hom` using `SmoothOfRelativeDimension.smooth g _`. Take `⟨v, hv⟩` from `GlobalTheory.KeyPow.exists_isLieBasis A hg`. Use `choose dd hdd using fun i => (GlobalTheory.KS.InvField.main K A (v i) (hv.1 i)).1`. Establish `hp` using `fun i => (GlobalTheory.KS.InvField.main K A (v i) (hv.1 i)).2 _ (hdd i)`.
+
+Set `D : Fin g → VF A` to `fun i => { D := fun U => AddMonoidHom.mk' (dd i U) ((hp i).1 U) leibniz := (hp i).2.1 const := (hp i).2.2.2.1 res := fun U V h a => by`. Use `(hp i).2.2.1 U V a h` as an intermediate fact. Rewrite `this` using `[GlobalTheory.KS.rsT_of_le h, GlobalTheory.KS.rsT_of_le h]`. Conclude with `this }`. Use `⟨D, by rwa [Fintype.card_fin], fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨U, t, hx⟩` from `InvFrame.exists_mem_basicOpen hv D hdd x`. Establish `hle` using `A.left.basicOpen_le (jac D U t)`. Use `⟨_, fun i => (A.left.presheaf.map (homOfLE hle).op).hom (t i), hx, ?_⟩` and prove the remaining obligations. Establish `e : jac D _ (fun i => (A.left.presheaf.map (homOfLE hle).op).hom (t i)) = (A.left.presheaf.map (homOfLE hle).op).hom (jac D U t)`. Conclude with `(congrArg Matrix.det (Matrix.ext fun i k => (D i).res U _ hle (t k))).trans (RingHom.map_det (A.left.presheaf.map (homOfLE hle).op).hom (Matrix.of fun i k => (D i).D U (t k))).symm`.
+
+Rewrite using `[e]`. Conclude with `A.left.toRingedSpace.isUnit_res_basicOpen (jac D U t)`.
+-/
 theorem GlobalTheory.SS.exists_isFrame : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A] (g : ℕ), SmoothOfRelativeDimension g A.hom → ∃ D : Fin g → VF A, IsFrame D := by
   intro K _ A _ _ g hg
   have : Smooth A.hom := SmoothOfRelativeDimension.smooth g _

@@ -13,6 +13,11 @@ namespace Gen
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
   (bkP : BKPh X)
 
+/- English proof (translation)
+Take `⟨epsT, h0, hs, hb⟩` from `h`. Unfold `partA`. Combine the equalities or inequalities in the displayed calculation. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem partA_of_partAT (i : X.Tw) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E))) (k' : ℕ)
     (ψ' : X.RCG i Q →* (X.Ok i k')ˣ) (eps' : ℝ) (h : partAT bkP i Q k' ψ' eps') :
     partA bkP i Q k' ψ' eps' := by

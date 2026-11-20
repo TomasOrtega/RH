@@ -14,11 +14,27 @@ instance isAdicComplete_maximalIdeal (D : ℕ) :
   exact { toIsHausdorff := GlobalTheory.PsCNL.haus_of_noeth _
           toIsPrecomplete := GlobalTheory.PsCNL.ps_isPrecomplete D }
 
+/- English proof (translation)
+Rewrite using `[eval_map, eval₂_hom]`.
+-/
 theorem constantCoeff_eval (D : ℕ) (P : Polynomial (MvPowerSeries (Fin D) ℂ)) (x : MvPowerSeries (Fin D) ℂ) :
     MvPowerSeries.constantCoeff (P.eval x) =
       (P.map (MvPowerSeries.constantCoeff (σ := Fin D) (R := ℂ))).eval (MvPowerSeries.constantCoeff x) := by
   rw [eval_map, eval₂_hom]
 
+/- English proof (translation)
+Introduce `D P hP hsep`. Use `set φ := MvPowerSeries.constantCoeff (σ := Fin D) (R := ℂ) with hφ`. Use `set Q := P.map φ with hQ`. Establish `hQdeg : Q.natDegree = P.natDegree` using `hP.natDegree_map φ`. Establish `hcard : Q.roots.toFinset.card = P.natDegree`.
+
+Rewrite using `[Multiset.toFinset_card_of_nodup (nodup_roots hsep), IsAlgClosed.card_roots_eq_natDegree, hQdeg]`. Set `e : Fin P.natDegree ≃ Q.roots.toFinset` to `(Q.roots.toFinset.equivFinOfCardEq hcard).symm`. Establish `lift : ∀ c : ℂ, c ∈ Q.roots → ∃ a : MvPowerSeries (Fin D) ℂ, P.IsRoot a ∧ φ a = c`. Introduce `c hc`. Establish `hQ0 : Q ≠ 0` using `(hP.map φ).ne_zero`.
+
+Establish `hroot : Q.eval c = 0` using `(mem_roots hQ0).1 hc`. Establish `h1 : P.eval (MvPowerSeries.C c) ∈ maximalIdeal (MvPowerSeries (Fin D) ℂ)`. Rewrite using `[GlobalTheory.PsCNL.mem_max_iff, constantCoeff_eval, MvPowerSeries.constantCoeff_C, ← hQ, hroot]`. Conclude with `zero_mem _`. Establish `hder : Q.derivative.eval c ≠ 0`.
+
+Use `hsep.eval₂_derivative_ne_zero (RingHom.id ℂ) (x := c) (by simpa [eval₂_id] using hroot)` as an intermediate fact. Simplify `this` using `[eval₂_id]`. Establish `h2 : IsUnit (P.derivative.eval (MvPowerSeries.C c))`. Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, constantCoeff_eval, MvPowerSeries.constantCoeff_C, ← derivative_map, ← hQ]`. Conclude with `hder.isUnit`.
+
+Take `⟨a, ha, hac⟩` from `HenselianRing.is_henselian (I := maximalIdeal (MvPowerSeries (Fin D) ℂ)) P hP (MvPowerSeries.C c) h1 (h2.map _)`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite `hac` using `[GlobalTheory.PsCNL.mem_max_iff, map_sub, MvPowerSeries.constantCoeff_C, IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot, sub_eq_zero]`. Conclude with `hac`. Use `choose! θ hθ using lift`.
+
+Use `⟨fun j => θ (e j), fun i j hij => ?_, fun j => (hθ _ (Multiset.mem_toFinset.1 (e j).2)).1⟩` and prove the remaining obligations. Establish `hi` using `(hθ _ (Multiset.mem_toFinset.1 (e i).2)).2`. Establish `hj` using `(hθ _ (Multiset.mem_toFinset.1 (e j).2)).2`. Establish `: ((e i : ℂ)) = e j` using `by rw [← hi, ← hj]; exact congrArg φ hij`. Conclude with `e.injective (Subtype.ext this)`.
+-/
 theorem exists_lifts_of_separable : ∀ (D : ℕ) (P : Polynomial (MvPowerSeries (Fin D) ℂ)), P.Monic →
     (P.map (MvPowerSeries.constantCoeff (σ := Fin D) (R := ℂ))).Separable →
     ∃ θ : Fin P.natDegree → MvPowerSeries (Fin D) ℂ, Function.Injective θ ∧ ∀ j, P.IsRoot (θ j) := by
@@ -58,5 +74,8 @@ theorem exists_lifts_of_separable : ∀ (D : ℕ) (P : Polynomial (MvPowerSeries
 
 end GlobalTheory.HenselSplitPS
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HenselSplitPS.exists_lifts_of_separable`.
+-/
 example : ∀ (D : ℕ) (P : Polynomial (MvPowerSeries (Fin D) ℂ)), P.Monic → (P.map (MvPowerSeries.constantCoeff (σ := Fin D) (R := ℂ))).Separable → ∃ θ : Fin P.natDegree → MvPowerSeries (Fin D) ℂ, Function.Injective θ ∧ ∀ j, P.IsRoot (θ j) :=
   GlobalTheory.HenselSplitPS.exists_lifts_of_separable

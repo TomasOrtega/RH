@@ -15,9 +15,19 @@ section Ring
 variable {n r : ℕ} {R : Type} [CommRing R] {s : R →+* R} {Jm : Matrix (Fin n) (Fin n) R}
   {Xm Ym : Matrix (Fin n) (Fin r) R}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hF.ss, hF.herm, hF.yy, hF.xx, hF.yx⟩`.
+-/
 theorem pfr_swap (hF : PFr s Jm Xm Ym) : PFr s Jm Ym Xm :=
   ⟨hF.ss, hF.herm, hF.yy, hF.xx, hF.yx⟩
 
+/- English proof (translation)
+Establish `h1 : cT s (diagonal d') * diagonal d = 1`. Establish `e` using `pgram_unitary hg Ym Xm`. Rewrite `e` using `[hY, hX, hF.yx, Formalism.UG.cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : diagonal d * cT s (diagonal d') = 1` using `mul_eq_one_comm.1 h1`.
+
+Establish `h3 : cT s (diagonal d') * (cT s Ym * Jm * g) = cT s Ym * Jm`. Establish `e : cT s (g * Ym) * Jm * g = cT s Ym * Jm` using `by conv_rhs => rw [← hg]`. Simplify using `only [Formalism.UG.cT_mul, Matrix.mul_assoc]`. Rewrite `e` using `[hY, Formalism.UG.cT_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT s Ym * Jm := e`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem row_mul {g : Matrix (Fin n) (Fin n) R} (hF : PFr s Jm Xm Ym) (hg : cT s g * Jm * g = Jm) {d d' : Fin r → R}
     (hX : g * Xm = Xm * diagonal d) (hY : g * Ym = Ym * diagonal d') :
     cT s Ym * Jm * g = diagonal d * (cT s Ym * Jm) := by
@@ -39,6 +49,15 @@ theorem row_mul {g : Matrix (Fin n) (Fin n) R} (hF : PFr s Jm Xm Ym) (hg : cT s 
   calc cT s Ym * Jm * g = diagonal d * cT s (diagonal d') * (cT s Ym * Jm * g) := by rw [h2, Matrix.one_mul]
     _ = diagonal d * (cT s Ym * Jm) := by rw [Matrix.mul_assoc, h3]
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `e1 : ∑ k, g a k * C k i = C a i * d i`. Use `congrFun (congrFun hC a) i` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.mul_diagonal]`. Then use the resulting hypothesis. Establish `e2 : ∑ k, A i k * g k b = d i * A i b`.
+
+Use `congrFun (congrFun hA i) b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.diagonal_mul]`. Then use the resulting hypothesis. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => (mul_assoc _ _ _).symm`. Use `_ = C a i * (d i * A i b) := by rw [e1, mul_assoc]`. Use `_ = C a i * ∑ k, A i k * g k b := by rw [e2]`. Use `_ = ∑ k, C a i * A i k * g k b := by`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => (mul_assoc _ _ _).symm`.
+-/
 theorem comm_vecMulVec {m : ℕ} {g : Matrix (Fin n) (Fin n) R} {C : Matrix (Fin n) (Fin m) R}
     {A : Matrix (Fin m) (Fin n) R} {d : Fin m → R} (hC : g * C = C * diagonal d) (hA : A * g = diagonal d * A)
     (i : Fin m) : g * vecMulVec (fun k => C k i) (A i) = vecMulVec (fun k => C k i) (A i) * g := by
@@ -62,6 +81,11 @@ end Ring
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n r : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Establish `e : (cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (adMat F D) : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)) * (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AF F) J : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) = (cT (σ : E →+* E) D * J).map (i …` using `F) (AF F)) := by`. Unfold `JR`. Rewrite using `[← cT_map_inclR, ← Matrix.map_mul]`. Rewrite using `[e]`. Use extensionality with `a b`.
+
+Conclude with `map_mul (inclR (F := F) (AF F)) (C a i) ((cT (σ : E →+* E) D * J) i b)`.
+-/
 theorem lineProj_map (C D : Matrix (Fin n) (Fin r) E) (i : Fin r) :
     (lineProj σ J C D i).map (inclR (F := F) (AF F)) =
       vecMulVec (fun k => adMat F C k i)
@@ -76,6 +100,11 @@ theorem lineProj_map (C D : Matrix (Fin n) (Fin r) E) (i : Fin r) :
   ext a b
   exact map_mul (inclR (F := F) (AF F)) (C a i) ((cT (σ : E →+* E) D * J) i b)
 
+/- English proof (translation)
+Take `⟨d, d', hX, hY⟩` from `hm`. Establish `hF` using `pfrA h hJ hW`. Establish `hg` using `unitaryA_matHom m`. Break down `k with i | i` into its components or cases. Simplify using `only [projFam, Sum.elim_inl]`.
+
+Rewrite using `[lineProj_map]`. Conclude with `comm_vecMulVec hX (row_mul hF hg hX hY) i`. Simplify using `only [projFam, Sum.elim_inr]`. Rewrite using `[lineProj_map]`. Conclude with `comm_vecMulVec hY (row_mul (pfr_swap hF) hg hY hX) i`.
+-/
 theorem leviMin_comm_projFam (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)
     (X Y : Matrix (Fin n) (Fin r) E) (hW : IsWittFrame σ J X Y) (m) (hm : m ∈ leviMin σ J X Y) (k) :

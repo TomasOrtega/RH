@@ -20,6 +20,17 @@ open GlobalTheory.Poinc.Sep.BaseTerms
 noncomputable section
 namespace GlobalTheory.Poinc.Sep.BaseTerms
 
+/- English proof (translation)
+Establish `hG : GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Use `P.isAb.comm` as an intermediate fact. Take `⟨α, hα⟩` from `GlobalTheory.EmbLocal.exists_mulPull hG P (m * d) T`. Take `⟨β, hβ⟩` from `GlobalTheory.EmbLocal.exists_mulPull hG P m T`. Take `⟨δ₀, hδ₀⟩` from `GlobalTheory.EmbLocal.exists_mulPull hG P d T`.
+
+Establish `a` using `GlobalTheory.ThetaCompare.torsFrame_pow hG P hα H hJ`. Establish `b` using `GlobalTheory.ThetaCompare.torsFrame_pow hG P hβ H' hJ`. Establish `rα` using `GlobalTheory.ThetaCompare.Reg.two (y := y) (J := J) α hα (snd T P.A) (snd T P.A ^ (m * d)) rfl rfl`. Establish `rβ` using `GlobalTheory.ThetaCompare.Reg.two (y := y) (J := J) β hβ (snd T P.A) (snd T P.A ^ m) rfl rfl`. Establish `rδ` using `GlobalTheory.ThetaCompare.Reg.two (y := y) (J := J) δ₀ hδ₀ (snd T P.A) (snd T P.A ^ d) rfl rfl`.
+
+Establish `c` using `(rα.mul hJ (((rβ.pow hJ (d ^ 2)).mul hJ (rδ.pull hJ (snd T P.A ^ m))).inv)).const hG P.isAb P.isLB hJ (fun U _ h => by`. Simplify using `only [SymLiftOdd.comp_pow', lift_snd, ← pow_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_pow, ofMul_inv, ofMul_zpow, ofMul_one]`. Use `push_cast`.
+
+Use the proof step `module) x 1`. Simplify using `only [SymLiftOdd.comp_pow', GlobalTheory.ThetaCompare.pt_snd, H'.1, one_pow] at c`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Use `replace a := congrArg Additive.ofMul a`. Use `replace b := congrArg Additive.ofMul b`.
+
+Use `replace c := congrArg Additive.ofMul c`. Simplify using `only [ofMul_mul, ofMul_pow, ofMul_inv, ofMul_div] at a b c ⊢`. Move the coercions through the operations in `at a b c ⊢`. Take the linear combination `(norm := module) a - (d ^ 2) • b + c`.
+-/
 theorem torsFrame_dvd {S : Scheme.{0}} (P : PolAV S) {T : Over S} {m d : ℕ}
     {rig rig' : LB.Gen (P.L.pull (eSec P.A))} {x : T ⟶ P.A} {τ τ'} (H : IsTorsFrame P rig (m * d) x τ)
     (H' : IsTorsFrame P rig' m x τ') {y : T.left} {J} (hJ : Good P.L y J) :
@@ -53,6 +64,27 @@ theorem torsFrame_dvd {S : Scheme.{0}} (P : PolAV S) {T : Over S} {m d : ℕ}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hG : GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Take `⟨rig', hrig', Hr⟩` from `GlobalTheory.ConstFam.exists_gen_through (K := PUnit) (φ' := fun _ => eSec 𝔗.X₂.ρ.P.A) (φ := fun _ => eSec X₁.ρ.P.A) (ε := fun _ => 1) (h := spMap 𝔗.om) hw₀ X₁.ρ.P.isLB 𝔗.X₂.ρ.P.isLB (fun _ => PolBaseChange.eSec_comm 𝔗.cart) X₁.ρ.rig X₁.ρ.rig_gen`. Establish `hr : ∀ (Y : Scheme.{0}) (r : Y ⟶ (𝟙_ (Over _)).left) (z : Y) J J', Good X₁.ρ.P.L z J → Good 𝔗.X₂.ρ.P.L z J' → GlobalTheory.FrameMove.rval X₁.ρ.rig (r ≫ spMap 𝔗.om) z J = GlobalTheory.ConstFam.wVal w₀ z J J' (r ≫ eSec 𝔗.X₂.ρ.P.A) * GlobalTheory.FrameMove.rval rig' r z J'` using `fun Y r z J J' hJ hJ' => (Hr Y r z J J' hJ hJ').trans (congrArg (· * _) ((Fintype.prod_unique _).trans (zpow_one _)))`. Use `choose τ' hτ' Hτ using fun b => GlobalTheory.ConstFam.exists_gen_through (φ' := fun _ : Fin 1 => (𝔗.X₂.ρ.pt (𝔗.lam b)).left) (h := spMap 𝔗.om) hw₀ X₁.ρ.P.isLB 𝔗.X₂.ρ.P.isLB (fun _ => 𝔗.lam_pt b) (X₁.ρ.fr b) (X₁.ρ.fr_tors b).2.1`. Establish `hT' : ∀ b, IsTorsFrame 𝔗.X₂.ρ.P rig' (X₁.S.r * X₁.S.N) (𝔗.X₂.ρ.pt (𝔗.lam b)) (τ' b)` using `fun b => GlobalTheory.FrameMove.isTorsFrame_move 𝔗.cart hw₀ hr (𝔗.lam_pt b) (X₁.ρ.fr_tors b) (hτ' b) (fun z J J' hJ hJ' => by`.
+
+Use `Hτ b _ (𝟙 _) z J J' hJ hJ'` as an intermediate fact. Rewrite using `[Fin.prod_univ_one, zpow_one, Category.id_comp, Category.id_comp] at this)` and apply the resulting hypothesis. Establish `H₂ : ∀ b, IsTorsFrame 𝔗.X₂.ρ.P 𝔗.X₂.ρ.rig (X₁.S.r * X₁.S.N * 𝔗.d) (𝔗.X₂.ρ.pt (𝔗.lam b)) (𝔗.X₂.ρ.fr (𝔗.lam b))` using `fun b => 𝔗.lev ▸ 𝔗.X₂.ρ.fr_tors (𝔗.lam b)`. Take `⟨ρ₀, hρ₀⟩ : ∃ ρ : Γ((baseOver (Sp 𝔗.X₂.S.R)).left, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ (baseOver (Sp 𝔗.X₂.S.R)).left) (z : Z) J, Good 𝔗.X₂.ρ.P.L z J → val 𝔗.X₂.ρ.rig r z J = gm r z ⊤ ρ * val rig' r z J` from `exists_ratio (K := PUnit) (φ := fun _ => eSec 𝔗.X₂.ρ.P.A) (ε := fun _ => 1) 𝔗.X₂.ρ.P.isLB rfl 𝔗.X₂.ρ.rig rig' 𝔗.X₂.ρ.rig_gen hrig'`. Use `choose v hv using fun b => exists_ratio 𝔗.X₂.ρ.P.isLB rfl (𝔗.X₂.ρ.fr (𝔗.lam b)) (τ' b) (𝔗.X₂.ρ.fr_tors _).2.1 (hτ' b)`.
+
+Establish `hroot : ∀ b, v b ^ ((X₁.S.r * X₁.S.N * 𝔗.d) ^ 2) = ρ₀ ^ ((X₁.S.r * X₁.S.N * 𝔗.d) ^ 2)` using `fun b => by`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x _`. Take `⟨J, hJ⟩` from `GlobalTheory.ConstFam.exists_good' 𝔗.X₂.ρ.P.isLB x`. Establish `q` using `GlobalTheory.Poinc.Sep.BaseTerms.torsFrame_dvd 𝔗.X₂.ρ.P (H₂ b) (hT' b) hJ`.
+
+Rewrite `q` using `[hv b _ (𝟙 _) x J hJ, hρ₀ _ _ x J hJ, mul_div_cancel_right, mul_div_cancel_right]`. Establish `q' : gm (𝟙 _) x ⊤ (v b) ^ ((X₁.S.r * X₁.S.N * 𝔗.d) ^ 2) = gm (𝟙 _) x ⊤ ρ₀ ^ ((X₁.S.r * X₁.S.N * 𝔗.d) ^ 2)` using `q`. Rewrite using `[map_pow, map_pow]`. Conclude with `q'`. Establish `hinj : Function.Injective (algebraMap 𝔗.X₂.o₁ 𝔗.X₂.S.R)` using `fun a a' h => (ArithBase.inj (o := 𝔗.X₂.o₁) (Ω := 𝔗.X₂.Ω₁)) (congrArg Subtype.val h)`.
+
+Establish `hprim : IsPrimitiveRoot (⟨algebraMap 𝔗.X₂.o₁ 𝔗.X₂.Ω₁ 𝔗.X₂.S.ζ, 𝔗.X₂.S.R.algebraMap_mem _⟩ : 𝔗.X₂.S.R) ((X₁.S.r * X₁.S.N * 𝔗.d) ^ 2)`. Rewrite using `[← 𝔗.lev]`. Conclude with `𝔗.X₂.S.prim.map_of_injective hinj`. Establish `hP : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).hom.hom ρ₀.val)` using `(ρ₀.map (Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).hom.hom.toMonoidHom).isUnit`. Establish `hV : ∀ b, ((Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).hom.hom (v b).val) ^ ((X₁.S.r * X₁.S.N * 𝔗.d) ^ 2) = ((Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).hom.hom ρ₀.val) ^ ((X₁.S.r * X₁.S.N * 𝔗.d) ^ 2)` using `fun b => by`.
+
+Establish `h'` using `congrArg (fun u => (Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).hom.hom (Units.val u)) (hroot b)`. Simplify `h'` using `only [Units.val_pow_eq_pow_val, map_pow]`. Establish `hμ : ∀ b, ((Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).hom.hom (v b).val * ↑hP.unit⁻¹) ^ ((X₁.S.r * X₁.S.N * 𝔗.d) ^ 2) = 1` using `fun b => by`. Rewrite using `[_root_.mul_pow, hV b, ← _root_.mul_pow, hP.mul_val_inv, one_pow]`. Establish `hpos : 0 < X₁.S.r * X₁.S.N * 𝔗.d`.
+
+Rewrite using `[← 𝔗.lev]`. Conclude with `Nat.mul_pos 𝔗.X₂.S.r_pos (by have := 𝔗.X₂.S.N_ge; omega)`. Use `haveI : NeZero ((X₁.S.r * X₁.S.N * 𝔗.d) ^ 2) := ⟨pow_ne_zero 2 hpos.ne'⟩`. Use `choose k hk using fun b => hprim.eq_pow_of_pow_eq_one (hμ b)`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).hom.hom ρ₀.val, k, (ρ₀.map (Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).hom.hom.toMonoidHom).isUnit, fun b Y r y J₁ J₂ hJ₁ hJ₂ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `Hτ b Y r y J₁ J₂ hJ₁ hJ₂`. Rewrite `h1` using `[Fin.prod_univ_one, zpow_one]`. Establish `h2` using `hv b Y r y J₂ hJ₂`. Establish `h3 : fn ((Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).hom.hom ρ₀.val * ⟨algebraMap 𝔗.X₂.o₁ 𝔗.X₂.Ω₁ 𝔗.X₂.S.ζ, 𝔗.X₂.S.R.algebraMap_mem _⟩ ^ k b) = (v b).val`. Rewrite using `[(hk b).2, mul_left_comm, hP.mul_val_inv, _root_.mul_one]`.
+
+Use `show ((Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).hom ≫ (Scheme.ΓSpecIso (CommRingCat.of 𝔗.X₂.S.R)).inv).hom (v b).val = (v b).val`. Rewrite using `[Iso.hom_inv_id]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `_ = _ * (val (X₁.ρ.fr b) (r ≫ spMap 𝔗.om) y J₁).val`. Rewrite using `[h3, h1, h2, gs_unit r y ⊤ trivial (v b)]`.
+
+Simplify using `only [GlobalTheory.ConstFam.wVal, Category.assoc, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tower_frames {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : Tower X₁ act)
     (w₀ : LB.Iso 𝔗.X₂.ρ.P.L (X₁.ρ.P.L.pull 𝔗.φ)) (hw₀ : w₀.IsGen) :
@@ -128,6 +160,19 @@ theorem tower_frames {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8)
   simp only [GlobalTheory.ConstFam.wVal, Category.assoc, Units.val_mul]
   ring
 
+/- English proof (translation)
+Establish `pw` using `(isGen_iff w).1 hw`. Establish `pwl` using `(isGen_iff wl).1 hwl`. Establish `pwl₂` using `(isGen_iff wl₂).1 hwl₂`. Establish `pw₀` using `(isGen_iff w₀).1 hw₀`. Take `⟨wa, Ta⟩` from `exists_comp hM wl w pwl pw hL₁ A₂.isLB`.
+
+Take `⟨wb, Tb⟩` from `exists_comp hL₂ w₀ wl₂ pw₀ pwl₂ hL₁ A₂.isLB`. Establish `pa` using `Ta.pgen_comp hM pwl pw`. Establish `pb` using `Tb.pgen_comp hL₂ pw₀ pwl₂`. Establish `conv : ∀ (F₁ F₂ : A₂.A.left ⟶ X₁) (_ : F₁ = F₂) (u : LB.Iso A₂.L (L₁.pull F₁)), PGen u → ∃ u' : LB.Iso A₂.L (L₁.pull F₂), PGen u' ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ A₂.A.left) (z : Z) j k, gw u' r z j k = gw u r z j k`. Introduce and unpack `F₁ _ rfl u hu`.
+
+Conclude with `⟨u, hu, fun _ _ _ _ _ => rfl⟩`. Take `⟨wb', pb', hb'⟩` from `conv _ _ hc wb pb`. Take `⟨u, hu⟩` from `GlobalTheory.PreUnif.exists_ratio hL₁ A₂.isLB wa wb' pa pb'`. Establish `hA` using `A₂.isAb`. Take `⟨s, hs⟩` from `(GlobalTheory.globalFns_holds S A₂.A hA).2 u.val`.
+
+Take `⟨s', hs'⟩` from `(GlobalTheory.globalFns_holds S A₂.A hA).2 (u⁻¹).val`. Establish `hss : s * s' = 1` using `(GlobalTheory.globalFns_holds S A₂.A hA).1 (by rw [map_mul, hs, hs', Units.mul_inv, map_one])`. Set `c₁ : Γ(S, ⊤)ˣ` to `⟨s, s', hss, (mul_comm _ _).trans hss⟩`. Use `⟨c₁, fun Z r z j₁ j j₂ k h₁ hj h₂ hk => ?_⟩` and prove the remaining obligations. Establish `hm₁ : c (b (r z)) ∈ L₁.U j₁`.
+
+Establish `e : (b ≫ c) (r z) = (ψ ≫ a) (r z)` using `by rw [hc]`. Conclude with `e ▸ h₁`. Establish `e : gm (r ≫ A₂.A.hom) z ⊤ c₁ = gm r z ⊤ u`. Rewrite using `[← gm_pull r A₂.A.hom z ⊤ trivial c₁]`. Use `show gm r z ⊤ (pullU A₂.A.hom ⊤ c₁) = _`.
+
+Use `congr 1`. Conclude with `Units.ext hs`. Rewrite using `[← Ta Z r z j₁ j k h₁ hj hk, hu Z r z j₁ k h₁ hk, hb' Z r z j₁ k, Tb Z r z j₁ j₂ k hm₁ h₂ hk, e]`.
+-/
 theorem iso_square_const {S : Scheme.{0}} (A₂ : PolAV S) {Y X₁ X₂ : Scheme.{0}} {M : LB Y} {L₁ : LB X₁} {L₂ : LB X₂}
     (hM : M.IsLB) (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB) {ψ : A₂.A.left ⟶ Y} {a : Y ⟶ X₁} {b : A₂.A.left ⟶ X₂}
     {c : X₂ ⟶ X₁} (hc : b ≫ c = ψ ≫ a) (w : LB.Iso A₂.L (M.pull ψ)) (wl : LB.Iso M (L₁.pull a))
@@ -167,6 +212,9 @@ theorem iso_square_const {S : Scheme.{0}} (A₂ : PolAV S) {Y X₁ X₂ : Scheme
     exact Units.ext hs
   rw [← Ta Z r z j₁ j k h₁ hj hk, hu Z r z j₁ k h₁ hk, hb' Z r z j₁ k, Tb Z r z j₁ j₂ k hm₁ h₂ hk, e]
 
+/- English proof (translation)
+Use `cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Simplify `h` using `only [Category.assoc]`. Rewrite using `[Category.assoc, gp.1.w, ← Category.assoc, Over.w x₂, Category.assoc, Over.w x] show Spec.map _ ≫ spMap f = spMap f ≫ Spec.map _`. Rewrite using `[show (CommRingCat.ofHom (algebraMap (FractionRing V') (FractionRing V'))) = 𝟙 _ from rfl, show (CommRingCat.ofHom (algebraMap (FractionRing V) (FractionRing V))) = 𝟙 _ from rfl, Spec.map_id, Spec.map_id, Category.id_comp, Category.comp_id]`.
+-/
 theorem pts_match {V V' : Type} [CommRing V] [IsDomain V] [CommRing V'] [IsDomain V']
     {A : PolAV (Sp (FractionRing V))} {A₂ : PolAV (Sp (FractionRing V'))} {B : Scheme.{0}} {G : Over B} [GrpObj G]
     {y₀ : Sp (FractionRing V) ⟶ B} {φ : A.A.left ⟶ G.left} (cart : IsGrpPullback A.A G y₀ φ)
@@ -181,6 +229,31 @@ theorem pts_match {V V' : Type} [CommRing V] [IsDomain V] [CommRing V'] [IsDomai
       show (CommRingCat.ofHom (algebraMap (FractionRing V) (FractionRing V))) = 𝟙 _ from rfl, Spec.map_id, Spec.map_id,
       Category.id_comp, Category.comp_id]
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ act 𝔗`. Take `⟨w₀, hw₀⟩` from `𝔗.lb`. Take `⟨u₀, k, hu₀, hT⟩` from `tower_frames 𝔗 w₀ hw₀`. Use `⟨k, ?_⟩` and prove the remaining obligations. Introduce `z₁ z₂ _ V _ _ _ ev X _ m t δ 𝔪 V' _ _ _ io f _ ev₂ X' _ m' t' δ' 𝔪₂ ψ w hw _ hyK gp hφ x fr hx hfr x₂ fr₂ hx₂ hfr₂`.
+
+Take `⟨c₁, hc₁⟩` from `iso_square_const 𝔪₂.A 𝔪.A.isLB X₁.ρ.P.isLB 𝔗.X₂.ρ.P.isLB hφ w 𝔪.wl 𝔪₂.wl w₀ hw 𝔪.wl_gen 𝔪₂.wl_gen hw₀`. Set `c₁' : (FractionRing V')ˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V'))).hom.hom.toMonoidHom c₁`. Establish `hsp : (spMap 𝔪₂.yK ≫ spMap 𝔗.om : Sp (FractionRing V') ⟶ Sp X₁.S.R) = spMap f ≫ spMap 𝔪.yK`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg (fun q => Spec.map (CommRingCat.ofHom q)) hyK`.
+
+Use `⟨c₁' * Units.map (𝔪₂.yK : 𝔗.X₂.S.R →* FractionRing V') hu₀.unit, fun b zz J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `set y := (x₂ (𝔗.lam b)).left with hy`. Establish `e₁ : y ≫ 𝔪₂.φ = spMap 𝔪₂.yK ≫ (𝔗.X₂.ρ.pt (𝔗.lam b)).left` using `hx₂ (𝔗.lam b)`. Establish `e₂ : y ≫ ψ ≫ 𝔪.φ = spMap 𝔪₂.yK ≫ (𝔗.X₂.ρ.pt (𝔗.lam b)).left ≫ 𝔗.φ`. Rewrite using `[← hφ, ← Category.assoc, e₁, Category.assoc]`.
+
+Establish `e₃ : y ≫ ψ ≫ 𝔪.φ = spMap f ≫ (x b).left ≫ 𝔪.φ`. Rewrite using `[e₂, 𝔗.lam_pt b, ← Category.assoc, hsp, Category.assoc, hx b]`. Establish `hpts : y ≫ ψ = spMap f ≫ (x b).left` using `pts_match 𝔪.cart gp (x₂ (𝔗.lam b)) (x b) e₃`. Establish `e₄ : spMap f ≫ (x b).left ≫ 𝔪.φ = y ≫ ψ ≫ 𝔪.φ` using `e₃.symm`. Take `⟨J₁, hJ₁⟩` from `GlobalTheory.ConstFam.exists_good' X₁.ρ.P.isLB zz`.
+
+Take `⟨J₂, hJ₂⟩` from `GlobalTheory.ConstFam.exists_good' 𝔗.X₂.ρ.P.isLB zz`. Establish `ha` using `(hfr₂ (𝔗.lam b)).2 zz J₂ J' hJ₂ hJ'`. Establish `hb` using `hT b (TFK (R := V') (FractionRing V')).left (show (TFK (R := V') (FractionRing V')).left ⟶ (baseOver (Sp 𝔗.X₂.S.R)).left from spMap 𝔪₂.yK) zz J₁ J₂ hJ₁ hJ₂`. Rewrite `hb` using `[← e₂, ← e₁]`. Establish `hd` using `hc₁ _ y zz (J₁ (y ≫ ψ ≫ 𝔪.φ)) (J (y ≫ ψ)) (J₂ (y ≫ 𝔪₂.φ)) (J' y) (hJ₁ _) (hJ _) (hJ₂ _) (hJ' _)`.
+
+Establish `hc0` using `(hfr b).2 (spMap f zz) (fun χ => J₁ (spMap f ≫ χ)) (fun χ => J (spMap f ≫ χ)) (fun χ => hJ₁ _) (fun χ => hJ _)`. Establish `p₁ : (gw 𝔪.wl (spMap f ≫ (x b).left) zz (J₁ (spMap f ≫ (x b).left ≫ 𝔪.φ)) (J (spMap f ≫ (x b).left))).val = ((spMap f).stalkMap zz).hom (gw 𝔪.wl (x b).left (spMap f zz) (J₁ (spMap f ≫ (x b).left ≫ 𝔪.φ)) (J (spMap f ≫ (x b).left))).val` using `GlobalTheory.UT.EvalZero.gm_comp_map (spMap f) (x b).left zz ((X₁.ρ.P.L.pull 𝔪.φ).U (fun _ => J₁ (spMap f ≫ (x b).left ≫ 𝔪.φ)) ⊓ 𝔪.A.L.U (J (spMap f ≫ (x b).left))) ⟨mem_pull.2 (hJ₁ _), hJ _⟩ _`. Establish `p₂ : (val (fr b) (spMap f) zz J).val = ((spMap f).stalkMap zz).hom (val (fr b) (𝟙 _) (spMap f zz) (fun χ => J (spMap f ≫ χ))).val` using `GlobalTheory.UT.EvalZero.val_comp_map (fr b) (spMap f) (𝟙 _) (spMap f) (Category.comp_id _) zz hJ`. Establish `p₃ : (val (X₁.ρ.fr b) ((show (TFK (R` using `V') (FractionRing V')).left ⟶ (baseOver (Sp 𝔗.X₂.S.R)).left from spMap 𝔪₂.yK) ≫ (show (baseOver (Sp 𝔗.X₂.S.R)).left ⟶ (baseOver (Sp X₁.S.R)).left from spMap 𝔗.om)) zz J₁).val = ((spMap f).stalkMap zz).hom (val (X₁.ρ.fr b) (spMap 𝔪.yK) (spMap f zz) (fun χ => J₁ (spMap f ≫ χ))).val …`. Establish `hc : (gw 𝔪.wl (y ≫ ψ) zz (J₁ (y ≫ ψ ≫ 𝔪.φ)) (J (y ≫ ψ))).val * @id ((TFK (R` using `V') (FractionRing V')).left.presheaf.stalk zz) (val (fr b) (spMap f) zz J).val = (val (X₁.ρ.fr b) ((show (TFK (R := V') (FractionRing V')).left ⟶ (baseOver (Sp 𝔗.X₂.S.R)).left from spMap 𝔪₂.yK) ≫ (show (baseOver (Sp 𝔗.X₂.S.R)).left ⟶ (baseOver (Sp X₁.S.R)).left from spMap 𝔗.om)) …`.
+
+Rewrite using `[e₃, hpts, p₁, p₂, p₃]`. Simplify using `only [id]`. Rewrite using `[← map_mul, ← Units.val_mul]`. Conclude with `congrArg (fun u => ((spMap f).stalkMap zz).hom u.val) hc0`. Establish `ha' : gw 𝔪₂.wl y zz (J₂ (y ≫ 𝔪₂.φ)) (J' y) * val (fr₂ (𝔗.lam b)) (𝟙 _) zz J' = val (𝔗.X₂.ρ.fr (𝔗.lam b)) (show (TFK (R` using `V') (FractionRing V')).left ⟶ (baseOver (Sp 𝔗.X₂.S.R)).left from spMap 𝔪₂.yK) zz J₂ := ha`.
+
+Establish `hG : gw w y zz (J (y ≫ ψ)) (J' y) * val (fr₂ (𝔗.lam b)) (𝟙 _) zz J' = (gw 𝔪.wl (y ≫ ψ) zz (J₁ (y ≫ ψ ≫ 𝔪.φ)) (J (y ≫ ψ)))⁻¹ * gm (y ≫ 𝔪₂.A.A.hom) zz ⊤ c₁ * (gw w₀ (y ≫ 𝔪₂.φ) zz (J₁ (y ≫ ψ ≫ 𝔪.φ)) (J₂ (y ≫ 𝔪₂.φ)) * val (𝔗.X₂.ρ.fr (𝔗.lam b)) (show (TFK (R` using `V') (FractionRing V')).left ⟶ (baseOver (Sp 𝔗.X₂.S.R)).left from spMap 𝔪₂.yK) zz J₂) := by`. Rewrite using `[eq_inv_mul_of_mul_eq hd, ← ha']`. Apply the tactic sequence `first | rfl | simp only [mul_assoc] | group`. Establish `hU : gs (show (TFK (R` using `V') (FractionRing V')).left ⟶ (baseOver (Sp 𝔗.X₂.S.R)).left from spMap 𝔪₂.yK) zz ⊤ (fn (u₀ * ⟨algebraMap 𝔗.X₂.o₁ 𝔗.X₂.Ω₁ 𝔗.X₂.S.ζ, 𝔗.X₂.S.R.algebraMap_mem _⟩ ^ k b)) = GlobalTheory.Poinc.TorsRatio.cstK zz (𝔪₂.yK (u₀ * ⟨algebraMap 𝔗.X₂.o₁ 𝔗.X₂.Ω₁ 𝔗.X₂.S.ζ, 𝔗.X₂.S.R.algebraMap_mem …`. Establish `hC : (gm (y ≫ 𝔪₂.A.A.hom) zz ⊤ c₁).val = GlobalTheory.Poinc.TorsRatio.cstK zz (c₁' : FractionRing V')`.
+
+Rewrite using `[← gs_unit _ zz ⊤ trivial, show y ≫ 𝔪₂.A.A.hom = (TFK (R := V') (FractionRing V')).hom from Over.w (x₂ (𝔗.lam b))]`. Establish `e : (c₁ : Γ(Sp (FractionRing V'), ⊤)) = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V'))).inv.hom (c₁' : FractionRing V')`. Simplify using `[c₁']`. Rewrite using `[e]`. Conclude with `(GlobalTheory.FrameMove.gs_spMap (RingHom.id _) zz _).trans (GlobalTheory.Poinc.TorsRatio.cst_eq_cstK zz _)`.
+
+Establish `hval` using `congrArg Units.val hG`. Establish `hb'` using `hb`. Rewrite `hb'` using `[Units.val_mul]`. Simplify using `only [Units.val_mul] at hval`. Rewrite `hval` using `[hb', ← hc, hU, hC]`.
+
+Use `show (gw w y zz (J (y ≫ ψ)) (J' y)).val * (val (fr₂ (𝔗.lam b)) (𝟙 _) zz J').val = _`. Rewrite using `[hval]`. Establish `hB` using `Units.inv_mul (gw 𝔪.wl (y ≫ ψ) zz (J₁ (y ≫ ψ ≫ 𝔪.φ)) (J (y ≫ ψ)))`. Simplify using `only [id, GlobalTheory.Poinc.TorsRatio.cst_eq_cstK, map_mul, map_pow, Units.val_mul, Units.coe_map, MonoidHom.coe_coe, IsUnit.unit_spec] at hB ⊢`. Establish `key : ∀ a b c d e : (TFK (R` using `V') (FractionRing V')).left.presheaf.stalk zz, a * b * (c * (d * e)) = b * c * e * (a * d) := fun _ _ _ _ _ => by ring`.
+
+Rewrite using `[key, hB, _root_.mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frames_along_tower : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     (X₁ : Setup F W i) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (𝔗 : Tower X₁ act), ∃ k : X₁.S.Gam → ℕ,
     ∀ (z₁ : X₁.M.Z) (z₂ : 𝔗.X₂.M.Z), 𝔗.p z₂ = z₁ →

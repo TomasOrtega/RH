@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSubquotientOfEquiv
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.JacStages
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.JacStages.deltaHalf_flatHom | exact GlobalTheory.JacStages.deltaHalf_flatHom | (intros; apply GlobalTheory.JacStages.deltaHalf_flatHom <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.parabolicModulusSqrtChar_refinedBlocks_in_stages : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (s : ℕ) (d t : Fin s → ℕ) (d' : ∀ a, Fin (t a) → ℕ) (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a))
     (g : ∀ a b, GL (Fin (d' a b)) k),

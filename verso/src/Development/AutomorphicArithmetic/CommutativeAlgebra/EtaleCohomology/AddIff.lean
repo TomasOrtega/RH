@@ -24,6 +24,17 @@ private def cov (Pa : Parts C) : Coverage Cᵒᵖ where
 
 private abbrev Jt (Pa : Parts C) : GrothendieckTopology Cᵒᵖ := (cov Pa).toGrothendieck
 
+/- English proof (translation)
+Rewrite using `[Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget AddCommGrpCat.{1}), isSheaf_iff_isSheaf_of_type, Presieve.isSheaf_coverage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h X R ⟨S, hS, rfl⟩`. Use `(Presieve.isSheafFor_arrows_iff _ _).2 fun x _ => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `(h _ S hS).2 x`.
+
+Conclude with `⟨t, fun i => congrFun ht i, fun t' ht' => (h _ S hS).1 (funext fun i => (ht' i).trans (congrFun ht i).symm)⟩`. Introduce `h A S hS`. Establish `arrows : ∀ {X : C} (S : Fam X), Pa.Cov S → ∀ x : ∀ i, F.obj (S.B i), Presieve.Arrows.Compatible ((unopUnop C ⋙ F) ⋙ forget AddCommGrpCat.{1}) (fun i => (S.f i).op) x → ∃! t, ∀ i, (F.map (S.f i)).hom t = x i` using `fun {X} S hS x hx => (Presieve.isSheafFor_arrows_iff _ _).1 (h (X := op X) (pre S) ⟨S, hS, rfl⟩) x hx`. Establish `sub : ∀ X : C, Pa.Cov (⟨Empty, fun e => e.elim, fun e => e.elim⟩ : Fam X) → Subsingleton (F.obj X)` using `fun X hX => ⟨fun a b => (arrows _ hX (fun e => e.elim) (fun e => e.elim)).unique (fun e => e.elim) (fun e => e.elim)⟩`. Establish `compat : ∀ x : ∀ i, F.obj (S.B i), Presieve.Arrows.Compatible ((unopUnop C ⋙ F) ⋙ forget AddCommGrpCat.{1}) (fun i => (S.f i).op) x`.
+
+Introduce `x i j Z gi gj e`. Establish `e' : S.f i ≫ gi.unop = S.f j ≫ gj.unop` using `congrArg Quiver.Hom.unop e`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `: gi.unop = gj.unop` using `(Pa.epi S hS i).left_cancellation _ _ e'`.
+
+Rewrite using `[Quiver.Hom.unop_inj this]`. Use `sub _ (Pa.disj S hS hij gi.unop gj.unop e')` as an intermediate fact. Conclude with `Subsingleton.elim (α := F.obj Z.unop) _ _`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`.
+
+Conclude with `(arrows S hS _ (compat fun i => (F.map (S.f i)).hom a)).unique (fun i => rfl) (fun i => (congrFun hab i).symm)`. Introduce `x`. Take `⟨t, ht, -⟩` from `arrows S hS x (compat x)`. Conclude with `⟨t, funext ht⟩`.
+-/
 private theorem add_iff (Pa : Parts C) (F : Coef C) :
     Pa.Add F ↔ Presheaf.IsSheaf (Jt Pa) (unopUnop C ⋙ F) := by
   rw [Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget AddCommGrpCat.{1}),
@@ -62,6 +73,9 @@ private theorem add_iff (Pa : Parts C) (F : Coef C) :
       obtain ⟨t, ht, -⟩ := arrows S hS x (compat x)
       exact ⟨t, funext ht⟩
 
+/- English proof (translation)
+The claim follows from `haveI : EssentiallySmall.{1} Cᵒᵖ := essentiallySmall_of_small_of_locallySmall _ haveI : IsGrothendieckAbelian.{1} (Sheaf (Jt Pa) AddCommGrpCat.{1}) := Sheaf.isGrothendieckAbelian_of_essentiallySmall _ _ inferInstance`.
+-/
 private theorem enough (Pa : Parts C) : EnoughInjectives (Sheaf (Jt Pa) AddCommGrpCat.{1}) :=
   haveI : EssentiallySmall.{1} Cᵒᵖ := essentiallySmall_of_small_of_locallySmall _
   haveI : IsGrothendieckAbelian.{1} (Sheaf (Jt Pa) AddCommGrpCat.{1}) :=
@@ -71,6 +85,13 @@ private theorem enough (Pa : Parts C) : EnoughInjectives (Sheaf (Jt Pa) AddCommG
 end UpperTheory.Ru.crystallineComparison
 
 open UpperTheory.Ru.crystallineComparison in
+/- English proof (translation)
+Introduce `C _ Pa F hF`. Use `haveI := enough Pa`. Set `Fs : Sheaf (Jt Pa) AddCommGrpCat.{1}` to `⟨unopUnop C ⋙ F, (add_iff Pa F).1 hF⟩`. Set `I` to `Injective.under Fs`. Set `G` to `(sheafToPresheaf (Jt Pa) AddCommGrpCat.{1}).obj I`.
+
+Establish `hG : Presheaf.IsSheaf (Jt Pa) G` using `I.property`. Use `haveI inj : Injective G := Injective.injective_of_adjoint (sheafificationAdjunction (Jt Pa) AddCommGrpCat.{1}) I`. Set `m` to `(sheafToPresheaf (Jt Pa) AddCommGrpCat.{1}).map (Injective.ι Fs)`. Establish `hm : Mono m` using `inferInstance`. Use `⟨opOp C ⋙ G, { app := fun X => m.app (op (op X)), naturality := fun X Y f => m.naturality f.op.op }, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[NatTrans.mono_iff_mono_app]`. Introduce `X`. Conclude with `(NatTrans.mono_iff_mono_app m).1 hm _`. Conclude with `Injective.injective_of_adjoint ((opOpEquivalence C).congrLeft (E := AddCommGrpCat.{1})).symm.toAdjunction G`. Conclude with `(add_iff Pa _).2 hG`.
+-/
 theorem UpperTheory.Ru.crystallineComparison.emb :
     UpperTheory.Ru.crystallineComparison.Emb := by
   intro C _ Pa F hF

@@ -11,6 +11,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FibreProj
 
+/- English proof (translation)
+Introduce `k _ X q D hX Z i _ l _ _`. Use `haveI : Module.Finite ℤ k := hX.finite`. Conclude with `GlobalTheory.FibreNef.isProjOver_fibre hX.isProjOver l i`.
+-/
 theorem isProjOver_closed_fibre : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (q : X ⟶ Sp k) (D : ℕ), IsArithVar q D → ∀ (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] (l : ℕ) [Fact l.Prime] [Algebra (ZMod l) Γ(Z, ⊤)], IsProjOver (strHom (ZMod l) Z) := by
   intro k _ X q D hX Z i _ l _ _
   haveI : Module.Finite ℤ k := hX.finite

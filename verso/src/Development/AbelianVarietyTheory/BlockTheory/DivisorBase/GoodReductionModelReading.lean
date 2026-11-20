@@ -18,11 +18,17 @@ def IsOrthSum {X ι : Type} [AddCommGroup X] [Module ℂ X] (Orth : X → X → 
   Pi.Finite ∧ Y = ⨆ c : Pi, part c ∧ iSupIndep (fun c : Pi => part c) ∧
     ∀ c ∈ Pi, ∀ c' ∈ Pi, c ≠ c' → ∀ x ∈ part c, ∀ y ∈ part c', Orth x y
 
+/- English proof (translation)
+Use `⟨Set.toFinite _, by simp, ?_, fun c _ c' _ h => absurd (Subsingleton.elim c c') h⟩` and prove the remaining obligations. Conclude with `iSupIndep_subsingleton _`.
+-/
 example {X : Type} [AddCommGroup X] [Module ℂ X] (Orth : X → X → Prop) (Y : Submodule ℂ X) :
     IsOrthSum Orth Y (fun _ : Unit => Y) Set.univ := by
   refine ⟨Set.toFinite _, by simp, ?_, fun c _ c' _ h => absurd (Subsingleton.elim c c') h⟩
   exact iSupIndep_subsingleton _
 
+/- English proof (translation)
+Rewrite using `[h.2.1]`. Conclude with `iSup_of_empty _`.
+-/
 example {X ι : Type} [AddCommGroup X] [Module ℂ X] (Orth : X → X → Prop) (Y : Submodule ℂ X) (part : ι → Submodule ℂ X)
     (h : IsOrthSum Orth Y part ∅) : Y = ⊥ := by
   rw [h.2.1]; exact iSup_of_empty _
@@ -120,6 +126,9 @@ def SumW (D : D7) : Prop :=
     IsOrthSum (PetOrth M) (goodW θ j hj M β ψ pl red om) (partW θ j hj M β ψ pl red om Sb)
       (occursW θ D.R.m hm Mm βm ψ pl red om Sb)
 
+/- English proof (translation)
+The claim follows from `D.sp.W_rank j h1 h2`.
+-/
 example (D : D7) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : (D.sp.W j).rank = D.R.r := D.sp.W_rank j h1 h2
 
 end GlobalTheory.IndefiniteRowSideFullHecke.GoodReductionModelReading

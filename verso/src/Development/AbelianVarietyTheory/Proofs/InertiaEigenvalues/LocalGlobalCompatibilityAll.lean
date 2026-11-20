@@ -7,6 +7,13 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisRe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepUniqueBaseChangeStatement
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module
 
+/- English proof (translation)
+Introduce `D ht h1 h2 h5 i r hr w _hwS hwg x`. Take `⟨P, hP⟩` from `D.naut.pt_surj i x`. Take `⟨Pa, hPa⟩` from `h1 i P`. Take `⟨ρ, hc, hss, hwd, hl⟩` from `GlobalTheory.T.exists_galois_rep_base_change D ht h2 i P Pa hPa`. Take `⟨Pm, hPm⟩` from `GlobalTheory.T.galois_rep_unique_base_change D h5 i r hr x P Pa hP hPa ρ hc hss (fun w _ => hwd w)`.
+
+Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hwg`. Establish `hsp : IsSplitPl D.host w` using `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) w hk).2.2.1`. Rewrite using `[← hPa.2.2.2.1 w hsp, ← hwd w]`. Establish `hok : SumRepresentations.At.WDok D.nd D.naut i ρ w`.
+
+Distinguish the cases in `hwl : w ∈ placesOver D.host.E (D.nd.l i)`. Conclude with `Or.inr (hl w hwl).1`. Conclude with `Or.inl hwl`. Conclude with `((ht.2.2.2.2.2 i).2.1 _ ρ _ hc Pm hPm).2.1 w hok`.
+-/
 theorem GlobalTheory.HubX.lgcG_of_adm : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm1 D → SumRepresentations.adm2 D → SumRepresentations.adm5 D → GlobalTheory.HubX.LgcG D := by
   intro D ht h1 h2 h5 i r hr w _hwS hwg x
   obtain ⟨P, hP⟩ := D.naut.pt_surj i x

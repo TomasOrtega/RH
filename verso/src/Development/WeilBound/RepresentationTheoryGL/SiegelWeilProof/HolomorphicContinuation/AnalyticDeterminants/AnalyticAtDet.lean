@@ -14,6 +14,9 @@ open PositivityTheory.Rg.Sw.LVs
 
 def H (N : ℕ) (t : ℤ) (T : Matrix (Fin N) (Fin N) ℂ) : ℂ := (1 + T).det ^ t
 
+/- English proof (translation)
+Establish `he : ∀ a b : ι, AnalyticAt ℂ (fun T : Matrix ι ι ℂ => T a b) M0` using `fun a b => ((ContinuousLinearMap.proj b).comp (ContinuousLinearMap.proj a : (ι → ι → ℂ) →L[ℂ] (ι → ℂ))).analyticAt M0`. Simplify using `only [Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Use `Finset.analyticAt_fun_sum _ fun σ _ => ?_` and prove the remaining obligations. Conclude with `analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => he (σ i) i)`.
+-/
 theorem analyticAt_det {ι : Type} [Fintype ι] [DecidableEq ι] (M0 : Matrix ι ι ℂ) :
     AnalyticAt ℂ (fun T : Matrix ι ι ℂ => T.det) M0 := by
   have he : ∀ a b : ι, AnalyticAt ℂ (fun T : Matrix ι ι ℂ => T a b) M0 := fun a b =>
@@ -23,6 +26,9 @@ theorem analyticAt_det {ι : Type} [Fintype ι] [DecidableEq ι] (M0 : Matrix ι
   refine Finset.analyticAt_fun_sum _ fun σ _ => ?_
   exact analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => he (σ i) i)
 
+/- English proof (translation)
+Establish `hd : AnalyticAt ℂ (fun T : Matrix (Fin N) (Fin N) ℂ => (1 + T).det) T0` using `(analyticAt_det (1 + T0)).comp (analyticAt_const.add analyticAt_id)`. Conclude with `hd.zpow h`.
+-/
 theorem analyticAt_H (N : ℕ) (t : ℤ) (T0 : Matrix (Fin N) (Fin N) ℂ) (h : (1 + T0).det ≠ 0) :
     AnalyticAt ℂ (H N t) T0 := by
   have hd : AnalyticAt ℂ (fun T : Matrix (Fin N) (Fin N) ℂ => (1 + T).det) T0 :=

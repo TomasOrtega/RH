@@ -10,5 +10,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Grothendie
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CanonicalOfAbelianDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.abelianDeRham | exact GlobalTheory.abelianDeRham | (intros; apply GlobalTheory.abelianDeRham <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.abelianScheme_firstDeRham_structure : GlobalTheory.Published.AbelianDeRham := by
   first | exact @GlobalTheory.abelianDeRham | exact GlobalTheory.abelianDeRham | (intros; apply GlobalTheory.abelianDeRham <;> assumption)

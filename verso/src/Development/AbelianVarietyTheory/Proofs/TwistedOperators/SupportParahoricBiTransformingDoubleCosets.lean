@@ -14,6 +14,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+The claim follows from `(_root_.GlobalTheory.ParahoricLowerBlock.lower_block_tame k A D 1 (fun _ _ => rfl) j hj).1`.
+-/
 theorem _root_.GlobalTheory.ChainStepSupp.det_lower_ne_zero {A D : Type} [Fintype A] [DecidableEq A]
     [Fintype D] [DecidableEq D]
     {j : GL (A ⊕ D) k} (hj : j ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection.parahoric k A D) : j.1.toBlocks₂₂.det ≠ 0 :=
@@ -24,11 +27,17 @@ variable (k) in
 def reGL {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] (e : m ≃ n) : GL m k ≃* GL n k :=
   Units.mapEquiv (Matrix.reindexAlgEquiv k k e).toMulEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_reGL {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] (e : m ≃ n) (g : GL m k) :
     (reGL k e g).1 = reindex e e g.1 := rfl
 
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite `hg`, the goal using `[_root_.GlobalTheory.SplitFlip.mem_KO_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify `hg.1 (e.symm i) (e.symm j)` using `[_root_.GlobalTheory.ChainStepSupp.val_reGL, Matrix.reindex_apply]`. Rewrite using `[← map_inv]`. Simplify `hg.2 (e.symm i) (e.symm j)` using `[_root_.GlobalTheory.ChainStepSupp.val_reGL, Matrix.reindex_apply]`.
+-/
 theorem _root_.GlobalTheory.ChainStepSupp.reGL_mem_KO {m n : Type} [Fintype m] [DecidableEq m]
     [Fintype n] [DecidableEq n] (e : m ≃ n)
     {g : GL m k} (hg : g ∈ _root_.GlobalTheory.SplitWeil.KO k m) :
@@ -41,6 +50,9 @@ theorem _root_.GlobalTheory.ChainStepSupp.reGL_mem_KO {m n : Type} [Fintype m] [
 
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.ChainStepSupp.val_reGL, _root_.GlobalTheory.GLDoubling.val_torusElt, Matrix.reindex_apply, Matrix.diagonal_apply]`.
+-/
 theorem _root_.GlobalTheory.ChainStepSupp.reGL_torusElt {m n : Type} [Fintype m]
     [DecidableEq m] [Fintype n] [DecidableEq n] (e : m ≃ n)
     (ϖ : kˣ) (f : m → ℤ) :
@@ -52,6 +64,9 @@ theorem _root_.GlobalTheory.ChainStepSupp.reGL_torusElt {m n : Type} [Fintype m]
 
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.ChainStepSupp.val_reGL, Matrix.reindex_apply]`.
+-/
 theorem _root_.GlobalTheory.ChainStepSupp.reGL_reGL_symm {m n : Type} [Fintype m] [DecidableEq m] [Fintype n]
     [DecidableEq n] (e : m ≃ n)
     (g : GL n k) : _root_.GlobalTheory.ChainStepSupp.reGL k e (_root_.GlobalTheory.ChainStepSupp.reGL k e.symm g) = g := by
@@ -61,6 +76,13 @@ theorem _root_.GlobalTheory.ChainStepSupp.reGL_reGL_symm {m n : Type} [Fintype m
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Rewrite `hx`, `hy` using `[_root_.GlobalTheory.SplitFlip.mem_KO_iff]`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection.mem_parahoric, _root_.GlobalTheory.SplitFlip.mem_KO_iff]`. Use `⟨⟨fun i j => ?_, fun i j => ?_⟩, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[_root_.GlobalTheory.SmGL.val_emb₂, hx.1, hy.1]`.
+
+Establish `hx₂` using `hx.2`. Establish `hy₂` using `hy.2`. Simplify using `only [Matrix.coe_units_inv] at hx₂ hy₂`. Rewrite using `[← map_inv, Prod.inv_mk]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`.
+
+Simplify using `[_root_.GlobalTheory.SmGL.val_emb₂, hx₂, hy₂]`. Simplify using `[_root_.GlobalTheory.SmGL.val_emb₂]`.
+-/
 theorem _root_.GlobalTheory.ChainStepSupp.emb₂_mem_parahoric {A D : Type} [Fintype A] [DecidableEq A]
     [Fintype D] [DecidableEq D]
     {x : GL A k} {y : GL D k} (hx : x ∈ _root_.GlobalTheory.SplitWeil.KO k A)
@@ -82,6 +104,9 @@ theorem _root_.GlobalTheory.ChainStepSupp.emb₂_mem_parahoric {A D : Type} [Fin
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Establish `h : (_root_.GlobalTheory.ZonalCellDecomposition.mtor ϖ f : GL (A ⊕ D) k) = _root_.GlobalTheory.GLDoubling.torusElt k (A ⊕ D) ϖ (0 ⊕ᵥ f)` using `rfl`. Rewrite using `[h]`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[_root_.GlobalTheory.SmGL.val_emb₂, _root_.GlobalTheory.GLDoubling.val_torusElt, Matrix.diagonal_apply, Matrix.one_apply]`.
+-/
 theorem _root_.GlobalTheory.ChainStepSupp.emb₂_one_torusElt {A D : Type} [Fintype A] [DecidableEq A]
     [Fintype D] [DecidableEq D] (ϖ : kˣ)
     (f : D → ℤ) :
@@ -98,6 +123,19 @@ theorem _root_.GlobalTheory.ChainStepSupp.emb₂_one_torusElt {A D : Type} [Fint
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ϖ hϖ r l t ξ hT hU φ hφ hL g hg`. Take `⟨x, y, j, hj, j', hj', rfl⟩` from `_root_.GlobalTheory.ParHeckeSupp.support_levi k (Fin r) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection.Blocks l t) ξ hT hU φ hφ g hg`. Establish `hne : φ (_root_.GlobalTheory.SmGL.emb₂ k (Equiv.refl _) (x, y)) ≠ 0`. Introduce `h0`. Apply `hg` to reduce the goal to its premises.
+
+Establish `hd` using `_root_.GlobalTheory.ChainStepSupp.det_lower_ne_zero hj`. Establish `hd'` using `_root_.GlobalTheory.ChainStepSupp.det_lower_ne_zero hj'`. Rewrite using `[mul_assoc, (hφ j hj (Units.mk0 _ hd) rfl _).1, (hφ j' hj' (Units.mk0 _ hd') rfl _).2, h0, mul_zero, mul_zero]`. Establish `hx` using `hL x y hne`. Use `set E := _root_.GlobalTheory.ZonalCellDecomposition.blkEquiv l t`.
+
+Take `⟨⟨e, he⟩, hy⟩` from `Set.mem_iUnion.1 ((Set.eq_univ_iff_forall.1 (_root_.GlobalTheory.GLDoubling.iUnion_cell (N := l * t) hϖ)) (_root_.GlobalTheory.ChainStepSupp.reGL k E.symm y))`. Unfold `_root_.GlobalTheory.GLDoubling.cell at hy`. Rewrite `hy` using `[DoubleCoset.mem_doubleCoset]`. Take `⟨κ₁, hκ₁, κ₂, hκ₂, hyeq⟩` from `hy`. Use `⟨e, he, ?_⟩` and prove the remaining obligations.
+
+Unfold `_root_.GlobalTheory.ZonalCellDecomposition.dcell`. Rewrite using `[DoubleCoset.mem_doubleCoset]`. Establish `hy' : y = _root_.GlobalTheory.ChainStepSupp.reGL k E κ₁ * _root_.GlobalTheory.GLDoubling.torusElt k _ ϖ (e ∘ E.symm) * _root_.GlobalTheory.ChainStepSupp.reGL k E κ₂`. Rewrite using `[← _root_.GlobalTheory.ChainStepSupp.reGL_torusElt, ← map_mul, ← map_mul, ← hyeq]`. Conclude with `(_root_.GlobalTheory.ChainStepSupp.reGL_reGL_symm E y).symm`.
+
+Use `⟨j * _root_.GlobalTheory.SmGL.emb₂ k (Equiv.refl _) (x, _root_.GlobalTheory.ChainStepSupp.reGL k E κ₁), (_root_.GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection.parahoric k _ _).mul_mem hj (_root_.GlobalTheory.ChainStepSupp.emb₂_mem_parahoric hx (_root_.GlobalTheory.Chai …` and prove the remaining obligations. Rewrite using `[← _root_.GlobalTheory.ChainStepSupp.emb₂_one_torusElt, hy']`. Establish `hprod : ((x, _root_.GlobalTheory.ChainStepSupp.reGL k E κ₁ * _root_.GlobalTheory.GLDoubling.torusElt k _ ϖ (e ∘ E.symm) * _root_.GlobalTheory.ChainStepSupp.reGL k E κ₂) : GL (Fin r) k × GL (_root_.GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection.Blocks l t) k) = (x, _roo …`. Simplify using `[Prod.mk_mul_mk]`. Rewrite using `[hprod, map_mul, map_mul]`.
+
+Simplify using `only [mul_assoc]`.
+-/
 theorem _root_.GlobalTheory.ChainStepSupp.support_dcell : ∀ (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ϖ : kˣ),
     valuation k (ϖ : k) = uniformizer k →

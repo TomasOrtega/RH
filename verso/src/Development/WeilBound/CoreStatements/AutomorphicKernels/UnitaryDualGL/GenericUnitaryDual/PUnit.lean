@@ -15,6 +15,9 @@ namespace PositivityTheory.Gud.Pf
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hA : GlobalTheory.Published.IrreducibleAdmissibleGL` using `PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Establish `sq` using `Zls.FreeSingleHomotopyEquivDiscreteChains.centredSegSqInt k hA PositivityTheory.Tls2.BZGL.standardFunctorsFiniteLength_top (GlobalTheory.CompanionTheory.SegCoarse.lSegJacquet hA PositivityTheory.RgGu.segmentRepresentation)`. Use `haveI : Nontrivial δ.snd.rep.V := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible δ.snd.rep.irr`. Establish `hsq : IsSqIntCoeff δ.rep` using `sq Δ δ hL (fun t c hc => PositivityTheory.RgUd.UOrder.norm_eq_one_of_unitCC hU hc)`. Conclude with `GlobalTheory.SqIntUnit.main k _ _ δ.rep δ.snd.rep.smooth δ.snd.rep.irr hsq`.
+-/
 theorem unitarisable_of_unitCC [CharZero k] {Δ : Segment k} {δ : IrrGL k} (hL : IsLSeg Δ δ.rep)
     (hU : PositivityTheory.RgUd.UOrder.UnitCC δ.rep) : IsUnitarisable δ.rep := by
   have hA : GlobalTheory.Published.IrreducibleAdmissibleGL := PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top

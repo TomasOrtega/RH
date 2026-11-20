@@ -21,6 +21,11 @@ open Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.UnusedSlot80.Ph
 
 variable [IsDomain O]
 
+/- English proof (translation)
+Establish `hmem : ∀ m, c m • z m ∈ W.N T` using `fun m => (W.N T).smul_mem _ (hz m)`. Establish `hs : ∑ m, c m • z m ∈ W.N T` using `(W.N T).sum_mem fun m _ => hmem m`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hs]`. Establish `e : (⟨∑ m, c m • z m, hs⟩ : ↥(W.N T)) = ∑ m, (⟨c m • z m, hmem m⟩ : ↥(W.N T))` using `Subtype.ext (by simp)`. Rewrite using `[e, map_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmp_smul_letter W T a (c m) (z m) (hz m) (hzl m), Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T (hz m)]`.
+-/
 theorem cmpD_sum (T : LocLat G Qp LL O) (a : ZMod n) {d : ℕ} (c : Fin d → LetA O n) (z : Fin d → W.DD T)
     (hz : ∀ m, z m ∈ W.N T) (hzl : ∀ m, (letE a : LetA O n) • z m = z m) :
     cmpD W T (∑ m, c m • z m) =
@@ -37,6 +42,31 @@ theorem cmpD_sum (T : LocLat G Qp LL O) (a : ZMod n) {d : ℕ} (c : Fin d → Le
 
 variable [NeZero n]
 
+/- English proof (translation)
+Use `set a : ZMod n := c' + (e : ZMod n) with hadef`. Use `set Λ : LetA O n := abelian₂ W A a e with hΛdef`. Establish `hz : ∀ m, InFNc W T a 1 (Λ • ((W.φD T) ^ e) (b m))` using `fun m => Formalism.MainNotions.UnusedSlot80.ArcC.arc_up W hs hR h5 A hA c' hc' e T hT _ (Formalism.MainNotions.UnusedSlot80.Relay2.Pp_phi W T c' e (hb.1 m))`. Establish `hzN : ∀ m, Λ • ((W.φD T) ^ e) (b m) ∈ W.N T` using `fun m => by`. Take `⟨y, hy, -, hye⟩` from `hz m`.
+
+Rewrite using `[hye, one_smul]`. Conclude with `hy.1`. Establish `hzl : ∀ m, (letE a : LetA O n) • (Λ • ((W.φD T) ^ e) (b m)) = Λ • ((W.φD T) ^ e) (b m)` using `fun m => by`. Take `⟨y, -, hyl, hye⟩` from `hz m`. Rewrite using `[hye, one_smul]`.
+
+Conclude with `hyl`. Establish `hsum : ∑ m, c m • (Λ • ((W.φD T) ^ e) (b m)) = 0`. Rewrite using `[show ∑ m, c m • (Λ • ((W.φD T) ^ e) (b m)) = Λ • ∑ m, c m • ((W.φD T) ^ e) (b m) by`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => smul_comm _ _ _, h0, smul_zero]`.
+
+Establish `hcmp` using `cmpD_sum W T a c _ hzN hzl`. Rewrite `hcmp` using `[hsum]`. Establish `hc0 : cmpD W T (0 : W.DD T) = 0`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T (W.N T).zero_mem]`. Conclude with `(W.cmp T).map_zero`.
+
+Rewrite `hcmp` using `[hc0]`. Take `⟨t, ht⟩` from `cmpD_lam W hs hR hp0 h5 T h3 A hA c' hc' hT e`. Establish `hfb` using `(Formalism.MainNotions.UnusedSlot80.ArcF.frame_basis W hs hV T h3 (h5 T _ _ hT.1 (jumpsLet_of_win W A hA T hT)) hmod c' e b hb).1`. Establish `hrel : ∑ m, algebraMap O LL (PowerSeries.constantCoeff (c m a)) • dv W T e b (Pi.single m 1) = 0`. Establish `hpt : ((PD.p : LL) ^ t) ≠ 0` using `pow_ne_zero _ (Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W)`.
+
+Rewrite `ht` using `[← hadef, ← hΛdef]`. Establish `e1 : ((PD.p : LL) ^ t) • ∑ m, algebraMap O LL (PowerSeries.constantCoeff (c m a)) • dv W T e b (Pi.single m 1) = 0`. Rewrite using `[hcmp, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[ht (b m) (hb.1 m), Formalism.MainNotions.UnusedSlot80.ArcF.dv_single, smul_comm]`.
+
+Conclude with `(smul_eq_zero.1 e1).resolve_left hpt`. Establish `hcc : ∀ m i, PowerSeries.constantCoeff (c m i) = 0`. Introduce `m i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality.
+
+Use `Fintype.linearIndependent_iff.1 hfb _ hrel m` as an intermediate fact. Conclude with `hinj (by rw [this, map_zero])`. Use `congrFun (hcl m) i` as an intermediate fact. Rewrite `this` using `[Pi.mul_apply, letE, Pi.single_eq_of_ne hi, zero_mul]`. Rewrite using `[← this, map_zero]`.
+
+Introduce `m`. Establish `hinv : ∀ i, Formalism.MainNotions.WachCoordinates.Br.Inv1 W (c m i)` using `fun i δ hδ => by`. Use `congrFun (hc m δ hδ) i` as an intermediate fact. Rewrite `this` using `[γA_apply]`. Then use the resulting hypothesis. Use `choose f hf using fun i => Formalism.MainNotions.WachCoordinates.Br.ιOf_full hR (c m i) (hinv i)`.
+
+Establish `hf0 : ∀ i, PowerSeries.constantCoeff (f i) = 0` using `fun i => by`. Rewrite using `[← Formalism.MainNotions.WachCoordinates.Br.ιOf_const hR, hf i, hcc m i]`. Use `choose g hg using fun i => (PowerSeries.X_dvd_iff.2 (hf0 i))`. Set `c₂ : LetA O n` to `fun i => Formalism.MainNotions.WachCoordinates.Br.ιOf hR (g i)`. Establish `hc₂ : c₂ ∈ W.AΔ` using `fun δ hδ => by`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[γA_apply]`. Conclude with `Formalism.MainNotions.WachCoordinates.Br.ιOf_inv hR (g i) δ hδ`. Establish `hcm : c m = W.π₀ * c₂`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[← hf i, hg i, map_mul, Formalism.MainNotions.WachCoordinates.Br.ιOf_X]`. Both sides reduce to the same expression. Use `⟨letE a * c₂, W.AΔ.mul_mem (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a) hc₂, by rw [← mul_assoc, letE_mul_self], ?_⟩` and prove the remaining obligations. Rewrite using `[← hcl m, hcm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem indep_step (hinj : Function.Injective (algebraMap O LL)) (hV : Formalism.MainNotions.WachCoordinates.Br.ValRing (LL := LL) O v)
     (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0)
     (h5 : ∀ (T : LocLat G Qp LL O) (M h : ZMod n → ℕ), IsCrys PD T.ρ →

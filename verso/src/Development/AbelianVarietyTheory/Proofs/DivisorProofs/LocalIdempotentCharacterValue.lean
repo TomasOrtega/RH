@@ -17,6 +17,11 @@ namespace GlobalTheory.SwapAtPlace
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1 : ∀ z : AF F, At (evFin F v) z → GlobalTheory.LatVac.liftV v 1 * z = z`. Introduce `z hz`. Use `hz (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])` as an intermediate fact. Rewrite `this` using `[smul_eq_mul]`. Take the linear combination `-this`.
+
+Establish `h2` using `GlobalTheory.LatVac.at_liftV v 1 (b - GlobalTheory.LatVac.liftV v (evFin F v b)) (by rw [map_sub, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `h2` using `[smul_eq_mul]`. Establish `h3` using `h1 _ (GlobalTheory.LatVac.at_liftV v (evFin F v b))`. Take the linear combination `h2 + h3`.
+-/
 theorem liftV_one_mul (v : Pl F) (b : AF F) :
     GlobalTheory.LatVac.liftV v 1 * b = GlobalTheory.LatVac.liftV v (evFin F v b) := by
   have h1 : ∀ z : AF F, At (evFin F v) z → GlobalTheory.LatVac.liftV v 1 * z = z := by
@@ -31,6 +36,11 @@ theorem liftV_one_mul (v : Pl F) (b : AF F) :
   linear_combination h2 + h3
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, hx, hy, map_add, map_add]`. Consider the case `tmul x b`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, liftV_one_mul]`.
+
+Simplify using `[compFin, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem smul_eq_map (v : Pl F) (a : AE F E) :
     GlobalTheory.LatVac.liftV v (1 : Fv F v) • a =
       TensorProduct.map (GlobalTheory.LatVac.liftV v) LinearMap.id (compFin F E v a) := by
@@ -41,6 +51,9 @@ theorem smul_eq_map (v : Pl F) (a : AE F E) :
     rw [TensorProduct.smul_tmul', smul_eq_mul, liftV_one_mul]
     simp [compFin, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Establish `h0 : compFin F E v a = 0` using `split_ext h t (by rw [map_zero]; exact h1) (by rw [map_zero]; exact h2)`. Rewrite using `[← ha, smul_eq_map, h0, map_zero]`.
+-/
 theorem eq_zero_of_piW {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v) {a : AE F E}
     (ha : GlobalTheory.LatVac.liftV v (1 : Fv F v) • a = a) (h1 : piW t a = 0) (h2 : piW (t.comp σ) a = 0) : a = 0 := by
   have h0 : compFin F E v a = 0 :=
@@ -48,10 +61,18 @@ theorem eq_zero_of_piW {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (t :
   rw [← ha, smul_eq_map, h0, map_zero]
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `hu _ (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])`.
+-/
 theorem one_sub_smul {m n : Type} {v : Pl F} {u : Matrix m n (AE F E)} (hu : At (evFin F v) u) :
     (1 - GlobalTheory.LatVac.liftV v (1 : Fv F v)) • u = 0 :=
   hu _ (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])
 
+/- English proof (translation)
+Establish `h0` using `one_sub_smul hu`. Rewrite `h0` using `[sub_smul, one_smul, sub_eq_zero]`. Use extensionality with `i j`. Establish `h3 : GlobalTheory.LatVac.liftV v (1 : Fv F v) • u i j = u i j` using `(congrFun (congrFun h0 i) j).symm`. Use `eq_zero_of_piW h t ?_ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.smul_apply, smul_comm, h3]`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, h1]`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, h2]`.
+-/
 theorem smul_eq_of_piW {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v) {m n : Type}
     {u : Matrix m n (AE F E)} (hu : At (evFin F v) u) (g : AE F E)
     (h1 : ∀ i j, piW t g * piW t (u i j) = 0) (h2 : ∀ i j, piW (t.comp σ) g * piW (t.comp σ) (u i j) = 0) :
@@ -65,6 +86,17 @@ theorem smul_eq_of_piW {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (t :
   · rw [Matrix.smul_apply, smul_eq_mul, map_mul, h1]
   · rw [Matrix.smul_apply, smul_eq_mul, map_mul, h2]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h a' d J v t f hf _ _ ht htσ w hw`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Establish `h1 : r * GlobalTheory.LatVac.liftV v (1 : Fv F v) = 0` using `GlobalTheory.LatVac.at_liftV v 1 r hr`. Establish `h2 : r • f = 0` using `by rw [← hf, smul_smul, h1, zero_smul]`.
+
+Establish `h3 : r * (1 - GlobalTheory.LatVac.liftV v (1 : Fv F v)) = r` using `by rw [mul_sub, h1, mul_one, sub_zero]`. Rewrite using `[hw, smul_sub, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.fromBlocks_smul, smul_smul, h3, ← smul_assoc, h2, zero_smul, smul_zero, sub_self]`. Introduce `u₁ u₂ hu₁ hu₂`. Establish `hact : actB (cA σ) w (Matrix.fromCols u₁ u₂) = Matrix.fromCols (f • u₂) (f • u₁)`. Unfold `actB`.
+
+Rewrite using `[hw, Matrix.fromBlocks_transpose, Matrix.fromCols_mul_fromBlocks]`. Simplify using `only [Matrix.transpose_smul, Matrix.transpose_one, Matrix.mul_smul, Matrix.mul_one, one_sub_smul hu₁, one_sub_smul hu₂, zero_add, add_zero]`. Establish `hneg : ∀ u : Matrix (Fin d) (Fin a') (AE F E), At (evFin F v) u → u.map (piW t) = 0 → f • u = -u`. Introduce `u hu h0`. Use `smul_eq_of_piW h t hu (f + 1) (fun i j => by rw [show piW t (u i j) = 0 from congrFun (congrFun h0 i) j, mul_zero]) (fun i j => by rw [map_add, htσ, map_one, neg_add_cancel, zero_mul])` as an intermediate fact.
+
+Rewrite `this` using `[add_smul, one_smul, add_eq_zero_iff_eq_neg]`. Then use the resulting hypothesis. Establish `hpos : ∀ u : Matrix (Fin d) (Fin a') (AE F E), At (evFin F v) u → u.map (piW (t.comp σ)) = 0 → f • u = u`. Introduce `u hu h0`. Use `smul_eq_of_piW h t hu (f - 1) (fun i j => by rw [map_sub, ht, map_one, sub_self, zero_mul]) (fun i j => by rw [show piW (t.comp σ) (u i j) = 0 from congrFun (congrFun h0 i) j, mul_zero])` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Then use the resulting hypothesis.
+
+Conclude with `⟨fun h1 h2 => by rw [hact, hneg _ hu₁ h1, hneg _ hu₂ h2], fun h1 h2 => by rw [hact, hpos _ hu₁ h1, hpos _ hu₂ h2]⟩`.
+-/
 theorem swap_at_acts : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ {a' d : ℕ} (J : Matrix (Fin a') (Fin a') (AE F E)) (v : Pl F) (t : E →ₐ[F] Fv F v) (f : AE F E),
     GlobalTheory.LatVac.liftV v (1 : Fv F v) • f = f → f * f = algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) →

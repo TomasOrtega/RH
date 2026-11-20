@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.FinInvKO
 
+/- English proof (translation)
+Establish `hfl` using `isFiniteLength_quotient_span_singleton O (mem_nonZeroDivisors_of_ne_zero hc)`. Rewrite `hfl`, the goal using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `ht : Module.IsTorsionBySet O M (Ideal.span {c})` using `(Module.isTorsionBySet_span_singleton_iff c).mpr (fun x => h x)`. Use `letI := ht.module`.
+
+Use `haveI : IsScalarTower O (O ⧸ Ideal.span {c}) M := ht.isScalarTower`. Use `haveI : IsArtinianRing (O ⧸ Ideal.span {c}) := isArtinian_of_tower O hfl.2`. Use `haveI : Module.Finite (O ⧸ Ideal.span {c}) M := Module.Finite.of_restrictScalars_finite O _ _`. Conclude with `isArtinian_of_surjective_algebraMap (R := O ⧸ Ideal.span {c}) Ideal.Quotient.mk_surjective`.
+-/
 theorem isFiniteLength_of_killed {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {M : Type} [AddCommGroup M] [Module O M] [Module.Finite O M] {c : O}
     (hc : c ≠ 0) (h : ∀ x : M, c • x = 0) : IsFiniteLength O M := by
@@ -22,6 +27,19 @@ theorem isFiniteLength_of_killed {O : Type} [CommRing O] [IsDomain O] [IsDiscret
   haveI : Module.Finite (O ⧸ Ideal.span {c}) M := Module.Finite.of_restrictScalars_finite O _ _
   exact isArtinian_of_surjective_algebraMap (R := O ⧸ Ideal.span {c}) Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+Establish `hc' : algebraMap O (FractionRing O) c ≠ 0`. Simplify using `using (IsFractionRing.injective O (FractionRing O)).ne hc`. Set `x₀ : KmodO O` to `Submodule.Quotient.mk ((algebraMap O (FractionRing O) c)⁻¹)`. Set `ψ : O →ₗ[O] KmodO O` to `LinearMap.toSpanSingleton O _ x₀`. Establish `hS : S ≤ LinearMap.range ψ`.
+
+Introduce `x hx`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1` using `h _ hx`. Rewrite `h1` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨a, ha⟩` from `h1`.
+
+Establish `ha' : algebraMap O (FractionRing O) a = algebraMap O (FractionRing O) c * y`. Rewrite using `[← Algebra.smul_def]`. Conclude with `ha`. Use `⟨a, ?_⟩` and prove the remaining obligations. Simplify using `only [ψ, LinearMap.toSpanSingleton_apply, x₀, ← Submodule.Quotient.mk_smul]`.
+
+Use `congr 1`. Rewrite using `[Algebra.smul_def, ha', mul_comm (algebraMap O (FractionRing O) c) y, mul_assoc, mul_inv_cancel₀ hc', mul_one]`. Establish `hk : ∀ z : LinearMap.range ψ, c • z = 0`. Introduce and unpack `⟨_, a, rfl⟩`. Use `ext1`.
+
+Simplify using `only [SetLike.val_smul, ψ, LinearMap.toSpanSingleton_apply, x₀, ← Submodule.Quotient.mk_smul, smul_smul, Submodule.coe_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.linearMap_apply, Algebra.smul_def, map_mul, mul_comm (algebraMap O (FractionRing O) c), mul_assoc, mul_inv_cancel₀ hc', mul_one]`. Establish `hfl` using `isFiniteLength_of_killed hc hk`.
+
+Conclude with `lt_of_le_of_lt (Module.length_le_of_injective (Submodule.inclusion hS) (Submodule.inclusion_injective hS)) (lt_top_iff_ne_top.2 (Module.length_ne_top_iff.2 hfl))`.
+-/
 theorem length_lt_top_of_killed {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (S : Submodule O (KmodO O)) {c : O} (hc : c ≠ 0) (h : ∀ x ∈ S, c • x = 0) :
     Module.length O S < ⊤ := by
@@ -54,6 +72,15 @@ theorem length_lt_top_of_killed {O : Type} [CommRing O] [IsDomain O] [IsDiscrete
   exact lt_of_le_of_lt (Module.length_le_of_injective (Submodule.inclusion hS) (Submodule.inclusion_injective hS))
     (lt_top_iff_ne_top.2 (Module.length_ne_top_iff.2 hfl))
 
+/- English proof (translation)
+Introduce `D i w hw e he`. Take `⟨g, hgI, hg⟩` from `GlobalTheory.EpsInertia.epsAll D i w hw 1`. Establish `hgD : g ∈ Dec (F` using `D.host.E) (D.nd.plOm.1 w) := hgI.1`. Establish `hp : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`. Use `haveI : CharZero (FractionRing (D.nd.O i)) := (D.nd.embK i).charZero_iff (D.nd.embK i).injective |>.1 inferInstance`.
+
+Use `haveI : CharZero (D.nd.O i) := (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))).charZero`. Establish `hle : 1 ≤ (1 + D.nd.l i ^ D.nd.s0 i) ^ e` using `Nat.one_le_pow _ _ (by omega)`. Establish `hlt : 1 < (1 + D.nd.l i ^ D.nd.s0 i) ^ e` using `Nat.one_lt_pow he.ne' (by have := pow_pos hp.pos (D.nd.s0 i); omega)`. Establish `hc : (((1 + D.nd.l i ^ D.nd.s0 i) ^ e - 1 : ℕ) : D.nd.O i) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Use `length_lt_top_of_killed _ hc fun v hv => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hv ⟨g, hgD⟩`. Express the relevant statement in the definitionally equal form `((((Glob.epsO D.nd i) ^ (-(e : ℤ))) g : (D.nd.O i)ˣ) : D.nd.O i) • v = v at h1`. Establish `hu : ((Glob.epsO D.nd i g : (D.nd.O i)ˣ) : D.nd.O i) = 1 + (D.nd.l i : D.nd.O i) ^ D.nd.s0 i`. Simplify using `[Glob.epsO, hg]`. Establish `h2 : (((Glob.epsO D.nd i g) ^ e : (D.nd.O i)ˣ) : D.nd.O i) • v = v` using `by conv_lhs => rw [← h1]`.
+
+Rewrite using `[smul_smul, ← Units.val_mul, MonoidHom.zpow_apply, ← zpow_natCast, ← zpow_add, add_neg_cancel, zpow_zero, Units.val_one, one_smul]`. Rewrite using `[Nat.cast_sub hle, Nat.cast_one, sub_smul, one_smul, Nat.cast_pow, Nat.cast_add, Nat.cast_one, Nat.cast_pow, ← hu, ← Units.val_pow_eq_pow_val, h2, sub_self]`.
+-/
 theorem finiteLength_invariants_negTwist_KmodO : ∀ (D : D7) (i : D.nd.Loc), ∀ w ∈ placesOver D.host.E (D.nd.l i), ∀ e : ℕ, 0 < e →
     Module.length (D.nd.O i) ↥(Representation.invariants
       ((Formalism.MainNotions.N.Glob.KOtw D.nd i (e : ℤ)).comp (decS D.nd w))) < ⊤ := by

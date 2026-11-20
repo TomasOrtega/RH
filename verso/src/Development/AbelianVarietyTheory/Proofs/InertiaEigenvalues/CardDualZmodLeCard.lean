@@ -5,6 +5,13 @@ open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Reciproc
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n _ A _ _ _`. Use `haveI : Fintype A := Fintype.ofFinite A`. Set `Φ : Module.Dual (ZMod n) A → AddChar A ℂ` to `fun f => (ZMod.stdAddChar (N := n)).compAddMonoidHom f.toAddMonoidHom`. Establish `hinj : Function.Injective Φ`. Introduce `f g h`.
+
+Use extensionality with `a`. Establish `h1` using `congrArg (fun χ : AddChar A ℂ => χ a) h`. Simplify using `only [Φ, AddChar.compAddMonoidHom_apply, LinearMap.toAddMonoidHom_coe] at h1`. Conclude with `ZMod.injective_stdAddChar h1`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Nat.card_eq_fintype_card, AddChar.card_eq, Nat.card_eq_fintype_card]`.
+-/
 theorem card_dual_zmod_le_card :
     ∀ (n : ℕ) [NeZero n] (A : Type) [AddCommGroup A] [Module (ZMod n) A] [Finite A],
       Nat.card (Module.Dual (ZMod n) A) ≤ Nat.card A := by

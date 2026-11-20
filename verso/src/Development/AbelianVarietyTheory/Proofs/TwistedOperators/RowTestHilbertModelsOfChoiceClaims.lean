@@ -18,6 +18,11 @@ open GlobalTheory.RowTest
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hmem : R.HE.e y ∈ R.EEat R.triv` using `hE.2.1 ▸ LinearMap.mem_range_self _ _`. Establish `hfix` using `((mem_goodPart _ _ _ _ _ _).1 hmem).2`. Apply `hE.1` to reduce the goal to its premises. Rewrite using `[map_sum]`. Repeatedly rewrite using `[map_smul, hg]`.
+
+Use extensionality with `v`. Rewrite using `[← hfix v]`. Simplify using `only [RealDat.e0, gaL, RealDat.eC, LinearMap.sum_apply, LinearMap.smul_apply, MultilinearMap.sum_apply, MultilinearMap.smul_apply, postOn_apply]`. Both sides reduce to the same expression.
+-/
 theorem sum_gE (R : RealDat D A Ks) (hE : R.models_HE) (hg : R.models_gE) (y : R.HE.H) :
     ∑ g, D.what₂.embLL ((idemOf A.X).coeff g) • R.gE g y = y := by
   have hmem : R.HE.e y ∈ R.EEat R.triv := hE.2.1 ▸ LinearMap.mem_range_self _ _
@@ -31,6 +36,11 @@ theorem sum_gE (R : RealDat D A Ks) (hE : R.models_HE) (hg : R.models_gE) (y : R
     MultilinearMap.sum_apply, MultilinearMap.smul_apply, postOn_apply]
   rfl
 
+/- English proof (translation)
+Take `⟨w', rfl⟩` from `hw`. Take `⟨r', hr'⟩` from `hr`. Use `⟨w' / (z * r'), ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_mul, hr']`. Establish `hp : p = κ * σ w' / (σ z * c)`.
+
+Rewrite using `[eq_div_iff (mul_ne_zero hz hc), ← h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hp]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rat_of_formula {K : Type} [Field K] (σ : K →+* ℂ) {z : K} {c c₀ κ p w : ℂ} (hz : σ z ≠ 0) (hc : c ≠ 0) (hc₀ : c₀ ≠ 0)
     (hκ : κ ≠ 0) (h : σ z * c * p = κ * w) (hw : w ∈ Set.range σ) (hr : c / c₀ ∈ Set.range σ) : ∃ y, σ y = c₀ * κ⁻¹ * p := by
   obtain ⟨w', rfl⟩ := hw
@@ -45,6 +55,13 @@ theorem rat_of_formula {K : Type} [Field K] (σ : K →+* ℂ) {z : K} {c c₀ �
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨hth, -⟩` from `GlobalTheory.LiftGroupEquiv.th_thG_act hP R F hC`. Establish `hga : goodAt A.fam.X (⊥ : Subgroup G) 1 = idemOf A.X` using `Formalism.IndefR.CxPass.LevelOperators.goodAt_bot _ _`. Establish `hmem : (A.fam.R t).S.gaOp (A.fam.R t).r (idemOf A.X) x ∈ (A.fam.R t).goodF A.fam.X`. Unfold `BlockDat.goodF`. Rewrite using `[hga]`.
+
+Conclude with `LinearMap.mem_range_self _ x`. Use `⟨_, hmem, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← sum_gE R hC.models.HE hC.models.gE (R.Th t (R.jX t x))]`. Simplify using `only [CSD.gaOp, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, LinearMap.map_smulₛₗ, map_smul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hth t g x]`.
+-/
 theorem exists_good (hP : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D A Ks) (F : Face D A) (hC : GlobalTheory.Hk3.Core R F) (t : T0)
     (x : A.fam.amb.FR t) :
     ∃ x' : A.fam.amb.FR t, x' ∈ (A.fam.R t).goodF A.fam.X ∧ R.Th t (R.jX t x') = R.Th t (R.jX t x) := by
@@ -60,6 +77,9 @@ theorem exists_good (hP : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D 
   refine Finset.sum_congr rfl fun g _ => ?_
   rw [hth t g x]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => { toFun := psiK ch a map_add' := fun u u' => by simp only [psiK, map_add] exact GlobalTheory.FunObj.fPsiPhi_add ch.W ch.M (hlin a u) (hlin a u') map_smul' := fun b u => by have h1 := GlobalTheory.FunObj.fPsiPhi_smul ch.W ch.M ch.ρ ch.ξ 1 b (ch.col a) (ch.Phi a) (ch.form …`.
+-/
 private theorem exists_linearMap_eq_psiK {R : RealDat D A Ks} (ch : Choice R) (hlin : ∀ a u, ConvK ch a u) :
     ∃ f : Fin ch.n → (R.HE.H →ₗ[ℂ] ℂ), ∀ a u, f a u = psiK ch a u :=
   ⟨fun a =>
@@ -73,6 +93,13 @@ private theorem exists_linearMap_eq_psiK {R : RealDat D A Ks} (ch : Choice R) (h
         simp only [psiK, map_smul, RingHom.id_apply, smul_eq_mul]
         exact h1 }, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_linearMap_eq_psiK ch hlin`. Use `⟨ch.n, fun a => k • f a, ?_, ?_⟩` and prove the remaining obligations. Introduce `e he`. Apply `hinj` to reduce the goal to its premises. Introduce `a`.
+
+Establish `h1` using `he a`. Rewrite `h1` using `[LinearMap.smul_apply, hf, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left hk`. Introduce `t x a`. Take `⟨z, hz⟩` from `hval t x a`.
+
+Use `⟨z, hz.trans ?_⟩` and prove the remaining obligations. Conclude with `(((LinearMap.smul_apply k (f a) _).trans (congrArg (k • ·) (hf a _))).trans (smul_eq_mul k _)).symm`.
+-/
 private theorem rowTestModel_of_scaled_values_rational {R : RealDat D A Ks} (ch : Choice R) (hlin : ∀ a u, ConvK ch a u)
     (hinj : ∀ u, (∀ a, psiK ch a u = 0) → u = 0) {k : ℂ} (hk : k ≠ 0)
     (hval : ∀ t x a, ∃ z : D.what₂.LL, D.what₂.embLL z = k * psiK ch a (R.Th t (R.jX t x))) :
@@ -91,6 +118,9 @@ private theorem rowTestModel_of_scaled_values_rational {R : RealDat D A Ks} (ch 
     exact (((LinearMap.smul_apply k (f a) _).trans (congrArg (k • ·) (hf a _))).trans (smul_eq_mul k _)).symm
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Take `⟨x', hx', hxx⟩` from `exists_good hP R F hC t x`. Use `⟨x', ?_⟩` and prove the remaining obligations. Rewrite using `[← hxx]`. Conclude with `hF.2 t x' hx' a`.
+-/
 private theorem exists_embLL_mul_psiK_eq_vK_of_formulaAt (hP : GlobalTheory.Published.CuspRapidDecay) {R : RealDat D A Ks} {F : Face D A} (hC : GlobalTheory.Hk3.Core R F)
     (ch : Choice R) {κ : ℂ} {ze : T0 → D.what₂.LL} (hF : FormulaAt ch κ ze) (t : T0) (x : A.fam.amb.FR t) (a : Fin ch.n) :
     ∃ x' : A.fam.amb.FR t, D.what₂.embLL (ze t) * cTot ch t * psiK ch a (R.Th t (R.jX t x)) = κ * vK ch t x' a := by
@@ -101,6 +131,17 @@ private theorem exists_embLL_mul_psiK_eq_vK_of_formulaAt (hP : GlobalTheory.Publ
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hcT : ∀ t, cTot ch t ≠ 0` using `fun t => Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun j _ => hc i j t`. Establish `hz0 : ∀ t, D.what₂.embLL (ze t) ≠ 0`. Introduce `t`. Take `⟨n, hn, hze⟩` from `hF.1 t`. Rewrite using `[map_ne_zero]`.
+
+Introduce and unpack `h0`. Rewrite `hze` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one hze`. Distinguish the cases in `hκ : κ = 0`. Substitute `hκ` using the available equality.
+
+Use `rowTestModel_of_scaled_values_rational ch hlin hinj one_ne_zero fun t x a => ?_` and prove the remaining obligations. Take `⟨x', hfo⟩` from `exists_embLL_mul_psiK_eq_vK_of_formulaAt hP hC ch hF t x a`. Establish `hp : psiK ch a (R.Th t (R.jX t x)) = 0` using `(mul_eq_zero.1 (hfo.trans (zero_mul _))).resolve_left (mul_ne_zero (hz0 t) (hcT t))`. Conclude with `⟨0, (map_zero D.what₂.embLL).trans (hp.symm.trans (one_mul _).symm)⟩`. Use `rowTestModel_of_scaled_values_rational ch hlin hinj (mul_ne_zero (hcT A.μ0) (inv_ne_zero hκ)) fun t x a => ?_` and prove the remaining obligations.
+
+Take `⟨x', hfo⟩` from `exists_embLL_mul_psiK_eq_vK_of_formulaAt hP hC ch hF t x a`. Establish `hrat : cTot ch t / cTot ch A.μ0 ∈ Set.range D.what₂.embLL`. Establish `he : cTot ch t / cTot ch A.μ0 = ∏ i, ∏ j, sqRatio ch i j t`. Simplify using `only [cTot, sqRatio, Finset.prod_div_distrib]`. Rewrite using `[he]`.
+
+Conclude with `RingHom.mem_fieldRange.1 (Subfield.prod_mem _ fun i _ => Subfield.prod_mem _ fun j _ => RingHom.mem_fieldRange.2 (hr i j t))`. Conclude with `rat_of_formula D.what₂.embLL (hz0 t) (hcT t) (hcT _) hκ hfo (hv t x' a) hrat`.
+-/
 theorem rowTest_of_choice (hP : GlobalTheory.Published.CuspRapidDecay) {R : RealDat D A Ks} {F : Face D A} (hC : GlobalTheory.Hk3.Core R F)
     (ch : Choice R) (hlin : ∀ a u, ConvK ch a u) (hinj : ∀ u, (∀ a, psiK ch a u = 0) → u = 0)
     (hc : ∀ i j t, ch.c i j t ≠ 0) {κ : ℂ} {ze : T0 → D.what₂.LL} (hF : FormulaAt ch κ ze)
@@ -134,6 +175,11 @@ theorem rowTest_of_choice (hP : GlobalTheory.Published.CuspRapidDecay) {R : Real
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP hL hI hC _ hF hR hRa`. Take `⟨CF0, h⟩` from `Big.and (Big.and (Big.and (Big.and (Big.and hL hI) hC) hF) hR) hRa`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `h ε CF hCF`. Use `⟨x₀, fun D large₂ hε hxl G _ _ Pl0 T0 A Ks _ _ _ R F hSet => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨ch, hch, hsc, hfld⟩`. Take `⟨⟨⟨⟨⟨hlin, hinj⟩, hcst⟩, hfor⟩, hrat⟩, hra⟩` from `hx D large₂ hε hxl G Pl0 T0 A Ks R F hSet ch hch hsc`. Take `⟨κ, ze, hFo⟩` from `hfor hfld`. Conclude with `rowTest_of_choice hP hSet.core ch hlin hinj (fun i j t => (hcst i j t).2) hFo (hrat hfld) (hra hfld)`.
+-/
 theorem rowTestModel_of_claims : GlobalTheory.Published.CuspRapidDecay → LinK → InjK → ConstK → SumOKK → Formula2K → SumRatK → RatioK → ∃ CF0 : ℝ, ∀ ε CF : ℝ, CF0 ≤ CF → ∃ x₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D), large₂.sc.eps = ε → x₀ ≤ large₂.sc.x → ∀ (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.RowClaim.HidaSetting large₂ R F → (∃ ch : GlobalTheory.RowTest.Choice R, ch.Is ∧ ch.AtScale CF large₂.sc.b ∧ ch.FieldOK) → GlobalTheory.IndefiniteRowSideFullHecke.RationalRowTestKernel.RowTestModel R := by
   intro hP hL hI hC _ hF hR hRa
   obtain ⟨CF0, h⟩ := Big.and (Big.and (Big.and (Big.and (Big.and hL hI) hC) hF) hR) hRa

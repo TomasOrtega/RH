@@ -60,6 +60,11 @@ def GenFun (g : ℕ) : Prop := ∀ x y : Carrier P, Rel Λ F P x y →
 def FeqFFun : Prop := ∀ x y : Carrier P, Rel Λ F P x y →
   ((∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame x.1 a) ↔ (∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame y.1 a))
 
+/- English proof (translation)
+Simplify using `only [NLam, IsAutLam, Set.mem_setOf_eq]`. Use `⟨⟨one_mem _, ?_⟩, fun j x _ => ?_, fun x _ => ?_⟩` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.gmap`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+
+Rewrite using `[show (1 : S.V ≃ₗ[E] S.V) x = x from rfl, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[show (1 : S.V ≃ₗ[E] S.V) x = x from rfl, sub_self]`. Conclude with `zero_mem _`.
+-/
 theorem one_mem_NLam {T₀ : E} (F₀ : LFlag S r T₀) : (1 : S.V ≃ₗ[E] S.V) ∈ NLam Λ F₀ := by
   simp only [NLam, IsAutLam, Set.mem_setOf_eq]
   refine ⟨⟨one_mem _, ?_⟩, fun j x _ => ?_, fun x _ => ?_⟩
@@ -71,23 +76,40 @@ theorem one_mem_NLam {T₀ : E} (F₀ : LFlag S r T₀) : (1 : S.V ≃ₗ[E] S.V
   · rw [show (1 : S.V ≃ₗ[E] S.V) x = x from rfl, sub_self]
     exact zero_mem _
 
+/- English proof (translation)
+Unfold `DCRel`. Conclude with `⟨1, one_mem_NLam Λ F, 1, one_mem_NLam Λ F₁, fun _ => rfl, rfl⟩`.
+-/
 theorem dcrel_refl (F₁ : LFlag S r T') : DCRel Λ F F₁ F₁ := by
   unfold DCRel
   exact ⟨1, one_mem_NLam Λ F, 1, one_mem_NLam Λ F₁, fun _ => rfl, rfl⟩
 
 variable {Λ F P}
 
+/- English proof (translation)
+Conclude with `congrArg (Quot.lift f hf) h`.
+-/
 theorem const_of_mk {β : Sort*} (f : Carrier P → β) (hf : ∀ x y, Rel Λ F P x y → f x = f y)
     {x y : Carrier P} (h : mk Λ F P x = mk Λ F P y) : f x = f y := by
   exact congrArg (Quot.lift f hf) h
 
+/- English proof (translation)
+Unfold `Rep`. Conclude with `⟨x.2, rfl⟩`.
+-/
 theorem rep_mk (x : Carrier P) : Rep Λ F P (mk Λ F P x) x.1 := by
   unfold Rep
   exact ⟨x.2, rfl⟩
 
+/- English proof (translation)
+Conclude with `const_of_mk (fun y : Carrier P => Gval F y.1) hG (Quot.out_eq (mk Λ F P x))`.
+-/
 theorem Gt_mk (hG : GFun Λ F P) (x : Carrier P) : Gt Λ F P (mk Λ F P x) = Gval F x.1 := by
   exact const_of_mk (fun y : Carrier P => Gval F y.1) hG (Quot.out_eq (mk Λ F P x))
 
+/- English proof (translation)
+Unfold `IsRel`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, e⟩, hr⟩`. Establish `e'` using `const_of_mk (fun y : Carrier P => Relevant K F.fl y.1.fl) (fun a b r => propext (hR a b r)) e`. Conclude with `cast e' hr`.
+
+Introduce `hr`. Conclude with `⟨x.1, rep_mk x, hr⟩`.
+-/
 theorem isRel_mk (K : Type) [Field K] [Algebra K E] (hR : RelFun Λ F P K) (x : Carrier P) :
     IsRel Λ F P K (mk Λ F P x) ↔ Relevant K F.fl x.1.fl := by
   unfold IsRel
@@ -98,6 +120,11 @@ theorem isRel_mk (K : Type) [Field K] [Algebra K E] (hR : RelFun Λ F P K) (x : 
   · intro hr
     exact ⟨x.1, rep_mk x, hr⟩
 
+/- English proof (translation)
+Unfold `IsGen`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, e⟩, hr⟩`. Establish `e'` using `const_of_mk (fun y : Carrier P => IsGeneric Λ g F y.1) (fun a b r => propext (hR a b r)) e`. Conclude with `cast e' hr`.
+
+Introduce `hr`. Conclude with `⟨x.1, rep_mk x, hr⟩`.
+-/
 theorem isGen_mk (g : ℕ) (hR : GenFun Λ F P g) (x : Carrier P) :
     IsGen Λ F P g (mk Λ F P x) ↔ IsGeneric Λ g F x.1 := by
   unfold IsGen
@@ -108,6 +135,11 @@ theorem isGen_mk (g : ℕ) (hR : GenFun Λ F P g) (x : Carrier P) :
   · intro hr
     exact ⟨x.1, rep_mk x, hr⟩
 
+/- English proof (translation)
+Unfold `IsFeqF`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, e⟩, hr⟩`. Establish `e'` using `const_of_mk (fun y : Carrier P => ∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame y.1 a) (fun a b r => propext (hR a b r)) e`. Conclude with `cast e' hr`.
+
+Introduce `hr`. Conclude with `⟨x.1, rep_mk x, hr⟩`.
+-/
 theorem isFeqF_mk (hR : FeqFFun Λ F P) (x : Carrier P) :
     IsFeqF Λ F P (mk Λ F P x) ↔ ∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame x.1 a := by
   unfold IsFeqF
@@ -119,6 +151,11 @@ theorem isFeqF_mk (hR : FeqFFun Λ F P) (x : Carrier P) :
   · intro hr
     exact ⟨x.1, rep_mk x, hr⟩
 
+/- English proof (translation)
+Unfold `AtPt`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, e⟩, hg, hc⟩`. Establish `e1` using `const_of_mk (fun y : Carrier P => Gval F y.1) hG e`. Establish `e2` using `const_of_mk (fun y : Carrier P => IsInCell (ZhatOM (ZhatL F y.1)) w) (fun a b r => propext (hC a b r w)) e`.
+
+Conclude with `⟨fun h0 => hg (e1.trans h0), cast e2 hc⟩`. Introduce and unpack `⟨hg, hc⟩`. Conclude with `⟨x.1, rep_mk x, hg, hc⟩`.
+-/
 theorem atPt_mk (hG : GFun Λ F P) (hC : CellFun Λ F P) (x : Carrier P) (w : Point E (r + 1)) :
     AtPt Λ F P (mk Λ F P x) w ↔ Gval F x.1 ≠ 0 ∧ IsInCell (ZhatOM (ZhatL F x.1)) w := by
   unfold AtPt
@@ -201,6 +238,9 @@ def Term.toSig {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ)
     {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (t : Term D u u' F0 what₂) :
     Σ Λ : {Λ // Λ ∈ what₂}, TermsOf D u' F0 Λ.1 := ⟨⟨t.lam, t.mem⟩, t.cls⟩
 
+/- English proof (translation)
+Introduce `t1 t2 h`. Consider the cases of `t1`. Consider the cases of `t2`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem Term.toSig_injective {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} :
     Function.Injective (Term.toSig (u' := u') (F0 := F0) (what₂ := what₂)) := by
@@ -210,6 +250,9 @@ theorem Term.toSig_injective {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (
   cases h
   rfl
 
+/- English proof (translation)
+Establish `hfin' : ∀ Λ : {Λ // Λ ∈ what₂}, {c : TermsOf D u' F0 Λ.1 | AtPt Λ.1 (lf D F0) (PD D Λ.1 (lf D F0) u') c w}.Finite` using `fun Λ => hfin hsig F0 Λ.1 (hrows.1 Λ.1 Λ.2) w`. Use `(Set.finite_iUnion fun Λ : {Λ // Λ ∈ what₂} => (hfin' Λ).image (fun c => (⟨Λ.1, Λ.2, c⟩ : Term D u u' F0 what₂))).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨l, m, c⟩ ht`. Conclude with `Set.mem_iUnion.2 ⟨⟨l, m⟩, c, ht, rfl⟩`.
+-/
 theorem term_atPt_finite {u u' : D.what₂.Word} (hfin : TermsAtFinite D u u') (hsig : (VS D).SigOK)
     (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
     (hrows : IsRowReps D F0 what₂) (w : Point D.host.E (D.R.rS + 1)) :
@@ -222,6 +265,15 @@ theorem term_atPt_finite {u u' : D.what₂.Word} (hfin : TermsAtFinite D u u') (
   rintro ⟨l, m, c⟩ ht
   exact Set.mem_iUnion.2 ⟨⟨l, m⟩, c, ht, rfl⟩
 
+/- English proof (translation)
+Take `⟨_, hfix, hX⟩` from `hΛ`. Take `⟨_, _, hlift, hconv⟩` from `hfix`. Unfold `PD`. Use `⟨hlift, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsAdmissible AdmWit`.
+
+Use `⟨1, fun a b hab => Matrix.one_apply_ne hab.ne', fun a => Matrix.one_apply_eq a, fun b => ?_⟩` and prove the remaining obligations. Establish `h0 : frameAct (frame (lf D F0)) (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)) b = frame (lf D F0) b`. Unfold `frameAct`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules.
+
+Introduce `a _ hab`. Simplify using `[Matrix.one_apply_ne hab]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`. Rewrite using `[h0, sub_self]`.
+
+Unfold `ModG`. Introduce `P _`. Conclude with `zero_mem _`. Unfold `FrameOK`. Conclude with `⟨hconv, hX⟩`.
+-/
 theorem pd_self {u : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : IsRowLat D F0 Λ) :
     PD D Λ (lf D F0) u (lf D F0) := by
@@ -257,12 +309,24 @@ def TermFeqFIff (D : D7) (u : D.what₂.Word) : Prop :=
     (hΛ : IsRowLat D F0 Λ) (t : TermsOf D u F0 Λ),
       IsFeqF Λ (lf D F0) (PD D Λ (lf D F0) u) t ↔ t = mk _ _ _ ⟨lf D F0, pd_self F0 Λ hΛ⟩
 
+/- English proof (translation)
+Unfold `Term.FeqF IsFeqF`. Conclude with `⟨lf D F0, rep_mk _, 1, one_mem_NLam _ _, fun _ => rfl⟩`.
+-/
 theorem idTerm_FeqF {u : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)) (hrows : IsRowReps D F0 what₂)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Λ ∈ what₂) : (idTerm F0 what₂ hrows Λ hΛ).FeqF := by
   unfold Term.FeqF IsFeqF
   exact ⟨lf D F0, rep_mk _, 1, one_mem_NLam _ _, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `F0 Λ hΛ t`. Unfold `IsFeqF`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, rfl⟩, n, hn, hfr⟩`. Use `symm`.
+
+Apply `Quot.sound` to reduce the goal to its premises. Unfold `Rel DCRel`. Establish `hz : F'.zt = F'.fl.z`. Take `⟨⟨_, hz⟩, _⟩` from `h`. Conclude with `hz`.
+
+Establish `hlast` using `hfr (Fin.last _)`. Simplify using `only [frame, FlagG.fvec, Fin.snoc_last] at hlast`. Use `⟨n, hn, 1, one_mem_NLam _ _, fun a => (hfr a).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Conclude with `hlast.symm`.
+
+Introduce and unpack `rfl`. Conclude with `⟨lf D F0, rep_mk _, 1, one_mem_NLam _ _, fun _ => rfl⟩`.
+-/
 theorem termFeqFIff_holds (D : D7) (u : D.what₂.Word) : TermFeqFIff D u := by
   intro F0 Λ hΛ t
   unfold IsFeqF

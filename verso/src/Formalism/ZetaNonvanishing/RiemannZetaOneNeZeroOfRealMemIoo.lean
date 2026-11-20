@@ -6,28 +6,45 @@ noncomputable section
 
 namespace Formalism
 
+/- English proof (translation)
+Establish `hs' : s - 1 ≠ 0` using `sub_ne_zero.mpr hs`. Rewrite using `[riemannZeta_eq_inv_sub_mul hs]`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma riemannZetaOne_eq_mul_of_ne_one {s : ℂ} (hs : s ≠ 1) : riemannZeta₁ s = (s - 1) * riemannZeta s := by
   have hs' : s - 1 ≠ 0 := sub_ne_zero.mpr hs
   rw [riemannZeta_eq_inv_sub_mul hs]
   field_simp
 
+/- English proof (translation)
+Distinguish the cases in `h1 : s = 1`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[riemannZetaOne_eq_mul_of_ne_one h1]`. Conclude with `mul_ne_zero (sub_ne_zero.mpr h1) (riemannZeta_ne_zero_of_one_le_re hs)`.
+-/
 lemma riemannZetaOne_ne_zero_of_one_le_re {s : ℂ} (hs : 1 ≤ s.re) : riemannZeta₁ s ≠ 0 := by
   by_cases h1 : s = 1
   · subst h1; simp
   · rw [riemannZetaOne_eq_mul_of_ne_one h1]
     exact mul_ne_zero (sub_ne_zero.mpr h1) (riemannZeta_ne_zero_of_one_le_re hs)
 
+/- English proof (translation)
+Introduce `h'`. Use `congrArg Complex.re h'` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma ofReal_ne_one_of_lt {σ : ℝ} (h : σ < 1) : (σ : ℂ) ≠ 1 := by
   intro h'
   have := congrArg Complex.re h'
   simp at this
   linarith
 
+/- English proof (translation)
+Rewrite using `[riemannZetaOne_eq_mul_of_ne_one (ofReal_ne_one_of_lt h1)]`. Conclude with `mul_ne_zero (sub_ne_zero.mpr (ofReal_ne_one_of_lt h1)) (h8 σ h0 h1)`.
+-/
 lemma riemannZetaOne_ne_zero_of_real_mem_Ioo (h8 : ZetaRealNonvanish) {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) :
     riemannZeta₁ σ ≠ 0 := by
   rw [riemannZetaOne_eq_mul_of_ne_one (ofReal_ne_one_of_lt h1)]
   exact mul_ne_zero (sub_ne_zero.mpr (ofReal_ne_one_of_lt h1)) (h8 σ h0 h1)
 
+/- English proof (translation)
+Establish `heq : riemannZeta₁ =ᶠ[𝓝 s] fun z => (z - 1) * riemannZeta z` using `by filter_upwards [isOpen_ne.mem_nhds hs] with z hz`. Conclude with `riemannZetaOne_eq_mul_of_ne_one hz`. Rewrite using `[heq.deriv_eq]`. Establish `h : HasDerivAt (fun z => (z - 1) * riemannZeta z) (1 * riemannZeta s + (s - 1) * deriv riemannZeta s) s` using `((hasDerivAt_id s).sub_const 1).mul (differentiableAt_riemannZeta hs).hasDerivAt`. Rewrite using `[h.deriv]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma deriv_riemannZetaOne_of_ne_one {s : ℂ} (hs : s ≠ 1) :
     deriv riemannZeta₁ s = riemannZeta s + (s - 1) * deriv riemannZeta s := by
   have heq : riemannZeta₁ =ᶠ[𝓝 s] fun z => (z - 1) * riemannZeta z := by
@@ -40,6 +57,9 @@ lemma deriv_riemannZetaOne_of_ne_one {s : ℂ} (hs : s ≠ 1) :
   rw [h.deriv]
   ring
 
+/- English proof (translation)
+Establish `hs' : s - 1 ≠ 0` using `sub_ne_zero.mpr hs`. Rewrite using `[deriv_riemannZetaOne_of_ne_one hs, riemannZetaOne_eq_mul_of_ne_one hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma logderiv_zeta_eq {s : ℂ} (hs : s ≠ 1) (hz : riemannZeta s ≠ 0) :
     -deriv riemannZeta s / riemannZeta s =
       -(deriv riemannZeta₁ s / riemannZeta₁ s) + 1 / (s - 1) := by
@@ -81,6 +101,9 @@ def IOC (ε C θ : ℝ) (s : ℂ) : ℂ :=
 def PhiOC (ε C θ : ℝ) (s : ℂ) : ℂ :=
   ε * dslope (AOC χ w) 1 s / (s * EOC χ s) + C / (s - θ)
 
+/- English proof (translation)
+Introduce `z` and use `((analyticOnNhd_univ_iff_differentiable.mpr hf).deriv z trivial).differentiableAt`.
+-/
 lemma differentiable_deriv_of {f : ℂ → ℂ} (hf : Differentiable ℂ f) : Differentiable ℂ (deriv f) :=
   fun z => ((analyticOnNhd_univ_iff_differentiable.mpr hf).deriv z trivial).differentiableAt
 

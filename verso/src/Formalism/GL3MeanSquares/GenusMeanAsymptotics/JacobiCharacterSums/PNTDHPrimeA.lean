@@ -15,6 +15,19 @@ open scoped LSeries.notation ComplexOrder
 def dhprC {M : ℕ} (χ₁ : DirichletCharacter ℂ M) (n : ℕ) : ℝ :=
   ((1 : DirichletCharacter ℂ M) (n : ZMod M)).re + (χ₁ (n : ZMod M)).re
 
+/- English proof (translation)
+Establish `hs : 1 < ((σ : ℂ)).re` using `by simpa using hσ`. Establish `h1` using `dhPos_hasSum (1 : DirichletCharacter ℂ M) k hs`. Establish `h2` using `dhPos_hasSum χ₁ k hs`. Establish `h3` using `h1.add h2`. Rewrite using `[show ((-1 : ℂ) ^ k * (iteratedDeriv k (negLD (1 : DirichletCharacter ℂ M)) (σ : ℂ) + iteratedDeriv k (negLD χ₁) (σ : ℂ))).re = ((-1 : ℂ) ^ k * iteratedDeriv k (negLD (1 : DirichletCharacter ℂ M)) (σ : ℂ)).re + ((-1 : ℂ) ^ k * iteratedDeriv k (negLD χ₁) (σ : ℂ)).re by rw [mul_add …`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Establish `hiter : ∀ (f : ℕ → ℂ) (j m : ℕ), (LSeries.logMul^[j] f) m = (Complex.log m) ^ j * f m`. Introduce `f j`. Proceed by induction on `j with`.
+
+Consider the case `zero => intro m`. Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `m`. Rewrite using `[Function.iterate_succ_apply', LSeries.logMul, ih]`.
+
+Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using `[LSeries.term]`. Rewrite using `[LSeries.term_of_ne_zero hn, LSeries.term_of_ne_zero hn, hiter, hiter]`.
+
+Simplify using `only [Pi.mul_apply]`. Establish `hn' : (n : ℂ) = ((n : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[hn', ← Complex.ofReal_log (Nat.cast_nonneg _), ← Complex.ofReal_cpow (Nat.cast_nonneg _), ← Complex.ofReal_pow]`. Simplify using `only [Complex.div_ofReal_re, Complex.re_ofReal_mul, Complex.re_mul_ofReal]`. Unfold `dhprC`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma dhpr_hasSum {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (k : ℕ) {σ : ℝ}
     (hσ : 1 < σ) :
     HasSum (fun n : ℕ => (Real.log n) ^ k * (Λ n / (n : ℝ) ^ σ) * dhprC χ₁ n)
@@ -49,6 +62,13 @@ lemma dhpr_hasSum {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (k : �
   unfold dhprC
   ring
 
+/- English proof (translation)
+Unfold `dhprC`. Distinguish the cases in `hu : IsUnit (n : ZMod M)`. Establish `h2 : χ₁ (n : ZMod M) ^ 2 = 1`. Establish `e` using `congrArg (fun ψ : DirichletCharacter ℂ M => ψ hu.unit) h1`. Simplify using `only [MulChar.pow_apply_coe, MulChar.one_apply_coe] at e`.
+
+Simplify using `using e`. Establish `h3 : χ₁ (n : ZMod M) = 1 ∨ χ₁ (n : ZMod M) = -1` using `mul_self_eq_one_iff.mp (by rw [← sq]; exact h2)`. Rewrite using `[MulChar.one_apply hu]`. Apply the tactic sequence `rcases h3 with h3 | h3 <;> rw [h3] <;> norm_num`. Rewrite using `[MulChar.map_nonunit _ hu, MulChar.map_nonunit _ hu]`.
+
+Evaluate the numerical expressions.
+-/
 lemma dhpr_C_bounds {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : χ₁ ^ 2 = 1)
     (n : ℕ) : 0 ≤ dhprC χ₁ n ∧ dhprC χ₁ n ≤ 2 := by
   unfold dhprC
@@ -63,11 +83,19 @@ lemma dhpr_C_bounds {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 
   · rw [MulChar.map_nonunit _ hu, MulChar.map_nonunit _ hu]
     norm_num
 
+/- English proof (translation)
+Conclude with `(Complex.nonneg_iff.mp (DirichletCharacter.zetaMul_nonneg h1 n)).1`.
+-/
 lemma dhpr_r_nonneg {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : χ₁ ^ 2 = 1)
     (n : ℕ) : 0 ≤ (zetaMul χ₁ n).re := by
   exact (Complex.nonneg_iff.mp (DirichletCharacter.zetaMul_nonneg h1 n)).1
 
 set_option backward.isDefEq.respectTransparency.types false in
+/- English proof (translation)
+Rewrite using `[DirichletCharacter.zetaMul, ArithmeticFunction.coe_zeta_mul_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `d hd`. Establish `hd0 : d ≠ 0` using `Nat.ne_of_gt (Nat.pos_of_mem_divisors hd)`. Use `first`.
+
+Consider the case `exact if_neg hd0`. Consider the case `simp only [LSeries.toArithmeticFunction, ArithmeticFunction.coe_mk, if_neg hd0]`.
+-/
 lemma dhpr_zetaMul_eq_sum {M : ℕ} (χ : DirichletCharacter ℂ M) (n : ℕ) :
     zetaMul χ n = ∑ d ∈ n.divisors, χ (d : ZMod M) := by
   rw [DirichletCharacter.zetaMul, ArithmeticFunction.coe_zeta_mul_apply]
@@ -78,6 +106,9 @@ lemma dhpr_zetaMul_eq_sum {M : ℕ} (χ : DirichletCharacter ℂ M) (n : ℕ) :
     | exact if_neg hd0
     | simp only [LSeries.toArithmeticFunction, ArithmeticFunction.coe_mk, if_neg hd0]
 
+/- English proof (translation)
+Rewrite using `[dhpr_zetaMul_eq_sum, Nat.divisors_prime_pow hp, Finset.sum_map]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Simplify using `[Nat.cast_pow, map_pow]`.
+-/
 lemma dhpr_zetaMul_prime_pow {M : ℕ} (χ : DirichletCharacter ℂ M) {p : ℕ} (hp : p.Prime)
     (a : ℕ) : zetaMul χ (p ^ a) = ∑ i ∈ range (a + 1), χ (p : ZMod M) ^ i := by
   rw [dhpr_zetaMul_eq_sum, Nat.divisors_prime_pow hp, Finset.sum_map]
@@ -85,6 +116,31 @@ lemma dhpr_zetaMul_prime_pow {M : ℕ} (χ : DirichletCharacter ℂ M) {p : ℕ}
   intro i _
   simp [Nat.cast_pow, map_pow]
 
+/- English proof (translation)
+Establish `hr0` using `dhpr_r_nonneg χ₁ h1 n`. Establish `hl` using `Real.log_natCast_nonneg n`. Distinguish the cases in `hΛ : Λ n = 0`. Rewrite using `[hΛ, zero_mul]`. Conclude with `mul_nonneg (mul_nonneg (by norm_num) hl) hr0`.
+
+Take `⟨p, a, hp', ha, rfl⟩` from `ArithmeticFunction.vonMangoldt_ne_zero_iff.mp hΛ`. Establish `hp : p.Prime` using `Nat.prime_iff.mpr hp'`. Establish `ha0 : a ≠ 0` using `Nat.pos_iff_ne_zero.mp ha`. Establish `hΛp : Λ (p ^ a) = Real.log p`. Rewrite using `[ArithmeticFunction.vonMangoldt_apply_pow ha0, ArithmeticFunction.vonMangoldt_apply_prime hp]`.
+
+Establish `hlog : Real.log ((p ^ a : ℕ) : ℝ) = a * Real.log p`. Rewrite using `[Nat.cast_pow, Real.log_pow]`. Establish `hlp : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Establish `ha1 : (1 : ℝ) ≤ a` using `by exact_mod_cast ha`. Establish `key : dhprC χ₁ (p ^ a) ≤ 2 * (zetaMul χ₁ (p ^ a)).re`.
+
+Unfold `dhprC`. Rewrite using `[dhpr_zetaMul_prime_pow χ₁ hp a]`. Distinguish the cases in `hu : IsUnit (p : ZMod M)`. Establish `hua : IsUnit ((p ^ a : ℕ) : ZMod M)` using `by rw [Nat.cast_pow]; exact hu.pow a`. Establish `h2 : χ₁ (p : ZMod M) ^ 2 = 1`.
+
+Establish `e` using `congrArg (fun ψ : DirichletCharacter ℂ M => ψ hu.unit) h1`. Simplify using `only [MulChar.pow_apply_coe, MulChar.one_apply_coe] at e`. Simplify using `using e`. Establish `h3 : χ₁ (p : ZMod M) = 1 ∨ χ₁ (p : ZMod M) = -1` using `mul_self_eq_one_iff.mp (by rw [← sq]; exact h2)`. Rewrite using `[MulChar.one_apply hua, Nat.cast_pow, map_pow]`.
+
+Break down `h3 with h3 | h3` into its components or cases. Rewrite using `[h3]`. Simplify using `only [one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[h3]`. Establish `hsum : ∀ b : ℕ, 2 * ∑ i ∈ range (b + 1), ((-1 : ℂ)) ^ i = 1 + (-1) ^ b`. Introduce `b`. Proceed by induction on `b with`. Consider the case `zero => norm_num`.
+
+Consider the case `succ b ih`. Rewrite using `[Finset.sum_range_succ, mul_add, ih, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hre` using `congrArg Complex.re (hsum a)`. Simplify using `only [Complex.add_re, Complex.one_re] at hre`.
+
+Establish `h2re : (2 * ∑ i ∈ range (a + 1), ((-1 : ℂ)) ^ i).re = 2 * (∑ i ∈ range (a + 1), ((-1 : ℂ)) ^ i).re`. Apply the tactic sequence `simp [Complex.mul_re] <;> split_ifs <;> simp`. Rewrite `hre` using `[h2re]`. Simplify using `only [Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hua : ¬ IsUnit ((p ^ a : ℕ) : ZMod M)`. Rewrite using `[Nat.cast_pow]`. Conclude with `fun h => hu ((isUnit_pow_iff ha0).mp h)`. Rewrite using `[MulChar.map_nonunit _ hua, MulChar.map_nonunit _ hua]`. Use `(Complex.nonneg_iff.mp (DirichletCharacter.zetaMul_nonneg h1 (p ^ a))).1` as an intermediate fact.
+
+Rewrite `this` using `[dhpr_zetaMul_prime_pow χ₁ hp a]`. Simplify using `only [Complex.zero_re, add_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hΛp, hlog]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hrr` using `dhpr_r_nonneg χ₁ h1 (p ^ a)`. Use polynomial arithmetic with `[mul_nonneg hlp hrr]`.
+-/
 lemma dhpr_coef_le {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : χ₁ ^ 2 = 1)
     (n : ℕ) : Λ n * dhprC χ₁ n ≤ 2 * Real.log n * (zetaMul χ₁ n).re := by
   have hr0 := dhpr_r_nonneg χ₁ h1 n
@@ -148,6 +204,9 @@ lemma dhpr_coef_le {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 :
         have hrr := dhpr_r_nonneg χ₁ h1 (p ^ a)
         nlinarith [mul_nonneg hlp hrr]
 
+/- English proof (translation)
+Establish `h1'` using `(dhpr_C_bounds χ₁ h1 n).1`. Establish `hl` using `Real.log_natCast_nonneg n`. Establish `hΛ : 0 ≤ Λ n` using `ArithmeticFunction.vonMangoldt_nonneg`. Establish `hn : 0 ≤ (n : ℝ) ^ σ` using `Real.rpow_nonneg (Nat.cast_nonneg n) σ`. Conclude with `mul_nonneg (mul_nonneg (pow_nonneg hl k) (div_nonneg hΛ hn)) h1'`.
+-/
 lemma dhpr_term_nonneg {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : χ₁ ^ 2 = 1)
     (k n : ℕ) (σ : ℝ) : 0 ≤ (Real.log n) ^ k * (Λ n / (n : ℝ) ^ σ) * dhprC χ₁ n := by
   have h1' := (dhpr_C_bounds χ₁ h1 n).1
@@ -156,6 +215,11 @@ lemma dhpr_term_nonneg {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (
   have hn : 0 ≤ (n : ℝ) ^ σ := Real.rpow_nonneg (Nat.cast_nonneg n) σ
   exact mul_nonneg (mul_nonneg (pow_nonneg hl k) (div_nonneg hΛ hn)) h1'
 
+/- English proof (translation)
+Establish `hc` using `dhpr_coef_le χ₁ h1 n`. Establish `hl` using `Real.log_natCast_nonneg n`. Establish `h0 : 0 ≤ Real.log n ^ k / (n : ℝ) ^ σ` using `div_nonneg (pow_nonneg hl k) (Real.rpow_nonneg (Nat.cast_nonneg n) σ)`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ (Real.log n ^ k / (n : ℝ) ^ σ) * (2 * Real.log n * (zetaMul χ₁ n).re) := mul_le_mul_of_nonneg_left hc h0`. Use `_ = 2 * Real.log n ^ (k + 1) * (zetaMul χ₁ n).re / (n : ℝ) ^ σ := by ring`.
+-/
 lemma dhpr_term_le_r {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : χ₁ ^ 2 = 1)
     (k n : ℕ) (σ : ℝ) :
     (Real.log n) ^ k * (Λ n / (n : ℝ) ^ σ) * dhprC χ₁ n ≤
@@ -169,6 +233,13 @@ lemma dhpr_term_le_r {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1
     _ ≤ (Real.log n ^ k / (n : ℝ) ^ σ) * (2 * Real.log n * (zetaMul χ₁ n).re) := mul_le_mul_of_nonneg_left hc h0
     _ = 2 * Real.log n ^ (k + 1) * (zetaMul χ₁ n).re / (n : ℝ) ^ σ := by ring
 
+/- English proof (translation)
+Establish `hC` using `dhpr_C_bounds χ₁ h1 n`. Establish `hl` using `Real.log_natCast_nonneg n`. Establish `hΛ : 0 ≤ Λ n` using `ArithmeticFunction.vonMangoldt_nonneg`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hn`. Establish `hpow : (n : ℝ) ≤ (n : ℝ) ^ σ`. Use `Real.rpow_le_rpow_of_exponent_le hn1 hσ` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis.
+
+Establish `hd : Λ n / (n : ℝ) ^ σ ≤ Λ n / n` using `div_le_div_of_nonneg_left hΛ (by linarith) hpow`. Establish `h0 : 0 ≤ Real.log n ^ k * (Λ n / n)` using `mul_nonneg (pow_nonneg hl k) (div_nonneg hΛ (Nat.cast_nonneg n))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma dhpr_term_le_small {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : χ₁ ^ 2 = 1)
     (k n : ℕ) {σ : ℝ} (hσ : 1 ≤ σ) :
     (Real.log n) ^ k * (Λ n / (n : ℝ) ^ σ) * dhprC χ₁ n ≤ 2 * (Real.log n) ^ k * (Λ n / n) := by
@@ -188,6 +259,11 @@ lemma dhpr_term_le_small {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M)
         mul_le_mul (mul_le_mul_of_nonneg_left hd (pow_nonneg hl k)) hC.2 hC.1 h0
     _ = 2 * Real.log n ^ k * (Λ n / n) := by ring
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `lfunction_deriv_near_one`. Use `⟨max C 0, le_max_right _ _, fun M _ χ₁ β₁ hχ hz hβ hβ1 => ?_⟩` and prove the remaining obligations. Establish `hd` using `DirichletCharacter.differentiable_LFunction hχ`. Establish `hder : ∀ t ∈ Set.Icc β₁ 1, HasDerivWithinAt (fun t : ℝ => DirichletCharacter.LFunction χ₁ (t : ℂ)) (deriv (DirichletCharacter.LFunction χ₁) (t : ℂ)) (Set.Icc β₁ 1) t` using `fun t _ => ((hd (t : ℂ)).hasDerivAt.comp_ofReal).hasDerivWithinAt`. Establish `hbd : ∀ t ∈ Set.Ico β₁ 1, ‖deriv (DirichletCharacter.LFunction χ₁) (t : ℂ)‖ ≤ max C 0 * Real.log (3 * M) ^ 2`.
+
+Introduce `t ht`. Conclude with `(hC M χ₁ hχ t (le_trans hβ ht.1) ht.2.le).trans (by gcongr; exact le_max_left _ _)`. Use `norm_image_sub_le_of_norm_deriv_le_segment' hder hbd 1 ⟨hβ1.le, le_rfl⟩` as an intermediate fact. Simplify using `only [hz, sub_zero, ofReal_one] at this`. Conclude with `this`.
+-/
 lemma lfunction_one_le_of_siegel_zero : ∃ C : ℝ, 0 ≤ C ∧ ∀ (M : ℕ) [NeZero M] (χ₁ : DirichletCharacter ℂ M) (β₁ : ℝ),
     χ₁ ≠ 1 → DirichletCharacter.LFunction χ₁ (β₁ : ℂ) = 0 →
     1 - 1 / Real.log (3 * M) ≤ β₁ → β₁ < 1 →

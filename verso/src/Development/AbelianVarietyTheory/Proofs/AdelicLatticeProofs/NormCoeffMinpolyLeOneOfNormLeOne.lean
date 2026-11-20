@@ -5,6 +5,11 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Establish `hx : IsIntegral K x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖(minpoly K x).coeff 0‖ ≤ 1`. Rewrite `h` using `[Algebra.norm_eq_norm_adjoin K x, ← IntermediateField.adjoin.powerBasis_gen hx, Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly, IntermediateField.adjoin.powerBasis_gen hx, IntermediateField.minpoly_gen, norm_pow, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) (Module.finrank_pos).ne').1 h`. Establish `h1 : spectralNorm K L x ≤ 1`.
+
+Rewrite using `[spectralNorm.spectralNorm_eq_norm_coeff_zero_rpow K L x]`. Conclude with `Real.rpow_le_one (norm_nonneg _) h0 (by positivity)`. Rewrite `h1` using `[spectralNorm, spectralValue_le_one_iff (minpoly.monic hx)]`. Conclude with `h1 n`.
+-/
 theorem norm_coeff_minpoly_le_one_of_norm_le_one (K : Type) [NontriviallyNormedField K]
     [IsUltrametricDist K] [CompleteSpace K] (L : Type) [Field L] [Algebra K L]
     [FiniteDimensional K L] (x : L) (h : ‖Algebra.norm K x‖ ≤ 1) (n : ℕ) :
@@ -22,6 +27,15 @@ theorem norm_coeff_minpoly_le_one_of_norm_le_one (K : Type) [NontriviallyNormedF
   rw [spectralNorm, spectralValue_le_one_iff (minpoly.monic hx)] at h1
   exact h1 n
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : IsIntegral (v.adicCompletionIntegers F) (Algebra.norm (v.adicCompletion F) x)` using `Algebra.isIntegral_norm (v.adicCompletion F) h`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (K := v.adicCompletion F)).1 h1`. Rewrite using `[← hy]`.
+
+Conclude with `y.2`. Introduce `h`. Use `letI : NontriviallyNormedField (v.adicCompletion F) := Valued.toNontriviallyNormedField (v.adicCompletion F) ℤᵐ⁰`. Use `haveI : IsUltrametricDist (v.adicCompletion F) := inferInstanceAs (@IsUltrametricDist (v.adicCompletion F) (Valued.toNormedField (v.adicCompletion F) ℤᵐ⁰).toDist)`. Establish `hc : ∀ n, Valued.v ((minpoly (v.adicCompletion F) x).coeff n) ≤ 1` using `fun n => Valued.toNormedField.norm_le_one_iff.1 (norm_coeff_minpoly_le_one_of_norm_le_one (v.adicCompletion F) L x (Valued.toNormedField.norm_le_one_iff.2 h) n)`.
+
+Establish `hx : IsIntegral (v.adicCompletion F) x` using `Algebra.IsIntegral.isIntegral x`. Establish `hl : minpoly (v.adicCompletion F) x ∈ Polynomial.lifts (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F))`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Conclude with `⟨⟨_, hc n⟩, rfl⟩`.
+
+Take `⟨q, hq, -, hm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (minpoly.monic hx)`. Use `⟨q, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap (v.adicCompletion F), hq, minpoly.aeval]`.
+-/
 theorem isIntegral_iff_valued_norm_le_one (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (L : Type) [Field L] [Algebra (v.adicCompletion F) L]
     [FiniteDimensional (v.adicCompletion F) L] [Algebra (v.adicCompletionIntegers F) L]

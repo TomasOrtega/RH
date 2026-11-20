@@ -14,6 +14,9 @@ namespace GlobalTheory.Published
 
 namespace AbelianDeRham
 
+/- English proof (translation)
+The claim follows from `GrpMor.of_isGrpPullback (isDPMorphism_of_eq_bot _ rfl _ _) ((Category.comp_id _).trans (Category.id_comp _).symm) h`.
+-/
 theorem bcMor {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {A : Over (Sp R)} [GrpObj A]
     {A' : Over (Sp R')} [GrpObj A'] {φ : A'.left ⟶ A.left}
     (h : IsGrpPullback A' A (spMap (algebraMap R R')) φ) :
@@ -70,6 +73,9 @@ namespace AbelianDeRham
 
 variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {g : ℕ}
 
+/- English proof (translation)
+Take `⟨h0, h1, h2, h3, -⟩` from `H R A g hA hg`. Set `e : primDR A ≃ₗ[R] FirstDeRham (A.hom ≫ 𝟙 _)` to `LinearEquiv.ofTop _ h0`. Conclude with `⟨Module.Finite.equiv e.symm, Module.Projective.of_equiv e.symm, fun p ↦ by rw [Module.rankAtStalk_eq_of_equiv e, h3]⟩`.
+-/
 theorem Free.prim (H : Free) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
     Module.Finite R (primDR A) ∧ Module.Projective R (primDR A) ∧
       ∀ p : PrimeSpectrum R, Module.rankAtStalk (primDR A) p = 2 * g := by
@@ -78,6 +84,9 @@ theorem Free.prim (H : Free) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDime
   exact ⟨Module.Finite.equiv e.symm, Module.Projective.of_equiv e.symm,
     fun p ↦ by rw [Module.rankAtStalk_eq_of_equiv e, h3]⟩
 
+/- English proof (translation)
+The claim follows from `(LinearEquiv.ofBijective _ (H R A g hA hg I κ hκ R₀ π hπ hI A₀ i h)).dualMap.bijective`.
+-/
 theorem Rigid.crysToDR_bijective (H : Rigid) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) {I : Ideal R} {κ : DividedPowers I} (hκ : IsNilDP κ)
     {R₀ : Type} [CommRing R₀] {π : R →+* R₀} (hπ : Function.Surjective π) (hI : RingHom.ker π = I)

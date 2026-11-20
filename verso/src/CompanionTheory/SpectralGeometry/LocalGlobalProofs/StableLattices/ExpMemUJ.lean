@@ -11,6 +11,27 @@ namespace GlobalTheory.CompanionTheory.DSStabLink
 
 open PI.UpqRep CompanionTheory.D.DSIC
 
+/- English proof (translation)
+Use `set Q : H →L[ℂ] H := Wᗮ.starProjection with hQ`. Establish `hQW : ∀ w ∈ W, Q w = 0` using `fun w hw => Submodule.starProjection_orthogonal_apply_eq_zero hw`. Establish `hQs : ∀ x, x - Q x ∈ W` using `fun x => by`. Use `Submodule.sub_starProjection_mem_orthogonal (K := Wᗮ) x` as an intermediate fact. Rewrite `this` using `[Submodule.orthogonal_orthogonal]`. Then use the resulting hypothesis.
+
+Establish `hQn : ∀ x, ‖Q x‖ ≤ ‖x‖` using `fun x => Submodule.norm_starProjection_apply_le _ x`. Establish `hcont : Continuous fun t => T t u`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `t`. Take `⟨z, -, hz⟩` from `hder u hu`.
+
+Establish `h1 : ContinuousAt (fun s : ℝ => T (s - t) u) t`. Establish `h2 : ContinuousAt (fun s : ℝ => s - t) t` using `by fun_prop`. Conclude with `ContinuousAt.comp_of_eq (g := fun t => T t u) hz.continuousAt h2 (by simp)`. Establish `h3 : ContinuousAt (fun s : ℝ => T t (T (s - t) u)) t` using `(T t).continuous.continuousAt.comp h1`. Use `h3 using 2 with s` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← hadd]`. Simplify using the standard rewrite rules. Establish `key : ∀ ⦃x⦄, x ∈ Icc (0 : ℝ) 1 → ‖Q (T x u)‖ ≤ 0`. Use `image_le_of_liminf_slope_right_le_deriv_boundary (f := fun t => ‖Q (T t u)‖) (B := fun _ => 0) (B' := fun _ => 0) ?_ ?_ continuousOn_const (fun x _ => hasDerivWithinAt_const _ _ _) ?_` and prove the remaining obligations. Conclude with `((Q.continuous.comp hcont).norm).continuousOn`.
+
+Simplify using `[h0, hQW u hu]`. Introduce `x _ r hr set w := T x u - Q (T x u) with hw`. Take `⟨z, hzW, hz⟩` from `hder w (hQs _)`. Establish `hg : HasDerivAt (fun t => Q (T t w)) 0 0`. Use `(Q.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hz` as an intermediate fact.
+
+Simplify `this` using `[hQW z hzW, Function.comp_def]`. Establish `hg2 : HasDerivAt (fun s : ℝ => Q (T (s - x) w)) 0 x`. Establish `h2 : HasDerivAt (fun s : ℝ => s - x) 1 x` using `(hasDerivAt_id x).sub_const x`. Use `HasDerivAt.scomp_of_eq (g₁ := fun t => Q (T t w)) x hg h2 (by simp)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+
+Establish `hsl` using `(hasDerivAt_iff_tendsto_slope.1 hg2).norm`. Rewrite `hsl` using `[norm_zero]`. Establish `hev : ∀ᶠ s in 𝓝[>] x, ‖slope (fun s : ℝ => Q (T (s - x) w)) x s‖ < r` using `(hsl.eventually (gt_mem_nhds hr)).filter_mono (nhdsWithin_mono _ fun s hs => ne_of_gt hs)`. Use `(hev.and self_mem_nhdsWithin).frequently.mono ?_` and prove the remaining obligations. Introduce and unpack `s ⟨hs, hsx⟩`.
+
+Establish `hpos : 0 < s - x` using `sub_pos.2 hsx`. Use `lt_of_le_of_lt ?_ hs` and prove the remaining obligations. Rewrite using `[slope_def_field, slope_def_module, norm_smul, sub_self, h0, hQW w (hQs _), sub_zero, Real.norm_eq_abs, abs_of_pos (inv_pos.2 hpos), div_eq_inv_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (inv_pos.2 hpos).le` and prove the remaining obligations. Establish `e : Q (T s u) = Q (T (s - x) w) + Q (T (s - x) (Q (T x u)))`.
+
+Rewrite using `[← map_add, ← map_add, hw, sub_add_cancel, ← hadd, sub_add_cancel]`. Establish `e2 : ‖Q (T (s - x) (Q (T x u)))‖ ≤ ‖Q (T x u)‖` using `(hQn _).trans (hiso _ _).le`. Establish `e3` using `norm_add_le (Q (T (s - x) w)) (Q (T (s - x) (Q (T x u))))`. Rewrite `e3` using `[← e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1` using `norm_le_zero_iff.1 (key (x := 1) ⟨zero_le_one, le_rfl⟩)`. Simplify `hQs (T 1 u)` using `[h1]`.
+-/
 theorem flow_mem {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (W : Submodule ℂ H)
     [FiniteDimensional ℂ W] (T : ℝ → (H →L[ℂ] H)) (h0 : ∀ v, T 0 v = v)
     (hadd : ∀ s t v, T (s + t) v = T s (T t v)) (hiso : ∀ t v, ‖T t v‖ = ‖v‖)
@@ -69,6 +90,11 @@ theorem flow_mem {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (W 
   have h1 := norm_le_zero_iff.1 (key (x := 1) ⟨zero_le_one, le_rfl⟩)
   simpa [h1] using hQs (T 1 u)
 
+/- English proof (translation)
+Use `set Q : H →L[ℂ] H := Wᗮ.starProjection with hQ`. Establish `hQW : ∀ w ∈ W, Q w = 0` using `fun w hw => Submodule.starProjection_orthogonal_apply_eq_zero hw`. Establish `hQs : ∀ x, x - Q x ∈ W` using `fun x => by`. Use `Submodule.sub_starProjection_mem_orthogonal (K := Wᗮ) x` as an intermediate fact. Rewrite `this` using `[Submodule.orthogonal_orthogonal]`. Then use the resulting hypothesis.
+
+Establish `h1 : HasDerivAt (fun t => Q (c t)) (Q z) 0` using `(Q.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hz`. Establish `h2 : (fun t => Q (c t)) = fun _ => 0` using `funext fun t => hQW _ (hc t)`. Rewrite `h1` using `[h2]`. Establish `h3 : Q z = 0` using `h1.unique (hasDerivAt_const _ _)`. Simplify `hQs z` using `[h3]`.
+-/
 theorem deriv_mem {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (W : Submodule ℂ H)
     [FiniteDimensional ℂ W] (c : ℝ → H) (z : H) (hc : ∀ t, c t ∈ W) (hz : HasDerivAt c z 0) :
     z ∈ W := by
@@ -86,6 +112,17 @@ theorem deriv_mem {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (W
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `inK inG Jm`. Simplify using `only [← Matrix.ext_iff, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : ∀ c d, ε c ≠ ε d → X c d = 0`.
+
+Introduce `c d h`. Use `h2 c d` as an intermediate fact. Apply the tactic sequence `cases hc : ε c <;> cases hd : ε d <;> simp [hc, hd] at h this <;> first | linear_combination this / 2 | linear_combination -this / 2`. Use `⟨h3, fun c d => ?_⟩` and prove the remaining obligations. Use `h1 c d` as an intermediate fact.
+
+Distinguish the cases in `h : ε c = ε d`. Apply the tactic sequence `cases hc : ε c <;> cases hd : ε d <;> simp [hc, hd] at h this ⊢ <;> first | linear_combination this | linear_combination -this`. Simplify using `[h3 c d h, h3 d c (Ne.symm h)]`. Introduce and unpack `⟨h1, h2⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `c d`. Distinguish the cases in `h : ε c = ε d`. Rewrite using `[h2, h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h1 c d h, h1 d c (Ne.symm h)]`.
+
+Introduce `c d`. Distinguish the cases in `h : ε c = ε d`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h1 c d h]`.
+-/
 theorem inK_iff (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     inK ε X ↔ (∀ c d, ε c ≠ ε d → X c d = 0) ∧ ∀ c d, star (X d c) = -X c d := by
   unfold inK inG Jm
@@ -115,6 +152,9 @@ theorem inK_iff (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
       · rw [h]; ring
       · simp [h1 c d h]
 
+/- English proof (translation)
+Rewrite `hX`, the goal using `[inK_iff]`. Use `⟨fun c d h => by simp [hX.1 c d h], fun c d => ?_⟩` and prove the remaining obligations. Use `hX.2 c d` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul, star_mul', this]`. Simplify using the standard rewrite rules.
+-/
 theorem inK_smul (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (t : ℝ) :
     inK ε ((t : ℂ) • X) := by
   rw [inK_iff] at hX ⊢
@@ -123,14 +163,43 @@ theorem inK_smul (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : in
   simp only [Matrix.smul_apply, smul_eq_mul, star_mul', this]
   simp
 
+/- English proof (translation)
+The claim follows from `(Formalism.REAL.maximal_compact_facts n ε).2.2.2.1 _ (inK_smul ε hX t)`.
+-/
 theorem exp_mem_K (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ Kset ε :=
   (Formalism.REAL.maximal_compact_facts n ε).2.2.2.1 _ (inK_smul ε hX t)
 
+/- English proof (translation)
+The claim follows from `Formalism.REAL.exp_indefinite_unitary_holds n ε X hX t`.
+-/
 theorem exp_mem_UJ (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ UJset ε :=
   Formalism.REAL.exp_indefinite_unitary_holds n ε X hX t
 
+/- English proof (translation)
+Introduce `hK n ε H _ _ σ S E hσ hS U hU`. Prove the components needed by the constructor for the conclusion. Introduce `hst g hg v hv`. Take `⟨X, hX, rfl⟩` from `hK n ε g hg`. Use `flow_mem (U.map S.subtype) (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X))) ?_ ?_ ?_ ?_ v hv` as an intermediate fact.
+
+Simplify using `using this`. Introduce `v`. Simplify using `[hσ.1.1]`. Introduce `s t v`. Establish `hc : Commute ((s : ℂ) • X) ((t : ℂ) • X)` using `((Commute.refl X).smul_left _).smul_right _`.
+
+Simplify using `only [Complex.ofReal_add, add_smul]`. Rewrite using `[Matrix.exp_add_of_commute _ _ hc, hσ.1.2 _ (exp_mem_UJ ε hX.1 s) _ (exp_mem_UJ ε hX.1 t)]`. Both sides reduce to the same expression. Introduce `t v`. Conclude with `hσ.2.1 _ (exp_mem_UJ ε hX.1 t) v`.
+
+Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `⟨_, ?_, hS.real X hX.1 w⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε a = ε b`. Conclude with `Submodule.smul_mem _ _ ⟨_, hst a b h w hw, rfl⟩`.
+
+Simplify using `[((inK_iff ε X).1 hX).1 a b h]`. Introduce `hst a b hab v hv`. Establish `hL : ∀ X, inK ε X → ∑ c, ∑ d, X c d • (E c d v : H) ∈ U.map S.subtype` using `fun X hX => deriv_mem _ _ _ (fun t => hst _ (exp_mem_K ε hX t) _ ⟨v, hv, rfl⟩) (hS.real X hX.1 v)`. Establish `hs : ∀ (p q : Fin n) (z : ℂ), ∑ c, ∑ d, (Matrix.single p q z) c d • (E c d v : H) = z • (E p q v : H)`. Introduce `p q z`.
+
+Simplify using `[Matrix.single_apply, ite_and]`. Establish `hoff : ∀ (p q : Fin n) (z : ℂ), ε p = ε q → ∀ c d, ε c ≠ ε d → Matrix.single p q z c d = 0`. Introduce `p q z h c d hcd`. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Conclude with `hcd h`. Establish `hZ : ∀ z : ℂ, z • (E a b v : H) - star z • (E b a v : H) ∈ U.map S.subtype`. Introduce `z`. Establish `hin : inK ε (Matrix.single a b z - Matrix.single b a (star z))`. Rewrite using `[inK_iff]`.
+
+Use `⟨fun c d h => by simp [hoff a b z hab c d h, hoff b a _ hab.symm c d h], fun c d => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.single_apply, star_sub, apply_ite star, star_star, star_zero, neg_sub, and_comm]`. Use `hL _ hin` as an intermediate fact. Simplify `this` using `only [Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib, hs]`. Establish `h1` using `hZ 1`.
+
+Establish `h2` using `hZ Complex.I`. Establish `h3` using `Submodule.add_mem _ (Submodule.smul_mem _ (1 / 2 : ℂ) h1) (Submodule.smul_mem _ (-Complex.I / 2 : ℂ) h2)`. Establish `e : (1 / 2 : ℂ) • ((1 : ℂ) • (E a b v : H) - star (1 : ℂ) • (E b a v : H)) + (-Complex.I / 2 : ℂ) • (Complex.I • (E a b v : H) - star Complex.I • (E b a v : H)) = (E a b v : H)`. Simplify using `only [star_one, Complex.star_def, Complex.conj_I]`. Use `match_scalars`.
+
+Take the linear combination `(-1 / 2 : ℂ) * Complex.I_mul_I`. Take the linear combination `(-1 / 2 : ℂ) * Complex.I_mul_I`. Rewrite `h3` using `[e]`. Take `⟨y, hy, hye⟩` from `h3`. Establish `: y = E a b v` using `Subtype.ext hye`.
+
+Conclude with `this ▸ hy`.
+-/
 theorem stabLink : KExp → StabLink := by
   intro hK n ε H _ _ σ S E hσ hS U hU
   constructor

@@ -10,11 +10,23 @@ namespace GlobalTheory.HaarRightTranslate
 variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H]
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
+/- English proof (translation)
+Rewrite using `[modularCharacterFun_eq_haarScalarFactor μ g]`. Conclude with `isMulLeftInvariant_eq_smul _ μ`.
+-/
 theorem map_mul_right_eq_modular (μ : Measure H) [IsHaarMeasure μ] (g : H) :
     map (· * g) μ = modularCharacterFun g • μ := by
   rw [modularCharacterFun_eq_haarScalarFactor μ g]
   exact isMulLeftInvariant_eq_smul _ μ
 
+/- English proof (translation)
+Use `set μ : Measure H := haar`. Establish `K : PositiveCompacts H` using `Classical.arbitrary _`. Use `set A : Set H := closure (K : Set H) with hA`. Establish `hAc : IsCompact A` using `K.isCompact.closure`. Establish `hAm : MeasurableSet A` using `isClosed_closure.measurableSet`.
+
+Establish `hpos : μ A ≠ 0` using `(measure_pos_of_nonempty_interior _ (K.interior_nonempty.mono (interior_mono subset_closure))).ne'`. Establish `hfin : μ A ≠ ∞` using `hAc.measure_lt_top.ne`. Establish `hB : IsCompact (A * V⁻¹)` using `hAc.mul hV.inv`. Establish `hBfin : μ (A * V⁻¹) ≠ ∞` using `hB.measure_lt_top.ne`. Use `⟨(μ (A * V⁻¹) / μ A).toNNReal, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (modularCharacterFun v : ℝ≥0∞) * μ A ≤ μ (A * V⁻¹)`. Establish `h` using `congrArg (fun ρ : Measure H => ρ A) (map_mul_right_eq_modular μ v)`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h`. Rewrite using `[← h, map_apply (measurable_mul_const _) hAm]`. Use `measure_mono fun x hx => ?_` and prove the remaining obligations.
+
+Conclude with `⟨x * v, hx, v⁻¹, by simpa using hv, by simp⟩`. Establish `h2 : (modularCharacterFun v : ℝ≥0∞) ≤ μ (A * V⁻¹) / μ A` using `(ENNReal.le_div_iff_mul_le (Or.inl hpos) (Or.inl hfin)).2 h1`. Establish `hne : μ (A * V⁻¹) / μ A ≠ ∞` using `ENNReal.div_ne_top hBfin hpos`. Rewrite using `[← ENNReal.coe_le_coe, ENNReal.coe_toNNReal hne]`. Conclude with `h2`.
+-/
 theorem modular_bdd_on_compact {V : Set H} (hV : IsCompact V) :
     ∃ M : ℝ≥0, ∀ v ∈ V, modularCharacterFun v ≤ M := by
   set μ : Measure H := haar
@@ -43,6 +55,11 @@ theorem modular_bdd_on_compact {V : Set H} (hV : IsCompact V) :
 
 end HaarRightTranslate
 
+/- English proof (translation)
+Introduce `H _ _ _ _ _ _ _ _ μ hμ K hK`. Take `⟨M, hM⟩` from `HaarRightTranslate.modular_bdd_on_compact hK`. Use `⟨M, fun y hy φ hφ => ?_⟩` and prove the remaining obligations. Establish `e : ∫⁻ x, φ (x * y) ∂μ = ∫⁻ x, φ x ∂(map (· * y) μ)` using `(lintegral_map hφ (measurable_mul_const y)).symm`. Rewrite using `[e, HaarRightTranslate.map_mul_right_eq_modular μ y, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`.
+
+Use `gcongr`. Conclude with `hM y hy` after adjusting the coercions.
+-/
 theorem haar_lintegral_mul_right_le :
     ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H]
       [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H] (μ : Measure H),

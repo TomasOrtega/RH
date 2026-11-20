@@ -20,6 +20,23 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum.ClosedFibreImm
 
+/- English proof (translation)
+Introduce `R _ _ _ D A G _ _ U Y ψ h`. Use `set g := U.gt 0 with hg`. Set `G₀` to `thickObj R (maximalIdeal R) 0 G`. Set `T : Over (Sp R)` to `Over.mk (G₀.hom ≫ thick R (maximalIdeal R) 0)`. Establish `hcl : IsClosedImmersion (thick R (maximalIdeal R) 0)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`.
+
+Set `T₀ : Over (Sp R)` to `Over.mk (pullback.fst Y.H.hom (thick R (maximalIdeal R) 0) ≫ Y.H.hom)`. Set `ξ` to `Y.Φ T₀ (Over.homMk (pullback.fst Y.H.hom (thick R (maximalIdeal R) 0)) rfl)`. Take `⟨χ, hχ⟩` from `GlobalTheory.TorusCoord.exists_point g (T := T₀) (pullback.snd Y.H.hom (thick R (maximalIdeal R) 0)) pullback.condition.symm ξ`. Set `ψ' : G₀.left ⟶ pullback Y.H.hom (thick R (maximalIdeal R) 0)` to `pullback.lift ψ.left G₀.hom (Over.w ψ)`. Establish `hψ' : ψ' ≫ pullback.fst _ _ = ψ.left` using `pullback.lift_fst _ _ _`.
+
+Establish `hw1 : ψ' ≫ pullback.fst Y.H.hom (thick R (maximalIdeal R) 0) ≫ Y.H.hom = T.hom`. Rewrite using `[← Category.assoc, hψ']`. Conclude with `Over.w ψ`. Set `k : T ⟶ T₀` to `Over.homMk ψ' hw1`. Establish `hkx : k ≫ (Over.homMk (pullback.fst Y.H.hom (thick R (maximalIdeal R) 0)) rfl : T₀ ⟶ Y.H) = ψ` using `Over.OverMorphism.ext (by simpa [k] using hψ')`.
+
+Establish `hpull` using `Y.rep.1 T T₀ k (Over.homMk (pullback.fst Y.H.hom (thick R (maximalIdeal R) 0)) rfl)`. Rewrite `hpull` using `[hkx]`. Establish `h1 : GlobalTheory.TorusCoord.IsPointOf g (ψ' ≫ χ) (Y.Φ T ψ)` using `hχ.pull g hpull`. Establish `e1 : ψ' ≫ χ = 𝟙 _` using `h1.unique_left g h`. Establish `hc` using `hχ.comp_hom g`.
+
+Establish `hw2 : χ ≫ T.hom = T₀.hom` using `hc`. Set `k' : T₀ ⟶ T` to `Over.homMk χ hw2`. Establish `hpull'` using `Y.rep.1 T₀ T k' ψ`. Establish `h2 : GlobalTheory.TorusCoord.IsPointOf g (χ ≫ 𝟙 _) (Y.Φ T₀ (k' ≫ ψ))` using `h.pull g hpull'`. Rewrite `h2` using `[Category.comp_id]`.
+
+Establish `e2 : Y.Φ T₀ (k' ≫ ψ) = ξ` using `h2.unique_right g hχ`. Establish `e3 : k' ≫ ψ = Over.homMk (pullback.fst Y.H.hom (thick R (maximalIdeal R) 0)) rfl` using `(Y.Φ T₀).injective e2`. Establish `e4 : χ ≫ ψ.left = pullback.fst Y.H.hom (thick R (maximalIdeal R) 0)` using `congrArg (·.left) e3`. Establish `e5 : χ ≫ G₀.hom = pullback.snd Y.H.hom (thick R (maximalIdeal R) 0)`. Rewrite using `[← cancel_mono (thick R (maximalIdeal R) 0), Category.assoc, ← pullback.condition]`.
+
+Conclude with `hc`. Establish `e6 : χ ≫ ψ' = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ', e4, Category.id_comp]`. Rewrite using `[Category.assoc, pullback.lift_snd, e5, Category.id_comp]`.
+
+Establish `: IsIso ψ'` using `⟨⟨χ, e1, e6⟩⟩`. Rewrite using `[← hψ']`. Use `infer_instance`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal R) D A G) (Y : Ext D.toPre) (ψ : Over.mk ((thickObj R (maximalIdeal R) 0 G).hom ≫ thick R (maximalIdeal R) 0) ⟶ Y.H), GlobalTheory.TorusCoord.IsPointOf (U.gt 0) (𝟙 (thickObj R (maximalIdeal R) 0 G).left) (Y.Φ _ ψ) → IsImmersion ψ.left := by
   intro R _ _ _ D A G _ _ U Y ψ h
   set g := U.gt 0 with hg

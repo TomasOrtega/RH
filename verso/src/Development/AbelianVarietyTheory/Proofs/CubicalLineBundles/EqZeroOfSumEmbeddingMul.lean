@@ -10,39 +10,62 @@ variable {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ)
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory NumberField in
 variable {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) in
+/- English proof (translation)
+Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, add_dotProduct]`.
+-/
 theorem _root_.GlobalTheory.EigenNorm.hermForm_add_left (z z' w : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (z + z') w = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z w + _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z' w := by
   simp only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, add_dotProduct]
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory NumberField in
 variable {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) in
+/- English proof (translation)
+Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, star_add, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem _root_.GlobalTheory.EigenNorm.hermForm_add_right (z w w' : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z (w + w') = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z w + _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z w' := by
   simp only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, star_add, Matrix.mulVec_add, dotProduct_add]
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory NumberField in
 variable {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) in
+/- English proof (translation)
+Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem _root_.GlobalTheory.EigenNorm.hermForm_smul_left (r : ℂ) (z w : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (r • z) w = r * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z w := by
   simp only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, smul_dotProduct, smul_eq_mul]
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory NumberField in
 variable {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) in
+/- English proof (translation)
+Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.EigenNorm.hermForm_smul_right (r : ℂ) (z w : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z (r • w) = starRingEnd ℂ r * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z w := by
   simp only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
   rfl
 
+/- English proof (translation)
+Simplify using `[hermForm, sum_dotProduct]`.
+-/
 theorem hermForm_sum_left {κ : Type*} (s : Finset κ) (z : κ → Fin g → ℂ) (w : Fin g → ℂ) :
     hermForm Hm (∑ i ∈ s, z i) w = ∑ i ∈ s, hermForm Hm (z i) w := by
   simp [hermForm, sum_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hermForm, star_sum, Matrix.mulVec_sum, dotProduct_sum]`.
+-/
 theorem hermForm_sum_right {κ : Type*} (s : Finset κ) (z : Fin g → ℂ) (w : κ → Fin g → ℂ) :
     hermForm Hm z (∑ i ∈ s, w i) = ∑ i ∈ s, hermForm Hm z (w i) := by
   simp [hermForm, star_sum, Matrix.mulVec_sum, dotProduct_sum]
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory NumberField in
 variable {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) in
+/- English proof (translation)
+Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrFun hH i) j`. Simplify using `only [Matrix.conjTranspose_apply] at h`.
+
+Rewrite using `[← h]`. Simplify using `[Pi.star_apply, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.EigenNorm.hermForm_conj (hH : Hm.IsHermitian) (z w : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm w z = starRingEnd ℂ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z w) := by
   simp only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum]
@@ -54,6 +77,11 @@ theorem _root_.GlobalTheory.EigenNorm.hermForm_conj (hH : Hm.IsHermitian) (z w :
   simp [Pi.star_apply, Complex.star_def]
   ring
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun τ : E →+* ℂ => ((τ.comp (algebraMap (𝓞 E) E) : 𝓞 E →+* ℂ) : 𝓞 E →* ℂ))`. Introduce `τ₁ τ₂ h12`. Use `IsFractionRing.ringHom_ext (A := 𝓞 E) fun s => ?_` and prove the remaining obligations. Conclude with `DFunLike.congr_fun h12 s`. Establish `hli` using `(linearIndependent_monoidHom (𝓞 E) ℂ).comp _ hinj`.
+
+Use `Fintype.linearIndependent_iff.1 hli f ?_ τ` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Simplify `hf s` using `[mul_comm]`.
+-/
 theorem eq_zero_of_sum_embedding_mul {E : Type} [Field E] [NumberField E] (f : (E →+* ℂ) → ℂ)
     (hf : ∀ s : 𝓞 E, ∑ τ : E →+* ℂ, τ (s : E) * f τ = 0) (τ : E →+* ℂ) : f τ = 0 := by
   have hinj : Function.Injective
@@ -66,6 +94,13 @@ theorem eq_zero_of_sum_embedding_mul {E : Type} [Field E] [NumberField E] (f : (
   funext s
   simpa [mul_comm] using hf s
 
+/- English proof (translation)
+Establish `hd' : (0 : ℝ) < d` using `by exact_mod_cast Nat.pos_of_ne_zero hd`. Establish `h1` using `congrArg Complex.re h`. Establish `h2` using `congrArg Complex.im h`. Simplify using `[pow_two] at h1 h2`. Establish `h3 : ρ.re * ρ.im = 0` using `by linarith [mul_comm ρ.re ρ.im]`.
+
+Establish `h4 : ρ.re = 0`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Conclude with `h`. Rewrite `h1` using `[h]`. Use polynomial arithmetic with `[mul_self_nonneg ρ.re]`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp [h4]`.
+-/
 theorem conj_eq_neg_of_sq {ρ : ℂ} {d : ℕ} (hd : d ≠ 0) (h : ρ ^ 2 = -(d : ℂ)) : starRingEnd ℂ ρ = -ρ := by
   have hd' : (0 : ℝ) < d := by exact_mod_cast Nat.pos_of_ne_zero hd
   have h1 := congrArg Complex.re h
@@ -78,6 +113,35 @@ theorem conj_eq_neg_of_sq {ρ : ℂ} {d : ℕ} (hd : d ≠ 0) (h : ρ ^ 2 = -(d 
     · rw [h] at h1; nlinarith [mul_self_nonneg ρ.re]
   apply Complex.ext <;> simp [h4]
 
+/- English proof (translation)
+Introduce `E _ _ _ H g Hm hH L _ _ h ρ c x hρ hadd hsmul hsymm hx hx0 hq τ τ' a b hτ`. Establish `hd : H.d ≠ 0` using `H.d_prime.ne_zero`. Establish `hρc` using `conj_eq_neg_of_sq hd hρ`. Establish `hρ0 : ρ ≠ 0`. Introduce and unpack `rfl`.
+
+Apply `hd` to reduce the goal to its premises. Establish `: (H.d : ℂ) = 0` using `by simpa using hρ.symm`. Conclude with `this` after adjusting the coercions. Establish `hconj : ∀ (σ : E →+* ℂ) a b, σ (h b a) = starRingEnd ℂ (σ (h a b))` using `fun σ a b => by`. Rewrite using `[hsymm a b, IsCMField.complexEmbedding_complexConj]`.
+
+Establish `haddr : ∀ (σ : E →+* ℂ) e a b, σ (h e (a + b)) = σ (h e a) + σ (h e b)` using `fun σ e a b => by`. Rewrite using `[hconj σ (a + b) e, hconj σ a e, hconj σ b e, hadd, map_add, map_add]`. Establish `hsmulr : ∀ (σ : E →+* ℂ) (s : 𝓞 E) e a, σ (h e (s • a)) = starRingEnd ℂ (σ s) * σ (h e a)` using `fun σ s e a => by rw [hconj σ (s • a) e, hconj σ a e, hsmul, map_mul, map_mul]`. Use `set Ψ := Finset.univ.filter (fun τ : E →+* ℂ => τ (H.rt : E) = ρ) with hΨ`. Set `D : L → L → ℂ` to `fun a b => hermForm Hm (∑ τ, x τ a) (∑ τ, x τ b) - c * ∑ τ ∈ Ψ, τ (h a b)`.
+
+Establish `hD0 : ∀ a, D a a = 0` using `fun a => sub_eq_zero.2 (hq a)`. Establish `hDc : ∀ a b, D b a = starRingEnd ℂ (D a b)` using `fun a b => by`. Simplify using `only [D, map_sub, map_mul, map_sum, Complex.conj_ofReal, ← hconj]`. Rewrite using `[hermForm_conj Hm hH]`. Establish `hDl : ∀ a b e, D (a + b) e = D a e + D b e` using `fun a b e => by`.
+
+Simplify using `only [D, map_add, hadd, Finset.sum_add_distrib, hermForm_add_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDr : ∀ e a b, D e (a + b) = D e a + D e b` using `fun e a b => by`. Simplify using `only [D, map_add, haddr, Finset.sum_add_distrib, hermForm_add_right]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hDpol : ∀ a b, D a b + starRingEnd ℂ (D a b) = 0` using `fun a b => by`. Use `hD0 (a + b)` as an intermediate fact. Rewrite `this` using `[hDl, hDr, hDr, hD0, hD0, hDc a b]`. Take the linear combination `this`. Establish `hDrt : ∀ a b, D (H.rt • a) b = ρ * D a b` using `fun a b => by`.
+
+Establish `h1 : ∑ τ, x τ (H.rt • a) = ρ • ∑ τ, x τ a`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Distinguish the cases in `hσ : σ (H.rt : E) = ρ`. Rewrite using `[hx, hσ]`.
+
+Simplify using `[hx0 σ hσ]`. Establish `h2 : ∑ τ ∈ Ψ, τ (h (H.rt • a) b) = ρ * ∑ τ ∈ Ψ, τ (h a b)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[hsmul, map_mul, (Finset.mem_filter.1 hσ).2]`.
+
+Simplify using `only [D]`. Rewrite using `[h1, h2, hermForm_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : ∀ a b, D a b = 0` using `fun a b => by`. Establish `h1` using `hDpol a b`.
+
+Establish `h2` using `hDpol (H.rt • a) b`. Rewrite `h2` using `[hDrt, map_mul, hρc]`. Establish `h3 : ρ * (2 * D a b) = 0` using `by linear_combination h2 + ρ * h1`. Simplify `h3` using `[hρ0]`. Establish `hstep : ∀ b, hermForm Hm (x τ a) (∑ σ, x σ b) = c * τ (h a b)` using `fun b => by`.
+
+Use `eq_zero_of_sum_embedding_mul (fun σ : E →+* ℂ => hermForm Hm (x σ a) (∑ σ, x σ b) - if σ (H.rt : E) = ρ then (c : ℂ) * σ (h a b) else 0) (fun s => ?_) τ` as an intermediate fact. Simplify `this` using `[hτ, sub_eq_zero]`. Establish `h1` using `hD (s • a) b`. Simplify using `only [D, hΨ] at h1`. Rewrite `h1` using `[hermForm_sum_left, Finset.sum_filter, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Eq.trans (Finset.sum_congr rfl fun σ _ => ?_) h1` and prove the remaining obligations. Rewrite using `[hx, hermForm_smul_left, hsmul, map_mul]`. Apply the tactic sequence `split_ifs <;> ring`. Use `eq_zero_of_sum_embedding_mul (fun σ : E →+* ℂ => starRingEnd ℂ (hermForm Hm (x τ a) (x σ b) - if σ = τ then (c : ℂ) * τ (h a b) else 0)) (fun s => ?_) τ'` as an intermediate fact. Rewrite `this` using `[map_eq_zero, sub_eq_zero]`.
+
+Use `this` and compare the differences between its conclusion and the goal. Establish `h1` using `hstep (s • b)`. Rewrite `h1` using `[hermForm_sum_right, hsmulr]`. Simplify using `only [hx, hermForm_smul_right] at h1`. Establish `h2 : ∑ σ : E →+* ℂ, starRingEnd ℂ (σ (s : E)) * (hermForm Hm (x τ a) (x σ b) - if σ = τ then (c : ℂ) * τ (h a b) else 0) = 0`.
+
+Simplify using `only [mul_sub, Finset.sum_sub_distrib, h1, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `congrArg (starRingEnd ℂ) h2`. Simplify `h3` using `only [map_sum, map_mul, Complex.conj_conj, map_zero]`.
+-/
 theorem hermForm_eigen :
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ), Hm.IsHermitian →
   ∀ (L : Type) [AddCommGroup L] [Module (𝓞 E) L] (h : L → L → E) (ρ : ℂ) (c : ℝ) (x : (E →+* ℂ) → L →+ (Fin g → ℂ)),

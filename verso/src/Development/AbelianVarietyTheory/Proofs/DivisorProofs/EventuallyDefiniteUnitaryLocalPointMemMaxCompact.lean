@@ -7,6 +7,9 @@ namespace GlobalTheory.BCT.GoodInt
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `filter_upwards [(HeightOneSpectrum.Support.finite (𝓞 E) x).compl_mem_cofinite] with w hw`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `h2 : Valued.v (algebraMap E (w.adicCompletion E) x) = w.valuation E x` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`. Rewrite using `[h2]`. Conclude with `not_lt.mp hw`.
+-/
 theorem eventually_int (x : E) :
     ∀ᶠ w : Pl E in cofinite, algebraMap E (w.adicCompletion E) x ∈ w.adicCompletionIntegers E := by
   filter_upwards [(HeightOneSpectrum.Support.finite (𝓞 E) x).compl_mem_cofinite] with w hw
@@ -16,6 +19,11 @@ theorem eventually_int (x : E) :
   rw [h2]
   exact not_lt.mp hw
 
+/- English proof (translation)
+Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) O => A.map O.subtype` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.mul_inv`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `g.inv_mul`.
+-/
 theorem mem_GLint {L : Type} [Field L] {n : ℕ} (O : Subring L) (g : GL (Fin n) L)
     (h1 : ∀ i j, g.1 i j ∈ O) (h2 : ∀ i j, g⁻¹.1 i j ∈ O) : g ∈ Formalism.UG.GLint (Fin n) O := by
   have hi : Function.Injective fun A : Matrix (Fin n) (Fin n) O => A.map O.subtype :=
@@ -26,6 +34,9 @@ theorem mem_GLint {L : Type} [Field L] {n : ℕ} (O : Subring L) (g : GL (Fin n)
   · simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
     exact g.inv_mul
 
+/- English proof (translation)
+Establish `h : ∀ g : GL (Fin n) E, ∀ᶠ w : Pl E in cofinite, ∀ i j, algebraMap E (w.adicCompletion E) (g.val i j) ∈ w.adicCompletionIntegers E` using `fun g => by`. Simplify using `only [Filter.eventually_all]`. Conclude with `fun i j => eventually_int _`. Use `filter_upwards [h g, h g⁻¹] with w a b`. Conclude with `mem_GLint _ _ a (by rw [← map_inv]; exact b)`.
+-/
 theorem eventually_mem_KGL {n : ℕ} (g : GL (Fin n) E) : ∀ᶠ w : Pl E in cofinite,
     GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) g ∈ GlobalTheory.LFun.KGL w n := by
   have h : ∀ g : GL (Fin n) E, ∀ᶠ w : Pl E in cofinite, ∀ i j,
@@ -34,6 +45,11 @@ theorem eventually_mem_KGL {n : ℕ} (g : GL (Fin n) E) : ∀ᶠ w : Pl E in cof
   filter_upwards [h g, h g⁻¹] with w a b
   exact mem_GLint _ _ a (by rw [← map_inv]; exact b)
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n γ _`. Use `filter_upwards [eventually_mem_KGL (E := E) γ.1] with w hw`. Unfold `locPt toSub`. Use `split_ifs with h`. Conclude with `hw`.
+
+Conclude with `one_mem _`.
+-/
 theorem locPt_mem_KL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, ∀ γ : UE E n,
     γ.1.val.charpoly.Separable → ∀ᶠ w in cofinite, locPt w γ ∈ KL n w := by
   intro E _ _ _ _ n γ _

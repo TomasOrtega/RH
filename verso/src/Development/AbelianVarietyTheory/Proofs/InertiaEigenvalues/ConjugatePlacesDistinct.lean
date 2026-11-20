@@ -16,10 +16,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwistPdeltaPlaces
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Polynomial.X ^ 2 + Polynomial.C (d : ℤ), Polynomial.monic_X_pow_add_C _ two_ne_zero, by simp [h]⟩`.
+-/
 theorem isIntegral_of_sq_eq_neg {A : Type} [CommRing A] (x : A) (d : ℕ) (h : x ^ 2 = -(d : A)) :
     IsIntegral ℤ x :=
   ⟨Polynomial.X ^ 2 + Polynomial.C (d : ℤ), Polynomial.monic_X_pow_add_C _ two_ne_zero, by simp [h]⟩
 
+/- English proof (translation)
+Use `haveI : Finite (𝓞 E ⧸ P.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hc]; exact hq.ne_zero)`. Use `letI : Fintype (𝓞 E ⧸ P.asIdeal) := Fintype.ofFinite _`. Set `e : ZMod q ≃+* (𝓞 E ⧸ P.asIdeal)` to `ZMod.ringEquivOfPrime _ hq (Nat.card_eq_fintype_card.symm.trans hc)`. Use `⟨(e.symm (Ideal.Quotient.mk _ x)).val, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, map_natCast]`.
+
+Establish `h1 : ((e.symm (Ideal.Quotient.mk P.asIdeal x)).val : ZMod q) = e.symm (Ideal.Quotient.mk _ x)` using `by haveI : Fact q.Prime := ⟨hq⟩`. Conclude with `ZMod.natCast_zmod_val _`. Establish `h2 : e (((e.symm (Ideal.Quotient.mk P.asIdeal x)).val : ℕ) : ZMod q) = ((e.symm (Ideal.Quotient.mk P.asIdeal x)).val : 𝓞 E ⧸ P.asIdeal)` using `map_natCast e _`. Rewrite using `[← h2, h1, RingEquiv.apply_symm_apply]`.
+-/
 theorem exists_nat_sub_mem {E : Type} [Field E] [NumberField E] (P : IsDedekindDomain.HeightOneSpectrum (𝓞 E))
     {q : ℕ} (hq : q.Prime) (hc : Nat.card (𝓞 E ⧸ P.asIdeal) = q) (x : 𝓞 E) :
     ∃ n : ℕ, x - (n : 𝓞 E) ∈ P.asIdeal := by
@@ -36,6 +44,33 @@ theorem exists_nat_sub_mem {E : Type} [Field E] [NumberField E] (P : IsDedekindD
       ((e.symm (Ideal.Quotient.mk P.asIdeal x)).val : 𝓞 E ⧸ P.asIdeal) := map_natCast e _
   rw [← h2, h1, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl μ0 hL i`. Use `set H := D.host`. Use `set p : ℕ := if D.ntw.l i = H.pde then H.pde' else H.pde with hpdef`. Establish `hp : p ∈ ({H.pde, H.pde'} : Set ℕ)`. Apply the tactic sequence `rw [hpdef]; split_ifs <;> simp`.
+
+Take `⟨𝔭, h𝔭⟩` from `hL.Q_de p hp`. Establish `hmemp : ∀ P : Pl H.E, P ∈ D.ntw.pD i → ((p : ℕ) : 𝓞 H.E) ∈ P.asIdeal`. Introduce `P hP`. Establish `h` using `(Set.ext_iff.mp (D.ntw.pD_eq i) P).mp (Finset.mem_coe.mpr hP)`. Conclude with `h`.
+
+Establish `hunder : ∀ P ∈ {P : Pl D.host.E | ∃ t, P ∈ Rl.Q t ∧ P ∈ D.ntw.pD i}, P.asIdeal.comap (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = 𝔭.asIdeal`. Introduce and unpack `P ⟨t, ht, hpi⟩`. Use `h𝔭 t P ht (hmemp P hpi)` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `P hP P' hP' hc`. It suffices to derive a contradiction. Take `⟨t, ht, hpi⟩` from `hP`. Take `⟨t', ht', hpi'⟩` from `hP'`.
+
+Establish `hsq : H.sqrtMinusD ^ 2 = -(H.d : H.E)` using `H.sqrtMinusD_sq`. Set `s : 𝓞 H.E` to `⟨H.sqrtMinusD, isIntegral_of_sq_eq_neg _ H.d hsq⟩`. Establish `hsK : H.sqrtMinusD ∈ H.K` using `H.toHostRaw.sqd_mem_K`. Set `sK0 : H.K` to `⟨H.sqrtMinusD, hsK⟩`. Establish `hsqK : sK0 ^ 2 = -(H.d : H.K)` using `Subtype.ext (by simpa using hsq)`.
+
+Set `sK : 𝓞 H.K` to `⟨sK0, isIntegral_of_sq_eq_neg _ H.d hsqK⟩`. Establish `hsmap : algebraMap (𝓞 H.K) (𝓞 H.E) sK = s` using `rfl`. Take `⟨⟨q, hq, hcard, -, -⟩, -⟩` from `hL.Q_pl t P ht`. Take `⟨n, hn⟩` from `exists_nat_sub_mem P hq hcard s`. Establish `hxK : sK - (n : 𝓞 H.K) ∈ P.asIdeal.comap (algebraMap (𝓞 H.K) (𝓞 H.E))`.
+
+Rewrite using `[Ideal.mem_comap, map_sub, map_natCast, hsmap]`. Conclude with `hn`. Rewrite `hxK` using `[hunder P ⟨t, ht, hpi⟩, ← hunder P' ⟨t', ht', hpi'⟩, Ideal.mem_comap, map_sub, map_natCast, hsmap]`. Establish `hy : -s - (n : 𝓞 H.E) ∈ P'.asIdeal`. Use `(hc (s - n) (-s - n) ?_).mp hn` and prove the remaining obligations.
+
+Use `push_cast`. Rewrite using `[map_sub, map_natCast]`. Express the relevant statement in the definitionally equal form `-H.sqrtMinusD - _ = H.conj H.sqrtMinusD - _`. Rewrite using `[H.conj_sqrtMinusD]`. Establish `h2s : (2 : 𝓞 H.E) * s ∈ P'.asIdeal`.
+
+Use `P'.asIdeal.sub_mem hxK hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hoff` using `(hL.Q_off t' P' ht').1`. Apply `hoff` to reduce the goal to its premises.
+
+Rewrite using `[Nat.cast_mul]`. Use `P'.asIdeal.mul_mem_right _ ?_` and prove the remaining obligations. Break down `P'.isPrime.mem_or_mem h2s with h2 | hs` into its components or cases. Conclude with `P'.asIdeal.mem_of_dvd (Nat.cast_dvd_cast (α := 𝓞 H.E) H.toHostRaw.two_dvd_condN) (by exact_mod_cast h2)`. Establish `hss : s * s = -(H.d : 𝓞 H.E)`.
+
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[← pow_two]`. Conclude with `hsq`. Establish `hd : ((H.d : ℕ) : 𝓞 H.E) ∈ P'.asIdeal`.
+
+Use `P'.asIdeal.mul_mem_left s hs` as an intermediate fact. Rewrite `this` using `[hss]`. Simplify using `using this`. Conclude with `P'.asIdeal.mem_of_dvd (Nat.cast_dvd_cast (α := 𝓞 H.E) (Dvd.intro_left (H.QS * H.q) rfl)) hd`. Introduce and unpack `P hP P' hP' -`.
+
+Rewrite using `[hunder P hP, hunder P' hP']`.
+-/
 theorem main : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks) (μ0 : T), Rl.toLevCh.Is μ0 → ∀ i : D.ntw.Tw, (∀ P ∈ {P : Pl D.host.E | ∃ t, P ∈ Rl.Q t ∧ P ∈ D.ntw.pD i}, ∀ P' ∈ {P : Pl D.host.E | ∃ t, P ∈ Rl.Q t ∧ P ∈ D.ntw.pD i}, Formalism.BasicNotions.IsConjPl D.host P P' → P = P') ∧ (∀ P ∈ {P : Pl D.host.E | ∃ t, P ∈ Rl.Q t ∧ P ∈ D.ntw.pD i}, ∀ P' ∈ {P : Pl D.host.E | ∃ t, P ∈ Rl.Q t ∧ P ∈ D.ntw.pD i}, (∃ p : ℕ, p.Prime ∧ (p : 𝓞 D.host.E) ∈ P.asIdeal ∧ (p : 𝓞 D.host.E) ∈ P'.asIdeal) → P.asIdeal.comap (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = P'.asIdeal.comap (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))) := by
   intro D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl μ0 hL i
   set H := D.host

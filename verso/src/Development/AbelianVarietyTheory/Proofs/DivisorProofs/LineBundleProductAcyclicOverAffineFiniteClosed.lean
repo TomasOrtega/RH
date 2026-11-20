@@ -20,6 +20,37 @@ namespace GlobalTheory.ProductAcyclicFin
 
 open GlobalTheory.Cube HomologicalComplex
 
+/- English proof (translation)
+Establish `hc` using `isCompl_range_inlEmb_inrEmb 𝔦 𝔧`. Establish `hQ : Set.OrdConnected {s : Finset 𝔦 | s.Nonempty}` using `ordConnected_nonempty`. Establish `hU₁ : IsUpperSet {t : Finset 𝔧 | 2 ≤ t.card}` using `fun s t hst (hs : 2 ≤ s.card) => le_trans hs (Finset.card_le_card hst)`. Establish `hT₁ : Set.OrdConnected {t : Finset 𝔧 | 2 ≤ t.card}` using `hU₁.ordConnected`. Establish `hT₂ : Set.OrdConnected {t : Finset 𝔧 | t.card = 1}` using `⟨fun a (ha : a.card = 1) b (hb : b.card = 1) x hx => by`.
+
+Establish `h1` using `Finset.card_le_card hx.1`. Establish `h2` using `Finset.card_le_card hx.2`. Use `show x.card = 1`. Use the proof step `omega⟩`. Establish `hTk : Set.OrdConnected ({{k}} : Set (Finset 𝔧))` using `Set.ordConnected_singleton`.
+
+Establish `hS` using `cubeFunctor_shortExact _ (suppSequence_shortExact A (ordConnected_partsIn (inlEmb 𝔦 𝔧) (inrEmb 𝔦 𝔧) hQ hT₁) (ordConnected_partsIn (inlEmb 𝔦 𝔧) (inrEmb 𝔦 𝔧) hQ ordConnected_nonempty) (ordConnected_partsIn (inlEmb 𝔦 𝔧) (inrEmb 𝔦 𝔧) hQ hT₂) (fun u => by`. Simplify using `only [mem_partsIn, Set.mem_setOf_eq, ← Finset.card_pos]`. Apply the tactic sequence `constructor <;> intro h <;> omega)`. Use the proof step `(fun u hu hu' => by`. Simplify using `only [mem_partsIn, Set.mem_setOf_eq] at hu hu'`.
+
+Use the proof step `omega)`. Use the proof step `(fun _ _ hst hs ht => ⟨ht.1, le_trans hs.2 (Finset.card_le_card (monotone_part _ hst))⟩))`. Establish `h₁ : (cubeComplex (supp A (partsIn (inlEmb 𝔦 𝔧) (inrEmb 𝔦 𝔧) {s | s.Nonempty} {t | 2 ≤ t.card}) (ordConnected_partsIn _ _ hQ hT₁))).Acyclic`. Rewrite using `[supp_partsIn_comm hQ hT₁ A]`. Use `cubeComplex_supp_partsIn_acyclic hc.symm hT₁ hQ A fun t ht => ?_` and prove the remaining obligations.
+
+Rewrite using `[← sliceFst_eq_slice]`. Conclude with `(cubeComplex_trunc₁_acyclic_iff _).2 (hA t ht)`. Establish `h₂ : (cubeComplex (trunc₂ A)).Acyclic`. Introduce `n`. Use `match n with`.
+
+Consider the case `n + 2 => exact (exactAt_iff_isZero_homology _ _).2 (h₀ n)`. Consider the case `0 | 1`. Use `ExactAt.of_isZero (isZero_cubeComplex_X_of_subsingleton _ _ fun u hu => ?_)` and prove the remaining obligations. Use `subsingleton_supp A (ordConnected_partsIn _ _ ordConnected_nonempty ordConnected_nonempty) fun hmem => ?_` and prove the remaining obligations. Simplify using `only [mem_partsIn, Set.mem_setOf_eq] at hmem`.
+
+Take `⟨⟨i, hi⟩, ⟨j, hj⟩⟩` from `hmem`. Rewrite `hi`, `hj` using `[mem_part]`. Establish `: 1 < u.card` using `Finset.one_lt_card.2 ⟨_, hi, _, hj, by simp⟩`. Use linear arithmetic over natural numbers and integers. Establish `h₃ : ∀ n, IsZero ((cubeComplex (supp A (partsIn (inlEmb 𝔦 𝔧) (inrEmb 𝔦 𝔧) {s | s.Nonempty} {t | t.card = 1}) (ordConnected_partsIn _ _ hQ hT₂))).homology n)`.
+
+Introduce `n`. Establish `hx` using `hS.homology_exact₃ n (n + 1) rfl`. Conclude with `hx.isZero_X₂ (((exactAt_iff_isZero_homology _ _).1 (h₂ n)).eq_of_src _ _) (((exactAt_iff_isZero_homology _ _).1 (h₁ (n + 1))).eq_of_tgt _ _)`. Establish `hPk` using `ordConnected_partsIn (inlEmb 𝔦 𝔧) (inrEmb 𝔦 𝔧) hQ hTk`. Establish `hP₂` using `ordConnected_partsIn (inlEmb 𝔦 𝔧) (inrEmb 𝔦 𝔧) hQ hT₂`.
+
+Set `ι₁` to `suppMap (𝟙 A) hPk hP₂ fun s t hst hs ht => by`. Simplify using `only [mem_partsIn, Set.mem_setOf_eq, Set.mem_singleton_iff] at hs ht ⊢`. Use `iff_of_true ⟨ht.1, ?_⟩ ⟨hs.1, by rw [hs.2]; rfl⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Finset.card_eq_one.1 ht.2`. Establish `: k ∈ part (inrEmb 𝔦 𝔧) t` using `monotone_part _ hst (by rw [hs.2]; exact Finset.mem_singleton_self k)`.
+
+Rewrite `this` using `[ha, Finset.mem_singleton]`. Rewrite using `[ha, this]`. Set `ρ₁` to `suppMap (𝟙 A) hP₂ hPk fun s t hst hs ht => by`. Simplify using `only [mem_partsIn, Set.mem_setOf_eq, Set.mem_singleton_iff] at hs ht ⊢`. Use `iff_of_true ⟨ht.1, by rw [ht.2]; rfl⟩ ⟨hs.1, ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `Finset.card_eq_one.1 hs.2`. Establish `: a ∈ part (inrEmb 𝔦 𝔧) t` using `monotone_part _ hst (by rw [ha]; exact Finset.mem_singleton_self a)`. Rewrite `this` using `[ht.2, Finset.mem_singleton]`. Rewrite using `[ha, this]`. Establish `hr : ι₁ ≫ ρ₁ = 𝟙 _`.
+
+Use extensionality with `s x`. Use `supp_ext fun hs => ?_` and prove the remaining obligations. Establish `hs₂ : s ∈ partsIn (inlEmb 𝔦 𝔧) (inrEmb 𝔦 𝔧) {s | s.Nonempty} {t | t.card = 1}`. Simplify using `only [mem_partsIn, Set.mem_setOf_eq, Set.mem_singleton_iff] at hs ⊢`. Conclude with `⟨hs.1, by rw [hs.2]; rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `suppEquiv A hPk hs (suppMapApp (𝟙 A) hP₂ hPk s (suppMapApp (𝟙 A) hPk hP₂ s x)) = suppEquiv A hPk hs x`. Rewrite using `[suppEquiv_suppMapApp (𝟙 A) hs₂ hs, suppEquiv_suppMapApp (𝟙 A) hs hs₂]`. Both sides reduce to the same expression. Establish `h₄ : ∀ n, IsZero ((cubeComplex (supp A (partsIn (inlEmb 𝔦 𝔧) (inrEmb 𝔦 𝔧) {s | s.Nonempty} {{k}}) hPk)).homology n)`. Introduce `n`.
+
+Rewrite using `[IsZero.iff_id_eq_zero]`. Use `congrArg (fun φ => homologyMap ((cubeFunctor _ R).map φ) n) hr` as an intermediate fact. Simplify using `only [Functor.map_comp, Functor.map_id, homologyMap_comp, homologyMap_id] at this`. Establish `h0 : homologyMap ((cubeFunctor _ R).map ρ₁) n = 0` using `(h₃ n).eq_of_src _ _`. Rewrite `this` using `[h0, comp_zero, CategoryTheory.Functor.map_id, homologyMap_id]`.
+
+Conclude with `this.symm`. Establish `h₅ : (cubeComplex (supp (slice (inlEmb 𝔦 𝔧) (({k} : Finset 𝔧).map (inrEmb 𝔦 𝔧).toEmbedding) A) {s | s.Nonempty} hQ)).Acyclic` using `fun n => (exactAt_iff_isZero_homology _ _).2 ((h₄ (n + 1)).of_iso (suppSingletonHomologyIso hc hQ k A n).symm)`. Rewrite using `[← cubeComplex_trunc₁_acyclic_iff, trunc₁, sliceFst_eq_slice]`. Conclude with `h₅`.
+-/
 theorem cech_sliceFst_singleton_acyclic {𝔦 𝔧 : Type} [LinearOrder 𝔦] [LinearOrder 𝔧] [Finite 𝔧]
     {R : Type} [Ring R] (A : GlobalTheory.Cube.{0} (𝔦 ⊕ₗ 𝔧) R)
     (h₀ : ∀ n, IsZero ((cubeComplex (trunc₂ A)).homology (n + 2)))
@@ -120,6 +151,21 @@ theorem cech_sliceFst_singleton_acyclic {𝔦 𝔧 : Type} [LinearOrder 𝔦] [L
 variable {K : Type} [Field K] {Z T X : Scheme.{0}} {p : Z ⟶ T} {g : T ⟶ Spec (CommRingCat.of K)}
   {q : Z ⟶ X} {h : X ⟶ Spec (CommRingCat.of K)} {F : LB Z}
 
+/- English proof (translation)
+Establish `: T.IsSeparated` using `⟨by`. Rewrite using `[← terminal.comp_from g]`. Use the proof step `infer_instance⟩`. Establish `: X.IsSeparated` using `⟨by`. Rewrite using `[← terminal.comp_from h]`.
+
+Use the proof step `infer_instance⟩`. Establish `: IsSeparated p` using `MorphismProperty.of_isPullback (P := @IsSeparated) sq.flip ‹_›`. Set `P : ν ×ₗ σ → Z.Opens` to `fun u => q ⁻¹ᵁ B (ofLex u).1 ⊓ p ⁻¹ᵁ V (ofLex u).2`. Establish `hP (u) : IsAffineOpen (P u)` using `GlobalTheory.ProductAcyclic.isAffineOpen_prod sq hF (hV _) B hB hBc _`. Establish `hPc : ⨆ u, P u = ⊤`.
+
+Use `top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hBc.ge (Set.mem_univ (q x)))`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hVc.ge (Set.mem_univ (p x)))`. Conclude with `⟨toLex (i, j), hi, hj⟩`. Establish `h₀ : ∀ n, IsZero ((cubeComplex (Cube.trunc₂ (secCube (p ≫ g) F fun u : ν ⊕ₗ σ => Sum.elim (fun i => q ⁻¹ᵁ B i) (fun j => p ⁻¹ᵁ V j) (ofLex u)))).homology (n + 2))`.
+
+Introduce `n`. Take `⟨e₁⟩` from `cechLB_homology_equiv_trunc₂ K _ (p ≫ g) F _ P _ (fun i => q ⁻¹ᵁ B i) _ (fun j => p ⁻¹ᵁ V j) hF inferInstance hP hPc (by rw [← Scheme.Hom.preimage_iSup, hBc, Scheme.Hom.preimage_top]) (by rw [← Scheme.Hom.preimage_iSup, hVc, Scheme.Hom.preimage_top]) (fun i _ hW => GlobalTheory.M …`. Establish `h₁` using `(HomologicalComplex.exactAt_iff_isZero_homology _ _).1 (hac _ P hP hPc n)`. Rewrite `h₁`, the goal using `[ModuleCat.isZero_iff_subsingleton]`. Conclude with `e₁.symm.injective.subsingleton`.
+
+Establish `hs : ∀ s : Finset σ, 2 ≤ s.card → (cechComplex (Cube.sliceFst (secCube (p ≫ g) F fun u : ν ⊕ₗ σ => Sum.elim (fun i => q ⁻¹ᵁ B i) (fun j => p ⁻¹ᵁ V j) (ofLex u)) s)).Acyclic`. Introduce `s hs`. Take `⟨j, hj, j', hj', hjj⟩` from `Finset.one_lt_card.1 hs`. Establish `hne : s.Nonempty` using `⟨j, hj⟩`. Establish `hVs : IsAffineOpen (⨅ j ∈ s, V j)` using `IsAffineOpen.biInf _ s.finite_toSet hne fun j _ => hV j`.
+
+Establish `H₀` using `IsPullback.of_hasPullback p hVs.fromSpec`. Establish `h₁` using `(GlobalTheory.ProductAcyclic.over_affineOpen (R := Γ(T, ⨅ j ∈ s, V j)) sq hF H₀ hVs.opensRange_fromSpec B hB hBc).2.1 (H Γ(T, ⨅ j ∈ s, V j) _ _ _ _ H₀ inferInstance j j' hjj fun y => le_inf (biInf_le V hj) (biInf_le V hj') (hVs.range_fromSpec.le ⟨y, rfl⟩))`. Take `⟨i₂⟩` from `GlobalTheory.MumfordCohom.nonempty_cech_sliceFst_iso (p ≫ g) F (fun i => q ⁻¹ᵁ B i) (fun j => p ⁻¹ᵁ V j) s _ (preimage_biInf V p s)`. Conclude with `fun m => (h₁ m).of_iso i₂`. Establish `hk` using `cech_sliceFst_singleton_acyclic _ h₀ hs k`.
+
+Take `⟨i₂⟩` from `GlobalTheory.MumfordCohom.nonempty_cech_sliceFst_iso (p ≫ g) F (fun i => q ⁻¹ᵁ B i) (fun j => p ⁻¹ᵁ V j) {k} (p ⁻¹ᵁ V k) (by simp)`. Conclude with `fun m => (hk m).of_iso i₂.symm`.
+-/
 theorem acyclic_over_of_pairs (sq : IsPullback p q g h) [IsSeparated g] [IsSeparated h] (hF : F.IsLB)
     {σ : Type} [LinearOrder σ] [Fintype σ] (V : σ → T.Opens) (hV : ∀ j, IsAffineOpen (V j))
     (hVc : ⨆ j, V j = ⊤)
@@ -183,6 +229,43 @@ end GlobalTheory.ProductAcyclicFin
 
 namespace GlobalTheory.ProductAcyclicFin
 
+/- English proof (translation)
+Introduce `K _ Z T p g X q h sq _ _ _ _ F hF S hS H hac R _ t Y π f H₀ ht`. Use `haveI := ht`. Establish `: CompactSpace T` using `QuasiCompact.compactSpace_of_compactSpace g`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace h`. Take `⟨m, B, hB, hBc, -, -⟩` from `GlobalTheory.ProductAcyclic.exists_cover X (isAffineOpen_bot X) ⊤ fun _ _ => trivial`.
+
+Establish `hU : ∀ s ∈ S, ∃ U : T.Opens, IsAffineOpen U ∧ s ∈ U ∧ ∀ x ∈ S, x ∈ U → x = s`. Introduce `s hs`. Establish `hC : IsClosed (⋃ x ∈ S.erase s, ({x} : Set T))` using `Set.Finite.isClosed_biUnion (S.erase s).finite_toSet fun x hx => hS x (Finset.mem_of_mem_erase hx)`. Establish `hsC : s ∈ (⋃ x ∈ S.erase s, ({x} : Set T))ᶜ`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_singleton_iff, not_exists]`.
+
+Introduce `x hx hsx`. Conclude with `Finset.ne_of_mem_erase hx hsx.symm`. Take `⟨_, ⟨U, hUa, rfl⟩, hsU, hUC⟩` from `T.isBasis_affineOpens.exists_subset_of_mem_open hsC hC.isOpen_compl`. Use `⟨U, hUa, hsU, fun x hx hxU => by_contra fun hne => hUC hxU ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iUnion₂.2 ⟨x, Finset.mem_erase.2 ⟨hne, hx⟩, rfl⟩`.
+
+Use `choose! U hUa hUs hUS using hU`. Set `S'` to `S.filter (fun s => s ∉ t.opensRange)`. Set `pt : Fin S'.card → T` to `fun j => (S'.equivFin.symm j).1`. Establish `hpt (j) : pt j ∈ S ∧ pt j ∉ t.opensRange` using `Finset.mem_filter.1 (S'.equivFin.symm j).2`. Set `G : Fin (S'.card + 1) → T.Opens` to `Fin.cons t.opensRange fun j => U (pt j)`.
+
+Establish `hGa : ∀ a, IsAffineOpen (G a)` using `Fin.cases (isAffineOpen_opensRange t) fun j => hUa _ (hpt j).1`. Establish `hGS : ∀ a b, a ≠ b → ∀ x ∈ S, x ∈ G a → x ∈ G b → False`. Establish `h₁ : ∀ j, ∀ x ∈ S, x ∈ t.opensRange → x ∈ U (pt j) → False` using `fun j x hx hx₁ hx₂ => (hpt j).2 (hUS _ (hpt j).1 x hx hx₂ ▸ hx₁)`. Introduce `a b hab x hx ha hb`. Proceed by induction on `a using Fin.cases with`.
+
+Consider the case `zero`. Proceed by induction on `b using Fin.cases with`. Consider the case `zero => exact hab rfl`. Consider the case `succ j => exact h₁ j x hx ha hb`. Consider the case `succ i`.
+
+Proceed by induction on `b using Fin.cases with`. Consider the case `zero => exact h₁ i x hx hb ha`. Consider the case `succ j`. Use `hab (congrArg Fin.succ (S'.equivFin.symm.injective (Subtype.ext ?_)))` and prove the remaining obligations. Conclude with `(hUS _ (hpt i).1 x hx ha).symm.trans (hUS _ (hpt j).1 x hx hb)`.
+
+Establish `hGc : ∀ x ∈ S, x ∈ ⨆ a, G a`. Introduce `x hx`. Use `TopologicalSpace.Opens.mem_iSup.2 ?_` and prove the remaining obligations. Distinguish the cases in `hxt : x ∈ t.opensRange`. Conclude with `⟨0, hxt⟩`.
+
+Establish `hx' : x ∈ S'` using `Finset.mem_filter.2 ⟨hx, hxt⟩`. Use `⟨(S'.equivFin ⟨x, hx'⟩).succ, ?_⟩` and prove the remaining obligations. Establish `: pt (S'.equivFin ⟨x, hx'⟩) = x` using `by simp [pt]`. Simplify using `only [G, Fin.cons_succ]`. Rewrite using `[this]`.
+
+Conclude with `hUs x hx`. Choose the witnesses or unpack the hypotheses as in `⟨r, V', hV'a, hV'S, hV'c⟩ : ∃ (r : ℕ) (V' : Fin r → T.Opens), (∀ j, IsAffineOpen (V' j)) ∧ (∀ j, ∀ x ∈ V' j, x ∉ S) ∧ ∀ x, x ∉ ⨆ a, G a → ∃ j, x ∈ V' j := by`. Establish `hSc : IsOpen (↑S : Set T)ᶜ`. Use `Set.Finite.isClosed_biUnion S.finite_toSet fun x hx => hS x hx` as an intermediate fact. Rewrite `this` using `[Set.biUnion_of_singleton]`.
+
+Conclude with `this.isOpen_compl`. Establish `hc : IsCompact (↑(⨆ a, G a) : Set T)ᶜ` using `(⨆ a, G a).isOpen.isClosed_compl.isCompact`. Take `⟨s, hs⟩` from `hc.elim_finite_subcover (fun W : {W : T.Opens // IsAffineOpen W ∧ (W : Set T) ⊆ (↑S)ᶜ} => (W.1 : Set T)) (fun W => W.1.isOpen) (by`. Introduce `x hx`. Establish `hxS : x ∈ (↑S : Set T)ᶜ` using `fun hxS => hx (hGc x hxS)`.
+
+Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWo⟩` from `T.isBasis_affineOpens.exists_subset_of_mem_open hxS hSc`. Conclude with `Set.mem_iUnion.2 ⟨⟨W, hW, hWo⟩, hxW⟩)`. Use `⟨s.card, fun j => (s.equivFin.symm j).1.1, fun j => (s.equivFin.symm j).1.2.1, fun j x hx => (s.equivFin.symm j).1.2.2 hx, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hxW⟩` from `Set.mem_iUnion₂.1 (hs hx)`. Conclude with `⟨s.equivFin ⟨W, hW⟩, by simpa using hxW⟩`.
+
+Set `V : Fin (S'.card + 1 + r) → T.Opens` to `Fin.append G V'`. Establish `hV : ∀ j, IsAffineOpen (V j)` using `Fin.addCases (fun a => by simpa [V] using hGa a) (fun j => by simpa [V] using hV'a j)`. Establish `hVc : ⨆ j, V j = ⊤`. Use `top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ ⨆ a, G a`.
+
+Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Conclude with `⟨Fin.castAdd r a, by simpa [V] using ha⟩`. Take `⟨j, hj⟩` from `hV'c x hx`. Conclude with `⟨Fin.natAdd _ j, by simpa [V] using hj⟩`. Establish `hVS : ∀ j j', j ≠ j' → ∀ x, x ∈ V j → x ∈ V j' → x ∉ S`.
+
+Introduce `j j' hjj x hx hx' hxS`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left a`. Proceed by induction on `j' using Fin.addCases with`. Consider the case `left b`.
+
+Simplify using `only [V, Fin.append_left] at hx hx'`. Conclude with `hGS a b (fun hab => hjj (hab ▸ rfl)) x hxS hx hx'`. Consider the case `right c`. Simplify using `only [V, Fin.append_right] at hx'`. Conclude with `hV'S c x hx' hxS`.
+
+Consider the case `right c`. Simplify using `only [V, Fin.append_right] at hx`. Conclude with `hV'S c x hx hxS`. Establish `hk : V (Fin.castAdd r 0) = t.opensRange` using `by simp [V, G]`. Establish `h₁` using `GlobalTheory.ProductAcyclicFin.acyclic_over_of_pairs sq hF V hV hVc (fun R _ t Y π f H₁ ht j j' hjj hy => H R t Y π f H₁ ht fun y hyS => hVS j j' hjj _ (hy y).1 (hy y).2 hyS) B hB hBc hac (Fin.castAdd r 0)`.
+
+Conclude with `(GlobalTheory.ProductAcyclic.over_affineOpen sq hF H₀ hk.symm B hB hBc).2.2 h₁`.
+-/
 theorem acyclic_over_affine_of_finite_closed : ∀ (K : Type) [Field K] (Z T : Scheme.{0}) (p : Z ⟶ T) (g : T ⟶ Spec (CommRingCat.of K)) (X : Scheme.{0}) (q : Z ⟶ X) (h : X ⟶ Spec (CommRingCat.of K)), IsPullback p q g h → IsSeparated g → QuasiCompact g → IsSeparated h → QuasiCompact h → ∀ F : LB Z, F.IsLB → ∀ S : Finset T, (∀ s ∈ S, IsClosed ({s} : Set T)) → (∀ (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ T) (Y : Scheme.{0}) (π : Y ⟶ Z) (f : Y ⟶ Spec (CommRingCat.of R)), IsPullback π f p t → IsOpenImmersion t → (∀ y, t y ∉ S) → (∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → (Y).Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB (f) (F.pull π) D).Acyclic)) → (∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → (Z).Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB (p ≫ g) (F) D).Acyclic) → (∀ (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ T) (Y : Scheme.{0}) (π : Y ⟶ Z) (f : Y ⟶ Spec (CommRingCat.of R)), IsPullback π f p t → IsOpenImmersion t → (∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → (Y).Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB (f) (F.pull π) D).Acyclic)) := by
   intro K _ Z T p g X q h sq _ _ _ _ F hF S hS H hac R _ t Y π f H₀ ht
   classical

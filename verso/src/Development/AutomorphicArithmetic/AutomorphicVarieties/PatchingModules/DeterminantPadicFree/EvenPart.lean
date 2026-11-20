@@ -8,11 +8,19 @@ section SlopeTestRemainingChoices
 
 variable {F G : Type} [Field F] [Group G] {n : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h i j e => (Submodule.mem_bot F).1 ((h i j).2 e), fun h i j => ⟨fun _ => Submodule.mem_top, fun e => (Submodule.mem_bot F).2 (h i j e)⟩⟩`.
+-/
 private theorem evP_iff {a : ℕ} (N : Matrix (Fin n) (Fin n) F) :
     N ∈ Ev F F n a ↔ ∀ i j : Fin n, ¬ (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → N i j = 0 :=
   ⟨fun h i j e => (Submodule.mem_bot F).1 ((h i j).2 e),
     fun h i j => ⟨fun _ => Submodule.mem_top, fun e => (Submodule.mem_bot F).2 (h i j e)⟩⟩
 
+/- English proof (translation)
+Rewrite `*` using `[evP_iff]`. Introduce `i j e`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `c : ((i : ℕ) < a) ↔ ((k : ℕ) < a)`.
+
+Rewrite using `[h' k j (by tauto), mul_zero]`. Rewrite using `[h i k c, zero_mul]`.
+-/
 private theorem evP_mul {a : ℕ} {N N' : Matrix (Fin n) (Fin n) F} (h : N ∈ Ev F F n a)
     (h' : N' ∈ Ev F F n a) : N * N' ∈ Ev F F n a := by
   rw [evP_iff] at *
@@ -23,18 +31,44 @@ private theorem evP_mul {a : ℕ} {N N' : Matrix (Fin n) (Fin n) F} (h : N ∈ E
   · rw [h' k j (by tauto), mul_zero]
   · rw [h i k c, zero_mul]
 
+/- English proof (translation)
+Rewrite `*` using `[evP_iff]`. Introduce `i j e`. Conclude with `h j i (by tauto)`.
+-/
 private theorem evP_tr {a : ℕ} {N : Matrix (Fin n) (Fin n) F} (h : N ∈ Ev F F n a) :
     Nᵀ ∈ Ev F F n a := by
   rw [evP_iff] at *
   intro i j e
   exact h j i (by tauto)
 
+/- English proof (translation)
+Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem evP_inv (D : DetFr F G n) (g : G) : D.r g⁻¹ * D.r g = 1 := by
   rw [← map_mul]; simp
 
+/- English proof (translation)
+Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem evP_inv' (D : DetFr F G n) (g : G) : D.r g * D.r g⁻¹ = 1 := by
   rw [← map_mul]; simp
 
+/- English proof (translation)
+Introduce `c hc h0`. Use `set M := c.sum fun g x => x • (z g * D.r g) with hM`. Establish `hME : M ∈ Ev F F n D.a` using `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (evP_mul (hev g) (D.ev g))`. Establish `key : ∀ X ∈ Ev F F n D.a, (M * X).trace = 0`. Introduce `X hX`.
+
+Rewrite `hX` using `[← D.span]`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, hh, rfl⟩` from `hx`. Establish `e : ∀ g ∈ c.support, (c g • (z g * D.r g) * D.r h).trace = -((c g • D.r g) * (z h * D.r h)).trace`.
+
+Introduce `g hg`. Establish `h1` using `htr _ (D.G'.mul_mem (hc g hg) hh)`. Rewrite `h1` using `[hz g (hc g hg) h hh, map_mul, one_smul, add_mul]`. Establish `h2 : D.r g * z h * D.r g⁻¹ * (D.r g * D.r h) = D.r g * z h * (D.r g⁻¹ * D.r g) * D.r h`. Simplify using `only [mul_assoc]`.
+
+Rewrite `h1` using `[h2, evP_inv, mul_one, trace_add]`. Rewrite using `[smul_mul_assoc, smul_mul_assoc, trace_smul, trace_smul, ← smul_neg]`. Use `congr 1`. Simplify using `only [mul_assoc] at h1 ⊢`. Conclude with `eq_neg_of_add_eq_zero_left h1`.
+
+Rewrite using `[hM, Finsupp.sum, Finset.sum_mul, trace_sum, Finset.sum_congr rfl e, Finset.sum_neg_distrib, ← trace_sum, ← Finset.sum_mul]`. Rewrite `h0` using `[Finsupp.sum]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [mul_add, trace_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [mul_smul_comm, trace_smul, hx, smul_zero]`. Distinguish the cases in `hij : ((i : ℕ) < D.a) ↔ ((j : ℕ) < D.a)`. Establish `hE : Matrix.single j i (1 : F) ∈ Ev F F n D.a`. Rewrite using `[evP_iff]`.
+
+Introduce `p q h`. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h hij.symm`. Use `key _ hE` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.trace_mul_single]`. Simplify using `using this`. Conclude with `(evP_iff M).1 hME i j hij`.
+-/
 private theorem evP_kills (D : DetFr F G n) (z : G → Matrix (Fin n) (Fin n) F)
     (hz : TwCoc (fun _ => 1) D.r D.G' z) (hev : ∀ g, z g ∈ Ev F F n D.a)
     (htr : ∀ g ∈ D.G', (z g * D.r g).trace = 0) (i j : Fin n) : D.KillsRel z i j := by
@@ -81,6 +115,25 @@ private theorem evP_kills (D : DetFr F G n) (z : G → Matrix (Fin n) (Fin n) F)
     simpa using this
   · exact (evP_iff M).1 hME i j hij
 
+/- English proof (translation)
+Use `set S : Matrix (Fin n) (Fin n) F := diagonal fun i => if (i : ℕ) < D.a then 1 else -1 with hS`. Establish `hc : ∀ X ∈ Ev F F n D.a, S * X = X * S`. Introduce `X hX`. Use extensionality with `i j`. Rewrite using `[hS, diagonal_mul, mul_diagonal]`.
+
+Distinguish the cases in `hij : ((i : ℕ) < D.a) ↔ ((j : ℕ) < D.a)`. Simplify using `only [hij, mul_comm]`. Rewrite using `[(evP_iff X).1 hX i j hij]`. Simplify using the standard rewrite rules. Establish `hSS : S * S = 1`.
+
+Rewrite using `[hS, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨(2 : F)⁻¹ • (Y + S * Y * S), ?_, fun χ g hg => ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[evP_iff]`. Introduce `i j hij`. Rewrite using `[Matrix.add_apply, hS, mul_diagonal, diagonal_mul]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < D.a <;> by_cases hj : (j : ℕ) < D.a`.
+
+Conclude with `absurd (iff_of_true hi hj) hij`. Rewrite using `[if_pos hi, if_neg hj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hi, if_pos hj]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `absurd (iff_of_false hi hj) hij`. Establish `h1 : dTw χ D.r (S * Y * S) g = dTw χ D.r Y g`. Establish `h2 : S * dTw χ D.r Y g * S = dTw χ D.r Y g`. Rewrite using `[hc _ hg, mul_assoc, hSS, mul_one]`. Rewrite using `[← h2]`.
+
+Unfold `dTw`. Rewrite using `[mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc]`. Use `congr 2`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+
+Use `_ = _ := by`. Rewrite using `[← hc _ (D.ev g), hc _ (D.ev g⁻¹)]`. Simplify using `only [mul_assoc]`. Establish `h3 : dTw χ D.r ((2 : F)⁻¹ • (Y + S * Y * S)) g = (2 : F)⁻¹ • (dTw χ D.r Y g + dTw χ D.r (S * Y * S) g)`. Unfold `dTw`.
+
+Simplify using `only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc]`. Use `module`. Rewrite using `[h3, h1, ← two_smul F, smul_smul, inv_mul_cancel₀ D.two, one_smul]`.
+-/
 private theorem evP_even (D : DetFr F G n) (Y : Matrix (Fin n) (Fin n) F) :
     ∃ Y' ∈ Ev F F n D.a, ∀ (χ : G → F) (g : G), dTw χ D.r Y g ∈ Ev F F n D.a →
       dTw χ D.r Y g = dTw χ D.r Y' g := by
@@ -127,6 +180,19 @@ private theorem evP_even (D : DetFr F G n) (Y : Matrix (Fin n) (Fin n) F) :
       module
     rw [h3, h1, ← two_smul F, smul_smul, inv_mul_cancel₀ D.two, one_smul]
 
+/- English proof (translation)
+Establish `hχ : ∀ g ∈ D.G', D.χF g = 1` using `fun g hg => by simp [DetFr.χF, D.χ_triv g hg]`. Establish `hcomm : ∀ k g, D.r g * z k = z k * D.r g`. Introduce `k`. Use `(UpperTheory.V.Pa.Det.central D (z k) fun h hh => ?_).2 (hev k)` and prove the remaining obligations. Establish `hm : k⁻¹ * h * k ∈ D.G'`.
+
+Use `D.G'.mul_mem (D.comm k⁻¹ h) hh` as an intermediate fact. Simplify using `using this`. Establish `e1` using `hz h trivial k trivial`. Establish `e2` using `hz k trivial _ (Set.mem_univ (k⁻¹ * h * k))`. Rewrite `e2` using `[h0 _ hm, show k * (k⁻¹ * h * k) = h * k by group, e1, h0 h hh, hχ h hh]`.
+
+Simplify using `only [zero_add, one_smul, mul_zero, zero_mul, smul_zero, add_zero] at e2`. Use `conv_rhs => rw [← e2]`. Rewrite using `[mul_assoc, evP_inv, mul_one]`. Establish `hconj : ∀ k g, D.r g * z k * D.r g⁻¹ = z k` using `fun k g => by`. Rewrite using `[hcomm, mul_assoc, evP_inv', mul_one]`.
+
+Establish `hmul : ∀ g k, z (g * k) = z g + D.χF g • z k` using `fun g k => by`. Rewrite using `[hz g trivial k trivial, hconj]`. Establish `hne : D.χF D.g₀ - 1 ≠ 0`. Introduce `h`. Conclude with `D.χ_ne (Units.ext (sub_eq_zero.1 h))`.
+
+Use `⟨(D.χF D.g₀ - 1)⁻¹ • z D.g₀, Submodule.smul_mem _ _ (hev _), fun g => ?_⟩` and prove the remaining obligations. Establish `e1 : z (D.g₀ * g) = z (g * D.g₀)`. Establish `hm` using `D.comm D.g₀ g`. Rewrite using `[show D.g₀ * g = (D.g₀ * g * D.g₀⁻¹ * g⁻¹) * (g * D.g₀) by group, hmul _ (g * D.g₀), h0 _ hm, hχ _ hm, zero_add, one_smul]`. Rewrite `e1` using `[hmul, hmul]`.
+
+Establish `e2 : (D.χF D.g₀ - 1) • z g = (D.χF g - 1) • z D.g₀`. Rewrite using `[sub_smul, sub_smul, one_smul, one_smul]`. Rewrite using `[sub_eq_sub_iff_add_eq_add, add_comm, e1, add_comm]`. Unfold `dTw`. Rewrite using `[mul_smul_comm, smul_mul_assoc, hconj, smul_comm, ← smul_sub, show D.χF g • z D.g₀ - z D.g₀ = (D.χF g - 1) • z D.g₀ by rw [sub_smul, one_smul], ← e2, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+-/
 private theorem evP_sah (D : DetFr F G n) (z : G → Matrix (Fin n) (Fin n) F)
     (hz : TwCoc D.χF D.r Set.univ z) (hev : ∀ g, z g ∈ Ev F F n D.a)
     (h0 : ∀ g ∈ D.G', z g = 0) : ∃ Z ∈ Ev F F n D.a, ∀ g, z g = dTw D.χF D.r Z g := by
@@ -166,6 +232,23 @@ private theorem evP_sah (D : DetFr F G n) (z : G → Matrix (Fin n) (Fin n) F)
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F G _ _ n D s ph hs hz hev hpol htr`. Establish `hχ : ∀ g ∈ D.G', D.χF g = 1` using `fun g hg => by simp [DetFr.χF, D.χ_triv g hg]`. Establish `hz1 : TwCoc (fun _ => 1) D.r D.G' ph` using `fun g hg h _ => by`. Rewrite using `[hz g trivial h trivial, hχ g hg]`. Take `⟨Y₀, hY₀⟩` from `UpperTheory.V.Pa.Det.der D ph hz1 (evP_kills D ph hz1 hev htr)`.
+
+Take `⟨Y₁, hY₁, hY₁'⟩` from `evP_even D Y₀`. Establish `hd : ∀ g, dTw D.χF D.r Y₁ g ∈ Ev F F n D.a` using `fun g => Submodule.sub_mem _ (Submodule.smul_mem _ _ (evP_mul (evP_mul (D.ev g) hY₁) (D.ev g⁻¹))) hY₁`. Take `⟨Z, hZ, hZ'⟩` from `evP_sah D (fun g => ph g - dTw D.χF D.r Y₁ g) (by`. Introduce `g _ h _`. Establish `hm : D.χF (g * h) = D.χF g * D.χF h` using `by simp [DetFr.χF]`.
+
+Simplify using `only [hz g trivial h trivial, dTw, hm, _root_.mul_inv_rev, map_mul, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, mul_assoc]`. Use the proof step `module) (fun g => Submodule.sub_mem _ (hev g) (hd g)) (by`. Introduce `g hg`. Establish `h1` using `hY₁' (fun _ => 1) g (hY₀ g hg ▸ hev g)`. Rewrite using `[hY₀ g hg, h1]`.
+
+Simplify using `only [dTw, hχ g hg, sub_self])`. Establish `hY : ∀ g, ph g = dTw D.χF D.r (Y₁ + Z) g`. Introduce `g`. Establish `h1` using `hZ' g`. Rewrite `h1` using `[sub_eq_iff_eq_add]`.
+
+Rewrite using `[h1]`. Simplify using `only [dTw, mul_add, add_mul]`. Use `module`. Establish `hE : Y₁ + Z ∈ Ev F F n D.a` using `Submodule.add_mem _ hY₁ hZ`. Generalize the expression as in `Y₁ + Z = Y at hY hE`.
+
+Use `⟨(2 : F)⁻¹ • (Y + s • Yᵀ), Submodule.smul_mem _ _ (Submodule.add_mem _ hE (Submodule.smul_mem _ _ (evP_tr hE))), ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[transpose_smul, transpose_add, transpose_smul, transpose_transpose, smul_comm, smul_add s, smul_smul, hs, one_smul, add_comm]`. Establish `h1` using `UpperTheory.V.Pa.Det.dSigma D D.χF Y g (fun g => by simp [DetFr.χF, D.χσ])`. Rewrite `h1` using `[← hY, hpol]`. Establish `h2 : dTw D.χF D.r Yᵀ g = s • ph g`.
+
+Use `congrArg transpose h1` as an intermediate fact. Simplify using `using this.symm`. Establish `h3 : dTw D.χF D.r ((2 : F)⁻¹ • (Y + s • Yᵀ)) g = (2 : F)⁻¹ • (dTw D.χF D.r Y g + s • dTw D.χF D.r Yᵀ g)`. Unfold `dTw`. Simplify using `only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc]`.
+
+Use `module`. Rewrite using `[h3, h2, ← hY, smul_smul s, hs, one_smul, ← two_smul F, smul_smul, inv_mul_cancel₀ D.two, one_smul]`.
+-/
 theorem UpperTheory.V.Pa.Det.evenPart :
     ∀ {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n) (s : F) (ph : G → Matrix (Fin n) (Fin n) F), s * s = 1 → TwCoc D.χF D.r Set.univ ph → (∀ g, ph g ∈ Ev F F n D.a) → (∀ g, ph (D.σ g) = s • (ph g)ᵀ) → (∀ g ∈ D.G', (ph g * D.r g).trace = 0) → ∃ Y ∈ Ev F F n D.a, s • Yᵀ = Y ∧ ∀ g, ph g = dTw D.χF D.r Y g := by
   intro F G _ _ n D s ph hs hz hev hpol htr

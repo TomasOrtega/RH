@@ -18,6 +18,15 @@ open GlobalTheory.UPoinc
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw _ l Xo cf C X₁ hproj`. Take `⟨m, c, hc⟩` from `RatModel.exists_isCl_of_isProjOver hproj`. Establish `hc0 : ∃ j, c j ≠ 0`. Take `⟨j, hj⟩` from `hc.1 (genericPoint X₁.M.Z)`. Conclude with `⟨j, hj.1⟩`.
+
+Take `⟨Y, U₀, EE, hO, hdiv, hE, ⟨G⟩⟩` from `GlobalTheory.zhSt_holds X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.big (Fin (m + 1)) c hc0 (GlobalTheory.ZH.finite_closure_theta_ratios_of_isCl X₁.o₁ X₁.Ω₁ X₁.S X₁.M (Fin (m + 1)) c hc)`. Take `⟨q, hq⟩` from `hc.exists_isHom (M' := Y) (φ := AlgHom.id X₁.o₁ X₁.Ω₁) hdiv`. Establish `hYp : IsProper Y.s` using `((GlobalTheory.isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hO.proj).1`. Establish `hsep : IsSeparated X₁.M.s` using `X₁.M.sep`. Establish `hqp : IsProper q` using `by haveI : IsProper (q ≫ X₁.M.s) := by rw [hq.inducedModelMorphism_comp_structureMap]; exact hYp`.
+
+Conclude with `IsProper.of_comp q X₁.M.s`. Establish `hpt : Y.pt ≫ q = X₁.M.pt` using `hq.trans ((congrArg (· ≫ X₁.M.pt) (Spec.map_id _)).trans (Category.id_comp _))`. Use `⟨Y, U₀, EE, G, q, hO, hE, hqp, hpt, ?_, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hiso⟩` from `GlobalTheory.ZH.RatModel.exists_isIso_morphismRestrict_of_isProjOver X₁.o₁ X₁.Ω₁ Y X₁.M hO.proj q hq`. Establish `: IsDedekindDomain X₁.o₁` using `(inferInstance : ArithBase X₁.o₁ X₁.Ω₁).ded`.
+
+Use `X₁.M.lft` as an intermediate fact. Establish `: IsLocallyNoetherian X₁.M.Z` using `LocallyOfFiniteType.isLocallyNoetherian X₁.M.s`. Conclude with `GlobalTheory.ZariskiConn.fibre_preconnected Y.Z X₁.M.Z q (fun x => ⟨X₁.normal.isDomain_stalk x, X₁.normal.isIntegrallyClosed_stalk x⟩) U hU hiso`. Introduce `p _ z₁ ct`. Conclude with `GlobalTheory.exists_lift_of_isProper_of_isHom_id X₁.o₁ X₁.Ω₁ Y X₁.M q hq hqp p ct.y`.
+-/
 theorem _root_.GlobalTheory.UPoinc.exists_zhModel_proper_over_uSetup : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf), ∀ (X : USetup C), IsProjOver X.M.s → ∃ (Y : RatModel X.o₁ X.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X.S.J) (_ : ZHOut X.ρ Y U₀ EE) (q : Y.Z ⟶ X.M.Z), X.S.Over₀ Y U₀ ∧ X.S.IsEE Y U₀ EE ∧ IsProper q ∧ Y.pt ≫ q = X.M.pt ∧ (∀ z : X.M.Z, _root_.IsPreconnected (q.base ⁻¹' {z})) ∧ ∀ (p : ℕ) [Fact p.Prime] (z : X.M.Z) (ct : UCTrait X p z), ∃ y : Sp (OO p) ⟶ Y.Z, y ≫ q = ct.y := by
   intro E _ _ _ H Dw _ l Xo cf C X₁ hproj
   obtain ⟨m, c, hc⟩ := RatModel.exists_isCl_of_isProjOver hproj

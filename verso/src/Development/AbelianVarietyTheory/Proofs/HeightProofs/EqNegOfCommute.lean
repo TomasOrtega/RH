@@ -45,36 +45,62 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D}
 
+/- English proof (translation)
+Take `⟨ρ, h1, h2, h3⟩` from `GlobalTheory.T.exists_real_chart_infiniteAdeles_cmType D θ hθ (GlobalTheory.T.cmType_restrict_realSubfield_infinitePlace_bijective D)`. Conclude with `GlobalTheory.T.exists_isArchimedeanAdeleChart_of_real_chart D θ hθ ρ h1 h2 h3`.
+-/
 theorem exists_chart (hθ : IsInfFam θ) : ∃ σ, Chart θ σ := by
   obtain ⟨ρ, h1, h2, h3⟩ := GlobalTheory.T.exists_real_chart_infiniteAdeles_cmType D θ hθ (GlobalTheory.T.cmType_restrict_realSubfield_infinitePlace_bijective D)
   exact GlobalTheory.T.exists_isArchimedeanAdeleChart_of_real_chart D θ hθ ρ h1 h2 h3
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.symplectic_val_tau_compat D θ hθ V W τ x y`.
+-/
 theorem valTau_sympl (hθ : IsInfFam θ) (V W : HSp D) (τ : D.what₂.Tau) (x y : WA V W) :
     valTau θ τ (sympl V W x y) = symplC V W τ (wAt θ V W τ x) (wAt θ V W τ y) := GlobalTheory.T.symplectic_val_tau_compat D θ hθ V W τ x y
 
+/- English proof (translation)
+Unfold `valTau`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, RingHom.map_sub, Complex.sub_re]`.
+-/
 theorem valTau_sub (τ : D.what₂.Tau) (a b : AF D.host.F) : valTau θ τ (a - b) = valTau θ τ a - valTau θ τ b := by
   unfold valTau
   rw [RingHom.map_sub, RingHom.map_sub, RingHom.map_sub, Complex.sub_re]
 
+/- English proof (translation)
+Unfold `valTau`. Rewrite using `[RingHom.map_neg, RingHom.map_neg, RingHom.map_neg, Complex.neg_re]`.
+-/
 theorem valTau_neg (τ : D.what₂.Tau) (a : AF D.host.F) : valTau θ τ (-a) = -valTau θ τ a := by
   unfold valTau
   rw [RingHom.map_neg, RingHom.map_neg, RingHom.map_neg, Complex.neg_re]
 
+/- English proof (translation)
+The claim follows from `congrFun (h.pi_iota V W z) τ`.
+-/
 theorem Chart.wAt_iota (h : Chart θ σ) (V W : HSp D) (z : RW V W) (τ : D.what₂.Tau) :
     wAt θ V W τ (iotaW σ V W z) = z τ := congrFun (h.pi_iota V W z) τ
 
+/- English proof (translation)
+Rewrite using `[omR_apply, omR_apply, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← h.wAt_iota V W u τ, ← h.wAt_iota V W v τ, ← valTau_sympl h.inf, ← valTau_sympl h.inf, GlobalTheory.DualPairCheck.sympl_skew, valTau_neg]`.
+-/
 theorem Chart.omR_skew (h : Chart θ σ) (V W : HSp D) (u v : RW V W) : omR V W v u = -omR V W u v := by
   rw [omR_apply, omR_apply, ← Finset.sum_neg_distrib]
   refine Finset.sum_congr rfl fun τ _ => ?_
   rw [← h.wAt_iota V W u τ, ← h.wAt_iota V W v τ, ← valTau_sympl h.inf, ← valTau_sympl h.inf,
     GlobalTheory.DualPairCheck.sympl_skew, valTau_neg]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h1 : finPart D (x i j) = 0` using `congrFun (congrFun hx i) j`. Use `show finPart D (-(x i j)) = 0`. Rewrite using `[RingHom.map_neg, h1, neg_zero]`.
+-/
 theorem isRealW_neg {V W : HSp D} {x : WA V W} (hx : IsRealW V W x) : IsRealW V W (-x) := by
   ext i j
   have h1 : finPart D (x i j) = 0 := congrFun (congrFun hx i) j
   show finPart D (-(x i j)) = 0
   rw [RingHom.map_neg, h1, neg_zero]
 
+/- English proof (translation)
+Use `GlobalTheory.T.hermitianMajorant_isCartanInvolution_and_commute_iff _ _ _ ?_ A _ _ ?_ h.1 h.2` and prove the remaining obligations. Use `(Formalism.UG.P.sig_data _ _ _ (hV (tauE D τ))).1` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this.symm`. Establish `: (gramAt D V τ).det = tauE D τ V.gram.det` using `((tauE D τ).map_det V.gram).symm`.
+
+Rewrite using `[this]`. Conclude with `(map_ne_zero _).2 (gram_det_ne V)`.
+-/
 theorem Rel.cart {V : HSp D} (hV : V.SigOK) {τ : D.what₂.Tau} {A s} (h : Rel V τ A s) :
     IsCart (gramAt D V τ) (thAt V τ s) ∧ ∀ g : Matrix (Fin V.rank) (Fin V.rank) ℂ,
       (∃ b : Mat (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2, IsKC b ∧ b * A = A * g) ↔ Commute g (thAt V τ s) := by
@@ -86,10 +112,16 @@ theorem Rel.cart {V : HSp D} (hV : V.SigOK) {τ : D.what₂.Tau} {A s} (h : Rel 
     rw [this]
     exact (map_ne_zero _).2 (gram_det_ne V)
 
+/- English proof (translation)
+The claim follows from `and_congr Iff.rfl (forall_congr' fun τ => ((h τ).cart hV).2 _)`.
+-/
 theorem isKinf_iff {V : HSp D} (hV : V.SigOK) {A} {s : InvFam V} (h : ∀ τ, Rel V τ (A τ) (s τ)) (g : GA D V) :
     IsKinf θ V A g ↔ g ∈ Kinf θ V s :=
   and_congr Iff.rfl (forall_congr' fun τ => ((h τ).cart hV).2 _)
 
+/- English proof (translation)
+Rewrite using `[eq_neg_iff_add_eq_zero]`. Apply `h0` to reduce the goal to its premises. Rewrite using `[map_add, map_add, hJ, hj, hc, add_comm]`.
+-/
 theorem eq_neg_of_commute {R : Type} [AddCommGroup R] (J j : R →+ R) (hJ : ∀ z, J (J z) = -z) (hj : ∀ z, j (j z) = -z)
     (hc : ∀ z, J (j z) = j (J z)) (h0 : ∀ y, J y = j y → y = 0) (z : R) : J z = -j z := by
   rw [eq_neg_iff_add_eq_zero]
@@ -102,12 +134,23 @@ variable {V W : HSp D} {s : InvFam V} {s' : InvFam W}
   (hs : ∀ τ, IsCart (gramAt D V τ) (thAt V τ (s τ))) (hs' : ∀ τ, IsCart (gramAt D W τ) (thAt W τ (s' τ)))
 include hs hs'
 
+/- English proof (translation)
+The claim follows from `funext fun τ => (GlobalTheory.T.complexStructureOfInvolutions_properties D V W τ _ _ (hs τ) (hs' τ)).1 (z τ)`.
+-/
 theorem jR_jR (z : RW V W) : jR V W s s' (jR V W s s' z) = -z :=
   funext fun τ => (GlobalTheory.T.complexStructureOfInvolutions_properties D V W τ _ _ (hs τ) (hs' τ)).1 (z τ)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_congr rfl fun τ _ => (GlobalTheory.T.complexStructureOfInvolutions_properties D V W τ _ _ (hs τ) (hs' τ)).2.1 (u τ) (v τ)`.
+-/
 theorem omR_jR (u v : RW V W) : omR V W (jR V W s s' u) (jR V W s s' v) = omR V W u v :=
   Finset.sum_congr rfl fun τ _ => (GlobalTheory.T.complexStructureOfInvolutions_properties D V W τ _ _ (hs τ) (hs' τ)).2.1 (u τ) (v τ)
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Use `symplC_smul_right V W τ 0 (jAt V W τ (s τ) (s' τ) x) x` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_mul]`. Rewrite `this`, the goal using `[hx]`. Conclude with `this.le`.
+
+Use `GlobalTheory.T.neg_traceSymplecticForm_complexStructure_pos D V W τ _ _ (hs τ) (hs' τ) x hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem symplC_jAt_le (τ : D.what₂.Tau) (x : WC V W) : symplC V W τ (jAt V W τ (s τ) (s' τ) x) x ≤ 0 := by
   by_cases hx : x = 0
   · have := symplC_smul_right V W τ 0 (jAt V W τ (s τ) (s' τ) x) x
@@ -117,6 +160,9 @@ theorem symplC_jAt_le (τ : D.what₂.Tau) (x : WC V W) : symplC V W τ (jAt V W
   · have := GlobalTheory.T.neg_traceSymplecticForm_complexStructure_pos D V W τ _ _ (hs τ) (hs' τ) x hx
     linarith
 
+/- English proof (translation)
+Rewrite using `[h.omR_skew, omR_apply, ← Finset.sum_neg_distrib]`. Take `⟨τ, hτ⟩` from `Function.ne_iff.1 hu`. Conclude with `Finset.sum_pos' (fun τ _ => neg_nonneg.2 (symplC_jAt_le hs hs' τ _)) ⟨τ, Finset.mem_univ _, GlobalTheory.T.neg_traceSymplecticForm_complexStructure_pos D V W τ _ _ (hs τ) (hs' τ) (u τ) hτ⟩`.
+-/
 theorem Chart.omR_pos (h : Chart θ σ) (u : RW V W) (hu : u ≠ 0) : 0 < omR V W u (jR V W s s' u) := by
   rw [h.omR_skew, omR_apply, ← Finset.sum_neg_distrib]
   obtain ⟨τ, hτ⟩ := Function.ne_iff.1 hu
@@ -125,6 +171,27 @@ theorem Chart.omR_pos (h : Chart θ σ) (u : RW V W) (hu : u ≠ 0) : 0 < omR V 
 
 end Cx
 
+/- English proof (translation)
+Establish `hs` using `fun τ => ((hA τ).cart hV).1`. Establish `hs'` using `fun τ => ((hB τ).cart hW).1`. Use `choose g hg g' hg' hgj using fun τ => (GlobalTheory.T.complexStructureOfInvolutions_properties D V W τ _ _ (hs τ) (hs' τ)).2.2.2`. Take `⟨k, hk, hkg⟩` from `GlobalTheory.T.exists_real_point_unitary_with_components D θ σ h V g fun τ => (hg τ).1`. Take `⟨k', hk', hkg'⟩` from `GlobalTheory.T.exists_real_point_unitary_with_components D θ σ h W g' fun τ => (hg' τ).1`.
+
+Establish `hK : IsKinf θ V A k` using `(isKinf_iff hV hA k).2 ⟨hk, fun τ => by rw [hkg]; exact (hg τ).2⟩`. Establish `hK' : IsKinf θ W B k'` using `(isKinf_iff hW hB k').2 ⟨hk', fun τ => by rw [hkg']; exact (hg' τ).2⟩`. Establish `hact` using `(GlobalTheory.T.adelicUnitary_action_at_real_place D θ h.inf).2 V W k k'`. Establish `hT : ∀ x, piW θ V W (actHom V W k k' x) = jR V W s s' (piW θ V W x)` using `fun x => funext fun τ => by`. Rewrite using `[piW_apply, (hact x).1, hkg, hkg']`.
+
+Conclude with `(hgj τ _).symm`. Set `J' : RW V W →+ RW V W` to `(piW θ V W).comp (J.comp (iotaW σ V W))`. Establish `hJ' : ∀ z, J' z = piW θ V W (J (iotaW σ V W z))` using `fun _ => rfl`. Establish `h1 : ∀ z, J' (J' z) = -z` using `fun z => by`. Rewrite using `[hJ', hJ', h.iota_pi (hJ.real _ (h.real_iota V W z)), hJ.sq _ (h.real_iota V W z), map_neg, h.pi_iota]`.
+
+Establish `h2 : ∀ z, J' (jR V W s s' z) = jR V W s s' (J' z)` using `fun z => by`. Establish `e : iotaW σ V W (jR V W s s' z) = actHom V W k k' (iotaW σ V W z)` using `h.real_ext (h.real_iota V W _) ((hact _).2 (h.real_iota V W z)) (by rw [hT, h.pi_iota, h.pi_iota])`. Rewrite using `[hJ', hJ', e, hJ.kcomm k k' hK hK' _ (h.real_iota V W z), hT]`. Establish `h3 : ∀ z τ, valTau θ τ (sympl V W (J (iotaW σ V W z)) (iotaW σ V W z)) = symplC V W τ (J' z τ) (z τ)` using `fun z τ => by rw [valTau_sympl h.inf, h.wAt_iota]; rfl`. Establish `h4 : ∀ y : RW V W, (∀ τ, 0 ≤ symplC V W τ (jR V W s s' y τ) (y τ)) → y = 0` using `fun y hy => funext fun τ => by`.
+
+Assume the negation of the conclusion as `hne`. Use `GlobalTheory.T.neg_traceSymplecticForm_complexStructure_pos D V W τ _ _ (hs τ) (hs' τ) (y τ) hne` as an intermediate fact. Establish `h5` using `hy τ`. Rewrite `h5` using `[jR_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨ε, hε | hε, hd⟩` from `hJ.defin`. Use `Or.inr fun x hx => ?_` and prove the remaining obligations. Use `eq_neg_of_commute J' (jR V W s s').toAddMonoidHom h1 (jR_jR hs hs') h2 (fun y hy => h4 y fun τ => by` as an intermediate fact. Establish `h5` using `(hd _ (h.real_iota V W y)).1 τ`. Rewrite `h5` using `[hε, one_mul, h3, hy]`.
+
+Conclude with `h5) (piW θ V W x)`. Rewrite `this` using `[hJ', h.iota_pi hx]`. Conclude with `this`. Use `Or.inl fun x hx => ?_` and prove the remaining obligations. Use `eq_neg_of_commute J' (-jR V W s s').toAddMonoidHom h1 (fun z => by show -jR V W s s' (-jR V W s s' z) = -z` as an intermediate fact.
+
+Rewrite using `[map_neg, neg_neg, jR_jR hs hs']) (fun z => by`. Use `show J' (-jR V W s s' z) = -jR V W s s' (J' z)`. Rewrite using `[map_neg, h2]) (fun y hy => h4 y fun τ => by`. Establish `h5` using `(hd _ (h.real_iota V W y)).1 τ`. Establish `h6 : J' y τ = (-1 : ℝ) • jR V W s s' y τ` using `by rw [hy, neg_one_smul]; rfl`.
+
+Establish `h7` using `symplC_smul_left V W τ (-1) (jR V W s s' y τ) (y τ)`. Rewrite `h5` using `[hε, h3, h6]`. Establish `h8` using `h5.trans_eq (congrArg (fun r : ℝ => -1 * r) h7)`. Use the proof step `linarith) (piW θ V W x)`. Rewrite `this` using `[hJ', h.iota_pi hx]`.
+
+Rewrite using `[this]`. Conclude with `neg_neg _`.
+-/
 theorem isFockCx_sign (h : Chart θ σ) {V W : HSp D} (hV : V.SigOK) (hW : W.SigOK) {A B} {s : InvFam V} {s' : InvFam W}
     (hA : ∀ τ, Rel V τ (A τ) (s τ)) (hB : ∀ τ, Rel W τ (B τ) (s' τ)) {J : WA V W →+ WA V W}
     (hJ : IsFockCx θ V W A B J) :
@@ -181,10 +248,28 @@ theorem isFockCx_sign (h : Chart θ σ) {V W : HSp D} (hV : V.SigOK) (hW : W.Sig
     rw [this]
     exact neg_neg _
 
+/- English proof (translation)
+Unfold `actC`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem actC_smul (V W : HSp D) (g h) (c : ℝ) (x : WC V W) : actC V W g h (c • x) = c • actC V W g h x := by
   unfold actC
   split_ifs <;> simp only [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Establish `hs` using `fun τ => ((hA τ).cart hV).1`. Establish `hs'` using `fun τ => ((hB τ).cart hW).1`. Establish `hal` using `fun τ => GlobalTheory.T.complexStructureOfInvolutions_properties D V W τ _ _ (hs τ) (hs' τ)`. Apply the tactic sequence `have hεε : ε * ε = 1 := by rcases hε with h | h <;> rw [h] <;> norm_num`. Use `⟨hc, hr, fun x hx => ?_, fun x y hx hy => ?_, fun k k' hk hk' x hx => ?_, -ε, ?_, fun x hx => ⟨fun τ => ?_, fun h0 => ?_⟩⟩` and prove the remaining obligations.
+
+Use `h.real_ext (hr _ (hr _ hx)) (isRealW_neg hx) (funext fun τ => ?_)` and prove the remaining obligations. Rewrite using `[map_neg, piW_apply, hJ _ (hr _ hx), hJ _ hx, jAt_smul, smul_smul, hεε, one_smul, (hal τ).1]`. Both sides reduce to the same expression. Rewrite using `[← sub_eq_zero]`. Use `(GlobalTheory.T.realAdele_ext_and_standardCharacter_formula D θ σ h _ ?_).1 fun τ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub, (GlobalTheory.T.symplectic_real_part_vanish D V W _ _).1 (Or.inl (hr _ hx)), (GlobalTheory.T.symplectic_real_part_vanish D V W _ _).1 (Or.inl hx), sub_zero]`. Rewrite using `[valTau_sub, valTau_sympl h.inf, valTau_sympl h.inf, hJ _ hx, hJ _ hy, symplC_smul_left, symplC_smul_right, ← mul_assoc, hεε, one_mul, (hal τ).2.1, sub_self]`. Establish `hact` using `(GlobalTheory.T.adelicUnitary_action_at_real_place D θ h.inf).2 V W k k'`. Use `h.real_ext (hr _ ((hact x).2 hx)) ((hact _).2 (hr _ hx)) (funext fun τ => ?_)` and prove the remaining obligations. Rewrite using `[piW_apply, piW_apply, hJ _ ((hact x).2 hx), (hact _).1, (hact _).1, hJ _ hx, (hal τ).2.2.1 _ _ (((isKinf_iff hV hA k).1 hk).2 τ) (((isKinf_iff hW hB k').1 hk').2 τ)]`.
+
+Conclude with `(actC_smul V W _ _ ε _).symm`. Apply the tactic sequence `rcases hε with h | h <;> rw [h] <;> norm_num`. Rewrite using `[valTau_sympl h.inf, hJ _ hx, symplC_smul_left, ← mul_assoc, neg_mul, hεε]`. Use `symplC_jAt_le hs hs' τ (wAt θ V W τ x)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[← h.iota_pi hx, ← (iotaW σ V W).map_zero]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Assume the negation of the conclusion as `hne`. Establish `h1` using `GlobalTheory.T.neg_traceSymplecticForm_complexStructure_pos D V W τ _ _ (hs τ) (hs' τ) (wAt θ V W τ x) hne`.
+
+Establish `h2` using `h0 τ`. Rewrite `h2` using `[valTau_sympl h.inf, hJ _ hx, symplC_smul_left]`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Rewrite `hεε` using `[h3]`. Evaluate the numerical expressions using `at hεε`.
+
+Rewrite `h1` using `[h3]`. Evaluate the numerical expressions using `at h1`.
+-/
 theorem isFockCx_of_sign (h : Chart θ σ) {V W : HSp D} (hV : V.SigOK) (hW : W.SigOK) {A B} {s : InvFam V} {s' : InvFam W}
     (hA : ∀ τ, Rel V τ (A τ) (s τ)) (hB : ∀ τ, Rel W τ (B τ) (s' τ)) {J : WA V W →+ WA V W} (hc : Continuous J)
     (hr : ∀ x, IsRealW V W x → IsRealW V W (J x)) {ε : ℝ} (hε : ε = 1 ∨ ε = -1)
@@ -223,6 +308,9 @@ theorem isFockCx_of_sign (h : Chart θ σ) {V W : HSp D} (hV : V.SigOK) (hW : W.
     · rw [h3] at hεε; norm_num at hεε
     · rw [h3] at h1; norm_num at h1
 
+/- English proof (translation)
+Take `⟨σ, h⟩` from `exists_chart hθ`. Use `⟨fun hJ => ⟨hJ.cont, hJ.real, ?_⟩, fun ⟨hc, hr, ε, hε, hJ⟩ => isFockCx_of_sign h hV hW hA hB hc hr hε hJ⟩` and prove the remaining obligations. Break down `isFockCx_sign h hV hW hA hB hJ with h1 | h1` into its components or cases. Conclude with `⟨1, Or.inl rfl, fun x hx τ => by rw [one_smul]; exact congrFun (h1 x hx) τ⟩`. Conclude with `⟨-1, Or.inr rfl, fun x hx τ => by rw [neg_one_smul]; exact congrFun (h1 x hx) τ⟩`.
+-/
 theorem isFockCx_iff (hθ : IsInfFam θ) {V W : HSp D} (hV : V.SigOK) (hW : W.SigOK) {A B} {s : InvFam V} {s' : InvFam W}
     (hA : ∀ τ, Rel V τ (A τ) (s τ)) (hB : ∀ τ, Rel W τ (B τ) (s' τ)) (J : WA V W →+ WA V W) :
     IsFockCx θ V W A B J ↔ Continuous J ∧ (∀ x, IsRealW V W x → IsRealW V W (J x)) ∧
@@ -238,18 +326,27 @@ section Killed
 
 variable {I M : Type} [AddCommGroup M] [Module ℂ M] {a : I → Module.End ℂ M}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => rw [List.foldr_cons, ih, List.map_cons, List.prod_cons, Module.End.mul_apply]`.
+-/
 theorem foldr_lin (a : I → Module.End ℂ M) (l : List I) (m : M) :
     l.foldr (fun i x => a i x) m = (l.map a).prod m := by
   induction l with
   | nil => rfl
   | cons i l ih => rw [List.foldr_cons, ih, List.map_cons, List.prod_cons, Module.End.mul_apply]
 
+/- English proof (translation)
+Introduce `l hl`. Take `_ | ⟨i, l⟩` from `l`. Simplify using `at hl`. Rewrite using `[List.foldr_cons, h l (by simpa using hl), map_zero]`.
+-/
 theorem Killed.succ {N : ℕ} {m : M} (h : Killed a N m) : Killed a (N + 1) m := by
   intro l hl
   obtain _ | ⟨i, l⟩ := l
   · simp at hl
   · rw [List.foldr_cons, h l (by simpa using hl), map_zero]
 
+/- English proof (translation)
+Proceed by induction on `hN with`. Consider the case `refl => exact h`. Consider the case `step _ ih => exact ih.succ`.
+-/
 theorem Killed.mono {N N' : ℕ} {m : M} (h : Killed a N m) (hN : N ≤ N') : Killed a N' m := by
   induction hN with
   | refl => exact h
@@ -274,6 +371,11 @@ section Fock
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D}
 
+/- English proof (translation)
+Unfold `symplH`. Rewrite using `[(GlobalTheory.T.realAdele_ext_and_standardCharacter_formula D θ σ h _ ((GlobalTheory.T.symplectic_real_part_vanish D V W _ _).1 (Or.inr (h.real_iota V W x)))).2 ψ hψ, omR_apply]`. Use `congr 3`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[valTau_sympl h.inf, h.wAt_iota]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Chart.psi_symplH (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) (w : WA V W) (x : RW V W) :
     ψ (symplH V W w (iotaW σ V W x)) =
       Complex.exp (-(Real.pi * Complex.I) * (omR V W (piW θ V W w) x : ℝ)) := by
@@ -284,6 +386,9 @@ theorem Chart.psi_symplH (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) (w : WA V
   rw [valTau_sympl h.inf, h.wAt_iota]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Unfold `dRho hD Heisenberg₂`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[(GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).2.1 L hL t, h.psi_symplH hψ]`.
+-/
 theorem Chart.dRho_eq_hD (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {L : ℝ →+ WA V W} (hL : IsRealDir V W L)
     (f : WA V W → ℂ) : dRho ψ V W L f = hD (iotaW σ V W) (piW θ V W) (omR V W) (piW θ V W (L 1)) f := by
   funext w
@@ -292,14 +397,23 @@ theorem Chart.dRho_eq_hD (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {L : ℝ 
   funext t
   rw [(GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).2.1 L hL t, h.psi_symplH hψ]
 
+/- English proof (translation)
+Take `⟨L, hL, e⟩` from `(GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).2.2 u`. Conclude with `⟨L, hL, by rw [e, one_smul, h.pi_iota]⟩`.
+-/
 theorem Chart.exists_line (h : Chart θ σ) (u : RW V W) : ∃ L : ℝ →+ WA V W, IsRealDir V W L ∧ piW θ V W (L 1) = u := by
   obtain ⟨L, hL, e⟩ := (GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).2.2 u
   exact ⟨L, hL, by rw [e, one_smul, h.pi_iota]⟩
 
+/- English proof (translation)
+Rewrite using `[(GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).2.1 L hL t, h.pi_iota]`.
+-/
 theorem Chart.pi_line (h : Chart θ σ) {L : ℝ →+ WA V W} (hL : IsRealDir V W L) (t : ℝ) :
     piW θ V W (L t) = t • piW θ V W (L 1) := by
   rw [(GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).2.1 L hL t, h.pi_iota]
 
+/- English proof (translation)
+Use `⟨fun ⟨h1, h2, h3⟩ => ⟨h1, h2, funext fun τ => h3 1 τ⟩, fun ⟨h1, h2, h3⟩ => ⟨h1, h2, fun t τ => ?_⟩⟩` and prove the remaining obligations. Establish `: piW θ V W (L' t) = jR V W s s' (piW θ V W (L t))`. Rewrite using `[h.pi_line h1, h.pi_line h2, map_smul, h3]`. Conclude with `congrFun this τ`.
+-/
 theorem Chart.isJPair_iff (h : Chart θ σ) (s : InvFam V) (s' : InvFam W) (L L' : ℝ →+ WA V W) :
     IsJPair θ V W s s' L L' ↔ IsRealDir V W L ∧ IsRealDir V W L' ∧ piW θ V W (L' 1) = jR V W s s' (piW θ V W (L 1)) := by
   refine ⟨fun ⟨h1, h2, h3⟩ => ⟨h1, h2, funext fun τ => h3 1 τ⟩, fun ⟨h1, h2, h3⟩ => ⟨h1, h2, fun t τ => ?_⟩⟩
@@ -307,9 +421,19 @@ theorem Chart.isJPair_iff (h : Chart θ σ) (s : InvFam V) (s' : InvFam W) (L L'
     rw [h.pi_line h1, h.pi_line h2, map_smul, h3]
   exact congrFun this τ
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).1 f).1 hf.smooth`.
+-/
 theorem Chart.sm (h : Chart θ σ) {f : WA V W → ℂ} (hf : IsThetaFun ψ V W f) : Sm (iotaW σ V W) f :=
   ((GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).1 f).1 hf.smooth
 
+/- English proof (translation)
+Establish `hsm` using `(GlobalTheory.T.heisenbergDirectionalDeriv_formula_and_smooth _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) f (h.sm hf) u).2`. Take `⟨L, hL, rfl⟩` from `h.exists_line u`. Rewrite `hsm`, the goal using `[← h.dRho_eq_hD hψ hL]`. Establish `hd` using `GlobalTheory.T.heisenbergDerivative_quasiInvariant_and_level D ψ V W L f`. Establish `hlev : ∃ U : AddSubgroup (WA V W), IsOpen (U : Set (WA V W)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → Heisenberg₂ ψ V W u (dRho ψ V W L f) = dRho ψ V W L f`.
+
+Take `⟨U, hU, hl⟩` from `hf.level`. Use `⟨U, hU, fun u hu h0 => hd.2 u (fun t => ?_) (hl u hu h0)⟩` and prove the remaining obligations. Establish `h1 : sympl V W u (L t) = 0` using `Prod.ext ((GlobalTheory.T.symplectic_real_part_vanish D V W _ _).2 (Or.inl h0)) ((GlobalTheory.T.symplectic_real_part_vanish D V W _ _).1 (Or.inr (hL.2 t)))`. Establish `h2 : sympl V W (L t) u = 0` using `Prod.ext ((GlobalTheory.T.symplectic_real_part_vanish D V W _ _).2 (Or.inr h0)) ((GlobalTheory.T.symplectic_real_part_vanish D V W _ _).1 (Or.inl (hL.2 t)))`. Unfold `symplH`.
+
+Rewrite using `[h1, h2, mul_zero]`. Conclude with `⟨rfl, rfl⟩`. Conclude with `⟨hd.1 hf.quasi, hlev, GlobalTheory.T.continuous_of_heisenberg_level_and_smooth D θ σ h ψ hψ.1.1 V W _ hlev hsm, ((GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).1 _).2 hsm⟩`.
+-/
 theorem Chart.theta_hD (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {f : WA V W → ℂ} (hf : IsThetaFun ψ V W f)
     (u : RW V W) : IsThetaFun ψ V W (hD (iotaW σ V W) (piW θ V W) (omR V W) u f) := by
   have hsm := (GlobalTheory.T.heisenbergDirectionalDeriv_formula_and_smooth _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) f (h.sm hf) u).2
@@ -330,6 +454,9 @@ theorem Chart.theta_hD (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {f : WA V W
   exact ⟨hd.1 hf.quasi, hlev, GlobalTheory.T.continuous_of_heisenberg_level_and_smooth D θ σ h ψ hψ.1.1 V W _ hlev hsm,
     ((GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).1 _).2 hsm⟩
 
+/- English proof (translation)
+Use `GlobalTheory.T.exists_le_of_continuous_of_spanning_periods _ (fun x => ‖f (w + iotaW σ V W x)‖) (h.sm hf w).continuous.norm _ (GlobalTheory.T.span_realProjection_rationalPoints_eq_top D θ σ h V W) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, rfl⟩`. Take `⟨N, hN, e⟩` from `GlobalTheory.T.norm_thetaFunction_periodic_real_variables D θ σ h ψ hψ.1.2.1 (GlobalTheory.T.exists_pos_nat_mem_open_adele_subgroup D.host.F) V W f hf γ`. Conclude with `⟨N, hN, fun x => by rw [map_add, ← add_assoc, e]⟩`.
+-/
 theorem Chart.bounded (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {f : WA V W → ℂ} (hf : IsThetaFun ψ V W f)
     (w : WA V W) : ∃ C : ℝ, ∀ x, ‖f (w + iotaW σ V W x)‖ ≤ C := by
   refine GlobalTheory.T.exists_le_of_continuous_of_spanning_periods _ (fun x => ‖f (w + iotaW σ V W x)‖) (h.sm hf w).continuous.norm _
@@ -338,6 +465,19 @@ theorem Chart.bounded (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {f : WA V W 
   obtain ⟨N, hN, e⟩ := GlobalTheory.T.norm_thetaFunction_periodic_real_variables D θ σ h ψ hψ.1.2.1 (GlobalTheory.T.exists_pos_nat_mem_open_adele_subgroup D.host.F) V W f hf γ
   exact ⟨N, hN, fun x => by rw [map_add, ← add_assoc, e]⟩
 
+/- English proof (translation)
+Establish `key : ∀ l : List (ℝ →+ WA V W), (∀ L ∈ l, IsRealDir V W L) → l.foldr (fun L g => annOp ψ V W J L g) m = ((l.map fun L => piW θ V W (L 1)).foldr (fun u x => (Dop u + Complex.I • Dop (j u)) x) m : M)`. Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons L l ih`.
+
+Establish `hL` using `hl L List.mem_cons_self`. Establish `hL' : IsRealDir V W (J.comp L)` using `⟨hc.comp hL.1, fun t => hr _ (hL.2 t)⟩`. Rewrite using `[List.foldr_cons, ih fun L' h' => hl L' (List.mem_cons_of_mem _ h'), List.map_cons, List.foldr_cons, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, hD1, hD1, ← hj _ (hL.2 1), ← h.dRho_eq_hD hψ hL]`. Use `erw [← h.dRho_eq_hD hψ hL']`. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H l hl choose Lf hLf e using fun u : RW V W => h.exists_line u`. Substitute `hl` using the available equality. Establish `h1` using `H (fun i => Lf (l.get i)) fun i => hLf _`. Establish `h2 : (List.ofFn fun i => Lf (l.get i)) = l.map Lf`.
+
+Rewrite using `[show (fun i => Lf (l.get i)) = Lf ∘ l.get from rfl, ← List.map_ofFn, List.ofFn_get]`. Rewrite using `[h2, key _ (by`. Introduce `L hL`. Take `⟨u, -, rfl⟩` from `List.mem_map.1 hL`. Conclude with `hLf u), List.map_map] at h1`.
+
+Establish `h3 : ((fun L : ℝ →+ WA V W => piW θ V W (L 1)) ∘ Lf) = id` using `funext e`. Rewrite `h1` using `[h3, List.map_id]`. Conclude with `Subtype.ext h1`. Introduce `H Ls hLs`. Rewrite using `[key _ (by`.
+
+Introduce `L hL`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hL`. Conclude with `hLs i), H _ (by simp)]`. Both sides reduce to the same expression.
+-/
 theorem Chart.killed_iff (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {M : Submodule ℂ (WA V W → ℂ)}
     {Dop : RW V W → Module.End ℂ M}
     (hD1 : ∀ u (f : M), ((Dop u f : M) : WA V W → ℂ) = hD (iotaW σ V W) (piW θ V W) (omR V W) u f)
@@ -381,6 +521,41 @@ theorem Chart.killed_iff (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {M : Subm
       exact hLs i), H _ (by simp)]
     rfl
 
+/- English proof (translation)
+Take `⟨σ, h⟩` from `exists_chart hθ`. Establish `hs` using `fun τ => ((hA τ).cart hV).1`. Establish `hs'` using `fun τ => ((hB τ).cart hW).1`. Take `⟨M, hM⟩` from `GlobalTheory.T.exists_submodule_thetaFunctions D ψ V W`. Establish `hform` using `fun f hf u => (GlobalTheory.T.heisenbergDirectionalDeriv_formula_and_smooth _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) f hf u).1`.
+
+Take `⟨Dop, hD1, hD2, hD3⟩` from `GlobalTheory.T.exists_heisenberg_derivative_linear_operators _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) hform M (fun f hf => h.sm ((hM f).1 hf)) fun u f hf => (hM _).2 (h.theta_hD hψ ((hM f).1 hf) u)`. Establish `hκ : -(2 * Real.pi * Complex.I : ℂ) ≠ 0` using `neg_ne_zero.2 Complex.two_pi_I_ne_zero`. Establish `hcomm : ∀ u v, Dop u * Dop v - Dop v * Dop u = (-(2 * Real.pi * Complex.I) * (omR V W u v : ℝ) : ℂ) • (1 : Module.End ℂ M)` using `fun u v => by`. Use `LinearMap.ext fun m => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, Submodule.coe_sub, hD1, hD1, hD1, hD1, GlobalTheory.T.heisenbergDerivative_commutator_relation _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) hform (h.omR_skew V W) _ (h.sm ((hM _).1 m.2))]`.
+
+Both sides reduce to the same expression. Use `set j := jR V W s s' with hjdef`. Take `⟨hβ, n, e, lam, hlam, hE⟩` from `GlobalTheory.T.canonicalCommutationRelations_weylNumber M _ Dop (omR V W) _ j hD2 hD3 hκ hcomm (h.omR_skew V W) (jR_jR hs hs') (omR_jR hs hs') (h.omR_pos hs hs')`. Establish `hann : ∀ L L', IsJPair θ V W s s' L L' → ∀ m : M, ann ψ V W L L' m = ((Dop (piW θ V W (L 1)) + Complex.I • Dop (j (piW θ V W (L 1)))) m : M)` using `fun L L' hp m => by`. Take `⟨h1, h2, h3⟩` from `(h.isJPair_iff s s' L L').1 hp`.
+
+Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, hD1, hD1, ← h3, ← h.dRho_eq_hD hψ h1, ← h.dRho_eq_hD hψ h2]`. Both sides reduce to the same expression. Establish `hcre : ∀ L L', IsJPair θ V W s s' L L' → ∀ m : M, cre ψ V W L L' m = ((Dop (piW θ V W (L 1)) - Complex.I • Dop (j (piW θ V W (L 1)))) m : M)` using `fun L L' hp m => by`. Take `⟨h1, h2, h3⟩` from `(h.isJPair_iff s s' L L').1 hp`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Submodule.coe_sub, Submodule.coe_smul, hD1, hD1, ← h3, ← h.dRho_eq_hD hψ h1, ← h.dRho_eq_hD hψ h2]`.
+
+Both sides reduce to the same expression. Establish `hpair : ∀ u, ∃ L L', IsJPair θ V W s s' L L' ∧ piW θ V W (L 1) = u` using `fun u => by`. Take `⟨L, hL, e1⟩` from `h.exists_line u`. Take `⟨L', hL', e2⟩` from `h.exists_line (j u)`. Conclude with `⟨L, L', (h.isJPair_iff s s' L L').2 ⟨hL, hL', by rw [e1, e2]⟩, e1⟩`.
+
+Establish `hnil : ∀ (N : ℕ) (m : M), Killed (fun u => Dop u + Complex.I • Dop (j u)) N m → (m : WA V W → ℂ) ∈ polFun ψ θ V W s s'` using `fun N m hm => by`. Use `GlobalTheory.T.mem_of_isKilledByOperatorProducts_vacuum_creation _ M (fun u => Dop u + Complex.I • Dop (j u)) (fun u => Dop u - Complex.I • Dop (j u)) n e lam hlam hE (Submodule.span ℂ {m : M | IsFockMon ψ θ V W s s' m}) (fun m hm => Submodule.subset_span (IsFockMon.vac _ ⟨(hM _) …` as an intermediate fact. Take `⟨L, L', hp, rfl⟩` from `hpair u`. Use `Submodule.map_span_le _ _ _ |>.2 (fun m' hm' => Submodule.subset_span ?_) (Submodule.mem_map_of_mem hm)` and prove the remaining obligations. Use `show IsFockMon ψ θ V W s s' _`.
+
+Rewrite using `[← hcre L L' hp]`. Conclude with `IsFockMon.cre L L' _ hp hm') N m hm`. Conclude with `Submodule.map_span_le M.subtype _ _ |>.2 (fun m' hm' => Submodule.subset_span hm') (Submodule.mem_map_of_mem this)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨J, hJ, N, hN⟩`.
+
+Break down `isFockCx_sign h hV hW hA hB hJ with hj | hj` into its components or cases. Conclude with `hnil N ⟨f, (hM f).2 hf⟩ ((h.killed_iff hψ hD1 hJ.cont hJ.real j hj N ⟨f, (hM f).2 hf⟩).1 hN)`. Establish `hk` using `(h.killed_iff hψ hD1 hJ.cont hJ.real (-j) hj N ⟨f, (hM f).2 hf⟩).1 hN`. Distinguish the cases in `h0 : ∀ u : RW V W, u = 0`. Establish `: -j = j` using `LinearMap.ext fun u => by rw [h0 (j u), h0 ((-j) u)]`.
+
+Rewrite `hk` using `[this]`. Conclude with `hnil N _ hk`. Take `⟨u, hu⟩` from `not_forall.1 h0`. Take `⟨-, n', e', lam', hlam', hE'⟩` from `GlobalTheory.T.canonicalCommutationRelations_weylNumber M _ Dop (-omR V W) (2 * Real.pi * Complex.I) (-j) hD2 hD3 Complex.two_pi_I_ne_zero (fun u v => by rw [hcomm]; simp) (fun u v => by simp only [LinearMap.neg_apply]; rw [h.omR_skew]) (fun u => by simp only [LinearMap.neg_apply …`. Use `GlobalTheory.T.mem_of_isKilledByOperatorProducts_vacuum_creation _ M (fun u => Dop u + Complex.I • Dop ((-j) u)) (fun u => Dop u - Complex.I • Dop ((-j) u)) n' e' lam' hlam' hE' ⊥ (fun m hm => by` as an intermediate fact.
+
+Rewrite using `[Submodule.mem_bot]`. Use `Subtype.ext (GlobalTheory.T.eq_zero_of_hD_sub_I_smul_hD_eq_zero_of_bounded _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) hform (h.omR_skew V W) m (h.sm ((hM _).1 m.2)) (h.bounded hψ ((hM _).1 m.2)) u (j u) (h.omR_pos hs hs' u hu) ?_)` and prove the remaining obligations. Establish `h3 : (Dop u + Complex.I • Dop ((-j) u)) m = 0` using `hm u`. Establish `h2 : Dop ((-j) u) = -Dop (j u)`. Use `hD3 (-1) (j u)` as an intermediate fact.
+
+Rewrite `this` using `[neg_one_smul]`. Rewrite using `[LinearMap.neg_apply, this]`. Simplify using the standard rewrite rules. Rewrite `h3` using `[h2]`. Establish `h1` using `congrArg Subtype.val h3`.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.neg_apply, smul_neg, Submodule.coe_add, Submodule.coe_neg, Submodule.coe_smul, hD1] at h1`. Rewrite using `[sub_eq_add_neg]`. Conclude with `h1)`. Use the proof step `(fun i m hm => by rw [(Submodule.mem_bot _).1 hm, map_zero]; exact Submodule.zero_mem _) N _ hk`. Establish `hf0 : f = 0` using `congrArg Subtype.val ((Submodule.mem_bot _).1 this)`.
+
+Rewrite using `[hf0]`. Conclude with `Submodule.zero_mem _`. Introduce `hp`. Set `J : WA V W →+ WA V W` to `(iotaW σ V W).comp (j.toAddMonoidHom.comp (piW θ V W))`. Establish `hc : Continuous J` using `(h.continuous_iota V W).comp (j.continuous_of_finiteDimensional.comp (continuous_pi' hθ V W))`.
+
+Establish `hr : ∀ x, IsRealW V W x → IsRealW V W (J x)` using `fun x _ => h.real_iota V W _`. Establish `hj : ∀ x, IsRealW V W x → piW θ V W (J x) = j (piW θ V W x)` using `fun x _ => h.pi_iota V W _`. Use `⟨J, isFockCx_of_sign h hV hW hA hB hc hr (Or.inl rfl) (fun x hx τ => by rw [one_smul]; exact congrFun (hj x hx) τ), ?_⟩` and prove the remaining obligations. Establish `hle : polFun ψ θ V W s s' ≤ (nilSub fun u => Dop u + Complex.I • Dop (j u)).map M.subtype`. Use `Submodule.span_le.2 fun g hg => ?_` and prove the remaining obligations.
+
+Proceed by induction on `hg with`. Consider the case `vac g hg`. Use `⟨⟨g, (hM g).2 hg.1⟩, ⟨1, fun l hl => ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `List.length_eq_one_iff.1 hl`. Take `⟨L, L', hp, rfl⟩` from `hpair u`.
+
+Conclude with `Subtype.ext ((hann L L' hp ⟨g, (hM g).2 hg.1⟩).symm.trans (hg.2 L L' hp))`. Consider the case `cre L L' g hp _ ih`. Take `⟨m, ⟨N, hN⟩, rfl⟩` from `ih`. Conclude with `⟨_, ⟨N + 1, GlobalTheory.T.isKilledByOperatorProducts_succ_creation_apply _ M _ _ (fun u => hβ u (piW θ V W (L 1))) N m hN⟩, (hcre L L' hp m).symm⟩`. Take `⟨m, ⟨N, hN⟩, rfl⟩` from `hle hp`.
+
+Conclude with `⟨N, (h.killed_iff hψ hD1 hc hr j hj N m).2 hN⟩`.
+-/
 theorem isPolFock_iff (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (hV : V.SigOK) (hW : W.SigOK) {A B}
     {s : InvFam V} {s' : InvFam W} (hA : ∀ τ, Rel V τ (A τ) (s τ)) (hB : ∀ τ, Rel W τ (B τ) (s' τ))
     {f : WA V W → ℂ} (hf : IsThetaFun ψ V W f) : IsPolFock ψ θ V W A B f ↔ f ∈ polFun ψ θ V W s s' := by
@@ -501,6 +676,11 @@ def Matches {Wl : WeilTied D X T} (K : Formalism.L2.Theta.KfinTied Wl)
   ∀ V : HSp D, V.SigOK → K.bas V = V.frame.toMatrix (b V) ∧ Adapted V (b V) (s V) ∧ IsSignFam V (s V) ∧
     ∀ τ, Rel V τ (K.cpt V τ) (s V τ)
 
+/- English proof (translation)
+Use `and_congr Iff.rfl (forall_congr' fun θ => forall_congr' fun hθ => forall_congr' fun V => forall_congr' fun W => forall_congr' fun hr => forall_congr' fun hV => forall_congr' fun hW => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.ext_iff]`. Use `forall_congr' fun Φ => iff_congr Iff.rfl ?_` and prove the remaining obligations. Establish `hΦ : Wl.evS V W Φ ∈ {f | IsThetaFun Wl.ψ V W f}`. Rewrite using `[← Wl.evS_range V W hr]`.
+
+Conclude with `⟨Φ, rfl⟩`. Conclude with `isPolFock_iff hθ Wl.ψ_std hV hW (h V hV) (h W hW) hΦ`.
+-/
 theorem kfin_iff (Wl : WeilTied D X T)
     (A : ∀ (V : HSp D) (τ : D.what₂.Tau), Matrix (Fin (V.sig (tauE D τ)).1 ⊕ Fin (V.sig (tauE D τ)).2) (Fin V.rank) ℂ)
     (s : ∀ V : HSp D, InvFam V) (h : ∀ V : HSp D, V.SigOK → ∀ τ, Rel V τ (A V τ) (s V τ)) :
@@ -514,12 +694,22 @@ theorem kfin_iff (Wl : WeilTied D X T)
     rw [← Wl.evS_range V W hr]; exact ⟨Φ, rfl⟩
   exact isPolFock_iff hθ Wl.ψ_std hV hW (h V hV) (h W hW) hΦ
 
+/- English proof (translation)
+Use `(Formalism.UG.P.sig_data _ _ _ (hV (tauE D τ))).1` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this.symm`.
+-/
 theorem sig_add {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau) :
     (V.sig (tauE D τ)).1 + (V.sig (tauE D τ)).2 = V.rank := by
   have := (Formalism.UG.P.sig_data _ _ _ (hV (tauE D τ))).1
   rw [Fintype.card_fin] at this
   exact this.symm
 
+/- English proof (translation)
+Take `⟨hu, -, h3⟩` from `(GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 b`. Take `⟨hd, hdiag, hth⟩` from `h3 hb τ`. Use `set Q := (V.frame.toMatrix b).map (tauE D τ) with hQ`. Establish `hQu : IsUnit Q.det`. Rewrite using `[hQ, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+
+Conclude with `hu.map _`. Establish `h1` using `GlobalTheory.T.Jpq_mul_monomial_eq_mul_sign_diagonal _ _ _ (sig_add hV τ) (A * Q) _ hd (by`. Rewrite using `[← hdiag, ← hA, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]) hm`. Use `⟨hA, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h1` using `[Matrix.mul_assoc, ← hth s hs, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Establish `h2` using `congrArg (· * Q⁻¹) h1`. Simplify `h2` using `only [Matrix.mul_nonsing_inv_cancel_right _ _ hQu]`.
+-/
 theorem rel_of_monomial {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau) (b : Module.Basis (Fin V.rank) D.host.E V.V)
     (hb : ∀ i j, i ≠ j → V.hT (b i) (b j) = 0) {s : Module.End D.host.E V.V}
     (hs : ∀ i, s (b i) = if 0 < (tauE D τ (V.hT (b i) (b i))).re then b i else -b i)
@@ -541,6 +731,15 @@ theorem rel_of_monomial {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau) (b : Mod
   have h2 := congrArg (· * Q⁻¹) h1
   simpa only [Matrix.mul_nonsing_inv_cancel_right _ _ hQu] using h2
 
+/- English proof (translation)
+Establish `hb : ∀ V : HSp D, ∃ b : Module.Basis (Fin V.rank) D.host.E V.V, V.SigOK → K.bas V = V.frame.toMatrix b` using `fun V => by`. Distinguish the cases in `hV : V.SigOK`. Take `⟨b, hb⟩` from `(GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).1 _ (K.bas_unit V hV)`. Conclude with `⟨b, fun _ => hb⟩`. Conclude with `⟨V.frame, fun h => absurd h hV⟩`.
+
+Use `choose b hb using hb`. Set `s : ∀ V : HSp D, InvFam V` to `fun V τ => (b V).constr D.host.E fun i => if 0 < (tauE D τ (V.hT (b V i) (b V i))).re then b V i else -b V i`. Establish `hs : ∀ V τ i, s V τ (b V i) = if 0 < (tauE D τ (V.hT (b V i) (b V i))).re then b V i else -b V i` using `fun V τ i => (b V).constr_basis _ _ i`. Establish `hM : Matches K b s` using `fun V hV => by`. Establish `ho : ∀ i j, i ≠ j → V.hT (b V i) (b V j) = 0` using `fun i j hij => by`.
+
+Rewrite using `[← ((GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 (b V)).2.1 i j, ← hb V hV]`. Conclude with `K.bas_orth V hV i j hij`. Establish `h1` using `fun τ => (GlobalTheory.T.sign_involution_diagonal_iff D V (b V) ho τ (s V τ)).2 (hs V τ)`. Use `⟨hb V hV, ⟨ho, fun τ => (h1 τ).2⟩, fun τ => (h1 τ).1, fun τ => rel_of_monomial hV τ (b V) ho (hs V τ) (K.cpt_gram V hV τ) ?_⟩` and prove the remaining obligations. Rewrite using `[← hb V hV]`.
+
+Conclude with `K.cpt_bas V hV τ`. Conclude with `⟨b, s, hM, (kfin_iff Wl K.cpt s fun V hV => (hM V hV).2.2.2).1 K.kfin⟩`.
+-/
 theorem toSign {Wl : WeilTied D X T} (K : Formalism.L2.Theta.KfinTied Wl) : ∃ b s, Matches K b s ∧ TieOn Wl s := by
   classical
   have hb : ∀ V : HSp D, ∃ b : Module.Basis (Fin V.rank) D.host.E V.V, V.SigOK → K.bas V = V.frame.toMatrix b := fun V => by
@@ -564,6 +763,15 @@ theorem toSign {Wl : WeilTied D X T} (K : Formalism.L2.Theta.KfinTied Wl) : ∃ 
     exact K.cpt_bas V hV τ
   exact ⟨b, s, hM, (kfin_iff Wl K.cpt s fun V hV => (hM V hV).2.2.2).1 K.kfin⟩
 
+/- English proof (translation)
+Establish `hA : ∀ (V : HSp D) (τ : D.what₂.Tau), ∃ A : Matrix (Fin (V.sig (tauE D τ)).1 ⊕ Fin (V.sig (tauE D τ)).2) (Fin V.rank) ℂ, V.SigOK → Rel V τ A (s V τ) ∧ ∀ a i j, (A * (V.frame.toMatrix (b V)).map (tauE D τ)) a i ≠ 0 → (A * (V.frame.toMatrix (b V)).map (tauE D τ)) a j ≠ 0 → i = j` using `fun V τ => by`. Distinguish the cases in `hV : V.SigOK`. Take `⟨⟨ho, hpm⟩, hsf⟩` from `h V hV`. Take `⟨hu, -, h3⟩` from `(GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 (b V)`. Take `⟨hd, hdiag, -⟩` from `h3 ho τ`.
+
+Take `⟨A, h1, h2⟩` from `GlobalTheory.T.exists_signature_decomposition_diagonal _ _ _ (gramAt D V τ) _ _ (hV (tauE D τ)) (by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(hu.map _).ne_zero) hd hdiag`. Conclude with `⟨A, fun _ => ⟨rel_of_monomial hV τ (b V) ho ((GlobalTheory.T.sign_involution_diagonal_iff D V (b V) ho τ (s V τ)).1 ⟨hsf τ, hpm τ⟩) h1 h2, h2⟩⟩`. Conclude with `⟨0, fun h => absurd h hV⟩`.
+
+Use `choose A hA using hA`. Conclude with `⟨{ cpt := A cpt_gram := fun V hV τ => (hA V τ hV).1.1 bas := fun V => V.frame.toMatrix (b V) bas_unit := fun V _ => ((GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 (b V)).1 bas_orth := fun V hV i j hij => by`. Rewrite using `[((GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 (b V)).2.1 i j]`. Conclude with `(h V hV).1.1 i j hij`. Use `cpt_bas := fun V hV τ => (hA V τ hV).2`.
+
+Use `kfin := (kfin_iff Wl A s fun V hV τ => (hA V τ hV).1).2 ht },`. Use `fun V hV => ⟨rfl, (h V hV).1, (h V hV).2, fun τ => (hA V τ hV).1⟩⟩`.
+-/
 theorem ofSign {Wl : WeilTied D X T} (b : ∀ V : HSp D, Module.Basis (Fin V.rank) D.host.E V.V)
     (s : ∀ V : HSp D, InvFam V) (h : ∀ V : HSp D, V.SigOK → Adapted V (b V) (s V) ∧ IsSignFam V (s V))
     (ht : TieOn Wl s) : ∃ K : Formalism.L2.Theta.KfinTied Wl, Matches K b s := by
@@ -594,6 +802,13 @@ theorem ofSign {Wl : WeilTied D X T} (b : ∀ V : HSp D, Module.Basis (Fin V.ran
 
 def OneBasis (V : HSp D) (s : InvFam V) : Prop := IsSignFam V s ∧ ∃ b, Adapted V b s
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨K⟩`. Take `⟨b, s, hM, ht⟩` from `toSign K`. Conclude with `⟨s, fun V hV => ⟨(hM V hV).2.2.1, b V, (hM V hV).2.1⟩, ht⟩`. Introduce and unpack `⟨s, hs, ht⟩`.
+
+Establish `: ∀ V : HSp D, ∃ b, V.SigOK → Adapted V b (s V)` using `fun V => by`. Distinguish the cases in `hV : V.SigOK`. Take `⟨b, hb⟩` from `(hs V hV).2`. Conclude with `⟨b, fun _ => hb⟩`. Conclude with `⟨V.frame, fun h => absurd h hV⟩`.
+
+Use `choose b hb using this`. Take `⟨K, -⟩` from `ofSign b s (fun V hV => ⟨hb V hV, (hs V hV).1⟩) ht`. Conclude with `⟨K⟩`.
+-/
 theorem tied_iff (Wl : WeilTied D X T) :
     Nonempty (Formalism.L2.Theta.KfinTied Wl) ↔ ∃ s, (∀ V : HSp D, V.SigOK → OneBasis V (s V)) ∧ TieOn Wl s := by
   constructor
@@ -610,9 +825,17 @@ theorem tied_iff (Wl : WeilTied D X T) :
     obtain ⟨K, -⟩ := ofSign b s (fun V hV => ⟨hb V hV, (hs V hV).1⟩) ht
     exact ⟨K⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.2.1, fun θ hθ V W hr _ _ => h.2.2 θ hθ V W hr⟩`.
+-/
 theorem tieOn_of_tiedBy {Wl : WeilTied D X T} {s : ∀ V : HSp D, InvFam V} (h : KfinWeilCompatibleWith Wl s) : TieOn Wl s :=
   ⟨h.2.1, fun θ hθ V W hr _ _ => h.2.2 θ hθ V W hr⟩
 
+/- English proof (translation)
+Take `⟨e, f, z, -, -, -, -, -, h⟩` from `h`. Establish `hP : ∀ τ, ∀ x ∈ LinearMap.range ι ⊔ Submodule.span D.host.E (Set.range fun i => e i + f i), s τ x = x` using `fun τ => by`. Establish `: LinearMap.range ι ⊔ Submodule.span D.host.E (Set.range fun i => e i + f i) ≤ LinearMap.eqLocus (s τ) LinearMap.id` using `sup_le (by rintro _ ⟨x, rfl⟩; exact (h τ).2.1 x) (Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact ((h τ).2.2.1 i).1))`. Conclude with `fun x hx => this hx`. Establish `hN : ∀ τ, ∀ x ∈ Submodule.span D.host.E (Set.range fun i => e i - f i) ⊔ Submodule.span D.host.E {z}, s τ x = -x` using `fun τ => by`.
+
+Establish `: Submodule.span D.host.E (Set.range fun i => e i - f i) ⊔ Submodule.span D.host.E {z} ≤ LinearMap.eqLocus (s τ) (-LinearMap.id)` using `sup_le (Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact ((h τ).2.2.1 i).2)) (Submodule.span_le.2 (by rintro _ rfl; exact (h τ).2.2.2))`. Conclude with `fun x hx => this hx`. Take `⟨τ₀, -⟩` from `(GlobalTheory.T.cmType_restrict_realSubfield_infinitePlace_bijective D).2 (Classical.arbitrary _)`. Conclude with `⟨fun τ => ⟨_, _, (h τ).1, hP τ, hN τ⟩, GlobalTheory.T.exists_adapted_basis_orthogonal D Y s _ _ τ₀ (h τ₀).1 fun τ => ⟨hP τ, hN τ⟩⟩`.
+-/
 theorem oneBasis_of_std {A Y : HSp D} {ι : A.V →ₗ[D.host.E] Y.V} {n : ℕ} {c : Prop} {s : InvFam Y}
     (h : IsStdDec A Y ι n c s) : OneBasis Y s := by
   obtain ⟨e, f, z, -, -, -, -, -, h⟩ := h
@@ -631,6 +854,9 @@ theorem oneBasis_of_std {A Y : HSp D} {ι : A.V →ₗ[D.host.E] Y.V} {n : ℕ} 
   obtain ⟨τ₀, -⟩ := (GlobalTheory.T.cmType_restrict_realSubfield_infinitePlace_bijective D).2 (Classical.arbitrary _)
   exact ⟨fun τ => ⟨_, _, (h τ).1, hP τ, hN τ⟩, GlobalTheory.T.exists_adapted_basis_orthogonal D Y s _ _ τ₀ (h τ₀).1 fun τ => ⟨hP τ, hN τ⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨toSign, ofSign, fun _ hθ _ _ hV hW _ _ _ _ hA hB => ⟨isKinf_iff hV hA, isFockCx_iff hθ hV hW hA hB, fun _ hf => isPolFock_iff hθ Wl.ψ_std hV hW hA hB hf⟩, fun s h hb => (tied_iff Wl).2 ⟨s, fun V hV => ⟨h.1 V, hb V hV⟩, tieOn_of_tiedBy h⟩, fun _ h t ht hr j hj => oneBasis_of_std …`.
+-/
 theorem compare (Wl : WeilTied D X T) :
     (∀ K : Formalism.L2.Theta.KfinTied Wl, ∃ b s, Matches K b s ∧ TieOn Wl s) ∧
     (∀ (b : ∀ V : HSp D, Module.Basis (Fin V.rank) D.host.E V.V) (s : ∀ V : HSp D, InvFam V),

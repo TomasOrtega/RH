@@ -15,6 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ShortValue
 
+/- English proof (translation)
+Establish `hne : l.Mb ≠ ⊥`. Introduce `h`. Establish `hp` using `l.prod`. Rewrite `hp` using `[h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Use `l.three_le` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `haveI : Finite (𝓞 E ⧸ l.Mb) := Ideal.finiteQuotientOfFreeOfNeBot _ hne`. Use `haveI := Dw.fin`. Conclude with `Submodule.finite_quotient_smul l.Mb (N := (⊤ : Submodule (𝓞 E) Dw.La)) Module.Finite.fg_top`.
+-/
 theorem finite_levelQuotient {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H)
     (l : Geo.Tor.Level H) : Finite (LevQ Dw l) := by
   have hne : l.Mb ≠ ⊥ := by
@@ -27,6 +32,9 @@ theorem finite_levelQuotient {E : Type} [Field E] [NumberField E] [IsCMField E] 
   haveI := Dw.fin
   exact Submodule.finite_quotient_smul l.Mb (N := (⊤ : Submodule (𝓞 E) Dw.La)) Module.Finite.fg_top
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite Q`. Simplify using `only [finsum_eq_sum_of_fintype, map_mul, map_sum, AlgHom.commutes, h]`.
+-/
 theorem map_weighted_finsum {F S₁ S₂ T Q : Type} [Field F] [CommRing S₁] [CommRing S₂] [CommRing T]
     [Algebra F S₁] [Algebra F S₂] [Algebra F T] [Finite Q] (ψ₁ : S₁ →ₐ[F] T) (ψ₂ : S₂ →ₐ[F] T)
     (k : F) (w : Q → F) (A₁ : Q → S₁) (A₂ : Q → S₂) (h : ∀ q, ψ₁ (A₁ q) = ψ₂ (A₂ q)) :
@@ -39,6 +47,15 @@ end GlobalTheory.ShortValue
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL hC E _ _ _ H Dw l Xo c _ nab hnab n Λ N hU hT hN a P hP w β`. Use `haveI := ShortValue.finite_levelQuotient Dw l`. Establish `cmp` using `GlobalTheory.T.shortThetaSum_eq_of_witnesses_common_algebra hL hC E H Dw l Xo c nab hnab n Λ N hU hT hN a P hP`. Establish `nat : ∀ (S T : Type) [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y0 : FrPt Xo c S) (y : FrPt Xo c T), FrMap φ y0 y → ∀ v0 v, ShortValAt Xo c nab w Λ β N P y0 v0 → ShortValAt Xo c nab w Λ β N P y v → φ v0 = v`. Introduce `S T _ _ _ _ φ y0 y hφ v0 v h0 h1`.
+
+Take `⟨S1, _, _, φ1, y1, z1, tp1, F1, hf1, hm1, hz1, hg1, ht1, hu1, e1⟩` from `h0`. Take `⟨S2, _, _, φ2, y2, z2, tp2, F2, hf2, hm2, hz2, hg2, ht2, hu2, e2⟩` from `h1`. Take `⟨U, _, _, ψ2, ψ1, hc, -, hinj⟩` from `exists_faithfullyFlat_pushout c.F S S2 S1 (φ2.comp φ) φ1 hf1`. Establish `key` using `cmp S y0 S1 φ1 y1 z1 tp1 F1 S2 (φ2.comp φ) y2 z2 tp2 F2 hm1 (FramedBaseChange.trans φ φ2 hφ hm2) hz1 hg1 ht1 hu1 hz2 hg2 ht2 hu2 U ψ1 ψ2 hc.symm`. Establish `hinj2 : Function.Injective φ2` using `hf2.injective`.
+
+Apply `hinj2` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Establish `e0 : ψ2 (φ2 (φ v0)) = ψ1 (φ1 v0)` using `AlgHom.congr_fun hc v0`. Rewrite using `[e0, e1, e2]`. Conclude with `ShortValue.map_weighted_finsum ψ1 ψ2 _ w _ _ key`.
+
+Use `⟨fun S _ _ y => ?_, nat⟩` and prove the remaining obligations. Take `⟨S1, _, _, φ1, y1, z1, tp1, F1, hf1, hm1, hz1, hg1, ht1, hu1⟩` from `GlobalTheory.T.exists_faithfullyFlat_cover_shortThetaValue_data hL E H Dw l Xo c n Λ N hU hT hN S y`. Take `⟨v, hv, -⟩` from `existsUnique_preimage_of_faithfullyFlat c.F S S1 φ1 hf1 (algebraMap c.F S1 (β⁻¹ * ((Λ.mIdx N (Dw.p + Dw.q) : c.F))⁻¹ * ((Nat.card (Fin n → LevQ Dw l) : c.F))⁻¹ * ((N : c.F) ^ P.totalDegree)⁻¹) * ∑ᶠ q : Fin n → LevQ Dw l, algebraMap c.F S1 (w q) * ∑ i, ∑ m ∈ P.support, algebraMap …`. Establish `hv' : ShortValAt Xo c nab w Λ β N P y v` using `⟨S1, _, _, φ1, y1, z1, tp1, F1, hf1, hm1, hz1, hg1, ht1, hu1, hv⟩`. Conclude with `⟨v, hv', fun v' h' => nat S S (AlgHom.id c.F S) y y (FramedBaseChange.refl y) v' v h' hv'⟩`.
+-/
 theorem shortThetaValue_existsUnique_natural : Laws → ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → Λ.TrivAt l.M → Λ.LevOK N l.M → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) → ∀ (w : (Fin n → LevQ Dw l) → c.F) (β : c.F), (∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), ∃! v, ShortValAt Xo c nab w Λ β N P y v) ∧ ∀ (S T : Type) [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y0 : FrPt Xo c S) (y : FrPt Xo c T), FrMap φ y0 y → ∀ v0 v, ShortValAt Xo c nab w Λ β N P y0 v0 → ShortValAt Xo c nab w Λ β N P y v → φ v0 = v := by
   intro hL hC E _ _ _ H Dw l Xo c _ nab hnab n Λ N hU hT hN a P hP w β
   haveI := ShortValue.finite_levelQuotient Dw l

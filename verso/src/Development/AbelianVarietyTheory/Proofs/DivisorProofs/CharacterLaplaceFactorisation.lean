@@ -15,6 +15,11 @@ namespace GlobalTheory.LaplaceChar
 
 open ReciprocityTheory.ChartRestriction.TR.Weyl
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.DiagonalConjugateExistence.exists_conj_diagonal`. Consider the case `exact _root_.GlobalTheory.DiagonalConjugateExistence.exists_conj_diagonal`. Consider the case `(apply _root_.GlobalTheory.DiagonalConjugateExistence.exists_conj_diagonal <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DiagonalConjugateExistence.exists_conj_diagonal <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.DiagonalConjugateExistence.exists_conj_diagonal <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DiagonalConjugateExistence.exists_conj_diagonal ..)`.
+-/
 theorem exists_mul_eq_mul_diagonal {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (t : Fin n → ℂ)
     (ht : Function.Injective t) (hA : A.charpoly = ∏ i, (X - C (t i))) :
     ∃ P : GL (Fin n) ℂ, A * (P : Matrix (Fin n) (Fin n) ℂ) = (P : Matrix (Fin n) (Fin n) ℂ) * diagonal t := by
@@ -26,6 +31,15 @@ theorem exists_mul_eq_mul_diagonal {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (t
   | (intros; apply @_root_.GlobalTheory.DiagonalConjugateExistence.exists_conj_diagonal <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.DiagonalConjugateExistence.exists_conj_diagonal ..)
 
+/- English proof (translation)
+Establish `hdet : IsUnit (diagonal t)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, det_diagonal]`. Conclude with `isUnit_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun i _ => h0 i)`. Establish `hex : ∃ g : GL (Fin n) ℂ, (g : Matrix (Fin n) (Fin n) ℂ).charpoly = ∏ i, (X - C (t i))` using `⟨hdet.unit, by simp [charpoly_diagonal]⟩`. Unfold `chAt`.
+
+Rewrite using `[dif_pos hex]`. Take `⟨P, hP⟩` from `exists_mul_eq_mul_diagonal _ t ht hex.choose_spec`. Use `set g := hex.choose`. Set `D : GL (Fin n) ℂ` to `P⁻¹ * g * P`. Establish `hD : (D : Matrix (Fin n) (Fin n) ℂ) = diagonal t` using `by show ((P⁻¹ * g * P : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = diagonal t`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, Matrix.mul_assoc, hP, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Establish `hgD : g = P * D * P⁻¹` using `by simp [D, mul_assoc]`. Take `⟨f, hf, htr⟩` from `sqChar n lam D t hD`. Establish `hfD : f = GlobalTheory.Branching.sqRep ℂ n lam D` using `LinearMap.ext fun x => Subtype.ext (by rw [hf, GlobalTheory.Branching.sqRep_coe])`. Establish `e : GlobalTheory.Branching.sqRep ℂ n lam (P * D * P⁻¹) = GlobalTheory.Branching.sqRep ℂ n lam P * (GlobalTheory.Branching.sqRep ℂ n lam D * GlobalTheory.Branching.sqRep ℂ n lam P⁻¹)`.
+
+Rewrite using `[map_mul, map_mul, mul_assoc]`. Establish `e2 : GlobalTheory.Branching.sqRep ℂ n lam P⁻¹ * GlobalTheory.Branching.sqRep ℂ n lam P = 1`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Rewrite using `[← htr, hfD, hgD, e, LinearMap.trace_mul_comm, mul_assoc, e2, mul_one]`.
+-/
 theorem chAt_prod_eq_gtChar {n : ℕ} (lam : DomWeight n) (t : Fin n → ℂ) (ht : Function.Injective t)
     (h0 : ∀ i, t i ≠ 0) : chAt lam (∏ i, (X - C (t i))) = gtChar n lam.w t := by
   have hdet : IsUnit (diagonal t) := by
@@ -53,6 +67,9 @@ theorem chAt_prod_eq_gtChar {n : ℕ} (lam : DomWeight n) (t : Fin n → ℂ) (h
     rw [← map_mul, inv_mul_cancel, map_one]
   rw [← htr, hfD, hgD, e, LinearMap.trace_mul_comm, mul_assoc, e2, mul_one]
 
+/- English proof (translation)
+The claim follows from `| 0, Q, hm, hd => ⟨Fin.elim0, by rw [Fin.prod_univ_zero]; exact Polynomial.eq_one_of_monic_natDegree_zero hm hd⟩ | a + 1, Q, hm, hd => by obtain ⟨r, hr⟩ := IsAlgClosed.exists_root Q (by rw [degree_eq_natDegree hm.ne_zero, hd]; exact_mod_cast Nat.succ_ne_zero a) have hdiv : (X - C …`.
+-/
 theorem exists_eq_prod_X_sub_C : ∀ (a : ℕ) (Q : ℂ[X]), Q.Monic → Q.natDegree = a →
     ∃ α : Fin a → ℂ, Q = ∏ i, (X - C (α i))
   | 0, Q, hm, hd => ⟨Fin.elim0, by rw [Fin.prod_univ_zero]; exact Polynomial.eq_one_of_monic_natDegree_zero hm hd⟩
@@ -69,6 +86,11 @@ theorem exists_eq_prod_X_sub_C : ∀ (a : ℕ) (Q : ℂ[X]), Q.Monic → Q.natDe
     simp only [Fin.cons_succ]
     rw [← hα, hdiv]
 
+/- English proof (translation)
+Unfold `wden`. Simplify using `only [Fin.prod_univ_add, Fin.addCases_left, Fin.addCases_right, Finset.prod_mul_distrib]`. Establish `h1 : ∀ i j : Fin a, (Fin.castAdd b i < Fin.castAdd b j) ↔ i < j` using `fun i j => Iff.rfl`. Establish `h2 : ∀ (i : Fin a) (j : Fin b), Fin.castAdd b i < Fin.natAdd a j` using `fun i j => by show (i : ℕ) < a + (j : ℕ); omega`. Establish `h3 : ∀ (i : Fin b) (j : Fin a), ¬ Fin.natAdd a i < Fin.castAdd b j` using `fun i j => by show ¬ (a + (i : ℕ) < (j : ℕ)); omega`.
+
+Establish `h4 : ∀ i j : Fin b, (Fin.natAdd a i < Fin.natAdd a j) ↔ i < j` using `fun i j => by show a + (i : ℕ) < a + (j : ℕ) ↔ (i : ℕ) < j; omega`. Simplify using `only [h1, h2, h3, h4, if_true, if_false, Finset.prod_const_one, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wden_addCases (a b : ℕ) (α : Fin a → ℂ) (β : Fin b → ℂ) :
     wden (a + b) (Fin.addCases α β) = wden a α * wden b β * ∏ i, ∏ j, (α i - β j) := by
   unfold wden
@@ -83,6 +105,9 @@ theorem wden_addCases (a b : ℕ) (α : Fin a → ℂ) (β : Fin b → ℂ) :
   simp only [h1, h2, h3, h4, if_true, if_false, Finset.prod_const_one, mul_one]
   ring
 
+/- English proof (translation)
+The claim follows from `| 0, k, k', h => by have : k = k' := Fin.ext (by omega) subst this; simp | d + 1, k, k', h => by have hk : (k : ℕ) + d < a := by omega have ih := le_sub_of_strictMono p hp d k ⟨k + d, hk⟩ rfl have hlt : p ⟨k + d, hk⟩ < p k' := hp (by rw [Fin.lt_iff_val_lt_val]; simp; omega) rw [F …`.
+-/
 theorem le_sub_of_strictMono {a n : ℕ} (p : Fin a → Fin n) (hp : StrictMono p) :
     ∀ (d : ℕ) (k k' : Fin a), (k' : ℕ) = k + d → (p k : ℤ) + d ≤ p k'
   | 0, k, k', h => by
@@ -104,9 +129,17 @@ namespace GlobalTheory.LaplaceChar
 
 open ReciprocityTheory.ChartRestriction.TR.Weyl
 
+/- English proof (translation)
+Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hx]`. Simplify using the standard rewrite rules.
+-/
 theorem conj_eq_inv_of_norm_one {x : ℂ} (hx : ‖x‖ = 1) : (starRingEnd ℂ) x = x⁻¹ := by
   rw [Complex.inv_def, Complex.normSq_eq_norm_sq, hx]; simp
 
+/- English proof (translation)
+Establish `hm : (∏ i, (X - C (α i))).Monic` using `monic_prod_of_monic _ _ fun i _ => monic_X_sub_C _`. Establish `hroots : (∏ i, (X - C (α i))).roots = Finset.univ.val.map α`. Rewrite using `[← roots_multiset_prod_X_sub_C (Finset.univ.val.map α), Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[resultant_eq_prod_eval _ _ _ le_rfl (IsAlgClosed.splits _), hm.leadingCoeff, one_pow, one_mul, hroots, Multiset.map_map]`.
+
+Use `show (Finset.univ.val.map fun i => eval (α i) (∏ j, (X - C (β j)))).prod = _`. Rewrite using `[← Finset.prod_eq_multiset_prod]`. Simplify using `[eval_prod]`.
+-/
 theorem resultant_prod {a b : ℕ} (α : Fin a → ℂ) (β : Fin b → ℂ) :
     resultant (∏ i, (X - C (α i))) (∏ j, (X - C (β j))) = ∏ i, ∏ j, (α i - β j) := by
   have hm : (∏ i, (X - C (α i))).Monic := monic_prod_of_monic _ _ fun i _ => monic_X_sub_C _
@@ -119,8 +152,16 @@ theorem resultant_prod {a b : ℕ} (α : Fin a → ℂ) (β : Fin b → ℂ) :
   rw [← Finset.prod_eq_multiset_prod]
   simp [eval_prod]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem delta_apply (n : ℕ) (j : Fin n) : delta n j = (n : ℤ) - 1 - (j : ℕ) := rfl
 
+/- English proof (translation)
+Introduce `k k' hkk'`. Establish `hd` using `le_sub_of_strictMono p hp ((k' : ℕ) - k) k k' (by rw [Fin.le_iff_val_le_val] at hkk'; omega)`. Establish `hw : lam.w (p k') ≤ lam.w (p k)` using `lam.anti (hp.monotone hkk')`. Rewrite `hkk'` using `[Fin.le_iff_val_le_val]`. Simplify using `only [Pi.add_apply, delta_apply]`.
+
+Move the coercions through the operations in `[Nat.cast_sub hkk'] at hd ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem antitone_select {n m : ℕ} (lam : DomWeight n) (p : Fin m → Fin n) (hp : StrictMono p) :
     Antitone fun k : Fin m => (lam.w + delta n) (p k) - delta m k := by
   intro k k' hkk'
@@ -152,18 +193,30 @@ def selL {a b : ℕ} (J : {J : Finset (Fin (a + b)) // J.card = a}) : Fin a → 
 def selR {a b : ℕ} (J : {J : Finset (Fin (a + b)) // J.card = a}) : Fin b → Fin (a + b) :=
   J.1ᶜ.orderEmbOfFin (by rw [Finset.card_compl, J.2]; simp)
 
+/- English proof (translation)
+The claim follows from `(J.1.orderEmbOfFin J.2).strictMono`.
+-/
 theorem selL_strictMono {a b : ℕ} (J : {J : Finset (Fin (a + b)) // J.card = a}) : StrictMono (selL J) :=
   (J.1.orderEmbOfFin J.2).strictMono
 
+/- English proof (translation)
+The claim follows from `(J.1ᶜ.orderEmbOfFin _).strictMono`.
+-/
 theorem selR_strictMono {a b : ℕ} (J : {J : Finset (Fin (a + b)) // J.card = a}) : StrictMono (selR J) :=
   (J.1ᶜ.orderEmbOfFin _).strictMono
 
+/- English proof (translation)
+Use `conv_rhs => rw [← Finset.map_orderEmbOfFin_univ s h]`. Rewrite using `[Finset.map_val, Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 theorem map_orderEmbOfFin {n k : ℕ} (s : Finset (Fin n)) (h : s.card = k) (F : Fin n → ℂ) :
     (Finset.univ.val.map fun i : Fin k => F (s.orderEmbOfFin h i)) = s.val.map F := by
   conv_rhs => rw [← Finset.map_orderEmbOfFin_univ s h]
   rw [Finset.map_val, Multiset.map_map]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Finset.union_compl s, ← Finset.disjUnion_eq_union s sᶜ disjoint_compl_right]`. Both sides reduce to the same expression.
+-/
 theorem val_add_compl {n : ℕ} (s : Finset (Fin n)) : s.val + sᶜ.val = (Finset.univ : Finset (Fin n)).val := by
   rw [← Finset.union_compl s, ← Finset.disjUnion_eq_union s sᶜ disjoint_compl_right]
   rfl
@@ -172,6 +225,51 @@ end GlobalTheory.LaplaceChar
 
 open GlobalTheory.LaplaceChar ReciprocityTheory.ChartRestriction.TR.Weyl in
 
+/- English proof (translation)
+Introduce `a b lam e he`. Take `⟨m, rfl⟩` from `he`. Use `set K : ℤ := m + 1 with hK`. Use `⟨{J : Finset (Fin (a + b)) // J.card = a}, inferInstance, fun J => selW lam (selL J) (selL_strictMono J) (-(b : ℤ) * K), fun J => selW lam (selR J) (selR_strictMono J) (-(a : ℤ) * K), fun J => (-1 : ℂ) ^ ((∑ j ∈ J.1, (j : ℕ)) + a * (a - 1) / 2) * ((-1 : ℂ) ^ (a * b)) ^ K, ?_, ?_⟩` and prove the remaining obligations. Introduce `J beta_reduce`.
+
+Set `F : Fin (a + b) → ℂ` to `fun j => (lam.w j : ℂ) + ((((a + b : ℕ) : ℂ) - 1) / 2 - ((j : ℕ) : ℂ))`. Establish `hL : (infOfWeight (selW lam (selL J) (selL_strictMono J) (-(b : ℤ) * K))).map (· + (b : ℂ) * ((2 * m + 1 : ℤ) : ℂ) / 2) = J.1.val.map F`. Rewrite using `[← map_orderEmbOfFin J.1 J.2 F]`. Unfold `infOfWeight`. Rewrite using `[Multiset.map_map]`.
+
+Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, selW, selL, F, Pi.add_apply, delta_apply, hK]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : (infOfWeight (selW lam (selR J) (selR_strictMono J) (-(a : ℤ) * K))).map (· + (a : ℂ) * ((2 * m + 1 : ℤ) : ℂ) / 2) = J.1ᶜ.val.map F`.
+
+Rewrite using `[← map_orderEmbOfFin J.1ᶜ (k := b) (by rw [Finset.card_compl, J.2]; simp) F]`. Unfold `infOfWeight`. Rewrite using `[Multiset.map_map]`. Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, selW, selR, F, Pi.add_apply, delta_apply, hK]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hR, ← Multiset.map_add, val_add_compl]`. Both sides reduce to the same expression. Introduce `Q₁ Q₂ h1 h2 hd1 hd2 hsep hroot beta_reduce`.
+
+Take `⟨α, rfl⟩` from `exists_eq_prod_X_sub_C a Q₁ h1 hd1`. Take `⟨β, rfl⟩` from `exists_eq_prod_X_sub_C b Q₂ h2 hd2`. Establish `hprod : (∏ i, (X - C (α i))) * ∏ j, (X - C (β j)) = ∏ i, (X - C (Fin.addCases α β i))`. Rewrite using `[Fin.prod_univ_add]`. Simplify using the standard rewrite rules.
+
+Rewrite `hsep`, `hroot`, the goal using `[hprod]`. Establish `htinj : Function.Injective (Fin.addCases α β : Fin (a + b) → ℂ)` using `separable_prod_X_sub_C_iff.mp hsep`. Establish `hmon : (∏ i, (X - C ((Fin.addCases α β : Fin (a + b) → ℂ) i))).Monic` using `monic_prod_of_monic _ _ fun j _ => monic_X_sub_C _`. Establish `htn : ∀ i, ‖(Fin.addCases α β : Fin (a + b) → ℂ) i‖ = 1` using `fun i => hroot _ (by`. Rewrite using `[mem_roots hmon.ne_zero, IsRoot, eval_prod]`.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp))`. Establish `ht0 : ∀ i, (Fin.addCases α β : Fin (a + b) → ℂ) i ≠ 0` using `fun i h => by simpa [h] using htn i`. Establish `hα : ∀ i, ‖α i‖ = 1` using `fun i => by simpa using htn (Fin.castAdd b i)`. Establish `hβ : ∀ j, ‖β j‖ = 1` using `fun j => by simpa using htn (Fin.natAdd a j)`. Establish `hα0 : ∀ i, α i ≠ 0` using `fun i h => by simpa [h] using hα i`.
+
+Establish `hβ0 : ∀ j, β j ≠ 0` using `fun j h => by simpa [h] using hβ j`. Establish `hαinj : Function.Injective α` using `fun i j h => Fin.castAdd_injective _ _ (htinj (by simpa using h))`. Establish `hβinj : Function.Injective β` using `fun i j h => Fin.natAdd_injective _ _ (htinj (by simpa using h))`. Establish `hne : ∀ i j, α i ≠ β j` using `fun i j h => by`. Use `htinj (show (Fin.addCases α β : Fin (a + b) → ℂ) (Fin.castAdd b i) = Fin.addCases α β (Fin.natAdd a j) by` as an intermediate fact.
+
+Simplify using `using h)`. Use `congrArg Fin.val this` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[chAt_prod_eq_gtChar lam _ htinj ht0]`.
+
+Simplify using `only [chAt_prod_eq_gtChar _ α hαinj hα0, chAt_prod_eq_gtChar _ β hβinj hβ0]`. Rewrite using `[resultant_prod α β]`. Establish `hph` using `GlobalTheory.resultant_phase_unit_circle a b α β hα hβ hne K`. Simplify using `only at hph`. Rewrite using `[show (2 * m + 1 : ℤ) = 2 * K - 1 by rw [hK]; ring, hph]`.
+
+Use `set R := ∏ i, ∏ j, (α i - β j) with hRdef`. Establish `hW` using `weylGT ℂ (a + b) lam.w lam.anti _ ht0`. Rewrite `hW` using `[wden_addCases]`. Set `α' : Fin a → ℂˣ` to `fun i => Units.mk0 (α i) (hα0 i)`. Set `β' : Fin b → ℂˣ` to `fun j => Units.mk0 (β j) (hβ0 j)`.
+
+Establish `hLap` using `GlobalTheory.weylNumerator_laplace a b α' β' (lam.w + delta (a + b))`. Establish `hLHS : alt (a + b) (lam.w + delta (a + b)) (Fin.addCases α β) = (Matrix.of fun i j : Fin (a + b) => (((Fin.addCases α' β' i : ℂˣ) ^ (lam.w + delta (a + b)) j : ℂˣ) : ℂ)).det`. Unfold `alt`. Use `congr 1`. Use extensionality with `i j`.
+
+Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp [α', β', Units.val_zpow_eq_zpow_val]`. Establish `hA : ∀ J : {J : Finset (Fin (a + b)) // J.card = a}, (Matrix.of fun i k : Fin a => ((α' i ^ (lam.w + delta (a + b)) (J.1.orderEmbOfFin J.2 k) : ℂˣ) : ℂ)).det = wden a α * gtChar a (fun k => (lam.w + delta (a + b)) (selL J k) - delta a k) α`. Introduce `J`. Rewrite using `[weylGT ℂ a _ (antitone_select lam (selL J) (selL_strictMono J)) α hα0]`. Unfold `alt`.
+
+Use `congr 1`. Use extensionality with `i k`. Simplify using `[α', Units.val_zpow_eq_zpow_val, selL]`. Establish `hB : ∀ J : {J : Finset (Fin (a + b)) // J.card = a}, (Matrix.of fun i k : Fin b => ((β' i ^ (lam.w + delta (a + b)) (J.1ᶜ.orderEmbOfFin (by rw [Finset.card_compl, J.2]; simp) k) : ℂˣ) : ℂ)).det = wden b β * gtChar b (fun k => (lam.w + delta (a + b)) (selR J k) - delta b k) β`. Introduce `J`.
+
+Rewrite using `[weylGT ℂ b _ (antitone_select lam (selR J) (selR_strictMono J)) β hβ0]`. Unfold `alt`. Use `congr 1`. Use extensionality with `i k`. Simplify using `[β', Units.val_zpow_eq_zpow_val, selR]`.
+
+Rewrite `hW` using `[hLHS, hLap]`. Simplify using `only [hA, hB] at hW`. Rewrite `hW` using `[← hRdef]`. Establish `hwden : ∀ {c : ℕ} (x : Fin c → ℂ), Function.Injective x → wden c x ≠ 0`. Introduce `c x hx`.
+
+Unfold `wden`. Use `Finset.prod_ne_zero_iff.mpr fun i _ => Finset.prod_ne_zero_iff.mpr fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `sub_ne_zero.mpr (hx.ne h.ne)`. Conclude with `one_ne_zero`.
+
+Establish `key : R * gtChar (a + b) lam.w (fun i => Fin.addCases α β i) = ∑ J : {J : Finset (Fin (a + b)) // J.card = a}, (-1 : ℂ) ^ ((∑ j ∈ J.1, (j : ℕ)) + a * (a - 1) / 2) * gtChar a (fun k => (lam.w + delta (a + b)) (selL J k) - delta a k) α * gtChar b (fun k => (lam.w + delta (a + b)) ( …`. Apply `mul_left_cancel₀ (mul_ne_zero (hwden α hαinj) (hwden β hβinj))` to reduce the goal to its premises. Rewrite using `[← mul_assoc, hW, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun J _ => by ring`. Establish `hc` using `congrArg (starRingEnd ℂ) key`.
+
+Simplify using `only [map_mul, map_sum, map_pow, map_neg, map_one] at hc`. Establish `hsA : ∀ J : {J : Finset (Fin (a + b)) // J.card = a}, gtChar a (selW lam (selL J) (selL_strictMono J) (-(b : ℤ) * K)).w α = (∏ i, α i) ^ (-(b : ℤ) * K) * gtChar a (fun k => (lam.w + delta (a + b)) (selL J k) - delta a k) α` using `fun J => sq_gt_shift a _ _ α hα0`. Establish `hsB : ∀ J : {J : Finset (Fin (a + b)) // J.card = a}, gtChar b (selW lam (selR J) (selR_strictMono J) (-(a : ℤ) * K)).w β = (∏ j, β j) ^ (-(a : ℤ) * K) * gtChar b (fun k => (lam.w + delta (a + b)) (selR J k) - delta b k) β` using `fun J => sq_gt_shift b _ _ β hβ0`. Establish `hPα : ‖∏ i, α i‖ = 1` using `by rw [norm_prod]; simp [hα]`. Establish `hPβ : ‖∏ j, β j‖ = 1` using `by rw [norm_prod]; simp [hβ]`.
+
+Establish `cA : (starRingEnd ℂ) ((∏ i, α i) ^ (-(b : ℤ) * K)) = ((∏ i, α i) ^ b) ^ K`. Rewrite using `[map_zpow₀, conj_eq_inv_of_norm_one hPα, _root_.inv_zpow', neg_mul, neg_neg, _root_.zpow_mul, zpow_natCast]`. Establish `cB : (starRingEnd ℂ) ((∏ j, β j) ^ (-(a : ℤ) * K)) = ((∏ j, β j) ^ a) ^ K`. Rewrite using `[map_zpow₀, conj_eq_inv_of_norm_one hPβ, _root_.inv_zpow', neg_mul, neg_neg, _root_.zpow_mul, zpow_natCast]`. Simplify using `only [hsA, hsB, map_mul, cA, cB]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_zpow, _root_.mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.character_laplace_factorisation : ∀ (a b : ℕ) (lam : DomWeight (a + b)) (e : ℤ), Odd e → ∃ (ι : Type) (_ : Fintype ι) (l₁ : ι → DomWeight a) (l₂ : ι → DomWeight b) (ε : ι → ℂ), (∀ j, (infOfWeight (l₁ j)).map (· + (b : ℂ) * e / 2) + (infOfWeight (l₂ j)).map (· + (a : ℂ) * e / 2) = infOfWeight lam) ∧ ∀ Q₁ Q₂ : ℂ[X], Q₁.Monic → Q₂.Monic → Q₁.natDegree = a → Q₂.natDegree = b → (Q₁ * Q₂).Separable → (∀ z ∈ (Q₁ * Q₂).roots, ‖z‖ = 1) → ((resultant Q₁ Q₂ / (‖resultant Q₁ Q₂‖ : ℂ)) ^ e * ‖resultant Q₁ Q₂‖) * (starRingEnd ℂ) (chAt lam (Q₁ * Q₂)) = ∑ j, ε j * (starRingEnd ℂ) (chAt (l₁ j) Q₁) * (starRingEnd ℂ) (chAt (l₂ j) Q₂) := by
   intro a b lam e he
   obtain ⟨m, rfl⟩ := he

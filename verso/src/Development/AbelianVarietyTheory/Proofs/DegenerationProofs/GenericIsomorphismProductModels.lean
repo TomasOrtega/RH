@@ -11,6 +11,13 @@ open GlobalTheory.SS
 noncomputable section
 namespace GlobalTheory.SS.GenProj
 
+/- English proof (translation)
+Set `a : Over.mk (m ≫ g) ⟶ Over.mk g` to `Over.homMk m`. Set `b : Over.mk (m ≫ g) ⟶ Over.mk g` to `Over.homMk m' h₂.symm`. Establish `: IsSeparated (Over.mk g).hom` using `‹_›`. Set `c : Over.mk (j ≫ m ≫ g) ⟶ Over.mk (m ≫ g)` to `Over.homMk j`. Establish `hc : c ≫ a = c ≫ b` using `by ext1; exact h₁`.
+
+Establish `hk : (equalizer.ι a b).left.ker = ⊥`. Establish `e : (equalizer.lift c hc).left ≫ (equalizer.ι a b).left = j`. Rewrite using `[← Over.comp_left, equalizer.lift_ι]`. Both sides reduce to the same expression. Use `(equalizer.lift c hc).left.le_ker_comp (equalizer.ι a b).left` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `le_bot_iff.mp (this.trans j.ker_eq_bot.le)`. Establish `: IsIso (equalizer.ι a b).left` using `IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hk`. Rewrite using `[← cancel_epi (equalizer.ι a b).left]`. Conclude with `congr($(equalizer.condition a b).left)`.
+-/
 theorem ext_of_dense {W X T Z : Scheme.{0}} (j : W ⟶ X)
     [IsSchemeTheoreticallyDominant j] {m m' : X ⟶ T} (g : T ⟶ Z) [IsSeparated g]
     (h₁ : j ≫ m = j ≫ m') (h₂ : m ≫ g = m' ≫ g) : m = m' := by
@@ -29,6 +36,13 @@ theorem ext_of_dense {W X T Z : Scheme.{0}} (j : W ⟶ X)
   rw [← cancel_epi (equalizer.ι a b).left]
   exact congr($(equalizer.condition a b).left)
 
+/- English proof (translation)
+Establish `key : pullback.fst p p ≫ q = pullback.snd p p ≫ q`. Set `w` to `pullback.fst p p ≫ p ≫ s`. Establish `: Flat w` using `by dsimp only [w]; infer_instance`. Use `ext_of_dense (pullback.fst w i) s' ?_ ?_` and prove the remaining obligations. Take `⟨c₁, h₁, h₁'⟩` from `H _ (pullback.fst w i ≫ pullback.fst p p) (pullback.snd w i) (by rw [← pullback.condition]; simp [w])`.
+
+Take `⟨c₂, h₂, h₂'⟩` from `H _ (pullback.fst w i ≫ pullback.snd p p) (pullback.snd w i) (by rw [← pullback.condition, Category.assoc, ← pullback.condition_assoc])`. Establish `e : c₁ = c₂`. Rewrite using `[← cancel_mono j, h₁, h₂, Category.assoc, Category.assoc, pullback.condition]`. Rewrite using `[← Category.assoc, ← Category.assoc, ← h₁', ← h₂', e]`. Rewrite using `[Category.assoc, Category.assoc, ← hs, pullback.condition_assoc]`.
+
+Use `congrArg (fun x => pullback.lift a b hab ≫ x) key` as an intermediate fact. Simplify `this` using `only [pullback.lift_fst_assoc, pullback.lift_snd_assoc]`.
+-/
 theorem eq_of_generic {S E U X X' A : Scheme.{0}} (i : E ⟶ S) [IsSchemeTheoreticallyDominant i] [QuasiCompact i]
     (s : X ⟶ S) (s' : X' ⟶ S) [Flat s] [IsSeparated s'] (p : U ⟶ X) (q : U ⟶ X') [Flat p]
     (hs : p ≫ s = q ≫ s') (j : A ⟶ X) [Mono j] (j' : A ⟶ X')
@@ -49,6 +63,13 @@ theorem eq_of_generic {S E U X X' A : Scheme.{0}} (i : E ⟶ S) [IsSchemeTheoret
   have := congrArg (fun x => pullback.lift a b hab ≫ x) key
   simpa only [pullback.lift_fst_assoc, pullback.lift_snd_assoc] using this
 
+/- English proof (translation)
+Set `V : X.Opens` to `⟨Set.range p, p.isOpenMap.isOpen_range⟩`. Establish `hr : Set.range p ⊆ Set.range V.ι` using `by rw [Scheme.Opens.range_ι]; exact subset_rfl`. Establish `e : IsOpenImmersion.lift V.ι p hr ≫ V.ι = p` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hP : IsPullback (IsOpenImmersion.lift V.ι p hr) (𝟙 U) V.ι p` using `IsPullback.of_vert_isIso_mono ⟨by rw [e, Category.id_comp]⟩`. Use `⟨V, IsOpenImmersion.lift V.ι p hr, e, ?_, ?_, ⟨?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `MorphismProperty.of_isPullback (P := @Flat) hP.flip ‹_›`. Conclude with `MorphismProperty.of_isPullback (P := @LocallyOfFinitePresentation) hP.flip ‹_›`. Introduce and unpack `⟨_, u, rfl⟩`. Use `⟨u, V.ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_image {U X : Scheme.{0}} (p : U ⟶ X) [Flat p] [LocallyOfFinitePresentation p] :
     ∃ (V : X.Opens) (p' : U ⟶ V.toScheme), p' ≫ V.ι = p ∧ Flat p' ∧ LocallyOfFinitePresentation p' ∧ Surjective p' := by
   let V : X.Opens := ⟨Set.range p, p.isOpenMap.isOpen_range⟩
@@ -63,6 +84,13 @@ theorem exists_image {U X : Scheme.{0}} (p : U ⟶ X) [Flat p] [LocallyOfFiniteP
     refine ⟨u, V.ι.isOpenEmbedding.injective ?_⟩
     rw [← Scheme.Hom.comp_apply, e]; rfl
 
+/- English proof (translation)
+Take `⟨V, p', hp, _, _, _⟩` from `exists_image p`. Take `⟨V', q', hq, _, _, _⟩` from `exists_image q`. Establish `H' : ∀ (Z : Scheme.{0}) (a b : Z ⟶ U), a ≫ p' = b ≫ p' ↔ a ≫ q' = b ≫ q'`. Introduce `Z a b`. Rewrite using `[← cancel_mono V.ι, ← cancel_mono V'.ι]`.
+
+Simplify `H Z a b` using `[hp, hq]`. Set `u` to `EffectiveEpi.desc p' q' (fun a b h => (H' _ a b).1 h)`. Set `v` to `EffectiveEpi.desc q' p' (fun a b h => (H' _ a b).2 h)`. Establish `hu : p' ≫ u = q'` using `EffectiveEpi.fac _ _ _`. Establish `hv : q' ≫ v = p'` using `EffectiveEpi.fac _ _ _`.
+
+Establish `: IsIso u` using `⟨v, by rw [← cancel_epi p', ← Category.assoc, hu, hv, Category.comp_id], by rw [← cancel_epi q', ← Category.assoc, hv, hu, Category.comp_id]⟩`. Conclude with `⟨V, p', u ≫ V'.ι, hp, ‹_›, ‹_›, by rw [← Category.assoc, hu, hq], inferInstance⟩`.
+-/
 theorem exists_openImmersion {U X X' : Scheme.{0}} (p : U ⟶ X) (q : U ⟶ X') [Flat p] [LocallyOfFinitePresentation p]
     [Flat q] [LocallyOfFinitePresentation q]
     (H : ∀ (Z : Scheme.{0}) (a b : Z ⟶ U), a ≫ p = b ≫ p ↔ a ≫ q = b ≫ q) :
@@ -84,6 +112,11 @@ theorem exists_openImmersion {U X X' : Scheme.{0}} (p : U ⟶ X) (q : U ⟶ X') 
 
 variable {R : Type} [CommRing R] {K : Type} [Field K] [Algebra R K] {A A' : Over (Sp K)}
 
+/- English proof (translation)
+Establish `h : (M.prod N).e.inv ≫ (Over.pullback (spMap (algebraMap R K))).map (fst M.Y N.Y) = fst A A' ≫ M.e.inv`. Simplify using `[Model.prod]`. Establish `h2` using `congrArg (fun q => q.left ≫ pullback.fst M.Y.hom (spMap (algebraMap R K))) h`. Establish `h4 : ((Over.pullback (spMap (algebraMap R K))).map (fst M.Y N.Y)).left ≫ pullback.fst M.Y.hom (spMap (algebraMap R K)) = pullback.fst (M.prod N).Y.hom (spMap (algebraMap R K)) ≫ (fst M.Y N.Y).left` using `pullback.lift_fst _ _ _`. Simplify using `only [Over.comp_left, Category.assoc] at h2`.
+
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (fun q => (M.prod N).e.inv.left ≫ q) h4).symm.trans h2)`.
+-/
 theorem prod_j_fst (M : Model R A) (N : Model R A') :
     (M.prod N).j ≫ (fst M.Y N.Y).left = (fst A A').left ≫ M.j := by
   have h : (M.prod N).e.inv ≫ (Over.pullback (spMap (algebraMap R K))).map (fst M.Y N.Y) = fst A A' ≫ M.e.inv := by
@@ -94,6 +127,9 @@ theorem prod_j_fst (M : Model R A) (N : Model R A') :
   simp only [Over.comp_left, Category.assoc] at h2
   exact (Category.assoc _ _ _).trans ((congrArg (fun q => (M.prod N).e.inv.left ≫ q) h4).symm.trans h2)
 
+/- English proof (translation)
+Use `⟨pullback.lift a t h ≫ M.e.hom.left, ?_⟩` and prove the remaining obligations. Establish `e : M.e.hom.left ≫ M.e.inv.left = 𝟙 _` using `by rw [← Over.comp_left, Iso.hom_inv_id]; rfl`. Unfold `Model.j`. Rewrite using `[Category.assoc, ← Category.assoc M.e.hom.left, e]`. Conclude with `(congrArg _ (Category.id_comp _)).trans (pullback.lift_fst _ _ _)`.
+-/
 theorem exists_lift_j (M : Model R A) {Z : Scheme.{0}} (a : Z ⟶ M.Y.left) (t : Z ⟶ Sp K)
     (h : a ≫ M.Y.hom = t ≫ spMap (algebraMap R K)) : ∃ d : Z ⟶ A.left, d ≫ M.j = a := by
   refine ⟨pullback.lift a t h ≫ M.e.hom.left, ?_⟩
@@ -102,12 +138,38 @@ theorem exists_lift_j (M : Model R A) {Z : Scheme.{0}} (a : Z ⟶ M.Y.left) (t :
   rw [Category.assoc, ← Category.assoc M.e.hom.left, e]
   exact (congrArg _ (Category.id_comp _)).trans (pullback.lift_fst _ _ _)
 
+/- English proof (translation)
+Establish `: IsPreimmersion (spMap (algebraMap R K))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `: IsIso M.e.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map M.e.inv))`. Establish `: Mono (pullback.fst M.Y.hom (spMap (algebraMap R K)))` using `inferInstance`. Conclude with `mono_comp' inferInstance this`.
+-/
 theorem mono_j [IsFractionRing R K] (M : Model R A) : Mono M.j := by
   have : IsPreimmersion (spMap (algebraMap R K)) := IsPreimmersion.of_isLocalization (nonZeroDivisors R)
   have : IsIso M.e.inv.left := inferInstanceAs (IsIso ((Over.forget _).map M.e.inv))
   have : Mono (pullback.fst M.Y.hom (spMap (algebraMap R K))) := inferInstance
   exact mono_comp' inferInstance this
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ hSH A A' B B' _ _ M M' N N' f Θ _ _ _ _ hΘ ⟨z, hz, U, g, hzU, ⟨hg₁, hg₂⟩, hgo⟩`. Use `hSH.2.2.2` as an intermediate fact. Use `M.smooth` as an intermediate fact. Use `M'.smooth` as an intermediate fact. Use `N.smooth` as an intermediate fact.
+
+Use `N'.smooth` as an intermediate fact. Use `M.sep` as an intermediate fact. Use `M'.sep` as an intermediate fact. Use `mono_j M` as an intermediate fact. Use `mono_j M'` as an intermediate fact.
+
+Establish `: IsDominant (spMap (algebraMap R K))`. Use `⟨?_⟩` and prove the remaining obligations. Use `show DenseRange (PrimeSpectrum.comap (algebraMap R K))`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R K)]`. Conclude with `bot_le`.
+
+Use `IsSchemeTheoreticallyDominant.of_isDominant (spMap (algebraMap R K))` as an intermediate fact. Establish `: IsIso f.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map f.hom))`. Set `π : (M.prod N).Y.left ⟶ M.Y.left` to `(fst M.Y N.Y).left`. Set `π' : (M'.prod N').Y.left ⟶ M'.Y.left` to `(fst M'.Y N'.Y).left`. Establish `: Smooth π` using `inferInstanceAs (Smooth (pullback.fst M.Y.hom N.Y.hom))`.
+
+Establish `: Smooth π'` using `inferInstanceAs (Smooth (pullback.fst M'.Y.hom N'.Y.hom))`. Establish `hπ : π ≫ M.Y.hom = (M.prod N).Y.hom` using `Over.w (fst M.Y N.Y)`. Establish `hπ' : π' ≫ M'.Y.hom = (M'.prod N').Y.hom` using `Over.w (fst M'.Y N'.Y)`. Establish `hj : (M.prod N).j ≫ π = (fst A B).left ≫ M.j` using `prod_j_fst M N`. Establish `hj' : (M'.prod N').j ≫ π' = (fst A' B').left ≫ M'.j` using `prod_j_fst M' N'`.
+
+Establish `hs : (U.ι ≫ π) ≫ M.Y.hom = (g ≫ π') ≫ M'.Y.hom`. Rewrite using `[Category.assoc, Category.assoc, hπ, hπ', hg₁]`. Establish `H : ∀ (Z : Scheme.{0}) (a : Z ⟶ U.toScheme) (t : Z ⟶ Sp K), a ≫ (U.ι ≫ π) ≫ M.Y.hom = t ≫ spMap (algebraMap R K) → ∃ c : Z ⟶ A.left, c ≫ M.j = a ≫ U.ι ≫ π ∧ c ≫ f.hom.left ≫ M'.j = a ≫ g ≫ π'`. Introduce `Z a t h`. Take `⟨d, hd⟩` from `exists_lift_j (M.prod N) (a ≫ U.ι) t (by rw [← h, ← hπ]; simp only [Category.assoc])`.
+
+Take `⟨d', h₁, h₂⟩` from `(isPullback_morphismRestrict (M.prod N).j U).exists_lift a d hd.symm`. Use `⟨d ≫ (fst A B).left, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hj, ← Category.assoc, hd, Category.assoc]`. Establish `e : Θ.left ≫ (fst A' B').left = (fst A B).left ≫ f.hom.left`. Rewrite using `[← Over.comp_left, hΘ, Over.comp_left]`.
+
+Rewrite using `[← h₁, ← h₂]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hg₂, hj', reassoc_of% e]`. Take `⟨V, p', h, hp, _, _, hq, hh⟩` from `exists_openImmersion (U.ι ≫ π) (g ≫ π') (fun Z a b => ⟨eq_of_generic (spMap (algebraMap R K)) M.Y.hom M'.Y.hom _ _ hs M.j (f.hom.left ≫ M'.j) H a b, eq_of_generic (spMap (algebraMap R K)) M'.Y.hom M.Y.hom _ _ hs.symm (f.hom.left ≫ M'.j) M.j (fun Z a t h => (H Z a t (by rw [hs, h] …`. Establish `: Epi p'` using `Flat.epi_of_flat_of_surjective _`.
+
+Use `⟨π z, ?_, V, h, ?_, ⟨?_, ?_⟩, hh⟩` and prove the remaining obligations. Use `show M.Y.hom (π z) = _`. Rewrite using `[← Scheme.Hom.comp_apply, hπ]`. Conclude with `hz`. Establish `: V.ι (p' ⟨z, hzU⟩) = π z` using `congrArg (fun q : U.toScheme ⟶ M.Y.left => q ⟨z, hzU⟩) hp`.
+
+Rewrite using `[← this]`. Conclude with `(p' ⟨z, hzU⟩).2`. Rewrite using `[← cancel_epi p', reassoc_of% hq, reassoc_of% hp]`. Simplify `hs.symm` using `only [Category.assoc]`. Establish `: Epi (pullback.snd p' (M.j ∣_ V))` using `Flat.epi_of_flat_of_surjective _`.
+
+Establish `e : pullback.fst p' (M.j ∣_ V) ≫ U.ι ≫ π = (pullback.snd p' (M.j ∣_ V) ≫ (M.j ⁻¹ᵁ V).ι) ≫ M.j`. Rewrite using `[← hp, pullback.condition_assoc, morphismRestrict_ι, Category.assoc]`. Take `⟨c, hc₁, hc₂⟩` from `H _ (pullback.fst p' (M.j ∣_ V)) (pullback.snd p' (M.j ∣_ V) ≫ (M.j ⁻¹ᵁ V).ι ≫ A.hom) (by rw [← Category.assoc, e, Category.assoc, M.j_hom]; simp only [Category.assoc])`. Rewrite `hc₁` using `[e, cancel_mono]`. Rewrite using `[← cancel_epi (pullback.snd p' (M.j ∣_ V)), ← pullback.condition_assoc, hq, ← hc₂, hc₁, Category.assoc]`.
+-/
 theorem genIso_of_prod : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K], SH R K → ∀ (A A' B B' : Over (Sp K)) [IsIntegral A.left] [IsIntegral (A ⊗ B).left] (M : Model R A) (M' : Model R A') (N : Model R B) (N' : Model R B') (f : A ≅ A') (Θ : A ⊗ B ⟶ A' ⊗ B'), M.Irr → M'.Irr → N.Irr → N'.Irr → Θ ≫ fst A' B' = fst A B ≫ f.hom → GenIso (M.prod N) (M'.prod N') Θ → GenIso M M' f.hom := by
   intro R K _ _ _ _ _ hSH A A' B B' _ _ M M' N N' f Θ _ _ _ _ hΘ ⟨z, hz, U, g, hzU, ⟨hg₁, hg₂⟩, hgo⟩
   have := hSH.2.2.2

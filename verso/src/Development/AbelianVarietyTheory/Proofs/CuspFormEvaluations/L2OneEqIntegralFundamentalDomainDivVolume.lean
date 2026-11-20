@@ -18,6 +18,9 @@ namespace GlobalTheory.Dict.ThetaPT
 
 open MeasureTheory
 
+/- English proof (translation)
+Unfold `I2.Hf`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Hf_add_smul_left {κ : Type} [Fintype κ] (c : ℂ) (v w u : EuclideanSpace ℂ κ) :
     I2.Hf (v + c • w) u = I2.Hf v u + c * I2.Hf w u := by
   unfold I2.Hf
@@ -26,6 +29,9 @@ theorem Hf_add_smul_left {κ : Type} [Fintype κ] (c : ℂ) (v w u : EuclideanSp
   simp only [PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `I2.Hf`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem Hf_neg_right {κ : Type} [Fintype κ] (v w : EuclideanSpace ℂ κ) :
     I2.Hf v (-w) = -I2.Hf v w := by
   unfold I2.Hf
@@ -33,6 +39,9 @@ theorem Hf_neg_right {κ : Type} [Fintype κ] (v w : EuclideanSpace ℂ κ) :
   refine Finset.sum_congr rfl fun i _ => ?_
   simp
 
+/- English proof (translation)
+Unfold `I2.Hf`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem Hf_neg_left {κ : Type} [Fintype κ] (v w : EuclideanSpace ℂ κ) :
     I2.Hf (-v) w = -I2.Hf v w := by
   unfold I2.Hf
@@ -40,12 +49,36 @@ theorem Hf_neg_left {κ : Type} [Fintype κ] (v w : EuclideanSpace ℂ κ) :
   refine Finset.sum_congr rfl fun i _ => ?_
   simp
 
+/- English proof (translation)
+Establish `h : (Real.pi : ℂ) * I * (k : ℂ) = ((Real.pi * k : ℝ) : ℂ) * I` using `by push_cast; ring`. Establish `hs : Real.sin (Real.pi * k) = 0` using `by rw [mul_comm]; exact Real.sin_int_mul_pi k`. Rewrite using `[h, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin, hs]`. Simplify using the standard rewrite rules.
+-/
 theorem cexp_pi_int (k : ℤ) : cexp (Real.pi * I * (k : ℂ)) = ((Real.cos (Real.pi * k) : ℝ) : ℂ) := by
   have h : (Real.pi : ℂ) * I * (k : ℂ) = ((Real.pi * k : ℝ) : ℂ) * I := by push_cast; ring
   have hs : Real.sin (Real.pi * k) = 0 := by rw [mul_comm]; exact Real.sin_int_mul_pi k
   rw [h, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin, hs]
   simp
 
+/- English proof (translation)
+Establish `hper : ∀ (a : A) (z : Fin g → ℂ), ‖θ (a +ᵥ z)‖ ^ 2 * Real.exp (-Real.pi * (I2.Hf (ψ (a +ᵥ z)) (ψ (a +ᵥ z))).re) = ‖θ z‖ ^ 2 * Real.exp (-Real.pi * (I2.Hf (ψ z) (ψ z)).re)`. Introduce `a z`. Establish `ha : ψ a ∈ T.L` using `(hL a).1 a.2`. Take `⟨-, hq⟩` from `hs`. Establish `h` using `hq (fun _ => ψ a) (fun _ => ha) (fun _ => ψ z)`.
+
+Simplify using `only [Pi.add_apply, I2.HC, Fin.sum_univ_one, Fin.prod_univ_one, pow_one, Nat.cast_one, _root_.one_mul, map_add, LinearEquiv.symm_apply_apply] at h`. Establish `hε : ‖((T.eps (ψ a) : ℤ) : ℂ)‖ = 1`. Apply the tactic sequence `rcases T.eps_pm _ ha with h1 | h1 <;> simp [h1]`. Establish `hv : (a +ᵥ z : Fin g → ℂ) = z + a`. Express the relevant statement in the definitionally equal form `(a : Fin g → ℂ) + z = z + a`.
+
+Conclude with `add_comm _ _`. Establish `hre : ((Real.pi : ℂ) * I2.Hf (ψ z) (ψ a) + (Real.pi : ℂ) * I2.Hf (ψ a) (ψ a) / 2).re = Real.pi * (I2.Hf (ψ z) (ψ a)).re + Real.pi * (I2.Hf (ψ a) (ψ a)).re / 2`. Simplify using `[Complex.add_re, Complex.div_ofNat_re]`. Rewrite using `[hv, h, map_add, GlobalTheory.EtaAn.ThetaTorus.Hf_add_re, norm_mul, norm_mul, hε, _root_.one_mul, Complex.norm_exp, hre, mul_pow, sq (Real.exp _), ← Real.exp_add, mul_comm (Real.exp _) (‖θ z‖ ^ 2), _root_.mul_assoc, ← Real.exp_add]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `ψR : (Fin g → ℂ) ≃L[ℝ] I2.Vsp T.dim` to `(ψ.restrictScalars ℝ).toContinuousLinearEquiv`. Establish `hψR : ∀ z, ψR z = ψ z` using `fun z => rfl`. Set `eR : (Fin g → ℂ) ≃L[ℝ] (Fin 1 → I2.Vsp T.dim)` to `ψR.trans (ContinuousLinearEquiv.funUnique (Fin 1) ℝ (I2.Vsp T.dim)).symm`. Establish `heR : ∀ z, eR z = fun _ => ψ z` using `fun z => rfl`.
+
+Establish `hl2 : T.l2 1 (fun v : Fin 1 → I2.Vsp T.dim => θ (ψ.symm (v 0))) = ⨍ z in ψ ⁻¹' ZSpan.fundamentalDomain T.b, ‖θ z‖ ^ 2 * Real.exp (-Real.pi * (I2.Hf (ψ z) (ψ z)).re)`. Establish `hset : eR ⁻¹' T.fd 1 = ψ ⁻¹' ZSpan.fundamentalDomain T.b`. Use extensionality with `z`. Simplify using `[I2.PT.fd, heR]`. Unfold `I2.PT.l2`.
+
+Rewrite using `[GlobalTheory.EtaAn.ThetaTorus.setAverage_equiv volume volume eR, hset]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `[I2.PT.ptN2, I2.HC, heR]`. Establish `hqmp : MeasureTheory.Measure.QuasiMeasurePreserving ψR volume volume` using `⟨ψR.continuous.measurable, MeasureTheory.Measure.absolutelyContinuous_isAddHaarMeasure _ _⟩`.
+
+Establish `hfd0 : IsAddFundamentalDomain A (ψ ⁻¹' ZSpan.fundamentalDomain T.b) volume`. Establish `h0` using `ZSpan.isAddFundamentalDomain T.b (volume : Measure (I2.Vsp T.dim))`. Use `h0.preimage_of_equiv hqmp (e := fun y => (⟨ψ.symm y, (hL _).2 (by simp only [LinearEquiv.apply_symm_apply]; exact y.2)⟩ : A)) ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `y y' hyy`. Use `congrArg Subtype.val hyy` as an intermediate fact.
+
+Conclude with `Subtype.ext (ψ.symm.injective this)`. Introduce `a`. Use `⟨⟨ψ a, (hL a).1 a.2⟩, ?_⟩` and prove the remaining obligations. Use `ext1`. Simplify using the standard rewrite rules.
+
+Introduce `y z`. Express the relevant statement in the definitionally equal form `ψ (ψ.symm (y : I2.Vsp T.dim) + z) = (y : I2.Vsp T.dim) + ψ z`. Simplify using the standard rewrite rules. Establish `hcA : Countable A`. Establish `: Countable (Submodule.span ℤ (Set.range T.b))` using `inferInstance`.
+
+Use `Function.Injective.countable (f := fun a : A => (⟨ψ a, (hL a).1 a.2⟩ : Submodule.span ℤ (Set.range T.b))) ?_` and prove the remaining obligations. Introduce `a a' h`. Conclude with `Subtype.ext (ψ.injective (congrArg Subtype.val h))`. Rewrite using `[hl2, MeasureTheory.setAverage_eq, MeasureTheory.measureReal_def, hfd0.measure_eq hFd, hfd0.setIntegral_eq hFd hper, smul_eq_mul, div_eq_inv_mul]`.
+-/
 theorem l2_one_eq_integral_fundamentalDomain_div_volume {E : Type} [Field E] [NumberField E] {g : ℕ} (T : I2.PT E)
     (ψ : (Fin g → ℂ) ≃ₗ[ℂ] I2.Vsp T.dim) (θ : (Fin g → ℂ) → ℂ)
     (hs : (fun v : Fin 1 → I2.Vsp T.dim => θ (ψ.symm (v 0))) ∈ T.Sec 1 1)
@@ -122,6 +155,39 @@ theorem l2_one_eq_integral_fundamentalDomain_div_volume {E : Type} [Field E] [Nu
   rw [hl2, MeasureTheory.setAverage_eq, MeasureTheory.measureReal_def, hfd0.measure_eq hFd,
     hfd0.setIntegral_eq hFd hper, smul_eq_mul, div_eq_inv_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx w L x t T ψ e hsy hxd hw hT`. Take `⟨-, hH, hL, hact, heps, -⟩` from `hT`. Establish `hlaws` using `hx_laws E r X g bas idx 0 hsy ⟨0, rfl⟩ x hxd`. Establish `hpvL : ∀ u ∈ L, ψ (pv X idx x u) ∈ T.L` using `fun u hu => (hL _).2 ⟨u, hu, rfl⟩`. Establish `hsign : ∀ u ∈ L, eps1 X (w : E) u = (T.eps (ψ (pv X idx x u)) : ℂ)`.
+
+Introduce `u hu`. Establish `hmem` using `hpvL u hu`. Take `⟨k, hk⟩` from `T.integral _ _ hmem (T.stable w _ hmem)`. Establish `him : (I2.Hf (ψ (pv X idx x u)) (I2.act w (ψ (pv X idx x u)))).im = (EF X u ((w : E) • u) : ℝ)`. Rewrite using `[← hact, hH]`.
+
+Conclude with `hlaws.2.2.1 u _`. Establish `hq : ((EF X u ((w : E) • u) : ℚ) : ℂ) = (k : ℂ)`. Establish `h1 : ((EF X u ((w : E) • u) : ℚ) : ℝ) = (k : ℝ)` using `by rw [← him, hk]`. Establish `h2` using `congrArg (fun s : ℝ => (s : ℂ)) h1`. Move the coercions through the operations in `at h2`.
+
+Conclude with `h2`. Establish `hs1 : ((T.eps (ψ (pv X idx x u)) : ℤ) : ℂ) = ((Real.cos (Real.pi * k) : ℝ) : ℂ)`. Establish `h1` using `heps _ hmem`. Rewrite `h1` using `[hk]`. Rewrite using `[← h1]`.
+
+Use `norm_cast`. Unfold `eps1`. Rewrite using `[hq, cexp_pi_int, hs1]`. Establish `hHadd : ∀ z a : Fin g → ℂ, hx X bas idx x (z + (1 / 2 : ℂ) • a) a = I2.Hf (ψ z) (ψ a) + I2.Hf (ψ a) (ψ a) / 2`. Introduce `z a`.
+
+Rewrite using `[← hH, map_add, map_smul, Hf_add_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `hHadd' : ∀ z a : Fin g → ℂ, hx X bas idx x (z + (1 / 2 : ℂ) • a) a = hx X bas idx x z a + hx X bas idx x a a / 2`. Introduce `z a`. Rewrite using `[hHadd, hH, hH]`.
+
+Establish `hthper : ∀ θ, IsTheta1 X bas idx (w : E) x L θ → ∀ u ∈ L, ∀ z, θ (z + pv X idx x u) = (T.eps (ψ (pv X idx x u)) : ℂ) * cexp (Real.pi * I2.Hf (ψ z) (ψ (pv X idx x u)) + Real.pi * I2.Hf (ψ (pv X idx x u)) (ψ (pv X idx x u)) / 2) * θ z`. Introduce `θ hθ u hu z`. Take `⟨-, hθp⟩` from `hθ`. Establish `h` using `congrFun (hθp u hu) z`. Simplify using `only [Pi.smul_apply, smul_eq_mul, fock, hHadd, hsign u hu, Nat.cast_one, _root_.one_mul] at h`.
+
+Use `set ε : ℂ := ((T.eps (ψ (pv X idx x u)) : ℤ) : ℂ) with hεdef`. Use `set P := I2.Hf (ψ z) (ψ (pv X idx x u))`. Use `set Q := I2.Hf (ψ (pv X idx x u)) (ψ (pv X idx x u))`. Establish `hε : ε * ε = 1`. Apply the tactic sequence `rcases T.eps_pm _ (hpvL u hu) with h1 | h1 <;> simp [hεdef, h1]`.
+
+Establish `hc : cexp (Real.pi * P + Real.pi * Q / 2) * cexp (-(Real.pi * (P + Q / 2))) = 1`. Rewrite using `[← Complex.exp_add, show (Real.pi : ℂ) * P + Real.pi * Q / 2 + -(Real.pi * (P + Q / 2)) = 0 by ring, Complex.exp_zero]`. Rewrite using `[← h]`. Take the linear combination `(-(cexp (Real.pi * P + Real.pi * Q / 2) * cexp (-(Real.pi * (P + Q / 2)))) * θ (z + pv X idx x u)) * hε - θ (z + pv X idx x u) * hc`. Establish `hsec : ∀ θ, IsTheta1 X bas idx (w : E) x L θ → (fun v : Fin 1 → I2.Vsp T.dim => θ (ψ.symm (v 0))) ∈ T.Sec 1 1`.
+
+Introduce `θ hθ`. Use `show Differentiable ℂ (fun v : Fin 1 → I2.Vsp T.dim => θ (ψ.symm (v 0))) ∧ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hd : Differentiable ℂ (fun y : I2.Vsp T.dim => ψ.symm y)`. Simplify using `using (LinearMap.toContinuousLinearMap (ψ.symm : I2.Vsp T.dim →ₗ[ℂ] (Fin g → ℂ))).differentiable`.
+
+Take `⟨hθd, -⟩` from `hθ`. Conclude with `hθd.comp (hd.comp (differentiable_apply 0))`. Introduce `gam hgam v`. Take `⟨u, hu, hgu⟩` from `(hL (gam 0)).1 (hgam 0)`. Establish `h` using `hthper θ hθ u hu (ψ.symm (v 0))`.
+
+Simplify using `only [Pi.add_apply, I2.HC, Fin.sum_univ_one, Fin.prod_univ_one, pow_one, Nat.cast_one, _root_.one_mul, map_add]`. Rewrite using `[hgu, LinearEquiv.symm_apply_apply, h, LinearEquiv.apply_symm_apply]`. Use `⟨fun θ hθ => ⟨hsec θ hθ, fun hM => ?_⟩, ?_, hsign⟩` and prove the remaining obligations. Take `⟨A, Fd, hA, hFd, hmean⟩` from `hM`. Establish `hAL : ∀ z, z ∈ A ↔ ψ z ∈ T.L`.
+
+Introduce `z`. Rewrite using `[hA z, hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨v, hv, rfl⟩`.
+
+Introduce and unpack `⟨v, hv, h⟩`. Conclude with `⟨v, hv, ψ.injective h⟩`. Rewrite using `[l2_one_eq_integral_fundamentalDomain_div_volume T ψ θ (hsec θ hθ) A hAL Fd hFd]`. Simplify `hmean` using `only [hH]`. Introduce `n k th a z`.
+
+Simplify using `only [fock, I2.PT.U, Pi.sub_apply, sub_neg_eq_add, map_add, LinearEquiv.symm_apply_apply]`. Rewrite using `[Finset.prod_mul_distrib, ← Complex.exp_sum]`. Use `congr 1`. Use `congr 1`. Simplify using `only [I2.HC, Hf_neg_right, Hf_neg_left, neg_neg, hH, hHadd']`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem theta_on_torus :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (w : 𝓞 E) (L : Lt E r) (x : Frame X.Ψ r) (t : ℝ) (T : I2.PT E) (ψ : (Fin g → ℂ) ≃ₗ[ℂ] I2.Vsp T.dim) (e : Fin g ≃ I2.Idx T.dim), IsSympl X bas → x ∈ X.dom → (w : E) + cc (w : E) = 1 → (T.r = r ∧ (∀ z z', I2.Hf (ψ z) (ψ z') = hx X bas idx x z z') ∧ (∀ ga, ga ∈ T.L ↔ ∃ u ∈ L, ga = ψ (pv X idx x u)) ∧ (∀ (a : 𝓞 E) u, ψ (pv X idx x ((a : E) • u)) = I2.act a (ψ (pv X idx x u))) ∧ (∀ ga ∈ T.L, (T.eps ga : ℝ) = Real.cos (Real.pi * (I2.Hf ga (I2.act w ga)).im)) ∧ (∀ j, (e j).1 = rowType X (idx j) ∧ ψ (Pi.single j 1) = ((Real.sqrt t : ℝ) : ℂ) • EuclideanSpace.single (e j) (1 : ℂ))) → (∀ θ : (Fin g → ℂ) → ℂ, IsTheta1 X bas idx (w : E) x L θ → (fun v : Fin 1 → I2.Vsp T.dim => θ (ψ.symm (v 0))) ∈ T.Sec 1 1 ∧ (MeanOne X bas idx x L θ → T.l2 1 (fun v : Fin 1 → I2.Vsp T.dim => θ (ψ.symm (v 0))) = 1)) ∧ (∀ (n k : ℕ) (th : Fin n → (Fin g → ℂ) → ℂ) (a z : Fin n → Fin g → ℂ), ∏ b, fock X bas idx x k (a b) (th b) (z b) = T.U k (fun b => -ψ (a b)) (fun v => ∏ b, th b (ψ.symm (v b))) (fun b => ψ (z b))) ∧ ∀ u ∈ L, eps1 X (w : E) u = (T.eps (ψ (pv X idx x u)) : ℂ) := by
   intro E _ _ _ r X g bas idx w L x t T ψ e hsy hxd hw hT

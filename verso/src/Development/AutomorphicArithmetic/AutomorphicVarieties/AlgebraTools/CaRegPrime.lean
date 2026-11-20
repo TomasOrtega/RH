@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCot
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Introduce `R _ _ p _ _`. Take `⟨r, x, hx, hsp⟩` from `exists_cotInd_of_regular_quotient R p`. Take `⟨-, hdim, -⟩` from `regular_quotient_cotInd R _ x hx`. Take `⟨hh, hreg⟩` from `regular_localization_cotInd R _ x hx p hsp.symm`. Use `⟨hreg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height p (Localization.AtPrime p), hh, add_comm]`. Rewrite `hdim` using `[hsp]`. Rewrite using `[← hdim]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.AlgebraTools.regular_localization_of_regular_quotient :
     ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] (p : Ideal R) [p.IsPrime] [IsRegularLocalRing (R ⧸ p)],
       IsRegularLocalRing (Localization.AtPrime p) ∧

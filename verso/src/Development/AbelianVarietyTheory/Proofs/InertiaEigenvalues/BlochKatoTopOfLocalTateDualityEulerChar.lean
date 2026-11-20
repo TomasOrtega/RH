@@ -22,6 +22,11 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 
 namespace GlobalTheory.TopClosing
 
+/- English proof (translation)
+Introduce `_ hdual heul D HW F Cm`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, -, hE⟩ : Formalism.MainNotions.DeltaInvariantLattices.DeltaInvariantNormBound D HW F Cm` from `GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm`. Take `⟨a23, a24⟩` from `tableLineDegreeTwo.ainf_clauses_of_theorem D HW F hE`. Establish `hA : Formalism.MainNotions.LocalSituation.ClassMapInjectiveBijectiveNorms D HW F` using `GlobalTheory.HerrFull.herr_part_a_every_record D HW F`. Establish `hFN : Formalism.MainNotions.HerrComplexNaturality.FN D HW F` using `GlobalTheory.Decompl.fontaine_and_decompletion D HW F`.
+
+Establish `a16 : tableLineDegreeTwo.adm16 D HW F` using `Formalism.MainNotions.InvariantsGenerators.herr_lattice_of_fon D HW F ⟨hA, GlobalTheory.T.invariants_statement_holds D HW F hFN, GlobalTheory.T.fontaine_fullFaithful_exact_psi D HW F⟩`. Establish `a17 : tableLineDegreeTwo.adm17 D HW F` using `(Formalism.MainNotions.InvariantsGenerators.herr_lattice_rest_iff D HW F).2 ⟨GlobalTheory.EtaleSub.exists_lattice_of_pow_mem D HW F, GlobalTheory.ExtDict.extension_rule D HW F⟩`. Establish `a21 : tableLineDegreeTwo.adm21 D HW F` using `GlobalTheory.SenMult.stmtSen D HW F Cm ⟨a2, a4, a5, a9, a11⟩`. Conclude with `GlobalTheory.TopBridge.twistedLatticeCohomology_theoremTOP D HW F Cm ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, ⟨hdual, heul⟩, GlobalTheory.FiltrationJumpMultiplicity.blochKato_dimension_saturation_unramified D, GlobalTheory.T.crystalline_charact …`.
+-/
 theorem blochKatoTop_of_localTateDuality_eulerChar_alt : GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK →
     Formalism.GaloisCohomology.LocalEulerCharK → ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F), tableLineDegreeTwo.aux₃ D HW F := by

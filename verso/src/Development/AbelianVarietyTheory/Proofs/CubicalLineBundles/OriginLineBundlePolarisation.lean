@@ -15,6 +15,9 @@ open GlobalTheory GlobalTheory.WeierstrassCurve GlobalTheory.AddLaw
 
 namespace GlobalTheory.WeierstrassCurve
 
+/- English proof (translation)
+Establish `e : (t.appLE U ⊤ h).hom a = resG _ h ((t.app U).hom a)` using `rfl`. Rewrite using `[e]`. Use `⟨fun h0 => ?_, fun h0 => by rw [h0, map_zero]⟩` and prove the remaining obligations. Use `congrArg (resG _ (le_top : t ⁻¹ᵁ U ≤ ⊤)) h0` as an intermediate fact. Rewrite `this` using `[Cartier.resG_resG, Cartier.resG_self, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem appLE_top_eq_zero_iff {X T : Scheme.{0}} (t : T ⟶ X) {U : X.Opens} (h : ⊤ ≤ t ⁻¹ᵁ U)
     (a : Γ(X, U)) : (t.appLE U ⊤ h).hom a = 0 ↔ (t.app U).hom a = 0 := by
   have e : (t.appLE U ⊤ h).hom a = resG _ h ((t.app U).hom a) := rfl
@@ -23,6 +26,15 @@ theorem appLE_top_eq_zero_iff {X T : Scheme.{0}} (t : T ⟶ X) {U : X.Opens} (h 
   have := congrArg (resG _ (le_top : t ⁻¹ᵁ U ≤ ⊤)) h0
   rwa [Cartier.resG_resG, Cartier.resG_self, map_zero] at this
 
+/- English proof (translation)
+Rewrite using `[appLE_top_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Break down `i with _ | _` into its components or cases. Establish `h1 : (1 : Γ(T, t ⁻¹ᵁ coordOpen W 2)) = 0` using `(map_one _).symm.trans h0`.
+
+Establish `hT : IsEmpty T` using `⟨fun p => by`. Use `congrArg (T.presheaf.germ (t ⁻¹ᵁ coordOpen W 2) p (h (Set.mem_univ p))).hom h1` as an intermediate fact. Rewrite `this` using `[map_one, map_zero]`. Conclude with `absurd this one_ne_zero⟩`. Use `(eq_comp_zero_iff W t).2 ⟨fun p _ => (hT.false p).elim, Cartier.ext_germ fun p _ => (hT.false p).elim⟩` and prove the remaining obligations.
+
+Conclude with `(eq_comp_zero_iff W t).2 ⟨h, h0⟩`. Introduce `e`. Establish `h0` using `(secPull_originSec_eq_zero_iff W t).2 e (fun _ => i)`. Use `congrArg (resG T (Cartier.pull_U (originLB W) t (fun _ => i)).ge) h0` as an intermediate fact. Rewrite `this` using `[map_zero]`.
+
+Conclude with `((Cartier.resG_resG _ _ _).trans (Cartier.resG_self _ _)).symm.trans this`.
+-/
 theorem appLE_originSec_eq_zero_iff {R : Type} [CommRing R] (W : WeierstrassCurve R) {T : Scheme.{0}}
     (t : T ⟶ scheme W) (i : (originLB W).ι) (h : ⊤ ≤ t ⁻¹ᵁ (originLB W).U i) :
     (t.appLE ((originLB W).U i) ⊤ h).hom ((originSec W).f i) = 0 ↔ t = t ≫ toSpec W ≫ zero W := by
@@ -43,6 +55,11 @@ theorem appLE_originSec_eq_zero_iff {R : Type} [CommRing R] (W : WeierstrassCurv
     rw [map_zero] at this
     exact ((Cartier.resG_resG _ _ _).trans (Cartier.resG_self _ _)).symm.trans this
 
+/- English proof (translation)
+Take `⟨c, hc, -⟩` from `existsUnique_eq_appLE_mul_secPull W H s`. Establish `h' : ⊤ ≤ (t ≫ φ) ⁻¹ᵁ (originLB W).U (j ⟨⟩)` using `fun p hp => (Cartier.pull_U (originLB W) φ j).le (h hp)`. Establish `h0` using `(appLE_originSec_eq_zero_iff W (t ≫ φ) (j ⟨⟩) h').2 (e.trans (Category.assoc _ _ _).symm)`. Establish `h1 : (t.appLE (((originLB W).pull φ).U j) ⊤ h).hom ((Cartier.secPull (originSec W) φ).f j) = 0`. Use `Eq.trans ?_ h0` and prove the remaining obligations.
+
+Use `Scheme.Hom.appLE_comp_appLE t φ ((originLB W).U (j ⟨⟩)) _ ⊤ (Cartier.pull_U (originLB W) φ j).le h` as an intermediate fact. Conclude with `congrArg (fun g => g.hom ((originSec W).f (j ⟨⟩))) this`. Rewrite using `[hc j, map_mul, h1, mul_zero]`.
+-/
 theorem appLE_sec_pull_originLB_eq_zero {R : Type} [CommRing R] (W : WeierstrassCurve R)
     {R' : Type} [CommRing R'] {f : Sp R' ⟶ Sp R} {Y : Scheme.{0}} {φ : Y ⟶ scheme W} {q : Y ⟶ Sp R'}
     (H : IsPullback φ q (toSpec W) f) (s : ((originLB W).pull φ).Sec) {T : Scheme.{0}} (t : T ⟶ Y)
@@ -61,6 +78,13 @@ theorem appLE_sec_pull_originLB_eq_zero {R : Type} [CommRing R] (W : Weierstrass
     exact congrArg (fun g => g.hom ((originSec W).f (j ⟨⟩))) this
   rw [hc j, map_mul, h1, mul_zero]
 
+/- English proof (translation)
+Establish `he' : eSec (schemeOver W) = zero W` using `he`. Establish `hz : ∀ (T : Scheme.{0}) (t : T ⟶ (schemeOver W).left) (i : (originLB W).ι) (h : ⊤ ≤ t ⁻¹ᵁ (originLB W).U i), (t.appLE ((originLB W).U i) ⊤ h).hom ((originSec W).f i) = 0 ↔ t = t ≫ (schemeOver W).hom ≫ eSec (schemeOver W)` using `fun T t i h => by`. Rewrite using `[he']`. Conclude with `appLE_originSec_eq_zero_iff W t i h`. Use `⟨?_, ?_, relAmple_originLB W, ?_⟩` and prove the remaining obligations.
+
+Unfold `Out.Rigidified`. Rewrite using `[he']`. Conclude with `⟨_, isGen_one_pull_zero W⟩`. Conclude with `GlobalTheory.T.symmetric_lineBundle_of_regular_section _ (schemeOver W) (originLB W) (originSec W) (originLB_isLB W) (fun i V h => ((isRegularSec_originSec W i).resG h).mem) hz`. Use `GlobalTheory.T.kernelPolarisation_trivial_of_sections_vanish_zero _ (schemeOver W) (originLB W) (originSec W) (originLB_isLB W) hz ?_` and prove the remaining obligations.
+
+Introduce `R' _ f Y φ q H s T t j h e`. Rewrite `e` using `[he']`. Conclude with `appLE_sec_pull_originLB_eq_zero W H s t j h e`.
+-/
 theorem originLB_polarisation (R : Type) [CommRing R] (W : WeierstrassCurve R) [GrpObj (schemeOver W)]
     (_hc : IsCommMonObj (schemeOver W)) (he : η[schemeOver W].left = zero W) :
     Out.Rigidified (schemeOver W) (originLB W) ∧ Out.Sym (schemeOver W) (originLB W) ∧

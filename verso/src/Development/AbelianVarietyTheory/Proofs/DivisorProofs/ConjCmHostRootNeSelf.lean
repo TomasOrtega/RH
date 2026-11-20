@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.CovTop.WtRead
 
+/- English proof (translation)
+Introduce `h`. Establish `him : H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 h`. Establish `hre` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Simplify using `only [pow_two, Complex.mul_re, him, mul_zero, sub_zero, Complex.neg_re, Complex.natCast_re] at hre`. Establish `: (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`.
+
+Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`.
+-/
 theorem conj_cmHostRoot_ne_self {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     (starRingEnd ℂ) H.rt0 ≠ H.rt0 := by
   intro h
@@ -22,6 +27,11 @@ theorem conj_cmHostRoot_ne_self {E : Type} [Field E] [NumberField E] [IsCMField 
   have : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
   nlinarith [mul_self_nonneg H.rt0.re]
 
+/- English proof (translation)
+Establish `hb : Function.Bijective fun t => InfinitePlace.mk (DV.tauEmb D t)` using `(Fintype.bijective_iff_injective_and_card _).2 ⟨Formalism.L2.Geo.Rec.StarEmbeddingNorm.mk_tauEmb_injective D, (Formalism.L2.Geo.Rec.StarEmbeddingNorm.card_places D).symm⟩`. Take `⟨t, ht⟩` from `hb.2 (InfinitePlace.mk τ)`. Use `⟨t, ?_⟩` and prove the remaining obligations. Break down `InfinitePlace.mk_eq_iff.1 ht with h | h` into its components or cases. Conclude with `Or.inl h`.
+
+Use `right`. Rewrite using `[← h]`. Use extensionality with `x`. Simplify using `[conjEmb, ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem exists_of_places (D : D7) (τ : D.host.E →+* ℂ) :
     ∃ t, DV.tauEmb D t = τ ∨ conjEmb (DV.tauEmb D t) = τ := by
   have hb : Function.Bijective fun t => InfinitePlace.mk (DV.tauEmb D t) :=
@@ -36,6 +46,11 @@ theorem exists_of_places (D : D7) (τ : D.host.E →+* ℂ) :
     ext x
     simp [conjEmb, ComplexEmbedding.conjugate_coe_eq]
 
+/- English proof (translation)
+Use `⟨fun s t h => GlobalTheory.WeightExponents.tauEmb_injective D (congrArg Subtype.val h), fun τ => ?_⟩` and prove the remaining obligations. Take `⟨t, h | h⟩` from `exists_of_places D τ.1`. Conclude with `⟨t, Subtype.ext h⟩`. It suffices to derive a contradiction. Establish `h1 : conjEmb (DV.tauEmb D t) (Q.H.rt : D.host.E) = (starRingEnd ℂ) Q.H.rt0`.
+
+Simplify using `only [conjEmb, RingHom.coe_comp, Function.comp_apply, hQ.2.2.2 t]`. Conclude with `conj_cmHostRoot_ne_self Q.H (h1.symm.trans ((congrArg (fun σ : D.host.E →+* ℂ => σ (Q.H.rt : D.host.E)) h).trans τ.2))`.
+-/
 theorem tauEmb_bijective (D : D7) (Q : Par D) (hQ : Q.PinHost) :
     Function.Bijective (fun t : D.what₂.Tau => (⟨DV.tauEmb D t, hQ.2.2.2 t⟩ : Psi Q.H)) := by
   refine ⟨fun s t h => GlobalTheory.WeightExponents.tauEmb_injective D (congrArg Subtype.val h), fun τ => ?_⟩
@@ -49,9 +64,15 @@ theorem tauEmb_bijective (D : D7) (Q : Par D) (hQ : Q.PinHost) :
 def tauPsi (D : D7) (Q : Par D) (hQ : Q.PinHost) : D.what₂.Tau ≃ Psi Q.H :=
   Equiv.ofBijective _ (tauEmb_bijective D Q hQ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tauPsi_val (D : D7) (Q : Par D) (hQ : Q.PinHost) (t : D.what₂.Tau) :
     (tauPsi D Q hQ t).1 = DV.tauEmb D t := rfl
 
+/- English proof (translation)
+Use `i.2` as an intermediate fact. Unfold `Ranks.sigW Ranks.r`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sigW_add (D : D7) (i : Fin D.R.m) :
     (D.R.sigW ((i : ℕ) + 1)).1 + (D.R.sigW ((i : ℕ) + 1)).2 = D.R.r := by
   have := i.2
@@ -59,6 +80,11 @@ theorem sigW_add (D : D7) (i : Fin D.R.m) :
   simp only
   omega
 
+/- English proof (translation)
+Establish `hD` using `hT.pins.2.2.2 ((i : ℕ) + 1) ⟨by omega, i.2⟩`. Establish `hk : (k : ℕ) < (T.Q.Dw ((i : ℕ) + 1)).p` using `by have := hD.1; have := a.2; omega`. Simplify using `only [laOf, weightOf, if_pos hk, hτ]`. Rewrite using `[GlobalTheory.WeightExponents.wtA_tauEmb hT.pins.1, Formalism.L2.Pj.ext0, dif_pos (by omega)]`. Establish `: (⟨(k : ℕ), by omega⟩ : Fin (D.R.sigW ((i : ℕ) + 1)).1) = a` using `Fin.ext ha.symm`.
+
+Rewrite using `[this]`.
+-/
 theorem laOf_big (D : D7) (T : CoreJ D) (hT : LawsJ T) (i : Fin D.R.m) (κ : WeightFamilies.Wt D ((i : ℕ) + 1))
     (t : D.what₂.Tau) (τ : Psi T.Q.H) (hτ : τ.1 = DV.tauEmb D t)
     (k : Fin ((T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q)) (a : Fin (D.R.sigW ((i : ℕ) + 1)).1)
@@ -71,6 +97,11 @@ theorem laOf_big (D : D7) (T : CoreJ D) (hT : LawsJ T) (i : Fin D.R.m) (κ : Wei
   have : (⟨(k : ℕ), by omega⟩ : Fin (D.R.sigW ((i : ℕ) + 1)).1) = a := Fin.ext ha.symm
   rw [this]
 
+/- English proof (translation)
+Establish `hD` using `hT.pins.2.2.2 ((i : ℕ) + 1) ⟨by omega, i.2⟩`. Establish `hs` using `sigW_add D i`. Establish `hp` using `hD.1`. Establish `hq` using `hD.2.1`. Establish `hk : ¬ (k : ℕ) < (T.Q.Dw ((i : ℕ) + 1)).p` using `by omega`.
+
+Simplify using `only [laOf, weightOf, if_neg hk, hτ]`. Rewrite using `[GlobalTheory.Shares.WtDic.wtA_conj, Formalism.L2.Pj.ext0, dif_pos (by omega)]`. Establish `: (⟨(T.Q.Dw ((i : ℕ) + 1)).q - 1 - ((k : ℕ) - (T.Q.Dw ((i : ℕ) + 1)).p), by omega⟩ : Fin (D.R.sigW ((i : ℕ) + 1)).2) = a` using `Fin.ext (by simp only; omega)`. Rewrite using `[this]`.
+-/
 theorem laOf_small (D : D7) (T : CoreJ D) (hT : LawsJ T) (i : Fin D.R.m) (κ : WeightFamilies.Wt D ((i : ℕ) + 1))
     (t : D.what₂.Tau) (τ : Psi T.Q.H) (hτ : τ.1 = DV.tauEmb D t)
     (k : Fin ((T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q)) (a : Fin (D.R.sigW ((i : ℕ) + 1)).2)
@@ -87,6 +118,13 @@ theorem laOf_small (D : D7) (T : CoreJ D) (hT : LawsJ T) (i : Fin D.R.m) (κ : W
       Fin (D.R.sigW ((i : ℕ) + 1)).2) = a := Fin.ext (by simp only; omega)
   rw [this]
 
+/- English proof (translation)
+Introduce `D T hT i κ`. Establish `hP` using `hT.pins`. Establish `hD` using `hP.2.2.2 ((i : ℕ) + 1) ⟨by omega, i.2⟩`. Establish `hs` using `sigW_add D i`. Establish `hcard : Fintype.card (Psi T.Q.H) = D.R.f` using `(Fintype.card_congr (tauPsi D T.Q hP.1)).symm.trans (Formalism.MainNotions.Lnk.card_Tau D)`.
+
+Use `⟨hD.1, hD.2.1, ?_, ?_, Formalism.L2.Pj.dom_wtA κ, tauPsi D T.Q hP.1, fun t => rfl, fun t k => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card, hcard]`. Rewrite using `[dimFlag, Formalism.DegreeFormula.dimFl, hcard, hD.1, hD.2.1, hs, Nat.choose_two_right]`. Conclude with `fun a ha => laOf_big D T hT i κ t _ rfl k a ha`. Introduce `a ha`.
+
+Rewrite using `[laOf_small D T hT i κ t _ rfl k a ha]`. Establish `h0 : (0 : ℤ) ≤ ((κ.n / 2 : ℕ) : ℤ)` using `Int.natCast_nonneg _`. Establish `h1 : ((κ.n / 2 : ℕ) : ℤ) ≤ (κ.n : ℤ)` using `by exact_mod_cast Nat.div_le_self _ _`. Rewrite using `[show -(κ.aM t a : ℤ) - ((κ.n / 2 : ℕ) : ℤ) + (κ.aM t a : ℤ) = -((κ.n / 2 : ℕ) : ℤ) by ring, abs_neg, abs_of_nonneg h0]`. Conclude with `h1`.
+-/
 theorem main : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ (i : Fin D.R.m) (κ : WeightFamilies.Wt D ((i : ℕ) + 1)), (T.Q.Dw ((i : ℕ) + 1)).p = (D.R.sigW ((i : ℕ) + 1)).1 ∧ (T.Q.Dw ((i : ℕ) + 1)).q = (D.R.sigW ((i : ℕ) + 1)).2 ∧ Nat.card (Psi T.Q.H) = D.R.f ∧ dimFlag (T.Q.Dw ((i : ℕ) + 1)) = D.R.f * D.R.r.choose 2 ∧ Dom (wtA κ) κ.n ∧ ∃ e : D.what₂.Tau ≃ Psi T.Q.H, (∀ t, (e t).1 = DV.tauEmb D t) ∧ ∀ t (k : Fin ((T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q)), (∀ a : Fin (D.R.sigW ((i : ℕ) + 1)).1, (a : ℕ) = k → laOf (T.Q.Dw ((i : ℕ) + 1)) (wtA κ) κ.n (e t) k = (κ.aP t a : ℤ) + ((κ.n / 2 : ℕ) : ℤ)) ∧ (∀ a : Fin (D.R.sigW ((i : ℕ) + 1)).2, (a : ℕ) + k + 1 = D.R.r → |laOf (T.Q.Dw ((i : ℕ) + 1)) (wtA κ) κ.n (e t) k + (κ.aM t a : ℤ)| ≤ (κ.n : ℤ)) := by
   intro D T hT i κ
   have hP := hT.pins

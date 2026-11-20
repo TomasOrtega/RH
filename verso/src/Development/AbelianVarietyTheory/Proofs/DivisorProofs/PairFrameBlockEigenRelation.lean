@@ -12,33 +12,56 @@ noncomputable section
 namespace GlobalTheory.ThKTorus.Scale
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Simplify using `only [realAd, map_add]`. Both sides reduce to the same expression.
+-/
 theorem realAd_add (u v : ℝ) : realAd F u + realAd F v = realAd F (u + v) := by
   simp only [realAd, map_add]
   rfl
 
+/- English proof (translation)
+Simplify using `only [realAd, map_mul]`. Conclude with `Prod.ext rfl (mul_zero _)`.
+-/
 theorem realAd_mul (u v : ℝ) : realAd F u * realAd F v = realAd F (u * v) := by
   simp only [realAd, map_mul]
   exact Prod.ext rfl (mul_zero _)
 
+/- English proof (translation)
+Simplify using `only [realAd, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem realAd_zero : realAd F 0 = 0 := by
   simp only [realAd, map_zero]
   rfl
 
+/- English proof (translation)
+Simplify using `only [tAd]`. Establish `: realAd F (u * v - 1) = realAd F (u - 1) + realAd F (v - 1) + realAd F (u - 1) * realAd F (v - 1)`. Rewrite using `[realAd_mul, realAd_add, realAd_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tAd_mul (u v : ℝ) : tAd F u * tAd F v = tAd F (u * v) := by
   simp only [tAd]
   have : realAd F (u * v - 1) = realAd F (u - 1) + realAd F (v - 1) + realAd F (u - 1) * realAd F (v - 1) := by
     rw [realAd_mul, realAd_add, realAd_add]; congr 1; ring
   rw [this]; ring
 
+/- English proof (translation)
+Simplify using `[tAd, realAd_zero]`.
+-/
 theorem tAd_one : tAd F 1 = 1 := by
   simp [tAd, realAd_zero]
 
+/- English proof (translation)
+Rewrite using `[tAd_mul, inv_mul_cancel₀ hs, tAd_one]`.
+-/
 theorem tAd_inv_mul {s : ℝ} (hs : s ≠ 0) : tAd F s⁻¹ * tAd F s = 1 := by
   rw [tAd_mul, inv_mul_cancel₀ hs, tAd_one]
 
 section GlobalTheory
 variable {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : Fin q → Finset κ)
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `tAd_inv_mul (ht i)`. Conclude with `one_mul 1`.
+-/
 theorem prod_inv_mul (t : Fin q → ℝ) (ht : ∀ i, t i ≠ 0) (j : κ) :
     (∏ i, if j ∈ blk i then tAd F (t i)⁻¹ else 1) * (∏ i, if j ∈ blk i then tAd F (t i) else 1) = 1 := by
   rw [← Finset.prod_mul_distrib]
@@ -47,23 +70,35 @@ theorem prod_inv_mul (t : Fin q → ℝ) (ht : ∀ i, t i ≠ 0) (j : κ) :
   · exact tAd_inv_mul (ht i)
   · exact one_mul 1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [blkScale]`. Rewrite using `[← mul_assoc, prod_inv_mul blk t ht j, one_mul]`.
+-/
 theorem blkScale_inv_blkScale (t : Fin q → ℝ) (ht : ∀ i, t i ≠ 0) (z : κ → AF F) :
     blkScale blk (fun i => (t i)⁻¹) (blkScale blk t z) = z := by
   funext j
   simp only [blkScale]
   rw [← mul_assoc, prod_inv_mul blk t ht j, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [blkScale, Pi.add_apply, mul_add]`.
+-/
 theorem blkScale_add (s : Fin q → ℝ) (z w : κ → AF F) :
     blkScale blk s (z + w) = blkScale blk s z + blkScale blk s w := by
   funext j
   simp only [blkScale, Pi.add_apply, mul_add]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, blkScale]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_mul_mul_comm, prod_inv_mul blk t ht j, one_mul]`.
+-/
 theorem dot_blkScale (t : Fin q → ℝ) (ht : ∀ i, t i ≠ 0) (x y : κ → AF F) :
     blkScale blk (fun i => (t i)⁻¹) x ⬝ᵥ blkScale blk t y = x ⬝ᵥ y := by
   simp only [dotProduct, blkScale]
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [mul_mul_mul_comm, prod_inv_mul blk t ht j, one_mul]
 
+/- English proof (translation)
+Simplify using `only [schr, dot_blkScale blk t ht, blkScale_add]`.
+-/
 theorem schr_blkScale (ψ : AddChar (AF F) ℂ) (t : Fin q → ℝ) (ht : ∀ i, t i ≠ 0) (p r : κ → AF F)
     (g : (κ → AF F) → ℂ) (x : κ → AF F) :
     schr ψ (blkScale blk (fun i => (t i)⁻¹) p, blkScale blk t r) g (blkScale blk (fun i => (t i)⁻¹) x) =
@@ -75,6 +110,11 @@ end GlobalTheory
 section Main
 variable {E : Type} [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hw : w = co.e.symm ((co.e w).1, 0) + co.e.symm (0, (co.e w).2)`. Rewrite using `[← map_add]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [hw]`. Rewrite using `[Matrix.mul_add, map_add, ((hco.2 t a ht hta) _).1, ((hco.2 t a ht hta) _).2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem co_mat_mul {σ : E →ₐ[F] E} {n d q : ℕ} {J : Matrix (Fin n) (Fin n) E} {JW : Matrix (Fin d) (Fin d) E}
     {x y : Fin q → Fin n → E} {co : Darboux (symp (R := AF F) (cA σ) (-1) (incM F J) (incM F JW)) (Fin n × Fin d)}
     {blk : Fin q → Finset (Fin n × Fin d)} (hco : IsFrameCo σ J JW x y co blk) {t : Fin q → ℝ} {a : UA σ J}
@@ -90,9 +130,19 @@ def twist {n d : ℕ} {σ : E →ₐ[F] E} {X : Spc F E n} {W : Spc F E d} (e : 
     (a : UA σ X.J) {q : ℕ} (blk : Fin q → Finset (Fin n × Fin d)) (t : Fin q → ℝ) : Fn F n d →ₗ[ℂ] Fn F n d :=
   LinearMap.funLeft ℂ ℂ (blkScale blk (fun i => (t i)⁻¹)) ∘ₗ e ∘ₗ om (a, 1)
 
+/- English proof (translation)
+Simplify using `[incM]`.
+-/
 theorem incM_one (n : ℕ) : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := by
   simp [incM]
 
+/- English proof (translation)
+Introduce `Ψ hΨ`. Establish `hs` using `hpair.weil.isUSplitting`. Establish `hΨ' : om (a, 1) Ψ ∈ schA F (Fin n × Fin d)` using `hs.pres (a, 1) Ψ hΨ`. Establish `h1 : om (a, 1) (M.co.rho B.ψ w Ψ) = M.co.rho B.ψ (mat a * w) (om (a, 1) Ψ)`. Rewrite using `[hs.impl (a, 1) w Ψ hΨ]`.
+
+Use `congr 2`. Simplify using `[actAB, mat]`. Establish `h2 : e (M.co.rho B.ψ (mat a * w) (om (a, 1) Ψ)) = M₁.co.rho B.ψ (mat a * w) (e (om (a, 1) Ψ))`. Simplify `hev.Heisenberg₂ (mat a * w) _ hΨ'` using `[incM_one]`. Use function extensionality and compare the values at `z`.
+
+Establish `hne : ∀ i, t i ≠ 0` using `fun i => (ht i).ne'`. Simplify using `only [twist, LinearMap.comp_apply, LinearMap.funLeft_apply]`. Rewrite using `[h1, h2]`. Simplify using `only [Darboux.rho, co_mat_mul hco ht hta w]`. Conclude with `schr_blkScale blk B.ψ t hne _ _ _ z`.
+-/
 theorem twist_heis {σ : E →ₐ[F] E} {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hpair : IsPair B M χX χW om r s r' s') {q : ℕ}
     {x y : Fin q → Fin n → E} {M₁ : Model σ X W} {blk : Fin q → Finset (Fin n × Fin d)} {e : Fn F n d →ₗ[ℂ] Fn F n d}
@@ -117,6 +167,13 @@ theorem twist_heis {σ : E →ₐ[F] E} {B : Base F E} {n d : ℕ} {X : Spc F E 
 
 end Main
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair q x y hxy M₁ blk e hM₁ hco hev φ hφ`. Take `⟨ex, hex⟩` from `GlobalTheory.T.pair_frame_blocks_evaluation hK F E σ B n d X W M χX χW om r s r' s' hpair q x y hxy M₁ blk e hM₁ hco hev`. Use `⟨ex, fun t a ht hta f κ h z => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `GlobalTheory.T.pair_evaluation_self_linear hK F E σ B n d X W M χX χW om r s r' s' hpair M₁ e hM₁ hev (twist e om a blk t) (fun w => twist_heis hpair hco hev ht hta w)`. Establish `hne : ∀ i, t i ≠ 0` using `fun i => (ht i).ne'`.
+
+Establish `key : ∀ Ψ ∈ schA F (Fin n × Fin d), ∀ z, e (om (a, 1) Ψ) z = c * e Ψ (blkScale blk t z)`. Introduce `Ψ hΨ z`. Use `congrFun (hc Ψ hΨ) (blkScale blk t z)` as an intermediate fact. Simplify `this` using `[twist, blkScale_inv_blkScale blk t hne]`. Establish `hc'` using `hex t a c ht hta key`.
+
+Establish `hs` using `hpair.weil.isUSplitting`. Establish `hΨ0 : om (κ, h) (pureA F f φ) ∈ schA F (Fin n × Fin d)` using `hs.pres (κ, h) _ (Submodule.subset_span ⟨f, φ, hφ, rfl⟩)`. Rewrite using `[show ((a * κ, h) : UA σ X.J × UA σ W.J) = (a, 1) * (κ, h) by simp, map_mul, Module.End.mul_apply, key _ hΨ0, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right hc' (norm_nonneg _)`.
+-/
 theorem norm_eval_torus_le : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ (q : ℕ) (x y : Fin q → Fin n → E), IsFrameU σ X.J x y →

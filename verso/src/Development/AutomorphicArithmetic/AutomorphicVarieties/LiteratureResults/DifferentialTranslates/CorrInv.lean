@@ -9,6 +9,9 @@ namespace UpperTheory.V.Lit.Dr
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `ga_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, pInf_infGL, pInf_finGL, mul_one]`. Simplify using `only [map_mul, pFin_infGL, pFin_finGL, one_mul]`. Both sides reduce to the same expression.
+-/
 private theorem rat_mul_split (γ : GL (Fin a) E) (g : GL (Fin a) (Cinf E)) (x : GL (Fin a) (Af E)) :
     infGL E a (GeneralLinearGroup.map (pInf E) (ratGL E a γ) * g) *
         finGL E a (GeneralLinearGroup.map (algebraMap E (Af E)) γ * x) =
@@ -18,12 +21,20 @@ private theorem rat_mul_split (γ : GL (Fin a) E) (g : GL (Fin a) (Cinf E)) (x :
   · simp only [map_mul, pFin_infGL, pFin_finGL, one_mul]
     rfl
 
+/- English proof (translation)
+Use `ga_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, pInf_infGL, pInf_finGL, mul_one]`. Simplify using `only [map_mul, pFin_infGL, pFin_finGL, one_mul]`.
+-/
 private theorem split_ga (g : GA E a) :
     infGL E a (GeneralLinearGroup.map (pInf E) g) * finGL E a (GeneralLinearGroup.map (pFin E) g) = g := by
   refine ga_ext ?_ ?_
   · simp only [map_mul, pInf_infGL, pInf_finGL, mul_one]
   · simp only [map_mul, pFin_infGL, pFin_finGL, one_mul]
 
+/- English proof (translation)
+Establish `hs : ∀ p : HV E a, (geo ho U Ξ).ρ γ⁻¹ (sand g p) = sand (GeneralLinearGroup.map (pInf E) (ratGL E a (γ⁻¹).1) * g) p` using `fun p => by`. Rewrite using `[geo_ρ, map_mul]`. Both sides reduce to the same expression. Establish `hσ : (geo ho U Ξ).σ γ⁻¹ (x : GL (Fin a) (Af E) ⧸ U) = ((GeneralLinearGroup.map (algebraMap E (Af E)) (γ⁻¹).1 * x : GL (Fin a) (Af E)) : GL (Fin a) (Af E) ⧸ U)` using `rfl`. Rewrite using `[Geo.act_apply, hσ]`.
+
+Simplify using `only [map_smul, hs]`. Rewrite using `[h, rat_mul_split, geo_ξ, Matrix.mulVec_mulVec, ← map_mul, ← mul_assoc, ← map_mul, ← map_mul]`. Simplify using `only [Subgroup.coe_inv, mul_inv_cancel, map_one, one_mul]`.
+-/
 private theorem act_corr (ho : IsOpen (cone E a)) (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a) (q : ℕ)
     (α : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))) (w : (geo ho U Ξ).Om q) (h : Corr U Ξ α w.1)
     (γ : (⊤ : Subgroup (GL (Fin a) E))) (g : GL (Fin a) (Cinf E)) (x : GL (Fin a) (Af E)) (X : Fin q → Herm E a) :
@@ -40,6 +51,15 @@ private theorem act_corr (ho : IsOpen (cone E a)) (U : Subgroup (GL (Fin a) (Af 
   rw [h, rat_mul_split, geo_ξ, Matrix.mulVec_mulVec, ← map_mul, ← mul_assoc, ← map_mul, ← map_mul]
   simp only [Subgroup.coe_inv, mul_inv_cancel, map_one, one_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ a ho U Ξ q α w h`. Prove the components needed by the constructor for the conclusion. Introduce `hL γ`. Use `Subtype.ext (funext fun s => funext fun p => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ cone E a`.
+
+Take `⟨g, rfl⟩` from `hp`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`. Use `ext1 v`. Establish `hv' : v = fun i => (2 : ℝ) • sand g (hv (hv.symm ((2 : ℝ)⁻¹ • sand g⁻¹ (v i))))`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[LinearEquiv.apply_symm_apply, map_smul, smul_smul, ← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Simplify using the standard rewrite rules. Rewrite using `[hv', act_corr ho U Ξ q α w h, h, hL]`. Rewrite using `[(((geo ho U Ξ).act q γ w).2 s).2 p hp, (w.2 s).2 p hp]`. Introduce `hw X γ g`.
+
+Establish `h1` using `act_corr ho U Ξ q α w h (⟨γ, Subgroup.mem_top γ⟩ : (⊤ : Subgroup (GL (Fin a) E)))⁻¹ (GeneralLinearGroup.map (pInf E) g) (GeneralLinearGroup.map (pFin E) g) X`. Rewrite `h1` using `[hw, h, split_ga, inv_inv]`. Establish `h2` using `congrArg (fun y => Ξ.mat (GeneralLinearGroup.map (pInf E) g)⁻¹ *ᵥ y) h1`. Simplify using `only [Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec] at h2`. Conclude with `h2.symm`.
+-/
 theorem corrInv : CorrInv := by
   intro E _ _ _ a ho U Ξ q α w h
   constructor

@@ -20,57 +20,102 @@ open scoped ENNReal
 
 variable {P Q P' Q' : ℕ}
 
+/- English proof (translation)
+Simplify using `[ActionCoordinates.herm, PerpendicularEmbedding.herm, ActionCoordinates.sgn, Fintype.sum_sum_type, sub_eq_add_neg]`.
+-/
 theorem herm_eq (x y : PerpendicularEmbedding.Sp P Q) : ActionCoordinates.herm x y = PerpendicularEmbedding.herm x y := by
   simp [ActionCoordinates.herm, PerpendicularEmbedding.herm, ActionCoordinates.sgn, Fintype.sum_sum_type, sub_eq_add_neg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[ActionCoordinates.qf, herm_eq, PerpendicularEmbedding.herm_self, Complex.ofReal_re]`.
+-/
 theorem qf_eq : (ActionCoordinates.qf : PerpendicularEmbedding.Sp P Q → ℝ) = PerpendicularEmbedding.qf := by
   funext x
   rw [ActionCoordinates.qf, herm_eq, PerpendicularEmbedding.herm_self, Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[ActionCoordinates.bil, herm_eq, Algebra.trace_complex_apply]`.
+-/
 theorem bil_eq (x y : PerpendicularEmbedding.Sp P Q) : ActionCoordinates.bil x y = 2 * (PerpendicularEmbedding.herm x y).re := by
   rw [ActionCoordinates.bil, herm_eq, Algebra.trace_complex_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dx_eq (P Q : ℕ) : ActionCoordinates.dx P Q = PerpendicularEmbedding.dx P Q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cM_eq (M : ℕ) : ActionCoordinates.cM M = ENNReal.ofReal (PerpendicularEmbedding.cM M) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_eq (g : UpqT P Q) (x : PerpendicularEmbedding.Sp P Q) : ActionCoordinates.act g x = PerpendicularEmbedding.act g x := rfl
 
+/- English proof (translation)
+Simplify using `only [ActionCoordinates.IsPerpFrame, PerpendicularEmbedding.IsPerpEmb, herm_eq, act_eq, Matrix.toLin'_apply]`.
+-/
 theorem isPerpFrame_iff (x₀ : PerpendicularEmbedding.Sp P Q) (A : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ)
     (j : UpqT P' Q' → UpqT P Q) :
     ActionCoordinates.IsPerpFrame x₀ (Matrix.toLin' A) j ↔ PerpendicularEmbedding.IsPerpEmb x₀ A j := by
   simp only [ActionCoordinates.IsPerpFrame, PerpendicularEmbedding.IsPerpEmb, herm_eq, act_eq, Matrix.toLin'_apply]
 
+/- English proof (translation)
+Rewrite using `[← isPerpFrame_iff, Matrix.toLin'_toMatrix']`.
+-/
 theorem isPerpEmb_iff (x₀ : PerpendicularEmbedding.Sp P Q) (A : PerpendicularEmbedding.Sp P' Q' →ₗ[ℂ] PerpendicularEmbedding.Sp P Q)
     (j : UpqT P' Q' → UpqT P Q) :
     PerpendicularEmbedding.IsPerpEmb x₀ (LinearMap.toMatrix' A) j ↔ ActionCoordinates.IsPerpFrame x₀ A j := by
   rw [← isPerpFrame_iff, Matrix.toLin'_toMatrix']
 
+/- English proof (translation)
+Unfold `PerpendicularEmbedding.qf`. Use `fun_prop`.
+-/
 theorem continuous_qf : Continuous (PerpendicularEmbedding.qf : PerpendicularEmbedding.Sp P Q → ℝ) := by
   unfold PerpendicularEmbedding.qf
   fun_prop
 
+/- English proof (translation)
+Simplify using `[PerpendicularEmbedding.qf]`.
+-/
 theorem qf_zero : PerpendicularEmbedding.qf (0 : PerpendicularEmbedding.Sp P Q) = 0 := by simp [PerpendicularEmbedding.qf]
 
 def rho (j : Fin P ⊕ Fin Q) (x : PerpendicularEmbedding.Sp P Q) : ℝ :=
   Complex.normSq (x j) / ∑ i, Complex.normSq (x i)
 
+/- English proof (translation)
+Introduce `h`. Rewrite `h` using `[Finset.sum_eq_zero_iff_of_nonneg fun _ _ => Complex.normSq_nonneg _]`. Conclude with `hx (funext fun i => Complex.normSq_eq_zero.1 (h i (Finset.mem_univ i)))`.
+-/
 theorem sum_normSq_ne {x : PerpendicularEmbedding.Sp P Q} (hx : x ≠ 0) : ∑ i, Complex.normSq (x i) ≠ 0 := by
   intro h
   rw [Finset.sum_eq_zero_iff_of_nonneg fun _ _ => Complex.normSq_nonneg _] at h
   exact hx (funext fun i => Complex.normSq_eq_zero.1 (h i (Finset.mem_univ i)))
 
+/- English proof (translation)
+The claim follows from `div_nonneg (Complex.normSq_nonneg _) (Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _)`.
+-/
 theorem rho_nonneg (j : Fin P ⊕ Fin Q) (x : PerpendicularEmbedding.Sp P Q) : 0 ≤ rho j x :=
   div_nonneg (Complex.normSq_nonneg _) (Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _)
 
+/- English proof (translation)
+Unfold `rho`. Rewrite using `[← Finset.sum_div, div_self (sum_normSq_ne hx)]`.
+-/
 theorem sum_rho {x : PerpendicularEmbedding.Sp P Q} (hx : x ≠ 0) : ∑ j, rho j x = 1 := by
   unfold rho
   rw [← Finset.sum_div, div_self (sum_normSq_ne hx)]
 
+/- English proof (translation)
+Unfold `rho`. Apply the tactic sequence `refine Measurable.div (Continuous.measurable ?_) (Continuous.measurable ?_) <;> fun_prop`.
+-/
 theorem measurable_rho (j : Fin P ⊕ Fin Q) : Measurable (rho j) := by
   unfold rho
   refine Measurable.div (Continuous.measurable ?_) (Continuous.measurable ?_) <;> fun_prop
 
+/- English proof (translation)
+Unfold `rho`. Apply the tactic sequence `refine ContinuousOn.div (Continuous.continuousOn ?_) (Continuous.continuousOn ?_) fun x hx => sum_normSq_ne hx <;> fun_prop`.
+-/
 theorem continuousOn_rho (j : Fin P ⊕ Fin Q) : ContinuousOn (rho j) {x | x ≠ 0} := by
   unfold rho
   refine ContinuousOn.div (Continuous.continuousOn ?_) (Continuous.continuousOn ?_)
@@ -79,11 +124,19 @@ theorem continuousOn_rho (j : Fin P ⊕ Fin Q) : ContinuousOn (rho j) {x | x ≠
 def glue (j : Fin P ⊕ Fin Q) (p : ℂ × ({i // i ≠ j} → ℂ)) : PerpendicularEmbedding.Sp P Q :=
   fun i => if h : i = j then p.1 else p.2 ⟨i, h⟩
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Unfold `glue`. Apply the tactic sequence `by_cases h : i = j <;> simp only [h, dite_true, dite_false] <;> fun_prop`.
+-/
 theorem continuous_glue (j : Fin P ⊕ Fin Q) : Continuous (glue j) := by
   refine continuous_pi fun i => ?_
   unfold glue
   by_cases h : i = j <;> simp only [h, dite_true, dite_false] <;> fun_prop
 
+/- English proof (translation)
+Establish `h1` using `(volume_preserving_piEquivPiSubtypeProd (fun _ : Fin P ⊕ Fin Q => ℂ) (fun i => i = j)).symm`. Establish `h2` using `((volume_preserving_funUnique {i // i = j} ℂ).symm).prod (MeasurePreserving.id (volume : Measure ({i // i ≠ j} → ℂ)))`. Establish `h3` using `h1.comp (f := Prod.map (MeasurableEquiv.funUnique {i // i = j} ℂ).symm id) (μa := (volume : Measure ℂ).prod volume) (by rw [Measure.volume_eq_prod]; convert h2)`. Establish `e : glue j = (MeasurableEquiv.piEquivPiSubtypeProd (fun _ => ℂ) fun i => i = j).symm ∘ Prod.map (MeasurableEquiv.funUnique {i // i = j} ℂ).symm id`. Use function extensionality and compare the values at `p i`.
+
+Apply the tactic sequence `by_cases h : i = j <;> simp [glue, h, MeasurableEquiv.piEquivPiSubtypeProd]`. Rewrite using `[e]`. Conclude with `h3`.
+-/
 theorem measurePreserving_glue (j : Fin P ⊕ Fin Q) :
     MeasurePreserving (glue j) ((volume : Measure ℂ).prod volume) volume := by
   have h1 := (volume_preserving_piEquivPiSubtypeProd (fun _ : Fin P ⊕ Fin Q => ℂ)
@@ -99,14 +152,29 @@ theorem measurePreserving_glue (j : Fin P ⊕ Fin Q) :
   rw [e]
   exact h3
 
+/- English proof (translation)
+Simplify using `[glue]`.
+-/
 theorem glue_self (j : Fin P ⊕ Fin Q) (p : ℂ × ({i // i ≠ j} → ℂ)) : glue j p j = p.1 := by
   simp [glue]
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Use `norm_le_pi_norm (glue j p) i.1` as an intermediate fact. Simplify `this` using `[glue, i.2]`.
+-/
 theorem norm_le_glue (j : Fin P ⊕ Fin Q) (p : ℂ × ({i // i ≠ j} → ℂ)) : ‖p.2‖ ≤ ‖glue j p‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_
   have := norm_le_pi_norm (glue j p) i.1
   simpa [glue, i.2] using this
 
+/- English proof (translation)
+Establish `key : ∀ {n : ℕ} (k : Fin n) (u v : Fin n → ℂ), (∀ i, i ≠ k → u i = v i) → v k = 0 → ∑ i, Complex.normSq (u i) = Complex.normSq (u k) + ∑ i, Complex.normSq (v i)`. Introduce `n k u v h h0`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ k), ← Finset.add_sum_erase _ (fun i => Complex.normSq (v i)) (Finset.mem_univ k), h0, map_zero, zero_add]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i hi => by rw [h i (Finset.ne_of_mem_erase hi)]`.
+
+Break down `j with k | k` into its components or cases. Use `⟨1, Or.inl rfl, fun z y => ?_⟩` and prove the remaining obligations. Unfold `PerpendicularEmbedding.qf`. Rewrite using `[key k (fun i => glue (Sum.inl k) (z, y) (Sum.inl i)) (fun i => glue (Sum.inl k) (0, y) (Sum.inl i)) (fun i hi => by simp [glue, hi]) (glue_self _ _), glue_self]`. Simplify using `[glue]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨-1, Or.inr rfl, fun z y => ?_⟩` and prove the remaining obligations. Unfold `PerpendicularEmbedding.qf`. Rewrite using `[key k (fun i => glue (Sum.inr k) (z, y) (Sum.inr i)) (fun i => glue (Sum.inr k) (0, y) (Sum.inr i)) (fun i hi => by simp [glue, hi]) (glue_self _ _), glue_self]`. Simplify using `[glue]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qf_glue (j : Fin P ⊕ Fin Q) : ∃ ε : ℝ, (ε = 1 ∨ ε = -1) ∧ ∀ z y,
     PerpendicularEmbedding.qf (glue j (z, y)) = ε * Complex.normSq z + PerpendicularEmbedding.qf (glue j (0, y)) := by
   have key : ∀ {n : ℕ} (k : Fin n) (u v : Fin n → ℂ), (∀ i, i ≠ k → u i = v i) → v k = 0 →
@@ -131,6 +199,43 @@ theorem qf_glue (j : Fin P ⊕ Fin Q) : ∃ ε : ℝ, (ε = 1 ∨ ε = -1) ∧ �
       (glue_self _ _), glue_self]
     simp [glue]; ring
 
+/- English proof (translation)
+Take `⟨ε, hε, hq⟩` from `qf_glue j`. Set `c : ({i // i ≠ j} → ℂ) → ℝ` to `fun y => PerpendicularEmbedding.qf (glue j (0, y))`. Establish `hc : Continuous c` using `continuous_qf.comp ((continuous_glue j).comp (by fun_prop))`. Set `ang : Measure ℝ` to `(2⁻¹ : ℝ≥0∞) • volume.restrict (Set.Ioo (-Real.pi) Real.pi)`. Use `haveI : IsFiniteMeasure ang := ⟨by`.
+
+Simplify using `only [ang, Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top (by simp) (measure_lt_top _ _)⟩`. Set `m : Measure (({i // i ≠ j} → ℂ) × ℝ)` to `volume.prod ang`. Set `pt : ℝ × (({i // i ≠ j} → ℂ) × ℝ) → PerpendicularEmbedding.Sp P Q` to `fun a => glue j ((Real.sqrt (ε * (a.1 - c a.2.1)) : ℂ) * Complex.exp ((a.2.2 : ℂ) * Complex.I), a.2.1)`. Establish `hpt : Continuous pt` using `(continuous_glue j).comp (by fun_prop)`.
+
+Establish `hpt' : ∀ t, Continuous fun p => pt (t, p)` using `fun t => hpt.comp (by fun_prop)`. Establish `hd : Measurable fun x : PerpendicularEmbedding.Sp P Q => (rho j x).toNNReal` using `(measurable_rho j).real_toNNReal`. Establish `hd' : Measurable fun x : PerpendicularEmbedding.Sp P Q => ENNReal.ofReal (rho j x)` using `(measurable_rho j).ennreal_ofReal`. Establish `hl : ∀ (t : ℝ) (φ : PerpendicularEmbedding.Sp P Q → ℝ≥0∞), Measurable φ → ∫⁻ x, φ x ∂((m.map fun p => pt (t, p)).withDensity fun x => ENNReal.ofReal (rho j x)) = ∫⁻ p, ENNReal.ofReal (rho j (pt (t, p))) * φ (pt (t, p)) ∂m` using `fun t φ hφ => by`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hd' hφ, lintegral_map (hd'.mul hφ) (hpt' t).measurable]`.
+
+Both sides reduce to the same expression. Use `⟨fun t => (m.map fun p => pt (t, p)).withDensity fun x => ENNReal.ofReal (rho j x), fun t => ?_, fun φ hφ => ?_, fun φ hφ hs ht => ?_⟩` and prove the remaining obligations. Establish `hS : MeasurableSet (PerpendicularEmbedding.qf ⁻¹' {t} ∩ {x : PerpendicularEmbedding.Sp P Q | x ≠ 0})ᶜ` using `((continuous_qf.measurable (measurableSet_singleton t)).inter isOpen_ne.measurableSet).compl`. Rewrite using `[← lintegral_indicator_one hS, hl t _ (measurable_one.indicator hS)]`. Use `(lintegral_congr fun p => ?_).trans lintegral_zero` and prove the remaining obligations.
+
+Distinguish the cases in `h : ε * (t - c p.1) ≤ 0`. Establish `: rho j (pt (t, p)) = 0`. Simplify using `[rho, pt, glue_self, Real.sqrt_eq_zero_of_nonpos h]`. Simplify using `[this]`. Establish `h` using `lt_of_not_ge h`.
+
+Establish `hn : Complex.normSq ((Real.sqrt (ε * (t - c p.1)) : ℂ) * Complex.exp ((p.2 : ℂ) * Complex.I)) = ε * (t - c p.1)`. Rewrite using `[map_mul, Complex.normSq_ofReal, Real.mul_self_sqrt h.le, Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem, mul_zero]`. Use `Set.notMem_compl_iff.2 ⟨?_, fun h0 => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `PerpendicularEmbedding.qf (glue j _) = t`. Rewrite using `[hq, hn]`. Apply the tactic sequence `rcases hε with rfl | rfl <;> simp [c]`. Establish `h1` using `congrFun h0 j`. Simplify using `only [pt, glue_self, Pi.zero_apply] at h1`.
+
+Rewrite `hn` using `[h1, map_zero]`. Conclude with `h.ne hn`. Simplify using `only [hl _ φ hφ]`. Establish `hG : Measurable fun x => ENNReal.ofReal (rho j x) * φ x` using `hd'.mul hφ`. Establish `hJ` using `hG.comp hpt.measurable`.
+
+Use `⟨hJ.lintegral_prod_right', ?_⟩` and prove the remaining obligations. Rewrite using `[← (measurePreserving_glue j).lintegral_comp hG, lintegral_prod_symm' (fun a => ENNReal.ofReal (rho j (glue j a)) * φ (glue j a)) (hG.comp (continuous_glue j).measurable)]`. Establish `e1 : ∀ t, ∫⁻ p, ENNReal.ofReal (rho j (pt (t, p))) * φ (pt (t, p)) ∂m = ∫⁻ y, ∫⁻ θ, ENNReal.ofReal (rho j (pt (t, y, θ))) * φ (pt (t, y, θ)) ∂ang` using `fun t => lintegral_prod _ (hG.comp (hpt' t).measurable).aemeasurable`. Simplify using `only [e1]`. Use `symm`.
+
+Rewrite using `[lintegral_lintegral_swap]`. Use `lintegral_congr fun y => Eq.symm ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.lintegral_complex_eq_polar_sqrt ε (c y) hε (fun z => ENNReal.ofReal (rho j (glue j (z, y))) * φ (glue j (z, y))) (hG.comp ((continuous_glue j).measurable.comp measurable_prodMk_right)) (by simp [rho, glue_self])]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ (by simp), lintegral_smul_measure]`.
+
+Both sides reduce to the same expression. Use `Measurable.aemeasurable ?_` and prove the remaining obligations. Use `Measurable.lintegral_prod_right' (f := fun a : (ℝ × ({i // i ≠ j} → ℂ)) × ℝ => ENNReal.ofReal (rho j (pt (a.1.1, a.1.2, a.2))) * φ (pt (a.1.1, a.1.2, a.2))) ?_` and prove the remaining obligations. Conclude with `hJ.comp (by fun_prop)`. Set `ψ : PerpendicularEmbedding.Sp P Q → ℝ` to `fun x => rho j x * φ x`.
+
+Establish `hψ : Continuous ψ` using `((continuousOn_rho j).mul hφ.continuousOn).continuous_of_tsupport_subset isOpen_ne (tsupport_mul_subset_right.trans ht)`. Establish `hψs : HasCompactSupport ψ` using `hs.mul_left`. Establish `e : (fun x => (rho j x).toNNReal • φ x) = ψ`. Use function extensionality and compare the values at `x`. Simplify using `[ψ, NNReal.smul_def, rho_nonneg]`.
+
+Take `⟨C, hC⟩` from `hψ.bounded_above_of_compact_support hψs`. Take `⟨R, hR⟩` from `hψs.isCompact.isBounded.subset_closedBall 0`. Set `b : ({i // i ≠ j} → ℂ) × ℝ → ℝ` to `(Metric.closedBall 0 R ×ˢ Set.univ).indicator fun _ => C`. Establish `hb : Integrable b m`. Use `(integrable_indicator_iff (Metric.isClosed_closedBall.measurableSet.prod MeasurableSet.univ)).2 (integrableOn_const ?_ (by simp))` and prove the remaining obligations.
+
+Rewrite using `[Measure.prod_prod]`. Conclude with `ENNReal.mul_ne_top measure_closedBall_lt_top.ne (measure_ne_top _ _)`. Establish `hle : ∀ t p, ‖ψ (pt (t, p))‖ ≤ b p` using `fun t p => by`. Distinguish the cases in `h : p ∈ Metric.closedBall (0 : {i // i ≠ j} → ℂ) R ×ˢ (Set.univ : Set ℝ)`. Simplify using `only [b, Set.indicator_of_mem h]`.
+
+Conclude with `hC _`. Simplify using `only [b, Set.indicator_of_notMem h]`. Rewrite using `[image_eq_zero_of_notMem_tsupport (f := ψ), norm_zero]`. Introduce `h1`. Conclude with `h ⟨mem_closedBall_zero_iff.2 ((norm_le_glue j (_, p.1)).trans (mem_closedBall_zero_iff.1 (hR h1))), trivial⟩`.
+
+Establish `hm : ∀ t, AEStronglyMeasurable (fun p => ψ (pt (t, p))) m` using `fun t => (hψ.comp (hpt' t)).aestronglyMeasurable`. Prove the components needed by the constructor for the conclusion. Introduce `t`. Use `(integrable_withDensity_iff_integrable_smul hd).2 ?_` and prove the remaining obligations. Rewrite using `[e, integrable_map_measure hψ.aestronglyMeasurable (hpt' t).aemeasurable]`.
+
+Conclude with `hb.mono' (hm t) (ae_of_all _ (hle t))`. Establish `e2 : ∀ t, ∫ x, φ x ∂((m.map fun p => pt (t, p)).withDensity fun x => ENNReal.ofReal (rho j x)) = ∫ p, ψ (pt (t, p)) ∂m` using `fun t => by`. Use `(integral_withDensity_eq_integral_smul hd φ).trans ?_` and prove the remaining obligations. Rewrite using `[e, integral_map (hpt' t).aemeasurable hψ.aestronglyMeasurable]`. Simplify using `only [e2]`.
+
+Conclude with `continuous_of_dominated hm (fun t => ae_of_all _ (hle t)) hb (ae_of_all _ fun p => hψ.comp (hpt.comp (by fun_prop)))`.
+-/
 theorem exists_chart (j : Fin P ⊕ Fin Q) : ∃ fib : ℝ → Measure (PerpendicularEmbedding.Sp P Q),
     (∀ t, fib t (PerpendicularEmbedding.qf ⁻¹' {t} ∩ {x | x ≠ 0})ᶜ = 0) ∧
     (∀ φ : PerpendicularEmbedding.Sp P Q → ℝ≥0∞, Measurable φ → Measurable (fun t => ∫⁻ x, φ x ∂(fib t)) ∧
@@ -248,6 +353,13 @@ theorem exists_chart (j : Fin P ⊕ Fin Q) : ∃ fib : ℝ → Measure (Perpendi
       exact continuous_of_dominated hm (fun t => ae_of_all _ (hle t)) hb
         (ae_of_all _ fun p => hψ.comp (hpt.comp (by fun_prop)))
 
+/- English proof (translation)
+Use `choose F h1 h2 h3 using fun j : Fin P ⊕ Fin Q => exists_chart j`. Establish `hk : ((2 : ℝ≥0∞) ^ (P + Q)) ≠ ⊤` using `by simp`. Use `⟨fun t => ((2 : ℝ≥0∞) ^ (P + Q)) • ∑ j, F j t, fun t => ?_, fun φ hφ => ?_, fun φ hφ hs ht => ⟨fun t _ => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.finset_sum_apply, id, Finset.sum_eq_zero fun j _ => h1 j t, smul_zero]`. Simplify using `only [PerpendicularEmbedding.dx, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul, lintegral_finset_sum_measure]`.
+
+Rewrite using `[lintegral_const_mul' _ _ hk, lintegral_finset_sum _ fun j _ => (h2 j φ hφ).1, ← Finset.sum_congr rfl fun j _ => (h2 j φ hφ).2, ← lintegral_finset_sum _ (f := fun j x => ENNReal.ofReal (rho j x) * φ x) fun j _ => (measurable_rho j).ennreal_ofReal.mul hφ, ← lintegral_indicator isO …`. Use `congr 1`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Simplify using `[hx, rho]`.
+
+Rewrite using `[Set.indicator_of_mem (by exact hx), ← Finset.sum_mul, ← ENNReal.ofReal_sum_of_nonneg fun j _ => rho_nonneg j x, sum_rho hx]`. Simplify using the standard rewrite rules. Conclude with `(integrable_finset_sum_measure.2 fun j _ => (h3 j φ hφ hs ht).1 t).smul_measure hk`. Simplify using `only [integral_smul_measure, integral_finset_sum_measure fun j _ => (h3 j φ hφ hs ht).1 _]`. Conclude with `(continuous_const.mul (continuous_finset_sum _ fun j _ => (h3 j φ hφ hs ht).2)).continuousOn`.
+-/
 theorem exists_isDxDq (P Q : ℕ) : ∃ fib : ℝ → Measure (PerpendicularEmbedding.Sp P Q), PerpendicularEmbedding.IsDxDq fib := by
   choose F h1 h2 h3 using fun j : Fin P ⊕ Fin Q => exists_chart j
   have hk : ((2 : ℝ≥0∞) ^ (P + Q)) ≠ ⊤ := by simp
@@ -275,10 +387,16 @@ theorem exists_isDxDq (P Q : ℕ) : ∃ fib : ℝ → Measure (PerpendicularEmbe
     exact (continuous_const.mul
       (continuous_finset_sum _ fun j _ => (h3 j φ hφ hs ht).2)).continuousOn
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{x | x ≠ 0}, Set.univ, subset_rfl, isOpen_univ, trivial, by rw [qf_eq]; exact h⟩`.
+-/
 theorem isDxDq_local {fib : ℝ → Measure (PerpendicularEmbedding.Sp P Q)} (h : PerpendicularEmbedding.IsDxDq fib) (β : ℝ) :
     ActionCoordinates.IsDxDq β fib :=
   ⟨{x | x ≠ 0}, Set.univ, subset_rfl, isOpen_univ, trivial, by rw [qf_eq]; exact h⟩
 
+/- English proof (translation)
+Take `⟨U, B, hU, hB, hβB, h'⟩` from `h'`. Rewrite `h'` using `[qf_eq]`. Use `GlobalTheory.T.isFibreFamily_eq_at_continuity_point (PerpendicularEmbedding.dx P Q) PerpendicularEmbedding.qf {x | x ≠ 0} U {x | x ≠ 0} B Set.univ fib' fib β continuous_qf.measurable isOpen_ne hU subset_rfl ?_ hB isOpen_univ hβB trivial h' h` and prove the remaining obligations. Introduce and unpack `x hx rfl`. Conclude with `hβ (by simpa [qf_zero] using hx.symm)`.
+-/
 theorem fib_eq {fib fib' : ℝ → Measure (PerpendicularEmbedding.Sp P Q)} {β : ℝ} (hβ : β ≠ 0)
     (h : PerpendicularEmbedding.IsDxDq fib) (h' : ActionCoordinates.IsDxDq β fib') : fib' β = fib β := by
   obtain ⟨U, B, hU, hB, hβB, h'⟩ := h'
@@ -288,11 +406,19 @@ theorem fib_eq {fib fib' : ℝ → Measure (PerpendicularEmbedding.Sp P Q)} {β 
   rintro x hx rfl
   exact hβ (by simpa [qf_zero] using hx.symm)
 
+/- English proof (translation)
+Establish `h1 : ∀ᵐ y ∂(fib β), y ∈ PerpendicularEmbedding.qf ⁻¹' {id β} ∩ {x | x ≠ 0}` using `h.1 β`. Use `filter_upwards [h1] with y hy using hy.1`.
+-/
 theorem ae_qf {fib : ℝ → Measure (PerpendicularEmbedding.Sp P Q)} (h : PerpendicularEmbedding.IsDxDq fib) (β : ℝ) :
     ∀ᵐ y ∂(fib β), PerpendicularEmbedding.qf y = β := by
   have h1 : ∀ᵐ y ∂(fib β), y ∈ PerpendicularEmbedding.qf ⁻¹' {id β} ∩ {x | x ≠ 0} := h.1 β
   filter_upwards [h1] with y hy using hy.1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h M hM fib' hfib'`. Take `⟨⟨fib, hfib⟩, h2⟩` from `h M hM`. Rewrite using `[fib_eq one_ne_zero hfib hfib', cM_eq, ← h2 fib hfib, qf_eq]`. Conclude with `measure_congr (Filter.eventuallyEq_univ.2 (ae_qf hfib 1))`.
+
+Introduce `h M hM`. Use `⟨exists_isDxDq M 0, fun fib hfib => ?_⟩` and prove the remaining obligations. Rewrite using `[← cM_eq, ← h M hM fib (isDxDq_local hfib 1), qf_eq]`. Conclude with `(measure_congr (Filter.eventuallyEq_univ.2 (ae_qf hfib 1))).symm`.
+-/
 theorem sphere_iff : PerpendicularEmbedding.SphereMass ↔ ActionCoordinates.SphereVolume := by
   constructor
   · intro h M hM fib' hfib'
@@ -304,6 +430,11 @@ theorem sphere_iff : PerpendicularEmbedding.SphereMass ↔ ActionCoordinates.Sph
     rw [← cM_eq, ← h M hM fib (isDxDq_local hfib 1), qf_eq]
     exact (measure_congr (Filter.eventuallyEq_univ.2 (ae_qf hfib 1))).symm
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : V)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Use `⟨h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff), h1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((b 0 : ℝ) : ℂ) = 1`. Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_test (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] :
     ∃ Φ : SchwartzMap V ℂ, HasCompactSupport Φ ∧ Φ 0 = 1 := by
   let b : ContDiffBump (0 : V) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -314,6 +445,15 @@ theorem exists_test (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [Finit
   rw [b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]
   simp
 
+/- English proof (translation)
+Take `⟨⟨c, -, hc⟩, hS⟩` from `GlobalTheory.T.fourier_inversion_haar_symm_form_alt B hs hn μ hμ`. Take `⟨Φ₀, h0, h1⟩` from `exists_test V`. Establish `key` using `hc Φ₀ Φ₀.continuous (hS Φ₀).1 (hS Φ₀).2 0`. Unfold `SelfDual ActionCoordinates.IsSelfDualFor ActionCoordinates.fourierT`. Simplify using `only [hB]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ Φ`. Use `h Φ₀ Φ₀.continuous h0 (hS Φ₀).2 0` as an intermediate fact. Rewrite `this` using `[key, neg_zero, h1, mul_one]`. Use `⟨(hS Φ).1, (hS Φ).2, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hc Φ Φ.continuous (hS Φ).1 (hS Φ).2, this, one_mul]`. Introduce `h`. Use `(h Φ₀).2.2 0` as an intermediate fact. Rewrite `this` using `[key, neg_zero, h1, mul_one]`. Use `⟨hμ, fun Φ hΦ hsup hI z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hc Φ hΦ (hΦ.integrable_of_hasCompactSupport hsup) hI, this, one_mul]`.
+-/
 theorem selfDual_iff_of_bilin {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (e : ℝ) (β : V → V → ℝ)
     (B : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hB : ∀ x y, e * β x y = B x y) (hs : ∀ x y, B x y = B y x)
@@ -337,6 +477,11 @@ theorem selfDual_iff_of_bilin {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ
     refine ⟨hμ, fun Φ hΦ hsup hI z => ?_⟩
     rw [hc Φ hΦ (hΦ.integrable_of_hasCompactSupport hsup) hI, this, one_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h μ hμ`. Establish `h'` using `(selfDual_iff_of_bilin e β B hB hs hn μ₀ hμ₀).1 h`. Use `⟨fun h2 => ?_, fun h2 => h2 ▸ h'⟩` and prove the remaining obligations. Take `⟨Φ₀, h0, h1⟩` from `exists_test V`.
+
+Conclude with `SelfDual.eq_of_test h ((selfDual_iff_of_bilin e β B hB hs hn μ hμ).2 h2) Φ₀ Φ₀.continuous h0 (h' Φ₀).2.1 0 (by rw [neg_zero, h1]; exact one_ne_zero)`. Introduce `h`. Conclude with `(selfDual_iff_of_bilin e β B hB hs hn μ₀ hμ₀).2 ((h μ₀ hμ₀).2 rfl)`.
+-/
 theorem selfDual_iff_unique {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (e : ℝ) (β : V → V → ℝ)
     (B : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hB : ∀ x y, e * β x y = B x y) (hs : ∀ x y, B x y = B y x)
@@ -353,14 +498,23 @@ theorem selfDual_iff_unique {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
   · intro h
     exact (selfDual_iff_of_bilin e β B hB hs hn μ₀ hμ₀).2 ((h μ₀ hμ₀).2 rfl)
 
+/- English proof (translation)
+Simplify using `only [PerpendicularEmbedding.herm, Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_add_left (x y z : PerpendicularEmbedding.Sp P Q) :
     PerpendicularEmbedding.herm (x + y) z = PerpendicularEmbedding.herm x z + PerpendicularEmbedding.herm y z := by
   simp only [PerpendicularEmbedding.herm, Pi.add_apply, add_mul, Finset.sum_add_distrib]; ring
 
+/- English proof (translation)
+Simplify using `only [PerpendicularEmbedding.herm, Pi.smul_apply, smul_eq_mul, mul_assoc, mul_sub, Finset.mul_sum]`.
+-/
 theorem herm_smul_left (a : ℂ) (x z : PerpendicularEmbedding.Sp P Q) :
     PerpendicularEmbedding.herm (a • x) z = a * PerpendicularEmbedding.herm x z := by
   simp only [PerpendicularEmbedding.herm, Pi.smul_apply, smul_eq_mul, mul_assoc, mul_sub, Finset.mul_sum]
 
+/- English proof (translation)
+Simplify using `[PerpendicularEmbedding.herm, mul_comm]`.
+-/
 theorem herm_star (x z : PerpendicularEmbedding.Sp P Q) : star (PerpendicularEmbedding.herm x z) = PerpendicularEmbedding.herm z x := by
   simp [PerpendicularEmbedding.herm, mul_comm]
 
@@ -374,6 +528,11 @@ def realForm (e : ℝ) (P Q : ℕ) : PerpendicularEmbedding.Sp P Q →ₗ[ℝ] P
     (fun a x z => by
       rw [← Complex.coe_smul, ← herm_star _ x, ← herm_star z, herm_smul_left]; simp; ring)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h1` using `h (Pi.single i 1)`. Establish `h2` using `h (Pi.single i Complex.I)`. Simplify using `only [realForm, LinearMap.mk₂_apply, mul_eq_zero, he, false_or, two_ne_zero] at h1 h2`. Apply the tactic sequence `rcases i with i | i <;>`.
+
+Simplify using `[PerpendicularEmbedding.herm, Pi.single_apply, apply_ite] at h1 h2`. Conclude with `Complex.ext h1 h2`.
+-/
 theorem realForm_nondeg {e : ℝ} (he : e ≠ 0) (x : PerpendicularEmbedding.Sp P Q)
     (h : ∀ y, realForm e P Q x y = 0) : x = 0 := by
   funext i
@@ -384,9 +543,19 @@ theorem realForm_nondeg {e : ℝ} (he : e ≠ 0) (x : PerpendicularEmbedding.Sp 
   · simp [PerpendicularEmbedding.herm, Pi.single_apply, apply_ite] at h1 h2
     exact Complex.ext h1 h2
 
+/- English proof (translation)
+The claim follows from `Measure.IsAddHaarMeasure.smul _ (by simp) (by simp)`.
+-/
 theorem isAddHaar_dx (P Q : ℕ) : (PerpendicularEmbedding.dx P Q).IsAddHaarMeasure :=
   Measure.IsAddHaarMeasure.smul _ (by simp) (by simp)
 
+/- English proof (translation)
+Use `forall_congr' fun e => forall_congr' fun he => and_congr ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `have he0 : e ≠ 0 := by rcases he with rfl | rfl <;> norm_num`. Use `forall_congr' fun P => forall_congr' fun Q => ?_` and prove the remaining obligations. Rewrite using `[dx_eq, ← selfDual_iff_unique e ActionCoordinates.bil (realForm e P Q) (fun x y => by rw [bil_eq]; rfl) (fun x y => by`. Simplify using `only [realForm, LinearMap.mk₂_apply]`.
+
+Rewrite using `[← herm_star x y]`. Use the proof step `simp)`. Use the proof step `(realForm_nondeg he0) _ (isAddHaar_dx P Q)]`. Simplify using `only [bil_eq]`. Apply the tactic sequence `have he0 : e ≠ 0 := by rcases he with rfl | rfl <;> norm_num`.
+
+Conclude with `selfDual_iff_unique e (fun t s : ℝ => t * s) (e • LinearMap.mul ℝ ℝ) (fun x y => by simp) (fun x y => by simp [mul_comm]) (fun x h => by simpa [he0] using h 1) _ inferInstance`.
+-/
 theorem selfDual_iff : PerpendicularEmbedding.SelfDualReal ↔ ActionCoordinates.SelfDualMeasures := by
   refine forall_congr' fun e => forall_congr' fun he => and_congr ?_ ?_
   · have he0 : e ≠ 0 := by rcases he with rfl | rfl <;> norm_num
@@ -402,17 +571,31 @@ theorem selfDual_iff : PerpendicularEmbedding.SelfDualReal ↔ ActionCoordinates
       (fun x y => by simp) (fun x y => by simp [mul_comm])
       (fun x h => by simpa [he0] using h 1) _ inferInstance
 
+/- English proof (translation)
+Unfold `PerpendicularEmbedding.act`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem act_mul (g h : UpqT P Q) (x : PerpendicularEmbedding.Sp P Q) :
     PerpendicularEmbedding.act (g * h) x = PerpendicularEmbedding.act g (PerpendicularEmbedding.act h x) := by
   unfold PerpendicularEmbedding.act
   rw [Matrix.mulVec_mulVec]; rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.one_mulVec x`.
+-/
 theorem act_one (x : PerpendicularEmbedding.Sp P Q) : PerpendicularEmbedding.act (1 : UpqT P Q) x = x := Matrix.one_mulVec x
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.UpqTopology.isClosedEmbedding_mat.injective (Matrix.toLin'.injective (LinearMap.ext fun x => H x))`.
+-/
 theorem ext_act {g h : UpqT P Q} (H : ∀ x, PerpendicularEmbedding.act g x = PerpendicularEmbedding.act h x) : g = h :=
   GlobalTheory.UpqTopology.isClosedEmbedding_mat.injective
     (Matrix.toLin'.injective (LinearMap.ext fun x => H x))
 
+/- English proof (translation)
+Establish `h0' : (PerpendicularEmbedding.qf x₀ : ℂ) ≠ 0` using `by exact_mod_cast h0`. Take `⟨u, hu⟩` from `(h.2.1 (y + (-(PerpendicularEmbedding.herm y x₀ / PerpendicularEmbedding.qf x₀)) • x₀)).1 (by`. Rewrite using `[herm_add_left, herm_smul_left, PerpendicularEmbedding.herm_self]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`.
+
+Conclude with `⟨u, PerpendicularEmbedding.herm y x₀ / PerpendicularEmbedding.qf x₀, by rw [hu]; simp⟩`.
+-/
 theorem decompose {x₀ : PerpendicularEmbedding.Sp P Q} (h0 : PerpendicularEmbedding.qf x₀ ≠ 0)
     {A : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ} {j : UpqT P' Q' → UpqT P Q}
     (h : PerpendicularEmbedding.IsPerpEmb x₀ A j) (y : PerpendicularEmbedding.Sp P Q) : ∃ (u : _) (a : ℂ), A *ᵥ u + a • x₀ = y := by
@@ -421,6 +604,9 @@ theorem decompose {x₀ : PerpendicularEmbedding.Sp P Q} (h0 : PerpendicularEmbe
     rw [herm_add_left, herm_smul_left, PerpendicularEmbedding.herm_self]; field_simp; ring)
   exact ⟨u, PerpendicularEmbedding.herm y x₀ / PerpendicularEmbedding.qf x₀, by rw [hu]; simp⟩
 
+/- English proof (translation)
+Use `ext_act fun y => ?_` and prove the remaining obligations. Take `⟨u, t, rfl⟩` from `decompose h0 h y`. Establish `lin : ∀ g : UpqT P Q, PerpendicularEmbedding.act g (A *ᵥ u + t • x₀) = PerpendicularEmbedding.act g (A *ᵥ u) + t • PerpendicularEmbedding.act g x₀` using `fun g => by`. Simplify using `[PerpendicularEmbedding.act, Matrix.mulVec_add, Matrix.mulVec_smul]`. Rewrite using `[lin, lin, act_mul, act_mul, (h.2.2 _).1, (h.2.2 _).1, (h.2.2 _).1, (h.2.2 _).2, (h.2.2 _).2, (h.2.2 _).2, act_mul]`.
+-/
 theorem emb_mul {x₀ : PerpendicularEmbedding.Sp P Q} (h0 : PerpendicularEmbedding.qf x₀ ≠ 0)
     {A : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ} {j : UpqT P' Q' → UpqT P Q}
     (h : PerpendicularEmbedding.IsPerpEmb x₀ A j) (a b : UpqT P' Q') : j (a * b) = j a * j b := by
@@ -432,6 +618,17 @@ theorem emb_mul {x₀ : PerpendicularEmbedding.Sp P Q} (h0 : PerpendicularEmbedd
   rw [lin, lin, act_mul, act_mul, (h.2.2 _).1, (h.2.2 _).1, (h.2.2 _).1, (h.2.2 _).2, (h.2.2 _).2,
     (h.2.2 _).2, act_mul]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Use `set μ := c.cd P Q`. Use `haveI : μ.IsHaarMeasure := c.haar P Q`. Use `haveI := GlobalTheory.UpqUnimodular.isMulRightInvariant_of_isHaarMeasure P Q μ (c.haar P Q)`. Establish `e : μ.inv = Measure.haarScalarFactor μ.inv μ • μ` using `Measure.isMulLeftInvariant_eq_smul _ _`.
+
+Use `set k := Measure.haarScalarFactor μ.inv μ`. Establish `e2 : μ = (k * k) • μ` using `by conv_lhs => rw [← Measure.inv_inv μ, e]`. Rewrite using `[Measure.inv, Measure.map_smul, ← Measure.inv, e, smul_smul]`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : UpqT P Q)`. Establish `hpos : μ K ≠ 0` using `(Measure.measure_pos_of_mem_nhds μ hK1).ne'`.
+
+Establish `hfin : μ K ≠ ⊤` using `hK.measure_lt_top.ne`. Establish `e3 : ((k * k : NNReal) : ℝ≥0∞) * μ K = 1 * μ K`. Rewrite using `[one_mul]`. Use `conv_rhs => rw [e2]`. Both sides reduce to the same expression.
+
+Establish `e4 : k * k = 1` using `by exact_mod_cast (ENNReal.mul_left_inj hpos hfin).1 e3`. Establish `e5 : k = 1`. Establish `: (k : ℝ) * k = 1` using `by exact_mod_cast e4`. Establish `h7 : (k : ℝ) = 1` using `by nlinarith [k.coe_nonneg]`. Conclude with `h7` after adjusting the coercions.
+
+Conclude with `⟨by rw [e, e5, one_smul]⟩`.
+-/
 theorem isInvInvariant_cd (c : CDHaar) (P Q : ℕ) : (c.cd P Q).IsInvInvariant := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc P Q
   set μ := c.cd P Q
@@ -455,17 +652,30 @@ theorem isInvInvariant_cd (c : CDHaar) (P Q : ℕ) : (c.cd P Q).IsInvInvariant :
     exact_mod_cast h7
   exact ⟨by rw [e, e5, one_smul]⟩
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Use `haveI := isInvInvariant_cd c P Q`. Conclude with `lintegral_inv_eq_self f`.
+-/
 theorem lintegral_inv_cd (c : CDHaar) (f : UpqT P Q → ℝ≥0∞) :
     ∫⁻ g, f g⁻¹ ∂(c.cd P Q) = ∫⁻ g, f g ∂(c.cd P Q) := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc P Q
   haveI := isInvInvariant_cd c P Q
   exact lintegral_inv_eq_self f
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Conclude with `hf.comp measurable_inv`.
+-/
 theorem measurable_comp_inv {f : UpqT P Q → ℝ≥0∞} (hf : Measurable f) :
     Measurable fun g => f g⁻¹ := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc P Q
   exact hf.comp measurable_inv
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P' Q'`. Use `haveI := c.haar P' Q'`. Set `J : UpqT P' Q' →* UpqT P Q` to `MonoidHom.mk' j (emb_mul h0 h)`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : b * a ∈ Set.range j := by`. Rewrite using `[hr]`.
+
+Express the relevant statement in the definitionally equal form `PerpendicularEmbedding.act (b * a) x₀ = x₀`. Rewrite using `[act_mul, hab, ← act_mul, mul_inv_cancel, act_one]`. Rewrite using `[← lintegral_inv_cd c (fun g' => f (j g' * b)), ← lintegral_mul_left_eq_self (fun g' => f (j g'⁻¹ * b)) k]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `: j (k * g)⁻¹ = (j k * j g)⁻¹` using `by rw [← emb_mul h0 h]; exact map_inv J _`.
+
+Rewrite using `[this, hk]`. Use `group`.
+-/
 theorem inner_eq (c : CDHaar) {x₀ : PerpendicularEmbedding.Sp P Q} (h0 : PerpendicularEmbedding.qf x₀ ≠ 0)
     {A : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ} {j : UpqT P' Q' → UpqT P Q}
     (h : PerpendicularEmbedding.IsPerpEmb x₀ A j) (hr : Set.range j = {g | PerpendicularEmbedding.act g x₀ = x₀})
@@ -483,6 +693,11 @@ theorem inner_eq (c : CDHaar) {x₀ : PerpendicularEmbedding.Sp P Q} (h0 : Perpe
   have : j (k * g)⁻¹ = (j k * j g)⁻¹ := by rw [← emb_mul h0 h]; exact map_inv J _
   rw [this, hk]; group
 
+/- English proof (translation)
+Establish `key : ∀ f : UpqT P Q → ℝ≥0∞, ∫⁻ y, (∫⁻ g', f (s y * j g')⁻¹ ∂(c.cd P' Q')) ∂ν = ∫⁻ y, (∫⁻ g', f (j g' * t y) ∂(c.cd P' Q')) ∂ν` using `fun f => lintegral_congr_ae (hν.mono fun y hy => inner_eq c (h0 ▸ hβ) h hr ((hs y hy).trans (ht y hy).symm) f)`. Rewrite using `[Measure.restrict_eq_self_of_ae_mem (s := {y | PerpendicularEmbedding.qf y = β}) hν]`. Prove the components needed by the constructor for the conclusion. Introduce `H f hf`. Rewrite using `[← lintegral_inv_cd c f, H _ (measurable_comp_inv hf), key]`.
+
+Introduce `H f hf`. Rewrite using `[← lintegral_inv_cd c f, H _ (measurable_comp_inv hf), ← key (fun g => f g⁻¹)]`. Simplify using `only [inv_inv]`.
+-/
 theorem formula_iff (c : CDHaar) {β : ℝ} (hβ : β ≠ 0) {x₀ : PerpendicularEmbedding.Sp P Q} (h0 : PerpendicularEmbedding.qf x₀ = β)
     {A : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ} {j : UpqT P' Q' → UpqT P Q}
     (h : PerpendicularEmbedding.IsPerpEmb x₀ A j) (hr : Set.range j = {g | PerpendicularEmbedding.act g x₀ = x₀})
@@ -505,6 +720,11 @@ theorem formula_iff (c : CDHaar) {β : ℝ} (hβ : β ≠ 0) {x₀ : Perpendicul
     rw [← lintegral_inv_cd c f, H _ (measurable_comp_inv hf), ← key (fun g => f g⁻¹)]
     simp only [inv_inv]
 
+/- English proof (translation)
+Establish `hv' : PerpendicularEmbedding.herm x₀ v = 0` using `by rw [← herm_star, hv, star_zero]`. Establish `r : ∀ x y z : PerpendicularEmbedding.Sp P Q, PerpendicularEmbedding.herm x (y + a • z) = PerpendicularEmbedding.herm x y + star a * PerpendicularEmbedding.herm x z` using `fun x y z => by`. Rewrite using `[← herm_star _ x, herm_add_left, herm_smul_left, star_add, star_mul', herm_star, herm_star]`. Establish `: (PerpendicularEmbedding.qf (v + a • x₀) : ℂ) = PerpendicularEmbedding.qf v + Complex.normSq a * PerpendicularEmbedding.qf x₀`. Rewrite using `[← PerpendicularEmbedding.herm_self, herm_add_left, herm_smul_left, r, r, hv, hv', PerpendicularEmbedding.herm_self, PerpendicularEmbedding.herm_self, ← Complex.mul_conj]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+-/
 theorem qf_add_smul {x₀ v : PerpendicularEmbedding.Sp P Q} (hv : PerpendicularEmbedding.herm v x₀ = 0) (a : ℂ) :
     PerpendicularEmbedding.qf (v + a • x₀) = PerpendicularEmbedding.qf v + Complex.normSq a * PerpendicularEmbedding.qf x₀ := by
   have hv' : PerpendicularEmbedding.herm x₀ v = 0 := by rw [← herm_star, hv, star_zero]
@@ -517,6 +737,9 @@ theorem qf_add_smul {x₀ v : PerpendicularEmbedding.Sp P Q} (hv : Perpendicular
     simp; ring
   exact_mod_cast this
 
+/- English proof (translation)
+Use `LinearMap.finrank_le_finrank_of_injective (f := (LinearMap.funLeft ℂ ℂ (Sum.inl : Fin P → Fin P ⊕ Fin Q)).comp T) ((injective_iff_map_eq_zero _).2 fun v hv => h v (by` as an intermediate fact. Establish `h1 : ∀ i, T v (Sum.inl i) = 0` using `fun i => congrFun hv i`. Simplify using `only [PerpendicularEmbedding.qf, h1, map_zero, Finset.sum_const_zero, zero_sub, neg_nonpos]`. Conclude with `Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _))`. Simplify using `using this`.
+-/
 theorem finrank_le_of_pos {V : Type} [AddCommGroup V] [Module ℂ V] (T : V →ₗ[ℂ] PerpendicularEmbedding.Sp P Q)
     (h : ∀ v, PerpendicularEmbedding.qf (T v) ≤ 0 → v = 0) : Module.finrank ℂ V ≤ P := by
   have := LinearMap.finrank_le_finrank_of_injective
@@ -527,6 +750,9 @@ theorem finrank_le_of_pos {V : Type} [AddCommGroup V] [Module ℂ V] (T : V →�
       exact Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _))
   simpa using this
 
+/- English proof (translation)
+Use `LinearMap.finrank_le_finrank_of_injective (f := (LinearMap.funLeft ℂ ℂ (Sum.inr : Fin Q → Fin P ⊕ Fin Q)).comp T) ((injective_iff_map_eq_zero _).2 fun v hv => h v (by` as an intermediate fact. Establish `h1 : ∀ i, T v (Sum.inr i) = 0` using `fun i => congrFun hv i`. Simplify using `only [PerpendicularEmbedding.qf, h1, map_zero, Finset.sum_const_zero, sub_zero]`. Conclude with `Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _))`. Simplify using `using this`.
+-/
 theorem finrank_le_of_neg {V : Type} [AddCommGroup V] [Module ℂ V] (T : V →ₗ[ℂ] PerpendicularEmbedding.Sp P Q)
     (h : ∀ v, 0 ≤ PerpendicularEmbedding.qf (T v) → v = 0) : Module.finrank ℂ V ≤ Q := by
   have := LinearMap.finrank_le_finrank_of_injective
@@ -537,6 +763,9 @@ theorem finrank_le_of_neg {V : Type} [AddCommGroup V] [Module ℂ V] (T : V →�
       exact Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _))
   simpa using this
 
+/- English proof (translation)
+Establish `h1` using `le_antisymm h (Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _)`. Rewrite `h1` using `[Finset.sum_eq_zero_iff_of_nonneg fun _ _ => Complex.normSq_nonneg _]`. Use function extensionality and compare the values at `i`. Conclude with `Complex.normSq_eq_zero.1 (h1 i (Finset.mem_univ i))`.
+-/
 theorem eq_zero_of_sum_normSq {n : ℕ} {u : Fin n → ℂ} (h : ∑ i, Complex.normSq (u i) ≤ 0) :
     u = 0 := by
   have h1 := le_antisymm h (Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _)
@@ -554,6 +783,25 @@ def inrMap (P Q : ℕ) : (Fin Q → ℂ) →ₗ[ℂ] PerpendicularEmbedding.Sp P
   map_add' u v := by funext i; rcases i with i | i <;> simp
   map_smul' a v := by funext i; rcases i with i | i <;> simp
 
+/- English proof (translation)
+Set `T : (PerpendicularEmbedding.Sp P' Q' × ℂ) →ₗ[ℂ] PerpendicularEmbedding.Sp P Q` to `(Matrix.toLin' A).coprod (LinearMap.toSpanSingleton ℂ _ x₀)`. Establish `hq : ∀ u, PerpendicularEmbedding.qf (A *ᵥ u) = PerpendicularEmbedding.qf u` using `fun u => by`. Use `h.1 u u` as an intermediate fact. Rewrite `this` using `[PerpendicularEmbedding.herm_self, PerpendicularEmbedding.herm_self]`. Conclude with `this` after adjusting the coercions.
+
+Establish `hT : ∀ u a, PerpendicularEmbedding.qf (T (u, a)) = PerpendicularEmbedding.qf u + Complex.normSq a * PerpendicularEmbedding.qf x₀` using `fun u a => by`. Rewrite using `[← hq u]`. Conclude with `qf_add_smul ((h.2.1 _).2 ⟨u, rfl⟩) a`. Establish `hdim : PerpendicularEmbedding.qf x₀ ≠ 0 → P + Q ≤ P' + Q' + 1` using `fun h0 => by`. Use `LinearMap.finrank_le_finrank_of_surjective (f := T) fun y => by` as an intermediate fact.
+
+Take `⟨u, a, hu⟩` from `decompose h0 h y`. Conclude with `⟨(u, a), hu⟩`. Simplify using `using this`. Establish `l : ∀ u, PerpendicularEmbedding.qf (inlMap P' Q' u) = ∑ i, Complex.normSq (u i)` using `fun u => by`. Simplify using `[PerpendicularEmbedding.qf, inlMap]`.
+
+Establish `r : ∀ u, PerpendicularEmbedding.qf (inrMap P' Q' u) = -∑ i, Complex.normSq (u i)` using `fun u => by`. Simplify using `[PerpendicularEmbedding.qf, inrMap]`. Establish `hP : P' ≤ P`. Simplify using `using finrank_le_of_pos ((Matrix.toLin' A).comp (inlMap P' Q')) fun u hu => eq_zero_of_sum_normSq (by rw [← l, ← hq]; exact hu)`. Establish `hQ : Q' ≤ Q`.
+
+Simplify using `using finrank_le_of_neg ((Matrix.toLin' A).comp (inrMap P' Q')) fun u hu => eq_zero_of_sum_normSq (by rw [← neg_nonneg, ← r, ← hq]; exact hu)`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `h2` using `hdim (by rw [h1]; exact one_ne_zero)`. Establish `h3 : P' + 1 ≤ P`.
+
+Simplify using `using finrank_le_of_pos (T.comp ((inlMap P' Q').prodMap LinearMap.id)) fun v hv => by`. Establish `h4 : PerpendicularEmbedding.qf (T (inlMap P' Q' v.1, v.2)) ≤ 0` using `hv`. Rewrite `h4` using `[hT, l, h1, mul_one]`. Establish `h5` using `Complex.normSq_nonneg v.2`. Establish `h6 : 0 ≤ ∑ i, Complex.normSq (v.1 i)` using `Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`.
+
+Conclude with `Prod.ext (eq_zero_of_sum_normSq (by linarith)) (Complex.normSq_eq_zero.1 (by linarith))`. Use linear arithmetic over natural numbers and integers. Introduce `h1`. Establish `h2` using `hdim (by rw [h1]; norm_num)`. Establish `h3 : Q' + 1 ≤ Q`.
+
+Simplify using `using finrank_le_of_neg (T.comp ((inrMap P' Q').prodMap LinearMap.id)) fun v hv => by`. Establish `h4 : 0 ≤ PerpendicularEmbedding.qf (T (inrMap P' Q' v.1, v.2))` using `hv`. Rewrite `h4` using `[hT, r, h1]`. Establish `h5` using `Complex.normSq_nonneg v.2`. Establish `h6 : 0 ≤ ∑ i, Complex.normSq (v.1 i)` using `Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`.
+
+Conclude with `Prod.ext (eq_zero_of_sum_normSq (by linarith)) (Complex.normSq_eq_zero.1 (by linarith))`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem signature_perp {x₀ : PerpendicularEmbedding.Sp P Q}
     {A : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ} {j : UpqT P' Q' → UpqT P Q}
     (h : PerpendicularEmbedding.IsPerpEmb x₀ A j) :
@@ -622,6 +870,17 @@ def PointClauses (c : CDHaar) (P Q P' Q' : ℕ) (β : ℝ) (x₀ : ActionCoordin
               (ActionCoordinates.cM (P + Q))⁻¹ *
                 ∫⁻ y in {y | ActionCoordinates.qf y = β}, (∫⁻ g', f (ι g' * s y) ∂(c.cd P' Q')) ∂(fib β)
 
+/- English proof (translation)
+Unfold `PointClauses`. Rewrite using `[qf_eq]`. Use `forall_congr' fun x₀ => forall_congr' fun h0 => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨A, j⟩, hA⟩, H⟩`.
+
+Use `⟨fun y hy => ?_, ⟨_, j, (isPerpFrame_iff x₀ A j).2 hA⟩, fun A' ι hι => ?_⟩` and prove the remaining obligations. Take `⟨-, ⟨fib, hfib⟩, H2⟩` from `H _ hA`. Take `⟨⟨s, hs⟩, -⟩` from `H2 fib hfib`. Conclude with `⟨(s y)⁻¹, by rw [inv_inv]; exact hs.2 y hy⟩`. Establish `hι'` using `(isPerpEmb_iff x₀ A' ι).2 hι`.
+
+Take `⟨hr, ⟨fib, hfib⟩, H2⟩` from `H (_, ι) hι'`. Take `⟨⟨s, hs⟩, H3⟩` from `H2 fib hfib`. Use `⟨hr, fun fib' hfib' t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[fib_eq hβ hfib hfib']`. Conclude with `(formula_iff c hβ h0 hι' hr _ (ae_qf hfib β) _ hs.2 ht).1 (H3 s hs)`.
+
+Introduce and unpack `⟨-, ⟨A, j, hA⟩, H⟩`. Use `⟨⟨(_, j), (isPerpEmb_iff x₀ A j).2 hA⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨A', ι⟩ hι`. Take `⟨hr, H2⟩` from `H _ ι ((isPerpFrame_iff x₀ A' ι).2 hι)`. Use `⟨hr, exists_isDxDq P Q, fun fib hfib => ⟨GlobalTheory.T.exists_borelSection_unitary_orbit_quadric P Q β x₀ hβ h0, fun s hs => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `ht : ∀ y, PerpendicularEmbedding.qf y = β → PerpendicularEmbedding.act ((s y)⁻¹)⁻¹ x₀ = y` using `fun y hy => by`. Rewrite using `[inv_inv]`. Conclude with `hs.2 y hy`. Conclude with `(formula_iff c hβ h0 hι hr _ (ae_qf hfib β) _ hs.2 ht).2 (H2 fib (isDxDq_local hfib β) _ ht)`.
+-/
 theorem quotFormula_iff (c : CDHaar) (P Q P' Q' : ℕ) {β : ℝ} (hβ : β ≠ 0) :
     PerpendicularEmbedding.QuotFormula c P Q P' Q' β ↔
       ∀ x₀ : ActionCoordinates.Wsp P Q, ActionCoordinates.qf x₀ = β → PointClauses c P Q P' Q' β x₀ := by
@@ -650,6 +909,25 @@ theorem quotFormula_iff (c : CDHaar) (P Q P' Q' : ℕ) {β : ℝ} (hβ : β ≠ 
     exact (formula_iff c hβ h0 hι hr _ (ae_qf hfib β) _ hs.2 ht).2
       (H2 fib (isDxDq_local hfib β) _ ht)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h P Q β hβ x₀ h0`. Take `⟨c₀⟩` from `GlobalTheory.CompactDualExists.nonempty_cdHaar`. Establish `hq0 : PerpendicularEmbedding.qf x₀ = β` using `by rw [← qf_eq]; exact h0`. Establish `nn : ∀ {n : ℕ} (u : Fin n → ℂ), 0 ≤ ∑ i, Complex.normSq (u i)` using `fun u => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`.
+
+Break down `hβ with rfl | rfl` into its components or cases. Take `_ | P` from `P`. Use `nn fun i => x₀ (Sum.inr i)` as an intermediate fact. Simplify using `only [PerpendicularEmbedding.qf, Finset.univ_eq_empty, Finset.sum_empty] at hq0`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `H` using `fun c => (quotFormula_iff c _ _ _ _ one_ne_zero).1 (h c P Q).1 x₀ h0`. Take `⟨h1, ⟨j, ι, h2⟩, h3⟩` from `H c₀`. Use `⟨h1, ⟨P, Q, j, ι, fun _ => ⟨rfl, rfl⟩, fun e => by norm_num at e, h2⟩, ?_⟩` and prove the remaining obligations. Introduce `P' Q' j ι hι`. Take `⟨e1, e2⟩` from `(signature_perp ((isPerpEmb_iff x₀ j ι).2 hι)).1 hq0`.
+
+Take `rfl : P = P'` from `by omega`. Substitute `e2` using the available equality. Conclude with `⟨(h3 j ι hι).1, fun c => ((H c).2.2 j ι hι).2⟩`. Take `_ | Q` from `Q`. Use `nn fun i => x₀ (Sum.inl i)` as an intermediate fact.
+
+Simplify using `only [PerpendicularEmbedding.qf, Finset.univ_eq_empty, Finset.sum_empty] at hq0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `H` using `fun c => (quotFormula_iff c _ _ _ _ (by norm_num)).1 (h c P Q).2 x₀ h0`. Take `⟨h1, ⟨j, ι, h2⟩, h3⟩` from `H c₀`. Use `⟨h1, ⟨P, Q, j, ι, fun e => by norm_num at e, fun _ => ⟨rfl, rfl⟩, h2⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `P' Q' j ι hι`. Take `⟨e1, e2⟩` from `(signature_perp ((isPerpEmb_iff x₀ j ι).2 hι)).2 hq0`. Take `rfl : Q = Q'` from `by omega`. Substitute `e1` using the available equality. Conclude with `⟨(h3 j ι hι).1, fun c => ((H c).2.2 j ι hι).2⟩`.
+
+Introduce `h c P Q`. Prove the components needed by the constructor for the conclusion. Use `(quotFormula_iff c _ _ _ _ one_ne_zero).2 fun x₀ h0 => ?_` and prove the remaining obligations. Take `⟨h1, ⟨P', Q', j, ι, e, -, h2⟩, h3⟩` from `h _ _ 1 (Or.inl rfl) x₀ h0`. Take `⟨e1, rfl⟩` from `e rfl`.
+
+Take `rfl : P' = P` from `by omega`. Conclude with `⟨h1, ⟨j, ι, h2⟩, fun j ι hι => ⟨(h3 _ _ j ι hι).1, (h3 _ _ j ι hι).2 c⟩⟩`. Use `(quotFormula_iff c _ _ _ _ (by norm_num)).2 fun x₀ h0 => ?_` and prove the remaining obligations. Take `⟨h1, ⟨P', Q', j, ι, -, e, h2⟩, h3⟩` from `h _ _ (-1) (Or.inr rfl) x₀ h0`. Take `⟨rfl, e1⟩` from `e rfl`.
+
+Take `rfl : Q' = Q` from `by omega`. Conclude with `⟨h1, ⟨j, ι, h2⟩, fun j ι hι => ⟨(h3 _ _ j ι hι).1, (h3 _ _ j ι hι).2 c⟩⟩`.
+-/
 theorem quotient_iff : PerpendicularEmbedding.CompactDualQuotient ↔ ActionCoordinates.QuotientMeasure := by
   constructor
   · intro h P Q β hβ x₀ h0
@@ -695,6 +973,9 @@ theorem quotient_iff : PerpendicularEmbedding.CompactDualQuotient ↔ ActionCoor
       obtain rfl : Q' = Q := by omega
       exact ⟨h1, ⟨j, ι, h2⟩, fun j ι hι => ⟨(h3 _ _ j ι hι).1, (h3 _ _ j ι hι).2 c⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨selfDual_iff, sphere_iff, quotient_iff, and_congr selfDual_iff (and_congr sphere_iff quotient_iff)⟩`.
+-/
 theorem typings_agree :
     (PerpendicularEmbedding.SelfDualReal ↔ ActionCoordinates.SelfDualMeasures) ∧
     (PerpendicularEmbedding.SphereMass ↔ ActionCoordinates.SphereVolume) ∧

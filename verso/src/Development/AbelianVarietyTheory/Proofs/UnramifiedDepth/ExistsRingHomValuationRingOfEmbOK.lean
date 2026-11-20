@@ -11,6 +11,27 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `T C _ _ V ι' h`. Establish `hnn : ∀ a : T.V, 0 ≤ vV T.V (algebraMap T.V T.Fr a)`. Introduce `a`. Unfold `vV`. Distinguish the cases in `ha : valV T.V (algebraMap T.V T.Fr a) = 0`.
+
+Simplify using `[ha]`. Establish `h1 : valV T.V (algebraMap T.V T.Fr a) ≤ 1` using `IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a`. Use `(WithZero.log_le_log ha one_ne_zero).2 h1` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hl0 : vV T.V ((V.l : ℕ) : T.Fr) ≠ 0`. Introduce `h0`. Establish `hl : ((V.l : ℕ) : T.Fr) ≠ 0` using `Nat.cast_ne_zero.2 V.l_prime.ne_zero`. Use `h _ hl` as an intermediate fact. Rewrite `this` using `[map_natCast, V.v_l, h0]`.
+
+Simplify using `at this`. Establish `hl : (0 : ℝ) < (vV T.V ((V.l : ℕ) : T.Fr) : ℝ)`. Establish `h0` using `hnn (V.l : T.V)`. Rewrite `h0` using `[map_natCast]`. Conclude with `lt_of_le_of_ne h0 hl0.symm` after adjusting the coercions.
+
+Establish `hR : ∀ x : T.V, (ι'.comp (algebraMap T.V T.Fr)) x ∈ V.RR`. Introduce `x`. Use `show V.Ge 0 (ι' (algebraMap T.V T.Fr x))`. Distinguish the cases in `h0 : algebraMap T.V T.Fr x = 0`. Rewrite using `[h0, map_zero]`.
+
+Conclude with `VF.Ge.zero 0`. Unfold `VF.Ge`. Rewrite using `[h _ h0]`. Conclude with `WithTop.coe_le_coe.2 (div_nonneg (by exact_mod_cast hnn x) hl.le)`. Use `⟨(ι'.comp (algebraMap T.V T.Fr)).codRestrict V.RR hR, fun x => rfl, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `key : ((0 : ℝ) : WithTop ℝ) < V.v (ι' (algebraMap T.V T.Fr x))`. Distinguish the cases in `h0 : algebraMap T.V T.Fr x = 0`. Rewrite using `[h0, map_zero, V.v.map_zero]`. Conclude with `WithTop.coe_lt_top _`. Rewrite using `[h _ h0]`.
+
+Establish `h2 : valV T.V (algebraMap T.V T.Fr x) < 1`. Unfold `valV`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hx`. Establish `h3` using `(WithZero.log_lt_log (valV_ne_zero h0) one_ne_zero).2 h2`.
+
+Establish `h4 : 0 < vV T.V (algebraMap T.V T.Fr x)`. Simplify using `at h3`. Unfold `vV`. Use linear arithmetic over natural numbers and integers. Conclude with `WithTop.coe_lt_coe.2 (div_pos (by exact_mod_cast h4) hl)`.
+
+Conclude with `key`.
+-/
 theorem embOK_exists_ringHom :
     ∀ (T : CDVR) (C : Type) [Field C] [CharZero C] (V : VF C) (ι' : T.Fr →+* C), EmbOK T V ι' → ∃ j : T.V →+* V.RR, (∀ x, (j x : C) = ι' (algebraMap T.V T.Fr x)) ∧ ∀ x ∈ maximalIdeal T.V, V.MM (j x : C) := by
   intro T C _ _ V ι' h

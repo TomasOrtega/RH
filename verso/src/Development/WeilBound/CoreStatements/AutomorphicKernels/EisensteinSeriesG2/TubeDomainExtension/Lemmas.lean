@@ -9,14 +9,23 @@ universe u
 
 namespace EisTube
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.gaussian_integrable_finite_dim`.
+-/
 theorem gaussInt : ∀ (ι : Type) [Fintype ι] (c : ℝ), 0 < c →
     MeasureTheory.Integrable (fun y : ι → ℝ => Real.exp (-(c * ∑ i, y i ^ 2))) :=
   GlobalTheory.T.gaussian_integrable_finite_dim
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.polynomial_times_gaussian_bounded`.
+-/
 theorem polyGaussBdd : ∀ (ι : Type) [Fintype ι] (c : ℝ), 0 < c → ∀ N : ℕ, ∃ M : ℝ, ∀ y : ι → ℝ,
     (1 + ‖y‖) ^ N * Real.exp (-(c * ∑ i, y i ^ 2)) ≤ M :=
   GlobalTheory.T.polynomial_times_gaussian_bounded
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.fourier_inversion_finite_dim`.
+-/
 theorem fourierInvCoord : ∀ (ι : Type) [Fintype ι] (g : (ι → ℝ) → ℂ), Continuous g → MeasureTheory.Integrable g →
     MeasureTheory.Integrable (fun t : ι → ℝ =>
       ∫ y, g y * Complex.exp (-(2 * (Real.pi : ℂ) * Complex.I) * ∑ i, (y i : ℂ) * t i)) →
@@ -24,6 +33,9 @@ theorem fourierInvCoord : ∀ (ι : Type) [Fintype ι] (g : (ι → ℝ) → ℂ
         Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * ∑ i, (y i : ℂ) * t i)) = g y :=
   GlobalTheory.T.fourier_inversion_finite_dim
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.contour_shift_tube_domain`.
+-/
 theorem tubeShift : ∀ (ι : Type) [Fintype ι] (Ω : Set (ι → ℝ)), IsOpen Ω → IsPreconnected Ω →
     ∀ H : (ι → ℂ) → ℂ, DifferentiableOn ℂ H {z | (fun i => (z i).re) ∈ Ω} →
     (∀ K ⊆ Ω, IsCompact K → ∃ C : ℝ, ∀ x ∈ K, ∀ y : ι → ℝ,
@@ -33,6 +45,9 @@ theorem tubeShift : ∀ (ι : Type) [Fintype ι] (Ω : Set (ι → ℝ)), IsOpen
         ∫ y : ι → ℝ, H (fun i => (x₂ i : ℂ) + (y i : ℂ) * Complex.I) :=
   GlobalTheory.T.contour_shift_tube_domain
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.contour_shift_parametrised_integral`.
+-/
 theorem laplaceEntire : ∀ (ι : Type) [Fintype ι] (P : Type u) [TopologicalSpace P] [FirstCountableTopology P] (h : P → ℝ), (∀ p, 0 ≤ h p) →
     (∀ p, ∃ U ∈ nhds p, BddAbove (h '' U)) →
     ∀ ψ : P → (ι → ℝ) → ℂ, (∀ p, MeasureTheory.AEStronglyMeasurable (ψ p)) →

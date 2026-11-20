@@ -33,6 +33,15 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hact : ActLev (Xo` using `T.Q.Xo ((i : ℕ) + 1)) T.Q.c (O i).lev2 := (hp i).2.act.1`. Distinguish the cases in `hk : ActKeeps (κ := κ) O i`. Establish `h0` using `(hr i).1 hk`. Introduce `g x`. Establish `key : ∀ hx : x ∈ (R.FW i).WK, (R.FW i).ρ g x ∈ (R.FW i).WK ∧ (x ∈ (R.FW i).MK → (R.FW i).ρ g x ∈ (R.FW i).MK)`.
+
+Introduce `hx`. Take `⟨f, hf⟩` from `(t.e i).surjective ⟨x, hx⟩`. Establish `hfx : ((t.e i f : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL) = x` using `congrArg Subtype.val hf`. Substitute `hfx` using the available equality. Take `⟨h1, h2⟩` from `h0 g f`.
+
+Rewrite using `[← h2]`. Use `⟨(t.e i _).2, fun hm => (t.mem_MK i _).2 ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.LevActInt.intAll_actLev T κ i (O i).lev2 t.laws hact g f ⟨_, h1⟩ rfl ((t.mem_MK i f).1 hm)`. Conclude with `⟨fun hx => (key hx).1, fun hx => (key hx.1).2 hx⟩`. Introduce `g x`.
+
+Rewrite using `[(hr i).2 hk g]`. Conclude with `⟨id, id⟩`.
+-/
 theorem mkStable_of_rhoGeo (t : FWTie T R κ v₀) (hp : ∀ i, OMPins T R κ v₀ O i) (hr : RhoGeo t O) (i : Fin D.R.m) :
     (R.FW i).MKStable := by
   have hact : ActLev (Xo := T.Q.Xo ((i : ℕ) + 1)) T.Q.c (O i).lev2 := (hp i).2.act.1
@@ -57,6 +66,13 @@ end
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP D G _ _ Pl0 T0 A T _ R ph B hC hχ hp hn`. Establish `ht : TieIn T R B.κ B.v₀` using `⟨B.fw.laws, B.fw.alg_eq, B.fw.kap, B.fw.hv₀, B.fw.chiR, B.fw.x0⟩`. Establish `hJ` using `GlobalTheory.CuspValues.jEvExists_and_jEvBar D G Pl0 T0 A T R B.κ B.v₀ hC.lev hC.models ht hp`. Establish `hI` using `GlobalTheory.MemberEvalInj.evInj_of_tieIn D G Pl0 T0 A T R B.κ B.v₀ hC.lev hC.models ht hp`. Establish `hU` using `GlobalTheory.ReadingSpan.jUnif hP D G Pl0 T0 A T R B.κ B.v₀ hC.lev hC.models ht hp hJ.1 hJ.2 hI hn`.
+
+Establish `hL` using `GlobalTheory.MemberLatFull.latFull_of_tieIn D G Pl0 T0 A T R B.κ B.v₀ hC.lev hC.models ht hp`. Establish `hG` using `GlobalTheory.geoAct_of_ties_of_equivAll T R B.κ B.v₀ B.O hC.lev hC.models.inf hC.models.HW ht hp B.pins B.equivAll`. Establish `hx` using `GlobalTheory.T.exists_equivariant_unit_constants_goodEmbedding T R B.κ B.v₀ B.O hC.lev ht hp B.pins`. Use `⟨⟨hJ.1, hJ.2, hI, hU, hG, hL, B.fw.dimMatch⟩, fun i σ => ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `⟨(GlobalTheory.TiedUnif.indep_span_of_tie B.fw hC.models.HW B.bar hU i σ).1, (GlobalTheory.TiedUnif.indep_span_of_tie B.fw hC.models.HW B.bar hU i σ).2, GlobalTheory.TiedUnif.rhoIs_of_eqAt B.fw hC.models.HW hC.models.gW hχ B.bar B.rhoGeo hU i σ (fun h hV => B.equivAll i _ h hV (h …`.
+
+Conclude with `⟨B.fw.ks i, GlobalTheory.GoodLat.mkFull_of_tie B.fw hL i, mkStable_of_rhoGeo B.fw B.pins B.rhoGeo i⟩`.
+-/
 theorem inGeo_and_lUnif_and_lIntegral : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (ph : Fin D.R.m → ℂ) (B : GeoHalf T R ph), PreChar R → R.grp_chiW → T.pb = R.C.P.pb → 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → InGeo B ∧ R.LUnif ∧ R.LIntegral := by
   intro hP D G _ _ Pl0 T0 A T _ R ph B hC hχ hp hn
   have ht : TieIn T R B.κ B.v₀ := ⟨B.fw.laws, B.fw.alg_eq, B.fw.kap, B.fw.hv₀, B.fw.chiR, B.fw.x0⟩

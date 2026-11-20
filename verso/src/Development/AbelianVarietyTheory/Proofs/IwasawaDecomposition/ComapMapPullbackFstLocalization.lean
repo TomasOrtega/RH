@@ -10,6 +10,13 @@ namespace GlobalTheory.LocClosure
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Use `set π := pullback.fst s (spMap (algebraMap R S))`. Establish `H : IsPullback π (pullback.snd s (spMap (algebraMap R S))) s (Spec.map (CommRingCat.ofHom (algebraMap (CommRingCat.of R) (CommRingCat.of S))))` using `IsPullback.of_hasPullback _ _`. Establish `: IsAffineHom π` using `GlobalTheory.QCoh.Qcqs.isAffineHom_of_isPullback_SpecMap H`. Use `le_antisymm (Scheme.IdealSheafData.comap_map_le _ _) ?_` and prove the remaining obligations. Use `Scheme.IdealSheafData.le_of_iSup_eq_top (fun U : X.affineOpens => ⟨π ⁻¹ᵁ U.1, U.2.preimage π⟩) ?_ fun U => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `⨆ U : X.affineOpens, π ⁻¹ᵁ U.1 = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, iSup_affineOpens_eq_top, Scheme.Hom.preimage_top]`. Set `` to `(π.app U).hom.toAlgebra`. Establish `hloc` using `GlobalTheory.QCoh.Qcqs.isLocalization_app (R := CommRingCat.of R) (L := CommRingCat.of S) M H U.2`. Establish `key` using `IsLocalization.map_comap (M.map (GlobalTheory.QCoh.Qcqs.baseRingHom s U.1).hom) (Γ(pullback s (spMap (algebraMap R S)), π ⁻¹ᵁ U.1)) (K.ideal ⟨π ⁻¹ᵁ U.1, U.2.preimage π⟩)`.
+
+Rewrite using `[← key, Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Establish `h5` using `GlobalTheory.GaloisDescent.ideal_le_comap_appLE π (le_refl ((K.map π).comap π)) U ⟨π ⁻¹ᵁ U.1, U.2.preimage π⟩ le_rfl (x := x) (by rw [Scheme.IdealSheafData.ideal_map_of_isAffineHom]; exact hx)`. Rewrite `h5` using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `h5`.
+-/
 theorem comap_map_pullback_fst_localization {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (M : Submonoid R)
     [IsLocalization M S] (X : Scheme.{0}) (s : X ⟶ Sp R) (K : (pullback s (spMap (algebraMap R S))).IdealSheafData) :
     (K.map (pullback.fst s (spMap (algebraMap R S)))).comap (pullback.fst s (spMap (algebraMap R S))) = K := by

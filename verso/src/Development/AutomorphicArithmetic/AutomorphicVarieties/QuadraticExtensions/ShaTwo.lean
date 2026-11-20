@@ -8,6 +8,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Two
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `Ω _ _ _ E E' _ _ _ _ _ _ e hle hidx`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : IsAlgClosure E Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩`. Use `haveI : IsAlgClosure E' Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) E'⟩`. Take `⟨D⟩` from `ldata_nonempty (F := E) (Ω := Ω) 2`.
+
+Take `⟨D'⟩` from `ldata_nonempty (F := E') (Ω := Ω) 2`. Establish `h1` using `(shaLenEq ℚ E Ω 2 D e).1`. Establish `h2` using `(shaLenEq ℚ E' Ω 2 D' e).1`. Rewrite `h1`, `h2` using `[shaLen_eq_shaInv]`. Establish `hsel` using `(selUp ℤ_[2] (G ℚ Ω) (QZ 2) (qzG ℚ Ω 2 e) _ _ hle (shaFam ℚ Ω 2) (conjStable_shaFam ℚ Ω 2)).1`.
+
+Establish `hker` using `kerTwo (G ℚ Ω) (qzG ℚ Ω 2 e) _ _ hle ((Base.contTw ℚ Ω 2).2.1 e) hidx`. Rewrite using `[h1, h2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Two.shaTwo :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (E E' : Type) [Field E] [NumberField E] [Algebra E Ω] [Field E'] [NumberField E'] [Algebra E' Ω] (e : ℤ), galOf ℚ E' Ω ≤ galOf ℚ E Ω → (galOf ℚ E' Ω).relIndex (galOf ℚ E Ω) ∣ 2 → shaInv E 2 e ≤ 1 + shaInv E' 2 e := by
   intro Ω _ _ _ E E' _ _ _ _ _ _ e hle hidx

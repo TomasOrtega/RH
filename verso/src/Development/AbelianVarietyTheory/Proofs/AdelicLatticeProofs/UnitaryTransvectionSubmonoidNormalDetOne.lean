@@ -7,6 +7,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.UTrans
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `h1` using `h (Pi.single a 1) (Pi.single b 1)`. Establish `h2 : hf σ G (Pi.single a 1) (Pi.single b 1) = G a b`. Simplify using `[hf, Pi.single_apply, apply_ite σ]`. Rewrite `h1` using `[h2]`.
+
+Rewrite using `[← h1]`. Simplify using `only [hf, Matrix.mulVec_single_one, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.col_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem IsU.transpose_mul_mul_map {R : Type} [CommRing R] {n : ℕ} {σ : R →+* R}
     {G γ : Matrix (Fin n) (Fin n) R} (h : IsU σ G γ) : γᵀ * G * γ.map σ = G := by
   ext a b
@@ -19,6 +24,11 @@ theorem IsU.transpose_mul_mul_map {R : Type} [CommRing R] {n : ℕ} {σ : R →+
     Matrix.col_apply, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `h1` using `congrArg Matrix.det h.transpose_mul_mul_map`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `h2 : (γ.map σ).det = σ γ.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[h2]`. Apply `mul_left_cancel₀ hG` to reduce the goal to its premises. Take the linear combination `h1`.
+-/
 theorem IsU.det_mul_conj_det {E : Type} [Field E] {n : ℕ} {σ : E →+* E}
     {G γ : Matrix (Fin n) (Fin n) E} (hG : G.det ≠ 0) (h : IsU σ G γ) : γ.det * σ γ.det = 1 := by
   have h1 := congrArg Matrix.det h.transpose_mul_mul_map
@@ -29,6 +39,9 @@ theorem IsU.det_mul_conj_det {E : Type} [Field E] {n : ℕ} {σ : E →+* E}
   apply mul_left_cancel₀ hG
   linear_combination h1
 
+/- English proof (translation)
+Establish `hu : IsUnit γ.det` using `IsUnit.of_mul_eq_one _ (h.det_mul_conj_det hG)`. Introduce `x y`. Rewrite using `[← h, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec, Matrix.one_mulVec]`.
+-/
 theorem IsU.nonsing_inv {E : Type} [Field E] {n : ℕ} {σ : E →+* E}
     {G γ : Matrix (Fin n) (Fin n) E} (hG : G.det ≠ 0) (h : IsU σ G γ) : IsU σ G γ⁻¹ := by
   have hu : IsUnit γ.det := IsUnit.of_mul_eq_one _ (h.det_mul_conj_det hG)
@@ -36,6 +49,23 @@ theorem IsU.nonsing_inv {E : Type} [Field E] {n : ℕ} {σ : E →+* E}
   rw [← h, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu,
     Matrix.one_mulVec, Matrix.one_mulVec]
 
+/- English proof (translation)
+Introduce `E _ _ n σ G hG`. Take `⟨-, -, hmul, hdet, hU, hconj, -, hUmul⟩` from `GlobalTheory.T.transvection_identities_unitary E n σ G hG.invol hG.herm`. Use `⟨fun γ h => ⟨h.det_mul_conj_det hG.det_ne, h.nonsing_inv hG.det_ne⟩, ?_⟩` and prove the remaining obligations. Establish `key : ∀ m ∈ TvGen σ G, IsU σ G m ∧ m.det = 1 ∧ m⁻¹ ∈ TvGen σ G ∧ ∀ γ, IsU σ G γ → ∃ m' ∈ TvGen σ G, γ * m = m' * γ`. Introduce `m hm`.
+
+Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem m hm`. Take `⟨x, t, hx, ht, rfl⟩` from `hm`. Use `⟨hU x t (by rw [ht, hx]; simp), by rw [hdet, hx]; simp, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : tv σ G x t * tv σ G x (-t) = 1`.
+
+Rewrite using `[hmul, hx]`. Use extensionality with `a b`. Simplify using `[tv]`. Rewrite using `[Matrix.inv_eq_right_inv h1]`. Conclude with `Submonoid.subset_closure ⟨x, -t, hx, by rw [map_neg]; linear_combination -ht, rfl⟩`.
+
+Introduce `γ hγ`. Conclude with `⟨tv σ G (γ *ᵥ x) t, Submonoid.subset_closure ⟨_, t, by rw [hγ, hx], ht, rfl⟩, hconj γ x t hγ⟩`. Consider the case `one`. Use `⟨fun x y => by simp, by simp, by rw [inv_one]; exact one_mem _, fun γ _ => ⟨1, one_mem _, by simp⟩⟩` and prove the remaining obligations. Consider the case `mul a b _ _ ha hb`.
+
+Take `⟨ha1, ha2, ha3, ha4⟩` from `ha`. Take `⟨hb1, hb2, hb3, hb4⟩` from `hb`. Use `⟨hUmul _ _ ha1 hb1, by rw [Matrix.det_mul, ha2, hb2, one_mul], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_inv_rev]`. Conclude with `mul_mem hb3 ha3`.
+
+Introduce `γ hγ`. Take `⟨a', ha', ea⟩` from `ha4 γ hγ`. Take `⟨b', hb', eb⟩` from `hb4 γ hγ`. Conclude with `⟨a' * b', mul_mem ha' hb', by rw [← mul_assoc, ea, mul_assoc, eb, mul_assoc]⟩`. Introduce `m hm`.
+
+Take `⟨h1, h2, h3, h4⟩` from `key m hm`. Use `⟨h1, h2, h3, fun γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨m', hm', e⟩` from `h4 γ hγ`. Take `⟨m'', hm'', e'⟩` from `h4 γ⁻¹ (hγ.nonsing_inv hG.det_ne)`. Establish `hu : IsUnit γ.det` using `IsUnit.of_mul_eq_one _ (hγ.det_mul_conj_det hG.det_ne)`.
+
+Use `⟨m', hm', e, m'', hm'', ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, Matrix.mul_nonsing_inv _ hu, one_mul]`. Use `_ = γ * m'' := by`. Rewrite using `[e', mul_assoc, mul_assoc, Matrix.nonsing_inv_mul _ hu, mul_one]`.
+-/
 theorem tvGen_normal : ∀ (E : Type) [Field E] [CharZero E] (n : ℕ) (σ : E →+* E) (G : Matrix (Fin n) (Fin n) E), IsHerm σ G → (∀ γ, IsU σ G γ → γ.det * σ γ.det = 1 ∧ IsU σ G γ⁻¹) ∧ (∀ m ∈ TvGen σ G, IsU σ G m ∧ m.det = 1 ∧ m⁻¹ ∈ TvGen σ G ∧ ∀ γ, IsU σ G γ → ∃ m' ∈ TvGen σ G, γ * m = m' * γ ∧ ∃ m'' ∈ TvGen σ G, m * γ = γ * m'') := by
   intro E _ _ n σ G hG
   obtain ⟨-, -, hmul, hdet, hU, hconj, -, hUmul⟩ := GlobalTheory.T.transvection_identities_unitary E n σ G hG.invol hG.herm

@@ -11,6 +11,9 @@ namespace PositivityTheory.ThKW.LatB
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {nS nT : ℕ} {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)}
 
+/- English proof (translation)
+Establish `h0 : pairA F 1 0 • (u : WOF F E nS nT) = 0` using `GlobalTheory.HeisThetaF.smul_eq_zero_of_map_infPartF (XFF.fin u)`. Establish `h` using `PositivityTheory.ThKW.LatA.dec (u : WOF F E nS nT)`. Rewrite `h` using `[h0, zero_add]`. Rewrite using `[algebraMap_smul]`. Conclude with `h.symm`.
+-/
 theorem fin_smul_self (u : XFF F E nS nT) :
     algebraMap (AF F) (AEF F E) (pairA F 0 1) • (u : WOF F E nS nT) = u := by
   have h0 : pairA F 1 0 • (u : WOF F E nS nT) = 0 := GlobalTheory.HeisThetaF.smul_eq_zero_of_map_infPartF (XFF.fin u)
@@ -19,12 +22,18 @@ theorem fin_smul_self (u : XFF F E nS nT) :
   rw [algebraMap_smul]
   exact h.symm
 
+/- English proof (translation)
+Use `show ((a • u : XFF F E nS nT) : WOF F E nS nT) ∈ latOF F E nS nT Λ`. Rewrite using `[XFF.coe_asmul, ← fin_smul_self u, smul_smul, mul_comm, fin_mul_eq]`. Conclude with `liftF_smul_mem ha hu`.
+-/
 theorem int_smul_mem {a : AEF F E} (ha : finPartF F E a ∈ hatO (F := F) E) {u : XFF F E nS nT}
     (hu : u ∈ (latF F E nS nT Λ).toAddSubgroup) : a • u ∈ (latF F E nS nT Λ).toAddSubgroup := by
   show ((a • u : XFF F E nS nT) : WOF F E nS nT) ∈ latOF F E nS nT Λ
   rw [XFF.coe_asmul, ← fin_smul_self u, smul_smul, mul_comm, fin_mul_eq]
   exact liftF_smul_mem ha hu
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hu`. Use `⟨a • y, int_smul_mem ha hy, XFF.ext ?_⟩` and prove the remaining obligations. Rewrite using `[coe_rhoFF, XFF.coe_asmul, XFF.coe_asmul, coe_rhoFF, actOF_smul]`.
+-/
 theorem int_smul_mem_map {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
     (p : GAF σ JS × GAF σ JT) {a : AEF F E} (ha : finPartF F E a ∈ hatO (F := F) E) {u : XFF F E nS nT}
     (hu : u ∈ ((latF F E nS nT Λ).map (rhoFF σ JS JT p)).toAddSubgroup) :
@@ -33,10 +42,18 @@ theorem int_smul_mem_map {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT)
   refine ⟨a • y, int_smul_mem ha hy, XFF.ext ?_⟩
   rw [coe_rhoFF, XFF.coe_asmul, XFF.coe_asmul, coe_rhoFF, actOF_smul]
 
+/- English proof (translation)
+Rewrite using `[← hf, ← mul_assoc, mul_comm a, fin_mul_eq, ha, map_zero, zero_mul]`.
+-/
 theorem mul_e_zero {a e : AEF F E} (ha : finPartF F E a = 0)
     (hf : algebraMap (AF F) (AEF F E) (pairA F 0 1) * e = e) : a * e = 0 := by
   rw [← hf, ← mul_assoc, mul_comm a, fin_mul_eq, ha, map_zero, zero_mul]
 
+/- English proof (translation)
+Establish `hr : infPartF F E (algebraMap (AF F) (AEF F E) (pairA F 1 0)) = 1` using `rfl`. Establish `hf : finPartF F E (algebraMap (AF F) (AEF F E) (pairA F 1 0)) = 0` using `TensorProduct.zero_tmul _ _`. Establish `e : a = algebraMap (AF F) (AEF F E) (pairA F 1 0) * a`. Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.SplitDetCharF.adele_tensor_ext _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub, map_mul, hr, one_mul, sub_self]`. Rewrite using `[map_sub, map_mul, hf, ha, zero_mul, sub_self]`. Rewrite using `[e, map_mul, GlobalTheory.HeisThetaF.cAF_algebraMap, map_mul, hf, zero_mul]`.
+-/
 theorem finPart_cAF_zero {a : AEF F E} (ha : finPartF F E a = 0) : finPartF F E (cAF σ a) = 0 := by
   have hr : infPartF F E (algebraMap (AF F) (AEF F E) (pairA F 1 0)) = 1 := rfl
   have hf : finPartF F E (algebraMap (AF F) (AEF F E) (pairA F 1 0)) = 0 := TensorProduct.zero_tmul _ _
@@ -47,6 +64,17 @@ theorem finPart_cAF_zero {a : AEF F E} (ha : finPartF F E a = 0) : finPartF F E 
     · rw [map_sub, map_mul, hf, ha, zero_mul, sub_self]
   rw [e, map_mul, GlobalTheory.HeisThetaF.cAF_algebraMap, map_mul, hf, zero_mul]
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, _, ⟨t, rfl⟩, rfl⟩` from `hw`. Take `⟨x, β, hβ, hx⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat F k hk).2 α hα`. Use `⟨algebraMap (𝓞 F) (𝓞 E) x * t, pairA F 0 β ⊗ₜ[F] (t : E), AddSubgroup.subset_closure ⟨β, hβ, _, ⟨t, rfl⟩, rfl⟩, AddSubgroup.subset_closure ⟨β, hβ, _, ⟨sgOF σ t, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hx, map_add, map_nsmul]`. Conclude with `GlobalTheory.SplitIndex.tmul_split β (x : F) k (t : E)`. Consider the case `zero => exact ⟨0, 0, by rw [map_zero]; exact zero_mem _, by rw [map_zero, map_zero]; exact zero_mem _, by simp⟩`. Consider the case `add x x' _ _ h h'`. Take `⟨r, s, h1, h2, rfl⟩` from `h`.
+
+Take `⟨r', s', h1', h2', rfl⟩` from `h'`. Use `⟨r + r', s + s', by rw [map_add]; exact add_mem h1 h1', by rw [map_add, map_add]; exact add_mem h2 h2', ?_⟩` and prove the remaining obligations. Rewrite using `[← map_add]`. Use `congr 1`. Use `push_cast`.
+
+Rewrite using `[map_add, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `neg x _ h`. Take `⟨r, s, h1, h2, rfl⟩` from `h`. Use `⟨-r, -s, by rw [map_neg]; exact neg_mem h1, by rw [map_neg, map_neg]; exact neg_mem h2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_neg]`. Use `congr 1`. Use `push_cast`. Rewrite using `[map_neg, smul_neg, neg_add]`.
+-/
 theorem approx {k : ℕ} (hk : 0 < k) {z : Af F ⊗[F] E} (hz : z ∈ hatO (F := F) E) :
     ∃ (r : 𝓞 E) (s : AEF F E), finPartF F E s ∈ hatO (F := F) E ∧ finPartF F E (cAF σ s) ∈ hatO (F := F) E ∧
       z = finPartF F E (incAF F E (r : E) + k • s) := by
@@ -80,6 +108,11 @@ theorem approx {k : ℕ} (hk : 0 < k) {z : Af F ⊗[F] E} (hz : z ∈ hatO (F :=
     push_cast
     rw [map_neg, smul_neg, neg_add]
 
+/- English proof (translation)
+Establish `heI : finPartF F E e ∈ hatO (F` using `F) E := GlobalTheory.AdIdem.mem_hat_of_idempotent F E _ (by rw [← map_mul, hee])`. Take `⟨r, s, hs, hs', hz⟩` from `approx (σ := σ) hq.pos heI`. Establish `h0 : finPartF F E (e - (incAF F E (r : E) + q • s)) = 0` using `by rw [map_sub, ← hz, sub_self]`. Establish `h0'` using `finPart_cAF_zero (σ := σ) h0`. Rewrite `h0'` using `[map_sub, map_add, map_nsmul, GlobalTheory.HeisLineF.cAF_incAF, ← coe_sgOF]`.
+
+Use `GlobalTheory.SplitIndex.core_split ((incAF F E).comp (algebraMap (𝓞 E) E)) _ (fun a => finPartF F E a ∈ hatO (F := F) E) (fun a ha u hu => int_smul_mem ha hu) (fun r => AddSubgroup.subset_closure ⟨1, fun v => GlobalTheory.AdLat.adele_one_integral F v, _, ⟨r, rfl⟩, rfl⟩) q x hx e …` and prove the remaining obligations. Introduce `P hP hqP hr`. Use `hin P hP hqP _ hr` as an intermediate fact. Rewrite `this` using `[show sgOF σ (sgOF σ r) = r from RingOfIntegers.ext (sg_sg h _)]`. Then use the resulting hypothesis.
+-/
 theorem split_mem (h : IsCMExt F E σ) {e : AEF F E} (hee : e * e = e)
     (hf : algebraMap (AF F) (AEF F E) (pairA F 0 1) * e = e) (hec : e * cAF σ e = 0) {q : ℕ} (hq : q.Prime)
     (hin : InertQF σ q) {x : XFF F E nS nT} (hx : q • x ∈ (latF F E nS nT Λ).toAddSubgroup) :
@@ -98,12 +131,21 @@ theorem split_mem (h : IsCMExt F E σ) {e : AEF F E} (hee : e * e = e)
   have := hin P hP hqP _ hr
   rwa [show sgOF σ (sgOF σ r) = r from RingOfIntegers.ext (sg_sg h _)] at this
 
+/- English proof (translation)
+Simplify using `only [mtF, map_mul, Units.val_mul]`.
+-/
 theorem mtF_mul {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (a b : GAF σ J) : mtF σ J (a * b) = mtF σ J a * mtF σ J b := by
   simp only [mtF, map_mul, Units.val_mul]
 
+/- English proof (translation)
+Simplify using `only [mtF, map_one, Units.val_one]`.
+-/
 theorem mtF_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mtF σ J 1 = 1 := by
   simp only [mtF, map_one, Units.val_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `hg i j` as an intermediate fact. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul] at this ⊢`. Take the linear combination `-this`.
+-/
 theorem supp_smul {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {e : AEF F E} {g : GAF σ J} (hg : SuppAtF σ e J g) :
     (1 - (e + cAF σ e)) • mtF σ J g = (1 - (e + cAF σ e)) • (1 : Matrix (Fin n) (Fin n) (AEF F E)) := by
   ext i j
@@ -111,6 +153,9 @@ theorem supp_smul {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {e : AEF F E} {g : GA
   simp only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul] at this ⊢
   linear_combination -this
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.smul_mul, Matrix.one_mul]`. Use `_ = ((1 - (e + cAF σ e)) • mtF σ J g) * mtF σ J g⁻¹ := by rw [supp_smul hg]`. Use `_ = _ := by rw [Matrix.smul_mul, ← mtF_mul, mul_inv_cancel, mtF_one]`.
+-/
 theorem supp_smul_inv {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {e : AEF F E} {g : GAF σ J} (hg : SuppAtF σ e J g) :
     (1 - (e + cAF σ e)) • mtF σ J g⁻¹ = (1 - (e + cAF σ e)) • (1 : Matrix (Fin n) (Fin n) (AEF F E)) := by
   calc (1 - (e + cAF σ e)) • mtF σ J g⁻¹ = ((1 - (e + cAF σ e)) • (1 : Matrix (Fin n) (Fin n) (AEF F E))) * mtF σ J g⁻¹ := by
@@ -118,6 +163,9 @@ theorem supp_smul_inv {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {e : AEF F E} {g 
     _ = ((1 - (e + cAF σ e)) • mtF σ J g) * mtF σ J g⁻¹ := by rw [supp_smul hg]
     _ = _ := by rw [Matrix.smul_mul, ← mtF_mul, mul_inv_cancel, mtF_one]
 
+/- English proof (translation)
+Unfold `actOF`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul]`. Use `_ = y * ((1 - (e + cAF σ e)) • (1 : Matrix (Fin nS) (Fin nS) (AEF F E))) := by rw [supp_smul_inv hg]`. Use `_ = _ := by rw [Matrix.mul_smul, Matrix.mul_one]`.
+-/
 theorem act_supp {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} {e : AEF F E}
     {g : GAF σ JS} {k : GAF σ JT} (hg : SuppAtF σ e JS g) (hk : SuppAtF σ e JT k) (y : WOF F E nS nT) :
     (1 - (e + cAF σ e)) • actOF σ JS JT g k y = (1 - (e + cAF σ e)) • y := by
@@ -130,6 +178,13 @@ theorem act_supp {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT
     _ = y * ((1 - (e + cAF σ e)) • (1 : Matrix (Fin nS) (Fin nS) (AEF F E))) := by rw [supp_smul_inv hg]
     _ = _ := by rw [Matrix.mul_smul, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `e he g k hg hk q hq hin`. Take `⟨hf, hfc, hcc⟩` from `split_parts he`. Establish `hc2 : cAF σ (cAF σ e) = e` using `GlobalTheory.HeisLineF.cAF_cAF σ (sg_sg h) e`. Establish `hec : e * cAF σ e = 0` using `he.2.1`. Establish `heI : finPartF F E e ∈ hatO (F` using `F) E := GlobalTheory.AdIdem.mem_hat_of_idempotent F E _ (by rw [← map_mul, he.1])`.
+
+Establish `hcI : finPartF F E (cAF σ e) ∈ hatO (F` using `F) E := GlobalTheory.AdIdem.mem_hat_of_idempotent F E _ (by rw [← map_mul, hcc])`. Establish `hcI' : finPartF F E (1 - (e + cAF σ e)) ∈ hatO (F` using `F) E := by`. Rewrite using `[map_sub, map_add, map_one]`. Conclude with `sub_mem (GlobalTheory.AdLat.one_tmul_mem_adelicCompletionOfElementSet F ⟨1, map_one _⟩) (add_mem heI hcI)`. Use `GlobalTheory.SplitIndex.not_dvd_of_saturated _ _ (hfin (g, k)) hq fun x hx hqx => ?_` and prove the remaining obligations.
+
+Use `GlobalTheory.SplitIndex.mem_of_parts _ e (cAF σ e) x (split_mem h he.1 hf hec hq hin hqx) (split_mem h hcc hfc (by rw [hc2, mul_comm, hec]) hq hin hqx) ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hx`. Establish `e1 : (1 - (e + cAF σ e)) • rhoFF σ JS JT (g, k) y = (1 - (e + cAF σ e)) • y` using `XFF.ext (by rw [XFF.coe_asmul, XFF.coe_asmul, coe_rhoFF]; exact act_supp hg hk _)`. Rewrite using `[e1]`. Conclude with `int_smul_mem hcI' hy`.
+-/
 theorem idx_main (h : IsCMExt F E σ) {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
     (hfin : ∀ p, idx (latF F E nS nT Λ) ((latF F E nS nT Λ).map (rhoFF σ JS JT p)) ≠ 0) :
     ∀ e, IsSplitIdemF σ e → ∀ g k, SuppAtF σ e JS g → SuppAtF σ e JT k → ∀ q : ℕ, q.Prime → InertQF σ q →

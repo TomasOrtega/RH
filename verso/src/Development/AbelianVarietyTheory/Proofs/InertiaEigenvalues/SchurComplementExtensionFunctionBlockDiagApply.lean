@@ -5,6 +5,11 @@ open scoped ContDiff Topology
 
 namespace GlobalTheory.SchurExt
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[blk, eqv, GroundTheory.Automorphic.FourierWhittaker.blockMat_apply, Matrix.one_apply, Fin.ext_iff]`. Use `all_goals`. Establish `hi` using `i.isLt`.
+
+Establish `hj` using `j.isLt`. Apply the tactic sequence `try intro`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | omega`.
+-/
 theorem schurSquareMatrixToBlocks_blockDiagonal_one {R : Type} [CommRing R] (m r : ℕ) (h : Matrix (Fin (m + 1)) (Fin (m + 1)) R) :
     blk (GroundTheory.Automorphic.FourierWhittaker.blockMat (by omega : m + 1 ≤ m + r + 1 + 1) h) =
       Matrix.fromBlocks h 0 0 1 := by
@@ -17,6 +22,17 @@ theorem schurSquareMatrixToBlocks_blockDiagonal_one {R : Type} [CommRing R] (m r
     try intro
     split_ifs <;> first | rfl | (exfalso; omega) | omega
 
+/- English proof (translation)
+Establish `hb` using `schurSquareMatrixToBlocks_blockDiagonal_one (R := Ad E) m r (h : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E))`. Establish `hD : Dof ((GroundTheory.Automorphic.FourierWhittaker.blockGL (by omega : m + 1 ≤ m + r + 1 + 1) h : GA E (m + r + 1 + 1)) : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) = 1`. Rewrite using `[Dof, GroundTheory.Automorphic.FourierWhittaker.coe_blockGL, hb, Matrix.toBlocks_fromBlocks₂₂]`. Establish `hA : Aof ((GroundTheory.Automorphic.FourierWhittaker.blockGL (by omega : m + 1 ≤ m + r + 1 + 1) h : GA E (m + r + 1 + 1)) : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) = h`. Rewrite using `[Aof, GroundTheory.Automorphic.FourierWhittaker.coe_blockGL, hb, Matrix.toBlocks_fromBlocks₁₁]`.
+
+Establish `hB : Bof ((GroundTheory.Automorphic.FourierWhittaker.blockGL (by omega : m + 1 ≤ m + r + 1 + 1) h : GA E (m + r + 1 + 1)) : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) = 0`. Rewrite using `[Bof, GroundTheory.Automorphic.FourierWhittaker.coe_blockGL, hb, Matrix.toBlocks_fromBlocks₁₂]`. Establish `hC : Cof ((GroundTheory.Automorphic.FourierWhittaker.blockGL (by omega : m + 1 ≤ m + r + 1 + 1) h : GA E (m + r + 1 + 1)) : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)) = 0`. Rewrite using `[Cof, GroundTheory.Automorphic.FourierWhittaker.coe_blockGL, hb, Matrix.toBlocks_fromBlocks₂₁]`. Establish `hmk : mkGL (h : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) = h` using `Units.ext (coe_mkGL (Matrix.isUnits_det_units h))`.
+
+Establish `hmk1 : mkGL (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) (Ad E)) = 1` using `Units.ext (by rw [coe_mkGL (by simp)]; rfl)`. Establish `hpsi : psi (0 : Ad E) = 1`. Simplify using `[psi]`. Establish `hchi : chiF (m` using `m) (r := r) χ 0 = (χ 0 : ℂ) := by`. Establish `h0 : (fun i j => pInf E ((0 : Matrix (Fin (r + 1)) (Fin (m + 1)) (Ad E)) i j)) = 0`.
+
+Use function extensionality and compare the values at `i j`. Simplify using the standard rewrite rules. Rewrite using `[chiF, h0]`. Simplify using `[zero_mem]`. Rewrite using `[schurF, if_pos (by rw [hD]; simp), Xof, Scof, Yof, hA, hB, hC, hD]`.
+
+Simplify using `only [inv_one, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, sub_zero, Matrix.zero_apply]`. Rewrite using `[hpsi, hmk, hmk1, hchi, one_mul]`.
+-/
 theorem schurF_blockGL (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ)
     (β : GA E (m + 1) → ℂ) (b₁ : GA E (r + 1) → ℂ) (χ : (Fin (r + 1) → Fin (m + 1) → Cinf E) → ℝ)
     (h : GA E (m + 1)) :

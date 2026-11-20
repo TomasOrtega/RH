@@ -19,6 +19,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.KeyPow
 
+/- English proof (translation)
+Introduce `R _ x j hj`. Use `x.P.isAb.comm` as an intermediate fact. Take `⟨hL, hS, hr⟩` from `BoxPower.boxPower_basic R x.P j`. Establish `hr'` using `hr x.rig x.rig_gen`. Establish `hA : IsAbelianScheme (Out.powObj x.P.A j)`.
+
+Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' hj`. Conclude with `AbelianSchemeGerms.isAbelianScheme_powObj x.P.A x.P.isAb n`. Set `P' : Out.PolAV (Sp R)` to `{ A := Out.powObj x.P.A j isAb := hA g := j * x.P.g smoothDim := powObj_smoothOfRelativeDimension_mul _ _ _ j x.P.smoothDim L := Out.boxLB x.P.L (Out.powPr x.P.A (n := j)) isLB := hL rigid := ⟨_, hr'⟩ sym := hS ample := relAmple_powObj_boxLB R x.P j ktriv := kTriv_boxLB_powObj R …`. Take `⟨th, hth, hne⟩` from `BoxSection.exists_boxSec _ _ _ j (Out.powIsPowGrp x.P.A j) x.P.L (fun _ => x.th) x.P.isLB`. Take `⟨v, hv, hvp⟩` from `PowLie.isLieBasis_pow R _ _ j x.P.g (Out.powIsPowGrp x.P.A j) x.v x.basis`.
+
+Use `⟨⟨P', Nat.mul_pos hj x.g_pos, _, hr', th, fun s => hne s fun _ => x.th_ne s, v, hv⟩, ⟨Out.powIsPowGrp x.P.A j, idIso _, idIso_isGen hL⟩, rfl, fun p => hr' p.1 p.2, fun jj b h => ?_, hvp⟩` and prove the remaining obligations. Use `Eq.trans ?_ (th.compat jj b)` and prove the remaining obligations. Rewrite using `[hth jj fun i => LB.wchart_le x.P.L _ jj i, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(congrArg (fun f => f.hom (x.th.f (jj i))) (Scheme.Hom.appLE_map (Out.powPr x.P.A i).left (LB.wchart_le x.P.L (fun i => (Out.powPr x.P.A i).left) jj i) (homOfLE (inf_le_left (b := P'.L.U b))).op)).symm`.
+-/
 theorem exists_isKeyPow : ∀ (R : Type) [CommRing R] (x : KeyIn R) (j : ℕ), 1 ≤ j → ∃ y, GlobalTheory.KeyPow.IsKeyPow y x j := by
   intro R _ x j hj
   have := x.P.isAb.comm

@@ -11,6 +11,9 @@ open scoped ContDiff
 
 variable {g : ℕ} {Y Y' : Scheme.{0}}
 
+/- English proof (translation)
+Introduce `U f`. Conclude with `⟨isOpen_const, differentiableOn_const _⟩`.
+-/
 theorem isHolFam_const (u : Sp ℂ ⟶ Y) : IsHolFam (g := g) (fun _ => u) := by
   intro U f
   exact ⟨isOpen_const, differentiableOn_const _⟩
@@ -18,6 +21,11 @@ theorem isHolFam_const (u : Sp ℂ ⟶ Y) : IsHolFam (g := g) (fun _ => u) := by
 def jetZero (m : ℕ) : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m :=
   jetMap (fun _ => 0) fun _ => Ideal.zero_mem _
 
+/- English proof (translation)
+Establish `h : (jetZero m : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) = (Algebra.ofId ℂ (Jet ℂ (Fin 1 × Fin g) m)).comp jetAug`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Simplify using `only [jetZero, jetMap, jetAug, liftJet, AlgHom.comp_assoc, Ideal.Quotient.liftₐ_comp]`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem jetZero_eq (m : ℕ) (a : Jet ℂ (Fin 1 × Fin g) m) :
     jetZero m a = algebraMap ℂ _ ((jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) a) := by
   have h : (jetZero m : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) =
@@ -30,6 +38,11 @@ theorem jetZero_eq (m : ℕ) (a : Jet ℂ (Fin 1 × Fin g) m) :
   rw [h]
   rfl
 
+/- English proof (translation)
+Establish `hl : IsLocalHom ((jetZero m : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 1 × Fin g) m)` using `isLocalHom_jetMap (m := m) (fun _ => 0) (fun _ => Ideal.zero_mem _)`. Establish `h1` using `jetPt_precomp (fun _ => u) (fun _ => u) (isHolFam_const u) (isHolFam_const u) rfl m ((jetZero m : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 1 × Fin g) m) (fun U _ f => by simp only [jetOf_const, AlgHom.coe_toRingHom, AlgHom.co …`. Rewrite using `[← h1]`. Establish `h2 : ((jetZero m : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 1 × Fin g) m) = (algebraMap ℂ (Jet ℂ (Fin 1 × Fin g) m)).comp ((jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin 1 × Fin g) m →+* ℂ)`. Conclude with `RingHom.ext fun a => jetZero_eq m a`.
+
+Establish `h3 : spMap ((algebraMap ℂ (Jet ℂ (Fin 1 × Fin g) m)).comp ((jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin 1 × Fin g) m →+* ℂ)) = spMap (algebraMap ℂ (Jet ℂ (Fin 1 × Fin g) m)) ≫ spMap ((jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin 1 × Fin g) m →+* ℂ)` using `by first`. Consider the case `rfl`. Consider the case `(simp only [spMap]; rw [← Spec.map_comp]; rfl)`. Consider the case `(unfold spMap; rw [← Spec.map_comp]; rfl)`. Rewrite using `[h2, h3, Category.assoc, jetPt_aug]`.
+-/
 theorem jetPt_const (u : Sp ℂ ⟶ Y) (m : ℕ) :
     spMap (algebraMap ℂ (Jet ℂ (Fin 1 × Fin g) m)) ≫ u = jetPt (fun _ => u) (isHolFam_const u) m := by
   have hl : IsLocalHom ((jetZero m : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) :
@@ -55,6 +68,9 @@ theorem jetPt_const (u : Sp ℂ ⟶ Y) (m : ℕ) :
     | (unfold spMap; rw [← Spec.map_comp]; rfl)
   rw [h2, h3, Category.assoc, jetPt_aug]
 
+/- English proof (translation)
+Rewrite using `[jetPt_comp e hol p (fun _ => u) (isHolFam_const u) he m, ← jetPt_const u m]`.
+-/
 theorem jetPt_over (e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)) (hol : IsHolFam e) (p : Y ⟶ Y') (u : Sp ℂ ⟶ Y')
     (he : ∀ z, e z ≫ p = u) (m : ℕ) :
     jetPt e hol m ≫ p = spMap (algebraMap ℂ (Jet ℂ (Fin 1 × Fin g) m)) ≫ u := by

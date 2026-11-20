@@ -22,6 +22,29 @@ open ReciprocityTheory.ChartRestriction.G.Geo (MRing HermLine IsSmoothHerm IsAri
 open GroundTheory.Heights₂.Heights (segreChartSet segreChartComponents mem_segreChartComponents chartLift
   contDiff_chartLift chartLift_blockNonzero segre_chartLift chart_coord_eq_one)
 
+/- English proof (translation)
+Introduce `K _ _ ι _ P n L A s g i δ hP hL hA hs hg hδ hsupp`. Take `⟨a, ha, hsa, -⟩` from `id hs`. Set `σ` to `(Fintype.equivFin ((k : K) → ι k)).symm`. Set `lam` to `chartLift σ i`. Set `χ : ContDiffBump (0 : Fin (Fintype.card ((k : K) → ι k)) → ℂ)` to `⟨1 / δ + 1, 1 / δ + 2, by positivity, by linarith⟩`.
+
+Set `G` to `fun x => χ x * g (lam x)`. Set `Φ : Fin n → _` to `fun j x => pot L j (lam x)`. Set `kk` to `fun x => A.h (lam x)`. Set `F` to `fun (ε : ℝ) x => Real.log (‖eval x (chartSection σ i s)‖ ^ 2 + ε * kk x ^ 2) / 2`. Establish `hlam : ContDiff ℝ ∞ lam` using `contDiff_chartLift σ i`.
+
+Set `Ω` to `lam ⁻¹' {z | ∀ k, ∃ j, z ⟨k, j⟩ ≠ 0}`. Establish `hΩ : IsOpen Ω` using `isOpen_blockNonzero.preimage hlam.continuous`. Establish `hsm : ∀ f : ((Σ k, ι k) → ℂ) → ℝ, ContDiffOn ℝ ∞ f {z | ∀ k, ∃ j, z ⟨k, j⟩ ≠ 0} → ContDiffOn ℝ ∞ (f ∘ lam) Ω` using `fun f hf => hf.comp hlam.contDiffOn fun _ hx => hx`. Establish `hpot : ∀ j, ContDiffOn ℝ ∞ (pot L j) {z | ∀ k, ∃ j, z ⟨k, j⟩ ≠ 0}` using `fun j => (hL j).log fun z hz => ((L j).pos z hz).ne'`. Establish `hxΩ : ∀ x ∈ segreChartSet P σ i, x ∈ Ω`.
+
+Introduce and unpack `_ ⟨z, -, hzi, rfl⟩`. Conclude with `chartLift_blockNonzero σ i (by simp [σ, hzi])`. Establish `key : ∀ x ∈ segreChartSet P σ i, G =ᶠ[𝓝 x] g ∘ lam`. Introduce and unpack `_ ⟨z, -, hzi, rfl⟩`. Distinguish the cases in `hr : ‖fun a => segre z (σ a)‖ < 1 / δ + 1`.
+
+Use `filter_upwards [Metric.isOpen_ball.mem_nhds (mem_ball_zero_iff.2 hr)] with y hy`. Simplify using `[G, χ.one_of_mem_closedBall (Metric.ball_subset_closedBall hy)]`. Establish `hle : ‖fun a => segre z (σ a)‖ ≤ ‖segre z‖` using `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun a => norm_le_pi_norm (segre z) (σ a)`. Establish `hcont : Continuous fun y => segre (lam y)` using `continuous_pi fun i' => continuous_finsetProd _ fun k _ => (continuous_apply (⟨k, i' k⟩ : Σ k, ι k)).comp hlam.continuous`. Establish `hO : IsOpen {y | ‖segre (lam y) i‖ < δ * ‖segre (lam y)‖}` using `isOpen_lt ((continuous_apply i).comp hcont).norm (continuous_const.mul hcont.norm)`.
+
+Establish `hx : ‖segre (lam fun a => segre z (σ a)) i‖ < δ * ‖segre (lam fun a => segre z (σ a))‖`. Rewrite using `[segre_chartLift σ i z hzi, hzi, norm_one]`. Establish `h1 : 1 / δ < ‖segre z‖` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Use `filter_upwards [hO.mem_nhds hx] with y hy`.
+
+Simplify using `[G, hsupp _ hy]`. Establish `hJ : ∀ J ∈ segreChartComponents P σ i, ComplexSets.zeroSet J ⊆ Ω` using `fun J hJ x hx => chartLift_blockNonzero σ i (chart_coord_eq_one hJ hx)`. Establish `hlim` using `tendsto_finsetSum (segreChartComponents P σ i) fun J hJs => hLel _ n J (chartSection σ i s) G kk Φ (mem_segreChartComponents.1 hJs).1.1 (hDim K ι P (n + 1) _ σ i hP J hJs) (hNot K ι P (n + 1) _ σ i A s hP hs J hJs) ⟨Ω, hΩ, hJ J hJs, (χ.contDiff.contDiffOn).mul (hsm g hg.1)⟩ χ.has …`. Rewrite `hlim` using `[hDiv K ι P n _ σ i L A s g δ G Φ hP hL hs hg hδ hsupp fun x hx => ⟨key x hx, fun j => EventuallyEq.rfl⟩]`. Use `hlim.congr' (eventually_nhdsWithin_of_forall fun ε (hε : 0 < ε) => ?_)` and prove the remaining obligations.
+
+Use `set M := (regLine A s ε ha hsa).tensor A`. Establish `hML : ∀ j, IsSmoothHerm ((Fin.cons M L : Fin (n + 1) → HermLine ι) j)` using `fun j => Fin.cases ((isSmoothHerm_regLine hA hε ha hsa).mul hA) (fun i => hL i) j`. Establish `hcongr : ptsIntegral P (Fin.cons (fun z => Real.log (‖eval z (map (Int.castRingHom ℂ) s)‖ ^ 2 + ε * A.h z ^ 2) / 2) (pot L)) g = ptsIntegral P (pot (Fin.cons M L)) g`. Rewrite using `[Inter.PtsAddFirst.pot_cons]`. Use `Inter.DiagRAux.ptsIntegral_congr_mcPts P (fun j => ?_) (fun _ _ => rfl)` and prove the remaining obligations.
+
+Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Fin.cons_zero]`. Conclude with `(log_regLine_tensor A s hε ha hsa z hz.1).symm`. Introduce `z _`.
+
+Simplify using `only [Fin.cons_succ]`. Use `beta_reduce`. Rewrite using `[hcongr]`. Use `(hInt K ι P n _ σ i (Fin.cons M L) g δ G (Matrix.vecCons (F ε) Φ) hP hML hg hδ (Or.inl hsupp) fun x hx => ⟨key x hx, fun j => ?_⟩).symm` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => EventuallyEq.rfl) j` and prove the remaining obligations.
+
+Use `filter_upwards [hΩ.mem_nhds (hxΩ x hx)] with y hy`. Simplify using `only [Matrix.cons_val_zero, Function.comp_apply, Inter.PtsAddFirst.pot_cons, Fin.cons_zero, F, kk, eval_chartSection]`. Conclude with `(log_regLine_tensor A s hε ha hsa (lam y) hy).symm`.
+-/
 theorem LelongChartLimit.proof (hInt : SegreChartIntegral.Statement) (hDim : SegreChartDim.Statement)
     (hNot : ChartSectionNotMem.Statement) (hLel : LelongPolyLimit.Statement)
     (hDiv : ChartDivisorCompare.Statement) : LelongChartLimit.Statement := by

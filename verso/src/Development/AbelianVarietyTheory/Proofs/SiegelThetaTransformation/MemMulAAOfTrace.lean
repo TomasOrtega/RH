@@ -31,10 +31,22 @@ variable {D : D7}
 def mulAA (D : D7) {k : ℕ} (L : Lt D.host.E k) : Lt D.host.E k :=
   Submodule.span (𝓞 D.host.E) {u | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ t ∈ L, u = a • t}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, ha, t, ht, rfl⟩`.
+-/
 theorem smul_mem_mulAA {k : ℕ} {L : Lt D.host.E k} {a : D.host.E} (ha : a ∈ D.host.AA)
     {t : Fin k → D.host.E} (ht : t ∈ L) : a • t ∈ mulAA D L :=
   Submodule.subset_span ⟨a, ha, t, ht, rfl⟩
 
+/- English proof (translation)
+Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact AddSubgroup.subset_closure hv`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add u v _ _ hu hv => exact add_mem hu hv`. Consider the case `smul c v _ hv => clear * - hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+
+Take `⟨a, ha, t, ht, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, c • t, L.smul_mem c ht, smul_comm _ _ _⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`. Introduce `hv`. Conclude with `(AddSubgroup.closure_le (mulAA D L).toAddSubgroup).2 Submodule.subset_span hv`.
+-/
 theorem isAA_mulAA {k : ℕ} (L : Lt D.host.E k) : IsAA (mulAA D L) L := by
   intro v
   constructor
@@ -55,6 +67,11 @@ theorem isAA_mulAA {k : ℕ} (L : Lt D.host.E k) : IsAA (mulAA D L) L := by
   · intro hv
     exact (AddSubgroup.closure_le (mulAA D L).toAddSubgroup).2 Submodule.subset_span hv
 
+/- English proof (translation)
+Establish `h` using `Submodule.FG.map₂ (Algebra.lsmul (𝓞 D.host.E) (𝓞 D.host.E) (Fin k → D.host.E) : D.host.E →ₐ[𝓞 D.host.E] _).toLinearMap (FractionalIdeal.fg_of_isNoetherianRing le_rfl D.host.AA) hL`. Rewrite `h` using `[Submodule.map₂_eq_span_image2]`. Rewrite using `[mulAA]`. Use `h using 2` and compare the differences between its conclusion and the goal. Use extensionality with `u`.
+
+Conclude with `⟨fun ⟨a, ha, t, ht, e⟩ => ⟨a, ha, t, ht, e.symm⟩, fun ⟨a, ha, t, ht, e⟩ => ⟨a, ha, t, ht, e.symm⟩⟩`.
+-/
 theorem mulAA_fg {k : ℕ} {L : Lt D.host.E k} (hL : L.FG) : (mulAA D L).FG := by
   have h := Submodule.FG.map₂ (Algebra.lsmul (𝓞 D.host.E) (𝓞 D.host.E) (Fin k → D.host.E) :
       D.host.E →ₐ[𝓞 D.host.E] _).toLinearMap
@@ -65,6 +82,11 @@ theorem mulAA_fg {k : ℕ} {L : Lt D.host.E k} (hL : L.FG) : (mulAA D L).FG := b
   ext u
   exact ⟨fun ⟨a, ha, t, ht, e⟩ => ⟨a, ha, t, ht, e.symm⟩, fun ⟨a, ha, t, ht, e⟩ => ⟨a, ha, t, ht, e.symm⟩⟩
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger (AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D)`. Establish `h0 : algebraMap (𝓞 D.host.E) D.host.E a ≠ 0` using `by simpa using ha0`. Rewrite using `[eq_top_iff, ← hL, Submodule.span_le]`. Introduce `t ht`. Use `Submodule.smul_mem _ (algebraMap (𝓞 D.host.E) D.host.E a)⁻¹ (Submodule.subset_span (R := D.host.E) (smul_mem_mulAA ha ht))` as an intermediate fact.
+
+Rewrite `this` using `[smul_smul, inv_mul_cancel₀ h0, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem mulAA_span {k : ℕ} {L : Lt D.host.E k} (hL : Submodule.span D.host.E (L : Set (Fin k → D.host.E)) = ⊤) :
     Submodule.span D.host.E (mulAA D L : Set (Fin k → D.host.E)) = ⊤ := by
   obtain ⟨a, ha0, ha⟩ := FractionalIdeal.exists_ne_zero_mem_isInteger
@@ -76,6 +98,9 @@ theorem mulAA_span {k : ℕ} {L : Lt D.host.E k} (hL : Submodule.span D.host.E (
     (Submodule.subset_span (R := D.host.E) (smul_mem_mulAA ha ht))
   rwa [smul_smul, inv_mul_cancel₀ h0, one_smul] at this
 
+/- English proof (translation)
+Rewrite using `[herm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.transpose_apply, show cc (y a) = star (y a) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_transpose (T : HSp D) (x y : Fin T.rank → D.host.E) :
     herm T.gramᵀ x y = ∑ i, ∑ j, star (y i) * T.gram i j * x j := by
   rw [herm, Finset.sum_comm]
@@ -83,6 +108,9 @@ theorem herm_transpose (T : HSp D) (x y : Fin T.rank → D.host.E) :
   rw [Matrix.transpose_apply, show cc (y a) = star (y a) from rfl]
   ring
 
+/- English proof (translation)
+Rewrite using `[hL.2]`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[herm_transpose]`. Conclude with `⟨fun ⟨b, hb⟩ => hb ▸ b.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`.
+-/
 theorem mem_iff_herm {T : HSp D} {L : Lt D.host.E T.rank} (hL : IsSelfDualC T L) (x : Fin T.rank → D.host.E) :
     x ∈ L ↔ ∀ y ∈ L, IsIntegral ℤ (herm T.gramᵀ x y) := by
   rw [hL.2]
@@ -90,6 +118,15 @@ theorem mem_iff_herm {T : HSp D} {L : Lt D.host.E T.rank} (hL : IsSelfDualC T L)
   rw [herm_transpose]
   exact ⟨fun ⟨b, hb⟩ => hb ▸ b.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Rewrite `hx`, `hy` using `[isAA_mulAA L]`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, s, hs, rfl⟩` from `hx`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+
+Consider the case `mem y hy`. Take `⟨b, hb, t, ht, rfl⟩` from `hy`. Rewrite using `[herm_smul_left, herm_smul_right, ← mul_assoc, mul_comm, cc_eq_conj]`. Conclude with `Submodule.smul_mem (NAA D) (⟨_, (mem_iff_herm hL s).1 hs t ht⟩ : 𝓞 D.host.E) (FractionalIdeal.mul_mem_mul ha (conj_mem_AAbar D hb))`. Consider the case `zero => simp [herm, cc]`.
+
+Consider the case `add u v _ _ hu hv => rw [herm_add_right]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu`. Rewrite using `[← neg_one_smul D.host.E u, herm_smul_right, cc, map_neg, map_one, neg_one_mul]`. Conclude with `neg_mem hu`.
+
+Consider the case `zero => simp [herm]`. Consider the case `add u v _ _ hu hv => rw [herm_add_left]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [← neg_one_smul D.host.E u, herm_smul_left, neg_one_mul]`. Conclude with `neg_mem hu`.
+-/
 theorem herm_mem_NAA {T : HSp D} {L : Lt D.host.E T.rank} (hL : IsSelfDualC T L) {x y : Fin T.rank → D.host.E}
     (hx : x ∈ mulAA D L) (hy : y ∈ mulAA D L) : herm T.gramᵀ x y ∈ NAA D := by
   rw [isAA_mulAA L] at hx hy
@@ -111,6 +148,15 @@ theorem herm_mem_NAA {T : HSp D} {L : Lt D.host.E T.rank} (hL : IsSelfDualC T L)
   | add u v _ _ hu hv => rw [herm_add_left]; exact add_mem hu hv
   | neg u _ hu => rw [← neg_one_smul D.host.E u, herm_smul_left, neg_one_mul]; exact neg_mem hu
 
+/- English proof (translation)
+Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum`. Establish `h1 : ∀ t ∈ L, herm T.gramᵀ x t ∈ D.host.AA` using `fun t ht => GlobalTheory.LatVac.RatDual.mem_AA_of_trace D _ fun a ha => by`. Use `h _ (smul_mem_mulAA ha ht)` as an intermediate fact. Rewrite `this` using `[herm_smul_right]`. Then use the resulting hypothesis. Establish `h2 : ∀ b ∈ D.host.AA⁻¹, b • x ∈ L` using `fun b hb => (mem_iff_herm hL _).2 fun t ht => by`.
+
+Take `⟨c, hc⟩` from `int_of_AA_mul hP D (h1 t ht) hb`. Rewrite using `[herm_smul_left, mul_comm, ← hc]`. Conclude with `c.2`. Establish `h3 : (1 : D.host.E) ∈ D.host.AA * D.host.AA⁻¹`. Rewrite using `[AA_mul_inv hP D]`.
+
+Conclude with `FractionalIdeal.one_mem_one _`. Establish `key` using `FractionalIdeal.mul_induction_on (C := fun w : D.host.E => w • x ∈ mulAA D L) h3 (fun a ha b hb => by show (a * b) • x ∈ _`. Rewrite using `[mul_smul]`. Conclude with `smul_mem_mulAA ha (h2 b hb))`. Use the proof step `(fun u v hu hv => by show (u + v) • x ∈ _`.
+
+Rewrite using `[add_smul]`. Conclude with `add_mem hu hv)`. Simplify using `using key`.
+-/
 theorem mem_mulAA_of_trace {T : HSp D} {L : Lt D.host.E T.rank} (hL : IsSelfDualC T L)
     {x : Fin T.rank → D.host.E}
     (h : ∀ y ∈ mulAA D L, ∃ n : ℤ, Algebra.trace ℚ D.host.E (D.host.xi0 * herm T.gramᵀ x y) = n) :
@@ -137,6 +183,11 @@ theorem mem_mulAA_of_trace {T : HSp D} {L : Lt D.host.E T.rank} (hL : IsSelfDual
       exact add_mem hu hv)
   simpa using key
 
+/- English proof (translation)
+Establish `e : ∀ x y, EF X x y = -Algebra.trace ℚ D.host.E (D.host.xi0 * herm T.gramᵀ x y)` using `fun x y => by`. Rewrite using `[EF_def, hG, hκ, mul_div_cancel_left₀ _ two_ne_zero, neg_mul, map_neg]`. Use `⟨mulAA_fg hL.1.fg, fun x => ⟨fun hx y hy => ?_, fun h => mem_mulAA_of_trace hL fun y hy => ?_⟩⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `trace_int_of_mem Formalism.IndefR.Fin.factPrincipalDatum D (herm_mem_NAA hL hx hy)`. Conclude with `⟨-n, by rw [e, hn, Int.cast_neg]⟩`.
+
+Take `⟨n, hn⟩` from `h y hy`. Conclude with `⟨-n, by rw [Int.cast_neg, ← hn, e, neg_neg]⟩`.
+-/
 theorem selfD_mulAA {T : HSp D} {L : Lt D.host.E T.rank} (hL : IsSelfDualC T L) (X : Data D.host.E T.rank)
     (hG : X.Gm = T.gramᵀ) (hκ : X.κ0 = 2 * D.host.xi0) : SelfD X (mulAA D L) := by
   have e : ∀ x y, EF X x y = -Algebra.trace ℚ D.host.E (D.host.xi0 * herm T.gramᵀ x y) := fun x y => by
@@ -147,6 +198,11 @@ theorem selfD_mulAA {T : HSp D} {L : Lt D.host.E T.rank} (hL : IsSelfDualC T L) 
   · obtain ⟨n, hn⟩ := h y hy
     exact ⟨-n, by rw [Int.cast_neg, ← hn, e, neg_neg]⟩
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `I.isFractional`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Use `⟨Ideal.absNorm (Ideal.span {a}), Nat.pos_of_ne_zero ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `nonZeroDivisors.ne_zero ha`.
+
+Take `⟨b, hb⟩` from `h z hz`. Establish `e : ((Ideal.absNorm (Ideal.span {a}) : ℕ) : E) * z = algebraMap (𝓞 E) E (c * b)`. Rewrite using `[map_mul, hb, Algebra.smul_def, ← mul_assoc, ← map_mul, hc, map_natCast]`. Rewrite using `[e]`. Conclude with `(c * b).2`.
+-/
 theorem exists_nat_clear {E : Type} [Field E] [NumberField E]
     (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : ∃ N : ℕ, 0 < N ∧ ∀ z ∈ I, IsIntegral ℤ ((N : E) * z) := by
   obtain ⟨a, ha, h⟩ := I.isFractional
@@ -160,6 +216,15 @@ theorem exists_nat_clear {E : Type} [Field E] [NumberField E]
     rw [e]
     exact (c * b).2
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨e, U, hU⟩` from `h`. Establish `hU' : (U : Matrix _ _ ℂ)ᴴ * G.reindex e e * (U : Matrix _ _ ℂ) = Formalism.UG.Jpq p q` using `hU`. Establish `h1 : ((U : Matrix _ _ ℂ).submatrix e finSumFinEquiv.symm)ᴴ * G * (U : Matrix _ _ ℂ).submatrix e finSumFinEquiv.symm = Matrix.diagonal fun a : Fin (p + q) => ((FD.sgn p (a : ℕ) : ℝ) : ℂ)`. Establish `h2 : G = (G.reindex e e).submatrix e e` using `by simp`.
+
+Rewrite using `[h2, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, hU']`. Use extensionality with `a b`. Take `⟨a, rfl⟩` from `finSumFinEquiv.surjective a`. Take `⟨b, rfl⟩` from `finSumFinEquiv.surjective b`. Rewrite using `[Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply, Matrix.diagonal_apply]`.
+
+Simplify using `only [EmbeddingLike.apply_eq_iff_eq]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Simplify using `[Formalism.UG.Jpq, FD.sgn, Matrix.one_apply]`. Apply the tactic sequence `all_goals split_ifs <;> simp`. Use `⟨_, fun h0 => ?_, h1⟩` and prove the remaining obligations.
+
+Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun a _ => ?_) h2.symm` and prove the remaining obligations. Unfold `FD.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem exists_on_basis {r p q : ℕ} (hr : p + q = r) {G : Matrix (Fin r) (Fin r) ℂ}
     (h : Formalism.UG.HasSignature G p q) :
     ∃ B : Matrix (Fin r) (Fin r) ℂ, B.det ≠ 0 ∧
@@ -187,6 +252,9 @@ theorem exists_on_basis {r p q : ℕ} (hr : p + q = r) {G : Matrix (Fin r) (Fin 
   unfold FD.sgn
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [FD.gram, hermC, FD.col, Matrix.of_apply, Matrix.map_apply, Matrix.mul_apply, Matrix.transpose_apply, ComplexEmbedding.conjugate_coe_eq, hG, Complex.conj_conj, Matrix.conjTranspose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+-/
 theorem gram_conj {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (B : Matrix (Fin r) (Fin r) ℂ) (hG : ∀ a b, conj (τ (G a b)) = τ (G b a)) :
     FD.gram (ComplexEmbedding.conjugate τ) Gᵀ (B.map conj) = Bᴴ * G.map τ * B := by
@@ -197,6 +265,29 @@ theorem gram_conj {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix 
   rw [Finset.sum_comm]
   rfl
 
+/- English proof (translation)
+Introduce `D S T p q L hS hev hr hsig hpq hL`. Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum`. Take `⟨ψ, hψ⟩` from `GlobalTheory.StdAdelicChar.exists_isStdChar D`. Take `⟨θ, hθ⟩` from `GlobalTheory.DualPairCompare.exists_infFam D`. Establish `hcc : ∀ σ : D.host.E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `fun σ => star_star σ`.
+
+Establish `hB : ∀ τ, ∃ B : Matrix (Fin T.rank) (Fin T.rank) ℂ, B.det ≠ 0 ∧ Bᴴ * gramAt D T τ * B = Matrix.diagonal fun a : Fin T.rank => ((FD.sgn p (a : ℕ) : ℝ) : ℂ)` using `fun τ => by`. Use `hsig (tauE D τ)` as an intermediate fact. Rewrite `this` using `[hpq τ]`. Conclude with `exists_on_basis hr this`. Use `choose B hB0 hB using hB`.
+
+Take `⟨N, hN, hNi⟩` from `exists_nat_clear (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) (2 * D.host.xi0) * (D.host.AA * D.host.AAbar))`. Use `set Ψ : Finset (D.host.E →+* ℂ) := Finset.univ.image fun τ => ComplexEmbedding.conjugate (tauE D τ) with hΨ`. Establish `hmem : ∀ σ, σ ∈ Ψ ↔ ∃ τ, tauE D τ = ComplexEmbedding.conjugate σ` using `fun σ => by`. Simplify using `only [hΨ, Finset.mem_image, Finset.mem_univ, true_and]`. Conclude with `exists_congr fun τ => ⟨fun h => by rw [← h, hcc], fun h => by rw [h, hcc]⟩`.
+
+Take `⟨X, hXΨ, hG, hp, hΛ, -, hκ, -⟩` from `GlobalTheory.FlagData.exists_data GlobalTheory.latMinkowski D.host.E T.rank p 3 (3 * N) Ψ T.gramᵀ (mulAA D L) D.host.xi0 (2 * D.host.xi0) (fun σ => by`. Rewrite using `[hmem, hmem, hcc, GlobalTheory.StdRat.tauE_cm D σ, not_not])`. Use the proof step `(fun a b => GlobalTheory.LatVac.gram_star T b a)`. Use the proof step `(by rw [Matrix.det_transpose]; exact (GlobalTheory.LatVac.gram_det_isUnit T).ne_zero)`. Use the proof step `(by omega)`.
+
+Use the proof step `(fun σ hσ => by`. Take `⟨τ, -, rfl⟩` from `Finset.mem_image.1 hσ`. Use `⟨(B τ).map conj, ?_, ?_⟩` and prove the remaining obligations. Use `RingHom.map_det (starRingEnd ℂ) (B τ)` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`.
+
+Rewrite using `[← this]`. Simplify using `using hB0 τ`. Rewrite using `[gram_conj _ _ _ fun a b => ?_]`. Conclude with `hB τ`. Rewrite using `[← IsCMField.complexEmbedding_complexConj]`.
+
+Conclude with `congrArg _ (GlobalTheory.LatVac.gram_star T a b))`. Use the proof step `(mulAA_fg hL.1.fg) (mulAA_span hL.1.span_eq_top) le_rfl (conj_xi0_alt D) (cmHost_imaginaryGenerator_ne_zero hP D) (Or.inl rfl)`. Use the proof step `(fun σ hσ => by`. Take `⟨τ, -, rfl⟩` from `Finset.mem_image.1 hσ`. Use `xi_zero_im_pos D τ` as an intermediate fact.
+
+Simplify using `only [ComplexEmbedding.conjugate_coe_eq, map_mul, map_ofNat, Complex.mul_im, Complex.conj_im]`. Evaluate the numerical expressions. Conclude with `this)`. Use the proof step `(by omega)`. Use the proof step `(fun x hx y hy => by`.
+
+Establish `e : ((3 * N : ℕ) : D.host.E) / ((3 : ℕ) : D.host.E) = N`. Rewrite using `[Nat.cast_mul, mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 (by norm_num))]`. Rewrite using `[e, mul_assoc]`. Conclude with `hNi _ (FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ _) (herm_mem_NAA hL hx hy)))`. Take `⟨g, bas, idx, hs⟩` from `exists_symplectic_basis_of_selfD _ _ X (hΛ ▸ selfD_mulAA hL X hG hκ)`.
+
+Set `e : D.what₂.Tau ≃ X.Ψ` to `Equiv.ofBijective (fun τ => ⟨ComplexEmbedding.conjugate (tauE D τ), hXΨ ▸ Finset.mem_image_of_mem _ (Finset.mem_univ τ)⟩) ⟨fun τ τ' h => GlobalTheory.StdRat.tauE_injective D (by`. Use `congrArg (fun σ : X.Ψ => ComplexEmbedding.conjugate σ.1) h` as an intermediate fact. Simplify `this),` using `only [hcc]`. Use `fun σ => by`. Take `⟨τ, -, h⟩` from `Finset.mem_image.1 (hXΨ ▸ σ.2 : σ.1 ∈ Ψ)`.
+
+Conclude with `⟨τ, Subtype.ext h⟩⟩`. Use `⟨⟨ψ, hψ, θ, hθ, X, ⟨hS, hG, e, fun _ => rfl, hκ⟩, g, q, by rw [hp, hr], bas, idx, hs, hev⟩, hp, rfl, hΛ ▸ isAA_mulAA L, B, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hB τ, sgnM]`. Simplify using `only [hp]`.
+-/
 theorem exists_ctx : ∀ (D : D7) (S T : HSp D) (p q : ℕ) (L : Lt D.host.E T.rank), S.gram = 1 → Even S.rank →
     p + q = T.rank → T.SigOK → (∀ τ, T.sig (tauE D τ) = (p, q)) → IsSelfDualC T L →
     ∃ C : Ctx S T, C.X.p0 = p ∧ C.q0 = q ∧ IsAA C.X.Λ L ∧ ∃ B : C.Bas, C.IsB B := by
@@ -265,6 +356,15 @@ theorem exists_ctx : ∀ (D : D7) (S T : HSp D) (p q : ℕ) (L : Lt D.host.E T.r
   rw [hB τ, sgnM]
   simp only [hp]
 
+/- English proof (translation)
+Establish `hm : ∀ x : Fin N → E, x ∈ Examples₂.stdLat N ↔ ∀ i, IsIntegral ℤ (x i)` using `fun x => by`. Rewrite using `[Examples₂.stdLat, Module.Basis.mem_span_iff_repr_mem]`. Conclude with `forall_congr' fun i => ⟨fun ⟨b, hb⟩ => by rw [← show _ = x i from hb]; exact b.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`. Establish `hs : ∀ b, IsIntegral ℤ (Examples₂.sgn b : E)` using `fun b => by`. Consider the cases of `b`.
+
+Conclude with `isIntegral_one`. Conclude with `isIntegral_one.neg`. Establish `hf : ∀ x : Fin N → E, ∑ i, ∑ j, star (x i) * G i j * y j = ∑ i, star (x i) * Examples₂.sgn (neg i) * y i`. Introduce `x`. Simplify using `[hG]`.
+
+Simplify using `only [hf]`. Use `(hm y).trans ⟨fun h x hx => ?_, fun h i => ?_⟩` and prove the remaining obligations. Establish `: IsIntegral ℤ (∑ i, star (x i) * Examples₂.sgn (neg i) * y i)` using `IsIntegral.sum _ fun i _ => ((Examples₂.star_isIntegral _ ((hm x).1 hx i)).mul (hs _)).mul (h i)`. Conclude with `⟨⟨_, this⟩, rfl⟩`. Take `⟨b, hb⟩` from `h (Pi.single i 1) (Submodule.subset_span ⟨i, by simp⟩)`.
+
+Rewrite `hb` using `[Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp)]`. Establish `: y i = Examples₂.sgn (neg i) * (b : E)`. Rewrite using `[hb, Pi.single_eq_same, star_one, one_mul, ← mul_assoc, Examples₂.sgn_mul_self, one_mul]`. Rewrite using `[this]`. Conclude with `(hs _).mul b.2`.
+-/
 theorem selfDual_diag {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ} (neg : Fin N → Bool)
     (G : Matrix (Fin N) (Fin N) E) (hG : ∀ i j, G i j = if i = j then (Examples₂.sgn (neg i) : E) else 0)
     (y : Fin N → E) : y ∈ Examples₂.stdLat N ↔
@@ -291,10 +391,18 @@ theorem selfDual_diag {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ
     rw [this]
     exact (hs _).mul b.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Examples₂.stdLat_isLattice N, selfDual_diag neg _ (Examples₂.stdSpace_gram_apply _ N neg p q)⟩`.
+-/
 theorem isSelfDualC_std (D : D7) (N : ℕ) (neg : Fin N → Bool) (p q : ℕ) :
     IsSelfDualC (D := D) (Examples₂.stdSpace Examples₂.star_isIntegral N neg p q) (Examples₂.stdLat N) :=
   ⟨Examples₂.stdLat_isLattice N, selfDual_diag neg _ (Examples₂.stdSpace_gram_apply _ N neg p q)⟩
 
+/- English proof (translation)
+Use `⟨(finSumFinEquiv (m := p) (n := q)).symm, 1, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_one, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`. Use extensionality with `i j`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, hG]`. Simplify using `only [EmbeddingLike.apply_eq_iff_eq]`.
+
+Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Apply the tactic sequence `by_cases h : a = b <;> simp [Formalism.UG.Jpq, Examples₂.sgn, h]`. Simplify using `[Formalism.UG.Jpq]`. Simplify using `[Formalism.UG.Jpq]`. Apply the tactic sequence `by_cases h : a = b <;> simp [Formalism.UG.Jpq, Examples₂.sgn, h]`.
+-/
 theorem hasSignature_diag (p q : ℕ) (G : Matrix (Fin (p + q)) (Fin (p + q)) ℂ)
     (hG : ∀ i j, G i j = if i = j then (Examples₂.sgn (decide (p ≤ (i : ℕ))) : ℂ) else 0) :
     Formalism.UG.HasSignature G p q := by
@@ -309,6 +417,9 @@ theorem hasSignature_diag (p q : ℕ) (G : Matrix (Fin (p + q)) (Fin (p + q)) �
   · simp [Formalism.UG.Jpq]
   · by_cases h : a = b <;> simp [Formalism.UG.Jpq, Examples₂.sgn, h]
 
+/- English proof (translation)
+Introduce `τ`. Use `hasSignature_diag p q _ fun i j => ?_` and prove the remaining obligations. Use `(congrArg τ (Examples₂.stdSpace_gram_apply _ (p + q) _ p q i j)).trans ?_` and prove the remaining obligations. Rewrite using `[apply_ite τ, Examples₂.map_sgn, map_zero]`.
+-/
 theorem sigOK_std (D : D7) (p q : ℕ) :
     (Examples₂.stdSpace (E := D.host.E) Examples₂.star_isIntegral (p + q) (fun i => decide (p ≤ (i : ℕ))) p q).SigOK := by
   intro τ
@@ -316,10 +427,16 @@ theorem sigOK_std (D : D7) (p q : ℕ) :
   refine (congrArg τ (Examples₂.stdSpace_gram_apply _ (p + q) _ p q i j)).trans ?_
   rw [apply_ite τ, Examples₂.map_sgn, map_zero]
 
+/- English proof (translation)
+Use `ext1 i j`. Conclude with `(Examples₂.stdSpace_gram_apply (E := D.host.E) _ N (fun _ => false) N 0 i j).trans rfl`.
+-/
 theorem gram_pos (D : D7) (N : ℕ) : (Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral N).gram = 1 := by
   ext1 i j
   exact (Examples₂.stdSpace_gram_apply (E := D.host.E) _ N (fun _ => false) N 0 i j).trans rfl
 
+/- English proof (translation)
+Take `⟨C, h1, h2, -, h3⟩` from `exists_ctx D (Examples₂.posSpace Examples₂.star_isIntegral (2 * n)) (Examples₂.stdSpace Examples₂.star_isIntegral (p + q) (fun i => decide (p ≤ (i : ℕ))) p q) p q (Examples₂.stdLat (p + q)) (gram_pos D _) (even_two_mul n) rfl (sigOK_std D p q) (fun _ => rfl) (isSelfDualC_std D _ …`. Conclude with `⟨_, _, C, rfl, h1, h2, Examples₂.posSpace_sigOK _ _, sigOK_std D p q, h3⟩`.
+-/
 theorem exists_ctx_sig (D : D7) (n p q : ℕ) : ∃ (S T : HSp D) (C : Ctx S T), S.rank = 2 * n ∧ C.X.p0 = p ∧
     C.q0 = q ∧ S.SigOK ∧ T.SigOK ∧ ∃ B : C.Bas, C.IsB B := by
   obtain ⟨C, h1, h2, -, h3⟩ := exists_ctx D (Examples₂.posSpace Examples₂.star_isIntegral (2 * n))

@@ -40,13 +40,22 @@ instance Op.towPol : IsScalarTower (X.Ol la) (Pol X la N) (Op X la N) :=
 instance Op.isLocalHom : IsLocalHom (algebraMap (X.Ol la) (Op X la N)) := Formalism.DV.GaussP.isLocalHom_A _ _
 instance Op.flat : Module.Flat (X.Ol la) (Op X la N) := Formalism.DV.GaussP.flat_A _ _
 
+/- English proof (translation)
+The claim follows from `Formalism.DV.GaussP.algebraMap_injective _ _`.
+-/
 theorem Op.algebraMap_injective : Function.Injective (algebraMap (X.Ol la) (Op X la N)) :=
   Formalism.DV.GaussP.algebraMap_injective _ _
 
+/- English proof (translation)
+The claim follows from `Formalism.DV.GaussP.maximalIdeal_eq _ _`.
+-/
 theorem Op.maximalIdeal_eq : IsLocalRing.maximalIdeal (Op X la N) =
     Ideal.map (algebraMap (X.Ol la) (Op X la N)) (IsLocalRing.maximalIdeal (X.Ol la)) :=
   Formalism.DV.GaussP.maximalIdeal_eq _ _
 
+/- English proof (translation)
+Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer, Op.maximalIdeal_eq, h.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem Op.irreducible_map {ϖ : X.Ol la} (h : Irreducible ϖ) :
     Irreducible (algebraMap (X.Ol la) (Op X la N) ϖ) := by
   rw [IsDiscreteValuationRing.irreducible_iff_uniformizer, Op.maximalIdeal_eq, h.maximalIdeal_eq, Ideal.map_span,
@@ -65,6 +74,9 @@ instance Kp.algOl : Algebra (X.Ol la) (Kp X la N) :=
 instance Kp.towOp : IsScalarTower (X.Ol la) (Op X la N) (Kp X la N) :=
   IsScalarTower.of_algebraMap_eq fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.injective (Op X la N) (Kp X la N)).comp (Op.algebraMap_injective X la N)`.
+-/
 theorem Kp.algebraMap_Ol_injective : Function.Injective (algebraMap (X.Ol la) (Kp X la N)) :=
   (IsFractionRing.injective (Op X la N) (Kp X la N)).comp (Op.algebraMap_injective X la N)
 
@@ -108,29 +120,54 @@ instance Rp.torsionFreeOp : Module.IsTorsionFree (Op X la N) (Rp X la N) where
 def bcV : X.Vl la →ₐ[X.Kl la] Rp X la N :=
   (Algebra.TensorProduct.includeRight : X.Vl la →ₐ[X.Kl la] Kp X la N ⊗[X.Kl la] X.Vl la)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcV_apply (v : X.Vl la) : bcV X la N v = ((1 : Kp X la N) ⊗ₜ[X.Kl la] v : Kp X la N ⊗[X.Kl la] X.Vl la) := rfl
 
+/- English proof (translation)
+The claim follows from `TensorProduct.isBaseChange (X.Kl la) (X.Vl la) (Kp X la N)`.
+-/
 theorem bcV_isBaseChange : IsBaseChange (Kp X la N) (bcV X la N).toLinearMap :=
   TensorProduct.isBaseChange (X.Kl la) (X.Vl la) (Kp X la N)
 
 def emb : X.Forms →+* Rp X la N :=
   (bcV X la N).toRingHom.comp (Algebra.TensorProduct.includeRight : X.Forms →ₐ[B.KO] X.Kl la ⊗[B.KO] X.Forms).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_apply (F : X.Forms) : emb X la N F =
     ((1 : Kp X la N) ⊗ₜ[X.Kl la] ((1 : X.Kl la) ⊗ₜ[B.KO] F) : Kp X la N ⊗[X.Kl la] X.Vl la) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_eq_bcV (F : X.Forms) : emb X la N F = bcV X la N (X.bc la F) := rfl
 
 def Vw (u : WeightFamilies.Wt D j) : Submodule (Kp X la N) (Rp X la N) :=
   Submodule.span (Kp X la N) (Set.range fun F : B.Cusp j u => emb X la N (X.inc u F))
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨F, rfl⟩`.
+-/
 theorem emb_mem_Vw (u : WeightFamilies.Wt D j) (F : B.Cusp j u) : emb X la N (X.inc u F) ∈ Vw X la N u :=
   Submodule.subset_span ⟨F, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[emb_eq_bcV, emb_eq_bcV, map_smul (X.bc la), ← algebraMap_smul (X.Kl la) a (X.bc la F), map_smul]`.
+-/
 theorem emb_smul (a : B.KO) (F : X.Forms) :
     emb X la N (a • F) = algebraMap B.KO (X.Kl la) a • emb X la N F := by
   rw [emb_eq_bcV, emb_eq_bcV, map_smul (X.bc la), ← algebraMap_smul (X.Kl la) a (X.bc la F), map_smul]
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.mpr ?_) (Submodule.span_mono (Set.image_subset_range _ _))` and prove the remaining obligations. Introduce and unpack `_ ⟨F, rfl⟩`. Establish `hF : F ∈ Submodule.span B.KO s` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+
+Consider the case `zero => simp only [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => simp only [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+
+Simplify using `only [map_smul, emb_smul]`. Rewrite using `[← algebraMap_smul (Kp X la N) (algebraMap B.KO (X.Kl la) a)]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem Vw_eq_span_image (u : WeightFamilies.Wt D j) {s : Set (B.Cusp j u)} (hs : Submodule.span B.KO s = ⊤) :
     Vw X la N u = Submodule.span (Kp X la N) ((fun F : B.Cusp j u => emb X la N (X.inc u F)) '' s) := by
   refine le_antisymm (Submodule.span_le.mpr ?_) (Submodule.span_mono (Set.image_subset_range _ _))
@@ -150,6 +187,11 @@ instance Vw.finiteDimensional (u : WeightFamilies.Wt D j) : FiniteDimensional (K
   rw [Vw_eq_span_image X la N u hs]
   exact FiniteDimensional.span_of_finite _ (s.finite_toSet.image _)
 
+/- English proof (translation)
+Unfold `Vw`. Rewrite using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨F, rfl⟩, _, ⟨G, rfl⟩, rfl⟩`. Take `⟨H, hH⟩` from `X.inc_mul u u' F G`.
+
+Conclude with `⟨H, by simp only [← hH, map_mul]⟩`.
+-/
 theorem Vw_mul_le (u u' : WeightFamilies.Wt D j) : Vw X la N u * Vw X la N u' ≤ Vw X la N (wadd u u') := by
   unfold Vw
   rw [Submodule.span_mul_span]
@@ -158,6 +200,9 @@ theorem Vw_mul_le (u u' : WeightFamilies.Wt D j) : Vw X la N u * Vw X la N u' �
   obtain ⟨H, hH⟩ := X.inc_mul u u' F G
   exact ⟨H, by simp only [← hH, map_mul]⟩
 
+/- English proof (translation)
+The claim follows from `Vw_mul_le X la N u u' (Submodule.mul_mem_mul hx hy)`.
+-/
 theorem mul_mem_Vw {u u' : WeightFamilies.Wt D j} {x y : Rp X la N} (hx : x ∈ Vw X la N u) (hy : y ∈ Vw X la N u') :
     x * y ∈ Vw X la N (wadd u u') :=
   Vw_mul_le X la N u u' (Submodule.mul_mem_mul hx hy)
@@ -168,6 +213,11 @@ end
 
 def addL (u wL : WeightFamilies.Wt D j) (n : ℕ) : WeightFamilies.Wt D j := wadd u (wsmul n wL)
 
+/- English proof (translation)
+Unfold `addL wadd wsmul`. Simplify using `only [WeightFamilies.Wt.mk.injEq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i`. Expand and normalize the polynomial expressions, which then agree.
+
+Use function extensionality and compare the values at `τ i`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wadd_addL (u wL : WeightFamilies.Wt D j) (n : ℕ) : wadd wL (addL u wL n) = addL u wL (n + 1) := by
   unfold addL wadd wsmul
   simp only [WeightFamilies.Wt.mk.injEq]
@@ -182,11 +232,17 @@ variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ} {wL : W
 def sec (i : Fin (WeightFamilies.dimY D j + 1)) : Rp X la N :=
   ∑ k, (algebraMap (Op X la N) (Kp X la N) (Tv X la N (i, k))) • emb X la N (X.inc wL (w k))
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (emb_mem_Vw X la N wL (w k))`.
+-/
 theorem sec_mem_Vw (i : Fin (WeightFamilies.dimY D j + 1)) : sec X la w i ∈ Vw X la N wL :=
   Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (emb_mem_Vw X la N wL (w k))
 
 def secPow (α : Fin (WeightFamilies.dimY D j) → ℕ) : Rp X la N := ∏ i, sec X la w i.succ ^ α i
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using hv`. Consider the case `succ m ih`. Rewrite using `[pow_succ', mul_assoc, ← add_assoc, ← wadd_addL]`. Conclude with `mul_mem_Vw X la N (sec_mem_Vw X la w i) ih`.
+-/
 theorem sec_pow_mul_mem (i : Fin (WeightFamilies.dimY D j + 1)) (u : WeightFamilies.Wt D j) (n m : ℕ) {v : Rp X la N}
     (hv : v ∈ Vw X la N (addL u wL n)) : sec X la w i ^ m * v ∈ Vw X la N (addL u wL (n + m)) := by
   induction m with
@@ -199,6 +255,11 @@ def Mon (u : WeightFamilies.Wt D j) (a n : ℕ) : Submodule (Kp X la N) (Rp X la
   ⨆ (α : Fin (WeightFamilies.dimY D j) → ℕ) (_ : ∑ i, α i = a),
     (Vw X la N (addL u wL n)).map (LinearMap.mulLeft (Kp X la N) (secPow X la w α))
 
+/- English proof (translation)
+Establish `h : Mon X la w u a n ≤ (Mon X la w u a (n + m)).comap (LinearMap.mulLeft (Kp X la N) (sec X la w 0 ^ m))`. Use `iSup₂_le fun α hα => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `v hv`. Use `show sec X la w 0 ^ m * (secPow X la w α * v) ∈ Mon X la w u a (n + m)`.
+
+Rewrite using `[mul_left_comm]`. Conclude with `Submodule.mem_iSup_of_mem α (Submodule.mem_iSup_of_mem hα (Submodule.mem_map_of_mem (f := LinearMap.mulLeft (Kp X la N) (secPow X la w α)) (sec_pow_mul_mem X la w 0 u n m hv)))`. Conclude with `h hx`.
+-/
 theorem sec_pow_mul_mem_Mon (u : WeightFamilies.Wt D j) (a n m : ℕ) {x : Rp X la N} (hx : x ∈ Mon X la w u a n) :
     sec X la w 0 ^ m * x ∈ Mon X la w u a (n + m) := by
   have h : Mon X la w u a n ≤
@@ -229,9 +290,15 @@ def Fil (u : WeightFamilies.Wt D j) (a : ℕ) : Submodule (Kp X la N) (Rp X la N
     rintro c f ⟨hf, k, hk, hfk⟩
     exact ⟨Submodule.smul_mem _ c hf, k, hk, by rw [mul_smul_comm]; exact Submodule.smul_mem _ c hfk⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Fil {u : WeightFamilies.Wt D j} {a : ℕ} {f : Rp X la N} : f ∈ Fil X la w u a ↔
     f ∈ Vw X la N u ∧ ∃ k, a ≤ k ∧ sec X la w 0 ^ k * f ∈ Mon X la w u a (k - a) := Iff.rfl
 
+/- English proof (translation)
+Introduce `_ h` and use `h.1`.
+-/
 theorem Fil_le_Vw (u : WeightFamilies.Wt D j) (a : ℕ) : Fil X la w u a ≤ Vw X la N u := fun _ h => h.1
 
 end

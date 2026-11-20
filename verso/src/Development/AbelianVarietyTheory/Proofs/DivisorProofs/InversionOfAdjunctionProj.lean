@@ -19,6 +19,23 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hP X _ _ p n hproj hdim x m g f y S hx hm hnorm hreg hS hSf hdisc hE hadj E hEy`. Establish `hη : (dForm (Cartier.constFn p) x : RatForms p n) ≠ 0` using `fun h => one_ne_zero ((isFreeGen_dForm_of_trBasis _ hx).1 (a₁ := 1) (a₂ := 0) (by simp [h]))`. Take `⟨Y, hYi, hYn, s, hsd, K, B, hres, hB, hconn⟩` from `GlobalTheory.T.connectedness_lemma_at_normal_point_logResolution hP X p n hproj hdim (dForm (Cartier.constFn p) x) m (CartierDiv.principal g) (CartierDiv.principal f).supp hη hm (CartierDiv.supp_ne_top _)`. Use `haveI := hYi`. Use `haveI := hYn`.
+
+Use `haveI := hsd`. Take `⟨z, hzy, hSz⟩` from `(isPrimeOf_placeEquiv S y).1 hS`. Establish `hbir` using `hres.bir`. Use `haveI : IsProper p := CommonModel.isProper_of_isProjOver hproj`. Use `haveI : IsProper (s ≫ p) := CommonModel.isProper_of_isProjOver hres.proj`.
+
+Use `haveI : IsProper s := IsProper.of_comp s p`. Take `⟨S', hS'⟩` from `DivOver.exists_over ℂ X Y p s hbir S`. Take `⟨σ, hσz, hS'σ⟩` from `DivOver.isAt_lift ℂ X Y p s hbir inferInstance S' S hS' z hSz`. Use `haveI := hres.smooth`. Establish `hη' : EtaleKlt.ratPull p s n (dForm (Cartier.constFn p) x) ≠ 0` using `fun h0 => hη ((EtaleKlt.ratPull_bijective_of_birational ℂ X Y p s hbir n).1 (h0.trans (map_zero _).symm))`.
+
+Establish `hd` using `discrep_isAt_eq_neg_mult ℂ Y (s ≫ p) n _ hη' K (pullCart s (CartierDiv.principal g)) m hm hres.div S' σ (fnPull s g) hS'σ (isEqn_pullCart s (hσz ▸ CartierDiv.isEqn_principal g z))`. Establish `hdd : discrep S' (EtaleKlt.ratPull p s n (dForm (Cartier.constFn p) x)) m (fnPull s g) = discrep S (dForm (Cartier.constFn p) x) m g`. Simplify using `only [discrep]`. Rewrite using `[BirOrd.formOrd_ratPull_of_over ℂ X Y p s hbir S' S hS' n _ hη, DivOver.Over.ord_fnPull_of_bijective ℂ X Y p s hbir S' S hS' g]`. Establish `hmq : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`.
+
+Establish `hmult : (pullCart s (CartierDiv.principal g) - m • K).mult σ = m`. Rewrite `hd` using `[hdd, hdisc]`. Establish `: ((pullCart s (CartierDiv.principal g) - m • K).mult σ : ℚ) = m`. Clear denominators, using `at hd` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `this` after adjusting the coercions. Establish `hsσ : s σ ⤳ y` using `hσz ▸ hzy`. Establish `heff : ∀ z', z' ⤳ y → ∀ E' : DivOver p, E'.IsAt z' → ∀ g', (CartierDiv.principal g).IsEqn z' g' → discrep E' (dForm (Cartier.constFn p) x) m g' ≤ 0`. Introduce `z' hz' E' hE' g' hg'`. Establish `h1` using `hE E' ((isPrimeOf_placeEquiv E' y).2 ⟨z', hz', hE'⟩)`.
+
+Establish `h2 : E'.ord g' = E'.ord g`. Rewrite using `[hE'.ord_eq, hE'.ord_eq, ← hg'.mult_eq, (CartierDiv.isEqn_principal g z').mult_eq]`. Simplify using `only [discrep] at h1 ⊢`. Rewrite using `[h2]`. Conclude with `h1`.
+
+Establish `hnb` using `GlobalTheory.T.log_residue_dominant_cartier X p n hproj hdim x m g Y s K B y σ S S' hx hm hres hS' hS'σ hmult hadj`. Establish `hlt` using `hconn y σ hnorm heff hmult hsσ hnb`. Establish `hordσ : Scheme.ord ((fnPull s f : Y.functionFieldˣ) : Y.functionField) σ = 1`. Rewrite using `[← hS'σ.ord_eq, DivOver.Over.ord_fnPull_of_bijective ℂ X Y p s hbir S' S hS' f, hSf]`. Conclude with `GlobalTheory.T.discrepancy_add_ord_gt_neg_one_log_resolution X p n hproj hdim _ m g f Y s K B y σ hη hm hres hB hreg hordσ hmult hlt E hEy`.
+-/
 theorem inversion_of_adjunction_proj : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (x : Fin n → X.functionField) (m : ℕ) (g f : X.functionFieldˣ) (y : X) (S : DivOver p), TrBasis (Cartier.constFn p) x → 0 < m → IsIntegrallyClosed (X.presheaf.stalk y) → RegAt y (f : X.functionField) → (placeEquiv p S).IsPrimeOf (locRing y) → S.ord f = 1 → discrep S (dForm (Cartier.constFn p) x) m g = -1 → (∀ E : DivOver p, (placeEquiv p E).IsPrimeOf (locRing y) → discrep E (dForm (Cartier.constFn p) x) m g ≤ 0) → AdjKlt (Cartier.constFn p) n (locRing y) (placeEquiv p S) (dForm (Cartier.constFn p) x) (Finsupp.single (g : X.functionField) (1 / (m : ℚ))) → ∀ E : DivOver p, E.Through y → -1 < discrep E (dForm (Cartier.constFn p) x) m g + E.ord f := by
   intro hP X _ _ p n hproj hdim x m g f y S hx hm hnorm hreg hS hSf hdisc hE hadj E hEy
   have hη : (dForm (Cartier.constFn p) x : RatForms p n) ≠ 0 := fun h =>

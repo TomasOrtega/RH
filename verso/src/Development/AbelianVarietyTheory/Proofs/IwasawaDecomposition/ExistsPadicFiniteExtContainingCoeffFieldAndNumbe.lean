@@ -8,6 +8,11 @@ open Formalism.L2.Fam.NPC Formalism.L2.Fam.NPC.BaseC GlobalTheory.HeckeLocN
 noncomputable section
 namespace GlobalTheory.HeckeLocN
 
+/- English proof (translation)
+Set `c` to `(plEmb pl).emb w`. Set `S : Finset (Loc.Om (D.what₂.places.resChar w))` to `(big w).image (fun z => (pl.ι w).symm z)`. Establish `h1` using `GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range c`. Establish `h2 : FiniteDimensional ℚ_[D.what₂.places.resChar w] (IntermediateField.adjoin ℚ_[D.what₂.places.resChar w] (S : Set (Loc.Om (D.what₂.places.resChar w))))` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Use `⟨⟨IntermediateField.adjoin ℚ_[D.what₂.places.resChar w] (Set.range c) ⊔ IntermediateField.adjoin ℚ_[D.what₂.places.resChar w] (S : Set (Loc.Om (D.what₂.places.resChar w))), IntermediateField.finiteDimensional_sup _ _⟩, fun x => ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(le_sup_left (a := IntermediateField.adjoin ℚ_[D.what₂.places.resChar w] (Set.range c)) (b := IntermediateField.adjoin ℚ_[D.what₂.places.resChar w] (S : Set (Loc.Om (D.what₂.places.resChar w))))) (IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩)`. Conclude with `(le_sup_right (a := IntermediateField.adjoin ℚ_[D.what₂.places.resChar w] (Set.range c)) (b := IntermediateField.adjoin ℚ_[D.what₂.places.resChar w] (S : Set (Loc.Om (D.what₂.places.resChar w))))) (IntermediateField.subset_adjoin _ _ (Finset.mem_coe.2 (Finset.mem_image_of_mem _ h …`.
+-/
 theorem exists_finExt_big (D : D7) (pl : PlSide D) (big : D.what₂.places.Pl → Finset ℂ) (w : D.what₂.places.Pl) :
     ∃ F0 : Loc.FinExt (D.what₂.places.resChar w), (∀ x, (plEmb pl).emb w x ∈ F0.1) ∧
       ∀ z ∈ big w, (pl.ι w).symm z ∈ F0.1 := by

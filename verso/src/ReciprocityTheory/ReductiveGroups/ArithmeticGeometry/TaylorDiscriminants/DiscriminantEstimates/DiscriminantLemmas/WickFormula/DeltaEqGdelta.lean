@@ -5,6 +5,9 @@ open MvPolynomial
 
 namespace PI.WickFormula
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem delta_eq_gdelta {k : Type} [CommRing k] {r s : ℕ} (κ : Fin r → Fin s → k) : delta κ = Gen.gdelta κ := rfl
 
 structure Hyp {k AA M : Type} [CommRing k] [Ring AA] [Algebra k AA] [AddCommGroup M] [Module AA M] {r s : ℕ}

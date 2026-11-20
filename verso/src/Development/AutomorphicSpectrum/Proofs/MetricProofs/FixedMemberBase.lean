@@ -5,6 +5,17 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
+/- English proof (translation)
+Establish `hL : Tendsto (fun t : ℝ => Real.log (1 / t)) (𝓝[>] 0) atTop`. Apply the tactic sequence `have hinv : Tendsto (fun t : ℝ => t⁻¹) (𝓝[>] 0) atTop := by first | exact tendsto_inv_nhdsGT_zero | exact tendsto_inv_zero_atTop`. Conclude with `(Real.tendsto_log_atTop.comp hinv).congr fun t => by simp [one_div]`. Establish `hq : Tendsto (fun x : ℝ => Real.log x / x) atTop (𝓝 0)`. Simplify using `using Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero`.
+
+Establish `he : Tendsto (fun t => epsT C t) (𝓝[>] 0) (𝓝 0)`. Establish `h` using `(hq.comp hL).const_mul C`. Rewrite `h` using `[mul_zero]`. Use `h.congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, epsT]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `ha : ∀ᶠ t in 𝓝[>] (0:ℝ), |epsT C t| < 1 / 2`. Establish `h` using `he.abs`. Rewrite `h` using `[abs_zero]`. Conclude with `h.eventually (gt_mem_nhds (by norm_num))`.
+
+Establish `hb : ∀ᶠ t in 𝓝[>] (0:ℝ), C * epsT C t < 1`. Establish `h` using `he.const_mul C`. Rewrite `h` using `[mul_zero]`. Conclude with `h.eventually (gt_mem_nhds (by norm_num))`. Apply the tactic sequence `obtain ⟨u, hu, hsub⟩ : ∃ u ∈ Set.Ioi (0:ℝ), Set.Ioc 0 u ⊆ {t | |epsT C t| < 1 / 2 ∧ C * epsT C t < 1} := by first | exact mem_nhdsGT_iff_exists_Ioc_subset.mp (ha.and hb) | exact mem_nhdsWithin_Ioi_iff_exists_Ioc_subset.mp (ha.and hb)`.
+
+Use `⟨u, hu, fun t ht htu => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hsub ⟨ht, htu⟩`. Conclude with `⟨h1.le, h2.le⟩`.
+-/
 theorem epsT_small (C : ℝ) :
     ∃ a : ℝ, 0 < a ∧ ∀ t, 0 < t → t ≤ a → |epsT C t| ≤ 1 / 2 ∧ C * epsT C t ≤ 1 := by
   have hL : Tendsto (fun t : ℝ => Real.log (1 / t)) (𝓝[>] 0) atTop := by
@@ -33,6 +44,9 @@ theorem epsT_small (C : ℝ) :
   obtain ⟨h1, h2⟩ := hsub ⟨ht, htu⟩
   exact ⟨h1.le, h2.le⟩
 
+/- English proof (translation)
+Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)` using `(A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target hU`. Use `((hf j).contDiffAt (hopen.mem_nhds ⟨hy, hyU⟩)).of_le ?_` and prove the remaining obligations. Apply the tactic sequence `first | exact_mod_cast (le_top : ((2 : ℕ∞)) ≤ ⊤) | simp | decide`.
+-/
 private theorem contDiffAt_comp_chart_symm_of_smoothOn {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (U : Set X) (f : X → ℝ) (hU : IsOpen U) (hf : A.SmoothOn U f) (j : Fin A.n) (y : Fin e → ℂ)
     (hy : y ∈ (A.chart j).target) (hyU : (A.chart j).symm y ∈ U) :
@@ -42,6 +56,13 @@ private theorem contDiffAt_comp_chart_symm_of_smoothOn {e : ℕ} {X : Type} [Top
   refine ((hf j).contDiffAt (hopen.mem_nhds ⟨hy, hyU⟩)).of_le ?_
   first | exact_mod_cast (le_top : ((2 : ℕ∞)) ≤ ⊤) | simp | decide
 
+/- English proof (translation)
+Establish `hF1 : ∀ᶠ z in 𝓝 y, DifferentiableAt ℝ F z` using `(hF.eventually (by simp)).mono fun z hz => hz.differentiableAt (by norm_num)`. Establish `hG1 : ∀ᶠ z in 𝓝 y, DifferentiableAt ℝ G z` using `(hG.eventually (by simp)).mono fun z hz => hz.differentiableAt (by norm_num)`. Establish `hD : (fderiv ℝ fun z => F z + k * G z) =ᶠ[𝓝 y] fun z => fderiv ℝ F z + k • fderiv ℝ G z` using `by filter_upwards [hF1, hG1] with z hz1 hz2`. Conclude with `(hz1.hasFDerivAt.add (hz2.hasFDerivAt.const_mul k)).fderiv`. Establish `hF2 : DifferentiableAt ℝ (fderiv ℝ F) y` using `(hF.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`.
+
+Establish `hG2 : DifferentiableAt ℝ (fderiv ℝ G) y` using `(hG.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `h2 : fderiv ℝ (fderiv ℝ fun z => F z + k * G z) y = fderiv ℝ (fderiv ℝ F) y + k • fderiv ℝ (fderiv ℝ G) y`. Rewrite using `[hD.fderiv_eq]`. Conclude with `(hF2.hasFDerivAt.add (hG2.hasFDerivAt.const_smul k)).fderiv`. Unfold `levi`.
+
+Rewrite using `[h2]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem levi_add_mul {ι : Type} [Fintype ι] (F G : (ι → ℂ) → ℝ) (y w : ι → ℂ) (k : ℝ)
     (hF : ContDiffAt ℝ 2 F y) (hG : ContDiffAt ℝ 2 G y) :
     levi (fun z => F z + k * G z) y w = levi F y w + k * levi G y w := by
@@ -65,6 +86,11 @@ private theorem levi_add_mul {ι : Type} [Fintype ι] (F G : (ι → ℂ) → �
   simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `hthC` using `contDiffAt_comp_chart_symm_of_smoothOn A (th.U x) (th.φ x) (th.isOpen_U x) (hth.1 x) j y hy h1`. Establish `hΘC` using `contDiffAt_comp_chart_symm_of_smoothOn A (Θ.U x) (Θ.φ x) (Θ.isOpen_U x) (hΘ.1 x) j y hy h2`. Establish `huC` using `contDiffAt_comp_chart_symm_of_smoothOn A Set.univ u isOpen_univ hu j y hy trivial`. Establish `hPC : ContDiffAt ℝ 2 ((th + LocPot.ofFun u + Θ.rsmul ε).φ x ∘ (A.chart j).symm) y` using `(hthC.add huC).add (contDiffAt_const.mul hΘC)`. Rewrite using `[← levi_add_mul _ _ y w (c - ε) hPC hΘC]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `z`. Use `show _ = th.φ x ((A.chart j).symm z) + u ((A.chart j).symm z) + ε * Θ.φ x ((A.chart j).symm z) + (c - ε) * Θ.φ x ((A.chart j).symm z)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_split {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (Θ th : LocPot X)
     (u : X → ℝ) (hΘ : IsPotential A Θ) (hth : IsPotential A th) (hu : A.Smooth u) (ε c : ℝ) (x : X)
     (j : Fin A.n) (y : Fin e → ℂ) (hy : y ∈ (A.chart j).target)
@@ -85,6 +111,11 @@ theorem levi_split {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e 
     (c - ε) * Θ.φ x ((A.chart j).symm z)
   ring
 
+/- English proof (translation)
+Establish `h : fderiv ℝ (fun z => g z - a) = fderiv ℝ g`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hg : DifferentiableAt ℝ g z`. Conclude with `(hg.hasFDerivAt.sub_const a).fderiv`. Establish `hg' : ¬ DifferentiableAt ℝ (fun z => g z - a) z` using `fun h => hg (by simpa using h.add_const a)`.
+
+Rewrite using `[fderiv_zero_of_not_differentiableAt hg, fderiv_zero_of_not_differentiableAt hg']`. Unfold `levi`. Rewrite using `[h]`.
+-/
 private theorem levi_sub_const' {ι : Type} [Fintype ι] (g : (ι → ℂ) → ℝ) (a : ℝ) (y w : ι → ℂ) :
     levi (fun z => g z - a) y w = levi g y w := by
   have h : fderiv ℝ (fun z => g z - a) = fderiv ℝ g := by
@@ -96,10 +127,22 @@ private theorem levi_sub_const' {ι : Type} [Fintype ι] (g : (ι → ℂ) → �
   unfold levi
   rw [h]
 
+/- English proof (translation)
+Unfold `levi`. Simplify using the standard rewrite rules.
+-/
 private theorem levi_zero' {ι : Type} [Fintype ι] (g : (ι → ℂ) → ℝ) (y : ι → ℂ) : levi g y 0 = 0 := by
   unfold levi
   simp
 
+/- English proof (translation)
+Introduce `x j y hy w`. Take `⟨hyt, hyQ⟩` from `hy`. Establish `hsub` using `hU x hyQ`. Establish `hfun : Q.φ x ∘ (A.chart j).symm = fun z => (th.φ x ((A.chart j).symm z) + u ((A.chart j).symm z) + c * Θ.φ x ((A.chart j).symm z)) - a`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [Function.comp_apply, hφ]`. Rewrite using `[hfun, levi_sub_const' (fun z => th.φ x ((A.chart j).symm z) + u ((A.chart j).symm z) + c * Θ.φ x ((A.chart j).symm z)) a y w, levi_split A Θ th u hΘ hth hu ε c x j y hyt hsub.1 hsub.2 w]`. Establish `hmem : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (th + LocPot.ofFun u + Θ.rsmul ε).U x`. Use `⟨hyt, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm y ∈ th.U x ∩ Set.univ ∩ Θ.U x`.
+
+Conclude with `⟨⟨hsub.1, trivial⟩, hsub.2⟩`. Establish `hPs` using `hP x j y hmem w`. Break down `eq_or_ne w 0 with rfl | hw` into its components or cases. Simplify using `[levi_zero']`. Establish `hΘp` using `hpos x j y ⟨hyt, hsub.2⟩ w hw`.
+
+Establish `hce : 0 ≤ c - ε` using `sub_nonneg.mpr hεc`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem isPsh_of_le {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Θ th : LocPot X) (u : X → ℝ) (hΘ : IsPotential A Θ) (hpos : IsPosPot A Θ)
     (hth : IsPotential A th) (hu : A.Smooth u) (ε c a : ℝ) (hεc : ε ≤ c)
@@ -127,6 +170,13 @@ theorem isPsh_of_le {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e
     have hce : 0 ≤ c - ε := sub_nonneg.mpr hεc
     nlinarith
 
+/- English proof (translation)
+Introduce `x j y hy w hw`. Take `⟨hyt, hyQ⟩` from `hy`. Establish `hsub` using `hU x hyQ`. Establish `hfun : Q.φ x ∘ (A.chart j).symm = fun z => th.φ x ((A.chart j).symm z) + u ((A.chart j).symm z) + c * Θ.φ x ((A.chart j).symm z)`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [Function.comp_apply, hφ]`. Rewrite using `[hfun, levi_split A Θ th u hΘ hth hu ε c x j y hyt hsub.1 hsub.2 w]`. Establish `hmem : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (th + LocPot.ofFun u + Θ.rsmul ε).U x`. Use `⟨hyt, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm y ∈ th.U x ∩ Set.univ ∩ Θ.U x`.
+
+Conclude with `⟨⟨hsub.1, trivial⟩, hsub.2⟩`. Establish `hPs` using `hP x j y hmem w`. Establish `hΘp` using `hpos x j y ⟨hyt, hsub.2⟩ w hw`. Establish `hce : 0 < c - ε` using `sub_pos.mpr hεc`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem isPosPot_of_lt {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Θ th : LocPot X) (u : X → ℝ) (hΘ : IsPotential A Θ) (hpos : IsPosPot A Θ)
     (hth : IsPotential A th) (hu : A.Smooth u) (ε c : ℝ) (hεc : ε < c)
@@ -150,6 +200,13 @@ theorem isPosPot_of_lt {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtla
   have hce : 0 < c - ε := sub_pos.mpr hεc
   nlinarith
 
+/- English proof (translation)
+Use `⟨fun x j => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Use `show ContDiffOn ℝ _ (fun z => P.φ x ((A.chart j).symm z) + Q.φ x ((A.chart j).symm z)) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (P.U x ∩ Q.U x))`. Conclude with `((hP.1 x j).mono fun z (hz : z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (P.U x ∩ Q.U x)) => ⟨hz.1, hz.2.1⟩).add ((hQ.1 x j).mono fun z (hz : z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (P.U x ∩ Q.U x)) => ⟨hz.1, hz.2.2⟩)`. Take `⟨⟨hPx, hQx⟩, hPx', hQx'⟩` from `hy`. Take `⟨W1, hW1o, hyW1, G1, hG1, hd1⟩` from `hP.2 x x' y ⟨hPx, hPx'⟩`.
+
+Take `⟨W2, hW2o, hyW2, G2, hG2, hd2⟩` from `hQ.2 x x' y ⟨hQx, hQx'⟩`. Use `⟨W1 ∩ W2, hW1o.inter hW2o, ⟨hyW1, hyW2⟩, fun z => G1 z + G2 z, fun j => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `((hG1 j).mono fun z (hz : z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (W1 ∩ W2)) => ⟨hz.1, hz.2.1⟩).add ((hG2 j).mono fun z (hz : z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (W1 ∩ W2)) => ⟨hz.1, hz.2.2⟩)`. Take `⟨⟨⟨hz1, hz2⟩, hzPx, hzQx⟩, hzPx', hzQx'⟩` from `hz`. Establish `e1` using `hd1 z ⟨⟨hz1, hzPx⟩, hzPx'⟩`.
+
+Establish `e2` using `hd2 z ⟨⟨hz2, hzQx⟩, hzQx'⟩`. Use `show P.φ x z + Q.φ x z - (P.φ x' z + Q.φ x' z) = (G1 z + G2 z).re`. Rewrite using `[Complex.add_re, ← e1, ← e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem isPotential_add' {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (P Q : LocPot X) (hP : IsPotential A P) (hQ : IsPotential A Q) : IsPotential A (P + Q) := by
   refine ⟨fun x j => ?_, fun x x' y hy => ?_⟩
@@ -172,6 +229,21 @@ private theorem isPotential_add' {e : ℕ} {X : Type} [TopologicalSpace X] (A : 
       rw [Complex.add_re, ← e1, ← e2]
       ring
 
+/- English proof (translation)
+Introduce `e X _ A Θ L s th ph phT C₅ C t₀ hΘ hpos hlog hSW hRF`. Take `⟨a, ha, hab⟩` from `epsT_small C`. Take `⟨ht0, -, hR⟩` from `hRF`. Take `⟨hthP, -, -, hSW4⟩` from `hSW`. Use `⟨min t₀ a, lt_min ht0 ha, min_le_left _ _, fun t₁ ht₁ ht₁2 => ?_⟩` and prove the remaining obligations.
+
+Establish `ht₁0 : t₁ ≤ t₀` using `ht₁2.trans (min_le_left _ _)`. Establish `ht₁a : t₁ ≤ a` using `ht₁2.trans (min_le_right _ _)`. Take `⟨hsm1, hC1, -, -, hpsh1, -, -, -⟩` from `hR t₁ ht₁ ht₁0`. Take `⟨he1, he1'⟩` from `hab t₁ ht₁ ht₁a`. Establish `hepsle : epsT C t₁ ≤ 1 / 2` using `(le_abs_self _).trans he1`.
+
+Use `⟨isPotential_add' A _ _ (isPotential_add' A _ _ hthP (isPotential_ofFun A _ hsm1)) hΘ, ?_, ?_, fun t ht htt₁ => ?_⟩` and prove the remaining obligations. Conclude with `isPsh_of_le A Θ th (phT t₁) hΘ hpos hthP hsm1 (epsT C t₁) (1 / 2) 0 hepsle hpsh1 _ (fun x z (hz : z ∈ th.U x ∩ Set.univ ∩ Θ.U x ∩ Θ.U x) => ⟨hz.1.1.1, hz.1.2⟩) (fun x z => by show th.φ x z + phT t₁ z + Θ.φ x z + -(1 / 2) * Θ.φ x z = th.φ x z + phT t₁ z + 1 / 2 * Θ.φ x z - 0 ring)`. Conclude with `isPosPot_of_lt A Θ th (phT t₁) hΘ hpos hthP hsm1 (epsT C t₁) 1 (by linarith) hpsh1 _ (fun x z (hz : z ∈ th.U x ∩ Set.univ ∩ Θ.U x) => ⟨hz.1.1, hz.2⟩) (fun x z => by show th.φ x z + phT t₁ z + Θ.φ x z = th.φ x z + phT t₁ z + 1 * Θ.φ x z ring)`. Establish `htt0 : t ≤ t₀` using `htt₁.trans ht₁0`. Take `⟨hsm, -, hph, -, hpsh, -, -, hmono⟩` from `hR t ht htt0`.
+
+Take `⟨he, -⟩` from `hab t ht (htt₁.trans ht₁a)`. Establish `hepsle' : epsT C t ≤ 1` using `by linarith [le_abs_self (epsT C t)]`. Use `⟨fun j => ((hsm j).sub (hsm1 j)).sub contDiffOn_const, ?_, fun y => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `isPsh_of_le A Θ th (phT t) hΘ hpos hthP hsm (epsT C t) 1 (C * epsT C t₁) hepsle' hpsh _ (fun x z (hz : z ∈ th.U x ∩ Set.univ ∩ Θ.U x ∩ Set.univ) => ⟨hz.1.1.1, hz.1.2⟩) (fun x z => by show th.φ x z + phT t₁ z + Θ.φ x z + (phT t z - phT t₁ z - C * epsT C t₁) = th.φ x z + phT t z + …`. Establish `h` using `hmono t₁ htt₁ ht₁0 y`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hph y hy`. Establish `h2` using `(hSW4 y hy).1`. Establish `h3` using `hC1 y`. Establish `hr : Real.exp 1 ≤ rW L s y`.
+
+Use `hlog y` as an intermediate fact. Unfold `rW`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL : 1 ≤ Real.log (rW L s y)`. Establish `h` using `Real.log_le_log (Real.exp_pos 1) hr`.
+
+Rewrite `h` using `[Real.log_exp]`. Then use the resulting hypothesis. Establish `k1 : 0 ≤ (|C₅| - C₅) * Real.log (rW L s y)` using `mul_nonneg (sub_nonneg.mpr (le_abs_self C₅)) (by linarith)`. Establish `k2 : 0 ≤ (|C| + 1) * (Real.log (rW L s y) - 1)` using `mul_nonneg (by positivity) (sub_nonneg.mpr hL)`. Establish `k3` using `le_abs_self C`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem fixedMember_base : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (Θ L : LocPot X) (s : X → X → ℂ) (th : LocPot X) (ph : X → ℝ) (phT : ℝ → X → ℝ) (C₅ C t₀ : ℝ), IsPotential A Θ → IsPosPot A Θ → (∀ y, logNormSec L s y ≤ 0) → IsSingWeight A L s th ph C₅ → IsRegFamily A Θ L s th ph phT C t₀ → ∃ t₂ : ℝ, 0 < t₂ ∧ t₂ ≤ t₀ ∧ ∀ t₁, 0 < t₁ → t₁ ≤ t₂ → IsPotential A (th + LocPot.ofFun (phT t₁) + Θ) ∧ IsPsh A (th + LocPot.ofFun (phT t₁) + Θ + Θ.rsmul (-(1 / 2))) ∧ IsPosPot A (th + LocPot.ofFun (phT t₁) + Θ) ∧ ∀ t, 0 < t → t ≤ t₁ → A.Smooth (fun y => phT t y - phT t₁ y - C * epsT C t₁) ∧ IsPsh A (th + LocPot.ofFun (phT t₁) + Θ + LocPot.ofFun (fun y => phT t y - phT t₁ y - C * epsT C t₁)) ∧ (∀ y, phT t y - phT t₁ y - C * epsT C t₁ ≤ 0) ∧ ∀ y ∉ bdry s, -(|C₅| + |C| + 1) * Real.log (rW L s y) ≤ phT t y - phT t₁ y - C * epsT C t₁ := by
   intro e X _ A Θ L s th ph phT C₅ C t₀ hΘ hpos hlog hSW hRF
   obtain ⟨a, ha, hab⟩ := epsT_small C

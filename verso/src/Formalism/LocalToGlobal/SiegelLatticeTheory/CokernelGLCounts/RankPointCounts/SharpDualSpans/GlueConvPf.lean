@@ -14,31 +14,61 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_add _`.
+-/
 theorem ddMk_add (H : HermSp M V) {r : ℕ} (t : Term V M r) (a b : ↥(MMsharp H t)) :
     ddMk H t (a + b) = ddMk H t a + ddMk H t b := Submodule.Quotient.mk_add _
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_smul _ _ _`.
+-/
 theorem ddMk_smul (H : HermSp M V) {r : ℕ} (t : Term V M r) (c : M.L.O) (a : ↥(MMsharp H t)) :
     ddMk H t (c • a) = c • ddMk H t a := Submodule.Quotient.mk_smul _ _ _
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_zero _`.
+-/
 theorem ddMk_zero (H : HermSp M V) {r : ℕ} (t : Term V M r) : ddMk H t 0 = 0 := Submodule.Quotient.mk_zero _
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_add _`.
+-/
 theorem dwMk_add (H : HermSp M V) {r : ℕ} (t : Term V M r) (N : Submodule M.L.O V) (a b : ↥(ThSharp H t N)) :
     dwMk H t N (a + b) = dwMk H t N a + dwMk H t N b := Submodule.Quotient.mk_add _
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_smul _ _ _`.
+-/
 theorem dwMk_smul (H : HermSp M V) {r : ℕ} (t : Term V M r) (N : Submodule M.L.O V) (c : M.L.O)
     (a : ↥(ThSharp H t N)) : dwMk H t N (c • a) = c • dwMk H t N a := Submodule.Quotient.mk_smul _ _ _
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_zero _`.
+-/
 theorem dwMk_zero (H : HermSp M V) {r : ℕ} (t : Term V M r) (N : Submodule M.L.O V) :
     dwMk H t N 0 = 0 := Submodule.Quotient.mk_zero _
 
+/- English proof (translation)
+Unfold `ddMk`. Conclude with `Submodule.Quotient.mk_eq_zero _`.
+-/
 theorem ddMk_eq_zero (H : HermSp M V) {r : ℕ} (t : Term V M r) (a : ↥(MMsharp H t)) :
     ddMk H t a = 0 ↔ (a : V) ∈ MMo H t := by
   unfold ddMk
   exact Submodule.Quotient.mk_eq_zero _
 
+/- English proof (translation)
+Unfold `dwMk`. Conclude with `Submodule.Quotient.mk_eq_zero _`.
+-/
 theorem dwMk_eq_zero (H : HermSp M V) {r : ℕ} (t : Term V M r) (N : Submodule M.L.O V) (a : ↥(ThSharp H t N)) :
     dwMk H t N a = 0 ↔ (a : V) ∈ N := by
   unfold dwMk
   exact Submodule.Quotient.mk_eq_zero _
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_surjective _ d`.
+-/
 theorem exists_rep (H : HermSp M V) {r : ℕ} (t : Term V M r) (N : Submodule M.L.O V) (d : DDW H t N) :
     ∃ w : ↥(ThSharp H t N), dwMk H t N w = d := Submodule.Quotient.mk_surjective _ d
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_surjective _ d`.
+-/
 theorem exists_rep' (H : HermSp M V) {r : ℕ} (t : Term V M r) (d : DDt H t) :
     ∃ m : ↥(MMsharp H t), ddMk H t m = d := Submodule.Quotient.mk_surjective _ d
 
@@ -49,6 +79,95 @@ section Conv
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Introduce `hOK V _ _ H t hG hMI N hNW hNfg hNspan hNint η hη`. Use `set U := Submodule.span E (Set.range (H.MMfam t)) with hUdef`. Establish `hU : IsCompl U (H.perp U)` using `isCompl_span_perp H (H.MMfam t) hG`. Establish `hW : H.W0 t.f t.f' = H.perp U` using `hermSp_W0_eq_perp_span_range_MMfam H t`. Establish `hdis : ∀ x, x ∈ U → x ∈ H.W0 t.f t.f' → x = 0`.
+
+Introduce `x h1 h2`. Rewrite `h2` using `[hW]`. Conclude with `(Submodule.disjoint_def.1 hU.disjoint) x h1 h2`. Establish `hdec : ∀ x : V, ∃ m ∈ U, ∃ w ∈ H.W0 t.f t.f', m + w = x`. Introduce `x`.
+
+Establish `hx : x ∈ U ⊔ H.perp U` using `by rw [hU.sup_eq_top]; trivial`. Rewrite `hx` using `[← hW]`. Conclude with `Submodule.mem_sup.1 hx`. Establish `huniq : ∀ {m m' w w' : V}, m ∈ U → m' ∈ U → w ∈ H.W0 t.f t.f' → w' ∈ H.W0 t.f t.f' → m + w = m' + w' → m = m' ∧ w = w'`. Introduce `m m' w w' hm hm' hw hw' he`.
+
+Establish `e1 : m - m' = w' - w` using `by rw [sub_eq_sub_iff_add_eq_add, he, add_comm]`. Establish `h0 : m - m' = 0` using `hdis _ (Submodule.sub_mem _ hm hm') (by rw [e1]; exact Submodule.sub_mem _ hw' hw)`. Establish `hmm : m = m'` using `sub_eq_zero.1 h0`. Use `⟨hmm, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[hmm]`.
+
+Conclude with `add_left_cancel he`. Establish `hMMs : ∀ m ∈ MMo H t, m ∈ MMsharp H t` using `fun m hm => ⟨mem_spanE_of_mem_MMo H t hm, fun m' hm' => hMI m hm m' hm'⟩`. Establish `hNs : ∀ n ∈ N, n ∈ ThSharp H t N` using `fun n hn => ⟨hNW hn, fun n' hn' => hNint n hn n' hn'⟩`. Set `Λ : Submodule M.L.O V` to `{ carrier := {x | ∃ (m : ↥(MMsharp H t)) (w : ↥(ThSharp H t N)), η (ddMk H t m) = dwMk H t N w ∧ (m : V) + w = x} add_mem' := by`. Introduce and unpack `_ _ ⟨m, w, h, rfl⟩ ⟨m', w', h', rfl⟩`.
+
+Use `⟨m + m', w + w', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ddMk_add, map_add, h, h', dwMk_add]`. Simplify using `only [Submodule.coe_add]`. Normalize the expressions using the abelian group laws. Use the proof step `zero_mem' := ⟨0, 0, by rw [ddMk_zero, map_zero, dwMk_zero], by simp⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨m, w, h, rfl⟩`. Use `⟨c • m, c • w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ddMk_smul, map_smul, h, dwMk_smul]`. Simplify using `only [Submodule.coe_smul]`.
+
+Rewrite using `[smul_add] }`. Establish `GI : ∀ (m : ↥(MMsharp H t)) (w : ↥(ThSharp H t N)), η (ddMk H t m) = dwMk H t N w ↔ (m : V) + w ∈ Λ`. Introduce `m w`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨m, w, h, rfl⟩`. Introduce and unpack `⟨m₀, w₀, h₀, e⟩`. Take `⟨e1, e2⟩` from `huniq m₀.2.1 m.2.1 w₀.2.1 w.2.1 e`. Establish `: m₀ = m` using `Subtype.ext e1`. Establish `: w₀ = w` using `Subtype.ext e2`.
+
+Use `subst_vars`. Conclude with `h₀`. Establish `hNΛ : N ≤ Λ`. Introduce `n hn`. Use `⟨0, ⟨n, hNs n hn⟩, ?_, by simp⟩` and prove the remaining obligations.
+
+Rewrite using `[ddMk_zero, map_zero, eq_comm, dwMk_eq_zero]`. Conclude with `hn`. Establish `hgΛ : ∀ a, H.MMfam t a ∈ Λ`. Introduce `a`. Establish `ha : H.MMfam t a ∈ MMo H t` using `Submodule.subset_span ⟨a, rfl⟩`.
+
+Use `⟨⟨_, hMMs _ ha⟩, 0, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[dwMk_zero, (ddMk_eq_zero H t _).2 ha, map_zero]`. Establish `hMMΛ : MMo H t ≤ Λ` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hgΛ a)`. Establish `hInf : Λ ⊓ (H.W0 t.f t.f').restrictScalars M.L.O = N`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `x ⟨⟨m, w, h, rfl⟩, hx⟩`. Establish `hxW : (m : V) + w ∈ H.W0 t.f t.f'` using `hx`. Establish `hm0 : (m : V) = 0` using `hdis _ m.2.1 (by`. Use `Submodule.sub_mem _ hxW w.2.1` as an intermediate fact. Rewrite using `[add_sub_cancel_right] at this)` and apply the resulting hypothesis.
+
+Establish `hm : m = 0` using `Subtype.ext hm0`. Substitute `hm` using the available equality. Rewrite `h` using `[ddMk_zero, map_zero, eq_comm, dwMk_eq_zero]`. Simplify using `using h`. Introduce `n hn`.
+
+Conclude with `⟨hNΛ hn, hNW hn⟩`. Establish `hPrim : H.Prim Λ (H.MMfam t)`. Use `⟨hgΛ, linIndep_of_gram H (H.MMfam t) hG, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨m, w, h, rfl⟩ hxU`. Establish `hw0 : (w : V) = 0` using `hdis _ (by`.
+
+Use `Submodule.sub_mem _ hxU m.2.1` as an intermediate fact. Rewrite using `[add_sub_cancel_left] at this) w.2.1` and apply the resulting hypothesis. Establish `hw : w = 0` using `Subtype.ext hw0`. Substitute `hw` using the available equality. Rewrite `h` using `[dwMk_zero, ← map_zero η, η.injective.eq_iff, ddMk_eq_zero]`.
+
+Simplify `h` using `[MMo]`. Establish `hfwd : ∀ x ∈ Λ, ∀ y ∈ Λ, H.h x y ∈ M.L.O`. Introduce and unpack `_ ⟨m, w, h, rfl⟩ _ ⟨m', w', h', rfl⟩`. Use `hη m m' w w' h h'` as an intermediate fact. Rewrite using `[h_expand, hermitian_span_orthogonal_W0 H t m.2.1 w'.2.1, hermitian_W0_orthogonal_span H t m'.2.1 w.2.1, add_zero, add_zero]`.
+
+Conclude with `this`. Establish `hdual : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, H.h x y ∈ M.L.O`. Introduce `x`. Use `⟨hfwd x, fun hx => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, w, hw, rfl⟩` from `hdec x`.
+
+Establish `hms : m ∈ MMsharp H t` using `⟨hm, fun m' hm' => by`. Use `hx m' (hMMΛ hm')` as an intermediate fact. Rewrite using `[H.h_add_left, hermitian_W0_orthogonal_span H t (mem_spanE_of_mem_MMo H t hm') hw, add_zero] at this⟩` and apply the resulting hypothesis. Establish `hws : w ∈ ThSharp H t N` using `⟨hw, fun n hn => by`. Use `hx n (hNΛ hn)` as an intermediate fact.
+
+Rewrite using `[H.h_add_left, hermitian_span_orthogonal_W0 H t hm (hNW hn), zero_add] at this⟩` and apply the resulting hypothesis. Take `⟨w₀, hw₀⟩` from `exists_rep H t N (η (ddMk H t ⟨m, hms⟩))`. Establish `hin₀ : m + (w₀ : V) ∈ Λ` using `(GI ⟨m, hms⟩ w₀).1 hw₀.symm`. Use `set v : ↥(ThSharp H t N) := ⟨w, hws⟩ - w₀ with hv`. Establish `hvV : (v : V) = w - w₀` using `rfl`.
+
+Take `⟨mv, hmv⟩` from `exists_rep' H t (η.symm (dwMk H t N v))`. Establish `hmv' : η (ddMk H t mv) = dwMk H t N v` using `by rw [hmv, LinearEquiv.apply_symm_apply]`. Establish `hint : ∀ u ∈ MMsharp H t, H.h mv u ∈ M.L.O`. Introduce `u hu`. Take `⟨w', hw'⟩` from `exists_rep H t N (η (ddMk H t ⟨u, hu⟩))`.
+
+Establish `h1 : H.h mv u + H.h v w' ∈ M.L.O` using `hη mv ⟨u, hu⟩ v w' hmv' hw'.symm`. Establish `hin : u + (w' : V) ∈ Λ` using `(GI ⟨u, hu⟩ w').1 hw'.symm`. Establish `h2` using `hx _ hin`. Rewrite `h2` using `[h_expand, hermitian_span_orthogonal_W0 H t hm w'.2.1, hermitian_W0_orthogonal_span H t hu.1 hw, add_zero, add_zero]`. Establish `h4` using `hfwd _ hin₀ _ hin`.
+
+Rewrite `h4` using `[h_expand, hermitian_span_orthogonal_W0 H t hm w'.2.1, hermitian_W0_orthogonal_span H t hu.1 w₀.2.1, add_zero, add_zero]`. Establish `h5 : H.h v w' ∈ M.L.O`. Establish `e : H.h (v : V) w' = (H.h m u + H.h w w') - (H.h m u + H.h w₀ w')`. Rewrite using `[hvV, h_sub_left]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `M.L.O.sub_mem h2 h4`. Use `M.L.O.sub_mem h1 h5` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Establish `hmvM : (mv : V) ∈ MMo H t` using `mem_MMo_of_dual H t hG mv.2.1 hint`.
+
+Establish `hvN : (v : V) ∈ N`. Rewrite using `[← dwMk_eq_zero, ← hmv', (ddMk_eq_zero H t mv).2 hmvM, map_zero]`. Establish `e : m + w = (m + (w₀ : V)) + (v : V)` using `by rw [hvV]; abel`. Rewrite using `[e]`. Conclude with `Λ.add_mem hin₀ (hNΛ hvN)`.
+
+Establish `hspan : Submodule.span E (Λ : Set V) = ⊤`. Apply `eq_top_iff.2` to reduce the goal to its premises. Rewrite using `[← hU.sup_eq_top, ← hW]`. Apply `sup_le` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact Submodule.subset_span (hgΛ a))`.
+
+Rewrite using `[← hNspan]`. Conclude with `Submodule.span_mono (fun x hx => hNΛ hx)`. Establish `hdualfam : ∀ j, ∃ u ∈ U, ∀ i, H.h u (H.MMfam t i) = if i = j then 1 else 0` using `fun j => exists_dual H _ hG j`. Use `choose u hu hu' using hdualfam`. Establish `husharp : ∀ j, u j ∈ MMsharp H t` using `fun j => dual_mem_sharp H t (hu j) j (hu' j)`.
+
+Establish `spanU_le : Submodule.span M.L.O (Set.range u) ≤ MMsharp H t` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact husharp j)`. Use `choose wj hwj using fun j => exists_rep H t N (η (ddMk H t ⟨u j, husharp j⟩))`. Use `set S := N ⊔ Submodule.span M.L.O (Set.range fun j => u j + (wj j : V)) with hS`. Establish `key : ∀ y ∈ Submodule.span M.L.O (Set.range u), ∀ (hy : y ∈ MMsharp H t) (w : ↥(ThSharp H t N)), η (ddMk H t ⟨y, hy⟩) = dwMk H t N w → y + (w : V) ∈ S`. Introduce `y hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy'`. Take `⟨j, rfl⟩` from `hy'`. Introduce `hy w hw`. Establish `e0 : (⟨u j, hy⟩ : ↥(MMsharp H t)) = ⟨u j, husharp j⟩` using `rfl`.
+
+Rewrite `hw` using `[e0, ← hwj j, dwMk_eq_iff]`. Establish `e : u j + (w : V) = (u j + wj j) + ((w : V) - wj j)` using `by abel`. Rewrite using `[e]`. Use `S.add_mem (Submodule.mem_sup_right (Submodule.subset_span ⟨j, rfl⟩)) (Submodule.mem_sup_left ?_)` and prove the remaining obligations. Use `N.neg_mem hw` as an intermediate fact.
+
+Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Consider the case `zero`. Introduce `hy w hw`. Establish `e0 : (⟨0, hy⟩ : ↥(MMsharp H t)) = 0` using `rfl`. Rewrite `hw` using `[e0, ddMk_zero, map_zero, eq_comm, dwMk_eq_zero]`.
+
+Rewrite using `[zero_add]`. Conclude with `Submodule.mem_sup_left hw`. Consider the case `add a b ha hb iha ihb`. Introduce `hy w hw`. Establish `has : a ∈ MMsharp H t` using `spanU_le ha`.
+
+Establish `hbs : b ∈ MMsharp H t` using `spanU_le hb`. Take `⟨wa, hwa⟩` from `exists_rep H t N (η (ddMk H t ⟨a, has⟩))`. Take `⟨wb, hwb⟩` from `exists_rep H t N (η (ddMk H t ⟨b, hbs⟩))`. Establish `hA` using `iha has wa hwa.symm`. Establish `hB` using `ihb hbs wb hwb.symm`.
+
+Establish `e0 : (⟨a + b, hy⟩ : ↥(MMsharp H t)) = ⟨a, has⟩ + ⟨b, hbs⟩` using `rfl`. Rewrite `hw` using `[e0, ddMk_add, map_add, ← hwa, ← hwb, ← dwMk_add, dwMk_eq_iff]`. Establish `e : a + b + (w : V) = (a + wa) + (b + wb) + ((w : V) - ↑(wa + wb))`. Simplify using `only [Submodule.coe_add]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Use `S.add_mem (S.add_mem hA hB) (Submodule.mem_sup_left ?_)` and prove the remaining obligations. Use `N.neg_mem hw` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Consider the case `smul c a ha iha`.
+
+Introduce `hy w hw`. Establish `has : a ∈ MMsharp H t` using `spanU_le ha`. Take `⟨wa, hwa⟩` from `exists_rep H t N (η (ddMk H t ⟨a, has⟩))`. Establish `hA` using `iha has wa hwa.symm`. Establish `e0 : (⟨c • a, hy⟩ : ↥(MMsharp H t)) = c • ⟨a, has⟩` using `rfl`.
+
+Rewrite `hw` using `[e0, ddMk_smul, map_smul, ← hwa, ← dwMk_smul, dwMk_eq_iff]`. Establish `e : c • a + (w : V) = c • (a + wa) + ((w : V) - ↑(c • wa))`. Simplify using `only [Submodule.coe_smul, smul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Use `S.add_mem (S.smul_mem c hA) (Submodule.mem_sup_left ?_)` and prove the remaining obligations. Use `N.neg_mem hw` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Establish `hΛS : Λ = S`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `x ⟨m, w, h, rfl⟩`. Conclude with `key m (sharp_le_span_dual H t hG u hu hu' m.2) m.2 w h`. Apply `sup_le hNΛ` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Conclude with `(GI ⟨u j, husharp j⟩ (wj j)).1 (hwj j).symm`. Establish `hFG : Λ.FG`. Rewrite using `[hΛS]`. Conclude with `hNfg.sup (Submodule.fg_span (Set.finite_range _))`. Use `⟨Λ, ⟨⟨hFG, hspan, hdual⟩, hPrim, hInf, GI⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `Λ' ⟨hSD', hPrim', hInf', GI'⟩`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨m, hm, w, hw, rfl⟩` from `hdec x`.
+
+Establish `hmΛ' : MMo H t ≤ Λ'` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hPrim'.1 a)`. Establish `hNΛ' : N ≤ Λ'` using `by rw [← hInf']; exact inf_le_left`. Establish `hms : m ∈ MMsharp H t` using `⟨hm, fun m' hm' => by`. Use `(hSD'.2.2 _).1 hx m' (hmΛ' hm')` as an intermediate fact. Rewrite using `[H.h_add_left, hermitian_W0_orthogonal_span H t (mem_spanE_of_mem_MMo H t hm') hw, add_zero] at this⟩` and apply the resulting hypothesis.
+
+Establish `hws : w ∈ ThSharp H t N` using `⟨hw, fun n hn => by`. Use `(hSD'.2.2 _).1 hx n (hNΛ' hn)` as an intermediate fact. Rewrite using `[H.h_add_left, hermitian_span_orthogonal_W0 H t hm (hNW hn), zero_add] at this⟩` and apply the resulting hypothesis. Conclude with `(GI ⟨m, hms⟩ ⟨w, hws⟩).1 ((GI' ⟨m, hms⟩ ⟨w, hws⟩).2 hx)`. Introduce and unpack `⟨m, w, h, rfl⟩`.
+
+Conclude with `(GI' m w).1 h`.
+-/
 theorem glueConv_holds (M : Model F E) (r : ℕ) : GlueConv M r := by
   intro hOK V _ _ H t hG hMI N hNW hNfg hNspan hNint η hη
   set U := Submodule.span E (Set.range (H.MMfam t)) with hUdef

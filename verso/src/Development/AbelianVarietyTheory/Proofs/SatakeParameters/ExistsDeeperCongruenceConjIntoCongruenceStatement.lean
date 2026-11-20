@@ -7,5 +7,8 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConjCong.exists_cong_conj | exact GlobalTheory.ConjCong.exists_cong_conj | (intros; apply GlobalTheory.ConjCong.exists_cong_conj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_deeper_congruence_conj_into_congruence : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n N : ℕ) (g : GAf L n), 0 < N → ∃ M : ℕ, 0 < M ∧ ∀ κ, NG.Cong L n (N * M) κ → NG.Cong L n N (g⁻¹ * κ * g) := by
   first | exact @GlobalTheory.ConjCong.exists_cong_conj | exact GlobalTheory.ConjCong.exists_cong_conj | (intros; apply GlobalTheory.ConjCong.exists_cong_conj <;> assumption)

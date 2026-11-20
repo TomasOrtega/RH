@@ -6,6 +6,13 @@ import Mathlib.RingTheory.Filtration
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Use `haveI : Module.Finite R Q := Module.Finite.iff_fg.mpr hQ`. Take `⟨k, hk⟩` from `Ideal.exists_pow_inf_eq_pow_smul I (P.comap Q.subtype)`. Use `⟨k + N, fun x hxP hxQ => ?_⟩` and prove the remaining obligations. Establish `hmap : I ^ (k + N) • Q = (I ^ (k + N) • (⊤ : Submodule R Q)).map Q.subtype`. Rewrite using `[Submodule.map_smul'', Submodule.map_subtype_top]`.
+
+Rewrite `hxQ` using `[hmap]`. Take `⟨y, hy, rfl⟩` from `hxQ`. Establish `hy' : y ∈ I ^ (k + N) • ⊤ ⊓ P.comap Q.subtype` using `⟨hy, hxP⟩`. Rewrite `hy'` using `[hk _ (Nat.le_add_right k N), Nat.add_sub_cancel_left]`. Establish `h2 : I ^ N • (I ^ k • ⊤ ⊓ P.comap Q.subtype) ≤ I ^ N • P.comap Q.subtype` using `Submodule.smul_mono le_rfl inf_le_right`.
+
+Establish `h3` using `Submodule.mem_map_of_mem (f := Q.subtype) (h2 hy')`. Rewrite `h3` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl (Submodule.map_comap_le _ _) h3`.
+-/
 private theorem artin_rees {R M : Type} [CommRing R] [IsNoetherianRing R] [AddCommGroup M] [Module R M] (I : Ideal R)
     (P Q : Submodule R M) (hQ : Q.FG) (N : ℕ) : ∃ K : ℕ, ∀ x ∈ P, x ∈ I ^ K • Q → x ∈ I ^ N • P := by
   haveI : Module.Finite R Q := Module.Finite.iff_fg.mpr hQ
@@ -23,6 +30,9 @@ private theorem artin_rees {R M : Type} [CommRing R] [IsNoetherianRing R] [AddCo
   rw [Submodule.map_smul''] at h3
   exact Submodule.smul_mono le_rfl (Submodule.map_comap_le _ _) h3
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Rewrite using `[List.map_cons, List.prod_cons, Subalgebra.coe_mul, ih, List.map_cons, List.prod_cons]`. Both sides reduce to the same expression.
+-/
 private theorem val_prod {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O]
     {F : UpperTheory.V.Fr.Frame l (ResidueField O)}
     {n : ℕ} (S : Space O F n) (L : List (F.G0 × Fin n × Fin n)) :
@@ -33,6 +43,37 @@ private theorem val_prod {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLoc
     rw [List.map_cons, List.prod_cons, Subalgebra.coe_mul, ih, List.map_cons, List.prod_cons]
     rfl
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ n hF hn S _`. Use `haveI : CharP (ResidueField O) l := IsCoef.char`. Take `⟨hgrI, hgrM, hgr0, hgrFG, hfin, hnoethA, hmem⟩` from `gr_A hF hn S`. Take `⟨hcx, haB, hψB, hAR⟩` from `cont_u hF hn S`. Establish `hres : ∀ x : S.B, res O S.B x = res O S.R (x : S.R)` using `fun x => (res_map S.B.val x).symm`.
+
+Establish `hmax : maximalIdeal S.B = S.mB`. Use extensionality with `x`. Rewrite using `[← res_eq_zero_iff O S.B x, hres, res_eq_zero_iff]`. Both sides reduce to the same expression. Establish `hdiag : ∀ g i, res O S.R (S.ρ.r g i i) = ((F.Ψ g ^ w n i : (ResidueField O)ˣ) : ResidueField O)` using `fun g i => S.lift.2.1.1 g i`.
+
+Establish `hpsi : ∀ v i g, res O S.R ((S.ρ.ψ v i g : S.Rˣ) : S.R) = ((F.Ψ (F.loc v g) ^ w n i : (ResidueField O)ˣ) : ResidueField O)` using `fun v i g => S.lift.2.1.2 v i g`. Establish `hoff : ∀ g (i j : Fin n), i ≠ j → res O S.R (S.ρ.r g i j) = 0` using `fun g i j h => S.lift.2.2 g i j h`. Establish `hA : ∀ g i, algebraMap S.B S.A (S.aB g i) = S.u.r g i i` using `fun _ _ => rfl`. Establish `hPsi : ∃ χ, IsPsi O F n χ ∧ ∀ v i g, algebraMap S.B S.A (χ v i g) = ((S.u.ψ v i g : S.Aˣ) : S.A)`. Use `⟨S.ψB, fun v i => ⟨?_, fun g => ?_⟩, fun v i g => rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[hmax]`. Conclude with `hψB v i`. Rewrite using `[hres]`. Conclude with `hpsi v i g`. Use `⟨⟨fun g i => ⟨S.aB g i, rfl, by rw [hres]; exact hdiag g i⟩, ?_, ?_, ?_, hPsi⟩, ⟨?_, hPsi, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `L hL ⟨s, hs, hne⟩`. Establish `hm : (L.map fun s => S.ρ.r s.1 s.2.1 s.2.2).prod ∈ S.B` using `S.mon_mem ⟨L, hL, rfl⟩`. Use `⟨⟨_, hm⟩, ?_, Subtype.ext (val_prod S L).symm⟩` and prove the remaining obligations. Rewrite using `[← res_eq_zero_iff O S.B, hres]`. Use `show res O S.R (L.map fun s => S.ρ.r s.1 s.2.1 s.2.2).prod = 0`.
+
+Rewrite using `[map_list_prod, List.map_map]`. Apply `List.prod_eq_zero` to reduce the goal to its premises. Conclude with `List.mem_map.2 ⟨s, hs, hoff _ _ _ hne⟩`. Introduce `i j haveI := isNoetherian_of_fg_of_noetherian _ (hgrFG (w n i - w n j))`. Establish `hle : Submodule.span S.B (Set.range fun g => S.u.r g i j) ≤ S.gr (w n i - w n j)` using `Submodule.span_le.2 (by rintro _ ⟨g, rfl⟩; exact hmem g i j)`.
+
+Use `haveI := isNoetherian_of_le hle`. Conclude with `Module.Finite.iff_fg.1 inferInstance`. Introduce `i j N`. Rewrite using `[hmax]`. Take `⟨K, hK⟩` from `artin_rees S.mB (Submodule.span S.B (Set.range fun g => S.u.r g i j)) (S.gr (w n i - w n j)) (hgrFG _) N`.
+
+Take `⟨M, hM⟩` from `hAR (w n i - w n j) K`. Establish `hc` using `S.lift.1.1 i j M`. Rewrite `hc`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Use `filter_upwards [hc g] with g' hg'`.
+
+Rewrite `hg'` using `[Ideal.Quotient.eq]`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Apply `hK` to reduce the goal to its premises. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨g', rfl⟩) (Submodule.subset_span ⟨g, rfl⟩)`. Apply `hM _ (Submodule.sub_mem _ (hmem g' i j) (hmem g i j))` to reduce the goal to its premises.
+
+Conclude with `hg'`. Use `⟨S.trB, ⟨?_, fun g => ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hmax]`. Introduce `N`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+
+Introduce `g`. Establish `h2` using `Filter.eventually_all.2 fun i => (IsLocallyConstant.iff_eventually_eq _).1 (haB i N) g`. Use `filter_upwards [h2] with g' hg'`. Simplify using `only [Space.trB, map_sum, hg']`. Use `show res O S.B (∑ i, S.aB g i) = _`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hres]; exact hdiag g i`. Use `show algebraMap S.B S.A (∑ i, S.aB g i) = _`. Rewrite using `[map_sum, Matrix.trace]`. Both sides reduce to the same expression.
+
+Take `⟨-, -, -, -, hst⟩` from `UpperTheory.V.Fr.star hF`. Establish `hz : ∀ i : Fin n, (S.u.r F.g0 - S.u.r (F.star F.g0)) i i = S.u.r F.g0 i i - S.u.r F.g0 i.rev i.rev` using `fun i => by rw [Matrix.sub_apply, hst]`. Break down `hn with rfl | rfl` into its components or cases. Use `⟨S.aB F.g0 0 - S.aB F.g0 1, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hres, hres] erw [hdiag, hdiag]`.
+
+Simplify using `[w]`. Apply the tactic sequence `rw [hz, map_sub, hA, hA] fin_cases i <;> simp [w] <;> ring`. Use `⟨S.aB F.g0 0 - S.aB F.g0 2, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hres, hres] erw [hdiag, hdiag]`. Simplify using `[w]`.
+
+Apply the tactic sequence `rw [hz, map_sub, hA, hA] fin_cases i <;> simp [w] <;> ring`.
+-/
 theorem UpperTheory.V.Fr.cone_u :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ [IsCO O S.B], Cone O S.B S.u ∧ Integral O S.B S.u := by
   intro l _ O _ _ _ _ F C₀ n hF hn S _

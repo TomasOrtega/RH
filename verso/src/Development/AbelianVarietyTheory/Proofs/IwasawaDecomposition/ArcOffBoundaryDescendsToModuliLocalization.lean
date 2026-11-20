@@ -7,6 +7,13 @@ noncomputable section
 
 namespace GlobalTheory.ShFam.BdArc
 
+/- English proof (translation)
+Set `s₀ : PrimeSpectrum ℂ` to `⟨⊥, Ideal.isPrime_bot⟩`. Take `⟨_, ⟨a, rfl⟩, h1, h2⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := A)).exists_subset_of_mem_open (h s₀) hU`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `h1` to reduce the goal to its premises.
+
+Use `show f a ∈ (⊥ : Ideal ℂ)`. Simplify using `[h0]`. Use `PrimeSpectrum.localization_away_comap_range (Localization.Away a) a` as an intermediate fact. Introduce and unpack `_ ⟨s, rfl⟩`. Apply `h2` to reduce the goal to its premises.
+
+Use `show _ ∈ (PrimeSpectrum.basicOpen a : Set (PrimeSpectrum A))`. Rewrite using `[← this]`. Conclude with `⟨s, rfl⟩`.
+-/
 theorem exists_basicOpen_subset_of_pt {A : Type} [CommRing A] (f : A →+* ℂ) (U : Set (Sp A)) (hU : IsOpen U)
     (h : ∀ s, spMap f s ∈ U) :
     ∃ a : A, f a ≠ 0 ∧ Set.range (spMap (algebraMap A (Localization.Away a))) ⊆ U := by
@@ -25,6 +32,13 @@ theorem exists_basicOpen_subset_of_pt {A : Type} [CommRing A] (f : A →+* ℂ) 
     rw [← this]
     exact ⟨s, rfl⟩
 
+/- English proof (translation)
+Set `ev : ℂ → (Localization.Away a →+* ℂ)` to `fun u => if h : u ∈ V then IsLocalization.Away.lift a (g := ψ u) (Ne.isUnit (ha u h)) else IsLocalization.Away.lift a (g := ψ u₀) (Ne.isUnit (ha u₀ h₀))`. Establish `hev : ∀ u ∈ V, (ev u).comp (algebraMap A _) = ψ u` using `fun u hu => by`. Simplify using `only [ev, dif_pos hu]`. Conclude with `IsLocalization.Away.lift_comp a _`. Use `⟨ev, hev, fun t => ?_⟩` and prove the remaining obligations.
+
+Take `⟨n, b, hb⟩` from `IsLocalization.Away.surj a t`. Use `(((hψ b).div ((hψ a).pow n) fun u hu => pow_ne_zero n (ha u hu))).congr fun u hu => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (ev u) hb`. Establish `h2 : ∀ z, ev u (algebraMap A _ z) = ψ u z` using `fun z => RingHom.congr_fun (hev u hu) z`. Rewrite `h1` using `[map_mul, map_pow, h2, h2]`.
+
+Use `show _ = ψ u b / ψ u a ^ n`. Rewrite using `[eq_div_iff (pow_ne_zero n (ha u hu)), h1]`.
+-/
 theorem exists_hol_away {A : Type} [CommRing A] (ψ : ℂ → (A →+* ℂ)) (V : Set ℂ)
     (hψ : ∀ b, DifferentiableOn ℂ (fun u => ψ u b) V) (a : A) (ha : ∀ u ∈ V, ψ u a ≠ 0) (u₀ : ℂ) (h₀ : u₀ ∈ V) :
     ∃ ev : ℂ → (Localization.Away a →+* ℂ), (∀ u ∈ V, (ev u).comp (algebraMap A _) = ψ u) ∧
@@ -45,20 +59,44 @@ theorem exists_hol_away {A : Type} [CommRing A] (ψ : ℂ → (A →+* ℂ)) (V 
   show _ = ψ u b / ψ u a ^ n
   rw [eq_div_iff (pow_ne_zero n (ha u hu)), h1]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun z => by ext <;> simp [dualMap]`.
+-/
 theorem dualMap_comp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     (dualMap g).comp (dualMap f) = dualMap (g.comp f) :=
   RingHom.ext fun z => by ext <;> simp [dualMap]
 
+/- English proof (translation)
+Rewrite using `[spMap_comp_comp, spMap_comp_comp]`. Use `congr 1`. Apply the tactic sequence `exact RingHom.ext fun z => by ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem spMap_dualMap_sq {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     spMap (dualMap f) ≫ spMap (algebraMap A (DualNumber A)) = spMap (algebraMap B (DualNumber B)) ≫ spMap f := by
   rw [spMap_comp_comp, spMap_comp_comp]
   congr 1
   exact RingHom.ext fun z => by ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z σ A _ φ x fr ψ r y harc hm u₀ hu₀ hne`. Use `haveI := Z.jQ_open`. Take `⟨a, ha, hsub⟩` from `exists_basicOpen_subset_of_pt (ψ u₀) (x ⁻¹' Set.range Z.jQ) ((IsOpenImmersion.isOpen_range Z.jQ).preimage x.continuous) (fun s => by`. Establish `h` using `(hm u₀ hu₀ hne).1`. Use `⟨GlobalTheory.AllWt.ptF (y u₀) s, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun g => g s) h :))`. Establish `hopen : IsOpen {u | u ∈ Metric.ball (0 : ℂ) r ∧ ψ u a ≠ 0}` using `((harc.1.2 a).continuousOn).isOpen_inter_preimage Metric.isOpen_ball (isOpen_ne (x := (0 : ℂ)))`. Set `V : Set ℂ` to `{u | u ∈ Metric.ball (0 : ℂ) r ∧ ψ u a ≠ 0} ∩ {u | u ≠ 0}`. Take `⟨ev, hev, hd⟩` from `exists_hol_away ψ V (fun b => (harc.1.2 b).mono fun u hu => hu.1.1) a (fun u hu => hu.1.2) u₀ ⟨⟨hu₀, ha⟩, hne⟩`. Set `R` to `Localization.Away a`.
+
+Set `ι : A →+* R` to `algebraMap A R`. Establish `hr : Set.range (spMap ι ≫ x) ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `hsub ⟨s, rfl⟩`. Set `x' : Sp R ⟶ Xo.XF c` to `IsOpenImmersion.lift Z.jQ (spMap ι ≫ x) hr`.
+
+Establish `hx' : x' ≫ Z.jQ = spMap ι ≫ x` using `IsOpenImmersion.lift_fac _ _ _`. Establish `P : IsPullback Z.m.φ Z.oF.t.G.hom Z.t.G.hom (Z.jQ ≫ genι Z)` using `Z.m.cart.1`. Establish `hw : ∀ τ i, (spMap (dualMap ι) ≫ fr.v τ i) ≫ Z.t.G.hom = (spMap (algebraMap R (DualNumber R)) ≫ x') ≫ Z.jQ ≫ genι Z` using `fun τ i => by`. Rewrite using `[Category.assoc, (fr.tan τ i).1, ← Category.assoc, spMap_dualMap_sq, Category.assoc, Category.assoc, ← Category.assoc x', hx', Category.assoc]`. Use `⟨R, inferInstance, x' ≫ pullback.fst _ _, fun τ i => P.lift _ _ (hw τ i) ≫ Z.m0.toSABMap.φ, ev, V, hopen.inter isOpen_ne, ⟨⟨hu₀, ha⟩, hne⟩, hd, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `hm u hu.1.1 hu.2`. Set `e : R →+* CAt σ` to `ev u`. Establish `he : e.comp ι = (show A →+* CAt σ from ψ u)` using `hev u hu`. Establish `hp : GlobalTheory.AllWt.ptF (y u) = spMap e ≫ x'`. Rewrite using `[← cancel_mono Z.jQ, h1, Category.assoc, hx', ← Category.assoc, spMap_comp_comp, he]`.
+
+Use `⟨?_, fun τ i => ?_⟩` and prove the remaining obligations. Use `show _ = spMap e ≫ x' ≫ _`. Rewrite using `[← Category.assoc, ← hp]`. Conclude with `(pullback.lift_fst _ _ _).symm`. Take `⟨w, hw1, hw2, hw3⟩` from `h2 τ i show _ = spMap (dualMap e) ≫ P.lift _ _ (hw τ i) ≫ _`.
+
+Rewrite using `[← hw2, ← Category.assoc]`. Use `congr 1`. Apply `P.hom_ext` to reduce the goal to its premises. Rewrite using `[hw3, Category.assoc, P.lift_fst, ← Category.assoc, spMap_comp_comp, dualMap_comp_comp, he]`. Rewrite using `[hw1, Category.assoc, P.lift_snd, ← Category.assoc, spMap_dualMap_sq, Category.assoc, hp]`.
+-/
 theorem arc_descends_to_moduli : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (A : Type) [CommRing A] (φ : c.F →+* A) (x : Sp A ⟶ gen Z) (fr : EigFrame Z φ (x ≫ genι Z)) (ψ : ℂ → (A →+* ℂ)) (r : ℝ) (y : ℂ → FrPt Xo c (CAt σ)), IsArc Z σ φ x ψ r → (∀ u ∈ Metric.ball (0 : ℂ) r, u ≠ 0 → Matches fr (ψ u) (y u)) → ∀ u₀ ∈ Metric.ball (0 : ℂ) r, u₀ ≠ 0 → ∃ (R : Type) (_ : CommRing R) (xR : Sp R ⟶ Xo.X) (vR : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber R) ⟶ Xo.univ.t.G.left)) (ev : ℂ → (R →+* ℂ)) (V : Set ℂ), IsOpen V ∧ u₀ ∈ V ∧ (∀ t, DifferentiableOn ℂ (fun u => ev u t) V) ∧ ∀ u ∈ V, (y u).x = spMap (show R →+* CAt σ from ev u) ≫ xR ∧ ∀ τ i, (y u).u τ i = spMap (dualMap (show R →+* CAt σ from ev u)) ≫ vR τ i := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ A _ φ x fr ψ r y harc hm u₀ hu₀ hne
   haveI := Z.jQ_open

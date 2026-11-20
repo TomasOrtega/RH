@@ -13,6 +13,17 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 open scoped MatrixOrder in
 
+/- English proof (translation)
+Take `⟨B, hB, hY⟩` from `CStarAlgebra.isStrictlyPositive_iff_eq_star_mul_self.mp h.posDef.isStrictlyPositive`. Rewrite `hY` using `[star_eq_conjTranspose, conjTranspose_eq_transpose_of_trivial]`. Establish `hB' : IsUnit B.det` using `(isUnit_iff_isUnit_det B).1 hB`. Establish `hX : (σ.map Complex.re).IsHermitian`. Use extensionality with `i j`.
+
+Simplify using `[conjTranspose_apply, h.isSymm.apply]`. Establish `hX' : (B⁻¹ᴴ * σ.map Complex.re * B⁻¹).IsHermitian` using `isHermitian_conjTranspose_mul_mul _ hX`. Take `⟨U, l, hUU, hs⟩ : ∃ (U : Matrix ι ι ℝ) (l : ι → ℝ), U * Uᵀ = 1 ∧ B⁻¹ᵀ * σ.map Complex.re * B⁻¹ = U * diagonal l * Uᵀ` from `⟨hX'.eigenvectorUnitary.1, hX'.eigenvalues, Unitary.coe_mul_star_self hX'.eigenvectorUnitary, hX'.spectral_theorem⟩`. Use `⟨Uᵀ * B, ?_, fun i => l i + I, fun i => by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul, det_transpose]`.
+
+Conclude with `mul_ne_zero (isUnit_det_of_right_inverse hUU).ne_zero hB'.ne_zero`. Establish `e1 : σ.map Complex.re = (Uᵀ * B)ᵀ * diagonal l * (Uᵀ * B)`. Establish `: (Uᵀ * B)ᵀ * diagonal l * (Uᵀ * B) = Bᵀ * (U * diagonal l * Uᵀ) * B`. Simplify using `[Matrix.mul_assoc]`. Rewrite using `[this, ← hs, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← transpose_mul, nonsing_inv_mul _ hB', transpose_one, Matrix.one_mul, Matrix.mul_assoc, nonsing_inv_mul _ hB', Matrix.mul_one]`.
+
+Establish `e2 : σ.map Complex.im = (Uᵀ * B)ᵀ * (Uᵀ * B)`. Rewrite using `[hY, transpose_mul, transpose_transpose, Matrix.mul_assoc, ← Matrix.mul_assoc U, hUU, Matrix.one_mul]`. Generalize the expression as in `Uᵀ * B = P at e1 e2`. Use extensionality with `i j`. Establish `e1'` using `congrFun (congrFun e1 i) j`.
+
+Establish `e2'` using `congrFun (congrFun e2 i) j`. Simplify using `only [mul_apply, map_apply, transpose_apply, diagonal_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at e1' e2' ⊢`. Apply the tactic sequence `apply Complex.ext <;> simp [e1', e2']`.
+-/
 theorem IsSiegel.exists_eq_transpose_mul_diagonal_mul {σ : Matrix ι ι ℂ} (h : IsSiegel σ) :
     ∃ P : Matrix ι ι ℝ, P.det ≠ 0 ∧ ∃ t : ι → ℂ, (∀ i, 0 < (t i).im) ∧
       σ = (P.map ofReal)ᵀ * diagonal t * P.map ofReal := by
@@ -51,23 +62,35 @@ theorem IsSiegel.exists_eq_transpose_mul_diagonal_mul {σ : Matrix ι ι ℂ} (h
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[mulVec, dotProduct]`.
+-/
 theorem ofReal_mulVec_eq (P : Matrix ι ι ℝ) (x : ι → ℝ) :
     (fun i => ((P *ᵥ x) i : ℂ)) = P.map ofReal *ᵥ fun i => (x i : ℂ) := by
   ext i
   simp [mulVec, dotProduct]
 
+/- English proof (translation)
+Establish `: (P.map ofReal).det = (P.det : ℂ)` using `(ofRealHom.map_det P).symm`. Rewrite using `[this]`. Simplify using `using hP`.
+-/
 theorem isUnit_det_map_ofReal {P : Matrix ι ι ℝ} (hP : P.det ≠ 0) :
     IsUnit (P.map ofReal).det := by
   have : (P.map ofReal).det = (P.det : ℂ) := (ofRealHom.map_det P).symm
   rw [this]
   simpa using hP
 
+/- English proof (translation)
+Use `inv_eq_right_inv ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.map ofRealHom * P⁻¹.map ofRealHom = 1`. Rewrite using `[← Matrix.map_mul, mul_nonsing_inv _ hP.isUnit, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem inv_map_ofReal {P : Matrix ι ι ℝ} (hP : P.det ≠ 0) :
     (P.map ofReal)⁻¹ = P⁻¹.map ofReal := by
   refine inv_eq_right_inv ?_
   change P.map ofRealHom * P⁻¹.map ofRealHom = 1
   rw [← Matrix.map_mul, mul_nonsing_inv _ hP.isUnit, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.IsSymm, transpose_mul, transpose_mul, transpose_transpose, h.isSymm.eq, Matrix.mul_assoc]`. Use `h.posDef.conjTranspose_mul_mul_same (B := P) (mulVec_injective_of_isUnit ((isUnit_iff_isUnit_det P).2 hP.isUnit)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[mul_apply]`.
+-/
 theorem IsSiegel.transpose_mul_mul {σ : Matrix ι ι ℂ} (h : IsSiegel σ) {P : Matrix ι ι ℝ}
     (hP : P.det ≠ 0) : IsSiegel ((P.map ofReal)ᵀ * σ * P.map ofReal) := by
   refine ⟨?_, ?_⟩
@@ -78,12 +101,18 @@ theorem IsSiegel.transpose_mul_mul {σ : Matrix ι ι ℂ} (h : IsSiegel σ) {P 
     ext i j
     simp [mul_apply]
 
+/- English proof (translation)
+Take `⟨P, hP, t, ht, rfl⟩` from `h.exists_eq_transpose_mul_diagonal_mul`. Rewrite using `[det_mul, det_mul, det_transpose, det_diagonal]`. Use `((isUnit_det_map_ofReal hP).mul (IsUnit.mk0 _ ?_)).mul (isUnit_det_map_ofReal hP)` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ h0 => by simpa [h0] using ht i`.
+-/
 theorem IsSiegel.isUnit_det {σ : Matrix ι ι ℂ} (h : IsSiegel σ) : IsUnit σ.det := by
   obtain ⟨P, hP, t, ht, rfl⟩ := h.exists_eq_transpose_mul_diagonal_mul
   rw [det_mul, det_mul, det_transpose, det_diagonal]
   refine ((isUnit_det_map_ofReal hP).mul (IsUnit.mk0 _ ?_)).mul (isUnit_det_map_ofReal hP)
   exact Finset.prod_ne_zero_iff.2 fun i _ h0 => by simpa [h0] using ht i
 
+/- English proof (translation)
+Use `inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Conclude with `funext fun i => mul_inv_cancel₀ (ht i)`.
+-/
 theorem inv_diagonal_of_ne_zero {t : ι → ℂ} (ht : ∀ i, t i ≠ 0) :
     (diagonal t)⁻¹ = diagonal fun i => (t i)⁻¹ := by
   refine inv_eq_right_inv ?_
@@ -91,6 +120,11 @@ theorem inv_diagonal_of_ne_zero {t : ι → ℂ} (ht : ∀ i, t i ≠ 0) :
   congr 1
   exact funext fun i => mul_inv_cancel₀ (ht i)
 
+/- English proof (translation)
+Take `⟨P, hP, t, ht, rfl⟩` from `h.exists_eq_transpose_mul_diagonal_mul`. Establish `ht0 (i : ι) : t i ≠ 0` using `fun h0 => by simpa [h0] using ht i`. Establish `h1 : IsSiegel (diagonal fun i => -(t i)⁻¹)` using `isSiegel_diagonal_iff.2 fun i => by`. Rewrite using `[neg_im, inv_im, neg_div, neg_neg]`. Conclude with `div_pos (ht i) (normSq_pos.2 (ht0 i))`.
+
+Establish `h2 : (P⁻¹ᵀ).det ≠ 0`. Rewrite using `[det_transpose]`. Conclude with `(isUnit_nonsing_inv_det _ hP.isUnit).ne_zero`. Use `h1.transpose_mul_mul h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, inv_diagonal_of_ne_zero ht0, ← transpose_nonsing_inv, inv_map_ofReal hP, transpose_map, transpose_transpose, ← diagonal_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`.
+-/
 theorem IsSiegel.neg_inv {σ : Matrix ι ι ℂ} (h : IsSiegel σ) : IsSiegel (-σ⁻¹) := by
   obtain ⟨P, hP, t, ht, rfl⟩ := h.exists_eq_transpose_mul_diagonal_mul
   have ht0 (i : ι) : t i ≠ 0 := fun h0 => by simpa [h0] using ht i
@@ -107,6 +141,9 @@ theorem IsSiegel.neg_inv {σ : Matrix ι ι ℂ} (h : IsSiegel σ) : IsSiegel (-
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Use `⟨h.isSymm.add (hC.map _), ?_⟩` and prove the remaining obligations. Use `h.posDef using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem IsSiegel.add_map_ofReal {σ : Matrix ι ι ℂ} (h : IsSiegel σ) {C : Matrix ι ι ℝ}
     (hC : C.IsSymm) : IsSiegel (σ + C.map ofReal) := by
   refine ⟨h.isSymm.add (hC.map _), ?_⟩
@@ -117,6 +154,9 @@ theorem IsSiegel.add_map_ofReal {σ : Matrix ι ι ℂ} (h : IsSiegel σ) {C : M
 def siegelGaussIntegral {ι : Type*} [Fintype ι] (σ : Matrix ι ι ℂ) : ℂ :=
   ∫ x : ι → ℝ, cexp (π * I * ((fun i => (x i : ℂ)) ⬝ᵥ (σ *ᵥ fun i => (x i : ℂ))))
 
+/- English proof (translation)
+Establish `h` using `integral_map (μ := (volume : Measure (ι → ℝ))) (φ := toLin' P) (f := f) (toLin' P).continuous_of_finiteDimensional.measurable.aemeasurable hf.aestronglyMeasurable`. Rewrite `h` using `[Real.map_matrix_volume_pi_eq_smul_volume_pi hP, integral_smul_measure, ENNReal.toReal_ofReal (abs_nonneg _), real_smul]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem integral_comp_mulVec_of_det_ne_zero {P : Matrix ι ι ℝ} (hP : P.det ≠ 0)
     {f : (ι → ℝ) → ℂ} (hf : Continuous f) :
     ∫ x, f (P *ᵥ x) = (|P.det⁻¹| : ℝ) * ∫ y, f y := by
@@ -127,6 +167,21 @@ theorem integral_comp_mulVec_of_det_ne_zero {P : Matrix ι ι ℝ} (hP : P.det �
   rw [h]
   rfl
 
+/- English proof (translation)
+Take `⟨P, hP, t, ht, rfl⟩` from `h.exists_eq_transpose_mul_diagonal_mul`. Establish `ht0 (i : ι) : t i ≠ 0` using `fun h0 => by simpa [h0] using ht i`. Establish `hπ : (π : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `hu` using `isUnit_det_map_ofReal hP`. Use `⟨(|P.det⁻¹| : ℝ) * ∏ i, (π / (-(π * I * t i))) ^ (1 / 2 : ℂ), ?_, fun w => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (P.map ofReal).det = (P.det : ℂ)` using `(ofRealHom.map_det P).symm`. Establish `e2 (i : ι) : ((π / (-(π * I * t i))) ^ (1 / 2 : ℂ)) ^ 2 * (-I * t i) = 1`. Rewrite using `[one_div, cpow_ofNat_inv_pow]`. Clear denominators, using `[ht0 i]` for the nonvanishing conditions. Establish `e3 : (P.det : ℂ) ≠ 0` using `by exact_mod_cast hP`.
+
+Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, ← diagonal_smul, det_mul, det_mul, det_transpose, det_diagonal, e, mul_pow, ← ofReal_pow, sq_abs, ← Finset.prod_pow]`. Establish `e4` using `Finset.prod_congr (s₁ := Finset.univ) rfl fun i _ => e2 i`. Rewrite `e4` using `[Finset.prod_mul_distrib, Finset.prod_const_one]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `push_cast`.
+
+Establish `e5 : (P.det : ℂ)⁻¹ ^ 2 * P.det * P.det = 1` using `by field_simp`. Take the linear combination `((P.det : ℂ)⁻¹ ^ 2 * P.det * P.det) * e4 + e5`. Use `set v := ((P.map ofReal)ᵀ)⁻¹ *ᵥ w with hv`. Establish `hw : w = (P.map ofReal)ᵀ *ᵥ v`. Rewrite using `[hv, mulVec_mulVec, mul_nonsing_inv _ (isUnit_det_transpose _ hu), one_mulVec]`.
+
+Establish `hb (i : ι) : 0 < (-(π * I * t i)).re` using `by simpa using mul_pos Real.pi_pos (ht i)`. Establish `key` using `GaussianFourier.integral_cexp_neg_sum_mul_add hb fun i => 2 * π * I * v i`. Establish `hc` using `integral_comp_mulVec_of_det_ne_zero hP (f := fun y : ι → ℝ => cexp (-∑ i, -(π * I * t i) * (y i : ℂ) ^ 2 + ∑ i, 2 * π * I * v i * y i)) (by fun_prop)`. Rewrite `hc` using `[key, Finset.prod_mul_distrib, ← Complex.exp_sum, ← mul_assoc]`. Use `hc using 3 with x` and compare the differences between its conclusion and the goal.
+
+Use `congr 1`. Establish `e` using `ofReal_mulVec_eq P x`. Rewrite using `[hw, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, dotProduct_mulVec _ _ v, vecMul_transpose, ← e]`. Simplify using `only [dotProduct, mulVec_diagonal, Finset.sum_div, ← Finset.sum_add_distrib, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+
+Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, inv_diagonal_of_ne_zero ht0, ← mulVec_mulVec, ← mulVec_mulVec, ← hv, dotProduct_mulVec, ← mulVec_transpose, transpose_nonsing_inv, ← hv]`. Simplify using `only [dotProduct, mulVec_diagonal, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Clear denominators, using `[ht0 i]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsSiegel.exists_integral_cexp_quadratic {σ : Matrix ι ι ℂ} (h : IsSiegel σ) :
     ∃ s : ℂ, s ^ 2 * (-I • σ).det = 1 ∧ ∀ w : ι → ℂ,
       ∫ x : ι → ℝ, cexp (2 * π * I * (((fun i => (x i : ℂ)) ⬝ᵥ (σ *ᵥ fun i => (x i : ℂ))) / 2 +
@@ -172,6 +227,11 @@ theorem IsSiegel.exists_integral_cexp_quadratic {σ : Matrix ι ι ℂ} (h : IsS
     field_simp [ht0 i]
     ring
 
+/- English proof (translation)
+Take `⟨s, -, hs⟩` from `h.exists_integral_cexp_quadratic`. Establish `h0` using `hs 0`. Simplify using `only [dotProduct_zero, zero_dotProduct, add_zero, mul_zero, Complex.exp_zero, mul_one] at h0`. Rewrite using `[hs, ← h0, siegelGaussIntegral]`. Use `congr 2 with x`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem IsSiegel.integral_cexp_quadratic {σ : Matrix ι ι ℂ} (h : IsSiegel σ) (w : ι → ℂ) :
     ∫ x : ι → ℝ, cexp (2 * π * I * (((fun i => (x i : ℂ)) ⬝ᵥ (σ *ᵥ fun i => (x i : ℂ))) / 2 +
         (fun i => (x i : ℂ)) ⬝ᵥ w)) =
@@ -184,6 +244,9 @@ theorem IsSiegel.integral_cexp_quadratic {σ : Matrix ι ι ℂ} (h : IsSiegel �
   congr 2 with x
   ring_nf
 
+/- English proof (translation)
+Take `⟨s, hs1, hs⟩` from `h.exists_integral_cexp_quadratic`. Establish `h0` using `(h.integral_cexp_quadratic 0).symm.trans (hs 0)`. Rewrite `h0` using `[mul_left_inj' (Complex.exp_ne_zero _)]`. Rewrite using `[h0]` and apply the resulting hypothesis.
+-/
 theorem IsSiegel.siegelGaussIntegral_sq_mul_det {σ : Matrix ι ι ℂ} (h : IsSiegel σ) :
     siegelGaussIntegral σ ^ 2 * (-I • σ).det = 1 := by
   obtain ⟨s, hs1, hs⟩ := h.exists_integral_cexp_quadratic
@@ -191,10 +254,30 @@ theorem IsSiegel.siegelGaussIntegral_sq_mul_det {σ : Matrix ι ι ℂ} (h : IsS
   rw [mul_left_inj' (Complex.exp_ne_zero _)] at h0
   rwa [h0]
 
+/- English proof (translation)
+Introduce `h0` and use `by simpa [h0] using h.siegelGaussIntegral_sq_mul_det`.
+-/
 theorem IsSiegel.siegelGaussIntegral_ne_zero {σ : Matrix ι ι ℂ} (h : IsSiegel σ) :
     siegelGaussIntegral σ ≠ 0 := fun h0 => by
   simpa [h0] using h.siegelGaussIntegral_sq_mul_det
 
+/- English proof (translation)
+Use `set L : Submodule ℤ (EuclideanSpace ℝ ι) := Submodule.span ℤ (Set.range (EuclideanSpace.basisFun ι ℝ).toBasis) with hL`. Establish `hmem (x : EuclideanSpace ℝ ι) : x ∈ L ↔ ∀ k, ∃ m : ℤ, (m : ℝ) = x k`. Rewrite using `[hL, Module.Basis.mem_span_iff_repr_mem]`. Simplify using the standard rewrite rules. Establish `hmem' (y : EuclideanSpace ℝ ι) : y ∈ dualLattice L ↔ ∀ k, ∃ m : ℤ, (m : ℝ) = y k`.
+
+Rewrite using `[mem_dualLattice]`. Use `⟨fun h k => ?_, fun h x hx => ?_⟩` and prove the remaining obligations. Simplify `h _ (Submodule.subset_span ⟨k, rfl⟩)` using `[EuclideanSpace.inner_single_left]`. Use `choose a ha using (hmem x).1 hx choose b hb using h`. Conclude with `⟨∑ k, b k * a k, by simp [PiLp.inner_apply, ha, hb]⟩`.
+
+Establish `hequiv (M : Submodule ℤ (EuclideanSpace ℝ ι)) (hM : ∀ x, x ∈ M ↔ ∀ k, ∃ m : ℤ, (m : ℝ) = x k) : ∃ e : (ι → ℤ) ≃ M, ∀ n, (e n : EuclideanSpace ℝ ι) = WithLp.toLp 2 fun i => (n i : ℝ)`. Use `⟨Equiv.ofBijective (fun n => ⟨WithLp.toLp 2 fun i => (n i : ℝ), (hM _).2 fun k => ⟨n k, rfl⟩⟩) ⟨fun n m h => funext fun i => ?_, fun x => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Simplify using `using congrArg (fun x : M => (x : EuclideanSpace ℝ ι) i) h`. Use `choose a ha using (hM x).1 x.2`. Conclude with `⟨a, Subtype.ext (by ext i; exact ha i)⟩`.
+
+Take `⟨e, he⟩` from `hequiv L hmem`. Take `⟨e', he'⟩` from `hequiv _ hmem'`. Establish `hF' (y : ι → ℝ) : FourierTransform.fourier (fun x : EuclideanSpace ℝ ι => f x.ofLp) (WithLp.toLp 2 y) = F y`. Rewrite using `[Real.fourier_eq', ← hF, ← (PiLp.volume_preserving_toLp ι).integral_comp (MeasurableEquiv.toLp 2 _).measurableEmbedding]`. Use `congr 1 with x`.
+
+Rewrite using `[smul_eq_mul]`. Use `congr 2`. Simplify using `only [PiLp.inner_apply, dotProduct, RCLike.inner_apply, conj_trivial, mul_comm (y _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `key` using `tsum_poisson_lattice L (f := fun x : EuclideanSpace ℝ ι => f x.ofLp) (by fun_prop) (fun R => by`. Take `⟨g, hg, h⟩` from `hdom R`. Use `⟨g ∘ e.symm, e.symm.summable_iff.2 hg, fun x v hv => ?_⟩` and prove the remaining obligations. Take `⟨n, rfl⟩` from `e.surjective x`. Rewrite using `[he, Function.comp_apply, e.symm_apply_apply]`.
+
+Use `h n v.ofLp ((pi_norm_le_iff_of_nonneg ((norm_nonneg _).trans hv)).2 fun i => ?_)` and prove the remaining obligations. Conclude with `(PiLp.norm_apply_le v i).trans hv)`. Use the proof step `(by`. Rewrite using `[← e'.summable_iff]`. Simplify `hs) (WithLp.toLp 2 u)` using `only [Function.comp_def, he', hF']`.
+
+Rewrite `key` using `[← e.tsum_eq, ← e'.tsum_eq, covolume_span_basis (EuclideanSpace.basisFun ι ℝ), Module.Basis.det_self]`. Simplify using `only [he, he', hF', abs_one, inv_one, one_smul, smul_eq_mul] at key`. Use `key.trans (tsum_congr fun n => ?_)` and prove the remaining obligations. Use `congr 3`. Simplify using `[PiLp.inner_apply, dotProduct, mul_comm]`.
+-/
 theorem tsum_poisson_pi_int {f F : (ι → ℝ) → ℂ} (hc : Continuous f)
     (hdom : ∀ R : ℝ, ∃ g : (ι → ℤ) → ℝ, Summable g ∧ ∀ (n : ι → ℤ) (u : ι → ℝ), ‖u‖ ≤ R →
       ‖f ((fun i => (n i : ℝ)) + u)‖ ≤ g n)
@@ -254,6 +337,23 @@ theorem tsum_poisson_pi_int {f F : (ι → ℝ) → ℂ} (hc : Continuous f)
   congr 3
   simp [PiLp.inner_apply, dotProduct, mul_comm]
 
+/- English proof (translation)
+Establish `hsi : σ⁻¹.IsSymm` using `by rw [Matrix.IsSymm, transpose_nonsing_inv, h.isSymm.eq]`. Use `set f : (ι → ℝ) → ℂ := fun x => cexp (2 * π * I * (((fun i => (x i : ℂ)) ⬝ᵥ (σ *ᵥ fun i => (x i : ℂ))) / 2 + (fun i => (x i : ℂ)) ⬝ᵥ w)) with hf`. Establish `hc : Continuous f`. Simplify using `only [hf, dotProduct, mulVec]`. Use `fun_prop`.
+
+Establish `hfn (n : ι → ℤ) (u : ι → ℝ) : f ((fun i => (n i : ℝ)) + u) = riemannThetaTerm u 0 σ w n`. Simplify using `[hf, riemannThetaTerm_def]`. Establish `key` using `tsum_poisson_pi_int (f := f) (F := fun y => siegelGaussIntegral σ * cexp (-(π * I) * (w ⬝ᵥ (σ⁻¹ *ᵥ w))) * cexp (2 * π * I * (((fun i => (y i : ℂ)) ⬝ᵥ (-σ⁻¹ *ᵥ fun i => (y i : ℂ))) / 2 + (fun i => (y i : ℂ)) ⬝ᵥ (σ⁻¹ *ᵥ w)))) hc (fun R => ?_) (fun y => ?_) ?_ a`. Simplify using `only [hfn] at key`. Rewrite using `[riemannTheta, key, riemannTheta, ← tsum_mul_left]`.
+
+Use `tsum_congr fun n => ?_` and prove the remaining obligations. Use `riemannThetaTerm_add_ofReal 0 0 a (-σ⁻¹) (σ⁻¹ *ᵥ w) n` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[← this, riemannThetaTerm_add, riemannThetaTerm_zero_zero]`. Simplify using `only [Pi.zero_apply, ofReal_zero, add_zero, ofReal_intCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc0, hY⟩` from `posDef_exists_mul_dotProduct_le h.posDef`. Take `⟨M, hM⟩` from `(isCompact_closedBall (0 : ι → ℝ) R).exists_bound_of_continuousOn hc.continuousOn`. Take `⟨S, hS⟩` from `(isCompact_closedBall (0 : ι → ℝ) R).exists_bound_of_continuousOn (f := fun u => w + σ *ᵥ fun i => (u i : ℂ)) (Continuous.continuousOn (by`. Use `continuous_const.add (continuous_pi fun i => ?_)` and prove the remaining obligations.
+
+Simplify using `only [mulVec, dotProduct]`. Use the proof step `fun_prop))`. Use `⟨_, (summable_riemannThetaBound 0 hc0 S).mul_left M, fun n u hu => ?_⟩` and prove the remaining obligations. Establish `hu'` using `mem_closedBall_zero_iff.2 hu`. Establish `e : riemannThetaTerm u 0 σ w n = f u * riemannThetaTerm 0 0 σ (w + σ *ᵥ fun i => (u i : ℂ)) n`.
+
+Rewrite using `[riemannThetaTerm_add_mulVec_ofReal h.isSymm, ← mul_assoc, hf, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Rewrite using `[hfn, e, norm_mul]`. Conclude with `mul_le_mul (hM u hu') (norm_riemannThetaTerm_le 0 0 hY (fun i => (abs_im_apply_le_norm _ i).trans (hS u hu')) n) (norm_nonneg _) ((norm_nonneg _).trans (hM u hu'))`. Use `h.integral_cexp_quadratic (w - fun i => (y i : ℂ))` as an intermediate fact.
+
+Rewrite using `[mul_assoc (siegelGaussIntegral σ), ← Complex.exp_add]`. Use `this using 3 with x` and compare the differences between its conclusion and the goal. Rewrite using `[hf, ← Complex.exp_add, dotProduct_sub]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[mulVec_sub, sub_dotProduct, dotProduct_sub, dotProduct_sub, neg_mulVec, dotProduct_neg, dotProduct_mulVec_comm_of_isSymm hsi w fun i => (y i : ℂ)]`. Expand and normalize the polynomial expressions, which then agree. Use `(h.neg_inv.summable_norm_riemannThetaTerm 0 0 (σ⁻¹ *ᵥ w)).mul_left ‖siegelGaussIntegral σ * cexp (-(π * I) * (w ⬝ᵥ (σ⁻¹ *ᵥ w)))‖` as an intermediate fact. Simplify `this` using `only [← norm_mul, riemannThetaTerm_zero_zero, ofReal_intCast]`.
+-/
 theorem IsSiegel.riemannTheta_eq_neg_inv {σ : Matrix ι ι ℂ} (h : IsSiegel σ) (a : ι → ℝ)
     (w : ι → ℂ) :
     riemannTheta a 0 σ w = siegelGaussIntegral σ * cexp (-(π * I) * (w ⬝ᵥ (σ⁻¹ *ᵥ w))) *
@@ -310,6 +410,13 @@ theorem IsSiegel.riemannTheta_eq_neg_inv {σ : Matrix ι ι ℂ} (h : IsSiegel �
       ‖siegelGaussIntegral σ * cexp (-(π * I) * (w ⬝ᵥ (σ⁻¹ *ᵥ w)))‖
     simpa only [← norm_mul, riemannThetaTerm_zero_zero, ofReal_intCast] using this
 
+/- English proof (translation)
+Establish `hsi : τ⁻¹.IsSymm` using `by rw [Matrix.IsSymm, transpose_nonsing_inv, h.isSymm.eq]`. Establish `e1` using `riemannTheta_add_ofReal b 0 (-a) τ z`. Establish `e2 : (z + fun i => ((-a) i : ℂ)) = z - fun i => (a i : ℂ)`. Use extensionality with `i`. Simplify using `[sub_eq_add_neg]`.
+
+Establish `e3 : τ⁻¹ *ᵥ (z - fun i => (a i : ℂ)) = τ⁻¹ *ᵥ z + -τ⁻¹ *ᵥ fun i => (a i : ℂ)`. Rewrite using `[mulVec_sub, neg_mulVec, sub_eq_add_neg]`. Establish `e4 : (fun i => (τ⁻¹ *ᵥ z) i + (b i : ℂ)) = τ⁻¹ *ᵥ z + fun i => (b i : ℂ)` using `rfl`. Rewrite `e1` using `[zero_add, e2]`. Rewrite using `[← e1, h.riemannTheta_eq_neg_inv, e3, riemannTheta_add_mulVec_ofReal hsi.neg, zero_add, ← mul_assoc, mul_assoc (siegelGaussIntegral τ), ← Complex.exp_add, e4]`.
+
+Use `congr 3`. Simplify using `only [dotProduct_add, sub_dotProduct, neg_mulVec, dotProduct_neg, dotProduct_mulVec_comm_of_isSymm hsi z fun i => (a i : ℂ)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsSiegel.riemannTheta_char_eq_neg_inv {τ : Matrix ι ι ℂ} (h : IsSiegel τ) (a b : ι → ℝ)
     (z : ι → ℂ) :
     riemannTheta b (-a) τ z = siegelGaussIntegral τ * cexp (-(π * I) * (z ⬝ᵥ (τ⁻¹ *ᵥ z)) -

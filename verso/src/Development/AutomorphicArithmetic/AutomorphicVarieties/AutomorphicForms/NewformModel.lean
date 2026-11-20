@@ -12,15 +12,26 @@ def heckeOne (k p : ℕ) (f : ℍ → ℂ) (z : ℍ) : ℂ :=
   (p : ℂ) ^ (k - 1) * f (ofComplex (p * (z : ℂ))) +
     (p : ℂ)⁻¹ * ∑ b ∈ Finset.range p, f (ofComplex (((z : ℂ) + b) / p))
 
+/- English proof (translation)
+Establish `: (0 : ℝ) < p` using `by exact_mod_cast hp`. Simplify using `using mul_pos this hz`.
+-/
 private theorem im_mul_pos {p : ℕ} (hp : 0 < p) {z : ℂ} (hz : 0 < z.im) : 0 < ((p : ℂ) * z).im := by
   have : (0 : ℝ) < p := by exact_mod_cast hp
   simpa using mul_pos this hz
 
+/- English proof (translation)
+Establish `: (0 : ℝ) < p` using `by exact_mod_cast hp`. Rewrite using `[Complex.div_natCast_im]`. Simplify using `using div_pos hz this`.
+-/
 private theorem im_div_pos {p : ℕ} (hp : 0 < p) {z : ℂ} (hz : 0 < z.im) (b : ℕ) : 0 < ((z + b) / (p : ℂ)).im := by
   have : (0 : ℝ) < p := by exact_mod_cast hp
   rw [Complex.div_natCast_im]
   simpa using div_pos hz this
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[UpperHalfPlane.mdifferentiable_iff]`. Establish `h : DifferentiableOn ℂ (fun z : ℂ => (p : ℂ) ^ (k - 1) * (f ∘ ofComplex) (p * z) + (p : ℂ)⁻¹ * ∑ b ∈ Finset.range p, (f ∘ ofComplex) ((z + b) / p)) {z : ℂ | 0 < z.im}`. Use `DifferentiableOn.add (DifferentiableOn.const_mul ?_ _) (DifferentiableOn.const_mul ?_ _)` and prove the remaining obligations. Conclude with `hf.comp (f := fun z : ℂ => (p : ℂ) * z) (by fun_prop) fun z hz => im_mul_pos hp hz`. Use `DifferentiableOn.fun_sum fun b _ => ?_` and prove the remaining obligations.
+
+Conclude with `hf.comp (f := fun z : ℂ => (z + b) / (p : ℂ)) (by fun_prop) fun z hz => im_div_pos hp hz b`. Use `h.congr fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, heckeOne, ofComplex_apply_of_im_pos hz]`.
+-/
 theorem heckeOne_mdiff (k : ℕ) {p : ℕ} (hp : 0 < p) {f : ℍ → ℂ} (hf : MDiff f) : MDiff (heckeOne k p f) := by
   rw [UpperHalfPlane.mdifferentiable_iff] at hf ⊢
   have h : DifferentiableOn ℂ (fun z : ℂ => (p : ℂ) ^ (k - 1) * (f ∘ ofComplex) (p * z) +
@@ -32,6 +43,19 @@ theorem heckeOne_mdiff (k : ℕ) {p : ℕ} (hp : 0 < p) {f : ℍ → ℂ} (hf : 
   refine h.congr fun z hz => ?_
   simp only [Function.comp, heckeOne, ofComplex_apply_of_im_pos hz]
 
+/- English proof (translation)
+Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne'`. Establish `hprim : IsPrimitiveRoot (Complex.exp (2 * π * Complex.I / p)) p` using `Complex.isPrimitiveRoot_exp p hp.ne'`. Establish `hterm : ∀ b : ℕ, Function.Periodic.qParam 1 ((τ + b) / p) ^ m = Complex.exp (2 * π * Complex.I * τ / p) ^ m * (Complex.exp (2 * π * Complex.I / p) ^ m) ^ b`. Introduce `b`. Rewrite using `[← pow_mul, mul_comm m b, pow_mul, ← mul_pow]`.
+
+Use `congr 1`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_add, Function.Periodic.qParam]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Repeatedly rewrite using `[hterm]`. Rewrite using `[← Finset.mul_sum]`. Use `split_ifs with h`. Take `⟨j, rfl⟩` from `h`. Establish `h1 : Complex.exp (2 * π * Complex.I / p) ^ (p * j) = 1`.
+
+Rewrite using `[pow_mul, hprim.pow_eq_one, one_pow]`. Rewrite using `[h1, Nat.mul_div_cancel_left j hp]`. Simplify using `only [one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Rewrite using `[mul_comm, pow_mul, ← Complex.exp_nat_mul, Function.Periodic.qParam]`. Use `congr 2`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hne : Complex.exp (2 * π * Complex.I / p) ^ m ≠ 1` using `fun h' => h ((hprim.pow_eq_one_iff_dvd m).mp h')`. Establish `h1 : (Complex.exp (2 * π * Complex.I / p) ^ m) ^ p = 1`. Rewrite using `[← pow_mul, mul_comm m p, pow_mul, hprim.pow_eq_one, one_pow]`.
+
+Rewrite using `[geom_sum_eq hne, h1, sub_self, zero_div, mul_zero, mul_zero]`.
+-/
 private theorem sum_range_qParam_add_div_pow_eq_ite_dvd (p : ℕ) (hp : 0 < p) (τ : ℂ) (m : ℕ) :
     ∑ b ∈ Finset.range p, Function.Periodic.qParam 1 ((τ + b) / p) ^ m =
       (p : ℂ) * (if p ∣ m then Function.Periodic.qParam 1 τ ^ (m / p) else 0) := by
@@ -66,6 +90,29 @@ private theorem sum_range_qParam_add_div_pow_eq_ite_dvd (p : ℕ) (hp : 0 < p) (
       rw [← pow_mul, mul_comm m p, pow_mul, hprim.pow_eq_one, one_pow]
     rw [geom_sum_eq hne, h1, sub_self, zero_div, mul_zero, mul_zero]
 
+/- English proof (translation)
+Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne'`. Establish `hpos : (0 : ℝ) < p` using `Nat.cast_pos.mpr hp`. Establish `hinj : Function.Injective (fun m : ℕ => p * m)` using `fun x y hxy => Nat.eq_of_mul_eq_mul_left hp hxy`. Establish `hB : HasSum (fun n => (p : ℂ) ^ (k - 1) * ((if p ∣ n then a (n / p) else 0) • Function.Periodic.qParam 1 (τ : ℂ) ^ n)) ((p : ℂ) ^ (k - 1) * f (ofComplex ((p : ℂ) * (τ : ℂ))))`. Use `HasSum.mul_left _ ?_` and prove the remaining obligations.
+
+Establish `him : 0 < ((p : ℂ) * τ).im` using `by simpa [Complex.mul_im] using mul_pos hpos τ.im_pos`. Establish `h` using `hf (ofComplex ((p : ℂ) * (τ : ℂ)))`. Rewrite `h`, the goal using `[ofComplex_apply_of_im_pos him]`. Use `(hinj.hasSum_iff ?_).mp ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite using `[if_neg, zero_smul]`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `hx ⟨j, rfl⟩`. Establish `e : ((fun n => (if p ∣ n then a (n / p) else 0) • Function.Periodic.qParam 1 (τ : ℂ) ^ n) ∘ fun m : ℕ => p * m) = fun m => a m • Function.Periodic.qParam 1 ((⟨(p : ℂ) * τ, him⟩ : ℍ) : ℂ) ^ m`. Use function extensionality and compare the values at `m`.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[if_pos (dvd_mul_right p m), Nat.mul_div_cancel_left m hp, pow_mul]`. Use `congr 2`. Simplify using `only [UpperHalfPlane.coe_mk, Function.Periodic.qParam, ← Complex.exp_nat_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h`. Establish `hA : HasSum (fun n => a (p * n) • Function.Periodic.qParam 1 (τ : ℂ) ^ n) ((p : ℂ)⁻¹ * ∑ b ∈ Finset.range p, f (ofComplex (((τ : ℂ) + b) / p)))`.
+
+Establish `him : ∀ b : ℕ, 0 < (((τ : ℂ) + b) / p).im` using `fun b => by`. Rewrite using `[Complex.div_natCast_im]`. Simplify using `using div_pos τ.im_pos hpos`. Establish `hs : HasSum (fun m => (p : ℂ)⁻¹ * ∑ b ∈ Finset.range p, a m • Function.Periodic.qParam 1 (((τ : ℂ) + b) / p) ^ m) ((p : ℂ)⁻¹ * ∑ b ∈ Finset.range p, f (ofComplex (((τ : ℂ) + b) / p)))`. Use `HasSum.mul_left _ (hasSum_sum fun b _ => ?_)` and prove the remaining obligations.
+
+Establish `h` using `hf (ofComplex (((τ : ℂ) + b) / p))`. Rewrite `h`, the goal using `[ofComplex_apply_of_im_pos (him b)]`. Simplify `h` using `only [UpperHalfPlane.coe_mk]`. Establish `heq : ∀ m, (p : ℂ)⁻¹ * ∑ b ∈ Finset.range p, a m • Function.Periodic.qParam 1 (((τ : ℂ) + b) / p) ^ m = a m • (if p ∣ m then Function.Periodic.qParam 1 (τ : ℂ) ^ (m / p) else 0)`. Introduce `m`.
+
+Simplify using `only [smul_eq_mul]`. Rewrite using `[← Finset.mul_sum, sum_range_qParam_add_div_pow_eq_ite_dvd p hp (τ : ℂ) m, mul_left_comm, inv_mul_cancel_left₀ hp0]`. Simplify using `only [heq] at hs`. Establish `hz : ∀ x, x ∉ Set.range (fun m : ℕ => p * m) → a x • (if p ∣ x then Function.Periodic.qParam 1 (τ : ℂ) ^ (x / p) else 0) = 0`. Introduce `x hx`.
+
+Rewrite using `[if_neg, smul_zero]`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `hx ⟨j, rfl⟩`. Use `(hinj.hasSum_iff hz).mpr hs using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`.
+
+Simplify using `only [Function.comp_apply, if_pos (dvd_mul_right p n), Nat.mul_div_cancel_left n hp]`. Use `hA.add hB using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [heckeOne]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasSum_heckeOne (k : ℕ) {p : ℕ} (hp : 0 < p) {f : ℍ → ℂ} {a : ℕ → ℂ}
     (hf : ∀ τ : ℍ, HasSum (fun m => a m • Function.Periodic.qParam 1 τ ^ m) (f τ)) (τ : ℍ) :
     HasSum (fun n => (a (p * n) + (p : ℂ) ^ (k - 1) * (if p ∣ n then a (n / p) else 0)) •
@@ -135,6 +182,11 @@ theorem hasSum_heckeOne (k : ℕ) {p : ℕ} (hp : 0 < p) {f : ℍ → ℂ} {a : 
   · simp only [heckeOne]
     ring
 
+/- English proof (translation)
+Set `γ : SL(2, ℤ)` to `⟨!![a, b; c, d], by rw [Matrix.det_fin_two_of]; exact h⟩`. Establish `h1` using `(slash_action_eq'_iff k f γ ⟨w, hw⟩).1 (by rw [hf γ])`. Establish `h2 : ofComplex w' = γ • (⟨w, hw⟩ : ℍ)`. Rewrite using `[← ofComplex_apply (γ • (⟨w, hw⟩ : ℍ)), specialLinearGroup_apply, e]`. Simplify using `[γ]`.
+
+Rewrite using `[h2, h1, ofComplex_apply_of_im_pos hw]`. Simplify using `[γ]`.
+-/
 private theorem apply_moeb {k : ℕ} {f : ℍ → ℂ} (hf : ∀ γ : SL(2, ℤ), f ∣[(k : ℤ)] γ = f) (a b c d : ℤ)
     (h : a * d - b * c = 1) {w w' : ℂ} (hw : 0 < w.im) (e : w' = (a * w + b) / (c * w + d)) :
     f (ofComplex w') = (c * w + d) ^ k * f (ofComplex w) := by
@@ -146,6 +198,23 @@ private theorem apply_moeb {k : ℕ} {f : ℍ → ℂ} (hf : ∀ γ : SL(2, ℤ)
   rw [h2, h1, ofComplex_apply_of_im_pos hw]
   simp [γ]
 
+/- English proof (translation)
+Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Use function extensionality and compare the values at `z`. Establish `hz0 : (z : ℂ) ≠ 0` using `z.ne_zero`. Rewrite using `[slash_action_eq'_iff, modular_S_smul]`.
+
+Set `i : ℕ → ℕ` to `fun b => (-(b : ZMod p)⁻¹).val`. Establish `hne : ∀ b ∈ (Finset.range p).erase 0, (b : ZMod p) ≠ 0` using `fun b hb h => by`. Rewrite `hb` using `[Finset.mem_erase, Finset.mem_range]`. Conclude with `hb.1 (Nat.eq_zero_of_dvd_of_lt ((ZMod.natCast_eq_zero_iff b p).1 h) hb.2)`. Establish `hi : ∀ b ∈ (Finset.range p).erase 0, i b ∈ (Finset.range p).erase 0` using `fun b hb => by`.
+
+Rewrite using `[Finset.mem_erase, Finset.mem_range]`. Conclude with `⟨by simpa [i] using hne b hb, ZMod.val_lt _⟩`. Establish `hii : ∀ b ∈ (Finset.range p).erase 0, i (i b) = b` using `fun b hb => by`. Rewrite `hb` using `[Finset.mem_erase, Finset.mem_range]`. Simplify using `[i, ZMod.val_natCast_of_lt hb.2]`.
+
+Establish `hdvd : ∀ b ∈ (Finset.range p).erase 0, (p : ℤ) ∣ (b : ℤ) * (i b : ℤ) + 1` using `fun b hb => by`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Simplify using `[i, mul_inv_cancel₀ (hne b hb)]`. Establish `e1 : f (ofComplex (p * (-(z : ℂ))⁻¹)) = ((z : ℂ) / p) ^ k * f (ofComplex (((z : ℂ) + (0 : ℕ)) / p))`. Rewrite using `[apply_moeb hf 0 (-1) 1 0 (by norm_num) (im_div_pos hp.pos z.2 0) (by simp; field_simp)]`.
+
+Simplify using the standard rewrite rules. Establish `e2 : f (ofComplex (((-(z : ℂ))⁻¹ + (0 : ℕ)) / p)) = (p * (z : ℂ)) ^ k * f (ofComplex (p * (z : ℂ)))`. Rewrite using `[apply_moeb hf 0 (-1) 1 0 (by norm_num) (im_mul_pos hp.pos z.2) (by push_cast; field_simp; ring)]`. Simplify using the standard rewrite rules. Establish `e3 : ∀ b ∈ (Finset.range p).erase 0, f (ofComplex (((-(z : ℂ))⁻¹ + b) / p)) = (z : ℂ) ^ k * f (ofComplex (((z : ℂ) + i b) / p))` using `fun b hb => by`.
+
+Take `⟨c, hc⟩` from `hdvd b hb`. Establish `hc' : (b : ℂ) * (i b : ℂ) + 1 = p * c` using `by exact_mod_cast hc`. Establish `hd : ((p : ℤ) : ℂ) * (((z : ℂ) + i b) / p) + ((-(i b : ℤ) : ℤ) : ℂ) = z` using `by push_cast; field_simp; ring`. Rewrite using `[apply_moeb hf b (-c) p (-(i b : ℤ)) (by linear_combination -hc) (im_div_pos hp.pos z.2 (i b)) (by rw [hd]; push_cast; field_simp; linear_combination -hc'), hd]`. Establish `h0 : 0 ∈ Finset.range p` using `Finset.mem_range.2 hp.pos`.
+
+Simplify using `only [heckeOne]`. Rewrite using `[← Finset.add_sum_erase _ _ h0, ← Finset.add_sum_erase _ _ h0, e1, e2, Finset.sum_congr rfl e3, ← Finset.mul_sum, Finset.sum_nbij' i i hi hi hii hii (g := fun b : ℕ => f (ofComplex (((z : ℂ) + b) / p))) fun _ _ => rfl]`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Simplify using `only [ModularGroup.S, Nat.add_sub_cancel, zpow_natCast]`. Simplify using `[div_pow, mul_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heckeOne_slash_S {k p : ℕ} (hk : 1 ≤ k) (hp : p.Prime) {f : ℍ → ℂ}
     (hf : ∀ γ : SL(2, ℤ), f ∣[(k : ℤ)] γ = f) : heckeOne k p f ∣[(k : ℤ)] ModularGroup.S = heckeOne k p f := by
   haveI : Fact p.Prime := ⟨hp⟩
@@ -190,6 +259,21 @@ theorem heckeOne_slash_S {k p : ℕ} (hk : 1 ≤ k) (hp : p.Prime) {f : ℍ → 
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hs : ∀ γ : SL(2, ℤ), ModularForm.discriminant ∣[((12 : ℕ) : ℤ)] γ = ModularForm.discriminant` using `SlashInvariantForm.slash_action_generators_SL2Z discriminant_S_invariant discriminant_T_invariant`. Establish `hsum : ∀ τ : ℍ, HasSum (fun m => coef ModularForm.discriminant m • Function.Periodic.qParam 1 τ ^ m) (ModularForm.discriminant τ)` using `fun τ => hasSum_qExpansion one_pos (SlashInvariantFormClass.periodic_comp_ofComplex CuspForm.discriminant one_mem_strictPeriods_SL) CuspForm.discriminant.holo' (ModularFormClass.bdd_at_infty CuspForm.discriminant) τ`. Establish `hT` using `hasSum_heckeOne 12 hp.pos hsum`. Establish `hinv : ∀ γ : SL(2, ℤ), heckeOne 12 p ModularForm.discriminant ∣[(12 : ℤ)] γ = heckeOne 12 p ModularForm.discriminant`. Use `SlashInvariantForm.slash_action_generators_SL2Z (heckeOne_slash_S (k := 12) (by norm_num) hp hs) ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[slash_action_eq'_iff, modular_T_smul]`. Establish `e : Function.Periodic.qParam 1 (((1 : ℝ) +ᵥ z : ℍ) : ℂ) = Function.Periodic.qParam 1 z`. Simplify using `[Function.Periodic.qParam, mul_add, Complex.exp_add]`. Establish `h1` using `hT ((1 : ℝ) +ᵥ z)`.
+
+Rewrite `h1` using `[e]`. Simplify using `[h1.unique (hT z), ModularGroup.T]`. Set `g : ModularForm 𝒮ℒ 12` to `{ toFun := heckeOne 12 p ModularForm.discriminant slash_action_eq' := fun A hA => by`. Take `⟨A, rfl⟩` from `hA`. Conclude with `hinv A`.
+
+Use the proof step `holo' := heckeOne_mdiff 12 hp.pos CuspForm.discriminant.holo'`. Use the proof step `bdd_at_cusps' := fun {c} hc => by`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`. Rewrite using `[OnePoint.isBoundedAt_iff_forall_SL2Z hc]`. Introduce `γ _`.
+
+Rewrite using `[hinv γ]`. Conclude with `isBoundedAtImInfty_of_hasSum_qExpansion one_pos hT }`. Establish `hq` using `ModularFormClass.qExpansion_coeff_unique (f := g) one_pos one_mem_strictPeriods_SL hT`. Establish `h0 : coef ModularForm.discriminant 0 = 0` using `CuspFormClass.qExpansion_coeff_zero CuspForm.discriminant one_pos one_mem_strictPeriods_SL`. Take `⟨c, hc⟩` from `CuspForm.exists_smul_discriminant_of_weight_eq_twelve (toCuspForm g (by rw [← hq 0]; simp [h0]))`.
+
+Establish `hc' : (g : ℍ → ℂ) = c • (CuspForm.discriminant : ℍ → ℂ)` using `(congrArg DFunLike.coe hc).symm`. Rewrite `hq` using `[hc', ModularForm.qExpansion_smul one_pos one_mem_strictPeriods_SL c CuspForm.discriminant]`. Establish `h1` using `hq 1`. Establish `hp1 : ¬ p ∣ 1` using `hp.not_dvd_one`. Simplify using `only [hp1, if_false, mul_one, mul_zero, add_zero, PowerSeries.coeff_smul, CuspForm.coe_discriminant, discriminant_qExpansion_coeff_one, smul_eq_mul] at h1`.
+
+Rewrite using `[hq n, h1]`. Both sides reduce to the same expression.
+-/
 theorem discriminant_eig {p : ℕ} (hp : p.Prime) (n : ℕ) :
     coef ModularForm.discriminant (p * n) +
         (p : ℂ) ^ (12 - 1) * (if p ∣ n then coef ModularForm.discriminant (n / p) else 0) =

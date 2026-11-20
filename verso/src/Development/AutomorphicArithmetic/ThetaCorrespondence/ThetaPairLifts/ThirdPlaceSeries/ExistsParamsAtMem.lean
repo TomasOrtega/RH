@@ -14,6 +14,15 @@ open Formalism.MainNotions.Inhab Formalism.BasicNotions.TH Formalism.L2.GlobalTh
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.HeightCounting.Up.SizePar
+/- English proof (translation)
+Use `(evG_of_ev GlobalTheory.PrimIn.AtData.ev_params).imp fun K _ _ _ _ hK => ?_` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T hO _ _ _ _ w Z Wt p0 t nch n xd c _ _ _ => ?_⟩` and prove the remaining obligations. Take `⟨L, -, -, hp, -⟩` from `hK (w.st Z) hO t.etaF fun v hv j h1 h2 => by`. Establish `key : ∀ v', (w.D Z).what₂.muAt v' = (w.D Z).what₂.mu0 → v' ∉ Wt`. Introduce `v' he hw`.
+
+Establish `he' : (w.st Z).W.muAt v' = (w.st Z).C.mu0` using `he`. Rewrite `he'` using `[t.mu.on v' hw]`. Establish `h1` using `t.mu.tw v'`. Rewrite `h1` using `[he', t.mu.mu0]`. Conclude with `(TwFin.tw_fin B f T).2.1 v' h1.symm`.
+
+Express the relevant statement in the definitionally equal form `(w.D Z).what₂.Aj j v = 0`. Use `replace hv : (w.D Z).what₂.muAt v = (w.D Z).what₂.mu0 := hv`. Establish `a` using `t.untw v (key v hv) j h1 h2`. Establish `b` using `t.untw _ (key _ (((w.D Z).what₂.muAt_conj v).trans hv)) j h1 h2`. Unfold `Formalism.BasicNotions.Rows.Data.Aj`.
+
+Rewrite using `[hv, a.1, a.2, b.1]`. Both sides reduce to the same expression. Conclude with `⟨L, hp⟩`.
+-/
 theorem exists_params_atMem_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) :
     _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ _ _ _ _ => ∃ L : SizeData₂ (w.D Z), Nonempty (ParameterChoice' (w.D Z) L) := by
   refine (evG_of_ev GlobalTheory.PrimIn.AtData.ev_params).imp fun K _ _ _ _ hK => ?_
@@ -39,6 +48,9 @@ end GlobalTheory.HeightCounting.Up.SizePar
 namespace GlobalTheory.HeightCounting.Up.SizePar
 end GlobalTheory.HeightCounting.Up.SizePar
 namespace GlobalTheory.HeightCounting.Up.SizePar
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_root_.GlobalTheory.HeightCounting.Up.SizePar.exists_params_atMem_alt, exists_params_allSt⟩`.
+-/
 theorem exists_params_alt :
     (∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ _ _ _ _ => ∃ L : SizeData₂ (w.D Z), Nonempty (ParameterChoice' (w.D Z) L)) ∧
       AllSt fun _ _ _ _ _ _ x => (∃ L : SizeData₂ (Dof x), Nonempty (ParameterChoice' (Dof x) L)) ∧

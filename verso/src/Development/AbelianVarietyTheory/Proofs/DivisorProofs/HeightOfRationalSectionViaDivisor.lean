@@ -17,16 +17,27 @@ open GlobalTheory.Cartier
 
 namespace GlobalTheory.VertMix
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.perm_sum_zero_of_polynomial_identity D E h`.
+-/
 theorem sum_perm_eq_zero {D : ℕ} (E : (Fin D → Fin D) → ℝ)
     (h : ∀ n : Fin D → ℤ, ∑ a : Fin D → Fin D, (∏ j, (n (a j) : ℝ)) * E a = 0) :
     ∑ σ : Equiv.Perm (Fin D), E σ = 0 :=
   GlobalTheory.T.perm_sum_zero_of_polynomial_identity D E h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.closed_subscheme_mod_l_projective k X p D hX Z i l`.
+-/
 theorem isProjOver_of_vertical {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} (hX : IsArithVar p D)
     {Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] (l : ℕ) [Fact l.Prime] [Algebra (ZMod l) Γ(Z, ⊤)] :
     IsProjOver (strHom (ZMod l) Z) :=
   GlobalTheory.T.closed_subscheme_mod_l_projective k X p D hX Z i l
 
+/- English proof (translation)
+Establish `HD` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom κ Z) (structureModule Z) hp (d := D) (by rw [QCoh.suppDim_structureModule, hd])`. Establish `hL : ∀ j, ((N j).B.pull i).IsLB` using `fun j => LB.isLB_pull (N j).isLB i`. Establish `e` using `HD.interNum_of_cls_eq_sum (L := fun j => (N j).B.pull i) hL (Q := fun _ => (comb N n).B.pull i) (fun _ => LB.isLB_pull (comb N n).isLB i) (fun _ => n) fun _ => by`. Rewrite using `[CechPic.cls_pull (comb N n).isLB, GenFibreSecs.cls_comb, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, CechPic.cls_pull (N j).isLB]`. Rewrite using `[topSelf_def, e]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem topSelf_comb_pull {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} {κ : Type} [Field κ]
     {Z : Scheme.{0}} [Algebra κ Γ(Z, ⊤)] (hp : IsProjOver (strHom κ Z)) (hd : topologicalKrullDim Z = D) (i : Z ⟶ X)
     (N : Fin D → HermLB p) (n : Fin D → ℤ) :
@@ -48,6 +59,9 @@ end GlobalTheory.VertMix
 
 namespace GlobalTheory.VertMix
 
+/- English proof (translation)
+Establish `e : (comb N n).archInt M D hr = 0`. Use `finsum_eq_zero_of_forall_eq_zero fun σ => ?_` and prove the remaining obligations. Rewrite using `[Weight.chernInt_congr (g := fun _ => 0) (isOpen_offSupp _).measurableSet (h1 σ)]`. Simplify using `[Weight.chernInt]`. Rewrite using `[(H k X p D hX ι M N Φ hΦ n h hh r hr).2, e, sub_zero]`.
+-/
 theorem diag_eq {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {p : X ⟶ Sp k} {D : ℕ}
     (H : Published.ArMix) (hX : IsArithVar p D) {ι : Type} [Fintype ι] {M : HermLB p} {N : ι → HermLB p}
     {Φ : MvPolynomial (Option ι) ℝ →ₗ[ℝ] ℝ} (hΦ : IsArFun (fun o : Option ι => o.elim M N) D Φ) (n : ι → ℤ)
@@ -60,6 +74,11 @@ theorem diag_eq {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] [IsLocal
     simp [Weight.chernInt]
   rw [(H k X p D hX ι M N Φ hΦ n h hh r hr).2, e, sub_zero]
 
+/- English proof (translation)
+Take `⟨_, Z, i, _, _, _, rfl, hdim, hdz⟩` from `hz`. Establish `hp` using `isProjOver_of_vertical hX i l`. Use `⟨fun a => (interNum (ZMod l) (structureModule Z) (fun j => (N (a j)).B.pull i) : ℝ), fun σ => ?_, fun n h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[hdz]`. Conclude with `congrArg _ (interNum_comp_perm (ZMod l) (structureModule Z) (L := fun j => (N j).B.pull i) (fun j => LB.isLB_pull (N j).isLB i) σ)`.
+
+Rewrite using `[hh.vertical Z i (ZMod l) D hdim, Nat.card_zmod, topSelf_comb_pull hp hdim i N n]`.
+-/
 theorem local_expansion {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} (hX : IsArithVar p D)
     (N : Fin D → HermLB p) (z : X) (l : ℕ) (dz : ℝ)
     (hz : ∃ (_ : Fact l.Prime) (Z : Scheme.{0}) (i : Z ⟶ X) (_ : IsClosedImmersion i) (_ : IsIntegral Z)
@@ -81,6 +100,11 @@ end GlobalTheory.VertMix
 
 namespace GlobalTheory.VertMix
 
+/- English proof (translation)
+Establish `e : MvPolynomial.rename some (lin fun i => (n i : ℝ)) ^ D = ∑ a : Fin D → Fin D, MvPolynomial.C (∏ j, (n (a j) : ℝ)) * ∏ j, MvPolynomial.X (some (a j))`. Rewrite using `[← Fin.prod_const, lin, map_sum, Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, MvPolynomial.rename_C, MvPolynomial.rename_X, Finset.prod_mul_distrib, map_prod]`. Rewrite using `[e, Finset.mul_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← MvPolynomial.smul_eq_C_mul, map_smul, smul_eq_mul]`.
+-/
 theorem expand {D : ℕ} (Φ : MvPolynomial (Option (Fin D)) ℝ →ₗ[ℝ] ℝ) (n : Fin D → ℤ) :
     Φ (MvPolynomial.X none * MvPolynomial.rename some (lin fun i => (n i : ℝ)) ^ D) =
       ∑ a : Fin D → Fin D, (∏ j, (n (a j) : ℝ)) *
@@ -94,6 +118,31 @@ theorem expand {D : ℕ} (Φ : MvPolynomial (Option (Fin D)) ℝ →ₗ[ℝ] ℝ
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [mul_left_comm, ← MvPolynomial.smul_eq_C_mul, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `hP k _ X _ _ p D hX num hnum M r hr h1 N ℓ d hd`. Establish `HC` using `hP.p4`. Take `⟨Φ, hΦ⟩` from `((HC.arExists k X p D hX).2 (Option (Fin D)) (fun o => o.elim M N)).1`. Establish `e1 : num (Fin.cons (cl M) fun j => cl (N j)) = Φ (MvPolynomial.X none * ∏ j : Fin D, MvPolynomial.X (some j))`. Set `c : Fin (D + 1) → Option (Fin D)` to `Fin.cons none some`.
+
+Use `hnum (Option (Fin D)) (fun o => o.elim M N) Φ hΦ (fun j => Pi.single (c j) 1)` as an intermediate fact. Establish `hl (o : Option (Fin D)) : lin (Pi.single o (1 : ℝ)) = MvPolynomial.X o`. Rewrite using `[lin, Finset.sum_eq_single o (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hs (o : Option (Fin D)) : ∑ i, (Pi.single o (1 : ℝ) : Option (Fin D) → ℝ) i • cl ((fun o => o.elim M N) i) = cl ((fun o => o.elim M N) o)`.
+
+Rewrite using `[Finset.sum_eq_single o (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using the standard rewrite rules. Simplify using `only [hl, hs] at this`. Rewrite `this` using `[Fin.prod_univ_succ]`. Use `(Eq.trans ?_ this.symm)` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) j <;> rfl`. Use `hX.isNoetherian` as an intermediate fact. Establish `hfin` using `CartierDiv.finite_support_mult (Z := X) (M.div hr)`.
+
+Use `set S := hfin.toFinset`. Establish `hS (z : X) : z ∈ S ↔ (M.div hr).mult z ≠ 0` using `by simp [S]`. Establish `hT (z : X) : ∃ T : (Fin D → Fin D) → ℝ, (M.div hr).mult z ≠ 0 → (∀ σ : Equiv.Perm (Fin D), T σ = d z) ∧ ∀ (n : Fin D → ℤ) (h : X → ℝ), (comb N n).IsArithHeight h → h z = (∑ a : Fin D → Fin D, (∏ j, (n (a j) : ℝ)) * T a) * Real.log (ℓ z)`. Distinguish the cases in `hz : (M.div hr).mult z = 0`. Conclude with `⟨0, fun h => absurd hz h⟩`.
+
+Take `⟨T, hT⟩` from `local_expansion hX N z (ℓ z) (d z) (hd z hz)`. Conclude with `⟨T, fun _ => hT⟩`. Use `choose T hT using hT`. Set `E : (Fin D → Fin D) → ℝ` to `fun a => Φ (MvPolynomial.X none * ∏ j, MvPolynomial.X (some (a j))) - ∑ z ∈ S, ((M.div hr).mult z : ℝ) * Real.log (ℓ z) * T z a`. Establish `hE : ∀ n : Fin D → ℤ, ∑ a : Fin D → Fin D, (∏ j, (n (a j) : ℝ)) * E a = 0`.
+
+Introduce `n`. Take `⟨h, hh⟩` from `(HC.arExists k X p D hX).1 (comb N n)`. Establish `e2` using `diag_eq HC.arMix hX hΦ n hh hr h1`. Rewrite `e2` using `[expand]`. Rewrite `e2` using `[finsum_eq_sum_of_support_subset _ (s := S) fun z hz => (hS z).2 fun h0 => hz (by simp [h0])]`.
+
+Establish `e3 : ∑ z ∈ S, ((M.div hr).mult z : ℝ) * h z = ∑ z ∈ S, ((M.div hr).mult z : ℝ) * ((∑ a : Fin D → Fin D, (∏ j, (n (a j) : ℝ)) * T z a) * Real.log (ℓ z))` using `Finset.sum_congr rfl fun z hz => by rw [((hT z ((hS z).1 hz)).2 n h hh)]`. Rewrite `e2` using `[e3]`. Establish `e4 : ∑ a : Fin D → Fin D, (∏ j, (n (a j) : ℝ)) * E a = ∑ a : Fin D → Fin D, (∏ j, (n (a j) : ℝ)) * Φ (MvPolynomial.X none * ∏ j, MvPolynomial.X (some (a j))) - ∑ z ∈ S, ((M.div hr).mult z : ℝ) * ((∑ a : Fin D → Fin D, (∏ j, (n (a j) : ℝ)) * T z a) * Real.log (ℓ z))`. Simplify using `only [E, mul_sub, Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`.
+
+Conclude with `Finset.sum_comm.trans (Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun a _ => by ring)`. Rewrite using `[e4, ← e2, sub_self]`. Establish `hsum` using `sum_perm_eq_zero E hE`. Establish `hconst (σ : Equiv.Perm (Fin D)) : E σ = E (Equiv.refl (Fin D))`. Simplify using `only [E]`.
+
+Use `congr 1`. Use `congr 2`. Conclude with `Equiv.prod_comp σ fun j => MvPolynomial.X (some j)`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations. Rewrite using `[(hT z ((hS z).1 hz)).1 σ, (hT z ((hS z).1 hz)).1 (Equiv.refl _)]`.
+
+Rewrite `hsum` using `[Finset.sum_congr rfl fun σ _ => hconst σ, Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul, mul_eq_zero]`. Establish `hE0 : E (Equiv.refl (Fin D)) = 0` using `hsum.resolve_left (by exact_mod_cast (Nat.factorial_pos D).ne')`. Simplify using `only [E, sub_eq_zero] at hE0`. Rewrite using `[e1, finsum_eq_sum_of_support_subset _ (s := S) fun z hz => (hS z).2 fun h0 => hz (by simp [h0])]`. Use `hE0.trans (Finset.sum_congr rfl fun z hz => ?_)` and prove the remaining obligations.
+
+Rewrite using `[(hT z ((hS z).1 hz)).1 (Equiv.refl _)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vertMix : Hypotheses2 → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ num : Form (Cl p) D, IsArForm D num → ∀ (M : HermLB p)
     (r : M.B.ι → X.functionFieldˣ) (hr : IsRatSec M.B r), (∀ σ, ∀ y ∈ offSupp p σ (M.div hr), logNorm (M.φ σ) r y = 0) →

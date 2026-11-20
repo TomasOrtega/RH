@@ -5,6 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open Polynomial UpperTheory.V.Z.Sym.Wt
 
+/- English proof (translation)
+Use `set A : Matrix (Fin 2) (Fin 2) ℂ := ↑g with hA`. Establish `hs : A.charpoly.Splits` using `IsAlgClosed.splits _`. Establish `hcard : Multiset.card A.charpoly.roots = 2`. Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Take `⟨a, b, hab⟩` from `Multiset.card_eq_two.mp hcard`.
+
+Establish `hp : A.charpoly = ∏ i, (X - C (![a, b] i))`. Rewrite using `[hs.eq_prod_roots_of_monic (Matrix.charpoly_monic A), hab]`. Simplify using `[Fin.prod_univ_two]`. Establish `htr : A.trace = a + b`. Rewrite using `[Matrix.trace_eq_sum_roots_charpoly, hab]`.
+
+Simplify using the standard rewrite rules. Establish `hdet : A.det = a * b`. Rewrite using `[Matrix.det_eq_prod_roots_charpoly, hab]`. Simplify using the standard rewrite rules. Rewrite using `[trOne 2 n g ![a, b] hp, hqTwo, htr, hdet]`.
+-/
 private theorem tr1_two_eq_hq_trace_det (g : GL (Fin 2) ℂ) (n : ℕ) :
     tr1 2 n g = hq (↑g : Matrix (Fin 2) (Fin 2) ℂ).trace (↑g : Matrix (Fin 2) (Fin 2) ℂ).det n := by
   set A : Matrix (Fin 2) (Fin 2) ℂ := ↑g with hA
@@ -21,6 +28,11 @@ private theorem tr1_two_eq_hq_trace_det (g : GL (Fin 2) ℂ) (n : ℕ) :
     rw [Matrix.det_eq_prod_roots_charpoly, hab]; simp
   rw [trOne 2 n g ![a, b] hp, hqTwo, htr, hdet]
 
+/- English proof (translation)
+Introduce `I _ n e g`. Rewrite using `[repD_apply, map_smul, smul_eq_mul]`. Establish `h` using `trProd I 2 (fun _ => n) g`. Simplify using `only [VD] at *`. Rewrite using `[h]`.
+
+Simplify using `only [detE, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [tr1_two_eq_hq_trace_det]`.
+-/
 theorem UpperTheory.V.Z.Sym.Wt.trDC :
     UpperTheory.V.Z.Sym.Wt.TrDC := by
   intro I _ n e g

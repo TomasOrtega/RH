@@ -13,6 +13,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
 namespace GlobalTheory.GeomConnConst
 
+/- English proof (translation)
+Rewrite using `[algebraMap_eq_strHom K C c]`. Simplify using `[algX, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+-/
 theorem algX_top_strHom (K : Type) [Field K] (C : Scheme.{0}) [Algebra K Γ(C, ⊤)] (c : K) :
     algX (strHom K C) ⊤ c = algebraMap K Γ(C, ⊤) c := by
   rw [algebraMap_eq_strHom K C c]

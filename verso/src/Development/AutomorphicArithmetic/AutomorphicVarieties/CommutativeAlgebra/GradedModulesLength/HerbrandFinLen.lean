@@ -8,6 +8,9 @@ open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg Upp
 open UpperTheory.V.abelian₂ (invLen coinvLen snake_len)
 open scoped Pointwise
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use extensionality with `x`. Simplify using the standard rewrite rules. Use extensionality with `x`. Simplify using `[Submodule.mem_smul_pointwise_iff_exists]`.
+-/
 private theorem ker_range {R : Type} [CommRing R] (g : R) (M : Type) [AddCommGroup M] [Module R M] :
     LinearMap.ker (LinearMap.lsmul R M g) = Submodule.torsionBy R M g ∧
       LinearMap.range (LinearMap.lsmul R M g) = g • (⊤ : Submodule R M) := by
@@ -16,12 +19,18 @@ private theorem ker_range {R : Type} [CommRing R] (g : R) (M : Type) [AddCommGro
   · ext x
     simp [Submodule.mem_smul_pointwise_iff_exists]
 
+/- English proof (translation)
+Unfold `theta`. Rewrite using `[(ker_range g M).1, (ker_range g M).2]`. Both sides reduce to the same expression.
+-/
 private theorem theta_eq {R : Type} [CommRing R] (g : R) (M : Type) [AddCommGroup M] [Module R M] :
     theta g M = ((coinvLen g M).toNat : ℤ) - ((invLen g M).toNat : ℤ) := by
   unfold theta
   rw [(ker_range g M).1, (ker_range g M).2]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `KStar.Selmer.length_ker_eq_length_coker (LinearMap.lsmul R M g) h`. Rewrite `h1` using `[(ker_range g M).1, (ker_range g M).2]`. Establish `h2 : invLen g M ≠ ⊤` using `ne_top_of_le_ne_top h (Module.length_le_of_injective _ (Submodule.injective_subtype _))`. Establish `h3 : coinvLen g M = invLen g M` using `h1.symm`. Conclude with `⟨h2, h3 ▸ h2, h3⟩`.
+-/
 private theorem herbrand_finLen {R : Type} [CommRing R] (g : R) (M : Type) [AddCommGroup M] [Module R M]
     (h : Module.length R M ≠ ⊤) :
     invLen g M ≠ ⊤ ∧ coinvLen g M ≠ ⊤ ∧ coinvLen g M = invLen g M := by
@@ -32,6 +41,11 @@ private theorem herbrand_finLen {R : Type} [CommRing R] (g : R) (M : Type) [AddC
   have h3 : coinvLen g M = invLen g M := h1.symm
   exact ⟨h2, h3 ▸ h2, h3⟩
 
+/- English proof (translation)
+Establish `key : ∀ {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] (e : M ≃ₗ[R] N), invLen g M ≤ invLen g N ∧ coinvLen g N ≤ coinvLen g M`. Introduce `M N _ _ _ _ e`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(snake_len R g M N PUnit e.toLinearMap 0 e.injective (fun _ => ⟨0, rfl⟩) (fun y => ⟨fun _ => e.surjective y, fun _ => rfl⟩)).2.2.2.1`. Conclude with `(snake_len R g PUnit M N 0 e.toLinearMap (fun _ _ _ => rfl) e.surjective (fun y => ⟨fun h => ⟨0, (e.map_eq_zero_iff.1 h).symm⟩, by`.
+
+Introduce and unpack `⟨_, rfl⟩`. Use the proof step `simp⟩)).2.2.2.2.1`. Conclude with `⟨le_antisymm (key e).1 (key e.symm).1, le_antisymm (key e.symm).2 (key e).2⟩`.
+-/
 private theorem herbrand_equiv {R : Type} [CommRing R] (g : R) {M N : Type} [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (e : M ≃ₗ[R] N) :
     invLen g M = invLen g N ∧ coinvLen g M = coinvLen g N := by
@@ -46,6 +60,17 @@ private theorem herbrand_equiv {R : Type} [CommRing R] (g : R) {M N : Type} [Add
           rintro ⟨_, rfl⟩; simp⟩)).2.2.2.2.1
   exact ⟨le_antisymm (key e).1 (key e.symm).1, le_antisymm (key e.symm).2 (key e).2⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Module.length_eq_one_iff, isSimpleModule_iff_toSpanSingleton_surjective]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← not_subsingleton_iff_nontrivial, LocalizedModule.subsingleton_iff]`. Introduce `h`.
+
+Take `⟨r, hr, hr'⟩` from `h (Submodule.Quotient.mk 1)`. Rewrite `hr'` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `hr (by simpa using hr')`. Introduce `x hx y`. Proceed by induction on `x using LocalizedModule.induction_on with | h m s => ?_`.
+
+Proceed by induction on `y using LocalizedModule.induction_on with | h m' s' => ?_`. Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective Q m`. Take `⟨r', rfl⟩` from `Submodule.Quotient.mk_surjective Q m'`. Establish `hr : r ∈ Q.primeCompl` using `fun hr => hx (by`. Rewrite using `[(Submodule.Quotient.mk_eq_zero Q).2 hr, LocalizedModule.zero_mk])`.
+
+Use `⟨Localization.mk (r' * s) (⟨r, hr⟩ * s'), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, LocalizedModule.mk_smul_mk, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [one_smul, Submonoid.smul_def, ← Submodule.Quotient.mk_smul, smul_eq_mul, Submonoid.coe_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem loc_self {S : Type} [CommRing S] (P Q : Ideal S) [hP : P.IsPrime] (h : Q = P) :
     Module.length (Localization.AtPrime P) (LocalizedModule P.primeCompl (S ⧸ Q)) = 1 := by
   subst h
@@ -70,6 +95,11 @@ private theorem loc_self {S : Type} [CommRing S] (P Q : Ideal S) [hP : P.IsPrime
     congr 1
     ring
 
+/- English proof (translation)
+Rewrite using `[Module.length_eq_zero_iff, LocalizedModule.subsingleton_iff]`. Take `⟨s, hs, hs'⟩` from `SetLike.not_le_iff_exists.mp h`. Introduce `x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective Q x`. Use `⟨s, hs', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Q.mul_mem_right _ hs`.
+-/
 private theorem loc_not_le {S : Type} [CommRing S] (P Q : Ideal S) [hP : P.IsPrime] (h : ¬ Q ≤ P) :
     Module.length (Localization.AtPrime P) (LocalizedModule P.primeCompl (S ⧸ Q)) = 0 := by
   rw [Module.length_eq_zero_iff, LocalizedModule.subsingleton_iff]
@@ -80,6 +110,9 @@ private theorem loc_not_le {S : Type} [CommRing S] (P Q : Ideal S) [hP : P.IsPri
   rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
   exact Q.mul_mem_right _ hs
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.length_restrictScalars O B X]`. Establish `: Module.length (ResidueField O) (ResidueField B) = 1`. Rewrite using `[Module.length_eq_of_surjective (S := ResidueField O) (R := ResidueField B) (resMap_bijective O B).2]`. Conclude with `Module.length_eq_one _ _`. Rewrite using `[this, mul_one]`.
+-/
 private theorem len_eq (O : Type) [CommRing O] [IsLocalRing O] (B : Type) [CommRing B] [Algebra O B] [IsCO O B]
     (X : Type) [AddCommGroup X] [Module O X] [Module B X] [IsScalarTower O B X] :
     Module.length O X = Module.length B X := by
@@ -89,6 +122,39 @@ private theorem len_eq (O : Type) [CommRing O] [IsLocalRing O] (B : Type) [CommR
     exact Module.length_eq_one _ _
   rw [this, mul_one]
 
+/- English proof (translation)
+Establish `h0 : ∀ σ : B →ₐ[O] K, ¬ P ≤ RingHom.ker σ → locLen σ (B ⧸ P) = 0` using `fun σ h => haveI : (RingHom.ker σ).IsPrime := RingHom.ker_isPrime σ loc_not_le _ P h`. Distinguish the cases in `hinj : P.comap (algebraMap O B) = ⊥`. Use `haveI : FaithfulSMul O (B ⧸ P) := by`. Rewrite using `[faithfulSMul_iff_algebraMap_injective, injective_iff_map_eq_zero]`. Introduce `c hc`.
+
+Establish `: c ∈ P.comap (algebraMap O B)`. Rewrite using `[Ideal.mem_comap, ← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hc`. Rewrite `this` using `[hinj]`. Then use the resulting hypothesis. Establish `hτ : ∀ τ : (B ⧸ P) →ₐ[O] K, Function.Injective τ` using `fun τ => by`.
+
+Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := O) ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `c hc`. Establish `: τ (algebraMap O _ c) = 0` using `hc`.
+
+Rewrite `this` using `[AlgHom.commutes]`. Conclude with `(FaithfulSMul.algebraMap_injective O K) (this.trans (map_zero _).symm)`. Establish `h1 : ∀ τ : (B ⧸ P) →ₐ[O] K, locLen (τ.comp (Ideal.Quotient.mkₐ O P)) (B ⧸ P) = 1` using `fun τ => by haveI : (RingHom.ker (τ.comp (Ideal.Quotient.mkₐ O P))).IsPrime := RingHom.ker_isPrime _`. Use `loc_self _ P ?_` and prove the remaining obligations. Use extensionality with `x`.
+
+Rewrite using `[RingHom.mem_ker, ← Ideal.Quotient.eq_zero_iff_mem, AlgHom.comp_apply, map_eq_zero_iff _ (hτ τ)]`. Both sides reduce to the same expression. Establish `hmem : ∀ τ : (B ⧸ P) →ₐ[O] K, τ.comp (Ideal.Quotient.mkₐ O P) ∈ S` using `fun τ => by`. Assume the negation of the conclusion as `h`. Conclude with `one_ne_zero ((h1 τ).symm.trans (hS' _ h))`.
+
+Establish `ha : Ideal.Quotient.mk P a ≠ 0` using `fun h => hS _ (hmem (IsAlgClosed.lift (R := O) (S := B ⧸ P) (M := K))) (by`. Rewrite using `[AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, h, map_zero])`. Take `⟨hf, hne, heq⟩` from `length_quotient_span_eq_finsum_valuation O K v hv (B ⧸ P) _ ha`. Establish `hi : invLen a (B ⧸ P) = 0`. Establish `: Submodule.torsionBy B (B ⧸ P) a = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `hx' : Ideal.Quotient.mk P a * x = 0` using `(Submodule.mem_torsionBy_iff _ _).1 hx`. Conclude with `(mul_eq_zero.1 hx').resolve_left ha`. Unfold `invLen`.
+
+Rewrite using `[this]`. Conclude with `Module.length_bot`. Establish `hc : coinvLen a (B ⧸ P) = Module.length O ((B ⧸ P) ⧸ Ideal.span {Ideal.Quotient.mk P a})`. Rewrite using `[len_eq O B]`. Establish `: a • (⊤ : Submodule B (B ⧸ P)) = (Ideal.span {Ideal.Quotient.mk P a}).restrictScalars B`.
+
+Use extensionality with `x`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists, Submodule.restrictScalars_mem, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, -, rfl⟩`. Conclude with `⟨b, mul_comm _ _⟩`.
+
+Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, trivial, mul_comm (Ideal.Quotient.mk P a) b⟩`. Conclude with `((Submodule.quotEquivOfEq _ _ this).trans (Submodule.Quotient.restrictScalarsEquiv B _)).length_eq`. Use `⟨by simp [hi], hc ▸ hne, ?_⟩` and prove the remaining obligations. Use `haveI := Fintype.ofFinite ((B ⧸ P) →ₐ[O] K)`.
+
+Rewrite using `[hi, hc, heq, finsum_eq_sum_of_fintype]`. Simplify using `only [ENat.toNat_zero, Nat.cast_zero, sub_zero]`. Use `Finset.sum_of_injOn (fun τ => τ.comp (Ideal.Quotient.mkₐ O P)) ?_ (fun τ _ => hmem τ) ?_ ?_` and prove the remaining obligations. Introduce `τ _ τ' _ h`. Conclude with `Ideal.Quotient.algHom_ext O h`.
+
+Introduce `σ _ hσ`. Rewrite using `[h0 σ fun hle => hσ ⟨Ideal.Quotient.liftₐ P σ hle, by simp, by ext; rfl⟩]`. Simplify using the standard rewrite rules. Introduce `τ _`. Rewrite using `[h1]`.
+
+Simplify using the standard rewrite rules. Establish `hmax : P.IsMaximal` using `by haveI : (P.comap (algebraMap O B)).IsMaximal := Ring.DimensionLEOne.maximalOfPrime hinj (Ideal.comap_isPrime _ _) haveI : (Ideal.comap (algebraMap O (B ⧸ P)) ⊥).IsMaximal := by`. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_bot, ← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Both sides reduce to the same expression. Use `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := O) (⊥ : Ideal (B ⧸ P)) this` as an intermediate fact. Conclude with `Ideal.Quotient.maximal_of_isField _ (Ring.isField_iff_maximal_bot.2 this)`. Use `haveI : IsSimpleModule B (B ⧸ P) := isSimpleModule_iff_quot_maximal.mpr ⟨P, hmax, ⟨LinearEquiv.refl _ _⟩⟩`. Take `⟨h1, h2, h3⟩` from `herbrand_finLen a (B ⧸ P) (by rw [Module.length_eq_one]; simp)`.
+
+Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[h3, sub_self]`. Use `(Finset.sum_eq_zero fun σ _ => ?_).symm` and prove the remaining obligations. Rewrite using `[h0 σ fun hle => hinj ?_]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[eq_bot_iff]`. Introduce `c hc`. Establish `: σ (algebraMap O B c) = 0` using `hle hc`. Rewrite `this` using `[AlgHom.commutes]`. Conclude with `(FaithfulSMul.algebraMap_injective O K) (this.trans (map_zero _).symm)`.
+-/
 private theorem prime_case (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CharZero O]
     (K : Type) [Field K] [Algebra O K] [IsAlgClosed K] [FaithfulSMul O K] (v : K → ℝ) (hv : IsNVal O K v)
@@ -186,6 +252,29 @@ private theorem prime_case (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValua
       rw [AlgHom.commutes] at this
       exact (FaithfulSMul.algebraMap_injective O K) (this.trans (map_zero _).symm)
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ K _ _ _ _ v hv B _ _ _ M _ _ hM hfin a S c hS hS'`. Establish `key : ∀ (I : Ideal B), Module.Finite O (B ⧸ I) → ∀ (N : Type) [AddCommGroup N] [Module B N] [hN : Module.Finite B N], I ≤ Module.annihilator B N → (∀ σ ∈ S, locLen σ N ≠ ⊤) → (∀ σ : B →ₐ[O] K, σ ∉ S → locLen σ N = 0) → invLen a N ≠ ⊤ ∧ coinvLen a N ≠ ⊤ ∧ ((coinvLen a N).toNat : ℝ …`. Introduce `I hI N _ _ hN`. Proceed by induction on `hN using IsNoetherianRing.induction_on_isQuotientEquivQuotientPrime B with`. Consider the case `subsingleton N`.
+
+Introduce `_ _ _`. Take `⟨h1, h2, h3⟩` from `herbrand_finLen a N (by simp)`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[h3, sub_self]`. Use `(Finset.sum_eq_zero fun σ _ => ?_).symm` and prove the remaining obligations.
+
+Establish `: locLen σ N = 0`. Unfold `locLen`. Conclude with `Module.length_eq_zero`. Simplify using `[this]`. Consider the case `quotient N p e`.
+
+Introduce `hle _ h0`. Establish `hl : ∀ σ : B →ₐ[O] K, locLen σ N = locLen σ (B ⧸ p.1)` using `fun σ => GlobalTheory.length_localizedModule_congr _ e`. Establish `hle' : I ≤ p.1`. Rewrite `hle` using `[e.annihilator_eq, Ideal.annihilator_quotient]`. Conclude with `hle`.
+
+Use `haveI : Module.Finite O (B ⧸ p.1) := Module.Finite.of_surjective (Ideal.Quotient.factorₐ O hle').toLinearMap (Ideal.Quotient.factor_surjective hle')`. Rewrite using `[(herbrand_equiv a e).1, (herbrand_equiv a e).2]`. Simplify using `only [hl] at h0 ⊢`. Conclude with `prime_case O K v hv B p.1 a S (fun σ h => (hS σ h).1) h0`. Consider the case `exact N₁ N₂ N₃ f g hf hg hfg ih₁ ih₃`.
+
+Introduce `hle ht h0`. Establish `hl : ∀ σ : B →ₐ[O] K, locLen σ N₂ = locLen σ N₁ + locLen σ N₃` using `fun σ => GlobalTheory.length_localizedModule_eq_add_of_exact _ f g hf hg hfg`. Establish `ht1 : ∀ σ ∈ S, locLen σ N₁ ≠ ⊤` using `fun σ h h' => ht σ h (by rw [hl, h', top_add])`. Establish `ht3 : ∀ σ ∈ S, locLen σ N₃ ≠ ⊤` using `fun σ h h' => ht σ h (by rw [hl, h', add_top])`. Take `⟨a1, b1, c1⟩` from `ih₁ (hle.trans (f.annihilator_le_of_injective hf)) ht1 fun σ h => (add_eq_zero.1 ((hl σ).symm.trans (h0 σ h))).1`.
+
+Take `⟨a3, b3, c3⟩` from `ih₃ (hle.trans (g.annihilator_le_of_surjective hg)) ht3 fun σ h => (add_eq_zero.1 ((hl σ).symm.trans (h0 σ h))).2`. Take `⟨s1, s2, s3, -⟩` from `snake_len B a N₁ N₂ N₃ f g hf hg hfg`. Establish `a2 : invLen a N₂ ≠ ⊤` using `ne_top_of_le_ne_top (WithTop.add_ne_top.2 ⟨a1, a3⟩) s2`. Establish `b2 : coinvLen a N₂ ≠ ⊤` using `ne_top_of_le_ne_top (WithTop.add_ne_top.2 ⟨b1, b3⟩) s3`. Use `⟨a2, b2, ?_⟩` and prove the remaining obligations.
+
+Establish `s` using `congrArg (fun x : ℕ∞ => (x.toNat : ℝ)) s1`. Establish `t1 : invLen a N₁ + invLen a N₃ ≠ ⊤` using `WithTop.add_ne_top.2 ⟨a1, a3⟩`. Establish `t2 : invLen a N₂ + coinvLen a N₁ ≠ ⊤` using `WithTop.add_ne_top.2 ⟨a2, b1⟩`. Rewrite `s` using `[ENat.toNat_add t1 b2, ENat.toNat_add a1 a3, ENat.toNat_add t2 b3, ENat.toNat_add a2 b1]`. Move the coercions through the operations in `at s`.
+
+Establish `: ∑ σ ∈ S, ((locLen σ N₂).toNat : ℝ) * v (σ a) = ∑ σ ∈ S, ((locLen σ N₁).toNat : ℝ) * v (σ a) + ∑ σ ∈ S, ((locLen σ N₃).toNat : ℝ) * v (σ a)`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ h => ?_` and prove the remaining obligations. Rewrite using `[hl, ENat.toNat_add (ht1 σ h) (ht3 σ h)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, -, h⟩` from `key _ hfin M le_rfl (fun σ h => ne_top_of_le_ne_top (ENat.coe_ne_top c) (hS σ h).2.2) hS'`. Rewrite using `[theta_eq]`. Use `push_cast`.
+
+Rewrite using `[h, Finset.mul_sum]`. Use `Finset.sum_le_sum fun σ h => mul_le_mul_of_nonneg_right ?_ (hS σ h).2.1` and prove the remaining obligations. Conclude with `ENat.toNat_le_of_le_coe (hS σ h).2.2` after adjusting the coercions.
+-/
 theorem UpperTheory.V.Alg.M.th_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]
       (K : Type) [Field K] [Algebra O K] [IsAlgClosed K] [FaithfulSMul O K] (v : K → ℝ), IsNVal O K v →

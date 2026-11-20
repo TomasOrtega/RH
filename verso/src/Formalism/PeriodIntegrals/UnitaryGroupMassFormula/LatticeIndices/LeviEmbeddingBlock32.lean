@@ -16,77 +16,134 @@ variable {A : Type} {r k : ℕ}
 
 variable [CommRing A]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `(simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring`.
+-/
 theorem block11_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b11 (x * y) = b11 x * b11 y + b12 x * b21 y + b13 x * b31 y := by
   ext a b
   (simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]`.
+-/
 theorem one_block11 : b11 (1 : Matrix (Idx r k) (Idx r k) A) = 1 := by
   ext a b
   simp [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `(simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring`.
+-/
 theorem block21_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b21 (x * y) = b21 x * b11 y + b22 x * b21 y + b23 x * b31 y := by
   ext a b
   (simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]`.
+-/
 theorem one_block21 : b21 (1 : Matrix (Idx r k) (Idx r k) A) = 0 := by
   ext a b
   simp [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `(simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring`.
+-/
 theorem block22_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b22 (x * y) = b21 x * b12 y + b22 x * b22 y + b23 x * b32 y := by
   ext a b
   (simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]`.
+-/
 theorem block22_one : b22 (1 : Matrix (Idx r k) (Idx r k) A) = 1 := by
   ext a b
   simp [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `(simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring`.
+-/
 theorem block31_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b31 (x * y) = b31 x * b11 y + b32 x * b21 y + b33 x * b31 y := by
   ext a b
   (simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]`.
+-/
 theorem one_block31 : b31 (1 : Matrix (Idx r k) (Idx r k) A) = 0 := by
   ext a b
   simp [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `(simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring`.
+-/
 theorem block32_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b32 (x * y) = b31 x * b12 y + b32 x * b22 y + b33 x * b32 y := by
   ext a b
   (simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]`.
+-/
 theorem block32_one : b32 (1 : Matrix (Idx r k) (Idx r k) A) = 0 := by
   ext a b
   simp [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `(simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring`.
+-/
 theorem block33_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b33 (x * y) = b31 x * b13 y + b32 x * b23 y + b33 x * b33 y := by
   ext a b
   (simp only [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply, Fintype.sum_sum_type]) <;> ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]`.
+-/
 theorem block33_one : b33 (1 : Matrix (Idx r k) (Idx r k) A) = 1 := by
   ext a b
   simp [b11, b12, b13, b21, b22, b23, b31, b32, b33, Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `[midEmb, Matrix.fromBlocks_multiply]`.
+-/
 theorem midEmb_mul (h h' : Matrix (Fin k) (Fin k) A) : midEmb h * midEmb h' = midEmb (h * h') := by
   simp [midEmb, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Simplify using `[midEmb, Matrix.fromBlocks_one]`.
+-/
 theorem midEmb_one : midEmb (1 : Matrix (Fin k) (Fin k) A) = 1 := by
   simp [midEmb, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+The claim follows from `(Matrix.fromBlocks_inj.1 e).1`.
+-/
 theorem midEmb_inj {h h' : Matrix (Fin k) (Fin k) A} (e : midEmb h = midEmb h') : h = h' := (Matrix.fromBlocks_inj.1 e).1
 
+/- English proof (translation)
+Simplify using `[midEmb, Matrix.det_fromBlocks_zero₂₁]`.
+-/
 theorem midEmb_det (h : Matrix (Fin k) (Fin k) A) : (midEmb h).det = h.det := by
   simp [midEmb, Matrix.det_fromBlocks_zero₂₁]
 
+/- English proof (translation)
+Simplify using `[hEmb, Matrix.fromBlocks_multiply, midEmb_mul]`.
+-/
 theorem hEmb_mul (h h' : Matrix (Fin k) (Fin k) A) : hEmb r h * hEmb r h' = hEmb r (h * h') := by
   simp [hEmb, Matrix.fromBlocks_multiply, midEmb_mul]
 
+/- English proof (translation)
+Simplify using `[hEmb, midEmb_one, Matrix.fromBlocks_one]`.
+-/
 theorem hEmb_one : hEmb r (1 : Matrix (Fin k) (Fin k) A) = 1 := by
   simp [hEmb, midEmb_one, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Establish `e1` using `(Matrix.fromBlocks_inj.1 e).2.2.2`. Conclude with `midEmb_inj (Matrix.fromBlocks_inj.1 e1).1`.
+-/
 theorem hEmb_inj {h h' : Matrix (Fin k) (Fin k) A} (e : hEmb r h = hEmb r h') : h = h' := by
   have e1 := (Matrix.fromBlocks_inj.1 e).2.2.2
   exact midEmb_inj (Matrix.fromBlocks_inj.1 e1).1
@@ -97,12 +154,18 @@ structure GP (P : Matrix (Fin k) (Fin k) A → Prop) : Prop where
   inv : ∀ {h}, P h → P h⁻¹
   unit : ∀ {h}, P h → IsUnit h.det
 
+/- English proof (translation)
+Simplify using `mul := by intro h h' a b; rw [Matrix.det_mul]; exact a.mul b inv := by intro h a; exact Matrix.isUnit_nonsing_inv_det h a unit := fun a => a`.
+-/
 theorem gpUnit : GP (fun h : Matrix (Fin k) (Fin k) A => IsUnit h.det) where
   one := by simp
   mul := by intro h h' a b; rw [Matrix.det_mul]; exact a.mul b
   inv := by intro h a; exact Matrix.isUnit_nonsing_inv_det h a
   unit := fun a => a
 
+/- English proof (translation)
+The claim follows from `isUpUni_one A mul := fun a b => isUpUni_mul A a b inv := fun a => isUpUni_inv A a unit := by intro h a; rw [isUpUni_det A a]; exact isUnit_one`.
+-/
 theorem gpUni : GP (IsUpUni : Matrix (Fin k) (Fin k) A → Prop) where
   one := isUpUni_one A
   mul := fun a b => isUpUni_mul A a b
@@ -117,9 +180,21 @@ def Emb (P : Matrix (Fin k) (Fin k) A → Prop) (x : Matrix (Idx r k) (Idx r k) 
 
 variable {P : Matrix (Fin k) (Fin k) A → Prop}
 
+/- English proof (translation)
+Rewrite using `[isUpUni_det (K := A) hu]`. Conclude with `isUnit_one`.
+-/
 theorem uni_unit {n : ℕ} {u : Matrix (Fin n) (Fin n) A} (hu : IsUpUni u) : IsUnit u.det := by
   rw [isUpUni_det (K := A) hu]; exact isUnit_one
 
+/- English proof (translation)
+Take `⟨h1, h3, h21, h31, h32, h, hPh, h22⟩` from `hx`. Rewrite using `[← Matrix.fromBlocks_toBlocks x]`. Establish `hz : x.toBlocks₂₁ = 0`. Use extensionality with `i j`. Break down `i with a | a` into its components or cases.
+
+Conclude with `congrFun (congrFun h21 a) j`. Conclude with `congrFun (congrFun h31 a) j`. Establish `hD : x.toBlocks₂₂ = Matrix.fromBlocks (b22 x) (b23 x) 0 (b33 x)`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `congrFun (congrFun h32 a) b`. Both sides reduce to the same expression. Rewrite using `[hz, Matrix.det_fromBlocks_zero₂₁, hD, Matrix.det_fromBlocks_zero₂₁, h22, midEmb_det]`.
+
+Conclude with `(uni_unit h1).mul ((hP.unit hPh).mul (uni_unit h3))`.
+-/
 theorem par_det (hP : GP P) {x : Matrix (Idx r k) (Idx r k) A} (hx : Par P x) : IsUnit x.det := by
   obtain ⟨h1, h3, h21, h31, h32, h, hPh, h22⟩ := hx
   rw [← Matrix.fromBlocks_toBlocks x]
@@ -138,12 +213,24 @@ theorem par_det (hP : GP P) {x : Matrix (Idx r k) (Idx r k) A} (hx : Par P x) : 
   rw [hz, Matrix.det_fromBlocks_zero₂₁, hD, Matrix.det_fromBlocks_zero₂₁, h22, midEmb_det]
   exact (uni_unit h1).mul ((hP.unit hPh).mul (uni_unit h3))
 
+/- English proof (translation)
+Use `⟨?_, ?_, one_block21, one_block31, block32_one, 1, hP.one, ?_⟩` and prove the remaining obligations. Rewrite using `[one_block11]`. Conclude with `isUpUni_one (K := A)`. Rewrite using `[block33_one]`. Conclude with `isUpUni_one (K := A)`.
+
+Rewrite using `[block22_one, midEmb_one]`.
+-/
 theorem par_one (hP : GP P) : Par P (1 : Matrix (Idx r k) (Idx r k) A) := by
   refine ⟨?_, ?_, one_block21, one_block31, block32_one, 1, hP.one, ?_⟩
   · rw [one_block11]; exact isUpUni_one (K := A)
   · rw [block33_one]; exact isUpUni_one (K := A)
   · rw [block22_one, midEmb_one]
 
+/- English proof (translation)
+Take `⟨x1, x3, x21, x31, x32, h, hh, x22⟩` from `hx`. Take `⟨y1, y3, y21, y31, y32, g, hg, y22⟩` from `hy`. Use `⟨?_, ?_, ?_, ?_, ?_, h * g, hP.mul hh hg, ?_⟩` and prove the remaining obligations. Rewrite using `[block11_mul, y21, y31]`. Simplify using `using isUpUni_mul (K := A) x1 y1`.
+
+Rewrite using `[block33_mul, x31, x32]`. Simplify using `using isUpUni_mul (K := A) x3 y3`. Rewrite using `[block21_mul, x21, y21, y31]`. Simplify using the standard rewrite rules. Rewrite using `[block31_mul, x31, x32, y31]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[block32_mul, x31, x32, y32]`. Simplify using the standard rewrite rules. Rewrite using `[block22_mul, x21, y32, x22, y22, midEmb_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem par_mul (hP : GP P) {x y : Matrix (Idx r k) (Idx r k) A} (hx : Par P x) (hy : Par P y) :
     Par P (x * y) := by
   obtain ⟨x1, x3, x21, x31, x32, h, hh, x22⟩ := hx
@@ -156,6 +243,25 @@ theorem par_mul (hP : GP P) {x y : Matrix (Idx r k) (Idx r k) A} (hx : Par P x) 
   · rw [block32_mul, x31, x32, y32]; simp
   · rw [block22_mul, x21, y32, x22, y22, midEmb_mul]; simp
 
+/- English proof (translation)
+Take `⟨x1, x3, x21, x31, x32, h, hh, x22⟩` from `hx`. Establish `e' : y * x = 1` using `mul_eq_one_comm.1 e`. Establish `u1` using `uni_unit x1`. Establish `u2 : IsUnit (b22 x).det` using `by rw [x22, midEmb_det]; exact hP.unit hh`. Establish `rz : ∀ {m : Type} [Fintype m] [DecidableEq m] {n : Type} {B : Matrix n m A} {C : Matrix m m A}, IsUnit C.det → B * C = 0 → B = 0`.
+
+Introduce `m _ _ n B C hC hBC`. Combine the equalities or inequalities in the displayed calculation. Establish `e11 : b11 y * b11 x = 1`. Establish `t` using `congrArg b11 e'`. Rewrite `t` using `[block11_mul, x21, x31, one_block11]`.
+
+Simplify using `using t`. Establish `e21 : b21 y * b11 x = 0`. Establish `t` using `congrArg b21 e'`. Rewrite `t` using `[block21_mul, x21, x31, one_block21]`. Simplify using `using t`.
+
+Establish `e31 : b31 y * b11 x = 0`. Establish `t` using `congrArg b31 e'`. Rewrite `t` using `[block31_mul, x21, x31, one_block31]`. Simplify using `using t`. Establish `y21` using `rz u1 e21`.
+
+Establish `y31` using `rz u1 e31`. Establish `e22 : b22 y * b22 x = 1`. Establish `t` using `congrArg b22 e'`. Rewrite `t` using `[block22_mul, y21, x32, block22_one]`. Simplify using `using t`.
+
+Establish `e32 : b32 y * b22 x = 0`. Establish `t` using `congrArg b32 e'`. Rewrite `t` using `[block32_mul, y31, x32, block32_one]`. Simplify using `using t`. Establish `y32` using `rz u2 e32`.
+
+Establish `e33 : b33 y * b33 x = 1`. Establish `t` using `congrArg b33 e'`. Rewrite `t` using `[block33_mul, y31, y32, block33_one]`. Simplify using `using t`. Use `⟨?_, ?_, y21, y31, y32, h⁻¹, hP.inv hh, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.inv_eq_left_inv e11]`. Conclude with `isUpUni_inv (K := A) x1`. Rewrite using `[← Matrix.inv_eq_left_inv e33]`. Conclude with `isUpUni_inv (K := A) x3`. Rewrite using `[← Matrix.inv_eq_left_inv e22, x22]`.
+
+Conclude with `Matrix.inv_eq_left_inv (by rw [midEmb_mul, Matrix.nonsing_inv_mul h (hP.unit hh), midEmb_one])`.
+-/
 theorem par_rinv (hP : GP P) {x y : Matrix (Idx r k) (Idx r k) A} (hx : Par P x) (e : x * y = 1) :
     Par P y := by
   obtain ⟨x1, x3, x21, x31, x32, h, hh, x22⟩ := hx

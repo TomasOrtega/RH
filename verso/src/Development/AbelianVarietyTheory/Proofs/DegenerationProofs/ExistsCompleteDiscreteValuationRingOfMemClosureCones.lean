@@ -4,6 +4,15 @@ open scoped BigOperators TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace F K`. Set `T` to `S.biUnion fun s => (b.repr (c s)).support`. Establish `hc : ∀ s ∈ S, c s = ∑ j ∈ T, b.coord j (c s) • b j` using `fun s hs => by conv_lhs => rw [← b.linearCombination_repr (c s)]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset (s := T)]`. Both sides reduce to the same expression.
+
+Conclude with `Finset.subset_biUnion_of_mem (fun s => (b.repr (c s)).support) hs`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Use `conv_lhs => rw [hc s hs]`.
+
+Rewrite using `[Finset.sum_mul]`. Simplify using the standard rewrite rules. Use `_ = 0 := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mul_sum, h, mul_zero]`.
+-/
 theorem sum_mul_eq_zero_of_forall_dual {F K σ : Type} [Field F] [Field K] [Algebra F K]
     (S : Finset σ) (c m : σ → K)
     (h : ∀ l : K →ₗ[F] F, ∑ s ∈ S, l (c s) • m s = 0) : ∑ s ∈ S, c s * m s = 0 := by
@@ -26,6 +35,17 @@ theorem sum_mul_eq_zero_of_forall_dual {F K σ : Type} [Field F] [Field K] [Alge
         refine Finset.sum_eq_zero fun j _ => ?_
         rw [← Finset.mul_sum, h, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_eq]`. Use `sum_mul_eq_zero_of_forall_dual (F := F) _ _ _ fun l => ?_` and prove the remaining obligations. Establish `key : ∀ (B : Type) [CommRing B] [Algebra F B] (u : J → B), MvPolynomial.aeval u (∑ s ∈ G.support, MvPolynomial.monomial s (l (G.coeff s))) = ∑ s ∈ G.support, l (G.coeff s) • ∏ j ∈ s.support, u j ^ s j` using `fun B _ _ u => by`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.aeval_monomial, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[← key]`. Use `h _ d (MvPolynomial.IsHomogeneous.sum _ _ _ fun s hs => ?_) fun i => ?_` and prove the remaining obligations. Use `MvPolynomial.isHomogeneous_monomial _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hG (MvPolynomial.mem_support_iff.mp hs)`. Rewrite using `[key]`. Establish `h1` using `congrArg ((TensorProduct.lid F (A i)).toLinearMap ∘ₗ l.rTensor (A i)) (h0 i)`. Rewrite `h1` using `[map_zero, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq, map_sum]`.
+
+Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `h2 : algebraMap K (K ⊗[F] A i) (G.coeff s) * ∏ j ∈ s.support, ((1 : K) ⊗ₜ[F] w i j) ^ s j = G.coeff s ⊗ₜ[F] ∏ j ∈ s.support, w i j ^ s j`. Establish `: ∏ j ∈ s.support, ((1 : K) ⊗ₜ[F] w i j) ^ s j = (1 : K) ⊗ₜ[F] ∏ j ∈ s.support, w i j ^ s j`. Simplify using `only [← Algebra.TensorProduct.includeRight_apply (R := F) (A := K), map_prod, map_pow]`.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+-/
 theorem eval_eq_zero_of_aeval_tmul_eq_zero {F K J ι : Type} [Field F] [Field K] [Algebra F K]
     (A : ι → Type) [∀ i, CommRing (A i)] [∀ i, Algebra F (A i)] (w : ∀ i, J → A i) (v : J → K)
     (h : ∀ (G : MvPolynomial J F) (d : ℕ), G.IsHomogeneous d →
@@ -62,6 +82,21 @@ theorem eval_eq_zero_of_aeval_tmul_eq_zero {F K J ι : Type} [Field F] [Field K]
     rw [h2]
     simp
 
+/- English proof (translation)
+Introduce `F K J ι _ _ _ _ _ A _ _ hA w v hv h`. Establish `hN : ∀ i, IsNoetherianRing (K ⊗[F] A i)` using `fun i => Algebra.FiniteType.isNoetherianRing K _`. Distinguish the cases in `hex : ∃ (i : ι) (P : Ideal (K ⊗[F] A i)), P ∈ minimalPrimes (K ⊗[F] A i) ∧ ∀ (G : MvPolynomial J K) (d : ℕ), G.IsHomogeneous d → MvPolynomial.aeval (fun j => Ideal.Quotient.mk P ((1 : K) ⊗ₜ[F] w i j)) G = 0 → MvPolynomial.eval v G = 0`. Take `⟨i, P, hP, hG⟩` from `hex`. Establish `: P.IsPrime` using `hP.1.1`.
+
+Take `⟨W, _, _, _, _, f, s, w', h1, h2, h3⟩` from `exists_complete_discreteValuationRing_of_mem_closure_cone K ((K ⊗[F] A i) ⧸ P) J inferInstance _ v hv hG`. Use `⟨i, W, inferInstance, inferInstance, inferInstance, inferInstance, f.toRingHom.comp ((Ideal.Quotient.mk P).comp (Algebra.TensorProduct.includeRight (R := F) (A := K) (B := A i)).toRingHom), s, w', h1, h2, fun x => ?_, h3⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply K W (FractionRing W), ← f.commutes]`. Express the relevant statement in the definitionally equal form `f (Ideal.Quotient.mk P (Algebra.TensorProduct.includeRight (R := F) (A := K) (algebraMap F (A i) x))) = f (Ideal.Quotient.mk P (algebraMap K _ (algebraMap F K x)))`. Rewrite using `[AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`.
+
+Use `exfalso push_neg at hex choose G d hG hG0 hGv using hex`. Establish `: ∀ i, Finite (minimalPrimes (K ⊗[F] A i))` using `fun i => (minimalPrimes.finite_of_isNoetherianRing _).to_subtype`. Use `letI : Fintype (Σ i, minimalPrimes (K ⊗[F] A i)) := Fintype.ofFinite _`. Set `H : MvPolynomial J K` to `∏ x : Σ i, minimalPrimes (K ⊗[F] A i), G x.1 x.2.1 x.2.2`. Establish `hH : H.IsHomogeneous (∑ x : Σ i, minimalPrimes (K ⊗[F] A i), d x.1 x.2.1 x.2.2)` using `MvPolynomial.IsHomogeneous.prod _ _ _ fun x _ => hG _ _ _`.
+
+Establish `hHv : MvPolynomial.eval v H ≠ 0`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun x _ => hGv _ _ _`. Establish `hnil : ∀ i, IsNilpotent (MvPolynomial.aeval (fun j => (1 : K) ⊗ₜ[F] w i j) H)`. Introduce `i`.
+
+Rewrite using `[nilpotent_iff_mem_prime]`. Introduce `Q hQ`. Take `⟨P, hP, hPQ⟩` from `Ideal.exists_minimalPrimes_le (I := ⊥) (J := Q) bot_le`. Use `hPQ ?_` and prove the remaining obligations. Rewrite using `[map_prod]`.
+
+Use `Ideal.prod_mem P (Finset.mem_univ (⟨i, P, hP⟩ : Σ i, minimalPrimes (K ⊗[F] A i))) ?_` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← hG0 i P hP]`. Conclude with `MvPolynomial.comp_aeval_apply _ (Ideal.Quotient.mkₐ K P) _`. Use `choose n hn using hnil`. Use `letI : Fintype ι := Fintype.ofFinite ι`.
+
+Use `pow_ne_zero (∑ i, n i) hHv ?_` and prove the remaining obligations. Rewrite using `[← map_pow]`. Use `eval_eq_zero_of_aeval_tmul_eq_zero A w v h _ _ (hH.pow _) fun i => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `pow_eq_zero_of_le (Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)) (hn i)`.
+-/
 theorem exists_complete_discreteValuationRing_of_mem_closure_cones :
     ∀ (F K J ι : Type) [Field F] [Field K] [Algebra F K] [Fintype J] [Finite ι] (A : ι → Type) [∀ i, CommRing (A i)] [∀ i, Algebra F (A i)], (∀ i, Algebra.FiniteType F (A i)) → ∀ (w : ∀ i, J → A i) (v : J → K), v ≠ 0 → (∀ (G : MvPolynomial J F) (d : ℕ), G.IsHomogeneous d → (∀ i, MvPolynomial.aeval (w i) G = 0) → MvPolynomial.aeval v G = 0) → ∃ (i : ι) (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W) (_ : Algebra K W) (f : A i →+* FractionRing W) (s : FractionRing W) (w' : J → W), IsAdicComplete (IsLocalRing.maximalIdeal W) W ∧ s ≠ 0 ∧ (∀ x : F, f (algebraMap F (A i) x) = algebraMap W (FractionRing W) (algebraMap K W (algebraMap F K x))) ∧ ∀ j, algebraMap W (FractionRing W) (w' j) = s * f (w i j) ∧ w' j - algebraMap K W (v j) ∈ IsLocalRing.maximalIdeal W := by
   intro F K J ι _ _ _ _ _ A _ _ hA w v hv h

@@ -6,6 +6,27 @@ namespace GlobalTheory
 
 open Polynomial IsLocalRing
 
+/- English proof (translation)
+Set `k` to `ResidueField B`. Use `letI : Algebra k K := (ResidueField.lift (algebraMap B K)).toAlgebra`. Establish `: IsScalarTower B k K` using `.of_algebraMap_eq fun b => (ResidueField.lift_residue_apply (algebraMap B K) b).symm`. Establish `hθ : IsIntegral k θ` using `(Algebra.IsIntegral.isIntegral (R := B) θ).tower_top`. Take `⟨μ, hμ, -, hμm⟩` from `lifts_and_natDegree_eq_and_monic (f := algebraMap B k) (p := minpoly k θ) (map_surjective _ residue_surjective _) (minpoly.monic hθ)`.
+
+Set `B'` to `AdjoinRoot μ`. Establish `hμθ : aeval θ μ = 0`. Rewrite using `[← aeval_map_algebraMap k]`. Conclude with `(congrArg (aeval θ) hμ).trans (minpoly.aeval k θ)`. Set `e : B' →ₐ[B] K` to `AdjoinRoot.liftAlgHom μ (Algebra.ofId B K) θ hμθ`.
+
+Establish `he₀ : e (AdjoinRoot.root μ) = θ` using `AdjoinRoot.liftAlgHom_root ..`. Establish `he : ∀ g : B[X], e (AdjoinRoot.mk μ g) = aeval θ g` using `fun g => by`. Rewrite using `[← AdjoinRoot.aeval_eq, ← aeval_algHom_apply, he₀]`. Establish `hu : ∀ y : B', e y ≠ 0 → IsUnit y` using `fun y hy => by`. Take `⟨g, rfl⟩` from `AdjoinRoot.mk_surjective y`.
+
+Conclude with `isUnit_adjoinRoot_mk_of_aeval_ne_zero hθ hμm hμ (he g ▸ hy)`. Establish `: Nontrivial B'` using `e.toRingHom.domain_nontrivial`. Establish `: IsLocalRing B'` using `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun y => by`. Distinguish the cases in `hy : e y = 0`. Conclude with `Or.inr (hu _ (by simp [hy]))`.
+
+Conclude with `Or.inl (hu _ hy)`. Establish `hm : ∀ y : B', y ∈ maximalIdeal B' ↔ e y = 0` using `fun y => ⟨fun hy => by_contra fun h => hy (hu y h), fun hy h => (h.map e).ne_zero hy⟩`. Establish `hfin : Module.Finite B B'` using `hμm.finite_adjoinRoot`. Establish `: Module.Free B B'` using `hμm.free_adjoinRoot`. Establish `hmap : (maximalIdeal B).map (algebraMap B B') = maximalIdeal B'`.
+
+Use `le_antisymm (Ideal.map_le_iff_le_comap.mpr fun b hb => ?_) fun y hy => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, hm, AlgHom.commutes, algebraMap_eq_zero_iff_mem_maximalIdeal (K := K)]`. Conclude with `hb`. Take `⟨g, rfl⟩` from `AdjoinRoot.mk_surjective y`. Rewrite `hy` using `[hm, he, ← aeval_map_algebraMap k]`.
+
+Take `⟨c, hc⟩` from `minpoly.dvd k θ hy`. Take `⟨c, rfl⟩` from `map_surjective (algebraMap B k) residue_surjective c`. Establish `h₀ : (g - μ * c).map (algebraMap B k) = 0`. Rewrite using `[Polynomial.map_sub, Polynomial.map_mul, hμ, hc, sub_self]`. Establish `h₁ : AdjoinRoot.mk μ (g - μ * c) ∈ (maximalIdeal B).map (algebraMap B B')`.
+
+Rewrite using `[(g - μ * c).as_sum_support_C_mul_X_pow, map_sum]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap B B' _ ∈ _`.
+
+Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Rewrite using `[← residue_eq_zero_iff]`. Express the relevant statement in the definitionally equal form `algebraMap B k _ = 0`. Rewrite using `[← coeff_map, h₀, coeff_zero]`. Rewrite `h₁` using `[map_sub, map_mul, AdjoinRoot.mk_self, zero_mul, sub_zero]`. Then use the resulting hypothesis.
+
+Establish `: IsNoetherianRing B'` using `IsNoetherianRing.of_finite B B'`. Take `⟨_, _⟩` from `exists_isDiscreteValuationRing_of_flat B B' hmap (Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal B').ne_top)`. Establish `hc` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra (R := B) B'`. Rewrite `hc` using `[hmap]`. Conclude with `⟨B', inferInstance, inferInstance, inferInstance, hc, inferInstance, hfin, FaithfulSMul.algebraMap_injective B B', e, ⟨fun y hy => hu y hy.ne_zero⟩, AdjoinRoot.root μ, he₀⟩`.
+-/
 theorem exists_finite_dvr_algHom_mem_range {B K : Type} [CommRing B] [IsDomain B]
     [IsDiscreteValuationRing B] [IsAdicComplete (maximalIdeal B) B] [Field K] [Algebra B K]
     [IsLocalHom (algebraMap B K)] [Module.Finite B K] (θ : K) :
@@ -70,6 +91,15 @@ theorem exists_finite_dvr_algHom_mem_range {B K : Type} [CommRing B] [IsDomain B
     FaithfulSMul.algebraMap_injective B B', e, ⟨fun y hy => hu y hy.ne_zero⟩,
     AdjoinRoot.root μ, he₀⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨B, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, fun _ _ h => h, Algebra.ofId B K, ‹IsLocalHom (algebraMap B K)›, by simp⟩`. Consider the case `insert θ s _ ih`. Take `⟨C, _, _, _, _, _, hfin, hinj, e, hloc, hs⟩` from `ih`.
+
+Use `letI : Algebra C K := (e : C →+* K).toAlgebra`. Establish `: IsScalarTower B C K` using `.of_algebraMap_eq fun b => (e.commutes b).symm`. Establish `: IsLocalHom (algebraMap C K)` using `hloc`. Establish `: Module.Finite C K` using `.of_restrictScalars_finite B C K`. Take `⟨D, _, _, _, _, _, hfin', hinj', e', hloc', hθ⟩` from `exists_finite_dvr_algHom_mem_range (B := C) θ`.
+
+Use `letI : Algebra B D := ((algebraMap C D).comp (algebraMap B C)).toAlgebra`. Establish `: IsScalarTower B C D` using `.of_algebraMap_eq fun _ => rfl`. Use `⟨D, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, Module.Finite.trans C D, hinj'.comp hinj, e'.restrictScalars B, hloc', ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_insert]`. Use `Set.insert_subset hθ fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨c, rfl⟩` from `hs hx`. Conclude with `⟨algebraMap C D c, e'.commutes c⟩`.
+-/
 theorem exists_finite_dvr_algHom_subset_range {B K : Type} [CommRing B] [IsDomain B]
     [IsDiscreteValuationRing B] [IsAdicComplete (maximalIdeal B) B] [Field K] [Algebra B K]
     [IsLocalHom (algebraMap B K)] [Module.Finite B K] (s : Finset K) :
@@ -99,6 +129,17 @@ theorem exists_finite_dvr_algHom_subset_range {B K : Type} [CommRing B] [IsDomai
     obtain ⟨c, rfl⟩ := hs hx
     exact ⟨algebraMap C D c, e'.commutes c⟩
 
+/- English proof (translation)
+Introduce `W _ _ _ _ K _ _ _`. Use `letI : Algebra W K := ((algebraMap (ResidueField W) K).comp (residue W)).toAlgebra`. Establish `: IsScalarTower W (ResidueField W) K` using `.of_algebraMap_eq fun _ => rfl`. Establish `: IsLocalHom (algebraMap W K)` using `⟨fun b hb => by`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hb.ne_zero ((algebraMap_eq_zero_iff_mem_maximalIdeal (K := K) b).mpr hn)⟩`. Establish `hfin : Module.Finite W K` using `Module.Finite.trans (ResidueField W) K`. Take `⟨s, hs⟩` from `hfin.fg_top`. Take `⟨W', _, _, _, _, _, hfin', hinj, e, hloc, hsub⟩` from `exists_finite_dvr_algHom_subset_range (B := W) s`. Establish `hsurj : Function.Surjective e` using `fun x => by`.
+
+Establish `: x ∈ LinearMap.range e.toLinearMap`. Establish `h : Submodule.span W (s : Set K) ≤ LinearMap.range e.toLinearMap` using `Submodule.span_le.mpr hsub`. Conclude with `h (hs ▸ Submodule.mem_top)`. Conclude with `this`. Set `f : ResidueField W' →+* K` to `ResidueField.lift (e : W' →+* K)`.
+
+Establish `hf : ∀ w, f (residue W' w) = e w` using `fun w => ResidueField.lift_residue_apply _ w`. Establish `hbij : Function.Bijective f` using `⟨f.injective, fun x => by`. Take `⟨w, rfl⟩` from `hsurj x`. Conclude with `⟨_, hf w⟩⟩`. Use `⟨W', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, hfin', hinj, (RingEquiv.ofBijective f hbij).symm, fun v => ?_⟩` and prove the remaining obligations.
+
+Use `(RingEquiv.symm_apply_eq _).mpr ?_` and prove the remaining obligations. Rewrite using `[RingEquiv.ofBijective_apply, hf, e.commutes]`. Both sides reduce to the same expression.
+-/
 theorem exists_finite_dvr_residueField_ringHom :
     ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [IsAdicComplete (maximalIdeal W) W] (k' : Type) [Field k'] [Algebra (ResidueField W) k'] [FiniteDimensional (ResidueField W) k'], ∃ (W' : Type) (_ : CommRing W') (_ : IsDomain W') (_ : IsDiscreteValuationRing W') (_ : IsAdicComplete (maximalIdeal W') W') (_ : Algebra W W'), Module.Finite W W' ∧ Function.Injective (algebraMap W W') ∧ ∃ e : k' →+* ResidueField W', ∀ v : W, e (algebraMap (ResidueField W) k' (residue W v)) = residue W' (algebraMap W W' v) := by
   intro W _ _ _ _ K _ _ _

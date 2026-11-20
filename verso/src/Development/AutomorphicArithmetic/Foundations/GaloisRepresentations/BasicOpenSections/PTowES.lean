@@ -14,6 +14,9 @@ namespace UpperTheory.Gal.Mod.EtaleTowerBaseChange
 section Lin
 variable {R : Type*} [CommSemiring R] {ι : Type*} {M : ι → Type*} [∀ i, AddCommMonoid (M i)] [∀ i, Module R (M i)]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', Module.End.mul_apply, ih, DirectSum.lmap_lof, pow_succ', Module.End.mul_apply]`.
+-/
 private theorem lmap_pow_lof [DecidableEq ι] (G : ∀ i, Module.End R (M i)) (m : ℕ) (k : ι) (x : M k) :
     ((DirectSum.lmap G : Module.End R (DirectSum ι fun i => M i)) ^ m) (DirectSum.lof R ι M k x) =
       DirectSum.lof R ι M k ((G k ^ m) x) := by
@@ -21,12 +24,20 @@ private theorem lmap_pow_lof [DecidableEq ι] (G : ∀ i, Module.End R (M i)) (m
   | zero => simp
   | succ m ih => rw [pow_succ', Module.End.mul_apply, ih, DirectSum.lmap_lof, pow_succ', Module.End.mul_apply]
 
+/- English proof (translation)
+Proceed by induction on `m generalizing x with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ, Module.End.mul_apply, ih, DirectSum.lmap_apply, pow_succ, Module.End.mul_apply]`.
+-/
 private theorem directSum_lmap_pow_apply (G : ∀ i, Module.End R (M i)) (m : ℕ) (x : DirectSum ι fun i => M i) (i : ι) :
     ((DirectSum.lmap G : Module.End R (DirectSum ι fun i => M i)) ^ m) x i = (G i ^ m) (x i) := by
   induction m generalizing x with
   | zero => simp
   | succ m ih => rw [pow_succ, Module.End.mul_apply, ih, DirectSum.lmap_apply, pow_succ, Module.End.mul_apply]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => DFinsupp.ext fun i => ?_` and prove the remaining obligations. Establish `hk` using `congrArg (fun f : Module.End R (M i) => f (x i)) (h i)`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, LinearMap.zero_apply] at hk ⊢`. Rewrite using `[DFinsupp.finset_sum_apply]`. Use `Eq.trans (Finset.sum_congr rfl fun j _ => ?_) hk` and prove the remaining obligations.
+
+Rewrite using `[DFinsupp.smul_apply, DirectSum.lmap_apply, directSum_lmap_pow_apply]`.
+-/
 private theorem lmap_sum_zero {J : Type*} [Fintype J] (c : J → R) (A : J → ∀ i, Module.End R (M i))
     (G : ∀ i, Module.End R (M i)) (e : J → ℕ) (h : ∀ k, ∑ j, c j • (A j k * G k ^ e j) = 0) :
     ∑ j, c j • ((DirectSum.lmap (A j) : Module.End R (DirectSum ι fun i => M i)) *
@@ -44,12 +55,18 @@ section Core
 variable {Q L A B : Type*} [Field Q] [Field L] [Algebra Q L] [CharZero L]
   [AddCommGroup A] [Module Q A] [AddCommGroup B] [Module Q B]
 
+/- English proof (translation)
+Establish `hc : P ∘ₗ G' = G ∘ₗ P` using `LinearMap.ext h`. Establish `hb` using `congrArg (fun f : B →ₗ[Q] A => f.baseChange L y) hc`. Simplify `hb` using `only [LinearMap.baseChange_comp, LinearMap.comp_apply]`.
+-/
 private theorem bc_comm (P : B →ₗ[Q] A) (G : A →ₗ[Q] A) (G' : B →ₗ[Q] B) (h : ∀ x, P (G' x) = G (P x))
     (y : L ⊗[Q] B) : P.baseChange L (G'.baseChange L y) = G.baseChange L (P.baseChange L y) := by
   have hc : P ∘ₗ G' = G ∘ₗ P := LinearMap.ext h
   have hb := congrArg (fun f : B →ₗ[Q] A => f.baseChange L y) hc
   simpa only [LinearMap.baseChange_comp, LinearMap.comp_apply] using hb
 
+/- English proof (translation)
+Proceed by induction on `k generalizing y with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ← bc_comm P G G' h, ih]`.
+-/
 private theorem bc_iter (P : B →ₗ[Q] A) (G : A →ₗ[Q] A) (G' : B →ₗ[Q] B) (h : ∀ x, P (G' x) = G (P x))
     (k : ℕ) (y : L ⊗[Q] B) :
     (G.baseChange L)^[k] (P.baseChange L y) = P.baseChange L ((G'.baseChange L)^[k] y) := by
@@ -57,6 +74,9 @@ private theorem bc_iter (P : B →ₗ[Q] A) (G : A →ₗ[Q] A) (G' : B →ₗ[Q
   | zero => rfl
   | succ k ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ← bc_comm P G G' h, ih]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing y with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply, ← ih, pow_succ, Module.End.mul_eq_comp, LinearMap.baseChange_comp, LinearMap.comp_apply]`.
+-/
 private theorem bc_pow (G' : Module.End Q B) (k : ℕ) (y : L ⊗[Q] B) :
     LinearMap.baseChange L (G' ^ k) y = (G'.baseChange L)^[k] y := by
   induction k generalizing y with
@@ -65,6 +85,19 @@ private theorem bc_pow (G' : Module.End Q B) (k : ℕ) (y : L ⊗[Q] B) :
     rw [Function.iterate_succ_apply, ← ih, pow_succ, Module.End.mul_eq_comp, LinearMap.baseChange_comp,
       LinearMap.comp_apply]
 
+/- English proof (translation)
+Establish `hw : ∀ k : ℕ, (G.baseChange L)^[k] (P.baseChange L y) ∈ U`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact hx`. Consider the case `succ k ih`.
+
+Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hU _ ih`. Establish `key : ∀ j : Fin (n + 1), ϑ j • (G.baseChange L)^[n - (j : ℕ)] (P.baseChange L y) = P.baseChange L ((T j * G' ^ (n - (j : ℕ))).baseChange L y)`. Introduce `j`. Establish `hne : ((m j : ℕ) : L) ≠ 0` using `Nat.cast_ne_zero.mpr (hm j)`.
+
+Apply `smul_right_injective (L ⊗[Q] A) hne` to reduce the goal to its premises. Simplify using `only`. Establish `e1` using `hUe j _ (hw (n - (j : ℕ)))`. Rewrite `e1` using `[bc_iter P G G' hG]`. Establish `e2` using `congrArg (fun f : B →ₗ[Q] A => f.baseChange L ((G'.baseChange L)^[n - (j : ℕ)] y)) (hH j)`.
+
+Simplify using `only [LinearMap.baseChange_comp, LinearMap.comp_apply, LinearMap.baseChange_smul, LinearMap.smul_apply] at e2`. Rewrite using `[smul_smul, bc_iter P G G' hG, ← e1, e2, Nat.cast_smul_eq_nsmul Q, Nat.cast_smul_eq_nsmul L, LinearMap.baseChange_mul, Module.End.mul_apply, bc_pow]`. Establish `hz : (∑ j : Fin (n + 1), (c j : Q) • (T j * G' ^ (n - (j : ℕ)))).baseChange L y = 0`. Rewrite using `[h0, LinearMap.baseChange_zero, LinearMap.zero_apply]`. Establish `hs` using `congrArg (P.baseChange L) hz`.
+
+Rewrite `hs` using `[map_zero]`. Rewrite using `[← hs]`. Establish `hsum` using `map_sum (LinearMap.baseChangeHom Q L B B) (fun j : Fin (n + 1) => (c j : Q) • (T j * G' ^ (n - (j : ℕ)))) Finset.univ`. Simplify using `only [LinearMap.baseChangeHom_apply] at hsum`. Rewrite using `[hsum, LinearMap.sum_apply, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, key j, LinearMap.baseChange_smul, LinearMap.smul_apply, Int.cast_smul_eq_zsmul Q, map_zsmul, Int.cast_smul_eq_zsmul L]`.
+-/
 private theorem core {n : ℕ} (P : B →ₗ[Q] A) (G : A →ₗ[Q] A) (G' : Module.End Q B)
     (hG : ∀ x, P (G' x) = G (P x)) (Hh : Fin (n + 1) → A →ₗ[Q] A) (T : Fin (n + 1) → Module.End Q B)
     (m : Fin (n + 1) → ℕ) (hm : ∀ j, m j ≠ 0) (hH : ∀ j, Hh j ∘ₗ P = (m j : Q) • (P ∘ₗ T j))
@@ -111,16 +144,25 @@ end Core
 section Geo
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω]
 
+/- English proof (translation)
+Unfold `geomMap`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 private theorem gm_fst {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) {q : Y ⟶ Spec (CommRingCat.of k)} (u : X ⟶ Y)
     (hu : u ≫ q = p) : geomMap Ω p u hu ≫ pullback.fst _ _ = pullback.fst _ _ ≫ u := by
   unfold geomMap
   exact pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Unfold `geomMap`. Conclude with `pullback.lift_snd _ _ _`.
+-/
 private theorem gm_snd {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) {q : Y ⟶ Spec (CommRingCat.of k)} (u : X ⟶ Y)
     (hu : u ≫ q = p) : geomMap Ω p u hu ≫ pullback.snd _ _ = pullback.snd _ _ := by
   unfold geomMap
   exact pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, galMap_fst, gm_fst Ω p u hu, galMap_fst_assoc]`. Rewrite using `[Category.assoc, Category.assoc, galMap_snd, gm_snd Ω p u hu, ← Category.assoc, gm_snd Ω p u hu, galMap_snd]`.
+-/
 private theorem gm_gal {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) {q : Y ⟶ Spec (CommRingCat.of k)} (u : X ⟶ Y)
     (hu : u ≫ q = p) (σ : Ω ≃ₐ[k] Ω) : geomMap Ω p u hu ≫ galMap Ω q σ = galMap Ω p σ ≫ geomMap Ω p u hu := by
   apply pullback.hom_ext
@@ -130,6 +172,9 @@ private theorem gm_gal {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) {q
 
 end Geo
 
+/- English proof (translation)
+Establish `e : piG C Ω ≫ galMap Ω (pullback.snd C.p (sp (algebraMap O k))) τ = galMap Ω H.q τ ≫ piG C Ω` using `gm_gal Ω _ _ _ τ`. Establish `e2` using `congrArg (fun f => pullTot l (sch.map f) x) e`. Simplify using `only [Functor.map_comp, pullTot_comp, LinearMap.comp_apply] at e2`. Simplify `e2` using `only [galTot]`.
+-/
 private theorem pi_gal (l : ℕ) [Fact l.Prime] {k L : Type} [Field k] [Field L] {H : HTower k} {θ : H.Γ → L} {O : Type}
     [CommRing O] [Algebra O k] (C : Cover H θ O) (Ω : Type) [Field Ω] [Algebra k Ω] (τ : Ω ≃ₐ[k] Ω)
     (x : Htot l (sch.obj (geom Ω (pullback.snd C.p (sp (algebraMap O k)))))) :
@@ -144,6 +189,29 @@ private theorem pi_gal (l : ℕ) [Fact l.Prime] {k L : Type} [Field k] [Field L]
 end UpperTheory.Gal.Mod.EtaleTowerBaseChange
 
 open UpperTheory.Gal.Mod.EtaleTowerBaseChange in
+/- English proof (translation)
+Introduce `hES hBC hLies hFix l _ p f n hp O _ _ _ hpu K _ _ hp0 hres Ω _ _ _ V hV hmax hlv L _ _ H θ hN C ϑ hC hstab σ hσ x hx`. Take `⟨ϖ, T, γ, m, hϖ, hpt, hj⟩` from `hC`. Establish `hlΩ : IsUnit (l : Ω)`. Use `isUnit_iff_ne_zero.mpr fun h0 => ?_` and prove the remaining obligations. Rewrite `hlv` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hlv`. Take `⟨y, rfl⟩` from `hFix l K L H θ O C Ω hlΩ x hx`. Use `choose c hc using fun j : Fin (n + 1) => hBC p O K Ω hp0 C.Y C.p (T j) (hj j).1`. Use `haveI : IsProper C.p := GlobalTheory.ProperFamily.isProper_of_isProjOver C.proj`. Use `haveI : Smooth C.p := C.smooth`.
+
+Use `haveI : CharZero L := charZero_of_injective_algebraMap (algebraMap ℚ_[l] L).injective`. Set `f0 : O →+* V` to `((algebraMap K Ω).comp (algebraMap O K)).codRestrict V.toSubring hV`. Use `haveI : IsLocalHom f0 := by`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`.
+
+Establish `hm : a ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hna)`. Establish `h1` using `(V.valuation_eq_one_iff (f0 a)).mp ha`. Establish `h2` using `hmax a hm`. Conclude with `absurd h1 (ne_of_lt h2)`. Use `letI : Algebra (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField V) := (IsLocalRing.ResidueField.map f0).toAlgebra`.
+
+Use `haveI : IsAlgClosed (FractionRing V) := IsAlgClosed.of_ringEquiv Ω _ (FractionRing.algEquiv V Ω).symm.toRingEquiv`. Use `haveI : IsAlgClosed (IsLocalRing.ResidueField V) := resClosed V`. Establish `hκ : algebraMap O (IsLocalRing.ResidueField O) ϖ = 0` using `(IsLocalRing.residue_eq_zero_iff ϖ).mpr ((IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hϖ.not_isUnit))`. Establish `hrc : ∀ a : O, IsLocalRing.residue V ⟨algebraMap K Ω (algebraMap O K a), hV a⟩ = algebraMap (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField V) (algebraMap O (IsLocalRing.ResidueField O) a)` using `fun a => (IsLocalRing.ResidueField.map_residue f0 a).symm`. Establish `hlV : IsUnit (l : V)` using `(V.valuation_eq_one_iff _).mpr (by exact_mod_cast hlv)`.
+
+Establish `hlk : IsUnit (l : IsLocalRing.ResidueField V)`. Simplify using `using hlV.map (IsLocalRing.residue V)`. Establish `key` using `fun k : ℤ => hES l p f n hp O ϖ hϖ hpu K (IsLocalRing.ResidueField O) hp0 hκ hres Ω V hV (IsLocalRing.ResidueField V) (IsLocalRing.residue V) IsLocalRing.residue_surjective hrc hlk C.Y C.p T (fun j => (hj j).1) hpt c hc σ hσ k`. Use `⟨fun hσ1 => ?_, fun hσ2 => ?_⟩` and prove the remaining obligations. Establish `hr1 : ∀ v : V, IsLocalRing.residue V ⟨σ v, hσ v v.2⟩ = IsLocalRing.residue V v`.
+
+Introduce `v`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, V.valuation_lt_one_iff]`. Conclude with `hσ1 v v.2`. Establish `hg : galTot l Ω (pullback.snd C.p (sp (algebraMap O K))) σ = 1` using `by show DirectSum.lmap (fun k => galHQ l Ω (pullback.snd C.p (sp (algebraMap O K))) k 0 σ) = 1`. Rewrite using `[show (fun k => galHQ l Ω (pullback.snd C.p (sp (algebraMap O K))) k 0 σ) = fun k => LinearMap.id from funext fun k => (key k).1 hr1]`.
+
+Conclude with `DirectSum.lmap_id`. Use `show (galTot l Ω H.q σ).baseChange L _ = _`. Rewrite using `[← bc_comm _ _ _ (pi_gal l C Ω σ) y, hg, LinearMap.baseChange_one, Module.End.one_apply]`. Establish `hr2 : ∀ v : V, IsLocalRing.residue V ⟨σ v, hσ v v.2⟩ = IsLocalRing.residue V v ^ p ^ f`. Introduce `v`.
+
+Rewrite using `[← map_pow, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, V.valuation_lt_one_iff]`. Conclude with `hσ2 v v.2`. Establish `h0` using `lmap_sum_zero (R := ℚ_[l]) (fun j : Fin (n + 1) => ((co (p ^ f) j : ℤ) : ℚ_[l])) (fun j k => TranscendenceTraces.Corr.opQ l (c j) k 0) (fun k => galHQ l Ω (pullback.snd C.p (sp (algebraMap O K))) k 0 σ⁻¹) (fun j => n - (j : ℕ)) (fun k => (key k).2 hr2)`. Establish `hd : ∀ j, ∃ d, FEt (H.s (γ j)) d` using `fun j => hN.2.2 (γ j)`. Use `choose d hd using hd`.
+
+Establish `hH` using `fun j => hLies l p K L H θ O C Ω hlΩ (T j) (γ j) (d j) (m j) (hd j) (hj j).2.1 (c j) (hc j)`. Establish `hUe : ∀ j, ∀ z ∈ piece l H Ω L θ, (hop l H Ω (γ j)).baseChange L z = ((m j : L) * ϑ j) • z`. Introduce `j z hz`. Establish `hz' : z ∈ ⨅ g, Module.End.eigenspace ((hop l H Ω g).baseChange L) (θ g)` using `hz`. Use `(Submodule.mem_iInf _).mp hz' (γ j)` as an intermediate fact.
+
+Rewrite `this` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[this, (hj j).2.2]`. Conclude with `core (pullTot l (sch.map (piG C Ω))) (galTot l Ω H.q σ⁻¹) (galTot l Ω (pullback.snd C.p (sp (algebraMap O K))) σ⁻¹) (pi_gal l C Ω σ⁻¹) (fun j => hop l H Ω (γ j)) (fun j => DirectSum.lmap fun k => TranscendenceTraces.Corr.opQ l (c j) k 0) m (fun j => ((hj j).2.1.1).ne') hH (fun j …`.
+-/
 theorem UpperTheory.Gal.Mod.towES :
     ESGen → BCEx → LiesOp → FixDesc → TowES := by
   intro hES hBC hLies hFix l _ p f n hp O _ _ _ hpu K _ _ hp0 hres Ω _ _ _ V hV hmax hlv L _ _ H θ hN C ϑ hC

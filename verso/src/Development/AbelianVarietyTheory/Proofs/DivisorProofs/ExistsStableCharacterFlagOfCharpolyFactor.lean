@@ -12,6 +12,9 @@ namespace GlobalTheory.CharFlag
 
 variable {k Γ V : Type} [Field k] [Group Γ] [AddCommGroup V] [Module k V]
 
+/- English proof (translation)
+Take `⟨R, W, rs, h0, h1, hm, hst, hinj, hstep⟩` from `h`. Use `⟨R, W, rs ∘ e.symm, h0, h1, hm, hst, hinj.comp e.symm.injective, fun s => ?_⟩` and prove the remaining obligations. Use `hstep (e.symm s)` as an intermediate fact. Simplify using `only [Function.comp_apply, Equiv.apply_symm_apply] at this ⊢`. Conclude with `this`.
+-/
 theorem HasCharFlag.perm {π : Representation k Γ V} {t : ℕ} (ψ : Fin t → Γ →* kˣ) (e : Fin t ≃ Fin t)
     (h : HasCharFlag π (ψ ∘ e)) : HasCharFlag π ψ := by
   obtain ⟨R, W, rs, h0, h1, hm, hst, hinj, hstep⟩ := h
@@ -20,6 +23,13 @@ theorem HasCharFlag.perm {π : Representation k Γ V} {t : ℕ} (ψ : Fin t → 
   simp only [Function.comp_apply, Equiv.apply_symm_apply] at this ⊢
   exact this
 
+/- English proof (translation)
+Use `⟨1, fun j => if (j : ℕ) = 0 then ⊥ else ⊤, Fin.elim0, by simp, by simp, ?_, ?_, fun a => a.elim0, fun s => s.elim0⟩` and prove the remaining obligations. Introduce `i j hij`. Distinguish the cases in `hi : (i : ℕ) = 0`. Simplify using `[hi]`. Establish `hj : (j : ℕ) ≠ 0` using `fun h => hi (by have : (i : ℕ) ≤ j := hij; omega)`.
+
+Simplify using `[hi, hj]`. Introduce `g j x hx`. Distinguish the cases in `hj : (j : ℕ) = 0`. Simplify using `only [hj, if_true, Submodule.mem_bot] at hx ⊢`. Simplify using `[hx]`.
+
+Simplify using `[hj]`.
+-/
 theorem hasCharFlag_zero (π : Representation k Γ V) (ψ : Fin 0 → Γ →* kˣ) : HasCharFlag π ψ := by
   refine ⟨1, fun j => if (j : ℕ) = 0 then ⊥ else ⊤, Fin.elim0, by simp, by simp, ?_, ?_,
     fun a => a.elim0, fun s => s.elim0⟩
@@ -33,6 +43,9 @@ theorem hasCharFlag_zero (π : Representation k Γ V) (ψ : Fin 0 → Γ →* k�
     · simp only [hj, if_true, Submodule.mem_bot] at hx ⊢; simp [hx]
     · simp [hj]
 
+/- English proof (translation)
+Introduce `g y hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[map_smul, hx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x))`.
+-/
 theorem stab_span (π : Representation k Γ V) (x : V) (c : Γ → k) (hx : ∀ g, π g x = c g • x) :
     Stab π (Submodule.span k {x}) := by
   intro g y hy
@@ -40,6 +53,11 @@ theorem stab_span (π : Representation k Γ V) (x : V) (c : Γ → k) (hx : ∀ 
   rw [map_smul, hx]
   exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x))
 
+/- English proof (translation)
+Establish `hf : subRep π _ hS g = c • LinearMap.id`. Use extensionality with `⟨y, hy⟩`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Simplify using `[subRep_apply, map_smul, hxg, smul_comm c a]`. Establish `hd : Module.finrank k (Submodule.span k {x}) = 1` using `finrank_span_singleton hx`.
+
+Set `b : Module.Basis (Fin 1) k (Submodule.span k {x})` to `Module.finBasisOfFinrankEq k _ hd`. Rewrite using `[← LinearMap.charpoly_toMatrix _ b, hf, Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem charpoly_line (π : Representation k Γ V) (x : V) (hx : x ≠ 0) (c : k) (g : Γ) (hxg : π g x = c • x)
     (hS : Stab π (Submodule.span k {x})) : LinearMap.charpoly (subRep π _ hS g) = X - C c := by
   have hf : subRep π _ hS g = c • LinearMap.id := by
@@ -51,11 +69,27 @@ theorem charpoly_line (π : Representation k Γ V) (x : V) (hx : x ≠ 0) (c : k
   rw [← LinearMap.charpoly_toMatrix _ b, hf, Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]
   simp
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ S (π g) (hS g)`.
+-/
 theorem charpoly_split [FiniteDimensional k V] (π : Representation k Γ V) (S : Submodule k V) (hS : Stab π S)
     (g : Γ) : LinearMap.charpoly (π g) =
       LinearMap.charpoly (subRep π S hS g) * LinearMap.charpoly (quotRep π S hS g) :=
   GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ S (π g) (hS g)
 
+/- English proof (translation)
+Take `⟨R, W, rs, h0, h1, hm, hst, hinj, hstep⟩` from `h`. Use `⟨R, Fin.cons ⊥ fun j => (W j).comap S.mkQ, rs, rfl, ?_, ?_, ?_, ?_, hinj, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.cons_succ, h0, Submodule.comap_bot, Submodule.ker_mkQ]`. Rewrite using `[← Fin.succ_last, Fin.cons_succ, h1, Submodule.comap_top]`. Introduce `i j hij`.
+
+Proceed by induction on `i using Fin.cases with`. Consider the case `zero => exact bot_le`. Consider the case `succ i`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact absurd hij (not_le.2 (Fin.succ_pos i))`.
+
+Consider the case `succ j => exact Submodule.comap_mono (hm (Fin.succ_le_succ_iff.1 hij))`. Introduce `g j x hx`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero`. Establish `hx0 : x = 0` using `hx`.
+
+Rewrite using `[hx0, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ j => exact hst g j (S.mkQ x) hx`. Take `⟨y, hy1, hy2, hy3, hy4⟩` from `hstep s`. Take `⟨x, rfl⟩` from `S.mkQ_surjective y`.
+
+Rewrite using `[← Fin.succ_castSucc, Fin.cons_succ, Fin.cons_succ]`. Use `⟨x, hy1, hy2, le_antisymm (fun z hz => ?_) (sup_le (Submodule.comap_mono (hm (Fin.castSucc_lt_succ).le)) ((Submodule.span_singleton_le_iff_mem _ _).2 hy1)), fun g => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[Submodule.mem_comap, hy3]`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hz`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hb`.
+
+Use `Submodule.mem_sup.2 ⟨z - c • x, ?_, c • x, Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x), sub_add_cancel _ _⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, map_sub, map_smul, ← hab, add_sub_cancel_right]`. Conclude with `ha`. Rewrite using `[Submodule.mem_comap, map_sub, map_smul]`. Conclude with `hy4 g`.
+-/
 theorem lift_core (π : Representation k Γ V) (S : Submodule k V) (hS : Stab π S) {t : ℕ} (ψ : Fin t → Γ →* kˣ)
     (h : HasCharFlag (quotRep π S hS) ψ) :
     ∃ (R : ℕ) (W : Fin (R + 1 + 1) → Submodule k V) (rs : Fin t → Fin R), W 0 = ⊥ ∧ W (Fin.succ 0) = S ∧
@@ -96,11 +130,21 @@ theorem lift_core (π : Representation k Γ V) (S : Submodule k V) (hS : Stab π
     · rw [Submodule.mem_comap, map_sub, map_smul]
       exact hy4 g
 
+/- English proof (translation)
+Take `⟨R, W, rs, h0, -, h1, hm, hst, hinj, hstep⟩` from `lift_core π S hS ψ h`. Conclude with `⟨R + 1, W, fun s => (rs s).succ, h0, h1, hm, hst, (Fin.succ_injective _).comp hinj, hstep⟩`.
+-/
 theorem lift_quot (π : Representation k Γ V) (S : Submodule k V) (hS : Stab π S) {t : ℕ} (ψ : Fin t → Γ →* kˣ)
     (h : HasCharFlag (quotRep π S hS) ψ) : HasCharFlag π ψ := by
   obtain ⟨R, W, rs, h0, -, h1, hm, hst, hinj, hstep⟩ := lift_core π S hS ψ h
   exact ⟨R + 1, W, fun s => (rs s).succ, h0, h1, hm, hst, (Fin.succ_injective _).comp hinj, hstep⟩
 
+/- English proof (translation)
+Take `⟨R, W, rs, h0, hS1, h1, hm, hst, hinj, hstep⟩` from `lift_core π _ hS ψ h`. Use `⟨R + 1, W, Fin.cons 0 fun s => (rs s).succ, h0, h1, hm, hst, ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.cons_injective_iff]`. Use `⟨?_, (Fin.succ_injective _).comp hinj⟩` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩`.
+
+Conclude with `Fin.succ_ne_zero _ hs`. Proceed by induction on `s using Fin.cases with`. Consider the case `zero`. Rewrite using `[Fin.cons_zero, Fin.cons_zero, Fin.castSucc_zero, h0, hS1]`. Conclude with `⟨x, Submodule.mem_span_singleton_self x, hx0, (bot_sup_eq _).symm, fun g => by rw [hx, sub_self]; exact Submodule.zero_mem _⟩`.
+
+Consider the case `succ s => exact hstep s`.
+-/
 theorem lift_line (π : Representation k Γ V) (x : V) (ψ₀ : Γ →* kˣ) (hx0 : x ≠ 0)
     (hx : ∀ g, π g x = ((ψ₀ g : kˣ) : k) • x) (hS : Stab π (Submodule.span k {x})) {t : ℕ}
     (ψ : Fin t → Γ →* kˣ) (h : HasCharFlag (quotRep π _ hS) ψ) :
@@ -118,6 +162,11 @@ theorem lift_line (π : Representation k Γ V) (x : V) (ψ₀ : Γ →* kˣ) (hx
         fun g => by rw [hx, sub_self]; exact Submodule.zero_mem _⟩
     | succ s => exact hstep s
 
+/- English proof (translation)
+Rewrite using `[← Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule]`. Use `⟨fun P => ?_⟩` and prove the remaining obligations. Take `⟨W', h1, h2⟩` from `h P.toSubmodule fun g v hv => P.apply_mem_toSubmodule g hv`. Use `⟨⟨W', fun g v hv => h1 g v hv⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[isCompl_iff, disjoint_iff, codisjoint_iff, ← Subrepresentation.toSubmodule_injective.eq_iff, ← Subrepresentation.toSubmodule_injective.eq_iff]`.
+
+Rewrite `h2` using `[isCompl_iff, disjoint_iff, codisjoint_iff]`. Conclude with `h2`.
+-/
 theorem ss_of_compl (σ : Representation k Γ V)
     (h : ∀ W, Stab σ W → ∃ W', Stab σ W' ∧ IsCompl W W') :
     IsSemisimpleModule (MonoidAlgebra k Γ) σ.asModule := by
@@ -130,6 +179,9 @@ theorem ss_of_compl (σ : Representation k Γ V)
   rw [isCompl_iff, disjoint_iff, codisjoint_iff] at h2
   exact h2
 
+/- English proof (translation)
+Use `ss_of_compl σ fun W hW => ?_` and prove the remaining obligations. Break down `h W hW with rfl | rfl` into its components or cases. Conclude with `⟨⊤, fun _ _ _ => trivial, isCompl_bot_top⟩`. Conclude with `⟨⊥, fun g x hx => by rw [(Submodule.mem_bot k).1 hx, map_zero]; exact Submodule.zero_mem _, isCompl_top_bot⟩`.
+-/
 theorem ss_of_min (σ : Representation k Γ V) (h : ∀ W, Stab σ W → W = ⊥ ∨ W = ⊤) :
     IsSemisimpleModule (MonoidAlgebra k Γ) σ.asModule := by
   refine ss_of_compl σ fun W hW => ?_
@@ -138,6 +190,9 @@ theorem ss_of_min (σ : Representation k Γ V) (h : ∀ W, Stab σ W → W = ⊥
   · exact ⟨⊥, fun g x hx => by rw [(Submodule.mem_bot k).1 hx, map_zero]; exact Submodule.zero_mem _,
       isCompl_top_bot⟩
 
+/- English proof (translation)
+Use `GlobalTheory.SSRank.ss_prod (R := MonoidAlgebra k Γ) (M := σ.asModule) (N := τ.asModule)` as an intermediate fact. Conclude with `IsSemisimpleModule.congr (GlobalTheory.SSRank.prodEquiv σ τ)`.
+-/
 theorem ss_prod' {U : Type} [AddCommGroup U] [Module k U] (σ : Representation k Γ V) (τ : Representation k Γ U)
     (hσ : IsSemisimpleModule (MonoidAlgebra k Γ) σ.asModule)
     (hτ : IsSemisimpleModule (MonoidAlgebra k Γ) τ.asModule) :
@@ -145,6 +200,9 @@ theorem ss_prod' {U : Type} [AddCommGroup U] [Module k U] (σ : Representation k
   have := GlobalTheory.SSRank.ss_prod (R := MonoidAlgebra k Γ) (M := σ.asModule) (N := τ.asModule)
   exact IsSemisimpleModule.congr (GlobalTheory.SSRank.prodEquiv σ τ)
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.Proof.exists_semisimplification'.exists_isSemisimplificationOf π`. Conclude with `⟨σ, ss_of_compl σ fun W hW => hσ.1 W hW, GlobalTheory.SemisimplificationCharpoly.charpoly_eq σ π hσ⟩`.
+-/
 theorem exists_ss [FiniteDimensional k V] (π : Representation k Γ V) :
     ∃ σ : Representation k Γ V, IsSemisimpleModule (MonoidAlgebra k Γ) σ.asModule ∧
       ∀ g, LinearMap.charpoly (σ g) = LinearMap.charpoly (π g) := by
@@ -156,12 +214,18 @@ def charRep (χ : Γ →* kˣ) : Representation k Γ k where
   map_one' := by ext; simp
   map_mul' g h := by ext; simp [mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix _ (Module.Basis.singleton (Fin 1) k), Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]`. Simplify using `[charRep, Module.Basis.toMatrix_apply]`.
+-/
 theorem charpoly_charRep (χ : Γ →* kˣ) (g : Γ) :
     LinearMap.charpoly (charRep χ g) = X - C ((χ g : kˣ) : k) := by
   rw [← LinearMap.charpoly_toMatrix _ (Module.Basis.singleton (Fin 1) k), Matrix.charpoly, Matrix.det_fin_one,
     Matrix.charmatrix_apply_eq]
   simp [charRep, Module.Basis.toMatrix_apply]
 
+/- English proof (translation)
+The claim follows from `| 0, ψ => ⟨Fin 0 → k, inferInstance, inferInstance, inferInstance, 1, ss_of_min _ fun W _ => Or.inl (Subsingleton.elim _ _), fun g => by rw [GlobalTheory.SSRank.charpoly_fin_zero]; simp, fun _ _ _ _ => LinearMap.ext fun _ => Subsingleton.elim _ _⟩ | t + 1, ψ => by obtain ⟨B, _, _ …`.
+-/
 theorem exists_sum_chars : ∀ (t : ℕ) (ψ : Fin t → Γ →* kˣ),
     ∃ (B : Type) (_ : AddCommGroup B) (_ : Module k B) (_ : FiniteDimensional k B) (δ : Representation k Γ B),
       IsSemisimpleModule (MonoidAlgebra k Γ) δ.asModule ∧
@@ -182,6 +246,25 @@ theorem exists_sum_chars : ∀ (t : ℕ) (ψ : Fin t → Γ →* kˣ),
       have e2 := h3 σ (LinearMap.snd k k B ∘ₗ f) (fun g x => congrArg Prod.snd (hf g x)) fun s => hφ s.succ
       exact LinearMap.ext fun x => Prod.ext (LinearMap.congr_fun e1 x) (LinearMap.congr_fun e2 x)
 
+/- English proof (translation)
+Establish `hsimple : ∀ W : Submodule k S, Stab (subRep π S hS) W → W = ⊥ ∨ W = ⊤`. Introduce `W hW`. Establish `hinj` using `Submodule.map_injective_of_injective S.subtype_injective`. Break down `hmin (W.map S.subtype) (Submodule.map_subtype_le S W) (by` into its components or cases. Introduce and unpack `g _ ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨_, hW g x hx, rfl⟩) with h0 | h0`. Conclude with `Or.inl (hinj (by rw [h0, Submodule.map_bot]))`. Conclude with `Or.inr (hinj (by rw [h0, Submodule.map_top, Submodule.range_subtype]))`. Take `⟨sQ, hQ1, hQ2⟩` from `exists_ss (quotRep π S hS)`. Take `⟨sA, hA1, hA2⟩` from `exists_ss α`.
+
+Take `⟨B, _, _, _, δ, hδ1, hδ2, hδ3⟩` from `exists_sum_chars (V := S) t ψ`. Take `⟨e, he⟩` from `GlobalTheory.SSRank.bn_gen ((subRep π S hS).prod sQ) (sA.prod δ) (ss_prod' _ _ (ss_of_min _ hsimple) hQ1) (ss_prod' _ _ hA1 hδ1) fun g => by`. Express the relevant statement in the definitionally equal form `LinearMap.charpoly ((subRep π S hS g).prodMap (sQ g)) = LinearMap.charpoly ((sA g).prodMap (δ g))`. Rewrite using `[LinearMap.charpoly_prodMap, LinearMap.charpoly_prodMap, hQ2, hA2, hδ2, ← h, ← charpoly_split]`. Set `j : S →ₗ[k] A × B` to `e.toLinearMap ∘ₗ LinearMap.inl k S (V ⧸ S)`.
+
+Establish `hj : ∀ g x, j (subRep π S hS g x) = (sA g (j x).1, δ g (j x).2)` using `fun g x => by`. Use `LinearMap.congr_fun (he g) (x, 0)` as an intermediate fact. Establish `h0 : ((subRep π S hS).prod sQ) g (x, 0) = (subRep π S hS g x, 0)` using `Prod.ext rfl (map_zero (sQ g))`. Rewrite `this` using `[LinearMap.comp_apply, h0]`. Conclude with `this`.
+
+Establish `h2 : LinearMap.snd k A B ∘ₗ j = 0`. Use `hδ3 (subRep π S hS) _ (fun g x => congrArg Prod.snd (hj g x)) fun s φ hφ => ?_` and prove the remaining obligations. Break down `hsimple (LinearMap.ker φ) (fun g x hx => by` into its components or cases. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hφ, hx, smul_zero]) with h0 | h0`.
+
+It suffices to derive a contradiction. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff S).1 hS0`. Use `hx0 (hno s x hx fun g => ?_)` and prove the remaining obligations. Establish `: subRep π S hS g ⟨x, hx⟩ = ((ψ s g : kˣ) : k) • ⟨x, hx⟩` using `LinearMap.ker_eq_bot.1 h0 (by rw [hφ, map_smul])`. Conclude with `congrArg Subtype.val this`.
+
+Conclude with `LinearMap.ker_eq_top.1 h0`. Set `f : S →ₗ[k] A` to `LinearMap.fst k A B ∘ₗ j`. Establish `hf : ∀ g x, f (subRep π S hS g x) = sA g (f x)` using `fun g x => congrArg Prod.fst (hj g x)`. Establish `hfi : Function.Injective f` using `fun x y hxy => LinearMap.inl_injective (e.injective (Prod.ext hxy ((LinearMap.congr_fun h2 x).trans (LinearMap.congr_fun h2 y).symm)))`. Establish `hR : Stab sA (LinearMap.range f)`.
+
+Introduce and unpack `g _ ⟨x, rfl⟩`. Conclude with `⟨_, hf g x⟩`. Use `⟨A ⧸ LinearMap.range f, inferInstance, inferInstance, inferInstance, quotRep sA _ hR, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hA2, charpoly_split sA _ hR, ← LinearEquiv.charpoly_conj (LinearEquiv.ofInjective f hfi) (subRep π S hS g)]`. Use `congr 2`.
+
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(LinearEquiv.ofInjective f hfi).surjective y`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`. Conclude with `Subtype.ext (hf g x).symm`.
+-/
 theorem bn_step [FiniteDimensional k V] {A : Type} [AddCommGroup A] [Module k A] [FiniteDimensional k A]
     (π : Representation k Γ V) (α : Representation k Γ A) {t : ℕ} (ψ : Fin t → Γ →* kˣ) (S : Submodule k V)
     (hS : Stab π S) (hS0 : S ≠ ⊥) (hmin : ∀ S' : Submodule k V, S' ≤ S → Stab π S' → S' = ⊥ ∨ S' = S)
@@ -239,6 +322,31 @@ theorem bn_step [FiniteDimensional k V] {A : Type} [AddCommGroup A] [Module k A]
   rw [LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]
   exact Subtype.ext (hf g x).symm
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `V _ _ _ hd π t ψ A _ _ _ α h`. Break down `Nat.eq_zero_or_pos t with rfl | ht` into its components or cases.
+
+Conclude with `hasCharFlag_zero π ψ`. Establish `hdeg` using `congrArg natDegree (h 1)`. Rewrite `hdeg` using `[LinearMap.charpoly_natDegree, (LinearMap.charpoly_monic _).natDegree_mul (monic_prod_of_monic _ _ fun s _ => monic_X_sub_C _), LinearMap.charpoly_natDegree, natDegree_prod_of_monic _ _ (fun s _ => monic_X_sub_C _)]`. Simplify using `only [natDegree_X_sub_C, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one] at hdeg`. Distinguish the cases in `hev : ∃ s, ∃ x : V, x ≠ 0 ∧ ∀ g, π g x = ((ψ s g : kˣ) : k) • x`.
+
+Take `⟨s, x, hx0, hx⟩` from `hev`. Take `⟨t', rfl⟩ : ∃ t', t = t' + 1` from `⟨t - 1, by omega⟩`. Establish `hS` using `stab_span π x (fun g => ((ψ s g : kˣ) : k)) hx`. Set `e : Fin (t' + 1) ≃ Fin (t' + 1)` to `Equiv.swap 0 s`. Use `HasCharFlag.perm ψ e ?_` and prove the remaining obligations.
+
+Rewrite using `[← Fin.cons_self_tail (ψ ∘ e)]`. Establish `he0 : (ψ ∘ e) 0 = ψ s` using `by simp [e]`. Rewrite using `[he0]`. Use `lift_line π x (ψ s) hx0 hx hS _ ?_` and prove the remaining obligations. Establish `hfr : Module.finrank k (V ⧸ Submodule.span k {x}) < d`.
+
+Establish `h1` using `Submodule.finrank_quotient_add_finrank (Submodule.span k {x})`. Rewrite `h1` using `[finrank_span_singleton hx0]`. Use linear arithmetic over natural numbers and integers. Use `ih _ hfr rfl _ _ α fun g => ?_` and prove the remaining obligations. Apply `mul_left_cancel₀ (X_sub_C_ne_zero ((ψ s g : kˣ) : k))` to reduce the goal to its premises.
+
+Establish `h1` using `charpoly_split π _ hS g`. Rewrite `h1` using `[charpoly_line π x hx0 _ g (hx g) hS]`. Rewrite using `[← h1, h g, ← Equiv.prod_comp e (fun s' => (X - C ((ψ s' g : kˣ) : k))), Fin.prod_univ_succ]`. Simplify using `only [Fin.tail, Function.comp_apply]`. Establish `: e 0 = s` using `by simp [e]`.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hV : (⊥ : Submodule k V) ≠ ⊤`. Introduce `hb`. Establish `: Module.finrank k V = 0`.
+
+Rewrite using `[← finrank_top k V, ← hb, finrank_bot]`. Use linear arithmetic over natural numbers and integers. Take `⟨S, ⟨hS0, hS⟩, hmin⟩` from `(wellFounded_lt (α := Submodule k V)).has_min {S | S ≠ ⊥ ∧ Stab π S} ⟨⊤, hV.symm, fun _ _ _ => trivial⟩`. Establish `hmin' : ∀ S' : Submodule k V, S' ≤ S → Stab π S' → S' = ⊥ ∨ S' = S`. Introduce `S' hle hst`.
+
+Distinguish the cases in `hb : S' = ⊥`. Conclude with `Or.inl hb`. Conclude with `Or.inr (by`. Assume the negation of the conclusion as `hne`. Conclude with `hmin S' ⟨hb, hst⟩ (lt_of_le_of_ne hle hne))`.
+
+Take `⟨B, _, _, _, β, hβ⟩` from `bn_step π α ψ S hS hS0 hmin' (fun s x _ hx => by`. Assume the negation of the conclusion as `hx0`. Conclude with `hev ⟨s, x, hx0, hx⟩) h`. Use `lift_quot π S hS ψ ?_` and prove the remaining obligations. Establish `hfr : Module.finrank k (V ⧸ S) < d`.
+
+Establish `h1` using `Submodule.finrank_quotient_add_finrank S`. Establish `h2 : 0 < Module.finrank k S` using `Module.finrank_pos_iff.2 (Submodule.nontrivial_iff_ne_bot.2 hS0)`. Use linear arithmetic over natural numbers and integers. Use `ih _ hfr rfl _ _ β fun g => ?_` and prove the remaining obligations. Apply `mul_left_cancel₀ (LinearMap.charpoly_monic (subRep π S hS g)).ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[← charpoly_split, h g, hβ g, mul_assoc]`.
+-/
 theorem main_gen : ∀ (d : ℕ) {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V],
     Module.finrank k V = d → ∀ (π : Representation k Γ V) {t : ℕ} (ψ : Fin t → Γ →* kˣ) {A : Type}
     [AddCommGroup A] [Module k A] [FiniteDimensional k A] (α : Representation k Γ A),
@@ -307,6 +415,13 @@ theorem main_gen : ∀ (d : ℕ) {V : Type} [AddCommGroup V] [Module k V] [Finit
     apply mul_left_cancel₀ (LinearMap.charpoly_monic (subRep π S hS g)).ne_zero
     rw [← charpoly_split, h g, hβ g, mul_assoc]
 
+/- English proof (translation)
+Introduce `k Γ _ _ n a t r ρ ψ _ hc`. Set `π : Representation k Γ (Fin n → k)` to `(Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) k ≃ₐ[k] Module.End k (Fin n → k)).toAlgHom.toRingHom.toMonoidHom.comp ((Units.coeHom _).comp r)`. Set `α : Representation k Γ (Fin a → k)` to `(Matrix.toLinAlgEquiv' : Matrix (Fin a) (Fin a) k ≃ₐ[k] Module.End k (Fin a → k)).toAlgHom.toRingHom.toMonoidHom.comp ((Units.coeHom _).comp ρ)`. Establish `hπ : ∀ g, π g = Matrix.toLin' (r g : Matrix (Fin n) (Fin n) k)` using `fun g => rfl`. Establish `hα : ∀ g, α g = Matrix.toLin' (ρ g : Matrix (Fin a) (Fin a) k)` using `fun g => rfl`.
+
+Take `⟨R, W, rs, h0, h1, hm, hst, hinj, hstep⟩` from `main_gen _ rfl π ψ α fun g => by`. Rewrite using `[hπ, hα, Matrix.charpoly_toLin', Matrix.charpoly_toLin']`. Conclude with `hc g`. Use `⟨R, W, rs, h0, h1, hm, fun g j x hx => ?_, hinj, fun s => ?_⟩` and prove the remaining obligations. Use `hst g j x hx` as an intermediate fact.
+
+Rewrite `this` using `[hπ, Matrix.toLin'_apply]`. Then use the resulting hypothesis. Take `⟨x, hx1, hx2, hx3, hx4⟩` from `hstep s`. Use `⟨x, hx1, hx2, hx3, fun g => ?_⟩` and prove the remaining obligations. Use `hx4 g` as an intermediate fact. Rewrite `this` using `[hπ, Matrix.toLin'_apply]`. Then use the resulting hypothesis.
+-/
 theorem main : ∀ (k Γ : Type) [Field k] [Group Γ] (n a t : ℕ) (r : Γ →* GL (Fin n) k) (ρ : Γ →* GL (Fin a) k) (ψ : Fin t → Γ →* kˣ), a + t = n → (∀ g, (r g : Matrix (Fin n) (Fin n) k).charpoly = (ρ g : Matrix (Fin a) (Fin a) k).charpoly * ∏ s, (Polynomial.X - Polynomial.C ((ψ s g : kˣ) : k))) → ∃ (R : ℕ) (V : Fin (R + 1) → Submodule k (Fin n → k)) (rs : Fin t → Fin R), V 0 = ⊥ ∧ V (Fin.last R) = ⊤ ∧ Monotone V ∧ (∀ g j x, x ∈ V j → (r g : Matrix (Fin n) (Fin n) k).mulVec x ∈ V j) ∧ Function.Injective rs ∧ ∀ s, ∃ x ∈ V (rs s).succ, x ∉ V (rs s).castSucc ∧ V (rs s).succ = V (rs s).castSucc ⊔ Submodule.span k {x} ∧ ∀ g, (r g : Matrix (Fin n) (Fin n) k).mulVec x - ((ψ s g : kˣ) : k) • x ∈ V (rs s).castSucc := by
   intro k Γ _ _ n a t r ρ ψ _ hc
   let π : Representation k Γ (Fin n → k) :=

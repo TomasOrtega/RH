@@ -49,14 +49,23 @@ def StrictPullbackSmoothSurjectiveOfDimLT (n : ℕ) (L : PrincipalizationAssignm
         IsStrictPullbackBlowupSeq h
           (L ((T.pullbackAlong Y q h).withBoundary E')).toSequenceOfBlowups (L T).toSequenceOfBlowups
 
+/- English proof (translation)
+The claim follows from `hL.base_change_strict`.
+-/
 theorem strictPullbackFieldBaseChangeOfDimLT_of_isMaxOrderReduction (n : ℕ) (L O : PrincipalizationAssignment.{u})
     (hL : IsMaxOrderReduction (fun d => d < n) L O) : StrictPullbackFieldBaseChangeOfDimLT n L :=
   hL.base_change_strict
 
+/- English proof (translation)
+The claim follows from `hL.smooth_pullback_strict`.
+-/
 theorem strictPullbackSmoothSurjectiveOfDimLT_of_isMaxOrderReduction (n : ℕ) (L O : PrincipalizationAssignment.{u})
     (hL : IsMaxOrderReduction (fun d => d < n) L O) : StrictPullbackSmoothSurjectiveOfDimLT n L :=
   hL.smooth_pullback_strict
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem toSequenceOfBlowups_heq_of_eq (L : PrincipalizationAssignment.{u}) {A B : MarkedIdealWithBoundary.{u}} (h : A = B) :
     HEq (L A).toSequenceOfBlowups (L B).toSequenceOfBlowups := by
   subst h; rfl
@@ -150,6 +159,19 @@ structure DivisorRestrictionFieldBaseChange : Prop where
             (List.map (fun D => D.comap (fieldBaseChangeProjection T K f))
               (List.take (T.boundary.length - 1) ((lowerBoundaryAfterBlowup T j hj).eraseIdx j)))
 
+/- English proof (translation)
+Take `⟨E'', e, hsme, hsue, ha, hb, hc, hdbe, heV, hfd⟩` from `hflf.lowerTriple_baseChange_comparison T j hj K f E' hjE hD I₀ E₀ I₀' E₀' hI hE`. Establish `hMV : (((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).withBoundary E'').IsAdmissible` using `heV hvS`. Establish `hMd : (((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).withBoundary E'').krullDimSucc < n`. Rewrite using `[hfd]`. Conclude with `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt ((T.baseChange K f).withBoundary E') hV' hcs' j hjE I₀' E₀') hdim'`.
+
+Establish `hdimT : (restrictToBoundaryDivisor T j hj I₀ E₀).krullDimSucc < n` using `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt T hV hcs j hj I₀ E₀) hdim`. Establish `h1` using `hfe (restrictToBoundaryDivisor T j hj I₀ E₀) hvT hdimT K f E'' ha hMV hMd`. Establish `hsq : divisorPullbackMap T j hj I₀ E₀ (T.baseChange K f).scheme (fieldBaseChangeProjection T K f) (E'.get ⟨j, hjE⟩) hD ≫ (T.boundary.get ⟨j, hj⟩).subschemeι = (E'.get ⟨j, hjE⟩).subschemeι ≫ fieldBaseChangeProjection T K f` using `subschemeMapOfComap_comp (fieldBaseChangeProjection T K f) (T.boundary.get ⟨j, hj⟩) (E'.get ⟨j, hjE⟩) hD`. Establish `hid : (((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).withBoundary E'').ideal.comap e = I₀'.comap (E'.get ⟨j, hjE⟩).subschemeι`. Establish `k1` using `hflf.comap_comap _ _ _ e (fieldBaseChangeProjection (restrictToBoundaryDivisor T j hj I₀ E₀) K f) (I₀.comap (T.boundary.get ⟨j, hj⟩).subschemeι)`.
+
+Establish `k2` using `congrArg (fun (φ : (E'.get ⟨j, hjE⟩).subscheme ⟶ (restrictToBoundaryDivisor T j hj I₀ E₀).scheme) => (I₀.comap (T.boundary.get ⟨j, hj⟩).subschemeι).comap φ) hb`. Establish `k3` using `hflf.comap_comap _ _ _ (divisorPullbackMap T j hj I₀ E₀ (T.baseChange K f).scheme (fieldBaseChangeProjection T K f) (E'.get ⟨j, hjE⟩) hD) (T.boundary.get ⟨j, hj⟩).subschemeι I₀`. Establish `k4` using `congrArg (fun (φ : (E'.get ⟨j, hjE⟩).subscheme ⟶ T.scheme) => I₀.comap φ) hsq`. Establish `k5` using `hflf.comap_comap _ _ _ (E'.get ⟨j, hjE⟩).subschemeι (fieldBaseChangeProjection T K f) I₀`. Establish `k6` using `congrArg (fun (I : (T.baseChange K f).scheme.IdealSheafData) => I.comap (E'.get ⟨j, hjE⟩).subschemeι) hI`.
+
+Conclude with `k1.trans (k2.trans (k3.trans (k4.trans (k5.symm.trans k6.symm))))`. Establish `htriple : ((((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).withBoundary E'').pullbackAlong (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ (T.baseChange K f).structMap) e).withBoundary (List.map (fun D => D.comap (E'.get ⟨j, hjE⟩).subschemeι) (List.take (E' …` using `congrArg (fun I => (T.baseChange K f).withSchemeIdealBoundary (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ (T.baseChange K f).structMap) I (List.map (fun (D : (T.baseChange K f).scheme.IdealSheafData) => D.comap (E'.get ⟨j, hjE⟩).subschemeι) (List.take (E'.length - …`. Establish `hbe : MarkedIdealWithBoundary.SameNontrivialBoundary ((((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).withBoundary E'').pullbackAlong (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ (T.baseChange K f).structMap) e).boundary (List.map (fun D => D.comap (E'.g …` using `hdbe.symm`. Establish `hva : (((((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).withBoundary E'').pullbackAlong (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ (T.baseChange K f).structMap) e).withBoundary (List.map (fun D => D.comap (E'.get ⟨j, hjE⟩).subschemeι) (List.take (E'.le …`. Rewrite using `[htriple]`.
+
+Conclude with `hvS`. Establish `hdd : (((((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).withBoundary E'').pullbackAlong (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ (T.baseChange K f).structMap) e).withBoundary (List.map (fun D => D.comap (E'.get ⟨j, hjE⟩).subschemeι) (List.take (E'.le …`. Rewrite using `[htriple]`. Conclude with `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt ((T.baseChange K f).withBoundary E') hV' hcs' j hjE I₀' E₀') hdim'`. Establish `h2` using `@hsm (((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).withBoundary E'') hMV hMd (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ (T.baseChange K f).structMap) e hsme hsue hc (List.map (fun D => D.comap (E'.get ⟨j, hjE⟩).subschemeι) (List.take (E'.length - 1) …`.
+
+Establish `h4 : IsStrictPullbackBlowupSeq (divisorPullbackMap T j hj I₀ E₀ (T.baseChange K f).scheme (fieldBaseChangeProjection T K f) (E'.get ⟨j, hjE⟩) hD) (L (((((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).withBoundary E'').pullbackAlong (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨ …`. Rewrite using `[← hb]`. Conclude with `h2.comp h1`. Establish `hLe : (L (((((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).withBoundary E'').pullbackAlong (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ (T.baseChange K f).structMap) e).withBoundary (List.map (fun D => D.comap (E'.get ⟨j, hjE⟩).subschemeι) (List.take (E' …` using `eq_of_heq (toSequenceOfBlowups_heq_of_eq L htriple)`. Conclude with `(congrArg (fun t : SequenceOfBlowups (E'.get ⟨j, hjE⟩).subscheme => IsStrictPullbackBlowupSeq (divisorPullbackMap T j hj I₀ E₀ (T.baseChange K f).scheme (fieldBaseChangeProjection T K f) (E'.get ⟨j, hjE⟩) hD) t (L (restrictToBoundaryDivisor T j hj I₀ E₀)).toSequenceOfBlowups) hLe …`.
+-/
 private theorem restrictToBoundaryDivisor_isStrictPullbackBlowupSeq_baseChange (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
     (hflf : DivisorRestrictionFieldBaseChange.{u}) (n : ℕ) (L : PrincipalizationAssignment.{u})
@@ -272,6 +294,11 @@ private theorem restrictToBoundaryDivisor_isStrictPullbackBlowupSeq_baseChange (
         (divisorPullbackMap T j hj I₀ E₀ (T.baseChange K f).scheme (fieldBaseChangeProjection T K f)
           (E'.get ⟨j, hjE⟩) hD) t (L (restrictToBoundaryDivisor T j hj I₀ E₀)).toSequenceOfBlowups) hLe).mp h4
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `T hV hdim hO hbal hj hcs K instK instC f E' hBE htake hV' hdim' hO' hDB' hjE hcs' hZ hZ'`. Conclude with `restrictToBoundaryDivisor_isStrictPullbackBlowupSeq_baseChange hres hfacts hflf n L hfe hsm j T hV hdim hj hcs K f E' hV' hdim' hjE hcs' (get_eq_comap_fieldBaseChangeProjection T j hj K f E' hjE htake) (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) (lowerIdealWithoutB …`. Introduce `T hV hdim hO hbal hj hcs K instK instC f E' hBE htake hV' hdim' hO' hDB' hjE hcs' hZ hZ'`. Establish `hZ2 : containedComponentsIdeal ((T.baseChange K f).withBoundary E') j hjE ≠ ⊤`.
+
+Rewrite using `[hZ']`. Conclude with `hflf.comap_baseChangeFieldProj_ne_top T K f (containedComponentsIdeal T j hj) hZ`. Conclude with `restrictToBoundaryDivisor_isStrictPullbackBlowupSeq_baseChange hres hfacts hflf n L hfe hsm j T hV hdim hj hcs K f E' hV' hdim' hjE hcs' (get_eq_comap_fieldBaseChangeProjection T j hj K f E' hjE htake) (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) (lowerIdealAf …`.
+-/
 theorem restrictedFieldBaseChange_of_strictPullback (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
     (hflf : DivisorRestrictionFieldBaseChange.{u}) (n : ℕ) (L : PrincipalizationAssignment.{u})
@@ -304,6 +331,9 @@ theorem restrictedFieldBaseChange_of_strictPullback (hres : FunctorialResolution
       (hfacts.valid_lowerPre T hV hO hbal j hj hZ)
       (hfacts.valid_lowerPre ((T.baseChange K f).withBoundary E') hV' hO' hDB' j hjE hZ2)
 
+/- English proof (translation)
+The claim follows from `divisorFamily_isStrictPullbackBlowupSeq_fieldBaseChange hres hfacts hbc hfbc n L j (restrictedFieldBaseChange_of_strictPullback hres hfacts hflf n L (strictPullbackFieldBaseChangeOfDimLT_of_isMaxOrderReduction n L O hL) (strictPullbackSmoothSurjectiveOfDimLT_of_isMaxOrderReductio …`.
+-/
 theorem divisorFamily_isStrictPullbackBlowupSeq_fieldBaseChange_of_isMaxOrderReduction
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -333,6 +363,9 @@ theorem divisorFamily_isStrictPullbackBlowupSeq_fieldBaseChange_of_isMaxOrderRed
       (strictPullbackSmoothSurjectiveOfDimLT_of_isMaxOrderReduction n L O hL) j)
     hshape T hV hdim hO hbal hj K f E' hBE htake hV' hdim' hO' hDB' hjE
 
+/- English proof (translation)
+The claim follows from `divisorFamily_isPullbackSequenceOfBlowups_fieldBaseChange hres hfacts hbc hfbc n L j (restrictedFieldBaseChange_of_strictPullback hres hfacts hflf n L (strictPullbackFieldBaseChangeOfDimLT_of_isMaxOrderReduction n L O hL) (strictPullbackSmoothSurjectiveOfDimLT_of_isMaxOrderReduct …`.
+-/
 theorem divisorFamily_isPullbackBlowupSequence_fieldBaseChange_of_isMaxOrderReduction
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)

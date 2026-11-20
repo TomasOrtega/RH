@@ -5,6 +5,11 @@ open scoped Topology
 
 namespace GlobalTheory.CompanionTheory.Topology
 
+/- English proof (translation)
+Introduce `G _ _ _ H K hH hK`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun x : G => (fun y => x + y) '' (H : Set G)) (fun x => (Homeomorph.addLeft x).isOpenMap _ hH) (fun x _ => Set.mem_iUnion.2 ⟨x, 0, H.zero_mem, add_zero x⟩)`. Use `(t.finite_toSet.image (QuotientAddGroup.mk : G → G ⧸ H)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Take `⟨x, hx, hxk⟩` from `Set.mem_iUnion₂.1 (ht hk)`.
+
+Take `⟨h, hh, rfl⟩` from `hxk`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Conclude with `QuotientAddGroup.eq.2 (by simpa using hh)`.
+-/
 theorem finite_image_mk_of_isOpen_of_isCompact :
     ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
       (H : AddSubgroup G) (K : Set G), IsOpen (H : Set G) → IsCompact K →

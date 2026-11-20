@@ -7,6 +7,11 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.FiniteLengthQuot
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ hfl hnt`. Establish `: WellFoundedGT (Subrepresentation ρ)` using `((hasFiniteLength_iff_wellFounded ρ).1 hfl).1`. Establish `hbt : (⊥ : Subrepresentation ρ) ≠ ⊤`. Introduce `h`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`.
+
+Establish `hmem : x ∈ (⊤ : Subrepresentation ρ).toSubmodule` using `Submodule.mem_top`. Rewrite `hmem` using `[← h]`. Conclude with `hx ((Submodule.mem_bot ℂ).1 hmem)`. Take `⟨M, hM, -⟩` from `(IsCoatomic.eq_top_or_exists_le_coatom (⊥ : Subrepresentation ρ)).resolve_left hbt`. Conclude with `⟨M, hM⟩`.
+-/
 theorem exists_isCoatom_subrepresentation :
     ∀ {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V),
       HasFiniteLength ρ → Nontrivial V → ∃ S : Subrepresentation ρ, IsCoatom S := by

@@ -19,6 +19,9 @@ def FundFor (X : Data E r) (Γ : Subgroup (GL (Fin r) E)) (x0 : Frame X.Ψ r) (F
   (∀ z ∈ FF, ∀ z' ∈ FF, ∀ γ ∈ Γ, ∀ b ∈ Bor X.Ψ r, cpt X x0 z' = lact γ (rmul (cpt X x0 z) b) → z = z') ∧
   ∀ᵐ z ∂muF X x0, ∃ z' ∈ FF, ∃ γ ∈ Γ, ∃ b ∈ Bor X.Ψ r, cpt X x0 z = lact γ (rmul (cpt X x0 z') b)
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem fundFor_iff (X : Data E r) (x0 : Frame X.Ψ r) (FF : Set (V (nd X))) :
     FundFor X X.Γ x0 FF ↔ IsFundSet X x0 FF := by
   exact Iff.rfl
@@ -83,6 +86,11 @@ def EqVolFD : Prop :=
     ∀ (x : Frame X.Ψ r) (x' : Frame X'.Ψ r) (FF : Set (V (nd X))) (FF' : Set (V (nd X'))),
       IsOrth X x → IsOrth X' x' → IsFundSet X x FF → IsFundSet X' x' FF' → muF X x FF = muF X' x' FF'
 
+/- English proof (translation)
+Introduce `γ hγ`. Establish `hst` using `(X.Γ_stab γ hγ).1`. Use `show (↑γ : Matrix (Fin r) (Fin r) E)ᵀ * X.Gm * (↑γ : Matrix (Fin r) (Fin r) E).map ⇑(ccH E) = X.Gm`. Use extensionality with `i j`. Establish `h` using `hst (Pi.single i 1) (Pi.single j 1)`.
+
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.herm, ReciprocityTheory.ChartRestriction.G.FD.cc, Matrix.mulVec, dotProduct, Pi.single_apply, apply_ite (⇑(NumberField.IsCMField.complexConj E)), map_one, map_zero, mul_ite, ite_mul, mul_one, one_mul, mul_zero, zero_mul, Finset.sum_it …`. Rewrite using `[← h]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+-/
 theorem gamma_le_u {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) :
     X.Γ ≤ uGrp (ccH E) X.Gm := by
   intro γ hγ
@@ -98,6 +106,17 @@ theorem gamma_le_u {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} 
   rw [Finset.sum_comm]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ r X X' a L L' aL' 𝔞 hΨ hp0 ha hiso hL hL' haL' hLL' hgen h𝔞 hneat hSO hSO' x x' FF FF' hx hx' hF hF'`. Establish `hdetX : IsUnit X.Gm.det` using `isUnit_iff_ne_zero.mpr X.Gm_det`. Establish `hdetX' : IsUnit X'.Gm.det` using `isUnit_iff_ne_zero.mpr X'.Gm_det`. Take `⟨hscal, -⟩` from `h6 _ E r (NumberField.IsCMField.complexConj E) X.Gm L 𝔞 hL hdetX`. Take `⟨hscal', hconj'⟩` from `h6 _ E r (NumberField.IsCMField.complexConj E) X'.Gm L' 𝔞 hL' hdetX'`.
+
+Establish `hΓ' : conjBy a (levelGrp (ccH E) X'.Gm L' 𝔞) = levelGrp (ccH E) X.Gm aL' 𝔞` using `hconj' X.Gm a aL' ha hLL'`. Establish `hlev_le : ∀ (J : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)), levelGrp (ccH E) J Λ 𝔞 ≤ uGrp (ccH E) J` using `fun J Λ => inf_le_left`. Establish `hs1` using `h5 E r X X.Γ (levelGrp (ccH E) X.Gm L 𝔞) (gamma_le_u X) (hlev_le _ _) hSO`. Establish `hs1'` using `h5 E r X' X'.Γ (levelGrp (ccH E) X'.Gm L' 𝔞) (gamma_le_u X') (hlev_le _ _) hSO'`. Establish `hfreeX : FreeOn X X.Γ` using `X.Γ_free`.
+
+Establish `hfreeX' : FreeOn X' X'.Γ` using `X'.Γ_free`. Take `⟨hfree1, hfund1⟩` from `h4 E r X X.Γ _ hs1 (hscal hneat) hfreeX`. Take `⟨hfree1', hfund1'⟩` from `h4 E r X' X'.Γ _ hs1' (hscal' hneat) hfreeX'`. Establish `hF1` using `hfund1 x FF ((fundFor_iff X x FF).mpr hF)`. Establish `hF1'` using `hfund1' x' FF' ((fundFor_iff X' x' FF').mpr hF')`.
+
+Take `⟨hfree2, x₂, F₂, hx₂, hF₂, hmu⟩` from `h3 E r X X' a _ x' FF' hΨ hp0 ha hx' hfree1' hF1'`. Rewrite `hfree2`, `hF₂` using `[hΓ']`. Establish `hisoS : IsIsotropicHermitianSetting (NumberField.IsCMField.complexConj E) X.Gm`. Use `⟨Algebra.IsQuadraticExtension.finrank_eq_two _ _, NumberField.IsCMField.complexConj_ne_one E, ?_, hdetX, hiso⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Conclude with `(X.Gm_herm i j).symm`. Establish `hidx` using `h1 _ E r (NumberField.IsCMField.complexConj E) X.Gm L aL' 𝔞 hisoS hL haL' h𝔞 hneat hgen`. Rewrite using `[← hmu]`. Conclude with `h2 E r X _ _ x x₂ FF F₂ (hlev_le _ _) (hlev_le _ _) hfree1 hfree2 hidx hx hx₂ hF1 hF₂`.
+-/
 theorem eqVolFD_of (h1 : LevelIndexEq) (h2 : VolOfIdx) (h3 : Transport) (h4 : ScalarSwap) (h5 : ScalarsOfOrbits)
     (h6 : LevelFacts) : EqVolFD := by
   intro E _ _ _ r X X' a L L' aL' 𝔞 hΨ hp0 ha hiso hL hL' haL' hLL' hgen h𝔞 hneat hSO hSO' x x' FF FF'

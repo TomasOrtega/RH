@@ -16,20 +16,40 @@ open GlobalTheory.Models GlobalTheory.ModelSum
 
 namespace GlobalTheory.AbLocusLocal
 
+/- English proof (translation)
+Rewrite using `[← h.isoPullback_hom_snd]`. Conclude with `(MorphismProperty.cancel_left_of_respectsIso @IsProper h.isoPullback.hom (pullback.snd f g)).2 H`.
+-/
 private theorem isProper_of_isPullback_of_pullback_snd {A B C D : Scheme.{0}} {fst : A ⟶ B} {snd : A ⟶ C} {f : B ⟶ D}
     {g : C ⟶ D} (h : IsPullback fst snd f g) (H : IsProper (pullback.snd f g)) : IsProper snd := by
   rw [← h.isoPullback_hom_snd]
   exact (MorphismProperty.cancel_left_of_respectsIso @IsProper h.isoPullback.hom (pullback.snd f g)).2 H
 
+/- English proof (translation)
+Rewrite using `[← h.isoPullback_inv_snd]`. Conclude with `(MorphismProperty.cancel_left_of_respectsIso @IsProper h.isoPullback.inv snd).2 H`.
+-/
 private theorem isProper_pullback_snd_of_isPullback {A B C D : Scheme.{0}} {fst : A ⟶ B} {snd : A ⟶ C} {f : B ⟶ D}
     {g : C ⟶ D} (h : IsPullback fst snd f g) (H : IsProper snd) : IsProper (pullback.snd f g) := by
   rw [← h.isoPullback_inv_snd]
   exact (MorphismProperty.cancel_left_of_respectsIso @IsProper h.isoPullback.inv snd).2 H
 
+/- English proof (translation)
+The claim follows from `isProper_of_isPullback_of_pullback_snd h inferInstance`.
+-/
 private theorem isProper_snd_of_isPullback_of_isProper {A B C D : Scheme.{0}} {fst : A ⟶ B} {snd : A ⟶ C} {f : B ⟶ D}
     {g : C ⟶ D} (h : IsPullback fst snd f g) (hf : IsProper f) : IsProper snd :=
   isProper_of_isPullback_of_pullback_snd h inferInstance
 
+/- English proof (translation)
+Establish `hsq : ∀ i, IsPullback (((p' i) ⁻¹ᵁ V i).ι ≫ F i) (p' i ∣_ V i) p ((V i).ι ≫ f i)` using `fun i => (isPullback_morphismRestrict (p' i) (V i)).flip.paste_horiz (h i)`. Use `IsZariskiLocalAtTarget.of_iSup_eq_top (fun i => U.ι ⁻¹ᵁ ((V i).ι ≫ f i).opensRange) ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`.
+
+Take `⟨i, hi⟩` from `hc (U.ι x) x.2`. Conclude with `⟨i, by simpa [Scheme.Hom.coe_opensRange] using hi⟩`. Introduce `i`. Set `W : U.toScheme.Opens` to `U.ι ⁻¹ᵁ ((V i).ι ≫ f i).opensRange`. Establish `hr : Set.range (W.ι ≫ U.ι) ⊆ Set.range ((V i).ι ≫ f i)`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : U.ι x.val ∈ ((V i).ι ≫ f i).opensRange` using `x.2`. Rewrite `hx` using `[← SetLike.mem_coe, Scheme.Hom.coe_opensRange]`. Conclude with `hx`. Set `e` to `IsOpenImmersion.lift ((V i).ι ≫ f i) (W.ι ≫ U.ι) hr`.
+
+Establish `he : e ≫ ((V i).ι ≫ f i) = W.ι ≫ U.ι` using `IsOpenImmersion.lift_fac _ _ _`. Establish `big` using `(isPullback_morphismRestrict (p ∣_ U) W).flip.paste_horiz (isPullback_morphismRestrict p U).flip`. Rewrite `big` using `[← he]`. Establish `hw : ((((p ∣_ U) ⁻¹ᵁ W).ι ≫ (p ⁻¹ᵁ U).ι)) ≫ p = ((p ∣_ U) ∣_ W ≫ e) ≫ ((V i).ι ≫ f i)`. Rewrite using `[big.w, Category.assoc]`.
+
+Establish `sq : IsPullback ((hsq i).lift _ _ hw) ((p ∣_ U) ∣_ W) (p' i ∣_ V i) e`. Use `IsPullback.of_right ?_ ((hsq i).lift_snd _ _ hw) (hsq i)` and prove the remaining obligations. Rewrite using `[(hsq i).lift_fst]`. Conclude with `big`. Conclude with `isProper_snd_of_isPullback_of_isProper sq (hV i)`.
+-/
 theorem isProper_restrict_of_cover {X Z : Scheme.{0}} (p : X ⟶ Z) {I : Type} {Y X' : I → Scheme.{0}}
     (f : ∀ i, Y i ⟶ Z) [∀ i, IsOpenImmersion (f i)] (p' : ∀ i, X' i ⟶ Y i) (F : ∀ i, X' i ⟶ X)
     (h : ∀ i, IsPullback (F i) (p' i) p (f i)) (V : ∀ i, (Y i).Opens) (hV : ∀ i, IsProper (p' i ∣_ V i))
@@ -62,6 +82,9 @@ theorem isProper_restrict_of_cover {X Z : Scheme.{0}} (p : X ⟶ Z) {I : Type} {
       exact big
     exact isProper_snd_of_isPullback_of_isProper sq (hV i)
 
+/- English proof (translation)
+Simplify using `only [abLocus, Set.mem_setOf_eq] at hy ⊢`. Introduce `K _ _ s hs`. Take `⟨x, rfl⟩` from `hs`. Establish `big` using `(IsPullback.of_hasPullback A.hom s).paste_horiz h`. Conclude with `isProper_of_isPullback_of_pullback_snd big (hy K (s ≫ g) ⟨x, by rw [Scheme.Hom.comp_apply]⟩)`.
+-/
 private theorem mem_abLocus_of_map_mem_of_isPullback {Y Z : Scheme.{0}} {A : Over Y} {B : Over Z} {g : Y ⟶ Z}
     {φ : A.left ⟶ B.left} (h : IsPullback φ A.hom B.hom g) (y : Y) (hy : g y ∈ abLocus B) :
     y ∈ abLocus A := by
@@ -71,6 +94,13 @@ private theorem mem_abLocus_of_map_mem_of_isPullback {Y Z : Scheme.{0}} {A : Ove
   have big := (IsPullback.of_hasPullback A.hom s).paste_horiz h
   exact isProper_of_isPullback_of_pullback_snd big (hy K (s ≫ g) ⟨x, by rw [Scheme.Hom.comp_apply]⟩)
 
+/- English proof (translation)
+Simplify using `only [abLocus, Set.mem_setOf_eq] at hy ⊢`. Introduce `K _ _ s hs`. Take `⟨x0, hx0⟩` from `hs`. Establish `hr : Set.range s ⊆ Set.range g`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Rewrite using `[Subsingleton.elim x x0, hx0]`. Conclude with `⟨y, rfl⟩`. Establish `hs' : IsOpenImmersion.lift g s hr ≫ g = s` using `IsOpenImmersion.lift_fac g s hr`. Establish `big` using `(IsPullback.of_hasPullback A.hom (IsOpenImmersion.lift g s hr)).paste_horiz h`. Rewrite `big` using `[hs']`.
+
+Establish `hy' : y ∈ Set.range (IsOpenImmersion.lift g s hr)`. Use `⟨x0, g.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hs', hx0]`. Conclude with `isProper_pullback_snd_of_isPullback big (hy K _ hy')`.
+-/
 private theorem map_mem_abLocus_of_isPullback {Y Z : Scheme.{0}} {A : Over Y} {B : Over Z} {g : Y ⟶ Z}
     [IsOpenImmersion g] {φ : A.left ⟶ B.left} (h : IsPullback φ A.hom B.hom g) (y : Y)
     (hy : y ∈ abLocus A) : g y ∈ abLocus B := by
@@ -89,6 +119,17 @@ private theorem map_mem_abLocus_of_isPullback {Y Z : Scheme.{0}} {A : Over Y} {B
     rw [← Scheme.Hom.comp_apply, hs', hx0]
   exact isProper_pullback_snd_of_isPullback big (hy K _ hy')
 
+/- English proof (translation)
+Introduce `E _ _ _ H Z t I Y f u m hf hc hab`. Unfold `AbOpen at hab ⊢`. Use `choose V hVs hVp using hab`. Establish `hpb : ∀ i, IsPullback (m i).φ (u i).G.hom t.G.hom (f i)` using `fun i => (m i).cart.1`. Use `⟨⨆ i, ((V i).ι ≫ f i).opensRange, ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `z`. Simplify using `only [TopologicalSpace.Opens.coe_iSup, Set.mem_iUnion, Scheme.Hom.coe_opensRange]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, v, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`.
+
+Conclude with `map_mem_abLocus_of_isPullback (hpb i) _ (by rw [← hVs i]; exact v.2)`. Introduce `hz`. Take `⟨i, y, rfl⟩` from `hc z`. Establish `hy` using `mem_abLocus_of_map_mem_of_isPullback (hpb i) y hz`. Rewrite `hy` using `[← hVs i]`.
+
+Conclude with `⟨i, ⟨y, hy⟩, rfl⟩`. Use `isProper_restrict_of_cover t.G.hom f (fun i => (u i).G.hom) _ hpb V hVp _ ?_ ?_` and prove the remaining obligations. Introduce `i z hz`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, by rw [← SetLike.mem_coe, Scheme.Hom.coe_opensRange]; exact hz⟩`.
+
+Introduce `z hz`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Rewrite `hi` using `[← SetLike.mem_coe, Scheme.Hom.coe_opensRange]`. Conclude with `⟨i, hi⟩`.
+-/
 theorem abOpen_of_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Z : Scheme.{0}) (t : SAB H Z) (I : Type) (Y : I → Scheme.{0}) (f : ∀ i, Y i ⟶ Z) (u : ∀ i, SAB H (Y i)) (_ : ∀ i, SABMap (u i) t (f i)), (∀ i, IsOpenImmersion (f i)) → (∀ z : Z, ∃ i, z ∈ Set.range (f i)) → (∀ i, AbOpen (u i).G) → AbOpen t.G := by
   intro E _ _ _ H Z t I Y f u m hf hc hab
   unfold AbOpen at hab ⊢

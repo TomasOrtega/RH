@@ -13,6 +13,9 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
+/- English proof (translation)
+Introduce `i j`. Set `k' : Matrix ι ι S` to `Matrix.of fun i j => ⟨k i j, hk i j⟩`. Establish `h1 : k = S.subtype.mapMatrix k'` using `by ext i j; rfl`. Rewrite using `[h1, ← RingHom.map_adjugate]`. Conclude with `(k'.adjugate i j).2`.
+-/
 theorem adjugate_entry_mem_subring {ι : Type} [Fintype ι] [DecidableEq ι] {R : Type} [CommRing R]
     (S : Subring R) (k : Matrix ι ι R) (hk : ∀ i j, k i j ∈ S) : ∀ i j, k.adjugate i j ∈ S := by
   intro i j
@@ -21,6 +24,9 @@ theorem adjugate_entry_mem_subring {ι : Type} [Fintype ι] [DecidableEq ι] {R 
   rw [h1, ← RingHom.map_adjugate]
   exact (k'.adjugate i j).2
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `S.sum_mem fun a _ => S.mul_mem (hk _ _) (hl _ _)`.
+-/
 theorem mul_entry_mem_subring {ι : Type} [Fintype ι] {R : Type} [CommRing R]
     (S : Subring R) (k l : Matrix ι ι R) (hk : ∀ i j, k i j ∈ S) (hl : ∀ i j, l i j ∈ S) :
     ∀ i j, (k * l) i j ∈ S := by
@@ -28,6 +34,51 @@ theorem mul_entry_mem_subring {ι : Type} [Fintype ι] {R : Type} [CommRing R]
   rw [Matrix.mul_apply]
   exact S.sum_mem fun a _ => S.mul_mem (hk _ _) (hl _ _)
 
+/- English proof (translation)
+Introduce `ι _ _ Γ R _ _ R₀ hΓ hss hA`. Take `⟨m, d, t, hfix, hstab, hcl⟩` from `GlobalTheory.T.exists_tensor_stabiliser_closed_SL_orbit ι Γ hΓ hss`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_ratPoly_eval_eq_tensorPowerSumRightAction ι m d t`. Take `⟨-, hmul, hadj, hdet⟩` from `GlobalTheory.T.ratZariskiClosurePoints_isGroup ι Γ hΓ.toIsPre R`. Take `⟨hrat, hratR⟩` from `GlobalTheory.T.rat_mem_ratZariskiClosurePoints ι Γ`.
+
+Take `⟨D, hD, hDt⟩` from `(adelicPair_elementary R R₀ hA).2.1 (TIdx ι d) (fun k => algebraMap ℚ R (t k))`. Take `⟨Z, hZ⟩` from `GlobalTheory.T.finite_integral_classes_closedOrbit ι m d t hcl D hD`. Establish `hone : ∀ (S : Type) [CommRing S] (s : TIdx ι d → S), act d s 1 = s` using `fun S _ s => ((tpow_act_algebra ι S).2 m d s).1`. Establish `hact : ∀ (S : Type) [CommRing S] (s : TIdx ι d → S) (y z : Matrix ι ι S), act d s (y * z) = act d (act d s y) z` using `fun S _ s => ((tpow_act_algebra ι S).2 m d s).2.1`. Establish `hmap : ∀ (S : Type) [CommRing S] [Algebra ℚ S] (s : TIdx ι d → ℚ) (y : Matrix ι ι ℚ), act d (fun k => algebraMap ℚ S (s k)) (y.map (algebraMap ℚ S)) = fun k => algebraMap ℚ S (act d s y k)` using `fun S _ _ s y => ((tpow_act_algebra ι ℚ).2 m d s).2.2.2.2.2 S (algebraMap ℚ S) y`.
+
+Establish `hfixR : ∀ x ∈ pts Γ R, act d (fun k => algebraMap ℚ R (t k)) x = fun k => algebraMap ℚ R (t k)`. Introduce `x hx`. Use function extensionality and compare the values at `k`. Establish `hv : Φ k - MvPolynomial.C (t k) ∈ vanI Γ`. Introduce `g hg`.
+
+Establish `h1` using `hΦ ℂ g k`. Establish `h2` using `congrFun (hfix g hg) k`. Simplify using `only [ev, map_sub, MvPolynomial.aeval_C] at h1 ⊢`. Rewrite using `[h1, sub_eq_zero]`. Conclude with `h2`.
+
+Establish `h3` using `hx _ hv`. Establish `h1` using `hΦ R x k`. Simplify using `only [ev, map_sub, MvPolynomial.aeval_C] at h1 h3`. Rewrite using `[← h1]`. Conclude with `sub_eq_zero.1 h3`.
+
+Set `P : (TIdx ι d → ℚ) → Matrix ι ι ℚ × Matrix ι ι R → Prop` to `fun z p => p.1.det = 1 ∧ p.2.det = 1 ∧ (∀ i j, p.2 i j ∈ R₀) ∧ p.1.map (algebraMap ℚ R) * p.2 ∈ pts Γ R ∧ act d t p.1 = z`. Establish `key : ∀ x ∈ pts Γ R, ∃ z ∈ Z, ∃ p, P z p ∧ x = p.1.map (algebraMap ℚ R) * p.2`. Introduce `x hx`. Take `⟨h, k, hh, hk, hkint, rfl⟩` from `GlobalTheory.T.specialLinear_classNumber_one_adelic ι R R₀ hA x (hdet x hx)`. Establish `hkk : k * k.adjugate = 1` using `by rw [Matrix.mul_adjugate, hk, one_smul]`.
+
+Establish `e1 : act d (fun k => algebraMap ℚ R (t k)) k.adjugate = fun k => algebraMap ℚ R (act d t h k)`. Rewrite using `[← hmap]`. Use `conv_lhs => rw [← hfixR _ hx, ← hact, Matrix.mul_assoc, hkk, Matrix.mul_one]`. Establish `e2 : ∀ j, ∃ z : ℤ, (D : ℚ) * act d t h j = z`. Introduce `j`.
+
+Apply `hA.int_of_mem` to reduce the goal to its premises. Establish `h1` using `((tpow_act_algebra ι R).2 m d ((D : R) • fun k => algebraMap ℚ R (t k))).2.2.2.1 R₀ k.adjugate (fun k => hDt k) (adjugate_entry_mem_subring R₀ k hkint) j`. Rewrite `h1` using `[((tpow_act_algebra ι R).2 m d (fun k => algebraMap ℚ R (t k))).2.2.2.2.1, e1]`. Rewrite using `[map_mul, map_natCast]`. Conclude with `h1`.
+
+Take `⟨γ, hγ, hγZ⟩` from `hZ h hh e2`. Establish `hγγ : γ * γ.adjugate = 1` using `by rw [Matrix.mul_adjugate, hγ, one_smul]`. Establish `hγR : (γ.map (Int.cast : ℤ → ℚ)).map (algebraMap ℚ R) * γ.adjugate.map (Int.castRingHom R) = 1`. Establish `: (γ.map (Int.cast : ℤ → ℚ)).map (algebraMap ℚ R) = γ.map (Int.castRingHom R)`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, ← Matrix.map_mul, hγγ, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e3 : (h * γ.map (Int.cast : ℤ → ℚ)).map (algebraMap ℚ R) * (γ.adjugate.map (Int.castRingHom R) * k) = h.map (algebraMap ℚ R) * k`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ _ k, hγR, Matrix.one_mul]`. Use `⟨_, hγZ, (h * γ.map (Int.cast : ℤ → ℚ), γ.adjugate.map (Int.castRingHom R) * k), ⟨?_, ?_, ?_, ?_, rfl⟩, e3.symm⟩` and prove the remaining obligations.
+
+Establish `: (γ.map (Int.cast : ℤ → ℚ)).det = 1`. Establish `h1` using `(Int.castRingHom ℚ).map_det γ`. Rewrite `h1` using `[hγ, map_one]`. Conclude with `h1.symm`. Simplify using `only [Matrix.det_mul, hh, this, one_mul]`.
+
+Establish `: (γ.adjugate.map (Int.castRingHom R)).det = 1`. Establish `h1` using `(Int.castRingHom R).map_det γ.adjugate`. Rewrite `h1` using `[Matrix.det_adjugate, hγ, one_pow, map_one]`. Conclude with `h1.symm`. Simplify using `only [Matrix.det_mul, hk, this, one_mul]`.
+
+Conclude with `mul_entry_mem_subring R₀ _ _ (fun i j => intCast_mem R₀ _) hkint`. Simplify using `only`. Rewrite using `[e3]`. Conclude with `hx`. Set `c : (TIdx ι d → ℚ) → Matrix ι ι ℚ × Matrix ι ι R` to `fun z => if hz : ∃ p, P z p then hz.choose else (1, 1)`.
+
+Establish `hc : ∀ z, (∃ p, P z p) → P z (c z)`. Introduce `z hz`. Simplify using `only [c, dif_pos hz]`. Conclude with `hz.choose_spec`. Use `⟨(Z.filter fun z => ∃ p, P z p).image fun z => (c z).1.map (algebraMap ℚ R) * (c z).2, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `s hs`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.1 hs`. Conclude with `(hc z (Finset.mem_filter.1 hz).2).2.2.2.1`. Introduce `x hx`. Take `⟨z, hz, ⟨h, k⟩, hp, rfl⟩` from `key x hx`.
+
+Establish `hz' : z ∈ Z.filter fun z => ∃ p, P z p` using `Finset.mem_filter.2 ⟨hz, _, hp⟩`. Establish `hq` using `hc z ⟨_, hp⟩`. Establish `hs` using `Finset.mem_image_of_mem (fun z => (c z).1.map (algebraMap ℚ R) * (c z).2) hz'`. Generalize the expression as in `(Z.filter fun z => ∃ p, P z p).image (fun z => (c z).1.map (algebraMap ℚ R) * (c z).2) = T at hs ⊢`. Generalize the expression as in `c z = q at hq hs`.
+
+Take `⟨h', k'⟩` from `q`. Take `⟨hh, hk, hkint, hxx, hhz⟩` from `hp`. Take `⟨hh', hk', hkint', hxx', hhz'⟩` from `hq`. Simplify using `only at hh hk hkint hxx hhz hh' hk' hkint' hxx' hhz' hs ⊢`. Establish `a1 : h' * h'.adjugate = 1` using `by rw [Matrix.mul_adjugate, hh', one_smul]`.
+
+Establish `a2 : h'.adjugate * h' = 1` using `by rw [Matrix.adjugate_mul, hh', one_smul]`. Establish `a3 : k' * k'.adjugate = 1` using `by rw [Matrix.mul_adjugate, hk', one_smul]`. Establish `g1 : act d t (h * h'.adjugate) = t`. Rewrite using `[hact, hhz, ← hhz', ← hact, a1, hone]`. Establish `g2 : h * h'.adjugate ∈ pts Γ ℚ`.
+
+Apply `hrat` to reduce the goal to its premises. Apply `hstab` to reduce the goal to its premises. Establish `h1` using `(algebraMap ℚ ℂ).map_det (h * h'.adjugate)`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_adjugate, hh, hh', one_pow, one_mul, map_one]`. Conclude with `h1.symm`.
+
+Establish `h1` using `hmap ℂ t (h * h'.adjugate)`. Rewrite `h1` using `[g1]`. Conclude with `h1`. Establish `g3` using `hratR R _ g2`. Establish `e : h.map (algebraMap ℚ R) * k = (h * h'.adjugate).map (algebraMap ℚ R) * (h'.map (algebraMap ℚ R) * k') * (k'.adjugate * k)`.
+
+Rewrite using `[← Matrix.mul_assoc _ _ k', ← Matrix.map_mul, Matrix.mul_assoc h, a2, Matrix.mul_one, Matrix.mul_assoc, ← Matrix.mul_assoc k', a3, Matrix.one_mul]`. Use `⟨_, g2, _, hs, k'.adjugate * k, ?_, mul_entry_mem_subring R₀ _ _ (adjugate_entry_mem_subring R₀ k' hkint') hkint, e⟩` and prove the remaining obligations. Establish `g4` using `hmul _ g3 _ hxx'`. Establish `g5` using `hmul _ (hadj _ g4) _ hxx`. Rewrite `g5` using `[e, ← Matrix.mul_assoc, Matrix.adjugate_mul, hdet _ g4, one_smul, Matrix.one_mul]`.
+
+Conclude with `g5`.
+-/
 theorem cf_of_ss : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)) (R : Type) [CommRing R] [Algebra ℚ R] (R₀ : Subring R), IsQGroup Γ → SS Γ → AdelicPair R R₀ → CF Γ R R₀ := by
   intro ι _ _ Γ R _ _ R₀ hΓ hss hA
   classical

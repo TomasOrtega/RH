@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.RealLift
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ B _ W W₂ _ _ hB h1 h2` and use `Cart.exists_conj hB.cm B.emb W Complex.I Complex.I_ne_zero W₂.θ h1.sig h1.cartan h2.cartan`.
+-/
 theorem cartan_conjugacy_holds : CartanConj := fun _ _ _ _ _ _ _ _ B _ W W₂ _ _ hB h1 h2 =>
   Cart.exists_conj hB.cm B.emb W Complex.I Complex.I_ne_zero W₂.θ h1.sig h1.cartan h2.cartan
 
@@ -19,10 +22,20 @@ namespace Cart
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
 
+/- English proof (translation)
+Introduce `c hc` and use `by rw [← Matrix.smul_mul, ← Matrix.mul_smul, hu c hc, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem at_act {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) (a : Matrix (Fin n) (Fin n) (AE F E))
     (b : Matrix (Fin d) (Fin d) (AE F E)) : At (evI F) (a * u * bᵀ) := fun c hc => by
   rw [← Matrix.smul_mul, ← Matrix.mul_smul, hu c hc, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `sInf_le ⟨fun f₀ ⟨ε, hε⟩ => ?_, fun u hu f hf f₁ h₁ => ?_⟩` and prove the remaining obligations. Use `Submodule.mem_sInf.2 fun N hN => hN.1 _ ⟨ε, fun u u' hu hu' e f f' hf hf' => ?_⟩` and prove the remaining obligations. Rewrite using `[(hD u hu _ _).1 hf, (hD u' hu' _ _).1 hf', ← hT u hu, ← hT u' hu', ← map_smul]`. Use `congrArg T (hε _ _ (at_act hu a b) (at_act hu' a b) (fun w => ?_) _ _ ((hD₂ _ (at_act hu a b) _ _).2 rfl) ((hD₂ _ (at_act hu' a b) _ _).2 rfl))` and prove the remaining obligations.
+
+Simplify using `only [Matrix.map_mul, Matrix.transpose_map]`. Rewrite using `[e w, Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [ha, hb]; simp only [Matrix.transpose_mul, Matrix.mul_assoc]`. Take `⟨u₀, h0, rfl⟩` from `hsurj u hu`. Use `Submodule.mem_sInf.2 fun N hN => hN.2 u₀ h0 (T f) (Submodule.mem_sInf.1 hf N hN) _ ?_` and prove the remaining obligations. Rewrite using `[(hD₂ _ hu _ _).1 h₁, hT u₀ h0]`. Conclude with `(hD u₀ h0 _ _).2 rfl`.
+-/
 theorem pol_le {X X₂ : Spc F E n} {W W₂ : Spc F E d} (M : Model σ X W) (M₂ : Model σ X₂ W₂) (ψ : AddChar (AF F) ℂ)
     (τ : ∀ w : InfinitePlace F, EmbOver E w) (D : Matrix (Fin n) (Fin d) (AE F E) → SInf F (Fin n × Fin d) → SInf F (Fin n × Fin d))
     (hD : ∀ u, At (evI F) u → ∀ f f₁ : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine ψ u) f f₁ ↔ f₁ = D u f)
@@ -53,10 +66,20 @@ theorem pol_le {X X₂ : Spc F E n} {W W₂ : Spc F E d} (M : Model σ X W) (M�
 
 variable {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`.
+-/
 theorem rho_zero (ψ : AddChar (AF F) ℂ) (z) : M.co.rho ψ z 0 = 0 := by
   funext x
   simp [Darboux.rho, schr]
 
+/- English proof (translation)
+Establish `hs` using `hp.weil.isUSplitting`. Use `(PositivityTheory.RL.actsLaws F _ (T f) _ _).2.2.2.2 _ (fun g hg l hl => ?_) (hD _ (at_act hu _ _) (T f))` and prove the remaining obligations. Establish `h1` using `hD u hu f g hg _ (hs.adm x l hl)`. Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite `h1` using `[hT.1 _ g hg]`.
+
+Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show l _ = l _`. Rewrite using `[hs.impl x _ _ (Submodule.subset_span ⟨f, g, hg, rfl⟩), hT.1 f g hg]`. Use `congr 2`. Use `show _ = mat x.1 * (realAd F t • u) * (mat x.2)ᵀ`.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem intertw (hp : IsPair B M χX χW om r s r' s')
     (D : Matrix (Fin n) (Fin d) (AE F E) → (SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d)))
     (hD : ∀ u, At (evI F) u → ∀ f, SD (fun t => M.co.rho B.ψ (realAd F t • u)) f (D u f)) {x T} (hT : IsArchOp om x T)
@@ -76,6 +99,27 @@ theorem intertw (hp : IsPair B M χX χW om r s r' s')
 end Cart
 
 open Cart in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp X₂ W₂ M₂ hco hp₂ h hh eh`. Take `⟨g, hg, eg⟩` from `Cart.exists_conj (σ := σ) hp.base.cm B.emb X 1 one_ne_zero X₂.θ (fun w => by rw [one_smul]; exact hp.herm.sig w) (fun w => by rw [one_smul]; exact hp.herm.cartan w) fun w => by rw [one_smul]; exact hp₂.herm.cartan w`. Use `⟨g, hg, eg, fun T hT => ?_⟩` and prove the remaining obligations. Take `⟨D, hD⟩` from `PositivityTheory.RL.derEx F E σ _ _ _ B.ψ _ _ M.co hp.base.std`. Establish `hD1 : ∀ u, At (evI F) u → ∀ f f₁ : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine B.ψ u) f f₁ ↔ f₁ = D u f` using `fun u hu f f₁ =>`.
+
+Establish `a` using `(PositivityTheory.RL.actsLaws F _ f (D u f) f).1 (M.heisLine B.ψ u) (fun _ => rho_zero _ _) (hD u hu f).1`. Use the proof step `⟨fun e => (PositivityTheory.RL.actsLaws F _ f f₁ _).2.2.1 _ e a, fun e => e ▸ a⟩`. Establish `hD2 : ∀ u, At (evI F) u → ∀ f f₁ : SInf F (Fin n × Fin d), ActsD (evI F) (M₂.heisLine B.ψ u) f f₁ ↔ f₁ = D u f`. Establish `: ∀ u, M₂.heisLine B.ψ u = M.heisLine B.ψ u` using `fun u => funext fun t => by`. Unfold `Model.heisLine`.
+
+Rewrite using `[hco]`. Both sides reduce to the same expression. Simplify using `only [this]`. Conclude with `hD1`. Establish `mm : ∀ {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (x : UA σ J), mat x * mat x⁻¹ = 1 ∧ mat x⁻¹ * mat x = 1` using `fun x => ⟨Units.mul_inv x.1, Units.inv_mul x.1⟩`.
+
+Establish `inv : ∀ {m : ℕ} {Y : Spc F E m} (x : UA σ Y.J), x ∈ UAt σ Y (evI F) → x⁻¹ ∈ UAt σ Y (evI F)` using `fun x hx c hc => by`. Establish `: mat x⁻¹ - 1 = -(mat x⁻¹ * (mat x - 1))` using `by rw [Matrix.mul_sub, (mm x).2, Matrix.mul_one, neg_sub]`. Rewrite using `[this, smul_neg, ← Matrix.mul_smul, hx c hc, Matrix.mul_zero, neg_zero]`. Establish `can : ∀ (x : UA σ X.J) (y : UA σ W.J) (u : Matrix (Fin n) (Fin d) (AE F E)), mat x * (mat x⁻¹ * u * (mat y⁻¹)ᵀ) * (mat y)ᵀ = u` using `fun x y u => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `flip : ∀ {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (x : UA σ J) w (θ θ₂ : Matrix (Fin m) (Fin m) ℂ), (mat x).map (piInf (B.emb w)) * θ₂ = θ * (mat x).map (piInf (B.emb w)) → (mat x⁻¹).map (piInf (B.emb w)) * θ = θ₂ * (mat x⁻¹).map (piInf (B.emb w))` using `fun x w θ θ₂ e => by`. Establish `e1 : (mat x).map (piInf (B.emb w)) * (mat x⁻¹).map (piInf (B.emb w)) = 1`. Rewrite using `[← Matrix.map_mul, (mm x).1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2` using `mul_eq_one_comm.1 e1`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, e1, Matrix.mul_one]`. Use `_ = _ := by rw [← e, ← Matrix.mul_assoc, e2, Matrix.one_mul]`. Take `⟨T', hT', -⟩` from `hO F E σ B n d X W M χX χW om r s r' s' hp g⁻¹ (inv g hg) h⁻¹ (inv h hh)`. Establish `hD'` using `fun u hu f => (hD u hu f).1`. Establish `l1` using `pol_le M M₂ B.ψ B.emb (fun u f => D u f) hD1 hD2 (T : _ →ₗ[ℂ] _) (mat g⁻¹) (mat h⁻¹) (fun u hu f => by`.
+
+Use `intertw hp D hD' hT _ (at_act hu (mat g⁻¹) (mat h⁻¹)) f` as an intermediate fact. Rewrite using `[can] at this)` and apply the resulting hypothesis. Use the proof step `(fun u hu => ⟨_, at_act hu (mat g) (mat h), by simpa using can g⁻¹ h⁻¹ u⟩)`. Use the proof step `(fun w => flip g w _ _ (eg w)) fun w => flip h w _ _ (eh w)`. Establish `l2` using `pol_le M₂ M B.ψ B.emb (fun u f => D u f) hD2 hD1 (T' : _ →ₗ[ℂ] _) (mat g) (mat h) (fun u hu f => by`.
+
+Use `intertw hp D hD' hT' _ (at_act hu (mat g) (mat h)) f` as an intermediate fact. Establish `c` using `can g⁻¹ h⁻¹ u`. Rewrite `c` using `[inv_inv, inv_inv]`. Rewrite using `[c] at this)` and apply the resulting hypothesis. Use the proof step `(fun u hu => ⟨_, at_act hu (mat g⁻¹) (mat h⁻¹), can g h u⟩) eg eh`.
+
+Use `le_antisymm l1 fun f hf => ⟨T' f, l2 ⟨f, hf, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `a1 : SA (om 1) f (T (T' f))` using `fun φ hφ => by`. Rewrite using `[← hT.1 _ φ hφ, ← hT'.1 _ φ hφ, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `a2 : SA (om 1) f f` using `fun φ _ => by rw [map_one]; rfl`.
+
+Conclude with `(PositivityTheory.RL.actsLaws F _ f _ _).2.2.2.1 _ ((PositivityTheory.RL.actsLaws F _ f _ f).2.1 _ (map_zero _) a1) ((PositivityTheory.RL.actsLaws F _ f _ f).2.1 _ (map_zero _) a2)`.
+-/
 theorem cartanMove_of (hO : ArchOp) : CartanMove := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp X₂ W₂ M₂ hco hp₂ h hh eh
   obtain ⟨g, hg, eg⟩ := Cart.exists_conj (σ := σ) hp.base.cm B.emb X 1 one_ne_zero X₂.θ

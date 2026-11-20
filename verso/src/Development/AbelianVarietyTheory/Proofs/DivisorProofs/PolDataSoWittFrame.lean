@@ -16,6 +16,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.ThK.CuspidalComponentGap
 
+/- English proof (translation)
+Use `push Not at h`. Take `⟨k, hk, i, hik, hi⟩` from `h`. Establish `hne : (S.filter (i ≤ ·)).Nonempty` using `⟨k, Finset.mem_filter.2 ⟨hk, hik⟩⟩`. Establish `h0` using `Finset.mem_filter.1 (Finset.min'_mem _ hne)`. Use `⟨_, h0.1, i, lt_of_le_of_ne h0.2 fun e => hi (e ▸ h0.1), fun j hij hjk hj => ?_⟩` and prove the remaining obligations.
+
+Conclude with `absurd (Finset.min'_le _ j (Finset.mem_filter.2 ⟨hj, hij⟩)) (not_le.2 hjk)`.
+-/
 theorem exists_gap {r : ℕ} {S : Finset (Fin r)} (h : ¬ ∀ k ∈ S, ∀ i ≤ k, i ∈ S) :
     ∃ k ∈ S, ∃ i : Fin r, i < k ∧ ∀ j : Fin r, i ≤ j → j < k → j ∉ S := by
   classical
@@ -26,6 +31,15 @@ theorem exists_gap {r : ℕ} {S : Finset (Fin r)} (h : ¬ ∀ k ∈ S, ∀ i ≤
   refine ⟨_, h0.1, i, lt_of_le_of_ne h0.2 fun e => hi (e ▸ h0.1), fun j hij hjk hj => ?_⟩
   exact absurd (Finset.min'_le _ j (Finset.mem_filter.2 ⟨hj, hij⟩)) (not_le.2 hjk)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ r Xf Yf hW K hK hA S hno`. Establish `hcm` using `hT.base.cm`. Use `haveI : IsTotallyComplex E := hcm.2.1`. Establish `hH` using `GlobalTheory.ThK.SqIntHerm.isHermND_smul_map F E σ B _ G.W _ _ hT.geo.hW c hc hcs`. Take `⟨φc, hφc, -⟩` from `(hKP.automorphicFormsUnitary.2 F E σ hcm (a + a') _ hH r Xf Yf hW K hK ∅ _ (GlobalTheory.StdPar.isAutOn_empty.2 hA)).1 S (Finset.empty_subset _)`.
+
+Distinguish the cases in `h0 : φc = 0`. Conclude with `h0 ▸ hφc`. It suffices to derive a contradiction. Take `⟨k, hk, i, hik, hgap⟩` from `exists_gap hno`. Take `⟨w, x, x', τ, χ₁, χ₂, s₁, s₂, h2, hu₁, hu₂, hn₁, hn₂, hs, V, _, _, Q, hQ, f, hf⟩` from `GlobalTheory.T.theta_integral_rational_frame_expansion F E σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ r Xf Yf hW K hK hA S φc hφc h0 k hk i hik hgap`.
+
+Establish `unr : ∀ {χ : (w.adicCompletion E)ˣ →* ℂˣ} (t : ℝ), GlobalTheory.SplitWeil.IsUnram χ → GlobalTheory.SmGL.IsSmoothChar (χ * GlobalTheory.SmGL.absPow (w.adicCompletion E) (t : ℂ))` using `fun t h => GlobalTheory.SmGL.isSmoothChar_of_isUnram fun u hu => by`. Rewrite using `[MonoidHom.mul_apply, h u hu, GlobalTheory.SmGL.isUnram_absPow _ _ u hu, mul_one]`. Take `⟨hx, hx'⟩` from `GlobalTheory.T.generic_subquotient_principal_series E x x' τ w _ _ hKP.genericityGL (unr s₁ hu₁) (unr s₂ hu₂) V Q hQ f hf`. Take `rfl : x = 1` from `by omega`. Take `rfl : x' = 1` from `by omega`.
+
+Conclude with `GlobalTheory.T.unramified_principal_series_irreducible E τ w χ₁ χ₂ s₁ s₂ hKP.jacquetShalika.2 hu₁ hu₂ hn₁ hn₂ (hs rfl rfl) V Q hQ f hf`.
+-/
 theorem cuspComp_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

@@ -9,5 +9,8 @@ open Ad3.R (G2 Jd md KA LInv IsLoc2 pt pri dia2)
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units | exact GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units | (intros; apply GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unit_measure_finite_compact_support : ∀ Sv : Finset Pl, IsFiniteMeasure (muU Sv) ∧ (∀ᵐ u ∂(muU Sv), ∀ v : Sv, u v ∈ unQ v.1) ∧ ∀ v : Pl, IsCompact (unQ v) := by
   first | exact @GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units | exact GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units | (intros; apply GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units <;> assumption)

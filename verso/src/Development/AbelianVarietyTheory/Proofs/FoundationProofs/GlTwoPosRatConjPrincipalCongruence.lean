@@ -15,6 +15,19 @@ open Matrix CongruenceSubgroup
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `y`. Set `A₁` to `g.1`. Set `A₂` to `(g⁻¹).1`. Establish `hA₁₂ : A₁ * A₂ = 1` using `by simp only [← Matrix.GeneralLinearGroup.coe_mul, mul_inv_cancel, Matrix.GeneralLinearGroup.coe_one, A₁, A₂]`. Set `a₁` to `A₁.den`.
+
+Set `a₂` to `A₂.den`. Take `⟨k, hk⟩ : ∃ k, y = 1 + (a₁ * a₂ * M) • k` from `by replace hy' : y.map (Int.cast : ℤ → ZMod (a₁ * a₂ * M)) = 1 := by`. Rewrite `hy'` using `[CongruenceSubgroup.Gamma_mem', Subtype.ext_iff]`. Simplify using `using! hy'`. Choose the witnesses `Matrix.of fun i j ↦ (y - 1) i j / (a₁ * a₂ * M)`.
+
+Rewrite using `[← sub_eq_iff_eq_add']`. Use extensionality with `i j`. Repeatedly rewrite using `[Matrix.smul_apply, Matrix.of_apply, nsmul_eq_mul, Nat.cast_mul]`. Use `(Int.mul_ediv_cancel_of_dvd ?_).symm` and prove the remaining obligations. Rewrite `hy'` using `[← Matrix.map_one Int.cast (by simp) (by simp), ← sub_eq_zero, ← Matrix.map_sub _ (by simp)]`.
+
+Simplify using `only [Matrix.zero_apply, Matrix.map_apply, ZMod.intCast_zmod_eq_zero_iff_dvd, Nat.cast_mul] using! congr_fun₂ hy' i j`. Set `z` to `1 + M • (A₁.num * k * A₂.num)`. Establish `hz_coe : z.map Int.cast = A₁ * (y.map Int.cast) * A₂`. Simplify using `only [Matrix.map_add _ Int.cast_add, Matrix.map_one _ Int.cast_zero Int.cast_one, hk, mul_add, mul_one, add_mul, hA₁₂, add_right_inj, z]`. Use `conv_rhs => rw [← A₁.inv_denom_smul_num, ← A₂.inv_denom_smul_num, Matrix.map_smul _ _ (by simp)]`.
+
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.map_smul (Int.cast : ℤ → ℚ) M (by simp), Matrix.map_mul_intCast]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ (_ * M), ← mul_smul, ← mul_smul, mul_comm a₁ a₂, Nat.cast_mul, Nat.cast_mul, mul_assoc _ _ (M : ℚ), mul_comm _ (M : ℚ), inv_mul_cancel_left₀ (mod_cast A₂.den_ne_zero), mul_inv_cancel_right₀ (mod_cast A₁.den_ne_zero), Nat.cast_smul_eq_nsmul]`. Establish `hz_det : z.det = 1`. Use `congr_arg Matrix.det hz_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, ← Int.cast_det]`.
+
+Rewrite `this` using `[mul_right_comm, ← Matrix.det_mul, hA₁₂, Matrix.det_one, one_mul, hy, Int.cast_inj]`. Then use the resulting hypothesis. Use `⟨⟨z, hz_det⟩, ?_, hz_coe⟩` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma_mem', Subtype.ext_iff]`. Use extensionality with `i j`. Repeatedly rewrite using `[Matrix.SpecialLinearGroup.map_apply_coe, z, map_add, map_one, RingHom.mapMatrix_apply, Int.coe_castRingHom, Matrix.add_apply, map_apply, Matrix.SpecialLinearGroup.coe_one, add_eq_left, Matrix.smul_apply, nsmul_eq_mul, Int.cast_mul, Int.cast_natCast, ZMod.natCast_self M, zero_mul …`.
+-/
 theorem conj_Gamma_den_mul (g : GL (Fin 2) ℚ) (M : ℕ) (y : SL(2, ℤ))
     (hy' : y ∈ Gamma ((g.1.den * (g⁻¹).1.den) * M)) :
     ∃ z ∈ Gamma M, ((z : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast : ℤ → ℚ)) =
@@ -61,6 +74,13 @@ theorem conj_Gamma_den_mul (g : GL (Fin 2) ℚ) (M : ℕ) (y : SL(2, ℤ))
     Matrix.add_apply, map_apply, Matrix.SpecialLinearGroup.coe_one, add_eq_left, Matrix.smul_apply, nsmul_eq_mul,
     Int.cast_mul, Int.cast_natCast, ZMod.natCast_self M, zero_mul]
 
+/- English proof (translation)
+Introduce `g`. Set `G : GL (Fin 2) ℚ` to `g`. Use `⟨G.1.den * (G⁻¹).1.den, Nat.mul_pos (Nat.pos_of_ne_zero (Matrix.den_ne_zero _)) (Nat.pos_of_ne_zero (Matrix.den_ne_zero _)), fun N δ hδ => ?_⟩` and prove the remaining obligations. Rewrite `hδ` using `[mul_comm]`. Take `⟨z, hz, hzc⟩` from `conj_Gamma_den_mul G N δ hδ`.
+
+Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `h21 : (G⁻¹).1 * G.1 = 1`. Simplify using `only [← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel, Matrix.GeneralLinearGroup.coe_one]`.
+
+Use `show G.1 * ((δ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom ℚ)) = ((z : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom ℚ)) * G.1`. Establish `e1 : ((z : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom ℚ)) = ((z : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast : ℤ → ℚ))` using `rfl`. Establish `e2 : ((δ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom ℚ)) = ((δ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast : ℤ → ℚ))` using `rfl`. Rewrite using `[e1, e2, hzc, Matrix.mul_assoc, h21, Matrix.mul_one]`.
+-/
 theorem exists_conj_principal_congruence :
     ∀ g : GQ, ∃ n : ℕ, 0 < n ∧ ∀ N : ℕ, ∀ δ ∈ CongruenceSubgroup.Gamma (N * n),
       ∃ δ' ∈ CongruenceSubgroup.Gamma N, g * ofSL δ = ofSL δ' * g := by

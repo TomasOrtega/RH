@@ -12,6 +12,11 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.KFock
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Take `⟨i, j, l⟩` from `k`. Establish `e : d.cmb c i j = ∑ k, c (i, j, k) • (Algebra.TensorProduct.basis (AF F) d.bs) k`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cmb, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Use `show (Algebra.TensorProduct.basis (AF F) d.bs).repr (d.cmb c i j) l = c (i, j, l)`.
+
+Rewrite using `[e, Module.Basis.repr_sum_self]`.
+-/
 theorem crd_cmb_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (c : Fin d.m × Fin d.n × Fin 2 → AF F) : d.crd (d.cmb c) = c := by
   funext k
   obtain ⟨i, j, l⟩ := k
@@ -19,6 +24,25 @@ theorem crd_cmb_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (c : F
     simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cmb, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
   show (Algebra.TensorProduct.basis (AF F) d.bs).repr (d.cmb c i j) l = c (i, j, l)
   rw [e, Module.Basis.repr_sum_self]
+/- English proof (translation)
+Establish `hcm : IsCMExt F E σ` using `d.ok.good.cm`. Use `haveI : IsTotallyReal F := hcm.1`. Use `haveI : IsTotallyComplex E := hcm.2.1`. Use `set τ : E →+* ℂ := (d.B.emb w).1 with hτ`. Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`.
+
+Establish `hreal : ∀ f : F, (τ (algebraMap F E f)).im = 0`. Introduce `f`. Establish `e1 : τ (algebraMap F E f) = w.embedding f` using `RingHom.congr_fun (d.B.emb w).2 f`. Establish `e3 : ComplexEmbedding.conjugate w.embedding = w.embedding` using `ComplexEmbedding.isReal_iff.mp (InfinitePlace.isReal_iff.mp hw)`. Establish `e4` using `RingHom.congr_fun e3 f`.
+
+Rewrite `e4` using `[ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[e1]`. Conclude with `Complex.conj_eq_iff_im.mp e4`. Establish `hexp : ∀ e : E, τ e = τ (algebraMap F E (d.bs.repr e 0)) * τ (d.bs 0) + τ (algebraMap F E (d.bs.repr e 1)) * τ (d.bs 1)`. Introduce `e`.
+
+Use `conv_lhs => rw [← d.bs.sum_repr e]`. Simplify using `[Fin.sum_univ_two, Algebra.smul_def, map_add, map_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : E, (τ e).im ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Establish `hc : (InfinitePlace.mk τ).IsComplex` using `IsTotallyComplex.isComplex _`. Rewrite `hc` using `[InfinitePlace.isComplex_mk_iff]`. Apply `hc` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Complex.conj_eq_iff_im.mpr (hne x)`. Introduce `hD`. Apply `he` to reduce the goal to its premises. Establish `h1` using `hexp 1`.
+
+Establish `h2` using `hexp e`. Use `set p := τ (algebraMap F E (d.bs.repr 1 0)) with hp`. Use `set q := τ (algebraMap F E (d.bs.repr 1 1)) with hq`. Use `set p' := τ (algebraMap F E (d.bs.repr e 0)) with hp'`. Use `set q' := τ (algebraMap F E (d.bs.repr e 1)) with hq'`.
+
+Establish `ip : p.im = 0` using `hreal _`. Establish `iq : q.im = 0` using `hreal _`. Establish `ip' : p'.im = 0` using `hreal _`. Establish `iq' : q'.im = 0` using `hreal _`. Rewrite `h1` using `[map_one]`.
+
+Establish `h1re` using `congrArg Complex.re h1`. Establish `h1im` using `congrArg Complex.im h1`. Establish `h2im` using `congrArg Complex.im h2`. Simplify using `only [Complex.one_re, Complex.one_im, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, ip, iq, ip', iq', zero_mul, sub_zero, add_zero] at h1re h1im h2im`. Take the linear combination `-(p'.re * (τ (d.bs 0)).re + q'.re * (τ (d.bs 1)).re) * h1im - (p.re * q'.re - q.re * p'.re) * hD + (p'.re * (τ (d.bs 0)).im + q'.re * (τ (d.bs 1)).im) * h1re + h2im`.
+-/
 theorem detIm_ne_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (w : InfinitePlace F) :
     ((d.B.emb w).1 (d.bs 0)).im * ((d.B.emb w).1 (d.bs 1)).re -
       ((d.B.emb w).1 (d.bs 0)).re * ((d.B.emb w).1 (d.bs 1)).im ≠ 0 := by
@@ -85,6 +109,19 @@ def realLinearCoordinates (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ
     congr 1
     simp only [Finset.mul_sum]
     refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `r hr0`. Establish `hz : ∀ w i j, ∑ l : Fin 2, (((r (i, j, l)).1 ⟨w, hr w⟩ : ℝ) : ℂ) * (d.B.emb w).1 (d.bs l) = 0`. Introduce `w`. Set `Z : Matrix (Fin d.m) (Fin d.n) ℂ` to `fun i j => ∑ l : Fin 2, (((r (i, j, l)).1 ⟨w, hr w⟩ : ℝ) : ℂ) * (d.B.emb w).1 (d.bs l)`.
+
+Establish `h1 : ((R.fr w)⁻¹).1 * Z = 0`. Use extensionality with `a j`. Establish `h` using `congrFun (congrFun (congrFun hr0 w) a) j`. Establish `h' : star (∑ i, ((R.fr w)⁻¹).1 a i * Z i j) = 0` using `h`. Rewrite `h'` using `[star_eq_zero]`.
+
+Rewrite using `[Matrix.mul_apply]`. Conclude with `h'`. Establish `h2 : Z = 0`. Establish `e : Z = (R.fr w).1 * (((R.fr w)⁻¹).1 * Z)`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`.
+
+Rewrite using `[e, h1, Matrix.mul_zero]`. Introduce `i j`. Conclude with `congrFun (congrFun h2 i) j`. Use function extensionality and compare the values at `k`. Take `⟨i, j, l⟩` from `k`.
+
+Use `Prod.ext (funext fun v => ?_) (funext fun v => ?_)` and prove the remaining obligations. Establish `h` using `hz v.1 i j`. Rewrite `h` using `[Fin.sum_univ_two]`. Establish `hi` using `real_indep (_root_.PositivityTheory.SiegelWeilFormula.KFock.detIm_ne_k d v.1) h`. Establish `ev : (⟨v.1, hr v.1⟩ : {w : InfinitePlace F // w.IsReal}) = v` using `Subtype.ext rfl`.
+
+Rewrite `hi` using `[ev]`. Use `fin_cases l`. Conclude with `hi.1`. Conclude with `hi.2`. Conclude with `absurd v.2 (InfinitePlace.not_isComplex_iff_isReal.mpr (hr v.1))`.
+-/
 theorem realLinearCoordinates_injective (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (hr : ∀ w : InfinitePlace F, w.IsReal) : Function.Injective (_root_.PositivityTheory.SiegelWeilFormula.KFock.realLinearCoordinates d R hr) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro r hr0
@@ -116,6 +153,17 @@ theorem realLinearCoordinates_injective (d : _root_.PositivityTheory.SiegelWeilF
     · exact hi.1
     · exact hi.2
   · exact absurd v.2 (InfinitePlace.not_isComplex_iff_isReal.mpr (hr v.1))
+/- English proof (translation)
+Establish `hcm : IsCMExt F E σ` using `d.ok.good.cm`. Use `haveI : IsTotallyReal F := hcm.1`. Establish `hr : ∀ w : InfinitePlace F, w.IsReal` using `fun w => IsTotallyReal.isReal w`. Establish `hdim : Module.finrank ℝ (Fin d.m × Fin d.n × Fin 2 → mixedEmbedding.mixedSpace F) = Module.finrank ℝ (InfinitePlace F → Fin d.m → Fin d.n → ℂ)`. Simplify using `only [Module.finrank_pi_fintype, mixedEmbedding.finrank, Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, smul_eq_mul, Fintype.card_prod, Fintype.card_fin]`.
+
+Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, ← InfinitePlace.card_add_two_mul_card_eq_rank, IsTotallyReal.nrComplexPlaces_eq_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinj` using `_root_.PositivityTheory.SiegelWeilFormula.KFock.realLinearCoordinates_injective d R hr`. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hinj`. Use `⟨(LinearEquiv.ofBijective (_root_.PositivityTheory.SiegelWeilFormula.KFock.realLinearCoordinates d R hr) ⟨hinj, hsurj⟩).toContinuousLinearEquiv, fun c w => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a j`. Use `show star (∑ i, ((R.fr w)⁻¹).1 a i * ∑ l : Fin 2, ((((InfiniteAdeleRing.ringEquiv_mixedSpace F (c (i, j, l)).1).1 ⟨w, hr w⟩ : ℝ) : ℂ) * (d.B.emb w).1 (d.bs l))) = star ((((R.fr w)⁻¹).1 * d.cw w (d.cmb c)) a j)`. Rewrite using `[Matrix.mul_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use `show _ = piInf (d.B.emb w) (∑ l, c (i, j, l) ⊗ₜ[F] d.bs l)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [InfiniteAdeleRing.ringEquiv_mixedSpace_apply, InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem archEquiv_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) :
     ∃ L : (Fin d.m × Fin d.n × Fin 2 → mixedEmbedding.mixedSpace F) ≃L[ℝ] (InfinitePlace F → Fin d.m → Fin d.n → ℂ),
       ∀ (c : Fin d.m × Fin d.n × Fin 2 → AF F) (w : InfinitePlace F),

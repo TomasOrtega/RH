@@ -13,6 +13,31 @@ def RestOddTops : Prop :=
     ∑ j : Fin (numSeg TT), ∑ i : Fin (segS TT j), f (segPos TT j i) (segStart TT j) ((segDists TT j).get i) =
       ∑ y ∈ TT.filter (fun y => ¬ IsTypeV y), f y (yPrev TT y) (dPrev TT y)
 
+/- English proof (translation)
+Establish `hN0 : 0 ≤ N` using `by linarith`. Establish `hk0 : 0 < k` using `by linarith`. Establish `hQ0 : 0 ≤ Q` using `by linarith`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `hCN1 : C ≤ C * N1` using `by nlinarith`.
+
+Establish `hp2 : 0 < p ^ 2` using `by positivity`. Establish `hA : a' / p ^ 2 ≤ 2 * (ar / p ^ 2)`. Rewrite using `[← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right ha hp2.le`. Establish `hA0 : 0 ≤ ar / p ^ 2` using `by positivity`.
+
+Establish `hB0 : 0 ≤ b' / p` using `by positivity`. Establish `hE : La' * a' / (p * k) ≤ 4 * (La * ar / (p * k))`. Rewrite using `[← mul_div_assoc]`. Apply `div_le_div_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Use `mul_le_mul hLa' ha ha0 (by linarith : (0 : ℝ) ≤ 2 * La)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE0 : 0 ≤ La * ar / (p * k)` using `by positivity`. Establish `hF : La' * b' / k ≤ 2 * (La * b' / k)`. Rewrite using `[← mul_div_assoc]`. Apply `div_le_div_of_nonneg_right _ hk0.le` to reduce the goal to its premises.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hF0 : 0 ≤ La * b' / k` using `by positivity`. Establish `hF'0 : 0 ≤ La' * b' / k` using `by positivity`. Establish `t1 : Ct * N * (a' / p ^ 2) ≤ C * N * N1 * (ar / p ^ 2)`. Establish `h1` using `mul_le_mul_of_nonneg_left hA (mul_nonneg hCt.le hN0)`.
+
+Establish `h2` using `mul_le_mul_of_nonneg_right (by linarith : 2 * Ct ≤ C * N1) (mul_nonneg hN0 hA0)`. Use the polynomial consequences of the given equalities and inequalities. Establish `t2 : Ct * N * (b' / p) ≤ C * N * N1 * (b' / p)`. Establish `h2` using `mul_le_mul_of_nonneg_right (by linarith : Ct ≤ C * N1) (mul_nonneg hN0 hB0)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `t3 : Ct * N * (La' * a' / (p * k)) ≤ C * N * N1 * (La * ar / (p * k))`. Establish `h1` using `mul_le_mul_of_nonneg_left hE (mul_nonneg hCt.le hN0)`. Establish `h2` using `mul_le_mul_of_nonneg_right (by linarith : 4 * Ct ≤ C * N1) (mul_nonneg hN0 hE0)`. Use the polynomial consequences of the given equalities and inequalities. Establish `t4 : Ct * N * (La' * b' / k) + N * (La' * b' / k) ≤ C * N * N1 * (La * b' / k)`.
+
+Establish `h1` using `mul_le_mul_of_nonneg_left hF (mul_nonneg (by linarith : (0 : ℝ) ≤ Ct + 1) hN0)`. Establish `h2` using `mul_le_mul_of_nonneg_right (by linarith : 2 * Ct + 2 ≤ C * N1) (mul_nonneg hN0 hF0)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hNkQ : 1 ≤ N * k * Q`. Use `one_le_mul_of_one_le_of_one_le hN hk` as an intermediate fact.
+
+Conclude with `one_le_mul_of_one_le_of_one_le this hQ`. Establish `t5 : Ct * N * (k * Q) + 1 ≤ C * N * (k * Q)`. Establish `h2` using `mul_le_mul_of_nonneg_right (by linarith : (4 : ℝ) ≤ C - Ct) (by linarith : (0 : ℝ) ≤ N * k * Q)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hX0 : 0 ≤ cS + 2 * N * ccl + 2 * n' * ccl` using `by positivity`.
+
+Establish `hXY : cS + 2 * N * ccl + 2 * n' * ccl ≤ cS + C * N * k * L + 4 * N * ccl + 2 * n' * ccl`. Establish `: 0 ≤ C * N * k * L` using `by positivity`. Establish `: 0 ≤ N * ccl` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t6 : Ct * N * (Q * (cS + 2 * N * ccl + 2 * n' * ccl)) ≤ C * N * (Q * (cS + C * N * k * L + 4 * N * ccl + 2 * n' * ccl))`.
+
+Apply `mul_le_mul (mul_le_mul_of_nonneg_right (by linarith) hN0) (mul_le_mul_of_nonneg_left hXY hQ0) (mul_nonneg hQ0 hX0) (mul_nonneg hC0 hN0)` to reduce the goal to its premises. Establish `t7 : N * ccl ≤ C * N * (k * L + ccl)`. Establish `: 0 ≤ C * N * (k * L)` using `by positivity`. Establish `h2` using `mul_le_mul_of_nonneg_right (by linarith : (1 : ℝ) ≤ C) (mul_nonneg hN0 hccl)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear relations using `[t1, t2, t3, t4, t5, t6, t7]`.
+-/
 theorem tle_abs (Ct C N N1 p k Q L ar a' b' La La' ccl cS n' S S' : ℝ) (hCt : 0 < Ct) (hC : 4 * Ct + 4 ≤ C)
     (hN : 1 ≤ N) (hN1 : 1 ≤ N1) (hp : 0 < p) (hk : 1 ≤ k) (hQ : 1 ≤ Q) (hL : 0 ≤ L) (har : 0 ≤ ar)
     (ha0 : 0 ≤ a') (ha : a' ≤ 2 * ar) (hb : 0 < b') (hLa : 0 ≤ La) (hLa0 : 0 ≤ La') (hLa' : La' ≤ 2 * La)
@@ -80,6 +105,9 @@ theorem tle_abs (Ct C N N1 p k Q L ar a' b' La La' ccl cS n' S S' : ℝ) (hCt : 
     linarith
   linarith [t1, t2, t3, t4, t5, t6, t7]
 
+/- English proof (translation)
+Unfold `Dat.t0 t0I t0G4 Dat.c4 Dat.N Dat.k`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem initial_level_formula (K : Cst) (X : Dat) (A B : X.TT → ℕ) :
     X.t0 K A B = (∑ j : Fin (numSeg X.TT), ∑ i : Fin (segS X.TT j),
         min ((ex B (segPos X.TT j i) : ℕ) : ℝ)

@@ -15,6 +15,11 @@ open GlobalTheory.HorComp
 
 namespace GlobalTheory.HorComp
 
+/- English proof (translation)
+Use `GlobalTheory.SchemeWords.isProper_of_isProjOver h` as an intermediate fact. Set `g` to `Limits.pullback.snd (Limits.pullback.snd f (spMap β)) (spMap σ)`. Establish `: IsProper g` using `inferInstance`. Establish `h1` using `LocallyOfFiniteType.isLocallyNoetherian g`. Establish `h2 : CompactSpace (Limits.pullback (Limits.pullback.snd f (spMap β)) (spMap σ) : Scheme.{0})` using `QuasiCompact.compactSpace_of_compactSpace g`.
+
+Establish `: IsNoetherian (Limits.pullback (Limits.pullback.snd f (spMap β)) (spMap σ) : Scheme.{0})` using `⟨⟩`. Use `infer_instance`.
+-/
 theorem noetherianSpace_pullback_of_isProjOver {R F K : Type} [CommRing R] [CommRing F] [Field K] {X : Scheme.{0}}
     {f : X ⟶ Sp R} (h : IsProjOver f) (β : R →+* F) (σ : F →+* K) :
     NoetherianSpace (Limits.pullback (Limits.pullback.snd f (spMap β)) (spMap σ) : Scheme.{0}) := by
@@ -27,6 +32,9 @@ theorem noetherianSpace_pullback_of_isProjOver {R F K : Type} [CommRing R] [Comm
   have : IsNoetherian (Limits.pullback (Limits.pullback.snd f (spMap β)) (spMap σ) : Scheme.{0}) := ⟨⟩
   infer_instance
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ s σ` and use `noetherianSpace_pullback_of_isProjOver s.T.Z.proj _ σ`.
+-/
 theorem noetherianSpace_genCx : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ), NoetherianSpace (genCx s.T.Z σ) :=
   fun _ _ _ _ _ _ s σ => noetherianSpace_pullback_of_isProjOver s.T.Z.proj _ σ
 

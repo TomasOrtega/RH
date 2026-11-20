@@ -28,12 +28,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.VacCoef
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_frameLat, GlobalTheory.PlaceModel.mem_latFrame]`.
+-/
 theorem frameLat_eq_latFrame {D : D7} (V : HSp D) : frameLat V = GlobalTheory.PlaceModel.latFrame V := by
   ext y; rw [mem_frameLat, GlobalTheory.PlaceModel.mem_latFrame]
 
+/- English proof (translation)
+Rewrite using `[frameLat_eq_latFrame]`. Conclude with `GlobalTheory.PlaceModel.isSelfDualC_latFrame V`.
+-/
 theorem isSelfDualC_frameLat {D : D7} (V : HSp D) : IsSelfDualC V (frameLat V) := by
   rw [frameLat_eq_latFrame]; exact GlobalTheory.PlaceModel.isSelfDualC_latFrame V
 
+/- English proof (translation)
+Establish `hu : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E)` using `by haveI := D.host.isCMField_hostE`. Conclude with `GlobalTheory.PlaceComp.unramified (E := D.host.E) D.sp.cm`. Rewrite using `[GlobalTheory.LFun.isUnram_iff]`. Introduce `P hP`. Use `haveI := P.isPrime`.
+
+Use `haveI : Algebra.IsUnramifiedAt (𝓞 D.host.F) P.asIdeal := Algebra.unramified_iff_forall.1 hu ⟨P.asIdeal, P.isPrime⟩`. Establish `hle : (P.asIdeal.under (𝓞 D.host.F)).map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ P.asIdeal` using `Ideal.map_comap_le`. Establish `h1 : Ideal.ramificationIdx' (P.asIdeal.under (𝓞 D.host.F)) P.asIdeal = 1`. Use `letI := Localization.AtPrime.algebraOfLiesOver (P.asIdeal.under (𝓞 D.host.F)) P.asIdeal`. Conclude with `(Ideal.IsDedekindDomain.ramificationIdx'_eq_one_iff P.ne_bot hle).2 ((Algebra.isUnramifiedAt_iff_map_eq (𝓞 D.host.F) (P.asIdeal.under (𝓞 D.host.F)) P.asIdeal).1 ‹_›).2`.
+
+Establish `hv : P.asIdeal.under (𝓞 D.host.F) = v.asIdeal` using `by rw [← hP]; rfl`. Establish `: P.asIdeal.LiesOver v.asIdeal` using `⟨hv.symm⟩`. Rewrite `h1` using `[hv]`. Rewrite `h1` using `[Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal _ v.ne_bot]`. Then use the resulting hypothesis.
+-/
 theorem isUnram_host (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : Formalism.MainNotions.SchurIrreducible.IsUnram (E := D.host.E) v := by
   have hu : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E) := by
     haveI := D.host.isCMField_hostE
@@ -54,6 +67,9 @@ theorem isUnram_host (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : Formalis
   rw [hv] at h1
   rwa [Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal _ v.ne_bot] at h1
 
+/- English proof (translation)
+Break down `GlobalTheory.LFun.InertChart.isSplit_or_isInertAt (isUnram_host D v) with hs | ⟨w, hw⟩` into its components or cases. Take `⟨w, -, -, h, -⟩` from `GlobalTheory.LFun.isSplit_iff.1 hs`. Conclude with `⟨w, h, fun h' => absurd hs h'⟩`. Conclude with `⟨w, GlobalTheory.LFun.under_eq_of_isInertAt hw, fun _ => hw⟩`.
+-/
 theorem exists_place (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     ∃ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v ∧
       (¬ IsSplit (E := D.host.E) v → IsInertAt D.host.F D.host.E v w) := by
@@ -62,15 +78,28 @@ theorem exists_place (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     exact ⟨w, h, fun h' => absurd hs h'⟩
   · exact ⟨w, GlobalTheory.LFun.under_eq_of_isInertAt hw, fun _ => hw⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LFun.ResEta.val_of_isInertAt (isCMExt_host D).2.2.1 hr hw hu`.
+-/
 theorem val_inert (D : D7) (χ : (AE D)ˣ →* Circle) (n : ℕ) (hr : ResEta D χ n)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : IsInertAt D.host.F D.host.E v w) (hu : UnrAt χ w) : val χ w = (-1) ^ n :=
   GlobalTheory.LFun.ResEta.val_of_isInertAt (isCMExt_host D).2.2.1 hr hw hu
 
+/- English proof (translation)
+Simplify using `[l2, Formalism.IndefR.Lift.pet, mul_assoc, integral_const_mul]`.
+-/
 theorem l2_smul {D : D7} {S T : HSp D} (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (c : ℂ) (f g : WO S T → ℂ) :
     l2 μ 𝓕 (c • f) g = c * l2 μ 𝓕 f g := by
   simp [l2, Formalism.IndefR.Lift.pet, mul_assoc, integral_const_mul]
 
+/- English proof (translation)
+Take `⟨f, f0, hf⟩` from `GlobalTheory.FinWeilForm.exists_theta hom.std S T`. Set `g : GlobalTheory.FinWeilO.thetaSub ψ S T` to `⟨f, hf⟩`. Establish `e1` using `(GlobalTheory.T.weilDatum_at_place_eq_latticeIntertwiner_mul_det_char D ψ S T χS χT om hom hom.std lam w₀ Om hL hlam hsq v w h a g).1 hs`. Establish `e2` using `(GlobalTheory.T.weilDatum_at_place_eq_latticeIntertwiner_mul_det_char D ψ S T χS χT om hom hom.std lam w₀ Om hL hlam hsq v w' h' a g).1 hs`. Establish `hne : (Om (1, embV T v a) g : WO S T → ℂ) ≠ 0`.
+
+Introduce `h0`. Establish `h3 : Om (1, embV T v a)⁻¹ (Om (1, embV T v a) g) = g`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `h1 : Om (1, embV T v a) g = 0` using `Subtype.ext h0`. Rewrite `h3` using `[h1, map_zero]`.
+
+Conclude with `f0 (congrArg Subtype.val h3).symm`. Conclude with `smul_left_injective ℂ hne (e1.symm.trans e2)`.
+-/
 theorem locChar_eq {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om) (lam : ℕ →* ℂ)
     (w₀ : 𝓞 D.host.E) (Om : GA D S × GA D T →* Module.End ℂ (GlobalTheory.FinWeilO.thetaSub ψ S T))
@@ -94,18 +123,53 @@ theorem locChar_eq {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS 
     exact f0 (congrArg Subtype.val h3).symm
   exact smul_left_injective ℂ hne (e1.symm.trans e2)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.localHeckeChar_det_doubleCoset_splitPlace`.
+-/
 theorem detval : ∀ (D : D7) (T : HSp D) (χ : (AE D)ˣ →* Circle) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), UnrAt χ w → ∀ e, IsSplitChart D.sp.cm.sig T.gram (frameLat T) h e → ∀ ϖ, IsUnifV D.host.E w ϖ → ∀ (d : Fin T.rank → ℤ) (t : GL (Fin T.rank) (w.adicCompletion D.host.E)), t.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KGL w T.rank, ∀ k₂ ∈ KGL w T.rank, ((locChar χ w (Matrix.GeneralLinearGroup.det (locMat D.sp.cm.sig T.gram h (e.symm (k₁ * t * k₂)))) : ℂˣ) : ℂ) = ((val χ w : ℂˣ) : ℂ) ^ (∑ i, d i) := GlobalTheory.T.localHeckeChar_det_doubleCoset_splitPlace
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.split_place_eigenvalue_is_sqrt_norm`.
+-/
 theorem lamsplit : ∀ (D : D7) (lam : ℕ →* ℂ), (∀ n : ℕ, n ≠ 0 → (∀ q : ℕ, q.Prime → Formalism.MainNotions.StandardLatticesGL3.InertQ D q → ¬ q ∣ n) → lam n = (Real.sqrt n : ℂ)) → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → IsSplit (E := D.host.E) v → ∀ m : ℕ, lam (qV D.host.E w ^ m) = (Real.sqrt ((qV D.host.E w ^ m : ℕ) : ℝ) : ℂ) := GlobalTheory.T.split_place_eigenvalue_is_sqrt_norm
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.indexNormalization_inert_norm_eq_neg`.
+-/
 theorem laminert : ∀ (D : D7) (lam : ℕ →* ℂ), GlobalTheory.FinWeil.GoodNorm (GlobalTheory.FinWeil.sgO D) lam → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), IsInertAt D.host.F D.host.E v w → lam (qV D.host.E w) = -((qV D.host.F v : ℕ) : ℂ) := GlobalTheory.T.indexNormalization_inert_norm_eq_neg
 
+/- English proof (translation)
+Rewrite using `[zpow_natCast, pow_mul, ← inv_pow, neg_pow, mul_inv, ← inv_pow (-1 : ℂ), inv_neg_one]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem inv_neg_pow_mul (x : ℂ) (N M : ℕ) :
     ((-x) ^ (N * M))⁻¹ = ((((-1 : ℂˣ) ^ N : ℂˣ) : ℂ) * (x ^ N)⁻¹) ^ (M : ℤ) := by
   rw [zpow_natCast, pow_mul, ← inv_pow, neg_pow, mul_inv, ← inv_pow (-1 : ℂ), inv_neg_one]
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hom μ 𝓕 hμ v hunr`. Establish `hψ` using `hom.std`. Take `⟨lam, hlam, hsq⟩` from `GlobalTheory.FinWeil.exists_goodNorm D`. Take `⟨w₀, Om, hL⟩` from `GlobalTheory.FinWeilO.exists_isLatRep hψ (isSelfDualC_frameLat S) (isSelfDualC_frameLat T) hlam`. Take `⟨w₁, hw₁, hin₁⟩` from `exists_place D v`.
+
+Set `I : Gv T v → ℕ` to `fun a => GlobalTheory.FinWeil.idx (GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)) ((GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).map (GlobalTheory.FinWeilO.rhoF S T (1, embV T v a)))`. Set `ν : Gv T v → ℂ` to `fun a => if IsSplit (E := D.host.E) v then ((locChar χS w₁ (Matrix.GeneralLinearGroup.det (locMat D.sp.cm.sig T.gram hw₁ a)) : ℂˣ) : ℂ) else 1`. Use `⟨fun a => ν a * (lam (I a))⁻¹, fun w h => ⟨fun hs e he => ?_, fun hw c ϖ e hϖ he => ?_⟩, fun a f₁ f₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Introduce `ϖ hϖ d t ht k₁ hk₁ k₂ hk₂`. Establish `hν : ν (e.symm (k₁ * t * k₂)) = ((val χS w : ℂˣ) : ℂ) ^ (∑ i, d i)`.
+
+Simplify using `only [ν, if_pos hs]`. Rewrite using `[locChar_eq hom lam w₀ Om hL hlam hsq hs hw₁ h]`. Conclude with `detval D T χS v w h (hunr w h).1 e he ϖ hϖ d t ht k₁ hk₁ k₂ hk₂`. Establish `hI : I (e.symm (k₁ * t * k₂)) = qV D.host.E w ^ (S.rank * (∑ i, |d i|).toNat)` using `GlobalTheory.T.index_movedHomLattice_splitPlaceChart D S T v w h hs e he ϖ hϖ d t ht k₁ hk₁ k₂ hk₂`. Use `show ν _ * (lam (I _))⁻¹ = _`.
+
+Rewrite using `[hν, hI, lamsplit D lam hsq v w h hs]`. Use `congr 1`. Establish `hs0 : 0 ≤ ∑ i, |d i|` using `Finset.sum_nonneg fun i _ => abs_nonneg _`. Establish `hM : ((∑ i, |d i| : ℤ) : ℂ) = (((∑ i, |d i|).toNat : ℕ) : ℂ)`. Conclude with `(Int.toNat_of_nonneg hs0).symm` after adjusting the coercions.
+
+Rewrite using `[hM]`. Generalize the expression as in `(∑ i, |d i|).toNat = M`. Rewrite using `[Real.sqrt_eq_rpow, Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _), Complex.ofReal_cpow (Nat.cast_nonneg _), ← Complex.cpow_neg]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `d t ht k₁ hk₁ k₂ hk₂`. Establish `hns : ¬ IsSplit (E` using `D.host.E) v := not_isSplit_of_isInertAt hw`. Establish `hν : ν (e.symm (k₁ * t * k₂)) = 1` using `if_neg hns`. Establish `hI : I (e.symm (k₁ * t * k₂)) = qV D.host.E w ^ (S.rank * (∑ i, max (d i) 0).toNat)` using `GlobalTheory.T.index_moved_homLattice_inertPlace D S T v w h hw c ϖ e hϖ he d t ht k₁ hk₁ k₂ hk₂`.
+
+Establish `hval` using `val_inert D χS S.rank hom.resS v w hw (hunr w h).1`. Establish `hq` using `laminert D lam hlam v w hw`. Use `show ν _ * (lam (I _))⁻¹ = _`. Rewrite using `[hν, hI, map_pow, hq, hval, one_mul]`. Establish `hs0 : 0 ≤ ∑ i, max (d i) 0` using `Finset.sum_nonneg fun i _ => le_max_right _ _`.
+
+Rewrite using `[← Int.toNat_of_nonneg hs0, zpow_natCast]`. Generalize the expression as in `(∑ i, max (d i) 0).toNat = M`. Use `clear hs0 hq hval hI hν hns hk₁ hk₂ ht`. Conclude with `inv_neg_pow_mul _ _ _`. Establish `hf₁ : IsThetaFunO ψ S T f₁` using `h₁.1`.
+
+Establish `hf₂ : IsThetaFunO ψ S T f₂` using `h₂.1`. Set `g₁ : GlobalTheory.FinWeilO.thetaSub ψ S T` to `⟨f₁, hf₁⟩`. Set `g₂ : GlobalTheory.FinWeilO.thetaSub ψ S T` to `⟨f₂, hf₂⟩`. Establish `hc` using `GlobalTheory.T.weil_latticeIntertwiner_coefficient_at_place D ψ S T hψ lam w₀ Om hL μ 𝓕 hμ v a g₁ g₂ h₁ h₂`. Establish `hn` using `GlobalTheory.T.weilDatum_at_place_eq_latticeIntertwiner_mul_det_char D ψ S T χS χT om hom hψ lam w₀ Om hL hlam hsq v w₁ hw₁ a g₁`.
+
+Use `show l2 μ 𝓕 (om (1, embV T v a) (g₁ : WO S T → ℂ)) (g₂ : WO S T → ℂ) = (ν a * (lam (I a))⁻¹) * l2 μ 𝓕 (g₁ : WO S T → ℂ) (g₂ : WO S T → ℂ)`. Distinguish the cases in `hs : IsSplit (E := D.host.E) v`. Rewrite using `[hn.1 hs, l2_smul, hc]`. Simplify using `only [ν, if_pos hs, I]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hn.2 (hin₁ hs) (hunr w₁ hw₁).1 (hunr w₁ hw₁).2, hc]`. Simplify using `only [ν, if_neg hs, I]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vac_coef : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)), (∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v → UnrAt χS w ∧ UnrAt χT w) → ∃ φ : Gv T v → ℂ, IsLocKer T S.rank (val χS) v φ ∧ ∀ (a : Gv T v) (f₁ f₂ : WO S T → ℂ), VacFin ψ S T v f₁ → VacFin ψ S T v f₂ → l2 μ 𝓕 (om (1, embV T v a) f₁) f₂ = φ a * l2 μ 𝓕 f₁ f₂ := by
   intro D ψ S T χS χT om hom μ 𝓕 hμ v hunr
   classical

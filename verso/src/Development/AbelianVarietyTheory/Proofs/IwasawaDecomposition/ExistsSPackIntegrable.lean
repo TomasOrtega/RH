@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.SRe
 
+/- English proof (translation)
+Introduce `hSW hBM hRF D F hG hL`. Take `⟨X, hb, ψ, Y, hF, tr, hinst, hpin, hmt, hch, hstd, hmc, hlc, hint, hu⟩` from `GlobalTheory.T.exists_global_setting hSW hBM hRF D F hG hL`. Take `⟨G⟩` from `GlobalTheory.rowDict_goodOp_nonempty D X`. Conclude with `⟨⟨X, hb, Y, hF, ψ, hmt, hch, hstd, hmc, hlc, tr, fun u => (hu u).2.1, fun u => (hu u).2.2.1, fun u => (hu u).1, fun u => (hu u).2.2.2, hinst, G, hpin⟩, hint⟩`.
+-/
 theorem exists_sPack_integrable :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → PI.BesselMapUniq.BesselMapUniq → Formalism.L2.SG.RowsDef.RowsFinDim →
       ∀ (D : D7) (F : ∀ u, Forms0 D u), GapHyp D → Formalism.L2.SG.Pf.LocCP.LocTied D →

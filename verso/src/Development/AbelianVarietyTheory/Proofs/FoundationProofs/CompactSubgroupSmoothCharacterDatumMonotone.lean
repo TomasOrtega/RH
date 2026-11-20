@@ -9,24 +9,39 @@ namespace GlobalTheory.StripGrp
 
 variable {k : Type} [Field k] [ValuativeRel k]
 
+/- English proof (translation)
+Introduce `u hu h1` and use `hx u hu (h1.trans h)`.
+-/
 theorem triv_mono {χ : kˣ →* ℂˣ} {x y : k} (h : valuation k y ≤ valuation k x) (hx : Triv χ x) :
     Triv χ y :=
   fun u hu h1 => hx u hu (h1.trans h)
 
+/- English proof (translation)
+Break down `le_total (valuation k x) (valuation k y) with h | h` into its components or cases. Conclude with `triv_mono ((Valuation.map_add _ _ _).trans (max_le h le_rfl)) hy`. Conclude with `triv_mono ((Valuation.map_add _ _ _).trans (max_le le_rfl h)) hx`.
+-/
 theorem triv_add {χ : kˣ →* ℂˣ} {x y : k} (hx : Triv χ x) (hy : Triv χ y) : Triv χ (x + y) := by
   rcases le_total (valuation k x) (valuation k y) with h | h
   · exact triv_mono ((Valuation.map_add _ _ _).trans (max_le h le_rfl)) hy
   · exact triv_mono ((Valuation.map_add _ _ _).trans (max_le le_rfl h)) hx
 
+/- English proof (translation)
+The claim follows from `triv_mono (by rw [Valuation.map_neg]) hx`.
+-/
 theorem triv_neg {χ : kˣ →* ℂˣ} {x : k} (hx : Triv χ x) : Triv χ (-x) :=
   triv_mono (by rw [Valuation.map_neg]) hx
 
+/- English proof (translation)
+Introduce `u _ h1`. Establish `h0 : valuation k ((u : k) - 1) = 0` using `le_antisymm (by simpa using h1) zero_le'`. Establish `hu : u = 1` using `Units.ext (sub_eq_zero.mp ((Valuation.zero_iff _).mp h0))`. Simplify using `[hu]`.
+-/
 theorem triv_zero (χ : kˣ →* ℂˣ) : Triv χ 0 := by
   intro u _ h1
   have h0 : valuation k ((u : k) - 1) = 0 := le_antisymm (by simpa using h1) zero_le'
   have hu : u = 1 := Units.ext (sub_eq_zero.mp ((Valuation.zero_iff _).mp h0))
   simp [hu]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the calculation `calc b = a⁻¹ * (a * b) := (inv_mul_cancel_left₀ ha b).symm _ ≤ a⁻¹ * 1 := by gcongr _ = a⁻¹ := mul_one _`.
+-/
 theorem le_inv_of_mul_le {a b : ValueGroupWithZero k} (ha : a ≠ 0) (h : a * b ≤ 1) : b ≤ a⁻¹ :=
   calc b = a⁻¹ * (a * b) := (inv_mul_cancel_left₀ ha b).symm
     _ ≤ a⁻¹ * 1 := by gcongr
@@ -34,12 +49,23 @@ theorem le_inv_of_mul_le {a b : ValueGroupWithZero k} (ha : a ≠ 0) (h : a * b 
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ne_of_blk {r : ℕ} {i j : Fin n} (h : (i : ℕ) < r ∧ r ≤ (j : ℕ)) : i ≠ j := by
   rintro rfl; omega
 
+/- English proof (translation)
+Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem val_one_apply_le (i j : Fin n) : valuation k ((1 : Matrix (Fin n) (Fin n) k) i j) ≤ 1 := by
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : (l : ℕ) < r`. Rewrite using `[hA i l (fun h => absurd h.2 (not_le.mpr hl)), zero_mul]`.
+
+Rewrite using `[hB l j (fun h => hl h.1), mul_zero]`.
+-/
 theorem mul_eq_zero_of_blk {r : ℕ} {A B : Matrix (Fin n) (Fin n) k}
     (hA : ∀ i j : Fin n, ¬ ((i : ℕ) < r ∧ r ≤ (j : ℕ)) → A i j = 0)
     (hB : ∀ i j : Fin n, ¬ ((i : ℕ) < r ∧ r ≤ (j : ℕ)) → B i j = 0) : A * B = 0 := by
@@ -52,17 +78,26 @@ theorem mul_eq_zero_of_blk {r : ℕ} {A B : Matrix (Fin n) (Fin n) k}
 
 variable {ψ : Fin n → kˣ →* ℂˣ} {r : ℕ} {ϖ : k} {m : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_strip {g : GL (Fin n) k} : g ∈ strip ψ r ϖ m ↔ ∀ i j : Fin n,
     if (i : ℕ) < r ∧ r ≤ (j : ℕ) then
       valuation k (ϖ ^ m * g.val i j) ≤ 1 ∧ Triv (ψ i / ψ j) (ϖ ^ m * g.val i j)
     else g.val i j = (1 : Matrix (Fin n) (Fin n) k) i j := Iff.rfl
 
+/- English proof (translation)
+Use `mem_strip.mp hg i j` as an intermediate fact. Rewrite `this` using `[if_neg h]`. Simplify using `[Matrix.sub_apply, this]`.
+-/
 theorem sub_one_of_mem {g : GL (Fin n) k} (hg : g ∈ strip ψ r ϖ m) (i j : Fin n)
     (h : ¬ ((i : ℕ) < r ∧ r ≤ (j : ℕ))) : (g.val - 1) i j = 0 := by
   have := mem_strip.mp hg i j
   rw [if_neg h] at this
   simp [Matrix.sub_apply, this]
 
+/- English proof (translation)
+Introduce `i j`. Use `split_ifs with h`. Simplify using `only [Units.val_one, Matrix.one_apply_ne (ne_of_blk h), mul_zero, map_zero, zero_le', true_and]`. Conclude with `triv_zero _`. Both sides reduce to the same expression.
+-/
 theorem one_mem : (1 : GL (Fin n) k) ∈ strip ψ r ϖ m := by
   intro i j
   split_ifs with h
@@ -71,6 +106,15 @@ theorem one_mem : (1 : GL (Fin n) k) ∈ strip ψ r ϖ m := by
     exact triv_zero _
   · rfl
 
+/- English proof (translation)
+Establish `key : (a * b).val = 1 + (a.val - 1) + (b.val - 1)`. Establish `h0` using `mul_eq_zero_of_blk (sub_one_of_mem ha) (sub_one_of_mem hb)`. Rewrite using `[Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `i j`.
+
+Establish `hA` using `mem_strip.mp ha i j`. Establish `hB` using `mem_strip.mp hb i j`. Rewrite using `[key]`. Use `split_ifs with h`. Rewrite `hA`, `hB` using `[if_pos h]`.
+
+Establish `h1 : (1 : Matrix (Fin n) (Fin n) k) i j = 0` using `Matrix.one_apply_ne (ne_of_blk h)`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, h1, sub_zero, zero_add]`. Rewrite using `[mul_add]`. Conclude with `⟨(Valuation.map_add _ _ _).trans (max_le hA.1 hB.1), triv_add hA.2 hB.2⟩`. Rewrite `hA`, `hB` using `[if_neg h]`.
+
+Simplify using `only [Matrix.add_apply, Matrix.sub_apply, hA, hB, sub_self, add_zero]`.
+-/
 theorem mul_mem {a b : GL (Fin n) k} (ha : a ∈ strip ψ r ϖ m) (hb : b ∈ strip ψ r ϖ m) :
     a * b ∈ strip ψ r ϖ m := by
   have key : (a * b).val = 1 + (a.val - 1) + (b.val - 1) := by
@@ -92,6 +136,13 @@ theorem mul_mem {a b : GL (Fin n) k} (ha : a ∈ strip ψ r ϖ m) (hb : b ∈ st
   · rw [if_neg h] at hA hB
     simp only [Matrix.add_apply, Matrix.sub_apply, hA, hB, sub_self, add_zero]
 
+/- English proof (translation)
+Establish `key : (a⁻¹).val = 1 - (a.val - 1)`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Establish `h0` using `mul_eq_zero_of_blk (sub_one_of_mem ha) (sub_one_of_mem ha)`. Combine the equalities or inequalities in the displayed calculation. Introduce `i j`.
+
+Establish `hA` using `mem_strip.mp ha i j`. Rewrite using `[key]`. Use `split_ifs with h`. Rewrite `hA` using `[if_pos h]`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) k) i j = 0` using `Matrix.one_apply_ne (ne_of_blk h)`.
+
+Simplify using `only [Matrix.sub_apply, h1, sub_zero, zero_sub, mul_neg, Valuation.map_neg]`. Conclude with `⟨hA.1, triv_neg hA.2⟩`. Rewrite `hA` using `[if_neg h]`. Simplify using `only [Matrix.sub_apply, hA, sub_self, sub_zero]`.
+-/
 theorem inv_mem {a : GL (Fin n) k} (ha : a ∈ strip ψ r ϖ m) : a⁻¹ ∈ strip ψ r ϖ m := by
   have key : (a⁻¹).val = 1 - (a.val - 1) := by
     apply Units.inv_eq_of_mul_eq_one_right
@@ -109,6 +160,11 @@ theorem inv_mem {a : GL (Fin n) k} (ha : a ∈ strip ψ r ϖ m) : a⁻¹ ∈ str
   · rw [if_neg h] at hA
     simp only [Matrix.sub_apply, hA, sub_self, sub_zero]
 
+/- English proof (translation)
+Introduce `g hg i j`. Establish `hA` using `mem_strip.mp hg i j`. Use `split_ifs with h`. Rewrite `hA` using `[if_pos h]`. Establish `hle : valuation k (ϖ ^ m' * g.val i j) ≤ valuation k (ϖ ^ m * g.val i j)`.
+
+Rewrite using `[map_mul, map_mul, map_pow, map_pow]`. Use `gcongr ?_ * _`. Conclude with `pow_le_pow_right_of_le_one' hϖ.le hmm`. Conclude with `⟨hle.trans hA.1, triv_mono hle hA.2⟩`. Rewrite `hA` using `[if_neg h]`. Then use the resulting hypothesis.
+-/
 theorem mono {m m' : ℕ} (hϖ : valuation k ϖ < 1) (hmm : m ≤ m') :
     strip ψ r ϖ m ⊆ strip ψ r ϖ m' := by
   intro g hg i j
@@ -124,6 +180,11 @@ theorem mono {m m' : ℕ} (hϖ : valuation k ϖ < 1) (hmm : m ≤ m') :
 
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `hx0 : valuation k x ≠ 0` using `fun h0 => hx (by`. Establish `: x = 0` using `(Valuation.zero_iff _).mp h0`. Rewrite using `[this]`.
+
+Conclude with `triv_zero χ)`. Use `Filter.mem_of_superset ((valuation k).locally_const hx0) ?_` and prove the remaining obligations. Introduce `y hy hT`. Conclude with `hx (triv_mono (le_of_eq hy.symm) hT)`.
+-/
 theorem isClosed_triv (χ : kˣ →* ℂˣ) : IsClosed {x : k | Triv χ x} := by
   rw [← isOpen_compl_iff, isOpen_iff_mem_nhds]
   intro x hx
@@ -134,6 +195,13 @@ theorem isClosed_triv (χ : kˣ →* ℂˣ) : IsClosed {x : k | Triv χ x} := by
   intro y hy hT
   exact hx (triv_mono (le_of_eq hy.symm) hT)
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `hball : IsClosed {z : k | valuation k z ≤ 1}` using `(IsNonarchimedeanLocalField.isCompact_closedBall k 1).isClosed`. Establish `hS : IsClosed {A : Matrix (Fin n) (Fin n) k | ∀ i j : Fin n, if (i : ℕ) < r ∧ r ≤ (j : ℕ) then valuation k (ϖ ^ m * A i j) ≤ 1 ∧ Triv (ψ i / ψ j) (ϖ ^ m * A i j) else A i j = (1 : Matrix (Fin n) (Fin n) k) i j}`. Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun i => isClosed_iInter fun j => ?_` and prove the remaining obligations.
+
+Establish `hc : Continuous fun A : Matrix (Fin n) (Fin n) k => A i j` using `(continuous_apply j).comp (continuous_apply i)`. Distinguish the cases in `h : (i : ℕ) < r ∧ r ≤ (j : ℕ)`. Simplify using `only [if_pos h]`. Conclude with `(hball.inter (isClosed_triv _)).preimage (continuous_const.mul hc)`. Simplify using `only [if_neg h]`.
+
+Conclude with `isClosed_eq hc continuous_const`. Conclude with `hS.preimage Units.continuous_val`.
+-/
 theorem isClosed_strip : IsClosed (strip ψ r ϖ m) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
   have hball : IsClosed {z : k | valuation k z ≤ 1} :=
@@ -153,6 +221,13 @@ theorem isClosed_strip : IsClosed (strip ψ r ϖ m) := by
       exact isClosed_eq hc continuous_const
   exact hS.preimage Units.continuous_val
 
+/- English proof (translation)
+Use `set a := valuation k (ϖ ^ m) with ha_def`. Establish `ha0 : a ≠ 0` using `(Valuation.ne_zero_iff _).mpr (pow_ne_zero _ hϖ0)`. Establish `ha1 : a ≤ 1` using `by rw [ha_def, map_pow]; exact pow_le_one' hϖ.le _`. Establish `h1t : (1 : ValueGroupWithZero k) ≤ a⁻¹` using `le_inv_of_mul_le ha0 (by rw [mul_one]; exact ha1)`. Establish `hbd : ∀ g ∈ strip ψ r ϖ m, ∀ i j : Fin n, valuation k (g.val i j) ≤ a⁻¹`.
+
+Introduce `g hg i j`. Establish `hA` using `mem_strip.mp hg i j`. Use `split_ifs at hA with h`. Conclude with `le_inv_of_mul_le ha0 (by rw [ha_def, ← map_mul]; exact hA.1)`. Rewrite using `[hA]`.
+
+Conclude with `(val_one_apply_le i j).trans h1t`. Use `(GlobalTheory.PairingOne.isCompact_bounded (m := Fin n) a⁻¹).of_isClosed_subset isClosed_strip ?_` and prove the remaining obligations. Introduce `g hg`. Conclude with `⟨hbd g hg, hbd g⁻¹ (inv_mem hg)⟩`.
+-/
 theorem isCompact_strip (hϖ0 : ϖ ≠ 0) (hϖ : valuation k ϖ < 1) : IsCompact (strip ψ r ϖ m) := by
   set a := valuation k (ϖ ^ m) with ha_def
   have ha0 : a ≠ 0 := (Valuation.ne_zero_iff _).mpr (pow_ne_zero _ hϖ0)
@@ -168,6 +243,9 @@ theorem isCompact_strip (hϖ0 : ϖ ≠ 0) (hϖ : valuation k ϖ < 1) : IsCompact
   intro g hg
   exact ⟨hbd g hg, hbd g⁻¹ (inv_mem hg)⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n ψ r ϖ _ hϖ0 hϖ _`. Use `⟨fun m => ⟨one_mem, fun a ha b hb => mul_mem ha hb, fun a ha => inv_mem ha, isCompact_strip hϖ0 hϖ, rfl, fun _ _ _ _ => (mul_one 1).symm, ⟨Set.univ, Filter.univ_mem, fun _ _ _ => rfl⟩⟩, fun m m' hmm => mono hϖ hmm⟩` and prove the remaining obligations.
+-/
 theorem strip_datum_monotone : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ψ : Fin n → kˣ →* ℂˣ) (r : ℕ) (ϖ : k), (∀ i, IsSmoothChar (ψ i)) → ϖ ≠ 0 → valuation k ϖ < 1 → (∀ x : k, valuation k x < 1 → valuation k x ≤ valuation k ϖ) → (∀ m, Datum (strip ψ r ϖ m) (fun _ => 1)) ∧ Monotone (strip ψ r ϖ) := by
   intro k _ _ _ _ n ψ r ϖ _ hϖ0 hϖ _
   refine ⟨fun m => ⟨one_mem, fun a ha b hb => mul_mem ha hb, fun a ha => inv_mem ha,

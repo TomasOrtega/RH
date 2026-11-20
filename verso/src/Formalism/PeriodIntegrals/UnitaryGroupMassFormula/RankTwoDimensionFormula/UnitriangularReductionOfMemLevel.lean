@@ -27,6 +27,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (TR : TypedRed X)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules. Use `_ = TR.res v 1 := TR.res_ew v 1`.
+
+Use `_ = 1 := map_one _`.
+-/
 theorem res_ew_one (v : TR.Pl) : TR.res v ⟨X.ew, X.ew_int⟩ = 1 := by
   calc TR.res v ⟨X.ew, X.ew_int⟩
       = TR.res v ⟨X.ew * ((1 : IntAf X.B.I.F X.B.I.E) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F),
@@ -37,6 +42,11 @@ theorem res_ew_one (v : TR.Pl) : TR.res v ⟨X.ew, X.ew_int⟩ = 1 := by
     _ = TR.res v 1 := TR.res_ew v 1
     _ = 1 := map_one _
 
+/- English proof (translation)
+Distinguish the cases in `hb : b`. Rewrite `hZ`, the goal using `[if_pos hb]`. Establish `hmem : c - X.ew ∈ IntAf X.B.I.F X.B.I.E` using `sub_mem hc X.ew_int`. Establish `hk` using `(TR.res_ker ⟨c - X.ew, hmem⟩).mpr (Z_smul X.B.I X.B.g X.ew_int hZ) v`. Establish `e : (⟨c - X.ew, hmem⟩ : IntAf X.B.I.F X.B.I.E) = ⟨c, hc⟩ - ⟨X.ew, X.ew_int⟩` using `rfl`.
+
+Rewrite `hk` using `[e, map_sub, res_ew_one, sub_eq_zero]`. Conclude with `hk`. Rewrite `hZ` using `[if_neg hb, sub_zero]`. Rewrite using `[if_neg hb]`. Conclude with `(TR.res_ker ⟨c, hc⟩).mpr (Z_smul X.B.I X.B.g X.ew_int hZ) v`.
+-/
 theorem res_of_Z_delta (v : TR.Pl) {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (hc : c ∈ IntAf X.B.I.F X.B.I.E) (b : Prop)
     [Decidable b] (hZ : ZMod' X.B.I X.B.g (c - if b then X.ew else 0)) :
     TR.res v ⟨c, hc⟩ = if b then 1 else 0 := by
@@ -51,6 +61,17 @@ theorem res_of_Z_delta (v : TR.Pl) {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (hc : c
     rw [if_neg hb]
     exact (TR.res_ker ⟨c, hc⟩).mpr (Z_smul X.B.I X.B.g X.ew_int hZ) v
 
+/- English proof (translation)
+Take `⟨hK, -, -, hc3⟩` from `hk`. Establish `hbwd : ∀ i, X.bwd i ∈ X.B.I.Lf` using `fun i => (X.vectorsInLattice.2.2 i).2`. Establish `hbb : ∀ i j : Fin D.R.k, i ≠ j → ZMod' X.B.I X.B.g (hA X.B.I (X.bwd i) (X.bw j))`. Introduce `i j hij`. Establish `h` using `X.bw_dual i j`.
+
+Rewrite `h` using `[if_neg hij, sub_zero]`. Then use the resulting hypothesis. Establish `key : ∀ i j : Fin D.R.k, j ≤ i → leviM TR x v i j = if i = j then 1 else 0`. Introduce `i j hji`. Establish `hmv : X.B.I.fmat x *ᵥ X.bw j ∈ X.B.I.Lf` using `K_mv X.B.I hK (X.vectorsInLattice.2.2 j).1`. Establish `hc : hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw j) ∈ IntAf X.B.I.F X.B.I.E` using `hA_int X.B.I (hbwd i) hmv`.
+
+Establish `hsub : Mo X.B.I X.B.g (Set.range X.e0 ∪ X.bw '' {l | l.1 < j.1}) ≤ Qs X.B.I X.B.g (X.bwd i)` using `le_trans (Mo_mono X.B.I (Set.union_subset_union_right _ (Set.image_mono (lt_sub (Fin.le_iff_val_le_val.mp hji))))) (Mb_Q X.B.I X.B.g X.e0 X.bw X.bwd hbwd (fun i a => dual_beta_reference_congruence i a) hbb i)`. Establish `h2 : ZMod' X.B.I X.B.g (hA X.B.I (X.bwd i) ((X.B.I.fmat x - 1) *ᵥ X.bw j))` using `hsub (hc3 j)`. Establish `hZ : ZMod' X.B.I X.B.g (hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw j) - if i = j then X.ew else 0)`. Establish `e : hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw j) - (if i = j then X.ew else 0) = (hA X.B.I (X.bwd i) (X.bw j) - if i = j then X.ew else 0) + hA X.B.I (X.bwd i) ((X.B.I.fmat x - 1) *ᵥ X.bw j)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, hA_sub_right]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Z_add X.B.I X.B.g (X.bw_dual i j) h2`. Use `show resT TR v (hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw j)) = _`. Rewrite using `[resT_of_mem TR v hc]`.
+
+Conclude with `res_of_Z_delta TR v hc (i = j) hZ`. Use `show (∀ i : Fin D.R.k, ((levi TR x v : GL (Fin D.R.k) (TR.Fq v)) : Matrix (Fin D.R.k) (Fin D.R.k) (TR.Fq v)) i i = 1) ∧ ∀ i j : Fin D.R.k, j < i → ((levi TR x v : GL (Fin D.R.k) (TR.Fq v)) : Matrix (Fin D.R.k) (Fin D.R.k) (TR.Fq v)) i j = 0`. Rewrite using `[levi_coe TR hx v]`. Conclude with `⟨fun i => by rw [key i i le_rfl, if_pos rfl], fun i j hji => by rw [key i j hji.le, if_neg (ne_of_lt hji).symm]⟩`.
+-/
 theorem unitriangular_reduction_of_mem_level {x : X.B.I.Gf} (hx : Good X x) (hk : x ∈ X.K2) (v : TR.Pl) :
     Formalism.L2.SG.GGMirabolic.IsUni D.R.k (levi TR x v) := by
   obtain ⟨hK, -, -, hc3⟩ := hk

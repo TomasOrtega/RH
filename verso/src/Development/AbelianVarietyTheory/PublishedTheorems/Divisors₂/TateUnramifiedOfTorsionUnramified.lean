@@ -54,9 +54,15 @@ def specAut (σ : Ω ≃ₐ[K] Ω) : ptOver K Ω ⟶ ptOver K Ω :=
     ext x
     simp)
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (Spec.map_id (CommRingCat.of Ω))`.
+-/
 theorem specAut_one : specAut (1 : Ω ≃ₐ[K] Ω) = 𝟙 _ :=
   Over.OverMorphism.ext (Spec.map_id (CommRingCat.of Ω))
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by change spMap _ = spMap _ ≫ spMap _ rw [← Spec.map_comp] rfl)`.
+-/
 theorem specAut_mul (σ τ : Ω ≃ₐ[K] Ω) : specAut (σ * τ) = specAut σ ≫ specAut τ :=
   Over.OverMorphism.ext (by
     change spMap _ = spMap _ ≫ spMap _
@@ -69,6 +75,9 @@ def galPts (σ : Ω ≃ₐ[K] Ω) : (ptOver K Ω ⟶ A) →* (ptOver K Ω ⟶ A)
   MonoidHom.mk' (fun x => specAut σ ≫ x) fun x y => MonObj.comp_mul _ x y
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galPts_left (σ : Ω ≃ₐ[K] Ω) (x : ptOver K Ω ⟶ A) :
     (galPts A σ x).left = spMap (σ : Ω →+* Ω) ≫ x.left := rfl
 
@@ -81,6 +90,9 @@ def galTate (l : ℕ) [Fact l.Prime] : (Ω ≃ₐ[K] Ω) →* Module.End ℤ_[l]
     change specAut (σ * τ) ≫ t.lev n = specAut σ ≫ specAut τ ≫ t.lev n
     rw [specAut_mul, Category.assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_galTate (l : ℕ) [Fact l.Prime] (σ : Ω ≃ₐ[K] Ω) (t : Tate l (ptOver K Ω ⟶ A)) (n : ℕ) :
     (galTate A l σ t).lev n = galPts A σ (t.lev n) := rfl
 
@@ -133,6 +145,15 @@ def SerreTateGoodReductionSt : Prop :=
 
 namespace AbVarRed
 
+/- English proof (translation)
+Establish `key : ∀ τ : V.decompositionSubgroup K, τ ∈ V.inertiaSubgroup K ↔ ∀ x ∈ V, V.valuation ((τ : Ω ≃ₐ[K] Ω) x - x) < 1` using `fun τ => by`. Establish `h : ∀ x : V, τ • residue V x = residue V x ↔ V.valuation ((τ : Ω ≃ₐ[K] Ω) x - x) < 1` using `fun x => by`. Rewrite using `[← ResidueField.residue_smul, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Both sides reduce to the same expression. Rewrite using `[ValuationSubring.inertiaSubgroup, MonoidHom.mem_ker]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `e x hx`. Conclude with `(h ⟨x, hx⟩).1 (DFunLike.congr_fun e (residue V ⟨x, hx⟩))`. Introduce `e`. Use `RingEquiv.ext fun y => ?_` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `residue_surjective y`. Conclude with `(h x).2 (e x x.2)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, hτ, rfl⟩`. Conclude with `⟨τ.2, (key τ).1 hτ⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨σ, h1⟩, (key _).2 h2, rfl⟩`.
+-/
 theorem mem_inertia_iff {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (V : ValuationSubring Ω) (σ : Ω ≃ₐ[K] Ω) :
     σ ∈ inertia K V ↔ σ • V = V ∧ ∀ x ∈ V, V.valuation (σ x - x) < 1 := by
   have key : ∀ τ : V.decompositionSubgroup K, τ ∈ V.inertiaSubgroup K ↔
@@ -155,21 +176,35 @@ theorem mem_inertia_iff {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (V : V
   · rintro ⟨h1, h2⟩
     exact ⟨⟨σ, h1⟩, (key _).2 h2, rfl⟩
 
+/- English proof (translation)
+Take `⟨V, -, -, -, h⟩` from `exists_valuationSubring_dominating (V := R) (algebraMap K Ω)`. Conclude with `⟨V, Subring.ext h⟩`.
+-/
 theorem exists_isAbove (R K Ω : Type) [CommRing R] [IsDomain R] [ValuationRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] [Field Ω] [Algebra K Ω] : ∃ V : ValuationSubring Ω, IsAbove R K V.toSubring := by
   obtain ⟨V, -, -, -, h⟩ := exists_valuationSubring_dominating (V := R) (algebraMap K Ω)
   exact ⟨V, Subring.ext h⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨G, inferInstance, hG, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 _))⟩`.
+-/
 theorem hasGoodReduction_genericFibre (R K : Type) [CommRing R] [Field K] [Algebra R K] (G : Over (Sp R))
     [GrpObj G] (hG : IsAbelianScheme G) :
     HasGoodReduction R K ((Over.pullback (spMap (algebraMap R K))).obj G) :=
   ⟨G, inferInstance, hG, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 _))⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem hasGoodReduction_baseChange_iff {K W L : Type} [Field K] [CommRing W] [Field L] [Algebra K L] [Algebra W L]
     (A : Over (Sp K)) [GrpObj A] :
     HasGoodReduction W L ((Over.pullback (spMap (algebraMap K L))).obj A) ↔
       ∃ (G : Over (Sp W)) (_ : GrpObj G), IsAbelianScheme G ∧ GlobalTheory.SS.IsModel (L := L) A G := Iff.rfl
 
+/- English proof (translation)
+Take `⟨G, _, hG, e, he⟩` from `h`. Use `⟨K, R, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, Subring.ext fun _ => Iff.rfl, G, inferInstance, hG, ?_⟩` and prove the remaining obligations. Establish `hh : spMap (algebraMap K K) = 𝟙 (Sp K)`. Rewrite using `[← Spec.map_id]`. Use `congr 1`.
+
+Take `⟨e', he', -⟩` from `grpPullback_iso ((isGrpPullback_of_iso e).congr hh.symm rfl) (isGrpPullback_pullback A (spMap (algebraMap K K)))`. Conclude with `⟨e', he'⟩`.
+-/
 theorem HasGoodReduction.potential {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K]
     [Algebra R K] [IsFractionRing R K] {A : Over (Sp K)} [GrpObj A] (h : HasGoodReduction R K A) :
     HasPotentialGoodReduction R K A := by
@@ -183,6 +218,9 @@ theorem HasGoodReduction.potential {R K : Type} [CommRing R] [IsDomain R] [IsDis
     (isGrpPullback_pullback A (spMap (algebraMap K K)))
   exact ⟨e', he'⟩
 
+/- English proof (translation)
+Introduce `σ hσ` and use `LinearMap.ext fun t => Tate.ext fun n => h n σ hσ _ (t.lev_pow n)`.
+-/
 theorem tateUnramified_of_torsionUnramified {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {A : Over (Sp K)}
     [GrpObj A] [IsCommMonObj A] {V : ValuationSubring Ω} {l : ℕ} [Fact l.Prime]
     (h : ∀ n, TorsionUnramified A V (l ^ n)) : TateUnramified A V l :=
@@ -196,6 +234,9 @@ variable {R K Ω : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [
   [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] {V : ValuationSubring Ω}
   {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+Establish `t` using `h R K Ω V hV A hA`. Establish `t01 : HasGoodReduction R K A ↔ ∀ m : ℕ, (m : ResidueField R) ≠ 0 → TorsionUnramified A V m` using `t.out 0 1`. Establish `t03 : HasGoodReduction R K A ↔ ∃ (l : ℕ) (_ : Fact l.Prime), (l : ResidueField R) ≠ 0 ∧ TateUnramified A V l` using `t.out 0 3`. Conclude with `⟨fun hg => tateUnramified_of_torsionUnramified fun n => t01.1 hg (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl), fun ht => t03.2 ⟨l, _, hl, ht⟩⟩`.
+-/
 theorem NeronOggShafarevichSt.iff_tateUnramified (h : NeronOggShafarevichSt) [PerfectField (ResidueField R)]
     (hV : IsAbove R K V.toSubring) (hA : IsAbelianScheme A) (l : ℕ) [Fact l.Prime]
     (hl : (l : ResidueField R) ≠ 0) : HasGoodReduction R K A ↔ TateUnramified A V l := by
@@ -206,6 +247,9 @@ theorem NeronOggShafarevichSt.iff_tateUnramified (h : NeronOggShafarevichSt) [Pe
   exact ⟨fun hg => tateUnramified_of_torsionUnramified fun n =>
     t01.1 hg (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl), fun ht => t03.2 ⟨l, _, hl, ht⟩⟩
 
+/- English proof (translation)
+The claim follows from `(h.2.1 R K Ω V hV A hA l hl).1 (h.2.2 R K A hA F hF)`.
+-/
 theorem SerreTateGoodReductionSt.finite_image_of_hasCMBy (h : SerreTateGoodReductionSt)
     [Finite (ResidueField R)] (hV : IsAbove R K V.toSubring) (hA : IsAbelianScheme A) {F : Type} [Field F]
     [NumberField F] (hF : HasCMBy A F) (l : ℕ) [Fact l.Prime] (hl : (l : ResidueField R) ≠ 0) :
@@ -222,21 +266,40 @@ def gaussEquiv : (ℤ × ℤ) ≃ₗ[ℤ] GaussianInt :=
   ({ toFun := fun p => ⟨p.1, p.2⟩, invFun := fun z => (z.re, z.im), map_add' := fun _ _ => rfl,
       left_inv := fun _ => rfl, right_inv := fun _ => rfl } : (ℤ × ℤ) ≃+ GaussianInt).toIntLinearEquiv
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.finrank_eq ℤ ℚ O F`.
+-/
 theorem finrank_eq_of_isFractionRing (O F : Type) [CommRing O] [Field F] [CharZero F] [Algebra O F]
     [IsFractionRing O F] : Module.finrank ℚ F = Module.finrank ℤ O :=
   IsFractionRing.finrank_eq ℤ ℚ O F
 
+/- English proof (translation)
+Rewrite using `[finrank_eq_of_isFractionRing GaussianInt, ← gaussEquiv.finrank_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_gaussField : Module.finrank ℚ (FractionRing GaussianInt) = 2 := by
   rw [finrank_eq_of_isFractionRing GaussianInt, ← gaussEquiv.finrank_eq]
   simp
 
+/- English proof (translation)
+The claim follows from `Module.finite_of_finrank_pos (by rw [finrank_gaussField]; norm_num)`.
+-/
 theorem numberField_gaussField : NumberField (FractionRing GaussianInt) where
   to_finiteDimensional := Module.finite_of_finrank_pos (by rw [finrank_gaussField]; norm_num)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by norm_num⟩`.
+-/
 theorem factPrimeFive : Fact (Nat.Prime 5) := ⟨by norm_num⟩
 
 attribute [local instance] factPrimeFive
 
+/- English proof (translation)
+Establish `h5 : ‖(5 : ℤ_[5])‖ < 1`. Use `PadicInt.norm_p (p := 5)` as an intermediate fact. Rewrite using `[show (5 : ℤ_[5]) = ((5 : ℕ) : ℤ_[5]) by norm_num, this]`. Evaluate the numerical expressions. Establish `h4 : ‖(4 : ℤ_[5])‖ = 1`.
+
+Establish `h` using `(PadicInt.norm_natCast_eq_one_iff (p := 5) (n := 4)).2 (by norm_num)`. Conclude with `h` after adjusting the coercions. Take `⟨z, hz, -⟩` from `hensels_lemma (p := 5) (R := ℤ) (F := Polynomial.X ^ 2 + 1) (a := 2) (by`. Establish `e1 : Polynomial.aeval (2 : ℤ_[5]) (Polynomial.X ^ 2 + 1 : Polynomial ℤ) = 5` using `by simp; norm_num`. Establish `e2 : Polynomial.aeval (2 : ℤ_[5]) (Polynomial.derivative (Polynomial.X ^ 2 + 1 : Polynomial ℤ)) = 4`.
+
+Simplify using `[map_ofNat]`. Evaluate the numerical expressions. Rewrite using `[e1, e2, h4]`. Simplify using `using h5)`. Conclude with `⟨z, eq_neg_of_add_eq_zero_left (by simpa using hz)⟩`.
+-/
 theorem exists_sq_eq_neg_one : ∃ i : ℤ_[5], i ^ 2 = -1 := by
   have h5 : ‖(5 : ℤ_[5])‖ < 1 := by
     have := PadicInt.norm_p (p := 5)
@@ -253,6 +316,13 @@ theorem exists_sq_eq_neg_one : ∃ i : ℤ_[5], i ^ 2 = -1 := by
     simpa using h5)
   exact ⟨z, eq_neg_of_add_eq_zero_left (by simpa using hz)⟩
 
+/- English proof (translation)
+Establish `h2 : IsUnit (2 : ℤ_[5])`. Rewrite using `[PadicInt.isUnit_iff]`. Establish `h` using `(PadicInt.norm_natCast_eq_one_iff (p := 5) (n := 2)).2 (by norm_num)`. Conclude with `h` after adjusting the coercions. Use `⟨Finite.of_equiv _ (PadicInt.residueField (p := 5)).symm.toEquiv, ?_, exists_isAbove _ _ _, inferInstance, ?_⟩` and prove the remaining obligations.
+
+Use `(h2.map (residue ℤ_[5])).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Take `⟨i, hi⟩` from `exists_sq_eq_neg_one`. Use `isElliptic_gaussianCurve h2` as an intermediate fact. Establish `hG` using `isAbelianScheme_schemeOver _ (gaussianCurve ℤ_[5]) (gaussianCurve ℤ_[5]).isUnit_Δ inferInstance`.
+
+Establish `hd : SmoothOfRelativeDimension 1 ((Over.pullback (spMap (algebraMap ℤ_[5] ℚ_[5]))).obj (schemeOver (gaussianCurve ℤ_[5]))).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) (smoothOfRelativeDimension_toSpec_of_isUnit _ (gaussianCurve ℤ_[5]).isUnit_Δ)`. Use `numberField_gaussField` as an intermediate fact. Establish `hg` using `hasGoodReduction_genericFibre ℤ_[5] ℚ_[5] _ hG`. Conclude with `⟨_, _, FractionRing GaussianInt, inferInstance, inferInstance, isAbelianScheme_pullback_obj _ _ hG, hd, ⟨⟨1, hd, finrank_gaussField⟩, GaussianInt, inferInstance, inferInstance, inferInstance, ⟨(gaussianAct hi).pullback _⟩⟩, hg, hg.potential⟩`.
+-/
 theorem exists_cm_curve :
     Finite (ResidueField ℤ_[5]) ∧ ((2 : ℕ) : ResidueField ℤ_[5]) ≠ 0 ∧
     (∃ V : ValuationSubring (AlgebraicClosure ℚ_[5]), IsAbove ℤ_[5] ℚ_[5] V.toSubring) ∧

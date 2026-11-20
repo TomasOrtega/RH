@@ -20,6 +20,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PsiFinAlgebraic.isAlgebraic_psi_symplOH | exact GlobalTheory.PsiFinAlgebraic.isAlgebraic_psi_symplOH | (intros; apply GlobalTheory.PsiFinAlgebraic.isAlgebraic_psi_symplOH <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isAlgebraic_stdChar_halfSymplectic_realPart_zero : ∀ {D : D7} {ψ : AddChar (AF D.host.F) ℂ}, IsStdChar D ψ (-1) → ∀ (S T : HSp D) (u v : WO S T),
     u.map (infPart D) = 0 → v.map (infPart D) = 0 → IsAlgebraic ℚ (ψ (symplOH S T u v)) := by
   first | exact @GlobalTheory.PsiFinAlgebraic.isAlgebraic_psi_symplOH | exact GlobalTheory.PsiFinAlgebraic.isAlgebraic_psi_symplOH | (intros; apply GlobalTheory.PsiFinAlgebraic.isAlgebraic_psi_symplOH <;> assumption)

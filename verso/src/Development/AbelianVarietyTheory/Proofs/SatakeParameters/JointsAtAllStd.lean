@@ -8,6 +8,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 set_option maxHeartbeats 1000000
 
+/- English proof (translation)
+Introduce `B f T w Z O P hL`. Take `⟨htw, -, hpiT, -, t, hstd, -, -⟩` from `GlobalTheory.Svd.Part.kerTie B f T w Z O P`. Establish `hchi` using `(GlobalTheory.Mem.ChiDVal.chiD_values_and_cc_top B f T w Z).1`. Take `⟨L, gatT, Gx, Gy, K, X, cX, ex⟩` from `O`. Take `⟨pin, col, errX, tp, xi, qp, ker0, ker_eq, ker⟩` from `P`.
+
+Simplify using `only [ofObj, extraObj] at ker_eq`. Establish `h1` using `congrArg Sigma.fst ker_eq`. Simplify using `only at h1`. Substitute `h1` using the available equality. Establish `h2` using `eq_of_heq (Sigma.mk.inj ker_eq).2`.
+
+Establish `h3` using `congrArg Sigma.fst h2`. Simplify using `only at h3`. Take `⟨lev, th, th_io, cmp, lat, tw, exker⟩` from `ex`. Simplify using `only at h3`. Substitute `h3` using the available equality.
+
+Conclude with `GlobalTheory.T.kernel_relation_true_columns_joints_all_tuples w.I w.ok w.pins w.l w.l0 Z L col.Gt Gx Gy K X cX _ t col.C col.full col.g _ tp xi pin.isTw pin.jets htw hpiT hstd col.std col.stdLv col.stdDt col.herm_eq col.forms_eq hchi hL`.
+-/
 theorem GlobalTheory.Svd.jointsAt_all_std : ∀ (B : GlobalTheory.Mem.Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (O : Obj (w.D Z)), Part w Z (ofObj O) → G.LatTied O.gatT O.Gx O.Gy → (∃ t : KerEntTied O.ex, ∀ μ, GlobalTheory.TwV.JointsAt t μ) ∧ ∀ u, O.ex.tw.e0 u (w.D Z).what₂.mu0 = O.ex.tw.eMu0 u 0 (Nat.zero_le _) := by
   intro B f T w Z O P hL
   obtain ⟨htw, -, hpiT, -, t, hstd, -, -⟩ := GlobalTheory.Svd.Part.kerTie B f T w Z O P

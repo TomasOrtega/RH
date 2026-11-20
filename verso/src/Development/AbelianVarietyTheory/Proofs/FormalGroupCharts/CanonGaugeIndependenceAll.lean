@@ -16,10 +16,16 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GE.gauge_exp_identity germ_expAdd_and_evConst.1 germ_expAdd_and_evConst.2 canonGauge_sub_isBiadd quadDeriv_of_biadditive HalfIdentity.halfSt`.
+-/
 theorem gaugeExp_holds : GaugeExpSt :=
   GE.gauge_exp_identity germ_expAdd_and_evConst.1 germ_expAdd_and_evConst.2 canonGauge_sub_isBiadd
     quadDeriv_of_biadditive HalfIdentity.halfSt
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨G2.galois_twist_preserves_siegel_bound germ_expAdd_and_evConst.1 germ_expAdd_and_evConst.2 canonGauge_sub_isBiadd quadDeriv_of_biadditive (wickVanish_of_half HalfIdentity.halfSt), gaugeExp_holds, WickVanishing.gauge_second_columns_of_exp gaugeExp_holds, WickVanishing.connection_ …`.
+-/
 theorem canonGauge_independence_all : AdmissibilitySecond ∧ GaugeExpSt ∧ GaugeIndependenceColumns ∧ NabTransSt :=
   ⟨G2.galois_twist_preserves_siegel_bound germ_expAdd_and_evConst.1 germ_expAdd_and_evConst.2 canonGauge_sub_isBiadd
       quadDeriv_of_biadditive (wickVanish_of_half HalfIdentity.halfSt),

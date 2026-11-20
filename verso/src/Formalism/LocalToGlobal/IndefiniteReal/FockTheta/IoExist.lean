@@ -116,6 +116,11 @@ def IoPiFromHW (D : D7) : Prop :=
 
 section Lemmas
 
+/- English proof (translation)
+Establish `hsub : Finset.range (i + 1) ⊆ (Finset.range L).filter (fun j => f j ≠ 0)`. Introduce `j hj`. Simplify using `only [Finset.mem_range, Finset.mem_filter] at hj ⊢`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Use `hf (show j ≤ i by omega)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `using Finset.card_le_card hsub`.
+-/
 theorem le_card_of_antitone {f : ℕ → ℕ} (hf : Antitone f) {i L : ℕ} (hi : i < L) (h : f i ≠ 0) :
     i + 1 ≤ ((Finset.range L).filter (fun j => f j ≠ 0)).card := by
   have hsub : Finset.range (i + 1) ⊆ (Finset.range L).filter (fun j => f j ≠ 0) := by
@@ -128,6 +133,13 @@ theorem le_card_of_antitone {f : ℕ → ℕ} (hf : Antitone f) {i L : ℕ} (hi 
 
 variable {m n : ℕ}
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `congrArg (MvPolynomial.eval (fun x : FVar D m n => if x.1 = τ ∧ (x.2.1 : ℕ) = x.2.2 then (1 : ℂ) else 0)) h0`. Rewrite `h1` using `[minorPlus, RingHom.map_det, map_zero]`. Establish `h2 : (MvPolynomial.eval (fun x : FVar D m n => if x.1 = τ ∧ (x.2.1 : ℕ) = x.2.2 then (1 : ℂ) else 0)).mapMatrix (Matrix.of fun α β : Fin k => (varF τ β α : MvPolynomial (FVar D m n) ℂ)) = 1`. Use extensionality with `α β`.
+
+Establish `hα` using `α.isLt`. Establish `hβ` using `β.isLt`. Establish `hr : (β : ℕ) < m ∧ (α : ℕ) < n` using `⟨by omega, by omega⟩`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, varF, dif_pos hr, MvPolynomial.eval_X, Matrix.one_apply, true_and, Fin.ext_iff, eq_comm]`. Rewrite `h1` using `[h2, Matrix.det_one]`.
+
+Conclude with `one_ne_zero h1`.
+-/
 theorem minorPlus_ne_zero (τ : D.what₂.Tau) (k : ℕ) (hm : k ≤ m) (hn : k ≤ n) :
     (minorPlus τ k : MvPolynomial (FVar D m n) ℂ) ≠ 0 := by
   classical
@@ -147,6 +159,15 @@ theorem minorPlus_ne_zero (τ : D.what₂.Tau) (k : ℕ) (hm : k ≤ m) (hn : k 
   rw [h2, Matrix.det_one] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `congrArg (MvPolynomial.eval (fun x : FVar D m n => if x.1 = τ ∧ (x.2.1 : ℕ) + (n - k) = (x.2.2 : ℕ) + p then (1 : ℂ) else 0)) h0`. Rewrite `h1` using `[minorMinus, RingHom.map_det, map_zero]`. Establish `h2 : (MvPolynomial.eval (fun x : FVar D m n => if x.1 = τ ∧ (x.2.1 : ℕ) + (n - k) = (x.2.2 : ℕ) + p then (1 : ℂ) else 0)).mapMatrix (Matrix.of fun α β : Fin k => (varF τ (p + β) (n - k + α) : MvPolynomial (FVar D m n) ℂ)) = 1`. Use extensionality with `α β`.
+
+Establish `hα` using `α.isLt`. Establish `hβ` using `β.isLt`. Establish `hr : p + (β : ℕ) < m ∧ n - k + (α : ℕ) < n` using `⟨by omega, by omega⟩`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, varF, dif_pos hr, MvPolynomial.eval_X, Matrix.one_apply, true_and]`. Distinguish the cases in `hab : α = β`.
+
+Substitute `hab; simp only [if_true]; rw [if_pos (by omega)]` using the available equality. Rewrite using `[if_neg hab, if_neg]`. Introduce `h`. Apply `hab` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[h2, Matrix.det_one]`. Conclude with `one_ne_zero h1`.
+-/
 theorem minorMinus_ne_zero (τ : D.what₂.Tau) (p k : ℕ) (hm : p + k ≤ m) (hn : k ≤ n) :
     (minorMinus τ p k : MvPolynomial (FVar D m n) ℂ) ≠ 0 := by
   classical
@@ -170,6 +191,15 @@ theorem minorMinus_ne_zero (τ : D.what₂.Tau) (p k : ℕ) (hm : p + k ≤ m) (
   rw [h2, Matrix.det_one] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Unfold `delta`. Use `Finset.prod_ne_zero_iff.mpr fun τ _ => ?_` and prove the remaining obligations. Unfold `deltaAt`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun i hi => ?_) (Finset.prod_ne_zero_iff.mpr fun i hi => ?_)` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`.
+
+Distinguish the cases in `h0 : ap τ i - (if i + 1 < p τ then ap τ (i + 1) else 0) = 0`. Rewrite using `[h0, pow_zero]`. Conclude with `one_ne_zero`. Establish `hne : ap τ i ≠ 0` using `by omega`. Use `le_card_of_antitone (hap τ) hi hne` as an intermediate fact.
+
+Use `hcard τ` as an intermediate fact. Conclude with `pow_ne_zero _ (minorPlus_ne_zero τ (i + 1) (by have := hp τ; omega) (by omega))`. Simplify using `only [Finset.mem_range] at hi`. Distinguish the cases in `h0 : am τ i - (if i + 1 < m - p τ then am τ (i + 1) else 0) = 0`. Rewrite using `[h0, pow_zero]`.
+
+Conclude with `one_ne_zero`. Establish `hne : am τ i ≠ 0` using `by omega`. Use `le_card_of_antitone (ham τ) hi hne` as an intermediate fact. Use `hcard τ` as an intermediate fact. Conclude with `pow_ne_zero _ (minorMinus_ne_zero τ (p τ) (i + 1) (by have := hp τ; omega) (by omega))`.
+-/
 theorem delta_ne_zero (p : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) (hp : ∀ τ, p τ ≤ m)
     (hap : ∀ τ, Antitone (ap τ)) (ham : ∀ τ, Antitone (am τ))
     (hcard : ∀ τ, ((Finset.range (p τ)).filter (fun i => ap τ i ≠ 0)).card +
@@ -194,6 +224,11 @@ theorem delta_ne_zero (p : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ
       have := hcard τ
       exact pow_ne_zero _ (minorMinus_ne_zero τ (p τ) (i + 1) (by have := hp τ; omega) (by omega))
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hk i) j`. Rewrite `h` using `[sgnDiag, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `hi : (i : ℕ) < p τ`. Establish `hj : ¬ (j : ℕ) < p τ` using `hij.mp hi`. Rewrite `h` using `[if_pos hi, if_neg hj]`.
+
+Take the linear combination `(-1 / 2 : ℂ) * h`. Establish `hj : (j : ℕ) < p τ` using `by by_contra hj; exact hi (hij.mpr hj)`. Rewrite `h` using `[if_neg hi, if_pos hj]`. Take the linear combination `(1 / 2 : ℂ) * h`.
+-/
 theorem offdiag_zero (p : D.what₂.Tau → ℕ) (τ : D.what₂.Tau) (k : Matrix (Fin m) (Fin m) ℂ)
     (hk : k * sgnDiag p τ = sgnDiag p τ * k) (i j : Fin m) (hij : ((i : ℕ) < p τ ↔ ¬ (j : ℕ) < p τ)) : k i j = 0 := by
   have h := congrFun (congrFun hk i) j
@@ -206,6 +241,13 @@ theorem offdiag_zero (p : D.what₂.Tau → ℕ) (τ : D.what₂.Tau) (k : Matri
     rw [if_neg hi, if_pos hj] at h
     linear_combination (1 / 2 : ℂ) * h
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi'` using `i.isLt`. Establish `hj'` using `j.isLt`. Simplify using `only [blockDiagonalOfBlocks, blk1, blk2, Matrix.of_apply]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < p τ <;> by_cases hj : (j : ℕ) < p τ`.
+
+Rewrite using `[dif_pos hi, dif_pos hj, dif_pos ⟨hi', hj'⟩]`. Rewrite using `[dif_pos hi, dif_neg hj]`. Conclude with `(offdiag_zero p τ (kk τ) (hk τ) i j ⟨fun _ => hj, fun _ => hi⟩).symm`. Rewrite using `[dif_neg hi, dif_pos hj]`. Conclude with `(offdiag_zero p τ (kk τ) (hk τ) i j ⟨fun h => absurd h hi, fun h => absurd hj h⟩).symm`.
+
+Rewrite using `[dif_neg hi, dif_neg hj]`. Apply the tactic sequence `congr 1 <;> apply Fin.ext <;> simp only <;> omega`.
+-/
 theorem block_diagonal_of_blocks_eq (p : D.what₂.Tau → ℕ) (kk : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ)
     (hk : ∀ τ, kk τ * sgnDiag p τ = sgnDiag p τ * kk τ) (τ : D.what₂.Tau) :
     blockDiagonalOfBlocks p (blk1 p kk) (blk2 p kk) τ = kk τ := by
@@ -228,6 +270,17 @@ section Transfer
 
 variable {m : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Establish `hK` using `Matrix.mem_unitaryGroup_iff'.mp (hu τ)`. Establish `hpm` using `hp τ`. Use extensionality with `i j`. Establish `hi` using `i.isLt`.
+
+Establish `hj` using `j.isLt`. Use `set g : ℕ → ℂ := fun l => if h : l < m then star (kk τ ⟨l, h⟩ ⟨i, by omega⟩) * kk τ ⟨l, h⟩ ⟨j, by omega⟩ else 0 with hg`. Establish `e1 : (star (blk1 p kk τ) * blk1 p kk τ) i j = ∑ l ∈ Finset.range (p τ), g l`. Rewrite using `[Matrix.mul_apply, ← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Establish `hl` using `l.isLt`. Simplify using `[hg, blk1, Matrix.star_apply, show (l : ℕ) < m by omega, show (i : ℕ) < m by omega, show (j : ℕ) < m by omega]`. Establish `e2 : (star (kk τ) * kk τ) ⟨i, by omega⟩ ⟨j, by omega⟩ = ∑ l ∈ Finset.range m, g l`. Rewrite using `[Matrix.mul_apply, ← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Simplify using `[hg, Matrix.star_apply, l.isLt]`. Establish `e3 : ∑ l ∈ Finset.range (p τ), g l = ∑ l ∈ Finset.range m, g l`. Use `Finset.sum_subset (Finset.range_subset.mpr fun x hx => Finset.mem_range.mpr (by omega)) fun l hl hnot => ?_` and prove the remaining obligations. Rewrite `hl`, `hnot` using `[Finset.mem_range]`. Establish `h0` using `offdiag_zero p τ (kk τ) (hk τ) ⟨l, hl⟩ ⟨i, by omega⟩ ⟨fun h => absurd h (by omega), fun h => absurd hi (by simpa using h)⟩`.
+
+Simplify using `[hg, hl, h0]`. Rewrite using `[e1, e3, ← e2, hK]`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`.
+-/
 theorem first_diagonal_block_unitary (p : D.what₂.Tau → ℕ) (hp : ∀ τ, p τ ≤ m) (kk : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ)
     (hk : ∀ τ, kk τ * sgnDiag p τ = sgnDiag p τ * kk τ) (hu : ∀ τ, kk τ ∈ Matrix.unitaryGroup (Fin m) ℂ)
     (τ : D.what₂.Tau) : blk1 p kk τ ∈ Matrix.unitaryGroup (Fin (p τ)) ℂ := by
@@ -258,6 +311,19 @@ theorem first_diagonal_block_unitary (p : D.what₂.Tau → ℕ) (hp : ∀ τ, p
   rw [e1, e3, ← e2, hK]
   simp [Matrix.one_apply, Fin.ext_iff]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Establish `hK` using `Matrix.mem_unitaryGroup_iff'.mp (hu τ)`. Establish `hpm` using `hp τ`. Use extensionality with `i j`. Establish `hi` using `i.isLt`.
+
+Establish `hj` using `j.isLt`. Use `set g : ℕ → ℂ := fun l => if h : l < m then star (kk τ ⟨l, h⟩ ⟨p τ + i, by omega⟩) * kk τ ⟨l, h⟩ ⟨p τ + j, by omega⟩ else 0 with hg`. Establish `e1 : (star (blk2 p kk τ) * blk2 p kk τ) i j = ∑ l ∈ Finset.range (m - p τ), g (p τ + l)`. Rewrite using `[Matrix.mul_apply, ← Fin.sum_univ_eq_sum_range (fun l => g (p τ + l))]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Establish `hl` using `l.isLt`. Simplify using `[hg, blk2, Matrix.star_apply, show p τ + (l : ℕ) < m by omega]`. Establish `e2 : (star (kk τ) * kk τ) ⟨p τ + i, by omega⟩ ⟨p τ + j, by omega⟩ = ∑ l ∈ Finset.range m, g l`. Rewrite using `[Matrix.mul_apply, ← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Simplify using `[hg, Matrix.star_apply, l.isLt]`. Establish `e3 : ∑ l ∈ Finset.range m, g l = ∑ l ∈ Finset.range (m - p τ), g (p τ + l)`. Establish `hs` using `Finset.sum_range_add g (p τ) (m - p τ)`. Rewrite `hs` using `[show p τ + (m - p τ) = m by omega]`. Rewrite using `[hs, Finset.sum_eq_zero, zero_add]`.
+
+Introduce `l hl`. Rewrite `hl` using `[Finset.mem_range]`. Establish `h0` using `offdiag_zero p τ (kk τ) (hk τ) ⟨l, by omega⟩ ⟨p τ + i, by omega⟩ ⟨fun _ => show ¬ (p τ + (i : ℕ) < p τ) by omega, fun _ => show l < p τ from hl⟩`. Simplify using `[hg, show l < m by omega, h0]`. Rewrite using `[e1, ← e3, ← e2, hK]`.
+
+Simplify using `[Matrix.one_apply, Fin.ext_iff]`.
+-/
 theorem second_diagonal_block_unitary (p : D.what₂.Tau → ℕ) (hp : ∀ τ, p τ ≤ m) (kk : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ)
     (hk : ∀ τ, kk τ * sgnDiag p τ = sgnDiag p τ * kk τ) (hu : ∀ τ, kk τ ∈ Matrix.unitaryGroup (Fin m) ℂ)
     (τ : D.what₂.Tau) : blk2 p kk τ ∈ Matrix.unitaryGroup (Fin (m - p τ)) ℂ := by
@@ -290,6 +356,11 @@ theorem second_diagonal_block_unitary (p : D.what₂.Tau → ℕ) (hp : ∀ τ, 
   rw [e1, ← e3, ← e2, hK]
   simp [Matrix.one_apply, Fin.ext_iff]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Use `hp τ` as an intermediate fact.
+
+Simplify using `[blk1, Matrix.one_apply, Fin.ext_iff, show (i : ℕ) < m by omega, show (j : ℕ) < m by omega]`.
+-/
 theorem extendOne_one (p : D.what₂.Tau → ℕ) (hp : ∀ τ, p τ ≤ m) :
     blk1 p (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) = fun _ => 1 := by
   funext τ
@@ -299,20 +370,32 @@ theorem extendOne_one (p : D.what₂.Tau → ℕ) (hp : ∀ τ, p τ ≤ m) :
   have := hp τ
   simp [blk1, Matrix.one_apply, Fin.ext_iff, show (i : ℕ) < m by omega, show (j : ℕ) < m by omega]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use extensionality with `i j`. Simplify using `[blk2, Matrix.one_apply, Fin.ext_iff]`.
+-/
 theorem symmetricScalarBlockMatrix_one_zero (p : D.what₂.Tau → ℕ) :
     blk2 p (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) = fun _ => 1 := by
   funext τ
   ext i j
   simp [blk2, Matrix.one_apply, Fin.ext_iff]
 
+/- English proof (translation)
+Simplify using `[kAt]`.
+-/
 theorem kAt_self (τ : D.what₂.Tau) (k : Matrix (Fin m) (Fin m) ℂ) : kAt τ k τ = k := by
   simp [kAt]
 
+/- English proof (translation)
+Unfold `kAt`. Conclude with `Function.update_of_ne h _ _`.
+-/
 theorem kAt_ne {τ τ' : D.what₂.Tau} (k : Matrix (Fin m) (Fin m) ℂ) (h : τ' ≠ τ) : kAt τ k τ' = 1 := by
   classical
   unfold kAt
   exact Function.update_of_ne h _ _
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm sgnDiag`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[hε i]`.
+-/
 theorem jm_eq_sgnDiag (p : D.what₂.Tau → ℕ) (τ : D.what₂.Tau) (ε : Fin m → Bool)
     (hε : ∀ i, ε i = decide ((i : ℕ) < p τ)) : Formalism.REAL.Jm ε = sgnDiag p τ := by
   unfold Formalism.REAL.Jm sgnDiag
@@ -320,6 +403,11 @@ theorem jm_eq_sgnDiag (p : D.what₂.Tau → ℕ) (τ : D.what₂.Tau) (ε : Fin
   funext i
   simp [hε i]
 
+/- English proof (translation)
+Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Rewrite using `[kAt_self, ← jm_eq_sgnDiag p τ' ε hε]`. Conclude with `⟨hk.2, hk.1⟩`. Rewrite using `[kAt_ne k e]`.
+
+Conclude with `⟨by rw [Matrix.one_mul, Matrix.mul_one], one_mem _⟩`.
+-/
 theorem kAt_props (p : D.what₂.Tau → ℕ) (τ : D.what₂.Tau) (ε : Fin m → Bool) (hε : ∀ i, ε i = decide ((i : ℕ) < p τ))
     (k : Matrix (Fin m) (Fin m) ℂ) (hk : k ∈ Formalism.REAL.Kset ε) (τ' : D.what₂.Tau) :
     kAt τ k τ' * sgnDiag p τ' = sgnDiag p τ' * kAt τ k τ' ∧ kAt τ k τ' ∈ Matrix.unitaryGroup (Fin m) ℂ := by
@@ -336,6 +424,9 @@ section Elems
 
 variable {V W : HSp D} {S' : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Establish `h` using `Formalism.IndefR.Eqv.isAtTau_atH D V τ 1 (Formalism.IndefR.Eqv.unitary_one D V τ)`. Rewrite `h` using `[Formalism.IndefR.Eqv.atH_one]`. Rewrite using `[Formalism.IndefR.Eqv.eq_thetaC D hθ]`. Conclude with `h.2.1`.
+-/
 theorem infMat_one' {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau) :
     infMat D.sp.cm.sig V.gram (θ τ) (1 : GA D V) = 1 := by
   have h := Formalism.IndefR.Eqv.isAtTau_atH D V τ 1 (Formalism.IndefR.Eqv.unitary_one D V τ)
@@ -343,6 +434,15 @@ theorem infMat_one' {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.what
   rw [Formalism.IndefR.Eqv.eq_thetaC D hθ]
   exact h.2.1
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Establish `hX : (infMat D.sp.cm.sig V.gram (θ τ) u)ᴴ * gramAt D V τ * infMat D.sp.cm.sig V.gram (θ τ) u = gramAt D V τ`. Rewrite using `[Formalism.IndefR.Eqv.eq_thetaC D hθ]`. Conclude with `Formalism.IndefR.Eqv.infMat_unitary' D V u τ`. Establish `hunit : IsUnit (BV τ).det` using `Matrix.isUnit_det_of_left_inverse (hBV τ)`.
+
+Establish `hinv : (BV τ)⁻¹ = (BV τ)ᴴ * gramAt D V τ` using `Matrix.inv_eq_left_inv (hBV τ)`. Establish `hG : (gramAt D V τ)ᴴ = gramAt D V τ` using `(hV τ).1`. Establish `hright0 : BV τ * ((BV τ)ᴴ * gramAt D V τ) = 1`. Rewrite using `[← hinv, Matrix.mul_nonsing_inv _ hunit]`. Use `set X := infMat D.sp.cm.sig V.gram (θ τ) u`.
+
+Establish `hh : hOf θ V BV u τ = (BV τ)ᴴ * gramAt D V τ * X * BV τ` using `by simp only [hOf, hinv, X]`. Rewrite using `[hh]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hG, Matrix.mul_assoc]`. Use `_ = (BV τ)ᴴ * (Xᴴ * gramAt D V τ * X) * BV τ := by`.
+
+Rewrite using `[hright0]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hX, hBV τ]`.
+-/
 theorem hOf_unitary {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (hV : ∀ τ, (gramAt D V τ).PosDef)
     (BV : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hBV : ∀ τ, (BV τ)ᴴ * gramAt D V τ * BV τ = 1)
     (u : GA D V) (τ : D.what₂.Tau) : hOf θ V BV u τ ∈ Matrix.unitaryGroup (Fin V.rank) ℂ := by
@@ -366,6 +466,9 @@ theorem hOf_unitary {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (hV : ∀ τ
         rw [hright0]; simp only [Matrix.mul_one, Matrix.mul_assoc]
     _ = 1 := by rw [hX, hBV τ]
 
+/- English proof (translation)
+Use `⟨hu, fun τ => ?_⟩` and prove the remaining obligations. Simplify using `only [hOf, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (hB τ), Matrix.mul_nonsing_inv _ (hB τ), Matrix.mul_one]`.
+-/
 theorem isInfEl_hOf (θ : InfFam D) (V : HSp D) (BV : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hB : ∀ τ, IsUnit (BV τ).det) (u : GA D V) (hu : u ∈ GinfC V) :
     IsInfEl θ V (fun τ => BV τ * hOf θ V BV u τ * (BV τ)⁻¹) u := by
@@ -373,12 +476,20 @@ theorem isInfEl_hOf (θ : InfFam D) (V : HSp D) (BV : D.what₂.Tau → Matrix (
   simp only [hOf, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (hB τ), Matrix.mul_nonsing_inv _ (hB τ),
     Matrix.mul_one]
 
+/- English proof (translation)
+Use `⟨one_mem _, fun τ => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Matrix.mul_one, Matrix.mul_nonsing_inv _ (hB τ), infMat_one' hθ V τ]`.
+-/
 theorem isInfEl_one {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hB : ∀ τ, IsUnit (B τ).det) : IsInfEl θ V (fun τ => B τ * 1 * (B τ)⁻¹) 1 := by
   refine ⟨one_mem _, fun τ => ?_⟩
   beta_reduce
   rw [Matrix.mul_one, Matrix.mul_nonsing_inv _ (hB τ), infMat_one' hθ V τ]
 
+/- English proof (translation)
+Take `rfl` from `Formalism.IndefR.Eqv.eq_thetaC D hθ`. Rewrite using `[Formalism.IndefR.Eqv.atTau_eq D W τ g hg]`. Establish `h` using `Formalism.IndefR.Eqv.isAtTau_atH D W τ g hg`. Use `⟨h.1, fun τ' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : τ' = τ`.
+
+Substitute `e` using the available equality. Rewrite using `[h.2.1, hG]`. Rewrite using `[h.2.2 τ' e, hG' τ' e]`.
+-/
 theorem isInfEl_atTau {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) (τ : D.what₂.Tau)
     (g : Matrix (Fin W.rank) (Fin W.rank) ℂ) (hg : gᴴ * gramAt D W τ * g = gramAt D W τ)
     (G : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (hG : G τ = g) (hG' : ∀ τ', τ' ≠ τ → G τ' = 1) :
@@ -391,9 +502,23 @@ theorem isInfEl_atTau {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) (τ : D.wh
   · subst e; rw [h.2.1, hG]
   · rw [h.2.2 τ' e, hG' τ' e]
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ)`.
+-/
 theorem isUnit_fr (M : DSModel W S') (τ : D.what₂.Tau) : IsUnit (M.fr τ).det :=
   (Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ)
 
+/- English proof (translation)
+Establish `hu` using `isUnit_fr M τ`. Establish `hJJ : ∀ Y, Formalism.REAL.Jm (M.ε τ) * (Formalism.REAL.Jm (M.ε τ) * Y) = Y`. Introduce `Y`. Rewrite using `[← Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.one_mul]`. Establish `hJh : (Formalism.REAL.Jm (M.ε τ))ᴴ = Formalism.REAL.Jm (M.ε τ)`.
+
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : M.ε τ a <;> simp [h]`.
+
+Establish `hFF : ∀ Y, ((M.fr τ)⁻¹)ᴴ * ((M.fr τ)ᴴ * Y) = Y`. Introduce `Y`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hu, Matrix.conjTranspose_one, Matrix.one_mul]`. Rewrite using `[← M.fr_gram τ]`. Unfold `cart`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu, hJJ, Matrix.nonsing_inv_mul _ hu]`. Simplify using `only [Matrix.conjTranspose_mul, hJh, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu, hFF, hJJ]`. Establish `e : (M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ * ((M.fr τ)⁻¹ * Formalism.REAL.Jm (M.ε τ) * M.fr τ) = (M.fr τ)ᴴ * M.fr τ`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu, hJJ]`.
+
+Rewrite using `[e]`. Use `Matrix.PosDef.conjTranspose_mul_self _ fun x y hxy => ?_` and prove the remaining obligations. Establish `h2` using `congrArg ((M.fr τ)⁻¹).mulVec hxy`. Simplify `h2` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu]`.
+-/
 theorem cart_isCartanInv (M : DSModel W S') (τ : D.what₂.Tau) : IsCartanInv (gramAt D W τ) (cart M τ) := by
   have hu := isUnit_fr M τ
   have hJJ : ∀ Y, Formalism.REAL.Jm (M.ε τ) * (Formalism.REAL.Jm (M.ε τ) * Y) = Y := by
@@ -421,6 +546,11 @@ theorem cart_isCartanInv (M : DSModel W S') (τ : D.what₂.Tau) : IsCartanInv (
     have h2 := congrArg ((M.fr τ)⁻¹).mulVec hxy
     simpa [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu] using h2
 
+/- English proof (translation)
+Establish `hu` using `isUnit_fr M τ`. Establish `hFF : ∀ Y, ((M.fr τ)⁻¹)ᴴ * ((M.fr τ)ᴴ * Y) = Y`. Introduce `Y`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hu, Matrix.conjTranspose_one, Matrix.one_mul]`. Rewrite using `[← jm_eq_sgnDiag p τ (M.ε τ) hε, ← M.fr_gram τ]`.
+
+Unfold `onb cart`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Matrix.mul_assoc, hFF, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`.
+-/
 theorem onb_props (M : DSModel W S') (p : D.what₂.Tau → ℕ) (τ : D.what₂.Tau)
     (hε : ∀ i, M.ε τ i = decide ((i : ℕ) < p τ)) :
     (onb M τ)ᴴ * gramAt D W τ * onb M τ = sgnDiag p τ ∧ cart M τ * onb M τ = onb M τ * sgnDiag p τ := by
@@ -435,6 +565,13 @@ theorem onb_props (M : DSModel W S') (p : D.what₂.Tau → ℕ) (τ : D.what₂
   · simp only [Matrix.mul_assoc, hFF, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]
   · simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hu` using `isUnit_fr M τ`. Establish `hFF : ∀ Y, ((M.fr τ)⁻¹)ᴴ * ((M.fr τ)ᴴ * Y) = Y`. Introduce `Y`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hu, Matrix.conjTranspose_one, Matrix.one_mul]`. Establish `hkk : ∀ Y, kᴴ * (k * Y) = Y`.
+
+Introduce `Y`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, Matrix.mem_unitaryGroup_iff'.mp hk.1, Matrix.one_mul]`. Establish `hJk : ∀ Y, Formalism.REAL.Jm (M.ε τ) * (k * Y) = k * (Formalism.REAL.Jm (M.ε τ) * Y)`. Introduce `Y`. Rewrite using `[← Matrix.mul_assoc, ← hk.2, Matrix.mul_assoc]`.
+
+Rewrite using `[← M.fr_gram τ]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu, hFF, hJk, hkk]`.
+-/
 theorem frk_unitary (M : DSModel W S') (τ : D.what₂.Tau) (k : Matrix (Fin W.rank) (Fin W.rank) ℂ)
     (hk : k ∈ Formalism.REAL.Kset (M.ε τ)) :
     ((M.fr τ)⁻¹ * k * M.fr τ)ᴴ * gramAt D W τ * ((M.fr τ)⁻¹ * k * M.fr τ) = gramAt D W τ := by
@@ -461,6 +598,9 @@ def dScal (p : D.what₂.Tau → ℕ) (t₁ : ∀ τ, Fin (p τ) → ℂ) (t₂ 
   if h : (x.2.1 : ℕ) < p x.1 then (t x.1 x.2.2)⁻¹ * t₁ x.1 ⟨x.2.1, h⟩
   else t x.1 x.2.2 * starRingEnd ℂ (t₂ x.1 ⟨(x.2.1 : ℕ) - p x.1, by have := x.2.1.isLt; omega⟩)
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `Matrix.diagonal_one using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `inv_mul_cancel₀ (hv i)`.
+-/
 theorem inv_diagonal' {k : ℕ} (v : Fin k → ℂ) (hv : ∀ i, v i ≠ 0) :
     (Matrix.diagonal v)⁻¹ = Matrix.diagonal fun i => (v i)⁻¹ := by
   apply Matrix.inv_eq_left_inv
@@ -469,6 +609,15 @@ theorem inv_diagonal' {k : ℕ} (v : Fin k → ℂ) (hv : ∀ i, v i ≠ 0) :
   funext i
   exact inv_mul_cancel₀ (hv i)
 
+/- English proof (translation)
+Take `⟨τ, i, c⟩` from `x`. Establish `hi'` using `i.isLt`. Establish `hc'` using `c.isLt`. Unfold `substVar dScal`. Distinguish the cases in `hi : (i : ℕ) < p τ`.
+
+Simplify using `only [dif_pos hi, zPlusS, zPlus, inv_diagonal' _ (ht τ), Matrix.diagonal_map (map_zero _), Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.of_apply, varF, dif_pos (⟨hi', hc'⟩ : (i : ℕ) < m ∧ (c : ℕ) < n)]`. Rewrite using `[MvPolynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : (i : ℕ) - p τ < m - p τ` using `by omega`. Establish `he : (⟨p τ + ((i : ℕ) - p τ), by omega⟩ : Fin m) = i` using `Fin.ext (by simp only; omega)`.
+
+Establish `hm : (Matrix.diagonal (t₂ τ)).map (fun x : ℂ => (MvPolynomial.C (starRingEnd ℂ x) : MvPolynomial (FVar D m n) ℂ)) = Matrix.diagonal fun j => MvPolynomial.C (starRingEnd ℂ (t₂ τ j))` using `Matrix.diagonal_map (by simp)`. Simplify using `only [dif_neg hi, zMinusS, zMinus, Matrix.diagonal_transpose, Matrix.diagonal_map (map_zero _), hm]`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Matrix.of_apply, varF, dif_pos (⟨by omega, hc'⟩ : p τ + ((i : ℕ) - p τ) < m ∧ (c : ℕ) < n), he]`. Rewrite using `[MvPolynomial.C_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem substVar_diag (p : D.what₂.Tau → ℕ) (t₁ : ∀ τ, Fin (p τ) → ℂ) (t₂ : ∀ τ, Fin (m - p τ) → ℂ)
     (t : D.what₂.Tau → Fin n → ℂ) (ht : ∀ τ c, t τ c ≠ 0) (x : FVar D m n) :
     substVar p (fun τ => Matrix.diagonal (t₁ τ)) (fun τ => Matrix.diagonal (t₂ τ)) (fun τ => Matrix.diagonal (t τ)) x =
@@ -502,6 +651,15 @@ def rowM (t : D.what₂.Tau → Fin n → ℂ) (τ : D.what₂.Tau) (r : ℕ) : 
 def colM (p : D.what₂.Tau → ℕ) (t₂ : ∀ τ, Fin (m - p τ) → ℂ) (τ : D.what₂.Tau) (β : ℕ) : ℂ :=
   if h : β < m - p τ then starRingEnd ℂ (t₂ τ ⟨β, h⟩) else 1
 
+/- English proof (translation)
+Unfold `minorPlus`. Rewrite using `[AlgHom.map_det]`. Establish `hA : (polySubst p (fun τ => Matrix.diagonal (t₁ τ)) (fun τ => Matrix.diagonal (t₂ τ)) (fun τ => Matrix.diagonal (t τ))).mapMatrix (Matrix.of fun α β : Fin k => (varF τ β α : MvPolynomial (FVar D m n) ℂ)) = Matrix.diagonal (fun α : Fin k => MvPolynomial.C (rowP t τ α)) * (Matrix.o …`. Use extensionality with `α β`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+
+Establish `hβ : (β : ℕ) < p τ` using `by have := β.isLt; omega`. Establish `hβm : (β : ℕ) < m` using `by have := hpm τ; omega`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, varF]`. Distinguish the cases in `hα : (α : ℕ) < n`. Rewrite using `[dif_pos ⟨hβm, hα⟩, polySubst_X, substVar_diag _ _ _ _ ht]`.
+
+Simplify using `only [dScal, dif_pos hβ, rowP, colP, dif_pos hα, MvPolynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg (fun h => hα h.2)]`. Simplify using the standard rewrite rules. Rewrite using `[hA, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, ← map_prod, ← map_prod, Fin.prod_univ_eq_prod_range (rowP t τ) k, Fin.prod_univ_eq_prod_range (colP p t₁ τ) k, MvPolynomial.C_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polySubst_diag_minorPlus (p : D.what₂.Tau → ℕ) (hpm : ∀ τ, p τ ≤ m) (t₁ : ∀ τ, Fin (p τ) → ℂ)
     (t₂ : ∀ τ, Fin (m - p τ) → ℂ) (t : D.what₂.Tau → Fin n → ℂ) (ht : ∀ τ c, t τ c ≠ 0) (τ : D.what₂.Tau) (k : ℕ)
     (hkp : k ≤ p τ) :
@@ -531,6 +689,15 @@ theorem polySubst_diag_minorPlus (p : D.what₂.Tau → ℕ) (hpm : ∀ τ, p τ
     Fin.prod_univ_eq_prod_range (rowP t τ) k, Fin.prod_univ_eq_prod_range (colP p t₁ τ) k, MvPolynomial.C_mul]
   ring
 
+/- English proof (translation)
+Unfold `minorMinus`. Rewrite using `[AlgHom.map_det]`. Establish `hA : (polySubst p (fun τ => Matrix.diagonal (t₁ τ)) (fun τ => Matrix.diagonal (t₂ τ)) (fun τ => Matrix.diagonal (t τ))).mapMatrix (Matrix.of fun α β : Fin k => (varF τ (p τ + β) (n - k + α) : MvPolynomial (FVar D m n) ℂ)) = Matrix.diagonal (fun α : Fin k => MvPolynomial.C (rowM t …`. Use extensionality with `α β`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+
+Establish `hα` using `α.isLt`. Establish `hβ` using `β.isLt`. Establish `hr : p τ + (β : ℕ) < m ∧ n - k + (α : ℕ) < n` using `⟨by omega, by omega⟩`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, varF, dif_pos hr]`. Rewrite using `[polySubst_X, substVar_diag _ _ _ _ ht]`.
+
+Establish `hnp : ¬ (p τ + (β : ℕ) < p τ)` using `by omega`. Establish `hq : (β : ℕ) < m - p τ` using `by omega`. Establish `hk1 : k - 1 - (α : ℕ) < n` using `by omega`. Establish `hidx : (⟨n - 1 - (k - 1 - (α : ℕ)), by omega⟩ : Fin n) = ⟨n - k + α, hr.2⟩` using `Fin.ext (by simp only; omega)`. Establish `hidx2 : (⟨p τ + (β : ℕ) - p τ, by omega⟩ : Fin (m - p τ)) = ⟨β, hq⟩` using `Fin.ext (by simp only; omega)`.
+
+Simplify using `only [dScal, dif_neg hnp, rowM, colM, dif_pos hk1, dif_pos hq, hidx, hidx2, MvPolynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, ← map_prod, ← map_prod, Fin.prod_univ_eq_prod_range (fun α => rowM t τ (k - 1 - α)) k, Fin.prod_univ_eq_prod_range (colM p t₂ τ) k, Finset.prod_range_reflect (rowM t τ) k, MvPolynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polySubst_diag_minorMinus (p : D.what₂.Tau → ℕ) (t₁ : ∀ τ, Fin (p τ) → ℂ)
     (t₂ : ∀ τ, Fin (m - p τ) → ℂ) (t : D.what₂.Tau → Fin n → ℂ) (ht : ∀ τ c, t τ c ≠ 0) (τ : D.what₂.Tau) (k : ℕ)
     (hkn : k ≤ n) (hkm : p τ + k ≤ m) :
@@ -565,6 +732,9 @@ theorem polySubst_diag_minorMinus (p : D.what₂.Tau → ℕ) (t₁ : ∀ τ, Fi
     Finset.prod_range_reflect (rowM t τ) k, MvPolynomial.C_mul]
   ring
 
+/- English proof (translation)
+Proceed by induction on `P with`. Consider the case `zero => simp`. Consider the case `succ P ih`. Rewrite using `[Finset.prod_range_succ (fun α => g α ^ f α), ← ih, Finset.prod_range_succ, mul_assoc, ← pow_add, Nat.sub_add_cancel (hf (Nat.le_succ P)), Finset.prod_range_succ g P, mul_pow, mul_assoc]`.
+-/
 theorem prod_telescope {M : Type*} [CommMonoid M] (g : ℕ → M) (f : ℕ → ℕ) (hf : Antitone f) (P : ℕ) :
     (∏ i ∈ Finset.range P, (∏ α ∈ Finset.range (i + 1), g α) ^ (f i - f (i + 1))) *
         (∏ α ∈ Finset.range P, g α) ^ f P = ∏ α ∈ Finset.range P, g α ^ f α := by
@@ -574,6 +744,9 @@ theorem prod_telescope {M : Type*} [CommMonoid M] (g : ℕ → M) (f : ℕ → �
     rw [Finset.prod_range_succ (fun α => g α ^ f α), ← ih, Finset.prod_range_succ, mul_assoc, ← pow_add,
       Nat.sub_add_cancel (hf (Nat.le_succ P)), Finset.prod_range_succ g P, mul_pow, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← prod_telescope g f hf P, h0 P le_rfl, pow_zero, mul_one]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[h0 (i + 1) (by omega)]`.
+-/
 theorem prod_telescope' {M : Type*} [CommMonoid M] (g : ℕ → M) (f : ℕ → ℕ) (hf : Antitone f) (P : ℕ)
     (h0 : ∀ i, P ≤ i → f i = 0) :
     ∏ i ∈ Finset.range P, (∏ α ∈ Finset.range (i + 1), g α) ^ (f i - if i + 1 < P then f (i + 1) else 0) =
@@ -584,6 +757,15 @@ theorem prod_telescope' {M : Type*} [CommMonoid M] (g : ℕ → M) (f : ℕ → 
   · rfl
   · rw [h0 (i + 1) (by omega)]
 
+/- English proof (translation)
+Unfold `deltaAt`. Rewrite using `[map_mul, map_prod, map_prod]`. Establish `hplus : ∀ i ∈ Finset.range (p τ), polySubst p (fun τ => Matrix.diagonal (t₁ τ)) (fun τ => Matrix.diagonal (t₂ τ)) (fun τ => Matrix.diagonal (t τ)) ((minorPlus τ (i + 1) : MvPolynomial (FVar D m n) ℂ) ^ (ap τ i - if i + 1 < p τ then ap τ (i + 1) else 0)) = MvPolynomial.C ((∏ α ∈ F …`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`.
+
+Rewrite using `[map_pow, polySubst_diag_minorPlus p hpm t₁ t₂ t ht τ (i + 1) (by omega), mul_pow, ← map_pow, Finset.prod_mul_distrib]`. Establish `hminus : ∀ i ∈ Finset.range (m - p τ), polySubst p (fun τ => Matrix.diagonal (t₁ τ)) (fun τ => Matrix.diagonal (t₂ τ)) (fun τ => Matrix.diagonal (t τ)) ((minorMinus τ (p τ) (i + 1) : MvPolynomial (FVar D m n) ℂ) ^ (am τ i - if i + 1 < m - p τ then am τ (i + 1) else 0)) = MvPolyno …`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Distinguish the cases in `h0 : am τ i - (if i + 1 < m - p τ then am τ (i + 1) else 0) = 0`.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hne : am τ i ≠ 0` using `by omega`. Use `le_card_of_antitone (ham τ) hi hne` as an intermediate fact. Use `hcard τ` as an intermediate fact.
+
+Rewrite using `[map_pow, polySubst_diag_minorMinus p t₁ t₂ t ht τ (i + 1) (by omega) (by have := hpm τ; omega), mul_pow, ← map_pow, Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_congr rfl hplus, Finset.prod_congr rfl hminus, Finset.prod_mul_distrib, Finset.prod_mul_distrib, ← map_prod, ← map_prod, prod_telescope' (fun α => rowP t τ α * colP p t₁ τ α) (ap τ) (hap τ) (p τ) (hap0 τ), prod_telescope' (fun r => rowM t τ r * colM p t₂ τ r) (am τ) …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polySubst_diag_deltaAt (p : D.what₂.Tau → ℕ) (hpm : ∀ τ, p τ ≤ m) (t₁ : ∀ τ, Fin (p τ) → ℂ)
     (t₂ : ∀ τ, Fin (m - p τ) → ℂ) (t : D.what₂.Tau → Fin n → ℂ) (ht : ∀ τ c, t τ c ≠ 0) (ap am : D.what₂.Tau → ℕ → ℕ)
     (hap : ∀ τ, Antitone (ap τ)) (ham : ∀ τ, Antitone (am τ)) (hap0 : ∀ τ i, p τ ≤ i → ap τ i = 0)
@@ -630,12 +812,20 @@ theorem polySubst_diag_deltaAt (p : D.what₂.Tau → ℕ) (hpm : ∀ τ, p τ �
     prod_telescope' (fun r => rowM t τ r * colM p t₂ τ r) (am τ) (ham τ) (m - p τ) (ham0 τ), MvPolynomial.C_mul]
   ring
 
+/- English proof (translation)
+Use `(Finset.prod_subset (Finset.range_subset.mpr fun x hx => Finset.mem_range.mpr (by omega)) fun α hA hL' => ?_).symm` and prove the remaining obligations. Rewrite `hA`, `hL'` using `[Finset.mem_range]`. Conclude with `h1 α (by omega) hA`.
+-/
 theorem prod_range_trunc {M : Type*} [CommMonoid M] (f : ℕ → M) {A L : ℕ} (hL : L ≤ A)
     (h1 : ∀ α, L ≤ α → α < A → f α = 1) : ∏ α ∈ Finset.range A, f α = ∏ α ∈ Finset.range L, f α := by
   refine (Finset.prod_subset (Finset.range_subset.mpr fun x hx => Finset.mem_range.mpr (by omega)) fun α hA hL' => ?_).symm
   rw [Finset.mem_range] at hA hL'
   exact h1 α (by omega) hA
 
+/- English proof (translation)
+Introduce `i hi`. Assume the negation of the conclusion as `h`. Distinguish the cases in `hiL : i < L`. Use `le_card_of_antitone hf hiL h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h (h0 i (by omega))`.
+-/
 theorem zero_of_card {f : ℕ → ℕ} (hf : Antitone f) {L n : ℕ}
     (hc : ((Finset.range L).filter (fun i => f i ≠ 0)).card ≤ n) (h0 : ∀ i, L ≤ i → f i = 0) :
     ∀ i, n ≤ i → f i = 0 := by
@@ -646,6 +836,21 @@ theorem zero_of_card {f : ℕ → ℕ} (hf : Antitone f) {L n : ℕ}
     omega
   · exact h (h0 i (by omega))
 
+/- English proof (translation)
+Establish `hapn` using `zero_of_card (hap τ) (le_trans (Nat.le_add_right _ _) (hcard τ)) (hap0 τ)`. Establish `hamn` using `zero_of_card (ham τ) (le_trans (Nat.le_add_left _ _) (hcard τ)) (ham0 τ)`. Establish `s1 : ∏ α ∈ Finset.range (p τ), colP p t₁ τ α ^ ap τ α = ∏ i : Fin (p τ), t₁ τ i ^ ap τ i`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun α => colP p t₁ τ α ^ ap τ α)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `[colP, i.isLt]`. Establish `s2 : ∏ α ∈ Finset.range (p τ), rowP t τ α ^ ap τ α = ∏ c : Fin n, (t τ c)⁻¹ ^ ap τ c`. Rewrite using `[prod_range_trunc (fun α => rowP t τ α ^ ap τ α) (min_le_left (p τ) n) (fun α h _ => by rw [(min_le_iff.mp h).elim (hap0 τ α) (hapn α), pow_zero]), ← prod_range_trunc (fun α => rowP t τ α ^ ap τ α) (min_le_right (p τ) n) (fun α h _ => by rw [(min_le_iff.mp h).elim (hap0 τ α) (hap …`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `[rowP, c.isLt]`.
+
+Establish `s3 : ∏ r ∈ Finset.range (m - p τ), colM p t₂ τ r ^ am τ r = ∏ j : Fin (m - p τ), (t₂ τ j)⁻¹ ^ am τ j`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun r => colM p t₂ τ r ^ am τ r)]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[colM, j.isLt, Complex.inv_eq_conj (h2 τ j)]`. Establish `s4 : ∏ r ∈ Finset.range (m - p τ), rowM t τ r ^ am τ r = ∏ c : Fin n, t τ c ^ am τ (n - 1 - c)`.
+
+Rewrite using `[prod_range_trunc (fun r => rowM t τ r ^ am τ r) (min_le_left (m - p τ) n) (fun α h _ => by rw [(min_le_iff.mp h).elim (ham0 τ α) (hamn α), pow_zero]), ← prod_range_trunc (fun r => rowM t τ r ^ am τ r) (min_le_right (m - p τ) n) (fun α h _ => by rw [(min_le_iff.mp h).elim (ham0 τ …`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hc` using `c.isLt`. Establish `hidx : (⟨n - 1 - (n - 1 - (c : ℕ)), by omega⟩ : Fin n) = c` using `Fin.ext (by simp only; omega)`. Simplify using `only [rowM, dif_pos (show n - 1 - (c : ℕ) < n by omega), hidx]`.
+
+Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[s1, s2, s3, s4]`. Establish `r1 : ∀ i : Fin (p τ), t₁ τ i ^ ((ap τ i : ℤ) + a - e τ) = t₁ τ i ^ (ap τ i) * t₁ τ i ^ (a - e τ)`. Introduce `i`. Rewrite using `[add_sub_assoc, zpow_add₀ (h1 τ i), zpow_natCast]`.
+
+Establish `r2 : ∀ j : Fin (m - p τ), t₂ τ j ^ (-(am τ j : ℤ) - a - e τ) = (t₂ τ j)⁻¹ ^ (am τ j) * t₂ τ j ^ (-a - e τ)`. Introduce `j`. Establish `hj : t₂ τ j ≠ 0` using `by intro h; have := h2 τ j; rw [h, norm_zero] at this; exact zero_ne_one this`. Rewrite using `[show -(am τ j : ℤ) - a - e τ = -(am τ j : ℤ) + (-a - e τ) by ring, zpow_add₀ hj, _root_.zpow_neg, zpow_natCast, inv_pow]`. Establish `r3 : ∀ c : Fin n, t τ c ^ nuDelta n m p e ap am τ c = (t τ c)⁻¹ ^ (ap τ c) * t τ c ^ (am τ (n - 1 - c)) * t τ c ^ (-dExp m p e τ)`.
+
+Introduce `c`. Unfold `nuDelta`. Rewrite using `[show -(ap τ c : ℤ) + (am τ (n - 1 - c) : ℤ) - dExp m p e τ = -(ap τ c : ℤ) + (am τ (n - 1 - c) : ℤ) + -dExp m p e τ by ring, zpow_add₀ (h3 τ c), zpow_add₀ (h3 τ c), _root_.zpow_neg, zpow_natCast, zpow_natCast, inv_pow]`. Simplify using `only [r1, r2, r3, Finset.prod_mul_distrib, Finset.prod_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scal_id (p : D.what₂.Tau → ℕ) (a : ℤ) (e : D.what₂.Tau → ℤ) (t₁ : ∀ τ, Fin (p τ) → ℂ)
     (t₂ : ∀ τ, Fin (m - p τ) → ℂ) (t : D.what₂.Tau → Fin n → ℂ) (h1 : ∀ τ i, t₁ τ i ≠ 0)
     (h2 : ∀ τ j, ‖t₂ τ j‖ = 1) (h3 : ∀ τ c, t τ c ≠ 0) (ap am : D.what₂.Tau → ℕ → ℕ)
@@ -705,6 +910,13 @@ theorem scal_id (p : D.what₂.Tau → ℕ) (a : ℤ) (e : D.what₂.Tau → ℤ
   simp only [r1, r2, r3, Finset.prod_mul_distrib, Finset.prod_zpow]
   ring
 
+/- English proof (translation)
+Establish `ne : ∀ {z : ℂ}, ‖z‖ = 1 → z ≠ 0` using `fun hz h => by rw [h, norm_zero] at hz; exact zero_ne_one hz`. Establish `hpoly : polySubst p (fun τ => Matrix.diagonal (t₁ τ)) (fun τ => Matrix.diagonal (t₂ τ)) (fun τ => Matrix.diagonal (t τ)) (delta p (fun τ => m - p τ) ap am : MvPolynomial (FVar D m n) ℂ) = MvPolynomial.C (∏ τ, (∏ α ∈ Finset.range (p τ), (rowP t τ α * colP p t₁ τ α) ^ ap τ α) * ∏ r …`. Unfold `delta`. Rewrite using `[map_prod, Finset.prod_congr rfl fun τ _ => polySubst_diag_deltaAt p hpm t₁ t₂ t (fun τ c => ne (h3 τ c)) ap am hap ham hap0 ham0 hcard τ, Finset.prod_mul_distrib, ← map_prod]`. Unfold `piAct`.
+
+Rewrite using `[LinearMap.smul_apply, AlgHom.toLinearMap_apply, hpoly, MvPolynomial.C_mul', smul_smul]`. Use `congr 1`. Unfold `fockChar`. Simplify using `only [Matrix.det_diagonal]`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun τ _ => scal_id p a e t₁ t₂ t (fun τ i => ne (h1 τ i)) h2 (fun τ c => ne (h3 τ c)) ap am hap ham hap0 ham0 hcard τ`.
+-/
 theorem piAct_diag_delta (p : D.what₂.Tau → ℕ) (hpm : ∀ τ, p τ ≤ m) (a : ℤ) (e : D.what₂.Tau → ℤ)
     (t₁ : ∀ τ, Fin (p τ) → ℂ) (t₂ : ∀ τ, Fin (m - p τ) → ℂ) (t : D.what₂.Tau → Fin n → ℂ)
     (h1 : ∀ τ i, ‖t₁ τ i‖ = 1) (h2 : ∀ τ j, ‖t₂ τ j‖ = 1) (h3 : ∀ τ c, ‖t τ c‖ = 1) (ap am : D.what₂.Tau → ℕ → ℕ)
@@ -735,6 +947,19 @@ theorem piAct_diag_delta (p : D.what₂.Tau → ℕ) (hpm : ∀ τ, p τ ≤ m) 
 
 open Formalism.IndefR.FockModel₂ in
 
+/- English proof (translation)
+Establish `hbt : u.BlockTriangular OrderDual.toDual` using `fun i j hij => by`. Use `(hu j i).1 (by simpa using hij)` as an intermediate fact. Simplify `this` using `[Matrix.transpose_apply]`. Establish `hdet : u.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular u hbt]`.
+
+Conclude with `Finset.prod_eq_one fun i _ => by have := (hu i i).2 rfl; simpa [Matrix.transpose_apply] using this`. Use `haveI : Invertible u := Matrix.invertibleOfIsUnitDet u (by rw [hdet]; exact isUnit_one)`. Establish `hbt' : u⁻¹.BlockTriangular OrderDual.toDual` using `Matrix.blockTriangular_inv_of_blockTriangular hbt`. Introduce `i j`. Use `⟨fun hji => ?_, fun hij => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.transpose_apply]`. Conclude with `hbt' (by simpa using hji)`. Substitute `hij` using the available equality. Simplify using `only [Matrix.transpose_apply]`. Establish `h1 : (u * u⁻¹) i i = (1 : Matrix (Fin N) (Fin N) ℂ) i i`.
+
+Rewrite using `[Matrix.mul_nonsing_inv u (by rw [hdet]; exact isUnit_one)]`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Establish `hii : u i i = 1` using `by have := (hu i i).2 rfl; simpa [Matrix.transpose_apply] using this`. Rewrite `h1` using `[hii, one_mul, Matrix.one_apply_eq]`. Conclude with `h1`.
+
+Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hbt' (show OrderDual.toDual i < OrderDual.toDual j from h), mul_zero]`. Rewrite using `[hbt (show OrderDual.toDual j < OrderDual.toDual i from h), zero_mul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem lowerUni_inv {N : ℕ} (u : Matrix (Fin N) (Fin N) ℂ) (hu : IsLowerUni u) : IsLowerUni u⁻¹ := by
   have hbt : u.BlockTriangular OrderDual.toDual := fun i j hij => by
     have := (hu j i).1 (by simpa using hij)
@@ -762,6 +987,13 @@ theorem lowerUni_inv {N : ℕ} (u : Matrix (Fin N) (Fin N) ℂ) (hu : IsLowerUni
       · rw [hbt (show OrderDual.toDual j < OrderDual.toDual i from h), zero_mul]
     · intro h; exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Set `g : ℕ → R` to `fun i => if h : i < N then f ⟨i, h⟩ else 0`. Establish `e1 : ∑ i, f i = ∑ i ∈ Finset.range N, g i`. Rewrite using `[← Fin.sum_univ_eq_sum_range g N]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [g, i.isLt]`. Establish `e2 : ∑ j : Fin k, f ⟨j, by omega⟩ = ∑ i ∈ Finset.range k, g i`.
+
+Rewrite using `[← Fin.sum_univ_eq_sum_range g k]`. Conclude with `Finset.sum_congr rfl fun j _ => by simp [g, show (j : ℕ) < N by omega]`. Rewrite using `[e1, e2]`. Use `(Finset.sum_subset (Finset.range_subset.mpr fun x hx => Finset.mem_range.mpr (by omega)) fun i hi hni => ?_).symm` and prove the remaining obligations. Rewrite `hi`, `hni` using `[Finset.mem_range]`.
+
+Simplify using `only [g, dif_pos hi]`. Conclude with `hf ⟨i, hi⟩ (by simp only; omega)`.
+-/
 theorem sum_fin_trunc {R : Type*} [AddCommMonoid R] {N k : ℕ} (hk : k ≤ N) (f : Fin N → R)
     (hf : ∀ i : Fin N, k ≤ (i : ℕ) → f i = 0) : ∑ i, f i = ∑ j : Fin k, f ⟨j, by omega⟩ := by
   classical
@@ -778,6 +1010,13 @@ theorem sum_fin_trunc {R : Type*} [AddCommMonoid R] {N k : ℕ} (hk : k ≤ N) (
   simp only [g, dif_pos hi]
   exact hf ⟨i, hi⟩ (by simp only; omega)
 
+/- English proof (translation)
+Set `g : ℕ → R` to `fun i => if h : i < N then f ⟨i, h⟩ else 0`. Establish `e1 : ∑ i, f i = ∑ i ∈ Finset.range N, g i`. Rewrite using `[← Fin.sum_univ_eq_sum_range g N]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [g, i.isLt]`. Establish `e2 : ∑ j : Fin k, f ⟨N - k + j, by omega⟩ = ∑ i ∈ Finset.range k, g (N - k + i)`.
+
+Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => g (N - k + i)) k]`. Conclude with `Finset.sum_congr rfl fun j _ => by simp [g, show N - k + (j : ℕ) < N by omega]`. Rewrite using `[e1, e2]`. Establish `hs` using `Finset.sum_range_add g (N - k) k`. Rewrite `hs` using `[show N - k + k = N by omega]`.
+
+Rewrite using `[hs, Finset.sum_eq_zero, zero_add]`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Simplify using `only [g, dif_pos (show i < N by omega)]`. Conclude with `hf ⟨i, by omega⟩ (by simp only; omega)`.
+-/
 theorem sum_fin_trunc_top {R : Type*} [AddCommMonoid R] {N k : ℕ} (hk : k ≤ N) (f : Fin N → R)
     (hf : ∀ i : Fin N, (i : ℕ) < N - k → f i = 0) : ∑ i, f i = ∑ j : Fin k, f ⟨N - k + j, by omega⟩ := by
   classical
@@ -799,6 +1038,25 @@ theorem sum_fin_trunc_top {R : Type*} [AddCommMonoid R] {N k : ℕ} (hk : k ≤ 
 
 open Formalism.IndefR.FockModel₂ in
 
+/- English proof (translation)
+Establish `hinv` using `lowerUni_inv (u τ) (hu τ)`. Establish `hpm'` using `hpm τ`. Unfold `minorPlus`. Rewrite using `[AlgHom.map_det]`. Use `set A : Matrix (Fin k) (Fin k) (MvPolynomial (FVar D m n) ℂ) := Matrix.of fun α β : Fin k => (varF τ β α : MvPolynomial (FVar D m n) ℂ) with hAdef`.
+
+Use `set L : Matrix (Fin k) (Fin k) (MvPolynomial (FVar D m n) ℂ) := Matrix.of fun α γ : Fin k => MvPolynomial.C ((u τ)⁻¹ ⟨α, by omega⟩ ⟨γ, by omega⟩) with hL`. Use `set U : Matrix (Fin k) (Fin k) (MvPolynomial (FVar D m n) ℂ) := Matrix.of fun δ β : Fin k => MvPolynomial.C (u₁ τ ⟨δ, by omega⟩ ⟨β, by omega⟩) with hU`. Establish `hA : (polySubst p u₁ u₂ u).mapMatrix A = L * A * U`. Use `Matrix.ext fun α β => ?_` and prove the remaining obligations. Establish `hα` using `α.isLt`.
+
+Establish `hβ` using `β.isLt`. Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_apply, hAdef, Matrix.of_apply, varF, dif_pos (⟨by omega, by omega⟩ : (β : ℕ) < m ∧ (α : ℕ) < n), polySubst_X]`. Unfold `substVar`. Rewrite using `[dif_pos (show ((⟨β, by omega⟩ : Fin m) : ℕ) < p τ by simp only; omega)]`. Unfold `zPlusS zPlus`.
+
+Simplify using `only`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, sum_fin_trunc (R := MvPolynomial (FVar D m n) ℂ) (k := k) hkp]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Establish `hδ` using `δ.isLt`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, sum_fin_trunc (R := MvPolynomial (FVar D m n) ℂ) (k := k) hkn]`.
+
+Both sides reduce to the same expression. Introduce `c hc`. Use `(hinv c ⟨α, by omega⟩).1 (show (⟨α, by omega⟩ : Fin n) < c from Fin.lt_def.mpr (by simp only; omega))` as an intermediate fact. Simplify using `only [Matrix.transpose_apply] at this`. Simplify using `[Matrix.map_apply, this]`.
+
+Introduce `a' ha'`. Use `(hu₁ τ a' ⟨β, by omega⟩).1 (Fin.lt_def.mpr (by simp only; omega))` as an intermediate fact. Simplify using `[Matrix.map_apply, this]`. Establish `hLt : L.BlockTriangular OrderDual.toDual` using `fun i j hij => by`. Use `(hinv ⟨j, by omega⟩ ⟨i, by omega⟩).1 (Fin.lt_def.mpr (by simp only; exact hij))` as an intermediate fact.
+
+Simplify using `only [Matrix.transpose_apply] at this`. Simplify using `[hL, this]`. Establish `hUt : U.BlockTriangular id` using `fun i j hij => by`. Use `(hu₁ τ ⟨i, by omega⟩ ⟨j, by omega⟩).1 (Fin.lt_def.mpr (by simp only; exact hij))` as an intermediate fact. Simplify using `[hU, this]`.
+
+Rewrite using `[hA, Matrix.det_mul, Matrix.det_mul, Matrix.det_of_lowerTriangular L hLt, Matrix.det_of_upperTriangular hUt]`. Establish `h1 : ∏ i, L i i = 1` using `Finset.prod_eq_one fun i _ => by`. Use `(hinv ⟨i, by omega⟩ ⟨i, by omega⟩).2 rfl` as an intermediate fact. Simplify using `only [Matrix.transpose_apply] at this`. Simplify using `[hL, this]`.
+
+Establish `h2 : ∏ i, U i i = 1` using `Finset.prod_eq_one fun i _ => by`. Use `(hu₁ τ ⟨i, by omega⟩ ⟨i, by omega⟩).2 rfl` as an intermediate fact. Simplify using `[hU, this]`. Rewrite using `[h1, h2, one_mul, mul_one]`.
+-/
 theorem polySubst_unip_minorPlus (p : D.what₂.Tau → ℕ) (hpm : ∀ τ, p τ ≤ m) (u₁ : complexSquareMatrixFamily D p) (u₂ : complementBlockMatrixFamily D m p)
     (u : HFam D n) (hu₁ : ∀ τ, IsUpperUni (u₁ τ)) (hu : ∀ τ, IsLowerUni (u τ)) (τ : D.what₂.Tau) (k : ℕ)
     (hkp : k ≤ p τ) (hkn : k ≤ n) :
@@ -854,6 +1112,25 @@ theorem polySubst_unip_minorPlus (p : D.what₂.Tau → ℕ) (hpm : ∀ τ, p τ
 
 open Formalism.IndefR.FockModel₂ in
 
+/- English proof (translation)
+Unfold `minorMinus`. Rewrite using `[AlgHom.map_det]`. Use `set A : Matrix (Fin k) (Fin k) (MvPolynomial (FVar D m n) ℂ) := Matrix.of fun α β : Fin k => (varF τ (p τ + β) (n - k + α) : MvPolynomial (FVar D m n) ℂ) with hAdef`. Use `set L : Matrix (Fin k) (Fin k) (MvPolynomial (FVar D m n) ℂ) := Matrix.of fun α γ : Fin k => MvPolynomial.C ((u τ)ᵀ ⟨n - k + α, by omega⟩ ⟨n - k + γ, by omega⟩) with hL`. Use `set U : Matrix (Fin k) (Fin k) (MvPolynomial (FVar D m n) ℂ) := Matrix.of fun δ β : Fin k => MvPolynomial.C (starRingEnd ℂ (u₂ τ ⟨δ, by omega⟩ ⟨β, by omega⟩)) with hU`.
+
+Establish `hA : (polySubst p u₁ u₂ u).mapMatrix A = L * A * U`. Use `Matrix.ext fun α β => ?_` and prove the remaining obligations. Establish `hα` using `α.isLt`. Establish `hβ` using `β.isLt`. Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_apply, hAdef, Matrix.of_apply, varF, dif_pos (⟨by omega, by omega⟩ : p τ + (β : ℕ) < m ∧ n - k + (α : ℕ) < n), polySubst_X]`.
+
+Unfold `substVar`. Rewrite using `[dif_neg (show ¬ ((⟨p τ + β, by omega⟩ : Fin m) : ℕ) < p τ by simp only; omega)]`. Unfold `zMinusS zMinus`. Simplify using `only`. Simplify using `only [Nat.add_sub_cancel_left]`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, sum_fin_trunc (R := MvPolynomial (FVar D m n) ℂ) (k := k) (by omega)]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Establish `hδ` using `δ.isLt`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, sum_fin_trunc_top (R := MvPolynomial (FVar D m n) ℂ) (k := k) hkn]`. Both sides reduce to the same expression.
+
+Introduce `c hc`. Use `(hu τ ⟨n - k + α, by omega⟩ c).1 (Fin.lt_def.mpr (by simp only; omega))` as an intermediate fact. Simplify using `only [Matrix.transpose_apply] at this`. Simplify using `[Matrix.map_apply, this]`. Introduce `b' hb'`.
+
+Use `(hu₂ τ b' ⟨β, by omega⟩).1 (Fin.lt_def.mpr (by simp only; omega))` as an intermediate fact. Simplify using `[Matrix.map_apply, this]`. Establish `hLt : L.BlockTriangular id` using `fun i j hij => by`. Use `(hu τ ⟨n - k + i, by omega⟩ ⟨n - k + j, by omega⟩).1 (Fin.lt_def.mpr (by simp only [id] at hij ⊢; omega))` as an intermediate fact. Simplify using `only [Matrix.transpose_apply] at this`.
+
+Simplify using `[hL, this]`. Establish `hUt : U.BlockTriangular id` using `fun i j hij => by`. Use `(hu₂ τ ⟨i, by omega⟩ ⟨j, by omega⟩).1 (Fin.lt_def.mpr (by simp only; exact hij))` as an intermediate fact. Simplify using `[hU, this]`. Rewrite using `[hA, Matrix.det_mul, Matrix.det_mul, Matrix.det_of_upperTriangular hLt, Matrix.det_of_upperTriangular hUt]`.
+
+Establish `h1 : ∏ i, L i i = 1` using `Finset.prod_eq_one fun i _ => by`. Use `(hu τ ⟨n - k + i, by omega⟩ ⟨n - k + i, by omega⟩).2 rfl` as an intermediate fact. Simplify using `only [Matrix.transpose_apply] at this`. Simplify using `[hL, this]`. Establish `h2 : ∏ i, U i i = 1` using `Finset.prod_eq_one fun i _ => by`.
+
+Use `(hu₂ τ ⟨i, by omega⟩ ⟨i, by omega⟩).2 rfl` as an intermediate fact. Simplify using `[hU, this]`. Rewrite using `[h1, h2, one_mul, mul_one]`.
+-/
 theorem polySubst_unip_minorMinus (p : D.what₂.Tau → ℕ) (u₁ : complexSquareMatrixFamily D p) (u₂ : complementBlockMatrixFamily D m p)
     (u : HFam D n) (hu₂ : ∀ τ, IsUpperUni (u₂ τ)) (hu : ∀ τ, IsLowerUni (u τ)) (τ : D.what₂.Tau) (k : ℕ)
     (hkn : k ≤ n) (hkm : p τ + k ≤ m) :
@@ -908,6 +1185,9 @@ theorem polySubst_unip_minorMinus (p : D.what₂.Tau → ℕ) (u₁ : complexSqu
 
 open Formalism.IndefR.FockModel₂ in
 
+/- English proof (translation)
+Establish `hbt : u.BlockTriangular id` using `fun i j hij => (hu i j).1 hij`. Rewrite using `[Matrix.det_of_upperTriangular hbt]`. Conclude with `Finset.prod_eq_one fun i _ => (hu i i).2 rfl`.
+-/
 theorem det_upperUni {N : ℕ} (u : Matrix (Fin N) (Fin N) ℂ) (hu : IsUpperUni u) : u.det = 1 := by
   have hbt : u.BlockTriangular id := fun i j hij => (hu i j).1 hij
   rw [Matrix.det_of_upperTriangular hbt]
@@ -915,11 +1195,29 @@ theorem det_upperUni {N : ℕ} (u : Matrix (Fin N) (Fin N) ℂ) (hu : IsUpperUni
 
 open Formalism.IndefR.FockModel₂ in
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_transpose]`. Conclude with `det_upperUni _ hu`.
+-/
 theorem det_lowerUni {N : ℕ} (u : Matrix (Fin N) (Fin N) ℂ) (hu : IsLowerUni u) : u.det = 1 := by
   rw [← Matrix.det_transpose]; exact det_upperUni _ hu
 
 open Formalism.IndefR.FockModel₂ in
 
+/- English proof (translation)
+Establish `hpoly : polySubst p u₁ u₂ u (delta p (fun τ => m - p τ) ap am : MvPolynomial (FVar D m n) ℂ) = delta p (fun τ => m - p τ) ap am`. Unfold `delta`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Unfold `deltaAt`.
+
+Rewrite using `[map_mul, map_prod, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[map_pow]`.
+
+Distinguish the cases in `h0 : ap τ i - (if i + 1 < p τ then ap τ (i + 1) else 0) = 0`. Rewrite using `[h0, pow_zero, pow_zero]`. Establish `hne : ap τ i ≠ 0` using `by omega`. Use `le_card_of_antitone (hap τ) hi hne` as an intermediate fact. Use `hcard τ` as an intermediate fact.
+
+Rewrite using `[polySubst_unip_minorPlus p hpm u₁ u₂ u hu₁ hu τ (i + 1) (by omega) (by omega)]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at hi`. Rewrite using `[map_pow]`. Distinguish the cases in `h0 : am τ i - (if i + 1 < m - p τ then am τ (i + 1) else 0) = 0`.
+
+Rewrite using `[h0, pow_zero, pow_zero]`. Establish `hne : am τ i ≠ 0` using `by omega`. Use `le_card_of_antitone (ham τ) hi hne` as an intermediate fact. Use `hcard τ` as an intermediate fact. Rewrite using `[polySubst_unip_minorMinus p u₁ u₂ u hu₂ hu τ (i + 1) (by omega) (by have := hpm τ; omega)]`.
+
+Establish `hchar : fockChar p a e u₁ u₂ u = 1`. Unfold `fockChar`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[det_upperUni _ (hu₁ τ), det_upperUni _ (hu₂ τ), det_lowerUni _ (hu τ), _root_.one_zpow, _root_.one_zpow, _root_.one_zpow, mul_one, mul_one]`. Unfold `piAct`.
+
+Rewrite using `[LinearMap.smul_apply, AlgHom.toLinearMap_apply, hpoly, hchar, one_smul]`.
+-/
 theorem piAct_unip_delta (p : D.what₂.Tau → ℕ) (hpm : ∀ τ, p τ ≤ m) (a : ℤ) (e : D.what₂.Tau → ℤ) (u₁ : complexSquareMatrixFamily D p)
     (u₂ : complementBlockMatrixFamily D m p) (u : HFam D n) (hu₁ : ∀ τ, IsUpperUni (u₁ τ)) (hu₂ : ∀ τ, IsUpperUni (u₂ τ))
     (hu : ∀ τ, IsLowerUni (u τ)) (ap am : D.what₂.Tau → ℕ → ℕ)
@@ -964,6 +1262,11 @@ theorem piAct_unip_delta (p : D.what₂.Tau → ℕ) (hpm : ∀ τ, p τ ≤ m) 
 
 end Extremal
 
+/- English proof (translation)
+Introduce `θ V W S' M c BV p a e ap am hθ hV ha hW hBV hc hM hcw`. Establish `hp : ∀ τ, p τ ≤ W.rank` using `fun τ => (hM τ).2.1`. Establish `hap : ∀ τ, Antitone (ap τ)` using `fun τ => (hM τ).2.2.1`. Establish `ham : ∀ τ, Antitone (am τ)` using `fun τ => (hM τ).2.2.2.1`. Establish `hap0 : ∀ τ i, p τ ≤ i → ap τ i = 0` using `fun τ => (hM τ).2.2.2.2.1`.
+
+Establish `ham0 : ∀ τ b, W.rank - p τ ≤ b → am τ b = 0` using `fun τ => (hM τ).2.2.2.2.2.1`. Establish `hcard` using `fun τ => (hM τ).2.2.2.2.2.2.1`. Conclude with `h θ V W M c BV p a e ap am _ hθ hV ha hW hBV hc hM hcw (delta_ne_zero p ap am hp hap ham hcard) (fun t₁ t₂ t h1 h2 h3 => piAct_diag_delta p hp a e t₁ t₂ t h1 h2 h3 ap am hap ham hap0 ham0 hcard) (fun u₁ u₂ u hu₁ hu₂ hu => piAct_unip_delta p hp a e u₁ u₂ u hu₁ hu₂ hu ap am hap ham …`.
+-/
 theorem ioPiExists_of (h : IoPiFromHW D) : IoPiExists D := by
   intro θ V W S' M c BV p a e ap am hθ hV ha hW hBV hc hM hcw
   have hp : ∀ τ, p τ ≤ W.rank := fun τ => (hM τ).2.1
@@ -980,6 +1283,9 @@ section Assembly
 
 variable {V W : HSp D} {S' : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Introduce `τ`. Take `⟨hε, h1, h2, h3, h4, h5, h6, h7⟩` from `h τ`. Conclude with `⟨hε, h1, ap τ, am τ, h2, h3, h4, h5, h6, h7⟩`.
+-/
 theorem realKVLoc_of_at (M : DSModel W S') (p : D.what₂.Tau → ℕ) (nV : ℕ) (αV : D.what₂.Tau → ℚ)
     (ap am : D.what₂.Tau → ℕ → ℕ)
     (h : ∀ τ, (∀ i, M.ε τ i = decide ((i : ℕ) < p τ)) ∧
@@ -989,6 +1295,23 @@ theorem realKVLoc_of_at (M : DSModel W S') (p : D.what₂.Tau → ℕ) (nV : ℕ
   obtain ⟨hε, h1, h2, h3, h4, h5, h6, h7⟩ := h τ
   exact ⟨hε, h1, ap τ, am τ, h2, h3, h4, h5, h6, h7⟩
 
+/- English proof (translation)
+Substitute `hΔ` using the available equality. Establish `hM' : ∀ τ, (∀ i, M.ε τ i = decide ((i : ℕ) < p τ)) ∧ KVWeightAt W.rank (p τ) V.rank (-(e τ : ℚ)) (ap τ) (am τ) (Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ))`. Introduce `τ`. Rewrite using `[← hαV τ]`. Conclude with `hM τ`.
+
+Establish `hp : ∀ τ, p τ ≤ W.rank` using `fun τ => (hM τ).2.1`. Use `⟨delta_ne_zero p ap am hp (fun τ => (hM τ).2.2.1) (fun τ => (hM τ).2.2.2.1) (fun τ => (hM τ).2.2.2.2.2.2.1), ?_⟩` and prove the remaining obligations. Take `⟨io, h1, h2, h3⟩` from `hIo θ V W M c BV p a e ap am hθ hV ha hW hBV hc hM' hcw`. Use `⟨io, fun χV χW hχV hχW ω hω f hf _ hvac => ⟨?_, ?_, h3⟩⟩` and prove the remaining obligations. Establish `hB : ∀ τ, IsUnit (BV τ).det` using `fun τ => Matrix.isUnit_det_of_left_inverse (hBV τ)`.
+
+Establish `hT : ∀ τ, IsUnit (onb M τ).det` using `fun τ => by`. Unfold `onb`. Conclude with `Matrix.isUnit_nonsing_inv_det_iff.mpr (isUnit_fr M τ)`. Establish `hF` using `hFE hLine ψ θ V W χV χW ω (fun _ => 1) (cart M) BV (onb M) p a e hψ hω.real hθ hω.datum ha hp hW hV (fun τ => by rw [← hαV τ]; exact hχV τ) (fun τ => by rw [← hαW τ]; exact hχW τ) (fun τ => ⟨by rw [Matrix.mul_one], by rw [Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one], …`. Introduce `u hu x w`.
+
+Rewrite using `[h1 u hu x w]`. Establish `e1 : ∀ τ, blockDiagonalOfBlocks p (fun _ => 1) (fun _ => 1) τ = (1 : Matrix (Fin W.rank) (Fin W.rank) ℂ)` using `fun τ => by`. Use `block_diagonal_of_blocks_eq p (fun _ => (1 : Matrix (Fin W.rank) (Fin W.rank) ℂ)) (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) τ` as an intermediate fact. Rewrite `this` using `[extendOne_one p hp, symmetricScalarBlockMatrix_one_zero p]`. Then use the resulting hypothesis. Use `hF (fun _ => 1) (fun _ => 1) (hOf θ V BV u) (fun _ => one_mem _) (fun _ => one_mem _) (hOf_unitary hθ V hV BV hBV u) u 1 (isInfEl_hOf θ V BV hB u hu) ?_ f hf hvac (io x w)` and prove the remaining obligations.
+
+Simplify using `only [e1]`. Conclude with `isInfEl_one hθ W (onb M) hT`. Establish `hB : ∀ τ, IsUnit (BV τ).det` using `fun τ => Matrix.isUnit_det_of_left_inverse (hBV τ)`. Establish `hT : ∀ τ, IsUnit (onb M τ).det` using `fun τ => by`. Unfold `onb`.
+
+Conclude with `Matrix.isUnit_nonsing_inv_det_iff.mpr (isUnit_fr M τ)`. Establish `hF` using `hFE hLine ψ θ V W χV χW ω (fun _ => 1) (cart M) BV (onb M) p a e hψ hω.real hθ hω.datum ha hp hW hV (fun τ => by rw [← hαV τ]; exact hχV τ) (fun τ => by rw [← hαW τ]; exact hχW τ) (fun τ => ⟨by rw [Matrix.mul_one], by rw [Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one], …`. Introduce `τ k hk v u hu w`. Rewrite using `[h2 τ k hk v u hu w]`. Establish `hkp` using `kAt_props p τ (M.ε τ) (hM τ).1 k hk`.
+
+Use `hF (blk1 p (kAt τ k)) (blk2 p (kAt τ k)) (fun _ => 1) (first_diagonal_block_unitary p hp (kAt τ k) (fun τ' => (hkp τ').1) (fun τ' => (hkp τ').2)) (second_diagonal_block_unitary p hp (kAt τ k) (fun τ' => (hkp τ').1) (fun τ' => (hkp τ').2)) (fun _ => one_mem _) 1 (atTau θ W τ ((M.f …` and prove the remaining obligations. Use `isInfEl_atTau hθ W τ _ (frk_unitary M τ k hk) _ ?_ ?_` and prove the remaining obligations. Rewrite using `[block_diagonal_of_blocks_eq p (kAt τ k) (fun τ' => (hkp τ').1) τ, kAt_self]`. Unfold `onb`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ (isUnit_fr M τ)]`.
+
+Introduce `τ' hne`. Rewrite using `[block_diagonal_of_blocks_eq p (kAt τ k) (fun τ' => (hkp τ').1) τ', kAt_ne k hne, Matrix.mul_one, Matrix.mul_nonsing_inv _ (hT τ')]`.
+-/
 theorem realKVCompatU_of (hFE : FockEquivOfReal D) (hIo : IoPiExists D) (hLine : LineAtExists D)
     {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {αV αW : D.what₂.Tau → ℚ} (M : DSModel W S') (c : CoefA V)
     (BV : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (p : D.what₂.Tau → ℕ) (a : ℤ) (e : D.what₂.Tau → ℤ)
@@ -1050,6 +1373,9 @@ theorem realKVCompatU_of (hFE : FockEquivOfReal D) (hIo : IoPiExists D) (hLine :
     · intro τ' hne
       rw [block_diagonal_of_blocks_eq p (kAt τ k) (fun τ' => (hkp τ').1) τ', kAt_ne k hne, Matrix.mul_one, Matrix.mul_nonsing_inv _ (hT τ')]
 
+/- English proof (translation)
+The claim follows from `realKVCompatU_of hFE (ioPiExists_of hHW) hLine M c BV p a e ap am Δ hψ hθ hV ha hW hBV hc hαV hαW hM hcw hΔ`.
+-/
 theorem realKVCompatU_of_hw (hFE : FockEquivOfReal D) (hHW : IoPiFromHW D) (hLine : LineAtExists D)
     {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {αV αW : D.what₂.Tau → ℚ} (M : DSModel W S') (c : CoefA V)
     (BV : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (p : D.what₂.Tau → ℕ) (a : ℤ) (e : D.what₂.Tau → ℤ)

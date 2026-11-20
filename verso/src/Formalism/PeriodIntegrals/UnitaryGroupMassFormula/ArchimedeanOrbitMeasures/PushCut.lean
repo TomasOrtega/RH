@@ -71,6 +71,13 @@ def ConstTest : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (
       ∫⁻ y, φ y ∂(fibInf (TI X u' hT)) < ⊤ ∧
       ∫⁻ y, φ y ∂(X.measG.μGinf.map (orbM X u')) = ENNReal.ofReal (KVal X u') * ∫⁻ y, φ y ∂(fibInf (TI X u' hT))
 
+/- English proof (translation)
+Introduce `D X hb FdN FdN' u u' ψ hX hM hS hG hT μinf νinf fibInf hμ hν hfib`. Establish `hP : PushHyp X u' ψ hT μinf νinf fibInf` using `⟨⟨hb, FdN, FdN', u, hX⟩, hM, hS, hG, hμ, hν, hfib⟩`. Take `⟨φ, hφ, hp, hf, he⟩` from `h6 X u' ψ hT μinf νinf fibInf hP`. Establish `hsupp : fibInf (TI X u' hT) (FbI X u' hT)ᶜ = 0` using `hfib.1 _`. Establish `hne : fibInf (TI X u' hT) ≠ 0`.
+
+Introduce `h`. Rewrite `hp` using `[h, lintegral_zero_measure]`. Conclude with `lt_irrefl _ hp`. Take `⟨c, hc⟩` from `h5 X u' ψ hT μinf νinf fibInf hP _ _ (h1 X u' ψ hT μinf νinf fibInf hP) (h2 X u' ψ hT μinf νinf fibInf hP) (h3 X u' ψ hT μinf νinf fibInf hP).1 hsupp (h3 X u' ψ hT μinf νinf fibInf hP).2 (h4 X u' ψ hT μinf νinf fibInf hP) hne`. Establish `e2 : ∫⁻ y, φ y ∂(X.measG.μGinf.map (orbM X u')) = c * ∫⁻ y, φ y ∂(fibInf (TI X u' hT))`.
+
+Rewrite using `[hc, lintegral_smul_measure, smul_eq_mul]`. Establish `hcK : c = ENNReal.ofReal (KVal X u')` using `(ENNReal.mul_left_inj hp.ne' hf.ne).1 (e2.symm.trans he)`. Rewrite using `[hc, hcK]`. Both sides reduce to the same expression.
+-/
 theorem pushInf_of (h1 : InvPush) (h2 : InvFib) (h3 : LFPush) (h4 : LFFib) (h5 : OrbUniq) (h6 : ConstTest) :
     PushInf := by
   intro D X hb FdN FdN' u u' ψ hX hM hS hG hT μinf νinf fibInf hμ hν hfib

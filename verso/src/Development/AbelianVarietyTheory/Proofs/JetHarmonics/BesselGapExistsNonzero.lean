@@ -9,6 +9,15 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.BesselShape
 
+/- English proof (translation)
+Introduce `hH k r ε mu h R Wp _ _ _ _ z π u μW μN μG νq hDS hG hOK hS hne`. Take `⟨w₀, hw₀, v₀, hv₀, hne⟩` from `hne`. Choose the witnesses or unpack the hypotheses as in `⟨ξ₀, hξ₀⟩ : ∃ ξ, be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w₀ v₀ ξ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Conclude with `hne (ContinuousLinearMap.ext hcon)`. Establish `hB` using `GlobalTheory.T.isBes_bessel_integral_of_gap hH k r ε mu h R Wp z π u μW μN μG νq hDS hG hOK hS`. Establish `hnz : NzOn R (fun w => be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w v₀ ξ₀)` using `⟨w₀, hw₀, hξ₀⟩`. Use `set y₀ := be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w₀ v₀ ξ₀ with hy₀`. Establish `hyy : ⟪y₀, y₀⟫_ℂ ≠ 0` using `fun h0 => hξ₀ (inner_self_eq_zero.mp h0)`.
+
+Use `⟨fun w => be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w v₀ ξ₀, fun v => (starRingEnd ℂ (⟪y₀, y₀⟫_ℂ)⁻¹) • ContinuousLinearMap.adjoint (be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w₀ v) y₀, hB v₀ hv₀ ξ₀, hnz, ?_⟩` and prove the remaining obligations. Introduce `w hw v hv`. Use extensionality with `ξ`. Take `⟨c, hc⟩` from `GlobalTheory.BesselLine.bessel_line hH k r ε mu R Wp z π u μW μN μG νq _ _ hDS hS (hB v₀ hv₀ ξ₀) hnz (hB v hv ξ)`. Establish `h1` using `hc w hw`.
+
+Establish `h2` using `hc w₀ hw₀`. Rewrite using `[ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_left, ContinuousLinearMap.adjoint_inner_left, h2, h1, ← hy₀, inner_smul_right, Complex.conj_conj]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem bessel_shape : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)), R.IsDS ε mu → Formalism.QuantumDeterminants.GapAtLeast ε mu h → GapOK k r h → SideG k r z π u μW μN μG νq → (∃ w ∈ R.sm, ∃ v ∈ R.TK, be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w v ≠ 0) → ∃ (l₀ La : R.H → Wp), IsBes R z π l₀ ∧ NzOn R l₀ ∧ ∀ w ∈ R.sm, ∀ v ∈ R.TK, be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w v = (innerSL ℂ (La v)).smulRight (l₀ w) := by
   intro hH k r ε mu h R Wp _ _ _ _ z π u μW μN μG νq hDS hG hOK hS hne
   obtain ⟨w₀, hw₀, v₀, hv₀, hne⟩ := hne

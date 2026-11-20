@@ -21,6 +21,9 @@ def Rad (Op : Set (Module.End ℂ M)) (Rel K : Submodule ℂ M) : Prop :=
 def RadFin (Op : Set (Module.End ℂ M)) (Rel K : Submodule ℂ M) : Prop :=
   ∃ s, Gen Op Rel s ∧ ∀ S : Finset M, (∀ k ∈ S, k ∈ K) → ∃ e ∈ Algebra.adjoin ℂ Op, e s = s ∧ ∀ k ∈ S, e k ∈ Rel
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun P _ _ h => (Submodule.eq_top_iff'.2 fun x => by simpa using P.smul_mem x h), fun k hk => ⟨1, one_mem _, rfl, hk⟩⟩`.
+-/
 example : Rad (∅ : Set (Module.End ℂ ℂ)) ⊥ ⊥ :=
   ⟨1, fun P _ _ h => (Submodule.eq_top_iff'.2 fun x => by simpa using P.smul_mem x h),
     fun k hk => ⟨1, one_mem _, rfl, hk⟩⟩
@@ -36,6 +39,9 @@ def intersection_update_fsHerm_neg_one (i : ι) (r : M₀ × ∀ j, M j) : M i �
   TensorProduct.mk ℂ M₀ _ r.1 ∘ₗ (PiTensorProduct.tprod ℂ (s := M)).toLinearMap r.2 i
 
 omit [Fintype ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem position_apply (i : ι) (r : M₀ × ∀ j, M j) (x : M i) :
     intersection_update_fsHerm_neg_one i r x = r.1 ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ (Function.update r.2 i x) := rfl
 

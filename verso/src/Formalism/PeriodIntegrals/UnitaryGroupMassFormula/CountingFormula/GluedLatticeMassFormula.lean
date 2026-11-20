@@ -17,6 +17,13 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 variable {V1 : Type} [AddCommGroup V1] [Module K V1] [FiniteDimensional K V1] [Module (𝓞 K) V1]
   [IsScalarTower (𝓞 K) K V1]
 
+/- English proof (translation)
+Establish `ex : ∀ {A B : Finset (Submodule (𝓞 K) V1)}, IsHzReps h1 z A → IsHzReps h1 z B → ∀ M ∈ A, ∃ M' ∈ B, ∃ σ ∈ hz h1 z, Formalism.HermitianLatticesTheory.gmap σ M' = M`. Introduce `A B hA hB M hM`. Take `⟨M', ⟨hM', σ, hσ, e⟩, -⟩` from `hB.2 M (hA.1 M hM)`. Conclude with `⟨M', hM', σ, hσ, e⟩`. Use `choose i hi σi hσi ei using ex hs hs'`.
+
+Use `choose j hj σj hσj ej using ex hs' hs`. Use `Finset.sum_bij' i j hi hj ?_ ?_ ?_` and prove the remaining obligations. Introduce `M hM`. Establish `hu` using `hs.2 (i M hM) (hs'.1 _ (hi M hM))`. Use `hu.unique ⟨hj _ (hi M hM), σj _ (hi M hM), hσj _ _, ej _ _⟩ ⟨hM, (σi M hM)⁻¹, inv_mem_hz (hσi M hM), (congrArg (Formalism.HermitianLatticesTheory.gmap (σi M hM)⁻¹) (ei M hM)).symm.trans (gmap_inv_gmap' _ _)⟩` and prove the remaining obligations.
+
+Introduce `M hM`. Establish `hu` using `hs'.2 (j M hM) (hs.1 _ (hj M hM))`. Use `hu.unique ⟨hi _ (hj M hM), σi _ (hj M hM), hσi _ _, ei _ _⟩ ⟨hM, (σj M hM)⁻¹, inv_mem_hz (hσj M hM), (congrArg (Formalism.HermitianLatticesTheory.gmap (σj M hM)⁻¹) (ej M hM)).symm.trans (gmap_inv_gmap' _ _)⟩` and prove the remaining obligations. Introduce `M hM`. Rewrite using `[← card_stabZ_conj (hσi M hM) (i M hM), ei M hM]`.
+-/
 theorem sum_reps_eq {h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K} {z : V1} {s s' : Finset (Submodule (𝓞 K) V1)}
     (hs : IsHzReps h1 z s) (hs' : IsHzReps h1 z s') :
     ∑ M ∈ s, ((Nat.card (stabZ h1 z M) : ℕ) : ℝ)⁻¹ = ∑ M ∈ s', ((Nat.card (stabZ h1 z M) : ℕ) : ℝ)⁻¹ := by
@@ -41,6 +48,9 @@ theorem sum_reps_eq {h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K} {z : V1} {s s' : Finse
   · intro M hM
     rw [← card_stabZ_conj (hσi M hM) (i M hM), ei M hM]
 
+/- English proof (translation)
+Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Establish `hpos` using `alphaStd_pos hK hF h𝔭 j`. Rewrite using `[Nat.add_sub_cancel]`. Unfold `alphaStd at hpos ⊢`. Rewrite using `[Finset.prod_Icc_succ_top (by omega), mul_div_cancel_left₀ _ hpos.ne']`.
+-/
 theorem alphaStd_ratio (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {k : ℕ} (hk : 1 ≤ k) :
     alphaStd K 𝔭 k / alphaStd K 𝔭 (k - 1) = 1 - etaF K F 𝔭 ^ k * (Ideal.absNorm 𝔭 : ℝ) ^ (-(k : ℤ)) := by
@@ -51,6 +61,37 @@ theorem alphaStd_ratio (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
   rw [Finset.prod_Icc_succ_top (by omega), mul_div_cancel_left₀ _ hpos.ne']
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
+/- English proof (translation)
+Establish `hH'` using `hH`. Take `⟨hK, hF, hsym, hzz, ht, hd⟩` from `hH'`. Establish `hz0 : h1 z z ≠ 0`. Rewrite using `[hzz, neg_ne_zero]`. Conclude with `ht.ne'` after adjusting the coercions.
+
+Establish `hz : z ≠ 0` using `z_ne_zero hz0`. Use `set k := finrank K (wPerp h1 z) with hkdef`. Establish `hC : IsCompl (Submodule.span K {z}) (Formalism.L2.SG.Pf.Cnt.orthK h1 (Submodule.span K {z}))`. Rewrite using `[orthK_span]`. Conclude with `isCompl_span hz0`.
+
+Establish `hP : Formalism.L2.SG.Pf.Cnt.PosDefOn h1 (Formalism.L2.SG.Pf.Cnt.orthK h1 (Submodule.span K {z}))`. Rewrite using `[orthK_span]`. Introduce `x hx hx0 φ`. Conclude with `hd ⟨x, hx⟩ (fun h => hx0 (congrArg Subtype.val h)) φ`. Establish `hLat : Formalism.L2.SG.Pf.Cnt.IsLatIn (Submodule.span K {z}) (Submodule.span (𝓞 K) {z})` using `⟨Submodule.fg_span_singleton z, Submodule.span_span_of_tower (𝓞 K) K {z}⟩`.
+
+Establish `hInt : Formalism.HermitianLatticesTheory.IsIntegralLat h1 (Submodule.span (𝓞 K) {z})`. Introduce `x hx y hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[Formalism.HermitianLatticesTheory.locDual_h_smul_left, Formalism.HermitianLatticesTheory.locDual_h_smul_right, hzz]`.
+
+Take `⟨c, hc⟩` from `Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range (K := K) a`. Rewrite using `[← hc]`. Use `Formalism.HermitianLatticesTheory.locDual_one_mul (Formalism.HermitianLatticesTheory.locDual_alg_mem c) (Formalism.HermitianLatticesTheory.locDual_one_mul (Formalism.HermitianLatticesTheory.locDual_alg_mem b) ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_one]`. Conclude with `⟨-((t : ℕ) : 𝓞 K), by simp⟩`.
+
+Establish `hGS : (Formalism.L2.SG.Pf.Cnt.GlueSet h1 (Submodule.span K {z}) (Submodule.span (𝓞 K) {z})).Nonempty`. Take `⟨M, hM⟩` from `hne`. Conclude with `⟨M, (glueSet_iff hz0 M).2 hM⟩`. Establish `hMC : MassConst K F (finrank K (Formalism.L2.SG.Pf.Cnt.orthK h1 (Submodule.span K {z}))) (cMass K F k)`. Rewrite using `[orthK_span]`.
+
+Conclude with `massConst_cMass hK hF k hk`. Take `⟨s', hs'1, hs'2, -, hsum⟩` from `Formalism.L2.SG.Pf.Cnt.gluing_mass_holds K F V1 hK hF h1 hsym (nondeg hH) _ hC hP _ hLat hInt hGS (cMass K F k) hMC`. Establish `hs' : IsHzReps h1 z s'`. Use `⟨fun M hM => (glueSet_iff hz0 M).1 (hs'1 M hM), fun M hM => ?_⟩` and prove the remaining obligations. Take `⟨Λ₁, ⟨h1s, g, hg, e⟩, hu⟩` from `hs'2 M ((glueSet_iff hz0 M).2 hM)`.
+
+Conclude with `⟨Λ₁, ⟨h1s, g, (isomFix_iff h1 z g).1 hg, e⟩, fun Λ₂ ⟨h2s, g2, hg2, e2⟩ => hu Λ₂ ⟨h2s, g2, (isomFix_iff h1 z g2).2 hg2, e2⟩⟩`. Rewrite using `[sum_reps_eq hs hs']`. Simplify using `only [stabFix_eq] at hsum`. Rewrite using `[hsum, orthK_span]`. Establish `hJ : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, Formalism.L2.SG.Pf.Cnt.vJ h1 (Submodule.span K {z}) (Submodule.span (𝓞 K) {z}) 𝔭.1 = vT F t 𝔭.1 ∧ Formalism.L2.SG.Pf.Cnt.cJ h1 (Submodule.span K {z}) (Submodule.span (𝓞 K) {z}) 𝔭.1 = if ((t : ℕ) : 𝓞 F) ∈ 𝔭.1 then 1 else 0`.
+
+Introduce `𝔭`. Establish `h1r : finrank K (Submodule.span K {z}) = 1` using `finrank_span_singleton hz`. Take `⟨e1, e2⟩` from `Formalism.L2.SG.Pf.G9.vJ_cJ_eq Formalism.L2.SG.Pf.Cnt.jordan_invariants_holds hK hF hsym hLat 𝔭.2 (jordan_rank_one_line hzz ht hz 𝔭.1)`. Establish `hv : vF 𝔭.1 (-((t : ℕ) : 𝓞 F)) = vT F t 𝔭.1` using `by rw [vF_neg, vF_eq_vT 𝔭.2 ht]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e1]`. Unfold `Formalism.L2.SG.Pf.Cnt.vJof`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, h1r, one_smul, hv]`. Rewrite using `[e2]`. Unfold `Formalism.L2.SG.Pf.Cnt.cJof`.
+
+Establish `ht0 : ((t : ℕ) : 𝓞 F) ≠ 0` using `by exact_mod_cast ht.ne'`. Establish `hiff : vF 𝔭.1 (-((t : ℕ) : 𝓞 F)) ≠ 0 ↔ ((t : ℕ) : 𝓞 F) ∈ 𝔭.1`. Rewrite using `[vF_neg, ← Nat.one_le_iff_ne_zero, ← Formalism.L2.SG.Pf.G1.mem_pow_iff 𝔭.2 ht0 1, pow_one]`. Distinguish the cases in `h : ((t : ℕ) : 𝓞 F) ∈ 𝔭.1`. Rewrite using `[if_pos h, Finset.filter_true_of_mem (fun i _ => hiff.2 h), Finset.card_univ, Fintype.card_fin, h1r]`.
+
+Rewrite using `[if_neg h, Finset.filter_false_of_mem (fun i _ => fun hh => h (hiff.1 hh)), Finset.card_empty]`. Establish `hnM : Formalism.L2.SG.Pf.Cnt.nM F h1 (Submodule.span K {z}) (Submodule.span (𝓞 K) {z}) = (t : ℝ) ^ finrank ℚ F`. Unfold `Formalism.L2.SG.Pf.Cnt.nM`. Establish `e` using `tprod_supT (F := F) ht (fun P => (Ideal.absNorm P : ℝ) ^ vT F t P)`. Use `beta_reduce at e`.
+
+Rewrite using `[← prod_absNorm_pow ht, ← e]`. Use `tprod_congr fun 𝔭 => ?_` and prove the remaining obligations. Rewrite using `[(hJ 𝔭).1]`. Distinguish the cases in `h : ((t : ℕ) : 𝓞 F) ∈ 𝔭.1`. Rewrite using `[if_pos h]`.
+
+Rewrite using `[if_neg h, ← vF_eq_vT 𝔭.2 ht, Formalism.L2.SG.Pf.G1.vF_of_notMem 𝔭.2 h, pow_zero]`. Establish `hratio : (∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, alphaStd K 𝔭.1 k / alphaStd K 𝔭.1 (k - Formalism.L2.SG.Pf.Cnt.cJ h1 (Submodule.span K {z}) (Submodule.span (𝓞 K) {z}) 𝔭.1)) = ∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, (if ((t : ℕ) : 𝓞 F) ∈ 𝔭.1 then 1 - etaF K F 𝔭.1 ^ k * (Ideal.a …`. Use `tprod_congr fun 𝔭 => ?_` and prove the remaining obligations. Rewrite using `[(hJ 𝔭).2]`. Distinguish the cases in `h : ((t : ℕ) : 𝓞 F) ∈ 𝔭.1`.
+
+Rewrite using `[if_pos h, if_pos h, alphaStd_ratio hK hF 𝔭.2 hk]`. Rewrite using `[if_neg h, if_neg h, Nat.sub_zero, div_self (alphaStd_pos hK hF 𝔭.2 k).ne']`. Rewrite using `[hnM, hratio, ← pow_mul, mul_comm (finrank ℚ F) k]`.
+-/
 theorem glued_lattice_mass_formula {h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K} {z : V1} {t : ℕ} (hH : GlueHyp K F h1 z t)
     (hk : 1 ≤ finrank K (wPerp h1 z)) (hne : ∃ M, IsGlueLat h1 z M) {s : Finset (Submodule (𝓞 K) V1)}
     (hs : IsHzReps h1 z s) :

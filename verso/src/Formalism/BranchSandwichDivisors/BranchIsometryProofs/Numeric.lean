@@ -5,6 +5,9 @@ open Finset
 
 namespace Formalism.BranchingDeterminantCap
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Nat.factorial_succ, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem two_pow_le_succ_factorial (j : ℕ) : 2 ^ j ≤ (j + 1).factorial := by
   induction j with
   | zero => simp
@@ -13,15 +16,44 @@ private theorem two_pow_le_succ_factorial (j : ℕ) : 2 ^ j ≤ (j + 1).factoria
     calc 2 ^ k * 2 ≤ (k + 1).factorial * (k + 1 + 1) := Nat.mul_le_mul ih (by omega)
       _ = (k + 1 + 1) * (k + 1).factorial := Nat.mul_comm _ _
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem choose_succ_mul_two_pow_le (r j : ℕ) : r.choose (j + 1) * 2 ^ j ≤ r ^ (j + 1) := by
   calc r.choose (j + 1) * 2 ^ j ≤ r.choose (j + 1) * (j + 1).factorial :=
         Nat.mul_le_mul le_rfl (two_pow_le_succ_factorial j)
     _ = r.descFactorial (j + 1) := by rw [Nat.descFactorial_eq_factorial_mul_choose, Nat.mul_comm]
     _ ≤ r ^ (j + 1) := Nat.descFactorial_le_pow r (j + 1)
 
+/- English proof (translation)
+Conclude with `sum_geometric_two_le k`.
+-/
 theorem geom_half_le (k : ℕ) : ∑ j ∈ range k, ((1 : ℝ) / 2) ^ j ≤ 2 := by
   exact sum_geometric_two_le k
 
+/- English proof (translation)
+Unfold `MultPlace`. Introduce `q k r Nn hq hk hkr hrq hN0 hNn gam hg0 hgs`. Establish `hq2 : (2:ℝ) ≤ (q:ℝ)` using `by exact_mod_cast hq`. Establish `hq0 : (0:ℝ) < (q:ℝ)` using `by linarith`. Establish `hqne : (q:ℝ) ≠ 0` using `hq0.ne'`.
+
+Establish `hrq' : (r:ℝ) ≤ (q:ℝ)` using `by exact_mod_cast hrq`. Establish `hg : ∀ l, 0 ≤ gam l ∧ gam l ≤ (q:ℝ) ^ l`. Introduce `l`. Consider the cases of `l with`. Consider the case `zero => simp [hg0]`.
+
+Consider the case `succ l`. Rewrite using `[hgs l]`. Establish `h1 : (0:ℝ) ≤ (q:ℝ) ^ l` using `pow_nonneg hq0.le l`. Prove the components needed by the constructor for the conclusion. Rewrite using `[pow_succ]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[Finset.sum_range_succ', hN0]`. Simplify using `only [Nat.cast_one, one_mul, Nat.sub_zero]`.
+
+Establish `hterm : ∀ i ∈ range (m + 1), (Nn (i + 1) : ℝ) * gam (m + 1 - (i + 1)) ≤ (r:ℝ) * (q:ℝ) ^ m * ((1:ℝ) / 2) ^ i`. Introduce `i hi`. Establish `him : i ≤ m` using `by have := Finset.mem_range.mp hi; omega`. Establish `e : m + 1 - (i + 1) = m - i` using `by omega`. Rewrite using `[e]`.
+
+Establish `hN : (Nn (i + 1) : ℝ) ≤ (r.choose (i + 1) : ℝ)` using `by exact_mod_cast hNn (i + 1)`. Establish `key : (r.choose (i + 1) : ℝ) * 2 ^ i ≤ (r:ℝ) ^ (i + 1)`. Conclude with `choose_succ_mul_two_pow_le r i` after adjusting the coercions. Establish `hqs : (q:ℝ) ^ m = (q:ℝ) ^ i * (q:ℝ) ^ (m - i)`. Rewrite using `[← pow_add]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ((2:ℝ)) ^ i * ((1:ℝ) / 2) ^ i = 1` using `by rw [← mul_pow]; norm_num`. Establish `hpos : (0:ℝ) ≤ ((1:ℝ) / 2) ^ i` using `by positivity`. Establish `hqm : (0:ℝ) ≤ (q:ℝ) ^ (m - i)` using `pow_nonneg hq0.le _`.
+
+Combine the equalities or inequalities in the displayed calculation. Take the linear combination `(-((r.choose (i + 1) : ℝ) * (q:ℝ) ^ (m - i))) * h2`. Use `_ ≤ (r:ℝ) * (q:ℝ) ^ m * ((1:ℝ) / 2) ^ i := by`. Apply `mul_le_mul_of_nonneg_right _ hpos` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsum_nonneg : 0 ≤ ∑ i ∈ range (m + 1), (Nn (i + 1) : ℝ) * gam (m + 1 - (i + 1))` using `Finset.sum_nonneg (fun i _ => mul_nonneg (Nat.cast_nonneg _) (hg _).1)`. Establish `hsum_le : ∑ i ∈ range (m + 1), (Nn (i + 1) : ℝ) * gam (m + 1 - (i + 1)) ≤ 2 * (r:ℝ) * (q:ℝ) ^ m`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left (geom_half_le (m + 1))` to reduce the goal to its premises. Check the signs of the components of the expression.
+
+Use `_ = 2 * (r:ℝ) * (q:ℝ) ^ m := by ring`. Establish `hgm : gam (m + 1) = (q:ℝ) ^ (m + 1) - (q:ℝ) ^ m` using `hgs m`. Establish `hA : (q:ℝ) ^ (m + 1) * (1 - 1 / (q:ℝ)) = (q:ℝ) ^ (m + 1) - (q:ℝ) ^ m` using `by field_simp; ring`. Establish `hB : (q:ℝ) ^ (m + 1) * (1 + (2 * (r:ℝ) - 1) / (q:ℝ)) = (q:ℝ) ^ (m + 1) + (2 * (r:ℝ) - 1) * (q:ℝ) ^ m` using `by field_simp; ring`. Rewrite using `[hA, hB, hgm]`.
+
+Apply the tactic sequence `constructor <;> linarith [hsum_nonneg, hsum_le]`.
+-/
 theorem multiplicity_at_place : MultPlace := by
   unfold MultPlace
   intro q k r Nn hq hk hkr hrq hN0 hNn gam hg0 hgs
@@ -85,6 +117,13 @@ theorem multiplicity_at_place : MultPlace := by
   rw [hA, hB, hgm]
   constructor <;> linarith [hsum_nonneg, hsum_le]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Establish `h0' : ∀ i ∈ s, 0 ≤ x i` using `fun i hi => h0 i (Finset.mem_insert_of_mem hi)`.
+
+Establish `h1' : ∀ i ∈ s, x i ≤ 1` using `fun i hi => h1 i (Finset.mem_insert_of_mem hi)`. Establish `ih'` using `ih h0' h1'`. Establish `hxa0 : 0 ≤ x a` using `h0 a (Finset.mem_insert_self a s)`. Establish `hxa1 : x a ≤ 1` using `h1 a (Finset.mem_insert_self a s)`. Establish `hS : 0 ≤ ∑ i ∈ s, x i` using `Finset.sum_nonneg h0'`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left ih' (sub_nonneg.2 hxa1), mul_nonneg hxa0 hS]`.
+-/
 theorem one_sub_sum_le_prod {ι : Type} (s : Finset ι) (x : ι → ℝ) (h0 : ∀ i ∈ s, 0 ≤ x i)
     (h1 : ∀ i ∈ s, x i ≤ 1) : 1 - ∑ i ∈ s, x i ≤ ∏ i ∈ s, (1 - x i) := by
   classical
@@ -100,6 +139,31 @@ theorem one_sub_sum_le_prod {ι : Type} (s : Finset ι) (x : ι → ℝ) (h0 : �
     have hS : 0 ≤ ∑ i ∈ s, x i := Finset.sum_nonneg h0'
     nlinarith [mul_le_mul_of_nonneg_left ih' (sub_nonneg.2 hxa1), mul_nonneg hxa0 hS]
 
+/- English proof (translation)
+Unfold `MultProd`. Introduce `Pv _ q nn k f r g hcard hr hg hgq hfrg hb`. Establish `hf : 0 ≤ f`. Use `Nat.cast_nonneg (α := ℝ) (Fintype.card Pv)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hqpos : ∀ v, 0 < q v` using `fun v => lt_of_lt_of_le hg (hgq v)`. Establish `hq1 : ∀ v, 1 ≤ q v`. Introduce `v`. Establish `hc : (1:ℝ) ≤ (Fintype.card Pv : ℝ)` using `Nat.one_le_cast.mpr (Fintype.card_pos_iff.mpr ⟨v⟩)`. Establish `hf2 : (1:ℝ) / 2 ≤ f` using `by linarith`.
+
+Use `mul_le_mul hf2 hr (by norm_num) hf` as an intermediate fact. Combine the linear relations using `[hgq v]`. Establish `hgne : g ≠ 0` using `hg.ne'`. Establish `hP0 : 0 ≤ ∏ v, q v ^ k` using `Finset.prod_nonneg (fun v _ => pow_nonneg (hqpos v).le k)`. Establish `hinv0 : ∀ v, 0 ≤ 1 / q v` using `fun v => le_of_lt (one_div_pos.mpr (hqpos v))`.
+
+Establish `hinv1 : ∀ v, 1 / q v ≤ 1` using `fun v => by`. Use `one_div_le_one_div_of_le one_pos (hq1 v)` as an intermediate fact. Rewrite `this` using `[div_one]`. Then use the resulting hypothesis. Establish `hsum_inv : ∑ v, 1 / q v ≤ 2 * f / g`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Establish `hprod1 : 1 - ∑ v, 1 / q v ≤ ∏ v, (1 - 1 / q v)` using `one_sub_sum_le_prod Finset.univ (fun v => 1 / q v) (fun v _ => hinv0 v) (fun v _ => hinv1 v)`. Establish `hlow : ∏ v, (q v ^ k * (1 - 1 / q v)) ≤ ∏ v, nn v` using `Finset.prod_le_prod (fun v _ => mul_nonneg (pow_nonneg (hqpos v).le k) (sub_nonneg.2 (hinv1 v))) (fun v _ => (hb v).1)`.
+
+Rewrite `hlow` using `[Finset.prod_mul_distrib]`. Establish `h8 : 8 * f * r / g - 2 * f / g = (8 * f * r - 2 * f) / g` using `by rw [sub_div]`. Establish `h8' : 0 ≤ (8 * f * r - 2 * f) / g` using `div_nonneg (by nlinarith) hg.le`. Establish `hcoef : 1 - 8 * f * r / g ≤ ∏ v, (1 - 1 / q v)` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `ha0 : ∀ v, 0 ≤ (2 * r - 1) / q v` using `fun v => div_nonneg (by linarith) (hqpos v).le`. Establish `hup : ∏ v, nn v ≤ ∏ v, (q v ^ k * (1 + (2 * r - 1) / q v))` using `Finset.prod_le_prod (fun v _ => le_trans (mul_nonneg (pow_nonneg (hqpos v).le k) (sub_nonneg.2 (hinv1 v))) (hb v).1) (fun v _ => (hb v).2)`. Rewrite `hup` using `[Finset.prod_mul_distrib]`. Establish `hexp1 : ∏ v, (1 + (2 * r - 1) / q v) ≤ Real.exp (∑ v, (2 * r - 1) / q v)`. Rewrite using `[Real.exp_sum]`.
+
+Conclude with `Finset.prod_le_prod (fun v _ => by linarith [ha0 v]) (fun v _ => by linarith [Real.add_one_le_exp ((2 * r - 1) / q v)])`. Establish `hsum_a : ∑ v, (2 * r - 1) / q v ≤ 4 * f * r / g`. Establish `e : ∑ v, (2 * r - 1) / q v = (2 * r - 1) * ∑ v, 1 / q v`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl (fun v _ => by ring)`. Rewrite using `[e]`.
+
+Establish `h2r : 0 ≤ 2 * r - 1` using `by linarith`. Establish `e2 : 4 * f * r / g - (2 * r - 1) * (2 * f / g) = 2 * f / g` using `by ring`. Establish `e3 : 0 ≤ 2 * f / g` using `div_nonneg (by linarith) hg.le`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hsum_inv h2r]`. Establish `hfr : 0 ≤ 4 * f * r`.
+
+Use `mul_nonneg hf (by linarith : (0:ℝ) ≤ r); linarith` as an intermediate fact. Establish `hT0 : 0 ≤ 4 * f * r / g` using `div_nonneg hfr hg.le`. Establish `hT1 : 4 * f * r / g ≤ 1`. Establish `e4 : (g - 4 * f * r) / g = 1 - 4 * f * r / g` using `by rw [sub_div, div_self hgne]`. Establish `e5 : 0 ≤ (g - 4 * f * r) / g` using `div_nonneg (by linarith) hg.le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp2 : Real.exp (4 * f * r / g) ≤ 1 + 2 * (4 * f * r / g)`. Establish `hc` using `convexOn_exp.2 (Set.mem_univ (1:ℝ)) (Set.mem_univ (0:ℝ)) hT0 (sub_nonneg.2 hT1) (by ring)`. Simplify using `only [smul_eq_mul, mul_one, mul_zero, add_zero, Real.exp_zero] at hc`. Establish `he : Real.exp 1 < 3` using `lt_trans Real.exp_one_lt_d9 (by norm_num)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hprod : ∏ v, (1 + (2 * r - 1) / q v) ≤ 1 + 8 * f * r / g`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem multiplicity_product : MultProd := by
   unfold MultProd
   intro Pv _ q nn k f r g hcard hr hg hgq hfrg hb
@@ -178,9 +242,15 @@ theorem multiplicity_product : MultProd := by
       _ ≤ (∏ v, q v ^ k) * (1 + 8 * f * r / g) := mul_le_mul_of_nonneg_left hprod hP0
       _ = (1 + 8 * f * r / g) * ∏ v, q v ^ k := by ring
 
+/- English proof (translation)
+The claim follows from `Fin.antitone_iff_succ_le.2 (fun i => (h i).2.trans (h i).1)`.
+-/
 theorem interlace_antitone {n : ℕ} {lam : Fin (n + 1) → ℤ} {sg : Fin n → ℤ}
     (h : Interlace lam sg) : Antitone lam := Fin.antitone_iff_succ_le.2 (fun i => (h i).2.trans (h i).1)
 
+/- English proof (translation)
+The claim follows from `|((v - (i : ℤ)) - (sg j - (j : ℤ)))| ≤ lam 0 - lam (Fin.last n) + (n : ℤ) - 1 := by have hA := interlace_antitone h have hv' := Finset.mem_of_mem_erase hv have hne : v ≠ sg i := Finset.ne_of_mem_erase hv unfold rset at hv' rw [Finset.mem_Icc] at hv' obtain ⟨hv1, hv2⟩ := hv' have …`.
+-/
 theorem cap_factor {n : ℕ} {lam : Fin (n + 1) → ℤ} {sg : Fin n → ℤ} (h : Interlace lam sg)
     (i j : Fin n) (v : ℤ) (hv : v ∈ (rset lam sg i).erase (sg i)) :
     ((v - (i : ℤ)) - (sg j - (j : ℤ))) ≠ 0 ∧
@@ -215,6 +285,9 @@ theorem cap_factor {n : ℕ} {lam : Fin (n + 1) → ℤ} {sg : Fin n → ℤ} (h
   · rw [abs_le]
     constructor <;> omega
 
+/- English proof (translation)
+Establish `hd0 : 0 ≤ d0 lam sg`. Unfold `d0`. Conclude with `Finset.sum_nonneg (fun i _ => sub_nonneg.2 (h i).2)`. Unfold `d1`. Conclude with `Finset.sum_nonneg (fun i _ => le_min (by linarith [(h i).1, (h i).2]) hd0)`.
+-/
 private theorem d1_nonneg_of_interlace {n : ℕ} {lam : Fin (n + 1) → ℤ} {sg : Fin n → ℤ}
     (h : Interlace lam sg) : 0 ≤ d1 lam sg := by
   have hd0 : 0 ≤ d0 lam sg := by
@@ -222,6 +295,29 @@ private theorem d1_nonneg_of_interlace {n : ℕ} {lam : Fin (n + 1) → ℤ} {sg
   unfold d1
   exact Finset.sum_nonneg (fun i _ => le_min (by linarith [(h i).1, (h i).2]) hd0)
 
+/- English proof (translation)
+Unfold `CapConst`. Introduce `n lam sg h`. Establish `hd0 : ∀ i : Fin n, sg i - lam i.succ ≤ d0 lam sg`. Introduce `i`. Unfold `d0`.
+
+Conclude with `Finset.single_le_sum (f := fun k : Fin n => sg k - lam k.succ) (fun k _ => sub_nonneg.2 (h k).2) (Finset.mem_univ i)`. Establish `hd0nn : 0 ≤ d0 lam sg`. Unfold `d0`. Conclude with `Finset.sum_nonneg (fun i _ => sub_nonneg.2 (h i).2)`. Establish `hmem : ∀ i : Fin n, sg i ∈ rset lam sg i`.
+
+Introduce `i`. Unfold `rset`. Rewrite using `[Finset.mem_Icc]`. Conclude with `⟨(h i).2, le_min (h i).1 (by linarith [hd0 i])⟩`. Establish `hcard : ∀ i : Fin n, ((rset lam sg i).erase (sg i)).card = (min (lam i.castSucc - lam i.succ) (d0 lam sg)).toNat`.
+
+Introduce `i`. Rewrite using `[Finset.card_erase_of_mem (hmem i)]`. Unfold `rset`. Rewrite using `[Int.card_Icc]`. Establish `h1` using `(h i).1`.
+
+Establish `h2` using `(h i).2`. Establish `h3` using `hd0 i`. Use linear arithmetic over natural numbers and integers. Establish `hm : ∀ i : Fin n, 0 ≤ min (lam i.castSucc - lam i.succ) (d0 lam sg)` using `fun i => le_min (by linarith [(h i).1, (h i).2]) hd0nn`. Establish `hd1nn : 0 ≤ d1 lam sg` using `d1_nonneg_of_interlace h`.
+
+Establish `hsum : ∑ i : Fin n, ((rset lam sg i).erase (sg i)).card = (d1 lam sg).toNat`. Rewrite using `[Finset.sum_congr rfl (fun i _ => hcard i)]`. Establish `key : ((∑ i : Fin n, (min (lam i.castSucc - lam i.succ) (d0 lam sg)).toNat : ℕ) : ℤ) = (((d1 lam sg).toNat : ℕ) : ℤ)`. Rewrite using `[Nat.cast_sum, Int.toNat_of_nonneg hd1nn, Finset.sum_congr rfl (fun i _ => Int.toNat_of_nonneg (hm i))]`. Unfold `d1`.
+
+Both sides reduce to the same expression. Conclude with `Nat.cast_injective key`. Prove the components needed by the constructor for the conclusion. Unfold `cCap capEig`. Rewrite using `[Finset.prod_ne_zero_iff]`.
+
+Introduce `i _`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `v hv`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j _`.
+
+Conclude with `(cap_factor h i j v hv).1`. Unfold `cCap capEig`. Simplify using `only [Finset.abs_prod]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod (fun i _ => Finset.prod_nonneg (fun v _ => Finset.prod_nonneg (fun j _ => abs_nonneg _)))` to reduce the goal to its premises.
+
+Introduce `i _`. Apply `Finset.prod_le_prod (fun v _ => Finset.prod_nonneg (fun j _ => abs_nonneg _))` to reduce the goal to its premises. Introduce `v hv`. Apply `Finset.prod_le_prod (fun j _ => abs_nonneg _)` to reduce the goal to its premises. Introduce `j _`.
+
+Conclude with `(cap_factor h i j v hv).2`. Use `_ = (lam 0 - lam (Fin.last n) + (n : ℤ) - 1) ^ (n * (d1 lam sg).toNat) := by`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, ← pow_mul, hsum]`.
+-/
 theorem capacity_constant_bound : CapConst := by
   unfold CapConst
   intro n lam sg h
@@ -280,6 +376,19 @@ theorem capacity_constant_bound : CapConst := by
           simp only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
           rw [Finset.prod_pow_eq_pow_sum, ← pow_mul, hsum]
 
+/- English proof (translation)
+Unfold `CapLog`. Introduce `n lam sg a h ha`. Take `⟨hne, hle⟩` from `capacity_constant_bound n lam sg h`. Establish `hd1` using `d1_nonneg_of_interlace h`. Establish `hM : (0:ℝ) ≤ ((lam 0 - lam (Fin.last n) : ℤ) : ℝ)`.
+
+Use `interlace_antitone h (Fin.zero_le (Fin.last n))` as an intermediate fact. Conclude with `(by omega : (0:ℤ) ≤ lam 0 - lam (Fin.last n))` after adjusting the coercions. Establish `hn : (0:ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hcpos : (0:ℝ) < |(cCap lam sg : ℝ)|`. Rewrite using `[abs_pos]`.
+
+Conclude with `hne` after adjusting the coercions. Establish `h1 : |(cCap lam sg : ℝ)| ≤ (((lam 0 - lam (Fin.last n) + (n:ℤ) - 1) : ℤ) : ℝ) ^ (n * (d1 lam sg).toNat)`. Conclude with `hle` after adjusting the coercions. Establish `e : (((lam 0 - lam (Fin.last n) + (n:ℤ) - 1) : ℤ) : ℝ) = ((lam 0 - lam (Fin.last n) : ℤ) : ℝ) + n - 1` using `by push_cast; ring`. Establish `hB : |(((lam 0 - lam (Fin.last n) + (n:ℤ) - 1) : ℤ) : ℝ)| ≤ 2 * a`.
+
+Apply the tactic sequence `rw [e, abs_le]; constructor <;> linarith`. Establish `h2 : |(cCap lam sg : ℝ)| ≤ (2 * a) ^ (n * (d1 lam sg).toNat)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← abs_pow]`. Conclude with `le_abs_self _`.
+
+Use `_ ≤ (2 * a) ^ (n * (d1 lam sg).toNat) := by gcongr`. Establish `ht : (((d1 lam sg).toNat : ℕ) : ℝ) = ((d1 lam sg : ℤ) : ℝ)`. Conclude with `Int.toNat_of_nonneg hd1` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.cast_mul, ht]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem capacity_log_bound : CapLog := by
   unfold CapLog
   intro n lam sg a h ha
@@ -311,6 +420,13 @@ theorem capacity_log_bound : CapLog := by
     _ = ((n:ℝ) + 1 - 1) * ((d1 lam sg : ℤ) : ℝ) * Real.log (2 * a) := by
         rw [Nat.cast_mul, ht]; ring
 
+/- English proof (translation)
+Rewrite using `[Finset.card_filter, Fintype.sum_prod_type]`. Simplify using `only`. Establish `h : ∀ a : Fin (n + 1), (∑ b : Fin (n + 1), if a < b then 1 else 0) = n - (a : ℕ)`. Introduce `a`. Rewrite using `[← Finset.card_filter, Finset.filter_lt_eq_Ioi, Fin.card_Ioi]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_congr rfl (fun a _ => h a)]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun k => n - k) (n + 1)]`. Establish `hr` using `Finset.sum_range_reflect (fun k => k) (n + 1)`. Simplify using `only [Nat.add_sub_cancel] at hr`.
+
+Rewrite using `[hr, Finset.sum_range_id, Nat.add_sub_cancel]`.
+-/
 theorem card_pairs_lt (n : ℕ) :
     ((Finset.univ : Finset (Fin (n + 1) × Fin (n + 1))).filter (fun p => p.1 < p.2)).card =
       (n + 1) * n / 2 := by
@@ -326,6 +442,15 @@ theorem card_pairs_lt (n : ℕ) :
   simp only [Nat.add_sub_cancel] at hr
   rw [hr, Finset.sum_range_id, Nat.add_sub_cancel]
 
+/- English proof (translation)
+Take `⟨a, b⟩` from `p`. Simplify using `only at hp ⊢`. Establish `hab : (a : ℕ) < (b : ℕ)` using `hp`. Establish `hD : nu b ≤ nu a` using `h hp.le`. Establish `h0 : nu a ≤ nu 0` using `h (Fin.zero_le a)`.
+
+Establish `hl : nu (Fin.last n) ≤ nu b` using `h (Fin.le_last b)`. Establish `hn : (1:ℝ) ≤ n`. Use `b.isLt` as an intermediate fact. Conclude with `(by omega : 1 ≤ n)` after adjusting the coercions. Establish `hd1 : ((a : ℕ) : ℝ) + 1 ≤ ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`.
+
+Establish `hDr : (0:ℝ) ≤ ((nu a - nu b : ℤ) : ℝ)`. Conclude with `(by omega : (0:ℤ) ≤ nu a - nu b)` after adjusting the coercions. Establish `hM : ((nu a - nu b : ℤ) : ℝ) ≤ ((nu 0 - nu (Fin.last n) : ℤ) : ℝ)`. Conclude with `(by omega : nu a - nu b ≤ nu 0 - nu (Fin.last n))` after adjusting the coercions. Establish `hdpos : (0:ℝ) < ((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)` using `by linarith`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[le_div_iff₀ hdpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_iff₀ hdpos]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (by linarith : (1:ℝ) ≤ ((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) (le_trans hDr hM), mul_le_mul_of_nonneg_right hn hdpos.le]`.
+-/
 theorem weyl_factor {n : ℕ} {nu : Fin (n + 1) → ℤ} (h : Antitone nu) (p : Fin (n + 1) × Fin (n + 1))
     (hp : p.1 < p.2) :
     1 ≤ (((nu p.1 - nu p.2 : ℤ) : ℝ) + ((p.2 : ℕ) : ℝ) - ((p.1 : ℕ) : ℝ)) /
@@ -353,6 +478,9 @@ theorem weyl_factor {n : ℕ} {nu : Fin (n + 1) → ℤ} (h : Antitone nu) (p : 
     nlinarith [mul_le_mul_of_nonneg_left (by linarith : (1:ℝ) ≤ ((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))
       (le_trans hDr hM), mul_le_mul_of_nonneg_right hn hdpos.le]
 
+/- English proof (translation)
+Unfold `WeylDimBound`. Introduce `n nu h`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem weyl_dimension_bound : WeylDimBound := by
   unfold WeylDimBound
   intro n nu h
@@ -368,6 +496,15 @@ theorem weyl_dimension_bound : WeylDimBound := by
             (fun p hp => (weyl_factor h p (Finset.mem_filter.mp hp).2).2)
       _ = _ := by rw [Finset.prod_const, card_pairs_lt]
 
+/- English proof (translation)
+Unfold `WeylLog`. Introduce `n nu a h ha`. Take `⟨h1, h2⟩` from `weyl_dimension_bound n nu h`. Establish `hM : (0:ℝ) ≤ ((nu 0 - nu (Fin.last n) : ℤ) : ℝ)`. Use `h (Fin.zero_le (Fin.last n))` as an intermediate fact.
+
+Conclude with `(by omega : (0:ℤ) ≤ nu 0 - nu (Fin.last n))` after adjusting the coercions. Establish `hn : (0:ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hK : (((n + 1) * n / 2 : ℕ) : ℝ) = ((n:ℝ) + 1) * ((n:ℝ) + 1 - 1) / 2`. Establish `hdvd : 2 ∣ (n + 1) * n`. Rewrite using `[mul_comm]`.
+
+Conclude with `even_iff_two_dvd.mp (Nat.even_mul_succ_self n)`. Rewrite using `[Nat.cast_div hdvd (by norm_num)]; push_cast; ring`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.log_le_log (by linarith)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = _ := by rw [Real.log_pow, hK]`.
+-/
 theorem weyl_log_bound : WeylLog := by
   unfold WeylLog
   intro n nu a h ha

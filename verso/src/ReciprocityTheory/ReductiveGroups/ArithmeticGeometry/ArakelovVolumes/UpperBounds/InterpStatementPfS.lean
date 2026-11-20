@@ -10,6 +10,15 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `r X Xa Fl _hPD ψ hψ hψs hψb hbm0 hstr0 hLnn j`. Take `⟨bb, m, hbb4, hbm, hmar⟩` from `hbm0`. Take `⟨η, hη, hstr⟩` from `hstr0`. Take `⟨C0, hC0⟩` from `hψb`. Take `⟨x0, ho, b0, hb0, hx⟩` from `hO r X (Fl.xs j) (Fl.xs_mem j)`.
+
+Establish `hbbpos : 0 < bb` using `lt_of_le_of_lt (by positivity) hbb4`. Take `⟨ε, hε, hball, hiso, hnull, F, hFd, hI⟩` from `coord_step (X := X) hLU hC Xa Fl ψ x0 ho (hψs x0 ho) bb m hbbpos hbm (hmar x0 ho) η hη (hstr x0 ho) (hLnn x0 ho) j b0 hb0 hx`. Establish `hint` using `integ_step (X := X) x0 ho Xa Fl ψ (hψs x0 ho) bb ε hε hball hnull F hI`. Take `⟨P, hBE, hPF⟩` from `hE r X x0 ho Xa.Fp F hFd (extF_hyp (X := X) x0 ho Xa.Fp ψ C0 hC0 bb hbbpos.le F hint)`. Take `⟨hw, hs0, hdet⟩` from `coord_data (X := X) hLU Xa Fl j x0 ho b0 hb0 hx`.
+
+Establish `hP1 : P x0 = 1` using `value_base (X := X) hV x0 ho Xa Fl ψ (hψs x0 ho) bb ε hε hball F hFd hI P hPF hw hs0 hdet`. Establish `hMW` using `metricW_of hR hLa hO hLU X Xa.Fp ψ hψ hψs ⟨C0, hC0⟩`. Use `⟨x0, Wpsi X Xa.Fp ψ, bb, F, P, 1, ho, hMW.1, hMW.2, ?_, hbb4, hFd, inAt_of (X := X) x0 Xa.Fp ψ bb F hint, hBE, hPF, X.Γ.one_mem, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx'`. Simplify using `[Wpsi, hx']`.
+
+Rewrite using `[lact_one (X := X), hx, hBE.2 x0 (orth_mem_dom (X := X) x0 ho) b0 hb0, hP1, mul_one]`. Conclude with `bchar_ne_zero (X := X) hb0 Xa.Fp`. Introduce `γ hγ j' hne`. Conclude with `vanish_other (X := X) hV hM hO hLU hR Xa Fl ψ C0 hC0 bb hbbpos.le x0 ho b0 hb0 j hx ε hε hball hiso hnull F hI P hBE hPF hγ j' hne`.
+-/
 theorem kronHolPsi_of (hE : ExtFStatement (E := E)) (hM : MeasInvStatement (E := E))
     (hV : VanishAtSStatement (E := E)) (hO : OrthoStatement (E := E)) (hLU : LUStatement (E := E))
     (hC : OmFConnStatement (E := E)) (hR : NfacRmulStatement (E := E))

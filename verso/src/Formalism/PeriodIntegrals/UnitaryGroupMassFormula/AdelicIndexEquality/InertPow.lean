@@ -22,17 +22,29 @@ def InR (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α z : Av I v) : Prop 
   ∃ a b : v.adicCompletion I.F, a ∈ v.adicCompletionIntegers I.F ∧ b ∈ v.adicCompletionIntegers I.F ∧
     z = incL I v a + incL I v b * α
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 0, one_mem _, zero_mem _, by simp⟩`.
+-/
 theorem inR_one (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v) : InR I v α 1 :=
   ⟨1, 0, one_mem _, zero_mem _, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 1, zero_mem _, one_mem _, by simp⟩`.
+-/
 theorem inR_self (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v) : InR I v α α :=
   ⟨0, 1, zero_mem _, one_mem _, by simp⟩
 
+/- English proof (translation)
+Take `⟨a, b, ha, hb, rfl⟩` from `hz`. Conclude with `⟨-a, -b, neg_mem ha, neg_mem hb, by simp only [map_neg]; ring⟩`.
+-/
 theorem inR_neg (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v) {z : Av I v}
     (hz : InR I v α z) : InR I v α (-z) := by
   obtain ⟨a, b, ha, hb, rfl⟩ := hz
   exact ⟨-a, -b, neg_mem ha, neg_mem hb, by simp only [map_neg]; ring⟩
 
+/- English proof (translation)
+Take `⟨a, b, ha, hb, rfl⟩` from `hx`. Take `⟨c, d, hc, hd, rfl⟩` from `hy`. Use `⟨a * c - b * d, a * d + b * c + b * d * t, sub_mem (mul_mem ha hc) (mul_mem hb hd), add_mem (add_mem (mul_mem ha hd) (mul_mem hb hc)) (mul_mem (mul_mem hb hd) htO), ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_add, map_mul]`. Take the linear combination `(incL I v b * incL I v d) * ht`.
+-/
 theorem inR_mul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v)
     {t : v.adicCompletion I.F} (htO : t ∈ v.adicCompletionIntegers I.F)
     (ht : α * α = incL I v t * α - 1) {x y : Av I v} (hx : InR I v α x) (hy : InR I v α y) :
@@ -44,6 +56,9 @@ theorem inR_mul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v)
   simp only [map_sub, map_add, map_mul]
   linear_combination (incL I v b * incL I v d) * ht
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using inR_one I v α`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `inR_mul I v α htO ht ih hx`.
+-/
 theorem inR_pow (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v)
     {t : v.adicCompletion I.F} (htO : t ∈ v.adicCompletionIntegers I.F)
     (ht : α * α = incL I v t * α - 1) {x : Av I v} (hx : InR I v α x) (m : ℕ) :
@@ -52,6 +67,27 @@ theorem inR_pow (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v)
   | zero => simpa using inR_one I v α
   | succ k ih => rw [pow_succ]; exact inR_mul I v α htO ht ih hx
 
+/- English proof (translation)
+Establish `hpow : ∀ m : ℕ, InR I v α (α ^ m)` using `fun m => inR_pow I v α htO ht (inR_self I v α) m`. Use `choose a b ha hb hab using hpow`. Establish `hNF : (N : v.adicCompletion I.F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Set `NO : Set (v.adicCompletion I.F)` to `(fun y => (N : v.adicCompletion I.F) * y) '' (v.adicCompletionIntegers I.F : Set _)`. Establish `hOo : IsOpen (v.adicCompletionIntegers I.F : Set (v.adicCompletion I.F))` using `Valued.isOpen_integer (R := v.adicCompletion I.F)`.
+
+Establish `hNO : IsOpen NO` using `(Homeomorph.mulLeft₀ (N : v.adicCompletion I.F) hNF).isOpenMap _ hOo`. Set `U : v.adicCompletionIntegers I.F → Set (v.adicCompletion I.F)` to `fun x => (fun y => y - (x : v.adicCompletion I.F)) ⁻¹' NO`. Establish `hU : ∀ x, IsOpen (U x)` using `fun x => hNO.preimage (continuous_id.sub continuous_const)`. Establish `hcov : (v.adicCompletionIntegers I.F : Set (v.adicCompletion I.F)) ⊆ ⋃ x, U x`. Introduce `y hy`.
+
+Use `Set.mem_iUnion.2 ⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Conclude with `⟨0, zero_mem _, by simp⟩`. Take `⟨T, hT⟩` from `(PI.WAU.isCompact_Ov v).elim_finite_subcover U hU hcov`. Establish `hsel : ∀ y ∈ (v.adicCompletionIntegers I.F : Set (v.adicCompletion I.F)), ∃ x : T, y ∈ U x`. Introduce `y hy`.
+
+Use `hT hy` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨x, hx, hyx⟩` from `this`. Conclude with `⟨⟨x, hx⟩, hyx⟩`. Use `choose sel hsel' using hsel`.
+
+Set `f : ℕ → T × T` to `fun m => (sel (a m) (ha m), sel (b m) (hb m))`. Establish `key : ∀ i j, f i = f j → ∃ w, InR I v α w ∧ α ^ j - α ^ i = incL I v N * w`. Introduce `i j hij`. Establish `h1 : sel (a i) (ha i) = sel (a j) (ha j)` using `congrArg Prod.fst hij`. Establish `h2 : sel (b i) (hb i) = sel (b j) (hb j)` using `congrArg Prod.snd hij`.
+
+Take `⟨p1, hp1, e1⟩` from `hsel' (a i) (ha i)`. Take `⟨p2, hp2, e2⟩` from `hsel' (a j) (ha j)`. Take `⟨q1, hq1, f1⟩` from `hsel' (b i) (hb i)`. Take `⟨q2, hq2, f2⟩` from `hsel' (b j) (hb j)`. Rewrite `e1` using `[h1]`.
+
+Rewrite `f1` using `[h2]`. Use `⟨incL I v (p2 - p1) + incL I v (q2 - q1) * α, ⟨p2 - p1, q2 - q1, sub_mem hp2 hp1, sub_mem hq2 hq1, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `ea : a j - a i = (N : v.adicCompletion I.F) * (p2 - p1)`. Simplify using `only at e1 e2`. Take the linear combination `e1 - e2`.
+
+Establish `eb : b j - b i = (N : v.adicCompletion I.F) * (q2 - q1)`. Simplify using `only at f1 f2`. Take the linear combination `f1 - f2`. Establish `ea'` using `congrArg (incL I v) ea`. Establish `eb'` using `congrArg (incL I v) eb`.
+
+Simplify using `only [map_sub, map_mul, map_natCast] at ea' eb' ⊢`. Rewrite using `[hab j, hab i]`. Take the linear combination `ea' + α * eb'`. Take `⟨i, j, hne, hf⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+
+Conclude with `⟨i, j, h, key i j hf⟩`. Conclude with `⟨j, i, h, key j i hf.symm⟩`.
+-/
 theorem exists_pow_sub (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v)
     {t : v.adicCompletion I.F} (htO : t ∈ v.adicCompletionIntegers I.F)
     (ht : α * α = incL I v t * α - 1) (N : ℕ) (hN : 0 < N) :
@@ -110,6 +146,17 @@ theorem exists_pow_sub (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av
   · exact ⟨i, j, h, key i j hf⟩
   · exact ⟨j, i, h, key j i hf.symm⟩
 
+/- English proof (translation)
+Establish `ht : α * α = incL I v t * α - 1`. Rewrite using `[← hsum]`. Take the linear combination `(-1 : Av I v) * hα`. Establish `hsig : InR I v α (sigV I v α)` using `⟨t, -1, htO, neg_mem (one_mem _), by`. Simplify using `only [map_neg, map_one]`.
+
+Take the linear combination `hsum⟩`. Take `⟨i, j, hij, w0, hw0, e0⟩` from `exists_pow_sub I v α htO ht N hN`. Take `⟨m, rfl⟩ : ∃ m, j = i + m` from `⟨j - i, by omega⟩`. Establish `hm : 1 ≤ m` using `by omega`. Establish `hpi : sigV I v α ^ i * α ^ i = 1` using `by rw [← mul_pow, hα, one_pow]`.
+
+Establish `hpm : sigV I v α ^ m * α ^ m = 1` using `by rw [← mul_pow, hα, one_pow]`. Establish `e1 : α ^ m - 1 = incL I v N * (sigV I v α ^ i * w0)`. Establish `: α ^ m - 1 = sigV I v α ^ i * (α ^ (i + m) - α ^ i)`. Rewrite using `[pow_add]`. Take the linear combination `(1 - α ^ m) * hpi`.
+
+Rewrite using `[this, e0]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨m, hm, sigV I v α ^ i * w0, -(sigV I v α ^ m) * (sigV I v α ^ i * w0), inR_mul I v α htO ht (inR_pow I v α htO ht hsig i) hw0, inR_mul I v α htO ht (inR_neg I v α (inR_pow I v α htO ht hsig m)) (inR_mul I v α htO ht (inR_pow I v α htO ht hsig i) hw0), e1, ?_⟩` and prove the remaining obligations. Establish `: sigV I v α ^ m - 1 = -(sigV I v α ^ m) * (α ^ m - 1)`. Take the linear combination `hpm`.
+
+Rewrite using `[this, e1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pow_near_one (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v)
     {t : v.adicCompletion I.F} (htO : t ∈ v.adicCompletionIntegers I.F)
     (hsum : α + sigV I v α = incL I v t) (hα : sigV I v α * α = 1) (N : ℕ) (hN : 0 < N) :
@@ -142,6 +189,9 @@ theorem exists_pow_near_one (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α
   rw [this, e1]
   ring
 
+/- English proof (translation)
+Take `⟨k, m, hm, hgen⟩` from `PI.WAU.B.exists_gen I.L (Module.Finite.iff_fg.mpr I.L_fg)`. Take `⟨N, hN0, hN⟩` from `PI.WAU.B.common_nat (fun j N => N • (Mx *ᵥ PI.WAU.B.ivec (F := I.F) (m j)) ∈ I.Lf) (fun j N M h => PI.WAU.B.nsmul_lam h M) (fun j => PI.WAU.B.exists_nat_vec (F := I.F) I.L_span _)`. Use `⟨N, hN0, fun w hw => ?_⟩` and prove the remaining obligations. Use `PI.WAU.B.mulVec_lam hm hgen (N • Mx) (fun j => by rw [Matrix.smul_mulVec]; exact hN j) hw` as an intermediate fact. Rewrite `this` using `[Matrix.smul_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem adelic_bound (I : AutInst) (Mx : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) :
     ∃ N : ℕ, 0 < N ∧ ∀ w ∈ I.Lf, N • (Mx *ᵥ w) ∈ I.Lf := by
   obtain ⟨k, m, hm, hgen⟩ := PI.WAU.B.exists_gen I.L (Module.Finite.iff_fg.mpr I.L_fg)
@@ -153,6 +203,11 @@ theorem adelic_bound (I : AutInst) (Mx : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F
   have := PI.WAU.B.mulVec_lam hm hgen (N • Mx) (fun j => by rw [Matrix.smul_mulVec]; exact hN j) hw
   rwa [Matrix.smul_mulVec] at this
 
+/- English proof (translation)
+Take `⟨w, hwv, hww⟩` from `PI.FinKW.local_vector_lift I v z`. Establish `hw : w ∈ I.Lf` using `PI.FinKW.memLocFrom_of PI.FinKW.local_vector_injective I w (fun u => by`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[hwv]` and apply the resulting hypothesis.
+
+Rewrite using `[hww u hu]`. Conclude with `zero_mem _)`. Establish `h1` using `PI.FinKW.LocTo.mem_local_lattice_iff I _ (hM w hw) v`. Rewrite `h1` using `[vecV_nsmul, vecV_mulVec', hwv]`. Then use the resulting hypothesis.
+-/
 theorem loc_bound (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (Mx : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) {N : ℕ}
     (hM : ∀ w ∈ I.Lf, N • (Mx *ᵥ w) ∈ I.Lf) (z : Fin I.n → Av I v)
@@ -169,6 +224,9 @@ theorem loc_bound (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   have h1 := PI.FinKW.LocTo.mem_local_lattice_iff I _ (hM w hw) v
   rwa [vecV_nsmul, vecV_mulVec', hwv] at h1
 
+/- English proof (translation)
+Take `⟨N, hN, h⟩` from `adelic_bound I (liftMat I v M)`. Use `⟨N, hN, fun z hz => ?_⟩` and prove the remaining obligations. Use `loc_bound I v _ h z hz` as an intermediate fact. Rewrite `this` using `[liftMat_map_same]`. Then use the resulting hypothesis.
+-/
 theorem local_bound (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (M : Matrix (Fin I.n) (Fin I.n) (Av I v)) :
     ∃ N : ℕ, 0 < N ∧ ∀ z ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)),
@@ -178,6 +236,9 @@ theorem local_bound (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   have := loc_bound I v _ h z hz
   rwa [liftMat_map_same] at this
 
+/- English proof (translation)
+Establish `e : incL I v a • y = (⟨a, ha⟩ : v.adicCompletionIntegers I.F) • y`. Rewrite using `[PI.FinKW.LocTo.ov_smul_vec]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem incL_smul_mem (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) {a : v.adicCompletion I.F}
     (ha : a ∈ v.adicCompletionIntegers I.F) {y : Fin I.n → Av I v}
     (hy : y ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))) :
@@ -188,6 +249,11 @@ theorem incL_smul_mem (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) {a : v.ad
   rw [e]
   exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Take `⟨a, b, ha, hb, rfl⟩` from `hw`. Establish `e : (incL I v N * (incL I v a + incL I v b * α)) • (P *ᵥ z) = incL I v a • (N • (P *ᵥ z)) + incL I v b • (N • ((α • P) *ᵥ z))`. Rewrite using `[Matrix.smul_mulVec, ← Nat.cast_smul_eq_nsmul (Av I v), ← Nat.cast_smul_eq_nsmul (Av I v), smul_smul, smul_smul, smul_smul, ← add_smul, map_natCast]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `add_mem (incL_smul_mem I v ha (h1 z hz)) (incL_smul_mem I v hb (h2 z hz))`.
+-/
 theorem small_mem (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v)
     (P : Matrix (Fin I.n) (Fin I.n) (Av I v)) (N : ℕ)
     (h1 : ∀ z ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)),
@@ -207,6 +273,9 @@ theorem small_mem (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (α : Av I v)
   rw [e]
   exact add_mem (incL_smul_mem I v ha (h1 z hz)) (incL_smul_mem I v hb (h2 z hz))
 
+/- English proof (translation)
+Simplify using `only [add_mul, mul_add, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hP, add_smul]`. Rewrite using `[mul_comm x y]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mul_qr {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
     (P : Matrix n n R) (hP : P * P = P) (x y : R) :
     (1 + x • P) * (1 + y • P) = 1 + (x + y + x * y) • P := by
@@ -215,6 +284,11 @@ theorem mul_qr {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
   rw [mul_comm x y]
   abel
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, mul_qr P hP]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qr_pow {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
     (P : Matrix n n R) (hP : P * P = P) (c : R) (m : ℕ) :
     (1 + (c - 1) • P) ^ m = 1 + (c ^ m - 1) • P := by
@@ -225,6 +299,23 @@ theorem qr_pow {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
     congr 2
     ring
 
+/- English proof (translation)
+Introduce `I v hv s hs`. Take `⟨P, α, hP, hα, hsP⟩` from `hs`. Take `⟨t, htO, hsum⟩` from `hT I v hv α hα`. Take `⟨N1, hN1, hb1⟩` from `local_bound I v P`. Take `⟨N2, hN2, hb2⟩` from `local_bound I v (α • P)`.
+
+Establish `h1 : ∀ z ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)), (N1 * N2) • (P *ᵥ z) ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))`. Introduce `z hz`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem (hb1 z hz) N2`. Establish `h2 : ∀ z ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)), (N1 * N2) • ((α • P) *ᵥ z) ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))`.
+
+Introduce `z hz`. Rewrite using `[mul_smul]`. Conclude with `nsmul_mem (hb2 z hz) N1`. Take `⟨m, hm, w, w', hw, hw', e1, e2⟩` from `exists_pow_near_one I v α htO hsum hα (N1 * N2) (Nat.mul_pos hN1 hN2)`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations.
+
+Establish `hmat : (((s ^ m : Uv I v) : GL (Fin I.n) (Av I v)) : Matrix (Fin I.n) (Fin I.n) (Av I v)) = 1 + (α ^ m - 1) • P`. Rewrite using `[Subgroup.coe_pow, Units.val_pow_eq_pow_val, hsP, qr_pow P hP α m]`. Establish `hpm : sigV I v α ^ m * α ^ m = 1` using `by rw [← mul_pow, hα, one_pow]`. Establish `hinv : (1 + (sigV I v α ^ m - 1) • P) * (1 + (α ^ m - 1) • P) = 1`. Rewrite using `[mul_qr P hP]`.
+
+Establish `: sigV I v α ^ m - 1 + (α ^ m - 1) + (sigV I v α ^ m - 1) * (α ^ m - 1) = 0`. Take the linear combination `hpm`. Rewrite using `[this, zero_smul, add_zero]`. Establish `hS : ∀ y, (1 + (α ^ m - 1) • P) *ᵥ y = y + (incL I v (N1 * N2 : ℕ) * w) • (P *ᵥ y)`. Introduce `y`.
+
+Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, e1]`. Establish `hT' : ∀ y, (1 + (sigV I v α ^ m - 1) • P) *ᵥ y = y + (incL I v (N1 * N2 : ℕ) * w') • (P *ᵥ y)`. Introduce `y`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, e2]`. Introduce `z`.
+
+Rewrite using `[hmat]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Rewrite using `[hS]`. Conclude with `add_mem hz (small_mem I v α P (N1 * N2) h1 h2 hw z hz)`.
+
+Introduce `hz`. Use `add_mem hz (small_mem I v α P (N1 * N2) h1 h2 hw' _ hz)` as an intermediate fact. Rewrite `this` using `[← hT', Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem qReflPow_of (hT : TraceInt) : QReflPow := by
   intro I v hv s hs
   obtain ⟨P, α, hP, hα, hsP⟩ := hs

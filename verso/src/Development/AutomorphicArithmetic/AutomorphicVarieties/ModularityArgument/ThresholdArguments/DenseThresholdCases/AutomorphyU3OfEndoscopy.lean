@@ -15,6 +15,9 @@ section
 open private tw_iso conj_left matIrr_conj att_iso dg corner_conj from Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.GdMain
 open UpperTheory.GalN.V hiding autCsd_iso
 open NumberField IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Aut UpperTheory.V.Pr UpperTheory.V
+/- English proof (translation)
+Take `⟨⟨f, hf⟩, hw⟩` from `h A r h1 h2 h3 W' h4 h5`. Conclude with `⟨⟨f, att_iso (tw_iso _ hi) hf⟩, hw.weak_admissible_iso hi⟩`.
+-/
 theorem UpperTheory.GalN.V.modOfEnd'_alt {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]
     {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : Dat Ω K c e ψ) {g₁ : G ℚ Ω}
     {B : ValuationSubring Ω} {ι : Qbar l ≃+* ℂ} (h : _root_.UpperTheory.V.Z.Win.Dn.AutEnd2A c D.η D.Ψ D.cc g₁ B e ι)
@@ -24,6 +27,21 @@ theorem UpperTheory.GalN.V.modOfEnd'_alt {Ω : Type} [Field Ω] [CharZero Ω] [I
     (h5 : (W' D.cc).val.trace = 0) (W : G ℚ Ω →* GL (Fin 2) (PadicAlgCl l)) (hi : Af.RepIso W' W) : _root_.UpperTheory.V.Z.Win.Dn.IsModularA D ι W := by
   obtain ⟨⟨f, hf⟩, hw⟩ := h A r h1 h2 h3 W' h4 h5
   exact ⟨⟨f, att_iso (tw_iso _ hi) hf⟩, hw.weak_admissible_iso hi⟩
+/- English proof (translation)
+Introduce `hL H Ω _ _ _ K _ _ _ _ l _ c N _ e ψ D _ ι`. Take `⟨B, hB, -, -, -, hmem, -⟩` from `dat_loc D`. Take `⟨g₁, hM, hfin, h3, h2⟩` from `H Ω K l c N e ψ D ι B hB`. Establish `hA : FinA D g₁` using `finA_of_end hL D g₁ hM B hmem hfin`. Use `⟨g₁, hM, hA, fun U S ξ r hr hp hI => ?_, fun U S ξ r hp hII h11 W hW => ?_⟩` and prove the remaining obligations.
+
+Take `⟨A, _, _, t, r', ho, ht⟩` from `exists_ordPt_of_point hL D g₁ hM U S hA B hmem ξ r hp`. Establish `hl : ∀ s ∈ D.η.ker, (UnitaryThreeInertia.push A.val r' s).left = tor _ t * (r s).left * (tor _ t)⁻¹` using `fun s hs => by`. Rewrite using `[ht, conj_left r _ _ ((hr s).trans hs)]`. Establish `hI' : TypeI D.η (UnitaryThreeInertia.push A.val r')` using `matIrr_conj (tor _ t) (fun s hs => by`. Rewrite using `[mats, mats, GG.mat, GG.mat, hl s hs, ← Units.val_mul, ← Units.val_mul]`.
+
+Use `congr 1`. Use the proof step `group) hI`. Establish `hm : HasMult D.η (UnitaryThreeInertia.push A.val r')` using `ho.red.mult`. Establish `hiso : Af.RepIso (D.rhoK r hr) (D.rhoK _ hm)` using `⟨tor _ t, fun s => hl _ (D.η_ker.ge (Base.galEmb_mem ℚ K Ω s))⟩`. Establish `key` using `h3 A r' ho (matIrr_open_gd D g₁ hM B hB A r' ho hI') (D.rhoK _ hm) fun s => rfl`.
+
+Conclude with `_root_.UpperTheory.GalN.V.autCsd_iso_alt (tw_iso _ hiso.symm') key`. Take `⟨A, _, _, t, r', ho, ht⟩` from `exists_ordPt_of_point hL D g₁ hM U S hA B hmem ξ r hp`. Set `W' : G ℚ Ω →* GL (Fin 2) (PadicAlgCl l)` to `(MulAut.conj (dg t)).toMonoidHom.comp W`. Establish `hW' : ∀ s, W' s = dg t * W s * (dg t)⁻¹` using `fun s => rfl`. Establish `hII' : TypeII D.η (UnitaryThreeInertia.push A.val r')`.
+
+Rewrite using `[ht]`. Use `⟨fun g hg a b hab => ?_, matIrr_conj (dg t) (fun s _ => ?_) hII.2⟩` and prove the remaining obligations. Rewrite using `[(conjBy_tor r t).1, hII.1 g hg a b hab, mul_zero]`. Rewrite using `[corner_conj]`. Simplify using `only [← Matrix.mul_assoc]`.
+
+Rewrite using `[Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Conclude with `_root_.UpperTheory.GalN.V.modOfEnd'_alt D h2 A r' ho hII' (fun g hg => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (UnitaryThreeInertia.push A.val r' g).mat 1 1 = 1`. Rewrite using `[ht, (conjBy_tor r t).1, h11 g hg]`.
+
+Simplify using `[wt]) W' (fun g hg => by`. Rewrite using `[ht, corner_conj, hW', Units.val_mul, Units.val_mul, hW.1 g hg]) (by`. Rewrite using `[hW', Units.val_mul, Units.val_mul, Matrix.trace_units_conj, hW.2]) W (Af.RepIso.symm' ⟨dg t, hW'⟩)`.
+-/
 theorem UpperTheory.V.Pr.automorphyUnramified_of_locPrints_kisin_gdEnd :
     Loc.LocalPublishedTheorems → _root_.UpperTheory.V.Pr.GdEndAlt → _root_.UpperTheory.V.Aut.AutomorphyUnramifiedCoefficientsAlt := by
   intro hL H Ω _ _ _ K _ _ _ _ l _ c N _ e ψ D _ ι

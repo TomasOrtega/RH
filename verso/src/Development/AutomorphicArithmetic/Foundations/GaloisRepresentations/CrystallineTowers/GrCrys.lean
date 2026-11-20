@@ -38,6 +38,9 @@ private def prEq (v : ℕ) : (Fin d → F) →ₗ[F] ↥(eqSub (F := F) c v) whe
     funext i
     by_cases h : c i = v <;> simp [h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem prEq_apply (v : ℕ) (x : Fin d → F) (i : Fin d) :
     (prEq c v x : Fin d → F) i = if c i = v then x i else 0 := rfl
 
@@ -65,6 +68,37 @@ section Crys
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hW : ∀ (v : ℕ) g, lowSub c v ≤ (lowSub (F` using `↥L.1) c v).comap (ρ₀ g) := by`. Introduce `v g x hx i hi`. Use `show (ρ₀ g x) i = 0`. Rewrite using `[h₀]`. Express the relevant statement in the definitionally equal form `∑ j, A g i j * x j = 0`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : v < c j`. Rewrite using `[hx j hj, mul_zero]`. Rewrite using `[hb g (lt_of_le_of_lt (not_lt.1 hj) hi), zero_mul]`. Establish `hU : ∀ (v : ℕ) g, eqSub c v ≤ (eqSub (F` using `↥L.1) c v).comap (ρ g) := by`.
+
+Introduce `v g x hx i hi`. Use `show (ρ g x) i = 0`. Rewrite using `[h₁]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : c i = c j`.
+
+Rewrite using `[hx j (hj ▸ hi), mul_zero]`. Rewrite using `[if_neg hj, zero_mul]`. Establish `hblock : ∀ v, IsCrys (P.PD K) (ρ.subrepresentation (eqSub c v) (hU v))`. Introduce `v`. Establish `c1` using `(GlobalTheory.Per.CrysSubQuot.crys_sub_quot l P AI T K L ↥(lowSub c v) (ρ₀.subrepresentation (lowSub c v) (hW v)) (Fin d → ↥L.1) ρ₀ (lowSub c v).subtype (fun g x => rfl)).1 Subtype.val_injective hc`.
+
+Use `((GlobalTheory.Per.CrysSubQuot.crys_sub_quot l P AI T K L ↥(lowSub c v) (ρ₀.subrepresentation (lowSub c v) (hW v)) ↥(eqSub c v) (ρ.subrepresentation (eqSub c v) (hU v)) ((prEq c v).comp (lowSub c v).subtype) ?_).2 ?_ c1).1` and prove the remaining obligations. Introduce `g x`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show (prEq c v (ρ₀ g x.1) : Fin d → ↥L.1) i = ρ g (prEq c v x.1 : Fin d → ↥L.1) i`.
+
+Rewrite using `[prEq_apply, h₁]`. Distinguish the cases in `hi : c i = v`. Rewrite using `[if_pos hi, h₀]`. Express the relevant statement in the definitionally equal form `∑ j, A g i j * x.1 j = _`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[prEq_apply]`. Distinguish the cases in `hj : c j = v`. Rewrite using `[if_pos (hi.trans hj.symm), if_pos hj]`. Rewrite using `[if_neg hj, mul_zero]`. Distinguish the cases in `hl : v < c j`.
+
+Rewrite using `[x.2 j hl, mul_zero]`. Rewrite using `[hb g (lt_of_le_of_ne (not_lt.1 hl) hj |>.trans_eq hi.symm), zero_mul]`. Rewrite using `[if_neg hi]`. Use `(Finset.sum_eq_zero fun j _ => ?_).symm` and prove the remaining obligations. Rewrite using `[prEq_apply]`.
+
+Distinguish the cases in `hj : c j = v`. Rewrite using `[if_neg fun h => hi (h.trans hj), zero_mul]`. Rewrite using `[if_neg hj, mul_zero]`. Introduce `y`. Use `⟨⟨y.1, fun i hi => y.2 i (ne_of_gt hi)⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show (prEq c v y.1 : Fin d → ↥L.1) i = y.1 i`. Rewrite using `[prEq_apply]`. Distinguish the cases in `hi : c i = v`.
+
+Rewrite using `[if_pos hi]`. Rewrite using `[if_neg hi, y.2 i hi]`. Use `GlobalTheory.BlockSum.isCrys_sum (P.PD K) (ι := ↥(Set.range c)) (V := fun v => ↥(eqSub (F := ↥L.1) c v.1)) (ρ := fun v => ρ.subrepresentation (eqSub c v.1) (hU v.1)) (ρ' := ρ) (E := eqEquiv c) ?_ fun v => hblock v.1` and prove the remaining obligations. Introduce `g x v`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Use `show (prEq c v.1 (ρ g x) : Fin d → ↥L.1) i = ρ g (prEq c v.1 x : Fin d → ↥L.1) i`. Rewrite using `[prEq_apply, h₁, h₁]`. Distinguish the cases in `hi : c i = v.1`. Rewrite using `[if_pos hi]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[prEq_apply]`. Distinguish the cases in `hj : c i = c j`. Rewrite using `[if_pos hj, if_pos (hj.symm.trans hi)]`. Rewrite using `[if_neg hj, zero_mul, zero_mul]`.
+
+Rewrite using `[if_neg hi]`. Use `(Finset.sum_eq_zero fun j _ => ?_).symm` and prove the remaining obligations. Rewrite using `[prEq_apply]`. Distinguish the cases in `hj : c i = c j`. Rewrite using `[if_neg fun h => hi (hj.trans h), mul_zero]`.
+
+Rewrite using `[if_neg hj, zero_mul]`.
+-/
 private theorem isCrys_gr (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K L : FinExt l) {d : ℕ}
     (c : Fin d → ℕ) (ρ₀ ρ : Representation ↥L.1 ↥(GK K) (Fin d → ↥L.1))
     (A : ↥(GK K) → Matrix (Fin d) (Fin d) ↥L.1) (h₀ : ∀ g x, ρ₀ g x = (A g).mulVec x)
@@ -151,6 +185,21 @@ end Crys
 
 end UpperTheory.Gal.Seam
 
+/- English proof (translation)
+Introduce `l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw d r₀ r hg h₀`. Take `⟨T⟩` from `hT`. Take `⟨c, hc⟩` from `hg`. Take `⟨L, r₀', hm, hcr⟩` from `h₀`. Set `f : ↥L.1 →+* Om l` to `algebraMap ↥L.1 (Om l)`.
+
+Establish `hr₀ : ∀ g, ((r₀' g : Matrix.GeneralLinearGroup (Fin d) ↥L.1) : Matrix (Fin d) (Fin d) ↥L.1).map f = (r₀ g : Matrix (Fin d) (Fin d) (Om l))` using `fun g => by`. Rewrite using `[← hm.2]`. Both sides reduce to the same expression. Establish `hmem : ∀ g i j, (r g : Matrix (Fin d) (Fin d) (Om l)) i j ∈ L.1` using `fun g i j => by`. Rewrite using `[(hc g).2 i j]`.
+
+Use `split_ifs`. Rewrite using `[← hr₀ g]`. Conclude with `((r₀' g : Matrix (Fin d) (Fin d) ↥L.1) i j).2`. Conclude with `zero_mem _`. Take `⟨r', hr'⟩` from `GlobalTheory.CrysSubRep.exists_model_of_mem r L hmem`.
+
+Establish `hmod : GlobalTheory.Pst.IsModel Bw r L r'` using `⟨hm.1, hr'⟩`. Establish `hr'g : ∀ g, ((r' g : Matrix.GeneralLinearGroup (Fin d) ↥L.1) : Matrix (Fin d) (Fin d) ↥L.1).map f = (r g : Matrix (Fin d) (Fin d) (Om l))` using `fun g => by`. Rewrite using `[← hr']`. Both sides reduce to the same expression. Establish `hent : ∀ g i j, (r' g : Matrix (Fin d) (Fin d) ↥L.1) i j = if c i = c j then (r₀' g : Matrix (Fin d) (Fin d) ↥L.1) i j else 0` using `fun g i j => by`.
+
+Apply `f.injective` to reduce the goal to its premises. Establish `e` using `(hc g).2 i j`. Rewrite `e` using `[← hr'g g, ← hr₀ g]`. Simplify using `only [Matrix.map_apply] at e`. Rewrite using `[e]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `⟨L, r', hmod, ?_⟩` and prove the remaining obligations. Use `isCrys_gr P AI T Bw.Kw L c (Bw.repE L r₀') (Bw.repE L r') (fun g => (r₀' (Bw.e.symm g) : Matrix (Fin d) (Fin d) ↥L.1)) (fun _ _ => rfl) ?_ ?_ hcr` and prove the remaining obligations. Introduce `g x i show ((r' (Bw.e.symm g) : Matrix (Fin d) (Fin d) ↥L.1).mulVec x) i = _`. Simplify using `only [Matrix.mulVec, dotProduct, hent]`.
+
+Introduce `g i j hij`. Apply `f.injective` to reduce the goal to its premises. Establish `e` using `(hc (Bw.e.symm g)).1 hij`. Rewrite `e` using `[← hr₀]`. Simplify using `using e`.
+-/
 theorem UpperTheory.Gal.Seam.grCrys :
     GrCrys := by
   intro l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw d r₀ r hg h₀

@@ -10,6 +10,9 @@ open scoped TensorProduct ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SwapWeil.isWeilDatumO_swap | exact GlobalTheory.SwapWeil.isWeilDatumO_swap | (intros; apply GlobalTheory.SwapWeil.isWeilDatumO_swap <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isWeilDatum_comp_group_swapping_symplectic_equiv : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T S' T' : HSp D), S'.rank = T.rank → T'.rank = S.rank →
     ∀ (L : WO S' T' ≃ₗ[AE D] WO S T) (φ : GA D S' →* GA D T) (φ' : GA D T' →* GA D S),
     Continuous L → Continuous L.symm → (∀ x, L x ∈ ratL T S ↔ x ∈ ratL T' S') →

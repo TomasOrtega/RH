@@ -15,14 +15,23 @@ open Formalism.MainNotions.TaylorLogMetric hiding admitted AdmittedStatements Al
 
 variable (D : Car)
 
+/- English proof (translation)
+Rewrite using `[← eq_ratCast (algebraMap ℚ D.host.E) t]`. Conclude with `D.host.K.algebraMap_mem t`.
+-/
 theorem rat_mem (t : ℚ) : (t : D.host.E) ∈ D.host.K := by
   rw [← eq_ratCast (algebraMap ℚ D.host.E) t]; exact D.host.K.algebraMap_mem t
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[CU.emb_conj, map_neg, CS.embedding_sqrt_neg_d, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_b : D.host.conj (D.host.sqd) = -D.host.sqd := by
   apply D.host.φ₀.injective
   rw [CU.emb_conj, map_neg, CS.embedding_sqrt_neg_d, map_mul, Complex.conj_I, Complex.conj_ofReal]
   ring
 
+/- English proof (translation)
+Take `⟨p, q, e⟩` from `CS.K_repr D _ k.2`. Rewrite using `[e, map_add, map_mul, map_ratCast, map_ratCast, conj_b]`. Conclude with `add_mem (rat_mem D p) (mul_mem (rat_mem D q) (neg_mem (FL.bE_mem D)))`.
+-/
 theorem conj_mem (k : D.host.K) : D.host.conj (k : D.host.E) ∈ D.host.K := by
   obtain ⟨p, q, e⟩ := CS.K_repr D _ k.2
   rw [e, map_add, map_mul, map_ratCast, map_ratCast, conj_b]
@@ -41,9 +50,31 @@ def cK : D.host.K →+* D.host.K where
 
 def hK (x y : D.host.E) : D.host.K := Algebra.trace D.host.K D.host.E (x * D.host.conj y)
 
+/- English proof (translation)
+Rewrite using `[← Fintype.card_pos_iff, FL.card_tau]`. Check the signs of the components of the expression.
+-/
 theorem tau_nonempty : Nonempty D.what₂.Tau := by
   rw [← Fintype.card_pos_iff, FL.card_tau]; positivity
 
+/- English proof (translation)
+Simplify using `only [hK, add_mul, map_add] smul_left k x y := by simp only [hK, smul_mul_assoc, map_smul, smul_eq_mul]`. Use symmetry as in `x y := by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `show D.host.φ₀ ((Algebra.trace D.host.K D.host.E (y * D.host.conj x) : D.host.K) : D.host.E) = D.host.φ₀ (D.host.conj ((Algebra.trace D.host.K D.host.E (x * D.host.conj y) : D.host.K) : D.host.E))`.
+
+Rewrite using `[CU.emb_conj, ← FL.sum_tau_trace, ← FL.sum_tau_trace, map_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul, CU.emb_conj, CU.emb_conj, Complex.conj_conj, mul_comm]`. Use `pos x hx := by`. Establish `hφ : D.host.φ₀ ((hK D x x : D.host.K) : D.host.E) = ((∑ τ : D.what₂.Tau, Complex.normSq (embT D τ x) : ℝ) : ℂ)` using `by show D.host.φ₀ ((Algebra.trace D.host.K D.host.E (x * D.host.conj x) : D.host.K) : D.host.E) = _`.
+
+Rewrite using `[← FL.sum_tau_trace]`. Use `push_cast`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, CU.emb_conj, Complex.mul_conj]`. Establish `hpos : 0 < ∑ τ : D.what₂.Tau, Complex.normSq (embT D τ x)` using `by haveI := tau_nonempty D`.
+
+Conclude with `Finset.sum_pos (fun τ _ => Complex.normSq_pos.2 ((map_ne_zero _).2 hx)) Finset.univ_nonempty`. Take `⟨p, q, e⟩` from `CS.K_repr D _ (hK D x x).2`. Establish `hs` using `IO.sqrt_d_pos D`. Rewrite `hφ` using `[e, map_add, map_mul, map_ratCast, map_ratCast, CS.embedding_sqrt_neg_d]`. Establish `him` using `congrArg Complex.im hφ`.
+
+Establish `hre` using `congrArg Complex.re hφ`. Simplify using `only [Complex.add_im, Complex.mul_im, Complex.ratCast_im, Complex.ratCast_re, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, Complex.mul_re, Complex.add_re] at him hre`. Establish `hq : (q : ℝ) = 0`. Establish `: (q : ℝ) * Real.sqrt D.host.d = 0` using `by linarith`. Break down `mul_eq_zero.1 this with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd h hs.ne'`. Establish `hq' : q = 0` using `by exact_mod_cast hq`. Establish `hp : (0 : ℝ) < (p : ℝ)` using `by rw [hq] at hre; linarith`. Establish `hp' : 0 < p` using `by exact_mod_cast hp`.
+
+Establish `hKp : hK D x x = ((p : ℚ) : D.host.K)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[e, hq']`. Use `show _ = algebraMap D.host.K D.host.E ((p : ℚ) : D.host.K)`. Rewrite using `[map_ratCast]`.
+
+Simplify using the standard rewrite rules. Take `⟨a, b, c, d, h4⟩` from `FS.rat_four_sq p hp'.le`. Use `⟨by rw [hKp]; exact Rat.cast_ne_zero.2 hp'.ne', (a : D.host.K), (b : D.host.K), (c : D.host.K), (d : D.host.K), map_ratCast _ a, map_ratCast _ b, map_ratCast _ c, map_ratCast _ d, ?_⟩` and prove the remaining obligations. Rewrite using `[hKp, h4]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm : FS.Herm4 (cK D) (hK D) where
   add_left x x' y := by simp only [hK, add_mul, map_add]
   smul_left k x y := by simp only [hK, smul_mul_assoc, map_smul, smul_eq_mul]
@@ -91,11 +122,19 @@ theorem herm : FS.Herm4 (cK D) (hK D) where
       map_ratCast _ a, map_ratCast _ b, map_ratCast _ c, map_ratCast _ d, ?_⟩
     rw [hKp, h4]; push_cast; ring
 
+/- English proof (translation)
+Use `letI := FL.algKC D`. Rewrite using `[← AlgHom.card D.host.K D.host.E ℂ]`. Conclude with `Fintype.card_of_bijective (FL.embA_bij D)`.
+-/
 theorem card_eq : Fintype.card D.what₂.Tau = Module.finrank D.host.K D.host.E := by
   letI := FL.algKC D
   rw [← AlgHom.card D.host.K D.host.E ℂ]
   exact Fintype.card_of_bijective (FL.embA_bij D)
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `(herm D).iso (n := D.what₂.Tau) (card_eq D)`. Use `⟨⟨g, fun x y => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `hg x y`. Establish `h2 : (∑ a, Algebra.trace D.host.K D.host.E (x a * D.host.conj (y a))) = ∑ w, g x w * cK D (g y w)` using `h.symm`. Rewrite using `[h2, map_sum]`.
+
+Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem iso0 : Nonempty (IsoK D) := by
   obtain ⟨g, hg⟩ := (herm D).iso (n := D.what₂.Tau) (card_eq D)
   refine ⟨⟨g, fun x y => ?_⟩⟩
@@ -128,11 +167,20 @@ def LinkTrivialLevelIsometry : Prop :=
       ∀ B : Base D cc δ, ∀ χ, IsChi D χ → EigenvectorPacketProperties B C χ) →
     aux₃ D C
 
+/- English proof (translation)
+The claim follows from `G0.iso0`.
+-/
 theorem isometry_linkage_trivial_level : LinkIso0 := G0.iso0
 
+/- English proof (translation)
+Introduce `D hp` and use `base_exists_link D (isometry_extension_link D (isometry_linkage_trivial_level D)) hp`.
+-/
 theorem base_linkage_at_prime : LinkBaseP :=
   fun D hp => base_exists_link D (isometry_extension_link D (isometry_linkage_trivial_level D)) hp
 
+/- English proof (translation)
+Introduce `D C hA hper hΔ hp h` and use `provision_extension_link D C hA hper hΔ (isometry_linkage_trivial_level D) hp h`.
+-/
 theorem eigen_linkage_at_prime : LinkTrivialLevelIsometry :=
   fun D C hA hper hΔ hp h => provision_extension_link D C hA hper hΔ (isometry_linkage_trivial_level D) hp h
 

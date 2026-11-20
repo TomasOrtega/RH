@@ -23,10 +23,18 @@ def c₁ (D : D7) (hn : r + t = n) : Matrix (Fin r) (Fin n) D.host.E :=
 def c₃ (D : D7) (hn : r + t = n) : Matrix (Fin t) (Fin n) D.host.E :=
   (1 : Matrix (Fin n) (Fin n) D.host.E).submatrix (fun k => ee hn (Sum.inr k)) id
 
+/- English proof (translation)
+Simplify using `only [jn, Matrix.submatrix_apply, id, Equiv.symm_apply_apply]`.
+-/
 theorem jn_ee (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) (i : Fin a) (s : Fin r ⊕ Fin t) :
     jn hn x v i (ee hn s) = Matrix.fromCols x v i s := by
   simp only [jn, Matrix.submatrix_apply, id, Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨s, rfl⟩` from `(ee hn).surjective j`. Rewrite using `[jn_ee]`. Apply the tactic sequence `rcases s with k | k <;>`. Apply the tactic sequence `simp [mm, c₁, Matrix.mul_apply, Matrix.one_apply, (ee hn).injective.eq_iff] <;>`.
+
+Conclude with `Finset.sum_eq_zero fun x _ => if_neg (by simp [Fin.ext_iff]; omega)`.
+-/
 theorem mul_c₁ (hn : r + t = n) (y : Mx D a r) : mm y ((c₁ D hn).map (incA D)) = jn hn y 0 := by
   ext i j
   obtain ⟨s, rfl⟩ := (ee hn).surjective j
@@ -35,6 +43,11 @@ theorem mul_c₁ (hn : r + t = n) (y : Mx D a r) : mm y ((c₁ D hn).map (incA D
     simp [mm, c₁, Matrix.mul_apply, Matrix.one_apply, (ee hn).injective.eq_iff] <;>
     exact Finset.sum_eq_zero fun x _ => if_neg (by simp [Fin.ext_iff]; omega)
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨s, rfl⟩` from `(ee hn).surjective j`. Rewrite using `[jn_ee]`. Apply the tactic sequence `rcases s with k | k <;>`. Apply the tactic sequence `simp [mm, c₃, Matrix.mul_apply, Matrix.one_apply, (ee hn).injective.eq_iff] <;>`.
+
+Conclude with `Finset.sum_eq_zero fun x _ => if_neg (by simp [Fin.ext_iff]; omega)`.
+-/
 theorem mul_c₃ (hn : r + t = n) (y : Mx D a t) : mm y ((c₃ D hn).map (incA D)) = jn hn 0 y := by
   ext i j
   obtain ⟨s, rfl⟩ := (ee hn).surjective j
@@ -43,12 +56,20 @@ theorem mul_c₃ (hn : r + t = n) (y : Mx D a t) : mm y ((c₃ D hn).map (incA D
     simp [mm, c₃, Matrix.mul_apply, Matrix.one_apply, (ee hn).injective.eq_iff] <;>
     exact Finset.sum_eq_zero fun x _ => if_neg (by simp [Fin.ext_iff]; omega)
 
+/- English proof (translation)
+Use `⟨by simp, fun i hi => ?_⟩` and prove the remaining obligations. Establish `: ee hn (Sum.inl ⟨i, hi⟩) = i` using `Fin.ext (ee_inl_val hn _)`. Simplify using `only [c₁, this]`. Both sides reduce to the same expression.
+-/
 theorem compl_c₁ (hn : r + t = n) : IsCompl (c₁ D hn) 1 := by
   refine ⟨by simp, fun i hi => ?_⟩
   have : ee hn (Sum.inl ⟨i, hi⟩) = i := Fin.ext (ee_inl_val hn _)
   simp only [c₁, this]
   rfl
 
+/- English proof (translation)
+Use `⟨Matrix.isUnit_det_of_right_inverse (Pm_mul_alt hn), fun i hi => ?_⟩` and prove the remaining obligations. Establish `h1 : ff hn (Sum.inl ⟨i, hi⟩) = i` using `Fin.ext (ff_inl_val hn _)`. Establish `h2 : πe hn i = ee hn (Sum.inr ⟨i, hi⟩)`. Use `πe_ff_inl hn ⟨i, hi⟩` as an intermediate fact. Rewrite `this` using `[h1]`. Then use the resulting hypothesis.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [Pm, c₃, Matrix.submatrix_apply]`. Rewrite using `[h2]`.
+-/
 theorem compl_c₃ (hn : r + t = n) : IsCompl (c₃ D hn) (Pm D.host.E hn) := by
   refine ⟨Matrix.isUnit_det_of_right_inverse (Pm_mul_alt hn), fun i hi => ?_⟩
   have h1 : ff hn (Sum.inl ⟨i, hi⟩) = i := Fin.ext (ff_inl_val hn _)
@@ -59,6 +80,9 @@ theorem compl_c₃ (hn : r + t = n) : IsCompl (c₃ D hn) (Pm D.host.E hn) := by
   simp only [Pm, c₃, Matrix.submatrix_apply]
   rw [h2]
 
+/- English proof (translation)
+Establish `h : c₁ D hn = (Pi.basisFun D.host.E (Fin n)) ∘ (fun k => ee hn (Sum.inl k))`. Use function extensionality and compare the values at `k j`. Simplify using `[c₁, Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[h]`. Conclude with `(Pi.basisFun D.host.E (Fin n)).linearIndependent.comp _ (fun k k' h => Sum.inl_injective ((ee hn).injective h))`.
+-/
 theorem linInd_c₁ (hn : r + t = n) : LinearIndependent D.host.E (c₁ D hn) := by
   have h : c₁ D hn = (Pi.basisFun D.host.E (Fin n)) ∘ (fun k => ee hn (Sum.inl k)) := by
     funext k j
@@ -67,6 +91,9 @@ theorem linInd_c₁ (hn : r + t = n) : LinearIndependent D.host.E (c₁ D hn) :=
   exact (Pi.basisFun D.host.E (Fin n)).linearIndependent.comp _
     (fun k k' h => Sum.inl_injective ((ee hn).injective h))
 
+/- English proof (translation)
+Simplify using `only [jn, bl]`. Rewrite using `[show (Matrix.fromCols x v).submatrix id (finSumFinEquiv.trans (finCongr hn)).symm = (Matrix.fromCols x v).submatrix id (⇑(finSumFinEquiv.trans (finCongr hn)).symm) from rfl, Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromBlocks]`.
+-/
 theorem jn_mul_bl (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) (A : Mx D r r) (B : Mx D r t) (C : Mx D t r)
     (E : Mx D t t) :
     HMul.hMul (jn hn x v) (bl hn A B C E) = jn hn (x * A + v * C) (x * B + v * E) := by
@@ -75,6 +102,9 @@ theorem jn_mul_bl (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) (A : Mx D r r) 
     (Matrix.fromCols x v).submatrix id (⇑(finSumFinEquiv.trans (finCongr hn)).symm) from rfl,
     Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromBlocks]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨s, rfl⟩` from `(ee hn).surjective j`. Simplify using `only [Matrix.add_apply, jn_ee]`. Apply the tactic sequence `rcases s with k | k <;> simp`.
+-/
 theorem jn_add (hn : r + t = n) (x x' : Mx D a r) (v v' : Mx D a t) : jn hn x v + jn hn x' v' = jn hn (x + x') (v + v') := by
   ext i j
   obtain ⟨s, rfl⟩ := (ee hn).surjective j

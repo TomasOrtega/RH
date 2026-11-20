@@ -13,6 +13,33 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.ShFam.BdArc (IsHolPts)
 open GlobalTheory.ShFam.BdArc GlobalTheory.TangentOrigin
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y X Z la σ n ε hε m hm W hW i p hi hdom hsm hp hbd j₀`. Establish `hPW : (Y₀ X Z).basicOpen p ≤ W` using `(Y₀ X Z).basicOpen_le p`. Establish `hPU : (Y₀ X Z).basicOpen p ≤ U₀ X Z` using `fun y hy => by`. Assume the negation of the conclusion as `h`. Conclude with `(hbd y (hPW hy)).1 h hy`.
+
+Establish `hPL : (Y₀ X Z).basicOpen p ≤ U₀ X Z ⊓ (L₀ X Z la).U i` using `le_inf hPU (hPW.trans hi)`. Use `hW.isLocalization_basicOpen p` as an intermediate fact. Take `⟨⟨_, M, rfl⟩, e⟩` from `IsLocalization.exist_integer_multiples_of_finite (Submonoid.powers p) (fun j => resG _ hPL ((m j).loc i))`. Use `choose a e using e`. Establish `e' : ∀ j, resG _ hPL ((m j).loc i) * resG _ hPW (p ^ M) = resG _ hPW (a j)` using `fun j => by`.
+
+Establish `e₁` using `e j`. Rewrite `e₁` using `[Algebra.smul_def, mul_comm]`. Conclude with `e₁.symm`. Establish `hφ : Spec.map (Spec.preimage ((show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec) ≫ str₀ X Z)) = (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec) ≫ str₀ X Z` using `Spec.map_preimage _`. Use `letI : Algebra c.F Γ(Y₀ X Z, W) := (Spec.preimage ((show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec) ≫ str₀ X Z)).hom.toAlgebra`.
+
+Take `⟨b, hab, hb⟩` from `UpperTheory.holomorphic_points_vanishing_at_origin c.F Γ(Y₀ X Z, W) hsm σ n ε hε p a M hp (fun ψ r hψ hσ h0 h1 => by`. Establish `hlim` using `hm W hW i hi ψ r hψ (fun u hu => by`. Rewrite using `[← hσ u hu]`. Conclude with `(congrArg (spMap (ψ u) ≫ ·) hφ.symm).trans (Spec.map_comp _ _).symm)`. Use the proof step `(fun s => (hbd _ (spMap_fromSpec_mem hW _ s)).2 fun h => (spMap_fromSpec_mem_basicOpen hW _ p s).1 h h0)`.
+
+Use the proof step `(fun u hu hu0 s _ => hPU ((spMap_fromSpec_mem_basicOpen hW _ p s).2 (h1 u hu hu0)))`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `η hη`. Establish `hball : Metric.ball (0 : ℂ) r ∈ 𝓝 (0 : ℂ)` using `Metric.ball_mem_nhds _ hψ.1`. Use `filter_upwards [hlim η hη, mem_nhdsWithin_of_mem_nhds hball, self_mem_nhdsWithin] with u hu hub hu0`.
+
+Establish `hWx : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) ⁻¹ᵁ W` using `fun s _ => spMap_fromSpec_mem hW _ s`. Establish `hPx : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) ⁻¹ᵁ (Y₀ X Z).basicOpen p` using `fun s _ => (spMap_fromSpec_mem_basicOpen hW _ p s).2 (h1 u hub hu0)`. Establish `hO : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) ⁻¹ᵁ U₀ X Z` using `fun s hs => hPU (hPx hs)`. Establish `hiu : ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) ⁻¹ᵁ (L₀ X Z la).U i` using `fun s hs => hi (hWx hs)`. Establish `hev` using `evalPt_spMap_fromSpec hW (ψ u) hWx`.
+
+Establish `hpu : ψ u (p ^ M) ≠ 0`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ (h1 u hub hu0)`. Establish `hmul : ∀ j, H0.val (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) i hO hiu (m j) * ψ u (p ^ M) = ψ u (a j)` using `fun j => by`. Establish `e₁` using `congrArg (GlobalTheory.TangentOrigin.evalPt _ _ hPx) (e' j)`.
+
+Rewrite `e₁` using `[map_mul, GlobalTheory.TangentOrigin.evalPt_res _ hPL (GlobalTheory.TopForm.le_preimage_inf hO hiu) hPx, GlobalTheory.TangentOrigin.evalPt_res _ hPW hWx hPx, GlobalTheory.TangentOrigin.evalPt_res _ hPW hWx hPx, hev]`. Conclude with `e₁`. Establish `hsum : (∑ j, ε j * ψ u (a j)) / ψ u (p ^ M) = ∑ j, ε j * H0.val (spMap (ψ u) ≫ (show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec)) i hO hiu (m j)`. Rewrite using `[div_eq_iff hpu, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [mul_assoc, hmul j]`.
+
+Rewrite using `[dist_zero_right, hsum]`. Conclude with `hu hO hiu) j₀`. Use `⟨b, fun y' h h' => ?_, fun y' h hy => ?_⟩` and prove the remaining obligations. Establish `hyP : y' ∈ (Y₀ X Z).basicOpen p`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `(hbd y' h).2 hn h'`. Establish `hunit : IsUnit (ger y' h p)` using `((Y₀ X Z).mem_basicOpen p y' h).1 hyP`. Establish `hunit' : IsUnit (ger y' h (p ^ M))`. Rewrite using `[map_pow]`. Conclude with `hunit.pow M`.
+
+Establish `e₁` using `congrArg (ger y' hyP) (e' j₀)`. Rewrite `e₁` using `[map_mul, ger_resG, ger_resG, ger_resG, hab, map_mul]`. Conclude with `(hunit'.mul_right_cancel e₁).symm`. Establish `hyP : y' ∉ (Y₀ X Z).basicOpen p` using `(hbd y' h).1 hy`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+
+Introduce `hu`. Take `⟨n, hn⟩` from `hb`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 hn`. Use `hyP (((Y₀ X Z).mem_basicOpen p y' h).2 ?_)` and prove the remaining obligations. Establish `h₂` using `hu.pow n`.
+
+Rewrite `h₂` using `[← map_pow, ← hd, map_mul]`. Conclude with `isUnit_of_mul_isUnit_right h₂`.
+-/
 private theorem exists_extension_of_famArcZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (X : FlagCover Y) (Z : Comp Xo c) (la : GlobalTheory.AllWt.Weight Dw) (σ : c.F →+* ℂ) (n : ℕ) (ε : Fin n → ℂ), (∀ a : Fin n → c.F, ∑ j, σ (a j) * ε j = 0 → a = 0) → ∀ (m : Fin n → H0 (str₀ X Z) (L₀ X Z la) (U₀ X Z)), FamArcZero X Z la σ ε m → ∀ (W : (Y₀ X Z).Opens) (hW : IsAffineOpen W) (i : (L₀ X Z la).ι) (p : Γ(Y₀ X Z, W)) (hi : W ≤ (L₀ X Z la).U i), IsDomain Γ(Y₀ X Z, W) → RingHom.Smooth (Spec.preimage ((show Sp Γ(Y₀ X Z, W) ⟶ Y₀ X Z from hW.fromSpec) ≫ str₀ X Z)).hom → p ≠ 0 → (∀ y' ∈ W, (y' ∈ bd₀ X Z ↔ y' ∉ (Y₀ X Z).basicOpen p)) → ∀ j, ∃ b : Γ(Y₀ X Z, W), (∀ y' (h : y' ∈ W) (h' : y' ∈ U₀ X Z), ger y' h b = H0.germ i y' h' (hi h) (m j)) ∧ ∀ y' (h : y' ∈ W), y' ∈ bd₀ X Z → ger y' h b ∈ IsLocalRing.maximalIdeal ((Y₀ X Z).presheaf.stalk y') := by
   intro E _ _ _ H Dw l Xo c Y X Z la σ n ε hε m hm W hW i p hi hdom hsm hp hbd j₀
   have hPW : (Y₀ X Z).basicOpen p ≤ W := (Y₀ X Z).basicOpen_le p
@@ -96,6 +123,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z la σ hv m ε hε s hm j`. Take `⟨t, hs, hz⟩` from `GlobalTheory.T.exists_section_extension_of_dense_local (GlobalTheory.CompHS.str₀ TF.X Z) (GlobalTheory.CompHS.L₀ TF.X Z la) (GlobalTheory.CompHS.isLB_L₀ TF.X Z la) (GlobalTheory.CompHS.U₀ TF.X Z) (GlobalTheory.CompHS.dense_U₀ TF.X Z) (s j) fun y _ => by`. Take `⟨W, hW, i, p, hyW, hi, hd, hsm, hp, hb⟩` from `GlobalTheory.T.exists_smooth_affine_chart_boundary_zero_set E H Dw l Xo c TF Z la hv y`. Take `⟨b, h1, h2⟩` from `exists_extension_of_famArcZero E H Dw l Xo c TF.Y TF.X Z la σ m ε hε s hm W hW i p hi hd hsm hp hb j`. Conclude with `⟨W, i, hi, b, hyW, h1, fun y' h h' => h2 y' h h'⟩`.
+
+Conclude with `⟨t, fun y hy i hi => hz y hy i hi, hs⟩`.
+-/
 theorem UpperTheory.vanishing_sections_toroidal_flag_independent :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : GlobalTheory.CompHS.TorFlag Xo c) (Z : Comp Xo c) (la : GlobalTheory.AllWt.Weight Dw) (σ : c.F →+* ℂ), GlobalTheory.CompHS.IsVariety₀ TF.X Z → ∀ (m : ℕ) (ε : Fin m → ℂ), (∀ a : Fin m → c.F, ∑ j, σ (a j) * ε j = 0 → a = 0) → ∀ s : Fin m → GlobalTheory.Vanishing.H0 (GlobalTheory.CompHS.str₀ TF.X Z) (GlobalTheory.CompHS.L₀ TF.X Z la) (GlobalTheory.CompHS.U₀ TF.X Z), GlobalTheory.CompHS.FamArcZero TF.X Z la σ ε s → ∀ j, ∃ t ∈ GlobalTheory.CompHS.vanBd TF.X Z la, GlobalTheory.Vanishing.H0.restr le_top t = s j := by
   intro E _ _ _ H Dw l Xo c TF Z la σ hv m ε hε s hm j

@@ -16,6 +16,11 @@ namespace UpperTheory.Gal.Spc.Iw
 private def LI {G : Type} [Group G] (K : Subgroup G) (g : G) : Prop :=
   ∃ φ ∈ Hecke ℂ K, conv K φ (dosetInd ℂ K g) = dosetInd ℂ K 1
 
+/- English proof (translation)
+Establish `e : dosetInd ℂ K g' = dosetInd ℂ K g`. Unfold `dosetInd`. Rewrite using `[DoubleCoset.doubleCoset_eq_of_mem h]`. Unfold `LI`. Rewrite using `[e]`.
+
+Conclude with `hg`.
+-/
 private theorem LI.congr {G : Type} [Group G] {K : Subgroup G} {g g' : G}
     (h : g' ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)) (hg : LI K g) : LI K g' := by
   have e : dosetInd ℂ K g' = dosetInd ℂ K g := by
@@ -25,13 +30,22 @@ private theorem LI.congr {G : Type} [Group G] {K : Subgroup G} {g g' : G}
   rw [e]
   exact hg
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, Final.DosetIndMem G K ℂ 1, (Final.HeckeUnit G K ℂ _ (Final.DosetIndMem G K ℂ 1)).1⟩`.
+-/
 private theorem LI.one {G : Type} [Group G] (K : Subgroup G) : LI K (1 : G) :=
   ⟨_, Final.DosetIndMem G K ℂ 1, (Final.HeckeUnit G K ℂ _ (Final.DosetIndMem G K ℂ 1)).1⟩
 
 private def Qr {G : Type} [Group G] (K : Subgroup G) (g : G) : Prop := ∀ h, LI K h → LI K (h * g)
 
+/- English proof (translation)
+Introduce `h hh` and use `by simpa using hh`.
+-/
 private theorem Qr.one {G : Type} [Group G] (K : Subgroup G) : Qr K (1 : G) := fun h hh => by simpa using hh
 
+/- English proof (translation)
+Introduce `h hh` and use `by simpa [mul_assoc] using b _ (a h hh)`.
+-/
 private theorem Qr.mul {G : Type} [Group G] {K : Subgroup G} {g g' : G} (a : Qr K g) (b : Qr K g') : Qr K (g * g') :=
   fun h hh => by simpa [mul_assoc] using b _ (a h hh)
 

@@ -4,6 +4,23 @@ open scoped InnerProductSpace ContDiff Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k T u hT hu x`. Use `set E := aP (T.erase u) with hE`. Use `set r := rt T u with hr`. Establish `hEK : E ≤ aP T` using `vecSpan_mono (Finset.erase_subset _ _)`. Establish `hvu : vec u ∈ aP T` using `Submodule.subset_span ⟨u, hu, rfl⟩`.
+
+Establish `hrdef : r = vec u - E.starProjection (vec u)` using `rfl`. Establish `hrE : r ∈ Eᗮ` using `by rw [hrdef]; exact Submodule.sub_starProjection_mem_orthogonal _`. Establish `hrK : r ∈ aP T`. Rewrite using `[hrdef]`. Conclude with `sub_mem hvu (hEK (Submodule.starProjection_apply_mem _ _))`.
+
+Establish `hr0 : r ≠ 0` using `hT.wt_ne_zero (Finset.erase_subset u T) (by simp [hu])`. Establish `hn : ‖r‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 hr0)`. Use `set c := ⟪r, x⟫_ℝ / ‖r‖ ^ 2 with hc`. Establish `hxyE : x - (pr (T.erase u) x + c • r) ∈ Eᗮ`. Rewrite using `[← sub_sub]`.
+
+Conclude with `sub_mem (Submodule.sub_starProjection_mem_orthogonal _) (Submodule.smul_mem _ _ hrE)`. Establish `hxyr : ⟪x - (pr (T.erase u) x + c • r), r⟫_ℝ = 0`. Establish `h1 : ⟪pr (T.erase u) x, r⟫_ℝ = 0` using `Submodule.inner_right_of_mem_orthogonal (Submodule.starProjection_apply_mem _ _) hrE`. Rewrite using `[inner_sub_left, inner_add_left, h1, inner_smul_left, real_inner_self_eq_norm_sq, real_inner_comm, hc]`. Simplify using `only [conj_trivial]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (add_mem (hEK (Submodule.starProjection_apply_mem _ _)) (Submodule.smul_mem _ _ hrK)) ?_` and prove the remaining obligations. Introduce `w hw`. Establish `hle : aP T ≤ (ℝ ∙ (x - (pr (T.erase u) x + c • r)))ᗮ`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right]`. Distinguish the cases in `hvu' : v = u`. Substitute `hvu'` using the available equality.
+
+Establish `: vec v = r + E.starProjection (vec v)` using `by rw [hrdef]; abel`. Rewrite using `[this, inner_add_right, hxyr, zero_add, real_inner_comm]`. Conclude with `Submodule.inner_right_of_mem_orthogonal (Submodule.starProjection_apply_mem _ _) hxyE`. Rewrite using `[real_inner_comm]`. Establish `hvE : vec v ∈ E` using `Submodule.subset_span ⟨v, Finset.mem_coe.2 (Finset.mem_erase.2 ⟨hvu', hv⟩), rfl⟩`.
+
+Conclude with `Submodule.inner_right_of_mem_orthogonal hvE hxyE`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.1 (hle hw)`.
+-/
 theorem pr_eq_pr_erase_add_rt : ∀ {k : ℕ} {T : Finset (SV k)} {u : SV k}, IsPar T → u ∈ T → ∀ x : A0 k,
     pr T x = pr (T.erase u) x + (⟪rt T u, x⟫_ℝ / ‖rt T u‖ ^ 2) • rt T u := by
   intro k T u hT hu x

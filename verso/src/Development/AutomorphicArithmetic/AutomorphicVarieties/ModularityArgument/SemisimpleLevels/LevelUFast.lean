@@ -32,6 +32,9 @@ set_option synthInstance.maxHeartbeats 200000
 attribute [local instance 2000] UpperTheory.V.W.coefLocal
 open UpperTheory.V.Hi.LvR
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `W.exists_determinantPair_map_of_algHom l F O n r B.B T g B.u`. Conclude with `(B.univ T p).unique ⟨h1.trans hp.1, fun v i => (h2 v i).trans (hp.2 v i)⟩ hp`.
+-/
 private theorem base_object_hom_ext {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ}
     {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) (T : Type) [CommRing T] [Algebra O T] [Alg.IsCO O T] (f g : B.B →ₐ[O] T)
     (h1 : B.u.D.map f.toRingHom = B.u.D.map g.toRingHom)
@@ -39,6 +42,9 @@ private theorem base_object_hom_ext {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {O
   obtain ⟨p, hp⟩ := W.exists_determinantPair_map_of_algHom l F O n r B.B T g B.u
   exact (B.univ T p).unique ⟨h1.trans hp.1, fun v i => (h2 v i).trans (hp.2 v i)⟩ hp
 
+/- English proof (translation)
+Establish `e2 : Z.map P.subtype = N₀` using `h.trans (Submodule.ext h₀)`. Conclude with `⟨((Z.equivMapOfInjective P.subtype P.injective_subtype).trans (LinearEquiv.ofEq _ _ e2)).toAddEquiv, fun z => ⟨rfl, h ▸ Submodule.mem_map_of_mem z.2⟩⟩`.
+-/
 private theorem eq_sub {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (P N N₀ : Submodule A M) (Z : Submodule A P)
     (h : Z.map P.subtype = N) (h₀ : ∀ f, f ∈ N ↔ f ∈ N₀) :
     ∃ e : Z ≃+ N₀, ∀ z : Z, (e z : M) = (z : P) ∧ ((z : P) : M) ∈ N := by
@@ -52,6 +58,11 @@ private def ProjAt {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Modul
     Module.Projective (MonoidAlgebra A (U ⧸ U₁.subgroupOf U)) ρ'.asModule
 
 set_option maxHeartbeats 3200000 in
+/- English proof (translation)
+Take `⟨θ', a', lam, hw', e1, e2, hl, hd, hJ⟩` from `LvF.step1 P l L Ω s n hn V0 Q0 c r ι A κ hi hu m τ₀ ty θ th hw a rs V h Q hsub hp B'`. Take `⟨hop, hM⟩` from `LvF.step2 P l L Ω s n hn V0 Q0 c r ι A κ hi hu m τ₀ ty θ th hw a rs V h Q hsub hp B' hS K0 θ' a' e1 e2`. Take `⟨ρ, α, h1, h2, h3, h4, h5, h6⟩` from `@LvF.umodAbs P.litN L Ω _ _ _ _ _ l _ n c (hset Q τ₀) (axU P.litN l L Ω s n hn V Q c m τ₀) A _ _ _ θ' hw' a' dq ι (PU (rUp h) ι) (autU P l L Ω s n hn V Q c (rUp h) ι m τ₀ (typeFor_up h hp ι τ₀ ty)) (fun _ => ⟨0, fun _ _ _ => le_rfl⟩) trivial (hd _) (neatU l L Ω s n hn V Q c m τ₀) …`. Establish `key` using `levelUR2SmulKey P.litN l L Ω s n hn V0 V Q0 Q c m τ₀ A θ hw a K0 (kMax Q τ₀) (p0 h) (continuous_levelChangeBaseGroupHom h) (surjective_levelChangeBaseGroupHom h) (levelChangeBaseGroupHom_apply_projection h hp) (opUp Q0 Q hsub τ₀) (fun _ => rfl) (fun _ _ => ⟨_, rfl⟩) θ' a' hw' e1 …`. Establish `h4' : ∀ (K K' : (hset Q τ₀).Lev) [((Subgroup.pi Set.univ K'.1).subgroupOf (Subgroup.pi Set.univ K.1)).Normal], (∀ q, K'.1 q ≤ K.1 q) → ProjAt ρ (Subgroup.pi Set.univ K.1) (Subgroup.pi Set.univ K'.1)` using `fun K K' _ hle => h4 K K' hle`.
+
+Take `⟨e0, he0⟩` from `eq_sub _ _ ((hset Q0 τ₀).MK θ a K0) _ (h3 (kMax Q τ₀)).1 hM`. Use `⟨_, _, _, ρ, α, lam, hl, h1, h2, fun K hK => (h3 ⟨K, hK⟩).2, fun K K' hK hK' hN hle => @h4' ⟨K, hK⟩ ⟨K', hK'⟩ hN hle, ⟨e0, fun t x x' hx => Subtype.ext ?_⟩, h6⟩` and prove the remaining obligations. Conclude with `((he0 x').1.trans (congrArg Subtype.val hx)).trans (key t ⟨x.1.1, (he0 x).2⟩ (e0 x) (he0 x).1.symm)`.
+-/
 private theorem s3 (P : Af.HypothesesH) (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ) (hn : 1 ≤ n)
     (V0 : s.Lev) (Q0 : QData V0) (c : Coef l) (r : Resid V0.frame c.O n) (ι : Qbar l ≃+* ℂ)
     (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (κ : ∀ v, Fin n → V0.frame.Iv v →* Aˣ) (hi hu)

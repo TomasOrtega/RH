@@ -10,6 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.DetRootChar
 
+/- English proof (translation)
+Establish `hker : δ.rangeRestrict.ker ≤ m.ker` using `fun g hg => by`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Conclude with `h g (congrArg Subtype.val hg)`. Take `⟨χ, hχ⟩` from `GlobalTheory.circle_hom_extend_of_injective δ.range.subtype Subtype.val_injective (δ.rangeRestrict.liftOfSurjective δ.rangeRestrict_surjective ⟨m, hker⟩)`. Use `⟨χ, fun g => ?_⟩` and prove the remaining obligations.
+
+Use `hχ (δ.rangeRestrict g)` as an intermediate fact. Rewrite `this` using `[MonoidHom.liftOfSurjective, MonoidHom.liftOfRightInverse_comp_apply]`. Conclude with `this`.
+-/
 theorem circle_hom_factor {G B : Type} [Group G] [CommGroup B] (δ : G →* B) (m : G →* Circle)
     (h : ∀ g, δ g = 1 → m g = 1) : ∃ χ : B →* Circle, ∀ g, χ (δ g) = m g := by
   have hker : δ.rangeRestrict.ker ≤ m.ker := fun g hg => by
@@ -22,6 +27,9 @@ theorem circle_hom_factor {G B : Type} [Group G] [CommGroup B] (δ : G →* B) (
   rw [MonoidHom.liftOfSurjective, MonoidHom.liftOfRightInverse_comp_apply] at this
   exact this
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [finPart, sigR]`. Consider the case `add x y hx hy => simp only [RingHom.map_add, hx, hy]`.
+-/
 theorem finPart_sigR (D : D7) (x : AE D) :
     finPart D (sigR (AF D.host.F) D.sp.cm.sig x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
   induction x using TensorProduct.induction_on with
@@ -29,6 +37,9 @@ theorem finPart_sigR (D : D7) (x : AE D) :
   | tmul a e => simp [finPart, sigR]
   | add x y hx hy => simp only [RingHom.map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem finPart_det (D : D7) (V : HSp D) (g : GA D V) :
     finPart D ((matHom V g).1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).det =
       ((Matrix.GeneralLinearGroup.det (finHom V g) : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) :
@@ -36,6 +47,15 @@ theorem finPart_det (D : D7) (V : HSp D) (g : GA D V) :
   rw [RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Establish `hσ : ∀ x, D.sp.cm.sig (D.sp.cm.sig x) = x` using `fun x => star_star x`. Establish `htr : ∀ x : D.host.E, ∃ t : D.host.F, algebraMap _ _ t = x + D.sp.cm.sig x`. Introduce `x`. Apply `(D.sp.cm.fixed _).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `D.sp.cm.sig _ = _`.
+
+Rewrite using `[map_add, hσ, add_comm]`. Take `⟨b, hb⟩` from `GlobalTheory.Member.exists_unit_of_sigR_fixed (Af D.host.F) D.sp.cm.sig htr (Units.map (finPart D).toMonoidHom x) hx`. Establish `hb' : algebraMap (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) (b : Af D.host.F) = finPart D (x : AE D)` using `congrArg Units.val hb`. Set `a : (AF D.host.F)ˣ` to `⟨((1 : Ainf D.host.F), (b : Af D.host.F)), ((1 : Ainf D.host.F), ((b⁻¹ : (Af D.host.F)ˣ) : Af D.host.F)), Prod.ext (mul_one _) b.mul_inv, Prod.ext (mul_one _) b.inv_mul⟩`. Establish `ha : Units.map (finPart D).toMonoidHom (idF D a) = Units.map (finPart D).toMonoidHom x`.
+
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `finPart D ((a : AF D.host.F) ⊗ₜ 1) = finPart D (x : AE D)`. Rewrite using `[← hb']`. Both sides reduce to the same expression. Use `⟨a, x * (idF D a)⁻¹, ?_, by simp⟩` and prove the remaining obligations.
+
+Establish `: Units.map (finPart D).toMonoidHom (x * (idF D a)⁻¹) = 1`. Rewrite using `[map_mul, map_inv, ha, mul_inv_cancel]`. Conclude with `congrArg Units.val this`.
+-/
 theorem exists_idF_mul (D : D7) (x : (AE D)ˣ)
     (hx : sigR (Af D.host.F) D.sp.cm.sig (finPart D (x : AE D)) = finPart D (x : AE D)) :
     ∃ (a : (AF D.host.F)ˣ) (y : (AE D)ˣ), finPart D (y : AE D) = 1 ∧ x = y * idF D a := by
@@ -62,6 +82,17 @@ theorem exists_idF_mul (D : D7) (x : (AE D)ˣ)
     rw [map_mul, map_inv, ha, mul_inv_cancel]
   exact congrArg Units.val this
 
+/- English proof (translation)
+Introduce `D V c hF hinf`. Take `⟨hex, huniq, -, hmul⟩` from `GlobalTheory.Member.isDetRoot_laws D V`. Use `choose r hr using hex`. Establish `hval : ∀ g x, IsDetRoot V g x → c (r g) = c x`. Introduce `g x hx`.
+
+Take `⟨a, ha⟩` from `huniq g _ _ (hr g) hx`. Rewrite using `[ha, map_mul, hF, mul_one]`. Establish `hm : ∀ g g', c (r (g * g')) = c (r g) * c (r g')`. Introduce `g g'`. Rewrite using `[hval _ _ (hmul _ _ _ _ (hr g) (hr g')), map_mul]`.
+
+Set `m : GA D V →* Circle` to `MonoidHom.mk' (fun g => c (r g)) hm`. Take `⟨χ, hχ⟩` from `circle_hom_factor (Matrix.GeneralLinearGroup.det.comp (finHom V)) m (by`. Introduce `g hg`. Establish `hg' : Matrix.GeneralLinearGroup.det (finHom V g) = 1` using `hg`. Establish `h1` using `congrArg (finPart D) (hr g)`.
+
+Rewrite `h1` using `[map_mul, finPart_det, hg', Units.val_one, one_mul, finPart_sigR]`. Take `⟨a, y, hy, hxy⟩` from `exists_idF_mul D (r g) h1.symm`. Express the relevant statement in the definitionally equal form `c (r g) = 1`. Rewrite using `[hxy, map_mul, hF, hinf y hy, mul_one])`. Use `⟨Circle.toUnits.comp χ, fun g x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `: χ (Matrix.GeneralLinearGroup.det (finHom V g)) = c x` using `(hχ g).trans (hval g x hx)`. Rewrite using `[MonoidHom.comp_apply, this]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_finite_char : ∀ (D : D7) (V : HSp D) (c : (AE D)ˣ →* Circle), (∀ a, c (idF D a) = 1) → (∀ x : (AE D)ˣ, finPart D (x : AE D) = 1 → c x = 1) → ∃ xi : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ →* ℂˣ, ∀ (g : GA D V) (x : (AE D)ˣ), IsDetRoot V g x → ((xi (Matrix.GeneralLinearGroup.det (finHom V g)) : ℂˣ) : ℂ) = ((c x : Circle) : ℂ) := by
   intro D V c hF hinf
   obtain ⟨hex, huniq, -, hmul⟩ := GlobalTheory.Member.isDetRoot_laws D V

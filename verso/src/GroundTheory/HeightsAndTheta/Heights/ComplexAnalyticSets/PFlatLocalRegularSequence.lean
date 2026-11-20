@@ -18,6 +18,13 @@ def quotSMulTopQuotIdealSMulTopEquiv {B M : Type} [CommRing B] [AddCommGroup M] 
     (Submodule.quotientQuotientEquivQuotientSup (y • ⊤) (I • ⊤)).symm ≪≫ₗ
     Submodule.quotEquivOfEq _ _ (by rw [Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ])
 
+/- English proof (translation)
+Proceed by induction on `ys generalizing M with`. Consider the case `nil`. Use `⟨IsWeaklyRegular.nil B M, ?_⟩` and prove the remaining obligations. Establish `e : (M ⧸ (Ideal.ofList ([] : List B) • (⊤ : Submodule B M))) ≃ₗ[B] M` using `Submodule.quotEquivOfEqBot _ (by rw [Ideal.ofList_nil, Submodule.bot_smul])`. Conclude with `Module.Flat.of_linearEquiv (e.restrictScalars A)`.
+
+Consider the case `cons y ys ih`. Rewrite `hreg` using `[isWeaklyRegular_cons_iff]`. Take `⟨hyM, hflat'⟩` from `h A B hA hB hl M hfin hflat y (hys y List.mem_cons_self) hreg.1`. Establish `hfin' : Module.Finite B (QuotSMulTop y M)` using `inferInstance`. Take `⟨h1, h2⟩` from `ih (fun z hz => hys z (List.mem_cons_of_mem _ hz)) (QuotSMulTop y M) hfin' hflat' (((quotSMulTopQuotIdealSMulTopEquiv _ y).isWeaklyRegular_congr ys).mp hreg.2)`.
+
+Use `⟨(isWeaklyRegular_cons_iff M y ys).mpr ⟨hyM, h1⟩, ?_⟩` and prove the remaining obligations. Establish `: Module.Flat A (QuotSMulTop y M ⧸ (Ideal.ofList ys • (⊤ : Submodule B (QuotSMulTop y M))))` using `h2`. Conclude with `Module.Flat.of_linearEquiv ((Submodule.quotOfListConsSMulTopEquivQuotSMulTopInner M y ys).restrictScalars A)`.
+-/
 theorem FlatLocalRegularElement.iterate (h : FlatLocalRegularElement.Statement)
     {A B : Type} [CommRing A] [CommRing B] [IsLocalRing A] [IsLocalRing B] [Algebra A B]
     (hA : IsNoetherianRing A) (hB : IsNoetherianRing B) (hl : IsLocalHom (algebraMap A B))
@@ -43,6 +50,15 @@ theorem FlatLocalRegularElement.iterate (h : FlatLocalRegularElement.Statement)
     exact Module.Flat.of_linearEquiv
       ((Submodule.quotOfListConsSMulTopEquivQuotSMulTopInner M y ys).restrictScalars A)
 
+/- English proof (translation)
+Introduce `A B _ _ _ _ _ hA hB hl hflat rs ys hrs hreg hys hfib`. Use `set I := (maximalIdeal A).map (algebraMap A B) with hI`. Establish `hfib' : IsWeaklyRegular (B ⧸ (I • ⊤ : Submodule B B)) ys`. Establish `e : (B ⧸ I) ≃ₗ[B] (B ⧸ (I • ⊤ : Submodule B B))` using `Submodule.quotEquivOfEq _ _ (by rw [Ideal.smul_eq_mul, Ideal.mul_top])`. Rewrite `hfib` using `[← Ideal.Quotient.algebraMap_eq, isWeaklyRegular_map_algebraMap_iff]`.
+
+Conclude with `(e.isWeaklyRegular_congr ys).mp hfib`. Take `⟨hysB, hflatQ⟩` from `FlatLocalRegularElement.iterate h hA hB hl ys hys B inferInstance hflat hfib'`. Establish `hrsN : IsWeaklyRegular (B ⧸ (Ideal.ofList ys • (⊤ : Submodule B B))) rs` using `((TensorProduct.lid A _).isWeaklyRegular_congr rs).mp (hreg.isWeaklyRegular_rTensor)`. Establish `happ : IsWeaklyRegular B (ys ++ rs.map (algebraMap A B))` using `(isWeaklyRegular_append_iff B ys _).mpr ⟨hysB, (isWeaklyRegular_map_algebraMap_iff B _ rs).mpr hrsN⟩`. Establish `: IsNoetherian B B` using `hB`.
+
+Use `IsLocalRing.isWeaklyRegular_of_perm_of_subset_maximalIdeal happ List.perm_append_comm ?_` and prove the remaining obligations. Introduce `r hr`. Break down `List.mem_append.mp hr with hr | hr` into its components or cases. Conclude with `hys r hr`. Take `⟨a, ha, rfl⟩` from `List.mem_map.mp hr`.
+
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => (IsLocalRing.mem_maximalIdeal a).mp (hrs a ha) (isUnit_of_map_unit _ _ hu)`.
+-/
 theorem FlatLocalRegularSequence.proof (h : FlatLocalRegularElement.Statement) :
     FlatLocalRegularSequence.Statement := by
   intro A B _ _ _ _ _ hA hB hl hflat rs ys hrs hreg hys hfib

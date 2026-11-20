@@ -19,6 +19,31 @@ open MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv mkT tanM_ext tv_mem actR)
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y p A Z π g κ _ hZ ht S _ _ P q`. Take `⟨b, hb⟩` from `A.cov ((frX P ≫ Y.j) q)`. Take `⟨f₀, hf₀, hV⟩` from `GlobalTheory.T.exists_basicOpen_nbhd_point_mem_open S Y.X (frX P ≫ Y.j) (A.k b).V q hb`. Set `ι₀ : S →ₐ[c.F] Localization.Away f₀` to `IsScalarTower.toAlgHom c.F S (Localization.Away f₀)`. Take `⟨P₀, hP₀⟩` from `exists_frMap ι₀ P`.
+
+Establish `hx₀ : frX P₀ ≫ Y.j = spMap (algebraMap S (Localization.Away f₀)) ≫ frX P ≫ Y.j`. Rewrite using `[← frX_frMap hP₀, Category.assoc]`. Both sides reduce to the same expression. Establish `h₀ : ⊤ ≤ (frX P₀ ≫ Y.j) ⁻¹ᵁ (A.k b).V` using `by rw [hx₀]; exact hV`. Use `choose T hTu hT using GlobalTheory.T.frameVectors_eq_eigenFrame_mul_invertible E H Dw l Xo c Y p A b _ P₀ h₀`.
+
+Establish `hq₀ : (Ideal.map (algebraMap S (Localization.Away f₀)) q.asIdeal).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers f₀) _ q.asIdeal q.2 ((Ideal.disjoint_powers_iff_notMem _ q.2.isRadical).2 hf₀)`. Establish `hdet : ∀ σ, (T σ).det ∉ Ideal.map (algebraMap S (Localization.Away f₀)) q.asIdeal` using `fun σ h => hq₀.ne_top (Ideal.eq_top_of_isUnit_mem _ h (hTu σ))`. Use `choose w hw using fun σ => GlobalTheory.T.exists_perm_leadingMinors_not_mem _ _ (T σ) _ hq₀ (hdet σ)`. Take `⟨f, hf, φ, hφ⟩` from `GlobalTheory.T.exists_basicOpen_isUnit_of_notMem_map' S f₀ q.asIdeal q.2 hf₀ (Σ σ : E →+* ℂ, Fin (Dw.mult σ + 1)) (fun i => (((T i.1).submatrix (w i.1) id).submatrix (Fin.castLE (Nat.lt_succ_iff.1 i.2.2)) (Fin.castLE (Nat.lt_succ_iff.1 i.2.2))).det) (fun i => hw i.1 _ _)`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+
+Set `φ' : Localization.Away f₀ →ₐ[c.F] Localization.Away f` to `φ.restrictScalars c.F`. Establish `hcomp : φ'.comp ι₀ = IsScalarTower.toAlgHom c.F S (Localization.Away f)` using `AlgHom.ext fun s => φ.commutes s`. Take `⟨P₁, hP₁⟩` from `exists_frMap φ' P₀`. Establish `hP₁' : FrMap (IsScalarTower.toAlgHom c.F S (Localization.Away f)) P P₁` using `hcomp ▸ PullbackSections.frMap_trans ι₀ φ' hP₀ hP₁`. Establish `hx₁ : frX P₁ ≫ Y.j = spMap φ'.toRingHom ≫ frX P₀ ≫ Y.j` using `by rw [← frX_frMap hP₁, Category.assoc]`.
+
+Establish `h₁ : ⊤ ≤ (frX P₁ ≫ Y.j) ⁻¹ᵁ (A.k b).V` using `by rw [hx₁]; exact le_preimage_comp _ h₀`. Establish `hM₁ : ⊤ ≤ (frX P₁ ≫ Y.j) ⁻¹ᵁ (A.k b).M.U` using `le_preimage_mono (A.k b).le h₁`. Establish `hminor : ∀ σ (k : ℕ) (hk : k ≤ Dw.mult σ), IsUnit ((((T σ).map φ').submatrix (w σ) id).submatrix (Fin.castLE hk) (Fin.castLE hk)).det`. Introduce `σ k hk`. Establish `h` using `hφ ⟨σ, ⟨k, Nat.lt_succ_of_le hk⟩⟩`.
+
+Establish `e : (((T σ).map φ').submatrix (w σ) id).submatrix (Fin.castLE hk) (Fin.castLE hk) = (φ : Localization.Away f₀ →+* Localization.Away f).mapMatrix (((T σ).submatrix (w σ) id).submatrix (Fin.castLE hk) (Fin.castLE hk))` using `rfl`. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `h`. Use `choose L U hL0 hL1 hU hUu hLU using fun σ => GlobalTheory.T.exists_lu_of_isUnit_leading_minors (Localization.Away f) (Dw.mult σ) (((T σ).map φ').submatrix (w σ) id) (hminor σ)`. Set `ψ₀ : Γ(Y.X, (A.V b).1) →+* Localization.Away f` to `ev (frX P₁ ≫ Y.j) _ h₁`.
+
+Set `xc : CellVar Dw.mult → Localization.Away f` to `fun v => L v.1 v.2.1.1 v.2.1.2`. Take `⟨hzπ, hz, huAt⟩` from `GlobalTheory.T.flagCellPoint_image_and_frame E H Dw l Xo c Y p A Z π g κ hZ ht b w _ ψ₀ xc _ rfl`. Use `⟨spMap (MvPolynomial.eval₂Hom ψ₀ xc) ≫ κ b w, fun P' hP' => ?_⟩` and prove the remaining obligations. Take `rfl` from `frMap_unique hP₁' hP'`. Establish `hx : (spMap (MvPolynomial.eval₂Hom ψ₀ xc) ≫ κ b w) ≫ π = frX P₁ ≫ Y.j` using `hzπ.trans (spMap_ev _ (A.V b).2 h₁)`.
+
+Use `GlobalTheory.T.carries_framedPoint_of_unitTriangular_chart E H Dw l Xo c c.F (RingHom.id c.F) Y Z π (cellFrames hZ ht) (GlobalTheory.T.flagCellFrames_lastStep_eigenmodules E H Dw l Xo c Y p A Z π g κ hZ ht) _ P₁ _ ((b, w) : A.B × Pm Dw.mult) hz hx U hU hUu ?_` and prove the remaining obligations. Introduce `σ i`. Rewrite using `[hT σ _ φ' P₁ hP₁ h₁ hM₁ i]`. Establish `hcell : Matrix.of (cell xc σ) = L σ`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.of_apply, cell, xc]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Substitute `h2` using the available equality. Conclude with `(hL1 σ i).symm`.
+
+Conclude with `(hL0 σ i j (lt_of_le_of_ne (not_lt.1 h1) h2)).symm`. Establish `key : ((A.k b).u σ).map ψ₀ * (T σ).map φ' = ((((A.k b).u σ).map ψ₀).submatrix id (w σ) * L σ) * U σ`. Rewrite using `[Matrix.mul_assoc, ← hLU σ, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`. Simplify using `only [Frames.vecAt, huAt σ, hcell, ← map_smul, ← map_sum]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `r`. Express the relevant statement in the definitionally equal form `(((A.k b).u σ).map ψ₀ * (T σ).map φ') r i = _`. Rewrite using `[key, Matrix.mul_apply]`. Use `erw [Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Conclude with `_root_.mul_comm _ _`.
+-/
 theorem exists_cell_lies : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id c.F)) (A : Atlas Y p) (Z : Scheme.{0}) (π : Z ⟶ Y.X) (g : ∀ en : En Dw.mult, Z ⟶ PSpace c.F (plN A.N en.1)) (κ : ∀ b, Pm Dw.mult → (Sp (CR Dw.mult (A.V b)) ⟶ Z)) [∀ b w, IsOpenImmersion (κ b w)] (hZ : Cells A π g κ) (ht : FlagCellFrameChangeTriangular hZ) (S : Type) [CommRing S] [Algebra c.F S] (P : FrPt Xo c S) (q : PrimeSpectrum S), ∃ f : S, f ∉ q.asIdeal ∧ ∃ z : Sp (Localization.Away f) ⟶ Z, ∀ P' : FrPt Xo c (Localization.Away f), FrMap (IsScalarTower.toAlgHom c.F S (Localization.Away f)) P P' → (cellFrames hZ ht).Lies z P' := by
   intro E _ _ _ H Dw l Xo c Y p A Z π g κ _ hZ ht S _ _ P q
   classical

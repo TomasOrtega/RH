@@ -3,6 +3,17 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Ine
 
 open Formalism.HC Formalism.FrobeniusOrbits UpperTheory.Top
 
+/- English proof (translation)
+Rewrite using `[D.ord_eq, ← Group.card_H D.e]`. Establish `hk : Nat.card D.R = Nat.card D.p1.ker * Nat.card (HGrp D.e)`. Rewrite using `[← Subgroup.card_mul_index D.p1.ker, Subgroup.index_ker, MonoidHom.range_eq_top.mpr D.projection_surjective, Subgroup.card_top]`. Rewrite using `[hk]`. Use `congr 1`.
+
+Use `Nat.card_congr (Equiv.ofBijective (fun x => ⟨(x.1 : HGrp D.e × D.B).2, ?_⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Take `⟨⟨y, u, hu⟩, hx⟩` from `x`. Establish `h1 : y.1 = 1` using `hx`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D.cl u = 1`.
+
+Rewrite using `[← h1, ← hu]`. Both sides reduce to the same expression. Conclude with `congrArg Prod.snd hu`. Introduce and unpack `⟨⟨x, hx⟩, hx1⟩ ⟨⟨y, hy⟩, hy1⟩ h`. Establish `a1 : x.1 = 1` using `hx1`.
+
+Establish `b1 : y.1 = 1` using `hy1`. Establish `h2 : x.2 = y.2` using `congrArg Subtype.val h`. Use `ext1`. Use `ext1`. Conclude with `Prod.ext (a1.trans b1.symm) h2`.
+
+Introduce and unpack `⟨b, u, hu, rfl⟩`. Use `⟨⟨⟨D.eta u, u, rfl⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `hu`.
+-/
 private theorem ord_eq_mul (D : ModData) : D.frame.ord = Nat.card (D.cl.ker.map D.ξ) * 2 ^ D.e := by
   rw [D.ord_eq, ← Group.card_H D.e]
   have hk : Nat.card D.R = Nat.card D.p1.ker * Nat.card (HGrp D.e) := by
@@ -30,6 +41,13 @@ private theorem ord_eq_mul (D : ModData) : D.frame.ord = Nat.card (D.cl.ker.map 
     refine ⟨⟨⟨D.eta u, u, rfl⟩, ?_⟩, rfl⟩
     exact hu
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(QuotientGroup.mk' _ (ZMod.unitsMap D.tower u) : HGrp D.e) = 1 ↔ _`. Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff, Subgroup.mem_zpowers_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Rewrite using `[← hk]`.
+
+Break down `Int.even_or_odd k with hk2 | hk2` into its components or cases. Conclude with `Or.inl hk2.neg_one_zpow`. Conclude with `Or.inr hk2.neg_one_zpow`. Introduce and unpack `(h | h)`. Conclude with `⟨0, by rw [h, zpow_zero]⟩`.
+
+Conclude with `⟨1, by rw [h, zpow_one]⟩`.
+-/
 private theorem cl_eq_one_iff (D : ModData) (u : (ZMod D.m)ˣ) :
     D.cl u = 1 ↔ ZMod.unitsMap D.tower u = 1 ∨ ZMod.unitsMap D.tower u = -1 := by
   change (QuotientGroup.mk' _ (ZMod.unitsMap D.tower u) : HGrp D.e) = 1 ↔ _
@@ -44,11 +62,27 @@ private theorem cl_eq_one_iff (D : ModData) (u : (ZMod D.m)ˣ) :
     · exact ⟨0, by rw [h, zpow_zero]⟩
     · exact ⟨1, by rw [h, zpow_one]⟩
 
+/- English proof (translation)
+Rewrite using `[← ZMod.unitsMap_comp h1 h2]`. Both sides reduce to the same expression.
+-/
 private theorem unitsMap_unitsMap {a b c : ℕ} (h1 : a ∣ b) (h2 : b ∣ c) (u : (ZMod c)ˣ) :
     ZMod.unitsMap h1 (ZMod.unitsMap h2 u) = ZMod.unitsMap (h1.trans h2) u := by
   rw [← ZMod.unitsMap_comp h1 h2]
   rfl
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `hb`. Establish `hL : (2 ^ (e + 2)).lcm M ∣ (2 ^ (e + 1 + 2)).lcm M` using `Nat.lcm_dvd (dvd_trans (pow_dvd_pow 2 (by omega)) (Nat.dvd_lcm_left _ _)) (Nat.dvd_lcm_right _ _)`. Use `haveI : NeZero ((2 ^ (e + 1 + 2)).lcm M) := ⟨Nat.lcm_ne_zero (by positivity) (NeZero.ne M)⟩`. Take `⟨w, rfl⟩` from `ZMod.unitsMap_surjective (EvenGrp.QS_dvd Ξ (e + 1)) u`. Establish `h23 : 2 ^ (e + 2) ∣ 2 ^ (e + 1 + 2)` using `pow_dvd_pow 2 (by omega)`.
+
+Establish `t0 : 2 ^ (e + 2) ∣ EvenGrp.QS Ξ e` using `(AnyGrp.data Ξ e).tower`. Establish `t1 : 2 ^ (e + 1 + 2) ∣ EvenGrp.QS Ξ (e + 1)` using `(AnyGrp.data Ξ (e + 1)).tower`. Use `⟨ZMod.unitsMap (EvenGrp.QS_dvd Ξ e) (ZMod.unitsMap hL w), ?_, ?_⟩` and prove the remaining obligations. Establish `hu'` using `(cl_eq_one_iff (AnyGrp.data Ξ (e + 1)) (ZMod.unitsMap (EvenGrp.QS_dvd Ξ (e + 1)) w)).mp hu`. Use `(cl_eq_one_iff (AnyGrp.data Ξ e) (ZMod.unitsMap (EvenGrp.QS_dvd Ξ e) (ZMod.unitsMap hL w))).mpr ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ZMod.unitsMap t0 (ZMod.unitsMap (EvenGrp.QS_dvd Ξ e) (ZMod.unitsMap hL w)) = 1 ∨ ZMod.unitsMap t0 (ZMod.unitsMap (EvenGrp.QS_dvd Ξ e) (ZMod.unitsMap hL w)) = -1`. Express the relevant statement in the definitionally equal form `ZMod.unitsMap t1 (ZMod.unitsMap (EvenGrp.QS_dvd Ξ (e + 1)) w) = 1 ∨ ZMod.unitsMap t1 (ZMod.unitsMap (EvenGrp.QS_dvd Ξ (e + 1)) w) = -1 at hu'`. Rewrite using `[unitsMap_unitsMap, unitsMap_unitsMap]`. Rewrite `hu'` using `[unitsMap_unitsMap]`. Break down `hu' with h | h` into its components or cases.
+
+Use `left`. Use `congrArg (ZMod.unitsMap h23) h` as an intermediate fact. Rewrite `this` using `[unitsMap_unitsMap, map_one]`. Conclude with `this`. Use `right`.
+
+Use `congrArg (ZMod.unitsMap h23) h` as an intermediate fact. Rewrite `this` using `[unitsMap_unitsMap, D7.unitsMap_neg_one]`. Conclude with `this`. Express the relevant statement in the definitionally equal form `EvenGrp.xi Ξ e _ = EvenGrp.xi Ξ (e + 1) _`. Rewrite using `[EvenGrp.xi_unitsMap, EvenGrp.xi_unitsMap]`.
+
+Express the relevant statement in the definitionally equal form `QuotientGroup.mk' _ (ZMod.unitsMap _ (ZMod.unitsMap hL w)) = QuotientGroup.mk' _ (ZMod.unitsMap _ w)`. Rewrite using `[unitsMap_unitsMap]`.
+-/
 private theorem step {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ M)) (e : ℕ) (b : EvenGrp.B Ξ)
     (hb : b ∈ (AnyGrp.data Ξ (e + 1)).cl.ker.map (AnyGrp.data Ξ (e + 1)).ξ) :
     b ∈ (AnyGrp.data Ξ e).cl.ker.map (AnyGrp.data Ξ e).ξ := by
@@ -83,6 +117,15 @@ private theorem step {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ
     change QuotientGroup.mk' _ (ZMod.unitsMap _ (ZMod.unitsMap hL w)) = QuotientGroup.mk' _ (ZMod.unitsMap _ w)
     rw [unitsMap_unitsMap]
 
+/- English proof (translation)
+Introduce `M _ Ξ`. Use `haveI hB : Finite (EvenGrp.B Ξ) := Nat.finite_of_card_ne_zero (by rw [EvenGrp.card_B]; exact Nat.card_pos.ne')`. Use `haveI : ∀ e, Finite (AnyGrp.data Ξ e).B := fun _ => hB`. Set `n : ℕ → ℕ` to `fun e => Nat.card ((AnyGrp.data Ξ e).cl.ker.map (AnyGrp.data Ξ e).ξ)`. Establish `hanti : Antitone n` using `antitone_nat_of_succ_le (fun e => Subgroup.card_le_of_le (fun b hb => step Ξ e b hb))`.
+
+Establish `hpos : ∀ e, 1 ≤ n e` using `fun e => Nat.card_pos`. Establish `hle : ∀ e, n e ≤ Nat.card Ξ` using `fun e => by`. Rewrite using `[← EvenGrp.card_B]`. Conclude with `Subgroup.card_le_card_group _`. Take `⟨e0, he0⟩ : sInf (Set.range n) ∈ Set.range n` from `Nat.sInf_mem (Set.range_nonempty n)`.
+
+Use `⟨n e0, e0, hpos e0, hle e0, fun e he => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(AnyGrp.data Ξ e).frame.ord = _`. Rewrite using `[ord_eq_mul]`. Establish `h1 : n e ≤ n e0` using `hanti he`. Establish `h2 : n e0 ≤ n e` using `he0 ▸ Nat.sInf_le ⟨e, rfl⟩`.
+
+Establish `h3 : n e = n e0` using `le_antisymm h1 h2`. Conclude with `congrArg (· * 2 ^ e) h3`.
+-/
 theorem UpperTheory.Top.ordAny :
     ∀ (M : ℕ) [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ M)), ∃ c e0 : ℕ, 1 ≤ c ∧ c ≤ Nat.card Ξ ∧
       ∀ e ≥ e0, (AnyGrp.frame Ξ e).ord = c * 2 ^ e := by

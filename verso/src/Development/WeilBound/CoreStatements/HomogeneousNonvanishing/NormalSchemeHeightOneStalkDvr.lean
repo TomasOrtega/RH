@@ -7,6 +7,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace PositivityTheory.UnitarySelfGeneration
 
+/- English proof (translation)
+Introduce `X _ hn p hd`. Take `⟨h1, h2⟩` from `hn p`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hnf : ¬ IsField (X.presheaf.stalk p)` using `fun h => by`. Rewrite `hd` using `[ringKrullDim_eq_zero_of_isField h]`.
+
+Conclude with `zero_ne_one hd`. Establish `hk : Ring.KrullDimLE 1 (X.presheaf.stalk p)` using `Ring.krullDimLE_iff.2 (by rw [hd]; rfl)`. Establish `hd1 : Ring.DimensionLEOne (X.presheaf.stalk p)` using `⟨fun hne hp => Ring.krullDimLE_one_iff_of_noZeroDivisors.1 hk _ hne hp⟩`. Establish `hdd : IsDedekindDomain (X.presheaf.stalk p)` using `{}`. Conclude with `((IsDiscreteValuationRing.TFAE (X.presheaf.stalk p) hnf).out 2 0).1 hdd`.
+-/
 theorem normal_scheme_height_one_stalk_dvr : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X], IsNormalScheme X → ∀ p : X, ringKrullDim (X.presheaf.stalk p) = 1 → ∃ _ : IsDomain (X.presheaf.stalk p), IsDiscreteValuationRing (X.presheaf.stalk p) := by
   intro X _ hn p hd
   obtain ⟨h1, h2⟩ := hn p

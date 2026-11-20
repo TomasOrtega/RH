@@ -4,6 +4,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S2
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r hyp hch hd u hu`. Use `haveI : IsAlgClosure k₀ Ω := ⟨IsAlgClosure.isAlgClosed ℚ, inferInstance⟩`. Use `haveI : IsGalois k₀ Ω := {}`. Establish `hc : Continuous (resQ k₀ : G k₀ Ω →* G ℚ Ω)`. Establish `h` using `(galEmbTop ℚ k₀ Ω).1.continuous`.
+
+Establish `e : (resQ k₀ : G k₀ Ω →* G ℚ Ω) = galEmb ℚ k₀ Ω`. Use extensionality with `σ x`. Rewrite using `[galEmb_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `h`. Set `H : Subgroup (G k₀ Ω)` to `T.F.fixingSubgroup.comap (resQ k₀)`. Establish `hHo : IsOpen (H : Set (G k₀ Ω))` using `T.F.fixingSubgroup_isOpen.preimage hc`. Use `haveI : CompactSpace H := isCompact_iff_compactSpace.1 (H.isClosed_of_isOpen hHo).isCompact`. Establish `hg : resQ T.F T.g0 ∈ T.F.fixingSubgroup`.
+
+Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `T.g0.commutes ⟨x, hx⟩`. Establish `huH : u ∈ H` using `by show resQ k₀ u ∈ T.F.fixingSubgroup`. Rewrite using `[hu]`.
+
+Conclude with `mul_mem hg hg`. Take `⟨ρ', ⟨g, hρ⟩, q1, q2, q3, s, q4⟩` from `ribetLat l H (r.comp H.subtype) 1 (((up D.ξ).comp (resQ k₀)).comp H.subtype) (hd.cont.comp continuous_subtype_val) (hd.irr H hHo) (fun s => ⟨by simp, hch.unit _ _⟩) (fun s i => by`. Use `hd.res s i` as an intermediate fact. Simplify `this) ⟨u, huH⟩ (by` using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, MonoidHom.comp_apply, MonoidHom.one_apply, Subgroup.coe_subtype]`. Use `hch.sq` as an intermediate fact.
+
+Rewrite `this` using `[← hu]`. Conclude with `this)`. Establish `e : ∀ s : H, ((MulAut.conj g).toMonoidHom.comp r) s = ρ' s` using `fun s => (hρ s).symm`. Use `⟨(MulAut.conj g).toMonoidHom.comp r, ⟨g, fun _ => rfl⟩, ?_, ?_, fun h hh => ?_, s, s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[e ⟨u, huH⟩]`.
+
+Conclude with `q1`. Rewrite using `[e ⟨u, huH⟩]`. Conclude with `q2`. Rewrite using `[e ⟨h, hh⟩]`. Conclude with `q3 ⟨h, hh⟩`.
+
+Rewrite using `[e s]`. Conclude with `q4`.
+-/
 theorem UpperTheory.exists_ribet_lattice :
     UpperTheory.V.Sd.S2.RibOf := by
   intro Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r hyp hch hd u hu

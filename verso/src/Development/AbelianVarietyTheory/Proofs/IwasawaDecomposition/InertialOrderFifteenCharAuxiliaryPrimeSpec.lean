@@ -27,27 +27,47 @@ section General
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime]
   {O : Type} [CommRing O] [IsDomain O]
 
+/- English proof (translation)
+The claim follows from `κ.injective.comp (IsFractionRing.injective O (FractionRing O))`.
+-/
 theorem toQ_injective (κ : FractionRing O →+* Qbar l) : Function.Injective (toQ κ) :=
   κ.injective.comp (IsFractionRing.injective O (FractionRing O))
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inQ_val (κ : FractionRing O →+* Qbar l) (r : G E Ω →* Oˣ) (g : G E Ω) :
     ((inQ κ r g : (Qbar l)ˣ) : Qbar l) = toQ κ (r g : Oˣ) := rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Units.ext (toQ_injective κ (congrArg Units.val h))`.
+-/
 theorem inQ_inj (κ : FractionRing O →+* Qbar l) {r r' : G E Ω →* Oˣ} {g g' : G E Ω} (h : inQ κ r g = inQ κ r' g') :
     r g = r' g' := Units.ext (toQ_injective κ (congrArg Units.val h))
 
 omit [NumberField E] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => inQ_inj κ (r' := 1) (g' := 1) (h.trans (map_one _).symm), fun h => by rw [inQ, MonoidHom.comp_apply, h, map_one]⟩`.
+-/
 theorem inQ_eq_one (κ : FractionRing O →+* Qbar l) {r : G E Ω →* Oˣ} {g : G E Ω} : inQ κ r g = 1 ↔ r g = 1 :=
   ⟨fun h => inQ_inj κ (r' := 1) (g' := 1) (h.trans (map_one _).symm), fun h => by
     rw [inQ, MonoidHom.comp_apply, h, map_one]⟩
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Conclude with `(h.comp continuous_inv).congr fun g => by simp only [Function.comp, map_inv]`.
+-/
 theorem continuous_units {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Monoid M]
     [TopologicalSpace M] (r : Γ →* Mˣ) (h : Continuous fun g => ((r g : Mˣ) : M)) : Continuous r := by
   refine Units.continuous_iff.2 ⟨h, ?_⟩
   exact (h.comp continuous_inv).congr fun g => by simp only [Function.comp, map_inv]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(isCompact_range (Units.continuous_val.comp h).norm).bddAbove`. Assume the negation of the conclusion as `hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C (not_le.1 hlt)`. Use `hC ⟨g ^ n, rfl⟩` as an intermediate fact. Simplify using `only [Function.comp, map_pow, Units.val_pow_eq_pow_val, norm_pow] at this`.
+
+Conclude with `absurd this (not_le.2 hn)`.
+-/
 theorem norm_le_one_of_compact {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] [NormedField K]
     (r : Γ →* Kˣ) (h : Continuous r) (g : Γ) : ‖((r g : Kˣ) : K)‖ ≤ 1 := by
   obtain ⟨C, hC⟩ := (isCompact_range (Units.continuous_val.comp h).norm).bddAbove
@@ -60,17 +80,29 @@ theorem norm_le_one_of_compact {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [C
 def AlmostIn {K : Type} [Field K] (ε : K →+* ℂ) (χ : HChar E) : Prop :=
   ∀ᶠ v in Filter.cofinite, ∃ y, ε y = ((χ.val v : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Use `filter_upwards [h, h'] with v ⟨y, hy⟩ ⟨y', hy'⟩`. Conclude with `⟨y * y', by rw [map_mul, hy, hy', HChar.val_mul, Units.val_mul]⟩`.
+-/
 theorem AlmostIn.mul {K : Type} [Field K] {ε : K →+* ℂ} {χ χ' : HChar E} (h : AlmostIn ε χ) (h' : AlmostIn ε χ') :
     AlmostIn ε (χ * χ') := by
   filter_upwards [h, h'] with v ⟨y, hy⟩ ⟨y', hy'⟩
   exact ⟨y * y', by rw [map_mul, hy, hy', HChar.val_mul, Units.val_mul]⟩
 
+/- English proof (translation)
+Use `filter_upwards [h] with v ⟨y, hy⟩`. Conclude with `⟨y⁻¹, by rw [map_inv₀, hy, HChar.val_inv, Units.val_inv_eq_inv_val]⟩`.
+-/
 theorem AlmostIn.inv {K : Type} [Field K] {ε : K →+* ℂ} {χ : HChar E} (h : AlmostIn ε χ) : AlmostIn ε χ⁻¹ := by
   filter_upwards [h] with v ⟨y, hy⟩
   exact ⟨y⁻¹, by rw [map_inv₀, hy, HChar.val_inv, Units.val_inv_eq_inv_val]⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.UnrAe.unr_ae_and_level E χ).1`.
+-/
 theorem unr_ae (χ : HChar E) : ∀ᶠ v in Filter.cofinite, χ.UnrAt v := (GlobalTheory.Mem.UnrAe.unr_ae_and_level E χ).1
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hl` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+-/
 theorem away_ae (l : ℕ) (hl : l ≠ 0) : ∀ᶠ v : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ v.asIdeal := by
   have h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0 := by
     rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
@@ -78,14 +110,23 @@ theorem away_ae (l : ℕ) (hl : l ≠ 0) : ∀ᶠ v : HeightOneSpectrum (𝓞 E)
   refine (Ideal.finite_factors h0).subset fun v hv => ?_
   exact Ideal.dvd_span_singleton.mpr (not_not.1 hv)
 
+/- English proof (translation)
+Use `filter_upwards [unr_ae χ] with v hv`. Take `⟨y, hy⟩` from `h v hv`. Conclude with `⟨y, by simpa [HChar.valTw] using hy⟩`.
+-/
 theorem almostIn_of_valuesIn {K : Type} [Field K] {ε : K →+* ℂ} {χ : HChar E} (h : χ.ValuesIn 0 ε) : AlmostIn ε χ := by
   filter_upwards [unr_ae χ] with v hv
   obtain ⟨y, hy⟩ := h v hv
   exact ⟨y, by simpa [HChar.valTw] using hy⟩
 
+/- English proof (translation)
+Conclude with `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)` after adjusting the coercions.
+-/
 theorem absNorm_ne_zero (v : HeightOneSpectrum (𝓞 E)) : ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ≠ 0 := by
   exact_mod_cast fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)
 
+/- English proof (translation)
+Rewrite using `[block, HChar.val_mul, HChar.val_mul, HChar.val_mul, Units.val_mul, Units.val_mul, Units.val_mul, (Model.absPow_isAbsPow E _).2.1 v, mul_assoc]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem block_val (μ η : HChar E) (r : ℕ) (v : HeightOneSpectrum (𝓞 E)) :
     (((block μ η r).val v : ℂˣ) : ℂ) =
       ((μ * η⁻¹).val v : ℂˣ) * ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (((r : ℝ) / 2 : ℝ) : ℂ) := by
@@ -95,6 +136,11 @@ theorem block_val (μ η : HChar E) (r : ℕ) (v : HeightOneSpectrum (𝓞 E)) :
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨ρ, rfl⟩` from `hr`. Use `filter_upwards [h, unr_ae η] with v ⟨y, hy⟩ hv`. Take `⟨z, hz⟩` from `hη v hv`. Use `⟨y * z⁻¹ * (Ideal.absNorm v.asIdeal : K) ^ ρ, ?_⟩` and prove the remaining obligations. Rewrite using `[block_val, map_mul, map_mul, map_inv₀, hy, hz, map_pow, map_natCast, HChar.val_mul, HChar.val_inv, Units.val_mul, Units.val_inv_eq_inv_val, HChar.valTw, mul_inv, ← Complex.cpow_neg, ← Complex.cpow_natCast, mul_assoc, mul_assoc, ← Complex.cpow_add _ _ (absNorm_ne_zero v), mul_ass …`.
+
+Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem AlmostIn.block {K : Type} [Field K] {ε : K →+* ℂ} {μ η : HChar E} (h : AlmostIn ε μ)
     (hη : η.ValuesIn (1 / 2) ε) {r : ℕ} (hr : Odd r) : AlmostIn ε (block μ η r) := by
   obtain ⟨ρ, rfl⟩ := hr
@@ -108,20 +154,32 @@ theorem AlmostIn.block {K : Type} [Field K] {ε : K →+* ℂ} {μ η : HChar E}
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[block, HChar.loc_mul, HChar.loc_mul, HChar.loc_inv, hη x hx, (Model.absPow_isAbsPow E _).1 v x hx]`. Simplify using the standard rewrite rules.
+-/
 theorem block_loc {μ η : HChar E} {r : ℕ} {v : HeightOneSpectrum (𝓞 E)} (hη : η.UnrAt v) {x : (v.adicCompletion E)ˣ}
     (hx : IsUnitAt v x) : (block μ η r).loc v x = μ.loc v x := by
   rw [block, HChar.loc_mul, HChar.loc_mul, HChar.loc_inv, hη x hx, (Model.absPow_isAbsPow E _).1 v x hx]
   simp
 
+/- English proof (translation)
+Introduce `k hk` and use `by rw [HChar.inf_mul, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm`.
+-/
 theorem isAlgPos_mul {χ χ' : HChar E} {n n' : (E →+* ℂ) → ℤ} (h : IsAlgPos χ n) (h' : IsAlgPos χ' n') :
     IsAlgPos (χ * χ') (n + n') := fun k hk => by
   rw [HChar.inf_mul, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm
 
+/- English proof (translation)
+Introduce `k hk` and use `by rw [HChar.inf_inv, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm`.
+-/
 theorem isAlgPos_inv {χ : HChar E} {n : (E →+* ℂ) → ℤ} (h : IsAlgPos χ n) : IsAlgPos χ⁻¹ (-n) := fun k hk => by
   rw [HChar.inf_inv, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib]
   exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm
 
+/- English proof (translation)
+Use `GlobalTheory.FrobDense.eq_one_of_frob E Ω art ha B (r * r'⁻¹) (hr.mul hr'.inv) (Filter.eventually_cofinite.1 h).toFinset fun v hv A hA σ hσ => by` as an intermediate fact. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, hv A hA σ hσ, mul_inv_cancel]`. Conclude with `mul_inv_eq_one.1 this`.
+-/
 theorem eq_of_frob [IsAlgClosure E Ω] {art : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art) {B : Type} [CommGroup B]
     [TopologicalSpace B] [IsTopologicalGroup B] [T2Space B] {r r' : G E Ω →* B} (hr : Continuous r) (hr' : Continuous r')
     (h : ∀ᶠ v : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ A : ValuationSubring Ω, IsPlaceOver A v → ∀ σ : G E Ω,
@@ -135,28 +193,48 @@ theorem eq_of_frob [IsAlgClosure E Ω] {art : Ideles E →* Gab E Ω} (ha : IsGl
 variable [TopologicalSpace O] {art : Ideles E →* Gab E Ω} {κ : FractionRing O →+* Qbar l} {ι : Qbar l ≃+* ℂ}
   {χ : HChar E} {n : (E →+* ℂ) → ℤ} {r : G E Ω →* Oˣ} {v : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
 
+/- English proof (translation)
+Rewrite using `[← inQ_val, h.2.2.frob_unr ha hv hu hA hσ, map_inv₀, ι.apply_symm_apply]`.
+-/
 theorem IsGal.frob (ha : IsGlobalArtin art) (h : IsGal art κ ι χ n r) (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal ∨ n = 0)
     (hu : χ.UnrAt v) (hA : IsPlaceOver A v) {σ : G E Ω} (hσ : IsFrob (F := E) A (normV v) σ) :
     ι (toQ κ (r σ : Oˣ)) = ((χ.val v : ℂˣ) : ℂ)⁻¹ := by
   rw [← inQ_val, h.2.2.frob_unr ha hv hu hA hσ, map_inv₀, ι.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[← inQ_val, h.2.2.loc_away hv x σ hx, ι.apply_symm_apply]`.
+-/
 theorem IsGal.loc (h : IsGal art κ ι χ n r) (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal ∨ n = 0) {x : (v.adicCompletion E)ˣ}
     {σ : G E Ω} (hx : art (localIdele E v x) = toAb E Ω σ) : ι (toQ κ (r σ : Oˣ)) = ((χ.loc v x : ℂˣ) : ℂ) := by
   rw [← inQ_val, h.2.2.loc_away hv x σ hx, ι.apply_symm_apply]
 
+/- English proof (translation)
+The claim follows from `(ha.ine v A hA _).2 ⟨σ, hσ, rfl⟩`.
+-/
 theorem exists_unit (ha : IsGlobalArtin art) (hA : IsPlaceOver A v) {σ : G E Ω} (hσ : σ ∈ Ine (F := E) A) :
     ∃ x, IsUnitAt v x ∧ art (localIdele E v x) = toAb E Ω σ := (ha.ine v A hA _).2 ⟨σ, hσ, rfl⟩
 
+/- English proof (translation)
+Take `⟨σ, hσ, e⟩` from `(ha.ine v A hA _).1 ⟨x, hx, rfl⟩`. Conclude with `⟨σ, hσ, e.symm⟩`.
+-/
 theorem exists_ine (ha : IsGlobalArtin art) (hA : IsPlaceOver A v) {x : (v.adicCompletion E)ˣ} (hx : IsUnitAt v x) :
     ∃ σ ∈ Ine (F := E) A, art (localIdele E v x) = toAb E Ω σ := by
   obtain ⟨σ, hσ, e⟩ := (ha.ine v A hA _).1 ⟨x, hx, rfl⟩
   exact ⟨σ, hσ, e.symm⟩
 
 omit [TopologicalSpace O] in
+/- English proof (translation)
+Rewrite using `[← Units.val_eq_one, ← Units.val_eq_one, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, ← h, ← map_pow, ← map_pow, map_eq_one_iff _ ι.injective, map_eq_one_iff _ (toQ_injective κ)]`.
+-/
 theorem pow_eq_one_iff_of_val {u : Oˣ} {z : ℂˣ} (h : ι (toQ κ (u : O)) = (z : ℂ)) (m : ℕ) : u ^ m = 1 ↔ z ^ m = 1 := by
   rw [← Units.val_eq_one, ← Units.val_eq_one, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, ← h, ← map_pow,
     ← map_pow, map_eq_one_iff _ ι.injective, map_eq_one_iff _ (toQ_injective κ)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Take `⟨σ, hσ, e⟩` from `exists_ine ha hA hx`. Conclude with `(pow_eq_one_iff_of_val (h.loc hv e) m).1 (H σ hσ)`. Introduce `H σ hσ`.
+
+Take `⟨x, hx, e⟩` from `exists_unit ha hA hσ`. Conclude with `(pow_eq_one_iff_of_val (h.loc hv e) m).2 (H x hx)`.
+-/
 theorem IsGal.ine_pow_iff (ha : IsGlobalArtin art) (h : IsGal art κ ι χ n r)
     (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal ∨ n = 0) (hA : IsPlaceOver A v) (m : ℕ) :
     (∀ σ ∈ Ine (F := E) A, r σ ^ m = 1) ↔ ∀ x, IsUnitAt v x → χ.loc v x ^ m = 1 := by
@@ -168,17 +246,26 @@ theorem IsGal.ine_pow_iff (ha : IsGlobalArtin art) (h : IsGal art κ ι χ n r)
     obtain ⟨x, hx, e⟩ := exists_unit ha hA hσ
     exact (pow_eq_one_iff_of_val (h.loc hv e) m).2 (H x hx)
 
+/- English proof (translation)
+Simplify `h.ine_pow_iff ha hv hA 1` using `only [pow_one, HChar.UnrAt]`.
+-/
 theorem IsGal.unr_iff (ha : IsGlobalArtin art) (h : IsGal art κ ι χ n r)
     (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal ∨ n = 0) (hA : IsPlaceOver A v) :
     (∀ σ ∈ Ine (F := E) A, r σ = 1) ↔ χ.UnrAt v := by
   simpa only [pow_one, HChar.UnrAt] using h.ine_pow_iff ha hv hA 1
 
+/- English proof (translation)
+Introduce `v A hA` and use `by rw [← not_iff_not, ← hQ, ← h.unr_iff ha (Or.inr rfl) hA] push Not rfl`.
+-/
 theorem IsGal.ramExactly (ha : IsGlobalArtin art) (h : IsGal art κ ι χ 0 r) {Q : Set (HeightOneSpectrum (𝓞 E))}
     (hQ : ∀ v, χ.UnrAt v ↔ v ∉ Q) : RamExactly r Q := fun v A hA => by
   rw [← not_iff_not, ← hQ, ← h.unr_iff ha (Or.inr rfl) hA]
   push Not
   rfl
 
+/- English proof (translation)
+Use `DFunLike.congr_fun (h.2.2.pow_eq_one ha.quot.surjective hm) g` as an intermediate fact. Rewrite `this` using `[MonoidHom.pow_apply, ← map_pow, MonoidHom.one_apply, inQ_eq_one, map_pow]`. Conclude with `this`.
+-/
 theorem IsGal.pow_eq_one (ha : IsGlobalArtin art) (h : IsGal art κ ι χ 0 r) {m : ℕ} (hm : χ.OrderDvd m) (g : G E Ω) :
     r g ^ m = 1 := by
   have := DFunLike.congr_fun (h.2.2.pow_eq_one ha.quot.surjective hm) g
@@ -186,11 +273,22 @@ theorem IsGal.pow_eq_one (ha : IsGlobalArtin art) (h : IsGal art κ ι χ 0 r) {
   exact this
 
 omit [TopologicalSpace O] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sideIso_true (ι : Qbar l ≃+* ℂ) : sideIso ι true = ι := rfl
 
 omit [TopologicalSpace O] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sideIso_false (ι : Qbar l ≃+* ℂ) (x : Qbar l) : sideIso ι false x = starRingEnd ℂ (ι x) := rfl
 
+/- English proof (translation)
+Establish `e` using `h.loc (Or.inr rfl) hx`. Consider the cases of `b`. Establish `h1 : ((χ.loc v x : ℂˣ) : ℂ) ^ m = 1`. Rewrite using `[← Units.val_pow_eq_pow_val]`. Conclude with `congrArg (fun ξ : HChar E => ((ξ.loc v x : ℂˣ) : ℂ)) hm`.
+
+Establish `h2` using `Complex.norm_eq_one_of_pow_eq_one h1 hm0.ne'`. Rewrite using `[sideIso_false, if_neg (by simp), map_units_inv, map_inv₀, e, map_inv₀, ← Complex.inv_eq_conj h2, inv_inv]`. Conclude with `e`.
+-/
 theorem IsGal.side (h : IsGal art κ ι χ 0 r) {m : ℕ} (hm0 : 0 < m) (hm : χ.OrderDvd m) (b : Bool)
     {x : (v.adicCompletion E)ˣ} {σ : G E Ω} (hx : art (localIdele E v x) = toAb E Ω σ) :
     sideIso ι b (toQ κ ((if b then r σ else (r σ)⁻¹ : Oˣ) : O)) = ((χ.loc v x : ℂˣ) : ℂ) := by
@@ -210,11 +308,20 @@ variable [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] 
   (hκ : ∀ z : ℤ_[l], κ (algebraMap O (FractionRing O) (algebraMap ℤ_[l] O z)) = algebraMap ℚ_[l] (Qbar l) (z : ℚ_[l]))
 include hO hκ
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CoefEmbed.embedding_closed_integral l O hO κ hκ).1`.
+-/
 theorem isEmbedding_toQ : Topology.IsEmbedding (toQ κ) := (GlobalTheory.CoefEmbed.embedding_closed_integral l O hO κ hκ).1
 
+/- English proof (translation)
+The claim follows from `continuous_units _ ((isEmbedding_toQ hO hκ).continuous.comp h.2.1)`.
+-/
 theorem IsGal.cont (h : IsGal art κ ι χ n r) : Continuous (inQ κ r) :=
   continuous_units _ ((isEmbedding_toQ hO hκ).continuous.comp h.2.1)
 
+/- English proof (translation)
+Use `isOpen_ker_of_pow (inQ κ r) (h.cont hO hκ) hm0 fun g => by` as an intermediate fact. Rewrite using `[← map_pow, inQ_eq_one, map_pow, h.pow_eq_one ha hm]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `(inQ_eq_one κ).symm`.
+-/
 theorem IsGal.isOpen_ker (ha : IsGlobalArtin art) (h : IsGal art κ ι χ 0 r) {m : ℕ} (hm0 : 0 < m) (hm : χ.OrderDvd m) :
     IsOpen (r.ker : Set (G E Ω)) := by
   have := isOpen_ker_of_pow (inQ κ r) (h.cont hO hκ) hm0 fun g => by
@@ -223,10 +330,16 @@ theorem IsGal.isOpen_ker (ha : IsGlobalArtin art) (h : IsGal art κ ι χ 0 r) {
   ext g
   exact (inQ_eq_one κ).symm
 
+/- English proof (translation)
+The claim follows from `(inQ_eq_one κ).1 ((h.2.2.dec_triv ha (h.cont hO hκ) (Or.inr rfl) hA).2 (MonoidHom.ext hv) σ hσ)`.
+-/
 theorem IsGal.dec_triv (ha : IsGlobalArtin art) (h : IsGal art κ ι χ 0 r) (hA : IsPlaceOver A v)
     (hv : ∀ x, χ.loc v x = 1) {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) : r σ = 1 :=
   (inQ_eq_one κ).1 ((h.2.2.dec_triv ha (h.cont hO hκ) (Or.inr rfl) hA).2 (MonoidHom.ext hv) σ hσ)
 
+/- English proof (translation)
+Rewrite using `[(isEmbedding_toQ hO hκ).continuous_iff]`. Establish `e : (toQ κ ∘ fun g : G E Ω => ((((Units.map (algebraMap ℤ_[l] O).toMonoidHom).comp (cycZ (F` using `E) (Ω := Ω) l)) g : Oˣ) : O)) = fun g => algebraMap ℚ_[l] (Qbar l) (((cycZ E Ω l g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) := funext fun g => hκ _`. Rewrite using `[e]`. Conclude with `(continuous_algebraMap _ _).comp ((continuous_subtype_val : Continuous fun z : ℤ_[l] => (z : ℚ_[l])).comp ((Units.continuous_val (M := ℤ_[l])).comp (continuous_cycZ E Ω l)))`.
+-/
 theorem continuous_cyc : Continuous fun g : G E Ω =>
     ((((Units.map (algebraMap ℤ_[l] O).toMonoidHom).comp (cycZ (F := E) (Ω := Ω) l)) g : Oˣ) : O) := by
   rw [(isEmbedding_toQ hO hκ).continuous_iff]
@@ -237,6 +350,17 @@ theorem continuous_cyc : Continuous fun g : G E Ω =>
   exact (continuous_algebraMap _ _).comp ((continuous_subtype_val : Continuous fun z : ℤ_[l] => (z : ℚ_[l])).comp
     ((Units.continuous_val (M := ℤ_[l])).comp (continuous_cycZ E Ω l)))
 
+/- English proof (translation)
+Take `⟨r, hr, hL⟩` from `ha.exists_isLAdicOf ι hn`. Take `⟨hemb, hcl, hint, -⟩` from `GlobalTheory.CoefEmbed.embedding_closed_integral l O hO κ hκ`. Set `K0 : Subgroup (Qbar l)ˣ` to `(Units.map κ.toMonoidHom).range`. Establish `hK0 : ∀ u : (Qbar l)ˣ, u ∈ K0 ↔ (u : Qbar l) ∈ Set.range κ` using `fun u => ⟨fun ⟨y, hy⟩ => ⟨y, congrArg Units.val hy⟩, fun ⟨y, hy⟩ => ⟨Units.mk0 y (by rintro rfl; exact u.ne_zero (by rw [← hy, map_zero])), Units.ext hy⟩⟩`. Use `haveI : IsClosed (K0 : Set (Qbar l)ˣ) := by`.
+
+Establish `: (K0 : Set (Qbar l)ˣ) = Units.val ⁻¹' Set.range κ` using `Set.ext hK0`. Rewrite using `[this]`. Conclude with `hcl.preimage Units.continuous_val`. Establish `h1 : (QuotientGroup.mk' K0).comp r = 1`. Use `eq_of_frob ha (QuotientGroup.continuous_mk.comp hr) continuous_const ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hχ, unr_ae χ, away_ae (E := E) l (Fact.out : l.Prime).ne_zero] with v ⟨y, hy⟩ hu hv A hA σ hσ`. Use `(QuotientGroup.eq_one_iff _).2 ((hK0 _).2 ⟨(f y)⁻¹, ?_⟩)` and prove the remaining obligations. Rewrite using `[hL.frob_unr ha (Or.inl hv) hu hA hσ, map_inv₀, ← hy, ← hf, ι.symm_apply_apply]`. Use `haveI : IsGalois E Ω := IsAlgClosure.isGalois E Ω`. Establish `h2 : ∀ g, ∃ y : O, toQ κ y = (r g : (Qbar l)ˣ)` using `fun g => by`.
+
+Take `⟨x, hx⟩` from `(hK0 _).1 ((QuotientGroup.eq_one_iff _).1 (DFunLike.congr_fun h1 g))`. Take `⟨y, rfl⟩` from `hint x (hx ▸ norm_le_one_of_compact r hr g)`. Conclude with `⟨y, hx⟩`. Use `choose s hs using h2`. Set `s' : G E Ω →* O` to `{ toFun := s map_one' := toQ_injective κ (by rw [hs, map_one, map_one, Units.val_one]) map_mul' := fun a b => toQ_injective κ (by rw [map_mul, hs, hs, hs, map_mul, Units.val_mul]) }`.
+
+Establish `e : inQ κ s'.toHomUnits = r` using `MonoidHom.ext fun g => Units.ext (hs g)`. Use `⟨s'.toHomUnits, hn, ?_, e ▸ hL⟩` and prove the remaining obligations. Rewrite using `[(isEmbedding_toQ hO hκ).continuous_iff]`. Conclude with `(Units.continuous_val.comp hr).congr fun g => (hs g).symm`.
+-/
 theorem exists_isGal [IsAlgClosure E Ω] (ha : IsGlobalArtin art) (hn : IsAlgPos χ n) {K : Type} [Field K] {ε : K →+* ℂ}
     {f : K →+* FractionRing O} (hf : ∀ x, ι (κ (f x)) = ε x) (hχ : AlmostIn ε χ) : ∃ r : G E Ω →* Oˣ, IsGal art κ ι χ n r := by
   obtain ⟨r, hr, hL⟩ := ha.exists_isLAdicOf ι hn
@@ -271,6 +395,11 @@ theorem exists_isGal [IsAlgClosure E Ω] (ha : IsGlobalArtin art) (hn : IsAlgPos
 
 end Coef
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`. Use `continuous_of_continuousAt_zero t ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, hO.hasBasis_nhds_zero.tendsto_iff hO'.hasBasis_nhds_zero]`. Use `fun n _ => ⟨e * n, trivial, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hx` using `[SetLike.mem_coe, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨y, rfl⟩` from `hx`. Establish `: ϖ ^ e = (↑u⁻¹ : O) * l` using `by rw [hu, Units.inv_mul_cancel_left]`. Rewrite using `[SetLike.mem_coe, pow_mul, this, map_mul, map_pow, map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (Ideal.mul_mem_left _ _ hl) n)`.
+-/
 theorem continuous_ringHom {O O' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]
     [IsTopologicalRing O] [CommRing O'] [IsLocalRing O'] [TopologicalSpace O'] [IsTopologicalRing O']
     (hO : IsAdic (IsLocalRing.maximalIdeal O)) (hO' : IsAdic (IsLocalRing.maximalIdeal O')) {l : ℕ} (h0 : (l : O) ≠ 0)
@@ -410,6 +539,9 @@ end Statements
 
 section Host
 
+/- English proof (translation)
+Introduce `hv'` and use `by obtain ⟨s, t, hst⟩ : IsCoprime (p : 𝓞 E) (q : 𝓞 E) := Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 h) apply v.isPrime.ne_top rw [Ideal.eq_top_iff_one, ← hst] exact v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hv) (v.asIdeal.mul_mem_left _ hv')`.
+-/
 theorem notMem_of_ne {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (h : p ≠ q)
     {v : HeightOneSpectrum (𝓞 E)} (hv : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal) : ((q : ℕ) : 𝓞 E) ∉ v.asIdeal := fun hv' => by
   obtain ⟨s, t, hst⟩ : IsCoprime (p : 𝓞 E) (q : 𝓞 E) := Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 h)
@@ -417,6 +549,9 @@ theorem notMem_of_ne {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Pr
   rw [Ideal.eq_top_iff_one, ← hst]
   exact v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hv) (v.asIdeal.mul_mem_left _ hv')
 
+/- English proof (translation)
+Establish `h` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hv)`. Rewrite `h` using `[Ideal.absNorm_span_natCast]`. Take `⟨a, -, ha⟩` from `(Nat.dvd_prime_pow hp).1 h`. Conclude with `⟨a, ha⟩`.
+-/
 theorem absNorm_eq_pow {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime)
     {v : HeightOneSpectrum (𝓞 E)} (hv : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal) : ∃ a, Ideal.absNorm v.asIdeal = p ^ a := by
   have h := Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hv)
@@ -424,6 +559,11 @@ theorem absNorm_eq_pow {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Pr
   obtain ⟨a, -, ha⟩ := (Nat.dvd_prime_pow hp).1 h
   exact ⟨a, ha⟩
 
+/- English proof (translation)
+Use `haveI : NeZero m := ⟨hm⟩`. Establish `hle : T ≤ rootsOfUnity m O` using `fun t ht => (h m).2 dvd_rfl t ht`. Use `haveI : Finite T := Finite.of_injective _ (Subgroup.inclusion_injective hle)`. Rewrite using `[← IsCyclic.exponent_eq_card]`. Establish `key : ∀ n : ℕ, Monoid.exponent T ∣ n ↔ m ∣ n` using `fun n => by`.
+
+Rewrite using `[Monoid.exponent_dvd_iff_forall_pow_eq_one, ← h]`. Conclude with `⟨fun a t ht => congrArg Subtype.val (a ⟨t, ht⟩), fun a t => Subtype.ext (a t.1 t.2)⟩`. Conclude with `Nat.dvd_antisymm ((key m).2 dvd_rfl) ((key _).1 dvd_rfl)`.
+-/
 theorem card_eq_of_pow_iff {O : Type} [CommRing O] [IsDomain O] (T : Subgroup Oˣ) {m : ℕ} (hm : m ≠ 0)
     (h : ∀ n : ℕ, (∀ t ∈ T, t ^ n = 1) ↔ m ∣ n) : Nat.card T = m := by
   haveI : NeZero m := ⟨hm⟩
@@ -435,12 +575,18 @@ theorem card_eq_of_pow_iff {O : Type} [CommRing O] [IsDomain O] (T : Subgroup O�
     exact ⟨fun a t ht => congrArg Subtype.val (a ⟨t, ht⟩), fun a t => Subtype.ext (a t.1 t.2)⟩
   exact Nat.dvd_antisymm ((key m).2 dvd_rfl) ((key _).1 dvd_rfl)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`. Use `R.two_le_m` as an intermediate fact. Conclude with `⟨a + b - 1, by unfold Ranks.r; omega⟩`.
+-/
 theorem odd_r (R : Ranks) : Odd R.r := by
   obtain ⟨a, ha⟩ := R.k_even
   obtain ⟨b, hb⟩ := R.m_even
   have := R.two_le_m
   exact ⟨a + b - 1, by unfold Ranks.r; omega⟩
 
+/- English proof (translation)
+Consider the cases of `b`. Rewrite using `[sideIso_false, if_neg (by simp), hf', Complex.conj_conj]`. Conclude with `hf x`.
+-/
 theorem sideIso_read {l : ℕ} [Fact l.Prime] {L K : Type} [Field L] [Field K] {κ : L →+* Qbar l} {ι : Qbar l ≃+* ℂ}
     {ε : K →+* ℂ} {f f' : K →+* L} (hf : ∀ x, ι (κ (f x)) = ε x) (hf' : ∀ x, ι (κ (f' x)) = starRingEnd ℂ (ε x))
     (b : Bool) (x : K) : sideIso ι b (κ ((if b then f else f') x)) = ε x := by
@@ -448,6 +594,9 @@ theorem sideIso_read {l : ℕ} [Fact l.Prime] {L K : Type} [Field L] [Field K] {
   · rw [sideIso_false, if_neg (by simp), hf', Complex.conj_conj]
   · exact hf x
 
+/- English proof (translation)
+Rewrite using `[hc x ⟨_, h0 x⟩ rfl, hf, ← hε]`.
+-/
 theorem read_conj {l : ℕ} [Fact l.Prime] {L LL : Type} [Field L] [Field LL] [CharZero LL] [StarRing LL]
     (LL0 : IntermediateField ℚ LL) (ε : LL →+* ℂ) (hε : ∀ x, ε (star x) = starRingEnd ℂ (ε x))
     (h0 : ∀ x : LL0, star (x : LL) ∈ LL0) {κ : L →+* Qbar l} {ι : Qbar l ≃+* ℂ} {f f' : LL0 →+* L}
@@ -458,6 +607,9 @@ theorem read_conj {l : ℕ} [Fact l.Prime] {L LL : Type} [Field L] [Field LL] [C
 variable {R : Ranks} {H : Formalism.BasicNotions.Host R} {Ω : Type} [Field Ω] [Algebra H.E Ω] {cc : Ω ≃+* Ω}
   {e : Fin R.m → R.Psi → ℚ} (C : GlobalTheory.Mem.Chr.HFrame H e) {art : Ideles H.E →* Gab H.E Ω}
 
+/- English proof (translation)
+Unfold `delAt`. Use `split_ifs with h`. Conclude with `⟨H.pde'_prime, h ▸ H.pde_ne.symm, fun k => (H.pde_ne_g k).2, H.pde_mod.2, C.isDel'⟩`. Conclude with `⟨H.pde_prime, Ne.symm h, fun k => (H.pde_ne_g k).1, H.pde_mod.1, C.isDel⟩`.
+-/
 theorem inertialOrderFifteenChar_auxiliaryPrime_spec {l : ℕ} : (if l = H.pde then H.pde' else H.pde).Prime ∧
     (if l = H.pde then H.pde' else H.pde) ≠ l ∧ (∀ k, (if l = H.pde then H.pde' else H.pde) ≠ H.g k) ∧
     (if l = H.pde then H.pde' else H.pde) % 15 = 1 ∧
@@ -467,6 +619,11 @@ theorem inertialOrderFifteenChar_auxiliaryPrime_spec {l : ℕ} : (if l = H.pde t
   · exact ⟨H.pde'_prime, h ▸ H.pde_ne.symm, fun k => (H.pde_ne_g k).2, H.pde_mod.2, C.isDel'⟩
   · exact ⟨H.pde_prime, Ne.symm h, fun k => (H.pde_ne_g k).1, H.pde_mod.1, C.isDel⟩
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `(C.isMu0 j).inf`. Use `choose z hz using he j`. Establish `e1 : n = fun τ => 2 * (-z τ)` using `funext fun τ => by`. Use `hn τ` as an intermediate fact. Simplify using `only [hz] at this`.
+
+Conclude with `this` after adjusting the coercions. Take `⟨n', h'⟩` from `(GlobalTheory.Mem.CharAlg.isAlg_even_odd R H).1 (C.mu0 j) (fun τ => -z τ) (e1 ▸ h)`. Conclude with `⟨n', isAlgPos_of_isAlg h'⟩`.
+-/
 theorem exists_isAlgPos_mu0 (he : ∀ j τ, ∃ z : ℤ, e j τ = z) (j : Fin R.m) : ∃ n, IsAlgPos (C.mu0 j) n := by
   obtain ⟨n, hn, h⟩ := (C.isMu0 j).inf
   choose z hz using he j
@@ -477,17 +634,28 @@ theorem exists_isAlgPos_mu0 (he : ∀ j τ, ∃ z : ℤ, e j τ = z) (j : Fin R.
   obtain ⟨n', h'⟩ := (GlobalTheory.Mem.CharAlg.isAlg_even_odd R H).1 (C.mu0 j) (fun τ => -z τ) (e1 ▸ h)
   exact ⟨n', isAlgPos_of_isAlg h'⟩
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `h`. Take `⟨n', hn'⟩` from `(GlobalTheory.Mem.CharAlg.isAlg_even_odd R H).2 C.eta C.isEta.inf R.r (odd_r R)`. Conclude with `⟨_, isAlgPos_mul hn (isAlgPos_of_isAlg hn')⟩`.
+-/
 theorem block_alg {μ : HChar H.E} (h : ∃ n, IsAlgPos μ n) : ∃ n, IsAlgPos (block μ C.eta R.r) n := by
   obtain ⟨n, hn⟩ := h
   obtain ⟨n', hn'⟩ := (GlobalTheory.Mem.CharAlg.isAlg_even_odd R H).2 C.eta C.isEta.inf R.r (odd_r R)
   exact ⟨_, isAlgPos_mul hn (isAlgPos_of_isAlg hn')⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨_, h0, h⟩ := (inertialOrderFifteenChar_auxiliaryPrime_spec C (l := l)).2.2.2.2.fin isAlgPos_zero_of_orderDvd h0 h`.
+-/
 theorem del_alg (l : ℕ) : IsAlgPos (delAt H C l) 0 :=
   let ⟨_, h0, h⟩ := (inertialOrderFifteenChar_auxiliaryPrime_spec C (l := l)).2.2.2.2.fin
   isAlgPos_zero_of_orderDvd h0 h
 
 variable [IsAlgClosure H.E Ω]
 
+/- English proof (translation)
+Take `⟨c, hc1, hcm, hr, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `h1 : ∀ x : H.E, cc (algebraMap H.E Ω x) = algebraMap H.E Ω (c x)` using `fun x => by`. Take `⟨j, hj⟩` from `hcc.1`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, hc1]`.
+
+Conclude with `(H.conjE_apply (j.comp (algebraMap H.E Ω)) x).symm`. Establish `h2` using `GlobalTheory.AntiLAdic.antiHom_of_trivOn H.F H.E c hcm.rank hcm.ne (fun x => by rw [hc1, hc1, conj_conj]) hr Ω cc h1 art ha l ι χ n _ hc h.2.2 ht`. Introduce `g g' hg`. Rewrite using `[← map_inv]`. Conclude with `inQ_inj κ (by rw [h2 g g' hg, map_inv])`.
+-/
 theorem IsGal.anti (hcc : IsCMConjOm H.E Ω cc) (ha : IsGlobalArtin art) {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O]
     [IsDomain O] [TopologicalSpace O] {κ : FractionRing O →+* Qbar l} {ι : Qbar l ≃+* ℂ} {χ : HChar H.E}
     {n : (H.E →+* ℂ) → ℤ} {r : G H.E Ω →* Oˣ} (h : IsGal art κ ι χ n r) (hc : Continuous (inQ κ r))
@@ -504,6 +672,23 @@ theorem IsGal.anti (hcc : IsCMConjOm H.E Ω cc) (ha : IsGlobalArtin art) {l : �
   rw [← map_inv]
   exact inQ_inj κ (by rw [h2 g g' hg, map_inv])
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ _ _ hO κ hκ ι K _ ε f f' hf hf' hμ hη hδ pD hpD`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨hp, hpl, hpg, hp15, hD⟩` from `inertialOrderFifteenChar_auxiliaryPrime_spec C (l := l)`. Use `set p := if l = H.pde then H.pde' else H.pde`. Establish `hmem : ∀ v, v ∈ pD ↔ OverP H p v` using `fun v => by rw [← Finset.mem_coe, hpD]; rfl`.
+
+Take `⟨m, hm0, hm⟩` from `hD.fin`. Take `⟨delta, hd⟩` from `exists_isGal hO hκ ha (del_alg C l) hf (almostIn_of_valuesIn hδ)`. Establish `hex : ∀ (j : Fin R.m) (b : Bool), ∃ r : G H.E Ω →* Oˣ, ∃ n, IsGal art κ (sideIso ι b) (block (C.mu0 j * delAt H C l) C.eta R.r) n r` using `fun j b => by`. Take `⟨n0, h0⟩` from `exists_isAlgPos_mu0 C he j`. Take `⟨n, hn⟩` from `block_alg C ⟨_, isAlgPos_mul h0 (del_alg C l)⟩`.
+
+Take `⟨r, hr⟩` from `exists_isGal hO hκ ha hn (sideIso_read hf hf' b) (((almostIn_of_valuesIn (hμ j)).mul (almostIn_of_valuesIn hδ)).block hη (odd_r R))`. Conclude with `⟨r, n, hr⟩`. Use `choose ch nn hch using hex`. Establish `hm2` using `R.two_le_m`. Set `ix : ℕ → Fin R.m` to `fun j => ⟨min (j - 1) (R.m - 1), by omega⟩`.
+
+Establish `hix : ∀ j : Fin R.m, ix (j.1 + 1) = j` using `fun j => Fin.ext (by have := j.2; simp only [ix]; omega)`. Use `⟨delta, fun j b => ch (ix j) b, hd, fun j b => ⟨nn j b, by simpa only [hix] using hch j b⟩, hd.isOpen_ker hO hκ ha hm0 hm, hd.anti hcc ha (hd.cont hO hκ) hD.triv, hd.ramExactly ha fun v => ?_, fun v hv A hA => ?_, fun v hv => ?_, fun j b => (hch _ b).2.1, fun j b v h1 h2 h3 A hA …` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, hmem]`. Use `⟨fun hu hv => ?_, hD.unr v⟩` and prove the remaining obligations. Use `(hD.ine v hv 1).1 fun x hx => by rw [pow_one, hu x hx]` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `card_eq_of_pow_iff _ (by norm_num) fun n => ?_` and prove the remaining obligations. Rewrite using `[← hD.ine v ((hmem v).1 hv) n, ← hd.ine_pow_iff ha (Or.inr rfl) hA n]`. Conclude with `⟨fun a σ hσ => a _ ⟨σ, hσ, rfl⟩, by rintro a _ ⟨σ, hσ, rfl⟩; exact a σ hσ⟩`. Take `⟨a, ha'⟩` from `absNorm_eq_pow hp ((hmem v).1 hv)`.
+
+Rewrite using `[ha', Nat.pow_mod, hp15, one_pow]`. Both sides reduce to the same expression. Use `((hch _ b).unr_iff ha (Or.inl h1) hA).2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[block_loc (C.isEta.unr v) hx, HChar.loc_mul, (C.isMu0 _).unr v h2 x hx, hD.unr v (mt (hmem v).2 h3) x hx, one_mul]`. Take `⟨x, hx, ex⟩` from `exists_unit ha hA hσ`.
+
+Establish `hv'` using `(hmem v).1 hv`. Establish `e1` using `(hch (ix j) b).loc (Or.inl (notMem_of_ne hp hl hpl hv')) ex`. Rewrite `e1` using `[block_loc (C.isEta.unr v) hx, HChar.loc_mul, (C.isMu0 _).unr v (fun k => notMem_of_ne hp (H.g_prime k) (hpg k) hv') x hx, one_mul, ← hd.side hm0 hm b ex]`. Conclude with `Units.ext (toQ_injective κ ((sideIso ι b).injective e1))`. Use `((hch _ b).ine_pow_iff ha (Or.inl h2) hA _).2 fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hN` using `(GlobalTheory.Mem.Chr.splitsC_main R H _ (H.g_prime k) (hg k) v h1).1`. Rewrite using `[block_loc (C.isEta.unr v) hx, HChar.loc_mul, hD.unr v (notMem_of_ne (H.g_prime k) hp (hpg k).symm h1) x hx, mul_one, ← hN]`. Conclude with `(GlobalTheory.Mem.WildChar.orders_on_units _ _ v).1 ((C.isMu0 _).tame v) x hx`.
+-/
 theorem hostHeckeFrame_twist_galois_characters (hcc : IsCMConjOm H.E Ω cc) (ha : IsGlobalArtin art) (he : ∀ j τ, ∃ z : ℤ, e j τ = z)
     (hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E) : HeckeTwistCharactersDeltaChi H cc C art := by
   intro l _ O _ _ _ _ _ _ _ hO κ hκ ι K _ ε f f' hf hf' hμ hη hδ pD hpD
@@ -553,6 +738,19 @@ theorem hostHeckeFrame_twist_galois_characters (hcc : IsCMConjOm H.E Ω cc) (ha 
       hD.unr v (notMem_of_ne (H.g_prime k) hp (hpg k).symm h1) x hx, mul_one, ← hN]
     exact (GlobalTheory.Mem.WildChar.orders_on_units _ _ v).1 ((C.isMu0 _).tame v) x hx
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ _ _ hO κ hκ ι K _ ε f f' hf hf' pD hpD delta hd O' _ _ _ _ _ hO' hlO' j b χ c hχF hχi hχw hμ hδ hχ S0 hS1 hS2 hS3 hS4`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨hp, hpl, hpg, -, hD⟩` from `inertialOrderFifteenChar_auxiliaryPrime_spec C (l := l)`. Use `set p := if l = H.pde then H.pde' else H.pde`. Establish `hmem : ∀ v, v ∈ pD ↔ OverP H p v` using `fun v => by rw [← Finset.mem_coe, hpD]; rfl`.
+
+Take `⟨m, hm0, hm⟩` from `hD.fin`. Take `⟨n0, h0⟩` from `exists_isAlgPos_mu0 C he j`. Take `⟨n1, h1⟩` from `(GlobalTheory.Mem.CharAlg.isAlg_even_odd R H).1 χ c hχi`. Take `⟨r, hr⟩` from `exists_isGal hO hκ ha (isAlgPos_mul (isAlgPos_mul h0 (del_alg C l)) (isAlgPos_inv (isAlgPos_of_isAlg h1))) (sideIso_read hf hf' b) (((almostIn_of_valuesIn hμ).mul (almostIn_of_valuesIn hδ)).mul (almostIn_of_valuesIn hχ).inv)`. Establish `hl0 : ((l : ℕ) : O) ≠ 0` using `fun h => by`.
+
+Use `congrArg (toQ κ) h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `hl.ne_zero (by exact_mod_cast this)`. Establish `hunr : ∀ v, v ∉ S0 → (C.mu0 j * delAt H C l * χ⁻¹).UnrAt v` using `fun v hv => (((C.isMu0 j).unr v fun k hk => hv (hS2 k hk)).mul (hD.unr v fun hk => hv (hS3 ((hmem v).2 hk)))).mul (hS4 v hv).inv`. Establish `hA` using `hr.anti hcc ha (hr.cont hO hκ) (((C.isMu0 j).triv.mul hD.triv).mul hχF.inv)`.
+
+Use `⟨r, _, fun P => algebraMap O O' (r (frobOf Ω P) : Oˣ), ⟨_, hr⟩, rfl, (continuous_ringHom hO hO' hl0 hlO' (algebraMap O O')).comp hr.2.1, fun v hv A hA σ hσ => ?_, fun v hv A hA σ hσ => ?_, fun g g' h => ?_, fun P hP A hA σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, (hr.unr_iff ha (Or.inl fun h => hv (hS1 h)) hA).2 (hunr v hv) σ hσ, map_one]`. Take `⟨x, hx, ex⟩` from `exists_unit ha hA hσ`. Establish `hv'` using `(hmem v).1 hv`. Take `⟨n, hn⟩` from `(GlobalTheory.Mem.WildChar.orders_on_units _ χ v).2 (hχw v hv) x hx`.
+
+Establish `e1` using `hr.loc (Or.inl (notMem_of_ne hp hl hpl hv')) ex`. Rewrite `e1` using `[HChar.loc_mul, HChar.loc_mul, HChar.loc_inv, (C.isMu0 _).unr v (fun k => notMem_of_ne hp (H.g_prime k) (hpg k) hv') x hx, one_mul]`. Establish `e2` using `hd.side hm0 hm b ex`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, ← map_inv, ← map_mul, ← map_pow, (pow_eq_one_iff_of_val (κ := κ) (ι := sideIso ι b) (z := (χ.loc v x)⁻¹) ?_ _).2 (by rw [inv_pow, hn, inv_one]), map_one]`.
+
+Rewrite using `[Units.val_mul, map_mul, map_mul, map_units_inv, map_inv₀, e1, e2, Units.val_mul, mul_comm, inv_mul_cancel_left₀ (Units.ne_zero _)]`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, hA g g' h, map_inv]`. Establish `hPl : ((l : ℕ) : 𝓞 H.E) ∉ P.asIdeal` using `fun h => hP (hS1 h)`. Establish `e1` using `(hr.frob ha (Or.inl hPl) (hunr P hP) (isPlaceOver_placeOf Ω P) (isFrob_frobOf Ω P)).trans (hr.frob ha (Or.inl hPl) (hunr P hP) hA hσ).symm`. Conclude with `congrArg (algebraMap O O') (toQ_injective κ ((sideIso ι b).injective e1))`.
+-/
 theorem hostHeckeFrame_toric_quotient_character (hcc : IsCMConjOm H.E Ω cc) (ha : IsGlobalArtin art) (he : ∀ j τ, ∃ z : ℤ, e j τ = z) :
     ToricHeckeQuotientCharacter H cc C art := by
   intro l _ O _ _ _ _ _ _ _ hO κ hκ ι K _ ε f f' hf hf' pD hpD delta hd O' _ _ _ _ _ hO' hlO' j b χ c hχF hχi hχw hμ hδ hχ
@@ -596,6 +794,21 @@ theorem hostHeckeFrame_toric_quotient_character (hcc : IsCMConjOm H.E Ω cc) (ha
       (hr.frob ha (Or.inl hPl) (hunr P hP) hA hσ).symm
     exact congrArg (algebraMap O O') (toQ_injective κ ((sideIso ι b).injective e1))
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ _ _ hO κ hκ ι K _ ε f hf j Q ψ hψ hQ hμ hη hδ hψv`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨hp, hpl, hpg, -, hD⟩` from `inertialOrderFifteenChar_auxiliaryPrime_spec C (l := l)`. Take `⟨a, ha'⟩` from `hψ.ord`. Establish `hla : 0 < l ^ a` using `pow_pos hl.pos a`.
+
+Establish `hψa` using `isAlgPos_zero_of_orderDvd hla ha'`. Take `⟨ps, hps⟩` from `exists_isGal hO hκ ha hψa hf (almostIn_of_valuesIn hψv)`. Take `⟨n0, h0⟩` from `exists_isAlgPos_mu0 C he j`. Take `⟨n, hn⟩` from `block_alg C ⟨_, isAlgPos_mul h0 (isAlgPos_mul (del_alg C l) hψa)⟩`. Take `⟨r, hr⟩` from `exists_isGal hO hκ ha hn hf (((almostIn_of_valuesIn hμ).mul ((almostIn_of_valuesIn hδ).mul (almostIn_of_valuesIn hψv))).block hη (odd_r R))`.
+
+Set `cy : G H.E Ω →* Oˣ` to `(Units.map (algebraMap ℤ_[l] O).toMonoidHom).comp (cycZ (F := H.E) (Ω := Ω) l)`. Establish `hcy : Continuous cy` using `continuous_units cy (continuous_cyc hO hκ)`. Establish `h1 : r * cy ^ (-(((1 : ℕ) : ℤ) - 1)) = r` using `by simp`. Use `⟨fun c => r * cy ^ (-((c : ℤ) - 1)), ps, ⟨n, by beta_reduce; rw [h1]; exact hr⟩, hps, fun c => ?_, fun c => by beta_reduce; rw [h1], fun v hv A hA => ?_, fun g => ⟨a, hps.pow_eq_one ha ha' g⟩, hps.isOpen_ker hO hκ ha hla ha', hps.anti hcc ha (hps.cont hO hκ) hψ.triv, hps.ramExact …` and prove the remaining obligations. Conclude with `Units.continuous_val.comp ((continuous_units r hr.2.1).mul (hcy.zpow _))`.
+
+Use `beta_reduce`. Rewrite using `[h1]`. Establish `hvl : ((l : ℕ) : 𝓞 H.E) ∉ v.asIdeal` using `fun h => (hψ.ram v).1 (fun x _ => hψ.atl v h x) hv`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+
+Use `(hψ.ram v).1 (fun x hx => ?_) hv` and prove the remaining obligations. Use `(hr.unr_iff ha (Or.inl hvl) hA).1 hn x hx` as an intermediate fact. Rewrite `this` using `[block_loc (C.isEta.unr v) hx, HChar.loc_mul, HChar.loc_mul, (C.isMu0 j).unr v (hQ v hv).1 x hx, hD.unr v (hQ v hv).2 x hx, one_mul, one_mul]`. Then use the resulting hypothesis. Establish `hu : (C.mu0 j * (delAt H C l * ψ)).UnrAt w` using `((C.isMu0 j).unr w w2).mul ((hD.unr w w3).mul ((hψ.ram w).2 w4))`. Use `⟨hu.mul (C.isEta.unr w).inv, fun B σ hB hσ => ?_⟩` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[h1]`. Establish `e1` using `hr.frob ha (Or.inl w1) (fun x hx => (block_loc (C.isEta.unr w) hx).trans (hu x hx)) hB hσ`. Rewrite `e1` using `[block_val, mul_inv, ← Complex.cpow_neg, ← Units.val_inv_eq_inv_val]`. Use `Eq.trans ?_ e1.symm` and prove the remaining obligations.
+
+Use `congr 2`. Unfold `Ranks.nV`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hostHeckeFrame_localisation_character_spec (hcc : IsCMConjOm H.E Ω cc) (ha : IsGlobalArtin art) (he : ∀ j τ, ∃ z : ℤ, e j τ = z) :
     LocalisationCharacterSpec H cc C art := by
   intro l _ O _ _ _ _ _ _ _ hO κ hκ ι K _ ε f hf j Q ψ hψ hQ hμ hη hδ hψv
@@ -638,6 +851,17 @@ theorem hostHeckeFrame_localisation_character_spec (hcc : IsCMConjOm H.E Ω cc) 
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `l₀ _ O₀ _ _ _ _ _ _ _ hO₀ κ₀ hκ₀ ι₀ l _ O _ _ _ _ _ _ _ hO κ hκ ι hll K _ ε f₀ f hf₀ hf t ht j ψ hμ hη hδ n₀ n n' chi1 chi psiL h1 h2 h3`. Establish `hl : l.Prime` using `Fact.out`. Establish `hl0 : ((l : ℕ) : O₀) ≠ 0` using `fun h => by`. Use `congrArg (toQ κ₀) h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`.
+
+Conclude with `hl.ne_zero (by exact_mod_cast this)`. Establish `htc` using `continuous_ringHom hO₀ hO hl0 (GlobalTheory.CoefEmbed.embedding_closed_integral l O hO κ hκ).2.2.2 t`. Use `haveI : T2Space O := (isEmbedding_toQ hO hκ).t2Space`. Establish `hb : block (C.mu0 j * (delAt H C l * ψ)) C.eta R.r = block (C.mu0 j * delAt H C l₀) C.eta R.r * ψ`. Rewrite using `[hll, block, block, ← mul_assoc (C.mu0 j), mul_right_comm]`.
+
+Rewrite `h2` using `[hb]`. Use `eq_of_frob ha (continuous_units _ h2.2.1) ((continuous_units ((Units.map t.toMonoidHom).comp chi1) (htc.comp h1.2.1)).mul (continuous_units _ h3.2.1)) ?_` and prove the remaining obligations. Use `filter_upwards [(((almostIn_of_valuesIn hμ).mul (almostIn_of_valuesIn hδ)).block hη (odd_r R)).inv, unr_ae ψ, unr_ae (block (C.mu0 j * delAt H C l₀) C.eta R.r), away_ae (E := H.E) l hl.ne_zero] with v ⟨y, hy⟩ u1 u2 hv A hA σ hσ`. Establish `e1` using `h1.frob ha (Or.inl (hll ▸ hv)) u2 hA hσ`. Establish `e2` using `h2.frob ha (Or.inl hv) (u2.mul u1) hA hσ`.
+
+Establish `e3` using `h3.frob ha (Or.inl hv) u1 hA hσ`. Rewrite `hy` using `[HChar.val_inv, Units.val_inv_eq_inv_val]`. Establish `e4` using `ht y (chi1 σ : O₀ˣ) (κ₀.injective (ι₀.injective (e1.trans (hy.symm.trans (hf₀ y).symm))))`. Use `Units.ext (toQ_injective κ (ι.injective ?_))` and prove the remaining obligations. Rewrite using `[e2, MonoidHom.mul_apply, Units.val_mul, map_mul, map_mul, e3, HChar.val_mul, Units.val_mul, mul_inv, ← hy, ← hf, e4]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hostFrame_localisationTwistCharacterCompat (ha : IsGlobalArtin art) : LocalisationTwistCharacterCompat H C art := by
   intro l₀ _ O₀ _ _ _ _ _ _ _ hO₀ κ₀ hκ₀ ι₀ l _ O _ _ _ _ _ _ _ hO κ hκ ι hll K _ ε f₀ f hf₀ hf t ht j ψ hμ hη hδ
     n₀ n n' chi1 chi psiL h1 h2 h3
@@ -664,6 +888,11 @@ theorem hostFrame_localisationTwistCharacterCompat (ha : IsGlobalArtin art) : Lo
   rw [e2, MonoidHom.mul_apply, Units.val_mul, map_mul, map_mul, e3, HChar.val_mul, Units.val_mul, mul_inv, ← hy, ← hf, e4]
   rfl
 
+/- English proof (translation)
+Use `haveI : NeZero (Nat.card Γ) := ⟨Nat.card_pos.ne'⟩`. Apply `Subgroup.eq_of_le_of_card_ge` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[mem_rootsOfUnity, ← map_pow, pow_card_eq_one', map_one]`. Rewrite using `[← Nat.card_congr (MonoidHom.ofInjective hχ).toEquiv]`.
+
+Conclude with `card_rootsOfUnity ℂ (Nat.card Γ)`.
+-/
 theorem range_eq_rootsOfUnity {Γ : Type} [CommGroup Γ] [Finite Γ] (χ : Γ →* ℂˣ) (hχ : Function.Injective χ) :
     χ.range = rootsOfUnity (Nat.card Γ) ℂ := by
   haveI : NeZero (Nat.card Γ) := ⟨Nat.card_pos.ne'⟩
@@ -673,6 +902,11 @@ theorem range_eq_rootsOfUnity {Γ : Type} [CommGroup Γ] [Finite Γ] (χ : Γ �
   · rw [← Nat.card_congr (MonoidHom.ofInjective hχ).toEquiv]
     exact card_rootsOfUnity ℂ (Nat.card Γ)
 
+/- English proof (translation)
+Take `⟨a, y, ha, hy, h⟩` from `(GlobalTheory.localUnit_congr_global H.E w x hx).2 _ (H.g_prime k) hN`. Use `⟨ZMod.unitOfCoprime a ha, fun j => ?_⟩` and prove the remaining obligations. Establish `hu` using `isUnitAt_nat (C.P.overP hw) ha hy`. Establish `h1` using `(C.isMu0 j).tame w (x * (atFin w y)⁻¹) (by`. Unfold `IsUnitAt at *`.
+
+Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hx, hu, inv_one, mul_one]) (by simpa using h)`. Rewrite `h1` using `[map_mul, map_inv, mul_inv_eq_one]`. Rewrite using `[h1]`. Conclude with `(C.isMu0 j).atg k w hw a ha y hy`.
+-/
 theorem mu0_loc_eq_inv_om_pow_of_div_of_absNorm_eq {k : Fin 2} {w : PlE H} (hw : C.P.Div k w) (hN : Ideal.absNorm w.asIdeal = H.g k)
     {x : (w.adicCompletion H.E)ˣ} (hx : IsUnitAt w x) :
     ∃ a : (ZMod (H.g k))ˣ, ∀ j : Fin R.m, (C.mu0 j).loc w x = (C.W.om k a ^ (2 * (j.1 + 1)))⁻¹ := by
@@ -686,6 +920,33 @@ theorem mu0_loc_eq_inv_om_pow_of_div_of_absNorm_eq {k : Fin 2} {w : PlE H} (hw :
   rw [h1]
   exact (C.isMu0 j).atg k w hw a ha y hy
 
+/- English proof (translation)
+Introduce `k w hw A hA tg htg teich hinj`. Use `haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩`. Establish `hwg` using `C.P.overP hw`. Establish `hN` using `(GlobalTheory.Mem.Chr.splitsC_main R H _ (H.g_prime k) (hg k) w hwg).1`. Take `⟨x, hx, ex⟩` from `exists_unit ha hA htg.1`.
+
+Take `⟨a, hxa⟩` from `mu0_loc_eq_inv_om_pow_of_div_of_absNorm_eq C hw hN hx`. Establish `hsq : ∀ b : (ZMod (H.g k))ˣ, b ^ 2 ∈ Subgroup.zpowers (a ^ 2)`. Introduce `b`. Use `haveI : Fact H.pde.Prime := ⟨H.pde_prime⟩`. Take `⟨ι⟩` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex H.pde`.
+
+Establish `hm` using `R.two_le_m`. Set `j0 : Fin R.m` to `⟨0, by omega⟩`. Take `⟨n, hn⟩` from `exists_isAlgPos_mu0 C he j0`. Take `⟨r, hr, hL⟩` from `ha.exists_isLAdicOf ι hn`. Establish `hv : ((H.pde : ℕ) : 𝓞 H.E) ∉ w.asIdeal` using `notMem_of_ne (H.g_prime k) H.pde_prime (H.pde_ne_g k).1.symm hwg`.
+
+Establish `hg1 : ((H.g k - 1 : ℕ) : 𝓞 H.E) ∉ w.asIdeal` using `fun h => by`. Apply `w.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Use `w.asIdeal.sub_mem hwg h` as an intermediate fact. Rewrite `this` using `[Nat.cast_sub (H.g_prime k).one_le, Nat.cast_one, sub_sub_cancel]`. Then use the resulting hypothesis.
+
+Establish `hcb` using `ZMod.val_coe_unit_coprime b`. Establish `hb0 : (((b : ZMod (H.g k)).val : ℕ) : H.E) ≠ 0`. Rewrite using `[Nat.cast_ne_zero]`. Introduce `h`. Rewrite `hcb` using `[h, Nat.coprime_zero_left]`.
+
+Conclude with `(H.g_prime k).ne_one hcb`. Establish `hy` using `isUnitAt_nat hwg hcb (x := Units.mk0 _ hb0) rfl`. Establish `hyb : (C.mu0 j0).loc w (atFin w (Units.mk0 _ hb0)) = _` using `(C.isMu0 j0).atg k w hw _ hcb (Units.mk0 _ hb0) rfl`. Establish `hu' : ZMod.unitOfCoprime _ hcb = b`. Use `ext`.
+
+Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.natCast_zmod_val]`. Rewrite `hyb` using `[hu']`. Take `⟨σ, hσ, eσ⟩` from `exists_ine ha hA hy`. Take `⟨s, hs⟩` from `GlobalTheory.TameGenPowers.mem_zpowers_of_tameGen H.E Ω w A hA tg htg (Qbar H.pde) r hr (H.g k - 1) hg1 (fun τ hτ => by`. Take `⟨z, hz, ez⟩` from `exists_unit ha hA hτ`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, hL.loc_away (Or.inl hv) z τ ez, ← map_pow, ← Units.val_pow_eq_pow_val, ← hN, (GlobalTheory.Mem.WildChar.orders_on_units _ _ w).1 ((C.isMu0 j0).tame w) z hz]`. Use the proof step `simp) σ hσ`. Establish `h1` using `congrArg (fun u : (Qbar H.pde)ˣ => ι (u : Qbar H.pde)) hs`. Simplify using `only [Units.val_zpow_eq_zpow_val, map_zpow₀, hL.loc_away (Or.inl hv) _ _ ex, hL.loc_away (Or.inl hv) _ _ eσ, RingEquiv.apply_symm_apply, hxa j0, hyb] at h1`.
+
+Rewrite `h1` using `[← Units.val_zpow_eq_zpow_val, Units.val_inj, inv_zpow, inv_inj]`. Use `⟨s, C.W.gen k ?_⟩` and prove the remaining obligations. Simplify using `only [map_zpow, map_pow]`. Conclude with `h1`. Take `⟨γ, hγ, hγa⟩` from `GlobalTheory.exists_generator_sq_eq_of_sq_mem_zpowers (H.g k) (H.g_prime k) a hsq`.
+
+Set `tU : (ZMod (H.g k))ˣ →* ℂˣ` to `Units.map (teich.comp (algebraMap (ZMod (H.g k)) (Formalism.CyclotomicNorms.Fbar (H.g k)) : ZMod (H.g k) →* Formalism.CyclotomicNorms.Fbar (H.g k)))`. Establish `htU : Function.Injective tU` using `fun y z h => by`. Establish `hi` using `(algebraMap (ZMod (H.g k)) (Formalism.CyclotomicNorms.Fbar (H.g k))).injective`. Conclude with `Units.ext (hi (hinj _ _ ((map_ne_zero_iff _ hi).2 y.ne_zero) ((map_ne_zero_iff _ hi).2 z.ne_zero) (congrArg Units.val h)))`. Establish `hr : (C.W.om k).range = tU.range` using `(range_eq_rootsOfUnity _ (C.W.gen k)).trans (range_eq_rootsOfUnity _ htU).symm`.
+
+Take `⟨γ', hγ'⟩ : C.W.om k γ ∈ tU.range` from `hr ▸ ⟨γ, rfl⟩`. Use `⟨γ', ?_, fun l _ hl O _ _ _ κ ι j ξ hξ n chi h => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`. Take `⟨z, hz⟩ : tU y ∈ (C.W.om k).range` from `hr.symm ▸ ⟨y, rfl⟩`.
+
+Take `⟨n, rfl⟩ : z ∈ Subgroup.zpowers γ` from `hγ ▸ Subgroup.mem_top z`. Use `⟨n, htU ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, map_zpow, map_zpow, hγ']`. Establish `e1` using `h.loc (Or.inl (notMem_of_ne (H.g_prime k) Fact.out hl.symm hwg)) ex`. Rewrite `e1` using `[block_loc (C.isEta.unr w) hx, HChar.loc_mul, hξ x hx, mul_one, hxa j, pow_mul, ← map_pow, ← hγa, map_pow, ← hγ', ← pow_mul, ← map_pow, ← map_inv]`.
+
+Conclude with `e1`.
+-/
 theorem hostHeckeFrame_tame_galois_characters (ha : IsGlobalArtin art) (he : ∀ j τ, ∃ z : ℤ, e j τ = z)
     (hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E) : TameInertiaGeneratorCharacterSpec H C art := by
   intro k w hw A hA tg htg teich hinj
@@ -759,6 +1020,9 @@ theorem hostHeckeFrame_tame_galois_characters (ha : IsGlobalArtin art) (he : ∀
 
 end Host
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hostHeckeFrame_twist_galois_characters C hcc ha he hg, hostHeckeFrame_toric_quotient_character C hcc ha he, hostHeckeFrame_localisation_character_spec C hcc ha he, hostFrame_localisationTwistCharacterCompat C ha, hostHeckeFrame_tame_galois_characters C ha he hg, fun l => univers …`.
+-/
 theorem galois_characters_of_artin (R : Ranks) (H : Formalism.BasicNotions.Host R) (Ω : Type) [Field Ω] [Algebra H.E Ω]
     [IsAlgClosure H.E Ω] (cc : Ω ≃+* Ω) (hcc : IsCMConjOm H.E Ω cc) (e : Fin R.m → R.Psi → ℚ)
     (he : ∀ j τ, ∃ z : ℤ, e j τ = z) (C : GlobalTheory.Mem.Chr.HFrame H e)

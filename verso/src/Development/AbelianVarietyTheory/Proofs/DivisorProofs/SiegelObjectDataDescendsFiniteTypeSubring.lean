@@ -21,15 +21,32 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit GlobalTheory.S
 
 namespace GlobalTheory.SiegFg
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_subtype_inclusion' {R : Type} [CommRing R] {S₀ R₁ : Subring R} (h : S₀ ≤ R₁) :
     spMap R₁.subtype ≫ spMap (Subring.inclusion h) = spMap S₀.subtype := by
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback B.hom f) hB`.
+-/
 theorem smooth_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (B : Over S) (g : ℕ) (hB : SmoothOfRelativeDimension g B.hom) :
     SmoothOfRelativeDimension g ((Over.pullback f).obj B).hom :=
   (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback B.hom f) hB
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `x`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem y hy`. Break down `hy with rfl | hy` into its components or cases. Conclude with `h₁`.
+
+Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `h₂ _`. Consider the case `zero => exact (congrArg (· ∈ S₀) (map_zero β)).mpr S₀.zero_mem`. Consider the case `one => exact (congrArg (· ∈ S₀) (map_one β)).mpr S₀.one_mem`.
+
+Consider the case `add y z hy hz ihy ihz`. Establish `e : β ⟨y + z, Subring.add_mem _ hy hz⟩ = β ⟨y, hy⟩ + β ⟨z, hz⟩` using `by rw [← map_add]; rfl`. Rewrite using `[e]`. Conclude with `S₀.add_mem ihy ihz`. Consider the case `neg y hy ihy`.
+
+Establish `e : β ⟨-y, Subring.neg_mem _ hy⟩ = -β ⟨y, hy⟩` using `by rw [← map_neg]; rfl`. Rewrite using `[e]`. Conclude with `S₀.neg_mem ihy`. Consider the case `mul y z hy hz ihy ihz`. Establish `e : β ⟨y * z, Subring.mul_mem _ hy hz⟩ = β ⟨y, hy⟩ * β ⟨z, hz⟩` using `by rw [← map_mul]; rfl`.
+
+Rewrite using `[e]`. Conclude with `S₀.mul_mem ihy ihz`.
+-/
 theorem range_le {n : ℕ} {R : Type} [CommRing R] (β : cycAway n →+* R) (S₀ : Subring R)
     (h₁ : β (zetaAway n) ∈ S₀) (h₂ : ∀ hm : ((n : ℂ))⁻¹ ∈ cycAway n, β ⟨((n : ℂ))⁻¹, hm⟩ ∈ S₀) (x : cycAway n) :
     β x ∈ S₀ := by
@@ -57,6 +74,31 @@ end GlobalTheory.SiegFg
 
 namespace GlobalTheory.SiegFg
 
+/- English proof (translation)
+Introduce `g n hn R _ β c`. Establish `h0 : n ≠ 0` using `by omega`. Use `haveI : NeZero n := ⟨h0⟩`. Establish `hdim : SmoothOfRelativeDimension g c.A.hom` using `relDim (ζ := (cycBase h0).ζ) (by omega) (isUnit_natCast h0) c`. Establish `hm : ((n : ℂ))⁻¹ ∈ cycAway n` using `Subring.subset_closure (by simp)`.
+
+Take `⟨S₀, B, _, φ, hF, hS₀, hB, hBd, hφ⟩` from `GlobalTheory.AbelianLimit.abelianScheme_descends_to_fg_subring R g c.A {β (zetaAway n), β ⟨((n : ℂ))⁻¹, hm⟩} c.ab hdim`. Establish `hβ : ∀ x, β x ∈ S₀` using `range_le β S₀ (hF (by simp)) (fun _ => hF (by simp))`. Establish `: IsCommMonObj B` using `hB.comm`. Establish `: IsProper B.hom` using `hB.proper`. Establish `: Smooth B.hom` using `hB.smooth`.
+
+Establish `: QuasiCompact (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `QuasiCompact (pullback.fst B.hom B.hom ≫ B.hom)`. Use `infer_instance`. Establish `: QuasiSeparated (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `QuasiSeparated (pullback.fst B.hom B.hom ≫ B.hom)`.
+
+Use `infer_instance`. Take `⟨φ₂, hsq⟩` from `GlobalTheory.SiegDesc.exists_isSquare hφ.1.w`. Take `⟨SP, hSP⟩` from `GlobalTheory.LBLimit.lb_descends_to_fg_subring R S₀ (c.A ⊗ c.A).left (B ⊗ B).left (c.A ⊗ c.A).hom (B ⊗ B).hom φ₂ c.P (GlobalTheory.SiegDesc.isPullback_of_isSquare hφ.1 hsq) c.isLB`. Establish `hw : ∀ a : Std g n, ((lvOf c a).left ≫ φ) ≫ B.hom = spMap S₀.subtype ≫ 𝟙 _` using `fun a => by`. Establish `e : (lvOf c a).left ≫ c.A.hom = 𝟙 _` using `Over.w (lvOf c a)`.
+
+Rewrite using `[Category.assoc, hφ.1.w, reassoc_of% e, Category.comp_id]`. Use `choose SL hSL using fun a : Std g n => GlobalTheory.morphism_descends_to_subring R S₀ (Sp R) (Sp S₀) B.left (𝟙 _) (𝟙 _) B.hom (spMap S₀.subtype) ((lvOf c a).left ≫ φ) IsPullback.of_id_snd (hw a)`. Set `T : Finset R` to `SP ∪ Finset.univ.biUnion SL`. Set `R₁ : Subring R` to `(Algebra.adjoin S₀ (T : Set R)).toSubring`. Establish `hFT : Algebra.FiniteType ℤ R₁` using `GlobalTheory.SpreadGroup.finiteType_of_fg hS₀ (Subalgebra.fg_adjoin_finset T)`.
+
+Establish `h : S₀ ≤ R₁` using `fun x hx => Subalgebra.algebraMap_mem (Algebra.adjoin S₀ (T : Set R)) (⟨x, hx⟩ : S₀)`. Establish `hT : (T : Set R) ⊆ R₁` using `Algebra.subset_adjoin`. Establish `hSPs : (SP : Set R) ⊆ R₁` using `fun x hx => hT (by simp [T, Finset.mem_coe.1 hx])`. Establish `hSLs : ∀ a, (SL a : Set R) ⊆ R₁` using `fun a x hx => hT (by`. Simplify using `only [T, Finset.coe_union, Finset.coe_biUnion, Finset.coe_univ, Set.mem_univ, Set.iUnion_true]`.
+
+Conclude with `Or.inr (Set.mem_iUnion.2 ⟨a, hx⟩))`. Establish `hj : spMap R₁.subtype ≫ spMap (Subring.inclusion h) = spMap S₀.subtype` using `spMap_subtype_inclusion' h`. Set `A₁ : Over (Sp R₁)` to `(Over.pullback (spMap (Subring.inclusion h))).obj B`. Establish `hA₁ : IsAbelianScheme A₁` using `{ comm := by infer_instance smooth := by show Smooth (pullback.snd _ _); infer_instance proper := by show IsProper (pullback.snd _ _); infer_instance geomConnected := by`. Use `hB.geomConnected` as an intermediate fact.
+
+Use `show GeometricallyConnected (pullback.snd _ _)`. Use `infer_instance }`. Establish `hA₁d : SmoothOfRelativeDimension g A₁.hom` using `smooth_pull _ B g hBd`. Establish `hpb` using `Pdiv.PullbackComparison.isGrpPullback (spMap (Subring.inclusion h)) B`. Set `ψ : c.A.left ⟶ A₁.left` to `pullback.lift φ (c.A.hom ≫ spMap R₁.subtype) (by rw [hφ.1.w, Category.assoc, hj])`.
+
+Establish `hψ₁ : ψ ≫ Pdiv.PullbackComparison.pφ (spMap (Subring.inclusion h)) B = φ` using `pullback.lift_fst _ _ _`. Establish `hψ₂ : ψ ≫ A₁.hom = c.A.hom ≫ spMap R₁.subtype` using `pullback.lift_snd _ _ _`. Establish `hgp : IsGrpPullback c.A A₁ (spMap R₁.subtype) ψ` using `IsGrpPullback.cancel hpb (by rw [hψ₁, hj]; exact hφ) hψ₂`. Take `⟨ψ₂, hsqψ⟩` from `GlobalTheory.SiegDesc.exists_isSquare hψ₂`. Take `⟨P₁, hP₁, hiso⟩` from `hSP R₁ h hSPs (A₁ ⊗ A₁).left (A₁ ⊗ A₁).hom (Pdiv.PullbackComparison.pφ₂ (spMap (Subring.inclusion h)) B) ψ₂ (GlobalTheory.SiegDesc.isPullback_of_isSquare hpb.1 (Pdiv.PullbackComparison.isSquare _ B)) (GlobalTheory.SiegDesc.isSquare_comp hψ₁ hsqψ (Pdiv.PullbackComparison.isSquare …`.
+
+Use `choose ψa hψa using fun a : Std g n => hSL a R₁ h (hSLs a) (Sp R₁) (𝟙 _) (spMap (Subring.inclusion h)) (spMap R₁.subtype) IsPullback.of_id_snd hj (by simp)`. Set `l : Std g n → (Sp R₁ ⟶ A₁.left)` to `fun a => pullback.lift (ψa a) (𝟙 _) (by rw [(hψa a).2, Category.comp_id, Category.id_comp])`. Establish `hl₁ : ∀ a, l a ≫ pullback.fst _ _ = ψa a` using `fun a => pullback.lift_fst _ _ _`. Establish `hl₂ : ∀ a, l a ≫ A₁.hom = 𝟙 _` using `fun a => pullback.lift_snd _ _ _`. Set `lv₁ : Std g n → (𝟙_ (Over (Sp R₁)) ⟶ A₁)` to `fun a => Over.homMk (l a) (hl₂ a)`.
+
+Use `⟨R₁, β.codRestrict R₁ (fun x => h (hβ x)), A₁, inferInstance, P₁, lv₁, hFT, by ext; rfl, hA₁, hA₁d, hP₁, ψ, ψ₂, hgp, hsqψ.1, hsqψ.2, hiso, fun a => ?_⟩` and prove the remaining obligations. Establish `e : (lvOf c a).left ≫ c.A.hom = 𝟙 _` using `Over.w (lvOf c a)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(lvOf c a).left ≫ ψ ≫ pullback.fst _ _ = spMap R₁.subtype ≫ l a ≫ pullback.fst _ _`. Rewrite using `[hl₁]`.
+
+Conclude with `(congrArg ((lvOf c a).left ≫ ·) hψ₁).trans (hψa a).1.symm`. Express the relevant statement in the definitionally equal form `(lvOf c a).left ≫ ψ ≫ A₁.hom = spMap R₁.subtype ≫ l a ≫ A₁.hom`. Rewrite using `[hψ₂, hl₂, reassoc_of% e, Category.comp_id]`.
+-/
 theorem siegPre_data_descends_fg : ∀ (g n : ℕ), 3 ≤ n → ∀ (R : Type) [CommRing R] (β : cycAway n →+* R) (c : SiegPre g n (zetaAway n) (spMap β)), ∃ (R₁ : Subring R) (β₁ : cycAway n →+* R₁) (A₁ : Over (Sp R₁)) (_ : GrpObj A₁) (P₁ : LB (A₁ ⊗ A₁).left) (lv₁ : Std g n → (𝟙_ (Over (Sp R₁)) ⟶ A₁)), Algebra.FiniteType ℤ R₁ ∧ R₁.subtype.comp β₁ = β ∧ IsAbelianScheme A₁ ∧ SmoothOfRelativeDimension g A₁.hom ∧ P₁.IsLB ∧ IsPullbackTriple c.A c.P (lvOf c) A₁ P₁ lv₁ (spMap R₁.subtype) := by
   intro g n hn R _ β c
   classical

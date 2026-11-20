@@ -19,12 +19,18 @@ open MeasureTheory
 namespace GlobalTheory.WeilL2Words
 variable (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.WeilCont.adeleJoin, archPart, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem adeleJoin_archPart (a : κ → AdeleRing (𝓞 F) F) :
     GlobalTheory.WeilCont.adeleJoin F (archPart F a) (fun i => (a i).2) = a := by
   funext i
   simp only [GlobalTheory.WeilCont.adeleJoin, archPart, RingEquiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i) + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (v i) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i + v i)`. Rewrite using `[map_add]`. Conclude with `add_zero (y i)`.
+-/
 theorem adeleJoin_add_arch (x v : κ → mixedEmbedding.mixedSpace F) (y : κ → FiniteAdeleRing (𝓞 F) F) :
     GlobalTheory.WeilCont.adeleJoin F x y + arch F v = GlobalTheory.WeilCont.adeleJoin F (x + v) y := by
   funext i
@@ -34,6 +40,9 @@ theorem adeleJoin_add_arch (x v : κ → mixedEmbedding.mixedSpace F) (y : κ �
     rw [map_add]
   · exact add_zero (y i)
 
+/- English proof (translation)
+Rewrite using `[dotProduct, adeleOfMixedSpaceComponent_finsetSum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[arch, mul_arch1']`. Use `congr 2`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+-/
 theorem adeleJoin_dot_arch (x u : κ → mixedEmbedding.mixedSpace F) (y : κ → FiniteAdeleRing (𝓞 F) F) :
     GlobalTheory.WeilCont.adeleJoin F x y ⬝ᵥ arch F u = arch1 F (∑ i, x i * u i) := by
   rw [dotProduct, adeleOfMixedSpaceComponent_finsetSum]
@@ -42,6 +51,9 @@ theorem adeleJoin_dot_arch (x u : κ → mixedEmbedding.mixedSpace F) (y : κ �
   congr 2
   exact RingEquiv.apply_symm_apply _ _
 
+/- English proof (translation)
+Rewrite using `[dotProduct, adeleOfMixedSpaceComponent_finsetSum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[arch, arch, mul_arch1']`. Use `congr 2`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+-/
 theorem arch_dot_arch (v u : κ → mixedEmbedding.mixedSpace F) :
     arch F v ⬝ᵥ arch F u = arch1 F (∑ i, v i * u i) := by
   rw [dotProduct, adeleOfMixedSpaceComponent_finsetSum]
@@ -50,6 +62,11 @@ theorem arch_dot_arch (v u : κ → mixedEmbedding.mixedSpace F) :
   congr 2
   exact RingEquiv.apply_symm_apply _ _
 
+/- English proof (translation)
+Rewrite `hΦ` using `[GlobalTheory.WeilM.schA, Submodule.mem_span_set']`. Take `⟨n, c, s, rfl⟩` from `hΦ`. Use `choose f g hg hfg using fun i => (s i).2`. Use `⟨n, fun i => c i • f i, g, hg, Finset.sum_congr rfl fun i _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hfg i]`.
+
+Use extensionality with `a`. Simplify using `[GlobalTheory.WeilM.pureA, mul_assoc]`.
+-/
 theorem schA_exists_sum {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ) :
     ∃ (n : ℕ) (f : Fin n → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : Fin n → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ),
       (∀ i, g i ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) ∧ Φ = ∑ i, GlobalTheory.WeilM.pureA F (f i) (g i) := by
@@ -63,6 +80,11 @@ theorem schA_exists_sum {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ �
 
 variable [Invertible (2 : AdeleRing (𝓞 F) F)]
 
+/- English proof (translation)
+Use `set c := InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AdeleRing (𝓞 F) F)).1`. Establish `hc : c + c = 1`. Rewrite using `[← map_add]`. Establish `: (⅟(2 : AdeleRing (𝓞 F) F)).1 + (⅟(2 : AdeleRing (𝓞 F) F)).1 = (⅟(2 : AdeleRing (𝓞 F) F) + ⅟2).1` using `rfl`. Rewrite using `[this, invOf_two_add_invOf_two]`.
+
+Conclude with `map_one _`. Establish `h2 : ℓ (c * z) + ℓ (c * z) = ℓ z` using `by rw [← map_add, ← add_mul, hc, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ell_half (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) (z : mixedEmbedding.mixedSpace F) :
     ℓ (InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AdeleRing (𝓞 F) F)).1 * z) = ℓ z / 2 := by
   set c := InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AdeleRing (𝓞 F) F)).1
@@ -74,6 +96,9 @@ theorem ell_half (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) (z : mixedE
   have h2 : ℓ (c * z) + ℓ (c * z) = ℓ z := by rw [← map_add, ← add_mul, hc, one_mul]
   linarith
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.WeilM.schr, archPair]`. Rewrite using `[adeleJoin_add_arch, adeleJoin_dot_arch, arch_dot_arch, mul_arch1', ← adeleOfMixedSpaceComponent_add, hℓ, map_add, ell_half]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_archPair_adeleJoin (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (hℓ : ∀ z, ψ (arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z))
     (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) (Φ : (κ → AdeleRing (𝓞 F) F) → ℂ)
@@ -87,6 +112,17 @@ theorem schr_archPair_adeleJoin (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ :
   push_cast
   ring
 
+/- English proof (translation)
+Use `set A : ℝ := ℓ (∑ i, x i * h.2 i)`. Use `set B : ℝ := ℓ (∑ i, h.1 i * h.2 i) / 2`. Establish `key : (fun t : ℝ => GlobalTheory.WeilM.schr ψ (archPair F (t • h)) (GlobalTheory.WeilM.pureA F f g) (GlobalTheory.WeilCont.adeleJoin F x y)) = fun t : ℝ => Complex.exp (2 * Real.pi * Complex.I * ((t * A + t ^ 2 * B : ℝ) : ℂ)) * (f (x + t • h.1) * g y)`. Use function extensionality and compare the values at `t`. Rewrite using `[schr_archPair_adeleJoin F ψ ℓ hℓ, GlobalTheory.WeilCont.pureA_adeleJoin]`.
+
+Use `congr 2`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, A, B]`. Establish `e1 : ∑ i, x i * (t • h.2 i) = t • ∑ i, x i * h.2 i`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_smul_comm _ _ _`.
+
+Establish `e2 : ∑ i, (t • h.1 i) * (t • h.2 i) = (t ^ 2) • ∑ i, h.1 i * h.2 i`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, mul_smul_comm, smul_smul, pow_two]`. Rewrite using `[e1, e2, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Establish `hφ` using `((((hasDerivAt_id (0:ℝ)).mul_const A).fun_add ((hasDerivAt_pow 2 (0:ℝ)).mul_const B)).ofReal_comp).const_mul (2 * (Real.pi : ℂ) * Complex.I)`. Establish `hS` using `((f.hasFDerivAt (x + (0:ℝ) • h.1)).comp_hasDerivAt (0:ℝ) (((hasDerivAt_id (0:ℝ)).smul_const h.1).const_add x)).mul_const (g y)`.
+
+Establish `hT` using `hφ.cexp.fun_mul hS`. Use `hT.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [id, Function.comp, zero_smul, add_zero, one_smul, zero_mul, mul_zero, Complex.ofReal_zero, Complex.exp_zero, one_mul, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_one, Complex.ofReal_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_schr_pureA (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (hℓ : ∀ z, ψ (arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z))
     (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))
@@ -124,12 +160,18 @@ theorem hasDerivAt_schr_pureA (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : m
   ring
 
 omit [Invertible (2 : AdeleRing (𝓞 F) F)] in
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.schr, Finset.sum_apply, Finset.mul_sum]`.
+-/
 theorem schr_sum' [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ)
     (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) {n : ℕ} (Φ : Fin n → (κ → AdeleRing (𝓞 F) F) → ℂ) :
     GlobalTheory.WeilM.schr ψ w (∑ i, Φ i) = ∑ i, GlobalTheory.WeilM.schr ψ w (Φ i) := by
   funext x
   simp [GlobalTheory.WeilM.schr, Finset.sum_apply, Finset.mul_sum]
 
+/- English proof (translation)
+Establish `e : (fun t : ℝ => GlobalTheory.WeilM.schr ψ (archPair F (t • h)) (∑ i, GlobalTheory.WeilM.pureA F (f i) (g i)) (GlobalTheory.WeilCont.adeleJoin F x y)) = fun t => ∑ i, GlobalTheory.WeilM.schr ψ (archPair F (t • h)) (GlobalTheory.WeilM.pureA F (f i) (g i)) (GlobalTheory.WeilCont.a …`. Use function extensionality and compare the values at `t`. Rewrite using `[schr_sum', Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `HasDerivAt.fun_sum (u := Finset.univ) fun i _ => hasDerivAt_schr_pureA F ψ ℓ hℓ h (f i) (g i) x y`.
+-/
 theorem hasDerivAt_schr_sum (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (hℓ : ∀ z, ψ (arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z))
     (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) {n : ℕ}
@@ -146,6 +188,9 @@ theorem hasDerivAt_schr_sum (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mix
   rw [e]
   exact HasDerivAt.fun_sum (u := Finset.univ) fun i _ => hasDerivAt_schr_pureA F ψ ℓ hℓ h (f i) (g i) x y
 
+/- English proof (translation)
+Take `⟨ℓ, -, hℓ⟩` from `hψ`. Take `⟨n, f, g, -, rfl⟩` from `schA_exists_sum F hΦ`. Rewrite using `[← adeleJoin_archPart F a]`. Conclude with `(hasDerivAt_schr_sum F ψ ℓ hℓ h f g _ _).differentiableAt`.
+-/
 theorem differentiableAt_schr {ψ : AddChar (AdeleRing (𝓞 F) F) ℂ} (hψ : IsStdInf F ψ)
     (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ}
     (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ) (a : κ → AdeleRing (𝓞 F) F) :
@@ -155,6 +200,9 @@ theorem differentiableAt_schr {ψ : AddChar (AdeleRing (𝓞 F) F) ℂ} (hψ : I
   rw [← adeleJoin_archPart F a]
   exact (hasDerivAt_schr_sum F ψ ℓ hℓ h f g _ _).differentiableAt
 
+/- English proof (translation)
+The claim follows from `(hasDerivAt_schr_sum F ψ ℓ hℓ h f g x y).deriv`.
+-/
 theorem dS_sum_adeleJoin (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (hℓ : ∀ z, ψ (arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z))
     (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) {n : ℕ}
@@ -164,6 +212,9 @@ theorem dS_sum_adeleJoin (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedE
       ∑ i, (2 * Real.pi * Complex.I * (ℓ (∑ k, x k * h.2 k) : ℂ) * f i x + fderiv ℝ (f i) x h.1) * g i y :=
   (hasDerivAt_schr_sum F ψ ℓ hℓ h f g x y).deriv
 
+/- English proof (translation)
+Take `⟨n, f, g, hg, rfl⟩` from `schA_exists_sum F hΦ`. Take `⟨f', hf'⟩` from `dS_sum_pureA F κ ψ hψ n g f h`. Rewrite using `[hf']`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f' i, g i, hg i, rfl⟩`.
+-/
 theorem dS_mem_schA {ψ : AddChar (AdeleRing (𝓞 F) F) ℂ} (hψ : IsStdInf F ψ)
     (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ}
     (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ) : dS F ψ h Φ ∈ GlobalTheory.WeilM.schA F κ := by

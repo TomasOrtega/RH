@@ -10,6 +10,15 @@ namespace PositivityTheory.Rg.BcB.F.R3
 variable {ι : Type} {H : ι → Type} [∀ s, NormedAddCommGroup (H s)] [∀ s, InnerProductSpace ℂ (H s)]
   [∀ s, CompleteSpace (H s)] {d : ℕ} {Γ : Type}
 
+/- English proof (translation)
+Establish `hinj : ∀ {c₁ c₂ : ℂ}, c₁ • v = c₂ • v → c₁ = c₂` using `fun h => smul_left_injective ℂ hv h`. Set `A₀ : StarAlgebra.adjoin ℂ (Set.range gen)` to `⟨gen a₀, StarAlgebra.subset_adjoin ℂ _ ⟨a₀, rfl⟩⟩`. Establish `hA₀ : A₀.1.2 v = v` using `ha₀`. Take `⟨c₀, hc₀, hχ₀⟩` from `heig A₀ (by rw [hA₀]; exact hv)`. Establish `hc₀1 : c₀ = 1` using `hinj (by rw [← hc₀, hA₀, one_smul])`.
+
+Distinguish the cases in `hc0 : c = 0`. Substitute `hc0` using the available equality. Establish `hsum : (a + A₀).1.2 v = v` using `by show a.1.2 v + A₀.1.2 v = v`. Rewrite using `[hc, hA₀, zero_smul, zero_add]`. Take `⟨c₁, hc₁, hχ₁⟩` from `heig (a + A₀) (by rw [hsum]; exact hv)`.
+
+Establish `hc₁1 : c₁ = 1` using `hinj (by rw [← hc₁, hsum, one_smul])`. Establish `hsplit : χ ⟨(a + A₀).1.1 s, StarAlgebra.subset_adjoin ℂ _ (Or.inl ⟨a + A₀, rfl⟩)⟩ = χ ⟨a.1.1 s, StarAlgebra.subset_adjoin ℂ _ (Or.inl ⟨a, rfl⟩)⟩ + χ ⟨A₀.1.1 s, StarAlgebra.subset_adjoin ℂ _ (Or.inl ⟨A₀, rfl⟩)⟩`. Rewrite using `[← map_add]`. Conclude with `congrArg χ (Subtype.ext rfl)`. Rewrite `hχ₁` using `[hsplit, hχ₀, hc₀1, hc₁1]`.
+
+Take the linear combination `hχ₁`. Take `⟨c', hc', hχ'⟩` from `heig a (by rw [hc]; exact smul_ne_zero hc0 hv)`. Rewrite using `[hχ']`. Conclude with `hinj (hc'.symm.trans hc)`.
+-/
 theorem chi_pin (gen : Γ → Prod' H d) (a₀ : Γ) (v : EuclideanSpace ℂ (Fin d)) (hv : v ≠ 0) (ha₀ : (gen a₀).2 v = v)
     (s : ι) (X : H s →L[ℂ] H s)
     (χ : StarAlgebra.adjoin ℂ (Set.range (fun a : StarAlgebra.adjoin ℂ (Set.range gen) => (a : Prod' H d).1 s) ∪ {X})

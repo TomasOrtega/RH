@@ -15,11 +15,27 @@ def form (N r : ℕ) (V : (Fin r → Fin N) → ℂ) : MultilinearMap ℂ (fun _
   ∑ q : Fin r → Fin N, V q • (MultilinearMap.mkPiAlgebra ℂ (Fin r) ℂ).compLinearMap
     (fun a => LinearMap.proj (q a))
 
+/- English proof (translation)
+Simplify using `[form, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, mul_comm]`.
+-/
 theorem form_apply (N r : ℕ) (V : (Fin r → Fin N) → ℂ) (w : Fin r → Fin N → ℂ) :
     form N r V w = ∑ q, (∏ a, w a (q a)) * V q := by
   simp [form, MultilinearMap.compLinearMap_apply,
     MultilinearMap.mkPiAlgebra_apply, mul_comm]
 
+/- English proof (translation)
+Establish `hw' : ∀ a, w (Equiv.swap i j a) = w a`. Introduce `a`. Rewrite using `[Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`. Rewrite using `[h1, hw]`.
+
+Rewrite using `[h2, hw]`. Both sides reduce to the same expression. Establish `hterm : ∀ q : Fin r → Fin N, (∏ a, w a ((q ∘ Equiv.swap i j) a)) * V (q ∘ Equiv.swap i j) = -((∏ a, w a (q a)) * V q)`. Introduce `q`. Establish `hp : ∏ a, w a ((q ∘ Equiv.swap i j) a) = ∏ a, w a (q a)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hw' a]`. Both sides reduce to the same expression. Use `_ = ∏ a, w a (q a) := Equiv.prod_comp (Equiv.swap i j) (fun a => w a (q a))`.
+
+Rewrite using `[hp, hV, Equiv.Perm.sign_swap hij]`. Simplify using the standard rewrite rules. Set `e : (Fin r → Fin N) ≃ (Fin r → Fin N)` to `(Equiv.swap i j).arrowCongr (Equiv.refl (Fin N))`. Establish `he : ∀ q, e q = q ∘ Equiv.swap i j`. Introduce `q`.
+
+Use extensionality with `a`. Simplify using `[e, Equiv.arrowCongr_apply, Equiv.symm_swap]`. Establish `hS : ∑ q, (∏ a, w a (q a)) * V q = -∑ q, (∏ a, w a (q a)) * V q`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `conv_lhs => rw [← Equiv.sum_comp e (fun q => (∏ a, w a (q a)) * V q)]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[he q]`. Conclude with `hterm q`. Take the linear combination `(1 / 2 : ℂ) * hS`.
+-/
 theorem sum_eq_zero_of_eq (N r : ℕ) (V : (Fin r → Fin N) → ℂ)
     (hV : ∀ q (σ : Equiv.Perm (Fin r)), V (q ∘ σ) = ((Equiv.Perm.sign σ : ℤ) : ℂ) * V q)
     (w : Fin r → Fin N → ℂ) (i j : Fin r) (hw : w i = w j) (hij : i ≠ j) :
@@ -64,11 +80,23 @@ def altForm (N r : ℕ) (V : (Fin r → Fin N) → ℂ)
       rw [form_apply]
       exact sum_eq_zero_of_eq N r V hV w i j hw hij }
 
+/- English proof (translation)
+The claim follows from `form_apply N r V w`.
+-/
 theorem altForm_apply (N r : ℕ) (V : (Fin r → Fin N) → ℂ)
     (hV : ∀ q (σ : Equiv.Perm (Fin r)), V (q ∘ σ) = ((Equiv.Perm.sign σ : ℤ) : ℂ) * V q)
     (w : Fin r → Fin N → ℂ) : altForm N r V hV w = ∑ q, (∏ a, w a (q a)) * V q :=
   form_apply N r V w
 
+/- English proof (translation)
+Introduce `N r V A M _ hV`. Set `g : (Fin r → ℂ) [⋀^Fin r]→ₗ[ℂ] ℂ` to `(altForm N r V hV).compLinearMap A.mulVecLin`. Establish `key` using `congrArg (fun F : (Fin r → ℂ) [⋀^Fin r]→ₗ[ℂ] ℂ => F (fun b a => M a b)) (AlternatingMap.eq_smul_basis_det (Pi.basisFun ℂ (Fin r)) g)`. Establish `hdet : (Pi.basisFun ℂ (Fin r)).det (fun b a => M a b) = M.det`. Rewrite using `[Module.Basis.det_apply]`.
+
+Use `congr 1`. Establish `h1 : g (fun b a => M a b) = ∑ q, (∏ a, (A * M) (q a) a) * V q`. Simplify using `only [g, AlternatingMap.compLinearMap_apply, altForm_apply, Matrix.mulVecLin_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Establish `h2 : g (Pi.basisFun ℂ (Fin r)) = ∑ q, (∏ a, A (q a) a) * V q`. Simplify using `only [g, AlternatingMap.compLinearMap_apply, altForm_apply, Matrix.mulVecLin_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Pi.basisFun_apply]`. Simplify using `only [AlternatingMap.smul_apply, smul_eq_mul, hdet] at key`. Rewrite using `[← h1, ← h2, key, mul_comm]`.
+-/
 theorem proof : AltSumDet.Statement := by
   intro N r V A M _ hV
   let g : (Fin r → ℂ) [⋀^Fin r]→ₗ[ℂ] ℂ := (altForm N r V hV).compLinearMap A.mulVecLin

@@ -11,6 +11,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC
 
 namespace UpperTheory.Gal.G3
 
+/- English proof (translation)
+Introduce `l _ k _ _ hl X p _ n i`. Establish `hT : ∀ a m, Finite (Ht (l ^ a) (sch.obj X) m i)` using `fun a m => by`. Establish `: NeZero (l ^ a)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Conclude with `UpperTheory.Et.etale_finiteness_of_duality (l ^ a) k (by rw [Nat.cast_pow]; exact hl.pow a) p m i`. Establish `hM : Module.Finite ℤ_[l] (Hl l (sch.obj X) n i)` using `LateralTheory.EWeil.AdicFinPf.AdicFin_of l _ n i (fun a => hT a n) (LateralTheory.EWeil.AdicKerPf.AdicKer_of GlobalTheory.EtC.RedCoef.a11 l _ i (fun b => LateralTheory.Fin.AdicFin.etale_bockstein_sequence_adic_finiteness GlobalTheory.T.etaleCohomology_coefficient_longExactSequenc …`.
+
+Conclude with `⟨hM, Module.Finite.base_change ℤ_[l] ℚ_[l] _⟩`.
+-/
 theorem vFin_holds : GlobalTheory.GalV.VFin := by
   intro l _ k _ _ hl X p _ n i
   have hT : ∀ a m, Finite (Ht (l ^ a) (sch.obj X) m i) := fun a m => by

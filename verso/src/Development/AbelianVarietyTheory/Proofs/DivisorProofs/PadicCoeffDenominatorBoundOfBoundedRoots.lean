@@ -8,6 +8,15 @@ namespace GlobalTheory
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `hd`. Establish `hden : ‖((c.den : ℤ) : ℚ_[p])‖ < 1` using `Padic.norm_intCast_lt_one_iff.2 (Int.natCast_dvd_natCast.2 hd)`. Establish `hnum : ‖((c.num : ℤ) : ℚ_[p])‖ < 1`. Establish `h1 : ((c.num : ℤ) : ℚ_[p]) = (c : ℚ_[p]) * ((c.den : ℤ) : ℚ_[p])`. Establish `: (c.num : ℚ) = c * (c.den : ℤ)`.
+
+Rewrite using `[Int.cast_natCast, Rat.mul_den_eq_num]`. Conclude with `congrArg (fun x : ℚ => (x : ℚ_[p])) this` after adjusting the coercions. Rewrite using `[h1, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpn : (p : ℤ) ∣ c.num` using `Padic.norm_intCast_lt_one_iff.1 hnum`.
+
+Establish `hcop` using `c.reduced`. Establish `h2 : p ∣ c.num.natAbs`. Rewrite using `[← Int.natCast_dvd_natCast, Int.natCast_natAbs]`. Conclude with `(dvd_abs _ _).2 hpn`. Establish `h3` using `Nat.dvd_gcd h2 hd`.
+
+Rewrite `h3` using `[hcop.gcd_eq_one]`. Conclude with `(Fact.out : p.Prime).ne_one (Nat.dvd_one.1 h3)`.
+-/
 theorem not_dvd_den_of_padic_norm_le_one (p : ℕ) [Fact p.Prime] (c : ℚ)
     (hc : ‖(c : ℚ_[p])‖ ≤ 1) : ¬ p ∣ c.den := by
   intro hd
@@ -30,6 +39,21 @@ theorem not_dvd_den_of_padic_norm_le_one (p : ℕ) [Fact p.Prime] (c : ℚ)
   rw [hcop.gcd_eq_one] at h3
   exact (Fact.out : p.Prime).ne_one (Nat.dvd_one.1 h3)
 
+/- English proof (translation)
+Introduce `p _ q hq k hroot i`. Establish `hp : p.Prime` using `Fact.out`. Distinguish the cases in `hi : q.natDegree < i`. Use `⟨1, Nat.coprime_one_left _, 0, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_eq_zero_of_natDegree_lt hi]`.
+
+Simplify using the standard rewrite rules. Use `push_neg at hi`. Establish `hQm : (q.map (algebraMap ℚ (PadicAlgCl p))).Monic` using `hq.map _`. Establish `hQd : (q.map (algebraMap ℚ (PadicAlgCl p))).natDegree = q.natDegree` using `natDegree_map _`. Establish `hB` using `GlobalTheory.norm_coeff_natDegree_sub_le_pow_of_roots_le (PadicAlgCl p) _ hQm ((p : ℝ) ^ k) hroot (q.natDegree - i) (by omega)`.
+
+Rewrite `hB` using `[hQd, Nat.sub_sub_self hi, coeff_map]`. Establish `hn : ‖((q.coeff i : ℚ) : ℚ_[p])‖ ≤ (p : ℝ) ^ (k * q.natDegree)`. Establish `e : algebraMap ℚ (PadicAlgCl p) (q.coeff i) = algebraMap ℚ_[p] (PadicAlgCl p) ((q.coeff i : ℚ) : ℚ_[p])`. Rewrite using `[eq_ratCast, map_ratCast]`. Rewrite `hB` using `[e, PadicAlgCl.norm_extends]`.
+
+Use `hB.trans ?_` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Conclude with `pow_le_pow_right₀ (by exact_mod_cast hp.one_lt.le) (Nat.mul_le_mul_left k (Nat.sub_le _ _))`. Use `set c : ℚ := ((p ^ (k * q.natDegree) : ℕ) : ℚ) * q.coeff i with hcdef`. Establish `hc : ‖(c : ℚ_[p])‖ ≤ 1`.
+
+Establish `hp0 : (0 : ℝ) < (p : ℝ) ^ (k * q.natDegree)`. Establish `: (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Check the signs of the components of the expression. Rewrite using `[hcdef]`. Use `push_cast`.
+
+Rewrite using `[norm_mul, norm_pow, Padic.norm_p, inv_pow]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨c.den, ?_, c.num, ?_⟩` and prove the remaining obligations. Conclude with `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp).2 (not_dvd_den_of_padic_norm_le_one p c hc))`. Rewrite using `[← Rat.den_mul_eq_num c, hcdef]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem padic_denom_coeff_of_roots_bounded :
     ∀ (p : ℕ) [Fact p.Prime] (q : Polynomial ℚ), q.Monic → ∀ k : ℕ,
       (∀ μ : PadicAlgCl p, (q.map (algebraMap ℚ (PadicAlgCl p))).IsRoot μ → ‖μ‖ ≤ (p : ℝ) ^ k) →

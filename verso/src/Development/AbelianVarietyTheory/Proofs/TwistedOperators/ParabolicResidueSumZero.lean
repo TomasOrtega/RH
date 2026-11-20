@@ -14,12 +14,22 @@ variable {k : ℕ}
 def flipOf (W : Finset (SV k)) : SV k → SV k :=
   if h : IsPar W then Classical.choose (GlobalTheory.T.exists_root_involution_parabolic W h) else id
 
+/- English proof (translation)
+Simplify using `only [flipOf, dif_pos h]`. Conclude with `Classical.choose_spec (GlobalTheory.T.exists_root_involution_parabolic W h) u hu hp`.
+-/
 theorem flipOf_spec {W : Finset (SV k)} (h : IsPar W) {u : SV k} (hu : u ∉ W) (hp : IsPar (insert u W)) :
     flipOf W u ∉ W ∧ flipOf W u ≠ u ∧ IsPar (insert (flipOf W u) W) ∧ vec u + vec (flipOf W u) ∈ aP W ∧
       flipOf W (flipOf W u) = u := by
   simp only [flipOf, dif_pos h]
   exact Classical.choose_spec (GlobalTheory.T.exists_root_involution_parabolic W h) u hu hp
 
+/- English proof (translation)
+Establish `key : ∀ a, aP (insert a W) = Submodule.span ℝ {vec a} ⊔ aP W` using `fun a => by`. Rewrite using `[aP, coe_insert, Set.image_insert_eq, Submodule.span_insert]`. Both sides reduce to the same expression. Rewrite using `[key, key]`. Establish `h1 : vec u' ∈ Submodule.span ℝ {vec u} ⊔ aP W`.
+
+Rewrite using `[show vec u' = (vec u + vec u') - vec u by abel]`. Conclude with `sub_mem (Submodule.mem_sup_right h) (Submodule.mem_sup_left (Submodule.mem_span_singleton_self _))`. Establish `h2 : vec u ∈ Submodule.span ℝ {vec u'} ⊔ aP W`. Rewrite using `[show vec u = (vec u + vec u') - vec u' by abel]`. Conclude with `sub_mem (Submodule.mem_sup_right h) (Submodule.mem_sup_left (Submodule.mem_span_singleton_self _))`.
+
+Conclude with `le_antisymm (sup_le ((Submodule.span_singleton_le_iff_mem _ _).2 h1) le_sup_right) (sup_le ((Submodule.span_singleton_le_iff_mem _ _).2 h2) le_sup_right)`.
+-/
 theorem vecSpan_insert_eq_of_add_mem {W : Finset (SV k)} {u u' : SV k} (h : vec u + vec u' ∈ aP W) :
     aP (insert u' W) = aP (insert u W) := by
   have key : ∀ a, aP (insert a W) = Submodule.span ℝ {vec a} ⊔ aP W := fun a => by
@@ -34,6 +44,9 @@ theorem vecSpan_insert_eq_of_add_mem {W : Finset (SV k)} {u u' : SV k} (h : vec 
   exact le_antisymm (sup_le ((Submodule.span_singleton_le_iff_mem _ _).2 h1) le_sup_right)
     (sup_le ((Submodule.span_singleton_le_iff_mem _ _).2 h2) le_sup_right)
 
+/- English proof (translation)
+Establish `hy : pr W (vec u + vec u') = vec u + vec u'` using `Submodule.starProjection_eq_self_iff.2 h`. Rewrite `hy` using `[map_add]`. Simplify using `only [rt, wt, erase_insert hu, erase_insert hu']`. Rewrite using `[neg_sub, sub_eq_sub_iff_add_eq_add, hy, add_comm]`.
+-/
 theorem rt_flip {W : Finset (SV k)} {u u' : SV k} (hu : u ∉ W) (hu' : u' ∉ W) (h : vec u + vec u' ∈ aP W) :
     rt (insert u' W) u' = - rt (insert u W) u := by
   have hy : pr W (vec u + vec u') = vec u + vec u' := Submodule.starProjection_eq_self_iff.2 h
@@ -41,6 +54,9 @@ theorem rt_flip {W : Finset (SV k)} {u u' : SV k} (hu : u ∉ W) (hu' : u' ∉ W
   simp only [rt, wt, erase_insert hu, erase_insert hu']
   rw [neg_sub, sub_eq_sub_iff_add_eq_add, hy, add_comm]
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [mem_erase, mem_sdiff]`. The claim follows by propositional logic.
+-/
 theorem erase_sdiff_eq (P Q : Finset (SV k)) (u : SV k) : (P \ Q).erase u = P.erase u \ Q := by
   ext v; simp only [mem_erase, mem_sdiff]; tauto
 
@@ -51,6 +67,15 @@ def term (Q : Finset (SV k)) (c : Finset (SV k) → A0 k → ℂ) (b x : A0 k) (
 def wallFac (Q W : Finset (SV k)) (x : A0 k) : ℝ :=
   √(Matrix.gram ℝ fun v : ↥(W \ Q) => rt W v).det * ∏ v ∈ W \ Q, (⟪x, rt W v⟫_ℝ)⁻¹
 
+/- English proof (translation)
+Take `⟨hPp, hPa, -⟩` from `mem_parP.1 hP`. Establish `huP` using `(mem_sdiff.1 hu).1`. Establish `hF : P ∈ parF 𝔞 ∅` using `mem_parF.2 ⟨hPp, hPa.le, empty_subset _⟩`. Establish `hs : (P \ Q).erase u ⊆ P.erase u` using `erase_subset_erase _ sdiff_subset`. Establish `hR` using `GlobalTheory.T.gram_root_determinant_erase ((P \ Q).erase u) hPp huP hs x hx`.
+
+Rewrite `hR` using `[insert_erase hu, erase_sdiff_eq]`. Establish `hpr : pr P x = pr (P.erase u) x`. Rewrite using `[GlobalTheory.T.projection_erase_root_formula hPp huP x, real_inner_comm, hx, zero_div, zero_smul, add_zero]`. Establish `hcP : c P x = c (P.erase u) x`. Rewrite using `[(hc P hF).2 P subset_rfl x, hpr, ← (hc P hF).2 _ (erase_subset _ _) x]`.
+
+Establish `hcard : (P \ Q).card = (P.erase u \ Q).card + 1`. Rewrite using `[← card_erase_add_one hu, erase_sdiff_eq]`. Establish `hR'` using `congrArg (fun t : ℝ => (t : ℂ)) hR`. Simplify using `only [wallFac] at hR' ⊢`. Move the coercions through the operations in `at hR' ⊢`.
+
+Rewrite using `[term, hcP, prod_const, hcard, erase_sdiff_eq]`. Take the linear combination `(Complex.I ^ ((P.erase u \ Q).card + 1))⁻¹ * c (P.erase u) x * ((⟪rt P u, b⟫_ℝ : ℂ))⁻¹ * hR'`.
+-/
 theorem term_eq {𝔞 : Submodule ℝ (A0 k)} {Q : Finset (SV k)} {c : Finset (SV k) → A0 k → ℂ} (hc : IsGMFam 𝔞 c)
     {b x : A0 k} {P : Finset (SV k)} (hP : P ∈ parP 𝔞 Q) {u : SV k} (hu : u ∈ P \ Q) (hx : ⟪x, rt P u⟫_ℝ = 0) :
     term Q c b x P u = ((wallFac Q (P.erase u) x : ℝ) : ℂ) * ((‖rt P u‖ : ℝ) : ℂ) *
@@ -73,6 +98,11 @@ theorem term_eq {𝔞 : Submodule ℝ (A0 k)} {Q : Finset (SV k)} {c : Finset (S
   rw [term, hcP, prod_const, hcard, erase_sdiff_eq]
   linear_combination (Complex.I ^ ((P.erase u \ Q).card + 1))⁻¹ * c (P.erase u) x * ((⟪rt P u, b⟫_ℝ : ℂ))⁻¹ * hR'
 
+/- English proof (translation)
+Take `⟨hPp, hPa, hQ⟩` from `mem_parP.1 hP`. Take `⟨huP, huQ⟩` from `mem_sdiff.1 hu`. Establish `hQW : Q ⊆ P.erase u` using `fun v hv => mem_erase.2 ⟨fun e => huQ (e ▸ hv), hQ hv⟩`. Take `⟨h1, h2, h3, h4, h5⟩` from `flipOf_spec (hPp.mono (erase_subset u P)) (notMem_erase u P) ((insert_erase huP).symm ▸ hPp)`. Use `⟨mem_parP.2 ⟨h3, ?_, hQW.trans (subset_insert _ _)⟩, mem_sdiff.2 ⟨mem_insert_self _ _, fun h => h1 (hQW h)⟩, ?_, erase_insert h1, h2, h5⟩` and prove the remaining obligations.
+
+Rewrite using `[vecSpan_insert_eq_of_add_mem h4, insert_erase huP, hPa]`. Rewrite using `[rt_flip (notMem_erase u P) h1 h4, insert_erase huP]`.
+-/
 theorem flip_facts {𝔞 : Submodule ℝ (A0 k)} {Q P : Finset (SV k)} (hP : P ∈ parP 𝔞 Q) {u : SV k} (hu : u ∈ P \ Q) :
     insert (flipOf (P.erase u) u) (P.erase u) ∈ parP 𝔞 Q ∧
       flipOf (P.erase u) u ∈ insert (flipOf (P.erase u) u) (P.erase u) \ Q ∧
@@ -89,6 +119,19 @@ theorem flip_facts {𝔞 : Submodule ℝ (A0 k)} {Q P : Finset (SV k)} (hP : P �
   · rw [vecSpan_insert_eq_of_add_mem h4, insert_erase huP, hPa]
   · rw [rt_flip (notMem_erase u P) h1 h4, insert_erase huP]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∑ P ∈ parP 𝔞 Q, ∑ u ∈ (P \ Q).filter (fun u => ∃ r : ℝ, rt P u = r • b), term Q c b x P u = 0`. Rewrite using `[sum_sigma']`. Use `sum_involution (fun a _ => ⟨insert (flipOf (a.1.erase a.2) a.2) (a.1.erase a.2), flipOf (a.1.erase a.2) a.2⟩) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨P, u⟩ ha`. Take `⟨hP, hu⟩` from `mem_sigma.1 ha`.
+
+Take `⟨hu, r, hr⟩` from `mem_filter.1 hu`. Take `⟨h1, h2, h3, h4, -, -⟩` from `flip_facts hP hu`. Simplify using `only at *`. Establish `hx' : ⟪x, rt P u⟫_ℝ = 0` using `by rw [hr, inner_smul_right, hx, mul_zero]`. Rewrite using `[term_eq hc hP hu hx', term_eq hc h1 h2 (by rw [h3, inner_neg_right, hx', neg_zero]), h3, h4, norm_neg, inner_neg_left]`.
+
+Use `push_cast`. Rewrite using `[inv_neg]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨P, u⟩ ha _ e`. Take `⟨hP, hu⟩` from `mem_sigma.1 ha`.
+
+Take `⟨-, -, -, -, h5, -⟩` from `flip_facts hP (mem_filter.1 hu).1`. Conclude with `h5 (congrArg (fun a : (_ : Finset (SV k)) × SV k => a.2) e)`. Introduce and unpack `⟨P, u⟩ ha`. Take `⟨hP, hu⟩` from `mem_sigma.1 ha`. Take `⟨hu, r, hr⟩` from `mem_filter.1 hu`.
+
+Take `⟨h1, h2, h3, -, -, -⟩` from `flip_facts hP hu`. Conclude with `mem_sigma.2 ⟨h1, mem_filter.2 ⟨h2, -r, by rw [h3, hr, neg_smul]⟩⟩`. Introduce and unpack `⟨P, u⟩ ha`. Take `⟨hP, hu⟩` from `mem_sigma.1 ha`. Establish `hu'` using `(mem_filter.1 hu).1`.
+
+Take `⟨-, -, -, h4, -, h6⟩` from `flip_facts hP hu'`. Simplify using `only at *`. Rewrite using `[h4, h6, insert_erase (mem_sdiff.1 hu').1]`.
+-/
 theorem residues_cancel {k : ℕ} (𝔞 : Submodule ℝ (A0 k)) (c : Finset (SV k) → A0 k → ℂ) (hc : IsGMFam 𝔞 c)
     (Q : Finset (SV k)) (_hQ : Q ∈ parF 𝔞 ∅) (b : A0 k) (_hb : b ≠ 0) (x : A0 k) (hx : ⟪x, b⟫_ℝ = 0) :
     ∑ P ∈ parP 𝔞 Q, ∑ u ∈ (P \ Q).filter (fun u => ∃ r : ℝ, rt P u = r • b),

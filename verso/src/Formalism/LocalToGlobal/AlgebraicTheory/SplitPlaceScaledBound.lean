@@ -5,9 +5,21 @@ import ReciprocityTheory.EigenFrames.EigenPf
 
 namespace Formalism.L2.AlgTh
 
+/- English proof (translation)
+The claim follows from `xiConn_of etLoc scalarConst xiSwap`.
+-/
 theorem xiConn : XiConn := xiConn_of etLoc scalarConst xiSwap
+/- English proof (translation)
+The claim follows from `split_bound_of_xi_lemmas xiEt xiConn`.
+-/
 theorem split_place_scaled_bound : SelfDualLatticeThetaPadicIntegrality := split_bound_of_xi_lemmas xiEt xiConn
+/- English proof (translation)
+The claim follows from `eigenFrameDual_of ReciprocityTheory.EigenFramesTheory.eigenFrameDual`.
+-/
 theorem eigenFrameDual : EigenFrameDual := eigenFrameDual_of ReciprocityTheory.EigenFramesTheory.eigenFrameDual
+/- English proof (translation)
+The claim follows from `kerFrame_of eigenFrameDual`.
+-/
 theorem kerFrame : KerFrame := kerFrame_of eigenFrameDual
 
 end Formalism.L2.AlgTh

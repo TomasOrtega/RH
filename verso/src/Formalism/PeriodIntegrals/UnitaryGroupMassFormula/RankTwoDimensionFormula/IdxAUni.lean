@@ -11,13 +11,24 @@ section Core
 
 variable {F : Type} [Field F] {k : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qh23.uniA_mul_diag .. | (apply UpperTheory.Reformulated.B.Qh23.uniA_mul_diag <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh23.uniA_mul_diag <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag <;> assumpt …`.
+-/
 theorem uniA_mul_diag (A B : Matrix (Fin k) (Fin k) F) (hA : A.BlockTriangular id)
     (hB : B.BlockTriangular id) (i : Fin k) : (A * B) i i = A i i * B i i := by
   first | exact UpperTheory.Reformulated.B.Qh23.uniA_mul_diag .. | (apply UpperTheory.Reformulated.B.Qh23.uniA_mul_diag <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh23.uniA_mul_diag <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag F ‹_› k A B hA hB i | exact @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag F ‹_› k A B hA hB | exact @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag F ‹_› k A B hA | exact @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag F ‹_› k A B | exact @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag F ‹_› k A | exact @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag F ‹_› k | exact @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag F ‹_› | exact @UpperTheory.Reformulated.B.Qh23.uniA_mul_diag F
 
+/- English proof (translation)
+Introduce `i j h` and use `hx i j h`.
+-/
 theorem uniA_tri (x : GL (Fin k) F) (hx : ∀ i j : Fin k, j < i → (x : Matrix (Fin k) (Fin k) F) i j = 0) :
     (x : Matrix (Fin k) (Fin k) F).BlockTriangular id := fun i j h => hx i j h
 
+/- English proof (translation)
+Establish `tx` using `uniA_tri x hx.2`. Establish `ty` using `uniA_tri y hy.2`. Establish `txy : ((x : Matrix (Fin k) (Fin k) F) * (y : Matrix (Fin k) (Fin k) F)).BlockTriangular id` using `tx.mul ty`. Use `⟨fun i => ?_, fun i j h => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, uniA_mul_diag _ _ tx ty, hx.1 i, hy.1 i, one_mul]`.
+
+Rewrite using `[Units.val_mul]`. Conclude with `txy h`.
+-/
 theorem uniA_mul (x y : GL (Fin k) F) (hx : Formalism.L2.SG.GGMirabolic.IsUni k x)
     (hy : Formalism.L2.SG.GGMirabolic.IsUni k y) : Formalism.L2.SG.GGMirabolic.IsUni k (x * y) := by
   have tx := uniA_tri x hx.2
@@ -28,6 +39,13 @@ theorem uniA_mul (x y : GL (Fin k) F) (hx : Formalism.L2.SG.GGMirabolic.IsUni k 
   · rw [Units.val_mul, uniA_mul_diag _ _ tx ty, hx.1 i, hy.1 i, one_mul]
   · rw [Units.val_mul]; exact txy h
 
+/- English proof (translation)
+Establish `tx` using `uniA_tri x hx.2`. Establish `: Invertible (x : Matrix (Fin k) (Fin k) F)` using `Units.invertible x`. Establish `tinv : ((x : Matrix (Fin k) (Fin k) F)⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular tx`. Establish `hc : ((x⁻¹ : GL (Fin k) F) : Matrix (Fin k) (Fin k) F) = (x : Matrix (Fin k) (Fin k) F)⁻¹` using `Matrix.coe_units_inv x`. Use `⟨fun i => ?_, fun i j h => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ((x : Matrix (Fin k) (Fin k) F)⁻¹ * (x : Matrix (Fin k) (Fin k) F)) i i = 1`. Rewrite using `[Matrix.inv_mul_of_invertible, Matrix.one_apply_eq]`. Rewrite `h1` using `[uniA_mul_diag _ _ tinv tx, hx.1 i, mul_one]`. Rewrite using `[hc]`. Conclude with `h1`.
+
+Rewrite using `[hc]`. Conclude with `tinv h`.
+-/
 theorem uniA_inv (x : GL (Fin k) F) (hx : Formalism.L2.SG.GGMirabolic.IsUni k x) :
     Formalism.L2.SG.GGMirabolic.IsUni k x⁻¹ := by
   have tx := uniA_tri x hx.2
@@ -45,6 +63,9 @@ theorem uniA_inv (x : GL (Fin k) F) (hx : Formalism.L2.SG.GGMirabolic.IsUni k x)
 
 end Core
 
+/- English proof (translation)
+Introduce `F _ k x y hx hy`. Conclude with `⟨uniA_mul x y hx hy, uniA_inv x hx⟩`.
+-/
 theorem uniSub : UniSub := by
   intro F _ k x y hx hy
   exact ⟨uniA_mul x y hx hy, uniA_inv x hx⟩

@@ -9,6 +9,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.SncBase
 
+/- English proof (translation)
+Introduce `W P Ω _ ξ' ξ₀ g o _ _ κ u h he p'`. Establish `hd : Dominates ξ' ξ₀ g (RingHom.id Ω)`. Establish `e : Spec.map (CommRingCat.ofHom (RingHom.id Ω)) = 𝟙 (Spec (CommRingCat.of Ω))`. Conclude with `Spec.map_id _`. Use `show ξ' ≫ g = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ ξ₀`.
+
+Rewrite using `[e, Category.id_comp]`. Conclude with `he`. Take `⟨hs, hreg, -⟩` from `RegAtDom.regAt_dominates P Ω ξ₀ W Ω ξ' g (RingHom.id Ω) hd p'`. Take `⟨c, hc, hr⟩` from `h.cover ⟨g p'.1, hs⟩`. Conclude with `⟨c, hc, fun c' => hreg _ (hr c')⟩`.
+-/
 theorem exists_inChart_of_comp_eq :
     ∀ (W P : Scheme.{0}) (Ω : Type) [Field Ω] (ξ' : Sp Ω ⟶ W) (ξ₀ : Sp Ω ⟶ P) (g : W ⟶ P) (o : Type) [CommRing o]
       [Algebra o Ω] (κ : Type) (u : κ → Ω), CoordTie o ξ₀ u → ξ' ≫ g = ξ₀ → ∀ p' : Cpt ξ', ∃ c, InChart ξ' u c p' := by

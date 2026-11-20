@@ -6,6 +6,9 @@ open scoped ContDiff
 
 namespace UpperTheory.V.Lit.Dr
 
+/- English proof (translation)
+Introduce `X _ _ V F _ _ _ _ q f v x hf hv`. Set `B : (V [⋀^Fin q]→L[ℝ] F) →L[ℝ] ContinuousMultilinearMap ℝ (fun _ : Fin q => V) F` to `ContinuousAlternatingMap.toContinuousMultilinearMapCLM ℝ`. Establish `hB : ContDiffAt ℝ ∞ (fun p : (V [⋀^Fin q]→L[ℝ] F) × (Fin q → V) => B p.1 p.2) (f x, fun i => v i x)` using `(B.cpolynomialAt_uncurry_of_multilinear).contDiffAt`. Establish `hin : ContDiffAt ℝ ∞ (fun y => (f y, fun i => v i y)) x` using `hf.prodMk (contDiffAt_pi.mpr hv)`. Conclude with `hB.comp x hin`.
+-/
 theorem applySmooth : ApplySmooth := by
   intro X _ _ V F _ _ _ _ q f v x hf hv
   let B : (V [⋀^Fin q]→L[ℝ] F) →L[ℝ] ContinuousMultilinearMap ℝ (fun _ : Fin q => V) F :=

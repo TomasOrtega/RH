@@ -40,6 +40,9 @@ def ArchSec.ofConst {Z : Comp Xo c} {la : Weight Dw} {δ : HeightOneSpectrum (�
     ArchSec U x Z la :=
   ⟨s.sig, s.inv, s.sig_mem, s.inv_mem, s.idem_sig, s.idem_inv, s.mul_inv, s.cInf, s.cInf_pos, s.norm_inf⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨.ofConst (ConstSec.one x h)⟩`.
+-/
 example (Z : Comp Xo c) (h : HasPts U Z) : Nonempty (ArchSec U x Z 0) := ⟨.ofConst (ConstSec.one x h)⟩
 
 def Onto : Prop :=
@@ -74,6 +77,9 @@ def htValOn (Z : Comp Xo c) (la : HeightOneSpectrum (𝓞 c.F)) : Set (Rul Xo c 
   {w | ∃ (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (y₀ : IntFr Xo c T io),
     OverLa la T.V io e ∧ algOn Z T io y₀ ∧ w ∈ htValAt la y₀}
 
+/- English proof (translation)
+Introduce and unpack `w ⟨T, io, e, y₀, ho, hz, p, hp, ha, k, y, hy, rfl⟩`. Conclude with `⟨p, hp, ha, T, io, e, y₀, k, y, ho, hz.1, hy, rfl⟩`.
+-/
 theorem htValOn_subset (Z : Comp Xo c) (la : HeightOneSpectrum (𝓞 c.F)) : htValOn Z la ⊆ htValSet Xo c la := by
   rintro w ⟨T, io, e, y₀, ho, hz, p, hp, ha, k, y, hy, rfl⟩
   exact ⟨p, hp, ha, T, io, e, y₀, k, y, ho, hz.1, hy, rfl⟩

@@ -13,18 +13,44 @@ def E_L (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N r : ℕ) (t
     (GA E N → ℂ) →ₗ[ℂ] (GA E N → ℂ) :=
   LinearMap.funLeft ℂ ℂ fun g => aT E N r t * g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem E_L_apply {N r : ℕ} (t : ℝ) (f : GA E N → ℂ) (g : GA E N) : E_L E N r t f g = f (aT E N r t * g) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[E_L_apply, aT_zero, one_mul]`.
+-/
 theorem constant_term_zero_eq {N r : ℕ} (f : GA E N → ℂ) : E_L E N r 0 f = f := by
   funext g
   rw [E_L_apply, aT_zero, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[E_L_apply, E_L_apply, E_L_apply, aT_add, mul_assoc]`.
+-/
 theorem E_LL {N r : ℕ} (s t : ℝ) (f : GA E N → ℂ) : E_L E N r s (E_L E N r t f) = E_L E N r (t + s) f := by
   funext g
   rw [E_L_apply, E_L_apply, E_L_apply, aT_add, mul_assoc]
 
 variable {r s : ℕ}
 
+/- English proof (translation)
+Establish `hφc : Continuous φ.1` using `GlobalTheory.CuspRep.ContAut.continuous_of_isOpen_stab E _ φ hφ.level`. Establish `hφl` using `GlobalTheory.CompanionTheory.LeftInv.isLeftInvariant_of_isAutForm E _ φ hφ`. Establish `hcr : Continuous (An.ctn r φ.1)` using `E_cont_ctn r hφc hφ.left`. Use function extensionality and compare the values at `m₁`. Use `set y := lev (Ad E) r s (m₁, m₂) * h with hy`.
+
+Establish `hpos : ∀ x : PPos (r + s) {r₁, r}, ¬ IsTop r x → ((x.1.1 : ℕ) < r ↔ (x.1.2 : ℕ) < r)` using `fun x hx => by`. Use `E_pos_top hr₁ x hx` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e2 : ∀ A : UPos r r₁ → Ad E, ψ (unipGL A * m₁) = ∑ t ∈ τs, a t * An.ctn r φ.1 (parGL (joinPos (r` using `r) 0 fun q => A ((eL r s r₁ hr₁).symm q)) * (aT E (r + s) r t * y)) := by`. Introduce `A`.
+
+Rewrite using `[hψF, hF]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `e : lev (Ad E) r s (unipGL A * m₁, m₂) = lev (Ad E) r s (unipGL A, 1) * lev (Ad E) r s (m₁, m₂)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e, lev_unipGL_left r s r₁ hr₁, mul_assoc, ← mul_assoc (aT E (r + s) r t), aT_comm_parGL _ _ _ _ hpos, mul_assoc]`.
+
+Establish `e3 : ∀ z, ∫ b, An.ctn r φ.1 (parGL (joinPos (r` using `r) 0 b) * z) ∂(Measure.pi fun _ : {x : PPos (r + s) {r₁, r} // ¬ IsTop r x} => boxMeasure E) = (E_vol E (r + s) r)⁻¹ * (E_vol E (r + s) r₁ * ∫ b, An.ctn r₁ φ.1 (parGL (joinPos (r := r₁) 0 b) * z) ∂(Measure.pi fun _ : {x : PPos (r + s) {r₁, r} // ¬ IsTop r₁ x} => boxMeasure E)) := …`. Introduce `z`. Simplify using `only [E_ctn_eq r]`. Rewrite using `[integral_const_mul, ← constantTermPar_eq_top hr₁ hφc, constantTermPar_eq_bot hr₁ hφc hφl]`. Use `congr 1`.
+
+Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Conclude with `E_ct_eq r₁ _ _`. Establish `hint : ∀ t ∈ τs, Integrable (fun A : UPos r r₁ → Ad E => a t * An.ctn r φ.1 (parGL (joinPos (r` using `r) 0 fun q => A ((eL r s r₁ hr₁).symm q)) * (aT E (r + s) r t * y))) (Measure.pi fun _ => boxMeasure E) := by`.
+
+Introduce `t _`. Use `(integrable_box ?_).const_mul _` and prove the remaining obligations. Conclude with `hcr.comp ((((E_cont_join (E := E) (n := r + s) (S := {r₁, r}) r).comp (continuous_pi fun q => continuous_apply _))).mul continuous_const)`. Rewrite using `[E_ctn_eq, constantTerm_eq_integral]`. Simplify using `only [e2]`.
+
+Rewrite using `[integral_finsetSum _ hint]`. Simplify using `only [integral_const_mul, E_B]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_box_reindex (eL r s r₁ hr₁) (fun b => An.ctn r φ.1 (parGL (joinPos (r := r) 0 b) * (aT E (r + s) r t * y))), e3]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem E_key_left {r₁ : ℕ} (hr₁ : r₁ < r) (φ : Sm E (r + s)) (hφ : IsAutForm φ) (τs : Finset ℝ) (a : ℝ → ℂ)
     (F : GA E (r + s) → ℂ) (hF : ∀ g, F g = ∑ t ∈ τs, a t * An.ctn r φ.1 (aT E (r + s) r t * g))
     (ψ : GA E r → ℂ) (m₂ : GA E s) (h : GA E (r + s)) (hψF : ∀ m₁, ψ m₁ = F (lev (Ad E) r s (m₁, m₂) * h)) :
@@ -78,6 +104,11 @@ theorem E_key_left {r₁ : ℕ} (hr₁ : r₁ < r) (φ : Sm E (r + s)) (hφ : Is
     (fun b => An.ctn r φ.1 (parGL (joinPos (r := r) 0 b) * (aT E (r + s) r t * y))), e3]
   ring
 
+/- English proof (translation)
+Establish `hpos : ∀ x : PPos (r + s) {r₁, r}, ¬ IsTop r₁ x → ((x.1.1 : ℕ) < r₁ ↔ (x.1.2 : ℕ) < r₁)` using `fun x hx => by`. Use `E_pos_bot hr₁ x hx` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `m₁`. Rewrite using `[E_L_apply]`.
+
+Unfold `E_B`. Use `congrArg (κ * ·) (Finset.sum_congr rfl fun u _ => congrArg (a u * ·) (integral_congr_ae (.of_forall fun b => ?_)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (aT E (r + s) r₁ t * _) = f _`. Use `congrArg f ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, aT_comm_parGL _ _ _ _ hpos, mul_assoc, ← mul_assoc (aT E (r + s) r₁ t), aT_comm, mul_assoc, ← mul_assoc (aT E (r + s) r₁ t), ← lev_aT_left r s r₁ hr₁.le, ← map_mul, Prod.mk_mul_mk, one_mul]`.
+-/
 theorem E_hB_left {r₁ : ℕ} (hr₁ : r₁ < r) (m₂ : GA E s) (h : GA E (r + s)) (κ : ℂ) (τs : Finset ℝ) (a : ℝ → ℂ)
     (t : ℝ) (f : GA E (r + s) → ℂ) :
     E_B (fun b : {x : PPos (r + s) {r₁, r} // ¬ IsTop r₁ x} → Ad E => (parGL (joinPos (r := r₁) 0 b) : GA E (r + s)))
@@ -98,6 +129,11 @@ theorem E_hB_left {r₁ : ℕ} (hr₁ : r₁ < r) (m₂ : GA E s) (h : GA E (r +
   rw [← mul_assoc, aT_comm_parGL _ _ _ _ hpos, mul_assoc, ← mul_assoc (aT E (r + s) r₁ t), aT_comm, mul_assoc,
     ← mul_assoc (aT E (r + s) r₁ t), ← lev_aT_left r s r₁ hr₁.le, ← map_mul, Prod.mk_mul_mk, one_mul]
 
+/- English proof (translation)
+Establish `hφc : Continuous φ.1` using `GlobalTheory.CuspRep.ContAut.continuous_of_isOpen_stab E _ φ hφ.level`. Establish `hφl` using `GlobalTheory.CompanionTheory.LeftInv.isLeftInvariant_of_isAutForm E _ φ hφ`. Establish `hpq : r < r + r₂` using `by omega`. Simplify using `only [E_ctn_eq r]`. Rewrite using `[integral_const_mul, ← constantTermPar_eq_bot hpq hφc hφl, constantTermPar_eq_top hpq hφc]`.
+
+Use `congr 1`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Conclude with `E_ct_eq (r + r₂) _ _`.
+-/
 theorem E_trans_right {r₂ : ℕ} (hr₂ : 0 < r₂) (φ : Sm E (r + s)) (hφ : IsAutForm φ) (w : GA E (r + s)) :
     ∫ b, An.ctn r φ.1 (parGL (joinPos (r := r) 0 b) * w)
       ∂(Measure.pi fun _ : {x : PPos (r + s) {r, r + r₂} // ¬ IsTop r x} => boxMeasure E) =
@@ -115,6 +151,15 @@ theorem E_trans_right {r₂ : ℕ} (hr₂ : 0 < r₂) (φ : Sm E (r + s)) (hφ :
   funext b
   exact E_ct_eq (r + r₂) _ _
 
+/- English proof (translation)
+Establish `hφc : Continuous φ.1` using `GlobalTheory.CuspRep.ContAut.continuous_of_isOpen_stab E _ φ hφ.level`. Establish `hcr : Continuous (An.ctn r φ.1)` using `E_cont_ctn r hφc hφ.left`. Establish `hpq : r < r + r₂` using `by omega`. Establish `hpos : ∀ x : PPos (r + s) {r, r + r₂}, ¬ IsTop r x → ((x.1.1 : ℕ) < r ↔ (x.1.2 : ℕ) < r)` using `fun x hx => by`. Use `E_pos_bot hpq x hx` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `e1 : ∀ b : {x : PPos (r + s) {r, r + r₂} // ¬ IsTop r x} → Ad E, F (parGL (joinPos (r` using `r) 0 b) * z) = ∑ t ∈ τs, a t * An.ctn r φ.1 (parGL (joinPos (r := r) 0 b) * (aT E (r + s) r t * z)) := by`. Introduce `b`. Rewrite using `[hF]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, aT_comm_parGL _ _ _ _ hpos, mul_assoc]`. Establish `hint : ∀ t ∈ τs, Integrable (fun b : {x : PPos (r + s) {r, r + r₂} // ¬ IsTop r x} → Ad E => a t * An.ctn r φ.1 (parGL (joinPos (r` using `r) 0 b) * (aT E (r + s) r t * z))) (Measure.pi fun _ => boxMeasure E) := fun t _ => (integrable_box (hcr.comp ((E_cont_join (E := E) (n := r + s) (S := {r, r + r₂}) r).mul continuous_const))).const_mul _`. Simplify using `only [e1]`. Rewrite using `[integral_finsetSum _ hint]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_const_mul, E_trans_right hr₂ φ hφ]`.
+-/
 theorem E_int_right {r₂ : ℕ} (hr₂ : 0 < r₂) (φ : Sm E (r + s)) (hφ : IsAutForm φ) (τs : Finset ℝ) (a : ℝ → ℂ)
     (F : GA E (r + s) → ℂ) (hF : ∀ g, F g = ∑ t ∈ τs, a t * An.ctn r φ.1 (aT E (r + s) r t * g)) (z : GA E (r + s)) :
     ∫ b, F (parGL (joinPos (r := r) 0 b) * z)
@@ -143,6 +188,11 @@ theorem E_int_right {r₂ : ℕ} (hr₂ : 0 < r₂) (φ : Sm E (r + s)) (hφ : I
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [integral_const_mul, E_trans_right hr₂ φ hφ]
 
+/- English proof (translation)
+Establish `hpq : r < r + r₂` using `by omega`. Establish `hpos : ∀ x : PPos (r + s) {r, r + r₂}, ¬ IsTop (r + r₂) x → ((x.1.1 : ℕ) < r + r₂ ↔ (x.1.2 : ℕ) < r + r₂)` using `fun x hx => by`. Use `E_pos_top hpq x hx` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Unfold `E_B`.
+
+Use `congrArg (1 * ·) (Finset.sum_congr rfl fun t _ => congrArg (a t * ·) (integral_congr_ae (.of_forall fun b => ?_)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (aT E (r + s) (r + r₂) u * _) = f _`. Use `congrArg f ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, aT_comm_parGL _ _ _ _ hpos, mul_assoc, ← mul_assoc (aT E (r + s) (r + r₂) u), aT_comm, mul_assoc]`.
+-/
 theorem E_G_shift {r₂ : ℕ} (hr₂ : 0 < r₂) (τs : Finset ℝ) (a : ℝ → ℂ) (u : ℝ) (f : GA E (r + s) → ℂ)
     (z : GA E (r + s)) :
     E_B (fun b : {x : PPos (r + s) {r, r + r₂} // ¬ IsTop (r + r₂) x} → Ad E =>
@@ -163,6 +213,11 @@ theorem E_G_shift {r₂ : ℕ} (hr₂ : 0 < r₂) (τs : Finset ℝ) (a : ℝ �
   refine congrArg f ?_
   rw [← mul_assoc, aT_comm_parGL _ _ _ _ hpos, mul_assoc, ← mul_assoc (aT E (r + s) (r + r₂) u), aT_comm, mul_assoc]
 
+/- English proof (translation)
+Establish `e1 : aT E (r + s) (r + r₂) t = lev (Ad E) r s (1, aT E s r₂ t) * aT E (r + s) r t`. Rewrite using `[lev_aT_right r s r₂ hr₂s, mul_assoc, ← aT_add, neg_add_cancel, aT_zero, mul_one]`. Establish `e2 : lev (Ad E) r s (m₁, aT E s r₂ t * m₂) = lev (Ad E) r s (1, aT E s r₂ t) * lev (Ad E) r s (m₁, m₂)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e1, e2, (aT_comm_lev r s t _).symm]`.
+
+Simplify using `only [mul_assoc]`.
+-/
 theorem E_aT_right {r₂ : ℕ} (hr₂s : r₂ ≤ s) (t : ℝ) (m₁ : GA E r) (m₂ : GA E s) (h : GA E (r + s)) :
     aT E (r + s) (r + r₂) t * (lev (Ad E) r s (m₁, m₂) * h) =
       aT E (r + s) r t * (lev (Ad E) r s (m₁, aT E s r₂ t * m₂) * h) := by

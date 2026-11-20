@@ -6,6 +6,13 @@ namespace GlobalTheory.PowerSeriesNoPole
 
 open scoped LaurentSeries in
 open PowerSeries in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Use extensionality with `d`. Simplify using `[coeff_C_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Introduce `h`.
+
+Establish `hd : ∀ d, ϖ ∣ coeff d f` using `fun d ↦ by`. Use `congrArg (coeff d) h` as an intermediate fact. Simplify `this` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Use `choose q hq using hd`. Use `⟨mk q, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `d`. Simplify using `[coeff_C_mul, hq d]`.
+-/
 private lemma C_dvd_iff_map_mk_eq_zero {A : Type} [CommRing A] (ϖ : A) (f : PowerSeries A) :
     C ϖ ∣ f ↔ PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) f = 0 := by
   constructor
@@ -23,6 +30,11 @@ private lemma C_dvd_iff_map_mk_eq_zero {A : Type} [CommRing A] (ϖ : A) (f : Pow
 
 open scoped LaurentSeries in
 open PowerSeries in
+/- English proof (translation)
+Use `haveI : (Ideal.span {ϖ}).IsPrime := (Ideal.span_singleton_prime hϖ.ne_zero).2 hϖ`. Use `⟨fun h ↦ hϖ.ne_zero (by simpa using congrArg (coeff 0) h), fun hu ↦ hϖ.not_unit ?_, fun f g h ↦ ?_⟩` and prove the remaining obligations. Simplify using `using hu.map (constantCoeff (R := A))`. Rewrite using `[C_dvd_iff_map_mk_eq_zero, C_dvd_iff_map_mk_eq_zero]`. Rewrite `h` using `[C_dvd_iff_map_mk_eq_zero, map_mul]`.
+
+Conclude with `mul_eq_zero.mp h`.
+-/
 private lemma prime_C_powerSeries {A : Type} [CommRing A] [IsDomain A] {ϖ : A} (hϖ : Prime ϖ) :
     Prime (C ϖ : PowerSeries A) := by
   haveI : (Ideal.span {ϖ}).IsPrime := (Ideal.span_singleton_prime hϖ.ne_zero).2 hϖ
@@ -36,6 +48,21 @@ private lemma prime_C_powerSeries {A : Type} [CommRing A] [IsDomain A] {ϖ : A} 
 open scoped LaurentSeries in
 open PowerSeries in
 
+/- English proof (translation)
+Take `⟨s, t, ht, hvt⟩` from `hst`. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj (C ϖ * X : PowerSeries A) v`. Rewrite `ha` using `[← map_pow]`. Establish `hϖ0 : ϖ ≠ 0` using `hϖ.ne_zero`. Establish `hu0 : (C ϖ * X : PowerSeries A) ≠ 0` using `mul_ne_zero (fun h ↦ hϖ0 (by simpa using congrArg (coeff 0) h)) X_ne_zero`.
+
+Establish `hinj : Function.Injective (algebraMap (PowerSeries A) S)` using `IsLocalization.injective S (powers_le_nonZeroDivisors_of_noZeroDivisors hu0)`. Establish `hat : a * t = s * (C ϖ * X) ^ n`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← ha, ← hvt]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨g, hg⟩` from `hv`. Establish `hga : g * PowerSeries.map k ((C ϖ * X) ^ n) = PowerSeries.map k a`. Apply `HahnSeries.ofPowerSeries_injective (Γ := ℤ)` to reduce the goal to its premises. Rewrite using `[map_mul, hg, ← hι, ← hι, ← map_mul, ha]`. Establish `hXa : (X : PowerSeries A) ^ n ∣ a`.
+
+Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `d hd`. Apply `hk` to reduce the goal to its premises. Rewrite using `[map_zero, ← PowerSeries.coeff_map, ← hga]`. Establish `hdvd : (X : PowerSeries ℂ) ^ n ∣ g * PowerSeries.map k ((C ϖ * X) ^ n)` using `⟨g * C (k ϖ) ^ n, by rw [map_pow, map_mul, map_C, map_X, mul_pow]; ring⟩`.
+
+Conclude with `(PowerSeries.X_pow_dvd_iff.mp hdvd) d hd`. Take `⟨a₁, rfl⟩` from `hXa`. Establish `ha₁ : a₁ * t = (C ϖ) ^ n * s`. Establish `hX : (X : PowerSeries A) ^ n ≠ 0` using `pow_ne_zero _ X_ne_zero`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises.
+
+Rewrite `hat` using `[mul_pow]`. Take the linear combination `hat`. Establish `hp : Prime (C ϖ : PowerSeries A)` using `prime_C_powerSeries hϖ.prime`. Take `⟨a₂, rfl⟩` from `hp.pow_dvd_of_dvd_mul_right n ht ⟨s, ha₁⟩`. Use `⟨a₂, ?_⟩` and prove the remaining obligations.
+
+Establish `hunit : IsUnit (algebraMap (PowerSeries A) S ((C ϖ * X) ^ n))` using `IsLocalization.map_units S (⟨(C ϖ * X) ^ n, n, rfl⟩ : Submonoid.powers (C ϖ * X))`. Apply `hunit.mul_left_inj.mp` to reduce the goal to its premises. Rewrite using `[ha, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.PowerSeriesNoPole.exists_eq_algebraMap (A : Type) [CommRing A] [IsDomain A]
     [IsDiscreteValuationRing A]
     (ϖ : A) (hϖ : Irreducible ϖ) (k : A →+* ℂ) (hk : Function.Injective k)

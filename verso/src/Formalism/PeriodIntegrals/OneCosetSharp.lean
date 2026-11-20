@@ -32,6 +32,11 @@ def R1cond (r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) : Prop :=
     ∀ i, r (eN k (n + c) (n + i)) - eN k (n + c) (n + i) ∈ Ufl k n c i
 
 variable {k n c} in
+/- English proof (translation)
+Use `⟨fun i v hv => hr.1 i _ (hs.1 i v hv), ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show r (s _) = _`. Rewrite using `[hs.2.1, hr.2.1]`. Establish `h1` using `hr.1 i _ (hs.2.2 i)`. Establish `h2` using `hr.2.2 i`.
+
+Establish `key : (r * s) (PI.OneCosetSharp.Loc.eN k (n + c) (n + i)) - PI.OneCosetSharp.Loc.eN k (n + c) (n + i) = r (s (PI.OneCosetSharp.Loc.eN k (n + c) (n + i)) - PI.OneCosetSharp.Loc.eN k (n + c) (n + i)) + (r (PI.OneCosetSharp.Loc.eN k (n + c) (n + i)) - PI.OneCosetSharp.Loc.eN k (n + …` using `by show r (s _) - _ = _`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ h1 h2`.
+-/
 theorem R1cond.mul {r s : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr : R1cond k n c r) (hs : R1cond k n c s) :
     R1cond k n c (r * s) := by
   refine ⟨fun i v hv => hr.1 i _ (hs.1 i v hv), ?_, fun i => ?_⟩
@@ -48,6 +53,9 @@ theorem R1cond.mul {r s : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr
     rw [key]
     exact Submodule.add_mem _ h1 h2
 
+/- English proof (translation)
+Use `⟨fun i v hv => hv, rfl, fun i => ?_⟩` and prove the remaining obligations. Use `show eN k (n + c) (n + i) - eN k (n + c) (n + i) ∈ _`. Rewrite using `[sub_self]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem R1cond_one : R1cond k n c 1 := by
   refine ⟨fun i v hv => hv, rfl, fun i => ?_⟩
   show eN k (n + c) (n + i) - eN k (n + c) (n + i) ∈ _

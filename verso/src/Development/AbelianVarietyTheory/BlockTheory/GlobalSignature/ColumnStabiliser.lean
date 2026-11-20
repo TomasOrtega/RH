@@ -20,6 +20,9 @@ def colStab (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
           (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))⁻¹).toMonoidHom).comap
         (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
 
+/- English proof (translation)
+Introduce `y γ`. Simplify using `[colStab, Subgroup.mem_inf, Subgroup.mem_comap]`.
+-/
 theorem mem_colStab (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     letI := D.host.cmStar
     ∀ (y : UPts D.sp.cm.sig D.sp.gram0 (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
@@ -41,10 +44,20 @@ def ColStabTrivialAt (D : D7) (Lv : LevelData D) (u : D.what₂.Word) : Prop :=
 def ColStabTrivial : Prop :=
   ∀ (D : D7) (Lv : LevelData D) (u : D.what₂.Word), ColStabTrivialAt D Lv u
 
+/- English proof (translation)
+Unfold `GBig`. Conclude with `exists_congr fun i => by omega`.
+-/
 example (D : D7) : GBig D ↔ ∃ i : Fin 2, 2 * D.R.f * D.R.k + 1 < D.host.g i := by
   unfold GBig
   exact exists_congr fun i => by omega
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Establish `hb` using `h D Lv u hg hs ((Lv u).y c)`. Establish `hr` using `((Lv u).stabI_range c ((Lv u).stabI c γ).1 ((Lv u).stabI c γ).2).1 ⟨γ, rfl⟩`. Establish `hm : ((Lv u).stabI c γ).1 ∈ colStab D Lv u ((Lv u).y c)`. Rewrite using `[mem_colStab]`.
+
+Use `⟨((Lv u).stabI c γ).2, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hx'⟩` from `hr`. Rewrite using `[← hx']`. Simplify `hx` using `[mul_assoc]`. Rewrite `hm` using `[hb, Subgroup.mem_bot]`.
+
+Apply `(Lv u).stabI_inj c` to reduce the goal to its premises. Rewrite using `[map_one]`. Conclude with `Subtype.ext hm`.
+-/
 example (h : ColStabTrivial) (D : D7) (Lv : LevelData D) (u : D.what₂.Word) (hg : GBig D)
     (hs : ∀ i : Fin 2, SplitsF D (D.host.g i)) (c : (D.mem u).C.cls 0)
     (γ : (D.mem u).C.stab 0 c) : γ = 1 := by
@@ -62,6 +75,11 @@ example (h : ColStabTrivial) (D : D7) (Lv : LevelData D) (u : D.what₂.Word) (h
   rw [map_one]
   exact Subtype.ext hm
 
+/- English proof (translation)
+Introduce `y`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, rfl⟩`. Take `⟨h1, h2⟩` from `(mem_colStab D Lv u y γ).1 hγ`.
+
+Conclude with `⟨⟨γ, h1, rfl⟩, ⟨_, h2, by simp [mul_assoc]⟩⟩`. Introduce and unpack `⟨⟨γ, h1, rfl⟩, z, hz, hz'⟩`. Use `⟨γ, (mem_colStab D Lv u y γ).2 ⟨h1, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← hz']`. Simplify `hz` using `[mul_assoc]`.
+-/
 theorem map_colStab (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     letI := D.host.cmStar
     ∀ y : UPts D.sp.cm.sig D.sp.gram0 (FiniteAdeleRing (𝓞 D.host.F) D.host.F),

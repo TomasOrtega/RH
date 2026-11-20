@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1600000
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PrincClassSum.terms_inv | exact GlobalTheory.PrincClassSum.terms_inv | (intros; apply GlobalTheory.PrincClassSum.terms_inv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.classSumTerms_invariant_principalLevel : ∀ {D : D7} {S T : HSp D} (B : Base S T), B.Good → S.SigOK → ∀ (ψ : Twist D Circle), ψ.Good → B.admitted ψ.Q →
     ∀ (ω : PairRep S T), B.IsWeil ψ.chi ω → ∀ F ∈ B.formsC ψ, ∀ g : GA D T,
       (∀ (γ : GQ S) (y : Bridge.Gf S),

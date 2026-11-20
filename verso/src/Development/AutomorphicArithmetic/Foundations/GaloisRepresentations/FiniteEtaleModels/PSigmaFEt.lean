@@ -7,6 +7,11 @@ open UpperTheory.Gal.Int.Geo
 open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Take `⟨pt⟩ : Nonempty (Spec (CommRingCat.of K))` from `inferInstance`. Take `⟨⟨i, w⟩, hw⟩` from `(sigmaMk (fun _ : I => W)).surjective (y pt)`. Rewrite `hw` using `[sigmaMk_mk]`. Use `⟨i, IsOpenImmersion.lift (Sigma.ι (fun _ : I => W) i) y ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`.
+
+Rewrite using `[Subsingleton.elim q pt]`. Conclude with `⟨w, hw⟩`.
+-/
 private theorem exists_sigma_point {W : Scheme.{0}} {I : Type} (K : Type) [Field K]
     (y : Spec (CommRingCat.of K) ⟶ ∐ fun _ : I => W) :
     ∃ (i : I) (y' : Spec (CommRingCat.of K) ⟶ W), y' ≫ Sigma.ι (fun _ : I => W) i = y := by
@@ -19,6 +24,15 @@ private theorem exists_sigma_point {W : Scheme.{0}} {I : Type} (K : Type) [Field
   rw [Subsingleton.elim q pt]
   exact ⟨w, hw⟩
 
+/- English proof (translation)
+Set `F : I × {y' : Spec (CommRingCat.of K) ⟶ Y' // y' ≫ s = x} → {y : Spec (CommRingCat.of K) ⟶ ∐ (fun _ : I => Y') // y ≫ (Sigma.desc fun _ : I => s) = x}` to `fun p => ⟨p.2.1 ≫ Sigma.ι (fun _ : I => Y') p.1, by simp [p.2.2]⟩`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, a, ha⟩ ⟨j, b, hb⟩ h`. Establish `h' : a ≫ Sigma.ι (fun _ : I => Y') i = b ≫ Sigma.ι (fun _ : I => Y') j` using `congrArg Subtype.val h`.
+
+Take `⟨pt⟩ : Nonempty (Spec (CommRingCat.of K))` from `inferInstance`. Establish `hij : i = j`. Assume the negation of the conclusion as `hne`. Conclude with `(isEmpty_of_commSq_sigmaι_of_ne ⟨h'⟩ hne).false pt`. Substitute `hij` using the available equality.
+
+Establish `hab : a = b` using `(cancel_mono _).1 h'`. Substitute `hab` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨y, hy⟩`. Take `⟨i, y', rfl⟩` from `exists_sigma_point K y`.
+
+Conclude with `⟨⟨i, y', by simpa using hy⟩, rfl⟩`. Rewrite using `[← Nat.card_prod]`. Conclude with `(Nat.card_congr (Equiv.ofBijective F hF)).symm`.
+-/
 private theorem card_sigma_fibre {Y Y' : Scheme.{0}} (s : Y' ⟶ Y) (I : Type) (K : Type) [Field K]
     (x : Spec (CommRingCat.of K) ⟶ Y) :
     Nat.card {y : Spec (CommRingCat.of K) ⟶ ∐ (fun _ : I => Y') // y ≫ (Sigma.desc fun _ : I => s) = x} =
@@ -45,6 +59,13 @@ private theorem card_sigma_fibre {Y Y' : Scheme.{0}} (s : Y' ⟶ Y) (I : Type) (
   rw [← Nat.card_prod]
   exact (Nat.card_congr (Equiv.ofBijective F hF)).symm
 
+/- English proof (translation)
+Introduce `Y Y' s d I _ h`. Take `⟨hf, he, hc⟩` from `h`. Take `⟨k, ⟨e⟩⟩` from `Finite.exists_equiv_fin I`. Establish `hfold` using `GlobalTheory.Et.TrivTors.isFinite_sigmaDesc_fin Y' k`. Set `i : (∐ fun _ : I => Y') ≅ ∐ fun _ : Fin k => Y'` to `Sigma.whiskerEquiv (f := fun _ : I => Y') (g := fun _ : Fin k => Y') e fun _ => Iso.refl Y'`.
+
+Establish `hd : (Sigma.desc fun _ : I => s) = i.hom ≫ (Sigma.desc fun _ : Fin k => 𝟙 Y') ≫ s`. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[i]`. Use `⟨by rw [hd]; infer_instance, ?_, fun K _ _ x => ?_⟩` and prove the remaining obligations.
+
+Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @Etale)` as an intermediate fact. Conclude with `IsZariskiLocalAtSource.sigmaDesc (P := @Etale) fun _ => inferInstance`. Rewrite using `[card_sigma_fibre, hc K x]`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.sigmaFEt_holds :
     SigmaFEt := by
   intro Y Y' s d I _ h

@@ -11,6 +11,25 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.PresSobA
 
+/- English proof (translation)
+Introduce `n _ _ μ _ V _ _ _ hU φ hφ x`. Take `⟨h1, h2⟩` from `hU n μ`. Establish `hφc : Continuous φ` using `hφ.1.continuous`. Establish `hφv : Continuous (fun y : G n => φ y.val)` using `hφc.comp Units.continuous_val`. Establish `hcont : Continuous (fun y : G n => φ y.val • lT μ V y x)` using `hφv.smul (GlobalTheory.T.regular_representation_continuous n μ V hU x).2`.
+
+Establish `hK : IsCompact ((Units.val : G n → Mat n) ⁻¹' tsupport φ)`. Use `((GlobalTheory.CompanionTheory.SobGL.HaarDom.isOpenEmbedding_valG n).isInducing.isCompact_preimage_iff ?_).2 hφ.2.1` and prove the remaining obligations. Introduce `g hg`. Establish `hd : g.det ≠ 0` using `hφ.2.2 hg`. Establish `hu : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det g).2 (isUnit_iff_ne_zero.2 hd)`.
+
+Conclude with `⟨hu.unit, rfl⟩`. Establish `hcs : HasCompactSupport (fun y : G n => φ y.val • lT μ V y x)`. Use `HasCompactSupport.intro hK fun y hy => ?_` and prove the remaining obligations. Establish `: φ y.val = 0` using `image_eq_zero_of_notMem_tsupport hy`. Simplify using `[this]`.
+
+Establish `hint : Integrable (fun y : G n => φ y.val • lT μ V y x) μ` using `hcont.integrable_of_hasCompactSupport hcs`. Establish `hmul : Measurable (fun p : G n × G n => p.1⁻¹ * p.2)` using `(continuous_fst.inv.mul continuous_snd).measurable`. Establish `hF : AEStronglyMeasurable (Function.uncurry fun (y z : G n) => φ y.val • (x : G n → V) (y⁻¹ * z)) (μ.prod μ)`. Use `StronglyMeasurable.aestronglyMeasurable ?_` and prove the remaining obligations. Establish `a1 : StronglyMeasurable (fun p : G n × G n => φ p.1.val)` using `(hφv.comp continuous_fst).stronglyMeasurable`.
+
+Establish `a2 : StronglyMeasurable (fun p : G n × G n => (x : G n → V) (p.1⁻¹ * p.2))` using `(Lp.stronglyMeasurable x).comp_measurable hmul`. Conclude with `a1.smul a2`. Establish `hae : ∀ᵐ y ∂μ, (φ y.val • lT μ V y x : Lp V 2 μ) =ᵐ[μ] fun z => φ y.val • (x : G n → V) (y⁻¹ * z)`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_smul (φ y.val) (lT μ V y x), lT_coe μ y x] with z e1 e2`.
+
+Rewrite using `[e1, Pi.smul_apply, e2]`. Establish `key` using `GlobalTheory.T.lp_integral_ae_pointwise (G n) (G n) V μ μ (fun y : G n => φ y.val • lT μ V y x) (fun y z => φ y.val • (x : G n → V) (y⁻¹ * z)) hint hF hae`. Establish `hconv : lConv μ V φ x = ∫ y : G n, φ y.val • lT μ V y x ∂μ` using `rfl`. Rewrite using `[hconv]`. Use `filter_upwards [key] with z hz`.
+
+Rewrite using `[hz]`. Set `H : G n → V` to `fun u => φ (z.val * (u⁻¹ : G n).val) • (x : G n → V) u`. Establish `e2 : ∫ u, H u ∂μ = ∫ u, H (u⁻¹ * z) ∂μ`. Rewrite using `[integral_inv_eq_self (fun u => H (u * z)) μ, integral_mul_right_eq_self H z]`. Use `show ∫ u, H u ∂μ = _`.
+
+Rewrite using `[e2]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `e3 : z.val * ((y⁻¹ * z)⁻¹ : G n).val = y.val`. Rewrite using `[← Units.val_mul]`. Use `congr 1`.
+
+Use `group`. Use `show φ (z.val * ((y⁻¹ * z)⁻¹ : G n).val) • (x : G n → V) (y⁻¹ * z) = _`. Rewrite using `[e3]`.
+-/
 theorem mol_ae_lConv : ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n))
     [μ.IsHaarMeasure] (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V],
     Unimod → ∀ φ : Mat n → ℝ, IsTest φ → ∀ x : Lp V 2 μ,

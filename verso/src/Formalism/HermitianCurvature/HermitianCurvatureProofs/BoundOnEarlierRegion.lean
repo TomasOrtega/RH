@@ -9,6 +9,11 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k ρ Wp Wq _ _ _ _ Bs w m`. Take `⟨K, hK, hM⟩` from `mDiff_ccle Bs w m`. Use `⟨K, hK, fun σ hσ ys => ?_⟩` and prove the remaining obligations. Proceed by induction on `ys with`. Consider the case `nil => intro A x c hx e`.
+
+Conclude with `hM σ hσ A x c hx e`. Consider the case `cons y ys ih`. Introduce `A x c hx e`. Conclude with `ih A (fun e' => x (Fin.cons (e (0 : Fin ((KB.plusW ys w).length + 1))) e')) c (fun e' => hx _) (fun a => e a.succ)`.
+-/
 theorem bound_on_earlier_region : OnOldBound := by
   intro k ρ Wp Wq _ _ _ _ Bs w m
   obtain ⟨K, hK, hM⟩ := mDiff_ccle Bs w m

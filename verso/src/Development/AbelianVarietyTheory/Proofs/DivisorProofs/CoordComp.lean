@@ -51,11 +51,17 @@ def Normal {S : Scheme.{0}} (t : T ⟶ S) (c : Fin mA → Fin mB → Γ(T, ⊤))
 def θ {Rg : Type} [CommRing Rg] (A : Over (Sp Rg)) : A.left ⟶ (topS Rg ⊗ A).left :=
   (lift (Over.homMk (A.hom ≫ (Sp Rg).topIso.inv) (by simp) : A ⟶ topS Rg) (𝟙 A)).left
 
+/- English proof (translation)
+Rewrite using `[θ, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem θ_snd {Rg : Type} [CommRing Rg] (A : Over (Sp Rg)) : θ A ≫ (snd (topS Rg) A).left = 𝟙 A.left := by
   rw [θ, ← Over.comp_left, lift_snd]; rfl
 
 abbrev fA {Rg : Type} [CommRing Rg] (A : Over (Sp Rg)) : (topS Rg ⊗ A).left ⟶ Sp Rg := (topS Rg ⊗ A).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coord_comp {Rg : Type} [CommRing Rg] {X' : Scheme.{0}} {n : ℕ} (h : X ⟶ X')
     (g : X' ⟶ Sp (MvPolynomial (Fin n) Rg)) (i : Fin n) : coord (h ≫ g) i = h.appTop (coord g i) := by
   rfl

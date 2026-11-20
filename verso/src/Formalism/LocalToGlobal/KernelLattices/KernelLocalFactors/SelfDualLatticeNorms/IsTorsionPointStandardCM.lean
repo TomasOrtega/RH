@@ -18,6 +18,11 @@ section Gen
 
 variable {L L' : PeriodPair} {ω₀ ω₀' : ℂ}
 
+/- English proof (translation)
+Take `⟨-, -, -, hA, -, hs, -⟩` from `Formalism.L2.Th1.F.latticeOnly L L' h`. Establish `e1 : Formalism.L2.Th1.F.th0 L (ω₀ / 2) = Formalism.L2.Th1.F.th0 L' (ω₀ / 2)`. Use function extensionality and compare the values at `z`. Simplify using `only [Formalism.L2.Th1.F.th0, Formalism.L2.Th1.F.opU, Formalism.L2.Th1.F.herm, hA, hs]`. Rewrite using `[e1]`.
+
+Use function extensionality and compare the values at `z`. Use `Formalism.L2.Th1.F.th0Class L' (ω₀' / 2) ((ω₀ - ω₀') / 2) z hω hn` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaNull_congr_lattice (h : L.lattice = L'.lattice) (hω : (ω₀ - ω₀') / 2 ∈ L'.lattice) (hn : ω₀' / 2 ∉ L'.lattice) :
     Formalism.L2.Th1.F.th0 L (ω₀ / 2) = Formalism.L2.Th1.F.th0 L' (ω₀' / 2) := by
   obtain ⟨-, -, -, hA, -, hs, -⟩ := Formalism.L2.Th1.F.latticeOnly L L' h
@@ -31,15 +36,26 @@ theorem thetaNull_congr_lattice (h : L.lattice = L'.lattice) (hω : (ω₀ - ω�
   congr 1
   ring
 
+/- English proof (translation)
+Unfold `Formalism.L2.Th1.H.stdH`. Rewrite using `[(Formalism.L2.Th1.F.latticeOnly L L' h).2.2.2.1]`.
+-/
 theorem stdH_congr (h : L.lattice = L'.lattice) (n : Type) [Fintype n] [DecidableEq n] :
     Formalism.L2.Th1.H.stdH L n = Formalism.L2.Th1.H.stdH L' n := by
   unfold Formalism.L2.Th1.H.stdH
   rw [(Formalism.L2.Th1.F.latticeOnly L L' h).2.2.2.1]
 
+/- English proof (translation)
+Unfold `hOne`. Rewrite using `[(Formalism.L2.Th1.F.latticeOnly L L' h).2.2.2.1]`.
+-/
 theorem hOne_congr (h : L.lattice = L'.lattice) (n : Type) [Fintype n] [DecidableEq n] : hOne L n = hOne L' n := by
   unfold hOne
   rw [(Formalism.L2.Th1.F.latticeOnly L L' h).2.2.2.1]
 
+/- English proof (translation)
+Establish `e : IsThM L ω₀ c ΛM g κ = IsThM L' ω₀' c ΛM g κ`. Use function extensionality and compare the values at `θ`. Unfold `IsThM kernel4 F0 Formalism.L2.Th1.H.stdLat`. Rewrite using `[hOne_congr h, stdH_congr h, thetaNull_congr_lattice h hω hn, h]`. Unfold `thM`.
+
+Rewrite using `[e]`.
+-/
 theorem thM_congr (h : L.lattice = L'.lattice) (hω : (ω₀ - ω₀') / 2 ∈ L'.lattice) (hn : ω₀' / 2 ∉ L'.lattice) (c : ℝ)
     {n : Type} [Fintype n] [DecidableEq n] (ΛM : AddSubgroup (n → ℂ)) (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) (κ : ℂ) :
     thM L ω₀ c ΛM g κ = thM L' ω₀' c ΛM g κ := by
@@ -58,21 +74,33 @@ def reBase (B : Base D cc δ) (L' : PeriodPair) (hl : L'.lattice.toAddSubgroup =
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc δ) (ω₀' / 2)) : Base D cc δ :=
   { B with L := L', lat := hl, ω₀ := ω₀', t0 := ht }
 
+/- English proof (translation)
+Establish `h : B.L.lattice.toAddSubgroup = B'.L.lattice.toAddSubgroup` using `B.lat.trans B'.lat.symm`. Conclude with `Submodule.toAddSubgroup_injective h`.
+-/
 theorem lattice_eq (B B' : Base D cc δ) : B.L.lattice = B'.L.lattice := by
   have h : B.L.lattice.toAddSubgroup = B'.L.lattice.toAddSubgroup := B.lat.trans B'.lat.symm
   exact Submodule.toAddSubgroup_injective h
 
+/- English proof (translation)
+The claim follows from `thM_congr (lattice_eq B (reBase B L' hl ω₀' ht)) hω (Base.half_not_mem (reBase B L' hl ω₀' ht)) _ _ _ _`.
+-/
 theorem thMM_reBase (B : Base D cc δ) (L' : PeriodPair) (hl : L'.lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ) (ω₀' : ℂ)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc δ) (ω₀' / 2)) (hω : (B.ω₀ - ω₀') / 2 ∈ L'.lattice) :
     B.thMM = (reBase B L' hl ω₀' ht).thMM :=
   thM_congr (lattice_eq B (reBase B L' hl ω₀' ht)) hω (Base.half_not_mem (reBase B L' hl ω₀' ht)) _ _ _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `N N' L L₁ z`. Simplify using `only [Base.eNat, Base.thMoved, Base.thHalf, Base.thZero, thMM_reBase B L' hl ω₀' ht hω]`.
+-/
 theorem eNat_reBase (B : Base D cc δ) (L' : PeriodPair) (hl : L'.lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ) (ω₀' : ℂ)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc δ) (ω₀' / 2)) (hω : (B.ω₀ - ω₀') / 2 ∈ L'.lattice) (χ : TaylorLogMetric.IdE D → ℂ) :
     B.eNat χ = (reBase B L' hl ω₀' ht).eNat χ := by
   funext N N' L L₁ z
   simp only [Base.eNat, Base.thMoved, Base.thHalf, Base.thZero, thMM_reBase B L' hl ω₀' ht hω]
 
+/- English proof (translation)
+Unfold `ambOf`. Rewrite using `[eNat_reBase B L' hl ω₀' ht hω χ]`.
+-/
 theorem ambOf_reBase {X : Fields} (s : Seam D X) (B : Base D cc δ) (L' : PeriodPair) (hl : L'.lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ) (ω₀' : ℂ)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc δ) (ω₀' / 2)) (hω : (B.ω₀ - ω₀') / 2 ∈ L'.lattice) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) :
     (ambOf s B χ cD : Amb X) = ambOf s (reBase B L' hl ω₀' ht) χ cD := by
@@ -85,13 +113,24 @@ open Formalism.L2.Th1.F (cmTheta)
 
 variable (B : Base D cc δ) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0)
 
+/- English proof (translation)
+Simplify using `[cmTheta]`.
+-/
 theorem theta_val' (d : ℕ) : cmTheta 1 d = (1 + Complex.I * (Real.sqrt d : ℂ)) / 2 := by
   simp [cmTheta]
 
+/- English proof (translation)
+Rewrite using `[← hl]`. Both sides reduce to the same expression.
+-/
 theorem mem_lam_iff (hl : (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ) (x : ℂ) :
     x ∈ TaylorLogMetric.lamOf D cc δ ↔ x ∈ (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice := by
   rw [← hl]; rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `half_period_standard_CM a₀ b₀ c₀ D.host.d ha hd lam hlam hcm`. Establish `e : (1 - Complex.I * (Real.sqrt D.host.d : ℂ)) / 2 = 1 - cmTheta 1 D.host.d` using `by rw [theta_val']; ring`. Use `⟨(mem_lam_iff a₀ b₀ ha hd lam hlam hl _).2 h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lam_iff a₀ b₀ ha hd lam hlam hl, ← theta_val']`. Conclude with `h2`.
+
+Rewrite using `[mem_lam_iff a₀ b₀ ha hd lam hlam hl, e]`. Conclude with `h3`.
+-/
 theorem isTorsionPoint_standard_CM (hcm : CmOK a₀ b₀ c₀ D.host.d)
     (hl : (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ) :
     GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc δ) (lam * a₀ / 2) := by
@@ -105,10 +144,18 @@ def cmBase (hcm : CmOK a₀ b₀ c₀ D.host.d)
     (hl : (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ) : Base D cc δ :=
   reBase B (cmL a₀ b₀ D.host.d ha hd lam hlam) hl (lam * a₀) (isTorsionPoint_standard_CM a₀ b₀ c₀ ha hd lam hlam hcm hl)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 theorem cmBase_isCm (hcm : CmOK a₀ b₀ c₀ D.host.d)
     (hl : (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ) :
     (cmBase B a₀ b₀ c₀ ha hd lam hlam hcm hl).IsCm a₀ b₀ ha hd lam hlam := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Use `ambOf_reBase s B _ hl _ _ ?_ χ cD` and prove the remaining obligations. Establish `e : (1 - Complex.I * (Real.sqrt D.host.d : ℂ)) / 2 = 1 - cmTheta 1 D.host.d` using `by rw [theta_val']; ring`. Establish `h` using `half_period_unique_CM a₀ b₀ c₀ D.host.d ha hd lam hlam hcm (B.ω₀ / 2) ((mem_lam_iff a₀ b₀ ha hd lam hlam hl _).1 B.t0.1) (by rw [← mem_lam_iff a₀ b₀ ha hd lam hlam hl, theta_val']; exact B.t0.2.1) (by rw [← mem_lam_iff a₀ b₀ ha hd lam hlam hl, ← e]; exact B.t0.2.2)`. Establish `e2 : (B.ω₀ - lam * a₀) / 2 = B.ω₀ / 2 - lam * a₀ / 2` using `by ring`. Rewrite using `[e2]`.
+
+Conclude with `h`.
+-/
 theorem ambOf_cmBase {X : Fields} (s : Seam D X) (hcm : CmOK a₀ b₀ c₀ D.host.d)
     (hl : (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) :
     (ambOf s B χ cD : Amb X) = ambOf s (cmBase B a₀ b₀ c₀ ha hd lam hlam hcm hl) χ cD := by

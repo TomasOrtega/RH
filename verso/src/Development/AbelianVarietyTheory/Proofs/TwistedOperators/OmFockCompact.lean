@@ -22,6 +22,17 @@ namespace GlobalTheory.RowReal
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Establish `hX : DefNode D.R.m (.grid (i : ℕ) D.R.m)` using `⟨i.2.le, rfl⟩`. Establish `hY : DefNode D.R.m (.grid ((i : ℕ) + 1) D.R.m)` using `⟨i.2, rfl⟩`. Establish `hp : DefPair D.R.m (Pair.chi (i : ℕ) D.R.m : Pair T)` using `⟨i.2, rfl⟩`. Take `⟨hf, hv⟩` from `GlobalTheory.T.movedVector_definitePair_theta_fockVacuum W S t (.chi i D.R.m) hp d hd`. Establish `hc` using `GlobalTheory.T.compactChain_chiPair_movedVector_columnCharacter hL W S g t i d hd`.
+
+Set `u : UG D.what₂.Tau ((rowSizes D).nC (i : ℕ))` to `g.2 ⟨(i : ℕ), Nat.lt_succ_of_lt i.2⟩`. Set `v : UG D.what₂.Tau ((rowSizes D).nC ((i : ℕ) + 1))` to `g.2 ⟨(i : ℕ) + 1, Nat.succ_lt_succ i.2⟩`. Establish `c1 : ∀ τ, compAt W.θ τ (mt (G.V (.grid ((i : ℕ) + 1) D.R.m)) (ptGrid W g ((i : ℕ) + 1))) = W.onb (.grid ((i : ℕ) + 1) D.R.m) τ * (v τ).1.submatrix (Fin.cast (rank_gridM G (i` using `(i : ℕ) + 1) i.2)) (Fin.cast (rank_gridM G (i := (i : ℕ) + 1) i.2)) * (W.onb (.grid ((i : ℕ) + 1) D.R.m) τ)⁻¹ := fun τ => by`. Rewrite using `[ptGrid_le W g (Nat.succ_lt_succ i.2)]`. Conclude with `compAt_kappa_snd g ⟨(i : ℕ) + 1, Nat.succ_lt_succ i.2⟩ (posOnb_of_defNode W μ0 hL hY) τ`.
+
+Establish `c1' : ∀ τ, compAt W.θ τ (mt (negSp (G.V (.grid ((i : ℕ) + 1) D.R.m))) (negGA (G.V (.grid ((i : ℕ) + 1) D.R.m)) (ptGrid W g ((i : ℕ) + 1)))) = W.onb (.grid ((i : ℕ) + 1) D.R.m) τ * (v τ).1.submatrix (Fin.cast (rank_gridM G (i` using `(i : ℕ) + 1) i.2)) (Fin.cast (rank_gridM G (i := (i : ℕ) + 1) i.2)) * (W.onb (.grid ((i : ℕ) + 1) D.R.m) τ)⁻¹ := fun τ => by`. Rewrite using `[mt_negGA]`. Conclude with `c1 τ`. Establish `c2 : ∀ τ, compAt W.θ τ (mt (G.V (.grid (i : ℕ) D.R.m)) (ptGrid W g i)) = W.onb (.grid (i : ℕ) D.R.m) τ * (u τ).1.submatrix (Fin.cast (rank_gridM G (i` using `(i : ℕ)) i.2.le)) (Fin.cast (rank_gridM G (i := (i : ℕ)) i.2.le)) * (W.onb (.grid (i : ℕ) D.R.m) τ)⁻¹ := fun τ => by`. Rewrite using `[ptGrid_le W g (Nat.lt_succ_of_lt i.2)]`.
+
+Conclude with `compAt_kappa_snd g ⟨(i : ℕ), Nat.lt_succ_of_lt i.2⟩ (posOnb_of_defNode W μ0 hL hX) τ`. Establish `key` using `GlobalTheory.T.weil_compactRealPoint_fockVector_substitution W (.chi i D.R.m) ⟨i.2, le_rfl⟩ (fun _ => 0) (fun _ => (G.V (.grid (i : ℕ) D.R.m)).rank) (fun _ => Nat.zero_le _) (fun _ => le_rfl) (fun ρ => (GlobalTheory.T.definiteNode_cartan_orthonormalBasis_allPlaces hL W _ hY ρ).2. …`. Establish `hQ' : Q' = colScal (rowEntries D sc.cGap) i g • fockSubAll (fun _ => 0) (fun _ => (G.V (.grid (i : ℕ) D.R.m)).rank) (fun τ => (v τ).1.submatrix (Fin.cast (rank_gridM G (i` using `(i : ℕ) + 1) i.2)) (Fin.cast (rank_gridM G (i := (i : ℕ) + 1) i.2))) (fun τ => (u τ).1.submatrix (Fin.cast (rank_gridM G (i := (i : ℕ)) i.2.le)) (Fin.cast (rank_gridM G (i := (i : ℕ)) i.2.le))) Q := by`. Apply `trRow_injective G i` to reduce the goal to its premises. Rewrite using `[hQ, map_smul, GlobalTheory.T.fockSubstitution_columnStep_rename_conj G i u v Q]`.
+
+Both sides reduce to the same expression. Conclude with `key.trans (by rw [hQ', LinearMap.map_smul])`.
+-/
 theorem om_fock_chi {μ0 : T} (hL : L.Is μ0) (W : G.Weil) {U : Set T} (S : GridChoice W U)
     (g : Gc D.what₂.Tau (rowSizes D)) (t : T) (i : Fin D.R.m)
     (d : FinDatum G t (.chi i D.R.m)) (hd : S.Z.HasVec d)

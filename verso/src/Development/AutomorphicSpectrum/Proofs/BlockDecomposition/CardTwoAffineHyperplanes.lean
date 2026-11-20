@@ -9,6 +9,19 @@ noncomputable def pairMap {k : Type} [Field k] {n : ℕ} (a b : Fin (n + 1) → 
   map_add' x y := by simp [dotProduct_add]
   map_smul' c x := by simp [dotProduct_smul]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Establish `hform : ∀ u v : k, φ (u, v) = u * φ (1, 0) + v * φ (0, 1)`. Introduce `u v`. Establish `h : ((u, v) : k × k) = u • ((1, 0) : k × k) + v • ((0, 1) : k × k)` using `by simp`.
+
+Rewrite using `[h, map_add, map_smul, map_smul]`. Simplify using the standard rewrite rules. Establish `hzero : (φ (1, 0) • a + φ (0, 1) • b) = 0`. Apply `dotProduct_eq_zero` to reduce the goal to its premises. Introduce `x`.
+
+Establish `hx : φ (pairMap a b x) = 0` using `hle (LinearMap.mem_range_self _ x)`. Establish `hx' : φ (a ⬝ᵥ x, b ⬝ᵥ x) = 0` using `hx`. Rewrite `hx'` using `[hform]`. Rewrite using `[add_dotProduct, smul_dotProduct, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Take the linear combination `hx'`.
+
+Distinguish the cases in `hμ : φ (0, 1) = 0`. Rewrite `hzero` using `[hμ, zero_smul, add_zero]`. Break down `smul_eq_zero.mp hzero with hl | h0` into its components or cases. Apply `hφ` to reduce the goal to its premises. Use extensionality with `p`.
+
+Simplify using `[hl]`. Simplify using `[hμ]`. Conclude with `ha h0`. Apply `hb (-(φ (0, 1))⁻¹ * φ (1, 0))` to reduce the goal to its premises. Establish `h1 : φ (0, 1) • b = -(φ (1, 0) • a)` using `eq_neg_of_add_eq_zero_right hzero`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, smul_neg, smul_smul, neg_mul, neg_smul]`.
+-/
 theorem pairMap_range {k : Type} [Field k] {n : ℕ} (a b : Fin (n + 1) → k)
     (ha : a ≠ 0) (hb : ∀ s : k, b ≠ s • a) : LinearMap.range (pairMap a b) = ⊤ := by
   by_contra hne
@@ -40,6 +53,19 @@ theorem pairMap_range {k : Type} [Field k] {n : ℕ} (a b : Fin (n + 1) → k)
       _ = (-(φ (0, 1))⁻¹ * φ (1, 0)) • a := by
         rw [h1, smul_neg, smul_smul, neg_mul, neg_smul]
 
+/- English proof (translation)
+Establish `hr` using `pairMap_range a b ha hb`. Choose the witnesses or unpack the hypotheses as in `⟨x0, hx0⟩ : ∃ x0, pairMap a b x0 = ((1, 1) : k × k) := by`. Establish `: ((1, 1) : k × k) ∈ LinearMap.range (pairMap a b)` using `by rw [hr]; trivial`. Conclude with `this`. Establish `hx1 : a ⬝ᵥ x0 = 1` using `congrArg Prod.fst hx0`.
+
+Establish `hx2 : b ⬝ᵥ x0 = 1` using `congrArg Prod.snd hx0`. Establish `hker : ∀ y, y ∈ LinearMap.ker (pairMap a b) ↔ a ⬝ᵥ y = 0 ∧ b ⬝ᵥ y = 0`. Introduce `y`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `Prod.ext_iff`.
+
+Set `e : LinearMap.ker (pairMap a b) ≃ {x : Fin (n + 1) → k // a ⬝ᵥ x = 1 ∧ b ⬝ᵥ x = 1}` to `{ toFun := fun y => ⟨y.1 + x0, by`. Establish `h` using `(hker y.1).1 y.2`. Simplify using `[dotProduct_add, h.1, h.2, hx1, hx2]⟩`. Use `invFun := fun x => ⟨x.1 - x0, by`. Rewrite using `[hker]`.
+
+Simplify using `[dotProduct_sub, x.2.1, x.2.2, hx1, hx2]⟩`. Use `left_inv := fun y => by simp`. Use `right_inv := fun x => by simp }`. Establish `hcard : (Finset.univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = 1 ∧ b ⬝ᵥ x = 1)).card = Fintype.card k ^ Module.finrank k (LinearMap.ker (pairMap a b))`. Rewrite using `[← Module.card_eq_pow_finrank (K := k) (V := LinearMap.ker (pairMap a b)), Fintype.card_congr e, Fintype.card_subtype]`.
+
+Establish `hrank` using `LinearMap.finrank_range_add_finrank_ker (pairMap a b)`. Rewrite `hrank` using `[hr, finrank_top]`. Establish `h2 : Module.finrank k (k × k) = 2` using `by simp`. Establish `hV : Module.finrank k (Fin (n + 1) → k) = n + 1` using `by simp`. Rewrite `hrank` using `[h2, hV]`.
+
+Rewrite using `[hcard, ← pow_add, hrank]`.
+-/
 theorem card_two_equations (k : Type) [Field k] [Fintype k] (n : ℕ) (a b : Fin (n + 1) → k)
     (ha : a ≠ 0) (hb : ∀ s : k, b ≠ s • a) :
     Fintype.card k ^ 2 * (Finset.univ.filter

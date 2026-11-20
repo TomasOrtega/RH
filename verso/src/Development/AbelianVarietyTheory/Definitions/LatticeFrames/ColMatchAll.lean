@@ -41,6 +41,9 @@ def CplData.phi (c : CplData I u a) (h : I.Ok) (hX : B.fields.Ok) :
   GlobalTheory.CoreHt.phiCol (Pr := B.primes X) B.wts I.Ch hX I.sel (I.tup a) (I.cst a) (I.idx a)
     (chKerC (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) I.A u (B.R.m - 2) c.b c.hY I.Ps c.hK) c.hF (h.idx_ok a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CplData.phi_apply (c : CplData I u a) (h : I.Ok) (hX : B.fields.Ok) (x : (RamH I u hX).V) (z : RowsK I a) :
     c.phi h hX x z = c.per h hX x.1 z := rfl
 

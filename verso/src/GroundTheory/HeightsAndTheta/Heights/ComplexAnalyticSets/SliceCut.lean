@@ -16,21 +16,33 @@ namespace SliceCut
 
 variable {n : ℕ} (h : HermNorm n)
 
+/- English proof (translation)
+Unfold `HermNorm.dualNorm`. Use `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => ?_)` and prove the remaining obligations. Conclude with `((continuous_apply i).comp (continuous_const.matrix_mulVec continuous_id)).norm.pow 2`.
+-/
 theorem continuous_dualNorm : Continuous h.dualNorm := by
   unfold HermNorm.dualNorm
   refine Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => ?_)
   exact ((continuous_apply i).comp (continuous_const.matrix_mulVec continuous_id)).norm.pow 2
 
+/- English proof (translation)
+Unfold `HermNorm.dualNorm`. Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖((h.matᵀ)⁻¹ *ᵥ x) j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`.
+-/
 theorem norm_coord_le (x : Fin n → ℂ) (i : Fin n) : ‖((h.matᵀ)⁻¹ *ᵥ x) i‖ ≤ h.dualNorm x := by
   unfold HermNorm.dualNorm
   refine Real.le_sqrt_of_sq_le ?_
   exact Finset.single_le_sum (f := fun j => ‖((h.matᵀ)⁻¹ *ᵥ x) j‖ ^ 2) (fun _ _ => by positivity)
     (Finset.mem_univ i)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (by rw [Matrix.det_transpose]; exact h.isUnit_det), Matrix.one_mulVec]`.
+-/
 theorem mulVec_inv (x : Fin n → ℂ) : h.matᵀ *ᵥ ((h.matᵀ)⁻¹ *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (by rw [Matrix.det_transpose]; exact h.isUnit_det),
     Matrix.one_mulVec]
 
+/- English proof (translation)
+Use `((isCompact_closedBall (0 : Fin n → ℂ) R).image (Continuous.matrix_mulVec (A := fun _ => h.matᵀ) continuous_const continuous_id)).of_isClosed_subset (isClosed_le (continuous_dualNorm h) continuous_const) fun x hx => ?_` and prove the remaining obligations. Use `⟨(h.matᵀ)⁻¹ *ᵥ x, ?_, mulVec_inv h x⟩` and prove the remaining obligations. Establish `hR : 0 ≤ R` using `(Real.sqrt_nonneg _).trans hx`. Rewrite using `[Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg hR]`. Conclude with `fun i => (norm_coord_le h x i).trans hx`.
+-/
 theorem isCompact_sublevel (R : ℝ) : IsCompact {x : Fin n → ℂ | h.dualNorm x ≤ R} := by
   refine ((isCompact_closedBall (0 : Fin n → ℂ) R).image
     (Continuous.matrix_mulVec (A := fun _ => h.matᵀ) continuous_const continuous_id)).of_isClosed_subset
@@ -40,9 +52,15 @@ theorem isCompact_sublevel (R : ℝ) : IsCompact {x : Fin n → ℂ | h.dualNorm
   rw [Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg hR]
   exact fun i => (norm_coord_le h x i).trans hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩`.
+-/
 theorem mem_Icc (k : ℕ) (x : Fin n → ℂ) : sliceCut h k x ∈ Set.Icc (0 : ℝ) 1 :=
   ⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩
 
+/- English proof (translation)
+Unfold `sliceCut`. Use `Real.smoothTransition.one_of_one_le ?_` and prove the remaining obligations. Establish `hlog : Real.log (h.dualNorm x) ≤ 0` using `Real.log_nonpos (Real.sqrt_nonneg _) hx.le`. Establish `: Real.log (h.dualNorm x) / ((k : ℝ) + 1) ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hlog (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_one_of_lt_one (k : ℕ) {x : Fin n → ℂ} (hx : h.dualNorm x < 1) : sliceCut h k x = 1 := by
   unfold sliceCut
   refine Real.smoothTransition.one_of_one_le ?_
@@ -50,6 +68,11 @@ theorem eq_one_of_lt_one (k : ℕ) {x : Fin n → ℂ} (hx : h.dualNorm x < 1) :
   have : Real.log (h.dualNorm x) / ((k : ℝ) + 1) ≤ 0 := div_nonpos_of_nonpos_of_nonneg hlog (by positivity)
   linarith
 
+/- English proof (translation)
+Use `contDiff_iff_contDiffAt.mpr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Establish `hU : {y : Fin n → ℂ | h.dualNorm y < 1} ∈ 𝓝 (0 : Fin n → ℂ)`. Use `(isOpen_lt (continuous_dualNorm h) continuous_const).mem_nhds ?_` and prove the remaining obligations.
+
+Simplify using `[HermNorm.dualNorm]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq (Filter.mem_of_superset hU fun y hy => eq_one_of_lt_one h k hy)`. Establish `hlog` using `(contDiffOn_log_dualNorm h).contDiffAt (isOpen_compl_singleton.mem_nhds hx)`. Conclude with `Real.smoothTransition.contDiff.contDiffAt.comp x (contDiffAt_const.sub (hlog.div_const _))`.
+-/
 theorem contDiff (k : ℕ) : ContDiff ℝ ∞ (sliceCut h k) := by
   refine contDiff_iff_contDiffAt.mpr fun x => ?_
   by_cases hx : x = 0
@@ -62,6 +85,13 @@ theorem contDiff (k : ℕ) : ContDiff ℝ ∞ (sliceCut h k) := by
   · have hlog := (contDiffOn_log_dualNorm h).contDiffAt (isOpen_compl_singleton.mem_nhds hx)
     exact Real.smoothTransition.contDiff.contDiffAt.comp x (contDiffAt_const.sub (hlog.div_const _))
 
+/- English proof (translation)
+Use `HasCompactSupport.intro (isCompact_sublevel h (Real.exp (2 * ((k : ℝ) + 1)))) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, not_le] at hx`. Unfold `sliceCut`. Use `Real.smoothTransition.zero_of_nonpos ?_` and prove the remaining obligations. Establish `hpos : 0 < h.dualNorm x` using `(Real.exp_pos _).trans hx`.
+
+Establish `hlog : 2 * ((k : ℝ) + 1) < Real.log (h.dualNorm x)`. Rewrite using `[Real.lt_log_iff_exp_lt hpos]`. Conclude with `hx`. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Rewrite using `[sub_nonpos, le_div_iff₀ hk]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem hasCompactSupport (k : ℕ) : HasCompactSupport (sliceCut h k) := by
   refine HasCompactSupport.intro (isCompact_sublevel h (Real.exp (2 * ((k : ℝ) + 1)))) fun x hx => ?_
   simp only [Set.mem_ofPred_eq, not_le] at hx
@@ -74,6 +104,9 @@ theorem hasCompactSupport (k : ℕ) : HasCompactSupport (sliceCut h k) := by
   rw [sub_nonpos, le_div_iff₀ hk]
   linarith
 
+/- English proof (translation)
+Establish `hdiv : Tendsto (fun k : ℕ => Real.log (h.dualNorm x) / ((k : ℝ) + 1)) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop (tendsto_natCast_atTop_atTop.atTop_add tendsto_const_nhds)`. Establish `h2` using `(tendsto_const_nhds (x := (2 : ℝ))).sub hdiv`. Rewrite `h2` using `[sub_zero]`. Use `(Real.smoothTransition.continuous.tendsto 2).comp h2` as an intermediate fact. Rewrite `this` using `[Real.smoothTransition.one_of_one_le (by norm_num : (1 : ℝ) ≤ 2)]`. Then use the resulting hypothesis.
+-/
 theorem tendsto_one (x : Fin n → ℂ) : Tendsto (fun k => sliceCut h k x) atTop (𝓝 1) := by
   have hdiv : Tendsto (fun k : ℕ => Real.log (h.dualNorm x) / ((k : ℝ) + 1)) atTop (𝓝 0) :=
     tendsto_const_nhds.div_atTop (tendsto_natCast_atTop_atTop.atTop_add tendsto_const_nhds)
@@ -82,6 +115,9 @@ theorem tendsto_one (x : Fin n → ℂ) : Tendsto (fun k => sliceCut h k x) atTo
   have := (Real.smoothTransition.continuous.tendsto 2).comp h2
   rwa [Real.smoothTransition.one_of_one_le (by norm_num : (1 : ℝ) ≤ 2)] at this
 
+/- English proof (translation)
+The claim follows from `(contDiff h k).continuous.measurable`.
+-/
 theorem measurable (k : ℕ) : Measurable (sliceCut h k) :=
   (contDiff h k).continuous.measurable
 

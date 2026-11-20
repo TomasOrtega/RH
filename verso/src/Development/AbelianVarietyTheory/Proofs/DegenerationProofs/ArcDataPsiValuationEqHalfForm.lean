@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.ArcPsiVal
 
+/- English proof (translation)
+Rewrite using `[gm_val _ _ _ hz, hC]`. Establish `e` using `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom c)) ((spMap g).naturality (homOfLE (le_top : U ≤ ⊤)).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Establish `e2` using `congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e2`.
+
+Use `(congrArg ((Sp F).presheaf.germ _ z hz).hom e).trans ?_` and prove the remaining obligations. Use `(TopCat.Presheaf.germ_res_apply (Sp F).presheaf _ z hz _).trans ?_` and prove the remaining obligations. Conclude with `congrArg ((Sp F).presheaf.germ ⊤ z trivial).hom e2.symm`.
+-/
 theorem gm_const {K F : Type} [Field K] [Field F] (g : K →+* F) (z : Sp F) (U : (Sp K).Opens) (hz : spMap g z ∈ U)
     (C : Γ(Sp K, U)ˣ) (c : K) (hC : C.val = resTop _ (scal (𝟙 (Sp K)) c)) :
     (gm (spMap g) z U C).val = toStk z (g c) := by
@@ -26,6 +31,15 @@ theorem gm_const {K F : Type} [Field K] [Field F] (g : K →+* F) (z : Sp F) (U 
   refine (TopCat.Presheaf.germ_res_apply (Sp F).presheaf _ z hz _).trans ?_
   exact congrArg ((Sp F).presheaf.germ ⊤ z trivial).hom e2.symm
 
+/- English proof (translation)
+Take `⟨e, -, c, hc, hC⟩` from `genHasVal_units _ _ _ _ _ _ h`. Take `⟨C, hCv, hCt⟩` from `hC (fun _ => j)`. Set `g : R →+* F` to `(algebraMap (FractionRing R) F).comp (algebraMap R _)`. Establish `hg : spMap g = Out.jFK (R` using `R) F ≫ Out.jK R := by`. Simplify using `only [g, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Establish `ht : ⊤ ≤ (𝟙 (Sp R)) ⁻¹ᵁ LB.wchart P.P.L (K` using `PUnit) (fun _ => (P.c χ).left) (fun _ => j) := (top_le_iff_cpt _ _).2 (Set.mem_iInter.2 fun _ => hj)`. Establish `hz' : Out.jK R (Out.jFK (R` using `R) F z) ∈ LB.wchart P.P.L (K := PUnit) (fun _ => (P.c χ).left) (fun _ => j) := ht (show Out.jK R (Out.jFK (R := R) F z) ∈ (⊤ : (Sp R).Opens) from trivial)`. Establish `hz : Out.jFK (R` using `R) F z ∈ LB.wchart P.P.L (K := PUnit) (fun _ => Out.ptK (P.c χ)) (fun _ => j) := Set.mem_iInter.2 fun k => by`. Rewrite using `[QForm.ptK_eq]`. Conclude with `Set.mem_iInter.1 hz' k`.
+
+Take `⟨v, hv⟩` from `GlobalTheory.ThetaShiftProofs.exists_unit_gm_spMap g (𝟙 _) _ ht (e.s (fun _ => j)) z`. Rewrite `hv` using `[Category.comp_id, hg]`. Use `⟨_, hasVal_mul_unit hc v, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (gm (spMap (algebraMap (FractionRing R) F)) z (LB.wchart P.P.L (K := PUnit) (fun _ => Out.ptK (P.c χ)) (fun _ => j))) hCt`. Rewrite `h2` using `[map_mul, gm_res _ _ _ hz]`.
+
+Use `replace hv := (congrArg Units.val (gm_pull _ _ _ _ hz' (e.s (fun _ => j)))).trans hv`. Rewrite using `[map_mul, map_mul]`. Conclude with `(congrArg Units.val h2).trans (congrArg₂ (· * ·) (gm_const (algebraMap (FractionRing R) F) z _ hz C c hCv) hv)`.
+-/
 theorem value_of_qVal {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (P : DegPre R) (ϖ : R)
     (χ : P.X) (n : ℤ) (h : QForm.QVal P ϖ χ n) (F : Type) [Field F] [Algebra (FractionRing R) F] (z : Sp F)
     (j : P.P.L.ι) (hj : (P.c χ).left (cpt R) ∈ P.P.L.U j) :
@@ -59,6 +73,25 @@ theorem value_of_qVal {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationR
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
   {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
 
+/- English proof (translation)
+Take `⟨hp, hv⟩` from `(genRel_iff w _ _ _ z).1 hG`. Set `g : R →+* F` to `(algebraMap (FractionRing R) F).comp (algebraMap R _)`. Set `x : Sp R ⟶ P.P.A.left` to `(P.c χ).left`. Establish `hx : Out.jFK (R` using `R) F ≫ Out.ptK (P.c χ) = spMap g ≫ x := by`. Establish `: spMap g = Out.jFK (R` using `R) F ≫ Out.jK R := by`.
+
+Simplify using `only [g, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[this, Category.assoc]`. Both sides reduce to the same expression. Take `⟨j₀, hj₀⟩` from `exists_chart a.D₀.P.isLB (φ (x (cpt R)))`. Establish `ht : ⊤ ≤ x ⁻¹ᵁ ((a.D₀.P.L.pull φ).U (fun _ => j₀) ⊓ P.P.L.U j)` using `(top_le_iff_cpt _ _).2 ⟨mem_pull.2 hj₀, hj⟩`.
+
+Establish `hz : (Out.jFK (R` using `R) F ≫ Out.ptK (P.c χ)) z ∈ (a.D₀.P.L.pull φ).U (fun _ => j₀) ⊓ P.P.L.U j := by`. Rewrite using `[hx]`. Conclude with `ht (show spMap g z ∈ (⊤ : (Sp R).Opens) from trivial)`. Establish `hz₀` using `mem_pull.1 hz.1`. Establish `H1` using `hv (fun _ => j) (fun _ => j₀) (fun _ => hz₀) (fun _ => hz.2)`.
+
+Rewrite `H1` using `[gm_pullGen', gm_pullGen', Category.id_comp, Category.id_comp, Fintype.prod_unique, zpow_neg_one, Units.val_mul, Units.inv_mul_eq_iff_eq_mul]`. Take `⟨u₁, hu₁⟩` from `GlobalTheory.ThetaShiftProofs.exists_unit_gm_spMap g x _ ht (w.s (fun _ => j₀, j)) z`. Establish `hpt : spMap f (cpt R) ∈ (a.D₀.c y).left ⁻¹ᵁ a.D₀.P.L.U j₀`. Establish `h1 : (x ≫ φ) (cpt R) ∈ a.D₀.P.L.U j₀` using `hj₀`. Rewrite `h1` using `[hc]`.
+
+Conclude with `h1`. Take `⟨_, ⟨V, hV, rfl⟩, hpV, hVle⟩` from `(Sp O').isBasis_affineOpens.exists_subset_of_mem_open hpt ((a.D₀.c y).left ⁻¹ᵁ a.D₀.P.L.U j₀).isOpen`. Establish `hle : Out.jK O' ⁻¹ᵁ V ≤ LB.wchart a.D₀.P.L (K` using `PUnit) (fun _ => Out.ptK (a.D₀.c y)) (fun _ => j₀) := fun q hq => Set.mem_iInter.2 fun _ => hVle hq`. Take `⟨r, ⟨r, rfl⟩, hr⟩` from `a.gen y (fun _ => j₀) V hV (Set.subset_univ _) hVle hle`. Establish `htV : ⊤ ≤ spMap f ⁻¹ᵁ V` using `(top_le_iff_cpt _ _).2 hpV`.
+
+Take `⟨u₀, hu₀⟩` from `GlobalTheory.ThetaShiftProofs.exists_unit_gm_spMap g (spMap f) V htV r z`. Establish `hcomp : Out.jFK (R` using `O') F ≫ Out.jK O' = spMap g ≫ spMap f := by`. Simplify using `only [← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext hF`.
+
+Establish `hzV : Out.jK O' (Out.jFK (R` using `O') F z) ∈ V := by`. Establish `h1 : (spMap g ≫ spMap f) z ∈ V` using `htV (show spMap g z ∈ (⊤ : (Sp R).Opens) from trivial)`. Rewrite `h1` using `[← hcomp]`. Conclude with `h1`. Establish `hr' : pullU (Out.jK O') V r = res hle ((a.D₀.psi y).s (fun _ => j₀))` using `Units.ext hr`.
+
+Rewrite `hu₀` using `[← hcomp, ← gm_pull _ _ _ _ hzV, hr']`. Use `replace hu₀ := (congrArg Units.val (gm_res (Out.jFK (R := O') F) z hle hzV _)).symm.trans hu₀`. Rewrite `hu₁` using `[← hx]`. Use `⟨u₁ * u₀, H1.trans ?_⟩` and prove the remaining obligations. Use `(congrArg₂ (· * ·) hu₁ (congrArg _ hu₀)).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [Units.val_mul, map_mul]`. Rewrite using `[mul_left_comm]`. Both sides reduce to the same expression.
+-/
 theorem psi_value (a : ArcIn D l β O' b) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     (f : O' →+* R) (u : R) (P : DegPre R) (φ : P.P.A.left ⟶ a.D₀.P.A.left)
     (w : LB.Iso P.P.L (a.D₀.P.L.pull φ)) (y : a.D₀.X) (χ : P.X)
@@ -125,6 +158,17 @@ theorem psi_value (a : ArcIn D l β O' b) {R : Type} [CommRing R] [IsDomain R] [
   rw [mul_left_comm]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y O' _ _ b a W _ _ _ f u χ hfi h`. Take `⟨t, m, P, φ, he, w, e, -, -, -, -, hc, hG⟩` from `h`. Use `⟨t, m, P, e.toAddEquiv, fun ϖ Q n hϖ hQ hu y => ?_⟩` and prove the remaining obligations. Set `F` to `AlgebraicClosure (FractionRing W)`. Set `g : W →+* F` to `(algebraMap (FractionRing W) F).comp (algebraMap W _)`.
+
+Establish `hg : Function.Injective g` using `(algebraMap (FractionRing W) F).injective.comp (IsFractionRing.injective _ _)`. Establish `hgf : Function.Injective (g.comp f)` using `hg.comp hfi`. Set `alg : Algebra (FractionRing O') F` to `(IsFractionRing.lift (K := FractionRing O') hgf).toAlgebra`. Establish `hF : ∀ x, @algebraMap (FractionRing O') F _ _ alg (algebraMap O' _ x) = algebraMap (FractionRing W) F (algebraMap W _ (f x))` using `fun x => IsFractionRing.lift_algebraMap hgf x`. Establish `z : Sp F` using `(default : PrimeSpectrum F)`.
+
+Take `⟨j, hj⟩` from `exists_chart P.D.toPre.P.isLB ((P.D.toPre.c (e y)).left (cpt W))`. Take `⟨v, hv⟩` from `psi_value a f u P.D.toPre φ w y (e y) (hc y) F hF ((hG F _ hF rfl).1 y) z j hj`. Take `⟨d, hd, hd'⟩` from `value_of_qVal P.D.toPre ϖ (e y) _ (hQ (e y)) F z j hj`. Establish `e1` using `(toStk z).injective (hd'.symm.trans hv)`. Rewrite `e1` using `[← map_zpow₀, ← map_mul]`.
+
+Establish `e2` using `(algebraMap (FractionRing W) F).injective e1`. Take `⟨s, hs⟩` from `hu`. Use `hasVal_unique hϖ hd ⟨s ^ (a.be y y / 2) * v, ?_⟩` and prove the remaining obligations. Rewrite using `[e2, hs, mul_zpow, ← zpow_mul, Units.val_mul, map_mul, _root_.mul_assoc]`. Use `congr 2`.
+
+Conclude with `(map_zpow (((algebraMap W (FractionRing W)) : W →* FractionRing W).comp (Units.coeHom W)) s _).symm`.
+-/
 theorem q_eq_of_hasArcData : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β), ∀ (O' : Type) [CommRing O'] [IsDomain O'] (b : O →+* O') (a : ArcIn D l β O' b) (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (f : O' →+* W) (u : W) (χ : Sp W ⟶ Y.X), Function.Injective f → Y.HasArcData a (maximalIdeal W) f u χ → ∃ (t : SAB H (Sp W)) (_ : SABMap t Y.t χ) (P : PELUnif (maximalIdeal W) t) (e : a.D₀.X ≃+ P.D.toPre.X), ∀ (ϖ : W) (Q : P.D.toPre.X → ℤ) (w : ℕ), Irreducible ϖ → QForm.IsQ P.D.toPre ϖ Q → HasVal ϖ (algebraMap W (FractionRing W) u) w → ∀ y, Q (e y) = w * (a.be y y / 2) := by
   intro E _ _ _ H D l Xo c O _ β Y O' _ _ b a W _ _ _ f u χ hfi h
   obtain ⟨t, m, P, φ, he, w, e, -, -, -, -, hc, hG⟩ := h

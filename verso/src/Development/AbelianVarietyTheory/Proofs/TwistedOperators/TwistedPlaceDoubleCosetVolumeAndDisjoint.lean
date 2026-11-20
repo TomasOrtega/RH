@@ -13,6 +13,13 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 
 namespace GlobalTheory.ChainCells
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ϖ hϖ r l t _ _ m _ hm _ _ μK _ hμK`. Use `⟨fun e => ?_, GlobalTheory.T.pairwise_disjoint_parahoricTorusDoubleCoset_antitone k ϖ hϖ r l t⟩` and prove the remaining obligations. Take `⟨ho, hc⟩` from `GlobalTheory.T.isOpen_isCompact_twoBlockParahoricSubgroup k (Fin r) (Blocks l t)`. Establish `h1` using `GlobalTheory.T.measureReal_doubleCoset_eq_relIndex_conj_mul m _ ho hc (mtor (A := Fin r) ϖ (e ∘ (blkEquiv l t).symm))`. Establish `h2` using `GlobalTheory.T.measureReal_doubleCoset_eq_relIndex_conj_mul μK (KO k (Fin (l * t))) SplitFlip.isOpen_KO SplitFlip.isCompact_KO (torusElt k _ ϖ e)`.
+
+Establish `hs : sumAbs (e ∘ (blkEquiv l t).symm) = sumAbs e`. Unfold `sumAbs`. Conclude with `Equiv.sum_comp (blkEquiv l t).symm (fun i => |e i|)`. Establish `hm1 : m.real (parahoric k (Fin r) (Blocks l t) : Set _) = 1` using `by simp [Measure.real, hm]`. Establish `hK1 : μK.real (KO k (Fin (l * t)) : Set _) = 1` using `by simp [Measure.real, hμK]`.
+
+Rewrite using `[dcell, h1, cell, h2, hm1, hK1, GlobalTheory.T.relIndex_twoBlockParahoric_conj_torusDiagElement k ϖ hϖ, GlobalTheory.T.relIndex_conj_uniformizerPowerDiagonalGL_reindex k ϖ _ _ (blkEquiv l t), hs]`. Simplify using the standard rewrite rules.
+-/
 theorem vol_dcell_and_disjoint : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k →
   ∀ (r l t : ℕ) [MeasurableSpace (GL (Fin r ⊕ Blocks l t) k)] [BorelSpace (GL (Fin r ⊕ Blocks l t) k)]
     (m : Measure (GL (Fin r ⊕ Blocks l t) k)) [m.IsHaarMeasure], m (parahoric k (Fin r) (Blocks l t)) = 1 →

@@ -20,14 +20,26 @@ def mulI (M N : LieI ι a) : LieI ι a := Matrix.of.symm (Matrix.of M * Matrix.o
 
 def gI (g : GL (Fin a) (ι → ℂ)) : LieI ι a := Matrix.of.symm g.val
 
+/- English proof (translation)
+Simplify using `[mulI, gI]`.
+-/
 theorem mulI_gI (g h : GL (Fin a) (ι → ℂ)) : mulI (gI g) (gI h) = gI (g * h) := by
   simp [mulI, gI]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gI_one : gI (1 : GL (Fin a) (ι → ℂ)) = oneI ι a := rfl
 
+/- English proof (translation)
+Simplify using `[mulI, Matrix.mul_assoc]`.
+-/
 theorem mulI_assoc (M N P : LieI ι a) : mulI (mulI M N) P = mulI M (mulI N P) := by
   simp [mulI, Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `[mulI, oneI]`.
+-/
 theorem oneI_mulI (M : LieI ι a) : mulI (oneI ι a) M = M := by simp [mulI, oneI]
 
 def lmul (M : LieI ι a) : LieI ι a →L[ℝ] LieI ι a :=
@@ -46,8 +58,14 @@ def rmul (M : LieI ι a) : LieI ι a →L[ℝ] LieI ι a :=
         ext i k t
         simp [mulI, Matrix.mul_apply, Finset.mul_sum, mul_assoc] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lmul_apply (M N : LieI ι a) : lmul M N = mulI M N := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rmul_apply (M N : LieI ι a) : rmul M N = mulI N M := rfl
 
 end Chart
@@ -57,12 +75,21 @@ section Orb
 variable {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
   (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `M`. Simplify using `[orb]`.
+-/
 theorem orb_zero : orb ρ (0 : X) = 0 := by
   funext M; simp [orb]
 
+/- English proof (translation)
+Apply the tactic sequence `funext M; by_cases h : IsUnit (Matrix.of M) <;> simp [orb, h]`.
+-/
 theorem orb_add (v w : X) : orb ρ (v + w) = orb ρ v + orb ρ w := by
   funext M; by_cases h : IsUnit (Matrix.of M) <;> simp [orb, h]
 
+/- English proof (translation)
+Apply the tactic sequence `funext M; by_cases h : IsUnit (Matrix.of M) <;> simp [orb, h]`.
+-/
 theorem orb_smul (c : ℂ) (v : X) : orb ρ (c • v) = c • orb ρ v := by
   funext M; by_cases h : IsUnit (Matrix.of M) <;> simp [orb, h]
 
@@ -80,10 +107,16 @@ def PolyG (m : V → ℂ) : Prop := Continuous m ∧ ∃ (C : ℝ) (k : ℕ), �
 variable {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
   {ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)}
 
+/- English proof (translation)
+Simplify using `only [gI, hu, oneI]`. Both sides reduce to the same expression.
+-/
 theorem gI_u {u : V → GL (Fin a) (ι → ℂ)} {L : V →L[ℝ] LieI ι a} (hu : ∀ y, (u y).val = 1 + Matrix.of (L y))
     (y : V) : gI (u y) = oneI ι a + L y := by
   simp only [gI, hu, oneI]; rfl
 
+/- English proof (translation)
+Simplify using `only [gI, hu', oneI]`. Both sides reduce to the same expression.
+-/
 theorem gI_u_inv {u : V → GL (Fin a) (ι → ℂ)} {L : V →L[ℝ] LieI ι a}
     (hu' : ∀ y, (u y)⁻¹.val = 1 - Matrix.of (L y)) (y : V) : gI (u y)⁻¹ = oneI ι a - L y := by
   simp only [gI, hu', oneI]; rfl
@@ -99,6 +132,11 @@ section Chart
 
 variable {ι : Type} [Fintype ι] {a : ℕ}
 
+/- English proof (translation)
+Use `⟨a, Nat.cast_nonneg _, fun M N => ?_⟩` and prove the remaining obligations. Establish `hMN : 0 ≤ (a : ℝ) * ‖M‖ * ‖N‖` using `by positivity`. Use `(pi_norm_le_iff_of_nonneg hMN).2 fun i => (pi_norm_le_iff_of_nonneg hMN).2 fun k => ?_` and prove the remaining obligations. Establish `e : mulI M N i k = ∑ j, M i j * N j k` using `by simp [mulI, Matrix.mul_apply]`. Rewrite using `[e]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_mulI_bound : ∃ K : ℝ, 0 ≤ K ∧ ∀ M N : LieI ι a, ‖mulI M N‖ ≤ K * ‖M‖ * ‖N‖ := by
   refine ⟨a, Nat.cast_nonneg _, fun M N => ?_⟩
   have hMN : 0 ≤ (a : ℝ) * ‖M‖ * ‖N‖ := by positivity
@@ -116,12 +154,20 @@ section Op
 
 attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNormedRing
 
+/- English proof (translation)
+Use `letI : NormedSpace ℝ (Matrix (Fin a) (Fin a) (ι → ℂ)) := Matrix.linftyOpNormedSpace`. Establish `: FiniteDimensional ℝ (Matrix (Fin a) (Fin a) (ι → ℂ))` using `by infer_instance`. Use `FiniteDimensional.complete ℝ (Matrix (Fin a) (Fin a) (ι → ℂ))` as an intermediate fact. Use `infer_instance`.
+-/
 theorem a_hsgs : HasSummableGeomSeries (Matrix (Fin a) (Fin a) (ι → ℂ)) := by
   letI : NormedSpace ℝ (Matrix (Fin a) (Fin a) (ι → ℂ)) := Matrix.linftyOpNormedSpace
   have : FiniteDimensional ℝ (Matrix (Fin a) (Fin a) (ι → ℂ)) := by infer_instance
   have := FiniteDimensional.complete ℝ (Matrix (Fin a) (Fin a) (ι → ℂ))
   infer_instance
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun k => ?_` and prove the remaining obligations. Use `show ‖A i k‖ ≤ ‖A‖`. Rewrite using `[Matrix.linfty_opNorm_def]`. Establish `h1 : ‖A i k‖₊ ≤ ∑ j, ‖A i j‖₊` using `Finset.single_le_sum (f := fun j => ‖A i j‖₊) (fun _ _ => bot_le) (Finset.mem_univ k)`. Establish `h2 : ∑ j, ‖A i j‖₊ ≤ Finset.univ.sup fun i => ∑ j, ‖A i j‖₊` using `Finset.le_sup (f := fun i => ∑ j, ‖A i j‖₊) (Finset.mem_univ i)`.
+
+Conclude with `h1.trans h2` after adjusting the coercions.
+-/
 theorem a_sup_le_op (A : Matrix (Fin a) (Fin a) (ι → ℂ)) :
     ‖(Matrix.of.symm A : LieI ι a)‖ ≤ ‖A‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i =>
@@ -134,6 +180,9 @@ theorem a_sup_le_op (A : Matrix (Fin a) (Fin a) (ι → ℂ)) :
     Finset.le_sup (f := fun i => ∑ j, ‖A i j‖₊) (Finset.mem_univ i)
   exact_mod_cast h1.trans h2
 
+/- English proof (translation)
+Rewrite using `[Matrix.linfty_opNorm_def]`. Establish `: (Finset.univ.sup fun i => ∑ j, ‖A i j‖₊) ≤ (a : NNReal) * ‖(Matrix.of.symm A : LieI ι a)‖₊`. Use `Finset.sup_le fun i _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions.
+-/
 theorem a_op_le_sup (A : Matrix (Fin a) (Fin a) (ι → ℂ)) :
     ‖A‖ ≤ a * ‖(Matrix.of.symm A : LieI ι a)‖ := by
   rw [Matrix.linfty_opNorm_def]
@@ -145,6 +194,17 @@ theorem a_op_le_sup (A : Matrix (Fin a) (Fin a) (ι → ℂ)) :
       _ = a * ‖(Matrix.of.symm A : LieI ι a)‖₊ := by simp
   exact_mod_cast this
 
+/- English proof (translation)
+Use `⟨1 / (2 * (a + 1)), by positivity, ‖(1 : Matrix (Fin a) (Fin a) (ι → ℂ))‖ - 1 + 2, fun M hM => ?_⟩` and prove the remaining obligations. Use `a_hsgs (ι := ι) (a := a)` as an intermediate fact. Use `set T : Matrix (Fin a) (Fin a) (ι → ℂ) := 1 - Matrix.of M with hT`. Establish `hTs : (Matrix.of.symm T : LieI ι a) = oneI ι a - M` using `rfl`. Establish `hd : ‖oneI ι a - M‖ < 1 / (2 * (a + 1))`.
+
+Rewrite `hM` using `[Metric.mem_ball, dist_eq_norm, norm_sub_rev]`. Conclude with `hM`. Establish `hT1 : ‖T‖ ≤ 1 / 2`. Establish `h` using `a_op_le_sup T`. Rewrite `h` using `[hTs]`.
+
+Establish `ha : (0 : ℝ) ≤ a` using `Nat.cast_nonneg _`. Establish `: (a : ℝ) * ‖oneI ι a - M‖ ≤ a * (1 / (2 * (a + 1)))` using `mul_le_mul_of_nonneg_left hd.le ha`. Establish `h3 : (a : ℝ) * (1 / (2 * (a + 1))) ≤ 1 / 2`. Rewrite using `[mul_one_div, div_le_div_iff₀ (by positivity) (by norm_num)]; nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hTlt : ‖T‖ < 1` using `by linarith`. Use `⟨Units.oneSub T hTlt, ?_, ?_⟩` and prove the remaining obligations. Use `show Matrix.of.symm (1 - T) = M`. Rewrite using `[hT, sub_sub_cancel]`. Both sides reduce to the same expression.
+
+Use `(a_sup_le_op _).trans ?_ show ‖∑' n : ℕ, T ^ n‖ ≤ _` and prove the remaining obligations. Use `(tsum_geometric_le_of_norm_lt_one T hTlt).trans ?_` and prove the remaining obligations. Establish `: (1 - ‖T‖)⁻¹ ≤ 2`. Rewrite using `[inv_le_comm₀ (by linarith) (by norm_num)]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_inv_bound : ∃ ε > (0 : ℝ), ∃ B : ℝ, ∀ M ∈ Metric.ball (oneI ι a) ε,
     ∃ g : GL (Fin a) (ι → ℂ), gI g = M ∧ ‖gI g⁻¹‖ ≤ B := by
   refine ⟨1 / (2 * (a + 1)), by positivity, ‖(1 : Matrix (Fin a) (Fin a) (ι → ℂ))‖ - 1 + 2, fun M hM => ?_⟩
@@ -186,12 +246,20 @@ section Orb
 variable {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
   (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X))
 
+/- English proof (translation)
+Establish `h : IsUnit (Matrix.of (gI g))` using `by simpa [gI] using g.isUnit`. Establish `hu : h.unit = g` using `Units.ext (by simp [gI])`. Simplify using `only [orb]`. Rewrite using `[dif_pos h, hu]`.
+-/
 theorem orb_gI (g : GL (Fin a) (ι → ℂ)) (v : X) : orb ρ v (gI g) = ρ g v := by
   have h : IsUnit (Matrix.of (gI g)) := by simpa [gI] using g.isUnit
   have hu : h.unit = g := Units.ext (by simp [gI])
   simp only [orb]
   rw [dif_pos h, hu]
 
+/- English proof (translation)
+Establish `e : Matrix.of (mulI (gI g) M) = (g : Matrix (Fin a) (Fin a) (ι → ℂ)) * Matrix.of M`. Simplify using `[mulI, gI]`. Distinguish the cases in `h : IsUnit (Matrix.of M)`. Establish `h' : IsUnit (Matrix.of (mulI (gI g) M))` using `by rw [e]; exact g.isUnit.mul h`. Establish `hu : h'.unit = g * h.unit` using `Units.ext (by simp [e])`.
+
+Simplify using `only [orb]`. Rewrite using `[dif_pos h', dif_pos h, hu, map_mul, ContinuousLinearMap.mul_apply]`. Establish `h' : ¬ IsUnit (Matrix.of (mulI (gI g) M))` using `by rw [e, Units.isUnit_units_mul]; exact h`. Simplify using `only [orb]`. Rewrite using `[dif_neg h', dif_neg h, map_zero]`.
+-/
 theorem orb_mulI (g : GL (Fin a) (ι → ℂ)) (v : X) (M : LieI ι a) :
     orb ρ v (mulI (gI g) M) = ρ g (orb ρ v M) := by
   have e : Matrix.of (mulI (gI g) M) = (g : Matrix (Fin a) (Fin a) (ι → ℂ)) * Matrix.of M := by
@@ -205,6 +273,11 @@ theorem orb_mulI (g : GL (Fin a) (ι → ℂ)) (v : X) (M : LieI ι a) :
     simp only [orb]
     rw [dif_neg h', dif_neg h, map_zero]
 
+/- English proof (translation)
+Establish `e : Matrix.of (mulI M (gI g)) = Matrix.of M * (g : Matrix (Fin a) (Fin a) (ι → ℂ))`. Simplify using `[mulI, gI]`. Distinguish the cases in `h : IsUnit (Matrix.of M)`. Establish `h' : IsUnit (Matrix.of (mulI M (gI g)))` using `by rw [e]; exact h.mul g.isUnit`. Establish `hu : h'.unit = h.unit * g` using `Units.ext (by simp [e])`.
+
+Simplify using `only [orb]`. Rewrite using `[dif_pos h', dif_pos h, hu, map_mul, ContinuousLinearMap.mul_apply]`. Establish `h' : ¬ IsUnit (Matrix.of (mulI M (gI g)))` using `by rw [e, Units.isUnit_mul_units]; exact h`. Simplify using `only [orb]`. Rewrite using `[dif_neg h', dif_neg h]`.
+-/
 theorem orb_mulI_right (g : GL (Fin a) (ι → ℂ)) (v : X) (M : LieI ι a) :
     orb ρ v (mulI M (gI g)) = orb ρ (ρ g v) M := by
   have e : Matrix.of (mulI M (gI g)) = Matrix.of M * (g : Matrix (Fin a) (Fin a) (ι → ℂ)) := by
@@ -218,6 +291,11 @@ theorem orb_mulI_right (g : GL (Fin a) (ι → ℂ)) (v : X) (M : LieI ι a) :
     simp only [orb]
     rw [dif_neg h', dif_neg h]
 
+/- English proof (translation)
+Establish `e : orb ρ v = fun N => ((ρ g).restrictScalars ℝ) (orb ρ v (lmul (gI g⁻¹) N))`. Use function extensionality and compare the values at `N`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', lmul_apply]`. Rewrite using `[← orb_mulI, ← mulI_assoc, mulI_gI, mul_inv_cancel, gI_one, oneI_mulI]`. Establish `h1 : lmul (gI g⁻¹) (gI g) = oneI ι a`.
+
+Rewrite using `[lmul_apply, mulI_gI, inv_mul_cancel, gI_one]`. Establish `hD' : HasFDerivAt (orb ρ v) D (lmul (gI g⁻¹) (gI g))` using `h1 ▸ hD`. Use `((ρ g).restrictScalars ℝ).hasFDerivAt.comp (gI g) (hD'.comp (gI g) (lmul (gI g⁻¹)).hasFDerivAt)` as an intermediate fact. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem hasFDerivAt_orb_at {v : X} {D : LieI ι a →L[ℝ] X} (hD : HasFDerivAt (orb ρ v) D (oneI ι a))
     (g : GL (Fin a) (ι → ℂ)) :
     HasFDerivAt (orb ρ v) (((ρ g).restrictScalars ℝ).comp (D.comp (lmul (gI g⁻¹)))) (gI g) := by
@@ -232,6 +310,9 @@ theorem hasFDerivAt_orb_at {v : X} {D : LieI ι a →L[ℝ] X} (hD : HasFDerivAt
   rw [e]
   exact this
 
+/- English proof (translation)
+Take `⟨C, N, hC, h⟩` from `hρ`. Conclude with `⟨C, N, hC, fun g => ContinuousLinearMap.opNorm_le_bound _ (mul_nonneg hC (pow_nonneg (by positivity) _)) (fun x => h g x)⟩`.
+-/
 theorem polyBd_opNorm (hρ : PolyBd ρ) : ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧
     ∀ g : GL (Fin a) (ι → ℂ), ‖ρ g‖ ≤ C * (1 + ‖gI g‖ + ‖gI g⁻¹‖) ^ N := by
   obtain ⟨C, N, hC, h⟩ := hρ
@@ -250,6 +331,11 @@ section RapC
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
+/- English proof (translation)
+Introduce `N`. Take `⟨C, hC⟩` from `hg (N + k)`. Use `⟨max K 0 * C, fun y => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ (1 + ‖y‖) ^ N` using `by positivity`. Establish `h1 : 0 ≤ (1 + ‖y‖) ^ k * ‖g y‖` using `by positivity`.
+
+Establish `h2 : ‖f y‖ ≤ max K 0 * ((1 + ‖y‖) ^ k * ‖g y‖)`. Rewrite using `[← mul_assoc]`. Conclude with `(hle y).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)) (norm_nonneg _))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem c_decay {E F : Type} [NormedAddCommGroup E] [NormedAddCommGroup F] {f : V → E} {g : V → F}
     (hg : ∀ N : ℕ, ∃ C : ℝ, ∀ y, (1 + ‖y‖) ^ N * ‖g y‖ ≤ C) (K : ℝ) (k : ℕ)
     (hle : ∀ y, ‖f y‖ ≤ K * (1 + ‖y‖) ^ k * ‖g y‖) :
@@ -268,6 +354,11 @@ theorem c_decay {E F : Type} [NormedAddCommGroup E] [NormedAddCommGroup F] {f : 
     _ = max K 0 * ((1 + ‖y‖) ^ (N + k) * ‖g y‖) := by rw [pow_add]; ring
     _ ≤ max K 0 * C := mul_le_mul_of_nonneg_left (hC y) (le_max_right _ _)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hf.2 (Module.finrank ℝ V + 1)`. Establish `hi : Integrable (fun y : V => (1 + ‖y‖) ^ (-((Module.finrank ℝ V + 1 : ℕ) : ℝ))) μ` using `integrable_one_add_norm (by push_cast; linarith)`. Use `(hi.const_mul C).mono' hf.1.aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hpos : 0 < (1 + ‖y‖) ^ (Module.finrank ℝ V + 1)` using `by positivity`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ hpos, mul_comm]`.
+
+Conclude with `hC y`.
+-/
 theorem integrable_of_rap [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V)
     [μ.IsAddHaarMeasure] {E : Type} [NormedAddCommGroup E] {f : V → E} (hf : Rap f) : Integrable f μ := by
   obtain ⟨C, hC⟩ := hf.2 (Module.finrank ℝ V + 1)
@@ -281,6 +372,23 @@ theorem integrable_of_rap [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSp
 variable {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
   {ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)}
 
+/- English proof (translation)
+Take `⟨C, N, hC0, hC⟩` from `polyBd_opNorm ρ hρ`. Use `set A : ℝ := ‖oneI ι a‖ + ‖L‖ + 1 with hAdef`. Establish `hbd : ∀ y, ‖ρ (u y)‖ ≤ C * (2 * A * (1 + ‖y‖)) ^ N`. Introduce `y`. Use `(hC (u y)).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) ?_ N) hC0)` and prove the remaining obligations.
+
+Rewrite using `[gI_u hu, gI_u_inv hu']`. Establish `h1` using `norm_add_le (oneI ι a) (L y)`. Establish `h2` using `norm_sub_le (oneI ι a) (L y)`. Establish `h3` using `L.le_opNorm y`. Establish `h4 : 0 ≤ ‖y‖` using `norm_nonneg _`.
+
+Establish `h5 : 0 ≤ ‖L‖` using `norm_nonneg _`. Establish `h6 : 0 ≤ ‖oneI ι a‖` using `norm_nonneg _`. Rewrite using `[hAdef]`. Use polynomial arithmetic with `[mul_nonneg h6 h4]`. Establish `hdec` using `c_decay hH.2 (C * (2 * A) ^ N) N fun y => by`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨continuous_iff_continuousAt.2 fun y0 => ?_, hdec⟩` and prove the remaining obligations. Take `⟨D, hD⟩` from `hd y0`. Establish `hcu : Continuous fun y => gI (u y)`. Repeatedly rewrite using `[gI_u hu]`.
+
+Conclude with `continuous_const.add L.continuous`. Establish `h2 : ContinuousAt (fun y => ρ (u y) (H y0)) y0`. Use `(hasFDerivAt_orb_at ρ hD (u y0)).continuousAt.comp (f := fun y => gI (u y)) hcu.continuousAt` as an intermediate fact. Simplify `this` using `[Function.comp_def, orb_gI]`. Establish `hP : Continuous fun y : V => C * (2 * A * (1 + ‖y‖)) ^ N` using `by fun_prop`.
+
+Establish `h1 : Tendsto (fun y => ρ (u y) (H y - H y0)) (𝓝 y0) (𝓝 0)`. Establish `ht : Tendsto (fun y => C * (2 * A * (1 + ‖y‖)) ^ N * ‖H y - H y0‖) (𝓝 y0) (𝓝 (C * (2 * A * (1 + ‖y0‖)) ^ N * 0))`. Use `(hP.tendsto y0).mul ?_` and prove the remaining obligations. Use `((hH.1.tendsto y0).sub_const (H y0)).norm` as an intermediate fact. Simplify using `using this`.
+
+Rewrite `ht` using `[mul_zero]`. Use `squeeze_zero_norm (fun y => ?_) ht` and prove the remaining obligations. Conclude with `((ρ (u y)).le_opNorm _).trans (mul_le_mul_of_nonneg_right (hbd y) (norm_nonneg _))`. Establish `e : (fun y => ρ (u y) (H y)) = fun y => ρ (u y) (H y - H y0) + ρ (u y) (H y0)`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[← map_add, sub_add_cancel]`. Rewrite using `[e]`. Unfold `ContinuousAt`. Use `h1.add h2` as an intermediate fact. Simplify using `using this`.
+-/
 theorem rap_rho (hρ : PolyBd ρ) {u : V → GL (Fin a) (ι → ℂ)} {L : V →L[ℝ] LieI ι a}
     (hu : ∀ y, (u y).val = 1 + Matrix.of (L y)) (hu' : ∀ y, (u y)⁻¹.val = 1 - Matrix.of (L y))
     {H : V → X} (hH : Rap H) (hd : ∀ y, ∃ D : LieI ι a →L[ℝ] X, HasFDerivAt (orb ρ (H y)) D (oneI ι a)) :
@@ -337,9 +445,15 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 variable {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
   {ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨continuous_const, 1, 0, fun y => by simp⟩`.
+-/
 theorem d_polyG_one : PolyG (fun _ : V => (1 : ℂ)) :=
   ⟨continuous_const, 1, 0, fun y => by simp⟩
 
+/- English proof (translation)
+Take `⟨hc, C, k, hC⟩` from `hm`. Take `⟨hc', C', k', hC'⟩` from `hm'`. Use `⟨hc.mul hc', C * C', k + k', fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem d_polyG_mul {m m' : V → ℂ} (hm : PolyG m) (hm' : PolyG m') : PolyG (fun y => m y * m' y) := by
   obtain ⟨hc, C, k, hC⟩ := hm
   obtain ⟨hc', C', k', hC'⟩ := hm'
@@ -349,10 +463,22 @@ theorem d_polyG_mul {m m' : V → ℂ} (hm : PolyG m) (hm' : PolyG m') : PolyG (
         mul_le_mul (hC y) (hC' y) (norm_nonneg _) (le_trans (norm_nonneg _) (hC y))
     _ = C * C' * ((1 + ‖y‖) ^ k * (1 + ‖y‖) ^ k') := by ring
 
+/- English proof (translation)
+Use `Submodule.subset_span ⟨G, hG, fun _ => 1, d_polyG_one, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
+-/
 theorem mem_mult {𝒢 : Submodule ℂ (V → X)} {G : V → X} (hG : G ∈ 𝒢) : G ∈ Mult 𝒢 := by
   refine Submodule.subset_span ⟨G, hG, fun _ => 1, d_polyG_one, ?_⟩
   funext y; simp
 
+/- English proof (translation)
+Proceed by induction on `hH using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨G, hG, m0, hm0, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨G, hG, fun y => m y * m0 y, d_polyG_mul hm hm0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`.
+
+Simplify using `[mul_smul]`. Consider the case `zero`. Use `Submodule.zero_mem (Mult 𝒢) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
+
+Consider the case `add x z _ _ hx hz`. Use `Submodule.add_mem _ hx hz using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `[smul_add]`. Consider the case `smul c x _ hx`.
+
+Use `Submodule.smul_mem _ c hx using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `[smul_comm (m y) c]`.
+-/
 theorem mult_mul {𝒢 : Submodule ℂ (V → X)} {H : V → X} (hH : H ∈ Mult 𝒢) {m : V → ℂ} (hm : PolyG m) :
     (fun y => m y • H y) ∈ Mult 𝒢 := by
   induction hH using Submodule.span_induction with
@@ -370,6 +496,29 @@ theorem mult_mul {𝒢 : Submodule ℂ (V → X)} {H : V → X} (hH : H ∈ Mult
     convert Submodule.smul_mem _ c hx using 1
     funext y; simp [smul_comm (m y) c]
 
+/- English proof (translation)
+Introduce `H hH`. Proceed by induction on `hH using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨G, hG, m, ⟨hmc, C, k, hC⟩, rfl⟩` from `hx`. Take `⟨hGc, hGr, D, hD𝒢, hD⟩` from `h𝒢 G hG`.
+
+Use `⟨hmc.smul hGc, fun N => ?_, fun Z y => m y • D Z y, fun Z => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨C', hC'⟩` from `hGr (N + k)`. Use `⟨max C 0 * C', fun y => ?_⟩` and prove the remaining obligations. Establish `hmy : ‖m y‖ ≤ max C 0 * (1 + ‖y‖) ^ k` using `(hC y).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Rewrite using `[norm_smul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `Submodule.subset_span ⟨D Z, hD𝒢 Z, m, ⟨hmc, C, k, hC⟩, rfl⟩`. Take `⟨D', hD'1, hD'2⟩` from `hD y`. Use `⟨m y • D', fun Z => by simp [hD'1], ?_⟩` and prove the remaining obligations. Use `show HasFDerivAt (orb ρ (m y • G y)) _ _`.
+
+Rewrite using `[orb_smul]`. Conclude with `hD'2.const_smul (m y)`. Consider the case `zero`. Use `⟨continuous_zero, fun N => ⟨0, fun y => by simp⟩, fun _ => 0, fun _ => Submodule.zero_mem _, fun y => ⟨0, fun Z => by simp, ?_⟩⟩` and prove the remaining obligations. Use `show HasFDerivAt (orb ρ 0) _ _`.
+
+Rewrite using `[orb_zero]`. Conclude with `hasFDerivAt_const _ _`. Consider the case `add x z _ _ hx hz`. Take `⟨hxc, hxr, Dx, hDx, hx'⟩` from `hx`. Take `⟨hzc, hzr, Dz, hDz, hz'⟩` from `hz`.
+
+Use `⟨hxc.add hzc, fun N => ?_, fun Z => Dx Z + Dz Z, fun Z => Submodule.add_mem _ (hDx Z) (hDz Z), fun y => ?_⟩` and prove the remaining obligations. Take `⟨C1, h1⟩` from `hxr N`. Take `⟨C2, h2⟩` from `hzr N`. Use `⟨C1 + C2, fun y => ?_⟩` and prove the remaining obligations. Establish `e1` using `h1 y`.
+
+Establish `e2` using `h2 y`. Combine the equalities or inequalities in the displayed calculation. Take `⟨D1, e1, h1⟩` from `hx' y`. Take `⟨D2, e2, h2⟩` from `hz' y`. Use `⟨D1 + D2, fun Z => by simp [e1, e2], ?_⟩` and prove the remaining obligations.
+
+Use `show HasFDerivAt (orb ρ (x y + z y)) _ _`. Rewrite using `[orb_add]`. Conclude with `h1.add h2`. Consider the case `smul c x _ hx`. Take `⟨hxc, hxr, Dx, hDx, hx'⟩` from `hx`.
+
+Use `⟨hxc.const_smul c, fun N => ?_, fun Z => c • Dx Z, fun Z => Submodule.smul_mem _ c (hDx Z), fun y => ?_⟩` and prove the remaining obligations. Take `⟨C1, h1⟩` from `hxr N`. Use `⟨‖c‖ * C1, fun y => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Pi.smul_apply, norm_smul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ‖c‖ * C1 := mul_le_mul_of_nonneg_left (h1 y) (norm_nonneg _)`. Take `⟨D1, e1, h1⟩` from `hx' y`. Use `⟨c • D1, fun Z => by simp [e1], ?_⟩` and prove the remaining obligations. Use `show HasFDerivAt (orb ρ (c • x y)) _ _`.
+
+Rewrite using `[orb_smul]`. Conclude with `h1.const_smul c`.
+-/
 theorem rapidFam_mult {𝒢 : Submodule ℂ (V → X)} (h𝒢 : RapidFam ρ 𝒢) : RapidFam ρ (Mult 𝒢) := by
   intro H hH
   induction hH using Submodule.span_induction with
@@ -445,14 +594,23 @@ open Classical in
 def unitChartOperator (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) (M : LieI ι a) : X →L[ℂ] X :=
   if h : IsUnit (Matrix.of M) then ρ h.unit else 0
 
+/- English proof (translation)
+Apply the tactic sequence `unfold orb unitChartOperator; split_ifs <;> simp`.
+-/
 theorem e_orb_eq (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) (w : X) (M : LieI ι a) :
     orb ρ w M = unitChartOperator ρ M w := by
   unfold orb unitChartOperator; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `: Matrix.of (gI g) = g.val` using `rfl`. Rewrite using `[this]`. Conclude with `g.isUnit`.
+-/
 theorem e_isUnit_gI (g : GL (Fin a) (ι → ℂ)) : IsUnit (Matrix.of (gI g)) := by
   have : Matrix.of (gI g) = g.val := rfl
   rw [this]; exact g.isUnit
 
+/- English proof (translation)
+Use `ext1`. Both sides reduce to the same expression.
+-/
 theorem e_unit_gI (g : GL (Fin a) (ι → ℂ)) (h : IsUnit (Matrix.of (gI g))) : h.unit = g := by
   ext1; rfl
 
@@ -461,6 +619,9 @@ def e_b (ι : Type) [Fintype ι] (a : ℕ) := Module.finBasis ℝ (LieI ι a)
 def e_crd (i : Fin (Module.finrank ℝ (LieI ι a))) : LieI ι a →L[ℝ] ℝ :=
   LinearMap.toContinuousLinearMap ((e_b ι a).coord i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem e_crd_apply (i : Fin (Module.finrank ℝ (LieI ι a))) (Z : LieI ι a) :
     e_crd i Z = (e_b ι a).coord i Z := rfl
 
@@ -469,10 +630,18 @@ variable {V : Type}
 def e_Dy (D : LieI ι a → V → X) (y : V) : LieI ι a →L[ℝ] X :=
   ∑ i, (e_crd i).smulRight (D (e_b ι a i) y)
 
+/- English proof (translation)
+Simplify using `[e_Dy, Complex.coe_smul]`.
+-/
 theorem e_Dy_apply (D : LieI ι a → V → X) (y : V) (W : LieI ι a) :
     e_Dy D y W = ∑ i, ((e_b ι a).coord i W : ℂ) • D (e_b ι a i) y := by
   simp [e_Dy, Complex.coe_smul]
 
+/- English proof (translation)
+Use extensionality with `Z`. Rewrite using `[e_Dy_apply]`. Use `conv_lhs => rw [← (e_b ι a).sum_repr Z]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, h]`. Simplify using `[Complex.coe_smul]`.
+-/
 theorem e_Dy_eq (D : LieI ι a → V → X) (y : V) (D' : LieI ι a →L[ℝ] X) (h : ∀ Z, D' Z = D Z y) :
     D' = e_Dy D y := by
   ext Z
@@ -483,23 +652,37 @@ theorem e_Dy_eq (D : LieI ι a → V → X) (y : V) (D' : LieI ι a →L[ℝ] X)
   rw [map_smul, h]
   simp [Complex.coe_smul]
 
+/- English proof (translation)
+Unfold `e_Dy`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `[ContinuousLinearMap.norm_smulRight_apply]`.
+-/
 theorem e_Dy_norm (D : LieI ι a → V → X) (y : V) :
     ‖e_Dy D y‖ ≤ ∑ i, ‖e_crd (ι := ι) (a := a) i‖ * ‖D (e_b ι a i) y‖ := by
   unfold e_Dy
   refine (norm_sum_le _ _).trans (le_of_eq ?_)
   simp [ContinuousLinearMap.norm_smulRight_apply]
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun k => continuous_pi fun t => ?_` and prove the remaining obligations. Simplify using `only [mulI, Matrix.of_symm_apply, Matrix.mul_apply, Finset.sum_apply, Pi.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem e_mulI_cont : Continuous (fun p : LieI ι a × LieI ι a => mulI p.1 p.2) := by
   refine continuous_pi fun i => continuous_pi fun k => continuous_pi fun t => ?_
   simp only [mulI, Matrix.of_symm_apply, Matrix.mul_apply, Finset.sum_apply, Pi.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+The claim follows from `e_mulI_cont.comp (hf.prodMk hg)`.
+-/
 theorem e_mulI_cont' {Y : Type} [TopologicalSpace Y] {f g : Y → LieI ι a} (hf : Continuous f)
     (hg : Continuous g) : Continuous (fun y => mulI (f y) (g y)) :=
   e_mulI_cont.comp (hf.prodMk hg)
 
 variable [NormedAddCommGroup V] [NormedSpace ℝ V]
 
+/- English proof (translation)
+Use `⟨((continuous_const.add continuous_norm).pow k).mul hf.1.norm, fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hf.2 (N + k)`. Use `⟨C, fun y => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ 1 + ‖y‖` using `by positivity`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity), ← mul_assoc, ← pow_add]`.
+
+Conclude with `hC y`.
+-/
 theorem e_rap_weight {E : Type} [NormedAddCommGroup E] {f : V → E} (hf : Rap f) (k : ℕ) :
     Rap (fun y => (1 + ‖y‖) ^ k * ‖f y‖) := by
   refine ⟨((continuous_const.add continuous_norm).pow k).mul hf.1.norm, fun N => ?_⟩
@@ -516,15 +699,26 @@ section KeyMain
 variable {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
   {ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)} {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun N => by simpa using hK P N`.
+-/
 theorem e_lmul_norm {K : ℝ} (hK0 : 0 ≤ K) (hK : ∀ M N : LieI ι a, ‖mulI M N‖ ≤ K * ‖M‖ * ‖N‖)
     (P : LieI ι a) : ‖lmul P‖ ≤ K * ‖P‖ :=
   ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun N => by simpa using hK P N
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun N => by have := hK N P; simp only [rmul_apply]; nlinarith [norm_nonneg N, norm_nonneg P]`.
+-/
 theorem e_rmul_norm {K : ℝ} (hK0 : 0 ≤ K) (hK : ∀ M N : LieI ι a, ‖mulI M N‖ ≤ K * ‖M‖ * ‖N‖)
     (P : LieI ι a) : ‖rmul P‖ ≤ K * ‖P‖ :=
   ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun N => by
     have := hK N P; simp only [rmul_apply]; nlinarith [norm_nonneg N, norm_nonneg P]
 
+/- English proof (translation)
+Establish `h1` using `L.le_opNorm y`. Establish `h2 : ‖oneI ι a‖ + ‖L‖ * ‖y‖ ≤ (‖oneI ι a‖ + ‖L‖) * (1 + ‖y‖)`. Use polynomial arithmetic with `[norm_nonneg (oneI ι a), norm_nonneg L, norm_nonneg y]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gI_u hu]; exact (norm_add_le _ _).trans (by linarith)`.
+
+Rewrite using `[gI_u_inv hu']; exact (norm_sub_le _ _).trans (by linarith)`.
+-/
 theorem e_gI_u_norm {u : V → GL (Fin a) (ι → ℂ)} {L : V →L[ℝ] LieI ι a}
     (hu : ∀ y, (u y).val = 1 + Matrix.of (L y)) (hu' : ∀ y, (u y)⁻¹.val = 1 - Matrix.of (L y)) (y : V) :
     ‖gI (u y)‖ ≤ (‖oneI ι a‖ + ‖L‖) * (1 + ‖y‖) ∧ ‖gI (u y)⁻¹‖ ≤ (‖oneI ι a‖ + ‖L‖) * (1 + ‖y‖) := by
@@ -535,6 +729,17 @@ theorem e_gI_u_norm {u : V → GL (Fin a) (ι → ℂ)} {L : V →L[ℝ] LieI ι
   · rw [gI_u hu]; exact (norm_add_le _ _).trans (by linarith)
   · rw [gI_u_inv hu']; exact (norm_sub_le _ _).trans (by linarith)
 
+/- English proof (translation)
+Take `⟨K, hK0, hK⟩` from `exists_mulI_bound (ι := ι) (a := a)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun y => mulI (gI (u y)⁻¹) (mulI Z (gI (u y)))`. Simplify using `only [gI_u hu, gI_u_inv hu']`. Establish `hP : Continuous fun y => oneI ι a - L y` using `continuous_const.sub L.continuous`.
+
+Establish `hQ : Continuous fun y => oneI ι a + L y` using `continuous_const.add L.continuous`. Conclude with `e_mulI_cont' hP (e_mulI_cont' continuous_const hQ)`. Establish `h2 : Continuous fun y => e_crd (ι` using `ι) (a := a) i (mulI (gI (u y)⁻¹) (mulI Z (gI (u y)))) := (e_crd (ι := ι) (a := a) i).continuous.comp hc`. Simplify using `only [e_crd_apply] at h2`. Conclude with `Complex.continuous_ofReal.comp h2`.
+
+Use `⟨‖e_crd (ι := ι) (a := a) i‖ * (K * (K * ‖Z‖)) * (‖oneI ι a‖ + ‖L‖) ^ 2, 2, fun y => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `e_gI_u_norm hu hu' y`. Use `set c := ‖oneI ι a‖ + ‖L‖`. Establish `hc0 : 0 ≤ c` using `by positivity`. Rewrite using `[Complex.norm_real]`.
+
+Establish `e1 : ‖(e_b ι a).coord i (mulI (gI (u y)⁻¹) (mulI Z (gI (u y))))‖ ≤ ‖e_crd (ι` using `ι) (a := a) i‖ * ‖mulI (gI (u y)⁻¹) (mulI Z (gI (u y)))‖ := (e_crd (ι := ι) (a := a) i).le_opNorm _`. Establish `e2` using `hK (gI (u y)⁻¹) (mulI Z (gI (u y)))`. Establish `e3` using `hK Z (gI (u y))`. Establish `hcrd` using `norm_nonneg (e_crd (ι := ι) (a := a) i)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `e1.trans (mul_le_mul_of_nonneg_left (e2.trans ?_) hcrd)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left e3 (by positivity)`. Use `_ ≤ ‖e_crd (ι := ι) (a := a) i‖ * (K * (c * (1 + ‖y‖)) * (K * ‖Z‖ * (c * (1 + ‖y‖)))) := by gcongr`. Use `_ = _ := by ring`.
+-/
 theorem e_polyG_coord {u : V → GL (Fin a) (ι → ℂ)} {L : V →L[ℝ] LieI ι a}
     (hu : ∀ y, (u y).val = 1 + Matrix.of (L y)) (hu' : ∀ y, (u y)⁻¹.val = 1 - Matrix.of (L y))
     (Z : LieI ι a) (i : Fin (Module.finrank ℝ (LieI ι a))) :
@@ -568,6 +773,53 @@ theorem e_polyG_coord {u : V → GL (Fin a) (ι → ℂ)} {L : V →L[ℝ] LieI 
           gcongr
       _ = _ := by ring
 
+/- English proof (translation)
+Take `⟨hHc, hHr, D, hD𝒢, hD'⟩` from `h𝒢 H hH`. Establish `hDy : ∀ y, HasFDerivAt (orb ρ (H y)) (e_Dy D y) (oneI ι a)` using `fun y => by`. Take `⟨D', h1, h2⟩` from `hD' y`. Rewrite using `[← e_Dy_eq D y D' h1]` and apply the resulting hypothesis. Establish `hrap : ∀ W ∈ 𝒢, Rap (fun y => ρ (u y) (W y))` using `fun W hW => by`.
+
+Take `⟨hc, hr, D1, -, hD1⟩` from `h𝒢 W hW`. Conclude with `rap_rho hρ hu hu' ⟨hc, hr⟩ fun y => (hD1 y).elim fun D' h => ⟨D', h.2⟩`. Establish `hint : Integrable (fun y => ρ (u y) (H y)) μ` using `integrable_of_rap μ (hrap H hH)`. Set `F : LieI ι a → V → X` to `fun M y => orb ρ (H y) (mulI M (gI (u y)))`. Establish `hFe : ∀ M y, F M y = unitChartOperator ρ M (ρ (u y) (H y))` using `fun M y => by show orb ρ (H y) (mulI M (gI (u y))) = _`.
+
+Rewrite using `[orb_mulI_right, e_orb_eq]`. Establish `hformula : orb ρ (∫ y, ρ (u y) (H y) ∂μ) = fun M => ∫ y, F M y ∂μ`. Use function extensionality and compare the values at `M`. Simplify using `only [hFe, e_orb_eq]`. Conclude with `((unitChartOperator ρ M).integral_comp_comm hint).symm`.
+
+Set `F' : LieI ι a → V → (LieI ι a →L[ℝ] X)` to `fun M y => if h : IsUnit (Matrix.of M) then (((ρ (h.unit * u y)).restrictScalars ℝ).comp ((e_Dy D y).comp (lmul (gI (h.unit * u y)⁻¹)))).comp (rmul (gI (u y))) else 0`. Establish `hF'g : ∀ g y, F' (gI g) y = (((ρ (g * u y)).restrictScalars ℝ).comp ((e_Dy D y).comp (lmul (gI (g * u y)⁻¹)))).comp (rmul (gI (u y)))`. Introduce `g y`. Simplify using `only [F', dif_pos (e_isUnit_gI g), e_unit_gI g]`. Establish `hdiff : ∀ g y, HasFDerivAt (F · y) (F' (gI g) y) (gI g)`.
+
+Introduce `g y`. Rewrite using `[hF'g]`. Establish `h1` using `hasFDerivAt_orb_at ρ (hDy y) (g * u y)`. Establish `e : gI (g * u y) = rmul (gI (u y)) (gI g)` using `(mulI_gI g (u y)).symm`. Rewrite `h1` using `[e]`.
+
+Conclude with `h1.comp (gI g) (rmul (gI (u y))).hasFDerivAt`. Take `⟨K, hK0, hK⟩` from `exists_mulI_bound (ι := ι) (a := a)`. Take `⟨ε, hε, B0, hB⟩` from `exists_inv_bound (ι := ι) (a := a)`. Take `⟨C, N, hC0, hC⟩` from `polyBd_opNorm ρ hρ`. Take `⟨B, hB0, hBB⟩ : ∃ B : ℝ, 0 ≤ B ∧ B0 ≤ B` from `⟨max B0 0, le_max_right _ _, le_max_left _ _⟩`.
+
+Take `⟨c, hc0, hcu⟩ : ∃ c : ℝ, 0 ≤ c ∧ ∀ y, ‖gI (u y)‖ ≤ c * (1 + ‖y‖) ∧ ‖gI (u y)⁻¹‖ ≤ c * (1 + ‖y‖)` from `⟨_, by positivity, e_gI_u_norm hu hu'⟩`. Choose the witnesses or unpack the hypotheses as in `⟨A, hA0, hAM⟩ : ∃ A : ℝ, 0 ≤ A ∧ ∀ M ∈ Metric.ball (oneI ι a) ε, ‖M‖ ≤ A := by`. Use `⟨‖oneI ι a‖ + ε, by positivity, fun M hM => ?_⟩` and prove the remaining obligations. Establish `h1` using `mem_ball_iff_norm.1 hM`. Establish `h2` using `norm_sub_norm_le M (oneI ι a)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Set `bound : V → ℝ` to `fun y => (C * (1 + K * A * c + K * c * B) ^ N * (K * (K * c * B)) * (K * c)) * ∑ i, ‖e_crd (ι := ι) (a := a) i‖ * ((1 + ‖y‖) ^ (N + 2) * ‖D (e_b ι a i) y‖)`. Establish `hbound : ∀ y, ∀ M ∈ Metric.ball (oneI ι a) ε, ‖F' M y‖ ≤ bound y`. Introduce `y M hM`. Establish `hgA` using `hAM M hM`.
+
+Take `⟨g, rfl, hg⟩` from `hB M hM`. Establish `hgB : ‖gI g⁻¹‖ ≤ B` using `hg.trans hBB`. Take `⟨hu1, hu2⟩` from `hcu y`. Establish `ht1 : 1 ≤ 1 + ‖y‖` using `le_add_of_nonneg_right (norm_nonneg y)`. Establish `n1 : ‖gI (g * u y)‖ ≤ K * A * (c * (1 + ‖y‖))`.
+
+Rewrite using `[← mulI_gI]`. Use `(hK _ _).trans ?_` and prove the remaining obligations. Use `gcongr`. Establish `n2 : ‖gI (g * u y)⁻¹‖ ≤ K * (c * (1 + ‖y‖)) * B`. Rewrite using `[_root_.mul_inv_rev, ← mulI_gI]`.
+
+Use `(hK _ _).trans ?_` and prove the remaining obligations. Use `gcongr`. Establish `nρ : ‖ρ (g * u y)‖ ≤ C * ((1 + K * A * c + K * c * B) * (1 + ‖y‖)) ^ N`. Use `(hC _).trans ?_` and prove the remaining obligations. Use `gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `nl : ‖lmul (gI (g * u y)⁻¹)‖ ≤ K * (K * (c * (1 + ‖y‖)) * B)` using `(e_lmul_norm hK0 hK _).trans (by gcongr)`. Establish `nr : ‖rmul (gI (u y))‖ ≤ K * (c * (1 + ‖y‖))` using `(e_rmul_norm hK0 hK _).trans (by gcongr)`. Establish `nD` using `e_Dy_norm D y`. Establish `hS : ∑ i, ‖e_crd (ι` using `ι) (a := a) i‖ * ((1 + ‖y‖) ^ (N + 2) * ‖D (e_b ι a i) y‖) = (1 + ‖y‖) ^ (N + 2) * ∑ i, ‖e_crd (ι := ι) (a := a) i‖ * ‖D (e_b ι a i) y‖ := by`.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[hF'g]`. Combine the equalities or inequalities in the displayed calculation. Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr`.
+
+Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.norm_restrictScalars]`. Use `gcongr`. Conclude with `ContinuousLinearMap.opNorm_comp_le _ _`. Use `_ ≤ (C * ((1 + K * A * c + K * c * B) * (1 + ‖y‖)) ^ N) * ((∑ i, ‖e_crd (ι := ι) (a := a) i‖ * ‖D (e_b ι a i) y‖) * (K * (K * (c * (1 + ‖y‖)) * B))) * (K * (c * (1 + ‖y‖))) := by gcongr`.
+
+Use `_ = bound y := by`. Simplify using `only [bound]`. Rewrite using `[hS, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbi : Integrable bound μ`.
+
+Use `Integrable.const_mul (integrable_finsetSum _ fun i _ => Integrable.const_mul ?_ _) _` and prove the remaining obligations. Take `⟨hc, hr, -⟩` from `h𝒢 _ (hD𝒢 (e_b ι a i))`. Conclude with `integrable_of_rap μ (e_rap_weight ⟨hc, hr⟩ (N + 2))`. Set `H' : LieI ι a → V → X` to `fun Z y => ∑ i, (((e_b ι a).coord i (mulI (gI (u y)⁻¹) (mulI Z (gI (u y)))) : ℝ) : ℂ) • D (e_b ι a i) y`. Establish `hH' : ∀ Z, H' Z ∈ 𝒢` using `fun Z => by`.
+
+Establish `: H' Z = ∑ i, (fun y => (((e_b ι a).coord i (mulI (gI (u y)⁻¹) (mulI Z (gI (u y)))) : ℝ) : ℂ) • D (e_b ι a i) y)`. Use function extensionality and compare the values at `y`. Simplify using `[H', Finset.sum_apply]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => hmul _ (hD𝒢 _) _ (e_polyG_coord hu hu' Z i)`.
+
+Establish `hF'Z : ∀ y Z, F' (oneI ι a) y Z = ρ (u y) (H' Z y)`. Introduce `y Z`. Rewrite using `[← gI_one, hF'g]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', lmul_apply, rmul_apply, one_mul, e_Dy_apply, H']`. Establish `hF'c : Continuous (F' (oneI ι a))`.
+
+Use `continuous_clm_apply.2 fun Z => ?_` and prove the remaining obligations. Repeatedly rewrite using `[hF'Z]`. Conclude with `(hrap _ (hH' Z)).1`. Establish `hFc : ∀ M, Continuous (F M)` using `fun M => by`. Establish `: F M = fun y => unitChartOperator ρ M (ρ (u y) (H y))` using `funext (hFe M)`.
+
+Rewrite using `[this]`. Conclude with `(unitChartOperator ρ M).continuous.comp (hrap H hH).1`. Establish `hF1 : Integrable (F (oneI ι a)) μ`. Establish `: F (oneI ι a) = fun y => unitChartOperator ρ (oneI ι a) (ρ (u y) (H y))` using `funext (hFe _)`. Rewrite using `[this]`.
+
+Conclude with `(unitChartOperator ρ _).integrable_comp hint`. Establish `hmem : oneI ι a ∈ Metric.ball (oneI ι a) ε` using `Metric.mem_ball_self hε`. Establish `hF'int : Integrable (F' (oneI ι a)) μ` using `Integrable.mono' hbi hF'c.aestronglyMeasurable (Filter.Eventually.of_forall fun y => hbound y _ hmem)`. Establish `hdiffb : ∀ y, ∀ M ∈ Metric.ball (oneI ι a) ε, HasFDerivAt (F · y) (F' M y) M`. Introduce `y M hM`.
+
+Take `⟨g, rfl, -⟩` from `hB M hM`. Conclude with `hdiff g y`. Use `⟨∫ y, F' (oneI ι a) y ∂μ, ?_, fun Z => ⟨H' Z, hH' Z, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hformula]`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (Metric.ball_mem_nhds _ hε) (Filter.Eventually.of_forall fun M => (hFc M).aestronglyMeasurable) hF1 hF'c.aestronglyMeasurable (Filter.Eventually.of_forall fun y => hbound y) hbi (Filter.Eventually.of_forall fun y => hdiffb y)`.
+
+Rewrite using `[ContinuousLinearMap.integral_apply hF'int]`. Simplify using `only [hF'Z]`.
+-/
 theorem key [CompleteSpace X] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V)
     [μ.IsAddHaarMeasure] (hρ : PolyBd ρ) {u : V → GL (Fin a) (ι → ℂ)} {L : V →L[ℝ] LieI ι a}
     (hu : ∀ y, (u y).val = 1 + Matrix.of (L y)) (hu' : ∀ y, (u y)⁻¹.val = 1 - Matrix.of (L y))
@@ -703,6 +955,21 @@ end Fe
 
 end UnitChartOperator
 
+/- English proof (translation)
+Introduce `hS1 ι _ a X _ _ _ ρ hρ V _ _ _ _ _ μ _ u L hu hu' 𝒢 h𝒢 G hG`. Establish `h1 : RapidFam ρ (UnitChartOperator.Mult 𝒢)` using `UnitChartOperator.rapidFam_mult h𝒢`. Establish `hint : ∀ H ∈ UnitChartOperator.Mult 𝒢, Integrable (fun y => ρ (u y) (H y)) μ`. Introduce `H hH`. Take `⟨hc, hr, D, -, hD⟩` from `h1 H hH`.
+
+Use `UnitChartOperator.integrable_of_rap μ (UnitChartOperator.rap_rho hρ hu hu' ⟨hc, hr⟩ fun y => ?_)` and prove the remaining obligations. Take `⟨D', -, h⟩` from `hD y`. Conclude with `⟨D', h⟩`. Use `⟨hint G (UnitChartOperator.mem_mult hG), ?_⟩` and prove the remaining obligations. Set `S0 : Set X` to `{x | ∃ H ∈ UnitChartOperator.Mult 𝒢, x = ∫ y, ρ (u y) (H y) ∂μ}`.
+
+Use `hS1 ι a X ρ hρ (Submodule.span ℂ S0) ?_ _ (Submodule.subset_span ⟨G, UnitChartOperator.mem_mult hG, rfl⟩)` and prove the remaining obligations. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨H, hH, rfl⟩` from `hx`.
+
+Take `⟨Dv, hDv, hZ⟩` from `UnitChartOperator.key μ hρ hu hu' h1 (fun H hH m hm => UnitChartOperator.mult_mul hH hm) hH`. Use `⟨Dv, hDv, fun Z => ?_⟩` and prove the remaining obligations. Take `⟨H', hH', e⟩` from `hZ Z`. Conclude with `Submodule.subset_span ⟨H', hH', e⟩`. Consider the case `zero`.
+
+Use `⟨0, ?_, fun Z => Submodule.zero_mem _⟩` and prove the remaining obligations. Rewrite using `[UnitChartOperator.orb_zero]`. Conclude with `hasFDerivAt_const _ _`. Consider the case `add x y _ _ hx hy`. Take `⟨Dx, hx1, hx2⟩` from `hx`.
+
+Take `⟨Dy, hy1, hy2⟩` from `hy`. Use `⟨Dx + Dy, ?_, fun Z => Submodule.add_mem _ (hx2 Z) (hy2 Z)⟩` and prove the remaining obligations. Rewrite using `[UnitChartOperator.orb_add]`. Conclude with `hx1.add hy1`. Consider the case `smul c x _ hx`.
+
+Take `⟨Dx, hx1, hx2⟩` from `hx`. Use `⟨c • Dx, ?_, fun Z => Submodule.smul_mem _ c (hx2 Z)⟩` and prove the remaining obligations. Rewrite using `[UnitChartOperator.orb_smul]`. Conclude with `hx1.const_smul c`.
+-/
 theorem unit_chart_operator_bound : S1 → S3 := by
   intro hS1 ι _ a X _ _ _ ρ hρ V _ _ _ _ _ μ _ u L hu hu' 𝒢 h𝒢 G hG
   have h1 : RapidFam ρ (UnitChartOperator.Mult 𝒢) := UnitChartOperator.rapidFam_mult h𝒢

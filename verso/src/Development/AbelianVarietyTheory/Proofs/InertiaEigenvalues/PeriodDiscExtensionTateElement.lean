@@ -32,6 +32,9 @@ open TensorProduct in
 variable {Qp LL : Type} [Field Qp] [Field LL] [Algebra Qp LL] (V : Type) [AddCommGroup V] [Module LL V]
   [Module Qp V] [IsScalarTower Qp LL V] (B : Type) [CommRing B] [Algebra Qp B] in
 variable {V B} in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.HWL.Cmp.actS, _root_.GlobalTheory.HWL.Cmp.mulR, smul_tmul']`.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.actS_tmul (c : LL) (b : B) (x : V) (y : B) :
     _root_.GlobalTheory.HWL.Cmp.actS V B (c ⊗ₜ[Qp] b) (x ⊗ₜ[Qp] y) = (c • x) ⊗ₜ[Qp] (b * y) := by
   simp [_root_.GlobalTheory.HWL.Cmp.actS, _root_.GlobalTheory.HWL.Cmp.mulR, smul_tmul']
@@ -40,6 +43,9 @@ open TensorProduct in
 variable {Qp LL : Type} [Field Qp] [Field LL] [Algebra Qp LL] (V : Type) [AddCommGroup V] [Module LL V]
   [Module Qp V] [IsScalarTower Qp LL V] (B : Type) [CommRing B] [Algebra Qp B] in
 variable {V B} in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.HWL.Cmp.actS, _root_.GlobalTheory.HWL.Cmp.mulR]`.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.actS_one_tmul (b : B) (m : V ⊗[Qp] B) :
     _root_.GlobalTheory.HWL.Cmp.actS (LL := LL) V B ((1 : LL) ⊗ₜ[Qp] b) m =
       AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (LinearMap.mulLeft Qp b) m := by
@@ -50,6 +56,11 @@ variable {Qp LL : Type} [Field Qp] [Field LL] [Algebra Qp LL] (V : Type) [AddCom
   [Module Qp V] [IsScalarTower Qp LL V] (B : Type) [CommRing B] [Algebra Qp B] in
 variable {V B} in
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c b`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul x y => simp [_root_.GlobalTheory.HWL.Cmp.actS_tmul]`. Consider the case `add m₁ m₂ h₁ h₂ => simp only [map_add, h₁, h₂]`. Consider the case `add a₁ a₂ h₁ h₂ => simp only [map_add, LinearMap.add_apply, h₁, h₂]`.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.map_actS {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
     {B' : Type} [CommRing B'] [Algebra Qp B'] (f : V →ₗ[LL] V') (h : B →ₐ[Qp] B') (a : LL ⊗[Qp] B)
     (m : V ⊗[Qp] B) :
@@ -93,6 +104,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n s : ℕ}
     {Γ : _root_.GlobalTheory.HWL.WGam PD LL O v n s} in
+/- English proof (translation)
+Use `PowerSeries.HasSubst.of_constantCoeff_zero' ?_` and prove the remaining obligations. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, (R.γ₀_X g).1, map_zero]`.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.hasSubst_γ (R : _root_.GlobalTheory.HWL.WSer Γ) (g : Γ.Gam) :
     PowerSeries.HasSubst (PowerSeries.map (algebraMap O LL) (R.γ₀ g PowerSeries.X)) := by
   refine PowerSeries.HasSubst.of_constantCoeff_zero' ?_
@@ -108,6 +122,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n s : ℕ}
     {Γ : _root_.GlobalTheory.HWL.WGam PD LL O v n s} in
+/- English proof (translation)
+Use `PowerSeries.HasSubst.of_constantCoeff_zero' ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.hasSubst_φ (L : Type) [CommRing L] (p : ℕ) :
     PowerSeries.HasSubst ((1 + PowerSeries.X) ^ p - 1 : PowerSeries L) := by
   refine PowerSeries.HasSubst.of_constantCoeff_zero' ?_
@@ -128,6 +145,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n s : ℕ}
     {Γ : _root_.GlobalTheory.HWL.WGam PD LL O v n s} in
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[_root_.GlobalTheory.HWL.Cmp.γL, _root_.Formalism.BasicNotions.letγ, PowerSeries.coe_substAlgHom]`.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.γL_apply (R : _root_.GlobalTheory.HWL.WSer Γ) (g : Γ.Gam) (a : _root_.Formalism.BasicNotions.LetA LL n) : _root_.GlobalTheory.HWL.Cmp.γL R g a =
     fun k => PowerSeries.subst (PowerSeries.map (algebraMap O LL) (R.γ₀ g PowerSeries.X)) (a k) := by
   funext k
@@ -142,6 +162,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n s : ℕ}
     {Γ : _root_.GlobalTheory.HWL.WGam PD LL O v n s} in
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[_root_.GlobalTheory.HWL.Cmp.φL, _root_.Formalism.BasicNotions.letφ, PowerSeries.coe_substAlgHom]`.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.φL_apply (L : Type) [CommRing L] (n p : ℕ) (a : _root_.Formalism.BasicNotions.LetA L n) : _root_.GlobalTheory.HWL.Cmp.φL L n p a =
     fun k => PowerSeries.subst ((1 + PowerSeries.X) ^ p - 1 : PowerSeries L) (a (k - 1)) := by
   funext k
@@ -157,6 +180,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n s : ℕ}
     {Γ : _root_.GlobalTheory.HWL.WGam PD LL O v n s} in
 
+/- English proof (translation)
+Establish `hpoly : ∀ q : Polynomial O, f (q : PowerSeries O) = g (q : PowerSeries O)`. Introduce `q`. Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C c => simpa using hC c`. Consider the case `add q r hq hr => simp only [Polynomial.coe_add, map_add, hq, hr]`.
+
+Consider the case `monomial k c _`. Simplify using `only [Polynomial.coe_mul, Polynomial.coe_C, Polynomial.coe_pow, Polynomial.coe_X, map_mul, map_pow, hC, hX]`. Take `⟨u, hu⟩` from `PowerSeries.X_dvd_iff.2 h0`. Establish `hg : g PowerSeries.X = PowerSeries.X * u` using `hX ▸ hu`. Use extensionality with `N`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : PowerSeries.X ^ (N + 1) ∣ a - (PowerSeries.trunc (N + 1) a : PowerSeries O) := by`. Use `PowerSeries.X_pow_dvd_iff.2 fun m hm => ?_` and prove the remaining obligations. Simplify using `[PowerSeries.coeff_trunc, hm]`. Establish `ha : a = (PowerSeries.trunc (N + 1) a : PowerSeries O) + PowerSeries.X ^ (N + 1) * b`. Rewrite using `[← hb]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdiff : f a - g a = PowerSeries.X ^ (N + 1) * (u ^ (N + 1) * (f b - g b))`. Rewrite using `[ha, map_add, map_add, hpoly, map_mul, map_mul, map_pow, map_pow, hu, hg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← sub_eq_zero, ← map_sub, hdiff, PowerSeries.coeff_X_pow_mul']`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.ringHom_ext_of_X {O L : Type} [CommRing O] [CommRing L] (f g : PowerSeries O →+* PowerSeries L)
     (hC : ∀ c, f (PowerSeries.C c) = g (PowerSeries.C c)) (hX : f PowerSeries.X = g PowerSeries.X)
     (h0 : PowerSeries.constantCoeff (f PowerSeries.X) = 0) (a : PowerSeries O) : f a = g a := by
@@ -191,6 +225,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n s : ℕ}
     {Γ : _root_.GlobalTheory.HWL.WGam PD LL O v n s} in
+/- English proof (translation)
+Use `_root_.GlobalTheory.HWL.Cmp.ringHom_ext_of_X ((PowerSeries.map (algebraMap O LL)).comp f.toRingHom) ((PowerSeries.substAlgHom hy).toRingHom.comp (PowerSeries.map (algebraMap O LL))) (fun c => ?_) ?_ ?_ a` and prove the remaining obligations. Establish `hfc : f (PowerSeries.C c) = PowerSeries.C c` using `f.commutes c`. Simplify using `[hfc, PowerSeries.coe_substAlgHom]`. Both sides reduce to the same expression. Simplify using `[hX, PowerSeries.coe_substAlgHom, PowerSeries.subst_X hy]`.
+
+Simplify using `[hX, h0]`.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.map_algHom_eq (f : PowerSeries O →ₐ[O] PowerSeries O) {y : PowerSeries LL} (hy : PowerSeries.HasSubst y)
     (h0 : PowerSeries.constantCoeff y = 0) (hX : PowerSeries.map (algebraMap O LL) (f PowerSeries.X) = y)
     (a : PowerSeries O) : PowerSeries.map (algebraMap O LL) (f a) =
@@ -212,6 +251,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n s : ℕ}
     {Γ : _root_.GlobalTheory.HWL.WGam PD LL O v n s} in
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, (R.γ₀_X g).1, map_zero]`.
+-/
 private lemma constantCoeff_map_gammaAction_X_eq_zero (R : _root_.GlobalTheory.HWL.WSer Γ) (g : Γ.Gam) :
     PowerSeries.constantCoeff (PowerSeries.map (algebraMap O LL) (R.γ₀ g PowerSeries.X)) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map,
@@ -226,6 +268,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n s : ℕ}
     {Γ : _root_.GlobalTheory.HWL.WGam PD LL O v n s} in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.HWL.Cmp.γL_apply]`. Use function extensionality and compare the values at `k`. Use `_root_.GlobalTheory.HWL.Cmp.map_algHom_eq (R.γ₀ g) (_root_.GlobalTheory.HWL.Cmp.hasSubst_γ R g) (constantCoeff_map_gammaAction_X_eq_zero R g) rfl (a k)` as an intermediate fact. Rewrite `this` using `[PowerSeries.coe_substAlgHom]`. Simplify `this` using `[_root_.GlobalTheory.HWL.Cmp.toL, _root_.Formalism.BasicNotions.letγ]`.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.toL_γ (R : _root_.GlobalTheory.HWL.WSer Γ) (g : Γ.Gam) (a : _root_.Formalism.BasicNotions.LetA O n) :
     _root_.GlobalTheory.HWL.Cmp.toL O LL n (_root_.Formalism.BasicNotions.letγ (R.γ₀ g) a) = _root_.GlobalTheory.HWL.Cmp.γL R g (_root_.GlobalTheory.HWL.Cmp.toL O LL n a) := by
   rw [_root_.GlobalTheory.HWL.Cmp.γL_apply]
@@ -244,6 +289,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n s : ℕ}
     {Γ : _root_.GlobalTheory.HWL.WGam PD LL O v n s} in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.HWL.Cmp.φL_apply]`. Use function extensionality and compare the values at `k`. Establish `hX : PowerSeries.map (algebraMap O LL) (R.φ₀ PowerSeries.X) = ((1 + PowerSeries.X) ^ PD.p - 1 : PowerSeries LL)`. Rewrite using `[R.φ₀_X, R.q₀_def]`. Simplify using the standard rewrite rules.
+
+Use `_root_.GlobalTheory.HWL.Cmp.map_algHom_eq R.φ₀ (_root_.GlobalTheory.HWL.Cmp.hasSubst_φ LL PD.p) (by simp) hX (a (k - 1))` as an intermediate fact. Rewrite `this` using `[PowerSeries.coe_substAlgHom]`. Simplify `this` using `[_root_.GlobalTheory.HWL.Cmp.toL, _root_.Formalism.BasicNotions.letφ]`.
+-/
 theorem _root_.GlobalTheory.HWL.Cmp.toL_φ (R : _root_.GlobalTheory.HWL.WSer Γ) (a : _root_.Formalism.BasicNotions.LetA O n) :
     _root_.GlobalTheory.HWL.Cmp.toL O LL n (_root_.Formalism.BasicNotions.letφ R.φ₀ a) = _root_.GlobalTheory.HWL.Cmp.φL LL n PD.p (_root_.GlobalTheory.HWL.Cmp.toL O LL n a) := by
   rw [_root_.GlobalTheory.HWL.Cmp.φL_apply]

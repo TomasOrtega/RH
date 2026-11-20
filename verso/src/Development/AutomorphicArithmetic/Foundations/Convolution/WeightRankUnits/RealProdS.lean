@@ -7,27 +7,51 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 private def emptyW : DomWeight 0 := ⟨fun i => i.elim0, fun i => i.elim0⟩
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.LaplaceChar.chAt_prod_eq_gtChar l (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0)`. Establish `hw : l.w = (0 : Fin 0 → ℤ)` using `Subsingleton.elim _ _`. Rewrite `h` using `[hw, ReciprocityTheory.ChartRestriction.TR.Weyl.gtChar_zero]`. Simplify using `using h`.
+-/
 private theorem chAt_rank_zero (l : DomWeight 0) : chAt l (1 : ℂ[X]) = 1 := by
   have h := GlobalTheory.LaplaceChar.chAt_prod_eq_gtChar l (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0)
   have hw : l.w = (0 : Fin 0 → ℤ) := Subsingleton.elim _ _
   rw [hw, ReciprocityTheory.ChartRestriction.TR.Weyl.gtChar_zero] at h
   simpa using h
 
+/- English proof (translation)
+Unfold `chW`. Simplify using `[chAt_rank_zero]`.
+-/
 private theorem chW_rank_zero {E : Type} [Field E] [NumberField E] [IsCMField E]
     (l : InfinitePlace E → DomWeight 0) : chW l (1 : E[X]) = 1 := by
   unfold chW
   simp [chAt_rank_zero]
 
+/- English proof (translation)
+Simplify using `[infOfWeight]`.
+-/
 private theorem infOfWeight_rank_zero (l : DomWeight 0) : infOfWeight l = 0 := by
   simp [infOfWeight]
 
+/- English proof (translation)
+The claim follows from `(Polynomial.Monic.natDegree_eq_zero (show P.Monic from h.1)).mp h.2.1`.
+-/
 private theorem eq_one_of_ell_zero {E : Type} [Field E] {P : E[X]} (h : P ∈ Ell E 0) : P = 1 :=
   (Polynomial.Monic.natDegree_eq_zero (show P.Monic from h.1)).mp h.2.1
 
+/- English proof (translation)
+Simplify using `[UpperTheory.ConvolutionTheory.G2.phase]`.
+-/
 private theorem phase_one {E : Type} [Field E] [NumberField E] [IsCMField E] (e : InfinitePlace E → ℤ) (v : InfinitePlace E) :
     UpperTheory.ConvolutionTheory.G2.phase e (1 : E) v = 1 := by
   simp [UpperTheory.ConvolutionTheory.G2.phase]
 
+/- English proof (translation)
+Introduce `E _ _ _ n a b hab e he lam`. Distinguish the cases in `hz : a = 0 ∨ b = 0`. Break down `hz with rfl | rfl` into its components or cases. Take `rfl : b = n` from `by omega`. Use `⟨Unit, inferInstance, fun _ _ => emptyW, fun _ => lam, fun _ => 1, fun _ => ⟨⟨(), fun _ => rfl⟩, fun _ => rfl⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `_ v`. Simplify using `[infOfWeight_rank_zero]`. Introduce `P₁ P₂ h₁ _ _`. Take `rfl` from `eq_one_of_ell_zero h₁`. Simplify using `[phase_one, chW_rank_zero]`.
+
+Take `rfl : a = n` from `by omega`. Use `⟨Unit, inferInstance, fun _ => lam, fun _ _ => emptyW, fun _ => 1, fun _ => ⟨⟨(), fun _ => rfl⟩, fun _ => rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `_ v`. Simplify using `[infOfWeight_rank_zero]`. Introduce `P₁ P₂ _ h₂ _`.
+
+Take `rfl` from `eq_one_of_ell_zero h₂`. Simplify using `[phase_one, chW_rank_zero]`. Take `⟨ι, hι, l₁, l₂, sg, hinf, hid⟩` from `UpperTheory.ConvolutionTheory.G2.realProd E n a b hab e he lam`. Conclude with `⟨ι, hι, l₁, l₂, sg, fun h => absurd h hz, hinf, hid⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.G2.realProdS :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ), a + b = n → ∀ e : InfinitePlace E → ℤ, (∀ v, Odd (e v)) →
     ∀ lam : InfinitePlace E → DomWeight n, ∃ (ι : Type) (_ : Fintype ι) (l₁ : ι → InfinitePlace E → DomWeight a)

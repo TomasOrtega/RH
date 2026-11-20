@@ -17,12 +17,20 @@ namespace PositivityTheory.Pf1.CLGD.K
 
 namespace CharPolyRestriction
 
+/- English proof (translation)
+Rewrite using `[← h ((n : ℕ) : 𝓞 K)]`. Simplify using the standard rewrite rules.
+-/
 theorem natCast_mem_iff {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 K)} (h : IsPlaceOver A v) (n : ℕ) :
     ((n : ℕ) : 𝓞 K) ∈ v.asIdeal ↔ A.valuation ((n : ℕ) : Ω) < 1 := by
   rw [← h ((n : ℕ) : 𝓞 K)]
   simp
 
+/- English proof (translation)
+Introduce `hqv`. Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne.symm)`. Take `⟨u, t, hut⟩` from `hc.map (Int.castRingHom (𝓞 K))`. Establish `h1 : (1 : 𝓞 K) ∈ v.asIdeal`. Rewrite using `[← hut]`.
+
+Simplify using `only [map_natCast]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left u hpv) (v.asIdeal.mul_mem_left t hqv)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+-/
 theorem natCast_not_mem {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) {p q : ℕ}
     (hp : p.Prime) (hq : q.Prime) (hne : q ≠ p) (hpv : ((p : ℕ) : 𝓞 K) ∈ v.asIdeal) :
     ((q : ℕ) : 𝓞 K) ∉ v.asIdeal := by
@@ -42,6 +50,9 @@ variable {E E' Ω : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] 
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {w' : HeightOneSpectrum (𝓞 E')}
   (h : IsPlaceOver A w) (h' : IsPlaceOver A w')
 
+/- English proof (translation)
+Take `⟨m, b, rfl⟩` from `WD.exists_rep x`. Rewrite using `[WD.res_mk, WD.charPol_mk, WD.charPol_mk, resRep_ρ]`.
+-/
 theorem charPol_res (x : WD h) (t : Weil h') : WD.charPol (WD.res h h' x) t = WD.charPol x (resW h h' t) := by
   obtain ⟨m, b, rfl⟩ := WD.exists_rep x
   rw [WD.res_mk, WD.charPol_mk, WD.charPol_mk, resRep_ρ]
@@ -51,6 +62,23 @@ end
 end CharPolyRestriction
 
 open CharPolyRestriction in
+/- English proof (translation)
+Introduce `hG hB hL _k2c hCL k5 k6 k7 E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT H P AI hT w hw A h O _ _ _ Bw hj σ hσ rc hrc U hU hU1`. Take `⟨T⟩` from `hT`. Take `⟨Y, P', w', h', hrange, -, hLift⟩` from `hCL E Ω a ha π hc hr A w h U hU`. Take `⟨l', hl'ge, hl'p⟩` from `Nat.exists_infinite_primes (l + 1)`. Establish `: Fact l'.Prime` using `⟨hl'p⟩`.
+
+Establish `hne : l' ≠ l` using `by omega`. Take `⟨ι'⟩ : Nonempty (Qbar l' ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l'`. Establish `hlw : ((l : ℕ) : 𝓞 E) ∈ w.asIdeal` using `hw`. Establish `hl'w : ((l' : ℕ) : 𝓞 E) ∉ w.asIdeal` using `natCast_not_mem w (Fact.out) hl'p hne hlw`. Establish `hl'w' : ((l' : ℕ) : 𝓞 Y.M) ∉ w'.asIdeal`.
+
+Rewrite using `[natCast_mem_iff h', ← natCast_mem_iff h]`. Conclude with `hl'w`. Take `⟨r1, wt1, HT1, H1⟩` from `GlobalTheory.Published.GaloisRepOfPolarizedCuspidal.of_isCsd hG Ω ι' ha hr hc`. Take `⟨r1', wt1', HT1', H1'⟩` from `GlobalTheory.Published.GaloisRepOfPolarizedCuspidal.of_isCsd hG Ω ι' ha hLift.reg hLift.csd`. Take `⟨p1, hp1⟩` from `hLift.res l' ι' r1 wt1 HT1 r1' wt1' HT1' H1 H1'`.
+
+Take `⟨σ', hσ', -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp CuspFormAutomorphicBounds.automorphicFormsFiniteGL Y.M a P' w'`. Take `⟨rc', hrc', -⟩` from `hL.1 Y.M Ω A w' h'`. Establish `hx : IsWDOf ι' r1 (rc (algNorm σ))` using `H1.away w hl'w A h rc hrc σ hσ`. Establish `hres : IsWDOf ι' (r1.comp (resG E (E'` using `Y.M))) (WD.res h h' (rc (algNorm σ))) := k5 E Ω Y l' a ι' r1 H1.cont A w h w' h' hl'w _ hx`. Establish `hres' : IsWDOf ι' r1' (WD.res h h' (rc (algNorm σ)))` using `IsWDOf.of_conj hl'w' p1 (fun g => by rw [MonoidHom.comp_apply, hp1 g, inv_mul_cancel_right]) hres`.
+
+Establish `hx' : IsWDOf ι' r1' (rc' (algNorm σ'))` using `H1'.away w' hl'w' A h' rc' hrc' σ' hσ'`. Establish `heq : rc' (algNorm σ') = WD.res h h' (rc (algNorm σ))` using `IsWDOf.unique hl'w' hx' hres'`. Establish `hfix : PRep.fixed σ'.ρ (SmGL.iwahori (w'.adicCompletion Y.M) (Fin a)) ≠ ⊥`. Use `k7 Y.M Ω A w' h' rc' hrc' a σ' fun t ht => ?_` and prove the remaining obligations. Rewrite using `[heq, charPol_res]`.
+
+Use `hU1 _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← hrange]`. Conclude with `⟨t, rfl⟩`. Rewrite using `[deg_resW, ht, mul_zero]`. Take `⟨r2, wt2, HT2, H2⟩` from `GlobalTheory.Published.GaloisRepOfPolarizedCuspidal.of_isCsd hG Ω ι ha hLift.reg hLift.csd`.
+
+Take `⟨p2, hp2⟩` from `hLift.res l ι r wt HT r2 wt2 HT2 H H2`. Establish `hpst : IsPstAt P Bw (r.comp (Dec (F` using `E) A).subtype) := H.isPstAt hB T h Bw hj`. Take `⟨O', _, _, _, Bw', hj', hpst', h6⟩` from `k6 E Ω Y l a ι r H.cont P AI ⟨T⟩ A w h w' h' O Bw hj hpst`. Take `⟨-, hconj⟩` from `GlobalTheory.PstConj.main Y.M Ω l ι a P AI ⟨T⟩ w' A h' O' Bw' hj' ((r.comp (resG E (E' := Y.M))).comp (Dec (F := Y.M) A).subtype) (r2.comp (Dec (F := Y.M) A).subtype) p2 (fun g => hp2 g) hpst'`. Establish `hiw` using `((H2.above P AI ⟨T⟩ w' A h' O' Bw' hj').iwahori σ' hσ' hfix).2 rc' hrc'`.
+
+Use `⟨Y, w', h', hrange, ?_⟩` and prove the remaining obligations. Rewrite using `[← h6, ← hconj, hiw, heq]`.
+-/
 theorem char_poly_restriction_holds : IwahoriLocalGlobal := by
   intro hG hB hL _k2c hCL k5 k6 k7 E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT H P AI hT w hw A h O _ _ _ Bw hj σ hσ rc hrc U hU hU1
   obtain ⟨T⟩ := hT

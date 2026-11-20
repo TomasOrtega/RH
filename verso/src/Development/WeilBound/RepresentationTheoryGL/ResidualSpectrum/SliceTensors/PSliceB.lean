@@ -10,11 +10,17 @@ namespace PositivityTheory.Rg.Rs.SliceClasses
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `hφ.unipGL_vadd g ⟨fun p => algebraMap K 𝔸[K] (ξ p), ξ, rfl⟩ x`.
+-/
 theorem B_per {r : ℕ} {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftInvariant φ) (g : AdelicGLn.AdelicGL K n)
     (ξ : UPos n r → K) (x : UPos n r → 𝔸[K]) :
     φ (unipGL (fun i => algebraMap K 𝔸[K] (ξ i) + x i) * g) = φ (unipGL x * g) :=
   hφ.unipGL_vadd g ⟨fun p => algebraMap K 𝔸[K] (ξ p), ξ, rfl⟩ x
 
+/- English proof (translation)
+Rewrite using `[constantTerm_eq_integral, constantTerm_eq_integral]`. Repeatedly rewrite using `[← mul_assoc, ← unipGL_add]`. Conclude with `B_translate (fun X => φ (unipGL X * g)) (fun ξ x => B_per hφ g ξ x) Y`.
+-/
 theorem constantTerm_unipGL_mul {r : ℕ} {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftInvariant φ)
     (Y : UPos n r → AdeleRing (𝓞 K) K) (g : AdelicGLn.AdelicGL K n) :
     constantTerm r φ (unipGL Y * g) = constantTerm r φ g := by
@@ -22,6 +28,13 @@ theorem constantTerm_unipGL_mul {r : ℕ} {φ : AdelicGLn.AdelicGL K n → ℂ} 
   simp_rw [← mul_assoc, ← unipGL_add]
   exact B_translate (fun X => φ (unipGL X * g)) (fun ξ x => B_per hφ g ξ x) Y
 
+/- English proof (translation)
+Establish `hr : q ∈ ({p, q} : Finset ℕ)` using `by simp`. Establish `hmax : ∀ s ∈ ({p, q} : Finset ℕ), ∀ i j : Fin n, (i : ℕ) < s → s ≤ (j : ℕ) → s ≤ q`. Introduce `s hs i j _ _`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[constantTermPar_eq_integral, B_fubini (IsTop q) (fun X => φ (parGL X * g)) (hφ.comp (continuous_parGL.mul continuous_const))]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Establish `e2 : ∀ a : {x : PPos n {p, q} // IsTop q x} → 𝔸[K], φ (parGL (fun i => if h : IsTop q i then a ⟨i, h⟩ else b ⟨i, h⟩) * g) = φ (unipGL (fun x => a ((topEquiv hr).symm x)) * (parGL (joinPos (r` using `q) 0 b) * g)) := by`. Introduce `a`.
+
+Rewrite using `[← mul_assoc, ← parGL_eq_unipGL_mul hr hmax a b]`. Both sides reduce to the same expression. Repeatedly rewrite using `[e2]`. Rewrite using `[← integral_box_reindex (topEquiv hr) (fun A => φ (unipGL A * (parGL (joinPos (r := q) 0 b) * g))), ← constantTerm_eq_integral]`.
+-/
 theorem constantTermPar_eq_top {p q : ℕ} (hpq : p < q) {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : Continuous φ)
     (g : AdelicGLn.AdelicGL K n) :
     constantTermPar {p, q} φ g = ∫ b, constantTerm q φ (parGL (joinPos (r := q) 0 b) * g)
@@ -52,6 +65,11 @@ variable {p q : ℕ} {R : Type*} [CommRing R]
 
 abbrev B_low (b : {x : PPos n {p, q} // ¬ IsTop p x} → R) : Matrix (Fin n) (Fin n) R := parEntry (joinPos (r := p) 0 b)
 
+/- English proof (translation)
+Simplify using `only [B_low, parEntry_apply, joinPos] at h`. Use `split_ifs at h with h1 h2`. Conclude with `absurd rfl h`. Take `⟨s, hs, h3, h4⟩` from `h1`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs`.
+
+Establish `h2' : ¬ ((i : ℕ) < p ∧ p ≤ (j : ℕ))` using `h2`. Apply the tactic sequence `rcases hs with rfl | rfl <;> omega`. Conclude with `absurd rfl h`.
+-/
 theorem B_low_apply_ne (_hpq : p < q) (b : {x : PPos n {p, q} // ¬ IsTop p x} → R) {i j : Fin n}
     (h : B_low b i j ≠ 0) : p ≤ (i : ℕ) ∧ (i : ℕ) < q ∧ q ≤ (j : ℕ) := by
   simp only [B_low, parEntry_apply, joinPos] at h
@@ -63,6 +81,11 @@ theorem B_low_apply_ne (_hpq : p < q) (b : {x : PPos n {p, q} // ¬ IsTop p x} �
     rcases hs with rfl | rfl <;> omega
   · exact absurd rfl h
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : B_low b i k = 0`. Rewrite using `[h, zero_mul]`.
+
+Use `B_low_apply_ne hpq b h` as an intermediate fact. Rewrite using `[blockEntry_apply, dif_neg (by omega), mul_zero]`.
+-/
 theorem B_low_mul_block (hpq : p < q) (b : {x : PPos n {p, q} // ¬ IsTop p x} → R) (A : UPos n p → R) :
     B_low b * blockEntry A = 0 := by
   ext i j
@@ -73,6 +96,11 @@ theorem B_low_mul_block (hpq : p < q) (b : {x : PPos n {p, q} // ¬ IsTop p x} �
   · have := B_low_apply_ne hpq b h
     rw [blockEntry_apply, dif_neg (by omega), mul_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : B_low b i k = 0`. Rewrite using `[h, zero_mul]`.
+
+Distinguish the cases in `h' : B_low b k j = 0`. Rewrite using `[h', mul_zero]`. Use `B_low_apply_ne hpq b h` as an intermediate fact. Use `B_low_apply_ne hpq b h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem B_low_mul_low (hpq : p < q) (b : {x : PPos n {p, q} // ¬ IsTop p x} → R) : B_low b * B_low b = 0 := by
   ext i j
   rw [Matrix.mul_apply, Matrix.zero_apply]
@@ -85,6 +113,13 @@ theorem B_low_mul_low (hpq : p < q) (b : {x : PPos n {p, q} // ¬ IsTop p x} →
       have := B_low_apply_ne hpq b h'
       omega
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [B_low, Matrix.add_apply, parEntry_apply, blockEntry_apply, joinPos]`. Distinguish the cases in `hP : ∃ s ∈ ({p, q} : Finset ℕ), (i : ℕ) < s ∧ s ≤ (j : ℕ)`. Rewrite using `[dif_pos hP, dif_pos hP]`. Distinguish the cases in `hT : (i : ℕ) < p ∧ p ≤ (j : ℕ)`.
+
+Establish `hT' : IsTop p (⟨(i, j), hP⟩ : PPos n {p, q})` using `hT`. Rewrite using `[dif_pos hT, dif_pos hT', dif_pos hT', Pi.zero_apply, zero_add]`. Both sides reduce to the same expression. Establish `hT' : ¬ IsTop p (⟨(i, j), hP⟩ : PPos n {p, q})` using `hT`. Rewrite using `[dif_neg hT, dif_neg hT', dif_neg hT', add_zero]`.
+
+Rewrite using `[dif_neg hP, dif_neg hP, zero_add, dif_neg]`. Introduce and unpack `hT`. Conclude with `hP ⟨p, by simp, hT⟩`.
+-/
 theorem B_parEntry_join (_hpq : p < q) (a : {x : PPos n {p, q} // IsTop p x} → R)
     (b : {x : PPos n {p, q} // ¬ IsTop p x} → R) :
     parEntry (joinPos a b) = B_low b + blockEntry (fun x => a ((topEquiv (S := {p, q}) (by simp)).symm x)) := by
@@ -102,6 +137,9 @@ theorem B_parEntry_join (_hpq : p < q) (a : {x : PPos n {p, q} // IsTop p x} →
     rintro hT
     exact hP ⟨p, by simp, hT⟩
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, coe_parGL, coe_unipGL]`. Apply the tactic sequence `rw [parMatrix, parMatrix, unipMatrix, B_parEntry_join hpq a b, show parEntry (joinPos (r := p) 0 b) = B_low b from rfl]`. Simplify using `only [add_mul, mul_add, one_mul, mul_one, B_low_mul_block hpq, add_zero]`. Normalize the expressions using the abelian group laws.
+-/
 theorem B_parGL_bot (hpq : p < q) (a : {x : PPos n {p, q} // IsTop p x} → R)
     (b : {x : PPos n {p, q} // ¬ IsTop p x} → R) :
     parGL (joinPos a b) = parGL (joinPos 0 b) * unipGL (fun x => a ((topEquiv (S := {p, q}) (by simp)).symm x)) := by
@@ -115,6 +153,11 @@ theorem B_parGL_bot (hpq : p < q) (a : {x : PPos n {p, q} // IsTop p x} → R)
 def B_ell (b : {x : PPos n {p, q} // ¬ IsTop p x} → R) (A : UPos n p → R) : UPos n p → R :=
   fun x => (blockEntry A * B_low b) x.1.1 x.1.2
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.sub_apply, blockEntry_apply, blockEntry_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[zero_sub, eq_comm, neg_eq_zero, Matrix.mul_apply]`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h' : B_low b k j = 0`. Rewrite using `[h', mul_zero]`. Use `B_low_apply_ne hpq b h'` as an intermediate fact. Rewrite using `[blockEntry_apply, dif_neg (by omega), zero_mul]`.
+-/
 theorem B_block_sub (hpq : p < q) (b : {x : PPos n {p, q} // ¬ IsTop p x} → R) (A : UPos n p → R) :
     blockEntry (A - B_ell b A) = blockEntry A - blockEntry A * B_low b := by
   ext i j
@@ -128,6 +171,11 @@ theorem B_block_sub (hpq : p < q) (b : {x : PPos n {p, q} // ¬ IsTop p x} → R
     · have := B_low_apply_ne hpq b h'
       rw [blockEntry_apply, dif_neg (by omega), zero_mul]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, coe_parGL, coe_unipGL]`. Apply the tactic sequence `rw [parMatrix, unipMatrix, unipMatrix, B_block_sub hpq, show parEntry (joinPos (r := p) 0 b) = B_low b from rfl]`. Establish `h1` using `B_low_mul_block hpq b A`. Establish `h2` using `B_low_mul_low hpq b`.
+
+Simplify using `only [mul_add, add_mul, one_mul, mul_one, sub_mul, h1, add_zero, mul_assoc, h2, mul_zero, sub_zero]`. Normalize the expressions using the abelian group laws.
+-/
 theorem B_shear_mat (hpq : p < q) (b : {x : PPos n {p, q} // ¬ IsTop p x} → R) (A : UPos n p → R) :
     parGL (joinPos 0 b) * unipGL A = unipGL (A - B_ell b A) * parGL (joinPos 0 b) := by
   apply Units.ext
@@ -141,6 +189,25 @@ theorem B_shear_mat (hpq : p < q) (b : {x : PPos n {p, q} // ¬ IsTop p x} → R
 
 end Bot
 
+/- English proof (translation)
+Establish `hr : p ∈ ({p, q} : Finset ℕ)` using `by simp`. Rewrite using `[constantTermPar_eq_integral, B_fubini (IsTop p) (fun X => φ (parGL X * g)) (hφ.comp (continuous_parGL.mul continuous_const))]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Establish `e2 : ∀ a : {x : PPos n {p, q} // IsTop p x} → 𝔸[K], φ (parGL (fun i => if h : IsTop p i then a ⟨i, h⟩ else b ⟨i, h⟩) * g) = φ (parGL (joinPos (r` using `p) 0 b) * unipGL (fun x => a ((topEquiv hr).symm x)) * g) := by`.
+
+Introduce `a`. Rewrite using `[← B_parGL_bot hpq a b]`. Both sides reduce to the same expression. Repeatedly rewrite using `[e2]`. Rewrite using `[← integral_box_reindex (topEquiv hr) (fun A => φ (parGL (joinPos (r := p) 0 b) * unipGL A * g)), constantTerm_eq_integral]`.
+
+Establish `e3 : ∀ A : UPos n p → 𝔸[K], φ (parGL (joinPos (r` using `p) 0 b) * unipGL A * g) = φ (unipGL (A - B_ell b A) * (parGL (joinPos (r := p) 0 b) * g)) := fun A => by`. Rewrite using `[B_shear_mat hpq b, mul_assoc]`. Repeatedly rewrite using `[e3]`. Use `B_shear (fun x : UPos n p => q ≤ (x.1.2 : ℕ)) (fun A => φ (unipGL A * (parGL (joinPos (r := p) 0 b) * g))) (hφ.comp (continuous_unipGL.mul continuous_const)) (fun ξ x => B_per hl _ ξ x) (B_ell b) ?_ ?_ ?_` and prove the remaining obligations. Use `continuous_pi fun x => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `have hb : Continuous fun A : UPos n p → 𝔸[K] => blockEntry A := by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `show Continuous fun A : UPos n p → 𝔸[K] => (if h : (i : ℕ) < p ∧ p ≤ (j : ℕ) then A ⟨(i, j), h⟩ else 0)`. Use `split_ifs`. Conclude with `continuous_apply _`.
+
+Conclude with `continuous_const`. Conclude with `(continuous_apply_apply x.1.1 x.1.2).comp (hb.matrix_mul continuous_const)`. Introduce `A x hx`. Simplify using `only [B_ell, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h' : B_low b k x.1.2 = 0`. Rewrite using `[h', mul_zero]`. Use `B_low_apply_ne hpq b h'` as an intermediate fact. Conclude with `absurd this.2.2 hx`. Introduce `A A' hA`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [B_ell, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h' : B_low b k x.1.2 = 0`. Rewrite using `[h', mul_zero, mul_zero]`.
+
+Use `B_low_apply_ne hpq b h'` as an intermediate fact. Use `congr 1`. Simplify using `only [blockEntry_apply]`. Use `split_ifs with h3`. Conclude with `hA _ (by show ¬ (q ≤ (k : ℕ)); omega)`.
+
+Both sides reduce to the same expression.
+-/
 theorem constantTermPar_eq_bot {p q : ℕ} (hpq : p < q) {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : Continuous φ)
     (hl : IsLeftInvariant φ) (g : AdelicGLn.AdelicGL K n) :
     constantTermPar {p, q} φ g = ∫ b, constantTerm p φ (parGL (joinPos (r := p) 0 b) * g)

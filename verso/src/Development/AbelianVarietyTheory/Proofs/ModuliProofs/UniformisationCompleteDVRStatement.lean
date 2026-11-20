@@ -10,5 +10,8 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.uniformisation_dvr_unconditional | exact GlobalTheory.uniformisation_dvr_unconditional | (intros; apply GlobalTheory.uniformisation_dvr_unconditional <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.uniformisation_completeDVR : GlobalTheory.LN.USt := by
   first | exact @GlobalTheory.uniformisation_dvr_unconditional | exact GlobalTheory.uniformisation_dvr_unconditional | (intros; apply GlobalTheory.uniformisation_dvr_unconditional <;> assumption)

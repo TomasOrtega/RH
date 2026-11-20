@@ -12,6 +12,17 @@ namespace GlobalTheory.FinPl.ColSplitA
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβi, hβ, a, ha, x, hx, rfl⟩` from `hz`. Use `set u : Fin S.rank → AE D := fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i) with hu`. Establish `hu' : u ∈ latV S L P` using `AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, x, hx, rfl⟩`.
+
+Establish `heq : M *ᵥ (fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (a * x i)) = fun k => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * (M *ᵥ u) k`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum, hu]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : pairA D.host.F 0 β ⊗ₜ[D.host.F] (a * x i) = ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i))`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul]`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `VacFlat.smul_mem_latA ha (hM u hu')`.
+
+Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`.
+
+Conclude with `neg_mem hz`.
+-/
 theorem mulVec_mem_latA {S T : HSp D} {L : Lat S} {L' : Lat T} {P : Pl D → Prop} (M : Mx D T.rank S.rank)
     (hM : ∀ y ∈ latV S L P, M *ᵥ y ∈ latV T L' P) {z : Fin S.rank → AE D} (hz : z ∈ latA S L P) :
     M *ᵥ z ∈ latA T L' P := by

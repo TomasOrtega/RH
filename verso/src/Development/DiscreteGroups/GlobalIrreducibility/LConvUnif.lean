@@ -17,6 +17,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 
 include hρ hKc hKo
 
+/- English proof (translation)
+Rewrite using `[diagPow_add]`. Use `hop_mul hρ hKc hKo fun w hw κ hκ => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, c, hc, h⟩` from `dominant_conj hr hμ hν hκ`. Establish `hbc : ρ (b * c) w = w` using `hw _ (mul_mem hb hc)`. Rewrite using `[h, show a * (diagPow F n μ * diagPow F n ν) * b * c = a * ((diagPow F n μ * diagPow F n ν) * (b * c)) by group, map_mul, Module.End.mul_apply, fixedProj_apply_act hρ hKc hKo ha, map_mul, Module.End.mul_apply, hbc]`.
+-/
 theorem hop_diagPow_mul (hr : 1 ≤ r) {μ ν : Fin n → ℤ} (hμ : IsDominant μ) (hν : IsDominant ν) :
     hop ρ hρ hKc hKo (diagPow F n μ) * hop ρ hρ hKc hKo (diagPow F n ν) =
       hop ρ hρ hKc hKo (diagPow F n (μ + ν)) := by
@@ -29,6 +32,9 @@ theorem hop_diagPow_mul (hr : 1 ≤ r) {μ ν : Fin n → ℤ} (hμ : IsDominant
     map_mul, Module.End.mul_apply, fixedProj_apply_act hρ hKc hKo ha, map_mul,
     Module.End.mul_apply, hbc]
 
+/- English proof (translation)
+Use `hop_mul hρ hKc hKo fun w _ κ hκ => ?_` and prove the remaining obligations. Rewrite using `[show k * κ * g = (k * κ * k⁻¹) * (k * g) by group, map_mul, Module.End.mul_apply, fixedProj_apply_act hρ hKc hKo (GLnLocal.conj_mem_congruenceSubgroup F n hk hκ)]`.
+-/
 theorem hop_integral_mul {k : GL (Fin n) F} (hk : k ∈ GLnLocal.integralGL F n)
     (g : GL (Fin n) F) :
     hop ρ hρ hKc hKo k * hop ρ hρ hKc hKo g = hop ρ hρ hKc hKo (k * g) := by
@@ -36,6 +42,9 @@ theorem hop_integral_mul {k : GL (Fin n) F} (hk : k ∈ GLnLocal.integralGL F n)
   rw [show k * κ * g = (k * κ * k⁻¹) * (k * g) by group, map_mul, Module.End.mul_apply,
     fixedProj_apply_act hρ hKc hKo (GLnLocal.conj_mem_congruenceSubgroup F n hk hκ)]
 
+/- English proof (translation)
+Use `hop_mul hρ hKc hKo fun w hw κ hκ => ?_` and prove the remaining obligations. Rewrite using `[show g * κ * k = (g * k) * (k⁻¹ * κ * k⁻¹⁻¹) by group, map_mul, Module.End.mul_apply, hw _ (GLnLocal.conj_mem_congruenceSubgroup F n (inv_mem hk) hκ)]`.
+-/
 theorem hop_mul_integral (g : GL (Fin n) F) {k : GL (Fin n) F}
     (hk : k ∈ GLnLocal.integralGL F n) :
     hop ρ hρ hKc hKo g * hop ρ hρ hKc hKo k = hop ρ hρ hKc hKo (g * k) := by
@@ -48,6 +57,29 @@ local notation "K0" => GLnLocal.integralGL F n
 local notation "W" => fixedVectors ρ (GLnLocal.congruenceSubgroup F n r)
 local notation "T" => hop ρ hρ hKc hKo
 
+/- English proof (translation)
+Distinguish the cases in `h0 : Module.finrank ℂ W = 0`. Rewrite using `[h0]`. Conclude with `Nat.zero_le _`. Establish `hpos : 0 < Module.finrank ℂ W` using `Nat.pos_of_ne_zero h0`. Establish `: Nontrivial W` using `Module.finrank_pos_iff.1 hpos`.
+
+Establish `hspan` using `span_hop_eq_top hρ hKc hKo`. Set `a : Fin (n + 1) → Module.End ℂ W` to `fun i => T (diagPow F n (gen n i))`. Establish `hcomm : ∀ i j, a i * a j = a j * a i` using `fun i j => by`. Simplify using `only [a]`. Rewrite using `[hop_diagPow_mul hρ hKc hKo hr (gen_dominant n i) (gen_dominant n j), hop_diagPow_mul hρ hKc hKo hr (gen_dominant n j) (gen_dominant n i), add_comm]`.
+
+Set `C` to `Algebra.adjoin ℂ (Set.range a)`. Establish `hTC : ∀ μ, IsDominant μ → T (diagPow F n μ) ∈ C`. Use `dom_induct (fun μ => T (diagPow F n μ) ∈ C) ?_ ?_ ?_` and prove the remaining obligations. Use `show T (diagPow F n 0) ∈ C`. Rewrite using `[diagPow_zero, hop_one]`.
+
+Conclude with `C.one_mem`. Introduce `i`. Conclude with `Algebra.subset_adjoin ⟨i, rfl⟩`. Introduce `μ ν hμ hν h1 h2 show T (diagPow F n (μ + ν)) ∈ C`. Rewrite using `[← hop_diagPow_mul hρ hKc hKo hr hμ hν]`.
+
+Conclude with `C.mul_mem h1 h2`. Set `P : (K0 ⧸ (Kr).subgroupOf K0) → Module.End ℂ W` to `fun q => T ((Quotient.out q : K0) : GL (Fin n) F)`. Establish `hP : ∀ k (hk : k ∈ K0), P (QuotientGroup.mk ⟨k, hk⟩) = T k`. Introduce `k hk`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul ((Kr).subgroupOf K0) (⟨k, hk⟩ : K0)`.
+
+Use `show T ((Quotient.out (QuotientGroup.mk ⟨k, hk⟩ : K0 ⧸ (Kr).subgroupOf K0) : K0) : GL (Fin n) F) = T k`. Rewrite using `[hh, Subgroup.coe_mul, ← hop_mul_integral hρ hKc hKo _ ((h : K0)).2, hop_of_mem hρ hKc hKo (Subgroup.mem_subgroupOf.1 h.2), mul_one]`. Establish `hCfin : FiniteDimensional ℂ C` using `Module.Finite.of_injective C.val.toLinearMap Subtype.val_injective`. Set `Φ : ((K0 ⧸ (Kr).subgroupOf K0) × (K0 ⧸ (Kr).subgroupOf K0) → C) →ₗ[ℂ] Module.End ℂ W` to `∑ p, (LinearMap.mulLeft ℂ (P p.1)) ∘ₗ (LinearMap.mulRight ℂ (P p.2)) ∘ₗ C.val.toLinearMap ∘ₗ LinearMap.proj p`. Establish `hΦ : ∀ f, Φ f = ∑ p, P p.1 * (((f p : C) : Module.End ℂ W) * P p.2)`.
+
+Introduce `f`. Rewrite using `[LinearMap.sum_apply]`. Both sides reduce to the same expression. Establish `hrange : Set.range T ⊆ LinearMap.range Φ`. Introduce and unpack `_ ⟨g, rfl⟩`.
+
+Take `⟨μ, hμ, k1, hk1, k2, hk2, hg⟩` from `exists_eq_mul_diagPow_mul F n g`. Use `⟨Pi.single (QuotientGroup.mk ⟨k1, hk1⟩, QuotientGroup.mk ⟨k2, hk2⟩) ⟨_, hTC μ hμ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, Finset.sum_eq_single (QuotientGroup.mk ⟨k1, hk1⟩, QuotientGroup.mk ⟨k2, hk2⟩)]`. Rewrite using `[Pi.single_eq_same] show P (QuotientGroup.mk ⟨k1, hk1⟩) * (T (diagPow F n μ) * P (QuotientGroup.mk ⟨k2, hk2⟩)) = T g`. Rewrite using `[hP, hP, hg, mul_assoc, hop_mul_integral hρ hKc hKo _ hk2, hop_integral_mul hρ hKc hKo hk1]`.
+
+Introduce `p _ hp`. Rewrite using `[Pi.single_eq_of_ne hp]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Establish `htop : LinearMap.range Φ = ⊤`. Rewrite using `[eq_top_iff, ← hspan, Submodule.span_le]`. Conclude with `hrange`. Establish `hdim` using `LinearMap.finrank_range_le Φ`. Rewrite `hdim` using `[htop, finrank_top, Module.finrank_linearMap, Module.finrank_pi_fintype]`.
+
+Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_prod, smul_eq_mul] at hdim`. Establish `hcb` using `hc a hcomm`. Establish `h2 : Module.finrank ℂ W * Module.finrank ℂ W ≤ c * Module.finrank ℂ W`. Use polynomial arithmetic with `[hdim, hcb]`. Conclude with `Nat.le_of_mul_le_mul_right h2 hpos`.
+-/
 theorem finrank_le_of_commBound (hr : 1 ≤ r) [ρ.IsIrreducible] [FiniteDimensional ℂ W]
     [Fintype (K0 ⧸ (Kr).subgroupOf K0)] {c : ℕ}
     (hc : ∀ a : Fin (n + 1) → Module.End ℂ W, (∀ i j, a i * a j = a j * a i) →
@@ -130,6 +162,17 @@ namespace DiscreteGroups.sglob.LConv
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.Parabolic DiscreteGroups.sglob.LConvU
 
+/- English proof (translation)
+Introduce `hCB k _ _ _ _ m K hK`. Take `⟨r0, -, hr0⟩` from `(GLnLocal.hasBasis_nhds_one k m).mem_iff.1 (hK.mem_nhds K.one_mem)`. Take `⟨r, hr, hrr⟩ : ∃ r, 1 ≤ r ∧ r0 ≤ r` from `⟨max r0 1, le_max_right _ _, le_max_left _ _⟩`. Establish `hKrK : GLnLocal.congruenceSubgroup k m r ≤ K` using `fun x hx => hr0 (GLnLocal.congruenceSubgroup_antitone k m hrr hx)`. Establish `hKc` using `GLnLocal.isCompact_congruenceSubgroup k m r`.
+
+Establish `hKo` using `GLnLocal.isOpen_congruenceSubgroup k m r`. Establish `: CompactSpace (GLnLocal.integralGL k m)` using `isCompact_iff_compactSpace.mp (GLnLocal.isCompact_integralGL k m)`. Establish `hHo : IsOpen (((GLnLocal.congruenceSubgroup k m r).subgroupOf (GLnLocal.integralGL k m) : Subgroup (GLnLocal.integralGL k m)) : Set (GLnLocal.integralGL k m))` using `hKo.preimage continuous_subtype_val`. Establish `: Finite (GLnLocal.integralGL k m ⧸ (GLnLocal.congruenceSubgroup k m r).subgroupOf (GLnLocal.integralGL k m))` using `Subgroup.quotient_finite_of_isOpen _ hHo`. Set `_ : Fintype (GLnLocal.integralGL k m ⧸ (GLnLocal.congruenceSubgroup k m r).subgroupOf (GLnLocal.integralGL k m))` to `Fintype.ofFinite _`.
+
+Take `⟨c, hc⟩` from `hCB (m + 1) (2 * Fintype.card (GLnLocal.integralGL k m ⧸ (GLnLocal.congruenceSubgroup k m r).subgroupOf (GLnLocal.integralGL k m)) ^ 2)`. Use `⟨c, fun V _ _ ρ hρs hρi => ?_⟩` and prove the remaining obligations. Establish `hρ : GroundTheory.Automorphic.IsSmooth ρ` using `fun v => hρs v`. Establish `: ρ.IsIrreducible` using `hρi`. Establish `hfin : FiniteDimensional ℂ (fixedVectors ρ (GLnLocal.congruenceSubgroup k m r))` using `(isAdmissible_of_isIrreducible hρ).2 _ hKc hKo`.
+
+Establish `hle : GlobalTheory.PRep.fixed ρ K ≤ fixedVectors ρ (GLnLocal.congruenceSubgroup k m r)`. Introduce `v hv κ hκ`. Use `hv ⟨κ, hKrK hκ⟩` as an intermediate fact. Simplify using `using this`. Use `⟨Submodule.finiteDimensional_of_le hle, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(LinearMap.finrank_le_finrank_of_injective (f := Submodule.inclusion hle) (Submodule.inclusion_injective hle)).trans (finrank_le_of_commBound hρ hKc hKo hr (c := c) fun a ha => hc _ a ha)`.
+-/
 theorem unifOfComm : UnifOfComm := by
   intro hCB k _ _ _ _ m K hK
   classical

@@ -41,6 +41,9 @@ def NabUnique : Prop :=
       (F : Fin n → SecAt Xo c y k) (P : MvPolynomial (LtN Dw n) c.F), IsHarmonic c P →
         sysVal Xo c nab y k F P = sysVal Xo c nab' y k F P
 
+/- English proof (translation)
+Introduce `τ i i'`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 example {n : ℕ} (x : LtN Dw n) : IsHarmonic c (MvPolynomial.X x : MvPolynomial (LtN Dw n) c.F) := by
   classical
   intro τ i i'

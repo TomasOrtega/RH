@@ -10,6 +10,9 @@ namespace Formalism.MainNotions.N.Ln34.UniversalLiftFrames
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.N.Ln34 Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules PowerSeries
 
+/- English proof (translation)
+Conclude with `u1r2_basis D HW F Cm hA hl K LL hG π' E hp9 T hT c`.
+-/
 theorem universal_lift_basis (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL)
     (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) (E : ZMod (finrank ℚ_[l] ↥(K0 K)) → Polynomial ↥(OL LL))
@@ -20,6 +23,9 @@ theorem universal_lift_basis (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA 
       (hrep : ∀ k, rep k ∈ NcS ((HW l).W K 1 LL hG) T (c - 1)), ∀ k, bL k = mkL ((HW l).W K 1 LL hG) T π' c (rep k) (hrep k) := by
   exact u1r2_basis D HW F Cm hA hl K LL hG π' E hp9 T hT c
 
+/- English proof (translation)
+Establish `hP` using `u1r2_pt D HW F Cm hA K LL hG T hT c τ ζ hpt`. Conclude with `⟨fun x y hx hy => (LevelExpansions.V.valL ((Cm l).C K 1 LL hG).tie T hP).map_add ⟨x, hx⟩ ⟨y, hy⟩, fun a x hx => (LevelExpansions.V.valL ((Cm l).C K 1 LL hG).tie T hP).map_smul a ⟨x, hx⟩⟩`.
+-/
 theorem universal_lift_valuation (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL)
     (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) (E : ZMod (finrank ℚ_[l] ↥(K0 K)) → Polynomial ↥(OL LL))
@@ -35,6 +41,9 @@ theorem universal_lift_valuation (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.l
   exact ⟨fun x y hx hy => (LevelExpansions.V.valL ((Cm l).C K 1 LL hG).tie T hP).map_add ⟨x, hx⟩ ⟨y, hy⟩,
     fun a x hx => (LevelExpansions.V.valL ((Cm l).C K 1 LL hG).tie T hP).map_smul a ⟨x, hx⟩⟩
 
+/- English proof (translation)
+Establish `hP` using `u1r2_pt D HW F Cm hA K LL hG T hT c τ ζ hpt`. Establish `hP'` using `u1r2_pt D HW F Cm hA K LL hG T hT c τ ζ' hpt'`. Establish `hxN` using `((mem_NcS _ T (c - 1) x).1 hx).1`. Conclude with `(LevelExpansions.V.valAt_eq ((Cm l).C K 1 LL hG).tie T hP ⟨x, hxN⟩).trans (LevelExpansions.V.valAt_eq ((Cm l).C K 1 LL hG).tie T hP' ⟨x, hxN⟩).symm`.
+-/
 theorem universal_lift_valuation_points (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL)
     (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) (E : ZMod (finrank ℚ_[l] ↥(K0 K)) → Polynomial ↥(OL LL))

@@ -11,6 +11,19 @@ section
 
 variable {R K : Type*} [CommRing R] [Field K] [StarRing K] [Algebra R K]
 
+/- English proof (translation)
+Establish `hd : ∀ x, e x ∈ dual k B ↔ x ∈ dual h A`. Introduce `x`. Unfold `dual Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H y hy`. Rewrite using `[← he]`. Conclude with `H _ ((hAB y).2 hy)`. Introduce `H y hy`. Take `⟨z, rfl⟩` from `e.surjective y`.
+
+Rewrite using `[he]`. Conclude with `H _ ((hAB z).1 hy)`. Establish `hm : ∀ (A : Submodule R V) (B : Submodule R W), (∀ x, e x ∈ B ↔ x ∈ A) → B.toAddSubgroup = A.toAddSubgroup.map (e : V →+ W)`. Introduce `A B H`. Use extensionality with `y`.
+
+Take `⟨z, rfl⟩` from `e.surjective y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨z, (H z).1 hy, rfl⟩`. Introduce and unpack `⟨w, hw, hwz⟩`.
+
+Establish `: e w = e z` using `hwz`. Rewrite using `[← this]`. Conclude with `(H w).2 hw`. Unfold `discN idxN`. Rewrite using `[hm A B hAB, hm _ _ hd]`.
+
+Conclude with `AddSubgroup.relIndex_map_map_of_injective (f := (e : V →+ W)) _ _ e.injective`.
+-/
 theorem discN_congr {V W : Type*} [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
     [AddCommGroup W] [Module K W] [Module R W] [IsScalarTower R K W]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (k : W →ₗ⋆[K] W →ₗ[K] K) (e : V ≃ₗ[K] W)
@@ -46,6 +59,11 @@ theorem discN_congr {V W : Type*} [AddCommGroup V] [Module K V] [Module R V] [Is
 
 variable {V : Type*} [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hwx⟩`. Establish `: w = x` using `(g : V ≃ₗ[K] V).injective hwx`. Conclude with `this ▸ hw`. Introduce `hx`.
+
+Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem smul_mem_smul_iff (h : V →ₗ⋆[K] V →ₗ[K] K) (g : isom h) (L : Submodule R V) (x : V) :
     (g : V ≃ₗ[K] V) x ∈ g • L ↔ x ∈ L := by
   constructor
@@ -55,6 +73,11 @@ theorem smul_mem_smul_iff (h : V →ₗ⋆[K] V →ₗ[K] K) (g : isom h) (L : S
   · intro hx
     exact ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Set `e : U ≃ₗ[K] (g • U : Submodule K V)` to `(g : V ≃ₗ[K] V).submoduleMap U`. Establish `he : ∀ x : U, (e x : V) = (g : V ≃ₗ[K] V) x` using `fun _ => rfl`. Establish `h1 : Module.finrank K (g • U : Submodule K V) = Module.finrank K U` using `e.finrank_eq.symm`. Establish `h2 : discN (hRes h (g • U)) (latIn (g • U) (g • L)) = discN (hRes h U) (latIn U L)`. Use `discN_congr _ _ e (fun x y => ?_) _ _ (fun x => ?_)` and prove the remaining obligations.
+
+Conclude with `g.2 (x : V) (y : V)`. Conclude with `smul_mem_smul_iff h g L (x : V)`. Express the relevant statement in the definitionally equal form `_ ∧ _ ↔ _ ∧ _`. Rewrite using `[h1, h2]`.
+-/
 theorem smul_mem_primSp (h : V →ₗ⋆[K] V →ₗ[K] K) (g : isom h) (L : Submodule R V)
     (U : Submodule K V) (j n : ℕ) : g • U ∈ primSp h (g • L) j n ↔ U ∈ primSp h L j n := by
   let e : U ≃ₗ[K] (g • U : Submodule K V) := (g : V ≃ₗ[K] V).submoduleMap U
@@ -69,6 +92,13 @@ theorem smul_mem_primSp (h : V →ₗ⋆[K] V →ₗ[K] K) (g : isom h) (L : Sub
 
 end
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h _ _ _ g L U j n`. Use `⟨smul_mem_primSp h g L U j n, ?_⟩` and prove the remaining obligations. Establish `hi : primSp h (g • L) j n = (fun W : Submodule K V => g • W) '' primSp h L j n`. Use extensionality with `W`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hW`. Use `⟨g⁻¹ • W, ?_, smul_inv_smul g W⟩` and prove the remaining obligations. Rewrite using `[← smul_mem_primSp h g, smul_inv_smul]`. Conclude with `hW`. Introduce and unpack `⟨W', hW', rfl⟩`.
+
+Conclude with `(smul_mem_primSp h g L W' j n).2 hW'`. Rewrite using `[hi]`. Conclude with `(MulAction.injective g).encard_image _`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → h.Nondegenerate → ∀ (g : isom h) (L : Submodule (𝓞 K) V) (U : Submodule K V) (j n : ℕ), (g • U ∈ primSp h (g • L) j n ↔ U ∈ primSp h L j n) ∧ (primSp h (g • L) j n).encard = (primSp h L j n).encard := by
   intro K V _ _ _ _ _ _ _ _ h _ _ _ g L U j n
   refine ⟨smul_mem_primSp h g L U j n, ?_⟩

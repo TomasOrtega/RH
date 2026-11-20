@@ -7,5 +7,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TypedPartSplitPrimes (IsIntHom IsOr
 open GlobalTheory.IndefiniteRowSideFullHecke.BigBlockCharacters (HasChars)
 open GlobalTheory.IndefiniteRowSideFullHecke.FactorDepthInertBounds (boundAll boundInert boundFine)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RefSum.facBetween_zero_boundAll | exact GlobalTheory.RefSum.facBetween_zero_boundAll | (intros; apply GlobalTheory.RefSum.facBetween_zero_boundAll <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.factorDepth_between_zero_and_bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c), ∀ (f : Lt1 Dw) (k : ℕ), FacBetween Xo la f k 0 (boundAll p (rk f) k) ∧ (k < p → FacBetween Xo la f k 0 0) := by
   first | exact @GlobalTheory.RefSum.facBetween_zero_boundAll | exact GlobalTheory.RefSum.facBetween_zero_boundAll | (intros; apply GlobalTheory.RefSum.facBetween_zero_boundAll <;> assumption)

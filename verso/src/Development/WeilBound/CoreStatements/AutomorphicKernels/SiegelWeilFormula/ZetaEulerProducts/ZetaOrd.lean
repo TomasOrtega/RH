@@ -8,10 +8,16 @@ namespace PositivityTheory.Lord
 
 open GroundTheory.Global
 
+/- English proof (translation)
+The claim follows from `(differentiableOn_continuedDedekindZeta K).analyticAt (isOpen_compl_singleton.mem_nhds hx)`.
+-/
 theorem zeta_analyticAt (K : Type) [Field K] [NumberField K] {x : ℂ} (hx : x ≠ 1) :
     AnalyticAt ℂ (continuedDedekindZeta K) x :=
   (differentiableOn_continuedDedekindZeta K).analyticAt (isOpen_compl_singleton.mem_nhds hx)
 
+/- English proof (translation)
+Use `⟨Function.update (fun s => (s - 1) * continuedDedekindZeta K s) 1 (dedekindZeta_residue K : ℂ), (differentiable_sub_one_mul_continuedDedekindZeta K).analyticAt 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.update_apply, if_pos rfl]`. Conclude with `Complex.ofReal_ne_zero.mpr (dedekindZeta_residue_ne_zero K)`. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Rewrite using `[Function.update_apply, if_neg (show s ≠ 1 from hs)]`.
+-/
 theorem zeta_pole (K : Type) [Field K] [NumberField K] :
     ∃ A : ℂ → ℂ, AnalyticAt ℂ A 1 ∧ A 1 ≠ 0 ∧
       ∀ᶠ s in 𝓝[≠] (1 : ℂ), (s - 1) * continuedDedekindZeta K s = A s := by
@@ -22,11 +28,17 @@ theorem zeta_pole (K : Type) [Field K] [NumberField K] :
   · filter_upwards [self_mem_nhdsWithin] with s hs
     rw [Function.update_apply, if_neg (show s ≠ 1 from hs)]
 
+/- English proof (translation)
+Rewrite using `[continuedDedekindZeta_of_ne_zero K hs0, normalizedDedekindZeta, mul_inv, inv_pow, inv_pow]`.
+-/
 theorem completed_zeta_continued_eq (K : Type) [Field K] [NumberField K] {s : ℂ} (hs0 : s ≠ 0) :
     continuedDedekindZeta K s = ((|(discr K : ℝ)| : ℝ) : ℂ) ^ (-(s / 2)) *
       ((Gammaℝ s)⁻¹ ^ nrRealPlaces K * (Gammaℂ s)⁻¹ ^ nrComplexPlaces K) * completedDedekindZeta K s := by
   rw [continuedDedekindZeta_of_ne_zero K hs0, normalizedDedekindZeta, mul_inv, inv_pow, inv_pow]
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) < |(discr K : ℝ)|` using `abs_pos.mpr (Int.cast_ne_zero.mpr (discr_ne_zero K))`. Use `⟨AnalyticAt.cpow analyticAt_const (by fun_prop) (Complex.ofReal_mem_slitPlane.mpr hpos), ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. Conclude with `fun h => (Complex.ofReal_ne_zero.mpr hpos.ne') h.1`.
+-/
 theorem discr_cpow_analytic (K : Type) [Field K] [NumberField K] (x : ℂ) :
     AnalyticAt ℂ (fun s : ℂ => ((|(discr K : ℝ)| : ℝ) : ℂ) ^ (-(s / 2))) x ∧
       ((|(discr K : ℝ)| : ℝ) : ℂ) ^ (-(x / 2)) ≠ 0 := by
@@ -35,16 +47,51 @@ theorem discr_cpow_analytic (K : Type) [Field K] [NumberField K] (x : ℂ) :
   rw [Ne, Complex.cpow_eq_zero_iff]
   exact fun h => (Complex.ofReal_ne_zero.mpr hpos.ne') h.1
 
+/- English proof (translation)
+The claim follows from `((invGammaR_zo j hj).pow _).mul ((invGammaC_zo j hj).pow _)`.
+-/
 theorem gammaInv_zo (K : Type) [Field K] [NumberField K] (j : ℤ) (hj : j ≤ 0) :
     ZO (fun s => (Gammaℝ s)⁻¹ ^ nrRealPlaces K * (Gammaℂ s)⁻¹ ^ nrComplexPlaces K) (j : ℂ)
       ((if Even j then 1 else 0) * nrRealPlaces K + 1 * nrComplexPlaces K) :=
   ((invGammaR_zo j hj).pow _).mul ((invGammaC_zo j hj).pow _)
 
+/- English proof (translation)
+Establish `h` using `card_add_two_mul_card_eq_rank K`. Establish `h1 : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_le_places (K : Type) [Field K] [NumberField K] : 1 ≤ nrRealPlaces K + nrComplexPlaces K := by
   have h := card_add_two_mul_card_eq_rank K
   have h1 : 0 < Module.finrank ℚ K := Module.finrank_pos
   omega
 
+/- English proof (translation)
+Establish `hG` using `gammaInv_zo K j hj`. Break down `hj.lt_or_eq with hlt | rfl` into its components or cases. Establish `hb` using `discr_cpow_analytic K (j : ℂ)`. Establish `hne : j ≠ 0` using `hlt.ne`. Establish `hj0 : (j : ℂ) ≠ 0` using `by exact_mod_cast hne`.
+
+Establish `hj1 : (j : ℂ) ≠ 1`. Introduce `h`. Establish `: j = 1` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers. Establish `hΛa : AnalyticAt ℂ (completedDedekindZeta K) (j : ℂ)`.
+
+Use `DifferentiableOn.analyticAt (s := {0}ᶜ ∩ {1}ᶜ) (fun z hz => ?_) ((isOpen_compl_singleton.inter isOpen_compl_singleton).mem_nhds ⟨hj0, hj1⟩)` and prove the remaining obligations. Conclude with `(differentiableAt_completedDedekindZeta K hz.1 hz.2).differentiableWithinAt`. Establish `hΛ0 : completedDedekindZeta K (j : ℂ) ≠ 0`. Introduce `h0`. Establish `hre : 1 < (1 - (j : ℂ)).re`.
+
+Establish `: (j : ℝ) < 0` using `by exact_mod_cast hlt`. Simplify using `only [Complex.sub_re, Complex.one_re, Complex.intCast_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs1 : (1 - (j : ℂ)) ≠ 0`. Introduce `h`.
+
+Rewrite `hre` using `[h, Complex.zero_re]`. Conclude with `absurd hre (by norm_num)`. Establish `e1` using `completedDedekindZeta_one_sub K hj0 hj1`. Establish `e2` using `completed_zeta_continued_eq K hs1`. Rewrite `e2` using `[e1, h0, mul_zero]`.
+
+Conclude with `(zeta_euler K hre).2 e2`. Establish `Z` using `((ZO.of_analytic hb.1 hb.2).mul hG).mul (ZO.of_analytic hΛa hΛ0)`. Establish `hord : nrRealPlaces K * (if Even j then 1 else 0) + nrComplexPlaces K - (if j = 0 then 1 else 0) = 0 + ((if Even j then 1 else 0) * nrRealPlaces K + 1 * nrComplexPlaces K) + 0`. Rewrite using `[if_neg hne, Nat.sub_zero]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hord]`. Use `Z.congr ?_` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds (isOpen_compl_singleton.mem_nhds hj0)] with s hs`. Conclude with `(completed_zeta_continued_eq K hs).symm`. Establish `he : Even (0 : ℤ)` using `⟨0, rfl⟩`.
+
+Simplify using `only [Int.cast_zero, he, ↓reduceIte, one_mul, mul_one] at hG ⊢`. Establish `hm : 1 ≤ nrRealPlaces K + nrComplexPlaces K` using `one_le_places K`. Take `⟨k, hk⟩ : ∃ k, nrRealPlaces K + nrComplexPlaces K = k + 1` from `⟨_, (Nat.sub_add_cancel hm).symm⟩`. Rewrite `hG` using `[hk]`. Rewrite using `[hk, Nat.add_sub_cancel]`.
+
+Establish `hb0` using `discr_cpow_analytic K 0`. Choose the witnesses or unpack the hypotheses as in `⟨L, hT, hL0⟩ : ∃ L : ℂ, Tendsto (fun s => s * completedDedekindZeta K s) (𝓝[≠] 0) (𝓝 L) ∧ L ≠ 0 := by`. Use `⟨_, tendsto_mul_completedDedekindZeta_zero K, ?_⟩` and prove the remaining obligations. Establish `h1 : (0 : ℝ) < √|(discr K : ℝ)| * dedekindZeta_residue K` using `mul_pos (Real.sqrt_pos.mpr (abs_pos.mpr (Int.cast_ne_zero.mpr (discr_ne_zero K)))) (dedekindZeta_residue_pos K)`. Conclude with `neg_ne_zero.mpr (mul_ne_zero (Complex.ofReal_ne_zero.mpr h1.ne') (inv_ne_zero (pow_ne_zero _ (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero))))`.
+
+Use `set F : ℂ → ℂ := Function.update (fun s => s * completedDedekindZeta K s) 0 L with hFdef`. Establish `hFa : AnalyticAt ℂ F 0`. Apply `Complex.analyticAt_of_differentiable_on_punctured_nhds_of_continuousAt` to reduce the goal to its premises. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (isOpen_compl_singleton.mem_nhds (zero_ne_one : (0 : ℂ) ≠ 1))] with z hz0 hz1`. Establish `hd : DifferentiableAt ℂ (fun s => s * completedDedekindZeta K s) z` using `differentiableAt_id.mul (differentiableAt_completedDedekindZeta K hz0 hz1)`.
+
+Use `hd.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [isOpen_compl_singleton.mem_nhds hz0] with w hw`. Rewrite using `[hFdef, Function.update_apply, if_neg (show w ≠ 0 from hw)]`. Rewrite using `[hFdef]`. Conclude with `continuousAt_update_same.mpr hT`.
+
+Unfold `ZO at hG ⊢`. Take `⟨u, hu, hu0, hGu⟩` from `hG`. Use `⟨fun s => ((|(discr K : ℝ)| : ℝ) : ℂ) ^ (-(s / 2)) * u s * F s, (hb0.1.mul hu).mul hFa, ?_, ?_⟩` and prove the remaining obligations. Use `mul_ne_zero (mul_ne_zero hb0.2 hu0) ?_` and prove the remaining obligations. Rewrite using `[hFdef, Function.update_apply, if_pos rfl]`.
+
+Conclude with `hL0`. Use `filter_upwards [self_mem_nhdsWithin, hGu] with s hs hGs beta_reduce at hGs`. Rewrite using `[completed_zeta_continued_eq K hs, hGs]`. Establish `hFs : F s = s * completedDedekindZeta K s`. Rewrite using `[hFdef, Function.update_apply, if_neg (show s ≠ 0 from hs)]`.
+
+Rewrite using `[hFs, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zeta_zo_nonpos (K : Type) [Field K] [NumberField K] (j : ℤ) (hj : j ≤ 0) :
     ZO (continuedDedekindZeta K) (j : ℂ)
       (nrRealPlaces K * (if Even j then 1 else 0) + nrComplexPlaces K - (if j = 0 then 1 else 0)) := by

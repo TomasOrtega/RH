@@ -67,6 +67,9 @@ namespace LatChart
 def FrameAt (q : LatChart Z L) {k : Type} [Field k] (x : Sp k ⟶ Z.X) (u : Vecs Dw (Y Z.i).t k) : Prop :=
   ⊤ ≤ x ⁻¹ᵁ q.U ∧ Z.FlagAt x u ∧ HasCoord q.g L q.m x u fun σ i l => valR x q.U (q.c σ i l)
 
+/- English proof (translation)
+The claim follows from `(q.adapted k x h ho).imp fun _ hu => ⟨h, hu⟩`.
+-/
 theorem exists_frameAt (q : LatChart Z L) {k : Type} [Field k] {x : Sp k ⟶ Z.X} (h : ⊤ ≤ x ⁻¹ᵁ q.U)
     (ho : Set.range x ⊆ Z.opn) : ∃ u, q.FrameAt x u :=
   (q.adapted k x h ho).imp fun _ hu => ⟨h, hu⟩
@@ -81,6 +84,9 @@ open Classical in
 def tr (q q' : LatChart Z L) (e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → ℤ) : Γ(Z.X, q.U ⊓ q'.U)ˣ :=
   if h : ∃ a : Γ(Z.X, q.U ⊓ q'.U)ˣ, q.IsTr q' e a.val then h.choose else 1
 
+/- English proof (translation)
+Rewrite using `[tr, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isTr_tr {q q' : LatChart Z L} {e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → ℤ}
     (h : ∃ a : Γ(Z.X, q.U ⊓ q'.U)ˣ, q.IsTr q' e a.val) : q.IsTr q' e (q.tr q' e).val := by
   rw [tr, dif_pos h]
@@ -121,6 +127,9 @@ instance isPrincipal_map_different {l : Level H} (c : Coeff l) (W : ValuationSub
 def diffGen {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (σ : E →+* ℂ) : c.V W :=
   Submodule.IsPrincipal.generator ((differentIdeal ℤ (𝓞 E)).map (embV c W σ))
 
+/- English proof (translation)
+The claim follows from `Ideal.span_singleton_generator _`.
+-/
 theorem span_diffGen {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (σ : E →+* ℂ) :
     Ideal.span {diffGen c W σ} = (differentIdeal ℤ (𝓞 E)).map (embV c W σ) := Ideal.span_singleton_generator _
 

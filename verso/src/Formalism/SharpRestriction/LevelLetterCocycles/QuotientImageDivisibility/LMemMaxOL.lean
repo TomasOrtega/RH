@@ -9,6 +9,13 @@ namespace Formalism.MainNotions.N.Pv.LocalLengthBound
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨w, hw⟩`. Establish `hv` using `P.v_l LL`. Establish `h1` using `(P.v_O LL (algebraMap ↥(OL LL) ↥LL.1 (w : ↥(OL LL)))).2 (w : ↥(OL LL)).2`. Establish `h2` using `(P.v_O LL (algebraMap ↥(OL LL) ↥LL.1 ((w⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL)))).2 ((w⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL)).2`.
+
+Establish `h3 : P.v LL (algebraMap ↥(OL LL) ↥LL.1 (w : ↥(OL LL))) + P.v LL (algebraMap ↥(OL LL) ↥LL.1 ((w⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL))) = 0`. Rewrite using `[← AddValuation.map_mul, ← map_mul, Units.mul_inv, map_one, AddValuation.map_one]`. Establish `h4 : P.v LL (algebraMap ↥(OL LL) ↥LL.1 (w : ↥(OL LL))) = 0` using `le_antisymm (le_trans (le_add_of_nonneg_right h2) h3.le) h1`. Rewrite `h4` using `[hw, map_natCast]`. Rewrite `hv` using `[h4]`.
+
+Conclude with `zero_ne_one hv`.
+-/
 theorem l_mem_maxOL {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : FinExt l) [IsLocalRing ↥(OL LL)] :
     ((l : ℕ) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL) := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
@@ -28,6 +35,13 @@ theorem l_mem_maxOL {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : FinExt l) [I
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `l _ K LL hA' h5`. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Use `haveI := Formalism.MainNotions.UnusedSlot80.neZero_finrank_max_unramified K`. Use `haveI : IsLocalRing ↥(OL LL) := Formalism.MainNotions.LiftingTheory.lkd_local (D.loc l) LL`. Use `haveI := hCpl l LL`.
+
+Establish `h1` using `hA.1 l K 1 LL hA'.2.2`. Establish `h11` using `hA.2.2.2.2.2.2.2.2.2.2.1 l K LL`. Establish `hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F` using `fun l _ K s LL h => (hA.1 l K s LL h).2.2.2.2.2.2.2.2.1`. Establish `hlm : ((((D.loc l).PD K).p : ℕ) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL)`. Rewrite using `[(D.loc l).PD_p K]`.
+
+Conclude with `l_mem_maxOL (D.loc l) LL`. Establish `tie` using `((Cm l).C K 1 LL hA'.2.2).tie`. Conclude with `expCrit_of _ Subtype.val_injective hlm (Formalism.MainNotions.UnusedSlot80.BCF.isFrac_OL LL) h1.1 h1.2.2.1 (hL l K LL hA' h5) h1.2.2.2.2.1 h1.2.2.2.2.2.2.2.2.1 h11.2.2 (hB l K LL hA'.2.2) tie h1.2.2.2.1 (ptTrans_rec D HW F hP9 l K LL hA' h5)`.
+-/
 theorem expCrit_D (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CR CA CB CK : ℝ) (hA : Formalism.MainNotions.RamifiedCoefficientChains.admitted D HW F Cm CR CA CB CK)
     (hL : Formalism.MainNotions.UnusedSlot80.LevCoeff D HW F)

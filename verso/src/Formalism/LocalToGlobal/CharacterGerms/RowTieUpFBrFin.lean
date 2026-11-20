@@ -17,6 +17,9 @@ variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {C3 : IntChart T io y}
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {ie : T.Fr →+* C}
 
+/- English proof (translation)
+The claim follows from `upCharS_at_chartL Pl.place_doubling_condition hL hie hd hY ha hg hr o Hc`.
+-/
 theorem upCharS_chartL (hL : UpFLaw V.l T.V (𝓞 E) (chD C3.ch) C3.FT C3.actT)
     (hie : EmbOK T V ie) (hd : ¬ ((V.l : ℤ) ∣ Algebra.discr ℤ (Module.Free.chooseBasis ℤ (𝓞 E))))
     {k : ℕ} {Y : FBChart C V (𝓞 E) (chD C3.ch)} (hY : IsBC C3 ie k Y)

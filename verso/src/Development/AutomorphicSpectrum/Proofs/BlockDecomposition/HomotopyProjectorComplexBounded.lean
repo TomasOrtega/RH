@@ -12,6 +12,21 @@ variable {R : Type} [CommRing R] {K C E : ℕ → Type}
   [∀ p, AddCommGroup (K p)] [∀ p, AddCommGroup (C p)] [∀ p, AddCommGroup (E p)]
   [∀ p, Module R (K p)] [∀ p, Module R (C p)] [∀ p, Module R (E p)]
 
+/- English proof (translation)
+Establish `hri' : ∀ p x, r p (inc p x) = x` using `fun p x => LinearMap.congr_fun (hri p) x`. Establish `hinc' : ∀ p x, inc (p + 1) (dC p x) = dE p (inc p x)` using `fun p x => LinearMap.congr_fun (hinc p) x`. Establish `hr' : ∀ p x, r (p + 1) (dE p x) = dC p (r p x)` using `fun p x => LinearMap.congr_fun (hr p) x`. Establish `h0' : ∀ x, inc 0 (r 0 x) = x + h 0 (dE 0 x)` using `fun x => LinearMap.congr_fun h0 x`. Establish `hs' : ∀ p x, inc (p + 1) (r (p + 1) x) = x + dE p (h p x) + h (p + 1) (dE (p + 1) x)` using `fun p x => LinearMap.congr_fun (hs p) x`.
+
+Use `⟨⟨?_, ?_⟩, fun n => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `x hx ⟨y, hy⟩`. Establish `h1 : inc 0 (φ 0 x) = 0` using `by simpa using hy.symm`. Establish `h2 : φ 0 x = 0` using `by rw [← hri' 0 (φ 0 x), h1, map_zero]`. Conclude with `⟨0, by simpa using (hc.inj x h2 hx).symm⟩`.
+
+Introduce `z hz`. Take `⟨x, hx, hx'⟩` from `hc.zero (r 0 z) 0 (by change dC 0 (r 0 z) = φ 1 0; rw [← hr', hz]; simp) (by simp)`. Establish `hx2 : φ 0 x = r 0 z` using `hx`. Use `⟨x, 0, hx', ?_⟩` and prove the remaining obligations. Simplify using `[hx2, h0', hz]`.
+
+Introduce and unpack `x hx ⟨y, hy⟩`. Establish `hy' : dE n y = inc (n + 1) (φ (n + 1) x)` using `hy`. Establish `h1 : dC n (r n y) = φ (n + 1) x` using `by rw [← hr', hy', hri']`. Consider the cases of `n with`. Consider the case `zero`.
+
+Take `⟨w, -, hw⟩` from `hc.zero (r 0 y) x h1 hx`. Conclude with `⟨w, hw⟩`. Consider the case `succ m`. Take `⟨-, w, -, hw⟩` from `hc.succ m (r (m + 1) y) x h1 hx`. Conclude with `⟨w, hw⟩`.
+
+Introduce `z hz`. Take `⟨c, k, hck, hk⟩` from `hc.succ n (r (n + 1) z) 0 (by change dC (n + 1) (r (n + 1) z) = φ (n + 2) 0; rw [← hr', hz]; simp) (by simp)`. Establish `hck' : dC n c + φ (n + 1) k = r (n + 1) z` using `hck`. Use `⟨k, h n z - inc n c, hk, ?_⟩` and prove the remaining obligations. Establish `h3 : φ (n + 1) k = r (n + 1) z - dC n c` using `eq_sub_of_add_eq' hck'`.
+
+Simplify using `only [LinearMap.comp_apply, h3, map_sub, hs', hinc', hz, map_zero, add_zero]`. Normalize the expressions using the abelian group laws.
+-/
 theorem qIsoAt_of_retract
     (dK : ∀ p, K p →ₗ[R] K (p + 1)) (dC : ∀ p, C p →ₗ[R] C (p + 1))
     (dE : ∀ p, E p →ₗ[R] E (p + 1))
@@ -68,6 +83,11 @@ section Complex
 
 variable {R : Type} [CommRing R] {E : ℕ → Type} [∀ n, AddCommGroup (E n)] [∀ n, Module R (E n)]
 
+/- English proof (translation)
+Establish `e` using `(C.homologyIsoSc' i j k hi hk ≪≫ (C.sc' i j k).moduleCatHomologyIso).toLinearEquiv`. Establish `h1 : Module.Finite R (LinearMap.ker (C.d j k).hom ⧸ (LinearMap.range (C.d i j).hom).comap (LinearMap.ker (C.d j k).hom).subtype)` using `Module.Finite.of_surjective f hf`. Establish `h2 : Module.Finite R (LinearMap.ker (C.d j k).hom ⧸ LinearMap.range (C.sc' i j k).moduleCatToCycles)`. Use `Module.Finite.equiv (Submodule.quotEquivOfEq ((LinearMap.range (C.d i j).hom).comap (LinearMap.ker (C.d j k).hom).subtype) (LinearMap.range (C.sc' i j k).moduleCatToCycles) ?_)` and prove the remaining obligations. Use extensionality with `x`.
+
+Conclude with `⟨fun ⟨y, hy⟩ => ⟨y, Subtype.ext hy⟩, fun ⟨y, hy⟩ => ⟨y, congrArg Subtype.val hy⟩⟩`. Establish `h3 : Module.Finite R (C.sc' i j k).moduleCatLeftHomologyData.H` using `h2`. Conclude with `Module.Finite.equiv e.symm`.
+-/
 theorem finite_homology_of_surjective (C : CochainComplex (ModuleCat.{0} R) ℕ) (i j k : ℕ)
     (hi : (ComplexShape.up ℕ).prev j = i) (hk : (ComplexShape.up ℕ).next j = k)
     (W : Type) [AddCommGroup W] [Module R W] [Module.Finite R W]
@@ -98,6 +118,11 @@ noncomputable def cyclesMap (d : ∀ n, E n →ₗ[R] E (n + 1))
     rw [LinearMap.mem_ker, LinearMap.comp_apply, Submodule.subtype_apply, ← h1,
       LinearMap.mem_ker.1 x.2, map_zero]
 
+/- English proof (translation)
+Introduce `y`. Establish `h1` using `LinearMap.congr_fun (hinc j) y.1`. Simplify using `only [LinearMap.comp_apply] at h1`. Use `⟨⟨inc j y.1, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, ← h1, LinearMap.mem_ker.1 y.2, map_zero]`.
+
+Conclude with `LinearMap.congr_fun (hri j) y.1`.
+-/
 theorem cyclesMap_surjective (d : ∀ n, E n →ₗ[R] E (n + 1))
     (C : CochainComplex (ModuleCat.{0} R) ℕ) (inc : ∀ n, C.X n →ₗ[R] E n)
     (r : ∀ n, E n →ₗ[R] C.X n) (hri : ∀ p, r p ∘ₗ inc p = LinearMap.id)
@@ -111,6 +136,15 @@ theorem cyclesMap_surjective (d : ∀ n, E n →ₗ[R] E (n + 1))
   · rw [LinearMap.mem_ker, ← h1, LinearMap.mem_ker.1 y.2, map_zero]
   · exact LinearMap.congr_fun (hri j) y.1
 
+/- English proof (translation)
+Establish `hsurj` using `cyclesMap_surjective d C inc r hri hinc hr`. Consider the cases of `p with`. Consider the case `zero`. Use `finite_homology_of_surjective C 0 0 1 (by simp) (by simp) (LinearMap.ker (d 0)) (Submodule.mkQ _ ∘ₗ cyclesMap d C r hr 0) ?_` and prove the remaining obligations. Conclude with `(Submodule.mkQ_surjective _).comp (hsurj 0)`.
+
+Consider the case `succ p`. Use `hfs p` as an intermediate fact. Use `finite_homology_of_surjective C p (p + 1) (p + 1 + 1) (by simp) (by simp) (LinearMap.ker (d (p + 1)) ⧸ (LinearMap.range (d p)).comap (LinearMap.ker (d (p + 1))).subtype) (Submodule.mapQ ((LinearMap.range (d p)).comap (LinearMap.ker (d (p + 1))).subtype) ((LinearMap.range (C.d p ( …` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy⟩`. Use `⟨r p y, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `LinearMap.congr_fun (hr p) y`. Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite using `[← h1, hy]`. Both sides reduce to the same expression. Introduce `y`.
+
+Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`. Take `⟨x, rfl⟩` from `hsurj (p + 1) y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`.
+-/
 theorem finite_homology_of_retract (d : ∀ n, E n →ₗ[R] E (n + 1))
     (C : CochainComplex (ModuleCat.{0} R) ℕ) (inc : ∀ n, C.X n →ₗ[R] E n)
     (r : ∀ n, E n →ₗ[R] C.X n) (hri : ∀ p, r p ∘ₗ inc p = LinearMap.id)
@@ -152,6 +186,15 @@ section Main
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `⟨Q, φ, hQ0, hQfin, -, hQproj, hq, -, -⟩` from `GlobalTheory.exists_finite_projective_complex_quasiIso.{0, 0} C B hB hflat hfin`. Establish `hQflat : ∀ p, Module.Flat R (Q.X p)` using `fun p => by`. Use `hQproj p` as an intermediate fact. Use `infer_instance`. Use `⟨Q, fun n => inc n ∘ₗ (φ.f n).hom, hQfin, hQproj, fun n => ?_, fun M => ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (hinc n) ((φ.f n).hom x)`. Establish `h2` using `GlobalTheory.cochain_comm_apply φ n (n + 1) x`. Simplify using `only [LinearMap.comp_apply] at h1 ⊢`. Rewrite using `[← h1, h2]`.
+
+Establish `hc` using `GlobalTheory.coneExact_lTensor_of_quasiIso φ hQflat hflat B hQ0 hB M`. Establish `key` using `qIsoAt_of_retract (R := R) (K := fun p => M ⊗[R] Q.X p) (C := fun p => M ⊗[R] C.X p) (E := fun p => M ⊗[R] E p) (fun p => (Q.d p (p + 1)).hom.lTensor M) (fun p => (C.d p (p + 1)).hom.lTensor M) (fun p => (d p).lTensor M) (fun p => (φ.f p).hom.lTensor M) (fun p => (inc p).lTensor …`. Rewrite using `[← LinearMap.lTensor_comp, ← LinearMap.lTensor_comp, hir, he0, LinearMap.lTensor_add, LinearMap.lTensor_id])`. Use the proof step `(fun p => by`. Rewrite using `[← LinearMap.lTensor_comp, ← LinearMap.lTensor_comp, ← LinearMap.lTensor_comp, hir, hes, LinearMap.lTensor_add, LinearMap.lTensor_add, LinearMap.lTensor_id])`.
+
+Simplify using `only [LinearMap.lTensor_comp]`. Conclude with `key`.
+-/
 theorem exists_model_of_complex_retract [IsNoetherianRing R] {E : ℕ → Type}
     [∀ n, AddCommGroup (E n)] [∀ n, Module R (E n)] (d : ∀ n, E n →ₗ[R] E (n + 1))
     (e : ∀ n, E n →ₗ[R] E n) (h : ∀ n, E (n + 1) →ₗ[R] E n) (B : ℕ)
@@ -201,6 +244,21 @@ theorem exists_model_of_complex_retract [IsNoetherianRing R] {E : ℕ → Type}
     simp only [LinearMap.lTensor_comp]
     exact key
 
+/- English proof (translation)
+Introduce `R _ _ E _ _ _ d hdd e h B hee hed he0 hes hB hf0 hfs`. Establish `hrange : ∀ n (x : E n), x ∈ LinearMap.range (e n) → e n x = x`. Introduce and unpack `n _ ⟨y, rfl⟩`. Conclude with `LinearMap.congr_fun (hee n) y`. Set `dN : ∀ n, LinearMap.range (e n) →ₗ[R] LinearMap.range (e (n + 1))` to `fun n => (d n ∘ₗ (LinearMap.range (e n)).subtype).codRestrict _ (by`.
+
+Introduce and unpack `⟨_, y, rfl⟩`. Conclude with `⟨d n y, LinearMap.congr_fun (hed n) y⟩)`. Establish `hdN : ∀ n (x : LinearMap.range (e n)), ((dN n x : LinearMap.range (e (n + 1))) : E (n + 1)) = d n x` using `fun _ _ => rfl`. Set `C : CochainComplex (ModuleCat.{0} R) ℕ` to `CochainComplex.of (fun n => ModuleCat.of R (LinearMap.range (e n))) (fun n => ModuleCat.ofHom (dN n)) (fun n => by`. Use `ModuleCat.hom_ext (LinearMap.ext fun x => Subtype.ext ?_)` and prove the remaining obligations.
+
+Conclude with `LinearMap.congr_fun (hdd n) x.1)`. Establish `hCd : ∀ p, C.d p (p + 1) = ModuleCat.ofHom (dN p)` using `fun p => by`. Simplify using `[C, CochainComplex.of_d]`. Set `inc : ∀ n, C.X n →ₗ[R] E n` to `fun n => (LinearMap.range (e n)).subtype`. Set `r : ∀ n, E n →ₗ[R] C.X n` to `fun n => (e n).rangeRestrict`.
+
+Establish `hri : ∀ p, r p ∘ₗ inc p = LinearMap.id` using `fun p => by`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Conclude with `hrange p _ x.2`. Establish `hinc : ∀ p, inc (p + 1) ∘ₗ (C.d p (p + 1)).hom = d p ∘ₗ inc p` using `fun p => by`. Rewrite using `[hCd]`.
+
+Both sides reduce to the same expression. Establish `hr : ∀ p, r (p + 1) ∘ₗ d p = (C.d p (p + 1)).hom ∘ₗ r p` using `fun p => by`. Rewrite using `[hCd]`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (hed p) x`.
+
+Establish `hflat : ∀ p, Module.Flat R (C.X p)` using `fun p => Module.Flat.of_retract (inc p) (r p) (hri p)`. Use `exists_model_of_complex_retract d e h B he0 hes C inc r hri hinc hr (fun _ => rfl) (fun p hp => ?_) hflat (finite_homology_of_retract d C inc r hri hinc hr hf0 hfs)` and prove the remaining obligations. Use `ModuleCat.isZero_iff_subsingleton.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Subsingleton (LinearMap.range (e p))`. Rewrite using `[hB p hp, LinearMap.range_zero]`.
+
+Use `infer_instance`.
+-/
 theorem exists_finite_projective_model : ∀ {R : Type} [CommRing R] [IsNoetherianRing R] (E : ℕ → Type) [∀ n, AddCommGroup (E n)]
     [∀ n, Module R (E n)] [∀ n, Module.Flat R (E n)] (d : ∀ n, E n →ₗ[R] E (n + 1))
     (_ : ∀ n, d (n + 1) ∘ₗ d n = 0) (e : ∀ n, E n →ₗ[R] E n) (h : ∀ n, E (n + 1) →ₗ[R] E n) (B : ℕ)

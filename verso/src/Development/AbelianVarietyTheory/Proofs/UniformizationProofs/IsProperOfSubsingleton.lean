@@ -19,6 +19,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TateUnif
 
+/- English proof (translation)
+Use `g.q_hom` as an intermediate fact. Use `g.i_hom` as an intermediate fact. Use `g.q_flat` as an intermediate fact. Use `g.q_surj` as an intermediate fact. Use `g.q_affine` as an intermediate fact.
+
+Establish `hp` using `g.isKernel`. Establish `: Mono g.q` using `⟨fun {Y} x y hxy => by`. Establish `h1 : (x * y⁻¹) ≫ g.q = toUnit _ ≫ η[thickObj R I e D.P.A]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, hxy, mul_inv_cancel]`. Both sides reduce to the same expression.
+
+Establish `h2 : hp.lift _ _ h1 = 1` using `GlobalTheory.UU.point_eq_of_subsingleton _ _`. Establish `h3` using `hp.lift_fst _ _ h1`. Rewrite `h3` using `[h2, MonObj.one_comp]`. Conclude with `mul_inv_eq_one.1 h3.symm⟩`. Establish `: Mono g.q.left` using `inferInstanceAs (Mono ((Over.forget _).map g.q))`.
+
+Establish `: EffectiveEpi g.q.left` using `inferInstance`. Establish `: IsIso g.q.left` using `isIso_of_mono_of_strongEpi _`. Use `D.P.isAb.proper` as an intermediate fact. Establish `: IsProper (thickObj R I e D.P.A).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`. Rewrite using `[← Over.w g.q]`.
+
+Use `infer_instance`.
+-/
 theorem isProper_of_subsingleton {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G) [Subsingleton D.X] :
     IsProper (thickObj R I e G).hom := by
@@ -44,6 +55,9 @@ theorem isProper_of_subsingleton {R : Type} [CommRing R] [IsDomain R] {I : Ideal
   rw [← Over.w g.q]
   infer_instance
 
+/- English proof (translation)
+Take `⟨hL, hL₂, -⟩` from `GlobalTheory.allSixLaws`. Use `hG.geomConnected` as an intermediate fact. Establish `h₁` using `GlobalTheory.finrank_fam_of_expBij hL.secBaseChange R I hR D A G U.toUnifPre 2 one_le_two (U.expand 2 one_le_two)`. Establish `h₂` using `(GlobalTheory.FamDimension.main hL.globalFns hL.cube hL.square hL₂.secTwist R I D (FractionRing R) 2 one_le_two).2`. Conclude with `Nat.pow_right_injective le_rfl (h₂.symm.trans h₁)`.
+-/
 theorem rank_add_dim {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hR : AdmBase R I) {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
     [IsCommMonObj G] (hG : IsSemiAbelian G) (U : Unif I D A G) :
@@ -56,6 +70,11 @@ theorem rank_add_dim {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hR : Ad
     one_le_two).2
   exact Nat.pow_right_injective le_rfl (h₂.symm.trans h₁)
 
+/- English proof (translation)
+Take `⟨A, G, _, _, s, hA, -, hnp⟩` from `GlobalTheory.T.exists_rank_one_nonproper_power_series`. Take `⟨D, U, -⟩` from `GlobalTheory.T.exists_degenerationData_uniformisation_unconditional (PowerSeries ℚ) A G s`. Establish `hR : AdmBase (PowerSeries ℚ) (IsLocalRing.maximalIdeal (PowerSeries ℚ))` using `⟨inferInstance, inferInstance, inferInstance, s.cdvr.2.1⟩`. Establish `h` using `rank_add_dim hR s.semi U`. Establish `h0 : Module.finrank ℤ D.toPre.X ≠ 0` using `fun h0 => by`.
+
+Establish `: Subsingleton D.toPre.X` using `Module.finrank_zero_iff.1 h0`. Conclude with `hnp (isProper_of_subsingleton (U.gt 0))`. Conclude with `⟨A, G, inferInstance, inferInstance, D, U, s.semi, hA, by omega, by omega⟩`.
+-/
 theorem exists_unif_rank_one : ∃ (A : PolAV (Spec (CommRingCat.of (FractionRing (PowerSeries ℚ))))) (G : Over (Spec (CommRingCat.of (PowerSeries ℚ)))) (_ : GrpObj G) (_ : IsCommMonObj G) (D : DegData (PowerSeries ℚ) (IsLocalRing.maximalIdeal (PowerSeries ℚ))) (_ : Unif (IsLocalRing.maximalIdeal (PowerSeries ℚ)) D A G), IsSemiAbelian G ∧ A.g = 1 ∧ Module.finrank ℤ D.toPre.X = 1 ∧ D.toPre.P.g = 0 := by
   obtain ⟨A, G, _, _, s, hA, -, hnp⟩ := GlobalTheory.T.exists_rank_one_nonproper_power_series
   obtain ⟨D, U, -⟩ := GlobalTheory.T.exists_degenerationData_uniformisation_unconditional (PowerSeries ℚ) A G s

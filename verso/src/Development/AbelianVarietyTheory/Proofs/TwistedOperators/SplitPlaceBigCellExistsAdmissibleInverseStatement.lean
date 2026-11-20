@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SplitPlaceBigCell.splitPlace_bigCell_exists_admissible_inverse | exact GlobalTheory.SplitPlaceBigCell.splitPlace_bigCell_exists_admissible_inverse | (intros; apply GlobalTheory.SplitPlaceBigCell.splitPlace_bigCell_exists_admissible_inverse <;> assumpti …`.
+-/
 theorem _root_.GlobalTheory.T.splitPlace_bigCell_exists_admissible_inverse_alt : (∀ {R : Type} [CommRing R] [IsLocalRing R], IsUnit (2 : R) → ∀ {n : ℕ} (S : Matrix (Fin n) (Fin n) R), IsUnit S.det →
     ∀ (G₁ G₂ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R), IsUnit G₁.det →
       G₁ᵀ * Matrix.fromBlocks S 0 0 (-S) * G₂ = Matrix.fromBlocks S 0 0 (-S) →

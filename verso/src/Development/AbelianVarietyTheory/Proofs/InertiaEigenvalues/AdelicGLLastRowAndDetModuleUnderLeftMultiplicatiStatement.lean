@@ -21,6 +21,9 @@ open scoped ENNReal ComplexConjugate ContDiff
 open GlobalTheory.MirTower GlobalTheory.CuspGeneric
 open GroundTheory.Automorphic.FourierWhittaker (partialCoeff blockGL uGL)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.UnfoldRows.rows_main) | (exact GlobalTheory.UnfoldRows.rows_main) | (intros; apply GlobalTheory.UnfoldRows.rows_main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adelicGLLastRow_and_detModule_under_left_multiplication : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ),
     (∀ (γ : GL (Fin (m + 1)) E) (g : GA E (m + 1)), GlobalTheory.ZEul.lastRow (ratGL E (m + 1) γ * g) =
       Matrix.vecMul (algebraMap E (Ad E) ∘ Matrix.vecMul (Pi.single (Fin.last m) 1 : Fin (m + 1) → E) γ.val) g.val) ∧

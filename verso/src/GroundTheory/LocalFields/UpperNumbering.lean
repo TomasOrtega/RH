@@ -8,6 +8,11 @@ namespace GroundTheory.LocalField
 
 open ValuativeRel
 
+/- English proof (translation)
+Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe k`. Proceed by induction on `N using ENat.recTopCoe with`. Consider the case `top => simp`.
+
+Consider the case `coe l`. Rewrite using `[← (Nat.mono_cast (α := ℕ∞)).map_min, enatMin_coe, enatMin_coe, enatMin_coe, Nat.cast_min, min_assoc]`.
+-/
 theorem enatMin_min (n N : ℕ∞) (a : ℝ) : enatMin (min n N) a = enatMin n (enatMin N a) := by
   induction n using ENat.recTopCoe with
   | top => simp
@@ -18,9 +23,15 @@ theorem enatMin_min (n N : ℕ∞) (a : ℝ) : enatMin (min n N) a = enatMin n (
       rw [← (Nat.mono_cast (α := ℕ∞)).map_min, enatMin_coe, enatMin_coe, enatMin_coe, Nat.cast_min,
         min_assoc]
 
+/- English proof (translation)
+The claim follows from `ENat.natCast_toNat (ne_top_of_le_ne_top (ENat.natCast_ne_top m) (min_le_right _ _))`.
+-/
 theorem natCast_toNat_min (n : ℕ∞) (m : ℕ) : (((min n m).toNat : ℕ) : ℕ∞) = min n m :=
   ENat.natCast_toNat (ne_top_of_le_ne_top (ENat.natCast_ne_top m) (min_le_right _ _))
 
+/- English proof (translation)
+Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe k`. Rewrite using `[← (Nat.mono_cast (α := ℕ∞)).map_min, ENat.toNat_natCast, enatMin_coe, Nat.cast_min]`.
+-/
 theorem cast_toNat_min (n : ℕ∞) (m : ℕ) : (((min n m).toNat : ℕ) : ℝ) = enatMin n m := by
   induction n using ENat.recTopCoe with
   | top => simp
@@ -33,6 +44,11 @@ variable {K L : Type*} [Field K] [Field L] [Algebra K L] (M : IntermediateField 
 
 open Classical in
 
+/- English proof (translation)
+Use `symm`. Use `Finset.sum_bij (fun τ _ ↦ σ * τ.restrictScalars K) ?_ ?_ ?_ (fun _ _ ↦ rfl)` and prove the remaining obligations. Introduce `τ _`. Rewrite using `[Finset.mem_filter, map_mul, restrictNormalHom_restrictScalars, mul_one]`. Conclude with `⟨Finset.mem_univ _, rfl⟩`.
+
+Introduce `a _ b _ hab`. Conclude with `AlgEquiv.restrictScalars_injective K (mul_left_cancel hab)`. Introduce `ρ hρ`. Take `⟨τ, hτ⟩` from `exists_eq_mul_restrictScalars_of_restrictNormalHom_eq M (Finset.mem_filter.mp hρ).2`. Conclude with `⟨τ, Finset.mem_univ _, hτ⟩`.
+-/
 theorem sum_filter_restrictNormalHom_eq {β : Type*} [AddCommMonoid β] [Fintype (L ≃ₐ[K] L)]
     [Fintype (L ≃ₐ[M] L)] (F : (L ≃ₐ[K] L) → β) (σ : L ≃ₐ[K] L) :
     ∑ ρ ∈ Finset.univ.filter
@@ -64,6 +80,9 @@ variable {K L : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[lowerRamificationGroupReal, mem_lowerRamificationGroup_iff_lowerIndex]`. Conclude with `h.trans hle`.
+-/
 theorem mem_lowerRamificationGroupReal_of_lowerIndex_le {t : ℝ} {σ σ' : L ≃ₐ[K] L}
     (h : σ ∈ lowerRamificationGroupReal K L t) (hle : lowerIndex K L σ ≤ lowerIndex K L σ') :
     σ' ∈ lowerRamificationGroupReal K L t := by
@@ -72,6 +91,21 @@ theorem mem_lowerRamificationGroupReal_of_lowerIndex_le {t : ℝ} {σ σ' : L �
 
 variable [IsGalois K L] (M : IntermediateField K L) [IsGalois K M]
 
+/- English proof (translation)
+Take `⟨τ₀, hmax, hmin⟩` from `exists_lowerIndex_mul_eq_min M σ`. Use `set σ₀ := σ * τ₀.restrictScalars K with hσ₀`. Establish `hres : AlgEquiv.restrictNormalHom M σ₀ = AlgEquiv.restrictNormalHom M σ`. Rewrite using `[hσ₀, map_mul, restrictNormalHom_restrictScalars, mul_one]`. Use `⟨σ₀, hres, hmax, hmin, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h1`. Take `⟨τ', hτ'⟩` from `exists_eq_mul_restrictScalars_of_restrictNormalHom_eq M (σ := 1) (ρ := σ) (by rw [h1, map_one])`. Establish `hm : τ'.restrictScalars K * (τ'⁻¹).restrictScalars K = 1` using `AlgEquiv.ext fun x ↦ τ'.apply_symm_apply x`. Use `hmax τ'⁻¹` as an intermediate fact. Rewrite `this` using `[← hτ', one_mul, hm, lowerIndex_one, top_le_iff]`. Then use the resulting hypothesis.
+
+Introduce `hs`. Establish `hσ₀1 : σ₀ ≠ 1` using `fun h ↦ hs (by rw [← hres, h, map_one])`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp (lowerIndex_ne_top hσ₀1)`. Take `⟨k, hk⟩` from `ENat.ne_top_iff_exists.mp (lowerIndex_ne_top hs)`. Use `⟨m, k, hm.symm, hk.symm, ?_⟩` and prove the remaining obligations.
+
+Establish `hsum` using `ramificationIndex_mul_lowerIndex_restrictNormalHom M σ₀`. Rewrite `hsum` using `[hres, ← hk]`. Rewrite `hsum` using `[hmin, ← hm]`. Establish `hconv : (∑ τ : L ≃ₐ[M] L, min (lowerIndex M L τ) (m : ℕ∞)) = ((∑ τ : L ≃ₐ[M] L, (min (lowerIndex M L τ) (m : ℕ∞)).toNat : ℕ) : ℕ∞)`. Rewrite using `[Nat.cast_sum]`.
+
+Repeatedly rewrite using `[natCast_toNat_min]`. Rewrite `hsum` using `[hconv, ← Nat.cast_mul, Nat.cast_inj]`. Establish `hsumR : (ramificationIndex M L : ℝ) * k = ∑ τ : L ≃ₐ[M] L, enatMin (lowerIndex M L τ) (m : ℝ)`. Repeatedly rewrite using `[← cast_toNat_min]`. Conclude with `hsum` after adjusting the coercions.
+
+Establish `hm0 : (0 : ℝ) ≤ m` using `m.cast_nonneg`. Establish `hphi` using `herbrandPhi_eq_sum_lowerIndex (K := M) (L := L) (u := (m : ℝ) - 1) (by linarith)`. Rewrite `hphi` using `[sub_add_cancel, card_lowerRamificationGroup_zero M L, ← hsumR]`. Establish `he : (0 : ℝ) < ramificationIndex M L` using `by exact_mod_cast ramificationIndex_pos M L`. Rewrite using `[hphi]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_lowerIndex_eq_herbrandPhi (σ : L ≃ₐ[K] L) :
     ∃ σ₀ : L ≃ₐ[K] L,
       AlgEquiv.restrictNormalHom M σ₀ = AlgEquiv.restrictNormalHom M σ ∧
@@ -119,6 +153,15 @@ theorem exists_lowerIndex_eq_herbrandPhi (σ : L ≃ₐ[K] L) :
     field_simp
     ring
 
+/- English proof (translation)
+Take `⟨σ₀, hres, -, hmin, h1, hne⟩` from `exists_lowerIndex_eq_herbrandPhi M σ`. Establish `hre : ∑ τ : L ≃ₐ[M] L, enatMin (lowerIndex K L (σ * τ.restrictScalars K)) (u + 1) = ∑ τ : L ≃ₐ[M] L, enatMin (lowerIndex K L (σ₀ * τ.restrictScalars K)) (u + 1)`. Rewrite using `[← sum_filter_restrictNormalHom_eq M (fun ρ ↦ enatMin (lowerIndex K L ρ) (u + 1)) σ, ← sum_filter_restrictNormalHom_eq M (fun ρ ↦ enatMin (lowerIndex K L ρ) (u + 1)) σ₀, hres]`. Rewrite using `[hre]`. Repeatedly rewrite using `[hmin, enatMin_min]`.
+
+Establish `he : (0 : ℝ) < ramificationIndex M L` using `by exact_mod_cast ramificationIndex_pos M L`. Establish `hH : ∀ w : ℝ, 0 ≤ w → ∑ τ : L ≃ₐ[M] L, enatMin (lowerIndex M L τ) w = ramificationIndex M L * (herbrandPhi M L (w - 1) + 1)`. Introduce `w hw`. Rewrite using `[herbrandPhi_eq_sum_lowerIndex (K := M) (L := L) (by linarith), sub_add_cancel, card_lowerRamificationGroup_zero M L, sub_add_cancel, ← mul_assoc, mul_inv_cancel₀ he.ne', one_mul]`. Distinguish the cases in `hs : AlgEquiv.restrictNormalHom M σ = 1`.
+
+Rewrite using `[h1 hs, enatMin_top, hs, lowerIndex_one, enatMin_top, hH (u + 1) (by linarith), add_sub_cancel_right]`. Take `⟨m, k, hm, hk, hkφ⟩` from `hne hs`. Rewrite using `[hm, hk, enatMin_coe, enatMin_coe, hH _ (le_min (Nat.cast_nonneg m) (by linarith))]`. Establish `hinner : herbrandPhi M L (min (m : ℝ) (u + 1) - 1) + 1 = min (k : ℝ) (herbrandPhi M L u + 1)`. Rewrite using `[← min_sub_sub_right, add_sub_cancel_right, (herbrandPhi_strictMono (K := M) (L := L)).monotone.map_min, hkφ, min_add_add_right]`.
+
+Rewrite using `[hinner]`.
+-/
 theorem sum_enatMin_lowerIndex_coset (σ : L ≃ₐ[K] L) {u : ℝ} (hu : -1 ≤ u) :
     ∑ τ : L ≃ₐ[M] L, enatMin (lowerIndex K L (σ * τ.restrictScalars K)) (u + 1) =
       ramificationIndex M L *
@@ -149,6 +192,15 @@ theorem sum_enatMin_lowerIndex_coset (σ : L ≃ₐ[K] L) {u : ℝ} (hu : -1 ≤
         (herbrandPhi_strictMono (K := M) (L := L)).monotone.map_min, hkφ, min_add_add_right]
     rw [hinner]
 
+/- English proof (translation)
+Distinguish the cases in `hu : -1 ≤ u`. Establish `hv : -1 ≤ herbrandPhi M L u`. Rewrite using `[← herbrandPhi_of_nonpos (K := M) (L := L) (show (-1 : ℝ) ≤ 0 by norm_num)]`. Conclude with `(herbrandPhi_strictMono (K := M) (L := L)).monotone hu`. Rewrite using `[herbrandPhi_eq_sum_lowerIndex (K := K) (L := M) hv, herbrandPhi_eq_sum_lowerIndex (K := K) (L := L) hu]`.
+
+Establish `hfib : ∑ σ : L ≃ₐ[K] L, enatMin (lowerIndex K L σ) (u + 1) = ∑ s : M ≃ₐ[K] M, (ramificationIndex M L : ℝ) * enatMin (lowerIndex K M s) (herbrandPhi M L u + 1)`. Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun σ ↦ AlgEquiv.restrictNormalHom M σ) (fun σ ↦ enatMin (lowerIndex K L σ) (u + 1))]`. Use `Finset.sum_congr rfl fun s _ ↦ ?_` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := M) L s`. Rewrite using `[sum_filter_restrictNormalHom_eq M (fun ρ ↦ enatMin (lowerIndex K L ρ) (u + 1)) σ, sum_enatMin_lowerIndex_coset M σ hu]`.
+
+Rewrite using `[hfib, ← Finset.mul_sum, card_lowerRamificationGroup_zero K L, card_lowerRamificationGroup_zero K M, ramificationIndex_tower K M L]`. Establish `h1 : (0 : ℝ) < ramificationIndex K M` using `by exact_mod_cast ramificationIndex_pos K M`. Establish `h2 : (0 : ℝ) < ramificationIndex M L` using `by exact_mod_cast ramificationIndex_pos M L`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hu0 : u ≤ 0` using `by linarith [not_le.mp hu]`. Rewrite using `[herbrandPhi_of_nonpos (K := M) (L := L) hu0, herbrandPhi_of_nonpos hu0, herbrandPhi_of_nonpos hu0]`.
+-/
 theorem herbrandPhi_comp (u : ℝ) :
     herbrandPhi K M (herbrandPhi M L u) = herbrandPhi K L u := by
   classical
@@ -177,11 +229,27 @@ theorem herbrandPhi_comp (u : ℝ) :
     rw [herbrandPhi_of_nonpos (K := M) (L := L) hu0, herbrandPhi_of_nonpos hu0,
       herbrandPhi_of_nonpos hu0]
 
+/- English proof (translation)
+Use `symm`. Rewrite using `[herbrandPsi_eq_iff, ← herbrandPhi_comp M, herbrandPhi_herbrandPsi, herbrandPhi_herbrandPsi]`.
+-/
 theorem herbrandPsi_comp (v : ℝ) :
     herbrandPsi M L (herbrandPsi K M v) = herbrandPsi K L v := by
   symm
   rw [herbrandPsi_eq_iff, ← herbrandPhi_comp M, herbrandPhi_herbrandPsi, herbrandPhi_herbrandPsi]
 
+/- English proof (translation)
+Use extensionality with `s`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, hσ, rfl⟩`. Take `⟨σ₀, -, hmax, -, -, hne⟩` from `exists_lowerIndex_eq_herbrandPhi M σ`.
+
+Distinguish the cases in `hs : AlgEquiv.restrictNormalHom M σ = 1`. Rewrite using `[hs]`. Conclude with `one_mem _`. Take `⟨m, k, hm, hk, hkφ⟩` from `hne hs`. Establish `hle : lowerIndex K L σ ≤ lowerIndex K L σ₀`.
+
+Use `hmax 1` as an intermediate fact. Rewrite `this` using `[show σ * (1 : L ≃ₐ[M] L).restrictScalars K = σ from AlgEquiv.ext fun _ ↦ rfl]`. Then use the resulting hypothesis. Establish `hσ₀` using `mem_lowerRamificationGroupReal_of_lowerIndex_le hσ hle`. Rewrite `hσ₀` using `[mem_lowerRamificationGroupReal_iff_of_lowerIndex_eq hm]`. Rewrite using `[mem_lowerRamificationGroupReal_iff_of_lowerIndex_eq hk, hkφ, add_le_add_iff_right]`.
+
+Conclude with `(herbrandPhi_strictMono (K := M) (L := L)).monotone (by linarith)`. Introduce `hs`. Take `⟨σ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := M) L s`. Take `⟨σ₀, hres, -, -, -, hne⟩` from `exists_lowerIndex_eq_herbrandPhi M σ`. Distinguish the cases in `h1 : AlgEquiv.restrictNormalHom M σ = 1`.
+
+Conclude with `⟨1, one_mem _, by rw [h1, map_one]⟩`. Take `⟨m, k, hm, hk, hkφ⟩` from `hne h1`. Use `⟨σ₀, ?_, hres⟩` and prove the remaining obligations. Rewrite using `[mem_lowerRamificationGroupReal_iff_of_lowerIndex_eq hm]`. Rewrite `hs` using `[mem_lowerRamificationGroupReal_iff_of_lowerIndex_eq hk, hkφ, add_le_add_iff_right, (herbrandPhi_strictMono (K := M) (L := L)).le_iff_le]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem map_lowerRamificationGroupReal (u : ℝ) :
     (lowerRamificationGroupReal K L u).map (AlgEquiv.restrictNormalHom M) =
       lowerRamificationGroupReal K M (herbrandPhi M L u) := by
@@ -213,6 +281,9 @@ theorem map_lowerRamificationGroupReal (u : ℝ) :
       (herbrandPhi_strictMono (K := M) (L := L)).le_iff_le] at hs
     linarith
 
+/- English proof (translation)
+Rewrite using `[upperRamificationGroup, map_lowerRamificationGroupReal, ← herbrandPsi_comp M, herbrandPhi_herbrandPsi]`. Both sides reduce to the same expression.
+-/
 theorem map_upperRamificationGroup (v : ℝ) :
     (upperRamificationGroup K L v).map (AlgEquiv.restrictNormalHom M) =
       upperRamificationGroup K M v := by

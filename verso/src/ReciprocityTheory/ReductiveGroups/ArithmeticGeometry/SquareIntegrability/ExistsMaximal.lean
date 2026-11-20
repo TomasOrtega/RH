@@ -9,17 +9,88 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Rewrite using `[act_eq_actE, act_eq_actE, act_eq_actE, actE_add_right]`.
+-/
 theorem act_add' {dim : (E →+* ℂ) → ℕ} (α : 𝓞 E) (v w : Vsp dim) :
     act α (v + w) = act α v + act α w := by
   rw [act_eq_actE, act_eq_actE, act_eq_actE, actE_add_right]
 
 variable [IsCMField E]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨IsCMField.complexConj E (β : E), (mem_integralClosure_iff ℤ E).mpr ((NumberField.RingOfIntegers.isIntegral_coe β).map (RingHom.toIntAlgHom (IsCMField.complexConj E).toRingEquiv.toRingHom))⟩, rfl⟩`.
+-/
 private theorem exists_integer_complexConj (β : 𝓞 E) : ∃ β' : 𝓞 E, (β' : E) = IsCMField.complexConj E (β : E) :=
   ⟨⟨IsCMField.complexConj E (β : E), (mem_integralClosure_iff ℤ E).mpr
     ((NumberField.RingOfIntegers.isIntegral_coe β).map
       (RingHom.toIntAlgHom (IsCMField.complexConj E).toRingEquiv.toRingHom))⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hΩθ : 0 < Ω * th` using `mul_pos hΩ hth`. Take `⟨p, hp, hxp⟩` from `(Metric.infDist_lt_iff ⟨0, (IR I).zero_mem⟩).mp hd`. Establish `hp' : p ∈ IR I` using `hp`. Use `set r := x - p with hr`. Establish `hrn : ‖r‖ < th`.
+
+Rewrite using `[hr, ← dist_eq_norm]`. Conclude with `hxp`. Establish `hxpr : x = p + r`. Rewrite using `[hr]`. Normalize the expressions using the abelian group laws.
+
+Establish `hxIR : ∀ a ∈ IR I, (Hf x a).im = 0`. Take `⟨ux, hux⟩` from `exists_isU I x`. Establish `hux0 : ux = 0`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hI.sep x hx ux hux hne`.
+
+Establish `h2` using `hux.norm_sq`. Establish `h3 : (Hf x ux).im = (Hf r ux).im`. Rewrite using `[hxpr, Hf_im_add_left, hI.IR_iso p hp' ux hux.1, zero_add]`. Establish `h4` using `abs_Hf_im_le r ux`. Establish `hpos : 0 < ‖ux‖` using `norm_pos_iff.mpr hne`.
+
+Establish `h5 : ‖ux‖ ^ 2 ≤ ‖r‖ * ‖ux‖`. Rewrite using `[h2, h3]`. Conclude with `le_trans (le_abs_self _) h4`. Establish `h6 : ‖ux‖ < th` using `by nlinarith`. Establish `h7 : 1 / (Ω * th) < th` using `lt_trans h1 h6`.
+
+Rewrite `h7` using `[div_lt_iff₀ hΩθ]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `Hf_im_span_right (I : Set (Vsp X.dim)) x (hux.eq_zero_iff.mp hux0)`. Establish `hrIR : ∀ a ∈ IR I, (Hf r a).im = 0`. Introduce `a ha`.
+
+Establish `h` using `hxIR a ha`. Rewrite `h` using `[hxpr, Hf_im_add_left, hI.IR_iso p hp' a ha, zero_add]`. Conclude with `h`. Establish `hact : ∀ (α : 𝓞 E) v, v ∈ IR I → act α v ∈ IR I` using `fun α v hv => hI.IR_stable α v hv`. Establish `hC : ∀ j, (Hf x (act (ω j) x)).im = 0`.
+
+Introduce `j`. Apply `im_eq_zero_of_lt X hx (X.stable (ω j) x hx)` to reduce the goal to its premises. Take `⟨β', hβ'⟩` from `exists_integer_complexConj (ω j)`. Establish `e1 : (Hf p (act (ω j) p)).im = 0` using `hI.IR_iso p hp' _ (hact _ p hp')`. Establish `e2 : (Hf r (act (ω j) p)).im = 0` using `hrIR _ (hact _ p hp')`.
+
+Establish `e3 : (Hf p (act (ω j) r)).im = 0`. Rewrite using `[act_eq_actE, Hf_actE', ← hβ', ← act_eq_actE, Hf_im_antisymm, hrIR _ (hact β' p hp'), neg_zero]`. Establish `e4 : |(Hf r (act (ω j) r)).im| < 1`. Establish `h1` using `abs_Hf_im_le r (act (ω j) r)`. Establish `h2 : ‖act (ω j) r‖ ≤ Ω * ‖r‖`.
+
+Rewrite using `[act_eq_actE]`. Conclude with `norm_actE_le _ Ω hΩ.le (hω j) r`. Establish `h3 : ‖r‖ * ‖act (ω j) r‖ ≤ Ω * ‖r‖ ^ 2` using `by nlinarith [norm_nonneg r]`. Establish `h4 : ‖r‖ ^ 2 < th ^ 2` using `by nlinarith [norm_nonneg r]`. Establish `h5 : Ω * ‖r‖ ^ 2 < 1` using `by nlinarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hxpr, act_add', Hf_im_add_left, Hf_im_add_right, Hf_im_add_right, e1, e2, e3]`. Simplify using `using e4`. Establish `hD : ∀ γ : 𝓞 E, (Hf x (act γ x)).im = 0`. Introduce `γ`.
+
+Rewrite using `[act_eq_actE]`. Use `Hf_im_span_right _ x ?_ _ (actE_mem_span_omega (fun j => (ω j : E)) (hsp γ) x)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `show (Hf x (actE (ω j : E) x)).im = 0`. Rewrite using `[← act_eq_actE]`.
+
+Conclude with `hC j`. Use `set S : Set (Vsp X.dim) := (I : Set (Vsp X.dim)) ∪ Set.range (fun α : 𝓞 E => act α x) with hS`. Use `set W : Submodule ℝ (Vsp X.dim) := Submodule.span ℝ S with hW`. Use `set J : Submodule ℤ (Vsp X.dim) := X.L ⊓ W.restrictScalars ℤ with hJ`. Establish `hSL : ∀ v ∈ S, v ∈ X.L`.
+
+Introduce and unpack `v (hv | ⟨α, rfl⟩)`. Conclude with `hI.le hv`. Conclude with `X.stable α x hx`. Establish `hSJ : S ⊆ J` using `fun v hv => Submodule.mem_inf.mpr ⟨hSL v hv, Submodule.subset_span hv⟩`. Establish `hIRJ : IR J = W`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.mpr fun v hv => (Submodule.mem_inf.mp hv).2`. Conclude with `Submodule.span_le.mpr fun v hv => Submodule.subset_span (hSJ hv)`. Establish `hIJ : IR I ≤ W` using `Submodule.span_mono Set.subset_union_left`. Use `⟨J, ⟨inf_le_left, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `y hy hyJ`. Rewrite `hyJ` using `[hIRJ]`. Conclude with `Submodule.mem_inf.mpr ⟨hy, hyJ⟩`. Introduce `α y hy`. Take `⟨hyL, hyW⟩` from `Submodule.mem_inf.mp hy`.
+
+Use `Submodule.mem_inf.mpr ⟨X.stable α y hyL, ?_⟩` and prove the remaining obligations. Use `show act α y ∈ W`. Rewrite using `[act_eq_actE]`. Use `actE_mem_of_span (α : E) S W ?_ y hyW` and prove the remaining obligations. Introduce and unpack `v (hv | ⟨β, rfl⟩)`.
+
+Rewrite using `[← act_eq_actE]`. Conclude with `Submodule.subset_span (Or.inl (hI.stable α v hv))`. Use `show actE (α : E) (act β x) ∈ W`. Rewrite using `[← act_eq_actE, ← act_mul']`. Conclude with `Submodule.subset_span (Or.inr ⟨α * β, rfl⟩)`.
+
+Establish `hSiso : ∀ v ∈ S, ∀ w ∈ S, (Hf v w).im = 0`. Introduce and unpack `v (hv | ⟨β, rfl⟩) w (hw | ⟨γ, rfl⟩)`. Conclude with `hI.iso v hv w hw`. Take `⟨γ', hγ'⟩` from `exists_integer_complexConj γ show (Hf v (act γ x)).im = 0`. Rewrite using `[Hf_im_antisymm, act_eq_actE, Hf_actE, ← hγ', ← act_eq_actE, hxIR _ (mem_IR (hI.stable γ' v hv)), neg_zero]`.
+
+Take `⟨β', hβ'⟩` from `exists_integer_complexConj β show (Hf (act β x) w).im = 0`. Rewrite using `[act_eq_actE, Hf_actE, ← hβ', ← act_eq_actE]`. Conclude with `hxIR _ (mem_IR (hI.stable β' w hw))`. Take `⟨β', hβ'⟩` from `exists_integer_complexConj β show (Hf (act β x) (act γ x)).im = 0`. Rewrite using `[act_eq_actE β, Hf_actE, ← hβ', ← act_eq_actE, ← act_mul']`.
+
+Conclude with `hD (β' * γ)`. Introduce `y hy z hz`. Conclude with `Hf_im_span_iso S hSiso y (Submodule.mem_inf.mp hy).2 z (Submodule.mem_inf.mp hz).2`. Introduce `y hy u hu hu0`. Take `⟨uI, huI⟩` from `exists_isU I y`.
+
+Establish `huIR : u ∈ W`. Rewrite using `[← hIRJ]`. Conclude with `hu.1`. Establish `hinner : ∀ a ∈ W, inner ℝ u a = (Hf y a).im` using `fun a ha => hu.2 a (by rw [hIRJ]; exact ha)`. Distinguish the cases in `huI0 : uI = 0`.
+
+Establish `horth : ∀ a ∈ IR I, inner ℝ u a = 0`. Introduce `a ha`. Rewrite using `[hinner a (hIJ ha), ← huI.2 a ha, huI0, inner_zero_left]`. Establish `hex : ∃ j, (Hf y (act (ω j) x)).im ≠ 0`. Assume the negation of the conclusion as `hall`.
+
+Use `push Not at hall`. Apply `hu0` to reduce the goal to its premises. Establish `hyI : ∀ a ∈ I, (Hf y a).im = 0` using `huI.eq_zero_iff.mp huI0`. Establish `hyS : ∀ w ∈ S, (Hf y w).im = 0`. Introduce and unpack `w (hw | ⟨γ, rfl⟩)`.
+
+Conclude with `hyI w hw`. Use `show (Hf y (act γ x)).im = 0`. Rewrite using `[act_eq_actE]`. Use `Hf_im_span_right _ y ?_ _ (actE_mem_span_omega (fun j => (ω j : E)) (hsp γ) x)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Use `show (Hf y (actE (ω j : E) x)).im = 0`. Rewrite using `[← act_eq_actE]`. Conclude with `hall j`. Establish `h1` using `Hf_im_span_right S y hyS u huIR`. Establish `h2` using `hinner u huIR`.
+
+Rewrite `h2` using `[h1, real_inner_self_eq_norm_sq]`. Conclude with `norm_eq_zero.mp (by nlinarith [norm_nonneg u])`. Take `⟨j, hj⟩` from `hex`. Establish `h1` using `one_le_abs_im X hy (X.stable (ω j) x hx) hj`. Establish `h2 : (Hf y (act (ω j) x)).im = inner ℝ u (act (ω j) r)`.
+
+Establish `hmem : act (ω j) x ∈ W` using `Submodule.subset_span (Or.inr ⟨ω j, rfl⟩)`. Rewrite using `[← hinner _ hmem, hxpr, act_add', inner_add_right, horth _ (hact _ p hp'), zero_add]`. Establish `h3 : |inner ℝ u (act (ω j) r)| ≤ ‖u‖ * (Ω * ‖r‖)`. Use `le_trans (abs_real_inner_le_norm _ _) (mul_le_mul_of_nonneg_left ?_ (norm_nonneg u))` and prove the remaining obligations. Rewrite using `[act_eq_actE]`.
+
+Conclude with `norm_actE_le _ Ω hΩ.le (hω j) r`. Rewrite `h1` using `[h2]`. Establish `hu_pos : 0 < ‖u‖` using `norm_pos_iff.mpr hu0`. Establish `h4 : ‖u‖ * (Ω * ‖r‖) < ‖u‖ * (Ω * th)` using `mul_lt_mul_of_pos_left (mul_lt_mul_of_pos_left hrn hΩ) hu_pos`. Rewrite using `[div_lt_iff₀ hΩθ]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hI.sep y hy uI huI huI0`. Establish `h2 : ‖uI‖ ^ 2 = inner ℝ u uI`. Rewrite using `[hinner uI (hIJ huI.1), ← huI.2 uI huI.1, real_inner_self_eq_norm_sq]`. Establish `h3 : inner ℝ u uI ≤ ‖u‖ * ‖uI‖` using `real_inner_le_norm u uI`.
+
+Establish `hpos : 0 < ‖uI‖` using `norm_pos_iff.mpr huI0`. Establish `h4 : ‖uI‖ ≤ ‖u‖` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `Submodule.finrank_lt_finrank_of_lt` to reduce the goal to its premises. Rewrite using `[hIRJ]`.
+
+Use `lt_of_le_of_ne hIJ ?_` and prove the remaining obligations. Introduce `heq`. Establish `hxW : x ∈ W` using `Submodule.subset_span (Or.inr ⟨1, act_one' x⟩)`. Rewrite `hxW` using `[← heq]`. Conclude with `hxI (hI.sat x hx hxW)`.
+-/
 theorem greedy_step (X : PT E) {n : ℕ} (ω : Fin n → 𝓞 E) {Ω th : ℝ} (hΩ : 0 < Ω) (hth : 0 < th)
     (hΩth : Ω * th ^ 2 ≤ 1) (hω : ∀ j (σ : E →+* ℂ), ‖σ (ω j)‖ ≤ Ω)
     (hsp : ∀ α : 𝓞 E, (α : E) ∈ Submodule.span ℚ (Set.range fun j => (ω j : E)))
@@ -193,6 +264,17 @@ theorem greedy_step (X : PT E) {n : ℕ} (ω : Fin n → 𝓞 E) {Ω th : ℝ} (
     rw [← heq] at hxW
     exact hxI (hI.sat x hx hxW)
 
+/- English proof (translation)
+Establish `key : ∀ k : ℕ, ∀ I : Submodule ℤ (Vsp X.dim), Good X (1 / (Ω * th)) I → Module.finrank ℝ (Vsp X.dim) - Module.finrank ℝ (IR I) ≤ k → ∃ J, Good X (1 / (Ω * th)) J ∧ ∀ x ∈ X.L, x ∉ J → th ≤ Metric.infDist x (IR J)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `I hI hk`.
+
+Use `⟨I, hI, fun x hx hxI => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Take `⟨J, -, hJ⟩` from `greedy_step X ω hΩ hth hΩth hω hsp hI hx hxI hlt`. Use `Submodule.finrank_le (IR J)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Introduce `I hI hk`. Distinguish the cases in `h : ∀ x ∈ X.L, x ∉ I → th ≤ Metric.infDist x (IR I)`. Conclude with `⟨I, hI, h⟩`.
+
+Use `push Not at h`. Take `⟨x, hx, hxI, hlt⟩` from `h`. Take `⟨J, hJ, hJr⟩` from `greedy_step X ω hΩ hth hΩth hω hsp hI hx hxI hlt`. Use `Submodule.finrank_le (IR J)` as an intermediate fact. Conclude with `ih J hJ (by omega)`.
+
+Conclude with `key _ ⊥ (Good.bot X _) (Nat.sub_le _ _)`.
+-/
 theorem exists_maximal (X : PT E) {n : ℕ} (ω : Fin n → 𝓞 E) {Ω th : ℝ} (hΩ : 0 < Ω)
     (hth : 0 < th) (hΩth : Ω * th ^ 2 ≤ 1) (hω : ∀ j (σ : E →+* ℂ), ‖σ (ω j)‖ ≤ Ω)
     (hsp : ∀ α : 𝓞 E, (α : E) ∈ Submodule.span ℚ (Set.range fun j => (ω j : E))) :

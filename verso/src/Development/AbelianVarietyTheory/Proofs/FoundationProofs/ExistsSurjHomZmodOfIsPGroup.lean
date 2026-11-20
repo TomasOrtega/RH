@@ -5,6 +5,13 @@ open scoped NNReal
 
 namespace GlobalTheory.AlmostEt
 
+/- English proof (translation)
+Introduce `p hp G _ _ _ hG`. Take `⟨n, hn, hc⟩` from `hG.nontrivial_iff_card.1 inferInstance`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Take `⟨K, hK⟩` from `Sylow.exists_subgroup_card_pow_prime (G := G) p (n := m) (by rw [hc]; exact pow_dvd_pow p (Nat.le_succ m))`. Establish `hi : K.index = p`.
+
+Use `K.card_mul_index` as an intermediate fact. Rewrite `this` using `[hK, hc, pow_succ]`. Conclude with `Nat.eq_of_mul_eq_mul_left (pow_pos hp.out.pos m) this`. Use `haveI : K.Normal := Subgroup.normal_of_index_eq_minFac_card (by`. Rewrite using `[hi, hc, hp.out.pow_minFac (Nat.succ_ne_zero m)])`.
+
+Set `e : (G ⧸ K) ≃* Multiplicative (ZMod p)` to `mulEquivOfPrimeCardEq (p := p) (by rw [← hi]; rfl) (by simp)`. Use `⟨e.toMonoidHom.comp (QuotientGroup.mk' K), ?_⟩` and prove the remaining obligations. Conclude with `e.surjective.comp (QuotientGroup.mk'_surjective K)`.
+-/
 theorem exists_surj_hom_zmod_of_isPGroup :
     ∀ (p : ℕ) [Fact p.Prime] (G : Type) [Group G] [Finite G] [Nontrivial G],
       IsPGroup p G → ∃ χ : G →* Multiplicative (ZMod p), Function.Surjective χ := by

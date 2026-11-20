@@ -9,6 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Take `⟨g, i, j, hw, hne⟩` from `h`. Use `⟨g, i, j, hw, fun h0 => hne ?_⟩` and prove the remaining obligations. Establish `e : mapRep f r g i j = f (r g i j)` using `rfl`. Rewrite using `[e, h0, map_zero]`.
+-/
 private theorem ent_of_map {Γ R K : Type} [Group Γ] [CommRing R] [CommRing K] (f : R →+* K) {r : Γ →* M4 R} {w : ℤ × ℤ}
     (h : Ent (mapRep f r) w) : Ent r w := by
   obtain ⟨g, i, j, hw, hne⟩ := h
@@ -16,9 +19,39 @@ private theorem ent_of_map {Γ R K : Type} [Group Γ] [CommRing R] [CommRing K] 
   have e : mapRep f r g i j = f (r g i j) := rfl
   rw [e, h0, map_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem mapRep_eq {Γ R K : Type} [Group Γ] [CommRing R] [CommRing K] (f : R →+* K) (r : Γ →* M4 R) (g : Γ) :
     mapRep f r g = (r g).map f := rfl
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD 𝔞 r u hK`. Take `⟨pr, hok, hunit⟩` from `Lab.choice D hD 𝔞 r u hK`. Use `⟨pr, hok, fun g0 hsep => ?_⟩` and prove the remaining obligations. Establish `hwinv : ∀ Y : M4 𝔞.V, wM 𝔞.V pr * (adj (wM 𝔞.V pr) * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, sp_mul_adj (wM_sp pr), Matrix.one_mul]`.
+
+Take `⟨hs, hsep2⟩` from `sg_sep hD 𝔞 pr`. Establish `hcg` using `hK.cg pr`. Establish `hconj : adj (adj (wM 𝔞.V pr) * u) * (adj (wM 𝔞.V pr) * r (D.sg l) * wM 𝔞.V pr) * (adj (wM 𝔞.V pr) * u) = adj u * r (D.sg l) * u`. Rewrite using `[adj_mul, adj_adj]`. Simplify using `only [Matrix.mul_assoc, hwinv]`.
+
+Take `⟨-, -, -, himp⟩` from `Lab.resFlag 𝔞.V (adj (wM 𝔞.V pr) * r (D.sg l) * wM 𝔞.V pr) (adj (wM 𝔞.V pr) * u) (fun i => 𝔞.a c ((chi D pr i (D.sg l) : (c.O)ˣ) : c.O)) (fun i => 𝔞.a c ((D.ps i (D.sg l) : (c.O)ˣ) : c.O)) (hcg _) (sp_mul (sp_adj (wM_sp pr)) hK.sp) (by rw [hconj]; exact hK.flag _ hs) (by rw [hcon …`. Establish `hminor` using `(himp hunit).1`. Establish `hoff : ∀ i j, i ≠ j → (adj (wM 𝔞.V pr) * r g0 * wM 𝔞.V pr) i j ∈ maximalIdeal 𝔞.V`. Introduce `i j hij`. Establish `h` using `hcg g0 i j`.
+
+Rewrite `h` using `[Matrix.diagonal_apply_ne _ hij, sub_zero]`. Then use the resulting hypothesis. Establish `hdiff : ∀ i j, i ≠ j → IsUnit ((adj (wM 𝔞.V pr) * r g0 * wM 𝔞.V pr) i i - (adj (wM 𝔞.V pr) * r g0 * wM 𝔞.V pr) j j)`. Introduce `i j hij`. Apply `unit_of_sub_mem (𝔞.unit_sub (hsep i j hij))` to reduce the goal to its premises. Establish `h1` using `hcg g0 i i`.
+
+Establish `h2` using `hcg g0 j j`. Simplify using `only [Matrix.diagonal_apply_eq] at h1 h2`. Establish `h3` using `(maximalIdeal 𝔞.V).sub_mem h1 h2`. Rewrite `h3` using `[sub_sub_sub_comm]`. Conclude with `h3`.
+
+Take `⟨P, v, b, hsm, hv, hv1, hPr, hdg, hlow, hb, hbup, hfac⟩` from `Lab.exNorm 𝔞 (G ℚ Ω) r u pr g0 (𝔞.a c ((D.th g0 : (c.O)ˣ) : c.O)) hK.small (𝔞.unit_two c hD.l_odd) ((D.th g0).isUnit.map _) (hK.mult g0) hK.sp _ _ rfl rfl hoff hdiff hunit hminor`. Take `⟨hQ, hN⟩` from `Lab.pairOf D hD 𝔞 r u hK pr g0 P v b hok hsm hv hv1 hPr hdg hlow hb hbup hfac`. Establish `hm : IsGSp 1 (wM 𝔞.V pr * v)` using `sp_mul (wM_sp pr) hv`. Establish `hinj : Function.Injective 𝔞.toK` using `fun x y h => Subtype.ext h`. Establish `hmap : ∀ g, mapRep 𝔞.toK P.r g = adj ((wM 𝔞.V pr * v).map 𝔞.toK) * mapRep 𝔞.toK r g * (wM 𝔞.V pr * v).map 𝔞.toK`.
+
+Introduce `g`. Rewrite using `[mapRep_eq, mapRep_eq, hPr g, adj_map, Matrix.map_mul, Matrix.map_mul]`. Establish `hparM : (∀ g, Par (mapRep 𝔞.toK r g)) → Par ((wM 𝔞.V pr * v).map 𝔞.toK)`. Introduce `hp`. Establish `hpr : Par (r g0)` using `fun i j hij => hinj (by`.
+
+Establish `h` using `hp g0 i j hij`. Rewrite `h` using `[mapRep_eq, Matrix.map_apply]`. Rewrite using `[h, map_zero])`. Establish `hX : Par (adj (wM 𝔞.V pr) * r g0 * wM 𝔞.V pr)` using `Par.mul (Par.mul (Par.adj (wM_par pr)) hpr) (wM_par pr)`. Establish `hXv : (adj (wM 𝔞.V pr) * r g0 * wM 𝔞.V pr) * v = v * Matrix.diagonal (P.r g0).diag`.
+
+Rewrite using `[hdg.diagonal_diag, hPr g0, adj_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc v (adj v), sp_mul_adj hv, Matrix.one_mul]`. Establish `hpv : Par v` using `Lab.parEig 𝔞.V _ v _ hoff hdiff hv1 hXv hX`. Establish `hpm` using `Par.mul (wM_par pr) hpv`.
+
+Introduce `i j hij`. Rewrite using `[Matrix.map_apply, hpm i j hij, map_zero]`. Use `⟨P, hQ, hN, ?_, ?_⟩` and prove the remaining obligations. Use `⟨⟨(adj (wM 𝔞.V pr * v)).map 𝔞.toK, (wM 𝔞.V pr * v).map 𝔞.toK, ?_, ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, sp_adj_mul hm, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Rewrite using `[← Matrix.map_mul, sp_mul_adj hm, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[hmap g, adj_map]`. Both sides reduce to the same expression. Introduce `hstar`. Establish `hgm : IsGSp 1 ((wM 𝔞.V pr * v).map 𝔞.toK)`.
+
+Simplify using `using gsp_map 𝔞.toK hm`. Take `⟨h1, h2, h3⟩` from `Lab.starConj 𝔞.K (G ℚ Ω) (mapRep 𝔞.toK r) (mapRep 𝔞.toK P.r) ((wM 𝔞.V pr * v).map 𝔞.toK) hgm hmap hparM hstar`. Use `⟨ent_of_map _ h1, ent_of_map _ h2, ?_⟩` and prove the remaining obligations. Break down `h3 with h | h | h` into its components or cases. Conclude with `Or.inl (ent_of_map _ h)`.
+
+Conclude with `Or.inr (Or.inl (ent_of_map _ h))`. Conclude with `Or.inr (Or.inr (ent_of_map _ h))`.
+-/
 theorem UpperTheory.V.Ws.labels :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (𝔞 : Amb l) r u, KPair D 𝔞 r u → ∃ pr, LabOk D pr ∧ ∀ g0 : G ℚ Ω,
       (∀ i j, i ≠ j → Raw.bar (chi D pr i) g0 ≠ Raw.bar (chi D pr j) g0) →

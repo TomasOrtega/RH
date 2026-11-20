@@ -20,6 +20,21 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨qA W ^ (size c + S) • y, ?_, ?_, (one_smul _ _).symm⟩` and prove the remaining obligations. Use `DYB.Pp_qpow (W := W) T₂ (c - 1) (size c + S) ?_ hy` and prove the remaining obligations. Introduce `z hz`.
+
+Take `⟨-, hs, hp2⟩` from `id hcase`. Take `⟨hcr, hWj⟩` from `id hW₂`. Take `⟨-, -, h9one⟩` from `hP9 T₂ hcr hs hp2`. Take `⟨hring, -⟩` from `h9one (NTB.finrank_one W hcase)`. Take `⟨-, -, -, -, ⟨u, hu⟩, -⟩` from `hring`.
+
+Establish `hq : W.q = (u : LetA O n) * qA W`. Rewrite using `[hu]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[DeltaInvariantLattices.Eat, qA, lA]`.
+
+Establish `hQ : W.Q = W.q`. Simplify using `[LocWach.Q, hs]`. Take `⟨-, hS, -⟩` from `hB`. Unfold `TruncatedSeriesCountingBounds.HidaSetting at hS`. Take `⟨-, -, hηs, -⟩` from `hS`.
+
+Establish `hJ : DeltaInvariantLattices.JumpsLet W T₂ (fun i => size i + S) (fun i => size i + S)`. Introduce `τ i hτ a ha`. Establish `h2` using `hWj i τ hτ a ha`. Establish `hη` using `hηs i`. Apply the tactic sequence `cases hup : up i <;> simp [arcOf, hup, LocalTheoryWindows.LT.win] at h2 <;>`.
+
+Apply the tactic sequence `simp only [Set.mem_Icc, Nat.cast_add] <;> omega`. Establish `h5 : W.Q ^ (size c + S) • W.φD T₂ z ∈ W.N T₂` using `(hP5 T₂ (fun i => size i + S) (fun i => size i + S) hcr hJ).1 c z hz.2`. Rewrite `h5` using `[hQ, hq]`. Establish `h6` using `Submodule.smul_mem (W.N T₂) ((↑(u⁻¹) : LetA O n) ^ (size c + S)) h5`. Rewrite `h6` using `[smul_smul, ← mul_pow, ← mul_assoc, Units.inv_mul, one_mul]`.
+
+Conclude with `h6`. Establish `hH` using `DYB.Pp_le_HLD (W := W) T₂ (c - 1) hy`. Take `⟨h, -⟩` from `hH`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[smul_smul, mul_comm, ← smul_smul, h]`.
+-/
 theorem inFNc_of_inFP_of_arc_sigma_le [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

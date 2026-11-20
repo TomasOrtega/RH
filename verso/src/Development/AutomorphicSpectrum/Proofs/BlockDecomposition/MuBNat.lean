@@ -8,6 +8,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.MuNat
 
+/- English proof (translation)
+Introduce `K B₁ B₂ _ _ _ _ _ I₁ I₂ γ₁ γ₂ X₁ X₂ q₁ q₂ σ nm hu l s hσ j x`. Use `letI t1 : RingHomCompTriple (algebraMap K B₁) σ (algebraMap K B₂) := ⟨RingHom.ext hσ⟩`. Set `r₁` to `CH.Mor.restrict (O (smFun X₁ q₁)) (TO q₁ l s {⊤}).ι`. Set `r₂` to `CH.Mor.restrict (O (smFun X₂ q₂)) (TO q₂ l s {⊤}).ι`. Set `a₁` to `(smO γ₁ q₁ l s {⊤}).o`.
+
+Set `a₂` to `(smO γ₂ q₂ l s {⊤}).o`. Set `n` to `(nmS nm l s).o`. Set `MS : CH.Mor (O (smFun X₁ q₁)) (O (smFun X₂ q₂)) (RingHom.id K)` to `CH.Mor.ofBlk { G := (smMor nm.u hu).functor τ := fun _ => { toFun := fun z => z, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl } nat := fun _ _ => rfl }`. Set `L1 : CH.Mor _ _ (algebraMap K B₁)` to `r₁.comp a₁`. Set `ML : CH.Mor _ _ (algebraMap K B₂)` to `L1.comp n`.
+
+Set `R1 : CH.Mor _ _ (RingHom.id K)` to `MS.comp r₂`. Set `MR : CH.Mor _ _ (algebraMap K B₂)` to `R1.comp a₂`. Establish `hL1` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := algebraMap K B₁) r₁ a₁ j x).1`. Establish `hL2` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := algebraMap K B₂) L1 n j x).1`. Establish `hR1` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id K) MS r₂ j x).1`.
+
+Establish `hR2` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := algebraMap K B₂) R1 a₂ j x).1`. Set `η : ML.G ⟶ MR.G` to `{ app := fun T => mkH (γ := dividedPowersBot K) (p := 0) (q := q₁) (κ := Ideal.Quotient.mk ⊥) (T := ML.G.obj T) (T' := MR.G.obj T) (RingHom.id T.obj.B) (fun r => congrArg T.obj.i (hσ r)) ⟨le_of_eq (Ideal.map_id _), fun x hx => rfl⟩ (fun x hx => hx) (by`. Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun r => ?_)` and prove the remaining obligations. Establish `hw1` using `(ML.G.obj T).w r`.
+
+Establish `hw2` using `(MR.G.obj T).w r`. Establish `h3 : Ideal.Quotient.mk T.obj.J ((ML.G.obj T).i r) = Ideal.Quotient.mk T.obj.J ((MR.G.obj T).i r)` using `congrArg (Ideal.Quotient.mk T.obj.J) (congrArg T.obj.i (hσ r))`. Conclude with `(congrArg (Ideal.quotientMap T.obj.J (RingHom.id T.obj.B) (fun x hx => hx)) hw1).trans (h3.trans hw2.symm)`. Establish `e : CommRingCat.ofHom (Ideal.quotientMap T.obj.J (RingHom.id T.obj.B) (fun x hx => hx)) = 𝟙 (CommRingCat.of (T.obj.B ⧸ T.obj.J))` using `CommRingCat.hom_ext (Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl))`. Establish `e2 : Spec.map (CommRingCat.ofHom (Ideal.quotientMap T.obj.J (RingHom.id T.obj.B) (fun x hx => hx))) = 𝟙 (Spec (CommRingCat.of (T.obj.B ⧸ T.obj.J)))` using `(congrArg Spec.map e).trans (Spec.map_id _)`.
+
+Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (Ideal.quotientMap T.obj.J (RingHom.id T.obj.B) (fun x hx => hx))) ≫ ((T.obj.y.1.2 ≫ nm.u) ≫ 𝟙 X₁) = (T.obj.y.1.2 ≫ 𝟙 X₂) ≫ nm.u`. Rewrite using `[e2, Category.id_comp, Category.comp_id, Category.comp_id])`. Use `naturality := fun T T' f => hom_ext (γ := dividedPowersBot K) (p := 0) (q := q₁) (κ := Ideal.Quotient.mk ⊥) (RingHom.ext fun _ => rfl) }`. Establish `h4` using `CrystallineSemistableComparison.P.prism ML MR η (fun T y => rfl) j x`. Conclude with `(congrArg (n.pull j) hL1.symm).trans (hL2.symm.trans (h4.trans (hR2.trans (congrArg (a₂.pull j) hR1))))`.
+-/
 theorem muB_nat : ∀ {K B₁ B₂ : Type} [CommRing K] [CommRing B₁] [CommRing B₂] [Algebra K B₁] [Algebra K B₂] {I₁ : Ideal B₁} {I₂ : Ideal B₂}
     {γ₁ : DividedPowers I₁} {γ₂ : DividedPowers I₂} {X₁ X₂ : Scheme.{0}} {q₁ : X₁ ⟶ Spec (CommRingCat.of K)}
     {q₂ : X₂ ⟶ Spec (CommRingCat.of K)} {σ : B₁ →+* B₂} (nm : NMor γ₁ q₁ (κA K I₁) γ₂ q₂ (κA K I₂) σ) (hu : nm.u ≫ q₁ = q₂) (l s : ℕ),

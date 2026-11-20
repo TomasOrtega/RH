@@ -8,6 +8,11 @@ section Vanishing
 
 variable {σ R : Type*} [Finite σ] [CommRing R] [IsDomain R] [CharZero R]
 
+/- English proof (translation)
+Use `eq_zero_of_eval_zero_at_prod_finset P (fun i => (Finset.range (d i + 1)).image (Nat.cast : ℕ → R)) (fun i => ?_) (fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[Finset.card_image_of_injective _ Nat.cast_injective, Finset.card_range]`. Conclude with `Nat.lt_succ_of_le (hdeg i)`. Use `choose n hn hnx using fun i => Finset.mem_image.1 (hx i)`. Establish `: x = fun i => (n i : R)` using `funext fun i => (hnx i).symm`.
+
+Rewrite using `[this]`. Conclude with `hP n fun i => Nat.lt_succ_iff.1 (Finset.mem_range.1 (hn i))`.
+-/
 theorem eq_zero_of_eval_box_eq_zero (d : σ → ℕ) (P : MvPolynomial σ R)
     (hdeg : ∀ i, P.degreeOf i ≤ d i)
     (hP : ∀ x : σ → ℕ, (∀ i, x i ≤ d i) → eval (fun i => (x i : R)) P = 0) : P = 0 := by
@@ -21,6 +26,9 @@ theorem eq_zero_of_eval_box_eq_zero (d : σ → ℕ) (P : MvPolynomial σ R)
     rw [this]
     exact hP n fun i => Nat.lt_succ_iff.1 (Finset.mem_range.1 (hn i))
 
+/- English proof (translation)
+The claim follows from `eq_zero_of_eval_box_eq_zero (fun _ => d) P hdeg hP`.
+-/
 theorem eq_zero_of_eval_grid_eq_zero (d : ℕ) (P : MvPolynomial σ R)
     (hdeg : ∀ i, P.degreeOf i ≤ d)
     (hP : ∀ x : σ → ℕ, (∀ i, x i ≤ d) → eval (fun i => (x i : R)) P = 0) : P = 0 :=
@@ -33,6 +41,11 @@ section Span
 variable {σ A K V : Type*} [Finite σ] [Field K] [CharZero K] [CommSemiring A] [Algebra A K]
   [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff U]`. Introduce `l hl`. Take `⟨P, hdeg, hP⟩` from `hΦ l`. Establish `h0 : P = 0`. Use `eq_zero_of_eval_grid_eq_zero d P hdeg fun x hx => ?_` and prove the remaining obligations.
+
+Use `(Submodule.mem_dualAnnihilator l).1 hl _ (hU x hx)` as an intermediate fact. Rewrite `this` using `[hP]`. Simplify using `using this`. Rewrite using `[hP, h0, map_zero]`.
+-/
 theorem mem_of_grid_mem (d : ℕ) (Φ : (σ → A) → V)
     (hΦ : ∀ l : Module.Dual K V, ∃ P : MvPolynomial σ K, (∀ i, P.degreeOf i ≤ d) ∧
       ∀ x, l (Φ x) = eval (fun i => algebraMap A K (x i)) P)
@@ -49,6 +62,11 @@ theorem mem_of_grid_mem (d : ℕ) (Φ : (σ → A) → V)
     simpa using this
   rw [hP, h0, map_zero]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `⟨_, rfl⟩`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Use `mem_of_grid_mem d Φ hΦ _ (fun x hx => ?_) y` and prove the remaining obligations. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem span_grid_eq_span_range (d : ℕ) (Φ : (σ → A) → V)
     (hΦ : ∀ l : Module.Dual K V, ∃ P : MvPolynomial σ K, (∀ i, P.degreeOf i ≤ d) ∧
       ∀ x, l (Φ x) = eval (fun i => algebraMap A K (x i)) P) :
@@ -66,6 +84,11 @@ theorem span_grid_eq_span_range (d : ℕ) (Φ : (σ → A) → V)
 
 omit [Finite σ] [CharZero K] in
 
+/- English proof (translation)
+Use `⟨∑ a ∈ s, monomial a (l (v a)), fun i => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[degreeOf_le_iff]`. Introduce `m hm`. Take `⟨a, ha, hma⟩` from `Finset.mem_biUnion.1 (support_sum hm)`. Use `Finset.mem_singleton.1 (support_monomial_subset hma)` as an intermediate fact.
+
+Rewrite using `[this]`. Conclude with `hs a ha i`. Simplify using `only [map_sum, map_smul, eval_monomial, smul_eq_mul, mul_comm]`.
+-/
 theorem exists_poly_dual_sum_monomial_smul (d : ℕ) (s : Finset (σ →₀ ℕ)) (v : (σ →₀ ℕ) → V)
     (hs : ∀ a ∈ s, ∀ i, a i ≤ d) (l : Module.Dual K V) :
     ∃ P : MvPolynomial σ K, (∀ i, P.degreeOf i ≤ d) ∧ ∀ x : σ → A,
@@ -81,6 +104,9 @@ theorem exists_poly_dual_sum_monomial_smul (d : ℕ) (s : Finset (σ →₀ ℕ)
     exact hs a ha i
   · simp only [map_sum, map_smul, eval_monomial, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Use `span_grid_eq_span_range d Φ fun l => ?_` and prove the remaining obligations. Simplify using `only [hΦ]`. Conclude with `exists_poly_dual_sum_monomial_smul d s v hs l`.
+-/
 theorem span_grid_eq_span_range_of_eq_sum (d : ℕ) (Φ : (σ → A) → V)
     (s : Finset (σ →₀ ℕ)) (v : (σ →₀ ℕ) → V) (hs : ∀ a ∈ s, ∀ i, a i ≤ d)
     (hΦ : ∀ x, Φ x = ∑ a ∈ s, (a.prod fun i n => algebraMap A K (x i) ^ n) • v a) :
@@ -90,6 +116,11 @@ theorem span_grid_eq_span_range_of_eq_sum (d : ℕ) (Φ : (σ → A) → V)
   simp only [hΦ]
   exact exists_poly_dual_sum_monomial_smul d s v hs l
 
+/- English proof (translation)
+Establish `h` using `span_grid_eq_span_range_of_eq_sum (K := K) d (fun x : σ → A => eval (fun i => algebraMap K B (algebraMap A K (x i))) F) F.support (fun a => F.coeff a) (fun a ha i => (degreeOf_le_iff.1 (hF i)) a ha) (fun x => by`. Rewrite using `[eval_eq]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Finsupp.prod, map_prod, mul_comm]`. Simplify using `only [map_pow])`.
+
+Simplify `h` using `only [map_natCast]`.
+-/
 theorem span_grid_eval_eq_span_range {B : Type*} [CommRing B] [Algebra K B] (d : ℕ)
     (F : MvPolynomial σ B) (hF : ∀ i, F.degreeOf i ≤ d) :
     Submodule.span K ((fun x : σ → ℕ => eval (fun i => (x i : B)) F) '' {x | ∀ i, x i ≤ d}) =
@@ -112,6 +143,17 @@ section Combination
 variable {ι κ V : Type*} [Fintype ι] [AddCommGroup V] {W : ι → Type*}
   [∀ j, AddCommGroup (W j)]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `choose f hf hf0 using h`. Establish `hinj : Function.Injective fun a : Fin (Fintype.card ι + 1) => f a (Nat.lt_succ_iff.1 a.2)`. Introduce `a b hab`.
+
+Establish `h1` using `hf0 a (Nat.lt_succ_iff.1 a.2)`. Establish `h2` using `hf0 b (Nat.lt_succ_iff.1 b.2)`. Establish `h3` using `hf a (Nat.lt_succ_iff.1 a.2)`. Simplify using `only at hab`. Rewrite `h2` using `[← hab]`.
+
+Generalize the expression as in `f a _ = j at h1 h2 h3`. Rewrite `h1`, `h2` using `[map_add, map_nsmul]`. Establish `hw : l j w ≠ 0`. Introduce `hw`. Rewrite `h1` using `[hw, nsmul_zero, zero_add]`.
+
+Conclude with `h3.elim (· h1) (· hw)`. Establish `h4 : (a : ℕ) • l j w = (b : ℕ) • l j w` using `add_right_cancel (h1.trans h2.symm)`. Establish `h5 : ((a : ℤ) - (b : ℤ)) • l j w = 0`. Rewrite using `[sub_smul, natCast_zsmul, natCast_zsmul, h4, sub_self]`. Establish `h6` using `(smul_eq_zero.1 h5).resolve_right hw`.
+
+Conclude with `Fin.ext (by omega)`. Use `Fintype.card_le_of_injective _ hinj` as an intermediate fact. Simplify using `at this`.
+-/
 theorem exists_nsmul_add_apply_ne_zero [∀ j, IsAddTorsionFree (W j)] (l : ∀ j, V →+ W j)
     (v w : V) :
     ∃ c : ℕ, c ≤ Fintype.card ι ∧ ∀ j, l j v ≠ 0 ∨ l j w ≠ 0 → l j (c • w + v) ≠ 0 := by
@@ -141,6 +183,15 @@ theorem exists_nsmul_add_apply_ne_zero [∀ j, IsAddTorsionFree (W j)] (l : ∀ 
   have := Fintype.card_le_of_injective _ hinj
   simp at this
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact ⟨0, fun _ => Nat.zero_le _, fun j ⟨k, hk, _⟩ => absurd hk (by simp)⟩`. Consider the case `insert a t ha ih`. Take `⟨c, hc, hl⟩` from `ih`. Take `⟨n, hn, hln⟩` from `exists_nsmul_add_apply_ne_zero l (∑ k ∈ t, c k • s k) (s a)`.
+
+Use `⟨Function.update c a n, fun k => ?_, fun j ⟨k, hk, hjk⟩ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Simplify using `using hn`. Simplify `hc k` using `[hk]`.
+
+Rewrite using `[Finset.sum_insert ha, Function.update_self, Finset.sum_congr rfl (g := fun k => c k • s k) fun k hk => by`. Rewrite using `[Function.update_of_ne (ne_of_mem_of_not_mem hk ha)]]`. Apply `hln` to reduce the goal to its premises. Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases. Conclude with `Or.inr hjk`.
+
+Conclude with `Or.inl (hl j ⟨k, hk, hjk⟩)`.
+-/
 theorem exists_sum_nsmul_apply_ne_zero_finset [∀ j, IsAddTorsionFree (W j)]
     (l : ∀ j, V →+ W j) (s : κ → V) (t : Finset κ) :
     ∃ c : κ → ℕ, (∀ k, c k ≤ Fintype.card ι) ∧
@@ -163,6 +214,9 @@ theorem exists_sum_nsmul_apply_ne_zero_finset [∀ j, IsAddTorsionFree (W j)]
       · exact Or.inr hjk
       · exact Or.inl (hl j ⟨k, hk, hjk⟩)
 
+/- English proof (translation)
+Take `⟨c, hc, hl⟩` from `exists_sum_nsmul_apply_ne_zero_finset l s Finset.univ`. Conclude with `⟨c, hc, fun j => hl j ((h j).imp fun k hk => ⟨Finset.mem_univ k, hk⟩)⟩`.
+-/
 theorem exists_sum_nsmul_apply_ne_zero [∀ j, IsAddTorsionFree (W j)] [Fintype κ]
     (l : ∀ j, V →+ W j) (s : κ → V) (h : ∀ j, ∃ k, l j (s k) ≠ 0) :
     ∃ c : κ → ℕ, (∀ k, c k ≤ Fintype.card ι) ∧ ∀ j, l j (∑ k, c k • s k) ≠ 0 := by
@@ -171,6 +225,9 @@ theorem exists_sum_nsmul_apply_ne_zero [∀ j, IsAddTorsionFree (W j)] [Fintype 
 
 variable {K : Type*} [Field K] [CharZero K] [Module K V] [∀ j, Module K (W j)]
 
+/- English proof (translation)
+Establish `: ∀ j, IsAddTorsionFree (W j)` using `fun j => IsAddTorsionFree.of_isTorsionFree K (W j)`. Simplify using `only [Nat.cast_smul_eq_nsmul]`. Conclude with `exists_sum_nsmul_apply_ne_zero (fun j => (l j).toAddMonoidHom) s h`.
+-/
 theorem exists_sum_natCast_smul_apply_ne_zero [Fintype κ]
     (l : ∀ j, V →ₗ[K] W j) (s : κ → V) (h : ∀ j, ∃ k, l j (s k) ≠ 0) :
     ∃ c : κ → ℕ, (∀ k, c k ≤ Fintype.card ι) ∧ ∀ j, l j (∑ k, (c k : K) • s k) ≠ 0 := by

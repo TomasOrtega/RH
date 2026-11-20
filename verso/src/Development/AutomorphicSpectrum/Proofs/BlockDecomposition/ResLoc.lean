@@ -6,6 +6,9 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 
 namespace GlobalTheory.CompanionTheory.EdgeMap
 
+/- English proof (translation)
+Introduce `R _ F s U x hx`. Conclude with `(GlobalTheory.EtC.resSec R F U).2.2.1 (s : ℤ) ((s + 1 : ℕ) : ℤ) ((s + 1 + 1 : ℕ) : ℤ) (by omega) (by omega) x (by omega) hx`.
+-/
 theorem resLoc : CrystallineSemistableComparison.E.ResLoc := by
   intro R _ F s U x hx
   exact (GlobalTheory.EtC.resSec R F U).2.2.1 (s : ℤ) ((s + 1 : ℕ) : ℤ) ((s + 1 + 1 : ℕ) : ℤ) (by omega) (by omega) x (by omega) hx

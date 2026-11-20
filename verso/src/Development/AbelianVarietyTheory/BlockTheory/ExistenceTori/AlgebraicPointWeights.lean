@@ -44,6 +44,13 @@ structure AlgebraicLaws : Prop where
 
 variable {Xo c}
 
+/- English proof (translation)
+Introduce `a n f hf T io y y' t hb e`. Use `letI := io.toAlgebra`. Establish `hw : evI y' f = wchar (ex Dw a n) t * evI y f` using `h₁ a n f hf T.Fr t y.1 y'.1 hb`. Use `choose u hu using h₂ T io y y' t hb`. Establish `hU : (wchar (ex Dw a n) t : T.Fr) = algebraMap T.V T.Fr ((∏ i, u i ^ ex Dw a n i : T.Vˣ) : T.V)`.
+
+Simplify using `[wchar, hu]`. Rewrite using `[hw, hU, nval_mul_unit]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective T.V T.Fr)).2 (Units.ne_zero _)`. Establish `: valV T.V (algebraMap T.V T.Fr ((∏ i, u i ^ ex Dw a n i : T.Vˣ) : T.V)) = 1`. Unfold `valV`.
+
+Rewrite using `[HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h (Units.isUnit _)`. Simplify using `only [vV, this, WithZero.log_one, neg_zero]`.
+-/
 theorem unitIndep_of (h₁ : WeightOverFields Xo c) (h₂ : IntegralDiagUnit Xo c) : UnitIndep Xo c := by
   intro a n f hf T io y y' t hb e
   letI := io.toAlgebra
@@ -59,6 +66,11 @@ theorem unitIndep_of (h₁ : WeightOverFields Xo c) (h₂ : IntegralDiagUnit Xo 
       exact fun h => (IsLocalRing.mem_maximalIdeal _).1 h (Units.isUnit _)
     simp only [vV, this, WithZero.log_one, neg_zero]
 
+/- English proof (translation)
+Introduce `la`. Take `⟨T, io, e, ho, hT, ⟨y⟩⟩` from `h₁ la`. Take `⟨T', io', φ, r, hr, hv, -, hfin, z, y', t, -, -⟩` from `h₂ la T io e ho y`. Use `letI := io.toAlgebra`. Use `letI := io'.toAlgebra`.
+
+Establish `hc : (φ : T.Fr →+* T'.Fr).comp io = io'` using `RingHom.ext fun x => φ.commutes x`. Conclude with `⟨T', io', r * e, hc ▸ ho.bc (φ : T.Fr →+* T'.Fr) hr hv, y', hfin hT⟩`.
+-/
 theorem intFrNe_of (h₁ : AlgebraicPointOver Xo c) (h₂ : IntegralFrameAfterExt Xo c) :
     IntFrNe Xo c (fun _ _ y => y.IsAlg) := by
   intro la

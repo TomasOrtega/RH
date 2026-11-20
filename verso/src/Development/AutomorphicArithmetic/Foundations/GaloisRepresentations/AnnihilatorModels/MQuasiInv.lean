@@ -15,6 +15,27 @@ attribute [local instance] Ideal.Quotient.field
 attribute [local instance] Over.cartesianMonoidalCategory
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `hPair hDiv p _ D R _ b N κ _ _ _ s c hc o o' ψ hψ hfin hsur hpol hker`. Take `⟨hAdd, -, -, ⟨e, he, hE⟩, hcalc⟩` from `hPair p D R b N (Sp κ) s o`. Take `⟨hAdd', -⟩` from `hPair p D R b N (Sp κ) s o'`. Establish `hmul` using `(hcalc o' ψ c).1 hpol`. Establish `hunit : ∀ T : Over (Sp κ), IsUnit ((e : ℕ) : Γ(T.left, ⊤))`.
+
+Introduce `T`. Establish `h0 : IsUnit ((e : ℕ) : κ)`. Rewrite using `[isUnit_iff_ne_zero, Ne, CharP.cast_eq_zero_iff κ p]`. Introduce `hd`. Establish `h3` using `Nat.Coprime.coprime_dvd_left hd he`.
+
+Rewrite `h3` using `[Nat.coprime_self]`. Conclude with `(Fact.out : p.Prime).one_lt.ne' h3`. Establish `h1` using `h0.map (Scheme.ΓSpecIso (CommRingCat.of κ)).inv.hom`. Establish `h2` using `h1.map T.hom.appTop.hom`. Simplify using `using h2`.
+
+Establish `hkc : ∀ (T : Over (Sp κ)) (x : T ⟶ o.A), x ≫ ψ = 1 → x ^ c = 1`. Introduce `T x hx`. Establish `h1 : (x ^ c) ^ e = 1`. Apply `hE T (x ^ c)` to reduce the goal to its premises. Rewrite using `[MonObj.comp_pow, GlobalTheory.ZarhinKerB.evc_pow_left _ hAdd, ← hmul, Category.assoc, hx, MonObj.comp_one]`.
+
+Conclude with `IsAdditive.evc_one _ hAdd' _`. Use `GlobalTheory.T.abelianScheme_torsionPoint_trivial_of_geometric (Sp κ) o.A o.ab T (x ^ c) e (hunit T) h1 ?_` and prove the remaining obligations. Introduce `k _ _ _ z g`. Rewrite using `[MonObj.comp_pow]`. Establish `hg : g ≫ x = 1` using `hker k z (g ≫ x) (by rw [Category.assoc, hx, MonObj.comp_one])`.
+
+Rewrite using `[hg, one_pow]`. Take `⟨d, hd⟩` from `GlobalTheory.AbelianDim.exists_relDim κ o.A o.ab`. Take `⟨d', hd'⟩` from `GlobalTheory.AbelianDim.exists_relDim κ o'.A o'.ab`. Set `Av : GlobalTheory.AV.AbVar κ` to `⟨o.A, o.ab, d, hd⟩`. Set `Av' : GlobalTheory.AV.AbVar κ` to `⟨o'.A, o'.ab, d', hd'⟩`.
+
+Set `q : Av ⟶ Av'` to `GlobalTheory.AV.AbVar.Hom.mk (A := Av) (B := Av') ψ`. Establish `hpm : IsMonHom (𝟙 o.A ^ c)` using `(GlobalTheory.AV.AbVar.homSub Av Av).pow_mem (show (𝟙 Av.X) ∈ GlobalTheory.AV.AbVar.homSub Av Av from (inferInstance : IsMonHom (𝟙 o.A))) c`. Set `f : Av ⟶ Av` to `GlobalTheory.AV.AbVar.Hom.mk (A := Av) (B := Av) (𝟙 o.A ^ c)`. Establish `hfhom : f.hom = 𝟙 o.A ^ c` using `rfl`. Establish `hq : GlobalTheory.AV.AbVar.IsIsogeny q` using `⟨hfin, hsur⟩`.
+
+Take `⟨g, hg⟩` from `GlobalTheory.AV.AbVar.exists_factor_of_isogeny κ Av Av' Av q f hq (by`. Introduce `T x hx`. Rewrite using `[hfhom, MonObj.comp_pow, Category.comp_id]`. Conclude with `hkc T x hx)`. Establish `hgm : IsMonHom g.hom` using `(Additive.toMul g).2`.
+
+Establish `hgψ : ψ ≫ g.hom = 𝟙 o.A ^ c`. Rewrite using `[← hfhom, ← hg]`. Both sides reduce to the same expression. Use `haveI : Flat (Over.Hom.left ψ) := (GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny κ Av Av' q hq).2.1`. Use `haveI : Surjective (Over.Hom.left ψ) := hsur`.
+
+Use `haveI : Epi (Over.Hom.left ψ) := Flat.epi_of_flat_of_surjective _`. Use `⟨g.hom, hgm, hgψ, ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[← cancel_epi (Over.Hom.left ψ), ← Over.comp_left, ← Over.comp_left, ← Category.assoc, hgψ, MonObj.pow_comp, MonObj.comp_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.quasiInv_of :
     PairCalc → DivC → QuasiInv := by
   intro hPair hDiv p _ D R _ b N κ _ _ _ s c hc o o' ψ hψ hfin hsur hpol hker

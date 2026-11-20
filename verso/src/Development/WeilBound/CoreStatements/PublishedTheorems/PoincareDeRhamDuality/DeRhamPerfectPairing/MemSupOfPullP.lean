@@ -29,13 +29,22 @@ def ResSurj.{u} : Prop :=
     (∀ m : Ideal R, m.IsMaximal → ∀ q : H, gam q ∈ m • (⊤ : Submodule R M) → q ∈ F ⊔ m • (⊤ : Submodule R H)) →
     Function.Surjective gam
 
+/- English proof (translation)
+The claim follows from `rs_self _ _`.
+-/
 theorem cst_top {Y : Scheme.{0}} (f : Y ⟶ Sp R) (r : R) :
     cst f ⊤ r = f.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) := rs_self _ _
 
+/- English proof (translation)
+Rewrite using `[cst_top, cst_top, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem cst_comp {Y Y' : Scheme.{0}} (ψ : Y' ⟶ Y) (f : Y ⟶ Sp R) (r : R) :
     cst (ψ ≫ f) ⊤ r = ψ.appTop.hom (cst f ⊤ r) := by
   rw [cst_top, cst_top, Scheme.Hom.comp_appTop]; rfl
 
+/- English proof (translation)
+Rewrite using `[cst_top, cst_top, Scheme.Hom.comp_appTop]`. Establish `e` using `congrArg (fun q ↦ q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ρ))`. Conclude with `congrArg t.appTop.hom e.symm`.
+-/
 theorem cst_spMap {R' : Type} [CommRing R'] {Y : Scheme.{0}} (t : Y ⟶ Sp R') (ρ : R →+* R') (r : R) :
     cst (t ≫ spMap ρ) ⊤ r = cst t ⊤ (ρ r) := by
   rw [cst_top, cst_top, Scheme.Hom.comp_appTop]
@@ -46,10 +55,24 @@ section Mod
 
 variable {A : Over (Sp R)} [GrpObj A] {g : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Category.comp_id, Category.comp_id]`. Conclude with `h.1.w`.
+-/
 theorem pull_w {R' : Type} [CommRing R'] {σ : R →+* R'} {A' : Over (Sp R')} [GrpObj A'] {φ : A'.left ⟶ A.left}
     (h : IsGrpPullback A' A (spMap σ) φ) : φ ≫ A.hom ≫ 𝟙 _ = (A'.hom ≫ 𝟙 _) ≫ spMap σ := by
   rw [Category.comp_id, Category.comp_id]; exact h.1.w
 
+/- English proof (translation)
+Take `⟨hbc, hF⟩` from `hB R A g hA hg (R ⧸ m) A' φ h`. Establish `h1 : (AbelianDeRham.bcMor h).pull q ∈ PrimitiveSubmodule A'` using `(toP_eq_zero_iff _).1 ((pullP_toP (AbelianDeRham.bcMor h).isMor q.1).symm.trans hq)`. Rewrite `h1` using `[hF]`. Establish `h2 : ∀ z ∈ Submodule.span (R ⧸ m) ((AbelianDeRham.bcMor h).pull '' (PrimitiveSubmodule A)), ∃ f ∈ PrimitiveSubmodule A, (AbelianDeRham.bcMor h).pull f = z`. Introduce `z hz`.
+
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, zero_mem _, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`.
+
+Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a + b, add_mem ha hb, map_add _ _ _⟩`. Consider the case `smul r x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective r`.
+
+Conclude with `⟨r • a, Submodule.smul_mem _ _ ha, LinearMap.map_smulₛₗ _ _ _⟩`. Take `⟨f, hf, e⟩` from `h2 _ h1`. Establish `h3 : (1 : R ⧸ m) ⊗ₜ[R] (q - f) = 0` using `hbc.1 (by`. Rewrite using `[liftSemi_tmul, one_smul, map_sub, e, sub_self, map_zero])`. Establish `h4` using `congrArg (TensorProduct.quotTensorEquivQuotSMul (primDR A) m) h3`.
+
+Rewrite `h4` using `[map_zero, ← map_one (Ideal.Quotient.mk m), TensorProduct.quotTensorEquivQuotSMul_mk_tmul, one_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[← add_sub_cancel f q]`. Conclude with `Submodule.add_mem_sup hf h4`.
+-/
 theorem mem_sup_of_pullP (hB : AbelianDeRham.BaseChange) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (m : Ideal R) {A' : Over (Sp (R ⧸ m))} [GrpObj A']
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A (spMap (algebraMap R (R ⧸ m))) φ) (q : primDR A)
@@ -81,6 +104,11 @@ theorem mem_sup_of_pullP (hB : AbelianDeRham.BaseChange) (hA : IsAbelianScheme A
   rw [← add_sub_cancel f q]
   exact Submodule.add_mem_sup hf h4
 
+/- English proof (translation)
+Take `⟨a₁, a₂, a₃⟩` from `hF.prim hA hg`. Take `⟨-, ⟨N, hN⟩, b₁, b₂, b₃⟩` from `hH R A g hA hg`. Establish `hs` using `hR R (primDR A) M g (PrimitiveSubmodule A) N hN a₁ a₂ a₃ b₁ b₂ b₃ h₁ h₂ h₃ (gam ∘ₗ toP _ ∘ₗ (primDR A).subtype) fun m _ q hq ↦ mem_sup_of_pullP hB hA hg m (isGrpPullback_pullback A _) q (hm m _ _ (isGrpPullback_pullback A _) _ hq)`. Introduce `c`. Take `⟨q, hq⟩` from `hs (gam c)`.
+
+Conclude with `⟨q.1, hgam hq⟩`.
+-/
 theorem surj_of_gamma (hR : ResSurj.{0}) (hF : AbelianDeRham.Free) (hH : AbelianDeRham.Hodge)
     (hB : AbelianDeRham.BaseChange) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     {M : Type} [AddCommGroup M] [Module R M] (h₁ : Module.Finite R M) (h₂ : Module.Projective R M)
@@ -105,11 +133,17 @@ section Gamma
 
 variable {E : ETy} (hE : IsE @E) {A B : Over (Sp R)} [GrpObj A] [GrpObj B]
 
+/- English proof (translation)
+Substitute `e e'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem E_congr {X Y : Scheme.{0}} (s : X ⟶ Sp R) (c : H1OnPoints s) {π π' : Y ⟶ X} {ν ν' : Γ(Y, ⊤)} (h : ν * ν = 0)
     (h' : ν' * ν' = 0) (e : π = π') (e' : ν = ν') : E s c π ν h = E s c π' ν' h' := by
   subst e e'; rfl
 
 include hE in
+/- English proof (translation)
+Establish `e` using `hE.add s 0 0 π ν h`. Rewrite `e` using `[add_zero]`. Conclude with `left_eq_add.1 e`.
+-/
 theorem E_zero {X Y : Scheme.{0}} (s : X ⟶ Sp R) (π : Y ⟶ X) (ν : Γ(Y, ⊤)) (h : ν * ν = 0) : E s 0 π ν h = 0 := by
   have e := hE.add s 0 0 π ν h
   rw [add_zero] at e
@@ -122,11 +156,19 @@ def Ec (c : H1OnPoints (A.hom ≫ 𝟙 _)) {Y : Over (Sp R)} (a : Y ⟶ A) (t : 
 
 omit [GrpObj A] in
 include hE in
+/- English proof (translation)
+The claim follows from `hE.nat _ c a.left _ _ u.left _ _ (cst_comp u.left t.left _)`.
+-/
 theorem pull_Ec (c : H1OnPoints (A.hom ≫ 𝟙 _)) {Y Z : Over (Sp R)} (u : Z ⟶ Y) (a : Y ⟶ A) (t : Y ⟶ epsR R) :
     GlobalTheory.CechPic.pull u.left (Ec E c a t) = Ec E c (u ≫ a) (u ≫ t) :=
   hE.nat _ c a.left _ _ u.left _ _ (cst_comp u.left t.left _)
 
 include hE in
+/- English proof (translation)
+Establish `h : (η[A].left : Sp R ⟶ A.left) ≫ A.hom ≫ 𝟙 _ = 𝟙 (Sp R) ≫ spMap (RingHom.id R)`. Rewrite using `[Category.comp_id, GlobalTheory.Cris.spMap_id, Category.comp_id]`. Conclude with `Over.w η[A]`. Establish `e` using `hE.chg h c Y.hom (epsFn (R := R) t.left) (epsFn_sq _)`. Use `haveI : IsIso (𝟙 (Sp R)) := IsIso.id _`.
+
+Rewrite `e` using `[H1OnPoints_eq_zero_of_isIso _ (pullP h c), E_zero hE]`. Conclude with `e.symm`.
+-/
 theorem Ec_one (c : H1OnPoints (A.hom ≫ 𝟙 _)) {Y : Over (Sp R)} (t : Y ⟶ epsR R) : Ec E c (1 : Y ⟶ A) t = 0 := by
   have h : (η[A].left : Sp R ⟶ A.left) ≫ A.hom ≫ 𝟙 _ = 𝟙 (Sp R) ≫ spMap (RingHom.id R) := by
     rw [Category.comp_id, GlobalTheory.Cris.spMap_id, Category.comp_id]; exact Over.w η[A]
@@ -137,6 +179,9 @@ theorem Ec_one (c : H1OnPoints (A.hom ≫ 𝟙 _)) {Y : Over (Sp R)} (t : Y ⟶ 
 
 omit [GrpObj A] in
 include hE in
+/- English proof (translation)
+Use `hE.zero _ c _ _ _ ?_` and prove the remaining obligations. Rewrite using `[epsFn, ht]`. Conclude with `(cst_spMap Y.hom _ _).trans (map_zero _)`.
+-/
 theorem Ec_red (c : H1OnPoints (A.hom ≫ 𝟙 _)) {Y : Over (Sp R)} (a : Y ⟶ A) (t : Y ⟶ epsR R)
     (ht : t.left = Y.hom ≫ GlobalTheory.DeRham.epsRed R) : Ec E c a t = 0 := by
   refine hE.zero _ c _ _ _ ?_
@@ -145,6 +190,11 @@ theorem Ec_red (c : H1OnPoints (A.hom ≫ 𝟙 _)) {Y : Over (Sp R)} (a : Y ⟶ 
 
 omit [GrpObj A] in
 include hE in
+/- English proof (translation)
+Use `hE.smul _ c r _ _ _ _ _ ?_` and prove the remaining obligations. Establish `e : a.left ≫ A.hom ≫ 𝟙 _ = t.left ≫ spMap (algebraMap R (DualNumber R))`. Rewrite using `[Category.comp_id, Over.w a]`. Conclude with `(Over.w t).symm`. Rewrite using `[e]`.
+
+Use `(cst_spMap (R := DualNumber R) t.left (epsScaleR r) _).trans ?_` and prove the remaining obligations. Rewrite using `[cst_spMap, epsFn, ← map_mul]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem Ec_smul (c : H1OnPoints (A.hom ≫ 𝟙 _)) (r : R) {Y : Over (Sp R)} (a : Y ⟶ A) (t : Y ⟶ epsR R) :
     Ec E (r • c) a t = Ec E c a (t ≫ GlobalTheory.GrpTangent.epsScale r) := by
   refine hE.smul _ c r _ _ _ _ _ ?_
@@ -163,6 +213,13 @@ variable {P : LB (A ⊗ B).left} (hP : IsDual A B P)
     IsAdditive M)
 
 include hE hP hadd in
+/- English proof (translation)
+Take `⟨M, hM, eM⟩` from `cls_surj (Ec E c (fst A (epsR R)) (snd A (epsR R)))`. Establish `k : ∀ (Y : Over (Sp R)) (a : Y ⟶ A) (t : Y ⟶ epsR R), evc hM a t = Ec E c a t` using `fun Y a t ↦ by`. Rewrite using `[evc, eM, pull_Ec hE, lift_fst, lift_snd]`. Take `⟨x, hx, -⟩` from `hP.univ _ M hM (hadd hM (fun Y t ↦ (k Y _ t).trans (Ec_one hE c t)) fun Y a t ht ↦ (k Y a t).trans (Ec_red hE c a t ht))`. Establish `e : cls M hM = evc hP.isLB (fst A _) (snd A _ ≫ x)` using `(cls_eq_iff hM (pull_isLB hP.isLB _)).2 hx`.
+
+Establish `k' : ∀ (Y : Over (Sp R)) (a : Y ⟶ A) (t : Y ⟶ epsR R), evc hP.isLB a (t ≫ x) = Ec E c a t` using `fun Y a t ↦ by`. Rewrite using `[← k, evc, evc, e, pull_evc, lift_fst, lift_snd_assoc, evc]`. Use `⟨x, (isTangent_iff x).2 (hP.eq_one _ ((triv_ev_iff hP.isLB _ _).2 ?_)), k'⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, k']`. Use `Ec_red hE c _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Over.comp_left, ← Over.w (snd A (𝟙_ (Over (Sp R))))]`. Conclude with `congrArg (· ≫ GlobalTheory.DeRham.epsRed R) (Category.comp_id _).symm`.
+-/
 theorem exists_pt (c : H1OnPoints (A.hom ≫ 𝟙 _)) : ∃ x : epsR R ⟶ B, IsTangent x ∧
     ∀ (Y : Over (Sp R)) (a : Y ⟶ A) (t : Y ⟶ epsR R), evc hP.isLB a (t ≫ x) = Ec E c a t := by
   obtain ⟨M, hM, eM⟩ := cls_surj (Ec E c (fst A (epsR R)) (snd A (epsR R)))
@@ -180,6 +237,27 @@ theorem exists_pt (c : H1OnPoints (A.hom ≫ 𝟙 _)) : ∃ x : epsR R ⟶ B, Is
   exact congrArg (· ≫ GlobalTheory.DeRham.epsRed R) (Category.comp_id _).symm
 
 include hE hP hadd in
+/- English proof (translation)
+Use `haveI := hA'.comm`. Use `choose x hx k using exists_pt hE hP hadd`. Set `gam : H1OnPoints (A.hom ≫ 𝟙 _) →ₗ[R] GlobalTheory.Serre.Lie (GlobalTheory.Serre.intAct B)` to `{ toFun := fun c ↦ GlobalTheory.Serre.Lie.mk _ (x c) (hx c) map_add' := fun c c' ↦ GlobalTheory.Serre.Lie.ext (GlobalTheory.BirigidLift.dual_ext hP (by`. Express the relevant statement in the definitionally equal form `evc _ _ (_ ≫ x (c + c')) = evc _ _ (_ ≫ (x c * x c'))`. Rewrite using `[MonObj.comp_mul, (GlobalTheory.BirigidLift.isAdditive_swap_iff hP.isLB).1 hsw, k, k, k]`.
+
+Conclude with `hE.add _ _ _ _ _ _))`. Use the proof step `map_smul' := fun r c ↦ GlobalTheory.Serre.Lie.ext (GlobalTheory.BirigidLift.dual_ext hP (by`. Express the relevant statement in the definitionally equal form `evc _ _ (_ ≫ x (r • c)) = evc _ _ (_ ≫ GlobalTheory.GrpTangent.epsScale r ≫ x c)`. Rewrite using `[← Category.assoc, k, k, Ec_smul hE])) }`. Take `⟨l₁, l₂, l₃⟩` from `GlobalTheory.LieInj.lie_finite_projective B g hg' (GlobalTheory.Serre.intAct B)`.
+
+Establish `pb : ∀ {C : Type} [CommRing C] (G : Over (Sp C)), IsPullback (fst G (epsR C)).left (snd G (epsR C)).left (G.hom ≫ 𝟙 _) (spMap (algebraMap C (DualNumber C)))` using `fun G ↦ by`. Rewrite using `[Category.comp_id]`. Conclude with `IsPullback.of_hasPullback _ _`. Use `surj_of_gamma hR hF hH hB hA hg l₁ l₂ l₃ gam ((injective_iff_map_eq_zero _).2 fun c hc ↦ ?_) fun m A' _ φ h c hc ↦ ?_` and prove the remaining obligations. Establish `e : x c = 1` using `congrArg GlobalTheory.Serre.Lie.hom hc`.
+
+Use `hE.inj _ c _ _ (pb A) ((k _ _ _ _).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[e, MonObj.comp_one, evc_one_right hP.isLB hP.zero]`. Set `σ` to `algebraMap R (R ⧸ m)`. Set `Y : Over (Sp R)` to `Over.mk ((A' ⊗ epsR (R ⧸ m)).hom ≫ spMap σ)`. Set `a : Y ⟶ A` to `Over.homMk ((fst A' (epsR (R ⧸ m))).left ≫ φ) (by`.
+
+Express the relevant statement in the definitionally equal form `(_ ≫ φ) ≫ A.hom = _ ≫ spMap σ`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w])`. Establish `hc' : (Chart.dualMapR σ).comp (algebraMap R (DualNumber R)) = (algebraMap (R ⧸ m) (DualNumber (R ⧸ m))).comp σ` using `RingHom.ext fun r ↦ by`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Set `t : Y ⟶ epsR R` to `Over.homMk ((snd A' (epsR (R ⧸ m))).left ≫ spMap (Chart.dualMapR σ)) (by`.
+
+Express the relevant statement in the definitionally equal form `(_ ≫ _) ≫ spMap _ = _ ≫ spMap σ`. Rewrite using `[Category.assoc, ← GlobalTheory.Cris.spMap_comp, hc', GlobalTheory.Cris.spMap_comp, ← Category.assoc]`. Conclude with `congrArg (· ≫ spMap σ) (Over.w (snd A' (epsR (R ⧸ m)))))`. Establish `ht : t ≫ (gam c).hom = 1`. Use `Submodule.smul_induction_on (p := fun v ↦ t ≫ GlobalTheory.Serre.Lie.hom v = 1) hc (fun r hr v _ ↦ ?_) fun v w hv hw ↦ by rw [GlobalTheory.Serre.Lie.hom_add, MonObj.comp_mul, hv, hw, _root_.mul_one]` and prove the remaining obligations.
+
+Establish `e : t ≫ GlobalTheory.GrpTangent.epsScale r = t ≫ GlobalTheory.GrpTangent.epsScale 0`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(_ ≫ spMap _) ≫ spMap (epsScaleR r) = (_ ≫ spMap _) ≫ spMap (epsScaleR 0)`. Rewrite using `[Category.assoc, Category.assoc, ← GlobalTheory.Cris.spMap_comp, ← GlobalTheory.Cris.spMap_comp]`. Use `congr 2`.
+
+Establish `hr' : σ r = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hr`. Use `RingHom.ext fun z ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, epsScaleR, hr']`. Rewrite using `[GlobalTheory.Serre.Lie.hom_smul, ← Category.assoc, e, Category.assoc, epsScale_zero_comp v.isTangent, MonObj.comp_one]`. Establish `e0 : Ec E c a t = 0`.
+
+Rewrite using `[← k]`. Conclude with `(congrArg (evc hP.isLB a) ht).trans (evc_one_right hP.isLB hP.zero a)`. Use `hE.inj _ _ _ _ (pb A') ((hE.chg (pull_w h) c _ _ _).trans (Eq.trans (E_congr _ c _ _ rfl ?_) e0))` and prove the remaining obligations. Use `Eq.trans ?_ (cst_spMap (R := DualNumber R) _ (Chart.dualMapR σ) _).symm` and prove the remaining obligations. Rewrite using `[epsFn]`.
+
+Use `congr 1`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+-/
 theorem surj_of_isDual' (hR : ResSurj.{0}) (hF : AbelianDeRham.Free) (hH : AbelianDeRham.Hodge)
     (hB : AbelianDeRham.BaseChange) {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (hA' : IsAbelianScheme B) (hg' : SmoothOfRelativeDimension g B.hom) (hsw : IsAdditive (swap P)) :

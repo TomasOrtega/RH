@@ -16,6 +16,19 @@ open scoped ContDiff ComplexOrder Classical
 
 namespace GlobalTheory.VdmCoef
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro c h`. Simplify using `using h 0`. Consider the case `insert s T hs ih`. Introduce `c h`.
+
+Establish `key` using `ih (fun j => c j * ∑ z, n j z * v s z) fun x => by`. Establish `hd : HasDerivAt (fun t : ℝ => ∑ j, c j * ((∑ z, n j z * x z) + t * ∑ z, n j z * v s z) ^ (T.card + 1)) (∑ j, c j * (((T.card + 1 : ℕ) : ℝ) * ((∑ z, n j z * x z) + 0 * ∑ z, n j z * v s z) ^ (T.card + 1 - 1) * (1 * ∑ z, n j z * v s z))) 0` using `HasDerivAt.fun_sum fun j _ => ((((hasDerivAt_id' (0 : ℝ)).mul_const _).const_add _).fun_pow _).const_mul _`. Establish `h0 : (fun t : ℝ => ∑ j, c j * ((∑ z, n j z * x z) + t * ∑ z, n j z * v s z) ^ (T.card + 1)) = fun _ => 0`. Use function extensionality and compare the values at `t`. Use `h (fun z => x z + t * v s z)` as an intermediate fact.
+
+Rewrite `this` using `[Finset.card_insert_of_notMem hs]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 2`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun z _ => by ring`. Rewrite `hd` using `[h0]`. Establish `e` using `hd.unique (hasDerivAt_const _ _)`. Establish `hne : ((T.card + 1 : ℕ) : ℝ) ≠ 0` using `by positivity`. Use `mul_left_cancel₀ hne ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_zero, ← e, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.add_sub_cancel, zero_mul, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← key]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_insert hs, mul_assoc]`.
+-/
 theorem polar_zero {Z S I : Type} [Fintype Z] [Fintype I] (n : I → Z → ℝ) (v : S → Z → ℝ) (T : Finset S) :
     ∀ c : I → ℝ, (∀ x : Z → ℝ, ∑ j, c j * (∑ z, n j z * x z) ^ T.card = 0) →
       ∑ j, c j * ∏ s ∈ T, ∑ z, n j z * v s z = 0 := by
@@ -51,6 +64,11 @@ theorem polar_zero {Z S I : Type} [Fintype Z] [Fintype I] (n : I → Z → ℝ) 
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [Finset.prod_insert hs, mul_assoc]
 
+/- English proof (translation)
+Use `polar_zero (Sum.elim n n') v T (Sum.elim c fun j => -c' j) fun x => by` as an intermediate fact. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[h x, add_neg_cancel]`. Rewrite `this` using `[Fintype.sum_sum_type]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib] at this`. Conclude with `sub_eq_zero.1 (by rw [sub_eq_add_neg]; exact this)`. Use the proof step `@[to_additive ]`.
+-/
 theorem polar {Z S I J : Type} [Fintype Z] [Fintype I] [Fintype J] (c : I → ℝ) (n : I → Z → ℝ) (c' : J → ℝ)
     (n' : J → Z → ℝ) (v : S → Z → ℝ) (T : Finset S)
     (h : ∀ x : Z → ℝ, ∑ j, c j * (∑ z, n j z * x z) ^ T.card = ∑ j, c' j * (∑ z, n' j z * x z) ^ T.card) :
@@ -64,6 +82,11 @@ theorem polar {Z S I J : Type} [Fintype Z] [Fintype I] [Fintype J] (c : I → �
   exact sub_eq_zero.1 (by rw [sub_eq_add_neg]; exact this)
 
 @[to_additive  ]
+/- English proof (translation)
+Rewrite using `[← Finset.prod_subtype (Finset.univ.filter fun s : Fin m × Fin m => s.2 < s.1) (by simp) (fun s => f s.1 s.2), Finset.prod_filter, Fintype.prod_prod_type_right]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem prod_low {M : Type} [CommMonoid M] {m : ℕ} (f : Fin m → Fin m → M) :
     ∏ s : Low m, f s.1.1 s.1.2 = ∏ i, ∏ j ∈ Finset.Ioi i, f j i := by
   rw [← Finset.prod_subtype (Finset.univ.filter fun s : Fin m × Fin m => s.2 < s.1) (by simp) (fun s => f s.1 s.2),
@@ -74,6 +97,11 @@ theorem prod_low {M : Type} [CommMonoid M] {m : ℕ} (f : Fin m → Fin m → M)
   ext
   simp
 
+/- English proof (translation)
+Rewrite using `[sum_low fun j i => θ j - θ i]`. Simplify using `only [Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm' (t' := Finset.univ) (s' := fun j => Finset.Iio j) (by simp), ← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.sum_const, Fin.card_Ioi, Fin.card_Iio, nsmul_eq_mul, nsmul_eq_mul]`.
+
+Establish `hi` using `i.isLt`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_roots {m : ℕ} (θ : Fin m → ℝ) :
     ∑ s : Low m, (θ s.1.1 - θ s.1.2) = -∑ i : Fin m, ((m : ℝ) - 1 - 2 * (i : ℕ)) * θ i := by
   rw [sum_low fun j i => θ j - θ i]
@@ -91,11 +119,17 @@ variable {ι : Type} [Fintype ι] {r : ι → ℕ}
 
 def root (x : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a)) : ℝ := x ⟨t.1, t.2.1.1⟩ - x ⟨t.1, t.2.1.2⟩
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sigma]`. Conclude with `Finset.prod_congr rfl fun a _ => prod_low fun j i => x ⟨a, j⟩ - x ⟨a, i⟩`.
+-/
 theorem prod_root (x : (Σ a, Fin (r a)) → ℝ) :
     ∏ t, root x t = ∏ a, ∏ i : Fin (r a), ∏ j ∈ Finset.Ioi i, (x ⟨a, j⟩ - x ⟨a, i⟩) := by
   rw [Fintype.prod_sigma]
   exact Finset.prod_congr rfl fun a _ => prod_low fun j i => x ⟨a, j⟩ - x ⟨a, i⟩
 
+/- English proof (translation)
+Simplify using `[prod_root, vdm]`.
+-/
 theorem eval_vdm (x : (Σ a, Fin (r a)) → ℝ) : MvPolynomial.eval x (vdm r) = ∏ t, root x t := by
   simp [prod_root, vdm]
 
@@ -103,9 +137,19 @@ def refl (t : Σ a, Low (r a)) : Equiv.Perm (Σ a, Fin (r a)) := Equiv.swap ⟨t
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Introduce `h` and use `t.2.2.ne' (eq_of_heq (Sigma.mk.inj_iff.1 h).2)`.
+-/
 theorem pos_ne (t : Σ a, Low (r a)) : (⟨t.1, t.2.1.1⟩ : Σ a, Fin (r a)) ≠ ⟨t.1, t.2.1.2⟩ := fun h =>
   t.2.2.ne' (eq_of_heq (Sigma.mk.inj_iff.1 h).2)
 
+/- English proof (translation)
+Rewrite using `[prod_root, prod_root, ← Finset.mul_prod_erase _ _ (Finset.mem_univ t.1), ← Finset.mul_prod_erase _ _ (Finset.mem_univ t.1), ← neg_mul]`. Use `congr 1`. Rewrite using `[← det_vandermonde fun i => x (refl t ⟨t.1, i⟩), ← det_vandermonde fun i => x ⟨t.1, i⟩]`. Establish `e : (vandermonde fun i => x (refl t ⟨t.1, i⟩)) = (vandermonde fun i => x ⟨t.1, i⟩).submatrix (Equiv.swap t.2.1.1 t.2.1.2) id`. Use extensionality with `i j`.
+
+Rewrite using `[submatrix_apply, vandermonde_apply, vandermonde_apply, refl, sigma_mk_injective.swap_apply]`. Both sides reduce to the same expression. Rewrite using `[e, det_permute, Equiv.Perm.sign_swap t.2.2.ne']`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations.
+
+Establish `e (i : Fin (r b)) : refl t ⟨b, i⟩ = ⟨b, i⟩` using `Equiv.swap_apply_of_ne_of_ne (fun h => Finset.ne_of_mem_erase hb (congrArg Sigma.fst h)) fun h => Finset.ne_of_mem_erase hb (congrArg Sigma.fst h)`. Simplify using `only [e]`.
+-/
 theorem prod_root_refl (x : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a)) :
     ∏ t', root (fun z => x (refl t z)) t' = -∏ t', root x t' := by
   rw [prod_root, prod_root, ← Finset.mul_prod_erase _ _ (Finset.mem_univ t.1),
@@ -125,6 +169,11 @@ theorem prod_root_refl (x : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a)) :
         fun h => Finset.ne_of_mem_erase hb (congrArg Sigma.fst h)
     simp only [e]
 
+/- English proof (translation)
+Distinguish the cases in `h : root x t = 0`. Establish `e : (fun z => x (refl t z)) = x` using `funext fun z => Equiv.apply_swap_eq_self (sub_eq_zero.1 h) z`. Rewrite using `[e]`. Establish `e` using `prod_root_refl x t`. Rewrite `e` using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ t), ← Finset.mul_prod_erase _ _ (Finset.mem_univ t)]`.
+
+Establish `e' : root (fun z => x (refl t z)) t = -root x t` using `by simp [root, refl]`. Rewrite `e` using `[e', neg_mul]`. Conclude with `mul_left_cancel₀ h (neg_injective e)`.
+-/
 theorem prod_erase_root_refl (x : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a)) :
     ∏ t' ∈ Finset.univ.erase t, root (fun z => x (refl t z)) t' = ∏ t' ∈ Finset.univ.erase t, root x t' := by
   by_cases h : root x t = 0
@@ -136,6 +185,9 @@ theorem prod_erase_root_refl (x : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a
     rw [e', neg_mul] at e
     exact mul_left_cancel₀ h (neg_injective e)
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_sub_distrib, Fintype.sum_eq_add _ _ (pos_ne t) fun z hz => by`. Rewrite using `[refl, Equiv.swap_apply_of_ne_of_ne hz.1 hz.2, sub_self]]`. Simplify using `only [refl, root, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_sub_refl (x θ : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a)) :
     ∑ z, x z * θ z - ∑ z, x (refl t z) * θ z = root θ t * root x t := by
   rw [← Finset.sum_sub_distrib, Fintype.sum_eq_add _ _ (pos_ne t) fun z hz => by
@@ -143,10 +195,18 @@ theorem pair_sub_refl (x θ : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a)) :
   simp only [refl, root, Equiv.swap_apply_left, Equiv.swap_apply_right]
   ring
 
+/- English proof (translation)
+Simplify using `[rootDiag, root, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem pair_rootDiag (x θ : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a)) :
     ∑ z, x z * rootDiag θ z (some t) = root x t := by
   simp [rootDiag, root, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Establish `e : (Finset.univ.erase (some t) : Finset (Option (Σ a, Low (r a)))) = Finset.insertNone (Finset.univ.erase t)`. Use extensionality with `s`. Apply the tactic sequence `cases s <;> simp`. Rewrite using `[e, Finset.prod_insertNone]`. Simplify using `only [pair_rootDiag]`.
+
+Both sides reduce to the same expression.
+-/
 theorem prod_erase_some (x θ : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a)) :
     ∏ s ∈ Finset.univ.erase (some t), ∑ z, x z * rootDiag θ z s =
       (∑ z, x z * θ z) * ∏ t' ∈ Finset.univ.erase t, root x t' := by
@@ -160,6 +220,13 @@ theorem prod_erase_some (x θ : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a))
 
 variable {I : Type} [Fintype I] {c : I → ℝ} {n : I → (Σ a, Fin (r a)) → ℝ}
 
+/- English proof (translation)
+Establish `hc : (Finset.univ.erase (some t) : Finset (Option (Σ a, Low (r a)))).card = Fintype.card (Σ a, Low (r a))`. Rewrite using `[Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_option, Nat.add_sub_cancel]`. Establish `e` using `polar c n (fun j => -c j) (fun j z => n j (refl t z)) (fun s z => rootDiag θ z s) (Finset.univ.erase (some t)) fun x => by`. Establish `e₁ (j : I) : ∑ z, n j (refl t z) * x z = ∑ z, n j z * x (refl t z)`. Rewrite using `[← Equiv.sum_comp (refl t)]`.
+
+Simplify using `[refl]`. Simplify using `only [hc, e₁, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[h, h, prod_root_refl, neg_neg]`. Simplify using `only [prod_erase_some, prod_erase_root_refl, neg_mul, Finset.sum_neg_distrib] at e ⊢`. Rewrite using `[eq_div_iff two_ne_zero, mul_two]`.
+
+Use `nth_rewrite 2 [e]`. Rewrite using `[← sub_eq_add_neg, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, ← sub_mul, pair_sub_refl, ← Finset.mul_prod_erase _ _ (Finset.mem_univ t)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coef_root (h : ∀ x : (Σ a, Fin (r a)) → ℝ,
       ∑ j, c j * (∑ z, n j z * x z) ^ Fintype.card (Σ a, Low (r a)) = ∏ t, root x t)
     (θ : (Σ a, Fin (r a)) → ℝ) (t : Σ a, Low (r a)) :
@@ -182,11 +249,17 @@ theorem coef_root (h : ∀ x : (Σ a, Fin (r a)) → ℝ,
   rw [← mul_sub, ← sub_mul, pair_sub_refl, ← Finset.mul_prod_erase _ _ (Finset.mem_univ t)]
   ring
 
+/- English proof (translation)
+Rewrite using `[← eval_vdm, ← h]`. Simplify using `[lin, MvPolynomial.smul_eval]`.
+-/
 theorem eval_rep (h : ∑ j, c j • lin (n j) ^ Fintype.card (Σ a, Low (r a)) = vdm r) (x : (Σ a, Fin (r a)) → ℝ) :
     ∑ j, c j * (∑ z, n j z * x z) ^ Fintype.card (Σ a, Low (r a)) = ∏ t, root x t := by
   rw [← eval_vdm, ← h]
   simp [lin, MvPolynomial.smul_eval]
 
+/- English proof (translation)
+Establish `e` using `polar c n c' n' (fun t z => rootDiag 0 z (some t)) Finset.univ fun x => by`. Rewrite using `[Finset.card_univ, eval_rep h, eval_rep h']`. Simplify `e` using `only [pair_rootDiag]`.
+-/
 theorem total_eq {J : Type} [Fintype J] {c' : J → ℝ} {n' : J → (Σ a, Fin (r a)) → ℝ}
     (h : ∑ j, c j • lin (n j) ^ Fintype.card (Σ a, Low (r a)) = vdm r)
     (h' : ∑ j, c' j • lin (n' j) ^ Fintype.card (Σ a, Low (r a)) = vdm r) :
@@ -195,6 +268,13 @@ theorem total_eq {J : Type} [Fintype J] {c' : J → ℝ} {n' : J → (Σ a, Fin 
     rw [Finset.card_univ, eval_rep h, eval_rep h']
   simpa only [pair_rootDiag] using e
 
+/- English proof (translation)
+Establish `e₁ : ∑ j, c j * ((Fintype.card (Σ a, Low (r a))).factorial * ∑ s : Option (Σ a, Low (r a)), bcDiag a s * ∏ s' ∈ Finset.univ.erase s, ∑ x, n j x * rootDiag θ x s') = (Fintype.card (Σ a, Low (r a))).factorial * ∑ s : Option (Σ a, Low (r a)), bcDiag a s * ∑ j, c j * ∏ s' ∈ Finset.un …`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `e₂ : ∑ t : Σ a, Low (r a), bcDiag a (some t) * root θ t = ∑ s : Low (r a), root θ ⟨a, s⟩`.
+
+Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single a (fun b _ hb => by simp [bcDiag, hb]) (by simp)]`. Simplify using `[bcDiag]`. Rewrite using `[e₁, Fintype.sum_option]`. Simplify using `only [coef_root (eval_rep h)]`. Rewrite using `[neg_mul, ← mul_neg, ← sum_roots fun i => θ ⟨a, i⟩]`.
+
+Establish `e₃ : bcDiag a (none : Option (Σ a, Low (r a))) = 0` using `rfl`. Rewrite using `[e₃, zero_mul, zero_add]`. Express the relevant statement in the definitionally equal form `_ = _ * ∑ s : Low (r a), root θ ⟨a, s⟩`. Rewrite using `[← e₂, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem coef_block (a : ι) (h : ∑ j, c j • lin (n j) ^ Fintype.card (Σ a, Low (r a)) = vdm r)
     (θ : (Σ a, Fin (r a)) → ℝ) :
     ∑ j, c j * ((Fintype.card (Σ a, Low (r a))).factorial * ∑ s : Option (Σ a, Low (r a)),
@@ -220,6 +300,11 @@ theorem coef_block (a : ι) (h : ∑ j, c j • lin (n j) ^ Fintype.card (Σ a, 
   rw [← e₂, Finset.mul_sum, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Introduce `ι _ r a`. Distinguish the cases in `H : ∃ (J : Type) (_ : Fintype J) (c' : J → ℝ) (n' : J → (Σ a, Fin (r a)) → ℝ), ∑ j, c' j • lin (n' j) ^ Fintype.card (Σ a, Low (r a)) = vdm r`. Take `⟨J, _, c', n', h'⟩` from `H`. Use `⟨-((Fintype.card (Σ a, Low (r a))).factorial * (∑ j, c' j * ∏ t, root (n' j) t) / 2), fun I _ c n h θ => ?_⟩` and prove the remaining obligations. Rewrite using `[← total_eq h h']`.
+
+Conclude with `coef_block a h θ`. Conclude with `⟨0, fun I _ c n h => (H ⟨I, _, c, _, h⟩).elim⟩`.
+-/
 theorem bc_vdm_coef : ∀ (ι : Type) [Fintype ι] (r : ι → ℕ) (a : ι), ∃ κ : ℝ, ∀ (I : Type) [Fintype I] (c : I → ℝ) (n : I → (Σ a, Fin (r a)) → ℤ), ∑ j, c j • lin (fun x => (n j x : ℝ)) ^ Fintype.card (Σ a, Low (r a)) = vdm r → ∀ θ : (Σ a, Fin (r a)) → ℝ, ∑ j, c j * ((Fintype.card (Σ a, Low (r a))).factorial * ∑ s : Option (Σ a, Low (r a)), bcDiag a s * ∏ s' ∈ Finset.univ.erase s, ∑ x, (n j x : ℝ) * rootDiag θ x s') = κ * ∑ i : Fin (r a), ((r a : ℝ) - 1 - 2 * (i : ℕ)) * θ ⟨a, i⟩ := by
   intro ι _ r a
   by_cases H : ∃ (J : Type) (_ : Fintype J) (c' : J → ℝ) (n' : J → (Σ a, Fin (r a)) → ℝ),

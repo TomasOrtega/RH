@@ -21,6 +21,9 @@ open GlobalTheory.Mem.Isom
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hM l k]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entries_fix {A : Type} [CommRing A] {m n : ℕ} (c : A) {M : Matrix (Fin n) (Fin n) A} (hM : ∀ i j, c * M i j = M i j)
     (P : Matrix (Fin m) (Fin n) A) (Q : Matrix (Fin n) (Fin m) A) (i j : Fin m) : c * (P * M * Q) i j = (P * M * Q) i j := by
   simp only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]
@@ -28,6 +31,9 @@ theorem entries_fix {A : Type} [CommRing A] {m n : ℕ} (c : A) {M : Matrix (Fin
   conv_rhs => rw [← hM l k]
   ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hM l j]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entries_fix' {A : Type} [CommRing A] {m n k : ℕ} (c : A) {M : Matrix (Fin n) (Fin k) A} (hM : ∀ i j, c * M i j = M i j)
     (P : Matrix (Fin m) (Fin n) A) (i : Fin m) (j : Fin k) : c * (P * M) i j = (P * M) i j := by
   simp only [Matrix.mul_apply, Finset.mul_sum]
@@ -35,10 +41,16 @@ theorem entries_fix' {A : Type} [CommRing A] {m n k : ℕ} (c : A) {M : Matrix (
   conv_rhs => rw [← hM l j]
   ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, PQ]`.
+-/
 theorem sub_one_conj {A : Type} [CommRing A] {m n : ℕ} {P : Matrix (Fin m) (Fin n) A} {Q : Matrix (Fin n) (Fin m) A} (PQ : P * Q = 1)
     (M : Matrix (Fin n) (Fin n) A) : P * M * Q - 1 = P * (M - 1) * Q := by
   rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, PQ]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_comm (P.det), mul_assoc, ← Matrix.det_mul, mul_eq_one_comm.1 QP, Matrix.det_one, mul_one]`.
+-/
 theorem det_conj_rect {A : Type} [CommRing A] {m n : ℕ} (h : n = m) {P : Matrix (Fin m) (Fin n) A} {Q : Matrix (Fin n) (Fin m) A}
     (QP : Q * P = 1) (M : Matrix (Fin n) (Fin n) A) : (P * M * Q).det = M.det := by
   subst h
@@ -46,6 +58,21 @@ theorem det_conj_rect {A : Type} [CommRing A] {m n : ℕ} (h : n = m) {P : Matri
 
 variable {V V' : HSp D} (I : IsoMat V V')
 
+/- English proof (translation)
+Establish `hinf : ∀ w : WO S V', w.map (infPart D) = 0 → ((I.phi S).symm w).map (infPart D) = 0` using `fun w h => by show (HMul.hMul I.aQ w).map (infPart D) = 0`. Rewrite using `[Matrix.map_mul, h, Matrix.mul_zero]`. Establish `hfin : ∀ w : WO S V', w.map (finPart D) = 0 → ((I.phi S).symm w).map (finPart D) = 0` using `fun w h => by show (HMul.hMul I.aQ w).map (finPart D) = 0`. Rewrite using `[Matrix.map_mul, h, Matrix.mul_zero]`. Use `⟨fun γ w => ?_, ?_, hf.cont.comp (I.continuous_phi_symm S), fun k L hL h0 w => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, rfl⟩` from `(I.phi S).surjective w`. Establish `e : ratW V' S γ = I.phi S (ratW V S (I.Q * γ))`. Rewrite using `[IsoMat.phi_ratW, ← Matrix.mul_assoc, I.PQ, Matrix.one_mul]`. Rewrite using `[e, ← map_add, I.symplOH_phi]`. Simplify using `only [IsoMat.trW, AddEquiv.symm_apply_apply]`.
+
+Conclude with `hf.quasi _ _`. Take `⟨U, hU, e⟩` from `hf.level`. Use `⟨U.map (I.phi S).toAddMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((U.map (I.phi S).toAddMonoidHom : AddSubgroup (WO S V')) : Set (WO S V')) = (I.phi S).symm ⁻¹' U`. Use extensionality with `w`.
+
+Simplify using `only [AddSubgroup.coe_map, Set.mem_image, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Simplify using `using hu`. Introduce `hw`.
+
+Conclude with `⟨_, hw, by simp⟩`. Rewrite using `[e]`. Conclude with `hU.preimage (I.continuous_phi_symm S)`. Introduce and unpack `_ ⟨u, hu, rfl⟩ h0`. Establish `h1 : u.map (infPart D) = 0`.
+
+Use `hinf _ h0` as an intermediate fact. Simplify using `using this`. Use `show heisO ψ S V' (I.phi S u) (I.trW S f) = I.trW S f`. Rewrite using `[I.heisO_trW, e u hu h1]`. Use `hf.smooth k ((I.phi S).symm.toAddMonoidHom.comp L) ((I.continuous_phi_symm S).comp hL) (fun t => hfin _ (h0 t)) ((I.phi S).symm w)` as an intermediate fact.
+
+Simplify `this` using `[IsoMat.trW]`.
+-/
 theorem isThetaFunO_tr (S : HSp D) {ψ : AddChar (AF D.host.F) ℂ} {f : WO S V → ℂ} (hf : IsThetaFunO ψ S V f) :
     IsThetaFunO ψ S V' (I.trW S f) := by
   have hinf : ∀ w : WO S V', w.map (infPart D) = 0 → ((I.phi S).symm w).map (infPart D) = 0 := fun w h => by
@@ -83,6 +110,25 @@ theorem isThetaFunO_tr (S : HSp D) {ψ : AddChar (AF D.host.F) ℂ} {f : WO S V 
       ((I.phi S).symm w)
     simpa [IsoMat.trW] using this
 
+/- English proof (translation)
+Establish `hT : ∀ f, IsThetaFunO ψ S V' f → IsThetaFunO ψ S V (I.symm.trW S f)` using `fun f hf => isThetaFunO_tr I.symm S hf`. Use `⟨h.std, h.hecS, h.hecT, h.resS, I.rank_eq ▸ h.resT, fun p f hf => ?_, fun g k w₀ f hf => ?_, fun γ hγ γ' hγ' f hf => ?_, fun f hf w => ?_, fun μ 𝓕 hμ h𝓕 p f hf => ?_, fun e he g k hg hk x y hx hy => ?_⟩` and prove the remaining obligations. Conclude with `isThetaFunO_tr I S (h.om_pres _ _ (hT f hf))`. Rewrite using `[IsoMat.omT_apply, IsoMat.omT_apply, ← I.symm.heisO_trW S ψ w₀ f, h.om_heis _ _ _ _ (hT f hf), ← I.heisO_trW, I.actO_phi]`. Use `congr 2`.
+
+Conclude with `I.kap.apply_symm_apply k`. Conclude with `(I.phi S).apply_symm_apply w₀`. Rewrite using `[IsoMat.omT_apply] show om (γ, I.kap.symm γ') (I.symm.trW S f) ((I.phi S).symm 0) = f 0`. Use `h.om_aut γ hγ (I.kap.symm γ') (I.symm.kap_mem_GQ hγ') _ (hT f hf)` as an intermediate fact. Rewrite using `[map_zero, this]`.
+
+Use `show f ((I.phi S) 0) = f 0`. Rewrite using `[map_zero]`. Conclude with `(h.om_cont _ (hT f hf) ((I.phi S).symm w)).comp (continuous_fst.prodMk ((I.continuous_kap_symm).comp continuous_snd))`. Take `⟨ν, 𝓖, hν, h𝓖, hu⟩` from `GlobalTheory.T.exists_haar_fundamentalDomain_isometryTransport D V V' I S μ 𝓕 hμ h𝓕`. Establish `e1` using `hu fun x => ‖om (p.1, I.kap.symm p.2) (I.symm.trW S f) x‖ₑ ^ 2`.
+
+Establish `e2` using `hu fun x => ‖I.symm.trW S f x‖ₑ ^ 2`. Establish `e3 : ∀ w, I.symm.trW S f ((I.phi S).symm w) = f w` using `fun w => congrArg f ((I.phi S).apply_symm_apply w)`. Simplify using `only [e3] at e2`. Rewrite using `[IsoMat.omT_apply]`. Conclude with `e1.trans ((h.om_unit ν 𝓖 hν h𝓖 _ _ (hT f hf)).trans e2.symm)`.
+
+Establish `e0 : mt V (I.kap.symm k) - 1 = _` using `sub_one_conj I.aQ_aP (mt V' k)`. Establish `hsupp : SuppAt e V (I.kap.symm k)` using `fun i j => by`. Unfold `SuppAt at hk`. Rewrite using `[e0]`. Conclude with `entries_fix _ hk _ _ i j`.
+
+Establish `e1 : (mt V (I.kap.symm k)).det = (mt V' k).det` using `det_conj_rect I.rank_eq.symm I.aP_aQ (mt V' k)`. Establish `hdet : IsDetAt e V (I.kap.symm k) y`. Unfold `IsDetAt at hy ⊢`. Rewrite using `[e1]`. Conclude with `hy`.
+
+Take `⟨r, hr, H⟩` from `h.om_split e he g (I.kap.symm k) hg hsupp x y hx hdet`. Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ u : WO S V, (∀ i j, cA D e * u i j = u i j) → ∀ f, IsThetaFunO ψ S V f → (ℓ ∘ₗ I.trL S) (heisO ψ S V u f) = (ℓ ∘ₗ I.trL S) f`. Introduce `u hu f hf`. Use `show ℓ (I.trW S (heisO ψ S V u f)) = ℓ (I.trW S f)`.
+
+Rewrite using `[← I.heisO_trW]`. Conclude with `hℓ _ (fun i j => entries_fix' _ hu I.aP i j) _ (isThetaFunO_tr I S hf)`. Use `H (ℓ ∘ₗ I.trL S) hinv _ (hT f hf)` as an intermediate fact. Establish `e1 : (ℓ ∘ₗ I.trL S) (I.symm.trW S f) = ℓ f` using `congrArg ℓ (I.symm.trW_symm_trW S f)`. Rewrite `this` using `[e1]`.
+
+Conclude with `this`.
+-/
 theorem isWeilDatumO_tr (S : HSp D) {ψ : AddChar (AF D.host.F) ℂ} {χ χ' : (AE D)ˣ →* Circle}
     {om : GA D S × GA D V →* Module.End ℂ (WO S V → ℂ)}
     (h : IsWeilDatumO ψ S V χ χ' om) : IsWeilDatumO ψ S V' χ χ' (I.omT S om) := by
@@ -139,19 +185,33 @@ namespace GlobalTheory.ConjLine
 open GlobalTheory.Mem.Isom GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => rfl`.
+-/
 theorem cT_eq_conjTranspose {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) M = Mᴴ := Matrix.ext fun _ _ => rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero (D := D)`.
+-/
 theorem cmHost_imaginaryGenerator_ne_zero : D.host.xi0 ≠ 0 := GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero (D := D)
 
 def sc (D : D7) : D.host.E := star (-D.host.xi0⁻¹)
 
+/- English proof (translation)
+Establish `h` using `cmHost_imaginaryGenerator_ne_zero (D := D)`. Establish `h' : star D.host.xi0 ≠ 0` using `star_ne_zero.2 h`. Simplify using `only [sc, star_star, star_neg, star_inv₀]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sc_mul : star (sc D) * sc D * (D.host.xi0 * star D.host.xi0) = 1 := by
   have h := cmHost_imaginaryGenerator_ne_zero (D := D)
   have h' : star D.host.xi0 ≠ 0 := star_ne_zero.2 h
   simp only [sc, star_star, star_neg, star_inv₀]
   field_simp
 
+/- English proof (translation)
+Rewrite using `[cT_eq_conjTranspose, Matrix.conjTranspose_smul]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Rewrite using `[hg, smul_smul]`. Use `one_smul D.host.E L'.gram using 2` and compare the differences between its conclusion and the goal. Use `sc_mul (D := D)` as an intermediate fact.
+
+Simplify using `only [Int.cast_one, one_mul]`. Take the linear combination `this`.
+-/
 theorem gram_sc (L L' : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host.E)
     (hg : τᴴ ⬝ (L.gram ⬝ τ) = (((1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • L'.gram) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (sc D • τ) * L.gram * (sc D • τ) = L'.gram := by
@@ -176,6 +236,11 @@ def isoOf (L L' : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host.E) (hr :
       Matrix.nonsing_inv_mul _ (GlobalTheory.MixModel.gram_isUnit_det L')]
   gram := gram_sc L L' τ hg
 
+/- English proof (translation)
+Establish `e : (sc D • τ).map (incA D) = incA D (sc D) • (rat τ : Mx D L.rank L'.rank)`. Use extensionality with `i j`. Simplify using `[rat]`. Rewrite using `[e, Matrix.smul_mul, dagger, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj, adj_smul]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul]`.
+
+Use `congr 1`. Use `show incA D (star (sc D)) = _`. Simplify using `[sc]`.
+-/
 theorem dagger_sc (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host.E) (w : WO S L') :
     dagger S L (HMul.hMul ((sc D • τ).map (incA D)) w) = GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L'.rank) ⬝ w) := by
   have e : (sc D • τ).map (incA D) = incA D (sc D) • (rat τ : Mx D L.rank L'.rank) := by
@@ -193,6 +258,9 @@ namespace GlobalTheory.ConjLine
 open GlobalTheory.Mem.Isom GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Use `show starRingEnd ℂ (f (dagger S L (HMul.hMul ((sc D • τ).map (incA D)) w))) = _`. Rewrite using `[dagger_sc]`. Both sides reduce to the same expression.
+-/
 theorem trW_cj (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host.E) (hr : L.rank = L'.rank)
     (hg : τᴴ ⬝ (L.gram ⬝ τ) = (((1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • L'.gram) (f : WO L S → ℂ) :
     (isoOf L L' τ hr hg).symm.trW S (cj (dagger S L) f) =
@@ -202,6 +270,9 @@ theorem trW_cj (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host.E
   rw [dagger_sc]
   rfl
 
+/- English proof (translation)
+Introduce `a`. Take `⟨η, hη⟩` from `h.1`. Establish `e1` using `h.2 η hη a`. Establish `e2` using `h'.2 η hη a`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, e1, e2, inv_mul_cancel]`.
+-/
 theorem trivOnF_of_resEta {χ χ' : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D χ n) (h' : ResEta D χ' n) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilDatumUniquenessCriterion.TrivOnF D (χ⁻¹ * χ') := by
   intro a
@@ -210,6 +281,17 @@ theorem trivOnF_of_resEta {χ χ' : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta 
   have e2 := h'.2 η hη a
   rw [MonoidHom.mul_apply, MonoidHom.inv_apply, e1, e2, inv_mul_cancel]
 
+/- English proof (translation)
+Introduce `D ψ L L' S τ hr hg χz χ χ' om om' hom hom' f hf`. Establish `CA` using `GlobalTheory.T.weilConjugationAdjointRule_standard_char D ψ hom.std L S`. Establish `hW : IsWeilDatumO ψ S L χ χz (conjAdjoint om)` using `(CA.conj_adjoint χz χ om hom).1`. Establish `hF₁ : IsThetaFunO ψ S L (cj (dagger S L) f)` using `(CA.theta_dagger f).2 hf`. Use `set I := (isoOf L L' τ hr hg).symm with hI`.
+
+Establish `hG : IsThetaFunO ψ S L' (I.trW S (cj (dagger S L) f))` using `isThetaFunO_tr I S hF₁`. Rewrite `hG` using `[hI, trW_cj]`. Use `⟨hG, fun h => ?_⟩` and prove the remaining obligations. Establish `hW₀ : IsWeilDatumO ψ S L' χ χz (I.omT S (conjAdjoint om))` using `isWeilDatumO_tr I S hW`. Establish `hom'' : IsWeilDatumO ψ S L' (χ * (χ⁻¹ * χ')) (χz * 1) om'`.
+
+Rewrite using `[mul_inv_cancel_left, mul_one]`. Conclude with `hom'`. Take `⟨a, b, ha, hb, e⟩` from `(GlobalTheory.WeilDetermined.weilDatumDetermined D).2 ψ S L' χ χz (χ⁻¹ * χ') 1 (I.omT S (conjAdjoint om)) om' (trivOnF_of_resEta hom.resT hom'.resS) (fun _ => rfl) hW₀ hom'' h 1`. Establish `ha1 : a = 1`. Take `⟨x, hx⟩` from `ha.1`.
+
+Conclude with `(ha.2 x hx).symm`. Establish `hb1 : b = 1` using `hb.at_one`. Use `(e _ hG).trans ?_` and prove the remaining obligations. Rewrite using `[ha1, hb1, inv_one, one_mul]`. Simplify using `only [Circle.coe_one, one_smul]`.
+
+Rewrite using `[← trW_cj L L' S τ hr hg, ← hI, IsoMat.omT_apply, map_one, I.trW_symm_trW, ← trW_cj L L' S τ hr hg, ← hI]`. Use `congr 1`. Conclude with `cjEnd_cj (daggerEquiv L S) (om (1, h)) f`.
+-/
 theorem conj_line : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host.E), L.rank = L'.rank → τᴴ ⬝ (L.gram ⬝ τ) = (((1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • L'.gram → ∀ (χz χ χ' : ((AE D)ˣ →* Circle)) (om : Om L S) (om' : Om S L'), IsWeilDatumO ψ L S χz χ om → IsWeilDatumO ψ S L' χ' χz om' → ∀ f, IsThetaFunO ψ L S f → IsThetaFunO ψ S L' (fun w => star (f (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L'.rank) ⬝ w)))) ∧ ∀ h, om' (h, 1) (fun w => star (f (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L'.rank) ⬝ w)))) = fun w => star (om (1, h) f (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L'.rank) ⬝ w))) := by
   intro D ψ L L' S τ hr hg χz χ χ' om om' hom hom' f hf
   have CA := GlobalTheory.T.weilConjugationAdjointRule_standard_char D ψ hom.std L S

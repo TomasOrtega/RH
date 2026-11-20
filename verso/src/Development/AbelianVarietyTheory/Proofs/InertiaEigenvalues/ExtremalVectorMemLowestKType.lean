@@ -18,14 +18,25 @@ namespace GlobalTheory.TwInputs.Move
 
 variable {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0}
 
+/- English proof (translation)
+Rewrite using `[X.phs j, map_one]`.
+-/
 theorem cj_phs (X : RealSide D) (j : Fin D.R.m) : cj (twAt D.what₂.embLL X.A3.A.v0) (X.R.phs j) = 1 := by
   rw [X.phs j, map_one]
 
+/- English proof (translation)
+Unfold `IsNorm`. Simplify using `only [cj_phs, one_mul]`.
+-/
 theorem isNorm_iff (X : RealSide D) {j : Fin D.R.m} (B : Base (Vc D j) (Wc D j)) (ν : ℂ) :
     IsNorm X.R X.geo.v₀ B ν ↔ ν ≠ 0 ∧ ∃ c, IsScale X.R X.geo.v₀ B c ∧ ∃ n : ℕ, n ≠ 0 ∧ ν ^ n = c ^ n := by
   unfold IsNorm
   simp only [cj_phs, one_mul]
 
+/- English proof (translation)
+Establish `key : ∀ {R R' : Ranks} {H : Host R} {H' : Host R'} (s : Spaces R H.F H.E) (s' : Spaces R' H'.F H'.E), R = R' → HEq H H' → HEq s s' → ∀ k, (s.V k).rank = (s'.V k).rank ∧ (s.W k).rank = (s'.W k).rank`. Introduce `R R' H H' s s' h1 h2 h3 k`. Substitute `h1` using the available equality. Consider the cases of `h2`. Consider the cases of `h3`.
+
+Conclude with `⟨rfl, rfl⟩`. Conclude with `key D.sp D'.sp h.gal.R h.gal.host h.sp _`.
+-/
 theorem CopyTw.rank_eq (h : CopyTw D D' ι e) (j : Fin D.R.m) :
     (Vc D j).rank = (Vc D' (h.cm j)).rank ∧ (Wc D j).rank = (Wc D' (h.cm j)).rank := by
   have key : ∀ {R R' : Ranks} {H : Host R} {H' : Host R'} (s : Spaces R H.F H.E) (s' : Spaces R' H'.F H'.E),
@@ -35,10 +46,16 @@ theorem CopyTw.rank_eq (h : CopyTw D D' ι e) (j : Fin D.R.m) :
     exact ⟨rfl, rfl⟩
   exact key D.sp D'.sp h.gal.R h.gal.host h.sp _
 
+/- English proof (translation)
+Use `show (D.what₂.Tau → GL (Fin (Vc D j).rank) ℂ) = (D'.what₂.Tau → GL (Fin (Vc D' (h.cm j)).rank) ℂ)`. Rewrite using `[h.Tau, (h.rank_eq j).1]`.
+-/
 theorem CopyTw.glr_eq (h : CopyTw D D' ι e) (j : Fin D.R.m) : GLR D (Vc D j).rank = GLR D' (Vc D' (h.cm j)).rank := by
   show (D.what₂.Tau → GL (Fin (Vc D j).rank) ℂ) = (D'.what₂.Tau → GL (Fin (Vc D' (h.cm j)).rank) ℂ)
   rw [h.Tau, (h.rank_eq j).1]
 
+/- English proof (translation)
+Rewrite using `[h.Tau, (h.rank_eq j).1]`.
+-/
 theorem CopyTw.pol_eq (h : CopyTw D D' ι e) (j : Fin D.R.m) :
     Formalism.L2.DIV.Pol D'.what₂.LL D.what₂.Tau (Vc D j).rank = Formalism.L2.DIV.Pol D'.what₂.LL D'.what₂.Tau (Vc D' (h.cm j)).rank := by
   rw [h.Tau, (h.rank_eq j).1]
@@ -47,13 +64,22 @@ section Coef
 
 variable {n : ℕ} {K : Type} [Field K] (σ : K →+* ℂ) (lam : D.what₂.Tau → DomWeight n)
 
+/- English proof (translation)
+Simplify using `only [coefFn, map_add, mul_add]`.
+-/
 theorem coefFn_add (F G : Formalism.L2.DIV.Pol K D.what₂.Tau n) (x : GLR D n) :
     coefFn σ lam (F + G) x = coefFn σ lam F x + coefFn σ lam G x := by
   simp only [coefFn, map_add, mul_add]
 
+/- English proof (translation)
+Simplify using `only [coefFn, map_zero, mul_zero]`.
+-/
 theorem coefFn_zero (x : GLR D n) : coefFn σ lam (0 : Formalism.L2.DIV.Pol K D.what₂.Tau n) x = 0 := by
   simp only [coefFn, map_zero, mul_zero]
 
+/- English proof (translation)
+Simplify using `only [coefFn, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.eval₂Hom_C]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coefFn_smul (a : K) (F : Formalism.L2.DIV.Pol K D.what₂.Tau n) (x : GLR D n) :
     coefFn σ lam (a • F) x = σ a * coefFn σ lam F x := by
   simp only [coefFn, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.eval₂Hom_C]
@@ -61,6 +87,9 @@ theorem coefFn_smul (a : K) (F : Formalism.L2.DIV.Pol K D.what₂.Tau n) (x : GL
 
 end Coef
 
+/- English proof (translation)
+The claim follows from `(hv.1 τ).2.1`.
+-/
 theorem extremalVector_mem_lowestKType (X : RealSide D) {j : Fin D.R.m}
     (hv : FWT.IsChosenExtremalVector X.R.toRealDat j (sg0 D X.A3.A) (X.geo.v₀ j _)) (τ : D.what₂.Tau) :
     X.geo.v₀ j (sg0 D X.A3.A) τ ∈ lowT (model X j) τ :=
@@ -68,6 +97,11 @@ theorem extremalVector_mem_lowestKType (X : RealSide D) {j : Fin D.R.m}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hB` using `hs.B i i' hi j (h.cm j) rfl b`. Take `⟨r, rfl⟩` from `h.exists_rest`. Establish `e1 : (ρ'.B i' (h.cm j) b).w.p = (ρ.B i j b).w.p` using `(eq_of_heq hB.p).symm`. Establish `e2 : (ρ'.B i' (h.cm j) b).w.c = (ρ.B i j b).w.c` using `(eq_of_heq hB.c).symm`. Establish `e3 : (ρ'.B i' (h.cm j) b).F.BS = (ρ.B i j b).F.BS` using `(eq_of_heq hB.BS).symm`.
+
+Establish `e4 : P' = P` using `(eq_of_heq hP).symm`. Establish `e5 : x' = x` using `(eq_of_heq hx).symm`. Rewrite using `[harmFn_apply, harmFn_apply, e1, e2, e3, e4, e5]`. Both sides reduce to the same expression.
+-/
 theorem harm_move (h : CopyTw D D' ι e) {ρ : Setup D.ntw} {ρ' : Setup D'.ntw} (hs : SameSetup ρ ρ') (i : D.ntw.Tw)
     (i' : D'.ntw.Tw) (hi : HEq i i') (j : Fin D.R.m) (b : Bool) (P : PolF D (Wc D j).rank (Vc D j).rank)
     (P' : PolF D' (Wc D' (h.cm j)).rank (Vc D' (h.cm j)).rank) (hP : HEq P P') (x : GLR D (Vc D j).rank)
@@ -84,6 +118,11 @@ theorem harm_move (h : CopyTw D D' ι e) {ρ : Setup D.ntw} {ρ' : Setup D'.ntw}
   rw [harmFn_apply, harmFn_apply, e1, e2, e3, e4, e5]
   rfl
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `h.exists_rest`. Take `rfl : P' = MvPolynomial.map ι P` from `(eq_of_heq hP).symm`. Take `rfl : x' = x` from `(eq_of_heq hx).symm`. Unfold `coefFn`. Use `congr 1`.
+
+Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.coe_eval₂Hom]`. Conclude with `(MvPolynomial.eval₂_map ι _ _ P).trans (by rw [h.embLL_comp]; rfl)`.
+-/
 theorem coefFn_move (h : CopyTw D D' ι e) (j : Fin D.R.m) (P : Formalism.L2.DIV.Pol D.what₂.LL D.what₂.Tau (Vc D j).rank)
     (P' : Formalism.L2.DIV.Pol D'.what₂.LL D'.what₂.Tau (Vc D' (h.cm j)).rank) (hP : HEq (MvPolynomial.map ι P) P')
     (x : GLR D (Vc D j).rank) (x' : GLR D' (Vc D' (h.cm j)).rank) (hx : HEq x x') :
@@ -96,6 +135,9 @@ theorem coefFn_move (h : CopyTw D D' ι e) (j : Fin D.R.m) (P : Formalism.L2.DIV
   rw [MvPolynomial.coe_eval₂Hom, MvPolynomial.coe_eval₂Hom]
   exact (MvPolynomial.eval₂_map ι _ _ P).trans (by rw [h.embLL_comp]; rfl)
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `h.exists_rest`. Take `rfl : P' = MvPolynomial.map ι P` from `(eq_of_heq hP).symm`. Conclude with `((baseChangeSpace_holds _ _ ι _ _ (FWT.lamV D j)).1 P).1 hmem`.
+-/
 theorem VV_map_mem (h : CopyTw D D' ι e) (j : Fin D.R.m) (P : Formalism.L2.DIV.Pol D.what₂.LL D.what₂.Tau (Vc D j).rank)
     (P' : Formalism.L2.DIV.Pol D'.what₂.LL D'.what₂.Tau (Vc D' (h.cm j)).rank) (hP : HEq (MvPolynomial.map ι P) P')
     (hmem : P ∈ VV D.what₂.LL (FWT.lamV D j)) : P' ∈ VV D'.what₂.LL (FWT.lamV D' (h.cm j)) := by
@@ -103,6 +145,9 @@ theorem VV_map_mem (h : CopyTw D D' ι e) (j : Fin D.R.m) (P : Formalism.L2.DIV.
   obtain rfl : P' = MvPolynomial.map ι P := (eq_of_heq hP).symm
   exact ((baseChangeSpace_holds _ _ ι _ _ (FWT.lamV D j)).1 P).1 hmem
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `h.exists_rest`. Use `(le_of_eq (baseChangeSpace_holds _ _ ι _ _ (FWT.lamV D j)).2.symm).trans (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Conclude with `⟨P, hP, HEq.rfl⟩`.
+-/
 theorem VV_le_span (h : CopyTw D D' ι e) (j : Fin D.R.m) :
     VV D'.what₂.LL (FWT.lamV D' (h.cm j)) ≤ Submodule.span D'.what₂.LL
       {P' | ∃ P ∈ VV D.what₂.LL (FWT.lamV D j), HEq (MvPolynomial.map ι P) P'} := by
@@ -112,6 +157,31 @@ theorem VV_le_span (h : CopyTw D D' ι e) (j : Fin D.R.m) :
   exact ⟨P, hP, HEq.rfl⟩
 
 set_option maxHeartbeats 6000000 in
+/- English proof (translation)
+Take `⟨g₁, r₁, c₁, hT₁, u, hu, hF⟩` from `hc`. Take `⟨c0, c0', hc0, hc0', hio⟩` from `m.io`. Take `⟨ζ, n, hn, hζ, hζF⟩` from `GlobalTheory.CoefUniq.exists_root_of_unity D X c0 c₁ hc0 ⟨g₁, r₁, hT₁⟩ j`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hζ` using `[zero_pow hn]`. Conclude with `zero_ne_one hζ`. Use `⟨ζ⁻¹ * c, ?_, n, hn, by rw [mul_pow, inv_pow, hζ, inv_one, one_mul]⟩` and prove the remaining obligations. Take `⟨g', r', hT'⟩` from `hc0'`. Set `u' : ∀ τ, lowT (model X' (h.cm j)) τ` to `fun τ => ⟨_, extremalVector_mem_lowestKType X' (hv' (h.cm j)) τ⟩`.
+
+Use `⟨g', r', c0', hT', u', fun τ => rfl, ?_⟩` and prove the remaining obligations. Establish `hsv : SameVec (M` using `model X j) (M' := model X' (h.cm j)) (fun τ => u τ) (fun τ => u' τ) := by`. Introduce `τ τ' hτ`. Establish `h1` using `m.v₀ j (h.cm j) rfl τ τ' hτ`. Establish `h2` using `hu τ`.
+
+Simplify using `only at h2 ⊢`. Rewrite using `[h2]`. Conclude with `h1`. Establish `hG : Submodule.span D'.what₂.LL {P' | ∃ P ∈ VV D.what₂.LL (FWT.lamV D j), HEq (MvPolynomial.map ι P) P'} ≤ VV D'.what₂.LL (FWT.lamV D' (h.cm j))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `P' ⟨P, hP, hPP'⟩`. Conclude with `VV_map_mem h j P P' hPP' hP`. Establish `key : ∀ z ∈ Submodule.span D'.what₂.LL {P' | ∃ P ∈ VV D.what₂.LL (FWT.lamV D j), HEq (MvPolynomial.map ι P) P'}, ∀ hz : z ∈ VV D'.what₂.LL (FWT.lamV D' (h.cm j)), harmFn (Wc D' (h.cm j)).rank (ρ'.B i' (h.cm j) b).w (ρ'.B i' (h.cm j) b).F.BS (X'.R.ioP (h.cm j) (PiTensorProduct.tpr …`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨P, hP, hPz⟩` from `hz`. Introduce `hz'`. Use function extensionality and compare the values at `x'`. Establish `hx : HEq (cast (h.glr_eq j).symm x') x'` using `cast_heq _ _`.
+
+Establish `e1` using `harm_move h hs i i' hi j b (X.R.ioP j (PiTensorProduct.tprod ℂ u) (c0 j ⟨P, hP⟩)) (X'.R.ioP (h.cm j) (PiTensorProduct.tprod ℂ u') (c0' (h.cm j) ⟨z, hz'⟩)) (hio j (h.cm j) rfl u u' hsv ⟨P, hP⟩ ⟨z, hz'⟩ hPz) _ x' hx`. Establish `e2` using `congrFun (hF ⟨P, hP⟩) (cast (h.glr_eq j).symm x')`. Rewrite `e2` using `[show (c₁ j) ⟨P, hP⟩ = ζ • (c0 j) ⟨P, hP⟩ from hζF _, map_smul, map_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `e3` using `coefFn_move h j P z hPz _ x' hx`. Establish `e2' : ζ * harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS (X.R.ioP j (PiTensorProduct.tprod ℂ u) (c0 j ⟨P, hP⟩)) (cast (h.glr_eq j).symm x') = c * coefFn D.what₂.embLL (FWT.lamV D j) P (cast (h.glr_eq j).symm x')` using `e2`.
+
+Rewrite using `[e1, Pi.smul_apply, smul_eq_mul, e3, mul_assoc, ← e2', ← mul_assoc, inv_mul_cancel₀ hζ0, one_mul]`. Consider the case `zero`. Introduce `hz`. Rewrite using `[show (⟨0, hz⟩ : ↥(VV D'.what₂.LL (FWT.lamV D' (h.cm j)))) = 0 from rfl, map_zero, map_zero, map_zero]`. Use function extensionality and compare the values at `x'`.
+
+Rewrite using `[Pi.smul_apply, coefFn_zero, smul_zero, Pi.zero_apply]`. Consider the case `add x y hx hy ihx ihy`. Introduce `hxy`. Establish `hx'` using `hG hx`. Establish `hy'` using `hG hy`.
+
+Rewrite using `[show (⟨x + y, hxy⟩ : ↥(VV D'.what₂.LL (FWT.lamV D' (h.cm j)))) = ⟨x, hx'⟩ + ⟨y, hy'⟩ from rfl, map_add, map_add, map_add, ihx hx', ihy hy']`. Use function extensionality and compare the values at `x'`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, coefFn_add, mul_add]`. Consider the case `smul a x hx ih`. Introduce `hax`.
+
+Establish `hx'` using `hG hx`. Rewrite using `[show (⟨a • x, hax⟩ : ↥(VV D'.what₂.LL (FWT.lamV D' (h.cm j)))) = a • ⟨x, hx'⟩ from rfl, map_smulₛₗ, map_smul, map_smul, ih hx']`. Use function extensionality and compare the values at `x'`. Simplify using `only [Pi.smul_apply, smul_eq_mul, coefFn_smul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `F'`. Conclude with `key F' (VV_le_span h j F'.2) F'.2`.
+-/
 theorem scale_fwd (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMove X X' ι) {ρ : Setup D.ntw}
     {ρ' : Setup D'.ntw} (hs : SameSetup ρ ρ')
     (hv' : ∀ j, FWT.IsChosenExtremalVector X'.R.toRealDat j (sg0 D' X'.A3.A) (X'.geo.v₀ j _)) (i : D.ntw.Tw) (i' : D'.ntw.Tw)
@@ -186,6 +256,21 @@ theorem scale_fwd (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m 
   exact key F' (VV_le_span h j F'.2) F'.2
 
 set_option maxHeartbeats 6000000 in
+/- English proof (translation)
+Take `⟨g₁, r₁, c₁, hT₁, u', hu', hF⟩` from `hc`. Take `⟨c0, c0', hc0, hc0', hio⟩` from `m.io`. Take `⟨ζ, n, hn, hζ, hζF⟩` from `GlobalTheory.CoefUniq.exists_root_of_unity D' X' c0' c₁ hc0' ⟨g₁, r₁, hT₁⟩ (h.cm j)`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hζ` using `[zero_pow hn]`. Conclude with `zero_ne_one hζ`. Use `⟨ζ⁻¹ * c', ?_, n, hn, by rw [mul_pow, inv_pow, hζ, inv_one, one_mul]⟩` and prove the remaining obligations. Take `⟨g, r, hT⟩` from `hc0`. Take `⟨u, hu⟩ : ∃ u : ∀ τ, lowT (model X j) τ, ∀ τ, (u τ : (model X j).sm τ) = X.geo.v₀ j (sg0 D X.A3.A) τ` from `⟨fun τ => ⟨_, extremalVector_mem_lowestKType X (hv j) τ⟩, fun τ => rfl⟩`.
+
+Use `⟨g, r, c0, hT, u, hu, ?_⟩` and prove the remaining obligations. Establish `hsv : SameVec (M` using `model X j) (M' := model X' (h.cm j)) (fun τ => u τ) (fun τ => u' τ) := by`. Introduce `τ τ' hτ`. Establish `h1` using `m.v₀ j (h.cm j) rfl τ τ' hτ`. Establish `h2` using `hu' τ'`.
+
+Establish `h3` using `hu τ`. Simplify using `only at h2 h3 ⊢`. Rewrite using `[h2, h3]`. Conclude with `h1`. Introduce and unpack `⟨P, hP⟩`.
+
+Use function extensionality and compare the values at `x`. Take `⟨P', hPP'⟩ : ∃ P' : Formalism.L2.DIV.Pol D'.what₂.LL D'.what₂.Tau (Vc D' (h.cm j)).rank, HEq (MvPolynomial.map ι P) P'` from `⟨cast (h.pol_eq j) (MvPolynomial.map ι P), (cast_heq _ _).symm⟩`. Establish `hP' : P' ∈ VV D'.what₂.LL (FWT.lamV D' (h.cm j))` using `VV_map_mem h j P P' hPP' hP`. Take `⟨x', hx⟩ : ∃ x' : GLR D' (Vc D' (h.cm j)).rank, HEq x x'` from `⟨cast (h.glr_eq j) x, (cast_heq _ _).symm⟩`. Establish `e1` using `harm_move h hs i i' hi j b (X.R.ioP j (PiTensorProduct.tprod ℂ u) (c0 j ⟨P, hP⟩)) (X'.R.ioP (h.cm j) (PiTensorProduct.tprod ℂ u') (c0' (h.cm j) ⟨P', hP'⟩)) (hio j (h.cm j) rfl u u' hsv ⟨P, hP⟩ ⟨P', hP'⟩ hPP') x x' hx`.
+
+Establish `e2 : ζ * harmFn (Wc D' (h.cm j)).rank (ρ'.B i' (h.cm j) b).w (ρ'.B i' (h.cm j) b).F.BS (X'.R.ioP (h.cm j) (PiTensorProduct.tprod ℂ u') (c0' (h.cm j) ⟨P', hP'⟩)) x' = c' * coefFn D'.what₂.embLL (FWT.lamV D' (h.cm j)) P' x'`. Use `congrFun (hF ⟨P', hP'⟩) x'` as an intermediate fact. Rewrite `this` using `[show (c₁ (h.cm j)) ⟨P', hP'⟩ = ζ • (c0' (h.cm j)) ⟨P', hP'⟩ from hζF _, map_smul, map_smul]`. Conclude with `this`. Establish `e3` using `coefFn_move h j P P' hPP' x x' hx`.
+
+Use `show _ = (ζ⁻¹ * c') * coefFn D.what₂.embLL (FWT.lamV D j) P x`. Use `e1.symm.trans ?_` and prove the remaining obligations. Rewrite using `[← e3, mul_assoc, ← e2, ← mul_assoc, inv_mul_cancel₀ hζ0, one_mul]`.
+-/
 theorem scale_bwd (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMove X X' ι) {ρ : Setup D.ntw}
     {ρ' : Setup D'.ntw} (hs : SameSetup ρ ρ')
     (hv : ∀ j, FWT.IsChosenExtremalVector X.R.toRealDat j (sg0 D X.A3.A) (X.geo.v₀ j _)) (i : D.ntw.Tw) (i' : D'.ntw.Tw)
@@ -231,6 +316,11 @@ theorem scale_bwd (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m 
   refine e1.symm.trans ?_
   rw [← e3, mul_assoc, ← e2, ← mul_assoc, inv_mul_cancel₀ hζ0, one_mul]
 
+/- English proof (translation)
+Rewrite using `[isNorm_iff, isNorm_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hν, c, hc, n, hn, hνc⟩`. Take `⟨c', hc', k, hk, hcc⟩` from `scale_fwd h m hs hv' i i' hi j b hc`. Use `⟨hν, c', hc', n * k, mul_ne_zero hn hk, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_mul, hνc, ← pow_mul, mul_comm, pow_mul, ← hcc, ← pow_mul, mul_comm, pow_mul]`. Introduce and unpack `⟨hν, c', hc', n, hn, hνc⟩`. Take `⟨c, hc, k, hk, hcc⟩` from `scale_bwd h m hs hv i i' hi j b hc'`. Use `⟨hν, c, hc, n * k, mul_ne_zero hn hk, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, hνc, ← pow_mul, mul_comm, pow_mul, ← hcc, ← pow_mul, mul_comm, pow_mul]`.
+-/
 theorem isNorm_move_iff (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMove X X' ι) {ρ : Setup D.ntw}
     {ρ' : Setup D'.ntw} (hs : SameSetup ρ ρ')
     (hv : ∀ j, FWT.IsChosenExtremalVector X.R.toRealDat j (sg0 D X.A3.A) (X.geo.v₀ j _))
@@ -248,6 +338,9 @@ theorem isNorm_move_iff (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D
     refine ⟨hν, c, hc, n * k, mul_ne_zero hn hk, ?_⟩
     rw [pow_mul, hνc, ← pow_mul, mul_comm, pow_mul, ← hcc, ← pow_mul, mul_comm, pow_mul]
 
+/- English proof (translation)
+Introduce `D D' ι e h X X' m S YS S' YS' ρ ρ' hs hρ hρ' _ _ hv hv' hrd i i' hi j b ν hS`. Establish `hN` using `fun ν => isNorm_move_iff h m hs hv hv' i i' hi j b ν`. Establish `hR` using `fun c => RatUp.rat_copy_iff h hs hρ hρ' _ _ (hrd c) i i' hi j b`. Conclude with `⟨hS.ne, fun ⟨ν', h'⟩ => (hN ν).1 (hS.norm ⟨ν', (hN ν').2 h'⟩), fun ⟨ν', hn', hr'⟩ => (hR ν).1 (hS.rat ⟨ν', (hN ν').2 hn', (hR ν').2 hr'⟩)⟩`.
+-/
 theorem scalar_move : ∀ {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMove X X' ι) {S : NX.RatDat D.ntw} {YS : NX.NExpRealS X.R X.cG S} {S' : NX.RatDat D'.ntw}
     {YS' : NX.NExpRealS X'.R X'.cG S'} {ρ : Setup D.ntw} {ρ' : Setup D'.ntw}, SameSetup ρ ρ' → ∀ (hρ : ρ.Good) (hρ' : ρ'.Good),
     RealPin X.R X.cG ρ → RealPin X'.R X'.cG ρ' →

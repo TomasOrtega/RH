@@ -15,10 +15,18 @@ variable {F : Type} [Field F] [NumberField F]
 def liftI {κ : Type} (x : κ → mixedEmbedding.mixedSpace F) : κ → AF F :=
   fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), 0)
 
+/- English proof (translation)
+Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i)) = x i`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+-/
 theorem evI_liftI {κ : Type} (x : κ → mixedEmbedding.mixedSpace F) (i : κ) : evI F (liftI x i) = x i := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i)) = x i
   exact RingEquiv.apply_symm_apply _ _
 
+/- English proof (translation)
+Establish `h1 : t.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact ht)`. Use function extensionality and compare the values at `i`. Use `show t * liftI x i = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show t.1 * _ = 0`.
+
+Rewrite using `[h1, zero_mul]`. Use `show t.2 * 0 = 0`. Conclude with `mul_zero _`.
+-/
 theorem smul_liftI {κ : Type} (t : AF F) (ht : evI F t = 0) (x : κ → mixedEmbedding.mixedSpace F) : t • liftI x = 0 := by
   have h1 : t.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact ht)
   funext i
@@ -29,6 +37,17 @@ theorem smul_liftI {κ : Type} (t : AF F) (ht : evI F t = 0) (x : κ → mixedEm
   · show t.2 * 0 = 0
     exact mul_zero _
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ ψ JA JB co hψ hD hA`. Take `⟨D, hDu⟩` from `hD F E σ α β κ ψ JA JB co hψ`. Establish `hDf : ∀ u, At (evI F) u → ∀ f : SInf F κ, ⇑(D u f) = dH (cw co u).1 (cw co u).2 ⇑f` using `fun u hu f => funext fun x => (hDu u hu f).2 x`. Establish `real : ∀ a b : κ → mixedEmbedding.mixedSpace F, ∃ u : Matrix α β (AE F E), At (evI F) u ∧ cw co u = (a, b)`. Introduce `a b`.
+
+Use `⟨co.e.symm (liftI a, liftI b), fun t ht => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, Prod.smul_mk, smul_liftI t ht, smul_liftI t ht, Prod.mk_zero_zero, map_zero]`. Simplify using `only [cw, LinearEquiv.apply_symm_apply, evI_liftI]`. Use `⟨fun a b f => ?_, fun u hu f f₁ => ?_, real⟩` and prove the remaining obligations. Take `⟨u, hu, hc⟩` from `real a b`.
+
+Conclude with `⟨D u f, by rw [hDf u hu f, hc]⟩`. Establish `h0 : ∀ t, (fun t => co.rho ψ (realAd F t • u)) t 0 = 0` using `fun t => by`. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`. Establish `h1 : ActsD (evI F) (fun t => co.rho ψ (realAd F t • u)) f (D u f)` using `(hA F κ f (D u f) (D u f)).1 _ h0 (hDu u hu f).1`.
+
+Rewrite using `[← hDf u hu f]`. Prove the components needed by the constructor for the conclusion. Introduce `h2`. Rewrite using `[(hA F κ f f₁ (D u f)).2.2.1 _ h2 h1]`. Introduce `e`.
+
+Rewrite using `[DFunLike.coe_injective e]` and apply the resulting hypothesis.
+-/
 theorem derivLines : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (ψ : AddChar (AF F) ℂ) (JA : Matrix α α (AE F E))
     (JB : Matrix β β (AE F E)) (co : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ), IsStd ψ → GlobalTheory.RealLift.DerEx →

@@ -52,6 +52,15 @@ noncomputable def holUnifReparam {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} 
   fr_compat i j z hz := by
     rw [u.fr_compat i j _ hz, mul_div_assoc]
 
+/- English proof (translation)
+Introduce `A _ L g u φ e he hne h0`. Use `⟨holUnifReparam u φ e he hne, fun _ => rfl, fun _ => Iff.rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `rig hr j hj show u.fr _ (φ 0) / e 0 = _`. Rewrite using `[map_zero, h0, div_one]`. Conclude with `hr j hj`.
+
+Introduce `s θ hs i z hz`. Establish `h` using `hs i (φ z) hz`. Use `show valAt' (u.ex (φ z)).left _ _ = e z * θ (φ z) * (u.fr i (φ z) / e z)`. Rewrite using `[h]`. Use `hne z` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Introduce `w v hv U h f`. Rewrite using `[hv U h f]`. Establish `key` using `φ.toContinuousLinearEquiv.comp_right_fderiv (f := fun z => valAt' (u.ex z).left U f) (x := 0)`. Establish `h2` using `congrArg (fun T => T w) key`.
+
+Simplify using `only [map_zero] at h2`. Conclude with `h2.symm`.
+-/
 theorem exists_holUnif_reparam :
     ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (g : ℕ) (u : HolUnif A L g) (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (e : (Fin g → ℂ) → ℂ), Differentiable ℂ e → (∀ z, e z ≠ 0) → e 0 = 1 → ∃ u' : HolUnif A L g, (∀ z, u'.ex z = u.ex (φ z)) ∧ (∀ z, z ∈ u'.Λ ↔ φ z ∈ u.Λ) ∧ (∀ rig, u.IsRig rig → u'.IsRig rig) ∧ (∀ s θ, u.IsFn s θ → u'.IsFn s (fun z => e z * θ (φ z))) ∧ ∀ w v, u.IsDiff (φ w) v → u'.IsDiff w v := by
   intro A _ L g u φ e he hne h0

@@ -16,6 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 4000000
 noncomputable section
 namespace GlobalTheory.HeightCounting.Fin
+/- English proof (translation)
+Introduce `hL _ _`. Use `StepW.of_all ?_` and prove the remaining obligations. Introduce `K B f T w _ _ _ P x l big L _ _ o m _ _ s r _`. Rewrite using `[m.z.lev.C, w.C_eq]`. Establish `hg : TypesTrue x.o.N.ntypes f.P f.W` using `x.fits.grp`.
+
+Conclude with `⟨fun k v => hg.pl k v, fun k => hg.teich k, fun k v j => hg.chi k v j, fun k p => hg.ser k p⟩`.
+-/
 theorem finite_types_with_local_conditions_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility → AllSt fun _ _ _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 (Dof x))), _root_.GlobalTheory.CoefDuty.BuiltAlt l.a.A l.mt.M l.c.ch l.c.tp.tup big L → SumRepresentations.hypO (withLoc L) → ∀ {o : P.q.Over} (m : Moved o), m.Copy → m.Coh → ∀ (s : Side0 o) (r : ReadPk m s), r.Pin → TypesTrue (withLoc L).ntypes m.z.R.C.P m.z.R.C.W := by
   intro hL _ _
   refine StepW.of_all ?_

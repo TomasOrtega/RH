@@ -16,6 +16,9 @@ variable {K K' : Type} [Field K] [Field K'] [Algebra K K'] {m : ℕ}
 def stdGram (h : HermFam K (Fin m → K)) (σ : K' →+* ℂ) : Matrix (Fin m) (Fin m) ℂ :=
   Matrix.of fun i j => h.form (σ.comp (algebraMap K K')) (Pi.single i 1) (Pi.single j 1)
 
+/- English proof (translation)
+Use `h.posDef (σ.comp (algebraMap K K')) m (fun i => Pi.single i 1) (by` as an intermediate fact. Establish `hb` using `(Pi.basisFun K (Fin m)).linearIndependent`. Rewrite using `[show ⇑(Pi.basisFun K (Fin m)) = fun i => Pi.single i 1 from funext (Pi.basisFun_apply K (Fin m))] at hb)` and apply the resulting hypothesis. Conclude with `this`.
+-/
 theorem stdGram_posDef (h : HermFam K (Fin m → K)) (σ : K' →+* ℂ) : (stdGram h σ).PosDef := by
   have := h.posDef (σ.comp (algebraMap K K')) m (fun i => Pi.single i 1)
     (by
@@ -26,6 +29,9 @@ theorem stdGram_posDef (h : HermFam K (Fin m → K)) (σ : K' →+* ℂ) : (stdG
 def extForm (h : HermFam K (Fin m → K)) (σ : K' →+* ℂ) (x y : Fin m → K') : ℂ :=
   star (fun i => σ (x i)) ⬝ᵥ (stdGram h σ *ᵥ fun i => σ (y i))
 
+/- English proof (translation)
+Use extensionality with `k l`. Simplify using `only [extForm, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem extForm_gram (h : HermFam K (Fin m → K)) (σ : K' →+* ℂ) {n : ℕ} (v : Fin n → Fin m → K') :
     (Matrix.of fun k l => extForm h σ (v k) (v l)) =
       (Matrix.of fun i k => σ (v k i))ᴴ * stdGram h σ * Matrix.of fun i k => σ (v k i) := by
@@ -61,6 +67,13 @@ def extFam (h : HermFam K (Fin m → K)) : HermFam K' (Fin m → K') where
     letI := σ.toAlgebra
     exact linearIndependent_algebraMap_comp_iff.2 hv
 
+/- English proof (translation)
+Introduce `σ i j`. Establish `e : ∀ j : Fin m, (fun k => σ ((Pi.single j (1 : K') : Fin m → K') k)) = Pi.single j 1`. Introduce `j`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Use `show extForm h σ _ _ = _`. Simplify using `only [extForm, e]`.
+
+Simplify using `[stdGram, Matrix.mulVec_single_one, dotProduct, Pi.single_apply]`.
+-/
 theorem isBC_extFam (h : HermFam K (Fin m → K)) : IsBC h (extFam (K' := K') h) := by
   intro σ i j
   have e : ∀ j : Fin m, (fun k => σ ((Pi.single j (1 : K') : Fin m → K') k)) = Pi.single j 1 := by
@@ -71,6 +84,9 @@ theorem isBC_extFam (h : HermFam K (Fin m → K)) : IsBC h (extFam (K' := K') h)
   simp only [extForm, e]
   simp [stdGram, Matrix.mulVec_single_one, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ h` and use `⟨extFam h, isBC_extFam h⟩`.
+-/
 theorem exists_isBC : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] (m : ℕ)
     (h : HermFam K (Fin m → K)), ∃ h' : HermFam K' (Fin m → K'), IsBC h h' :=
   fun _ _ _ _ _ _ _ _ h => ⟨extFam h, isBC_extFam h⟩

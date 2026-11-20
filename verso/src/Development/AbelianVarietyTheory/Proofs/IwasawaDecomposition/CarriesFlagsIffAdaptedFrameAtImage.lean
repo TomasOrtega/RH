@@ -18,12 +18,18 @@ section Tri
 
 variable {ι : Type} {m : ι → ℕ} {K : Type} [Field K]
 
+/- English proof (translation)
+Introduce `τ` and use `by have hdet : (h τ).det ≠ 0 := by rw [Matrix.det_of_lowerTriangular (h τ) fun i j hij => hl τ i j hij] exact Finset.prod_ne_zero_iff.2 fun i _ => hd τ i exact ⟨fun _ _ => trivial, hdet, trivial, fun i j _ hij => hl τ i j hij⟩`.
+-/
 theorem par_of_tri {h : Mat m K} (hd : ∀ τ i, h τ i i ≠ 0) (hl : ∀ τ i k, i < k → h τ i k = 0) : Par m ⊤ h := fun τ => by
   have hdet : (h τ).det ≠ 0 := by
     rw [Matrix.det_of_lowerTriangular (h τ) fun i j hij => hl τ i j hij]
     exact Finset.prod_ne_zero_iff.2 fun i _ => hd τ i
   exact ⟨fun _ _ => trivial, hdet, trivial, fun i j _ hij => hl τ i j hij⟩
 
+/- English proof (translation)
+Use `hp.det_ne τ` as an intermediate fact. Rewrite `this` using `[Matrix.det_of_lowerTriangular (h τ) fun a b hab => (hp τ).2.2.2 a b a.2 hab]`. Conclude with `Finset.prod_ne_zero_iff.1 this i (Finset.mem_univ i)`.
+-/
 theorem Par.diag_ne {O : Subring K} {h : Mat m K} (hp : Par m O h) (τ : ι) (i : Fin (m τ)) : h τ i i ≠ 0 := by
   have := hp.det_ne τ
   rw [Matrix.det_of_lowerTriangular (h τ) fun a b hab => (hp τ).2.2.2 a b a.2 hab] at this
@@ -34,11 +40,17 @@ end Tri
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨g, fun _ _ => rfl⟩`.
+-/
 theorem exists_cast {R : Type} [CommRing R] {φ : c.F →+* R} {x x' : Sp R ⟶ Z.X} (h : x = x') (g : EigFrame Z φ x) :
     ∃ g' : EigFrame Z φ x', ∀ τ i, g'.v τ i = g.v τ i := by
   subst h
   exact ⟨g, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Establish `e : dualMap (ψ.comp ρ) = (dualMap ψ).comp (dualMap ρ)`. Apply the tactic sequence `ext r <;> simp [dualMap]`. Rewrite using `[e]`. Simplify using `[spMap, Spec.map_comp]`.
+-/
 theorem spMap_dualMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (ρ : R →+* R') (ψ : R' →+* R'') :
     spMap (dualMap (ψ.comp ρ)) = spMap (dualMap ψ) ≫ spMap (dualMap ρ) := by
   have e : dualMap (ψ.comp ρ) = (dualMap ψ).comp (dualMap ρ) := by
@@ -46,6 +58,13 @@ theorem spMap_dualMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRin
   rw [e]
   simp [spMap, Spec.map_comp]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, ?_, fun τ i => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hx, ← Category.assoc]`. Use `congr 1`. Simplify using `[spMap, Spec.map_comp]`.
+
+Rewrite using `[h2, hφ, RingHom.comp_assoc]`. Establish `e : (fun k => spMap (dualMap ψ) ≫ f'.v τ k) = fun k => spMap (dualMap (ψ.comp ρ)) ≫ f.v τ k`. Use function extensionality and compare the values at `k`. Rewrite using `[hv, spMap_dualMap_comp, Category.assoc]`. Rewrite using `[e]`.
+
+Conclude with `h3 τ i`.
+-/
 theorem coord_of_bc {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {φ : c.F →+* R} {φ' : c.F →+* R'}
     {φ'' : c.F →+* R''} {x : Sp R ⟶ Z.X} {x' : Sp R' ⟶ Z.X} {x'' : Sp R'' ⟶ Z.X} {f : EigFrame Z φ x}
     {f' : EigFrame Z φ' x'} {g : EigFrame Z φ'' x''} {ρ : R →+* R'} {ψ : R' →+* R''} {A : Mat Dw.mult R''}
@@ -63,12 +82,36 @@ theorem coord_of_bc {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] 
     rw [e]
     exact h3 τ i
 
+/- English proof (translation)
+The claim follows from `(congrArg CommRingCat.Hom.hom (TopCat.Presheaf.stalkSpecializes_comp X.presheaf (genericPoint_specializes y') h)).symm`.
+-/
 theorem algebraMap_eq_comp_specializes {X : Scheme.{0}} [IsIntegral X] {y y' : X} (h : y' ⤳ y) :
     algebraMap (X.presheaf.stalk y) X.functionField =
       (algebraMap (X.presheaf.stalk y') X.functionField).comp (X.presheaf.stalkSpecializes h).hom :=
   (congrArg CommRingCat.Hom.hom
     (TopCat.Presheaf.stalkSpecializes_comp X.presheaf (genericPoint_specializes y') h)).symm
 
+/- English proof (translation)
+Use `set ρ := (C.Y.X.presheaf.stalkSpecializes hsp).hom with hρdef`. Use `set alg := algebraMap (C.Y.X.presheaf.stalk y') C.Y.X.functionField with halg`. Establish `hρ : spMap ρ ≫ stalkPt C.Y y = stalkPt C.Y y'` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp`. Establish `hinj : Function.Injective alg` using `IsFractionRing.injective _ _`. Establish `hfS : f.Stable` using `EigStable.stable_of_isLocalRing E H Dw l Xo c O β Z _ _ _ f inferInstance`.
+
+Take `⟨f₀, hf₀⟩` from `hfS (C.Y.X.presheaf.stalk y') ρ`. Establish `hx' : spMap ρ ≫ stalkPt C.Y y ≫ C.π ≫ genι Z = stalkPt C.Y y' ≫ C.π ≫ genι Z`. Rewrite using `[← Category.assoc, hρ]`. Take `⟨f', hf'⟩` from `exists_cast hx' f₀`. Establish `hv : ∀ τ i, f'.v τ i = spMap (dualMap ρ) ≫ f.v τ i` using `fun τ i => (hf' τ i).trans (hf₀ τ i)`.
+
+Establish `hT1' : f'.Coord alg C.f0 T` using `coord_of_bc hx'.symm rfl hv (algebraMap_eq_comp_specializes hsp ▸ hT1)`. Establish `hh1' : f'.Coord ψ' g h` using `coord_of_bc hx'.symm rfl hv hh1`. Take `⟨A', hA'⟩` from `S.nonempty y'`. Take `⟨φ'', f'', hf''⟩` from `hTied y' A' hA'`. Take `rfl : φ'' = ρ.comp φ₁` from `RingHom.ext fun a => hinj (by`.
+
+Establish `e1` using `RingHom.congr_fun hf''.2.1 a`. Establish `e2` using `RingHom.congr_fun hT1'.2.1 a`. Conclude with `e1.symm.trans e2)`. Establish `hS'' : f''.Stable` using `EigStable.stable_of_isLocalRing E H Dw l Xo c O β Z _ _ _ f'' inferInstance`. Establish `hid : stalkPt C.Y y' ≫ C.π ≫ genι Z = spMap (RingHom.id _) ≫ stalkPt C.Y y' ≫ C.π ≫ genι Z`.
+
+Rewrite using `[show spMap (RingHom.id (C.Y.X.presheaf.stalk y')) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Take `⟨⟨G, hG, -⟩, hGu⟩` from `(GlobalTheory.ShFam.EigCoord.coord_spec E H Dw l Xo c O β Z _ _ _ f'' _ (ρ.comp φ₁) _ (RingHom.id _) inferInstance hS'' hid (RingHom.id_comp _).symm).1 f'`. Establish `hGd` using `hGu G hG`. Establish `hcomp : f''.Coord alg C.f0 (T * G.map alg)`. Use `CoordComp.coord_comp E H Dw l Xo c O β Z _ _ _ f'' _ _ _ f' _ _ _ C.f0 (RingHom.id _) alg G T inferInstance hG hT1'` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.comp_id]`. Then use the resulting hypothesis. Establish `heq : A₀ * A'⁻¹ = T * G.map alg` using `(((GlobalTheory.ShFam.EigCoord.coord_spec E H Dw l Xo c O β Z _ _ _ f'' _ _ _ alg inferInstance hS'' hf''.1 hf''.2.1).1 C.f0).1).unique hf'' hcomp`. Establish `hAA : T⁻¹ * A₀ * A'⁻¹ = G.map alg`. Rewrite using `[mul_assoc, heq, ← mul_assoc, Mat.inv_mul hT.det_ne, one_mul]`. Establish `hPg : Par Dw.mult ((ratOf C.Y).O (genericPoint C.Y.X)).toSubring (A₀ * A'⁻¹)` using `(Fr.mem_iff (Fr.mem_genericPoint hA')).1 hA₀`.
+
+Establish `hlow : Par Dw.mult ⊤ (G.map alg)`. Rewrite using `[← hAA, mul_assoc]`. Conclude with `hT.inv.mul (hPg.mono le_rfl le_top)`. Establish `hpar : Par Dw.mult ((ratOf C.Y).O y').toSubring (T⁻¹ * A₀ * A'⁻¹)` using `fun τ => by`. Rewrite using `[hAA]`.
+
+Establish `hdet : (G.map alg τ).det = alg (G τ).det` using `(alg.map_det (G τ)).symm`. Take `⟨u, hu⟩` from `hGd τ`. Use `⟨fun i j => mem_O_ratOf.2 ⟨G τ i j, rfl⟩, hlow.det_ne τ, ?_, fun i j hi hij => (hlow τ).2.2.2 i j hi hij⟩` and prove the remaining obligations. Use `mem_O_ratOf.2 ⟨(u⁻¹ : (C.Y.X.presheaf.stalk y')ˣ), ?_⟩` and prove the remaining obligations. Rewrite using `[hdet, ← hu]`.
+
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Use `⟨T⁻¹ * A₀, (Fr.mem_iff hA').2 hpar, ρ.comp φ₁, f', ?_, hh1'⟩` and prove the remaining obligations. Establish `hA₀d : ∀ τ, (A₀ τ).det ≠ 0` using `Fr.det_ne hA₀`. Rewrite using `[Mat.mul_inv_rev, Mat.inv_inv hT.det_ne, ← mul_assoc, Mat.mul_inv hA₀d, one_mul]`.
+
+Conclude with `hT1'`.
+-/
 theorem exists_adapted {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e) {S : Fr (ratOf C.Y) Dw.mult Dw.mult}
     {A₀ : Mat Dw.mult C.Y.Fn} (hA₀ : A₀ ∈ S.S (genericPoint C.Y.X))
     (hTied : ∀ y : C.Y.X, ∀ A ∈ S.S y, ∃ (φ : c.F →+* C.Y.X.presheaf.stalk y)
@@ -135,6 +178,17 @@ theorem exists_adapted {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e) 
   rw [Mat.mul_inv_rev, Mat.inv_inv hT.det_ne, ← mul_assoc, Mat.mul_inv hA₀d, one_mul]
   exact hT1'
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e C S A₀ K _ φ x g p hT`. Take `⟨hA₀, hTied⟩` from `hT`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ψ, φ₁, f, t, t', hp, hf, hg⟩`. Take `⟨T, hT1, hT2, hT3⟩` from `(f.tri_iff _ C.f0 t).1 hf`.
+
+Take `⟨h, hh1, hh2, hh3⟩` from `(f.tri_iff _ g t').1 hg`. Establish `hsp : p (IsLocalRing.closedPoint K) ⤳ y`. Establish `: p (IsLocalRing.closedPoint K) ∈ Set.range (C.Y.X.fromSpecStalk y)`. Rewrite using `[hp]`. Conclude with `⟨spMap ψ (IsLocalRing.closedPoint K), rfl⟩`.
+
+Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hψ : ψ = (Scheme.stalkClosedPointTo (R` using `CommRingCat.of K) p).hom.comp (C.Y.X.presheaf.stalkSpecializes hsp).hom := by`. Use `EigLoc.spMap_inj ((cancel_mono (C.Y.X.fromSpecStalk y)).1 ?_)` and prove the remaining obligations. Establish `e1` using `spMap_stalkClosedPointTo p`. Establish `e2 : spMap (C.Y.X.presheaf.stalkSpecializes hsp).hom ≫ C.Y.X.fromSpecStalk y = C.Y.X.fromSpecStalk _` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp`.
+
+Establish `e3 : spMap ((Scheme.stalkClosedPointTo (R` using `CommRingCat.of K) p).hom.comp (C.Y.X.presheaf.stalkSpecializes hsp).hom) = spMap (Scheme.stalkClosedPointTo (R := CommRingCat.of K) p).hom ≫ spMap (C.Y.X.presheaf.stalkSpecializes hsp).hom := by`. Simplify using `[spMap, Spec.map_comp]`. Rewrite using `[e3, Category.assoc, e2, e1]`. Conclude with `hp.symm`. Take `⟨A, hA, φ₂, f₁, c1, c2⟩` from `exists_adapted C hA₀ hTied g hsp _ f hT1 (par_of_tri (fun τ i => by rw [hT2]; exact Units.ne_zero _) hT3) (hψ ▸ hh1)`.
+
+Conclude with `⟨A, hA, φ₂, f₁, h, c1, c2, par_of_tri (fun τ i => by rw [hh2]; exact Units.ne_zero _) hh3⟩`. Introduce and unpack `⟨A, hA, φ₁, f₁, h, h1, h2, h3⟩`. Establish `hgen` using `Fr.mem_genericPoint hA`. Establish `hP : Par Dw.mult ⊤ (A₀ * A⁻¹)` using `((Fr.mem_iff hgen).1 hA₀).mono le_rfl le_top`. Use `⟨_, (Scheme.stalkClosedPointTo (R := CommRingCat.of K) p).hom, φ₁, f₁, fun τ i => Units.mk0 _ (Par.diag_ne hP τ i), fun τ i => Units.mk0 _ (Par.diag_ne h3 τ i), (spMap_stalkClosedPointTo p).symm, (f₁.tri_iff _ C.f0 _).2 ⟨_, h1, fun _ _ => rfl, fun τ i k hik => (hP τ).2.2.2 i k i. …` and prove the remaining obligations.
+-/
 theorem carries_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (C : FlagCpt Z e) (S : Fr (ratOf C.Y) Dw.mult Dw.mult) (A₀ : Mat Dw.mult C.Y.Fn) (K : Type) [Field K] (φ : c.F →+* K) (x : Sp K ⟶ Z.X) (g : EigFrame Z φ x) (p : Sp K ⟶ C.Y.X), Tied e C.Y C.π C.f0 S A₀ → (C.Carries p g ↔ ∃ A ∈ S.S (p (IsLocalRing.closedPoint K)), ∃ (φ₁ : c.F →+* C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) (f₁ : EigFrame Z φ₁ (stalkPt C.Y (p (IsLocalRing.closedPoint K)) ≫ C.π ≫ genι Z)) (h : Mat Dw.mult K), f₁.Coord (algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField) C.f0 (A₀ * A⁻¹) ∧ f₁.Coord (Scheme.stalkClosedPointTo (R := CommRingCat.of K) p).hom g h ∧ Par Dw.mult ⊤ h) := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e C S A₀ K _ φ x g p hT
   obtain ⟨hA₀, hTied⟩ := hT

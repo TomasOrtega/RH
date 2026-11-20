@@ -25,6 +25,11 @@ open Classical in
 def extFam (ι : Fin r → Fin c) (x : ∀ i, M (ι i)) (z : ∀ j, M j) : ∀ j, M j :=
   fun j => if h : ∃ i, ι i = j then h.choose_spec ▸ x h.choose else z j
 
+/- English proof (translation)
+Establish `key : ∀ (i' : Fin r) (e : ι i' = ι i), (e ▸ x i' : M (ι i)) = x i`. Introduce `i' e`. Establish `hi : i' = i` using `hι e`. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+
+Establish `h : ∃ i', ι i' = ι i` using `⟨i, rfl⟩`. Unfold `extFam`. Rewrite using `[dif_pos h]`. Conclude with `key _ _`.
+-/
 theorem extFam_apply {ι : Fin r → Fin c} (hι : Function.Injective ι) (x : ∀ i, M (ι i)) (z : ∀ j, M j) (i : Fin r) :
     extFam ι x z (ι i) = x i := by
   have key : ∀ (i' : Fin r) (e : ι i' = ι i), (e ▸ x i' : M (ι i)) = x i := by
@@ -37,11 +42,19 @@ theorem extFam_apply {ι : Fin r → Fin c} (hι : Function.Injective ι) (x : �
   rw [dif_pos h]
   exact key _ _
 
+/- English proof (translation)
+Unfold `extFam`. Rewrite using `[dif_neg h]`.
+-/
 theorem extFam_of_not {ι : Fin r → Fin c} (x : ∀ i, M (ι i)) (z : ∀ j, M j) {j : Fin c} (h : ¬ ∃ i, ι i = j) :
     extFam ι x z j = z j := by
   unfold extFam
   rw [dif_neg h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : ∃ i', ι i' = j`. Take `⟨i', rfl⟩` from `hj`. Rewrite using `[extFam_apply hι]`. Distinguish the cases in `hii : i' = i`.
+
+Substitute `hii` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hii, Function.update_of_ne (hι.ne hii), extFam_apply hι]`. Establish `hne : j ≠ ι i` using `fun e => hj ⟨i, e.symm⟩`. Rewrite using `[extFam_of_not _ _ hj, Function.update_of_ne hne, extFam_of_not _ _ hj]`.
+-/
 theorem extFam_update {ι : Fin r → Fin c} (hι : Function.Injective ι) [DecidableEq (Fin r)]
     (x : ∀ i, M (ι i)) (z : ∀ j, M j) (i : Fin r) (v : M (ι i)) :
     extFam ι (Function.update x i v) z = Function.update (extFam ι x z) (ι i) v := by
@@ -72,6 +85,11 @@ def dropMul {ι : Fin r → Fin c} (hι : Function.Injective ι) (z : ∀ j, X j
     intro _ m i a x
     simp only [extFam_update hι, MultilinearMap.map_update_smul]
 
+/- English proof (translation)
+Establish `hφ : ∀ i, ∃ φ : Module.Dual ℂ (V i), φ (v i) ≠ 0`. Introduce `i`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hv i ((Module.forall_dual_apply_eq_zero_iff ℂ (v i)).mp hcon)`.
+
+Use `choose φ hφ using hφ`. Introduce `h0`. Establish `h1` using `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap φ)) h0`. Rewrite `h1` using `[PiTensorProduct.lift.tprod, map_zero, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun i _ => hφ i) h1`.
+-/
 theorem tprod_ne_zero {ι : Type} [Fintype ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
     (v : ∀ i, V i) (hv : ∀ i, v i ≠ 0) : PiTensorProduct.tprod ℂ v ≠ 0 := by
   have hφ : ∀ i, ∃ φ : Module.Dual ℂ (V i), φ (v i) ≠ 0 := by
@@ -92,6 +110,13 @@ section Sums
 
 variable {r c : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_bij (fun a _ => Fin.castLE t.2.le a) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `Fin.lt_def.mpr (by simp)`.
+
+Introduce `a _ b _ h`. Conclude with `Fin.castLE_injective _ h`. Introduce `j hj`. Establish `hjt : (j : ℕ) < t` using `Fin.lt_def.mp (Finset.mem_filter.mp hj).2`. Conclude with `⟨⟨j, hjt⟩, Finset.mem_univ _, rfl⟩`.
+
+Introduce `a _`. Both sides reduce to the same expression.
+-/
 theorem sum_castLE_eq (f : Fin c → ℕ) (t : Fin c) :
     ∑ a : Fin (t : ℕ), f (Fin.castLE t.2.le a) = ∑ j, if j < t then f j else 0 := by
   rw [← Finset.sum_filter]
@@ -106,6 +131,9 @@ theorem sum_castLE_eq (f : Fin c → ℕ) (t : Fin c) :
     exact ⟨⟨j, hjt⟩, Finset.mem_univ _, rfl⟩
   · intro a _
     rfl
+/- English proof (translation)
+Rewrite using `[← Finset.sum_image (fun a _ b _ h => ι.injective h)]`. Use `(Finset.sum_subset (Finset.subset_univ _) ?_).symm` and prove the remaining obligations. Introduce `j _ hj`. Conclude with `hg j fun ⟨i, e⟩ => hj (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, e⟩)`.
+-/
 private theorem sumRange_lemma {M : Type} [AddCommMonoid M] (ι : Fin r ↪o Fin c) (g : Fin c → M)
     (hg : ∀ j, (¬ ∃ i, ι i = j) → g j = 0) : ∑ j, g j = ∑ i, g (ι i) := by
   rw [← Finset.sum_image (fun a _ b _ h => ι.injective h)]
@@ -113,6 +141,9 @@ private theorem sumRange_lemma {M : Type} [AddCommMonoid M] (ι : Fin r ↪o Fin
   intro j _ hj
   exact hg j fun ⟨i, e⟩ => hj (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, e⟩)
 
+/- English proof (translation)
+Rewrite using `[sum_castLE_eq b (ι i), sum_castLE_eq (fun a => b (ι a)) i, sumRange_lemma ι (fun j => if j < ι i then b j else 0) (fun j hj => by simp [hz j hj])]`. Simplify using `only [ι.lt_iff_lt]`.
+-/
 theorem sum_partial (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hz : ∀ j, (¬ ∃ i, ι i = j) → b j = 0) (i : Fin r) :
     ∑ a : Fin (ι i : ℕ), b (Fin.castLE (ι i).2.le a) = ∑ a : Fin (i : ℕ), b (ι (Fin.castLE i.2.le a)) := by
   rw [sum_castLE_eq b (ι i), sum_castLE_eq (fun a => b (ι a)) i,
@@ -132,6 +163,9 @@ def restrictHom (b : Fin c → ℕ) (ι : Fin r → Fin c) :
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `Units.ext (Matrix.ext fun a => Fin.elim0 a)`.
+-/
 theorem eq_one_of_zero {n : ℕ} (h : n = 0) (g : GL (Fin n) k) : g = 1 := by
   subst h
   exact Units.ext (Matrix.ext fun a => Fin.elim0 a)
@@ -140,6 +174,9 @@ variable (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hb : ∑ j, b j = N) (hb' 
   (hz : ∀ j, (¬ ∃ i, ι i = j) → b j = 0)
 
 include hz in
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [GlobalTheory.SmGL.stdBlocks, Equiv.trans_apply, finCongr_apply, Fin.val_cast, finSigmaFinEquiv_apply]`. Rewrite using `[sum_partial ι b hz i]`.
+-/
 theorem stdBlocks_drop (i : Fin r) (x : Fin (b (ι i))) :
     stdBlocks b hb ⟨ι i, x⟩ = stdBlocks (fun i => b (ι i)) hb' ⟨i, x⟩ := by
   apply Fin.ext
@@ -147,6 +184,9 @@ theorem stdBlocks_drop (i : Fin r) (x : Fin (b (ι i))) :
   rw [sum_partial ι b hz i]
 
 include hz in
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hx : (x : ℕ) < b j` using `x.2`. Establish `h0` using `hz j hne`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_index {j : Fin c} (x : Fin (b j)) : ∃ i, ι i = j := by
   by_contra hne
   have hx : (x : ℕ) < b j := x.2
@@ -154,6 +194,11 @@ theorem exists_index {j : Fin c} (x : Fin (b j)) : ∃ i, ι i = j := by
   omega
 
 include hz in
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p q`. Take `⟨⟨i, x⟩, rfl⟩` from `(stdBlocks (fun i => b (ι i)) hb').surjective p`. Take `⟨⟨i', x'⟩, rfl⟩` from `(stdBlocks (fun i => b (ι i)) hb').surjective q`. Simplify using `only [GlobalTheory.SmGL.leviEmb, MonoidHom.coe_toHomUnits, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+
+Rewrite using `[← stdBlocks_drop ι b hb hb' hz i x, ← stdBlocks_drop ι b hb hb' hz i' x', Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Distinguish the cases in `hii : i = i'`. Substitute `hii` using the available equality. Simplify using `[Matrix.blockDiagonal'_apply, restrictHom]`. Simplify using `[Matrix.blockDiagonal'_apply, hii, ι.injective.ne hii]`.
+-/
 theorem leviEmb_drop (G : Levi k fun j => Fin (b j)) :
     leviEmb k (stdBlocks b hb) G = leviEmb k (stdBlocks (fun i => b (ι i)) hb') (restrictHom b ι G) := by
   apply Units.ext
@@ -170,6 +215,11 @@ theorem leviEmb_drop (G : Levi k fun j => Fin (b j)) :
   · simp [Matrix.blockDiagonal'_apply, hii, ι.injective.ne hii]
 
 include hz in
+/- English proof (translation)
+Establish `hblk : ∀ p, GlobalTheory.SmGL.blk (stdBlocks b hb) p = ι (GlobalTheory.SmGL.blk (stdBlocks (fun i => b (ι i)) hb') p)`. Introduce `p`. Take `⟨⟨i, x⟩, rfl⟩` from `(stdBlocks (fun i => b (ι i)) hb').surjective p`. Simplify using `only [GlobalTheory.SmGL.blk, Equiv.symm_apply_apply]`. Rewrite using `[← stdBlocks_drop ι b hb hb' hz i x, Equiv.symm_apply_apply]`.
+
+Use extensionality with `g`. Use `show (g : Matrix (Fin N) (Fin N) k).BlockTriangular _ ↔ (g : Matrix (Fin N) (Fin N) k).BlockTriangular _`. Unfold `Matrix.BlockTriangular`. Simplify using `only [hblk, ι.lt_iff_lt]`.
+-/
 theorem parab_drop : parab k (stdBlocks b hb) = parab k (stdBlocks (fun i => b (ι i)) hb') := by
   have hblk : ∀ p, GlobalTheory.SmGL.blk (stdBlocks b hb) p = ι (GlobalTheory.SmGL.blk (stdBlocks (fun i => b (ι i)) hb') p) := by
     intro p
@@ -182,6 +232,17 @@ theorem parab_drop : parab k (stdBlocks b hb) = parab k (stdBlocks (fun i => b (
   simp only [hblk, ι.lt_iff_lt]
 
 include hz in
+/- English proof (translation)
+Establish `hP` using `parab_drop (k := k) ι b hb hb' hz`. Establish `key : ∀ (g : GL (Fin N) k) (hg : g ∈ parab k (stdBlocks b hb)) (hg' : g ∈ parab k (stdBlocks (fun i => b (ι i)) hb')), GlobalTheory.SmGL.leviProj k (stdBlocks b hb) ⟨g, hg⟩ = 1 ↔ GlobalTheory.SmGL.leviProj k (stdBlocks (fun i => b (ι i)) hb') ⟨g, hg'⟩ = 1`. Introduce `g hg hg'`. Simplify using `only [GlobalTheory.SmGL.leviProj, funext_iff, MonoidHom.pi_apply, Units.ext_iff, MonoidHom.coe_toHomUnits, GlobalTheory.SmGL.diagBlock, MonoidHom.coe_mk, OneHom.coe_mk, Pi.one_apply, Units.val_one, Matrix.ext_iff.symm, Matrix.submatrix_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i x y`. Rewrite using `[← stdBlocks_drop ι b hb hb' hz i x, ← stdBlocks_drop ι b hb hb' hz i y]`. Conclude with `h (ι i) x y`. Introduce `h j x y`. Take `⟨i, rfl⟩` from `exists_index ι b hz x`.
+
+Rewrite using `[stdBlocks_drop ι b hb hb' hz i x, stdBlocks_drop ι b hb hb' hz i y]`. Conclude with `h i x y`. Use extensionality with `g`. Simplify using `only [GlobalTheory.SmGL.unipRad, Subgroup.mem_map, MonoidHom.mem_ker, Subgroup.coe_subtype]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨g, hg⟩, hk, rfl⟩`. Establish `hg' : g ∈ parab k (stdBlocks (fun i => b (ι i)) hb')` using `hP ▸ hg`. Conclude with `⟨⟨g, hg'⟩, (key g hg hg').mp hk, rfl⟩`. Introduce and unpack `⟨⟨g, hg'⟩, hk, rfl⟩`. Establish `hg : g ∈ parab k (stdBlocks b hb)` using `hP.symm ▸ hg'`.
+
+Conclude with `⟨⟨g, hg⟩, (key g hg hg').mpr hk, rfl⟩`.
+-/
 theorem unipRad_drop : unipRad k (stdBlocks b hb) = unipRad k (stdBlocks (fun i => b (ι i)) hb') := by
   have hP := parab_drop (k := k) ι b hb hb' hz
   have key : ∀ (g : GL (Fin N) k) (hg : g ∈ parab k (stdBlocks b hb))
@@ -211,12 +272,18 @@ theorem unipRad_drop : unipRad k (stdBlocks b hb) = unipRad k (stdBlocks (fun i 
     exact ⟨⟨g, hg⟩, (key g hg hg').mpr hk, rfl⟩
 
 include hz in
+/- English proof (translation)
+Simplify using `only [GlobalTheory.SmGL.modExp, Fintype.card_fin, Finset.sum_filter]`. Rewrite using `[sumRange_lemma ι (fun j => if ι i < j then (b j : ℤ) else 0) (fun j hj => by simp [hz j hj]), sumRange_lemma ι (fun j => if j < ι i then (b j : ℤ) else 0) (fun j hj => by simp [hz j hj])]`. Simplify using `only [ι.lt_iff_lt]`.
+-/
 theorem modExp_drop (i : Fin r) : modExp (fun i => Fin (b (ι i))) i = modExp (fun j => Fin (b j)) (ι i) := by
   simp only [GlobalTheory.SmGL.modExp, Fintype.card_fin, Finset.sum_filter]
   rw [sumRange_lemma ι (fun j => if ι i < j then (b j : ℤ) else 0) (fun j hj => by simp [hz j hj]),
     sumRange_lemma ι (fun j => if j < ι i then (b j : ℤ) else 0) (fun j hj => by simp [hz j hj])]
   simp only [ι.lt_iff_lt]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_image (fun a _ b _ h => ι.injective h)]`. Use `(Finset.prod_subset (Finset.subset_univ _) ?_).symm` and prove the remaining obligations. Introduce `j _ hj`. Conclude with `hg j fun ⟨i, e⟩ => hj (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, e⟩)`.
+-/
 private theorem prodRange_lemma_2 {M : Type} [CommMonoid M] (ι : Fin r ↪o Fin c) (g : Fin c → M)
     (hg : ∀ j, (¬ ∃ i, ι i = j) → g j = 1) : ∏ j, g j = ∏ i, g (ι i) := by
   rw [← Finset.prod_image (fun a _ b _ h => ι.injective h)]
@@ -225,6 +292,9 @@ private theorem prodRange_lemma_2 {M : Type} [CommMonoid M] (ι : Fin r ↪o Fin
   exact hg j fun ⟨i, e⟩ => hj (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, e⟩)
 
 include hz in
+/- English proof (translation)
+Simplify using `only [GlobalTheory.SmGL.deltaHalf, MonoidHom.finsetProd_apply, MonoidHom.coe_comp, Function.comp_apply, Pi.evalMonoidHom_apply]`. Rewrite using `[prodRange_lemma_2 ι _ (fun j hj => by rw [eq_one_of_zero (hz j hj) (G j), map_one])]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[modExp_drop ι b hz i]`. Both sides reduce to the same expression.
+-/
 theorem deltaHalf_drop (G : Levi k fun j => Fin (b j)) :
     deltaHalf k (fun j => Fin (b j)) G = deltaHalf k (fun i => Fin (b (ι i))) (restrictHom b ι G) := by
   simp only [GlobalTheory.SmGL.deltaHalf, MonoidHom.finsetProd_apply, MonoidHom.coe_comp, Function.comp_apply,
@@ -236,6 +306,11 @@ theorem deltaHalf_drop (G : Levi k fun j => Fin (b j)) :
 
 include hz in
 
+/- English proof (translation)
+Establish `hU` using `unipRad_drop (k := k) ι b hb hb' hz`. Establish `hK : GlobalTheory.PRep.twKer π (GlobalTheory.SmGL.unipRad k (stdBlocks b hb)) 1 = GlobalTheory.PRep.twKer π (GlobalTheory.SmGL.unipRad k (stdBlocks (fun i => b (ι i)) hb')) 1`. Rewrite using `[hU]`. Set `L` to `Submodule.quotEquivOfEq _ _ hK`. Use `⟨Representation.Equiv.mk' ⟨L.toLinearMap, fun G => ?_⟩ L.symm L.left_inv L.right_inv⟩` and prove the remaining obligations.
+
+Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `[L, GlobalTheory.SmGL.jac, GlobalTheory.SmGL.twist, GlobalTheory.SmGL.jacU, GlobalTheory.PRep.jacquet, leviEmb_drop ι b hb hb' hz G, deltaHalf_drop ι b hz G]`.
+-/
 theorem nonempty_jac_equiv (π : Representation ℂ (GL (Fin N) k) V) :
     Nonempty ((jac (stdBlocks b hb) π).Equiv
       ((jac (stdBlocks (fun i => b (ι i)) hb') π).comp (restrictHom b ι))) := by
@@ -256,6 +331,15 @@ section Abstract
 
 variable {G G' V W : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `hK : ∀ (g : G) (w : V), w ∈ LinearMap.ker f.toLinearMap → ρ g w ∈ LinearMap.ker f.toLinearMap`. Introduce `g w hw`. Take `⟨g', rfl⟩` from `hψ g`. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ f g' w`. Rewrite `hw`, the goal using `[LinearMap.mem_ker]`.
+
+Establish `h2 : f w = 0` using `hw`. Rewrite `h1` using `[h2, map_zero]`. Conclude with `h1`. Establish `hs : IsSimpleOrder (Subrepresentation ρ)` using `hρ`. Break down `hs.eq_bot_or_eq_top ⟨LinearMap.ker f.toLinearMap, fun g w hw => hK g w hw⟩ with h | h` into its components or cases.
+
+Establish `h2` using `congrArg Subrepresentation.toSubmodule h`. Conclude with `LinearMap.ker_eq_bot.mp h2`. It suffices to derive a contradiction. Establish `h2` using `congrArg Subrepresentation.toSubmodule h`. Establish `h3 : LinearMap.ker f.toLinearMap = (⊤ : Subrepresentation ρ).toSubmodule` using `h2`.
+
+Establish `hv' : v ∈ LinearMap.ker f.toLinearMap`. Rewrite using `[h3]`. Conclude with `Submodule.mem_top`. Conclude with `hv hv'`.
+-/
 theorem injective_of_comp (ψ : G' →* G) (hψ : Function.Surjective ψ) {ρ : Representation ℂ G V}
     (hρ : ρ.IsIrreducible) {σ : Representation ℂ G' W}
     (f : Representation.IntertwiningMap (ρ.comp ψ : Representation ℂ G' V) σ) {v : V} (hv : f v ≠ 0) : Function.Injective f := by
@@ -279,6 +363,15 @@ theorem injective_of_comp (ψ : G' →* G) (hψ : Function.Surjective ψ) {ρ : 
       exact Submodule.mem_top
     exact hv hv'
 
+/- English proof (translation)
+Establish `hI : ∀ (g : G) ⦃w : W⦄, w ∈ LinearMap.range f.toLinearMap → σ g w ∈ LinearMap.range f.toLinearMap`. Introduce and unpack `g _ ⟨u, rfl⟩`. Conclude with `⟨ρ g u, Representation.IntertwiningMap.isIntertwining _ _ f g u⟩`. Set `I : Subrepresentation σ` to `⟨LinearMap.range f.toLinearMap, hI⟩`. Establish `hnt : Nontrivial (LinearMap.range f.toLinearMap)` using `⟨⟨⟨f v, ⟨v, rfl⟩⟩, 0, fun h => hv (congrArg Subtype.val h)⟩⟩`.
+
+Take `⟨Z, i1, i2, υ, hυ, hsub⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient G (LinearMap.range f.toLinearMap) I.toRepresentation hnt`. Establish `hIσ : GlobalTheory.SmGL.IsSubquotient I.toRepresentation σ` using `⟨I, ⟨LinearMap.id, fun g => LinearMap.ext fun _ => rfl⟩, Function.surjective_id⟩`. Establish `hIρ : GlobalTheory.SmGL.IsSubquotient I.toRepresentation ρ`. Use `⟨⊤, ⟨(LinearMap.rangeRestrict f.toLinearMap).comp (Submodule.subtype _), fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `u`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Representation.IntertwiningMap.isIntertwining _ _ f g u`. Introduce and unpack `⟨_, ⟨u, rfl⟩⟩`. Conclude with `⟨⟨u, trivial⟩, rfl⟩`.
+
+Conclude with `⟨Z, i1, i2, υ, hυ, hsub.trans hIρ, hsub.trans hIσ⟩`.
+-/
 theorem exists_common {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (f : ρ.IntertwiningMap σ) {v : V}
     (hv : f v ≠ 0) : ∃ (Z : Type) (_ : AddCommGroup Z) (_ : Module ℂ Z) (υ : Representation ℂ G Z),
       υ.IsIrreducible ∧ IsSubquotient υ ρ ∧ IsSubquotient υ σ := by
@@ -309,6 +402,29 @@ section Rep
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {r c N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hres : Function.Surjective (restrictHom (k` using `k) b ι) := fun H => ⟨extFam (M := fun j => GL (Fin (b j)) k) ι H 1, by`. Use function extensionality and compare the values at `i`. Conclude with `extFam_apply (M := fun j => GL (Fin (b j)) k) ι.injective H 1 i⟩`. Establish `hnt : ∀ j, Nontrivial (s j).V`. Introduce `j`.
+
+Establish `hs : IsSimpleOrder (Subrepresentation (s j).ρ)` using `(s j).irr`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_nontrivial_iff_subsingleton]`. Apply `bot_ne_top (α := Subrepresentation (s j).ρ)` to reduce the goal to its premises. Conclude with `Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _)`.
+
+Use `choose z hz0 using fun j => exists_ne (0 : (s j).V)`. Set `L` to `PiTensorProduct.lift (dropMul (X := fun j => (s j).V) ι.injective z)`. Establish `hL : ∀ x : ∀ i, (s (ι i)).V, L (PiTensorProduct.tprod ℂ x) = PiTensorProduct.tprod ℂ (extFam ι x z)` using `fun x => PiTensorProduct.lift.tprod x`. Establish `hp : ∀ {α : Type} {Γ X : α → Type} [∀ a, Group (Γ a)] [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (G : ∀ a, Γ a), GlobalTheory.SmGL.piTensor ρ G = PiTensorProduct.map (fun a => ρ a (G a))` using `fun ρ G => rfl`. Establish `hint : ∀ G : Levi k (fun j => Fin (b j)), L ∘ₗ (GlobalTheory.SmGL.piTensor fun i => (s (ι i)).ρ) (restrictHom b ι G) = (GlobalTheory.SmGL.piTensor fun j => (s j).ρ) G ∘ₗ L`.
+
+Introduce `G`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, hp, PiTensorProduct.map_tprod, hL]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : ∃ i, ι i = j`. Take `⟨i, rfl⟩` from `hj`. Rewrite using `[extFam_apply ι.injective, extFam_apply ι.injective]`.
+
+Both sides reduce to the same expression. Rewrite using `[extFam_of_not _ _ hj, extFam_of_not _ _ hj, eq_one_of_zero (hz j hj) (G j), map_one]`. Both sides reduce to the same expression. Establish `hzz : extFam ι (fun i => z (ι i)) z = z`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `hj : ∃ i, ι i = j`. Take `⟨i, rfl⟩` from `hj`. Rewrite using `[extFam_apply ι.injective]`. Rewrite using `[extFam_of_not _ _ hj]`. Set `F : Representation.IntertwiningMap ((GlobalTheory.SmGL.piTensor fun i => (s (ι i)).ρ).comp (restrictHom b ι)) (GlobalTheory.SmGL.piTensor fun j => (s j).ρ)` to `⟨L, hint⟩`.
+
+Establish `hF0 : F (PiTensorProduct.tprod ℂ fun i => z (ι i)) ≠ 0` using `by show L (PiTensorProduct.tprod ℂ fun i => z (ι i)) ≠ 0`. Rewrite using `[hL, hzz]`. Conclude with `tprod_ne_zero z hz0`. Establish `hinj : Function.Injective L` using `injective_of_comp (restrictHom b ι) hres hI F hF0`. Establish `hS : ∀ (G : Levi k (fun j => Fin (b j))) ⦃w⦄, w ∈ LinearMap.range L → (GlobalTheory.SmGL.piTensor fun j => (s j).ρ) G w ∈ LinearMap.range L`.
+
+Introduce and unpack `G _ ⟨t, rfl⟩`. Conclude with `⟨(GlobalTheory.SmGL.piTensor fun i => (s (ι i)).ρ) (restrictHom b ι G) t, LinearMap.congr_fun (hint G) t⟩`. Set `S : Subrepresentation (GlobalTheory.SmGL.piTensor fun j => (s j).ρ)` to `⟨LinearMap.range L, hS⟩`. Set `eL` to `LinearEquiv.ofInjective L hinj`. Establish `hsub0 : GlobalTheory.SmGL.IsSubquotient ((GlobalTheory.SmGL.piTensor fun i => (s (ι i)).ρ).comp (restrictHom b ι)) (GlobalTheory.SmGL.piTensor fun j => (s j).ρ)`.
+
+Use `⟨S, ⟨eL.symm.toLinearMap, fun G => LinearMap.ext fun y => ?_⟩, eL.symm.surjective⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `eL.surjective y`. Establish `he : S.toRepresentation G (eL t) = eL ((GlobalTheory.SmGL.piTensor fun i => (s (ι i)).ρ) (restrictHom b ι G) t)`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(LinearMap.congr_fun (hint G) t).symm`.
+
+Use `show eL.symm (S.toRepresentation G (eL t)) = _`. Rewrite using `[he, LinearEquiv.symm_apply_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `h1 : GlobalTheory.SmGL.IsSubquotient (GlobalTheory.SmGL.piTensor fun j => (s j).ρ) ((jac (stdBlocks (fun i => b (ι i)) hb') π).comp (restrictHom b ι))` using `h.trans (GlobalTheory.JacStages.isSubquotient_of_equiv (nonempty_jac_equiv ι b hb hb' hz π).some)`. Conclude with `GlobalTheory.JacStages.isSubquotient_of_comp (restrictHom b ι) hres (hsub0.trans h1)`.
+-/
 theorem isSubquotient_jac_drop (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hb : ∑ j, b j = N) (hb' : ∑ i, b (ι i) = N)
     (hz : ∀ j, (¬ ∃ i, ι i = j) → b j = 0) (π : Representation ℂ (GL (Fin N) k) V)
     (s : ∀ j, IrrRep (GL (Fin (b j)) k)) (hI : (piTensor fun i => (s (ι i)).ρ).IsIrreducible)
@@ -382,6 +498,11 @@ theorem isSubquotient_jac_drop (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hb :
     h.trans (GlobalTheory.JacStages.isSubquotient_of_equiv (nonempty_jac_equiv ι b hb hb' hz π).some)
   exact GlobalTheory.JacStages.isSubquotient_of_comp (restrictHom b ι) hres (hsub0.trans h1)
 
+/- English proof (translation)
+Substitute `hD` using the available equality. Establish `hsq : GlobalTheory.SmGL.IsSubquotient (piTensor fun i => (σ₁ i).ρ) (piTensor fun i => (σ₂ i).ρ)` using `hsub.trans (GlobalTheory.JacStages.isSubquotient_of_equiv φ)`. Establish `h1` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.isSubquotient_comp_mulSingle (fun i => (σ₁ i).ρ) (fun i => (σ₁ i).irr) i`. Establish `h2` using `GlobalTheory.LocGL.SupportUnique.isSubquotient_comp hsq (MonoidHom.mulSingle (fun i => GL (Fin (D₁ i)) k) i)`. Establish `h3` using `GlobalTheory.LocGL.SupportUnique.isSubquotient_factor (fun i => (σ₂ i).ρ) i (σ₁ i).irr (h1.trans h2)`.
+
+Take `⟨e⟩` from `GlobalTheory.LocGL.SupportUnique.nonempty_equiv_of_isSubquotient (σ₁ i).irr (σ₂ i).irr h3`. Unfold `GlobalTheory.LocGL.IrrGL.of`. Conclude with `congrArg (Sigma.mk (D₁ i)) (Quotient.sound (s := GlobalTheory.SmGL.IrrRep.setoid _) ((GlobalTheory.SmGL.IrrRep.setoid _).iseqv.symm ⟨e⟩))`.
+-/
 theorem of_eq_of_jac (D₁ D₂ : Fin r → ℕ) (hD : D₁ = D₂) (h₁ : ∑ i, D₁ i = N) (h₂ : ∑ i, D₂ i = N)
     (π : Representation ℂ (GL (Fin N) k) V) (σ₁ : ∀ i, IrrRep (GL (Fin (D₁ i)) k))
     (σ₂ : ∀ i, IrrRep (GL (Fin (D₂ i)) k))
@@ -399,6 +520,23 @@ theorem of_eq_of_jac (D₁ D₂ : Fin r → ℕ) (hD : D₁ = D₂) (h₁ : ∑ 
   exact congrArg (Sigma.mk (D₁ i)) (Quotient.sound (s := GlobalTheory.SmGL.IrrRep.setoid _)
     ((GlobalTheory.SmGL.IrrRep.setoid _).iseqv.symm ⟨e⟩))
 
+/- English proof (translation)
+Take `⟨ι, hι⟩` from `SupportUnique.exists_map_of_isCuspidal hx.1 x.2.rep.irr hx.2 (isSmooth_parInd _ _) (SupportUnique.exists_scalar_multiProd e (fun a => (s a).ρ) (fun a => (s a).smooth) fun a => (s a).irr) hsub`. Establish `hne : GlobalTheory.SmGL.Model.evalOne e ι ≠ 0`. Introduce `h0`. Use `hι ((GlobalTheory.SmGL.Model.evalOne_bijective e hx.2.1 _).1 ?_)` and prove the remaining obligations. Use `h0.trans ?_` and prove the remaining obligations.
+
+Use `Representation.IntertwiningMap.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Both sides reduce to the same expression. Establish `hU : unipRad k e = ⊥`. Assume the negation of the conclusion as `hU`.
+
+Use `haveI := hx.2.2 h _ e hU`. Use `hne (Representation.IntertwiningMap.ext (LinearMap.ext fun v => ?_))` and prove the remaining obligations. Rewrite using `[Subsingleton.elim v 0, map_zero]`. Both sides reduce to the same expression. Take `⟨⟨a, i⟩, -⟩` from `e.surjective ⟨0, hx.1⟩`.
+
+Establish `ha : ∀ j, j ≠ a → c j = 0`. Introduce `j hj`. Assume the negation of the conclusion as `hj0`. Use `GlobalTheory.SmGL.CuspMax.unipRad_ne_bot_iff.2 ?_ hU` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases.
+
+Conclude with `⟨e ⟨j, ⟨0, by omega⟩⟩, e ⟨a, i⟩, by rwa [blk_apply, blk_apply]⟩`. Conclude with `⟨e ⟨a, i⟩, e ⟨j, ⟨0, by omega⟩⟩, by rwa [blk_apply, blk_apply]⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Take `⟨d, y⟩` from `x`. Choose the witnesses or unpack the hypotheses as in `rfl : c a = d := by`.
+
+Establish `h1 : ∑ j, c j = d` using `by simpa using Fintype.card_congr e`. Rewrite `h1` using `[Finset.sum_eq_single a (fun j _ hj => ha j hj) (by simp)]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, GlobalTheory.SmGL.Model.evalOne e ι v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `hne (Representation.IntertwiningMap.ext (LinearMap.ext hc))`. Set `ψ` to `compMap (GlobalTheory.SmGL.Model.evalOne e ι) (MonoidHom.mulSingle (fun j => GL (Fin (c j)) k) a)`. Take `⟨Z, _, _, υ, hυ, h1, h2⟩` from `exists_common ψ (v := v) hv`. Take `⟨φ₁⟩` from `SupportUnique.nonempty_equiv_of_isSubquotient hυ y.rep.irr (h1.trans (SupportUnique.isSubquotient_jac_single a ha e _))`. Take `⟨φ₂⟩` from `SupportUnique.nonempty_equiv_of_isSubquotient hυ (s a).irr (SupportUnique.isSubquotient_factor _ a hυ h2)`.
+
+Conclude with `(IrrGL.of_eq_of.2 ⟨φ₂.trans φ₁.symm⟩).trans (IrrGL.of_rep ⟨_, y⟩)`.
+-/
 theorem exists_col {x : IrrGL k} (hx : x.IsCusp) {h : ℕ} {c : Fin h → ℕ} (e : (Σ i, Fin (c i)) ≃ Fin x.1)
     (s : ∀ i, IrrRep (GL (Fin (c i)) k)) (hsub : IsSubquotient x.rep (multiProd e fun i => (s i).ρ)) :
     ∃ a, (∀ i, i ≠ a → c i = 0) ∧ IrrGL.of (s a).ρ (s a).smooth (s a).irr = x := by
@@ -448,6 +586,15 @@ section Main
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hτ` using `GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA y`. Establish `hτs : IsSmooth (piTensor fun j => (y j).rep)` using `isSmooth_piTensor fun j => (y j).2.rep.smooth`. Take `⟨hG, hC⟩` from `GlobalTheory.CompanionTheory.GeoLink.geometricLemma k`. Set `M : Fin h → Type` to `fun i => Fin (x i).1`. Set `M' : Fin c → Type` to `fun j => Fin (y j).1`.
+
+Use `haveI : Fintype (SizeMatrix M M') := Fintype.ofFinite _`. Establish `hr : ∀ (b : SizeMatrix M M') i, ∑ j, b.1 i j = (x i).1` using `fun b i => by simpa [M] using b.2.1 i`. Set `fR : ∀ (b : SizeMatrix M M') i, (Σ j, Fin (b.1 i j)) ≃ M i` to `fun b i => stdBlocks (b.1 i) (hr b i)`. Set `gC : ∀ (b : SizeMatrix M M') j, (Σ i, Fin (b.1 i j)) ≃ M' j` to `fun b => b.nonempty_cols.some`. Establish `h0 : jhMult (piTensor fun j => (y j).rep) (jac (stdBlocks (fun j => (y j).1) hy) (prodIrr x hd)) ≠ 0` using `ENat.one_le_iff_ne_zero.1 hjm`.
+
+Establish `h1` using `hG.jhMult_eq (m := M) (m' := M') (stdBlocks (fun i => (x i).1) hd) (stdBlocks (fun j => (y j).1) hy) (isSmooth_piTensor fun i => (x i).2.rep.smooth) fR gC hτ`. Establish `h2 : ∑ b, jhMult (piTensor fun j => (y j).rep) (cellFunctor (fR b) (gC b) (piTensor fun i => (x i).rep)) ≠ 0` using `fun e => h0 (h1.trans e)`. Take `⟨b, -, hb⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h2`. Take `⟨T, -, hT⟩` from `hC _ _ M M' _ (fR b) (gC b) _ (fun i => (x i).rep) (fun i => (x i).2.rep.smooth) (fun i => hasFiniteLength_of_isIrreducible (x i).2.rep.irr)`. Rewrite `hb` using `[hT ⟨_, piTensor fun j => (y j).rep, hτs, hτ⟩]`.
+
+Take `⟨s, -, hs⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hb`. Establish `hcol : IsSubquotient (piTensor fun j => (y j).rep) (piTensor fun j => multiProd (gC b j) fun i => (s i j).rep.ρ)` using `jhMult_ne_zero_iff.1 (right_ne_zero_of_mul hs)`. Use `⟨b.1, hr b, fun i j => (s i j).rep, fun i => jhMult_ne_zero_iff.1 (Finset.prod_ne_zero_iff.1 (left_ne_zero_of_mul hs) i (Finset.mem_univ i)), fun j => ?_⟩` and prove the remaining obligations. Establish `h3` using `(GlobalTheory.CompanionTheory.Hypotheses₂.TD.isSubquotient_comp_mulSingle (fun j => (y j).rep) (fun j => (y j).2.rep.irr) j).trans (SupportUnique.isSubquotient_comp hcol (MonoidHom.mulSingle (fun j => GL (Fin (y j).1) k) j))`. Conclude with `exists_col (hyc j) (gC b j) _ (SupportUnique.isSubquotient_factor (fun j => multiProd (gC b j) fun i => (s i j).rep.ρ) j (y j).2.rep.irr h3)`.
+-/
 theorem exists_cell_data (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h c N : ℕ} (x : Fin h → IrrGL k)
     (hd : ∑ i, (x i).1 = N) (y : Fin c → IrrGL k) (hy : ∑ i, (y i).1 = N) (hyc : ∀ i, (y i).IsCusp)
     (hjm : 1 ≤ jm y hy (prodIrr x hd)) :
@@ -484,6 +631,27 @@ theorem exists_cell_data (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {
   exact exists_col (hyc j) (gC b j) _
     (SupportUnique.isSubquotient_factor (fun j => multiProd (gC b j) fun i => (s i j).rep.ρ) j (y j).2.rep.irr h3)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨r, ι, hz, hpos⟩ : ∃ (r : ℕ) (ι : Fin r ↪o Fin c), (∀ j, (¬ ∃ i, ι i = j) → b j = 0) ∧ ∀ i, b (ι i) ≠ 0 := by`. Set `A : Finset (Fin c)` to `Finset.univ.filter fun j => b j ≠ 0`. Use `⟨A.card, A.orderEmbOfFin rfl, fun j hj => ?_, fun i => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `hm : j ∈ (A : Set (Fin c))` using `by simpa [A] using h0`.
+
+Rewrite `hm` using `[← Finset.range_orderEmbOfFin A rfl]`. Conclude with `hj hm`. Conclude with `(Finset.mem_filter.1 (A.orderEmbOfFin_mem rfl i)).2`. Establish `hb' : ∑ i, b (ι i) = x.1`. Rewrite using `[← hb]`.
+
+Conclude with `Fintype.sum_of_injective ι ι.injective _ _ (fun j hj => hz j (by simpa using hj)) fun _ => rfl`. Set `y' : Fin r → IrrGL k` to `fun i => IrrGL.of (w (ι i)).ρ (w (ι i)).smooth (w (ι i)).irr`. Establish `hyy : ∀ i, y' i = y (ι i)` using `fun i => hw _ (hpos i)`. Establish `hy'c : ∀ i, (y' i).IsCusp` using `fun i => by rw [hyy]; exact hyc _`. Set `φ : (piTensor fun i => (w (ι i)).ρ).Equiv (piTensor fun i => (y' i).rep)` to `piTensorEquiv fun i => IrrGL.equivOf (w (ι i)).ρ (w (ι i)).smooth (w (ι i)).irr`.
+
+Establish `hI : (piTensor fun i => (w (ι i)).ρ).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv φ.symm (GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA y')`. Establish `hdrop` using `isSubquotient_jac_drop ι b hb hb' hz x.rep w hI hsub`. Establish `hsum : ∑ i, (y' i).1 = x.1` using `hb'`. Establish `hjm : 1 ≤ jm y' hsum x.rep` using `ENat.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 ((GlobalTheory.JacStages.isSubquotient_of_equiv φ.symm).trans hdrop))`. Take `⟨ψ⟩` from `hu`.
+
+Use `haveI := GlobalTheory.ProdSupport.nontrivial_piTensor (fun a => (s a).2.rep.V) fun a => GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible (s a).2.rep.irr`. Take `⟨t, ht⟩` from `exists_ne (0 : PiTensorProduct ℂ fun a => (s a).2.rep.V)`. Take `⟨F, hF⟩` from `(GlobalTheory.SmGL.Model.evalOne_bijective (stdBlocks (fun i => (s i).1) hs) x.2.rep.smooth _).2 ψ.toIntertwiningMap`. Establish `hQ : IsSubquotient x.rep (prodIrr s hs)`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (ψ.symm t)`.
+
+Establish `h1 : GlobalTheory.SmGL.Model.evalOne _ F (Submodule.Quotient.mk v) = t`. Rewrite using `[hF, hv]`. Conclude with `ψ.apply_symm_apply t`. Establish `h2 : F v ≠ 0`. Introduce `h0`.
+
+Use `ht (h1.symm.trans ?_)` and prove the remaining obligations. Use `show (F v).1.1 1 = 0`. Rewrite using `[h0]`. Both sides reduce to the same expression. Conclude with `.of_injective F (injective_of_comp (MonoidHom.id _) Function.surjective_id x.2.rep.irr F h2)`.
+
+Establish `hP : 1 ≤ jm y' hsum (prodIrr s hs)` using `hjm.trans (GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient y' hsum x.rep (prodIrr s hs) (isSmooth_prodIrr _ _) hQ)`. Rewrite `hP` using `[GlobalTheory.T.jacquet_multiplicity_cuspidal_product hA s y' hs hsum hsc hy'c]`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : Fin r ≃ Fin p, ∀ a, y' a = s (e a) := by`. Assume the negation of the conclusion as `hc`. Establish `h0 : {e : Fin r ≃ Fin p | ∀ a, y' a = s (e a)} = ∅` using `Set.eq_empty_of_forall_notMem fun e he => hc ⟨e, he⟩`.
+
+Rewrite `hP` using `[h0]`. Simplify using `at hP`. Take `rfl : r = p` from `by simpa using Fintype.card_congr e`. Establish `hdeg : (fun i => b (ι i)) = fun i => (s i).1` using `funext fun i => by`. Establish `h1 : (y' i).1 = (s (e i)).1` using `congrArg Sigma.fst (he i)`.
+
+Conclude with `h1.trans ((hsd _).trans (hsd i).symm)`. Use `⟨ι, hpos, fun i => ?_⟩` and prove the remaining obligations. Establish `h2` using `of_eq_of_jac (fun i => b (ι i)) (fun i => (s i).1) hdeg hb' hs x.rep (fun i => w (ι i)) (fun i => (s i).2.rep) hdrop ψ i`. Conclude with `(hyy i).symm.trans (h2.trans (IrrGL.of_rep (s i)))`.
+-/
 theorem exists_row (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {p c : ℕ} (x : IrrGL k) (s : Fin p → IrrGL k)
     (hs : ∑ i, (s i).1 = x.1) (d : ℕ) (hsd : ∀ i, (s i).1 = d) (hsc : ∀ i, (s i).IsCusp)
     (hu : Nonempty ((jac (stdBlocks (fun i => (s i).1) hs) x.rep).Equiv (piTensor fun i => (s i).rep)))
@@ -551,6 +719,15 @@ theorem exists_row (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {p c : 
     (fun i => (s i).2.rep) hdrop ψ i
   exact (hyy i).symm.trans (h2.trans (IrrGL.of_rep (s i)))
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA p q N c u v s t hs ht d hsd htd hsc htc hu hv hd y hy hyc h`. Take `⟨b, hb, w, hsub, hcol⟩` from `exists_cell_data hA ![u, v] hd y hy hyc h`. Establish `hw : ∀ i : Fin 2, ∀ j, b i j ≠ 0 → IrrGL.of (w i j).ρ (w i j).smooth (w i j).irr = y j`. Introduce `i j hij`. Take `⟨a, ha, hay⟩` from `hcol j`.
+
+Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Conclude with `hay`. Conclude with `absurd (ha i hia) hij`. Take `⟨f, hf0, hfy⟩` from `exists_row hA u s hs d hsd hsc hu (b 0) (hb 0) (w 0) (hsub 0) y hyc (hw 0)`.
+
+Take `⟨g, hg0, hgy⟩` from `exists_row hA v t ht d htd htc hv (b 1) (hb 1) (w 1) (hsub 1) y hyc (hw 1)`. Use `⟨f, g, ?_, hfy, hgy⟩` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `J ⟨i, rfl⟩ ⟨j, hj⟩`. Take `⟨a, ha, -⟩` from `hcol (f i)`.
+
+Use `fin_cases a`. Apply `hg0 j` to reduce the goal to its premises. Rewrite using `[hj]`. Conclude with `ha 1 (by decide)`. Conclude with `hf0 i (ha 0 (by decide))`.
+-/
 theorem shuffle2 : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {p q N c : ℕ} (u v : IrrGL k) (s : Fin p → IrrGL k) (t : Fin q → IrrGL k) (hs : ∑ i, (s i).1 = u.1) (ht : ∑ i, (t i).1 = v.1) (d : ℕ) (hsd : ∀ i, (s i).1 = d) (htd : ∀ j, (t j).1 = d) (hsc : ∀ i, (s i).IsCusp) (htc : ∀ i, (t i).IsCusp) (hu : Nonempty ((jac (stdBlocks (fun i => (s i).1) hs) u.rep).Equiv (piTensor fun i => (s i).rep))) (hv : Nonempty ((jac (stdBlocks (fun i => (t i).1) ht) v.rep).Equiv (piTensor fun i => (t i).rep))) (hd : ∑ i, (![u, v] i).1 = N) (y : Fin c → IrrGL k) (hy : ∑ i, (y i).1 = N) (hyc : ∀ i, (y i).IsCusp) (h : 1 ≤ jm y hy (prodIrr ![u, v] hd)), ∃ (f : Fin p ↪o Fin c) (g : Fin q ↪o Fin c), Disjoint (Set.range f) (Set.range g) ∧ (∀ i, y (f i) = s i) ∧ ∀ j, y (g j) = t j := by
   intro k _ _ _ _ hA p q N c u v s t hs ht d hsd htd hsc htc hu hv hd y hy hyc h
   obtain ⟨b, hb, w, hsub, hcol⟩ := exists_cell_data hA ![u, v] hd y hy hyc h

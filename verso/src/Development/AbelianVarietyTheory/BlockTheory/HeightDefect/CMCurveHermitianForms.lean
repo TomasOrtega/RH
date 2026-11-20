@@ -93,12 +93,29 @@ def IsTensorSgn (ε : ℤˣ) (D : Datum H) {R : Type} [CommRing R] {ω : R} (C :
 def IsTensor (D : Datum H) {R : Type} [CommRing R] {ω : R} (C : CMCurve H R ω) (t : SAB H (Sp R)) : Prop :=
   IsTensorSgn (posSign D) D C t
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (D : Datum H) {S : Scheme.{0}} {G : Over S} [GrpObj G] (act : OAct (𝓞 E) G) {k : Type} [Field k]
     (x : Sp k ⟶ S) (ρ : k) : SigAt H D.p D.q act x ρ ↔ DetCond D act x ρ := Iff.rfl
 
+/- English proof (translation)
+Simplify using `[herm, D.alt]`.
+-/
 example (D : Datum H) (x : D.La) : herm D x x = ((D.EF (H.w0 • x) x : ℤ) : Zw H) := by
   simp [herm, D.alt]
 
+/- English proof (translation)
+Establish `hr : H.bar H.rt = -H.rt`. Establish `h2 : (H.bar H.rt) ^ 2 = H.rt ^ 2` using `by rw [← map_pow, H.rt_sq]; simp`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h2 with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+
+Establish `h3` using `IsCMField.complexEmbedding_complexConj E φ (H.rt : E)`. Rewrite `h3` using `[← H.bar_eq, h]`. Establish `him : (φ (H.rt : E)).im = 0` using `Complex.conj_eq_iff_im.1 h3.symm`. Establish `h4 : (φ (H.rt : E)) ^ 2 = -(H.d : ℂ)`. Use `congrArg (fun a : 𝓞 E => φ (a : E)) H.rt_sq` as an intermediate fact.
+
+Simplify using `using this`. Establish `h5` using `congrArg Complex.re h4`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Simplify using `[sq, him] at h5`. Use polynomial arithmetic with `[mul_self_nonneg (φ (H.rt : E)).re]`.
+
+Conclude with `h`. Establish `h2 : (2 : 𝓞 E) * H.bar H.w0 = 1 - H.rt`. Use `congrArg H.bar H.two_weight_eq_one_add_root` as an intermediate fact. Simplify `this` using `[hr, sub_eq_add_neg, map_ofNat]`. Establish `: (2 : 𝓞 E) * (H.bar H.w0 - (1 - H.w0)) = 0` using `by linear_combination h2 + H.two_weight_eq_one_add_root`.
+
+Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_left two_ne_zero)`.
+-/
 theorem cmHost_bar_halfIntegerGenerator (H : Host E) : H.bar H.w0 = 1 - H.w0 := by
   have hr : H.bar H.rt = -H.rt := by
     have h2 : (H.bar H.rt) ^ 2 = H.rt ^ 2 := by rw [← map_pow, H.rt_sq]; simp
@@ -122,6 +139,13 @@ theorem cmHost_bar_halfIntegerGenerator (H : Host E) : H.bar H.w0 = 1 - H.w0 := 
   have : (2 : 𝓞 E) * (H.bar H.w0 - (1 - H.w0)) = 0 := by linear_combination h2 + H.two_weight_eq_one_add_root
   exact sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_left two_ne_zero)
 
+/- English proof (translation)
+Establish `hb : H.bar H.w0 = 1 - H.w0` using `cmHost_bar_halfIntegerGenerator H`. Establish `sk : ∀ a b, D.EF a b = - D.EF b a` using `fun a b => by`. Use `D.alt (a + b)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, D.alt] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1 : D.EF (H.w0 • y) x = D.EF (H.w0 • x) y - D.EF x y`. Rewrite using `[D.adj, hb, sk y, sub_smul, one_smul, map_sub, LinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [herm, wz, h1, sk y x]`. Simplify using `[hb]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_conj (D : Datum H) (x y : D.La) : (herm D y x : 𝓞 E) = H.bar (herm D x y : 𝓞 E) := by
   have hb : H.bar H.w0 = 1 - H.w0 := cmHost_bar_halfIntegerGenerator H
   have sk : ∀ a b, D.EF a b = - D.EF b a := fun a b => by

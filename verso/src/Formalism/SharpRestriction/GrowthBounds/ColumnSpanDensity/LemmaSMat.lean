@@ -6,6 +6,11 @@ open Module
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Establish `hE0 : E.map (IsLocalRing.residue O) = 0`. Use extensionality with `i j`. Simplify `hE i j` using `[Matrix.map_apply, IsLocalRing.residue_eq_zero_iff]`. Establish `h : (RingHom.mapMatrix (IsLocalRing.residue O)) (1 - E * C) = 1`.
+
+Rewrite using `[map_sub, map_one, RingHom.mapMatrix_apply, Matrix.map_mul, hE0, Matrix.zero_mul, sub_zero]`. Rewrite using `[h, Matrix.det_one]`. Conclude with `one_ne_zero`.
+-/
 private theorem smt_unit {s ρ : ℕ} (E : Matrix (Fin s) (Fin ρ) O) (C : Matrix (Fin ρ) (Fin s) O)
     (hE : ∀ i j, E i j ∈ IsLocalRing.maximalIdeal O) : IsUnit (1 - E * C).det := by
   rw [← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]
@@ -17,6 +22,15 @@ private theorem smt_unit {s ρ : ℕ} (E : Matrix (Fin s) (Fin ρ) O) (C : Matri
   rw [h, Matrix.det_one]
   exact one_ne_zero
 
+/- English proof (translation)
+Establish `hU` using `smt_unit E C hE`. Establish `hV : IsUnit (1 - C * E).det` using `by rw [Matrix.det_one_sub_mul_comm]; exact hU`. Establish `hUi : (1 - E * C) * (1 - E * C)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hU`. Establish `hVi : (1 - C * E) * (1 - C * E)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hV`. Use `⟨Matrix.fromBlocks (z2 • (1 - E * C)⁻¹) (-(z1 * z2) • (E * (1 - C * E)⁻¹)) (-(C * (1 - E * C)⁻¹)) (z1 • (1 - C * E)⁻¹), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, smul_zero, Matrix.fromBlocks_inj]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (z1 * z2) • (1 : Matrix (Fin s) (Fin s) O) = (z1 * z2) • ((1 - E * C) * (1 - E * C)⁻¹)`. Rewrite using `[hUi]`. Rewrite using `[e]`.
+
+Simplify using `only [Matrix.sub_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg, Matrix.mul_assoc, smul_smul]`. Use `module`. Simplify using `only [Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, smul_smul, neg_smul] module`. Simplify using `only [Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, smul_smul] module`. Establish `e : (z1 * z2) • (1 : Matrix (Fin ρ) (Fin ρ) O) = (z1 * z2) • ((1 - C * E) * (1 - C * E)⁻¹)`.
+
+Rewrite using `[hVi]`. Rewrite using `[e]`. Simplify using `only [Matrix.sub_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, smul_smul, neg_smul]`. Use `module`.
+-/
 private theorem smt_block {s ρ : ℕ} (z1 z2 : O) (E : Matrix (Fin s) (Fin ρ) O)
     (C : Matrix (Fin ρ) (Fin s) O) (hE : ∀ i j, E i j ∈ IsLocalRing.maximalIdeal O) :
     ∃ M : Matrix (Fin s ⊕ Fin ρ) (Fin s ⊕ Fin ρ) O,
@@ -51,6 +65,49 @@ private theorem smt_block {s ρ : ℕ} (z1 z2 : O) (E : Matrix (Fin s) (Fin ρ) 
       Matrix.neg_mul, Matrix.mul_assoc, smul_smul, neg_smul]
     module
 
+/- English proof (translation)
+Establish `hz0 : z1 * z2 ≠ 0` using `mul_ne_zero h1 h2`. Establish `key : ∀ (n : ℕ) (N : Matrix (Fin n) (Fin ρ) O), ∃ (r s : ℕ), r + s = n ∧ (∃ (P : Matrix (Fin r) (Fin n) O) (Q : Matrix (Fin ρ) (Fin r) O), P * N * Q = (z1 * z2) • (1 : Matrix (Fin r) (Fin r) O)) ∧ (∃ (P' : Matrix (Fin s) (Fin n) O) (P'' : Matrix (Fin n) (Fin s) O), P' * P'' = 1 ∧ …`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `N`. Use `⟨0, 0, rfl, ⟨0, 0, ?_⟩, ⟨0, 0, ?_, fun i => i.elim0⟩⟩` and prove the remaining obligations. Use extensionality with `i`. Conclude with `i.elim0`. Use extensionality with `i`.
+
+Conclude with `i.elim0`. Consider the case `succ n ih`. Introduce `N`. Distinguish the cases in `hall : ∀ i j, ∃ e ∈ IsLocalRing.maximalIdeal O, N i j = z1 * z2 * e`. Use `⟨0, n + 1, by omega, ⟨0, 0, ?_⟩, ⟨1, 1, Matrix.one_mul 1, ?_⟩⟩` and prove the remaining obligations.
+
+Use extensionality with `i`. Conclude with `i.elim0`. Introduce `i j`. Rewrite using `[Matrix.one_mul]`. Conclude with `hall i j`.
+
+Take `⟨ia, hia⟩` from `not_forall.mp hall`. Take `⟨ja, hna⟩` from `not_forall.mp hia`. Take `⟨⟨i0, j0⟩, -, hmin⟩` from `Finset.exists_min_image (Finset.univ : Finset (Fin (n + 1) × Fin ρ)) (fun p => IsDiscreteValuationRing.addVal O (N p.1 p.2)) ⟨(ia, ja), Finset.mem_univ _⟩`. Establish `hdiv : ∀ p : Fin (n + 1) × Fin ρ, N i0 j0 ∣ N p.1 p.2` using `fun p => (IsDiscreteValuationRing.addVal_le_iff_dvd).mp (hmin p (Finset.mem_univ _))`. Establish `haz : N i0 j0 ∣ z1 * z2`.
+
+Assume the negation of the conclusion as `hnd`. Break down `le_total (IsDiscreteValuationRing.addVal O (N i0 j0)) (IsDiscreteValuationRing.addVal O (z1 * z2)) with h | h` into its components or cases. Conclude with `hnd ((IsDiscreteValuationRing.addVal_le_iff_dvd).mp h)`. Take `⟨e, he⟩` from `(IsDiscreteValuationRing.addVal_le_iff_dvd).mp h`. Establish `hem : e ∈ IsLocalRing.maximalIdeal O`.
+
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, rfl⟩`. Conclude with `hnd ⟨↑u⁻¹, by rw [he, mul_assoc, Units.mul_inv, mul_one]⟩`. Apply `hna` to reduce the goal to its premises. Take `⟨b, hb⟩ : N i0 j0 ∣ N ia ja` from `hdiv (ia, ja)`.
+
+Conclude with `⟨e * b, Ideal.mul_mem_right _ _ hem, by rw [hb, he, mul_assoc]⟩`. Take `⟨t, ht⟩` from `haz`. Use `choose f hf using hdiv`. Establish `hf' : ∀ i l, N i l = N i0 j0 * f (i, l)` using `fun i l => hf (i, l)`. Establish `ha0 : N i0 j0 ≠ 0`.
+
+Introduce `h0`. Apply `hz0` to reduce the goal to its premises. Rewrite using `[ht, h0, zero_mul]`. Establish `hf00 : f (i0, j0) = 1`. Apply `mul_left_cancel₀ ha0` to reduce the goal to its premises.
+
+Rewrite using `[mul_one]`. Conclude with `(hf' i0 j0).symm`. Set `N1 : Matrix (Fin n) (Fin ρ) O` to `Matrix.of fun k l => N (i0.succAbove k) l - f (i0.succAbove k, j0) * N i0 l`. Take `⟨r1, s1, hrs, ⟨P1, Q1, hPQ⟩, ⟨P1', P1'', hP1, hgood⟩⟩` from `ih N1`. Set `S : Matrix (Fin n) (Fin (n + 1)) O` to `Matrix.of fun k i => (if i = i0.succAbove k then 1 else 0) - (if i = i0 then f (i0.succAbove k, j0) else 0)`.
+
+Set `Em : Matrix (Fin (n + 1)) (Fin n) O` to `Matrix.of fun i k => if i = i0.succAbove k then 1 else 0`. Set `Ei : Matrix (Fin 1) (Fin (n + 1)) O` to `Matrix.of fun _ i => if i = i0 then t else 0`. Set `ej : Matrix (Fin ρ) (Fin 1) O` to `Matrix.of fun l _ => if l = j0 then 1 else 0`. Set `dd : Matrix (Fin 1) (Fin ρ) O` to `Matrix.of fun _ l => f (i0, l)`. Set `Q1' : Matrix (Fin ρ) (Fin r1) O` to `Q1 - ej * (dd * Q1)`.
+
+Establish `hSN : S * N = N1`. Use extensionality with `k l`. Simplify using `[S, N1, Matrix.mul_apply, sub_mul, Finset.sum_sub_distrib, ite_mul]`. Establish `hSE : S * Em = 1`. Use extensionality with `k k'`.
+
+Establish `hne : i0 ≠ i0.succAbove k'` using `Fin.ne_succAbove i0 k'`. Establish `hne' : i0.succAbove k' ≠ i0` using `Fin.succAbove_ne i0 k'`. Simplify using `only [S, Em, Matrix.mul_apply, Matrix.of_apply, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, Matrix.one_apply]`. Simplify using `[hne, hne', Fin.succAbove_right_inj]`. Establish `hrow : Ei * N = (z1 * z2) • dd`.
+
+Use extensionality with `i l`. Simplify using `[Ei, dd, Matrix.mul_apply, ite_mul]`. Rewrite using `[hf' i0 l, ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdd : dd * ej = 1`.
+
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[dd, ej, Matrix.mul_apply, hf00]`. Establish `hN1e : N1 * ej = 0`.
+
+Use extensionality with `k j`. Simplify using `[N1, ej, Matrix.mul_apply]`. Rewrite using `[hf' (i0.succAbove k) j0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hblocks : Matrix.fromRows Ei (P1 * S) * N * Matrix.fromCols ej Q1' = (z1 * z2) • (1 : Matrix (Fin 1 ⊕ Fin r1) (Fin 1 ⊕ Fin r1) O)`.
+
+Rewrite using `[Matrix.fromRows_mul, Matrix.fromRows_mul_fromCols, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, smul_zero, smul_zero, Matrix.fromBlocks_inj]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrow, Matrix.smul_mul, hdd]`. Rewrite using `[hrow, Matrix.mul_sub, Matrix.smul_mul, Matrix.smul_mul, ← Matrix.mul_assoc dd ej, hdd, Matrix.one_mul, sub_self]`. Rewrite using `[Matrix.mul_assoc P1 S N, hSN, Matrix.mul_assoc, hN1e, Matrix.mul_zero]`.
+
+Rewrite using `[Matrix.mul_assoc P1 S N, hSN, Matrix.mul_sub, ← Matrix.mul_assoc (P1 * N1) ej, Matrix.mul_assoc P1 N1 ej, hN1e, Matrix.mul_zero, Matrix.zero_mul, sub_zero, hPQ]`. Use `⟨1 + r1, s1, by omega, ⟨(Matrix.fromRows Ei (P1 * S)).submatrix finSumFinEquiv.symm id, (Matrix.fromCols ej Q1').submatrix id finSumFinEquiv.symm, ?_⟩, ⟨P1' * S, Em * P1'', ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Matrix.submatrix_id_id N, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, hblocks]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc S Em, hSE, Matrix.one_mul, hP1]`. Introduce `i j`. Rewrite using `[Matrix.mul_assoc, hSN]`. Conclude with `hgood i j`. Take `⟨r, s, hrs, hP, P', P'', hP', hg⟩` from `key σ N`.
+
+Use `⟨r, s, hrs, hP, P', P'', ?_⟩` and prove the remaining obligations. Use `choose E hEm hE using hg`. Take `⟨M, hM⟩` from `smt_block z1 z2 (Matrix.of E) (B * P'') (fun i j => hEm i j)`. Use `⟨M, hP', ?_⟩` and prove the remaining obligations. Establish `hPN : P' * N = (z1 * z2) • Matrix.of E`.
+
+Use extensionality with `i j`. Simplify using `[hE i j]`. Rewrite using `[hPN]`. Conclude with `hM`.
+-/
 theorem lemmaSMat {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (σ ρ : ℕ) (z1 z2 : O) (h1 : z1 ≠ 0) (h2 : z2 ≠ 0) (N : Matrix (Fin σ) (Fin ρ) O) (B : Matrix (Fin ρ) (Fin σ) O) :
   ∃ (r s : ℕ), r + s = σ ∧
     (∃ (P : Matrix (Fin r) (Fin σ) O) (Q : Matrix (Fin ρ) (Fin r) O), P * N * Q = (z1 * z2) • (1 : Matrix (Fin r) (Fin r) O)) ∧

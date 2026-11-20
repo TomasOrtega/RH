@@ -12,6 +12,9 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EisMidHt.ht_iwasawa_anyDim | exact GlobalTheory.EisMidHt.ht_iwasawa_anyDim | (intros; apply GlobalTheory.EisMidHt.ht_iwasawa_anyDim <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.iwasawa_height_adapted : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E)
     (L : Submodule (𝓞 E) (Fin n → E)) (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ),

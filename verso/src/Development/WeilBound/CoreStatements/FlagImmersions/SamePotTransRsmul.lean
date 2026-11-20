@@ -18,6 +18,13 @@ section Block
 variable {K₀ K : Type} [Fintype K₀] [Fintype K] {ι₀ : K₀ → Type} {ι : K → Type} [∀ k, Fintype (ι₀ k)]
   [∀ k, Fintype (ι k)] {κ : K₀ → K} {v : (Σ k, ι₀ k) → Σ k, ι k} {Ω₀ Ω : Type} [Field Ω₀] [Field Ω]
 
+/- English proof (translation)
+Establish `key : ((mConeMap y).toRingHom.comp (rename v).toRingHom) = ((rename κ).toRingHom.comp (MvPolynomial.map i)).comp (mConeMap y₀).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using the standard rewrite rules. Introduce `p`.
+
+Simplify using `[mConeMap, hy, hv.2.2.1]`. Use extensionality with `f`. Establish `e : mConeMap y (rename v f) = rename κ (MvPolynomial.map i (mConeMap y₀ f))`. Use `congrArg (fun φ => φ f) key` as an intermediate fact. Simplify using `using this`.
+
+Simplify using `only [imageZ, mCoordIdeal, Ideal.mem_comap, RingHom.mem_ker]`. Use `show mConeMap y (rename v f) = 0 ↔ mConeMap y₀ f = 0`. Rewrite using `[e, map_eq_zero_iff _ (rename_injective κ hv.1), map_eq_zero_iff _ (map_injective i i.injective)]`.
+-/
 theorem imageZ_restr (i : Ω₀ →+* Ω) {y₀ : (Σ k, ι₀ k) → Ω₀} {y : (Σ k, ι k) → Ω} (hv : IsBlockMap κ v)
     (hy : ∀ p, y (v p) = i (y₀ p)) : imageZ v (mCoordIdeal y) = mCoordIdeal y₀ := by
   have key : ((mConeMap y).toRingHom.comp (rename v).toRingHom) =
@@ -35,6 +42,11 @@ theorem imageZ_restr (i : Ω₀ →+* Ω) {y₀ : (Σ k, ι₀ k) → Ω₀} {y 
   show mConeMap y (rename v f) = 0 ↔ mConeMap y₀ f = 0
   rw [e, map_eq_zero_iff _ (rename_injective κ hv.1), map_eq_zero_iff _ (map_injective i i.injective)]
 
+/- English proof (translation)
+Introduce `s`. Take `⟨d, g, h, hg, hh, hne, he⟩` from `hB s`. Establish `hyv : y ∘ v = y₀` using `funext hy`. Establish `hc : ∀ f : MRing ι₀, aeval y (rename v f) = aeval y₀ f`. Introduce `f`.
+
+Rewrite using `[aeval_rename, hyv]`. Conclude with `⟨Function.extend κ d 0, rename v g, rename v h, DegBlock.isMultiHomog_rename' hv hg, DegBlock.isMultiHomog_rename' hv hh, by rw [hc]; exact hne, by rw [hc, hc]; exact he⟩`.
+-/
 theorem birational_of_block {y₀ : (Σ k, ι₀ k) → Ω} {y : (Σ k, ι k) → Ω} (hv : IsBlockMap κ v)
     (hy : ∀ p, y (v p) = y₀ p) (hB : Birational y₀) : Birational y := by
   intro s
@@ -46,6 +58,9 @@ theorem birational_of_block {y₀ : (Σ k, ι₀ k) → Ω} {y : (Σ k, ι k) �
   exact ⟨Function.extend κ d 0, rename v g, rename v h, DegBlock.isMultiHomog_rename' hv hg,
     DegBlock.isMultiHomog_rename' hv hh, by rw [hc]; exact hne, by rw [hc, hc]; exact he⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hA.2.1.2.2 k`. Use `⟨a, fun h0 => ha ?_⟩` and prove the remaining obligations. Use `show mConeMap y (X ⟨k, a⟩) = 0`. Simplify using `[mConeMap, h0]`.
+-/
 theorem ne_zero_of_arith {y : (Σ k, ι k) → Ω} {d : ℕ} (hA : IsArithVar (mCoordIdeal y) d) (k : K) :
     ∃ a, y ⟨k, a⟩ ≠ 0 := by
   obtain ⟨a, ha⟩ := hA.2.1.2.2 k
@@ -53,6 +68,15 @@ theorem ne_zero_of_arith {y : (Σ k, ι k) → Ω} {d : ℕ} (hA : IsArithVar (m
   show mConeMap y (X ⟨k, a⟩) = 0
   simp [mConeMap, h0]
 
+/- English proof (translation)
+Use `letI := i.toAlgebra`. Set `φ : Ω₀ →ₐ[ℚ] Ω` to `i.toRatAlgHom`. Establish `hS : φ '' {t : Ω₀ | ∃ p q : (Σ k, ι₀ k), p.1 = q.1 ∧ t = y₀ p / y₀ q} = {t : Ω | ∃ p q : (Σ k, ι₀ k), p.1 = q.1 ∧ t = (y ∘ v) p / (y ∘ v) q}`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨s, ⟨p, q, hpq, rfl⟩, rfl⟩`. Conclude with `⟨p, q, hpq, by simp [φ, hy]⟩`. Introduce and unpack `⟨p, q, hpq, rfl⟩`. Conclude with `⟨_, ⟨p, q, hpq, rfl⟩, by simp [φ, hy]⟩`. Establish `hrange : blockFnField (y ∘ v) = (⊤ : IntermediateField ℚ Ω₀).map φ`.
+
+Rewrite using `[← h₀]`. Simplify using `only [blockFnField]`. Rewrite using `[IntermediateField.adjoin_map, hS]`. Rewrite using `[h, IntermediateField.relfinrank_top_right, hrange]`. Set `e : ((⊤ : IntermediateField ℚ Ω₀).map φ) ≃+* Ω₀` to `((IntermediateField.equivMap ⊤ φ).symm.trans IntermediateField.topEquiv).toRingEquiv`.
+
+Apply `Algebra.finrank_eq_of_equiv_equiv e (RingEquiv.refl Ω)` to reduce the goal to its premises. Use extensionality with `x`. Take `⟨z, rfl⟩` from `(IntermediateField.equivMap ⊤ φ).surjective x`. Simplify using `[e, φ, RingHom.algebraMap_toAlgebra]`. Both sides reduce to the same expression.
+-/
 theorem relfinrank_restr [CharZero Ω₀] [CharZero Ω] (i : Ω₀ →+* Ω) {y₀ : (Σ k, ι₀ k) → Ω₀} {y : (Σ k, ι k) → Ω}
     (hy : ∀ p, y (v p) = i (y₀ p)) (h₀ : blockFnField y₀ = ⊤) (h : blockFnField y = ⊤) :
     IntermediateField.relfinrank (blockFnField (y ∘ v)) (blockFnField y) =
@@ -80,6 +104,11 @@ theorem relfinrank_restr [CharZero Ω₀] [CharZero Ω] (i : Ω₀ →+* Ω) {y�
   simp [e, φ, RingHom.algebraMap_toAlgebra]
   rfl
 
+/- English proof (translation)
+Establish `: ∀ k, ∃ a : ι₀ k, v ⟨k, a⟩ = ⟨κ k, c (κ k)⟩`. Introduce `k`. Take `⟨p, hp⟩` from `hv.2.2.2 ⟨κ k, c (κ k)⟩ ⟨k, rfl⟩`. Establish `h1 : κ p.1 = κ k` using `by rw [← hv.2.2.1 p, hp]`. Take `⟨k₁, a⟩` from `p`.
+
+Take `rfl : k₁ = k` from `hv.1 h1`. Conclude with `⟨a, hp⟩`. Use `choose c₀ hc₀ using this`. Conclude with `⟨c₀, hc₀⟩`.
+-/
 theorem exists_chart (hv : IsBlockMap κ v) (c : ∀ k, ι k) : ∃ c₀ : ∀ k, ι₀ k, ∀ k, v ⟨k, c₀ k⟩ = ⟨κ k, c (κ k)⟩ := by
   have : ∀ k, ∃ a : ι₀ k, v ⟨k, a⟩ = ⟨κ k, c (κ k)⟩ := by
     intro k
@@ -91,6 +120,11 @@ theorem exists_chart (hv : IsBlockMap κ v) (c : ∀ k, ι k) : ∃ c₀ : ∀ k
   choose c₀ hc₀ using this
   exact ⟨c₀, hc₀⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ k₀, w (κ k₀) ^ a k₀ = w (κ k₀) ^ pullDeg κ a (κ k₀)` using `fun k₀ => by`. Rewrite using `[pullDeg, hκ.extend_apply]`. Repeatedly rewrite using `[h1]`. Rewrite using `[← Finset.prod_image (f := fun k => w k ^ pullDeg κ a k) (fun x _ y _ h => hκ h)]`. Use `symm`.
+
+Apply `Finset.prod_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `k _ hk`. Establish `hn : ¬ ∃ k₀, κ k₀ = k` using `fun ⟨k₀, e⟩ => hk (by simp [← e])`. Simplify using `[pullDeg, Function.extend_apply' _ _ _ hn]`.
+-/
 theorem prod_pullDeg (hκ : Function.Injective κ) (w : K → Ω) (a : K₀ → ℤ) :
     ∏ k, w k ^ pullDeg κ a k = ∏ k, w (κ k) ^ a k := by
   classical
@@ -104,6 +138,11 @@ theorem prod_pullDeg (hκ : Function.Injective κ) (w : K → Ω) (a : K₀ → 
   have hn : ¬ ∃ k₀, κ k₀ = k := fun ⟨k₀, e⟩ => hk (by simp [← e])
   simp [pullDeg, Function.extend_apply' _ _ _ hn]
 
+/- English proof (translation)
+Distinguish the cases in `hk : ∃ k₀, κ k₀ = k`. Take `⟨k₀, rfl⟩` from `hk`. Simplify using `only [pullDeg, hκ.extend_apply, Pi.one_apply, mul_one]`. Use `h k₀` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `[pullDeg, Function.extend_apply' _ _ _ hk]`.
+-/
 theorem pullDeg_add_nonneg (hκ : Function.Injective κ) {a : K₀ → ℤ} {n : ℕ} (h : ∀ k, -a k ≤ n) (k : K) :
     0 ≤ pullDeg κ a k + n * pullDeg κ 1 k := by
   by_cases hk : ∃ k₀, κ k₀ = k
@@ -113,6 +152,9 @@ theorem pullDeg_add_nonneg (hκ : Function.Injective κ) {a : K₀ → ℤ} {n :
     linarith
   · simp [pullDeg, Function.extend_apply' _ _ _ hk]
 
+/- English proof (translation)
+Distinguish the cases in `hk : ∃ k₀, κ k₀ = k`. Take `⟨k₀, rfl⟩` from `hk`. Simplify using `only [pullDeg, hκ.extend_apply]`. Conclude with `h k₀`. Simplify using `[pullDeg, Function.extend_apply' _ _ _ hk]`.
+-/
 theorem pullDeg_nonneg (hκ : Function.Injective κ) {a : K₀ → ℤ} (h : ∀ k, 0 ≤ a k) (k : K) :
     0 ≤ pullDeg κ a k := by
   by_cases hk : ∃ k₀, κ k₀ = k
@@ -127,6 +169,15 @@ section Pot
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨V₁, o₁, m₁, G₁, hG₁, e₁⟩` from `h₁ x hx`. Take `⟨V₂, o₂, m₂, G₂, hG₂, e₂⟩` from `h₂ x hx`. Take `⟨W, hW, oW, mW⟩` from `eventually_nhds_iff.1 (hQ x)`. Use `⟨V₁ ∩ V₂ ∩ W, (o₁.inter o₂).inter oW, ⟨⟨m₁, m₂⟩, mW⟩, fun y => G₁ y + (c : ℂ) * G₂ y, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `j`. Establish `a1 : AnalyticOnNhd ℂ (G₁ ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (V₁ ∩ V₂ ∩ W))` using `(hG₁ j).mono (fun z hz => ⟨hz.1, hz.2.1.1⟩)`. Establish `a2 : AnalyticOnNhd ℂ (G₂ ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (V₁ ∩ V₂ ∩ W))` using `(hG₂ j).mono (fun z hz => ⟨hz.1, hz.2.1.2⟩)`. Conclude with `a1.add (analyticOnNhd_const.mul a2)`. Introduce `y hy`.
+
+Establish `f1` using `e₁ y hy.1.1`. Establish `f2` using `e₂ y hy.1.2`. Establish `f3` using `hW y hy.2`. Simplify using `only [LocPot.rsmul] at f1 ⊢`. Rewrite `f1` using `[f3]`.
+
+Simplify using `only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Take the linear combination `f1 + c * f2`.
+-/
 theorem samePot_trans_rsmul {P Q Q' T : LocPot X} (c : ℝ) (h₁ : PB.SamePot A Set.univ P (Q.rsmul c))
     (h₂ : PB.SamePot A Set.univ Q' T) (hQ : ∀ x, ∀ᶠ y in nhds x, Q.φ x y = Q'.φ x y) :
     PB.SamePot A Set.univ P (T.rsmul c) := by
@@ -203,6 +254,13 @@ def pullRealis (Re : PB.Realis S P₀) (hA : IsArithVar P (D + 1)) (hv : IsBlock
       Real.log ((Re.ref a).h fun p => R.lift x x (v p)) + S.phT a t (Re.π (h x))
     linarith
 
+/- English proof (translation)
+Establish `hzJ : z ∉ mcPts Re.J`. Rewrite using `[hJ]`. Introduce `hz'`. Use `hz'.2 1 Submodule.mem_top` as an intermediate fact. Simplify using `at this`.
+
+Take `⟨x, c, hc, he⟩` from `Re.R.surj z hz hzJ`. Establish `hw` using `(Re.R.mem x x (Re.R.mem_U x)).1`. Establish `e1` using `Re.line_eq a t h0 h1 x`. Rewrite `e1` using `[hph, add_zero]`. Establish `e2 : (Re.line a t).h (Re.R.lift x x) = (Re.ref a).h (Re.R.lift x x)` using `Real.log_injOn_pos ((Re.line a t).pos _ hw) ((Re.ref a).pos _ hw) e1`.
+
+Rewrite `e2` using `[he, (Re.line a t).smul c z hc, (Re.ref a).smul c z hc, Re.line_deg]`. Establish `hp : (∏ k, ‖c k‖ ^ (Re.ref a).a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Conclude with `mul_left_cancel₀ hp e2`.
+-/
 theorem line_h_of_phT (Re : PB.Realis S P₀) (hJ : Re.J = ⊤) {a : σ} {t : ℝ} (h0 : 0 < t) (h1 : t ≤ S.t₀)
     (hph : ∀ x, S.phT a t x = 0) {z : (Σ k, ι₀ k) → ℂ} (hz : z ∈ mcPts P₀) : (Re.line a t).h z = (Re.ref a).h z := by
   have hzJ : z ∉ mcPts Re.J := by
@@ -221,6 +279,19 @@ theorem line_h_of_phT (Re : PB.Realis S P₀) (hJ : Re.J = ⊤) {a : σ} {t : �
     Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))
   exact mul_left_cancel₀ hp e2
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Establish `hmem : ∀ w : (Σ k, ι k) → ℂ, w ∈ mcPts P → (fun q => w (v q)) ∈ mcPts P₀`. Introduce `w hw`. Use `⟨fun k₀ => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hw.1 (κ k₀)`.
+
+Take `⟨p, hp⟩` from `hv.2.2.2 ⟨κ k₀, i⟩ ⟨k₀, rfl⟩`. Establish `h1 : κ p.1 = κ k₀` using `by rw [← hv.2.2.1 p, hp]`. Take `⟨k', j⟩` from `p`. Take `rfl : k' = k₀` from `hv.1 h1`. Use `⟨j, ?_⟩` and prove the remaining obligations.
+
+Use `show w (v ⟨k', j⟩) ≠ 0`. Rewrite using `[hp]`. Conclude with `hi`. Establish `hf' : rename v f ∈ P` using `hP hf`. Use `hw.2 _ hf'` as an intermediate fact.
+
+Rewrite `this` using `[map_rename, eval_rename]`. Conclude with `this`. Establish `hcomp : ∀ y y' u, u ∈ R.U y ∩ R.U y' → SameOrbit (fun q => R.lift y u (v q)) (fun q => R.lift y' u (v q))`. Introduce `y y' u hu`. Take `⟨c, hc, he⟩` from `R.compat y y' u hu`.
+
+Use `⟨c ∘ κ, fun k => hc (κ k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Rewrite using `[he]`. Simplify using `only [Function.comp_apply, hv.2.2.1 q]`. Take `⟨h, hh, ho⟩` from `PB.Proj.exists_holoMap_of_local_lifts R₀ R.A (V := R.U) (μ := fun y u q => R.lift y u (v q)) R.isOpen_U R.mem_U (fun y q => R.holo y (v q)) (fun y u hu => hmem _ (R.mem y u hu)) hcomp`.
+
+Conclude with `⟨h, hh, ho⟩`.
+-/
 theorem exists_resProj {J₀ : Ideal (MRing ι₀)} (hJ : J₀ = ⊤) (R₀ : AnLogRes P₀ J₀ D) (R : AnLogRes P J D)
     (hv : IsBlockMap κ v) (hP : P₀ ≤ imageZ v P) :
     ∃ h : R.X → R₀.X, HoloMap R.A R₀.A h ∧ ∀ x, SameOrbit (R₀.lift (h x) (h x)) (fun p => R.lift x x (v p)) := by
@@ -256,6 +327,17 @@ theorem exists_resProj {J₀ : Ideal (MRing ι₀)} (hJ : J₀ = ⊤) (R₀ : An
 
 end Pull
 
+/- English proof (translation)
+Establish `hdZ : ∏ p ∈ S, ((p : ℤ)) ^ padicValNat p n ∣ (n : ℤ)`. Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises. Introduce `p hp q hq hpq`. Conclude with `IsCoprime.pow (Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes (hS p hp) (hS q hq)).2 hpq))`. Introduce `p _`.
+
+Conclude with `(pow_padicValNat_dvd : p ^ padicValNat p n ∣ n)` after adjusting the coercions. Establish `hd : ∏ p ∈ S, p ^ padicValNat p n ∣ n`. Apply `Int.natCast_dvd_natCast.1` to reduce the goal to its premises. Use `push_cast`. Conclude with `hdZ`.
+
+Establish `hle : ((∏ p ∈ S, p ^ padicValNat p n : ℕ) : ℝ) ≤ n`. Conclude with `Nat.le_of_dvd hn hd` after adjusting the coercions. Establish `hpos : ∀ p ∈ S, ((p : ℝ) ^ padicValNat p n) ≠ 0` using `fun p hp => pow_ne_zero _ (Nat.cast_ne_zero.2 (hS p hp).ne_zero)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_prod hpos]`.
+
+Simplify using `[Real.log_pow]`. Use `_ ≤ Real.log n := by`. Apply `Real.log_le_log` to reduce the goal to its premises. Conclude with `Finset.prod_pos fun p hp => pow_pos (Nat.cast_pos.2 (hS p hp).pos) _`. Move the coercions through the operations in `at hle`.
+
+Conclude with `hle`.
+-/
 theorem sum_padicValNat_log {S : Finset ℕ} (hS : ∀ p ∈ S, p.Prime) {n : ℕ} (hn : 0 < n) :
     ∑ p ∈ S, (padicValNat p n : ℝ) * Real.log p ≤ Real.log n := by
   have hdZ : ∏ p ∈ S, ((p : ℤ)) ^ padicValNat p n ∣ (n : ℤ) := by

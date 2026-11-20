@@ -14,6 +14,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `Y G U J ψ g h ho hc hw hs`. Set `𝒰 : G.OpenCover` to `Scheme.Cover.mkOfCovers J (fun _ => U) ψ (fun x => by`. Take `⟨j, hj⟩` from `hc x`. Conclude with `⟨j, hj⟩) ho`. Use `haveI : IsZariskiLocalAtSource @Smooth.{0} := HasRingHomProperty.instIsZariskiLocalAtSource`.
+
+Use `IsZariskiLocalAtSource.of_openCover (P := @Smooth) 𝒰 ?_` and prove the remaining obligations. Introduce `j`. Establish `h2 : 𝒰.f j ≫ g = h` using `hw j`. Rewrite using `[h2]`. Conclude with `hs`.
+-/
 theorem smooth_of_charts_cover : ∀ (Y G U : Scheme.{0}) (J : Type) (ψ : J → (U ⟶ G)) (g : G ⟶ Y) (h : U ⟶ Y), (∀ j, IsOpenImmersion (ψ j)) → (∀ x : G, ∃ j, x ∈ Set.range (ψ j)) → (∀ j, ψ j ≫ g = h) → Smooth h → Smooth g := by
   intro Y G U J ψ g h ho hc hw hs
   let 𝒰 : G.OpenCover := Scheme.Cover.mkOfCovers J (fun _ => U) ψ (fun x => by
@@ -24,6 +29,11 @@ theorem smooth_of_charts_cover : ∀ (Y G U : Scheme.{0}) (J : Type) (ψ : J →
   have h2 : 𝒰.f j ≫ g = h := hw j
   rw [h2]; exact hs
 
+/- English proof (translation)
+Introduce `R _ _ _ hA S π hp hs hS G' _ _ hG N hL φ hφ`. Take `⟨n, a, x, hx, hcov⟩` from `GlobalTheory.T.finite_section_translates_cover_semiAbelian R hA S π hp hs hS G' hG N hL`. Use `haveI : IsNoetherianRing R := hA.1`. Use `haveI : IsIntegrallyClosed R := hA.2.2.1`. Use `haveI : Smooth N.U.hom := N.smooth`.
+
+Take `⟨G, β, ψ, hψ, hcovG, hpb, hφβ⟩` from `GlobalTheory.T.exists_descent_of_charts_pulled_back_from_flat R S G'.left π G'.hom hp hs hS φ.hom.left (Over.w φ.hom) N.U inferInstance (Option (Fin n)) (N.chart x) (fun j => (GlobalTheory.T.chart_isOpenImmersion_over_base S π G' N n x j).1) (fun j => (GlobalTheory.T.chart_isOpen …`. Use `⟨G, β, Over.homMk (ψ none) (hψ none).2.1, ?_, hpb, (hψ none).1, ?_, hφβ⟩` and prove the remaining obligations. Conclude with `smooth_of_charts_cover _ _ _ _ ψ G.hom N.U.hom (fun j => (hψ j).1) hcovG (fun j => (hψ j).2.1) N.smooth`. Simplify using `using (hψ none).2.2`.
+-/
 theorem descends_near_closed_fibre : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (S : Scheme.{0}) (π : S ⟶ Sp R), IsProper π → Surjective π → IsIntegral S → ∀ (G' : Over S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ N : Near π G', N.Law → ∀ φ, N.Datum φ → ∃ (G : Over (Sp R)) (β : G'.left ⟶ G.left) (i : N.U ⟶ G), Smooth G.hom ∧ IsPullback β G'.hom G.hom π ∧ IsOpenImmersion i.left ∧ N.u ≫ β = pullback.fst _ _ ≫ i.left ∧ pullback.fst G'.hom (pullback.fst π π) ≫ β = φ.hom.left ≫ pullback.fst G'.hom (pullback.snd π π) ≫ β := by
   intro R _ _ _ hA S π hp hs hS G' _ _ hG N hL φ hφ
   obtain ⟨n, a, x, hx, hcov⟩ := GlobalTheory.T.finite_section_translates_cover_semiAbelian R hA S π hp hs hS G' hG N hL

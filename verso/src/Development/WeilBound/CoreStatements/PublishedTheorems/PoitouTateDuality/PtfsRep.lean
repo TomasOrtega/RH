@@ -8,6 +8,11 @@ open CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal
 
 namespace PositivityTheory.Lit1.PTN
 
+/- English proof (translation)
+Take `⟨A, hA, eM, h⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gcRep G R M rho hc`. Use `⟨Rep.res (θ.symm : H ≃* G).toMonoidHom A, IsDiscreteRep.res θ.symm.continuous (φ := (θ.symm : H ≃* G).toMonoidHom) A, eM, ?_⟩` and prove the remaining obligations. Introduce `g m`. Rewrite using `[h]`. Use `show A.ρ g (eM m) = A.ρ ((θ.symm : H ≃* G) (θ g)) (eM m)`.
+
+Use `congr 2`. Conclude with `(θ.symm_apply_apply g).symm`.
+-/
 theorem repCmp {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     [TopologicalSpace H] [IsTopologicalGroup H] (θ : G ≃ₜ* H) {R M : Type} [CommRing R]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [DiscreteTopology M]

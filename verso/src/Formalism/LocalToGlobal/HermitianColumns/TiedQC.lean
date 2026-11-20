@@ -60,6 +60,9 @@ structure TwChTied (D : D7) (inQ : D.what₂.Tup → HeightOneSpectrum (𝓞 D.h
 
 attribute [instance] TwChTied.ChFin TwChTied.YbFin TwChTied.YbAct
 
+/- English proof (translation)
+The claim follows from `Finite.of_surjective _ (T.cls u μ hμ i h1 hm β).y_bij.2`.
+-/
 theorem TwChTied.finite_cls {D : D7} {inQ : D.what₂.Tup → HeightOneSpectrum (𝓞 D.host.F) → Prop} (T : TwChTied D inQ)
     (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0) (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ D.R.m) (β : T.Ch u μ i) :
     Finite (ClassSet (UFin D.sp.cm (D.sp.X i)) ((T.lev u μ i h1 hm β).U.subgroupOf (UAf D.sp.cm (D.sp.X i)))) :=

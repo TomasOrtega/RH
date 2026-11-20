@@ -43,6 +43,13 @@ namespace GlobalTheory.NewPrime
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} {bkP : BKPh X}
   {i : X.Tw} {s : X.Sig i}
 
+/- English proof (translation)
+Take `⟨⟨h1, h2, h3, h4, h5⟩, h6, h7⟩` from `hL`. Use `⟨⟨?_, ?_, fun g g' hg => ?_, fun g => ⟨h4 g, ?_⟩, fun g hg => h5 g hg.1⟩, fun g hg => h6 g hg.1, fun g hg => h7 g hg.1⟩` and prove the remaining obligations. Use `h1.inter ?_ show IsOpen ((⨅ q, (d q).ker : Subgroup (GE N)) : Set (GE N))` and prove the remaining obligations. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite ho`.
+
+Establish `: (⨅ q, (d q).ker).Normal` using `Subgroup.normal_iInf_normal fun b => inferInstance infer_instance`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker, h3 g g' hg]`. Use `and_congr_right fun _ => forall_congr' fun q => ?_` and prove the remaining obligations. Rewrite using `[ha q g g' hg, inv_eq_one]`. Use `Subgroup.mem_iInf.2 fun q => ?_` and prove the remaining obligations.
+
+Simplify using `[MonoidHom.mem_ker]`.
+-/
 theorem small_inf {M : ℕ} {L : Subgroup (GE N)} {z : GE N} (hL : Small2 i s M L z) {ι C : Type} [Finite ι] [CommGroup C]
     (d : ι → (GE N →* C)) (ho : ∀ q, IsOpen ((d q).ker : Set (GE N))) (ha : ∀ q, AntiHom X.cc (d q)) :
     Small2 i s M (L ⊓ ⨅ q, (d q).ker) z := by
@@ -61,11 +68,17 @@ theorem small_inf {M : ℕ} {L : Subgroup (GE N)} {z : GE N} (hL : Small2 i s M 
   · refine Subgroup.mem_iInf.2 fun q => ?_
     simp [MonoidHom.mem_ker]
 
+/- English proof (translation)
+Introduce `g g' hg` and use `by rw [eq_inv_iff_mul_eq_one, ← map_mul] exact h _ fun q => by rw [map_mul, ha q g g' hg, inv_mul_cancel]`.
+-/
 theorem anti_of_ker {ι C C' : Type} [CommGroup C] [CommGroup C'] (d : ι → (GE N →* C)) (ha : ∀ q, AntiHom X.cc (d q))
     (κ : GE N →* C') (h : ∀ g, (∀ q, d q g = 1) → κ g = 1) : AntiHom X.cc κ := fun g g' hg => by
   rw [eq_inv_iff_mul_eq_one, ← map_mul]
   exact h _ fun q => by rw [map_mul, ha q g g' hg, inv_mul_cancel]
 
+/- English proof (translation)
+Establish `e` using `h g`. Rewrite `e` using `[Finset.prod_eq_one, mul_one]`. Conclude with `Units.ext e`. Introduce `q _`. Apply the tactic sequence `rcases hg q with h0 | h0 <;> simp [h0]`.
+-/
 theorem IsChar.eq_one {Λ : Type} [CommRing Λ] {κ : GE N →* Λˣ} {M : ℕ} {ι : Type} [Fintype ι] {ξ : ι → Λ}
     {d : ι → (GE N →* Multiplicative (ZMod (X.l i ^ M)))} (h : IsChar i κ ξ d) {g : GE N}
     (hg : ∀ q, ξ q = 0 ∨ d q g = 1) : κ g = 1 := by
@@ -75,6 +88,9 @@ theorem IsChar.eq_one {Λ : Type} [CommRing Λ] {κ : GE N →* Λˣ} {M : ℕ} 
   · intro q _
     rcases hg q with h0 | h0 <;> simp [h0]
 
+/- English proof (translation)
+Establish `e` using `h g`. Apply the tactic sequence `rwa [Finset.prod_eq_single q₀ (fun q _ hq => by rcases hg q hq with h0 | h0 <;> simp [h0]) (by simp)] at e`.
+-/
 theorem IsChar.single {Λ : Type} [CommRing Λ] {κ : GE N →* Λˣ} {M : ℕ} {ι : Type} [Fintype ι] {ξ : ι → Λ}
     {d : ι → (GE N →* Multiplicative (ZMod (X.l i ^ M)))} (h : IsChar i κ ξ d) {g : GE N} (q₀ : ι)
     (hg : ∀ q, q ≠ q₀ → ξ q = 0 ∨ d q g = 1) :
@@ -82,6 +98,23 @@ theorem IsChar.single {Λ : Type} [CommRing Λ] {κ : GE N →* Λˣ} {M : ℕ} 
   have e := h g
   rwa [Finset.prod_eq_single q₀ (fun q _ hq => by rcases hg q hq with h0 | h0 <;> simp [h0]) (by simp)] at e
 
+/- English proof (translation)
+Establish `hZA` using `GlobalTheory.T.universalSelmerCocycle_map_algHom D N X bkP i s B A π κ' κ hκ' Q' a' Φ' Z' hZ'`. Establish `hσD : σ ∈ DecV N p` using `hp.2.2.2.2.2.1.1`. Establish `hσL : σ ∈ L` using `hp.2.2.2.1 hσD`. Take `⟨E, hE1, hE2, hE3⟩` from `GlobalTheory.T.comparison_cocycles_alt D N X bkP i s A κ Q Q' a a' Ψ (Φ'.map π) Z (fun g => (Z' g).map π) (two X γ) (two X σ) hZ hZA (GlobalTheory.T.selmer_unramified_of_vanish_inertia_generators hT D N X bkP i s hl M L z p d σ γ h3 hL hp A κ hK ha hκ Q Q' hQ) (fun W _ _ b m => b …`. Consider the cases of `b`.
+
+Use `show repOn (Tgl i s) κ W σ m = m`. Rewrite using `[(GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl M L z (by omega) hL A κ ρ hK hρ W σ hσL).1, hκ σ hσD, Units.val_one, one_smul]`. Use `show repOn (Tgl i s) κ W (cConj X σ) m = m`. Rewrite using `[(GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl M L z (by omega) hL A κ ρ hK hρ W _ ((hL.1.2.2.1 σ _ (cConj_apply X σ)).1 hσL)).1, antiHom_cConj X ha, hκ σ hσD, inv_one, Units.val_one, one_smul])`. Establish `hcard : Fintype.card (Bool × Fin D.R.r) = 2 * D.R.r` using `by simp`.
+
+Use `GlobalTheory.T.det_ne_zero_of_lowestForm_ne_zero_presentation A B (π : B →+* A) x₁ x₂ (Bool × Fin D.R.r) a a' Φ' (fun j => Z' (two X σ j.1) j.2) (fun j => Z' (two X γ j.1) j.2) (fun j => if j.1 then 1 else ((κ' σ : Bˣ) : B)) Ψ E (fun j => Z (two X σ j.1) j.2) (fun j => if j.1 the …` and prove the remaining obligations. Use `split_ifs`. Conclude with `map_one _`. Use `show π _ = 1`. Rewrite using `[← hκ', hκ σ hσD, Units.val_one]`.
+
+Use `hβ.2.1 _ fun c => ?_` and prove the remaining obligations. Establish `hcx : matAct (Φ'.map π) (c • x) = 0`. Establish `hx' : matAct (Φ'.map π) x = 0` using `hx`. Rewrite using `[map_smul, hx', smul_zero]`. Establish `e` using `GlobalTheory.T.reciprocity_relaxedSelmer_dualSelmer_newPlace hPT hT D N X bkP i s hl M L z p d σ γ h3 hL hp A κ Q Q' ρ hS hK hρ ha hκ hQ Y A β hβ.1 y _ hy ((hZA Y).1 _ hcx)`.
+
+Establish `key : ∀ (g : GE N) (k : Fin D.R.r → A), vecPair D.R.r β (rect ((Z' g).map π) (c • x)) k = β (∑ j, (∑ u, k u * π (Z' g u j)) • x j) c` using `fun g k => by`. Rewrite using `[vecPair_apply]`. Simplify using `only [rect, Finset.sum_smul, map_sum, AddMonoidHom.finsetSum_apply, Pi.smul_apply, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hβ.1, hβ.1, hβ.1, smul_eq_mul, smul_eq_mul, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[key, key, ← sub_eq_zero, ← AddMonoidHom.sub_apply, ← map_sub, ← Finset.sum_sub_distrib]`. Rewrite using `[← e]`.
+
+Use `congr 2`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul, Finset.sum_apply, Fintype.sum_prod_type, Fintype.sum_bool, sub_eq_neg_add, ← Finset.sum_neg_distrib]`. Simplify using `only [← neg_mul]`. Both sides reduce to the same expression.
+
+Use `fun h0 => hB ?_` and prove the remaining obligations. Rewrite using `[← h0, Fintype.sum_prod_type, Fintype.sum_bool, bform, sub_eq_neg_add, dotProduct_comm, dotProduct_comm _ (y.1 σ), ← neg_dotProduct]`. Both sides reduce to the same expression.
+-/
 theorem det_ne_zero (hPT : PoitouTateTotallyComplex) (hT : TameLocal) (hl : 0 < nu X i) {M : ℕ} {L : Subgroup (GE N)} {z : GE N}
     {p : PlE D.host} {d : GE N →* Multiplicative (ZMod (X.l i ^ M))} {σ γ : GE N} (h3 : nu X i + 2 ≤ M) (hL : Small2 i s M L z)
     (hp : NewPl i M L p d σ γ) {A : Type} [CommRing A] [IsLocalRing A] [Finite A] [Algebra (X.O0 i) A]
@@ -150,6 +183,77 @@ theorem det_ne_zero (hPT : PoitouTateTotallyComplex) (hT : TameLocal) (hl : 0 < 
       ← neg_dotProduct]
     rfl
 
+/- English proof (translation)
+Introduce `hC hPT _ hT hLF hLD hLE hGF hGE _ h4 D N X bkP hS i s hG hl M R n H S d A₀ L z P w e hn he hM h3 hAdm hLH hz hL hSt hFit`. Establish `hM1 : 1 ≤ M` using `by omega`. Establish `hMν : nu X i + 1 ≤ M` using `by omega`. Establish `hp : (X.l i).Prime` using `(X.lPrime i).out`. Distinguish the cases in `hNF : NF bkP i s M d P (2 * (e + 1) * w + 2)`.
+
+Take `⟨P', hE, hSt', -⟩` from `GlobalTheory.T.exists_newPlace_frobeniusConjugate_modOpenNormalSubgroup hC D N X i s M R n d A₀ L z P hM1 hz hL hSt hn H S hAdm hLH L 1 hL.1.1 hL.1.2.1 le_rfl L.one_mem (fun _ _ => map_one _) (fun b _ => (hSt.2.1 b).1 _ (over_refl _) _ (N.plOm.2 _))`. Conclude with `⟨P', hE, hSt', (GlobalTheory.T.chebotarevInductionGrowBound_of_presentation hT D N X bkP hS i s hG hl M R n d A₀ L z P P' _ hn hM h3 hz hL hSt' hE).1 hNF⟩`. Unfold `NF at hNF`. Use `push Not at hNF`. Take `⟨Q, hQ, a, Φ, hΦ, F₀, hF₀, hc₀⟩` from `hNF`.
+
+Break down `hFit Q hQ a Φ hΦ with rfl | ⟨b, b', hb⟩` into its components or cases. It suffices to derive a contradiction. Establish `hK : Kills i (X.O0 i ⧸ idl i)` using `fun x hx => Ideal.Quotient.eq_zero_iff_mem.2 hx`. Take `⟨φ, hφ, -⟩` from `GlobalTheory.T.exists_lambda_algebra_hom_evaluation D N X i M (Fin R ⊕ Fin n) _ (fun _ => (0 : X.O0 i ⧸ idl i)) hl hMν hK (fun _ => zero_pow (pow_ne_zero _ hp.ne_zero))`. Establish `e1` using `hφ F₀`.
+
+Rewrite `e1` using `[hF₀, Matrix.det_isEmpty, map_one, GlobalTheory.T.aeval_eq_zero_of_low_coeff_of_nilpotent_multiple _ _ _ (0 : X.O0 i ⧸ idl i) 1 (fun _ => 0) F₀ (pow_one _) (fun _ => dvd_rfl) (fun u hu => hK _ (hc₀ u (by omega)))]`. Establish `e2 : (1 : X.O0 i) ∈ Ideal.span {(X.l i : X.O0 i) ^ nu X i} * IsLocalRing.maximalIdeal (X.O0 i)` using `Ideal.Quotient.eq_zero_iff_mem.1 e1`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal (X.O0 i)).ne_top ((Ideal.eq_top_iff_one _).2 (Ideal.mul_le_inf e2).2)`. Take `⟨F₁, hF₁⟩` from `GlobalTheory.TwSys.toLam_surjective X i M (Fin R ⊕ Fin n) (Φ.adjugate b b')`. Set `K : Set (Fin R ⊕ Fin n)` to `{q | ∃ j : Fin R, n ≤ j.val ∧ q = .inl j}`.
+
+Use `X.twistBaseCoefficientRing_residueField_finite i` as an intermediate fact. Take `⟨A, _, _, _, _, t, a₀, hK, htK, ht2, haK, hau, hdvd⟩` from `GlobalTheory.T.exists_finiteLocalRing_poly_divides_var_pow (X.O0 i) ((X.l i : X.O0 i) ^ nu X i) e w _ K F₁ he (by`. Take `⟨m, h1, h2, h3⟩` from `hb F₁ hF₁`. Conclude with `⟨m, h1, by rintro q ⟨j, hj, rfl⟩; exact h2 j hj, h3⟩)`. Express the relevant statement in the definitionally equal form `Kills i A at hK`.
+
+Use `letI : TopologicalSpace A := ⊥`. Use `haveI : DiscreteTopology A := ⟨rfl⟩`. Establish `ht0 : t ^ X.l i ^ (M - nu X i - 1) = 0` using `pow_eq_zero_of_le (by omega) htK`. Take `⟨φ, hφ, hκ⟩` from `GlobalTheory.T.exists_lambda_algebra_hom_evaluation D N X i M _ A (fun q => a₀ q * t) hl hMν hK (fun q => by rw [mul_pow, ht0, mul_zero])`. Take `⟨κ, hκφ, hκ⟩` from `hκ (fun q => d (P q))`.
+
+Establish `hker : ∀ g, (∀ q ∉ K, d (P q) g = 1) → κ g = 1` using `fun g hg => hκ.eq_one fun q => by`. Distinguish the cases in `hq : q ∈ K`. Conclude with `Or.inl (by rw [haK q hq, zero_mul])`. Conclude with `Or.inr (hg q hq)`. Take `⟨hSet, hAnti, hκz⟩` from `GlobalTheory.T.setup_and_antiHom_of_kills D N X bkP i s hG M _ P _ A₀ Q hSt.1 hQ A κ hK (fun g hg => hker g fun q _ => hg q)`.
+
+Take `⟨Z, hZ⟩` from `GlobalTheory.T.exists_universalSelmerCocycle_baseChange D N X bkP i s M _ _ Q a Φ hΦ A φ κ hκφ hK`. Establish `hdet : (Φ.map φ).det = 0`. Establish `e1` using `(φ : _ →+* A).map_det Φ`. Rewrite `e1` using `[RingHom.coe_coe, ← hF₀, hφ, GlobalTheory.T.aeval_eq_zero_of_low_coeff_of_nilpotent_multiple _ _ _ t _ _ F₀ htK (fun _ => dvd_mul_left _ _) (fun u hu => hK _ (hc₀ u hu))]`. Conclude with `e1.symm`.
+
+Establish `hadj : (Φ.map φ).adjugate b b' ∣ t ^ ((e + 1) * w)`. Establish `e1` using `congrFun (congrFun ((φ : _ →+* A).map_adjugate Φ) b) b'`. Rewrite `hdvd` using `[← hφ, hF₁]`. Conclude with `e1 ▸ hdvd`. Generalize the expression as in `Φ.map φ = Ψ at hZ hdet hadj`.
+
+Take `⟨ρ, hρ⟩` from `exists_isDual i s`. Establish `hl0 : X.l i ^ (nu X i + 1) ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Take `⟨Y, _, _, _, β, hβ, hcog⟩` from `GlobalTheory.T.perfect_pairing_finite_module_rows_criterion A (X.l i ^ (nu X i + 1)) hl0 (by`. Establish `e1` using `hK _ (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) (GlobalTheory.ResSel.SmallSub.l_mem X i))`. Rewrite `e1` using `[map_mul, map_pow, map_natCast]`.
+
+Rewrite using `[Nat.cast_pow, pow_succ, e1])`. Use `letI : TopologicalSpace Y := ⊥`. Use `haveI : DiscreteTopology Y := ⟨rfl⟩`. Establish `hNI` using `GlobalTheory.T.noInvDual_of_setup_of_isDual_of_tame_inertia D N X bkP i s A κ Q ρ z hSet hρ hz`. Take `⟨y, hy, hyc⟩` from `GlobalTheory.T.exists_dual_selmer_class_not_killed D N X bkP i s A κ Q ρ hSet hK hρ hNI (GlobalTheory.T.selmer_order_formula_dual_selmer hPT hLF hLD hLE hGF hGE h4 D N X bkP i s A κ Q ρ hSet hK hρ hNI) Y β hβ a Ψ Z hZ ((X.l i : A) ^ nu X i * t ^ ((e + 1) * w)) t (Ψ.adjugate b) b' …`.
+
+Establish `e1` using `congrFun (Matrix.adjugate_mul Ψ) b`. Rewrite `e1` using `[hdet, zero_smul]`. Conclude with `e1)`. Use the proof step `(fun h0 => ht2 (by`. Take `⟨c, hc⟩` from `hadj`.
+
+Rewrite using `[map_pow, map_natCast]`. Establish `e1 : t ^ (2 * (e + 1) * w + 1) = t ^ ((e + 1) * w) * t * t ^ ((e + 1) * w)` using `by ring`. Rewrite using `[e1]`. Use `nth_rewrite 2 [hc]`. Take the linear combination `c * h0))`.
+
+Set `L' : Subgroup (GE N)` to `L ⊓ ⨅ q : {q // q ∉ K}, (d (P q.1)).ker`. Establish `hL' : Small2 i s M L' z` using `small_inf hL (fun q : {q // q ∉ K} => d (P q.1)) (fun q => (hSt.1.2.2 q.1).1) (fun q => (hSt.1.2.2 q.1).2.1)`. Establish `hmem : ∀ g, g ∈ L' ↔ g ∈ L ∧ ∀ q ∉ K, d (P q) g = 1` using `fun g => by`. Simplify using `[L', Subgroup.mem_iInf, MonoidHom.mem_ker, -Sum.forall]`. Establish `hκL : ∀ g ∈ L', κ g = 1` using `fun g hg => hker g ((hmem g).1 hg).2`.
+
+Establish `hx₀ : matAct Ψ (fun c => Ψ.adjugate c b') = 0`. Use function extensionality and compare the values at `u`. Establish `e1` using `congrFun (congrFun (Matrix.mul_adjugate Ψ) u) b'`. Rewrite `e1` using `[hdet, zero_smul]`. Conclude with `e1`.
+
+Take `⟨h, hh, hB⟩` from `GlobalTheory.T.exists_smallSubgroup_cocycleForm_ne_zero D N X bkP i s hl M L' z hMν hz hL' A κ Q ρ hSet hK hρ hAnti (hκz z hz) hκL a Ψ Z hZ _ b _ y hx₀ hadj hyc`. Take `⟨x, hx, -⟩` from `(hZ A).1 _ hx₀`. Rewrite `hB` using `[← hx]`. Take `⟨U, hUo, hUn, hUL, hUm, hUB⟩` from `GlobalTheory.T.exists_open_normal_subgroup_two_cocycles D N X i s hl M L' z hMν hL' A κ ρ hK hρ hκL x y h hh hB`. Take `⟨P', hE, hSt', σ, γ, g, hNew, hdσ, hg⟩` from `GlobalTheory.T.exists_newPlace_frobeniusConjugate_modOpenNormalSubgroup hC D N X i s M R n d A₀ L z P hM1 hz hL hSt hn H S hAdm hLH U h hUo hUn (hUL.trans inf_le_left) hh.1 (fun c hc => ((hmem h).1 hh).2 _ (by rintro ⟨j, hj, h⟩; cases h; omega)) (fun c hc => by`.
+
+Establish `hI : ∀ τ ∈ Ine (F` using `D.host.E) (N.plOm.1 (P (.inl c))), τ ∈ L' := fun τ hτ => (hmem τ).2 ⟨(hSt.2.1 c).1 _ (over_refl _) _ (N.plOm.2 _) hτ, fun q hq => (hSt.1.2.2 q).2.2.2.1 _ (fun h => hq ⟨c, hc, hSt.1.2.1 _ _ h⟩) _ (N.plOm.2 _) τ hτ⟩`. Introduce `τ hτ`. Establish `e1` using `(GlobalTheory.T.inertiaVanishing_noInvariants_firstHalfPlaces hT D N X bkP i s hG hl M R n d A₀ L z P hMν hz hL hSt A κ _ hK hSet.2.2.2.2.1 (Or.inl rfl) A c).2 hAnti (fun τ hτ => hκL τ (hI τ hτ)) x τ hτ`. Establish `e2` using `(GlobalTheory.T.inertiaVanishing_noInvariants_firstHalfPlaces hT D N X bkP i s hG hl M R n d A₀ L z P hMν hz hL hSt A κ⁻¹ ρ hK (fun g => (hSet.2.2.2.2.1 g).imp fun k hk => by rw [MonoidHom.inv_apply, inv_pow, hk, inv_one]) (Or.inr hρ) A c).2 (fun g g' hg => by rw [MonoidHom.inv_a …`. Conclude with `hUm τ (hI τ hτ) e1.1 e1.2 e2.1 e2.2)`.
+
+Use `⟨P', hE, hSt', fun Q' hQ' a' Φ' hΦ' F' hF' => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hr : 0 < 2 * D.R.r` using `by have := hG.2.2.2.2.2.2; omega`. Take `⟨B, _, _, j, π, x₁, x₂, hπj, hπk, h1, h2, h11, h22, h12⟩` from `GlobalTheory.T.exists_ring_sq_zero_nilpotent_augmented (X.O0 i) A _ hr`.
+
+Establish `hK' : Kills i B` using `fun u hu => by rw [← j.commutes, hK u hu, map_zero]`. Set `q₀ : Fin R ⊕ Fin (n + 1)` to `.inr (Fin.last n)`. Set `q₁ : Fin R ⊕ Fin n` to `.inl ⟨n, hn⟩`. Set `em : Fin R ⊕ Fin n → Fin R ⊕ Fin (n + 1)` to `Sum.map id Fin.castSucc`. Set `ξ : Fin R ⊕ Fin (n + 1) → B` to `Sum.elim (fun c => if c = ⟨n, hn⟩ then x₂ else j (a₀ (.inl c) * t)) (Fin.lastCases x₁ fun c => j (a₀ (.inr c) * t))`.
+
+Establish `hcases : ∀ q', q' = q₀ ∨ ∃ q, q' = em q`. Introduce and unpack `(c | c)`. Conclude with `Or.inr ⟨.inl c, rfl⟩`. Conclude with `Fin.lastCases (Or.inl rfl) (fun c => Or.inr ⟨.inr c, rfl⟩) c`. Establish `hne : ∀ q, em q ≠ q₀`.
+
+Introduce and unpack `(c | c) h`. Conclude with `Sum.inl_ne_inr h`. Conclude with `Fin.castSucc_ne_last c (Sum.inr.inj h)`. Establish `hξ0 : ξ q₀ = x₁` using `by simp [ξ, q₀]`. Establish `hξ1 : ξ (em q₁) = x₂` using `by simp [ξ, q₁, em]`.
+
+Establish `hξ : ∀ q, q ≠ q₁ → ξ (em q) = j (a₀ q * t)`. Introduce and unpack `(c | c) h`. Establish `: c ≠ ⟨n, hn⟩` using `fun h' => h (congrArg _ h')`. Simplify using `[ξ, em, this]`. Simplify using `[ξ, em]`.
+
+Establish `hξ3 : ∀ q, j t ∣ ξ q ∨ ξ q = x₁ ∨ ξ q = x₂` using `fun q' => by`. Break down `hcases q' with rfl | ⟨q, rfl⟩` into its components or cases. Conclude with `Or.inr (Or.inl hξ0)`. Distinguish the cases in `hq : q = q₁`. Conclude with `Or.inr (Or.inr (hq ▸ hξ1))`.
+
+Conclude with `Or.inl (by rw [hξ q hq, map_mul]; exact dvd_mul_left _ _)`. Take `⟨φ', hφ', hκ'⟩` from `GlobalTheory.T.exists_lambda_algebra_hom_evaluation D N X i M _ B ξ hl hMν hK' (fun q => by`. Apply the tactic sequence `rcases hξ3 q with ⟨c, hc⟩ | hc | hc <;> rw [hc]`. Rewrite using `[mul_pow, ← map_pow, ht0, map_zero, zero_mul]`. Conclude with `pow_eq_zero_of_le (m := 2) (by omega) (by rw [sq, h11])`.
+
+Conclude with `pow_eq_zero_of_le (by omega) h22)`. Take `⟨κ', hκφ', hκ'⟩` from `hκ' (fun q => d (P' q))`. Take `⟨Z', hZ'⟩` from `GlobalTheory.T.exists_universalSelmerCocycle_baseChange D N X bkP i s M _ _ Q' a' Φ' hΦ' B φ' κ' hκφ' hK'`. Establish `hP' : ∀ q, P' (em q) = P q` using `hE`. Establish `hσL : σ ∈ L'`.
+
+Establish `e1` using `hL'.1.2.1.conj_mem _ (L'.mul_mem (hUL hg) hh) g⁻¹`. Rewrite `e1` using `[show g⁻¹ * (g * σ * g⁻¹ * h⁻¹ * h) * g⁻¹⁻¹ = σ by group]`. Then use the resulting hypothesis. Establish `hunr : ∀ q', q' ≠ q₀ → ∀ τ ∈ Ine (F` using `D.host.E) (N.plOm.1 (P' q₀)), d (P' q') τ = 1 := fun q' hq' τ hτ => (hSt'.1.2.2 q').2.2.2.1 _ (fun h => hq' (hSt'.1.2.1 _ _ h)) _ (N.plOm.2 _) τ hτ`. Establish `hDec : DecV N (P' q₀) ≤ L'` using `GlobalTheory.ChosenPrimes.dec_le (N.plOm.2 _) hL'.1.1 (fun τ hτ => (hmem τ).2 ⟨hNew.2.2.2.1 hτ.1, fun q _ => hP' q ▸ hunr _ (hne q) τ hτ⟩) hNew.2.2.2.2.2.1 hσL`. Use `det_ne_zero hPT hT hl h3 hL hNew (Q' := Q') hSet hK hρ hAnti (fun g hg => hκL g (hDec hg)) (fun v => ?_) hβ hcog hZ hy b' (hx ▸ hUB σ g hg) π (fun u => ⟨j u, hπj u⟩) hπk h1 h2 h11 h22 h12 (κ' := κ') (fun g => ?_) hK' (anti_of_ker (fun q => d (P' q)) (fun q => (hSt'.1.2.2 q).2.1) …` and prove the remaining obligations.
+
+Rewrite using `[hQ', hQ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q', hq'⟩`. Break down `hcases q' with rfl | ⟨q, rfl⟩` into its components or cases. Conclude with `Or.inr hq'`.
+
+Conclude with `Or.inl ⟨q, hP' q ▸ hq'⟩`. Introduce and unpack `(⟨q, hq⟩ | hq)`. Conclude with `⟨em q, (hP' q).symm ▸ hq⟩`. Conclude with `⟨q₀, hq⟩`. Establish `e1` using `congrArg π (hκ' g)`.
+
+Establish `e2` using `hκ g`. Establish `hπξ : ∀ q, π (ξ (em q)) = a₀ q * t` using `fun q => by`. Distinguish the cases in `hq : q = q₁`. Rewrite using `[hq, hξ1, h2, haK q₁ ⟨_, le_rfl, rfl⟩, zero_mul]`. Rewrite using `[hξ q hq, hπj]`.
+
+Establish `e3 : π (∏ q, (1 + ξ q) ^ (Multiplicative.toAdd (d (P' q) g)).val) = ∏ q, (1 + a₀ q * t) ^ (Multiplicative.toAdd (d (P q) g)).val`. Simplify using `only [map_prod, map_pow, map_add, map_one]`. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type, Fin.prod_univ_castSucc]`. Establish `e4 : π (ξ (.inr (Fin.last n))) = 0` using `by rw [← h1, ← hξ0]`. Rewrite using `[e4, add_zero, one_pow, mul_one]`.
+
+Apply the tactic sequence `congr 1 <;> refine Finset.prod_congr rfl fun c _ => ?_`. Rewrite using `[← hπξ, ← hP']`. Both sides reduce to the same expression. Rewrite using `[← hπξ, ← hP']`. Both sides reduce to the same expression.
+
+Rewrite `e1` using `[map_mul, map_one, e3]`. Conclude with `(left_inv_eq_right_inv e2 (by rw [mul_comm]; exact e1))`. Establish `e1` using `hκ'.single (g := σ) (em q₁) fun q' hq' => by`. Break down `hcases q' with rfl | ⟨q, rfl⟩` into its components or cases. Conclude with `Or.inr hdσ`.
+
+Distinguish the cases in `hq : q ∈ K`. Conclude with `Or.inl (by rw [hξ q (fun h => hq' (congrArg em h)), haK q hq, zero_mul, map_zero])`. Conclude with `Or.inr (by rw [hP']; exact ((hmem σ).1 hσL).2 q hq)`. Establish `e2 : d (P' (em q₁)) σ = Multiplicative.ofAdd 1`. Use `(hSt'.2.2 (Fin.last n)).2 ⟨n, hn⟩ σ hNew.2.2.2.2.2.1` as an intermediate fact.
+
+Rewrite `this` using `[if_pos (by simp)]`. Then use the resulting hypothesis. Establish `: Fact (1 < X.l i ^ M)` using `⟨Nat.one_lt_pow (by omega) hp.one_lt⟩`. Rewrite `e1` using `[hξ1, e2, toAdd_ofAdd, ZMod.val_one, pow_one]`. Then use the resulting hypothesis. Establish `e1` using `(φ' : _ →+* B).map_det Φ'`. Rewrite `e1` using `[RingHom.coe_coe, ← hF', hφ', GlobalTheory.T.aeval_eq_zero_low_coeff_three_nilpotents _ _ _ (j t) x₁ x₂ (2 * (e + 1) * w + 2) (2 * D.R.r) ξ F' (by rw [← map_pow, htK, map_zero]) h11 h22 hξ3 (fun u hu => hK' _ (hcon u hu))]`.
+
+Conclude with `e1.symm`.
+-/
 theorem step : Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLocal → LocalFiniteness → LocalTateDuality → LocalEulerChar → GlobalFiniteness → GlobalEulerChar → UnramifiedOrthogonality → Gen.ArchimedeanSignatureMatching → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X), ThmS bkP → ∀ (i : X.Tw) (s : X.Sig i), GalHyp bkP i s → Step bkP i s := by
   intro hC hPT _ hT hLF hLD hLE hGF hGE _ h4 D N X bkP hS i s hG hl M R n H S d A₀ L z P w e hn he hM h3 hAdm hLH hz hL hSt hFit
   classical

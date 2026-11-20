@@ -15,12 +15,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `smul_add n a b`.
+-/
 lemma nsmul_add' {M : Type*} [AddCommGroup M] (n : ℕ) (a b : M) : n • (a + b) = n • a + n • b :=
   smul_add n a b
 
+/- English proof (translation)
+The claim follows from `smul_neg n a`.
+-/
 lemma nsmul_neg' {M : Type*} [AddCommGroup M] (n : ℕ) (a : M) : n • (-a) = -(n • a) :=
   smul_neg n a
 
+/- English proof (translation)
+Use `set I : Ideal (𝓞 K) := Ideal.span {(N : 𝓞 K)} with hIdef`. Establish `hI : I ≠ ⊥`. Rewrite using `[hIdef, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hN.ne'` after adjusting the coercions. Use `haveI : Finite (𝓞 K ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI`.
+
+Use `haveI := Fintype.ofFinite (𝓞 K ⧸ I)`. Use `⟨Finset.univ.image (fun q : 𝓞 K ⧸ I => q.out), fun x => ?_⟩` and prove the remaining obligations. Use `⟨(Ideal.Quotient.mk I x).out, Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩` and prove the remaining obligations. Establish `h : x - (Ideal.Quotient.mk I x).out ∈ I` using `Ideal.Quotient.eq.1 (Quotient.out_eq (Ideal.Quotient.mk I x)).symm`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 h`.
+
+Conclude with `⟨y, by linear_combination (-1 : 𝓞 K) * hy⟩`.
+-/
 lemma ringInt_residues {K : Type} [Field K] [NumberField K] (N : ℕ) (hN : 0 < N) :
     ∃ R : Finset (𝓞 K), ∀ x : 𝓞 K, ∃ r ∈ R, ∃ y : 𝓞 K, x = r + (N : 𝓞 K) * y := by
   classical
@@ -37,17 +50,38 @@ lemma ringInt_residues {K : Type} [Field K] [NumberField K] (N : ℕ) (hN : 0 < 
   obtain ⟨y, hy⟩ := Ideal.mem_span_singleton'.1 h
   exact ⟨y, by linear_combination (-1 : 𝓞 K) * hy⟩
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul β y => rfl`. Consider the case `add w w' h h' => rw [map_add, map_add, h, h']`.
+-/
 lemma finite_part_finite_embedding (w : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (finiteEmbeddingTensor D w) = w := by
   induction w using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero]
   | tmul β y => rfl
   | add w w' h h' => rw [map_add, map_add, h, h']
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [mul_fI_eq, finite_part_finite_embedding], by rw [finite_part_finite_embedding]; exact hw⟩`.
+-/
 lemma integral_of_finite_embedding {w : Af D.host.F ⊗[D.host.F] D.host.E} (hw : w ∈ intAE D) : IntF (finiteEmbeddingTensor D w) :=
   ⟨by rw [mul_fI_eq, finite_part_finite_embedding], by rw [finite_part_finite_embedding]; exact hw⟩
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, o, rfl⟩` from `hw`. Establish `hN0 : ((N : 𝓞 D.host.F)) ≠ 0` using `by exact_mod_cast hN.ne'`. Take `⟨b, c, hc, hαe⟩` from `Formalism.L2.S.Pv.PsiTrCore.exists_decomp α (fun v => hα v) (N : 𝓞 D.host.F) hN0`.
+
+Establish `hx : ∃ x : 𝓞 D.host.E, (x : D.host.E) = (b : D.host.F) • (o : D.host.E)`. Use `⟨⟨(b : D.host.F) • (o : D.host.E), ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `IsIntegral.mul ((RingOfIntegers.isIntegral_coe b).map (IsScalarTower.toAlgHom ℤ D.host.F D.host.E)) (RingOfIntegers.isIntegral_coe o)`. Take `⟨x, hx⟩` from `hx`.
+
+Use `⟨x, c ⊗ₜ[D.host.F] (o : D.host.E), AddSubgroup.subset_closure ⟨c, fun v => hc v, o, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hαe, TensorProduct.add_tmul, hx, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Use `congr 1`. Establish `hNc : algebraMap D.host.F (Af D.host.F) (((N : 𝓞 D.host.F) : D.host.F)) = (N : Af D.host.F)`. Establish `h1 : ((N : 𝓞 D.host.F) : D.host.F) = (N : D.host.F)` using `by push_cast; rfl`.
+
+Rewrite using `[h1, map_natCast]`. Rewrite using `[hNc, ← nsmul_eq_mul]`. Conclude with `(TensorProduct.smul_tmul' N c _).symm`. Consider the case `zero => exact ⟨0, 0, zero_mem _, by simp⟩`. Consider the case `add w₁ w₂ _ _ h₁ h₂`.
+
+Take `⟨x₁, w₁', hw₁', e₁⟩` from `h₁`. Take `⟨x₂, w₂', hw₂', e₂⟩` from `h₂`. Use `⟨x₁ + x₂, w₁' + w₂', add_mem hw₁' hw₂', ?_⟩` and prove the remaining obligations. Rewrite using `[e₁, e₂]`. Use `push_cast`.
+
+Rewrite using `[TensorProduct.tmul_add, nsmul_add']`. Normalize the expressions using the abelian group laws. Consider the case `neg w _ h`. Take `⟨x, w', hw', e⟩` from `h`. Use `⟨-x, -w', neg_mem hw', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Use `push_cast`. Rewrite using `[TensorProduct.tmul_neg, nsmul_neg']`. Normalize the expressions using the abelian group laws.
+-/
 lemma intAE_decomp (N : ℕ) (hN : 0 < N) {w : Af D.host.F ⊗[D.host.F] D.host.E} (hw : w ∈ intAE D) :
     ∃ x : 𝓞 D.host.E, ∃ w' ∈ intAE D, w = (1 : Af D.host.F) ⊗ₜ[D.host.F] (x : D.host.E) + N • w' := by
   induction hw using AddSubgroup.closure_induction with
@@ -88,6 +122,13 @@ lemma intAE_decomp (N : ℕ) (hN : 0 < N) {w : Af D.host.F ⊗[D.host.F] D.host.
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨RE, hRE⟩` from `ringInt_residues (K := D.host.E) N hN`. Use `⟨RE.image (fun r : 𝓞 D.host.E => (1 : Af D.host.F) ⊗ₜ[D.host.F] (r : D.host.E)), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨x, w', hw', e⟩` from `intAE_decomp N hN hw`. Take `⟨r, hr, y, hy⟩` from `hRE x`. Establish `h1 : (1 : Af D.host.F) ⊗ₜ[D.host.F] (y : D.host.E) ∈ intAE D` using `AddSubgroup.subset_closure ⟨1, one_mem_intAf, y, rfl⟩`.
+
+Use `⟨_, Finset.mem_image_of_mem _ hr, (1 : Af D.host.F) ⊗ₜ[D.host.F] (y : D.host.E) + w', add_mem h1 hw', ?_⟩` and prove the remaining obligations. Rewrite using `[e, hy]`. Use `push_cast`. Establish `h2 : (1 : Af D.host.F) ⊗ₜ[D.host.F] ((N : D.host.E) * (y : D.host.E)) = N • ((1 : Af D.host.F) ⊗ₜ[D.host.F] (y : D.host.E))`. Rewrite using `[← TensorProduct.tmul_smul, nsmul_eq_mul]`.
+
+Rewrite using `[TensorProduct.tmul_add, h2, nsmul_add']`. Normalize the expressions using the abelian group laws.
+-/
 lemma intAE_residues (N : ℕ) (hN : 0 < N) :
     ∃ R : Finset (Af D.host.F ⊗[D.host.F] D.host.E), ∀ w ∈ intAE D, ∃ r ∈ R, ∃ w' ∈ intAE D, w = r + N • w' := by
   classical
@@ -108,6 +149,11 @@ lemma intAE_residues (N : ℕ) (hN : 0 < N) :
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `intAE_residues (D := D) N hN`. Use `⟨R.image (finiteEmbeddingTensor D), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, w', hw', e⟩` from `hR _ hy.2`. Use `⟨finiteEmbeddingTensor D r, Finset.mem_image_of_mem _ hr, finiteEmbeddingTensor D w', integral_of_finite_embedding hw', ?_⟩` and prove the remaining obligations. Establish `hy' : y = finiteEmbeddingTensor D (finPart D y)` using `by rw [← mul_fI_eq, hy.1]`.
+
+Rewrite using `[hy', e, map_add, map_nsmul]`.
+-/
 lemma intF_residues (N : ℕ) (hN : 0 < N) :
     ∃ R : Finset (AE D), ∀ y : AE D, IntF y → ∃ r ∈ R, ∃ y' : AE D, IntF y' ∧ y = r + N • y' := by
   classical
@@ -120,6 +166,11 @@ lemma intF_residues (N : ℕ) (hN : 0 < N) :
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨R1, hR1⟩` from `intF_residues (D := D) N hN`. Use `⟨(Fintype.piFinset fun _ : Fin m => Fintype.piFinset fun _ : Fin n => R1).image Matrix.of, fun Z hZ => ?_⟩` and prove the remaining obligations. Use `choose r hr y hy hyeq using fun i j => hR1 (Z i j) (hZ i j)`. Use `⟨Matrix.of r, Finset.mem_image_of_mem _ (Fintype.mem_piFinset.2 fun i => Fintype.mem_piFinset.2 fun j => hr i j), Matrix.of y, hy, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, Matrix.of_apply]`. Conclude with `hyeq i j`.
+-/
 lemma mat_residues (m n : ℕ) (N : ℕ) (hN : 0 < N) :
     ∃ R : Finset (Mx D m n), ∀ Z : Mx D m n, (∀ i j, IntF (Z i j)) →
       ∃ ρ ∈ R, ∃ Z' : Mx D m n, (∀ i j, IntF (Z' i j)) ∧ Z = ρ + N • Z' := by
@@ -135,6 +186,11 @@ lemma mat_residues (m n : ℕ) (N : ℕ) (hN : 0 < N) :
   exact hyeq i j
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Establish `hk' : ((k : D.host.F)) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `hu : algebraMap D.host.F (AE D) ((k : D.host.F))⁻¹ * algebraMap D.host.F (AE D) (k : D.host.F) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hk', map_one]`. Establish `hkc : (k : AE D) = algebraMap D.host.F (AE D) (k : D.host.F)` using `(map_natCast _ k).symm`. Rewrite `h` using `[nsmul_eq_mul, nsmul_eq_mul, hkc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, hu, one_mul]`. Use `_ = algebraMap D.host.F (AE D) ((k : D.host.F))⁻¹ * (algebraMap D.host.F (AE D) (k : D.host.F) * y) := by`. Rewrite using `[h]`. Use `_ = y := by rw [← mul_assoc, hu, one_mul]`.
+-/
 lemma nsmul_cancel_AE {x y : AE D} {k : ℕ} (hk : 0 < k) (h : k • x = k • y) : x = y := by
   have hk' : ((k : D.host.F)) ≠ 0 := by exact_mod_cast hk.ne'
   have hu : algebraMap D.host.F (AE D) ((k : D.host.F))⁻¹ * algebraMap D.host.F (AE D) (k : D.host.F) = 1 := by
@@ -147,6 +203,9 @@ lemma nsmul_cancel_AE {x y : AE D} {k : ℕ} (hk : 0 < k) (h : k • x = k • y
         rw [h]
     _ = y := by rw [← mul_assoc, hu, one_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply `nsmul_cancel_AE hk` to reduce the goal to its premises. Establish `h1` using `congrFun (congrFun h i) j`. Simplify using `using h1`.
+-/
 lemma nsmul_cancel_Mx {m n : ℕ} {X Y : Mx D m n} {k : ℕ} (hk : 0 < k) (h : k • X = k • Y) : X = Y := by
   ext i j
   apply nsmul_cancel_AE hk
@@ -155,6 +214,19 @@ lemma nsmul_cancel_Mx {m n : ℕ} {X Y : Mx D m n} {k : ℕ} (hk : 0 < k) (h : k
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨c, hc, hlow⟩` from `lower hS hT`. Take `⟨RL, hRL⟩` from `mat_residues (D := D) T.rank S.rank (k * c * c') (Nat.mul_pos (Nat.mul_pos hk hc) hc')`. Set `G : WO S T → Prop` to `fun ρ => ∃ u ∈ latAll S T ΛS ΛT, IsHalf e₁ u ∧ ∃ Z : WO S T, (∀ i j, IntF (Z i j)) ∧ c' • u = ρ + (k * c * c') • Z`. Set `pick : WO S T → WO S T` to `fun ρ => if h : G ρ then h.choose else 0`. Use `⟨(RL.filter G).image pick, fun u hu hhalf => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ρ, hρ, Z, hZ, hEq⟩` from `hRL (c' • u) (hup u hu)`. Establish `hG : G ρ` using `⟨u, hu, hhalf, Z, hZ, hEq⟩`. Establish `hpick : pick ρ = hG.choose` using `dif_pos hG`. Take `⟨hu₀, hh₀, Z₀, hZ₀, hEq₀⟩` from `hG.choose_spec`. Establish `hZZ : ∀ i j, IntF ((Z - Z₀) i j)` using `fun i j => by`.
+
+Rewrite using `[Matrix.sub_apply, sub_eq_add_neg]`. Conclude with `intF_add (hZ i j) (intF_neg (hZ₀ i j))`. Establish `hdiff : u - hG.choose = k • (c • (Z - Z₀))`. Apply `nsmul_cancel_Mx hc'` to reduce the goal to its premises. Rewrite using `[smul_sub, hEq, hEq₀, add_sub_add_left_eq_sub, ← smul_sub, smul_smul, smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hlowV` using `hlow _ hZZ`. Generalize the expression as in `hV : c • (Z - Z₀) = V at hdiff hlowV`. Use `⟨pick ρ, Finset.mem_image_of_mem _ (Finset.mem_filter.2 ⟨hρ, hG⟩), V, hlowV, fun i j => ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `nsmul_cancel_AE hk` to reduce the goal to its premises. Establish `h1 : (k • V) i j = (u - hG.choose) i j` using `by rw [hdiff]`. Rewrite `h1` using `[Matrix.smul_apply, Matrix.sub_apply]`. Rewrite using `[← mul_smul_comm, h1, mul_sub, hhalf i j, hh₀ i j]`. Rewrite using `[hpick, ← hdiff]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 lemma exists_finset_half_decomp {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
     {c' : ℕ} (hc' : 0 < c') (hup : ∀ t ∈ latAll S T ΛS ΛT, ∀ i j, IntF ((c' • t) i j))
@@ -189,6 +261,9 @@ lemma exists_finset_half_decomp {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (
   · rw [hpick, ← hdiff]
     abel
 
+/- English proof (translation)
+Introduce `ψ _ S T ΛS ΛT hS hT P e _ k hk e₁ _`. Take `⟨c', hc', hup⟩` from `upper hS hT`. Conclude with `exists_finset_half_decomp hS hT hc' hup k hk e₁`.
+-/
 theorem placeLatDualIv (D : D7) : PlaceLatDualIv D := by
   intro ψ _ S T ΛS ΛT hS hT P e _ k hk e₁ _
   obtain ⟨c', hc', hup⟩ := upper hS hT

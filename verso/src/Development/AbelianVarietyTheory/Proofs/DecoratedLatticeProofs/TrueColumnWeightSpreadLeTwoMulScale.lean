@@ -7,6 +7,25 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 namespace GlobalTheory.CoreHt.SpreadBound
 
+/- English proof (translation)
+Establish `hN : 0 < R.N j` using `by unfold Ranks.N; omega`. Establish `hNm` using `Formalism.BasicNotions.Examples₂.N_mono (R := R) hj`. Establish `h2` using `R.two_le_m`. Unfold `DomWeight.spread`. Rewrite using `[dif_pos hN]`.
+
+Use `push_cast`. Rewrite using `[Formalism.BasicNotions.Examples₂.lamOf_eq p j hj, Formalism.BasicNotions.Examples₂.lamOf_eq p j hj, Formalism.BasicNotions.Examples₂.wtQ_eq_wtN, Formalism.BasicNotions.Examples₂.wtQ_eq_wtN]`. Establish `a1 : Formalism.BasicNotions.Examples₂.wtN p (R.N R.m - 1) ≤ Formalism.BasicNotions.Examples₂.wtN p (R.N j - 1)` using `Formalism.BasicNotions.Examples₂.wtN_anti p (by omega) (by omega)`. Establish `hmul : R.m * (R.t + 1) = (R.m - 1) * (R.t + 1) + (R.t + 1)`. Take `⟨n, hn⟩ : ∃ n, R.m = n + 1` from `⟨R.m - 1, by omega⟩`.
+
+Rewrite using `[hn, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : Formalism.BasicNotions.Examples₂.blkN R (R.N R.m - 1) = R.m - 1`. Unfold `Formalism.BasicNotions.Examples₂.blkN Ranks.N`. Establish `: R.k + R.m * (R.t + 1) - 1 - R.k = R.t + (R.t + 1) * (R.m - 1)`.
+
+Rewrite using `[hmul, mul_comm (R.t + 1)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Nat.add_mul_div_left _ _ (by omega), Nat.div_eq_of_lt (by omega), zero_add]`. Establish `a2 : -p.e ⟨R.m - 1, hm⟩ ≤ Formalism.BasicNotions.Examples₂.wtN p (R.N R.m - 1)`. Establish `c1 : ¬ R.N R.m - 1 < R.k` using `by unfold Ranks.N; omega`.
+
+Establish `c2 : Formalism.BasicNotions.Examples₂.blkN R (R.N R.m - 1) < R.m` using `by omega`. Unfold `Formalism.BasicNotions.Examples₂.wtN`. Rewrite using `[dif_neg c1, dif_pos c2]`. Establish `e : (⟨Formalism.BasicNotions.Examples₂.blkN R (R.N R.m - 1), c2⟩ : Fin R.m) = ⟨R.m - 1, hm⟩` using `Fin.ext hb`. Rewrite using `[e]`.
+
+Unfold `wG`. Use `push_cast`. Establish `: (0 : ℚ) ≤ (2 * ((Formalism.BasicNotions.Examples₂.blkN R (R.N R.m - 1) : ℚ) + 1) - 1) * ((R.t : ℚ) + 1) / 2`. Establish `: (0 : ℚ) ≤ 2 * ((Formalism.BasicNotions.Examples₂.blkN R (R.N R.m - 1) : ℚ) + 1) - 1`. Establish `: (0 : ℚ) ≤ (Formalism.BasicNotions.Examples₂.blkN R (R.N R.m - 1) : ℚ)` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression. Establish `: (0 : ℚ) ≤ (R.k : ℚ) / 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a3 : Formalism.BasicNotions.Examples₂.wtN p 0 ≤ p.u ⟨0, hk⟩`.
+
+Unfold `Formalism.BasicNotions.Examples₂.wtN`. Rewrite using `[dif_pos hk]`. Unfold `hcToWeightQ rhoVec`. Establish `: (1 : ℚ) ≤ R.k` using `by exact_mod_cast hk`. Simplify using `only [Nat.cast_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `a4 : (R.N j : ℚ) ≤ R.N R.m` using `by exact_mod_cast hNm`. Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem spread_lamOf_le {R : Ranks} (p : HCParam R) (j : ℕ) (hj : j ≤ R.m) (hk : 0 < R.k) (hm : R.m - 1 < R.m) :
     (((Formalism.BasicNotions.Examples₂.lamOf p j).spread : ℤ) : ℚ) ≤ p.u ⟨0, hk⟩ + p.e ⟨R.m - 1, hm⟩ + R.N R.m := by
   have hN : 0 < R.N j := by unfold Ranks.N; omega
@@ -57,6 +76,41 @@ end GlobalTheory.CoreHt.SpreadBound
 
 namespace GlobalTheory.CoreHt.SpreadBound
 
+/- English proof (translation)
+Introduce `B X I _ l Z L CY hS hX hx u j hj τ`. Take `⟨⟨P⟩, -, -, ⟨hN3, -, hmt, hkS, hbT⟩, -, hT⟩` from `hS`. Establish `hm` using `B.R.two_le_m`. Establish `hk : 5 ≤ B.R.k` using `by have := B.R.m_add_three_le_k; omega`. Establish `hk0 : 0 < B.R.k` using `by omega`.
+
+Establish `hm1 : B.R.m - 1 < B.R.m` using `by omega`. Establish `c1` using `spread_lamOf_le (B.hcW u τ) j hj hk0 hm1`. Establish `c2 : (((B.wts.lamTrue u j τ).spread : ℤ) : ℝ) ≤ (((B.hcW u τ).u ⟨0, hk0⟩ : ℚ) : ℝ) + (((B.hcW u τ).e ⟨B.R.m - 1, hm1⟩ : ℚ) : ℝ) + B.R.N B.R.m`. Unfold `Wts.lamTrue`. Rewrite using `[spread_shiftW]`.
+
+Conclude with `c1` after adjusting the coercions. Use `c2.trans ?_` and prove the remaining obligations. Establish `hx1` using `L.sc.one_lt_alt`. Establish `hL1 : 1 ≤ L.sc.L` using `Real.one_le_rpow hx1.le L.sc.eps_pos.le`. Establish `hb1 : 1 ≤ L.sc.b` using `Real.one_le_exp (by linarith)`.
+
+Establish `ha : L.sc.a = L.sc.x * L.sc.b` using `rfl`. Establish `hb2 : 2 * L.sc.b ≤ L.sc.a` using `by rw [ha]; nlinarith`. Establish `hX0 : 0 < L.sc.X'` using `by linarith`. Establish `hb'a : L.sc.b' ≤ L.sc.a / 8`. Establish `: 0 < L.sc.a` using `by linarith`.
+
+Conclude with `div_le_div_of_nonneg_left this.le (by norm_num) hX`. Establish `hb'0 : 0 < L.sc.b'`. Establish `: 0 < L.sc.a` using `by linarith`. Conclude with `div_pos this hX0`. Establish `hn1 : (1 : ℝ) ≤ (I.rec7 l Z).R.n`.
+
+Establish `: 1 ≤ (I.rec7 l Z).R.n` using `by unfold Ranks.n; exact Nat.succ_le_of_lt (by positivity)`. Conclude with `this` after adjusting the coercions. Establish `hw : L.sc.w'' (I.rec7 l Z).R.n ≤ L.sc.b'` using `div_le_self hb'0.le (one_le_mul_of_one_le_of_one_le hx1.le hn1)`. Establish `he` using `L.etaSz_pos`. Establish `hS0` using `L.Sc_pos`.
+
+Establish `hm' : (2 : ℝ) ≤ B.R.m` using `by exact_mod_cast hm`. Establish `hk' : (5 : ℝ) ≤ B.R.k` using `by exact_mod_cast hk`. Establish `ht : (0 : ℝ) ≤ B.R.t` using `Nat.cast_nonneg _`. Establish `heta : 2 * L.etaSz ≤ L.sc.b'`. Establish `h1 : (2 : ℝ) ≤ B.R.m * ((B.R.t : ℝ) + 1)` using `by nlinarith`.
+
+Establish `h2` using `mul_le_mul_of_nonneg_right h1 he.le`. Establish `h3 : (B.R.m : ℝ) * ((B.R.t : ℝ) + 1) * L.etaSz ≤ L.sc.w'' (I.rec7 l Z).R.n` using `hmt`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hSc : 5 * L.Sc ≤ L.sc.b'`. Establish `h3 : (B.R.k : ℝ) * L.Sc ≤ L.sc.w'' (I.rec7 l Z).R.n` using `hkS`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hN1 : (1 : ℝ) ≤ B.R.N B.R.m`. Establish `: 1 ≤ B.R.N B.R.m` using `by unfold Ranks.N; omega`. Conclude with `this` after adjusting the coercions. Establish `hNeta : (B.R.N B.R.m : ℝ) ≤ L.etaSz`.
+
+Establish `h3 : 4 * (B.R.N B.R.m : ℝ) ^ 3 ≤ L.etaSz` using `hN3`. Establish `h4 : (B.R.N B.R.m : ℝ) ^ 1 ≤ (B.R.N B.R.m : ℝ) ^ 3` using `pow_le_pow_right₀ hN1 (by norm_num)`. Rewrite `h4` using `[pow_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkN : (B.R.k : ℝ) ≤ B.R.N B.R.m`.
+
+Establish `: B.R.k ≤ B.R.N B.R.m` using `by unfold Ranks.N; omega`. Conclude with `this` after adjusting the coercions. Establish `hu0 : (B.hcW u τ).u ⟨0, hk0⟩ = ((I.rec7 l Z).hc τ).u ⟨0, hk0⟩` using `(I.rec7 l Z).hcW_first u τ hk0`. Establish `he0 : (B.hcW u τ).e = ((I.rec7 l Z).hc τ).e` using `(I.rec7 l Z).hcW_e u τ`. Establish `hwm : wj (I.rec7 l Z) B.R.m τ = (((B.hcW u τ).e ⟨B.R.m - 1, hm1⟩ : ℚ) : ℝ)`.
+
+Unfold `wj`. Rewrite using `[dif_pos (show B.R.m - 1 < (I.rec7 l Z).R.m from hm1)]`. Conclude with `(congrArg (fun f => ((f ⟨B.R.m - 1, hm1⟩ : ℚ) : ℝ)) he0).symm`. Rewrite using `[← hwm, hu0]`. Distinguish the cases in `htop : ((I.rec7 l Z).eTau τ : (I.rec7 l Z).R.GG) ∈ (I.rec7 l Z).host.topPlaces`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨t, htt⟩ : ∃ t : (I.rec7 l Z).host.TT, ((I.rec7 l Z).eTau τ : (I.rec7 l Z).R.GG) = (I.rec7 l Z).R.tau1 t := by`. Unfold `Host.topPlaces at htop`. Take `⟨t, ht, hte⟩` from `Finset.mem_image.1 htop`. Conclude with `⟨⟨t, ht⟩, hte.symm⟩`. Rewrite using `[(L.top_u τ t hk0 htt).1]`.
+
+Use `show (L.aT t : ℝ) + ((B.R.k : ℝ) - 1) / 2 + wj (I.rec7 l Z) B.R.m τ + (B.R.N B.R.m : ℝ) ≤ 2 * L.sc.a`. Establish `a1 : wj (I.rec7 l Z) B.R.m τ ≤ (L.bT t : ℝ) + L.sc.b' / L.sc.x + L.etaSz` using `(L.win_top B.R.m (by omega) le_rfl τ t htt).2`. Establish `a2 : (L.aT t : ℝ) ≤ L.sc.a + L.sc.a / ((B.R.k : ℝ) * L.sc.x ^ (Scale.A / 2))` using `(L.aT_win t).2`. Establish `a3 : (5 : ℝ) ≤ (B.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)` using `hk'.trans (le_mul_of_one_le_right (by linarith) (Real.one_le_rpow hx1.le (by unfold Scale.A; norm_num)))`. Establish `a4 : L.sc.a / ((B.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)) ≤ L.sc.a / 5` using `div_le_div_of_nonneg_left (by linarith) (by norm_num) a3`.
+
+Establish `a5 : L.sc.b' / L.sc.x ≤ L.sc.b'` using `div_le_self hb'0.le hx1.le`. Establish `a6` using `hbT t`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `P.cloud_place_bound τ (by show 0 < B.R.k - 1; omega) htop`. Establish `h2` using `(L.cloud_v τ ⟨0, by show 0 < B.R.k - 1; omega⟩).2`.
+
+Move the coercions through the operations in `at h1`. Distinguish the cases in `hc : ((I.rec7 l Z).eTau τ : (I.rec7 l Z).R.GG) ∈ (I.rec7 l Z).host.thickPlaces`. Establish `a1` using `hT B.R.m (by omega) le_rfl τ hc`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a1` using `(L.win_thin B.R.m (by omega) le_rfl τ ⟨((I.rec7 l Z).eTau τ).2, htop, hc⟩).2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem spread_lamTrue_le : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (L : SizeData₂ (I.rec7 l Z)) (CY : ℝ), HtRowsS L CY → 8 ≤ L.sc.X' → 2 ≤ L.sc.x → ∀ (u : B.Word) (j : ℕ), j ≤ B.R.m → ∀ τ,
     ((B.wts.lamTrue u j τ).spread : ℝ) ≤ 2 * L.sc.a := by

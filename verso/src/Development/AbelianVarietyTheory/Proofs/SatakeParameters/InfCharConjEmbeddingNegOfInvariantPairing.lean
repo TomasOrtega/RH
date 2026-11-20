@@ -25,6 +25,9 @@ variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
 
 omit [Algebra ℂ A] in
 
+/- English proof (translation)
+Introduce `a b c d`. Establish `h1` using `congrArg op (h d c b a)`. Simplify using `only [op_sub, op_mul, apply_ite op, op_zero] at h1`. Rewrite using `[h1]`. Simplify using `only [eq_comm (a := c) (b := b), eq_comm (a := a) (b := d)]`.
+-/
 theorem glRel_op {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X) : Formalism.REAL.GlRel fun i j => op (X j i) := by
   intro a b c d
   have h1 := congrArg op (h d c b a)
@@ -32,6 +35,17 @@ theorem glRel_op {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X) : Form
   rw [h1]
   simp only [eq_comm (a := c) (b := b), eq_comm (a := a) (b := d)]
 
+/- English proof (translation)
+Establish `hP : ∀ (arg : Fin n → ℂ) (σ τ : Equiv.Perm (Fin n)), orderedTermProduct (fun i j => op (X j i)) arg σ τ = op (orderedTermProduct X (arg ∘ Fin.revPerm) (τ * Fin.revPerm) (σ * Fin.revPerm))` using `fun arg σ τ => by`. Unfold `orderedTermProduct`. Rewrite using `[op_list_prod, List.map_ofFn]`. Use `congr 1`. Use `List.ext_getElem (by simp) fun k h1 h2 => ?_` and prove the remaining obligations.
+
+Establish `hk : k < n` using `by simpa using h1`. Establish `e : (⟨n - 1 - k, by omega⟩ : Fin n).rev = ⟨k, hk⟩` using `Fin.ext (by rw [Fin.val_rev]; simp only; omega)`. Simplify using `only [List.getElem_reverse, List.getElem_ofFn, List.length_ofFn, Function.comp_apply, Equiv.Perm.mul_apply, Fin.revPerm_apply, e, Tm, op_add, apply_ite op, op_zero, eq_comm (a := τ _)]`. Both sides reduce to the same expression. Establish `hS : ∀ arg : Fin n → ℂ, doublyAntisymmetrizedProduct (fun i j => op (X j i)) arg = op (doublyAntisymmetrizedProduct X (arg ∘ Fin.revPerm))` using `fun arg => by`.
+
+Unfold `doublyAntisymmetrizedProduct`. Rewrite using `[Finset.sum_comm, Finset.op_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight Fin.revPerm) _ _ fun σ => ?_` and prove the remaining obligations. Rewrite using `[Finset.op_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight Fin.revPerm) _ _ fun τ => ?_` and prove the remaining obligations.
+
+Simplify using `only [hP, ← zsmul_eq_mul, op_smul, smul_smul, Equiv.coe_mulRight, Equiv.Perm.sign_mul, Units.val_mul]`. Use `congr 1`. Take the linear combination `(-((Equiv.Perm.sign σ : ℤ) * (Equiv.Perm.sign τ : ℤ))) * Int.units_coe_mul_self (Equiv.Perm.sign (Fin.revPerm (n := n)))`. Establish `e` using `hS fun k => y - (k : ℂ)`. Rewrite `e` using `[antisymmetrizedProduct_perm_invariant, antisymmetrizedProduct_eq_factorial_smul_qdet _ h, antisymmetrizedProduct_eq_factorial_smul_qdet _ (glRel_op h), op_smul]`.
+
+Conclude with `(IsUnit.mk0 _ (by exact_mod_cast n.factorial_ne_zero)).smul_left_cancel.mp e`.
+-/
 theorem qdet_op {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X) (y : ℂ) :
     qdet (fun i j => op (X j i)) y = op (qdet X y) := by
   have hP : ∀ (arg : Fin n → ℂ) (σ τ : Equiv.Perm (Fin n)), orderedTermProduct (fun i j => op (X j i)) arg σ τ =
@@ -59,10 +73,16 @@ theorem qdet_op {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X) (y : �
   rw [antisymmetrizedProduct_perm_invariant, antisymmetrizedProduct_eq_factorial_smul_qdet _ h, antisymmetrizedProduct_eq_factorial_smul_qdet _ (glRel_op h), op_smul] at e
   exact (IsUnit.mk0 _ (by exact_mod_cast n.factorial_ne_zero)).smul_left_cancel.mp e
 
+/- English proof (translation)
+Rewrite using `[quantumDet_neg_transpose _ (glRel_op h), qdet_op h, op_smul]`.
+-/
 theorem qdet_antipode {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X) (x : ℂ) :
     qdet (fun i j => -op (X i j)) x = op ((-1 : ℂ) ^ n • qdet X ((n : ℂ) - 1 - x)) := by
   rw [quantumDet_neg_transpose _ (glRel_op h), qdet_op h, op_smul]
 
+/- English proof (translation)
+The claim follows from `Prod.ext (map_qdet (AlgHom.fst ℂ A A') _ _) (map_qdet (AlgHom.snd ℂ A A') _ _)`.
+-/
 theorem qdet_prod {A' : Type} [Ring A'] [Algebra ℂ A'] (X : Fin n → Fin n → A) (Y : Fin n → Fin n → A') (x : ℂ) :
     qdet (fun i j => (X i j, Y i j)) x = (qdet X x, qdet Y x) :=
   Prod.ext (map_qdet (AlgHom.fst ℂ A A') _ _) (map_qdet (AlgHom.snd ℂ A A') _ _)
@@ -88,6 +108,27 @@ def adjPairs {M : Type} [AddCommGroup M] [Module ℂ M] (V W : Submodule ℂ M) 
     change B (c • φ) ψ = B φ (c • ψ)
     rw [map_smul, map_smul, LinearMap.smul_apply]
 
+/- English proof (translation)
+Introduce `E _ _ _ a π π' ⟨B, hB, _, _, _, hL⟩ τ m m' hm hm'`. Set `S` to `adjPairs π.V π'.V B`. Establish `h1 : ∀ i j z, (lieS E a i j (atEmb τ z), -op (lieS E a i j (atEmb (ComplexEmbedding.conjugate τ) z))) ∈ S`. Introduce `i j z φ ψ`. Establish `e : star (atEmb τ z) = atEmb (ComplexEmbedding.conjugate τ) z` using `by classical`.
+
+Rewrite using `[atEmb_conj]`. Unfold `atEmb`. Rewrite using `[Pi.star_single]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `e2 : conjOp (.lie (toL (Matrix.single i j (atEmb τ z))) : Op E a) = .lie (toL (Matrix.single i j (atEmb (ComplexEmbedding.conjugate τ) z)))`.
+
+Use `congrArg Op.lie (funext fun k => funext fun l => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (Matrix.single i j (atEmb τ z) k l) = Matrix.single i j _ k l`. Rewrite using `[Matrix.single_apply, Matrix.single_apply, apply_ite star, e, star_zero]`. Establish `h` using `hL (toL (Matrix.single i j (atEmb τ z))) φ ψ`. Rewrite `h` using `[e2, add_eq_zero_iff_eq_neg, ← map_neg]`.
+
+Conclude with `⟨π.stable (.lie _) _ φ.2, neg_mem (π'.stable (.lie _) _ ψ.2), h⟩`. Establish `h2 : ∀ i j, (Eop τ i j, -op (Eop (ComplexEmbedding.conjugate τ) i j)) ∈ S` using `fun i j => by`. Use `S.smul_mem (S.sub_mem (h1 i j 1) (S.smul_mem (h1 i j Complex.I) Complex.I)) (1 / 2) using 1` and compare the differences between its conclusion and the goal. Use `Prod.ext rfl ?_` and prove the remaining obligations. Simplify using `only [Eop, op_smul, op_sub, Prod.smul_snd, Prod.snd_sub]`.
+
+Use `module`. Establish `h3 : ∀ x, qdet (fun i j => (Eop (a` using `a) τ i j, -op (Eop (ComplexEmbedding.conjugate τ) i j))) x ∈ S := fun x => by`. Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `S.add_mem ?_ (h2 _ _)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`. Establish `h4 : ∀ u, (cap (a` using `a) τ u, op ((-1 : ℂ) ^ a • cap (a := a) (ComplexEmbedding.conjugate τ) (-u) : Module.End ℂ (Sm E a))) ∈ S := fun u => by`. Use `h3 (u + ((a : ℂ) - 1) / 2) using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[qdet_prod, qdet_antipode (A := Module.End ℂ (Sm E a)) (glRel_Eop (a := a) (ComplexEmbedding.conjugate τ)), show (a : ℂ) - 1 - (u + ((a : ℂ) - 1) / 2) = -u + ((a : ℂ) - 1) / 2 by ring]`. Both sides reduce to the same expression. Establish `h5 : π.HasInfChar τ (m'.map Neg.neg)`. Use `⟨by rw [Multiset.card_map, hm'.1], fun u φ hφ => ?_⟩` and prove the remaining obligations. Establish `e : ((m'.map Neg.neg).map (u + ·)) = (m'.map (-u + ·)).map Neg.neg`.
+
+Rewrite using `[Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Multiset.prod_map_neg, Multiset.card_map, hm'.1]`.
+
+Take `⟨h, -⟩` from `h4 u ⟨φ, hφ⟩ 0`. Use `sub_eq_zero.1 (congrArg Subtype.val (hB (⟨_, h⟩ - ((-1) ^ a * (m'.map (-u + ·)).prod) • ⟨φ, hφ⟩) fun ψ => ?_))` and prove the remaining obligations. Take `⟨_, h', e'⟩` from `h4 u ⟨φ, hφ⟩ ψ`. Establish `e3 : (⟨_, h'⟩ : π'.V) = ((-1) ^ a * (m'.map (-u + ·)).prod) • ψ` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(-1 : ℂ) ^ a • cap (ComplexEmbedding.conjugate τ) (-u) ψ.1 = _ • ψ.1`.
+
+Rewrite using `[hm'.2 _ _ ψ.2, smul_smul])`. Rewrite using `[map_sub, LinearMap.sub_apply, e', e3, map_smul, map_smul, LinearMap.smul_apply, sub_self]`. Rewrite using `[hm.unique h5, Multiset.map_map]`. Simplify using the standard rewrite rules.
+-/
 theorem infChar_conj_of_paired : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (π π' : CuspSub E a),
     Paired π π' conjOp → ∀ (τ : E →+* ℂ) (m m' : Multiset ℂ), π.HasInfChar τ m →
       π'.HasInfChar (NumberField.ComplexEmbedding.conjugate τ) m' → m' = m.map Neg.neg := by

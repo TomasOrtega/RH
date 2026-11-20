@@ -31,18 +31,30 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Simplify using `[Scheme.IdealSheafData.ideal_top]`.
+-/
 private theorem top_ideal_eq_top {Y : Scheme.{u}} (U : Y.affineOpens) :
     (⊤ : Y.IdealSheafData).ideal U = ⊤ := by
   simp [Scheme.IdealSheafData.ideal_top]
 
+/- English proof (translation)
+Introduce `j` and use `congrFun (Scheme.IdealSheafData.ideal_pow A j) U`.
+-/
 private theorem pow_ideal_eq_ideal_pow {Y : Scheme.{u}} (A : Y.IdealSheafData)
     (U : Y.affineOpens) : ∀ j : ℕ, (A ^ j).ideal U = A.ideal U ^ j :=
   fun j => congrFun (Scheme.IdealSheafData.ideal_pow A j) U
 
+/- English proof (translation)
+Simplify using `[restrictIdeal_eq_comap_ι]`.
+-/
 private theorem restrictIdeal_top {Y : Scheme.{u}} (U : Y.Opens) :
     restrictIdeal (⊤ : Y.IdealSheafData) U = ⊤ := by
   simp [restrictIdeal_eq_comap_ι]
 
+/- English proof (translation)
+Establish `h2 : restrictIdeal D V = restrictIdeal (⊤ : Y.IdealSheafData) V`. Rewrite using `[restrictIdeal_top]`. Conclude with `h`. Rewrite using `[ideal_eq_of_restrictIdeal_eq D ⊤ ⟨V, hV⟩ h2, top_ideal_eq_top]`.
+-/
 private theorem ideal_affineOpen_eq_top_of_restrictIdeal_eq_top {Y : Scheme.{u}} (D : Y.IdealSheafData)
     {V : Y.Opens} (hV : IsAffineOpen V) (h : restrictIdeal D V = ⊤) :
     D.ideal ⟨V, hV⟩ = ⊤ := by
@@ -51,6 +63,9 @@ private theorem ideal_affineOpen_eq_top_of_restrictIdeal_eq_top {Y : Scheme.{u}}
     exact h
   rw [ideal_eq_of_restrictIdeal_eq D ⊤ ⟨V, hV⟩ h2, top_ideal_eq_top]
 
+/- English proof (translation)
+The claim follows from `smooth_comp_of_isBlowupAlongIdealSheaf hsnc hπ ∃ V : X₁.affineOpens, x₁ ∈ V.1 ∧ (derivIdealSheafIterate k (π ≫ p) n (L 0)).ideal V ≤ (⨆ l, ⨆ _ : l ≤ n, logDerivIdealSheafIterate k (π ≫ p) (Blowup.strictTransform π Z H) (n - l) (L l)).ideal V := by let hsmooth : AlgebraicGeometry. …`.
+-/
 theorem exists_affineOpen_derivIdealSheafIterate_le_biSup_logDerivIdealSheafIterate
     (k : Type u) [Field k] [CharZero k] {X X₁ : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -217,6 +232,9 @@ theorem exists_affineOpen_derivIdealSheafIterate_le_biSup_logDerivIdealSheafIter
     exact Scheme.IdealSheafData.le_def.mp (le_iSup₂ (f := fun l (_ : l ≤ n) =>
       logDerivIdealSheafIterate k (π ≫ p) (Blowup.strictTransform π Z H) (n - l) (L l)) i hi) _
 
+/- English proof (translation)
+The claim follows from `smooth_comp_of_isBlowupAlongIdealSheaf hsnc hπ derivIdealSheafIterate k (π ≫ p) n (L 0) ≤ ⨆ l, ⨆ _ : l ≤ n, logDerivIdealSheafIterate k (π ≫ p) (Blowup.strictTransform π Z H) (n - l) (L l) := by let hsmooth : AlgebraicGeometry.Smooth (π ≫ p) := smooth_comp_of_isBlowupAlongIdealSh …`.
+-/
 theorem derivIdealSheafIterate_le_biSup_logDerivIdealSheafIterate_strictTransform
     (k : Type u) [Field k] [CharZero k] {X X₁ : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

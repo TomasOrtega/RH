@@ -29,6 +29,17 @@ namespace GlobalTheory.MovedTwist
 
 open Formalism.L2.Host GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing GlobalTheory.ChiUnit
 
+/- English proof (translation)
+Take `⟨N, hN, hu⟩` from `GlobalTheory.Corev.UnrPow.exists_pow_unrAt L χ`. Establish `hinf' : (χ ^ N).HasInf φ fun i => n i * N` using `fun k => by`. Establish `e : (χ ^ N).inf k = χ.inf k ^ N` using `rfl`. Rewrite using `[e, Units.val_pow_eq_pow_val, hinf k, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[zpow_mul, zpow_natCast]`. Establish `hv` using `GlobalTheory.ValUnit.unitOff_val L (χ ^ N) I φ _ v q hinf' (by simp [hu]) (fun w x hx _ => hu w x hx) (hu v) hq`. Use `unitOff_of_pow hN ?_` and prove the remaining obligations. Establish `e : ((χ.loc v x : ℂˣ) : ℂ) ^ N = (((χ ^ N).loc v x : ℂˣ) : ℂ)`. Rewrite using `[← Units.val_pow_eq_pow_val]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Use `set u : (v.adicCompletion L)ˣ := atFin v (unif v) with hudef`. Establish `h0 : Valued.v (x : v.adicCompletion L) ≠ 0` using `by simp`. Establish `hu1 : Valued.v (u : v.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec v`.
+
+Establish `hx : Valued.v (x : v.adicCompletion L) = WithZero.exp (WithZero.log (Valued.v (x : v.adicCompletion L)))` using `(WithZero.exp_log h0).symm`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℤ, Valued.v (((x * u ^ m : (v.adicCompletion L)ˣ)) : v.adicCompletion L) = 1 := by`. Use `⟨WithZero.log (Valued.v (x : v.adicCompletion L)), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hx, hu1, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+
+Establish `hx' : x = (x * u ^ m) * u ^ (-m)`. Rewrite using `[mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, mul_one]`. Rewrite using `[hx', map_mul, hu v _ hm, one_mul, map_zpow, Units.val_zpow_eq_zpow_val]`. Conclude with `unitOff_zpow hv _`.
+-/
 theorem unitOff_loc {L : Type} [Field L] [NumberField L] (χ : HChar L) {I : Type} [Fintype I] {φ : I → L →+* ℂ} {n : I → ℤ}
     (hinf : χ.HasInf φ n) (v : HeightOneSpectrum (𝓞 L)) {q : ℕ} (hq : (q : 𝓞 L) ∈ v.asIdeal) (x : (v.adicCompletion L)ˣ) :
     UnitOff q ((χ.loc v x : ℂˣ) : ℂ) := by
@@ -57,6 +68,11 @@ theorem unitOff_loc {L : Type} [Field L] [NumberField L] (χ : HChar L) {I : Typ
   rw [hx', map_mul, hu v _ hm, one_mul, map_zpow, Units.val_zpow_eq_zpow_val]
   exact unitOff_zpow hv _
 
+/- English proof (translation)
+Use `unitOff_of_pow two_pos ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _), Complex.ofReal_natCast]`. Establish `h` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hq)`. Rewrite `h` using `[Ideal.absNorm_span_natCast]`. Take `⟨b, hb⟩` from `h`.
+
+Establish `hi : ∀ a : ℕ, IsIntegral ℤ (a : ℂ)` using `fun a => by`. Simplify using `using isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := (a : ℤ))`. Use `unitOff_of_mul_eq (m := Module.finrank ℤ (𝓞 L)) (hi _) (hi b) ?_ hq0` and prove the remaining obligations. Rewrite using `[← Nat.cast_mul, ← hb, Nat.cast_pow]`.
+-/
 theorem unitOff_sqrt_absNorm {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L)) {q : ℕ} (hq0 : q ≠ 0)
     (hq : (q : 𝓞 L) ∈ v.asIdeal) : UnitOff q ((Real.sqrt (Ideal.absNorm v.asIdeal) : ℝ) : ℂ) := by
   refine unitOff_of_pow two_pos ?_
@@ -71,6 +87,11 @@ theorem unitOff_sqrt_absNorm {L : Type} [Field L] [NumberField L] (v : HeightOne
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `GlobalTheory.MovedField.exists_zpow_unit P x`. Establish `h1 : valuation (Kw P) (((x * unifAt P ^ n : (Kw P)ˣ)) : Kw P) = 1` using `(Good.isEquiv_Kw P).eq_one_iff_eq_one.2 hn`. Establish `hx : x = (x * unifAt P ^ n) * unifAt P ^ (-n)`. Rewrite using `[mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, mul_one]`. Rewrite using `[hx, apow_mul, apow_of_valuation_eq_one h1, one_mul, apow_zpow, (isUnif_unifAt P).apow_eq, GlobalTheory.LFun.SatBoundGL.resCard_completion]`.
+
+Establish `e1 : -(((-n : ℤ) : ℂ) * ((z : ℂ) / 2)) = ((((n * z : ℤ) : ℝ) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e1, GlobalTheory.MovedField.natCast_cpow_half]`. Conclude with `unitOff_zpow (unitOff_sqrt_absNorm P hq0 hq) _`.
+-/
 theorem unitOff_apow_half {P : Pl D.host.E} {q : ℕ} (hq0 : q ≠ 0) (hq : (q : 𝓞 D.host.E) ∈ P.asIdeal) (x : (Kw P)ˣ) (z : ℤ) :
     UnitOff q (apow x ((z : ℂ) / 2)) := by
   obtain ⟨n, hn⟩ := GlobalTheory.MovedField.exists_zpow_unit P x
@@ -83,6 +104,19 @@ theorem unitOff_apow_half {P : Pl D.host.E} {q : ℕ} (hq0 : q ≠ 0) (hq : (q :
   rw [e1, GlobalTheory.MovedField.natCast_cpow_half]
   exact unitOff_zpow (unitOff_sqrt_absNorm P hq0 hq) _
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hu`. Take `⟨y', rfl, h'⟩` from `hz`. Use `⟨y * y', map_mul _ _ _, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : y' = 0`. Conclude with `Or.inl (by rw [h0, mul_zero])`.
+
+Establish `h'` using `h'.resolve_left h0`. Take `⟨hy, k, hk, -⟩` from `hq`. Establish `hy0 : y ≠ 0` using `fun e => hy (by rw [e, map_zero])`. Establish `hq0 : (q : D.what₂.LL) ≠ 0`. Establish `: q ≠ 0` using `fun e => hw (by rw [e, Nat.cast_zero]; exact zero_mem _)`.
+
+Conclude with `this` after adjusting the coercions. Establish `hint : IsIntegral ℤ ((q : D.what₂.LL) ^ k * y)`. Rewrite using `[← isIntegral_algHom_iff D.what₂.embLL.toIntAlgHom D.what₂.embLL.injective]`. Simplify using `using hk`. Establish `hqk : ((q ^ k : ℕ) : 𝓞 D.what₂.LL) ∉ w.asIdeal` using `fun h => hw (w.isPrime.mem_of_pow_mem k (by simpa using h))`.
+
+Establish `h1 : vw w ((q ^ k : ℕ) : D.what₂.LL) = 0`. Establish `h0 : ((q ^ k : ℕ) : 𝓞 D.what₂.LL) ≠ 0` using `fun e => hqk (e ▸ zero_mem _)`. Establish `h1` using `Formalism.EigenvalueLevelCeiling.intValuation_eq_exp' w _ h0`. Rewrite `h1` using `[(w.intValuation_eq_one_iff).2 hqk, ← WithZero.exp_zero]`. Establish `h2` using `WithZero.exp_injective h1`.
+
+Establish `h3 : (((q ^ k : ℕ) : 𝓞 D.what₂.LL) : D.what₂.LL) = ((q ^ k : ℕ) : D.what₂.LL)` using `by simp`. Rewrite `h2` using `[h3]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : 0 ≤ vw w ((q : D.what₂.LL) ^ k * y)` using `Formalism.DivisionValues.ValuationRepresentative.vw_int_nonneg w (⟨_, hint⟩ : 𝓞 D.what₂.LL)`. Rewrite `h2` using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ (pow_ne_zero _ hq0) hy0, ← Nat.cast_pow, h1, zero_add]`.
+
+Use `Or.inr ?_` and prove the remaining obligations. Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ hy0 h0, Int.cast_add]`. Establish `h3 : (0 : ℝ) ≤ (vw w y : ℝ)` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lossLe_unit_mul {w : PlL D} {q : ℕ} (hw : (q : 𝓞 D.what₂.LL) ∉ w.asIdeal) {u z : ℂ} {c : ℝ}
     (hu : u ∈ D.what₂.embLL.fieldRange) (hq : UnitOff q u) (hz : LossLe w z c) : LossLe w (u * z) c := by
   obtain ⟨y, rfl⟩ := hu
@@ -117,16 +151,31 @@ theorem lossLe_unit_mul {w : PlL D} {q : ℕ} (hw : (q : 𝓞 D.what₂.LL) ∉ 
 
 def UnitIn (K : Subfield ℂ) (q : ℕ) (u : ℂ) : Prop := u ∈ K ∧ UnitOff q u
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_mem h.1 h'.1, unitOff_mul h.2 h'.2⟩`.
+-/
 theorem UnitIn.mul {K : Subfield ℂ} {q : ℕ} {u v : ℂ} (h : UnitIn K q u) (h' : UnitIn K q v) : UnitIn K q (u * v) :=
   ⟨mul_mem h.1 h'.1, unitOff_mul h.2 h'.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inv_mem h.1, unitOff_inv h.2⟩`.
+-/
 theorem UnitIn.inv {K : Subfield ℂ} {q : ℕ} {u : ℂ} (h : UnitIn K q u) : UnitIn K q u⁻¹ := ⟨inv_mem h.1, unitOff_inv h.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pow_mem h.1 n, unitOff_pow h.2 n⟩`.
+-/
 theorem UnitIn.pow {K : Subfield ℂ} {q : ℕ} {u : ℂ} (h : UnitIn K q u) (n : ℕ) : UnitIn K q (u ^ n) :=
   ⟨pow_mem h.1 n, unitOff_pow h.2 n⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_mem K, unitOff_one q⟩`.
+-/
 theorem unitIn_one (K : Subfield ℂ) (q : ℕ) : UnitIn K q 1 := ⟨one_mem K, unitOff_one q⟩
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simpa using unitIn_one K q | a :: l, h => by rw [List.map_cons, List.prod_cons] exact (h a List.mem_cons_self).mul (unitIn_prod f l fun b hb => h b (List.mem_cons_of_mem _ hb))`.
+-/
 theorem unitIn_prod {α : Type*} {K : Subfield ℂ} {q : ℕ} (f : α → ℂ) :
     ∀ l : List α, (∀ a ∈ l, UnitIn K q (f a)) → UnitIn K q (l.map f).prod
   | [], _ => by simpa using unitIn_one K q
@@ -138,6 +187,25 @@ end GlobalTheory.MovedTwist
 
 open GlobalTheory.MovedTwist GlobalTheory.MovedField Formalism.L2.Host GlobalTheory.ChiUnit in
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F CF b hS _ _ hF t Φ β _ P hP w hw c _ hT z`. Use `set K : Subfield ℂ := D.what₂.embLL.fieldRange with hKdef`. Use `set q : ℕ := Formalism.EigenvalueLevelCeiling.plc (P : Pl D.host.E) with hqdef`. Establish `hq0 : q ≠ 0` using `(Formalism.EigenvalueLevelCeiling.plc_prime _).ne_zero`. Establish `hq : (q : 𝓞 D.host.E) ∈ (P : Pl D.host.E).asIdeal` using `Formalism.EigenvalueLevelCeiling.plc_mem _`.
+
+Establish `hK : ∀ y : ℂ, y ∈ Set.range D.what₂.embLL ↔ y ∈ K` using `fun y => by`. Rewrite using `[Set.mem_range, hKdef, RingHom.mem_fieldRange]`. Establish `hsq : ((Real.sqrt (Ideal.absNorm (P : Pl D.host.E).asIdeal) : ℝ) : ℂ) ∈ K` using `(hK _).1 (hF.sqrt P.1 (.inr ⟨t, P.2⟩))`. Establish `hmu : ∀ j (x : (Kw P.1)ˣ), UnitIn K q (((locGrid ch.G t P).mu j x : ℂˣ) : ℂ)` using `fun j x => by show UnitIn K q ((((GlobalTheory.FunObj.muBase _ j * _).loc _) x : ℂˣ) : ℂ)`. Rewrite using `[HChar.loc_mul, Units.val_mul]`.
+
+Use `UnitIn.mul ?_ ⟨(hK _).1 (hF.chars.xi t _ x), ?_⟩` and prove the remaining obligations. Break down `j with _ | j` into its components or cases. Simplify `unitIn_one K q` using `[GlobalTheory.FunObj.muBase]`. Rewrite using `[GlobalTheory.FunObj.muBase] split_ifs with hj`. Take `⟨n, -, hn⟩` from `(R.toLevCh.C.isMu0 ⟨j, hj⟩).inf`.
+
+Conclude with `⟨(hK _).1 (hF.chars.mu0 ⟨j, hj⟩ _ x), unitOff_loc _ hn _ hq x⟩`. Simplify using `using unitIn_one K q`. Take `⟨n, hn, ho⟩` from `hS.core.lev.xi_fin t`. Use `unitOff_of_pow_eq_one q hn ?_` and prove the remaining obligations. Establish `: ((R.toLevCh.xiH t) ^ n).loc P.1 x = 1` using `by rw [show (R.toLevCh.xiH t) ^ n = 1 from ho]; rfl`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val]`. Conclude with `congrArg Units.val this`. Establish `hchi : ∀ i, 1 ≤ i → i ≤ D.R.m → ∀ x : (Kw P.1)ˣ, UnitIn K q (((locGrid ch.G t P).chi i x : ℂˣ) : ℂ)` using `fun i h1 h2 x => ⟨(hK _).1 (hF.chars.chi i h1 h2 _ x), unitOff_loc _ (ch.G.ch.inf i h1 h2) _ hq x⟩`. Establish `heta : ∀ x : (Kw P.1)ˣ, UnitIn K q (((locGrid ch.G t P).eta x : ℂˣ) : ℂ)` using `fun x => by`. Establish `hu` using `R.toLevCh.C.isEta.unr P.1`.
+
+Take `⟨y, hy⟩` from `hF.chars.eta P.1 hu`. Conclude with `⟨loc_mem_of_unrAt hu (hy ▸ (hK _).1 ⟨y, rfl⟩) hsq x, unitOff_loc _ R.toLevCh.C.isEta.inf _ hq x⟩`. Establish `hkap : ∀ e ∈ oppositePath D.R.m, ∀ X (x : (Kw P.1)ˣ), UnitIn K q (((locGrid ch.G t P).kappa e X x : ℂˣ) : ℂ)`. Introduce `e he X x`. Rewrite using `[Grid.kappa, MonoidHom.div_apply, MonoidHom.pow_apply, Units.val_div_eq_div_val, Units.val_pow_eq_pow_val, div_eq_mul_inv]`.
+
+Use `UnitIn.mul ?_ ((heta x).pow _).inv` and prove the remaining obligations. Break down `GlobalTheory.FunObj.mem_oppositePath.1 he with ⟨i, hi, rfl⟩ | ⟨j, -, rfl⟩` into its components or cases. Conclude with `hchi _ (by show 1 ≤ D.R.m - i; omega) (by show D.R.m - i ≤ D.R.m; omega) x`. Conclude with `hmu _ x`. Establish `hap : ∀ (x : (Kw P.1)ˣ) (n : ℕ), UnitIn K q (apow x ((n : ℂ) / 2)) ∧ UnitIn K q (apow x (-(n : ℂ) / 2))` using `fun x n => ⟨⟨by simpa using apow_half_mem hsq x n, by simpa using unitOff_apow_half hq0 hq x n⟩, by simpa using apow_half_mem hsq x (-n), by simpa using unitOff_apow_half hq0 hq x (-n)⟩`.
+
+Establish `hedge : ∀ g, ∀ e ∈ oppositePath D.R.m, UnitIn K q ((locGrid ch.G t P).edgeFactor .one g e)`. Introduce `g e he`. Rewrite using `[Grid.edgeFactor, Units.val_inv_eq_inv_val]`. Conclude with `(((hkap e he _ _).mul (hkap e he _ _).inv).mul (hap _ _).1).mul (hap _ _).2`. Establish `hk : keepAt ch.G (P : Pl D.host.E) = true` using `by classical`.
+
+Simplify using `[keepAt, hP]`. Establish `hg` using `unitIn_prod _ _ (hedge ((repsAt ch.G t P).elt (β P)))`. Simplify using `only [moved, Grid.pathAct, hk, if_true, one_mul]`. Conclude with `lossLe_unit_mul hw hg.1 hg.2 (hT _)`.
+-/
 theorem GlobalTheory.MovedTwist.moved_lossLe : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A) (CF b : ℝ),
     HidaSetting large₂ R F → ch.Is → ch.AtScale CF b → ch.FieldOK → ∀ (t : T) (Φ : ch.G.Datum), ∀ β ∈ ch.S.supp t Φ, ∀ (P : locPl ch.G t),

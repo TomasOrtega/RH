@@ -4,6 +4,9 @@ open PowerSeries Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Fo
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℤ_[l] (algebraMap ℚ_[l] ↥LL.1 x)` using `hx`. Establish `hint' : IsIntegral ℤ_[l] x` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ_[l] ℚ_[l] ↥LL.1) (algebraMap ℚ_[l] ↥LL.1).injective).mp hint`. Conclude with `IsIntegrallyClosed.isIntegral_iff.mp hint'`.
+-/
 theorem exists_padicInt_of_mem_OL {l : ℕ} [Fact l.Prime] (LL : FinExt l) (x : ℚ_[l])
     (hx : algebraMap ℚ_[l] ↥LL.1 x ∈ OL LL) : ∃ y : ℤ_[l], algebraMap ℤ_[l] ℚ_[l] y = x := by
   have hint : IsIntegral ℤ_[l] (algebraMap ℚ_[l] ↥LL.1 x) := hx
@@ -12,16 +15,31 @@ theorem exists_padicInt_of_mem_OL {l : ℕ} [Fact l.Prime] (LL : FinExt l) (x : 
       (algebraMap ℚ_[l] ↥LL.1).injective).mp hint
   exact IsIntegrallyClosed.isIntegral_iff.mp hint'
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] ↥LL.1]`. Conclude with `(algebraMap ℚ_[l] ↥LL.1).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`.
+-/
 theorem algebraMap_padicInt_finExt_injective {l : ℕ} [Fact l.Prime] (LL : FinExt l) :
     Function.Injective (algebraMap ℤ_[l] ↥LL.1) := by
   rw [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] ↥LL.1]
   exact (algebraMap ℚ_[l] ↥LL.1).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])
 
+/- English proof (translation)
+Introduce `a b h`. Conclude with `algebraMap_padicInt_finExt_injective LL (congrArg Subtype.val h)`.
+-/
 theorem algebraMap_padicInt_OL_injective {l : ℕ} [Fact l.Prime] (LL : FinExt l) :
     Function.Injective (algebraMap ℤ_[l] ↥(OL LL)) := by
   intro a b h
   exact algebraMap_padicInt_finExt_injective LL (congrArg Subtype.val h)
 
+/- English proof (translation)
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[map_zero, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_one hc`. Establish `hspec` using `PadicInt.unitCoeff_spec hc0`.
+
+Use `set u := PadicInt.unitCoeff hc0`. Establish `hnn : ∀ w : ℤ_[l], 0 ≤ P.v LL (algebraMap ℤ_[l] ↥LL.1 w)` using `fun w => (P.v_O LL _).mpr (Subalgebra.algebraMap_mem _ w)`. Establish `hu0 : P.v LL (algebraMap ℤ_[l] ↥LL.1 (u : ℤ_[l])) = 0`. Establish `h1 : P.v LL (algebraMap ℤ_[l] ↥LL.1 (u : ℤ_[l])) + P.v LL (algebraMap ℤ_[l] ↥LL.1 ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l])) = 0`. Rewrite using `[← AddValuation.map_mul, ← map_mul, Units.mul_inv, map_one, AddValuation.map_one]`.
+
+Conclude with `((add_eq_zero_iff_of_nonneg (hnn _) (hnn _)).mp h1).1`. Establish `hval : c.valuation = 1`. Rewrite `hc` using `[hspec, map_mul, AddValuation.map_mul, hu0, zero_add, map_pow, AddValuation.map_pow, map_natCast, P.v_l LL, nsmul_one]`. Conclude with `hc` after adjusting the coercions. Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [hspec]`. Rewrite using `[hval, pow_one, mul_comm, ← mul_assoc, Units.inv_mul, one_mul]`.
+-/
 private theorem associated_prime_of_valuation_eq_one {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : FinExt l)
     (c : ℤ_[l]) (hc : P.v LL (algebraMap ℤ_[l] ↥LL.1 c) = 1) : Associated c (l : ℤ_[l]) := by
   have hc0 : c ≠ 0 := by
@@ -45,6 +63,11 @@ private theorem associated_prime_of_valuation_eq_one {l : ℕ} [Fact l.Prime] (P
   conv_lhs => rw [hspec]
   rw [hval, pow_one, mul_comm, ← mul_assoc, Units.inv_mul, one_mul]
 
+/- English proof (translation)
+Apply `associated_prime_of_valuation_eq_one P LL` to reduce the goal to its premises. Establish `hx : algebraMap ↥(OL LL) ↥LL.1 x = algebraMap ℤ_[l] ↥LL.1 y`. Rewrite using `[← hy]`. Both sides reduce to the same expression. Rewrite using `[map_sub, map_one, ← hx]`.
+
+Conclude with `h`.
+-/
 theorem associated_of_v_sub_one {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : FinExt l)
     (y : ℤ_[l]) (x : ↥(OL LL)) (hy : algebraMap ℤ_[l] ↥(OL LL) y = x)
     (h : P.v LL (algebraMap ↥(OL LL) ↥LL.1 x - 1) = 1) : Associated (y - 1) (l : ℤ_[l]) := by
@@ -55,6 +78,13 @@ theorem associated_of_v_sub_one {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : 
   rw [map_sub, map_one, ← hx]
   exact h
 
+/- English proof (translation)
+Use `choose y hy using hex`. Establish `hinv : ∀ g, y g * y g⁻¹ = 1` using `fun g => hφ (by`. Rewrite using `[map_mul, hy, hy, map_one, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one])`. Establish `hinv' : ∀ g, y g⁻¹ * y g = 1` using `fun g => by simpa using hinv g⁻¹`. Set `u : Γ → Rˣ` to `fun g => ⟨y g, y g⁻¹, hinv g, hinv' g⟩`.
+
+Use `⟨{ toFun := u, map_one' := ?_, map_mul' := ?_ }, fun g => hy g⟩` and prove the remaining obligations. Use `ext`. Apply `hφ` to reduce the goal to its premises. Simplify using `[u, hy]`. Introduce `g h`.
+
+Use `ext`. Apply `hφ` to reduce the goal to its premises. Simplify using `[u, hy]`.
+-/
 theorem exists_units_hom_lift {Γ R S : Type} [Group Γ] [CommRing R] [CommRing S] (φ : R →+* S)
     (hφ : Function.Injective φ) (c : Γ →* Sˣ) (hex : ∀ g, ∃ y : R, φ y = (c g : S)) :
     ∃ χ : Γ →* Rˣ, ∀ g, φ (χ g : R) = (c g : S) := by
@@ -72,6 +102,15 @@ theorem exists_units_hom_lift {Γ R S : Type} [Group Γ] [CommRing R] [CommRing 
     apply hφ
     simp [u, hy]
 
+/- English proof (translation)
+Introduce `l _ P K LL n W`. Establish `hex : ∀ g, ∃ y : ℤ_[l], algebraMap ℤ_[l] ↥(OL LL) y = (W.χΓ g : ↥(OL LL))`. Introduce `g`. Take `⟨h, rfl⟩` from `W.resΓ_onto g`. Establish `hmem : algebraMap ℚ_[l] ↥LL.1 ((P.PD K).χ h : ℚ_[l]) ∈ OL LL`.
+
+Rewrite using `[← W.χΓ_res h]`. Conclude with `(W.χΓ (W.resΓ h) : ↥(OL LL)).2`. Take `⟨y, hy⟩` from `exists_padicInt_of_mem_OL LL _ hmem`. Use `⟨y, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show algebraMap ℤ_[l] ↥LL.1 y = _`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥LL.1, hy, ← W.χΓ_res h]`. Both sides reduce to the same expression. Take `⟨χ, hχ⟩` from `exists_units_hom_lift (algebraMap ℤ_[l] ↥(OL LL)) (algebraMap_padicInt_OL_injective LL) W.χΓ hex`. Use `⟨χ, hχ, fun hs => ?_⟩` and prove the remaining obligations. Apply `associated_of_v_sub_one P LL _ _ (hχ W.gam)` to reduce the goal to its premises.
+
+Establish `hg` using `W.gam_gen`. Rewrite `hg` using `[hs, Nat.cast_one]`. Conclude with `hg`.
+-/
 theorem exists_cyclotomicChar_padicInt_units : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {n : ℕ} (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n), ∃ χ : W.Gam →* ℤ_[l]ˣ, (∀ g, algebraMap ℤ_[l] ↥(OL LL) (χ g : ℤ_[l]) = (W.χΓ g : ↥(OL LL))) ∧ (W.s = 1 → Associated ((χ W.gam : ℤ_[l]) - 1) (l : ℤ_[l])) := by
   intro l _ P K LL n W
   have hex : ∀ g, ∃ y : ℤ_[l], algebraMap ℤ_[l] ↥(OL LL) y = (W.χΓ g : ↥(OL LL)) := by

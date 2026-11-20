@@ -10,8 +10,14 @@ namespace Formalism.MainNotions.Gaps.T0
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
+/- English proof (translation)
+The claim follows from `thm0Concl_of thm0Local`.
+-/
 theorem thm0Concl : Thm0Concl (D := D) (B := B) (P := P) (j := j) := thm0Concl_of thm0Local
 
+/- English proof (translation)
+Establish `hT : 1 ≤ T`. Take `⟨_, hS, _⟩` from `hH`. Conclude with `(hS.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 : 0 < T)`. Conclude with `thm0Concl large₂ X H S ka wL wF T nus β r hH.2.2.2.1 hT hc (theta_le_msup_of_hyp X S hH) hr0 hrs hrb hloc`.
+-/
 theorem concl_of_hyp (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 CR Bx CT : ℝ) (S : Scal B)
     (ka wL wF : WeightFamilies.Wt D j) (T nP nW : ℕ) (h0 : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (β : ℝ)
     (r : HeightOneSpectrum (𝓞 B.KO) → ℝ)

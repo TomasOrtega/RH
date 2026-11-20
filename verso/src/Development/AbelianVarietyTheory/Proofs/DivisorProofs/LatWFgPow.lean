@@ -31,6 +31,17 @@ noncomputable section
 
 namespace GlobalTheory.CovTop.ShiftFG
 
+/- English proof (translation)
+Establish `hσ : GoodEmb Y.d.c₂ Y.d.c₂.F.val.toRingHom` using `rfl`. Establish `hU` using `hG.unf _ hσ`. Establish `hFm` using `GlobalTheory.AllWt.mem_cuspW.1 hF`. Take `⟨k, x₁, hx₁, hne₁⟩` from `GlobalTheory.T.exists_uniformisationFrame_reading_ne_zero _ _ _ _ _ _ _ _ _ hU _ F hFm.1 hF0`. Take `⟨Xx, 𝔄, hX, h𝔄, hΛ⟩` from `GlobalTheory.T.goodCover_component_extends_to_rankOne_cusp_data D T j Y e o hG _ hσ k`.
+
+Establish `hbdd` using `(Formalism.L2.Pj.abelian₂.holSub_SS ReciprocityTheory.ChartRestriction.G.FD.siegelSpaceAlgebra_holds _ _ (hFm.2 _ hσ) k).1`. Establish `hr : 0 < D.R.r`. Establish `hn : 0 < D.R.ord` using `D.R.ord_pos`. Establish `hk` using `D.R.f_le_k`. Establish `ht` using `D.R.rank_add_five_le`.
+
+Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Take `⟨La, x, lam, hx, hB, hne⟩` from `GlobalTheory.CMDetect.exists_cm_frame Xx _ hX hr _ _ hbdd hx₁ hne₁`. Take `⟨z, σ₁, hz, hzx⟩` from `GlobalTheory.LamT.exists_good_cmPt_at_frame _ _ _ _ _ _ hstar _ _ hU hr k ⟨x, hx⟩ Xx hX 𝔄 h𝔄 hΛ La lam hB`. Establish `hev : evR Y.d.Xo₂ Y.d.c₂ F ((Y.U _).un k ⟨x, hx⟩) ≠ 0`.
+
+Introduce `h0`. Apply `hne` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(if h : x ∈ ((Y.U _).X k).dom then toC (evR Y.d.Xo₂ Y.d.c₂ F ((Y.U _).un k ⟨x, h⟩)) else 0) = 0`. Rewrite using `[dif_pos hx]`. Conclude with `h0`.
+
+Take `⟨y, hy, hyne⟩` from `GlobalTheory.T.exists_numberFieldFrame_value_ne_zero_of_complex _ _ _ _ _ _ z.K z.y _ F hFm.1 _ σ₁ _ hzx hev`. Conclude with `⟨z, La, y, hz, hy.trans hz.2.2.2.1, hyne⟩`.
+-/
 theorem exists_good_cmPt_frame_ne_zero {D : D7} {T : Core D} {j : ℕ} (Y : Deep T j) {e : ℕ} {o : ℝ} (hG : Y.Good e o)
     [StarRing (𝓞 D.host.E)] (hstar : ∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) (G : WTZ D.host.E)
     (F : Rul Y.d.Xo₂ Y.d.c₂) (hF : F ∈ Y.V G) (hF0 : F ≠ 0) :
@@ -62,6 +73,13 @@ theorem exists_good_cmPt_frame_ne_zero {D : D7} {T : Core D} {j : ℕ} (Y : Deep
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `_ D T _ j hp hq _ _ Y e o hY la hA hb _ m`. Use `letI := T.Q.H.starRing`. Use `haveI := GlobalTheory.Deep.finiteDimensional_V_of_good D T.toCore j Y e o hY (wtOf _ la m)`. Use `GlobalTheory.fg_of_integral_functionals Y.d.c₂.F (Y.V (wtOf _ la m)) _ fun x hx => ?_` and prove the remaining obligations. Take `⟨z, La, y, hz, hyx, hne⟩` from `exists_good_cmPt_frame_ne_zero Y hY (fun _ => rfl) _ x.1 x.2 (fun h => hx (Subtype.ext h))`.
+
+Take `⟨N, hN, hint⟩` from `GlobalTheory.T.exists_frame_denominator_dominant_weight_power_cm _ _ _ _ _ _ z _ La hz y hyx hp hq la hA hb m`. Use `⟨z.K, inferInstance, inferInstance, inferInstance, { toFun := fun F => N * evR Y.d.Xo₂ Y.d.c₂ F.1 y map_add' := fun F G => ?_ map_smul' := fun s F => ?_ }, mul_ne_zero hN hne, fun F hF => hint F.1 (GlobalTheory.AllWt.cuspW_le_secZ _ F.2) hF⟩` and prove the remaining obligations. Rewrite using `[← mul_add]`. Conclude with `congrArg _ (evalAt_add _ _ F.1 G.1 y)`. Establish `e1 : evR Y.d.Xo₂ Y.d.c₂ (s • F).1 y = algebraMap Y.d.c₂.F z.K s * evR Y.d.Xo₂ Y.d.c₂ F.1 y` using `evalAt_smul _ _ s F.1 y`.
+
+Rewrite using `[e1, RingHom.id_apply, Algebra.smul_def, mul_left_comm]`.
+-/
 theorem latW_fg_pow : Hypotheses2 → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q →
     2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o →
     ∀ (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) →

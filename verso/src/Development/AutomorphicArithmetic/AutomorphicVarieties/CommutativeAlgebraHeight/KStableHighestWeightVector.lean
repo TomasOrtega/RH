@@ -7,6 +7,9 @@ import Mathlib.RingTheory.TensorProduct.Quotient
 
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
+/- English proof (translation)
+Establish `hl : (maximalIdeal B).LiesOver (maximalIdeal A)` using `⟨Ideal.IsMaximal.eq_of_le inferInstance (Ideal.comap_ne_top _ (Ideal.IsMaximal.ne_top inferInstance)) (by rw [← hm]; exact Ideal.le_comap_map)⟩`. Establish `h` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (maximalIdeal A) (maximalIdeal B)`. Rewrite `h` using `[hm, Ideal.map_quotient_self]`. Simplify using `at h`. Rewrite using `[← maximalIdeal_height_eq_ringKrullDim, ← maximalIdeal_height_eq_ringKrullDim, h]`.
+-/
 private theorem dim_eq_of_flat {A B : Type} [CommRing A] [CommRing B] [IsLocalRing A] [IsLocalRing B]
     [IsNoetherianRing A] [IsNoetherianRing B] [Algebra A B] [Module.Flat A B]
     (hm : (maximalIdeal A).map (algebraMap A B) = maximalIdeal B) :
@@ -19,6 +22,15 @@ private theorem dim_eq_of_flat {A B : Type} [CommRing A] [CommRing B] [IsLocalRi
   simp at h
   rw [← maximalIdeal_height_eq_ringKrullDim, ← maximalIdeal_height_eq_ringKrullDim, h]
 
+/- English proof (translation)
+Distinguish the cases in `hJ : J = ⊤`. Substitute `hJ` using the available equality. Rewrite using `[Ideal.map_top]`. Rewrite using `[ringKrullDim_eq_bot_of_subsingleton, ringKrullDim_eq_bot_of_subsingleton]`. Establish `hJm : J ≤ maximalIdeal A` using `IsLocalRing.le_maximalIdeal hJ`.
+
+Establish `hIm : J.map (algebraMap A B) ≤ maximalIdeal B` using `hm ▸ Ideal.map_mono hJm`. Establish `hI : J.map (algebraMap A B) ≠ ⊤` using `ne_top_of_le_ne_top (Ideal.IsMaximal.ne_top inferInstance) hIm`. Use `haveI : Nontrivial (A ⧸ J) := Ideal.Quotient.nontrivial_iff.mpr hJ`. Use `haveI : Nontrivial (B ⧸ J.map (algebraMap A B)) := Ideal.Quotient.nontrivial_iff.mpr hI`. Use `haveI : IsLocalRing (A ⧸ J) := .of_surjective' (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective`.
+
+Use `haveI : IsLocalRing (B ⧸ J.map (algebraMap A B)) := .of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Use `haveI : Module.Flat (A ⧸ J) (B ⧸ J.map (algebraMap A B)) := by`. Establish `e : (B ⧸ J.map (algebraMap A B)) ≃ₗ[A] TensorProduct A (A ⧸ J) B` using `((Algebra.TensorProduct.quotIdealMapEquivTensorQuot B J).toLinearEquiv.restrictScalars A).trans (TensorProduct.comm A B (A ⧸ J))`. Use `haveI := Module.Flat.baseChange A (A ⧸ J) B`. Conclude with `Module.Flat.of_linearEquiv (LinearEquiv.extendScalarsOfSurjective Ideal.Quotient.mk_surjective e)`.
+
+Apply `dim_eq_of_flat` to reduce the goal to its premises. Establish `hmA : maximalIdeal (A ⧸ J) = (maximalIdeal A).map (Ideal.Quotient.mk J)` using `(IsLocalRing.eq_maximalIdeal (Ideal.IsMaximal.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hJm))).symm`. Establish `hmB : maximalIdeal (B ⧸ J.map (algebraMap A B)) = (maximalIdeal B).map (Ideal.Quotient.mk (J.map (algebraMap A B)))` using `(IsLocalRing.eq_maximalIdeal (Ideal.IsMaximal.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hIm))).symm`. Rewrite using `[hmA, hmB, Ideal.map_map, ← hm, Ideal.map_map]`. Use `congr 1`.
+-/
 private theorem dim_quot_eq_of_flat {A B : Type} [CommRing A] [CommRing B] [IsLocalRing A]
     [IsLocalRing B] [IsNoetherianRing A] [IsNoetherianRing B] [Algebra A B] [Module.Flat A B]
     (hm : (maximalIdeal A).map (algebraMap A B) = maximalIdeal B) (J : Ideal A) :
@@ -53,6 +65,17 @@ private theorem dim_quot_eq_of_flat {A B : Type} [CommRing A] [CommRing B] [IsLo
   rw [hmA, hmB, Ideal.map_map, ← hm, Ideal.map_map]
   congr 1
 
+/- English proof (translation)
+Introduce `C R _ _ _ _ _ x _ hR`. Take `⟨_, ⟨e⟩, hmap⟩` from `cpl_uniq x hR`. Use `haveI := hR.noeth`. Use `haveI : IsNoetherianRing (Cpl x) := isNoetherianRing_of_ringEquiv R e.toRingEquiv`. Establish `hmapI : ∀ I : Ideal C, I.map (algebraMap C (Cpl x)) = (I.map (algebraMap C R)).map (e.toRingEquiv : R →+* Cpl x)`.
+
+Introduce `I`. Rewrite using `[Ideal.map_map]`. Use `congr 1`. Use extensionality with `c`. Simplify using the standard rewrite rules.
+
+Establish `h1 : x.map (algebraMap C (Cpl x)) = (maximalIdeal (Localization.AtPrime x)).map (algebraMap (Localization.AtPrime x) (Cpl x))`. Rewrite using `[IsScalarTower.algebraMap_eq C (Localization.AtPrime x) (Cpl x), ← Ideal.map_map, Localization.AtPrime.map_eq_maximalIdeal]`. Establish `hm : (maximalIdeal (Localization.AtPrime x)).map (algebraMap (Localization.AtPrime x) (Cpl x)) = maximalIdeal (Cpl x)`. Rewrite using `[← h1, hmapI, hmap]`. Conclude with `IsLocalRing.eq_maximalIdeal (Ideal.map_isMaximal_of_equiv e.toRingEquiv)`.
+
+Establish `key : ∀ I : Ideal C, ringKrullDim (R ⧸ I.map (algebraMap C R)) = dimAt x I`. Introduce `I`. Unfold `dimAt`. Rewrite using `[← dim_quot_eq_of_flat hm (I.map (algebraMap C (Localization.AtPrime x))), Ideal.map_map, ← IsScalarTower.algebraMap_eq]`. Conclude with `ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv _ _ e.toRingEquiv (hmapI I))`.
+
+Use `⟨key, fun I q hq => ?_⟩` and prove the remaining obligations. Rewrite using `[← key I]`. Establish `hle : I.map (algebraMap C R) ≤ q` using `Ideal.map_le_iff_le_comap.mpr hq`. Conclude with `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hle) (Ideal.Quotient.factor_surjective hle)`.
+-/
 theorem UpperTheory.V.CA.c3c :
     ∀ {C R : Type} [CommRing C] [IsNoetherianRing C] [CommRing R] [Algebra C R] [IsLocalRing R] (x : Ideal C) [x.IsMaximal], IsCplAt x R → (∀ I : Ideal C, ringKrullDim (R ⧸ I.map (algebraMap C R)) = dimAt x I) ∧ ∀ (I : Ideal C) (q : Ideal R), I ≤ q.comap (algebraMap C R) → ringKrullDim (R ⧸ q) ≤ dimAt x I := by
   intro C R _ _ _ _ _ x _ hR

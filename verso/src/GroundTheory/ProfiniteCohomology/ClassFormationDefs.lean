@@ -15,6 +15,9 @@ section ResLE
 
 omit [IsTopologicalGroup G] in
 
+/- English proof (translation)
+The claim follows from `continuous_induced_rng.2 continuous_subtype_val`.
+-/
 theorem continuous_subgroup_inclusion {U V : Subgroup G} (h : V ≤ U) :
     Continuous (Subgroup.inclusion h) :=
   continuous_induced_rng.2 continuous_subtype_val
@@ -27,6 +30,9 @@ def resResHom {U V : Subgroup G} (h : V ≤ U) :
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resResHom_hom_apply {U V : Subgroup G} (h : V ≤ U) (a : A) :
     (resResHom A h).hom a = a :=
   rfl
@@ -37,6 +43,9 @@ noncomputable def cohomologyResLE {U V : Subgroup G} (h : V ≤ U) (n : ℕ) :
     cohomology (Rep.res U.subtype A) n ⟶ cohomology (Rep.res V.subtype A) n :=
   cohomologyMapAlong (Subgroup.inclusion h) (continuous_subgroup_inclusion h) (resResHom A h) n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomologyResLE_eq {U V : Subgroup G} (h : V ≤ U) (n : ℕ) :
     cohomologyResLE A h n = cohomologyMapAlong (Subgroup.inclusion h)
       (continuous_subgroup_inclusion h) (resResHom A h) n :=

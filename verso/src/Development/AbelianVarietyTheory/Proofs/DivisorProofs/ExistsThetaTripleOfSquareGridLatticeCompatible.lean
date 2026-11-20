@@ -36,10 +36,16 @@ namespace GlobalTheory.BigNZ.Tied
 open GlobalTheory.TripleSpaceW (conjSub)
 open GlobalTheory.SkewLat (scLat pairLat)
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.T.exists_embedding_splitPrime_gridLocalTensorPlaces`.
+-/
 theorem tau_choice : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (v : HeightOneSpectrum (𝓞 D.host.F)), (∃ w ∈ locPl G t, w.under (𝓞 D.host.F) = v) →
     ∃ τ : D.host.E →ₐ[D.host.F] Fv D.host.F v, ∀ w ∈ locPl G t, w.under (𝓞 D.host.F) = v → splitPrime τ = w := @GlobalTheory.T.exists_embedding_splitPrime_gridLocalTensorPlaces
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.T.scaledLattice_conj_directSum_trace_selfDual`.
+-/
 theorem dual_conjLat : ∀ {D : D7} (A B : HSp D)
     {ΛA : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)} {ΛB : Submodule (𝓞 D.host.E) (Fin B.rank → D.host.E)},
     IsSelfDualC A ΛA → IsSelfDualC B ΛB → ∀ {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin d) (y : Fin d → D.host.E),
@@ -47,11 +53,33 @@ theorem dual_conjLat : ∀ {D : D7} (A B : HSp D)
       ∀ x ∈ pairLat (scLat D.host.AA ΛA) (conjSub (scLat D.host.AA (conjSub ΛB))) e,
       ∀ o : 𝓞 D.host.E, IsIntegral ℤ (Algebra.trace ℚ D.host.E (o * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram A B e) y x)) := @GlobalTheory.T.scaledLattice_conj_directSum_trace_selfDual
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.T.placesUnder_localData_mem_goodCharacter_ramification`.
+-/
 theorem under_gridLocalTensorPlace_mem_goodThetaCharacterPlaces : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m) (B : Base D.host.F D.host.E) (X : Chars D.host.F D.host.E) (a a' : ℕ),
     X.α = alpha G t i j → X.β = beta G i j → X.IsGood B a a' →
     ∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ∈ X.T := @GlobalTheory.T.placesUnder_localData_mem_goodCharacter_ramification
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W i j B τf hemb`. Establish `hX : (Node.grid ((i : ℕ) + 1) ((j : ℕ) + 1)).InRange D.R.m` using `⟨i.2, j.2⟩`. Establish `hV` using `node_isV G hL hX`. Use `haveI hlat : (conjSub (G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1)))).IsLattice D.host.E := GlobalTheory.TripleSpaceW.conjSub_isLattice hV.sd.1`. Use `choose bas0 hbas0 using fun v : B.P => GlobalTheory.AdelicU.exists_isSplitBasis (B.τ v) (conjSub (G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1)))) (GlobalTheory.AdelicU.isCMExt_host D)`.
+
+Establish `hq : Node.neg D.R.m (.grid ((i : ℕ) + 1) ((j : ℕ) + 1)) = (D.R.m - j - 1) / 2` using `by show (D.R.m - ((j : ℕ) + 1)) / 2 = _`. Rewrite using `[Nat.sub_sub]`. Establish `hherm : ∀ a b, star ((spW G i j).gram b a) = (spW G i j).gram a b` using `fun a b => (spW G i j).herm.eq ((spW G i j).frame b) ((spW G i j).frame a)`. Use `⟨fun v => if h : v ∈ B.P then bas0 ⟨v, h⟩ else 1, ⟨fun a b => ?_, fun w => ?_, hlat, fun y => ?_, fun w => ?_, fun v => ?_⟩⟩` and prove the remaining obligations. Use `show star (((1 : D.host.E) • (spW G i j).gram) b a) = ((1 : D.host.E) • (spW G i j).gram) a b`.
+
+Rewrite using `[one_smul]`. Conclude with `hherm a b`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (((1 : D.host.E) • (spW G i j).gram).map (B.emb w).1) _ _`. Establish `hs` using `hV.sigOK (B.emb w).1`. Rewrite `hs` using `[hV.sig, hq, ← hV.rank]`.
+
+Rewrite using `[one_smul]`. Conclude with `GlobalTheory.TripleSpaceW.hasSig_of_hasSignature hs`. Establish `hσ : ∀ z : D.host.E, D.sp.cm.sig z = star z` using `fun _ => rfl`. Establish `hh' : ∀ a b, star ((spW G i j).gram a b) = (spW G i j).gram b a` using `fun a b => hherm b a`. Establish `key : ∀ x, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig ((1 : D.host.E) • (spW G i j).gram) y x = star (∑ a, ∑ b, star ((star x) a) * (spW G i j).gram a b * (star y) b)` using `fun x => by`.
+
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, one_smul, dotProduct, Matrix.mulVec, star_sum, star_mul', star_star, Pi.star_apply, hσ, hh', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `show star y ∈ G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1)) ↔ _`.
+
+Rewrite using `[hV.sd.2 (star y)]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Rewrite using `[key, ← GlobalTheory.TripleSpaceW.exists_coe_iff]`. Conclude with `h _ hx`.
+
+Introduce `h x' hx'`. Use `h (star x') (by rw [GlobalTheory.TripleSpaceW.mem_conjSub, star_star]; exact hx')` as an intermediate fact. Rewrite `this` using `[key, ← GlobalTheory.TripleSpaceW.exists_coe_iff, star_star]`. Conclude with `this`. Establish `e : ((1 : D.host.E) • (spW G i j).gram).map (B.emb w).1 = (gramAt D (spW G i j) (τf w)).map (starRingEnd ℂ)`.
+
+Use extensionality with `a b`. Simplify using `only [one_smul, Matrix.map_apply, hemb, gramAt]`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (((1 : D.host.E) • (spW G i j).gram).map (B.emb w).1) _`. Rewrite using `[e]`. Conclude with `GlobalTheory.TripleSpaceW.isCartan_map_conj (W.cart_is _ hX (τf w))`.
+
+Use `show GlobalTheory.AdelicU.IsSplitBasis (B.τ v) _ (if h : v.1 ∈ B.P then bas0 ⟨v.1, h⟩ else 1)`. Rewrite using `[dif_pos v.2]`. Conclude with `hbas0 v`.
+-/
 theorem isHerm_conjLat : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (W : G.Weil)
     (i j : Fin D.R.m) (B : Base D.host.F D.host.E) (τf : InfinitePlace D.host.F → D.what₂.Tau),
     (∀ w x, (B.emb w).1 x = conj (tauE D (τf w) x)) →
@@ -114,6 +142,29 @@ theorem isHerm_conjLat : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {
     rw [dif_pos v.2]
     exact hbas0 v
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W i j e B τf hB`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Establish `hrV : Node.InRange D.R.m (.grid (i : ℕ) ((j : ℕ) + 1))` using `⟨by omega, by omega⟩`. Establish `hrV₁ : Node.InRange D.R.m (.grid ((i : ℕ) + 1) (j : ℕ))` using `⟨by omega, by omega⟩`.
+
+Establish `hV` using `GlobalTheory.FunObj.node_isV G hL hrV`. Establish `hV₁` using `GlobalTheory.FunObj.node_isV G hL hrV₁`. Establish `hcm` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm).1`. Establish `hAA : D.host.AA ≠ 0` using `fun h => by`. Use `Formalism.IndefR.Fin.factPrincipalDatum D.R D.host` as an intermediate fact.
+
+Rewrite `this` using `[h, mul_zero, zero_mul, zero_mul]`. Conclude with `zero_ne_one this`. Use `set Λ := pairLat (scLat D.host.AA (G.Λ (.grid (i : ℕ) ((j : ℕ) + 1)))) (conjSub (scLat D.host.AA (conjSub (G.Λ (.grid ((i : ℕ) + 1) (j : ℕ)))))) e with hΛ`. Establish `hlat : Submodule.IsLattice D.host.E Λ` using `GlobalTheory.SkewLat.PairLatLattice.pairLat_isLattice (GlobalTheory.SkewLat.PairLatLattice.scLat_isLattice hAA hV.sd.1) (GlobalTheory.TripleSpaceW.conjSub_isLattice (GlobalTheory.SkewLat.PairLatLattice.scLat_isLattice hAA (GlobalTheory.TripleSpaceW.conjSub_isLattice hV₁.sd.1))) e`. Establish `hex : ∀ v : B.P, ∃ β, GlobalTheory.AdelicU.IsSplitBasis (B.τ v) Λ β` using `fun v => GlobalTheory.AdelicU.exists_isSplitBasis (B.τ v) Λ hcm`.
+
+Use `⟨fun v => if h : v ∈ B.P then (hex ⟨v, h⟩).choose else 1, ?skew, ?sig, hlat, ?dual, ?cartan, ?bas⟩` and prove the remaining obligations. Use `case skew =>`. Introduce `k l`. Take `⟨k, rfl⟩` from `e.surjective k`. Take `⟨l, rfl⟩` from `e.surjective l`.
+
+Establish `hg : ∀ (S : HSp D) (a b : Fin S.rank), star (S.gram a b) = S.gram b a` using `fun S a b => by`. Establish `h1 : S.gramᴴ = S.gram` using `Matrix.ext fun a b => S.herm.eq _ _`. Establish `h2` using `congrFun (congrFun h1 b) a`. Rewrite `h2` using `[Matrix.conjTranspose_apply]`. Then use the resulting hypothesis. Use `show star (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram (spV G i j) (spV₁ G i j) e (e l) (e k)) = -GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram (spV G i j) (spV₁ G i j) e (e k) (e l)`.
+
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram, Matrix.smul_apply, smul_eq_mul, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, star_mul', GlobalTheory.DualPairCheck.s …`. Apply the tactic sequence `rcases k with k | k <;> rcases l with l | l <;>`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.transpose_apply, Matrix.zero_apply, star_zero, mul_zero, neg_zero, hg, neg_mul]`. Use `case sig =>`. Introduce `w`.
+
+Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (Complex.I • (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram (spV G i j) (spV₁ G i j) e).map (B.emb w).1) _ _`. Rewrite using `[GlobalTheory.SkewLat.I_smul_skewGram_map _ _ e (τf w) (B.emb w).1 (hB w)]`. Establish `hA` using `hV.sigOK (tauE D (τf w))`. Establish `hA₁` using `hV₁.sigOK (tauE D (τf w))`. Rewrite `hA` using `[hV.sig]`.
+
+Rewrite `hA₁` using `[hV₁.sig]`. Establish `h` using `GlobalTheory.SkewLat.hasSig_blk e (gramAt D (spV G i j) (τf w)) (gramAt D (spV₁ G i j) (τf w)) (Formalism.L2.Theta.xi_zero_im_pos D (τf w)) hA hA₁`. Establish `hsum` using `h.1`. Establish `hd : Fintype.card (Fin (spV G i j).rank ⊕ Fin (spV₁ G i j).rank) = Fintype.card (Fin ((spW G i j).rank + (spW₁ G i j).rank))` using `Fintype.card_congr e`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at hd`.
+
+Establish `h1` using `hV.rank`. Establish `h2` using `hV₁.rank`. Simplify using `only [Node.rank, Node.neg] at h1 h2 h hsum`. Apply the tactic sequence `convert h using 2 <;> omega`. Use `case dual => exact fun y => dual_conjLat _ _ hV.sd hV₁.sd e y`.
+
+Use `case cartan =>`. Introduce `w`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (Complex.I • (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram (spV G i j) (spV₁ G i j) e).map (B.emb w).1) _`. Rewrite using `[GlobalTheory.SkewLat.I_smul_skewGram_map _ _ e (τf w) (B.emb w).1 (hB w)]`. Conclude with `GlobalTheory.SkewLat.isCartan_blk e _ _ _ _ (Formalism.L2.Theta.xi_zero_im_pos D (τf w)) (W.cart_is _ hrV (τf w)) (W.cart_is _ hrV₁ (τf w))`.
+
+Use `case bas =>`. Introduce `v`. Use `show GlobalTheory.AdelicU.IsSplitBasis (B.τ v) Λ (if h : (v : HeightOneSpectrum (𝓞 D.host.F)) ∈ B.P then (hex ⟨v, h⟩).choose else 1)`. Rewrite using `[dif_pos v.2]`. Conclude with `(hex v).choose_spec`.
+-/
 theorem isSkew_conjLat : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (W : G.Weil)
     (i j : Fin D.R.m) (e : Num G i j) (B : Base D.host.F D.host.E) (τf : InfinitePlace D.host.F → D.what₂.Tau),
     (∀ w x, (B.emb w).1 x = conj (tauE D (τf w) x)) →
@@ -190,6 +241,19 @@ theorem isSkew_conjLat : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {
     rw [dif_pos v.2]
     exact (hex v).choose_spec
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W t i j hst M hM`. Take `⟨S₀, Q, hSQ, hX⟩` from `GlobalTheory.T.squareCharacters_isGood_gridPlaces hL t i j hst`. Use `choose τf hτf using (GlobalTheory.T.exists_conj_tauE_comp_algebraMap_eq_embedding (D := D))`. Take `⟨mα, mβ, hα, hβ, hκ⟩` from `GlobalTheory.T.thetaGridCharacters_archExponents_gap_gt_rank hL t i j hst τf hτf`. Take `⟨v₁, hv₁P, hv₁s, hv₁l, ⟨τ₁⟩⟩` from `GlobalTheory.T.exists_splitCompletely_auxiliary_place_outside_finset (G := G) hL t (S₀ ∪ Q)`.
+
+Use `choose τP hτP using fun v : (S₀ ∪ Q : Finset (HeightOneSpectrum (𝓞 D.host.F))) => tau_choice hL t v.1 (hSQ v v.2).1`. Set `B : Base D.host.F D.host.E` to `⟨W.ψ, fun w => ⟨_, hτf w⟩, mα, mβ, S₀ ∪ Q, τP, v₁, τ₁⟩`. Establish `hB : B.IsGood D.sp.cm.sig` using `GlobalTheory.T.isAdmissibleCMBaseData_of_squareTupleStanding hL W t hst B rfl fun v hv => (hSQ v hv).1`. Establish `hemb : ∀ w x, (B.emb w).1 x = conj (tauE D (τf w) x)` using `fun _ _ => rfl`. Take `⟨e⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.nonempty_num (G := G) (i := i) (j := j) hL (by omega) (by omega)`.
+
+Take `⟨basV, hV⟩` from `isHerm_conjLat hL W i j B τf hemb`. Take `⟨ΛV', basV', hV'⟩` from `GlobalTheory.T.exists_negConj_member_hermitianLatticeSpaceData hL W i j B τf hemb`. Take `⟨basW, hW⟩` from `isSkew_conjLat hL W i j e B τf hemb`. Take `⟨co, vac, dom, hMo⟩` from `GlobalTheory.T.exists_goodSchrodingerModel_conjugateDoubled hL t i j M hM B hB _ _ rfl _ _ _ _ hV hW`. Take `⟨co', vac', dom', hMo'⟩` from `GlobalTheory.T.squareModel_negSpace_goodSchroedinger hL t i j M hM B hB _ _ rfl _ _ _ _ hV' hW`.
+
+Take `⟨om, hom⟩` from `GlobalTheory.T.exists_weilRep_dualPair_characters_beta_quotient hL t i j hst B hB _ _ _ _ _ _ hV hW _ hMo`. Take `⟨om', hom'⟩` from `GlobalTheory.T.exists_weilRep_squarePair_characters_alpha_quotient hL t i j hst B hB _ _ _ _ _ _ hV' hW _ hMo'`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.thetaGridSquare_rank_inequalities (G := G) hL i j`. Establish `hgood` using `hX B subset_rfl hv₁P hv₁s hα hβ`. Use `⟨e, B, ⟨(D.R.m - j - 1) / 2, (D.R.m - j) / 2, _, _, _, Model.mk co vac ((M.ν (.grid ((i : ℕ) + 1) ((j : ℕ) + 1))).map (conjU (spW G i j) (J := (1 : D.host.E) • (spW G i j).gram) 1 rfl)) dom, Model.mk co' vac' ((M.ν (.grid (i : ℕ) (j : ℕ))).map (conjU (spW₁ G i j) (J := (-1 : D.ho …` and prove the remaining obligations.
+
+Conclude with `⟨rfl, rfl, rfl, rfl, fun w => ⟨τf w, fun _ => rfl, rfl, rfl, rfl⟩, rfl, rfl, rfl, rfl⟩`. Conclude with `⟨hB, ⟨h1, h2, hκ, h3, h4, hV, hV', hW, hMo, hMo'⟩, hgood, hom, hom'⟩`. Use `⟨rfl, rfl, fun v => ⟨fun hv => ?_, fun ⟨w, hw, hwv⟩ => ?_⟩, fun v w hw hwv => hτP v w hw hwv⟩` and prove the remaining obligations. Conclude with `(hSQ v (by simpa [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars.T, Finset.mem_union] using hv)).1`. Use `under_gridLocalTensorPlace_mem_goodThetaCharacterPlaces hL t i j B _ _ _ rfl rfl hgood w hw` as an intermediate fact.
+
+Rewrite `this` using `[hwv]`. Then use the resulting hypothesis.
+-/
 theorem squareTriple_tied : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (t : T) (i j : Fin D.R.m), SquareStanding G t → ∀ M : Vol G, M.Is t →
     ∃ (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)
       (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W),

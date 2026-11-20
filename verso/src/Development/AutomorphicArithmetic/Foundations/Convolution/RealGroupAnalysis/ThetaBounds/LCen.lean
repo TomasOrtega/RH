@@ -8,6 +8,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W z`. Use `⟨LinearMap.ext fun φ => Subtype.ext (funext fun v => ?_), nu_scalar z⟩` and prove the remaining obligations. Establish `hη : W.η.1 (ideleNorm F E z)⁻¹ = 1` using `by rw [map_inv, W.η_norm, inv_one]`. Establish `hs : (Matrix.GeneralLinearGroup.scalar (Fin 2) z)⁻¹ = Matrix.GeneralLinearGroup.scalar (Fin 2) z⁻¹` using `(map_inv _ _).symm`. Establish `hv : D.act (Matrix.GeneralLinearGroup.scalar (Fin 2) z)⁻¹ v = fun i => (((ideleNorm F E z)⁻¹ : (A F)ˣ) : A F) * v i`.
+
+Rewrite using `[hs, D.act_scalar, map_inv]`. Both sides reduce to the same expression. Rewrite using `[W.L_apply, W.Om_m, nu_scalar, hv, hη, ab_inv, ab_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.lCen :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), LCen W := by
   intro F E _ _ _ _ _ _ _ D W z

@@ -11,6 +11,9 @@ def EtaleTateTwistCupPairingExistsAndCupUnique : Prop :=
     ∀ μ ν : Pair (res _ (tw q i)) (res _ (tw q j)) (res _ (tw q k)), IsTwPair μ → IsTwPair ν →
       ∀ (E : Spc) {n m w : ℤ} (h : n + m = w), μ.cup E h = ν.cup E h
 
+/- English proof (translation)
+Introduce `q _ i j`. Conclude with `⟨twPair q i j, (htw q i j).1⟩`.
+-/
 theorem t_twpair_ex_of (htw : EtaleTateTwistCupPairingExistsAndCupUnique) : t_twpair_ex := by
   intro q _ i j
   exact ⟨twPair q i j, (htw q i j).1⟩

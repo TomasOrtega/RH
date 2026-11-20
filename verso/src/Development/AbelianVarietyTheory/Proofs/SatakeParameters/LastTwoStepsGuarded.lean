@@ -17,6 +17,9 @@ section Psi
 
 variable {X : Fields} {SB : Finset (HeightOneSpectrum (𝓞 X.E))} {c : LocCst X SB}
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le' (hc.D_pos P)`. Apply the tactic sequence `refine hc.psi_add P a b ?_ ?_ <;> rw [hk, pow_succ, mul_assoc]`. Conclude with `(intAt_pow (intAt_nat _) _).mul ha`. Conclude with `(intAt_pow (intAt_nat _) _).mul hb`.
+-/
 theorem psi_add (hc : c.Ok) (P : SB) {a b : X.E} (ha : IntAt P.1 ((qOf P.1 : X.E) * a)) (hb : IntAt P.1 ((qOf P.1 : X.E) * b)) :
     c.psi P (a + b) = c.psi P a * c.psi P b := by
   obtain ⟨k, hk⟩ := Nat.exists_eq_add_of_le' (hc.D_pos P)
@@ -24,10 +27,18 @@ theorem psi_add (hc : c.Ok) (P : SB) {a b : X.E} (ha : IntAt P.1 ((qOf P.1 : X.E
   · exact (intAt_pow (intAt_nat _) _).mul ha
   · exact (intAt_pow (intAt_nat _) _).mul hb
 
+/- English proof (translation)
+Rewrite using `[psi_add hc P ha ((intAt_nat _).mul hb), hc.psi_int P b hb, mul_one]`.
+-/
 theorem psi_add_int (hc : c.Ok) (P : SB) {a b : X.E} (ha : IntAt P.1 ((qOf P.1 : X.E) * a)) (hb : IntAt P.1 b) :
     c.psi P (a + b) = c.psi P a := by
   rw [psi_add hc P ha ((intAt_nat _).mul hb), hc.psi_int P b hb, mul_one]
 
+/- English proof (translation)
+Establish `h : ∀ k : ℕ, c.psi P a ^ k = c.psi P ((k : X.E) * a)` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, Nat.cast_zero, zero_mul, hc.psi_int P 0 intAt_zero]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, Nat.cast_succ, add_mul, one_mul, psi_add hc P _ ha]`.
+
+Rewrite using `[mul_left_comm]`. Conclude with `(intAt_nat _).mul ha`. Conclude with `mem_Zmu_of_pow (by rw [h, hc.psi_int P _ ha])`.
+-/
 theorem psi_mem (hc : c.Ok) (P : SB) {a : X.E} (ha : IntAt P.1 ((qOf P.1 : X.E) * a)) : c.psi P a ∈ Zmu X.K (qOf P.1) := by
   have h : ∀ k : ℕ, c.psi P a ^ k = c.psi P ((k : X.E) * a) := fun k => by
     induction k with
@@ -44,6 +55,9 @@ section Til
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {N n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Establish `e : (DecoSet.tilH (ST` using `ST) rfl pi d).1 = d.1.til pi := DecoSet.til_val d hT hG`. Rewrite using `[e]`. Conclude with `mem_localization_tilN Q d.1.N v`.
+-/
 theorem mem_tilH (hN : N = n + 1) (d : DecoSet E n ∅ SG) {pi : 𝓞 E} (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal)
     (hG : ∀ w : SG, pi ∉ w.1.asIdeal) (Q : HeightOneSpectrum (𝓞 E)) (v : Sp E N) :
     v ∈ localization₂ Q.asIdeal (DecoSet.tilH (ST := ST) hN pi d).1.N ↔
@@ -53,6 +67,9 @@ theorem mem_tilH (hN : N = n + 1) (d : DecoSet E n ∅ SG) {pi : 𝓞 E} (hT : �
   rw [e]
   exact mem_localization_tilN Q d.1.N v
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Rewrite using `[lamY_zero]`. Both sides reduce to the same expression.
+-/
 theorem comp_funLeft_mem {P : HeightOneSpectrum (𝓞 E)} {a c b : ℕ} (hc : c = 0) (ex : ℕ → ℕ) (B : Submodule (𝓞 E) (Sp E b))
     (x : HomE E a b) :
     x ∘ₗ LinearMap.funLeft E E (Fin.castAdd c) ∈ homS (LocE.lamY P (qOf P) a c ex) B ↔ x ∈ homS (stdAt E a P) B := by
@@ -68,12 +85,24 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
+/- English proof (translation)
+Establish `h : R.N R.m - 1 < R.N R.m` using `(Br.iL (N_m_succ R)).2`. Unfold `atNL`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem atNL_last (v : Sp X.E (R.N R.m)) : atNL X.E (R.N R.m) (R.N R.m - 1) v = v (Br.iL (N_m_succ R)) := by
   have h : R.N R.m - 1 < R.N R.m := (Br.iL (N_m_succ R)).2
   unfold atNL
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Establish `he : IntAt P.1 (epsSg : X.E)` using `by simpa [epsSg] using intAt_neg intAt_one`. Establish `h1 : ∀ η : Sp X.E n →ₗ[X.E] X.E, (∀ i, IntAt P.1 (η (Pi.single i 1))) → IntAt P.1 ((qOf P.1 : X.E) * ((epsSg : X.E) * η y))` using `fun η h => by`. Use `(inDual_iff η).2 h _ hy` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul]`. Rewrite using `[mul_left_comm]`.
+
+Conclude with `he.mul this`. Unfold `ftY`. Simplify using `only [if_pos hP]`. Use `⟨fun η h => (inDual_iff η).2 (ne_of_ite h), fun η z hz => ?_, fun η => ?_⟩` and prove the remaining obligations. Establish `hz'` using `(inDual_iff z).1 hz`.
+
+Use `ite_eq_ite_zero (forall_congr' fun i => intAt_add_q (hz' i)) fun h => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, mul_add, mul_left_comm]`. Conclude with `psi_add_int hc P (h1 η h) (h1 z hz')`. Simplify using `only split_ifs with h`. Conclude with `psi_mem hc P (h1 η h)`.
+
+Conclude with `zero_mem _`.
+-/
 theorem good_ftY (hc : cst.Ok) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) {n : ℕ} {y : Sp X.E n}
     (hy : (qOf P.1 : X.E) • y ∈ stdAt X.E n P.1) :
     Good P.1 {ξ : Sp X.E n →ₗ[X.E] X.E | InDual P.1 ξ} fun η => ftY sel mu cst P η y := by
@@ -96,6 +125,9 @@ theorem good_ftY (hc : cst.Ok) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) {n : 
     · exact psi_mem hc P (h1 η h)
     · exact zero_mem _
 
+/- English proof (translation)
+Use `Good.sum _ fun y hy => (good_ftY sel mu cst hc P hP (mem_stdAt.2 fun i => ?_)).const_mul (hf.2.2 y)` and prove the remaining obligations. Take `⟨k, -, hk⟩` from `Finset.mem_image.1 (Fintype.mem_piFinset.1 hy i)`. Rewrite using `[Pi.smul_apply, ← hk, smul_eq_mul, pow_one, mul_div_cancel₀ _ qOf_ne_zero]`. Conclude with `intAt_nat k`.
+-/
 theorem good_fhat (hc : cst.Ok) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) {n : ℕ} {f : Sp X.E n → X.K} (hf : ColFn P.1 f) :
     Good P.1 {ξ : Sp X.E n →ₗ[X.E] X.E | InDual P.1 ξ} (fhat sel mu cst P f) := by
   classical
@@ -104,6 +136,13 @@ theorem good_fhat (hc : cst.Ok) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) {n :
   rw [Pi.smul_apply, ← hk, smul_eq_mul, pow_one, mul_div_cancel₀ _ qOf_ne_zero]
   exact intAt_nat k
 
+/- English proof (translation)
+Establish `h1 : R.k ≤ R.N (m2 + 1)` using `Nat.le_add_right _ _`. Establish `h3 : R.r + (R.m - 1) * R.t = R.N (m2 + 1) + cOf R (m2 + 1)`. Unfold `Ranks.r Ranks.N cOf`. Rewrite using `[hm, show m2 + 2 - 1 = m2 + 1 from rfl, mul_add (m2 + 1)]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h4 : R.N (m2 + 1) + cOf R (m2 + 1) ≤ R.N R.m - 1 + 0`. Unfold `Ranks.N cOf`. Rewrite using `[hm, show m2 + 2 = m2 + 1 + 1 from rfl, add_mul (m2 + 1)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← lamY_zero fun i => i + 1]`.
+
+Unfold `PhiTop`. Rewrite using `[if_pos hP]`. Use `split_ifs`. Conclude with `good_PhiGS _ _ h1 (by omega) h3 h4`. Conclude with `good_PhiG _ _ h1 (by omega) h3 h4`.
+-/
 theorem good_PhiTop {m2 : ℕ} (hm : R.m = m2 + 2) (sharp : Bool) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vGs) :
     Good P (homS (LocE.lamY P (qOf P) (R.N (m2 + 1)) (cOf R (m2 + 1)) fun i => i + 1) (stdAt X.E (R.N R.m - 1) P))
       (PhiTop Ch mu sharp m2 P) := by
@@ -123,6 +162,15 @@ theorem good_PhiTop {m2 : ℕ} (hm : R.m = m2 + 2) (sharp : Bool) {P : HeightOne
   · exact good_PhiGS _ _ h1 (by omega) h3 h4
   · exact good_PhiG _ _ h1 (by omega) h3 h4
 
+/- English proof (translation)
+Establish `h1 : R.k ≤ R.N m2` using `Nat.le_add_right _ _`. Establish `h2 : R.k ≤ R.N (m2 + 1)` using `Nat.le_add_right _ _`. Establish `h3 : R.r + (m2 + 1 - 1) * R.t = R.N m2 + cOf R m2`. Unfold `Ranks.r Ranks.N cOf`. Rewrite using `[hm, Nat.add_sub_cancel, mul_add m2]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h4 : R.N m2 + cOf R m2 ≤ R.N (m2 + 1) + cOf R (m2 + 1)`. Unfold `Ranks.N cOf`. Rewrite using `[hm, add_mul m2]`. Use linear arithmetic over natural numbers and integers.
+
+Unfold `lamYat at hh`. Rewrite `hh` using `[if_pos hP]`. Use `good_om ?_ _ _ _ hh` and prove the remaining obligations. Unfold `PhiAt`. Rewrite using `[if_pos hP]`.
+
+Use `split_ifs`. Conclude with `good_PhiGS _ _ h1 h2 h3 h4`. Conclude with `good_PhiG _ _ h1 h2 h3 h4`.
+-/
 theorem good_omPhi {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) {hal : AutY X R m2}
     (hh : hal ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) m2 P.1)) :
     Good P.1 (homS (LocE.lamY P.1 (qOf P.1) (R.N m2) (cOf R m2) fun i => i + 1)
@@ -146,14 +194,23 @@ theorem good_omPhi {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu) (hP : P.
   · exact good_PhiGS _ _ h1 h2 h3 h4
   · exact good_PhiG _ _ h1 h2 h3 h4
 
+/- English proof (translation)
+Unfold `cOf`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cOf_pen {m2 : ℕ} (hm : R.m = m2 + 2) : cOf R m2 = 1 := by
   unfold cOf
   omega
 
+/- English proof (translation)
+Unfold `cOf`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cOf_top {m2 : ℕ} (hm : R.m = m2 + 2) : cOf R (m2 + 1) = 0 := by
   unfold cOf
   omega
 
+/- English proof (translation)
+Establish `h` using `good_omPhi Ch sel mu cst hm P hP hh`. Use `⟨fun x hx => ((joinCol_mem (cOf_pen hm) (cOf_top hm) _ _).1 (h.1 _ hx)).1, fun x z hz => ?_, fun x => h.2.2 _⟩` and prove the remaining obligations. Use `h.2.1 (joinCol x y) (joinCol z 0) ((joinCol_mem (cOf_pen hm) (cOf_top hm) _ _).2 ⟨hz, by simp⟩)` as an intermediate fact. Rewrite `this` using `[← joinCol_add, smul_zero, add_zero]`. Conclude with `this`.
+-/
 theorem good_PsiAt {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) {hal : AutY X R m2}
     (hh : hal ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) m2 P.1)) (y : Sp X.E (R.N (m2 + 1))) :
     Good P.1 (homS (stdAt X.E (R.N m2) P.1) (stdAt X.E (R.N (m2 + 1)) P.1)) fun x₀ => PsiAt Ch sel mu cst m2 P hal x₀ y := by
@@ -163,6 +220,11 @@ theorem good_PsiAt {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu) (hP : P.
   rw [← joinCol_add, smul_zero, add_zero] at this
   exact this
 
+/- English proof (translation)
+Establish `h` using `good_omPhi Ch sel mu cst hm P hP hh`. Establish `hq : (qOf P.1 : X.E) ≠ 0` using `qOf_ne_zero`. Use `⟨fun x => by rw [PsiAt, joinCol_restr (cOf_pen hm) (cOf_top hm)], ?_⟩` and prove the remaining obligations. Take `⟨ι, _, a, f, hf, hs⟩` from `exists_split (P := P.1) (PsiAt Ch sel mu cst m2 P hal) (fun x y hx => ((joinCol_mem (cOf_pen hm) (cOf_top hm) _ _).1 (h.1 _ hx)).2) fun x y z hz => by`. Use `h.2.1 (joinCol x y) (joinCol 0 ((qOf P.1 : X.E)⁻¹ • z)) ((joinCol_mem (cOf_pen hm) (cOf_top hm) _ _).2 ⟨fun _ _ => zero_mem _, by rwa [smul_inv_smul₀ hq]⟩)` as an intermediate fact.
+
+Rewrite `this` using `[← joinCol_add, smul_zero, add_zero, smul_inv_smul₀ hq]`. Conclude with `this`. Conclude with `⟨ι, inferInstance, fun i x₀ => PsiAt Ch sel mu cst m2 P hal x₀ (a i), f, fun i => (fnModAt_iff _ _ _).2 (good_PsiAt Ch sel mu cst hm P hP hh _), hf, hs⟩`.
+-/
 theorem splitAt {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) {hal : AutY X R m2}
     (hh : hal ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) m2 P.1)) : SplitAt Ch sel mu cst m2 P hal := by
   have h := good_omPhi Ch sel mu cst hm P hP hh
@@ -177,6 +239,11 @@ theorem splitAt {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu) (hP : P.1 �
   exact ⟨ι, inferInstance, fun i x₀ => PsiAt Ch sel mu cst m2 P hal x₀ (a i), f,
     fun i => (fnModAt_iff _ _ _).2 (good_PsiAt Ch sel mu cst hm P hP hh _), hf, hs⟩
 
+/- English proof (translation)
+Use `(fnModAt_iff _ _ _).2 ((good_PhiTop Ch mu hm cst.sharp hP).mul (good_fhat sel mu cst hc P hP hf) (fun x => prXp X.E R ∘ₗ x ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) (fun x => atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ x) (fun x z => ?_) (fun x z => ?_) fun w => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.add_comp, LinearMap.comp_add, LinearMap.smul_comp, LinearMap.comp_smul]`. Rewrite using `[LinearMap.comp_add, LinearMap.comp_smul]`. Rewrite using `[← LinearMap.comp_assoc, comp_funLeft_mem (cOf_top hm)]`. Establish `key : ∀ v : Sp X.E (R.N R.m), v ∈ stdAt X.E _ P.1 ↔ prXp X.E R v ∈ stdAt X.E (R.N R.m - 1) P.1 ∧ IntAt P.1 (atNL X.E (R.N R.m) (R.N R.m - 1) v)` using `fun v => by`.
+
+Rewrite using `[atNL_last]`. Conclude with `mem_stdAt_succ (N_m_succ R)`. Conclude with `⟨fun h => ⟨fun y hy => ((key _).1 (h y hy)).1, fun y hy => ((key _).1 (h y hy)).2⟩, fun h y hy => (key _).2 ⟨h.1 y hy, h.2 y hy⟩⟩`.
+-/
 theorem fnMod_topDatum (hc : cst.Ok) {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     {f : Sp X.E (R.N (m2 + 1)) → X.K} (hf : ColFn P.1 f) : FnMod P.1 (topDatum Ch sel mu cst m2 P f) := by
   refine (fnModAt_iff _ _ _).2 ((good_PhiTop Ch mu hm cst.sharp hP).mul (good_fhat sel mu cst hc P hP hf)
@@ -192,16 +259,27 @@ theorem fnMod_topDatum (hc : cst.Ok) {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG P
     exact ⟨fun h => ⟨fun y hy => ((key _).1 (h y hy)).1, fun y hy => ((key _).1 (h y hy)).2⟩,
       fun h y hy => (key _).2 ⟨h.1 y hy, h.2 y hy⟩⟩
 
+/- English proof (translation)
+Unfold `frsF`. Rewrite using `[dif_pos hP]`. Conclude with `(liftFr_spec p.deco.2 ⟨P.1, hP⟩).1 x`.
+-/
 theorem frsF_mem {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     (x : Sp X.E (R.N j)) : frsF sel mu p P x ∈ localization₂ P.1.asIdeal p.deco.1.N ↔ x ∈ stdAt X.E (R.N j) P.1 := by
   unfold frsF
   rw [dif_pos hP]
   exact (liftFr_spec p.deco.2 ⟨P.1, hP⟩).1 x
 
+/- English proof (translation)
+Rewrite using `[← frsF_mem sel mu p P hP, LinearEquiv.apply_symm_apply]`.
+-/
 theorem frsF_symm_mem {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     (x : Sp X.E (R.N j)) : (frsF sel mu p P).symm x ∈ stdAt X.E (R.N j) P.1 ↔ x ∈ localization₂ P.1.asIdeal p.deco.1.N := by
   rw [← frsF_mem sel mu p P hP, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use `(fnModAt_iff _ _ _).2 ((good_PsiAt Ch sel mu cst hm P hP hh _).comp (inFr (frsF sel mu p₀ P) (frsF sel mu p P)) (fun x z => ?_) fun w => ⟨fun h y hy => ?_, fun h y hy => ?_⟩)` and prove the remaining obligations. Unfold `inFr`. Rewrite using `[LinearMap.add_comp, LinearMap.comp_add, LinearMap.smul_comp, LinearMap.comp_smul]`. Conclude with `(frsF_symm_mem sel mu p P hP _).2 (h _ ((frsF_mem sel mu p₀ P hP y).2 hy))`. Use `(frsF_symm_mem sel mu p P hP _).1 (h _ ((frsF_symm_mem sel mu p₀ P hP y).2 hy))` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem fnModAt_facPen {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (al : L.β m2)
     (hh : L.h m2 al P ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) m2 P.1)) {u : Pr.Word} (p₀ : ChPt (R := R) sel mu u m2)
@@ -215,6 +293,11 @@ theorem fnModAt_facPen {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu) (hP 
   · have := (frsF_symm_mem sel mu p P hP _).1 (h _ ((frsF_symm_mem sel mu p₀ P hP y).2 hy))
     simpa using this
 
+/- English proof (translation)
+Take `⟨y, hy, hY⟩` from `hY`. Establish `h0 : repY Y ∈ Y` using `Classical.epsilon_spec (p := fun y => y ∈ Y) ⟨y, by rw [hY]; simp⟩`. Generalize the expression as in `repY Y = y' at h0`. Rewrite `h0` using `[hY]`. Establish `h1` using `(mem_locLat _ _ _ _).1 hy P`.
+
+Establish `h2` using `(mem_locLat _ _ _ _).1 h0 P`. Rewrite `h1`, `h2` using `[if_pos hP]`. Simplify using `only [zpow_neg, zpow_one, inv_inv, zpow_zero, inv_one, one_smul] at h1 h2`. Establish `h3` using `add_mem (smul_mem_locP (intAt_nat (qOf P.1)) h2) h1`. Rewrite `h3` using `[← smul_add, sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem q_smul_repY {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Set (Sp X.E n)} (hY : Y ∈ ybSet sel mu cst N)
     (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) : (qOf P.1 : X.E) • repY Y ∈ localization₂ P.1.asIdeal N := by
   obtain ⟨y, hy, hY⟩ := hY
@@ -228,6 +311,17 @@ theorem q_smul_repY {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Set (Sp
   have h3 := add_mem (smul_mem_locP (intAt_nat (qOf P.1)) h2) h1
   rwa [← smul_add, sub_add_cancel] at h3
 
+/- English proof (translation)
+Establish `hy : (qOf P.1 : X.E) • (frsF sel mu p P).symm (repY Y) ∈ stdAt X.E _ P.1`. Rewrite using `[← map_smul, frsF_symm_mem sel mu p P hP]`. Conclude with `q_smul_repY sel mu cst hY P hP`. Use `(fnModAt_iff _ _ _).2 ((good_PhiTop Ch mu hm cst.sharp hP).mul (good_ftY sel mu cst hc P hP hy) (fun x => (d.1.liftFr P).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ x ∘ₗ (frsF sel mu p P).toLinearMap ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) (fun x => (((Pr.piT u : 𝓞 X.E …` and prove the remaining obligations. Simplify using `only [LinearMap.add_comp, LinearMap.comp_add, LinearMap.smul_comp, LinearMap.comp_smul]`.
+
+Rewrite using `[LinearMap.add_comp, LinearMap.comp_add, LinearMap.smul_comp (qOf P.1 : X.E), LinearMap.comp_smul]`. Rewrite using `[← LinearMap.comp_assoc, ← LinearMap.comp_assoc, ← LinearMap.comp_assoc, comp_funLeft_mem (cOf_top hm)]`. Establish `h0 : ((Pr.piT u : 𝓞 X.E) : X.E) ≠ 0` using `fun h => hu P (by`. Rewrite using `[show Pr.piT u = 0 from RingOfIntegers.ext h]`. Conclude with `zero_mem _)`.
+
+Establish `key : ∀ v : Sp X.E (R.N R.m), v ∈ localization₂ P.1.asIdeal (tilQ sel mu u d).1.N ↔ (d.1.liftFr P).symm (prXp X.E R v) ∈ stdAt X.E (R.N R.m - 1) P.1 ∧ IntAt P.1 (((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ * atNL X.E (R.N R.m) (R.N R.m - 1) v)` using `fun v => by`. Rewrite using `[atNL_last, ← (liftFr_spec d.2 P).1, LinearEquiv.apply_symm_apply]`. Use `(mem_tilH (N_m_succ R) d (conj_piT_notMem hPr u) hu P.1 v).trans (and_congr Iff.rfl ⟨fun h => ?_, fun h => ?_⟩)` and prove the remaining obligations. Rewrite using `[inv_mul_eq_div]`. Conclude with `h.div_of_notMem (hu P)`.
+
+Use `(IntAt.coe P.1 (Pr.piT u)).mul h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, show algebraMap (𝓞 X.E) X.E (Pr.piT u) = ((Pr.piT u : 𝓞 X.E) : X.E) from rfl, mul_inv_cancel₀ h0, one_mul]`. Then use the resulting hypothesis. Use `⟨fun h => ⟨fun y hy => ((key _).1 (h _ ((frsF_mem sel mu p P hP y).2 hy))).1, fun y hy => ((key _).1 (h _ ((frsF_mem sel mu p P hP y).2 hy))).2⟩, fun h y hy => ?_⟩` and prove the remaining obligations. Establish `hy'` using `(frsF_symm_mem sel mu p P hP y).2 hy`. Rewrite using `[← (frsF sel mu p P).apply_symm_apply y]`.
+
+Conclude with `(key _).2 ⟨h.1 _ hy', h.2 _ hy'⟩`.
+-/
 theorem fnModAt_facTop (hPr : Pr.Ok) (hc : cst.Ok) {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     {u : Pr.Word} (hu : ∀ w : rowSG Pr sel mu, Pr.piT u ∉ w.1.asIdeal) (p : ChPt (R := R) sel mu u (m2 + 1))
     (d : RowPt Pr R sel mu) {Y : Set (Sp X.E (R.N (m2 + 1)))} (hY : Y ∈ ybSet sel mu cst p.deco.1.N) :
@@ -264,6 +358,9 @@ theorem fnModAt_facTop (hPr : Pr.Ok) (hc : cst.Ok) {m2 : ℕ} (hm : R.m = m2 + 2
 
 end Chain
 
+/- English proof (translation)
+Introduce `_ _ _ Ch sel _ mu cst _ hPr hc hm P hP` and use `⟨fun _ hh => splitAt Ch sel mu cst hm P hP hh, fun _ hf => good_fhat sel mu cst hc P hP hf, fun _ hf => fnMod_topDatum Ch sel mu cst hc hm P hP hf, fun L al hh _ p₀ p Y _ => fnModAt_facPen Ch sel mu cst hm P hP L al hh p₀ p Y, fun _ hu p d _ hY => fnModAt_facTop Ch sel mu cst hPr …`.
+-/
 theorem chainDataGuarded : ChainDataGuarded := fun _ _ _ Ch sel _ mu cst _ hPr hc hm P hP =>
   ⟨fun _ hh => splitAt Ch sel mu cst hm P hP hh, fun _ hf => good_fhat sel mu cst hc P hP hf,
     fun _ hf => fnMod_topDatum Ch sel mu cst hc hm P hP hf,

@@ -29,17 +29,28 @@ namespace GlobalTheory.CompanionTheory.Ar.HcVb
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X}
   {Li : Type} [AddCommGroup Li] [Module Ω Li]
 
+/- English proof (translation)
+Introduce `p _` and use `by obtain ⟨U, hU, b, hb, hf⟩ := h p trivial exact ⟨U, hU, b, hb, fun q _ hq => hf q trivial hq⟩`.
+-/
 theorem isVBOn_of_isVB {L : Lat ξ Li} {r : ℕ} {V : Submodule Ω Li} (h : L.IsVB r V) (T : Set (Cpt ξ)) :
     L.IsVBOn T r V := fun p _ => by
   obtain ⟨U, hU, b, hb, hf⟩ := h p trivial
   exact ⟨U, hU, b, hb, fun q _ hq => hf q trivial hq⟩
 
+/- English proof (translation)
+Use `hN q _ ?_` and prove the remaining obligations. Establish `h : IsIntegral ℤ (σ a)` using `(Algebra.IsIntegral.isIntegral (R := ℤ) a).map σ.toIntAlgHom`. Conclude with `h.tower_top`.
+-/
 theorem integers_regular {F : Type} [Field F] [NumberField F] (hN : Flat.NormalCpt ξ) (σ : 𝓞 F →+* Ω) (q : Cpt ξ)
     (a : 𝓞 F) : σ a ∈ regAt ξ q := by
   refine hN q _ ?_
   have h : IsIntegral ℤ (σ a) := (Algebra.IsIntegral.isIntegral (R := ℤ) a).map σ.toIntAlgHom
   exact h.tower_top
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => exact absurd rfl hn`. Consider the case `one => simpa using Flat.ZUnit.one`. Consider the case `prime p hp => exact h p hp dvd_rfl`. Consider the case `mul a b ha hb`.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `Flat.ZUnit.mul (ha (left_ne_zero_of_mul hn) fun p hp hd => h p hp (hd.mul_right b)) (hb (right_ne_zero_of_mul hn) fun p hp hd => h p hp (hd.mul_left a))`.
+-/
 theorem unitAt_nat {q : Cpt ξ} [CharZero Ω] (n : ℕ) (hn : n ≠ 0)
     (h : ∀ p : ℕ, p.Prime → p ∣ n → unitAt ξ q (p : Ω)) : unitAt ξ q (n : Ω) := by
   induction n using Nat.recOnMul with
@@ -51,12 +62,20 @@ theorem unitAt_nat {q : Cpt ξ} [CharZero Ω] (n : ℕ) (hn : n ≠ 0)
     exact Flat.ZUnit.mul (ha (left_ne_zero_of_mul hn) fun p hp hd => h p hp (hd.mul_right b))
       (hb (right_ne_zero_of_mul hn) fun p hp hd => h p hp (hd.mul_left a))
 
+/- English proof (translation)
+The claim follows from `unitAt_nat _ (Int.natAbs_ne_zero.2 (discr_ne_zero F)) fun p hp hd => h p hp (Int.natCast_dvd.2 hd)`.
+-/
 theorem unitAt_natAbs_discr {F : Type} [Field F] [NumberField F] {q : Cpt ξ} [CharZero Ω]
     (h : ∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr F → unitAt ξ q (p : Ω)) :
     unitAt ξ q (((discr F).natAbs : ℕ) : Ω) :=
   unitAt_nat _ (Int.natAbs_ne_zero.2 (discr_ne_zero F)) fun p hp hd =>
     h p hp (Int.natCast_dvd.2 hd)
 
+/- English proof (translation)
+Establish `hu` using `unitAt_natAbs_discr h`. Break down `Int.natAbs_eq (discr F) with e | e` into its components or cases. Rewrite using `[e]`. Simplify using `using hu`. Rewrite using `[e]`.
+
+Simplify using `only [Int.cast_neg, Int.cast_natCast, Int.natAbs_neg, Int.natAbs_natCast]`. Conclude with `⟨neg_ne_zero.2 hu.1, neg_mem hu.2.1, by rw [inv_neg]; exact neg_mem hu.2.2⟩`.
+-/
 theorem unitAt_discr {F : Type} [Field F] [NumberField F] {q : Cpt ξ} [CharZero Ω]
     (h : ∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr F → unitAt ξ q (p : Ω)) :
     unitAt ξ q ((discr F : ℤ) : Ω) := by
@@ -67,6 +86,9 @@ theorem unitAt_discr {F : Type} [Field F] [NumberField F] {q : Cpt ξ} [CharZero
     simp only [Int.cast_neg, Int.cast_natCast, Int.natAbs_neg, Int.natAbs_natCast]
     exact ⟨neg_ne_zero.2 hu.1, neg_mem hu.2.1, by rw [inv_neg]; exact neg_mem hu.2.2⟩
 
+/- English proof (translation)
+Establish `h` using `Ideal.absNorm_mem (differentIdeal ℤ (𝓞 F))`. Rewrite `h` using `[absNorm_differentIdeal F]`. Then use the resulting hypothesis.
+-/
 theorem natAbs_discr_mem_different (F : Type) [Field F] [NumberField F] :
     (((discr F).natAbs : ℕ) : 𝓞 F) ∈ differentIdeal ℤ (𝓞 F) := by
   have h := Ideal.absNorm_mem (differentIdeal ℤ (𝓞 F))
@@ -74,6 +96,15 @@ theorem natAbs_discr_mem_different (F : Type) [Field F] [NumberField F] :
 
 variable {G : Over X} [GrpObj G]
 
+/- English proof (translation)
+Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv⟩` from `hx`. Use `Submodule.subset_span ⟨v ≫ a, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hv.1`.
+
+Unfold `IsTanAt at h1 ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, h1, ← Over.comp_left]`. Simplify using `[Hom.one_def]`. Rewrite using `[h x, Over.comp_left, hv.2, Over.comp_left]`. Conclude with `Category.assoc _ _ _`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `: A (c • x) = c • A x` using `by show A ((c : Ω) • x) = (c : Ω) • A x`.
+
+Rewrite using `[map_smul]`. Rewrite using `[this]`. Conclude with `(M.lat p).smul_mem c hx`.
+-/
 theorem lat_stable (M : LieModel G ξ Li) (a : G ⟶ G) [IsMonHom a] (A : Li →ₗ[Ω] Li) (h : M.IsDiffOf a A)
     (p : Cpt ξ) (e : Li) (he : e ∈ M.lat p) : A e ∈ M.lat p := by
   induction he using Submodule.span_induction with
@@ -101,6 +132,11 @@ namespace GlobalTheory.CompanionTheory.Ar.HcVb
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
 
+/- English proof (translation)
+Take `⟨PP', cub, sym, adj, prim, n₁, -⟩` from `sabPull Out.proved_CubePullSt ξ t`. Take `⟨n₂, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m n₁`. Rewrite `n₂` using `[hj]`. Take `⟨n₃, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m n₂`. Use `GlobalTheory.T.exists_generic_weil_pairing hW E H D l _ _ _ X _ (GlobalTheory.ModelCompare.objOfSABMap Y.oF n₃) t ξ n₁ Ω (𝟙 _) n hn (by rwa [Category.id_comp]) hζ` as an intermediate fact.
+
+Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem exists_genWeil (hW : Out.WeilSt) {Xo : Moduli D l} {c : Coeff l} (Y : Model Xo c (algebraMap (𝓞 c.F) c.F))
     {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] (ξ : Sp Ω ⟶ X) (f : X ⟶ Y.X) (y₀ : Sp Ω ⟶ Xo.XF c)
     (t : SAB H X) (m : SABMap t Y.t f) (hj : ξ ≫ f = y₀ ≫ Y.j) (n : ℕ) (hn : 1 ≤ n)
@@ -117,6 +153,35 @@ end GlobalTheory.CompanionTheory.Ar.HcVb
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `hW E _ _ _ H D l Xo c Y X Ω _ _ ξ f y₀ t m Li _ _ M ρ cst S R _ hj hs hact hgen hN hSp hdisc htors hζ hVB s`. Establish `hsm : Smooth t.G.hom` using `t.semi.smooth`. Take `⟨hLat, -⟩` from `GlobalTheory.T.lie_omega_lattice_vector_bundle X Ω ξ t.G Li M hgen hsm`. Take `⟨hfd, hrk⟩` from `GlobalTheory.T.eigen_lattice_constant_rank E H D l Xo c Y X Ω ξ f y₀ t m Li M ρ cst hj hs hact`. Take `⟨hinj, hcard⟩` from `GlobalTheory.T.label_embedding_injective E H l c`.
+
+Use `haveI := hfd`. Set `σ : CMType H ⊕ CMType H → (𝓞 E →+* Ω)` to `fun s' => cst.comp (labelEmb c s')`. Establish `hσinj : Function.Injective σ` using `fun a b hab => hinj (RingHom.ext fun x => cst.injective (RingHom.congr_fun hab x))`. Establish `hreg : ∀ (τ : 𝓞 E →+* Ω) (q : Cpt ξ) (a : 𝓞 E), τ a ∈ regAt ξ q` using `fun τ q a => HcVb.integers_regular hN τ q a`. Use `letI : Fintype (CMType H ⊕ CMType H) := Fintype.ofFinite _`.
+
+Establish `hA : (M.eigLat ρ (σ s)).IsVBOn {q | ∀ l ∈ S, ¬ InFibre ξ l q} (labelRk D s) (eigSp ρ (σ s))`. Establish `h` using `(GlobalTheory.T.lattice_eigen_vector_bundle X Ω ξ Li E ρ M.lat {q | ∀ l ∈ S, ¬ InFibre ξ l q} (Module.finrank Ω Li) (CMType H ⊕ CMType H) σ hgen hσinj (by rw [← Nat.card_eq_fintype_card]; exact hcard) (HcVb.isVBOn_of_isVB hLat _) (fun p _ a e he => by haveI := t.act.hom a`. Conclude with `HcVb.lat_stable M (t.act.act a) (ρ a) (hact a) p e he)`. Use the proof step `(fun p _ s' a => hreg _ p a)`. Use the proof step `(fun p hp => HcVb.unitAt_discr fun r hr hd => not_not.1 (hp r (hdisc r hr hd)))).1 s`.
+
+Rewrite `h` using `[hrk s]`. Conclude with `h`. Establish `hDual : ∀ p ∈ S, ∀ (T : Set (Cpt ξ)) (s' : CMType H ⊕ CMType H), (M.htDual t.PP.L (p ^ R p) ρ (σ s')).IsVBOn T (labelRk D s') (eigSp ρ (σ s'))`. Introduce `p hp T s'`. Establish `e : M.htDual t.PP.L (p ^ R p) ρ (σ s') = (M.htOm t.PP.L (p ^ R p)).predualIn (eigSp ρ (σ s'))`.
+
+Use function extensionality and compare the values at `q`. Use extensionality with `v`. Conclude with `M.mem_htDual_iff t.PP.L (p ^ R p) ρ (σ s') q v`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.predual_vector_bundle X Ω ξ Li _ T _ _ (HcVb.isVBOn_of_isVB (hVB p hp s') T)`.
+
+Establish `hB : ∀ p ∈ S, ∀ (T : Set (Cpt ξ)), (htLabel M t.PP.L (p ^ R p) ρ σ s).IsVBOn T (labelRk D s) (eigSp ρ (σ s))`. Introduce `p hp T`. Consider the cases of `s with`. Consider the case `inr τ => exact hDual p hp T (.inr τ)`. Consider the case `inl τ`.
+
+Establish `hσ1 : Function.Injective (σ (.inl τ))`. Introduce `a b hab`. Establish `h1` using `cst.injective hab`. Establish `h2 : τ.1 (a : E) = τ.1 (b : E)` using `congrArg Subtype.val h1`. Conclude with `RingOfIntegers.ext (τ.1.injective h2)`.
+
+Conclude with `GlobalTheory.T.ideal_saturated_vector_bundle X Ω ξ Li (𝓞 E) (σ (.inl τ)) (differentIdeal ℤ (𝓞 E)) _ T _ _ hσ1 differentIdeal_ne_bot (fun q _ a => hreg _ q a) (hDual p hp T (.inl τ))`. Establish `hC : ∀ p ∈ S, ∀ q : Cpt ξ, (∀ l' : ℕ, l'.Prime → ¬ InFibre ξ l' q) → htLabel M t.PP.L (p ^ R p) ρ σ s q = M.eigLat ρ (σ s) q`. Introduce `p hp q hq`. Establish `hpp` using `hSp p hp`. Establish `hn : 1 ≤ p ^ R p` using `Nat.one_le_pow _ _ hpp.pos`.
+
+Take `⟨e, he⟩` from `HcVb.exists_genWeil hW Y ξ f y₀ t m hj (p ^ R p) hn (htors p hp) (hζ p hp)`. Establish `hco` using `GlobalTheory.T.hodge_tate_omega_coherent X Ω ξ hgen hN t.G t.semi t.PP.L (p ^ R p) hn (htors p hp) e he Li M`. Take `⟨h1, h2, -⟩` from `hco.2 q`. Establish `hu : unitAt ξ q ((p ^ R p : ℕ) : Ω)`. Rewrite using `[Nat.cast_pow]`.
+
+Conclude with `Flat.ZUnit.pow (not_not.1 (hq p hpp)) _`. Establish `heq : M.htOm t.PP.L (p ^ R p) q = M.omLat q` using `le_antisymm h2 fun u hu' => by`. Establish `h3` using `(M.htOm t.PP.L (p ^ R p) q).smul_mem (⟨((p ^ R p : ℕ) : Ω)⁻¹, hu.2.2⟩ : regAt ξ q) (h1 u hu')`. Establish `e2 : (⟨((p ^ R p : ℕ) : Ω)⁻¹, hu.2.2⟩ : regAt ξ q) • ((p ^ R p) • u) = u` using `by show ((p ^ R p : ℕ) : Ω)⁻¹ • ((p ^ R p) • u) = u`. Rewrite using `[← Nat.cast_smul_eq_nsmul Ω, inv_smul_smul₀ hu.1]`.
+
+Rewrite `h3` using `[e2]`. Then use the resulting hypothesis. Take `⟨g1, g2⟩` from `GlobalTheory.T.hodge_tate_eigen_lattice_eq X Ω ξ t.G Li M t.PP.L (p ^ R p) (Module.finrank Ω Li) (𝓞 E) ρ (σ s) q (HcVb.isVBOn_of_isVB hLat _) heq`. Break down `s with τ | τ` into its components or cases. Use `g2 _ (fun a => hreg _ q a) ⟨_, HcVb.natAbs_discr_mem_different E, ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast]`.
+
+Conclude with `HcVb.unitAt_natAbs_discr fun r hr _ => not_not.1 (hq r hr)`. Conclude with `g1`. Take `⟨L, hL, hL0, hLp⟩` from `GlobalTheory.T.lattice_glue_over_primes X Ω ξ Li S (M.eigLat ρ (σ s)) (fun p => htLabel M t.PP.L (p ^ R p) ρ σ s) (labelRk D s) (eigSp ρ (σ s)) hgen hSp hA (fun p hp => hB p hp _) hC`. Establish `e : Lat.patch S (M.eigLat ρ (σ s)) (fun p => htLabel M t.PP.L (p ^ R p) ρ σ s) = L`. Use function extensionality and compare the values at `q`.
+
+Distinguish the cases in `h : ∃ p ∈ S, InFibre ξ p q`. Take `⟨p, hp, hq⟩` from `h`. Rewrite using `[Lat.patch_of_unique S _ _ hp hq fun p' hp' h' => inFibre_unique (hSp _ hp) (hSp _ hp') hq h', hLp p hp q hq]`. Establish `h' : ∀ p ∈ S, ¬ InFibre ξ p q` using `fun p hp hf => h ⟨p, hp, hf⟩`. Rewrite using `[Lat.patch_of_not S _ _ h', hL0 q h']`.
+
+Use `show (Lat.patch S (M.eigLat ρ (σ s)) fun p => htLabel M t.PP.L (p ^ R p) ρ σ s).IsVB (labelRk D s) (eigSp ρ (σ s))`. Rewrite using `[e]`. Conclude with `hL`.
+-/
 theorem hodgeLattices_isVB : Out.WeilSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Sp Ω ⟶ X) (f : X ⟶ Y.X) (y₀ : Sp Ω ⟶ Xo.XF c) (t : SAB H X) (m : SABMap t Y.t f) (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel t.G ξ Li) (ρ : 𝓞 E →+* Module.End Ω Li) (cst : c.F →+* Ω) (S : Finset ℕ) (R : ℕ → ℕ) [IsLocallyNoetherian X], ξ ≫ f = y₀ ≫ Y.j → ξ ≫ f ≫ Y.s = spMap (cst.comp (algebraMap (𝓞 c.F) c.F)) → M.IsActOf t.act.act ρ → IsCptGen ξ → Flat.NormalCpt ξ → (∀ p ∈ S, p.Prime) → (∀ p : ℕ, p.Prime → (p : ℤ) ∣ NumberField.discr E → p ∈ S) → (∀ p ∈ S, FullTorsion t.G ξ (p ^ R p)) → (∀ p ∈ S, ∃ ζ : Ω, IsPrimitiveRoot ζ (p ^ R p)) → (∀ p ∈ S, ∀ s, ((M.htOm t.PP.L (p ^ R p)).map (eigSp ρ (cst.comp (labelEmb c s))).dualRestrict).IsVB (labelRk D s) ⊤) → ∀ s, (Lat.patch S (M.eigLat ρ (cst.comp (labelEmb c s))) fun p => htLabel M t.PP.L (p ^ R p) ρ (fun s' => cst.comp (labelEmb c s')) s).IsVB (labelRk D s) (eigSp ρ (cst.comp (labelEmb c s))) := by
   intro hW E _ _ _ H D l Xo c Y X Ω _ _ ξ f y₀ t m Li _ _ M ρ cst S R _ hj hs hact hgen hN hSp hdisc htors hζ hVB s
   classical

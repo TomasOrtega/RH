@@ -20,14 +20,35 @@ namespace GlobalTheory.ThetaSignLat
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_selfDualLattice_semicharacter_vacuum`.
+-/
 theorem semichar_value : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsStdChar D ψ (-1) → IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ b : 𝓞 D.host.E, (b : D.host.E) + star (b : D.host.E) = 1 → ∃ χ : WO S T → ℂ, IsLatVac (heisO ψ S T) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) χ ∧ ∀ l ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True), χ l = ψ (symplOH S T (l.map fun z => incA D (b : D.host.E) * z) l) := GlobalTheory.T.exists_selfDualLattice_semicharacter_vacuum
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.stdChar_finiteAdele_rational_eq_exp_trace`.
+-/
 theorem psi_fin_rat : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ q : D.host.F, ψ (pairA D.host.F 0 (algebraMap D.host.F (Af D.host.F) q)) = Complex.exp (2 * Real.pi * Complex.I * ∑ τ, tauE D τ (q : D.host.E)) := GlobalTheory.T.stdChar_finiteAdele_rational_eq_exp_trace
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cmTrace_eq_add_star`.
+-/
 theorem trace_eq_add_star : ∀ {D : D7} (x : D.host.E), ((Algebra.trace D.host.F D.host.E x : D.host.F) : D.host.E) = x + star x := GlobalTheory.T.cmTrace_eq_add_star
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.rationalHomHermitianTraceForm_self_eq_frame_normSum`.
+-/
 theorem hRat_frame : ∀ {D : D7} (S T : HSp D) (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frT.1 * T.gram * frT.1 = 1 → ∀ v : Matrix (Fin T.rank) (Fin S.rank) D.host.E, GlobalTheory.LatVac.hRat S T v v = ∑ a, ∑ b, star (((frT⁻¹ : GL (Fin T.rank) D.host.E).1 * v * frS.1) a b) * ((frT⁻¹ : GL (Fin T.rank) D.host.E).1 * v * frS.1) a b := GlobalTheory.T.rationalHomHermitianTraceForm_self_eq_frame_normSum
 
+/- English proof (translation)
+Establish `h2 : Complex.exp (2 * (-(Real.pi : ℂ) * Complex.I * t)) = 1`. Rewrite using `[show (2 : ℂ) = ((2 : ℕ) : ℂ) by norm_num, Complex.exp_nat_mul]`. Apply the tactic sequence `rcases h with h | h <;> rw [h] <;> norm_num`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h2`. Establish `hπ : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`.
+
+Establish `: (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `[this, Complex.I_ne_zero]`. Establish `h3 : (2 * (Real.pi : ℂ) * Complex.I) * ((t : ℂ) + n) = 0` using `by linear_combination (-1 : ℂ) * hn`. Establish `h4 : (t : ℂ) = -((n : ℤ) : ℂ)`. Use `(mul_eq_zero.1 h3).resolve_left hπ` as an intermediate fact.
+
+Take the linear combination `this`. Establish `ht : t = ((-n : ℤ) : ℝ)`. Use `push_cast`. Conclude with `h4` after adjusting the coercions. Rewrite using `[ht, round_intCast]`.
+
+Establish `e1 : (-1 : ℂ) ^ (-n) = (-1) ^ n` using `by rw [_root_.zpow_neg, ← _root_.inv_zpow, inv_neg, inv_one]`. Establish `e2 : -(Real.pi : ℂ) * Complex.I * (((-n : ℤ) : ℝ) : ℂ) = n * ((Real.pi : ℂ) * Complex.I)` using `by push_cast; ring`. Rewrite using `[e1, e2, Complex.exp_int_mul, Complex.exp_pi_mul_I]`.
+-/
 theorem sign_of_exp (t : ℝ)
     (h : Complex.exp (-(Real.pi : ℂ) * Complex.I * t) = 1 ∨ Complex.exp (-(Real.pi : ℂ) * Complex.I * t) = -1) :
     (-1 : ℂ) ^ (round t) = Complex.exp (-(Real.pi : ℂ) * Complex.I * t) := by
@@ -51,6 +72,17 @@ theorem sign_of_exp (t : ℝ)
     push_cast; ring
   rw [e1, e2, Complex.exp_int_mul, Complex.exp_pi_mul_I]
 
+/- English proof (translation)
+Take `⟨-, hN1, -⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX.xiR_facts D`. Establish `hN : Ideal.absNorm D.host.ccK ≠ 0`. Introduce `h0`. Rewrite `hN1` using `[h0, Nat.cast_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hN0 : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0` using `by exact_mod_cast hN`. Establish `hsq` using `D.host.sqd_sq`. Establish `hs0 : D.host.sqrtMinusD ≠ 0`. Introduce `h0`. Establish `hd0 : D.host.d ≠ 0`.
+
+Introduce `h`. Use `D.host.hyp.2.2.2.1` as an intermediate fact. Rewrite `this` using `[h]`. Evaluate the numerical expressions using `at this`. Establish `e : (D.host.d : D.host.E) = 0`.
+
+Establish `h' : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E)` using `hsq`. Rewrite `h'` using `[h0]`. Take the linear combination `h'`. Conclude with `hd0 (by exact_mod_cast e)`. Use `⟨hN0, hs0, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show -1 / ((Ideal.absNorm D.host.ccK : D.host.E) * D.host.sqrtMinusD) * D.host.sqrtMinusD = _`. Clear the denominators using the available nonvanishing facts. Use `show star (-1 / ((Ideal.absNorm D.host.ccK : D.host.E) * D.host.sqrtMinusD)) = -(-1 / ((Ideal.absNorm D.host.ccK : D.host.E) * D.host.sqrtMinusD))`. Rewrite using `[star_div₀, star_neg, star_one, star_mul', star_natCast, GlobalTheory.FockCompare.RealChart.star_sqrtMinusD]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem host_facts (D : D7) : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0 ∧ D.host.sqrtMinusD ≠ 0 ∧
     D.host.xi0 * D.host.sqrtMinusD = -1 / (Ideal.absNorm D.host.ccK : D.host.E) ∧ star D.host.xi0 = -D.host.xi0 := by
   obtain ⟨-, hN1, -⟩ := ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX.xiR_facts D
@@ -75,6 +107,15 @@ theorem host_facts (D : D7) : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0 ∧ D.
     rw [star_div₀, star_neg, star_one, star_mul', star_natCast, GlobalTheory.FockCompare.RealChart.star_sqrtMinusD]
     field_simp
 
+/- English proof (translation)
+Take `⟨hN0, hs0, hxs, hxstar⟩` from `host_facts D`. Establish `h2s : star (2 : D.host.E) = 2`. Use `star_natCast (R := D.host.E) 2` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hbs : star b = 1 - b`.
+
+Rewrite using `[hbv, star_div₀, star_add, star_one, h2s, GlobalTheory.FockCompare.RealChart.star_sqrtMinusD]`. Expand and normalize the polynomial expressions, which then agree. Establish `htr : ((Algebra.trace D.host.F D.host.E (D.host.xi0 * (b * n)) : D.host.F) : D.host.E) = -n / (Ideal.absNorm D.host.ccK : D.host.E)`. Rewrite using `[GlobalTheory.ThetaSignLat.trace_eq_add_star, star_mul', star_mul', hxstar, hbs, hns]`. Establish `e : D.host.xi0 * (b * n) + -D.host.xi0 * ((1 - b) * n) = (D.host.xi0 * D.host.sqrtMinusD) * n` using `by rw [hbv]; ring`.
+
+Rewrite using `[e, hxs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : ((1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * (b * n)) : D.host.F) : D.host.E) = ((1 / 2 : D.host.F) : D.host.E) * ((Algebra.trace D.host.F D.host.E (D.host.xi0 * (b * n)) : D.host.F) : D.host.E)` using `rfl`. Establish `h12 : ((1 / 2 : D.host.F) : D.host.E) = 1 / 2`. Rewrite using `[show ((1 / 2 : D.host.F) : D.host.E) = D.host.F.subtype (1 / 2) from rfl, map_div₀, map_one, map_ofNat]`.
+
+Rewrite using `[hc, h12, htr]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem trace_val (n b : D.host.E) (hns : star n = n) (hbv : b = (1 + D.host.sqrtMinusD) / 2) :
     ((1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * (b * n)) : D.host.F) : D.host.E) =
       -n / (2 * (Ideal.absNorm D.host.ccK : D.host.E)) := by
@@ -98,6 +139,9 @@ theorem trace_val (n b : D.host.E) (hns : star n = n) (hbv : b = (1 + D.host.sqr
   rw [hc, h12, htr]
   field_simp
 
+/- English proof (translation)
+Unfold `GlobalTheory.LatVac.hRat`. Simplify using `only [Finset.mul_sum, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+-/
 theorem hRat_smul_left (S T : HSp D) (c : D.host.E) (M N : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     GlobalTheory.LatVac.hRat S T (Matrix.of fun i j => c * M i j) N = c * GlobalTheory.LatVac.hRat S T M N := by
   unfold GlobalTheory.LatVac.hRat
@@ -105,6 +149,9 @@ theorem hRat_smul_left (S T : HSp D) (c : D.host.E) (M N : Matrix (Fin T.rank) (
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ =>
     Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Unfold `GlobalTheory.LatVac.hRat`. Simplify using `only [Matrix.neg_apply, star_neg]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+-/
 theorem hRat_neg_neg (S T : HSp D) (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     GlobalTheory.LatVac.hRat S T (-M) (-M) = GlobalTheory.LatVac.hRat S T M M := by
   unfold GlobalTheory.LatVac.hRat
@@ -112,6 +159,11 @@ theorem hRat_neg_neg (S T : HSp D) (M : Matrix (Fin T.rank) (Fin S.rank) D.host.
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ =>
     Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Establish `hinv : (GlobalTheory.FockPos.frAt frT τ)⁻¹ = (frT⁻¹ : GL (Fin T.rank) D.host.E).1.map (tauE D τ)`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockPos.frAt, ← Matrix.map_mul, Units.inv_mul]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[hinv, Matrix.map_mul, Matrix.map_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coord_entry (S T : HSp D) (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E)
     (v : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (τ : D.what₂.Tau) :
     (GlobalTheory.FockPos.frAt frT τ)⁻¹ * Matrix.of (GlobalTheory.VacUnique.infRat S T v τ) * GlobalTheory.FockPos.frAt frS τ =
@@ -123,6 +175,51 @@ theorem coord_entry (S T : HSp D) (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fi
   rw [hinv, Matrix.map_mul, Matrix.map_mul]
   rfl
 
+/- English proof (translation)
+Introduce `D ψ S T frS frT hS hT hψ δ hδ v hv ε hε`. Use `set L := latO S T (colLat frS : Set (Fin S.rank → D.host.E)) (colLat frT : Set (Fin T.rank → D.host.E)) (fun _ => True) with hL`. Establish `hSd` using `GlobalTheory.FunObj.VecEx.isSelfDualC_colLat S frS hS`. Establish `hTd` using `GlobalTheory.FunObj.VecEx.isSelfDualC_colLat T frT hT`. Use `set u : WO S T := GlobalTheory.VacUnique.finRat S T (-v) with hu`.
+
+Establish `huL : u ∈ L`. Rewrite using `[hu, map_neg]`. Conclude with `L.neg_mem hv`. Establish `hsq` using `D.host.sqd_sq`. Set `b : 𝓞 D.host.E` to `⟨(1 + D.host.sqrtMinusD) / 2, GlobalTheory.NormSum.isIntegral_half_one_add D.host.d D.host.hyp.2.2.2.1 _ hsq⟩`.
+
+Establish `hbv : (b : D.host.E) = (1 + D.host.sqrtMinusD) / 2` using `rfl`. Establish `h2s : star (2 : D.host.E) = 2`. Use `star_natCast (R := D.host.E) 2` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hbs : star (b : D.host.E) = 1 - (b : D.host.E)`.
+
+Rewrite using `[hbv, star_div₀, star_add, star_one, h2s, GlobalTheory.FockCompare.RealChart.star_sqrtMinusD]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : (b : D.host.E) + star (b : D.host.E) = 1` using `by rw [hbs]; ring`. Take `⟨χ, hχ, hval⟩` from `GlobalTheory.ThetaSignLat.semichar_value ψ S T (colLat frS) (colLat frT) hψ hSd hTd b hb`. Take `⟨f1, -, f3, -⟩` from `GlobalTheory.T.homSymplecticHalfForm_algebraic_laws_continuous D S T`.
+
+Establish `hz : ∀ w : WO S T, symplOH S T 0 w = 0` using `fun w => by`. Use `f1 0 0 w` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`. Establish `e1 : ∀ g : WO S T → ℂ, heisO ψ S T u g 0 = g u` using `fun g => by show ψ (symplOH S T 0 u) * g (0 + u) = g u`.
+
+Rewrite using `[hz, AddChar.map_zero_eq_one, one_mul, zero_add]`. Establish `e0 : χ 0 = 1`. Rewrite using `[hval 0 (zero_mem _)]`. Establish `: ((0 : WO S T).map fun z => incA D (b : D.host.E) * z) = 0`. Use function extensionality and compare the values at `i j`.
+
+Conclude with `mul_zero _`. Rewrite using `[this, f3, AddChar.map_zero_eq_one]`. Establish `hεu : ε = χ u`. Use `congrFun (hε χ hχ) 0` as an intermediate fact. Rewrite `this` using `[e1]`.
+
+Rewrite using `[this, Pi.smul_apply, e0, smul_eq_mul, mul_one]`. Establish `hpm : ε = 1 ∨ ε = -1`. Take `⟨ε', h1, h2⟩` from `(GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T (colLat frS) (colLat frT) hψ hSd hTd).2.2 χ hχ u huL`. Use `congrFun (h2 χ hχ) 0` as an intermediate fact. Rewrite `this` using `[e1, Pi.smul_apply, e0, smul_eq_mul, mul_one]`.
+
+Rewrite using `[hεu, this]`. Conclude with `h1`. Use `set Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E := (frT⁻¹ : GL (Fin T.rank) D.host.E).1 * v * frS.1 with hY`. Use `set n : D.host.E := ∑ a, ∑ b, star (Y a b) * Y a b with hn`. Establish `hns : star n = n`.
+
+Rewrite using `[hn, star_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', star_star, mul_comm]`.
+
+Establish `hmap : (u.map fun z => incA D (b : D.host.E) * z) = GlobalTheory.LatVac.finTens 1 (Matrix.of fun i j => (b : D.host.E) * (-v) i j)`. Use function extensionality and compare the values at `i j`. Use `show ((1 : AF D.host.F) ⊗ₜ[D.host.F] (b : D.host.E)) * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] ((-v) i j)) = pairA D.host.F 0 1 ⊗ₜ[D.host.F] ((b : D.host.E) * (-v) i j)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `hu' : u = GlobalTheory.LatVac.finTens 1 (-v)` using `rfl`.
+
+Establish `hs : symplOH S T (u.map fun z => incA D (b : D.host.E) * z) u = pairA D.host.F 0 (algebraMap D.host.F (Af D.host.F) (1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * ((b : D.host.E) * n))))`. Rewrite using `[hmap, hu', symplOH, GlobalTheory.LatVac.symplO_finTens, hRat_smul_left, hRat_neg_neg, GlobalTheory.ThetaSignLat.hRat_frame S T frS frT hS hT v]`. Use `Prod.ext (mul_zero _) ?_` and prove the remaining obligations. Use `show algebraMap D.host.F (Af D.host.F) (1 / 2) * (1 * 1 * _) = _`. Rewrite using `[one_mul, one_mul, ← RingHom.map_mul]`.
+
+Both sides reduce to the same expression. Establish `hq` using `trace_val n (b : D.host.E) hns hbv`. Establish `hχu : χ u = Complex.exp (2 * Real.pi * Complex.I * ∑ τ, tauE D τ ((1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * ((b : D.host.E) * n)) : D.host.F) : D.host.E))`. Rewrite using `[hval u huL, hs, GlobalTheory.ThetaSignLat.psi_fin_rat ψ hψ]`. Take `⟨c, hc⟩ : ∃ c : ℂ, c = ∑ τ, tauE D τ n` from `⟨_, rfl⟩`.
+
+Establish `hsumq : ∑ τ, tauE D τ ((1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * ((b : D.host.E) * n)) : D.host.F) : D.host.E) = -c / (2 * (Ideal.absNorm D.host.ccK : ℂ))`. Establish `: ∀ τ, tauE D τ ((1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * ((b : D.host.E) * n)) : D.host.F) : D.host.E) = -(tauE D τ n) / (2 * (Ideal.absNorm D.host.ccK : ℂ))` using `fun τ => by`. Rewrite using `[hq, map_div₀, map_neg, map_mul, map_natCast, map_ofNat]`. Rewrite using `[Finset.sum_congr rfl fun τ _ => this τ, ← Finset.sum_div, Finset.sum_neg_distrib, hc]`. Establish `hcre : ((c.re : ℝ) : ℂ) = c`.
+
+Establish `: starRingEnd ℂ c = c`. Rewrite using `[hc, map_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.FockCompare.tauE_star, hns]`. Conclude with `Complex.conj_eq_iff_re.1 this`.
+
+Take `⟨hxi, hN1, hd1⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX.xiR_facts D`. Establish `hNC : (Ideal.absNorm D.host.ccK : ℂ) ≠ 0`. Establish `: Ideal.absNorm D.host.ccK ≠ 0`. Introduce `h0`. Rewrite `hN1` using `[h0, Nat.cast_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Establish `hNR : (Ideal.absNorm D.host.ccK : ℝ) ≠ 0` using `by linarith`. Establish `hdR : Real.sqrt D.host.d ≠ 0` using `by linarith`. Establish `hεt : ε = Complex.exp (-(Real.pi : ℂ) * Complex.I * ((c.re / Ideal.absNorm D.host.ccK : ℝ) : ℂ))`.
+
+Rewrite using `[hεu, hχu, hsumq]`. Use `congr 1`. Use `push_cast`. Rewrite using `[hcre]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hX : (fun τ a b => ((GlobalTheory.FockPos.frAt frT τ)⁻¹ * Matrix.of (GlobalTheory.VacUnique.infRat S T v τ) * GlobalTheory.FockPos.frAt frS τ) a b) = fun τ a b => tauE D τ (Y a b)`. Use function extensionality and compare the values at `τ a b`. Rewrite using `[coord_entry]`. Both sides reduce to the same expression. Establish `hsum : (∑ τ, ∑ a, ∑ b, tauE D τ (Y a b) * starRingEnd ℂ (tauE D τ (Y a b))) = c`.
+
+Rewrite using `[hc]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hn, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, GlobalTheory.FockCompare.tauE_star, mul_comm]`. Establish `h0` using `GlobalTheory.RatFinIso.symplOH_ratW_finRat_neg S T v`. Rewrite `h0` using `[← hu]`. Rewrite using `[h0, neg_zero, AddChar.map_zero_eq_one, one_mul, hX, Formalism.MainNotions.TaylorLogMetric.al, GlobalTheory.ThetaLawOF.torusHermitianForm_scaled_coordinate_eq hδ, hsum]`.
+
+Establish `hre : Real.sqrt D.host.d / 2 * (2 * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * c).re = c.re / Ideal.absNorm D.host.ccK`. Rewrite using `[show (2 * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * c) = ((2 * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * c by push_cast; ring, Complex.re_ofReal_mul, hxi]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hre, hεt]`. Conclude with `(GlobalTheory.ThetaSignLat.sign_of_exp _ (by rw [← hεt]; exact hpm)).symm`.
+-/
 theorem sign_eq_alpha : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frT.1 * T.gram * frT.1 = 1 → IsStdChar D ψ (-1) → ∀ δ : ℂ, δ ≠ 0 → ∀ v : Matrix (Fin T.rank) (Fin S.rank) D.host.E, GlobalTheory.VacUnique.finRat S T v ∈ latO S T (colLat frS : Set (Fin S.rank → D.host.E)) (colLat frT : Set (Fin T.rank → D.host.E)) (fun _ => True) → ∀ ε : ℂ, (∀ g : WO S T → ℂ, IsLatVac (heisO ψ S T) (latO S T (colLat frS : Set (Fin S.rank → D.host.E)) (colLat frT : Set (Fin T.rank → D.host.E)) (fun _ => True)) g → heisO ψ S T (GlobalTheory.VacUnique.finRat S T (-v)) g = ε • g) → ψ (-symplOH S T (ratW T S v) (GlobalTheory.VacUnique.finRat S T (-v))) * ε = Formalism.MainNotions.TaylorLogMetric.al D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (δ • (fun τ a b => ((GlobalTheory.FockPos.frAt frT τ)⁻¹ * Matrix.of (GlobalTheory.VacUnique.infRat S T v τ) * GlobalTheory.FockPos.frAt frS τ) a b)) := by
   intro D ψ S T frS frT hS hT hψ δ hδ v hv ε hε
   set L := latO S T (colLat frS : Set (Fin S.rank → D.host.E)) (colLat frT : Set (Fin T.rank → D.host.E))

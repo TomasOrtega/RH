@@ -21,6 +21,21 @@ section Fam
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
   (F : FamilyUnif Xo σ ty) {i : Fin F.n} {P : (F.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (F.Di i) ty P)
 
+/- English proof (translation)
+Establish `key : ∀ a : lat hP (((ε : ℤ) : ℂ) * H.rt0), ∃ a' ∈ lat hP' (((ε : ℤ) : ℂ) * H.rt0), ∀ z : ℂ, U ≫ F.ex i P (f z • P a) = F.ex i' P' (z • P' a')`. Introduce and unpack `⟨a, ha⟩`. Take `⟨φ, -, hφ⟩` from `GlobalTheory.T.exists_cmCurve_hom_of_pureType_vector_anyLevel E H D l Xo σ g ty F h₁ h₂ h₃ C i P hP ε a ha`. Establish `hx : ∀ z w, F.ex i P (f (z + w) • P a) = F.ex i P (f z • P a) * F.ex i P (f w • P a)` using `fun z w => by`. Rewrite using `[ex_congr_type F hP ε ha (hadd z w), add_smul, F.ex_add i P hP]`.
+
+Use `GlobalTheory.T.cmCurveHom_exists_pureTypeVector_anyLevel E H D l Xo σ g ty F h₁ h₂ h₃ C i' P' hP' (io ≫ φ) (fun z => U ≫ F.ex i P (f z • P a)) ε (fun z => ?_) (fun z w => ?_) (fun z => ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, hf, Category.assoc, hφ]`. Both sides reduce to the same expression. Use `show U ≫ _ = (U ≫ _) * (U ≫ _)`. Rewrite using `[hx, MonObj.comp_mul]`.
+
+Use `show U ≫ _ = (U ≫ _) ≫ _`. Rewrite using `[Category.assoc, ← ex_smul F hP, period_w0_smul hP ha, smul_smul]`. Use `congr 1`. Establish `e0 : wC H (0, 1) = (1 + H.rt0) / 2` using `by simp [wC]`. Rewrite `hw` using `[e0]`.
+
+Break down `Int.units_eq_one_or ε with rfl | rfl` into its components or cases. Use `ex_congr_type F hP 1 ha ?_` and prove the remaining obligations. Simplify `hw z` using `[mul_comm]`. Establish `e1` using `hx ((1 + -H.rt0) / 2 * z) ((1 + H.rt0) / 2 * z)`. Rewrite `e1` using `[ex_congr_type F hP _ ha (hw z), ← F.ex_add i P hP, ← add_smul, show (1 + -H.rt0) / 2 * z + (1 + H.rt0) / 2 * z = z by ring]`.
+
+Establish `e2` using `(F.ex_ker i P hP ((f ((1 + -H.rt0) / 2 * z) + (1 + H.rt0) / 2 * f z - f z) • P a)).1 (by`. Establish `e3` using `F.ex_add i P hP ((f ((1 + -H.rt0) / 2 * z) + (1 + H.rt0) / 2 * f z - f z) • P a) (f z • P a)`. Rewrite `e3` using `[← add_smul, sub_add_cancel, ← e1]`. Conclude with `mul_eq_right.1 e3.symm)`. Use `ex_congr F hP ?_` and prove the remaining obligations.
+
+Rewrite using `[← sub_smul]`. Use `e2 using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, neg_one_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `choose Φ hΦ hex using key`.
+
+Use `⟨{ toFun := Φ, map_add' := fun a b => ?_, map_smul' := fun s a => ?_ }, hΦ, fun a z => (hex a z).symm⟩` and prove the remaining obligations. Use `eq_of_ex F hP' fun z => ?_` and prove the remaining obligations. Rewrite using `[map_add, smul_add, F.ex_add i' P' hP', ← hex, ← hex, ← hex, Submodule.coe_add, map_add, smul_add, F.ex_add i P hP, MonObj.comp_mul]`. Use `eq_of_ex F hP' fun z => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, ex_smul F hP', ← hex, ← hex, Submodule.coe_smul, ex_smul F hP, Category.assoc]`.
+-/
 theorem exists_lin (h₁ : 1 ≤ D.p + D.q) (h₂ : σ (baseKA l).ρ = H.rt0) (h₃ : IsTypeFn H D.p D.q ty)
     (C : Curve H) (io : C.P.A.left ⟶ C.P.A.left) {i' : Fin F.n} {P' : (F.Di i').La →+ (Fin g → ℂ)}
     (hP' : IsPeriod (F.Di i') ty P') (U : Over.mk (F.u i' P') ⟶ Over.mk (F.u i P)) (f : ℂ → ℂ)
@@ -71,6 +86,29 @@ theorem exists_lin (h₁ : 1 ≤ D.p + D.q) (h₂ : σ (baseKA l).ρ = H.rt0) (h
 
 end Fam
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ g ty F h₁ h₂ h₃ τ hτ C io hio i P hP i' P' hP' hsp hu`. Take `⟨f, hadd, hw, hon, hact, hf⟩` from `exists_param C τ hτ io hio`. Set `U : Over.mk (F.u i' P') ⟶ Over.mk (F.u i P)` to `Over.homMk (spMap (τ : ℂ →+* ℂ)) hu`. Establish `hU : ∀ x y : Over.mk (F.u i P) ⟶ Xo.univ.t.G, U ≫ x = U ≫ y → x = y` using `fun x y h => Over.OverMorphism.ext (spMap_cancel τ (congrArg (fun m => m.left) h))`. Establish `key : ∀ (ε : ℤˣ) (ρ : ℂ), ((ε : ℤ) : ℂ) * H.rt0 = ρ → ∃ Φ : lat hP ρ →ₗ[𝓞 E] (F.Di i').La, (∀ a, Φ a ∈ lat hP' ρ) ∧ (∀ a, Φ a = 0 → a = 0) ∧ ∀ (n : ℕ) (s : ℤ × ℤ), C.ActsBy τ io n s → ∀ a : lat hP ρ, U ≫ F.ex i P ((n : ℂ)⁻¹ • P a) = F.ex i' P' ((n : ℂ)⁻¹ • wC H s • P' (Φ a))`.
+
+Introduce and unpack `ε _ rfl`. Take `⟨Φ, hΦ, hex⟩` from `exists_lin F hP h₁ h₂ h₃ C io hP' U f hadd hw hf ε`. Use `⟨Φ, hΦ, fun a ha => Subtype.ext (eq_of_ex F hP fun z' => ?_), fun n s hA a => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hon z'`. Rewrite using `[← ex_congr_type F hP ε a.2 hz, ← ex_congr_type F hP ε (Submodule.coe_mem 0) hz]`.
+
+Apply `hU` to reduce the goal to its premises. Rewrite using `[← hex, ← hex, ha, map_zero Φ]`. Rewrite using `[smul_smul, mul_comm (n : ℂ)⁻¹, ← div_eq_mul_inv, hex, ex_congr_type F hP ε a.2 (hact n s hA), one_div]`. Take `⟨Φp, hp, ip, tp⟩` from `key 1 H.rt0 (by simp)`. Take `⟨Φm, hm, im, tm⟩` from `key (-1) (-H.rt0) (by simp)`.
+
+Establish `hc : IsCompl (lat hP H.rt0) (lat hP (-H.rt0))` using `⟨disjoint_lat hP rt0_ne_neg, codisjoint_iff.2 hsp⟩`. Establish `hd` using `Submodule.disjoint_def.1 (disjoint_lat hP (rt0_ne_neg (H := H)))`. Establish `hd'` using `Submodule.disjoint_def.1 (disjoint_lat hP' (rt0_ne_neg (H := H)))`. Establish `hdec : ∀ x, ∃ (a : lat hP H.rt0) (b : lat hP (-H.rt0)), x = a.1 + b.1` using `fun x => by`. Take `⟨a, ha, b, hb, e⟩` from `Submodule.mem_sup.1 ((show lat hP H.rt0 ⊔ lat hP (-H.rt0) = ⊤ from hsp) ▸ Submodule.mem_top (x := x))`.
+
+Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, e.symm⟩`. Establish `hΦ : ∀ (a : lat hP H.rt0) (b : lat hP (-H.rt0)), LinearMap.ofIsCompl hc Φp Φm (a.1 + b.1) = Φp a + Φm b` using `fun a b => by`. Rewrite using `[map_add, LinearMap.ofIsCompl_apply_left, LinearMap.ofIsCompl_apply_right]`. Use `⟨LinearMap.ofIsCompl hc Φp Φm, (injective_iff_map_eq_zero _).2 fun x hx => ?_, fun x => ?_, fun x => ?_, fun n s _ hA a ha b hb => ?_⟩` and prove the remaining obligations. Take `⟨a, b, rfl⟩` from `hdec x`.
+
+Rewrite `hx` using `[hΦ]`. Establish `e : Φp a = 0` using `hd' _ (hp a) (by rw [eq_neg_of_add_eq_zero_left hx]; exact neg_mem (hm b))`. Rewrite `hx` using `[e, zero_add]`. Rewrite using `[ip a e, im b hx]`. Simplify using the standard rewrite rules.
+
+Take `⟨a, b, rfl⟩` from `hdec x`. Rewrite using `[hΦ, Submodule.add_mem_iff_right _ (hp a), Submodule.add_mem_iff_right _ a.2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[im b (hd' _ h (hm b))]`.
+
+Simplify using the standard rewrite rules. Introduce `h`. Rewrite using `[show b = 0 from Subtype.ext (hd _ h b.2)]`. Simplify using the standard rewrite rules. Take `⟨a, b, rfl⟩` from `hdec x`.
+
+Rewrite using `[hΦ, Submodule.add_mem_iff_left _ (hm b), Submodule.add_mem_iff_left _ b.2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[ip a (hd' _ (hp a) h)]`. Simplify using the standard rewrite rules.
+
+Introduce `h`. Rewrite using `[show a = 0 from Subtype.ext (hd _ a.2 h)]`. Simplify using the standard rewrite rules. Establish `e` using `hΦ (wE H s • ⟨a, ha⟩) (H.bar (wE H s) • ⟨b, hb⟩)`. Rewrite `e` using `[map_smul, map_smul]`.
+
+Establish `e' : LinearMap.ofIsCompl hc Φp Φm (wE H s • a + H.bar (wE H s) • b) = _` using `e`. Rewrite using `[e', map_add P', period_wE hP' (hp _), period_bar_wE hP' (hm _), smul_add, F.ex_add i' P' hP', ← tp n s hA, ← tm n s hA, ← MonObj.comp_mul, ← F.ex_add i P hP, ← smul_add, ← map_add]`. Both sides reduce to the same expression.
+-/
 theorem exists_conj_lattice_map : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ ty), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → IsTypeFn H D.p D.q ty → ∀ τ : ℂ ≃+* ℂ, τ H.rt0 = H.rt0 → ∀ (C : Curve H) (io : C.P.A.left ⟶ C.P.A.left), IsGrpPullback C.P.A C.P.A (spMap (τ : ℂ →+* ℂ)) io → ∀ (i : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (F.Di i) ty P), ∀ (i' : Fin F.n) (P' : (F.Di i').La →+ (Fin g → ℂ)) (hP' : IsPeriod (F.Di i') ty P'), IsSplit hP → spMap (τ : ℂ →+* ℂ) ≫ F.u i P = F.u i' P' → ∃ Φ : (F.Di i).La →ₗ[𝓞 E] (F.Di i').La, Function.Injective Φ ∧ (∀ a, Φ a ∈ lat hP' H.rt0 ↔ a ∈ lat hP H.rt0) ∧ (∀ a, Φ a ∈ lat hP' (-H.rt0) ↔ a ∈ lat hP (-H.rt0)) ∧ ∀ (n : ℕ) (s : ℤ × ℤ), 0 < n → C.ActsBy τ io n s → ∀ a ∈ lat hP H.rt0, ∀ b ∈ lat hP (-H.rt0), spMap (τ : ℂ →+* ℂ) ≫ (F.ex i P ((n : ℂ)⁻¹ • P (a + b))).left = (F.ex i' P' ((n : ℂ)⁻¹ • P' (Φ (wE H s • a + H.bar (wE H s) • b)))).left := by
   intro E _ _ _ H D l Xo σ g ty F h₁ h₂ h₃ τ hτ C io hio i P hP i' P' hP' hsp hu
   obtain ⟨f, hadd, hw, hon, hact, hf⟩ := exists_param C τ hτ io hio

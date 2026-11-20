@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Take `⟨e, -, hX⟩` from `GlobalTheory.T.exists_sheafHom_linearMapsSheaf_curry_equiv R J`. Use `haveI : Module.Projective (ULift.{1} R) M := (IsProjective.iff_projective (P := M)).2 ‹_›`. Prove the components needed by the constructor for the conclusion. Introduce `X Y g i _`. Establish `surj : Function.Surjective (Linear.leftComp (ULift.{1} R) J i)` using `fun k => ⟨Injective.factorThru k i, Injective.comp_factorThru k i⟩`.
+
+Take `⟨h', hh'⟩` from `Module.projective_lifting_property _ (e X M g) surj`. Use `⟨(e Y M).symm h', ?_⟩` and prove the remaining obligations. Apply `(e X M).injective` to reduce the goal to its premises. Rewrite using `[hX, Equiv.apply_symm_apply, hh']`.
+-/
 theorem homSh_injective (R : Type) [CommRing R] (J : Shv R) [Injective J] (M : ModuleCat.{1} (ULift.{1} R)) [Projective M] :
     Injective ((homSh J).obj (op M)) := by
   obtain ⟨e, -, hX⟩ := GlobalTheory.T.exists_sheafHom_linearMapsSheaf_curry_equiv R J

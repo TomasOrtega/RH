@@ -24,20 +24,32 @@ namespace GlobalTheory.Dict.DiagFree
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : Data E r}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ}
 
+/- English proof (translation)
+Take `⟨hfg, hdual, s, hs, -, h1, h2⟩` from `h`. Conclude with `⟨hfg, hdual, s, hs, Nat.coprime_one_right s, h1, h2⟩`.
+-/
 theorem vset_one {M : ℕ} {Λ : Lt E n} (h : Λ ∈ Vset E n M) : Λ ∈ Vset E n 1 := by
   obtain ⟨hfg, hdual, s, hs, -, h1, h2⟩ := h
   exact ⟨hfg, hdual, s, hs, Nat.coprime_one_right s, h1, h2⟩
 
+/- English proof (translation)
+Unfold `conjI`. Conclude with `Ideal.span_mono fun _ ⟨b, hb, e⟩ => ⟨b, h hb, e⟩`.
+-/
 theorem conjI_mono {P Q : Ideal (𝓞 E)} (h : P ≤ Q) : conjI P ≤ conjI Q := by
   unfold conjI
   exact Ideal.span_mono fun _ ⟨b, hb, e⟩ => ⟨b, h hb, e⟩
 
+/- English proof (translation)
+Take `⟨R, hR, h1, h2⟩` from `h`. Use `⟨R, hR, fun x hx => h1 x fun h0 => hx ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Simplify using `[h0]`. Simplify using `[h2 x y hy]`.
+-/
 theorem isSB_smul (c : ℂ) {φ : TF n g} (h : IsSB φ) : IsSB (c • φ) := by
   obtain ⟨R, hR, h1, h2⟩ := h
   refine ⟨R, hR, fun x hx => h1 x fun h0 => hx ?_, fun x y hy => ?_⟩
   · simp [h0]
   · simp [h2 x y hy]
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Establish `h0` using `GlobalTheory.SW.UnAct.thA_smul (bas := bas) idx x (0 : ℂ) (0 : TF n g)`. Simplify using `using h0`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, GlobalTheory.SW.UnAct.thA_add idx hs hx (hf a) (GlobalTheory.SW.RecSum.isSB_sum s f hf), ih]`.
+-/
 theorem thA_sum (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) {x : Frame X.Ψ r}
     (hx : x ∈ X.dom) {T : Type} (s : Finset T) (f : T → TF n g) (hf : ∀ i, IsSB (f i)) :
     thA X bas idx (∑ i ∈ s, f i) x = ∑ i ∈ s, thA X bas idx (f i) x := by
@@ -49,6 +61,9 @@ theorem thA_sum (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) {x : Frame 
     rw [Finset.sum_insert ha, Finset.sum_insert ha,
       GlobalTheory.SW.UnAct.thA_add idx hs hx (hf a) (GlobalTheory.SW.RecSum.isSB_sum s f hf), ih]
 
+/- English proof (translation)
+Unfold `unitv projA`. Use `isSB_smul _ (isSB_smul _ ?_)` and prove the remaining obligations. Use `finsum_mem_induction (fun ψ => IsSB ψ) isSB_zero (fun a b ha hb => (isSB_algebra_haar_linear ℚ (Fin n) (Fin g) a b ha hb).1) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `isSB_smul _ ((heisG_laws E r X g bas idx n hs hn).2.2.2 y φ hφ).1`.
+-/
 theorem isSB_unitv_projA (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even n) {w : E}
     (hw : IsIntegral ℤ w) (hw' : w + cc w = 1) {L : Lt E r} (hL : SelfD X L) {Λ : Lt E n}
     (hΛ : Λ ∈ Vset E n 1) {φ : TF n g} (hφ : IsSB φ) :
@@ -60,6 +75,9 @@ theorem isSB_unitv_projA (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (h
   rintro _ ⟨y, -, rfl⟩
   exact isSB_smul _ ((heisG_laws E r X g bas idx n hs hn).2.2.2 y φ hφ).1
 
+/- English proof (translation)
+Rewrite using `[thA_sum idx hs hx s _ (fun i => isSB_smul (a i) (hψ i)), Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SW.UnAct.thA_smul (bas := bas) idx x (a i) (ψ i)]`. Both sides reduce to the same expression.
+-/
 private theorem thA_finset_sum_smul (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) {x : Frame X.Ψ r}
     (hx : x ∈ X.dom) {T : Type} (s : Finset T) (a : T → ℂ) (ψ : T → TF n g)
     (hψ : ∀ i, IsSB (ψ i)) (z : Fin n → Fin g → ℂ) :
@@ -69,6 +87,31 @@ private theorem thA_finset_sum_smul (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSymp
   rw [GlobalTheory.SW.UnAct.thA_smul (bas := bas) idx x (a i) (ψ i)]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g q0 hr bas idx n hs hn D hrn M 𝔐 𝔍 hM hMm hsplit hcop v₀ hv₀ k k' Λ hΛ P hP`. Establish `hle : D.𝔪 ≤ 𝔍`. Rewrite using `[hsplit]`. Conclude with `Ideal.mul_le_inf.trans inf_le_right`. Establish `h𝔍 : 𝔍 ≠ ⊥`.
+
+Introduce `h0`. Apply `D.ne_bot` to reduce the goal to its premises. Rewrite using `[hsplit, h0, Ideal.mul_bot]`. Establish `hMJ : ((M : ℕ) : 𝓞 E) ∈ 𝔍` using `hle hMm`. Establish `hcopJ : IsCoprime 𝔍 (conjI 𝔍)`.
+
+Establish `h1` using `D.cop`. Rewrite `h1`, the goal using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `top_unique (h1.symm.le.trans (sup_le_sup hle (conjI_mono hle)))`. Take `⟨α, 𝔞, hα, hspan, hcopa⟩` from `GlobalTheory.T.exists_cmField_generator_at_primes_dividing E 𝔍 M h𝔍 hM`. Use `set H : Matrix (Fin n) (Fin n) E := Matrix.diagonal (fun k : Fin n => if (k : ℕ) < r then 1 else cc (α : E) / (α : E)) with hHdef`.
+
+Take `⟨hunit, hmove⟩` from `GlobalTheory.T.selfDual_lattice_diagonal_unitary_patched_standard E n r M 𝔍 𝔞 α hM hMJ hcopJ hα hspan hcopa H hHdef`. Take `⟨Λ', hΛ', Λ'', hΛ'', hmv, hle1, hle2⟩` from `hmove Λ hΛ`. Take `⟨t, ht0, ht⟩` from `GlobalTheory.T.sum_moved_vacuum_translates_eq_freeRow_testFunction E r X g bas idx n hs hn D hrn M 𝔐 𝔍 𝔞 α hM hMm hsplit hcop hα hspan hcopa v₀ hv₀ H hHdef Λ hΛ Λ' hΛ' Λ'' hΛ'' hmv hle1 hle2`. Take `⟨t', ht'1, ht'⟩` from `GlobalTheory.T.thetaVacuum_unitary_column_change_unit_factor E r X g bas idx n hs hn D.w D.w_int D.w_tr H hunit Λ (vset_one hΛ) Λ'' hΛ'' hmv`. Take `⟨P', hP', hPd⟩` from `GlobalTheory.T.exists_rowHighest_harmonic_polyDeriv_unitaryAction E r X g q0 hr bas idx n hs hn H hunit k k' P hP`.
+
+Establish `ht'0 : t' ≠ 0`. Introduce `h0`. Rewrite `ht'1` using `[h0, norm_zero]`. Conclude with `zero_ne_one ht'1`. Use `⟨Λ', hΛ', (t / t') • P', Submodule.smul_mem _ _ hP', fun L hL x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hSh : SelfD X (D.sh L)` using `((GlobalTheory.T.level_structure_properties E r X g bas idx n hs hn D hrn).2.2.2.1 L hL).1`. Establish `hv` using `hv₀ L hL`. Establish `hφ` using `isSB_unitv_projA idx hs hn D.w_int D.w_tr hSh (vset_one hΛ) hv.1`. Establish `hφ''` using `isSB_unitv_projA idx hs hn D.w_int D.w_tr hSh hΛ'' hv.1`. Establish `hheis : ∀ (y : Matrix (Fin n) (Fin r) E) (ψ : TF n g), IsSB ψ → IsSB (heisG X bas y ψ)` using `fun y ψ hψ => ((heisG_laws E r X g bas idx n hs hn).2.2.2 y ψ hψ).1`.
+
+Take `⟨s, hs1, hs2⟩` from `ht L hL`. Establish `hphiF : IsSB (phiF bas D 𝔐 hrn v₀ L Λ')`. Establish `h2 : phiF bas D 𝔐 hrn v₀ L Λ' = t⁻¹ • (t • phiF bas D 𝔐 hrn v₀ L Λ')`. Rewrite using `[smul_smul, inv_mul_cancel₀ ht0, one_smul]`. Rewrite using `[h2, ← hs2]`.
+
+Conclude with `isSB_smul _ (GlobalTheory.SW.RecSum.isSB_sum s _ fun y => isSB_smul _ (hheis _ _ hφ''))`. Establish `hDphi : IsSB (D.phi bas hrn v₀ L Λ)`. Rewrite using `[hs1]`. Conclude with `GlobalTheory.SW.RecSum.isSB_sum s _ fun y => isSB_smul _ (hheis _ _ hφ)`. Establish `key : ∀ z, t * thA X bas idx (phiF bas D 𝔐 hrn v₀ L Λ') x (GlobalTheory.Dict.hAct X idx H z) = t' * thA X bas idx (D.phi bas hrn v₀ L Λ) x z`.
+
+Introduce `z`. Establish `e1` using `congrFun (GlobalTheory.SW.UnAct.thA_smul (bas := bas) idx x t (phiF bas D 𝔐 hrn v₀ L Λ')) (GlobalTheory.Dict.hAct X idx H z)`. Rewrite `e1` using `[Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← e1, ← hs2, thA_finset_sum_smul idx hs hx s _ _ (fun y => hheis _ _ hφ''), hs1, thA_finset_sum_smul idx hs hx s _ _ (fun y => hheis _ _ hφ), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.T.theta_heisenberg_unitary_column_change E r X g bas idx n hs hn H hunit _ _ hφ hφ'' t' x hx (fun z => ht' (D.sh L) hSh (v₀ L) hv x hx z) y z]`. Expand and normalize the polynomial expressions, which then agree. Establish `hana` using `(theta_holomorphic_weight E r X g q0 hr bas idx n hs hn k k' _ hphiF P' hP').2.2.2 x hx`. Establish `hdiff` using `ReciprocityTheory.ChartRestriction.G.I2.contDiff_of_diff (GlobalTheory.SW.ThetaHol.differentiable_thA idx hs hDphi hx)`. Establish `hfun : (fun z => thA X bas idx (phiF bas D 𝔐 hrn v₀ L Λ') x (GlobalTheory.Dict.hAct X idx H z)) = (t' / t) • thA X bas idx (D.phi bas hrn v₀ L Λ) x`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `key z`. Unfold `GlobalTheory.SW.thP`.
+
+Rewrite using `[ReciprocityTheory.ChartRestriction.G.I2.polyDeriv_smul, ← hPd _ hana, hfun, ReciprocityTheory.ChartRestriction.G.I2.polyDeriv_smul_fun _ _ hdiff]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem thP_phi_eq_thP_phiF : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ (D : SW.Level X) (hn : r ≤ n) (M : ℕ) (𝔐 𝔍 : Ideal (𝓞 E)), 0 < M → (M : 𝓞 E) ∈ D.𝔪 → D.𝔪 = 𝔐 * 𝔍 → IsCoprime 𝔐 𝔍 → ∀ v₀ : Lt E r → TF n g, (∀ L ∈ D.lats, IsVac X bas D.w (tens (stdL E n) (D.sh L)) (v₀ L)) → ∀ (k : X.Ψ → Fin q0 → ℕ) (k' : X.Ψ → Fin X.p0 → ℕ), ∀ Λ ∈ Vset E n M, ∀ P ∈ Harm.rowHighest ℂ k k', ∃ Λ' ∈ Vset E n M, ∃ P' ∈ Harm.rowHighest ℂ k k', ∀ L ∈ D.lats, ∀ x ∈ X.dom, thP X hr bas idx (D.phi bas hn v₀ L Λ) P x = thP X hr bas idx (phiF bas D 𝔐 hn v₀ L Λ') P' x := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn D hrn M 𝔐 𝔍 hM hMm hsplit hcop v₀ hv₀ k k' Λ hΛ P hP
   have hle : D.𝔪 ≤ 𝔍 := by

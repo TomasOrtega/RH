@@ -13,6 +13,17 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeBumpB
 open scoped GlobalTheory.VacAny
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' hE ei' ev' hL X om om' om₁ om₁' hT hT₁ v l φ hφ`. Establish `hψ : Continuous B.ψ` using `hT.base.std.1`. Establish `hψv : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.SchrSB.continuous_psiAt B.ψ hψ v`. Establish `hne : GlobalTheory.LatVac.psiAt B.ψ v ≠ 1` using `GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hT.base.std v`. Use `haveI := GlobalTheory.LocTateInt.t2Space_Fv_tensor (E := E) v`.
+
+Establish `hU : {t : Fv F v ⊗[F] E | schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M'.co v (GlobalTheory.VanishLoc.uAt H H' v t)) φ = φ} ∈ nhds 0` using `(GlobalTheory.VanishLocCont.tendsto_locCo_uAt G.M' H H' v).eventually (GlobalTheory.SchrSmall.schr_eventually_eq v (GlobalTheory.LatVac.psiAt B.ψ v) hψv φ hφ)`. Establish `hK` using `GlobalTheory.TraceAnnCompact.isCompact_trace_ann v (GlobalTheory.LatVac.psiAt B.ψ v) hψv hne _ hU`. Use `⟨(UpperTheory.unipotent_schwartz_locally_constant F E σ B _ _ _ _ _ _ G.M' H H' hψ v φ hφ).comp (fun f => l (ev' v f)), HasCompactSupport.intro hK fun s hs => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_forall] at hs`. Take `⟨t, ht, hne1⟩` from `hs`.
+
+Establish `h1` using `UpperTheory.local_theta_partition_triple hP F E σ B a b G G₁ H H' hC e' hE ei' ev' hL X om om' om₁ om₁' hT hT₁ v φ hφ t s`. Rewrite `h1` using `[(locOp_rho G.M'.co hψ v (GlobalTheory.VanishLoc.uAt H H' v t) hφ).2, ht]`. Establish `hne2 : GlobalTheory.LatVac.psiAt B.ψ v (-Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (t * s)) ≠ 1`. Introduce `h`. Apply `hne1` to reduce the goal to its premises.
+
+Establish `h3` using `(GlobalTheory.LatVac.psiAt B.ψ v).map_add_eq_mul (-Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (t * s)) (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (t * s))`. Rewrite `h3` using `[neg_add_cancel, AddChar.map_zero_eq_one, h, one_mul]`. Conclude with `h3.symm`. Establish `h2 : (GlobalTheory.LatVac.psiAt B.ψ v (-Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (t * s)) - 1) • evS B G.M' v (ev' v) H H' φ s = 0`. Rewrite using `[sub_smul, ← h1, one_smul, sub_self]`.
+
+Establish `h4` using `(smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hne2)`. Use `show l (evS B G.M' v (ev' v) H H' φ s) = 0`. Rewrite using `[h4, map_zero]`.
+-/
 theorem UpperTheory.local_part_evaluation_config_one :
     GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
                  (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

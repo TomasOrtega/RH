@@ -20,9 +20,37 @@ def intSub (D : D7) (n : ℕ) : Submodule (𝓞 D.host.E) (Fin n → D.host.E) w
     show IsIntegral ℤ ((c : D.host.E) * x k)
     exact (RingOfIntegers.isIntegral_coe c).mul (hx k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_intSub (n : ℕ) : ((intSub D n : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : Set (Fin n → D.host.E)) = intVec D n := rfl
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Use `set cm := Algebra.TensorProduct.comm D.host.F (Formalism.L2.Herm.Af D.host.F) D.host.E`. Establish `mono : ∀ m ∈ Submonoid.closure ((Set.range fun x : Formalism.UG.intOE D.host.E => (x : D.host.E) ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) ∪ Set.range fun y : Formalism.UG.intAd D.host.F => (1 : D.host.E) ⊗ₜ[D.host.F] (y : Formalism.L2.Herm.Af D.host.F)), ∃ x : D.host.E, …`. Introduce `m hm`. Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem m hm`.
+
+Break down `hm with ⟨⟨x, b, rfl⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩` into its components or cases. Conclude with `⟨algebraMap (𝓞 D.host.E) D.host.E b, RingOfIntegers.isIntegral_coe b, 1, one_mem _, rfl⟩`. Conclude with `⟨1, isIntegral_one, y, hy, rfl⟩`. Consider the case `one => exact ⟨1, isIntegral_one, 1, one_mem _, rfl⟩`. Consider the case `mul m m' _ _ h h'`.
+
+Take `⟨x, hx, a, ha, rfl⟩` from `h`. Take `⟨x', hx', a', ha', rfl⟩` from `h'`. Conclude with `⟨x * x', hx.mul hx', a * a', mul_mem ha ha', by rw [Algebra.TensorProduct.tmul_mul_tmul]⟩`. Establish `single : ∀ (i : Fin n) (t : D.host.E ⊗[D.host.F] Formalism.L2.Herm.Af D.host.F), t ∈ Formalism.L2.Herm.intAf D.host.F D.host.E → Pi.single i (cm.symm t) ∈ GlobalTheory.AdLat.hat D.host.F (intVec D n)`. Introduce `i t ht`.
+
+Rewrite `ht` using `[Formalism.L2.Herm.intAf, Formalism.UG.tensInt, Subring.mem_closure_iff]`. Proceed by induction on `ht using AddSubgroup.closure_induction with`. Consider the case `mem m hm`. Take `⟨x, hx, a, ha, rfl⟩` from `mono m hm`. Use `AddSubgroup.subset_closure ⟨a, ha, Pi.single i x, fun k => ?_, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `using hx`. Rewrite using `[Pi.single_eq_of_ne hk]`. Conclude with `isIntegral_zero`.
+
+Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[cm]`. Simplify using `[Pi.single_eq_of_ne hk]`.
+
+Consider the case `zero => simp`. Consider the case `add s t _ _ hs ht => rw [map_add, Pi.single_add]`. Conclude with `add_mem hs ht`. Consider the case `neg s _ hs => rw [map_neg, Pi.single_neg]`. Conclude with `neg_mem hs`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, x, hx, rfl⟩` from `hw`.
+
+Introduce `i`. Establish `: cm (a ⊗ₜ[D.host.F] x i) = (x i ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) * ((1 : D.host.E) ⊗ₜ[D.host.F] a)`. Simplify using `[cm, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[this]`. Use `mul_mem (Subring.subset_closure (Or.inl ⟨⟨x i, ⟨⟨x i, hx i⟩, rfl⟩⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩))` and prove the remaining obligations.
+
+Consider the case `zero => intro i`. Simplify using the standard rewrite rules. Consider the case `add s t _ _ hs ht => intro i`. Rewrite using `[Pi.add_apply, map_add]`. Conclude with `add_mem (hs i) (ht i)`.
+
+Consider the case `neg s _ hs => intro i`. Rewrite using `[Pi.neg_apply, map_neg]`. Conclude with `neg_mem (hs i)`. Introduce `hz`. Rewrite using `[← Finset.univ_sum_single z]`.
+
+Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `single i _ (hz i)`. Rewrite `h1` using `[AlgEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem hat_intVec_iff (D : D7) (n : ℕ) (z : Fin n → GlobalTheory.AdLat.RA D.host.F D.host.E) :
     z ∈ GlobalTheory.AdLat.hat D.host.F (intVec D n) ↔
       ∀ i, Algebra.TensorProduct.comm D.host.F (Formalism.L2.Herm.Af D.host.F) D.host.E (z i) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -80,6 +108,21 @@ theorem hat_intVec_iff (D : D7) (n : ℕ) (z : Fin n → GlobalTheory.AdLat.RA D
     have h1 := single i _ (hz i)
     rwa [AlgEquiv.symm_apply_apply] at h1
 
+/- English proof (translation)
+Establish `es : ∀ y : Fin n → D.host.E, ∑ a, ∑ b, v a * (1 : Matrix (Fin n) (Fin n) D.host.E) a b * GlobalTheory.Member.cF D (y b) = ∑ a, v a * GlobalTheory.Member.cF D (y a)` using `fun y => by`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`. Establish `mem : ∀ x : D.host.E, x ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ↔ IsIntegral ℤ x`. Introduce `x`.
+
+Rewrite using `[FractionalIdeal.mem_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `RingOfIntegers.isIntegral_coe b`. Introduce `hx`.
+
+Conclude with `⟨⟨x, hx⟩, rfl⟩`. Simplify using `only [es, mem]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `hi` using `h (Pi.single i 1) (fun k => by`.
+
+Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `isIntegral_one`. Rewrite using `[Pi.single_eq_of_ne hk]`.
+
+Conclude with `isIntegral_zero)`. Establish `e : ∑ a, v a * GlobalTheory.Member.cF D ((Pi.single i (1 : D.host.E) : Fin n → D.host.E) a) = v i`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Rewrite using `[Pi.single_eq_of_ne hb, map_zero, mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Rewrite `hi` using `[e]`. Conclude with `hi`.
+
+Introduce `hv y hy`. Use `IsIntegral.sum _ fun a _ => (hv a).mul ?_` and prove the remaining obligations. Conclude with `(hy a).map ((GlobalTheory.Member.cF D : D.host.E →+* D.host.E).toIntAlgHom)`.
+-/
 theorem dual_intVec (D : D7) (n : ℕ) (v : Fin n → D.host.E) :
     (∀ y ∈ intVec D n, ∑ a, ∑ b, v a * (1 : Matrix (Fin n) (Fin n) D.host.E) a b * GlobalTheory.Member.cF D (y b) ∈
       (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) ↔ v ∈ intVec D n := by
@@ -111,6 +154,13 @@ theorem dual_intVec (D : D7) (n : ℕ) (v : Fin n → D.host.E) :
     refine IsIntegral.sum _ fun a _ => (hv a).mul ?_
     exact (hy a).map ((GlobalTheory.Member.cF D : D.host.E →+* D.host.E).toIntAlgHom)
 
+/- English proof (translation)
+Set `φ : (Fin n → 𝓞 D.host.E) →ₗ[𝓞 D.host.E] (Fin n → D.host.E)` to `LinearMap.pi fun i => (Algebra.linearMap (𝓞 D.host.E) D.host.E).comp (LinearMap.proj i)`. Establish `e : intSub D n = Submodule.map φ ⊤`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Use `⟨fun i => ⟨x i, hx i⟩, trivial, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Introduce and unpack `⟨y, -, rfl⟩ i`. Conclude with `RingOfIntegers.isIntegral_coe (y i)`.
+
+Rewrite using `[e]`. Conclude with `(Module.Finite.fg_top (R := 𝓞 D.host.E) (M := Fin n → 𝓞 D.host.E)).map φ`.
+-/
 theorem intSub_fg (n : ℕ) : (intSub D n).FG := by
   let φ : (Fin n → 𝓞 D.host.E) →ₗ[𝓞 D.host.E] (Fin n → D.host.E) :=
     LinearMap.pi fun i => (Algebra.linearMap (𝓞 D.host.E) D.host.E).comp (LinearMap.proj i)
@@ -125,6 +175,13 @@ theorem intSub_fg (n : ℕ) : (intSub D n).FG := by
   rw [e]
   exact (Module.Finite.fg_top (R := 𝓞 D.host.E) (M := Fin n → 𝓞 D.host.E)).map φ
 
+/- English proof (translation)
+Use `eq_top_iff.2 ?_` and prove the remaining obligations. Rewrite using `[← (Pi.basisFun D.host.E (Fin n)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩ k`. Rewrite using `[Pi.basisFun_apply]`.
+
+Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `isIntegral_one`. Rewrite using `[Pi.single_eq_of_ne' h]`.
+
+Conclude with `isIntegral_zero`.
+-/
 theorem intSub_span (n : ℕ) : Submodule.span D.host.E (intSub D n : Set (Fin n → D.host.E)) = ⊤ := by
   refine eq_top_iff.2 ?_
   rw [← (Pi.basisFun D.host.E (Fin n)).span_eq]
@@ -137,6 +194,11 @@ theorem intSub_span (n : ℕ) : Submodule.span D.host.E (intSub D n : Set (Fin n
 
 instance intSub_isLattice (n : ℕ) : Submodule.IsLattice D.host.E (intSub D n) := ⟨intSub_fg n, intSub_span n⟩
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (x b) * (1 : Matrix (Fin n) (Fin n) D.host.E) b a * y a = y a * (1 : Matrix (Fin n) (Fin n) D.host.E) a b * star (x b)`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h : a = b`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, Ne.symm h]`.
+-/
 theorem sum_swap_one (n : ℕ) (x y : Fin n → D.host.E) :
     ∑ i, ∑ j, star (x i) * (1 : Matrix (Fin n) (Fin n) D.host.E) i j * y j =
       ∑ a, ∑ b, y a * (1 : Matrix (Fin n) (Fin n) D.host.E) a b * GlobalTheory.Member.cF D (x b) := by
@@ -148,6 +210,9 @@ theorem sum_swap_one (n : ℕ) (x y : Fin n → D.host.E) :
   · subst h; simp; ring
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Use `⟨inferInstance, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hV]`. Rewrite using `[← SetLike.mem_coe, coe_intSub, ← dual_intVec D V.rank y]`. Use `forall_congr' fun x => imp_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[sum_swap_one, FractionalIdeal.mem_one_iff]`.
+-/
 theorem selfDual_int (V : HSp D) (hV : V.gram = 1) : IsSelfDualC V (intSub D V.rank) := by
   refine ⟨inferInstance, fun y => ?_⟩
   rw [hV]
@@ -155,6 +220,15 @@ theorem selfDual_int (V : HSp D) (hV : V.gram = 1) : IsSelfDualC V (intSub D V.r
   refine forall_congr' fun x => imp_congr_right fun _ => ?_
   rw [sum_swap_one, FractionalIdeal.mem_one_iff]
 
+/- English proof (translation)
+Establish `inv : ∀ y, (finHom V g⁻¹).1 *ᵥ ((finHom V g).1 *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec]`. Establish `inv' : ∀ y, (finHom V g).1 *ᵥ ((finHom V g⁻¹).1 *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, map_inv, Units.mul_inv, Matrix.one_mulVec]`. Establish `ent : ∀ (x : Fin V.rank → D.host.E) i, Algebra.TensorProduct.comm D.host.F (Formalism.L2.Herm.Af D.host.F) D.host.E (((finHom V g⁻¹).1 *ᵥ GlobalTheory.AdLat.fv D.host.F x) i) = (finM V rfl g⁻¹ *ᵥ fun j => eToEAf D (x j)) i`.
+
+Introduce `x i`. Simplify using `only [GlobalTheory.AdForm.finM, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.reindex_apply, finCongr_refl, Equiv.refl_symm, Equiv.coe_refl, Matrix.submatrix_id_id]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `x`.
+
+Express the relevant statement in the definitionally equal form `x ∈ N ↔ GlobalTheory.AdLat.fv D.host.F x ∈ (finHom V g).1.mulVec '' _`. Rewrite using `[hN x]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨(finHom V g⁻¹).1 *ᵥ GlobalTheory.AdLat.fv D.host.F x, (hat_intVec_iff D V.rank _).2 fun i => ?_, inv' _⟩` and prove the remaining obligations.
+
+Rewrite using `[ent]`. Conclude with `hx i`. Introduce and unpack `⟨y, hy, hxy⟩ i`. Rewrite using `[← ent, ← hxy, inv]`. Conclude with `(hat_intVec_iff D V.rank y).1 hy i`.
+-/
 theorem latOf_eq (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hN : Moves V rfl g N) :
     (N : Set (Fin V.rank → D.host.E)) = GlobalTheory.AdLat.latOf D.host.F (finHom V g).1 (intVec D V.rank) := by
@@ -182,6 +256,9 @@ theorem latOf_eq (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V.
     rw [← ent, ← hxy, inv]
     exact (hat_intVec_iff D V.rank y).1 hy i
 
+/- English proof (translation)
+Take `⟨Λ, hΛ, hfg, hsp, hhat⟩` from `GlobalTheory.AdLat.exists_lattice_latOf D.host.F D.host.E V.rank (intSub D V.rank) (finHom V g) (intSub_fg _) (intSub_span _)`. Take `rfl : Λ = N` from `SetLike.coe_injective (hΛ.trans (latOf_eq V g N hN).symm)`. Conclude with `⟨hfg, hsp, hhat⟩`.
+-/
 theorem exists_eq_latOf (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hN : Moves V rfl g N) : N.FG ∧ Submodule.span D.host.E (N : Set (Fin V.rank → D.host.E)) = ⊤ ∧
       (GlobalTheory.AdLat.hat D.host.F (N : Set (Fin V.rank → D.host.E)) : Set (Fin V.rank → GlobalTheory.AdLat.RA D.host.F D.host.E)) =
@@ -191,6 +268,11 @@ theorem exists_eq_latOf (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) 
   obtain rfl : Λ = N := SetLike.coe_injective (hΛ.trans (latOf_eq V g N hN).symm)
   exact ⟨hfg, hsp, hhat⟩
 
+/- English proof (translation)
+Take `⟨-, -, hh⟩` from `exists_eq_latOf V g N hN`. Use `⟨fun z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, hh]`. Conclude with `⟨z, hz, rfl⟩`. Rewrite `hz` using `[← SetLike.mem_coe, hh]`.
+
+Take `⟨y, hy, rfl⟩` from `hz`. Rewrite using `[Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `hy`.
+-/
 theorem hat_move (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hN : Moves V rfl g N) :
     (∀ z ∈ GlobalTheory.AdLat.hat D.host.F (intSub D V.rank : Set (Fin V.rank → D.host.E)),
@@ -205,6 +287,13 @@ theorem hat_move (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V.
     rw [Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec]
     exact hy
 
+/- English proof (translation)
+Take `⟨hfg, hsp, -⟩` from `exists_eq_latOf V g N hN`. Use `⟨⟨hfg, hsp⟩, fun y => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, -, c2, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Establish `hU` using `GlobalTheory.RepsCompare.isUnA_gf V (Formalism.IndefR.FWT.fin V g)`. Rewrite `hU` using `[hV, Matrix.transpose_one]`.
+
+Establish `key` using `GlobalTheory.AdLat.latOf_selfDual D.host.F D.host.E V.rank (intSub D V.rank) (GlobalTheory.Member.cF D) 1 1 (finHom V g) (intSub_fg _) (intSub_span _) c2 (fun a b => by`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]) (by simp) one_ne_zero (fun v => dual_intVec D V.rank v) hU`. Rewrite `key` using `[coe_intSub, ← latOf_eq V g N hN]`. Rewrite using `[hV, ← SetLike.mem_coe, ← key y]`. Use `forall_congr' fun x => imp_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[sum_swap_one, FractionalIdeal.mem_one_iff]`.
+-/
 theorem selfDual_move (V : HSp D) (hV : V.gram = 1) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hN : Moves V rfl g N) : IsSelfDualC V N := by
   obtain ⟨hfg, hsp, -⟩ := exists_eq_latOf V g N hN
@@ -225,6 +314,11 @@ theorem selfDual_move (V : HSp D) (hV : V.gram = 1) (g : GA D V) (N : Submodule 
 
 variable {S T : HSp D}
 
+/- English proof (translation)
+Take `⟨h1, k, hk, h2, h3⟩` from `hΨ`. Use `⟨fun t ht => (GlobalTheory.SchrMove.isHalf_actO_iff g h t).1 (h1 _ ht), k, hk, fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[GlobalTheory.SchrMove.actO_add, GlobalTheory.SchrMove.actO_nsmul]`. Conclude with `h2 _ ((hΛ u).1 hu) (GlobalTheory.SplitHecke.isHalf_actO g h hu') _`.
+
+Rewrite using `[hΛ, GlobalTheory.SchrMove.actO_nsmul]`. Conclude with `h3 _ ht`.
+-/
 theorem isSBHalf_comp₂ {e : AE D} {Λ Λ' : AddSubgroup (WO S T)} {g : GA D S} {h : GA D T}
     (hΛ : ∀ u, u ∈ Λ ↔ actO S T g h u ∈ Λ') {Ψ : WO S T → ℂ} (hΨ : IsSBHalf e Λ' Ψ) :
     IsSBHalf e Λ fun t => Ψ (actO S T g h t) := by
@@ -236,6 +330,9 @@ theorem isSBHalf_comp₂ {e : AE D} {Λ Λ' : AddSubgroup (WO S T)} {g : GA D S}
   · rw [hΛ, GlobalTheory.SchrMove.actO_nsmul]
     exact h3 _ ht
 
+/- English proof (translation)
+Unfold `halfInd`. Distinguish the cases in `ht : t ∈ Λ ∧ IsHalf e t`. Rewrite using `[if_pos ht, if_pos ⟨(hΛ t).1 ht.1, GlobalTheory.SplitHecke.isHalf_actO g h ht.2⟩]`. Rewrite using `[if_neg ht, if_neg fun h' => ht ⟨(hΛ t).2 h'.1, (GlobalTheory.SchrMove.isHalf_actO_iff g h t).1 h'.2⟩]`.
+-/
 theorem halfInd_comp₂ {e : AE D} {Λ Λ' : AddSubgroup (WO S T)} {g : GA D S} {h : GA D T}
     (hΛ : ∀ u, u ∈ Λ ↔ actO S T g h u ∈ Λ') (t : WO S T) : halfInd e Λ' (actO S T g h t) = halfInd e Λ t := by
   unfold halfInd
@@ -243,6 +340,15 @@ theorem halfInd_comp₂ {e : AE D} {Λ Λ' : AddSubgroup (WO S T)} {g : GA D S} 
   · rw [if_pos ht, if_pos ⟨(hΛ t).1 ht.1, GlobalTheory.SplitHecke.isHalf_actO g h ht.2⟩]
   · rw [if_neg ht, if_neg fun h' => ht ⟨(hΛ t).2 h'.1, (GlobalTheory.SchrMove.isHalf_actO_iff g h t).1 h'.2⟩]
 
+/- English proof (translation)
+Establish `ev : ∀ Ψ : WO S T → ℂ, (om (g, h) ∘ₗ Tm ∘ₗ LinearMap.funLeft ℂ ℂ (actO S T g h)) Ψ = om (g, h) (Tm fun t => Ψ (actO S T g h t))` using `fun _ => rfl`. Use `⟨fun Ψ hΨ x hx => ?_, fun Ψ hΨ y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `s` using `isSBHalf_comp₂ hΛ hΨ`. Establish `e1` using `hTm.trans _ s _ (GlobalTheory.SplitHecke.isHalf_actO g⁻¹ h⁻¹ hx)`. Establish `e2` using `hW.om_heis g h (actO S T g⁻¹ h⁻¹ x) _ (hth _ s)`.
+
+Rewrite `e2` using `[GlobalTheory.AdelicLatMove.actO_actO_inv]`. Rewrite using `[ev, ev, ← e2, ← e1]`. Simplify using `only [GlobalTheory.SchrMove.actO_add, GlobalTheory.AdelicLatMove.actO_actO_inv]`. Establish `s` using `isSBHalf_comp₂ hΛ hΨ`. Establish `e1` using `hTm.modul _ s _ (GlobalTheory.SplitHecke.isHalf_actO g⁻¹ h⁻¹ hy)`.
+
+Establish `e2` using `hW.om_heis g h (actO S T g⁻¹ h⁻¹ y) _ (hth _ s)`. Rewrite `e2` using `[GlobalTheory.AdelicLatMove.actO_actO_inv]`. Establish `e3 : ∀ t, symplO S T (actO S T g h t) y = symplO S T t (actO S T g⁻¹ h⁻¹ y)` using `fun t => by`. Rewrite using `[← GlobalTheory.SplitHecke.symplO_actO S T g h t, GlobalTheory.AdelicLatMove.actO_actO_inv]`. Rewrite using `[ev, ev, ← e2, ← e1]`.
+
+Simplify using `only [e3]`. Establish `v` using `hTm.vac`. Rewrite `v` using `[one_smul]`. Establish `e1 : (fun t => halfInd a Λ' (actO S T g h t)) = halfInd a Λ` using `funext (halfInd_comp₂ hΛ)`. Rewrite using `[one_smul, ev, e1, v]`.
+-/
 theorem isPlaceModel_move₂ {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) {a : AE D}
     {Λ Λ' : AddSubgroup (WO S T)} {g : GA D S} {h : GA D T} (hΛ : ∀ u, u ∈ Λ ↔ actO S T g h u ∈ Λ')
@@ -277,6 +383,23 @@ end GlobalTheory.SplitMove
 
 namespace GlobalTheory.SplitMove
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hstd μ om hW e SS hSS f₀ Φ f hf₀ _hvac hΦ hf g _hg h _hh N N' hN hN'`. Substitute `hS` using the available equality. Substitute `hT` using the available equality. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self hSS`. Establish `hinf : infPart D e = 0` using `GlobalTheory.PlaceDatum.infPart_idemSum hSS`.
+
+Establish `sdS0` using `selfDual_int S hstd.gS`. Establish `sdT0` using `selfDual_int T hstd.gT`. Establish `sdS1` using `selfDual_move S hstd.gS g N hN`. Establish `sdT1` using `selfDual_move T hstd.gT h N' hN'`. Take `⟨fS, bS⟩` from `hat_move S g N hN`.
+
+Take `⟨fT, bT⟩` from `hat_move T h N' hN'`. Establish `e0 : stdHom S T = latO S T (intSub D S.rank : Set (Fin S.rank → D.host.E)) (intSub D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True` using `rfl`. Establish `e1 : latO S T (latFr S rfl N) (latFr T rfl N') (fun _ => True) = latO S T (N : Set (Fin S.rank → D.host.E)) (N' : Set (Fin T.rank → D.host.E)) fun _ => True` using `rfl`. Rewrite using `[e1]`. Rewrite `hΦ`, `hf` using `[e0]`.
+
+Establish `key : ∀ u, u ∈ latO S T (intSub D S.rank : Set (Fin S.rank → D.host.E)) (intSub D T.rank : Set (Fin T.rank → D.host.E)) (fun _ => True) ↔ actO S T g h u ∈ latO S T (N : Set (Fin S.rank → D.host.E)) (N' : Set (Fin T.rank → D.host.E)) fun _ => True`. Introduce `u`. Use `⟨GlobalTheory.MovedLat.actO_mem S T g h _ _ _ _ fS fT u, fun hu => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.MovedLat.actO_mem S T g⁻¹ h⁻¹ _ _ _ _ bS bT _ hu` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SplitHecke.actO_inv_actO]`. Then use the resulting hypothesis.
+
+Establish `key' : ∀ u, u ∈ latO S T (N : Set (Fin S.rank → D.host.E)) (N' : Set (Fin T.rank → D.host.E)) (fun _ => True) ↔ actO S T g⁻¹ h⁻¹ u ∈ latO S T (intSub D S.rank : Set (Fin S.rank → D.host.E)) (intSub D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True`. Introduce `u`. Use `⟨GlobalTheory.MovedLat.actO_mem S T g⁻¹ h⁻¹ _ _ _ _ bS bT u, fun hu => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.MovedLat.actO_mem S T g h _ _ _ _ fS fT _ hu` as an intermediate fact. Rewrite `this` using `[GlobalTheory.AdelicLatMove.actO_actO_inv]`. Then use the resulting hypothesis.
+
+Establish `omm : ∀ p q (X : WO S T → ℂ), om p (om q X) = om (p * q) X` using `fun p q X => by`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Take `⟨⟨T₀, hT₀⟩, hall⟩` from `hf`. Establish `th0` using `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hstd.std S T _ _ sdS0 sdT0 e hee hinf f₀ hf₀ T₀ hT₀`.
+
+Use `⟨isSBHalf_comp₂ key' hΦ, ⟨_, isPlaceModel_move₂ hW key hT₀ th0⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Establish `th1` using `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hstd.std S T _ _ sdS1 sdT1 e hee hinf _ (hW.om_pres _ _ hf₀) T' hT'`. Establish `pm` using `isPlaceModel_move₂ hW key' hT' th1`. Establish `ev : om (g⁻¹, h⁻¹) (om (g, h) f₀) = f₀`. Rewrite using `[omm, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, Prod.mk_one_one, map_one]`.
+
+Both sides reduce to the same expression. Rewrite `pm` using `[ev]`. Establish `hf' : f = om (g⁻¹, h⁻¹) (T' fun t => Φ (actO S T g⁻¹ h⁻¹ t))` using `hall _ pm`. Rewrite using `[hf', omm, Prod.mk_mul_mk, mul_inv_cancel, mul_inv_cancel, Prod.mk_one_one, map_one]`. Both sides reduce to the same expression.
+-/
 theorem isThetaAt_move : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (μ : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T μ μ om → ∀ e (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ f₀ Φ f, IsThetaFunO ψ S T f₀ → IsLatVac (heisO ψ S T) (stdHom S T) f₀ → IsSBHalf e (stdHom S T) Φ → IsThetaAt ψ (symplO S T) (heisO ψ S T) e (stdHom S T) 1 f₀ Φ f → ∀ g ∈ GfC S, ∀ h ∈ GfC T, ∀ N N', Moves S hS g N → Moves T hT h N' → IsSBHalf e (latO S T (latFr S hS N) (latFr T hT N') fun _ => True) (fun x => Φ (actO S T g⁻¹ h⁻¹ x)) ∧ IsThetaAt ψ (symplO S T) (heisO ψ S T) e (latO S T (latFr S hS N) (latFr T hT N') fun _ => True) 1 (om (g, h) f₀) (fun x => Φ (actO S T g⁻¹ h⁻¹ x)) (om (g, h) f) := by
   intro D ψ θ S T a b hS hT δ sc hstd μ om hW e SS hSS f₀ Φ f hf₀ _hvac hΦ hf g _hg h _hh N N' hN hN'
   subst hS

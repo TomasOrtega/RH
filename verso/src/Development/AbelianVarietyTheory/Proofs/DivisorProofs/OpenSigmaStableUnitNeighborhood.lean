@@ -14,6 +14,11 @@ namespace GlobalTheory.IdeleCongr
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralAdeleProducts.intAE_mul_mem`. Consider the case `exact _root_.GlobalTheory.IntegralAdeleProducts.intAE_mul_mem`. Consider the case `(apply _root_.GlobalTheory.IntegralAdeleProducts.intAE_mul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralAdeleProducts.intAE_mul_mem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.IntegralAdeleProducts.intAE_mul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralAdeleProducts.intAE_mul_mem ..)`.
+-/
 theorem intAE_mul {s t : FiniteAdeleRing (𝓞 F) F ⊗[F] E} (hs : s ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E) (ht : t ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E) : s * t ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E := by
   first
   | exact @_root_.GlobalTheory.IntegralAdeleProducts.intAE_mul_mem
@@ -23,14 +28,25 @@ theorem intAE_mul {s t : FiniteAdeleRing (𝓞 F) F ⊗[F] E} (hs : s ∈ HeckeC
   | (intros; apply @_root_.GlobalTheory.IntegralAdeleProducts.intAE_mul_mem <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.IntegralAdeleProducts.intAE_mul_mem ..)
 
+/- English proof (translation)
+Use `AddSubgroup.subset_closure ⟨1, fun v => ?_, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `one_mem _`. Rewrite using `[Algebra.TensorProduct.one_def]`. Simplify using the standard rewrite rules.
+-/
 theorem intAE_one : (1 : FiniteAdeleRing (𝓞 F) F ⊗[F] E) ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E := by
   refine AddSubgroup.subset_closure ⟨1, fun v => ?_, 1, ?_⟩
   · rw [map_one]; exact one_mem _
   · rw [Algebra.TensorProduct.one_def]; simp
 
+/- English proof (translation)
+Rewrite using `[← nsmul_one]`. Conclude with `nsmul_mem intAE_one m`.
+-/
 theorem intAE_nat (m : ℕ) : (m : FiniteAdeleRing (𝓞 F) F ⊗[F] E) ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E := by
   rw [← nsmul_one]; exact nsmul_mem intAE_one m
 
+/- English proof (translation)
+Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, RingOfIntegers.mapRingHom (σ : E →+* E) x, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem sigR_intAE (σ : E →ₐ[F] E) {z : FiniteAdeleRing (𝓞 F) F ⊗[F] E} (h : z ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E) : HeckeCharacterZeroLocus.ThmBIn.sigR (FiniteAdeleRing (𝓞 F) F) σ z ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E := by
   induction h using AddSubgroup.closure_induction with
   | mem y hy =>
@@ -40,6 +56,9 @@ theorem sigR_intAE (σ : E →ₐ[F] E) {z : FiniteAdeleRing (𝓞 F) F ⊗[F] E
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add x y hx hy => simp only [RingHom.map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+-/
 theorem finPart_cA (σ : E →ₐ[F] E) (y : AdeleRing (𝓞 F) F ⊗[F] E) : HeckeCharacterZeroLocus.ThmBIn.finPart F E (HeckeCharacterZeroLocus.ThmBIn.cA σ y) = HeckeCharacterZeroLocus.ThmBIn.sigR (FiniteAdeleRing (𝓞 F) F) σ (HeckeCharacterZeroLocus.ThmBIn.finPart F E y) := by
   induction y using TensorProduct.induction_on with
   | zero => simp only [RingHom.map_zero]
@@ -50,6 +69,31 @@ end GlobalTheory.IdeleCongr
 
 namespace GlobalTheory.IdeleCongr
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ m hm`. Use `haveI : IsModuleTopology (HeckeCharacterZeroLocus.ThmBIn.AF F) (HeckeCharacterZeroLocus.ThmBIn.AE F E) := ⟨rfl⟩`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (HeckeCharacterZeroLocus.ThmBIn.AE F E) := IsModuleTopology.isTopologicalRing (HeckeCharacterZeroLocus.ThmBIn.AF F) _`. Take `⟨Φ, hΦc, -, hint⟩` from `GlobalTheory.HeckeInhabitant.exists_fin (F := F) (E := E)`.
+
+Establish `hm0 : (m : E) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Set `c : FiniteAdeleRing (𝓞 F) F ⊗[F] E` to `HeckeCharacterZeroLocus.ThmBIn.finPart F E (HeckeCharacterZeroLocus.ThmBIn.incA F E (m : E)⁻¹)`. Establish `hmc : (m : FiniteAdeleRing (𝓞 F) F ⊗[F] E) * c = 1`. Establish `: (m : FiniteAdeleRing (𝓞 F) F ⊗[F] E) = HeckeCharacterZeroLocus.ThmBIn.finPart F E (HeckeCharacterZeroLocus.ThmBIn.incA F E (m : E))`. Rewrite using `[map_natCast, map_natCast]`.
+
+Rewrite using `[this, ← map_mul, ← map_mul, mul_inv_cancel₀ hm0, map_one, map_one]`. Set `C : AdeleRing (𝓞 F) F ⊗[F] E → Prop` to `fun y => (HeckeCharacterZeroLocus.ThmBIn.finPart F E y - 1) * c ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E`. Establish `hdec : ∀ z : FiniteAdeleRing (𝓞 F) F ⊗[F] E, z = 1 + m * ((z - 1) * c)` using `fun z => by`. Take the linear combination `(1 - z) * hmc`. Establish `hint' : ∀ y, C y → HeckeCharacterZeroLocus.ThmBIn.finPart F E y ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E` using `fun y hy => by`.
+
+Rewrite using `[hdec (HeckeCharacterZeroLocus.ThmBIn.finPart F E y)]`. Conclude with `add_mem intAE_one (intAE_mul (intAE_nat m) hy)`. Establish `hCmul : ∀ y z, C y → C z → C (y * z)` using `fun y z hy hz => by`. Establish `e : (HeckeCharacterZeroLocus.ThmBIn.finPart F E (y * z) - 1) * c = HeckeCharacterZeroLocus.ThmBIn.finPart F E y * ((HeckeCharacterZeroLocus.ThmBIn.finPart F E z - 1) * c) + (HeckeCharacterZeroLocus.ThmBIn.finPart F E y - 1) * c`. Rewrite using `[map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show _ ∈ _`. Rewrite using `[e]`. Conclude with `add_mem (intAE_mul (hint' y hy) hz) hy`. Establish `hC1 : C 1` using `by show _ ∈ _`.
+
+Rewrite using `[map_one, sub_self, zero_mul]`. Conclude with `zero_mem _`. Set `U : Subgroup (AdeleRing (𝓞 F) F ⊗[F] E)ˣ` to `{ carrier := {x | C x ∧ C ((x⁻¹ : (AdeleRing (𝓞 F) F ⊗[F] E)ˣ) : AdeleRing (𝓞 F) F ⊗[F] E)} one_mem' := ⟨by rw [Units.val_one]; exact hC1, by rw [inv_one, Units.val_one]; exact hC1⟩ mul_mem' := fun {x y} hx hy => ⟨by rw [Units.val_mul]; exact hCmul _ _ hx.1 hy.1, by rw [mul_inv_r …`. Establish `hO : IsOpen {a : FiniteAdeleRing (𝓞 E) E | ∀ v, a v ∈ v.adicCompletionIntegers E}` using `RestrictedProduct.isOpen_forall_mem fun v => Valued.isOpen_valuationSubring _`. Establish `hcont : Continuous fun y : AdeleRing (𝓞 F) F ⊗[F] E => (y - 1) * HeckeCharacterZeroLocus.ThmBIn.incA F E (m : E)⁻¹` using `(continuous_id.sub continuous_const).mul continuous_const`.
+
+Establish `hCo : IsOpen {y | C y}`. Establish `h1 : IsOpen {y : AdeleRing (𝓞 F) F ⊗[F] E | ∀ P, Valued.v (Φ ((y - 1) * HeckeCharacterZeroLocus.ThmBIn.incA F E (m : E)⁻¹) P) ≤ 1}` using `(hO.preimage hΦc).preimage hcont`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Rewrite using `[← hint, map_mul, map_sub, map_one]`. Establish `hσ : ∀ y, (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) σ) y = HeckeCharacterZeroLocus.ThmBIn.cA σ y` using `fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Consider the case `tmul a x => rfl`. Establish `hsc : HeckeCharacterZeroLocus.ThmBIn.sigR (FiniteAdeleRing (𝓞 F) F) σ c = c`. Express the relevant statement in the definitionally equal form `HeckeCharacterZeroLocus.ThmBIn.sigR (FiniteAdeleRing (𝓞 F) F) σ (HeckeCharacterZeroLocus.ThmBIn.finPart F E (HeckeCharacterZeroLocus.ThmBIn.incA F E (m : E)⁻¹)) = _`. Rewrite using `[← finPart_cA, GlobalTheory.HeckeInhabitant.cA_inc, map_inv₀, map_natCast]`. Establish `hCσ : ∀ y, C y → C (HeckeCharacterZeroLocus.ThmBIn.cA σ y)` using `fun y hy => by show _ ∈ _`.
+
+Rewrite using `[finPart_cA, ← hsc, ← map_one (HeckeCharacterZeroLocus.ThmBIn.sigR (FiniteAdeleRing (𝓞 F) F) σ), ← map_sub, ← map_mul]`. Conclude with `sigR_intAE σ hy`. Use `⟨U, ?_, fun x hx => ⟨?_, ?_⟩, fun x hx => ⟨_, hx.1, hdec _⟩⟩` and prove the remaining obligations. Conclude with `(hCo.preimage Units.continuous_val).inter (hCo.preimage Units.continuous_coe_inv)`. Express the relevant statement in the definitionally equal form `C ((Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) σ) (x : AdeleRing (𝓞 F) F ⊗[F] E))`.
+
+Rewrite using `[hσ]`. Conclude with `hCσ _ hx.1`. Rewrite using `[← map_inv]`. Express the relevant statement in the definitionally equal form `C ((Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) σ) ((x⁻¹ : (AdeleRing (𝓞 F) F ⊗[F] E)ˣ) : AdeleRing (𝓞 F) F ⊗[F] E))`. Rewrite using `[hσ]`.
+
+Conclude with `hCσ _ hx.2`.
+-/
 theorem exists_open_congruence_subgroup : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (m : ℕ), 0 < m → ∃ U : Subgroup (AdeleRing (𝓞 F) F ⊗[F] E)ˣ, IsOpen (U : Set (AdeleRing (𝓞 F) F ⊗[F] E)ˣ) ∧
       (∀ x ∈ U, Units.map (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) σ).toRingHom.toMonoidHom x ∈ U) ∧

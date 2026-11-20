@@ -16,6 +16,9 @@ def t8C (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) {j : ℕ} (b : Fin j �
     Matrix (Fin I.n) (Fin j) ℂ :=
   (uMat (x.1 v)⁻¹ * (I.P v)⁻¹) * (Matrix.of fun i k => b k i).map (I.φ v)
 
+/- English proof (translation)
+Unfold `coordV t8C`. Establish `hw : (fun i => I.φ v ((∑ k, a k • b k) i)) = (Matrix.of fun i k => b k i).map (I.φ v) *ᵥ fun k => I.φ v (a k)`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, map_sum, mul_comm]`. Rewrite using `[hw, Matrix.mulVec_mulVec]`.
+-/
 theorem coord_linear_comb (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) {j : ℕ}
     (b : Fin j → Fin I.n → I.E) (a : Fin j → I.E) :
     coordV I x v (∑ k, a k • b k) = t8C I x v b *ᵥ fun k => I.φ v (a k) := by
@@ -26,6 +29,11 @@ theorem coord_linear_comb (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) {j : 
     simp [Matrix.mulVec, dotProduct, Finset.sum_apply, map_sum, mul_comm]
   rw [hw, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Establish `hc : ∀ a i, coordV I x v (b a) i = t8C I x v b i a`. Introduce `a i`. Use `first`. Consider the case `rfl`. Consider the case `(unfold coordV t8C; simp [Matrix.mulVec, dotProduct, Matrix.mul_apply])`.
+
+Unfold `gramV`. Use extensionality with `a c`. Simplify using `only [hc, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+-/
 theorem gramV_eq_conjTranspose_t8C_mul_t8C (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) {j : ℕ} (b : Fin j → Fin I.n → I.E) :
     gramV I x v b = (t8C I x v b)ᴴ * t8C I x v b := by
   have hc : ∀ a i, coordV I x v (b a) i = t8C I x v b i a := by
@@ -37,6 +45,15 @@ theorem gramV_eq_conjTranspose_t8C_mul_t8C (I : AutInst) (x : I.GA) (v : Infinit
   ext a c
   simp only [hc, Matrix.mul_apply, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Use `set A : Matrix (Fin I.n) (Fin I.n) ℂ := uMat (x.1 v)⁻¹ * (I.P v)⁻¹ with hA`. Use `set Bm : Matrix (Fin I.n) (Fin j) I.E := Matrix.of fun i a => b a i with hBm`. Establish `hB : Function.Injective Bm.mulVec`. Introduce `c c' h`. Establish `hs : ∑ a, (c a - c' a) • b a = 0`.
+
+Use extensionality with `i`. Use `congrFun h i` as an intermediate fact. Simplify using `only [Bm, Matrix.mulVec, dotProduct, Matrix.of_apply] at this`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, sub_mul, Finset.sum_sub_distrib, Pi.zero_apply]`. Rewrite using `[sub_eq_zero]`.
+
+Simplify `this` using `only [mul_comm]`. Use function extensionality and compare the values at `a`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hb _ hs a)`. Establish `hAu : IsUnit A` using `(Units.isUnit _).mul (Matrix.isUnit_nonsing_inv_iff.2 (I.P_unit v))`. Introduce `w w' h`.
+
+Apply `mulVec_injective_map (I.φ v) Bm hB` to reduce the goal to its premises. Apply `Matrix.mulVec_injective_iff_isUnit.2 hAu` to reduce the goal to its premises. Simplify `h` using `only [t8C, Matrix.mulVec_mulVec]`.
+-/
 theorem coord_matrix_mulVec_injective (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) {j : ℕ}
     (b : Fin j → Fin I.n → I.E) (hb : LinearIndependent I.E b) :
     Function.Injective (t8C I x v b).mulVec := by
@@ -65,9 +82,15 @@ def linearCombinationOfRows {n j : ℕ} {E : Type} [Field E] (b : Fin j → Fin 
   map_zero' := by simp
   map_add' a a' := by simp [add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem linearComb_apply {n j : ℕ} {E : Type} [Field E] (b : Fin j → Fin n → E) (a : Fin j → E) :
     linearCombinationOfRows b a = ∑ k, a k • b k := rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Rewrite `ha` using `[linearComb_apply]`. Use function extensionality and compare the values at `k`. Conclude with `Fintype.linearIndependent_iff.mp hb a ha k`.
+-/
 theorem linear_comb_injective {n j : ℕ} {E : Type} [Field E] (b : Fin j → Fin n → E) (hb : LinearIndependent E b) :
     Function.Injective (linearCombinationOfRows b) := by
   rw [injective_iff_map_eq_zero]
@@ -76,11 +99,77 @@ theorem linear_comb_injective {n j : ℕ} {E : Type} [Field E] (b : Fin j → Fi
   funext k
   exact Fintype.linearIndependent_iff.mp hb a ha k
 
+/- English proof (translation)
+Rewrite using `[linearComb_apply]`. Simplify using `[Pi.single_apply, ite_smul]`.
+-/
 theorem linearComb_single {n j : ℕ} {E : Type} [Field E] (b : Fin j → Fin n → E) (k : Fin j) (c : E) :
     linearCombinationOfRows b (Pi.single k c) = c • b k := by
   rw [linearComb_apply]
   simp [Pi.single_apply, ite_smul]
 
+/- English proof (translation)
+Use `choose R hR hRdet using fun v => gram_factor_invertible (t8C I x v s.b) (coord_matrix_mulVec_injective I x v s.b s.b_ind)`. Establish `hgram : ∀ v, (gramV I x v s.b).det.re = Complex.normSq (R v).det`. Introduce `v`. Rewrite using `[gramV_eq_conjTranspose_t8C_mul_t8C, hR v, Matrix.det_mul, Matrix.det_conjTranspose, ← Complex.ofReal_re (Complex.normSq (R v).det), Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+
+Use `set P : Submodule (𝓞 I.E) (Fin I.n → I.E) := Submodule.span (𝓞 I.E) (Set.range s.b) with hP`. Establish `hfin : Finite (s.B ⧸ P.comap s.B.subtype)`. Take `⟨M, hMfg, hM⟩` from `h1 I x`. Use `h2 I.E I.n s.j M s.B s.b hMfg ?_ s.b_ind s.b_mem s.B_span` and prove the remaining obligations. Introduce `u hu`.
+
+Rewrite using `[← SetLike.mem_coe, hM]`. Conclude with `s.B_lat hu`. Use `set N : ℕ := Nat.card (s.B ⧸ P.comap s.B.subtype) with hN`. Establish `hN0 : 0 < N` using `Nat.card_pos`. Use `set lin := linearCombinationOfRows s.b with hlin`.
+
+Establish `hlinj : Function.Injective lin` using `linear_comb_injective s.b s.b_ind`. Use `set Bp : AddSubgroup (Fin s.j → I.E) := s.B.toAddSubgroup.comap lin with hBp`. Use `set Op : AddSubgroup (Fin s.j → I.E) := (t8O I s.j).toAddSubgroup with hOp`. Establish `hgen : ∀ p : Σ _ : Fin s.j, Free.ChooseBasisIndex ℤ (𝓞 I.E), lin (Pi.single p.1 (integralBasis I.E p.2)) = (RingOfIntegers.basis I.E p.2) • s.b p.1`. Introduce `p`.
+
+Rewrite using `[hlin, linearComb_single, integralBasis_apply, algebraMap_smul]`. Establish `hOB : Op ≤ Bp`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `lin y ∈ s.B`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨p, rfl⟩` from `hy`. Rewrite using `[hgen]`. Conclude with `s.B.smul_mem _ (s.b_mem p.1)`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `s.B.add_mem hy hz`. Consider the case `smul c y _ hy => rw [map_zsmul]`. Conclude with `s.B.toAddSubgroup.zsmul_mem hy c`. Establish `hmapO : Op.map lin = P.toAddSubgroup`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Express the relevant statement in the definitionally equal form `lin a ∈ P`. Proceed by induction on `ha using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨p, rfl⟩` from `hy`. Rewrite using `[hgen]`. Conclude with `P.smul_mem _ (Submodule.subset_span ⟨p.1, rfl⟩)`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `P.add_mem hy hz`. Consider the case `smul c y _ hy => rw [map_zsmul]`. Conclude with `P.toAddSubgroup.zsmul_mem hy c`. Introduce `hy`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 I.E)).1 (show y ∈ P from hy)`. Use `⟨fun k => (c k : I.E), mem_integral_vectors I s.j _ fun k => ⟨c k, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hlin, linearComb_apply, ← hc]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `algebraMap_smul I.E (c k) (s.b k)`.
+
+Establish `hmapB : Bp.map lin = s.B.toAddSubgroup`. Use `AddSubgroup.map_comap_eq_self ?_` and prove the remaining obligations. Introduce `u hu`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun I.E).1 (s.B_span hu)`. Conclude with `⟨c, hc⟩`.
+
+Establish `hrel : Op.relIndex Bp = N`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective Op Bp hlinj, hmapO, hmapB, hN]`. Both sides reduce to the same expression. Establish `hRdet' : ∀ v, (R v).det ≠ 0` using `hRdet`. Use `set Θ := t8Th R with hΘ`.
+
+Establish `hΘinj : Function.Injective Θ` using `blockTransform_injective R hRdet'`. Use `set L₁ : Submodule ℤ (EuclideanSpace ℝ (Fin (2 * I.f * s.j))) := Submodule.span ℤ (Set.range (blockBasis R hRdet')) with hL₁`. Use `set L₂ : Submodule ℤ (EuclideanSpace ℝ (Fin (2 * I.f * s.j))) := (Bp.map Θ).toIntSubmodule with hL₂`. Establish `hL₁' : L₁.toAddSubgroup = Op.map Θ`. Rewrite using `[hL₁, ← map_integral_vectors_span R hRdet']`.
+
+Both sides reduce to the same expression. Establish `hL₂' : L₂.toAddSubgroup = Bp.map Θ` using `AddSubgroup.toIntSubmodule_toAddSubgroup _`. Establish `h12 : L₁ ≤ L₂`. Introduce `y hy`. Establish `hy' : y ∈ L₁.toAddSubgroup` using `hy`.
+
+Rewrite `hy'` using `[hL₁']`. Use `show y ∈ L₂.toAddSubgroup`. Rewrite using `[hL₂']`. Conclude with `AddSubgroup.map_mono hOB hy'`. Establish `hrel2 : L₁.toAddSubgroup.relIndex L₂.toAddSubgroup = N`.
+
+Rewrite using `[hL₁', hL₂', AddSubgroup.relIndex_map_map_of_injective Op Bp hΘinj, hrel]`. Establish `hNR : ((N : ℝ))⁻¹ ≠ 0` using `inv_ne_zero (Nat.cast_ne_zero.2 hN0.ne')`. Use `set β' := (blockBasis R hRdet').isUnitSMul (w := fun _ => ((N : ℝ))⁻¹) (fun _ => isUnit_iff_ne_zero.2 hNR) with hβ'`. Establish `hsub : (L₂ : Set (EuclideanSpace ℝ (Fin (2 * I.f * s.j)))) ⊆ Submodule.span ℤ (Set.range β')`. Introduce `w hw`.
+
+Establish `hw' : w ∈ L₂.toAddSubgroup` using `hw`. Rewrite `hw'` using `[hL₂']`. Take `⟨a, ha, rfl⟩` from `hw'`. Establish `hNa : N • a ∈ Op`. Rewrite using `[← hrel]`.
+
+Conclude with `AddSubgroup.nsmul_relIndex_mem Op ha`. Establish `hNw : N • Θ a ∈ L₁`. Establish `: Θ (N • a) ∈ L₁.toAddSubgroup`. Rewrite using `[hL₁']`. Conclude with `⟨N • a, hNa, rfl⟩`.
+
+Rewrite `this` using `[map_nsmul]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hNw`. Use `(Submodule.mem_span_range_iff_exists_fun ℤ).2 ⟨c, ?_⟩` and prove the remaining obligations. Simplify using `only [hβ', Basis.isUnitSMul_apply]`. Establish `e : ∀ p, c p • ((N : ℝ)⁻¹ • blockBasis R hRdet' p) = (N : ℝ)⁻¹ • (c p • blockBasis R hRdet' p)` using `fun p => smul_comm _ _ _`.
+
+Simplify using `only [e, ← Finset.smul_sum, hc]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℝ, inv_smul_smul₀ (Nat.cast_ne_zero.2 hN0.ne')]`. Establish `: DiscreteTopology L₂` using `DiscreteTopology.of_subset (inferInstance : DiscreteTopology (Submodule.span ℤ (Set.range β'))) hsub`. Establish `: IsZLattice ℝ L₂` using `⟨by`. Rewrite using `[eq_top_iff, ← (blockBasis R hRdet').span_eq]`.
+
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `h12 (Submodule.subset_span ⟨p, rfl⟩)⟩`. Establish `hcov` using `ZLattice.covolume_div_covolume_eq_relIndex' L₁ L₂ h12`. Rewrite `hcov` using `[hrel2, covolume_blockBasis]`.
+
+Establish `hht : ht I s = (∏ v, Complex.normSq (R v).det) / N`. Rewrite using `[ht]`. Simplify using `only [hgram]`. Both sides reduce to the same expression. Establish `hcov2 : ZLattice.covolume L₂ = t8K I s.j * ht I s`.
+
+Establish `hpos` using `ZLattice.covolume_pos L₂ volume`. Rewrite using `[hht]`. Rewrite `hcov` using `[div_eq_iff hpos.ne']`. Establish `hNpos : (0 : ℝ) < N` using `Nat.cast_pos.2 hN0`. Clear the denominators using the available nonvanishing facts.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hht0 : 0 ≤ ht I s`. Rewrite using `[hht]`. Conclude with `div_nonneg (Finset.prod_nonneg fun v _ => Complex.normSq_nonneg _) (Nat.cast_nonneg _)`. Take `⟨w, hw, hw0, hwb⟩` from `hC L₂`.
+
+Establish `hw' : w ∈ L₂.toAddSubgroup` using `hw`. Rewrite `hw'` using `[hL₂']`. Take `⟨a, ha, rfl⟩` from `hw'`. Use `⟨lin a, ha, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hw0` to reduce the goal to its premises. Establish `: a = 0` using `hlinj (by rw [h0, map_zero])`. Rewrite using `[this, map_zero]`. Establish `hnorm : ‖Θ a‖ ^ 2 = ∑ v, ∑ i, ‖coordV I x v (lin a) i‖ ^ 2`. Rewrite using `[hΘ, blockTransform_norm_sq]`.
+
+Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hlin, linearComb_apply, coord_linear_comb]`. Conclude with `(norm_sq_eq_of_gram_eq _ _ (hR v) _).symm`. Rewrite using `[← hnorm]`. Use `hwb.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[hcov2, Real.mul_rpow (integral_covolume_pos I s.j).le hht0, size, ← Real.rpow_mul_natCast hht0]`. Establish `hf : (0 : ℝ) < I.f`. Establish `: 0 < Fintype.card (InfinitePlace I.F)` using `Fintype.card_pos`. Rewrite `this` using `[card_infinite_places]`. Conclude with `this` after adjusting the coercions.
+
+Establish `hj : (0 : ℝ) < s.j` using `by exact_mod_cast s.j_pos`. Establish `e : (1 : ℝ) / (2 * (I.f : ℝ) * (s.j : ℝ)) * ((2 : ℕ) : ℝ) = (2 : ℝ) / ((2 * I.f * s.j : ℕ) : ℝ)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem short_vector_sublattice (I : AutInst) (h1 : LatticeFinitelyGenerated) (h2 : ExistsBoundedBasis) (x : I.GA) (s : Sub I x) (C : ℝ)
     (hC : ∀ (L : Submodule ℤ (EuclideanSpace ℝ (Fin (2 * I.f * s.j)))) [DiscreteTopology L] [IsZLattice ℝ L],
       ∃ u ∈ L, u ≠ 0 ∧ ‖u‖ ^ 2 ≤ C * ZLattice.covolume L ^ ((2 : ℝ) / ((2 * I.f * s.j : ℕ) : ℝ))) :
@@ -248,6 +337,21 @@ theorem short_vector_sublattice (I : AutInst) (h1 : LatticeFinitelyGenerated) (h
     rw [e]
     ring
 
+/- English proof (translation)
+Introduce `I`. Set `cj : ℕ → ℝ` to `fun j => if h : 1 ≤ 2 * I.f * j then (h8m _ h).choose * t8K I j ^ ((2 : ℝ) / ((2 * I.f * j : ℕ) : ℝ)) else 0`. Establish `hcj : ∀ j, 0 ≤ cj j`. Introduce `j`. Simplify using `only [cj]`.
+
+Use `split_ifs with h`. Conclude with `mul_nonneg (h8m _ h).choose_spec.1.le (Real.rpow_nonneg (integral_covolume_pos I j).le _)`. Conclude with `le_rfl`. Use `⟨1 + ∑ j ∈ Finset.range (I.n + 1), cj j, by` and prove the remaining obligations. Use `Finset.sum_nonneg fun j (_ : j ∈ Finset.range (I.n + 1)) => hcj j` as an intermediate fact.
+
+Use the proof step `linarith, ?_⟩`. Introduce `x s`. Establish `hd : 1 ≤ 2 * I.f * s.j`. Establish `: 0 < Fintype.card (InfinitePlace I.F)` using `Fintype.card_pos`. Rewrite `this` using `[card_infinite_places]`.
+
+Use `s.j_pos` as an intermediate fact. Establish `: 1 ≤ I.f * s.j` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))`. Rewrite using `[Nat.mul_assoc]`. Use linear arithmetic over natural numbers and integers. Take `⟨u, hu, hu0, hub⟩` from `short_vector_sublattice I h1 h2 x s (h8m _ hd).choose (fun L _ _ => (h8m _ hd).choose_spec.2 L)`.
+
+Use `⟨u, hu, hu0, hub.trans ?_⟩` and prove the remaining obligations. Establish `hjn : s.j ≤ I.n`. Use `s.b_ind.fintype_card_le_finrank` as an intermediate fact. Simplify using `using this`. Establish `hle : cj s.j ≤ 1 + ∑ j ∈ Finset.range (I.n + 1), cj j`.
+
+Use `Finset.single_le_sum (f := cj) (fun j _ => hcj j) (Finset.mem_range.2 (Nat.lt_succ_of_le hjn))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcs : cj s.j = (h8m _ hd).choose * t8K I s.j ^ ((2 : ℝ) / ((2 * I.f * s.j : ℕ) : ℝ))`. Simplify using `only [cj, dif_pos hd]`. Rewrite using `[← hcs]`.
+
+Conclude with `mul_le_mul_of_nonneg_right hle (sq_nonneg _)`.
+-/
 theorem minkowski_submodule_short_vector (h1 : LatticeFinitelyGenerated) (h2 : ExistsBoundedBasis) (h8m : MinkowskiFirstTheorem) : MinkowskiSubmodule := by
   intro I
   let cj : ℕ → ℝ := fun j =>

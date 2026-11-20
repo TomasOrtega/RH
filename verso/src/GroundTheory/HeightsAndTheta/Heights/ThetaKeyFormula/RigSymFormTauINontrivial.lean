@@ -57,16 +57,27 @@ def thetaSec {g : ℕ} (P : SiegelPt g) (m : HalfChar g) (n : ℕ) :
     · simp only [Pi.smul_apply, smul_eq_mul, hf1]; ring
     · simp only [Pi.smul_apply, smul_eq_mul, hf2]; ring
 
+/- English proof (translation)
+Unfold `perFactor`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma perFactor_add {g : ℕ} (m : HalfChar g) (k n : ℕ) (v : Fin g → ℤ) :
     perFactor m k v * perFactor m n v = perFactor m (k + n) v := by
   unfold perFactor
   rw [← Complex.exp_add]; congr 1; push_cast; ring
 
+/- English proof (translation)
+Unfold `autFactor`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma autFactor_add {g : ℕ} (P : SiegelPt g) (m : HalfChar g) (k n : ℕ) (u : Fin g → ℤ)
     (z : Fin g → ℂ) : autFactor P m k u z * autFactor P m n u z = autFactor P m (k + n) u z := by
   unfold autFactor
   rw [← Complex.exp_add]; congr 1; push_cast; ring
 
+/- English proof (translation)
+Take `⟨hf, hf1, hf2⟩` from `hf`. Take `⟨hh, hh1, hh2⟩` from `hh`. Use `⟨hf.mul hh, fun v z => ?_, fun u z => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, hf1, hh1, ← perFactor_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [Pi.mul_apply, hf2, hh2, ← autFactor_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaSec_mul {g : ℕ} (P : SiegelPt g) (m : HalfChar g) {k n : ℕ}
     {f h : (Fin g → ℂ) → ℂ} (hf : f ∈ thetaSec P m k) (hh : h ∈ thetaSec P m n) :
     f * h ∈ thetaSec P m (k + n) := by
@@ -76,6 +87,9 @@ theorem thetaSec_mul {g : ℕ} (P : SiegelPt g) (m : HalfChar g) {k n : ℕ}
   · simp only [Pi.mul_apply, hf1, hh1, ← perFactor_add]; ring
   · simp only [Pi.mul_apply, hf2, hh2, ← autFactor_add]; ring
 
+/- English proof (translation)
+Use `⟨differentiable_const c, fun v z => ?_, fun u z => ?_⟩` and prove the remaining obligations. Simplify using `[perFactor]`. Simplify using `[autFactor]`.
+-/
 theorem const_mem_thetaSec_zero {g : ℕ} (P : SiegelPt g) (m : HalfChar g) (c : ℂ) :
     (fun _ => c) ∈ thetaSec P m 0 := by
   refine ⟨differentiable_const c, fun v z => ?_, fun u z => ?_⟩
@@ -110,6 +124,13 @@ def tauI : SiegelPt 1 where
       ext i j; fin_cases i; fin_cases j; simp
     rw [this]; exact Matrix.PosDef.one
 
+/- English proof (translation)
+Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Use `jacobiTheta₂_add_left (w + k) τ` as an intermediate fact. Move the coercions through the operations in `at ih ⊢`.
+
+Rewrite using `[← add_assoc, this, ih]`. Consider the case `pred k ih`. Use `jacobiTheta₂_add_left (w + (-(k : ℂ) - 1)) τ` as an intermediate fact. Move the coercions through the operations in `at ih ⊢`. Rewrite `this` using `[show w + (-(k : ℂ) - 1) + 1 = w + -(k : ℂ) by ring]`.
+
+Rewrite using `[← this, ih]`.
+-/
 lemma jacobiTheta₂_add_int (w τ : ℂ) (k : ℤ) : jacobiTheta₂ (w + k) τ = jacobiTheta₂ w τ := by
   induction k using Int.induction_on with
   | zero => simp
@@ -122,6 +143,15 @@ lemma jacobiTheta₂_add_int (w τ : ℂ) (k : ℤ) : jacobiTheta₂ (w + k) τ 
     rw [show w + (-(k : ℂ) - 1) + 1 = w + -(k : ℂ) by ring] at this
     rw [← this, ih]
 
+/- English proof (translation)
+Proceed by induction on `k using Int.induction_on generalizing w with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Move the coercions through the operations in `at ih ⊢`. Rewrite using `[show w + ((k : ℂ) + 1) * τ = (w + (k : ℂ) * τ) + τ by ring, jacobiTheta₂_add_left', ih, ← mul_assoc, ← Complex.exp_add]`.
+
+Use `congr 1`. Put the polynomial expressions in normal form. Consider the case `pred k ih`. Move the coercions through the operations in `at ih ⊢`. Establish `h` using `jacobiTheta₂_add_left' (w + (-(k : ℂ) - 1) * τ) τ`.
+
+Rewrite `h` using `[show w + (-(k : ℂ) - 1) * τ + τ = w + -(k : ℂ) * τ by ring, ih]`. Establish `hne` using `Complex.exp_ne_zero (-π * I * (τ + 2 * (w + (-(k : ℂ) - 1) * τ)))`. Rewrite `h` using `[eq_comm, ← eq_inv_mul_iff_mul_eq₀ hne]`. Rewrite using `[h, ← mul_assoc, ← Complex.exp_neg, ← Complex.exp_add]`. Use `congr 1`.
+
+Put the polynomial expressions in normal form.
+-/
 lemma jacobiTheta₂_add_int_mul (w τ : ℂ) (k : ℤ) :
     jacobiTheta₂ (w + k * τ) τ = cexp (-(π * I * k ^ 2 * τ) - 2 * π * I * k * w) * jacobiTheta₂ w τ := by
   induction k using Int.induction_on generalizing w with
@@ -142,8 +172,20 @@ lemma jacobiTheta₂_add_int_mul (w τ : ℂ) (k : ℤ) :
 
 def thetaOneVar : (Fin 1 → ℂ) → ℂ := fun z => jacobiTheta₂ (z 0) I
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma intVec_one (v : Fin 1 → ℤ) : intVec v 0 = (v 0 : ℂ) := rfl
 
+/- English proof (translation)
+Use `⟨?_, fun v z => ?_, fun u z => ?_⟩` and prove the remaining obligations. Introduce `z`. Establish `h1 : DifferentiableAt ℂ (fun w : ℂ => jacobiTheta₂ w I) (z 0)` using `differentiableAt_jacobiTheta₂_fst (z 0) (by simp)`. Establish `h2 : DifferentiableAt ℂ (fun z : Fin 1 → ℂ => z 0) z` using `(differentiable_apply 0) z`. Conclude with `h1.comp z h2`.
+
+Establish `: perFactor (HalfChar.zero 1) 1 v = 1`. Simplify using `[perFactor, HalfChar.a, HalfChar.zero, dotProduct]`. Rewrite using `[this, one_mul]`. Simplify using `only [thetaOneVar, Pi.add_apply, intVec_one]`. Conclude with `jacobiTheta₂_add_int (z 0) I (v 0)`.
+
+Simplify using `only [thetaOneVar, Pi.add_apply, autFactor, tauI]`. Establish `hτ : ((I • (1 : Matrix (Fin 1) (Fin 1) ℂ)) *ᵥ intVec u) 0 = (u 0 : ℂ) * I`. Simplify using `[Matrix.mulVec, dotProduct, intVec, mul_comm]`. Rewrite using `[hτ, jacobiTheta₂_add_int_mul]`. Use `congr 2`.
+
+Simplify using `[dotProduct, Matrix.mulVec, intVec, HalfChar.b, HalfChar.zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaOneVar_mem : thetaOneVar ∈ thetaSec tauI (HalfChar.zero 1) 1 := by
   refine ⟨?_, fun v z => ?_, fun u z => ?_⟩
   · intro z
@@ -164,6 +206,15 @@ theorem thetaOneVar_mem : thetaOneVar ∈ thetaSec tauI (HalfChar.zero 1) 1 := b
     simp [dotProduct, Matrix.mulVec, intVec, HalfChar.b, HalfChar.zero]
     ring
 
+/- English proof (translation)
+Introduce `h`. Establish `hb` using `norm_jacobiTheta_sub_one_le (τ := I) (by simp)`. Rewrite `hb` using `[jacobiTheta_eq_jacobiTheta₂]`. Simplify using `only [thetaOneVar, Pi.zero_apply] at h`. Rewrite `hb` using `[h]`.
+
+Simplify using `only [zero_sub, norm_neg, norm_one, Complex.I_im, mul_one] at hb`. Establish `hπ : 3 < Real.exp Real.pi`. Use `Real.add_one_le_exp Real.pi` as an intermediate fact. Combine the linear relations using `[Real.pi_gt_three]`. Establish `ht : Real.exp (-Real.pi) < 1 / 3`.
+
+Rewrite using `[Real.exp_neg]`. Rewrite using `[inv_lt_comm₀ (Real.exp_pos _) (by norm_num)]`. Simplify using `using hπ`. Establish `htpos` using `Real.exp_pos (-Real.pi)`. Establish `h1 : 0 < 1 - Real.exp (-Real.pi)` using `by linarith`.
+
+Establish `: 2 / (1 - Real.exp (-Real.pi)) * Real.exp (-Real.pi) < 1`. Rewrite using `[div_mul_eq_mul_div, div_lt_one h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem thetaOneVar_zero_ne : thetaOneVar 0 ≠ 0 := by
   intro h
   have hb := norm_jacobiTheta_sub_one_le (τ := I) (by simp)
@@ -184,6 +235,9 @@ theorem thetaOneVar_zero_ne : thetaOneVar 0 ≠ 0 := by
     rw [div_mul_eq_mul_div, div_lt_one h1]; linarith
   linarith
 
+/- English proof (translation)
+Introduce `h` and use `thetaOneVar_zero_ne (by rw [h]; rfl)`.
+-/
 theorem thetaOneVar_ne_zero : thetaOneVar ≠ 0 := fun h => thetaOneVar_zero_ne (by rw [h]; rfl)
 
 def rigSymFormTauI : RigSymForm ℂ where
@@ -199,6 +253,9 @@ def rigSymFormTauI : RigSymForm ℂ where
   rig := 1
   rig_mem := fun n f _ => ⟨(1 : ℂ) ^ n * f 0, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, thetaOneVar, thetaOneVar_mem, thetaOneVar_ne_zero⟩`.
+-/
 theorem rigSymFormTauI_nontrivial :
     rigSymFormTauI.g = 1 ∧ ∃ f ∈ rigSymFormTauI.S 1, f ≠ 0 :=
   ⟨rfl, thetaOneVar, thetaOneVar_mem, thetaOneVar_ne_zero⟩

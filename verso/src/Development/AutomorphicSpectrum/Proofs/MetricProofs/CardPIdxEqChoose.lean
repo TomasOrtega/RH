@@ -12,15 +12,26 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.PFl.AllKept
 
 variable {Ψ : Type} {N j : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stepOf_val' (N j : ℕ) (c : Fin N) :
     (stepOf N j c : ℕ) = if N - j ≤ (c : ℕ) then (c : ℕ) - (N - j) else (c : ℕ) + j := rfl
 
+/- English proof (translation)
+Use `c.2` as an intermediate fact. Establish `hv` using `stepOf_val' N j c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs at hv ⊢ <;> omega`.
+-/
 theorem stepOf_mem' (hj : j ≤ N) (c : Fin N) : c ∈ stepCols N j (stepOf N j c) := by
   have := c.2
   have hv := stepOf_val' N j c
   simp only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]
   split_ifs at hv ⊢ <;> omega
 
+/- English proof (translation)
+Use `c.2` as an intermediate fact. Use `d.2` as an intermediate fact. Establish `hv` using `stepOf_val' N j c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] at hd`. Rewrite using `[Fin.le_def]`.
+
+Apply the tactic sequence `split_ifs at hv hd <;> omega`.
+-/
 theorem stepOf_top' (hj : j ≤ N) (c d : Fin N) (hd : d ∈ stepCols N j (stepOf N j c)) : d ≤ c := by
   have := c.2
   have := d.2
@@ -29,6 +40,11 @@ theorem stepOf_top' (hj : j ≤ N) (c d : Fin N) (hd : d ∈ stepCols N j (stepO
   rw [Fin.le_def]
   split_ifs at hv hd <;> omega
 
+/- English proof (translation)
+Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Establish `h : (b : ℕ) < a` using `hlt`. Establish `hv` using `stepOf_val' N j b`. Simplify using `only [IsProperStep]`.
+
+Apply the tactic sequence `split_ifs at hv <;> omega`.
+-/
 theorem stepOf_proper' (hj : j ≤ N) {a b : Fin N} (hlt : b < a) (hblk : ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)) :
     IsProperStep N j (stepOf N j b) := by
   have := a.2
@@ -38,10 +54,16 @@ theorem stepOf_proper' (hj : j ≤ N) {a b : Fin N} (hlt : b < a) (hblk : ((a : 
   simp only [IsProperStep]
   split_ifs at hv <;> omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨stepOf N j q.1.2.2, hk _, stepOf_proper' hj q.2.1 q.2.2, stepOf_mem' hj _, fun h => absurd (stepOf_top' hj _ _ h) (not_le.2 q.2.1)⟩`.
+-/
 theorem sep_of_all (hj : j ≤ N) {keep : Ψ × Fin N → Prop} (hk : ∀ p, keep p) (q : LowIdx Ψ N j) : Sep keep q :=
   ⟨stepOf N j q.1.2.2, hk _, stepOf_proper' hj q.2.1 q.2.2, stepOf_mem' hj _,
     fun h => absurd (stepOf_top' hj _ _ h) (not_le.2 q.2.1)⟩
 
+/- English proof (translation)
+Introduce `Ψ _ _ N j keep hj hk`. Establish `e : PIdx j keep ≃ LowIdx Ψ N j` using `Equiv.subtypeUnivEquiv (sep_of_all hj hk)`. Rewrite using `[Nat.card_congr e, Nat.card_eq_fintype_card, GlobalTheory.CompanionTheory.Ar.PB.WMan.ChartCount.card_lowIdx Ψ N j hj]`.
+-/
 theorem card_pIdx_of_all : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (keep : Ψ × Fin N → Prop), j ≤ N →
     (∀ p, keep p) → Nat.card (PIdx j keep) = Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) := by
   intro Ψ _ _ N j keep hj hk

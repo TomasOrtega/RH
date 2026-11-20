@@ -14,6 +14,9 @@ namespace GlobalTheory.ChainOnto
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hP D hL c hc j hj s hs`. Establish `h1` using `(hL c hc j hj s hs).1`. Establish `: FiniteDimensional ℂ (Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L))` using `GlobalTheory.MultFinite.hcFinite hP hc.inf h1`. Conclude with `Module.Finite.map _ _`.
+-/
 theorem finDim_of_levFacts : GlobalTheory.Published.HarishChandraFinite → ∀ D : D7, LevFacts D → FinDim D := by
   intro hP D hL c hc j hj s hs
   have h1 := (hL c hc j hj s hs).1

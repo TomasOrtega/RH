@@ -163,6 +163,11 @@ def eCls0 (u : B.Word) (a : I.ι) : (I.stp u I.mu0 0).Cl ≃ (I.stp u a 0).Cl :=
   Equiv.ofBijective (I.cl0 u a (l.idx0 a).some) (l.bij0 u a _)
 
 include l in
+/- English proof (translation)
+Use `letI := B.host.cmStar`. Unfold `latAt`. Use `split_ifs with hi`. Establish `h` using `l.lat u a i c`. Use `⟨h.fg.map _, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `congrArg (Submodule.map ((crd B i hi).symm : (Fin (B.R.N i) → B.host.E) →ₗ[B.host.E] (B.sp.X i).V)) h.span_eq_top`. Rewrite `h2` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range]`. Conclude with `h2`. Conclude with `(B.sp.X i).standardTuple_isLattice`.
+-/
 theorem latAt_lattice (u : B.Word) (a : I.ι) (i : ℕ) (c : (I.stp u a i).Cl) :
     letI := B.host.cmStar; Submodule.IsLattice B.host.E (I.latAt u a i c) := by
   letI := B.host.cmStar

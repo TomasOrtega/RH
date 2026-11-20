@@ -20,6 +20,9 @@ def IsMultiLin (Pu : (κ → V) → V → Prop) : Prop :=
   ∀ (x y z : κ → V) (f g : V) (q : κ) (c : ℂ), Pu x f → Pu y g → (∀ p, p ≠ q → y p = x p) → (∀ p, p ≠ q → z p = x p) →
     z q = c • x q + y q → Pu z (c • f + g)
 
+/- English proof (translation)
+Use `h _ _ _ f g q c h1 h2 (fun p hp => ?_) (fun p hp => ?_) ?_` and prove the remaining obligations. Simplify using `[hp]`. Simplify using `[hp]`. Simplify using the standard rewrite rules.
+-/
 theorem IsMultiLin.upd (h : IsMultiLin Pu) {x : κ → V} {q : κ} {a b f g : V} (c : ℂ)
     (h1 : Pu (Function.update x q a) f) (h2 : Pu (Function.update x q b) g) :
     Pu (Function.update x q (c • a + b)) (c • f + g) := by
@@ -28,12 +31,24 @@ theorem IsMultiLin.upd (h : IsMultiLin Pu) {x : κ → V} {q : κ} {a b f g : V}
   · simp [hp]
   · simp
 
+/- English proof (translation)
+Establish `h0 : Pu (Function.update x q 0) 0`. Simplify using `using h.upd (-1) h1 h1`. Simplify using `using h.upd c h1 h0`.
+-/
 theorem IsMultiLin.upd_smul (h : IsMultiLin Pu) {x : κ → V} {q : κ} {a f : V} (c : ℂ)
     (h1 : Pu (Function.update x q a) f) : Pu (Function.update x q (c • a)) (c • f) := by
   have h0 : Pu (Function.update x q 0) 0 := by
     simpa using h.upd (-1) h1 h1
   simpa using h.upd c h1 h0
 
+/- English proof (translation)
+Establish `hP' : P ∈ Algebra.adjoin ℂ (MvPolynomial.X '' s)`. Rewrite using `[← MvPolynomial.supported_eq_adjoin_X]` and apply the resulting hypothesis. Use `clear hP`. Proceed by induction on `hP' using Algebra.adjoin_induction with`. Consider the case `mem P hPs`.
+
+Take `⟨y, hy, rfl⟩` from `hPs`. Conclude with `hX y hy`. Consider the case `algebraMap r`. Introduce `x R Q hRQ`. Rewrite using `[← Algebra.smul_def, ← Algebra.smul_def, map_smul, map_smul]`.
+
+Conclude with `h.upd_smul r hRQ`. Consider the case `add P₁ P₂ _ _ ih₁ ih₂`. Introduce `x R Q hRQ`. Simplify `h.upd 1 (ih₁ x R Q hRQ) (ih₂ x R Q hRQ)` using `[add_mul]`. Consider the case `mul P₁ P₂ _ _ ih₁ ih₂`.
+
+Introduce `x R Q hRQ`. Simplify `ih₁ x (P₂ * R) (P₂ * Q) (ih₂ x R Q hRQ)` using `[mul_assoc]`.
+-/
 theorem poly_step (h : IsMultiLin Pu) (L L₀ : MvPolynomial ι ℂ →ₗ[ℂ] V) (q : κ) (s : Set ι)
     (hX : ∀ y ∈ s, ∀ x R Q, Pu (Function.update x q (L₀ Q)) (L R) →
       Pu (Function.update x q (L₀ (MvPolynomial.X y * Q))) (L (MvPolynomial.X y * R)))
@@ -57,6 +72,19 @@ theorem poly_step (h : IsMultiLin Pu) (L L₀ : MvPolynomial ι ℂ →ₗ[ℂ] 
     intro x R Q hRQ
     simpa [mul_assoc] using ih₁ x (P₂ * R) (P₂ * Q) (ih₂ x R Q hRQ)
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Establish `e : (Sum.elim (fun v => x (.inl v)) fun τ => if τ ∈ (∅ : Finset β) then L₀ (P τ) else L₀ 1) = x`. Use function extensionality and compare the values at `p`. Break down `p with v | τ` into its components or cases.
+
+Both sides reduce to the same expression. Simplify using `[hx0]`. Rewrite using `[e, Finset.prod_empty]`. Conclude with `hx`. Consider the case `@insert a t ha ih`.
+
+Rewrite using `[Finset.prod_insert ha]`. Use `set G := (Sum.elim (fun v => x (.inl v)) fun τ => if τ ∈ t then L₀ (P τ) else L₀ 1) with hG`. Establish `hGa : G (.inr a) = L₀ 1` using `by simp [hG, ha]`. Establish `hfix : Function.update G (.inr a) (L₀ 1) = G`. Rewrite using `[← hGa, Function.update_eq_self]`.
+
+Establish `key` using `poly_step h L L₀ (.inr a) (s a) (hX a) (hP a) G (∏ τ ∈ t, P τ) 1 (by rw [hfix]; exact ih)`. Establish `e : Function.update G (.inr a) (L₀ (P a * 1)) = Sum.elim (fun v => x (.inl v)) (fun τ => if τ ∈ insert a t then L₀ (P τ) else L₀ 1)`. Use function extensionality and compare the values at `p`. Break down `p with v | τ` into its components or cases. Simplify using `[hG]`.
+
+Distinguish the cases in `hτ : τ = a`. Substitute `hτ` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hG, hτ]`. Rewrite using `[← e]`.
+
+Conclude with `key`.
+-/
 theorem prod_step {α β : Type} [DecidableEq (α ⊕ β)] {Pu : (α ⊕ β → V) → V → Prop} (h : IsMultiLin Pu) (L L₀ : MvPolynomial ι ℂ →ₗ[ℂ] V)
     (s : β → Set ι)
     (hX : ∀ τ, ∀ y ∈ s τ, ∀ x R Q, Pu (Function.update x (.inr τ) (L₀ Q)) (L R) →
@@ -93,6 +121,9 @@ theorem prod_step {α β : Type} [DecidableEq (α ⊕ β)] {Pu : (α ⊕ β → 
     rw [← e]
     exact key
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hx`. Consider the case `cons a l ih => exact hth a _ ih`.
+-/
 private theorem foldr_mem_of_invariant {X ι : Type} (A : ι → X → X) (Pth : X → Prop)
     (hth : ∀ i x, Pth x → Pth (A i x)) (l : List ι) {x : X} (hx : Pth x) :
     Pth (l.foldr (fun i g => A i g) x) := by
@@ -100,6 +131,9 @@ private theorem foldr_mem_of_invariant {X ι : Type} (A : ι → X → X) (Pth :
   | nil => exact hx
   | cons a l ih => exact hth a _ ih
 
+/- English proof (translation)
+Proceed by induction on `hp with`. Consider the case `nil => rfl`. Consider the case `cons a _ ih => simp only [List.foldr_cons, ih]`. Consider the case `swap a b l => exact hc b a _ (foldr_mem_of_invariant A Pth hth l hx)`. Consider the case `trans _ _ ih₁ ih₂ => exact ih₁.trans ih₂`.
+-/
 private theorem foldr_eq_of_perm_of_commute {X ι : Type} (A : ι → X → X) (Pth : X → Prop)
     (hth : ∀ i x, Pth x → Pth (A i x)) (hc : ∀ i j x, Pth x → A i (A j x) = A j (A i x))
     {l l' : List ι} (hp : l.Perm l') {x : X} (hx : Pth x) :
@@ -110,6 +144,9 @@ private theorem foldr_eq_of_perm_of_commute {X ι : Type} (A : ι → X → X) (
   | swap a b l => exact hc b a _ (foldr_mem_of_invariant A Pth hth l hx)
   | trans _ _ ih₁ ih₂ => exact ih₁.trans ih₂
 
+/- English proof (translation)
+Unfold `opPow`. Establish `hp : ((Finsupp.toMultiset (Finsupp.single y 1 + u)).toList).Perm (y :: (Finsupp.toMultiset u).toList)`. Rewrite using `[← Multiset.coe_eq_coe, Multiset.coe_toList, ← Multiset.cons_coe, Multiset.coe_toList, map_add, Finsupp.toMultiset_single, one_nsmul, Multiset.singleton_add]`. Rewrite using `[foldr_eq_of_perm_of_commute A Pth hth hc hp hx]`. Both sides reduce to the same expression.
+-/
 private theorem opPow_single_one_add {X ι : Type} (A : ι → (X → ℂ) → (X → ℂ)) (Pth : (X → ℂ) → Prop)
     (hth : ∀ i x, Pth x → Pth (A i x)) (hc : ∀ i j x, Pth x → A i (A j x) = A j (A i x))
     (y : ι) (u : ι →₀ ℕ) {x : X → ℂ} (hx : Pth x) :
@@ -121,6 +158,13 @@ private theorem opPow_single_one_add {X ι : Type} (A : ι → (X → ℂ) → (
   rw [foldr_eq_of_perm_of_commute A Pth hth hc hp hx]
   rfl
 
+/- English proof (translation)
+Use `set Φ := (MvPolynomial.basisMonomials σ ℂ).constr ℂ fun k => opPow A k g with hΦ`. Establish `hmono : ∀ m a, Φ (MvPolynomial.monomial m a) = a • opPow A m g`. Introduce `m a`. Establish `e : MvPolynomial.monomial m a = a • MvPolynomial.basisMonomials σ ℂ m`. Simplify using `[MvPolynomial.smul_monomial]`.
+
+Rewrite using `[e, map_smul, hΦ, Module.Basis.constr_basis]`. Establish `hpow : ∀ m, Pth (opPow A m g)` using `fun m => by`. Unfold `opPow`. Conclude with `foldr_mem_of_invariant A Pth hth _ hg`. Establish `hall : ∀ P, Pth (Φ P)` using `fun P => MvPolynomial.induction_on' P (fun m a => by rw [hmono]; exact hsm a _ (hpow m)) (fun p q hp hq => by rw [map_add]; exact hadd _ _ hp hq)`.
+
+Use `MvPolynomial.induction_on' Q (fun u a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.X, MvPolynomial.monomial_mul, one_mul, hmono, hmono, opPow_single_one_add A Pth hth hc y u hg, hAs y a _ (hpow u)]`. Rewrite using `[mul_add, map_add, map_add, hp, hq, hA y _ _ (hall p) (hall q)]`.
+-/
 private theorem constr_opPow_X_mul {X σ : Type} (A : σ → (X → ℂ) → (X → ℂ)) (Pth : (X → ℂ) → Prop)
     (hadd : ∀ f f', Pth f → Pth f' → Pth (f + f')) (hsm : ∀ (c : ℂ) f, Pth f → Pth (c • f))
     (hth : ∀ i f, Pth f → Pth (A i f)) (hc : ∀ i j f, Pth f → A i (A j f) = A j (A i f))
@@ -155,6 +199,11 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
   {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
   {f₀ : WO S T → ℂ} {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
 
+/- English proof (translation)
+Establish `hψ` using `base_std hb`. Establish `hθ` using `base_inf hb`. Establish `hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)` using `hb.1`. Establish `hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ)` using `hb.2.1`. Unfold `pureTensorO pureTensorL aPlusAll`.
+
+Conclude with `constr_opPow_X_mul (fun k : FVar D T.rank S.rank => aPlus (heisO ψ S T) θ k.1 (cplxO (sS k.1) (sT k.1)) (unitMap (BS k.1) (BT k.1) k.2.1 k.2.2)) (IsThetaFunO ψ S T) (fun f f' hf hf' => GlobalTheory.OrientedHeis.theta_add hf hf') (fun c f hf => GlobalTheory.OrientedHeis.theta_smul …`.
+-/
 theorem pureTensorO_X_mul (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g)
     (Q : MvPolynomial (FVar D T.rank S.rank) ℂ) (y : FVar D T.rank S.rank) :
@@ -177,6 +226,11 @@ theorem pureTensorO_X_mul (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (BS : D.wha
     (fun k c f hf => GlobalTheory.FockSubst.aPlus_smul (hψ := hψ) (hθ := hθ) (τ := k.1) (J := _) (z := _) c hf)
     hg y Q
 
+/- English proof (translation)
+Establish `hlin` using `GlobalTheory.T.pureTensor_linear_in_factor_and_heisenbergDeriv_real D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ`. Establish `hML : IsMultiLin (IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀)` using `hlin.1`. Establish `hd : ∀ w : Matrix (Fin T.rank) (Fin S.rank) ℂ, IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ (Function.update y (.inr τ) (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ w a)) (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ w g)`. Introduce `w`. Use `hlin.2 _ _ g τ w h (fun p hp => ?_) ?_` and prove the remaining obligations.
+
+Simplify using `[hp]`. Simplify using the standard rewrite rules. Establish `h4` using `hML.upd_smul ((fockScale D τ : ℂ)⁻¹) (hML.upd (-Complex.I) (hd (J z)) (hd z))`. Rewrite using `[GlobalTheory.FockSubst.aPlus_eq, GlobalTheory.FockSubst.aPlus_eq, add_comm (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z a), add_comm (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z g)]`. Conclude with `h4`.
+-/
 theorem isPure_aPlus (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (hμ : IsCovolOne (ratL T S) μ 𝓕)
     (y : Place D → WO S T → ℂ) (τ : D.what₂.Tau) (a g : WO S T → ℂ)
     (J : Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (Fin T.rank) (Fin S.rank) ℂ) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ)
@@ -201,6 +255,17 @@ theorem isPure_aPlus (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (hμ : IsCovolOn
 
 end Theta
 
+/- English proof (translation)
+Introduce `D`. Unfold `FockPure`. Introduce `ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 BS BT pS pT hb hμ _ _ x f hx hx0 P hP`. Establish `hth0 : IsThetaFunO ψ S T f₀` using `base_theta hb`. Establish `hthf : IsThetaFunO ψ S T f` using `hx.2.1`.
+
+Establish `hlin` using `GlobalTheory.T.pureTensor_linear_in_factor_and_heisenbergDeriv_real D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ`. Establish `hone : ∀ g : WO S T → ℂ, pureTensorO ψ θ S T sS sT BS BT g 1 = g`. Introduce `g`. Establish `e1 : (1 : MvPolynomial (FVar D T.rank S.rank) ℂ) = MvPolynomial.basisMonomials (FVar D T.rank S.rank) ℂ 0`. Rewrite using `[MvPolynomial.coe_basisMonomials]`.
+
+Both sides reduce to the same expression. Unfold `pureTensorO pureTensorL`. Rewrite using `[e1, Module.Basis.constr_basis]`. Unfold `opPow`. Simplify using the standard rewrite rules.
+
+Establish `hX : ∀ τ, ∀ y ∈ (fun τ : D.what₂.Tau => {y : FVar D T.rank S.rank | y.1 = τ}) τ, ∀ x' R Q, IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ (Function.update x' (.inr τ) (pureTensorO ψ θ S T sS sT BS BT f₀ Q)) (pureTensorO ψ θ S T sS sT BS BT f R) → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ (Function.up …`. Introduce `τ y hy x' R Q h`. Establish `hy' : y.1 = τ` using `hy`. Substitute `hy'` using the available equality. Rewrite using `[pureTensorO_X_mul hb BS BT hth0 Q y, pureTensorO_X_mul hb BS BT hthf R y]`.
+
+Conclude with `isPure_aPlus hb hμ x' y.1 _ _ (cplxO (sS y.1) (sT y.1)) (unitMap (BS y.1) (BT y.1) y.2.1 y.2.2) h`. Establish `key` using `prod_step hlin.1 (pureTensorO ψ θ S T sS sT BS BT f) (pureTensorO ψ θ S T sS sT BS BT f₀) (fun τ : D.what₂.Tau => {y : FVar D T.rank S.rank | y.1 = τ}) hX hP (x := x) (by rw [hone]; exact hx) (fun τ => by rw [hone]; exact hx0 τ) Finset.univ`. Simplify using `using key`.
+-/
 theorem fockPure : ∀ D : D7, FockPure D := by
   intro D
   unfold FockPure

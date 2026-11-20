@@ -4,12 +4,20 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PrimeAp
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core
 open scoped TensorProduct
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.PrimeApproximation.yPrime_approx h n J x hx`.
+-/
 private theorem yPrime_approx {R σ : Type} [CommRing R] {y : σ → R} {f : R} {BB : Type} [CommRing BB]
     [Algebra R BB] (h : IsYCpl y f BB) (n : ℕ) (J : Ideal R) (x : BB) (hx : x ∈ J.map (algebraMap R BB)) :
     ∃ (k : ℕ) (a : R), a ∈ J ∧
       algebraMap R BB f ^ k * x - algebraMap R BB a ∈ (Ideal.span (Set.range y) ^ n).map (algebraMap R BB) :=
   _root_.UpperTheory.Reformulated.B.PrimeApproximation.yPrime_approx h n J x hx
 
+/- English proof (translation)
+Take `⟨k, a, ha, h1⟩` from `yPrime_approx h n J _ hr`. Rewrite `h1` using `[← map_pow, ← map_mul, ← map_sub]`. Take `⟨m, hm⟩` from `h.strict n _ h1`. Use `⟨m + k, ?_⟩` and prove the remaining obligations. Use `J.add_mem (hJ hm) (J.mul_mem_left (f ^ m) ha) using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem yPrime_back {R σ : Type} [CommRing R] {y : σ → R} {f : R} {BB : Type} [CommRing BB]
     [Algebra R BB] (h : IsYCpl y f BB) (n : ℕ) (J : Ideal R) (hJ : Ideal.span (Set.range y) ^ n ≤ J)
     (r : R) (hr : algebraMap R BB r ∈ J.map (algebraMap R BB)) : ∃ k : ℕ, f ^ k * r ∈ J := by
@@ -20,6 +28,41 @@ private theorem yPrime_back {R σ : Type} [CommRing R] {y : σ → R} {f : R} {B
   convert J.add_mem (hJ hm) (J.mul_mem_left (f ^ m) ha) using 1
   ring
 
+/- English proof (translation)
+Introduce `R σ _ _ y f BB _ _ h q hq hf hy`. Establish `hI : Ideal.span (Set.range y) ≤ q`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hy a`.
+
+Establish `hfk : ∀ k : ℕ, f ^ k ∉ q` using `fun k hk => hf (hq.mem_of_pow_mem k hk)`. Establish `hmul : ∀ {s t : R}, s ∉ q → t ∉ q → s * t ∉ q` using `fun hs ht hst => (hq.mem_or_mem hst).elim hs ht`. Establish `hcom : ∀ r : R, algebraMap R BB r ∈ q.map (algebraMap R BB) → r ∈ q`. Introduce `r hr`. Take `⟨k, hk⟩` from `yPrime_back h 1 q (by simpa using hI) r hr`.
+
+Conclude with `(hq.mem_or_mem hk).resolve_left (hfk k)`. Establish `hcomap : (q.map (algebraMap R BB)).comap (algebraMap R BB) = q` using `le_antisymm (fun r hr => hcom r hr) Ideal.le_comap_map`. Establish `hIn : ∀ n : ℕ, (Ideal.span (Set.range y) ^ n).map (algebraMap R BB) ≤ (q ^ n).map (algebraMap R BB)` using `fun n => Ideal.map_mono (Ideal.pow_right_mono hI n)`. Establish `hI1 : ∀ n : ℕ, (Ideal.span (Set.range y) ^ (n + 1)).map (algebraMap R BB) ≤ q.map (algebraMap R BB)` using `fun n => Ideal.map_mono ((Ideal.pow_le_self (Nat.succ_ne_zero n)).trans hI)`. Establish `hI2 : ∀ n : ℕ, (Ideal.span (Set.range y) ^ (n + 1)).map (algebraMap R BB) ≤ (q ^ n).map (algebraMap R BB)` using `fun n => (Ideal.map_mono (Ideal.pow_le_pow_right (Nat.le_succ n))).trans (hIn n)`.
+
+Establish `hiff : ∀ (n k : ℕ) (x : BB) (r : R), algebraMap R BB f ^ k * x - algebraMap R BB r ∈ (Ideal.span (Set.range y) ^ (n + 1)).map (algebraMap R BB) → (x ∈ q.map (algebraMap R BB) ↔ r ∈ q)`. Introduce `n k x r hx`. Establish `h1` using `hI1 n hx`. Prove the components needed by the constructor for the conclusion. Introduce `hx'`.
+
+Apply `hcom` to reduce the goal to its premises. Use `Ideal.sub_mem _ (Ideal.mul_mem_left _ (algebraMap R BB f ^ k) hx') h1` as an intermediate fact. Simplify using `using this`. Introduce `hr`. Use `Ideal.add_mem _ h1 (Ideal.mem_map_of_mem (algebraMap R BB) hr)` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ (h.unit.pow k)).1 this`. Use `⟨⟨?_, ?_⟩, hcomap, ?_, ?_⟩` and prove the remaining obligations. Introduce `ht`. Apply `hq.ne_top` to reduce the goal to its premises.
+
+Rewrite using `[← hcomap, ht, Ideal.comap_top]`. Introduce `x z hxz`. Take `⟨j, r, hr⟩` from `h.dense (0 + 1) x`. Take `⟨k, s, hs⟩` from `h.dense (0 + 1) z`. Rewrite using `[hiff 0 j x r hr, hiff 0 k z s hs]`.
+
+Apply `hq.mem_or_mem` to reduce the goal to its premises. Rewrite using `[← hiff 0 (j + k) (x * z) (r * s) ?_]`. Conclude with `hxz`. Use `Ideal.add_mem _ (Ideal.mul_mem_left _ (algebraMap R BB f ^ k * z) hr) (Ideal.mul_mem_left _ (algebraMap R BB r) hs) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `P _ hyP hPq x hx`. Take `⟨j, r, hr⟩` from `h.dense (0 + 1) x`. Rewrite using `[hiff 0 j x r hr]`. Apply `hPq` to reduce the goal to its premises.
+
+Establish `hIP : (Ideal.span (Set.range y) ^ (0 + 1)).map (algebraMap R BB) ≤ P`. Rewrite using `[zero_add, pow_one, Ideal.map_le_iff_le_comap, Ideal.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hyP a`. Use `P.sub_mem (P.mul_mem_left (algebraMap R BB f ^ j) hx) (hIP hr)` as an intermediate fact.
+
+Rewrite using `[Ideal.mem_comap]`. Simplify using `using this`. Introduce `B _ _ _ _ _ hB`. Establish `hm : ∀ (n : ℕ) (x : BB), x ∈ (q ^ n).map (algebraMap R BB) → algebraMap BB B x ∈ maximalIdeal B ^ n`. Introduce `n x hx`.
+
+Establish `h1 : (q.map (algebraMap R BB)).map (algebraMap BB B) ≤ maximalIdeal B`. Rewrite using `[Ideal.map_le_iff_le_comap, hB.comap_eq]`. Apply `Ideal.pow_right_mono h1 n` to reduce the goal to its premises. Rewrite using `[← Ideal.map_pow, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+
+Use `⟨hB.noeth, hB.complete, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_eq R BB B, ← Ideal.comap_comap, hB.comap_eq, hcomap]`. Introduce `n b`. Take `⟨a, s, hs, hb⟩` from `hB.dense n b`. Take `⟨j, s', hs'⟩` from `h.dense (n + 1) s`.
+
+Take `⟨k, a', ha'⟩` from `h.dense (n + 1) a`. Use `⟨f ^ j * a', f ^ k * s', hmul (hfk k) (fun hh => hs ((hiff n j s s' hs').2 hh)), ?_⟩` and prove the remaining obligations. Establish `k1` using `hm n _ (hI2 n hs')`. Establish `k2` using `hm n _ (hI2 n ha')`. Simplify using `only [map_sub, map_mul, map_pow, ← IsScalarTower.algebraMap_apply] at k1 k2`.
+
+Use `Ideal.add_mem _ (Ideal.sub_mem _ (Ideal.mul_mem_left _ (algebraMap R B f ^ (j + k)) hb) (Ideal.mul_mem_left _ (algebraMap R B f ^ k * b) k1)) (Ideal.mul_mem_left _ (algebraMap R B f ^ j) k2) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Introduce `n a ha`. Rewrite `ha` using `[IsScalarTower.algebraMap_apply R BB B]`.
+
+Take `⟨s, hs, hsa⟩` from `hB.strict n _ ha`. Rewrite `hsa` using `[← Ideal.map_pow]`. Take `⟨j, s', hs'⟩` from `h.dense (n + 1) s`. Establish `h1 : algebraMap R BB (s' * a) ∈ (q ^ n).map (algebraMap R BB)`. Use `Ideal.sub_mem _ (Ideal.mul_mem_left _ (algebraMap R BB f ^ j) hsa) (Ideal.mul_mem_left _ (algebraMap R BB a) (hI2 n hs')) using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk⟩` from `yPrime_back h n (q ^ n) (Ideal.pow_right_mono hI n) _ h1`. Conclude with `⟨f ^ k * s', hmul (hfk k) (fun hh => hs ((hiff n j s s' hs').2 hh)), by rwa [mul_assoc]⟩`.
+-/
 theorem UpperTheory.V.Pa.Core.yPrime :
     ∀ (R σ : Type) [CommRing R] [Fintype σ] (y : σ → R) (f : R) (BB : Type) [CommRing BB] [Algebra R BB], IsYCpl y f BB → ∀ q : Ideal R, q.IsPrime → f ∉ q → (∀ a, y a ∈ q) → (q.map (algebraMap R BB)).IsPrime ∧ (q.map (algebraMap R BB)).comap (algebraMap R BB) = q ∧ (∀ P : Ideal BB, P.IsPrime → (∀ a, algebraMap R BB (y a) ∈ P) → P.comap (algebraMap R BB) ≤ q → P ≤ q.map (algebraMap R BB)) ∧ ∀ (B : Type) [CommRing B] [IsLocalRing B] [Algebra BB B] [Algebra R B] [IsScalarTower R BB B], IsCplAt BB (q.map (algebraMap R BB)) B → IsCplAt R q B := by
   intro R σ _ _ y f BB _ _ h q hq hf hy

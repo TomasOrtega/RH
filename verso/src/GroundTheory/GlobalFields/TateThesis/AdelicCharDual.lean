@@ -22,18 +22,29 @@ def mixedToInfinite : mixedSpace K →+ InfiniteAdeleRing K :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm.toAddMonoidHom
 
 omit [NumberField K] in
+/- English proof (translation)
+Rewrite using `[homeomorphMixedSpace_apply]`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace K).apply_symm_apply m`.
+-/
 theorem homeomorphMixedSpace_mixedToInfinite (m : mixedSpace K) :
     homeomorphMixedSpace K (mixedToInfinite K m) = m := by
   rw [homeomorphMixedSpace_apply]
   exact (InfiniteAdeleRing.ringEquiv_mixedSpace K).apply_symm_apply m
 
 omit [NumberField K] in
+/- English proof (translation)
+Rewrite using `[homeomorphMixedSpace_apply]`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace K).symm_apply_apply x`.
+-/
 theorem mixedToInfinite_homeomorphMixedSpace (x : InfiniteAdeleRing K) :
     mixedToInfinite K (homeomorphMixedSpace K x) = x := by
   rw [homeomorphMixedSpace_apply]
   exact (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm_apply_apply x
 
 omit [NumberField K] in
+/- English proof (translation)
+Establish `: (mixedToInfinite K : mixedSpace K → InfiniteAdeleRing K) = (homeomorphMixedSpace K).symm`. Use function extensionality and compare the values at `m`. Apply `(homeomorphMixedSpace K).injective` to reduce the goal to its premises. Rewrite using `[homeomorphMixedSpace_mixedToInfinite, Homeomorph.apply_symm_apply]`. Rewrite using `[this]`.
+
+Conclude with `(homeomorphMixedSpace K).symm.continuous`.
+-/
 theorem continuous_mixedToInfinite : Continuous (mixedToInfinite K) := by
   have : (mixedToInfinite K : mixedSpace K → InfiniteAdeleRing K) =
       (homeomorphMixedSpace K).symm := by
@@ -44,16 +55,27 @@ theorem continuous_mixedToInfinite : Continuous (mixedToInfinite K) := by
   exact (homeomorphMixedSpace K).symm.continuous
 
 omit [NumberField K] in
+/- English proof (translation)
+Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace K).symm_apply_apply _`.
+-/
 theorem mixedToInfinite_mixedEmbedding (k : K) :
     mixedToInfinite K (mixedEmbedding K k) = algebraMap K (InfiniteAdeleRing K) k := by
   rw [InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]
   exact (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm_apply_apply _
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm m m'`.
+-/
 theorem mixedToInfinite_mul (m m' : mixedSpace K) :
     mixedToInfinite K (m * m') = mixedToInfinite K m * mixedToInfinite K m' :=
   map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm m m'
 
+/- English proof (translation)
+Rewrite using `[mixedTrace_apply, homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply, infiniteTrace_apply, ← Fintype.sum_subtype_add_sum_subtype (fun w => IsReal w)]`. Use `congr 1`. Use `Fintype.sum_congr _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[w.2.mult_eq_one, Nat.cast_one, one_mul, ← extensionEmbeddingOfIsReal_apply w.2, Complex.ofReal_re]`. Use `Fintype.sum_equiv (Equiv.subtypeEquivRight fun w => not_isReal_iff_isComplex.symm) _ _ fun w => ?_` and prove the remaining obligations.
+
+Establish `hw : IsComplex w.1` using `w.2`. Use `show 2 * (extensionEmbedding w.1 (x w.1)).re = (w.1.mult : ℝ) * _`. Rewrite using `[hw.mult_eq_two, Nat.cast_ofNat]`. Both sides reduce to the same expression.
+-/
 theorem mixedTrace_homeomorphMixedSpace (x : InfiniteAdeleRing K) :
     mixedTrace K (homeomorphMixedSpace K x) = infiniteTrace K x := by
   classical
@@ -70,6 +92,25 @@ theorem mixedTrace_homeomorphMixedSpace (x : InfiniteAdeleRing K) :
     rw [hw.mult_eq_two, Nat.cast_ofNat]
     rfl
 
+/- English proof (translation)
+Use `set b := latticeBasis K`. Use `set ω := integralBasis K`. Establish `hbω : ∀ i, b i = mixedEmbedding K (ω i)` using `fun i => latticeBasis_apply K i`. Establish `hω : ∀ i, ω i = algebraMap (𝓞 K) K (RingOfIntegers.basis K i)` using `fun i => integralBasis_apply K i`. Establish `hline : ∀ i, ∃ τ : ℝ, ∀ t : ℝ, χ (t • b i) = Circle.exp (τ * t)` using `fun i => (existsUnique_circleExp_of_continuous (fun t : ℝ => χ (t • b i)) (hχ.comp (continuous_id.smul continuous_const)) (fun s t => by rw [add_smul, AddChar.map_add_eq_mul])).exists`.
+
+Use `choose τ hτ using hline`. Establish `hn : ∀ i, ∃ n : ℤ, τ i = n * (2 * Real.pi)` using `fun i => by`. Establish `h` using `hτ i 1`. Rewrite `h` using `[one_smul, mul_one, hbω, hω, h1]`. Conclude with `Circle.exp_eq_one.mp h.symm`.
+
+Use `choose n hn using hn`. Use `set ωd := (Algebra.traceForm ℚ K).dualBasis (traceForm_nondegenerate ℚ K) ω`. Use `set ξ : K := -∑ j, (n j : ℚ) • ωd j`. Establish `hξω : ∀ i, Algebra.trace ℚ K (ξ * ω i) = -(n i : ℚ)`. Introduce `i`.
+
+Establish `: ∀ j, Algebra.trace ℚ K (ωd j * ω i) = if i = j then 1 else 0` using `fun j => by`. Rewrite using `[← Algebra.traceForm_apply]`. Conclude with `LinearMap.BilinForm.apply_dualBasis_left _ _ _ _`. Simplify using `only [ξ, neg_mul, map_neg, Finset.sum_mul, map_sum, smul_mul_assoc, map_smul, this, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `⟨ξ, fun a => ?_, fun m => ?_⟩` and prove the remaining obligations.
+
+Establish `ha : algebraMap (𝓞 K) K a = ∑ i, ((RingOfIntegers.basis K).repr a i : ℤ) • ω i` using `by conv_lhs => rw [← (RingOfIntegers.basis K).sum_repr a]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, hω]`. Use `⟨-∑ i, ((RingOfIntegers.basis K).repr a i : ℤ) * n i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_intCast, ha, Finset.mul_sum, map_sum]`. Use `push_cast`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, mul_left_comm, show ((((RingOfIntegers.basis K).repr a i : ℤ)) : K) = algebraMap ℚ K ((RingOfIntegers.basis K).repr a i : ℚ) by simp, ← Algebra.smul_def, map_smul, hξω, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [← b.sum_repr m]`. Rewrite using `[addChar_map_finsetSum]`. Establish `hT : mixedTrace K (mixedEmbedding K ξ * ∑ i, b.repr m i • b i) = -∑ i, b.repr m i * n i`. Rewrite using `[Finset.mul_sum, map_sum]`.
+
+Simplify using `only [mul_smul_comm, map_smul, hbω, ← map_mul, mixedTrace_mixedEmbedding, hξω, smul_eq_mul, Rat.cast_neg, Rat.cast_intCast, mul_neg, Finset.sum_neg_distrib]`. Use `conv_rhs => rw [← b.sum_repr m, hT, neg_neg, addChar_map_finsetSum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hτ, hn, Real.fourierChar_apply']`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_mixedSpace_char_eq (χ : AddChar (mixedSpace K) Circle) (hχ : Continuous χ)
     (h1 : ∀ a : 𝓞 K, χ (mixedEmbedding K (algebraMap (𝓞 K) K a)) = 1) :
     ∃ ξ : K, (∀ a : 𝓞 K,
@@ -130,6 +171,11 @@ theorem exists_mixedSpace_char_eq (χ : AddChar (mixedSpace K) Circle) (hχ : Co
     congr 1
     ring
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `Valued.mem_nhds.1 hW`. Use `set c := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hc`. Establish `hc0 : c ≠ 0` using `fun h ↦ γ.ne_zero (MonoidWithZeroHom.ValueGroup₀.embedding_injective (h.trans (map_zero _).symm))`. Use `⟨(-(log c)).toNat + 1, fun y hy ↦ hγ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v.restrict (y - 0) < γ.1`.
+
+Rewrite using `[sub_zero, Valuation.restrict_lt_iff_lt_embedding, ← hc]`. Use `hy.trans_lt (lt_of_lt_of_eq ?_ (exp_log hc0))` and prove the remaining obligations. Rewrite using `[exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_forall_valued_le_mem {v : HeightOneSpectrum (𝓞 K)} {W : Set (v.adicCompletion K)}
     (hW : W ∈ 𝓝 (0 : v.adicCompletion K)) :
     ∃ n : ℕ, ∀ y : v.adicCompletion K, Valued.v y ≤ exp (-(n : ℤ)) → y ∈ W := by
@@ -144,10 +190,16 @@ theorem exists_forall_valued_le_mem {v : HeightOneSpectrum (𝓞 K)} {W : Set (v
   rw [exp_lt_exp]
   omega
 
+/- English proof (translation)
+Rewrite using `[valuedAdicCompletion_eq_valuation', valuation_of_algebraMap]`.
+-/
 theorem valued_coe_algebraMap (v : HeightOneSpectrum (𝓞 K)) (d : 𝓞 K) :
     Valued.v ((algebraMap (𝓞 K) K d : K) : v.adicCompletion K) = v.intValuation d := by
   rw [valuedAdicCompletion_eq_valuation', valuation_of_algebraMap]
 
+/- English proof (translation)
+Establish `hJ : (∏ v ∈ T, v.asIdeal ^ n v) ≠ ⊥`. Rewrite using `[← Ideal.zero_eq_bot, Finset.prod_ne_zero_iff]`. Conclude with `fun v _ => pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact v.ne_bot)`. Take `⟨d, hd, hd0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hJ`. Conclude with `⟨d, hd0, fun v hv => (v.intValuation_le_pow_iff_mem d (n v)).mpr ((Ideal.prod_le_inf.trans (Finset.inf_le hv)) hd)⟩`.
+-/
 theorem exists_ne_zero_forall_intValuation_le (T : Finset (HeightOneSpectrum (𝓞 K)))
     (n : HeightOneSpectrum (𝓞 K) → ℕ) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ ∀ v ∈ T, v.intValuation d ≤ exp (-(n v : ℤ)) := by
@@ -159,6 +211,13 @@ theorem exists_ne_zero_forall_intValuation_le (T : Finset (HeightOneSpectrum (�
   exact ⟨d, hd0, fun v hv => (v.intValuation_le_pow_iff_mem d (n v)).mpr
     ((Ideal.prod_le_inf.trans (Finset.inf_le hv)) hd)⟩
 
+/- English proof (translation)
+Take `⟨t, ⟨V, hVo, hVA, rfl⟩, h0, hsub⟩` from `(GroundTheory.Global.RestrictedProduct.isTopologicalBasis (R := fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K) (A := fun v => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) (fun v => Valued.isOpen_valuationSubring _)).mem_nhds_iff.mp hW`. Establish `hT : {v | ¬ V v = (v.adicCompletionIntegers K : Set (v.adicCompletion K))}.Finite` using `hVA`. Establish `hVn : ∀ v, V v ∈ 𝓝 (0 : v.adicCompletion K)` using `fun v => (hVo v).mem_nhds (h0 v)`. Use `choose n hn using fun v => exists_forall_valued_le_mem (hVn v)`. Take `⟨d, hd0, hd⟩` from `exists_ne_zero_forall_intValuation_le hT.toFinset n`.
+
+Use `⟨d, hd0, fun y hy => hsub fun v => ?_⟩` and prove the remaining obligations. Use `show ((algebraMap (𝓞 K) K d : K) : v.adicCompletion K) * y v ∈ V v`. Distinguish the cases in `hv : v ∈ hT.toFinset`. Use `hn v _ ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul, valued_coe_algebraMap]`.
+
+Conclude with `(mul_le_of_le_one_right' ((mem_adicCompletionIntegers _ _ _).mp (hy v))).trans (hd v hv)`. Establish `: V v = (v.adicCompletionIntegers K : Set (v.adicCompletion K))` using `by simpa using hv`. Rewrite using `[this]`. Conclude with `mul_mem (coe_algebraMap_mem_adicCompletionIntegers v d) (hy v)`.
+-/
 theorem exists_forall_mul_mem_of_mem_nhds {W : Set (FiniteAdeleRing (𝓞 K) K)}
     (hW : W ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 K) K)) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ ∀ y ∈ integralFiniteAdeles (𝓞 K) K,
@@ -184,6 +243,13 @@ theorem exists_forall_mul_mem_of_mem_nhds {W : Set (FiniteAdeleRing (𝓞 K) K)}
     rw [this]
     exact mul_mem (coe_algebraMap_mem_adicCompletionIntegers v d) (hy v)
 
+/- English proof (translation)
+Establish `hU : IsOpen {z : Circle | ‖(z : ℂ) - 1‖ < 1 / 2}` using `isOpen_lt (continuous_norm.comp (continuous_subtype_val.sub continuous_const)) continuous_const`. Establish `hW : χ ⁻¹' {z : Circle | ‖(z : ℂ) - 1‖ < 1 / 2} ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 K) K)` using `(hU.preimage hχ).mem_nhds (by simp)`. Take `⟨d, hd0, hd⟩` from `exists_forall_mul_mem_of_mem_nhds hW`. Use `⟨d, hd0, fun y hy => ?_⟩` and prove the remaining obligations. Set `H : Subgroup Circle` to `{ carrier := {z | ∃ y ∈ integralFiniteAdeles (𝓞 K) K, χ (algebraMap K (FiniteAdeleRing (𝓞 K) K) (algebraMap (𝓞 K) K d) * y) = z} one_mem' := ⟨0, zero_mem _, by rw [mul_zero, AddChar.map_zero_eq_one]⟩ mul_mem' := by`.
+
+Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, add_mem ha hb, by rw [mul_add, AddChar.map_add_eq_mul]⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨-a, neg_mem ha, by rw [mul_neg, AddChar.map_neg_eq_inv]⟩ }`.
+
+Establish `hH : H = ⊥` using `GroundTheory.Global.Circle.subgroup_eq_bot_of_norm_sub_one_lt H (by rintro _ ⟨a, ha, rfl⟩; exact hd a ha)`. Establish `hmem : χ (algebraMap K (FiniteAdeleRing (𝓞 K) K) (algebraMap (𝓞 K) K d) * y) ∈ H` using `⟨y, hy, rfl⟩`. Rewrite `hmem` using `[hH]`. Conclude with `Subgroup.mem_bot.mp hmem`.
+-/
 theorem exists_forall_finiteChar_mul_eq_one (χ : AddChar (FiniteAdeleRing (𝓞 K) K) Circle)
     (hχ : Continuous χ) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ ∀ y ∈ integralFiniteAdeles (𝓞 K) K,
@@ -212,16 +278,31 @@ theorem exists_forall_finiteChar_mul_eq_one (χ : AddChar (FiniteAdeleRing (𝓞
   rw [hH] at hmem
   exact Subgroup.mem_bot.mp hmem
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adeleRing_mul_fst (x y : 𝔸[K]) : (x * y).1 = x.1 * y.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adeleRing_mul_snd (x y : 𝔸[K]) : (x * y).2 = x.2 * y.2 := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_id.prodMk continuous_const`.
+-/
 theorem continuous_infiniteAdeleInl : Continuous (infiniteAdeleInl (K := K)) :=
   continuous_id.prodMk continuous_const
 
+/- English proof (translation)
+The claim follows from `continuous_const.prodMk continuous_id`.
+-/
 theorem continuous_finiteAdeleInr : Continuous (finiteAdeleInr (K := K)) :=
   continuous_const.prodMk continuous_id
 
+/- English proof (translation)
+Use `Prod.ext (α := InfiniteAdeleRing K) (β := FiniteAdeleRing (𝓞 K) K) ?_ ?_` and prove the remaining obligations. Rewrite using `[adeleRing_mul_fst, infiniteAdeleInl_fst, infiniteAdeleInl_fst, adeleRing_algebraMap_fst]`. Rewrite using `[adeleRing_mul_snd, infiniteAdeleInl_snd, infiniteAdeleInl_snd, mul_zero]`.
+-/
 theorem algebraMap_mul_infiniteAdeleInl (ξ : K) (z : InfiniteAdeleRing K) :
     algebraMap K 𝔸[K] ξ * infiniteAdeleInl z =
       infiniteAdeleInl (algebraMap K (InfiniteAdeleRing K) ξ * z) := by
@@ -229,6 +310,9 @@ theorem algebraMap_mul_infiniteAdeleInl (ξ : K) (z : InfiniteAdeleRing K) :
   · rw [adeleRing_mul_fst, infiniteAdeleInl_fst, infiniteAdeleInl_fst, adeleRing_algebraMap_fst]
   · rw [adeleRing_mul_snd, infiniteAdeleInl_snd, infiniteAdeleInl_snd, mul_zero]
 
+/- English proof (translation)
+Use `Prod.ext (α := InfiniteAdeleRing K) (β := FiniteAdeleRing (𝓞 K) K) ?_ ?_` and prove the remaining obligations. Rewrite using `[adeleRing_mul_fst, finiteAdeleInr_fst, finiteAdeleInr_fst, mul_zero]`. Rewrite using `[adeleRing_mul_snd, finiteAdeleInr_snd, finiteAdeleInr_snd, adeleRing_algebraMap_snd]`.
+-/
 theorem algebraMap_mul_finiteAdeleInr (ξ : K) (y : FiniteAdeleRing (𝓞 K) K) :
     algebraMap K 𝔸[K] ξ * finiteAdeleInr y =
       finiteAdeleInr (algebraMap K (FiniteAdeleRing (𝓞 K) K) ξ * y) := by
@@ -236,6 +320,11 @@ theorem algebraMap_mul_finiteAdeleInr (ξ : K) (y : FiniteAdeleRing (𝓞 K) K) 
   · rw [adeleRing_mul_fst, finiteAdeleInr_fst, finiteAdeleInr_fst, mul_zero]
   · rw [adeleRing_mul_snd, finiteAdeleInr_snd, finiteAdeleInr_snd, adeleRing_algebraMap_snd]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hne' : ξ - η ≠ 0` using `sub_ne_zero.mpr hne`. Apply `adelicChar_ne_one (K := K)` to reduce the goal to its premises. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Establish `hx : x = algebraMap K 𝔸[K] (ξ - η) * (algebraMap K 𝔸[K] (ξ - η)⁻¹ * x)`.
+
+Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hne', map_one, one_mul]`. Rewrite using `[AddChar.one_apply, hx, map_sub, sub_mul, AddChar.map_sub_eq_div, h, div_self']`.
+-/
 theorem eq_of_forall_adelicChar_mul_eq {ξ η : K}
     (h : ∀ x : 𝔸[K], adelicChar K (algebraMap K 𝔸[K] ξ * x) =
       adelicChar K (algebraMap K 𝔸[K] η * x)) : ξ = η := by
@@ -247,6 +336,25 @@ theorem eq_of_forall_adelicChar_mul_eq {ξ η : K}
     rw [← mul_assoc, ← map_mul, mul_inv_cancel₀ hne', map_one, one_mul]
   rw [AddChar.one_apply, hx, map_sub, sub_mul, AddChar.map_sub_eq_div, h, div_self']
 
+/- English proof (translation)
+Set `χM : AddChar (mixedSpace K) Circle` to `χ.compAddMonoidHom (infiniteAdeleInl.comp (mixedToInfinite K))`. Establish `hχM : Continuous χM` using `hχ.comp (continuous_infiniteAdeleInl.comp continuous_mixedToInfinite)`. Establish `hO' : ∀ a : 𝓞 K, χ (infiniteAdeleInl (algebraMap K (InfiniteAdeleRing K) (algebraMap (𝓞 K) K a))) = 1`. Introduce `a`. Establish `hsplit` using `infiniteAdeleInl_add_finiteAdeleInr (algebraMap K 𝔸[K] (algebraMap (𝓞 K) K a))`.
+
+Rewrite `hsplit` using `[adeleRing_algebraMap_fst, adeleRing_algebraMap_snd]`. Establish `h` using `congrArg χ hsplit`. Rewrite `h` using `[AddChar.map_add_eq_mul, hK, hO _ (algebraMap_integers_mem_integralFiniteAdeles K a), mul_one]`. Conclude with `h`. Establish `h1 : ∀ a : 𝓞 K, χM (mixedEmbedding K (algebraMap (𝓞 K) K a)) = 1` using `fun a => by show χ (infiniteAdeleInl (mixedToInfinite K (mixedEmbedding K _))) = 1`.
+
+Rewrite using `[mixedToInfinite_mixedEmbedding]`. Conclude with `hO' a`. Take `⟨ξ, hξO, hξ⟩` from `exists_mixedSpace_char_eq χM hχM h1`. Use `⟨ξ, fun x => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_sub_mem_integralFiniteAdeles (R := 𝓞 K) x.2`.
+
+Establish `hx : x = algebraMap K 𝔸[K] k + infiniteAdeleInl (x.1 - algebraMap K _ k) + finiteAdeleInr (x.2 - algebraMap K _ k)` using `by conv_lhs => rw [← infiniteAdeleInl_add_finiteAdeleInr x]`. Use `Prod.ext (α := InfiniteAdeleRing K) (β := FiniteAdeleRing (𝓞 K) K) ?_ ?_` and prove the remaining obligations. Simplify using `only [adeleRing_add_fst, infiniteAdeleInl_fst, finiteAdeleInr_fst, adeleRing_algebraMap_fst]`. Normalize the expressions using the abelian group laws. Simplify using `only [adeleRing_add_snd, infiniteAdeleInl_snd, finiteAdeleInr_snd, adeleRing_algebraMap_snd]`.
+
+Normalize the expressions using the abelian group laws. Establish `hinf : ∀ z, χ (infiniteAdeleInl z) = adelicChar K (infiniteAdeleInl (algebraMap K (InfiniteAdeleRing K) ξ * z))`. Introduce `z`. Establish `h` using `hξ (homeomorphMixedSpace K z)`. Establish `e1 : χM (homeomorphMixedSpace K z) = χ (infiniteAdeleInl z)` using `by show χ (infiniteAdeleInl (mixedToInfinite K _)) = _`.
+
+Rewrite using `[mixedToInfinite_homeomorphMixedSpace]`. Rewrite `h` using `[e1]`. Rewrite using `[h, adelicChar_of_mem_invDifferentAdeles (mem_invDifferentAdeles.mpr (by rw [infiniteAdeleInl_snd]; exact zero_mem _)), infiniteAdeleInl_fst, ← mixedTrace_homeomorphMixedSpace]`. Use `congr 3`. Rewrite using `[homeomorphMixedSpace_apply, homeomorphMixedSpace_apply, map_mul, ← InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`.
+
+Establish `hfin : ∀ y ∈ integralFiniteAdeles (𝓞 K) K, adelicChar K (finiteAdeleInr (algebraMap K (FiniteAdeleRing (𝓞 K) K) ξ * y)) = 1`. Introduce `y hy`. Establish `hξv : ∀ v : HeightOneSpectrum (𝓞 K), (ξ : v.adicCompletion K) ∈ localInvDifferent v` using `(forall_coe_mem_localInvDifferent_iff ξ).mpr hξO`. Rewrite using `[adelicChar_of_mem_invDifferentAdeles (mem_invDifferentAdeles.mpr ?_)]`. Simplify using the standard rewrite rules.
+
+Introduce `v show (ξ : v.adicCompletion K) * y v ∈ localInvDifferent v`. Rewrite using `[mul_comm]`. Conclude with `mul_mem_localInvDifferent (hy v) (hξv v)`. Use `conv_lhs => rw [hx]`. Use `conv_rhs => rw [hx]`.
+
+Rewrite using `[mul_add, mul_add, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, hK, hO _ hk, ← (algebraMap K 𝔸[K]).map_mul, adelicChar_algebraMap, algebraMap_mul_infiniteAdeleInl, algebraMap_mul_finiteAdeleInr, hfin _ hk, hinf]`.
+-/
 theorem exists_eq_adelicChar_mul_of_integral (χ : AddChar 𝔸[K] Circle) (hχ : Continuous χ)
     (hK : ∀ k : K, χ (algebraMap K 𝔸[K] k) = 1)
     (hO : ∀ y ∈ integralFiniteAdeles (𝓞 K) K, χ (finiteAdeleInr y) = 1) :
@@ -313,6 +421,17 @@ theorem exists_eq_adelicChar_mul_of_integral (χ : AddChar 𝔸[K] Circle) (hχ 
     ← (algebraMap K 𝔸[K]).map_mul, adelicChar_algebraMap, algebraMap_mul_infiniteAdeleInl,
     algebraMap_mul_finiteAdeleInr, hfin _ hk, hinf]
 
+/- English proof (translation)
+Take `⟨d, hd0, hd⟩` from `exists_forall_finiteChar_mul_eq_one (χ.compAddMonoidHom finiteAdeleInr) (hχ.comp continuous_finiteAdeleInr)`. Use `set δ : K := algebraMap (𝓞 K) K d with hδdef`. Establish `hδ : δ ≠ 0`. Rewrite using `[hδdef]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hd0`.
+
+Set `χ' : AddChar 𝔸[K] Circle` to `χ.compAddMonoidHom (AddMonoidHom.mulLeft (algebraMap K 𝔸[K] δ))`. Establish `hχ' : Continuous χ'` using `hχ.comp (continuous_const.mul continuous_id)`. Establish `hK' : ∀ k : K, χ' (algebraMap K 𝔸[K] k) = 1` using `fun k => by show χ (algebraMap K 𝔸[K] δ * algebraMap K 𝔸[K] k) = 1`. Rewrite using `[← map_mul, hK]`. Establish `hO' : ∀ y ∈ integralFiniteAdeles (𝓞 K) K, χ' (finiteAdeleInr y) = 1` using `fun y hy => by show χ (algebraMap K 𝔸[K] δ * finiteAdeleInr y) = 1`.
+
+Rewrite using `[algebraMap_mul_finiteAdeleInr]`. Conclude with `hd y hy`. Take `⟨ξ', hξ'⟩` from `exists_eq_adelicChar_mul_of_integral χ' hχ' hK' hO'`. Establish `hex : ∀ x : 𝔸[K], χ x = adelicChar K (algebraMap K 𝔸[K] (ξ' / δ) * x)`. Introduce `x`.
+
+Establish `hx : x = algebraMap K 𝔸[K] δ * (algebraMap K 𝔸[K] δ⁻¹ * x)`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hδ, map_one, one_mul]`. Establish `h` using `hξ' (algebraMap K 𝔸[K] δ⁻¹ * x)`. Express the relevant statement in the definitionally equal form `χ (algebraMap K 𝔸[K] δ * (algebraMap K 𝔸[K] δ⁻¹ * x)) = _ at h`. Rewrite `h` using `[← hx]`.
+
+Rewrite using `[h, ← mul_assoc, ← map_mul, div_eq_mul_inv]`. Conclude with `⟨ξ' / δ, hex, fun η hη => eq_of_forall_adelicChar_mul_eq fun x => (hη x).symm.trans (hex x)⟩`.
+-/
 theorem existsUnique_eq_adelicChar_mul (χ : AddChar 𝔸[K] Circle) (hχ : Continuous χ)
     (hK : ∀ k : K, χ (algebraMap K 𝔸[K] k) = 1) :
     ∃! ξ : K, ∀ x : 𝔸[K], χ x = adelicChar K (algebraMap K 𝔸[K] ξ * x) := by
@@ -344,6 +463,9 @@ theorem existsUnique_eq_adelicChar_mul (χ : AddChar 𝔸[K] Circle) (hχ : Cont
   exact ⟨ξ' / δ, hex, fun η hη => eq_of_forall_adelicChar_mul_eq fun x =>
     (hη x).symm.trans (hex x)⟩
 
+/- English proof (translation)
+The claim follows from `existsUnique_eq_adelicChar_mul (χ.compAddMonoidHom (QuotientAddGroup.mk' _)) (hχ.comp continuous_quot_mk) fun k => by show χ (QuotientAddGroup.mk (algebraMap K 𝔸[K] k)) = 1 have hk : algebraMap K 𝔸[K] k ∈ AdeleRing.principalSubgroup (𝓞 K) K := RingHom.mem_range_self _ k rw [(Quot …`.
+-/
 theorem existsUnique_adeleQuotient_char_eq (χ : AddChar (AdeleQuotient K) Circle)
     (hχ : Continuous χ) :
     ∃! ξ : K, ∀ x : 𝔸[K],
@@ -355,10 +477,16 @@ theorem existsUnique_adeleQuotient_char_eq (χ : AddChar (AdeleQuotient K) Circl
         RingHom.mem_range_self _ k
       rw [(QuotientAddGroup.eq_zero_iff _).mpr hk, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+The claim follows from `(continuous_adelicChar (K := K)).comp (continuous_const.mul continuous_id)`.
+-/
 theorem continuous_adelicChar_mul (ξ : K) :
     Continuous fun x : 𝔸[K] => adelicChar K (algebraMap K 𝔸[K] ξ * x) :=
   (continuous_adelicChar (K := K)).comp (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Rewrite using `[← map_mul, adelicChar_algebraMap]`.
+-/
 theorem adelicChar_mul_algebraMap (ξ k : K) :
     adelicChar K (algebraMap K 𝔸[K] ξ * algebraMap K 𝔸[K] k) = 1 := by
   rw [← map_mul, adelicChar_algebraMap]

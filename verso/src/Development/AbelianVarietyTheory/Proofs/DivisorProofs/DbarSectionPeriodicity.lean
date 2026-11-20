@@ -5,6 +5,13 @@ open scoped Real ContDiff
 
 namespace GlobalTheory.FlatAcycShift
 
+/- English proof (translation)
+Introduce `E _ _ g B τ M j hB hj b hb m f hf l hl z c S`. Establish `hopen : IsOpen (cov B g)` using `hB.prod isOpen_univ`. Establish `hmem : ((b, z) : Pt E g) ∈ cov B g` using `⟨hb, Set.mem_univ _⟩`. Establish `hjd : DifferentiableAt ℂ (fun z' : Fin g → ℂ => j l (b, z')) z`. Establish `h1 : DifferentiableAt ℂ (j l) (b, z)` using `((hj.1 l hl).1).differentiableAt (hopen.mem_nhds hmem)`.
+
+Conclude with `h1.comp z ((differentiableAt_const b).prodMk differentiableAt_id)`. Establish `hfd : DifferentiableAt ℝ (fun z' => f z' S) z`. Establish `h2 : Differentiable ℝ f` using `hf.1.differentiable (by simp)`. Conclude with `differentiableAt_pi.1 (h2 z) S`. Establish `hfun : (fun z' => f (z' + per (τ b) l) S) = fun z' => j l (b, z') * f z' S`.
+
+Use function extensionality and compare the values at `z'`. Rewrite using `[hf.2 l hl z']`. Both sides reduce to the same expression. Rewrite using `[← dbar_comp_translate (fun z' => f z' S) z (per (τ b) l) (ev c), hfun, dbar_mul_leibniz (hjd.restrictScalars ℝ) hfd, dbar_eq_zero_of_holomorphic hjd]`. Simplify using the standard rewrite rules.
+-/
 theorem dbar_coeff_transl : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)} {j : Fl g → Pt E g → ℂ}
     (hB : IsOpen B) (hj : IsFactor B τ M j) {b : E} (hb : b ∈ B) {m : ℕ}

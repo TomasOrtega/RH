@@ -18,6 +18,15 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 
 namespace GlobalTheory.MixHt.VSwap
 
+/- English proof (translation)
+Establish `: IsNoetherian Z` using `{}`. Take `⟨S, hS, hc, hi, hU⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible D.supp.isClosed`. Use `(hS.image fun T => if h : IsIrreducible T then h.genericPoint else genericPoint Z).subset fun z hz => ?_` and prove the remaining obligations. Take `⟨T, hT, hzT⟩` from `Set.mem_sUnion.1 (hU.le hz.2)`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [dif_pos (hi T hT)]`. Establish `hg` using `(hi T hT).isGenericPoint_genericPoint (hc T hT)`. Establish `h₁ : z ≤ (hi T hT).genericPoint` using `hg.specializes hzT`. Establish `h₂ : (hi T hT).genericPoint < genericPoint Z`. Use `lt_of_le_not_ge (genericPoint_specializes _) fun e => ?_` and prove the remaining obligations.
+
+Establish `e' : _ = genericPoint Z` using `(Specializes.antisymm e (genericPoint_specializes _)).eq`. Conclude with `D.genericPoint_notMem_supp (e' ▸ hU.ge (Set.mem_sUnion.2 ⟨T, hT, hg.mem⟩))`. Assume the negation of the conclusion as `hne`. Establish `h₃` using `Order.coheight_add_one_le (lt_of_le_not_ge h₁ fun e => hne (Specializes.antisymm h₁ e).eq)`. Establish `h₄` using `Order.coheight_add_one_le h₂`.
+
+Rewrite `h₃` using `[hz.1]`. Establish `h₅ : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add_left (le_add_self.trans h₄) 1).trans h₃`. Conclude with `absurd h₅ (by decide)`.
+-/
 theorem finite_coheight_one_mem_supp {Z : Scheme.{0}} [IsIntegral Z] [IsLocallyNoetherian Z] [CompactSpace Z]
     (D : CartierDiv Z) : {z : Z | Order.coheight z = 1 ∧ z ∈ D.supp}.Finite := by
   classical
@@ -49,6 +58,9 @@ variable (hI : ArchInteg) (hR : ArchRecip) {k : Type} [CommRing k] {Y : Scheme.{
 
 include hI hR hq hd hT in
 
+/- English proof (translation)
+Establish `hp : IsRatSec (M.tens A).B (fun c : M.B.ι × A.B.ι => r c.1 * u c.2)` using `PtHtComb.isRatSec_tens hr hu`. Rewrite using `[GlobalTheory.T.mixedHeightInduction_independent_of_section hI hR k Y q hq e hd T hT (M.tens A) (Fin.cons N L) t ht _ hp]`. Conclude with `GlobalTheory.T.inductiveArakelovFormula_rhs_tensor_additive hI k Y q hq (e + 1) hd (T (e + 1) (Fin.cons N L)) (Fin.cons N L) M A r hr u hu _ hp fun _ _ _ _ => rfl`.
+-/
 theorem add_first (N M A : HermLB q) {r : M.B.ι → Y.functionFieldˣ} (hr : IsRatSec M.B r)
     {u : A.B.ι → Y.functionFieldˣ} (hu : IsRatSec A.B u) {t : (M.tens A).B.ι → Y.functionFieldˣ}
     (ht : IsRatSec (M.tens A).B t) :
@@ -62,6 +74,13 @@ theorem add_first (N M A : HermLB q) {r : M.B.ι → Y.functionFieldˣ} (hr : Is
 
 include hI hR hq hd hT in
 
+/- English proof (translation)
+Establish `: IsNoetherian Y` using `hq.isNoetherian`. Use `set S : Set Y := {genericPoint Y} ∪ {z | Order.coheight z = 1 ∧ z ∈ (divOfSec N.isLB t ht).supp} with hS`. Establish `hfin : S.Finite` using `(Set.finite_singleton _).union (finite_coheight_one_mem_supp _)`. Take `⟨B, s, v, hsS, hvS⟩` from `GlobalTheory.T.exists_tensor_sections_nonvanishing_finite_set k Y q hq M S hfin`. Establish `hs : genericPoint Y ∈ nonzeroLocus s` using `hsS (Set.mem_union_left _ rfl)`.
+
+Establish `hv : genericPoint Y ∈ nonzeroLocus v` using `hvS (Set.mem_union_left _ rfl)`. Establish `hcov : ∀ z : Y, Order.coheight z = 1 → z ∉ nonzeroLocus t → z ∈ S` using `fun z hz hzt => Set.mem_union_right _ ⟨hz, by_contra fun h => hzt ((notMem_supp_divOfSec (hL := N.isLB) (s := t) (hs := ht)).1 h)⟩`. Establish `R1` using `GlobalTheory.T.inductiveMixedHeight_reciprocity_two_sections hR k Y q hq e hd T hT (M.tens B) N L s t hs ht fun z hz => (em (z ∈ nonzeroLocus t)).elim Or.inr fun h => Or.inl (hsS (hcov z hz h))`. Establish `R2` using `GlobalTheory.T.inductiveMixedHeight_reciprocity_two_sections hR k Y q hq e hd T hT B N L v t hv ht fun z hz => (em (z ∈ nonzeroLocus t)).elim Or.inr fun h => Or.inl (hvS (hcov z hz h))`. Establish `A1` using `add_first hI hR hq hd hT L N M B hr (isRatSec_ratOfSec v hv) (isRatSec_ratOfSec s hs)`.
+
+Establish `A2` using `GlobalTheory.T.inductiveMixedHeight_tensor_additive hI k Y q hq e hd T hT N (ratOfSec t ht) (isRatSec_ratOfSec t ht) M B L`. Rewrite using `[GlobalTheory.T.mixedHeightInduction_independent_of_section hI hR k Y q hq e hd T hT N (Fin.cons M L) r' hr' _ (isRatSec_ratOfSec t ht)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem swap_of_sec (M N : HermLB q) (t : N.B.Sec) (ht : genericPoint Y ∈ nonzeroLocus t)
     {r : M.B.ι → Y.functionFieldˣ} (hr : IsRatSec M.B r) {r' : N.B.ι → Y.functionFieldˣ} (hr' : IsRatSec N.B r') :
     recVal (T (e + 1) (Fin.cons N L)) (Fin.cons N L : Fin (e + 1) → HermLB q) M hr =
@@ -85,6 +104,11 @@ theorem swap_of_sec (M N : HermLB q) (t : N.B.Sec) (ht : genericPoint Y ∈ nonz
 
 end
 
+/- English proof (translation)
+Introduce `hI hR k _ Y _ _ q hq e hd T hT M N L r hr r' hr'`. Take `⟨A, s, u, hsS, huS⟩` from `GlobalTheory.T.exists_tensor_sections_nonvanishing_finite_set k Y q hq N {genericPoint Y} (Set.finite_singleton _)`. Establish `hs : genericPoint Y ∈ nonzeroLocus s` using `hsS rfl`. Establish `hu : genericPoint Y ∈ nonzeroLocus u` using `huS rfl`. Establish `hp` using `PtHtComb.isRatSec_tens hr' (isRatSec_ratOfSec u hu)`.
+
+Establish `K1` using `swap_of_sec hI hR hq hd hT L M (N.tens A) s hs hr hp`. Establish `K2` using `swap_of_sec hI hR hq hd hT L M A u hu hr (isRatSec_ratOfSec u hu)`. Establish `A3` using `GlobalTheory.T.inductiveMixedHeight_tensor_additive hI k Y q hq e hd T hT M r hr N A L`. Establish `A4` using `add_first hI hR hq hd hT L M N A hr' (isRatSec_ratOfSec u hu) hp`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem main : ArchInteg → ArchRecip → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y]
     (q : Y ⟶ Sp k), IsAmb q → ∀ e : ℕ, topologicalKrullDim Y = (e + 1 + 1 : ℕ) → ∀ T, IsMix q (e + 1) T →
     ∀ (M N : HermLB q) (L : Fin e → HermLB q) (r : M.B.ι → Y.functionFieldˣ) (hr : IsRatSec M.B r)

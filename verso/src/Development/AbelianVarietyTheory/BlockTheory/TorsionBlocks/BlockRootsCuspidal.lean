@@ -41,6 +41,13 @@ def LabelsAndTameInertia (D : Formalism.BasicNotions.D7) : Prop :=
     (D.ntypes.cuspidal σ → ∀ lam : D.what₂.places.Pl, D.what₂.places.resChar lam ≠ D.host.g k →
       TameAt D σ k v lam)
 
+/- English proof (translation)
+Take `⟨M, rfl, hM, rfl⟩` from `h`. Introduce `p hp h0`. Take `⟨q, hq, rfl⟩` from `Multiset.mem_map.1 hp`. Establish `hc` using `(hM q hq).1`. Take `⟨x, hx⟩` from `Multiset.card_pos_iff_exists_mem.1 (hc ▸ h0)`.
+
+Establish `hle : q.1.2 • q.2 ≤ (M.map fun p => p.1.2 • p.2).sum` using `Multiset.single_le_sum (fun _ _ => Multiset.zero_le _) _ (Multiset.mem_map_of_mem _ hq)`. Establish `h1` using `Multiset.count_le_of_le x hle`. Establish `h2` using `Multiset.nodup_iff_count_le_one.1 hR x`. Rewrite `h1` using `[Multiset.count_nsmul]`. Establish `h3` using `Multiset.one_le_count_iff_mem.2 hx`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem IsBlockRoots.le_one {F : Type} [Monoid F] {g : ℕ} {B : Multiset (ℕ × ℕ)} {Rt : Multiset F}
     (h : IsBlockRoots g B Rt) (hR : Rt.Nodup) : ∀ p ∈ B, 0 < p.1 → p.2 ≤ 1 := by
   classical
@@ -57,6 +64,15 @@ theorem IsBlockRoots.le_one {F : Type} [Monoid F] {g : ℕ} {B : Multiset (ℕ �
   have h3 := Multiset.one_le_count_iff_mem.2 hx
   nlinarith
 
+/- English proof (translation)
+Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hdeg : ((D.nd.lab k σ v).map (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)))).natDegree = D.R.r`. Rewrite using `[natDegree_map]`. Conclude with `(D.nd.lab_monic k σ v).2`. Establish `hcard` using `IsAlgClosed.card_roots_eq_natDegree (p := (D.nd.lab k σ v).map (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k))))`.
+
+Use `⟨{((D.R.r, 1), labelRoots D σ k v)}, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_singleton]`. Conclude with `h.symm`. Introduce `p hp`. Rewrite `hp` using `[Multiset.mem_singleton]`.
+
+Substitute `hp` using the available equality. Use `⟨hcard.trans hdeg, ?_⟩` and prove the remaining obligations. Use `roots_map_of_injective_of_card_eq_natDegree (f := frobenius (Formalism.CyclotomicNorms.Fbar (D.host.g k)) (D.host.g k)) (RingHom.injective _) hcard` as an intermediate fact. Rewrite `this` using `[Polynomial.map_map, RingHom.ext_zmod ((frobenius _ _).comp _) (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)))]`. Conclude with `this`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem blockRootsAt_of_cuspidal (D : Formalism.BasicNotions.D7) (σ : D.what₂.FT) (k : Fin 2) (v : D.nd.PlG k)
     (h : D.ntypes.cuspidal σ) : BlockRootsAt D σ k v := by
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩

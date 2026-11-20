@@ -10,6 +10,15 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 
 local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 
+/- English proof (translation)
+Establish `hbdd : BddAbove {e : ℕ | n ∈ 𝔭 ^ e}`. Assume the negation of the conclusion as `hnb`. Rewrite `hnb` using `[not_bddAbove_iff]`. Apply `hn` to reduce the goal to its premises. Establish `hI` using `Ideal.iInf_pow_eq_bot_of_isDomain (I := 𝔭) h𝔭.ne_top`.
+
+Rewrite using `[← Ideal.mem_bot, ← hI, Ideal.mem_iInf]`. Introduce `i`. Take `⟨e', he', hie'⟩` from `hnb i`. Conclude with `Ideal.pow_le_pow_right hie'.le he'`. Establish `hne : {e : ℕ | n ∈ 𝔭 ^ e}.Nonempty` using `⟨0, by simp⟩`.
+
+Unfold `vF`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Conclude with `le_csSup hbdd he`. Introduce `he`.
+
+Establish `hmem : sSup {e : ℕ | n ∈ 𝔭 ^ e} ∈ {e : ℕ | n ∈ 𝔭 ^ e}` using `Nat.sSup_mem hne hbdd`. Conclude with `Ideal.pow_le_pow_right he hmem`.
+-/
 theorem mem_pow_iff_le_vF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {n : 𝓞 F} (hn : n ≠ 0) (e : ℕ) :
     n ∈ 𝔭 ^ e ↔ e ≤ vF 𝔭 n := by
   have hbdd : BddAbove {e : ℕ | n ∈ 𝔭 ^ e} := by
@@ -30,6 +39,9 @@ theorem mem_pow_iff_le_vF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {n : 
     have hmem : sSup {e : ℕ | n ∈ 𝔭 ^ e} ∈ {e : ℕ | n ∈ 𝔭 ^ e} := Nat.sSup_mem hne hbdd
     exact Ideal.pow_le_pow_right he hmem
 
+/- English proof (translation)
+Unfold `cnt`. Rewrite using `[Ideal.Quotient.eq.mpr h]`.
+-/
 theorem cnt_congr (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k M : ℕ) {n n' : 𝓞 K}
     (h : n - n' ∈ extP K 𝔭 ^ k) : cnt hF 𝔭 k M n = cnt hF 𝔭 k M n' := by
   unfold cnt
@@ -38,6 +50,17 @@ theorem cnt_congr (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k M : ℕ) {n n' : 
 variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Establish `h0` using `sum_nkCount hK hF hs hd hL hLi h𝔭 1`. Use `MeanC.finite_quot_pow h𝔭 1` as an intermediate fact. Use `Fintype.ofFinite (𝓞 F ⧸ 𝔭 ^ 1)` as an intermediate fact. Rewrite `h0` using `[finsum_eq_sum_of_fintype, Finset.sum_congr rfl fun n' _ => nkCount_eq_cnt hK hF hs hd hL hLi h𝔭 hv le_rfl _, ← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ (0 : 𝓞 F ⧸ 𝔭 ^ 1))]`. Establish `h1 : (cnt hF 𝔭 1 (finrank K V) (ι (Quotient.out (0 : 𝓞 F ⧸ 𝔭 ^ 1))) : ℝ) + ∑ n' ∈ Finset.univ.erase (0 : 𝓞 F ⧸ 𝔭 ^ 1), (cnt hF 𝔭 1 (finrank K V) (ι (Quotient.out n')) : ℝ) = (Ideal.absNorm 𝔭 : ℝ) ^ (2 * finrank K V * 1)` using `by exact_mod_cast h0`.
+
+Establish `h2 : cnt hF 𝔭 1 (finrank K V) (ι (Quotient.out (0 : 𝓞 F ⧸ 𝔭 ^ 1))) = cnt hF 𝔭 1 (finrank K V) (ι n)`. Apply `cnt_congr` to reduce the goal to its premises. Rewrite using `[← map_sub, idealPowerSpanBounds.mem_pow_iff]`. Use `sub_mem ?_ (by rwa [pow_one])` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, Ideal.Quotient.mk_out]`.
+
+Establish `h3 : ∀ n' ∈ Finset.univ.erase (0 : 𝓞 F ⧸ 𝔭 ^ 1), (cnt hF 𝔭 1 (finrank K V) (ι (Quotient.out n')) : ℝ) = (Ideal.absNorm 𝔭 : ℝ) ^ (2 * finrank K V - 1) * (1 - etaF K F 𝔭 ^ finrank K V * (Ideal.absNorm 𝔭 : ℝ) ^ (-(finrank K V : ℤ)))`. Introduce `n' hn'`. Establish `hne : Quotient.out n' ∉ 𝔭`. Introduce `hmem`. Apply `Finset.ne_of_mem_erase hn'` to reduce the goal to its premises.
+
+Rewrite using `[← Ideal.Quotient.mk_out n', Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(pow_one 𝔭).ge hmem`. Rewrite using `[cnt_unit hK hF h𝔭 hm le_rfl hne, mul_one]`. Establish `hcard : ((Finset.univ.erase (0 : 𝓞 F ⧸ 𝔭 ^ 1)).card : ℝ) = (Ideal.absNorm 𝔭 : ℝ) - 1`. Rewrite using `[Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, ← Nat.card_eq_fintype_card, MeanC.card_quot_pow, pow_one, Nat.cast_sub (MeanC.one_lt_absNorm h𝔭).le, Nat.cast_one]`.
+
+Rewrite `h1` using `[h2, Finset.sum_congr rfl h3, Finset.sum_const, nsmul_eq_mul, hcard, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cnt_one_of_mem (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)}
@@ -79,6 +102,13 @@ theorem cnt_one_of_mem (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
   rw [h2, Finset.sum_congr rfl h3, Finset.sum_const, nsmul_eq_mul, hcard, mul_one] at h1
   linarith
 
+/- English proof (translation)
+Substitute `hT hβ hc1` using the available equality. Establish `e : 2 * (t + 1) - 1 = 2 * t + 1` using `by omega`. Establish `hq' : q ≠ 0` using `hq.ne'`. Establish `h1 : (j + 2) * (2 * t + 1) = (2 * t + 1) * (j + 1) + (2 * t + 1)` using `by ring`. Rewrite using `[e, h1, pow_add q ((2 * t + 1) * (j + 1)) (2 * t + 1), add_div, mul_div_mul_left _ _ (pow_ne_zero _ hq')]`.
+
+Use `congr 1`. Establish `hε2 : ε = 1 ∨ ε = -1` using `mul_self_eq_one_iff.mp (by rw [← sq]; exact hε)`. Break down `hε2 with rfl | rfl` into its components or cases. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem real_step (q T ε β c1 cI : ℝ) (j t : ℕ) (hq : 0 < q) (hT : T = q ^ t) (hε : ε ^ 2 = 1)
     (hβ : β = 1 - ε * (q ^ (t + 1))⁻¹)
     (hc1 : c1 = q ^ (2 * (t + 1)) - (q - 1) * (q ^ (2 * (t + 1) - 1) * β)) :

@@ -4,6 +4,25 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory.MomT.MomentCompanion
 
+/- English proof (translation)
+Establish `hd` using `d.2`. Establish `hIN : Ideal.span {ϖ} • d.1.N ≤ d.1.L`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr y hy`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`.
+
+Conclude with `hd.smul_N_mem_L (fun P => Ideal.mul_mem_left _ _ (hST P)) hy`. Take `⟨h1, h2⟩` from `glue_unimodular (I := Ideal.span {ϖ}) (J := Ideal.span {cO E ϖ}) (fun p hp => by`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hp`. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`.
+
+Use the proof step `(fun p hp => by`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hp`. Rewrite using `[map_mul, cO_cO]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`. Use the proof step `(by`.
+
+Take `⟨u, v, huv⟩` from `hcop`. Conclude with `⟨u * ϖ, Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _), v * cO E ϖ, Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _), huv⟩)`. Use the proof step `hd.uni hd.L_lattice hd.L_le_N hIN`. Establish `hbar : ∀ x ∈ d.1.L ⊔ Ideal.span {ϖ} • dual (hStd E b) d.1.L, cO E ϖ • x ∈ d.1.L`. Introduce `x hx`.
+
+Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[smul_add]`. Use `Submodule.add_mem _ (Submodule.smul_mem _ _ hy) ?_` and prove the remaining obligations. Use `Submodule.smul_induction_on hz (fun r hr u hu => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+
+Conclude with `hIN (Submodule.smul_mem_smul hr (conj_smul_dual_mem hd.uni hIN (by rw [cO_cO]; exact Ideal.mem_span_singleton_self _) hu))`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hu hv`. Use `⟨_, ⟨h1, h2⟩, fun y hy => ?_, fun y hy => ?_, fun P y => ?_⟩` and prove the remaining obligations. Establish `: ϖ • y ∈ d.1.L` using `hd.smul_N_mem_L hST hy`.
+
+Rewrite `this` using `[← algebraMap_smul E ϖ y]`. Conclude with `Submodule.mem_sup_left this`. Use `hd.L_le_N (hbar y hy)` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul E (cO E ϖ) y, algebraMap_cO]`. Conclude with `this`.
+
+Establish `hn : cO E ϖ ∉ P.1.asIdeal`. Introduce `h`. Take `⟨u, v, huv⟩` from `hcop`. Conclude with `one_notMem P.1 (huv ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ (hST P)) (Ideal.mul_mem_left _ _ h))`. Rewrite using `[← hd.mem_locP_L P y]`.
+
+Conclude with `⟨fun h => localization_le_of_smul_mem hn hbar h, fun h => localization_le_of_smul_mem (one_notMem P.1) (fun x hx => by`. Rewrite using `[one_smul]`. Conclude with `Submodule.mem_sup_left hx) h⟩`.
+-/
 theorem companion_gen {E : Type} [Field E] [NumberField E] [StarRing E] {b : ℕ}
     {ST SG : Finset (HeightOneSpectrum (𝓞 E))} (ϖ : 𝓞 E) (d : DecoSet E b ST SG)
     (hST : ∀ P : ST, ϖ ∈ P.1.asIdeal) (hcop : IsCoprime ϖ (cO E ϖ)) :
@@ -56,6 +75,9 @@ theorem companion_gen {E : Type} [Field E] [NumberField E] [StarRing E] {b : ℕ
     exact ⟨fun h => localization_le_of_smul_mem hn hbar h, fun h => localization_le_of_smul_mem (one_notMem P.1) (fun x hx => by
       rw [one_smul]; exact Submodule.mem_sup_left hx) h⟩
 
+/- English proof (translation)
+Introduce `_ _ _ ϖ d _ h0 hcop _` and use `companion_gen ϖ d (fun P => (mem_divs h0 P.1).1 P.2) hcop`.
+-/
 theorem companion : ∀ (X : Fields) (b : ℕ) (SG : Finset (HeightOneSpectrum (𝓞 X.E))) (ϖ : 𝓞 X.E) (d : DecoSet X.E b (divs ϖ) SG), X.Ok → ϖ ≠ 0 → IsCoprime ϖ (X.conjO ϖ) → (∀ P ∈ divs ϖ, ϖ ∉ P.asIdeal ^ 2) → ∃ N'' : Submodule (𝓞 X.E) (Sp X.E b), IsSdLat N'' ∧ (∀ y ∈ d.1.N, (ϖ : X.E) • y ∈ N'') ∧ (∀ y ∈ N'', star (ϖ : X.E) • y ∈ d.1.N) ∧ ∀ (P : ↥(divs ϖ)) (y : Sp X.E b), y ∈ localization₂ P.1.asIdeal N'' ↔ y ∈ d.1.at P.1 ∧ d.1.f P y = 0 :=
   fun _ _ _ ϖ d _ h0 hcop _ => companion_gen ϖ d (fun P => (mem_divs h0 P.1).1 P.2) hcop
 

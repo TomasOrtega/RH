@@ -13,6 +13,53 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Introduce `hstd hun hp e hee`. Take `⟨θ, h3, h4⟩` from `theta_exists σ v hstd.1`. Establish `hsp` using `thetaSpan_holds σ J ψ v hstd hun θ h4`. Establish `hind` using `theta_indep σ v hstd.1 θ h3`. Use `set iθ : Fv F v ⊗[F] E := inclR (F := F) (Fv F v) (θ : E) with hiθ`.
+
+Establish `scm : ∀ a b : Fv F v, sc (E` using `E) v (a * b) = sc (E := E) v a * sc (E := E) v b := fun a b => by`. Simplify using `only [sc_eq', map_mul]`. Establish `hcoord : ∀ y : Fv F v ⊗[F] E, ∃ c0 c1 : Fv F v, y = sc (E` using `E) v c0 + sc (E := E) v c1 * iθ := by`. Establish `hnot : ∀ c : F, algebraMap F E c ≠ (θ : E)`. Introduce `c hc`.
+
+Establish `hint : IsIntegral ℤ c`. Rewrite using `[← isIntegral_algebraMap_iff (A := F) (B := E) (FaithfulSMul.algebraMap_injective F E), hc]`. Conclude with `θ.isIntegral_coe`. Set `c' : 𝓞 F` to `⟨c, (mem_integralClosure_iff ℤ F).2 hint⟩`. Establish `hθ : algebraMap (𝓞 F) (𝓞 E) c' = θ` using `RingOfIntegers.ext hc`.
+
+Use `(h3 (Ideal.Quotient.mk _ c') (-1) (by` as an intermediate fact. Rewrite using `[Ideal.Quotient.algebraMap_quotient_map_quotient, hθ, map_neg, map_one]`. Use the proof step `ring)).2`. Conclude with `one_ne_zero (neg_eq_zero.1 this)`. Establish `li : LinearIndependent F ![(1 : E), (θ : E)]`.
+
+Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero, smul_eq_zero, one_ne_zero, or_false] at hst`.
+
+Conclude with `⟨hst, rfl⟩`. It suffices to derive a contradiction. Apply `hnot (-(t⁻¹ * s))` to reduce the goal to its premises. Establish `hy' : (θ : E) = t⁻¹ • (t • (θ : E))` using `by rw [smul_smul, inv_mul_cancel₀ ht, one_smul]`. Rewrite using `[hy', eq_neg_of_add_eq_zero_right hst, smul_neg, smul_smul, Algebra.algebraMap_eq_smul_one, neg_smul]`.
+
+Set `b : Module.Basis (Fin 2) F E` to `basisOfLinearIndependentOfCardEqFinrank li (by simpa using hstd.1.2.2.1.symm)`. Set `B` to `Algebra.TensorProduct.basis (Fv F v) b`. Establish `hB0 : B 0 = (1 : Fv F v) ⊗ₜ[F] (1 : E)` using `by simp [B, b, Algebra.TensorProduct.basis_apply]`. Establish `hB1 : B 1 = (1 : Fv F v) ⊗ₜ[F] (θ : E)` using `by simp [B, b, Algebra.TensorProduct.basis_apply]`. Introduce `y`.
+
+Use `⟨B.repr y 0, B.repr y 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← B.sum_repr y]`. Rewrite using `[Fin.sum_univ_two, hB0, hB1, smul_eq_sc, smul_eq_sc, ← Algebra.TensorProduct.one_def, mul_one]`. Both sides reduce to the same expression. Take `⟨ϖ, hϖ⟩ : ∃ ϖ : Fv F v, IsUnif v ϖ` from `⟨unifV v, unifV_val v⟩`.
+
+Take `⟨ρ, -, hρk, -⟩` from `resQ_of σ J ψ v (thetaBas_of σ J ψ v (thetaSpan_holds σ J ψ v)) hstd hun ϖ hϖ`. Establish `hϖ1 : Valued.v ϖ < 1` using `by rw [show Valued.v ϖ = _ from hϖ]; decide`. Establish `hnotPO : ∀ d0 d1 : Fv F v, (d0 = 1 ∨ d1 = 1) → sc (E` using `E) v d0 + sc (E := E) v d1 * iθ ∉ PO (E := E) v ϖ := by`. Introduce and unpack `d0 d1 hd ⟨o, ho, hzo⟩`. Take `⟨e0, e1, he⟩` from `hsp o ho`.
+
+Establish `hz' : sc (E` using `E) v d0 + sc (E := E) v d1 * iθ = sc (E := E) v (ϖ * e0) + sc (E := E) v (ϖ * e1) * iθ := by`. Rewrite using `[hzo, he]`. Simplify using `only [sc_eq', map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsub` using `hind (d0 - ϖ * e0) (d1 - ϖ * e1) (by simp only [sc_eq', map_sub] at hz' ⊢; linear_combination hz')`.
+
+Establish `key : ∀ (d : Fv F v) (e' : v.adicCompletionIntegers F), d - ϖ * e' = 0 → d = 1 → False`. Introduce `d e' h0 h1`. Substitute `h1` using the available equality. Establish `h' : (1 : Fv F v) = ϖ * e'` using `sub_eq_zero.1 h0`. Establish `hv` using `congrArg Valued.v h'`.
+
+Rewrite `hv` using `[map_one, map_mul]`. Establish `he1 : Valued.v (e' : Fv F v) ≤ 1` using `e'.2`. Establish `hlt : Valued.v ϖ * Valued.v (e' : Fv F v) < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right' he1) hϖ1`. Conclude with `(ne_of_lt hlt).symm hv`. Break down `hd with h | h` into its components or cases.
+
+Conclude with `key d0 e0 hsub.1 h`. Conclude with `key d1 e1 hsub.2 h`. Establish `hmem : ∀ a : Fv F v, Valued.v a ≤ 1 → ∀ o ∈ OEv (E` using `E) v, sc (E := E) v a * o ∈ OEv (E := E) v := fun a ha o ho => sc_mul_mem_oEv v ha ho`. Establish `hnorm : ∀ y : Fv F v ⊗[F] E, y ≠ 0 → ∃ c : Fv F v, sc (E` using `E) v c * y ∈ OEv (E := E) v ∧ sc (E := E) v c * y ∉ PO (E := E) v ϖ := by`. Introduce `y hy`.
+
+Take `⟨c0, c1, rfl⟩` from `hcoord y`. Distinguish the cases in `hle : Valued.v c1 ≤ Valued.v c0`. Establish `hc0 : c0 ≠ 0`. Introduce and unpack `rfl`. Establish `hc1 : c1 = 0`.
+
+Rewrite `hle` using `[map_zero, le_zero_iff, map_eq_zero]`. Conclude with `hle`. Apply `hy` to reduce the goal to its premises. Rewrite using `[hc1]`. Simplify using `[sc_eq']`.
+
+Establish `e : sc (E` using `E) v c0⁻¹ * (sc (E := E) v c0 + sc (E := E) v c1 * iθ) = sc (E := E) v 1 + sc (E := E) v (c0⁻¹ * c1) * iθ := by`. Simplify using `only [mul_add, ← mul_assoc, ← scm, inv_mul_cancel₀ hc0]`. Establish `hv : Valued.v (c0⁻¹ * c1) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨c0⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `Orb.oev_add v (by simpa using hmem 1 (by rw [map_one]) 1 (Orb.oSub (E := E) v).1) (hmem _ hv _ (Orb.gen_mem v θ))`. Rewrite using `[e]`. Conclude with `hnotPO 1 _ (Or.inl rfl)`. Use `push Not at hle`.
+
+Establish `hc1 : c1 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hle` using `[map_zero]`. Conclude with `absurd hle (not_lt_of_ge zero_le')`. Establish `e : sc (E` using `E) v c1⁻¹ * (sc (E := E) v c0 + sc (E := E) v c1 * iθ) = sc (E := E) v (c1⁻¹ * c0) + sc (E := E) v 1 * iθ := by`.
+
+Simplify using `only [mul_add, ← mul_assoc, ← scm, inv_mul_cancel₀ hc1]`. Establish `hv : Valued.v (c1⁻¹ * c0) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨c1⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `Orb.oev_add v (by simpa using hmem _ hv 1 (Orb.oSub (E := E) v).1) (hmem 1 (by rw [map_one]) _ (Orb.gen_mem v θ))`. Rewrite using `[e]`. Conclude with `hnotPO _ 1 (Or.inr rfl)`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+
+Take `⟨c, hc1, hc2⟩` from `hnorm e hne.1`. Take `⟨c', hc1', hc2'⟩` from `hnorm (1 - e) (sub_ne_zero.2 (Ne.symm hne.2))`. Use `haveI : IsDomain (QE (E := E) v) := (Ideal.Quotient.isDomain_iff_prime _).2 hp`. Establish `h0 : (sc (E` using `E) v c * e) * (sc (E := E) v c' * (1 - e)) = 0 := by`. Establish `h1 : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, hee, sub_self]`.
+
+Combine the equalities or inequalities in the displayed calculation. Set `z1 : OR (E` to `E) v := ⟨_, hc1⟩`. Set `z2 : OR (E` to `E) v := ⟨_, hc1'⟩`. Establish `hz : z1 * z2 = 0` using `Subtype.ext h0`. Establish `h` using `congrArg ρ hz`.
+
+Rewrite `h` using `[map_mul, map_zero]`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `hc2 ((hρk z1).1 h)`. Conclude with `hc2' ((hρk z2).1 h)`.
+-/
 theorem etaIn_holds : EtaIn σ J ψ v := by
   intro hstd hun hp e hee
   obtain ⟨θ, h3, h4⟩ := theta_exists σ v hstd.1
@@ -134,6 +181,9 @@ theorem etaIn_holds : EtaIn σ J ψ v := by
   · exact hc2 ((hρk z1).1 h)
   · exact hc2' ((hρk z2).1 h)
 
+/- English proof (translation)
+The claim follows from `resAlg_of_etaSp σ J ψ v (etaIn_holds σ J ψ v) hS`.
+-/
 theorem resAlg_of_sp (hS : EtaSp σ J ψ v) : ResAlg σ J ψ v :=
   resAlg_of_etaSp σ J ψ v (etaIn_holds σ J ψ v) hS
 

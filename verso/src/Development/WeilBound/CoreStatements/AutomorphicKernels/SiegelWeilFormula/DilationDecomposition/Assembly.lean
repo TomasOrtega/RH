@@ -9,6 +9,11 @@ open GlobalTheory.Doubling (absE)
 
 namespace PositivityTheory.SiegelWeilFormula.Kdil
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Rewrite using `[iteratedDeriv_succ, ih, iteratedDeriv_succ]`.
+
+Use function extensionality and compare the values at `z`. Conclude with `deriv_mul_const_field _`.
+-/
 theorem iteratedDeriv_mul_const' (f : ℂ → ℂ) (c : ℂ) :
     ∀ r : ℕ, iteratedDeriv r (fun z => f z * c) = fun z => iteratedDeriv r f z * c := by
   intro r
@@ -21,6 +26,37 @@ theorem iteratedDeriv_mul_const' (f : ℂ → ℂ) (c : ℂ) :
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d R w Ψ hΨ φ hφ g X a ha`. Unfold `TAll at hT`. Establish `hTA : ThetaAuto` using `hT.2.2.2.2`. Take `⟨hμ0, hμT, hTA'⟩` from `hTA F E σ d`. Use `haveI : IsTopologicalGroup d.G := (hAux F E σ d).2.2.1`.
+
+Use `haveI : Countable (Matrix (Fin d.m) (Fin d.n) E) := hMC E d.m d.n`. Take `⟨L, hL⟩` from `hLE F E σ d R w`. Take `⟨y₀, Ψ', hsplit, hgauss⟩` from `hSD F E σ d R w L hL Ψ hΨ g`. Take `⟨Gf, hGt, hGd, hGc, hGb, hGr⟩` from `hLF F E σ d R w L hL X a ha`. Take `⟨hUo, hUt, hUb⟩` from `hSO d.n X`.
+
+Use `set ν : Measure (UA σ d.A.J) := ((d.μ.restrict d.D) Set.univ)⁻¹ • d.μ.restrict d.D with hν`. Establish `hνu : ν Set.univ = 1`. Rewrite using `[hν, Measure.smul_apply, Measure.restrict_apply_univ, smul_eq_mul]`. Conclude with `ENNReal.inv_mul_cancel hμ0 hμT`. Use `haveI : IsFiniteMeasure ν := ⟨by rw [hνu]; exact ENNReal.one_lt_top⟩`.
+
+Set `Mt : UA σ d.A.J → Matrix (Fin d.m) (Fin d.n) E → Mx F E d.m d.n` to `fun h k => mat h⁻¹ * incM F k`. Set `Fk : GR d.n → ℂ → UA σ d.A.J → Matrix (Fin d.m) (Fin d.n) E → ℂ` to `fun p z h k => Gf (y₀ * p) z (R.loc w (Mt h k)) * Ψ' (Mt h k)`. Establish `hsum : ∀ (P : PX d.m d.n) (y : GR d.n) (h : UA σ d.A.J), thetaSum F ((d.om (g * R.ι w y)) ((d.S h) (φ P))) = ∑' k, L (y₀ * y) (fP P) (R.loc w (Mt h k)) * Ψ' (Mt h k)`. Introduce `P y h`. Rewrite using `[hTP F E σ d (φ P) (hφ P).1 (g * R.ι w y) h, hsplit (φ P) (hφ P).1 (fP P) (hFP d.m d.n P) (hφ P).2 y]`.
+
+Both sides reduce to the same expression. Establish `hid : ∀ (p : GR d.n) (t : ℝ) (h : UA σ d.A.J), ∑' k, Fk p t h k = thetaSum F ((d.om (g * R.ι w (p * a t))) ((d.S h) (φ 1)))`. Introduce `p t h`. Rewrite using `[hsum 1 (p * a t) h]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations.
+
+Use `show Gf (y₀ * p) (t : ℂ) (R.loc w (Mt h k)) * Ψ' (Mt h k) = _`. Rewrite using `[hGt, mul_assoc y₀ p (a t)]`. Establish `hshift : Continuous fun q : GR d.n × ℂ => (y₀ * q.1, q.2)` using `(continuous_const.mul continuous_fst).prodMk continuous_snd`. Establish `hdiff : ∀ p h k, DifferentiableOn ℂ (fun z => Fk p z h k) (strip X)` using `fun p h k => (hGd (y₀ * p) _).mul_const _`. Establish `hcont : ∀ h k, ContinuousOn (fun q : GR d.n × ℂ => Fk q.1 q.2 h k) (Set.univ ×ˢ strip X)`.
+
+Introduce `h k`. Establish `hmap : Set.MapsTo (fun q : GR d.n × ℂ => (y₀ * q.1, q.2)) (Set.univ ×ˢ strip X) (Set.univ ×ˢ strip X)` using `fun q hq => ⟨Set.mem_univ _, hq.2⟩`. Conclude with `((hGc (R.loc w (Mt h k))).comp hshift.continuousOn hmap).mul continuousOn_const`. Establish `hmeas : ∀ (p : GR d.n) (t : ℝ), (t : ℂ) ∈ strip X → AEStronglyMeasurable (fun h => ∑' k, Fk p t h k) ν`. Introduce `p t _`.
+
+Establish `hI` using `(hTA' (φ 1) (hφ 1).1).1 (g * R.ι w (p * a t))`. Establish `he : (fun h => ∑' k, Fk p t h k) = fun h => thetaSum F ((d.om (g * R.ι w (p * a t))) ((d.S h) (φ 1)))`. Use function extensionality and compare the values at `fun h => hid p t h`. Rewrite using `[he]`. Conclude with `hI.aestronglyMeasurable.smul_measure _`.
+
+Establish `hdom : ∀ q ∈ Set.univ ×ˢ strip X, ∃ N ∈ 𝓝 q, ∃ (M : UA σ d.A.J → Matrix (Fin d.m) (Fin d.n) E → ℝ) (b : UA σ d.A.J → ℝ), (∀ h, Summable (M h)) ∧ Integrable b ν ∧ (∀ h, ∑' k, M h k ≤ b h) ∧ ∀ q' ∈ N, q'.2 ∈ strip X → ∀ h k, ‖Fk q'.1 q'.2 h k‖ ≤ M h k`. Introduce `q hq`. Take `⟨N, hN, C, δ, hδ, hb⟩` from `hGb (y₀ * q.1, q.2) ⟨Set.mem_univ _, hq.2⟩`. Take `⟨K, hK⟩` from `hTB F E σ d _ (hgauss δ hδ)`. Use `⟨(fun q : GR d.n × ℂ => (y₀ * q.1, q.2)) ⁻¹' N, hshift.continuousAt.preimage_mem_nhds hN, fun h k => max C 0 * ‖R.tens w (fun u => ((Real.exp (-δ * sq u) : ℝ) : ℂ)) Ψ' (Mt h k)‖, fun _ => max C 0 * K, fun h => (hK h).1.mul_left _, integrable_const _, fun h => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[tsum_mul_left]`. Conclude with `mul_le_mul_of_nonneg_left (hK h).2 (le_max_right _ _)`. Introduce `q' hq' hq'U h k`. Establish `hb'` using `hb (y₀ * q'.1, q'.2) hq' hq'U (R.loc w (Mt h k))`. Use `show ‖Gf (y₀ * q'.1) q'.2 (R.loc w (Mt h k)) * Ψ' (Mt h k)‖ ≤ max C 0 * ‖((Real.exp (-δ * sq (R.loc w (Mt h k))) : ℝ) : ℂ) * Ψ' (Mt h k)‖`.
+
+Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (hb'.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.exp_pos _).le)) (norm_nonneg _)`. Take `⟨hHc, hHd, hHr⟩` from `hHM (GR d.n) (UA σ d.A.J) (Matrix (Fin d.m) (Fin d.n) E) ν (strip X) hUo hUb Fk hdiff hcont hmeas hdom`. Establish `h0 : (0 : ℂ) ∈ strip X` using `by simpa using hUt 0`. Use `⟨strip X, fun y z => ∫ h, ∑' k, Fk y z h k ∂ν, hUo, hUt, hHc, fun y => ⟨hHd y, fun t => ?_, fun r => ?_⟩⟩` and prove the remaining obligations.
+
+Use `show ∫ h, ∑' k, Fk y t h k ∂ν = ∫ h, thetaSum F ((d.om (g * R.ι w (y * a t))) ((d.S h) (φ 1))) ∂ν`. Conclude with `integral_congr_ae (ae_of_all _ fun h => hid y t h)`. Establish `hDC' : ContinuousOn (fun q : GR d.n × ℂ => iteratedDeriv r (fun z => ∫ h, ∑' k, Fk q.1 z h k ∂ν) q.2) (Set.univ ×ˢ strip X)` using `hDC (GR d.n) (strip X) hUo (fun y z => ∫ h, ∑' k, Fk y z h k ∂ν) hHc hHd r`. Establish `hcL : Continuous fun y : GR d.n => iteratedDeriv r (fun z => ∫ h, ∑' k, Fk y z h k ∂ν) 0` using `hDC'.comp_continuous (f := fun y : GR d.n => (y, (0 : ℂ))) (continuous_id.prodMk continuous_const) (fun y => ⟨Set.mem_univ _, h0⟩)`. Establish `hcR : Continuous fun y : GR d.n => d.I (φ ((dil (2 * Real.pi) X ^ r) 1)) (g * R.ι w y)` using `(hTA' _ (hφ _).1).2.1.comp (continuous_const.mul (R.cont w))`.
+
+Establish `hdense : Dense {y : GR d.n | (Matrix.toBlocks₂₂ (mR (y₀ * y))).det ≠ 0}` using `(hBD d.n).preimage (isOpenMap_mul_left y₀)`. Establish `heq` using `Continuous.ext_on hdense hcL hcR (fun y hy => by show iteratedDeriv r (fun z => ∫ h, ∑' k, Fk y z h k ∂ν) 0 = ∫ h, thetaSum F ((d.om (g * R.ι w y)) ((d.S h) (φ ((dil (2 * Real.pi) X ^ r) 1)))) ∂ν`. Rewrite using `[hHr y 0 h0 r]`. Use `integral_congr_ae (ae_of_all _ fun h => ?_)` and prove the remaining obligations. Use `show ∑' k, iteratedDeriv r (fun z => Fk y z h k) 0 = thetaSum F ((d.om (g * R.ι w y)) ((d.S h) (φ ((dil (2 * Real.pi) X ^ r) 1))))`.
+
+Rewrite using `[hsum _ y h]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Use `show iteratedDeriv r (fun z => Gf (y₀ * y) z (R.loc w (Mt h k)) * Ψ' (Mt h k)) 0 = _`. Rewrite using `[iteratedDeriv_mul_const' (fun z => Gf (y₀ * y) z (R.loc w (Mt h k))) (Ψ' (Mt h k)) r]`. Use `show iteratedDeriv r (fun z => Gf (y₀ * y) z (R.loc w (Mt h k))) 0 * Ψ' (Mt h k) = _`.
+
+Rewrite using `[hGr (y₀ * y) hy r])`. Conclude with `congrFun heq y`.
+-/
 theorem gIdil_of (hT : TAll) (hAux : AuxiliaryPrimeFunction) (hLE : LocOpEx) (hTP : ThetaPt) (hFP : FPSw) (hMC : MatCount)
     (hSD : SplitDom) (hTB : ThetaBdd) (hLF : LocFamG) (hBD : BigDense) (hHM : HolMean)
     (hDC : DerCont) (hSO : StripOK) : GIdil := by

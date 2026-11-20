@@ -25,11 +25,20 @@ def proj : (∀ i, G i) →* (∀ i, G i) where
   map_one' := by funext i; split_ifs <;> rfl
   map_mul' := fun a b => by funext i; simp only [Pi.mul_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem proj_apply (γ : ∀ i, G i) (i : ι) : proj p γ i = if p i then γ i else 1 := rfl
 
+/- English proof (translation)
+Introduce `i hi` and use `by rw [proj_apply, if_neg hi]`.
+-/
 theorem proj_mem (γ : ∀ i, G i) : proj p γ ∈ Sub p :=
   fun i hi => by rw [proj_apply, if_neg hi]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[proj_apply]`. Use `split_ifs with hi`. Both sides reduce to the same expression. Conclude with `(h i hi).symm`.
+-/
 theorem proj_of_mem {γ : ∀ i, G i} (h : γ ∈ Sub p) : proj p γ = γ := by
   funext i
   rw [proj_apply]
@@ -37,6 +46,9 @@ theorem proj_of_mem {γ : ∀ i, G i} (h : γ ∈ Sub p) : proj p γ = γ := by
   · rfl
   · exact (h i hi).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[proj_apply, Pi.one_apply]`. Use `split_ifs with hi`. Conclude with `hb i (hpq i hi)`. Both sides reduce to the same expression.
+-/
 theorem proj_eq_one_of {q : ι → Prop} {b : ∀ i, G i} (hb : b ∈ Sub q) (hpq : ∀ i, p i → ¬ q i) : proj p b = 1 := by
   funext i
   rw [proj_apply, Pi.one_apply]
@@ -55,11 +67,17 @@ variable {G : Type} [Group G] [Fintype G] [DecidableEq G] (H : Subgroup G) [Fint
 def res (A : MonoidAlgebra ℂ G) : MonoidAlgebra ℂ H :=
   MonoidAlgebra.ofCoeff (Finsupp.equivFunOnFinite.symm fun h => A.coeff (h : G))
 
+/- English proof (translation)
+Simplify using `[res]`.
+-/
 theorem res_coeff (A : MonoidAlgebra ℂ G) (h : H) : (res H A).coeff h = A.coeff (h : G) := by
   simp [res]
 
 variable {H}
 
+/- English proof (translation)
+Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype _ _ (fun _ => zero_mul _), Finsupp.sum_fintype _ _ (fun _ => zero_mul _), ← Finset.sum_filter_of_ne (p := fun x => x ∈ H) (fun x _ hx => hA x (left_ne_zero_of_mul hx)), Finset.sum_subtype …`. Simplify using `only [res_coeff, Subgroup.coe_mul, Subgroup.coe_inv]`.
+-/
 theorem res_mul (A B : MonoidAlgebra ℂ G) (hA : ∀ γ, A.coeff γ ≠ 0 → γ ∈ H) (h : H) :
     (A * B).coeff (h : G) = (res H A * res H B).coeff h := by
   classical
@@ -82,11 +100,23 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.Arithm
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Use `show RingOfIntegers.mapRingEquiv X.ιE ((D.host.g j : ℕ) : 𝓞 X.B.I.E) ∈ (D.naut.plGw j v).asIdeal`. Rewrite using `[map_natCast]`. Conclude with `D.naut.plGw_over j v`.
+-/
 theorem gj_mem_wB (j : Fin 2) (v : D.nd.PlG j) :
     ((D.host.g j : ℕ) : 𝓞 X.B.I.E) ∈ (wB X (D.naut.plGw j v)).asIdeal := by
   show RingOfIntegers.mapRingEquiv X.ιE ((D.host.g j : ℕ) : 𝓞 X.B.I.E) ∈ (D.naut.plGw j v).asIdeal
   rw [map_natCast]; exact D.naut.plGw_over j v
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Formalism.L2.SG.Pf.AllRowsRedKer.redKerP_holds X j _ z.2 fun v => ?_` and prove the remaining obligations. Use `goodAt_rhoX X z ⟨j, v⟩` as an intermediate fact. Rewrite `this` using `[h v]`.
+
+Simplify using `using this`. Introduce `hz v`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[rhoX_apply, rhoB_val, Units.val_one]`. Use `matB_eq (redBX X ⟨j, v⟩) z.2 (redMatB_one_of (redBX X ⟨j, v⟩) fun i => ?_)` and prove the remaining obligations.
+
+Take `⟨w, hw, hxw⟩` from `hz.2 _ (DictLat.iv_mem X.B.I ((redBX X ⟨j, v⟩).hb.1 i))`. Establish `e2 : X.B.I.fmat z *ᵥ iv X.B.I ((redBX X ⟨j, v⟩).b i) - iv X.B.I ((redBX X ⟨j, v⟩).b i) = (X.B.I.fmat z - 1) *ᵥ iv X.B.I ((redBX X ⟨j, v⟩).b i)` using `by rw [Matrix.sub_mulVec, Matrix.one_mulVec]`. Rewrite using `[e2, hxw]`. Establish `hg : ((D.host.g j : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) = Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) ((((D.host.g j : ℕ) : 𝓞 X.B.I.E)) : X.B.I.E) := by simp`. Rewrite using `[hg]`.
+
+Conclude with `smul_mem X.B.I _ (gj_mem_wB X j v) hw`.
+-/
 theorem ker_part (j : Fin 2) (z : KSub X.B.I) :
     (∀ v : D.nd.PlG j, rhoX X z ⟨j, v⟩ = 1) ↔ (z : X.B.I.Gf) ∈ X.B.I.Kg (D.host.g j) := by
   constructor
@@ -108,6 +138,15 @@ theorem ker_part (j : Fin 2) (z : KSub X.B.I) :
     rw [hg]
     exact smul_mem X.B.I _ (gj_mem_wB X j v) hw
 
+/- English proof (translation)
+Establish `hfin : ∀ a : Fin 2, ¬ a = k ↔ a = 1 - k`. Introduce `a`. Apply the tactic sequence `fin_cases a <;> fin_cases k <;> decide`. Rewrite using `[← ker_part X (1 - k) (x⁻¹ * y)]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h v`. Establish `hv` using `congrFun h ⟨1 - k, v⟩`. Rewrite `hv` using `[proj_apply, proj_apply, if_pos ((hfin _).2 rfl), if_pos ((hfin _).2 rfl)]`. Rewrite using `[map_mul, map_inv, Pi.mul_apply, Pi.inv_apply, hv, inv_mul_cancel]`. Introduce `h`.
+
+Use function extensionality and compare the values at `⟨k', v⟩`. Simplify using `only [proj_apply]`. Distinguish the cases in `hk : k' = k`. Rewrite using `[if_neg (not_not.2 hk), if_neg (not_not.2 hk)]`. Take `rfl : k' = 1 - k` from `(hfin k').1 hk`.
+
+Rewrite using `[if_pos hk, if_pos hk]`. Establish `hv` using `h v`. Rewrite `hv` using `[map_mul, map_inv, Pi.mul_apply, Pi.inv_apply, inv_mul_eq_one]`. Conclude with `hv`.
+-/
 theorem part_iff_j (k : Fin 2) (x y : KSub X.B.I) :
     proj (fun kv : (Σ k', D.nd.PlG k') => ¬ kv.1 = k) (rhoX X x) =
       proj (fun kv : (Σ k', D.nd.PlG k') => ¬ kv.1 = k) (rhoX X y) ↔
@@ -132,6 +171,15 @@ theorem part_iff_j (k : Fin 2) (x y : KSub X.B.I) :
       rw [map_mul, map_inv, Pi.mul_apply, Pi.inv_apply, inv_mul_eq_one] at hv
       exact hv
 
+/- English proof (translation)
+Rewrite using `[← ker_part X k (x⁻¹ * y)]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Establish `hv` using `congrFun h ⟨k, v⟩`. Rewrite `hv` using `[proj_apply, proj_apply, if_pos rfl, if_pos rfl]`.
+
+Rewrite using `[map_mul, map_inv, Pi.mul_apply, Pi.inv_apply, hv, inv_mul_cancel]`. Introduce `h`. Use function extensionality and compare the values at `⟨k', v⟩`. Simplify using `only [proj_apply]`. Distinguish the cases in `hk : k' = k`.
+
+Substitute `hk` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Establish `hv` using `h v`. Rewrite `hv` using `[map_mul, map_inv, Pi.mul_apply, Pi.inv_apply, inv_mul_eq_one]`. Conclude with `hv`.
+
+Rewrite using `[if_neg hk, if_neg hk]`.
+-/
 theorem part_iff_k (k : Fin 2) (x y : KSub X.B.I) :
     proj (fun kv : (Σ k', D.nd.PlG k') => kv.1 = k) (rhoX X x) =
       proj (fun kv : (Σ k', D.nd.PlG k') => kv.1 = k) (rhoX X y) ↔
@@ -206,6 +254,13 @@ def Gt (k : Fin 2) (t : Tup D k) (kv : Σ k' : Fin 2, D.nd.PlG k') :
     MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g kv.1))) :=
   if kv.1 = k then D.ntypes.eSer kv.1 (Function.update (0 : Tup2 D) k t kv.1 kv.2) else 1
 
+/- English proof (translation)
+Distinguish the cases in `hf : f.Monic ∧ f.natDegree = D.R.r`. Establish `hc0` using `Formalism.L2.SG.Pf.RowDictPf.monicOf_coeff hf.1 hf.2`. Rewrite using `[Finset.sum_eq_single (fun i : Fin D.R.r => f.coeff i)]`. Rewrite using `[if_pos hc0, hc0]`. Introduce `c _ hc`.
+
+Rewrite using `[if_neg]`. Introduce `h`. Apply `hc` to reduce the goal to its premises. Conclude with `monicOf_inj (h.trans hc0.symm)`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Finset.sum_eq_zero fun c _ => if_neg fun (h : Formalism.CyclotomicNorms.monicOf c = f) => hf (h ▸ Formalism.L2.SG.Pf.RowDictPf.monicOf_monic c)]`. Rewrite using `[D.ntypes.eSer_zero k f (fun h => hf ⟨h.1, h.2.1⟩)]`. Both sides reduce to the same expression.
+-/
 theorem sumW_single (k : Fin 2) (f : Polynomial (ZMod (D.host.g k))) (g : GL (Fin D.R.r) (ZMod (D.host.g k))) :
     ∑ c : Fin D.R.r → ZMod (D.host.g k),
       (if Formalism.CyclotomicNorms.monicOf c = f then (D.ntypes.eSer k (Formalism.CyclotomicNorms.monicOf c)).coeff g else 0) =
@@ -226,6 +281,9 @@ theorem sumW_single (k : Fin 2) (f : Polynomial (ZMod (D.host.g k))) (g : GL (Fi
     rw [D.ntypes.eSer_zero k f (fun h => hf ⟨h.1, h.2.1⟩)]
     rfl
 
+/- English proof (translation)
+Rewrite using `[← Formalism.L2.SG.AllRowsOf.sum_eSer' k, MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply]`.
+-/
 theorem sumW_all (k : Fin 2) (g : GL (Fin D.R.r) (ZMod (D.host.g k))) :
     ∑ c : Fin D.R.r → ZMod (D.host.g k), (D.ntypes.eSer k (Formalism.CyclotomicNorms.monicOf c)).coeff g =
       (1 : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k)))).coeff g := by
@@ -233,6 +291,25 @@ theorem sumW_all (k : Fin 2) (g : GL (Fin D.R.r) (ZMod (D.host.g k))) :
 
 open Classical in
 
+/- English proof (translation)
+Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `γ`. Rewrite using `[ES_eq, MonoidAlgebra.coeff_sum, Finset.sum_apply', MonoidAlgebra.coeff_sum, Finset.sum_apply']`. Simplify using `only [Ea_coeff, pA_coeff]`. Rewrite using `[Finset.sum_filter]`.
+
+Establish `h1 : ∀ a : CV D, (if tupOf a ∈ cyl D k (S : Set (Tup D k)) then ∏ kv : (Σ k : Fin 2, D.nd.PlG k), (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (a kv))).coeff (γ kv) else 0) = ∑ t ∈ S, (if tupOf a k = t then ∏ kv : (Σ k : Fin 2, D.nd.PlG k), (D.ntypes.eSer kv.1 (Formalis …`. Introduce `a`. Rewrite using `[Finset.sum_ite_eq]`. Conclude with `if_congr Iff.rfl rfl rfl`. Repeatedly rewrite using `[h1]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `set G : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), (Fin D.R.r → ZMod (D.host.g kv.1)) → ℂ := fun kv c => if kv.1 = k then (if Formalism.CyclotomicNorms.monicOf c = Function.update (0 : Tup2 D) k t kv.1 kv.2 then (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf c)).coeff (γ kv) else …`. Establish `h2 : ∀ a : CV D, (if tupOf a k = t then ∏ kv : (Σ k : Fin 2, D.nd.PlG k), (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (a kv))).coeff (γ kv) else 0) = ∏ kv, G kv (a kv)`. Introduce `a`.
+
+Establish `hG' : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), G kv (a kv) = if (kv.1 = k → Formalism.CyclotomicNorms.monicOf (a kv) = Function.update (0 : Tup2 D) k t kv.1 kv.2) then (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (a kv))).coeff (γ kv) else 0`. Introduce `kv`. Distinguish the cases in `hk : kv.1 = k`. Simplify using `only [hG, hk, if_true, true_implies]`. Simplify using `only [hG, hk, if_false, false_implies, if_true]`.
+
+Rewrite using `[Finset.prod_congr rfl fun kv _ => hG' kv, Finset.prod_ite_zero]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h kv _ hk`.
+
+Take `⟨k', v⟩` from `kv`. Simplify using `only at hk`. Substitute `hk` using the available equality. Rewrite using `[Function.update_self, ← h]`. Both sides reduce to the same expression.
+
+Introduce `h`. Use function extensionality and compare the values at `v`. Use `h ⟨k, v⟩ (Finset.mem_univ _) rfl` as an intermediate fact. Rewrite `this` using `[Function.update_self]`. Conclude with `this`.
+
+Repeatedly rewrite using `[h2]`. Rewrite using `[← Fintype.prod_sum]`. Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Unfold `Gt`. Distinguish the cases in `hk : kv.1 = k`.
+
+Simplify using `only [hG, hk, if_true]`. Conclude with `sumW_single kv.1 _ _`. Simplify using `only [hG, hk, if_false]`. Conclude with `sumW_all kv.1 _`.
+-/
 theorem ES_cyl_pA (k : Fin 2) (S : Finset (Tup D k)) : ES (cyl D k (S : Set (Tup D k))) = ∑ t ∈ S, pA (Gt k t) := by
   apply MonoidAlgebra.ext; ext γ
   rw [ES_eq, MonoidAlgebra.coeff_sum, Finset.sum_apply', MonoidAlgebra.coeff_sum, Finset.sum_apply']
@@ -300,6 +377,9 @@ variable {D : D7} (P : G0g D.nd) (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddC
 def Fv (kv : Σ k : Fin 2, D.nd.PlG k) : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g kv.1))) :=
   MonoidAlgebra.single (P kv) 1 * eJv kv (ψ kv) * MonoidAlgebra.single (P kv)⁻¹ 1
 
+/- English proof (translation)
+Establish `h1 : MonoidAlgebra.single (P kv)⁻¹ (1 : ℂ) * MonoidAlgebra.single (P kv) 1 = 1`. Rewrite using `[MonoidAlgebra.single_mul_single, inv_mul_cancel, mul_one, MonoidAlgebra.one_def]`. Unfold `Fv`. Establish `e : ∀ a b c : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g kv.1))), a * b * c * (a * b * c) = a * (b * (c * a) * b) * c` using `fun a b c => by simp only [mul_assoc]`. Rewrite using `[e, h1, mul_one, eJ_idem]`.
+-/
 theorem Fv_idem (kv : Σ k : Fin 2, D.nd.PlG k) : Fv P ψ kv * Fv P ψ kv = Fv P ψ kv := by
   have h1 : MonoidAlgebra.single (P kv)⁻¹ (1 : ℂ) * MonoidAlgebra.single (P kv) 1 = 1 := by
     rw [MonoidAlgebra.single_mul_single, inv_mul_cancel, mul_one, MonoidAlgebra.one_def]
@@ -308,6 +388,9 @@ theorem Fv_idem (kv : Σ k : Fin 2, D.nd.PlG k) : Fv P ψ kv * Fv P ψ kv = Fv P
       a * b * c * (a * b * c) = a * (b * (c * a) * b) * c := fun a b c => by simp only [mul_assoc]
   rw [e, h1, mul_one, eJ_idem]
 
+/- English proof (translation)
+Use `haveI : Fact (D.host.g kv.1).Prime := ⟨D.host.g_prime kv.1⟩`. Unfold `Fv`. Rewrite using `[MonoidAlgebra.coeff_mul_single_apply, MonoidAlgebra.coeff_single_mul_apply, one_mul, mul_one, inv_inv, ← mul_assoc, eJ_coeff, card_PJ]`.
+-/
 theorem Fv_coeff (kv : Σ k : Fin 2, D.nd.PlG k) (g : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) :
     (Fv P ψ kv).coeff g = if PJ D.R.k (D.R.m / 2 - 1) (((P kv)⁻¹ * g * P kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) :
         Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) then
@@ -322,9 +405,15 @@ variable (p : (Σ k : Fin 2, D.nd.PlG k) → Prop)
 
 def Ep : MonoidAlgebra ℂ (G0g D.nd) := pA (fun kv => if p kv then Fv P ψ kv else 1)
 
+/- English proof (translation)
+Conclude with `Finset.mem_one.1 (MonoidAlgebra.support_coeff_one_subset (Finsupp.mem_support_iff.2 h))`.
+-/
 theorem one_coeff_ne {G : Type} [Group G] {g : G} (h : (1 : MonoidAlgebra ℂ G).coeff g ≠ 0) : g = 1 := by
   exact Finset.mem_one.1 (MonoidAlgebra.support_coeff_one_subset (Finsupp.mem_support_iff.2 h))
 
+/- English proof (translation)
+Introduce `i hi`. Rewrite `h` using `[Ep, pA_coeff]`. Establish `hi'` using `Finset.prod_ne_zero_iff.1 h i (Finset.mem_univ _)`. Rewrite `hi'` using `[if_neg hi]`. Conclude with `one_coeff_ne hi'`.
+-/
 theorem Ep_supp (γ : G0g D.nd) (h : (Ep P ψ p).coeff γ ≠ 0) : γ ∈ Sub p := by
   intro i hi
   rw [Ep, pA_coeff] at h
@@ -332,6 +421,11 @@ theorem Ep_supp (γ : G0g D.nd) (h : (Ep P ψ p).coeff γ ≠ 0) : γ ∈ Sub p 
   rw [if_neg hi] at hi'
   exact one_coeff_ne hi'
 
+/- English proof (translation)
+Rewrite using `[Ep, pA_mul]`. Use `congr 1`. Use function extensionality and compare the values at `kv`. Use `split_ifs`. Conclude with `Fv_idem P ψ kv`.
+
+Conclude with `one_mul 1`.
+-/
 theorem Ep_idem : Ep P ψ p * Ep P ψ p = Ep P ψ p := by
   rw [Ep, pA_mul]
   congr 1
@@ -354,12 +448,18 @@ variable {D : D7} (P : G0g D.nd) (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddC
 abbrev cj (γ : G0g D.nd) (kv : Σ k : Fin 2, D.nd.PlG k) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)) :=
   (((P kv)⁻¹ * γ kv * P kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)))
 
+/- English proof (translation)
+Simplify using `only [cj, Pi.mul_apply]`. Rewrite using `[← Units.val_mul]`. Use `congr 1`. Use `group`.
+-/
 theorem cj_mul (a b : G0g D.nd) (kv : Σ k : Fin 2, D.nd.PlG k) : cj P (a * b) kv = cj P a kv * cj P b kv := by
   simp only [cj, Pi.mul_apply]
   rw [← Units.val_mul]
   congr 1
   group
 
+/- English proof (translation)
+Simplify using `[cj]`.
+-/
 theorem cj_one (kv : Σ k : Fin 2, D.nd.PlG k) : cj P 1 kv = 1 := by
   simp [cj]
 
@@ -381,6 +481,11 @@ def Uj : Subgroup (Sub p : Subgroup (G0g D.nd)) where
 
 def chij (a : G0g D.nd) : ℂ := ∏ kv, if p kv then ψ kv (phiJ D.R.k (D.R.m / 2 - 1) (cj P a kv)) else 1
 
+/- English proof (translation)
+Unfold `chij`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[cj_mul, Formalism.L2.SG.AllRowsOf.phiJ_mul (ha kv h).1 (hb kv h).1 (hb kv h).2, AddChar.map_add_eq_mul]`.
+
+Rewrite using `[mul_one]`.
+-/
 theorem chij_mul (a b : G0g D.nd) (ha : ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (cj P a kv))
     (hb : ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (cj P b kv)) :
     chij P ψ p (a * b) = chij P ψ p a * chij P ψ p b := by
@@ -391,6 +496,11 @@ theorem chij_mul (a b : G0g D.nd) (ha : ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1
   · rw [cj_mul, Formalism.L2.SG.AllRowsOf.phiJ_mul (ha kv h).1 (hb kv h).1 (hb kv h).2, AddChar.map_add_eq_mul]
   · rw [mul_one]
 
+/- English proof (translation)
+Unfold `chij`. Rewrite using `[norm_prod]`. Use `Finset.prod_eq_one fun kv _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `AddChar.norm_apply _ _`.
+
+Conclude with `norm_one`.
+-/
 theorem chij_norm (a : G0g D.nd) : ‖chij P ψ p a‖ = 1 := by
   unfold chij
   rw [norm_prod]
@@ -401,6 +511,9 @@ theorem chij_norm (a : G0g D.nd) : ‖chij P ψ p a‖ = 1 := by
 
 def cjc : ℂ := ∏ kv : (Σ k : Fin 2, D.nd.PlG k), if p kv then ((cJ D (D.host.g kv.1) : ℂ))⁻¹ else 1
 
+/- English proof (translation)
+Unfold `cjc`. Use `Finset.prod_ne_zero_iff.2 fun kv _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `inv_ne_zero (Nat.cast_ne_zero.2 (cJ_pos D kv.1).ne')`. Conclude with `one_ne_zero`.
+-/
 theorem cjc_ne : cjc (D := D) p ≠ 0 := by
   unfold cjc
   refine Finset.prod_ne_zero_iff.2 fun kv _ => ?_
@@ -408,6 +521,13 @@ theorem cjc_ne : cjc (D := D) p ≠ 0 := by
   · exact inv_ne_zero (Nat.cast_ne_zero.2 (cJ_pos D kv.1).ne')
   · exact one_ne_zero
 
+/- English proof (translation)
+Rewrite using `[res_coeff, Ep, pA_coeff]`. Use `split_ifs with hU`. Establish `hU' : ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (cj P (a : G0g D.nd) kv)` using `hU`. Rewrite using `[chij, cjc, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hp : p kv`. Rewrite using `[if_pos hp, if_pos hp, if_pos hp, Fv_coeff, if_pos (hU' kv hp), div_eq_mul_inv]`. Rewrite using `[if_neg hp, if_neg hp, if_neg hp, a.2 kv hp, MonoidAlgebra.coeff_one_one, inv_one, one_mul]`. Establish `hU' : ¬ ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (cj P (a : G0g D.nd) kv)` using `hU push_neg at hU'`. Take `⟨kv, hp, hJ⟩` from `hU'`.
+
+Use `Finset.prod_eq_zero (Finset.mem_univ kv) ?_` and prove the remaining obligations. Rewrite using `[if_pos hp, Fv_coeff, if_neg hJ]`.
+-/
 theorem res_Ep_coeff (a : Sub p) :
     (res (Sub p) (Ep P ψ p)).coeff a = if a ∈ Uj P p then (chij P ψ p a)⁻¹ * cjc p else 0 := by
   rw [res_coeff, Ep, pA_coeff]
@@ -435,6 +555,9 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.Arithm
 variable {D : D7} (P : G0g D.nd) (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ)
   (p : (Σ k : Fin 2, D.nd.PlG k) → Prop)
 
+/- English proof (translation)
+Unfold `chij`. Use `Finset.prod_eq_one fun kv _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[cj_one, Formalism.L2.SG.Pf.AllRowsEtOne.phiJ_one', AddChar.map_zero_eq_one]`. Both sides reduce to the same expression.
+-/
 theorem chij_one : chij P ψ p 1 = 1 := by
   unfold chij
   refine Finset.prod_eq_one fun kv _ => ?_
@@ -442,10 +565,26 @@ theorem chij_one : chij P ψ p 1 = 1 := by
   · rw [cj_one, Formalism.L2.SG.Pf.AllRowsEtOne.phiJ_one', AddChar.map_zero_eq_one]
   · rfl
 
+/- English proof (translation)
+Use extensionality with `h`. Rewrite using `[← res_mul _ _ (Ep_supp P ψ p) h, Ep_idem, res_coeff]`.
+-/
 theorem res_Ep_idem : res (Sub p) (Ep P ψ p) * res (Sub p) (Ep P ψ p) = res (Sub p) (Ep P ψ p) := by
   ext h
   rw [← res_mul _ _ (Ep_supp P ψ p) h, Ep_idem, res_coeff]
 
+/- English proof (translation)
+Establish `hcoef` using `res_Ep_coeff P ψ p`. Establish `hc0` using `cjc_ne (D := D) p`. Establish `hχinv : ∀ x ∈ Uj P p, (chij P ψ p ((x : Sub p) : G0g D.nd))⁻¹ * (chij P ψ p (((x⁻¹ : Sub p)) : G0g D.nd))⁻¹ = 1`. Introduce `x hx`. Rewrite using `[← mul_inv, ← chij_mul P ψ p _ _ hx ((Uj P p).inv_mem hx), Subgroup.coe_inv, mul_inv_cancel, chij_one, inv_one]`.
+
+Establish `hterm : ∀ x : Sub p, (res (Sub p) (Ep P ψ p)).coeff x * (res (Sub p) (Ep P ψ p)).coeff (x⁻¹ * 1) = if x ∈ Uj P p then cjc p * cjc p else 0`. Introduce `x`. Rewrite using `[mul_one, hcoef, hcoef]`. Distinguish the cases in `hx : x ∈ Uj P p`. Rewrite using `[if_pos hx, if_pos ((Uj P p).inv_mem hx), if_pos hx]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg hx, if_neg hx, zero_mul]`. Establish `hsum : (res (Sub p) (Ep P ψ p) * res (Sub p) (Ep P ψ p)).coeff 1 = cjc p * cjc p * (Nat.card (Uj P p) : ℂ)`. Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype _ _ (fun _ => zero_mul _), Finset.sum_congr rfl (fun x _ => hterm x), Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul, mul_comm, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Establish `h1 : (res (Sub p) (Ep P ψ p)).coeff 1 = cjc p`.
+
+Rewrite using `[hcoef, if_pos (Uj P p).one_mem, Subgroup.coe_one, chij_one, inv_one, one_mul]`. Establish `hc : cjc p * (Nat.card (Uj P p) : ℂ) = 1`. Establish `h` using `congrArg (fun f => MonoidAlgebra.coeff f 1) (res_Ep_idem P ψ p)`. Rewrite `h` using `[hsum, h1]`. Conclude with `mul_left_cancel₀ hc0 (by rw [mul_one, ← mul_assoc, h])`.
+
+Use `⟨Uj P p, fun a => chij P ψ p a, fun a ha b hb => ?_, fun a _ => chij_norm P ψ p a, fun a => ?_⟩` and prove the remaining obligations. Use `show chij P ψ p ((a * b : Sub p) : G0g D.nd) = _`. Rewrite using `[Subgroup.coe_mul]`. Conclude with `chij_mul P ψ p a b ha hb`. Rewrite using `[hcoef] split_ifs`.
+
+Rewrite using `[div_eq_mul_inv, eq_inv_of_mul_eq_one_left hc]`. Both sides reduce to the same expression.
+-/
 theorem charIdem_Ep : Formalism.MainNotions.S.IsCharIdemFin (res (Sub p) (Ep P ψ p)) := by
   have hcoef := res_Ep_coeff P ψ p
   have hc0 := cjc_ne (D := D) p
@@ -494,6 +633,15 @@ section Gen2
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, Fintype (G i)]
   [∀ i, DecidableEq (G i)]
 
+/- English proof (translation)
+Establish `hpq' : proj p γ * proj q γ = γ`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.mul_apply, proj_apply, proj_apply]`. Distinguish the cases in `h : p i`. Rewrite using `[if_pos h, if_neg (fun hq => (hpq i).1 hq h), mul_one]`.
+
+Rewrite using `[if_neg h, if_pos ((hpq i).2 h), one_mul]`. Establish `e : (proj p γ)⁻¹ * γ = proj q γ`. Rewrite using `[inv_mul_eq_iff_eq_mul, hpq']`. Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_eq_single (proj p γ), e]`. Introduce `h hh hne`.
+
+Establish `hBz : B.coeff (h⁻¹ * γ) = 0`. Assume the negation of the conclusion as `hne'`. Apply `hne` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[proj_of_mem p (hA h hh), proj_eq_one_of p (hB _ hne') (fun i hi hq => (hpq i).1 hq hi), mul_one]`.
+
+Use `_ = proj p γ := by rw [← map_mul, mul_inv_cancel_left]`. Use `show A.coeff h * B.coeff (h⁻¹ * γ) = 0`. Rewrite using `[hBz, mul_zero]`. Introduce `_`. Conclude with `zero_mul _`.
+-/
 theorem mul_coeff_compl' {p q : ι → Prop} [DecidablePred p] [DecidablePred q] (hpq : ∀ i, q i ↔ ¬ p i)
     (A B : MonoidAlgebra ℂ (∀ i, G i)) (hA : ∀ γ, A.coeff γ ≠ 0 → γ ∈ Sub p)
     (hB : ∀ γ, B.coeff γ ≠ 0 → γ ∈ Sub q) (γ : ∀ i, G i) :
@@ -519,6 +667,9 @@ theorem mul_coeff_compl' {p q : ι → Prop} [DecidablePred p] [DecidablePred q]
   · intro _
     exact zero_mul _
 
+/- English proof (translation)
+Rewrite `h` using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum]`. Take `⟨x, hx, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Establish `h1` using `hA x (Finsupp.mem_support_iff.1 hx)`. Establish `h2` using `hB _ (right_ne_zero_of_mul hne)`. Simplify using `using H.mul_mem h1 h2`.
+-/
 theorem mul_supp {H : Subgroup (∀ i, G i)} (A B : MonoidAlgebra ℂ (∀ i, G i)) (hA : ∀ γ, A.coeff γ ≠ 0 → γ ∈ H)
     (hB : ∀ γ, B.coeff γ ≠ 0 → γ ∈ H) (γ : ∀ i, G i) (h : (A * B).coeff γ ≠ 0) : γ ∈ H := by
   rw [MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum] at h
@@ -527,6 +678,9 @@ theorem mul_supp {H : Subgroup (∀ i, G i)} (A B : MonoidAlgebra ℂ (∀ i, G 
   have h2 := hB _ (right_ne_zero_of_mul hne)
   simpa using H.mul_mem h1 h2
 
+/- English proof (translation)
+Rewrite `h` using `[MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply]`. Take `⟨t, -, ht⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Conclude with `hA t γ ht`.
+-/
 theorem sum_supp {κ : Type} (T : Finset κ) {H : Subgroup (∀ i, G i)} (A : κ → MonoidAlgebra ℂ (∀ i, G i))
     (hA : ∀ t, ∀ γ, (A t).coeff γ ≠ 0 → γ ∈ H) (γ : ∀ i, G i) (h : (∑ t ∈ T, A t).coeff γ ≠ 0) : γ ∈ H := by
   rw [MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply] at h
@@ -547,6 +701,9 @@ variable {D : D7}
 def TS (k : Fin 2) (S : Set (Tup D k)) : Finset (Tup D k) :=
   (Finset.univ.filter (fun a : CV D => tupOf a k ∈ S)).image (fun a => tupOf a k)
 
+/- English proof (translation)
+Establish `key : ∀ a, tupOf a ∈ cyl D k S ↔ tupOf a ∈ cyl D k (TS k S : Set (Tup D k))`. Introduce `a`. Simplify using `only [cyl, Set.mem_setOf_eq, TS, Finset.coe_image, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_image, Set.mem_setOf_eq]`. Conclude with `⟨fun h => ⟨a, h, rfl⟩, fun ⟨b, hb, e⟩ => e ▸ hb⟩`. Simplify using `only [ES, key]`.
+-/
 theorem ES_TS (k : Fin 2) (S : Set (Tup D k)) : ES (cyl D k S) = ES (cyl D k (TS k S : Set (Tup D k))) := by
   have key : ∀ a, tupOf a ∈ cyl D k S ↔ tupOf a ∈ cyl D k (TS k S : Set (Tup D k)) := by
     intro a
@@ -555,6 +712,9 @@ theorem ES_TS (k : Fin 2) (S : Set (Tup D k)) : ES (cyl D k S) = ES (cyl D k (TS
     exact ⟨fun h => ⟨a, h, rfl⟩, fun ⟨b, hb, e⟩ => e ▸ hb⟩
   simp only [ES, key]
 
+/- English proof (translation)
+Introduce `i hi`. Rewrite `h` using `[pA_coeff]`. Establish `hi'` using `Finset.prod_ne_zero_iff.1 h i (Finset.mem_univ _)`. Rewrite `hi'` using `[Gt, if_neg hi]`. Conclude with `one_coeff_ne hi'`.
+-/
 theorem Gt_supp (k : Fin 2) (t : Tup D k) (γ : G0g D.nd) (h : (pA (Gt k t)).coeff γ ≠ 0) :
     γ ∈ Sub (fun kv : (Σ k' : Fin 2, D.nd.PlG k') => kv.1 = k) := by
   intro i hi
@@ -563,6 +723,9 @@ theorem Gt_supp (k : Fin 2) (t : Tup D k) (γ : G0g D.nd) (h : (pA (Gt k t)).coe
   rw [Gt, if_neg hi] at hi'
   exact one_coeff_ne hi'
 
+/- English proof (translation)
+Rewrite `h` using `[ES_TS, ES_cyl_pA]`. Conclude with `sum_supp _ _ (fun t => Gt_supp k t) γ h`.
+-/
 theorem ES_supp (k : Fin 2) (S : Set (Tup D k)) (γ : G0g D.nd) (h : (ES (cyl D k S)).coeff γ ≠ 0) :
     γ ∈ Sub (fun kv : (Σ k' : Fin 2, D.nd.PlG k') => kv.1 = k) := by
   rw [ES_TS, ES_cyl_pA] at h
@@ -580,6 +743,11 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.Arithm
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `h`. Use `⟨hx.1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `hx.2 y hy`. Use `⟨c • z, nsmul_mem hz c, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Nat.cast_mul, mul_smul]`.
+
+Simplify using `only [Nat.cast_smul_eq_nsmul]`.
+-/
 theorem Kg_dvd {d m : ℕ} (h : d ∣ m) {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kg m) : x ∈ X.B.I.Kg d := by
   obtain ⟨c, rfl⟩ := h
   refine ⟨hx.1, fun y hy => ?_⟩
@@ -588,6 +756,15 @@ theorem Kg_dvd {d m : ℕ} (h : d ∣ m) {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kg m) 
   rw [e, Nat.cast_mul, mul_smul]
   simp only [Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Rewrite using `[pow_one, pow_one]`. Establish `hg : X.B.g = D.host.g (1 - k) * D.host.g k`. Rewrite using `[X.g_eq]`. Use `fin_cases k`. Conclude with `mul_comm _ _`.
+
+Both sides reduce to the same expression. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[hg]`.
+
+Conclude with `⟨Kg_dvd X (dvd_mul_right _ _) hx, Kg_dvd X (dvd_mul_left _ _) hx⟩`. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[hg]`. Use `Formalism.L2.SG.AllRowsOf.Kg_inter X.B.I ?_ h1 h2` and prove the remaining obligations. Use `(Nat.coprime_primes (D.host.g_prime _) (D.host.g_prime _)).2 ?_` and prove the remaining obligations.
+
+Use `fin_cases k`. Conclude with `D.host.g_ne.symm`. Conclude with `D.host.g_ne`.
+-/
 theorem Kg_eq (k : Fin 2) :
     X.B.I.Kg X.B.g = X.B.I.Kg (D.host.g (1 - k) ^ 1) ∩ X.B.I.Kg (D.host.g k ^ 1) := by
   rw [pow_one, pow_one]
@@ -608,6 +785,39 @@ theorem Kg_eq (k : Fin 2) :
     · exact D.host.g_ne.symm
     · exact D.host.g_ne
 
+/- English proof (translation)
+Establish `hS` using `Formalism.L2.SG.Pf.AllRowsAdd.hS_X X`. Take `⟨P, ψ, -, hK⟩` from `Formalism.L2.SG.Pf.AllRowsClosed.kppShape_holds X`. Establish `hmem` using `fun x => (hK x).1`. Establish `hchi` using `fun x => (hK x).2`. Set `pj : (Σ k' : Fin 2, D.nd.PlG k') → Prop` to `fun kv => ¬ kv.1 = k`.
+
+Set `pk : (Σ k' : Fin 2, D.nd.PlG k') → Prop` to `fun kv => kv.1 = k`. Establish `hsplit : Ehat hS = Ep P ψ pj * Ep P ψ pk`. Rewrite using `[Ehat_eq hS P ψ hmem hchi]`. Unfold `Ep`. Rewrite using `[pA_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `kv`. Distinguish the cases in `hk : kv.1 = k`. Simplify using `only [pj, pk, hk, not_true_eq_false, if_false, if_true, one_mul]`. Both sides reduce to the same expression.
+
+Simplify using `only [pj, pk, hk, not_false_eq_true, if_true, if_false, mul_one]`. Both sides reduce to the same expression. Establish `hz2 : res (Sub pk) (ES (cyl D k S)) * res (Sub pk) (ES (cyl D k S)) = res (Sub pk) (ES (cyl D k S))`. Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `a`.
+
+Rewrite using `[← res_mul _ _ (ES_supp k S) a, ES_idem, res_coeff]`. Establish `hzc : ∀ y, res (Sub pk) (ES (cyl D k S)) * y = y * res (Sub pk) (ES (cyl D k S))` using `central_of_class _ fun g h => by`. Rewrite using `[res_coeff, res_coeff]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Conclude with `ES_conj _ _ _`.
+
+Use `⟨1, 1, D.host.g k, redD X k, res (Sub pj) (Ep P ψ pj), res (Sub pk) (ES (cyl D k S)), res (Sub pk) (Ep P ψ pk), D.host.g_prime k, ?_, charIdem_Ep P ψ pj, ?_, charIdem_Ep P ψ pk, hz2, hzc, ?_⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `D.host.g_ne`. Conclude with `D.host.g_ne.symm`. Introduce `x hx hf`.
+
+Establish `hred : (redD X k).red x = (⟨proj pj (rhoX X ⟨x, hx⟩), proj_mem _ _⟩, ⟨proj pk (rhoX X ⟨x, hx⟩), proj_mem _ _⟩)` using `by show (if hx : x ∈ X.B.I.Kset then _ else 1) = _`. Conclude with `dif_pos hx`. Establish `hf' : (res (Sub pj) (Ep P ψ pj)).coeff (⟨proj pj (rhoX X ⟨x, hx⟩), proj_mem _ _⟩ : Sub pj) ≠ 0`. Rewrite `hf` using `[hred]`. Conclude with `hf`.
+
+Rewrite `hf'` using `[res_Ep_coeff]`. Use `split_ifs at hf' with hU`. Use `set γ := proj pj (rhoX X ⟨x, hx⟩) with hγ`. Establish `hJ : ∀ kv, JPred D.R.k (D.R.m / 2 - 1) (cjM P γ kv)`. Introduce `kv`.
+
+Distinguish the cases in `hk : kv.1 = k`. Establish `h1 : γ kv = 1` using `proj_mem pj _ kv (by simp [pj, hk]) show PJ D.R.k (D.R.m / 2 - 1) (cj P γ kv)`. Establish `h2 : cj P γ kv = 1` using `by unfold cj; rw [h1]; simp`. Rewrite using `[h2]`. Conclude with `jPred_one _ _`.
+
+Conclude with `hU kv hk`. Establish `hy : ((sec hS γ : KSub X.B.I) : X.B.I.Gf) ∈ X.K2` using `(hmem (sec hS γ)).2 (by rw [rho_sec]; exact hJ)`. Establish `hdiv : D.host.g (1 - k) ∣ X.B.g`. Rewrite using `[X.g_eq]`. Use `fin_cases k`.
+
+Conclude with `dvd_mul_left _ _`. Conclude with `dvd_mul_right _ _`. Establish `hyU` using `levelSubgroup_unipotent_mod X hdiv hy`. Establish `hz` using `(part_iff_j X k (sec hS γ) ⟨x, hx⟩).1 (by rw [rho_sec, hγ, proj_of_mem _ (proj_mem _ _)])`. Use `unipMod_mul_Kg X hy.1 hyU hz` as an intermediate fact.
+
+Simplify `this` using `only [Subgroup.coe_mul, Subgroup.coe_inv, mul_inv_cancel_left]`. Conclude with `absurd rfl hf'`. Introduce `x`. Distinguish the cases in `hx : x ∈ X.B.I.Kset`. Rewrite using `[if_pos hx]`.
+
+Establish `hred : (redD X k).red x = (⟨proj pj (rhoX X ⟨x, hx⟩), proj_mem _ _⟩, ⟨proj pk (rhoX X ⟨x, hx⟩), proj_mem _ _⟩)` using `by show (if hx : x ∈ X.B.I.Kset then _ else 1) = _`. Conclude with `dif_pos hx`. Rewrite using `[hred]`. Establish `h1` using `val_hat hS (biInv_eT X (cyl D k S)) ⟨x, hx⟩`. Establish `hV : V X = (X.B.μf (X.B.I.Kg (D.host.g (1 - k) ^ 1) ∩ X.B.I.Kg (D.host.g k ^ 1))).toReal`.
+
+Unfold `V`. Rewrite using `[Kg_eq X k]`. Rewrite using `[show eT X (cyl D k S) x = eT X (cyl D k S) ((⟨x, hx⟩ : KSub X.B.I) : X.B.I.Gf) from rfl, h1, hat_eT' hS, hsplit, mul_assoc, ← hV]`. Rewrite using `[mul_coeff_compl' (p := pj) (q := pk) (fun kv => by simp [pj, pk]) _ _ (Ep_supp P ψ pj) (mul_supp _ _ (Ep_supp P ψ pk) (ES_supp k S))]`. Establish `a1 : ∀ h : Sub pj, (res (Sub pj) (Ep P ψ pj)).coeff h = (Ep P ψ pj).coeff (h : G0g D.nd)` using `fun h => res_coeff _ _ _`.
+
+Establish `a2 : ∀ h : Sub pk, (res (Sub pk) (ES (cyl D k S)) * res (Sub pk) (Ep P ψ pk)).coeff h = (Ep P ψ pk * ES (cyl D k S)).coeff (h : G0g D.nd)` using `fun h => by`. Rewrite using `[hzc (res (Sub pk) (Ep P ψ pk)), ← res_mul (Ep P ψ pk) (ES (cyl D k S)) (Ep_supp P ψ pk)]`. Use `show _ = (res (Sub pj) (Ep P ψ pj)).coeff (⟨proj pj (rhoX X ⟨x, hx⟩), proj_mem _ _⟩ : Sub pj) * (res (Sub pk) (ES (cyl D k S)) * res (Sub pk) (Ep P ψ pk)).coeff (⟨proj pk (rhoX X ⟨x, hx⟩), proj_mem _ _⟩ : Sub pk) / (V X : ℂ)`. Simplify using `only [a1, a2]`. Rewrite using `[if_neg hx]`.
+
+Conclude with `eT_of_not_mem X _ hx`.
+-/
 theorem isCountIdem_cyl (k : Fin 2) (S : Set (Tup D k)) :
     X.B.I.IsCountIdem X.B.μf (D.host.g (1 - k)) (eT X (cyl D k S)) := by
   have hS := Formalism.L2.SG.Pf.AllRowsAdd.hS_X X
@@ -696,6 +906,9 @@ section Comparison₂
 
 variable {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Introduce `k S` and use `Or.inr (Formalism.L2.SG.Pf.AllRowsPCount.isCountIdem_cyl X k S)`.
+-/
 theorem pCountTie_holds (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) (hψ₀ : ∀ k, ψ₀ k ≠ 1)
     (hL : Formalism.L2.SG.AllRowsOf.RowsLab X) :
     Formalism.MainNotions.N.CylinderCountFamily.PCountTie D (Formalism.L2.SG.Pf.AllRowsClosed.allRowsOfL X ψ₀ hψ₀ hL).toAt :=

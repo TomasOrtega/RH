@@ -5,6 +5,9 @@ import CompanionTheory.RealGroups.GeneralUnitaryRepresentations.ArchimedeanJacqu
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `CompanionTheory.Exh.standardCosocleGL_of_seg CompanionTheory.RgGu.segmentRepresentation`.
+-/
 theorem standardCosocleGL_holds : GlobalTheory.Published.StandardCosocleGL :=
   CompanionTheory.Exh.standardCosocleGL_of_seg CompanionTheory.RgGu.segmentRepresentation
 

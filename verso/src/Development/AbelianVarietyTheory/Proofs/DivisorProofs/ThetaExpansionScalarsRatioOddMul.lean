@@ -16,6 +16,19 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D C m hm Φ hΦ F₁ θ₀ hθ`. Distinguish the cases in `hz : ∀ α j, (F₁.f α).f j = 0`. Use `⟨1, 1, one_ne_zero, one_ne_zero, fun W _ _ _ T => ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, hb, h⟩` from `hθ W T`. Conclude with `⟨a, a, 1, ha, ha, GlobalTheory.T.expansion_scalar_arbitrary_of_members_zero R hR D C W T 1 le_rfl θ₀ F₁ hz a b h a, by simp⟩`.
+
+Use `push_neg at hz`. Take `⟨G, S, hG, hS⟩` from `GlobalTheory.T.exists_oddMultiplication_pullback_thetaFamily_degree_sq R hR D C m hm F₁ θ₀`. Establish `hGz` using `hG hz`. Establish `hk : 1 ≤ m ^ 2` using `Nat.one_le_pow _ _ hm.pos`. Distinguish the cases in `hT : ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W), Nonempty (Trait C W)`.
+
+Use `swap`. Use `⟨1, 1, one_ne_zero, one_ne_zero, fun W _ _ _ T => (hT ⟨W, _, _, _, ⟨T⟩⟩).elim⟩` and prove the remaining obligations. Take `⟨W₀, _, _, _, ⟨T₀⟩⟩` from `hT`. Take `⟨a₀, b₀, ha₀, hb₀, h₀⟩` from `hθ W₀ T₀`. Take `⟨v₀, hv₀⟩` from `hS W₀ T₀ a₀ b₀ ha₀ h₀`.
+
+Take `⟨r, t, hr, ht, hrt⟩` from `GlobalTheory.T.exists_ratio_of_expansions_proportional_at_trait R hR D C (m ^ 2) hk G S (Φ G) (fun W _ _ _ T => (hΦ W T).imp fun u hu => hu G) W₀ T₀ a₀ (b₀ * v₀) ha₀ (mul_ne_zero hb₀ v₀.ne_zero) hv₀`. Use `⟨r, t, hr, ht, fun W _ _ _ T => ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, hb, h⟩` from `hθ W T`. Take `⟨v, hv⟩` from `hS W T a b ha h`. Take `⟨u, hu⟩` from `hrt W T`.
+
+Establish `htW : T.φ t ≠ 0` using `fun h0 => ht (T.inj (h0.trans (map_zero _).symm))`. Establish `h1` using `GlobalTheory.T.coverTrait_expansion_scale_both_scalars R D C W T (m ^ 2) S G a (b * v) (T.φ t) hv`. Establish `h2` using `GlobalTheory.T.coverTrait_expansion_scale_both_scalars R D C W T (m ^ 2) S G (T.φ t) (T.φ r * u) a hu`. Rewrite `h2` using `[mul_comm a (T.φ t)]`. Establish `he` using `GlobalTheory.T.expansion_secondScalar_determined_of_nonzero R hR D C W T (m ^ 2) hk S G hGz (T.φ t * a) _ _ (mul_ne_zero htW ha) h1 h2`.
+
+Use `⟨a, b, u * v⁻¹, ha, hb, h, ?_⟩` and prove the remaining obligations. Establish `: b * T.φ t * v = a * T.φ r * u` using `by linear_combination he`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ratio_odd_mul : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (m : ℕ), Odd m → ∀ Φ : IntFam (maximalIdeal R) D.toPre (m ^ 2) → SecK C.P.L.L C.α (m ^ 2), (∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ u : Wˣ, ∀ F, T.Exp 1 u (Φ F) F) → ∀ (F₁ : IntFam (maximalIdeal R) D.toPre 1) (θ₀ : SecK C.P.L.L C.α 1), (∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ a b : W, a ≠ 0 ∧ b ≠ 0 ∧ T.Exp a b θ₀ F₁) → ∃ r t : R, r ≠ 0 ∧ t ≠ 0 ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ (a b : W) (v : Wˣ), a ≠ 0 ∧ b ≠ 0 ∧ T.Exp a b θ₀ F₁ ∧ b * T.φ t = a * T.φ r * v := by
   intro R _ _ _ hR D C m hm Φ hΦ F₁ θ₀ hθ
   by_cases hz : ∀ α j, (F₁.f α).f j = 0

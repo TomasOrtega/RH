@@ -22,19 +22,34 @@ variable {R : Type} [CommRing R] {d : ℕ}
 def blk2 (d : ℕ) (a b : R) : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) R :=
   Matrix.fromBlocks (a • 1) (b • 1) (b • 1) (a • 1)
 
+/- English proof (translation)
+Simplify using `only [blk2, Matrix.fromBlocks_multiply, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, ← add_smul]`. Apply the tactic sequence `congr 2 <;> ring`.
+-/
 theorem symmetricScalarBlockMatrix_mul (a b a' b' : R) : blk2 d a b * blk2 d a' b' = blk2 d (a * a' + b * b') (a * b' + b * a') := by
   simp only [blk2, Matrix.fromBlocks_multiply, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, ← add_smul]
   congr 2 <;> ring
 
+/- English proof (translation)
+Simplify using `[blk2, Matrix.fromBlocks_one]`.
+-/
 theorem symmetricScalarBlockMatrix_one_zero : blk2 d (1 : R) 0 = 1 := by
   simp [blk2, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Simplify using `[blk2, Matrix.fromBlocks_transpose, Matrix.transpose_smul]`.
+-/
 theorem symmetricScalarBlockMatrix_transpose (a b : R) : (blk2 d a b)ᵀ = blk2 d a b := by
   simp [blk2, Matrix.fromBlocks_transpose, Matrix.transpose_smul]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> by_cases h : i = j <;> simp [blk2, Matrix.one_apply, h, h0]`.
+-/
 theorem symmetricScalarBlockMatrix_map (c : R → R) (h0 : c 0 = 0) (a b : R) : (blk2 d a b).map c = blk2 d (c a) (c b) := by
   ext (i | i) (j | j) <;> by_cases h : i = j <;> simp [blk2, Matrix.one_apply, h, h0]
 
+/- English proof (translation)
+Simplify using `only [blk2, Matrix.fromBlocks_multiply, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, smul_zero, zero_add, add_zero, smul_neg, Matrix.neg_mul, Matrix.mul_neg, smul_smul]`. Apply the tactic sequence `congr 1 <;> module`.
+-/
 theorem symmetricScalarBlockMatrix_mul_gram_mul (J : Matrix (Fin d) (Fin d) R) (a b a' b' : R) :
     blk2 d a b * Matrix.fromBlocks J 0 0 (-J) * blk2 d a' b' =
       Matrix.fromBlocks ((a * a' - b * b') • J) ((a * b' - b * a') • J) ((b * a' - a * b') • J) ((b * b' - a * a') • J) := by
@@ -42,11 +57,17 @@ theorem symmetricScalarBlockMatrix_mul_gram_mul (J : Matrix (Fin d) (Fin d) R) (
     Matrix.zero_mul, Matrix.mul_zero, smul_zero, zero_add, add_zero, smul_neg, Matrix.neg_mul, Matrix.mul_neg, smul_smul]
   congr 1 <;> module
 
+/- English proof (translation)
+Simplify using `only [blk2, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.mul_one, Matrix.one_mul, add_comm b a, ← add_smul]`.
+-/
 theorem symmetricScalarBlockMatrix_mul_diagonalColumns (a b : R) :
     blk2 d a b * (Matrix.fromRows (1 : Matrix (Fin d) (Fin d) R) (1 : Matrix (Fin d) (Fin d) R) : Matrix (Fin d ⊕ Fin d) (Fin d) R) =
       (Matrix.fromRows (1 : Matrix (Fin d) (Fin d) R) (1 : Matrix (Fin d) (Fin d) R) : Matrix (Fin d ⊕ Fin d) (Fin d) R) * ((a + b) • (1 : Matrix (Fin d) (Fin d) R)) := by
   simp only [blk2, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.mul_one, Matrix.one_mul, add_comm b a, ← add_smul]
 
+/- English proof (translation)
+Simplify using `only [blk2, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg, Matrix.neg_mul]`. Apply the tactic sequence `congr 1 <;> module`.
+-/
 theorem symmetricScalarBlockMatrix_mul_antidiagonalColumns (a b : R) :
     blk2 d a b * (Matrix.fromRows (1 : Matrix (Fin d) (Fin d) R) (-(1 : Matrix (Fin d) (Fin d) R)) : Matrix (Fin d ⊕ Fin d) (Fin d) R) =
       (Matrix.fromRows (1 : Matrix (Fin d) (Fin d) R) (-(1 : Matrix (Fin d) (Fin d) R)) : Matrix (Fin d ⊕ Fin d) (Fin d) R) * ((a - b) • (1 : Matrix (Fin d) (Fin d) R)) := by
@@ -54,13 +75,22 @@ theorem symmetricScalarBlockMatrix_mul_antidiagonalColumns (a b : R) :
     Matrix.neg_mul]
   congr 1 <;> module
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> by_cases h : i = j <;> simp [blk2, Matrix.one_apply, h]`.
+-/
 theorem symmetricScalarBlockMatrix_sub_one (a b : R) : blk2 d a b - 1 = blk2 d (a - 1) b := by
   ext (i | i) (j | j) <;> by_cases h : i = j <;> simp [blk2, Matrix.one_apply, h]
 
+/- English proof (translation)
+Simplify using `[blk2, Matrix.fromBlocks_mulVec, Matrix.smul_mulVec]`.
+-/
 theorem symmetricScalarBlockMatrix_mulVec_inl (a b : R) (z : Fin d ⊕ Fin d → R) (i : Fin d) :
     (blk2 d a b *ᵥ z) (Sum.inl i) = a * z (Sum.inl i) + b * z (Sum.inr i) := by
   simp [blk2, Matrix.fromBlocks_mulVec, Matrix.smul_mulVec]
 
+/- English proof (translation)
+Simplify using `[blk2, Matrix.fromBlocks_mulVec, Matrix.smul_mulVec]`.
+-/
 theorem symmetricScalarBlockMatrix_mulVec_inr (a b : R) (z : Fin d ⊕ Fin d → R) (i : Fin d) :
     (blk2 d a b *ᵥ z) (Sum.inr i) = b * z (Sum.inl i) + a * z (Sum.inr i) := by
   simp [blk2, Matrix.fromBlocks_mulVec, Matrix.smul_mulVec]
@@ -69,6 +99,15 @@ end FinTwoTypeFamily
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hv2 : Valued.v (2 : Fv F v) = 1`. Establish `e : ((algebraMap (𝓞 F) (v.adicCompletionIntegers F) 2 : v.adicCompletionIntegers F) : Fv F v) = 2`. Rewrite using `[map_ofNat]`. Both sides reduce to the same expression. Establish `hn` using `(GlobalTheory.InertUnitNorm.algebraMap_mem_maximalIdeal_iff v 2).not.2 h2`.
+
+Rewrite `hn` using `[GlobalTheory.InertUnitNorm.mem_maximalIdeal_iff_valued_lt_one, e]`. Establish `hle : Valued.v (2 : Fv F v) ≤ 1`. Rewrite using `[← e]`. Conclude with `(algebraMap (𝓞 F) (v.adicCompletionIntegers F) 2).2`. Conclude with `le_antisymm hle (not_lt.1 hn)`.
+
+Establish `hx : (2 : Fv F v) * evFin F v (⅟2 : AF F) = 1`. Rewrite using `[← map_ofNat (evFin F v) 2, ← map_mul, mul_invOf_self, map_one]`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `congrArg Valued.v hx` as an intermediate fact. Rewrite `this` using `[map_mul, hv2, one_mul, map_one]`.
+
+Conclude with `this.le`.
+-/
 theorem evFin_half_mem (v : Pl F) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) :
     evFin F v (⅟2 : AF F) ∈ v.adicCompletionIntegers F := by
   have hv2 : Valued.v (2 : Fv F v) = 1 := by
@@ -86,6 +125,9 @@ theorem evFin_half_mem (v : Pl F) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) :
   rw [map_mul, hv2, one_mul, map_one] at this
   exact this.le
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify using `only [symmetricScalarBlockMatrix_mulVec_inl]`. Conclude with `add_mem (ha _ hz.1) (hb _ hz.2)`. Simplify using `only [symmetricScalarBlockMatrix_mulVec_inr]`. Conclude with `add_mem (hb _ hz.1) (ha _ hz.2)`.
+-/
 theorem symmetricScalarBlockMatrix_mulVec_mem_doubledLattice {d : ℕ} {W : Spc F E d} {v : Pl F} {a b : AE F E} (ha : GlobalTheory.SplitConj.Mult W v a)
     (hb : GlobalTheory.SplitConj.Mult W v b) (z : Fin d ⊕ Fin d → AE F E) (hz : z ∈ GlobalTheory.InertDbl.latAtD W v) :
     blk2 d a b *ᵥ z ∈ GlobalTheory.InertDbl.latAtD W v := by
@@ -95,18 +137,64 @@ theorem symmetricScalarBlockMatrix_mulVec_mem_doubledLattice {d : ℕ} {W : Spc 
   · simp only [symmetricScalarBlockMatrix_mulVec_inr]
     exact add_mem (hb _ hz.1) (ha _ hz.2)
 
+/- English proof (translation)
+Introduce `z hz` and use `by have : (fun i => -a * z i) = -(fun i => a * z i) := by ext i; simp rw [this]; exact neg_mem (ha z hz)`.
+-/
 theorem mult_neg {d : ℕ} {W : Spc F E d} {v : Pl F} {a : AE F E} (ha : GlobalTheory.SplitConj.Mult W v a) :
     GlobalTheory.SplitConj.Mult W v (-a) := fun z hz => by
   have : (fun i => -a * z i) = -(fun i => a * z i) := by ext i; simp
   rw [this]; exact neg_mem (ha z hz)
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `GlobalTheory.SplitConj.mult_add ha (mult_neg hb)`.
+-/
 theorem mult_sub {d : ℕ} {W : Spc F E d} {v : Pl F} {a b : AE F E} (ha : GlobalTheory.SplitConj.Mult W v a)
     (hb : GlobalTheory.SplitConj.Mult W v b) : GlobalTheory.SplitConj.Mult W v (a - b) := by
   rw [sub_eq_add_neg]; exact GlobalTheory.SplitConj.mult_add ha (mult_neg hb)
 
+/- English proof (translation)
+Introduce `z hz` and use `by simpa using hz`.
+-/
 theorem mult_one {d : ℕ} (W : Spc F E d) (v : Pl F) : GlobalTheory.SplitConj.Mult W v 1 := fun z hz => by
   simpa using hz
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B _ d W v h2 A hA hAe hAB hL`. Use `set h : AE F E := algebraMap (AF F) (AE F E) (⅟2) with hh`. Use `set e : AE F E := algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) with he`. Use `set A' : AE F E := cA σ A with hA'`. Establish `h2h : 2 * h = 1`.
+
+Rewrite using `[hh, ← map_ofNat (algebraMap (AF F) (AE F E)) 2, ← map_mul, mul_invOf_self, map_one]`. Establish `hee : e * e = e` using `by rw [he, ← map_mul, ← GlobalTheory.SplitConj.liftV_mul, one_mul]`. Establish `hAe' : A * e = A` using `by rw [← hAe, mul_add, hA, hAB, add_zero]`. Establish `hA'e : A' = e - A` using `by rw [← hAe]; ring`. Establish `hA'A' : A' * A' = A'` using `by rw [hA'e]; linear_combination hee - 2 * hAe' + hA`.
+
+Establish `ch : cA σ h = h` using `(cA σ).commutes _`. Establish `ce : cA σ e = e` using `(cA σ).commutes _`. Establish `cA' : cA σ A' = A` using `by rw [hA'e, map_sub, ce, ← hA', hA'e]; ring`. Establish `hx : (1 - h * A) * (1 + A) = 1` using `by linear_combination (-h) * hA - A * h2h`. Establish `hy : (1 + A') * (1 - h * A') = 1` using `by linear_combination (-h) * hA'A' - A' * h2h`.
+
+Establish `cx : cA σ (1 - h * A) = 1 - h * A'` using `by rw [map_sub, map_one, map_mul, ch]`. Establish `cy : cA σ (1 + A') = 1 + A` using `by rw [map_add, map_one, cA']`. Establish `Mh : GlobalTheory.SplitConj.Mult W v h` using `GlobalTheory.SplitConj.mult_algebraMap W v _ (evFin_half_mem v h2)`. Establish `Me : GlobalTheory.SplitConj.Mult W v e` using `GlobalTheory.SplitConj.mult_algebraMap W v _ (by`. Rewrite using `[GlobalTheory.LatVac.evFin_liftV]`.
+
+Conclude with `one_mem _)`. Establish `MA : GlobalTheory.SplitConj.Mult W v A` using `hL`. Establish `MA' : GlobalTheory.SplitConj.Mult W v A'` using `hA'e ▸ mult_sub Me MA`. Establish `Mx` using `mult_sub (mult_one W v) (GlobalTheory.SplitConj.mult_mul Mh MA)`. Establish `Mx'` using `GlobalTheory.SplitConj.mult_add (mult_one W v) MA`.
+
+Establish `My` using `GlobalTheory.SplitConj.mult_add (mult_one W v) MA'`. Establish `My'` using `mult_sub (mult_one W v) (GlobalTheory.SplitConj.mult_mul Mh MA')`. Establish `hu : ∀ u : AF F, evFin F v u = 0 → algebraMap (AF F) (AE F E) u * A = 0 ∧ algebraMap (AF F) (AE F E) u * A' = 0`. Introduce `u hu`. Establish `h1 : algebraMap (AF F) (AE F E) u * e = 0`.
+
+Use `GlobalTheory.LatVac.at_liftV v 1 u hu` as an intermediate fact. Rewrite using `[he, ← map_mul, ← smul_eq_mul, this, map_zero]`. Establish `h3 : algebraMap (AF F) (AE F E) u * A = 0`. Rewrite using `[← hAe']`. Take the linear combination `A * h1`.
+
+Conclude with `⟨h3, by rw [hA'e, mul_sub, h1, h3, sub_zero]⟩`. Establish `hsm : (⅟2 : AF F) • A = h * A` using `Algebra.smul_def _ _`. Rewrite using `[hsm]`. Generalize the expression as in `hxe : 1 - h * A = x at *`. Generalize the expression as in `hxe' : 1 + A = x' at *`.
+
+Generalize the expression as in `hye : 1 + A' = y at *`. Generalize the expression as in `hye' : 1 - h * A' = y' at *`. Establish `i1 : h * (x + y) * (h * (x' + y')) + h * (x - y) * (h * (x' - y')) = 1`. Take the linear combination `2 * h * h * hx + 2 * h * h * hy + (2 * h + 1) * h2h`. Establish `i2 : h * (x + y) * (h * (x' - y')) + h * (x - y) * (h * (x' + y')) = 0`.
+
+Take the linear combination `2 * h * h * hx - 2 * h * h * hy`. Establish `i3 : h * (x' + y') * (h * (x + y)) + h * (x' - y') * (h * (x - y)) = 1`. Take the linear combination `i1`. Establish `i4 : h * (x' + y') * (h * (x - y)) + h * (x' - y') * (h * (x + y)) = 0`. Take the linear combination `i2`.
+
+Establish `ca : cA σ (h * (x + y)) = h * (x' + y')` using `by rw [map_mul, map_add, ch, cx, cy, add_comm]`. Establish `cb : cA σ (h * (x - y)) = -(h * (x' - y'))` using `by rw [map_mul, map_sub, ch, cx, cy]; ring`. Establish `hmem : (blk2 d (h * (x + y)) (h * (x - y)))ᵀ * dbl (incM F W.J) * (blk2 d (h * (x + y)) (h * (x - y))).map (cA σ) = dbl (incM F W.J)`. Rewrite using `[symmetricScalarBlockMatrix_transpose, symmetricScalarBlockMatrix_map _ (map_zero _), ca, cb, dbl, symmetricScalarBlockMatrix_mul_gram_mul]`. Establish `j1 : h * (x + y) * (h * (x' + y')) - h * (x - y) * -(h * (x' - y')) = 1` using `by linear_combination i1`.
+
+Establish `j2 : h * (x + y) * -(h * (x' - y')) - h * (x - y) * (h * (x' + y')) = 0` using `by linear_combination -i2`. Establish `j3 : h * (x - y) * (h * (x' + y')) - h * (x + y) * -(h * (x' - y')) = 0` using `by linear_combination i2`. Establish `j4 : h * (x - y) * -(h * (x' - y')) - h * (x + y) * (h * (x' + y')) = -1` using `by linear_combination -i1`. Rewrite using `[j1, j2, j3, j4, one_smul, zero_smul, neg_smul, one_smul]`. Set `s : GlobalTheory.InertDbl.UD σ W` to `⟨⟨blk2 d (h * (x + y)) (h * (x - y)), blk2 d (h * (x' + y')) (h * (x' - y')), by rw [symmetricScalarBlockMatrix_mul, i1, i2, symmetricScalarBlockMatrix_one_zero], by rw [symmetricScalarBlockMatrix_mul, i3, i4, symmetricScalarBlockMatrix_one_zero]⟩, hmem⟩`.
+
+Establish `hs : GlobalTheory.InertDbl.matD s = blk2 d (h * (x + y)) (h * (x - y))` using `rfl`. Establish `hs' : GlobalTheory.InertDbl.matD s⁻¹ = blk2 d (h * (x' + y')) (h * (x' - y'))` using `rfl`. Establish `hd : GlobalTheory.InertDbl.matD s * diagCols (Fin d) = diagCols (Fin d) * (x • (1 : Matrix (Fin d) (Fin d) (AE F E)))`. Establish `: h * (x + y) + h * (x - y) = x` using `by linear_combination x * h2h`. Establish `k` using `symmetricScalarBlockMatrix_mul_diagonalColumns (d := d) (h * (x + y)) (h * (x - y))`.
+
+Rewrite `k` using `[this]`. Conclude with `k`. Use `⟨s, ⟨⟨?_, ?_⟩, ⟨x • 1, x' • 1, ?_, ?_⟩, hd⟩, hd, ?_⟩` and prove the remaining obligations. Introduce `u hu0`. Take `⟨u1, u2⟩` from `hu u hu0`.
+
+Establish `k1 : u • (h * (x + y) - 1) = 0`. Rewrite using `[Algebra.smul_def, ← hxe, ← hye]`. Take the linear combination `(-h * h) * u1 + h * u2 + algebraMap (AF F) (AE F E) u * h2h`. Establish `k2 : u • (h * (x - y)) = 0`. Rewrite using `[Algebra.smul_def, ← hxe, ← hye]`.
+
+Take the linear combination `(-h * h) * u1 - h * u2`. Rewrite using `[hs, symmetricScalarBlockMatrix_sub_one, blk2, Matrix.fromBlocks_smul, ← smul_assoc, ← smul_assoc, k1, k2, zero_smul, Matrix.fromBlocks_zero]`. Introduce `z hz`. Rewrite using `[hs, hs']`. Conclude with `⟨symmetricScalarBlockMatrix_mulVec_mem_doubledLattice (GlobalTheory.SplitConj.mult_mul Mh (GlobalTheory.SplitConj.mult_add Mx My)) (GlobalTheory.SplitConj.mult_mul Mh (mult_sub Mx My)) z hz, symmetricScalarBlockMatrix_mulVec_mem_doubledLattice (GlobalTheory.SplitConj.mult_mul Mh …`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.one_mul, smul_smul, hx, one_smul]`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul, smul_smul, mul_comm, hx, one_smul]`. Establish `: h * (x + y) - h * (x - y) = y` using `by linear_combination y * h2h`. Establish `k` using `symmetricScalarBlockMatrix_mul_antidiagonalColumns (d := d) (h * (x + y)) (h * (x - y))`. Rewrite `k` using `[this]`.
+
+Conclude with `k`.
+-/
 theorem exists_par : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (d : ℕ) (W : Spc F E d) (v : Pl F), (2 : 𝓞 F) ∉ v.asIdeal →
     ∀ Eid : AE F E, Eid * Eid = Eid → Eid + cA σ Eid = algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) →

@@ -18,10 +18,21 @@ local notation:70 X:70 " ⬝ " Y:71 => @HMul.hMul _ _ _ Matrix.instHMulOfFintype
 section Mat
 variable {ι R : Type} [Fintype ι] [DecidableEq ι] [Semiring R]
 end Mat
+/- English proof (translation)
+Establish `e : mat2 (1 : d.G) = 1` using `rfl`. Simplify using `only [inFrame, e, Matrix.mul_one, _root_.PositivityTheory.SiegelWeilFormula.KWhit.incM_inv_mul_k]`.
+-/
 theorem inFrame_one_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : inFrame d.b (1 : d.G) = 1 := by
   have e : mat2 (1 : d.G) = 1 := rfl
   simp only [inFrame, e, Matrix.mul_one, _root_.PositivityTheory.SiegelWeilFormula.KWhit.incM_inv_mul_k]
+/- English proof (translation)
+Introduce `u hu v` and use `L.j_out g u hu v`.
+-/
 theorem quasiCharacter_conj_embed {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (g : L.sd.G) : IdentityOnLastRowsCols L.i₀ (inFrame d.b (L.j g)) := fun u hu v => L.j_out g u hu v
+/- English proof (translation)
+Establish `hH : inFrame d.b (L.j g) * inFrame d.b (L.j g)⁻¹ = 1`. Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.KWhit.inFrame_mul_k, mul_inv_cancel, _root_.PositivityTheory.SiegelWeilFormula.Avac.inFrame_one_k]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KWhit.inFrame_mul_k, _root_.PositivityTheory.SiegelWeilFormula.KWhit.inFrame_mul_k]`. Use `isQ_conj hq hH (_root_.PositivityTheory.SiegelWeilFormula.Avac.quasiCharacter_conj_embed L g) ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+
+Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Avac.quasiCharacter_conj_embed L g⁻¹`.
+-/
 theorem q_conj'_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) {q : d.G} {lam : (AE F E)ˣ} (hq : IsQ F E L.i₀ (inFrame d.b q) lam) (g : L.sd.G) :
     IsQ F E L.i₀ (inFrame d.b (L.j g * q * (L.j g)⁻¹)) lam := by
   have hH : inFrame d.b (L.j g) * inFrame d.b (L.j g)⁻¹ = 1 := by

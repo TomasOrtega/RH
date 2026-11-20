@@ -6,6 +6,27 @@ open GlobalTheory.SupMeas
 
 namespace GlobalTheory.SupMeas
 
+/- English proof (translation)
+Set `f : N → N` to `fun x => ⟨m * x * m⁻¹, (hm x x.2).1⟩`. Establish `hset : ∀ S : Set N, Subtype.val ⁻¹' ((fun g => m⁻¹ * g * m) '' (Subtype.val '' S)) = f ⁻¹' S`. Introduce `S`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_image]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, hyx⟩`. Establish `h1 : (y : G) = m * x * m⁻¹` using `by rw [← hyx]; group`. Establish `h2 : y = f x` using `Subtype.ext h1`. Rewrite using `[← h2]` and apply the resulting hypothesis.
+
+Introduce `hx`. Conclude with `⟨_, ⟨_, hx, rfl⟩, by simp [f, mul_assoc]⟩`. Establish `hfc : Continuous f`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Use `fun_prop`.
+
+Establish `hfm : Measurable f` using `hfc.measurable`. Establish `hq : Measure.QuasiMeasurePreserving f νN νN`. Use `⟨hfm, ?_⟩` and prove the remaining obligations. Use `Measure.AbsolutelyContinuous.mk fun S hS h0 => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hfm hS, ← hset]`.
+
+Establish `h3` using `hmod S`. Rewrite `h3` using `[h0]`. Conclude with `(mul_eq_zero.mp h3).resolve_left hc`. Establish `hmemQ : ∀ l : Q.subgroupOf N, m⁻¹ * ((l : N) : G) * m ∈ Q.map (MulAut.conj m⁻¹).toMonoidHom`. Introduce `l`.
+
+Use `Subgroup.mem_map.mpr ⟨((l : N) : G), (Subgroup.mem_subgroupOf.mp l.2), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Set `e : Q.subgroupOf N → (Q.map (MulAut.conj m⁻¹).toMonoidHom).subgroupOf N` to `fun l => ⟨⟨m⁻¹ * ((l : N) : G) * m, (hm _ (l : N).2).2⟩, Subgroup.mem_subgroupOf.mpr (hmemQ l)⟩`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `a b hab`. Establish `h4 : m⁻¹ * ((a : N) : G) * m = m⁻¹ * ((b : N) : G) * m`. Simplify `congrArg (fun z : (Q.map (MulAut.conj m⁻¹).toMonoidHom).subgroupOf N => ((z : N) : G)) hab` using `[e]`. Conclude with `Subtype.ext (Subtype.ext (by simpa using h4))`. Introduce `h`.
+
+Take `⟨q, hqQ, hqh⟩` from `Subgroup.mem_map.mp (Subgroup.mem_subgroupOf.mp h.2)`. Establish `hq' : m⁻¹ * q * m = ((h : N) : G)` using `by simpa using hqh`. Establish `hqN : q ∈ N`. Establish `h5 : q = m * ((h : N) : G) * m⁻¹` using `by rw [← hq']; group`. Rewrite using `[h5]`.
+
+Conclude with `(hm _ (h : N).2).1`. Use `⟨⟨⟨q, hqN⟩, Subgroup.mem_subgroupOf.mpr hqQ⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (Subtype.ext (by simpa [e] using hq'))`. Rewrite using `[hset E]`. Use `hE.preimage_of_equiv hq he ?_` and prove the remaining obligations.
+
+Introduce `l x`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.smul_def, smul_eq_mul, f, e, Subgroup.coe_mul]`. Use `group`.
+-/
 theorem isFundamentalDomain_conj_inv {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
     (N Q : Subgroup G) (m : G) (_hN : IsClosed (N : Set G))

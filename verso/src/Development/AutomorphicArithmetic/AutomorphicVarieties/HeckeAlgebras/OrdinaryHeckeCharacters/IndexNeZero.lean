@@ -5,6 +5,9 @@ open Matrix ValuativeRel GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.
 
 namespace UpperTheory.V.Hi.GlAx
 
+/- English proof (translation)
+Rewrite using `[← inv_mem_iff, Subgroup.mem_comap, mem_unipB]`. Conclude with `⟨fun h => ⟨fun i j hij => h.1 j i hij, h.2⟩, fun h => ⟨fun i j hij => h.1 j i hij, h.2⟩⟩`.
+-/
 theorem mem_low {R : Type} [CommRing R] {n : ℕ} {y : GL (Fin n) R} :
     y ∈ (unipB R (Fin n)).comap (GlobalTheory.CuspRep.invT n R) ↔
       (∀ i j, i < j → (y : Matrix (Fin n) (Fin n) R) i j = 0) ∧ ∀ i, (y : Matrix (Fin n) (Fin n) R) i i = 1 := by
@@ -12,6 +15,19 @@ theorem mem_low {R : Type} [CommRing R] {n : ℕ} {y : GL (Fin n) R} :
   exact ⟨fun h => ⟨fun i j hij => h.1 j i hij, h.2⟩, fun h => ⟨fun i j hij => h.1 j i hij, h.2⟩⟩
 
 open Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.S3x7 Formalism.FourierDecayAlt.S3 Formalism.DoubleCosetMeasures in
+/- English proof (translation)
+Use `set π := Ideal.Quotient.mk I`. Establish `hg' : GeneralLinearGroup.map π g⁻¹ = 1` using `by rw [map_inv, hg, inv_one]`. Establish `hM : (g⁻¹).val.map π = 1` using `congrArg Units.val hg'`. Establish `hu : ∀ x : A, π x = 1 → IsUnit x` using `fun x hx => by`. Establish `h1 : 1 - x ∈ I`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one]`. Conclude with `sub_eq_zero.2 hx.symm`. Conclude with `(IsLocalRing.isUnit_or_isUnit_one_sub_self x).resolve_right (hI h1)`. Take `⟨L, U, d, hL, hU, hE, -⟩` from `ldu_decomposition_exists A n (g⁻¹).val fun l hl => hu _ (by`. Rewrite using `[lead, RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.submatrix_map, hM, Matrix.submatrix_one _ (Fin.castLE_injective _), det_one])`.
+
+Establish `hE' : L.map π * diagonal (fun i => π (d i)) * U.map π = 1`. Rewrite using `[← hM, hE, Matrix.map_mul, Matrix.map_mul, diagonal_map (map_zero π)]`. Take `⟨h1, h2, -⟩` from `ldu_unique (L := L.map π) (U := U.map π) (d := fun i => π (d i)) (L' := 1) (U' := 1) (d' := fun _ => 1) (mk_low (fun i j h => by rw [map_apply, low_apply hL h, map_zero]) fun i => by rw [map_apply, hL.2, map_one]) (mk_up (fun i j h => by rw [map_apply, up_apply hU h, map_zero]) f …`. Set `L' : GL (Fin n) A` to `GeneralLinearGroup.mk'' L (by rw [isLowUni_det A hL]; exact isUnit_one)`. Set `U' : GL (Fin n) A` to `GeneralLinearGroup.mk'' U (by rw [isUpUni_det A hU]; exact isUnit_one)`.
+
+Set `t : Fin n → Aˣ` to `fun i => (hu _ (congrFun h2 i)).unit`. Establish `e : g⁻¹ = L' * diagT A (Fin n) t * U'` using `Units.ext (by`. Rewrite using `[hE, Units.val_mul, Units.val_mul, val_diagT]`. Use the proof step `rfl)`. Use `⟨U'⁻¹, inv_mem ((mem_unipB _).2 ⟨fun i j h => up_apply hU h, hU.2⟩), t⁻¹, L'⁻¹, inv_mem (mem_low.2 ⟨fun i j h => low_apply hL h, hL.2⟩), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_inv, map_inv, inv_eq_one]`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(diagT A (Fin n) t).val.map π = 1`. Rewrite using `[val_diagT, diagonal_map (map_zero π)]`. Conclude with `(congrArg diagonal h2).trans diagonal_one`.
+
+Rewrite using `[map_inv, inv_eq_one]`. Conclude with `Units.ext h1`. Rewrite using `[← inv_inv g, e, map_inv]`. Use `group`.
+-/
 theorem udl {A : Type} [CommRing A] [IsLocalRing A] {n : ℕ} (I : Ideal A) (hI : I ≤ IsLocalRing.maximalIdeal A)
     (g : GL (Fin n) A) (hg : GeneralLinearGroup.map (Ideal.Quotient.mk I) g = 1) :
     ∃ u ∈ unipB A (Fin n), ∃ t : Fin n → Aˣ, ∃ l ∈ (unipB A (Fin n)).comap (GlobalTheory.CuspRep.invT n A),
@@ -52,10 +68,18 @@ theorem udl {A : Type} [CommRing A] [IsLocalRing A] {n : ℕ} (I : Ideal A) (hI 
     exact Units.ext h1
   · rw [← inv_inv g, e, map_inv]; group
 
+/- English proof (translation)
+Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, val_diagT, val_diagT, mul_diagonal, diagonal_mul]`. Both sides reduce to the same expression.
+-/
 theorem conj_apply {R : Type} [CommRing R] {n : ℕ} (t : Fin n → Rˣ) (g : GL (Fin n) R) (i j : Fin n) :
     (diagT R (Fin n) t * g * (diagT R (Fin n) t)⁻¹).val i j = t i * g.val i j * ((t j)⁻¹ : Rˣ) := by
   rw [← map_inv, Units.val_mul, Units.val_mul, val_diagT, val_diagT, mul_diagonal, diagonal_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, conj_apply, Matrix.one_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_sub, sub_mul]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem conj_sub_one {R : Type} [CommRing R] {n : ℕ} (t : Fin n → Rˣ) (g : GL (Fin n) R) (i j : Fin n) :
     ((diagT R (Fin n) t * g * (diagT R (Fin n) t)⁻¹).val - 1) i j = t i * (g.val - 1) i j * ((t j)⁻¹ : Rˣ) := by
   rw [Matrix.sub_apply, Matrix.sub_apply, conj_apply, Matrix.one_apply]
@@ -63,17 +87,26 @@ theorem conj_sub_one {R : Type} [CommRing R] {n : ℕ} (t : Fin n → Rˣ) (g : 
   · subst h; rw [mul_sub, sub_mul]; simp
   · simp
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[mem_unipB]`. Conclude with `⟨fun i j h => by rw [conj_apply, hg.1 i j h]; simp, fun i => by rw [conj_apply, hg.2]; simp⟩`.
+-/
 theorem conj_up {R : Type} [CommRing R] {n : ℕ} (t : Fin n → Rˣ) {g : GL (Fin n) R} (hg : g ∈ unipB R (Fin n)) :
     diagT R (Fin n) t * g * (diagT R (Fin n) t)⁻¹ ∈ unipB R (Fin n) := by
   rw [mem_unipB] at hg ⊢
   exact ⟨fun i j h => by rw [conj_apply, hg.1 i j h]; simp, fun i => by rw [conj_apply, hg.2]; simp⟩
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[mem_low]`. Conclude with `⟨fun i j h => by rw [conj_apply, hg.1 i j h]; simp, fun i => by rw [conj_apply, hg.2]; simp⟩`.
+-/
 theorem conj_low {R : Type} [CommRing R] {n : ℕ} (t : Fin n → Rˣ) {g : GL (Fin n) R}
     (hg : g ∈ (unipB R (Fin n)).comap (GlobalTheory.CuspRep.invT n R)) :
     diagT R (Fin n) t * g * (diagT R (Fin n) t)⁻¹ ∈ (unipB R (Fin n)).comap (GlobalTheory.CuspRep.invT n R) := by
   rw [mem_low] at hg ⊢
   exact ⟨fun i j h => by rw [conj_apply, hg.1 i j h]; simp, fun i => by rw [conj_apply, hg.2]; simp⟩
 
+/- English proof (translation)
+Rewrite `hg` using `[mem_unipB]`. Break down `h.eq_or_lt with rfl | h` into its components or cases. Simplify using `[hg.2]`. Simplify using `[hg.1 i j h, one_apply_ne h.ne']`.
+-/
 theorem up_sub_one {R : Type} [CommRing R] {n : ℕ} {g : GL (Fin n) R} (hg : g ∈ unipB R (Fin n)) {i j : Fin n}
     (h : j ≤ i) : (g.val - 1) i j = 0 := by
   rw [mem_unipB] at hg
@@ -81,6 +114,9 @@ theorem up_sub_one {R : Type} [CommRing R] {n : ℕ} {g : GL (Fin n) R} (hg : g 
   · simp [hg.2]
   · simp [hg.1 i j h, one_apply_ne h.ne']
 
+/- English proof (translation)
+Rewrite `hg` using `[mem_low]`. Break down `h.eq_or_lt with rfl | h` into its components or cases. Simplify using `[hg.2]`. Simplify using `[hg.1 i j h, one_apply_ne h.ne]`.
+-/
 theorem low_sub_one {R : Type} [CommRing R] {n : ℕ} {g : GL (Fin n) R}
     (hg : g ∈ (unipB R (Fin n)).comap (GlobalTheory.CuspRep.invT n R)) {i j : Fin n}
     (h : i ≤ j) : (g.val - 1) i j = 0 := by
@@ -89,6 +125,13 @@ theorem low_sub_one {R : Type} [CommRing R] {n : ℕ} {g : GL (Fin n) R}
   · simp [hg.2]
   · simp [hg.1 i j h, one_apply_ne h.ne]
 
+/- English proof (translation)
+Establish `e : x * diagT R (Fin n) t = y⁻¹` using `eq_inv_of_mul_eq_one_left h`. Establish `hy'` using `inv_mem hy`. Establish `ht : t = 1` using `funext fun i => Units.ext (by`. Establish `h1` using `(mem_low.1 hy').2 i`. Rewrite `h1` using `[← e, Units.val_mul, val_diagT, mul_diagonal, ((mem_unipB _).1 hx).2, one_mul]`.
+
+Conclude with `h1)`. Rewrite `e` using `[ht, map_one, mul_one]`. Use `⟨Units.ext (sub_eq_zero.1 (Matrix.ext fun i j => ?_)), by rw [ht, map_one]⟩` and prove the remaining obligations. Break down `le_total i j with hij | hij` into its components or cases. Conclude with `low_sub_one (e ▸ hy') hij`.
+
+Conclude with `up_sub_one hx hij`.
+-/
 theorem uniq {R : Type} [CommRing R] {n : ℕ} {x y : GL (Fin n) R} (t : Fin n → Rˣ) (hx : x ∈ unipB R (Fin n))
     (hy : y ∈ (unipB R (Fin n)).comap (GlobalTheory.CuspRep.invT n R)) (h : x * diagT R (Fin n) t * y = 1) :
     x = 1 ∧ diagT R (Fin n) t = 1 := by
@@ -108,8 +151,14 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `zero_lt_iff.2 (by simp)`.
+-/
 theorem unif_pos : 0 < uniformizer k := zero_lt_iff.2 (by simp)
 
+/- English proof (translation)
+Use `Classical.epsilon_spec (p := fun x : kˣ => valuation k (x : k) = uniformizer k) ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `valuation_surjective (uniformizer k)`. Use `⟨Units.mk0 x ?_, hx⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `unif_pos.ne ((map_zero _).symm.trans hx)`.
+-/
 theorem unif_spec : valuation k (unif k : k) = uniformizer k := by
   refine Classical.epsilon_spec (p := fun x : kˣ => valuation k (x : k) = uniformizer k) ?_
   obtain ⟨x, hx⟩ := valuation_surjective (uniformizer k)
@@ -117,9 +166,17 @@ theorem unif_spec : valuation k (unif k : k) = uniformizer k := by
   rintro rfl
   exact unif_pos.ne ((map_zero _).symm.trans hx)
 
+/- English proof (translation)
+The claim follows from `zpow_le_zpow_right_of_le_one₀ unif_pos uniformizer_lt_one.le h`.
+-/
 theorem zpow_le {a b : ℤ} (h : b ≤ a) : uniformizer k ^ a ≤ uniformizer k ^ b :=
   zpow_le_zpow_right_of_le_one₀ unif_pos uniformizer_lt_one.le h
 
+/- English proof (translation)
+Set `o : kˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by`. Rewrite using `[ord_mul, ofAdd_add]`. Establish `h1 : o (x / unif k ^ ord k x) = 1`. Rewrite using `[map_div, map_zpow, show o (unif k) = .ofAdd 1 from congrArg Multiplicative.ofAdd (ord_eq_one unif_spec), ← ofAdd_zsmul, smul_eq_mul, mul_one]`. Conclude with `div_self' _`.
+
+Conclude with `ord_eq_zero_iff.1 (ofAdd_eq_one.1 h1)`.
+-/
 theorem val_div_ord (x : kˣ) : valuation k ((x / unif k ^ ord k x : kˣ) : k) = 1 := by
   let o : kˣ →* Multiplicative ℤ := MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by
     rw [ord_mul, ofAdd_add]
@@ -129,9 +186,17 @@ theorem val_div_ord (x : kˣ) : valuation k ((x / unif k ^ ord k x : kˣ) : k) =
     exact div_self' _
   exact ord_eq_zero_iff.1 (ofAdd_eq_one.1 h1)
 
+/- English proof (translation)
+Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, unif_spec]`.
+-/
 theorem val_zpow (a : ℤ) : valuation k ((unif k ^ a : kˣ) : k) = uniformizer k ^ a := by
   rw [Units.val_zpow_eq_zpow_val, map_zpow₀, unif_spec]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by simp [hx]⟩`. Use `⟨ord k (Units.mk0 x hx), le_of_eq ?_⟩` and prove the remaining obligations. Establish `h` using `val_div_ord (Units.mk0 x hx)`. Rewrite `h` using `[Units.val_div_eq_div_val, map_div₀, val_zpow]`.
+
+Conclude with `(div_eq_one_iff_eq (zpow_pos unif_pos _).ne').1 h`.
+-/
 theorem exists_le (x : k) : ∃ m : ℤ, valuation k x ≤ uniformizer k ^ m := by
   by_cases hx : x = 0
   · exact ⟨0, by simp [hx]⟩
@@ -140,6 +205,13 @@ theorem exists_le (x : k) : ∃ m : ℤ, valuation k x ≤ uniformizer k ^ m := 
     rw [Units.val_div_eq_div_val, map_div₀, val_zpow] at h
     exact (div_eq_one_iff_eq (zpow_pos unif_pos _).ne').1 h
 
+/- English proof (translation)
+Establish `hv` using `Valuation.integer.integers (valuation k)`. Set `p : 𝒪[k]` to `⟨unif k, (unif_spec.trans_lt uniformizer_lt_one).le⟩`. Establish `hp : IsLocalRing.maximalIdeal 𝒪[k] = Ideal.span {p}`. Use extensionality with `y`. Rewrite using `[Ideal.mem_span_singleton, hv.dvd_iff_le, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hv.isUnit_iff_valuation_eq_one]`.
+
+Express the relevant statement in the definitionally equal form `_ ↔ valuation k (y : k) ≤ valuation k (unif k : k)`. Rewrite using `[unif_spec, le_uniformizer_iff]`. Conclude with `⟨fun h => lt_of_le_of_ne y.2 h, fun h => h.ne⟩`. Rewrite using `[hp, Ideal.span_singleton_pow, Ideal.mem_span_singleton, hv.dvd_iff_le, map_pow, map_pow, zpow_natCast]`. Express the relevant statement in the definitionally equal form `valuation k (x : k) ≤ valuation k (unif k : k) ^ c ↔ _`.
+
+Rewrite using `[unif_spec]`.
+-/
 theorem mem_pow (c : ℕ) (x : 𝒪[k]) :
     x ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ c ↔ valuation k (x : k) ≤ uniformizer k ^ (c : ℤ) := by
   have hv := Valuation.integer.integers (valuation k)
@@ -157,6 +229,11 @@ theorem mem_pow (c : ℕ) (x : 𝒪[k]) :
 
 def Bd (c : ℤ) (g : GL (Fin n) k) : Prop := ∀ i j, valuation k ((g.val - 1) i j) ≤ uniformizer k ^ c
 
+/- English proof (translation)
+Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `h1 : (1 : Matrix (Fin n) (Fin n) k) i j ∈ 𝒪[k]`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+
+Rewrite using `[zpow_zero, Matrix.sub_apply]`. Conclude with `⟨fun h => by simpa using add_mem (show _ ∈ 𝒪[k] from h) h1, fun h => sub_mem h h1⟩`.
+-/
 theorem bd_zero {g : GL (Fin n) k} : Bd 0 g ↔ ∀ i j, g.val i j ∈ 𝒪[k] := by
   refine forall₂_congr fun i j => ?_
   have h1 : (1 : Matrix (Fin n) (Fin n) k) i j ∈ 𝒪[k] := by
@@ -165,9 +242,15 @@ theorem bd_zero {g : GL (Fin n) k} : Bd 0 g ↔ ∀ i j, g.val i j ∈ 𝒪[k] :
   rw [zpow_zero, Matrix.sub_apply]
   exact ⟨fun h => by simpa using add_mem (show _ ∈ 𝒪[k] from h) h1, fun h => sub_mem h h1⟩
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).trans (zpow_le hc)`.
+-/
 theorem Bd.mono {c c' : ℤ} {g : GL (Fin n) k} (h : Bd c g) (hc : c' ≤ c) : Bd c' g :=
   fun i j => (h i j).trans (zpow_le hc)
 
+/- English proof (translation)
+Use `choose f hf using fun p : Fin n × Fin n => exists_le ((g.val - 1) p.1 p.2)`. Take `⟨m, hm⟩` from `(Set.finite_range fun p => (f p).natAbs).bddAbove`. Use `⟨m, fun i j => (hf (i, j)).trans (zpow_le ?_)⟩` and prove the remaining obligations. Establish `: (f (i, j)).natAbs ≤ m` using `hm ⟨(i, j), rfl⟩`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_bd (g : GL (Fin n) k) : ∃ m : ℕ, Bd (-m) g := by
   choose f hf using fun p : Fin n × Fin n => exists_le ((g.val - 1) p.1 p.2)
   obtain ⟨m, hm⟩ := (Set.finite_range fun p => (f p).natAbs).bddAbove
@@ -175,9 +258,17 @@ theorem exists_bd (g : GL (Fin n) k) : ∃ m : ℕ, Bd (-m) g := by
   have : (f (i, j)).natAbs ≤ m := hm ⟨(i, j), rfl⟩
   omega
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff, bd_zero, bd_zero]`.
+-/
 theorem mem_KO {g : GL (Fin n) k} : g ∈ KO k (Fin n) ↔ Bd 0 g ∧ Bd 0 g⁻¹ := by
   rw [GlobalTheory.SplitFlip.mem_KO_iff, bd_zero, bd_zero]
 
+/- English proof (translation)
+Rewrite using `[Units.ext_iff, ← Matrix.ext_iff]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `e : ((GeneralLinearGroup.map (algebraMap 𝒪[k] k) h).val - 1) i j = (((h.val - 1) i j : 𝒪[k]) : k)`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Rewrite using `[e, ← mem_pow, ← Ideal.Quotient.eq_zero_iff_mem, Matrix.sub_apply, map_sub, sub_eq_zero]`. Use `Eq.congr rfl ?_` and prove the remaining obligations. Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_eq_one (c : ℕ) (h : GL (Fin n) 𝒪[k]) :
     GeneralLinearGroup.map (n := Fin n) (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c)) h = 1 ↔
       Bd c (GeneralLinearGroup.map (algebraMap 𝒪[k] k) h) := by
@@ -191,6 +282,11 @@ theorem map_eq_one (c : ℕ) (h : GL (Fin n) 𝒪[k]) :
   simp only [Units.val_one, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Use `⟨(map_eq_one c h).1 hh, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `(map_eq_one c _).1 (inv_mem hh)`.
+
+Introduce and unpack `⟨h1, h2⟩`. Take `⟨h, rfl⟩` from `mem_KO.2 ⟨h1.mono (by omega), h2.mono (by omega)⟩`. Conclude with `⟨h, (map_eq_one c h).2 h1, rfl⟩`.
+-/
 theorem mem_Kc {c : ℕ} {g : GL (Fin n) k} : g ∈ Kc k n c ↔ Bd c g ∧ Bd c g⁻¹ := by
   constructor
   · rintro ⟨h, hh, rfl⟩
@@ -201,14 +297,28 @@ theorem mem_Kc {c : ℕ} {g : GL (Fin n) k} : g ∈ Kc k n c ↔ Bd c g ∧ Bd c
     obtain ⟨h, rfl⟩ := mem_KO.2 ⟨h1.mono (by omega), h2.mono (by omega)⟩
     exact ⟨h, (map_eq_one c h).2 h1, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[mem_Kc, mem_KO]`. Both sides reduce to the same expression.
+-/
 theorem Kc_zero : Kc k n 0 = KO k (Fin n) := by
   ext g; rw [mem_Kc, mem_KO]; rfl
 
+/- English proof (translation)
+Introduce `a b hab g hg` and use `mem_Kc.2 ⟨(mem_Kc.1 hg).1.mono (by omega), (mem_Kc.1 hg).2.mono (by omega)⟩`.
+-/
 theorem Kc_anti : Antitone (Kc k n) := fun a b hab g hg =>
   mem_Kc.2 ⟨(mem_Kc.1 hg).1.mono (by omega), (mem_Kc.1 hg).2.mono (by omega)⟩
 
+/- English proof (translation)
+The claim follows from `Kc_zero (k := k) (n := n) ▸ Kc_anti (Nat.zero_le c)`.
+-/
 theorem Kc_le (c : ℕ) : Kc k n c ≤ KO k (Fin n) := Kc_zero (k := k) (n := n) ▸ Kc_anti (Nat.zero_le c)
 
+/- English proof (translation)
+Use `fun h => absurd (Subgroup.relIndex_eq_zero_of_le_right hH h) ?_` and prove the remaining obligations. Establish `inj : Function.Injective (GeneralLinearGroup.map (n` using `Fin n) (algebraMap 𝒪[k] k)) := fun A B h => Units.ext (Matrix.ext fun i j => Subtype.ext (congrArg (fun g : GL (Fin n) k => g.val i j) h))`. Establish `: Finite (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k])` using `inferInstanceAs (Finite 𝓀[k])`. Use `Ideal.finite_quotient_pow (IsNoetherian.noetherian (IsLocalRing.maximalIdeal 𝒪[k])) c` as an intermediate fact. Rewrite using `[Kc, KO, MonoidHom.range_eq_map, Subgroup.relIndex_map_map_of_injective _ _ inj, Subgroup.relIndex_top_right, Subgroup.index_ker]`.
+
+Establish `: Finite (Matrix (Fin n) (Fin n) (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c))` using `inferInstanceAs (Finite (Fin n → Fin n → _))`. Establish `: Finite (GL (Fin n) (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c))` using `Finite.of_injective _ Units.val_injective`. Conclude with `Nat.card_pos.ne'`.
+-/
 theorem Kc_index (c : ℕ) {H : Subgroup (GL (Fin n) k)} (hH : H ≤ KO k (Fin n)) : (Kc k n c).relIndex H ≠ 0 := by
   refine fun h => absurd (Subgroup.relIndex_eq_zero_of_le_right hH h) ?_
   have inj : Function.Injective (GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k)) := fun A B h =>
@@ -223,10 +333,16 @@ theorem Kc_index (c : ℕ) {H : Subgroup (GL (Fin n) k)} (hH : H ≤ KO k (Fin n
     Finite.of_injective _ Units.val_injective
   exact Nat.card_pos.ne'
 
+/- English proof (translation)
+Introduce `h0` and use `Kc_index c hH (by rw [← Subgroup.inf_relIndex_right]; exact Subgroup.relIndex_eq_zero_of_le_left h h0)`.
+-/
 theorem index_ne_zero (c : ℕ) {H H' : Subgroup (GL (Fin n) k)} (hH : H ≤ KO k (Fin n)) (h : Kc k n c ⊓ H ≤ H') :
     H'.relIndex H ≠ 0 := fun h0 =>
   Kc_index c hH (by rw [← Subgroup.inf_relIndex_right]; exact Subgroup.relIndex_eq_zero_of_le_left h h0)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [conj_sub_one] rcases H i j with H | H · simp [H] · rw [map_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, ht, ht, ← _root_.zpow_neg] calc _ ≤ uniformizer k ^ a i * uniformizer k ^ c * uniformizer k ^ (-a j) := by gcongr; exact h i j _ ≤ _ := by rw [← zpow_add₀ unif_pos. …`.
+-/
 theorem Bd.conj {c c' : ℤ} {g : GL (Fin n) k} (h : Bd c g) (t : Fin n → kˣ) (a : Fin n → ℤ)
     (ht : ∀ i, valuation k (t i : k) = uniformizer k ^ a i)
     (H : ∀ i j, (g.val - 1) i j = 0 ∨ c' + a j ≤ c + a i) :
@@ -241,6 +357,9 @@ theorem Bd.conj {c c' : ℤ} {g : GL (Fin n) k} (h : Bd c g) (t : Fin n → kˣ)
           rw [← zpow_add₀ unif_pos.ne', ← zpow_add₀ unif_pos.ne']
           exact zpow_le (by omega)
 
+/- English proof (translation)
+Use `⟨h.1.conj t a ht fun i j => (H i j).imp_left fun H => H _ hS, ?_⟩` and prove the remaining obligations. Rewrite using `[conj_inv]`. Conclude with `h.2.conj t a ht fun i j => (H i j).imp_left fun H => H _ (inv_mem hS)`.
+-/
 theorem conj_Kc {c c' : ℤ} {S : Subgroup (GL (Fin n) k)} {g : GL (Fin n) k} (hS : g ∈ S) (h : Bd c g ∧ Bd c g⁻¹)
     (t : Fin n → kˣ) (a : Fin n → ℤ) (ht : ∀ i, valuation k (t i : k) = uniformizer k ^ a i)
     (H : ∀ i j, (∀ x ∈ S, (x.val - 1) i j = 0) ∨ c' + a j ≤ c + a i) :
@@ -250,24 +369,38 @@ theorem conj_Kc {c c' : ℤ} {S : Subgroup (GL (Fin n) k)} {g : GL (Fin n) k} (h
   rw [conj_inv]
   exact h.2.conj t a ht fun i j => (H i j).imp_left fun H => H _ (inv_mem hS)
 
+/- English proof (translation)
+Rewrite using `[upow, upow, upow, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.zpow_add]`.
+-/
 theorem upow_add (a b : Fin n → ℤ) : upow k n (a + b) = upow k n a * upow k n b := by
   rw [upow, upow, upow, ← map_mul]
   congr 1
   funext i
   simp [_root_.zpow_add]
 
+/- English proof (translation)
+Rewrite using `[upow, upow, ← map_inv]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem upow_neg (a : Fin n → ℤ) : upow k n (-a) = (upow k n a)⁻¹ := by
   rw [upow, upow, ← map_inv]
   congr 1
   funext i
   simp
 
+/- English proof (translation)
+Rewrite using `[upow, upow, ← map_pow]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.pow_apply, ← zpow_natCast, ← _root_.zpow_mul, mul_comm]`.
+-/
 theorem upow_pow (a : Fin n → ℤ) (m : ℕ) : upow k n a ^ m = upow k n fun i => m * a i := by
   rw [upow, upow, ← map_pow]
   congr 1
   funext i
   rw [Pi.pow_apply, ← zpow_natCast, ← _root_.zpow_mul, mul_comm]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(Set.finite_range fun p : Fin n × Fin n => (o p.1 - o p.2).natAbs).bddAbove`. Use `⟨m, fun i j hij => ?_⟩` and prove the remaining obligations. Break down `hij.eq_or_lt with rfl | hij` into its components or cases. Conclude with `le_rfl`. Establish `h1 : (o i - o j).natAbs ≤ m` using `hm ⟨(i, j), rfl⟩`.
+
+Establish `h2 : ((i : ℕ) : ℤ) + 1 ≤ (j : ℕ)` using `by exact_mod_cast hij`. Establish `h3 : o j - o i ≤ m` using `by omega`. Express the relevant statement in the definitionally equal form `(m : ℤ) * _ + _ ≤ m * _ + _`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 (Int.natCast_nonneg m)]`.
+-/
 theorem exists_anti (o : Fin n → ℤ) : ∃ m : ℕ, Antitone fun i : Fin n => m * ((n : ℤ) - 1 - (i : ℕ)) + o i := by
   obtain ⟨m, hm⟩ := (Set.finite_range fun p : Fin n × Fin n => (o p.1 - o p.2).natAbs).bddAbove
   refine ⟨m, fun i j hij => ?_⟩
@@ -285,18 +418,27 @@ section Main
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨conj_up t hx.1, mem_KO.2 (conj_Kc hx.1 (mem_KO.1 hx.2) t a ht fun i j => (le_total j i).imp (fun h _ hx => up_sub_one hx h) fun h => by have := ha h; omega)⟩`.
+-/
 theorem conj_N {t : Fin n → kˣ} {a : Fin n → ℤ} (ht : ∀ i, valuation k (t i : k) = uniformizer k ^ a i)
     (ha : Antitone a) {x : GL (Fin n) k} (hx : x ∈ (glData k n).N) :
     diagT k (Fin n) t * x * (diagT k (Fin n) t)⁻¹ ∈ (glData k n).N :=
   ⟨conj_up t hx.1, mem_KO.2 (conj_Kc hx.1 (mem_KO.1 hx.2) t a ht fun i j =>
     (le_total j i).imp (fun h _ hx => up_sub_one hx h) fun h => by have := ha h; omega)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨conj_low t hy.1, mem_Kc.2 (conj_Kc hy.1 (mem_Kc.1 hy.2) t a ht fun i j => (le_or_gt i j).imp (fun h _ hx => low_sub_one hx h) fun h => by have := ha i j h; push_cast; omega)⟩`.
+-/
 theorem conj_Nm {t : Fin n → kˣ} {a : Fin n → ℤ} (ht : ∀ i, valuation k (t i : k) = uniformizer k ^ a i)
     {c c' : ℕ} (ha : ∀ i j, j < i → c' + a j ≤ c + a i) {y : GL (Fin n) k} (hy : y ∈ (glData k n).Nm c) :
     diagT k (Fin n) t * y * (diagT k (Fin n) t)⁻¹ ∈ (glData k n).Nm c' :=
   ⟨conj_low t hy.1, mem_Kc.2 (conj_Kc hy.1 (mem_Kc.1 hy.2) t a ht fun i j =>
     (le_or_gt i j).imp (fun h _ hx => low_sub_one hx h) fun h => by have := ha i j h; push_cast; omega)⟩
 
+/- English proof (translation)
+Use `conj_Nm (a := -a) (t := fun i => unif k ^ (-a) i) (fun i => val_zpow _) (c := c) (c' := c') (fun i j h => by have := ha i j h; simp only [Pi.neg_apply]; omega) hy` as an intermediate fact. Express the relevant statement in the definitionally equal form `upow k n (-a) * y * (upow k n (-a))⁻¹ ∈ _ at this`. Rewrite `this` using `[upow_neg, inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem conj_Nm' (a : Fin n → ℤ) {c c' : ℕ} (ha : ∀ i j, j < i → c' + a i ≤ c + a j) {y : GL (Fin n) k}
     (hy : y ∈ (glData k n).Nm c) : (upow k n a)⁻¹ * y * upow k n a ∈ (glData k n).Nm c' := by
   have := conj_Nm (a := -a) (t := fun i => unif k ^ (-a) i) (fun i => val_zpow _) (c := c) (c' := c')
@@ -304,6 +446,15 @@ theorem conj_Nm' (a : Fin n → ℤ) {c c' : ℕ} (ha : ∀ i j, j < i → c' + 
   change upow k n (-a) * y * (upow k n (-a))⁻¹ ∈ _ at this
   rwa [upow_neg, inv_inv] at this
 
+/- English proof (translation)
+Take `⟨-, y₀, hy₀, rfl⟩` from `hy`. Take `⟨hx, x₀, rfl⟩` from `hx`. Take `⟨u, hu, t, l, hl, ht1, hl1, e⟩` from `udl (IsLocalRing.maximalIdeal 𝒪[k] ^ (c + 1)) (Ideal.pow_le_self (Nat.succ_ne_zero c)) (x₀⁻¹ * y₀ * x₀) (by rw [map_mul, map_mul, MonoidHom.mem_ker.1 hy₀, map_inv, mul_one, inv_mul_cancel])`. Rewrite `hu` using `[mem_unipB]`. Rewrite `hl` using `[mem_low]`.
+
+Use `⟨GeneralLinearGroup.map (algebraMap 𝒪[k] k) (x₀ * u), ⟨?_, _, rfl⟩, GeneralLinearGroup.map (algebraMap 𝒪[k] k) (diagT _ (Fin n) t), ⟨⟨fun i => Units.map (algebraMap 𝒪[k] k).toMonoidHom (t i), fun i => ?_, ?_⟩, _, ht1, rfl⟩, GeneralLinearGroup.map (algebraMap 𝒪[k] k) l, ⟨mem_low.2 …` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem hx ((mem_unipB _).2 ⟨fun i j h => congrArg (algebraMap 𝒪[k] k) (hu.1 i j h), fun i => congrArg (algebraMap 𝒪[k] k) (hu.2 i)⟩)`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit (t i).isUnit`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = (diagT _ (Fin n) t).val.map (algebraMap 𝒪[k] k)`. Rewrite using `[val_diagT, val_diagT, diagonal_map (map_zero _)]`. Both sides reduce to the same expression. Conclude with `congrArg (algebraMap 𝒪[k] k) (hl.1 i j h)`. Conclude with `congrArg (algebraMap 𝒪[k] k) (hl.2 i)`.
+
+Rewrite using `[← map_mul, ← map_mul, ← map_mul, mul_assoc x₀, mul_assoc x₀, ← e]`. Use `congr 1`. Use `group`.
+-/
 theorem swap (c : ℕ) {y x : GL (Fin n) k} (hy : y ∈ (glData k n).Nm c) (hx : x ∈ (glData k n).N) :
     ∃ x' ∈ (glData k n).N, ∃ t ∈ (glData k n).Tc c, ∃ y' ∈ (glData k n).Nm c, y * x = x' * t * y' := by
   obtain ⟨-, y₀, hy₀, rfl⟩ := hy
@@ -331,10 +482,18 @@ theorem swap (c : ℕ) {y x : GL (Fin n) k} (hy : y ∈ (glData k n).Nm c) (hx :
     congr 1
     group
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `iwahori_le_KO k _ (diagT_mem_iwahori ht)`.
+-/
 theorem T_le_KO : (glData k n).T ≤ KO k (Fin n) := by
   rintro _ ⟨t, ht, rfl⟩
   exact iwahori_le_KO k _ (diagT_mem_iwahori ht)
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(Set.finite_range fun p : Fin n × Fin n => (a p.1 - a p.2).natAbs).bddAbove`. Use `index_ne_zero m inf_le_right fun x hx => ⟨(upow k n a)⁻¹ * x * upow k n a, ?_, ?_⟩` and prove the remaining obligations. Establish `: upow k n (-a) * x * (upow k n (-a))⁻¹ ∈ (glData k n).N` using `⟨conj_up _ hx.2.1, mem_KO.2 (conj_Kc hx.2.1 (mem_Kc.1 hx.1) _ (-a) (fun i => val_zpow _) fun i j => Or.inr (by`. Establish `h1 : (a i - a j).natAbs ≤ m` using `hm ⟨(i, j), rfl⟩`. Simplify using `only [Pi.neg_apply]`.
+
+Use the proof step `omega))⟩`. Rewrite `this` using `[upow_neg, inv_inv]`. Then use the resulting hypothesis. Simplify using `[mul_assoc]`.
+-/
 theorem fin_N (a : Fin n → ℤ) :
     ((glData k n).N.map (MulAut.conj (upow k n a)).toMonoidHom).relIndex (glData k n).N ≠ 0 := by
   obtain ⟨m, hm⟩ := (Set.finite_range fun p : Fin n × Fin n => (a p.1 - a p.2).natAbs).bddAbove
@@ -346,6 +505,11 @@ theorem fin_N (a : Fin n → ℤ) :
     rwa [upow_neg, inv_inv] at this
   · simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_bd x`. Take `⟨b, hb⟩` from `exists_bd x⁻¹`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `upow k n _ ^ _ * x * (upow k n _ ^ _)⁻¹ ∈ _`. Rewrite using `[upow_pow]`.
+
+Use `⟨conj_up _ hx, mem_KO.2 (conj_Kc (c := -((a + b : ℕ) : ℤ)) hx ⟨ha.mono (by omega), hb.mono (by omega)⟩ _ _ (fun i => val_zpow _) fun i j => (le_or_gt j i).imp (fun h _ hx => up_sub_one hx h) fun h => ?_)⟩` and prove the remaining obligations. Establish `h2 : ((i : ℕ) : ℤ) + 1 ≤ (j : ℕ)` using `by exact_mod_cast h`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 (Int.natCast_nonneg (a + b))]`.
+-/
 theorem exh {x : GL (Fin n) k} (hx : x ∈ unipB k (Fin n)) :
     ∃ m : ℕ, (glData k n).z ^ m * x * ((glData k n).z ^ m)⁻¹ ∈ (glData k n).N := by
   obtain ⟨a, ha⟩ := exists_bd x
@@ -358,11 +522,17 @@ theorem exh {x : GL (Fin n) k} (hx : x ∈ unipB k (Fin n)) :
   have h2 : ((i : ℕ) : ℤ) + 1 ≤ (j : ℕ) := by exact_mod_cast h
   nlinarith [mul_le_mul_of_nonneg_left h2 (Int.natCast_nonneg (a + b))]
 
+/- English proof (translation)
+Introduce `i j h` and use `by have : (i : ℕ) ≤ j := h change (n : ℤ) - 1 - (j : ℕ) ≤ (n : ℤ) - 1 - (i : ℕ) omega`.
+-/
 theorem z_anti : Antitone fun i : Fin n => (n : ℤ) - 1 - (i : ℕ) := fun i j h => by
   have : (i : ℕ) ≤ j := h
   change (n : ℤ) - 1 - (j : ℕ) ≤ (n : ℤ) - 1 - (i : ℕ)
   omega
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_anti o`. Use `⟨m, _, hm, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `upow k n _ ^ _ * _ = _`. Rewrite using `[upow_pow, ← upow_add]`. Both sides reduce to the same expression.
+-/
 theorem z_mul (o : Fin n → ℤ) : ∃ m : ℕ, (glData k n).z ^ m * upow k n o ∈ (glData k n).P := by
   obtain ⟨m, hm⟩ := exists_anti o
   refine ⟨m, _, hm, ?_⟩
@@ -375,6 +545,23 @@ end Main
 end UpperTheory.V.Hi.GlAx
 
 open UpperTheory.V.Hi.GlAx in
+/- English proof (translation)
+Introduce `k _ _ _ _ n`. Establish `comm : ∀ s ∈ (glData k n).Tf, ∀ t ∈ (glData k n).Tf, s * t = t * s`. Introduce and unpack `_ ⟨s, rfl⟩ _ ⟨t, rfl⟩`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `hz : (glData k n).z ∈ (glData k n).P` using `⟨_, z_anti, rfl⟩`.
+
+Use `{ N_le := inf_le_left T_le := Subgroup.map_le_range _ _ P_le := by rintro _ ⟨a, -, rfl⟩; exact ⟨_, rfl⟩ z_mem := hz Tc_le := fun c => inf_le_left Tc_anti := fun a b h => inf_le_inf_left _ (Kc_anti (Nat.succ_le_succ h)) Nm_anti := fun a b h => inf_le_inf_left _ (Kc_anti (Nat.succ_ …` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩ x hx`. Conclude with `conj_N (a := 0) (fun i => (ht i).trans (zpow_zero _).symm) (fun _ _ _ => le_rfl) hx`. Use `T_Nm := by`. Introduce and unpack `c _ ⟨t, ht, rfl⟩ x hx`.
+
+Conclude with `conj_Nm (a := 0) (fun i => (ht i).trans (zpow_zero _).symm) (fun _ _ _ => le_rfl) hx`. Use `P_N := by`. Introduce and unpack `_ ⟨a, ha, rfl⟩ x hx`. Conclude with `conj_N (fun i => val_zpow _) ha hx`. Use `P_Nm := by`.
+
+Introduce and unpack `c _ ⟨a, ha, rfl⟩ y hy`. Conclude with `conj_Nm' a (fun i j h => by have := ha h.le; omega) hy`. Use `z_Nm := fun c y hy => conj_Nm' _ (fun i j h => by`. Establish `: (j : ℕ) < i` using `h`. Use `push_cast`.
+
+Use the proof step `omega) hy`. Use `swap := fun c y hy x hx => swap c hy hx`. Use `uniq := by rintro x hx _ ⟨t, rfl⟩ y hy h; exact uniq t hx hy.1 h`. Use `fin_N := by rintro _ ⟨a, -, rfl⟩; exact fin_N a`. Use `fin_Nm := fun c => index_ne_zero (c + 1) (inf_le_right.trans (Kc_le _)) fun y hy => ⟨hy.2.1, hy.1⟩`.
+
+Use `fin_Tc := fun c => index_ne_zero (c + 1) T_le_KO fun y hy => ⟨hy.2, hy.1⟩`. Use `exh := fun x hx => exh hx`. Use `exists_pow_mul_inv_mem := by`. Introduce and unpack `_ ⟨a, -, rfl⟩`. Rewrite using `[← upow_neg]`.
+
+Conclude with `z_mul _`. Use `gen := ?_ }`. Introduce and unpack `_ ⟨t, rfl⟩`. Take `⟨m, hm⟩` from `z_mul (k := k) fun i => ord k (t i)`. Use `⟨_, ⟨fun i => t i / unif k ^ ord k (t i), fun i => val_div_ord _, rfl⟩, _, hm, _, pow_mem hz m, ?_⟩` and prove the remaining obligations.
+
+Establish `h : (glData k n).z ^ m * upow k n (fun i => ord k (t i)) = upow k n (fun i => ord k (t i)) * (glData k n).z ^ m` using `comm _ (pow_mem (⟨_, rfl⟩ : (glData k n).z ∈ (glData k n).Tf) m) _ ⟨_, rfl⟩`. Rewrite using `[h, mul_assoc, mul_inv_cancel_right, upow, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Hi.glAx :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ), (glData k n).Ax := by
   intro k _ _ _ _ n

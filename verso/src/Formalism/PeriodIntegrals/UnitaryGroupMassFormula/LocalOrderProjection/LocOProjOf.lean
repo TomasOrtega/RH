@@ -25,6 +25,11 @@ def NonSqCase : Prop :=
   ∀ θ ∈ M.L.O, M.L.cj θ = -θ → ∀ D : 𝒪[F], (D : F) ≠ 0 → θ * θ = algebraMap F E D →
     (¬ ∃ s : F, s * s = D) → Concl M
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM`. Use `haveI := hM.loc`. Use `haveI := hM.char0`. Take `⟨θ, hθ, hc, D, hD0, hD⟩` from `PI.LocHerm.SlopeTestRemainingChoices.exists_theta (L := M.L)`. Distinguish the cases in `hs : ∃ s : F, s * s = D`.
+
+Conclude with `hS F E M hM θ hθ hc D hD0 hD hs`. Conclude with `hN F E M hM θ hθ hc D hD0 hD hs`.
+-/
 theorem locOProj_of (hS : SqCase) (hN : NonSqCase) : PI.LocHerm.LocOProj := by
   intro F _ _ _ E _ _ _ _ M hM
   haveI := hM.loc

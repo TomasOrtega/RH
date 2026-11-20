@@ -7,6 +7,17 @@ open scoped Matrix
 
 namespace GlobalTheory.HilbertThetaSeries
 
+/- English proof (translation)
+Introduce `F _ _ _ p _ ι r s f g c hf hg`. Take `⟨a, ha, har⟩` from `hf`. Take `⟨b, hb, hbs⟩` from `hg`. Establish `hr : 0 ≤ r` using `(norm_nonneg _).trans (har 0)`. Establish `hs : 0 ≤ s` using `(norm_nonneg _).trans (hbs 0)`.
+
+Take `⟨h1, h2, -, h4⟩` from `GlobalTheory.T.qExpansion_linear_combination F f g a b c ha hb`. Use `⟨⟨a + b, h1, fun ξ => ?_⟩, ?_, ⟨c • a, h2, fun ξ => ?_⟩, fun hrs => ⟨a, ha, fun ξ => (har ξ).trans hrs⟩, hr, ⟨_, h4, fun ξ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (har ξ) (hbs ξ))`. Take `⟨d, hd, hds⟩` from `GlobalTheory.T.qExpansion_mul_finite_convolution F f g a b ha hb`.
+
+Use `⟨d, hd, fun ξ => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hds ξ`. Rewrite using `[ht, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hr hs) fun η _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`.
+
+Conclude with `mul_le_mul (har η) (hbs _) (norm_nonneg _) hr`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (har ξ) (norm_nonneg _)`. Use `split_ifs`. Conclude with `le_rfl`.
+
+Rewrite using `[map_zero, norm_zero]`. Conclude with `norm_nonneg _`.
+-/
 theorem small_filtration : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ) (r s : ℝ) (f g : Hn F → ℂ) (c : ℂ), Small ι r f → Small ι s g → Small ι (max r s) (f + g) ∧ Small ι (r * s) (f * g) ∧ Small ι (‖ι.symm c‖ * r) (c • f) ∧ (r ≤ s → Small ι s f) ∧ 0 ≤ r ∧ Small ι ‖ι.symm c‖ (fun _ : Hn F => c) := by
   intro F _ _ _ p _ ι r s f g c hf hg
   obtain ⟨a, ha, har⟩ := hf
@@ -36,5 +47,8 @@ end GlobalTheory.HilbertThetaSeries
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.small_filtration | exact GlobalTheory.HilbertThetaSeries.small_filtration | (intros; apply GlobalTheory.HilbertThetaSeries.small_filtration <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hilbertQExp_padicBound_algebra_properties : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ) (r s : ℝ) (f g : Hn F → ℂ) (c : ℂ), Small ι r f → Small ι s g → Small ι (max r s) (f + g) ∧ Small ι (r * s) (f * g) ∧ Small ι (‖ι.symm c‖ * r) (c • f) ∧ (r ≤ s → Small ι s f) ∧ 0 ≤ r ∧ Small ι ‖ι.symm c‖ (fun _ : Hn F => c) := by
   first | exact @GlobalTheory.HilbertThetaSeries.small_filtration | exact GlobalTheory.HilbertThetaSeries.small_filtration | (intros; apply GlobalTheory.HilbertThetaSeries.small_filtration <;> assumption)

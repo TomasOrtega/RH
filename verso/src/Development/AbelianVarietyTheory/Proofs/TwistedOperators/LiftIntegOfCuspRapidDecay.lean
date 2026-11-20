@@ -8,6 +8,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 namespace GlobalTheory.Chain.LiftConv
 
+/- English proof (translation)
+Introduce `hP D` and use `liftInteg_of_growth hP D (GlobalTheory.T.thetaKernel_moderateGrowth_with_seminorms D)`.
+-/
 theorem liftInteg_of_cuspRapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, GlobalTheory.Chain.LiftInteg D :=
   fun hP D => liftInteg_of_growth hP D (GlobalTheory.T.thetaKernel_moderateGrowth_with_seminorms D)
 

@@ -12,6 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheo
 
 namespace GlobalTheory.BigTop.Fun
 
+/- English proof (translation)
+Unfold `GlobalTheory.FunObj.SqNum.halfRank sqRank`. Use `congr 1`. Simplify using `only [GlobalTheory.ChiGrid.rankV]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem halfRank_eq_sqRank_div (D : D7) (ij : Sq D) :
     GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2 = sqRank D ij / 2 := by
   unfold GlobalTheory.FunObj.SqNum.halfRank sqRank
@@ -19,6 +22,13 @@ theorem halfRank_eq_sqRank_div (D : D7) (ij : Sq D) :
   simp only [GlobalTheory.ChiGrid.rankV]
   ring
 
+/- English proof (translation)
+Introduce `hS hL hD`. Use `Lf.mono (GlobalTheory.T.fitted_ties_bound_eventual _ hS hL hD) fun {D _ _ _ _ _ _ _ _ _} p CF d C CH _ hd => ⟨hd, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨-, a, ha⟩` from `hd`. Establish `hsq` using `ha.sq`. Use `⟨fun l hl => ((hsq.den l).1 hl).1, fun ij s h1 h2 => ?_⟩` and prove the remaining obligations.
+
+Use `lift s to ℕ using (by omega)`. Establish `h1' : 1 ≤ s` using `by exact_mod_cast h1`. Establish `h2' : s ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2`. Establish `h2'' : s ≤ sqRank D ij / 2` using `by exact_mod_cast h2`. Conclude with `h2''.trans_eq (halfRank_eq_sqRank_div D ij).symm`.
+
+Conclude with `hq ij.1 ij.2 s h1' h2' _ (hsq.inside ij s h1' h2').2 d.Sd fun l hl => ((hsq.den l).1 hl).1`.
+-/
 theorem den_tie : SetAt → (Closed FamHyp fun Fm _ => EvPt Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) →
     DenSum → Den @Comparison₂ := by
   intro hS hL hD

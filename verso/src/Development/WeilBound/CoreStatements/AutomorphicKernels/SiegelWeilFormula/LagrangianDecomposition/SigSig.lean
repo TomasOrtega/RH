@@ -12,6 +12,9 @@ namespace PositivityTheory.SiegelWeilFormula.Ald.YFA
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+-/
 theorem sig_sig' (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
@@ -20,6 +23,11 @@ variable (F) in
 
 def spcOf {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Spc F E n := ⟨J, ⊤, fun _ => 1, fun _ => 1⟩
 
+/- English proof (translation)
+Establish `hd` using `GlobalTheory.ThK.Dbl.Frame.frame_diag (1 : GL (Fin n) E) T a`. Use `⟨1, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (congrFun hd i) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Fintype.sum_sum_type]`.
+
+Simplify using `only [Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Simplify `this` using `[Matrix.toCols₁]`.
+-/
 theorem toCols₁_wit {n : ℕ} (T : GL (Fin n) E) (a : E) :
     ∃ t : GL (Fin n) E, (GlobalTheory.ThK.Dbl.Frame.two 1 * GlobalTheory.ThK.Dbl.Frame.wit a T).1.toCols₁ = diagCols (Fin n) * t.1 := by
   have hd := GlobalTheory.ThK.Dbl.Frame.frame_diag (1 : GL (Fin n) E) T a
@@ -33,10 +41,16 @@ theorem toCols₁_wit {n : ℕ} (T : GL (Fin n) E) (a : E) :
   simpa [Matrix.toCols₁] using this
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, Matrix.fromBlocks, hJ]`.
+-/
 theorem dbl_sym {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {e₀ : E} (hJ : ∀ i j, σ (J j i) = e₀ * J i j) :
     ((dbl J).map (σ : E →+* E))ᵀ = e₀ • dbl J := by
   ext (i | i) (j | j) <;> simp [dbl, Matrix.fromBlocks, hJ]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.ThK.Dbl.Frame.gram_sym (σ : E →+* E) hc (dbl_sym hJ) b`. Establish `hb' : bᵀ * dbl J * b.map (σ : E →+* E) = Matrix.fromBlocks 0 1 (e • 1) 0` using `hb`. Rewrite `h` using `[hb']`. Use `congrFun (congrFun h (Sum.inl ⟨0, hn⟩)) (Sum.inr ⟨0, hn⟩)` as an intermediate fact. Simplify `this` using `[Matrix.fromBlocks, he]`.
+-/
 theorem eps_eq {n : ℕ} (hn : 1 ≤ n) (hc : ∀ z : E, σ (σ z) = z) {J : Matrix (Fin n) (Fin n) E} {e₀ : E}
     (hJ : ∀ i j, σ (J j i) = e₀ * J i j) {b : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E} {e : E}
     (hb : bᵀ * dbl J * b.map σ = Matrix.fromBlocks 0 1 (e • 1) 0) (he : σ e = e) : e = e₀ := by

@@ -13,6 +13,21 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 noncomputable section
 namespace GlobalTheory.DblTargetRestrict
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ0 hσξ χS χT _ _ _ _ ω hω JA JB ξ hA hB' κ _ co hrat om hom ωd hωd omp homp g gd hgd φ₁ hφ₁ φ₂ hφ₂`. Establish `hR : IsTotallyReal F` using `hB.cm.1`. Establish `hψ : IsCharAF F B.ψ` using `hω.std.1`. Set `h : Formalism.IndefR.DatumF.GAF σ JT` to `⟨g.1, GlobalTheory.TransportF.mem_HR_target hA g⟩`. Set `hd : Formalism.IndefR.DatumF.GAF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT)` to `⟨gd.1, GlobalTheory.TransportF.mem_HR_target rfl gd⟩`.
+
+Establish `hh : Formalism.IndefR.DatumF.mtF σ JT h = g.1.1` using `rfl`. Establish `hhd : Formalism.IndefR.DatumF.mtF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) hd = gd.1.1` using `rfl`. Establish `h1 : Formalism.IndefR.DatumF.mtF σ JS 1 = ((1 : UG (cA σ) (incM F JB))⁻¹).1.1ᵀ` using `by show (Formalism.IndefR.DatumF.matHomF σ JS 1).1 = _`. Rewrite using `[map_one, inv_one]`. Apply the tactic sequence `first | rfl | simp | exact Matrix.transpose_one.symm`.
+
+Establish `hdm : Formalism.IndefR.DatumF.mtF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) hd = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (Formalism.IndefR.DatumF.mtF σ JT h) 0 0 1)`. Rewrite using `[hhd, hgd, hh]`. Establish `t1` using `hom g 1 1 h hh h1 φ₁ hφ₁`. Establish `hΦ` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F κ κ φ₁ hφ₁ φ₂ hφ₂`. Establish `hΦ'` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F κ κ _ t1.1 φ₂ hφ₂`.
+
+Establish `t2` using `homp gd 1 1 hd hhd h1 _ hΦ`. Establish `hφ₂'` using `GlobalTheory.T.adelicSchwartzSpace_closed_under_conj_reflection F κ φ₂ hφ₂`. Set `τ` to `Fintype.equivFin κ`. Establish `he : ∀ w w', Formalism.IndefR.DatumF.symplOF σ JS JT ξ₀ w w' = GlobalTheory.ThetaTransform.symV (GlobalTheory.TransportF.numCoordF co τ w) (GlobalTheory.TransportF.numCoordF co τ w')` using `fun w w' => by`. Rewrite using `[GlobalTheory.TransportF.symplOF_eq_symp hA hB', co.form]`.
+
+Simplify using `only [GlobalTheory.ThetaTransform.symV, GlobalTheory.TransportF.numCoordF_apply, comp_equiv_dotProduct_comp_equiv]`. Establish `hr : ∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y z : Fin (Fintype.card κ) → F, GlobalTheory.TransportF.numCoordF co τ (Formalism.IndefR.DatumF.ratWF x) = (GlobalTheory.SWQ.rat y, GlobalTheory.SWQ.rat z)` using `fun x => by`. Take `⟨y, z, h⟩` from `hrat x`. Conclude with `⟨y ∘ τ.symm, z ∘ τ.symm, by rw [GlobalTheory.TransportF.numCoordF_apply]; erw [h]; rfl⟩`. Establish `thf : ∀ Φ ∈ schA F κ, Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ)` using `fun Φ hΦ => by`.
+
+Rewrite using `[GlobalTheory.TransportF.thetaTr_eqF co τ]`. Conclude with `_root_.GlobalTheory.T.schrodinger_model_isomorphism F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hσξ hω.std _ (GlobalTheory.TransportF.numCoordF co τ) he hr _ (GlobalTheory.TransportF.comp_mem_schA τ hΦ)`. Establish `key` using `t2.2.trans ((congrArg (ωd (1, hd)) (_root_.GlobalTheory.T.lagrangian_darboux_theta_model F E σ B hB hω.std nS nT JT JA JB ξ hA κ co φ₁ hφ₁ φ₂ hφ₂)).trans ((_root_.GlobalTheory.T.weil_pair_global_intertwiner F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hσξ χS χT ω hω ωd hωd h hd hdm _ _ (t …`. Set `τ'` to `Fintype.equivFin (κ ⊕ κ)`. Simplify using `only [GlobalTheory.TransportF.thetaTr_eqF (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co) τ'] at key`.
+
+Establish `h2` using `GlobalTheory.TransportF.thV_injOn hR hψ (GlobalTheory.TransportF.comp_mem_schA τ' t2.1) (GlobalTheory.TransportF.comp_mem_schA τ' hΦ') ((GlobalTheory.TransportF.numCoordF (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co) τ').surjective.injective_comp_right key)`. Use function extensionality and compare the values at `x`. Simplify `congrFun h2 (x ∘ τ'.symm)` using `[Function.comp_def]`.
+-/
 theorem restrict_boxFun_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

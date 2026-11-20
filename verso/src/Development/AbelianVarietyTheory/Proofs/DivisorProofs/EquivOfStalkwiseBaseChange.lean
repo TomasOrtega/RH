@@ -21,6 +21,11 @@ instance (S : Scheme.{0}) : (covSurj S).IsStableUnderComposition := by
   have : Surjective g.unop.left := hg
   exact (inferInstance : Surjective (g.unop.left ≫ f.unop.left))
 
+/- English proof (translation)
+Establish `w : 𝟙 X ≫ f = (f ≫ inv g) ≫ g`. Rewrite using `[Category.id_comp, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Use `⟨⟨pullback.lift (𝟙 _) (f ≫ inv g) w, ?_, pullback.lift_fst _ _ _⟩⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, Category.comp_id, Category.id_comp]`.
+
+Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, pullback.condition, Category.assoc, IsIso.hom_inv_id, Category.comp_id, Category.id_comp]`.
+-/
 theorem fst_isIso {C : Type*} [Category C] {X Y Z : C} (f : X ⟶ Z) (g : Y ⟶ Z) [IsIso g] [HasPullback f g] :
     IsIso (pullback.fst f g) := by
   have w : 𝟙 X ≫ f = (f ≫ inv g) ≫ g := by
@@ -31,6 +36,21 @@ theorem fst_isIso {C : Type*} [Category C] {X Y Z : C} (f : X ⟶ Z) (g : Y ⟶ 
   · rw [Category.assoc, pullback.lift_snd, ← Category.assoc, pullback.condition, Category.assoc,
       IsIso.hom_inv_id, Category.comp_id, Category.id_comp]
 
+/- English proof (translation)
+Introduce `R _ F S E E' α p hF hq hq' hst`. Set `Φ : (S.Etale)ᵒᵖ ⥤ Spcᵒᵖ` to `(Scheme.Etale.forget S ⋙ bc (α ≫ p)).op`. Set `Φ' : (S.Etale)ᵒᵖ ⥤ Spcᵒᵖ` to `(Scheme.Etale.forget S ⋙ bc p).op`. Set `β : Φ' ⟶ Φ` to `NatTrans.op (Functor.whiskerLeft (Scheme.Etale.forget S) (bcMap α p))`. Establish `hLG` using `GlobalTheory.T.etale_cohomology_equivalence_of_strictly_henselian_stalks R F S E E' α p hF hq hq' hst`.
+
+Establish `hD` using `GlobalTheory.T.etaleSpace_descent_local_equivalence R F (S.Etale)ᵒᵖ (covSurj S) Φ Φ' β (GlobalTheory.refines_of_coAug _ (covSurj S) _ (fun U V g hg => ⟨GlobalTheory.T.smallEtale_cechNerve_resolution_of_surjective R S E (α ≫ p) U V g hg, GlobalTheory.T.smallEtale_cechNerve_resolut …`. Introduce `U n x`. Take `⟨V, h, y, hV, hs, hy⟩` from `(hLG ((Scheme.Etale.forget S).obj U.unop) U.unop.prop n).1 x`. Set `V' : S.Etale` to `MorphismProperty.Over.mk ⊤ V.hom hV`. Set `h' : V' ⟶ U.unop` to `MorphismProperty.Over.homMk h.left (Over.w h) trivial`.
+
+Conclude with `⟨op V', h'.op, hs, y, hy⟩)`. Use the proof step `(by`. Introduce `U n y hy`. Take `⟨V, h, hV, hs, hy⟩` from `(hLG ((Scheme.Etale.forget S).obj U.unop) U.unop.prop n).2 y hy`. Set `V' : S.Etale` to `MorphismProperty.Over.mk ⊤ V.hom hV`.
+
+Set `h' : V' ⟶ U.unop` to `MorphismProperty.Over.homMk h.left (Over.w h) trivial`. Conclude with `⟨op V', h'.op, hs, hy⟩)`. Establish `h1` using `hD (op (Scheme.Etale.mk (𝟙 S)))`. Set `U0 : Over S` to `(Scheme.Etale.forget S).obj (Scheme.Etale.mk (𝟙 S))`. Establish `h2 : Eqv R ((bcMap α p).app U0) F` using `h1`.
+
+Take `⟨hiso, hcomp, -, -⟩` from `GlobalTheory.EtC.eqv_basic R F`. Establish `hsq : (bcMap α p).app U0 ≫ pullback.fst p (sch.map U0.hom) = pullback.fst (α ≫ p) (sch.map U0.hom) ≫ α`. Simplify using `only [bcMap, pullback.map]`. Conclude with `pullback.lift_fst _ _ _`. Use `haveI hI : IsIso (sch.map U0.hom) := by`.
+
+Express the relevant statement in the definitionally equal form `IsIso (sch.map (𝟙 S))`. Rewrite using `[CategoryTheory.Functor.map_id]`. Use `infer_instance`. Establish `key : Eqv R ((bcMap α p).app U0 ≫ pullback.fst p (sch.map U0.hom)) F` using `(hcomp _ _ _ _ _).1 h2 (hiso _ _ _ (fst_isIso _ _))`. Rewrite `key` using `[hsq]`.
+
+Conclude with `(hcomp _ _ _ _ _).2.1 (hiso _ _ _ (fst_isIso _ _)) key`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] (F : Shv R) (S : Scheme.{0}) (E E' : Spc) (α : E ⟶ E') (p : E' ⟶ sch.obj S), Finitary F → QcqsOver (α ≫ p) → QcqsOver p → (∀ (O : Type) [CommRing O] (s : Spec (CommRingCat.of O) ⟶ S), IsStalk O s → Eqv R ((bcMap α p).app (Over.mk s)) F) → Eqv R α F := by
   intro R _ F S E E' α p hF hq hq' hst
   let Φ : (S.Etale)ᵒᵖ ⥤ Spcᵒᵖ := (Scheme.Etale.forget S ⋙ bc (α ≫ p)).op

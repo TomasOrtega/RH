@@ -13,6 +13,13 @@ section General
 
 variable {Z O A : Type} [CommRing Z] [CommRing O] [CommRing A] [Algebra Z O] [Algebra Z A]
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis Z O`. Distinguish the cases in `h : ∃ i, IsUnit (b.repr 1 i)`. Take `⟨i, hi⟩` from `h`. Take `⟨v, hv⟩` from `hi.exists_left_inv`. Conclude with `⟨v • b.coord i, by simpa using hv⟩`.
+
+It suffices to derive a contradiction. Apply `hu` to reduce the goal to its premises. Establish `h1 : ∀ i, p ∣ b.repr 1 i` using `fun i => by`. Rewrite using `[← Ideal.mem_span_singleton, ← hp, IsLocalRing.mem_maximalIdeal]`. Conclude with `fun hi => h ⟨i, hi⟩`.
+
+Use `isUnit_of_dvd_one ?_` and prove the remaining obligations. Rewrite using `[← b.linearCombination_repr 1, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `Finset.dvd_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `(map_dvd _ (h1 i)).mul_right _`.
+-/
 theorem exists_retraction [IsLocalRing Z] [Module.Free Z O] (p : Z)
     (hp : IsLocalRing.maximalIdeal Z = Ideal.span {p}) (hu : ¬ IsUnit (algebraMap Z O p)) :
     ∃ r : O →ₗ[Z] Z, r 1 = 1 := by
@@ -32,6 +39,23 @@ theorem exists_retraction [IsLocalRing Z] [Module.Free Z O] (p : Z)
     rw [Algebra.smul_def]
     exact (map_dvd _ (h1 i)).mul_right _
 
+/- English proof (translation)
+Set `p : O ⊗[Z] A →ₗ[Z] A` to `(TensorProduct.lid Z A).toLinearMap ∘ₗ r.rTensor A`. Establish `hp : ∀ o a, p (o ⊗ₜ a) = r o • a` using `fun o a => by simp [p]`. Establish `hp1 : ∀ a, p (1 ⊗ₜ a) = a` using `fun a => by rw [hp, hr, one_smul]`. Set `j : A →+* O ⊗[Z] A` to `(Algebra.TensorProduct.includeRight (R := Z) (A := O) (B := A)).toRingHom`. Establish `hj : ∀ a, j a = (1 : O) ⊗ₜ[Z] a` using `fun _ => rfl`.
+
+Establish `hpm : ∀ a y, p (j a * y) = a * p y` using `fun a y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o b => rw [hj, Algebra.TensorProduct.tmul_mul_tmul, one_mul, hp, hp, mul_smul_comm]`. Consider the case `add y z hy hz => rw [mul_add, map_add, map_add, hy, hz, mul_add]`.
+
+Establish `hinj : Function.Injective j` using `fun a b h => by`. Rewrite using `[← hp1 a, ← hp1 b, ← hj, ← hj, h]`. Establish `hpoly : ∀ q : Polynomial W, f (q : PowerSeries W) ∈ j.range` using `fun q => by`. Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add q q' h h' => rw [Polynomial.coe_add, map_add]`.
+
+Conclude with `add_mem h h'`. Consider the case `monomial n w`. Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial, Polynomial.coe_mul, Polynomial.coe_pow, Polynomial.coe_C, Polynomial.coe_X, map_mul, map_pow]`. Take `⟨a, ha⟩` from `hC w`. Conclude with `mul_mem (RingHom.mem_range.2 ⟨a, ha.symm⟩) (pow_mem (RingHom.mem_range.2 ⟨π, hX.symm⟩) _)`.
+
+Establish `hall : ∀ x, f x ∈ j.range` using `fun x => by`. Use `⟨p (f x), ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `hs.haus _ fun m => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+
+Take `⟨x', hx'⟩ : ∃ x', x = ((PowerSeries.trunc m x : Polynomial W) : PowerSeries W) + PowerSeries.X ^ m * x'` from `⟨_, PowerSeries.eq_X_pow_mul_shift_add_trunc m x |>.trans (add_comm _ _)⟩`. Take `⟨a, ha⟩` from `hpoly (PowerSeries.trunc m x)`. Establish `e : f x = j a + j (π ^ m) * f x'` using `by conv_lhs => rw [hx']`. Rewrite using `[map_add, map_mul, map_pow, hX, ha, map_pow, hj]`. Use `⟨j (p (f x')) - f x', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, map_add, hpm, hj a, hp1, map_add, map_mul, ← hj a, ← hj π, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun a b h => hinj h, ?_⟩` and prove the remaining obligations. Set `e : A ≃+* j.range` to `RingEquiv.ofBijective j.rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), j.rangeRestrict_surjective⟩`. Use `⟨e.symm.toRingHom.comp (f.codRestrict j.range hall), fun x => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg Subtype.val (e.apply_symm_apply (f.codRestrict j.range hall x))` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem exists_factor {W : Type} [CommRing W] (r : O →ₗ[Z] Z) (hr : r 1 = 1)
     (f : PowerSeries W →+* O ⊗[Z] A) (π : A) (hX : f PowerSeries.X = (1 : O) ⊗ₜ[Z] π)
     (hC : ∀ w, ∃ a, f (PowerSeries.C w) = (1 : O) ⊗ₜ[Z] a)
@@ -79,11 +103,19 @@ theorem exists_factor {W : Type} [CommRing W] (r : O →ₗ[Z] Z) (hr : r 1 = 1)
   have := congrArg Subtype.val (e.apply_symm_apply (f.codRestrict j.range hall x))
   exact this.symm
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, smul_tmul]`.
+-/
 theorem tmul_algebraMap (c : Z) :
     algebraMap O (O ⊗[Z] A) (algebraMap Z O c) = (1 : O) ⊗ₜ[Z] algebraMap Z A c := by
   rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply,
     Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, smul_tmul]
 
+/- English proof (translation)
+Use `choose a a1 a2 using hz`. Use `choose b b1 b2 using hu`. Use `⟨∑ i, a i * b i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, a1, b1, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, a2, b2]`.
+-/
 theorem exists_sum {W C : Type} [CommRing W] [CommRing C] (F : W →+* O ⊗[Z] A) (θ : A →+* C) (g : W →+* C)
     {n : ℕ} (z u : Fin n → W) (hz : ∀ i, ∃ a, F (z i) = (1 : O) ⊗ₜ[Z] a ∧ θ a = g (z i))
     (hu : ∀ i, ∃ a, F (u i) = (1 : O) ⊗ₜ[Z] a ∧ θ a = g (u i)) :
@@ -102,6 +134,9 @@ end General
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => simp [LocAinf.εroot]`. Consider the case `succ s ih`. Rewrite using `[pow_succ', pow_mul, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]`. Conclude with `ih`.
+-/
 theorem εroot_pow {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) : AI.εroot s ^ l ^ s = AI.ε := by
   induction s with
   | zero => simp [LocAinf.εroot]
@@ -109,6 +144,9 @@ theorem εroot_pow {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) : AI.εroot s ^
     rw [pow_succ', pow_mul, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]
     exact ih
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `(h.pow (l ^ s)).map (PreTilt.coeff (O := OC l) (p := l) 0)`. Rewrite `h1` using `[sub_pow_char_pow, εroot_pow, one_pow, map_sub, AI.ε_coeff, AI.ζ_zero, map_one, map_one, sub_self]`. Conclude with `not_isUnit_zero h1`.
+-/
 theorem εroot_sub_not_unit {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) : ¬ IsUnit (AI.εroot s - 1) := by
   intro h
   have h1 := (h.pow (l ^ s)).map (PreTilt.coeff (O := OC l) (p := l) 0)
@@ -116,18 +154,27 @@ theorem εroot_sub_not_unit {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) : ¬ I
     sub_self] at h1
   exact not_isUnit_zero h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Rewrite using `[letEmb_apply, PowerSeries.map_C]`. Both sides reduce to the same expression.
+-/
 theorem letEmb_C {K LL : FinExt l} {n : ℕ} (emb : ZMod n → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1)) (w : WK K) :
     letEmb emb (PowerSeries.C w) = fun k => PowerSeries.C (embW (emb k) w) := by
   funext k
   rw [letEmb_apply, PowerSeries.map_C]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Rewrite using `[letEmb_apply, PowerSeries.map_X]`. Both sides reduce to the same expression.
+-/
 theorem letEmb_X {K LL : FinExt l} {n : ℕ} (emb : ZMod n → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1)) :
     letEmb emb PowerSeries.X = letπ := by
   funext k
   rw [letEmb_apply, PowerSeries.map_X]
   rfl
 
+/- English proof (translation)
+Rewrite using `[letEmb_C]`. Use function extensionality and compare the values at `k`. Rewrite using `[(embW (emb k)).commutes c]`. Both sides reduce to the same expression.
+-/
 theorem letEmb_scalar {K LL : FinExt l} {n : ℕ} (emb : ZMod n → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1)) (c : ℤ_[l]) :
     letEmb emb (PowerSeries.C (algebraMap ℤ_[l] (WK K) c)) =
       algebraMap ↥(OL LL) (LetA ↥(OL LL) n) (algebraMap ℤ_[l] ↥(OL LL) c) := by
@@ -136,17 +183,30 @@ theorem letEmb_scalar {K LL : FinExt l} {n : ℕ} (emb : ZMod n → (↥(K0 K) �
   rw [(embW (emb k)).commutes c]
   rfl
 
+/- English proof (translation)
+Rewrite using `[letEmb_scalar, AlgHom.commutes, tmul_algebraMap]`.
+-/
 theorem map_scalar {K LL : FinExt l} {n : ℕ} (emb : ZMod n → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1))
     (φ : LetA ↥(OL LL) n →ₐ[↥(OL LL)] RA LL) (c : ℤ_[l]) :
     φ (letEmb emb (PowerSeries.C (algebraMap ℤ_[l] (WK K) c))) =
       (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] algebraMap ℤ_[l] (Ainf l) c := by
   rw [letEmb_scalar, AlgHom.commutes, tmul_algebraMap]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext ((GlobalTheory.UnramIdem.ringHom_eq ((Formalism.Per.θ l).comp (algebraMap ℤ_[l] (Ainf l))) c).trans (GlobalTheory.UnramIdem.ringHom_eq ((intToOC K).comp (algebraMap ℤ_[l] ↥(OL K))) c).symm)`.
+-/
 theorem theta_scalar (K : FinExt l) (c : ℤ_[l]) :
     Formalism.Per.θ l (algebraMap ℤ_[l] (Ainf l) c) = intToOC K (algebraMap ℤ_[l] ↥(OL K) c) :=
   Subtype.ext ((GlobalTheory.UnramIdem.ringHom_eq ((Formalism.Per.θ l).comp (algebraMap ℤ_[l] (Ainf l))) c).trans
     (GlobalTheory.UnramIdem.ringHom_eq ((intToOC K).comp (algebraMap ℤ_[l] ↥(OL K))) c).symm)
 
+/- English proof (translation)
+Take `⟨n, z, ω, hω, hsum⟩` from `GlobalTheory.UnramSpan.exists_sum_rootsOfUnity l K ((w : ↥(K0 K)) : Om l) (w : ↥(K0 K)).2 (norm_le_one_of_mem_OL (unr K) w)`. Use `choose h0 m hm hl h1 using hω`. Use `⟨n, z, fun i => ⟨⟨ω i, h0 i⟩, IsIntegral.of_pow (hm i) (by` and prove the remaining obligations. Rewrite using `[show (⟨ω i, h0 i⟩ : ↥(K0 K)) ^ m i = 1 from Subtype.ext (h1 i)]`. Conclude with `isIntegral_one)⟩,`.
+
+Use `fun i => ⟨m i, hm i, hl i, h1 i⟩, ?_⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hsum]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_span (K : FinExt l) (w : WK K) : ∃ (n : ℕ) (z : Fin n → ℤ_[l]) (u : Fin n → WK K),
     (∀ i, ∃ m : ℕ, 0 < m ∧ ¬ l ∣ m ∧ ((u i : ↥(K0 K)) : Om l) ^ m = 1) ∧
       w = ∑ i, algebraMap ℤ_[l] (WK K) (z i) * u i := by
@@ -162,6 +222,11 @@ theorem exists_span (K : FinExt l) (w : WK K) : ∃ (n : ℕ) (z : Fin n → ℤ
   push_cast
   rfl
 
+/- English proof (translation)
+Take `⟨r, z, u, hu, rfl⟩` from `exists_span K w`. Use `exists_sum ((φ.toRingHom.comp (letEmb emb)).comp PowerSeries.C) (Formalism.Per.θ l) (intToOC (unr K)) (fun i => algebraMap ℤ_[l] (WK K) (z i)) u (fun i => ⟨_, map_scalar emb φ (z i), theta_scalar (unr K) (z i)⟩) (fun i => ?_)` and prove the remaining obligations. Take `⟨m, hm, hl, h1⟩` from `hu i`. Take `⟨xb, hxb⟩` from `GlobalTheory.MemLoc.exists_isTiltOf _ m hm hl h1`. Use `⟨WittVector.teichmuller l xb, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `φ (letEmb emb (PowerSeries.C (u i))) = _`. Rewrite using `[letEmb_C]`. Conclude with `hI _ m hm hl h1 xb hxb _ (fun k => rfl)`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(congrArg Subtype.val (WittVector.fontaineTheta_teichmuller xb)).trans (GlobalTheory.MemLoc.IsTiltOf.untilt_eq hxb)`.
+-/
 theorem exists_const {K LL : FinExt l} {n : ℕ} (emb : ZMod n → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1))
     (φ : LetA ↥(OL LL) n →ₐ[↥(OL LL)] RA LL)
     (hI : ∀ (c : ↥(K0 K)) (m : ℕ), 0 < m → ¬ l ∣ m → (c : Om l) ^ m = 1 → ∀ xb : OCb l,
@@ -183,6 +248,11 @@ theorem exists_const {K LL : FinExt l} {n : ℕ} (emb : ZMod n → (↥(K0 K) �
     exact (congrArg Subtype.val (WittVector.fontaineTheta_teichmuller xb)).trans
       (GlobalTheory.MemLoc.IsTiltOf.untilt_eq hxb)
 
+/- English proof (translation)
+Take `⟨_, -, -, hu, hfree, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Take `⟨r, hr⟩` from `exists_retraction (Z := ℤ_[l]) (O := ↥(OL LL)) (l : ℤ_[l]) PadicInt.maximalIdeal_eq_span_p (by rwa [map_natCast])`. Establish `hX : φ (letEmb emb PowerSeries.X) = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (WittVector.teichmuller l e - 1)`. Rewrite using `[letEmb_X, hπ]`. Take `⟨hinj, io, hio⟩` from `exists_factor r hr (φ.toRingHom.comp (letEmb emb)) _ hX (fun w => (hC w).imp fun a h => h.1) ((GlobalTheory.HWL.TensorWitt.main l LL).2.2.2.2 e he).toIsHausdorff`.
+
+Use `⟨io, hio, hinj _ _ ((hio _).symm.trans hX), fun w => ?_⟩` and prove the remaining obligations. Take `⟨a, h1, h2⟩` from `hC w`. Rewrite using `[hinj _ _ ((hio _).symm.trans h1), h2]`.
+-/
 theorem exists_io {K LL : FinExt l} {n : ℕ} (emb : ZMod n → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1))
     (φ : LetA ↥(OL LL) n →ₐ[↥(OL LL)] RA LL) (e : OCb l) (he : ¬ IsUnit (e - 1))
     (hπ : φ letπ = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (WittVector.teichmuller l e - 1))
@@ -204,6 +274,9 @@ theorem exists_io {K LL : FinExt l} {n : ℕ} (emb : ZMod n → (↥(K0 K) →�
   obtain ⟨a, h1, h2⟩ := hC w
   rw [hinj _ _ ((hio _).symm.trans h1), h2]
 
+/- English proof (translation)
+Introduce `_ _ _ AI _ s _ Γ _ I hI` and use `exists_io Γ.emb I.io _ (εroot_sub_not_unit AI s) I.io_π (exists_const Γ.emb I.io hI)`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l) (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R), IoW I → ∃ io : PowerSeries (WK K) →+* Ainf l, (∀ x, I.io (letEmb Γ.emb x) = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] io x) ∧ io PowerSeries.X = WittVector.teichmuller l (AI.εroot s) - 1 ∧ ∀ w : WK K, Formalism.Per.θ l (io (PowerSeries.C w)) = intToOC (unr K) w :=
   fun _ _ _ AI _ s _ Γ _ I hI =>
     exists_io Γ.emb I.io _ (εroot_sub_not_unit AI s) I.io_π (exists_const Γ.emb I.io hI)

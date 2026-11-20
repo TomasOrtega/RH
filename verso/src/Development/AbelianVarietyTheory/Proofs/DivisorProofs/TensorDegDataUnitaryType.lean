@@ -13,6 +13,13 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
+/- English proof (translation)
+Establish `hA` using `GlobalTheory.T.finrank_dvd_of_ringOfIntegers_to_int_matrix`. Establish `hB` using `GlobalTheory.T.tensorDegenerationData_torsion_isometry_onto`. Introduce `R _ _ _ hR E _ _ _ H D D' r W hpos hdet T ρ hadj hw0 hX hr _ o hact hpsi`. Take `⟨s, hs⟩` from `hA E ρ`. Take `⟨Dm, e, hp, hq, he, hEF⟩` from `GlobalTheory.T.exists_unitary_datum_standardLattice_tensor_unimodular E H W hpos hdet ρ hadj hw0 (D.toPre.P.g + Module.finrank ℤ D.toPre.X) s hs`.
+
+Take `⟨hrk, hlie⟩` from `GlobalTheory.T.lieMultiplicity_and_rank_tensorData_lattice R hR E H D D' W hpos hdet T ρ o hact s hs`. Establish `hs0 : s ≠ 0` using `by rintro rfl; omega`. Establish `hX0 : 0 < Module.finrank ℤ D.toPre.X` using `Module.finrank_pos`. Use `⟨Dm, hp.trans hq.symm, ?_, hpsi, fun F _ _ _ => ⟨fun τ => ⟨s * D.toPre.P.g, hlie F τ, ?_⟩, fun ζ hζ hζ' => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hp]; exact Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hs0 (by omega))`.
+
+Rewrite using `[hrk, hp]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ev, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.exists_compatible_symplectic_bases_levelPoints R hR D F ζ hζ hζ' _ rfl`. Conclude with `hB R hR E H D D' W hpos hdet T ρ hadj hw0 o hact hpsi Dm _ e rfl he hEF F ζ hζ hζ' ev h1 h2 h3 h4 h5`.
+-/
 theorem GlobalTheory.Mum.tens_pelOK : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) , ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsUnit (W + W.transpose).det → ∀ T : Tens D.toPre D'.toPre W, ∀ (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ), (∀ a, (ρ a).transpose * (W + W.transpose) = (W + W.transpose) * ρ (H.bar a)) → W = (W + W.transpose) * ρ H.w0 → Nontrivial D.toPre.X → 1 ≤ r → ∀ [Module (𝓞 E) D'.toPre.X] (o : letI := H.starRing; D'.toPre.OAct (𝓞 E)), (letI := H.starRing; T.IsAct o ρ) → (letI := H.starRing; TraceFormTwistIso D'.toPre o H.w0) → ∃ Dm : Datum H, PelOK Dm D'.toPre o := by
   have hA := GlobalTheory.T.finrank_dvd_of_ringOfIntegers_to_int_matrix
   have hB := GlobalTheory.T.tensorDegenerationData_torsion_isometry_onto

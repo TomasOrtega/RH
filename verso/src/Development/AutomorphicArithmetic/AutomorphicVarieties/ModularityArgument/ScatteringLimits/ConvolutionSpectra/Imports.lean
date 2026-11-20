@@ -6,6 +6,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M X a b hX hs`. Take `⟨-, -, -, -, pl, p0, -, -⟩` from `projLaws M`. Break down `le_or_gt b a with hab | hab` into its components or cases. Rewrite using `[Ioc_eq_empty_of_le hab, p0, ContinuousLinearMap.comp_zero] show hsNormSq _ < _`. Rewrite using `[hsNormSq_zero]`.
+
+Conclude with `ENNReal.zero_lt_top`. Use `set d := b - a with hd`. Establish `d0 : 0 < d` using `sub_pos.2 hab`. Set `I : ℤ → Set ℝ` to `fun n => Ioc (a + n * d) (a + (n + 1) * d)`. Establish `hI : ∀ n, MeasurableSet (I n)` using `fun _ => measurableSet_Ioc`.
+
+Establish `sa : ∀ s, MeasurableSet s → ContinuousLinearMap.adjoint (M.P s) = M.P s` using `fun s hs => (pl s s hs hs).2.1.adjoint_eq`. Establish `pyth : ∀ x : H, ‖x‖ₑ ^ 2 = ∑' n, ‖M.P (I n) x‖ₑ ^ 2` using `fun x => by`. Establish `h1 : HasSum (fun n => M.P (I n) x) x`. Establish `h0 : HasSum (fun n => M.P (I n) x) (M.J (M.J.symm x))` using `((cutLim (M.J.symm x)).2 a d d0).mapL (M.J.toContinuousLinearEquiv : L V →L[ℂ] H)`. Rewrite `h0` using `[M.J.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Establish `h2` using `(h1.mapL (innerSL ℂ x)).mapL Complex.reCLM`. Establish `e : ∀ n, (⟪x, M.P (I n) x⟫_ℂ).re = ‖M.P (I n) x‖ ^ 2` using `fun n => by`. Establish `i1` using `DFunLike.congr_fun (pl _ _ (hI n) (hI n)).1 x`. Rewrite `i1` using `[inter_self, ContinuousLinearMap.comp_apply]`. Rewrite using `[← i1, ← ContinuousLinearMap.adjoint_inner_left, sa _ (hI n), i1, inner_self_eq_norm_sq_to_K]`.
+
+Simplify using `[← Complex.ofReal_pow]`. Simplify using `only [innerSL_apply_apply, Complex.reCLM_apply, e] at h2`. Rewrite `h2` using `[inner_self_eq_norm_sq_to_K]`. Establish `h3 : HasSum (fun n => ‖M.P (I n) x‖ ^ 2) (‖x‖ ^ 2)` using `by simpa [← Complex.ofReal_pow] using h2`. Establish `h4` using `ENNReal.ofReal_tsum_of_nonneg (fun n => sq_nonneg ‖M.P (I n) x‖) h3.summable`.
+
+Rewrite `h4` using `[h3.tsum_eq]`. Simplify `h4` using `[ENNReal.ofReal_pow]`. Establish `dec : ∀ Y : H →L[ℂ] H, hsNormSq Y = ∑' n, hsNormSq (M.P (I n) ∘L Y)` using `fun Y => by`. Simplify using `only [hsNormSq]`. Rewrite using `[ENNReal.tsum_comm]`.
+
+Conclude with `tsum_congr fun m => pyth _`. Establish `un : ∀ t, ‖M.F.U t‖ₑ ≤ 1` using `fun t => by`. Rewrite using `[← ofReal_norm_eq_enorm, ENNReal.ofReal_le_one]`. Conclude with `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun h => by rw [M.F.norm, one_mul]`. Establish `step : ∀ n : ℤ, hsNormSq (M.P (I n) ∘L X ∘L M.P (Ioc a b)) ≤ hsNormSq (M.P (I n) ∘L ContinuousLinearMap.adjoint (M.P (Ioc a b) ∘L X))` using `fun n => by`.
+
+Establish `t1` using `((pl (Ioc a b) _ measurableSet_Ioc (measurableSet_Ioc (a := a) (b := b))).2.2.2.2 (-(n * d))).1`. Establish `pre : (fun x => x + -(n * d)) ⁻¹' Ioc a b = I n`. Use extensionality with `x`. Simplify using `only [I, mem_preimage, mem_Ioc]`. Apply the tactic sequence `constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> linarith`.
+
+Rewrite `t1` using `[pre]`. Establish `t2 : ∀ h, M.F.U (-(n * d)) (M.P (Ioc a b) h) = M.P (I n) (M.F.U (-(n * d)) h)` using `fun h => DFunLike.congr_fun t1 h`. Establish `e : M.P (I n) ∘L X ∘L M.P (Ioc a b) = M.F.U (-(n * d)) ∘L (M.P (Ioc a b) ∘L X ∘L M.P (I n)) ∘L M.F.U (-(n * d))`. Use extensionality with `h`. Simplify using `only [ContinuousLinearMap.comp_apply]`.
+
+Rewrite using `[← t2, hX, t2, ← M.F.add, add_neg_cancel, M.F.zero]`. Establish `e2 : M.P (I n) ∘L ContinuousLinearMap.adjoint (M.P (Ioc a b) ∘L X) = ContinuousLinearMap.adjoint (M.P (Ioc a b) ∘L X ∘L M.P (I n))`. Simplify using `only [ContinuousLinearMap.adjoint_comp, sa _ (hI n), ContinuousLinearMap.comp_assoc]`. Rewrite using `[e, e2, hsNormSq_adjoint]`. Use `(hsNormSq_comp_left_le _ _).trans ((mul_le_of_le_one_left' (pow_le_one' (un _) _)).trans ?_)` and prove the remaining obligations.
+
+Conclude with `(hsNormSq_comp_right_le _ _).trans (mul_le_of_le_one_left' (pow_le_one' (un _) _))`. Use `show hsNormSq _ < _`. Rewrite using `[dec]`. Use `(ENNReal.tsum_le_tsum step).trans_lt ?_` and prove the remaining obligations. Rewrite using `[← dec]`.
+
+Conclude with `hs.adjoint`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.flip :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (X : H →L[ℂ] H) (a b : ℝ), (∀ t h, X (M.F.U t h) = M.F.U (-t) (X h)) →
       IsHilbertSchmidt (M.P (Ioc a b) ∘L X) → IsHilbertSchmidt (X ∘L M.P (Ioc a b)) := by

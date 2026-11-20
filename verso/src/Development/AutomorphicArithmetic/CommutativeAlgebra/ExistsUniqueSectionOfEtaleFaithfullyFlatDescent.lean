@@ -8,10 +8,18 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveReso
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC TensorProduct
 
+/- English proof (translation)
+Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+-/
 private lemma sec_res_res {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U)
     (a : Sec F U) : Sec.res k (Sec.res g a) = Sec.res (k ≫ g) a := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover]`. Introduce `x`. Establish `hff : (CommRingCat.ofHom (algebraMap A C)).hom.FaithfullyFlat` using `RingHom.faithfullyFlat_algebraMap_iff.mpr inferInstance`. Establish `hs` using `((flat_and_surjective_SpecMap_iff (CommRingCat.ofHom (algebraMap A C))).mpr hff).2`. Establish `het : Etale (Spec.map (CommRingCat.ofHom (algebraMap A C)))` using `HasRingHomProperty.Spec_iff.mpr (RingHom.etale_algebraMap.mpr inferInstance)`.
+
+Take `⟨y, hy⟩` from `hs.surj x`. Conclude with `⟨_, Spec.map (CommRingCat.ofHom (algebraMap A C)), inferInstance, het, ⟨y, hy⟩, 𝟙 _, Category.id_comp _⟩`. Introduce and unpack `V W g k ⟨h, rfl⟩`. Conclude with `⟨k ≫ h, Category.assoc _ _ _⟩`.
+-/
 private lemma cover_loc (A C : Type) [CommRing A] [CommRing C] [Algebra A C]
     [Module.FaithfullyFlat A C] [Algebra.Etale A C] :
     Loc (Spec (CommRingCat.of A)) (fun V g => ∃ h : V ⟶ Spec (CommRingCat.of C),
@@ -29,6 +37,11 @@ private lemma cover_loc (A C : Type) [CommRing A] [CommRing C] [Algebra A C]
   · rintro V W g k ⟨h, rfl⟩
     exact ⟨k ≫ h, Category.assoc _ _ _⟩
 
+/- English proof (translation)
+Use `set ψ := pullback.lift h h' e ≫ (pullbackSpecIso A C C).hom with hψ`. Establish `hL : ψ ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeft : C →ₐ[A] C ⊗[A] C).toRingHom) = h`. Rewrite using `[hψ, Category.assoc]`. Use `erw [pullbackSpecIso_hom_fst]`. Conclude with `pullback.lift_fst _ _ _`.
+
+Establish `hR : ψ ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : C →ₐ[A] C ⊗[A] C).toRingHom) = h'`. Rewrite using `[hψ, Category.assoc]`. Use `erw [pullbackSpecIso_hom_snd]`. Conclude with `pullback.lift_snd _ _ _`. Rewrite using `[← hL, ← hR, ← sec_res_res, hw, sec_res_res]`.
+-/
 private lemma lift_wd {R : Type} [CommRing R] (F : Shv R) (A C : Type) [CommRing A] [CommRing C] [Algebra A C]
     (w : Sec F (Spec (CommRingCat.of C)))
     (hw : Sec.res (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeft : C →ₐ[A] C ⊗[A] C).toRingHom)) w =
@@ -49,6 +62,17 @@ private lemma lift_wd {R : Type} [CommRing R] (F : Shv R) (A C : Type) [CommRing
     exact pullback.lift_snd _ _ _
   rw [← hL, ← hR, ← sec_res_res, hw, sec_res_res]
 
+/- English proof (translation)
+Introduce `R _ F A C _ _ _ _ _ w hw`. Take `⟨S, hS, hSP⟩` from `cover_loc A C`. Use `choose lf hlf using hSP`. Take `⟨a, ha⟩` from `(GlobalTheory.T.etaleSheafSections_ext_and_glue R F _).2 S hS (fun V g hg => Sec.res (lf V g hg) w) (by`. Introduce `V W g k hg`.
+
+Rewrite using `[sec_res_res]`. Apply `lift_wd F A C w hw` to reduce the goal to its premises. Rewrite using `[Category.assoc, hlf, hlf])`. Establish `hex : Sec.res (Spec.map (CommRingCat.ofHom (algebraMap A C))) a = w`. Apply `(GlobalTheory.T.etaleSheafSections_ext_and_glue R F _).1` to reduce the goal to its premises.
+
+Establish `hloc : Loc (Spec (CommRingCat.of C)) (fun V g => S.arrows (g ≫ Spec.map (CommRingCat.ofHom (algebraMap A C))))` using `GlobalTheory.T.etaleLocal_property_calculus_rules.2.2.2.1 _ _ _ (fun V g => S.arrows g) ⟨S, hS, fun _ _ h => h⟩`. Use `GlobalTheory.T.etaleLocal_property_calculus_rules.2.1 _ _ _ hloc ?_` and prove the remaining obligations. Introduce `V g hg`. Rewrite using `[sec_res_res, ha V _ hg]`. Conclude with `lift_wd F A C w hw _ _ (hlf _ _ _)`.
+
+Use `⟨a, hex, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Apply `(GlobalTheory.T.etaleSheafSections_ext_and_glue R F _).1` to reduce the goal to its premises. Use `GlobalTheory.T.etaleLocal_property_calculus_rules.2.1 _ _ _ (cover_loc A C) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨h, rfl⟩`.
+
+Rewrite using `[← sec_res_res, ← sec_res_res, hy, hex]`.
+-/
 theorem UpperTheory.existsUnique_section_of_etale_faithfullyFlat_descent :
     ∀ (R : Type) [CommRing R] (F : Shv R) (A C : Type) [CommRing A] [CommRing C] [Algebra A C]
         [Module.FaithfullyFlat A C] [Algebra.Etale A C] (w : Sec F (Spec (CommRingCat.of C))),

@@ -9,6 +9,13 @@ open scoped Matrix ContDiff ComplexOrder
 
 namespace GlobalTheory.CurvSmooth
 
+/- English proof (translation)
+Introduce `n r _ _ G v hG hu i j`. Establish `e : ∀ x, (curvEv G x i j : Alt n) = ∑ a, ∑ b, curv G x (coordVec a) (coordVec b) i j • (dz a * dzb b)`. Introduce `x`. Simplify using `[curvEv, curvPoly, Matrix.map_apply, map_sum, sym, Algebra.smul_def]`. Use `⟨e, fun S => ?_⟩` and prove the remaining obligations.
+
+Establish `hc : ∀ a b, ContDiffAt ℝ ∞ (fun x => curv G x (coordVec a) (coordVec b) i j) v` using `fun a b => MContDiffAt.curv (j := ∞) hG hu (le_of_eq rfl) _ _ i j`. Establish `hf : (fun x => (bas n).repr ((curvEv G x i j : Alt n)) S) = fun x => ∑ a, ∑ b, curv G x (coordVec a) (coordVec b) i j * (bas n).repr (dz a * dzb b) S`. Use function extensionality and compare the values at `x`. Rewrite using `[e x]`. Simplify using `[map_sum, Finsupp.finset_sum_apply]`.
+
+Rewrite using `[hf]`. Conclude with `ContDiffAt.sum fun a _ => ContDiffAt.sum fun b _ => (hc a b).mul contDiffAt_const`.
+-/
 theorem curvEv_entry_smooth : ∀ (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (v : V n), MContDiffAt ∞ G v → IsUnit (G v).det → ∀ i j, (∀ x, (curvEv G x i j : Alt n) = ∑ a, ∑ b, curv G x (coordVec a) (coordVec b) i j • (dz a * dzb b)) ∧ (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr ((curvEv G x i j : Alt n)) S) v) := by
   intro n r _ _ G v hG hu i j
   have e : ∀ x, (curvEv G x i j : Alt n) = ∑ a, ∑ b, curv G x (coordVec a) (coordVec b) i j • (dz a * dzb b) := by

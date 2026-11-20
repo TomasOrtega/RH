@@ -15,10 +15,18 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramedLatticeZeroCycleHeight
 
 namespace GlobalTheory.ZeroCycleHt
 
+/- English proof (translation)
+Simplify using `[linSubst]`.
+-/
 theorem linSubst_mul {R : Type} [CommRing R] {B N n : ℕ} (M : Matrix (Fin N) (Fin n) R)
     (f g : MvPolynomial (Fin B × Fin N) R) : linSubst M (f * g) = linSubst M f * linSubst M g := by
   simp [linSubst]
 
+/- English proof (translation)
+Use `choose x hx using fun j : Fin N => hw (Pi.single j 1)`. Use `⟨Matrix.of fun k j => x j k, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (hx j) i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[this, Pi.single_apply]`.
+-/
 theorem exists_rightInv {F : Type} [Field F] {N n : ℕ} {w : Matrix (Fin N) (Fin n) F}
     (hw : Function.Surjective w.mulVec) : ∃ P : Matrix (Fin n) (Fin N) F, w * P = 1 := by
   classical
@@ -31,6 +39,13 @@ theorem exists_rightInv {F : Type} [Field F] {N n : ℕ} {w : Matrix (Fin N) (Fi
   simp only [Matrix.of_apply]
   rw [this, Pi.single_apply]
 
+/- English proof (translation)
+Establish `hlf` using `GlobalTheory.HeightUnique.linSubst_ne_zero hP hf`. Establish `hlg` using `GlobalTheory.HeightUnique.linSubst_ne_zero hP hg`. Establish `hfin : ∑ᶠ v : FinitePlace F, Real.log (gaussAbs v (linSubst w (f * g))) = ∑ᶠ v : FinitePlace F, Real.log (gaussAbs v (linSubst w f)) + ∑ᶠ v : FinitePlace F, Real.log (gaussAbs v (linSubst w g))`. Rewrite using `[← finsum_add_distrib (gauss_abs_log_support_finite _ hlf) (gauss_abs_log_support_finite _ hlg)]`. Use `finsum_congr fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[linSubst_mul, gauss_abs_mul v _ _ hlf hlg, Real.log_mul (gauss_abs_pos_of_ne_zero v _ hlf).ne' (gauss_abs_pos_of_ne_zero v _ hlg).ne']`. Establish `hne : ∀ (σ : F →+* ℂ) {h : MvPolynomial (Fin B × Fin N) F}, h ≠ 0 → linSubst (A σ) (MvPolynomial.map σ h) ≠ 0` using `fun σ h hh => GlobalTheory.HeightUnique.linSubst_ne_zero ((A σ).mul_nonsing_inv (hA σ).isUnit) fun h0 => hh (MvPolynomial.map_injective σ σ.injective (by rw [h0, map_zero]))`. Establish `hinf : ∀ σ : F →+* ℂ, blockSphereMean B N (linSubst (A σ) (MvPolynomial.map σ (f * g))) = blockSphereMean B N (linSubst (A σ) (MvPolynomial.map σ f)) + blockSphereMean B N (linSubst (A σ) (MvPolynomial.map σ g))`. Introduce `σ`. Rewrite using `[map_mul, linSubst_mul]`.
+
+Conclude with `sphere_mean_mul_multihomogeneous Closed.sphereLogIntegrable B N a a' _ _ (hne σ hf) (hne σ hg) (GlobalTheory.HeightUnique.linSubst_homog _ (isMultiHomogeneous_map_ring a f ha σ)) (GlobalTheory.HeightUnique.linSubst_homog _ (isMultiHomogeneous_map_ring a' g ha' σ))`. Unfold `formHeight`. Rewrite using `[hfin]`. Simplify using `only [hinf, Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, Nat.cast_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formHeight_mul {F : Type} [Field F] [NumberField F] {B N n : ℕ} (δ δ' : ℕ)
     {w : Matrix (Fin N) (Fin n) F} {P : Matrix (Fin n) (Fin N) F} (hP : w * P = 1)
     {A : (F →+* ℂ) → Matrix (Fin N) (Fin N) ℂ} (hA : ∀ σ, (A σ).det ≠ 0) {a a' : Fin B → ℕ}
@@ -63,6 +78,9 @@ theorem formHeight_mul {F : Type} [Field F] [NumberField F] {B N n : ℕ} (δ δ
   simp only [hinf, Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, Nat.cast_add]
   ring
 
+/- English proof (translation)
+Establish `h1 : ∀ v : FinitePlace F, gaussAbs v (1 : MvPolynomial (Fin B × Fin n) F) = 1` using `fun v => by`. Simplify using `using GlobalTheory.HeightUnique.gaussAbs_C (σ := Fin B × Fin n) v (1 : F)`. Unfold `formHeight`. Simplify using `[linSubst, h1, blockSphereMean]`.
+-/
 theorem formHeight_one {F : Type} [Field F] [NumberField F] {B N n : ℕ}
     (w : Matrix (Fin N) (Fin n) F) (A : (F →+* ℂ) → Matrix (Fin N) (Fin N) ℂ) :
     formHeight 0 w A (1 : MvPolynomial (Fin B × Fin N) F) = 0 := by

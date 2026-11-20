@@ -14,6 +14,27 @@ noncomputable section
 
 namespace GlobalTheory.TorsorUnionDescent
 
+/- English proof (translation)
+Introduce `T _ _ ι _ _ _ 𝒜 hA hU q hq E _ _ _ _ _ Q _ D₁ _ _ act₁ htor`. Take `⟨i₀, E₀, _, _, hE₀, ⟨iso₀⟩⟩` from `GlobalTheory.T.exists_etale_polynomial_descent_of_directed_union T ι 𝒜 hA hU E`. Set `ι'` to `{k : ι // i₀ ≤ k}`. Use `haveI : IsDirected ι' (· ≤ ·) := ⟨fun a b => by`. Take `⟨c, hac, hbc⟩` from `directed_of (· ≤ ·) a.1 b.1`.
+
+Conclude with `⟨⟨c, a.2.trans hac⟩, hac, hbc⟩⟩`. Use `haveI : Nonempty ι' := ⟨⟨i₀, le_rfl⟩⟩`. Set `𝒜' : ι' → Subring T` to `fun k => 𝒜 k.1`. Establish `hA' : Monotone 𝒜'` using `fun a b hab => hA hab`. Establish `hU' : ∀ x : T, ∃ k : ι', x ∈ 𝒜' k` using `fun x => by`.
+
+Take `⟨j, hj⟩` from `hU x`. Take `⟨c, hjc, hic⟩` from `directed_of (· ≤ ·) j i₀`. Conclude with `⟨⟨c, hic⟩, hA hjc hj⟩`. Take `⟨Ek, _, _, _, _, _, e, h, he, hh, heh, hid, hcomp, hinj, hsurj⟩` from `GlobalTheory.T.directedSystem_etale_baseChange_polynomial T ι' 𝒜' hA' hU' ⟨i₀, le_rfl⟩ (fun k => k.2) E E₀ ⟨iso₀⟩`. Establish `he' : ∀ k (a : 𝒜' k), e k (algebraMap (𝒜' k) (Ek k) a) = algebraMap T E a`.
+
+Introduce `k a`. Use `congrArg (fun φ => φ (Polynomial.C a)) (he k)` as an intermediate fact. Simplify `this` using `[IsScalarTower.algebraMap_apply (𝒜' k) (Polynomial (𝒜' k)) (Ek k), IsScalarTower.algebraMap_apply T (Polynomial T) E]`. Establish `hnz : ∀ (S S' : Subring T) (φ : S →+* S'), (∀ a, (φ a : T) = a) → ∀ a ∈ nonZeroDivisors S, φ a ∈ nonZeroDivisors S'`. Introduce `S S' φ hφ a ha`.
+
+Use `mem_nonZeroDivisors_of_ne_zero (fun h0 => nonZeroDivisors.ne_zero ha (Subtype.ext ?_))` and prove the remaining obligations. Use `congrArg Subtype.val h0` as an intermediate fact. Rewrite `this` using `[hφ]`. Conclude with `this`. Establish `hnzT : ∀ (S : Subring T), ∀ a ∈ nonZeroDivisors S, S.subtype a ∈ nonZeroDivisors T`.
+
+Introduce `S a ha`. Conclude with `mem_nonZeroDivisors_of_ne_zero (fun h0 => nonZeroDivisors.ne_zero ha (Subtype.ext h0))`. Set `g : ∀ k : ι', GlobalTheory.LocAcyc.GenFib (𝒜' k) (Localization.AtPrime (Q.comap (e k))) →+* GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)` to `fun k => GlobalTheory.GenFibMap.genFibMap (𝒜' k).subtype (e k) (he' k) (hnzT _) (Q.comap (e k)) Q rfl`. Establish `hQ : ∀ k l (hkl : k ≤ l), Q.comap (e k) = (Q.comap (e l)).comap (h k l hkl)`. Introduce `k l hkl`.
+
+Rewrite using `[Ideal.comap_comap]`. Use `congr 1`. Use extensionality with `y`. Conclude with `(heh k l hkl y).symm`. Set `f : ∀ k l : ι', k ≤ l → GlobalTheory.LocAcyc.GenFib (𝒜' k) (Localization.AtPrime (Q.comap (e k))) →+* GlobalTheory.LocAcyc.GenFib (𝒜' l) (Localization.AtPrime (Q.comap (e l)))` to `fun k l hkl => GlobalTheory.GenFibMap.genFibMap (Subring.inclusion (hA' hkl)) (h k l hkl) (hh k l hkl) (hnz _ _ _ (fun _ => rfl)) (Q.comap (e k)) (Q.comap (e l)) (hQ k l hkl)`.
+
+Establish `hgc : ∀ k (y : Ek k), g k (algebraMap (Localization.AtPrime (Q.comap (e k))) (GlobalTheory.LocAcyc.GenFib (𝒜' k) (Localization.AtPrime (Q.comap (e k)))) (algebraMap (Ek k) (Localization.AtPrime (Q.comap (e k))) y)) = algebraMap (Localization.AtPrime Q) (GlobalTheory.LocAcyc.GenFi …` using `fun k y => GlobalTheory.GenFibMap.genFibMap_apply _ _ _ _ _ _ _ y`. Establish `hfc : ∀ k l (hkl : k ≤ l) (y : Ek k), f k l hkl (algebraMap (Localization.AtPrime (Q.comap (e k))) (GlobalTheory.LocAcyc.GenFib (𝒜' k) (Localization.AtPrime (Q.comap (e k)))) (algebraMap (Ek k) (Localization.AtPrime (Q.comap (e k))) y)) = algebraMap (Localization.AtPrime (Q.comap …` using `fun k l hkl y => GlobalTheory.GenFibMap.genFibMap_apply _ _ _ _ _ _ _ y`. Take `⟨k, Di, _, _, acti, htori, ⟨iso₂⟩⟩` from `GlobalTheory.T.exists_torsor_model_filtered_colimit ι' (fun k => GlobalTheory.LocAcyc.GenFib (𝒜' k) (Localization.AtPrime (Q.comap (e k)))) f (fun k hkk => GlobalTheory.GenFibMap.genFibMap_id _ _ _ _ _ _ (hid k hkk)) (fun k l m hkl hlm => GlobalTheory.GenFibMap.genFibMap_comp _ _ …`. Use `⟨k.1, Ek k, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, e k, he k, g k, GlobalTheory.GenFibMap.genFibMap_comp_algebraMap _ _ _ _ _ _ _, Di, inferInstance, inferInstance, acti, htori, ?_⟩` and prove the remaining obligations. Introduce `C _ ψ σ hσ`.
+
+Use `letI : Algebra (GlobalTheory.LocAcyc.GenFib (𝒜' k) (Localization.AtPrime (Q.comap (e k)))) (GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)) := (g k).toAlgebra`. Use `letI : Algebra (GlobalTheory.LocAcyc.GenFib (𝒜' k) (Localization.AtPrime (Q.comap (e k)))) C := (ψ.comp (g k)).toAlgebra`. Set `ψa : GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q) →ₐ[GlobalTheory.LocAcyc.GenFib (𝒜' k) (Localization.AtPrime (Q.comap (e k)))] C` to `{ ψ with commutes' := fun r => rfl }`. Set `σa : Di →ₐ[GlobalTheory.LocAcyc.GenFib (𝒜' k) (Localization.AtPrime (Q.comap (e k)))] C` to `{ σ with commutes' := fun r => (congrArg (fun φ => φ r) hσ : _) }`. Use `⟨(Algebra.TensorProduct.lift ψa σa (fun _ _ => Commute.all _ _)).toRingHom.comp iso₂.symm.toAlgHom.toRingHom, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `b`. Simplify using `[ψa]`.
+-/
 theorem exists_stage_torsor : ∀ (T : Type) [CommRing T] [IsDomain T] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι]
     (𝒜 : ι → Subring T), Monotone 𝒜 → (∀ x : T, ∃ i, x ∈ 𝒜 i) →
     ∀ (q : ℕ), 0 < q →

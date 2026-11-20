@@ -9,6 +9,9 @@ open scoped ComplexOrder
 
 namespace HadamardPSDAux
 
+/- English proof (translation)
+Establish `h0 : star (Pi.single i (1 : ℂ)) ⬝ᵥ A *ᵥ Pi.single i 1 = 0`. Simplify using `using hi`. Establish `hcol` using `(hA.dotProduct_mulVec_zero_iff _).mp h0`. Use `det_eq_zero_of_column_eq_zero i fun k => ?_` and prove the remaining obligations. Simplify using `using congrFun hcol k`.
+-/
 theorem det_eq_zero_of_diag_eq_zero {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.PosSemidef)
     {i : Fin n} (hi : A i i = 0) : A.det = 0 := by
   have h0 : star (Pi.single i (1 : ℂ)) ⬝ᵥ A *ᵥ Pi.single i 1 = 0 := by
@@ -17,6 +20,25 @@ theorem det_eq_zero_of_diag_eq_zero {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (
   refine det_eq_zero_of_column_eq_zero i fun k => ?_
   simpa using congrFun hcol k
 
+/- English proof (translation)
+Use `set d : Fin n → ℝ := fun i => (A i i).re with hd_def`. Establish `hAd : ∀ i, A i i = (d i : ℂ)`. Introduce `i`. Take `⟨-, him⟩` from `Complex.nonneg_iff.mp (hA.diag_nonneg (i := i))`. Conclude with `Complex.ext (by simp [d]) (by simp [← him])`.
+
+Use `set c : Fin n → ℝ := fun i => (Real.sqrt (d i))⁻¹ with hc_def`. Establish `hc : ∀ i, 0 < c i` using `fun i => inv_pos.mpr (Real.sqrt_pos.mpr (hpos i))`. Establish `hcd : ∀ i, c i * c i * d i = 1`. Introduce `i`. Simplify using `only [c]`.
+
+Rewrite using `[← mul_inv, Real.mul_self_sqrt (hpos i).le, inv_mul_cancel₀ (hpos i).ne']`. Take `⟨D, hD_def⟩ : ∃ D : Matrix (Fin n) (Fin n) ℂ, D = diagonal fun i => (c i : ℂ)` from `⟨_, rfl⟩`. Establish `hD : Dᴴ = D` using `by simp [hD_def, diagonal_conjTranspose]`. Establish `hB : (D * A * D).PosSemidef` using `by simpa [hD] using hA.conjTranspose_mul_mul_same D`. Establish `hBdiag : ∀ i, (D * A * D) i i = 1`.
+
+Introduce `i`. Simplify using `only [hD_def, diagonal_mul, mul_diagonal, hAd]`. Conclude with `(by linarith [hcd i] : c i * d i * c i = 1)` after adjusting the coercions. Establish `htr : ∑ i, hB.1.eigenvalues i = n`. Establish `h` using `hB.1.trace_eq_sum_eigenvalues`.
+
+Simplify using `only [Matrix.trace, Matrix.diag_apply, hBdiag] at h`. Simplify using `only [sum_const, card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one] at h`. Simplify using `using (congrArg Complex.re h).symm`. Establish `hprod : ∏ i, hB.1.eigenvalues i ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hnormB : ‖(D * A * D).det‖ ≤ 1`. Establish `h1 : (D * A * D).det = ((∏ i, hB.1.eigenvalues i : ℝ) : ℂ)`. Rewrite using `[hB.1.det_eq_prod_eigenvalues]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, Complex.norm_of_nonneg (prod_nonneg fun i _ => hB.eigenvalues_nonneg i)]`. Conclude with `hprod`. Establish `hdetB : (D * A * D).det = (((∏ i, c i) ^ 2 : ℝ) : ℂ) * A.det`. Simplify using `only [det_mul, hD_def, det_diagonal]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `key : ‖(D * A * D).det‖ * ∏ i, d i = ‖A.det‖`. Rewrite using `[hdetB, norm_mul, Complex.norm_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[prod_mul_distrib, prod_mul_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ‖A.det‖ := by simp [hcd]`. Establish `hnd : ∀ i, ‖A i i‖ = d i` using `fun i => by rw [hAd i, Complex.norm_of_nonneg (hpos i).le]`. Rewrite using `[← key, prod_congr rfl fun i _ => hnd i]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_of_diag_pos {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.PosSemidef)
     (hpos : ∀ i, 0 < (A i i).re) : ‖A.det‖ ≤ ∏ i, ‖A i i‖ := by
   set d : Fin n → ℝ := fun i => (A i i).re with hd_def
@@ -70,6 +92,13 @@ theorem le_of_diag_pos {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.PosSem
 
 end HadamardPSDAux
 
+/- English proof (translation)
+Introduce `n A hA`. Distinguish the cases in `h : ∃ i, A i i = 0`. Take `⟨i, hi⟩` from `h`. Rewrite using `[HadamardPSDAux.det_eq_zero_of_diag_eq_zero hA hi, norm_zero]`. Conclude with `prod_nonneg fun _ _ => norm_nonneg _`.
+
+Use `push Not at h`. Use `HadamardPSDAux.le_of_diag_pos hA fun i => ?_` and prove the remaining obligations. Take `⟨hre, him⟩` from `Complex.nonneg_iff.mp (hA.diag_nonneg (i := i))`. Break down `hre.lt_or_eq with hlt | heq` into its components or cases. Conclude with `hlt`.
+
+Conclude with `absurd (Complex.ext heq.symm him.symm) (h i)`.
+-/
 theorem HadamardPSD.proof : HadamardPSD.Statement := by
   intro n A hA
   by_cases h : ∃ i, A i i = 0

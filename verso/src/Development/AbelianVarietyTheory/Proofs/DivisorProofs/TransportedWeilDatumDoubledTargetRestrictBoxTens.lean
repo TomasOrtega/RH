@@ -23,6 +23,17 @@ namespace GlobalTheory.WeilSchrodinger.DblRestrict
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ _ co hrat ω hω om hom ωd hωd omp homp g gd hgd φ₁ hφ₁ φ₂ hφ₂`. Set `h : GA D T` to `⟨g.1, GlobalTheory.ThetaTransform.mem_GA_target hA g⟩`. Set `hd : GA D (GlobalTheory.Doubling.dblSp T)` to `⟨gd.1, GlobalTheory.ThetaTransform.mem_GA_target rfl gd⟩`. Establish `hh : Formalism.L2.Theta.mt T h = g.1.1` using `rfl`. Establish `hhd : Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp T) hd = gd.1.1` using `rfl`.
+
+Establish `h1S : Formalism.L2.Theta.mt S 1 = ((1 : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F JB))⁻¹).1.1ᵀ`. Simplify using `[Formalism.L2.Theta.mt]`. Take `⟨hB1, hΘ1⟩` from `hom g 1 1 h hh h1S φ₁ hφ₁`. Establish `hbox` using `GlobalTheory.SchwartzBox.boxFun_mem_schA D.host.F κ κ φ₁ hφ₁ φ₂ hφ₂`. Take `⟨hA1, hΘA⟩` from `homp gd 1 1 hd hhd h1S _ hbox`.
+
+Establish `hφ₂'` using `GlobalTheory.ConjSch.star_mem_schA κ φ₂ hφ₂`. Establish `bij` using `GlobalTheory.ThetaTransform.thetaTr_bij co hψ hA hB hrat`. Establish `bijd` using `GlobalTheory.ThetaTransform.thetaTr_bij (GlobalTheory.WeilSchrodinger.DblTarget.coDbl hA co) hψ rfl hB (GlobalTheory.WeilSchrodinger.DblTarget.coDbl_rat hA co hrat)`. Use `bijd.2.1 _ hA1 _ (GlobalTheory.SchwartzBox.boxFun_mem_schA D.host.F κ κ _ hB1 φ₂ hφ₂) ?_` and prove the remaining obligations. Establish `e1` using `GlobalTheory.T.thetaTransform_doubledCoords_boxProduct D ψ hψ S T JA JB ξ hA κ co _ hφ₁ _ hφ₂`.
+
+Establish `e2` using `GlobalTheory.T.thetaTransform_doubledCoords_boxProduct D ψ hψ S T JA JB ξ hA κ co _ hB1 _ hφ₂`. Establish `hgd' : Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp T) hd = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (Formalism.L2.Theta.mt T h) 0 0 1)` using `hgd`. Establish `key` using `GlobalTheory.T.doubledWeilDatum_diag_acts_on_externalProduct D ψ hψ S T χS χT ω hω ωd hωd (GlobalTheory.T.doubledWeilDatum_diag_thetaProduct_eq_scalar_smul D ψ hψ S T χS χT ω hω ωd hωd) h hd hgd' _ _ ((bij.2.2 _).2 ⟨φ₁, hφ₁, rfl⟩) ((bij.2.2 _).2 ⟨_, hφ₂', rfl⟩)`. Use `hΘA.trans ?_` and prove the remaining obligations. Use `((congrArg (ωd (1, hd)) e1).trans key).trans ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ e2.symm` and prove the remaining obligations. Rewrite using `[hΘ1]`.
+-/
 theorem omp_diag_boxFun : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

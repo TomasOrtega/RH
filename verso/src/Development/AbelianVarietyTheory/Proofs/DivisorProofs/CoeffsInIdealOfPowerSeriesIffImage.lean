@@ -6,6 +6,15 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `B Q σ _ _ _ N f`. Use `⟨⟨fun h => ?_, fun ⟨s, hs, hsf⟩ α => ?_⟩, fun g hf hg a => ⟨fun α => ?_, fun α => ?_⟩⟩` and prove the remaining obligations. Use `choose b hbN hb using h`. Take `⟨s, hs⟩ : ∃ s : MvPowerSeries σ B, ∀ α, coeff α s = b α` from `⟨b, fun _ => rfl⟩`. Use `⟨s, fun α => (hs α).symm ▸ hbN α, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `α`. Rewrite using `[coeff_map, hs]`. Conclude with `(hb α).symm`. Conclude with `⟨coeff α s, hs α, by rw [← hsf, coeff_map]⟩`. Take `⟨b₁, hb₁N, hb₁⟩` from `hf α`.
+
+Take `⟨b₂, hb₂N, hb₂⟩` from `hg α`. Use `⟨b₁ + a * b₂, N.add_mem hb₁N (N.mul_mem_left a hb₂N), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, smul_eq_mul, hb₁, hb₂, map_add, map_mul]`. Take `⟨b₁, hb₁N, hb₁⟩` from `hf α`. Take `⟨b₂, hb₂N, hb₂⟩` from `hg α`.
+
+Conclude with `⟨b₁ - b₂, N.sub_mem hb₁N hb₂N, by rw [map_sub, hb₁, hb₂, map_sub]⟩`.
+-/
 theorem series_in_ideal_iff_image :
     ∀ (B Q σ : Type) [CommRing B] [CommRing Q] [Algebra B Q] (N : Ideal B) (f : MvPowerSeries σ Q),
       (In N f ↔ ∃ s : MvPowerSeries σ B, (∀ α, coeff α s ∈ N) ∧ map (algebraMap B Q) s = f) ∧

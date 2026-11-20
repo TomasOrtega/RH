@@ -7,6 +7,21 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.ThetaGauss
 
+/- English proof (translation)
+Establish `hne : ∀ s₀, ∀ᶠ s in 𝓝[≠] s₀, h s ≠ 0` using `fun s₀ => by`. Use `(hh.analyticAt s₀).eventually_eq_zero_or_eventually_ne_zero.resolve_left fun hz => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `h0`. Conclude with `hs ((hh.differentiableOn.analyticOnNhd isOpen_univ).eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ s₀) hz (Set.mem_univ s))`. Set `q : ℂ → ℂ` to `fun s => N s / h s`.
+
+Establish `hq : ∀ s, h s ≠ 0 → DifferentiableAt ℂ q s` using `fun s hs => (hN s).div (hh s) hs`. Set `k : ℂ → ℂ` to `fun s => limUnder (𝓝[≠] s) q`. Establish `hk : ∀ s, h s ≠ 0 → k s = q s` using `fun s hs => ((hq s hs).continuousAt.tendsto.mono_left nhdsWithin_le_nhds).limUnder_eq`. Establish `hd : Differentiable ℂ k`. Introduce `s₀`.
+
+Distinguish the cases in `hs : h s₀ = 0`. Take `⟨C, hC⟩` from `hb s₀ hs`. Take `⟨U, hU, hU'⟩` from `mem_nhdsWithin_iff_exists_mem_nhds_inter.1 (hC.and (hne s₀))`. Establish `h1 : DifferentiableOn ℂ (Function.update q s₀ (limUnder (𝓝[≠] s₀) q)) U`. Use `Complex.differentiableOn_update_limUnder_of_bddAbove hU (fun s hs => (hq s (hU' ⟨hs.1, hs.2⟩).2).differentiableWithinAt) ⟨C, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `hU' ⟨hs.1, hs.2⟩` as an intermediate fact. Simplify using `only [Function.comp, q, norm_div]`. Rewrite using `[div_le_iff₀ (norm_pos_iff.2 this.2)]`. Conclude with `this.1`.
+
+Use `(h1.differentiableAt hU).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hU] with s hs`. Distinguish the cases in `e : s = s₀`. Substitute `e` using the available equality. Simplify using `[k]`.
+
+Rewrite using `[Function.update_of_ne e, hk s (hU' ⟨hs, e⟩).2]`. Use `(hq s₀ hs).congr_of_eventuallyEq ?_ filter_upwards [(hh s₀).continuousAt.eventually_ne hs] with s hs using hk s hs` and prove the remaining obligations. Use `⟨k, hd, fun s₀ => ?_⟩` and prove the remaining obligations. Use `tendsto_nhds_unique_of_eventuallyEq (l := 𝓝[≠] s₀) (((hd s₀).mul (hh s₀)).continuousAt.tendsto.mono_left nhdsWithin_le_nhds) ((hN s₀).continuousAt.tendsto.mono_left nhdsWithin_le_nhds) ?_` and prove the remaining obligations. Use `filter_upwards [hne s₀] with s hs`.
+
+Simplify using `only [Pi.mul_apply]`. Rewrite using `[hk s hs, div_mul_cancel₀ _ hs]`.
+-/
 theorem exists_entire_quot {N h : ℂ → ℂ} (hN : Differentiable ℂ N) (hh : Differentiable ℂ h)
     (h0 : ∃ s, h s ≠ 0)
     (hb : ∀ s₀, h s₀ = 0 → ∃ C : ℝ, ∀ᶠ s in 𝓝[≠] s₀, ‖N s‖ ≤ C * ‖h s‖) :
@@ -49,6 +64,21 @@ theorem exists_entire_quot {N h : ℂ → ℂ} (hN : Differentiable ℂ N) (hh :
   simp only [Pi.mul_apply]
   rw [hk s hs, div_mul_cancel₀ _ hs]
 
+/- English proof (translation)
+Use `exists_entire_quot (hh.deriv.pow 2) hh h0 fun s₀ hs₀ => ?_` and prove the remaining obligations. Establish `hnz : ¬ ∀ᶠ s in 𝓝 s₀, h s = 0` using `fun hz => by`. Take `⟨s, hs⟩` from `h0`. Conclude with `hs ((hh.differentiableOn.analyticOnNhd isOpen_univ).eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ s₀) hz (Set.mem_univ s))`. Take `⟨n, u, hu, hu0, he⟩` from `(hh.analyticAt s₀).exists_eventuallyEq_pow_smul_nonzero_iff.2 hnz`.
+
+Simplify using `only [smul_eq_mul] at he`. Establish `hder : ∀ᶠ s in 𝓝 s₀, deriv h s = n * (s - s₀) ^ (n - 1) * u s + (s - s₀) ^ n * deriv u s` using `by filter_upwards [he.eventually_nhds, hu.eventually_analyticAt] with s hs hus`. Rewrite using `[Filter.EventuallyEq.deriv_eq (f := fun s => (s - s₀) ^ n * u s) hs]`. Use `(((hasDerivAt_id s).sub_const s₀).pow n).mul hus.differentiableAt.hasDerivAt` as an intermediate fact. Simplify `this.deriv` using `[Pi.mul_def]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨m, rfl⟩ : ∃ m, n = m + 2 := by`. Break down `n with _ | _ | m` into its components or cases. Use `he.self_of_nhds` as an intermediate fact. Simplify using `[hs₀] at this`. Conclude with `absurd this.symm hu0`.
+
+Use `hder.self_of_nhds` as an intermediate fact. Simplify using `[hm _ hs₀] at this`. Conclude with `absurd this.symm hu0`. Conclude with `⟨m, rfl⟩`. Set `w : ℂ → ℂ` to `fun s => (s - s₀) ^ m * (((m + 2 : ℕ) : ℂ) * u s + (s - s₀) * deriv u s) ^ 2 / u s`.
+
+Establish `hw : ContinuousAt w s₀`. Use `hu.continuousAt` as an intermediate fact. Use `hu.deriv.continuousAt` as an intermediate fact. Use `ContinuousAt.div ?_ hu.continuousAt hu0` and prove the remaining obligations. Use `fun_prop`.
+
+Use `⟨‖w s₀‖ + 1, Filter.Eventually.filter_mono nhdsWithin_le_nhds ?_⟩` and prove the remaining obligations. Use `filter_upwards [he, hder, hu.continuousAt.eventually_ne hu0, hw.norm.eventually (ge_mem_nhds (lt_add_one _))] with s h1 h2 h3 h4`. Establish `: deriv h s ^ 2 = w s * h s`. Rewrite using `[h1, h2]`. Simplify using `only [w, show m + 2 - 1 = m + 1 from rfl]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, norm_mul]`. Use `gcongr`.
+-/
 theorem exists_deriv_sq_quot {h : ℂ → ℂ} (hh : Differentiable ℂ h) (h0 : ∃ s, h s ≠ 0)
     (hm : ∀ s, h s = 0 → deriv h s = 0) :
     ∃ k : ℂ → ℂ, Differentiable ℂ k ∧ ∀ s, k s * h s = deriv h s ^ 2 := by
@@ -83,6 +113,13 @@ theorem exists_deriv_sq_quot {h : ℂ → ℂ} (hh : Differentiable ℂ h) (h0 :
   rw [this, norm_mul]
   gcongr
 
+/- English proof (translation)
+Take `⟨k, hk, hk'⟩` from `exists_deriv_sq_quot hh ⟨r, norm_pos_iff.1 (hδ.trans_le (hl _ (by simp [hr.le])))⟩ hm`. Rewrite using `[← hk', norm_mul]`. Use `gcongr`. Use `Complex.norm_le_of_forall_mem_frontier_norm_le (U := ball 0 r) isBounded_ball hk.diffContOnCl (fun t ht => ?_) (subset_closure (mem_ball_self hr))` and prove the remaining obligations. Rewrite `ht` using `[frontier_ball _ hr.ne']`.
+
+Establish `h1 : ‖deriv h t‖ ≤ M / (1 / 2)`. Use `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le (by norm_num) hh.diffContOnCl fun z hz => hM z ?_` and prove the remaining obligations. Rewrite `ht`, `hz` using `[mem_sphere]`. Rewrite using `[mem_closedBall]`. Combine the linear relations using `[dist_triangle z t 0]`.
+
+Rewrite using `[le_div_iff₀ hδ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_deriv_sq_le {h : ℂ → ℂ} (hh : Differentiable ℂ h)
     (hm : ∀ s, h s = 0 → deriv h s = 0) {r M δ : ℝ} (hr : 0 < r) (hr' : r ≤ 1 / 2) (hδ : 0 < δ)
     (hM : ∀ t ∈ closedBall (0 : ℂ) 1, ‖h t‖ ≤ M) (hl : ∀ t ∈ sphere (0 : ℂ) r, δ ≤ ‖h t‖) :
@@ -107,6 +144,9 @@ theorem norm_deriv_sq_le {h : ℂ → ℂ} (hh : Differentiable ℂ h)
 
 variable {g : ℕ}
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.AnForm.Osgood.osgood g _ f isOpen_univ hf.differentiableOn`.
+-/
 theorem analytic_of_diff {f : (Fin g → ℂ) → ℂ} (hf : Differentiable ℂ f) :
     AnalyticOnNhd ℂ f Set.univ :=
   ReciprocityTheory.AnForm.Osgood.osgood g _ f isOpen_univ hf.differentiableOn
@@ -115,10 +155,32 @@ noncomputable def transl {K : Type} [TopologicalSpace K] {f : (Fin g → ℂ) �
     (hf : Differentiable ℂ f) (γ : C(K, Fin g → ℂ)) (z : Fin g → ℂ) : C(K, ℂ) :=
   ⟨fun k => f (z + γ k), hf.continuous.comp (continuous_const.add γ.continuous)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem transl_apply {K : Type} [TopologicalSpace K] {f : (Fin g → ℂ) → ℂ}
     (hf : Differentiable ℂ f) (γ : C(K, Fin g → ℂ)) (z : Fin g → ℂ) (k : K) :
     transl hf γ z k = f (z + γ k) := rfl
 
+/- English proof (translation)
+Introduce `z`. Establish `hc : Continuous (fderiv ℂ f)` using `continuousOn_univ.1 (analytic_of_diff hf).fderiv.continuousOn`. Set `L : (Fin g → ℂ) →ₗ[ℂ] C(K, ℂ)` to `{ toFun := fun h => ⟨fun k => fderiv ℂ f (z + γ k) h, by fun_prop⟩ map_add' := fun a b => by ext k; simp map_smul' := fun a b => by ext k; simp }`. Take `⟨M₁, hM₁⟩` from `(isCompact_closedBall z (‖γ‖ + 1)).exists_bound_of_continuousOn hf.continuous.continuousOn`. Take `⟨M₂, hM₂⟩` from `(isCompact_closedBall z (‖γ‖ + 1)).exists_bound_of_continuousOn hc.continuousOn`.
+
+Establish `hmem : ∀ k, ∀ h ∈ ball (0 : Fin g → ℂ) 1, z + γ k + h ∈ closedBall z (‖γ‖ + 1)`. Introduce `k h hh`. Rewrite `hh` using `[mem_ball_zero_iff]`. Rewrite using `[mem_closedBall, dist_eq_norm, show z + γ k + h - z = γ k + h by abel]`. Combine the linear relations using `[norm_add_le (γ k) h, γ.norm_coe_le_norm k]`.
+
+Establish `hM : 0 ≤ M₁ + M₁ + M₂`. Use `(norm_nonneg _).trans (hM₁ z (mem_closedBall_self (by positivity)))` as an intermediate fact. Use `(norm_nonneg _).trans (hM₂ z (mem_closedBall_self (by positivity)))` as an intermediate fact. Check the signs of the components of the expression. Use `HasFDerivAt.differentiableAt (f' := LinearMap.toContinuousLinearMap L) ?_` and prove the remaining obligations.
+
+Rewrite using `[hasFDerivAt_iff_isLittleO_nhds_zero]`. Use `Asymptotics.IsBigO.trans_isLittleO (g := fun h => ‖h‖ ^ 2) ?_ (Asymptotics.isLittleO_norm_pow_id (by norm_num))` and prove the remaining obligations. Use `Asymptotics.IsBigO.of_bound (M₁ + M₁ + M₂) ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds 0 one_pos] with h hh`. Use `(ContinuousMap.norm_le _ (by positivity)).2 fun k => ?_` and prove the remaining obligations.
+
+Establish `key` using `Complex.dist_le_mul_div_pow_of_mapsTo_ball_of_isLittleO (f := fun h => f (z + γ k + h) - fderiv ℂ f (z + γ k) h) (c := 0) (z := h) (R₁ := 1) (R₂ := M₁ + M₁ + M₂) (n := 1) (by fun_prop) (fun y hy => ?_) ?_ hh`. Simplify using `only [dist_eq_norm, add_zero, map_zero, sub_zero, div_one] at key`. Simplify using `only [norm_pow, norm_norm]`. Use `le_trans (le_of_eq ?_) key` and prove the remaining obligations. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `f (z + h + γ k) - f (z + γ k) - fderiv ℂ f (z + γ k) h = _`. Rewrite using `[add_right_comm]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [mem_closedBall, dist_eq_norm, add_zero, map_zero, sub_zero]`. Establish `h1` using `hM₁ _ (hmem k y hy)`.
+
+Establish `h2` using `hM₁ _ (hmem k 0 (by simp))`. Establish `h3` using `hM₂ _ (hmem k 0 (by simp))`. Rewrite `h2`, `h3` using `[add_zero]`. Establish `h4 : ‖fderiv ℂ f (z + γ k) y‖ ≤ M₂`. Use `((fderiv ℂ f (z + γ k)).le_opNorm y).trans ?_` and prove the remaining obligations.
+
+Rewrite `hy` using `[mem_ball_zero_iff]`. Use polynomial arithmetic with `[norm_nonneg y, norm_nonneg (fderiv ℂ f (z + γ k))]`. Combine the linear relations using `[norm_sub_le (f (z + γ k + y) - fderiv ℂ f (z + γ k) y) (f (z + γ k)), norm_sub_le (f (z + γ k + y)) (fderiv ℂ f (z + γ k) y)]`. Use `hasFDerivAt_iff_isLittleO_nhds_zero.1 (hf (z + γ k)).hasFDerivAt` as an intermediate fact. Simplify using `only [add_zero, map_zero, sub_zero, pow_one]`.
+
+Use `(this.congr_left fun y => by ring).norm_right` and prove the remaining obligations.
+-/
 theorem differentiable_transl {K : Type} [TopologicalSpace K] [CompactSpace K]
     {f : (Fin g → ℂ) → ℂ} (hf : Differentiable ℂ f) (γ : C(K, Fin g → ℂ)) :
     Differentiable ℂ (transl hf γ) := by
@@ -173,18 +235,29 @@ theorem differentiable_transl {K : Type} [TopologicalSpace K] [CompactSpace K]
     simp only [add_zero, map_zero, sub_zero, pow_one]
     refine (this.congr_left fun y => by ring).norm_right
 
+/- English proof (translation)
+Establish `h : HasDerivAt (fun t : ℂ => x + t • v) v t`. Simplify using `using ((hasDerivAt_id t).smul_const v).const_add x`. Conclude with `(hf _).hasFDerivAt.comp_hasDerivAt t h`.
+-/
 theorem hasDerivAt_line {f : (Fin g → ℂ) → ℂ} (hf : Differentiable ℂ f) (x v : Fin g → ℂ) (t : ℂ) :
     HasDerivAt (fun t : ℂ => f (x + t • v)) (fderiv ℂ f (x + t • v) v) t := by
   have h : HasDerivAt (fun t : ℂ => x + t • v) v t := by
     simpa using ((hasDerivAt_id t).smul_const v).const_add x
   exact (hf _).hasFDerivAt.comp_hasDerivAt t h
 
+/- English proof (translation)
+Introduce `hz` and use `by obtain ⟨s, hs⟩ := h0 exact hs ((hh.differentiableOn.analyticOnNhd isOpen_univ).eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ s₀) hz (Set.mem_univ s))`.
+-/
 theorem not_eventually_zero {h : ℂ → ℂ} (hh : Differentiable ℂ h) (h0 : ∃ s, h s ≠ 0) (s₀ : ℂ) :
     ¬ ∀ᶠ s in 𝓝 s₀, h s = 0 := fun hz => by
   obtain ⟨s, hs⟩ := h0
   exact hs ((hh.differentiableOn.analyticOnNhd isOpen_univ).eqOn_zero_of_preconnected_of_eventuallyEq_zero
     isPreconnected_univ (Set.mem_univ s₀) hz (Set.mem_univ s))
 
+/- English proof (translation)
+Rewrite `hp` using `[eventually_nhdsWithin_iff, Metric.eventually_nhds_iff]`. Take `⟨ε, hε, h⟩` from `hp`. Use `⟨min (ε / 2) (1 / 2), by positivity, min_le_right _ _, fun t ht => h ?_ ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[mem_sphere]`. Rewrite using `[ht]; exact (min_le_left _ _).trans_lt (by linarith)`.
+
+Introduce and unpack `rfl`. Simplify using `only [mem_sphere, dist_self] at ht`. Conclude with `absurd ht (ne_of_lt (by positivity))`.
+-/
 theorem exists_sphere {p : ℂ → Prop} (hp : ∀ᶠ t in 𝓝[≠] (0 : ℂ), p t) :
     ∃ r : ℝ, 0 < r ∧ r ≤ 1 / 2 ∧ ∀ t ∈ sphere (0 : ℂ) r, p t := by
   rw [eventually_nhdsWithin_iff, Metric.eventually_nhds_iff] at hp
@@ -196,6 +269,33 @@ theorem exists_sphere {p : ℂ → Prop} (hp : ∀ᶠ t in 𝓝[≠] (0 : ℂ), 
     simp only [mem_sphere, dist_self] at ht
     exact absurd ht (ne_of_lt (by positivity))
 
+/- English proof (translation)
+Set `K : Set ℂ` to `closedBall 0 1`. Set `γ : C(K, Fin g → ℂ)` to `⟨fun t => (t : ℂ) • v, by fun_prop⟩`. Set `Φ : ℂ → C(K, ℂ)` to `fun s => transl hθ γ (z + s • w)`. Establish `hΦ : Differentiable ℂ Φ` using `(differentiable_transl hθ γ).comp (by fun_prop)`. Establish `hnz : ¬ ∀ᶠ s in 𝓝 (0 : ℂ), Φ s = 0` using `fun hz => not_eventually_zero (h := fun s => θ (z + s • w)) (by fun_prop) h0 0 (hz.mono fun s hs => by`.
+
+Simplify `congrArg (fun F : C(K, ℂ) => F ⟨0, by simp [K]⟩) hs)` using `[Φ, γ]`. Take `⟨n, G, hG, hG0, he⟩` from `(hΦ.analyticAt 0).exists_eventuallyEq_pow_smul_nonzero_iff.2 hnz`. Simplify using `only [sub_zero] at he`. Set `F : ℂ → ℂ → ℂ` to `fun s t => (s ^ n)⁻¹ * θ (z + s • w + t • v)`. Establish `hFd : ∀ s, Differentiable ℂ (F s)` using `fun s => by fun_prop`.
+
+Establish `hF : ∀ᶠ s in 𝓝[≠] (0 : ℂ), ∀ t : K, F s t = G s t` using `by filter_upwards [he.filter_mono nhdsWithin_le_nhds, self_mem_nhdsWithin] with s hs hs0 t`. Use `congrArg (fun F : C(K, ℂ) => F t) hs` as an intermediate fact. Simplify using `only [Φ, γ, transl_apply, ContinuousMap.coe_mk, ContinuousMap.smul_apply, smul_eq_mul] at this`. Simplify using `only [F]`. Rewrite using `[this, inv_mul_cancel_left₀ (pow_ne_zero _ hs0)]`.
+
+Establish `hclose : ∀ ε > 0, ∀ᶠ s in 𝓝[≠] (0 : ℂ), ∀ t : K, ‖F s t - G 0 t‖ < ε` using `fun ε hε => by filter_upwards [hF, ((Metric.tendsto_nhds.1 hG.continuousAt) ε hε).filter_mono nhdsWithin_le_nhds] with s hs hs' t`. Rewrite using `[hs, ← dist_eq_norm]`. Conclude with `(ContinuousMap.dist_apply_le_dist t).trans_lt hs'`. Set `g₀ : ℂ → ℂ` to `fun t => if h : t ∈ K then G 0 ⟨t, h⟩ else 0`. Establish `hg₀ : ∀ t : K, g₀ t = G 0 t` using `fun t => by simp [g₀]`.
+
+Establish `hu : TendstoUniformlyOn F g₀ (𝓝[≠] 0) K`. Rewrite using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Use `filter_upwards [hclose ε hε] with s hs t ht`. Rewrite using `[dist_comm, dist_eq_norm, hg₀ ⟨t, ht⟩]`.
+
+Conclude with `hs ⟨t, ht⟩`. Establish `hgd : DifferentiableOn ℂ g₀ (ball 0 1)` using `(hu.mono ball_subset_closedBall).tendstoLocallyUniformlyOn.differentiableOn (Eventually.of_forall fun s => (hFd s).differentiableOn) isOpen_ball`. Establish `hgc : ContinuousOn g₀ K` using `hu.continuousOn (Eventually.of_forall fun s => (hFd s).continuous.continuousOn).frequently`. Establish `hga` using `hgd.analyticOnNhd isOpen_ball`. Establish `hgne : ∀ᶠ t in 𝓝[≠] (0 : ℂ), g₀ t ≠ 0`.
+
+Use `(hga 0 (by simp)).eventually_eq_zero_or_eventually_ne_zero.resolve_left fun hz => hG0 ?_` and prove the remaining obligations. Establish `h1` using `hga.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball _ _).isPreconnected (mem_ball_self one_pos) hz`. Establish `h2 : Set.EqOn g₀ 0 K` using `h1.of_subset_closure hgc continuousOn_const ball_subset_closedBall (by rw [closure_ball _ one_ne_zero])`. Use extensionality with `t`. Rewrite using `[← hg₀]`.
+
+Conclude with `h2 t.2`. Take `⟨r, hr, hr', hsph⟩` from `exists_sphere hgne`. Establish `hsub : sphere (0 : ℂ) r ⊆ K` using `sphere_subset_closedBall.trans (closedBall_subset_closedBall (by linarith))`. Take `⟨t₀, ht₀, hmin⟩` from `(isCompact_sphere (0 : ℂ) r).exists_isMinOn (NormedSpace.sphere_nonempty.2 hr.le) (hgc.mono hsub).norm`. Establish `hδ : 0 < ‖g₀ t₀‖ / 2` using `half_pos (norm_pos_iff.2 (hsph t₀ ht₀))`.
+
+Use `⟨(2 * (‖G 0‖ + 1)) ^ 2 / (‖g₀ t₀‖ / 2), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hclose _ hδ, hclose 1 one_pos, self_mem_nhdsWithin, nhdsWithin_le_nhds (closedBall_mem_nhds (0 : ℂ) one_pos)] with s h1 h2 hs0 hs1`. Establish `hsn : s ^ n ≠ 0` using `pow_ne_zero _ hs0`. Establish `hder : ∀ t, deriv (F s) t = (s ^ n)⁻¹ * fderiv ℂ θ (z + s • w + t • v) v` using `fun t => ((hasDerivAt_line hθ (z + s • w) v t).const_mul _).deriv`. Establish `key` using `norm_deriv_sq_le (hFd s) (fun t ht => by`.
+
+Rewrite using `[hder, hm _ ((mul_eq_zero.1 ht).resolve_left (inv_ne_zero hsn)), mul_zero])`. Use `hr hr' hδ (M := ‖G 0‖ + 1) (fun t ht => by`. Use `h2 ⟨t, ht⟩` as an intermediate fact. Combine the linear relations using `[norm_sub_norm_le (F s t) (G 0 ⟨t, ht⟩), (G 0).norm_coe_le_norm ⟨t, ht⟩])`. Use the proof step `(fun t ht => by`.
+
+Establish `h3` using `h1 ⟨t, hsub ht⟩`. Establish `h4 : ‖g₀ t₀‖ ≤ ‖g₀ t‖` using `hmin ht`. Rewrite `h3` using `[← hg₀, norm_sub_rev]`. Combine the linear relations using `[norm_sub_norm_le (g₀ t) (F s t)])`. Rewrite `key` using `[hder]`.
+
+Simplify using `only [F, zero_smul, add_zero, mul_pow, norm_mul] at key`. Rewrite `key` using `[← mul_pow]`. Use `set C := (2 * (‖G 0‖ + 1)) ^ 2 / (‖g₀ t₀‖ / 2)`. Establish `hC : 0 ≤ C` using `by positivity`. Establish `hle : ‖s ^ n‖ ≤ 1`.
+
+Rewrite using `[norm_pow]; exact pow_le_one₀ (norm_nonneg _) (by simpa using hs1)`. Establish `hpos : 0 < ‖s ^ n‖` using `norm_pos_iff.2 hsn`. Rewrite `key` using `[norm_pow, norm_inv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bound_on_line {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiable ℂ θ) (v : Fin g → ℂ)
     (hm : ∀ a, θ a = 0 → fderiv ℂ θ a v = 0) (z w : Fin g → ℂ) (h0 : ∃ s : ℂ, θ (z + s • w) ≠ 0) :
     ∃ C : ℝ, ∀ᶠ s in 𝓝[≠] (0 : ℂ), ‖fderiv ℂ θ (z + s • w) v ^ 2‖ ≤ C * ‖θ (z + s • w)‖ := by
@@ -280,6 +380,13 @@ theorem bound_on_line {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiable ℂ �
     _ = ‖s ^ n‖ * (C * ‖θ (z + s • w)‖) := by field_simp
     _ ≤ _ := mul_le_of_le_one_left (by positivity) hle
 
+/- English proof (translation)
+Set `p : ℝ → Set.Icc (0 : ℝ) (2 * Real.pi)` to `Set.projIcc 0 (2 * Real.pi) Real.two_pi_pos.le`. Establish `hp : Continuous p` using `continuous_projIcc`. Set `L : C(Set.Icc (0 : ℝ) (2 * Real.pi), ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun f => ∫ φ in (0 : ℝ)..(2 * Real.pi), f (p φ) map_add' := fun a b => intervalIntegral.integral_add ((a.continuous.comp hp).intervalIntegrable _ _) ((b.continuous.comp hp).intervalIntegrable _ _) map_smul' := fun a b => intervalIntegral.integral_smul a _ }`. Establish `hL : ∀ f, ‖L f‖ ≤ |2 * Real.pi - 0| * ‖f‖` using `fun f => by`. Rewrite using `[mul_comm _ ‖f‖]`.
+
+Conclude with `intervalIntegral.norm_integral_le_of_norm_le_const fun x _ => f.norm_coe_le_norm _`. Use `⟨(2 * Real.pi)⁻¹ • L.mkContinuous _ hL, fun f k r hk hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← (hk.diffContOnCl (s := ball 0 |r|)).circleAverage, Real.circleAverage_def]`. Express the relevant statement in the definitionally equal form `(2 * Real.pi)⁻¹ • ∫ φ in (0 : ℝ)..(2 * Real.pi), f (p φ) = _`. Use `congr 1`.
+
+Use `intervalIntegral.integral_congr fun φ hφ => ?_` and prove the remaining obligations. Rewrite `hφ` using `[Set.uIcc_of_le Real.two_pi_pos.le]`. Simplify using `only [hf, p, Set.projIcc_of_mem _ hφ]`.
+-/
 theorem exists_mean : ∃ ℓ : C(Set.Icc (0 : ℝ) (2 * Real.pi), ℂ) →L[ℂ] ℂ,
     ∀ (f : C(Set.Icc (0 : ℝ) (2 * Real.pi), ℂ)) (k : ℂ → ℂ) (r : ℝ), Differentiable ℂ k →
       (∀ φ, f φ = k (circleMap 0 r φ)) → ℓ f = k 0 := by
@@ -301,6 +408,9 @@ theorem exists_mean : ∃ ℓ : C(Set.Icc (0 : ℝ) (2 * Real.pi), ℂ) →L[ℂ
   rw [Set.uIcc_of_le Real.two_pi_pos.le] at hφ
   simp only [hf, p, Set.projIcc_of_mem _ hφ]
 
+/- English proof (translation)
+Use `frequently_mem_iff_neBot.1 fun h => ?_` and prove the remaining obligations. Use `h0 (funext fun x => (analytic_of_diff hθ).eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ z) (h.mono fun y hy => ?_) (Set.mem_univ x))` and prove the remaining obligations. Simplify using `using hy`.
+-/
 theorem frequently_ne_zero {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiable ℂ θ) (h0 : θ ≠ 0) (z) :
     (𝓝[{x | θ x ≠ 0}] z).NeBot := by
   refine frequently_mem_iff_neBot.1 fun h => ?_
@@ -308,6 +418,19 @@ theorem frequently_ne_zero {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiable 
     isPreconnected_univ (Set.mem_univ z) (h.mono fun y hy => ?_) (Set.mem_univ x))
   simpa using hy
 
+/- English proof (translation)
+Take `⟨ℓ, hℓ⟩` from `exists_mean`. Take `⟨z₀, hz₀⟩` from `Function.ne_iff.1 h0`. Establish `hloc : ∀ a, ∃ Ψ : (Fin g → ℂ) → ℂ, ∀ᶠ z in 𝓝 a, DifferentiableAt ℂ Ψ z ∧ Ψ z * θ z = N z`. Introduce `a`. Use `set w := z₀ - a with hw`.
+
+Establish `hd : Differentiable ℂ fun s : ℂ => θ (a + s • w)` using `by fun_prop`. Take `⟨r, hr, -, hsph⟩` from `exists_sphere ((hd.analyticAt 0).eventually_eq_zero_or_eventually_ne_zero.resolve_left (not_eventually_zero hd ⟨1, by simpa [hw] using hz₀⟩ 0))`. Set `γ : C(Set.Icc (0 : ℝ) (2 * Real.pi), Fin g → ℂ)` to `⟨fun φ => circleMap 0 r φ • w, by fun_prop⟩`. Establish `hunit : IsUnit (transl hθ γ a)` using `(ContinuousMap.isUnit_iff_forall_ne_zero _).2 fun φ => hsph _ (circleMap_mem_sphere 0 hr.le φ)`. Use `⟨fun z => ℓ (transl hN γ z * Ring.inverse (transl hθ γ z)), ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [(differentiable_transl hθ γ).continuous.continuousAt.preimage_mem_nhds (Units.isOpen.mem_nhds hunit)] with z hz`. Establish `hz' : IsUnit (transl hθ γ z)` using `hz`. Use `⟨ℓ.differentiableAt.comp z ((differentiable_transl hN γ z).mul ((differentiableAt_inverse hz').comp z (differentiable_transl hθ γ z))), ?_⟩` and prove the remaining obligations. Establish `hne` using `(ContinuousMap.isUnit_iff_forall_ne_zero _).1 hz'`. Take `⟨k, hk, hk'⟩` from `hl z w ⟨_, hne ⟨0, le_rfl, Real.two_pi_pos.le⟩⟩`.
+
+Rewrite using `[hℓ _ k r hk fun φ => ?_]`. Simplify using `using hk' 0`. Use `mul_right_cancel₀ (hne φ) ?_` and prove the remaining obligations. Rewrite using `[← ContinuousMap.mul_apply, mul_assoc, Ring.inverse_mul_cancel _ hz', mul_one]`. Conclude with `(hk' _).symm`.
+
+Use `choose Ψ hΨ using hloc`. Set `ψ : (Fin g → ℂ) → ℂ` to `fun z => limUnder (𝓝[{x | θ x ≠ 0}] z) (fun x => N x / θ x)`. Establish `he : ∀ a, ∀ᶠ z in 𝓝 a, ψ z = Ψ a z` using `fun a => by filter_upwards [hΨ a, (hΨ a).eventually_nhds] with z h1 h2 haveI := frequently_ne_zero hθ h0 z`. Use `Tendsto.limUnder_eq ((h1.1.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' ?_)` and prove the remaining obligations. Use `filter_upwards [h2.filter_mono nhdsWithin_le_nhds, self_mem_nhdsWithin] with y hy hy0`.
+
+Rewrite using `[← hy.2, mul_div_cancel_right₀ _ hy0]`. Use `⟨ψ, fun a => (hΨ a).self_of_nhds.1.congr_of_eventuallyEq (he a), fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[(he a).self_of_nhds, (hΨ a).self_of_nhds.2]`.
+-/
 theorem exists_entire_quot_of_lines {θ N : (Fin g → ℂ) → ℂ} (hθ : Differentiable ℂ θ)
     (hN : Differentiable ℂ N) (h0 : θ ≠ 0)
     (hl : ∀ z w : Fin g → ℂ, (∃ s : ℂ, θ (z + s • w) ≠ 0) →
@@ -350,6 +473,13 @@ theorem exists_entire_quot_of_lines {θ N : (Fin g → ℂ) → ℂ} (hθ : Diff
   refine ⟨ψ, fun a => (hΨ a).self_of_nhds.1.congr_of_eventuallyEq (he a), fun a => ?_⟩
   rw [(he a).self_of_nhds, (hΨ a).self_of_nhds.2]
 
+/- English proof (translation)
+Use `exists_entire_quot_of_lines hθ (hD.pow 2) h0 fun z w hw => ?_` and prove the remaining obligations. Establish `hl : Differentiable ℂ fun s : ℂ => z + s • w` using `by fun_prop`. Use `exists_entire_quot (N := fun s => fderiv ℂ θ (z + s • w) v ^ 2) ((hD.comp hl).pow 2) (hθ.comp hl) hw fun s₀ _ => ?_` and prove the remaining obligations. Establish `e : ∀ s : ℂ, z + s₀ • w + (s - s₀) • w = z + s • w` using `fun s => by`. Rewrite using `[sub_smul]`.
+
+Normalize the expressions using the abelian group laws. Take `⟨s₁, hs₁⟩` from `hw`. Take `⟨C, hC⟩` from `bound_on_line hθ v hm (z + s₀ • w) w ⟨s₁ - s₀, by rwa [e]⟩`. Establish `ht : Tendsto (fun s : ℂ => s - s₀) (𝓝[≠] s₀) (𝓝[≠] 0)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, eventually_mem_nhdsWithin.mono fun s hs => sub_ne_zero.2 hs⟩` and prove the remaining obligations.
+
+Conclude with `((continuous_sub_right s₀).tendsto' s₀ 0 (sub_self _)).mono_left nhdsWithin_le_nhds`. Conclude with `⟨C, (ht.eventually hC).mono fun s hs => by rwa [e] at hs⟩`.
+-/
 theorem exists_fderiv_sq_quot {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiable ℂ θ) (h0 : θ ≠ 0)
     (v : Fin g → ℂ) (hD : Differentiable ℂ fun z => fderiv ℂ θ z v)
     (hm : ∀ a, θ a = 0 → fderiv ℂ θ a v = 0) :
@@ -367,11 +497,21 @@ theorem exists_fderiv_sq_quot {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiab
     exact ((continuous_sub_right s₀).tendsto' s₀ 0 (sub_self _)).mono_left nhdsWithin_le_nhds
   exact ⟨C, (ht.eventually hC).mono fun s hs => by rwa [e] at hs⟩
 
+/- English proof (translation)
+The claim follows from `(differentiableOn_univ.1 (analytic_of_diff hθ).fderiv.differentiableOn).clm_apply (differentiable_const v)`.
+-/
 theorem differentiable_fderiv_apply {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiable ℂ θ)
     (v : Fin g → ℂ) : Differentiable ℂ fun z => fderiv ℂ θ z v :=
   (differentiableOn_univ.1 (analytic_of_diff hθ).fderiv.differentiableOn).clm_apply
     (differentiable_const v)
 
+/- English proof (translation)
+Establish `h1` using `hasDerivAt_line hf (z + a) v 0`. Establish `h2` using `((((hasDerivAt_id (0 : ℂ)).mul_const l).cexp).const_mul (j z)).mul (hasDerivAt_line hp z v 0)`. Establish `e : (fun t : ℂ => f (z + a + t • v)) = (fun t : ℂ => j z * Complex.exp (id t * l)) * fun t : ℂ => p (z + t • v)`. Use extensionality with `t`. Rewrite using `[add_right_comm, h, hj]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[e]`. Use `h1.unique h2` as an intermediate fact. Simplify using `only [zero_smul, add_zero, id, zero_mul, Complex.exp_zero] at this`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fderiv_translate {f p : (Fin g → ℂ) → ℂ} (hf : Differentiable ℂ f)
     (hp : Differentiable ℂ p) (a v : Fin g → ℂ) (j : (Fin g → ℂ) → ℂ) (l : ℂ)
     (hj : ∀ z (t : ℂ), j (z + t • v) = j z * Complex.exp (t * l))
@@ -389,6 +529,19 @@ theorem fderiv_translate {f p : (Fin g → ℂ) → ℂ} (hf : Differentiable �
   simp only [zero_smul, add_zero, id, zero_mul, Complex.exp_zero] at this
   rw [this]; ring
 
+/- English proof (translation)
+Establish `hh : Differentiable ℂ h` using `fun t => (hd t).differentiableAt`. Establish `hh₁ : Differentiable ℂ h₁` using `fun t => (hd₁ t).differentiableAt`. Take `⟨ε, hε, hb⟩` from `Metric.eventually_nhds_iff_ball.1 ((hh 0).continuousAt.eventually_ne h0)`. Establish `hq : ∀ t ∈ ball (0 : ℂ) ε, HasDerivAt (fun t => h₁ t / h t - c * t) 0 t` using `fun t ht => by`. Use `((hd₁ t).div (hd t) (hb t ht)).sub ((hasDerivAt_id t).const_mul c)` as an intermediate fact.
+
+Use `this.congr_deriv ?_` and prove the remaining obligations. Use `hb t ht` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `he t`. Use `⟨h₁ 0 / h 0, ?_⟩` and prove the remaining obligations.
+
+Use `set α := h₁ 0 / h 0 with hα`. Establish `hc : ∀ t ∈ ball (0 : ℂ) ε, h₁ t / h t - c * t = α` using `fun t ht => by`. Use `isOpen_ball.is_const_of_deriv_eq_zero (convex_ball _ _).isPreconnected (fun t ht => (hq t ht).differentiableAt.differentiableWithinAt) (fun t ht => (hq t ht).deriv) ht (mem_ball_self hε)` as an intermediate fact. Simplify using `using this`. Establish `h1 : ∀ t, h₁ t - (α + c * t) * h t = 0`.
+
+Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Use `not_eventually_zero (by fun_prop) hn 0 ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds 0 hε] with t ht`. Rewrite using `[← hc t ht, sub_add_cancel, div_mul_cancel₀ _ (hb t ht), sub_self]`.
+
+Establish `h2 : ∀ t, HasDerivAt (fun t => h t * Complex.exp (-(α * t + c / 2 * t ^ 2))) 0 t` using `fun t => by`. Use `(hd t).mul ((((hasDerivAt_id t).const_mul α).add (((hasDerivAt_id t).pow 2).const_mul (c / 2))).neg.cexp)` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [id, Pi.neg_apply, Pi.add_apply, Pi.pow_apply]`. Use `push_cast`.
+
+Take the linear combination `Complex.exp (-(α * t + c / 2 * t ^ 2)) * h1 t`. Introduce `t`. Use `is_const_of_deriv_eq_zero (fun t => (h2 t).differentiableAt) (fun t => (h2 t).deriv) t 0` as an intermediate fact. Simplify using `only [mul_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, add_zero, neg_zero, Complex.exp_zero, mul_one] at this`. Rewrite using `[← this, mul_assoc, ← Complex.exp_add, neg_add_cancel, Complex.exp_zero, mul_one]`.
+-/
 theorem eq_exp_of_ode {h h₁ h₂ : ℂ → ℂ} (hd : ∀ t, HasDerivAt h (h₁ t) t)
     (hd₁ : ∀ t, HasDerivAt h₁ (h₂ t) t) (c : ℂ) (he : ∀ t, h t * h₂ t - h₁ t ^ 2 = c * h t ^ 2)
     (h0 : h 0 ≠ 0) : ∃ α : ℂ, ∀ t, h t = h 0 * Complex.exp (α * t + c / 2 * t ^ 2) := by
@@ -427,6 +580,15 @@ theorem eq_exp_of_ode {h h₁ h₂ : ℂ → ℂ} (hd : ∀ t, HasDerivAt h (h�
     Complex.exp_zero, mul_one] at this
   rw [← this, mul_assoc, ← Complex.exp_add, neg_add_cancel, Complex.exp_zero, mul_one]
 
+/- English proof (translation)
+Set `Q` to `(Fin g → ℂ) ⧸ L.toAddSubgroup`. Use `haveI : CompactSpace Q := by`. Use `IsZLattice.isCompact_range_of_periodic L (QuotientAddGroup.mk : _ → Q) QuotientAddGroup.continuous_mk fun z w hw => by` as an intermediate fact. Rewrite using `[QuotientAddGroup.mk_add, (QuotientAddGroup.eq_zero_iff w).2 hw, add_zero]`. Rewrite `this` using `[QuotientAddGroup.mk_surjective.range_eq]`.
+
+Conclude with `⟨this⟩`. Set `U : Q → ℝ` to `Quotient.lift (fun x => u (z + x)) fun a b hab => by`. Establish `hab' : -a + b ∈ L` using `QuotientAddGroup.leftRel_apply.1 hab`. Use `hp _ hab' (z + a)` as an intermediate fact. Rewrite using `[← this]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `hU : Continuous U` using `Continuous.quotient_lift (by fun_prop) _`. Establish `h1` using `(mapClusterPt_zero_atTop_nsmul (QuotientAddGroup.mk w : Q)).continuousAt_comp hU.continuousAt`. Establish `h2 : U 0 = u z`.
+
+Express the relevant statement in the definitionally equal form `u (z + 0) = u z`. Rewrite using `[add_zero]`. Rewrite `h1` using `[h2]`. Conclude with `eq_of_nhds_neBot (ClusterPt.mono h1 ht)`.
+-/
 theorem eq_zero_of_tendsto (L : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology L] [IsZLattice ℝ L]
     {u : (Fin g → ℂ) → ℝ} (hu : Continuous u) (hp : ∀ a ∈ L, ∀ z, u (z + a) = u z)
     (z w : Fin g → ℂ) (ht : Tendsto (fun n : ℕ => u (z + n • w)) atTop (𝓝 0)) : u z = 0 := by
@@ -450,6 +612,51 @@ theorem eq_zero_of_tendsto (L : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology
   rw [h2] at h1
   exact eq_of_nhds_neBot (ClusterPt.mono h1 ht)
 
+/- English proof (translation)
+Introduce `g Hm hH Λ hd hΛ χ θ hθ h0 hχ hθt v hv`. Assume the negation of the conclusion as `hm`. Use `push_neg at hm`. Establish `hD` using `differentiable_fderiv_apply hθ v`. Take `⟨ψ, hψ, hψ'⟩` from `exists_fderiv_sq_quot hθ h0 v hD hm`.
+
+Use `set D : (Fin g → ℂ) → ℂ := fun z => fderiv ℂ θ z v with hDdef`. Establish `hD₂` using `differentiable_fderiv_apply hD v`. Take `⟨c, hc⟩` from `ThetaTranslSpan.exists_eq_smul hH Λ hΛ χ θ (fun z => fderiv ℂ D z v - ψ z) hχ hθ h0 hθt (hD₂.sub hψ) (fun a ha z => by set j : (Fin g → ℂ) → ℂ := fun z => χ a * Complex.exp (Real.pi * (star a ⬝ᵥ Hm.mulVec z) + Real.pi / 2 * (star a ⬝ᵥ Hm.mulVec a)) with hjdef set l : ℂ := Real.pi …`. Establish `hj : ∀ z (t : ℂ), j (z + t • v) = j z * Complex.exp (t * l)` using `fun z t => by`. Simplify using `only [j, l, mulVec_add, dotProduct_add, mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+
+Rewrite using `[mul_assoc (χ a), ← Complex.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hj0 : ∀ z, j z ≠ 0` using `fun z => mul_ne_zero (fun h => by simpa [h] using hχ a ha) (Complex.exp_ne_zero _)`. Establish `hjc : Continuous j`.
+
+Simplify using `only [j, dotProduct, mulVec]`. Use `fun_prop`. Establish `e0 : ∀ z, θ (z + a) = j z * θ z` using `hθt a ha`. Establish `e1 : ∀ z, D (z + a) = j z * (D z + l * θ z)` using `fderiv_translate hθ hθ a v j l hj e0`. Establish `e2` using `fderiv_translate hD (hD.add (hθ.const_mul l)) a v j l hj e1 z`.
+
+Establish `e3 : fderiv ℂ (D + fun y => l * θ y) z v = fderiv ℂ D z v + l * D z`. Rewrite using `[((hD z).hasFDerivAt.add ((hθ z).hasFDerivAt.const_mul l)).fderiv]`. Both sides reduce to the same expression. Establish `e4 : ψ (z + a) = j z * (ψ z + 2 * l * D z + l ^ 2 * θ z)` using `by haveI := frequently_ne_zero hθ h0 z`. Establish `c1 : Continuous fun z => ψ (z + a)` using `hψ.continuous.comp (by fun_prop)`.
+
+Establish `c2 : Continuous fun z => j z * (ψ z + 2 * l * D z + l ^ 2 * θ z)`. Use `hψ.continuous` as an intermediate fact. Use `hD.continuous` as an intermediate fact. Use `hθ.continuous` as an intermediate fact. Use `fun_prop`.
+
+Use `tendsto_nhds_unique_of_eventuallyEq (l := 𝓝[{x | θ x ≠ 0}] z) ((c1.tendsto z).mono_left nhdsWithin_le_nhds) ((c2.tendsto z).mono_left nhdsWithin_le_nhds) ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with y hy`. Use `mul_right_cancel₀ (mul_ne_zero (hj0 y) hy) ?_` and prove the remaining obligations. Establish `a1 : ψ (y + a) * θ (y + a) = D (y + a) ^ 2` using `hψ' _`. Establish `a2 : ψ y * θ y = D y ^ 2` using `hψ' _`.
+
+Rewrite `a1` using `[e0, e1]`. Take the linear combination `a1 - j y ^ 2 * a2`. Express the relevant statement in the definitionally equal form `_ = j z * _`. Rewrite using `[e2, e3, e4]`. Simplify using `only [Pi.add_apply]`.
+
+Use the proof step `ring)`. Take `⟨z, hz⟩` from `Function.ne_iff.1 h0`. Take `⟨α, hα⟩` from `eq_exp_of_ode (hasDerivAt_line hθ z v) (hasDerivAt_line hD z v) c (fun t => by`. Establish `a1` using `congrFun hc (z + t • v)`. Establish `a2` using `hψ' (z + t • v)`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul] at a1`. Take the linear combination `θ (z + t • v) * a1 + a2) (by simpa using hz)`. Simplify using `only [zero_smul, add_zero] at hα`. Choose the witnesses or unpack the hypotheses as in `⟨t₀, ht₀, hc₀⟩ : ∃ t₀ : ℂ, t₀ ≠ 0 ∧ (c / 2 * t₀ ^ 2).re ≤ 0 := by`. Break down `le_total (c / 2).re 0 with h | h` into its components or cases.
+
+Conclude with `⟨1, one_ne_zero, by simpa using h⟩`. Conclude with `⟨Complex.I, Complex.I_ne_zero, by`. Rewrite using `[Complex.I_sq, mul_neg_one, Complex.neg_re]`. Use the proof step `linarith⟩`. Set `B : (Fin g → ℂ) → (Fin g → ℂ) → ℝ` to `fun x y => (star x ⬝ᵥ Hm.mulVec y).re`.
+
+Establish `hB : ∀ x y, B x y = B y x` using `fun x y => by`. Simplify using `only [B]`. Rewrite using `[ThetaTranslSpan.herm_swap hH]`. Both sides reduce to the same expression. Establish `hBadd : ∀ x y, B (x + y) (x + y) = B x x + 2 * B y x + B y y` using `fun x y => by`.
+
+Use `hB x y` as an intermediate fact. Simplify using `only [B, star_add, mulVec_add, add_dotProduct, dotProduct_add, Complex.add_re] at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Set `u : (Fin g → ℂ) → ℝ` to `fun x => ‖θ x‖ * Real.exp (-(Real.pi / 2 * B x x))`. Establish `huc : Continuous u`.
+
+Use `hθ.continuous` as an intermediate fact. Simplify using `only [u, B, dotProduct, mulVec]`. Use `fun_prop`. Establish `hup : ∀ a ∈ Λ, ∀ x, u (x + a) = u x` using `fun a ha x => by`. Simplify using `only [u]`.
+
+Rewrite using `[hθt a ha, norm_mul, norm_mul, hχ a ha, one_mul, Complex.norm_exp, hBadd, mul_right_comm, ← Real.exp_add, mul_comm]`. Use `congr 2`. Simplify using `[B]`. Expand and normalize the polynomial expressions, which then agree. Set `L : Submodule ℤ (Fin g → ℂ)` to `AddSubgroup.toIntSubmodule Λ`.
+
+Use `haveI hL : DiscreteTopology L := hd`. Use `haveI : IsZLattice ℝ L := ⟨ThetaTranslSpan.span_eq_top hH Λ fun v => (hΛ v).1⟩`. Use `set w := t₀ • v with hw`. Establish `hw0 : w ≠ 0` using `smul_ne_zero ht₀ hv`. Establish `hpos : 0 < B w w` using `(Complex.pos_iff.1 (hH.dotProduct_mulVec_pos hw0)).1`.
+
+Use `set A : ℝ := (α * t₀).re - Real.pi * B w z`. Use `set β : ℝ := Real.pi / 2 * B w w - (c / 2 * t₀ ^ 2).re with hβ`. Establish `hβ0 : 0 < β` using `by have := Real.pi_pos; have : 0 < Real.pi / 2 * B w w := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hun : ∀ n : ℕ, u (z + n • w) = u z * Real.exp (n * (A - β * n))` using `fun n => by`.
+
+Establish `hre : ∀ x : ℂ, ((n : ℂ) * x).re = n * x.re` using `fun x => by simp`. Establish `b1 : B (n • w) z = n * B w z`. Simplify using `only [B]`. Rewrite using `[star_nsmul, smul_dotProduct, nsmul_eq_mul, hre]`. Establish `b2 : B (n • w) (n • w) = n * (n * B w w)`.
+
+Simplify using `only [B]`. Rewrite using `[star_nsmul, smul_dotProduct, mulVec_smul, dotProduct_smul, nsmul_eq_mul, nsmul_eq_mul, hre, hre]`. Establish `b3 : θ (z + n • w) = θ z * Complex.exp (n * (α * t₀) + n * (n * (c / 2 * t₀ ^ 2)))`. Rewrite using `[hw, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, hα]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [u]`. Rewrite using `[hBadd, b1, b2, b3, norm_mul, Complex.norm_exp, mul_assoc, mul_assoc, ← Real.exp_add, ← Real.exp_add, Complex.add_re, hre, hre, hre]`. Use `congr 2`. Simplify using `only [A, β]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hzero` using `eq_zero_of_tendsto L huc hup z w (by`. Simplify using `only [hun]`. Rewrite using `[← mul_zero (u z)]`. Use `Tendsto.const_mul _ (Real.tendsto_exp_atBot.comp ?_)` and prove the remaining obligations.
+
+Use `tendsto_natCast_atTop_atTop.atTop_mul_atBot₀ ?_` and prove the remaining obligations. Conclude with `tendsto_atBot_add_const_left _ _ (tendsto_neg_atTop_atBot.comp (tendsto_natCast_atTop_atTop.const_mul_atTop hβ0)))`. Conclude with `absurd hzero (mul_pos (norm_pos_iff.2 hz) (Real.exp_pos _)).ne'`.
+-/
 theorem exists_zero_fderiv_ne_zero : ∀ (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ), Hm.PosDef → ∀ (Λ : AddSubgroup (Fin g → ℂ)), DiscreteTopology Λ → (∀ v, (∀ a ∈ Λ, ∃ k : ℤ, (star v ⬝ᵥ Hm.mulVec a).im = k) ↔ v ∈ Λ) → ∀ (χ θ : (Fin g → ℂ) → ℂ), Differentiable ℂ θ → θ ≠ 0 → (∀ a ∈ Λ, ‖χ a‖ = 1) → (∀ a ∈ Λ, ∀ z, θ (z + a) = χ a * Complex.exp (Real.pi * (star a ⬝ᵥ Hm.mulVec z) + Real.pi / 2 * (star a ⬝ᵥ Hm.mulVec a)) * θ z) → ∀ v : Fin g → ℂ, v ≠ 0 → ∃ a, θ a = 0 ∧ fderiv ℂ θ a v ≠ 0 := by
   intro g Hm hH Λ hd hΛ χ θ hθ h0 hχ hθt v hv
   by_contra hm

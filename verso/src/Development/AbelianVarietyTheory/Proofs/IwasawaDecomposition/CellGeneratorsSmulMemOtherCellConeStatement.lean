@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEqAddOfRedVEq
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolFan.exists_smul_eq_sum_of_sum_toReal_eq | exact GlobalTheory.PolFan.exists_smul_eq_sum_of_sum_toReal_eq | (intros; apply GlobalTheory.PolFan.exists_smul_eq_sum_of_sum_toReal_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cell_generators_smul_mem_other_cellCone : ∀ {O : Type} [CommRing O] (bar : O → O) (φ : InvFun O) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {m m' : ℕ} (δ : Fin m → LinearMap.BilinForm ℤ X) (γ : Fin m' → LinearMap.BilinForm ℤ X)
     (c : Fin m' → ℝ), IsCell bar φ δ → IsCell bar φ γ → (∀ j, 0 ≤ c j) →

@@ -8,6 +8,11 @@ namespace GlobalTheory.HilbAff
 
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B]
 
+/- English proof (translation)
+Take `⟨rfl, h2⟩` from `Sigma.mk.inj_iff.mp e`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `: pullback.map (str A B) g₀ (str A B) g₀ (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp) = 𝟙 _`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[this, Scheme.IdealSheafData.comap_id]`.
+
+Conclude with `(congrArg Subtype.val (eq_of_heq h2)).symm`.
+-/
 theorem sigma_inv (r : ℕ) {T : Scheme.{0}} {g₀ g : T ⟶ Spec (CommRingCat.of A)}
     {I₀ : (pullback (str A B) g₀).IdealSheafData} {I : (pullback (str A B) g).IdealSheafData}
     {h₀ : Good A B r g₀ I₀} {h₁ : Good A B r g I}
@@ -22,6 +27,13 @@ theorem sigma_inv (r : ℕ) {T : Scheme.{0}} {g₀ g : T ⟶ Spec (CommRingCat.o
   rw [this, Scheme.IdealSheafData.comap_id]
   exact (congrArg Subtype.val (eq_of_heq h2)).symm
 
+/- English proof (translation)
+Set `φ` to `IsClosedImmersion.lift v v.ker.subschemeι (by rw [Scheme.IdealSheafData.ker_subschemeι])`. Establish `hφ : φ ≫ v = v.ker.subschemeι` using `IsClosedImmersion.lift_fac _ _ _`. Use `haveI : IsIso φ := IsClosedImmersion.isIso_of_ker_eq v.ker.subschemeι v φ hφ (Scheme.IdealSheafData.ker_subschemeι _)`. Establish `e : v.ker.subschemeι ≫ pullback.snd _ g = φ ≫ (v ≫ pullback.snd _ g)`. Rewrite using `[← Category.assoc, hφ]`.
+
+Use `⟨?_, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `infer_instance`. Rewrite using `[e]`. Use `infer_instance`.
+
+Rewrite using `[e, Scheme.Hom.finrank_comp_left_of_isIso, h3]`.
+-/
 theorem good_ker (r : ℕ) {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) {V : Scheme.{0}}
     (v : V ⟶ pullback (str A B) g) [IsClosedImmersion v] (h1 : IsFinite (v ≫ pullback.snd _ g))
     (h2 : Flat (v ≫ pullback.snd _ g)) (h3 : ∀ y, (v ≫ pullback.snd _ g).finrank y = r) :
@@ -39,6 +51,23 @@ theorem good_ker (r : ℕ) {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) 
 
 end GlobalTheory.HilbAff
 
+/- English proof (translation)
+Introduce `A B _ _ _ r H R`. Establish `key : ∀ {T : Scheme.{0}} (f : T ⟶ H), R.homEquiv f = ⟨f ≫ (R.homEquiv (𝟙 H)).1, ⟨(R.homEquiv (𝟙 H)).2.1.comap (GlobalTheory.HilbAff.bc A B (R.homEquiv (𝟙 H)).1 f), GlobalTheory.HilbAff.good_comap A B r _ f _ (R.homEquiv (𝟙 H)).2.2⟩⟩` using `fun f => by`. Use `R.homEquiv_comp f (𝟙 H)` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Use `⟨(R.homEquiv (𝟙 H)).2.1.subscheme, (R.homEquiv (𝟙 H)).2.1.subschemeι, inferInstance, (R.homEquiv (𝟙 H)).2.2.1, (R.homEquiv (𝟙 H)).2.2.2.1, (R.homEquiv (𝟙 H)).2.2.2.2, ?_⟩` and prove the remaining obligations. Introduce `T g V v hv h1 h2 h3`. Establish `hG` using `GlobalTheory.HilbAff.good_ker A B r g v h1 h2 h3`. Set `y : (GlobalTheory.HilbAff.functor A B r).obj (op T)` to `⟨g, ⟨v.ker, hG⟩⟩`.
+
+Establish `cmp : ∀ (f : T ⟶ H) (hf : f ≫ (R.homEquiv (𝟙 H)).1 = g), pullback.map (GlobalTheory.HilbAff.str A B) g (GlobalTheory.HilbAff.str A B) (f ≫ (R.homEquiv (𝟙 H)).1) (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp [hf]) ≫ GlobalTheory.HilbAff.bc A B (R.homEquiv (𝟙 H)).1 f = pullback.map _ g _ (R …`. Introduce `f hf`. Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `only [GlobalTheory.HilbAff.bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]`. Establish `cmp' : ∀ (f : T ⟶ H) (hf : f ≫ (R.homEquiv (𝟙 H)).1 = g), pullback.map (GlobalTheory.HilbAff.str A B) (f ≫ (R.homEquiv (𝟙 H)).1) (GlobalTheory.HilbAff.str A B) g (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp [hf]) ≫ pullback.map _ g _ (R.homEquiv (𝟙 H)).1 (𝟙 _) f (𝟙 _) (by simp) (by rw [C …`.
+
+Introduce `f hf`. Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `only [GlobalTheory.HilbAff.bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]`. Set `f` to `R.homEquiv.symm y`. Establish `hfy : R.homEquiv f = y` using `Equiv.apply_symm_apply _ _`.
+
+Rewrite `hfy` using `[key]`. Take `⟨hf, hI⟩` from `GlobalTheory.HilbAff.sigma_inv A B r hfy`. Establish `hcomap : (R.homEquiv (𝟙 H)).2.1.comap (pullback.map _ g _ (R.homEquiv (𝟙 H)).1 (𝟙 _) f (𝟙 _) (by simp) (by rw [Category.comp_id, hf])) = v.ker`. Rewrite using `[hI, ← Scheme.IdealSheafData.comap_comp, cmp f hf]`. Use `⟨f, ⟨hf, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hle : ((R.homEquiv (𝟙 H)).2.1.subschemeι).ker ≤ (v ≫ pullback.map _ g _ (R.homEquiv (𝟙 H)).1 (𝟙 _) f (𝟙 _) (by simp) (by rw [Category.comp_id, hf])).ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι, Scheme.Hom.ker_comp, Scheme.IdealSheafData.le_map_iff_comap_le, hcomap]`. Use `⟨IsClosedImmersion.lift _ _ hle, ?_⟩` and prove the remaining obligations. Conclude with `isPullback_of_isClosedImmersion _ _ _ _ (IsClosedImmersion.lift_fac _ _ hle).symm (by rw [Scheme.IdealSheafData.ker_subschemeι, hcomap])`. Introduce and unpack `f' ⟨hf', w', hpb⟩`.
+
+Establish `hv : v.ker = (R.homEquiv (𝟙 H)).2.1.comap (pullback.map _ g _ (R.homEquiv (𝟙 H)).1 (𝟙 _) f' (𝟙 _) (by simp) (by rw [Category.comp_id, hf']))`. Rewrite using `[← hpb.isoPullback_hom_fst, Scheme.Hom.ker_comp_of_isIso, Scheme.IdealSheafData.ker_fst_of_isClosedImmersion, Scheme.IdealSheafData.ker_subschemeι]`. Establish `h' : R.homEquiv f' = y`. Rewrite using `[key]`. Use `GlobalTheory.HilbAff.sigma_eq A B r hf' ?_ _ _` and prove the remaining obligations.
+
+Rewrite using `[hv, ← Scheme.IdealSheafData.comap_comp, cmp' f' hf']`. Apply `R.homEquiv.injective` to reduce the goal to its premises. Rewrite using `[h']`. Conclude with `(Equiv.apply_symm_apply R.homEquiv y).symm`.
+-/
 theorem GlobalTheory.HilbAff.universal : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (r : ℕ) (H : Scheme.{0}) (R : (GlobalTheory.HilbAff.functor A B r).RepresentableBy H), ∃ (U : Scheme.{0}) (u : U ⟶ pullback (Spec.map (CommRingCat.ofHom (algebraMap A B))) (R.homEquiv (𝟙 H)).1), IsClosedImmersion u ∧ IsFinite (u ≫ pullback.snd _ (R.homEquiv (𝟙 H)).1) ∧ Flat (u ≫ pullback.snd _ (R.homEquiv (𝟙 H)).1) ∧ (∀ y, (u ≫ pullback.snd _ (R.homEquiv (𝟙 H)).1).finrank y = r) ∧ ∀ (T : Scheme.{0}) (g : T ⟶ Spec (CommRingCat.of A)) (V : Scheme.{0}) (v : V ⟶ pullback (Spec.map (CommRingCat.ofHom (algebraMap A B))) g), IsClosedImmersion v → IsFinite (v ≫ pullback.snd _ g) → Flat (v ≫ pullback.snd _ g) → (∀ y, (v ≫ pullback.snd _ g).finrank y = r) → ∃! f : T ⟶ H, ∃ hf : f ≫ (R.homEquiv (𝟙 H)).1 = g, ∃ w : V ⟶ U, IsPullback v w (pullback.map _ g _ (R.homEquiv (𝟙 H)).1 (𝟙 _) f (𝟙 _) (by simp) (by rw [Category.comp_id, hf])) u := by
   intro A B _ _ _ r H R
   have key : ∀ {T : Scheme.{0}} (f : T ⟶ H), R.homEquiv f =

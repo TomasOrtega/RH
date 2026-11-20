@@ -17,6 +17,9 @@ open MeasureTheory Metric
 open ReciprocityTheory.AnForm.A (Mollifier molli regMax)
 open GroundTheory.Heights₂.Heights.Regular
 
+/- English proof (translation)
+Establish `hc : MeasurePreserving (fun z : ℂ => star z) volume volume` using `Complex.conjLIE.measurePreserving`. Establish `hmp : MeasurePreserving (fun v : Fin n → ℂ => star v) volume volume`. Rewrite using `[volume_pi]`. Conclude with `measurePreserving_pi (fun _ => volume) (fun _ => volume) (fun _ => hc)`. Conclude with `hmp.integral_comp (starL' ℝ : (Fin n → ℂ) ≃L[ℝ] (Fin n → ℂ)).toHomeomorph.measurableEmbedding g`.
+-/
 theorem integral_star {n : ℕ} (g : (Fin n → ℂ) → ℝ) : ∫ v, g (star v) = ∫ v, g v := by
   have hc : MeasurePreserving (fun z : ℂ => star z) volume volume := Complex.conjLIE.measurePreserving
   have hmp : MeasurePreserving (fun v : Fin n → ℂ => star v) volume volume := by
@@ -24,6 +27,13 @@ theorem integral_star {n : ℕ} (g : (Fin n → ℂ) → ℝ) : ∫ v, g (star v
     exact measurePreserving_pi (fun _ => volume) (fun _ => volume) (fun _ => hc)
   exact hmp.integral_comp (starL' ℝ : (Fin n → ℂ) ≃L[ℝ] (Fin n → ℂ)).toHomeomorph.measurableEmbedding g
 
+/- English proof (translation)
+Unfold `molli`. Rewrite using `[← integral_star (fun w => ρ.scaled t w * u' (star y - w))]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Establish `hs : ρ.scaled t (star v) = ρ.scaled t v`.
+
+Simplify using `only [Mollifier.scaled]`. Rewrite using `[show t⁻¹ • star v = star (t⁻¹ • v) by rw [star_smul, star_trivial t⁻¹], hρ]`. Rewrite using `[hs]`. Distinguish the cases in `h0 : ρ.toFun (t⁻¹ • v) = 0`. Simplify using `[Mollifier.scaled, h0]`.
+
+Establish `hb` using `ρ.support_subset h0`. Rewrite `hb` using `[mem_ball, dist_zero_right, norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos ht, inv_mul_lt_iff₀ ht, _root_.mul_one]`. Rewrite using `[← star_sub, h (y - v) (by rw [mem_closedBall, dist_eq_norm, sub_sub_cancel_left, norm_neg]; exact hb.le)]`.
+-/
 theorem molli_star {n : ℕ} (ρ : Mollifier n) (hρ : ∀ v, ρ.toFun (star v) = ρ.toFun v) {t : ℝ} (ht : 0 < t)
     {u u' : (Fin n → ℂ) → ℝ} {y : Fin n → ℂ} (h : ∀ v ∈ closedBall y t, u' (star v) = u v) :
     molli ρ t u' (star y) = molli ρ t u y := by
@@ -42,6 +52,11 @@ theorem molli_star {n : ℕ} (ρ : Mollifier n) (hρ : ∀ v, ρ.toFun (star v) 
       inv_mul_lt_iff₀ ht, _root_.mul_one] at hb
     rw [← star_sub, h (y - v) (by rw [mem_closedBall, dist_eq_norm, sub_sub_cancel_left, norm_neg]; exact hb.le)]
 
+/- English proof (translation)
+Rewrite using `[Filter.eventually_all]`. Introduce `j`. Establish `hK : IsCompact ((P.chart j) '' closure (P.mid j))` using `isClosed_closure.isCompact.image_of_continuousOn ((P.chart j).continuousOn.mono (P.closure_mid j))`. Establish `hsub : (P.chart j) '' closure (P.mid j) ⊆ (P.chart j).target`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `(P.chart j).map_source (P.closure_mid j hx)`. Take `⟨δ, hδ, hδs⟩` from `hK.exists_cthickening_subset_open (P.chart j).open_target hsub`. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with t ht x hx`. Conclude with `(closedBall_subset_cthickening (Set.mem_image_of_mem _ (subset_closure hx)) t).trans ((cthickening_mono ht.2.le _).trans hδs)`.
+-/
 theorem eventually_margin {n : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X]
     {A : ReciprocityTheory.AnForm.M.FinHolAtlas n X} (P : PotentialCharts A) :
     ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ j, ∀ x ∈ P.mid j, closedBall (P.chart j x) t ⊆ (P.chart j).target := by
@@ -71,6 +86,9 @@ noncomputable def symmH {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype 
     simp only [Complex.norm_conj]
     ring
 
+/- English proof (translation)
+Unfold `IsSmoothHerm at hA ⊢`. Establish `hc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (conjVec : ((Σ k, J k) → ℂ) → ((Σ k, J k) → ℂ))` using `(starL' ℝ : ((Σ k, J k) → ℂ) ≃L[ℝ] ((Σ k, J k) → ℂ)).contDiff`. Establish `hmaps : Set.MapsTo (conjVec : ((Σ k, J k) → ℂ) → ((Σ k, J k) → ℂ)) {z : (Σ k, J k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `fun z hz k => (hz k).imp fun i hi => (map_ne_zero _).2 hi`. Conclude with `(hA.add (hA.comp hc.contDiffOn hmaps)).div_const 2`.
+-/
 theorem symmH_smooth {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {A : HermLine J}
     (hA : IsSmoothHerm A) : IsSmoothHerm (symmH A) := by
   unfold IsSmoothHerm at hA ⊢
@@ -81,6 +99,9 @@ theorem symmH_smooth {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J 
     fun z hz k => (hz k).imp fun i hi => (map_ne_zero _).2 hi
   exact (hA.add (hA.comp hc.contDiffOn hmaps)).div_const 2
 
+/- English proof (translation)
+Introduce `z` and use `by change (A.h (conjVec z) + A.h (conjVec (conjVec z))) / 2 = (A.h z + A.h (conjVec z)) / 2 rw [SncPiece.conj_conj, add_comm]`.
+-/
 theorem symmH_conj {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] (A : HermLine J) :
     IsConjInvariantH (symmH A) := fun z => by
   change (A.h (conjVec z) + A.h (conjVec (conjVec z))) / 2 = (A.h z + A.h (conjVec z)) / 2
@@ -90,6 +111,23 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : In
   {Ω : Type} [Field Ω] [Algebra ℚ Ω] {W : Ψ → Type} [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)]
   {D : ComponentData II Ψ K J Ω W} {M : XModel D}
 
+/- English proof (translation)
+Establish `hκκ` using `hS.1`. Establish `hsym` using `hS.2.2`. Unfold `BoundedPshData.regularised PotentialCharts.glue`. Use `congr 1`. Set `e : {j // M.proj z ∈ B.mid j} ≃ {j // M.proj (conjVec z) ∈ B.mid j}` to `{ toFun := fun j => ⟨κ j, (hsym j z hz).2.1.mpr j.2⟩ invFun := fun j => ⟨κ j, by`.
+
+Use `(hsym (κ j) z hz).2.1` as an intermediate fact. Rewrite `this` using `[hκκ]`. Conclude with `this.mp j.2⟩`. Use `left_inv := fun j => Subtype.ext (hκκ j)`. Use `right_inv := fun j => Subtype.ext (hκκ j) }`.
+
+Establish `hterm : ∀ j : {j // M.proj z ∈ B.mid j}, B.phReg ρ t (κ j) (M.proj (conjVec z)) + 4 * ε * ct (κ j) (M.proj (conjVec z)) = B.phReg ρ t j (M.proj z) + 4 * ε * ct j (M.proj z)`. Introduce `j`. Rewrite using `[hη j z hz]`. Use `congr 1`. Establish `hsrc : M.proj z ∈ (B.chart j).source` using `B.closure_mid j (subset_closure j.2)`.
+
+Establish `hch` using `(hsym j z hz).2.2.2 hsrc`. Unfold `BoundedPshData.phReg BoundedPshData.smoothed`. Rewrite using `[hch, hS.2.1 j]`. Establish `hu : ∀ v ∈ closedBall ((B.chart j) (M.proj z)) t, B.u (κ j) (star v) = B.u j v`. Introduce `v hv`.
+
+Establish `hvt : v ∈ (B.chart j).target` using `hm j (M.proj z) j.2 hv`. Take `⟨z', hz', hpz⟩` from `M.surj ((B.chart j).symm v)`. Establish `hsrc' : M.proj z' ∈ (B.chart j).source`. Rewrite using `[hpz]`. Conclude with `(B.chart j).map_target hvt`.
+
+Establish `hc2` using `(hsym j z' hz').2.2.2 hsrc'`. Establish `hsrcκ : M.proj (conjVec z') ∈ (B.chart (κ j)).source` using `(hsym j z' hz').1.mpr hsrc'`. Establish `e1 : (B.chart j) (M.proj z') = v`. Rewrite using `[hpz]`. Conclude with `(B.chart j).right_inv hvt`.
+
+Establish `hsymm : (B.chart (κ j)).symm (star v) = M.proj (conjVec z')`. Rewrite using `[← e1, ← hc2]`. Conclude with `(B.chart (κ j)).left_inv hsrcκ`. Unfold `BoundedPshData.u PotentialCharts.chartFun`. Rewrite using `[hS.2.1 j v, hsymm, hph z' hz', hpz]`.
+
+Rewrite using `[molli_star ρ hρ ht hu]`. Use `(regMax_comp_equiv e ε (fun j : {j // M.proj (conjVec z) ∈ B.mid j} => B.phReg ρ t j (M.proj (conjVec z)) + 4 * ε * ct j (M.proj (conjVec z)))).symm using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Conclude with `(hterm j).symm`.
+-/
 theorem regularised_conj (B : BoundedPshData M.atlas) (κ : Equiv.Perm (Fin B.N))
     (hS : SymmCharts M B.toPotentialCharts κ) (ρ : Mollifier D.n) (hρ : ∀ v, ρ.toFun (star v) = ρ.toFun v)
     (ct : Fin B.N → M.Xc → ℝ)
@@ -146,6 +184,19 @@ theorem regularised_conj (B : BoundedPshData M.atlas) (κ : Equiv.Perm (Fin B.N)
 
 end LevelTowerAlt.Conj
 
+/- English proof (translation)
+Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M w S' κ hT hS hρ hη hrefc hph`. Introduce `B p q _ _ _`. Establish `hev` using `(GlobalTheory.T.regularized_weight_dominates_eventually K J II Ψ Ω W D Hd M w S' hT).and (LevelTowerAlt.Conj.eventually_margin S'.B.toPotentialCharts)`. Take `⟨t₀, ht₀, hsub⟩` from `mem_nhdsGT_iff_exists_Ioc_subset.1 hev`. Use `⟨t₀, ht₀, fun t' ht' ht'le => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨-, -, hMU⟩, hm⟩` from `hsub ⟨ht', ht'le⟩`. Take `⟨hsm, hdeg, hlog⟩` from `hMU B p q`. Apply `smoothRepConj_conj` to reduce the goal to its premises. Use `⟨LevelTowerAlt.Conj.symmH (MUc Hd S' B p q t'), hdeg, LevelTowerAlt.Conj.symmH_smooth hsm, LevelTowerAlt.Conj.symmH_conj _, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Establish `hcz : conjVec z ∈ mcPts (mCoordIdeal D.y)` using `⟨LevelTowerAlt.conjVec_ne hz.1, fun f hf => by rw [LevelTowerAlt.eval_conjVec, hz.2 f hf, map_zero]⟩`. Establish `h1 : S'.ref.h (conjVec z) = S'.ref.h z` using `hrefc z`. Establish `h2 : S'.bregWeight t' (M.proj (conjVec z)) = S'.bregWeight t' (M.proj z)` using `LevelTowerAlt.Conj.regularised_conj S'.B κ hS S'.ρ hρ S'.η hη hph ht' hm (S'.e1 t') hz`. Establish `h3 : ∀ r ∈ D.SB B, D.vertFactor r (conjVec z) = D.vertFactor r z`. Introduce `r hr`.
+
+Establish `hrS : r ∈ D.S` using `(Finset.mem_filter.1 hr).1`. Take `⟨A, -, -, hAc, hAv⟩` from `(GlobalTheory.T.vertical_factor_smooth_hermitian_metric K J II Ψ Ω W D r hrS).1`. Rewrite using `[← hAv _ hz, ← hAv _ hcz]`. Conclude with `hAc z`. Establish `h4 : D.A'.h (conjVec z) = D.A'.h z` using `D.A'_conj z`.
+
+Establish `heq : (MUc Hd S' B p q t').h (conjVec z) = (MUc Hd S' B p q t').h z`. Establish `p1` using `(MUc Hd S' B p q t').pos z hz.1`. Establish `p2` using `(MUc Hd S' B p q t').pos (conjVec z) hcz.1`. Apply `Real.log_injOn_pos (Set.mem_Ioi.2 p2) (Set.mem_Ioi.2 p1)` to reduce the goal to its premises. Rewrite using `[hlog _ hcz, hlog _ hz, h1, h2, Finset.sum_congr rfl (fun r hr => by rw [h3 r hr]), h4]`.
+
+Use `show ((MUc Hd S' B p q t').h z + (MUc Hd S' B p q t').h (conjVec z)) / 2 = _`. Rewrite using `[heq, add_self_div_two]`. Conclude with `smoothRepConj_h _ hz`.
+-/
 theorem LevelTowerAlt.tied_setting_symmetric_charts : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (Hd : HodgeData D) (M : XModel D) (w : ((Σ k, J k) → ℂ) → ℝ) (S' : BoundedRegularisationSetting M D.Xo Hd.aMu w) (κ : Equiv.Perm (Fin S'.B.N)), S'.IsTied → SymmCharts M S'.B.toPotentialCharts κ → (∀ v, S'.ρ.toFun (star v) = S'.ρ.toFun v) → (∀ j, ∀ z ∈ mcPts (mCoordIdeal D.y), S'.η (κ j) (M.proj (conjVec z)) = S'.η j (M.proj z)) → IsConjInvariantH S'.ref → (∀ z ∈ mcPts (mCoordIdeal D.y), S'.B.ph (M.proj (conjVec z)) = S'.B.ph (M.proj z)) → ConjU S' := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M w S' κ hT hS hρ hη hrefc hph
   intro B p q _ _ _

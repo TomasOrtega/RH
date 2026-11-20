@@ -17,6 +17,9 @@ namespace GlobalTheory.ThetaDvr
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real}
   {V : Type} [CommRing V] [IsDomain V]
 
+/- English proof (translation)
+Establish `e : (TFK (R` using `V) (AlgebraicClosure (FractionRing V))).hom ≫ spMap yK = spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp yK) := (Spec.map_comp (CommRingCat.ofHom yK) (CommRingCat.ofHom (algebraMap _ _))).symm`. Take `⟨x, h₁, h₂⟩` from `labelled_torsion_pull cart (TFK (R := V) (AlgebraicClosure (FractionRing V))) (E := baseOver (Sp S.R)) (Over.homMk ((TFK (R := V) (AlgebraicClosure (FractionRing V))).hom ≫ spMap yK :) (by simp)) ρ.pt (S.r * S.N) ρ.pt_add (fun a => (ρ.fr_tors a).1) (fun z hz => ρ.pt_bij (Algebrai …`. Conclude with `⟨x, fun a => (h₁ a).trans (by rw [← e]; rfl), h₂⟩`.
+-/
 theorem torsion_points (yK : S.R →+* FractionRing V) {A : PolAV (Sp (FractionRing V))} {φ : A.A.left ⟶ ρ.P.A.left}
     (cart : IsGrpPullback A.A ρ.P.A (spMap yK) φ) :
     ∃ x : S.Gam → (TFK (R := V) (AlgebraicClosure (FractionRing V)) ⟶ A.A),
@@ -32,6 +35,9 @@ theorem torsion_points (yK : S.R →+* FractionRing V) {A : PolAV (Sp (FractionR
     ρ.pt_add (fun a => (ρ.fr_tors a).1) (fun z hz => ρ.pt_bij (AlgebraicClosure (FractionRing V)) _ z hz)
   exact ⟨x, fun a => (h₁ a).trans (by rw [← e]; rfl), h₂⟩
 
+/- English proof (translation)
+Establish `hh : (spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp yK) : (TFK (R` using `V) (AlgebraicClosure (FractionRing V))).left ⟶ (baseOver (Sp S.R)).left) ≫ (baseOver (Sp S.R)).hom = (TFK (R := V) (AlgebraicClosure (FractionRing V))).hom ≫ spMap yK := (Category.comp_id _).trans (Spec.map_comp (CommRingCat.ofHom yK) (CommRingCat.ofHom (algebraMap _ _)))`. Take `⟨rig, e, h₁, h₂, h₃⟩` from `GlobalTheory.FrameMove.exists_move (T := baseOver (Sp S.R)) (T' := TFK (R := V) (AlgebraicClosure (FractionRing V))) cart lb hh ρ.rig_gen hx ρ.fr_tors`. Use `⟨rig, e, h₁, h₂, fun k σ => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `h₃ k σ`. Conclude with `⟨t, fun a c hc z J hJ => (ht a _ hc z J hJ).trans (congrArg (· * _) (GlobalTheory.FrameMove.gs_spMap _ z c))⟩`.
+-/
 theorem frames (yK : S.R →+* FractionRing V) {A : PolAV (Sp (FractionRing V))} {φ : A.A.left ⟶ ρ.P.A.left}
     (cart : IsGrpPullback A.A ρ.P.A (spMap yK) φ) (lb : LBIso A.L (ρ.P.L.pull φ))
     (x : S.Gam → (TFK (R := V) (AlgebraicClosure (FractionRing V)) ⟶ A.A))
@@ -66,6 +72,15 @@ namespace GlobalTheory.ThetaDvr
 
 open ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by rw [hx, map_zero, zero_mul], fun _ => zero_mem _⟩`. Take `⟨n, u, hu⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.RegC.exists_hasVal hϖ x hx`. Take `⟨m, u', hu'⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.RegC.exists_hasVal hϖ y hy`. Establish `hn` using `hv x n ⟨u, hu⟩`.
+
+Establish `hm` using `hv y m ⟨u', hu'⟩`. Rewrite `h` using `[hn, hm, WithTop.coe_le_coe, Int.cast_le]`. Take `⟨k, hk⟩ : ∃ k : ℕ, n = m + k` from `⟨(n - m).toNat, by omega⟩`. Establish `hϖ0 : algebraMap V (FractionRing V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hϖ.ne_zero`. Establish `hu'1 : algebraMap V (FractionRing V) (↑u'⁻¹ : V) * algebraMap V (FractionRing V) (u' : V) = 1`.
+
+Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Use `⟨ϖ ^ k * u * ↑u'⁻¹, ?_, fun hlt => ?_⟩` and prove the remaining obligations. Rewrite using `[hu, hu', hk, zpow_add₀ hϖ0, zpow_natCast, map_mul, map_mul, map_pow]`. Take the linear combination `(-(algebraMap V (FractionRing V) ϖ ^ m * algebraMap V (FractionRing V) ϖ ^ k * algebraMap V (FractionRing V) (u : V))) * hu'1`. Rewrite `hlt` using `[hn, hm, WithTop.coe_lt_coe, Int.cast_lt]`.
+
+Establish `hk0 : k ≠ 0` using `by omega`. Use `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ ?_ k (Nat.pos_of_ne_zero hk0)))` and prove the remaining obligations. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 hϖ.not_isUnit`.
+-/
 theorem exists_mul_of_val_le {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
     (hϖ : Irreducible ϖ) {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)}
     (hv : ValOver ϖ F v) {x y : FractionRing V} (hy : y ≠ 0)

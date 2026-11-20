@@ -14,6 +14,17 @@ noncomputable section
 
 namespace GlobalTheory.TorsEqOpen
 
+/- English proof (translation)
+Use `⟨(pullback.lift u v huv) ⁻¹ᵁ (pullback.diagonal f).opensRange, ?_, ?_⟩` and prove the remaining obligations. Introduce `V hV`. Establish `hr : Set.range (V.ι ≫ pullback.lift u v huv).base ⊆ Set.range (pullback.diagonal f).base`. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `hp : V.ι.base p ∈ V`.
+
+Establish `h0 : V.ι.base p ∈ Set.range V.ι.base` using `⟨p, rfl⟩`. Rewrite `h0` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Use `hV hp` as an intermediate fact. Simplify using `using this`. Establish `hl` using `IsOpenImmersion.lift_fac (pullback.diagonal f) (V.ι ≫ pullback.lift u v huv) hr`.
+
+Establish `h1` using `congrArg (· ≫ pullback.fst f f) hl`. Establish `h2` using `congrArg (· ≫ pullback.snd f f) hl`. Simplify using `only [Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd, pullback.lift_fst, pullback.lift_snd, Category.comp_id] at h1 h2`. Rewrite using `[← h1, ← h2]`. Introduce `T g hg`.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Establish `e : g ≫ pullback.lift u v huv = g ≫ u ≫ pullback.diagonal f`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pullback.lift_fst, pullback.diagonal_fst, Category.comp_id]`. Simplify using `only [Category.assoc, pullback.lift_snd, pullback.diagonal_snd, Category.comp_id, hg]`.
+
+Establish `e2` using `congrArg (fun h => h.base p) e`. Simplify using `only [Scheme.Hom.comp_base, TopCat.comp_app] at e2`. Use `show (pullback.lift u v huv).base (g.base p) ∈ (pullback.diagonal f).opensRange`. Rewrite using `[← SetLike.mem_coe, Scheme.Hom.coe_opensRange]`. Conclude with `⟨_, e2.symm⟩`.
+-/
 theorem exists_open_eqLocus {S X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImmersion (pullback.diagonal f)]
     (u v : S ⟶ X) (huv : u ≫ f = v ≫ f) :
     ∃ U : S.Opens, (∀ V : S.Opens, V ≤ U → V.ι ≫ u = V.ι ≫ v) ∧
@@ -49,12 +60,24 @@ end GlobalTheory.TorsEqOpen
 
 namespace GlobalTheory.TorsEqOpen
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem comp_pow_pt {S : Scheme.{0}} {X Y G : Over S} [GrpObj G] (f : X ⟶ Y) (g : Y ⟶ G) (n : ℕ) :
     f ≫ g ^ n = (f ≫ g) ^ n := by
   induction n with
   | zero => rw [pow_zero, pow_zero, MonObj.comp_one]
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Set `F : (κ → ℤ) →+ Additive (Z ⟶ A)` to `AddMonoidHom.mk' (fun a => Additive.ofMul (φ ≫ x a)) (fun a b => by`. Rewrite using `[hx, MonObj.comp_mul]`. Use the proof step `rfl)`. Set `G : (κ → ℤ) →+ Additive (Z ⟶ A)` to `AddMonoidHom.mk' (fun a => Additive.ofMul (φ ≫ y a)) (fun a b => by`. Rewrite using `[hy, MonObj.comp_mul]`.
+
+Use the proof step `rfl)`. Establish `hFG : F = G`. Use `AddMonoidHom.functions_ext _ F G fun i k => ?_` and prove the remaining obligations. Establish `e : (Pi.single i k : κ → ℤ) = k • Pi.single i 1`. Use extensionality with `j`.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Rewrite using `[e, map_zsmul, map_zsmul]`.
+
+Use `congr 1`. Simplify `congrArg Additive.ofMul (hφ i)` using `[F, G]`. Conclude with `congrArg Additive.toMul (DFunLike.congr_fun hFG a)`.
+-/
 theorem eq_of_eq_single {S : Scheme.{0}} {κ : Type} [Fintype κ] [DecidableEq κ] {A Z W : Over S} [GrpObj A] [IsCommMonObj A]
     (x y : (κ → ℤ) → (W ⟶ A)) (hx : ∀ a b, x (a + b) = x a * x b) (hy : ∀ a b, y (a + b) = y a * y b)
     (φ : Z ⟶ W) (hφ : ∀ i, φ ≫ x (Pi.single i 1) = φ ≫ y (Pi.single i 1)) (a : κ → ℤ) :
@@ -81,6 +104,17 @@ end GlobalTheory.TorsEqOpen
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `m M S' _ t A _ _ hA hM x y hx hy hxM hyM`. Establish `hu : IsUnit (M : Γ(S', ⊤))`. Establish `h1 : IsUnit (M : cycAway M)` using `isUnit_natCast (by omega)`. Establish `h2` using `h1.map (Scheme.ΓSpecIso (CommRingCat.of (cycAway M))).inv.hom`. Establish `h3` using `h2.map t.appTop.hom`.
+
+Simplify using `using h3`. Use `haveI := hA.smooth`. Use `haveI : Etale (𝟙 A ^ M).left := GlobalTheory.GrpTangent.etale_id_pow A hu`. Establish `hpow : ∀ z : 𝟙_ (Over S') ⟶ A, z ^ M = 1 → z.left ≫ (𝟙 A ^ M).left = (1 : 𝟙_ (Over S') ⟶ A).left`. Introduce `z hz`.
+
+Rewrite using `[← Over.comp_left, TorsEqOpen.comp_pow_pt, Category.comp_id, hz]`. Use `choose U hU1 hU2 using fun i : Fin m ⊕ Fin m => TorsEqOpen.exists_open_eqLocus (S := S') (𝟙 A ^ M).left (x (Pi.single i 1)).left (y (Pi.single i 1)).left ((hpow _ (hxM _)).trans (hpow _ (hyM _)).symm)`. Use `⟨⟨⋂ i, (U i : Set S'), isOpen_iInter_of_finite fun i => (U i).2⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `V hV a`. Establish `hVi : ∀ i, V ≤ U i` using `fun i => (show (V : Set S') ⊆ U i from (show (V : Set S') ⊆ ⋂ i, (U i : Set S') from hV).trans (Set.iInter_subset _ i))`.
+
+Establish `key` using `TorsEqOpen.eq_of_eq_single x y hx hy (toUnit (Over.mk V.ι)) (fun i => Over.OverMorphism.ext (by`. Rewrite using `[Over.comp_left, Over.comp_left, Over.toUnit_left]`. Conclude with `hU1 i V (hVi i))) a`. Use `congrArg Over.Hom.left key` as an intermediate fact. Rewrite `this` using `[Over.comp_left, Over.comp_left, Over.toUnit_left]`. Then use the resulting hypothesis.
+
+Introduce `T g hg`. Conclude with `Set.subset_iInter fun i => hU2 i T g (hg _)`.
+-/
 theorem torsFamily_eq_isOpen : ∀ (m M : ℕ) (S' : Scheme.{0}) [IsLocallyNoetherian S'] (t : S' ⟶ Sp (cycAway M))
     (A : Over S') [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → 1 ≤ M →
     ∀ (x y : (Fin m ⊕ Fin m → ℤ) → (𝟙_ (Over S') ⟶ A)), (∀ a b, x (a + b) = x a * x b) →

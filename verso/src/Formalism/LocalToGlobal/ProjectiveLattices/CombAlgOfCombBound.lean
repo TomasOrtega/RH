@@ -11,6 +11,15 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor R
 
 variable {D : D7} {T : Top D} (h : LawsP T)
 
+/- English proof (translation)
+Introduce and unpack `la _ ⟨y0, rfl⟩`. Take `⟨T', io, e, ho, z, hz, eta, heta, hq⟩` from `y0.2`. Take `⟨η, hη⟩` from `T.G.liesTotal h.points_condition h.bc66 hj la T' io e ho z hz`. Set `y : T.PtA j la` to `PtV.mk la ho z hz η hη`. Establish `hyv : vAtV y = vAtV y0` using `funext fun g => by show y.1.1 g = y0.1.1 g`.
+
+Rewrite using `[hq]`. Both sides reduce to the same expression. Establish `hv : ∀ w (F : (recB h.toLawsCore).Cusp j w), (recPJ h j hj).vAt la y ((recPJ h j hj).inc w F) = vAtV y0 F.1` using `fun w F => by`. Rewrite using `[recPJ_vAt_inc, hyv]`. Establish `hd : (recPJ h j hj).depth S.sW wL la y = ⨅ k, vAtV y0 (G.w k).1`.
+
+Unfold `PJ.depth`. Rewrite using `[← hspan, iInf_span_eq (X := recPJ h j hj) G.w la ((recPJ h j hj).vAt la y) ((recPJ h j hj).vAt_zero la y) ((recPJ h j hj).vAt_add la y) ((recPJ h j hj).vAt_smul la y) (fun _ ha => vAdd_int_nonneg la ha)]`. Simplify using `only [hv]`. Take `⟨h0, h1⟩` from `(hX la y).1 hjm`. Rewrite `h0`, `h1` using `[hv]`.
+
+Rewrite `h1` using `[hd]`. Use `⟨h0, fun htop => ?_⟩` and prove the remaining obligations. Establish `h2` using `h1 htop`. Rewrite `h2` using `[EReal.coe_add, EReal.coe_mul, EReal.coe_toReal htop (vAtV_ne_bot y0 _)]`. Conclude with `h2`.
+-/
 theorem combAlg_of_combBound (j : ℕ) (hj : InR D j) (hjm : j < D.R.m) {ka wL wF : WeightFamilies.Wt D j}
     (G : GlobalFamilyData (recPJ h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (cb : ℝ)
     (nus : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO) → ℝ)

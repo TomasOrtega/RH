@@ -25,22 +25,40 @@ abbrev inRad : Set.Ioc (0 : ℝ) ρ1 := (𝔽).radPow ρ1
 
 abbrev circ : Set.Ioo (0 : ℝ) 1 := (𝔽).powRadius ρ1
 
+/- English proof (translation)
+Use `show (ρ1 : ℝ) ^ p ^ (𝔽).a = _`. Rewrite using `[frob_a, pow_one]`.
+-/
 theorem coe_circ : ((circ p ρ1 : Set.Ioo (0 : ℝ) 1) : ℝ) = (ρ1 : ℝ) ^ p := by
   show (ρ1 : ℝ) ^ p ^ (𝔽).a = _; rw [frob_a, pow_one]
 
+/- English proof (translation)
+The claim follows from `coe_circ p ρ1`.
+-/
 theorem coe_inRad : ((inRad p ρ1 : Set.Ioc (0 : ℝ) ρ1) : ℝ) = (ρ1 : ℝ) ^ p := coe_circ p ρ1
 
+/- English proof (translation)
+The claim follows from `coe_circ p ρ1`.
+-/
 theorem coe_topRad_circ : ((topRad (circ p ρ1) : Set.Ioc (0 : ℝ) (circ p ρ1)) : ℝ) = (ρ1 : ℝ) ^ p :=
   coe_circ p ρ1
 
+/- English proof (translation)
+Rewrite using `[coe_inRad, coe_topRad_circ]`.
+-/
 theorem inRad_le_circ : ((inRad p ρ1 : Set.Ioc (0 : ℝ) ρ1) : ℝ) ≤ (topRad (circ p ρ1) : ℝ) := by
   rw [coe_inRad, coe_topRad_circ]
 
+/- English proof (translation)
+Rewrite using `[TeichLift.TeichFrob.coe_powRad, frob_a, pow_one, coe_inRad, coe_topRad_circ, ← pow_mul]`. Conclude with `pow_le_pow_of_le_one ρ1.2.1.le ρ1.2.2.le (Nat.le_mul_of_pos_left p hp.out.pos)`.
+-/
 theorem powRad_inRad_le :
     ((((𝔽).powRad (inRad p ρ1)) : Set.Ioc (0 : ℝ) (circ p ρ1)) : ℝ) ≤ (topRad (circ p ρ1) : ℝ) := by
   rw [TeichLift.TeichFrob.coe_powRad, frob_a, pow_one, coe_inRad, coe_topRad_circ, ← pow_mul]
   exact pow_le_pow_of_le_one ρ1.2.1.le ρ1.2.2.le (Nat.le_mul_of_pos_left p hp.out.pos)
 
+/- English proof (translation)
+The claim follows from `(𝔽).powRadius_le_self ρ1`.
+-/
 theorem circ_le : ((circ p ρ1 : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ ρ1 := (𝔽).powRadius_le_self ρ1
 
 def resCirc : (𝓣).Ann ρ1 (inRad p ρ1) →+* (𝓣).Ann (circ p ρ1) (topRad (circ p ρ1)) :=
@@ -53,6 +71,9 @@ abbrev circRad : AnnRad (circ p ρ1) (topRad (circ p ρ1)) := annIn (circ p ρ1)
 
 variable {p}
 
+/- English proof (translation)
+Rewrite using `[frobCirc, RingHom.comp_apply, (𝓣).annNorm_annRes]`. Establish `e : annRadOf (le_refl ((circ p ρ1 : Set.Ioo (0 : ℝ) 1) : ℝ)) (powRad_inRad_le p ρ1) (circRad p ρ1) = (𝔽).annPowRad (annOut ρ1 (inRad p ρ1))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_annRadOf, TeichLift.TeichFrob.coe_annPowRad, frob_a, pow_one, coe_annOut, coe_annIn, coe_topRad_circ]`. Rewrite using `[e, TeichLift.TeichFrob.annNorm_annFrob, frob_a, pow_one]`.
+-/
 theorem annNorm_frobCirc (x : (𝓣).Ann ρ1 (inRad p ρ1)) :
     (𝓣).annNorm _ _ (circRad p ρ1) (frobCirc p ρ1 x) =
       (𝓣).annNorm ρ1 (inRad p ρ1) (annOut ρ1 (inRad p ρ1)) x ^ p := by
@@ -64,12 +85,20 @@ theorem annNorm_frobCirc (x : (𝓣).Ann ρ1 (inRad p ρ1)) :
       coe_topRad_circ]
   rw [e, TeichLift.TeichFrob.annNorm_annFrob, frob_a, pow_one]
 
+/- English proof (translation)
+Rewrite using `[resCirc, (𝓣).annNorm_annRes]`. Use `congr 1`.
+-/
 theorem annNorm_resCirc (x : (𝓣).Ann ρ1 (inRad p ρ1)) :
     (𝓣).annNorm _ _ (circRad p ρ1) (resCirc p ρ1 x) =
       (𝓣).annNorm ρ1 (inRad p ρ1) (annIn ρ1 (inRad p ρ1)) x := by
   rw [resCirc, (𝓣).annNorm_annRes]
   congr 1
 
+/- English proof (translation)
+Rewrite using `[TeichLift.piE, TeichLift.ofAll]`. Rewrite using `[← map_natCast (Completion.coeRingHom : (𝓣).Econ σ →+* (𝓣).RobbaExt σ) p]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (WC p) (𝓣).B ((p : ℕ) : WC p) = (((p : ℕ) : (𝓣).Econ σ) : (𝓣).B)`.
+
+Rewrite using `[map_natCast]`. Simplify using the standard rewrite rules.
+-/
 theorem piE_eq_natCast (σ : Set.Ioo (0 : ℝ) 1) : (𝓣).piE σ = (p : (𝓣).RobbaExt σ) := by
   rw [TeichLift.piE, TeichLift.ofAll]
   rw [← map_natCast (Completion.coeRingHom : (𝓣).Econ σ →+* (𝓣).RobbaExt σ) p]
@@ -79,31 +108,76 @@ theorem piE_eq_natCast (σ : Set.Ioo (0 : ℝ) 1) : (𝓣).piE σ = (p : (𝓣).
   rw [map_natCast]
   simp
 
+/- English proof (translation)
+Rewrite using `[← (𝓣).toAnn_coe, ← (𝓣).toAnn_coe, ← map_sub, (𝓣).annNorm_toAnn]`.
+-/
 theorem annNorm_coeAnn_sub (r : AnnRad ρ1 (inRad p ρ1)) (a b : (𝓣).Econ ρ1) :
     (𝓣).annNorm ρ1 (inRad p ρ1) r ((𝓣).coeAnn a - (𝓣).coeAnn b) =
       (𝓣).extNorm ρ1 (annIoc r) ((a : (𝓣).RobbaExt ρ1) - b) := by
   rw [← (𝓣).toAnn_coe, ← (𝓣).toAnn_coe, ← map_sub, (𝓣).annNorm_toAnn]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem annIoc_annOut : annIoc (annOut ρ1 (inRad p ρ1)) = topRad ρ1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem annIoc_annIn : annIoc (annIn ρ1 (inRad p ρ1)) = (𝔽).radPow ρ1 := rfl
 
+/- English proof (translation)
+Rewrite using `[frobCirc, RingHom.comp_apply, TeichLift.TeichFrob.annFrob_toAnn, (𝓣).annRes_toAnn, (𝓣).res_self]`.
+-/
 theorem frobCirc_toAnn (w : (𝓣).RobbaExt ρ1) :
     frobCirc p ρ1 ((𝓣).toAnn ρ1 (inRad p ρ1) w) =
       (𝓣).toAnn (circ p ρ1) (topRad (circ p ρ1)) ((𝔽).extFrob ρ1 w) := by
   rw [frobCirc, RingHom.comp_apply, TeichLift.TeichFrob.annFrob_toAnn, (𝓣).annRes_toAnn, (𝓣).res_self]
 
+/- English proof (translation)
+Rewrite using `[resCirc, (𝓣).annRes_toAnn]`.
+-/
 theorem resCirc_toAnn (w : (𝓣).RobbaExt ρ1) :
     resCirc p ρ1 ((𝓣).toAnn ρ1 (inRad p ρ1) w) =
       (𝓣).toAnn (circ p ρ1) (topRad (circ p ρ1)) ((𝓣).res ((𝔽).powRadius_le_self ρ1) w) := by
   rw [resCirc, (𝓣).annRes_toAnn]
 
+/- English proof (translation)
+Rewrite using `[annNorm_awayToAnn_natCast_p]`. Conclude with `coe_circ p ρ1`.
+-/
 theorem annNorm_natCast_p_circ :
     (𝓣).annNorm _ _ (circRad p ρ1) (p : (𝓣).Ann (circ p ρ1) (topRad (circ p ρ1))) = (ρ1 : ℝ) ^ p := by
   rw [annNorm_awayToAnn_natCast_p]; exact coe_circ p ρ1
 
 set_option maxHeartbeats 3200000 in
 
+/- English proof (translation)
+Use `choose U hU using fun J : ℕ => (𝓣).exists_coeAnn_near Y (Nat.one_div_pos_of_nat (n := J))`. Use `set u : ℕ → (𝓣).RobbaExt ρ1 := fun J => (U J : (𝓣).RobbaExt ρ1) with hudef`. Establish `hdiff : ∀ (r : AnnRad ρ1 (inRad p ρ1)) (J K : ℕ), (𝓣).extNorm ρ1 (annIoc r) (u J - u K) ≤ max (1 / ((J : ℝ) + 1)) (1 / ((K : ℝ) + 1))`. Introduce `r J K`. Rewrite using `[hudef, ← annNorm_coeAnn_sub]`.
+
+Establish `e : (𝓣).coeAnn (U J) - (𝓣).coeAnn (U K) = -(Y - (𝓣).coeAnn (U J)) + (Y - (𝓣).coeAnn (U K))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `((𝓣).annNorm_add_le r _ _).trans (max_le_max ?_ (hU K r).le)` and prove the remaining obligations. Rewrite using `[(𝓣).annNorm_neg]`.
+
+Conclude with `(hU J r).le`. Establish `hcau : ∀ r : AnnRad ρ1 (inRad p ρ1), ∀ ε > 0, ∃ J₀, ∀ J ≥ J₀, ∀ K ≥ J₀, (𝓣).extNorm ρ1 (annIoc r) (u J - u K) ≤ ε`. Introduce `r ε hε`. Take `⟨J₀, hJ₀⟩` from `exists_nat_one_div_lt hε`. Use `⟨J₀, fun J hJ K hK => (hdiff r J K).trans (max_le ?_ ?_)⟩` and prove the remaining obligations.
+
+Conclude with `(one_div_le_one_div_of_le (by positivity) (by exact_mod_cast Nat.add_le_add_right hJ 1)).trans hJ₀.le`. Conclude with `(one_div_le_one_div_of_le (by positivity) (by exact_mod_cast Nat.add_le_add_right hK 1)).trans hJ₀.le`. Establish `hD : ∀ J, (𝓣).extNorm (circ p ρ1) (topRad _) ((𝔽).extFrob ρ1 (u J) - (𝓣).piE ((𝔽).powRadius ρ1) ^ N * (𝓣).res ((𝔽).powRadius_le_self ρ1) (u J)) ≤ 1 / ((J : ℝ) + 1)`. Introduce `J`. Establish `hJ1 : 1 / ((J : ℝ) + 1) ≤ 1`.
+
+Rewrite using `[div_le_one (by positivity)]; linarith [(Nat.cast_nonneg J : (0 : ℝ) ≤ J)]`. Rewrite using `[piE_eq_natCast]`. Establish `e1` using `(𝓣).annNorm_toAnn (circRad p ρ1) ((𝔽).extFrob ρ1 (u J) - (p : (𝓣).RobbaExt _) ^ N * (𝓣).res ((𝔽).powRadius_le_self ρ1) (u J))`. Establish `hioc : annIoc (circRad p ρ1) = topRad (circ p ρ1)` using `rfl`. Rewrite `e1` using `[hioc]`.
+
+Rewrite using `[← e1, map_sub, map_mul, map_pow, map_natCast, ← frobCirc_toAnn, ← resCirc_toAnn, hudef, (𝓣).toAnn_coe]`. Use `set c := (𝓣).coeAnn (σ0 := inRad p ρ1) (U J)`. Establish `e2 : frobCirc p ρ1 c - (p : (𝓣).Ann _ _) ^ N * resCirc p ρ1 c = (frobCirc p ρ1 (c - Y) - (p : (𝓣).Ann _ _) ^ N * resCirc p ρ1 (c - Y)) + (frobCirc p ρ1 Y - (p : (𝓣).Ann _ _) ^ N * resCirc p ρ1 Y)`. Rewrite using `[map_sub, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e2]`. Use `((𝓣).annNorm_add_le _ _ _).trans (max_le ?_ (by rw [hY]; positivity))` and prove the remaining obligations. Use `((𝓣).annNorm_sub_le _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[annNorm_frobCirc, (𝓣).annNorm_sub_comm]`. Conclude with `(pow_le_of_le_one ((𝓣).annNorm_nonneg _ _) ((hU J _).le.trans hJ1) hp.out.ne_zero).trans (hU J _).le`.
+
+Rewrite using `[(𝓣).annNorm_mul, (𝓣).annNorm_pow, annNorm_natCast_p_circ, annNorm_resCirc, (𝓣).annNorm_sub_comm]`. Use `(mul_le_of_le_one_left ((𝓣).annNorm_nonneg _ _) ?_).trans (hU J _).le` and prove the remaining obligations. Conclude with `pow_le_one₀ (pow_nonneg ρ1.2.1.le p) (pow_le_one₀ ρ1.2.1.le ρ1.2.2.le)`. Establish `hsmall : ∀ ε > 0, ∃ J₀, ∀ J ≥ J₀, (𝓣).extNorm ((𝔽).powRadius ρ1) (topRad _) ((𝔽).extFrob ρ1 (u J) - (𝓣).piE ((𝔽).powRadius ρ1) ^ N * (𝓣).res ((𝔽).powRadius_le_self ρ1) (u J)) ≤ ε`. Introduce `ε hε`.
+
+Take `⟨J₀, hJ₀⟩` from `exists_nat_one_div_lt hε`. Use `⟨J₀, fun J hJ => (hD J).trans ?_⟩` and prove the remaining obligations. Conclude with `(one_div_le_one_div_of_le (by positivity) (by exact_mod_cast Nat.add_le_add_right hJ 1)).trans hJ₀.le`. Take `⟨g, hg, hgeq⟩` from `TeichLift.TeichFrob.exists_eigen_of_approx (F := 𝔽) (by rw [frob_a]; exact one_pos) N u (hcau (annOut ρ1 (inRad p ρ1))) (hcau (annIn ρ1 (inRad p ρ1))) hsmall`. Use `⟨g, by rw [hgeq, piE_eq_natCast], ?_⟩` and prove the remaining obligations.
+
+Use `(𝓣).eq_of_annNorm_sub ?_ ?_` and prove the remaining obligations. Use `all_goals`. Use `le_antisymm (le_of_forall_pos_le_add fun ε hε => ?_) ((𝓣).annNorm_nonneg _ _)` and prove the remaining obligations. Rewrite using `[zero_add]`. Take `⟨J₁, hJ₁⟩` from `hg ε hε`.
+
+Take `⟨J₂, hJ₂⟩` from `exists_nat_one_div_lt hε`. Use `set J := max J₁ J₂`. Establish `e : (𝓣).toAnn ρ1 (inRad p ρ1) g - Y = ((𝓣).toAnn ρ1 (inRad p ρ1) g - (𝓣).coeAnn (U J)) + -(Y - (𝓣).coeAnn (U J))` using `by ring`. Rewrite using `[e]`. Use `((𝓣).annNorm_add_le _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
+
+Rewrite using `[← (𝓣).toAnn_coe, ← map_sub, (𝓣).annNorm_toAnn, annIoc_annIn]`. Conclude with `(hJ₁ J (le_max_left _ _)).2`. Rewrite using `[(𝓣).annNorm_neg]`. Use `(hU J _).le.trans ((one_div_le_one_div_of_le (by positivity) ?_).trans hJ₂.le)` and prove the remaining obligations. Conclude with `Nat.add_le_add_right (le_max_right J₁ J₂) 1` after adjusting the coercions.
+
+Rewrite using `[← (𝓣).toAnn_coe, ← map_sub, (𝓣).annNorm_toAnn, annIoc_annOut]`. Conclude with `(hJ₁ J (le_max_left _ _)).1`. Rewrite using `[(𝓣).annNorm_neg]`. Use `(hU J _).le.trans ((one_div_le_one_div_of_le (by positivity) ?_).trans hJ₂.le)` and prove the remaining obligations. Conclude with `Nat.add_le_add_right (le_max_right J₁ J₂) 1` after adjusting the coercions.
+-/
 theorem exists_eigen_of_ann (N : ℕ) (Y : (𝓣).Ann ρ1 (inRad p ρ1))
     (hY : (𝓣).annNorm _ _ (circRad p ρ1)
       (frobCirc p ρ1 Y - (p : (𝓣).Ann _ _) ^ N * resCirc p ρ1 Y) = 0) :
@@ -192,10 +266,16 @@ section Step3
 variable (hσ : (p : ℝ)⁻¹ ≤ ((inRad p ρ1 : Set.Ioc (0 : ℝ) ρ1) : ℝ))
 
 include hσ in
+/- English proof (translation)
+Rewrite using `[coe_topRad_circ]`. Rewrite `hσ` using `[coe_inRad]`. Conclude with `hσ`.
+-/
 theorem inv_p_le_circ : (p : ℝ)⁻¹ ≤ ((topRad (circ p ρ1) : Set.Ioc (0 : ℝ) (circ p ρ1)) : ℝ) := by
   rw [coe_topRad_circ]; rw [coe_inRad] at hσ; exact hσ
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Establish `e : (frobCirc p ρ1).comp (bcrisToAnn hσ) = (bcrisToAnn (inv_p_le_circ ρ1 hσ)).comp (phiPlus ℂ_[p] p)` using `IsLocalization.ringHom_ext (Submonoid.powers (p : ACris ℂ_[p] p)) (RingHom.ext fun a => by`. Simplify using `only [RingHom.comp_apply, bcrisToAnn_algebraMap, phiPlus_algebraMap, frobCirc]`. Conclude with `annRes_annFrob_acrisToAnn _ _ hσ (inv_p_le_circ ρ1 hσ) a)`. Conclude with `congrArg (fun f : BCrisPlus ℂ_[p] p →+* (𝓣).Ann _ _ => f x) e`.
+-/
 theorem frobCirc_bcrisToAnn (x : BCrisPlus ℂ_[p] p) :
     frobCirc p ρ1 (bcrisToAnn hσ x) = bcrisToAnn (inv_p_le_circ ρ1 hσ) (phiPlus ℂ_[p] p x) := by
   have e : (frobCirc p ρ1).comp (bcrisToAnn hσ) = (bcrisToAnn (inv_p_le_circ ρ1 hσ)).comp (phiPlus ℂ_[p] p) :=
@@ -205,6 +285,9 @@ theorem frobCirc_bcrisToAnn (x : BCrisPlus ℂ_[p] p) :
   exact congrArg (fun f : BCrisPlus ℂ_[p] p →+* (𝓣).Ann _ _ => f x) e
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Rewrite using `[resCirc, annRes_bcrisToAnn]`.
+-/
 theorem resCirc_bcrisToAnn (x : BCrisPlus ℂ_[p] p) :
     resCirc p ρ1 (bcrisToAnn hσ x) = bcrisToAnn (inv_p_le_circ ρ1 hσ) x := by
   rw [resCirc, annRes_bcrisToAnn]
@@ -213,12 +296,18 @@ variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
   (hζ : PreTilt.untilt ((_root_.frobeniusEquiv (PreTilt (normInteger ℂ_[p]) p) p).symm ε) ≠ 1)
 
 include hε hζ in
+/- English proof (translation)
+Rewrite using `[frobCirc_toAnn, extFrob_tTildeExt hε hζ, map_mul, map_natCast]`.
+-/
 theorem frobCirc_tTilde :
     frobCirc p ρ1 ((𝓣).toAnn ρ1 (inRad p ρ1) (tTildeExt p ε ρ1)) =
       (p : (𝓣).Ann _ _) * (𝓣).toAnn (circ p ρ1) (topRad (circ p ρ1)) (tTildeExt p ε (circ p ρ1)) := by
   rw [frobCirc_toAnn, extFrob_tTildeExt hε hζ, map_mul, map_natCast]
 
 include hε hζ in
+/- English proof (translation)
+Rewrite using `[resCirc_toAnn, res_tTildeExt hε hζ]`.
+-/
 theorem resCirc_tTilde :
     resCirc p ρ1 ((𝓣).toAnn ρ1 (inRad p ρ1) (tTildeExt p ε ρ1)) =
       (𝓣).toAnn (circ p ρ1) (topRad (circ p ρ1)) (tTildeExt p ε (circ p ρ1)) := by
@@ -227,6 +316,17 @@ theorem resCirc_tTilde :
 set_option maxHeartbeats 1600000 in
 include hε hζ in
 
+/- English proof (translation)
+Use `set hσ' := inv_p_le_circ ρ1 hσ`. Use `set D := frobCirc p ρ1 Y - (p : (𝓣).Ann (circ p ρ1) (topRad (circ p ρ1))) ^ (m + 1) * resCirc p ρ1 Y`. Use `set t' := (𝓣).toAnn (circ p ρ1) (topRad (circ p ρ1)) (tTildeExt p ε (circ p ρ1))`. Establish `h1 : frobCirc p ρ1 Y * bcrisToAnn hσ' (phiPlus ℂ_[p] p b) = ((p : (𝓣).Ann (circ p ρ1) (topRad (circ p ρ1))) * t') ^ m * bcrisToAnn hσ' (phiPlus ℂ_[p] p a)`. Rewrite using `[← frobCirc_bcrisToAnn ρ1 hσ, ← frobCirc_bcrisToAnn ρ1 hσ, ← map_mul, hY, map_mul, map_pow, frobCirc_tTilde ρ1 hε hζ]`.
+
+Establish `h2 : resCirc p ρ1 Y * bcrisToAnn hσ' b = t' ^ m * bcrisToAnn hσ' a`. Rewrite using `[← resCirc_bcrisToAnn ρ1 hσ, ← resCirc_bcrisToAnn ρ1 hσ, ← map_mul, hY, map_mul, map_pow, resCirc_tTilde ρ1 hε hζ]`. Establish `h3 : bcrisToAnn hσ' (phiPlus ℂ_[p] p a) * bcrisToAnn hσ' b = (p : (𝓣).Ann (circ p ρ1) (topRad (circ p ρ1))) * bcrisToAnn hσ' a * bcrisToAnn hσ' (phiPlus ℂ_[p] p b)`. Rewrite using `[← map_mul, hφ, map_mul, map_mul, map_natCast]`. Establish `key : D * bcrisToAnn hσ' (phiPlus ℂ_[p] p b) * bcrisToAnn hσ' b = 0`.
+
+Establish `e : D * bcrisToAnn hσ' (phiPlus ℂ_[p] p b) * bcrisToAnn hσ' b = (frobCirc p ρ1 Y * bcrisToAnn hσ' (phiPlus ℂ_[p] p b)) * bcrisToAnn hσ' b - (p : (𝓣).Ann (circ p ρ1) (topRad (circ p ρ1))) ^ (m + 1) * (resCirc p ρ1 Y * bcrisToAnn hσ' b) * bcrisToAnn hσ' (phiPlus ℂ_[p] p b)` using `by ring`. Rewrite using `[e, h1, h2]`. Take the linear combination `((p : (𝓣).Ann (circ p ρ1) (topRad (circ p ρ1))) ^ m * t' ^ m) * h3`. Establish `hpos1 : 0 < (𝓣).annNorm (circ p ρ1) (topRad (circ p ρ1)) (circRad p ρ1) (bcrisToAnn hσ' (phiPlus ℂ_[p] p b))`. Rewrite using `[← frobCirc_bcrisToAnn ρ1 hσ, annNorm_frobCirc]`.
+
+Conclude with `pow_pos (annNorm_bcrisToAnn_pos hσ hb _) p`. Establish `hpos2 : 0 < (𝓣).annNorm (circ p ρ1) (topRad (circ p ρ1)) (circRad p ρ1) (bcrisToAnn hσ' b)` using `annNorm_bcrisToAnn_pos hσ' hb _`. Establish `h0` using `congrArg ((𝓣).annNorm (circ p ρ1) (topRad (circ p ρ1)) (circRad p ρ1)) key`. Rewrite `h0` using `[(𝓣).annNorm_mul, (𝓣).annNorm_mul, (𝓣).annNorm_zero]`. Establish `hD0` using `(𝓣).annNorm_nonneg (circRad p ρ1) D`.
+
+Assume the negation of the conclusion as `hne`. Establish `hDpos : 0 < (𝓣).annNorm (circ p ρ1) (topRad (circ p ρ1)) (circRad p ρ1) D` using `lt_of_le_of_ne hD0 (Ne.symm hne)`. Use `mul_pos (mul_pos hDpos hpos1) hpos2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem annNorm_frobCirc_sub_eq_zero {a b : BCrisPlus ℂ_[p] p} (hb : b ≠ 0)
     (hφ : phiPlus ℂ_[p] p a * b = (p : BCrisPlus ℂ_[p] p) * a * phiPlus ℂ_[p] p b) {m : ℕ}
     {Y : (𝓣).Ann ρ1 (inRad p ρ1)}

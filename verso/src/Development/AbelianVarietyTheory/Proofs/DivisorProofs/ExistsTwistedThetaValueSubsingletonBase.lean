@@ -15,6 +15,23 @@ noncomputable section
 
 namespace GlobalTheory.UPoinc.USum
 
+/- English proof (translation)
+Introduce `B P N m T₀ T θ z₀ τ β x h hT hm hN hτ hx hh`. Substitute `hN` using the available equality. Establish `hG` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Establish `hL` using `P.isLB`. Take `⟨α, hα⟩ : ∃ α : LB.Gen (LB.LinComb P.L (K` from `Fin 2) ![(snd T P.A).left, (snd T P.A ^ m).left] ![((m ^ 2 : ℕ) : ℤ), -1]), α.IsGen := by`.
+
+Rewrite using `[Nat.cast_pow]`. Conclude with `GlobalTheory.EmbLocal.exists_mulPull hG P m T`. Choose the witnesses or unpack the hypotheses as in `⟨U, hU⟩ : ∃ U : ThetaGrp P.A P.L ((m ^ 2 : ℕ) : ℤ) T, SymLift P.A P.L ((m ^ 2 : ℕ) : ℤ) (m ^ 2) x U := by`. Break down `isEmpty_or_nonempty T.left with he | ⟨⟨p⟩⟩` into its components or cases. Conclude with `GlobalTheory.GlobalLift.exists_symLift_empty hL (m ^ 2) x`.
+
+Take `⟨V, hV, H⟩` from `GlobalTheory.EmbLocal.exists_symLift_near hG P (k := m ^ 2) hm.pow x hx p`. Take `⟨θ', hθ'⟩` from `H T (𝟙 T) (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Subsingleton.elim ((𝟙 T : T ⟶ T).left q) p])` and apply the resulting hypothesis. Rewrite `hθ'` using `[Category.id_comp]`.
+
+Conclude with `⟨θ', hθ'⟩`. Break down `U with ⟨pt, φU, hφU⟩` into its components or cases. Take `rfl : x = pt` from `hU.pt_eq.symm`. Take `⟨s, hs⟩` from `GlobalTheory.VVRank.exists_isTwistPull P.A (ψ := mulT P.A T m) (m := snd T P.A ^ m) (hm := lift_snd _ _) (a := ((m ^ 2 : ℕ) : ℤ)) (b := 1) hL hα (GlobalTheory.VVRank.pullS P.A 1 β θ)`. Take `⟨σ, hσ⟩` from `GlobalTheory.VVRank.exists_isTwistPull P.A (ψ := translT P.A x) (m := translPt P.A x) (hm := lift_snd _ _) hL hφU s`.
+
+Establish `e₁ : (ptSecT P.A h).left ≫ (snd T P.A).left = h.left` using `GlobalTheory.ThetaPtMove.ptSecT_snd h`. Establish `e₂ : (ptSecT P.A h).left ≫ (snd T P.A ^ m).left = (h ^ m).left`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, GlobalTheory.ThetaCompare.pt_snd]`. Establish `e₃ : β.left ≫ z₀.left = (h ^ m).left` using `by rw [← Over.comp_left, hh]`. Take `⟨τ', hτ', vτ'⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_gen hL (φ' := fun _ : Fin 1 => h.left) (ε' := fun _ => ((m ^ 2 : ℕ) : ℤ)) (fun U _ f => by`.
+
+Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_two, Fin.prod_univ_one, Matrix.cons_val_zero, Matrix.cons_val_one, e₁, e₂, e₃, zpow_neg, zpow_one]`. Use the proof step `group)`. Use the proof step `(LB.mulGen P.L _ _ _ _ (LB.pullGen P.L _ _ α (ptSecT P.A h).left) (LB.pullGen P.L _ _ τ β.left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hα _) (DVR.pullGen_isGen _ _ _ _ hτ _))`. Take `⟨v, hv⟩` from `GlobalTheory.ThetaPtExist.exists_isValueAt hL σ h τ' hτ'`.
+
+Use `⟨v, α, ⟨x, φU, hφU⟩, hα, hU, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `q1` using `GlobalTheory.ThetaPtMove.sv_of_isValueAt hv r z hJ`. Establish `q2` using `GlobalTheory.VVRank.sv_of_isTwistPull P.A hσ (r ≫ (ptSecT P.A h).left) z hJ`. Establish `q3` using `GlobalTheory.VVRank.sv_of_isTwistPull P.A hs (r ≫ (ptSecT P.A (x * h)).left) z hJ`. Establish `q4` using `GlobalTheory.VVRank.sv_pullS P.A 1 β θ (r ≫ (ptSecT P.A ((x * h) ^ m)).left) z hJ`.
+
+Rewrite `q2` using `[Category.assoc, GlobalTheory.ThetaCompare.pt_translT]`. Rewrite `q3` using `[Category.assoc, GlobalTheory.ThetaCompare.pt_mulT]`. Rewrite `q1` using `[vτ' Z r z J hJ, ReciprocityTheory.ChartRestriction.G.Geo.Tor.val_mul hJ, ReciprocityTheory.ChartRestriction.G.Geo.Tor.val_pull hJ, ReciprocityTheory.ChartRestriction.G.Geo.Tor.val_pull hJ]`. Rewrite using `[← q1, q2, q3, q4, Units.val_mul, Category.assoc, _root_.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem exists_isTwVal_of_subsingleton : ∀ {B : Scheme.{0}} (P : PolAV B) (N m : ℕ) {T₀ T : Over B} (θ : LB.Sec (LPow P.A P.L 1 T₀)) {z₀ : T₀ ⟶ P.A} (τ : LB.Gen (LB.LinComb P.L (Y := T₀.left) (K := Fin 1) (fun _ => z₀.left) (fun _ => 1))) (β : T ⟶ T₀) (x h : T ⟶ P.A), Subsingleton T.left → Odd m → N = m ^ 2 → τ.IsGen → x ^ N = 1 → h ^ m = β ≫ z₀ → ∃ v, IsTwVal P N m θ τ β x h v := by
   intro B P N m T₀ T θ z₀ τ β x h hT hm hN hτ hx hh
   subst hN

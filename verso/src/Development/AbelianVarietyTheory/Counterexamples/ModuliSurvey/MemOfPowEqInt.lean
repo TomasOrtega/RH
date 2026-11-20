@@ -9,6 +9,11 @@ namespace GlobalTheory.ArcInTest
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
 
+/- English proof (translation)
+Establish `hi : IsIntegral V x`. Use `IsIntegral.of_pow hn ?_` and prove the remaining obligations. Rewrite using `[h]`. Simplify using `using isIntegral_algebraMap (R := V) (A := F) (x := (m : V))`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := V) (K := F)).1 hi`.
+
+Conclude with `hy ▸ y.2`.
+-/
 theorem mem_of_pow_eq_int {F : Type} [Field F] (V : ValuationSubring F) (x : F) (n : ℕ) (hn : 0 < n) (m : ℤ)
     (h : x ^ n = m) : x ∈ V := by
   have hi : IsIntegral V x := by
@@ -18,6 +23,9 @@ theorem mem_of_pow_eq_int {F : Type} [Field F] (V : ValuationSubring F) (x : F) 
   obtain ⟨y, hy⟩ := (IsIntegrallyClosed.isIntegral_iff (R := V) (K := F)).1 hi
   exact hy ▸ y.2
 
+/- English proof (translation)
+Use `⟨⟨⟨_, GlobalTheory.HostModel.sqrtNegDisc_mem_coeffField c⟩, mem_of_pow_eq_int _ _ 2 two_pos (-(H.d : ℤ)) ?_⟩, ⟨⟨_, GlobalTheory.HostModel.zeta_A_mem_coeff c⟩, mem_of_pow_eq_int _ _ l.A l.A_pos 1 ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using H.sqrt_neg_disc_sq`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `(Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one` using `[zeta]`.
+-/
 theorem exists_values (c : Coeff l) (W : ValuationSubring ℂ) :
     ∃ r z : c.V W, (((c.V W).subtype r : c.F) : ℂ) = H.rt0 ∧ (((c.V W).subtype z : c.F) : ℂ) = zeta l.A := by
   refine ⟨⟨⟨_, GlobalTheory.HostModel.sqrtNegDisc_mem_coeffField c⟩, mem_of_pow_eq_int _ _ 2 two_pos (-(H.d : ℤ)) ?_⟩,
@@ -27,6 +35,11 @@ theorem exists_values (c : Coeff l) (W : ValuationSubring ℂ) :
   · apply Subtype.ext
     simpa [zeta] using (Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : ((r : ℂ)) ^ 2 = -(H.d : ℂ)`. Rewrite using `[← H.sqrt_neg_disc_sq, ← h]`. Simplify using the standard rewrite rules. Establish `h2 : r ^ 2 = -(H.d : ℤ)` using `by exact_mod_cast h1`.
+
+Establish `h3` using `H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg r]`.
+-/
 theorem int_ne_rt (c : Coeff l) (r : ℤ) : ((Int.castRingHom c.F r : c.F) : ℂ) ≠ H.rt0 := by
   intro h
   have h1 : ((r : ℂ)) ^ 2 = -(H.d : ℂ) := by
@@ -35,6 +48,9 @@ theorem int_ne_rt (c : Coeff l) (r : ℤ) : ((Int.castRingHom c.F r : c.F) : ℂ
   have h3 := H.d_prime.pos
   nlinarith [sq_nonneg r]
 
+/- English proof (translation)
+The claim follows from `let a := GlobalTheory.HostModel.arcIn c c.F (RingHom.id _) ⟨{ D₀ := a.D₀, mod := a.mod, oa := a.oa, nontriv := a.nontriv, even := a.even, bimult := a.bimult, gen := a.gen w0 := a.w0, be := a.be, be_symm := a.be_symm, be_pos := a.be_pos, be_adj := a.be_adj, be_dvd := a.be_dvd eta …`.
+-/
 theorem nonempty_int (D : Datum H) (c : Coeff l) :
     Nonempty (ArcIn D l (Int.castRingHom c.F) c.F (Int.castRingHom c.F)) :=
   let a := GlobalTheory.HostModel.arcIn c c.F (RingHom.id _)
@@ -55,6 +71,9 @@ def changeOff {D : Datum H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* 
       refine ⟨h₁, I, h₂, h₃, fun v hv q hq => h₄ v hv q ?_⟩
       simpa only [if_pos hv] using hq }
 
+/- English proof (translation)
+Take `⟨h, -⟩` from `a.geom (AlgebraicClosure (FractionRing O')) r z hr hz _ rfl`. Take `⟨n, -, hn⟩` from `h τ`. Apply the tactic sequence `split_ifs at hn <;> omega`.
+-/
 theorem rank_le {D : Datum H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {O' : Type} [CommRing O']
     [IsDomain O'] {b : O →+* O'} (a : ArcIn D l β O' b) (r z : O) (hr : ((β r : c.F) : ℂ) = H.rt0)
     (hz : ((β z : c.F) : ℂ) = zeta l.A) (τ : 𝓞 E →+* AlgebraicClosure (FractionRing O')) :
@@ -63,6 +82,9 @@ theorem rank_le {D : Datum H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+
   obtain ⟨n, -, hn⟩ := h τ
   split_ifs at hn <;> omega
 
+/- English proof (translation)
+The claim follows from `a.eta`.
+-/
 example {D : Datum H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {O' : Type} [CommRing O']
     [IsDomain O'] {b : O →+* O'} (a : ArcIn D l β O' b) :
     D.La → @QkPt O' _ _ a.D₀ (FractionRing O') _ (Algebra.id _) l.M := a.eta

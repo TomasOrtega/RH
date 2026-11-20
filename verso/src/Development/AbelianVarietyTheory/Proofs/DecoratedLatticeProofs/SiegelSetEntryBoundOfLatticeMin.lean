@@ -4,6 +4,41 @@ open Matrix GlobalTheory.ClassFin
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hN : 0 < N` using `Fin.pos i`. Use `set i0 : Fin N := ⟨0, hN⟩ with hi0`. Establish `hk : ∀ p q, |k p q| ≤ 1`. Introduce `p q`. Establish `h` using `congrFun (congrFun hS.orth q) q`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.one_apply_eq] at h`. Establish `: k p q * k p q ≤ ∑ x, k x q * k x q` using `Finset.single_le_sum (f := fun x => k x q * k x q) (fun x _ => mul_self_nonneg _) (Finset.mem_univ p)`. Rewrite `this` using `[h]`. Establish `h2 : |k p q| ^ 2 ≤ 1` using `by rw [sq_abs, sq]; exact this`. Use polynomial arithmetic with `[abs_nonneg (k p q)]`.
+
+Establish `hC1 : 1 ≤ C`. Use `hS.bdd i i` as an intermediate fact. Rewrite `this` using `[hS.diag i, abs_one]`. Conclude with `this`. Establish `hg : ∀ p q, (k * diagonal a * n) p q = ∑ l, k p l * a l * n l q`.
+
+Introduce `p q`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal]`. Establish `hcol : ∀ p, (k * diagonal a * n) p i0 = k p i0 * a i0`. Introduce `p`.
+
+Rewrite using `[hg, Finset.sum_eq_single i0]`. Rewrite using `[hS.diag i0, mul_one]`. Introduce `l _ hl`. Establish `: i0 < l`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases.
+
+Conclude with `absurd h (by simp [hi0, Fin.lt_def])`. Conclude with `h`. Rewrite using `[hS.lower l i0 this, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Establish `ha0 : t ≤ a i0`. Establish `h` using `hmin (Pi.single i0 1) (by`. Introduce `h`. Use `congrFun h i0` as an intermediate fact. Simplify using `at this)`.
+
+Use `h.trans ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (le_of_lt (hS.pos i0))).2 ?_` and prove the remaining obligations. Introduce `p`. Establish `: ((k * diagonal a * n) *ᵥ fun i => (((Pi.single i0 (1:ℤ) : Fin N → ℤ) i : ℤ) : ℝ)) p = (k * diagonal a * n) p i0`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+
+Rewrite using `[this, hcol, Real.norm_eq_abs, abs_mul, abs_of_pos (hS.pos i0)]`. Conclude with `mul_le_of_le_one_left (le_of_lt (hS.pos i0)) (hk p i0)`. Establish `hlow : ∀ l, t ≤ C * a l`. Introduce `l`. Distinguish the cases in `hl : l = i0`.
+
+Substitute `hl` using the available equality. Use polynomial arithmetic with `[hS.pos i0]`. Establish `: i0 < l`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Conclude with `absurd h (by simp [hi0, Fin.lt_def])`.
+
+Conclude with `h`. Conclude with `ha0.trans (hS.le i0 l this)`. Establish `hup : ∀ l, a l * t ^ (N - 1) ≤ C ^ (N - 1)`. Introduce `l`. Establish `hprod : ∏ x ∈ Finset.univ.erase l, t ≤ ∏ x ∈ Finset.univ.erase l, (C * a x)` using `Finset.prod_le_prod (fun _ _ => le_of_lt ht0) (fun x _ => hlow x)`.
+
+Rewrite `hprod` using `[Finset.prod_const, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_erase_of_mem (Finset.mem_univ l), Finset.card_univ, Fintype.card_fin]`. Establish `h1 : a l * ∏ x ∈ Finset.univ.erase l, a x = 1`. Rewrite using `[Finset.mul_prod_erase _ _ (Finset.mem_univ l)]`. Conclude with `hS.prod_eq`. Establish `hal` using `le_of_lt (hS.pos l)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hent : |(k * diagonal a * n) i j| ≤ ∑ l, a l * C`. Rewrite using `[hg]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[abs_mul, abs_mul, abs_of_pos (hS.pos l)]`.
+
+Establish `h1` using `hk i l`. Establish `h2` using `hS.bdd l j`. Establish `hal` using `le_of_lt (hS.pos l)`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul_of_nonneg_right h1 hal) h2 (abs_nonneg _) (by positivity)` to reduce the goal to its premises.
+
+Use `_ = a l * C := by ring`. Establish `htN : t ^ N = t ^ (N - 1) * t`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hN]`. Establish `htpow : 0 ≤ t ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[htN]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ l : Fin N, C ^ (N - 1) * C * 1 := by`.
+
+Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Apply `mul_le_mul (mul_le_mul_of_nonneg_right (hup l) (by linarith)) ht1 (le_of_lt ht0)` to reduce the goal to its premises. Check the signs of the components of the expression. Use `_ = N * C ^ N := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one, ← pow_succ, Nat.sub_add_cancel hN]`.
+-/
 theorem siegelSet_entry_bound_of_lattice_min (N : ℕ) (C : ℝ) (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ)
     (n : Matrix (Fin N) (Fin N) ℝ) (hS : IsSiegel C k a n) (t : ℝ) (ht0 : 0 < t) (ht1 : t ≤ 1)
     (hmin : ∀ z : Fin N → ℤ, z ≠ 0 → t ≤ ‖(k * diagonal a * n) *ᵥ fun i => (z i : ℝ)‖)
@@ -100,6 +135,9 @@ theorem siegelSet_entry_bound_of_lattice_min (N : ℕ) (C : ℝ) (k : Matrix (Fi
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one, ← pow_succ,
           Nat.sub_add_cancel hN]
 
+/- English proof (translation)
+Introduce `N C` and use `⟨N * C ^ N, fun k a n hS t ht0 ht1 hmin i j => siegelSet_entry_bound_of_lattice_min N C k a n hS t ht0 ht1 hmin i j⟩`.
+-/
 theorem siegel_entry_bound : ∀ (N : ℕ) (C : ℝ), ∃ C' : ℝ, ∀ (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ)
     (n : Matrix (Fin N) (Fin N) ℝ), IsSiegel C k a n → ∀ t : ℝ, 0 < t → t ≤ 1 →
     (∀ z : Fin N → ℤ, z ≠ 0 → t ≤ ‖(k * diagonal a * n) *ᵥ fun i => (z i : ℝ)‖) →

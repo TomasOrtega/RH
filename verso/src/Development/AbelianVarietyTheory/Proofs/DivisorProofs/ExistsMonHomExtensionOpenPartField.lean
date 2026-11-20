@@ -24,6 +24,11 @@ instance flat_bc (K : Type) [Field K] : Flat (bc K) := by
 instance surjective_bc (K : Type) [Field K] : Surjective (bc K) :=
   ⟨Function.surjective_to_subsingleton _⟩
 
+/- English proof (translation)
+Use `IsPullback.of_right (h₁₂ := pullback.snd Y.hom φ) (v₁₃ := φ) (h₂₂ := Y.hom) ?_ ?_ (IsPullback.of_hasPullback Y.hom φ).flip` and prove the remaining obligations. Establish `e1 : ((Over.pullback φ).map u).left ≫ pullback.snd Y.hom φ = pullback.snd X.hom φ` using `Over.w ((Over.pullback φ).map u)`. Establish `e2 : u.left ≫ Y.hom = X.hom` using `Over.w u`. Rewrite using `[e1, e2]`. Conclude with `(IsPullback.of_hasPullback X.hom φ).flip`.
+
+Simplify using `only [Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem isPullback_map_left {S T : Scheme.{0}} (φ : T ⟶ S) {X Y : Over S} (u : X ⟶ Y) :
     IsPullback ((Over.pullback φ).map u).left (pullback.fst X.hom φ) (pullback.fst Y.hom φ) u.left := by
   refine IsPullback.of_right (h₁₂ := pullback.snd Y.hom φ) (v₁₃ := φ) (h₂₂ := Y.hom) ?_ ?_
@@ -38,6 +43,9 @@ theorem isPullback_map_left {S T : Scheme.{0}} (φ : T ⟶ S) {X Y : Over S} (u 
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Establish `: Epi (pullback.fst X.hom (bc K))` using `Flat.epi_of_flat_of_surjective _`. Use `ext1`. Apply `(cancel_epi (pullback.fst X.hom (bc K))).1` to reduce the goal to its premises. Rewrite using `[← (isPullback_map_left (bc K) u).w, ← (isPullback_map_left (bc K) v).w, h]`.
+-/
 theorem map_injective {X Y : Over (Sp K)} {u v : X ⟶ Y}
     (h : (Over.pullback (bc K)).map u = (Over.pullback (bc K)).map v) : u = v := by
   have : Epi (pullback.fst X.hom (bc K)) := Flat.epi_of_flat_of_surjective _
@@ -45,10 +53,20 @@ theorem map_injective {X Y : Over (Sp K)} {u v : X ⟶ Y}
   apply (cancel_epi (pullback.fst X.hom (bc K))).1
   rw [← (isPullback_map_left (bc K) u).w, ← (isPullback_map_left (bc K) v).w, h]
 
+/- English proof (translation)
+The claim follows from `map_mul (Over.pullback (bc K)).homMonoidHom a b`.
+-/
 theorem map_mul' {X M : Over (Sp K)} [MonObj M] (a b : X ⟶ M) :
     (Over.pullback (bc K)).map (a * b) = (Over.pullback (bc K)).map a * (Over.pullback (bc K)).map b :=
   map_mul (Over.pullback (bc K)).homMonoidHom a b
 
+/- English proof (translation)
+Set `sh : H ⊗ H ⟶ H ⊗ H` to `lift (fst H H) (fst H H * snd H H)`. Set `sh' : H ⊗ H ⟶ H ⊗ H` to `lift (fst H H) ((fst H H)⁻¹ * snd H H)`. Establish `e1 : sh ≫ sh' = 𝟙 _`. Apply the tactic sequence `ext <;> simp [sh, sh', MonObj.comp_mul, GrpObj.comp_inv]`. Establish `e2 : sh' ≫ sh = 𝟙 _`.
+
+Apply the tactic sequence `ext <;> simp [sh, sh', MonObj.comp_mul, GrpObj.comp_inv]`. Establish `: IsIso sh.left` using `⟨sh'.left, by rw [← Over.comp_left, e1]; rfl, by rw [← Over.comp_left, e2]; rfl⟩`. Establish `hm : (fst V V ≫ j) * (snd V V ≫ j) = (j ⊗ₘ j) ≫ sh ≫ snd H H`. Simplify using `[sh, Hom.mul_def]`. Establish `: Flat (snd H H).left` using `by show Flat (pullback.snd H.hom H.hom); infer_instance`.
+
+Establish `: IsOpenImmersion (j ⊗ₘ j).left`. Rewrite using `[Over.tensorHom_left]`. Use `infer_instance`. Rewrite using `[hm, Over.comp_left, Over.comp_left]`. Use `infer_instance`.
+-/
 theorem flat_mul {S : Scheme.{0}} (H V : Over S) [GrpObj H] [Flat H.hom] (j : V ⟶ H)
     [IsOpenImmersion j.left] : Flat ((fst V V ≫ j) * (snd V V ≫ j)).left := by
   let sh : H ⊗ H ⟶ H ⊗ H := lift (fst H H) (fst H H * snd H H)
@@ -67,6 +85,11 @@ theorem flat_mul {S : Scheme.{0}} (H V : Over S) [GrpObj H] [Flat H.hom] (j : V 
   rw [hm, Over.comp_left, Over.comp_left]
   infer_instance
 
+/- English proof (translation)
+Establish `: QuasiCompact V.hom` using `by rw [← Over.w j]; infer_instance`. Establish `: QuasiCompact (V ⊗ V).hom` using `by show QuasiCompact (pullback.fst V.hom V.hom ≫ V.hom); infer_instance`. Establish `h2 : QuasiCompact (((fst V V ≫ j) * (snd V V ≫ j)).left ≫ H.hom)`. Rewrite using `[Over.w]`. Use `infer_instance`.
+
+Establish `h3 : QuasiSeparated H.hom` using `inferInstance`. Conclude with `MorphismProperty.of_postcomp (W := @QuasiCompact) (W' := @QuasiSeparated) _ H.hom h3 h2`.
+-/
 theorem quasiCompact_mul {S : Scheme.{0}} (H V : Over S) [GrpObj H] [IsLocallyNoetherian H.left]
     [QuasiCompact H.hom] [QuasiSeparated H.hom] (j : V ⟶ H) [IsOpenImmersion j.left] :
     QuasiCompact ((fst V V ≫ j) * (snd V V ≫ j)).left := by
@@ -78,6 +101,23 @@ theorem quasiCompact_mul {S : Scheme.{0}} (H V : Over S) [GrpObj H] [IsLocallyNo
   have h3 : QuasiSeparated H.hom := inferInstance
   exact MorphismProperty.of_postcomp (W := @QuasiCompact) (W' := @QuasiSeparated) _ H.hom h3 h2
 
+/- English proof (translation)
+Establish `hH'` using `GlobalTheory.IsogRed.smConn_baseChange (bc K) H hH`. Take `⟨_, hs, _, _, _⟩` from `hH`. Take `⟨_, hs', _, _, _⟩` from `hH'`. Establish `: IsIntegral ((Over.pullback (bc K)).obj H).left` using `isIntegral_of_smooth_of_geometricallyConnected ((Over.pullback (bc K)).obj H).hom`. Establish `hj' : IsOpenImmersion ((Over.pullback (bc K)).map j).left` using `MorphismProperty.of_isPullback (isPullback_map_left (bc K) j).flip inferInstance`.
+
+Establish `hV' : Nonempty ((Over.pullback (bc K)).obj V).left`. Take `⟨v⟩` from `‹Nonempty V.left›`. Take `⟨w, -⟩` from `(pullback.fst V.hom (bc K)).surjective v`. Conclude with `⟨w⟩`. Establish `hflat : Flat ((Over.pullback (bc K)).map ((fst V V ≫ j) * (snd V V ≫ j))).left` using `MorphismProperty.of_isPullback (isPullback_map_left (bc K) _).flip (flat_mul H V j)`.
+
+Establish `htr : ∀ (a x : 𝟙_ (Over (Sp (AlgebraicClosure K))) ⟶ (Over.pullback (bc K)).obj H), x ≫ (GlobalTheory.SS.transl a).hom = a * x` using `fun a x => (GlobalTheory.GenericHom.point_comp_mul x a (𝟙 _)).trans (by rw [Category.comp_id])`. Establish `hdec : ∀ h : 𝟙_ (Over (Sp (AlgebraicClosure K))) ⟶ (Over.pullback (bc K)).obj H, ∃ a x : 𝟙_ (Over (Sp (AlgebraicClosure K))) ⟶ (Over.pullback (bc K)).obj V, (a ≫ (Over.pullback (bc K)).map j) * (x ≫ (Over.pullback (bc K)).map j) = h`. Introduce `h`. Take `⟨u, hu⟩` from `GlobalTheory.GenericHom.exists_generic ((Over.pullback (bc K)).map j) [Iso.refl _, asIso (ι[(Over.pullback (bc K)).obj H]) ≪≫ GlobalTheory.SS.transl h]`. Take `⟨x, hx⟩` from `hu (Iso.refl _) (by simp)`.
+
+Take `⟨a, ha⟩` from `hu (asIso (ι[(Over.pullback (bc K)).obj H]) ≪≫ GlobalTheory.SS.transl h) (by simp)`. Use `⟨a, x, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, hx, Iso.trans_hom, ← Category.assoc, htr, asIso_hom, Iso.refl_hom, Category.comp_id, ← Hom.inv_def, inv_mul_cancel_right]`. Establish `hrange : ∀ y, y ∈ Set.range ((Over.pullback (bc K)).map ((fst V V ≫ j) * (snd V V ≫ j))).left`. Introduce `y`.
+
+Take `⟨h, hh⟩` from `GlobalTheory.GenericHom.exists_point_mem ((Over.pullback (bc K)).obj H) (closure {y}) isClosed_closure.isLocallyClosed ⟨y, subset_closure rfl⟩`. Take `⟨a, x, hax⟩` from `hdec h`. Set `t` to `lift a x ≫ Functor.LaxMonoidal.μ (Over.pullback (bc K)) V V`. Establish `ht : t ≫ (Over.pullback (bc K)).map ((fst V V ≫ j) * (snd V V ≫ j)) = h`. Rewrite using `[map_mul', Functor.map_comp, Functor.map_comp, MonObj.comp_mul, ← hax]`.
+
+Simplify using `only [t, Category.assoc]`. Rewrite using `[← Category.assoc (Functor.LaxMonoidal.μ _ V V), Functor.Monoidal.μ_fst, ← Category.assoc (Functor.LaxMonoidal.μ _ V V), Functor.Monoidal.μ_snd, lift_fst_assoc, lift_snd_assoc]`. Establish `hpt : ((Over.pullback (bc K)).map ((fst V V ≫ j) * (snd V V ≫ j))).left (t.left (IsLocalRing.closedPoint (AlgebraicClosure K))) = h.left (IsLocalRing.closedPoint (AlgebraicClosure K))`. Use `congrArg (fun φ => φ.left (IsLocalRing.closedPoint (AlgebraicClosure K))) ht` as an intermediate fact. Conclude with `this`.
+
+Conclude with `(hflat.generalizingMap).stableUnderGeneralization_range (specializes_iff_mem_closure.2 (hh _)) ⟨_, hpt⟩`. Use `⟨fun y => ?_⟩` and prove the remaining obligations. Take `⟨yb, rfl⟩` from `(pullback.fst H.hom (bc K)).surjective y`. Take `⟨w, rfl⟩` from `hrange yb`. Conclude with `⟨pullback.fst _ (bc K) w, by`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← (isPullback_map_left (bc K) _).w, Scheme.Hom.comp_apply]⟩`.
+-/
 theorem surjective_mul {K : Type} [Field K] (H V : Over (Sp K)) [GrpObj H] (hH : GlobalTheory.SS.SmConn H)
     (j : V ⟶ H) [IsOpenImmersion j.left] [Nonempty V.left] :
     Surjective ((fst V V ≫ j) * (snd V V ≫ j)).left := by
@@ -132,6 +172,33 @@ theorem surjective_mul {K : Type} [Field K] (H V : Over (Sp K)) [GrpObj H] (hH :
   exact ⟨pullback.fst _ (bc K) w, by
     rw [← Scheme.Hom.comp_apply, ← (isPullback_map_left (bc K) _).w, Scheme.Hom.comp_apply]⟩
 
+/- English proof (translation)
+Introduce `K _ H G V _ _ hH hG j f hj hV hm`. Establish `hj' : IsOpenImmersion ((Over.pullback (bc K)).map j).left` using `MorphismProperty.of_isPullback (isPullback_map_left (bc K) j).flip hj`. Establish `hV' : Nonempty ((Over.pullback (bc K)).obj V).left`. Take `⟨v⟩` from `hV`. Take `⟨w, -⟩` from `(pullback.fst V.hom (bc K)).surjective v`.
+
+Conclude with `⟨w⟩`. Establish `hpts : ∀ x y z : 𝟙_ (Over (Sp (AlgebraicClosure K))) ⟶ (Over.pullback (bc K)).obj V, (x ≫ (Over.pullback (bc K)).map j) * (y ≫ (Over.pullback (bc K)).map j) = z ≫ (Over.pullback (bc K)).map j → (x ≫ (Over.pullback (bc K)).map f) * (y ≫ (Over.pullback (bc K)).map f) = z ≫ (Over.pu …`. Introduce `x y z hxyz`. Take `⟨x', rfl⟩` from `((Over.mapPullbackAdj (bc K)).homEquiv _ V).surjective x`. Take `⟨y', rfl⟩` from `((Over.mapPullbackAdj (bc K)).homEquiv _ V).surjective y`.
+
+Take `⟨z', rfl⟩` from `((Over.mapPullbackAdj (bc K)).homEquiv _ V).surjective z`. Simplify using `only [← Adjunction.homEquiv_naturality_right, ← ReciprocityTheory.ChartRestriction.G.Out.UBC.homEquiv_mul] at hxyz ⊢`. Conclude with `congrArg _ (hm _ x' y' z' (Equiv.injective _ hxyz))`. Take `⟨Fb, hFb, hjF⟩` from `GlobalTheory.GenericHom.exists_monHom_extension (AlgebraicClosure K) ((Over.pullback (bc K)).obj H) ((Over.pullback (bc K)).obj G) ((Over.pullback (bc K)).obj V) (GlobalTheory.IsogRed.smConn_baseChange _ H hH) (GlobalTheory.IsogRed.smConn_baseChange _ G hG) ((Over.pullback (bc K) …`. Set `m : V ⊗ V ⟶ H` to `(fst V V ≫ j) * (snd V V ≫ j)`.
+
+Set `g : V ⊗ V ⟶ G` to `(fst V V ≫ f) * (snd V V ≫ f)`. Establish `hPg : (Over.pullback (bc K)).map g = (Over.pullback (bc K)).map m ≫ Fb`. Simplify using `only [m, g, map_mul', Functor.map_comp, MonObj.mul_comp, Category.assoc, hjF]`. Use `haveI := hj`. Use `haveI := hV`.
+
+Take `⟨_, hs, _, _, _⟩` from `id hH`. Establish `: IsLocallyNoetherian H.left` using `LocallyOfFiniteType.isLocallyNoetherian H.hom`. Establish `hflat : Flat m.left` using `flat_mul H V j`. Establish `hqc : QuasiCompact m.left` using `quasiCompact_mul H V j`. Establish `hsurj : Surjective m.left` using `surjective_mul H V hH j`.
+
+Establish `hcond : ∀ {Z : Scheme.{0}} (a b : Z ⟶ (V ⊗ V).left), a ≫ m.left = b ≫ m.left → a ≫ g.left = b ≫ g.left`. Introduce `Z a b hab`. Establish `hb : b ≫ (V ⊗ V).hom = a ≫ (V ⊗ V).hom`. Rewrite using `[← Over.w m, ← Category.assoc, ← Category.assoc, hab]`. Set `a' : Over.mk (a ≫ (V ⊗ V).hom) ⟶ V ⊗ V` to `Over.homMk a rfl`.
+
+Set `b' : Over.mk (a ≫ (V ⊗ V).hom) ⟶ V ⊗ V` to `Over.homMk b hb`. Establish `h1 : a' ≫ m = b' ≫ m` using `Over.OverMorphism.ext hab`. Establish `h2 : a' ≫ g = b' ≫ g` using `map_injective (by`. Rewrite using `[Functor.map_comp, Functor.map_comp, hPg, ← Category.assoc, ← Category.assoc, ← Functor.map_comp, ← Functor.map_comp, h1])`. Conclude with `congrArg CommaMorphism.left h2`.
+
+Set `F₀ : H.left ⟶ G.left` to `EffectiveEpi.desc m.left g.left hcond`. Establish `hF₀ : m.left ≫ F₀ = g.left` using `EffectiveEpi.fac m.left g.left hcond`. Establish `hw : F₀ ≫ G.hom = H.hom`. Apply `(cancel_epi m.left).1` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hF₀, Over.w g, Over.w m]`.
+
+Set `F : H ⟶ G` to `Over.homMk F₀ hw`. Establish `hmF : m ≫ F = g` using `Over.OverMorphism.ext hF₀`. Establish `hmb : Epi ((Over.pullback (bc K)).map m).left`. Establish `: Flat ((Over.pullback (bc K)).map m).left` using `MorphismProperty.of_isPullback (isPullback_map_left (bc K) m).flip hflat`. Establish `: Surjective ((Over.pullback (bc K)).map m).left` using `MorphismProperty.of_isPullback (isPullback_map_left (bc K) m).flip hsurj`.
+
+Conclude with `Flat.epi_of_flat_of_surjective _`. Establish `hPF : (Over.pullback (bc K)).map F = Fb` using `by ext1`. Apply `(cancel_epi ((Over.pullback (bc K)).map m).left).1` to reduce the goal to its premises. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Functor.map_comp, hmF, hPg]`. Establish `hmul : ∀ (Z : Over (Sp K)) (x y : Z ⟶ H), (x * y) ≫ F = (x ≫ F) * (y ≫ F)`.
+
+Introduce `Z x y`. Apply `map_injective` to reduce the goal to its premises. Rewrite using `[Functor.map_comp, map_mul', map_mul', Functor.map_comp, Functor.map_comp, hPF, MonObj.mul_comp]`. Use `⟨F, ?_, map_injective (by rw [Functor.map_comp, hPF, hjF])⟩` and prove the remaining obligations. Establish `hone : (1 : 𝟙_ (Over (Sp K)) ⟶ H) ≫ F = 1`.
+
+Establish `h` using `hmul (𝟙_ (Over (Sp K))) 1 1`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `_root_.mul_eq_left.1 h.symm`. Establish `e1 : ∀ (A : Over (Sp K)) [GrpObj A], (η[A] : 𝟙_ _ ⟶ A) = 1` using `fun A _ => by`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1 H, e1 G, hone]`. Establish `h` using `hmul _ (fst H H) (snd H H)`. Simplify `h` using `[Hom.mul_def]`.
+-/
 theorem exists_monHom_extension_of_field : ∀ (K : Type) [Field K] (H G V : Over (Sp K)) [GrpObj H] [GrpObj G], GlobalTheory.SS.SmConn H → GlobalTheory.SS.SmConn G → ∀ (j : V ⟶ H) (f : V ⟶ G), IsOpenImmersion j.left → Nonempty V.left → (∀ (Z : Over (Sp K)) (u₁ u₂ u₃ : Z ⟶ V), (u₁ ≫ j) * (u₂ ≫ j) = u₃ ≫ j → (u₁ ≫ f) * (u₂ ≫ f) = u₃ ≫ f) → ∃ F : H ⟶ G, IsMonHom F ∧ j ≫ F = f := by
   intro K _ H G V _ _ hH hG j f hj hV hm
   have hj' : IsOpenImmersion ((Over.pullback (bc K)).map j).left :=

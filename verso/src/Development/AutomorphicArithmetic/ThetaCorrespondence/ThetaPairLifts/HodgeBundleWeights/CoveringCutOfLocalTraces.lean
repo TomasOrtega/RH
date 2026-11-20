@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop
 namespace GlobalTheory.CovTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Use `(Sizes.hostN 3).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨C, -, x0, hx⟩` from `h`. Conclude with `⟨0, le_rfl, x0, fun x hx' hle ι p hp i => cutAt_of_rows p hp.1 hp.2 i _ _ (hx x hx' hle ι p hp i)⟩`.
+-/
 theorem covering_cut_of_local_traces (_h : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) : Cut := by
   refine (Sizes.hostN 3).imp fun Fm CH _ h => ?_
   obtain ⟨C, -, x0, hx⟩ := h
@@ -21,6 +24,9 @@ end
 section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.covering_cut_of_local_traces | exact _root_.GlobalTheory.CovTop.covering_cut_of_local_traces | (intros; apply _root_.GlobalTheory.CovTop.covering_cut_of_local_traces <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.covering_cut_criterion : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Cut := by
   first | exact @_root_.GlobalTheory.CovTop.covering_cut_of_local_traces | exact _root_.GlobalTheory.CovTop.covering_cut_of_local_traces | (intros; apply _root_.GlobalTheory.CovTop.covering_cut_of_local_traces <;> assumption)
 end

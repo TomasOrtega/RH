@@ -11,26 +11,49 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Diagona
 
 open NumberField Matrix IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Aut UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Simplify using `only [SemidirectProduct.mul_left, SemidirectProduct.mul_right, SemidirectProduct.inv_left, hy, mul_one]`. Rewrite using `[← MulAut.mul_apply, ← map_mul, mul_inv_cancel, map_one, MulAut.one_apply]`.
+-/
 private theorem conj_left {R : Type} [CommRing R] (x y : GG 3 R) (hy : y.right = 1) :
     (x * y * x⁻¹).left = x.left * sgnAct 3 R x.right y.left * x.left⁻¹ := by
   simp only [SemidirectProduct.mul_left, SemidirectProduct.mul_right, SemidirectProduct.inv_left, hy, mul_one]
   rw [← MulAut.mul_apply, ← map_mul, mul_inv_cancel, map_one, MulAut.one_apply]
 
+/- English proof (translation)
+Use `conj_left (GG.ofGL h) (r d) hd` as an intermediate fact. Rewrite `this` using `[SemidirectProduct.left_inl, SemidirectProduct.right_inl, sgnAct_one]`. Conclude with `this`.
+-/
 private theorem conjBy_left {D R : Type} [Group D] [CommRing R] (h : GL (Fin 3) R) (r : D →* GG 3 R) (d : D)
     (hd : (r d).right = 1) : (conjBy h r d).left = h * (r d).left * h⁻¹ := by
   have := conj_left (GG.ofGL h) (r d) hd
   rw [SemidirectProduct.left_inl, SemidirectProduct.right_inl, sgnAct_one] at this
   exact this
 
+/- English proof (translation)
+Use `show (GG.ofGL h * r d * (GG.ofGL h)⁻¹).right = _`. Simplify using the standard rewrite rules.
+-/
 private theorem conjBy_right {D R : Type} [Group D] [CommRing R] (h : GL (Fin 3) R) (r : D →* GG 3 R) (d : D) :
     (conjBy h r d).right = (r d).right := by
   show (GG.ofGL h * r d * (GG.ofGL h)⁻¹).right = _
   simp
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.UpperTriangularThreeDiagonalOfMul.diag_mul X Y hX hY a`.
+-/
 private theorem diag_mul {R : Type} [CommRing R] (X Y : Matrix (Fin 3) (Fin 3) R) (hX : ∀ i j, j < i → X i j = 0)
     (hY : ∀ i j, j < i → Y i j = 0) (a : Fin 3) : (X * Y) a a = X a a * Y a a :=
   _root_.UpperTheory.Reformulated.B.UpperTriangularThreeDiagonalOfMul.diag_mul X Y hX hY a
 
+/- English proof (translation)
+Break down `Int.units_eq_one_or ε with rfl | rfl` into its components or cases. Rewrite using `[sgnAct_one]`. Conclude with `⟨hT, fun _ _ h => h⟩`. Rewrite using `[sgnAct_neg_one]`. Establish `h1 : ∀ a b, theta T a b = (T⁻¹ : GL (Fin 3) R) b.rev a.rev`.
+
+Introduce `a b`. Rewrite using `[theta_val]`. Generalize the expression as in `((T⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) = X`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]`. Establish `h2 : ∀ i j, j < i → (T⁻¹ : GL (Fin 3) R) i j = 0`.
+
+Use `T.invertible` as an intermediate fact. Establish `h3 : (T : Matrix (Fin 3) (Fin 3) R).BlockTriangular id` using `fun i j h => hT i j h`. Establish `h4` using `Matrix.blockTriangular_inv_of_blockTriangular h3`. Introduce `i j h`. Rewrite using `[Matrix.GeneralLinearGroup.coe_inv]`.
+
+Conclude with `h4 h`. Use `⟨fun i j h => by rw [h1, h2 _ _ (Fin.rev_lt_rev.2 h)], fun u I h a => ?_⟩` and prove the remaining obligations. Establish `h5` using `diag_mul _ _ hT h2 a.rev`. Rewrite `h5` using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_apply_eq]`. Establish `h6 : ((u ^ wt1 a : Rˣ) : R) * ((u ^ wt1 a.rev : Rˣ) : R) = 1`.
+
+Apply the tactic sequence `rw [← Units.val_mul, ← _root_.zpow_add, show wt1 a + wt1 a.rev = 0 by fin_cases a <;> rfl, zpow_zero, Units.val_one]`. Rewrite using `[h1]`. Establish `h7` using `I.mul_mem_left (-((T⁻¹ : GL (Fin 3) R) a.rev a.rev * ((u ^ wt1 a : Rˣ) : R))) (h a.rev)`. Use `h7 using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-((u ^ wt1 a : Rˣ) : R)) * h5 - (T⁻¹ : GL (Fin 3) R) a.rev a.rev * h6`.
+-/
 private theorem tri_sgn {R : Type} [CommRing R] (ε : ℤˣ) (T : GL (Fin 3) R) (hT : ∀ i j, j < i → T i j = 0) :
     (∀ i j, j < i → sgnAct 3 R ε T i j = 0) ∧ ∀ (u : Rˣ) (I : Ideal R), (∀ a, T a a - ((u ^ wt1 a : Rˣ) : R) ∈ I) →
       ∀ a, sgnAct 3 R ε T a a - ((u ^ wt1 a : Rˣ) : R) ∈ I := by
@@ -60,6 +83,13 @@ private theorem tri_sgn {R : Type} [CommRing R] (ε : ℤˣ) (T : GL (Fin 3) R) 
   convert h7 using 1
   linear_combination (-((u ^ wt1 a : Rˣ) : R)) * h5 - (T⁻¹ : GL (Fin 3) R) a.rev a.rev * h6
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `(Ideal.Quotient.eq (I := maximalIdeal R)).2 h`. Establish `h2 : Units.map (residue R).toMonoidHom u ^ wt1 i = Units.map (residue R).toMonoidHom u ^ wt1 j`. Rewrite using `[← map_zpow, ← map_zpow]`. Conclude with `Units.ext h1`.
+
+Establish `h3 : Units.map (residue R).toMonoidHom u ^ 2 = 1`. Generalize the expression as in `Units.map (residue R).toMonoidHom u = v at h2`. Establish `h4 : v ^ (wt1 i - wt1 j) = 1` using `by rw [_root_.zpow_sub, h2, mul_inv_cancel]`. Apply the tactic sequence `have h5 : wt1 i - wt1 j ∣ 2 := by revert hij; fin_cases i <;> fin_cases j <;> simp [wt1] <;> decide`. Take `⟨k, hk⟩` from `h5`.
+
+Rewrite using `[← zpow_natCast, Nat.cast_ofNat, hk, _root_.zpow_mul, h4, _root_.one_zpow]`. Establish `h6 : residue R ((u : R) ^ 2 - 1) = 0`. Rewrite using `[map_sub, map_pow, map_one, sub_eq_zero]`. Conclude with `congrArg Units.val h3`. Conclude with `(residue_eq_zero_iff _).1 h6 hu`.
+-/
 private theorem unit_sep {R : Type} [CommRing R] [IsLocalRing R] (u : Rˣ) (hu : IsUnit ((u : R) ^ 2 - 1)) {i j : Fin 3}
     (hij : i ≠ j) : ((u ^ wt1 i : Rˣ) : R) - ((u ^ wt1 j : Rˣ) : R) ∉ maximalIdeal R := by
   intro h
@@ -79,6 +109,35 @@ private theorem unit_sep {R : Type} [CommRing R] [IsLocalRing R] (u : Rˣ) (hu :
     exact congrArg Units.val h3
   exact (residue_eq_zero_iff _).1 h6 hu
 
+/- English proof (translation)
+Take `⟨h, hh, htri⟩` from `(hpt.loc F.vl).1 rfl`. Set `f : GL (Fin 3) A →* GL (Fin 3) K` to `GeneralLinearGroup.map (val : A →+* K)`. Set `ε` to `(r' γ).right`. Use `⟨f (sgnAct 3 A ε h⁻¹ * (r' γ).left⁻¹) * tor K t, fun d hd X hX => ?_⟩` and prove the remaining obligations. Establish `hd' : (r' (F.loc _ d)).right = 1` using `(hpt.mult _).trans hd`.
+
+Set `T` to `(conjBy h⁻¹ (r'.comp (F.loc _)) d).left`. Establish `hT : T = h⁻¹ * (r' (F.loc _ d)).left * h`. Use `conjBy_left h⁻¹ (r'.comp (F.loc _)) d hd'` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `e1 : ∀ s, (r' s).right = 1 → f (r' s).left = tor K t * (r s).left * (tor K t)⁻¹` using `fun s hs => by`.
+
+Establish `h1` using `DFunLike.congr_fun hpush s`. Establish `h2 : (r s).right = 1`. Rewrite using `[← conjBy_right (tor K t), ← h1]`. Conclude with `hs`. Rewrite using `[← conjBy_left _ _ _ h2, ← h1]`.
+
+Both sides reduce to the same expression. Establish `e2 : X = f (sgnAct 3 A ε T)`. Establish `h1` using `e1 (γ * F.loc _ d * γ⁻¹) (by simp [hd'])`. Rewrite `h1` using `[map_mul, map_mul, map_inv, conj_left _ _ hd']`. Establish `h2 : (r (γ * F.loc _ d * γ⁻¹)).left = (tor K t)⁻¹ * f ((r' γ).left * sgnAct 3 A ε (r' (F.loc _ d)).left * (r' γ).left⁻¹) * tor K t`.
+
+Rewrite using `[h1]`. Use `group`. Rewrite using `[hX, h2, hT]`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+
+Establish `e3 : ∀ i j, X i j = val (sgnAct 3 A ε T i j)` using `fun i j => by rw [e2]; rfl`. Establish `up : ∀ i j, j < i → T i j = 0` using `fun i j hij => htri.tri d hd i j (by`. Establish `: (j : ℕ) < i` using `hij`. Simplify using `only [wt, wt1]`. Use the proof step `omega)`.
+
+Take `⟨s1, s2⟩` from `tri_sgn ε T up`. Set `u₀ : Aˣ` to `Units.map (algebraMap O A).toMonoidHom (F.Ψv _ d)`. Establish `hu : ∀ a, ((u₀ ^ wt1 a : Aˣ) : A) = algebraMap O A (psi (F.Ψv _) a d)` using `fun a => by`. Rewrite using `[← map_zpow]`. Both sides reduce to the same expression.
+
+Use `⟨fun i j hij => by rw [e3, s1 i j hij, map_zero], fun hI a => ?_, fun hun u hu1 i j hij he => ?_⟩` and prove the remaining obligations. Use `s2 u₀ ⊥ (fun a => by rw [Ideal.mem_bot, sub_eq_zero, hu]; exact htri.ine d hI hd a) a` as an intermediate fact. Rewrite `this` using `[Ideal.mem_bot, sub_eq_zero, hu]`. Rewrite using `[e3, this, AlgHom.commutes]`. Establish `hres : ∀ a, T a a - ((u₀ ^ wt1 a : Aˣ) : A) ∈ maximalIdeal A` using `fun a => by`.
+
+Establish `h1 : GeneralLinearGroup.map (residue A) h = 1`. Use extensionality with `a b`. Use `(residue_eq_zero_iff _).2 (hh a b)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Use `this.trans ?_` and prove the remaining obligations.
+
+Simplify using `[Matrix.one_apply, apply_ite (residue A)]`. Establish `h2 : GeneralLinearGroup.map (residue A) T = GeneralLinearGroup.map (residue A) (r' (F.loc _ d)).left`. Rewrite using `[hT, map_mul, map_mul, map_inv, h1, inv_one, one_mul, mul_one]`. Establish `h3 : residue A (T a a) = residue A ((r' (F.loc _ d)).mat a a)` using `congrArg (fun Y : GL (Fin 3) (ResidueField A) => Y a a) h2`. Establish `h4` using `hpt.red (F.loc _ d) a a`.
+
+Establish `h5 : ((r0 F.η F.Ψ (F.loc _ d)).mat.map (algebraMap O A)) a a = ((u₀ ^ wt1 a : Aˣ) : A)`. Rewrite using `[hu, Matrix.map_apply, GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply_eq]`. Both sides reduce to the same expression. Rewrite `h4` using `[Matrix.sub_apply, h5, ← residue_eq_zero_iff, map_sub]`. Rewrite using `[← residue_eq_zero_iff, map_sub, h3, h4]`.
+
+Establish `h6` using `s2 u₀ _ hres`. Establish `h7 : algebraMap O A u - 1 ∈ maximalIdeal A`. Rewrite using `[← map_one (algebraMap O A), ← map_sub]`. Conclude with `map_nonunit _ _ hu1`. Establish `h8 : sgnAct 3 A ε T i i = sgnAct 3 A ε T j j * algebraMap O A u`.
+
+Rewrite `he` using `[e3, e3]`. Conclude with `hval (by rw [he, map_mul, AlgHom.commutes])`. Use `unit_sep u₀ (by simpa [u₀] using hun.map (algebraMap O A)) hij ?_` and prove the remaining obligations. Establish `h9` using `sub_mem (add_mem (h6 j) ((maximalIdeal A).mul_mem_left (sgnAct 3 A ε T j j) h7)) (h6 i)`. Use `h9 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[h8]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem key {O K G Γ ι A : Type} [CommRing O] [IsLocalRing O] [Field K] [Algebra O K] [Group G] [Group Γ]
     [TopologicalSpace Γ] (F : Frame O G Γ ι) (g₁ : Γ) (r : Γ →* GG 3 K) [CommRing A] [IsLocalRing A] [Algebra O A]
     [IsLocalHom (algebraMap O A)] (val : A →ₐ[O] K) (hval : Function.Injective val) (t : Kˣ) (r' : Γ →* GG 3 A)
@@ -152,15 +211,24 @@ private theorem key {O K G Γ ι A : Type} [CommRing O] [IsLocalRing O] [Field K
     convert h9 using 1
     rw [h8]; ring
 
+/- English proof (translation)
+Establish `: FaithfulSMul O A` using `(faithfulSMul_iff_algebraMap_injective O A).2 fun x y hxy => hinj (congrArg A.val hxy)`. Conclude with `Algebra.IsIntegral.isLocalHom O A`.
+-/
 private theorem loc_hom {O K : Type} [CommRing O] [Field K] [Algebra O K] (hinj : Function.Injective (algebraMap O K))
     (A : Subalgebra O K) [Module.Finite O A] : IsLocalHom (algebraMap O A) := by
   have : FaithfulSMul O A := (faithfulSMul_iff_algebraMap_injective O A).2 fun x y hxy =>
     hinj (congrArg A.val hxy)
   exact Algebra.IsIntegral.isLocalHom O A
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, map_inv, inv_mul_cancel_comm]`.
+-/
 private theorem chr_conj {G C : Type} [Group G] [CommGroup C] (χ : G →* C) (u x : G) : χ (u⁻¹ * x * u) = χ x := by
   rw [map_mul, map_mul, map_inv, inv_mul_cancel_comm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => MonoidHom.toHomUnits { toFun := fun s => X s i i map_one' := by simp map_mul' := fun s t => by rw [map_mul, Units.val_mul, diag_mul _ _ (hX s) (hX t)] }, fun _ _ => rfl⟩`.
+-/
 private theorem exists_diag {H k : Type} [Group H] [Field k] (X : H →* GL (Fin 3) k)
     (hX : ∀ s i j, j < i → X s i j = 0) : ∃ κ : Fin 3 → H →* kˣ, ∀ i s, X s i i = κ i s :=
   ⟨fun i => MonoidHom.toHomUnits
@@ -169,6 +237,45 @@ private theorem exists_diag {H k : Type} [Group H] [Field k] (X : H →* GL (Fin
       map_mul' := fun s t => by rw [map_mul, Units.val_mul, diag_mul _ _ (hX s) (hX t)] }, fun _ _ => rfl⟩
 
 open UpperTheory.V.Base in
+/- English proof (translation)
+Introduce `Ω _ _ _ l hl c N _ e ψ o₁ hD S A F hF K _ _ _ _ hK g₁ _ r hr ρ hρ w hw`. Take `⟨A', _, _, t, r', hpt, hpush⟩` from `hr`. Use `loc_hom (O := c.O) Subtype.val_injective A'` as an intermediate fact. Set `B` to `placeOf Ω w`. Establish `hB : IsPlaceOver B w` using `isPlaceOver_placeOf Ω w`.
+
+Establish `hBl : B.valuation (l : Ω) < 1`. Establish `h` using `hB ((l : ℕ) : 𝓞 K)`. Establish `e : algebraMap K Ω (((l : ℕ) : 𝓞 K) : K) = (l : Ω)` using `by simp`. Rewrite `h` using `[e]`. Conclude with `h.2 hw`.
+
+Establish `hAl : (A F.vl).valuation (l : Ω) < 1`. Establish `h` using `hF.isOver F.vl ((l : ℕ) : 𝓞 ℚ)`. Establish `e : algebraMap ℚ Ω (((l : ℕ) : 𝓞 ℚ) : ℚ) = (l : Ω)` using `by simp`. Rewrite `h` using `[e]`. Conclude with `h.2 hF.vl`.
+
+Take `⟨u, hu, huI⟩` from `(Chr.placesQ Ω).2.2 l B _ hl.out hBl hAl`. Take `⟨u', hu', -⟩` from `(Chr.placesQ Ω).2.2 l _ B hl.out hAl hBl`. Establish `hrg` using `(gaussian_field_range_eq_ker_quartic_char.2 Ω K hK).1`. Establish `hη : ∀ d : F.D F.vl, F.ηv _ d = eta4 Ω d` using `fun d => DFunLike.congr_fun hF.η d.1`. Establish `hΨ : ∀ d : F.D F.vl, F.Ψv _ d = Chr.Psi l e (Chr.dirG ℚ Ω ψ) d` using `fun d => DFunLike.congr_fun hF.Ψ d.1`.
+
+Establish `hDec : ∀ s : G K Ω, s ∈ Dec (F` using `K) B ↔ galEmb ℚ K Ω s ∈ Dec (F := ℚ) B := fun s => by`. Rewrite using `[mem_Dec, mem_Dec]`. Conclude with `Iff.rfl`. Establish `hIne : ∀ s : G K Ω, s ∈ Ine (F` using `K) B ↔ galEmb ℚ K Ω s ∈ Ine (F := ℚ) B := fun s => and_congr (hDec s) Iff.rfl`. Take `⟨P, hP⟩` from `key F g₁ r A'.val Subtype.val_injective t r' hpt hpush (F.π u)`.
+
+Set `d : Dec (F` to `K) B → F.D F.vl := fun s => ⟨u⁻¹ * galEmb ℚ K Ω s * u, hF.D _ ▸ hu _ ((hDec s).1 s.2)⟩`. Establish `hd : ∀ s, F.ηv _ (d s) = 1` using `fun s => by`. Rewrite using `[hη, chr_conj, ← MonoidHom.mem_ker, ← hrg]`. Conclude with `⟨_, rfl⟩`. Establish `hP'` using `fun s : Dec (F := K) B => hP (d s) (hd s) (P * ρ s * P⁻¹) (by`.
+
+Establish `h1 : F.π u * F.loc _ (d s) * (F.π u)⁻¹ = toGS Ω _ (galEmb ℚ K Ω s)` using `by show F.π u * F.π (u⁻¹ * galEmb ℚ K Ω s * u) * (F.π u)⁻¹ = _`. Rewrite using `[← hF.π, map_mul, map_mul, map_inv]`. Use `group`. Rewrite using `[h1, show ρ s = (r (toGS Ω _ (galEmb ℚ K Ω s))).left from Units.ext (hρ s)])`. Take `⟨κ, hκ⟩` from `exists_diag ((MulAut.conj P).toMonoidHom.comp (ρ.comp (Dec (F := K) B).subtype)) fun s => (hP' s).1`.
+
+Use `replace hκ : ∀ i (s : Dec (F := K) B), (P * ρ s * P⁻¹ : GL (Fin 3) (Qbar l)) i i = κ i s := hκ`. Set `m : c.Oˣ →* (Qbar l)ˣ` to `Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom`. Establish `hcyc : ∀ s : G K Ω, cycBar K Ω l s = m (chiO ℚ Ω l c.O (galEmb ℚ K Ω s))` using `fun s => Units.ext rfl`. Use `⟨B, hB, fun i => (m.comp ((Chr.dirG ℚ Ω ψ).comp (galEmb ℚ K Ω))) ^ wt1 i, κ, fun i s hs => ?_, ⟨P, fun s => ⟨(hP' s).1, fun i => hκ i s⟩⟩, fun i s hs => ?_, Or.inl fun i j hij => ?_⟩` and prove the remaining obligations. Establish `h1 : Chr.cls ℚ Ω N (galEmb ℚ K Ω s) = 1` using `(Chr.clsFacts ℚ Ω N).2.2.1 _ 1 fun x hx => by`.
+
+Use `(hs x hx).trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hx, pow_one]`. Use `show m (ψ.toUnitHom (Chr.cls ℚ Ω N (galEmb ℚ K Ω s))) ^ wt1 i = 1`. Rewrite using `[h1, map_one, map_one, _root_.one_zpow]`. Establish `h1` using `(hP' s).2.1 (by`.
+
+Rewrite using `[Subgroup.mem_subgroupOf, hF.I]`. Conclude with `huI _ ((hIne s).1 hs)) i`. Establish `h2 : κ i s = m (F.Ψv _ (d s) ^ wt1 i)` using `Units.ext ((hκ i s).symm.trans h1)`. Apply the tactic sequence `rw [h2, hΨ, chr_conj, hcyc, show ![(e : ℤ), 0, -(e : ℤ)] i = e * wt1 i by fin_cases i <;> simp [wt1]]`. Use `show m ((chiO ℚ Ω l c.O _ ^ (e : ℤ) * Chr.dirG ℚ Ω ψ _) ^ wt1 i) = _ * m (Chr.dirG ℚ Ω ψ _) ^ wt1 i`.
+
+Rewrite using `[mul_zpow, map_mul, map_zpow, map_zpow, map_zpow, _root_.zpow_mul]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Establish `hun : IsUnit (1 + (l : ℤ_[l]))`. Rewrite using `[PadicInt.isUnit_iff]`.
+
+Conclude with `PadicInt.norm_natCast_eq_one_iff.2 (show l.Coprime (1 + l) by simp)` after adjusting the coercions. Take `⟨σ, hσ, h1⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l B hBl hun.unit`. Establish `h2 : σ ^ 2 ∈ (galEmb ℚ K Ω).range`. Rewrite using `[hrg, MonoidHom.mem_ker, map_pow, Int.units_sq]`. Take `⟨s, hs⟩` from `h2`.
+
+Establish `h3` using `DFunLike.congr_fun hij ⟨s, (hDec s).2 (hs ▸ pow_mem hσ.1 2)⟩`. Rewrite `h3` using `[MonoidHom.mul_apply, left_eq_mul]`. Establish `h4 : cycZ K Ω l s = 1`. Use `Units.ext (Subtype.val_injective ((algebraMap ℚ_[l] (Qbar l)).injective ?_))` and prove the remaining obligations. Conclude with `(congrArg Units.val h3).trans (map_one _).symm`.
+
+Establish `h5 : cycZ ℚ Ω l (galEmb ℚ K Ω s) = 1` using `h4`. Rewrite `h5` using `[hs, map_pow, h1]`. Establish `h6 : (1 + (l : ℤ_[l])) ^ 2 = 1` using `congrArg Units.val h5`. Establish `h7 : (1 + l) ^ 2 = 1` using `by exact_mod_cast h6`. Use `hl.out.pos` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Take `⟨x, hx1, hx2, hx3⟩` from `exists_sigma Ω c e ψ o₁ hD S A F hF F.vl (Set.mem_insert _ _)`. Establish `h2 : u'⁻¹ * x * u' ∈ (galEmb ℚ K Ω).range`. Rewrite using `[hrg, MonoidHom.mem_ker, chr_conj, ← hη, hx1]`. Take `⟨s, hs⟩` from `h2`.
+
+Establish `hs' : s ∈ Dec (F` using `K) B := (hDec s).2 (hs ▸ hu' _ (hF.D _ ▸ x.2))`. Establish `h3` using `congrArg Units.val (DFunLike.congr_fun hij ⟨s, hs'⟩)`. Use `(hP' ⟨s, hs'⟩).2.2 ?_ (chiO ℚ Ω l c.O (galEmb ℚ K Ω s) : c.Oˣ) ?_ i j h ?_` and prove the remaining obligations. Rewrite using `[hΨ, chr_conj, hs, chr_conj, ← hΨ]` and apply the resulting hypothesis. Rewrite using `[hs, chr_conj]`.
+
+Establish `: IsLocalHom (algebraMap ℤ_[l] c.O)` using `(dvrFacts l c.O).2.2.1`. Establish `h4 : PadicInt.toZModPow 1 ((cycZ ℚ Ω l x : ℤ_[l]) - 1) = 0`. Use `congrArg Units.val hx3` as an intermediate fact. Rewrite using `[map_sub, map_one, sub_eq_zero]`. Simplify `this` using `[cycMod]`.
+
+Establish `h5 : (cycZ ℚ Ω l x : ℤ_[l]) - 1 ∈ maximalIdeal ℤ_[l]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p, ← pow_one (l : ℤ_[l]), ← PadicInt.ker_toZModPow]`. Conclude with `h4`. Establish `h6` using `map_nonunit (algebraMap ℤ_[l] c.O) _ h5`. Rewrite `h6` using `[map_sub, map_one]`. Then use the resulting hypothesis.
+
+Rewrite using `[hκ, hκ, h3, MonoidHom.mul_apply, Units.val_mul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.levelAt_of_pt :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), HostData l e ψ o₁ →
     ∀ (S : Finset Pl) (A : S → ValuationSubring Ω) (F : Frame c.O (Formalism.ConjugateSelfDual.G ℚ Ω) (Gam Ω S) S), IsHostFrame Ω c e ψ S A F →

@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.LineForm
 
+/- English proof (translation)
+Take the linear combination `(-a) * h`.
+-/
 theorem mul_sub_mul_of_add_eq {R : Type} [CommRing R] {a b c e : R} (h : a + b = c + e) :
     c * e - a * b = (e - a) * (c - a) := by
   linear_combination (-a) * h
@@ -21,6 +24,11 @@ section Calc
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+Establish `C` using `(GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.1`. Establish `e : α - β = α + (-1 : ℂ) • β` using `by rw [neg_one_smul, sub_eq_add_neg]`. Establish `hβ' : A.IsForm ((-1 : ℂ) • β)` using `(C (-1) β β hβ hβ).2.2.1`. Establish `hdα : A.IsForm (A.dbar α)` using `(C 0 α α hα hα).2.2.2.2.1`. Establish `hdβ : A.IsForm (A.dbar β)` using `(C 0 β β hβ hβ).2.2.2.2.1`.
+
+Establish `hdβ' : A.IsForm ((-1 : ℂ) • A.dbar β)` using `(C (-1) _ _ hdβ hdβ).2.2.1`. Use `⟨e ▸ (C 0 α _ hα hβ').1, ?_⟩` and prove the remaining obligations. Rewrite using `[e, HolAtlas.ddc, HolAtlas.ddc, HolAtlas.ddc, (C 0 α _ hα hβ').2.2.2.2.2.2.1, (C (-1) β β hβ hβ).2.2.2.2.2.2.2.2, (C 0 _ _ hdα hdβ').2.2.2.2.2.1, (C (-1) _ _ hdβ hdβ).2.2.2.2.2.2.2.1, smul_add, smul_comm GlobalTheory.HermFrame.kappa (-1 : ℂ), neg_one_smul, sub_eq_add_neg]`.
+-/
 theorem ddc_sub_of_isForm (α β : A.Fld) (hα : A.IsForm α) (hβ : A.IsForm β) :
     A.IsForm (α - β) ∧ A.ddc (α - β) = A.ddc α - A.ddc β := by
   have C := (GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.1
@@ -34,6 +42,9 @@ theorem ddc_sub_of_isForm (α β : A.Fld) (hα : A.IsForm α) (hβ : A.IsForm β
     (C 0 _ _ hdα hdβ').2.2.2.2.2.1, (C (-1) _ _ hdβ hdβ).2.2.2.2.2.2.2.1, smul_add, smul_comm GlobalTheory.HermFrame.kappa (-1 : ℂ),
     neg_one_smul, sub_eq_add_neg]
 
+/- English proof (translation)
+Establish `C` using `(GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.1`. Establish `P` using `((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.2.2.2 M' n' A' f hf).2`. Establish `hdα : A.IsForm (A.dbar α)` using `(C 0 α α hα hα).2.2.2.2.1`. Rewrite using `[HolAtlas.ddc, HolAtlas.ddc, ((P 0 α α).2.2.2 hα).2.2, ((P 0 (A.dbar α) (A.dbar α)).2.2.2 hdα).2.1, (P GlobalTheory.HermFrame.kappa (A.del (A.dbar α)) (A.del (A.dbar α))).2.2.1]`.
+-/
 theorem ddc_pullback {M' : Type} [TopologicalSpace M'] {n' : ℕ} (A' : HolAtlas M' n') (f : M' → M) (hf : A.IsHolo A' f)
     (α : A.Fld) (hα : A.IsForm α) : A'.ddc (A.pullback A' f α) = A.pullback A' f (A.ddc α) := by
   have C := (GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.1
@@ -42,24 +53,47 @@ theorem ddc_pullback {M' : Type} [TopologicalSpace M'] {n' : ℕ} (A' : HolAtlas
   rw [HolAtlas.ddc, HolAtlas.ddc, ((P 0 α α).2.2.2 hα).2.2, ((P 0 (A.dbar α) (A.dbar α)).2.2.2 hdα).2.1,
     (P GlobalTheory.HermFrame.kappa (A.del (A.dbar α)) (A.del (A.dbar α))).2.2.1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[fld]`.
+-/
 theorem fld_sub (f g : A.Pt → Ev n) : fld A (f - g) = fld A f - fld A g := by
   funext x; simp [fld]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[fld]`.
+-/
 theorem fld_mul (f g : A.Pt → Ev n) : fld A (f * g) = fld A f * fld A g := by
   funext x; simp [fld]
 
+/- English proof (translation)
+Establish `P` using `((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.2.2.2 M' n' A' f hf).2`. Rewrite using `[show α - β = α + (-1 : ℂ) • β by rw [neg_one_smul, sub_eq_add_neg], (P 0 α ((-1 : ℂ) • β)).1, (P (-1) β β).2.2.1, neg_one_smul, sub_eq_add_neg]`.
+-/
 theorem pullback_sub {M' : Type} [TopologicalSpace M'] {n' : ℕ} (A' : HolAtlas M' n') (f : M' → M) (hf : A.IsHolo A' f)
     (α β : A.Fld) : A.pullback A' f (α - β) = A.pullback A' f α - A.pullback A' f β := by
   have P := ((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.2.2.2 M' n' A' f hf).2
   rw [show α - β = α + (-1 : ℂ) • β by rw [neg_one_smul, sub_eq_add_neg], (P 0 α ((-1 : ℂ) • β)).1, (P (-1) β β).2.2.1,
     neg_one_smul, sub_eq_add_neg]
 
+/- English proof (translation)
+The claim follows from `(((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.2.2.2 M' n' A' f hf).2 0 α β).2.1`.
+-/
 theorem pullback_mul {M' : Type} [TopologicalSpace M'] {n' : ℕ} (A' : HolAtlas M' n') (f : M' → M) (hf : A.IsHolo A' f)
     (α β : A.Fld) : A.pullback A' f (α * β) = A.pullback A' f α * A.pullback A' f β :=
   (((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.2.2.2 M' n' A' f hf).2 0 α β).2.1
 
 end Calc
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl _ A σ`. Establish `TY` using `GlobalTheory.T.firstChern_form_properties k Y p (d + 1) hY σ`. Establish `TB` using `GlobalTheory.T.firstChern_form_properties k B q d hB σ`. Take `⟨hHolo, hc1, hE⟩` from `TB.2.2 Y p (d + 1) hY π w`. Take `⟨hc2, hsum⟩` from `hE E h H flB fl`.
+
+Establish `cY` using `TY.2.1 _ (h.pull π w) (H.pull π w) fl fl`. Establish `cB` using `TB.2.1 E h H flB flB`. Establish `hpf : ∀ α, pullF hB hY σ π w α = (hB.atlas σ).pullback (hY.atlas σ) (GlobalTheory.Points.PtsOver.map π w _) α` using `fun _ => rfl`. Establish `hωB : (hB.atlas σ).IsForm (fld (hB.atlas σ) (omF hB σ h flB))` using `cB.1.1`. Establish `hpω : (hY.atlas σ).IsForm (pullF hB hY σ π w (fld (hB.atlas σ) (omF hB σ h flB)))`.
+
+Rewrite using `[hpf]`. Conclude with `((((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ (hB.atlas σ)).2.2.2.2 _ _ (hY.atlas σ) _ hHolo).2 0 (fld (hB.atlas σ) (omF hB σ h flB)) (fld (hB.atlas σ) (omF hB σ h flB))).2.2.2 hωB).1`. Take `⟨hF, hD⟩` from `ddc_sub_of_isForm (hY.atlas σ) _ _ cY.1.1 hpω`. Use `⟨hF, ?_⟩` and prove the remaining obligations. Rewrite using `[hD, hpf, ddc_pullback _ _ _ hHolo _ hωB, cY.2.2.2.2.2.2.2, cB.2.2.2.2.2.2.2, fld_sub (hB.atlas σ), fld_mul (hB.atlas σ), pullback_sub _ _ _ hHolo, pullback_mul _ _ _ hHolo, ← hpf, ← hpf, ← hpf, ← hc2, ← hc1, ← hc1]`.
+
+Simplify using `only [← fld_mul, ← fld_sub, evalF]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun hsum x`. Simplify using `only [Pi.add_apply] at hx`.
+
+Simplify using `[fam5]`. Conclude with `mul_sub_mul_of_add_eq (R := Ev (d + 1)) hx`.
+-/
 theorem ddc_omF_sub_pull : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)
     (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2),

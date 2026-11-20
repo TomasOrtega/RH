@@ -13,6 +13,11 @@ open GlobalTheory.Cartier.CartierDiv
 
 variable {X : Scheme.{0}} [IsIntegral X]
 
+/- English proof (translation)
+Introduce `y`. Establish `hy : y ∈ ⨆ i, 𝒜.U i` using `by rw [𝒜.cover]; trivial`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 hy`. Take `⟨e, -, -, heq⟩` from `𝒜.snc i`. Use `⟨_, heq c y hi, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[one_mul]`. Consider the cases of `h : e c with`. Consider the case `none => exact (unitAt_one y).regAt`. Consider the case `some j => exact ((𝒜.chart i).chart y hi).mem j`.
+-/
 theorem eff_of_atlas {C : Type} {E : C → CartierDiv X} {n : ℕ} {ι : Type}
     (𝒜 : SncAtlas E n ι) (c : C) : (E c).Eff := by
   intro y
@@ -25,11 +30,19 @@ theorem eff_of_atlas {C : Type} {E : C → CartierDiv X} {n : ℕ} {ι : Type}
   | none => exact (unitAt_one y).regAt
   | some j => exact ((𝒜.chart i).chart y hi).mem j
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [zero_nsmul]`. Conclude with `eff_zero`. Consider the case `succ m ih => rw [succ_nsmul]`. Conclude with `ih.add h`.
+-/
 theorem Eff.nsmul' {D : CartierDiv X} (h : D.Eff) (m : ℕ) : (m • D).Eff := by
   induction m with
   | zero => rw [zero_nsmul]; exact eff_zero
   | succ m ih => rw [succ_nsmul]; exact ih.add h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.prod_empty]`. Conclude with `isEqn_zero y`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`.
+
+Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun c hc => h c (Finset.mem_insert_of_mem hc))`.
+-/
 theorem isEqn_sum {C : Type} (s : Finset C) (D : C → CartierDiv X) (g : C → X.functionFieldˣ)
     (y : X) (h : ∀ c ∈ s, (D c).IsEqn y (g c)) : (∑ c ∈ s, D c).IsEqn y (∏ c ∈ s, g c) := by
   classical
@@ -39,6 +52,15 @@ theorem isEqn_sum {C : Type} (s : Finset C) (D : C → CartierDiv X) (g : C → 
     rw [Finset.sum_insert ha, Finset.prod_insert ha]
     exact (h a (Finset.mem_insert_self a s)).add (ih fun c hc => h c (Finset.mem_insert_of_mem hc))
 
+/- English proof (translation)
+Establish `step : ∀ c, ((e c).elim 1 x) ^ r c = ∏ j ∈ J, x j ^ (if e c = some j then r c else 0)`. Introduce `c`. Consider the cases of `h : e c with`. Consider the case `none => simp`. Consider the case `some j₀`.
+
+Establish `hj₀ : j₀ ∈ J` using `(hJ j₀).2 ⟨c, h⟩`. Rewrite using `[Finset.prod_eq_single j₀]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Ne.symm hj]`.
+
+Introduce `hn`. Conclude with `(hn hj₀).elim`. Repeatedly rewrite using `[step]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Conclude with `Finset.prod_pow_eq_pow_sum _ _ _`.
+-/
 theorem prod_elim_pow {C : Type} [Fintype C] {n : ℕ} {M : Type} [CommMonoid M] (x : Fin n → M)
     (J : Finset (Fin n)) (e : C → Option (Fin n)) (hJ : ∀ j, j ∈ J ↔ ∃ c, e c = some j)
     (r : C → ℕ) :
@@ -64,6 +86,17 @@ end GlobalTheory.RoundEqn
 
 open GlobalTheory.RoundEqn GlobalTheory.Cartier.CartierDiv in
 
+/- English proof (translation)
+Introduce `p hp X _ _ C _ E n ι _ 𝒜 G r hr`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_cancel_left]`. Use `Finset.sum_induction _ (fun D : CartierDiv X => D.Eff) (fun _ _ h h' => h.add h') eff_zero ?_` and prove the remaining obligations. Introduce `c _`.
+
+Conclude with `Eff.nsmul' (eff_of_atlas 𝒜 c) (r c)`. Take `⟨e, huniq, hJ, heq⟩` from `𝒜.snc i`. Use `⟨fun j => ∑ c, if e c = some j then r c else 0, fun j => ?_, fun y hy t ht => ?_⟩` and prove the remaining obligations. Use `show (∑ c, if e c = some j then r c else 0) < p`. Distinguish the cases in `h : ∃ c, e c = some j`.
+
+Take `⟨c₀, hc₀⟩` from `h`. Rewrite using `[Finset.sum_eq_single c₀]`. Rewrite using `[if_pos hc₀]`. Conclude with `hr c₀`. Introduce `c _ hc`.
+
+Rewrite using `[if_neg]`. Conclude with `fun h' => hc (huniq c c₀ j h' hc₀)`. Introduce `hn`. Conclude with `(hn (Finset.mem_univ _)).elim`. Use `push_neg at h`.
+
+Rewrite using `[Finset.sum_eq_zero fun c _ => if_neg (h c)]`. Conclude with `hp.out.pos`. Rewrite using `[← prod_elim_pow (𝒜.x i) (𝒜.J i) e hJ r]`. Use `(ht.nsmul p).add (isEqn_sum _ _ _ y fun c _ => ?_)` and prove the remaining obligations. Conclude with `(heq c y hy).nsmul (r c)`.
+-/
 theorem GlobalTheory.roundedTwist_isEqn :
   ∀ (p : ℕ) [Fact p.Prime] {X : Scheme.{0}} [IsIntegral X] [CharP X.functionField p] {C : Type} [Fintype C] {E : C → CartierDiv X} {n : ℕ} {ι : Type} [LinearOrder ι] (𝒜 : SncAtlas E n ι) (G : CartierDiv X) (r : C → ℕ), (∀ c, r c < p) → ((p • G + ∑ c, r c • E c) - p • G).Eff ∧ ∀ (i : ι), ∃ ρ : Fin n → ℕ, (∀ j, ρ j < p) ∧ ∀ y ∈ 𝒜.U i, ∀ t, G.IsEqn y t → (p • G + ∑ c, r c • E c).IsEqn y (t ^ p * ∏ j ∈ 𝒜.J i, 𝒜.x i j ^ ρ j) := by
   intro p hp X _ _ C _ E n ι _ 𝒜 G r hr

@@ -7,11 +7,25 @@ open NumberField IsDedekindDomain Formalism.L2.Th1.CM Neutral.HilbertClassField
 
 namespace ReciprocityTheory.ChartRestriction.L1
 
+/- English proof (translation)
+Rewrite using `[Aio, ValuationSubring.mem_comap, Valuation.mem_valuationSubring_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]`. Apply the tactic sequence `try exact Iff.rfl`.
+-/
 theorem mem_Aio {d l : ℕ} [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) (x : Om d) : x ∈ Aio d l ι ↔ ‖ι (x : ℂ)‖ ≤ 1 := by
   rw [Aio, ValuationSubring.mem_comap, Valuation.mem_valuationSubring_iff, NormedField.valuation_apply,
     ← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]
   try exact Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal (A := Aio d l ι)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `hle : ‖ι (x : ℂ)‖ ≤ 1` using `(mem_Aio ι x).1 h1`. Use `lt_of_le_of_ne hle fun heq => ?_` and prove the remaining obligations.
+
+Rewrite `h2` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Apply `h2` to reduce the goal to its premises. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at heq`.
+
+Establish `hinv : x⁻¹ ∈ Aio d l ι` using `(mem_Aio ι x⁻¹).2 (le_of_eq (by rw [IntermediateField.coe_inv, map_inv₀, norm_inv, heq, inv_one]))`. Establish `hm : (⟨x, h1⟩ : Aio d l ι) * ⟨x⁻¹, hinv⟩ = 1` using `Subtype.ext (mul_inv_cancel₀ hx0)`. Conclude with `⟨⟨_, _, hm, (mul_comm _ _).trans hm⟩, rfl⟩`. Introduce `h`. Use `⟨(mem_Aio ι x).2 h.le, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`. Establish `hy` using `(mem_Aio ι (((u⁻¹ : (Aio d l ι)ˣ) : Aio d l ι) : Om d)).1 ((u⁻¹ : (Aio d l ι)ˣ) : Aio d l ι).2`. Establish `h0 : ((u : Aio d l ι) : Om d) * (((u⁻¹ : (Aio d l ι)ˣ) : Aio d l ι) : Om d) = 1` using `congrArg Subtype.val u.mul_inv`. Rewrite `h0` using `[hu]`.
+
+Establish `hmul : (x : ℂ) * ((((u⁻¹ : (Aio d l ι)ˣ) : Aio d l ι) : Om d) : ℂ) = 1` using `congrArg (fun t : Om d => (t : ℂ)) h0`. Establish `hn : ‖ι (x : ℂ)‖ * ‖ι ((((u⁻¹ : (Aio d l ι)ˣ) : Aio d l ι) : Om d) : ℂ)‖ = 1`. Simplify using `using congrArg (fun t => ‖ι t‖) hmul`. Use polynomial arithmetic with `[norm_nonneg (ι (x : ℂ)), mul_le_mul_of_nonneg_left hy (norm_nonneg (ι (x : ℂ)))]`.
+-/
 theorem mem_nonunits_Aio {d l : ℕ} [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) (x : Om d) :
     x ∈ (Aio d l ι).nonunits ↔ ‖ι (x : ℂ)‖ < 1 := by
   rw [ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal (A := Aio d l ι)]
@@ -42,6 +56,17 @@ theorem mem_nonunits_Aio {d l : ℕ} [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) (x 
       simpa using congrArg (fun t => ‖ι t‖) hmul
     nlinarith [norm_nonneg (ι (x : ℂ)), mul_le_mul_of_nonneg_left hy (norm_nonneg (ι (x : ℂ)))]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hd, hx⟩`. Use `Subgroup.mem_map.2 ⟨⟨g, hd⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[ValuationSubring.inertiaSubgroup, MonoidHom.mem_ker]`. Use `RingEquiv.ext fun y => ?_` and prove the remaining obligations.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (IsLocalRing.maximalIdeal A) ((⟨g, hd⟩ : A.decompositionSubgroup E) • a) = Ideal.Quotient.mk (IsLocalRing.maximalIdeal A) a`. Rewrite using `[Ideal.Quotient.eq]`. Take `⟨h1, h2⟩` from `(ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal (A := A)).1 (hx a a.2)`. Conclude with `h2`.
+
+Introduce `hg`. Take `⟨g', hg', rfl⟩` from `Subgroup.mem_map.1 hg`. Use `⟨g'.2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `key : (g' • (⟨x, hx⟩ : A)) - ⟨x, hx⟩ ∈ IsLocalRing.maximalIdeal A`. Rewrite `hg'` using `[ValuationSubring.inertiaSubgroup, MonoidHom.mem_ker]`.
+
+Establish `h3` using `congrArg (fun f : RingAut (IsLocalRing.ResidueField A) => f (Ideal.Quotient.mk (IsLocalRing.maximalIdeal A) ⟨x, hx⟩)) hg'`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (IsLocalRing.maximalIdeal A) (g' • (⟨x, hx⟩ : A)) = Ideal.Quotient.mk (IsLocalRing.maximalIdeal A) ⟨x, hx⟩ at h3`. Conclude with `Ideal.Quotient.eq.1 h3`. Establish `e : ((A.decompositionSubgroup E).subtype g') x - x = ((g' • (⟨x, hx⟩ : A) - (⟨x, hx⟩ : A) : A) : Ω)` using `rfl`. Rewrite using `[e, ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal (A := A)]`.
+
+Conclude with `⟨(g' • (⟨x, hx⟩ : A) - (⟨x, hx⟩ : A)).2, key⟩`.
+-/
 theorem inertiaEl_iff {E Ω : Type*} [Field E] [Field Ω] [Algebra E Ω] (A : ValuationSubring Ω) (g : Ω ≃ₐ[E] Ω) :
     InertiaEl A g ↔ g ∈ (A.inertiaSubgroup E).map (A.decompositionSubgroup E).subtype := by
   constructor
@@ -70,18 +95,27 @@ theorem inertiaEl_iff {E Ω : Type*} [Field E] [Field Ω] [Algebra E Ω] (A : Va
     rw [e, ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal (A := A)]
     exact ⟨(g' • (⟨x, hx⟩ : A) - (⟨x, hx⟩ : A)).2, key⟩
 
+/- English proof (translation)
+Unfold `hilbertSubgroup`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.subset_closure (Or.inl (Or.inr ⟨A, (inertiaEl_iff A g).1 h⟩)))`.
+-/
 theorem inertiaEl_mem_hilbert {E Ω : Type*} [Field E] [Field Ω] [Algebra E Ω] {A : ValuationSubring Ω}
     {g : Ω ≃ₐ[E] Ω} (h : InertiaEl A g) : g ∈ hilbertSubgroup E Ω := by
   unfold hilbertSubgroup
   exact Subgroup.le_topologicalClosure _
     (Subgroup.subset_closure (Or.inl (Or.inr ⟨A, (inertiaEl_iff A g).1 h⟩)))
 
+/- English proof (translation)
+Establish `h2 : IsIntegral A x` using `hx.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h2`. Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem mem_of_isIntegral {Ω : Type*} [Field Ω] (A : ValuationSubring Ω) {x : Ω} (hx : IsIntegral ℤ x) : x ∈ A := by
   have h2 : IsIntegral A x := hx.tower_top
   obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.mp h2
   rw [← hy]
   exact y.2
 
+/- English proof (translation)
+Establish `hzK : IsIntegral (KQ d) z` using `hz.tower_top`. Establish `hmem : z ∈ Om d` using `hzK`. Use `⟨⟨z, hmem⟩, rfl, ?_⟩` and prove the remaining obligations. Conclude with `(isIntegral_algHom_iff (x := (⟨z, hmem⟩ : Om d)) (algebraMap (Om d) ℂ).toIntAlgHom (algebraMap (Om d) ℂ).injective).mp hz`.
+-/
 theorem exists_Om (d : ℕ) {z : ℂ} (hz : IsIntegral ℤ z) : ∃ x : Om d, (x : ℂ) = z ∧ IsIntegral ℤ x := by
   have hzK : IsIntegral (KQ d) z := hz.tower_top
   have hmem : z ∈ Om d := hzK
@@ -89,6 +123,9 @@ theorem exists_Om (d : ℕ) {z : ℂ} (hz : IsIntegral ℤ z) : ∃ x : Om d, (x
   exact (isIntegral_algHom_iff (x := (⟨z, hmem⟩ : Om d)) (algebraMap (Om d) ℂ).toIntAlgHom
     (algebraMap (Om d) ℂ).injective).mp hz
 
+/- English proof (translation)
+Establish `hx : IsIntegral (KQ d) (x : ℂ)` using `x.2`. Conclude with `(isIntegral_trans (R := ℚ) _ hx).isAlgebraic`.
+-/
 theorem Om_isAlgebraic (d : ℕ) (x : Om d) : IsAlgebraic ℚ (x : ℂ) := by
   have hx : IsIntegral (KQ d) (x : ℂ) := x.2
   exact (isIntegral_trans (R := ℚ) _ hx).isAlgebraic

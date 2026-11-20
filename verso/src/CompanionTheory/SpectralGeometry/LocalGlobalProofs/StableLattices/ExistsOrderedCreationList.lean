@@ -10,6 +10,17 @@ namespace GlobalTheory.CompanionTheory.RgClusterOrder
 
 def rootHt {n : ℕ} (i : Pos n) : ℕ := (i.1.2 : ℕ) - (i.1.1 : ℕ)
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.strongInduction with`. Consider the case `H S ih`. Break down `S.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `⟨[], List.nodup_nil, by simp, List.Pairwise.nil⟩`. Take `⟨m, hm, hmin⟩` from `Finset.exists_min_image S h hne`.
+
+Take `⟨l, hnd, hmem, hs⟩` from `ih (S.erase m) (Finset.erase_ssubset hm)`. Use `⟨m :: l, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `List.nodup_cons.2 ⟨?_, hnd⟩` and prove the remaining obligations. Introduce `hml`. Conclude with `(Finset.mem_erase.1 ((hmem m).1 hml)).1 rfl`.
+
+Introduce `i`. Rewrite using `[List.mem_cons, hmem, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(rfl | hi)`. Conclude with `hm`.
+
+Conclude with `hi.2`. Introduce `hi`. Distinguish the cases in `him : i = m`. Conclude with `Or.inl him`. Conclude with `Or.inr ⟨him, hi⟩`.
+
+Use `List.pairwise_cons.2 ⟨?_, hs⟩` and prove the remaining obligations. Introduce `b hb`. Conclude with `hmin b (Finset.mem_of_mem_erase ((hmem b).1 hb))`.
+-/
 theorem exists_sorted_list {α : Type} (S : Finset α) (h : α → ℕ) :
     ∃ l : List α, l.Nodup ∧ (∀ i, i ∈ l ↔ i ∈ S) ∧ l.Pairwise (fun a b => h a ≤ h b) := by
   classical
@@ -37,12 +48,20 @@ theorem exists_sorted_list {α : Type} (S : Finset α) (h : α → ℕ) :
         intro b hb
         exact hmin b (Finset.mem_of_mem_erase ((hmem b).1 hb))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_or]`. Conclude with `h (by simp only [adC, if_neg hc.1, if_neg hc.2, sub_self])`.
+-/
 theorem adC_ne_zero_cases {n : ℕ} {p q : Fin n} {i k : Pos n} (h : adC p q i k ≠ 0) :
     (q = i.1.1 ∧ k.1 = (p, i.1.2)) ∨ (i.1.2 = p ∧ k.1 = (i.1.1, q)) := by
   by_contra hc
   rw [not_or] at hc
   exact h (by simp only [adC, if_neg hc.1, if_neg hc.2, sub_self])
 
+/- English proof (translation)
+Establish `hle : lev i.1.1 ≤ lev i.1.2` using `hlev (le_of_lt i.2)`. Simplify using `only [CompanionTheory.D.LK.om, omU, Finset.mem_filter, Finset.mem_univ, true_and, cpt, not_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, le_antisymm hle (not_lt.1 (h2 h1))⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun _ => by omega⟩`.
+-/
 theorem mem_inside_iff {n : ℕ} {ε : Fin n → Bool} {lev : Fin n → ℕ} (hlev : Monotone lev) (i : Pos n) :
     i ∈ om ε ∧ i ∉ omU ε lev ↔ ε i.1.1 = ε i.1.2 ∧ lev i.1.1 = lev i.1.2 := by
   have hle : lev i.1.1 ≤ lev i.1.2 := hlev (le_of_lt i.2)
@@ -53,6 +72,23 @@ theorem mem_inside_iff {n : ℕ} {ε : Fin n → Bool} {lev : Fin n → ℕ} (hl
   · rintro ⟨h1, h2⟩
     exact ⟨h1, fun _ => by omega⟩
 
+/- English proof (translation)
+Introduce `n ε lev hlev`. Take `⟨l, hnd, hmem, hs⟩` from `exists_sorted_list ((om ε).filter (· ∉ omU ε lev)) (rootHt (n := n))`. Establish `hmem' : ∀ i, i ∈ l ↔ i ∈ om ε ∧ i ∉ omU ε lev` using `fun i => by`. Rewrite using `[hmem, Finset.mem_filter]`. Use `⟨l, hnd, hmem', ?_⟩` and prove the remaining obligations.
+
+Introduce `pre f post hl e he k hk`. Establish `hfl : f ∈ l` using `by simp [hl]`. Take `⟨he1, he2⟩` from `(mem_inside_iff hlev e).1 ((hmem' e).1 he)`. Take `⟨hf1, hf2⟩` from `(mem_inside_iff hlev f).1 ((hmem' f).1 hfl)`. Establish `he0 : (e.1.1 : ℕ) < e.1.2` using `e.2`.
+
+Establish `hf0 : (f.1.1 : ℕ) < f.1.2` using `f.2`. Establish `hkey : (ε k.1.1 = ε k.1.2 ∧ lev k.1.1 = lev k.1.2) ∧ rootHt f < rootHt k`. Break down `adC_ne_zero_cases hk with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Rewrite using `[h2]`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [← h1] at hf1 hf2 ⊢`. Conclude with `he1.trans hf1`. Simplify using `only [← h1] at hf1 hf2 ⊢`. Conclude with `he2.trans hf2`. Establish `: (e.1.2 : ℕ) = f.1.1` using `congrArg Fin.val h1`.
+
+Simplify using `only [rootHt, h2]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h2]`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [h1] at hf1 hf2 ⊢`.
+
+Conclude with `hf1.trans he1`. Simplify using `only [h1] at hf1 hf2 ⊢`. Conclude with `hf2.trans he2`. Establish `: (f.1.2 : ℕ) = e.1.1` using `congrArg Fin.val h1`. Simplify using `only [rootHt, h2]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hkl : k ∈ l` using `(hmem' k).2 ((mem_inside_iff hlev k).2 hkey.1)`. Rewrite `hkl`, `hs` using `[hl]`. Break down `List.mem_append.1 hkl with hpre | hrest` into its components or cases. Use `(List.pairwise_append.1 hs).2.2 k hpre f (by simp)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Break down `List.mem_cons.1 hrest with rfl | hpost` into its components or cases. Conclude with `absurd hkey.2 (lt_irrefl _)`. Conclude with `hpost`.
+-/
 theorem exists_inside_order : ∀ (n : ℕ) (ε : Fin n → Bool) (lev : Fin n → ℕ), Monotone lev →
     ∃ l : List (Pos n), l.Nodup ∧ (∀ i, i ∈ l ↔ i ∈ om ε ∧ i ∉ omU ε lev) ∧
       ∀ (pre : List (Pos n)) (f : Pos n) (post : List (Pos n)), l = pre ++ f :: post → ∀ e ∈ l, ∀ k : Pos n,

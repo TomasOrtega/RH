@@ -16,6 +16,11 @@ open AutomorphicForm
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Use `set g := x⁻¹ * unipGL P * x with hg`. Establish `hfin : finPart g = 1` using `prodEquiv_conj_snd x P hP`. Rewrite using `[← infEmb_archPart_mul_finEmb_finPart g, hfin, map_one, mul_one, archExp]`. Use `congr 1`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations.
+
+Rewrite using `[coe_expG_top, exp_eq_one_add_of_mul_self_eq_zero (conjArch_mul_conjArch x P P)]`. Use `show archMat K n ((g : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = _`. Rewrite using `[hg, coe_conj_unipGL, map_add, map_one]`. Both sides reduce to the same expression.
+-/
 theorem conj_unipGL_eq_archExp {r : ℕ} (x : AdelicGLn.AdelicGL K n) (P : UPos n r → 𝔸[K])
     (hP : ∀ p, (P p).2 = 0) : x⁻¹ * unipGL P * x = archExp (conjArch K n x P) := by
   set g := x⁻¹ * unipGL P * x with hg
@@ -28,6 +33,37 @@ theorem conj_unipGL_eq_archExp {r : ℕ} (x : AdelicGLn.AdelicGL K n) (P : UPos 
   rw [hg, coe_conj_unipGL, map_add, map_one]
   rfl
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_norm_diffSum_le hφ.1`. Use `⟨N, fun k => ?_⟩` and prove the remaining obligations. Take `⟨U₀, -, hU₀⟩` from `exists_openSubgroup_rightInvariant hφ.1.isSmooth hφ.1.isKFinite`. Use `set U : Subgroup (AdelicGLn.integralFiniteGL K n) := (U₀ : Subgroup (AdelicGLn.FiniteAdelicGL K n)).subgroupOf (AdelicGLn.integralFiniteGL K n)`. Establish `hU : IsOpen (U : Set (AdelicGLn.integralFiniteGL K n))` using `U₀.isOpen.preimage continuous_subtype_val`.
+
+Take `⟨M, hM, hMconj⟩` from `exists_natCast_conj_unipGL_mem U hU hω r`. Take `⟨C₁, hC₁⟩` from `exists_norm_archMat_conj_le hω hωB ht hr hrn (isCompact_scaledInfSet (K := K) M)`. Use `set C₁' := max C₁ 0`. Establish `hC₁'0 : 0 ≤ C₁'` using `le_max_right _ _`. Take `⟨C, hC⟩` from `hN k (C₁' * t⁻¹)`.
+
+Use `⟨max C 0 * C₁' ^ k, ?_⟩` and prove the remaining obligations. Introduce `b hb ρ hρ hsieg kk hkk x hx`. Use `set gain := ρ ⟨r, hrn⟩ / ρ ⟨r - 1, by omega⟩`. Establish `hgain0 : 0 ≤ gain` using `div_nonneg (hρ _).le (hρ _).le`. Establish `hgain : gain ≤ t⁻¹`.
+
+Establish `h1` using `hsieg ⟨r - 1, by omega⟩ ⟨r, hrn⟩ (by simp; omega)`. Rewrite using `[div_le_iff₀ (hρ _), ← div_eq_inv_mul, le_div_iff₀ ht, mul_comm]`. Conclude with `h1`. Use `set H : (UPos n r → 𝔸[K]) → ℂ := fun s => φ (unipGL s * x) with hH`. Establish `hHc : Continuous H` using `hφ.1.continuous.comp (continuous_unipGL.mul continuous_const)`.
+
+Establish `hper : ∀ ξ ∈ unipLattice K n r, ∀ s, H (ξ + s) = H s` using `fun ξ hξ s => hφ.1.isLeftInvariant.unipGL_vadd x ⟨ξ, hξ⟩ s`. Establish `hD` using `isAddFundamentalDomain_scaledUnipFD (K := K) (n := n) (r := r) hM`. Take `⟨Cc, hCc, hDC⟩` from `exists_isCompact_superset_scaledUnipFD (K := K) (n := n) r hM`. Establish `hint : ∀ t', IntegrableOn (fun y => H (t' + y)) (scaledUnipFD K n r M) (unipMeasure K n r)` using `fun t' => ((hHc.comp (continuous_const.add continuous_id)).continuousOn.integrableOn_compact hCc).mono_set hDC`. Establish `hmean : ∫ y in scaledUnipFD K n r M, H y ∂unipMeasure K n r = 0`.
+
+Rewrite using `[hD.setIntegral_eq isAddFundamentalDomain_unipFundamentalDomain fun ξ s => hper ξ ξ.2 s]`. Conclude with `hφ.2 r hr hrn x`. Establish `h0` using `norm_le_of_forall_altSum_le hD (unipMeasure_scaledUnipFD hM) k H hper hint hmean (max C 0 * (C₁' * gain) ^ k * height x ^ N) ?_`. Establish `hH0 : H 0 = φ x` using `by simp [hH, unipGL_zero]`. Rewrite `h0` using `[hH0]`.
+
+Use `h0.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Introduce `y hy`. Use `set Y : Fin k → ArchMatrix K n := fun i => conjArch K n x (truncInf (y i)) with hYdef`.
+
+Establish `hYY : ∀ i j, Y i * Y j = 0` using `fun i j => conjArch_mul_conjArch _ _ _`. Establish `hYn : ∀ i, ‖Y i‖ ≤ C₁' * gain`. Introduce `i`. Establish `h1` using `hC₁ b hb ρ hρ hsieg kk hkk (truncInf (y i)) (fun p => rfl) (fun p => infinite_mem_scaledInfSet hM (hy i) p)`. Apply the tactic sequence `have h2 : Y i = archMat K n ((((b * Reduction.diagUnits n (fun i => Reduction.posIdele (K := K) (ρ i) (hρ i)) * kk)⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * blockEntry (truncInf (y i)) * ((b * Reduction.diagUnits n (fun i => Reduction.posIdele (K := K) (ρ i) ( …`.
+
+Simplify using `only [hYdef, conjArch, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hx]`. Rewrite using `[h2]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hgain0)`. Establish `hYT : ∀ i, ‖Y i‖ ≤ C₁' * t⁻¹` using `fun i => (hYn i).trans (mul_le_mul_of_nonneg_left hgain hC₁'0)`. Establish `key : ∀ ε : Fin k → Bool, H (0 + altPoint y ε) = φ (x * archExp (altPoint Y ε))`.
+
+Introduce `ε`. Rewrite using `[zero_add]`. Use `set P := altPoint y ε`. Take `⟨u, hu⟩` from `hMconj b hb ρ hρ kk hkk (truncFin P) (fun p => rfl) fun p => by`. Take `⟨a, ha, hPa⟩` from `exists_finite_altPoint_eq_natCast_mul hM y hy ε p`.
+
+Conclude with `⟨a, ha, hPa⟩`. Rewrite `hu` using `[← hx]`. Establish `hsplit : unipGL P * x = unipGL (truncInf P) * x * (x⁻¹ * unipGL (truncFin P) * x)`. Rewrite using `[show unipGL P = unipGL (truncInf P) * unipGL (truncFin P) by`. Rewrite using `[← unipGL_add, truncInf_add_truncFin]]`.
+
+Use `group`. Establish `hinf : unipGL (truncInf P) * x = x * (x⁻¹ * unipGL (truncInf P) * x)` using `by group`. Establish `hY : conjArch K n x (truncInf P) = altPoint Y ε`. Rewrite using `[← truncInfHom_apply, map_altPoint (truncInfHom n r), map_altPoint (conjArch K n x)]`. Both sides reduce to the same expression.
+
+Simplify using `only [hH]`. Rewrite using `[hsplit, hu, hU₀ _ ((u : AdelicGLn.integralFiniteGL K n) : AdelicGLn.FiniteAdelicGL K n) (Subgroup.mem_subgroupOf.1 u.2), hinf, conj_unipGL_eq_archExp x _ fun p => rfl, hY]`. Establish `hsum : altSum k H y 0 = diffSum φ x Y`. Rewrite using `[altSum_eq_sum, diffSum]`. Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[key ε, zsmul_eq_mul]`. Rewrite using `[hsum]`. Use `(hC x Y hYY hYT).trans ?_` and prove the remaining obligations. Establish `hprod : ∏ i, ‖Y i‖ ≤ (C₁' * gain) ^ k`. Rewrite using `[← Fin.prod_const]`.
+
+Conclude with `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => hYn i`. Establish `hh` using `pow_nonneg (height_pos x).le N`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_norm_le_siegel_root {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : φ ∈ cuspForms K n)
     {ω : Set (AdelicGLn.AdelicGL K n)} (hω : IsCompact ω)
     (hωB : ω ⊆ ((Reduction.adelicBorel : Subgroup (AdelicGLn.AdelicGL K n)) :
@@ -131,6 +167,45 @@ theorem exists_norm_le_siegel_root {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : 
     _ ≤ max C 0 * (C₁' * gain) ^ k * height x ^ N :=
         mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hprod (le_max_right _ _)) hh
 
+/- English proof (translation)
+Take `⟨C₀, N₀, hC₀⟩` from `hφ.1.hasModerateGrowth`. Take `⟨Ch, hCh0, hCh⟩` from `exists_height_le_normOne (K := K) (n := n) hω`. Use `set e := 2 * Fintype.card (InfinitePlace K)`. Use `set τ := (max 1 t⁻¹) ^ n with hτ`. Establish `hτ1 : 1 ≤ τ` using `one_le_pow₀ (le_max_left _ _)`.
+
+Use `set D := max (Ch * τ ^ e) 1 with hD`. Establish `hD1 : 1 ≤ D` using `le_max_right _ _`. Establish `hD0 : 0 ≤ D` using `le_trans zero_le_one hD1`. Establish `hroot` using `fun (r : ℕ) (hr : 0 < r) (hrn : r < n) => exists_norm_le_siegel_root hφ hω hωB ht hr hrn`. Use `choose Nf hNf using hroot`.
+
+Establish `hroot2` using `fun (r : ℕ) (hr : 0 < r) (hrn : r < n) => hNf r hr hrn (n * e * (Nf r hr hrn + N'))`. Use `choose Cf hCf using hroot2`. Use `set S : ℝ := ∑ r : Fin n, if h : 0 < (r : ℕ) then max (Cf r h r.2) 0 * D ^ (Nf r h r.2 + N') else 0 with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun r _ => by split_ifs`. Conclude with `mul_nonneg (le_max_right _ _) (pow_nonneg hD0 _)`.
+
+Conclude with `le_rfl`. Establish `hSle : ∀ (r : ℕ) (hr : 0 < r) (hrn : r < n), max (Cf r hr hrn) 0 * D ^ (Nf r hr hrn + N') ≤ S`. Introduce `r hr hrn`. Establish `h1` using `Finset.single_le_sum (f := fun r : Fin n => if h : 0 < (r : ℕ) then max (Cf r h r.2) 0 * D ^ (Nf r h r.2 + N') else 0) (fun r _ => by split_ifs`. Conclude with `mul_nonneg (le_max_right _ _) (pow_nonneg hD0 _)`.
+
+Conclude with `le_rfl) (Finset.mem_univ ⟨r, hrn⟩)`. Simplify `h1` using `only [hr, dif_pos]`. Use `set C₀' := |C₀| * D ^ (N₀ + N')`. Establish `hC₀'0 : 0 ≤ C₀'` using `mul_nonneg (abs_nonneg _) (pow_nonneg hD0 _)`. Use `⟨C₀' + S, ?_⟩` and prove the remaining obligations.
+
+Introduce `b hb ρ hρ hsieg kk hkk x hx1 hx`. Establish `hh0 : 0 < height x` using `height_pos x`. Establish `hhN' : 0 < height x ^ N'` using `pow_pos hh0 _`. Establish `hsmall : height x ≤ D → ‖φ x‖ ≤ (C₀' + S) * (height x ^ N')⁻¹`. Introduce `hxD`.
+
+Establish `h1 : ‖φ x‖ ≤ |C₀| * D ^ N₀` using `(hC₀ x).trans (mul_le_mul (le_abs_self _) (pow_le_pow_left₀ hh0.le hxD _) (pow_nonneg hh0.le _) (abs_nonneg _))`. Establish `h2 : |C₀| * D ^ N₀ ≤ C₀' * (height x ^ N')⁻¹`. Rewrite using `[le_mul_inv_iff₀ hhN']`. Simplify using `only [C₀', pow_add, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hh0.le hxD _) (pow_nonneg hD0 _)) (abs_nonneg _)`.
+
+Use `h1.trans (h2.trans ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_add_of_nonneg_right hS0) (inv_nonneg.2 hhN'.le)`. Establish `hheight : ∀ R : ℝ, 1 ≤ R → (∀ i j : Fin n, i < j → ρ i / ρ j ≤ R) → height x ≤ D * R ^ e`. Introduce `R hR1 hR`. Establish `hall : ∀ i j : Fin n, ρ i / ρ j ≤ τ * R` using `fun i j => siegel_div_le_mul ht hρ hsieg hR1 hR i j`.
+
+Establish `h1` using `hCh b hb ρ hρ kk hkk x hx1 hx (τ * R) (one_le_mul_of_one_le_of_one_le hτ1 hR1) hall`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hn : 2 ≤ n`. Take `⟨r, hr, hrn, hratio⟩` from `exists_le_max_pow hn ρ hρ set α := ρ ⟨r - 1, by omega⟩ / ρ ⟨r, hrn⟩ with hα`. Establish `hα0 : 0 < α` using `div_pos (hρ _) (hρ _)`.
+
+Break down `le_or_gt α 1 with hα1 | hα1` into its components or cases. Use `hsmall ?_` and prove the remaining obligations. Use `hheight 1 le_rfl fun i j hij => (hratio i j hij).trans (by` as an intermediate fact. Rewrite using `[max_eq_left hα1, one_pow])`. Simplify using `using this`.
+
+Establish `hM : max 1 α = α` using `max_eq_right hα1.le set A := α ^ (n * e) with hA`. Establish `hA1 : 1 ≤ A` using `one_le_pow₀ hα1.le`. Establish `hxA : height x ≤ D * A`. Use `hheight (α ^ n) (one_le_pow₀ hα1.le) fun i j hij => (hratio i j hij).trans (by rw [hM])` as an intermediate fact. Rewrite `this` using `[← pow_mul]`. Then use the resulting hypothesis.
+
+Use `set k := n * e * (Nf r hr hrn + N')`. Establish `h1` using `hCf r hr hrn b hb ρ hρ hsieg kk hkk x hx`. Establish `hgain : ρ ⟨r, hrn⟩ / ρ ⟨r - 1, by omega⟩ = α⁻¹` using `by rw [hα, inv_div]`. Rewrite `h1` using `[hgain]`. Establish `hk : (α⁻¹) ^ k = (A ^ (Nf r hr hrn + N'))⁻¹`.
+
+Rewrite using `[inv_pow, hA, ← pow_mul]`. Rewrite `h1` using `[hk]`. Establish `hApos : 0 < A` using `lt_of_lt_of_le one_pos hA1`. Establish `hAN : 0 < A ^ N'` using `pow_pos hApos _`. Establish `hhN : height x ^ Nf r hr hrn ≤ D ^ Nf r hr hrn * A ^ Nf r hr hrn`.
+
+Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ hh0.le hxA _`. Establish `hhN'' : height x ^ N' ≤ D ^ N' * A ^ N'`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ hh0.le hxA _`.
+
+Use `set Cr := max (Cf r hr hrn) 0`. Establish `hCr0 : 0 ≤ Cr` using `le_max_right _ _`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (mul_le_mul_of_nonneg_right (le_max_left _ _) (inv_nonneg.2 (pow_nonneg hApos.le _))) hhN (pow_nonneg hh0.le _) (mul_nonneg hCr0 (inv_nonneg.2 (pow_nonneg hApos.le _)))` and prove the remaining obligations. Use `_ = Cr * D ^ Nf r hr hrn * (A ^ N')⁻¹ := by`.
+
+Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ Cr * D ^ Nf r hr hrn * (D ^ N' * (height x ^ N')⁻¹) := by`. Use `mul_le_mul_of_nonneg_left ?_ (mul_nonneg hCr0 (pow_nonneg hD0 _))` and prove the remaining obligations. Rewrite using `[inv_le_iff_one_le_mul₀ hAN, mul_right_comm, ← div_eq_mul_inv, le_div_iff₀ hhN', one_mul]`.
+
+Conclude with `hhN''`. Use `_ = Cr * D ^ (Nf r hr hrn + N') * (height x ^ N')⁻¹ := by rw [pow_add]; ring`. Use `_ ≤ (C₀' + S) * (height x ^ N')⁻¹ := by`. Use `mul_le_mul_of_nonneg_right ?_ (inv_nonneg.2 hhN'.le)` and prove the remaining obligations. Conclude with `(hSle r hr hrn).trans (le_add_of_nonneg_left hC₀'0)`.
+
+Use `hsmall ?_` and prove the remaining obligations. Use `hheight 1 le_rfl fun i j hij => by` as an intermediate fact. It suffices to derive a contradiction. Establish `: (i : ℕ) < j` using `hij`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `using this`.
+-/
 theorem exists_norm_le_height_pow_neg_siegel {φ : AdelicGLn.AdelicGL K n → ℂ}
     (hφ : φ ∈ cuspForms K n) {ω : Set (AdelicGLn.AdelicGL K n)} (hω : IsCompact ω)
     (hωB : ω ⊆ ((Reduction.adelicBorel : Subgroup (AdelicGLn.AdelicGL K n)) :
@@ -254,6 +329,11 @@ theorem exists_norm_le_height_pow_neg_siegel {φ : AdelicGLn.AdelicGL K n → �
       omega
     simpa using this
 
+/- English proof (translation)
+Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `Reduction.exists_siegelSet (K := K) n`. Take `⟨C, hC⟩` from `exists_norm_le_height_pow_neg_siegel hφ hω hωB ht 0`. Use `⟨C, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `hsieg x`. Take `⟨b, hb, a, ⟨ρ, hρ, hs, rfl⟩, kk, hkk, hxe⟩` from `hγ`.
+
+Establish `hγx : AdelicGLn.diagonal K n γ * x ∈ Reduction.normOneGL K n` using `mul_mem (Reduction.rationalGL_le_normOneGL ⟨γ, rfl⟩) hx`. Establish `h` using `hC b hb ρ hρ hs kk hkk _ hγx hxe`. Rewrite `h` using `[pow_zero, inv_one, mul_one, hφ.1.isLeftInvariant γ x]`. Then use the resulting hypothesis.
+-/
 theorem exists_norm_le_of_mem_cuspForms {φ : AdelicGLn.AdelicGL K n → ℂ}
     (hφ : φ ∈ cuspForms K n) : ∃ C : ℝ, ∀ x ∈ Reduction.normOneGL K n, ‖φ x‖ ≤ C := by
   obtain ⟨ω, hω, hωB, t, ht, hsieg⟩ := Reduction.exists_siegelSet (K := K) n

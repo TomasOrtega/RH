@@ -13,6 +13,29 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.TNZ
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h a ha ε rc hL hLit s d η hη hdist x hd`. Establish `hψ : ∀ b, IsSmooth ((η b).comp a)` using `fun b => ha.smooth (hη b)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, hc⟩`. Take `⟨v, hv, hsum⟩` from `h4a E Ω A w h (rc x) s d (fun b => (η b).comp a) hψ hdist h0 hc`.
+
+Establish `hv' : ∀ b, ∃ v' : WD h, v'.unr ∧ v'.lpDim = d b ∧ v b = v'.lpChar (WD.lpOfChar h ((η b).comp a) (hψ b))`. Introduce `b`. Take `⟨v', hu, hdim, he⟩` from `h4b E Ω A w h (v b) ((η b).comp a) (hψ b) (hv b).1 (fun t => by rw [(hv b).2.1]; exact (hv b).2.2 t)`. Conclude with `⟨v', hu, hdim.trans (hv b).2.1, he⟩`. Use `choose v' hu hdim he using hv'`.
+
+Use `choose Xs instA instM σ hs hi hsph hrc using fun b => h5 E Ω A w h a ha ε rc hL (d b) (v' b) (hu b) (hdim b)`. Use `letI := instA`. Use `letI := instM`. Use `choose hs' hi' hrc' using fun b => h6 E Ω A w h a ha ε rc hL (d b) (Xs b) (σ b) (hs b) (hi b) (η b) (hη b)`. Establish `hdet : ∀ b, HasDetVec (twist (σ b) (detChar (Fin (d b)) (η b))) (η b)` using `fun b => (h1 _ (d b) (Xs b) (σ b) (η b)).1 (hsph b)`.
+
+Establish `hdistU : ∀ b c, b ≠ c → ∃ u : (w.adicCompletion E)ˣ, valuation (w.adicCompletion E) (u : w.adicCompletion E) = 1 ∧ η b u ≠ η c u`. Introduce `b c hbc`. Take `⟨t, ht⟩` from `hdist b c hbc`. Conclude with `⟨a (ineIncl h t), (h9 E Ω A w h a ha).1 t, ht⟩`. Establish `hI` using `h8b h8a hLit _ s x.1 d hd Xs (fun b => twist (σ b) (detChar (Fin (d b)) (η b))) hs' hi' η hη hdet hdistU`.
+
+Establish `hrcP` using `h7 E Ω A w h a ha ε rc hL s x.1 d hd Xs (fun b => twist (σ b) (detChar (Fin (d b)) (η b))) hs' hi' hI`. Establish `heq : rc (IrrGL.of (multiProd (stdBlocks d hd) fun b => twist (σ b) (detChar (Fin (d b)) (η b))) (isSmooth_parInd _ _) hI) = rc x`. Rewrite using `[hrcP, hsum]`. Use `congr 1`. Use `List.ofFn_inj.2 (funext fun b => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hrc' b, hrc b, he b]`. Establish `e2` using `(hL.bij.1 heq).trans (IrrGL.of_rep x).symm`. Take `⟨e⟩` from `IrrGL.of_eq_of.1 e2`. Conclude with `⟨Xs, instA, instM, fun b => twist (σ b) (detChar (Fin (d b)) (η b)), hs', hi', hdet, ⟨e.symm⟩⟩`. Introduce and unpack `⟨Xs, instA, instM, σ, hs, hi, hdet, ⟨e⟩⟩`.
+
+Use `letI := instA`. Use `letI := instM`. Establish `hI : (multiProd (stdBlocks d hd) σ).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv e x.2.rep.irr`. Establish `hx : x = IrrGL.of (multiProd (stdBlocks d hd) σ) (isSmooth_parInd _ _) hI` using `(IrrGL.of_rep x).symm.trans (IrrGL.of_eq_of.2 ⟨e⟩)`. Establish `hfac : ∀ b, ∃ u : WD h, u.unr ∧ u.lpDim = d b ∧ rc (IrrGL.of (σ b) (hs b) (hi b)) = u.lpChar (WD.lpOfChar h ((η b).comp a) (hψ b))`.
+
+Introduce `b`. Take `⟨hs', hi', hr⟩` from `h6' E Ω A w h a ha ε rc hL (d b) (Xs b) (σ b) (hs b) (hi b) (η b) (hη b)`. Conclude with `⟨_, h5' E Ω A w h a ha ε rc hL (d b) (Xs b) _ hs' hi' ((h1 _ (d b) (Xs b) (σ b) (η b)).2 (hdet b)), hL.dim _, hr⟩`. Use `choose u hu hud hur using hfac`. Establish `hl` using `h3 E Ω A w h (List.ofFn fun b => rc (IrrGL.of (σ b) (hs b) (hi b)))`.
+
+Establish `hP` using `h7 E Ω A w h a ha ε rc hL s x.1 d hd Xs σ hs hi hI`. Rewrite `hP` using `[← hx]`. Rewrite using `[hP]`. Use `⟨hl.1.2 fun y hy => ?_, fun t => ?_⟩` and prove the remaining obligations. Simplify using `only [List.mem_ofFn, Set.mem_range] at hy`.
+
+Take `⟨b, rfl⟩` from `hy`. Rewrite using `[hur b]`. Conclude with `(h2 E Ω A w h (u b) _ (hψ b) (hu b)).1`. Rewrite using `[hl.2, List.map_ofFn, List.prod_ofFn]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[hur b, (h2 E Ω A w h (u b) _ (hψ b) (hu b)).2 t, hud b]`. Both sides reduce to the same expression.
+-/
 theorem gMain_alt (h1 : DeterminantVectorProp) (h2 : UnramifiedTwistProp) (h3 : SumOverListProp) (h4a : IsotypicComponentProp)
     (h4b : ScalarOnInertiaProp) (h5 : SphericalOfUnramifiedProp) (h5' : SphericalUnramifiedProp) (h6 : TwistRestrictionProp) (h6' : UntwistRestrictionProp)
     (h7 : ProductRestrictionProp) (h8a : _root_.UpperTheory.TNZ.Step_cuspSupp_alt) (h8b : _root_.UpperTheory.TNZ.Step_prodIrr_alt) (h9 : ArtinInertiaProp) : _root_.UpperTheory.TNZ.GMainAlt := by

@@ -30,6 +30,9 @@ structure IsTgLift (x : N → A) (y : G → A) : Prop where
 
 variable {A N} {x : N → A} {y : G → A}
 
+/- English proof (translation)
+Establish `e : (n : G) * g = g * (GroundTheory.GroupCoh.conjHom N g n : G)`. Simplify using `only [GroundTheory.GroupCoh.coe_conjHom_apply]`. Use `group`. Rewrite using `[e, hy.mul_right, ← sub_add_cancel (A.ρ g _) (x n), hy.conj]`. Normalize the expressions using the abelian group laws.
+-/
 theorem IsTgLift.mul_left (hy : IsTgLift A N x y) (n : N) (g : G) :
     y (n * g) = A.ρ n (y g) + x n := by
   have e : (n : G) * g = g * (GroundTheory.GroupCoh.conjHom N g n : G) := by
@@ -37,12 +40,20 @@ theorem IsTgLift.mul_left (hy : IsTgLift A N x y) (n : N) (g : G) :
   rw [e, hy.mul_right, ← sub_add_cancel (A.ρ g _) (x n), hy.conj]
   abel
 
+/- English proof (translation)
+Simplify using `only [tgDiff]`. Rewrite using `[hy.mul_right, ← mul_assoc, hy.mul_right, map_add, ← Module.End.mul_apply, ← map_mul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem IsTgLift.tgDiff_mul_right (hy : IsTgLift A N x y) (g h : G) (n : N) :
     tgDiff A y g (h * n) = tgDiff A y g h := by
   simp only [tgDiff]
   rw [hy.mul_right, ← mul_assoc, hy.mul_right, map_add, ← Module.End.mul_apply, ← map_mul]
   abel
 
+/- English proof (translation)
+Simplify using `only [tgDiff]`. Establish `e : g * n * h = g * h * (GroundTheory.GroupCoh.conjHom N h n : G)` using `by simp; group`. Rewrite using `[e, hy.mul_right, hy.mul_right]`. Establish `hc` using `hy.conj h n`. Establish `: A.ρ (g * n) (y h) = A.ρ g (A.ρ n (y h))` using `by rw [map_mul]; rfl`.
+
+Rewrite using `[this, show A.ρ n (y h) = y h + (A.ρ h (x (GroundTheory.GroupCoh.conjHom N h n)) - x n) by`. Rewrite using `[hc]`. Use the proof step `abel, map_add, map_sub, map_mul (A.ρ) g h, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem IsTgLift.tgDiff_mul_left (hx : IsCocycleOne A N x) (hy : IsTgLift A N x y) (g : G) (n : N)
     (h : G) : tgDiff A y (g * n) h = tgDiff A y g h := by
   simp only [tgDiff]
@@ -54,6 +65,11 @@ theorem IsTgLift.tgDiff_mul_left (hx : IsCocycleOne A N x) (hy : IsTgLift A N x 
     rw [hc]; abel, map_add, map_sub, map_mul (A.ρ) g h, Module.End.mul_apply]
   abel
 
+/- English proof (translation)
+Establish `e1 : tgDiff A y (n * g) h = A.ρ n (tgDiff A y g h)`. Simplify using `only [tgDiff]`. Rewrite using `[mul_assoc, hy.mul_left, hy.mul_left, map_mul, Module.End.mul_apply, map_add, map_sub]`. Normalize the expressions using the abelian group laws. Establish `e2 : (n : G) * g = g * (GroundTheory.GroupCoh.conjHom N g n : G)`.
+
+Simplify using `only [GroundTheory.GroupCoh.coe_conjHom_apply]`. Use `group`. Rewrite using `[← e1, e2, hy.tgDiff_mul_left hx]`.
+-/
 theorem IsTgLift.tgDiff_mem_invariants (hx : IsCocycleOne A N x) (hy : IsTgLift A N x y)
     (g h : G) (n : N) : A.ρ n (tgDiff A y g h) = tgDiff A y g h := by
   have e1 : tgDiff A y (n * g) h = A.ρ n (tgDiff A y g h) := by
@@ -64,6 +80,9 @@ theorem IsTgLift.tgDiff_mem_invariants (hx : IsCocycleOne A N x) (hy : IsTgLift 
     simp only [GroundTheory.GroupCoh.coe_conjHom_apply]; group
   rw [← e1, e2, hy.tgDiff_mul_left hx]
 
+/- English proof (translation)
+Rewrite using `[hy.tgDiff_mul_left hx, hy.tgDiff_mul_right]`.
+-/
 theorem IsTgLift.tgDiff_mul_mul (hx : IsCocycleOne A N x) (hy : IsTgLift A N x y) (g h : G)
     (m n : N) : tgDiff A y (g * m) (h * n) = tgDiff A y g h := by
   rw [hy.tgDiff_mul_left hx, hy.tgDiff_mul_right]
@@ -80,6 +99,9 @@ omit [IsTopologicalGroup G] in
 def liftCochain {y : G → A} (hy : IsLocallyConstant y) : locallyConstantCochains A 1 :=
   ⟨fun g => y (g 0), hy.comp_continuous (continuous_apply 0)⟩
 
+/- English proof (translation)
+Establish `h1 : IsLocallyConstant fun g : Fin 2 → G => A.ρ (g 0) (y (g 1))` using `isLocallyConstant_ρ_apply A (continuous_apply 0) (hy.comp_continuous (continuous_apply 1))`. Establish `h2 : IsLocallyConstant fun g : Fin 2 → G => y (g 0 * g 1)` using `hy.comp_continuous ((continuous_apply 0).mul (continuous_apply 1))`. Establish `h3 : IsLocallyConstant fun g : Fin 2 → G => y (g 0)` using `hy.comp_continuous (continuous_apply 0)`. Conclude with `(h1.sub h2).add h3`.
+-/
 theorem isLocallyConstant_tgDiff {y : G → A} (hy : IsLocallyConstant y) :
     IsLocallyConstant fun g : Fin 2 → G => tgDiff A y (g 0) (g 1) := by
   have h1 : IsLocallyConstant fun g : Fin 2 → G => A.ρ (g 0) (y (g 1)) :=
@@ -90,6 +112,9 @@ theorem isLocallyConstant_tgDiff {y : G → A} (hy : IsLocallyConstant y) :
     hy.comp_continuous (continuous_apply 0)
   exact (h1.sub h2).add h3
 
+/- English proof (translation)
+Rewrite using `[cochainsComplex_d_one_apply]`. Both sides reduce to the same expression.
+-/
 theorem cochainsComplex_d_liftCochain {y : G → A} (hy : IsLocallyConstant y) (g : Fin 2 → G) :
     (((cochainsComplex A).d 1 2).hom (liftCochain A hy)).1 g = tgDiff A y (g 0) (g 1) := by
   rw [cochainsComplex_d_one_apply]
@@ -98,6 +123,9 @@ theorem cochainsComplex_d_liftCochain {y : G → A} (hy : IsLocallyConstant y) (
 variable {A N} {x : N → A} {y : G → A}
 
 omit [IsTopologicalGroup G] [IsDiscreteRep A] in
+/- English proof (translation)
+Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul N g`. Take `⟨n, hn⟩` from `QuotientGroup.mk_out_eq_mul N h`. Express the relevant statement in the definitionally equal form `tgDiff A y (g : G ⧸ N).out (h : G ⧸ N).out = _`. Rewrite using `[hm, hn, hy.tgDiff_mul_mul hx]`.
+-/
 theorem IsTgLift.tgDiff_out (hx : IsCocycleOne A N x) (hy : IsTgLift A N x y) (g h : G) :
     tgDiff A y (Quotient.out (g : G ⧸ N)) (Quotient.out (h : G ⧸ N)) = tgDiff A y g h := by
   obtain ⟨m, hm⟩ := QuotientGroup.mk_out_eq_mul N g
@@ -126,6 +154,11 @@ noncomputable def tgCochain (hx : IsCocycleOne A N x) (hy : IsTgLift A N x y)
 
 variable (A N) in
 
+/- English proof (translation)
+Introduce `w w' h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Use `congrFun (congrArg Subtype.val h) fun i => (c i).out` as an intermediate fact. Establish `hc : (⇑(QuotientGroup.mk' N) ∘ fun i => (c i).out) = c`.
+
+Use function extensionality and compare the values at `fun i => QuotientGroup.out_eq' (c i)`. Express the relevant statement in the definitionally equal form `((w.1 (⇑(QuotientGroup.mk' N) ∘ fun i => (c i).out)) : A) = ((w'.1 (⇑(QuotientGroup.mk' N) ∘ fun i => (c i).out)) : A) at this`. Rewrite `this` using `[hc]`. Conclude with `Subtype.ext this`.
+-/
 theorem cochainsMapAlong_mk_injective (n : ℕ) :
     Function.Injective ((cochainsMapAlong (A := A.quotientToInvariants N) (B := A)
       (QuotientGroup.mk' N) (continuous_quotientGroup_mk' N)
@@ -141,6 +174,9 @@ theorem cochainsMapAlong_mk_injective (n : ℕ) :
   rw [hc] at this
   exact Subtype.ext this
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[cochainsComplex_d_liftCochain]`. Conclude with `hy.tgDiff_out hx (g 0) (g 1)`.
+-/
 theorem cochainsMapAlong_tgCochain (hx : IsCocycleOne A N x) (hy : IsTgLift A N x y)
     (hyc : IsLocallyConstant y) :
     ((cochainsMapAlong (QuotientGroup.mk' N) (continuous_quotientGroup_mk' N)
@@ -151,12 +187,18 @@ theorem cochainsMapAlong_tgCochain (hx : IsCocycleOne A N x) (hy : IsTgLift A N 
   rw [cochainsComplex_d_liftCochain]
   exact hy.tgDiff_out hx (g 0) (g 1)
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, HomologicalComplex.d_comp_d]`. Both sides reduce to the same expression.
+-/
 theorem cochainsComplex_d_d_apply {B : Rep.{u} k G} [IsDiscreteRep B] (i j l : ℕ)
     (v : (cochainsComplex B).X i) :
     ((cochainsComplex B).d j l).hom (((cochainsComplex B).d i j).hom v) = 0 := by
   rw [← LinearMap.comp_apply, ← ModuleCat.hom_comp, HomologicalComplex.d_comp_d]
   rfl
 
+/- English proof (translation)
+Apply `cochainsMapAlong_mk_injective A N 3` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `(hom_f_d_apply _ 2 3 _).trans ?_` and prove the remaining obligations. Rewrite using `[cochainsMapAlong_tgCochain]`. Conclude with `cochainsComplex_d_d_apply 1 2 3 _`.
+-/
 theorem tgCochain_d (hx : IsCocycleOne A N x) (hy : IsTgLift A N x y) (hyc : IsLocallyConstant y) :
     ((cochainsComplex (A.quotientToInvariants N)).d 2 (2 + 1)).hom (tgCochain hx hy hyc) = 0 := by
   apply cochainsMapAlong_mk_injective A N 3
@@ -176,17 +218,26 @@ noncomputable def cocycleOf (n : ℕ) (v : locallyConstantCochains B n)
     (hv : ((cochainsComplex B).d n (n + 1)).hom v = 0) : cocycles B n :=
   Classical.choose (exists_iCycles_eq_of_d_eq_zero (cochainsComplex B) n v hv)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_iCycles_eq_of_d_eq_zero (cochainsComplex B) n v hv)`.
+-/
 theorem iCycles_cocycleOf (n : ℕ) (v : locallyConstantCochains B n)
     (hv : ((cochainsComplex B).d n (n + 1)).hom v = 0) :
     ((cochainsComplex B).iCycles n).hom (cocycleOf n v hv) = v :=
   Classical.choose_spec (exists_iCycles_eq_of_d_eq_zero (cochainsComplex B) n v hv)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h ▸ iCycles_cocycleOf n v hv, fun h => iCycles_injective _ n ((iCycles_cocycleOf n v hv).trans h.symm)⟩`.
+-/
 theorem cocycleOf_eq_iff (n : ℕ) (v : locallyConstantCochains B n)
     (hv : ((cochainsComplex B).d n (n + 1)).hom v = 0) (z : cocycles B n) :
     cocycleOf n v hv = z ↔ ((cochainsComplex B).iCycles n).hom z = v :=
   ⟨fun h => h ▸ iCycles_cocycleOf n v hv, fun h =>
     iCycles_injective _ n ((iCycles_cocycleOf n v hv).trans h.symm)⟩
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `(homologyπ_succ_eq_zero_iff _ n _).2 ⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, iCycles_cocycleOf, iCycles_cocycleOf]`. Conclude with `hw`.
+-/
 theorem cohomologyπ_cocycleOf_eq (n : ℕ) (v v' : locallyConstantCochains B (n + 1))
     (hv : ((cochainsComplex B).d (n + 1) (n + 1 + 1)).hom v = 0)
     (hv' : ((cochainsComplex B).d (n + 1) (n + 1 + 1)).hom v' = 0)

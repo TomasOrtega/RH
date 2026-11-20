@@ -21,6 +21,9 @@ namespace GlobalTheory.CompanionTheory.GKClosure
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {V : Submodule ℂ H}
 
+/- English proof (translation)
+Rewrite using `[dsigC_eq]`. Conclude with `add_mem (hV.lieStable _ (cre_mem Y) v hv) (Submodule.smul_mem _ _ (hV.lieStable _ (cim_mem Y) v hv))`.
+-/
 theorem dsigC_mem_sub (hV : IsGKSub ε ρ V) (Y : Matrix (Fin n) (Fin n) ℂ) {v : H} (hv : v ∈ V) :
     PI.DSInfCharCap.dsigC ε ρ Y v ∈ V := by
   rw [dsigC_eq]
@@ -49,6 +52,9 @@ section Equiv
 
 variable [CompleteSpace H]
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H ρ hU hI`. Conclude with `⟨fun v hv => CompanionTheory.D.gk.HC.smoothVec_of_smD_A (h1 v hv), fun v hv => hv, isKStableOn_kFinVec ε ρ, fun X hX v hv => GlobalTheory.CompanionTheory.KFinLink.isLieStable_of hU hI X hX v hv⟩`.
+-/
 theorem isGKSub_kFinVec (hU : IsURepOn (UJset ε) ρ) (hI : IsIrredOn (UJset ε) ρ) :
     IsGKSub ε ρ (kFinVec ε ρ) := by
   obtain ⟨h1, -⟩ := CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H ρ hU hI

@@ -32,6 +32,9 @@ namespace GlobalTheory.RealAvg
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[Finsupp.mapDomain, Finsupp.sum_apply, Finsupp.sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply]`.
+-/
 theorem mapDomain_fst_apply {ι κ : Type} [DecidableEq ι] (k : ι × κ →₀ ℕ) (τ : ι) :
     Finsupp.mapDomain Prod.fst k τ = ∑ v ∈ k.support with v.1 = τ, k v := by
   rw [Finsupp.mapDomain, Finsupp.sum_apply, Finsupp.sum, Finset.sum_filter]
@@ -41,6 +44,9 @@ theorem mapDomain_fst_apply {ι κ : Type} [DecidableEq ι] (k : ι × κ →₀
 def Mon (D : D7) (m n : ℕ) (d : D.what₂.Tau →₀ ℕ) : Set (FVar D m n →₀ ℕ) := {k | Finsupp.mapDomain Prod.fst k = d}
 
 open Classical in
+/- English proof (translation)
+The claim follows from `(GlobalTheory.finite_monomials_of_placeDegree D m n (fun τ => d τ)).subset fun k hk τ => by have e := mapDomain_fst_apply k τ rw [show Finsupp.mapDomain Prod.fst k = d from hk] at e convert e.symm`.
+-/
 theorem mon_finite (D : D7) (m n : ℕ) (d : D.what₂.Tau →₀ ℕ) : (Mon D m n d).Finite :=
   (GlobalTheory.finite_monomials_of_placeDegree D m n (fun τ => d τ)).subset fun k hk τ => by
     have e := mapDomain_fst_apply k τ
@@ -58,6 +64,13 @@ def substMat (θ : InfFam D) (V : HSp D) (m : ℕ) (d : D.what₂.Tau →₀ ℕ
 
 open MvPolynomial
 
+/- English proof (translation)
+Establish `key : GlobalTheory.CompactHowe.substF (ι` using `ι) (fun _ => (1 : Matrix (Fin N) (Fin N) ℂ)) (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)) = AlgHom.id ℂ _ := by`. Use `algHom_ext fun p => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompactHowe.substF_X, Finset.sum_eq_single p.2.1, Finset.sum_eq_single p.2.2]`. Simplify using the standard rewrite rules. Introduce `l _ hl`.
+
+Simplify using `[Matrix.one_apply_ne hl]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Matrix.one_apply_ne hk]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[key]`. Both sides reduce to the same expression.
+-/
 theorem substF_one {ι : Type} {N n : ℕ} (P : MvPolynomial (ι × Fin N × Fin n) ℂ) :
     GlobalTheory.CompactHowe.substF (fun _ => (1 : Matrix (Fin N) (Fin N) ℂ)) (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)) P = P := by
   have key : GlobalTheory.CompactHowe.substF (ι := ι) (fun _ => (1 : Matrix (Fin N) (Fin N) ℂ))
@@ -71,6 +84,15 @@ theorem substF_one {ι : Type} {N n : ℕ} (P : MvPolynomial (ι × Fin N × Fin
     · simp
   rw [key]; rfl
 
+/- English proof (translation)
+Use extensionality with `k'`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_smul, coeff_monomial, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `hk : k' ∈ Mon D m n d`. Rewrite using `[Finset.sum_eq_single ⟨k', hk⟩]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (Subtype.ext h)`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero]`. Assume the negation of the conclusion as `h`. Conclude with `hk (hP k' h)`. Introduce `b _`.
+
+Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `hk b.2`.
+-/
 theorem eq_sum_mon {D : D7} {m n : ℕ} {d : D.what₂.Tau →₀ ℕ} (P : MvPolynomial (FVar D m n) ℂ)
     (hP : ∀ k', coeff k' P ≠ 0 → k' ∈ Mon D m n d) :
     P = ∑ k : Mon D m n d, coeff k.1 P • monomial k.1 (1 : ℂ) := by
@@ -89,6 +111,11 @@ theorem eq_sum_mon {D : D7} {m n : ℕ} {d : D.what₂.Tau →₀ ℕ} (P : MvPo
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `k' k`. Simplify using `only [substMat, GlobalTheory.StdUnn.CartanMove.compAt_mt_one, substF_one, coeff_monomial, Matrix.one_apply]`. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `h' : (k.1 : FVar D m V.rank →₀ ℕ) ≠ k'.1` using `fun e => h (Subtype.ext e.symm)`. Simplify using `[h, h']`.
+-/
 theorem substMat_one (θ : InfFam D) (V : HSp D) (m : ℕ) (d : D.what₂.Tau →₀ ℕ) : substMat θ V m d 1 = 1 := by
   classical
   ext k' k
@@ -98,6 +125,11 @@ theorem substMat_one (θ : InfFam D) (V : HSp D) (m : ℕ) (d : D.what₂.Tau �
   · have h' : (k.1 : FVar D m V.rank →₀ ℕ) ≠ k'.1 := fun e => h (Subtype.ext e.symm)
     simp [h, h']
 
+/- English proof (translation)
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Use `show IsAlgebraic ℚ ((1 : Matrix (Fin m) (Fin m) ℂ) a a)`. Rewrite using `[Matrix.one_apply_eq]`. Conclude with `isAlgebraic_one`.
+
+Use `show IsAlgebraic ℚ ((1 : Matrix (Fin m) (Fin m) ℂ) a b)`. Rewrite using `[Matrix.one_apply_ne hab]`. Conclude with `isAlgebraic_zero`.
+-/
 theorem one_alg (m : ℕ) (i : D.what₂.Tau) (a b : Fin m) :
     IsAlgebraic ℚ ((fun _ : D.what₂.Tau => (1 : Matrix (Fin m) (Fin m) ℂ)) i a b) := by
   by_cases hab : a = b
@@ -110,6 +142,9 @@ variable {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [Compa
   (κ : Measure K) [IsProbabilityMeasure κ] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 omit [Group K] [IsTopologicalGroup K] [DecidableEq ι] in
+/- English proof (translation)
+Repeatedly rewrite using `[hF]`. Rewrite using `[integral_finsetSum]`. Conclude with `Finset.sum_congr rfl fun k' _ => integral_mul_const _ _`. Conclude with `fun k' _ => (GlobalTheory.HaarAlg.integrable_of_continuous κ (hρ.matrix_elem k' k)).mul_const _`.
+-/
 theorem integral_expand (ρ : K → Matrix ι ι ℂ) (hρ : Continuous ρ) (Φ : ι → ℂ) (F : K → ℂ) (k : ι)
     (hF : ∀ g, F g = ∑ k', ρ g k' k * Φ k') : ∫ g, F g ∂κ = ∑ k', (∫ g, ρ g k' k ∂κ) * Φ k' := by
   simp_rw [hF]
@@ -117,6 +152,11 @@ theorem integral_expand (ρ : K → Matrix ι ι ℂ) (hρ : Continuous ρ) (Φ 
   · exact Finset.sum_congr rfl fun k' _ => integral_mul_const _ _
   · exact fun k' _ => (GlobalTheory.HaarAlg.integrable_of_continuous κ (hρ.matrix_elem k' k)).mul_const _
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.HaarAlg.rho_mul_avg κ ρ hρ z`. Rewrite `h` using `[hz, Matrix.smul_mul, Matrix.one_mul]`. Establish `h3` using `congrFun (congrFun h a) b`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, GlobalTheory.HaarAlg.avg, Matrix.of_apply] at h3`. Establish `h2 : (c - 1) * ∫ g, ρ g a b ∂κ = 0` using `by rw [sub_mul, one_mul, h3, sub_self]`.
+
+Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hc)`.
+-/
 theorem integral_eq_zero_of_scalar [κ.IsMulLeftInvariant] (ρ : K →* Matrix ι ι ℂ) (hρ : Continuous ρ) (z : K) (c : ℂ)
     (hc : c ≠ 1) (hz : ρ z = c • 1) (a b : ι) : ∫ g, ρ g a b ∂κ = 0 := by
   classical

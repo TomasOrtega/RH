@@ -18,35 +18,63 @@ variable {l : ℕ} [hl : Fact l.Prime]
 
 def large₂ (u : ℤ_[l]ˣ) : ℚ_[l] := Formalism.MainNotions.LocalSituation.logZl l ((u : ℤ_[l]) : ℚ_[l])
 
+/- English proof (translation)
+The claim follows from `PadicInt.norm_units u`.
+-/
 theorem norm_coe_unit (u : ℤ_[l]ˣ) : ‖((u : ℤ_[l]) : ℚ_[l])‖ = 1 := PadicInt.norm_units u
 
+/- English proof (translation)
+Rewrite using `[large₂, Units.val_mul, PadicInt.coe_mul]`. Conclude with `(GlobalTheory.PadicLogUnits.logZl_hom l).1 _ _ (norm_coe_unit u) (norm_coe_unit w)`.
+-/
 theorem Lg_mul (u w : ℤ_[l]ˣ) : large₂ (u * w) = large₂ u + large₂ w := by
   rw [large₂, Units.val_mul, PadicInt.coe_mul]
   exact (GlobalTheory.PadicLogUnits.logZl_hom l).1 _ _ (norm_coe_unit u) (norm_coe_unit w)
 
+/- English proof (translation)
+Use `Lg_mul (1 : ℤ_[l]ˣ) 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Take the linear combination `-this`.
+-/
 theorem Lg_one : large₂ (1 : ℤ_[l]ˣ) = 0 := by
   have := Lg_mul (1 : ℤ_[l]ˣ) 1
   rw [mul_one] at this
   linear_combination -this
 
+/- English proof (translation)
+Use `Lg_mul u u⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, Lg_one]`. Take the linear combination `-this`.
+-/
 theorem Lg_inv (u : ℤ_[l]ˣ) : large₂ u⁻¹ = -large₂ u := by
   have := Lg_mul u u⁻¹
   rw [mul_inv_cancel, Lg_one] at this
   linear_combination -this
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [Lg_one]`. Consider the case `succ n ih => rw [pow_succ, Lg_mul, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Lg_pow (u : ℤ_[l]ˣ) (n : ℕ) : large₂ (u ^ n) = n * large₂ u := by
   induction n with
   | zero => simp [Lg_one]
   | succ n ih => rw [pow_succ, Lg_mul, ih]; push_cast; ring
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.PadicLogUnits.logZl_hom l).2.1.comp_continuous (continuous_subtype_val.comp (Units.continuous_val (M := ℤ_[l]))) norm_coe_unit`.
+-/
 theorem continuous_Lg : Continuous (large₂ (l := l)) :=
   (GlobalTheory.PadicLogUnits.logZl_hom l).2.1.comp_continuous
     (continuous_subtype_val.comp (Units.continuous_val (M := ℤ_[l]))) norm_coe_unit
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.PadicLogUnits.logZl_hom l).2.2.2 j h1 h2 _ hu`.
+-/
 theorem norm_Lg {j : ℕ} (h1 : 1 ≤ j) (h2 : l = 2 → 2 ≤ j) (u : ℤ_[l]ˣ)
     (hu : ‖(u : ℤ_[l]) - 1‖ ≤ (l : ℝ) ^ (-(j : ℤ))) : ‖large₂ u‖ = ‖(u : ℤ_[l]) - 1‖ :=
   (GlobalTheory.PadicLogUnits.logZl_hom l).2.2.2 j h1 h2 _ hu
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `hl.out.two_le`. Use `⟨l * (l - 1), Nat.mul_pos (by omega) (by omega), ?_⟩` and prove the remaining obligations. Establish `h3` using `norm_Lg (j := 2) (by norm_num) (fun _ => le_rfl) (u ^ (l * (l - 1))) (GlobalTheory.PadicLogUnits.norm_unit_pow_sub_one (norm_coe_unit u))`.
+
+Rewrite `h3` using `[Lg_pow, h, mul_zero, norm_zero, eq_comm, norm_eq_zero, sub_eq_zero]`. Conclude with `Units.ext h3`. Introduce and unpack `⟨k, hk, h⟩`. Use `Lg_pow u k` as an intermediate fact. Rewrite `this` using `[h, Lg_one, eq_comm, mul_eq_zero]`.
+
+Conclude with `this.resolve_left (by exact_mod_cast hk.ne')`.
+-/
 theorem Lg_eq_zero_iff (u : ℤ_[l]ˣ) : large₂ u = 0 ↔ ∃ k : ℕ, 0 < k ∧ u ^ k = 1 := by
   constructor
   · intro h
@@ -61,10 +89,22 @@ theorem Lg_eq_zero_iff (u : ℤ_[l]ˣ) : large₂ u = 0 ↔ ∃ k : ℕ, 0 < k �
     rw [h, Lg_one, eq_comm, mul_eq_zero] at this
     exact this.resolve_left (by exact_mod_cast hk.ne')
 
+/- English proof (translation)
+Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]`.
+-/
 theorem norm_le_iff_dvd (x : ℤ_[l]) (j : ℕ) :
     ‖x‖ ≤ (l : ℝ) ^ (-(j : ℤ)) ↔ (l : ℤ_[l]) ^ j ∣ x := by
   rw [PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Establish `h2` using `hl.out.two_le`. Establish `hF : (l : ℤ_[l]) ∣ (a : ℤ_[l]) ^ (l - 1) - 1`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_pow, map_one, sub_eq_zero]`. Conclude with `ZMod.pow_card_sub_one_eq_one (a.isUnit.map PadicInt.toZMod).ne_zero`. Establish `hd : ‖(((l - 1 : ℕ) : ℤ_[l]))‖ = 1`.
+
+Use `GlobalTheory.PadicLogUnits.norm_sub_one (l := l)` as an intermediate fact. Rewrite using `[PadicInt.norm_def, PadicInt.coe_natCast, Nat.cast_sub hl.out.one_le, Nat.cast_one, this]`. Take `⟨z, hz, hza, -⟩` from `hensels_lemma (p := l) (F := (Polynomial.X ^ (l - 1) - 1 : Polynomial ℤ_[l])) (a := (a : ℤ_[l])) (by`. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, Polynomial.derivative_sub, Polynomial.derivative_X_pow, Polynomial.derivative_one, sub_zero, map_mul, Polynomial.aeval_C, Algebra.algebraMap_self, RingHom.id_apply, norm_mul, norm_pow, PadicInt.norm_units, hd]`. Simplify using `using (PadicInt.norm_lt_one_iff_dvd _).2 hF)`.
+
+Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, sub_eq_zero] at hz`. Establish `hzu : IsUnit z` using `IsUnit.of_pow_eq_one hz (by omega)`. Take `⟨w, rfl⟩` from `hzu`. Use `⟨w, Units.ext (by simpa using hz), ?_⟩` and prove the remaining obligations. Establish `h3` using `(PadicInt.norm_lt_one_iff_dvd _).1 (hza.trans_le (PadicInt.norm_le_one _))`.
+
+Establish `e : ((a * w⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) - 1 = ((w : ℤ_[l]) - a) * (-((w⁻¹ : ℤ_[l]ˣ) : ℤ_[l]))`. Rewrite using `[Units.val_mul]`. Take the linear combination `w.mul_inv`. Rewrite using `[e]`. Conclude with `h3.mul_right _`.
+-/
 theorem exists_teich (a : ℤ_[l]ˣ) :
     ∃ z : ℤ_[l]ˣ, z ^ (l - 1) = 1 ∧ (l : ℤ_[l]) ∣ ((a * z⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) - 1 := by
   have h2 := hl.out.two_le
@@ -96,6 +136,17 @@ section Sub
 
 variable {S : Subgroup ℤ_[l]ˣ} {s d : ℕ}
 
+/- English proof (translation)
+Establish `h2` using `hl.out.two_le`. Take `⟨z, hz, haz⟩` from `exists_teich a`. Establish `hzl : ∀ m : ℕ, z ^ (l ^ m) = z`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_mul, ih]`. Establish `e : z ^ l = z ^ (l - 1 + 1)` using `by rw [Nat.sub_add_cancel hl.out.one_le]`. Rewrite using `[e, pow_succ, hz, one_mul]`.
+
+Establish `h1 : (a * z⁻¹) ^ (l ^ s) ∈ S`. Apply `hS` to reduce the goal to its premises. Use `dvd_sub_pow_of_dvd_sub haz s` as an intermediate fact. Rewrite `this` using `[one_pow, pow_succ]`. Rewrite using `[Units.val_pow_eq_pow_val]`.
+
+Conclude with `(Dvd.intro _ rfl).trans this`. Establish `h3 : z ∈ S`. Use `S.mul_mem (S.inv_mem h1) (S.pow_mem ha (l ^ s))` as an intermediate fact. Rewrite `this` using `[mul_pow, inv_pow, hzl, mul_inv_rev, inv_inv, inv_mul_cancel_right]`. Then use the resulting hypothesis. Establish `h4` using `hd z h3 ⟨l - 1, by omega, hz⟩`.
+
+Establish `h5 : a ^ d = (a * z⁻¹) ^ d` using `by rw [mul_pow, inv_pow, h4, inv_one, mul_one]`. Rewrite using `[h5, Units.val_pow_eq_pow_val]`. Use `sub_dvd_pow_sub_pow ((a * z⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) 1 d` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `haz.trans this`.
+-/
 theorem dvd_pow_sub_one (hS : ∀ u : ℤ_[l]ˣ, (l : ℤ_[l]) ^ s ∣ (u : ℤ_[l]) - 1 → u ∈ S)
     (hd : ∀ z ∈ S, (∃ k : ℕ, 0 < k ∧ z ^ k = 1) → z ^ d = 1) {a : ℤ_[l]ˣ} (ha : a ∈ S) :
     (l : ℤ_[l]) ∣ ((a ^ d : ℤ_[l]ˣ) : ℤ_[l]) - 1 := by
@@ -125,6 +176,17 @@ theorem dvd_pow_sub_one (hS : ∀ u : ℤ_[l]ˣ, (l : ℤ_[l]) ^ s ∣ (u : ℤ_
   rw [one_pow] at this
   exact haz.trans this
 
+/- English proof (translation)
+Establish `hb0 : large₂ b ≠ 0` using `norm_pos_iff.1 ((norm_nonneg _).trans_lt hlt)`. Set `t : ℤ_[l]` to `⟨large₂ c / large₂ b, by`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ hlt.le (norm_nonneg _)⟩`. Establish `ht` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ s).2 (PadicInt.appr_spec s t)`.
+
+Use `set n := t.appr s`. Establish `hj : (l : ℤ_[l]) ^ j ∣ ((c * (b ^ n)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) - 1`. Establish `e : ((c * (b ^ n)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) - 1 = (((c : ℤ_[l]) - 1) - ((b : ℤ_[l]) ^ n - 1 ^ n)) * (((b ^ n)⁻¹ : ℤ_[l]ˣ) : ℤ_[l])`. Rewrite using `[Units.val_mul, ← Units.val_pow_eq_pow_val, one_pow]`. Take the linear combination `(b ^ n).mul_inv`.
+
+Rewrite using `[e]`. Conclude with `(dvd_sub hcj (hbj.trans (sub_dvd_pow_sub_pow _ _ _))).mul_right _`. Establish `h3` using `norm_Lg h1 h2 _ ((norm_le_iff_dvd _ _).2 hj)`. Establish `h4 : c * (b ^ n)⁻¹ ∈ S`. Apply `hS` to reduce the goal to its premises.
+
+Rewrite using `[← norm_le_iff_dvd, ← h3, Lg_mul, Lg_inv, Lg_pow]`. Establish `e : large₂ c + -((n : ℚ_[l]) * large₂ b) = ((t - n : ℤ_[l]) : ℚ_[l]) * large₂ b`. Rewrite using `[PadicInt.coe_sub, PadicInt.coe_natCast]`. Express the relevant statement in the definitionally equal form `_ = (large₂ c / large₂ b - n) * large₂ b`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) ((GlobalTheory.PadicLogUnits.logZl_hom l).2.2.1 _ (norm_coe_unit b))).trans ht`. Use `S.mul_mem h4 (S.pow_mem hb n)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_norm_Lg_lt {j : ℕ} (h1 : 1 ≤ j) (h2 : l = 2 → 2 ≤ j)
     (hS : ∀ u : ℤ_[l]ˣ, (l : ℤ_[l]) ^ s ∣ (u : ℤ_[l]) - 1 → u ∈ S) {b c : ℤ_[l]ˣ} (hb : b ∈ S)
     (hbj : (l : ℤ_[l]) ^ j ∣ (b : ℤ_[l]) - 1) (hcj : (l : ℤ_[l]) ^ j ∣ (c : ℤ_[l]) - 1)
@@ -156,6 +218,11 @@ theorem mem_of_norm_Lg_lt {j : ℕ} (h1 : 1 ≤ j) (h2 : l = 2 → 2 ≤ j)
   have := S.mul_mem h4 (S.pow_mem hb n)
   rwa [inv_mul_cancel_right] at this
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `u.isUnit.map (PadicInt.toZModPow (p := l) 2)`. Simplify using `only [← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, Units.val_neg, map_neg, ← hv]`. Use `clear hv`. Substitute `h` using the available equality. Use `revert v`.
+
+Evaluate the decidable proposition.
+-/
 theorem two_adic_cases (h : l = 2) (u : ℤ_[l]ˣ) :
     (l : ℤ_[l]) ^ 2 ∣ (u : ℤ_[l]) - 1 ∨ (l : ℤ_[l]) ^ 2 ∣ ((-u : ℤ_[l]ˣ) : ℤ_[l]) - 1 := by
   obtain ⟨v, hv⟩ := u.isUnit.map (PadicInt.toZModPow (p := l) 2)
@@ -166,10 +233,30 @@ theorem two_adic_cases (h : l = 2) (u : ℤ_[l]ˣ) :
   revert v
   decide
 
+/- English proof (translation)
+Establish `h : large₂ (-1 : ℤ_[l]ˣ) = 0` using `(Lg_eq_zero_iff _).2 ⟨2, by norm_num, by simp⟩`. Rewrite using `[← neg_one_mul, Lg_mul, h, zero_add]`.
+-/
 theorem Lg_neg (u : ℤ_[l]ˣ) : large₂ (-u) = large₂ u := by
   have h : large₂ (-1 : ℤ_[l]ˣ) = 0 := (Lg_eq_zero_iff _).2 ⟨2, by norm_num, by simp⟩
   rw [← neg_one_mul, Lg_mul, h, zero_add]
 
+/- English proof (translation)
+Establish `main : ∀ j : ℕ, 1 ≤ j → (l = 2 → 2 ≤ j) → (l : ℤ_[l]) ^ j ∣ ((a ^ d : ℤ_[l]ˣ) : ℤ_[l]) - 1 → ‖large₂ b‖ ≤ ‖large₂ a‖`. Introduce `j h1 h2 hj`. Rewrite `hj` using `[← norm_le_iff_dvd]`. Establish `h3` using `hmax b hb`. Rewrite `h3` using `[← norm_Lg h1 h2 _ hj, ← norm_Lg h1 h2 _ ((hmax b hb).trans hj), Lg_pow, Lg_pow, norm_mul, norm_mul]`.
+
+Establish `h4 : 0 < ‖(d : ℚ_[l])‖` using `norm_pos_iff.2 (by exact_mod_cast hd0)`. Conclude with `le_of_mul_le_mul_left h3 h4`. Distinguish the cases in `h : l = 2`. Use `swap`. Conclude with `main 1 le_rfl (fun h' => absurd h' h) (by rw [pow_one]; exact dvd_pow_sub_one hS hd ha)`.
+
+Distinguish the cases in `h4 : (l : ℤ_[l]) ^ 2 ∣ ((a ^ d : ℤ_[l]ˣ) : ℤ_[l]) - 1`. Conclude with `main 2 (by norm_num) (fun _ => le_rfl) h4`. Establish `hdv : ∀ u : ℤ_[l]ˣ, (l : ℤ_[l]) ^ 2 ∣ (u : ℤ_[l]) - 1 → (l : ℤ_[l]) ^ 2 ∣ ((u ^ d : ℤ_[l]ˣ) : ℤ_[l]) - 1`. Introduce `u hu`. Use `sub_dvd_pow_sub_pow (u : ℤ_[l]) 1 d` as an intermediate fact.
+
+Rewrite `this` using `[one_pow]`. Conclude with `hu.trans this`. Establish `ha'` using `(two_adic_cases h a).resolve_left fun h' => h4 (hdv a h')`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`.
+
+Establish `hna : -a ∈ S`. Break down `two_adic_cases h b with hb' | hb'` into its components or cases. Conclude with `mem_of_norm_Lg_lt (by norm_num) (fun _ => le_rfl) hS hb hb' ha' (by rwa [Lg_neg])`. Use `mem_of_norm_Lg_lt (by norm_num) (fun _ => le_rfl) hS (S.mul_mem hb ha) ?_ ha' ?_` and prove the remaining obligations. Establish `e : ((b * a : ℤ_[l]ˣ) : ℤ_[l]) - 1 = (((-b : ℤ_[l]ˣ) : ℤ_[l]) - 1) * ((-a : ℤ_[l]ˣ) : ℤ_[l]) + (((-a : ℤ_[l]ˣ) : ℤ_[l]) - 1)`.
+
+Simplify using `only [Units.val_mul, Units.val_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `dvd_add (hb'.mul_right _) ha'`. Rewrite using `[Lg_neg, Lg_mul, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne']`.
+
+Conclude with `lt_max_of_lt_left hlt`. Establish `hm1 : (-1 : ℤ_[l]ˣ) ∈ S`. Use `S.mul_mem hna (S.inv_mem ha)` as an intermediate fact. Rewrite `this` using `[neg_mul, mul_inv_cancel]`. Then use the resulting hypothesis. Establish `h5` using `hd _ hm1 ⟨2, by norm_num, by simp⟩`.
+
+Establish `h6` using `hdv _ ha'`. Rewrite `h6` using `[neg_pow, h5, one_mul]`. Conclude with `h4 h6`.
+-/
 theorem norm_Lg_le_of_max (hS : ∀ u : ℤ_[l]ˣ, (l : ℤ_[l]) ^ s ∣ (u : ℤ_[l]) - 1 → u ∈ S)
     (hd0 : d ≠ 0) (hd : ∀ z ∈ S, (∃ k : ℕ, 0 < k ∧ z ^ k = 1) → z ^ d = 1) {a : ℤ_[l]ˣ} (ha : a ∈ S)
     (hmax : ∀ b ∈ S, ‖((b ^ d : ℤ_[l]ˣ) : ℤ_[l]) - 1‖ ≤ ‖((a ^ d : ℤ_[l]ˣ) : ℤ_[l]) - 1‖)
@@ -218,6 +305,15 @@ theorem norm_Lg_le_of_max (hS : ∀ u : ℤ_[l]ˣ, (l : ℤ_[l]) ^ s ∣ (u : �
 
 end Sub
 
+/- English proof (translation)
+Set `f : G → ℤ_[l]` to `fun g => ⟨large₂ (χ g) / large₂ (χ g₀), by`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ (hle g) (norm_nonneg _)⟩`. Establish `hf : Continuous f` using `((continuous_Lg.comp hχ).div_const _).subtype_mk _`. Use `⟨MonoidHom.mk' (fun g => Multiplicative.ofAdd (f g)) fun a b => ?_, continuous_ofAdd.comp hf, fun g => ?_, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ofAdd_add]`. Use `congrArg _ (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `large₂ (χ (a * b)) / large₂ (χ g₀) = large₂ (χ a) / large₂ (χ g₀) + large₂ (χ b) / large₂ (χ g₀)`. Rewrite using `[map_mul, Lg_mul, add_div]`. Rewrite using `[MonoidHom.mk'_apply, ofAdd_eq_one]`.
+
+Use `Subtype.ext_iff.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `large₂ (χ g) / large₂ (χ g₀) = 0 ↔ _`. Rewrite using `[div_eq_zero_iff, or_iff_left h0]`. Rewrite using `[MonoidHom.mk'_apply, Multiplicative.ofAdd.apply_eq_iff_eq]`. Use `Subtype.ext_iff.trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `large₂ (χ g) / large₂ (χ g₀) = 1 ↔ _`. Rewrite using `[div_eq_one_iff_eq h0]`.
+-/
 theorem exists_coord {G : Type} [Group G] [TopologicalSpace G] (χ : G →* ℤ_[l]ˣ) (hχ : Continuous χ)
     (g₀ : G) (h0 : large₂ (χ g₀) ≠ 0) (hle : ∀ g, ‖large₂ (χ g)‖ ≤ ‖large₂ (χ g₀)‖) :
     ∃ lam : G →* Multiplicative ℤ_[l], Continuous lam ∧ (∀ g, lam g = 1 ↔ large₂ (χ g) = 0) ∧
@@ -240,21 +336,35 @@ theorem exists_coord {G : Type} [Group G] [TopologicalSpace G] (χ : G →* ℤ_
     change large₂ (χ g) / large₂ (χ g₀) = 1 ↔ _
     rw [div_eq_one_iff_eq h0]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `‖algebraMap ℚ_[l] (Om l) x‖ = ‖x‖`. Conclude with `norm_algebraMap' _ x`.
+-/
 theorem norm_algebraMap_ext (LL : FinExt l) (x : ℚ_[l]) :
     ‖((algebraMap ℚ_[l] ↥LL.1 x : ↥LL.1) : Om l)‖ = ‖x‖ := by
   change ‖algebraMap ℚ_[l] (Om l) x‖ = ‖x‖
   exact norm_algebraMap' _ x
 
+/- English proof (translation)
+Rewrite using `[(NormVal.locPrime_v_normalised l P LL).1, norm_algebraMap_ext, Rat.cast_intCast, ← Int.cast_neg, Real.rpow_intCast]`.
+-/
 theorem v_eq_iff (P : LocPrime l) (LL : FinExt l) (x : ℚ_[l]) (j : ℤ) :
     P.v LL (algebraMap ℚ_[l] ↥LL.1 x) = ((j : ℚ) : WithTop ℚ) ↔ ‖x‖ = (l : ℝ) ^ (-j) := by
   rw [(NormVal.locPrime_v_normalised l P LL).1, norm_algebraMap_ext, Rat.cast_intCast,
     ← Int.cast_neg, Real.rpow_intCast]
 
+/- English proof (translation)
+Rewrite using `[(NormVal.locPrime_v_normalised l P LL).2.1, norm_algebraMap_ext, Rat.cast_intCast, ← Int.cast_neg, Real.rpow_intCast]`.
+-/
 theorem le_v_iff (P : LocPrime l) (LL : FinExt l) (x : ℚ_[l]) (j : ℤ) :
     ((j : ℚ) : WithTop ℚ) ≤ P.v LL (algebraMap ℚ_[l] ↥LL.1 x) ↔ ‖x‖ ≤ (l : ℝ) ^ (-j) := by
   rw [(NormVal.locPrime_v_normalised l P LL).2.1, norm_algebraMap_ext, Rat.cast_intCast,
     ← Int.cast_neg, Real.rpow_intCast]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Rewrite `h` using `[hx, map_zero, AddValuation.map_zero, top_le_iff, AddValuation.top_iff, map_eq_zero_iff _ (algebraMap ℚ_[l] ↥LL.1).injective]`. Rewrite using `[h, norm_zero]`. Conclude with `norm_nonneg _`. Establish `h1` using `Padic.norm_eq_zpow_neg_valuation hx`.
+
+Rewrite `h` using `[(v_eq_iff P LL x _).2 h1, le_v_iff]`. Rewrite using `[h1]` and apply the resulting hypothesis.
+-/
 theorem norm_le_of_v_le (P : LocPrime l) (LL : FinExt l) {x y : ℚ_[l]}
     (h : P.v LL (algebraMap ℚ_[l] ↥LL.1 x) ≤ P.v LL (algebraMap ℚ_[l] ↥LL.1 y)) : ‖y‖ ≤ ‖x‖ := by
   by_cases hx : x = 0
@@ -268,6 +378,41 @@ theorem norm_le_of_v_le (P : LocPrime l) (LL : FinExt l) {x y : ℚ_[l]}
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `l hl P K s LL hg Γ`. Take `⟨hs1, hs2, hK, -⟩` from `hg`. Take `⟨χ₀, hχ₀, hc₀, hon⟩` from `GlobalTheory.Cyc.exists_integral_cyclotomicChar l P`. Set `χ : ↥(GK K) →* ℤ_[l]ˣ` to `χ₀.comp (GK K).subtype`. Establish `hc : Continuous χ` using `hc₀.comp continuous_subtype_val`.
+
+Establish `hPD : ∀ g, ((P.PD K).χ g : ℚ_[l]) = ((χ g : ℤ_[l]) : ℚ_[l])` using `fun g => by`. Rewrite using `[P.PD_χ]`. Conclude with `(hχ₀ _).symm`. Establish `hres : ∀ g, algebraMap ↥(OL LL) ↥LL.1 (Γ.χΓ (Γ.resΓ g) : ↥(OL LL)) = algebraMap ℚ_[l] ↥LL.1 ((χ g : ℤ_[l]) : ℚ_[l])` using `fun g => by rw [Γ.χΓ_res, hPD]`. Establish `hker : ∀ g, Γ.resΓ g = 1 ↔ χ g = 1`.
+
+Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hres g` as an intermediate fact. Rewrite `this` using `[h, Γ.χΓ.map_one, Units.val_one, RingHom.map_one, eq_comm, map_eq_one_iff _ (algebraMap ℚ_[l] ↥LL.1).injective]`.
+
+Conclude with `Units.ext (Subtype.ext this)`. Introduce `h`. Use `hres g` as an intermediate fact. Rewrite `this` using `[h, Units.val_one, PadicInt.coe_one, RingHom.map_one]`. Use `Γ.χΓ_inj (Eq.trans ?_ Γ.χΓ.map_one.symm)` and prove the remaining obligations.
+
+Conclude with `Units.ext (Subtype.ext this)`. Establish `heq : ∀ g g', Γ.resΓ g = Γ.resΓ g' ↔ χ g = χ g'`. Introduce `g g'`. Rewrite using `[← mul_inv_eq_one, ← map_inv, ← map_mul, hker, map_mul, map_inv, mul_inv_eq_one]`. Establish `hs : ((s : ℕ) : WithTop ℚ) = (((s : ℤ) : ℚ) : WithTop ℚ)` using `by simp`.
+
+Establish `hmem : ∀ g, g ∈ Γ.GKs ↔ ‖(χ g : ℤ_[l]) - 1‖ ≤ (l : ℝ) ^ (-(s : ℤ))`. Introduce `g`. Rewrite using `[Γ.GKs_def, hPD, ← map_one (algebraMap ℚ_[l] ↥LL.1), ← map_sub, hs, le_v_iff]`. Both sides reduce to the same expression. Take `⟨g₀, hg₀⟩` from `Γ.resΓ_onto Γ.gam`.
+
+Establish `hn₀ : ‖(χ g₀ : ℤ_[l]) - 1‖ = (l : ℝ) ^ (-(s : ℤ))`. Use `Γ.gam_gen` as an intermediate fact. Rewrite `this` using `[← hg₀, hres, ← map_one (algebraMap ℚ_[l] ↥LL.1), ← map_sub, hs, v_eq_iff]`. Conclude with `this`. Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast hl.out.pos`.
+
+Establish `hL₀ : large₂ (χ g₀) ≠ 0`. Rewrite using `[← norm_pos_iff, norm_Lg hs1 hs2 _ hn₀.le, hn₀]`. Check the signs of the components of the expression. Establish `hz : ∀ g ∈ Γ.GKs, large₂ (χ g) = 0 ↔ Γ.resΓ g = 1`. Introduce `g hg`.
+
+Rewrite using `[hker, ← norm_eq_zero, norm_Lg hs1 hs2 _ ((hmem g).1 hg), norm_eq_zero, sub_eq_zero, Units.val_eq_one]`. Establish `hm₀ : g₀ ∈ Γ.GKs` using `(hmem g₀).2 hn₀.le`. Establish `hΔ : ∀ g, Γ.resΓ g ∈ Γ.DelF ↔ ∃ k : ℕ, 0 < k ∧ χ g ^ k = 1`. Introduce `g`. Simplify using `only [Γ.DelF_def, ← map_pow, hker]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨lam, h1, h2, h3⟩` from `exists_coord (χ.comp Γ.GKs.subtype) (hc.comp continuous_subtype_val) ⟨g₀, hm₀⟩ hL₀ (fun g => by`. Express the relevant statement in the definitionally equal form `‖large₂ (χ g)‖ ≤ ‖large₂ (χ g₀)‖`. Rewrite using `[norm_Lg hs1 hs2 _ hn₀.le, hn₀, norm_Lg hs1 hs2 _ ((hmem g).1 g.2)]`. Conclude with `(hmem g).1 g.2)`.
+
+Use `⟨lam, h1, fun g => (h2 g).trans (hz g g.2), fun g => (h3 g).trans ?_, ⟨⟨g₀, hm₀⟩, (h3 _).2 rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `large₂ (χ g) = large₂ (χ g₀) ↔ _`. Use `hz _ (Γ.GKs.mul_mem g.2 (Γ.GKs.inv_mem hm₀))` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, Lg_mul, Lg_inv, map_mul, map_inv, mul_inv_eq_one, hg₀, ← sub_eq_add_neg, sub_eq_zero]`. Then use the resulting hypothesis. Establish `e : (Γ.GKs : Set ↥(GK K)) = {g | ‖(χ g : ℤ_[l]) - 1‖ ≤ (l : ℝ) ^ (-(s : ℤ))}` using `Set.ext hmem`.
+
+Rewrite using `[e]`. Conclude with `isClosed_le (((Units.continuous_val (M := ℤ_[l])).comp hc).sub continuous_const).norm continuous_const`. Take `⟨g₁, hg₁⟩` from `Γ.resΓ_onto Γ.gamK`. Establish `hcard : Γ.DelF.card = Nat.card (CommGroup.torsion Γ.Gam)`. Rewrite using `[← Fintype.card_coe, ← Nat.card_eq_fintype_card]`.
+
+Use `Nat.card_congr (Equiv.subtypeEquivRight fun x => ?_)` and prove the remaining obligations. Rewrite using `[Γ.DelF_def, CommGroup.mem_torsion, isOfFinOrder_iff_pow_eq_one]`. Establish `hle : ∀ g, ‖large₂ (χ g)‖ ≤ ‖large₂ (χ g₁)‖`. Introduce `g`. Use `norm_Lg_le_of_max (S := χ.range) (s := s) (d := Γ.DelF.card) ?_ ?_ ?_ ⟨g₁, rfl⟩ ?_ ⟨g, rfl⟩` and prove the remaining obligations.
+
+Introduce `u hu`. Take `⟨g, hg, h⟩` from `hon K s hK u hu`. Conclude with `⟨⟨g, hg⟩, h⟩`. Conclude with `Finset.card_ne_zero_of_mem ((Γ.DelF_def 1).2 ⟨1, one_pos, one_pow _⟩)`. Introduce and unpack `_ ⟨g, rfl⟩ hz`.
+
+Establish `h1` using `(Γ.DelF_def _).1 ((hΔ g).2 hz)`. Rewrite `h1` using `[← isOfFinOrder_iff_pow_eq_one, ← CommGroup.mem_torsion]`. Rewrite using `[← map_pow, ← hker, map_pow, hcard]`. Conclude with `congrArg Subtype.val (pow_card_eq_one' (x := (⟨_, h1⟩ : CommGroup.torsion Γ.Gam)))`. Introduce and unpack `_ ⟨g, rfl⟩`.
+
+Use `Γ.gamK_gen (Γ.resΓ g)` as an intermediate fact. Rewrite `this` using `[← hg₁, map_pow, map_pow, hres, hres, ← map_pow, ← map_pow, ← map_one (algebraMap ℚ_[l] ↥LL.1), ← map_sub, ← map_sub]`. Conclude with `norm_le_of_v_le P LL this`. Establish `hL₁ : large₂ (χ g₁) ≠ 0` using `norm_pos_iff.1 ((norm_pos_iff.2 hL₀).trans_le (hle g₀))`. Take `⟨lam, h1, h2, h3⟩` from `exists_coord χ hc g₁ hL₁ hle`.
+
+Use `⟨lam, h1, fun g => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[h2, hΔ, Lg_eq_zero_iff]`. Rewrite using `[h3, (heq g g₁).1 (hg.trans hg₁.symm)]`.
+-/
 theorem exists_gamma_coordinates : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∀ Γ : GamS P K s LL, (∃ lam : ↥Γ.GKs →* Multiplicative ℤ_[l], Continuous lam ∧ (∀ g, lam g = 1 ↔ Γ.resΓ (g : ↥(GK K)) = 1) ∧ (∀ g, lam g = Multiplicative.ofAdd 1 ↔ Γ.resΓ (g : ↥(GK K)) = Γ.gam) ∧ (∃ g, lam g = Multiplicative.ofAdd 1) ∧ IsClosed (Γ.GKs : Set ↥(GK K))) ∧ ∃ lam : ↥(GK K) →* Multiplicative ℤ_[l], Continuous lam ∧ (∀ g, lam g = 1 ↔ Γ.resΓ g ∈ Γ.DelF) ∧ (∀ g, Γ.resΓ g = Γ.gamK → lam g = Multiplicative.ofAdd 1) := by
   intro l hl P K s LL hg Γ
   obtain ⟨hs1, hs2, hK, -⟩ := hg

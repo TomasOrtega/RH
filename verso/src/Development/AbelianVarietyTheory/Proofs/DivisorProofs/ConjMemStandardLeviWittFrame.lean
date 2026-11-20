@@ -19,21 +19,33 @@ namespace GlobalTheory.Cusp.ConjLevi
 
 variable {D : D7} {V : HSp D}
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.Cusp.ratAct]`. Rewrite using `[show (a * b).1.1 = a.1.1 * b.1.1 from rfl, Matrix.toLin_mul V.frame V.frame V.frame]`. Both sides reduce to the same expression.
+-/
 theorem ratAct_mul_apply (a b : GF V) (v : V.V) :
     GlobalTheory.Cusp.ratAct D.sp.cm V (a * b) v = GlobalTheory.Cusp.ratAct D.sp.cm V a (GlobalTheory.Cusp.ratAct D.sp.cm V b v) := by
   simp only [GlobalTheory.Cusp.ratAct]
   rw [show (a * b).1.1 = a.1.1 * b.1.1 from rfl, Matrix.toLin_mul V.frame V.frame V.frame]
   rfl
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.Cusp.ratAct]`. Rewrite using `[show (1 : GF V).1.1 = 1 from rfl, Matrix.toLin_one]`. Both sides reduce to the same expression.
+-/
 theorem ratAct_one_apply (v : V.V) : GlobalTheory.Cusp.ratAct D.sp.cm V 1 v = v := by
   simp only [GlobalTheory.Cusp.ratAct]
   rw [show (1 : GF V).1.1 = 1 from rfl, Matrix.toLin_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← ratAct_mul_apply, inv_mul_cancel, ratAct_one_apply]`.
+-/
 theorem ratAct_inv_apply (g : GF V) (v : V.V) :
     GlobalTheory.Cusp.ratAct D.sp.cm V g⁻¹ (GlobalTheory.Cusp.ratAct D.sp.cm V g v) = v := by
   rw [← ratAct_mul_apply, inv_mul_cancel, ratAct_one_apply]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[ratAct_mul_apply, ratAct_inv_apply, ratAct_mul_apply]`. Conclude with `⟨_, h y hy, rfl⟩`.
+-/
 theorem conj_maps (γ g : GF V) (S : Submodule D.host.E V.V)
     (h : ∀ v ∈ S, GlobalTheory.Cusp.ratAct D.sp.cm V γ v ∈ S) :
     ∀ w ∈ S.map (GlobalTheory.Cusp.ratAct D.sp.cm V g),
@@ -42,6 +54,9 @@ theorem conj_maps (γ g : GF V) (S : Submodule D.host.E V.V)
   rw [ratAct_mul_apply, ratAct_inv_apply, ratAct_mul_apply]
   exact ⟨_, h y hy, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `hx i`.
+-/
 theorem map_span_range (g : GF V) {a : ℕ} (x : Fin a → V.V) (y : Fin a → V.V)
     (hx : ∀ i, GlobalTheory.Cusp.ratAct D.sp.cm V g (x i) = y i) :
     (Submodule.span D.host.E (Set.range x)).map (GlobalTheory.Cusp.ratAct D.sp.cm V g) =
@@ -55,6 +70,27 @@ end GlobalTheory.Cusp.ConjLevi
 
 open GlobalTheory.Cusp.ConjLevi in
 
+/- English proof (translation)
+Introduce `D V Φ γ g a ha j hj x x' hx hx' h1 h2`. Establish `hmem : ∀ i : Fin (wittIndex V), i ≤ j ↔ ∃ k : Fin a, Fin.castLE ha k = i` using `fun i => by`. Prove the components needed by the constructor for the conclusion. Introduce `hi`. Conclude with `⟨⟨i.val, by have := Fin.le_def.1 hi; omega⟩, Fin.ext rfl⟩`.
+
+Introduce and unpack `⟨k, rfl⟩`. Conclude with `Fin.le_def.2 (by simp only [Fin.val_castLE]; omega)`. Establish `hE : Φ.sub (stdVec j) = Submodule.span D.host.E (Set.range fun i : Fin a => Φ.e (Fin.castLE ha i))`. Rewrite using `[WittFrame.sub]`. Use `congr 1`.
+
+Use extensionality with `v`. Simplify using `only [Set.mem_union, Set.mem_image, Set.mem_ofPred_eq, Set.mem_range, stdVec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩)`. Distinguish the cases in `h : i ≤ j`.
+
+Take `⟨k, rfl⟩` from `(hmem i).1 h`. Conclude with `⟨k, rfl⟩`. Rewrite using `[if_neg h] at hi; exact absurd hi (by decide)`. Distinguish the cases in `h : i ≤ j`. Rewrite using `[if_pos h] at hi; exact absurd hi (by decide)`.
+
+Rewrite using `[if_neg h] at hi; exact absurd hi (by decide)`. Introduce and unpack `⟨k, rfl⟩`. Conclude with `Or.inl ⟨_, by rw [if_pos ((hmem _).2 ⟨k, rfl⟩)], rfl⟩`. Establish `hF : Φ.sub (-stdVec j) = Submodule.span D.host.E (Set.range fun i : Fin a => Φ.f (Fin.castLE ha i))`. Rewrite using `[WittFrame.sub]`.
+
+Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_union, Set.mem_image, Set.mem_ofPred_eq, Set.mem_range, stdVec, Pi.neg_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩)`.
+
+Distinguish the cases in `h : i ≤ j`. Rewrite using `[if_pos h] at hi; exact absurd hi (by decide)`. Rewrite using `[if_neg h] at hi; exact absurd hi (by decide)`. Distinguish the cases in `h : i ≤ j`. Take `⟨k, rfl⟩` from `(hmem i).1 h`.
+
+Conclude with `⟨k, rfl⟩`. Rewrite using `[if_neg h] at hi; exact absurd hi (by decide)`. Introduce and unpack `⟨k, rfl⟩`. Use `Or.inr ⟨_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[if_pos ((hmem _).2 ⟨k, rfl⟩)]`.
+
+Use `haveI : Nontrivial (AF D.host.F) := (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F).nontrivial`. Unfold `WittFrame.levi`. Simplify using `only [Finset.mem_singleton, iInf_iInf_eq_left]`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.diagH _ _ _ (g * γ * g⁻¹) ∈ _`.
+
+Rewrite using `[GlobalTheory.Cusp.diagH_mem_parab, hE, ← map_span_range g x _ hx]`. Conclude with `conj_maps γ g _ h1`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.diagH _ _ _ (g * γ * g⁻¹) ∈ _`. Rewrite using `[GlobalTheory.Cusp.diagH_mem_parab, hF, ← map_span_range g x' _ hx']`. Conclude with `conj_maps γ g _ h2`.
+-/
 theorem GlobalTheory.Cusp.ConjLevi.conj_mem_levi_stdVec : ∀ {D : D7} {V : HSp D} (Φ : WittFrame V) (γ g : GF V) {a : ℕ} (ha : a ≤ wittIndex V) (j : Fin (wittIndex V)), j.val + 1 = a → ∀ (x x' : Fin a → V.V), (∀ i, GlobalTheory.Cusp.ratAct D.sp.cm V g (x i) = Φ.e (Fin.castLE ha i)) → (∀ i, GlobalTheory.Cusp.ratAct D.sp.cm V g (x' i) = Φ.f (Fin.castLE ha i)) → (∀ v ∈ Submodule.span D.host.E (Set.range x), GlobalTheory.Cusp.ratAct D.sp.cm V γ v ∈ Submodule.span D.host.E (Set.range x)) → (∀ v ∈ Submodule.span D.host.E (Set.range x'), GlobalTheory.Cusp.ratAct D.sp.cm V γ v ∈ Submodule.span D.host.E (Set.range x')) → rat V (g * γ * g⁻¹) ∈ Φ.levi D.sp.cm (AF D.host.F) {stdVec j} := by
   intro D V Φ γ g a ha j hj x x' hx hx' h1 h2
   have hmem : ∀ i : Fin (wittIndex V), i ≤ j ↔ ∃ k : Fin a, Fin.castLE ha k = i := fun i => by

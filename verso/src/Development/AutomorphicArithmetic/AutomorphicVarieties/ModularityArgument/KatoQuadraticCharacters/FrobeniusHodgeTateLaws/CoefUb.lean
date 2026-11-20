@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.N
 
 open UpperTheory.V.Z.Kato.Joint
 
+/- English proof (translation)
+Introduce `l _ c c' F hF`. Take `⟨d, h1, h2⟩` from `(UpperTheory.V.HV.coefSup l).1 c c'`. Take `⟨d', h3, h4⟩` from `(UpperTheory.V.Th.Nm.inOf d).1 {x // x ∈ F} (fun x => x.1) (fun x => hF x.1 x.2)`. Conclude with `⟨d', h1.trans h3, h2.trans h3, fun x hx => h4 ⟨x, hx⟩⟩`.
+-/
 theorem UpperTheory.V.Z.Kato.Joint.coefUb :
     UpperTheory.V.Z.Kato.Joint.CoefUb := by
   intro l _ c c' F hF

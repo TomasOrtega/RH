@@ -15,14 +15,23 @@ namespace PositivityTheory.ThKG.CayleyTransformDarboux
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {R S R₁ S₁ d d₁ : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[incV, piInf, compInf, inclR, infEmb_tmul]`.
+-/
 theorem piInf_incV {w : InfinitePlace F} (τ : EmbOver E w) {n : ℕ} (x : Fin n → E) :
     (piInf τ ∘ incV F x) = fun i => τ.1 (x i) := by
   funext i
   simp [incV, piInf, compInf, inclR, infEmb_tmul]
 
+/- English proof (translation)
+The claim follows from `funext fun i => RingHom.map_mulVec _ M v i`.
+-/
 theorem map_mulVec' {w : InfinitePlace F} (τ : EmbOver E w) {n k : ℕ} (M : Matrix (Fin n) (Fin k) (AE F E)) (v : Fin k → AE F E) :
     piInf τ ∘ (M *ᵥ v) = M.map (piInf τ) *ᵥ (piInf τ ∘ v) := funext fun i => RingHom.map_mulVec _ M v i
 
+/- English proof (translation)
+Establish `: (M *ᵥ z) i - z i = ((M - 1) *ᵥ z) i` using `by rw [Matrix.sub_mulVec, Matrix.one_mulVec]; rfl`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `∑ j, (M - 1) i j * z j ∈ _`. Apply the tactic sequence `exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (at_entry h i j)`.
+-/
 theorem at_mulVec {n : ℕ} {M : Matrix (Fin n) (Fin n) (AE F E)} (h : At (evI F) (M - 1)) (z : Fin n → AE F E) (i : Fin n) :
     (M *ᵥ z) i - z i ∈ atI F E := by
   have : (M *ᵥ z) i - z i = ((M - 1) *ᵥ z) i := by rw [Matrix.sub_mulVec, Matrix.one_mulVec]; rfl
@@ -43,14 +52,25 @@ variable {B : Base F E} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d�
   {C : InfinitePlace F → Matrix (Fin d) (Ix R S) ℂ} {C₁ : InfinitePlace F → Matrix (Fin d₁) (Ix R₁ S₁) ℂ}
   {n n' : InfinitePlace F → ℂ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Conclude with `congrArg (· *ᵥ v) (h s w)`.
+-/
 theorem gen_vec {γ : Multiplicative ℝ →* UA σ W.J} {Y} (h : IsGen B.emb C γ Y) (s : ℝ) (w) (v : Ix R S → ℂ) :
     (mat (γ (Multiplicative.ofAdd s))).map (piInf (B.emb w)) *ᵥ (C w *ᵥ v) = C w *ᵥ (NormedSpace.exp (s • Y w) *ᵥ v) := by
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
   exact congrArg (· *ᵥ v) (h s w)
 
+/- English proof (translation)
+Rewrite using `[Matrix.smul_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem real_mulVec (s : ℝ) (Y : Mat R S) (v : Ix R S → ℂ) : (s • Y) *ᵥ v = (s : ℂ) • (Y *ᵥ v) := by
   rw [Matrix.smul_mulVec]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `eq_of_inf hc B.emb ?_ fun w => ?_` and prove the remaining obligations. Use `sub_mem (at_mulVec (hγ.2 (Multiplicative.ofAdd s)) (incV F x) i) (Ideal.mul_mem_right (incV F x i) _ ht)` as an intermediate fact. Rewrite `this` using `[sub_mul, one_mul, sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Establish `e` using `map_mulVec' (B.emb w) (mat (γ (Multiplicative.ofAdd s))) (incV F x)`.
+
+Rewrite `e` using `[piInf_incV, hx, Matrix.mulVec_smul, gen_vec h, exp_eig (c := s * l w) (by rw [real_mulVec, hY, smul_smul]), Matrix.mulVec_smul, smul_comm, ← hx]`. Use `(congrFun e i).trans ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, ht']`. Conclude with `congrArg _ (congrFun (piInf_incV (B.emb w) x) i).symm`.
+-/
 theorem eig_vec (hc : IsCMExt F E σ) {γ : Multiplicative ℝ →* UA σ W.J} (hγ : γ ∈ Lines σ W) {Y} (h : IsGen B.emb C γ Y) (s : ℝ)
     (x : Fin d → E) (k l : InfinitePlace F → ℂ) (v : Ix R S → ℂ) (hx : ∀ w, (fun i => (B.emb w).1 (x i)) = k w • C w *ᵥ v)
     (hY : ∀ w, Y w *ᵥ v = l w • v) (t : AE F E) (ht : t - 1 ∈ atI F E) (ht' : ∀ w, piInf (B.emb w) t = Complex.exp (s * l w)) :
@@ -66,12 +86,26 @@ theorem eig_vec (hc : IsCMExt F E σ) {γ : Multiplicative ℝ →* UA σ W.J} (
     rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, ht']
     exact congrArg _ (congrFun (piInf_incV (B.emb w) x) i).symm
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `h.inv w`. Use `⟨A *ᵥ z, by rw [Matrix.mulVec_mulVec, hA, Matrix.one_mulVec], ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, h.hι, Matrix.mulVec_mulVec, Matrix.mul_assoc, hA, Matrix.mul_one]`.
+-/
 theorem FD.iota (h : FD (σ := σ) B H' m C C₁ n n') (w) (z : Fin d₁ → ℂ) :
     ∃ u, z = C₁ w *ᵥ u ∧ H'.ι.map (B.emb w).1 *ᵥ z = C w *ᵥ (m.P *ᵥ u) := by
   obtain ⟨A, hA⟩ := h.inv w
   refine ⟨A *ᵥ z, by rw [Matrix.mulVec_mulVec, hA, Matrix.one_mulVec], ?_⟩
   rw [Matrix.mulVec_mulVec, h.hι, Matrix.mulVec_mulVec, Matrix.mul_assoc, hA, Matrix.mul_one]
 
+/- English proof (translation)
+Use `⟨eig_vec h.cm hγ hg s _ _ _ _ h.hx h1 _ ht ht', eig_vec h.cm hγ hg s _ _ _ _ h.hy h2 _ ?_ fun w => ?_, ?_⟩` and prove the remaining obligations. Use `at_cA (σ := σ) (inv_at ht)` as an intermediate fact. Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis. Establish `h3` using `congrArg (piInf (B.emb w)) t.mul_inv`. Rewrite `h3` using `[map_mul, ht', map_one]`.
+
+Rewrite using `[piInf_cA h.cm, eq_inv_of_mul_eq_one_right h3, ← Complex.exp_neg]`. Use `(Complex.exp_conj _).symm.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `Matrix.ext_iff_mulVec.2 fun z => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+
+Use function extensionality and compare the values at `i`. Use `eq_of_inf h.cm B.emb ?_ fun w => ?_` and prove the remaining obligations. Establish `a1` using `at_mulVec (hγ.2 (Multiplicative.ofAdd s)) (incM F H'.ι *ᵥ z) i`. Establish `a2 : (incM F H'.ι *ᵥ (mat (γ₁ (Multiplicative.ofAdd s)) *ᵥ z - z)) i ∈ atI F E`. Express the relevant statement in the definitionally equal form `∑ j, incM F H'.ι i j * (mat (γ₁ (Multiplicative.ofAdd s)) *ᵥ z - z) j ∈ _`.
+
+Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (at_mulVec (hγ₁.2 (Multiplicative.ofAdd s)) z j)`. Use `sub_mem a1 a2` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_sub, Pi.sub_apply, sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Use `congrFun (?_ : piInf (B.emb w) ∘ _ = piInf (B.emb w) ∘ _) i` and prove the remaining obligations. Take `⟨u, e1, e2⟩` from `h.iota w (piInf (B.emb w) ∘ z)`.
+
+Rewrite using `[map_mulVec', map_mulVec', map_mulVec', map_mulVec', incM_map, e2, gen_vec hg, e1, gen_vec hg₁, exp_int (B := s • Y₁ w) (by rw [Matrix.smul_mul, h3, Matrix.mul_smul]), Matrix.mulVec_mulVec _ (C w), h.hι, ← Matrix.mulVec_mulVec]`.
+-/
 theorem FD.levi (h : FD (σ := σ) B H' m C C₁ n n') {γ : Multiplicative ℝ →* UA σ W.J} (hγ : γ ∈ Lines σ W) {Y}
     (hg : IsGen B.emb C γ Y) {γ₁ : Multiplicative ℝ →* UA σ W₁.J} (hγ₁ : γ₁ ∈ Lines σ W₁) {Y₁} (hg₁ : IsGen B.emb C₁ γ₁ Y₁)
     {l : InfinitePlace F → ℂ} (h1 : ∀ w, Y w *ᵥ m.x = l w • m.x) (h2 : ∀ w, Y w *ᵥ m.y = (-star (l w)) • m.y)
@@ -102,6 +136,15 @@ theorem FD.levi (h : FD (σ := σ) B H' m C C₁ n n') {γ : Multiplicative ℝ 
         exp_int (B := s • Y₁ w) (by rw [Matrix.smul_mul, h3, Matrix.mul_smul]), Matrix.mulVec_mulVec _ (C w), h.hι,
         ← Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `Multiplicative.ofAdd.surjective s`. Use `Subgroup.subset_closure ⟨?_, fun z => ?_⟩` and prove the remaining obligations. Use `eig_vec h.cm hγ hg s _ _ 0 m.x h.hx (fun w => by simp [h1]) 1 (by simp) fun w => by simp` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Use `choose u e1 e2 using fun w => h.iota w (piInf (B.emb w) ∘ z) choose a ha using fun w => h2 w (u w)`.
+
+Take `⟨b, hb, hb'⟩` from `exists_inf h.cm B.emb fun w => s * a w / n w`. Use `⟨b, funext fun i => eq_of_inf h.cm B.emb ?_ fun w => ?_⟩` and prove the remaining obligations. Use `sub_mem (at_mulVec (hγ.2 (Multiplicative.ofAdd s)) (incM F H'.ι *ᵥ z) i) (Ideal.mul_mem_right (incV F H'.x i) (atI F E) hb)` as an intermediate fact. Rewrite `this` using `[sub_sub]`. Then use the resulting hypothesis. Establish `e3` using `map_mulVec' (B.emb w) (mat (γ (Multiplicative.ofAdd s))) (incM F H'.ι *ᵥ z)`.
+
+Establish `e4` using `map_mulVec' (B.emb w) (incM F H'.ι) z`. Rewrite `e4` using `[incM_map, e2]`. Rewrite `e3` using `[e4, gen_vec hg, exp_nil (by rw [real_mulVec, real_mulVec, ha, smul_smul, Matrix.mulVec_smul, h1]; simp), real_mulVec, ha, Matrix.mulVec_add, ← e4]`. Use `(congrFun e3 i).trans ?_` and prove the remaining obligations. Establish `e5` using `congrFun ((piInf_incV (B.emb w) H'.x).trans (h.hx w)) i`.
+
+Use `h.n0 w` as an intermediate fact. Simplify using `only [Function.comp_apply, Pi.smul_apply, smul_eq_mul] at e5`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, hb', e5, Matrix.mulVec_smul, Function.comp_apply]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem FD.unip (h : FD (σ := σ) B H' m C C₁ n n') {γ : Multiplicative ℝ →* UA σ W.J} (hγ : γ ∈ Lines σ W) {Y}
     (hg : IsGen B.emb C γ Y) (h1 : ∀ w, Y w *ᵥ m.x = 0) (h2 : ∀ w u, ∃ a : ℂ, Y w *ᵥ (m.P *ᵥ u) = a • m.x) (s) :
     γ s ∈ unip σ W H' := by
@@ -128,12 +171,72 @@ theorem FD.unip (h : FD (σ := σ) B H' m C C₁ n n') {γ : Multiplicative ℝ 
       simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, hb', e5, Matrix.mulVec_smul, Function.comp_apply]
       field_simp
 
+/- English proof (translation)
+Distinguish the cases in `e : i = w`. Substitute `e` using the available equality. Simplify using `using h`. Simplify `h0` using `[Pi.single_eq_of_ne e]`.
+-/
 theorem single_prop {ι A A' : Type} [DecidableEq ι] [Zero A] [Zero A'] (P : A → A' → Prop) (w : ι) {a : A} {a' : A'} (h : P a a')
     (h0 : P 0 0) (i : ι) : P ((Pi.single w a : ι → A) i) ((Pi.single w a' : ι → A') i) := by
   by_cases e : i = w
   · subst e; simpa using h
   · simpa [Pi.single_eq_of_ne e] using h0
 
+/- English proof (translation)
+Establish `hc` using `hT.base.cm`. Establish `rk` using `hH.rank`. Establish `b1` using `hT₁.geo.aBig`. Use `choose C₁ hC₁ hθ₁ using fun w => hD.frame _ _ _ _ _ (hT₁.geo.hW.sig w) (hT₁.geo.hW.cartan w)`. Establish `fm : ∀ (w) (x y : Fin (a + a') → E), hf (Complex.I • G.W.J.map (B.emb w).1) (fun i => (B.emb w).1 (x i)) (fun i => (B.emb w).1 (y i)) = Complex.I * (B.emb w).1 (form σ G.W.J x y)` using `fun w x y => by`.
+
+Simplify using `only [hf, form, dotProduct, Matrix.mulVec, map_sum, map_mul, hc.2.2.2, Finset.mul_sum, Matrix.smul_apply, Matrix.map_apply, Pi.star_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [Complex.star_def]; ring`. Establish `col : ∀ j, H'.ι *ᵥ Pi.single j 1 = fun r => H'.ι r j` using `fun j => Matrix.mulVec_single_one _ _`. Use `choose c' c0' hcy using fun w => (hH.cartan w).2`. Establish `ex` using `fun w => exists_frame m hs (d := a + a') (by omega) (M := Complex.I • G.W.J.map (B.emb w).1) (fun i j => by`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, star_mul']`. Rewrite using `[← hc.2.2.2, hT.geo.hW.skew, Complex.star_def, Complex.conj_I, map_neg, neg_mul_neg])`. Use the proof step `(hT.geo.hW.cartan w) (x := fun i => (B.emb w).1 (H'.x i)) (y := fun i => (B.emb w).1 (H'.y i))`. Use the proof step `(ι := H'.ι.map (B.emb w).1)`. Use the proof step `(fun e => by`.
+
+Use `fm w H'.x H'.y` as an intermediate fact. Rewrite `this` using `[e, hH.xy]`. Rewrite `this` using `[map_one, mul_one, hf, zero_dotProduct]`. Conclude with `Complex.I_ne_zero this.symm)`. Use the proof step `(by rw [fm, hH.xx]; simp) (c0' w) (hcy w)`.
+
+Use the proof step `(fun j => by`. Use `fm w (H'.ι *ᵥ Pi.single j 1) H'.x` as an intermediate fact. Rewrite `this` using `[(hH.orth _).1, col]`. Simplify using `using this)`. Use the proof step `(fun j => by`.
+
+Use `fm w (H'.ι *ᵥ Pi.single j 1) H'.y` as an intermediate fact. Rewrite `this` using `[(hH.orth _).2, col]`. Simplify using `using this)`. Use the proof step `(by`. Rewrite using `[← hH.gram, Matrix.map_mul, Matrix.map_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_map]`.
+
+Use `congr 2`. Use extensionality with `i j`. Conclude with `(hc.2.2.2 _ _).symm)`. Use the proof step `(hH.cartan w).1 (hC₁ w) (hθ₁ w)`. Use `choose C n n' hC hθ n0 hx hy' hι using ex`.
+
+Establish `fd : FD (σ` using `σ) B H' m C C₁ n n' := ⟨hc, n0, hx, hy', hι, fun w => (hC₁ w).2⟩`. Establish `hC' : ∀ w, IsFrame (Complex.I • (incM F G.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by rw [incM_map]; exact hC w`. Establish `hC₁' : ∀ w, IsFrame (Complex.I • (incM F G₁.W.J).map (piInf (B.emb w))) (C₁ w)` using `fun w => by`. Rewrite using `[incM_map]`. Conclude with `hC₁ w`.
+
+Take `⟨act, f, hM, ha⟩` from `exists_mod hD hT hR (by omega) hy C hC' hθ`. Take `⟨act₁, f₁, hM₁, ha₁⟩` from `exists_mod hD hT₁ hR₁ (by omega) rfl C₁ hC₁' hθ₁`. Establish `tor` using `fun l => exists_torus hc B.emb l χ hχ r`. Use `choose t c ht hd using tor`. Establish `onto : ∀ v : Rm.Pi, ∃ f ∈ G.M.Pol B.ψ B.emb, Rm.p f = v` using `fun v => (hR.quot.onto ▸ Submodule.mem_top : v ∈ _)`.
+
+Establish `onto₁ : ∀ v : Rm₁.Pi, ∃ f ∈ G₁.M.Pol B.ψ B.emb, Rm₁.p f = v` using `fun v => (hR₁.quot.onto ▸ Submodule.mem_top : v ∈ _)`. Establish `c0 : c 0 = 0`. Use `(hd 0).unique ?_` and prove the remaining obligations. Establish `: ∀ s, t 0 s = 1` using `fun s => Units.ext (eq_of_inf hc B.emb (ht 0 s).1 fun w => by simp [(ht 0 s).2])`. Simplify using `only [this]`.
+
+Conclude with `hasDerivAt_const _ _`. Establish `ij : (Sum.inl m.i : Ix _ _) ≠ Sum.inr m.j` using `Sum.inl_ne_inr`. Establish `par : ∀ D : Rm.Pi →ₗ[ℂ] Rm₁.Pi, IsArchimedeanLocalEquivariantMap B G.M G₁.M om om₁ H' χ r Rm.p Rm₁.p D → IsPar m act act₁ (fun w => -Complex.I * c (Pi.single w Complex.I)) (fun w => c (Pi.single w 1)) D`. Introduce `D hP`. Establish `L : ∀ Y Y₁ l, (∀ w, Y w ∈ upq _ _) → (∀ w, Y₁ w ∈ upq _ _) → (∀ w, Y w *ᵥ m.x = l w • m.x) → (∀ w, Y w *ᵥ m.y = (-star (l w)) • m.y) → (∀ w, Y w * m.P = m.P * Y₁ w) → ∀ v, D (act Y v) = c l • D v + act₁ Y₁ (D v)`.
+
+Introduce `Y Y₁ l u1 u2 h1 h2 h3 v`. Take `⟨γ, hγ, hg⟩` from `hD.line F E σ _ _ _ B.emb _ Complex.I C hc hC' Y u1`. Take `⟨γ₁, hγ₁, hg₁⟩` from `hD.line F E σ _ _ _ B.emb _ Complex.I C₁ hc hC₁' Y₁ u2`. Take `⟨g, hg0, rfl⟩` from `onto v`. Take `⟨g₁, hg₁0, e⟩` from `onto₁ (D (Rm.p g))`.
+
+Take `⟨g', q1, q2⟩` from `ha γ hγ Y hg g hg0`. Take `⟨g₁', q3, q4⟩` from `ha₁ γ₁ hγ₁ Y₁ hg₁ g₁ hg₁0`. Rewrite using `[← q2, ← e, ← q4]`. Conclude with `hP.levi γ hγ γ₁ hγ₁ (t l) (fun s => fd.levi hγ hg hγ₁ hg₁ h1 h2 h3 s _ (ht l s).1 (ht l s).2) _ (hd l) g hg0 g₁ hg₁0 g' g₁' q1 q3 e.symm`. Establish `U : ∀ w Y, Y ∈ upq _ _ → Y *ᵥ m.x = 0 → (∀ u, ∃ a : ℂ, Y *ᵥ (m.P *ᵥ u) = a • m.x) → ∀ v, D (act (Pi.single w Y) v) = 0`.
+
+Introduce `w Y u1 h1 h2 v`. Take `⟨γ, hγ, hg⟩` from `hD.line F E σ _ _ _ B.emb _ Complex.I C hc hC' _ (single_upq w u1)`. Take `⟨g, hg0, rfl⟩` from `onto v`. Take `⟨g', q1, q2⟩` from `ha γ hγ _ hg g hg0`. Rewrite using `[← q2]`.
+
+Conclude with `hP.unip γ hγ (fd.unip hγ hg (single_prop (fun Z (_ : ℂ) => Z *ᵥ m.x = 0) w (a' := 0) h1 (by simp)) (single_prop (fun Z (_ : ℂ) => ∀ u, ∃ a : ℂ, Z *ᵥ (m.P *ᵥ u) = a • m.x) w (a' := 0) h2 fun u => ⟨0, by simp⟩)) g hg0 g' q1`. Establish `T : ∀ w Y (l : ℂ), Y ∈ upq _ _ → Y *ᵥ m.x = l • m.x → Y *ᵥ m.y = (-star l) • m.y → (∀ u, Y *ᵥ (m.P *ᵥ u) = 0) → ∀ v, D (act (Pi.single w Y) v) = c (Pi.single w l) • D v`. Introduce `w Y l u1 h1 h2 h3 v`. Use `L (Pi.single w Y) 0 (Pi.single w l) (single_upq w u1) (fun _ => zero_upq _ _) (single_prop (fun Z (l : ℂ) => Z *ᵥ m.x = l • m.x) w h1 (by simp)) (single_prop (fun Z (l : ℂ) => Z *ᵥ m.y = (-star l) • m.y) w h2 (by simp)) (fun i => Matrix.ext_iff_mulVec.2 fun u => by` as an intermediate fact. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Pi.zero_apply, Matrix.zero_mulVec, Matrix.mulVec_zero]`.
+
+Conclude with `single_prop (fun Z (_ : ℂ) => Z *ᵥ (m.P *ᵥ u) = 0) w (a' := 0) (h3 u) (Matrix.zero_mulVec _) i) v`. Simplify using `using this`. Establish `xi : m.x (.inl m.i) = 1 ∧ m.x (.inr m.j) = 1 ∧ m.y (.inl m.i) = 1 ∧ m.y (.inr m.j) = -1 ∧ ∀ b, m.x (m.e b) = 0`. Simplify using `[Emb.x, Emb.y, Pi.single_eq_of_ne (m.ne_i _), Pi.single_eq_of_ne (m.ne_j _)]`. Establish `N : ∀ w b (s : ℂ) v, s • D (act (un w (m.e b) (.inl m.i) - un w (m.e b) (.inr m.j)) v) - (star s * sg (m.e b)) • D (act (un w (.inl m.i) (m.e b) + un w (.inr m.j) (m.e b)) v) = 0` using `fun w b s v => by`.
+
+Use `U w (s • (Matrix.single (m.e b) (.inl m.i) 1 - Matrix.single (m.e b) (.inr m.j) 1) - (star s * sg (m.e b)) • (Matrix.single (.inl m.i) (m.e b) 1 + Matrix.single (.inr m.j) (m.e b) 1)) (by` as an intermediate fact. Simplify using `only [upq, Set.mem_setOf_eq, Matrix.conjTranspose_sub, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_single, star_one, star_mul', star_star, star_sg, Matrix.sub_mul, Matrix.add_mul, Matrix.smul_mul, Matrix.mul_sub, Matrix.mul_add, Matrix.mul_smul, J_si …`. Use the proof step `module)`. Use the proof step `(by simp only [Matrix.sub_mulVec, Matrix.add_mulVec, Matrix.smul_mulVec, single_mulVec', xi]; simp)`. Use the proof step `(fun u => ⟨-(star s * sg (m.e b) * u b), by`.
+
+Simplify using `only [Matrix.sub_mulVec, Matrix.add_mulVec, Matrix.smul_mulVec, single_mulVec', m.embeddingMatrix_mulVec, Emb.x]`. Use the proof step `module⟩) v`. Simplify `this` using `only [Pi.single_sub, Pi.single_smul, Pi.single_add, map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, un, map_add, LinearMap.add_apply]`. Establish `sg0 : ∀ b, sg (m.e b) ≠ 0` using `fun b e => by simpa [e] using sg_sq (m.e b)`. Use `⟨fun w a b v => ?_, fun w v => ?_, fun w v => ?_, fun w v => ?_, fun w b v => ?_, fun w b v => ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ Y : Mat _ _, D (act (Pi.single w (m.P * Y * m.Pᵀ)) v) = act₁ (Pi.single w Y) (D v)`. Establish `k1 : ∀ Y ∈ upq _ _, D (act (Pi.single w (m.P * Y * m.Pᵀ)) v) = act₁ (Pi.single w Y) (D v)` using `fun Y hY => by`. Use `L (Pi.single w (m.P * Y * m.Pᵀ)) (Pi.single w Y) 0 (single_upq w (m.conj_upq hs hY)) (single_upq w hY) (single_prop (fun Z (_ : ℂ) => Z *ᵥ m.x = (0 : ℂ) • m.x) w (a' := 0) (by rw [← Matrix.mulVec_mulVec, m.embedding_transpose_vector_zero]; simp) (by simp)) (single_prop (fun Z (_ …` as an intermediate fact. Rewrite `this` using `[c0, zero_smul, zero_add]`. Then use the resulting hypothesis. Introduce `Y`.
+
+Take `⟨Y₁, h₁, Y₂, h₂, rfl⟩` from `upq_split Y`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Pi.single_add, Pi.single_smul, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, k1 _ h₁, k1 _ h₂]`. Use `key (Matrix.single a b 1)` as an intermediate fact. Rewrite `this` using `[m.conj_single]`. Then use the resulting hypothesis. Use `T w (Complex.I • (Matrix.single (.inl m.i) (.inl m.i) 1 + Matrix.single (.inr m.j) (.inr m.j) 1)) Complex.I (by` as an intermediate fact.
+
+Simplify using `only [upq, Set.mem_setOf_eq, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_single, star_one, Complex.star_def, Complex.conj_I, Matrix.add_mul, Matrix.smul_mul, Matrix.mul_add, Matrix.mul_smul, J_single, single_J, sg_l, sg_r, map_one]`. Use the proof step `module)`. Use the proof step `(by simp only [Matrix.add_mulVec, Matrix.smul_mulVec, single_mulVec', xi]; simp [Emb.x])`. Use the proof step `(by simp only [Matrix.add_mulVec, Matrix.smul_mulVec, single_mulVec', xi]; simp [Emb.y, sub_eq_add_neg])`. Use the proof step `(fun u => by simp only [Matrix.add_mulVec, Matrix.smul_mulVec, single_mulVec', m.embeddingMatrix_mulVec]; simp) v`.
+
+Rewrite `this` using `[Pi.single_smul, map_smul, LinearMap.smul_apply, map_smul, Pi.single_add]`. Rewrite using `[mul_smul, ← this, smul_smul]`. Simplify using `[un]`. Use `T w (Matrix.single (.inl m.i) (.inr m.j) 1 + Matrix.single (.inr m.j) (.inl m.i) 1) 1 (by` as an intermediate fact. Simplify using `only [upq, Set.mem_setOf_eq, Matrix.conjTranspose_add, Matrix.conjTranspose_single, star_one, Matrix.add_mul, Matrix.mul_add, J_single, single_J, sg_l, sg_r]`.
+
+Use the proof step `module)`. Use the proof step `(by simp only [Matrix.add_mulVec, single_mulVec', xi]; simp [Emb.x])`. Use the proof step `(by simp only [Matrix.add_mulVec, single_mulVec', xi]; simp [Emb.y, neg_add_eq_sub])`. Use the proof step `(fun u => by simp only [Matrix.add_mulVec, single_mulVec', m.embeddingMatrix_mulVec]; simp) v`. Rewrite `this` using `[Pi.single_add]`. Then use the resulting hypothesis.
+
+Use `U w (Complex.I • (Matrix.single (.inl m.i) (.inl m.i) 1 - Matrix.single (.inl m.i) (.inr m.j) 1 + Matrix.single (.inr m.j) (.inl m.i) 1 - Matrix.single (.inr m.j) (.inr m.j) 1)) (by` as an intermediate fact. Simplify using `only [upq, Set.mem_setOf_eq, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_sub, Matrix.conjTranspose_single, star_one, Complex.star_def, Complex.conj_I, Matrix.add_mul, Matrix.smul_mul, Matrix.mul_add, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, J …`. Use the proof step `module)`. Use the proof step `(by simp only [Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, single_mulVec', xi]; simp)`. Use the proof step `(fun u => ⟨0, by simp only [Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, single_mulVec', m.embeddingMatrix_mulVec]; simp⟩) v`.
+
+Rewrite `this` using `[Pi.single_smul, map_smul, LinearMap.smul_apply, map_smul, Pi.single_sub, Pi.single_add, Pi.single_sub, smul_eq_zero]`. Conclude with `this.resolve_left Complex.I_ne_zero`. Establish `a1` using `N w b 1 v`. Establish `a2` using `N w b Complex.I v`. Rewrite `a2` using `[Complex.star_def, Complex.conj_I]`.
+
+Rewrite `a1` using `[star_one]`. Establish `: (2 * Complex.I) • D (act (un w (m.e b) (.inl m.i) - un w (m.e b) (.inr m.j)) v) = 0`. Take the linear combination `(norm := module) Complex.I • a1 + a2`. Conclude with `(smul_eq_zero.1 this).resolve_left (by simp)`. Establish `a1` using `N w b 1 v`.
+
+Establish `a2` using `N w b Complex.I v`. Rewrite `a2` using `[Complex.star_def, Complex.conj_I]`. Rewrite `a1` using `[star_one]`. Establish `: (2 * Complex.I * sg (m.e b)) • D (act (un w (.inl m.i) (m.e b) + un w (.inr m.j) (m.e b)) v) = 0`. Take the linear combination `(norm := module) a2 - Complex.I • a1`.
+
+Conclude with `(smul_eq_zero.1 this).resolve_left (by simp [sg0])`. Conclude with `par_line hM hM₁ (fun w b => congrArg _ (hΛ w b)) (par _ h) (par _ h') h0`.
+-/
 theorem core (hD : Dic) {a a' a₁ a₁' : ℕ} {G : Geo σ a a'} {G₁ : Geo σ a₁ a₁'} {X : Chars F E} {om om' om₁ om₁'}
     {Rm : RealMaps F a a'} {Rm₁ : RealMaps F a₁ a₁'} (hT : IsTriple B G X om om') (hR : IsRealMaps B G om om' Rm)
     (hT₁ : IsTriple B G₁ X om₁ om₁') (hR₁ : IsRealMaps B G₁ om₁ om₁' Rm₁) {H' : Plane E (a + a') (a₁ + a₁')} {i₀ i₁ : ℕ}
@@ -314,6 +417,11 @@ theorem core (hD : Dic) {a a' a₁ a₁' : ℕ} {G : Geo σ a a'} {G₁ : Geo σ
       exact (smul_eq_zero.1 this).resolve_left (by simp [sg0])
   exact par_line hM hM₁ (fun w b => congrArg _ (hΛ w b)) (par _ h) (par _ h') h0
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' a₁ a₁' G G₁ X om om' om₁ om₁' R Rf R₁ Rf₁ H' i₀ i₁ χ r hM hM₁ hS hH lam lam' h h' h0`. Establish `b1` using `hM₁.triple.geo.aBig`. Establish `b2` using `hM₁.triple.geo.eBig`. Break down `hS with ⟨rfl, e1, e2, e3, rfl, rfl⟩ | ⟨e0, rfl, e2, e3, rfl, rfl⟩` into its components or cases. Use `core hD hM.triple hM.real hM₁.triple hM₁.real hH (embB _ _) (sg_embB _ _) (by omega) ?_ hM.triple.chars.expβ _ h h' h0` and prove the remaining obligations.
+
+Apply the tactic sequence `rintro w (b | b) <;> simp [lamW, embB, e2, FockH1Action.cPair]`. Use `core hD hM.triple hM.real hM₁.triple hM₁.real hH (embA _ _) (sg_embA _ _) (by omega) ?_ hM.triple.chars.expα _ h h' h0` and prove the remaining obligations. Establish `e4 : a - G.p = a₁ - G₁.p + 1` using `by omega`. Rewrite using `[e4, ← e2]`. Apply the tactic sequence `rintro w (b | b) <;> simp [lamW, embA, FockH1Action.cPair]`.
+-/
 theorem archimedean_multiplicity_one_of (hD : Dic) : ArchimedeanMultiplicityOne := by
   intro F E _ _ _ _ _ σ B a a' a₁ a₁' G G₁ X om om' om₁ om₁' R Rf R₁ Rf₁ H' i₀ i₁ χ r hM hM₁ hS hH lam lam' h h' h0
   have b1 := hM₁.triple.geo.aBig

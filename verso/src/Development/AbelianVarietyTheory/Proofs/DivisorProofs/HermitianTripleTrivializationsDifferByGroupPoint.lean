@@ -5,6 +5,15 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.LKMid
 
+/- English proof (translation)
+Establish `h1 : (σ x).unop * (σ ((x⁻¹ : Sˣ) : S)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Establish `ht : algebraMap A S ((t⁻¹ : Aˣ) : A) * algebraMap A S (t : A) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `h2 : ((x⁻¹ : Sˣ) : S) * (σ ((x⁻¹ : Sˣ) : S)).unop = algebraMap A S ((t⁻¹ : Aˣ) : A) * b`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Algebra.commutes (t : A), ← mul_assoc, ← mul_assoc, ht, one_mul]`. Use `_ = algebraMap A S ((t⁻¹ : Aˣ) : A) * ((((x⁻¹ : Sˣ) : S) * x) * b * ((σ x).unop * (σ ((x⁻¹ : Sˣ) : S)).unop)) := by`. Rewrite using `[← hx]`. Simplify using `only [mul_assoc]`.
+
+Use `_ = _ := by rw [Units.inv_mul, h1, one_mul, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, mul_assoc]`. Use `_ = algebraMap A S ((t⁻¹ : Aˣ) : A) * ((x' : S) * b * (σ x').unop) := by`. Rewrite using `[h2]`.
+
+Simplify using `only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc]`. Use `_ = _ := by rw [hx', ← map_mul, mul_comm, Units.val_mul]`.
+-/
 theorem quot_mul_star {S A : Type*} [Ring S] [CommRing A] [Algebra A S] (σ : S →+* Sᵐᵒᵖ) (b : S) (x x' : Sˣ)
     (t t' : Aˣ) (hx : (x : S) * b * (σ x).unop = algebraMap A S t)
     (hx' : (x' : S) * b * (σ x').unop = algebraMap A S t') :
@@ -29,6 +38,9 @@ theorem quot_mul_star {S A : Type*} [Ring S] [CommRing A] [Algebra A S] (σ : S 
         rw [h2]; simp only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc]
     _ = _ := by rw [hx', ← map_mul, mul_comm, Units.val_mul]
 
+/- English proof (translation)
+Introduce `p _ G R _ _ β x x' t t' hx hx'`. Conclude with `⟨⟨(x' * x⁻¹, t' * t⁻¹), quot_mul_star (starT G.star R) (inC G R β) x x' t t' hx hx'⟩, rfl⟩`.
+-/
 theorem triv_quot : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R] (β : G.C)
     (x x' : (R ⊗[ℚ] G.C)ˣ) (t t' : Rˣ), Triv G R β x t → Triv G R β x' t' →
     ∃ g : UPts G.star R, (g : (R ⊗[ℚ] G.C)ˣ × Rˣ).1 = x' * x⁻¹ := by

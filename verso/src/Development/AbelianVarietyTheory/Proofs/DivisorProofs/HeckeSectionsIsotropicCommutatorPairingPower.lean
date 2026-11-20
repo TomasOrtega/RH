@@ -26,6 +26,21 @@ namespace GlobalTheory.UPel.HT.HeckeAd
 
 open GlobalTheory.CechPic GlobalTheory.DiagPairing GlobalTheory.HeckeWeilLift
 
+/- English proof (translation)
+Introduce `p _ D R _ b h u c k N hc hk hN hNp hdiv hlin hcomp hsim honto S s o g₁ hg₁ g₂ hg₂`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB` using `pull_isLB o.isLB _`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ o.A), pc o.isLB (x * x') y = pc o.isLB x y + pc o.isLB x' y` using `fun T x x' y => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S o.A _ o.ab hD o.ample o.P o.isLB o.rig₁ o.rig₂ T x x' y).1`.
+
+Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb o.isLB _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb o.isLB, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`.
+
+Normalize the expressions using the abelian group laws. Establish `hB' : ∀ (T : Over S) (x y y' : T ⟶ o.A), pc o.isLB x (y * y') = pc o.isLB x y + pc o.isLB x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S o.A _ o.ab hD o.ample o.P o.isLB o.rig₁ o.rig₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb o.isLB _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb o.isLB, Fin.sum_univ_three]`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `hQ : (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).IsLB` using `LB.isLB_linComb o.isLB _ _`.
+
+Establish `hcls : cls _ hQ = (k ^ 2 / c) • cls o.P o.isLB`. Use `(cls_linComb o.isLB (K := Fin (k ^ 2 / c)) (fun _ => 𝟙 _) (fun _ => 1) hQ).trans ?_` and prove the remaining obligations. Simplify using `[pull_id]`. Establish `hQB : ∀ (T : Over S) (x x' y : T ⟶ o.A), qc hQ (x * x') y = qc hQ x y + qc hQ x' y` using `fun T x x' y => by`. Unfold `qc`.
+
+Rewrite using `[hcls, map_nsmul, map_nsmul, map_nsmul]`. Conclude with `(congrArg _ (hB T x x' y)).trans (smul_add _ _ _)`. Establish `hQB' : ∀ (T : Over S) (x y y' : T ⟶ o.A), qc hQ x (y * y') = qc hQ x y + qc hQ x y'` using `fun T x y y' => by`. Unfold `qc`. Rewrite using `[hcls, map_nsmul, map_nsmul, map_nsmul]`.
+
+Conclude with `(congrArg _ (hB' T x y y')).trans (smul_add _ _ _)`. Take `⟨t₁, -⟩` from `GlobalTheory.T.hecke_coefficients_congruence p D R b h u c k N hc hk hN hNp hdiv hlin hcomp hsim honto S s o g₁ hg₁`. Take `⟨-, t₂⟩` from `GlobalTheory.T.hecke_coefficients_congruence p D R b h u c k N hc hk hN hNp hdiv hlin hcomp hsim honto S s o g₂ hg₂`. Establish `hA2 : IsAbelianScheme (G2 o.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor o.A o.A o.ab o.ab`. Conclude with `CommutatorPairing.exists_weilIs hG hA2 hQ (fun _ => ⟨⊤, trivial, exists_theta_left hQB (Out.overResι ⊤) g₁ t₁⟩) (fun _ => ⟨⊤, trivial, exists_theta_right hQB' (Out.overResι ⊤) g₂ t₂⟩)`.
+-/
 theorem exists_weilIs_heckeA : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (h : ℕ → D.La →+ D.La) (u : ℕ → ℤ) (c k N : ℕ), c.Coprime p → k.Coprime p → 3 ≤ N → N.Coprime p → c ∣ k ^ 2 → (∀ n, 0 < n → n.Coprime p → ∀ (a : D.O) (x : D.La), ∃ z, h n (a • x) = a • h n x + n • z) → (∀ n m, 0 < n → 0 < m → (n * m).Coprime p → (∀ x, ∃ z, h (n * m) x = h n x + n • z) ∧ (n : ℤ) ∣ u (n * m) - u n) → (∀ n, 0 < n → n.Coprime p → IsCoprime (u n) (n : ℤ) ∧ ∀ x y, (n : ℤ) ∣ D.EF (h n x) (h n y) - c * u n * D.EF x y) → (∀ n, 0 < n → n.Coprime p → ∀ x, ∃ y z, h n y = k • x + n • z) → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k) s), ∀ g₁ ∈ GlobalTheory.UPel.HT.HeckeAd.heckeSubA o (h (N * k)) N, ∀ g₂ ∈ GlobalTheory.UPel.HT.HeckeAd.heckeSubA o (h (N * k)) N, ∃ v : Γ((𝟙_ (Over S)).left, ⊤)ˣ, Out.WeilIs (G2 o.A) (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) 1 (lift g₁ 1 : 𝟙_ (Over S) ⟶ G2 o.A) (lift 1 g₂) v := by
   intro p _ D R _ b h u c k N hc hk hN hNp hdiv hlin hcomp hsim honto S s o g₁ hg₁ g₂ hg₂
   have hG : Out.GlobalFnsSt := GlobalTheory.globalFns_holds
@@ -73,6 +88,17 @@ theorem exists_weilIs_heckeA : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : T
     (fun _ => ⟨⊤, trivial, exists_theta_left hQB (Out.overResι ⊤) g₁ t₁⟩)
     (fun _ => ⟨⊤, trivial, exists_theta_right hQB' (Out.overResι ⊤) g₂ t₂⟩)
 
+/- English proof (translation)
+Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hA : IsAbelianScheme (G2 o.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor o.A o.A o.ab o.ab`. Establish `hL : (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).IsLB` using `LB.isLB_linComb o.isLB _ _`. Establish `hk1 : g₁ ^ k = 1` using `pow_eq_one_of_mem o f g₁ hg₁`. Establish `hxk : (lift g₁ 1 : 𝟙_ (Over S) ⟶ G2 o.A) ^ k = 1`.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[MonObj.pow_comp]`. Simplify using `[hk1]`. Rewrite using `[MonObj.pow_comp]`. Simplify using the standard rewrite rules.
+
+Break down `Nat.eq_zero_or_pos k with hk | hk` into its components or cases. Rewrite using `[hk, pow_zero]`. Establish `pw : ∀ m : ℕ, Out.WeilIs (G2 o.A) (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) 1 ((lift g₁ 1 : 𝟙_ (Over S) ⟶ G2 o.A) ^ (m + 1)) (lift 1 g₂) (v ^ (m + 1))`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => simpa using hv`. Consider the case `succ m ih`. Rewrite using `[pow_succ _ (m + 1), pow_succ v (m + 1)]`. Conclude with `GlobalTheory.DiagPairing.weilIs_mul_left hG hA hL ih hv`. Establish `hp` using `pw (k - 1)`.
+
+Rewrite `hp` using `[Nat.sub_add_cancel hk, hxk]`. Establish `h11` using `GlobalTheory.DiagPairing.weilIs_mul_left hG hA hL hp hp`. Rewrite `h11` using `[_root_.mul_one]`. Conclude with `mul_eq_left.1 (GlobalTheory.CommutatorPairing.weilIs_unique hG hA hL h11 hp)`.
+-/
 theorem weilIs_heckeA_pow_eq_one {S : Scheme.{0}} {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R]
     {b : Base D R} {s : S ⟶ Sp R} (f : D.La →+ D.La) (c k N : ℕ) (o : Obj b (N * k) s)
     (g₁ : 𝟙_ (Over S) ⟶ o.A) (hg₁ : g₁ ∈ heckeSubA o f N) (g₂ : 𝟙_ (Over S) ⟶ o.A)
@@ -103,6 +129,13 @@ theorem weilIs_heckeA_pow_eq_one {S : Scheme.{0}} {p : ℕ} [Fact p.Prime] {D : 
   rw [_root_.mul_one] at h11
   exact mul_eq_left.1 (GlobalTheory.CommutatorPairing.weilIs_unique hG hA hL h11 hp)
 
+/- English proof (translation)
+Introduce `p _ D R _ b h u c k N hc hk hN hNp hdiv hlin hcomp hsim honto S s o g₁ hg₁ g₂ hg₂`. Take `⟨v, hv⟩` from `exists_weilIs_heckeA p D R b h u c k N hc hk hN hNp hdiv hlin hcomp hsim honto S s o g₁ hg₁ g₂ hg₂`. Establish `hQ : (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).IsLB` using `LB.isLB_linComb o.isLB _ _`. Establish `hA2 : IsAbelianScheme (G2 o.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor o.A o.A o.ab o.ab`. Establish `h1 : v = 1`.
+
+Use `GlobalTheory.rootOfUnity_eq_one_of_geom R S s k v (b.unit k hk) (weilIs_heckeA_pow_eq_one (h (N * k)) c k N o g₁ hg₁ g₂ v hv) ?_` and prove the remaining obligations. Introduce `K _ _ x β hx`. Establish `hp` using `GlobalTheory.CommPairing.weilIs_pull (A := G2 o.A) GlobalTheory.globalFns_holds hA2 hQ (toUnit (Over.mk x)) hv`. Conclude with `GlobalTheory.T.hecke_coefficients_congruence_scaled p D R b h u c k N hc hk hN hNp hdiv hlin hcomp hsim honto S s o g₁ hg₁ g₂ hg₂ K x β hx _ hp`. Substitute `h1` using the available equality.
+
+Conclude with `hv`.
+-/
 theorem weilIs_heckeSubA_one : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (h : ℕ → D.La →+ D.La) (u : ℕ → ℤ) (c k N : ℕ), c.Coprime p → k.Coprime p → 3 ≤ N → N.Coprime p → c ∣ k ^ 2 → (∀ n, 0 < n → n.Coprime p → ∀ (a : D.O) (x : D.La), ∃ z, h n (a • x) = a • h n x + n • z) → (∀ n m, 0 < n → 0 < m → (n * m).Coprime p → (∀ x, ∃ z, h (n * m) x = h n x + n • z) ∧ (n : ℤ) ∣ u (n * m) - u n) → (∀ n, 0 < n → n.Coprime p → IsCoprime (u n) (n : ℤ) ∧ ∀ x y, (n : ℤ) ∣ D.EF (h n x) (h n y) - c * u n * D.EF x y) → (∀ n, 0 < n → n.Coprime p → ∀ x, ∃ y z, h n y = k • x + n • z) → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k) s), ∀ g₁ ∈ GlobalTheory.UPel.HT.HeckeAd.heckeSubA o (h (N * k)) N, ∀ g₂ ∈ GlobalTheory.UPel.HT.HeckeAd.heckeSubA o (h (N * k)) N, Out.WeilIs (G2 o.A) (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) 1 (lift g₁ 1 : 𝟙_ (Over S) ⟶ G2 o.A) (lift 1 g₂) 1 := by
   intro p _ D R _ b h u c k N hc hk hN hNp hdiv hlin hcomp hsim honto S s o g₁ hg₁ g₂ hg₂
   obtain ⟨v, hv⟩ := exists_weilIs_heckeA p D R b h u c k N hc hk hN hNp hdiv hlin hcomp hsim honto S s o g₁ hg₁

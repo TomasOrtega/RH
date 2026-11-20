@@ -22,6 +22,33 @@ local instance valRing : ValuationRing (Formalism.UG.intL L) :=
 local instance fracRing : IsFractionRing (Formalism.UG.intL L) L :=
   inferInstanceAs (IsFractionRing (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring L)
 
+/- English proof (translation)
+Establish `: Module.Finite (Formalism.UG.intL L) M` using `Module.Finite.iff_fg.2 hfg`. Establish `: Module.Free (Formalism.UG.intL L) M`. Establish `: Module.Flat (Formalism.UG.intL L) M`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce `x hx`.
+
+Rewrite using `[Submodule.mem_bot]`. Take `⟨a, ha⟩` from `(Submodule.mem_torsion_iff x).1 hx`. Establish `ha0 : ((a : Formalism.UG.intL L) : L) ≠ 0` using `fun h => nonZeroDivisors.ne_zero a.2 (Subtype.ext h)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Establish `h1` using `congrFun (congrArg Subtype.val ha) i`. Express the relevant statement in the definitionally equal form `((a : Formalism.UG.intL L) : L) * (x : Fin n → L) i = 0 at h1`. Conclude with `(mul_eq_zero.1 h1).resolve_left ha0`. Conclude with `Module.free_of_flat_of_isLocalRing`. Set `b` to `Module.Free.chooseBasis (Formalism.UG.intL L) M`.
+
+Set `v : Module.Free.ChooseBasisIndex (Formalism.UG.intL L) M → Fin n → L` to `fun i => (b i : Fin n → L)`. Establish `hR : LinearIndependent (Formalism.UG.intL L) v` using `b.linearIndependent.map' M.subtype (Submodule.ker_subtype _)`. Establish `hC : LinearIndependent L v` using `(LinearIndependent.iff_fractionRing (Formalism.UG.intL L) L).1 hR`. Establish `hspR : Submodule.span (Formalism.UG.intL L) (Set.range v) = M`. Establish `: Set.range v = M.subtype '' Set.range b`.
+
+Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`. Establish `hspC : Submodule.span L (Set.range v) = ⊤`. Rewrite using `[← Submodule.span_span_of_tower (Formalism.UG.intL L), hspR, hsp]`.
+
+Set `bC` to `Module.Basis.mk hC (by rw [hspC])`. Establish `hcard : Fintype.card (Fin n) = Fintype.card (Module.Free.ChooseBasisIndex (Formalism.UG.intL L) M)`. Rewrite using `[← Module.finrank_fintype_fun_eq_card (R := L), Module.finrank_eq_card_basis bC]`. Set `e : Fin n ≃ Module.Free.ChooseBasisIndex (Formalism.UG.intL L) M` to `Fintype.equivOfCardEq hcard`. Set `B : Matrix (Fin n) (Fin n) L` to `Matrix.of fun i j => v (e j) i`.
+
+Establish `hli : LinearIndependent L (fun j => v (e j))` using `hC.comp e e.injective`. Establish `hu : IsUnit B` using `Matrix.linearIndependent_cols_iff_isUnit.1 (by`. Establish `hcol : B.col = fun j => v (e j)` using `by funext j i; rfl`. Rewrite using `[hcol]`. Conclude with `hli)`.
+
+Establish `hBx : ∀ y : Fin n → L, B *ᵥ y = ∑ j, y j • v (e j)`. Introduce `y`. Use function extensionality and compare the values at `i`. Simplify using `[B, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hrg : (Set.range fun j => v (e j)) = Set.range v` using `e.surjective.range_comp v`.
+
+Establish `hspR' : Submodule.span (Formalism.UG.intL L) (Set.range fun j => v (e j)) = M` using `by rw [hrg, hspR]`. Establish `key : ∀ y, y ∈ M ↔ y ∈ Submodule.span (Formalism.UG.intL L) (Set.range fun j => v (e j))` using `fun y => by`. Rewrite using `[hspR']`. Use `⟨hu.unit, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, hBx, key]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Use `Submodule.smul_mem (Submodule.span (Formalism.UG.intL L) (Set.range fun j => v (e j))) (⟨x j, hx j⟩ : (Formalism.UG.intL L)) (Submodule.subset_span ⟨j, rfl⟩)` as an intermediate fact. Conclude with `this`.
+
+Introduce `hx i`. Rewrite `hx` using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hx`. Establish `h0` using `(Fintype.linearIndependent_iff.1 hli) (fun j => (c j : L) - x j) (by`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`.
+
+Rewrite using `[sub_eq_zero, ← hc]`. Use the proof step `rfl)`. Use `h0 i` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`. Rewrite using `[← this]`.
+
+Conclude with `(c i).2`.
+-/
 theorem exists_basis_of_fg {n : ℕ} (M : Submodule (Formalism.UG.intL L) (Fin n → L)) (hfg : M.FG)
     (hsp : Submodule.span L (M : Set (Fin n → L)) = ⊤) :
     ∃ P : GL (Fin n) L, ∀ x : Fin n → L,
@@ -95,12 +122,23 @@ variable (F E) in
 def genAt (v : Pl F) : Set (AE F E) := {z : AE F E | ∃ a : AF F, At (evFin F v) a ∧
   evFin F v a ∈ v.adicCompletionIntegers F ∧ ∃ o : 𝓞 E, z = a • inclR (F := F) (AF F) (o : E)}
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [← smul_mul_assoc, hz u hu, zero_mul]`.
+-/
 theorem at_mul {v : Pl F} {z : AE F E} (hz : At (evFin F v) z) (y : AE F E) : At (evFin F v) (z * y) :=
   fun u hu => by rw [← smul_mul_assoc, hz u hu, zero_mul]
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [smul_smul, ← smul_eq_mul, ha u hu, zero_smul]`.
+-/
 theorem at_smul_one {v : Pl F} {a : AF F} (ha : At (evFin F v) a) : At (evFin F v) (a • (1 : AE F E)) :=
   fun u hu => by rw [smul_smul, ← smul_eq_mul, ha u hu, zero_smul]
 
+/- English proof (translation)
+Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, hev, o', rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, hev, o' * o, by simp [smul_mul_assoc, map_mul]⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_mul]`. Conclude with `neg_mem hx`.
+-/
 theorem mul_incl_mem {v : Pl F} {s : AE F E} (hs : s ∈ AddSubgroup.closure (genAt F E v)) (o : 𝓞 E) :
     s * inclR (F := F) (AF F) (o : E) ∈ AddSubgroup.closure (genAt F E v) := by
   induction hs using AddSubgroup.closure_induction with
@@ -111,6 +149,13 @@ theorem mul_incl_mem {v : Pl F} {s : AE F E} (hs : s ∈ AddSubgroup.closure (ge
   | add x y _ _ hx hy => rw [add_mul]; exact add_mem hx hy
   | neg x _ hx => rw [neg_mul]; exact neg_mem hx
 
+/- English proof (translation)
+Unfold `GlobalTheory.InertSph.latAt at hz ⊢`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a', ha', hev', y, hy, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨a * a', fun u hu => ?_, ?_, y, hy, by rw [smul_smul]⟩` and prove the remaining obligations.
+
+Establish `h0 : u * a = 0` using `ha u hu`. Rewrite using `[smul_eq_mul, ← mul_assoc, h0, zero_mul]`. Rewrite using `[map_mul]`. Conclude with `mul_mem hev hev'`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem smul_latAt_mem {n : ℕ} (X : Spc F E n) {v : Pl F} {a : AF F} (ha : At (evFin F v) a)
     (hev : evFin F v a ∈ v.adicCompletionIntegers F) {z : Fin n → AE F E} (hz : z ∈ GlobalTheory.InertSph.latAt X v) :
     a • z ∈ GlobalTheory.InertSph.latAt X v := by
@@ -126,6 +171,15 @@ theorem smul_latAt_mem {n : ℕ} (X : Spc F E n) {v : Pl F} {a : AF F} (ha : At 
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, hev, o, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨a, ha, hev, o • y, X.L.smul_mem o hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Use `show (a • inclR (F := F) (AF F) (o : E)) * inclR (F := F) (AF F) (y i) = a • inclR (F := F) (AF F) ((o • y) i)`. Rewrite using `[smul_mul_assoc, ← map_mul]`. Both sides reduce to the same expression. Consider the case `zero => convert (GlobalTheory.InertSph.latAt X v).zero_mem using 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Consider the case `add x x' _ _ hx hx' => convert add_mem hx hx' using 1`. Use function extensionality and compare the values at `i`. Simplify using `[add_mul]`. Consider the case `neg x _ hx => convert neg_mem hx using 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem mul_incl_latAt {n : ℕ} (X : Spc F E n) {v : Pl F} {s : AE F E}
     (hs : s ∈ AddSubgroup.closure (genAt F E v)) {y : Fin n → E} (hy : y ∈ X.L) :
     (fun i => s * inclR (F := F) (AF F) (y i)) ∈ GlobalTheory.InertSph.latAt X v := by
@@ -140,6 +194,15 @@ theorem mul_incl_latAt {n : ℕ} (X : Spc F E n) {v : Pl F} {s : AE F E}
   | add x x' _ _ hx hx' => convert add_mem hx hx' using 1; funext i; simp [add_mul]
   | neg x _ hx => convert neg_mem hx using 1; funext i; simp
 
+/- English proof (translation)
+Unfold `GlobalTheory.InertSph.latAt at hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, hev, y, hy, rfl⟩` from `hx`. Establish `h` using `smul_latAt_mem X ha hev (mul_incl_latAt X hs hy)`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[mul_smul_comm]`. Consider the case `zero => convert (GlobalTheory.InertSph.latAt X v).zero_mem using 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Consider the case `add x x' _ _ hx hx' => convert add_mem hx hx' using 1`. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Consider the case `neg x _ hx => convert neg_mem hx using 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem mul_latAt {n : ℕ} (X : Spc F E n) {v : Pl F} {s : AE F E}
     (hs : s ∈ AddSubgroup.closure (genAt F E v)) {z : Fin n → AE F E} (hz : z ∈ GlobalTheory.InertSph.latAt X v) :
     (fun i => s * z i) ∈ GlobalTheory.InertSph.latAt X v := by
@@ -157,6 +220,55 @@ theorem mul_latAt {n : ℕ} (X : Spc F E n) {v : Pl F} {s : AE F E}
 
 end Adelic
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v w _ n X hlat L _ _ ι hinj himg hmul hint`. Use `haveI := hlat`. Establish `hint' : ∀ x, x ∈ Formalism.UG.intL L ↔ ι x ∈ AddSubgroup.closure (genAt F E v)` using `hint`. Establish `h11 : ι 1 * ι 1 = ι 1` using `by rw [← hmul, one_mul]`. Establish `hAt1 : At (evFin F v) (ι 1)` using `(himg _).2 ⟨1, rfl⟩`.
+
+Establish `hpre : ∀ z, At (evFin F v) z → ι (GlobalTheory.InertLocFrame.pre ι z) = z` using `fun z hz => GlobalTheory.InertLocFrame.pre_spec ι ((himg z).1 hz)`. Set `κ : E → L` to `fun c => GlobalTheory.InertLocFrame.pre ι (ι 1 * inclR (F := F) (AF F) c)`. Establish `hκ : ∀ c, ι (κ c) = ι 1 * inclR (F` using `F) (AF F) c := fun c => hpre _ (at_mul hAt1 _)`. Establish `h1mem : ι 1 ∈ AddSubgroup.closure (genAt F E v)` using `(hint' 1).1 (Formalism.UG.intL L).one_mem`. Establish `hκR : ∀ o : 𝓞 E, κ (o : E) ∈ Formalism.UG.intL L` using `fun o => (hint' _).2 (by rw [hκ]; exact mul_incl_mem h1mem o)`.
+
+Take `⟨s, hs⟩` from `(Submodule.IsLattice.fg : X.L.FG)`. Set `M : Submodule (Formalism.UG.intL L) (Fin n → L)` to `Submodule.span (Formalism.UG.intL L) ((fun t : Fin n → E => fun i => κ (t i)) '' (s : Set (Fin n → E)))`. Establish `key1 : ∀ t ∈ X.L, ∃ y ∈ M, ∀ i, ι (y i) = ι 1 * inclR (F` using `F) (AF F) (t i) := by`. Introduce `t ht`. Rewrite `ht` using `[← hs]`.
+
+Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem t ht => exact ⟨_, Submodule.subset_span ⟨t, ht, rfl⟩, fun i => hκ _⟩`. Consider the case `zero => exact ⟨0, M.zero_mem, fun i => by simp⟩`. Consider the case `add t t' _ _ h h'`. Take `⟨y, hy, e⟩` from `h`.
+
+Take `⟨y', hy', e'⟩` from `h'`. Conclude with `⟨y + y', M.add_mem hy hy', fun i => by simp [e, e', mul_add]⟩`. Consider the case `smul o t _ h`. Take `⟨y, hy, e⟩` from `h`. Use `⟨(⟨κ (o : E), hκR o⟩ : Formalism.UG.intL L) • y, M.smul_mem _ hy, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `ho : (o • t) i = (o : E) * t i` using `rfl`. Use `show ι (κ (o : E) * y i) = _`. Rewrite using `[hmul, hκ, e, ho, map_mul]`. Take the linear combination `(inclR (F := F) (AF F) (o : E) * inclR (F := F) (AF F) (t i)) * h11`. Establish `key2 : ∀ z ∈ GlobalTheory.InertSph.latAt X v, ∃ y ∈ M, (fun i => ι (y i)) = z`.
+
+Introduce `z hz`. Unfold `GlobalTheory.InertSph.latAt at hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hev, t, ht, rfl⟩` from `hz`.
+
+Take `⟨y, hy, e⟩` from `key1 t ht`. Establish `hr : ι (GlobalTheory.InertLocFrame.pre ι (a • (1 : AE F E))) = a • 1` using `hpre _ (at_smul_one ha)`. Establish `hrR : GlobalTheory.InertLocFrame.pre ι (a • (1 : AE F E)) ∈ Formalism.UG.intL L` using `(hint' _).2 (by rw [hr]; exact AddSubgroup.subset_closure ⟨a, ha, hev, 1, by simp⟩)`. Use `⟨(⟨_, hrR⟩ : Formalism.UG.intL L) • y, M.smul_mem _ hy, funext fun i => ?_⟩` and prove the remaining obligations. Use `show ι (GlobalTheory.InertLocFrame.pre ι (a • (1 : AE F E)) * y i) = (a • fun i => inclR (F := F) (AF F) (t i)) i`.
+
+Rewrite using `[hmul, e, ← mul_assoc, ← hmul, mul_one, hr, smul_mul_assoc, one_mul]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, M.zero_mem, by funext i; simp⟩`. Consider the case `add z z' _ _ h h'`. Take `⟨y, hy, rfl⟩` from `h`.
+
+Take `⟨y', hy', rfl⟩` from `h'`. Conclude with `⟨y + y', M.add_mem hy hy', by funext i; simp⟩`. Consider the case `neg z _ h`. Take `⟨y, hy, rfl⟩` from `h`. Conclude with `⟨-y, M.neg_mem hy, by funext i; simp⟩`.
+
+Establish `hMem : ∀ y : Fin n → L, y ∈ M ↔ (fun i => ι (y i)) ∈ GlobalTheory.InertSph.latAt X v`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨t, ht, rfl⟩` from `hy`. Establish `htL : t ∈ X.L` using `hs ▸ Submodule.subset_span ht`. Use `mul_incl_latAt X h1mem htL` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Conclude with `hκ _`. Consider the case `zero => convert (GlobalTheory.InertSph.latAt X v).zero_mem using 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Consider the case `add y y' _ _ h h' => convert add_mem h h' using 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `smul r y _ h`. Use `mul_latAt X ((hint' _).1 r.2) h` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `hmul (r : L) (y i)`. Introduce `h`. Take `⟨y', hy', e⟩` from `key2 _ h`.
+
+Establish `: y' = y` using `funext fun i => hinj (congrFun e i)`. Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hκadd : ∀ c d, κ (c + d) = κ c + κ d` using `fun c d => hinj (by rw [map_add, hκ, hκ, hκ, map_add, mul_add])`. Establish `hκmul : ∀ c d, κ (c * d) = κ c * κ d` using `fun c d => hinj (by`. Rewrite using `[hmul, hκ, hκ, hκ, map_mul]`.
+
+Take the linear combination `(-(inclR (F := F) (AF F) c * inclR (F := F) (AF F) d)) * h11)`. Establish `hκ1 : κ 1 = 1` using `hinj (by rw [hκ, (inclR (F := F) (AF F)).map_one, mul_one])`. Establish `hκ0 : κ 0 = 0` using `hinj (by rw [hκ, map_zero, mul_zero, map_zero])`. Establish `hκmem : ∀ t ∈ X.L, (fun i => κ (t i)) ∈ M` using `fun t ht => by`. Take `⟨y, hy, e⟩` from `key1 t ht`.
+
+Establish `: y = fun i => κ (t i)` using `funext fun i => hinj (by rw [e, hκ])`. Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hQ : ∀ t : Fin n → E, (fun i => κ (t i)) ∈ Submodule.span L (M : Set (Fin n → L))`. Introduce `t`. Establish `ht : t ∈ Submodule.span E (X.L : Set (Fin n → E))`.
+
+Rewrite using `[Submodule.IsLattice.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem t ht => exact Submodule.subset_span (hκmem t ht)`. Consider the case `zero => convert (Submodule.span L (M : Set (Fin n → L))).zero_mem using 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[hκ0]`. Consider the case `add t t' _ _ h h' => convert add_mem h h' using 1`. Use function extensionality and compare the values at `i`. Simplify using `[hκadd]`.
+
+Consider the case `smul c t _ h`. Use `Submodule.smul_mem _ (κ c) h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[hκmul]`. Establish `hsp : Submodule.span L (M : Set (Fin n → L)) = ⊤`.
+
+Rewrite using `[eq_top_iff, ← (Pi.basisFun L (Fin n)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe]`. Use `hQ (Pi.single i 1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[Pi.basisFun_apply]`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `[hκ1]`.
+
+Simplify using `[Pi.single_apply, hij, hκ0]`. Establish `hfg : M.FG` using `Submodule.fg_span ((s.finite_toSet).image _)`. Take `⟨P, hP⟩` from `exists_basis_of_fg M hfg hsp`. Conclude with `⟨P, fun x => (hP x).trans (hMem _)⟩`.
+-/
 theorem exists_basis_at_inert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w →
     ∀ (n : ℕ) (X : Spc F E n), X.L.IsLattice E →
     ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ι : L →+ AE F E),

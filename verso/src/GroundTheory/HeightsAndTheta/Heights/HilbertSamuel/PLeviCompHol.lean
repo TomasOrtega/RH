@@ -8,6 +8,21 @@ open ReciprocityTheory.ChartRestriction.G.Geo Filter Topology
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `E F _ _ g φ x w hg hφ`. Establish `hgev : ∀ᶠ y in 𝓝 x, AnalyticAt ℂ g y` using `hg.eventually_analyticAt`. Establish `hfdg : ∀ᶠ y in 𝓝 x, fderiv ℝ g y = (fderiv ℂ g y).restrictScalars ℝ` using `by filter_upwards [hgev] with y hy`. Conclude with `hy.differentiableAt.fderiv_restrictScalars ℝ`. Establish `hgC : ContDiffAt ℂ 2 g x` using `hg.contDiffAt`.
+
+Establish `hgR : ContDiffAt ℝ 2 g x` using `hgC.restrict_scalars ℝ`. Establish `hgd : DifferentiableAt ℝ g x` using `hgR.differentiableAt (by norm_num)`. Establish `hd2 : DifferentiableAt ℝ (fderiv ℝ g) x` using `(hgR.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hGw : ∀ v, fderiv ℝ g x v = fderiv ℂ g x v` using `fun v => by rw [hfdg.self_of_nhds]; rfl`. Establish `hGI : ∀ v, fderiv ℝ g x (Complex.I • v) = Complex.I • fderiv ℝ g x v` using `fun v => by`.
+
+Rewrite using `[hGw, hGw]`. Conclude with `(fderiv ℂ g x).map_smul _ _`. Establish `hG2I : ∀ u v, fderiv ℝ (fderiv ℝ g) x u (Complex.I • v) = Complex.I • fderiv ℝ (fderiv ℝ g) x u v`. Introduce `u v`. Establish `hA : HasFDerivAt (fun y => fderiv ℝ g y (Complex.I • v)) ((ContinuousLinearMap.apply ℝ (F → ℂ) (Complex.I • v)).comp (fderiv ℝ (fderiv ℝ g) x)) x` using `(ContinuousLinearMap.apply ℝ (F → ℂ) (Complex.I • v)).hasFDerivAt.comp x hd2.hasFDerivAt`.
+
+Establish `hB : HasFDerivAt (fun y => Complex.I • fderiv ℝ g y v) (Complex.I • (ContinuousLinearMap.apply ℝ (F → ℂ) v).comp (fderiv ℝ (fderiv ℝ g) x)) x` using `((ContinuousLinearMap.apply ℝ (F → ℂ) v).hasFDerivAt.comp x hd2.hasFDerivAt).const_smul Complex.I`. Establish `hAB : (fun y => Complex.I • fderiv ℝ g y v) =ᶠ[𝓝 x] fun y => fderiv ℝ g y (Complex.I • v)` using `by filter_upwards [hfdg] with y hy`. Rewrite using `[hy]`. Conclude with `((fderiv ℂ g y).map_smul _ _).symm`. Establish `h` using `congrArg (fun L => L u) ((hB.congr_of_eventuallyEq hAB.symm).unique hA)`.
+
+Simplify using `using h.symm`. Establish `hsymm : IsSymmSndFDerivAt ℝ g x` using `hgR.isSymmSndFDerivAt (by simp)`. Establish `hG2II : fderiv ℝ (fderiv ℝ g) x (Complex.I • w) (Complex.I • w) = -fderiv ℝ (fderiv ℝ g) x w w`. Rewrite using `[hG2I, hsymm (Complex.I • w) w, hG2I, smul_smul, Complex.I_mul_I, neg_one_smul]`. Establish `hev : ∀ᶠ y in 𝓝 x, ContDiffAt ℝ 2 φ (g y)` using `hgd.continuousAt.tendsto.eventually (hφ.eventually (by simp))`.
+
+Establish `hfd : fderiv ℝ (fun y => φ (g y)) =ᶠ[𝓝 x] fun y => (fderiv ℝ φ (g y)).comp (fderiv ℝ g y)` using `by filter_upwards [hev, hgev] with y hy hy'`. Conclude with `fderiv_comp y (hy.differentiableAt (by norm_num)) (hy'.differentiableAt.restrictScalars ℝ)`. Establish `hdφ : DifferentiableAt ℝ (fderiv ℝ φ) (g x)` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hc : HasFDerivAt (fun y => fderiv ℝ φ (g y)) ((fderiv ℝ (fderiv ℝ φ) (g x)).comp (fderiv ℝ g x)) x` using `hdφ.hasFDerivAt.comp x hgd.hasFDerivAt`. Establish `hD` using `hc.clm_comp hd2.hasFDerivAt`.
+
+Unfold `leviForm`. Rewrite using `[hfd.fderiv_eq, hD.fderiv]`. Simplify using `only [add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.compL_apply, ContinuousLinearMap.flip_apply, hGI, hG2II, map_neg, hGw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem LeviCompHol.proof : LeviCompHol.Statement := by
   intro E F _ _ g φ x w hg hφ
   have hgev : ∀ᶠ y in 𝓝 x, AnalyticAt ℂ g y := hg.eventually_analyticAt

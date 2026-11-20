@@ -14,6 +14,21 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D O W M π f hf φ hφ Y hY h`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.D) := ⟨by simpa using vol F M⟩`. Establish `hφ'` using `dLFock F E D O Y φ hφ`. Establish `hOne` using `(dLDer F E D O W Y hY).1`. Take `⟨hadd, hcont, -⟩` from `exPar E Y`.
+
+Establish `h0 : ex Y 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Establish `hnu : ∀ t, nu F (h * infGL E 2 (ex Y t)) = nu F h` using `fun t => by`.
+
+Establish `e : nu F (infGL E 2 (ex Y t)) = 1` using `hOne t`. Rewrite using `[show nu F (h * infGL E 2 (ex Y t)) = nu F h * nu F (infGL E 2 (ex Y t)) by simp [nu], e, mul_one]`. Establish `hc : Continuous fun g : G1 F => f.1 (gl g * dM (nu F h))` using `(decay F π f hf).1.comp (Matrix.SpecialLinearGroup.continuous_toGL.mul continuous_const)`. Establish `hC' : IsCompact (ex Y '' Metric.closedBall (0 : ℝ) 1)` using `(isCompact_closedBall 0 1).image hcont`. Establish `hC1 : ∀ y ∈ ex Y '' Metric.closedBall (0 : ℝ) 1, One F y`.
+
+Introduce and unpack `_ ⟨t, -, rfl⟩`. Conclude with `hOne t`. Take `⟨B, hB⟩` from `thBoundH F E D W π f hf _ hφ' h {dM (nu F h)} isCompact_singleton _ hC' hC1`. Establish `key : (fun t => lift W M f.1 φ (h * infGL E 2 (ex Y t))) = fun t => ∫ g in M.D, f.1 (gl g * dM (nu F h)) * Th (W.Om g (W.L (h * infGL E 2 (ex Y t)) φ)).1 ∂M.μ`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [lift, hnu t]`. Establish `key' : lift W M f.1 (O.dL D Y φ) h = ∫ g in M.D, f.1 (gl g * dM (nu F h)) * Th (W.Om g (W.L (h * infGL E 2 (ex Y 0)) (O.dL D Y φ))).1 ∂M.μ`. Simplify using `only [lift, h0, map_one, mul_one]`. Rewrite using `[key, key']`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (𝕜 := ℝ) (μ := M.μ.restrict M.D) (F := fun t g => f.1 (gl g * dM (nu F h)) * Th (W.Om g (W.L (h * infGL E 2 (ex Y t)) φ)).1) (F' := fun t g => f.1 (gl g * dM (nu F h)) * Th (W.Om g (W.L (h * infGL E 2 (ex Y t)) (O.dL D Y φ))).1) ( …` and prove the remaining obligations.
+
+Conclude with `Filter.Eventually.of_forall fun t => (hc.measurable.mul (thMeas F E D W _).1).aestronglyMeasurable`. Use `(conv F E D W M π f hf φ hφ h).1` as an intermediate fact. Rewrite `this` using `[IntegrableOn]`. Simplify `this` using `only [h0, map_one, mul_one]`. Conclude with `(hc.measurable.mul (thMeas F E D W _).1).aestronglyMeasurable`.
+
+Conclude with `ae_of_all _ fun g t ht => hB g _ (Set.mem_singleton _) (ex Y t) ⟨t, Metric.ball_subset_closedBall ht, rfl⟩`. Conclude with `integrable_const _`. Conclude with `ae_of_all _ fun g t _ => (thDerL F E D O W φ Y hY g h t).const_mul _`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.derL :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Fo.Ops F) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), DerL O W M π := by
   intro F E _ _ _ _ _ _ _ D O W M π f hf φ hφ Y hY h

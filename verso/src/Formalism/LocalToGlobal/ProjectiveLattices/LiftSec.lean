@@ -13,15 +13,39 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
 
 def hasseW (β : Idx D j N →₀ ℕ) (x : Lw X la w) : Lw X la w := hasse X la w β x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hasseW_apply (β : Idx D j N →₀ ℕ) (x : Lw X la w) : hasseW X la w β x = hasse X la w β x := rfl
 
+/- English proof (translation)
+The claim follows from `hasse_of_mul_eq X la w β h`.
+-/
 theorem hasseW_of_mul_eq (β : Idx D j N →₀ ℕ) {s x : Rp X la N} {y : Lw X la w}
     (h : algebraMap (Rp X la N) (Lw X la w) s * y = algebraMap (Rp X la N) (Lw X la w) x) :
     ∑ q ∈ antidiagonal β, algebraMap (Rp X la N) (Lw X la w) (hasseRp X la N q.1 s) * hasseW X la w q.2 y =
       algebraMap (Rp X la N) (Lw X la w) (hasseRp X la N β x) := hasse_of_mul_eq X la w β h
 
+/- English proof (translation)
+The claim follows from `hasse_zero X la w x`.
+-/
 theorem hasseW_zero (x : Lw X la w) : hasseW X la w 0 x = x := hasse_zero X la w x
 
+/- English proof (translation)
+Proceed by induction on `hn : Finsupp.degree β using Nat.strong_induction_on generalizing β with`. Consider the case `_ n ih`. Establish `hs0 : sec X la w 0 ^ (m + 1) ∈ Vw X la N (addL (wt0 D j) wL (m + 1))`. Establish `h1 : sec X la w 0 ∈ Vw X la N (addL (wt0 D j) wL 1)`. Rewrite using `[add_zero_weight_one_eq]`.
+
+Conclude with `sec_mem_Vw X la w 0`. Use `sec_pow_mul_mem X la w 0 (wt0 D j) 1 m h1` as an intermediate fact. Rewrite `this` using `[← pow_succ, add_comm 1 m]`. Then use the resulting hypothesis. Establish `hs : algebraMap (Rp X la N) (Lw X la w) (sec X la w 0 ^ (m + 1)) * frac X la w (m + 1) g = algebraMap (Rp X la N) (Lw X la w) g`. Rewrite using `[frac_apply, mul_comm (algebraMap _ _ g), ← mul_assoc, map_pow, ← mul_pow, section_mul_inverse_eq_one, one_pow, one_mul]`.
+
+Establish `hq` using `hasseW_of_mul_eq X la w β hs`. Establish `hmem : ((0 : Idx D j N →₀ ℕ), β) ∈ antidiagonal β` using `mem_antidiagonal.2 (zero_add β)`. Rewrite `hq` using `[← add_sum_erase _ _ hmem, hasseRp_zero]`. Establish `hinv : w0inv X la w ^ (m + 1) * algebraMap (Rp X la N) (Lw X la w) (sec X la w 0 ^ (m + 1)) = 1`. Rewrite using `[map_pow, ← mul_pow, mul_comm, section_mul_inverse_eq_one, one_pow]`.
+
+Establish `key : hasseW X la w β (frac X la w (m + 1) g) = w0inv X la w ^ (m + 1) * (algebraMap (Rp X la N) (Lw X la w) (hasseRp X la N β g) - ∑ q ∈ (antidiagonal β).erase (0, β), algebraMap (Rp X la N) (Lw X la w) (hasseRp X la N q.1 (sec X la w 0 ^ (m + 1))) * hasseW X la w q.2 (frac X la …`. Rewrite using `[← hq, add_sub_cancel_right, ← mul_assoc, hinv, one_mul]`. Rewrite using `[key, mul_sub, mul_sum]`. Use `Submodule.sub_mem _ ?_ (Submodule.sum_mem _ fun q hq' => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm, ← frac_apply]`.
+
+Conclude with `frac_mem_Hfr X la w (hasseRp_mem_Vw X la hg β)`. Establish `h12 : q.1 + q.2 = β` using `mem_antidiagonal.1 (mem_of_mem_erase hq')`. Establish `hne : q.1 ≠ 0`. Introduce `h`. Apply `ne_of_mem_erase hq'` to reduce the goal to its premises.
+
+Conclude with `Prod.ext h (by rw [← h12, h, zero_add])`. Establish `hlt : Finsupp.degree q.2 < n`. Rewrite using `[← hn, ← h12, map_add]`. Establish `: Finsupp.degree q.1 ≠ 0` using `fun h => hne ((Finsupp.degree_eq_zero_iff _).1 h)`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2` using `ih _ hlt q.2 rfl`. Rewrite using `[← mul_assoc, mul_comm (w0inv X la w ^ (m + 1)), ← frac_apply]`. Establish `hf` using `frac_mem_Hfr X la w (hasseRp_mem_Vw X la hs0 q.1)`. Use `mul_mem_Hfr X la w hf h2` as an intermediate fact. Rewrite `this` using `[zero_weight_add]`. Then use the resulting hypothesis.
+-/
 theorem hasse_frac_succ_mem {u : WeightFamilies.Wt D j} {m : ℕ} {g : Rp X la N} (hg : g ∈ Vw X la N (addL u wL (m + 1)))
     (β : Idx D j N →₀ ℕ) : hasseW X la w β (frac X la w (m + 1) g) ∈ Hfr X la w u := by
   induction hn : Finsupp.degree β using Nat.strong_induction_on generalizing β with
@@ -63,6 +87,9 @@ theorem hasse_frac_succ_mem {u : WeightFamilies.Wt D j} {m : ℕ} {g : Rp X la N
     have := mul_mem_Hfr X la w hf h2
     rwa [zero_weight_add] at this
 
+/- English proof (translation)
+Take `⟨k, g, hg, rfl⟩` from `(mem_Hfr X la w).1 hx`. Establish `hg'` using `sec_pow_mul_mem X la w 0 u k 1 hg`. Rewrite `*` using `[← frac_pow_mul X la w k 1 g, pow_one]`. Conclude with `hasse_frac_succ_mem X la w (by simpa using hg') β`.
+-/
 theorem hasse_mem_Hfr {u : WeightFamilies.Wt D j} {x : Lw X la w} (hx : x ∈ Hfr X la w u) (β : Idx D j N →₀ ℕ) :
     hasseW X la w β x ∈ Hfr X la w u := by
   obtain ⟨k, g, hg, rfl⟩ := (mem_Hfr X la w).1 hx
@@ -87,11 +114,20 @@ def I : Ideal M.Λ :=
 
 def Low (n : ℕ) (z : M.Λ) : Prop := ∀ β : Idx D j G.N →₀ ℕ, M.hd β z ∈ M.I ^ (n - Finsupp.degree β)
 
+/- English proof (translation)
+Introduce `β` and use `by simp`.
+-/
 theorem low_zero_left (z : M.Λ) : M.Low 0 z := fun β => by simp
 
+/- English proof (translation)
+Introduce `β` and use `by rw [map_add]; exact Ideal.add_mem _ (hz β) (hz' β)`.
+-/
 theorem low_add {n : ℕ} {z z' : M.Λ} (hz : M.Low n z) (hz' : M.Low n z') : M.Low n (z + z') := fun β => by
   rw [map_add]; exact Ideal.add_mem _ (hz β) (hz' β)
 
+/- English proof (translation)
+Introduce `β` and use `by rw [M.hd_mul] refine Ideal.sum_mem _ fun q hq => ?_ have h12 := mem_antidiagonal.1 hq have h := Ideal.mul_mem_mul (hz q.1) (hz' q.2) rw [← pow_add] at h refine Ideal.pow_le_pow_right ?_ h rw [← h12, map_add] omega`.
+-/
 theorem low_mul {n m : ℕ} {z z' : M.Λ} (hz : M.Low n z) (hz' : M.Low m z') : M.Low (n + m) (z * z') := fun β => by
   rw [M.hd_mul]
   refine Ideal.sum_mem _ fun q hq => ?_
@@ -102,6 +138,9 @@ theorem low_mul {n m : ℕ} {z z' : M.Λ} (hz : M.Low n z) (hz' : M.Low m z') : 
   rw [← h12, map_add]
   omega
 
+/- English proof (translation)
+Introduce `β` and use `by by_cases hβ : β = 0 · subst hβ rw [M.hd_zero, map_zero, Nat.sub_zero, pow_one] exact Ideal.subset_span ⟨i, rfl⟩ · have : Finsupp.degree β ≠ 0 := fun h => hβ ((Finsupp.degree_eq_zero_iff _).1 h) rw [show 1 - Finsupp.degree β = 0 by omega, pow_zero, Ideal.one_eq_top] exact Submo …`.
+-/
 theorem low_gen (i : Fin (WeightFamilies.dimY D j)) :
     M.Low 1 (M.ι (sfr (xplus X E hM) la G.w i.succ : Lw (xplus X E hM) la G.w)) := fun β => by
   by_cases hβ : β = 0
@@ -112,6 +151,11 @@ theorem low_gen (i : Fin (WeightFamilies.dimY D j)) :
     rw [show 1 - Finsupp.degree β = 0 by omega, pow_zero, Ideal.one_eq_top]
     exact Submodule.mem_top
 
+/- English proof (translation)
+Unfold `LiftModel.I at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `M.low_gen i`.
+
+Consider the case `zero => exact fun β => by rw [map_zero]; exact Ideal.zero_mem _`. Consider the case `add x y _ _ hx hy => exact M.low_add hx hy`. Consider the case `smul a x _ hx`. Use `M.low_mul (M.low_zero_left a) hx` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+-/
 theorem low_one {z : M.Λ} (hz : z ∈ M.I) : M.Low 1 z := by
   unfold LiftModel.I at hz
   induction hz using Submodule.span_induction with
@@ -124,6 +168,9 @@ theorem low_one {z : M.Λ} (hz : z ∈ M.I) : M.Low 1 z := by
     have := M.low_mul (M.low_zero_left a) hx
     rwa [zero_add] at this
 
+/- English proof (translation)
+Proceed by induction on `n generalizing z with`. Consider the case `zero => exact M.low_zero_left z`. Consider the case `succ n ih`. Rewrite `hz` using `[pow_succ]`. Conclude with `Submodule.mul_induction_on hz (fun a ha b hb => M.low_mul (ih ha) (M.low_one hb)) (fun x y hx hy => M.low_add hx hy)`.
+-/
 theorem hd_pow_mem (n : ℕ) {z : M.Λ} (hz : z ∈ M.I ^ n) : M.Low n z := by
   induction n generalizing z with
   | zero => exact M.low_zero_left z
@@ -132,6 +179,11 @@ theorem hd_pow_mem (n : ℕ) {z : M.Λ} (hz : z ∈ M.I ^ n) : M.Low n z := by
     exact Submodule.mul_induction_on hz (fun a ha b hb => M.low_mul (ih ha) (M.low_one hb))
       (fun x y hx hy => M.low_add hx hy)
 
+/- English proof (translation)
+Unfold `LiftModel.I at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Rewrite using `[M.ev_ι]`.
+
+Conclude with `(hs ζ).lift_Jid (sfr_succ_mem_Jid (xplus X E hM) la G.w i)`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [smul_eq_mul, map_mul, hx, mul_zero]`.
+-/
 theorem ev_I (ζ : PtsG G la) {z : M.Λ} (hz : z ∈ M.I) : M.ev ζ z = 0 := by
   unfold LiftModel.I at hz
   induction hz using Submodule.span_induction with
@@ -143,6 +195,13 @@ theorem ev_I (ζ : PtsG G la) {z : M.Λ} (hz : z ∈ M.I) : M.ev ζ z = 0 := by
   | add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]
   | smul a x _ hx => rw [smul_eq_mul, map_mul, hx, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[M.hd_mul, sum_eq_single (β, 0)]`. Rewrite using `[M.hd_zero]`. Introduce `q hq hne`. Establish `h12` using `mem_antidiagonal.1 hq`. Establish `h2 : q.2 ≠ 0`.
+
+Introduce `h`. Apply `hne` to reduce the goal to its premises. Conclude with `Prod.ext (by rw [← h12, h, add_zero]) h`. Rewrite using `[M.e'_hd _ h2, mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (mem_antidiagonal.2 (add_zero β)) h`.
+-/
 theorem hd_mul_e' (β : Idx D j G.N →₀ ℕ) (r : M.Λ) : M.hd β (r * M.e') = M.hd β r * M.e' := by
   rw [M.hd_mul, sum_eq_single (β, 0)]
   · rw [M.hd_zero]
@@ -156,6 +215,11 @@ theorem hd_mul_e' (β : Idx D j G.N →₀ ℕ) (r : M.Λ) : M.hd β (r * M.e') 
   · intro h
     exact absurd (mem_antidiagonal.2 (add_zero β)) h
 
+/- English proof (translation)
+Establish `h1` using `M.hd_pow_mem n hx β`. Establish `h2 : M.hd β (M.ι x - r * M.e') ∈ M.I` using `Ideal.pow_le_self (by omega) h1`. Establish `h3` using `M.ev_I ζ h2`. Rewrite `h3` using `[map_sub, M.hd_ι, M.hd_mul_e', map_sub, sub_eq_zero, map_mul]`. Establish `h4` using `M.ev_ι ζ (hasse (xplus X E hM) la G.w β x)`.
+
+Rewrite `h3` using `[h4]`. Rewrite using `[h3, nval_mul]`. Conclude with `add_nonneg (M.RG_int ζ _ (M.RG_hd β r hr)) (M.e'_int ζ)`.
+-/
 theorem step5 {r : M.Λ} (hr : r ∈ M.RG) (x : Lw (xplus X E hM) la G.w) {n : ℕ} (hx : M.ι x - r * M.e' ∈ M.I ^ n)
     (β : Idx D j G.N →₀ ℕ) (hβ : Finsupp.degree β < n) (ζ : PtsG G la) :
     0 ≤ nval (hs ζ).T.V 1 ((hs ζ).lift (hasse (xplus X E hM) la G.w β x)) := by
@@ -178,6 +242,21 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   {ka wL wF : WeightFamilies.Wt D j} {G : GlobalFamilyData (xplus X E hM) ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)}
   {y : PtsG G la → E.Pt' la} {hs : ∀ ζ, SecPt ζ (y ζ)} {g0 : B.Cusp j wF}
 
+/- English proof (translation)
+Establish `hgen : IsGen (OsK (xplus X E hM) la G.w) (secQ y hs g0).e` using `hCurve.2.2`. Establish `hg0 : (hs ζ).ev (emb (xplus X E hM) la G.N (X.inc wF g0)) ≠ 0`. Introduce `h0`. Establish `h5` using `(hTie ζ).2.2.2.2.1`. Establish `hv : (xplus X E hM).vAt la ((secQ y hs g0).y ζ) ((xplus X E hM).inc wF (secQ y hs g0).g0) = nval (hs ζ).T.V (ep (unifO (xplus X E hM) la G.N) ζ) ((hs ζ).ev (emb (xplus X E hM) la G.N (X.inc wF g0)))` using `(hs ζ).hv wF g0`.
+
+Rewrite `h5` using `[hv, h0, nval_zero, EReal.mul_top_of_pos (by exact_mod_cast (hs ζ).ep_pos)]`. Conclude with `EReal.coe_ne_top _ h5`. Use `set a := toA0K (xplus X E hM) la G.w wF z with ha`. Take `⟨f, hf⟩` from `toOsK_surjective (xplus X E hM) la G.w (coord (secQ y hs g0).e a)`. Establish `hca : coord (secQ y hs g0).e a • (secQ y hs g0).e = a` using `coord_smul_self hgen a`.
+
+Establish `h1 : toA0K (xplus X E hM) la G.w wF (f • toHK0 (xplus X E hM) la G.w wF ⟨emb (xplus X E hM) la G.N (X.inc wF g0), emb_mem_Vw (xplus X E hM) la G.N wF g0⟩) = a`. Rewrite using `[map_smul, ← restriction_apply_eq_reduction, ← hca, ← hf]`. Conclude with `(algebraMap_smul (OsK (xplus X E hM) la G.w) f _).symm`. Establish `h2` using `(Submodule.Quotient.eq _).1 h1`. Establish `h3` using `(hs ζ).lift_JHK h2`.
+
+Rewrite `h3` using `[Submodule.coe_sub, map_sub, sub_eq_zero, Submodule.coe_smul, Algebra.smul_def, map_mul, coe_toHK0, (hs ζ).lift_alg]`. Establish `hord` using `(hs ζ).ord f`. Rewrite `hord` using `[hf]`. Establish `key : toE ((secQ y hs g0).ordA ζ a) = nval (hs ζ).T.V 1 ((hs ζ).lift (z : Lw (xplus X E hM) la G.w))`. Simplify using `only [LocalPointData.ordA, ordV]`.
+
+Rewrite using `[toE_add_coe, hord, ← h3, nval_mul, nval_of_ne hg0]`. Simplify using `only [Nat.cast_one, div_one]`. Both sides reduce to the same expression. Rewrite `h` using `[← key]`. Generalize the expression as in `(secQ y hs g0).ordA ζ a = o at h ⊢`.
+
+Consider the cases of `o with`. Consider the case `top => exact le_top`. Consider the case `coe n`. Establish `h' : (0 : ℝ) ≤ (n : ℝ)` using `EReal.coe_nonneg.1 h`. Establish `hn : (0 : ℤ) ≤ n` using `by exact_mod_cast h'`.
+
+Conclude with `hn` after adjusting the coercions.
+-/
 theorem ordA_nonneg {S : Scal B} (hCurve : (secQ y hs g0).InCurve) (hTie : (secQ y hs g0).InTie S)
     (z : ↥(HK (xplus X E hM) la G.w wF)) (ζ : PtsG G la)
     (h : 0 ≤ nval (hs ζ).T.V 1 ((hs ζ).lift (z : Lw (xplus X E hM) la G.w))) :
@@ -218,6 +297,17 @@ theorem ordA_nonneg {S : Scal B} (hCurve : (secQ y hs g0).InCurve) (hTie : (secQ
     have hn : (0 : ℤ) ≤ n := by exact_mod_cast h'
     exact_mod_cast hn
 
+/- English proof (translation)
+Introduce `y hs g0 T hMod _ hCurve hTie a ha`. Take `⟨M⟩` from `hMod`. Take `⟨r, hr, x1, hx1a, hx1I⟩` from `M.ball a ha`. Take `⟨x2, hx2⟩` from `M.approx r hr`. Establish `hex : ∃ x : ↥(HK (xplus X E hM) la G.w wF), toA0K (xplus X E hM) la G.w wF x = a ∧ ∃ n : ℕ, (∀ β : Idx D j G.N →₀ ℕ, β.sum (fun _ n => n) ≤ a0 D j T - 1 → Finsupp.degree β < n) ∧ M.ι (x : Lw (xplus X E hM) la G.w) - r * M.e' ∈ M.I ^ n`.
+
+Distinguish the cases in `h0 : a0 D j T = 0`. Use `⟨x1, hx1a, 1, fun β hβ => ?_, by rw [pow_one]; exact hx1I⟩` and prove the remaining obligations. Establish `: Finsupp.degree β = β.sum (fun _ n => n)` using `rfl`. Use linear arithmetic over natural numbers and integers. Use `⟨x2, ?_, a0 D j T, fun β hβ => ?_, hx2⟩` and prove the remaining obligations.
+
+Rewrite using `[← hx1a, ← sub_eq_zero, ← map_sub]`. Apply `M.res_ker` to reduce the goal to its premises. Establish `e : M.ι ((x2 - x1 : ↥(HK (xplus X E hM) la G.w wF)) : Lw (xplus X E hM) la G.w) = (M.ι (x2 : Lw (xplus X E hM) la G.w) - r * M.e') - (M.ι (x1 : Lw (xplus X E hM) la G.w) - r * M.e')`. Rewrite using `[Submodule.coe_sub, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Ideal.pow_le_self h0 hx2) hx1I`. Establish `: Finsupp.degree β = β.sum (fun _ n => n)` using `rfl`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hxa, n, hn, hxI⟩` from `hex`.
+
+Establish `hH : ∀ β : Idx D j G.N →₀ ℕ, hasse (xplus X E hM) la G.w β (x : Lw (xplus X E hM) la G.w) ∈ HK (xplus X E hM) la G.w wF` using `fun β => (mem_HK (xplus X E hM) la G.w).2 (hasse_mem_Hfr (xplus X E hM) la G.w ((mem_HK (xplus X E hM) la G.w).1 x.2) β)`. Use `⟨x, hxa, Submodule.subset_span ⟨x, ⟨fun β _ => hH β, fun β hβ ζ => ?_⟩, rfl⟩⟩` and prove the remaining obligations. Use `ordA_nonneg hCurve hTie ⟨_, hH β⟩ ζ (M.step5 hr _ hxI β (hn β hβ) ζ)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem inLiftSec (G : GlobalFamilyData (xplus X E hM) ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (S : Scal B) (Gc Prw : ℝ) :
     InLiftSecSt G la S Gc Prw := by
   intro y hs g0 T hMod _ hCurve hTie a ha

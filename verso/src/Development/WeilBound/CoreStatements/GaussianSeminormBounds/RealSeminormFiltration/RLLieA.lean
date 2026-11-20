@@ -10,6 +10,11 @@ namespace PositivityTheory.RL.Up
 
 open GlobalTheory.RealWeil
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `banach_steinhaus (g := fun t : Set.Icc (-1 : ℝ) 1 => NormedSpace.inclusionInDoubleDual ℂ B (h t)) fun φ => by`. Take `⟨C, hC⟩` from `isCompact_Icc.exists_bound_of_continuousOn (hc φ).continuousOn`. Conclude with `⟨C, fun t => hC t t.2⟩`. Use `⟨C, fun t ht => ?_⟩` and prove the remaining obligations. Use `hC ⟨t, ht⟩` as an intermediate fact.
+
+Rewrite `this` using `[show ‖NormedSpace.inclusionInDoubleDual ℂ B (h t)‖ = ‖h t‖ from (NormedSpace.inclusionInDoubleDualLi ℂ (E := B)).norm_map (h t)]`. Then use the resulting hypothesis.
+-/
 theorem bdd_of_weak {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] (h : ℝ → B)
     (hc : ∀ φ : B →L[ℂ] ℂ, Continuous fun t => φ (h t)) : ∃ M, ∀ t ∈ Set.Icc (-1 : ℝ) 1, ‖h t‖ ≤ M := by
   obtain ⟨C, hC⟩ := banach_steinhaus (g := fun t : Set.Icc (-1 : ℝ) 1 => NormedSpace.inclusionInDoubleDual ℂ B (h t))
@@ -21,6 +26,13 @@ theorem bdd_of_weak {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] (h : �
   rwa [show ‖NormedSpace.inclusionInDoubleDual ℂ B (h t)‖ = ‖h t‖ from
     (NormedSpace.inclusionInDoubleDualLi ℂ (E := B)).norm_map (h t)] at this
 
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) ∈ Set.Icc (-1 : ℝ) 1` using `by norm_num`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 0 h0)`. Establish `a1 : ∀ u ∈ Set.Icc (-1 : ℝ) 1, ‖φ' u - φ' 0‖ ≤ M * ‖u - 0‖` using `fun u hu => (convex_Icc (-1 : ℝ) 1).norm_image_sub_le_of_norm_hasDerivWithin_le (fun x _ => (h2 x).hasDerivWithinAt) hM h0 hu`. Establish `hsub : Set.uIcc 0 t ⊆ Set.Icc (-1 : ℝ) 1` using `Set.uIcc_subset_Icc h0 ht`. Establish `a2` using `(convex_uIcc (0 : ℝ) t).norm_image_sub_le_of_norm_hasDerivWithin_le (f := fun u : ℝ => φ u - u * φ' 0) (f' := fun u => φ' u - φ' 0) (C := M * |t|) (fun x _ => ((h1 x).sub ((((hasDerivAt_id x).ofReal_comp).mul_const (φ' 0)).congr_deriv (by simp))).hasDerivWithinAt) (fun u hu => (a …`.
+
+Rewrite using `[sub_zero, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_left (by simpa using Set.abs_sub_left_of_mem_uIcc hu) hM0))`. Use the proof step `Set.left_mem_uIcc Set.right_mem_uIcc`. Rewrite `a2` using `[sub_zero, Real.norm_eq_abs, mul_assoc, abs_mul_abs_self, ← sq]`. Use `le_trans (le_of_eq (congrArg norm ?_)) a2` and prove the remaining obligations.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem taylor2 (φ φ' φ'' : ℝ → ℂ) (h1 : ∀ t, HasDerivAt φ (φ' t) t) (h2 : ∀ t, HasDerivAt φ' (φ'' t) t) {M : ℝ}
     (hM : ∀ t ∈ Set.Icc (-1 : ℝ) 1, ‖φ'' t‖ ≤ M) {t : ℝ} (ht : t ∈ Set.Icc (-1 : ℝ) 1) :
     ‖φ t - φ 0 - t * φ' 0‖ ≤ M * t ^ 2 := by
@@ -41,6 +53,15 @@ theorem taylor2 (φ φ' φ'' : ℝ → ℂ) (h1 : ∀ t, HasDerivAt φ (φ' t) t
   push_cast
   ring
 
+/- English proof (translation)
+Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Take `⟨δ, hδ, hd⟩` from `Metric.continuousAt_iff.1 (hg.continuousAt (x := x)) ε hε`. Establish `hr : 0 < δ / 2` using `by positivity`. Use `set s := Metric.closedBall x (δ / 2)`. Establish `hfin : μ s < ⊤` using `(isCompact_closedBall x _).measure_lt_top`.
+
+Establish `hpos : 0 < μ.real s` using `ENNReal.toReal_pos (Metric.measure_closedBall_pos μ x hr).ne' hfin.ne`. Establish `h1 : ‖∫ y in s, (g x - g y) ∂μ‖ ≤ ε * μ.real s` using `norm_setIntegral_le_of_norm_le_const hfin fun y hy => by`. Rewrite using `[← dist_eq_norm, dist_comm]`. Conclude with `(hd (lt_of_le_of_lt (Metric.mem_closedBall.1 hy) (by linarith))).le`. Rewrite `h1` using `[integral_sub (show IntegrableOn (fun _ => g x) s μ from integrableOn_const hfin.ne) (hg.continuousOn.integrableOn_compact (isCompact_closedBall x _)), setIntegral_const]`.
+
+Establish `h2` using `h _ hr`. Establish `h3 : ‖μ.real s • g x‖ ≤ (C + ε) * μ.real s`. Use `norm_add_le (μ.real s • g x - ∫ y in s, g y ∂μ) (∫ y in s, g y ∂μ)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite `h3` using `[norm_smul, Real.norm_of_nonneg hpos.le, mul_comm]`. Conclude with `le_of_mul_le_mul_right h3 hpos`.
+-/
 theorem norm_le_of_avg {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V]
     [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (g : V → ℂ) (hg : Continuous g) {C : ℝ} (x : V)
     (h : ∀ r > 0, ‖∫ y in Metric.closedBall x r, g y ∂μ‖ ≤ C * μ.real (Metric.closedBall x r)) : ‖g x‖ ≤ C := by
@@ -70,6 +91,23 @@ def Good {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] (U : ℝ → (Sch
     (j : Sch l →L[ℂ] B) : Prop := ∀ f, HasDerivAt (fun t => j (U t f)) (j (Q f)) 0
 
 omit [DecidableEq l] in
+/- English proof (translation)
+Introduce `f`. Establish `hd : ∀ g s, HasDerivAt (fun t => (U t g).toLp 2 volume) ((U s (Q g)).toLp 2 volume) s` using `fun g s => by`. Take `⟨L, hL⟩` from `hL s`. Establish `a : HasDerivAt (fun t => (U (t - s) g).toLp 2 volume) ((Q g).toLp 2 volume) s`. Use `h1 g` as an intermediate fact.
+
+Rewrite `this` using `[← sub_self s]`. Conclude with `this.comp_sub_const s s`. Establish `b` using `(L.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s a`. Rewrite using `[hL]`. Use `b.congr_of_eventuallyEq (.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Use `show _ = L _`. Rewrite using `[← hL, ← ContinuousLinearMap.mul_apply, ← hm, add_sub_cancel]`. Take `⟨M, hM⟩` from `bdd_of_weak (fun t => toBoundedContinuousFunctionCLM ℂ _ ℂ (U t (Q (Q f)))) fun φ => hw (φ ∘L toBoundedContinuousFunctionCLM ℂ _ ℂ) _`. Establish `key : ∀ t ∈ Set.Icc (-1 : ℝ) 1, ‖toBoundedContinuousFunctionCLM ℂ _ ℂ (U t f - f - (t : ℂ) • Q f)‖ ≤ M * t ^ 2` using `fun t ht => by`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 0 (by norm_num))`.
+
+Use `(BoundedContinuousFunction.norm_le (by positivity)).2 fun x => ?_` and prove the remaining obligations. Use `norm_le_of_avg volume (U t f - f - (t : ℂ) • Q f : Sch l) (SchwartzMap.continuous _) x fun r hr => ?_` and prove the remaining obligations. Use `set s := Metric.closedBall x r`. Establish `hfin : volume s < ⊤` using `(isCompact_closedBall x _).measure_lt_top`. Set `u : L2 l` to `indicatorConstLp 2 (measurableSet_closedBall (x := x) (ε := r)) hfin.ne (1 : ℂ)`.
+
+Establish `hu : ∀ g : Sch l, innerSL ℂ u (g.toLp 2 volume) = ∫ y in s, g y` using `fun g => by`. Rewrite using `[innerSL_apply_apply, L2.inner_indicatorConstLp_one]`. Conclude with `setIntegral_congr_ae measurableSet_closedBall ((g.coeFn_toLp 2 volume).mono fun y hy _ => hy)`. Establish `hd' : ∀ g s, HasDerivAt (fun t => innerSL ℂ u ((U t g).toLp 2 volume)) (innerSL ℂ u ((U s (Q g)).toLp 2 volume)) s` using `fun g s => ((innerSL ℂ u).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s (hd g s)`. Use `taylor2 _ _ _ (hd' f) (hd' (Q f)) (M := M * volume.real s) (fun v hv => by` as an intermediate fact.
+
+Rewrite using `[hu]`. Conclude with `norm_setIntegral_le_of_norm_le_const hfin fun y _ => (BoundedContinuousFunction.norm_coe_le_norm (toBoundedContinuousFunctionCLM ℂ _ ℂ (U v (Q (Q f)))) y).trans (hM v hv)) ht`. Rewrite using `[← hu]`. Simplify using `only [h0, ContinuousLinearMap.one_apply] at this`. Rewrite using `[← toLpCLM_apply (𝕜 := ℂ), map_sub, map_sub, map_smul, map_sub, map_sub, map_smul]`.
+
+Simplify using `only [toLpCLM_apply, smul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hasDerivAt_iff_isLittleO_nhds_zero]`. Use `IsBigO.trans_isLittleO (g := fun t : ℝ => t ^ 2) (IsBigO.of_bound M ?_) (isLittleO_pow_id (by norm_num))` and prove the remaining obligations. Use `filter_upwards [Icc_mem_nhds (show (-1 : ℝ) < 0 by norm_num) (show (0 : ℝ) < 1 by norm_num)] with t ht`.
+
+Use `key t ht` as an intermediate fact. Simplify using `only [map_sub, map_smul] at this`. Simplify `this` using `[h0, ← Complex.coe_smul]`.
+-/
 theorem good_sup (U : ℝ → (Sch l →L[ℂ] Sch l)) (Q : Sch l →L[ℂ] Sch l) (h0 : U 0 = 1)
     (hm : ∀ s t, U (s + t) = U s * U t)
     (h1 : ∀ f, HasDerivAt (fun t => (U t f).toLp 2 volume) ((Q f).toLp 2 volume) 0)
@@ -121,6 +159,13 @@ theorem good_sup (U : ℝ → (Sch l →L[ℂ] Sch l)) (Q : Sch l →L[ℂ] Sch 
   simp only [map_sub, map_smul] at this
   simpa [h0, ← Complex.coe_smul] using this
 
+/- English proof (translation)
+Introduce `f`. Establish `e : (fun t => (j ∘L dRho w) (U t f)) = fun t => ∑ a, ((c t w a : ℝ) : ℂ) • j (U t (dRho (Pi.single a 1) f))`. Use function extensionality and compare the values at `t`. Use `show j ((dRho w * U t) f) = _`. Rewrite using `[hD, ContinuousLinearMap.mul_apply, dRho_eq_sum]`.
+
+Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul]`. Rewrite using `[e]`. Use `HasDerivAt.fun_sum (u := Finset.univ) fun a _ => ((hc w a).ofReal_comp).smul (hj (dRho (Pi.single a 1) f))` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [h0, hc0, ContinuousLinearMap.one_apply, Finset.sum_add_distrib]`.
+
+Establish `e1 : dRho w * Q = Q * dRho w - dRho (X *ᵥ w)` using `by rw [← hQ]; abel`. Use `show _ = j ((dRho w * Q) f)`. Rewrite using `[e1, ContinuousLinearMap.sub_apply, ContinuousLinearMap.mul_apply, map_sub, dRho_eq_sum w, dRho_eq_sum (X *ᵥ w)]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul, ofReal_neg, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+-/
 theorem good_mul {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] (U : ℝ → (Sch l →L[ℂ] Sch l))
     (Q : Sch l →L[ℂ] Sch l) (h0 : U 0 = 1) (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) (c : ℝ → (l ⊕ l → ℝ) → (l ⊕ l → ℝ))
     (hc0 : ∀ w, c 0 w = w) (hc : ∀ w a, HasDerivAt (fun t => c t w a) (-(X *ᵥ w) a) 0)
@@ -143,6 +188,17 @@ theorem good_mul {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] (U : ℝ 
   simp only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul, ofReal_neg, neg_smul,
     Finset.sum_neg_distrib, sub_eq_add_neg]
 
+/- English proof (translation)
+Use `SchwartzMap.seminorm_le_bound ℂ k (n + 1) g (Finset.sum_nonneg fun _ _ => apply_nonneg _ _) fun x => ?_` and prove the remaining obligations. Set `L : l → ℂ →L[ℝ] (EuclideanSpace ℝ l →L[ℝ] ℂ)` to `fun i => ContinuousLinearMap.smulRightL ℝ _ ℂ (EuclideanSpace.proj i)`. Establish `hL : ∀ i, ‖L i‖ ≤ 1` using `fun i => ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun z => by`. Rewrite using `[one_mul]`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun v => ?_` and prove the remaining obligations.
+
+Use `show ‖(v i) • z‖ ≤ _`. Rewrite using `[norm_smul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (PiLp.norm_apply_le v i) (norm_nonneg _)`. Establish `e : fderiv ℝ g = fun y => ∑ i, (L i ∘ dRho (Pi.single (Sum.inl i) 1) g) y`. Use function extensionality and compare the values at `y`.
+
+Use extensionality with `v`. Establish `hv : v = ∑ i, v i • (EuclideanSpace.single i 1 : EuclideanSpace ℝ l)`. Use extensionality with `j`. Simplify using `[Pi.single_apply]`. Use `conv_lhs => rw [hv]`.
+
+Simplify using `[L, dRho_single_inl, lineDerivOp_apply_eq_fderiv]`. Establish `hs : ∀ i, ContDiff ℝ ∞ (dRho (Pi.single (Sum.inl i) 1) g : Sch l)` using `fun i => SchwartzMap.smooth _ ⊤`. Rewrite using `[← norm_iteratedFDeriv_fderiv, e, iteratedFDeriv_fun_sum_apply (fun i _ => (((L i).contDiff.comp (hs i)).of_le (by exact_mod_cast le_top)).contDiffAt)]`. Use `(mul_le_mul_of_nonneg_left (norm_sum_le _ _) (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun i _ => le_trans ?_ (SchwartzMap.le_seminorm ℂ k n _ x)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (((L i).norm_iteratedFDeriv_comp_left (hs i).contDiffAt (by exact_mod_cast le_top)).trans ?_) (by positivity)` and prove the remaining obligations. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hL i)`.
+-/
 theorem seminorm_succ_n (k n : ℕ) (g : Sch l) :
     SchwartzMap.seminorm ℂ k (n + 1) g ≤ ∑ i, SchwartzMap.seminorm ℂ k n (dRho (Pi.single (Sum.inl i) 1) g) := by
   refine SchwartzMap.seminorm_le_bound ℂ k (n + 1) g (Finset.sum_nonneg fun _ _ => apply_nonneg _ _) fun x => ?_
@@ -172,6 +228,15 @@ theorem seminorm_succ_n (k n : ℕ) (g : Sch l) :
     (by exact_mod_cast le_top)).trans ?_) (by positivity)
   exact mul_le_of_le_one_left (norm_nonneg _) (hL i)
 
+/- English proof (translation)
+Use `SchwartzMap.seminorm_le_bound ℂ (k + 1) 0 g (Finset.sum_nonneg fun _ _ => apply_nonneg _ _) fun x => ?_` and prove the remaining obligations. Establish `h1 : ‖x‖ ≤ ∑ i, |x i|`. Establish `hv : x = ∑ i, x i • (EuclideanSpace.single i 1 : EuclideanSpace ℝ l)`. Use extensionality with `j`. Simplify using `[Pi.single_apply]`.
+
+Use `conv_lhs => rw [hv]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Simplify using `[norm_smul]`. Rewrite using `[norm_iteratedFDeriv_zero]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => le_trans ?_ (SchwartzMap.le_seminorm ℂ k 0 _ x)` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_zero, dRho_single_inr]`. Simplify using `only [norm_mul, norm_ofNat, norm_real, norm_I, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Establish `: |x i| * (‖x‖ ^ k * ‖g x‖) * 1 ≤ |x i| * (‖x‖ ^ k * ‖g x‖) * (2 * π)` using `mul_le_mul_of_nonneg_left (by linarith [Real.pi_gt_three]) (by positivity)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem seminorm_succ_k (k : ℕ) (g : Sch l) :
     SchwartzMap.seminorm ℂ (k + 1) 0 g ≤ ∑ i, SchwartzMap.seminorm ℂ k 0 (dRho (Pi.single (Sum.inr i) 1) g) := by
   refine SchwartzMap.seminorm_le_bound ℂ (k + 1) 0 g (Finset.sum_nonneg fun _ _ => apply_nonneg _ _) fun x => ?_
@@ -194,6 +259,25 @@ theorem seminorm_succ_k (k : ℕ) (g : Sch l) :
         mul_le_mul_of_nonneg_left (by linarith [Real.pi_gt_three]) (by positivity)
       linarith
 
+/- English proof (translation)
+Introduce `f`. Set `W` to `Submonoid.closure (Set.range (dRho (l := l)))`. Set `R : ℝ → Sch l` to `fun t => U t f - f - (t : ℂ) • Q f`. Establish `hW : ∀ L ∈ W, Good U Q (toBoundedContinuousFunctionCLM ℂ _ ℂ ∘L L)` using `fun L hL => by`. Proceed by induction on `hL using Submonoid.closure_induction_right with`.
+
+Consider the case `one => exact hj`. Consider the case `mul_right x _ y hy ih`. Take `⟨w, rfl⟩` from `hy`. Conclude with `good_mul U Q h0 X c hc0 hc hD hQ ih w`. Establish `hDW : ∀ w, ∀ L ∈ W, dRho w * L ∈ W` using `fun w L hL => mul_mem (Submonoid.subset_closure ⟨w, rfl⟩) hL`.
+
+Establish `hk : ∀ k, ∀ L ∈ W, (fun t => SchwartzMap.seminorm ℂ k 0 (L (R t))) =o[𝓝 0] fun t => t` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `L hL`. Use `hasDerivAt_iff_isLittleO_nhds_zero.1 (hW L hL f)` as an intermediate fact.
+
+Use `IsBigO.trans_isLittleO (IsBigO.of_bound 1 (.of_forall fun t => ?_)) this` and prove the remaining obligations. Rewrite using `[one_mul, Real.norm_of_nonneg (apply_nonneg _ _)]`. Use `SchwartzMap.seminorm_le_bound ℂ 0 0 _ (norm_nonneg _) fun x => ?_` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul, norm_iteratedFDeriv_zero]`. Use `le_trans (BoundedContinuousFunction.norm_coe_le_norm (toBoundedContinuousFunctionCLM ℂ _ ℂ (L (R t))) x) (le_of_eq ?_)` and prove the remaining obligations.
+
+Simplify using `[R, h0, ← Complex.coe_smul]`. Consider the case `succ k ih`. Introduce `L hL`. Use `IsBigO.trans_isLittleO (IsBigO.of_bound 1 (.of_forall fun t => ?_)) (IsLittleO.fun_sum (s := Finset.univ) fun i _ => ih _ (hDW (Pi.single (Sum.inr i) 1) L hL))` and prove the remaining obligations. Rewrite using `[one_mul, Real.norm_of_nonneg (apply_nonneg _ _)]`.
+
+Conclude with `(seminorm_succ_k k _).trans (le_abs_self _)`. Establish `hn : ∀ n k, ∀ L ∈ W, (fun t => SchwartzMap.seminorm ℂ k n (L (R t))) =o[𝓝 0] fun t => t` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => exact hk`. Consider the case `succ n ih`.
+
+Introduce `k L hL`. Use `IsBigO.trans_isLittleO (IsBigO.of_bound 1 (.of_forall fun t => ?_)) (IsLittleO.fun_sum (s := Finset.univ) fun i _ => ih k _ (hDW (Pi.single (Sum.inl i) 1) L hL))` and prove the remaining obligations. Rewrite using `[one_mul, Real.norm_of_nonneg (apply_nonneg _ _)]`. Conclude with `(seminorm_succ_n k n _).trans (le_abs_self _)`. Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ (EuclideanSpace ℝ l) ℂ) ((normSeminorm ℂ ℂ).comp T.toLinearMap) T.continuous.norm`.
+
+Rewrite using `[hasDerivAt_iff_isLittleO_nhds_zero]`. Use `IsBigO.trans_isLittleO (IsBigO.of_bound C (.of_forall fun t => ?_)) (IsLittleO.fun_sum (s := s) fun i _ => hn i.2 i.1 1 (one_mem _))` and prove the remaining obligations. Establish `h1` using `hC (R t)`. Establish `h2 : (s.sup (schwartzSeminormFamily ℂ (EuclideanSpace ℝ l) ℂ)) (R t) ≤ ∑ i ∈ s, SchwartzMap.seminorm ℂ i.1 i.2 (R t)` using `Seminorm.finset_sup_apply_le (Finset.sum_nonneg fun _ _ => apply_nonneg _ _) fun i hi => Finset.single_le_sum (f := fun i : ℕ × ℕ => SchwartzMap.seminorm ℂ i.1 i.2 (R t)) (fun _ _ => apply_nonneg _ _) hi`. Establish `h3 : ‖T (R t)‖ ≤ C * ∑ i ∈ s, SchwartzMap.seminorm ℂ i.1 i.2 (R t)` using `h1.trans (mul_le_mul_of_nonneg_left h2 C.2)`.
+
+Use `le_trans (le_of_eq ?_) (h3.trans (mul_le_mul_of_nonneg_left (le_abs_self _) C.2))` and prove the remaining obligations. Simplify using `[R, h0]`.
+-/
 theorem weak_deriv (U : ℝ → (Sch l →L[ℂ] Sch l)) (Q : Sch l →L[ℂ] Sch l) (h0 : U 0 = 1)
     (hj : Good U Q (toBoundedContinuousFunctionCLM ℂ _ ℂ))
     (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) (c : ℝ → (l ⊕ l → ℝ) → (l ⊕ l → ℝ))

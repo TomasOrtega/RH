@@ -16,6 +16,21 @@ open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 noncomputable section
 namespace GlobalTheory.RealDict.LineStab
+/- English proof (translation)
+Introduce `hPr D ψ θ hstd hθ ε M X A B χS χT ω eS eT hW hExp Xs Ws Mo ψ' χX χW om τ hPH hPR Φ hinj hrange hFock N hN γ hγ f hf f₁ hD`. Establish `hψ` using `hPR.psi.symm`. Substitute `hψ` using the available equality. Take `⟨P, hPN, rfl⟩` from `Submodule.mem_map.1 hf`. Take `⟨f₀, r, hvac, hf0, hΦ⟩` from `hFock`.
+
+Take `⟨h, Y, hY, hγh, hder⟩` from `GlobalTheory.T.skewSpaceLine_oneParam_fockDerivative D ψ θ ε M X A B χS χT ω eS eT hθ hW hExp Ws hPR.JW γ hγ`. Use `set Q := ∑ t, GlobalTheory.RealQuot.actT ε A B eS t (Y t) P with hQ`. Establish `hQN : Q ∈ N` using `Submodule.sum_mem _ fun t _ => hN ⟨(t, Y t), hY t⟩ P hPN`. Establish `hne : ∃ x, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (Φ 1) r x ≠ 0`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Establish `h0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (Φ 1) r = 0` using `funext hc`. Establish `h1` using `(hΦ 1).2`. Rewrite `h1` using `[h0, thO_zero', ptF_one']`. Conclude with `hf0 h1.symm`.
+
+Establish `hr : ∃ x, r x ≠ 0`. Take `⟨x, hx⟩` from `hne`. Conclude with `⟨x, fun h0 => hx (by simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, h0])⟩`. Establish `hR1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) f₁ r` using `GlobalTheory.Twist.RestrictionTransfer.rest_transfer _ (Φ 1) r (hΦ 1).1 hne f₁`. Establish `hT : ∀ t : ℝ, GlobalTheory.TripleRead.thO Mo ψ (sgn ε M).gram (Equiv.refl (Fin X.rank)) (om (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (Φ P) r)) = ω (1, h t …` using `sgn ε M) ψ θ (frSgn ε A) B f₀ P) := by`.
+
+Introduce `t`. Establish `e1` using `hPR.transp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (Φ P) r) (hΦ P).1.2 1 (h t)`. Rewrite `e1` using `[conjU_one', ← hγh t]`. Rewrite using `[e1, (hΦ P).2]`. Establish `key : GlobalTheory.TripleRead.thO Mo ψ (sgn ε M).gram (Equiv.refl (Fin X.rank)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) f₁ r) = GlobalTheory.TripleRead.thO Mo ψ (sgn ε M).gram (Equiv.re …`.
+
+Use function extensionality and compare the values at `x`. Establish `a` using `_root_.GlobalTheory.T.theta_interchange_derivative_pure hPr D Xs Ws Mo ψ χX χW om τ hPH hPR.good γ hγ (Φ P) f₁ r (hΦ P).1 hR1 hD (sgn ε M).gram (Equiv.refl (Fin X.rank)) x`. Establish `e2 : (fun t : ℝ => GlobalTheory.TripleRead.thO Mo ψ (sgn ε M).gram (Equiv.refl (Fin X.rank)) (om (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (Φ P) r)) x) = f …` using `sgn ε M) ψ θ (frSgn ε A) B f₀ P) x := funext fun t => by rw [hT t]`. Rewrite `a` using `[e2]`. Rewrite using `[a.unique (hder f₀ hvac P x), (hΦ Q).2]`.
+
+Establish `hdet : ((sgn ε M).gram).det ≠ 0` using `det_sgn_gram ε M (hPR.JX ▸ hPH.2.2.2.1)`. Establish `heq` using `GlobalTheory.ThetaTransformInj.thO_injective D Xs Ws Mo ψ χX χW om τ hPH hPR.good (sgn ε M).gram (Equiv.refl (Fin X.rank)) hdet _ hR1.2 _ (hΦ Q).1.2 key`. Conclude with `⟨Q, hQN, (GlobalTheory.ArchCancel.eq_of_tens_eq _ r (hΦ P).1.1 hr f₁ (Φ Q) heq).symm⟩`.
+-/
 theorem line_derivative_mem_fock_image : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),
@@ -89,6 +104,9 @@ open GlobalTheory.SquareComm
 open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealDict.LineStab.line_derivative_mem_fock_image | exact _root_.GlobalTheory.RealDict.LineStab.line_derivative_mem_fock_image | (intros; apply _root_.GlobalTheory.RealDict.LineStab.line_derivative_mem_fock_image <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fock_image_line_stable : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),

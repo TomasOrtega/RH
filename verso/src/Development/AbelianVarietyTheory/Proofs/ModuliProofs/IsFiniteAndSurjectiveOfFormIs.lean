@@ -19,11 +19,33 @@ namespace GlobalTheory.FormFinite
 
 open GlobalTheory.CechPic GlobalTheory.AmpleStabFinite
 
+/- English proof (translation)
+Rewrite using `[h, e, ← h, lam_comm, h, GrpObj.inv_comp, e, ← GrpObj.inv_comp, ← h]`.
+-/
 theorem lam_inv_eq {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A] (m l : CechPic.Pic A.left) (s : A ⟶ A)
     [IsMonHom s] (h : ∀ u v : T ⟶ A, lam m u v = lam l u (v ≫ s)) {x y : T ⟶ A} (e : x ≫ s = y ≫ s) :
     lam m x⁻¹ x = lam m y y⁻¹ := by
   rw [h, e, ← h, lam_comm, h, GrpObj.inv_comp, e, ← GrpObj.inv_comp, ← h]
 
+/- English proof (translation)
+Take `⟨n, -, N, t, hc, ha⟩` from `hM.exists_cover`. Establish `: IsProper (s.left ≫ A.hom)` using `by rw [Over.w s]; infer_instance`. Establish `: IsProper s.left` using `.of_comp _ A.hom`. It suffices to establish `LocallyQuasiFinite s.left from .of_isProper_of_locallyQuasiFinite _`. Use `LocallyQuasiFinite.of_finite_preimage_singleton _ fun z => ?_` and prove the remaining obligations.
+
+Break down `Set.eq_empty_or_nonempty (s.left ⁻¹' {z}) with h0 | ⟨a, hz⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `Set.finite_empty`. Set `k : Type` to `A.left.residueField a`. Set `y₀ : Spec (CommRingCat.of k) ⟶ A.left` to `A.left.fromSpecResidueField a`.
+
+Set `P : Over (Sp K)` to `Over.mk (y₀ ≫ A.hom)`. Set `y : P ⟶ A` to `Over.homMk y₀ rfl`. Set `π : pullback s.left (y₀ ≫ s.left) ⟶ A.left` to `pullback.fst _ _`. Set `q : pullback s.left (y₀ ≫ s.left) ⟶ Spec (CommRingCat.of k)` to `pullback.snd _ _`. Establish `w : π ≫ s.left = q ≫ y₀ ≫ s.left` using `pullback.condition`.
+
+Set `F : Over (Sp K)` to `Over.mk (π ≫ A.hom)`. Set `x : F ⟶ A` to `Over.homMk π rfl`. Set `r : F ⟶ P` to `Over.homMk q (by`. Express the relevant statement in the definitionally equal form `q ≫ y₀ ≫ A.hom = π ≫ A.hom`. Rewrite using `[← Over.w s, reassoc_of% w])`.
+
+Establish `: IsAffineHom (y₀ ≫ s.left)` using `.of_comp _ A.hom`. Establish `: IsAffineHom π` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom.{0}) (IsPullback.of_hasPullback s.left (y₀ ≫ s.left)).flip this`. Establish `key` using `lam_inv_eq _ l s (h F) (x := x) (y := r ≫ y) (Over.OverMorphism.ext w)`. Establish `triv : ∀ (b : P ⟶ A) (c : CechPic.Pic A.left), CechPic.pull (r ≫ b).left c = 0` using `fun b c => by`. Rewrite using `[Over.comp_left, pull_comp, pull_spec_local (K := k) b.left, map_zero]`.
+
+Establish `one : ∀ c : CechPic.Pic A.left, CechPic.pull (1 : F ⟶ A).left c = 0` using `fun c => by`. Rewrite using `[← MonObj.comp_one r, triv]`. Simplify using `only [lam, inv_mul_cancel, ← GrpObj.comp_inv, ← MonObj.comp_mul, one, triv] at key`. Establish `: CompactSpace ↥(pullback s.left (y₀ ≫ s.left))` using `QuasiCompact.compactSpace_of_compactSpace q`. Establish `: (pullback s.left (y₀ ≫ s.left)).IsQuasiAffine` using `quasiAffine_of_pull_add π (x⁻¹).left (isLB_lbPow hM.isLB n) t hc ha (by`.
+
+Establish `e : CechPic.pull x.left (cls M hM.isLB) + CechPic.pull (x⁻¹).left (cls M hM.isLB) = 0`. Take the linear combination `(norm := abel) - key`. Express the relevant statement in the definitionally equal form `CechPic.pull x.left _ + CechPic.pull (x⁻¹).left _ = 0`. Rewrite using `[cls_lbPow hM.isLB, map_nsmul, map_nsmul, ← nsmul_add, e, nsmul_zero])`. Establish `: IsAffine (pullback s.left (y₀ ≫ s.left))` using `isAffine_of_quasiAffine q`.
+
+Establish `: IsFinite q` using `IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩`. Establish `hfin : (Set.univ : Set ↥(pullback s.left (y₀ ≫ s.left))).Finite` using `(q.finite_preimage_singleton (IsLocalRing.closedPoint k)).subset fun t _ => Subsingleton.elim _ _`. Use `(hfin.image π).subset fun b hb => ?_` and prove the remaining obligations. Establish `e : s.left b = (y₀ ≫ s.left) (IsLocalRing.closedPoint k)`. Establish `e₀ : y₀ (IsLocalRing.closedPoint k) = a` using `Scheme.fromSpecResidueField_apply a _`.
+
+Conclude with `(show s.left b = z from hb).trans ((show s.left a = z from hz).symm.trans (congrArg s.left e₀).symm)`. Take `⟨c, hc, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := s.left) (g := y₀ ≫ s.left) b _ e`. Conclude with `⟨c, trivial, hc⟩`.
+-/
 theorem isFinite_of_lam_eq {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A] [IsProper A.hom]
     {M : LB A.left} (hM : IsAmpleLB M) (l : CechPic.Pic A.left) (s : A ⟶ A) [IsMonHom s]
     (h : ∀ (T : Over (Sp K)) (u v : T ⟶ A), lam (cls M hM.isLB) u v = lam l u (v ≫ s)) : IsFinite s.left := by
@@ -73,6 +95,11 @@ theorem isFinite_of_lam_eq {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] [Is
   obtain ⟨c, hc, -⟩ := Scheme.Pullback.exists_preimage_pullback (f := s.left) (g := y₀ ≫ s.left) b _ e
   exact ⟨c, trivial, hc⟩
 
+/- English proof (translation)
+Introduce `_ _ K _ _ P M s hM hA ⟨hs, H⟩`. Use `P.isAb.proper` as an intermediate fact. Use `P.isAb.comm` as an intermediate fact. Establish `e` using `(cls_eq_iff (LB.isLB_linComb hM _ _) (LB.isLB_linComb P.isLB _ _)).2 H`. Establish `e'` using `(cls_cube_two hM _ _ _).symm.trans (e.trans (cls_cube_two P.isLB _ _ _))`.
+
+Establish `hf : IsFinite s.left` using `isFinite_of_lam_eq (isAmpleLB_of_relAmple_of_isAffine P.A hM hA) (cls P.L P.isLB) s fun T u v => by`. Simplify `congrArg (CechPic.pull (lift u v).left) e'` using `only [pull_lam, lift_fst, lift_snd, lift_snd_assoc]`. Conclude with `⟨hf, (flat_and_surjective_of_isFinite_abelianEnd forall_geometricallyIntegral_of_smooth_of_geometricallyConnected K P.A P.isAb s hs hf).2⟩`.
+-/
 theorem isFinite_and_surjective_of_formIs : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M : LB P.A.left) (s : P.A ⟶ P.A), M.IsLB → Out.RelAmple P.A M → FormIs P M s → IsFinite s.left ∧ Surjective s.left := by
   intro _ _ K _ _ P M s hM hA ⟨hs, H⟩
   have := P.isAb.proper

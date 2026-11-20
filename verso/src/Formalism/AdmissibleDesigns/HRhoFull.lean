@@ -32,6 +32,9 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `hRho_of i r ρ π dc g0 eB e₁ s Dd hD hc hT hrk hG4 hdec (fun l => KTate.finFf_rec (i := i) (dc := dc) (Dd := Dd) (r := r) (π := π) (g0 := g0) (eB := eB) (e₁ := e₁) (s := s) hFin hD hc l) (fun l => KTate.rankFf_normAt (i := i) (dc := dc) (Dd := Dd) (ρ := ρ) (π := π) (r := r) (g0 := …`.
+-/
 theorem hRho_full (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π)
     (hG4 : TruncatedSeriesCountingIdentities.admG4 i r) (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i) :
     InRhoFixReal2 (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk 0) Dd.r Dd.χ Dd.e₁ (colIdx i dc) (decs D.host.E (Aw i dc))
@@ -66,6 +69,9 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `hRho_full i (Norm.rN i r ρ π) ρ π dc g0 eB e₁ s Dd hD hc hT hrk (Norm.normAt_rN i r ρ π) (Norm.admG4_rN i r ρ π hdec hG4) (Norm.decomposes_normalized i r ρ π) hFin`.
+-/
 theorem hRho_rN (hG4 : TruncatedSeriesCountingIdentities.admG4 i r) (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i) :
     InRhoFixReal2 (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk 0) Dd.r Dd.χ Dd.e₁ (colIdx i dc) (decs D.host.E (Aw i dc))
       (jN i ρ π dc) (rowsN i dc) (sN i ρ π) (tensM (D.nd.O i) _ (Dd.ρk 0).toRingHom) (v1S i Dd hT hrk)

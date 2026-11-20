@@ -17,6 +17,9 @@ def monoidHomRootsOfUnityEquiv (G : Type*) [Group G] (hG : ∀ g : G, g ^ n = 1)
   left_inv φ := by ext; rfl
   right_inv ψ := by ext; rfl
 
+/- English proof (translation)
+Establish `: HasEnoughRootsOfUnity K (Monoid.exponent G)` using `HasEnoughRootsOfUnity.of_dvd K (Monoid.exponent_dvd_of_forall_pow_eq_one hG)`. Rewrite using `[Nat.card_congr (monoidHomRootsOfUnityEquiv G hG), CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity]`.
+-/
 lemma card_monoidHom_rootsOfUnity (G : Type*) [CommGroup G] [Finite G]
     (hG : ∀ g : G, g ^ n = 1) : Nat.card (G →* rootsOfUnity n K) = Nat.card G := by
   have : HasEnoughRootsOfUnity K (Monoid.exponent G) :=
@@ -24,6 +27,9 @@ lemma card_monoidHom_rootsOfUnity (G : Type*) [CommGroup G] [Finite G]
   rw [Nat.card_congr (monoidHomRootsOfUnityEquiv G hG),
     CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity]
 
+/- English proof (translation)
+The claim follows from `.of_injective _ DFunLike.coe_injective`.
+-/
 lemma finite_monoidHom_rootsOfUnity (G : Type*) [Group G] [Finite G] :
     Finite (G →* rootsOfUnity n K) :=
   .of_injective _ DFunLike.coe_injective
@@ -37,6 +43,9 @@ variable (L : Type*) [Field L] [Algebra K L]
 
 omit [NeZero n] [HasEnoughRootsOfUnity K n] in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (UnitsModPow.pow_eq_one K n x.1)`.
+-/
 lemma kummerGroup_pow_eq_one (x : kummerGroup K n L) : x ^ n = 1 :=
   Subtype.ext (UnitsModPow.pow_eq_one K n x.1)
 
@@ -44,6 +53,13 @@ variable {K n L}
 
 omit [NeZero n] [HasEnoughRootsOfUnity K n] in
 
+/- English proof (translation)
+Set `f : Gal(L/K) → Lˣ` to `fun σ => Units.map (algebraMap K L : K →* L) (χ σ)`. Establish `hf : groupCohomology.IsMulCocycle₁ f`. Introduce `g h`. Use `ext`. Simplify using `only [f, map_mul, Units.val_mul, Units.coe_map, MonoidHom.coe_coe, AlgEquiv.smul_units_def, AlgEquiv.commutes]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨β, hβ⟩` from `groupCohomology.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units f hf`. Use `⟨β, fun σ => ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (hβ σ)` as an intermediate fact. Simplify using `only [AlgEquiv.smul_units_def, Units.val_div_eq_div_val, Units.coe_map, MonoidHom.coe_coe, f] at this`.
+
+Rewrite using `[← this, div_mul_cancel₀ _ β.ne_zero]`.
+-/
 lemma exists_eigenvector_of_character [FiniteDimensional K L] (χ : Gal(L/K) →* Kˣ) :
     ∃ β : Lˣ, ∀ σ : Gal(L/K), σ (β : L) = algebraMap K L (χ σ : K) * β := by
   let f : Gal(L/K) → Lˣ := fun σ => Units.map (algebraMap K L : K →* L) (χ σ)
@@ -62,6 +78,11 @@ lemma exists_eigenvector_of_character [FiniteDimensional K L] (χ : Gal(L/K) →
 
 omit [NeZero n] [HasEnoughRootsOfUnity K n] in
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `exists_eigenvector_of_character χ`. Establish `hfix : ∀ σ : Gal(L/K), σ ((β : L) ^ n) = (β : L) ^ n`. Introduce `σ`. Rewrite using `[map_pow, hβ σ, mul_pow, ← map_pow, ← Units.val_pow_eq_pow_val, ← map_pow, Monoid.exponent_dvd_iff_forall_pow_eq_one.mp hexp σ, map_one, Units.val_one, map_one, one_mul]`. Take `⟨b, hb⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed (F := K) _).mpr hfix`.
+
+Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hb` using `[map_zero]`. Conclude with `pow_ne_zero n β.ne_zero hb.symm`. Conclude with `⟨Units.mk0 b hb0, β, hb.symm, hβ⟩`.
+-/
 lemma exists_kummer_eigenvector [FiniteDimensional K L] [IsGalois K L]
     (hexp : Monoid.exponent Gal(L/K) ∣ n) (χ : Gal(L/K) →* Kˣ) :
     ∃ a : Kˣ, ∃ β : L, β ^ n = algebraMap K L a ∧
@@ -80,6 +101,13 @@ lemma exists_kummer_eigenvector [FiniteDimensional K L] [IsGalois K L]
 
 variable (K n L)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_one]`. Introduce `x hx`. Take `⟨a, ha, α, hα⟩` from `exists_rep x`. Establish `hfix : ∀ σ : Gal(L/K), σ α = α` using `fun σ => (kummerPairing_eq_one_iff σ x ha hα).mp (DFunLike.congr_fun hx σ)`. Take `⟨b, rfl⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed (F := K) α).mpr hfix`.
+
+Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hα` using `[map_zero, zero_pow (NeZero.ne n)]`. Conclude with `(map_ne_zero (algebraMap K L)).mpr a.ne_zero hα.symm`. Establish `hba : (Units.mk0 b hb0) ^ n = a`.
+
+Use `ext`. Simplify `hα)` using `using (algebraMap K L).injective (by simpa`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← ha, OneMemClass.coe_one, QuotientGroup.eq_one_iff]`. Conclude with `mem_unitsPow.mpr ⟨_, hba⟩`.
+-/
 theorem kummerPairingRight_injective [FiniteDimensional K L] [IsGalois K L] :
     Function.Injective (kummerPairingRight K n L) := by
   rw [injective_iff_map_eq_one]
@@ -99,6 +127,13 @@ theorem kummerPairingRight_injective [FiniteDimensional K L] [IsGalois K L] :
   rw [← ha, OneMemClass.coe_one, QuotientGroup.eq_one_iff]
   exact mem_unitsPow.mpr ⟨_, hba⟩
 
+/- English proof (translation)
+Set `_ : CommGroup Gal(L/K)` to `{ (inferInstance : Group Gal(L/K)) with mul_comm := fun a b => (IsMulCommutative.is_comm (M := Gal(L/K))).comm a b }`. Establish `: HasEnoughRootsOfUnity K (Monoid.exponent Gal(L/K))` using `HasEnoughRootsOfUnity.of_dvd K hexp`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨χ, hχ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity Gal(L/K) K hne`. Take `⟨a, β, hβ, hχβ⟩` from `exists_kummer_eigenvector hexp χ`. Establish `hx : (a : UnitsModPow K n) ∈ kummerGroup K n L` using `mk_mem_kummerGroup.mpr ⟨β, hβ⟩`. Establish `h1 : σ β = β` using `(kummerPairing_eq_one_iff σ ⟨_, hx⟩ rfl hβ).mp (DFunLike.congr_fun hσ ⟨_, hx⟩)`. Rewrite `h1` using `[hχβ σ]`.
+
+Establish `h2 : algebraMap K L (χ σ : K) = 1` using `mul_right_cancel₀ (ne_zero_of_pow_eq_algebraMap hβ) (h1.trans (one_mul β).symm)`. Apply `hχ` to reduce the goal to its premises. Use `ext`. Simplify using `using (algebraMap K L).injective (h2.trans (map_one _).symm)`.
+-/
 theorem kummerPairingLeft_injective [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
     Function.Injective (kummerPairingLeft K n L) := by
@@ -121,11 +156,19 @@ theorem kummerPairingLeft_injective [FiniteDimensional K L] [IsGalois K L]
   ext
   simpa using (algebraMap K L).injective (h2.trans (map_one _).symm)
 
+/- English proof (translation)
+The claim follows from `have := finite_monoidHom_rootsOfUnity (K := K) (n := n) Gal(L/K) Finite.of_injective _ (kummerPairingRight_injective K n L)`.
+-/
 theorem kummerGroup_finite [FiniteDimensional K L] [IsGalois K L] :
     Finite (kummerGroup K n L) :=
   have := finite_monoidHom_rootsOfUnity (K := K) (n := n) Gal(L/K)
   Finite.of_injective _ (kummerPairingRight_injective K n L)
 
+/- English proof (translation)
+Set `_ : CommGroup Gal(L/K)` to `{ (inferInstance : Group Gal(L/K)) with mul_comm := fun a b => (IsMulCommutative.is_comm (M := Gal(L/K))).comm a b }`. Use `kummerGroup_finite K n L` as an intermediate fact. Use `finite_monoidHom_rootsOfUnity (K := K) (n := n) Gal(L/K)` as an intermediate fact. Use `finite_monoidHom_rootsOfUnity (K := K) (n := n) (kummerGroup K n L)` as an intermediate fact. Rewrite using `[← IsGalois.card_aut_eq_finrank]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_kummerGroup [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
     Nat.card (kummerGroup K n L) = Module.finrank K L := by
@@ -146,6 +189,11 @@ theorem card_kummerGroup [FiniteDimensional K L] [IsGalois K L]
       _ = Nat.card (kummerGroup K n L) :=
           card_monoidHom_rootsOfUnity (kummerGroup K n L) (kummerGroup_pow_eq_one K n L)
 
+/- English proof (translation)
+Use `kummerGroup_finite K n L` as an intermediate fact. Use `finite_monoidHom_rootsOfUnity (K := K) (n := n) (kummerGroup K n L)` as an intermediate fact. Rewrite using `[Nat.bijective_iff_injective_and_card]`. Use `⟨kummerPairingLeft_injective K n L hexp, ?_⟩` and prove the remaining obligations. Rewrite using `[IsGalois.card_aut_eq_finrank, ← card_kummerGroup K n L hexp]`.
+
+Conclude with `(card_monoidHom_rootsOfUnity (kummerGroup K n L) (kummerGroup_pow_eq_one K n L)).symm`.
+-/
 theorem kummerPairingLeft_bijective [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
     Function.Bijective (kummerPairingLeft K n L) := by
@@ -156,6 +204,11 @@ theorem kummerPairingLeft_bijective [FiniteDimensional K L] [IsGalois K L]
   rw [IsGalois.card_aut_eq_finrank, ← card_kummerGroup K n L hexp]
   exact (card_monoidHom_rootsOfUnity (kummerGroup K n L) (kummerGroup_pow_eq_one K n L)).symm
 
+/- English proof (translation)
+Set `_ : CommGroup Gal(L/K)` to `{ (inferInstance : Group Gal(L/K)) with mul_comm := fun a b => (IsMulCommutative.is_comm (M := Gal(L/K))).comm a b }`. Use `finite_monoidHom_rootsOfUnity (K := K) (n := n) Gal(L/K)` as an intermediate fact. Rewrite using `[Nat.bijective_iff_injective_and_card]`. Use `⟨kummerPairingRight_injective K n L, ?_⟩` and prove the remaining obligations. Rewrite using `[card_kummerGroup K n L hexp, ← IsGalois.card_aut_eq_finrank]`.
+
+Conclude with `(card_monoidHom_rootsOfUnity Gal(L/K) (Monoid.exponent_dvd_iff_forall_pow_eq_one.mp hexp)).symm`.
+-/
 theorem kummerPairingRight_bijective [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
     Function.Bijective (kummerPairingRight K n L) := by
@@ -178,14 +231,27 @@ noncomputable def kummerGroupEquivDual [FiniteDimensional K L] [IsGalois K L]
     kummerGroup K n L ≃* (Gal(L/K) →* rootsOfUnity n K) :=
   MulEquiv.ofBijective _ (kummerPairingRight_bijective K n L hexp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma galEquivDual_apply [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) (σ : Gal(L/K))
     (x : kummerGroup K n L) : galEquivDual K n L hexp σ x = kummerPairing K n L σ x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma kummerGroupEquivDual_apply [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) (x : kummerGroup K n L)
     (σ : Gal(L/K)) : kummerGroupEquivDual K n L hexp x σ = kummerPairing K n L σ x := rfl
 
+/- English proof (translation)
+Use `set E := kummerField K n L (kummerGroup K n L)`. Establish `hbot : E.fixingSubgroup = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `σ hσ`. Rewrite using `[Subgroup.mem_bot]`.
+
+Apply `kummerPairingLeft_injective K n L hexp` to reduce the goal to its premises. Rewrite using `[map_one]`. Use extensionality with `x : 1`. Take `⟨a, ha, α, hα⟩` from `exists_rep x`. Establish `hαE : α ∈ E` using `IntermediateField.subset_adjoin _ _ ⟨a, ha ▸ x.2, hα⟩`.
+
+Rewrite using `[kummerPairingLeft_apply, MonoidHom.one_apply]`. Conclude with `(kummerPairing_eq_one_iff σ x ha hα).mpr (hσ ⟨α, hαE⟩)`. Rewrite using `[← IsGalois.fixedField_fixingSubgroup E, hbot, IntermediateField.fixedField_bot]`.
+-/
 theorem kummerField_kummerGroup [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
     kummerField K n L (kummerGroup K n L) = ⊤ := by
@@ -203,6 +269,9 @@ theorem kummerField_kummerGroup [FiniteDimensional K L] [IsGalois K L]
     exact (kummerPairing_eq_one_iff σ x ha hα).mpr (hσ ⟨α, hαE⟩)
   rw [← IsGalois.fixedField_fixingSubgroup E, hbot, IntermediateField.fixedField_bot]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← kummerField_kummerGroup K n L hexp]`. Apply `IntermediateField.adjoin.mono` to reduce the goal to its premises. Introduce and unpack `α ⟨a, -, hα⟩`. Conclude with `⟨ne_zero_of_pow_eq_algebraMap hα, a, hα.symm⟩`.
+-/
 theorem adjoin_nthRoots_eq_top [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
     IntermediateField.adjoin K {α : L | α ≠ 0 ∧ α ^ n ∈ Set.range (algebraMap K L)} = ⊤ := by

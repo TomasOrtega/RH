@@ -15,14 +15,27 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {m n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← zsmul_eq_mul, map_zsmul, zsmul_eq_mul]`.
+-/
 theorem trace_int_mul (u : ℤ) (t : AE F E) :
     Algebra.trace (AF F) (AE F E) ((u : AE F E) * t) = (u : AF F) * Algebra.trace (AF F) (AE F E) t := by
   rw [← zsmul_eq_mul, map_zsmul, zsmul_eq_mul]
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, map_sum]`.
+-/
 theorem trace_map_cA {σ : E →ₐ[F] E} {ι : Type} [Fintype ι] (M : Matrix ι ι (AE F E)) :
     (M.map (cA σ)).trace = cA σ M.trace := by
   simp [Matrix.trace, map_sum]
 
+/- English proof (translation)
+Establish `hJc : (incM F J).map (cA σ) = ((u : ℤ) : AE F E) • (incM F J)ᵀ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `cA σ (inclR (F := F) (AF F) (J i j)) = _ * inclR (F := F) (AF F) (J j i)`. Rewrite using `[show cA σ (inclR (F := F) (AF F) (J i j)) = inclR (F := F) (AF F) (σ (J i j)) from rfl, hJ j i, map_mul, map_intCast]`.
+
+Establish `hcc : (Z.map (cA σ)).map (cA σ) = Z` using `by ext i j; exact cA_cA hσ _`. Unfold `Bf`. Rewrite using `[← trace_cA hσ, ← trace_map_cA, map_cA_mul, map_cA_mul, Matrix.transpose_map, hJc, hcc, Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul, trace_int_mul]`. Use `congr 2`. Rewrite using `[← Matrix.trace_transpose]`.
+
+Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+-/
 theorem Bf_symm {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) (J : Matrix (Fin m) (Fin m) E) (u : ℤ)
     (hJ : ∀ i j, σ (J j i) = (u : E) * J i j) (X Z : Mx F E m n) :
     Bf σ J X Z = (u : AF F) * Bf σ J Z X := by
@@ -39,10 +52,16 @@ theorem Bf_symm {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) (J : Matrix (F
   rw [← Matrix.trace_transpose]
   simp only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`.
+-/
 theorem mapS_mul {σ : E →ₐ[F] E} {a b c : Type} [Fintype b] (x : Matrix a b E) (y : Matrix b c E) :
     (x * y).map σ = x.map σ * y.map σ := by
   ext i j; simp [Matrix.mul_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Establish `hbb : (b.map σ).map σ = b` using `by ext i j; simp [hσ]`. Rewrite using `[mapS_mul, mapS_mul, hbb, Matrix.transpose_mul, Matrix.transpose_mul, ← Matrix.transpose_map, ← Matrix.transpose_map, Matrix.transpose_transpose, hD, Matrix.smul_mul, Matrix.mul_smul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem congr_symm {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) {ι : Type} [Fintype ι] (D b : Matrix ι ι E) (u : ℤ)
     (hD : Dᵀ.map σ = (u : E) • D) : ((bᵀ * D * b.map σ).map σ)ᵀ = (u : E) • (bᵀ * D * b.map σ) := by
   have hbb : (b.map σ).map σ = b := by ext i j; simp [hσ]
@@ -50,6 +69,11 @@ theorem congr_symm {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) {ι : Type}
     ← Matrix.transpose_map, Matrix.transpose_transpose, hD, Matrix.smul_mul, Matrix.mul_smul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hD : (dbl YJ)ᵀ.map σ = (u : E) • dbl YJ`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, hY]`. Establish `h` using `congrArg (fun M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E => M (Sum.inl ⟨0, hn⟩) (Sum.inr ⟨0, hn⟩)) (congr_symm hσ (dbl YJ) b.1 u hD)`. Simplify using `only [hb] at h`. Simplify using `[jeps] at h`.
+
+Conclude with `h` after adjusting the coercions.
+-/
 theorem eps_eq {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) (YJ : Matrix (Fin n) (Fin n) E) (u : ℤ)
     (hY : ∀ i j, σ (YJ j i) = (u : E) * YJ i j) (b : GL (Fin n ⊕ Fin n) E) (ε : ℤˣ)
     (hb : b.1ᵀ * dbl YJ * b.1.map σ = jeps n ε) (hn : 1 ≤ n) : (ε : ℤ) = u := by

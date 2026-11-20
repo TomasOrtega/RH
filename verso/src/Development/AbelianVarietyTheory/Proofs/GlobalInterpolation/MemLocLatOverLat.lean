@@ -30,25 +30,47 @@ local instance (priority := high) acgLat {v : HeightOneSpectrum (𝓞 F)}
 abbrev loc (v : HeightOneSpectrum (𝓞 F)) (x : Fin k → E) : Fin k → E ⊗[F] v.adicCompletion F :=
   fun i => inclE (F := F) (v.adicCompletion F) (x i)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+-/
 theorem loc_mem (v : HeightOneSpectrum (𝓞 F)) {Λ : Submodule (𝓞 E) (Fin k → E)} {x : Fin k → E}
     (hx : x ∈ Λ) : loc v x ∈ locLat v Λ := Submodule.subset_span ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[loc]`.
+-/
 theorem loc_add (v : HeightOneSpectrum (𝓞 F)) (x y : Fin k → E) :
     loc v (x + y) = loc v x + loc v y := by
   funext i; simp [loc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[loc]`.
+-/
 theorem loc_zero (v : HeightOneSpectrum (𝓞 F)) : loc v (0 : Fin k → E) = 0 := by
   funext i; simp [loc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show inclE (F := F) (v.adicCompletion F) ((a : E) * x i) = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem loc_smul (v : HeightOneSpectrum (𝓞 F)) (a : 𝓞 E) (x : Fin k → E) :
     loc v (a • x) = GlobalTheory.IndefiniteRowSideFullHecke.OverPlaceIntegralForm.toIntV E v a • loc v x := by
   funext i
   show inclE (F := F) (v.adicCompletion F) ((a : E) * x i) = _
   rw [map_mul]; rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+-/
 theorem locLat_mono (v : HeightOneSpectrum (𝓞 F)) {Λ Λ' : Submodule (𝓞 E) (Fin k → E)} (h : Λ ≤ Λ') :
     locLat v Λ ≤ locLat v Λ' := Submodule.span_mono (Set.image_mono h)
 
+/- English proof (translation)
+Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Use `loc_mem v (h x hx)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[loc]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem nsmul_mem_locLat (v : HeightOneSpectrum (𝓞 F)) {Λ Λ' : Submodule (𝓞 E) (Fin k → E)} {T : ℕ}
     (h : ∀ x ∈ Λ', T • x ∈ Λ) : ∀ y ∈ locLat v Λ', T • y ∈ locLat v Λ := by
   intro y hy
@@ -62,6 +84,15 @@ theorem nsmul_mem_locLat (v : HeightOneSpectrum (𝓞 F)) {Λ Λ' : Submodule (�
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Use `⟨fun hy => ?_, fun hy => Submodule.subset_span hy⟩` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `zero => intro x _`. Simplify using `[hform]`.
+
+Consider the case `add y z _ _ hy hz`. Introduce `x hx`. Establish `: hform σ J x (y + z) = hform σ J x y + hform σ J x z`. Simplify using `[hform, mul_add, Finset.sum_add_distrib]`. Rewrite using `[this]`.
+
+Conclude with `add_mem (hy x hx) (hz x hx)`. Consider the case `smul a y _ hy`. Introduce `x hx`. Establish `: hform σ J x (a • y) = algebraMap (𝓞 E) E a * hform σ J x y`. Simplify using `only [hform, Finset.mul_sum, Pi.smul_apply, Algebra.smul_def]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[this]`. Conclude with `mul_mem ⟨a, rfl⟩ (hy x hx)`.
+-/
 theorem mem_span_dualSet (σ : E →+* E) (J : Matrix (Fin k) (Fin k) E)
     (Λ : Submodule (𝓞 E) (Fin k → E)) (y : Fin k → E) :
     y ∈ Submodule.span (𝓞 E) (dualSet σ J Λ) ↔ y ∈ dualSet σ J Λ := by
@@ -81,6 +112,15 @@ theorem mem_span_dualSet (σ : E →+* E) (J : Matrix (Fin k) (Fin k) E)
       exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
     rw [this]; exact mul_mem ⟨a, rfl⟩ (hy x hx)
 
+/- English proof (translation)
+Take `⟨x, hx, H⟩` from `GlobalTheory.T.exists_lattice_vector_approx_all_finitePlaces F E k Λ' hfin T hT (Pi.single (M := fun w : HeightOneSpectrum (𝓞 F) => Fin k → E ⊗[F] w.adicCompletion F) v y) (fun w => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `hy`.
+
+Rewrite using `[Pi.single_eq_of_ne hw]`. Conclude with `zero_mem _)`. Use `⟨x, hx, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `H v`. Rewrite `e` using `[Pi.single_eq_same]`.
+
+Rewrite using `[e, add_sub_cancel_left]`. Conclude with `nsmul_mem_locLat v h z hz`. Take `⟨z, hz, e⟩` from `H w`. Rewrite `e` using `[Pi.single_eq_of_ne hw]`. Rewrite using `[show loc w x = -(T • z) from eq_neg_of_add_eq_zero_left e.symm]`.
+
+Conclude with `neg_mem (nsmul_mem_locLat w h z hz)`.
+-/
 theorem approx_one {Λ Λ' : Submodule (𝓞 E) (Fin k → E)} (hfin : Module.Finite (𝓞 E) Λ') {T : ℕ}
     (hT : T ≠ 0) (h : ∀ x ∈ Λ', T • x ∈ Λ) (v : HeightOneSpectrum (𝓞 F))
     (y : Fin k → E ⊗[F] v.adicCompletion F) (hy : y ∈ locLat v Λ') :
@@ -103,6 +143,25 @@ theorem approx_one {Λ Λ' : Submodule (𝓞 E) (Fin k → E)} (hfin : Module.Fi
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Use `haveI : Finite {v : HeightOneSpectrum (𝓞 F) // (T : 𝓞 F) ∈ v.asIdeal} := Nat.finite_of_card_ne_zero (hpl ▸ hf)`. Use `haveI := Fintype.ofFinite {v : HeightOneSpectrum (𝓞 F) // (T : 𝓞 F) ∈ v.asIdeal}`. Set `Ψ : Λ'.toAddSubgroup →+ ∀ p : {v : HeightOneSpectrum (𝓞 F) // (T : 𝓞 F) ∈ v.asIdeal}, Q p.1 p.2` to `{ toFun := fun x p => ψ p.1 p.2 ⟨loc p.1 x.1, loc_mem p.1 (Λ := Λ') x.2⟩ map_zero' := funext fun p => by`. Conclude with `(congrArg (ψ p.1 p.2) (Subtype.ext (loc_zero p.1))).trans (ψ p.1 p.2).map_zero`. Use the proof step `map_add' := fun x y => funext fun p => by`.
+
+Conclude with `(congrArg (ψ p.1 p.2) (Subtype.ext (loc_add p.1 x.1 y.1))).trans ((ψ p.1 p.2).map_add ⟨_, loc_mem p.1 (Λ := Λ') x.2⟩ ⟨_, loc_mem p.1 (Λ := Λ') y.2⟩) }`. Establish `hΨ : Function.Surjective Ψ`. Introduce `t`. Use `choose y hy using fun p : {v : HeightOneSpectrum (𝓞 F) // (T : 𝓞 F) ∈ v.asIdeal} => hsur p.1 p.2 (t p)`. Take `⟨x, hx, H⟩` from `GlobalTheory.T.exists_lattice_vector_approx_all_finitePlaces F E k Λ' hfin T hT (fun v => if hv : (T : 𝓞 F) ∈ v.asIdeal then (y ⟨v, hv⟩).1 else 0) (fun v => by`.
+
+Distinguish the cases in `hv : (T : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[dif_pos hv]`. Conclude with `(y ⟨v, hv⟩).2`. Rewrite using `[dif_neg hv]`. Conclude with `zero_mem _)`.
+
+Use `⟨⟨x, hx⟩, funext fun p => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `H p.1`. Rewrite `e` using `[dif_pos p.2]`. Establish `h0` using `hker p.1 p.2 (T • ⟨z, hz⟩) (nsmul_mem_locLat p.1 h z hz)`. Establish `e' : y p = ⟨loc p.1 x, loc_mem p.1 hx⟩ + T • ⟨z, hz⟩` using `Subtype.ext e`.
+
+Establish `e2` using `(congrArg (ψ p.1 p.2) e').trans ((ψ p.1 p.2).map_add _ _)`. Conclude with `(((hy p).symm.trans e2).trans ((congrArg (_ + ·) h0).trans (add_zero _))).symm`. Establish `hcard : Ψ.ker.index = T ^ (2 * f)`. Rewrite using `[AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hΨ, AddSubgroup.card_top, Nat.card_pi]`. Simplify using `only [hQ]`.
+
+Rewrite using `[Finset.prod_const, Finset.card_univ, ← Nat.card_eq_fintype_card, hpl, ← sq, ← pow_mul]`. Establish `hle : Λ.toAddSubgroup.addSubgroupOf Λ'.toAddSubgroup ≤ Ψ.ker` using `fun x hx =>`. Use function extensionality and compare the values at `fun p => hker p.1 p.2 _ (loc_mem p.1 (Λ := Λ) hx)`. Establish `hge : Ψ.ker ≤ Λ.toAddSubgroup.addSubgroupOf Λ'.toAddSubgroup`. Establish `h1` using `AddSubgroup.relIndex_mul_index hle`.
+
+Rewrite `h1` using `[hcard, show (Λ.toAddSubgroup.addSubgroupOf Λ'.toAddSubgroup).index = T ^ (2 * f) from hidx]`. Conclude with `AddSubgroup.relIndex_eq_one.1 (Nat.eq_of_mul_eq_mul_right (by positivity) (h1.trans (one_mul _).symm))`. Introduce `v hv x hx`. Take `⟨x₀, hx₀, h1, h2⟩` from `approx_one hfin hT h v x.1 x.2`. Establish `: (⟨x₀, hx₀⟩ : Λ'.toAddSubgroup) ∈ Ψ.ker`.
+
+Use function extensionality and compare the values at `p`. Take `⟨w, hw⟩` from `p`. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Use `hker w hw (x - ⟨loc w x₀, loc_mem w hx₀⟩) h1` as an intermediate fact.
+
+Conclude with `(sub_eq_zero.1 (((ψ w hw).map_sub _ _).symm.trans this)).symm.trans hx`. Conclude with `hker w hw _ (h2 w hwv)`. Establish `h3` using `add_mem h1 (loc_mem v (show x₀ ∈ Λ from hge this))`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_count {Λ Λ' : Submodule (𝓞 E) (Fin k → E)} (hfin : Module.Finite (𝓞 E) Λ') {T f : ℕ}
     (hT : T ≠ 0) (hf : f ≠ 0) (h : ∀ x ∈ Λ', T • x ∈ Λ)
     (hidx : Λ.toAddSubgroup.relIndex Λ'.toAddSubgroup = T ^ (2 * f))
@@ -175,43 +234,82 @@ def e₁ (hs : IsSplitting σ v s) : intV E v :=
 def e₂ (hs : IsSplitting σ v s) : intV E v :=
   ⟨s.symm (0, 1), (hs.2.2 _).2 (by rw [s.apply_symm_apply]; exact ⟨zero_mem _, one_mem _⟩)⟩
 
+/- English proof (translation)
+The claim follows from `congrArg Prod.fst (s.apply_symm_apply _)`.
+-/
 theorem prP_e₁ (hs : IsSplitting σ v s) : prP s (e₁ hs) = 1 := congrArg Prod.fst (s.apply_symm_apply _)
+/- English proof (translation)
+The claim follows from `congrArg Prod.snd (s.apply_symm_apply _)`.
+-/
 theorem prPbar_e₁ (hs : IsSplitting σ v s) : prPbar s (e₁ hs) = 0 := congrArg Prod.snd (s.apply_symm_apply _)
+/- English proof (translation)
+The claim follows from `congrArg Prod.fst (s.apply_symm_apply _)`.
+-/
 theorem prP_e₂ (hs : IsSplitting σ v s) : prP s (e₂ hs) = 0 := congrArg Prod.fst (s.apply_symm_apply _)
+/- English proof (translation)
+The claim follows from `congrArg Prod.snd (s.apply_symm_apply _)`.
+-/
 theorem prPbar_e₂ (hs : IsSplitting σ v s) : prPbar s (e₂ hs) = 1 := congrArg Prod.snd (s.apply_symm_apply _)
 
+/- English proof (translation)
+The claim follows from `funext fun i => s.injective (Prod.ext (h1 i) (h2 i))`.
+-/
 theorem vec_ext (s : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F)
     {x y : Fin k → E ⊗[F] v.adicCompletion F} (h1 : ∀ i, prP s (x i) = prP s (y i))
     (h2 : ∀ i, prPbar s (x i) = prPbar s (y i)) : x = y :=
   funext fun i => s.injective (Prod.ext (h1 i) (h2 i))
 
+/- English proof (translation)
+The claim follows from `map_mul p _ _`.
+-/
 theorem map_smul_vec (p : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F) (a : intV E v)
     (x : Fin k → E ⊗[F] v.adicCompletion F) (i : Fin k) : p ((a • x) i) = p a * p (x i) := map_mul p _ _
 
+/- English proof (translation)
+The claim follows from `vec_ext s (fun i => by rw [Pi.add_apply, map_add, map_smul_vec, map_smul_vec, prP_e₁, prP_e₂]; ring) (fun i => by rw [Pi.add_apply, map_add, map_smul_vec, map_smul_vec, prPbar_e₁, prPbar_e₂]; ring)`.
+-/
 theorem e₁_add_e₂ (hs : IsSplitting σ v s) (x : Fin k → E ⊗[F] v.adicCompletion F) :
     e₁ hs • x + e₂ hs • x = x :=
   vec_ext s (fun i => by rw [Pi.add_apply, map_add, map_smul_vec, map_smul_vec, prP_e₁, prP_e₂]; ring)
     (fun i => by rw [Pi.add_apply, map_add, map_smul_vec, map_smul_vec, prPbar_e₁, prPbar_e₂]; ring)
 
+/- English proof (translation)
+The claim follows from `vec_ext s (fun i => by rw [map_smul_vec, prP_e₂]; simp) (fun i => by rw [map_smul_vec, map_smul_vec, prPbar_e₁]; simp)`.
+-/
 theorem e₂_e₁ (hs : IsSplitting σ v s) (x : Fin k → E ⊗[F] v.adicCompletion F) :
     e₂ hs • e₁ hs • x = 0 :=
   vec_ext s (fun i => by rw [map_smul_vec, prP_e₂]; simp)
     (fun i => by rw [map_smul_vec, map_smul_vec, prPbar_e₁]; simp)
 
+/- English proof (translation)
+The claim follows from `congrArg Prod.fst (hs.2.1 a)`.
+-/
 theorem prP_sig (hs : IsSplitting σ v s) (a : E ⊗[F] v.adicCompletion F) :
     prP s (sigR σ (v.adicCompletion F) a) = prPbar s a := congrArg Prod.fst (hs.2.1 a)
 
+/- English proof (translation)
+The claim follows from `congrArg Prod.snd (hs.2.1 a)`.
+-/
 theorem prPbar_sig (hs : IsSplitting σ v s) (a : E ⊗[F] v.adicCompletion F) :
     prPbar s (sigR σ (v.adicCompletion F) a) = prP s a := congrArg Prod.snd (hs.2.1 a)
 
+/- English proof (translation)
+The claim follows from `s.injective (Prod.ext ((prP_sig hs _).trans ((prPbar_e₁ hs).trans (prP_e₂ hs).symm)) ((prPbar_sig hs _).trans ((prP_e₁ hs).trans (prPbar_e₂ hs).symm)))`.
+-/
 theorem sig_e₁ (hs : IsSplitting σ v s) : sigR σ (v.adicCompletion F) (e₁ hs) = e₂ hs :=
   s.injective (Prod.ext ((prP_sig hs _).trans ((prPbar_e₁ hs).trans (prP_e₂ hs).symm))
     ((prPbar_sig hs _).trans ((prP_e₁ hs).trans (prPbar_e₂ hs).symm)))
 
+/- English proof (translation)
+The claim follows from `s.injective (Prod.ext ((prP_sig hs _).trans ((prPbar_e₂ hs).trans (prP_e₁ hs).symm)) ((prPbar_sig hs _).trans ((prP_e₂ hs).trans (prPbar_e₁ hs).symm)))`.
+-/
 theorem sig_e₂ (hs : IsSplitting σ v s) : sigR σ (v.adicCompletion F) (e₂ hs) = e₁ hs :=
   s.injective (Prod.ext ((prP_sig hs _).trans ((prPbar_e₂ hs).trans (prP_e₁ hs).symm))
     ((prPbar_sig hs _).trans ((prP_e₂ hs).trans (prPbar_e₁ hs).symm)))
 
+/- English proof (translation)
+Rewrite using `[← H, Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use extensionality with `i j`. Conclude with `(h _).symm`.
+-/
 theorem map_gram {A K : Type} [CommRing A] [CommRing K] (τ : A →+* A) (p q : A →+* K)
     (h : ∀ a, p (τ a) = q a) (X J Y Z : Matrix (Fin k) (Fin k) A) (H : cT τ X * J * Y = Z) :
     (X.map q)ᵀ * J.map p * Y.map p = Z.map p := by
@@ -220,15 +318,24 @@ theorem map_gram {A K : Type} [CommRing A] [CommRing K] (τ : A →+* A) (p q : 
   ext i j
   exact (h _).symm
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hform_smul_left {A : Type} [CommRing A] (τ : A →+* A) (J : Matrix (Fin k) (Fin k) A) (a : A)
     (x y : Fin k → A) : hform τ J (a • x) y = hform τ J x (τ a • y) := by
   simp only [hform, Pi.smul_apply, smul_eq_mul, map_mul]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `[hform, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hform_add_left {A : Type} [CommRing A] (τ : A →+* A) (J : Matrix (Fin k) (Fin k) A)
     (x x' y : Fin k → A) : hform τ J (x + x') y = hform τ J x y + hform τ J x' y := by
   simp [hform, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hform, map_sum, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem hform_loc (J : Matrix (Fin k) (Fin k) E) (x y : Fin k → E) :
     hform (sigR σ (v.adicCompletion F)) (J.map (inclE (F := F) (v.adicCompletion F))) (loc v x) (loc v y) =
       inclE (F := F) (v.adicCompletion F) (hform (σ : E →+* E) J x y) := by
@@ -247,6 +354,47 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨B, C', hBC, hB, hC⟩` from `GlobalTheory.DualFrame.exists_dual_frames F E sp.cm.sig R.k sp.gram0 (gram_matrix_det_unit sp) L.Lb L.Lb_fin L.Lb_span v`. Take `⟨m₁, st₁, fr₁⟩` from `GlobalTheory.OverCompare.StabPart.stabPart F E sp.cm.sig v s hs R.k (locLat v L.Lb)`. Take `⟨m₂, st₂, fr₂⟩` from `GlobalTheory.OverCompare.StabPart.stabPart F E sp.cm.sig v s hs R.k (locLat v (dualLb L))`. Take `⟨-, stN, -⟩` from `GlobalTheory.OverCompare.StabPart.stabPart F E sp.cm.sig v s hs R.k (locLat v N)`. Take `⟨fB1, fB2⟩` from `fr₁ B hB`.
+
+Take `⟨firstChern_family, fC2⟩` from `fr₂ C' hC`. Establish `hpart1 : partOf (prP s) (locLat v N) = partOf (prP s) (locLat v (dualLb L))`. Use extensionality with `y`. Rewrite using `[mem_partOf _ (sur_prP hs), mem_partOf _ (sur_prP hs)]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, ((hN x).1 hx).1, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨e₁ hs • x, (hN _).2 ⟨Submodule.smul_mem _ _ hx, ?_⟩, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[e₂_e₁]`.
+
+Conclude with `zero_mem _`. Rewrite using `[map_smul_vec, prP_e₁, one_mul]`. Establish `hpart2 : partOf (prPbar s) (locLat v N) = partOf (prPbar s) (locLat v L.Lb)`. Use extensionality with `y`. Rewrite using `[mem_partOf _ (sur_prPbar hs), mem_partOf _ (sur_prPbar hs)]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨e₂ hs • x, ((hN x).1 hx).2, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul_vec, prPbar_e₂, one_mul]`. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Conclude with `⟨x, (hN x).2 ⟨hle hx, Submodule.smul_mem _ _ hx⟩, rfl⟩`. Establish `d1 : ∀ g ∈ UPts sp.cm.sig sp.gram0 (v.adicCompletion F), bc (prPbar s) g ∈ stabGL (partOf (prPbar s) (locLat v L.Lb)) ↔ bc (prP s) g ∈ stabGL (partOf (prP s) (locLat v (dualLb L)))` using `fun g hg => GlobalTheory.OverCompare.mem_stabGL_iff_of_dual_frames _ _ R.k _ _ _ _ _ _ _ fB2 firstChern_family ((map_gram _ (prP s) (prPbar s) (prP_sig hs) _ _ _ _ hBC).trans (Matrix.map_one _ (map_zero _) (map_one _))) (map_gram _ (prP s) (prPbar s) (prP_sig hs) _ _ _ _ hg)`. Establish `d2 : ∀ g ∈ UPts sp.cm.sig sp.gram0 (v.adicCompletion F), bc (prP s) g ∈ stabGL (partOf (prP s) (locLat v L.Lb)) ↔ bc (prPbar s) g ∈ stabGL (partOf (prPbar s) (locLat v (dualLb L)))` using `fun g hg => GlobalTheory.OverCompare.mem_stabGL_iff_of_dual_frames _ _ R.k _ _ _ _ _ _ _ fB1 fC2 ((map_gram _ (prPbar s) (prP s) (prPbar_sig hs) _ _ _ _ hBC).trans (Matrix.map_one _ (map_zero _) (map_one _))) (map_gram _ (prPbar s) (prP s) (prPbar_sig hs) _ _ _ _ hg)`. Establish `hstab : ∀ g ∈ UPts sp.cm.sig sp.gram0 (v.adicCompletion F), g ∈ levelVL sp.cm.sig sp.gram0 v N ↔ bc (prP s) g ∈ stabGL (partOf (prP s) (locLat v N))`. Introduce `g hg`.
+
+Use `⟨fun h => ((stN g).1 h.2).1, fun h => ⟨hg, (stN g).2 ⟨h, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[hpart2, d1 g hg, ← hpart1]`. Conclude with `h`. Establish `hb : IsFrame (partOf (prP s) (locLat v N)) (bc (prP s) C')` using `hpart1 ▸ firstChern_family`. Establish `hΛ : ∀ y, y ∈ partOf (prP s) (locLat v N) ↔ ∃ x ∈ locLat v (dualLb L), (fun i => prP s (x i)) = y` using `fun y => by`.
+
+Rewrite using `[hpart1, mem_partOf _ (sur_prP hs)]`. Establish `hcong : ∀ x x' : locLat v (dualLb L), (∀ i, prP s (x.1 i) = prP s (x'.1 i)) → L.fT v hv x = L.fT v hv x'`. Introduce `x x' h`. Use `hfac (x - x') (fun i => by show prP s (x.1 i - x'.1 i) = 0` as an intermediate fact. Rewrite using `[map_sub, h, sub_self])`.
+
+Conclude with `sub_eq_zero.1 (((L.fT v hv).map_sub _ _).symm.trans this)`. Use `choose lift hlift hlift' using fun y : partOf (prP s) (locLat v N) => (hΛ y.1).1 y.2`. Set `f : partOf (prP s) (locLat v N) →ₗ[v.adicCompletionIntegers F] IsLocalRing.ResidueField (v.adicCompletionIntegers F)` to `{ toFun := fun y => ε (L.fT v hv ⟨lift y, hlift y⟩) map_add' := fun y z => by`. Use `Eq.trans (congrArg ε ?_) (ε.map_add _ _)` and prove the remaining obligations. Use `(hcong _ (⟨lift y, hlift y⟩ + ⟨lift z, hlift z⟩) fun i => ?_).trans ((L.fT v hv).map_add _ _)` and prove the remaining obligations.
+
+Use `show prP s (lift (y + z) i) = prP s (lift y i + lift z i)`. Rewrite using `[map_add, congrFun (hlift' (y + z)) i, congrFun (hlift' y) i, congrFun (hlift' z) i]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun a y => by`. Take `⟨d, hd, hda⟩` from `sur_prP hs a a.2`.
+
+Use `Eq.trans (congrArg ε ?_) (hε ⟨d, hd⟩ a hda.symm _)` and prove the remaining obligations. Use `(hcong _ ((⟨d, hd⟩ : intV E v) • ⟨lift y, hlift y⟩) fun i => ?_).trans ((L.fT v hv).map_smul _ _)` and prove the remaining obligations. Use `show prP s (lift (a • y) i) = prP s (d * lift y i)`. Rewrite using `[map_mul, congrFun (hlift' (a • y)) i, congrFun (hlift' y) i, hda]`. Use `rfl }`.
+
+Establish `hfe : ∀ (x : locLat v (dualLb L)) (y : partOf (prP s) (locLat v N)), (∀ i, y.1 i = prP s (x.1 i)) → f y = ε (L.fT v hv x)` using `fun x y h => congrArg ε (hcong _ _ fun i => (congrFun (hlift' y) i).trans (h i))`. Establish `hk : ∀ y, f y = 0 ↔ y.1 ∈ partOf (prP s) (locLat v L.Lb)`. Introduce `y`. Rewrite using `[mem_partOf _ (sur_prP hs)]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h0 : L.fT v hv ⟨lift y, hlift y⟩ = 0` using `(map_eq_zero_iff _ ε.injective).1 h`. Use `⟨_, hker _ h0, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul_vec, prP_e₁, one_mul]`. Conclude with `congrFun (hlift' y) i`.
+
+Introduce and unpack `⟨x, hx, hxy⟩`. Conclude with `(hfe ⟨x, hle hx⟩ y fun i => (congrFun hxy i).symm).trans ((congrArg ε (L.fT_L v hv ⟨x, hle hx⟩ hx)).trans ε.map_zero)`. Use `⟨hs, hfac, iso, hpart1, hpart2, existsUnique_upts sp.cm.sig sp.gram0 sp.baseGram_isHermitian (gram_matrix_det_unit sp) _ s hs.2.1, hstab, ⟨bc (prP s) C', hb, fun g hg => (hstab g hg).trans (hb.mem_stabGL_iff _)⟩, f, ε, hε, hfe, ?_, ?_, hk, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `L.fT_ne v hv` to reduce the goal to its premises.
+
+Use extensionality with `x`. Use `hfe x ⟨_, (hΛ _).2 ⟨x.1, x.2, rfl⟩⟩ (fun _ => rfl)` as an intermediate fact. Rewrite `this` using `[h0, LinearMap.zero_apply]`. Conclude with `(map_eq_zero_iff _ ε.injective).1 this.symm`. Introduce `y`.
+
+Use `(hfe ((A.T : intV E v) • ⟨lift y, hlift y⟩) _ fun i => ?_).trans ((congrArg ε (L.fT_T v hv _)).trans ε.map_zero)` and prove the remaining obligations. Use `show ((A.T : v.adicCompletionIntegers F) : v.adicCompletion F) * y.1 i = prP s (((A.T : intV E v) : E ⊗[F] v.adicCompletion F) * lift y i)`. Rewrite using `[map_mul, congrFun (hlift' y) i]`. Simplify using the standard rewrite rules. Introduce `g`.
+
+Rewrite using `[L.UlocAlt v hv, Subgroup.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : bc (prP s) g ∈ stabGL (partOf (prP s) (locLat v N))` using `hpart1 ▸ ((st₂ g).1 h2.1).1`. Conclude with `⟨(hstab g h1.1).2 h3, (mem_stabFun_iff_part (prP s) _ _ hΛ _ f ε hfe g h2.1 h3).1 h2⟩`.
+
+Introduce and unpack `⟨h1, h3, h4⟩`. Establish `hsub : ∀ y ∈ partOf (prP s) (locLat v L.Lb), y ∈ partOf (prP s) (locLat v N)` using `fun y hy => by`. Take `⟨x, hx, hxy⟩` from `(mem_partOf _ (sur_prP hs) _ _).1 hy`. Conclude with `(hΛ y).2 ⟨x, hle hx, hxy⟩`. Establish `h5 : bc (prP s) g ∈ stabGL (partOf (prP s) (locLat v L.Lb))`.
+
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `(hk ⟨_, (h3 y).1 (hsub y hy)⟩).1 ((h4 ⟨y, hsub y hy⟩).trans ((hk ⟨y, hsub y hy⟩).2 hy))`. Introduce `hy`.
+
+Establish `hy'` using `(h3 y).2 (hsub _ hy)`. Conclude with `(hk ⟨y, hy'⟩).1 ((h4 ⟨y, hy'⟩).symm.trans ((hk ⟨_, hsub _ hy⟩).2 hy))`. Establish `h6 : bc (prP s) g ∈ stabGL (partOf (prP s) (locLat v (dualLb L)))` using `hpart1 ▸ h3`. Establish `h7 : g ∈ stabGL (locLat v (dualLb L))` using `(st₂ g).2 ⟨h6, (d2 g h1.1).1 h5⟩`. Conclude with `⟨⟨h1.1, (st₁ g).2 ⟨h5, (d1 g h1.1).2 h6⟩⟩, (mem_stabFun_iff_part (prP s) _ _ hΛ _ f ε hfe g h7 h3).2 ⟨h3, h4⟩⟩`.
+-/
 theorem localAtT (L : ColLevel R F E sp gp C A clsLat) (N : Submodule (𝓞 E) (Fin R.k → E))
     (v : HeightOneSpectrum (𝓞 F)) (hv : (A.T : 𝓞 F) ∈ v.asIdeal)
     {s : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F}
@@ -390,6 +538,11 @@ theorem localAtT (L : ColLevel R F E sp gp C A clsLat) (N : Submodule (𝓞 E) (
         (mem_stabFun_iff_part (prP s) _ _ hΛ _ f ε hfe g h7 h3).2 ⟨h3, h4⟩⟩
 
 omit [StarRing E] in
+/- English proof (translation)
+Establish `: intV E v ≤ (intV E v).comap (sigR σ (v.adicCompletion F))`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨_, a, rfl⟩, rfl⟩ | ⟨a, rfl⟩)`. Conclude with `tmul_mem_intV (⟨σ a, (a.isIntegral_coe).map (σ.restrictScalars ℤ)⟩ : 𝓞 E)`. Use `show (σ 1) ⊗ₜ[F] (a : v.adicCompletion F) ∈ intV E v`.
+
+Rewrite using `[map_one]`. Conclude with `Subring.subset_closure (Or.inr ⟨a, rfl⟩)`. Conclude with `this`.
+-/
 theorem sigR_mem_intV (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) :
     ∀ a ∈ intV E v, sigR σ (v.adicCompletion F) a ∈ intV E v := by
   have : intV E v ≤ (intV E v).comap (sigR σ (v.adicCompletion F)) := by
@@ -401,6 +554,11 @@ theorem sigR_mem_intV (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) :
       exact Subring.subset_closure (Or.inr ⟨a, rfl⟩)
   exact this
 
+/- English proof (translation)
+Take `⟨B, C', hBC, hB, hC⟩` from `GlobalTheory.DualFrame.exists_dual_frames F E sp.cm.sig R.k sp.gram0 (gram_matrix_det_unit sp) L.Lb L.Lb_fin L.Lb_span v`. Use `GlobalTheory.DualFrames.dual_of_dual_frames _ (intV E v) _ (fun a => ?_) (sigR_mem_intV _ v) R.k _ ?_ B C' _ _ hBC hB hC` and prove the remaining obligations. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => show (star (star a)) ⊗ₜ[F] b = _`.
+
+Rewrite using `[star_star]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Use extensionality with `i j`. Conclude with `congrArg (inclE (F := F) (v.adicCompletion F)) (congrFun (congrFun sp.baseGram_isHermitian i) j)`.
+-/
 theorem dual_loc (L : ColLevel R F E sp gp C A clsLat) (v : HeightOneSpectrum (𝓞 F)) :
     (∀ y, y ∈ locLat v (dualLb L) ↔ ∀ x ∈ locLat v L.Lb, hform (sigR sp.cm.sig (v.adicCompletion F))
       (sp.gram0.map (inclE (F := F) (v.adicCompletion F))) x y ∈ intV E v) ∧
@@ -420,14 +578,23 @@ theorem dual_loc (L : ColLevel R F E sp gp C A clsLat) (v : HeightOneSpectrum (�
   · ext i j
     exact congrArg (inclE (F := F) (v.adicCompletion F)) (congrFun (congrFun sp.baseGram_isHermitian i) j)
 
+/- English proof (translation)
+Introduce `x hx` and use `Submodule.subset_span (L.Lb_int x hx)`.
+-/
 theorem le_dualLb (L : ColLevel R F E sp gp C A clsLat) : L.Lb ≤ dualLb L :=
   fun x hx => Submodule.subset_span (L.Lb_int x hx)
 
+/- English proof (translation)
+Introduce `x hx`. Use `L.Lb_dual x ((mem_span_dualSet _ _ _ _).1 hx)` as an intermediate fact. Rewrite `this` using `[Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis.
+-/
 theorem nsmul_mem (L : ColLevel R F E sp gp C A clsLat) : ∀ x ∈ dualLb L, A.T • x ∈ L.Lb := by
   intro x hx
   have := L.Lb_dual x ((mem_span_dualSet _ _ _ _).1 hx)
   rwa [Nat.cast_smul_eq_nsmul] at this
 
+/- English proof (translation)
+Use `haveI := L.Lb_fin`. Set `φ : dualLb L →ₗ[𝓞 E] L.Lb` to `LinearMap.codRestrict _ (A.T • (dualLb L).subtype) (fun x => nsmul_mem L x.1 x.2)`. Use `Module.Finite.of_injective φ fun x y h => Subtype.ext ?_` and prove the remaining obligations. Establish `h' : A.T • x.1 = A.T • y.1` using `congrArg Subtype.val h`. Conclude with `nsmul_right_injective A.T_prime.ne_zero h'`.
+-/
 theorem finite_dualLb (L : ColLevel R F E sp gp C A clsLat) : Module.Finite (𝓞 E) (dualLb L) := by
   haveI := L.Lb_fin
   let φ : dualLb L →ₗ[𝓞 E] L.Lb :=
@@ -439,6 +606,23 @@ theorem finite_dualLb (L : ColLevel R F E sp gp C A clsLat) : Module.Finite (�
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨χ, hχ⟩` from `GlobalTheory.PrimeOrderModule.exists_character (intV E v) (L.fM v hv) A.T A.T_prime (L.fM_card v hv)`. Take `⟨s, hs, hsχ⟩` from `GlobalTheory.OverSplit.exists_splitting_of_character F E sp.cm.sig sp.cm.deg2 (fun x => star_star x) (fun x hx => (sp.cm.fixed x).1 hx) sp.cm.cmUnram.2.2 v A.T A.T_prime χ`. Take `⟨hε, hiso, hcard⟩` from `GlobalTheory.OverResidue.residue_of_prime_card F E sp.cm.sig v s hs (L.fM v hv) A.T A.T_prime (L.fM_card v hv) (fun a m ha => hχ a m (hsχ a ha))`. Establish `hfac : ∀ x : locLat v (dualLb L), (∀ i, prP s (x.1 i) = 0) → L.fT v hv x = 0`. Introduce `x hx`.
+
+Establish `e : x = e₂ hs • x` using `Subtype.ext (vec_ext s (fun i => (hx i).trans (by show _ = prP s ((e₂ hs • x.1) i)`. Rewrite using `[map_smul_vec, prP_e₂, zero_mul]))`. Use the proof step `(fun i => by show _ = prPbar s ((e₂ hs • x.1) i)`. Rewrite using `[map_smul_vec, prPbar_e₂, one_mul]))`. Conclude with `(congrArg (L.fT v hv) e).trans (((L.fT v hv).map_smul _ _).trans (hχ _ _ (hsχ _ (by rw [prP_e₂]; simp))))`.
+
+Establish `h1 : ∀ x : locLat v (dualLb L), L.fT v hv (e₁ hs • x) = L.fT v hv x`. Introduce `x`. Establish `e : x = e₁ hs • x + e₂ hs • x` using `Subtype.ext (e₁_add_e₂ hs x.1).symm`. Establish `h0` using `hfac (e₂ hs • x) (fun i => by show prP s ((e₂ hs • x.1) i) = 0`. Rewrite using `[map_smul_vec, prP_e₂, zero_mul])`.
+
+Conclude with `(((congrArg (L.fT v hv) e).trans ((L.fT v hv).map_add _ _)).trans ((congrArg (_ + ·) h0).trans (add_zero _))).symm`. Take `⟨x₀, hx₀⟩` from `DFunLike.ne_iff.1 (L.fT_ne v hv)`. Take `⟨-, hd2, hd3⟩` from `dual_loc L v`. Take `⟨f₂, hsur, hk, hk2⟩` from `GlobalTheory.SecondFunctional.exists_second_functional F E sp.cm.sig v s hs R.k _ (locLat v L.Lb) (locLat v (dualLb L)) (fun y hy => (hd2 y).1 hy) hd3 A.T A.T_prime.ne_zero (nsmul_mem_locLat v (nsmul_mem L)) ⟨(e₁ hs • x₀).1, (e₁ hs • x₀).2, fun h => hx₀ ((h1 x₀).symm.trans (L.fT_ …`. Rewrite using `[map_smul_vec, prPbar_e₁, zero_mul]⟩`.
+
+Establish `hsur1 : Function.Surjective (L.fT v hv)` using `by haveI : Fact (Nat.card (L.fM v hv)).Prime := ⟨(L.fM_card v hv).symm ▸ A.T_prime⟩`. Break down `(LinearMap.range (L.fT v hv)).toAddSubgroup.eq_bot_or_eq_top_of_prime_card with h | h` into its components or cases. Establish `: L.fT v hv x₀ ∈ (LinearMap.range (L.fT v hv)).toAddSubgroup` using `⟨x₀, rfl⟩`. Rewrite `this` using `[h]`. Conclude with `absurd this hx₀`.
+
+Introduce `m`. Establish `: m ∈ (LinearMap.range (L.fT v hv)).toAddSubgroup` using `h ▸ AddSubgroup.mem_top m`. Conclude with `this`. Use `⟨s, hs, hfac, hε, hiso, hcard, f₂, ?_, hk, hk2⟩` and prove the remaining obligations. Introduce and unpack `⟨m, n⟩`.
+
+Take `⟨x, rfl⟩` from `hsur1 m`. Take `⟨y, rfl⟩` from `hsur n`. Establish `a1` using `hfac (e₂ hs • y) (fun i => by show prP s ((e₂ hs • y.1) i) = 0`. Rewrite using `[map_smul_vec, prP_e₂, zero_mul])`. Establish `a2 : ∀ z : locLat v (dualLb L), f₂ (e₁ hs • z) = 0` using `fun z => hk2 _ (fun i => by show prPbar s ((e₁ hs • z.1) i) = 0`.
+
+Rewrite using `[map_smul_vec, prPbar_e₁, zero_mul])`. Establish `e : e₁ hs • y + e₂ hs • y = y` using `Subtype.ext (e₁_add_e₂ hs y.1)`. Use `⟨e₁ hs • x + e₂ hs • y, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Conclude with `((L.fT v hv).map_add _ _).trans ((congrArg (_ + ·) a1).trans ((add_zero _).trans (h1 x)))`. Conclude with `(f₂.map_add _ _).trans ((congrArg (· + _) ((a2 x).trans (a2 y).symm)).trans ((f₂.map_add _ _).symm.trans (congrArg f₂ e)))`.
+-/
 theorem exists_local (L : ColLevel R F E sp gp C A clsLat)
     (v : HeightOneSpectrum (𝓞 F)) (hv : (A.T : 𝓞 F) ∈ v.asIdeal) :
     ∃ s : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F,
@@ -512,6 +696,13 @@ theorem exists_local (L : ColLevel R F E sp gp C A clsLat)
 
 omit [StarRing E] in
 
+/- English proof (translation)
+Establish `h1 : Valued.v (T : v.adicCompletion F) = 1`. Establish `h2` using `(valued_algebraMap_lt_one_iff (v := v) (T : 𝓞 F)).not.2 hv`. Establish `h3 : (T : v.adicCompletion F) ∈ v.adicCompletionIntegers F` using `natCast_mem _ T`. Simplify using `only [map_natCast, not_lt] at h2`. Conclude with `le_antisymm h3 (by simpa using h2)`.
+
+Establish `h0 : (T : v.adicCompletion F) ≠ 0` using `fun h => by simp [h] at h1`. Establish `hu : (1 : E) ⊗ₜ[F] ((T : v.adicCompletion F)⁻¹) ∈ intV E v` using `Subring.subset_closure (Or.inr ⟨⟨_, show Valued.v (T : v.adicCompletion F)⁻¹ ≤ 1 by`. Rewrite using `[map_inv₀, h1, inv_one]⟩, rfl⟩)`. Use `Λ.smul_mem ⟨_, hu⟩ hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Use `show y i = ((1 : E) ⊗ₜ[F] ((T : v.adicCompletion F)⁻¹)) * (T • y i)`. Rewrite using `[nsmul_eq_mul, ← mul_assoc, show ((T : ℕ) : E ⊗[F] v.adicCompletion F) = (1 : E) ⊗ₜ[F] (T : v.adicCompletion F) from (map_natCast (Algebra.TensorProduct.includeRight (R := F) (A := E)) T).symm, Algebra.TensorProduct.tmul_mul_tmul, inv_mul_cancel₀ h0, one_mul, ← Algebra.TensorProd …`.
+-/
 theorem mem_of_nsmul_mem {k T : ℕ} {v : HeightOneSpectrum (𝓞 F)} (hv : (T : 𝓞 F) ∉ v.asIdeal)
     (Λ : Submodule (intV E v) (Fin k → E ⊗[F] v.adicCompletion F)) {y} (hy : T • y ∈ Λ) : y ∈ Λ := by
   have h1 : Valued.v (T : v.adicCompletion F) = 1 := by
@@ -542,12 +733,29 @@ def overLat (L : ColLevel R F E sp gp C A clsLat)
   smul_mem' := fun a x hx => ⟨Submodule.smul_mem _ _ hx.1, fun v hv => by
     rw [loc_smul, smul_comm]; exact Submodule.smul_mem _ _ (hx.2 v hv)⟩
 
+/- English proof (translation)
+Introduce `_ hx` and use `⟨le_dualLb L hx, fun v _ => Submodule.smul_mem _ _ (loc_mem v hx)⟩`.
+-/
 theorem le_overLat (L : ColLevel R F E sp gp C A clsLat) (e) : L.Lb ≤ overLat L e :=
   fun _ hx => ⟨le_dualLb L hx, fun v _ => Submodule.smul_mem _ _ (loc_mem v hx)⟩
 
+/- English proof (translation)
+Introduce `_ hx` and use `hx.1`.
+-/
 theorem overLat_le (L : ColLevel R F E sp gp C A clsLat) (e) : overLat L e ≤ dualLb L :=
   fun _ hx => hx.1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨locLat_mono v (overLat_le L e) hy, ?_⟩` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `hx.2 v hv`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce and unpack `⟨h1, h2⟩`. Take `⟨x, hx, h3, h4⟩` from `approx_one (finite_dualLb L) A.T_prime.ne_zero (nsmul_mem L) v y h1`.
+
+Establish `hxN : x ∈ overLat L e` using `⟨hx, fun w hw => by`. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Use `sub_mem h2 (Submodule.smul_mem _ (e w hv) h3)` as an intermediate fact. Rewrite `this` using `[← smul_sub, sub_sub_cancel]`. Then use the resulting hypothesis.
+
+Conclude with `Submodule.smul_mem _ _ (h4 w hwv)⟩`. Use `add_mem (locLat_mono v (le_overLat L e) h3) (loc_mem v hxN)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mem_locLat_overLat (L : ColLevel R F E sp gp C A clsLat) (e)
     (v : HeightOneSpectrum (𝓞 F)) (hv : (A.T : 𝓞 F) ∈ v.asIdeal) (y) :
     y ∈ locLat v (overLat L e) ↔ y ∈ locLat v (dualLb L) ∧ e v hv • y ∈ locLat v L.Lb := by
@@ -572,6 +780,9 @@ theorem mem_locLat_overLat (L : ColLevel R F E sp gp C A clsLat) (e)
     have := add_mem (locLat_mono v (le_overLat L e) h3) (loc_mem v hxN)
     rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Introduce `y hy` and use `mem_of_nsmul_mem hv _ (nsmul_mem_locLat v (nsmul_mem L) y hy)`.
+-/
 theorem locLat_dual_le (L : ColLevel R F E sp gp C A clsLat) (v : HeightOneSpectrum (𝓞 F))
     (hv : (A.T : 𝓞 F) ∉ v.asIdeal) : locLat v (dualLb L) ≤ locLat v L.Lb :=
   fun y hy => mem_of_nsmul_mem hv _ (nsmul_mem_locLat v (nsmul_mem L) y hy)
@@ -579,6 +790,41 @@ theorem locLat_dual_le (L : ColLevel R F E sp gp C A clsLat) (v : HeightOneSpect
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `choose s hs hfac hε hiso hcard f₂ hsur hk hk2 using exists_local L`. Establish `hcount` using `mem_of_count (finite_dualLb L) A.T_prime.ne_zero (show R.f ≠ 0 by unfold Ranks.f Ranks.n; positivity) (nsmul_mem L) L.Lb_index hpl (fun v h => L.fM v h × (intV E v ⧸ primeOf (prPbar (s v h)))) (fun v h => by rw [Nat.card_prod, L.fM_card, hcard]) (fun v h => ((L.fT v h).prod (f₂ v …`. Set `N` to `overLat L (fun v hv => e₂ (hs v hv))`. Establish `hN` using `mem_locLat_overLat L (fun v hv => e₂ (hs v hv))`. Establish `hLN : L.Lb ≤ N` using `le_overLat L _`.
+
+Establish `hNL : N ≤ dualLb L` using `overLat_le L _`. Establish `hfin : Module.Finite (𝓞 E) N` using `by haveI := finite_dualLb L`. Conclude with `Module.Finite.of_injective (Submodule.inclusion hNL) (Submodule.inclusion_injective hNL)`. Establish `hspan : Submodule.span E (N : Set (Fin R.k → E)) = ⊤` using `top_le_iff.1 (L.Lb_span ▸ Submodule.span_mono hLN)`. Establish `hoff : ∀ v : HeightOneSpectrum (𝓞 F), (A.T : 𝓞 F) ∉ v.asIdeal → locLat v N = locLat v L.Lb` using `fun v hv => le_antisymm ((locLat_mono v hNL).trans (locLat_dual_le L v hv)) (locLat_mono v hLN)`.
+
+Take `⟨hAd, -, hint⟩` from `GlobalTheory.T.adelicLatticeCompletion_local_global F E R.k N hfin`. Establish `hloc : ∀ (v : HeightOneSpectrum (𝓞 F)) (h : (A.T : 𝓞 F) ∈ v.asIdeal), LocalAtT L N v h (s v h)`. Introduce `v hv`. Take `⟨ε, hε⟩` from `hε v hv`. Take `⟨i₁⟩` from `hiso v hv`.
+
+Use `localAtT L N v hv (hs v hv) (hfac v hv) ε hε ?_ (locLat_mono v (le_dualLb L)) ?_ (hN v hv)` and prove the remaining obligations. Establish `hker : (locLat v L.Lb).submoduleOf (locLat v (dualLb L)) = LinearMap.ker ((L.fT v hv).prod (f₂ v hv))`. Use extensionality with `x`. Conclude with `⟨fun hx => Prod.ext (L.fT_L v hv x hx) (hk v hv x hx), fun hx => hcount v hv x hx⟩`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hker).trans ((LinearMap.quotKerEquivOfSurjective _ (hsur v hv)).trans (i₁.prodCongr (LinearEquiv.refl _ _)))⟩`.
+
+Introduce `x hx`. Use `hcount v hv (e₁ (hs v hv) • x) (Prod.ext ?_ (hk2 v hv _ fun i => ?_))` and prove the remaining obligations. Conclude with `((L.fT v hv).map_smul _ _).trans ((congrArg (e₁ (hs v hv) • ·) hx).trans (smul_zero _))`. Use `show prPbar (s v hv) ((e₁ (hs v hv) • x.1) i) = 0`. Rewrite using `[map_smul_vec, prPbar_e₁, zero_mul]`.
+
+Establish `hU : ∀ v, L.Uloc v ≤ levelVL sp.cm.sig sp.gram0 v N`. Introduce `v`. Distinguish the cases in `hv : (A.T : 𝓞 F) ∈ v.asIdeal`. Take `⟨-, -, -, -, -, -, -, -, f, ε, -, -, -, -, -, h⟩` from `hloc v hv`. Conclude with `fun g hg => ((h g).1 hg).1`.
+
+Establish `: levelVL sp.cm.sig sp.gram0 v N = levelVL sp.cm.sig sp.gram0 v L.Lb` using `congrArg (level _ _) (hoff v hv)`. Rewrite using `[this]`. Conclude with `L.Uloc_lev v`. Use `⟨N, ⟨hfin, hspan, ?_, hLN, hNL, hoff⟩, fun v h => ⟨_, hloc v h⟩, hU, ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨Submodule.subset_span fun x hx => hy x (hLN hx), fun v hv => ?_⟩` and prove the remaining obligations. Establish `key : ∀ z ∈ locLat v N, hform (sigR sp.cm.sig (v.adicCompletion F)) (sp.gram0.map (inclE (F` using `F) (v.adicCompletion F))) z (loc v y) ∈ intV E v := by`. Introduce `z hz`.
+
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Take `⟨a, ha⟩` from `hy x hx`. Use `hform_loc (σ := sp.cm.sig) (v := v) sp.gram0 x y` as an intermediate fact.
+
+Rewrite `this` using `[← ha]`. Conclude with `this ▸ tmul_mem_intV a`. Consider the case `zero => simp [hform]`. Consider the case `add x z _ _ hx hz => rw [hform_add_left]`. Conclude with `add_mem hx hz`.
+
+Consider the case `smul a x _ hx`. Establish `: hform (sigR sp.cm.sig (v.adicCompletion F)) (sp.gram0.map (inclE (F` using `F) (v.adicCompletion F))) (a • x) (loc v y) = sigR sp.cm.sig (v.adicCompletion F) a * hform (sigR sp.cm.sig (v.adicCompletion F)) (sp.gram0.map (inclE (F := F) (v.adicCompletion F))) x (loc v y) := by`. Simplify using `only [hform, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show (a • x) i = (a : E ⊗[F] v.adicCompletion F) * x i from rfl, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_mem (sigR_mem_intV _ v _ a.2) hx`. Use `((dual_loc L v).2.1 _).2 fun z hz => ?_` and prove the remaining obligations. Establish `h1` using `key (e₁ (hs v hv) • z) ((hN v hv _).2 ⟨Submodule.smul_mem _ _ hz, by`.
+
+Rewrite using `[e₂_e₁]`. Conclude with `zero_mem _⟩)`. Establish `h2` using `hform_smul_left (sigR sp.cm.sig (v.adicCompletion F)) (sp.gram0.map (inclE (F := F) (v.adicCompletion F))) (e₁ (hs v hv)) z (loc v y)`. Rewrite `h2` using `[sig_e₁]`. Conclude with `h2 ▸ h1`.
+
+Introduce `hy x hx`. Use `hint _ fun v => ?_` and prove the remaining obligations. Rewrite using `[← hform_loc]`. Distinguish the cases in `hv : (A.T : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[← e₁_add_e₂ (hs v hv) (loc v x), hform_add_left]`.
+
+Use `add_mem ?_ (((dual_loc L v).1 _).1 (loc_mem v hy.1) _ (hx.2 v hv))` and prove the remaining obligations. Establish `h2` using `hform_smul_left (sigR sp.cm.sig (v.adicCompletion F)) (sp.gram0.map (inclE (F := F) (v.adicCompletion F))) (e₁ (hs v hv)) (loc v x) (loc v y)`. Rewrite `h2` using `[sig_e₁]`. Conclude with `h2.symm ▸ ((dual_loc L v).2.1 _).1 (hy.2 v hv) _ (loc_mem v hx.1)`. Conclude with `((dual_loc L v).1 _).1 (loc_mem v hy.1) _ (locLat_dual_le L v hv (loc_mem v hx.1))`.
+
+Introduce `g hg`. Take `⟨h1, h2⟩` from `(L.U_eq g).1 hg`. Use `⟨h1, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hAd, hAd]`. Use `forall_congr' fun v => ((hU v (h2 v)).2 _).trans ?_` and prove the remaining obligations.
+
+Conclude with `Iff.of_eq (congrArg (· ∈ locLat v N) (funext fun i => (RingHom.map_mulVec (prV (E := E) v) g.val u i).symm))`.
+-/
 theorem exists_overLattice (L : ColLevel R F E sp gp C A clsLat)
     (hpl : Nat.card {v : HeightOneSpectrum (𝓞 F) // (A.T : 𝓞 F) ∈ v.asIdeal} = R.f) :
     ∃ N : Submodule (𝓞 E) (Fin R.k → E), IsOverLattice L N ∧
@@ -684,6 +930,19 @@ theorem exists_overLattice (L : ColLevel R F E sp gp C A clsLat)
 
 end Level
 
+/- English proof (translation)
+Introduce `h`. Take `⟨π, -, hπ, hmod⟩` from `D.T_norm u`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hmod`. Establish `hd : D.host.g i ∣ D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2`. Use `Dvd.dvd.mul_left (Dvd.dvd.pow ?_ two_ne_zero) _` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `Dvd.intro _ rfl`. Conclude with `Dvd.intro_left _ rfl`. Take `⟨m, hm⟩` from `hd`. Set `c` to `RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E)`.
+
+Establish `h1 : π = 1 + (D.host.g i : 𝓞 D.host.E) * (a * m)`. Rewrite `ha` using `[hm]`. Move the coercions through the operations in `at ha`. Take the linear combination `-ha`. Establish `h2 : c π = 1 + (D.host.g i : 𝓞 D.host.E) * c (a * m)` using `by conv_lhs => rw [h1]`.
+
+Rewrite using `[map_add, map_one, map_mul c (D.host.g i : 𝓞 D.host.E), map_natCast]`. Establish `h3 : π * c π = (D.host.g i : 𝓞 D.host.E)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[← h]`. Conclude with `hπ.trans (map_natCast (algebraMap (𝓞 D.host.E) D.host.E) _).symm`.
+
+Establish `h4 : IsUnit (D.host.g i : 𝓞 D.host.E)`. Use `isUnit_of_dvd_one ⟨1 - a * m - c (a * m) - (D.host.g i : 𝓞 D.host.E) * (a * m) * c (a * m), ?_⟩` and prove the remaining obligations. Rewrite `h3` using `[h2]`. Rewrite `h3` using `[h1]`. Take the linear combination `h3`.
+
+Establish `h5` using `h4.map (Algebra.norm ℤ)`. Rewrite `h5` using `[show (D.host.g i : 𝓞 D.host.E) = algebraMap ℤ _ (D.host.g i : ℤ) by simp, Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `(D.host.g_prime i).ne_one h5`.
+-/
 theorem T_ne_g (D : D7) (u : D.what₂.Word) (i : Fin 2) : (D.mem u).A.T ≠ D.host.g i := by
   intro h
   obtain ⟨π, -, hπ, hmod⟩ := D.T_norm u
@@ -714,6 +973,9 @@ theorem T_ne_g (D : D7) (u : D.what₂.Word) (i : Fin 2) : (D.mem u).A.T ≠ D.h
     isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast] at h5
   exact (D.host.g_prime i).ne_one h5
 
+/- English proof (translation)
+The claim follows from `overLattice_iff_selfDualOverBase.2 fun D Lv u => letI := D.host.cmStar fun hT => ⟨T_ne_g D u, exists_overLattice (Lv u) hT.1⟩`.
+-/
 theorem overLattice : GlobalTheory.IndefiniteRowSideFullHecke.OverPlaceIntegralForm.OverLattice :=
   overLattice_iff_selfDualOverBase.2 fun D Lv u =>
     letI := D.host.cmStar

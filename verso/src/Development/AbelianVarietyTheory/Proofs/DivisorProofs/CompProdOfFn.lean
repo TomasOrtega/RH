@@ -22,9 +22,15 @@ def evalSq {S : Type} [CommRing S] (e : S) (he : e * e = 0) : DualNumber S →+*
   map_zero' := by simp
   map_add' a b := by simp only [TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalSq_apply {S : Type} [CommRing S] (e : S) (he : e * e = 0) (z : DualNumber S) :
     evalSq e he z = z.fst + e * z.snd := rfl
 
+/- English proof (translation)
+Establish `hz : z = TrivSqZeroExt.inl z.fst + TrivSqZeroExt.inl z.snd * DualNumber.eps`. Apply the tactic sequence `ext <;> simp`. Use `conv_lhs => rw [hz]`. Rewrite using `[map_add, map_mul]`.
+-/
 theorem dual_apply {R S : Type} [CommRing R] [CommRing S] (f : DualNumber R →+* S) (z : DualNumber R) :
     f z = f (TrivSqZeroExt.inl z.fst) + f (TrivSqZeroExt.inl z.snd) * f DualNumber.eps := by
   have hz : z = TrivSqZeroExt.inl z.fst + TrivSqZeroExt.inl z.snd * DualNumber.eps := by
@@ -32,6 +38,9 @@ theorem dual_apply {R S : Type} [CommRing R] [CommRing S] (f : DualNumber R →+
   conv_lhs => rw [hz]
   rw [map_add, map_mul]
 
+/- English proof (translation)
+The claim follows from `| 0, u => by simp [MonObj.comp_one] | m + 1, u => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, MonObj.comp_mul, comp_prod_ofFn]`.
+-/
 theorem comp_prod_ofFn {C : Type*} [Category C] [CartesianMonoidalCategory C] {M A B : C} [MonObj M]
     (k : A ⟶ B) : ∀ {m : ℕ} (u : Fin m → (B ⟶ M)), k ≫ (List.ofFn u).prod = (List.ofFn fun i => k ≫ u i).prod
   | 0, u => by simp [MonObj.comp_one]
@@ -42,6 +51,37 @@ end GlobalTheory.FirstOrderValue
 
 namespace GlobalTheory.FirstOrderValue
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t U n v hv c x hx S _ ψ g₀ a w ha hw O f hO`. Take `⟨φ, hφ⟩ : ∃ φ : Γ(X, U.1) →+* S, φ = ψ.comp (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1)))` from `⟨_, rfl⟩`. Rewrite `hw` using `[← hφ]`. Take `⟨e, hedef⟩ : ∃ e : S, e = ψ DualNumber.eps` from `⟨_, rfl⟩`. Rewrite using `[← hedef]`.
+
+Establish `he : e * e = 0` using `by rw [hedef, ← map_mul, DualNumber.eps_mul_eps, map_zero]`. Establish `hφs : ∀ s, φ s = ψ (TrivSqZeroExt.inl s)` using `fun s => by`. Rewrite using `[hφ, RingHom.comp_apply, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hg₀ : g₀ ≫ t.G.hom = spMap φ ≫ chart U`. Establish `h1 : a.left ≫ spMap (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1))) ≫ chart U = g₀ ≫ t.G.hom` using `Over.w a`.
+
+Rewrite using `[← h1, ha, ← Category.assoc, GlobalTheory.KSLin.spMap_comp_spMap, hφ]`. Use `choose g'' v'' hg'' hv'' hw'' using hw`. Set `g' : tEpsG (g₀ ≫ t.G.hom) ⟶ t.G` to `Over.homMk (spMap (algebraMap S (DualNumber S)) ≫ g₀) (Category.assoc _ _ _)`. Establish `hgg : ∀ b, g'' b = g'` using `fun b => Over.OverMorphism.ext (hg'' b)`. Set `h : tEpsG (g₀ ≫ t.G.hom) ⟶ Over.mk (chart U)` to `Over.homMk (spMap (algebraMap S (DualNumber S)) ≫ spMap φ) (by show (spMap _ ≫ spMap φ) ≫ chart U = spMap _ ≫ g₀ ≫ t.G.hom`.
+
+Rewrite using `[Category.assoc, hg₀])`. Establish `hy0 : ∀ b, smT (g₀ ≫ t.G.hom) 0 (v'' b) = 1`. Introduce `b`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h1 : (smT (g₀ ≫ t.G.hom) 0 (v'' b)).left = spMap (epsMul 0) ≫ (v'' b).left` using `rfl`.
+
+Establish `e1 : (epsMul (0 : S)).comp (dualMap φ) = ((algebraMap S (DualNumber S)).comp φ).comp (TrivSqZeroExt.fstHom Γ(X, U.1) Γ(X, U.1) Γ(X, U.1)).toRingHom`. Apply the tactic sequence `apply RingHom.ext; intro z; ext <;> simp [epsMul, dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[h1, hv'' b, ← Category.assoc, GlobalTheory.KSLin.spMap_comp_spMap, e1, ← GlobalTheory.KSLin.spMap_comp_spMap, ← GlobalTheory.KSLin.spMap_comp_spMap, Category.assoc, Category.assoc, (hv b).2]`. Establish `h2 : (h ≫ (1 : Over.mk (chart U) ⟶ t.G)).left = (1 : tEpsG (g₀ ≫ t.G.hom) ⟶ t.G).left` using `congrArg (fun k : tEpsG (g₀ ≫ t.G.hom) ⟶ t.G => k.left) (MonObj.comp_one h)`. Establish `h3 : (spMap (algebraMap S (DualNumber S)) ≫ spMap φ) ≫ (1 : Over.mk (chart U) ⟶ t.G).left = (1 : tEpsG (g₀ ≫ t.G.hom) ⟶ t.G).left` using `h2`.
+
+Rewrite using `[← h3, Category.assoc]`. Take `⟨u, hu, hux⟩` from `hx`. Take `rfl : x = (List.ofFn u).prod` from `(Over.OverMorphism.ext hux).symm`. Set `ρ` to `evalSq e he`. Establish `hρψ : ∀ r, ψ.comp (epsMul r) = (ρ.comp (epsMul (φ r))).comp (dualMap φ)`.
+
+Introduce `r`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `z`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[dual_apply ψ, ← hedef, evalSq_apply]`.
+
+Simplify using `[epsMul, dualMap, hφs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsp : spMap ρ ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _`. Rewrite using `[GlobalTheory.KSLin.spMap_comp_spMap]`. Establish `: ρ.comp (algebraMap S (DualNumber S)) = RingHom.id S`.
+
+Use extensionality with `s`. Simplify using `[ρ, evalSq_apply, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[this]`. Simplify using `[spMap]`. Set `ρh : Over.mk (g₀ ≫ t.G.hom) ⟶ tEpsG (g₀ ≫ t.G.hom)` to `Over.homMk (spMap ρ) (by show spMap ρ ≫ spMap (algebraMap S (DualNumber S)) ≫ g₀ ≫ t.G.hom = g₀ ≫ t.G.hom`.
+
+Rewrite using `[← Category.assoc, hsp, Category.id_comp])`. Establish `hu' : ∀ b, a ≫ u b = ρh ≫ smT (g₀ ≫ t.G.hom) (φ (c b)) (v'' b)`. Introduce `b`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h1 : (smT (g₀ ≫ t.G.hom) (φ (c b)) (v'' b)).left = spMap (epsMul (φ (c b))) ≫ (v'' b).left` using `rfl`.
+
+Simplify using `only [Over.comp_left]`. Rewrite using `[h1, hv'' b, hu b, ha]`. Use `show spMap ψ ≫ spMap (epsMul (c b)) ≫ v b = spMap ρ ≫ spMap (epsMul (φ (c b))) ≫ spMap (dualMap φ) ≫ v b`. Simplify using `only [← Category.assoc, GlobalTheory.KSLin.spMap_comp_spMap, hρψ]`. Establish `hg'eq : (Over.homMk g₀ rfl : Over.mk (g₀ ≫ t.G.hom) ⟶ t.G) = ρh ≫ g'`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show g₀ = spMap ρ ≫ spMap (algebraMap S (DualNumber S)) ≫ g₀`. Rewrite using `[← Category.assoc, hsp, Category.id_comp]`. Establish `hmain : (a ≫ (List.ofFn u).prod) * (Over.homMk g₀ rfl : Over.mk (g₀ ≫ t.G.hom) ⟶ t.G) = ρh ≫ (g' * (List.ofFn fun b => smT (g₀ ≫ t.G.hom) (φ (c b)) (v'' b)).prod)`. Rewrite using `[comp_prod_ofFn, hg'eq, MonObj.comp_mul, comp_prod_ofFn, mul_comm]`.
+
+Simplify using `only [hu']`. Establish `hP1` using `GlobalTheory.KSLin.snd_sectionValue_translate_list_prod_induction g₀ g' rfl O hO f n v'' (fun b => φ (c b)) hy0`. Establish `hQ0 : smT (g₀ ≫ t.G.hom) 0 (g' * (List.ofFn fun b => smT (g₀ ≫ t.G.hom) (φ (c b)) (v'' b)).prod) = g'`. Rewrite using `[smT_mul, GlobalTheory.KSLin.smT_const g₀ g' rfl, hP1.1, _root_.mul_one]`. Establish `hQ : ⊤ ≤ (Over.Hom.left (g' * (List.ofFn fun b => smT (g₀ ≫ t.G.hom) (φ (c b)) (v'' b)).prod)) ⁻¹ᵁ O` using `GlobalTheory.KSLin.top_le_of_smT_zero g₀ g' rfl O hO _ hQ0`.
+
+Establish `hfst` using `GlobalTheory.KSLin.fst_comp_of_smT_zero g₀ g' rfl _ hQ0`. Establish `hwb : ∀ b, (g' * v'' b).left = w b` using `fun b => by rw [← hgg b]; exact hw'' b`. Rewrite using `[hmain, Over.comp_left]`. Use `show ⊤ ≤ (spMap ρ ≫ _) ⁻¹ᵁ O ∧ valR (spMap ρ ≫ _) O f = _`. Use `⟨GlobalTheory.TanDeriv.comp_top_le ρ _ O hQ, ?_⟩` and prove the remaining obligations.
+
+Establish `hOg : ⊤ ≤ g₀ ⁻¹ᵁ O` using `hO`. Rewrite using `[GlobalTheory.KSLin.valR_spMap_comp ρ _ O hQ f, evalSq_apply, hP1.2]`. Use `conv_rhs => rw [← hfst, GlobalTheory.KSLin.valR_spMap_comp _ _ O hQ f]`. Simplify using `only [hwb, hφs, TrivSqZeroExt.algebraMap_eq_inl]`. Both sides reduce to the same expression.
+-/
 theorem valR_mul_comb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (U : X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)), (∀ i, IsTanAtG t (chart U) (v i)) → ∀ (c : Fin n → Γ(X, U.1)) (x : tEpsG (chart U) ⟶ t.G), IsCombAtG t (chart U) v c x.left → (∀ (S : Type) [CommRing S] (ψ : DualNumber Γ(X, U.1) →+* S) (g₀ : Sp S ⟶ t.G.left) (a : Over.mk (g₀ ≫ t.G.hom) ⟶ tEpsG (chart U)) (w : Fin n → (Sp (DualNumber S) ⟶ t.G.left)), a.left = spMap ψ → (∀ b, IsTranslate t (ψ.comp (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1)))) g₀ (v b) (w b)) → ∀ (O : t.G.left.Opens) (f : Γ(t.G.left, O)), ⊤ ≤ g₀ ⁻¹ᵁ O → ⊤ ≤ ((a ≫ x) * (Over.homMk g₀ rfl : Over.mk (g₀ ≫ t.G.hom) ⟶ t.G)).left ⁻¹ᵁ O ∧ valR ((a ≫ x) * (Over.homMk g₀ rfl : Over.mk (g₀ ≫ t.G.hom) ⟶ t.G)).left O f = valR g₀ O f + ψ DualNumber.eps * ∑ b, ψ (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1)) (c b)) * (valR (w b) O f).snd) := by
   intro E _ _ _ H X t U n v hv c x hx S _ ψ g₀ a w ha hw O f hO
   obtain ⟨φ, hφ⟩ : ∃ φ : Γ(X, U.1) →+* S, φ = ψ.comp (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1))) := ⟨_, rfl⟩

@@ -11,11 +11,17 @@ noncomputable section
 
 variable {A : Type} [Ring A] [StarRing A] [Algebra ℂ A]
 
+/- English proof (translation)
+Establish `h1 : star xi * y = 1` using `by rw [← h, ← star_mul, hx, star_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem star_inv_eq {x xi y yi : A} (h : star x = y) (hx : x * xi = 1) (hy : y * yi = 1) : star xi = yi := by
   have h1 : star xi * y = 1 := by rw [← h, ← star_mul, hx, star_one]
   calc star xi = star xi * (y * yi) := by rw [hy, mul_one]
     _ = yi := by rw [← mul_assoc, h1, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => rw [List.prod_cons, star_mul, ih, List.map_cons, List.reverse_cons, List.prod_append, List.prod_singleton]`.
+-/
 theorem star_list_prod (l : List A) : star l.prod = (l.map star).reverse.prod := by
   induction l with
   | nil => simp
@@ -24,12 +30,26 @@ theorem star_list_prod (l : List A) : star l.prod = (l.map star).reverse.prod :=
 
 variable {P : M.Par} {d : Q.NFData P A}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨b, hb, [h], rfl, by simpa using hh, by simp⟩`.
+-/
 theorem mem_span {b h : A} (hb : b ∈ bmon d) (hh : h ∈ hats d.L) : b * h ∈ nfSpan d (hats d.L) 0 0 1 :=
   Submodule.subset_span ⟨b, hb, [h], rfl, by simpa using hh, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Or.inl (Or.inl (Or.inl ⟨y, rfl⟩))`.
+-/
 theorem ahat_mem (y : ℂ) : d.L.Ahat y ∈ hats d.L := Or.inl (Or.inl (Or.inl ⟨y, rfl⟩))
+/- English proof (translation)
+The claim follows from `Or.inl (Or.inl (Or.inr ⟨y, rfl⟩))`.
+-/
 theorem plusHatR_mem_hatLettersAllPoints (y : ℂ) : d.L.R0 y ∈ hats d.L := Or.inl (Or.inl (Or.inr ⟨y, rfl⟩))
 
+/- English proof (translation)
+Take `⟨-, -, hR, -, -, -, hs⟩` from `h`. Establish `hf : ∀ g ∈ d.L.fns, Commute (d.κ f) g` using `fun g hg => hR.2.1 f g (Or.inl hg)`. Establish `hn : Commute (d.κ f) d.L.nab` using `hR.2.1 f _ (Or.inr (by simp))`. Establish `hp : ∀ l, Commute (d.κ f) (d.L.p l)` using `fun l => hs f _ (by simp [TL.siteOps])`. Establish `hT` using `d.L.inv_comm_Tprod hp (fun l => hf _ (d.L.inv_mem_c l)) (fun l => hf _ (d.L.inv_mem_ci l)) y`.
+
+Establish `hDr : Commute (d.κ f) d.L.Dr` using `LevelData.inv_comm_ofFn fun l => hf _ (d.L.inv_mem_c l)`. Establish `hDrb : Commute (d.κ f) d.L.Drb` using `LevelData.inv_comm_ofFn fun l => hf _ (d.L.inv_mem_cb l)`. Establish `hl0 : Commute (d.κ f) (d.L.l0 y)` using `hn.neg_right.sub_right ((Algebra.commute_algebraMap_right _ _).mul_right ((hf _ d.L.inv_mem_ζb).mul_right (hf _ d.L.inv_mem_GGi)))`. Conclude with `⟨hDr.mul_right (hT 0 0), (hDrb.mul_right (hf _ d.L.inv_mem_GG)).mul_right ((hl0.mul_right (hT 0 0)).add_right (hT 1 0))⟩`.
+-/
 theorem kappa_comm (h : HatHyp d) (f : M.Ty P → ℂ) (y : ℂ) :
     Commute (d.κ f) (d.L.Ahat y) ∧ Commute (d.κ f) (d.L.R0 y) := by
   obtain ⟨-, -, hR, -, -, -, hs⟩ := h
@@ -45,6 +65,9 @@ theorem kappa_comm (h : HatHyp d) (f : M.Ty P → ℂ) (y : ℂ) :
   exact ⟨hDr.mul_right (hT 0 0),
     (hDrb.mul_right (hf _ d.L.inv_mem_GG)).mul_right ((hl0.mul_right (hT 0 0)).add_right (hT 1 0))⟩
 
+/- English proof (translation)
+Take `⟨-, -, hR, -, -, -, -⟩` from `h`. Take `⟨h1, h2⟩` from `hR.2.2.2.2.1 l hl`. Establish `hc` using `hR.2.2.1 l`. Use `Formalism.FourierDecayAlt.P.intertwinerConjugation _ P.r d.L (d.SS l) 0 (fun x hx => (hc x (Or.inl (Or.inl hx))).symm.eq) (fun m => (hc _ (Or.inl (Or.inr ⟨m, rfl⟩))).symm.eq) (fun m => (hc _ (Or.inr ⟨m, rfl⟩)).symm.eq) h1 h2 (fun x _ => by simp) (fun l => by simp) (fun l => by si …` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`.
+-/
 theorem ssn_rule (h : HatHyp d) {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1)) (y : ℂ) :
     d.L.Ahat y * ssn d l = ssn d l * d.L.Ahat (y - 1) ∧ d.L.R0 y * ssn d l = ssn d l * d.L.R0 (y - 1) := by
   obtain ⟨-, -, hR, -, -, -, -⟩ := h
@@ -57,13 +80,32 @@ theorem ssn_rule (h : HatHyp d) {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1)) (y
 
 variable [StarModule ℂ A]
 
+/- English proof (translation)
+Take `⟨-, ⟨hz, -, hT⟩, -⟩` from `h`. Establish `hzb : star d.L.ζb = d.L.ζ` using `by rw [← hz, star_star]`. Rewrite using `[d.L.GG_def, star_sub, star_mul, hz, hzb, Algebra.algebraMap_eq_smul_one, star_smul, hT, star_one]`.
+-/
 theorem star_GG (h : HatHyp d) : star d.L.GG = d.L.GG := by
   obtain ⟨-, ⟨hz, -, hT⟩, -⟩ := h
   have hzb : star d.L.ζb = d.L.ζ := by rw [← hz, star_star]
   rw [d.L.GG_def, star_sub, star_mul, hz, hzb, Algebra.algebraMap_eq_smul_one, star_smul, hT, star_one]
 
+/- English proof (translation)
+The claim follows from `star_inv_eq (star_GG h) d.L.GG_GGi d.L.GG_GGi`.
+-/
 theorem star_GGi (h : HatHyp d) : star d.L.GGi = d.L.GGi := star_inv_eq (star_GG h) d.L.GG_GGi d.L.GG_GGi
 
+/- English proof (translation)
+Establish `hG` using `star_GG h`. Establish `hGi` using `star_GGi h`. Take `⟨-, ⟨hz, -, -⟩, -, -, hc, hci, -⟩` from `h`. Establish `hzi : star d.L.ζi = d.L.ζbi` using `star_inv_eq hz d.L.ζ_ζi d.L.ζb_ζbi`. Introduce `x hx`.
+
+Simplify using `only [LevelData.fns, Set.mem_union, Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with ((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | (rfl | rfl | rfl | rfl | rfl | rfl))` into its components or cases. Rewrite using `[hc]`. Conclude with `d.L.inv_mem_cb l`. Rewrite using `[hci]`.
+
+Conclude with `d.L.inv_mem_cbi l`. Rewrite using `[← hc, star_star]`. Conclude with `d.L.inv_mem_c l`. Rewrite using `[← hci, star_star]`. Conclude with `d.L.inv_mem_ci l`.
+
+Rewrite using `[hz]`. Conclude with `d.L.inv_mem_ζb`. Rewrite using `[hzi]`. Conclude with `d.L.inv_mem_ζbi`. Rewrite using `[← hz, star_star]`.
+
+Conclude with `d.L.inv_mem_ζ`. Rewrite using `[← hzi, star_star]`. Conclude with `d.L.inv_mem_ζi`. Rewrite using `[hG]`. Conclude with `d.L.inv_mem_GG`.
+
+Rewrite using `[hGi]`. Conclude with `d.L.inv_mem_GGi`.
+-/
 theorem star_fns (h : HatHyp d) : ∀ x ∈ d.L.fns, star x ∈ d.L.fns := by
   have hG := star_GG h
   have hGi := star_GGi h
@@ -84,6 +126,15 @@ theorem star_fns (h : HatHyp d) : ∀ x ∈ d.L.fns, star x ∈ d.L.fns := by
   · rw [hGi]; exact d.L.inv_mem_GGi
 
 omit [StarModule ℂ A] in
+/- English proof (translation)
+Take `⟨-, -, -, -, hc, hci, -⟩` from `h`. Establish `h1 : star d.L.Drb = d.L.Dr`. Unfold `LevelData.Drb LevelData.Dr`. Rewrite using `[star_list_prod, List.map_ofFn]`. Establish `: (star ∘ d.L.cb) = d.L.c` using `funext fun m => by rw [Function.comp, ← hc, star_star]`.
+
+Rewrite using `[this, rev_prod d.L]`. Introduce `x hx`. Take `⟨m, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `memF d.L (d.L.inv_mem_c m)`. Establish `h2 : star d.L.Dri = d.L.Drbi`.
+
+Unfold `LevelData.Dri LevelData.Drbi`. Rewrite using `[star_list_prod, List.map_ofFn]`. Establish `: (star ∘ d.L.ci) = d.L.cbi` using `funext hci`. Rewrite using `[this, rev_prod d.L]`. Introduce `x hx`.
+
+Take `⟨m, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `memF d.L (d.L.inv_mem_cbi m)`. Unfold `ssn`. Rewrite using `[star_mul, star_mul, h1, h2, cl_comm d.L (memDrbi d.L) (memDr d.L)]`.
+-/
 theorem star_ssn (h : HatHyp d) (l : ℕ) : star (ssn d l) = star (d.SS l) * (d.L.Dr * d.L.Drbi) := by
   obtain ⟨-, -, -, -, hc, hci, -⟩ := h
   have h1 : star d.L.Drb = d.L.Dr := by
@@ -101,6 +152,23 @@ theorem star_ssn (h : HatHyp d) (l : ℕ) : star (ssn d l) = star (d.SS l) * (d.
   unfold ssn
   rw [star_mul, star_mul, h1, h2, cl_comm d.L (memDrbi d.L) (memDr d.L)]
 
+/- English proof (translation)
+Establish `hGi` using `star_GGi h`. Establish `hF` using `star_fns h`. Rewrite using `[star_ssn h]`. Take `⟨-, ⟨hz, hn, -⟩, hR, hp, -, -, -⟩` from `h`. Take `⟨h1, h2⟩` from `hR.2.2.2.2.1 l hl`.
+
+Establish `hc` using `hR.2.2.1 l`. Establish `hzb : star d.L.ζb = d.L.ζ` using `by rw [← hz, star_star]`. Establish `hns : star d.L.nabs = d.L.nab` using `by rw [← hn, star_star]`. Establish `key : ∀ x, Commute (d.SS l) (star x) → x * star (d.SS l) = star (d.SS l) * x` using `fun x hx => by`. Use `congrArg star hx.eq` as an intermediate fact.
+
+Simplify `this` using `[star_mul]`. Establish `hf : ∀ x ∈ d.L.fns, x * star (d.SS l) = star (d.SS l) * x` using `fun x hx => key x (hc _ (Or.inl (Or.inl (hF x hx))))`. Establish `hp1 : ∀ m, d.L.p m * star (d.SS l) = star (d.SS l) * d.L.p m` using `fun m => key _ (by rw [hp]; exact (hc _ (Or.inr ⟨m, rfl⟩)).neg_right)`. Establish `hp2 : ∀ m, d.L.pb m * star (d.SS l) = star (d.SS l) * d.L.pb m` using `fun m => key _ (by`. Establish `: star (d.L.pb m) = -d.L.p m`.
+
+Use `congrArg star (hp m)` as an intermediate fact. Rewrite `this` using `[star_star, star_neg]`. Rewrite using `[this, neg_neg]`. Rewrite using `[this]`. Conclude with `(hc _ (Or.inl (Or.inr ⟨m, rfl⟩))).neg_right)`.
+
+Establish `c1 : star (d.SS l) * (d.L.GGi * d.L.ζb) = d.L.ζb * d.L.GGi * star (d.SS l)`. Rewrite using `[← mul_assoc, ← hf _ d.L.inv_mem_GGi, mul_assoc, ← hf _ d.L.inv_mem_ζb, ← mul_assoc, (d.L.inv_fcomm d.L.inv_mem_GGi d.L.inv_mem_ζb).eq]`. Establish `c2 : star (d.SS l) * (d.L.GGi * d.L.ζ) = d.L.ζ * d.L.GGi * star (d.SS l)`. Rewrite using `[← mul_assoc, ← hf _ d.L.inv_mem_GGi, mul_assoc, ← hf _ d.L.inv_mem_ζ, ← mul_assoc, (d.L.inv_fcomm d.L.inv_mem_GGi d.L.inv_mem_ζ).eq]`. Establish `e1 : d.L.nab * star (d.SS l) = star (d.SS l) * d.L.nab + d.L.ζb * d.L.GGi * star (d.SS l)`.
+
+Use `congrArg star h2` as an intermediate fact. Rewrite `this` using `[star_mul, star_sub, star_mul, star_mul, star_mul, hns, hz, hGi]`. Rewrite using `[← c1, this]`. Normalize the expressions using the abelian group laws. Establish `e2 : d.L.nabs * star (d.SS l) = star (d.SS l) * d.L.nabs + d.L.ζ * d.L.GGi * star (d.SS l)`.
+
+Use `congrArg star h1` as an intermediate fact. Rewrite `this` using `[star_mul, star_sub, star_mul, star_mul, star_mul, hn, hzb, hGi]`. Rewrite using `[← c2, this]`. Normalize the expressions using the abelian group laws. Use `Formalism.FourierDecayAlt.P.intertwinerConjugation _ P.r d.L 0 (star (d.SS l)) (fun x _ => by simp) (fun l => by simp) (fun l => by simp) (by simp) (by simp) hf hp1 hp2 e1 e2 y` as an intermediate fact.
+
+Conclude with `⟨this.2.2.2.2.1, this.2.2.2.2.2.1⟩`.
+-/
 theorem star_ssn_rule (h : HatHyp d) {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1)) (y : ℂ) :
     d.L.Ahat y * star (ssn d l) = star (ssn d l) * d.L.Ahat (y + 1) ∧
       d.L.R0 y * star (ssn d l) = star (ssn d l) * d.L.R0 (y + 1) := by
@@ -146,6 +214,19 @@ theorem star_ssn_rule (h : HatHyp d) {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1
 
 end
 
+/- English proof (translation)
+Introduce `P A _ _ _ _ d h b hb y`. Establish `gen : ∀ {x}, x ∈ bset d → x ∈ bmon d` using `fun h => Submonoid.subset_closure h`. Establish `mDD : d.L.D * d.L.Dbi ∈ bmon d` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`. Establish `mDbD : d.L.Db * d.L.Di ∈ bmon d` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`. Establish `mζi : d.L.ζi ∈ bmon d` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`.
+
+Establish `mζbi : d.L.ζbi ∈ bmon d` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`. Establish `hdrb : d.L.Drb * d.L.Di ∈ bmon d`. Rewrite using `[drb_eq]`. Conclude with `Submonoid.mul_mem _ mDbD mζbi`. Establish `hbm` using `gen hb`.
+
+Break down `hb with (((hb | ⟨f, rfl⟩) | ⟨i, hi, rfl⟩) | ⟨i, hi, rfl⟩)` into its components or cases. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hb`. Break down `hb with rfl | rfl | rfl | rfl` into its components or cases. Use `⟨by rw [(hat_ζi d.L y).1]; exact mem_span hbm (ahat_mem _), ?_⟩` and prove the remaining obligations. Rewrite using `[gen_ζi_R]`.
+
+Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Conclude with `Submodule.add_mem _ (mem_span hbm (plusHatR_mem_hatLettersAllPoints _)) (Submodule.add_mem _ (Submodule.smul_mem _ _ (mem_span mDbD (ahat_mem _))) (Submodule.smul_mem _ _ (mem_span (Submonoid.mul_mem _ (Submonoid.mul_mem _ mζi mζbi) mDbD) (ahat_mem _))))`. Conclude with `⟨by rw [← (hat_ζbi d.L y).1]; exact mem_span hbm (ahat_mem _), by rw [← (hat_ζbi d.L y).2]; exact mem_span hbm (plusHatR_mem_hatLettersAllPoints _)⟩`. Use `⟨by rw [gen_DD_A]; exact mem_span hbm (ahat_mem _), ?_⟩` and prove the remaining obligations. Rewrite using `[gen_DD_R]`.
+
+Conclude with `Submodule.add_mem _ (mem_span hbm (plusHatR_mem_hatLettersAllPoints _)) (Submodule.smul_mem _ _ (mem_span (Submonoid.mul_mem _ mDD hdrb) (ahat_mem _)))`. Use `⟨by rw [gen_DbD_A]; exact mem_span hbm (ahat_mem _), ?_⟩` and prove the remaining obligations. Rewrite using `[gen_DbD_R]`. Conclude with `Submodule.add_mem _ (mem_span hbm (plusHatR_mem_hatLettersAllPoints _)) (Submodule.smul_mem _ _ (mem_span (Submonoid.mul_mem _ mDbD hdrb) (ahat_mem _)))`. Conclude with `⟨by rw [← (kappa_comm h f y).1.eq]; exact mem_span hbm (ahat_mem _), by rw [← (kappa_comm h f y).2.eq]; exact mem_span hbm (plusHatR_mem_hatLettersAllPoints _)⟩`.
+
+Establish `hi'` using `Finset.mem_Icc.2 (Set.mem_Icc.1 hi)`. Conclude with `⟨by rw [(ssn_rule h hi' y).1]; exact mem_span hbm (ahat_mem _), by rw [(ssn_rule h hi' y).2]; exact mem_span hbm (plusHatR_mem_hatLettersAllPoints _)⟩`. Establish `hi'` using `Finset.mem_Icc.2 (Set.mem_Icc.1 hi)`. Conclude with `⟨by beta_reduce; rw [(star_ssn_rule h hi' y).1]; exact mem_span hbm (ahat_mem _), by beta_reduce; rw [(star_ssn_rule h hi' y).2]; exact mem_span hbm (plusHatR_mem_hatLettersAllPoints _)⟩`.
+-/
 theorem plus_hats_pass_generators : ∀ (P : M.Par) (A : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A]
     (d : Q.NFData P A), HatHyp d → ∀ b ∈ bset d, ∀ y : ℂ,
       d.L.Ahat y * b ∈ nfSpan d (hats d.L) 0 0 1 ∧ d.L.R0 y * b ∈ nfSpan d (hats d.L) 0 0 1 := by

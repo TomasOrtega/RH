@@ -12,6 +12,11 @@ open scoped NumberField.AdeleRing
 
 namespace GlobalTheory.InfConj
 
+/- English proof (translation)
+Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace E).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
+
+Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace E).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+-/
 theorem continuous_mixedSpace_symm (E : Type) [Field E] [NumberField E] :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace E).symm := by
   refine continuous_pi fun v => ?_
@@ -27,11 +32,17 @@ def liftMat (E : Type) [Field E] [NumberField E] (a : ℕ)
     (Y : GroundTheory.Automorphic.AutomorphicForm.ArchMatrix E a) : Matrix (Fin a) (Fin a) (Ad E) :=
   Matrix.of fun i j => (((InfiniteAdeleRing.ringEquiv_mixedSpace E).symm (Y i j), 0) : Ad E)
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `Continuous.prodMk ((continuous_mixedSpace_symm E).comp ?_) continuous_const` and prove the remaining obligations. Conclude with `(continuous_apply j).comp (continuous_apply i)`.
+-/
 theorem continuous_liftMat (E : Type) [Field E] [NumberField E] (a : ℕ) : Continuous (liftMat E a) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   refine Continuous.prodMk ((continuous_mixedSpace_symm E).comp ?_) continuous_const
   exact (continuous_apply j).comp (continuous_apply i)
 
+/- English proof (translation)
+Use extensionality with `i j : 2`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace E).symm 0 = 0`. Conclude with `map_zero _`. Both sides reduce to the same expression.
+-/
 theorem liftMat_zero (E : Type) [Field E] [NumberField E] (a : ℕ) : liftMat E a 0 = 0 := by
   ext i j : 2
   refine Prod.ext ?_ ?_
@@ -39,6 +50,9 @@ theorem liftMat_zero (E : Type) [Field E] [NumberField E] (a : ℕ) : liftMat E 
     exact map_zero _
   · rfl
 
+/- English proof (translation)
+Use extensionality with `i j : 2`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace E).symm (InfiniteAdeleRing.ringEquiv_mixedSpace E (Z i j).1) = (Z i j).1`. Conclude with `RingEquiv.symm_apply_apply _ _`. Conclude with `(hZ i j).symm`.
+-/
 theorem liftMat_archMat (E : Type) [Field E] [NumberField E] (a : ℕ) (Z : Matrix (Fin a) (Fin a) (Ad E))
     (hZ : ∀ i j, (Z i j).2 = 0) : liftMat E a (GroundTheory.Automorphic.CuspidalSpectrum.archMat E a Z) = Z := by
   ext i j : 2
@@ -51,6 +65,13 @@ end GlobalTheory.InfConj
 
 namespace GlobalTheory.InfConj
 
+/- English proof (translation)
+Set `f : Matrix (Fin a) (Fin a) (Ad E) →+* Matrix (Fin a) (Fin a) (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E)` to `(RingHom.snd (InfiniteAdeleRing E) (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E)).mapMatrix`. Apply the tactic sequence `have hB : f (GroundTheory.Automorphic.AutomorphicForm.blockEntry P) = 0 := by`. Use `Matrix.ext fun k l => ?_` and prove the remaining obligations. Apply the tactic sequence `change (GroundTheory.Automorphic.AutomorphicForm.blockEntry P k l).2 = 0`. Unfold `GroundTheory.Automorphic.AutomorphicForm.blockEntry`.
+
+Rewrite using `[Matrix.of_apply]`. Use `split_ifs with h`. Conclude with `hP _`. Both sides reduce to the same expression. Apply the tactic sequence `change f (((x⁻¹ : GA E a) : Matrix (Fin a) (Fin a) (Ad E)) * GroundTheory.Automorphic.AutomorphicForm.blockEntry P * (x : Matrix (Fin a) (Fin a) (Ad E))) i j = 0`.
+
+Rewrite using `[map_mul, map_mul, hB, mul_zero, zero_mul]`. Both sides reduce to the same expression.
+-/
 theorem conj_blockEntry_snd (E : Type) [Field E] [NumberField E] (a r : ℕ) (x : GA E a)
     (P : BlockIx a r → Ad E) (hP : ∀ p, (P p).2 = 0) (i j : Fin a) :
     ((((x⁻¹ : GA E a) : Matrix (Fin a) (Fin a) (Ad E)) *
@@ -70,6 +91,21 @@ theorem conj_blockEntry_snd (E : Type) [Field E] [NumberField E] (a r : ℕ) (x 
   rw [map_mul, map_mul, hB, mul_zero, zero_mul]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ a r U hU`. Rewrite `hU` using `[(Units.isInducing_embedProduct (M := Matrix (Fin a) (Fin a) (Ad E))).nhds_eq_comap, Filter.mem_comap]`. Take `⟨t, ht, htU⟩` from `hU`. Set `φ : Matrix (Fin a) (Fin a) (Ad E) → Matrix (Fin a) (Fin a) (Ad E) × (Matrix (Fin a) (Fin a) (Ad E))ᵐᵒᵖ` to `fun Z => (1 + Z, MulOpposite.op (1 - Z))`. Establish `hφ : Continuous φ` using `(continuous_const.add continuous_id).prodMk (MulOpposite.continuous_op.comp (continuous_const.sub continuous_id))`.
+
+Establish `hφ0 : φ (liftMat E a 0) = Units.embedProduct _ (1 : GA E a)`. Rewrite using `[liftMat_zero]`. Simplify using `only [φ, add_zero, sub_zero, Units.embedProduct_apply, inv_one, Units.val_one]`. Establish `hnb : (φ ∘ liftMat E a) ⁻¹' t ∈ 𝓝 (0 : GroundTheory.Automorphic.AutomorphicForm.ArchMatrix E a)` using `(hφ.comp (continuous_liftMat E a)).continuousAt.preimage_mem_nhds (by`. Rewrite using `[Function.comp_apply, hφ0]`.
+
+Conclude with `ht)`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hnb`. Use `⟨ε / 2, by positivity, fun x P hP hnorm => htU ?_⟩` and prove the remaining obligations. Apply the tactic sequence `set Z := ((x⁻¹ : GA E a) : Matrix (Fin a) (Fin a) (Ad E)) * GroundTheory.Automorphic.AutomorphicForm.blockEntry P * (x : Matrix (Fin a) (Fin a) (Ad E)) with hZdef`. Establish `hmem : GroundTheory.Automorphic.CuspidalSpectrum.archMat E a Z ∈ Metric.ball 0 ε`.
+
+Rewrite using `[mem_ball_zero_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hball hmem`. Rewrite `h1` using `[Set.mem_preimage, Function.comp_apply, liftMat_archMat E a Z (conj_blockEntry_snd E a r x P hP)]`. Rewrite using `[Set.mem_preimage]`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Establish `hv : ((x⁻¹ * unip P * x : GA E a) : Matrix (Fin a) (Fin a) (Ad E)) = 1 + Z`. Rewrite using `[Units.val_mul, Units.val_mul]`. Express the relevant statement in the definitionally equal form `((x⁻¹ : GA E a) : Matrix (Fin a) (Fin a) (Ad E)) * (1 + nilM P) * (x : Matrix (Fin a) (Fin a) (Ad E)) = _`. Rewrite using `[mul_add, add_mul, mul_one, Units.inv_mul, hZdef]`.
+
+Both sides reduce to the same expression. Establish `hi : ((x⁻¹ * unip P * x : GA E a)⁻¹ : GA E a).val = 1 - Z`. Rewrite using `[mul_inv_rev, mul_inv_rev, inv_inv, ← mul_assoc, Units.val_mul, Units.val_mul]`. Express the relevant statement in the definitionally equal form `((x⁻¹ : GA E a) : Matrix (Fin a) (Fin a) (Ad E)) * (1 - nilM P) * (x : Matrix (Fin a) (Fin a) (Ad E)) = _`. Rewrite using `[mul_sub, sub_mul, mul_one, Units.inv_mul, hZdef]`.
+
+Both sides reduce to the same expression. Simplify using `only [Units.embedProduct_apply, φ]`. Rewrite using `[hv, hi]`.
+-/
 theorem conj_unip_mem_nhds : ∀ (E : Type) [Field E] [NumberField E] (a r : ℕ) (U : Set (GA E a)), U ∈ 𝓝 (1 : GA E a) →
     ∃ δ : ℝ, 0 < δ ∧ ∀ (x : GA E a) (P : BlockIx a r → Ad E), (∀ p, (P p).2 = 0) →
       ‖GroundTheory.Automorphic.CuspidalSpectrum.archMat E a (((x⁻¹ : GA E a) : Matrix (Fin a) (Fin a) (Ad E)) *

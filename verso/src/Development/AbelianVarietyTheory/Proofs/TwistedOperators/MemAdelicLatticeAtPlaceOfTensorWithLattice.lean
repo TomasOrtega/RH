@@ -32,9 +32,19 @@ def mulL {d : ℕ} (c : E) : (Fin d → GlobalTheory.IndefiniteRowSideFullHecke.
   map_zero' := by ext j; simp
   map_add' z z' := by ext j; simp [mul_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma mulL_apply {d : ℕ} (c : E) (z : Fin d → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) (j : Fin d) :
     mulL (F := F) c z j = inclR (F := F) (AF F) c * z j := rfl
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hai, y, hy, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, hai, o • y, W.L.smul_mem o hy, ?_⟩` and prove the remaining obligations. Use extensionality with `j`.
+
+Simplify using `only [mulL_apply, Pi.smul_apply]`. Rewrite using `[Algebra.smul_def (A := E) o (y j), map_mul, mul_smul_comm]`. Consider the case `zero => simpa using (GlobalTheory.InertSph.latAt W v).zero_mem`. Consider the case `add z z' _ _ h h' => rw [map_add]`. Conclude with `(GlobalTheory.InertSph.latAt W v).add_mem h h'`.
+
+Consider the case `neg z _ h => rw [map_neg]`. Conclude with `(GlobalTheory.InertSph.latAt W v).neg_mem h`.
+-/
 lemma mulL_int_mem {d : ℕ} (W : Spc F E d) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (o : 𝓞 E)
     {z : Fin d → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E}
     (hz : z ∈ GlobalTheory.InertSph.latAt W v) : mulL (F := F) (o : E) z ∈ GlobalTheory.InertSph.latAt W v := by
@@ -63,6 +73,15 @@ def rowL {n d : ℕ} (i₀ : Fin n) (c : E) :
   map_zero' := by ext j; simp
   map_add' z z' := by ext j; simp [mul_add]
 
+/- English proof (translation)
+Proceed by induction on `hΓ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hai, x, hx, y, hy, rfl⟩` from `hz`. Take `⟨o, ho⟩` from `hc x hx`. Use `AddSubgroup.subset_closure ⟨a, ha, hai, o • y, W.L.smul_mem o hy, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `j`. Use `show inclR (F := F) (AF F) c * (a • incM F (Matrix.vecMulVec x y)) i₀ j = _`. Simplify using `only [Matrix.smul_apply, Pi.smul_apply, incM, Matrix.map_apply, Matrix.vecMulVec_apply]`. Rewrite using `[Algebra.smul_def (A := E) o (y j), mul_smul_comm, ← map_mul, ← mul_assoc]`. Use `congr 2`.
+
+Rewrite using `[← ho]`. Consider the case `zero => simpa using (GlobalTheory.InertSph.latAt W v).zero_mem`. Consider the case `add z z' _ _ h h' => rw [map_add]`. Conclude with `(GlobalTheory.InertSph.latAt W v).add_mem h h'`. Consider the case `neg z _ h => rw [map_neg]`.
+
+Conclude with `(GlobalTheory.InertSph.latAt W v).neg_mem h`.
+-/
 lemma rowL_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (i₀ : Fin n) (c : E)
     (hc : ∀ x ∈ X.L, ∃ o : 𝓞 E, (o : E) = c * x i₀)
     {Γ : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)} (hΓ : Γ ∈ latAtV X W v) :
@@ -82,6 +101,9 @@ lemma rowL_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : GlobalTheory.Ind
   | add z z' _ _ h h' => rw [map_add]; exact (GlobalTheory.InertSph.latAt W v).add_mem h h'
   | neg z _ h => rw [map_neg]; exact (GlobalTheory.InertSph.latAt W v).neg_mem h
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `only [rowL, mulL, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.vecMulVec_apply, map_mul, mul_assoc]`.
+-/
 lemma rowL_vecMulVec {n d : ℕ} (i₀ : Fin n) (c : E) (x : Fin n → E) (q : Fin d → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) :
     rowL (F := F) i₀ c (Matrix.vecMulVec (fun i => inclR (F := F) (AF F) (x i)) q) = mulL (F := F) (c * x i₀) q := by
   ext j
@@ -113,6 +135,23 @@ def coefSub {d : ℕ} (W : Spc F E d) (v : GlobalTheory.IndefiniteRowSideFullHec
       ext j; simp only [mulL_apply, Algebra.smul_def, map_mul, mul_assoc]
     rw [this]; exact mulL_int_mem W v o hc
 
+/- English proof (translation)
+Use `set i₀ : Fin n := ⟨0, hn⟩`. Set `b₀ : Submodule (𝓞 E) E` to `X.L.map (LinearMap.proj (R := 𝓞 E) (φ := fun _ : Fin n => E) i₀)`. Establish `hfg : b₀.FG` using `hL.fg.map _`. Set `𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E` to `⟨b₀, FractionalIdeal.isFractional_of_fg hfg⟩`. Establish `hmem : ∀ b, b ∈ 𝔟 ↔ ∃ x ∈ X.L, x i₀ = b` using `fun b => by`.
+
+Rewrite using `[← FractionalIdeal.mem_coe]`. Conclude with `Submodule.mem_map`. Establish `hne : 𝔟 ≠ 0`. Introduce `h0`. Establish `hle : Submodule.span E (X.L : Set (Fin n → E)) ≤ LinearMap.ker (LinearMap.proj (R` using `E) (φ := fun _ : Fin n => E) i₀) := by`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Establish `: x i₀ ∈ 𝔟` using `(hmem _).2 ⟨x, hx, rfl⟩`. Rewrite `this` using `[h0, FractionalIdeal.mem_zero_iff]`. Simplify using `using this`.
+
+Rewrite `hle` using `[hL.span_eq_top]`. Use `hle (Submodule.mem_top (x := Pi.single i₀ (1 : E)))` as an intermediate fact. Simplify using `at this`. Establish `hone : (1 : E) ∈ ((𝔟⁻¹ * 𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E)`. Rewrite using `[inv_mul_cancel₀ hne, FractionalIdeal.mem_coe]`.
+
+Conclude with `FractionalIdeal.one_mem_one _`. Establish `hle : ((𝔟⁻¹ * 𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E) ≤ coefSub W v q`. Rewrite using `[FractionalIdeal.coe_mul, Submodule.mul_le]`. Introduce `c hc b hb`. Rewrite `hc` using `[FractionalIdeal.mem_coe, FractionalIdeal.mem_inv_iff hne]`.
+
+Rewrite `hb` using `[FractionalIdeal.mem_coe, hmem]`. Take `⟨x, hx, rfl⟩` from `hb`. Establish `hc' : ∀ x ∈ X.L, ∃ o : 𝓞 E, (o : E) = c * x i₀`. Introduce `x hx`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 (hc _ ((hmem _).2 ⟨x, hx, rfl⟩))`.
+
+Conclude with `⟨o, ho⟩`. Express the relevant statement in the definitionally equal form `mulL (F := F) (c * x i₀) q ∈ GlobalTheory.InertSph.latAt W v`. Rewrite using `[← rowL_vecMulVec]`. Conclude with `rowL_mem X W v i₀ c hc' (h x hx)`. Establish `h1 : mulL (F` using `F) (1 : E) q ∈ GlobalTheory.InertSph.latAt W v := hle hone`.
+
+Establish `: mulL (F` using `F) (1 : E) q = q := by ext j; simp [mulL_apply]`. Rewrite `h1` using `[this]`. Then use the resulting hypothesis.
+-/
 theorem extract (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (q : Fin d → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) (hn : 0 < n) (hL : X.L.IsLattice E)
     (h : ∀ x ∈ X.L, Matrix.vecMulVec (fun i => inclR (F := F) (AF F) (x i)) q ∈ latAtV X W v) :
@@ -155,6 +194,9 @@ theorem extract (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (v : GlobalTheory.In
 
 end GlobalTheory.LatExtract
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n d X W v q hn hL h` and use `GlobalTheory.LatExtract.extract n d X W v q hn hL h`.
+-/
 theorem GlobalTheory.LatExtract.main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ)
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (q : Fin d → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E), 0 < n → X.L.IsLattice E →

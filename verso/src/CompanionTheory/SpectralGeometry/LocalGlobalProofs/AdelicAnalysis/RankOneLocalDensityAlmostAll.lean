@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.LocGood
 
+/- English proof (translation)
+Establish `h` using `Valued.isOpen_ball (Fv F v) (Valued.v.restrict s)`. Establish `h' : IsOpen {y : Fv F v | Valued.v y < Valued.v s}`. Simplify `h` using `[Valuation.restrict_lt_iff]`. Conclude with `h'.preimage (continuous_id.sub continuous_const)`.
+-/
 theorem isOpen_ball_sub {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (s : Fv F v) : IsOpen {z : Fv F v | Valued.v (z - s) < Valued.v s} := by
   have h := Valued.isOpen_ball (Fv F v) (Valued.v.restrict s)
@@ -26,6 +29,51 @@ theorem isOpen_ball_sub {F : Type} [Field F] [NumberField F] (v : HeightOneSpect
     simpa [Valuation.restrict_lt_iff] using h
   exact h'.preimage (continuous_id.sub continuous_const)
 
+/- English proof (translation)
+Establish `hloc : IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F v`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Fv F v) := hloc.1`. Use `haveI : LocallyCompactSpace (Fv F v) := hloc.2.1`. Use `haveI : SecondCountableTopology (Fv F v) := hloc.2.2.1`.
+
+Use `haveI : T2Space (Fv F v) := hloc.2.2.2.1`. Use `haveI := hlam.1`. Take `⟨-, -, -, hT2K, -, -, -, hBorW, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)`. Use `haveI := hT2K`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b lam hlam.1`.
+
+Take `⟨hLc, hLo, -, -⟩` from `GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b 1 M v`. Take `⟨hSh, hSl, hSm⟩` from `GlobalTheory.CompanionTheory.SW.hermScal_main F E σ hCM (Fv F v) d b`. Take `⟨-, -, -, hHB, hG⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hCM (Fv F v) 1`. Take `⟨g, -, hgram⟩` from `hG M J hJ`. Take `⟨hcm, hcmap⟩` from `GlobalTheory.T.measurable_coordinate_maps_tensor F E σ hCM (Fv F v) d b M lam hlam.1`.
+
+Use `haveI : BorelSpace (Fin 1 → Fin M → Fv F v ⊗[F] E) := hBorW 1 M`. Use `haveI : BorelSpace (HermR (Fv F v) σ 1) := hHB`. Establish `hLm : MeasurableSet (latV (M` using `M) (n := 1) b v) := hLo.measurableSet`. Take `⟨c, hcdef⟩ : ∃ c : (Fin 1 → Fin M → Fv F v ⊗[F] E) → (Fin M × Fin d → Fv F v), c = fun X p => (Algebra.TensorProduct.basis (Fv F v) b).repr (X 0 p.1) p.2` from `⟨_, rfl⟩`. Rewrite `hcm`, `hcmap` using `[← hcdef]`.
+
+Take `⟨φ, hφ⟩ : ∃ φ : (Fin 1 → Fin M → Fv F v ⊗[F] E) → ℂ, φ = (latV b v).indicator (fun _ => (1 : ℂ))` from `⟨_, rfl⟩`. Establish `hcl : IsClopen (latV (M` using `M) (n := 1) b v) := ⟨hLc.isClosed, hLo⟩`. Establish `hφc : Continuous φ`. Rewrite using `[hφ]`. Conclude with `Continuous.indicator (fun a ha => by`.
+
+Rewrite `ha` using `[hcl.frontier_eq]`. Conclude with `absurd ha (Set.notMem_empty a)) continuous_const`. Establish `hφs : HasCompactSupport φ`. Rewrite using `[hφ]`. Conclude with `HasCompactSupport.intro hLc (fun x hx => Set.indicator_of_notMem hx _)`.
+
+Take `⟨⟨hgc, hgi⟩, -⟩` from `GlobalTheory.T.gram_fiber_integral_isContDensityOn F E σ hCM M J hJ (Fv F v) hloc 1 (coordW (Fv F v) b lam 1 M) (coordHerm (Fv F v) σ b lam 1) m (hW 1 M) (hH 1) hm φ hφc hφs`. Establish `hval : ∀ T, ∫ X, φ X ∂(m T) = (((m T (latV b v)).toReal : ℝ) : ℂ)` using `fun T => by`. Rewrite using `[hφ, integral_indicator_const (1 : ℂ) hLm]`. Simplify using `[Measure.real]`. Establish `hinj : Function.Injective (hermScal (Fv F v) σ)` using `hSh.injective`.
+
+Establish `hEmb : MeasurableEmbedding (hermScal (Fv F v) σ)` using `(hSh.homeomorph _).isClosedEmbedding.measurableEmbedding`. Establish `hunit : ∀ z ∈ {z : Fv F v | Valued.v (z - s) < Valued.v s}, hermScal (Fv F v) σ z ∈ {S : HermR (Fv F v) σ 1 | IsUnit (S : Matrix (Fin 1) (Fin 1) (Fv F v ⊗[F] E)).det}`. Introduce `z hz`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hz`. Establish `hu : IsUnit (algebraMap (Fv F v) (Fv F v ⊗[F] E) z)` using `(IsUnit.mk0 z hz0).map _`. Use `show IsUnit (Matrix.det _)`. Rewrite using `[Matrix.det_fin_one]`. Simplify `hu` using `[hermScal, Algebra.TensorProduct.algebraMap_apply]`.
+
+Establish `hcont : ContinuousOn (fun z => (m (hermScal (Fv F v) σ z) (latV b v)).toReal) {z : Fv F v | Valued.v (z - s) < Valued.v s}`. Establish `h1` using `hgc.comp hSh.continuous.continuousOn hunit`. Establish `h2` using `Complex.continuous_re.comp_continuousOn h1`. Use `h2.congr fun z _ => ?_` and prove the remaining obligations. Simplify using `[hval]`.
+
+Establish `hkey : ∀ C : Set (Fv F v), IsCompact C → C ⊆ {z | Valued.v (z - s) < Valued.v s} → ∫ z in C, (m (hermScal (Fv F v) σ z) (latV b v)).toReal ∂lam = ((D : ℝ≥0∞) * lam C).toReal`. Introduce `C hC hCB`. Establish `hCm : MeasurableSet C` using `hC.measurableSet`. Establish `hsub : hermScal (Fv F v) σ '' C ⊆ {S : HermR (Fv F v) σ 1 | IsUnit (S : Matrix (Fin 1) (Fin 1) (Fv F v ⊗[F] E)).det}`. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Conclude with `hunit z (hCB hz)`. Establish `e : ∫ X in gramR (Fv F v) σ J ⁻¹' (Subtype.val '' (hermScal (Fv F v) σ '' C)), φ X ∂(coordW (Fv F v) b lam 1 M) = ∫ T in hermScal (Fv F v) σ '' C, ∫ X, φ X ∂(m T) ∂(coordHerm (Fv F v) σ b lam 1)` using `hgi _ (hC.image hSh.continuous) hsub`. Establish `hO : MeasurableSet (v.adicCompletionIntegers F : Set (Fv F v))` using `(Valued.isOpen_valuationSubring _).measurableSet`. Establish `hTm : MeasurableSet {x : Fin M × Fin d → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (Bv *ᵥ x)) ∈ C}`. Establish `h1 : MeasurableSet {x : Fin M × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F}`.
+
+Establish `: {x : Fin M × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} = ⋂ i, (fun x : Fin M × Fin d → Fv F v => x i) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `MeasurableSet.iInter fun i => measurable_pi_apply i hO`.
+
+Establish `hq : Continuous fun x : Fin M × Fin d → Fv F v => (2 : Fv F v)⁻¹ * (x ⬝ᵥ (Bv *ᵥ x))` using `continuous_const.mul (continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id))`. Conclude with `h1.inter (hq.measurable hC.isClosed.measurableSet)`. Establish `hset : (gramR (Fv F v) σ J ⁻¹' (Subtype.val '' (hermScal (Fv F v) σ '' C))) ∩ latV b v = c ⁻¹' {x : Fin M × Fin d → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (Bv *ᵥ x)) ∈ C}`. Use extensionality with `X`. Establish `hgX` using `hgram X`.
+
+Establish `hQ : hermScal (Fv F v) σ ((2 : Fv F v)⁻¹ * (c X ⬝ᵥ (Bv *ᵥ c X))) = g X`. Establish `h1` using `hSl (g X)`. Establish `h2 : ((g X : HermR (Fv F v) σ 1) : Matrix (Fin 1) (Fin 1) (Fv F v ⊗[F] E)) 0 0 = hR (Fv F v) σ J (X 0) (X 0)`. Rewrite using `[← hgX]`. Both sides reduce to the same expression.
+
+Establish `h3 : algebraMap F (Fv F v) (1 / 2) = (2 : Fv F v)⁻¹`. Rewrite using `[one_div, map_inv₀, map_ofNat]`. Rewrite `h1` using `[h2, hform, h3]`. Rewrite using `[hcdef]`. Conclude with `h1`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨T, ⟨z, hz, rfl⟩, hT⟩, hL⟩`. Use `⟨fun p => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcdef]`. Conclude with `hL 0 p.1 p.2`.
+
+Establish `h1 : hermScal (Fv F v) σ z = g X` using `Subtype.ext (hT.trans hgX)`. Rewrite using `[← hinj (h1.trans hQ.symm)]`. Conclude with `hz`. Introduce and unpack `⟨hi, hq⟩`. Use `⟨⟨g X, ⟨_, hq, hQ⟩, hgX.symm⟩, fun a i k => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : a = 0` from `Subsingleton.elim _ _`. Use `hi (i, k)` as an intermediate fact. Rewrite `this` using `[hcdef]`. Conclude with `this`. Establish `hmass : coordW (Fv F v) b lam 1 M ((gramR (Fv F v) σ J ⁻¹' (Subtype.val '' (hermScal (Fv F v) σ '' C))) ∩ latV b v) = (D : ℝ≥0∞) * lam C`.
+
+Rewrite using `[hset, ← Measure.map_apply hcm hTm, hcmap]`. Conclude with `hD C hCm hCB`. Rewrite `e` using `[hφ, setIntegral_indicator hLm, setIntegral_const, ← hφ, ← hSm lam hlam.1, hEmb.setIntegral_map, Set.preimage_image_eq _ hinj]`. Rewrite `e` using `[hval]`. Rewrite `e` using `[integral_complex_ofReal, Measure.real, hmass, Complex.real_smul, mul_one]`.
+
+Conclude with `(Complex.ofReal_injective e).symm`. Establish `hsmem : s ∈ {z : Fv F v | Valued.v (z - s) < Valued.v s}`. Simplify `hs0` using `[zero_lt_iff]`. Establish `hfin` using `GlobalTheory.CompanionTheory.SW.eq_of_setLIntegral_compact_eq (Fv F v) lam _ (isOpen_ball_sub v s) (fun z => ENNReal.ofReal (m (hermScal (Fv F v) σ z) (latV b v)).toReal) (fun _ => (D : ℝ≥0∞)) (ENNReal.continuous_ofReal.comp_continuousOn hcont) continuousOn_const (fun C hC hCB => …`. Establish `hint : IntegrableOn (fun z => (m (hermScal (Fv F v) σ z) (latV b v)).toReal) C lam` using `(hcont.mono hCB).integrableOn_compact hC`.
+
+Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun _ => ENNReal.toReal_nonneg), hkey C hC hCB, ENNReal.ofReal_toReal (ENNReal.mul_ne_top ENNReal.coe_ne_top hC.measure_lt_top.ne), setLIntegral_const])`. Use `s hsmem`. Use `congrArg ENNReal.toReal hfin` as an intermediate fact. Simplify `this` using `[ENNReal.toReal_ofReal ENNReal.toReal_nonneg]`.
+-/
 theorem local_mass {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
     (hJ : IsHermND σ J) (d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
@@ -182,6 +230,19 @@ theorem local_mass {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   have := congrArg ENNReal.toReal hfin
   simpa [ENNReal.toReal_ofReal ENNReal.toReal_nonneg] using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ h3 d b`. Take `⟨B, hBs, hBd, hBt⟩` from `GlobalTheory.CompanionTheory.SW.trace_form_coords F E σ hCM M J hJ d b`. Take `⟨-, hun⟩` from `GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hCM d b`. Establish `hd : d = 2`. Establish `h1` using `Module.finrank_eq_card_basis b`.
+
+Rewrite `h1` using `[hCM.2.2.1, Fintype.card_fin]`. Conclude with `h1.symm`. Establish `hcard : Fintype.card (Fin M × Fin d) = 2 * M`. Rewrite using `[Fintype.card_prod, Fintype.card_fin, Fintype.card_fin, hd, mul_comm]`. Establish `hent : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ i j, algebraMap F (Fv F v) (B i j) ∈ v.adicCompletionIntegers F`.
+
+Use `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : B i j = 0`. Use `Filter.Eventually.of_forall fun v => ?_` and prove the remaining obligations. Rewrite using `[h0, map_zero]`. Conclude with `zero_mem _`.
+
+Use `(hun _ h0).mono fun v hv => ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hv.le`. Use `filter_upwards [hun 2 two_ne_zero, hun _ hBd, hent] with v hv2 hvd hve lam hlam m hm s hs hs0`. Establish `hv2' : Valued.v (2 : Fv F v) = 1` using `by rwa [map_ofNat] at hv2`.
+
+Establish `hdet : Valued.v (B.map (algebraMap F (Fv F v))).det = 1`. Establish `h1` using `(algebraMap F (Fv F v)).map_det B`. Rewrite `hvd` using `[h1]`. Conclude with `hvd`. Take `⟨D, hD1, hD⟩` from `GlobalTheory.T.local_quadratic_density_bound_nonzero F v lam hlam hv2' (Fin M × Fin d) (B.map (algebraMap F (Fv F v))) (hBs.map _) (fun i j => hve i j) hdet M hcard h3 s hs hs0`.
+
+Rewrite using `[local_mass σ hCM M J hJ d b v (B.map (algebraMap F (Fv F v))) (fun x y => hBt (Fv F v) x y) lam hlam m hm s hs0 D hD]`. Conclude with `hD1`.
+-/
 theorem density_standard_lattice : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ (lam : Measure (Fv F v)), IsStdV v lam → ∀ m, IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b lam 1 M) (coordHerm (Fv F v) σ b lam 1) m → ∀ s : Fv F v, s ∈ v.adicCompletionIntegers F → s ≠ 0 → |(m (hermScal (Fv F v) σ s) (latV b v)).toReal - 1| ≤ 2 / (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1) := by
   intro F E _ _ _ _ _ σ hCM M J hJ h3 d b
   classical

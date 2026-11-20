@@ -34,10 +34,16 @@ def LevFam.glue (A : LevFam E K n SG) (B : LevFam E K n Q) : LevFam E K n (uSG S
   if h : w.1 ∈ SG then A ⟨w.1, h⟩ else B ⟨w.1, (Finset.mem_union.mp w.2).resolve_left h⟩
 
 open Classical in
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem LevFam.glue_of_mem (A : LevFam E K n SG) (B : LevFam E K n Q) (w : uSG SG Q) (h : w.1 ∈ SG) :
     A.glue B w = A ⟨w.1, h⟩ := dif_pos h
 
 open Classical in
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 theorem LevFam.glue_of_not (A : LevFam E K n SG) (B : LevFam E K n Q) (w : uSG SG Q) (h : w.1 ∉ SG) :
     A.glue B w = B ⟨w.1, (Finset.mem_union.mp w.2).resolve_left h⟩ := dif_neg h
 
@@ -53,8 +59,14 @@ def extGLG : GLG E n SG →* GLG E n (uSG SG Q) where
     funext w
     by_cases h : w.1 ∈ SG <;> simp [h]
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem extGLG_of_mem (g : GLG E n SG) (w : uSG SG Q) (h : w.1 ∈ SG) : extGLG Q g w = g ⟨w.1, h⟩ := dif_pos h
 
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 theorem extGLG_of_not (g : GLG E n SG) (w : uSG SG Q) (h : w.1 ∉ SG) : extGLG Q g w = 1 := dif_neg h
 
 end Glue
@@ -64,14 +76,23 @@ section Norm
 def Lev.NormBy {κ K : Type} [CommRing κ] [Field K] {n : ℕ} (l : Lev κ K n) (a : GL (Fin n) κ) : Prop :=
   ∀ h : ↥l.H, ∃ h' : ↥l.H, a⁻¹ * h.1 = h'.1 * a⁻¹ ∧ l.lam h' = l.lam h
 
+/- English proof (translation)
+Introduce `h` and use `⟨h, by simp, rfl⟩`.
+-/
 theorem Lev.normBy_one {κ K : Type} [CommRing κ] [Field K] {n : ℕ} (l : Lev κ K n) : l.NormBy 1 :=
   fun h => ⟨h, by simp, rfl⟩
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨h', e1, e2⟩ := H h exact ⟨h', e1, congrArg (·⁻¹) e2⟩`.
+-/
 theorem Lev.NormBy.inv {κ K : Type} [CommRing κ] [Field K] {n : ℕ} {l : Lev κ K n} {a : GL (Fin n) κ}
     (H : l.NormBy a) : l.inv.NormBy a := fun h => by
   obtain ⟨h', e1, e2⟩ := H h
   exact ⟨h', e1, congrArg (·⁻¹) e2⟩
 
+/- English proof (translation)
+Rewrite using `[piChar, MonoidHom.finsetProd_apply]`. Both sides reduce to the same expression.
+-/
 theorem piChar_apply {K : Type} [Field K] {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)]
     (H : ∀ i, Subgroup (G i)) (lam : ∀ i, ↥(H i) →* Kˣ) (x : ↥(Subgroup.pi Set.univ H)) :
     piChar H lam x = ∏ i, lam i (piProj H i x) := by
@@ -80,10 +101,18 @@ theorem piChar_apply {K : Type} [Field K] {ι : Type} [Fintype ι] {G : ι → T
 
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
 
+/- English proof (translation)
+The claim follows from `piChar_apply (fun w => (Λ w).H) (fun w => (Λ w).lam) h`.
+-/
 theorem LevFam.chr_apply (Λ : LevFam X.E X.K n SG) (h : ↥Λ.grp) :
     Λ.chr h = ∏ w, (Λ w).lam ⟨h.1 w, h.2 w (Set.mem_univ w)⟩ :=
   piChar_apply (fun w => (Λ w).H) (fun w => (Λ w).lam) h
 
+/- English proof (translation)
+Use `choose f hf1 hf2 using fun w => ha w ⟨h.1 w, h.2 w (Set.mem_univ w)⟩`. Use `⟨⟨fun w => (f w).1, fun w _ => (f w).2⟩, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Conclude with `hf1 w`. Rewrite using `[LevFam.chr_apply, LevFam.chr_apply]`.
+
+Conclude with `Finset.prod_congr rfl fun w _ => hf2 w`.
+-/
 theorem LevFam.normBy (Λ : LevFam X.E X.K n SG) (a : GLG X.E n SG) (ha : ∀ w, (Λ w).NormBy (a w)) (h : ↥Λ.grp) :
     ∃ h' : ↥Λ.grp, a⁻¹ * h.1 = h'.1 * a⁻¹ ∧ Λ.chr h' = Λ.chr h := by
   choose f hf1 hf2 using fun w => ha w ⟨h.1 w, h.2 w (Set.mem_univ w)⟩
@@ -110,9 +139,17 @@ def trF (V : Type) [AddCommGroup V] [Module X.K V] :
     show φ (((1 : UF X.E n), (a * b)⁻¹) • d) = φ (((1 : UF X.E n), b⁻¹) • ((1 : UF X.E n), a⁻¹) • d)
     rw [smul_smul, Prod.mk_mul_mk, one_mul, mul_inv_rev]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trF_apply (V : Type) [AddCommGroup V] [Module X.K V] (a : GLG X.E n SG) (φ : DecoSet X.E n ST SG → V)
     (d : DecoSet X.E n ST SG) : trF X n ST SG V a φ d = φ (((1 : UF X.E n), a⁻¹) • d) := rfl
 
+/- English proof (translation)
+Introduce `g d`. Take `⟨h', e1, e2⟩` from `Λ.normBy a ha g.2`. Establish `h1 : φ ((g.1, (h'.1 : GLG X.E n SG)) • ((1 : UF X.E n), a⁻¹) • (d : DecoSet X.E n ST SG)) = ((Λ.chr h' : X.Kˣ) : X.K) • C.rho g.1 (φ (((1 : UF X.E n), a⁻¹) • (d : DecoSet X.E n ST SG)))` using `hφ ((g.1, h') : FormG Λ) _`. Use `show φ (((1 : UF X.E n), a⁻¹) • (g.1, (g.2.1 : GLG X.E n SG)) • (d : DecoSet X.E n ST SG)) = ((Λ.chr g.2 : X.Kˣ) : X.K) • C.rho g.1 (φ (((1 : UF X.E n), a⁻¹) • (d : DecoSet X.E n ST SG)))`. Rewrite `h1` using `[smul_smul, Prod.mk_mul_mk, mul_one]`.
+
+Rewrite using `[smul_smul, Prod.mk_mul_mk, one_mul, e1, h1, e2]`.
+-/
 theorem trF_mem (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG) (a : GLG X.E n SG)
     (ha : ∀ w, (Λ w).NormBy (a w)) (φ : DecoSet X.E n ST SG → C.V) (hφ : φ ∈ (formGSD C Λ).EqFun) :
     trF X n ST SG C.V a φ ∈ (formGSD C Λ).EqFun := by
@@ -146,6 +183,9 @@ def trRep (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG) {A :
     rw [map_mul, map_mul]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trRep_apply (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG) {A : Type} [Group A]
     (ι : A →* GLG X.E n SG) (hι : ∀ a w, (Λ w).NormBy (ι a w)) (a : A) (φ : (formGSD C Λ).EqFun)
     (d : DecoSet X.E n ST SG) :
@@ -181,16 +221,25 @@ def QE (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (ξ
 
 end Sel
 
+/- English proof (translation)
+Establish `h1 : R.m * (R.t + 1) = R.m * R.t + R.m` using `by ring`. Establish `h2` using `R.m_add_three_le_k`. Unfold `Ranks.N Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_X'_eq (R : Ranks) : R.N R.m - 1 = R.r + R.m * R.t := by
   have h1 : R.m * (R.t + 1) = R.m * R.t + R.m := by ring
   have h2 := R.m_add_three_le_k
   unfold Ranks.N Ranks.r
   omega
 
+/- English proof (translation)
+Rewrite using `[rank_X'_eq R]`. Conclude with `Nat.le_add_right _ _`.
+-/
 theorem r_le_X' (R : Ranks) : R.r ≤ R.N R.m - 1 := by
   rw [rank_X'_eq R]
   exact Nat.le_add_right _ _
 
+/- English proof (translation)
+The claim follows from `Nat.le_add_right _ _`.
+-/
 theorem r_le_nV (R : Ranks) : R.r ≤ R.nV := Nat.le_add_right _ _
 
 section RBlock
@@ -307,6 +356,9 @@ end Forms
 
 section G0
 
+/- English proof (translation)
+Introduce `M`. Use `⟨⟨diagEmb κ h g⁻¹ * M.1 * (diagEmb κ h g⁻¹)⁻¹, HK_conj_diagEmb h g⁻¹ M.2⟩, ?_, lamK_conj_diagEmb χ h g⁻¹ M⟩` and prove the remaining obligations. Use `show (diagEmb κ h g)⁻¹ * M.1 = diagEmb κ h g⁻¹ * M.1 * (diagEmb κ h g⁻¹)⁻¹ * (diagEmb κ h g)⁻¹`. Rewrite using `[map_inv, inv_inv, mul_assoc, mul_inv_cancel, mul_one]`.
+-/
 theorem HK_normBy {κ K : Type} [CommRing κ] [Field K] {n r : ℕ} (h : r ≤ n) (bl : List ℕ) (χ : ℕ → κˣ →* Kˣ)
     (g : GL (Fin r) κ) : (⟨HK n κ r bl, lamK χ n r bl⟩ : Lev κ K n).NormBy (diagEmb κ h g) := by
   intro M
@@ -326,6 +378,11 @@ variable (Pr) in
 def unipotentGroupBlockEmbedding {r n : ℕ} (h : r ≤ n) : G0 X.E Pr.vGs r →* GLG X.E n (rowSG Pr sel mu) :=
   (extGLG (QE sel (mu : Chr X.F X.E X.K))).comp (diagonalEmbeddingProduct Pr.vGs h)
 
+/- English proof (translation)
+Apply `Lev.NormBy.inv` to reduce the goal to its premises. Distinguish the cases in `h : w.1 ∈ Pr.vGs`. Rewrite using `[rowTyKK, LevFam.glue_of_mem _ _ w h] show Lev.NormBy _ (extGLG _ (diagonalEmbeddingProduct Pr.vGs (r_le_X' R) a) w)`. Rewrite using `[extGLG_of_mem _ w h]`. Conclude with `HK_normBy (r_le_X' R) _ _ _`.
+
+Rewrite using `[rowTyKK, LevFam.glue_of_not _ _ w h] show Lev.NormBy _ (extGLG _ (diagonalEmbeddingProduct Pr.vGs (r_le_X' R) a) w)`. Rewrite using `[extGLG_of_not _ w h]`. Conclude with `Lev.normBy_one _`.
+-/
 theorem rowTyKK_inv_normBy_g0Hat (a : G0 X.E Pr.vGs R.r) (w : rowSG Pr sel mu) :
     ((rowTyKK Ch sel mu).inv w).NormBy (unipotentGroupBlockEmbedding Pr sel mu (r_le_X' R) a w) := by
   apply Lev.NormBy.inv
@@ -339,6 +396,11 @@ theorem rowTyKK_inv_normBy_g0Hat (a : G0 X.E Pr.vGs R.r) (w : rowSG Pr sel mu) :
     rw [extGLG_of_not _ w h]
     exact Lev.normBy_one _
 
+/- English proof (translation)
+Apply `Lev.NormBy.inv` to reduce the goal to its premises. Distinguish the cases in `h : w.1 ∈ Pr.vGs`. Rewrite using `[mtTyKK, LevFam.glue_of_mem _ _ w h] show Lev.NormBy _ (extGLG _ (diagonalEmbeddingProduct Pr.vGs (r_le_nV R) a) w)`. Rewrite using `[extGLG_of_mem _ w h]`. Conclude with `HK_normBy (r_le_nV R) _ _ _`.
+
+Rewrite using `[mtTyKK, LevFam.glue_of_not _ _ w h] show Lev.NormBy _ (extGLG _ (diagonalEmbeddingProduct Pr.vGs (r_le_nV R) a) w)`. Rewrite using `[extGLG_of_not _ w h]`. Conclude with `Lev.normBy_one _`.
+-/
 theorem mtTyKK_inv_normBy_g0Hat (j : ℕ) (a : G0 X.E Pr.vGs R.r) (w : rowSG Pr sel mu) :
     ((mtTyKK Ch sel mu j).inv w).NormBy (unipotentGroupBlockEmbedding Pr sel mu (r_le_nV R) a w) := by
   apply Lev.NormBy.inv

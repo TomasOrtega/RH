@@ -19,5 +19,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AscFin.shiftRow_smul_mulVec_mem | exact GlobalTheory.AscFin.shiftRow_smul_mulVec_mem | (intros; apply GlobalTheory.AscFin.shiftRow_smul_mulVec_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.besselStep_depthLattice_mulVec_mem_completion : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m) (M : WO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0))), M ∈ latRow G (2 * ρ + 1) → ∀ v : GlobalTheory.FinPl.Pl D, ∀ y ∈ latV _ (G.Λ (.grid (2 * ρ + 2) 0)) (· = v), ∀ s ∈ GlobalTheory.SeeSaw.idV (D.host.AA⁻¹ * (shiftId G)⁻¹) v, s • (M *ᵥ y) ∈ latV _ (G.Λ (.grid (2 * ρ + 1) 0)) (· = v) := by
   first | exact @GlobalTheory.AscFin.shiftRow_smul_mulVec_mem | exact GlobalTheory.AscFin.shiftRow_smul_mulVec_mem | (intros; apply GlobalTheory.AscFin.shiftRow_smul_mulVec_mem <;> assumption)

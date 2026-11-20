@@ -3,15 +3,36 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 private theorem wt_root : ∀ i j : Fin 4, i ≠ j → wt i j ∈ roots := by
   decide
 
+/- English proof (translation)
+Establish `hd : Φ.χ 3 g = (Φ.χ 0 g)⁻¹ * (Φ.χ 1 g * Φ.χ 2 g)` using `eq_inv_mul_of_mul_eq h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Fr.rt, wt, lamW, muW, hd] <;>`. Apply the tactic sequence `apply Additive.ofMul.injective <;> simp <;> abel`.
+-/
 private theorem rt_wt' {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) (g : Γ)
     (h : Φ.χ 0 g * Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g) (i j : Fin 4) : Φ.rt (wt i j) g * Φ.χ j g = Φ.χ i g := by
   have hd : Φ.χ 3 g = (Φ.χ 0 g)⁻¹ * (Φ.χ 1 g * Φ.χ 2 g) := eq_inv_mul_of_mul_eq h
   fin_cases i <;> fin_cases j <;> simp [Fr.rt, wt, lamW, muW, hd] <;>
     apply Additive.ofMul.injective <;> simp <;> abel
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T c' h X hT i j hij`. Assume the negation of the conclusion as `hne`. Take `⟨g, hgL, hg⟩` from `hT.g3 _ (wt_root i j hne)`. Take `⟨g', rfl⟩` from `((galEq T).2.2 g).1 hgL`. Establish `hrel : (T.fr ∅).χ 0 (resLe T.F_le g') * (T.fr ∅).χ 3 (resLe T.F_le g') = (T.fr ∅).χ 1 (resLe T.F_le g') * (T.fr ∅).χ 2 (resLe T.F_le g')`.
+
+Simplify using `only [Tower.fr, MonoidHom.coe_comp, Function.comp_apply, chi]`. Apply the tactic sequence `cases T.pr <;> simp [lab, Raw.ps, Raw.th, mul_comm]`. Establish `key` using `rt_wt' (T.fr ∅) (resLe T.F_le g') hrel i j`. Establish `hcb` using `congrArg (fun φ => ((φ g' : (ResidueField c'.O)ˣ) : ResidueField c'.O)) hij`. Simplify using `only [OCh.cb_val] at hcb`.
+
+Simplify using `only [Tower.rb] at hg`. Use `set r := (T.fr ∅).rt (wt i j) (resLe T.F_le g') with hr_def`. Establish `key' : ((r : c.O) * (chi D T.pr j (resQ T.L g') : c.O)) = (chi D T.pr i (resQ T.L g') : c.O)`. Rewrite using `[← Units.val_mul]`. Conclude with `congrArg Units.val key`.
+
+Rewrite `hcb` using `[← key']`. Simplify using `only [map_mul] at hcb`. Establish `hu1 : residue c'.O (X.κ g' : c'.O) ≠ 0` using `((X.κ g').isUnit.map (residue c'.O)).ne_zero`. Establish `hu2 : residue c'.O (inc h (chi D T.pr j (resQ T.L g') : c.O)) ≠ 0` using `(((chi D T.pr j (resQ T.L g')).isUnit.map (inc h)).map (residue c'.O)).ne_zero`. Establish `hr : residue c'.O (inc h (r : c.O)) = 1`.
+
+Establish `h1` using `mul_left_cancel₀ hu1 hcb`. Conclude with `mul_right_cancel₀ hu2 (h1.trans (one_mul _).symm)`. Apply `hg` to reduce the goal to its premises. Assume the negation of the conclusion as `hne1`. Establish `hmem : (r : c.O) - 1 ∉ maximalIdeal c.O`.
+
+Introduce `hm`. Apply `hne1` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero, ← map_one (residue c.O), ← map_sub]`. Conclude with `(residue_eq_zero_iff _).2 hm`. Establish `hunit : IsUnit ((r : c.O) - 1)`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hmem ((mem_maximalIdeal _).2 hn)`. Establish `hu` using `(hunit.map (inc h)).map (residue c'.O)`. Rewrite `hu` using `[map_sub, map_sub, map_one, map_one, hr, sub_self]`. Conclude with `not_isUnit_zero hu`.
+-/
 theorem UpperTheory.V.Ws.Lk.cbInj :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (X : OCh T c' h), T.Ok → Function.Injective X.cb := by
   intro Ω _ _ _ l _ c D T c' h X hT i j hij

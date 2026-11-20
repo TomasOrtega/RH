@@ -27,6 +27,9 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 namespace GlobalTheory.QuoWt
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.shifted_weights_dominant_of_gaps`.
+-/
 theorem dominance : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H) (P : WtPar Dw),
     0 ≤ P.c₀ → 2 * (Dw.p + Dw.q) + CompHt.dimFlag Dw ≤ P.T →
     (∀ (τ : Psi H) (a b : Fin (Dw.p + Dw.q)), (b : ℕ) = a + 1 →
@@ -37,11 +40,17 @@ theorem dominance : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
     ∀ s : ℕ, s ≤ 3 → ∀ τ : Psi H, Antitone (P.uMinus τ + (s * P.c₀) • hodgeWt Dw τ) ∧
       Antitone (((P.T + CompHt.dimFlag Dw + (if s = 0 then 3 else 4) : ℕ) : ℤ) • P.u₁ τ - (P.uMinus τ + (s * P.c₀) • hodgeWt Dw τ)) := GlobalTheory.T.shifted_weights_dominant_of_gaps
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.bar_gap_parameter_inequality`.
+-/
 theorem arith : ∀ (T D c0 h0 N f m k PP : ℝ), 4 * D + 4 ≤ T → 4 * T ^ 2 ≤ h0 → PP * T * N * f ^ 2 * m ^ 2 * k * D ≤ h0 →
     4 * (c0 + 2 * N + T + D + 1) ≤ h0 → 0 ≤ c0 → c0 ≤ 22 * f ^ 2 * N ^ 4 → D = f * (N * (N - 1) / 2) → 40 ≤ PP →
     N + 4 ≤ 2 * k → 2 ≤ m → 6 ≤ N → 8 ≤ f →
     (T + c0) * (T + D + 1) + c0 + 2 * N - 2 ≤ h0 ∧ 2 * N + D ≤ T := GlobalTheory.T.bar_gap_parameter_inequality
 
+/- English proof (translation)
+Introduce `τ`. Use `⟨fun a (ha : (a : ℕ) + 1 = kc) => (P.anchored τ (by omega)).1, fun a b hb => ?_⟩` and prove the remaining obligations. Establish `hb' : (a : ℕ) + 1 < Dw.p + Dw.q` using `hb ▸ b.2`. Use `show P.u₁ τ a - P.u₁ τ b = (P.u τ a - P.u τ b + if (b : ℕ) = Dw.p then -P.c₀ - (2 * ((Dw.p + Dw.q : ℕ) : ℤ) - 2) else 2) / ((P.T : ℤ) + CompHt.dimFlag Dw + 1)`. Rewrite using `[← CompHS.gap_eq (P.u₁ τ) hb, P.gap_u₁ τ hb', P.gap_uMinus_sub_kap τ hb', CompHS.gap_eq (P.u τ) hb, hb, WtPar.T₁, dimFlag_eq]`.
+-/
 theorem isQuot_u₁ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
     (P : WtPar Dw) (kc : ℕ) (hk : P.a + 1 = kc) : IsQuot Dw kc P.T P.c₀ P.u P.u₁ := by
   intro τ
@@ -52,6 +61,9 @@ theorem isQuot_u₁ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reci
   rw [← CompHS.gap_eq (P.u₁ τ) hb, P.gap_u₁ τ hb', P.gap_uMinus_sub_kap τ hb', CompHS.gap_eq (P.u τ) hb, hb,
     WtPar.T₁, dimFlag_eq]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.MeanTop.Inhab.dividedWeight_unique _ u1 (by show 1 ≤ kc; omega) hN (isQuot_u₁ Dw P kc hk) hq`.
+-/
 theorem quo_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
     (P : WtPar Dw) (kc : ℕ) (hk : P.a + 1 = kc) (hN : kc ≤ Dw.p + Dw.q) (u1 : AllWt.Weight Dw)
     (hq : IsQuot Dw kc P.T P.c₀ P.u u1) : u1 = P.u₁ :=
@@ -66,6 +78,35 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
+/- English proof (translation)
+Take `⟨⟨s1, s2, s3⟩, -, hdim, -, -, -, -, -, -, -, hyp⟩` from `hw`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `ep : (dat p i).p = D.R.k + i` using `by rw [s1]; unfold Ranks.sigW; omega`. Establish `eq : (dat p i).q = D.R.m - ((i : ℕ) + 1)` using `by rw [s2]; rfl`.
+
+Establish `er : (dat p i).p + (dat p i).q = D.R.r` using `s3`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Use `set P : WtPar (dat p i) := ⟨uW p i, cZero D ((i : ℕ) + 1), D.R.k - 2, lenT p i PP⟩ with hP`. Establish `hPa : P.a + 1 = D.R.k - 1` using `by show D.R.k - 2 + 1 = D.R.k - 1; omega`. Establish `hquo : Quo p i PP P.u₁` using `GlobalTheory.QuoWt.isQuot_u₁ (dat p i) P (D.R.k - 1) hPa`.
+
+Take `⟨h0, S, eta, -, -, -, hT2, hrow, hH⟩` from `hyp hi`. Establish `hW` using `hH P.u₁`. Establish `hdiv` using `(quo_iff p i PP h0 S eta P.u₁).1 hquo`. Establish `ha : D.R.k - 2 < (dat p i).p + (dat p i).q` using `by omega`. Use `⟨by omega, by omega, ?_, fun u1 hu => GlobalTheory.QuoWt.quo_unique (dat p i) P _ hPa (by omega) u1 hu, fun τ => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `hh.deg` as an intermediate fact. Use `hh.f8` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨a1, a2, -⟩` from `GlobalTheory.MeanTop.divided_strictAnti _ _ _ hW hdiv τ`. Use `⟨a1, ?_⟩` and prove the remaining obligations.
+
+Use `a2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `only [CompHt.uPrime, hodgeWt, CompHt.barWt, GlobalTheory.MeanTop.Wts.u', wtsAt, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `by_cases h : (j : ℕ) < (dat p i).p <;> simp [h] <;> ring`. Use `⟨fun τ => -(FlagTan.kap (dat p i) τ ⟨D.R.k - 2, ha⟩), fun τ => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [FlagTan.kap]`. Rewrite using `[if_pos (by show D.R.k - 2 < (dat p i).p; omega), ep, eq, hr, abs_le]`. Apply the tactic sequence `constructor <;> push_cast <;> omega`. Use function extensionality and compare the values at `τ j`. Establish `e` using `P.uMinus_eq τ (a := ⟨D.R.k - 2, ha⟩) rfl j`.
+
+Establish `e1 : P.u τ ⟨D.R.k - 2, ha⟩ = 0` using `uWt_anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ ⟨D.R.k - 2, ha⟩ (by show D.R.k - 2 + 1 = D.R.k - 1; omega)`. Establish `e0 : P.uMinus τ ⟨D.R.k - 2, ha⟩ = 0`. Simplify using `only [WtPar.uMinus, Pi.sub_apply, Pi.smul_apply, hodgeWt, CompHt.barWt, smul_eq_mul, e1]`. Rewrite using `[if_pos (by show D.R.k - 2 < (dat p i).p; omega)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show P.uMinus τ j = P.wt P.T τ j + GlobalTheory.FlatLine.parWt (dat p i) _ τ j`. Rewrite using `[e, e0]`. Simplify using `[GlobalTheory.FlatLine.parWt, sub_eq_add_neg]`. Introduce `s hs τ`. Establish `hc` using `cZero_spec D ((i : ℕ) + 1)`.
+
+Establish `hf8` using `hh.f8`. Establish `hL` using `hh.big.2.1`. Establish `hZ : (40 : ℝ) ≤ zBase L`. Unfold `zBase`. Establish `a1 : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf8`.
+
+Establish `a2 : (6 : ℝ) ≤ D.R.r` using `by exact_mod_cast (show 6 ≤ D.R.r by omega)`. Establish `a3 : (48 : ℝ) ≤ D.R.f * D.R.r` using `by nlinarith`. Establish `a4 : (10 : ℝ) ≤ L.sc.L` using `hL`. Use the polynomial consequences of the given equalities and inequalities. Establish `hPP : (40 : ℝ) ≤ PP` using `hZ.trans ((le_self_pow₀ (by linarith) (by norm_num)).trans hh.ppLow)`.
+
+Establish `hD : ((CompHt.dimFlag (dat p i) : ℕ) : ℝ) = (D.R.f : ℝ) * ((D.R.r : ℝ) * ((D.R.r : ℝ) - 1) / 2)`. Rewrite using `[hdim]`. Move the coercions through the operations in `[Nat.cast_choose_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `hh1 : 4 * CompHt.dimFlag (dat p i) + 4 ≤ lenT p i PP` using `hW.h1`.
+
+Establish `hh2 : 4 * (cZero D ((i : ℕ) + 1) + 2 * ((D.R.r : ℕ) : ℤ) + lenT p i PP + CompHt.dimFlag (dat p i) + 1) ≤ h0`. Use `hW.h2.1` as an intermediate fact. Express the relevant statement in the definitionally equal form `4 * (cZero D ((i : ℕ) + 1) + 2 * (((dat p i).p + (dat p i).q : ℕ) : ℤ) + (lenT p i PP : ℤ) + (CompHt.dimFlag (dat p i) : ℤ) + 1) ≤ h0 at this`. Rewrite `this` using `[er]`. Conclude with `this`.
+
+Take `⟨r1, r2⟩` from `GlobalTheory.QuoWt.arith (lenT p i PP : ℝ) (CompHt.dimFlag (dat p i) : ℝ) (cZero D ((i : ℕ) + 1) : ℝ) (h0 : ℝ) (D.R.r : ℝ) (D.R.f : ℝ) (D.R.m : ℝ) (D.R.k : ℝ) PP (by exact_mod_cast hh1) (by exact_mod_cast hT2) hrow (by exact_mod_cast hh2) (by exact_mod_cast hc.2.1) (by exact_mod_ …`. Establish `hbar : ((P.T : ℤ) + P.c₀) * ((P.T : ℤ) + CompHt.dimFlag (dat p i) + 1) + P.c₀ + 2 * (((dat p i).p + (dat p i).q : ℕ) : ℤ) - 2 ≤ h0`. Rewrite using `[er]`. Conclude with `r1` after adjusting the coercions. Establish `hTD : 2 * ((dat p i).p + (dat p i).q) + CompHt.dimFlag (dat p i) ≤ P.T`.
+
+Rewrite using `[er]`. Conclude with `r2` after adjusting the coercions. Conclude with `GlobalTheory.QuoWt.dominance (dat p i) P hW.weightConst_nonneg hTD (fun τ a b hab => ⟨fun hb => (hW.h4 τ a b hab).1 hb, fun hb => hbar.trans ((hW.h4 τ a b hab).2.2 hb)⟩) s hs τ`.
+-/
 theorem atPoint (PP A M : ℝ) (hi : (i : ℕ) + 1 < D.R.m) (hw : WtNum p i PP) (hh : HostNum D L PP A M) :
     1 ≤ (dat p i).p ∧ 1 ≤ (dat p i).q ∧ 2 < Module.finrank ℚ D.host.E / 2 ∧ (∀ u1, Quo p i PP u1 → u1 = (⟨uW p i, cZero D ((i : ℕ) + 1), D.R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁) ∧ (∀ τ, StrictAnti ((⟨uW p i, cZero D ((i : ℕ) + 1), D.R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ τ) ∧ StrictAnti (CompHt.uPrime (dat p i) (⟨uW p i, cZero D ((i : ℕ) + 1), D.R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ τ)) ∧ (∃ w : Psi p.T.Q.H → ℤ, (∀ τ, |w τ| ≤ 3 * (D.R.r : ℤ)) ∧ uM p i = (⟨uW p i, cZero D ((i : ℕ) + 1), D.R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP) + GlobalTheory.FlatLine.parWt (dat p i) w) ∧ ∀ s : ℕ, s ≤ 3 → ∀ τ, Antitone (uM p i τ + (s * cZero D ((i : ℕ) + 1)) • hodgeWt (dat p i) τ) ∧ Antitone (((lenT p i PP + CompHt.dimFlag (dat p i) + (if s = 0 then 3 else 4) : ℕ) : ℤ) • (⟨uW p i, cZero D ((i : ℕ) + 1), D.R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ τ - (uM p i τ + (s * cZero D ((i : ℕ) + 1)) • hodgeWt (dat p i) τ)) := by
   obtain ⟨⟨s1, s2, s3⟩, -, hdim, -, -, -, -, -, -, -, hyp⟩ := hw
@@ -142,6 +183,13 @@ theorem atPoint (PP A M : ℝ) (hi : (i : ℕ) + 1 < D.R.m) (hw : WtNum p i PP) 
 
 end Pt
 
+/- English proof (translation)
+Introduce `_`. Establish `hw : WtN` using `GlobalTheory.T.weight_bound_holds`. Establish `hh : HostN 1` using `GlobalTheory.CovTop.Sizes.hostN 1`. Unfold `WtN Lifts at hw`. Unfold `HostN Lifts at hh`.
+
+Unfold `Lifts`. Use `Closed.imp (Closed.and hw hh) ?_` and prove the remaining obligations. Introduce `eps Fm CH _ h`. Take `⟨⟨C1, -, x1, h1⟩, ⟨C2, -, x2, h2⟩⟩` from `h`. Use `⟨0, le_rfl, max x1 x2, fun x hx hle ι p hp i hi => ?_⟩` and prove the remaining obligations.
+
+Conclude with `atPoint p i _ _ _ hi (h1 x hx ((le_max_left _ _).trans hle) ι p hp i) (h2 x hx ((le_max_right _ _).trans hle) ι p hp i)`.
+-/
 theorem weights_at_point : Size → Lifts fun Fm x _ ι p i PP _ => (i : ℕ) + 1 < (Fm.D x ι).R.m → 1 ≤ (dat p i).p ∧ 1 ≤ (dat p i).q ∧ 2 < Module.finrank ℚ (Fm.D x ι).host.E / 2 ∧ (∀ u1, Quo p i PP u1 → u1 = (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁) ∧ (∀ τ, StrictAnti ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ τ) ∧ StrictAnti (CompHt.uPrime (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ τ)) ∧ (∃ w : Psi p.T.Q.H → ℤ, (∀ τ, |w τ| ≤ 3 * ((Fm.D x ι).R.r : ℤ)) ∧ uM p i = (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP) + GlobalTheory.FlatLine.parWt (dat p i) w) ∧ ∀ s : ℕ, s ≤ 3 → ∀ τ, Antitone (uM p i τ + (s * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i) τ) ∧ Antitone (((lenT p i PP + CompHt.dimFlag (dat p i) + (if s = 0 then 3 else 4) : ℕ) : ℤ) • (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ τ - (uM p i τ + (s * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i) τ)) := by
   intro _
   have hw : WtN := GlobalTheory.T.weight_bound_holds

@@ -9,6 +9,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.AfBox
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts μ := by`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Establish `hU : ∀ k : G, IsOpen ((fun x => -k + x) ⁻¹' C)` using `fun k => hC.preimage (continuous_const.add continuous_id)`. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun k => (fun x => -k + x) ⁻¹' C) (fun k _ => (hU k).mem_nhds (by simpa using h0))`. Establish `hm : ∀ k : G, μ ((fun x => -k + x) ⁻¹' C) = 1` using `fun k => by`.
+
+Rewrite using `[measure_preimage_add, hμ]`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `Measure.isAddLeftInvariant_eq_smul μ ν`. Establish `hc : Measure.addHaarScalarFactor μ ν = 1`. Establish `h2 : μ C = (Measure.addHaarScalarFactor μ ν • ν) C` using `by rw [← h]`.
+
+Rewrite `h2` using `[Measure.smul_apply, hμ, hν]`. Simplify `h2` using `[ENNReal.smul_def, eq_comm]`. Rewrite `h` using `[hc, one_smul]`. Conclude with `h`.
+-/
 theorem eq_of_invariant_of_open {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (μ ν : Measure G) [ν.IsAddHaarMeasure] [μ.IsAddLeftInvariant] {C : Set G} (hC : IsOpen C)
@@ -33,6 +40,13 @@ theorem eq_of_invariant_of_open {G : Type} [AddCommGroup G] [TopologicalSpace G]
   rw [hc, one_smul] at h
   exact h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `g`. Take `⟨h, hh, rfl⟩` from `hs g`. Establish `e : (m.restrict H).map (fun x => h + x) = m.restrict H`. Establish `hp : (fun x => h + x) ⁻¹' (H : Set G) = H`.
+
+Use extensionality with `x`. Simplify using `[H.add_mem_cancel_left hh]`. Use `Measure.restrict_map (μ := m) (measurable_const_add h) hH` as an intermediate fact. Rewrite `this` using `[map_add_left_eq_self, hp]`. Conclude with `this.symm`.
+
+Rewrite using `[Measure.map_map (measurable_const_add _) hρ]`. Establish `hc : (fun x => ρ h + x) ∘ ρ = ρ ∘ (fun x => h + x)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hc, ← Measure.map_map hρ (measurable_const_add _), e]`.
+-/
 theorem map_restrict_invariant {G T : Type} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G]
     [AddCommGroup T] [MeasurableSpace T] [MeasurableAdd T]
     (m : Measure G) [m.IsAddLeftInvariant] (H : AddSubgroup G) (hH : MeasurableSet (H : Set G))
@@ -54,6 +68,11 @@ theorem map_restrict_invariant {G T : Type} [AddCommGroup G] [MeasurableSpace G]
     simp
   rw [hc, ← Measure.map_map hρ (measurable_const_add _), e]
 
+/- English proof (translation)
+Use `haveI := map_restrict_invariant m H hH ρ hρ hs`. Establish `hmap : ∀ D : Set T, MeasurableSet D → ((m.restrict H).map ρ) D = m ((H : Set G) ∩ ρ ⁻¹' D)`. Introduce `D hD`. Rewrite using `[Measure.map_apply hρ hD, Measure.restrict_apply (hρ hD), Set.inter_comm]`. Establish `he` using `eq_of_invariant_of_open ((m.restrict H).map ρ) ν hC h0 (by rw [hmap C hC.measurableSet, hm]) hν`.
+
+Rewrite using `[← he, hmap B hB]`.
+-/
 theorem measure_inter_preimage {G T : Type} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G]
     [AddCommGroup T] [TopologicalSpace T] [IsTopologicalAddGroup T] [LocallyCompactSpace T]
     [SecondCountableTopology T] [MeasurableSpace T] [BorelSpace T]
@@ -86,6 +105,9 @@ def compS (ι : Type) (S : Finset (HeightOneSpectrum (𝓞 F))) :
   map_zero' := by ext; simp
   map_add' x y := by ext; simp
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun v => continuous_pi fun i => (RestrictedProduct.continuous_eval v.1).comp (continuous_apply i)`.
+-/
 theorem continuous_compS (ι : Type) (S : Finset (HeightOneSpectrum (𝓞 F))) :
     Continuous (compS (F := F) ι S) :=
   continuous_pi fun v => continuous_pi fun i =>
@@ -100,17 +122,26 @@ def liftS {S : Finset (HeightOneSpectrum (𝓞 F))} (t : ∀ v : S, Fv F v.1) : 
     simp [this]⟩
 
 open Classical in
+/- English proof (translation)
+Establish `: evalV F v.1 (liftS t) = dite (v.1 ∈ S) (fun hw => t ⟨v.1, hw⟩) (fun _ => (0 : Fv F v.1))` using `rfl`. Rewrite using `[this, dif_pos v.2]`.
+-/
 theorem evalV_liftS_of_mem {S : Finset (HeightOneSpectrum (𝓞 F))} (t : ∀ v : S, Fv F v.1) (v : S) :
     evalV F v.1 (liftS t) = t v := by
   have : evalV F v.1 (liftS t) = dite (v.1 ∈ S) (fun hw => t ⟨v.1, hw⟩) (fun _ => (0 : Fv F v.1)) := rfl
   rw [this, dif_pos v.2]
 
 open Classical in
+/- English proof (translation)
+Establish `: evalV F v (liftS t) = dite (v ∈ S) (fun hw => t ⟨v, hw⟩) (fun _ => (0 : Fv F v))` using `rfl`. Rewrite using `[this, dif_neg hv]`.
+-/
 theorem evalV_liftS_of_notMem {S : Finset (HeightOneSpectrum (𝓞 F))} (t : ∀ v : S, Fv F v.1)
     {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) : evalV F v (liftS t) = 0 := by
   have : evalV F v (liftS t) = dite (v ∈ S) (fun hw => t ⟨v, hw⟩) (fun _ => (0 : Fv F v)) := rfl
   rw [this, dif_neg hv]
 
+/- English proof (translation)
+Use `⟨fun i => liftS fun v => t v i, fun v hv i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[evalV_liftS_of_notMem _ hv]`. Conclude with `zero_mem (v.adicCompletionIntegers F)`. Use function extensionality and compare the values at `v i`. Conclude with `evalV_liftS_of_mem (fun v => t v i) v`.
+-/
 theorem exists_offS_compS (ι : Type) (S : Finset (HeightOneSpectrum (𝓞 F)))
     (t : ∀ v : S, ι → Fv F v.1) : ∃ h ∈ offS (F := F) ι S, compS ι S h = t := by
   refine ⟨fun i => liftS fun v => t v i, fun v hv i => ?_, ?_⟩
@@ -119,9 +150,17 @@ theorem exists_offS_compS (ι : Type) (S : Finset (HeightOneSpectrum (𝓞 F)))
   · funext v i
     exact evalV_liftS_of_mem (fun v => t v i) v
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)`.
+-/
 theorem isOpen_integral : IsOpen {x : Af F | ∀ v, x v ∈ v.adicCompletionIntegers F} :=
   RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)
 
+/- English proof (translation)
+Use `AddSubgroup.isOpen_of_mem_nhds _ (g := 0) ?_` and prove the remaining obligations. Establish `ho : IsOpen (Set.pi Set.univ fun _ : ι => {x : Af F | ∀ v, x v ∈ v.adicCompletionIntegers F})` using `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_integral`. Use `Filter.mem_of_superset (ho.mem_nhds ?_) ?_` and prove the remaining obligations. Introduce `i _ v`. Conclude with `zero_mem (v.adicCompletionIntegers F)`.
+
+Introduce `x hx v _ i`. Conclude with `hx i (Set.mem_univ i) v`.
+-/
 theorem isOpen_offS (ι : Type) [Finite ι] (S : Finset (HeightOneSpectrum (𝓞 F))) :
     IsOpen (offS (F := F) ι S : Set (ι → Af F)) := by
   refine AddSubgroup.isOpen_of_mem_nhds _ (g := 0) ?_
@@ -133,6 +172,25 @@ theorem isOpen_offS (ι : Type) [Finite ι] (S : Finset (HeightOneSpectrum (𝓞
   · intro x hx v _ i
     exact hx i (Set.mem_univ i) v
 
+/- English proof (translation)
+Introduce `F _ _ lam hlam lf hlf h1 ι _ S A hA`. Take `⟨-, hAfLC, hAfSC, hAfT2⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Establish `hloc` using `fun v => GlobalTheory.T.completion_is_local_ring F v`. Use `haveI : ∀ v, IsTopologicalRing (Fv F v) := fun v => (hloc v).1`. Use `haveI : ∀ v, LocallyCompactSpace (Fv F v) := fun v => (hloc v).2.1`.
+
+Use `haveI : ∀ v, SecondCountableTopology (Fv F v) := fun v => (hloc v).2.2.1`. Use `haveI : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩`. Use `haveI : ∀ v, (lam v).IsAddHaarMeasure := fun v => (hlam v).1`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`. Set `ν : Measure (∀ v : S, ι → Fv F v.1)` to `Measure.pi fun v : S => Measure.pi fun _ : ι => lam v.1`.
+
+Set `O : Set (∀ v : S, ι → Fv F v.1)` to `Set.pi Set.univ fun v : S => Set.pi Set.univ fun _ : ι => (v.1.adicCompletionIntegers F : Set (Fv F v.1))`. Establish `hOo : IsOpen O` using `isOpen_set_pi Set.finite_univ fun v _ => isOpen_set_pi Set.finite_univ fun _ _ => Valued.isOpen_valuationSubring _`. Establish `hO0 : (0 : ∀ v : S, ι → Fv F v.1) ∈ O` using `fun v _ i _ => zero_mem (v.1.adicCompletionIntegers F)`. Establish `hνO : ν O = 1`. Simplify using `only [ν, O]`.
+
+Rewrite using `[Measure.pi_pi]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.pi_pi]`. Conclude with `Finset.prod_eq_one fun _ _ => (hlam v.1).2`. Establish `hmO : (Measure.pi fun _ : ι => lf) ((offS (F` using `F) ι S : Set (ι → Af F)) ∩ compS ι S ⁻¹' O) = 1 := by`.
+
+Establish `: ((offS (F` using `F) ι S : Set (ι → Af F)) ∩ compS ι S ⁻¹' O) = Set.pi Set.univ fun _ : ι => {x : Af F | ∀ v, x v ∈ v.adicCompletionIntegers F} := by`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx1, hx2⟩ i _ v`. Distinguish the cases in `hv : v ∈ S`.
+
+Conclude with `hx2 ⟨v, hv⟩ (Set.mem_univ _) i (Set.mem_univ _)`. Conclude with `hx1 v hv i`. Introduce `hx`. Conclude with `⟨fun v _ i => hx i (Set.mem_univ i) v, fun v _ i _ => hx i (Set.mem_univ i) v.1⟩`. Rewrite using `[this, Measure.pi_pi]`.
+
+Conclude with `Finset.prod_eq_one fun _ _ => h1`. Establish `hset : {x : ι → Af F | (∀ v ∈ S, (fun i => evalV F v (x i)) ∈ A v) ∧ ∀ v, v ∉ S → ∀ i, evalV F v (x i) ∈ v.adicCompletionIntegers F} = (offS (F` using `F) ι S : Set (ι → Af F)) ∩ compS ι S ⁻¹' (Set.pi Set.univ fun v : S => A v.1) := by`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx1, hx2⟩`.
+
+Conclude with `⟨hx2, fun v _ => hx1 v.1 v.2⟩`. Introduce and unpack `⟨hx1, hx2⟩`. Conclude with `⟨fun v hv => hx2 ⟨v, hv⟩ (Set.mem_univ _), hx1⟩`. Rewrite using `[hset, measure_inter_preimage (Measure.pi fun _ : ι => lf) (offS (F := F) ι S) (isOpen_offS ι S).measurableSet (compS ι S) (continuous_compS ι S).measurable (exists_offS_compS ι S) ν hOo hO0 hmO hνO (MeasurableSet.univ_pi fun v => hA v.1)]`. Simplify using `only [ν]`.
+
+Rewrite using `[Measure.pi_pi]`. Conclude with `Finset.prod_coe_sort S fun v => (Measure.pi fun _ : ι => lam v) (A v)`.
+-/
 theorem pi_box : ∀ (F : Type) [Field F] [NumberField F] (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), (∀ v, IsStdV v (lam v)) → ∀ (lf : Measure (Af F)), lf.IsAddHaarMeasure → lf {x | ∀ v, x v ∈ v.adicCompletionIntegers F} = 1 → ∀ (ι : Type) [Fintype ι] (S : Finset (HeightOneSpectrum (𝓞 F))) (A : ∀ v : HeightOneSpectrum (𝓞 F), Set (ι → Fv F v)), (∀ v, MeasurableSet (A v)) → (Measure.pi fun _ : ι => lf) {x | (∀ v ∈ S, (fun i => evalV F v (x i)) ∈ A v) ∧ ∀ v, v ∉ S → ∀ i, evalV F v (x i) ∈ v.adicCompletionIntegers F} = ∏ v ∈ S, (Measure.pi fun _ : ι => lam v) (A v) := by
   intro F _ _ lam hlam lf hlf h1 ι _ S A hA
   obtain ⟨-, hAfLC, hAfSC, hAfT2⟩ := GlobalTheory.T.adeles_locally_compact_second_countable F

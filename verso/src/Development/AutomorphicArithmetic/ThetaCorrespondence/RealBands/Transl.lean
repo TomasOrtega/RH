@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.IsBand
 open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ f hf ε hε`. Use `haveI : Fact ((1 : ENNReal) ≠ ⊤) := ⟨ENNReal.one_ne_top⟩`. Establish `hm : MemLp f 1 μ` using `memLp_one_iff_integrable.2 hf`. Use `set F : Lp ℂ 1 μ := hm.toLp f with hF`. Establish `hc : Continuous fun b : G => ‖(DomMulAct.mk b) • F - F‖` using `((DomMulAct.continuous_mk.smul continuous_const).sub continuous_const).norm`.
+
+Establish `h1 : ‖(DomMulAct.mk (1 : G)) • F - F‖ < ε`. Establish `: (DomMulAct.mk (1 : G)) • F = F` using `one_smul Gᵈᵐᵃ F`. Rewrite using `[this, sub_self, norm_zero]`. Conclude with `hε`. Establish `hev` using `hc.continuousAt.eventually_lt continuousAt_const h1`.
+
+Use `filter_upwards [hev] with b hb`. Use `le_of_eq_of_le ?_ hb.le` and prove the remaining obligations. Rewrite using `[L1.norm_eq_integral_norm]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Establish `hFf : F =ᵐ[μ] f` using `hm.coeFn_toLp`.
+
+Establish `h2 : (fun g => F (b * g)) =ᵐ[μ] fun g => f (b * g)` using `(measurePreserving_mul_left μ b).quasiMeasurePreserving.ae_eq_comp hFf`. Use `filter_upwards [Lp.coeFn_sub ((DomMulAct.mk b) • F) F, DomMulAct.smul_Lp_ae_eq (DomMulAct.mk b) F, hFf, h2] with g e1 e2 e3 e4`. Rewrite using `[e1, Pi.sub_apply, e2, e3, ← e4]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Lit.Cusp.transl_small :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
       [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (f : G → ℂ), Integrable f μ →

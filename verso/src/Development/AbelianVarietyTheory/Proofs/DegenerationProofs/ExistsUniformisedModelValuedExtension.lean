@@ -13,6 +13,13 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.Relabel
 
 namespace GlobalTheory.Ex.ExtModel
 
+/- English proof (translation)
+Establish `hb : Function.Injective b`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Establish `h1 : IsAlgebraic ℤ (x : F)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic _)`.
+
+Establish `h2 : IsAlgebraic ℤ x` using `(isAlgebraic_algHom_iff (V.subtype.toIntAlgHom) Subtype.val_injective).1 h1`. Use `Ideal.comap_ne_bot_of_algebraic_mem (I := RingHom.ker b) h0 hx h2 ?_` and prove the remaining obligations. Use `(Submodule.eq_bot_iff _).2 fun n hn => ?_` and prove the remaining obligations. Establish `h3 : b (algebraMap ℤ V n) = 0` using `hn`. Simplify using `using h3`.
+
+Conclude with `⟨IsFractionRing.lift (K := F) hb, fun x => IsFractionRing.lift_algebraMap (K := F) hb x⟩`.
+-/
 theorem exists_extend {F : Type} [Field F] [CharZero F] [Algebra.IsAlgebraic ℚ F] (V : ValuationSubring F)
     {K : Type} [Field K] [CharZero K] (b : V →+* K) : ∃ bF : F →+* K, ∀ x : V, bF x = b x := by
   have hb : Function.Injective b := by
@@ -28,12 +35,32 @@ theorem exists_extend {F : Type} [Field F] [CharZero F] [Algebra.IsAlgebraic ℚ
     simpa using h3
   exact ⟨IsFractionRing.lift (K := F) hb, fun x => IsFractionRing.lift_algebraMap (K := F) hb x⟩
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[← V.valuation_le_one_iff]`. Rewrite `h` using `[map_pow]`. Conclude with `(pow_le_one_iff hn.ne').1 h`.
+-/
 theorem mem_of_pow_mem {F : Type} [Field F] (V : ValuationSubring F) {x : F} {n : ℕ} (hn : 0 < n) (h : x ^ n ∈ V) :
     x ∈ V := by
   rw [← V.valuation_le_one_iff] at h ⊢
   rw [map_pow] at h
   exact (pow_le_one_iff hn.ne').1 h
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7 E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a _ K _ _ _ A o hρ C _ _ _ _ _ W _ _ _ _ hW hC K₁ _ _ _ gam e φ hg he o' hext`. Establish `: CharZero K` using `o.charZero`. Use `c.fin` as an intermediate fact. Take `⟨bF, hbF⟩` from `exists_extend (c.V W₀) (((algebraMap (FractionRing O') K).comp (algebraMap O' (FractionRing O'))).comp b)`. Take `⟨ν, h₀, hν₁, hν₂⟩` from `GlobalTheory.ReZeta.exists_exponent o.I.ζ A.I.ζ o.I.ζ_prim o.I.ζ_pow A.I.ζ_prim A.I.ζ_pow`.
+
+Take `⟨g, rfl⟩` from `GlobalTheory.ReZeta.exists_sim D ν hν₁ hν₂`. Set `o₁ : Full D K` to `withI o (GlobalTheory.LevelTwist.twist o.I g fun n m hn hm => ⟨hν₂ n m hn hm, hν₁ n hn⟩)`. Set `o₁' : Full D C` to `withI o' (GlobalTheory.LevelTwist.twist o'.I g fun n m hn hm => ⟨hν₂ n m hn hm, hν₁ n hn⟩)`. Establish `hext₁ : FullExt (gam.comp e) o₁ o₁'`. Take `⟨p₁, p₂, ψ, p₃, p₄, p₅, p₆⟩` from `hext`.
+
+Use `⟨p₁, fun n hn => ?_, ψ, p₃, p₄, p₅, fun n v hn => p₆ n (g.f n v) hn⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((o'.I.ζ n ^ g.ν n : Cˣ) : C) = gam.comp e ((o.I.ζ n ^ g.ν n : Kˣ) : K)`. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, map_zpow₀, p₂ n hn]`. Take `⟨q₁, -, q₃⟩` from `GlobalTheory.T.fullTorsionObject_existsUnique_moduliPoint h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K bF`. Take `⟨y, ⟨hy, hyo⟩, -⟩` from `q₁ o₁ (fun r hr => by`.
+
+Establish `hm : r ∈ c.V W₀` using `mem_of_pow_mem _ two_pos (by`. Establish `: r ^ 2 = -(H.d : c.F)` using `Subtype.ext (by simpa [hr] using H.sqrt_neg_disc_sq)`. Rewrite using `[this]`. Conclude with `neg_mem (natCast_mem _ _))`. Conclude with `hρ.trans ((A.ρ_eq ⟨r, hm⟩ hr).trans (hbF ⟨r, hm⟩).symm))`.
+
+Use the proof step `(fun z hz => by`. Establish `hm : z ∈ c.V W₀` using `mem_of_pow_mem _ l.A_pos (by`. Establish `: z ^ l.A = 1` using `Subtype.ext (by`. Simplify `(Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one)` using `[hz, zeta]`. Rewrite using `[this]`.
+
+Conclude with `one_mem _)`. Conclude with `(congrArg Units.val (h₀ l.A l.A_pos)).trans ((A.ζ_eq ⟨z, hm⟩ hz).trans (hbF ⟨z, hm⟩).symm))`. Establish `hF` using `q₃ C (gam.comp e) y o₁ o₁' hyo hext₁`. Rewrite `hF` using `[spMap_comp', Category.assoc]`. Establish `hs : (spMap e ≫ y) ≫ Y.j ≫ Y.s = spMap (algebraMap (FractionRing W) K₁) ≫ jK W ≫ spMap (φ.comp b)`.
+
+Rewrite using `[Model.j_s, Category.assoc, ← Category.assoc y, hy, ← spMap_comp', ← spMap_comp']`. Express the relevant statement in the definitionally equal form `_ = spMap _ ≫ spMap (algebraMap W (FractionRing W)) ≫ _`. Rewrite using `[← spMap_comp', ← spMap_comp']`. Use `congrArg spMap (RingHom.ext fun x => ?_)` and prove the remaining obligations. Conclude with `(congrArg e (hbF x)).trans (he (b x))`.
+
+Take `⟨M, f, -, -, -, hf, -⟩` from `GlobalTheory.Ex.UnifModel.exists_mdl h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y C W hW hC K₁ gam hg (spMap e ≫ y) (φ.comp b) hs o₁' hF`. Conclude with `⟨{ W := M.W, cdv := M.cdv, ext := M.ext, t := M.t, P := M.P, φ := M.φ, cart := M.cart, lb := M.lb, act := M.act }, f, hf⟩`.
+-/
 theorem exists_mdl_ext : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → AllA fun {E} _ _ _ {H} {D} {l} {Xo} {c} {W₀} Y {O'} _ _ {b} a => ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra (FractionRing O') K] (A : Lift a K) (o : Full D K), o.ρ = A.ρ → ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [CharZero C] (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] [Algebra (FractionRing W) C], CDV W → CExt W (IsLocalRing.maximalIdeal W) C → ∀ (K₁ : Type) [Field K₁] [Algebra (FractionRing W) K₁] [Algebra.IsAlgebraic (FractionRing W) K₁] (gam : K₁ →+* C) (e : K →+* K₁) (φ : O' →+* W), (∀ x, gam (algebraMap (FractionRing W) K₁ x) = algebraMap (FractionRing W) C x) → (∀ x, e (algebraMap (FractionRing O') K (algebraMap O' _ x)) = algebraMap (FractionRing W) K₁ (algebraMap W _ (φ x))) → ∀ o' : Full D C, FullExt (gam.comp e) o o' → ∃ (M : Mdl o') (f : W →+* M.W), ∀ x, algebraMap (FractionRing M.W) C (algebraMap _ _ (f x)) = algebraMap (FractionRing W) C (algebraMap _ _ x) := by
   intro h1 h2 h3 h4 h5 h6 h7 E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a _ K _ _ _ A o hρ C _ _ _ _ _ W _ _ _ _ hW hC K₁ _ _ _
     gam e φ hg he o' hext

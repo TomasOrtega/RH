@@ -17,12 +17,24 @@ variable {p : ℕ} [hp : Fact p.Prime]
 
 def ball (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] := GlobalTheory.ClosedBallValuationSubring.closedBallSubring ℂ_[p]
 
+/- English proof (translation)
+Establish `h` using `PadicComplex.norm_extends' p (p : ℚ_[p])`. Establish `h2 : ‖(p : ℚ_[p])‖ < 1` using `Padic.norm_p_lt_one`. Rewrite `h2` using `[← h]`. Simplify using `using h2`.
+-/
 theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   have h := PadicComplex.norm_extends' p (p : ℚ_[p])
   have h2 : ‖(p : ℚ_[p])‖ < 1 := Padic.norm_p_lt_one
   rw [← h] at h2
   simpa using h2
 
+/- English proof (translation)
+Establish `hne : p ^ k ≠ 0` using `pow_ne_zero _ hp.out.ne_zero`. Establish `hy : ‖y‖ ≤ 1`. Establish `h1 : ‖y‖ ^ p ^ k = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg _) hne).1 h1).le`. Set `Y : ball p` to `⟨y, hy⟩`.
+
+Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hp.out (Y - 1) 1 k`. Establish `hr'` using `congrArg (fun t : ball p => (t : ℂ_[p])) hr`. Simplify using `only [sub_add_cancel, one_pow, mul_one] at hr'`. Move the coercions through the operations in `at hr'`. Establish `hz : ‖y - 1‖ ≤ 1` using `(Y - 1).2`.
+
+Establish `hrr : ‖(r : ℂ_[p])‖ ≤ 1` using `r.2`. Establish `e : (y - 1) ^ p ^ k = -((p : ℂ_[p]) * (y - 1) * r)`. Establish `: (Y : ℂ_[p]) = y` using `rfl`. Rewrite `hr'` using `[this, h]`. Take the linear combination `-hr'`.
+
+Establish `h2 : ‖(y - 1) ^ p ^ k‖ < 1`. Rewrite using `[e, norm_neg, norm_mul, norm_mul, mul_assoc]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) norm_p_lt_one (mul_le_one₀ hz (norm_nonneg _) hrr)`. Rewrite `h2` using `[norm_pow]`. Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) hne).1 h2`.
+-/
 theorem norm_sub_one_lt {y : ℂ_[p]} {k : ℕ} (h : y ^ p ^ k = 1) : ‖y - 1‖ < 1 := by
   have hne : p ^ k ≠ 0 := pow_ne_zero _ hp.out.ne_zero
   have hy : ‖y‖ ≤ 1 := by
@@ -46,6 +58,9 @@ theorem norm_sub_one_lt {y : ℂ_[p]} {k : ℕ} (h : y ^ p ^ k = 1) : ‖y - 1�
   rw [norm_pow] at h2
   exact (pow_lt_one_iff_of_nonneg (norm_nonneg _) hne).1 h2
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_derivative, norm_mul]`. Use `mul_le_one₀ (hf _) (norm_nonneg _) ?_` and prove the remaining obligations. Use `IsUltrametricDist.norm_natCast_le_one ℂ_[p] (n + 1)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem bd_derivative {f : ℂ_[p]⟦X⟧} (hf : Bd 1 f) : Bd 1 (derivative ℂ_[p] f) := by
   intro n
   rw [coeff_derivative, norm_mul]
@@ -53,6 +68,11 @@ theorem bd_derivative {f : ℂ_[p]⟦X⟧} (hf : Bd 1 f) : Bd 1 (derivative ℂ_
   have := IsUltrametricDist.norm_natCast_le_one ℂ_[p] (n + 1)
   simpa using this
 
+/- English proof (translation)
+Establish `h` using `bd_derivative hf`. Introduce `n`. Rewrite using `[DT, add_mul, one_mul, map_add]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h n) ?_)` and prove the remaining obligations. Consider the cases of `n with`.
+
+Consider the case `zero => simp`. Consider the case `succ n => rw [coeff_succ_X_mul]`. Conclude with `h n`.
+-/
 theorem bd_DT {f : ℂ_[p]⟦X⟧} (hf : Bd 1 f) : Bd 1 (DT f) := by
   have h := bd_derivative hf
   intro n
@@ -62,16 +82,25 @@ theorem bd_DT {f : ℂ_[p]⟦X⟧} (hf : Bd 1 f) : Bd 1 (DT f) := by
   | zero => simp
   | succ n => rw [coeff_succ_X_mul]; exact h n
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact hf`. Consider the case `succ k ih => rw [Function.iterate_succ_apply']`. Conclude with `bd_DT ih`.
+-/
 theorem bd_iterate {f : ℂ_[p]⟦X⟧} (hf : Bd 1 f) (k : ℕ) : Bd 1 (DT^[k] f) := by
   induction k with
   | zero => exact hf
   | succ k ih => rw [Function.iterate_succ_apply']; exact bd_DT ih
 
+/- English proof (translation)
+Unfold `U1 h1`. Use `fun_prop`.
+-/
 theorem differentiable_U1 (d : ℕ) (x : ℂ) {F : ℂ → ℂ} (hF : Differentiable ℂ F) :
     Differentiable ℂ (U1 d x F) := by
   unfold U1 h1
   fun_prop
 
+/- English proof (translation)
+Use `differentiable_U1 d x hF` as an intermediate fact. Unfold `W1`. Use `fun_prop`.
+-/
 theorem differentiable_W1 (d : ℕ) (x : ℂ) {F : ℂ → ℂ} (hF : Differentiable ℂ F) :
     Differentiable ℂ (W1 d x F) := by
   have := differentiable_U1 d x hF
@@ -83,6 +112,19 @@ end GlobalTheory.MomOne.JetAlg
 namespace GlobalTheory.MomOne
 open JetAlg
 
+/- English proof (translation)
+Introduce `d q hq δ θ hd hd16 hsp hθ hδ hL ι t y n s k hs ht hy`. Use `mem_algebraicClosure_of_norm_le q ι _ 1 ?_` and prove the remaining obligations. Introduce `ι' hι'`. Take `⟨Ω, hΩ, h1', h2', -⟩` from `hL ι'`. Take `⟨hA, hB, -⟩` from `okArith d q ι hd hd16 hsp`.
+
+Establish `hy' : Good ι' d n s y`. Take `⟨v, hv, hn, rfl⟩` from `hy`. Use `⟨v, hv, ?_, rfl⟩` and prove the remaining obligations. Establish `hc : InOK d (conj v)` using `(hA.2.2 v v hv hv).2.2.2`. Use `hι' ⟨conj v, (hB _ hc).2.2⟩` as an intermediate fact.
+
+Simplify using `only at this`. Rewrite using `[this]`. Conclude with `hn`. Establish `hs0 : 0 < s`. Break down `Nat.eq_zero_or_pos s with rfl | h` into its components or cases.
+
+Conclude with `absurd (by simpa using hs) hq.out.ne_one`. Conclude with `h`. Take `⟨hζ, hE⟩` from `h2' t y n s hs ht hy'`. Establish `hb` using `(Shift.shift_laws q _ (norm_sub_one_lt hζ)).1 _ _ (h1' t ⟨s, hs0, hs, ht⟩)`. Rewrite `hb` using `[← hE]`.
+
+Establish `han : AnalyticAt ℂ (W1 d y (U1 d t θ)) 0` using `(differentiable_W1 d y (differentiable_U1 d t hθ.1)).analyticAt 0`. Establish `hk` using `(hat_multiplicative_chart q ι' (Ω / ι' δ) _ han).2.1 k`. Establish `hc` using `bd_iterate hb k 0`. Rewrite `hc` using `[coeff_zero_eq_constantCoeff_apply, hk, div_eq_mul_inv, mul_pow, mul_assoc, norm_mul, norm_pow, hΩ, one_pow, one_mul]`. Rewrite using `[map_mul, map_pow, map_inv₀]`.
+
+Conclude with `hc`.
+-/
 theorem jets_algebraic : ∀ (d q : ℕ) [Fact q.Prime] (δ : ℂ) (θ : ℂ → ℂ), d.Prime → d % 16 = 7 → Split d q → IsTh d θ → δ ≠ 0 → (∀ ι : ℂ ≃+* ℂ_[q], ∃ Ω : ℂ_[q], ‖Ω‖ = 1 ∧ ThetaLaws ι d (Ω / ι δ) θ) → ∀ (ι : ℂ ≃+* ℂ_[q]) (t y : ℂ) (n s k : ℕ), Nat.Coprime s q → InOK d ((s : ℂ) * t) → Good ι d n s y → δ⁻¹ ^ k * iteratedDeriv k (W1 d y (U1 d t θ)) 0 ∈ algebraicClosure ℚ ℂ := by
   intro d q hq δ θ hd hd16 hsp hθ hδ hL ι t y n s k hs ht hy
   refine mem_algebraicClosure_of_norm_le q ι _ 1 ?_

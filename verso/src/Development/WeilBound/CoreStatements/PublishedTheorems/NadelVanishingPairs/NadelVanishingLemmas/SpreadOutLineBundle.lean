@@ -18,6 +18,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.LogPair
 
+/- English proof (translation)
+Establish `: FaithfulSMul R k` using `(faithfulSMul_iff_algebraMap_injective R k).2 R.subtype_injective`. Set `_` to `FractionRing.liftAlgebra R k`. Use `FractionRing.isScalarTower_liftAlgebra R k` as an intermediate fact. Establish `h1 : Module.Flat R (FractionRing R)` using `IsLocalization.flat _ (nonZeroDivisors R)`. Establish `h2 : Module.Flat R k` using `Module.Flat.trans R (FractionRing R) k`.
+
+Conclude with `(RingHom.flat_algebraMap_iff (R := R) (S := k)).2 h2`.
+-/
 theorem subring_subtype_flat {k : Type} [Field k] (R : Subring k) : R.subtype.Flat := by
   have : FaithfulSMul R k := (faithfulSMul_iff_algebraMap_injective R k).2 R.subtype_injective
   let _ := FractionRing.liftAlgebra R k
@@ -26,6 +31,9 @@ theorem subring_subtype_flat {k : Type} [Field k] (R : Subring k) : R.subtype.Fl
   have h2 : Module.Flat R k := Module.Flat.trans R (FractionRing R) k
   exact (RingHom.flat_algebraMap_iff (R := R) (S := k)).2 h2
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appLE ⊤ U le_top ≫ X.presheaf.map (homOfLE h).op).hom c = _`. Use `erw [Scheme.Hom.appLE_map]`. Both sides reduce to the same expression.
+-/
 theorem resG_cstOn_const {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U V : X.Opens}
     (h : V ≤ U) (c : R) : resG X h (cstOn p U c) = cstOn p V c := by
   change ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appLE ⊤ U le_top ≫
@@ -33,6 +41,9 @@ theorem resG_cstOn_const {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp 
   erw [Scheme.Hom.appLE_map]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appLE ⊤ U le_top ≫ j.appLE U V h).hom c = _`. Conclude with `congrArg (fun g => ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ g).hom c) (Scheme.Hom.appLE_comp_appLE j p ⊤ U V le_top h)`.
+-/
 theorem app_cstOn_const {R : Type} [CommRing R] {X Y : Scheme.{0}} (p : X ⟶ Sp R) (j : Y ⟶ X)
     {U : X.Opens} {V : Y.Opens} (h : V ≤ j ⁻¹ᵁ U) (c : R) :
     resG Y h ((j.app U).hom (cstOn p U c)) = cstOn (j ≫ p) V c := by
@@ -40,6 +51,9 @@ theorem app_cstOn_const {R : Type} [CommRing R] {X Y : Scheme.{0}} (p : X ⟶ Sp
   exact congrArg (fun g => ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ g).hom c)
     (Scheme.Hom.appLE_comp_appLE j p ⊤ U V le_top h)
 
+/- English proof (translation)
+Establish `e : (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (p ≫ spMap φ).appLE ⊤ U le_top = CommRingCat.ofHom φ ≫ (Scheme.ΓSpecIso (CommRingCat.of R')).inv ≫ p.appLE ⊤ U le_top`. Rewrite using `[← Category.assoc, Scheme.ΓSpecIso_inv_naturality, Category.assoc]`. Use `erw [Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Conclude with `congrArg (fun g => g.hom c) e`.
+-/
 theorem cstOn_comp_spMap_const {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {X : Scheme.{0}}
     (p : X ⟶ Sp R') (U : X.Opens) (c : R) : cstOn (p ≫ spMap φ) U c = cstOn p U (φ c) := by
   have e : (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (p ≫ spMap φ).appLE ⊤ U le_top =
@@ -59,6 +73,9 @@ def secComb {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {L : LB X}
     rw [map_mul, map_mul, resG_cstOn_const, resG_cstOn_const, mul_left_comm]
     exact congrArg _ ((τ a).compat i j)
 
+/- English proof (translation)
+Rewrite using `[Cartier.resG_resG, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul, app_cstOn_const, resG_cstOn_const, hf, cstOn_comp_spMap_const, Cartier.app_resG, Cartier.resG_resG, Cartier.resG_resG]`. Both sides reduce to the same expression.
+-/
 theorem resG_comb_pull {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {X X₁ X₀ : Scheme.{0}}
     (f : X ⟶ Sp R') (f₁ : X₁ ⟶ Sp R) (π₁ : X₁ ⟶ X₀) (j : X ⟶ X₁) (hf : j ≫ f₁ = f ≫ spMap φ)
     {n : ℕ} (c : Fin n → R) {U₀ : X₀.Opens} (t : Fin n → Γ(X₀, U₀)) {U₁ : X₁.Opens} {V V' W : X.Opens}
@@ -72,6 +89,13 @@ theorem resG_comb_pull {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R'
     Cartier.app_resG, Cartier.resG_resG, Cartier.resG_resG]
   rfl
 
+/- English proof (translation)
+Introduce `k _ R₀ X X₀ f f₀ π _ L σ hπ hL`. Take `⟨n, c, τ, hσ⟩` from `GlobalTheory.T.flat_base_change_sections R₀ k R₀.subtype X₀ X f₀ f π L (subring_subtype_flat R₀) hπ hL σ`. Use `⟨Finset.univ.image c, fun R₁ hR hF X₁ f₁ π₁ j _ hj hf => ?_⟩` and prove the remaining obligations. Substitute `hj` using the available equality. Set `c₁ : Fin n → R₁` to `fun a => ⟨c a, hF (by simp)⟩`.
+
+Use `⟨secComb f₁ c₁ fun a => Cartier.secPull (τ a) π₁, fun x => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ ((j ≫ π₁) x)))`. Establish `h1 : (j ≫ π₁) ⁻¹ᵁ L.U i ≤ (L.pull (j ≫ π₁)).U fun _ => i` using `(Cartier.pull_U L _ fun _ => i).ge`. Establish `h2 : (j ≫ π₁) ⁻¹ᵁ L.U i ≤ ((L.pull π₁).pull j).U fun _ _ => i` using `(j.preimage_mono (Cartier.pull_U L π₁ fun _ => i).ge).trans (Cartier.pull_U (L.pull π₁) j fun _ _ => i).ge`. Use `⟨(j ≫ π₁) ⁻¹ᵁ L.U i, fun _ => i, fun _ _ => i, h1, h2, 1, hi, ?_⟩` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (one_mul _).symm` and prove the remaining obligations. Use `(congrArg (resG X h1) (hσ fun _ => i)).trans ?_` and prove the remaining obligations. Conclude with `resG_comb_pull R₁.subtype f f₁ π₁ j hf c₁ (fun a => (τ a).f i) (Cartier.pull_U L π₁ fun _ => i).le (Cartier.pull_U (L.pull π₁) j fun _ _ => i).le (Cartier.pull_U L (j ≫ π₁) fun _ => i).le h1 h2`.
+-/
 theorem exists_finset_sec_descends : ∀ (k : Type) [Field k] (R₀ : Subring k) (X X₀ : Scheme.{0}) (f : X ⟶ Sp k) (f₀ : X₀ ⟶ Sp R₀) (π : X ⟶ X₀) [IsProper f₀] (L : LB X₀) (σ : (L.pull π).Sec), IsPullback π f f₀ (spMap R₀.subtype) → L.IsLB → ∃ F : Finset k, ∀ (R₁ : Subring k) (hR : R₀ ≤ R₁), (F : Set k) ⊆ R₁ → ∀ (X₁ : Scheme.{0}) (f₁ : X₁ ⟶ Sp R₁) (π₁ : X₁ ⟶ X₀) (j : X ⟶ X₁), IsPullback π₁ f₁ f₀ (spMap (Subring.inclusion hR)) → j ≫ π₁ = π → j ≫ f₁ = f ≫ spMap R₁.subtype → ∃ τ : (L.pull π₁).Sec, SameDiv σ (Cartier.secPull τ j) := by
   classical
   intro k _ R₀ X X₀ f f₀ π _ L σ hπ hL

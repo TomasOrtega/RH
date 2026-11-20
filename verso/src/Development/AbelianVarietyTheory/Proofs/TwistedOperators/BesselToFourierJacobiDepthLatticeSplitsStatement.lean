@@ -10,5 +10,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AscFin.pcBF_splits | exact GlobalTheory.AscFin.pcBF_splits | (intros; apply GlobalTheory.AscFin.pcBF_splits <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.besselToFourierJacobi_depthLattice_splits : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), Splits (F.dB ρ h) (F.dJ ρ h) (pcBF W F ρ h) (xZero (F.dJ ρ h)) (yBF F ρ h) W.ψ (latRow G (2 * ρ + 1)) := by
   first | exact @GlobalTheory.AscFin.pcBF_splits | exact GlobalTheory.AscFin.pcBF_splits | (intros; apply GlobalTheory.AscFin.pcBF_splits <;> assumption)

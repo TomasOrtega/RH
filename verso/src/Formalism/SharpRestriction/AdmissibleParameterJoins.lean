@@ -4,11 +4,17 @@ namespace Formalism.MainNotions
 
 open Formalism.BasicNotions Formalism.D5
 
+/- English proof (translation)
+Establish `h : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Unfold `SizeData₂.B0 sizeBudget bSize`. Check the signs of the components of the expression.
+-/
 theorem loss_bound_nonneg {D : D7} (L : SizeData₂ D) : 0 ≤ L.B0 := by
   have h : 0 < L.sc.x := lt_trans one_pos L.sc.one_lt_alt
   unfold SizeData₂.B0 sizeBudget bSize
   positivity
 
+/- English proof (translation)
+Establish `h : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Unfold `SizeData₂.Nc budgetNc rankBudget bSize`. Check the signs of the components of the expression.
+-/
 theorem Nc_nonneg {D : D7} (L : SizeData₂ D) : 0 ≤ L.Nc := by
   have h : 0 < L.sc.x := lt_trans one_pos L.sc.one_lt_alt
   unfold SizeData₂.Nc budgetNc rankBudget bSize

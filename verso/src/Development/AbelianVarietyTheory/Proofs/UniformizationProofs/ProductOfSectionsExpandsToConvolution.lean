@@ -27,6 +27,11 @@ section Prod
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 
+/- English proof (translation)
+Establish `e₀ : ρ.left ≫ D.famφB α 0 = ρ.left` using `Category.comp_id _`. Establish `e₁ : ρ.left ≫ D.famφB α 1 = (cP D T α * ρ).left` using `congrArg (fun q => q.left) ((MonObj.comp_mul ρ (𝟙 _) (cP D _ α)).trans (by rw [comp_cP, Category.comp_id, mul_comm]))`. Establish `e₂ : ρ.left ≫ D.famφB α 2 = (cP D T α).left` using `congrArg (fun q => q.left) (comp_cP D ρ α)`. Establish `e₃ : ρ.left ≫ D.famφB α 3 = (1 : T ⟶ D.P.A).left` using `congrArg (fun q : T ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) ρ)`. Rewrite using `[Fin.prod_univ_four, e₀, e₁, e₂, e₃]`.
+
+Use `show _ ^ ((k : ℤ) - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) = _`. Rewrite using `[zpow_one, zpow_one, zpow_neg_one]`.
+-/
 theorem prod_famB {T : Over (Spec (CommRingCat.of R))} (ρ : T ⟶ D.P.A) (α : D.X) (k : ℕ) {U : Type} [CommGroup U]
     (h : (T.left ⟶ D.P.A.left) → U) : ∏ i, h (ρ.left ≫ D.famφB α i) ^ DegPre.famε k i =
       h ρ.left ^ ((k : ℤ) - 1) * h (cP D T α * ρ).left * (h (cP D T α).left)⁻¹ * h (1 : T ⟶ D.P.A).left := by
@@ -45,6 +50,17 @@ def IsProd (r : R) {k l m : ℕ} {β ga α : D.X} (a : D.SecB k β) (b : D.SecB 
     sval c ρ.left z J = constVal T.hom z r *
       (sval a ρ.left z J * sval b ρ.left z J * (th D z J (cP D T β) (cP D T ga) ρ).val)
 
+/- English proof (translation)
+Substitute `hα` using the available equality. Set `a : D.P.A ⟶ D.P.A` to `cP D _ β`. Set `b : D.P.A ⟶ D.P.A` to `cP D _ ga`. Establish `hu` using `pullGen_isGen _ _ _ _ D.cub.isGen (lift a (lift b (𝟙 D.P.A))).left`. Take `⟨t, ht⟩` from `exists_sec D.P.isLB (φ' := D.famφB (β + ga)) (ε' := DegPre.famε (k + l)) (fun U _ h => by`.
+
+Establish `p₁` using `prod_cub a b (𝟙 D.P.A) h`. Establish `p₂` using `prod_famB (𝟙 D.P.A) β k h`. Establish `p₃` using `prod_famB (𝟙 D.P.A) ga l h`. Establish `p₄` using `prod_famB (𝟙 D.P.A) (β + ga) (k + l) h`. Rewrite `p₄` using `[cPoint_add]`.
+
+Simplify using `only [Over.id_left, Category.id_comp] at p₁ p₂ p₃ p₄`. Use `Eq.trans (prod_sum₂ (K := Fin 4 ⊕ Fin 4) (K' := thK) (U := U) _ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ p₂ p₃) p₁) (Eq.trans ?_ p₄.symm)` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, a, b]`. Use `push_cast`.
+
+Use the proof step `module)`. Use the proof step `(H1.SectionArithmetic.mulSec (H1.SectionArithmetic.mulSec f g) (Geo.Tor.genSec (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (lift a (lift b (𝟙 D.P.A))).left) hu))`. Use `⟨(r • (show SecOver D.P.A.hom _ from t) : SecOver D.P.A.hom _), fun T ρ z J hJ => ?_⟩` and prove the remaining obligations. Use `(sval_smul' hJ ρ.left r _).trans (congrArg₂ (· * ·) (by rw [Over.w]) ?_)` and prove the remaining obligations. Use `(ht _ _ z J hJ).trans ((H1.SectionArithmetic.sval_mulSec _ _ _ z hJ).trans (congrArg₂ (· * ·) (H1.SectionArithmetic.sval_mulSec _ _ _ z hJ) ((sval_genSec _ hu _ z hJ).trans (congrArg Units.val ((val_cub D.cub ρ hJ a b (𝟙 _)).trans ?_)))))` and prove the remaining obligations.
+
+Rewrite using `[comp_cP, comp_cP, Category.comp_id]`.
+-/
 theorem exists_isProd (r : R) (k l : ℕ) {β ga α : D.X} (hα : β + ga = α) (f : D.SecB k β) (g : D.SecB l ga) :
     ∃ h : D.SecB (k + l) α, IsProd r f g h := by
   subst hα
@@ -75,6 +91,13 @@ theorem exists_isProd (r : R) (k l : ℕ) {β ga α : D.X} (hα : β + ga = α) 
 
 variable {I : Ideal R} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Substitute `hα` using the available equality. Set `FinalForm : Over (Spec (CommRingCat.of R))` to `Over.mk (x ≫ g.pG.left ≫ D.P.A.hom)`. Set `xo : FinalForm ⟶ (Over.map (thick R I e)).obj (thickObj R I e G)` to `Over.homMk x (congrArg (x ≫ ·) (Over.w g.pG).symm)`. Establish `h₁` using `H FinalForm (xo ≫ g.pG) z J hJ`. Establish `h₂` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (g.t_mul β ga) x).trans (val_mul hJ _ _ _))`.
+
+Establish `h₃` using `val_cub D.cub xo (z := z) hJ (cP D _ β) (cP D _ ga) g.pG`. Rewrite `h₃` using `[comp_cP, comp_cP]`. Establish `h₅` using `congrArg Units.val ((congrArg (val (g.t (β + ga)) x z J * ·) h₃).symm.trans h₂)`. Rewrite `h₅` using `[Units.val_mul, Units.val_mul]`. Use `(congrArg (· * (val (g.t (β + ga)) x z J).val) h₁).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[_root_.mul_mul_mul_comm, ← h₅]`. Conclude with `(_root_.mul_assoc _ _ _).trans (congrArg _ ((_root_.mul_assoc _ _ _).trans (congrArg _ (mul_comm _ _))))`.
+-/
 theorem prod_mul_coord {e : ℕ} (g : GtCoord I D e G) {r : R} {k l m : ℕ} {β ga α : D.X}
     (hα : β + ga = α) {a : D.SecB k β} {b : D.SecB l ga} {c : D.SecB m α} (H : IsProd r a b c) {Z : Scheme.{0}}
     (x : Z ⟶ (thickObj R I e G).left) (z : Z) (J) (hJ : Good D.P.L z J) :
@@ -100,6 +123,21 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `expandsAt_val U e k σ f h`. Take `⟨s', hs'⟩` from `expandsAt_val U e l σ' f' h'`. Take `⟨s'', hs''⟩` from `expandsAt_val U e m σ'' f'' h''`. Establish `hπ : fGl I G e ≫ G.hom = pGl U e ≫ D.toPre.P.A.hom` using `(Over.w (fstG I e G)).trans (Over.w (U.gt e).pG).symm`. Establish `key : ∀ (Z : Scheme.{0}) (x : Z ⟶ (thickObj R I e G).left) (z : Z) (J), Good D.toPre.P.L z J → ∑ α ∈ s'', sval (f'' α) (x ≫ pGl U e) z J * (val (tG U e α) x z J).val = constVal (x ≫ pGl U e ≫ D.toPre.P.A.hom) z r * ((∑ α ∈ s, sval (f α) (x ≫ pGl U e) z J * (val (tG U e α) x z J). …`.
+
+Introduce `Z x z J hJ`. Take `⟨j, hj⟩` from `exists_chart U.LG.isLB (fGl I G e (x z))`. Rewrite using `[← (hs Z x z J hJ).2 j hj, ← (hs' Z x z J hJ).2 j hj, ← (hs'' Z x z J hJ).2 j hj, hσ Z (x ≫ fGl I G e) z j hj, Category.assoc, hπ, hm, pow_add, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `choose d hd using fun α => ConvOfProd.exists_sub_sum (f'' α) (p α) s`.
+
+Set `S : Finset D.toPre.X` to `insert α₀ (s'' ∪ Finset.image₂ (· + ·) s s')`. Establish `hd0` using `GlobalTheory.sval_eq_zero_of_sum_mul_coord R I D.toPre e G (U.gt e) D.toPre.P.A (𝟙 _) (Fin 4) D.toPre.famφB (DegPre.famε m) d S (fun Z x ρ hr z J hJ => by`. Take `rfl : ρ = x ≫ pGl U e` from `(Category.comp_id ρ).symm.trans hr`. Establish `c` using `ConvOfProd.sum_conv s s' S (fun β => sval (f β) (x ≫ pGl U e) z J * (val (tG U e β) x z J).val) (fun β => sval (f' β) (x ≫ pGl U e) z J * (val (tG U e β) x z J).val) (fun v hv => by rw [(hs' Z x z J hJ).1 v hv, zero_mul]) (fun β hβ v hv => Finset.mem_insert_of_mem (Finset.mem_uni …`. Establish `c' : ∑ α ∈ s'', sval (f'' α) (x ≫ pGl U e) z J * (val (tG U e α) x z J).val = ∑ α ∈ S, sval (f'' α) (x ≫ pGl U e) z J * (val (tG U e α) x z J).val` using `Finset.sum_subset (fun a ha => Finset.mem_insert_of_mem (Finset.mem_union_left _ ha)) (fun a _ ha => by rw [(hs'' Z x z J hJ).1 a ha, zero_mul])`.
+
+Establish `k₄` using `key Z x z J hJ`. Rewrite `k₄` using `[← c, c', Finset.mul_sum]`. Rewrite using `[← sub_eq_zero.2 k₄, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[hd α Z _ z J hJ, sub_mul, Finset.sum_mul, Finset.mul_sum]`.
+
+Conclude with `congrArg _ (Finset.sum_congr rfl fun β _ => prod_mul_coord (U.gt e) (add_sub_cancel β α) (hp α β) x z J hJ)) α₀ (Finset.mem_insert_self _ _)`. Use `⟨s, fun Z x z J hJ => ?_⟩` and prove the remaining obligations. Establish `hl : ∃ ρ : Z ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1))), ρ ≫ thick R I e = (x ≫ (D.toPre.prBe I e).left) ≫ D.toPre.P.A.hom` using `⟨x ≫ (thickObj R I e D.toPre.P.A).hom, by`. Rewrite using `[Category.assoc, Category.assoc, Over.w (D.toPre.prBe I e)]`. Use the proof step `rfl⟩`.
+
+Use `⟨fun β hβ => ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.LiftTest.main R I D.toPre e G (U.gt e) D.toPre.P.A (𝟙 _) _ D.toPre.P.L D.toPre.P.isLB _ _ _ (p α₀ β) (fun Z x ρ hr z J hJ => ?_) Z _ hl z J hJ` and prove the remaining obligations. Take `rfl : ρ = x ≫ pGl U e` from `(Category.comp_id ρ).symm.trans hr`. Establish `c` using `prod_mul_coord (U.gt e) (add_sub_cancel β α₀) (hp α₀ β) x z J hJ`. Rewrite `c` using `[(hs Z x z J hJ).1 β hβ, zero_mul, zero_mul, mul_zero]`.
+
+Conclude with `(Units.mul_left_eq_zero _).1 c`. Establish `c` using `GlobalTheory.LiftTest.main R I D.toPre e G (U.gt e) D.toPre.P.A (𝟙 _) _ D.toPre.P.L D.toPre.P.isLB _ _ _ (d α₀) hd0 Z _ hl z J hJ`. Rewrite `c` using `[hd α₀ Z _ z J hJ]`. Conclude with `sub_eq_zero.1 c`.
+-/
 theorem level (e : ℕ) {k l m : ℕ} (r : R) {σ : H0 U.LG.L k} {σ' : H0 U.LG.L l} {σ'' : H0 U.LG.L m} (hm : m = k + l)
     {f : ∀ α, D.toPre.SecB k α} {f' : ∀ α, D.toPre.SecB l α} {f'' : ∀ α, D.toPre.SecB m α}
     (h : U.ExpandsAt e k σ f) (h' : U.ExpandsAt e l σ' f') (h'' : U.ExpandsAt e m σ'' f'')
@@ -171,6 +209,13 @@ def IsTerm {D : DegPre R} {k : ℕ} (g : GtPtF D F) (w : Frm D F k g.b) {χ : D.
     cst F z x * (rigV D (TF (R := R) F).hom z J).val ^ k =
       sval f g.b.left z J * (val (g.s χ) (𝟙 _) z J).val * (val w (𝟙 _) z J).val
 
+/- English proof (translation)
+Take `⟨τ, hτ, vτ⟩` from `exists_gen D.P.isLB (φ' := fun i => g.b.left ≫ D.famφB α i) (ε' := DegPre.famε m) (fun U _ h => by`. Establish `p₁ : ∏ i : PUnit, h ((TF (R` using `R) F).hom ≫ eSec D.P.A) ^ ((m : ℤ) * 1) = h (1 : TF (R := R) F ⟶ D.P.A).left ^ (m : ℤ) := by`. Rewrite using `[Fintype.prod_unique, _root_.mul_one]`. Both sides reduce to the same expression. Use `Eq.trans (prod_sum₂ (K := PUnit ⊕ Fin 4) (K' := Fin 2) (U := U) _ (prod_sum₂ (K := PUnit) (K' := Fin 4) (U := U) _ p₁ (prod_neg _ _ (prod_gt g.b α h))) (prod_neg _ _ (CoefBasic.prod_line m g.b h))) (Eq.trans ?_ (prod_famB g.b α m h).symm)` and prove the remaining obligations.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use the proof step `module)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (GeneratorPullback.powGen D.P.L _ _ (LB.pullGen D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => 1) D.rig (TF (R := R) F).hom) m) (LB.invGen D.P.L _ _ (g.s α))) (LB.invGen D.P.L _ _ w))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (powGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.rig_gen _) _) (invGen_isGen _ _ _ _ (g.isGen α))) (invGen_isGen _ _ _ _ hw))`.
+
+Use `⟨τ, hτ, fun z J hJ => (vτ _ _ z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((map_pow _ _ _).trans (congrArg (· ^ m) ((val_pull hJ _ _ _).trans ?_))) (val_inv _ _))) (val_inv _ _)))⟩` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem exists_frame {D : DegPre R} {m : ℕ} (g : GtPtF D F) {w : Frm D F m g.b} (hw : w.IsGen) (α : D.X) :
     ∃ τ : LB.Gen (LB.LinComb D.P.L (fun i => g.b.left ≫ D.famφB α i) (DegPre.famε m)), τ.IsGen ∧
       ∀ z J, Good D.P.L z J → val τ (𝟙 _) z J =
@@ -197,12 +242,18 @@ theorem exists_frame {D : DegPre R} {m : ℕ} (g : GtPtF D F) {w : Frm D F m g.b
   rw [Category.id_comp]; rfl
 
 omit [IsDomain R] in
+/- English proof (translation)
+Use `(constVal_specMap (jFK (R := R) F) (algebraMap R (FractionRing R)) z r).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (constVal_specMap (𝟙 (Spec (CommRingCat.of F))) (algebraMap (FractionRing R) F) z _)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+-/
 theorem constVal_TF [IsDomain R] (z : (TF (R := R) F).left) (r : R) :
     constVal (TF (R := R) F).hom z r = cst F z (algebraMap (FractionRing R) F (algebraMap R (FractionRing R) r)) := by
   refine (constVal_specMap (jFK (R := R) F) (algebraMap R (FractionRing R)) z r).trans ?_
   refine Eq.trans ?_ (constVal_specMap (𝟙 (Spec (CommRingCat.of F))) (algebraMap (FractionRing R) F) z _)
   rw [Category.id_comp]
 
+/- English proof (translation)
+Use `(w * a).mul_left_inj.1 ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, ← Units.val_mul, ← _root_.mul_assoc (ρ ^ m * a⁻¹ * w⁻¹), inv_mul_cancel_right, inv_mul_cancel_right, Units.val_pow_eq_pow_val, h, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alg_term {S : Type} [CommRing S] {x f : S} {ρ a w : Sˣ} {m : ℕ} (h : x * ρ.val ^ m = f * a.val * w.val) :
     f = x * (ρ ^ m * a⁻¹ * w⁻¹).val := by
   refine (w * a).mul_left_inj.1 ?_
@@ -210,6 +261,9 @@ theorem alg_term {S : Type} [CommRing S] {x f : S} {ρ a w : Sˣ} {m : ℕ} (h :
     inv_mul_cancel_right, Units.val_pow_eq_pow_val, h, Units.val_mul]
   ring
 
+/- English proof (translation)
+Use `alg_term ?_` and prove the remaining obligations. Establish `b'` using `congrArg Units.val b`. Rewrite `b'` using `[Units.val_mul, Units.val_mul]`. Rewrite using `[Units.val_mul, pow_add]`. Take the linear combination `c * x' * ρ.val ^ l * h + c * (f * a.val * w.val) * h' - c * f * f' * w.val * w'.val * b'`.
+-/
 theorem alg_prod {S : Type} [CommRing S] (c : S) {x x' f f' : S} {ρ a a' a'' w w' θ : Sˣ} {k l : ℕ}
     (h : x * ρ.val ^ k = f * a.val * w.val) (h' : x' * ρ.val ^ l = f' * a'.val * w'.val) (b : a'' * θ = a * a') :
     c * (f * f' * θ.val) = c * (x * x') * (ρ ^ (k + l) * a''⁻¹ * (w * w')⁻¹).val := by
@@ -219,6 +273,11 @@ theorem alg_prod {S : Type} [CommRing S] (c : S) {x x' f f' : S} {ρ a a' a'' w 
   rw [Units.val_mul, pow_add]
   linear_combination c * x' * ρ.val ^ l * h + c * (f * a.val * w.val) * h' - c * f * f' * w.val * w'.val * b'
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Use `choose p hp using fun α β => exists_isProd r k l (add_sub_cancel β α) (f β) (f' (α - β))`. Take `⟨τ, hτ, vτ⟩` from `exists_frame g hw α`. Use `GlobalTheory.T.adicSum_sections_of_finite_sums_on_thickenings hL R I hR D F (Fin 4) (D.toPre.famφB α) (DegPre.famε (k + l)) D.toPre.X (p α) (f'' α) (fun e => level U e r rfl (h e) (h' e) (h'' e) hσ p hp α) g.b τ hτ _ _ fun z J hJ => ⟨fun χ => ?_, ?_⟩` and prove the remaining obligations. Establish `b` using `gt_mul (𝟙 (TF (R := R) F)) hJ g χ (α - χ)`.
+
+Rewrite `b` using `[add_sub_cancel, Category.id_comp, Over.id_left]`. Rewrite using `[hp α χ _ g.b z J hJ, vτ z J hJ, constVal_TF, hww z J hJ, CoefBasic.cst_eq z (_ * _), map_mul, map_mul, ← CoefBasic.cst_eq, ← CoefBasic.cst_eq, ← CoefBasic.cst_eq]`. Conclude with `alg_prod _ (hx χ z J hJ) (hx' (α - χ) z J hJ) b`. Rewrite using `[vτ z J hJ]`. Conclude with `alg_term (hx'' z J hJ)`.
+-/
 theorem point [CharZero R] [IsAlgClosed F] (hL : LL) (hR : AdmBase R I) {k l m : ℕ} (r : R) {σ : H0 U.LG.L k}
     {σ' : H0 U.LG.L l} {σ'' : H0 U.LG.L m} (hm : m = k + l)
     {f : ∀ α, D.toPre.SecB k α} {f' : ∀ α, D.toPre.SecB l α} {f'' : ∀ α, D.toPre.SecB m α}
@@ -245,6 +304,11 @@ theorem point [CharZero R] [IsAlgClosed F] (hL : LL) (hR : AdmBase R I) {k l m :
 
 end Point
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_sec hL (K' := Fin 1) (φ' := fun _ => q) (ε' := fun _ => (m : ℤ)) (fun U _ h => by`. Use `(prod_sum₂ (K := Fin 1) (K' := Fin 1) (U := U) _ (Fin.prod_univ_one _) (Fin.prod_univ_one _)).trans (Eq.trans ?_ (Fin.prod_univ_one _).symm)` and prove the remaining obligations. Rewrite using `[hm, Nat.cast_add, zpow_add]`. Use the proof step `rfl) (H1.SectionArithmetic.mulSec a b)`. Use `⟨c, fun Z r z i hi => ?_⟩` and prove the remaining obligations.
+
+Take `⟨J, hJ, e⟩` from `exists_good L hL z (fun _ : PUnit => r ≫ q) (fun _ => i) (fun _ _ _ => rfl) (fun _ => hi)`. Take `rfl : J (r ≫ q) = i` from `e PUnit.unit`. Conclude with `(hc Z r z J hJ).trans (H1.SectionArithmetic.sval_mulSec a b r z hJ)`.
+-/
 theorem exists_powMul {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {q : Y ⟶ X} {k l m : ℕ} (hm : m = k + l)
     (a : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => q) (fun _ => (k : ℤ))))
     (b : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => q) (fun _ => (l : ℤ)))) :
@@ -259,6 +323,13 @@ theorem exists_powMul {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {q : Y ⟶ X} 
   obtain rfl : J (r ≫ q) = i := e PUnit.unit
   exact (hc Z r z J hJ).trans (H1.SectionArithmetic.sval_mulSec a b r z hJ)
 
+/- English proof (translation)
+Use `U.smooth` as an intermediate fact. Establish `hd : IsDominant (jK R)`. Use `⟨?_⟩` and prove the remaining obligations. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap R (FractionRing R))).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))]`.
+
+Conclude with `bot_le)`. Establish `: IsSchemeTheoreticallyDominant (jK R)` using `.of_isDominant _`. Introduce `a b e`. Use `SecOver.ext _ _ fun j => Scheme.Hom.app_injective (pullback.fst G.hom (jK R)) _ (fn_ext fun y hy => ?_)` and prove the remaining obligations. Establish `hy'` using `(wchart_eq (L := U.LG.L) (φ := fun _ : Fin 1 => 𝟙 G.left) (p := pullback.fst G.hom (jK R)) (fun _ => (Category.comp_id _).symm) j).ge hy`.
+
+Establish `v : ∀ s : IntSec U k, gs (𝟙 _) y _ (LB.Sec.f (genericSec U k s) j) = gs (𝟙 _) y _ (((pullback.fst G.hom (jK R)).app _).hom (LB.Sec.f s j))` using `fun s => (gs_pullFn _ _ _ (𝟙 _) y hy').trans (gs_pull (𝟙 _) _ y _ hy _).symm`. Conclude with `(v a).symm.trans ((congrArg (fun s : U.SecK k => gs (𝟙 _) y _ (LB.Sec.f s j)) e).trans (v b))`.
+-/
 theorem genericSec_injective (k : ℕ) : Function.Injective (genericSec U k) := by
   have := U.smooth
   have hd : IsDominant (jK R) := by
@@ -280,6 +351,9 @@ section Global
 
 variable (F : Type) [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Set `e` to `(Fintype.equivFin κ).symm`. Use `(expandsG_iff U F k v s).2 ⟨_, fun i => c (e i), fun i => x (e i), fun i => hx _, h₁.trans ?_, fun α => (h₂ α).trans ?_⟩` and prove the remaining obligations. Conclude with `(e.sum_comp fun i => c i • extendSec U F k (genericSec U k (x i).1)).symm`. Conclude with `(e.sum_comp fun i => c i • termPull D.toPre (FractionRing R) F k α (genericTerm D k α ((x i).2 α))).symm`.
+-/
 theorem expandsG_of_fintype {κ : Type} [Fintype κ] (k : ℕ) (v : GroupSec U F k) (s : Fam D.toPre F k) (c : κ → F)
     (x : κ → IntSec U k × ∀ α, IntTerm D k α) (hx : ∀ i, x i ∈ expansionPairs U k)
     (h₁ : v = ∑ i, c i • extendSec U F k (genericSec U k (x i).1))
@@ -293,6 +367,9 @@ theorem expandsG_of_fintype {κ : Type} [Fintype κ] (k : ℕ) (v : GroupSec U F
 
 variable {F}
 
+/- English proof (translation)
+Use `(sval_pullOver _ _ _ _ hJ).trans ((sval_pullOver _ _ _ _ hJ).trans (congrArg (fun q => sval f q z J) ?_))` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← Over.comp_left, Category.assoc, famMap_snd, lift_snd]`.
+-/
 theorem sval_termPull {k : ℕ} {α : D.toPre.X} (f : IntTerm D k α) (b : TF (R := R) F ⟶ D.toPre.P.A)
     {z : (TF (R := R) F).left} {J} (hJ : Good D.toPre.P.L z J) :
     sval (termPull D.toPre (FractionRing R) F k α (genericTerm D k α f)) (lift (𝟙 (TF (R := R) F)) b).left z J =
@@ -300,11 +377,19 @@ theorem sval_termPull {k : ℕ} {α : D.toPre.X} (f : IntTerm D k α) (b : TF (R
   refine (sval_pullOver _ _ _ _ hJ).trans ((sval_pullOver _ _ _ _ hJ).trans (congrArg (fun q => sval f q z J) ?_))
   rw [← Over.comp_left, ← Over.comp_left, Category.assoc, famMap_snd, lift_snd]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `CoefBasic.exists_isCoef g hw χ (termPull D.toPre (FractionRing R) F k χ (genericTerm D k χ f))`. Conclude with `⟨x, fun z J hJ => (hx z J hJ).trans (by rw [sval_termPull f g.b hJ])⟩`.
+-/
 theorem exists_isTerm {k : ℕ} (g : GtPtF D.toPre F) {w : Frm D.toPre F k g.b} (hw : w.IsGen) {χ : D.toPre.X}
     (f : IntTerm D k χ) : ∃ x, IsTerm g w f x := by
   obtain ⟨x, hx⟩ := CoefBasic.exists_isCoef g hw χ (termPull D.toPre (FractionRing R) F k χ (genericTerm D k χ f))
   exact ⟨x, fun z J hJ => (hx z J hJ).trans (by rw [sval_termPull f g.b hJ])⟩
 
+/- English proof (translation)
+Use `CoefBasic.coef_eq fun z J hJ => ?_` and prove the remaining obligations. Establish `e : (lift (𝟙 (TF (R` using `R) F)) g.b).left ≫ famBase D.toPre F = 𝟙 _ := congrArg (fun q => q.left) (lift_fst (𝟙 (TF (R := R) F)) g.b)`. Establish `e₁` using `(congrArg (fun q => sval q (lift (𝟙 (TF (R := R) F)) g.b).left z J) h).trans (sval_sum' hJ _ _ _)`. Use `Eq.trans ?_ (congrArg (fun q => q * _ * _) e₁).symm` and prove the remaining obligations. Rewrite using `[CoefBasic.cst_eq, map_sum, Finset.sum_mul, Finset.sum_mul, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sval_smul' hJ, sval_termPull (f i) g.b hJ, e, map_mul, ← CoefBasic.cst_eq, ← CoefBasic.cst_eq, _root_.mul_assoc, hx i z J hJ, ← _root_.mul_assoc, ← _root_.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem coef_eq_sum {κ : Type} [Fintype κ] {k : ℕ} (g : GtPtF D.toPre F) {w : Frm D.toPre F k g.b} {χ : D.toPre.X}
     {s : Fam D.toPre F k} {c x : κ → F} {f : κ → IntTerm D k χ} (hx : ∀ i, IsTerm g w (f i) (x i))
     (h : famProj D.toPre F k χ s = ∑ i, c i • termPull D.toPre (FractionRing R) F k χ (genericTerm D k χ (f i))) :
@@ -320,6 +405,11 @@ theorem coef_eq_sum {κ : Type} [Fintype κ] {k : ℕ} (g : GtPtF D.toPre F) {w 
     hx i z J hJ, ← _root_.mul_assoc, ← _root_.mul_assoc]
   rfl
 
+/- English proof (translation)
+Take `⟨J, hJ, e⟩` from `exists_good U.LG.L U.LG.isLB y (fun _ : PUnit => UnifPre.gFK (G := G) F) (fun _ => i) (fun _ _ _ => rfl) (fun _ => hi)`. Take `rfl : J (UnifPre.gFK (G` from `G) F) = i := e PUnit.unit`. Establish `e₁` using `sval_sum' hJ (𝟙 _) Finset.univ (fun p => (c p • extendSec U F k (genericSec U k (σ p)) : GroupSec U F k))`. Use `Eq.trans (congrArg (fun q => powVal _ (𝟙 _) y (J q)) (Category.id_comp _).symm) (e₁.trans (Finset.sum_congr rfl fun p _ => ?_))` and prove the remaining obligations. Establish `e₂ : sval (extendSec U F k (genericSec U k (σ p))) (𝟙 _) y J = sval (σ p) (UnifPre.gFK (G` using `G) F) y J := (sval_pullOver _ _ _ (𝟙 _) hJ).trans ((sval_pullOver _ _ (σ p) _ hJ).trans (by rw [Category.id_comp]))`.
+
+Conclude with `(sval_smul' hJ _ _ _).trans (congrArg₂ (· * ·) (by rw [Category.id_comp]) (e₂.trans (congrArg (fun q => powVal (σ p) _ y (J q)) (Category.comp_id _))))`.
+-/
 theorem powVal_comb {κ : Type} [Fintype κ] {k : ℕ} (c : κ → F) (σ : κ → IntSec U k) (y : (UnifPre.GF (G := G) F).left)
     {i : U.LG.L.ι} (hi : UnifPre.gFK (G := G) F y ∈ U.LG.L.U i) :
     powVal (∑ p, c p • extendSec U F k (genericSec U k (σ p)) : GroupSec U F k) (𝟙 _) y i =
@@ -336,10 +426,16 @@ theorem powVal_comb {κ : Type} [Fintype κ] {k : ℕ} (c : κ → F) (σ : κ �
     (e₂.trans (congrArg (fun q => powVal (σ p) _ y (J q)) (Category.comp_id _))))
 
 omit [IsDomain R] in
+/- English proof (translation)
+Use `letI : Module R F := Module.compHom F (algebraMap R (FractionRing R))`. Conclude with `⟨⊥, Submodule.fg_bot, zero_mem _, fun _ => zero_mem _, fun n => ⟨∅, fun T _ => by simp⟩⟩`.
+-/
 theorem sumF_zero [IsDomain R] {Ix : Type} : SumF I F (fun _ : Ix => (0 : F)) 0 := by
   letI : Module R F := Module.compHom F (algebraMap R (FractionRing R))
   exact ⟨⊥, Submodule.fg_bot, zero_mem _, fun _ => zero_mem _, fun n => ⟨∅, fun T _ => by simp⟩⟩
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa only [Finset.sum_empty] using sumF_zero`. Consider the case `insert a S ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(GlobalTheory.AdicSum.sumF_calculus R I hR F Ix _ _ _ _).2.1 (h a) ih (c a)`.
+-/
 theorem sumF_sum (hR : AdmBase R I) {κ Ix : Type} (S : Finset κ) (c : κ → F) {x : κ → Ix → F} {s : κ → F}
     (h : ∀ p, SumF I F (x p) (s p)) : SumF I F (fun i => ∑ p ∈ S, c p * x p i) (∑ p ∈ S, c p * s p) := by
   classical
@@ -351,6 +447,31 @@ theorem sumF_sum (hR : AdmBase R I) {κ Ix : Type} (S : Finset κ) (c : κ → F
 
 end Global
 
+/- English proof (translation)
+Introduce `hL R _ _ _ I hR D A G _ _ _ U F _ _ _ w₀ hw₀ k k' k'' hk hk' hm t t' t'' s s' s'' h h' h'' ht g w w' w'' hw hw' hw'' hww α`. Establish `hG` using `hL.1.globalFns`. Establish `hk'' : 1 ≤ k''` using `by omega`. Take `⟨v, a, b⟩` from `h`. Take `⟨v', a', b'⟩` from `h'`.
+
+Take `⟨v'', a'', b''⟩` from `h''`. Take `⟨n, c, x, hx, e₁, e₂⟩` from `(expandsG_iff U.toUnifPre F k v s).1 b`. Take `⟨n', c', x', hx', e₁', e₂'⟩` from `(expandsG_iff U.toUnifPre F k' v' s').1 b'`. Take `⟨u, hu⟩` from `exists_powMul A.isLB (q := (snd (TFK (R := R) F) A.A).left) hm t t'`. Take `rfl : t'' = u` from `sec_ext' A.isLB fun y J hJ => (ht y J hJ).trans (hu _ (𝟙 _) y _ (hJ (𝟙 _ ≫ _))).symm`.
+
+Use `choose τ hτ using fun p : Fin n × Fin n' => exists_powMul U.LG.isLB (q := 𝟙 G.left) hm (x p.1).1 (x' p.2).1`. Use `choose Φ hΦ using fun p => ((U.expand k'' hk'').1 (genericSec U.toUnifPre k'' (τ p))).exists`. Use `choose r hr y hy d₁ d₂ using fun p => (expands_iff U.toUnifPre k'' _ _).1 (hΦ p)`. Establish `hr' : ∀ p, algebraMap (FractionRing R) F (algebraMap R (FractionRing R) (r p)) ≠ 0` using `fun p => by`. Rewrite using `[map_ne_zero]`.
+
+Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 (hr p)`. Establish `hyτ : ∀ p, (y p).1 = r p • (show IntSec U.toUnifPre k'' from τ p)` using `fun p => genericSec_injective U.toUnifPre k'' ((d₁ p).trans (map_smulₛₗ _ _ _).symm)`. Establish `hv : v'' = (∑ p : Fin n × Fin n', (c p.1 * c' p.2) • extendSec U.toUnifPre F k'' (genericSec U.toUnifPre k'' (τ p)) : GroupSec U.toUnifPre F k'')`. Use `powVal_ext U.LG.isLB fun z i hi => ?_` and prove the remaining obligations. Take `⟨i₁, hi₁⟩` from `exists_chart A.isLB (U.gen.hom.left ((snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left z))`.
+
+Establish `m` using `(isoRelM_iff _ _ _ _ a.1 _ a.2.1 _ _).1 a _ (𝟙 _) z i i₁ hi hi₁`. Establish `m'` using `(isoRelM_iff _ _ _ _ a'.1 _ a'.2.1 _ _).1 a' _ (𝟙 _) z i i₁ hi hi₁`. Establish `m''` using `(isoRelM_iff _ _ _ _ a''.1 _ a''.2.1 _ _).1 a'' _ (𝟙 _) z i i₁ hi hi₁`. Establish `b₁ : (snd (TFK (R` using `R) F) A.A).left ((𝟙 _ ≫ (U.genF F).left) z) ∈ A.L.U i₁ := (congrArg (fun q => q z ∈ A.L.U i₁) a.1).mpr hi₁`. Establish `m₀` using `hu _ _ z i₁ b₁`.
+
+Rewrite `m`, `m'`, `m''` using `[Category.comp_id]`. Establish `w₁` using `(congrArg (fun q => powVal q (𝟙 _) z i) e₁).trans (powVal_comb U.toUnifPre c (fun p => (x p).1) z hi)`. Establish `w₂` using `(congrArg (fun q => powVal q (𝟙 _) z i) e₁').trans (powVal_comb U.toUnifPre c' (fun p => (x' p).1) z hi)`. Use `Eq.trans ?_ (powVal_comb U.toUnifPre _ τ z hi).symm` and prove the remaining obligations. Establish `w₃ : powVal v'' (𝟙 _) z i = powVal v (𝟙 _) z i * powVal v' (𝟙 _) z i`.
+
+Rewrite using `[m, m', m'', m₀, hm, Nat.cast_add, zpow_add, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[w₃, w₁, w₂, Finset.sum_mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `cm : constVal (groupBase G F) z (c p * c' q) = constVal (groupBase G F) z (c p) * constVal (groupBase G F) z (c' q)` using `(congrArg (gs _ z ⊤) (map_mul _ _ _)).trans (gs_mul _ z ⊤ trivial _ _)`.
+
+Rewrite using `[hτ (p, q) _ (UnifPre.gFK (G := G) F) z i hi, cm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ∀ β, famProj D.toPre F k'' β (∑ p : Fin n × Fin n', (c p.1 * c' p.2) • famPull D.toPre (FractionRing R) F hG k'' (Φ p)) = ∑ p : Fin n × Fin n', (c p.1 * c' p.2 * (algebraMap (FractionRing R) F (algebraMap R (FractionRing R) (r p)))⁻¹) • termPull D.toPre (FractionRing R) F k' …` using `fun β => by`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[d₂, map_smulₛₗ, map_smulₛₗ, smul_smul, inv_mul_cancel_right₀ (hr' p)]`. Both sides reduce to the same expression. Establish `hE` using `expandsG_of_fintype U.toUnifPre F k'' v'' _ _ y hy (hv.trans (Finset.sum_congr (M := GroupSec U.toUnifPre F k'') rfl fun p _ => by`. Rewrite using `[d₁, map_smulₛₗ, smul_smul, inv_mul_cancel_right₀ (hr' p)])) hs`. Rewrite `hs` using `[← ((expandsG_bijective U.toUnifPre F hG hk'' (U.expand k'' hk'')).1 v'').unique b'' hE]`.
+
+Use `choose z hz using fun i χ => exists_isTerm g hw ((x i).2 χ)`. Use `choose z' hz' using fun i χ => exists_isTerm g hw' ((x' i).2 χ)`. Use `choose z'' hz'' using fun p => exists_isTerm g hw'' ((y p).2 α)`. Establish `key` using `sumF_sum hR Finset.univ (fun p : Fin n × Fin n' => c p.1 * c' p.2 * (algebraMap (FractionRing R) F (algebraMap R (FractionRing R) (r p)))⁻¹) fun p => point U.toUnifPre hL hR (r p) hm (hx p.1) (hx' p.2) (hy p) (fun Z q z j hj => by`. Rewrite using `[hyτ p]`.
+
+Conclude with `(powVal_smul _ _ q z hj).trans (congrArg _ (hτ p Z q z j hj))) g hw'' hww (hz p.1) (hz' p.2) α (hz'' p)`. Rewrite using `[coef_eq_sum g hz'' (hs α)]`. Use `key using 2 with χ` and compare the differences between its conclusion and the goal. Rewrite using `[coef_eq_sum g (fun i => hz i χ) (e₂ χ), coef_eq_sum g (fun i => hz' i (α - χ)) (e₂' (α - χ)), Finset.sum_mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Use `hr' (p, q)` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem main : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ (k k' k'' : ℕ), 1 ≤ k → 1 ≤ k' → k'' = k + k' → ∀ (t : SecA A F k) (t' : SecA A F k') (t'' : SecA A F k'') s s' s'', U.ExpandsF F k w₀ t s → U.ExpandsF F k' w₀ t' s' → U.ExpandsF F k'' w₀ t'' s'' → (∀ z J, Good A.L z J → sA t'' (𝟙 _) z J = sA t (𝟙 _) z J * sA t' (𝟙 _) z J) → ∀ (g : GtPtF D.toPre F) (w : Frm D.toPre F k g.b) (w' : Frm D.toPre F k' g.b) (w'' : Frm D.toPre F k'' g.b), w.IsGen → w'.IsGen → w''.IsGen → (∀ z J, Good D.toPre.P.L z J → val w'' (𝟙 _) z J = val w (𝟙 _) z J * val w' (𝟙 _) z J) → ∀ α, SumF I F (fun χ => coef s g w χ * coef s' g w' (α - χ)) (coef s'' g w'' α) := by
   intro hL R _ _ _ I hR D A G _ _ _ U F _ _ _ w₀ hw₀ k k' k'' hk hk' hm t t' t'' s s' s'' h h' h'' ht g w w' w'' hw hw' hw''
     hww α

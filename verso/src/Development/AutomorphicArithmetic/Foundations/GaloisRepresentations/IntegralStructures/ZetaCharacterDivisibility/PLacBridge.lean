@@ -13,6 +13,13 @@ open GlobalTheory.BlockSum (blockRep)
 open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac IsSSMat)
 open UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ a dd ρ h`. Take `⟨P, AI, hT, w, A, hl, hA, O, i1, i2, i3, Bw, hI, τ, J, hJ, J₀, hc, hm, hL⟩` from `h`. Establish `hinj : Function.Injective (fun i => J₀.orderEmbOfFin hc i)` using `(J₀.orderEmbOfFin hc).injective`. Use `⟨P, AI, hT, w, A, hl, hA, O, i1, i2, i3, Bw, hI, τ, J, hJ, fun i => J₀.orderEmbOfFin hc i, hinj, fun i => hm _ (Finset.orderEmbOfFin_mem J₀ hc i), ?_⟩` and prove the remaining obligations. Introduce `S T hS hT' hd heq`.
+
+Set `f : Fin a ↪ ℤ` to `⟨fun i => J₀.orderEmbOfFin hc i, hinj⟩`. Establish `hsub : ∀ C : Finset (Fin a), C.map f ⊆ J₀`. Introduce `C x hx`. Take `⟨i, -, rfl⟩` from `Finset.mem_map.1 hx`. Conclude with `Finset.orderEmbOfFin_mem J₀ hc i`.
+
+Use `hL (S.map f) (T.map f) (hsub S) (hsub T) ((Finset.disjoint_map f).2 hd) (hS.map) (hT'.map) ?_` and prove the remaining obligations. Rewrite using `[Finset.card_map, Finset.card_map, Finset.sum_map, Finset.sum_map]`. Establish `: ((T.card : ℤ) * ∑ i ∈ S, f i : ℚ) = (S.card : ℤ) * ∑ i ∈ T, f i`. Simplify `heq` using `[f]`. Simplify using `using (by exact_mod_cast this : (T.card : ℤ) * ∑ i ∈ S, f i = (S.card : ℤ) * ∑ i ∈ T, f i)`.
+-/
 theorem UpperTheory.Gal.Int.Div.lacBridge_of :
     LacBridge := by
   intro E Ω _ _ _ _ _ l _ a dd ρ h

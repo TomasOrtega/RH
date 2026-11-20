@@ -10,10 +10,20 @@ namespace CompanionTheory.PRW.ACWD
 
 variable {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `L.2` as an intermediate fact. Conclude with `L.1.toSubalgebra.toSubmodule.closed_of_finiteDimensional`.
+-/
 theorem finExt_isClosed (L : FinExt l) : IsClosed (L.1 : Set (Qbar l)) := by
   have := L.2
   exact L.1.toSubalgebra.toSubmodule.closed_of_finiteDimensional
 
+/- English proof (translation)
+Set `T : Subfield E` to `L.1.toSubfield.comap φ`. Establish `hq : ∀ q : ℚ, algebraMap ℚ E q ∈ T` using `fun q => by show φ (algebraMap ℚ E q) ∈ L.1`. Rewrite using `[eq_ratCast, map_ratCast]`. Conclude with `SubfieldClass.ratCast_mem L.1 q`. Set `T' : IntermediateField ℚ E` to `T.toIntermediateField hq`.
+
+Establish `h1 : IntermediateField.adjoin ℚ {θ} ≤ T'`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `h`.
+
+Establish `h2 : y ∈ T'` using `h1 (hθ ▸ IntermediateField.mem_top)`. Conclude with `h2`.
+-/
 theorem map_mem_of_gen (θ : E) (hθ : IntermediateField.adjoin ℚ {θ} = ⊤) (φ : E →+* Qbar l) (L : FinExt l)
     (h : φ θ ∈ L.1) (y : E) : φ y ∈ L.1 := by
   let T : Subfield E := L.1.toSubfield.comap φ
@@ -30,6 +40,13 @@ theorem map_mem_of_gen (θ : E) (hθ : IntermediateField.adjoin ℚ {θ} = ⊤) 
   have h2 : y ∈ T' := h1 (hθ ▸ IntermediateField.mem_top)
   exact h2
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `Field.exists_primitive_element ℚ E`. Use `haveI := finite_contEmb (l := l) w`. Set `S : Set (Qbar l)` to `((X ^ k - 1 : ℚ_[l][X]).rootSet (Qbar l) : Set (Qbar l)) ∪ Set.range (fun j : {j : w.adicCompletion E →+* Qbar l // Continuous j} => j.1 (algebraMap E _ θ))`. Use `haveI : Finite S := Set.Finite.to_subtype (Set.Finite.union (Finset.finite_toSet _) (Set.finite_range _))`. Establish `hfd : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] S)` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`.
+
+Set `L₂ : FinExt l` to `⟨L₁.1 ⊔ IntermediateField.adjoin ℚ_[l] S, haveI := L₁.2; IntermediateField.finiteDimensional_sup _ _⟩`. Establish `hS : IntermediateField.adjoin ℚ_[l] S ≤ L₂.1` using `le_sup_right`. Use `⟨L₂, le_sup_left, fun z hz => hS (IntermediateField.subset_adjoin _ _ (Or.inl ?_)), fun j x => ?_⟩` and prove the remaining obligations. Establish `hne : (X ^ k - 1 : ℚ_[l][X]) ≠ 0` using `X_pow_sub_C_ne_zero hk 1`. Rewrite using `[mem_rootSet]`.
+
+Conclude with `⟨hne, by simp [hz]⟩`. Establish `hjθ : j.1 (algebraMap E _ θ) ∈ L₂.1` using `hS (IntermediateField.subset_adjoin _ _ (Or.inr ⟨j, rfl⟩))`. Establish `hE : ∀ y : E, j.1 (algebraMap E (w.adicCompletion E) y) ∈ L₂.1` using `fun y => map_mem_of_gen θ hθ (j.1.comp (algebraMap E (w.adicCompletion E))) L₂ hjθ y`. Conclude with `(HeightOneSpectrum.denseRange_algebraMap E w).induction_on x ((finExt_isClosed L₂).preimage j.2) hE`.
+-/
 theorem exists_big (L₁ : FinExt l) (k : ℕ) (hk : 0 < k) (w : HeightOneSpectrum (𝓞 E)) :
     ∃ L₂ : FinExt l, L₁.1 ≤ L₂.1 ∧ (∀ z : Qbar l, z ^ k = 1 → z ∈ L₂.1) ∧
       ∀ (j : {j : w.adicCompletion E →+* Qbar l // Continuous j}) (x : w.adicCompletion E), j.1 x ∈ L₂.1 := by

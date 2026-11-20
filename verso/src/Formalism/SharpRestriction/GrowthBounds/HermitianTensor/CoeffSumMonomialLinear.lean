@@ -25,6 +25,11 @@ def sub2 (K : Type) [Field K] (r : ℕ) :
       MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) (MvPolynomial (Bool × (Fin r × Fin r)) K) :=
   aeval fun w => map (blockEmb K (k := r) (n := r) w.1).toRingHom (subY K r (X w.2))
 
+/- English proof (translation)
+Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with hu`. Both sides reduce to the same expression.
+
+Establish `h0 : coeff u f = 0` using `by simpa [mem_support_iff] using hu`. Rewrite using `[h0, map_zero]`.
+-/
 theorem coeff_sum_monomial_linear {K B σ : Type} [Field K] [CommRing B] [Algebra K B] (L : B →ₗ[K] K) (f : MvPolynomial σ B)
     (u : σ →₀ ℕ) : coeff u (∑ u' ∈ f.support, monomial u' (L (coeff u' f))) = L (coeff u f) := by
   classical
@@ -46,6 +51,9 @@ def lcoef {K B σ : Type} [Field K] [CommRing B] [Algebra K B] (L : B →ₗ[K] 
     ext u
     rw [RingHom.id_apply, coeff_smul, coeff_sum_monomial_linear, coeff_sum_monomial_linear, coeff_smul, map_smul]
 
+/- English proof (translation)
+The claim follows from `coeff_sum_monomial_linear L f u`.
+-/
 theorem coeff_lcoef {K B σ : Type} [Field K] [CommRing B] [Algebra K B] (L : B →ₗ[K] K) (f : MvPolynomial σ B)
     (u : σ →₀ ℕ) : coeff u (lcoef L f) = L (coeff u f) :=
   coeff_sum_monomial_linear L f u

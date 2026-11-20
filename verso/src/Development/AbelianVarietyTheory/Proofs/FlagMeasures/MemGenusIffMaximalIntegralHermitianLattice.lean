@@ -27,9 +27,15 @@ def extForm (h : V →ₗ⋆[K] V →ₗ[K] K) (π : K) : (V × K) →ₗ⋆[K] 
     (fun a b w => by simp; ring)
     (fun c a w => by simp; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extForm_apply (h : V →ₗ⋆[K] V →ₗ[K] K) (π : K) (z w : V × K) :
     extForm h π z w = h z.1 w.1 + star z.2 * π * w.2 := rfl
 
+/- English proof (translation)
+Use `⟨fun z w => ?_⟩` and prove the remaining obligations. Rewrite using `[extForm_apply, extForm_apply, starRingEnd_apply, star_add, LocWitt.symm' hs]`. Simplify using `only [star_mul', star_star, hπ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem extForm_symm {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {π : K} (hπ : star π = π) :
     (extForm h π).IsSymm := by
   refine ⟨fun z w => ?_⟩
@@ -37,6 +43,11 @@ theorem extForm_symm {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {π : K}
   simp only [star_mul', star_star, hπ]
   ring
 
+/- English proof (translation)
+Use `⟨fun z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `a : z.1 = 0` using `hn.1 _ fun y => by simpa [extForm_apply] using hz (y, 0)`. Establish `b : z.2 = 0` using `by simpa [extForm_apply, h0] using hz (0, 1)`. Conclude with `Prod.ext a b`. Establish `a : z.1 = 0` using `hn.2 _ fun y => by simpa [extForm_apply] using hz (y, 0)`.
+
+Establish `b : z.2 = 0` using `by simpa [extForm_apply, h0] using hz (0, 1)`. Conclude with `Prod.ext a b`.
+-/
 theorem extForm_nondeg {h : V →ₗ⋆[K] V →ₗ[K] K} (hn : h.Nondegenerate) {π : K} (h0 : π ≠ 0) :
     (extForm h π).Nondegenerate := by
   refine ⟨fun z hz => ?_, fun z hz => ?_⟩
@@ -47,6 +58,21 @@ theorem extForm_nondeg {h : V →ₗ⋆[K] V →ₗ[K] K} (hn : h.Nondegenerate)
     have b : z.2 = 0 := by simpa [extForm_apply, h0] using hz (0, 1)
     exact Prod.ext a b
 
+/- English proof (translation)
+Establish `sc0 : star c ≠ 0` using `star_ne_zero.2 c0`. Take `⟨v, t⟩` from `z`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Take `⟨r, rA, hr⟩` from `hd v fun m hm => by`.
+
+Simplify `H (m, 0) ⟨by simpa using A.zero_mem, by simpa using hm⟩` using `[extForm_apply]`. Establish `E` using `H ((π⁻¹ * c) • x, π⁻¹) ⟨by simpa [π0] using A.one_mem, by simpa using Λ.zero_mem⟩`. Establish `F` using `hA _ (hm _ hr)`. Rewrite `F` using `[star_div₀, LocWitt.symm' hs, πs]`. Simplify using `only [extForm_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_mul', star_inv₀, πs, smul_eq_mul] at E`.
+
+Simplify using `only [map_sub, map_smul, smul_eq_mul] at F`. Establish `T : π * t ∈ A`. Use `A.sub_mem (A.mul_mem πA E) (A.mul_mem (hA _ cA) (A.add_mem rA (A.mul_mem πA F)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨T, ?_⟩` and prove the remaining obligations. Establish `S` using `A.mul_mem (A.mul_mem (A.mul_mem πa cA) cN) (A.sub_mem (A.sub_mem E (A.mul_mem (hA _ cA) F)) (A.mul_mem T hG))`. Use `Λ.add_mem hr (hΛ _ S x hx)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[sub_add, ← sub_smul]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨T, hv⟩ ⟨v', t'⟩ ⟨T', hv'⟩`.
+
+Establish `F` using `hA _ (hm _ hv)`. Establish `T''` using `hA _ T'`. Rewrite `F` using `[star_div₀, LocWitt.symm' hs, πs]`. Rewrite `T''` using `[star_mul', πs]`. Use `A.add_mem (A.add_mem (hi _ hv' _ hv) (A.mul_mem (A.mul_mem T cA) (hm _ hv'))) (A.add_mem (A.mul_mem (A.mul_mem T'' (hA _ cA)) F) (A.mul_mem (A.mul_mem T'' T) hG))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [extForm_apply, map_sub, map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, LinearMap.sub_apply, starRingEnd_apply, star_mul', smul_eq_mul, RingHom.id_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem abs_unimod {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {Λ : AddSubgroup V} {A : Subring K}
     (hA : ∀ a ∈ A, star a ∈ A) (hΛ : ∀ a ∈ A, ∀ v ∈ Λ, a • v ∈ Λ) (hi : ∀ v ∈ Λ, ∀ w ∈ Λ, h v w ∈ A)
     {π c : K} {x : V} (πA : π ∈ A) (π0 : π ≠ 0) (πs : star π = π) (hx : x ∈ Λ) (a0 : h x x ≠ 0)
@@ -94,6 +120,13 @@ theorem abs_unimod {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {Λ : AddS
     field_simp
     ring
 
+/- English proof (translation)
+Establish `h2 : ∀ v, (G (v, 0)).2 = 0` using `fun v => by`. Use `hG (0, 1) (v, 0)` as an intermediate fact. Rewrite `this` using `[hy]`. Simplify `this` using `[extForm_apply, π0]`. Set `f : V →ₗ[K] V` to `LinearMap.fst K V K ∘ₗ (G : V × K →ₗ[K] V × K) ∘ₗ LinearMap.inl K V K`.
+
+Establish `hf : ∀ v, G (v, 0) = (f v, 0)` using `fun v => Prod.ext rfl (h2 v)`. Establish `inj : Function.Injective f` using `fun a b e => by`. Establish `: G (a, 0) = G (b, 0)` using `by rw [hf, hf, e]`. Conclude with `congrArg Prod.fst (G.injective this)`. Use `⟨LinearEquiv.ofInjectiveEndo f inj, fun a b => ?_, hf⟩` and prove the remaining obligations.
+
+Use `hG (a, 0) (b, 0)` as an intermediate fact. Rewrite `this` using `[hf, hf]`. Simplify `this` using `[extForm_apply]`.
+-/
 theorem restrict [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} {π : K} (π0 : π ≠ 0)
     {G : (V × K) ≃ₗ[K] (V × K)} (hG : G ∈ isom (extForm h π)) (hy : G (0, 1) = (0, 1)) :
     ∃ g ∈ isom h, ∀ v, G (v, 0) = (g v, 0) := by
@@ -111,6 +144,13 @@ theorem restrict [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} {π 
   rw [hf, hf] at this
   simpa [extForm_apply] using this
 
+/- English proof (translation)
+Set `F` to `RingHom.eqLocusField σ (RingHom.id k)`. Establish `mF : ∀ a, a ∈ F ↔ σ a = a` using `fun a => Iff.rfl`. Take `⟨a, b, e⟩` from `unimodUnramUnique_ff (k := F) ⟨θ + σ θ, (mF _).2 (by rw [map_add, hσ, add_comm])⟩ ⟨θ * σ θ, (mF _).2 (by rw [map_mul, hσ, mul_comm])⟩ ⟨u, hu⟩ (fun e => by`. Use `congrArg F.subtype e` as an intermediate fact. Simplify using `only [map_sub, map_pow, map_mul, map_ofNat, map_zero, Subfield.coe_subtype] at this`.
+
+Conclude with `pow_ne_zero 2 hθ (by linear_combination this))`. Use `congrArg F.subtype e` as an intermediate fact. Simplify using `only [map_add, map_pow, map_mul, Subfield.coe_subtype] at this`. Use `⟨a + b * θ, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, (mF a).1 a.2, (mF b).1 b.2]`.
+
+Take the linear combination `this`.
+-/
 theorem norm_onto {k : Type} [Field k] [Finite k] (σ : k →+* k) (hσ : ∀ a, σ (σ a) = a)
     {θ : k} (hθ : θ - σ θ ≠ 0) {u : k} (hu : σ u = u) : ∃ c, σ c * c = u := by
   let F := RingHom.eqLocusField σ (RingHom.id k)
@@ -133,18 +173,32 @@ section Local
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+The claim follows from `LocWitt.star_int r`.
+-/
 theorem hstar (r : 𝓞 K) : star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K) :=
   LocWitt.star_int r
 
+/- English proof (translation)
+The claim follows from `exists_congr fun s => and_congr_left' (LocWitt.mem_hcompl p.isMaximal hc s)`.
+-/
 theorem mem_loc {W : Type} [AddCommGroup W] [Module (𝓞 K) W] {p : HeightOneSpectrum (𝓞 K)}
     (hc : conjIdeal (K := K) p.asIdeal = p.asIdeal) (L : Submodule (𝓞 K) W) (v : W) :
     v ∈ loc (K := K) p.asIdeal L ↔ ∃ s, s ∉ p.asIdeal ∧ s • v ∈ L :=
   exists_congr fun s => and_congr_left' (LocWitt.mem_hcompl p.isMaximal hc s)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (p.valuation_le_one s) (not_lt.1 fun a => hs ((p.valuation_lt_one_iff_mem s).1 a))`.
+-/
 theorem val_one {p : HeightOneSpectrum (𝓞 K)} {s : 𝓞 K} (hs : s ∉ p.asIdeal) :
     p.valuation K (algebraMap (𝓞 K) K s) = 1 :=
   le_antisymm (p.valuation_le_one s) (not_lt.1 fun a => hs ((p.valuation_lt_one_iff_mem s).1 a))
 
+/- English proof (translation)
+Rewrite using `[locR, mem_loc hc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hr⟩`. Take `⟨r, e⟩` from `Submodule.mem_one.1 hr`. Establish `: p.valuation K (algebraMap (𝓞 K) K r) ≤ 1` using `p.valuation_le_one r`.
+
+Rewrite `this` using `[e, Algebra.smul_def, map_mul, val_one hs, one_mul]`. Then use the resulting hypothesis. Introduce `ha`. Take `⟨n, d, e⟩` from `p.exists_primeCompl_mul_eq_of_integer a ha`. Conclude with `⟨d, d.2, Submodule.mem_one.2 ⟨n, by rw [Algebra.smul_def, mul_comm, e]⟩⟩`.
+-/
 theorem mem_locR {p : HeightOneSpectrum (𝓞 K)} (hc : conjIdeal (K := K) p.asIdeal = p.asIdeal)
     (a : K) : a ∈ locR (K := K) p.asIdeal ↔ p.valuation K a ≤ 1 := by
   rw [locR, mem_loc hc]
@@ -157,12 +211,18 @@ theorem mem_locR {p : HeightOneSpectrum (𝓞 K)} (hc : conjIdeal (K := K) p.asI
     obtain ⟨n, d, e⟩ := p.exists_primeCompl_mul_eq_of_integer a ha
     exact ⟨d, d.2, Submodule.mem_one.2 ⟨n, by rw [Algebra.smul_def, mul_comm, e]⟩⟩
 
+/- English proof (translation)
+Introduce `a` and use `hs (by rw [← hc] exact Ideal.subset_span ⟨t, a, by rw [e, star_star]⟩)`.
+-/
 theorem star_notMem {p : HeightOneSpectrum (𝓞 K)} (hc : conjIdeal (K := K) p.asIdeal = p.asIdeal)
     {s t : 𝓞 K} (e : algebraMap (𝓞 K) K t = star (algebraMap (𝓞 K) K s)) (hs : s ∉ p.asIdeal) :
     t ∉ p.asIdeal := fun a => hs (by
   rw [← hc]
   exact Ideal.subset_span ⟨t, a, by rw [e, star_star]⟩)
 
+/- English proof (translation)
+Take `⟨n, d, e⟩` from `p.exists_primeCompl_mul_eq_of_integer a ha`. Take `⟨n', en⟩` from `hstar n`. Take `⟨d', ed⟩` from `hstar (d : 𝓞 K)`. Establish `: p.valuation K (algebraMap (𝓞 K) K n') ≤ 1` using `p.valuation_le_one n'`. Rewrite `this` using `[en, ← e, star_mul', ← ed, map_mul, val_one (star_notMem hc ed d.2), mul_one]`. Then use the resulting hypothesis.
+-/
 theorem star_le {p : HeightOneSpectrum (𝓞 K)} (hc : conjIdeal (K := K) p.asIdeal = p.asIdeal)
     (a : K) (ha : p.valuation K a ≤ 1) : p.valuation K (star a) ≤ 1 := by
   obtain ⟨n, d, e⟩ := p.exists_primeCompl_mul_eq_of_integer a ha
@@ -171,6 +231,11 @@ theorem star_le {p : HeightOneSpectrum (𝓞 K)} (hc : conjIdeal (K := K) p.asId
   have : p.valuation K (algebraMap (𝓞 K) K n') ≤ 1 := p.valuation_le_one n'
   rwa [en, ← e, star_mul', ← ed, map_mul, val_one (star_notMem hc ed d.2), mul_one] at this
 
+/- English proof (translation)
+Take `⟨n, d, e⟩` from `p.exists_primeCompl_mul_eq_of_integer a ha`. Take `⟨s, hs, e'⟩` from `(mem_loc hc L v).1 hv`. Use `(mem_loc hc L _).2 ⟨d * s, fun b => (p.isPrime.mem_or_mem b).elim d.2 hs, ?_⟩` and prove the remaining obligations. Establish `: ((d : 𝓞 K) * s) • a • v = n • s • v`. Rewrite using `[← algebraMap_smul K ((d : 𝓞 K) * s), ← algebraMap_smul K n, ← algebraMap_smul K s, smul_smul, smul_smul, ← e, map_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `L.smul_mem n e'`.
+-/
 theorem smul_mem_loc {p : HeightOneSpectrum (𝓞 K)} (hc : conjIdeal (K := K) p.asIdeal = p.asIdeal)
     (L : Submodule (𝓞 K) V) (a : K) (ha : p.valuation K a ≤ 1) (v : V)
     (hv : v ∈ loc (K := K) p.asIdeal L) : a • v ∈ loc (K := K) p.asIdeal L := by
@@ -184,6 +249,11 @@ theorem smul_mem_loc {p : HeightOneSpectrum (𝓞 K)} (hc : conjIdeal (K := K) p
   rw [this]
   exact L.smul_mem n e'
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Establish `a1` using `(p.intValuation_le_pow_iff_mem a 1).2 (by simpa using h1)`. Establish `a2` using `mt (p.intValuation_le_pow_iff_mem a 2).1 h2`. Establish `a0 : p.intValuation a ≠ 0` using `fun e => a2 (by rw [e]; exact zero_le)`. Rewrite `a1`, `a2` using `[← WithZero.exp_log a0, WithZero.exp_le_exp]`.
+
+Rewrite using `[← WithZero.exp_log a0, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_unif {p : HeightOneSpectrum (𝓞 K)} {a : 𝓞 K} (h1 : a ∈ p.asIdeal) (h2 : a ∉ p.asIdeal ^ 2) :
     p.valuation K (algebraMap (𝓞 K) K a) = WithZero.exp (-1 : ℤ) := by
   rw [HeightOneSpectrum.valuation_of_algebraMap]
@@ -194,6 +264,11 @@ theorem val_unif {p : HeightOneSpectrum (𝓞 K)} {a : 𝓞 K} (h1 : a ∈ p.asI
   rw [← WithZero.exp_log a0, WithZero.exp_inj]
   omega
 
+/- English proof (translation)
+Distinguish the cases in `a0 : x = 0`. Rewrite using `[a0]`. Conclude with `zero_le`. Rewrite `h` using `[← WithZero.exp_log a0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_log a0, WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) := by
   by_cases a0 : x = 0
   · rw [a0]; exact zero_le
@@ -201,6 +276,23 @@ theorem le_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ Wit
   rw [← WithZero.exp_log a0, WithZero.exp_le_exp]
   omega
 
+/- English proof (translation)
+Establish `inj : Function.Injective (algebraMap (𝓞 K) K)` using `RingOfIntegers.coe_injective`. Set `σ` to `locBasic_sigma inj hstar`. Establish `hσ : ∀ r, algebraMap (𝓞 K) K (σ r) = star (algebraMap (𝓞 K) K r)` using `locBasic_sigma_spec inj hstar`. Establish `hle : p.asIdeal ≤ p.asIdeal.comap σ`. Rewrite using `[← locBasic_conj_eq inj hstar, hc]`.
+
+Use `p.isMaximal` as an intermediate fact. Use `letI : Field (𝓞 K ⧸ p.asIdeal) := Ideal.Quotient.field _`. Use `haveI : Finite (𝓞 K ⧸ p.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ p.ne_bot`. Set `τ` to `Ideal.quotientMap p.asIdeal σ hle`. Establish `hτ : ∀ r, τ (Ideal.Quotient.mk _ r) = Ideal.Quotient.mk _ (σ r)` using `fun r => rfl`.
+
+Establish `σσ : ∀ r, σ (σ r) = r` using `fun r => inj (by rw [hσ, hσ, star_star])`. Take `⟨θ, t, et, hθ⟩` from `hK.2.2 _ p.isMaximal`. Take `⟨n, d, e⟩` from `p.exists_primeCompl_mul_eq_of_integer u hu`. Establish `fix : σ (n * σ d) = n * σ d` using `inj (by`. Rewrite using `[hσ, map_mul, hσ, ← e, star_mul', star_mul', star_star, us]`.
+
+Use the proof step `ring)`. Take `⟨c, ec⟩` from `norm_onto τ (fun a => by`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[hτ, hτ, σσ]) (θ := Ideal.Quotient.mk _ θ) (u := Ideal.Quotient.mk _ (n * σ d))`. Use the proof step `(by`.
+
+Rewrite using `[hτ, ← map_sub, Ne, Ideal.Quotient.eq_zero_iff_mem, show σ θ = t from inj (by rw [hσ, et])]`. Conclude with `hθ) (by rw [hτ, fix])`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite `ec` using `[hτ, ← map_mul, Ideal.Quotient.eq]`. Establish `d1` using `val_one (K := K) d.2`.
+
+Establish `d2` using `val_one (K := K) (star_notMem hc (hσ d) d.2)`. Establish `d0 : algebraMap (𝓞 K) K d ≠ 0` using `fun z => by simp [z] at d1`. Establish `d0' : star (algebraMap (𝓞 K) K d) ≠ 0` using `star_ne_zero.2 d0`. Use `⟨algebraMap (𝓞 K) K c / algebraMap (𝓞 K) K d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, d1, div_one]`.
+
+Conclude with `p.valuation_le_one c`. Establish `: star (algebraMap (𝓞 K) K c / algebraMap (𝓞 K) K d) * (algebraMap (𝓞 K) K c / algebraMap (𝓞 K) K d) - u = algebraMap (𝓞 K) K (σ c * c - n * σ d) / (algebraMap (𝓞 K) K (σ d) * algebraMap (𝓞 K) K d)`. Rewrite using `[map_sub, map_mul, map_mul, hσ, hσ, ← e, star_div₀]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, map_div₀, map_mul, d1, d2, mul_one, div_one]`.
+
+Conclude with `(p.valuation_lt_one_iff_mem _).2 ec`.
+-/
 theorem exists_norm (hK : IsCMUnram K) {p : HeightOneSpectrum (𝓞 K)}
     (hc : conjIdeal (K := K) p.asIdeal = p.asIdeal) {u : K} (hu : p.valuation K u ≤ 1)
     (us : star u = u) : ∃ c : K, p.valuation K c ≤ 1 ∧ p.valuation K (star c * c - u) < 1 := by
@@ -240,6 +332,9 @@ theorem exists_norm (hK : IsCMUnram K) {p : HeightOneSpectrum (𝓞 K)}
     rw [this, map_div₀, map_mul, d1, d2, mul_one, div_one]
     exact (p.valuation_lt_one_iff_mem _).2 ec
 
+/- English proof (translation)
+Establish `a` using `((locDual (𝓞 K) K V h hs hstar M hM.1.fg).1 P hP)`. Conclude with `⟨a.2.trans a.1.symm, locBasic_locS_mono _ (((dualBasic (𝓞 K) K V h hs hstar).2.2.2.1 M).1 hM.2)⟩`.
+-/
 theorem loc_int {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {M : Submodule (𝓞 K) V} (hM : IsIntLat h M)
     {P : Ideal (𝓞 K)} (hP : P.IsPrime) :
     dualAt h P (loc (K := K) P M) = loc (K := K) P (dual h M) ∧
@@ -247,6 +342,53 @@ theorem loc_int {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {M : Submodul
   have a := ((locDual (𝓞 K) K V h hs hstar M hM.1.fg).1 P hP)
   exact ⟨a.2.trans a.1.symm, locBasic_locS_mono _ (((dualBasic (𝓞 K) K V h hs hstar).2.2.2.1 M).1 hM.2)⟩
 
+/- English proof (translation)
+Take `⟨hc, -, -, x, xM, ⟨a, ea, a1, a2⟩, hd⟩` from `(GlobalTheory.T.maximalHermitianLattice_local_structure_discriminant K V h hK hs hn M hM).2.2.2 _ hb`. Establish `av : p.valuation K (h x x) = WithZero.exp (-1 : ℤ)` using `ea ▸ val_unif a1 a2`. Establish `a0 : h x x ≠ 0` using `fun z => WithZero.exp_ne_zero (by rw [← av, z, map_zero])`. Establish `π0 : π ≠ 0` using `fun z => WithZero.exp_ne_zero (by rw [← πv, z, map_zero])`. Establish `e0 : (WithZero.exp (-1 : ℤ) : WithZero (Multiplicative ℤ)) ≠ 0` using `WithZero.exp_ne_zero`.
+
+Take `⟨l1, l2⟩` from `loc_int hs hM.1 p.isPrime`. Establish `xL : x ∈ loc (K` using `K) p.asIdeal M := locBasic_le_locS _ _ xM`. Establish `md : ∀ y, y ∈ loc (K` using `K) p.asIdeal (dual h M) ↔ ∀ m ∈ loc (K := K) p.asIdeal M, p.valuation K (h m y) ≤ 1 := fun y => by`. Rewrite using `[← l1, locDual_mem_dualAt]`. Simplify using `only [mem_locR hc]`.
+
+Establish `uv : p.valuation K (-π / h x x) = 1`. Rewrite using `[map_div₀, Valuation.map_neg, πv, av, div_self e0]`. Take `⟨c, cA, cN⟩` from `exists_norm hK hc uv.le (by rw [star_div₀, star_neg, πs, LocWitt.symm' hs])`. Establish `Nv : p.valuation K (star c * c) = 1`. Rewrite using `[← uv]`.
+
+Conclude with `Valuation.map_eq_of_sub_lt _ (uv ▸ cN)`. Establish `c0 : c ≠ 0` using `fun z => by simp [z] at Nv`. Establish `hm : ∀ m ∈ loc (K` using `K) p.asIdeal M, p.valuation K (h m x / π) ≤ 1 := by`. Take `⟨y, y1, y2⟩ : ∃ y ∈ loc (K` from `K) p.asIdeal (dual h M), y ∉ loc (K := K) p.asIdeal M := by by_contra! hh`. Conclude with `hb.2 (l1.trans (le_antisymm hh l2))`.
+
+Take `⟨r, rA, hr⟩` from `hd y y1`. Rewrite `rA` using `[mem_locR hc]`. Establish `r1 : p.valuation K r = 1`. Use `le_antisymm rA (not_lt.1 fun lt => y2 ?_)` and prove the remaining obligations. Use `smul_mem_loc hc M (r * (h x x)⁻¹) (by` as an intermediate fact.
+
+Rewrite using `[map_mul, map_inv₀, av, mul_inv_le_iff₀ (zero_lt_iff.2 e0), one_mul]`. Conclude with `le_of_lt_one lt) x xL`. Simplify using `using Submodule.add_mem _ hr this`. Introduce `m hm`. Establish `b` using `(p.valuation K).map_sub_le ((md y).1 y1 m hm) ((md _).1 (l2 hr) m hm)`.
+
+Establish `: h m y - h m (y - (r * (h x x)⁻¹) • x) = r * (h m x / h x x)`. Simplify using `only [map_sub, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `b` using `[this, map_mul, r1, one_mul, map_div₀, av]`. Rewrite using `[map_div₀, πv]` and apply the resulting hypothesis.
+
+Establish `hG : p.valuation K ((star c * c * h x x + π) / π ^ 2) ≤ 1`. Establish `: (star c * c * h x x + π) / π ^ 2 = (star c * c - -π / h x x) * h x x / (π * π)` using `by field_simp; ring`. Rewrite using `[this, map_div₀, map_mul, map_mul, av, πv, mul_div_mul_right _ _ e0, div_le_one₀ (zero_lt_iff.2 e0)]`. Conclude with `le_of_lt_one cN`. Establish `πA : p.valuation K π ≤ 1`.
+
+Rewrite using `[πv, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `key` using `abs_unimod (h := h) hs (Λ := (loc (K := K) p.asIdeal M).toAddSubgroup) (A := (p.valuation K).integer) (star_le hc) (smul_mem_loc hc M) (fun v hv w hw => (md w).1 (l2 hw) v hv) (π := π) (c := c) (x := x) πA π0 πs xL a0 cA c0 (by change p.valuation K _ ≤ 1; rw [map_inv₀, Nv, inv_on …`. Take `⟨r, rA, hr⟩` from `hd y ((md y).2 hy)`. Conclude with `⟨r, (mem_locR hc r).1 rA, hr⟩)`.
+
+Set `w : V × K` to `((π⁻¹ * c) • x, π⁻¹)`. Set `L : Submodule (𝓞 K) (V × K)` to `M.map (LinearMap.inl (𝓞 K) V K) ⊔ Submodule.span (𝓞 K) {w}`. Establish `dec : ∀ z : V × K, z = (z.1 - (z.2 * c) • x, 0) + (π * z.2) • w` using `fun z => by`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [w, Prod.fst_add, Prod.smul_fst, smul_smul]`.
+
+Rewrite using `[show π * z.2 * (π⁻¹ * c) = z.2 * c by field_simp]; simp`. Simplify using `only [w, Prod.snd_add, Prod.smul_snd, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `mL : ∀ z : V × K, z ∈ L ↔ π * z.2 ∈ (1 : Submodule (𝓞 K) K) ∧ z.1 - (z.2 * c) • x ∈ M`.
+
+Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨_, ⟨m, hm, rfl⟩, b, hb, rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hb`.
+
+Rewrite using `[← algebraMap_smul K r w]`. Use `⟨Submodule.mem_one.2 ⟨r, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [w, Prod.snd_add, Prod.smul_snd, smul_eq_mul, LinearMap.inl_apply]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+
+Simplify `hm` using `[w, smul_smul, mul_assoc]`. Introduce and unpack `⟨h1, h2⟩`. Take `⟨r, er⟩` from `Submodule.mem_one.1 h1`. Rewrite using `[dec z, ← er, algebraMap_smul]`. Conclude with `Submodule.add_mem_sup ⟨_, h2, rfl⟩ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self w))`.
+
+Establish `mL' : ∀ z : V × K, z ∈ loc (K` using `K) p.asIdeal L ↔ p.valuation K (π * z.2) ≤ 1 ∧ z.1 - (z.2 * c) • x ∈ loc (K := K) p.asIdeal M := by`. Introduce `z`. Establish `e1 : ∀ s : 𝓞 K, π * (s • z).2 = s • (π * z.2)` using `fun s => by simp`. Establish `e2 : ∀ s : 𝓞 K, (s • z).1 - ((s • z).2 * c) • x = s • (z.1 - (z.2 * c) • x)` using `fun s => by`. Simplify using `[smul_sub]`.
+
+Rewrite using `[← mem_locR hc, locR, mem_loc hc, mem_loc hc, mem_loc hc]`. Simplify using `only [mL, e1, e2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h1, h2⟩`. Conclude with `⟨⟨s, hs, h1⟩, s, hs, h2⟩`.
+
+Introduce and unpack `⟨⟨s, hs, h1⟩, s', hs', h2⟩`. Use `⟨s * s', fun b => (p.isPrime.mem_or_mem b).elim hs hs', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm s, mul_smul]`. Conclude with `Submodule.smul_mem _ _ h1`. Rewrite using `[mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ h2`. Use `⟨L, ⟨(hM.1.1.fg.map _).sup (Submodule.fg_span_singleton w), ?_⟩, ?_, ?_, ⟨w, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `z _`. Rewrite using `[dec z]`.
+
+Use `Submodule.add_mem _ ?_ (Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.mem_sup_right (Submodule.mem_span_singleton_self w))))` and prove the remaining obligations. Establish `: z.1 - (z.2 * c) • x ∈ Submodule.span K (M : Set V)`. Rewrite using `[hM.1.1.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.mem_map_of_mem (f := LinearMap.inl K V K) this` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `Submodule.mem_sup_left ⟨m, hm, rfl⟩`. Use extensionality with `z`.
+
+Rewrite using `[locDual_mem_dualAt]`. Simplify using `only [mL', mem_locR hc]`. Conclude with `key z`. Rewrite using `[mL']`. Use `⟨by simpa using πA, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using smul_mem_loc hc M c cA x xL`. Conclude with `locBasic_le_locS _ _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self w))`. Simplify using `[extForm_apply, w, πs, π0]`. Introduce `v`. Rewrite using `[mL']`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_ext [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} (hK : IsCMUnram K) (hs : h.IsSymm)
     (hn : h.Nondegenerate) {M : Submodule (𝓞 K) V} (hM : IsMaxLat h M) {p : HeightOneSpectrum (𝓞 K)}
     (hb : p.asIdeal ∈ badP h M) {π : K} (πs : star π = π)
@@ -368,6 +510,13 @@ theorem exists_ext [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} (h
   · intro v
     rw [mL']; simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl v`. Simplify using `[gmap]`. Introduce `hh`. Use extensionality with `v`.
+
+Simplify using `only [gmap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `(hh w).2 hw`. Introduce `hv`.
+
+Conclude with `⟨g.symm v, (hh _).1 (by simpa using hv), by simp⟩`.
+-/
 theorem mem_iff_of_gmap {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
     [IsScalarTower (𝓞 K) K W] {g : W ≃ₗ[K] W} {A B : Submodule (𝓞 K) W} :
     gmap g A = B ↔ ∀ v, g v ∈ B ↔ v ∈ A := by
@@ -383,6 +532,17 @@ theorem mem_iff_of_gmap {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K
     · intro hv
       exact ⟨g.symm v, (hh _).1 (by simpa using hv), by simp⟩
 
+/- English proof (translation)
+Introduce `P hP`. Establish `par : P ∈ badP h M ↔ P ∈ badP h N` using `(GlobalTheory.T.maximalHermitianLattice_badPrimes_iff_gramDet K V h hK hs hn M hM _ (Module.finBasis K V) P hP).trans (GlobalTheory.T.maximalHermitianLattice_badPrimes_iff_gramDet K V h hK hs hn N hN _ (Module.finBasis K V) P hP).symm`. Distinguish the cases in `hb : P ∈ badP h M`. Use `swap`. Conclude with `GlobalTheory.T.exists_isometry_of_unimodular_lattices_at_place K V h hK hs hn M N hM.1.1 hN.1.1 P hP (by_contra fun a => hb ⟨hP, a⟩) (by_contra fun a => hb (par.2 ⟨hP, a⟩))`.
+
+Set `p : HeightOneSpectrum (𝓞 K)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField K)⟩`. Take `⟨hc, -, -, x, -, ⟨a, ea, a1, a2⟩, -⟩` from `(GlobalTheory.T.maximalHermitianLattice_local_structure_discriminant K V h hK hs hn M hM).2.2.2 _ hb`. Establish `πv : p.valuation K (h x x) = WithZero.exp (-1 : ℤ)` using `ea ▸ val_unif (p := p) a1 a2`. Establish `π0 : h x x ≠ 0` using `fun z => WithZero.exp_ne_zero (by rw [← πv, z, map_zero])`. Establish `πs` using `LocWitt.symm' hs x x`.
+
+Take `⟨L, L1, L2, L3, ⟨w, L4, L5⟩, L6⟩` from `exists_ext hK hs hn hM (p := p) hb πs πv`. Take `⟨L', N1, N2, N3, N4, N6⟩` from `exists_ext hK hs hn hN (p := p) (par.1 hb) πs πv`. Establish `s'` using `extForm_symm hs πs`. Establish `n'` using `extForm_nondeg hn π0`. Take `⟨g, g1, g2⟩` from `GlobalTheory.T.exists_isometry_of_unimodular_lattices_at_place K (V × K) _ hK s' n' L L' L1 N1 P hP L2 N2`.
+
+Rewrite `g2` using `[mem_iff_of_gmap]`. Take `⟨k, k1, k2, k3⟩` from `LocWitt.main K (V × K) _ hK s' n' L' N1 P hP hc N2 (g (0, 1)) ((g2 _).2 L3) (0, 1) N3 (g1 _ _) ⟨g w, (g2 _).2 L4, (g1 _ _).trans L5⟩ N4`. Rewrite `k2` using `[mem_iff_of_gmap]`. Take `⟨f, f1, f2⟩` from `restrict π0 ((isom _).mul_mem k1 g1) k3`. Use `⟨f, f1, mem_iff_of_gmap.2 fun v => ?_⟩` and prove the remaining obligations.
+
+Conclude with `((N6 _).symm.trans (by rw [← f2]; exact (k2 _).trans (g2 _))).trans (L6 v)`.
+-/
 theorem sameGenus [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} (hK : IsCMUnram K) (hs : h.IsSymm)
     (hn : h.Nondegenerate) {M N : Submodule (𝓞 K) V} (hM : IsMaxLat h M) (hN : IsMaxLat h N) :
     SameGenus h M N := by
@@ -415,6 +575,17 @@ theorem sameGenus [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} (hK
 
 end Local
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h hK hs hpd M N hM`. Establish `hn : h.Nondegenerate`. Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `: ∀ x, h x x = 0 → x = 0` using `fun x e => by`. Assume the negation of the conclusion as `a`.
+
+Use `hpd τ x a` as an intermediate fact. Simplify using `[e] at this`. Conclude with `⟨fun x hx => this x (hx x), fun x hx => this x (hx x)⟩`. Use `⟨fun hN => ?_, fun hN => ⟨hN.1.1, sameGenus hK hs hn hM hN⟩⟩` and prove the remaining obligations. Establish `dM` using `(GlobalTheory.T.hermitianLatticeDiscriminantOrder_ne_zero_unimodular K V h hK hs hn M hM.1).2.2.2.1`.
+
+Take `⟨N1, N2⟩` from `dM N hN`. Take `⟨N', m', le⟩` from `(GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V h hK hs hn).1 N N1`. Establish `N3` using `(dM N' ⟨m'.1.1, sameGenus hK hs hn hM m'⟩).2`. Establish `dN` using `GlobalTheory.T.hermitianLatticeDiscriminantOrder_ne_zero_unimodular K V h hK hs hn N N1`. Establish `e` using `(dN.2.2.1 N' m'.1 le).2`.
+
+Rewrite `e` using `[N3, ← N2]`. Establish `i1 : idxN N' N = 1`. Use `mul_left_cancel₀ dN.1 ((mul_one _).trans e)` as an intermediate fact. Conclude with `(Nat.pow_eq_one.1 this.symm).resolve_right (by norm_num)`. Establish `: N' ≤ N` using `fun x hx => AddSubgroup.relIndex_eq_one.1 i1 hx`.
+
+Rewrite using `[le_antisymm le this]`. Conclude with `m'`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → PD h → ∀ M N : Submodule (𝓞 K) V, IsMaxLat h M → (N ∈ genus h M ↔ IsMaxLat h N) := by
   intro K V _ _ _ _ _ _ _ _ h hK hs hpd M N hM
   have hn : h.Nondegenerate := by

@@ -16,6 +16,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace PositivityTheory.Xgn.IntegralModelFacts
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ o ho hmem`. Establish `h1 : β o ∈ (y : PrimeSpectrum F).asIdeal` using `hmem`. Establish `hp : (y : PrimeSpectrum F).asIdeal.IsPrime` using `PrimeSpectrum.isPrime (y : PrimeSpectrum F)`. Establish `h2 : (y : PrimeSpectrum F).asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`.
+
+Rewrite `h1` using `[h2, Ideal.mem_bot]`. Conclude with `ho (hβ (by rw [h1, map_zero]))`. Introduce `hx`. Use `⟨(⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum F), ?_⟩` and prove the remaining obligations. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `Ideal.comap β ⊥ = x.asIdeal`. Use extensionality with `o`. Simplify using `only [Ideal.mem_comap, Ideal.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[(injective_iff_map_eq_zero β).1 hβ o h]`. Conclude with `zero_mem _`. Introduce `hmem`. Assume the negation of the conclusion as `hne`. Conclude with `hx o (fun h0 => hne (by rw [h0, map_zero])) hmem`.
+-/
 theorem mem_range_spMap {O F : Type} [CommRing O] [Field F] (β : O →+* F) (hβ : Function.Injective β)
     (x : Sp O) : x ∈ Set.range (spMap β) ↔ ∀ o : O, o ≠ 0 → o ∉ x.asIdeal := by
   constructor
@@ -42,6 +51,19 @@ theorem mem_range_spMap {O F : Type} [CommRing O] [Field F] (β : O →+* F) (h�
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+Use `haveI := Y.oF.t.semi.smooth`. Set `K` to `AlgebraicClosure Ω`. Set `e : Ω →+* K` to `algebraMap Ω K`. Establish `hx : (spMap e ≫ y) ≫ (pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s) = spMap (e.comp (i.comp (IntermediateField.inclusion c.le).toRingHom))`. Rewrite using `[pullback.condition, ← Category.assoc, Category.assoc _ y, hy]`.
+
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hdet` using `(Y.oF.geom K (spMap e ≫ y) _ hx).1`. Establish `key : ∀ (σ : 𝓞 E →+* Ω) (n : ℕ), LieMult Y.oF.t.act (spMap e ≫ y) (e.comp σ) n → LieMult Y.t.act (y ≫ Y.j) σ n`. Introduce `σ n h`.
+
+Rewrite `h` using `[GlobalTheory.DetExtend.lieMult_extend]`. Conclude with `(GlobalTheory.LiePull.lieMult_pull (𝓞 E) _ _ Y.t.G Y.oF.t.G Y.j Y.m.cm.F Y.t.act Y.oF.t.act Y.m.cart Y.m.act Ω y σ n).1 h`. Establish `hρ : ∀ σ : E →+* ℂ, (e.comp (i.comp (tauIn c σ))) H.rt = (e.comp (i.comp (IntermediateField.inclusion c.le).toRingHom)) (baseKA l).ρ ↔ σ (H.rt : E) = H.rt0`. Introduce `σ`. Simplify using `only [RingHom.comp_apply]`.
+
+Rewrite using `[e.injective.eq_iff, i.injective.eq_iff, Subtype.ext_iff]`. Both sides reduce to the same expression. Use `⟨key _ _ ((hdet (e.comp (i.comp (tauIn c τ)))).1 ((hρ τ).2 hτ)), key _ _ ((hdet (e.comp (i.comp (tauIn c (ComplexEmbedding.conjugate τ))))).2 ?_)⟩` and prove the remaining obligations. Introduce `h`. Establish `h1` using `(hρ _).1 h`.
+
+Rewrite `h1` using `[ComplexEmbedding.conjugate_coe_eq, hτ, GlobalTheory.CompanionTheory.Ar.EigRank.rt0_conj_neg_ne_zero H.d_prime.pos H.sqrt_neg_disc_sq]`. Establish `h2 : (2 : ℂ) * H.rt0 = 0` using `by linear_combination -h1`. Establish `h0 : H.rt0 = 0` using `(mul_eq_zero.1 h2).resolve_left two_ne_zero`. Establish `h3` using `H.sqrt_neg_disc_sq`. Rewrite `h3` using `[h0]`.
+
+Establish `h4 : (H.d : ℂ) = 0` using `by linear_combination h3`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast h4)`.
+-/
 theorem lieMult_pt (Y : Model Xo c β) (τ : E →+* ℂ) (hτ : τ (H.rt : E) = H.rt0) {Ω : Type} [Field Ω]
     (i : c.F →+* Ω) (y : Sp Ω ⟶ Xo.XF c) (hy : y ≫ pullback.snd _ _ = spMap i) :
     LieMult Y.t.act (y ≫ Y.j) (i.comp (tauIn c τ)) D.p ∧
@@ -82,6 +104,27 @@ theorem lieMult_pt (Y : Model Xo c β) (τ : E →+* ℂ) (hτ : τ (H.rt : E) =
 
 end PositivityTheory.Xgn.IntegralModelFacts
 
+/- English proof (translation)
+Introduce `p a ha`. Take `⟨hdom, hic⟩` from `hX p.1`. Establish `hinj : Function.Injective (GlobalTheory.CompanionTheory.Ar.genMap ξ p)` using `hg.inj p`. Establish `hfrac : ∀ z : Ω, ∃ r t : X.presheaf.stalk p.1, GlobalTheory.CompanionTheory.Ar.genMap ξ p t ≠ 0 ∧ z * GlobalTheory.CompanionTheory.Ar.genMap ξ p t = GlobalTheory.CompanionTheory.Ar.genMap ξ p r`. Introduce `z`.
+
+Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := p.1) (U := ⊤) trivial`. Establish `hgU : GlobalTheory.CompanionTheory.Ar.genPt ξ ∈ U` using `p.2.mem_open U.2 hpU`. Use `letI : Algebra Γ(X, U) (X.presheaf.stalk (GlobalTheory.CompanionTheory.Ar.genPt ξ)) := (X.presheaf.germ U _ hgU).hom.toAlgebra`. Use `haveI := hU.isLocalization_stalk ⟨_, hgU⟩`. Establish `hφ : ∀ u, GlobalTheory.CompanionTheory.Ar.genMap ξ p (X.presheaf.germ U p.1 hpU u) = (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U _ hgU u)`.
+
+Introduce `u`. Use `show (X.presheaf.germ U p.1 hpU ≫ X.presheaf.stalkSpecializes p.2 ≫ Scheme.stalkClosedPointTo ξ).hom u = _`. Rewrite using `[← TopCat.Presheaf.germ_stalkSpecializes X.presheaf hpU p.2]`. Both sides reduce to the same expression. Take `⟨s, hs⟩ : ∃ s : X.presheaf.stalk (GlobalTheory.CompanionTheory.Ar.genPt ξ), (Scheme.stalkClosedPointTo ξ).hom s = z` from `hg.bij.2 z`.
+
+Take `⟨⟨r, t⟩, hrt⟩` from `IsLocalization.surj (S := X.presheaf.stalk (GlobalTheory.CompanionTheory.Ar.genPt ξ)) (hU.primeIdealOf ⟨_, hgU⟩).asIdeal.primeCompl s`. Use `⟨X.presheaf.germ U p.1 hpU r, X.presheaf.germ U p.1 hpU t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Establish `hu : IsUnit (X.presheaf.germ U _ hgU (t : Γ(X, U)))` using `IsLocalization.map_units (X.presheaf.stalk (GlobalTheory.CompanionTheory.Ar.genPt ξ)) t`. Conclude with `(hu.map (Scheme.stalkClosedPointTo ξ).hom).ne_zero`.
+
+Rewrite using `[hφ, hφ, ← hs]`. Conclude with `(map_mul (Scheme.stalkClosedPointTo ξ).hom _ _).symm.trans (congrArg (Scheme.stalkClosedPointTo ξ).hom hrt)`. Use `letI : Algebra (X.presheaf.stalk p.1) Ω := (GlobalTheory.CompanionTheory.Ar.genMap ξ p).toAlgebra`. Use `haveI : IsFractionRing (X.presheaf.stalk p.1) Ω := by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨y, hy⟩`. Conclude with `IsUnit.mk0 _ (fun h => nonZeroDivisors.ne_zero hy (hinj (by`. Rewrite using `[map_zero]`. Conclude with `h)))`. Introduce `z`.
+
+Take `⟨r, t, ht, hz⟩` from `hfrac z`. Conclude with `⟨⟨r, ⟨t, mem_nonZeroDivisors_of_ne_zero (fun h => ht (by rw [h, map_zero]))⟩⟩, hz⟩`. Introduce `x y hxy`. Conclude with `⟨1, by rw [hinj hxy]⟩`. Take `⟨P, hPm, hP⟩` from `ha`.
+
+Set `e : X.presheaf.stalk p.1 ≃+* GlobalTheory.CompanionTheory.Ar.regAt ξ p` to `RingEquiv.ofBijective (GlobalTheory.CompanionTheory.Ar.genMap ξ p).rangeRestrict ⟨fun x y h => hinj (congrArg Subtype.val h), (GlobalTheory.CompanionTheory.Ar.genMap ξ p).rangeRestrict_surjective⟩`. Establish `hcomp : (algebraMap (X.presheaf.stalk p.1) Ω).comp e.symm.toRingHom = algebraMap (GlobalTheory.CompanionTheory.Ar.regAt ξ p) Ω`. Use extensionality with `u`. Express the relevant statement in the definitionally equal form `GlobalTheory.CompanionTheory.Ar.genMap ξ p (e.symm u) = (u : Ω)`. Use `conv_rhs => rw [← e.apply_symm_apply u]`.
+
+Both sides reduce to the same expression. Establish `hint : IsIntegral (X.presheaf.stalk p.1) a`. Use `⟨P.map e.symm.toRingHom, hPm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, hcomp]`. Conclude with `hP`.
+
+Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Conclude with `⟨y, hy⟩`.
+-/
 private theorem normalCpt_of_isNormalScheme_isCptGen {X : Scheme} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (hX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (hg : GlobalTheory.CompanionTheory.Ar.IsCptGen ξ) :
     GlobalTheory.CompanionTheory.Ar.Flat.NormalCpt ξ := by
@@ -143,6 +186,15 @@ private theorem normalCpt_of_isNormalScheme_isCptGen {X : Scheme} {Ω : Type} [F
   obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.1 hint
   exact ⟨y, hy⟩
 
+/- English proof (translation)
+Rewrite using `[Scheme.Pullback.range_fst, Set.mem_preimage, PositivityTheory.Xgn.IntegralModelFacts.mem_range_spMap β hβ]`. Take `⟨θ, hθs⟩` from `Spec.map_surjective (X.fromSpecStalk x.1 ≫ s)`. Establish `hgen : ∀ o, GlobalTheory.CompanionTheory.Ar.genMap ξ x (θ.hom o) = k (β o)`. Establish `e1` using `GlobalTheory.CompanionTheory.Ar.LieCarrier.genMap_fromSpecStalk x`. Establish `h1 : Spec.map (θ ≫ CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.genMap ξ x)) = Spec.map (CommRingCat.ofHom (k.comp β))` using `(Spec.map_comp _ _).trans ((congrArg (Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.genMap ξ x)) ≫ ·) hθs).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ s) e1).trans hs)))`.
+
+Establish `h2` using `Spec.map_injective h1`. Introduce `o`. Conclude with `congrArg (fun f => f.hom o) h2`. Establish `hcp` using `congrArg (fun f : Spec (X.presheaf.stalk x.1) ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O => f (IsLocalRing.closedPoint (X.presheaf.stalk x.1))) hθs`. Establish `hpt : s x.1 = Spec.map θ (IsLocalRing.closedPoint (X.presheaf.stalk x.1))` using `(congrArg s (Scheme.fromSpecStalk_closedPoint (X := X) (x := x.1))).symm.trans hcp.symm`.
+
+Establish `hmem : (s x.1).asIdeal = Ideal.comap θ.hom (IsLocalRing.maximalIdeal (X.presheaf.stalk x.1))` using `congrArg PrimeSpectrum.asIdeal hpt`. Use `forall_congr' fun o => imp_congr_right fun _ => ?_` and prove the remaining obligations. Use `Iff.trans ?_ (GlobalTheory.CompanionTheory.Ar.unitAt_iff_of_isCptGen ξ hg x _).symm` and prove the remaining obligations. Rewrite using `[hmem, Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hu`. Conclude with `⟨θ.hom o, hu, hgen o⟩`. Introduce and unpack `⟨u, hu, hu'⟩`. Rewrite `hu'` using `[← hgen o]`. Rewrite using `[← hg.inj x hu']` and apply the resulting hypothesis.
+-/
 private theorem mem_range_pullback_fst_iff_unitAt {X : Scheme} {Ω O F : Type} [Field Ω] [CommRing O] [Field F]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (s : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O) (β : O →+* F)
     (hβ : Function.Injective β) (k : F →+* Ω) (hg : GlobalTheory.CompanionTheory.Ar.IsCptGen ξ)
@@ -178,6 +230,11 @@ private theorem mem_range_pullback_fst_iff_unitAt {X : Scheme} {Ω O F : Type} [
     rwa [← hg.inj x hu']
 
 open PositivityTheory.Xgn.IntegralModelFacts in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ _ _ β Y U Z τ hβ hfrac hτ`. Use `haveI := Y.t.semi.smooth`. Establish `hlie` using `PositivityTheory.Xgn.IntegralModelFacts.lieMult_pt Y τ hτ Z.inc Z.ξ₀ Z.over_inc`. Establish `hs : (Z.ξ₀ ≫ Y.j) ≫ Y.s = spMap (Z.inc.comp β)`. Rewrite using `[Category.assoc, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j_s, ← Category.assoc, Z.over_inc]`.
+
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `⟨ReciprocityTheory.ChartRestriction.G.Geo.Tor.projProper O Y.X Y.s Y.proj, normalCpt_of_isNormalScheme_isCptGen _ Y.normal Z.gen, hs, fun x => mem_range_pullback_fst_iff_unitAt _ Y.s β hβ Z.inc Z.gen hs x, (PositivityTheory.HtPt.Htat.lie_fin _ _ _ _ _ Z.M).1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.CompanionTheory.Ar.EigRank.finrank_eigSp_of_lieMult _ _ _ _ _ _ _ _ _ Z.M Z.ρ Z.act hlie.1`. Conclude with `GlobalTheory.CompanionTheory.Ar.EigRank.finrank_eigSp_of_lieMult _ _ _ _ _ _ _ _ _ Z.M Z.ρ Z.act hlie.2`.
+-/
 theorem PositivityTheory.Xgn.integral_model_facts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] [IsDomain O] [IsNoetherianRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ), Function.Injective β → (∀ x : c.F, ∃ a b : O, b ≠ 0 ∧ x * β b = β a) → τ (H.rt : E) = H.rt0 → IsProper Y.s ∧ NormalCpt (Z.ξ₀ ≫ Y.j) ∧ (Z.ξ₀ ≫ Y.j) ≫ Y.s = spMap (Z.inc.comp β) ∧ (∀ x, x ∈ Z.genFib ↔ ∀ o : O, o ≠ 0 → unitAt (Z.ξ₀ ≫ Y.j) x (Z.inc (β o))) ∧ FiniteDimensional Z.Ω Z.V ∧ Module.finrank Z.Ω (eigSp Z.ρ (Z.inc.comp (tauIn c τ))) = D.p ∧ Module.finrank Z.Ω (eigSp Z.ρ (Z.inc.comp (tauIn c (ComplexEmbedding.conjugate τ)))) = D.q := by
   intro E _ _ _ H D l Xo c O _ _ _ β Y U Z τ hβ hfrac hτ
   haveI := Y.t.semi.smooth

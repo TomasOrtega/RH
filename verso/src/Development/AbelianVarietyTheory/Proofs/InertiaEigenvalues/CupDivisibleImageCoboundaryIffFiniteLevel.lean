@@ -18,18 +18,32 @@ variable {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Al
   {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
   {ρ : Representation LL G V}
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_surjective I x).choose.2`.
+-/
 theorem liftQ_mem_lat (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (x : ↥L.T ⧸ I) :
     Formalism.MainNotions.LocalSituation.liftQ L I x ∈ L.T :=
   (Submodule.Quotient.mk_surjective I x).choose.2
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_surjective I x).choose_spec`.
+-/
 theorem mk_liftQ_lat (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (x : ↥L.T ⧸ I) :
     (Submodule.Quotient.mk ⟨Formalism.MainNotions.LocalSituation.liftQ L I x, liftQ_mem_lat L I x⟩ : ↥L.T ⧸ I) = x :=
   (Submodule.Quotient.mk_surjective I x).choose_spec
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_surjective L.T c).choose_spec`.
+-/
 theorem mk_liftD_lat (L : Lattice (O := O) ρ) (c : V ⧸ L.T) :
     (Submodule.Quotient.mk (liftD L c) : V ⧸ L.T) = c :=
   (Submodule.Quotient.mk_surjective L.T c).choose_spec
 
+/- English proof (translation)
+Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨y, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `⟨y, Submodule.mem_top, rfl⟩`.
+-/
 theorem mem_span_pow_smul_top (L : Lattice (O := O) ρ) (a : O) (x : ↥L.T) :
     x ∈ (Ideal.span {a} • ⊤ : Submodule O ↥L.T) ↔ ∃ y : ↥L.T, x = a • y := by
   rw [Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]
@@ -37,6 +51,9 @@ theorem mem_span_pow_smul_top (L : Lattice (O := O) ρ) (a : O) (x : ↥L.T) :
   · rintro ⟨y, -, rfl⟩; exact ⟨y, rfl⟩
   · rintro ⟨y, rfl⟩; exact ⟨y, Submodule.mem_top, rfl⟩
 
+/- English proof (translation)
+Break down `eq_or_ne (algebraMap O LL ϖ) 0 with h0 | h0` into its components or cases. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Conclude with `⟨1, by simp [hr]⟩`. Conclude with `⟨0, by simp [h0, zero_pow hr.ne']⟩`. Conclude with `⟨1, by rw [← mul_pow, inv_mul_cancel₀ h0, one_pow, map_one]⟩`.
+-/
 theorem inv_pow_mul_pow_mem (ϖ : O) (r : ℕ) :
     ∃ e : O, (algebraMap O LL ϖ)⁻¹ ^ r * (algebraMap O LL ϖ) ^ r = algebraMap O LL e := by
   rcases eq_or_ne (algebraMap O LL ϖ) 0 with h0 | h0
@@ -45,6 +62,9 @@ theorem inv_pow_mul_pow_mem (ϖ : O) (r : ℕ) :
     · exact ⟨0, by simp [h0, zero_pow hr.ne']⟩
   · exact ⟨1, by rw [← mul_pow, inv_mul_cancel₀ h0, one_pow, map_one]⟩
 
+/- English proof (translation)
+Substitute `hâ hk hu hv` using the available equality. Simplify using `only [map_sub, map_add, map_smul, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_shift {V' : Type} [AddCommGroup V'] [Module LL V'] (m : V →ₗ[LL] V' →ₗ[LL] LL)
     (f : V' →ₗ[LL] V') (a t â : V) (w y : V') (c π k u v : LL) (hâ : â = a + π • t)
     (hk : c * π = k) (hu : m a (f (w - c • y)) = u) (hv : m t (f y) = v) :
@@ -62,6 +82,21 @@ namespace GlobalTheory.BKFinLevel
 
 open GlobalTheory.BKFinLevel.NatCup in
 
+/- English proof (translation)
+Introduce `l _ P K LL _ _ _ O _ _ _ L1 hL1 A A' LA LA' m hd ϖ r d c'`. Establish `key : ∀ x, (Submodule.Quotient.mk (cupLD LA' m (d : ↥(GK K) → A.V) (fun g => ioL LA' ϖ r (c' g)) x) : LL ⧸ L1.T) = Submodule.Quotient.mk (cupQ LA LA' m ϖ r (redT LA _ d) c' x)`. Introduce and unpack `⟨g, h⟩`. Rewrite using `[Submodule.Quotient.eq, hL1]`. Take `⟨e, he⟩` from `inv_pow_mul_pow_mem (LL := LL) ϖ r`.
+
+Establish `hyT` using `liftQ_mem_lat LA' _ (c' h)`. Establish `hw : liftD LA' (ioL LA' ϖ r (c' h)) - (algebraMap O LL ϖ)⁻¹ ^ r • Formalism.MainNotions.LocalSituation.liftQ LA' _ (c' h) ∈ LA'.T`. Establish `h2 : ioL LA' ϖ r (c' h) = Submodule.Quotient.mk ((algebraMap O LL ϖ)⁻¹ ^ r • Formalism.MainNotions.LocalSituation.liftQ LA' _ (c' h))` using `by conv_lhs => rw [← mk_liftQ_lat LA' _ (c' h)]`. Both sides reduce to the same expression. Conclude with `(Submodule.Quotient.eq _).1 ((mk_liftD_lat LA' _).trans h2)`.
+
+Establish `haT : (d : ↥(GK K) → A.V) g ∈ LA.T` using `d.2.2 g (Set.mem_univ g)`. Establish `hred : (Submodule.Quotient.mk ⟨Formalism.MainNotions.LocalSituation.liftQ LA _ (redT LA _ d g), liftQ_mem_lat LA _ _⟩ : ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)) = Submodule.Quotient.mk ⟨(d : ↥(GK K) → A.V) g, haT⟩` using `mk_liftQ_lat LA _ _`. Take `⟨t, ht⟩` from `(mem_span_pow_smul_top LA _ _).1 ((Submodule.Quotient.eq _).1 hred)`. Establish `ht' : Formalism.MainNotions.LocalSituation.liftQ LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T) (redT LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T) d g) = (d : ↥(GK K) → A.V) g + (algebraMap O LL ϖ) ^ r • (t : A.V)`. Use `congrArg (fun z : ↥LA.T => (z : A.V)) ht` as an intermediate fact.
+
+Simplify using `only [Submodule.coe_sub, Submodule.coe_smul] at this`. Establish `hs : (algebraMap O LL ϖ) ^ r • (t : A.V) = ϖ ^ r • (t : A.V)`. Rewrite using `[← map_pow, algebraMap_smul]`. Rewrite using `[hs]`. Conclude with `(sub_eq_iff_eq_add').1 this`.
+
+Establish `hw2 : A'.ρ g (liftD LA' (ioL LA' ϖ r (c' h)) - (algebraMap O LL ϖ)⁻¹ ^ r • Formalism.MainNotions.LocalSituation.liftQ LA' (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA'.T) (c' h)) ∈ LA'.T` using `LA'.stable g _ hw`. Establish `hy2 : A'.ρ g (Formalism.MainNotions.LocalSituation.liftQ LA' (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA'.T) (c' h)) ∈ LA'.T` using `LA'.stable g _ hyT`. Establish `hb1' : ∃ b : O, m ((d : ↥(GK K) → A.V) g) (A'.ρ g (liftD LA' (ioL LA' ϖ r (c' h)) - (algebraMap O LL ϖ)⁻¹ ^ r • Formalism.MainNotions.LocalSituation.liftQ LA' (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA'.T) (c' h))) = algebraMap O LL b` using `(hd.2 _).1 hw2 _ haT`. Establish `hb2' : ∃ b : O, m (t : A.V) (A'.ρ g (Formalism.MainNotions.LocalSituation.liftQ LA' (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA'.T) (c' h))) = algebraMap O LL b` using `(hd.2 _).1 hy2 _ t.2`. Take `⟨b1, hb1⟩` from `hb1'`.
+
+Take `⟨b2, hb2⟩` from `hb2'`. Use `⟨b1 - e * b2, ?_⟩` and prove the remaining obligations. Use `show algebraMap O LL (b1 - e * b2) = m ((d : ↥(GK K) → A.V) g) (A'.ρ g (liftD LA' (ioL LA' ϖ r (c' h)))) - (algebraMap O LL ϖ)⁻¹ ^ r * m (Formalism.MainNotions.LocalSituation.liftQ LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T) (redT LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA. …`. Establish `hsplit : algebraMap O LL (b1 - e * b2) = algebraMap O LL b1 - algebraMap O LL e * algebraMap O LL b2`. Rewrite using `[map_sub, map_mul]`.
+
+Conclude with `hsplit.trans (pair_shift m (A'.ρ g) _ _ _ _ _ _ _ _ _ _ ht' he hb1 hb2)`. Unfold `CobO`. Conclude with `Iff.of_eq (congrArg (fun z => z ∈ ReciprocityTheory.Def.B2 (repD L1) ⊤) (funext key))`.
+-/
 theorem cobO_cupLD_ioL_iff : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ L1 : Lattice (O := O) (charRep (cycLL (P.PD K) LL)), L1.T = LinearMap.range (Algebra.linearMap O LL) → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 (P.PD K) LA LA' m → ∀ (ϖ : O) (r : ℕ) (d : ↥(latticeCocycles LA)) (c' : ↥(GK K) → ↥LA'.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA'.T)), CobO (P.PD K) L1 (cupLD LA' m (d : ↥(GK K) → A.V) (fun g => GlobalTheory.BKFinLevel.ioL LA' ϖ r (c' g))) ↔ CobO (P.PD K) L1 (GlobalTheory.BKFinLevel.cupQ LA LA' m ϖ r (redT LA _ d) c') := by
   intro l _ P K LL _ _ _ O _ _ _ L1 hL1 A A' LA LA' m hd ϖ r d c'
   have key : ∀ x, (Submodule.Quotient.mk (cupLD LA' m (d : ↥(GK K) → A.V)

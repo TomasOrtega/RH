@@ -22,6 +22,21 @@ open scoped InnerProductSpace
 
 variable {E I : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 
+/- English proof (translation)
+Use `choose s hs using hadj`. Establish `hs' : ∀ i x y, ⟪T (s i) x, y⟫_ℂ = ⟪x, T i y⟫_ℂ` using `fun i x y => by`. Rewrite using `[← inner_conj_symm, ← hs, inner_conj_symm]`. Set `H : I ⊕ I → E →ₗ[ℂ] E` to `Sum.elim (fun i => T i + T (s i)) (fun i => Complex.I • (T i - T (s i)))`. Establish `hH : ∀ i, (H i).IsSymmetric`.
+
+Introduce and unpack `(i | i) x y`. Simplify using `only [H, Sum.elim_inl, LinearMap.add_apply, inner_add_left, inner_add_right, hs i, hs' i]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [H, Sum.elim_inr, LinearMap.smul_apply, LinearMap.sub_apply, inner_smul_left, inner_smul_right, inner_sub_left, inner_sub_right, hs i, hs' i, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hT : ∀ i k, Commute (H i) (T k)`. Introduce and unpack `(i | i) k`. Conclude with `(hc _ _).add_left (hc _ _)`. Conclude with `((hc _ _).sub_left (hc _ _)).smul_left _`. Establish `hHc : ∀ i k, Commute (H i) (H k)`.
+
+Introduce and unpack `i (k | k)`. Conclude with `(hT _ _).add_right (hT _ _)`. Conclude with `((hT _ _).sub_right (hT _ _)).smul_right _`. Establish `h` using `LinearMap.IsSymmetric.iSup_iInf_eq_top_of_commute hH (fun i k _ => hHc i k)`. Rewrite using `[eq_top_iff, ← h]`.
+
+Use `iSup_le fun χ => le_iSup_of_le (fun i => (χ (.inl i) - Complex.I * χ (.inr i)) / 2) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, mem_eigenspace_iff] at hx ⊢`. Introduce `i`. Establish `h1 : T i x + T (s i) x = χ (.inl i) • x` using `hx (.inl i)`. Establish `h2 : Complex.I • (T i x - T (s i) x) = χ (.inr i) • x` using `hx (.inr i)`.
+
+Establish `h3 : T i x - T (s i) x = -(Complex.I * χ (.inr i)) • x`. Rewrite using `[neg_smul, mul_smul, ← h2, smul_smul, Complex.I_mul_I]`. Simplify using the standard rewrite rules. Establish `h4 : (2 : ℂ) • T i x = (χ (.inl i) - Complex.I * χ (.inr i)) • x`. Rewrite using `[sub_eq_add_neg, add_smul, ← h1, ← h3, two_smul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[div_eq_inv_mul, mul_smul, ← h4, smul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem iSup_iInf_eigenspace_eq_top [FiniteDimensional ℂ E] (T : I → E →ₗ[ℂ] E) (hc : ∀ i k, Commute (T i) (T k))
     (hadj : ∀ i, ∃ k, ∀ x y, ⟪T i x, y⟫_ℂ = ⟪x, T k y⟫_ℂ) :
     ⨆ χ : I → ℂ, ⨅ i, eigenspace (T i) (χ i) = ⊤ := by
@@ -68,6 +83,11 @@ structure IsPosOn (Y : Submodule ℂ X) (B : X → X → ℂ) : Prop where
   symm : ∀ x ∈ Y, ∀ y ∈ Y, B y x = star (B x y)
   pos : ∀ x ∈ Y, x ≠ 0 → 0 < (B x x).re
 
+/- English proof (translation)
+Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use symmetry as in `x _ y _ := by simp [mul_comm]`. Use `pos x _ hx := by`. Establish `: star x * x = (Complex.normSq x : ℂ)` using `by rw [Complex.normSq_eq_conj_mul_self]; rfl`.
+
+Rewrite using `[this]`. Conclude with `Complex.normSq_pos.2 hx`.
+-/
 example : IsPosOn (⊤ : Submodule ℂ ℂ) (fun x y => star x * y) where
   lin x _ y _ z _ c := by simp only [smul_eq_mul]; ring
   symm x _ y _ := by simp [mul_comm]
@@ -77,14 +97,23 @@ example : IsPosOn (⊤ : Submodule ℂ ℂ) (fun x y => star x * y) where
 
 variable {Y : Submodule ℂ X} {B : X → X → ℂ}
 
+/- English proof (translation)
+Use `h.lin x hx 0 Y.zero_mem 0 Y.zero_mem 1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem IsPosOn.zero_right (h : IsPosOn Y B) {x : X} (hx : x ∈ Y) : B x 0 = 0 := by
   have := h.lin x hx 0 Y.zero_mem 0 Y.zero_mem 1
   simpa using this
 
+/- English proof (translation)
+Simplify using `using h.lin x hx y hy z hz 1`.
+-/
 theorem IsPosOn.add_right (h : IsPosOn Y B) {x y z : X} (hx : x ∈ Y) (hy : y ∈ Y) (hz : z ∈ Y) :
     B x (y + z) = B x y + B x z := by
   simpa using h.lin x hx y hy z hz 1
 
+/- English proof (translation)
+Simplify `h.lin x hx 0 Y.zero_mem z hz c` using `[h.zero_right hx]`.
+-/
 theorem IsPosOn.smul_right (h : IsPosOn Y B) {x z : X} (hx : x ∈ Y) (hz : z ∈ Y) (c : ℂ) :
     B x (c • z) = c * B x z := by
   simpa [h.zero_right hx] using h.lin x hx 0 Y.zero_mem z hz c
@@ -111,6 +140,11 @@ theorem IsPosOn.smul_right (h : IsPosOn Y B) {x z : X} (hx : x ∈ Y) (hz : z �
     rw [hx'] at this
     simp at this
 
+/- English proof (translation)
+Use `letI := h.core`. Use `letI : NormedAddCommGroup Y := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)`. Use `letI : InnerProductSpace ℂ Y := InnerProductSpace.ofCore _`. Establish `key` using `iSup_iInf_eigenspace_eq_top (E := Y) (fun i => (T i).restrict (hT i)) (fun i k => LinearMap.ext fun x => Subtype.ext (hc i k x x.2)) (fun i => (hadj i).imp fun k hk x y => hk x x.2 y y.2)`. Establish `: (⊤ : Submodule ℂ Y) ≤ Z.comap Y.subtype`.
+
+Rewrite using `[← key]`. Use `iSup_le fun χ x hx => hZ χ x x.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, Module.End.mem_eigenspace_iff] at hx`. Conclude with `congrArg Subtype.val (hx i)`. Conclude with `fun x hx => this (x := ⟨x, hx⟩) Submodule.mem_top`.
+-/
 theorem IsPosOn.le_iSup_eigen [FiniteDimensional ℂ Y] (h : IsPosOn Y B) (T : I → X →ₗ[ℂ] X)
     (hT : ∀ i, ∀ x ∈ Y, T i x ∈ Y) (hc : ∀ i k, ∀ x ∈ Y, T i (T k x) = T k (T i x))
     (hadj : ∀ i, ∃ k, ∀ x ∈ Y, ∀ y ∈ Y, B (T i x) y = B x (T k y))
@@ -128,6 +162,15 @@ theorem IsPosOn.le_iSup_eigen [FiniteDimensional ℂ Y] (h : IsPosOn Y B) (T : I
     exact congrArg Subtype.val (hx i)
   exact fun x hx => this (x := ⟨x, hx⟩) Submodule.mem_top
 
+/- English proof (translation)
+Introduce `i`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Assume the negation of the conclusion as `h0`. Establish `h1` using `h.pos x (hle i hx) h0`.
+
+Establish `h2 : ∀ y ∈ ⨆ k, ⨆ (_ : k ≠ i), part k, y ∈ Y ∧ B x y = 0`. Introduce `y hy`. Use `Submodule.iSup_induction (motive := fun y => y ∈ Y ∧ B x y = 0) _ hy ?_ ⟨Y.zero_mem, h.zero_right (hle i hx)⟩ ?_` and prove the remaining obligations. Introduce `k y hy`. Distinguish the cases in `hk : k = i`.
+
+Simplify using `only [hk, ne_eq, not_true_eq_false, iSup_neg, not_false_eq_true, Submodule.mem_bot] at hy`. Rewrite using `[hy]`. Conclude with `⟨Y.zero_mem, h.zero_right (hle i hx)⟩`. Rewrite `hy` using `[iSup_pos hk]`. Conclude with `⟨hle k hy, horth i k (Ne.symm hk) x hx y hy⟩`.
+
+Introduce `y z hy hz`. Conclude with `⟨Y.add_mem hy.1 hz.1, by rw [h.add_right (hle i hx) hy.1 hz.1, hy.2, hz.2, add_zero]⟩`. Rewrite `h1` using `[(h2 x hx').2]`. Simplify using `at h1`.
+-/
 theorem IsPosOn.iSupIndep (h : IsPosOn Y B) (part : I → Submodule ℂ X) (hle : ∀ i, part i ≤ Y)
     (horth : ∀ i k, i ≠ k → ∀ x ∈ part i, ∀ y ∈ part k, B x y = 0) : iSupIndep part := by
   intro i
@@ -177,6 +220,11 @@ def FiniteAt : Prop := FiniteDimensional ℂ (goodPart θ M J χ e)
 
 variable {θ V S M J χ Sb e}
 
+/- English proof (translation)
+Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1` as an intermediate fact. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`.
+
+Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+-/
 theorem exists_haar (V : HSp D) : ∃ μ : Measure (GA D V), μ.IsHaarMeasure := by
   have := (GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1
   have : BorelSpace (GA D V) := ⟨rfl⟩

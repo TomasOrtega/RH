@@ -16,6 +16,21 @@ namespace TeichLift
 variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [IsUltrametricDist L]
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hyint`. Rewrite `hyint` using `[T.mem_int_iff]`. Use `push_neg at hyint`. Use `set n0 := Nat.find hyint with hn0def`. Establish `hn0 : 1 < ‖T.coeff y n0‖` using `Nat.find_spec hyint`.
+
+Establish `hlow : ∀ i < n0, ‖T.coeff y i‖ ≤ 1` using `fun i hi => by`. Use `Nat.find_min hyint hi` as an intermediate fact. Use `push_neg at this`. Conclude with `this`. Establish `hA : ψ (T.partialSum y n0) ∈ T.int`.
+
+Simplify using `only [partialSum, finSum, map_sum, map_mul, map_pow, hπ, hteich]`. Use `Subring.sum_mem _ fun i hi => mul_mem (pow_mem (mul_mem T.π_mem_int hu) _) ?_` and prove the remaining obligations. Conclude with `T.teich_mem_int ((hg _).2 (hlow i (Finset.mem_range.1 hi)))`. Use `set t := T.tail^[n0] y with htdef`. Establish `hy' : y = T.partialSum y n0 + T.π ^ n0 * t` using `by rw [← T.sub_partialSum]; ring`.
+
+Establish `ht : t = T.teich (T.coeff y n0) + T.π * T.tail t`. Use `T.eq_teich_add_π_mul_tail t` as an intermediate fact. Rewrite `this` using `[show T.red t = T.coeff y n0 from rfl]`. Then use the resulting hypothesis. Establish `hX : ψ y - ψ (T.partialSum y n0) = T.π ^ n0 * (u ^ n0 * T.teich (g (T.coeff y n0)) + T.π * (u ^ (n0 + 1) * ψ (T.tail t)))`. Establish `e : ψ y = ψ (T.partialSum y n0) + ψ (T.π ^ n0 * t)` using `by rw [← map_add, ← hy']`.
+
+Establish `hψt : ψ t = T.teich (g (T.coeff y n0)) + T.π * u * ψ (T.tail t)` using `by conv_lhs => rw [ht]`. Rewrite using `[map_add, map_mul, hteich, hπ]`. Rewrite using `[e, add_sub_cancel_left, map_mul, map_pow, hπ, hψt]`. Expand and normalize the polynomial expressions, which then agree. Establish `hXint : ψ y - ψ (T.partialSum y n0) ∈ T.int` using `sub_mem hy hA`.
+
+Establish `hc` using `(T.mem_int_iff.1 hXint) n0`. Rewrite `hc` using `[hX]`. Use `T.coeff_π_pow_mul_add n0 (u ^ n0 * T.teich (g (T.coeff y n0)) + T.π * (u ^ (n0 + 1) * ψ (T.tail t))) 0` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite `hc` using `[this, coeff_zero, map_add, map_mul, map_mul, map_pow, red_teich, red_π, zero_mul, add_zero, norm_mul, norm_pow, hu1, one_pow, one_mul]`.
+
+Conclude with `absurd ((hg _).1 hc) (not_le.2 hn0)`.
+-/
 theorem mem_int_of_map_mem_int (ψ : Γ →+* Γ) (g : L →+* L) (hg : ∀ c, ‖g c‖ ≤ 1 ↔ ‖c‖ ≤ 1)
     {u : Γ} (hπ : ψ T.π = T.π * u) (hu : u ∈ T.int) (hu1 : ‖T.red u‖ = 1)
     (hteich : ∀ c, ψ (T.teich c) = T.teich (g c)) {y : Γ} (hy : ψ y ∈ T.int) : y ∈ T.int := by
@@ -85,14 +100,26 @@ def gammaTeichLift : TeichLift p L (Gamma p ι) where
   exists_eq_π_mul := fun _ hx h0 => exists_mem_gammaInt_eq_gammaPi_mul p ι hϖ hι hx h0
   mem_int_of_approx := fun _ h => mem_gammaInt_of_forall p ι hϖ hι h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gammaTeichLift_π : (gammaTeichLift p ι hϖ hι).π = gammaPi p ι ϖ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gammaTeichLift_red : (gammaTeichLift p ι hϖ hι).red = gammaRed p ι := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gammaTeichLift_int : (gammaTeichLift p ι hϖ hι).int = gammaInt p ι := rfl
 
 include hι in
 
+/- English proof (translation)
+Establish `h1 : ‖ι c‖ * ‖ι c⁻¹‖ = 1` using `by rw [← norm_mul, ← map_mul, mul_inv_cancel₀ hc, map_one, norm_one]`. Establish `ha` using `hι c`. Establish `hb` using `hι c⁻¹`. Use polynomial arithmetic with `[norm_nonneg (ι c), norm_nonneg (ι c⁻¹)]`.
+-/
 theorem norm_ι_eq_one {c : ResidueField (normInteger K)} (hc : c ≠ 0) : ‖ι c‖ = 1 := by
   have h1 : ‖ι c‖ * ‖ι c⁻¹‖ = 1 := by rw [← norm_mul, ← map_mul, mul_inv_cancel₀ hc, map_one, norm_one]
   have ha := hι c
@@ -113,12 +140,18 @@ def intFrob : normInteger K →+* normInteger K :=
   (σ.comp (normInteger K).subtype).codRestrict (normInteger K) fun x => mem_normInteger.2 (by
     rw [RingHom.comp_apply, hσn]; exact mem_normInteger.1 x.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_intFrob (x : normInteger K) : ((intFrob σ hσn x : normInteger K) : K) = σ x := rfl
 
 variable (a : ℕ) (hσr : ∀ x : K, ‖x‖ ≤ 1 → ‖σ x - x ^ p ^ a‖ < 1)
 
 include hσr in
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_pow, ← map_sub, residue_eq_zero_iff_norm_lt_one]`. Use `push_cast`. Conclude with `hσr x (mem_normInteger.1 x.2)`.
+-/
 theorem residue_intFrob (x : normInteger K) :
     residue (normInteger K) (intFrob σ hσn x) = residue (normInteger K) x ^ p ^ a := by
   rw [← sub_eq_zero, ← map_pow, ← map_sub, residue_eq_zero_iff_norm_lt_one]
@@ -129,6 +162,15 @@ variable {ϖ : normInteger K} (hϖ : Irreducible ϖ)
 
 include hσn hσr hϖ in
 
+/- English proof (translation)
+Establish `hϖ0 : ‖(ϖ : K)‖ ≠ 0` using `(norm_unif_pos hϖ).ne'`. Establish `hσϖ : ‖σ ϖ‖ = ‖(ϖ : K)‖` using `hσn _`. Establish `hσϖ0 : σ ϖ ≠ 0` using `fun h => hϖ0 (by rw [← hσϖ, h, norm_zero])`. Establish `hz' : ‖(z : K) / σ ϖ ^ n‖ ≤ 1`. Rewrite using `[norm_div, norm_pow, hσϖ, div_le_one (pow_pos (norm_unif_pos hϖ) n)]`.
+
+Conclude with `hz`. Use `set z' : normInteger K := ⟨(z : K) / σ ϖ ^ n, mem_normInteger.2 hz'⟩ with hz'def`. Take `⟨x0, hx0⟩` from `residue_surjective ((iterateFrobeniusEquiv (ResidueField (normInteger K)) p a).symm (residue (normInteger K) z'))`. Establish `hres : residue (normInteger K) (intFrob σ hσn x0 - z') = 0`. Rewrite using `[map_sub, residue_intFrob p σ hσn a hσr, hx0, ← iterateFrobeniusEquiv_def, RingEquiv.apply_symm_apply, sub_self]`.
+
+Rewrite `hres` using `[residue_eq_zero_iff_norm_lt_one]`. Establish `h1` using `norm_le_norm_unif_of_lt_one hϖ hres`. Move the coercions through the operations in `at h1`. Use `⟨ϖ ^ n * x0, ?_⟩` and prove the remaining obligations. Establish `e : σ ((ϖ ^ n * x0 : normInteger K) : K) - z = σ ϖ ^ n * (σ x0 - (z : K) / σ ϖ ^ n)`.
+
+Use `push_cast`. Rewrite using `[map_mul, map_pow, mul_sub, mul_div_cancel₀ _ (pow_ne_zero _ hσϖ0)]`. Rewrite using `[e, norm_mul, norm_pow, hσϖ, pow_succ]`. Conclude with `mul_le_mul_of_nonneg_left h1 (pow_nonneg (norm_nonneg _) _)`.
+-/
 theorem exists_intFrob_approx (n : ℕ) (z : normInteger K) (hz : ‖(z : K)‖ ≤ ‖(ϖ : K)‖ ^ n) :
     ∃ x : normInteger K, ‖σ x - z‖ ≤ ‖(ϖ : K)‖ ^ (n + 1) := by
   have hϖ0 : ‖(ϖ : K)‖ ≠ 0 := (norm_unif_pos hϖ).ne'
@@ -153,6 +195,11 @@ theorem exists_intFrob_approx (n : ℕ) (z : normInteger K) (hz : ‖(z : K)‖ 
   exact mul_le_mul_of_nonneg_left h1 (pow_nonneg (norm_nonneg _) _)
 
 include hσn hσr hϖ in
+/- English proof (translation)
+Proceed by induction on `n generalizing z with`. Consider the case `zero => exact ⟨0, by simpa using mem_normInteger.1 z.2⟩`. Consider the case `succ n ih`. Take `⟨x, hx⟩` from `ih z`. Establish `hw : ‖((z - intFrob σ hσn x : normInteger K) : K)‖ ≤ ‖(ϖ : K)‖ ^ n` using `by push_cast; rw [norm_sub_rev]; exact hx`.
+
+Take `⟨x', hx'⟩` from `exists_intFrob_approx p σ hσn a hσr hϖ n _ hw`. Use `⟨x + x', ?_⟩` and prove the remaining obligations. Establish `e : σ ((x + x' : normInteger K) : K) - z = σ x' - ((z - intFrob σ hσn x : normInteger K) : K)` using `by push_cast; rw [map_add, coe_intFrob]; ring`. Rewrite using `[e]`. Conclude with `hx'`.
+-/
 theorem exists_intFrob_near (n : ℕ) (z : normInteger K) :
     ∃ x : normInteger K, ‖σ x - z‖ ≤ ‖(ϖ : K)‖ ^ n := by
   induction n generalizing z with
@@ -169,6 +216,13 @@ theorem exists_intFrob_near (n : ℕ) (z : normInteger K) :
 
 include hσn hσr hϖ in
 
+/- English proof (translation)
+Use `⟨fun x y h => Subtype.ext (σ.injective (by` and prove the remaining obligations. Use `congrArg (fun z : normInteger K => (z : K)) h` as an intermediate fact. Simplify using `using this)), fun y => ?_⟩`. Apply the tactic sequence `have hiso : Isometry σ := AddMonoidHomClass.isometry_of_norm σ hσn`. Establish `hclosed : IsClosed (Set.range σ)` using `hiso.isClosedEmbedding.isClosed_range`.
+
+Establish `hmem : (y : K) ∈ closure (Set.range σ)`. Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε (norm_unif_lt_one hϖ)`. Take `⟨x, hx⟩` from `exists_intFrob_near p σ hσn a hσr hϖ n y`.
+
+Conclude with `⟨σ x, ⟨x, rfl⟩, by rw [dist_eq_norm, norm_sub_rev]; exact hx.trans_lt hn⟩`. Rewrite `hmem` using `[hclosed.closure_eq]`. Take `⟨x, hx⟩` from `hmem`. Establish `hx1 : ‖x‖ ≤ 1` using `by rw [← hσn, hx]; exact mem_normInteger.1 y.2`. Conclude with `⟨⟨x, mem_normInteger.2 hx1⟩, Subtype.ext hx⟩`.
+-/
 theorem intFrob_bijective : Function.Bijective (intFrob σ hσn) := by
   refine ⟨fun x y h => Subtype.ext (σ.injective (by
     have := congrArg (fun z : normInteger K => (z : K)) h; simpa using this)), fun y => ?_⟩
@@ -189,16 +243,25 @@ def frobUnifUnit (hϖ : Irreducible ϖ) : normInteger K :=
   ⟨σ ϖ / ϖ, mem_normInteger.2 (by
     rw [norm_div, hσn, div_self (norm_unif_pos hϖ).ne'])⟩
 
+/- English proof (translation)
+Use `show ‖σ ϖ / ϖ‖ = 1`. Rewrite using `[norm_div, hσn, div_self (norm_unif_pos hϖ).ne']`.
+-/
 theorem norm_frobUnifUnit : ‖((frobUnifUnit σ hσn hϖ : normInteger K) : K)‖ = 1 := by
   show ‖σ ϖ / ϖ‖ = 1
   rw [norm_div, hσn, div_self (norm_unif_pos hϖ).ne']
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `hϖ0 : (ϖ : K) ≠ 0` using `fun h => (norm_unif_pos hϖ).ne' (by rw [h, norm_zero])`. Use `show σ ϖ = (ϖ : K) * (σ ϖ / ϖ)`. Rewrite using `[mul_div_cancel₀ _ hϖ0]`.
+-/
 theorem intFrob_unif : intFrob σ hσn ϖ = ϖ * frobUnifUnit σ hσn hϖ := by
   apply Subtype.ext
   have hϖ0 : (ϖ : K) ≠ 0 := fun h => (norm_unif_pos hϖ).ne' (by rw [h, norm_zero])
   show σ ϖ = (ϖ : K) * (σ ϖ / ϖ)
   rw [mul_div_cancel₀ _ hϖ0]
 
+/- English proof (translation)
+Rewrite using `[Ne, residue_eq_zero_iff_norm_lt_one, norm_frobUnifUnit]`. Conclude with `lt_irrefl 1`.
+-/
 theorem residue_frobUnifUnit_ne_zero : residue (normInteger K) (frobUnifUnit σ hσn hϖ) ≠ 0 := by
   rw [Ne, residue_eq_zero_iff_norm_lt_one, norm_frobUnifUnit]
   exact lt_irrefl 1
@@ -211,10 +274,16 @@ def gammaPhiEquiv : Gamma p ι ≃+* Gamma p ι :=
   RingEquiv.ofBijective (gammaPhi p ι a (intFrob σ hσn) (residue_intFrob p σ hσn a hσr))
     (gammaPhi_bijective p ι a _ _ (intFrob_bijective p σ hσn a hσr hϖ) hϖ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gammaPhiEquiv_apply (x : Gamma p ι) :
     gammaPhiEquiv p σ hσn a hσr hϖ ι x =
       gammaPhi p ι a (intFrob σ hσn) (residue_intFrob p σ hσn a hσr) x := rfl
 
+/- English proof (translation)
+Rewrite using `[gammaPhi_gammaPi, intFrob_unif σ hσn hϖ, gammaPi_eq, gammaPi_eq, gammaOfInt_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem gammaPhi_gammaPi_eq :
     gammaPhi p ι a (intFrob σ hσn) (residue_intFrob p σ hσn a hσr) (gammaPi p ι ϖ) =
       gammaPi p ι ϖ * gammaOfInt p ι (frobUnifUnit σ hσn hϖ) := by
@@ -222,6 +291,9 @@ theorem gammaPhi_gammaPi_eq :
     Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 include hι in
+/- English proof (translation)
+Rewrite using `[gammaOfInt_apply, gammaRed_tmul, map_one, WittVector.one_coeff_zero, one_mul]`. Conclude with `norm_ι_eq_one ι hι (residue_frobUnifUnit_ne_zero σ hσn hϖ)`.
+-/
 theorem norm_gammaRed_frobUnifUnit :
     ‖gammaRed p ι (gammaOfInt p ι (frobUnifUnit σ hσn hϖ))‖ = 1 := by
   rw [gammaOfInt_apply, gammaRed_tmul, map_one, WittVector.one_coeff_zero, one_mul]
@@ -251,8 +323,14 @@ def gammaTeichFrob : TeichLift.TeichFrob (gammaTeichLift p ι hϖ hι) where
     rw [← gammaPhiEquiv_apply p σ hσn a hσr hϖ ι, RingEquiv.apply_symm_apply]
     exact hx
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gammaTeichFrob_a : (gammaTeichFrob p σ hσn a hσr hϖ ι hι).a = a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gammaTeichFrob_φ (x : Gamma p ι) :
     (gammaTeichFrob p σ hσn a hσr hϖ ι hι).φ x =
       gammaPhi p ι a (intFrob σ hσn) (residue_intFrob p σ hσn a hσr) x := rfl

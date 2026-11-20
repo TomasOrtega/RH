@@ -22,6 +22,9 @@ def pairL (u : Fin n → Cinf E) : (Fin n → Cinf E) →L[ℝ] ℝ :=
           smul_eq_mul, Finset.mul_sum]
         exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun w _ => by ring }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairL_apply (u x : Fin n → Cinf E) : pairL u x = ∑ i, ∑ w, 2 * (x i w * u i w).re := rfl
 
 instance isAddHaarMeasure_volume : (volume : Measure (Fin n → Cinf E)).IsAddHaarMeasure :=
@@ -30,6 +33,9 @@ instance isAddHaarMeasure_volume : (volume : Measure (Fin n → Cinf E)).IsAddHa
 instance isAddHaarMeasure_infMeasure : (infMeasure E n).IsAddHaarMeasure :=
   Measure.IsAddHaarMeasure.smul _ (by simp) (by simp)
 
+/- English proof (translation)
+Establish `h1` using `(Real.hasDerivAt_fourierChar (-pairL u x)).hasFDerivAt`. Establish `h2 : HasFDerivAt (fun y => -pairL u y) (-pairL u) x` using `(pairL u).hasFDerivAt.neg`. Conclude with `h1.comp x h2`.
+-/
 theorem hasFDerivAt_kernel (u x : Fin n → Cinf E) :
     HasFDerivAt (fun y => (𝐞 (-pairL u y) : ℂ))
       ((ContinuousLinearMap.smulRight (1 : ℝ →L[ℝ] ℝ) (2 * π * I * 𝐞 (-pairL u x))).comp (-pairL u)) x :=
@@ -38,6 +44,9 @@ theorem hasFDerivAt_kernel (u x : Fin n → Cinf E) :
     have h2 : HasFDerivAt (fun y => -pairL u y) (-pairL u) x := (pairL u).hasFDerivAt.neg
     exact h1.comp x h2
 
+/- English proof (translation)
+Rewrite using `[(hasFDerivAt_kernel u x).fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.neg_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.one_apply, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fderiv_kernel (u x v : Fin n → Cinf E) :
     fderiv ℝ (fun y => (𝐞 (-pairL u y) : ℂ)) x v = -(2 * π * I * (pairL u v : ℂ)) * 𝐞 (-pairL u x) := by
   rw [(hasFDerivAt_kernel u x).fderiv]
@@ -46,9 +55,21 @@ theorem fderiv_kernel (u x v : Fin n → Cinf E) :
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `continuous_iff_continuousAt.2 fun x => (hasFDerivAt_kernel u x).continuousAt`.
+-/
 theorem continuous_kernel (u : Fin n → Cinf E) : Continuous (fun y => (𝐞 (-pairL u y) : ℂ)) :=
   continuous_iff_continuousAt.2 fun x => (hasFDerivAt_kernel u x).continuousAt
 
+/- English proof (translation)
+Establish `hfc : Continuous f` using `hf.continuous`. Establish `hd : Differentiable ℝ f` using `hf.differentiable (by simp)`. Establish `hf'c : Continuous (fun y => fderiv ℝ f y v)` using `(hf.continuous_fderiv (by simp)).clm_apply continuous_const`. Establish `hf's : HasCompactSupport (fun y => fderiv ℝ f y v)` using `(hs.fderiv (𝕜 := ℝ)).comp_left (g := fun L : (Fin n → Cinf E) →L[ℝ] ℂ => L v) rfl`. Establish `hgc` using `continuous_kernel u`.
+
+Establish `h1 : Integrable (fun x => fderiv ℝ f x v * (𝐞 (-pairL u x) : ℂ)) (infMeasure E n)` using `(hf'c.mul hgc).integrable_of_hasCompactSupport hf's.mul_right`. Establish `h2 : Integrable (fun x => f x * fderiv ℝ (fun y => (𝐞 (-pairL u y) : ℂ)) x v) (infMeasure E n)`. Simplify using `only [fderiv_kernel]`. Conclude with `(hfc.mul (continuous_const.mul hgc)).integrable_of_hasCompactSupport hs.mul_right`. Establish `h3 : Integrable (fun x => f x * (𝐞 (-pairL u x) : ℂ)) (infMeasure E n)` using `(hfc.mul hgc).integrable_of_hasCompactSupport hs.mul_right`.
+
+Establish `key` using `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable h1 h2 h3 (fun x _ => hd x) (fun x _ => (hasFDerivAt_kernel u x).differentiableAt)`. Simplify using `only [fderiv_kernel] at key`. Establish `e : ∫ x, f x * (-(2 * π * I * (pairL u v : ℂ)) * (𝐞 (-pairL u x) : ℂ)) ∂infMeasure E n = -(2 * π * I * (pairL u v : ℂ)) * ∫ x, f x * (𝐞 (-pairL u x) : ℂ) ∂infMeasure E n`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => by ring)`.
+
+Use `show ∫ x, fderiv ℝ f x v * (𝐞 (-pairL u x) : ℂ) ∂infMeasure E n = (2 * π * I * (pairL u v : ℂ)) * ∫ x, f x * (𝐞 (-pairL u x) : ℂ) ∂infMeasure E n`. Take the linear combination `key - e`.
+-/
 theorem infFourier_fderiv {f : (Fin n → Cinf E) → ℂ} (hf : ContDiff ℝ ∞ f) (hs : HasCompactSupport f)
     (v u : Fin n → Cinf E) :
     infFourier (fun y => fderiv ℝ f y v) u = (2 * π * I * (pairL u v : ℂ)) * infFourier f u := by
@@ -82,6 +103,11 @@ open Classical in
 def dirv (k : Fin n × InfinitePlace E × Bool) : Fin n → Cinf E :=
   Pi.single k.1 (Pi.single k.2.1 (if k.2.2 then I else 1))
 
+/- English proof (translation)
+Take `⟨i, w, b⟩` from `k`. Rewrite using `[pairL_apply, Finset.sum_eq_single i, Finset.sum_eq_single w]`. Simplify using `[dirv]`. Introduce `w' _ hw`. Simplify using `[dirv, Pi.single_apply, hw]`.
+
+Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[dirv, Pi.single_apply, hj]`. Simplify using the standard rewrite rules.
+-/
 theorem pairL_dirv (u : Fin n → Cinf E) (k : Fin n × InfinitePlace E × Bool) :
     pairL u (dirv k) = 2 * ((if k.2.2 then I else 1) * u k.1 k.2.1).re := by
   classical
@@ -95,6 +121,15 @@ theorem pairL_dirv (u : Fin n → Cinf E) (k : Fin n × InfinitePlace E × Bool)
     simp [dirv, Pi.single_apply, hj]
   · simp
 
+/- English proof (translation)
+Establish `hcoord : ∀ i w, ‖u i w‖ ≤ |pairL u (dirv (i, w, false))| + |pairL u (dirv (i, w, true))|`. Introduce `i w`. Rewrite using `[pairL_dirv, pairL_dirv]`. Simplify using `only [Bool.false_eq_true, ↓reduceIte, one_mul, Complex.I_mul_re, abs_mul, abs_neg, abs_two]`. Use `Complex.norm_le_abs_re_add_abs_im (u i w)` as an intermediate fact.
+
+Use polynomial arithmetic with `[abs_nonneg (u i w).re, abs_nonneg (u i w).im]`. Establish `hS : ∑ k, |pairL u (dirv k)| = ∑ i, ∑ w, (|pairL u (dirv (i, w, false))| + |pairL u (dirv (i, w, true))|)`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hS]`. Establish `h0 : 0 ≤ ∑ i, ∑ w, (|pairL u (dirv (i, w, false))| + |pairL u (dirv (i, w, true))|)` using `by positivity`.
+
+Use `(pi_norm_le_iff_of_nonneg h0).2 fun i => (pi_norm_le_iff_of_nonneg h0).2 fun w => ?_` and prove the remaining obligations. Use `(hcoord i w).trans ?_` and prove the remaining obligations. Establish `hi` using `Finset.single_le_sum (f := fun i => ∑ w, (|pairL u (dirv (i, w, false))| + |pairL u (dirv (i, w, true))|)) (fun i _ => by positivity) (Finset.mem_univ i)`. Establish `hw` using `Finset.single_le_sum (f := fun w => (|pairL u (dirv (i, w, false))| + |pairL u (dirv (i, w, true))|)) (fun w _ => by positivity) (Finset.mem_univ w)`. Conclude with `hw.trans hi`.
+-/
 theorem norm_le_sum_pairL (u : Fin n → Cinf E) : ‖u‖ ≤ ∑ k, |pairL u (dirv k)| := by
   have hcoord : ∀ i w, ‖u i w‖ ≤ |pairL u (dirv (i, w, false))| + |pairL u (dirv (i, w, true))| := by
     intro i w
@@ -124,6 +159,21 @@ end GlobalTheory.FourierDecay
 
 open GlobalTheory.FourierDecay in
 
+/- English proof (translation)
+Introduce `E _ _ _ n ι w 𝒞 hC hD M`. Proceed by induction on `M with`. Consider the case `zero`. Introduce `f hf`. Take `⟨C, hC'⟩` from `(hC f hf).2`.
+
+Use `⟨C, fun i u => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, mul_one]`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq_of_le ?_ (hC' i))` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show ‖f i x * _‖ = ‖f i x‖`.
+
+Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`. Consider the case `succ M ih`. Introduce `f hf`. Use `choose C hC' using fun k : Fin n × InfinitePlace E × Bool => ih _ (hD f hf (dirv k))`. Take `⟨C₀, h₀⟩` from `ih f hf`.
+
+Use `⟨C₀ + ∑ k, C k / (2 * π), fun i u => ?_⟩` and prove the remaining obligations. Take `⟨hsm, hcs⟩` from `(hC f hf).1 i`. Establish `hrel : ∀ k, ‖infFourier (f i) u‖ * (1 + ‖u‖) ^ M * |pairL u (dirv k)| = ‖infFourier (fun y => fderiv ℝ (f i) y (dirv k)) u‖ * (1 + ‖u‖) ^ M / (2 * π)`. Introduce `k`. Rewrite using `[infFourier_fderiv hsm hcs, norm_mul]`.
+
+Establish `: ‖(2 * π * I * (pairL u (dirv k) : ℂ))‖ = 2 * π * |pairL u (dirv k)|`. Simplify using `[norm_mul, Complex.norm_real, abs_of_pos pi_pos]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Establish `hN` using `norm_le_sum_pairL u`.
+
+Establish `hA : 0 ≤ ‖infFourier (f i) u‖ * (1 + ‖u‖) ^ M` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `congrArg _ (Finset.sum_congr rfl fun k _ => hrel k)`. Use `_ ≤ C₀ * w i + ∑ k, C k * w i / (2 * π) := add_le_add (h₀ i u) (Finset.sum_le_sum fun k _ => div_le_div_of_nonneg_right (hC' k i u) (by positivity))`.
+
+Use `_ = (C₀ + ∑ k, C k / (2 * π)) * w i := by`. Rewrite using `[add_mul, Finset.sum_mul]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem GlobalTheory.fourier_decay_family : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ) (ι : Type)
     (w : ι → ℝ) (𝒞 : Set (ι → (Fin n → Cinf E) → ℂ)),
     (∀ f ∈ 𝒞, (∀ i, ContDiff ℝ ∞ (f i) ∧ HasCompactSupport (f i)) ∧ ∃ C : ℝ, ∀ i, ∫ y, ‖f i y‖ ∂(infMeasure E n) ≤ C * w i) →

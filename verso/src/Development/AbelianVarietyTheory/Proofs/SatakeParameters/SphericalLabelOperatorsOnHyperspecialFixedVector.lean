@@ -23,6 +23,21 @@ namespace GlobalTheory.SphLabelOps
 
 section Abstract
 
+/- English proof (translation)
+Establish `key : ∀ x y : Fin n → R, φ ∘ x = φ ∘ y → ε • x = ε • y` using `fun x y e =>`. Use function extensionality and compare the values at `fun i => hφ _ _ (congrFun e i)`. Establish `key' : ∀ x y : Fin n → R, ε • x = ε • y → φ ∘ x = φ ∘ y` using `fun x y e => funext fun i => by`. Use `congrArg φ (congrFun e i)` as an intermediate fact. Simplify `this` using `[hε]`.
+
+Establish `mv : ∀ (M : Matrix (Fin n) (Fin n) R) x, φ ∘ (M *ᵥ x) = M.map φ *ᵥ (φ ∘ x)` using `fun M x =>`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec φ M x i`. Establish `ss : ∀ w : Fin n → K, φ ∘ (s ∘ w) = w` using `fun w => funext fun i => hs _`. Establish `int : ∀ (k : Matrix (Fin n) (Fin n) K) (z : Fin n → R), (∀ i j, k i j ∈ OK) → (∀ i, O (z i)) → ∀ i, O ((s ∘ (k *ᵥ (φ ∘ z))) i)` using `fun k z hk hz i => hO' _ (OK.sum_mem (t := Finset.univ) fun j _ => mul_mem (hk i j) (hO _ (hz j)))`. Establish `hB : (B * k₁.1.map s).map φ = B.map φ * k₁.1`.
+
+Rewrite using `[Matrix.map_mul]`. Use `congr 1`. Conclude with `Matrix.ext fun i j => hs _`. Establish `hu : ∀ z : Fin n → R, φ ∘ (fun i => u i * z i) = Matrix.diagonal (fun i => φ (u i)) *ᵥ (φ ∘ z)` using `fun z => funext fun i => by simp [Matrix.mulVec_diagonal]`. Use `⟨B * k₁.1.map s, fun z hz => ?_, fun y hy => ?_, fun y hy => ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key _ (B *ᵥ (s ∘ (k₁.1 *ᵥ (φ ∘ z)))) (by rw [mv, mv, ss, hB, Matrix.mulVec_mulVec])]`. Conclude with `h1 _ (int _ z i1 hz)`. Take `⟨z, hz, e⟩` from `h2 y hy`. Use `⟨_, int _ z i1' hz, key _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[key' _ _ e, mv, mv, ss, hB, Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+
+Take `⟨z, hz, e⟩` from `h2 y hy`. Use `⟨_, int _ z i2 hz, key _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[mv, key' _ _ e, mv, mv, hu, ss, hB]`. Simplify using `only [Matrix.mulVec_mulVec, h, Matrix.mul_assoc]`. Use `⟨_, h1 _ (int _ z i2' hz), key _ _ ?_⟩` and prove the remaining obligations.
+
+Establish `e : φ ∘ (ε • B *ᵥ (s ∘ ((k₂⁻¹).1 *ᵥ (φ ∘ z)))) = φ ∘ (B *ᵥ (s ∘ ((k₂⁻¹).1 *ᵥ (φ ∘ z))))`. Use function extensionality and compare the values at `fun i => by simp [hε]`. Rewrite using `[mv, e, mv, mv, hu, ss, hB]`. Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[← Matrix.mul_assoc, h]`.
+
+Simplify using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+-/
 theorem dv_of_cartan {R K : Type} [CommRing R] [CommRing K] {n : ℕ} {Λ : (Fin n → R) → Prop} {O : R → Prop}
     {OK : Subring K} {ε : R} (φ : R →+* K) (s : K → R) (hs : ∀ t, φ (s t) = t) (hε : φ ε = 1)
     (hφ : ∀ x y, φ x = φ y → ε * x = ε * y) (hO : ∀ x, O x → φ x ∈ OK) (hO' : ∀ t ∈ OK, O (s t))
@@ -74,6 +89,9 @@ def Reps (K : Subgroup G) (g : G) (R : Finset G) : Prop :=
   (∀ γ ∈ R, ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * g * k₂) ∧
     ∀ x : G, (∃ k₁ ∈ K, ∃ k₂ ∈ K, x = k₁ * g * k₂) → ∃! γ, γ ∈ R ∧ γ⁻¹ * x ∈ K
 
+/- English proof (translation)
+Use `⟨fun γ hγ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `h.1 γ hγ`. Conclude with `⟨_, mul_mem h₁ ha, _, mul_mem hb h₂, by group⟩`. Introduce and unpack `_ ⟨k₁, h₁, k₂, h₂, rfl⟩`. Conclude with `h.2 _ ⟨_, mul_mem h₁ (inv_mem ha), _, mul_mem (inv_mem hb) h₂, by group⟩`.
+-/
 theorem Reps.of_dc {K : Subgroup G} {g a b : G} {R : Finset G} (ha : a ∈ K) (hb : b ∈ K)
     (h : Reps K (a * g * b) R) : Reps K g R := by
   refine ⟨fun γ hγ => ?_, ?_⟩
@@ -82,6 +100,17 @@ theorem Reps.of_dc {K : Subgroup G} {g a b : G} {R : Finset G} (ha : a ∈ K) (h
   · rintro _ ⟨k₁, h₁, k₂, h₂, rfl⟩
     exact h.2 _ ⟨_, mul_mem h₁ (inv_mem ha), _, mul_mem (inv_mem hb) h₂, by group⟩
 
+/- English proof (translation)
+Establish `mv : ∀ {l x : G}, l ∈ K → (∃ k₁ ∈ K, ∃ k₂ ∈ K, x = k₁ * g * k₂) → ∃ k₁ ∈ K, ∃ k₂ ∈ K, l * x = k₁ * g * k₂`. Introduce and unpack `l _ hl ⟨k₁, h₁, k₂, h₂, rfl⟩`. Conclude with `⟨_, mul_mem hl h₁, _, h₂, by group⟩`. Establish `ex` using `fun γ (hγ : γ ∈ R) => h'.2 _ (mv hk (h.1 γ hγ))`. Use `Finset.sum_bij (fun γ hγ => (ex γ hγ).choose) (fun γ hγ => (ex γ hγ).choose_spec.1.1) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `a ha b hb e`. Establish `e1` using `(ex a ha).choose_spec.1.2`. Establish `e2` using `(ex b hb).choose_spec.1.2`. Rewrite `e1` using `[e]`. Use `(h.2 b (h.1 b hb)).unique ⟨ha, ?_⟩ ⟨hb, by rw [inv_mul_cancel]; exact one_mem _⟩` and prove the remaining obligations.
+
+Use `mul_mem (inv_mem e1) e2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce `δ hδ`. Take `⟨γ, ⟨hγ, e⟩, -⟩` from `h.2 _ (mv (inv_mem hk) (h'.1 δ hδ))`.
+
+Use `⟨γ, hγ, ((ex γ hγ).choose_spec.2 δ ⟨hδ, ?_⟩).symm⟩` and prove the remaining obligations. Use `inv_mem e` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce `γ hγ`.
+
+Use `hF (ex γ hγ).choose _ (ex γ hγ).choose_spec.1.2` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem Reps.sum_eq {K : Subgroup G} {g k : G} {R R' : Finset G} (h : Reps K g R) (h' : Reps K g R') (hk : k ∈ K)
     {M : Type} [AddCommMonoid M] (F : G → M) (hF : ∀ x, ∀ l ∈ K, F (x * l) = F x) :
     ∑ γ ∈ R, F (k * γ) = ∑ γ ∈ R', F γ := by
@@ -109,6 +138,9 @@ theorem Reps.sum_eq {K : Subgroup G} {g k : G} {R R' : Finset G} (h : Reps K g R
     have := hF (ex γ hγ).choose _ (ex γ hγ).choose_spec.1.2
     rwa [mul_inv_cancel_left] at this
 
+/- English proof (translation)
+Simplify using `using h.sum_eq h' (one_mem K) (fun _ => (1 : ℕ)) fun _ _ _ => rfl`.
+-/
 theorem Reps.card_eq {K : Subgroup G} {g : G} {R R' : Finset G} (h : Reps K g R) (h' : Reps K g R') :
     R.card = R'.card := by
   simpa using h.sum_eq h' (one_mem K) (fun _ => (1 : ℕ)) fun _ _ _ => rfl
@@ -121,11 +153,21 @@ open Formalism.L2.NTheta GlobalTheory.IdemSupport GlobalTheory.LatLocBasis
 
 variable {D : D7} {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : Formalism.L2.Theta.AE D}
 
+/- English proof (translation)
+Break down `h with ⟨h, -⟩ | ⟨-, -, h⟩` into its components or cases. Conclude with `h.2`. Conclude with `h`.
+-/
 theorem tie_of_isPrimeIdem (h : IsPrimeIdem P e f) : Comparison₂ P e := by
   rcases h with ⟨h, -⟩ | ⟨-, -, h⟩
   · exact h.2
   · exact h
 
+/- English proof (translation)
+Take `⟨a, s, hs, hc⟩` from `c.2`. Establish `hs0 : s ≠ 0` using `fun h0 => hs (h0 ▸ P.asIdeal.zero_mem)`. Establish `h1 : finPart D (e * incA D ((s : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `hn`. Conclude with `hs ((h s hs0).2 hn)`.
+
+Establish `h2 : (t ⊗ₜ[D.host.F] (a : D.host.E)) ∈ intAE D` using `AddSubgroup.subset_closure ⟨t, ht, a, rfl⟩`. Establish `h3` using `mul_mem_int D h1 h2`. Establish `h4 : finPart D (incA D ((s : D.host.E)⁻¹)) = (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] ((s : D.host.E)⁻¹)` using `rfl`. Rewrite `h3` using `[RingHom.map_mul, h4, mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_comm _ (a : D.host.E)]`. Rewrite using `[hc]`.
+
+Conclude with `h3`.
+-/
 theorem idem_mul_loc_mem (h : Comparison₂ P e) {t : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F} (ht : t ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F)
     (c : locRing P) : finPart D e * (t ⊗ₜ[D.host.F] (c : D.host.E)) ∈ intAE D := by
   obtain ⟨a, s, hs, hc⟩ := c.2
@@ -141,6 +183,15 @@ theorem idem_mul_loc_mem (h : Comparison₂ P e) {t : Formalism.MainNotions.Glob
   rw [hc]
   exact h3
 
+/- English proof (translation)
+Establish `hee : finPart D e * finPart D e = finPart D e` using `by rw [← RingHom.map_mul, he]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Use `GlobalTheory.LatDual.smul_mem_lamHat V _ (GlobalTheory.SplitPlace.idem_mem he) _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LatDual.lamHat_eq_hat]`.
+
+Conclude with `AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩`. Consider the case `zero`. Simplify using `only [Pi.zero_apply, TensorProduct.tmul_zero, mul_zero]`. Conclude with `zero_mem _`. Consider the case `add u w _ _ hu hw`.
+
+Simplify using `only [Pi.add_apply, TensorProduct.tmul_add, mul_add]`. Conclude with `add_mem hu hw`. Consider the case `smul c u _ hu`. Use `GlobalTheory.LatDual.smul_mem_lamHat V _ (idem_mul_loc_mem h (one_mem_intAf _) c) _ hu` as an intermediate fact. Use `this using 2 with a` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[mul_mul_mul_comm, hee, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem idem_mul_span_mem (V : HSp D) (he : e * e = e) (h : Comparison₂ P e) {x : Fin V.rank → D.host.E}
     (hx : x ∈ Submodule.span (locRing P) (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E))) :
     (fun a => finPart D e * ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] x a)) ∈ LamHat V := by
@@ -164,6 +215,19 @@ theorem idem_mul_span_mem (V : HSp D) (he : e * e = e) (h : Comparison₂ P e) {
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hee : finPart D e * finPart D e = finPart D e` using `by rw [← RingHom.map_mul, he]`. Take `⟨-, -, hfg, hspan, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Take `⟨b, hb, hc⟩` from `exists_gens P (GlobalTheory.Member.latC V) hfg hspan`. Use `⟨Matrix.of fun a i => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] b i a, fun z hz => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `sum_mem (S := LamHat V) (t := Finset.univ) fun i _ => GlobalTheory.LatDual.smul_mem_lamHat V _ (hz i) _ (idem_mul_span_mem V he h (hb i))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite `hy` using `[GlobalTheory.LatDual.lamHat_eq_hat]`.
+
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨t, ht, x, hx, rfl⟩` from `hy`. Take `⟨c, hc⟩` from `hc x hx`. Use `⟨fun i => finPart D e * (t ⊗ₜ[D.host.F] (c i : D.host.E)), fun i => idem_mul_loc_mem h ht _, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.mul_sum]`. Rewrite using `[hc a, TensorProduct.tmul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm _ (finPart D e), ← mul_assoc, hee, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_comm (b i a)]`.
+
+Consider the case `zero => exact ⟨0, fun _ => zero_mem _, by rw [Matrix.mulVec_zero]⟩`. Consider the case `add u w _ _ hu hw`. Take `⟨z, hz, hu⟩` from `hu`. Take `⟨z', hz', hw⟩` from `hw`. Use `⟨z + z', fun i => add_mem (hz i) (hz' i), funext fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_add, Pi.add_apply, Pi.add_apply, mul_add, mul_add, congrFun hu a, congrFun hw a]`. Consider the case `neg u _ hu`. Take `⟨z, hz, hu⟩` from `hu`. Use `⟨-z, fun i => neg_mem (hz i), funext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_neg, Pi.neg_apply, Pi.neg_apply, mul_neg, mul_neg, congrFun hu a]`.
+-/
 theorem exists_basis (V : HSp D) (he : e * e = e) (h : Comparison₂ P e) :
     ∃ B : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E),
       (∀ z, IntVec z → (fun a => finPart D e * B.mulVec z a) ∈ LamHat V) ∧
@@ -203,6 +267,25 @@ theorem exists_basis (V : HSp D) (he : e * e = e) (h : Comparison₂ P e) :
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨ι, i1, i2, -⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Establish `hee : finPart D e * finPart D e = finPart D e` using `by rw [← RingHom.map_mul, he]`. Establish `ev : ∀ a b Q, ι (a * b) Q = ι a Q * ι b Q` using `fun a b Q => by rw [map_mul]; rfl`. Establish `inc : ∀ (x : D.host.E) Q, ι (finPart D (incA D x)) Q = algebraMap D.host.E _ x` using `fun x Q => congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z Q) (i1 x)`. Establish `one : ∀ Q, ι (finPart D e) Q ≠ 0 → ι (finPart D e) Q = 1` using `fun Q h0 => mul_left_cancel₀ h0 (by rw [← ev, hee, mul_one])`.
+
+Establish `nint : ∀ x : 𝓞 D.host.E, x ≠ 0 → (x ∈ P.asIdeal ↔ ∃ Q, ι (finPart D e) Q ≠ 0 ∧ x ∈ Q.asIdeal)`. Introduce `x hx`. Rewrite using `[h x hx, i2, not_forall]`. Use `exists_congr fun Q => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, ev, inc]`.
+
+Distinguish the cases in `h0 : ι (finPart D e) Q = 0`. Rewrite using `[h0, zero_mul, map_zero]`. Conclude with `iff_of_false (fun h => h zero_le_one) (fun h => h.1 rfl)`. Rewrite using `[one Q h0, one_mul]`. Conclude with `((inv_mem_iff Q hx).not.trans not_not).trans (and_iff_right one_ne_zero).symm`.
+
+Establish `h1 : ∀ Q, ι (finPart D e) Q ≠ 0 → Q = P` using `fun Q hQ => eq_of_le fun x hx => by`. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0]`. Conclude with `zero_mem _`. Conclude with `(nint x hx0).2 ⟨Q, hQ, hx⟩`.
+
+Establish `h2 : ι (finPart D e) P = 1`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`. Take `⟨Q, hQ, -⟩` from `(nint x hx0).1 hx`. Take `rfl` from `h1 Q hQ`. Conclude with `one _ hQ`.
+
+Establish `s1 : ∀ t, singleV D.host.E P t P = t` using `fun t => Pi.single_eq_same (M := fun w : HeightOneSpectrum (𝓞 D.host.E) => w.adicCompletion D.host.E) P t`. Establish `s2 : ∀ t Q, Q ≠ P → singleV D.host.E P t Q = 0` using `fun t Q hQ => Pi.single_eq_of_ne (M := fun w : HeightOneSpectrum (𝓞 D.host.E) => w.adicCompletion D.host.E) hQ t`. Use `⟨(Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.E P).toRingHom.comp ι.toRingHom, fun t => ι.symm (singleV D.host.E P t), fun t => ?_, h2, fun x y hxy => ι.injective (FiniteAdeleRing.ext _ fun Q => ?_), fun x hx => (i2 x).1 hx P, fun t ht => (i2 _).2 fun Q …` and prove the remaining obligations. Use `show ι (ι.symm _) P = t`. Rewrite using `[ι.apply_symm_apply, s1]`.
+
+Rewrite using `[ev, ev]`. Distinguish the cases in `h0 : ι (finPart D e) Q = 0`. Rewrite using `[h0, zero_mul, zero_mul]`. Take `rfl` from `h1 Q h0`. Establish `: ι x Q = ι y Q` using `hxy`.
+
+Rewrite using `[this]`. Rewrite using `[ι.apply_symm_apply]`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[s1]`.
+
+Conclude with `ht`. Rewrite using `[s2 t Q hQ, map_zero]`. Conclude with `zero_le_one`.
+-/
 theorem exists_component (he : e * e = e) (h : Comparison₂ P e) :
     ∃ (φ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E →+* P.adicCompletion D.host.E)
       (s : P.adicCompletion D.host.E → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E),
@@ -257,6 +340,19 @@ theorem exists_component (he : e * e = e) (h : Comparison₂ P e) :
       rw [s1]; exact ht
     · rw [s2 t Q hQ, map_zero]; exact zero_le_one
 
+/- English proof (translation)
+Take `⟨φ, s, hs, hε, hφ, hO, hO', hinc⟩` from `exists_component he h`. Take `⟨B, b1, b2⟩` from `exists_basis V he h`. Establish `hee : finPart D e * finPart D e = finPart D e` using `by rw [← RingHom.map_mul, he]`. Take `⟨C, c1, c2⟩` from `(GlobalTheory.LatIntFacts.int_facts V).2.2 _ B hee fun y hy => (b2 y hy).imp fun _ h => h.2`. Establish `mp : ∀ X Y : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E), finPart D e • (X * Y) = finPart D e • (1 : Matrix (Fin V.rank) (Fin V.rank) _) → X.map φ * Y.map φ = 1`.
+
+Introduce `X Y hXY`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_one φ (map_zero φ) (map_one φ)]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrArg φ (congrFun (congrFun hXY i) j)` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, map_mul, hε, one_mul, one_mul]`. Then use the resulting hypothesis.
+
+Set `b : GL (Fin V.rank) (P.adicCompletion D.host.E)` to `⟨B.map φ, C.map φ, mp _ _ c1, mp _ _ c2⟩`. Set `a : GL (Fin V.rank) (P.adicCompletion D.host.E)` to `Formalism.UG.bc φ (finHom V g)`. Establish `hv : Formalism.UG.IsUnifV D.host.E P (algebraMap D.host.E _ (ϖ : D.host.E))` using `(P.valuedAdicCompletion_eq_valuation' (ϖ : D.host.E)).trans ((P.valuation_of_algebraMap ϖ).trans (GlobalTheory.LatIntFacts.intValuation_uniformiser P h1 h2))`. Take `⟨d, hd, k₁, hk₁, k₂, hk₂, hk⟩` from `Formalism.UG.Final.CartanDecomp D.host.E P V.rank _ (Formalism.UG.P.cartan_unif_lt_one D.host.E P _ hv).le hv (b⁻¹ * a * b)`. Use `⟨List.ofFn d, List.pairwise_ofFn.2 fun i j hij => hd hij.le, (GlobalTheory.DivDual.divAt_iff V e _ _ g).2 ⟨List.length_ofFn, dv_of_cartan φ s hs hε hφ hO hO' (B := B) b1 b2 (Formalism.UG.P.cartan_entries_of_mem _ _ hk₁) (Formalism.UG.P.cartan_entries_of_mem _ _ (inv_mem hk₁)) (Fo …` and prove the remaining obligations.
+
+Establish `e1 : (Matrix.diagonal fun i : Fin V.rank => φ (finPart D (incA D ((ϖ : D.host.E) ^ ((List.ofFn d).getD i.1 0))))) = Formalism.UG.diagPow D.host.E P (algebraMap D.host.E _ (ϖ : D.host.E)) d`. Unfold `Formalism.UG.diagPow`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hinc, map_zpow₀]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1, ← hk]`. Use `show a.1 * b.1 = b.1 * _`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`.
+
+Use `group`.
+-/
 theorem exists_divAt (V : HSp D) (he : e * e = e) (h : Comparison₂ P e) {ϖ : 𝓞 D.host.E} (h1 : ϖ ∈ P.asIdeal)
     (h2 : ϖ ∉ P.asIdeal ^ 2) (g : GA D V) :
     ∃ d : List ℤ, d.Pairwise (fun a b => b ≤ a) ∧ DivAt V e (ϖ : D.host.E) d g := by
@@ -297,6 +393,11 @@ theorem exists_divAt (V : HSp D) (he : e * e = e) (h : Comparison₂ P e) {ϖ : 
   congr 1
   group
 
+/- English proof (translation)
+Take `⟨B, b1, b2⟩` from `exists_basis V he h`. Establish `hee : finPart D e * finPart D e = finPart D e` using `by rw [← RingHom.map_mul, he]`. Establish `e1 : ∀ z : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E, (fun i : Fin V.rank => finPart D (incA D (ϖ ^ ((List.replicate V.rank (0 : ℤ)).getD i.1 0))) * z i) = z` using `fun z => funext fun i => by`. Rewrite using `[List.getD_replicate _ i.2, zpow_zero, map_one, map_one, one_mul]`. Establish `e2 : finMat D.sp.cm.sig V.gram (1 : GA D V) = 1` using `GlobalTheory.SplitPlace.fm_one V`.
+
+Use `⟨List.length_replicate, B, b1, b2, fun y hy => ?_, fun z hz => ⟨_, b1 z hz, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [e1, e2, Matrix.one_mulVec]`. Conclude with `b2 y hy`. Simplify using `only [e1, e2, Matrix.one_mulVec, ← mul_assoc, hee]`.
+-/
 theorem divAt_one (V : HSp D) (he : e * e = e) (h : Comparison₂ P e) (ϖ : D.host.E) :
     DivAt V e ϖ (List.replicate V.rank 0) 1 := by
   obtain ⟨B, b1, b2⟩ := exists_basis V he h
@@ -319,6 +420,13 @@ open Formalism.L2.NTheta GlobalTheory.IdemSupport
 
 variable {D : D7} {V : HSp D} {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : Formalism.L2.Theta.AE D}
 
+/- English proof (translation)
+Establish `hu : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E)` using `by haveI := D.host.isCMField_hostE`. Conclude with `GlobalTheory.PlaceComp.unramified (E := D.host.E) D.sp.cm`. Use `haveI := P.isPrime`. Use `haveI : Algebra.IsUnramifiedAt (𝓞 D.host.F) P.asIdeal := Algebra.unramified_iff_forall.1 hu ⟨P.asIdeal, P.isPrime⟩`. Establish `hle : (P.asIdeal.under (𝓞 D.host.F)).map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ P.asIdeal` using `Ideal.map_comap_le`.
+
+Establish `h1 : Ideal.ramificationIdx' (P.asIdeal.under (𝓞 D.host.F)) P.asIdeal = 1`. Use `letI := Localization.AtPrime.algebraOfLiesOver (P.asIdeal.under (𝓞 D.host.F)) P.asIdeal`. Conclude with `(Ideal.IsDedekindDomain.ramificationIdx'_eq_one_iff P.ne_bot hle).2 ((Algebra.isUnramifiedAt_iff_map_eq (𝓞 D.host.F) (P.asIdeal.under (𝓞 D.host.F)) P.asIdeal).1 ‹_›).2`. Establish `h2 : ¬ (P.asIdeal.under (𝓞 D.host.F)).map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ P.asIdeal ^ 2` using `fun h => (Ideal.ramificationIdx'_ne_one_iff hle).2 h h1`. Rewrite `h2` using `[Ideal.map_le_iff_le_comap, SetLike.not_le_iff_exists]`.
+
+Take `⟨x, hx, hx2⟩` from `h2`. Conclude with `⟨x, algebraMap _ _ x, rfl, hx, hx2⟩`.
+-/
 theorem exists_real_unif (D : D7) (P : HeightOneSpectrum (𝓞 D.host.E)) :
     ∃ x : 𝓞 D.host.F, ∃ y : 𝓞 D.host.E, (y : D.host.E) = algebraMap D.host.F D.host.E (x : D.host.F) ∧
       y ∈ P.asIdeal ∧ y ∉ P.asIdeal ^ 2 := by
@@ -343,15 +451,24 @@ theorem exists_real_unif (D : D7) (P : HeightOneSpectrum (𝓞 D.host.E)) :
 noncomputable abbrev stabG (V : HSp D) : Subgroup (GA D V) :=
   GlobalTheory.AdelicU.levelOff D.sp.cm.sig V.gram (GlobalTheory.AdelicU.frameLat V) ∅
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.AdelicU.KsphC_eq]`. Both sides reduce to the same expression.
+-/
 theorem mem_stabG (k : GA D V) : k ∈ stabG V ↔ k ∈ KsphC V ∅ := by
   rw [GlobalTheory.AdelicU.KsphC_eq]; rfl
 
+/- English proof (translation)
+Use `Set.ext fun k => and_congr_right fun _ => ⟨?_, fun hk => ⟨e, f, h, hk⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨e', f', h', hk⟩`. Take `⟨-, rfl⟩` from `((supported_group_and_prime_idempotents V).2.2.1 P e f h).2.2.2.1 e' f' h'`. Conclude with `hk`.
+-/
 theorem hyp_eq (h : IsPrimeIdem P e f) : hyp V P = {k | k ∈ KsphC V ∅ ∧ SuppF V f k} := by
   refine Set.ext fun k => and_congr_right fun _ => ⟨?_, fun hk => ⟨e, f, h, hk⟩⟩
   rintro ⟨e', f', h', hk⟩
   obtain ⟨-, rfl⟩ := ((supported_group_and_prime_idempotents V).2.2.1 P e f h).2.2.2.1 e' f' h'
   exact hk
 
+/- English proof (translation)
+Take `⟨e, f, h⟩` from `(supported_group_and_prime_idempotents V).2.1 P`. Establish `h0` using `(supported_group_and_prime_idempotents V).2.2.1 P e f h`. Take `⟨L, hL⟩` from `((supported_group_and_prime_idempotents V).1 f h0.1 h0.2.1).1`. Conclude with `⟨stabG V ⊓ L, (hyp_eq h).trans (Set.ext fun k => and_congr (mem_stabG k).symm (hL k).symm)⟩`.
+-/
 theorem exists_hyp (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) :
     ∃ K : Subgroup (GA D V), hyp V P = K := by
   obtain ⟨e, f, h⟩ := (supported_group_and_prime_idempotents V).2.1 P
@@ -361,6 +478,9 @@ theorem exists_hyp (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) :
 
 variable {K : Subgroup (GA D V)} {ϖ : 𝓞 D.host.E} {d : List ℤ} {g : GA D V}
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨R, r1, r2⟩ : ∃ R : Finset (GA D V), (∀ γ ∈ R, SuppF V f γ) ∧ IsCosetRep V {k | k ∈ KsphC V ∅ ∧ SuppF V f k} g R := by`. Break down `id h with ⟨hs, rfl⟩ | ⟨rfl, -⟩` into its components or cases. Conclude with `(GlobalTheory.SplitPlace.split_local V P e hs).2.1 g hg`. Conclude with `(GlobalTheory.InertDoubleCoset.inert_double_cosets V P f h (exists_real_unif D P) g hg).2.1`. Conclude with `⟨R, e, f, ϖ, g, fun v hv => absurd hv (Finset.notMem_empty v), h, h1, h2, hd, fun _ _ => Iff.rfl, fun _ _ _ => rfl, hg, hD, r1, r2⟩`.
+-/
 theorem isLab_of_divAt (h : IsPrimeIdem P e f) (h1 : ϖ ∈ P.asIdeal) (h2 : ϖ ∉ P.asIdeal ^ 2)
     (hd : d.Pairwise fun a b => b ≤ a) (hg : SuppF V f g) (hD : DivAt V e (ϖ : D.host.E) d g) : IsLab V P d := by
   obtain ⟨R, r1, r2⟩ : ∃ R : Finset (GA D V), (∀ γ ∈ R, SuppF V f γ) ∧
@@ -371,6 +491,13 @@ theorem isLab_of_divAt (h : IsPrimeIdem P e f) (h1 : ϖ ∈ P.asIdeal) (h2 : ϖ 
   exact ⟨R, e, f, ϖ, g, fun v hv => absurd hv (Finset.notMem_empty v), h, h1, h2, hd, fun _ _ => Iff.rfl,
     fun _ _ _ => rfl, hg, hD, r1, r2⟩
 
+/- English proof (translation)
+Take `⟨e', f', ϖ', α, -, h', h1', h2', hd, -, -, hα, hD', -, hc⟩` from `hR`. Take `⟨rfl, rfl⟩` from `((supported_group_and_prime_idempotents V).2.2.1 P e f h).2.2.2.1 e' f' h'`. Establish `hK'` using `(hyp_eq h).symm.trans hK`. Rewrite `hc` using `[hK']`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, b, hb, rfl⟩ : ∃ a ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f' k}, ∃ b ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f' k}, α = a * g * b := by`.
+
+Break down `id h with ⟨hs, rfl⟩ | ⟨rfl, -⟩` into its components or cases. Conclude with `GlobalTheory.SplitLabel.split_label V P e' ϖ ϖ' d g α hs h1 h2 h1' h2' hg hα hD hD'`. Take `⟨a, b, ha, ha', hb, hb', e⟩` from `(GlobalTheory.InertDoubleCoset.inert_double_cosets V P f' h (exists_real_unif D P) g hg).2.2 ϖ ϖ' d α h1 h2 h1' h2' hd hα hD hD'`. Conclude with `⟨a, ⟨ha, ha'⟩, b, ⟨hb, hb'⟩, e⟩`. Rewrite `ha`, `hb` using `[hK']`.
+
+Conclude with `Reps.of_dc ha hb ⟨fun γ hγ => (hc.1 γ hγ).2, hc.2⟩`.
+-/
 theorem reps_of_sphOp (hK : hyp V P = K) (h : IsPrimeIdem P e f) (h1 : ϖ ∈ P.asIdeal) (h2 : ϖ ∉ P.asIdeal ^ 2)
     (hg : SuppF V f g) (hD : DivAt V e (ϖ : D.host.E) d g) {R : Finset (GA D V)} (hR : SphOp V P d R) :
     Reps K g R := by
@@ -389,28 +516,54 @@ theorem reps_of_sphOp (hK : hyp V P = K) (h : IsPrimeIdem P e f) (h1 : ϖ ∈ P.
   rw [hK'] at ha hb
   exact Reps.of_dc ha hb ⟨fun γ hγ => (hc.1 γ hγ).2, hc.2⟩
 
+/- English proof (translation)
+Rewrite using `[Hk3.rep, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem sphOp_rep (h : IsLab V P d) : SphOp V P d (rep V P d) := by
   rw [Hk3.rep, dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Take `⟨e, f, ϖ, α, -, h, h1, h2, -, -, -, hα, hD, -⟩` from `id hR`. Conclude with `⟨α, reps_of_sphOp hK h h1 h2 hα hD hR, reps_of_sphOp hK h h1 h2 hα hD (sphOp_rep ⟨R, hR⟩)⟩`.
+-/
 theorem exists_reps (hK : hyp V P = K) {R : Finset (GA D V)} (hR : SphOp V P d R) :
     ∃ g, Reps K g R ∧ Reps K g (rep V P d) := by
   obtain ⟨e, f, ϖ, α, -, h, h1, h2, -, -, -, hα, hD, -⟩ := id hR
   exact ⟨α, reps_of_sphOp hK h h1 h2 hα hD hR, reps_of_sphOp hK h h1 h2 hα hD (sphOp_rep ⟨R, hR⟩)⟩
 
+/- English proof (translation)
+Rewrite using `[dualLab, List.pairwise_reverse, List.pairwise_map]`. Conclude with `h.imp fun h => neg_le_neg h`.
+-/
 theorem dualLab_pairwise (h : d.Pairwise fun a b => b ≤ a) : (dualLab d).Pairwise fun a b => b ≤ a := by
   rw [dualLab, List.pairwise_reverse, List.pairwise_map]
   exact h.imp fun h => neg_le_neg h
 
+/- English proof (translation)
+Simplify using `[dualLab]`.
+-/
 theorem dualLab_dualLab (d : List ℤ) : dualLab (dualLab d) = d := by
   simp [dualLab]
 
+/- English proof (translation)
+Introduce `h` and use `h2 (by rw [show ϖ = 0 from RingOfIntegers.ext h] exact zero_mem _)`.
+-/
 theorem unif_ne_zero (h2 : ϖ ∉ P.asIdeal ^ 2) : (ϖ : D.host.E) ≠ 0 := fun h => h2 (by
   rw [show ϖ = 0 from RingOfIntegers.ext h]
   exact zero_mem _)
 
 open GlobalTheory.HeckeDual in
 
+/- English proof (translation)
+Take `⟨e, f, ϖ, α, hS, hef, hϖ, hϖ2, hd, hJ, hχ, hα, hdiv, hR, hrep⟩` from `hR`. Take `⟨he, v, hf⟩` from `idem_of_isPrimeIdem hef`. Take `⟨a, rfl⟩` from `(GlobalTheory.HeckeDual.suppF_iff V hf α).1 hα`. Take `⟨δ, hδ, hσδ⟩` from `exists_skew D`. Use `haveI := isLattice_frameLat V`.
+
+Establish `hK : ∀ g, g ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f k} ↔ ∃ k ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig V.gram (GlobalTheory.AdelicU.frameLat V) v, GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v k = g` using `fun g => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h3, h2⟩`. Take `⟨k, rfl⟩` from `(GlobalTheory.HeckeDual.suppF_iff V hf g).1 h2`. Rewrite `h3` using `[GlobalTheory.AdelicU.KsphC_eq]`.
+
+Establish `h4` using `(GlobalTheory.AdelicU.mem_levelOff.1 h3).2.2 v (Finset.notMem_empty v)`. Rewrite `h4` using `[GlobalTheory.AdelicU.proj_emb_self]`. Conclude with `⟨k, h4, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Use `⟨?_, (GlobalTheory.HeckeDual.suppF_iff V hf _).2 ⟨k, rfl⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.AdelicU.KsphC_eq]`. Conclude with `GlobalTheory.AdelicU.emb_mem_levelOff (Finset.notMem_empty v) hk`. Take `⟨R', h1, h2, h3⟩` from `exists_rep_inv (modular_eq_one D.sp.cm.sig V.gram (fun x => star_star x) hδ hσδ ((GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V) v) (GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v) (GlobalTheory.AdelicU.emb_injective _ _ v) _ (GlobalTheory.AdelicU.isOpen_s …`. Use `⟨R', ⟨e, f, ϖ, _, hS, hef, hϖ, hϖ2, dualLab_pairwise hd, hJ, hχ, (GlobalTheory.HeckeDual.suppF_iff V hf _).2 (inv_mem ⟨a, rfl⟩), (GlobalTheory.DivDual.divAt_inv_and_mul V e _ d _ he (unif_ne_zero hϖ2) hdiv).1, fun γ hγ => (GlobalTheory.HeckeDual.suppF_iff V hf _).2 (h1 γ hγ).1, f …` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(h1 γ hγ).1`.
+
+Conclude with `GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ v x)`.
+-/
 theorem exists_dual {R : Finset (GA D V)} (hR : SphOp V P d R) :
     ∃ R', SphOp V P (dualLab d) R' ∧ R'.card = R.card := by
   obtain ⟨e, f, ϖ, α, hS, hef, hϖ, hϖ2, hd, hJ, hχ, hα, hdiv, hR, hrep⟩ := hR
@@ -445,6 +598,9 @@ theorem exists_dual {R : Finset (GA D V)} (hR : SphOp V P d R) :
   obtain ⟨x, rfl⟩ := (h1 γ hγ).1
   exact GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ v x)
 
+/- English proof (translation)
+Rewrite using `[opOf, Finsupp.sum_single_index (by simp), one_smul, LinearMap.sum_apply]`.
+-/
 theorem opOf_single {M : Type} [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (d : List ℤ) (u : M) :
     opOf π P (Finsupp.single d 1) u = ∑ γ ∈ rep V P d, π γ u := by
   rw [opOf, Finsupp.sum_single_index (by simp), one_smul, LinearMap.sum_apply]
@@ -453,6 +609,27 @@ end Labels
 
 open GlobalTheory.IdemSupport in
 
+/- English proof (translation)
+Introduce `D V P`. Take `⟨K, hK⟩` from `exists_hyp V P`. Take `⟨-, ϖ, -, h1, h2⟩` from `exists_real_unif D P`. Establish `fix : ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → ∀ x, ∀ l ∈ K, π (x * l) u = π x u`. Introduce `M _ _ π u hu x l hl`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, hu l (hK ▸ hl)]`. Establish `c1 : ∀ d R, SphOp V P d R → R.card = (rep V P d).card ∧ ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → ∑ γ ∈ R, π γ u = opOf π P (Finsupp.single d 1) u`. Introduce `d R hR`. Take `⟨g, r1, r2⟩` from `exists_reps hK hR`. Use `⟨r1.card_eq r2, fun M _ _ π u hu => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[opOf_single, ← r1.sum_eq r2 (one_mem K) (fun x => π x u) (fix M π u hu)]`. Simplify using `only [one_mul]`. Establish `dual : ∀ d, IsLab V P d → IsLab V P (dualLab d)` using `fun d ⟨R, hR⟩ => (exists_dual hR).imp fun _ h => h.1`. Use `⟨c1, fun c M _ _ π u hu k hk => ?_, ?_, fun d => ?_, fun e f g h hg => ?_⟩` and prove the remaining obligations. Simplify using `only [opOf, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`.
+
+Use `Finset.sum_congr rfl fun d _ => congrArg _ ?_` and prove the remaining obligations. Distinguish the cases in `hd : IsLab V P d`. Take `⟨g, r1, -⟩` from `exists_reps hK (sphOp_rep hd)`. Rewrite using `[← r1.sum_eq r1 (k := k) (by rwa [hK] at hk) (fun x => π x u) (fix M π u hu)]`. Simplify using `only [map_mul, Module.End.mul_apply]`.
+
+Simplify using `only [Hk3.rep, dif_neg hd, Finset.sum_empty]`. Take `⟨e, f, h⟩` from `(supported_group_and_prime_idempotents V).2.1 P`. Establish `hD` using `divAt_one V (GlobalTheory.HeckeDual.idem_of_isPrimeIdem h).1 (tie_of_isPrimeIdem h) (ϖ : D.host.E)`. Establish `hg : SuppF V f 1` using `(one_mem (suppGroup V f) :)`. Establish `hl` using `isLab_of_divAt h h1 h2 (by simp) hg hD`.
+
+Use `⟨hl, fun M _ _ π u hu => ?_⟩` and prove the remaining obligations. Establish `r1` using `reps_of_sphOp hK h h1 h2 hg hD (sphOp_rep hl)`. Establish `r2 : Reps K 1 {1}`. Use `⟨fun γ hγ => ⟨1, one_mem _, 1, one_mem _, by simpa using hγ⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`.
+
+Conclude with `⟨1, ⟨Finset.mem_singleton_self _, by simpa using mul_mem ha hb⟩, fun γ hγ => Finset.mem_singleton.1 hγ.1⟩`. Use `r1.sum_eq r2 (one_mem K) (fun x => π x u) (fix M π u hu)` as an intermediate fact. Rewrite using `[opOf_single]`. Simplify using `using this`. Establish `hi : IsLab V P d ↔ IsLab V P (dualLab d)` using `⟨dual d, fun h => dualLab_dualLab d ▸ dual _ h⟩`.
+
+Use `⟨hi, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hd : IsLab V P d`. Take `⟨R', r1, r2⟩` from `exists_dual (sphOp_rep hd)`. Rewrite using `[← (c1 _ _ r1).1, r2]`. Rewrite using `[Hk3.rep, Hk3.rep, dif_neg hd, dif_neg (_root_.mt hi.2 hd)]`.
+
+Establish `he` using `(GlobalTheory.HeckeDual.idem_of_isPrimeIdem h).1`. Take `⟨d, hd, hD⟩` from `exists_divAt V he (tie_of_isPrimeIdem h) h1 h2 g`. Establish `hl` using `isLab_of_divAt h h1 h2 hd hg hD`. Establish `h0` using `(supported_group_and_prime_idempotents V).2.2.1 P e f h`. Take `⟨L, hL⟩` from `((supported_group_and_prime_idempotents V).1 f h0.1 h0.2.1).1`.
+
+Rewrite using `[hK]`. Conclude with `⟨d, hl, (reps_of_sphOp hK h h1 h2 hg hD (sphOp_rep hl)).1, (reps_of_sphOp hK h h1 h2 ((hL _).1 (inv_mem ((hL _).2 hg))) (GlobalTheory.DivDual.divAt_inv_and_mul V e _ d g he (unif_ne_zero h2) hD).1 (sphOp_rep (dual d hl))).1⟩`.
+-/
 theorem label_operators : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), (∀ d R, SphOp V P d R → R.card = (rep V P d).card ∧ ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → ∑ γ ∈ R, π γ u = opOf π P (Finsupp.single d 1) u) ∧ (∀ c, ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → ∀ k ∈ hyp V P, π k (opOf π P c u) = opOf π P c u) ∧ (IsLab V P (List.replicate V.rank 0) ∧ ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → opOf π P (Finsupp.single (List.replicate V.rank 0) 1) u = u) ∧ (∀ d, (IsLab V P d ↔ IsLab V P (dualLab d)) ∧ (rep V P (dualLab d)).card = (rep V P d).card) ∧ ∀ e f g, IsPrimeIdem P e f → SuppF V f g → ∃ d, IsLab V P d ∧ (∀ γ ∈ rep V P d, ∃ k₁ ∈ hyp V P, ∃ k₂ ∈ hyp V P, γ = k₁ * g * k₂) ∧ ∀ γ ∈ rep V P (dualLab d), ∃ k₁ ∈ hyp V P, ∃ k₂ ∈ hyp V P, γ = k₁ * g⁻¹ * k₂ := by
   intro D V P
   obtain ⟨K, hK⟩ := exists_hyp V P

@@ -9,6 +9,9 @@ open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNo
 
 namespace GlobalTheory.ColRows
 
+/- English proof (translation)
+Introduce `_ _ _ W _ u _ hW _` and use `⟨fun τ => GlobalTheory.BranchMembers.interlace W hW.1 u τ, fun τ => GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.members_sameShift W hW.1 u τ⟩`.
+-/
 theorem weights_interlace_sameShift : ∀ (N : NumDatum) (X : Fields) (Pr : Primes X) (W : Wts X Pr.Word N.R) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), WeightTie N W pl u δ → SizeRows N δ (Pr.T u) → (∀ τ, Br.Interlace (N_m_succ N.R) (W.lamTrue u N.R.m τ) (W.sgTrue τ)) ∧ ∀ τ, Br.SameShift (W.lamTrue u N.R.m τ) (W.sgTrue τ) :=
   fun _ _ _ W _ u _ hW _ =>
     ⟨fun τ => GlobalTheory.BranchMembers.interlace W hW.1 u τ, fun τ => GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.members_sameShift W hW.1 u τ⟩

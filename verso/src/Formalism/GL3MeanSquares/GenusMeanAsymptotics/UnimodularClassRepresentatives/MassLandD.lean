@@ -49,37 +49,58 @@ def imF (w : K) (hw : star w = -w) (x : K) : cmF K :=
   ⟨(x - star x) / (2 * w), (mem_cmF_iff K _).2 (by
     rw [star_div₀, star_sub, star_star, star_mul', hw, star_ofNat]; ring)⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x + y + star (x + y)) / 2 = (x + star x) / 2 + (y + star y) / 2`. Rewrite using `[star_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem reF_add (x y : K) : reF (x + y) = reF x + reF y := by
   apply Subtype.ext
   show (x + y + star (x + y)) / 2 = (x + star x) / 2 + (y + star y) / 2
   rw [star_add]; ring
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x + y - star (x + y)) / (2 * w) = (x - star x) / (2 * w) + (y - star y) / (2 * w)`. Rewrite using `[star_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem imF_add (w : K) (hw : star w = -w) (x y : K) :
     imF w hw (x + y) = imF w hw x + imF w hw y := by
   apply Subtype.ext
   show (x + y - star (x + y)) / (2 * w) = (x - star x) / (2 * w) + (y - star y) / (2 * w)
   rw [star_add]; ring
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((a : K) + star (a : K)) / 2 = a`. Rewrite using `[star_coe_cmF]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem reF_coe (a : cmF K) : reF (a : K) = a := by
   apply Subtype.ext
   show ((a : K) + star (a : K)) / 2 = a
   rw [star_coe_cmF]; ring
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((a : K) - star (a : K)) / (2 * w) = 0`. Rewrite using `[star_coe_cmF, sub_self, zero_div]`.
+-/
 theorem imF_coe (w : K) (hw : star w = -w) (a : cmF K) : imF w hw (a : K) = 0 := by
   apply Subtype.ext
   show ((a : K) - star (a : K)) / (2 * w) = 0
   rw [star_coe_cmF, sub_self, zero_div]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (star x + star (star x)) / 2 = (x + star x) / 2`. Rewrite using `[star_star, add_comm]`.
+-/
 theorem reF_star (x : K) : reF (star x) = reF x := by
   apply Subtype.ext
   show (star x + star (star x)) / 2 = (x + star x) / 2
   rw [star_star, add_comm]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (star x - star (star x)) / (2 * w) = -((x - star x) / (2 * w))`. Rewrite using `[star_star]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem imF_star (w : K) (hw : star w = -w) (x : K) : imF w hw (star x) = -imF w hw x := by
   apply Subtype.ext
   show (star x - star (star x)) / (2 * w) = -((x - star x) / (2 * w))
   rw [star_star]; ring
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x * y + star (x * y)) / 2 = (x + star x) / 2 * ((y + star y) / 2) + w * w * ((x - star x) / (2 * w) * ((y - star y) / (2 * w)))`. Rewrite using `[star_mul']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem reF_mul (w : K) (hw0 : w ≠ 0) (hw : star w = -w) (x y : K) :
     reF (x * y) = reF x * reF y + skewSq w hw * (imF w hw x * imF w hw y) := by
   apply Subtype.ext
@@ -89,6 +110,9 @@ theorem reF_mul (w : K) (hw0 : w ≠ 0) (hw : star w = -w) (x y : K) :
   field_simp
   ring
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x * y - star (x * y)) / (2 * w) = (x + star x) / 2 * ((y - star y) / (2 * w)) + (x - star x) / (2 * w) * ((y + star y) / 2)`. Rewrite using `[star_mul']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem imF_mul (w : K) (hw0 : w ≠ 0) (hw : star w = -w) (x y : K) :
     imF w hw (x * y) = reF x * imF w hw y + imF w hw x * reF y := by
   apply Subtype.ext
@@ -98,6 +122,11 @@ theorem imF_mul (w : K) (hw0 : w ≠ 0) (hw : star w = -w) (x y : K) :
   field_simp
   ring
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Establish `hr` using `QuadAdj.root_mul_root (algebraMap (cmF K) (Ed d) (skewSq 0 hw))`. Establish `h0 : skewSq (0 : K) hw = 0` using `Subtype.ext (mul_zero _)`. Establish `hz : algebraMap (cmF K) (Ed d) (skewSq 0 hw) = 0` using `by rw [h0, map_zero]`. Establish `hr0` using `mul_self_eq_zero.1 (hr.trans ((congrArg (AdjoinRoot.of _) hz).trans (map_zero _)))`.
+
+Use `QuadAdj.rep_eq_zero (algebraMap (cmF K) (Ed d) (skewSq 0 hw)) (a := 0) (b := 1) (by` as an intermediate fact. Rewrite using `[map_zero, map_one, hr0]`. Use the proof step `ring)`. Conclude with `one_ne_zero this.2`.
+-/
 theorem skew_ne_zero_of_irreducible (w : K) (hw : star w = -w) (d : cmF K)
     [Fact (Irreducible (polE d))] [Fact (Irreducible (polKE d (skewSq w hw)))] : w ≠ 0 := by
   rintro rfl
@@ -161,14 +190,23 @@ def ιK : K →ₐ[cmF K] KEd d (skewSq w hw) where
       algebraMap (cmF K) (KEd d (skewSq w hw)) r
     rw [reF_coe, imF_coe, map_zero, zero_mul, add_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ιK_apply (x : K) : ιK w hw d x = algebraMap (cmF K) (KEd d (skewSq w hw)) (reF x) +
     algebraMap (cmF K) (KEd d (skewSq w hw)) (imF w hw x) *
       AdjoinRoot.root (polKE d (skewSq w hw)) := rfl
 
+/- English proof (translation)
+The claim follows from `τ.commutes (algebraMap (cmF K) (Ed d) a)`.
+-/
 theorem gal_KEd_algebraMap (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq w hw)) (a : cmF K) :
     τ (algebraMap (cmF K) (KEd d (skewSq w hw)) a) = algebraMap (cmF K) (KEd d (skewSq w hw)) a :=
   τ.commutes (algebraMap (cmF K) (Ed d) a)
 
+/- English proof (translation)
+Rewrite using `[ιK_apply, ιK_apply, map_add, map_mul, gal_KEd_algebraMap, gal_KEd_algebraMap, h, reF_star, imF_star, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gal_KEd_ιK_of_neg (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq w hw))
     (h : τ (AdjoinRoot.root (polKE d (skewSq w hw))) = -AdjoinRoot.root (polKE d (skewSq w hw)))
     (x : K) : τ (ιK w hw d x) = ιK w hw d (star x) := by
@@ -176,6 +214,11 @@ theorem gal_KEd_ιK_of_neg (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq 
     imF_star, map_neg]
   ring
 
+/- English proof (translation)
+Break down `QuadAdj.gal_root (algebraMap (cmF K) (Ed d) (skewSq w hw)) τ with h | h` into its components or cases. Use `left`. Introduce `x`. Rewrite using `[ιK_apply, map_add, map_mul, gal_KEd_algebraMap, gal_KEd_algebraMap, h]`. Use `right`.
+
+Conclude with `gal_KEd_ιK_of_neg w hw d τ h`.
+-/
 theorem gal_KEd_ιK (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq w hw)) :
     (∀ x : K, τ (ιK w hw d x) = ιK w hw d x) ∨ ∀ x : K, τ (ιK w hw d x) = ιK w hw d (star x) := by
   rcases QuadAdj.gal_root (algebraMap (cmF K) (Ed d) (skewSq w hw)) τ with h | h

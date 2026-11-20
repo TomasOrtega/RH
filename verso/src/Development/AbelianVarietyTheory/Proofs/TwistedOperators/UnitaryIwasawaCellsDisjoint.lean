@@ -10,18 +10,27 @@ section
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {N : ℕ}
 
+/- English proof (translation)
+Break down `idx_cases l with rfl | ⟨j, rfl⟩ | rfl` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[mid_ne_zero]`. Simplify using `[last_ne_zero]`.
+-/
 theorem blk_eq_zero_iff {l : Fin (N + 2)} : blk N l = 0 ↔ l = 0 := by
   rcases idx_cases l with rfl | ⟨j, rfl⟩ | rfl
   · simp
   · simp [mid_ne_zero]
   · simp [last_ne_zero]
 
+/- English proof (translation)
+Break down `idx_cases l with rfl | ⟨j, rfl⟩ | rfl` into its components or cases. Simplify using `[(last_ne_zero (N := N)).symm]`. Simplify using `[mid_ne_last]`. Simplify using the standard rewrite rules.
+-/
 theorem blk_eq_two_iff {l : Fin (N + 2)} : blk N l = 2 ↔ l = Fin.last (N + 1) := by
   rcases idx_cases l with rfl | ⟨j, rfl⟩ | rfl
   · simp [(last_ne_zero (N := N)).symm]
   · simp [mid_ne_last]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single 0]`. Introduce `l _ hl`. Rewrite using `[hx 0 l (by rw [blk_zero]; exact fun h => hl (blk_eq_zero_iff.1 h.symm)), zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem levi_mul_apply_zero {x : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) (M : Matrix (Fin (N + 2)) (Fin (N + 2)) L)
     (j : Fin (N + 2)) : (mat x * M) 0 j = mat x 0 0 * M 0 j := by
   rw [Matrix.mul_apply, Finset.sum_eq_single 0]
@@ -29,6 +38,9 @@ theorem levi_mul_apply_zero {x : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) (M
     rw [hx 0 l (by rw [blk_zero]; exact fun h => hl (blk_eq_zero_iff.1 h.symm)), zero_mul]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last (N + 1))]`. Introduce `l _ hl`. Rewrite using `[hx _ l (by rw [blk_last]; exact fun h => hl (blk_eq_two_iff.1 h.symm)), zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem levi_mul_apply_last {x : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) (M : Matrix (Fin (N + 2)) (Fin (N + 2)) L)
     (j : Fin (N + 2)) : (mat x * M) (Fin.last (N + 1)) j = mat x (Fin.last (N + 1)) (Fin.last (N + 1)) * M (Fin.last (N + 1)) j := by
   rw [Matrix.mul_apply, Finset.sum_eq_single (Fin.last (N + 1))]
@@ -36,6 +48,9 @@ theorem levi_mul_apply_last {x : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) (M
     rw [hx _ l (by rw [blk_last]; exact fun h => hl (blk_eq_two_iff.1 h.symm)), zero_mul]
   · simp
 
+/- English proof (translation)
+Substitute `hi` using the available equality. Rewrite using `[Matrix.mul_apply, sum_idx (fun l => mat x (mid k) l * M l j), hx (mid k) 0 (by simp), hx (mid k) _ (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem levi_mul_apply_mid {x : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) (M : Matrix (Fin (N + 2)) (Fin (N + 2)) L)
     (i j : Fin (N + 2)) (k : Fin N) (hi : i = mid k) :
     (mat x * M) i j = ∑ l, mat x i (mid l) * M (mid l) j := by
@@ -45,6 +60,23 @@ theorem levi_mul_apply_mid {x : GU σ (N + 2)} (hx : x ∈ leviU σ (blk N)) (M 
 
 end
 
+/- English proof (translation)
+Introduce `L _ _ ϖ σ q N hU a a' g₀ g₀' m m' hm hm' u hu u' hu' hK`. Establish `hσ : ∀ x, Valued.v (σ x) = Valued.v x` using `hU.2.1`. Establish `hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hU.2.2.2.1`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => by rw [h, map_zero] at hϖ; exact WithZero.exp_ne_zero hϖ.symm`. Establish `hvz : ∀ k : ℤ, Valued.v (ϖ ^ k) = WithZero.exp (-k)` using `fun k => by`.
+
+Rewrite using `[map_zpow₀, hϖ, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules. Use `set n := m⁻¹ * m' with hn_def`. Establish `hnL : n ∈ leviU σ (blk N)` using `mul_mem (inv_mem hm.1) hm'.1`. Establish `hconj : n⁻¹ * u⁻¹ * n⁻¹⁻¹ ∈ radQ σ N` using `(leviRad L σ (N + 2) (blk N) hσ n⁻¹ (inv_mem hnL) u⁻¹ (inv_mem hu)).1`.
+
+Establish `he : (m * u)⁻¹ * (m' * u') = n * ((n⁻¹ * u⁻¹ * n⁻¹⁻¹) * u')`. Rewrite using `[hn_def]`. Use `group`. Establish `hnK : n ∈ KU σ (N + 2)` using `(leviRad L σ (N + 2) (blk N) hσ n hnL _ (mul_mem hconj hu')).2 (he ▸ hK)`. Establish `hint : ∀ i j, mat n i j ∈ intL L` using `(mem_KU_iff hσ n).1 hnK`.
+
+Establish `hmn : mat m * mat n = mat m'` using `by rw [← mat_mul, hn_def, mul_inv_cancel_left]`. Establish `h0 : ϖ ^ a * mat n 0 0 = ϖ ^ a'`. Rewrite using `[← hm.2.1, ← hm'.2.1, ← hmn, levi_mul_apply_zero hm.1]`. Establish `hl : ϖ ^ (-a) * mat n (Fin.last (N + 1)) (Fin.last (N + 1)) = ϖ ^ (-a')`. Rewrite using `[← hm.2.2.1, ← hm'.2.2.1, ← hmn, levi_mul_apply_last hm.1]`.
+
+Establish `hv0` using `hint 0 0`. Establish `hvl` using `hint (Fin.last (N + 1)) (Fin.last (N + 1))`. Establish `e0 : mat n 0 0 = ϖ ^ (a' - a)`. Rewrite using `[zpow_sub₀ hϖ0, ← h0]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `el : mat n (Fin.last (N + 1)) (Fin.last (N + 1)) = ϖ ^ (a - a')`. Rewrite using `[show a - a' = -a' - -a by ring, zpow_sub₀ hϖ0, ← hl]; field_simp`. Express the relevant statement in the definitionally equal form `Valued.v (mat n 0 0) ≤ 1 at hv0`. Express the relevant statement in the definitionally equal form `Valued.v (mat n (Fin.last (N + 1)) (Fin.last (N + 1))) ≤ 1 at hvl`. Rewrite `hv0` using `[e0, hvz, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Rewrite `hvl` using `[el, hvz, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_KU_iff hσ]`. Establish `hmid : mat g₀ * Matrix.of (fun i j => mat n (mid i) (mid j)) = mat g₀'`. Use extensionality with `i j`.
+
+Rewrite using `[← hm'.2.2.2, ← hmn, levi_mul_apply_mid hm.1 _ _ _ i rfl, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [hm.2.2.2]; rfl`. Introduce `i j`. Rewrite using `[mat_mul, ← hmid, ← Matrix.mul_assoc, mat_inv_mul, Matrix.one_mul]`. Conclude with `hint _ _`.
+-/
 theorem cosetInj : CosetInj := by
   intro L _ _ ϖ σ q N hU a a' g₀ g₀' m m' hm hm' u hu u' hu' hK
   have hσ : ∀ x, Valued.v (σ x) = Valued.v x := hU.2.1

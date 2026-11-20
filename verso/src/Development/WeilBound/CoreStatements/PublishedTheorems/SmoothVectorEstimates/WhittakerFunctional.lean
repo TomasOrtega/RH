@@ -12,6 +12,11 @@ section Avg
 
 variable {G : Type} [AddCommGroup G] [TopologicalSpace G]
 
+/- English proof (translation)
+Set `_ : MeasurableSpace G` to `borel G`. Unfold `avg`. Use `split_ifs with h`. Establish `h1` using `h.choose_spec.2.2`. Establish `hs : h.choose.1 h.choose.2 < ⊤` using `by rw [h1]; exact ENNReal.one_lt_top`.
+
+Use `norm_setIntegral_le_of_norm_le_const hs (f := Φ) (fun x _ => hC x)` as an intermediate fact. Simplify `this` using `[Measure.real, h1]`. Simplify using `using h0`.
+-/
 theorem norm_avg_le (Γ : AddSubgroup G) (Φ : G → ℂ) {C : ℝ} (h0 : 0 ≤ C) (hC : ∀ x, ‖Φ x‖ ≤ C) :
     ‖avg Γ Φ‖ ≤ C := by
   let _ : MeasurableSpace G := borel G
@@ -27,12 +32,18 @@ end Avg
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ} {ψ : AddChar (Ad E) ℂ}
 
+/- English proof (translation)
+Use `norm_avg_le _ _ h0 fun x => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hψ.norm, one_mul]`. Conclude with `hf _`.
+-/
 theorem norm_colT_le (hψ : StdPsi ψ) (k : ℕ) {f : GA E a → ℂ} {C : ℝ} (h0 : 0 ≤ C) (hf : ∀ g, ‖f g‖ ≤ C)
     (g : GA E a) : ‖colT ψ k f g‖ ≤ C := by
   refine norm_avg_le _ _ h0 fun x => ?_
   rw [norm_mul, hψ.norm, one_mul]
   exact hf _
 
+/- English proof (translation)
+Proceed by induction on `m generalizing f g with`. Consider the case `zero => exact hf g`. Consider the case `succ m ih`. Rewrite using `[whit_succ]`. Conclude with `ih (fun g => norm_colT_le hψ (m + 1) h0 hf g) g`.
+-/
 theorem norm_whit_le (hψ : StdPsi ψ) (m : ℕ) {f : GA E a → ℂ} {C : ℝ} (h0 : 0 ≤ C) (hf : ∀ g, ‖f g‖ ≤ C)
     (g : GA E a) : ‖whit ψ m f g‖ ≤ C := by
   induction m generalizing f g with
@@ -41,6 +52,9 @@ theorem norm_whit_le (hψ : StdPsi ψ) (m : ℕ) {f : GA E a → ℂ} {C : ℝ} 
     rw [whit_succ]
     exact ih (fun g => norm_colT_le hψ (m + 1) h0 hf g) g
 
+/- English proof (translation)
+The claim follows from `hf.cont.add hf'.cont left γ hγ g := by simp only [hf.left γ hγ g, hf'.left γ hγ g] law k hk y g := by simp only [hf.law k hk y g, hf'.law k hk y g, mul_add] van r hr hrm g := by have := GlobalTheory.T.quotientAverage_add_of_periodic _ (ratV E (UnipotentBlockColumnIndex a r m)) (i …`.
+-/
 theorem good_add {m : ℕ} {f f' : GA E a → ℂ} (hf : Good ψ m f) (hf' : Good ψ m f') :
     Good ψ m (fun g => f g + f' g) where
   cont := hf.cont.add hf'.cont
@@ -52,6 +66,9 @@ theorem good_add {m : ℕ} {f f' : GA E a → ℂ} (hf : Good ψ m f) (hf' : Goo
       (per_blk hf'.cont (fun c g => hf'.left _ (isMir_blkU c) g) g)
     rw [this, hf.van r hr hrm g, hf'.van r hr hrm g, add_zero]
 
+/- English proof (translation)
+The claim follows from `continuous_const.mul hf.cont left γ hγ g := by simp only [hf.left γ hγ g] law k hk y g := by simp only [hf.law k hk y g]; ring van r hr hrm g := by show avg _ (fun x => c * f (blkU x * g)) = 0 rw [avg_const_mul, hf.van r hr hrm g, mul_zero]`.
+-/
 theorem good_smul (c : ℂ) {m : ℕ} {f : GA E a → ℂ} (hf : Good ψ m f) : Good ψ m (fun g => c * f g) where
   cont := continuous_const.mul hf.cont
   left γ hγ g := by simp only [hf.left γ hγ g]
@@ -60,6 +77,9 @@ theorem good_smul (c : ℂ) {m : ℕ} {f : GA E a → ℂ} (hf : Good ψ m f) : 
     show avg _ (fun x => c * f (blkU x * g)) = 0
     rw [avg_const_mul, hf.van r hr hrm g, mul_zero]
 
+/- English proof (translation)
+The claim follows from `continuous_const left _ _ _ := rfl law _ _ _ _ := by simp van r _ _ g := by have := avg_const_mul (ratV E (UnipotentBlockColumnIndex a r m)) 0 (fun _ => 0) simpa using this`.
+-/
 theorem good_zero (m : ℕ) : Good ψ m (fun _ : GA E a => (0 : ℂ)) where
   cont := continuous_const
   left _ _ _ := rfl
@@ -68,6 +88,9 @@ theorem good_zero (m : ℕ) : Good ψ m (fun _ : GA E a => (0 : ℂ)) where
     have := avg_const_mul (ratV E (UnipotentBlockColumnIndex a r m)) 0 (fun _ => 0)
     simpa using this
 
+/- English proof (translation)
+The claim follows from `hf.cont.comp (continuous_id.mul continuous_const) left γ hγ g := by simp only [mul_assoc, hf.left γ hγ (g * h)] law k hk y g := by simp only [mul_assoc, hf.law k hk y (g * h)] van r hr hrm g := by simp only [mul_assoc] exact hf.van r hr hrm (g * h)`.
+-/
 theorem good_rt {m : ℕ} {f : GA E a → ℂ} (hf : Good ψ m f) (h : GA E a) : Good ψ m (fun x => f (x * h)) where
   cont := hf.cont.comp (continuous_id.mul continuous_const)
   left γ hγ g := by simp only [mul_assoc, hf.left γ hγ (g * h)]
@@ -76,6 +99,9 @@ theorem good_rt {m : ℕ} {f : GA E a → ℂ} (hf : Good ψ m f) (h : GA E a) :
     simp only [mul_assoc]
     exact hf.van r hr hrm (g * h)
 
+/- English proof (translation)
+Simplify using `only [dot, eLast, lastE]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem dot_eLast (k : ℕ) (y : UnipotentBlockColumnIndex a k k → Ad E) : dot (eLast a k) y = lastE k y := by
   simp only [dot, eLast, lastE]
   refine Finset.sum_congr rfl fun t _ => ?_
@@ -102,6 +128,15 @@ end PositivityTheory.jumpWindows.WhittakerFunctional
 
 namespace PositivityTheory.jumpWindows
 
+/- English proof (translation)
+Introduce `E _ _ _ a ψ hψ`. Establish `h0 : a - 1 < a ∨ a - 1 = 0` using `by omega`. Use `⟨fun g => ?_, fun φ g h => ?_, fun φ h hφ => ?_, fun φ hφ => ⟨?_, fun hne => ?_, fun k hk y g => ?_⟩⟩` and prove the remaining obligations. Take `⟨Λ, hΛ, -⟩` from `exists_extension_norm_eq (WhittakerFunctional.Yg E a hψ) (WhittakerFunctional.whL hψ g)`. Use `⟨Λ, fun φ hφ => ?_⟩` and prove the remaining obligations.
+
+Use `hΛ ⟨φ, hφ⟩` as an intermediate fact. Rewrite `this` using `[WhittakerFunctional.whL, LinearMap.mkContinuous_apply]`. Conclude with `this`. Conclude with `whit_rt (a - 1) φ h g`. Conclude with `WhittakerFunctional.good_rt hφ h`.
+
+Conclude with `(whit_good hψ (a - 1) h0 hφ).1.cont`. Establish `hf : (φ : GA E a → ℂ) ≠ 0` using `fun h => hne (DFunLike.coe_injective (by simpa using h))`. Take `⟨g, hg⟩` from `Function.ne_iff.1 ((whit_good hψ (a - 1) h0 hφ).2 hf)`. Conclude with `⟨g, hg⟩`. Rewrite using `[← WhittakerFunctional.dot_eLast]`.
+
+Conclude with `(whit_good hψ (a - 1) h0 hφ).1.law k hk y g`.
+-/
 theorem local_group_averaging_tensor : G5 := by
   intro E _ _ _ a ψ hψ
   have h0 : a - 1 < a ∨ a - 1 = 0 := by omega

@@ -15,34 +15,64 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp.NfComp
 
+/- English proof (translation)
+Establish `h : gᴴ * H * g = H` using `hg`. Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h]`.
+-/
 lemma herm_iso {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH H) (v w : Fin n → ℂ) :
     herm H (g *ᵥ v) (g *ᵥ w) = herm H v w := by
   have h : gᴴ * H * g = H := hg
   unfold herm
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h]
 
+/- English proof (translation)
+Use `(hpkFacts k r).2.1` as an intermediate fact. Conclude with `Matrix.isUnit_det_of_left_inverse this`.
+-/
 lemma Hunit (k r : ℕ) : IsUnit (Hpk k r).det := by
   have := (hpkFacts k r).2.1
   exact Matrix.isUnit_det_of_left_inverse this
 
+/- English proof (translation)
+The claim follows from `((uHGroup _ _ (Hunit k r)).2.2 g hg).1`.
+-/
 lemma G_unit {k r : ℕ} {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det :=
   ((uHGroup _ _ (Hunit k r)).2.2 g hg).1
 
+/- English proof (translation)
+The claim follows from `((uHGroup _ _ (Hunit k r)).2.2 g hg).2`.
+-/
 lemma G_inv {k r : ℕ} {g : Mat k r} (hg : g ∈ GG k r) : g⁻¹ ∈ GG k r :=
   ((uHGroup _ _ (Hunit k r)).2.2 g hg).2
 
+/- English proof (translation)
+The claim follows from `(uHGroup _ _ (Hunit k r)).2.1 g hg h hh`.
+-/
 lemma G_mul {k r : ℕ} {g h : Mat k r} (hg : g ∈ GG k r) (hh : h ∈ GG k r) : g * h ∈ GG k r :=
   (uHGroup _ _ (Hunit k r)).2.1 g hg h hh
 
+/- English proof (translation)
+Rewrite using `[← herm_iso hg, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (G_unit hg), Matrix.one_mulVec]`.
+-/
 lemma herm_inv_left {k r : ℕ} {g : Mat k r} (hg : g ∈ GG k r) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (g⁻¹ *ᵥ v) w = herm (Hpk k r) v (g *ᵥ w) := by
   rw [← herm_iso hg, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (G_unit hg), Matrix.one_mulVec]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[Matrix.star_dotProduct, Matrix.star_mulVec, (hpkFacts k r).1, ← Matrix.dotProduct_mulVec]`.
+-/
 lemma herm_symm (k r : ℕ) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) v w = star (herm (Hpk k r) w v) := by
   unfold herm
   rw [Matrix.star_dotProduct, Matrix.star_mulVec, (hpkFacts k r).1, ← Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+Unfold `herm bvec`. Establish `: star (Pi.single (eI k r a) (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) = Pi.single (eI k r a) 1`. Rewrite using `[Pi.star_single]`. Simplify using the standard rewrite rules. Rewrite using `[this, single_dotProduct, one_mul, Matrix.mulVec, dotProduct, Finset.sum_eq_single (esI k r a)]`.
+
+Use `a.2` as an intermediate fact. Establish `h : Hpk k r (eI k r a) (esI k r a) = 1`. Unfold `Hpk eI esI`. Apply the tactic sequence `rw [if_pos]; constructor <;> simp; omega`. Rewrite using `[h, one_mul]`.
+
+Introduce `i _ hi`. Use `a.2` as an intermediate fact. Establish `hi' : i.val ≠ 2 * r + k - a.val` using `fun h => hi (Fin.ext h)`. Establish `h : Hpk k r (eI k r a) i = 0`. Unfold `Hpk eI`.
+
+Apply the tactic sequence `rw [if_neg, if_neg, if_neg] <;> simp <;> omega`. Rewrite using `[h, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 lemma herm_e (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) v (bvec (eI k r a)) = v (esI k r a) := by
   unfold herm bvec
@@ -63,6 +93,15 @@ lemma herm_e (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     rw [h, zero_mul]
   · simp
 
+/- English proof (translation)
+Unfold `herm bvec`. Establish `: star (Pi.single (esI k r a) (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) = Pi.single (esI k r a) 1`. Rewrite using `[Pi.star_single]`. Simplify using the standard rewrite rules. Rewrite using `[this, single_dotProduct, one_mul, Matrix.mulVec, dotProduct, Finset.sum_eq_single (eI k r a)]`.
+
+Use `a.2` as an intermediate fact. Establish `h : Hpk k r (esI k r a) (eI k r a) = 1`. Unfold `Hpk eI esI`. Apply the tactic sequence `rw [if_neg, if_pos] <;> simp <;> omega`. Rewrite using `[h, one_mul]`.
+
+Introduce `i _ hi`. Use `a.2` as an intermediate fact. Establish `hi' : i.val ≠ a.val` using `fun h => hi (Fin.ext h)`. Establish `h : Hpk k r (esI k r a) i = 0`. Unfold `Hpk esI`.
+
+Apply the tactic sequence `rw [if_neg, if_neg, if_neg] <;> simp <;> omega`. Rewrite using `[h, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 lemma herm_es (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) v (bvec (esI k r a)) = v (eI k r a) := by
   unfold herm bvec
@@ -83,29 +122,49 @@ lemma herm_es (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     rw [h, zero_mul]
   · simp
 
+/- English proof (translation)
+Simplify using `[herm, Matrix.mulVec_smul]`.
+-/
 lemma herm_smul_left {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (v w : Fin n → ℂ) :
     herm H (c • v) w = c * herm H v w := by
   simp [herm, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq]`. Unfold `eucl`. Simplify using `[Complex.normSq_eq_norm_sq]`.
+-/
 lemma eucl_eq {n : ℕ} (v : Fin n → ℂ) : eucl v = ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n))‖ := by
   rw [EuclideanSpace.norm_eq]; unfold eucl
   simp [Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.inner_toLp_toLp, dotProduct_comm]`.
+-/
 lemma inner_toLp {n : ℕ} (v w : Fin n → ℂ) :
     ⟪(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n)), WithLp.toLp 2 w⟫_ℂ = star v ⬝ᵥ w := by
   rw [EuclideanSpace.inner_toLp_toLp, dotProduct_comm]
 
+/- English proof (translation)
+Rewrite using `[inner_toLp, Matrix.star_mulVec, (hpkFacts k r).1, ← Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 lemma inner_H (k r : ℕ) (v w : Fin (2 * r + k + 1) → ℂ) :
     ⟪(WithLp.toLp 2 (Hpk k r *ᵥ w) : EuclideanSpace ℂ (Fin (2 * r + k + 1))), WithLp.toLp 2 v⟫_ℂ =
       herm (Hpk k r) v w := by
   rw [inner_toLp, Matrix.star_mulVec, (hpkFacts k r).1, ← Matrix.dotProduct_mulVec]; rfl
 
+/- English proof (translation)
+Rewrite using `[eucl_eq, norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), inner_H, inner_toLp]`. Unfold `herm`. Rewrite using `[Matrix.mulVec_mulVec, (hpkFacts k r).2.1, Matrix.one_mulVec]`.
+-/
 lemma norm_H (k r : ℕ) (w : Fin (2 * r + k + 1) → ℂ) :
     ‖(WithLp.toLp 2 (Hpk k r *ᵥ w) : EuclideanSpace ℂ (Fin (2 * r + k + 1)))‖ = eucl w := by
   rw [eucl_eq, norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), inner_H, inner_toLp]
   unfold herm
   rw [Matrix.mulVec_mulVec, (hpkFacts k r).2.1, Matrix.one_mulVec]
 
+/- English proof (translation)
+Use `a.2` as an intermediate fact. Use function extensionality and compare the values at `i`. Unfold `bvec`. Rewrite using `[Matrix.mulVec_single_one]`. Simplify using `only [Matrix.col_apply, mEmb]`.
+
+Rewrite using `[dif_neg (by simp [eI]), Pi.single_apply]`.
+-/
 lemma mEmb_e (k r : ℕ) (m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (a : Fin r) :
     mEmb k r m *ᵥ bvec (eI k r a) = bvec (eI k r a) := by
   have := a.2
@@ -115,6 +174,11 @@ lemma mEmb_e (k r : ℕ) (m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (a : Fin r
   simp only [Matrix.col_apply, mEmb]
   rw [dif_neg (by simp [eI]), Pi.single_apply]
 
+/- English proof (translation)
+Introduce `a b h`. Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [esI] at this`.
+
+Conclude with `Fin.ext (by omega)`.
+-/
 lemma esI_inj (k r : ℕ) : Function.Injective (esI k r) := by
   intro a b h
   have := a.2; have := b.2
@@ -122,6 +186,11 @@ lemma esI_inj (k r : ℕ) : Function.Injective (esI k r) := by
   simp only [esI] at this
   exact Fin.ext (by omega)
 
+/- English proof (translation)
+Unfold `XstJ at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, rfl⟩` from `hx`. Conclude with `Pi.single_eq_of_ne (hi c.1 c.2) _`.
+
+Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+-/
 lemma XstJ_eq {k r j : ℕ} {v : Fin (2 * r + k + 1) → ℂ} (hv : v ∈ XstJ k r j) (i : Fin (2 * r + k + 1))
     (hi : ∀ c : Fin r, c.val < j → i ≠ esI k r c) : v i = 0 := by
   unfold XstJ at hv
@@ -133,6 +202,27 @@ lemma XstJ_eq {k r j : ℕ} {v : Fin (2 * r + k + 1) → ℂ} (hv : v ∈ XstJ k
   | add x y _ _ hx hy => simp [hx, hy]
   | smul c x _ hx => simp [hx]
 
+/- English proof (translation)
+Take `⟨uu, h1, h2⟩` from `GlobalTheory.Amp.GramFlag.gramSchmidt_lengths k r z x hx`. Establish `hsum : ∀ a : Fin n, ∑ i : Fin n, ((upper uu).submatrix (Fin.castLE hn) (Fin.castLE hn)) i a • (WithLp.toLp 2 (x⁻¹ *ᵥ bvec (eI k r (Fin.castLE hn i))) : EuclideanSpace ℂ (Fin (2 * r + k + 1))) = WithLp.toLp 2 (∑ b, upper uu b (Fin.castLE hn a) • (x⁻¹ *ᵥ bvec (eI k r b)))`. Introduce `a`. Rewrite using `[WithLp.toLp_sum]`. Use `Fintype.sum_of_injective (Fin.castLE hn) (Fin.castLE_injective hn) _ _ ?_ ?_` and prove the remaining obligations.
+
+Introduce `b hb`. Establish `hb' : n ≤ b.val`. Assume the negation of the conclusion as `h`. Conclude with `hb ⟨⟨b.val, by omega⟩, rfl⟩`. Establish `ha` using `a.2`.
+
+Establish `: upper uu b (Fin.castLE hn a) = 0`. Unfold `upper`. Rewrite using `[dif_neg, if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+
+Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.lt_def]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[this]`. Introduce `i`. Simplify using the standard rewrite rules. Establish `hdet : ((upper uu).submatrix (Fin.castLE hn) (Fin.castLE hn)).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular]`.
+
+Simplify using `[upper]`. Introduce `a b hab`. Establish `hab' : b.val < a.val` using `hab`. Simplify using `only [Matrix.submatrix_apply, upper]`. Rewrite using `[dif_neg, if_neg]`.
+
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.lt_def]`.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `hp` using `GlobalTheory.PlueckerBound.norm_det_inner_le_of_det_eq_one _ n (fun i => WithLp.toLp 2 (x⁻¹ *ᵥ bvec (eI k r (Fin.castLE hn i)))) (fun a => WithLp.toLp 2 (Hpk k r *ᵥ y a)) _ hdet (by`. Introduce `a a' h`. Rewrite using `[hsum, hsum, inner_toLp]`.
+
+Conclude with `h2 _ _ fun h' => h (Fin.castLE_injective hn h'))`. Simplify using `only [inner_H, hsum, norm_H] at hp`. Simplify using `only [← eucl_eq] at hp`. Use `hp.trans (mul_le_mul ?_ ?_ ?_ ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(h1 _).1.trans_le <| (((GlobalTheory.Amp.LInv.lengths_basic k r z hz).2.2 x).2.1 _).2.trans hR`. Use `_ = _ := by simp`. Conclude with `Finset.prod_nonneg fun _ _ => Real.sqrt_nonneg _`. Conclude with `pow_nonneg (zero_le_one.trans (((GlobalTheory.Amp.LInv.lengths_basic k r z hz).2.2 x).1.trans hR)) _`.
+-/
 lemma pluck_flag {k r n : ℕ} (hn : n ≤ r) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (x : Mat k r)
     (hx : x ∈ GG k r) (R : ℝ) (hR : Sg k r z x ≤ R) (y : Fin n → Fin (2 * r + k + 1) → ℂ)
     (hy : ∀ a, eucl (y a) ≤ R) :
@@ -182,11 +272,23 @@ lemma pluck_flag {k r n : ℕ} (hn : n ≤ r) (z : Fin (2 * r + k + 1) → ℂ) 
   · exact Finset.prod_nonneg fun _ _ => Real.sqrt_nonneg _
   · exact pow_nonneg (zero_le_one.trans (((GlobalTheory.Amp.LInv.lengths_basic k r z hz).2.2 x).1.trans hR)) _
 
+/- English proof (translation)
+Introduce `a b h`. Use `congrArg Fin.val h` as an intermediate fact. Conclude with `Fin.ext this`.
+-/
 lemma eI_inj (k r : ℕ) : Function.Injective (eI k r) := by
   intro a b h
   have := congrArg Fin.val h
   exact Fin.ext this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : ∃ c : Fin j, i = esI k r (Fin.castLE hj c)`. Take `⟨c, rfl⟩` from `hi`. Establish `h1 : (g⁻¹ *ᵥ bvec (eI k r (Fin.castLE hj a))) (esI k r (Fin.castLE hj c)) = star (Zr k r g (Fin.castLE hj a) (Fin.castLE hj c))`. Rewrite using `[← herm_e k r (g⁻¹ *ᵥ _), herm_inv_left hg, herm_symm, herm_e]`.
+
+Simplify using `[bvec, Zr]`. Rewrite using `[h1]`. Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Simplify using `[bvec]`.
+
+Establish `h0 : Zr k r g (Fin.castLE hj a) (Fin.castLE hj c) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hc (hb c h)`. Establish `: esI k r (Fin.castLE hj c) ≠ esI k r (Fin.castLE hj b)` using `fun h => hc (Fin.castLE_injective hj (esI_inj k r h))`. Simplify using `[h0, bvec, Pi.single_eq_of_ne this]`.
+
+Use `push_neg at hi`. Rewrite using `[XstJ_eq hX i fun c hc => hi ⟨c.val, hc⟩]`. Simplify using `[bvec, Pi.single_eq_of_ne (hi b)]`.
+-/
 lemma inv_e {k r j : ℕ} (hj : j ≤ r) {g : Mat k r} (hg : g ∈ GG k r) (a b : Fin j)
     (hX : g⁻¹ *ᵥ bvec (eI k r (Fin.castLE hj a)) ∈ XstJ k r j)
     (hb : ∀ c : Fin j, Zr k r g (Fin.castLE hj a) (Fin.castLE hj c) ≠ 0 → c = b) :
@@ -211,10 +313,20 @@ lemma inv_e {k r j : ℕ} (hj : j ≤ r) {g : Mat k r} (hg : g ∈ GG k r) (a b 
     rw [XstJ_eq hX i fun c hc => hi ⟨c.val, hc⟩]
     simp [bvec, Pi.single_eq_of_ne (hi b)]
 
+/- English proof (translation)
+The claim follows from `(nSubgroup k r).2.1 _ (((GlobalTheory.Amp.Rad.radical k r).1 _ _).2.2.2 ((GlobalTheory.Amp.Rad.radical k r).2.1 _ _)).1 _ ((GlobalTheory.Amp.UEmb.uEmb_hom k r).2.2.2 _).2`.
+-/
 lemma sEl_mem (k r j : ℕ) (β : Fin r → ℕ) (q : PSec k r j × (UToff β → ℂ)) : sEl k r j β q ∈ Nset k r :=
   (nSubgroup k r).2.1 _ (((GlobalTheory.Amp.Rad.radical k r).1 _ _).2.2.2 ((GlobalTheory.Amp.Rad.radical k r).2.1 _ _)).1 _
     ((GlobalTheory.Amp.UEmb.uEmb_hom k r).2.2.2 _).2
 
+/- English proof (translation)
+Rewrite using `[herm_inv_left (sEl_mem k r j β q).1, herm_symm, herm_es]`. Establish `hu : IsUnit (upperOff β q.2).det`. Unfold `upperOff`. Rewrite using `[((GlobalTheory.Amp.UEmb.uEmb_hom k r).2.2.2 _).1]`. Conclude with `isUnit_one`.
+
+Unfold `sEl`. Rewrite using `[← Matrix.mulVec_mulVec, ((GlobalTheory.Amp.UEmb.uEmb_hom k r).2.2.1 _ hu).2.2.1, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, pSec, pOf, ((GlobalTheory.Amp.Rad.radical k r).1 _ _).1]`. Use `congr 1`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single c']`.
+
+Simplify using `[bvec]`. Introduce `b _ hb`. Establish `: eI k r c' ≠ eI k r b` using `fun h => hb (eI_inj k r h).symm`. Simplify using `[bvec, Pi.single_eq_of_ne this]`. Simplify using the standard rewrite rules.
+-/
 lemma sEl_pair (k r j : ℕ) (β : Fin r → ℕ) (q : PSec k r j × (UToff β → ℂ)) (c c' : Fin r) :
     herm (Hpk k r) ((sEl k r j β q)⁻¹ *ᵥ bvec (esI k r c')) (bvec (eI k r c)) = star (upperOff β q.2 c' c) := by
   rw [herm_inv_left (sEl_mem k r j β q).1, herm_symm, herm_es]
@@ -231,6 +343,11 @@ lemma sEl_pair (k r j : ℕ) (β : Fin r → ℕ) (q : PSec k r j × (UToff β �
     simp [bvec, Pi.single_eq_of_ne this]
   · simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Unfold `upperOff upper`. Distinguish the cases in `h1 : a < b`.
+
+Rewrite using `[dif_pos h1]`. Conclude with `dif_neg (not_not.2 (le_antisymm (hβ h1.le) hc.2))`. Rewrite using `[dif_neg h1, if_neg hc.1]`.
+-/
 lemma upperOff_ne {r : ℕ} {β : Fin r → ℕ} (hβ : Monotone β) (x : UToff β → ℂ) (a b : Fin r)
     (h : upperOff β x a b ≠ 0) : a = b ∨ β a < β b := by
   by_contra hc
@@ -242,6 +359,15 @@ lemma upperOff_ne {r : ℕ} {β : Fin r → ℕ} (hβ : Monotone β) (x : UToff 
     exact dif_neg (not_not.2 (le_antisymm (hβ h1.le) hc.2))
   · rw [dif_neg h1, if_neg hc.1]
 
+/- English proof (translation)
+Establish `hu : IsUnit (Matrix.diagonal fun b => (a b : ℂ)).det`. Rewrite using `[Matrix.det_diagonal, isUnit_iff_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 fun b _ => by exact_mod_cast (ha b).ne'`. Take `⟨h1, -, h3, -⟩` from `(GlobalTheory.Amp.UEmb.uEmb_hom k r).2.2.1 _ hu`. Establish `hG` using `G_mul h1 ((GlobalTheory.Amp.Rad.radical k r).2.2.2.2 m hm).1`.
+
+Use `⟨hG, fun c => ?_⟩` and prove the remaining obligations. Establish `h4 : (uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m) *ᵥ bvec (eI k r c) = (a c : ℂ) • bvec (eI k r c)`. Rewrite using `[← Matrix.mulVec_mulVec, mEmb_e, h3, Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[hb]`. Simplify using the standard rewrite rules. Establish `hc : (a c : ℂ) ≠ 0` using `by exact_mod_cast (ha c).ne'`. Establish `h5 : (uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m)⁻¹ *ᵥ bvec (eI k r c) = (a c : ℂ)⁻¹ • bvec (eI k r c)`. Use `congrArg (fun v => (uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m)⁻¹ *ᵥ v) h4` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (G_unit hG), Matrix.one_mulVec, Matrix.mulVec_smul] at this`. Rewrite using `[eq_inv_smul_iff₀ hc]`. Conclude with `this.symm`. Rewrite using `[h5, eucl_eq, WithLp.toLp_smul, norm_smul]`. Simplify using `[bvec, abs_of_pos (ha c)]`.
+-/
 lemma levi_diag_middle_mem_bessel_unitary_eucl {k r : ℕ} {m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hm : m ∈ UH (Hb k)) (a : Fin r → ℝ)
     (ha : ∀ b, 0 < a b) :
     uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m ∈ GG k r ∧ ∀ c : Fin r,
@@ -268,6 +394,11 @@ lemma levi_diag_middle_mem_bessel_unitary_eucl {k r : ℕ} {m : Matrix (Fin (k +
   rw [h5, eucl_eq, WithLp.toLp_smul, norm_smul]
   simp [bvec, abs_of_pos (ha c)]
 
+/- English proof (translation)
+Unfold `Dmin`. Use `congr 1`. Use extensionality with `a b`. Establish `ha` using `a.2`. Establish `hb` using `b.2`.
+
+Simplify using `only at ha hb`. Simplify using `only [Matrix.submatrix_apply, Zhat, fvec]`. Rewrite using `[dif_pos (by simp; omega), dif_pos (by simp; omega), herm_e]`. Simplify using `only [bvec, Matrix.mulVec_single_one, Matrix.col_apply, Zr]`. Both sides reduce to the same expression.
+-/
 lemma Dmin_eq {k r j : ℕ} (hj : j ≤ r) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) (l : ℕ) (hl : l ≤ j) :
     Dmin k r z z' g ⟨l, by omega⟩ =
       (((Zr k r g).submatrix (Fin.castLE hj) (Fin.castLE hj)).submatrix (Fin.castLE hl) (Fin.castLE hl)).det := by
@@ -282,6 +413,41 @@ lemma Dmin_eq {k r j : ℕ} (hj : j ≤ r) (z z' : Fin (2 * r + k + 1) → ℂ) 
   simp only [bvec, Matrix.mulVec_single_one, Matrix.col_apply, Zr]
   rfl
 
+/- English proof (translation)
+Introduce `k r j hj z z' g₀ β c hz hz' _ hN De R₀ hDe hR m hm q a ha hS' hS b hb u hu`. Take `⟨hg, -, -, hβ, -, hX, -, hB⟩` from `hN`. Take `⟨w, hw, hwβ, hP⟩` from `GlobalTheory.Amp.blockAnti_perm_partialProd j _ _ De hB hDe.1 (fun l hl h => by`. Rewrite `h`, the goal using `[← Dmin_eq hj z z']`. Conclude with `hDe.2 _ (hl.trans hj) h)`.
+
+Take `⟨hg1, he⟩` from `levi_diag_middle_mem_bessel_unitary_eucl (r := r) hm a ha`. Establish `hs` using `sEl_mem k r j β q`. Establish `hlen : ∀ c : Fin r, (a c)⁻¹ ≤ R₀`. Introduce `c`. Establish `hsS : sEl k r j β q ∈ Sset k r z'` using `⟨1, ⟨(uHGroup _ _ (Hunit k r)).1, by simp, by simp⟩, _, hs, (one_mul _).symm⟩`.
+
+Establish `h1` using `(((GlobalTheory.Amp.LInv.lengths_basic k r z' hz').1 _ hg1 _ hsS 1 ⟨(uHGroup _ _ (Hunit k r)).1, one_mem _⟩).1 c.castSucc)`. Rewrite `h1` using `[mul_one, (GlobalTheory.Amp.LInv.lengths_basic k r z' hz').2.1 a ha m hm]`. Rewrite using `[← h1]`. Use `le_trans ?_ hS'` and prove the remaining obligations. Unfold `Sg2`.
+
+Conclude with `(Finset.le_fold_max _).2 (Or.inr ⟨c.castSucc, Finset.mem_univ _, le_max_left _ _⟩)`. Use `set s := sEl k r j β q with hsdef`. Use `set g₁ := uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m with hg₁`. Use `set Z := (Zr k r g₀).submatrix (Fin.castLE hj) (Fin.castLE hj) with hZ`. Take `⟨b₀, hb₀⟩` from `w.surjective ⟨b.val, hb⟩`.
+
+Establish `hn : b₀.val + 1 ≤ j` using `b₀.2`. Use `set ι : Fin (b₀.val + 1) → Fin j := Fin.castLE hn with hι`. Set `y : Fin (b₀.val + 1) → Fin (2 * r + k + 1) → ℂ` to `fun i => if i = Fin.last _ then u else bvec (eI k r (Fin.castLE hj (w (ι i))))`. Establish `hp` using `pluck_flag (hn.trans hj) z hz _ (G_mul hg (G_mul hs.1 hg1)) R₀ hS (fun i => g₁⁻¹ *ᵥ y i) (by`. Introduce `i`.
+
+Simplify using `only [y]`. Use `split_ifs`. Conclude with `hu`. Rewrite using `[he]`. Conclude with `hlen _)`.
+
+Establish `hent : ∀ i i' : Fin (b₀.val + 1), herm (Hpk k r) ((g₀ * (s * g₁))⁻¹ *ᵥ bvec (eI k r (Fin.castLE (hn.trans hj) i'))) (g₁⁻¹ *ᵥ y i) = star (Z (ι i') (w (ι i'))) * herm (Hpk k r) (s⁻¹ *ᵥ bvec (esI k r (Fin.castLE hj (w (ι i'))))) (y i)`. Introduce `i i'`. Establish `h` using `inv_e hj hg (ι i') (w (ι i')) (hX _ (ι i').2).1 fun c hc => (hw _ _).1 hc`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, herm_iso (G_inv hg1)]`. Express the relevant statement in the definitionally equal form `herm _ (s⁻¹ *ᵥ (g₀⁻¹ *ᵥ bvec (eI k r (Fin.castLE hj (ι i'))))) _ = _`.
+
+Rewrite using `[h, Matrix.mulVec_smul, herm_smul_left]`. Both sides reduce to the same expression. Simplify using `only [hent] at hp`. Rewrite `hp` using `[Matrix.det_of_lowerTriangular]`. Use `swap`.
+
+Introduce `i i' hii`. Establish `hlt : i < i'` using `hii`. Establish `hi : i ≠ Fin.last _` using `(hlt.trans_le (Fin.le_last _)).ne`. Simplify using `only [Matrix.of_apply, y, if_neg hi]`. Rewrite using `[sEl_pair]`.
+
+Use `mul_eq_zero_of_right _ (star_eq_zero.2 ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Break down `upperOff_ne hβ _ _ _ h0 with h | h` into its components or cases. Conclude with `hlt.ne' (Fin.castLE_injective hn (w.injective (Fin.castLE_injective hj h)))`. Establish `h1` using `hwβ (ι i)`.
+
+Establish `h2` using `hwβ (ι i')`. Rewrite `h` using `[h1, h2]`. Conclude with `absurd (hβ (show Fin.castLE hj (ι i) ≤ Fin.castLE hj (ι i') from hlt.le)) (not_le.2 h)`. Simplify using `only [Matrix.of_apply, Finset.prod_mul_distrib, norm_mul, norm_prod, norm_star] at hp`. Establish `hlast : ∏ i : Fin (b₀.val + 1), ‖herm (Hpk k r) (s⁻¹ *ᵥ bvec (esI k r (Fin.castLE hj (w (ι i))))) (y i)‖ = ‖herm (Hpk k r) (s⁻¹ *ᵥ bvec (esI k r b)) u‖`.
+
+Rewrite using `[Finset.prod_eq_single (Fin.last _)]`. Establish `: ι (Fin.last _) = b₀` using `rfl`. Simplify using `only [y, if_true, this, hb₀]`. Both sides reduce to the same expression. Introduce `i _ hi`.
+
+Simplify using `only [y, if_neg hi]`. Rewrite using `[sEl_pair]`. Simplify using `[upperOff, upper]`. Simplify using the standard rewrite rules. Establish `hprod : ∏ i : Fin (b₀.val + 1), ‖Z (ι i) (w (ι i))‖ = ∏ a ∈ Finset.univ.filter (fun a : Fin j => a.val < b₀.val + 1), ‖Z a (w a)‖`.
+
+Use `Finset.prod_bij (fun i _ => ι i) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i _`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, i.2⟩`. Introduce `i _ i' _ h`. Conclude with `Fin.castLE_injective hn h`.
+
+Introduce `c hc`. Conclude with `⟨⟨c.val, (Finset.mem_filter.1 hc).2⟩, Finset.mem_univ _, rfl⟩`. Introduce `i _`. Both sides reduce to the same expression. Rewrite `hp` using `[hlast, hprod]`.
+
+Establish `hP'` using `hP (b₀.val + 1)`. Use `set P := ∏ a ∈ Finset.univ.filter (fun a : Fin j => a.val < b₀.val + 1), ‖Z a (w a)‖`. Establish `hP0 : 0 < P` using `Finset.prod_pos fun a _ => norm_pos_iff.2 ((hw _ _).2 rfl)`. Establish `hpow : R₀ ^ (b₀.val + 1) * R₀ ^ (b₀.val + 1) ≤ R₀ ^ (2 * r)`. Rewrite using `[← pow_add]; exact pow_le_pow_right₀ hR (by omega)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← div_eq_mul_inv, le_div_iff₀' hP0]`. Conclude with `hp.trans hpow`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left hP' (by positivity)`.
+-/
 theorem herm_sEl_inv_le : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r + k + 1) → ℂ)), ∀ (g₀ : Mat k r) (β : Fin r → ℕ) (c : ℂ), inWb k r z → inWb k r z' → 0 < Tz k r z → IsNormal0 k r hj β c z z' g₀ → ∀ De R₀ : ℝ, DeOK k r z z' g₀ De → 1 ≤ R₀ → ∀ m ∈ UH (Hb k), ∀ (q : PSec k r j × (UToff β → ℂ)) (a : Fin r → ℝ), (∀ b, 0 < a b) → Sg2 k r z' (sEl k r j β q * (uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m)) ≤ R₀ → Sg k r z (g₀ * (sEl k r j β q * (uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m))) ≤ R₀ → ∀ b : Fin r, b.val < j → ∀ u : (Fin (2 * r + k + 1) → ℂ), eucl ((uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m)⁻¹ *ᵥ u) ≤ R₀ → ‖herm (Hpk k r) ((sEl k r j β q)⁻¹ *ᵥ bvec (esI k r b)) u‖ ≤ R₀ ^ (2 * r) * De := by
   intro k r j hj z z' g₀ β c hz hz' _ hN De R₀ hDe hR m hm q a ha hS' hS b hb u hu
   obtain ⟨hg, -, -, hβ, -, hX, -, hB⟩ := hN

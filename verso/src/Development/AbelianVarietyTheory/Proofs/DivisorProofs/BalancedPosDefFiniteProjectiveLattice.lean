@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.UPoinc.UTrait
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T`. Use `haveI hf : Module.Finite (𝓞 E) T.P.D.toPre.X := Module.Finite.of_restrictScalars_finite ℤ _ _`. Use `⟨(balForms_eq_levelForms H T.P.D.toPre.X).ge T.lev, fun y hy => ?_, hf, ?_, _, ⟨(Module.finBasis ℤ T.P.D.toPre.X).equivFun⟩⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `IsMonomial.exists_pos (maximalIdeal.isMaximal T.V).ne_top T.mono hy`. Simplify using `using hi`.
+
+Conclude with `GlobalTheory.Forms.projective_of_int (𝓞 E) _`.
+-/
 theorem balanced_posDef_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : UTrait Xo c), T.be ∈ balForms H.bar T.P.D.toPre.X ∧ (∀ y, y ≠ 0 → 0 < T.be y y) ∧ Module.Finite (𝓞 E) T.P.D.toPre.X ∧ Module.Projective (𝓞 E) T.P.D.toPre.X ∧ ∃ n : ℕ, Nonempty (T.P.D.toPre.X ≃ₗ[ℤ] (Fin n → ℤ)) := by
   intro E _ _ _ H Dw l Xo c T
   haveI hf : Module.Finite (𝓞 E) T.P.D.toPre.X := Module.Finite.of_restrictScalars_finite ℤ _ _

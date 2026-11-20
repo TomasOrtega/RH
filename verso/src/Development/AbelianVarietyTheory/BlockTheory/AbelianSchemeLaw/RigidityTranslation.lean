@@ -50,12 +50,18 @@ def GlobalFunctions : Prop :=
 
 def Laws : Prop := Cube ∧ Square ∧ Rigidity ∧ GlobalFunctions
 
+/- English proof (translation)
+Establish `h : fst T A ≫ toUnit T = toUnit (T ⊗ A)` using `toUnit_unique _ _`. Unfold `translate`. Rewrite using `[← Category.assoc, h, MonObj.lift_comp_one_left]`.
+-/
 example {S : Scheme.{0}} (A : Over S) [GrpObj A] (T : Over S) :
     translate A (toUnit T ≫ η[A]) = snd T A := by
   have h : fst T A ≫ toUnit T = toUnit (T ⊗ A) := toUnit_unique _ _
   unfold translate
   rw [← Category.assoc, h, MonObj.lift_comp_one_left]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left) {T : Over S} (x : T ⟶ A) :
     translDiff A L x =
       LB.LinComb L (K := Fin 2) ![(translate A x).left, (snd T A).left] ![1, -1] := rfl

@@ -22,9 +22,15 @@ def archSlice (φ : AdelicGLn.AdelicGL K n → ℂ) (g : AdelicGLn.AdelicGL K n)
     archGroup K n → ℂ :=
   fun x => φ (g * infEmb K n x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem archSlice_apply (φ : AdelicGLn.AdelicGL K n → ℂ) (g : AdelicGLn.AdelicGL K n)
     (x : archGroup K n) : archSlice φ g x = φ (g * infEmb K n x) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[mul_assoc]`.
+-/
 theorem archSlice_mul (φ : AdelicGLn.AdelicGL K n → ℂ) (g : AdelicGLn.AdelicGL K n)
     (x : archGroup K n) : archSlice φ (g * infEmb K n x) = leftTranslate x (archSlice φ g) := by
   funext y
@@ -41,6 +47,9 @@ def archSmooth : Submodule ℂ (AdelicGLn.AdelicGL K n → ℂ) where
   add_mem' hφ hψ g := ((isExpLieAlgebra K n).smoothFuns (F := ℂ)).add_mem (hφ g) (hψ g)
   smul_mem' c _ hφ g := ((isExpLieAlgebra K n).smoothFuns (F := ℂ)).smul_mem c (hφ g)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_archSmooth {φ : AdelicGLn.AdelicGL K n → ℂ} : φ ∈ archSmooth K n ↔ IsArchSmooth φ :=
   Iff.rfl
 
@@ -50,10 +59,16 @@ def sliceL (g : AdelicGLn.AdelicGL K n) :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_sliceL (g : AdelicGLn.AdelicGL K n) (φ : archSmooth K n) :
     ((sliceL g φ : (isExpLieAlgebra K n).smoothFuns (F := ℂ)) : archGroup K n → ℂ) =
       archSlice φ g := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (archSlice_mul (φ : AdelicGLn.AdelicGL K n → ℂ) g x)`.
+-/
 theorem sliceL_mul (g : AdelicGLn.AdelicGL K n) (x : archGroup K n) (φ : archSmooth K n) :
     sliceL (g * infEmb K n x) φ = (isExpLieAlgebra K n).leftTranslateEnd x (sliceL g φ) :=
   Subtype.ext (archSlice_mul (φ : AdelicGLn.AdelicGL K n → ℂ) g x)
@@ -61,6 +76,9 @@ theorem sliceL_mul (g : AdelicGLn.AdelicGL K n) (x : archGroup K n) (φ : archSm
 def uActFun (u : UEnv K n) (φ : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ :=
   fun g => ((isExpLieAlgebra K n).rightUAction u (sliceL g φ) : archGroup K n → ℂ) 1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [archSlice_apply, uActFun, sliceL_mul]`. Rewrite using `[(isExpLieAlgebra K n).rightUAction_leftTranslate_apply, mul_one]`.
+-/
 theorem archSlice_uActFun (u : UEnv K n) (φ : archSmooth K n) (g : AdelicGLn.AdelicGL K n) :
     archSlice (uActFun u φ) g =
       ((isExpLieAlgebra K n).rightUAction u (sliceL g φ) : archGroup K n → ℂ) := by
@@ -68,6 +86,9 @@ theorem archSlice_uActFun (u : UEnv K n) (φ : archSmooth K n) (g : AdelicGLn.Ad
   simp only [archSlice_apply, uActFun, sliceL_mul]
   rw [(isExpLieAlgebra K n).rightUAction_leftTranslate_apply, mul_one]
 
+/- English proof (translation)
+Introduce `g`. Rewrite using `[archSlice_uActFun]`. Conclude with `((isExpLieAlgebra K n).rightUAction u (sliceL g φ)).2`.
+-/
 theorem uActFun_mem (u : UEnv K n) (φ : archSmooth K n) : uActFun u φ ∈ archSmooth K n := by
   intro g
   rw [archSlice_uActFun]
@@ -102,14 +123,23 @@ def uAction : UEnv K n →ₐ[ℝ] Module.End ℂ (archSmooth K n) where
     ext φ g
     simp [uActFun, Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_uAction (u : UEnv K n) (φ : archSmooth K n) :
     ((uAction u φ : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ) = uActFun u φ := rfl
 
+/- English proof (translation)
+The claim follows from `archSlice_uActFun u φ g`.
+-/
 theorem archSlice_uAction (u : UEnv K n) (φ : archSmooth K n) (g : AdelicGLn.AdelicGL K n) :
     archSlice (uAction u φ : AdelicGLn.AdelicGL K n → ℂ) g =
       ((isExpLieAlgebra K n).rightUAction u (sliceL g φ) : archGroup K n → ℂ) :=
   archSlice_uActFun u φ g
 
+/- English proof (translation)
+Rewrite using `[coe_uAction]`. Use `show ((isExpLieAlgebra K n).rightUAction (UniversalEnvelopingAlgebra.ι ℝ X) (sliceL g φ) : archGroup K n → ℂ) 1 = _`. Rewrite using `[(isExpLieAlgebra K n).rightUAction_ι]`. Both sides reduce to the same expression.
+-/
 theorem uAction_ι_apply (X : (isExpLieAlgebra K n).lieSubalgebra) (φ : archSmooth K n)
     (g : AdelicGLn.AdelicGL K n) :
     (uAction (UniversalEnvelopingAlgebra.ι ℝ X) φ : AdelicGLn.AdelicGL K n → ℂ) g =

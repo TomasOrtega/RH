@@ -17,6 +17,19 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.NabFixSplitV
 
+/- English proof (translation)
+Establish `hLine` using `GlobalTheory.T.vacuum_split_place_indicator_final`. Establish `hConj` using `GlobalTheory.T.adelicSchwartzSpace_le_span_pureTensors`. Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hTr v hsp hT hψ h2 hvac d' hd' dd omd hdc hws R hR0 hRv n hn`. Use `set Φ := GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) with hΦdef`. Take `⟨c, hc⟩` from `hLine hP F E σ B a a' G X om om' hTr v hsp hT hψ h2 hvac d' hd' dd omd hdc hws R hR0 hRv n hn.1`.
+
+Take `⟨s, hs, hsn⟩` from `hConj F E σ B hTr.base a' G.V' v hsp h2 n hn`. Establish `hs1 : omd s Φ = Φ` using `GlobalTheory.T.vacuum_split_place_indicator_dual_pair hP F E σ B a a' G X om om' hTr v hsp hT hψ h2 hvac d' hd' dd omd hdc hws R hR0 hRv s hs`. Establish `hs2 : omd s⁻¹ Φ = Φ` using `by conv_lhs => rw [← hs1]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `e1 : omd (s * n * s⁻¹) Φ = c • Φ`.
+
+Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hs2, hc, map_smul, hs1]`. Establish `e2 : omd (n * n) Φ = (c * c) • Φ`. Rewrite using `[map_mul, Module.End.mul_apply, hc, map_smul, hc, smul_smul]`. Rewrite `e1` using `[hsn, e2]`. Distinguish the cases in `hΦ : Φ = 0`.
+
+Rewrite using `[hΦ, map_zero]`. Establish `hcc : c * c = c` using `smul_left_injective ℂ hΦ e1`. Establish `h01 : c = 0 ∨ c = 1`. Break down `mul_eq_zero.1 (show c * (c - 1) = 0 by linear_combination hcc) with h | h` into its components or cases. Conclude with `Or.inl h`.
+
+Conclude with `Or.inr (by linear_combination h)`. Break down `h01 with h0 | h1` into its components or cases. It suffices to derive a contradiction. Apply `hΦ` to reduce the goal to its premises. Establish `: omd n⁻¹ (omd n Φ) = Φ`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← this, hc, h0, zero_smul, map_zero]`. Rewrite using `[hc, h1, one_smul]`.
+-/
 theorem nab_fix_splitV : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →

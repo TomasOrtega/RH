@@ -10,6 +10,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.EisRes
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EisCT.exists_unipRad_stabL_big | exact GlobalTheory.EisCT.exists_unipRad_stabL_big | (intros; apply GlobalTheory.EisCT.exists_unipRad_stabL_big <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bruhat_cell_rational_decomposition : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),
     IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y →

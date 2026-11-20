@@ -10,6 +10,13 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hf : (T ∩ s).Finite` using `hs.inter_of_right T`. Establish `e1 : ∀ i, ∑ᶠ p ∈ T, G i p = ∑ p ∈ hf.toFinset, G i p` using `fun i => by`. Rewrite using `[← finsum_mem_eq_finite_toFinset_sum _ hf]`. Conclude with `finsum_mem_inter_support_eq' _ _ _ fun p hp => ⟨fun hT => ⟨hT, h0 i p hT hp⟩, fun hT => hT.1⟩`. Establish `e2 : ∑ᶠ p ∈ T, F p = ∑ p ∈ hf.toFinset, F p`.
+
+Rewrite using `[← finsum_mem_eq_finite_toFinset_sum _ hf]`. Use `finsum_mem_inter_support_eq' _ _ _ fun p hp => ⟨fun hT => ⟨hT, ?_⟩, fun hT => hT.1⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hp` to reduce the goal to its premises. Rewrite using `[h p hT]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[not_not.1 fun hG => hn (h0 i p hT hG), mul_zero]`. Simplify using `only [e1, e2, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun p hp => h p (hf.mem_toFinset.1 hp).1`.
+-/
 private theorem finsum_exch {α ι : Type} [Fintype ι] (T s : Set α) (hs : s.Finite) (F : α → ℂ) (c : ι → ℂ)
     (G : ι → α → ℂ) (h : ∀ p ∈ T, F p = ∑ i, c i * G i p) (h0 : ∀ i, ∀ p ∈ T, G i p ≠ 0 → p ∈ s) :
     ∑ᶠ p ∈ T, F p = ∑ i, c i * ∑ᶠ p ∈ T, G i p := by
@@ -29,6 +36,9 @@ private theorem finsum_exch {α ι : Type} [Fintype ι] (T s : Set α) (hs : s.F
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun p hp => h p (hf.mem_toFinset.1 hp).1
 
+/- English proof (translation)
+Introduce `w hw h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[finprod_mem_eq_prod _ hf]`. Use `Finset.prod_eq_zero (i := w) ?_ h0` and prove the remaining obligations. Simplify using `[hw, Function.mem_mulSupport, h0]`.
+-/
 private theorem ne_zero_of_finprod {α : Type} (S : Set α) (g : α → ℂ) (hf : (S ∩ Function.mulSupport g).Finite)
     (h : ∏ᶠ w ∈ S, g w ≠ 0) : ∀ w ∈ S, g w ≠ 0 := by
   intro w hw h0
@@ -37,6 +47,19 @@ private theorem ne_zero_of_finprod {α : Type} (S : Set α) (g : α → ℂ) (hf
   refine Finset.prod_eq_zero (i := w) ?_ h0
   simp [hw, Function.mem_mulSupport, h0]
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n _ μ e hμ lam`. Establish `hle : ∀ a : Fin (n + 1), (a : ℕ) ≤ n` using `fun a => Nat.lt_succ_iff.1 a.2`. Use `choose ι fι l₁ l₂ sg hu hw hch using fun a : Fin (n + 1) => UpperTheory.ConvolutionTheory.G2.realProdS E n a (n - a) (Nat.add_sub_cancel' (hle a)) e hμ.2.2.2.1 lam`. Establish `key : ∀ a : Fin (n + 1), ((a : ℕ) = 0 ∨ n - a = 0) → ∃ i : Σ a, ι a, (i.1 : ℕ) = a ∧ sg i.1 i.2 = 1 ∧ ∀ j : Σ a, ι a, (j.1 : ℕ) = a → j = i` using `fun a h => by`. Take `⟨⟨i₀, hi⟩, hs⟩` from `hu a h`.
+
+Use `⟨⟨a, i₀⟩, rfl, hs i₀, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a', j⟩ hj`. Take `rfl : a' = a` from `Fin.ext hj`. Rewrite using `[hi j]`. Use `⟨Σ a, ι a, inferInstance, fun i => i.1, fun i => l₁ i.1 i.2, fun i => l₂ i.1 i.2, fun i => sg i.1 i.2, fun i => ⟨hle i.1, hw i.1 i.2⟩, key (Fin.last n) (Or.inr (by simp)), key 0 (Or.inl rfl), ?_⟩` and prove the remaining obligations.
+
+Introduce `S hS K' f φ _ _ hφ`. Unfold `geomU`. Rewrite using `[Finset.sum_range, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Take `⟨⟨K₁, K₂, -, -, hH, hU⟩, hM⟩` from `hφ a (hle a)`.
+
+Establish `hU' : ∀ᶠ w in cofinite, φ a w = UpperTheory.ConvolutionTheory.G2.unit2 a (n - a) w` using `hU`. Establish `hT` using `UpperTheory.ConvolutionTheory.G2.termId E hE μ e hμ S hS n a (n - a) f (φ a) hU' hM`. Use `finsum_exch _ _ (UpperTheory.ConvolutionTheory.G2.finP E hE a (n - a) S hS (φ a) (fun w => (hH w).1) hU') _ _ _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨P₁, P₂⟩ ⟨h₁, h₂, hc⟩`. Establish `k` using `hch a P₁ P₂ h₁ h₂ hc`.
+
+Rewrite using `[(hT P₁ P₂ h₁ h₂ hc).2, (GlobalTheory.BCT.KapMul.kap_mul E hE a (n - a) P₁ P₂ h₁ h₂ hc).1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[k, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Introduce and unpack `i ⟨P₁, P₂⟩ ⟨h₁, h₂, hc⟩ hG`.
+
+Conclude with `⟨h₁, h₂, ne_zero_of_finprod S _ (hT P₁ P₂ h₁ h₂ hc).1 (right_ne_zero_of_mul hG)⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.G2.g2s :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.G2s := by
   intro E _ _ _ hE n _ μ e hμ lam

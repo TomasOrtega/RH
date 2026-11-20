@@ -18,6 +18,9 @@ open scoped LaurentSeries ComplexOrder
 
 namespace GlobalTheory.ArcCM.NormTie
 
+/- English proof (translation)
+Take `⟨z, u, Hm, W, χ, θ, Fd, hpb, hA, hR, hF, -, hD, e, -⟩` from `h`. Take `⟨φ, he, w, hg, F, hφ, hw, h1, h2, -⟩` from `hy z hpb`. Conclude with `⟨z.P, z.rig, z.th, φ, he, w, hφ, hw, h1, h2, u, Hm, χ, θ, Fd, hA, hR, hF, hD, e⟩`.
+-/
 theorem isThNormAt_of_keyArchAt {K K' : Type} [Field K] [NumberField K] [Field K'] {x : KeyIn K} {T abelian₂ : MLine K}
     {σ : K →+* ℂ} (h : KeyArchAt x T abelian₂ σ) (y : KeyIn K') (τ : K' →+* ℂ)
     (hy : ∀ z : KeyIn ℂ, KeyPB z x σ → KeyPB z y τ) : Arch.IsThNormAt y.P y.rig y.th τ (T.n σ ^ 2) := by
@@ -25,6 +28,11 @@ theorem isThNormAt_of_keyArchAt {K K' : Type} [Field K] [NumberField K] [Field K
   obtain ⟨φ, he, w, hg, F, hφ, hw, h1, h2, -⟩ := hy z hpb
   exact ⟨z.P, z.rig, z.th, φ, he, w, hφ, hw, h1, h2, u, Hm, χ, θ, Fd, hA, hR, hF, hD, e⟩
 
+/- English proof (translation)
+Take `⟨xs, u, Hm, χ, W, hg, hpb, hA, hW, e⟩` from `h.2.2 σ`. Take `⟨ψ, hg', hψ, hv⟩` from `GlobalTheory.KeyFibre.exists_isPolFibre_of_keyPB K ℂ σ x xs hpb`. Take `⟨w, hw⟩` from `LBIso.symm hψ.2.2`. Use `⟨xs.P, ψ, w, _, hψ.2.1, hw, hv (i.cast hg.symm), u, Hm, χ, W, hA, hW, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, Real.log_pow]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isLieNormAt_of_isVecLine {K : Type} [Field K] [NumberField K] {A : Out.PolAV (Sp (𝓞 K))} {x : KeyIn K}
     {φ : x.P.A.left ⟶ A.A.left} {i : Fin x.P.g} {ℓ : MLine K} (h : IsVecLine A x φ i ℓ) (σ : K →+* ℂ) :
     Arch.IsLieNormAt x.P (x.v i) σ (Real.log (ℓ.n σ)) := by
@@ -41,14 +49,25 @@ section Pull
 variable {K : Type} [Field K] {D₀ : Out.DegPre K} {DC : Out.DegPre ℂ} {σ : K →+* ℂ} (p : Out.IsPullDeg σ D₀ DC)
 
 include p in
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.H1.dim_unique DC.P.A.hom DC.P.smoothDim ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (pull_grp p).1 D₀.P.smoothDim) (eSec DC.P.A (default : PrimeSpectrum ℂ))`.
+-/
 theorem g_eq : DC.P.g = D₀.P.g :=
   ReciprocityTheory.ChartRestriction.G.H1.dim_unique DC.P.A.hom DC.P.smoothDim
     ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (pull_grp p).1 D₀.P.smoothDim)
     (eSec DC.P.A (default : PrimeSpectrum ℂ))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨g_eq p, pull_grp p, LBIso.symm ⟨p.w, p.w_gen⟩⟩`.
+-/
 theorem isPolFibre_prj : IsPolFibre σ D₀.P DC.P (prj p) :=
   ⟨g_eq p, pull_grp p, LBIso.symm ⟨p.w, p.w_gen⟩⟩
 
+/- English proof (translation)
+Establish `e` using `g_eq p`. Establish `c₁ : IsCommMonObj D₀.P.A` using `D₀.P.isAb.comm`. Establish `c₂ : IsCommMonObj DC.P.A` using `DC.P.isAb.comm`. Take `⟨v', hb', hv'⟩` from `exists_isLieBasis_baseChange K ℂ σ D₀.P.A DC.P.A (prj p) (pull_grp p) D₀.P.isAb.smooth D₀.P.g v hv`. Use `⟨e ▸ hg, GlobalTheory.ArcQBC.thNZ_of_thBC p h hn, fun i => v' (i.cast e), GlobalTheory.KeyTf.isLieBasis_cast e hb', prj p, p.he, p.w, e, Chart.dualMapR σ, pull_grp p, p.w_gen, p.w_rig, GlobalTheory.KeyPow.appLE_eq_of_stalk _ th thC ((GlobalTheory.ArcQBC.through_iff _ _).1 h), fun …` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+-/
 theorem exists_keyPB {th : D₀.P.L.Sec} {thC : DC.P.L.Sec} (h : ThBC p th thC) (hg : 1 ≤ D₀.P.g) (hn : ThNZ th)
     (v : Fin D₀.P.g → (epsR K ⟶ D₀.P.A)) (hv : IsLieBasis v) :
     ∃ hg' hn' v' hv', KeyPB ⟨DC.P, hg', DC.rig, DC.rig_gen, thC, hn', v', hv'⟩
@@ -66,6 +85,11 @@ theorem exists_keyPB {th : D₀.P.L.Sec} {thC : DC.P.L.Sec} (h : ThBC p th thC) 
 
 end Pull
 
+/- English proof (translation)
+Take `⟨rig, hr⟩` from `P.rigid`. Take `⟨u, Hm, χ, -, hA, -, hd, -⟩` from `hU P rig hr`. Take `⟨z, hz, -⟩` from `hd v hv`. Take `⟨h₁, h₂⟩` from `GlobalTheory.polFibre_id_comp_cancel.1 ℂ P v`. Take `⟨w, hw⟩` from `LBIso.symm h₁.2.2`.
+
+Conclude with `⟨u, Hm, χ, z, hA, hz, P, _, w, v, h₁.2.1, hw, h₂, u, Hm, χ, z, hA, hz, rfl⟩`.
+-/
 theorem exists_isLieNormAt (hU : ThetaUnifAV) (P : Out.PolAV (Sp ℂ)) (v : epsR ℂ ⟶ P.A) (hv : IsTangent v) :
     ∃ (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (z : Fin P.g → ℂ),
       u.IsAH Hm χ ∧ u.IsDiff z v ∧
@@ -77,6 +101,21 @@ theorem exists_isLieNormAt (hU : ThetaUnifAV) (P : Out.PolAV (Sp ℂ)) (v : epsR
   obtain ⟨w, hw⟩ := LBIso.symm h₁.2.2
   exact ⟨u, Hm, χ, z, hA, hz, P, _, w, v, h₁.2.1, hw, h₂, u, Hm, χ, z, hA, hz, rfl⟩
 
+/- English proof (translation)
+Establish `hB` using `hG.2.2.2.1`. Establish `hp : IsPolFibre (algebraMap (𝓞 o.K₁) o.K₁) o.B o.xB.P o.φB` using `(isFibreOf_iff_isPolFibre (𝓞 o.K₁) o.K₁ (algebraMap (𝓞 o.K₁) o.K₁) o.B o.xB o.φB).1 hB`. Take `⟨h, Hh⟩` from `(GlobalTheory.CM.LieMetric.exists_unique_isHerm hU hL o.K₁ o.B (GlobalTheory.CM.GenFib.mk o.xB.P o.φB hp o.xB.v o.xB.basis)).1`. Take `⟨w, hw1, hw2⟩` from `hLg.2.2.1 m`. Choose the witnesses or unpack the hypotheses as in `rfl : u = w := by`.
+
+Use `Over.OverMorphism.ext (hp.2.1.1.hom_ext ?_ ((Over.w u).trans (Over.w w).symm))` and prove the remaining obligations. Unfold `LamLetters.IsLetter at hu hw1`. Consider the cases of `hq : L.src m with`. Consider the case `inl q => rw [hq] at hu hw1`. Conclude with `hu.trans hw1.symm`.
+
+Consider the case `inr q => rw [hq] at hu hw1`. Conclude with `hu.trans hw1.symm`. Establish `c₁ : IsCommMonObj o.xB.P.A` using `o.xB.P.isAb.comm`. Establish `ht : IsTangent u`. Rewrite using `[(LieComb.isLieComb_iff_tanExp _ _).1 hw2]`.
+
+Conclude with `LieComb.isTangent_tanExp o.xB.basis.1 _`. Take `⟨uu, Hm, χ, z, hA, hz, hN⟩` from `exists_isLieNormAt hU Q uC (hC.isTangent hQ.2.1 ht)`. Use `⟨_, hN, fun hLa => ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.CM.LieMetric.form_eq_pi_mul_hermForm hU hL o.K₁ o.B _ h Hh σ Q ψ uu Hm χ hQ hA _ _ _ _ _ _ z z hw2 hw2 hC hC hz hz`. Establish `e' : Real.pi * (hermForm Hm z z).re = (h.form σ (L.U m) (L.U m)).re`.
+
+Rewrite using `[e, Complex.re_ofReal_mul]`. Establish `b` using `(lamLen_of_isHerm hU hL E H l c nΨ n' f o La hG L hLg hp h Hh σ).2 m`. Establish `hd` using `GlobalTheory.LamF.Ind.lamInd E H l c hs nΨ n' f o La hG L hLg`. Establish `hne : L.U m ≠ 0` using `fun h0 => hd (Matrix.det_eq_zero_of_row_eq_zero m (congrFun h0))`. Establish `hpos : 0 < (h.form σ (L.U m) (L.U m)).re`.
+
+Use `(h.posDef σ 1 ![L.U m] (by simpa [linearIndependent_unique_iff] using hne)).diag_pos (i := 0)` as an intermediate fact. Conclude with `(Complex.pos_iff.1 this).1`. Rewrite using `[e']`. Use `Real.log_le_log hpos b` as an intermediate fact. Rewrite `this` using `[Real.log_pow]`.
+
+Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_letter_bound (hU : ThetaUnifAV) (hL : Out.Laws) {E : Type} [Field E] [NumberField E] [IsCMField E]
     [StarRing (𝓞 E)] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H} {c : Coeff l} (hs : ∀ a : 𝓞 E, star a = H.bar a)
     {nΨ n' f : ℕ} {o : LamObj c nΨ n'} {La : ℝ} (hG : LamObjGood o f La) (L : LamLetters o) (hLg : L.IsGood)
@@ -118,6 +157,11 @@ theorem exists_letter_bound (hU : ThetaUnifAV) (hL : Out.Laws) {E : Type} [Field
   push_cast at this
   linarith
 
+/- English proof (translation)
+Introduce `hK E _ _ _ H Dw l c K₁ _ _ _ a e th jj n' La c₁ s em`. Use `letI := H.starRing`. Establish `hG` using `s.good`. Establish `hA : KeyArchAt s.xB s.Tl s.LamL em` using `hG.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 em`. Use `⟨isThNormAt_of_keyArchAt hA s.xB em fun _ h => h, fun i => isLieNormAt_of_isVecLine (hG.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 i) em, fun i => isLieNormAt_of_isVecLine (hG.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 i) em, fun DC p => ⟨fun thC hC => ?_, fun m u uC hu hC => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨hg', hn', v', hv', h⟩` from `exists_keyPB p hC s.g_pos s.th_nz s.v s.basis`. Conclude with `isThNormAt_of_keyArchAt hA ⟨DC.P, hg', DC.rig, DC.rig_gen, thC, hn', v', hv'⟩ (RingHom.id ℂ) fun z hz => GlobalTheory.KeyCancel.keyPB_cancel K₁ ℂ ℂ _ _ z em (RingHom.id ℂ) h (by rwa [RingHom.id_comp])`. Conclude with `exists_letter_bound hK.theta hK.laws (fun _ => rfl) hG s.L s.L_good em DC.P (prj p) (isPolFibre_prj p) m u uC hu hC`.
+-/
 theorem lengths_eq_norms : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (a : ArcIn Dw l (RingHom.id c.F) K₁ (algebraMap c.F K₁)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K₁)) (th : a.D₀.P.L.Sec) (jj : ℤ) (n' : ℕ) (La c₁ : ℝ) (s : CMIn a e th jj n' La c₁) (em : K₁ →+* ℂ), letI := H.starRing; Arch.IsThNormAt a.D₀.P a.D₀.rig th em (s.Tl.n em ^ 2) ∧ (∀ i, Arch.IsLieNormAt s.xΨ.P (s.xΨ.v i) em (Real.log ((s.ℓΨ i).n em))) ∧ (∀ i, Arch.IsLieNormAt s.x'.P (s.x'.v i) em (Real.log ((s.ℓ' i).n em))) ∧ ∀ (DC : Out.DegPre ℂ) (p : Out.IsPullDeg em a.D₀ DC), (∀ thC, ThBC p th thC → Arch.IsThNormAt DC.P DC.rig thC (RingHom.id ℂ) (s.Tl.n em ^ 2)) ∧ ∀ m (u : epsR K₁ ⟶ a.D₀.P.A) (uC : epsR ℂ ⟶ DC.P.A), s.L.IsLetter m u → uC.left ≫ prj p = spMap (dualMap em) ≫ u.left → ∃ x, Arch.IsLieNormAt DC.P uC (RingHom.id ℂ) x ∧ (0 < La → x ≤ Real.log (La * (s.L.ℓ m).n em)) := by
   intro hK E _ _ _ H Dw l c K₁ _ _ _ a e th jj n' La c₁ s em
   letI := H.starRing

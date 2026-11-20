@@ -19,6 +19,13 @@ noncomputable section
 
 namespace GlobalTheory.ZxMul
 
+/- English proof (translation)
+Introduce `D X u u' g γ h v C B hC hB`. Establish `hU : (uMat (g⁻¹ v))ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * uMat (g⁻¹ v) = Formalism.REAL.Jm (X.B.I.ε v)` using `(g⁻¹ v).2`. Establish `e : uMat ((g * γ * h) v) = uMat (g v) * uMat (γ v) * uMat (h v)` using `rfl`. Establish `hL : ∀ a, uMat (g⁻¹ v) *ᵥ Formalism.L2.SG.RealObj.frm X u 1 v a = ∑ c, Cᵀ a c • Formalism.L2.SG.RealObj.frm X u 1 v c` using `fun a => by`. Rewrite using `[hC a]`.
+
+Both sides reduce to the same expression. Establish `hM : ∀ b, uMat (h v) *ᵥ Formalism.L2.SG.RealObj.frm X u' 1 v b = ∑ d, Bᵀ b d • Formalism.L2.SG.RealObj.frm X u' 1 v d` using `fun b => by`. Rewrite using `[hB b]`. Both sides reduce to the same expression. Unfold `Formalism.L2.SG.RealObj.ZX`.
+
+Rewrite using `[e, GlobalTheory.GxConj.zhat_conj _ _ _ _ _ _ _ (GlobalTheory.GxConj.hJ_adj _ _ _ hU (Formalism.L2.SG.RealObj.InfCut.uMat_inv_mul' (g v))) _ _ hL hM, Matrix.transpose_transpose]`. Both sides reduce to the same expression.
+-/
 theorem zx_mul : ∀ (D : D7) (X : HidaSetting D) (u u' : D.what₂.Word) (g γ h : X.B.I.Ginf) (v : NumberField.InfinitePlace X.B.I.F) (C B : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ), GlobalTheory.LoopAct.IsMatOn (uMat (g⁻¹ v)) (Formalism.L2.SG.RealObj.frm X u 1 v) C → GlobalTheory.LoopAct.IsMatOn (uMat (h v)) (Formalism.L2.SG.RealObj.frm X u' 1 v) B → Formalism.L2.SG.RealObj.ZX X u u' 1 (g * γ * h) v = Cᴴ * Formalism.L2.SG.RealObj.ZX X u u' 1 γ v * B := by
   intro D X u u' g γ h v C B hC hB
   have hU : (uMat (g⁻¹ v))ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * uMat (g⁻¹ v) = Formalism.REAL.Jm (X.B.I.ε v) := (g⁻¹ v).2

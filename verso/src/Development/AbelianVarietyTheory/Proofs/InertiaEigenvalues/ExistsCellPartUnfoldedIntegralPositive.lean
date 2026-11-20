@@ -28,6 +28,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `‖((GlobalTheory.Mem.Chr.CharModel.absHom E (x : ℂ) (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ)‖ = _`. Rewrite using `[GlobalTheory.Mem.Chr.CharModel.absHom_val, Complex.norm_exp]`. Use `congr 1`. Simplify using `[Complex.mul_re]`.
+-/
 theorem detPow_eq (x : ℝ) {a : ℕ} (g : GA E a) :
     detPow E a x g = Real.exp (x * GlobalTheory.Mem.Chr.CharModel.logNorm E (Matrix.GeneralLinearGroup.det g)) := by
   change ‖((GlobalTheory.Mem.Chr.CharModel.absHom E (x : ℂ) (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ)‖ = _
@@ -36,6 +39,9 @@ theorem detPow_eq (x : ℝ) {a : ℕ} (g : GA E a) :
   simp [Complex.mul_re]
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Distinguish the cases in `h : j = Fin.last m`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `: (j : ℕ) ≠ m` using `fun e => h (Fin.ext e)`. Rewrite using `[Pi.single_apply, if_neg h, if_neg (by omega)]`.
+-/
 theorem single_last_eq {R : Type} [Zero R] [One R] (j : Fin (m + 1)) :
     (Pi.single (Fin.last m) (1 : R) : Fin (m + 1) → R) j = if (j : ℕ) + 1 = m + 1 then 1 else 0 := by
   by_cases h : j = Fin.last m
@@ -45,6 +51,15 @@ theorem single_last_eq {R : Type} [Zero R] [One R] (j : Fin (m + 1)) :
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `hu : IsUnit (N : Af E)`. Establish `e : (N : Af E) = algebraMap E (Af E) (N : E)` using `(map_natCast _ _).symm`. Rewrite using `[e]`. Conclude with `(isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hN.ne')).map _`. Establish `e : natLat E N = (fun x => ((hu.unit⁻¹ : (Af E)ˣ) : Af E) * x) ⁻¹' (GroundTheory.Global.integralFiniteAdeles (𝓞 E) E : Set (Af E))`.
+
+Use extensionality with `x`. Simplify using `only [natLat, Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe, GroundTheory.Global.mem_integralFiniteAdeles]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[← mul_assoc, hu.val_inv_mul, one_mul]`.
+
+Conclude with `hz`. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hu.mul_val_inv, one_mul]`. Rewrite using `[e]`.
+
+Conclude with `GroundTheory.Global.isOpen_integralFiniteAdeles.preimage (continuous_const.mul continuous_id)`.
+-/
 theorem isOpen_natLat {N : ℕ} (hN : 0 < N) : IsOpen (natLat E N) := by
   have hu : IsUnit (N : Af E) := by
     have e : (N : Af E) = algebraMap E (Af E) (N : E) := (map_natCast _ _).symm
@@ -66,6 +81,15 @@ theorem isOpen_natLat {N : ℕ} (hN : 0 < N) : IsOpen (natLat E N) := by
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use `set T : Set (Fin (m + 1) → Af E) := {y | ∀ i : Fin (m + 1), y i - (if (i : ℕ) + 1 = m + 1 then 1 else 0) ∈ natLat E N} with hT`. Establish `hTc : IsClopen T`. Establish `e : T = ⋂ i : Fin (m + 1), (fun y : Fin (m + 1) → Af E => y i - (if (i : ℕ) + 1 = m + 1 then 1 else 0)) ⁻¹' natLat E N`. Use extensionality with `y`. Simplify using `[T]`.
+
+Rewrite using `[e]`. Conclude with `isClopen_iInter_of_finite fun i => ⟨(GlobalTheory.ZUnfWt.isClosed_natLat N).preimage ((continuous_apply i).sub continuous_const), (isOpen_natLat hN).preimage ((continuous_apply i).sub continuous_const)⟩`. Establish `e2 : (fun y : Fin (m + 1) → Af E => indN N y) = T.indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `y`. Distinguish the cases in `h : y ∈ T`.
+
+Rewrite using `[Set.indicator_of_mem h]`. Unfold `indN`. Conclude with `if_pos h`. Rewrite using `[Set.indicator_of_notMem h]`. Unfold `indN`.
+
+Conclude with `if_neg h`. Rewrite using `[e2]`. Conclude with `continuous_indicator (by simp [hTc.frontier_eq]) continuous_const.continuousOn`.
+-/
 theorem continuous_indN {N : ℕ} (hN : 0 < N) : Continuous fun y : Fin (m + 1) → Af E => indN N y := by
   set T : Set (Fin (m + 1) → Af E) :=
     {y | ∀ i : Fin (m + 1), y i - (if (i : ℕ) + 1 = m + 1 then 1 else 0) ∈ natLat E N} with hT
@@ -85,6 +109,13 @@ theorem continuous_indN {N : ℕ} (hN : 0 < N) : Continuous fun y : Fin (m + 1) 
   rw [e2]
   exact continuous_indicator (by simp [hTc.frontier_eq]) continuous_const.continuousOn
 
+/- English proof (translation)
+Establish `hi : Continuous fun g : GA E (m + 1) => indN N (GlobalTheory.ZUnf.yFin g)` using `(continuous_indN hN).comp GlobalTheory.ZUnfWt.continuous_yFin`. Establish `hw : Continuous fun g : GA E (m + 1) => (detPow E (m + 1) x g : ℂ)` using `Complex.continuous_ofReal.comp (GlobalTheory.ZUnfWt.continuous_detPow x)`. Establish `e : GlobalTheory.ZEul.uInt φ φ' Φ N x = fun q => GlobalTheory.JSW.whit φ (q * infGL E (m + 1) (secInv (GlobalTheory.ZUnf.yInf q))) * conj (GlobalTheory.JSW.whit φ' (q * infGL E (m + 1) (secInv (GlobalTheory.ZUnf.yInf q)))) * Φ (GlobalTheory.ZUnf.yInf q) * indN N (GlobalTheory.ZUn …` using `rfl`. Rewrite using `[e]`. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hp : GlobalTheory.ZUnf.yInf g ∈ tsupport Φ`. Establish `hU : GlobalTheory.RSTheta.rowSet E (Fin.last m) ∈ nhds (GlobalTheory.ZUnf.yInf g)` using `(GlobalTheory.RSTheta.isOpen_rowSet (E := E) (Fin.last m)).mem_nhds (hs hp)`. Establish `hc : ContinuousOn (fun u => infGL E (m + 1) (secInv u)) (GlobalTheory.RSTheta.rowSet E (Fin.last m))`. Use `(GlobalTheory.RSTheta.continuousOn_inv_rowGL (E := E) (Fin.last m)).congr fun u hu => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.ZUnf.secInv_eq_inv_rowGL hu, map_inv]`.
+
+Establish `h1 : ContinuousAt (fun q : GA E (m + 1) => q * infGL E (m + 1) (secInv (GlobalTheory.ZUnf.yInf q))) g` using `continuousAt_id.mul ((hc.continuousAt hU).comp GlobalTheory.ZUnf.continuous_yInf.continuousAt)`. Conclude with `(((hφ.continuousAt.comp h1).mul (Complex.continuous_conj.continuousAt.comp (hφ'.continuousAt.comp h1))).mul (hΦ.comp GlobalTheory.ZUnf.continuous_yInf).continuousAt).mul hi.continuousAt |>.mul hw.continuousAt`. Use `(continuousAt_const (y := (0 : ℂ))).congr ?_ filter_upwards [GlobalTheory.ZUnf.continuous_yInf.continuousAt.eventually (notMem_tsupport_iff_eventuallyEq.1 hp)] with q hq` and prove the remaining obligations. Simplify using `[hq]`.
+-/
 theorem continuous_uInt {N : ℕ} (hN : 0 < N) {φ φ' : GA E (m + 1) → ℂ} (hφ : Continuous (GlobalTheory.JSW.whit φ))
     (hφ' : Continuous (GlobalTheory.JSW.whit φ')) {Φ : (Fin (m + 1) → Cinf E) → ℂ} (hΦ : Continuous Φ)
     (hs : tsupport Φ ⊆ GlobalTheory.RSTheta.rowSet E (Fin.last m)) (x : ℝ) :
@@ -112,6 +143,13 @@ theorem continuous_uInt {N : ℕ} (hN : 0 < N) {φ φ' : GA E (m + 1) → ℂ} (
     filter_upwards [GlobalTheory.ZUnf.continuous_yInf.continuousAt.eventually (notMem_tsupport_iff_eventuallyEq.1 hp)] with q hq
     simp [hq]
 
+/- English proof (translation)
+Use `set w := GlobalTheory.JSW.whit φ (g * infGL E (m + 1) (secInv fun i => pInf E (GlobalTheory.ZEul.lastRow g i))) with hw`. Use `set y : Fin (m + 1) → Cinf E := fun i => pInf E (GlobalTheory.ZEul.lastRow g i) with hy`. Use `set c := indN N (fun i => GlobalTheory.RSJ.pFin E (GlobalTheory.ZEul.lastRow g i)) with hc`. Establish `hc' : c = (c.re : ℂ) ∧ 0 ≤ c.re`. Apply the tactic sequence `simp only [c, indN]; split_ifs <;> simp`.
+
+Establish `hΦy : Φ y = ((Φ y).re : ℂ)` using `Complex.ext rfl (by simp [(hΦ y).2])`. Establish `hd : detPow E (m + 1) 0 g = 1` using `by rw [detPow_eq]; simp`. Establish `e : GlobalTheory.ZEul.uInt φ φ Φ N 0 g = ((Complex.normSq w * (Φ y).re * c.re : ℝ) : ℂ)`. Express the relevant statement in the definitionally equal form `w * conj w * Φ y * c * (detPow E (m + 1) 0 g : ℂ) = _`. Use `conv_lhs => rw [hd, Complex.mul_conj, hΦy, hc'.1]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.ofReal_re]`. Conclude with `⟨rfl, mul_nonneg (mul_nonneg (Complex.normSq_nonneg _) (hΦ y).1) hc'.2⟩`.
+-/
 theorem uInt_self_zero {Φ : (Fin (m + 1) → Cinf E) → ℂ} (hΦ : ∀ u, 0 ≤ (Φ u).re ∧ (Φ u).im = 0)
     (φ : GA E (m + 1) → ℂ) (N : ℕ) (g : GA E (m + 1)) :
     GlobalTheory.ZEul.uInt φ φ Φ N 0 g = ((GlobalTheory.ZEul.uInt φ φ Φ N 0 g).re : ℂ) ∧ 0 ≤ (GlobalTheory.ZEul.uInt φ φ Φ N 0 g).re := by
@@ -129,6 +167,15 @@ theorem uInt_self_zero {Φ : (Fin (m + 1) → Cinf E) → ℂ} (hΦ : ∀ u, 0 �
   rw [e, Complex.ofReal_re]
   exact ⟨rfl, mul_nonneg (mul_nonneg (Complex.normSq_nonneg _) (hΦ y).1) hc'.2⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB _).1 hu`. Establish `hu' : u ∈ GlobalTheory.JSW.NA E (m + 1)` using `⟨h1, h2⟩`. Establish `hr : GlobalTheory.ZEul.lastRow (u * g) = GlobalTheory.ZEul.lastRow g` using `GlobalTheory.ZUnf.lastRow_mul_of_row fun l => by`. Break down `lt_or_eq_of_le (Fin.le_last l) with hl | rfl` into its components or cases. Rewrite using `[h1 _ _ hl, Matrix.one_apply_ne (ne_of_gt hl)]`.
+
+Rewrite using `[h2, Matrix.one_apply_eq]`. Establish `hd : detPow E (m + 1) x (u * g) = detPow E (m + 1) x g`. Rewrite using `[detPow_eq, detPow_eq, map_mul, show Matrix.GeneralLinearGroup.det u = 1 from Units.ext (GlobalTheory.RSLocalPart.det_eq_one hu), one_mul]`. Establish `hp : GlobalTheory.JSW.psiN u * conj (GlobalTheory.JSW.psiN u) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Simplify using `only [GlobalTheory.JSW.psiN, Circle.norm_coe]`. Simplify using the standard rewrite rules. Unfold `GlobalTheory.ZEul.uInt`. Rewrite using `[hr, hd, mul_assoc u g, hN u hu' _, map_mul]`. Use `set W := GlobalTheory.JSW.whit φ (g * infGL E (m + 1) (secInv fun i => pInf E (GlobalTheory.ZEul.lastRow g i)))`.
+
+Use `set r := Φ (fun i => pInf E (GlobalTheory.ZEul.lastRow g i)) * indN N (fun i => GlobalTheory.RSJ.pFin E (GlobalTheory.ZEul.lastRow g i)) * (detPow E (m + 1) x g : ℂ)`. Take the linear combination `(W * conj W * r) * hp`.
+-/
 theorem uInt_unip_mul {φ : GA E (m + 1) → ℂ}
     (hN : ∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, GlobalTheory.JSW.whit φ (u * g) = GlobalTheory.JSW.psiN u * GlobalTheory.JSW.whit φ g)
     (Φ : (Fin (m + 1) → Cinf E) → ℂ) (N : ℕ) (x : ℝ) {u : GA E (m + 1)} (hu : u ∈ NA E (m + 1))
@@ -163,6 +210,9 @@ open scoped Pointwise
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ}
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.single_one_vecMul]`. Both sides reduce to the same expression.
+-/
 theorem single_vecMul_eq_lastRow (g : GA E (m + 1)) :
     Matrix.vecMul (Pi.single (Fin.last m) (1 : Ad E)) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) =
       GlobalTheory.ZEul.lastRow g := by
@@ -170,6 +220,25 @@ theorem single_vecMul_eq_lastRow (g : GA E (m + 1)) :
   rw [Matrix.single_one_vecMul]
   rfl
 
+/- English proof (translation)
+Take `⟨C, hC, hbC⟩` from `hb`. Use `⟨(C * (finGL E (m + 1) '' (GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E (m + 1) : Set _))) * ((fun y => infGL E (m + 1) (GlobalTheory.RSTheta.rowGL (Fin.last m) y)) '' tsupport Φ), (hC.mul ((GroundTheory.Automorphic.AdelicGLn.isCompact_integralFiniteGL E (m + 1)).image G …` and prove the remaining obligations. Introduce `g hg h0`. Establish `hrow` using `single_vecMul_eq_lastRow g`. Establish `hdef : GlobalTheory.ZEul.uInt φ φ Φ N 0 g = GlobalTheory.JSW.whit φ (g * infGL E (m + 1) (secInv fun i => pInf E (GlobalTheory.ZEul.lastRow g i))) * conj (GlobalTheory.JSW.whit φ (g * infGL E (m + 1) (secInv fun i => pInf E (GlobalTheory.ZEul.lastRow g i)))) * Φ (fun i => pInf E …` using `rfl`.
+
+Establish `hΦ0 : Φ (fun i => pInf E (GlobalTheory.ZEul.lastRow g i)) ≠ 0` using `fun h => h0 (by rw [hdef, h]; ring)`. Establish `hy : (fun i => pInf E (GlobalTheory.ZEul.lastRow g i)) ∈ tsupport Φ` using `subset_tsupport _ hΦ0`. Establish `hcond : ∀ i : Fin (m + 1), GlobalTheory.RSJ.pFin E (GlobalTheory.ZEul.lastRow g i) - (if (i : ℕ) + 1 = m + 1 then 1 else 0) ∈ natLat E N`. Assume the negation of the conclusion as `hc`. Apply `h0` to reduce the goal to its premises.
+
+Establish `: indN N (fun i => GlobalTheory.RSJ.pFin E (GlobalTheory.ZEul.lastRow g i)) = 0` using `by unfold indN; exact if_neg hc`. Rewrite using `[hdef, this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hi : (fun i => pInf E (Matrix.vecMul (Pi.single (Fin.last m) 1) (g : Matrix _ _ (Ad E)) i)) ∈ GlobalTheory.RSTheta.rowSet E (Fin.last m)`. Rewrite using `[hrow]`.
+
+Conclude with `hs hy`. Establish `hf : ∀ v ∈ S, ∀ j : Fin (m + 1), Valued.v ((GlobalTheory.CuspRep.pFin E (Matrix.vecMul (Pi.single (Fin.last m) 1) (g : Matrix _ _ (Ad E)) j) - (Pi.single (Fin.last m) 1 : Fin (m + 1) → Af E) j) v) ≤ WithZero.exp (-FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E))`. Introduce `v hv j`. Rewrite using `[hrow, single_last_eq]`. Conclude with `hNJ _ (hcond j) v hv`.
+
+Take `⟨u, hu, p, hp, κ, hκ, e⟩` from `GlobalTheory.RSLocalPart.exists_decomp (fun i => Fin.le_last i) hJ hg hi hf`. Rewrite `e` using `[hrow]`. Use `set y : Fin (m + 1) → Cinf E := fun i => pInf E (GlobalTheory.ZEul.lastRow g i) with hydef`. Establish `hge : g = u * p * finGL E (m + 1) κ * infGL E (m + 1) (GlobalTheory.RSTheta.rowGL (Fin.last m) y)`. Rewrite using `[← e, inv_mul_cancel_right]`.
+
+Establish `hpS : p ∈ GlobalTheory.JSW.mirS E S m` using `⟨fun w hw => hp.2 w hw, hp.1⟩`. Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB _).1 hu`. Establish `hW' : GlobalTheory.JSW.whit φ (g * infGL E (m + 1) (secInv y)) = GlobalTheory.JSW.psiN u * b p`. Rewrite using `[GlobalTheory.ZUnf.secInv_eq_inv_rowGL (hs hy), map_inv, e, mul_assoc, hN u ⟨h1, h2⟩, hK κ hκ, hW p hpS]`. Establish `hbp : b p ≠ 0`.
+
+Introduce `hb0`. Apply `h0` to reduce the goal to its premises. Rewrite using `[hdef]`. Express the relevant statement in the definitionally equal form `GlobalTheory.JSW.whit φ (g * infGL E (m + 1) (secInv y)) * _ * _ * _ * _ = 0`. Rewrite using `[hW', hb0, mul_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨u', hu', hc'⟩` from `hbC p hpS hbp`. Establish `hu'N : u' ∈ NA E (m + 1)` using `(GlobalTheory.SmGL.mem_unipB _).2 hu'`. Use `⟨(u * u')⁻¹, inv_mem (mul_mem hu hu'N), _, ⟨_, hc', _, ⟨κ, GlobalTheory.RSLocalPart.levelAt_subset S J hκ, rfl⟩, rfl⟩, _, ⟨y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hge]`.
+
+Use `group`.
+-/
 theorem exists_compact_support {S : Finset (HeightOneSpectrum (𝓞 E))} {b φ : GA E (m + 1) → ℂ} {N : ℕ}
     {J : (FractionalIdeal (𝓞 E)⁰ E)ˣ} {Φ : (Fin (m + 1) → Cinf E) → ℂ}
     (hJ : ∀ v ∈ S, 0 < FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E))
@@ -243,6 +312,33 @@ namespace GlobalTheory.CellBump
 
 open GlobalTheory.CellDec GlobalTheory.RSJ
 
+/- English proof (translation)
+Introduce `E _ _ _ m S b φ N J Φ hN0 hJ hNJ hΦ hΦc hs hΦr hΦ1 hWc hN hK hb1 hb hW μ _ 𝓕₀ h𝓕`. Establish `hO` using `isOpen_adelicUnipotentTimesIntegralOutsideSet E (m + 1) S`. Establish `hre` using `fun g => uInt_self_zero hΦr φ N g`. Establish `hc : Continuous (GlobalTheory.ZEul.uInt φ φ Φ N 0)` using `continuous_uInt hN0 hWc hWc hΦ hs 0`. Establish `hBc : Continuous fun g => (GlobalTheory.ZEul.uInt φ φ Φ N 0 g).re` using `Complex.continuous_re.comp hc`.
+
+Take `⟨K, hKc, hKs⟩` from `exists_compact_support hJ hNJ hΦc hs hN hK hb hW`. Establish `hS1 : (1 : GA E (m + 1)) ∈ GlobalTheory.JSW.mirS E S m` using `⟨fun w _ => map_one _, fun j => by simp [Matrix.one_apply, eq_comm]⟩`. Establish `hy1 : (fun i => pInf E (GlobalTheory.ZEul.lastRow (1 : GA E (m + 1)) i)) = Pi.single (Fin.last m) 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = Fin.last m`.
+
+Substitute `h` using the available equality. Simplify using `[GlobalTheory.ZEul.lastRow]`. Simplify using `[GlobalTheory.ZEul.lastRow, Matrix.one_apply_ne (Ne.symm h), h]`. Establish `hyl : (Pi.single (Fin.last m) 1 : Fin (m + 1) → Cinf E) = GlobalTheory.RSJ.Model.eLast (Cinf E) (m + 1)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[single_last_eq]`. Both sides reduce to the same expression. Establish `hf1 : indN N (fun i => GlobalTheory.RSJ.pFin E (GlobalTheory.ZEul.lastRow (1 : GA E (m + 1)) i)) = 1`. Unfold `indN`. Use `if_pos fun i => ?_` and prove the remaining obligations.
+
+Establish `: GlobalTheory.RSJ.pFin E (GlobalTheory.ZEul.lastRow (1 : GA E (m + 1)) i) = if (i : ℕ) + 1 = m + 1 then 1 else 0`. Rewrite using `[← single_last_eq (R := Af E)]`. Distinguish the cases in `h : i = Fin.last m`. Substitute `h` using the available equality. Simplify using `[GlobalTheory.ZEul.lastRow]`.
+
+Simplify using `[GlobalTheory.ZEul.lastRow, Matrix.one_apply_ne (Ne.symm h), h]`. Use `show GlobalTheory.RSJ.pFin E (GlobalTheory.ZEul.lastRow (1 : GA E (m + 1)) i) - _ ∈ _`. Rewrite using `[this, sub_self]`. Conclude with `⟨0, fun v => zero_mem _, by simp⟩`. Establish `hB1 : 0 < (GlobalTheory.ZEul.uInt φ φ Φ N 0 1).re`.
+
+Establish `e : GlobalTheory.ZEul.uInt φ φ Φ N 0 1 = Φ (Pi.single (Fin.last m) 1)`. Express the relevant statement in the definitionally equal form `GlobalTheory.JSW.whit φ (1 * infGL E (m + 1) (secInv fun i => pInf E (GlobalTheory.ZEul.lastRow (1 : GA E (m + 1)) i))) * conj (GlobalTheory.JSW.whit φ (1 * infGL E (m + 1) (secInv fun i => pInf E (GlobalTheory.ZEul.lastRow (1 : GA E (m + 1)) i)))) * Φ (fun i => pInf E (GlobalThe …`. Rewrite using `[hf1, hy1, hyl, GlobalTheory.RSJ.Model.secInv_eLast, map_one, one_mul, hW 1 hS1, hb1, detPow_eq, ← hyl]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Use `lt_of_le_of_ne (hΦr _).1 fun h => hΦ1 (Complex.ext h.symm (hΦr _).2)` and prove the remaining obligations. Take `⟨hpos, -⟩` from `GlobalTheory.RSLocalPart.lintegral_cell_pos_lt_top_continuous E (m + 1) μ S 𝓕₀ h𝓕 (fun _ g => (GlobalTheory.ZEul.uInt φ φ Φ N 0 g).re) (hBc.comp continuous_snd) (fun _ g => (hre g).2) (fun _ => hB1) (fun _ u hu g => by simp only [uInt_unip_mul hN Φ N 0 hu g]) ⟨K, hKc, fun _ g hg …`. Take `⟨hlpos, hltop⟩` from `hpos 0`. Establish `hIB : IntegrableOn (fun g => (GlobalTheory.ZEul.uInt φ φ Φ N 0 g).re) (𝓕₀ ∩ C0 E (m + 1) S) μ` using `⟨hBc.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (ae_of_all _ fun g => (hre g).2)).2 hltop⟩`. Use `set t : GA E (m + 1) → ℝ := fun g => GlobalTheory.Mem.Chr.CharModel.logNorm E (Matrix.GeneralLinearGroup.det g) with ht`.
+
+Establish `htc : Continuous t` using `(GlobalTheory.Mem.Chr.CharModel.continuous_logNorm E).comp Matrix.GeneralLinearGroup.continuous_det`. Establish `htu : ∀ u ∈ NA E (m + 1), ∀ g, t (u * g) = t g` using `fun u hu g => by`. Simplify using `only [ht, map_mul, show Matrix.GeneralLinearGroup.det u = 1 from Units.ext (GlobalTheory.RSLocalPart.det_eq_one hu), one_mul]`. Take `⟨R, hR⟩` from `hKc.exists_bound_of_continuousOn htc.continuousOn`. Use `⟨(C0 E (m + 1) S).indicator fun g => (GlobalTheory.ZEul.uInt φ φ Φ N 0 g).re, t, hBc.measurable.indicator hO.measurableSet, htc.measurable, fun g => Set.indicator_nonneg (fun g _ => (hre g).2) g, ?_, ?_, ⟨R, fun g hg => ?_⟩, fun g hg => Set.indicator_of_notMem hg _, fun g hg => ? …` and prove the remaining obligations.
+
+Unfold `IntegrableOn`. Rewrite using `[integrable_indicator_iff hO.measurableSet]`. Unfold `IntegrableOn`. Rewrite using `[Measure.restrict_restrict hO.measurableSet, Set.inter_comm]`. Conclude with `hIB`.
+
+Rewrite using `[integral_indicator hO.measurableSet, Measure.restrict_restrict hO.measurableSet, Set.inter_comm, integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun g => (hre g).2) hBc.aestronglyMeasurable]`. Conclude with `ENNReal.toReal_pos hlpos.ne' hltop.ne`. Establish `hgC : g ∈ C0 E (m + 1) S`. Assume the negation of the conclusion as `h`. Conclude with `hg (Set.indicator_of_notMem h _)`.
+
+Rewrite `hg` using `[Set.indicator_of_mem hgC]`. Take `⟨u, hu, hk⟩` from `hKs g hgC fun h => hg (by rw [h, Complex.zero_re])`. Use `hR _ hk` as an intermediate fact. Rewrite `this` using `[htu u hu, Real.norm_eq_abs]`. Then use the resulting hypothesis. Rewrite using `[Set.indicator_of_mem hg]`.
+
+Conclude with `(hre g).1`. Rewrite using `[detPow_eq, Complex.ofReal_exp]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exists_cellPart_unfoldedIntegral_positive_alt : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (b : GA E (m + 1) → ℂ) (φ : GA E (m + 1) → ℂ)
     (N : ℕ) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (Φ : (Fin (m + 1) → Cinf E) → ℂ),

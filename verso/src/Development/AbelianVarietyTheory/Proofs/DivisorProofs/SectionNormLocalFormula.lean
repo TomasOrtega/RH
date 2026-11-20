@@ -5,6 +5,25 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨_, ⟨hsecH, hsecG⟩, hsnc, _⟩` from `hB i`. Use `set x := ψ.symm z with hx`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover x`. Establish `h1 : AnalyticAt ℂ (s i x ∘ (A.chart j).symm) (A.chart j x)`.
+
+Apply `hsecH x j` to reduce the goal to its premises. Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm (A.chart j x) ∈ (L i).U x`. Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `(L i).mem_U x`.
+
+Establish `h2 : AnalyticAt ℂ (A.chart j ∘ ψ.symm) z` using `(hψ j).2 z ⟨hz, hj⟩`. Establish `h3 : AnalyticAt ℂ ((s i x ∘ (A.chart j).symm) ∘ (A.chart j ∘ ψ.symm)) z` using `AnalyticAt.comp h1 h2`. Use `h3.congr ?_` and prove the remaining obligations. Establish `hO : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (A.chart j).source)` using `ψ.isOpen_inter_preimage_symm (A.chart j).open_source`. Use `filter_upwards [hO.mem_nhds ⟨hz, hj⟩] with y hy`.
+
+Simplify using `only [Function.comp]`. Rewrite using `[(A.chart j).left_inv hy.2]`. Take `⟨ψ', _, hxψ', _, σ, _, hDσ, u, _, hu0, hs⟩` from `hsnc x`. Rewrite using `[hs x hxψ']`. Use `mul_ne_zero (hu0 x hxψ') ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `k _`. Consider the cases of `hk : σ k with`. Consider the case `none => simp`. Consider the case `some a`.
+
+Simplify using `only`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Rewrite using `[Pi.single_eq_same, pow_one]`. Introduce `h0`.
+
+Apply `hD` to reduce the goal to its premises. Establish `: x ∈ {y ∈ ψ'.source | ∃ a, σ k = some a ∧ ψ' y a = 0}` using `⟨hxψ', a, hk, h0⟩`. Rewrite `this` using `[← hDσ k]`. Conclude with `this.1`. Rewrite using `[Pi.single_eq_of_ne hki, pow_zero]`.
+
+Conclude with `one_ne_zero`. Establish `hO : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (L i).U x)` using `ψ.isOpen_inter_preimage_symm ((L i).isOpen_U x)`. Establish `hzO : z ∈ ψ.target ∩ ψ.symm ⁻¹' (L i).U x` using `⟨hz, (L i).mem_U x⟩`. Use `filter_upwards [hO.mem_nhds hzO] with y hy`. Establish `hg` using `hsecG (ψ.symm y) x (ψ.symm y) ⟨(L i).mem_U _, hy.2⟩`.
+
+Simplify using `only [normSec, Function.comp]`. Rewrite using `[hg, mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem boundary_chart_facts {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {m : ℕ}
     (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X)
     (hB : IsBoundary A L s D) (i : Fin m) (ψ : OpenPartialHomeomorph X (Fin e → ℂ))

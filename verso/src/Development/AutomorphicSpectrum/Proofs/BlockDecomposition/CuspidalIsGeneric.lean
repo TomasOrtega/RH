@@ -11,12 +11,20 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir
 
 namespace GlobalTheory.CompanionTheory.BZDeriv
 
+/- English proof (translation)
+Introduce `v`. Conclude with `(hπ v).preimage continuous_subtype_val`.
+-/
 theorem isSmooth_resM {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin (N + 1)) k) V)
     (hπ : IsSmooth π) : IsSmooth (resM k π).ρ := by
   intro v
   exact (hπ v).preimage continuous_subtype_val
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψc hψ1 N V _ _ π hπ hV`. Establish `hV' : Nontrivial (resM k π).V` using `hV`. Take `⟨n, hn, hnt⟩` from `hNZ k ψ hψc hψ1 N (resM k π).V (resM k π).ρ (isSmooth_resM π hπ.1) hV'`. Rewrite `hnt` using `[Submodule.Quotient.nontrivial_iff, hRes k ψ N n V π]`. Break down `Nat.eq_zero_or_pos n with rfl | hpos` into its components or cases.
+
+Rewrite `hnt` using `[hW0 k ψ (N + 1) V π]`. Conclude with `Submodule.Quotient.nontrivial_iff.2 hnt`. Conclude with `absurd (hVan k ψ (N + 1) n V π hπ hpos (Nat.lt_succ_of_le hn)) hnt`.
+-/
 theorem isGenericFor_of_isCuspidal_of
     (hNZ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (m : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
@@ -46,6 +54,9 @@ theorem isGenericFor_of_isCuspidal_of
     exact Submodule.Quotient.nontrivial_iff.2 hnt
   · exact absurd (hVan k ψ (N + 1) n V π hπ hpos (Nat.lt_succ_of_le hn)) hnt
 
+/- English proof (translation)
+The claim follows from `isGenericFor_of_isCuspidal_of GlobalTheory.T.exists_nontrivial_derivative (fun k _ _ _ _ ψ m n V _ _ π => GlobalTheory.CompanionTheory.BZMirDer.twKer_resM_derUnipM (k := k) ψ m n V π) GlobalTheory.T.cuspidal_twisted_kernel_top (fun k _ _ _ _ ψ N V _ _ π => GlobalTheory.CompanionT …`.
+-/
 theorem isGenericFor_of_isCuspidal :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]

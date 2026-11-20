@@ -13,6 +13,9 @@ variable {ι L : Type} [Zero L]
 
 def Φ (F : ι → L → ℂ) (l : ι →₀ L) : ℂ := ∏ w ∈ l.support, F w (l w)
 
+/- English proof (translation)
+Unfold `Φ`. Use `Finset.prod_subset hT fun w _ hw => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.notMem_support_iff.1 hw, h0]`.
+-/
 theorem Φ_eq (F : ι → L → ℂ) (h0 : ∀ w, F w 0 = 1) (l : ι →₀ L) (T : Finset ι) (hT : l.support ⊆ T) :
     Φ F l = ∏ w ∈ T, F w (l w) := by
   unfold Φ
@@ -44,6 +47,9 @@ def splitE (a : ι) (T : Finset ι) (ha : a ∉ T) :
       · simp [Finsupp.update_apply, Finsupp.erase_apply, h]
     · simp [Finsupp.update_apply]
 
+/- English proof (translation)
+Rewrite using `[Φ_eq F h0 l.1 _ l.2, Φ_eq F h0 _ T (splitE a T ha l).1.2, Finset.prod_insert ha, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hwa : w ≠ a` using `fun e => ha (e ▸ hw)`. Simplify using `[splitE, Finsupp.erase_apply, hwa]`.
+-/
 theorem Φ_split (F : ι → L → ℂ) (h0 : ∀ w, F w 0 = 1) (a : ι) (T : Finset ι) (ha : a ∉ T)
     (l : {l : ι →₀ L // l.support ⊆ insert a T}) :
     Φ F l.1 = Φ F (splitE a T ha l).1.1 * F a (splitE a T ha l).2 := by
@@ -56,6 +62,21 @@ theorem Φ_split (F : ι → L → ℂ) (h0 : ∀ w, F w 0 = 1) (a : ι) (T : Fi
 variable (F : ι → L → ℂ) (h0 : ∀ w, F w 0 = 1) (hs : ∀ w, Summable fun l => ‖F w l‖)
 include h0 hs
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Establish `hu : ∀ l : {l : ι →₀ L // l.support ⊆ ∅}, l.1 = 0` using `fun l => Finsupp.support_eq_empty.1 (Finset.subset_empty.1 l.2)`. Use `haveI : Unique {l : ι →₀ L // l.support ⊆ ∅} := ⟨⟨⟨0, by simp⟩⟩, fun l => Subtype.ext (hu l)⟩`. Establish `hΦ : ∀ l : {l : ι →₀ L // l.support ⊆ ∅}, Φ F l.1 = 1` using `fun l => by rw [hu l]; simp [Φ]`.
+
+Establish `e1` using `hasSum_unique (fun l : {l : ι →₀ L // l.support ⊆ ∅} => Φ F l.1)`. Establish `e2` using `hasSum_unique (fun l : {l : ι →₀ L // l.support ⊆ ∅} => ‖Φ F l.1‖)`. Rewrite `e1` using `[hΦ]`. Rewrite `e2` using `[hΦ, norm_one]`. Simplify using `only [Finset.prod_empty]`.
+
+Conclude with `⟨e2.summable, e1, e2⟩`. Consider the case `insert a T ha ih`. Take `⟨ih1, ih2, ih3⟩` from `ih`. Set `e` to `splitE (L := L) a T ha`. Establish `hp1 : Summable fun p : {l : ι →₀ L // l.support ⊆ T} × L => Φ F p.1.1 * F a p.2` using `summable_mul_of_summable_norm (f := fun l : {l : ι →₀ L // l.support ⊆ T} => Φ F l.1) (g := F a) ih1 (hs a)`.
+
+Establish `hH` using `ih2.mul (hs a).of_norm.hasSum hp1`. Establish `hp2 : Summable fun p : {l : ι →₀ L // l.support ⊆ T} × L => ‖Φ F p.1.1‖ * ‖F a p.2‖` using `summable_mul_of_summable_norm (f := fun l : {l : ι →₀ L // l.support ⊆ T} => ‖Φ F l.1‖) (g := fun x => ‖F a x‖) (by simp only [norm_norm]; exact ih1) (by simp only [norm_norm]; exact hs a)`. Establish `hH'` using `ih3.mul (hs a).hasSum hp2`. Establish `k1 : HasSum (fun l : {l : ι →₀ L // l.support ⊆ insert a T} => Φ F l.1) ((∏ w ∈ T, ∑' l, F w l) * ∑' l, F a l)`. Use `(e.hasSum_iff (f := fun p : {l : ι →₀ L // l.support ⊆ T} × L => Φ F p.1.1 * F a p.2)).2 hH` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `l`. Conclude with `Φ_split F h0 a T ha l`. Establish `k2 : HasSum (fun l : {l : ι →₀ L // l.support ⊆ insert a T} => ‖Φ F l.1‖) ((∏ w ∈ T, ∑' l, ‖F w l‖) * ∑' l, ‖F a l‖)`. Use `(e.hasSum_iff (f := fun p : {l : ι →₀ L // l.support ⊆ T} × L => ‖Φ F p.1.1‖ * ‖F a p.2‖)).2 hH'` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `l`. Simplify using `only [Function.comp_apply]`. Rewrite using `[Φ_split F h0 a T ha l, norm_mul]`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, mul_comm (∑' l, F a l), mul_comm (∑' l, ‖F a l‖)]`.
+
+Conclude with `⟨k2.summable, k1, k2⟩`.
+-/
 theorem fin (T : Finset ι) :
     Summable (fun l : {l : ι →₀ L // l.support ⊆ T} => ‖Φ F l.1‖) ∧
     HasSum (fun l : {l : ι →₀ L // l.support ⊆ T} => Φ F l.1) (∏ w ∈ T, ∑' l, F w l) ∧
@@ -98,6 +119,19 @@ theorem fin (T : Finset ι) :
     rw [Finset.prod_insert ha, Finset.prod_insert ha, mul_comm (∑' l, F a l), mul_comm (∑' l, ‖F a l‖)]
     exact ⟨k2.summable, k1, k2⟩
 
+/- English proof (translation)
+Use `set c := Real.exp (∑' w, ((∑' l, ‖F w l‖) - 1)) with hc`. Establish `hge : ∀ w, 1 ≤ ∑' l, ‖F w l‖` using `fun w => by`. Use `(hs w).le_tsum 0 (fun _ _ => norm_nonneg _)` as an intermediate fact. Rewrite `this` using `[h0, norm_one]`. Then use the resulting hypothesis. Establish `hprod : ∀ T : Finset ι, ∏ w ∈ T, ∑' l, ‖F w l‖ ≤ c` using `fun T => by`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hN : Summable (fun l : ι →₀ L => ‖Φ F l‖)`. Use `summable_of_sum_le (c := c) (fun l => norm_nonneg _) fun u => ?_` and prove the remaining obligations. Use `set T := u.biUnion fun l => l.support`. Establish `hsub : ∀ l ∈ u, l.support ⊆ T` using `fun l hl => Finset.subset_biUnion_of_mem (fun l => l.support) hl`.
+
+Take `⟨h1, -, h3⟩` from `fin F h0 hs T`. Combine the equalities or inequalities in the displayed calculation. Establish `hS : Summable (fun l : ι →₀ L => Φ F l)` using `hN.of_norm`. Use `⟨hN, ?_⟩` and prove the remaining obligations. Establish `hP : HasProd (fun w => ∑' l, F w l) (∑' l, Φ F l)`.
+
+Express the relevant statement in the definitionally equal form `Filter.Tendsto (fun s : Finset ι => ∏ b ∈ s, ∑' l, F b l) Filter.atTop _`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Take `⟨u, hu⟩ : ∃ u : Finset (ι →₀ L), ∑' l : {l // l ∉ u}, ‖Φ F l‖ < ε` from `((tendsto_tsum_compl_atTop_zero (fun l : ι →₀ L => ‖Φ F l‖)).eventually (gt_mem_nhds hε)).exists`. Use `⟨u.biUnion (·.support), fun T hT => ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, h2, -⟩` from `fin F h0 hs T`. Rewrite using `[dist_eq_norm, ← h2.tsum_eq, ← hS.tsum_subtype_add_tsum_subtype_compl {l | l.support ⊆ T}, show (∑' b : {l : ι →₀ L // l.support ⊆ T}, Φ F b) = ∑' x : ↑{l : ι →₀ L | l.support ⊆ T}, Φ F x from rfl, sub_add_cancel_left, norm_neg]`. Use `lt_of_le_of_lt ((norm_tsum_le_tsum_norm (hN.subtype _)).trans ?_) hu` and prove the remaining obligations. Use `(hN.subtype _).tsum_le_tsum_of_inj (fun l => (⟨l.1, fun h => l.2 ?_⟩ : {l // l ∉ u})) (fun x y h => Subtype.ext (congrArg Subtype.val h : _)) (fun _ _ => norm_nonneg _) (fun _ => le_rfl) (hN.subtype _)` and prove the remaining obligations. Conclude with `(Finset.subset_biUnion_of_mem (·.support) h).trans hT`.
+
+Rewrite using `[hP.tprod_eq]`. Conclude with `hS.hasSum`.
+-/
 theorem main (ht : Summable fun w => (∑' l, ‖F w l‖) - 1) :
     Summable (fun l : ι →₀ L => ‖Φ F l‖) ∧ HasSum (fun l : ι →₀ L => Φ F l) (∏' w, ∑' l, F w l) := by
   set c := Real.exp (∑' w, ((∑' l, ‖F w l‖) - 1)) with hc
@@ -142,6 +176,13 @@ theorem main (ht : Summable fun w => (∑' l, ‖F w l‖) - 1) :
 
 end Gen
 
+/- English proof (translation)
+Establish `hx1 : 0 < 1 - x` using `by linarith`. Use `set a := (1 - x)⁻¹ with ha`. Establish `ha1 : 1 ≤ a` using `by rw [ha]; exact one_le_inv₀ hx1 |>.2 (by linarith)`. Establish `ha2 : a ≤ 2` using `by rw [ha, inv_le_comm₀ hx1 (by norm_num)]; linarith`. Establish `hax : a - 1 ≤ 2 * x`.
+
+Establish `e : a - 1 = x / (1 - x)` using `by rw [ha]; field_simp; ring`. Rewrite using `[e, div_le_iff₀ hx1]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hg : a ^ N - 1 = (∑ i ∈ Finset.range N, a ^ i) * (a - 1)` using `(geom_sum_mul a N).symm`. Establish `hs : ∑ i ∈ Finset.range N, a ^ i ≤ N * 2 ^ N`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem poly_mul_gaussian_le_const (N : ℕ) (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 1 / 2) :
     ((1 - x)⁻¹) ^ N - 1 ≤ (2 * N * 2 ^ N) * x := by
   have hx1 : 0 < 1 - x := by linarith
@@ -169,6 +210,19 @@ namespace PositivityTheory.RgJS
 
 open CauchySplitting
 
+/- English proof (translation)
+Introduce `hC hP E _ _ S m k α β s hkm hα hβ hs`. Establish `hq` using `hP E S`. Use `set F : Off E S → (Fin k → ℤ) → ℂ := fun w l => loc (nq w) (α w) (β w) s l with hF`. Establish `hloc` using `fun w : Off E S => hC m k (nq w) (α w) (β w) s hkm (hq.two w) (hα w) (hβ w) (by linarith)`. Use `set σ := s.re with hσ`.
+
+Establish `hx : ∀ w : Off E S, 0 ≤ (nq w : ℝ) ^ (1 - σ) ∧ (nq w : ℝ) ^ (1 - σ) ≤ 1 / 2` using `fun w => by`. Establish `h2 : (2 : ℝ) ≤ nq w` using `by exact_mod_cast hq.two w`. Use `⟨Real.rpow_nonneg (by linarith) _, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hge : ∀ w, 1 ≤ ∑' l, ‖F w l‖` using `fun w => by`.
+
+Use `(hloc w).2.2.1.le_tsum 0 (fun _ _ => norm_nonneg _)` as an intermediate fact. Rewrite `this` using `[(hloc w).1, norm_one]`. Then use the resulting hypothesis. Establish `ht : Summable fun w => (∑' l, ‖F w l‖) - 1`. Use `Summable.of_nonneg_of_le (fun w => by linarith [hge w]) (fun w => ?_) ((hq.conv (σ - 1) (by linarith)).mul_left (2 * ((m * m : ℕ) : ℝ) * 2 ^ (m * m)))` and prove the remaining obligations. Establish `e : (nq w : ℝ) ^ (-(σ - 1)) = (nq w : ℝ) ^ (1 - σ)` using `by congr 1; ring`.
+
+Rewrite using `[e]`. Conclude with `(sub_le_sub_right (hloc w).2.2.2 1).trans (poly_mul_gaussian_le_const (m * m) _ (hx w).1 (hx w).2)`. Take `⟨h1, h2⟩` from `main F (fun w => (hloc w).1) (fun w => (hloc w).2.2.1) ht`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `e : LS S α β s = ∏' w, ∑' l, F w l`.
+
+Unfold `LS eul`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `((hloc w).2.1.tsum_eq).symm`. Rewrite using `[e]`.
+
+Conclude with `h2`.
+-/
 theorem cauchy_of_local_prime : CauchyLoc → PrimeOff → CAUCHY := by
   intro hC hP E _ _ S m k α β s hkm hα hβ hs
   have hq := hP E S

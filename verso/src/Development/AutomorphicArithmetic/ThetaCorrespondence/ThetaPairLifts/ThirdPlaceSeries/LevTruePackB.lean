@@ -18,6 +18,11 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc GlobalTheory.MiS GlobalTheory.Fam
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.BundleLev
+/- English proof (translation)
+Establish `key : ∀ k : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S, k = _root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput y.y → k.B.Q.Rl.toRealDat.Pg = x.R.Pg ∧ ∀ t, k.B.Q.Rl.toRealDat.xiH t = x.R.toLevCh.xiH (x.Y.tupT (k.P.I.tup t))`. Introduce `k hk`. Substitute `hk` using the available equality. Use `⟨rfl, fun t => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg x.R.toLevCh.xiH (x.Y.tupT_tup t)).symm`.
+
+Conclude with `key (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b) y.eq`.
+-/
 theorem lev_of_btw_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition D O c) (x : R3.TwIn O.ex) (y : _root_.GlobalTheory.Mem.Top.Bl.TwistedBundle b x) :
     (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).Pg = x.R.Pg ∧ ∀ t, (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).xiH t = x.R.toLevCh.xiH (x.Y.tupT ((_root_.GlobalTheory.Fam.packB_alt b).P.I.tup t)) := by
   have key : ∀ k : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S, k = _root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput y.y →
@@ -28,6 +33,9 @@ theorem lev_of_btw_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheory.F
     exact (congrArg x.R.toLevCh.xiH (x.Y.tupT_tup t)).symm
   exact key (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b) y.eq
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `h` using `GlobalTheory.Mem.R3.twArgs_lev K _ _ _ q.w q.Z _ _ _ _ _ _ _ _ q.O.ex q.x.what₂ a`. Establish `e : a.x = x` using `eq_of_heq ax`. Substitute `e` using the available equality. Conclude with `⟨eq_of_heq h.2.1, fun μ hμ => eq_of_heq (h.2.2.1 μ hμ).2⟩`.
+-/
 theorem pg_eq_vGs_and_xiH_eq_xi_of_twArgs {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) (x : R3.TwIn q.O.ex)
     (a : R3.TwArgs q.O.ex q.x.what₂) (ax : HEq a.x x) :
     x.R.Pg = (q.B.primes q.w.px).vGs ∧
@@ -37,6 +45,13 @@ theorem pg_eq_vGs_and_xiH_eq_xi_of_twArgs {hL : _root_.UpperTheory.Zero.LLC.RecT
   subst e
   exact ⟨eq_of_heq h.2.1, fun μ hμ => eq_of_heq (h.2.2.1 μ hμ).2⟩
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hL p K q c b hw`. Establish `h1` using `_root_.GlobalTheory.Fam.BundleLev.lev_of_btw_alt b hw.x hw.y`. Establish `h2` using `_root_.GlobalTheory.Fam.BundleLev.pg_eq_vGs_and_xiH_eq_xi_of_twArgs q hw.x hw.a hw.ax`. Establish `hPg : (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).Pg = (q.B.primes q.w.px).vGs` using `h1.1.trans h2.1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hPg]`. Conclude with `ColTest.isTypePlaces_vGs q.w.I q.w.l q.Z q.w.ok`. Introduce `PP`. Rewrite using `[hPg]`. Conclude with `Iff.rfl`.
+
+Introduce `t`. Conclude with `(h1.2 t).trans (h2.2 _ (_root_.GlobalTheory.MiS.Check.used_all_alt (_root_.GlobalTheory.Fam.packB_alt b) t))`.
+-/
 theorem levTrue_packB_of_bWit : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → _root_.GlobalTheory.Fam.LevelCondition' (_root_.GlobalTheory.Fam.packB_alt b) := by
   intro hL p K q c b hw
   have h1 := _root_.GlobalTheory.Fam.BundleLev.lev_of_btw_alt b hw.x hw.y

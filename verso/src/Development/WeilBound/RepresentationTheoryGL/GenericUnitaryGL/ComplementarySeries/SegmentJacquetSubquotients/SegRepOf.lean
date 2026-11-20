@@ -28,6 +28,13 @@ def StageP : Prop :=
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `k _ _ _ _ d hd σ hσ`. Establish `h2 : (0 : ℕ) < 2` using `by decide`. Take `⟨S, hS, hU, h1⟩` from `Uniq.exists_unique_irred_sub hd h2 σ hσ (SRC.jhMult_jac_multiProd hG hd h2 σ hσ)`. Use `⟨S, hS, hU, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.CompanionTheory.FineStep.nonempty_equiv_of_jhMult_eq_one _ _ (SRC.isIrreducible_segTensor hd σ) (SRC.hasFiniteLength_jac_sub hd σ hσ S) h1 fun X _ _ ρ hρ hs => ?_` and prove the remaining obligations.
+
+Break down `SRC.constituents_jac_sub hG hd σ hσ S ρ hρ hs with h | h'` into its components or cases. Conclude with `h`. Take `⟨φ⟩` from `h'`. It suffices to derive a contradiction. Use `jhMult_ne_zero_iff.2 ?_ (SRC.jhMult_rev_jac_sub hG hR hd σ hσ S hS h1)` and prove the remaining obligations.
+
+Conclude with `(IsSubquotient.of_surjective φ.toIntertwiningMap fun w => ⟨φ.symm w, φ.apply_symm_apply w⟩).trans hs`.
+-/
 theorem segTwo_of (hG : GeometricLemma) (hR : RhoNuRhoReducible) : PositivityTheory.Pf1.SegRepC.SegTwo := by
   intro k _ _ _ _ d hd σ hσ
   have h2 : (0 : ℕ) < 2 := by decide
@@ -43,6 +50,13 @@ theorem segTwo_of (hG : GeometricLemma) (hR : RhoNuRhoReducible) : PositivityThe
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `k _ _ _ _ d l hd hl σ hσ`. Take `⟨S, hS, huniq, h1⟩` from `Uniq.exists_unique_irred_sub hd hl σ hσ (SRC.jhMult_jac_multiProd hG hd hl σ hσ)`. Use `⟨S, hS, huniq, ?_⟩` and prove the remaining obligations. Establish `hfl : HasFiniteLength (jac (consecBlocks l d) S.toRepresentation)` using `GlobalTheory.CompanionTheory.JacquetBridge.jacquetFiniteLength k _ _ _ (consecBlocks l d) _ S.toRepresentation (GlobalTheory.CompanionTheory.JacExp.isSmooth_sub (Lift.isSmooth_multiProd_segTerm σ l) S) (hasFiniteLength_of_isIrreducible hS)`. Use `GlobalTheory.CompanionTheory.FineStep.nonempty_equiv_of_jhMult_eq_one _ _ (PositivityTheory.Lit1.SegRep.PIrr.isIrreducible_piTensor_segTerm σ l) hfl h1 fun X _ _ π hπ h => ?_` and prove the remaining obligations.
+
+Take `⟨w, ⟨φ⟩⟩` from `SRC.exists_perm_of_isSubquotient_jac hG hd hl σ hσ π hπ (Lift.isSubquotient_jac_multiProd_of_sub σ S h)`. Take `rfl : w = 1` from `Lift.perm_eq_one_of_lt_succ w fun i hi => by`. Take `⟨T, hT0, hTw⟩` from `hT k hG h2 hd hl σ hσ i hi`. Take `⟨S', hS', hle⟩` from `SRC.exists_irred_le hd hl σ hσ T hT0`. Take `rfl` from `huniq S' hS'`.
+
+Conclude with `hTw π hπ (PiLocalization₂.isSubquotient_jac_of_le σ hle h) w φ`. Conclude with `⟨φ⟩`.
+-/
 theorem segRep_of (hT : StageP) (hG : GeometricLemma) (h2 : PositivityTheory.Pf1.SegRepC.SegTwo) : SegmentRepresentation := by
   intro k _ _ _ _ d l hd hl σ hσ
   obtain ⟨S, hS, huniq, h1⟩ := Uniq.exists_unique_irred_sub hd hl σ hσ (SRC.jhMult_jac_multiProd hG hd hl σ hσ)

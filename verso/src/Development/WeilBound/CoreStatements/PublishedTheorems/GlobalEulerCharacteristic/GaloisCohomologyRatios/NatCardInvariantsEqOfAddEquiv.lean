@@ -6,6 +6,11 @@ namespace PositivityTheory.Lit1.GEN.X
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Use `Nat.card_congr (e.toEquiv.subtypeEquiv fun v => ?_)` and prove the remaining obligations. Simplify using `only [Representation.mem_invariants, AddEquiv.toEquiv_eq_coe, EquivLike.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hv h`. Rewrite using `[← he, hv]`.
+
+Introduce `hv h`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, hv]`.
+-/
 theorem natCard_invariants_eq_of_addEquiv {k k' H V W : Type*} [CommRing k] [CommRing k'] [Group H]
     [AddCommGroup V] {_mV : Module k V} [AddCommGroup W] {_mW : Module k' W}
     (ρ : Representation k H V) (σ : Representation k' H W) (e : V ≃+ W)
@@ -22,6 +27,9 @@ theorem natCard_invariants_eq_of_addEquiv {k k' H V W : Type*} [CommRing k] [Com
 
 variable {G : Type} [Group G] {ℓ : ℕ}
 
+/- English proof (translation)
+Establish `h : ((r : ULift.{0} ℤ)) = ⟨r⟩` using `by ext; simp`. Use `Int.cast_smul_eq_zsmul (ULift.{0} ℤ) r x` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this`.
+-/
 theorem uliftInt_smul {X : Type*} [AddCommGroup X] [Module (ULift.{0} ℤ) X] (r : ℤ) (x : X) :
     (Module.toDistribMulAction.toDistribSMul.toSMul : SMul (ULift.{0} ℤ) X).smul ⟨r⟩ x = r • x := by
   have h : ((r : ULift.{0} ℤ)) = ⟨r⟩ := by ext; simp
@@ -29,6 +37,9 @@ theorem uliftInt_smul {X : Type*} [AddCommGroup X] [Module (ULift.{0} ℤ) X] (r
   rw [h] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `Int.cast_smul_eq_zsmul _ _ _`.
+-/
 theorem zmod_smul_eq {X : Type*} [AddCommGroup X] [Module (ZMod ℓ) X] (n : ℤ) (x : X) :
     ((n : ZMod ℓ)) • x = n • x := Int.cast_smul_eq_zsmul _ _ _
 
@@ -61,6 +72,9 @@ noncomputable def dualIntEquiv (D : Rep.{0} (ULift.{0} ℤ) G) (hD : ∀ d : D, 
   right_inv g := rfl
   map_add' f g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualIntEquiv_comm (D : Rep.{0} (ULift.{0} ℤ) G) (hD : ∀ d : D, ℓ • d = 0)
     (M : Rep.{0} (ZMod ℓ) G) (g : G) (f : dualRep D (intRep M)) :
     dualIntEquiv D hD M ((dualRep D (intRep M)).ρ g f) =

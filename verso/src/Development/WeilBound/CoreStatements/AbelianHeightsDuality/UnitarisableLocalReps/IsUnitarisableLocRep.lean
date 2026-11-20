@@ -22,11 +22,17 @@ section Transport
 variable {F : Type} [Field F] [NumberField F] {w : HeightOneSpectrum (𝓞 F)} {n : ℕ}
   {V₁ V₂ : Type} [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂]
 
+/- English proof (translation)
+Unfold `Tj Set.indicator`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem star_Tj (ϖ : w.adicCompletion F) (j : ℕ) (g : GL (Fin n) (w.adicCompletion F)) :
     starRingEnd ℂ (Tj ℂ n (Ov F w) ϖ j g) = Tj ℂ n (Ov F w) ϖ j g := by
   unfold Tj Set.indicator
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `⟨hy0, hyf, by rw [Multiset.card_map, h.2.2.1], fun ϖ hϖ j hj => hinj ?_⟩` and prove the remaining obligations. Establish `hfin` using `finite_heckeVec (Final.GLintComm F w n) (Tj_mem_hecke hϖ j) ρ₂ y`. Rewrite using `[hsmul, UnitaryParam.satEig_map_star, Complex.conj_conj, ← h.2.2.2 ϖ hϖ j hj, heckeVec, D.map_finsum hfin, heckeVec]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[hsmul, hρ, star_Tj]`.
+-/
 theorem isSatVecGL_of_conj (ρ₁ : Representation ℂ (GL (Fin n) (w.adicCompletion F)) V₁)
     (ρ₂ : Representation ℂ (GL (Fin n) (w.adicCompletion F)) V₂) (D : V₂ →+ V₁) (hinj : Function.Injective D)
     (hsmul : ∀ (c : ℂ) v, D (c • v) = starRingEnd ℂ c • D v) (hρ : ∀ g v, D (ρ₂ g v) = ρ₁ g (D v)) {y : V₂}
@@ -45,11 +51,21 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.DiscreteUnit.transInv (Ad E) a).left_inv g`. Conclude with `(congrArg (GlobalTheory.DiscreteUnit.transInv (Ad E) a) (Units.ext rfl : PositivityTheory.PRW.GKD.invA E a g = GlobalTheory.DiscreteUnit.transInv (Ad E) a g)).trans ((Units.ext rfl).trans h)`.
+-/
 theorem invA_invA (g : GA E a) : PositivityTheory.PRW.GKD.invA E a (PositivityTheory.PRW.GKD.invA E a g) = g := by
   have h := (GlobalTheory.DiscreteUnit.transInv (Ad E) a).left_inv g
   exact (congrArg (GlobalTheory.DiscreteUnit.transInv (Ad E) a) (Units.ext rfl : PositivityTheory.PRW.GKD.invA E a g =
     GlobalTheory.DiscreteUnit.transInv (Ad E) a g)).trans ((Units.ext rfl).trans h)
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k`. Express the relevant statement in the definitionally equal form `y.1 (g * finGL E a k) = star (ψ.1 (invT a (Ad E) g * finGL E a (invT a (Af E) k)))`. Rewrite using `[hy, map_mul, GlobalTheory.CompanionTheory.DualAct.invT_finGL]`. Consider the case `cpt k`.
+
+Express the relevant statement in the definitionally equal form `y.1 (g * infGL E a (Unitary.toUnits k)) = star (ψ.1 (invT a (Ad E) g * infGL E a (Unitary.toUnits (barK k))))`. Rewrite using `[hy, map_mul, GlobalTheory.CompanionTheory.DualAct.invT_infGL, GlobalTheory.CompanionTheory.DualAct.invT_toUnits]`. Consider the case `lie X`. Establish `e : y.1 = fun g => star (ψ.1 (invT a (Ad E) g))` using `funext hy`. Express the relevant statement in the definitionally equal form `lieD X y.1 g = star (lieD (toL (-(Matrix.of X)ᵀ)) ψ.1 (invT a (Ad E) g))`.
+
+Rewrite using `[e, GlobalTheory.CompanionTheory.DualAct.lieD_star_invT X ψ.2 g]`.
+-/
 theorem act_val (o : Op E a) {y ψ : Sm E a} (hy : ∀ g, y.1 g = star (ψ.1 (invT a (Ad E) g))) (g : GA E a) :
     (act o y).1 g = star ((act (invTOp o) ψ).1 (invT a (Ad E) g)) := by
   cases o with
@@ -69,16 +85,25 @@ abbrev invW (w : HeightOneSpectrum (𝓞 E)) (a : ℕ) : GL (Fin a) (w.adicCompl
   ConjPlace.invT (RingEquiv.refl (w.adicCompletion E)) a
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun i j => by rw [ConjPlace.invT_val, ← map_inv, ConjPlace.invT_val, inv_inv]; rfl)`.
+-/
 theorem invW_invW (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (w.adicCompletion E)) : invW w a (invW w a g) = g :=
   Units.ext (Matrix.ext fun i j => by
     rw [ConjPlace.invT_val, ← map_inv, ConjPlace.invT_val, inv_inv]; rfl)
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `(MulEquiv.symm_apply_eq _).2 (invW_invW w g).symm`.
+-/
 theorem invW_symm (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (w.adicCompletion E)) : (invW w a).symm g = invW w a g :=
   (MulEquiv.symm_apply_eq _).2 (invW_invW w g).symm
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Rewrite using `[invW_symm]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem invT_locGL (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (w.adicCompletion E)) :
     invT a (Af E) (locGL E a w g) = locGL E a w ((invW w a).symm g) := by
   rw [invW_symm]
@@ -87,6 +112,13 @@ theorem invT_locGL (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (w.adicCompl
     _ = locGL E a w (invW w a g) := congrArg (cornerGL a (sLoc E w)) (Units.ext (Matrix.ext fun i j =>
         (ConjPlace.invT_val (RingEquiv.refl (w.adicCompletion E)) g i j).symm))
 
+/- English proof (translation)
+Use `GlobalTheory.DiscreteUnit.countable_latticeGL (E := E) (N := a)` as an intermediate fact. Establish `: Infinite (w.adicCompletion E)` using `.of_injective _ (algebraMap E _).injective`. Take `⟨μ, hμ⟩ : ∃ μ : Measure (GA E a), μ.IsHaarMeasure` from `⟨Measure.haar, inferInstance⟩`. Use `(GlobalTheory.CovolGL.finvol E a μ).1` as an intermediate fact. Establish `hc : ∀ φ ∈ π.V, Continuous φ.1` using `fun φ hφ => GlobalTheory.CuspRep.ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level`.
+
+Establish `hsq : ∀ φ ∈ π.V, IsSqInt φ.1` using `fun φ hφ => by`. Take `⟨C, hC⟩` from `hB E a φ (π.cusp φ hφ) (fun t g => by rw [hπ φ hφ t g])`. Establish `hl` using `GlobalTheory.CuspRep.CuspidalL2GL.leftInv_latticeGL (π.cusp φ hφ).1.left (hπ φ hφ)`. Conclude with `(GlobalTheory.CuspRep.CuspidalL2GL.memL2_iff_isSqInt (μ := μ) (hc φ hφ) (π.cusp φ hφ).1.left (hπ φ hφ)).1 (GlobalTheory.CuspQuot.memL2_of_bound (μ := μ) (hc φ hφ) hl hC)`. Use `GlobalTheory.DiscreteUnit.isUnitarisable_of_embedding (Γ := latticeGL E a) (π.locRep w) (fun g => finGL E a (locGL E a w g)) (fun g => ?_) ((Sm E a).subtype.comp π.V.subtype) (Subtype.val_injective.comp Subtype.val_injective) (fun v => hc v.1 v.2) (fun v => GlobalTheory.CuspRep.C …` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.DiscreteUnit.modular_eq_one ((finGL E a).comp (locGL E a w)) (fun g => (congrArg (finGL E a) (GlobalTheory.DiscreteUnit.cornerGL_transInv (sLoc E w) g)).trans (GlobalTheory.DiscreteUnit.cornerGL_transInv (sFin E) _)) g`.
+-/
 theorem isUnitarisable_locRep (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : CuspSub E a} (hπ : IsNormalised π)
     (w : HeightOneSpectrum (𝓞 E)) : GlobalTheory.LGrp.IsUnitarisable (π.locRep w) := by
   classical
@@ -110,6 +142,47 @@ theorem isUnitarisable_locRep (hB : GlobalTheory.Published.CuspFormsBoundedGL) {
     (fun g => (congrArg (finGL E a) (GlobalTheory.DiscreteUnit.cornerGL_transInv (sLoc E w) g)).trans
       (GlobalTheory.DiscreteUnit.cornerGL_transInv (sFin E) _)) g
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[CG.hasSat_mk]`. Take `⟨hsph, hall⟩` from `h`. Establish `hex : ∀ y : σ.V, ∃ φ : π.V, ∀ g, y.1.1 g = star (φ.1.1 (invT a (Ad E) g))` using `fun y => by`. Take `⟨φ, hφ, e⟩` from `(hσ y.1).1 y.2`. Conclude with `⟨⟨φ, hφ⟩, fun g => congrFun e g⟩`.
+
+Use `choose Df hDf using hex`. Establish `hDv : ∀ y h, (Df y).1.1 h = star (y.1.1 (invT a (Ad E) h))` using `fun y h => by`. Rewrite using `[hDf y, invA_invA, star_star]`. Establish `hDext : ∀ x x' : π.V, (∀ h, x.1.1 h = x'.1.1 h) → x = x'` using `fun x x' e => Subtype.ext (Subtype.ext (funext e))`. Set `D : σ.V →+ π.V` to `{ toFun := Df map_zero' := hDext _ _ fun h => by`.
+
+Rewrite using `[hDv]`. Express the relevant statement in the definitionally equal form `star ((0 : Sm E a).1 _) = (0 : Sm E a).1 h`. Simplify using the standard rewrite rules. Use the proof step `map_add' := fun y y' => hDext _ _ fun h => by`. Rewrite using `[hDv]`.
+
+Express the relevant statement in the definitionally equal form `star (y.1.1 _ + y'.1.1 _) = (Df y).1.1 h + (Df y').1.1 h`. Rewrite using `[hDv, hDv]`. Conclude with `star_add _ _ }`. Establish `hD : ∀ y, D y = Df y` using `fun _ => rfl`. Establish `hinj : Function.Injective D` using `fun y y' e => by`.
+
+Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Rewrite using `[hDf y, hDf y', ← hD, ← hD, e]`. Establish `hsmul : ∀ (c : ℂ) y, D (c • y) = starRingEnd ℂ c • D y` using `fun c y => hDext _ _ fun h => by`. Simplify using `only [hD]`. Rewrite using `[hDv]`.
+
+Express the relevant statement in the definitionally equal form `_ = starRingEnd ℂ c * (Df y).1.1 h`. Rewrite using `[hDv]`. Express the relevant statement in the definitionally equal form `star (c * y.1.1 _) = _`. Rewrite using `[star_mul']`. Both sides reduce to the same expression.
+
+Establish `hop : ∀ o y, D (σ.op o y) = π.op (invTOp o) (D y)` using `fun o y => hDext _ _ fun h => by`. Simplify using `only [hD]`. Rewrite using `[hDv]`. Express the relevant statement in the definitionally equal form `star ((act o y.1).1 _) = (act (invTOp o) (Df y).1).1 h`. Rewrite using `[act_val o (hDf y), invA_invA, star_star]`.
+
+Establish `hsurj : Function.Surjective D`. Set `S : Submodule ℂ (Sm E a)` to `{ carrier := {φ | ∃ y : σ.V, ∀ g, y.1.1 g = star (φ.1 (invT a (Ad E) g))} add_mem' := fun {φ φ'} ⟨y, hy⟩ ⟨y', hy'⟩ => ⟨y + y', fun g => by`. Express the relevant statement in the definitionally equal form `y.1.1 g + y'.1.1 g = _`. Rewrite using `[hy, hy']`. Conclude with `(star_add _ _).symm⟩`.
+
+Use the proof step `zero_mem' := ⟨0, fun g => by simp⟩`. Use the proof step `smul_mem' := fun c {φ} ⟨y, hy⟩ => ⟨starRingEnd ℂ c • y, fun g => by`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ c * y.1.1 g = _`. Rewrite using `[hy]`. Express the relevant statement in the definitionally equal form `_ = star (c * φ.1 _)`.
+
+Rewrite using `[star_mul']`. Use the proof step `rfl⟩ }`. Establish `hle : S ≤ π.V` using `fun φ ⟨y, hy⟩ => by`. Establish `e : φ = (Df y).1` using `Subtype.ext (funext fun h => by rw [hDv, hy, invA_invA, star_star])`. Rewrite using `[e]`.
+
+Conclude with `(Df y).2`. Establish `hst : IsStable S` using `fun o φ ⟨y, hy⟩ => ⟨σ.op (invTOp o) y, fun g => by`. Express the relevant statement in the definitionally equal form `(act (invTOp o) y.1).1 g = _`. Rewrite using `[act_val (invTOp o) hy, GlobalTheory.CsdBack.invTOp_involutive o]⟩`. Establish `hne : S ≠ ⊥`.
+
+Take `⟨ψ, hψ, h0⟩` from `(Submodule.ne_bot_iff _).1 σ.ne_bot`. Use `(Submodule.ne_bot_iff _).2 ⟨(Df ⟨ψ, hψ⟩).1, ⟨⟨ψ, hψ⟩, hDf _⟩, fun e => h0 ?_⟩` and prove the remaining obligations. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ.1 g = 0`. Rewrite using `[show ψ.1 g = (⟨ψ, hψ⟩ : σ.V).1.1 g from rfl, hDf, e]`.
+
+Simplify using the standard rewrite rules. Establish `hS : S = π.V` using `(π.irred S hle hst).resolve_left hne`. Introduce `x`. Establish `hx : x.1 ∈ S` using `by rw [hS]; exact x.2`. Take `⟨y, hy⟩` from `hx`.
+
+Conclude with `⟨y, hDext _ _ fun h => by rw [hD, hDv, hy, invA_invA, star_star]⟩`. Establish `hρ : ∀ g y, D (σ.locRep w g y) = ((π.locRep w).comp (invW w a).symm.toMonoidHom) g (D y)` using `fun g y => by`. Rewrite using `[CuspSub.locRep_eq, hop]`. Express the relevant statement in the definitionally equal form `π.op (.fin (invT a (Af E) (locGL E a w g))) (D y) = _`. Rewrite using `[invT_locGL]`.
+
+Both sides reduce to the same expression. Set `c` to `RingEquiv.refl (w.adicCompletion E)`. Establish `hc : ∀ a, Valued.v (c a) = Valued.v a` using `fun _ => rfl`. Establish `hK : ∀ g, g ∈ KGL w a ↔ invW w a g ∈ KGL w a` using `ConjPlace.mem_iff_invT (n := a) c (ConjPlace.map_mem_Ov_iff c hc)`. Establish `hfix : ∀ y : σ.V, y ∈ fixed (σ.locRep w) (KGL w a) ↔ D y ∈ fixed (π.locRep w) (KGL w a)` using `fun y => by`.
+
+Rewrite using `[GlobalTheory.LGrp.mem_fixed, GlobalTheory.LGrp.mem_fixed]`. Prove the components needed by the constructor for the conclusion. Introduce `hy k hk`. Establish `e` using `hρ (invW w a k) y`. Rewrite `e` using `[hy _ ((hK k).1 hk), MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`.
+
+Conclude with `e.symm`. Introduce `hx k hk`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hρ, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, invW_symm]`. Conclude with `hx _ ((hK k).1 hk)`.
+
+Take `⟨x₀, hx₀f, hx₀⟩` from `(Submodule.ne_bot_iff _).1 hsph`. Establish `hBB` using `UnitaryParam.map_star_eq_map_inv E w a π.V (π.locRep w) x₀ B (isUnitarisable_locRep hB hπ w) (hall x₀ hx₀f hx₀)`. Establish `hBf : (B.map (·⁻¹)).map star = B`. Rewrite using `[Multiset.map_map]`. Establish `e : (star ∘ fun b : ℂˣ => b⁻¹) = (fun b : ℂˣ => b⁻¹) ∘ star` using `funext fun b => star_inv b`.
+
+Rewrite using `[e, ← Multiset.map_map, hBB, Multiset.map_map]`. Simplify using the standard rewrite rules. Establish `hD0 : ∀ y, D y = 0 → y = 0` using `fun y e => hinj (e.trans D.map_zero.symm)`. Use `⟨?_, fun y hyf hy0 => ?_⟩` and prove the remaining obligations. Take `⟨y₀, rfl⟩` from `hsurj x₀`.
+
+Conclude with `(Submodule.ne_bot_iff _).2 ⟨y₀, (hfix y₀).2 hx₀f, fun e => hx₀ (by rw [e, D.map_zero])⟩`. Establish `hxy` using `hall (D y) ((hfix y).1 hyf) fun e => hy0 (hD0 y e)`. Establish `h1` using `ConjPlace.isSatVecGL_invT c hc rfl hxy`. Establish `h2` using `isSatVecGL_of_conj _ (σ.locRep w) D hinj hsmul hρ hy0 hyf h1`. Rewrite `h2` using `[hBf]`. Then use the resulting hypothesis.
+-/
 theorem hasSat_dual (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : CuspSub E a} (hπ : IsNormalised π) (σ : CuspSub E a)
     (hσ : ∀ ψ : Sm E a, ψ ∈ σ.V ↔ ∃ φ ∈ π.V, ψ.1 = fun g => star (φ.1 (PositivityTheory.PRW.GKD.invA E a g)))
     (w : HeightOneSpectrum (𝓞 E)) (B : Multiset ℂˣ) (h : (CG.mk π).HasSat w B) :

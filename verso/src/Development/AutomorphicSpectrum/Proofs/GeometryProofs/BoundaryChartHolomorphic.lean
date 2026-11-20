@@ -13,6 +13,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Establish `h : punct n a ρ = Metric.ball 0 ρ ∩ ⋂ i : Fin n, {z : Fin n → ℂ | (i : ℕ) < a → z i ≠ 0}`. Use extensionality with `z`. Simplify using `only [punct, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[h]`. Use `Metric.isOpen_ball.inter (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hi : (i : ℕ) < a`. Simplify using `only [hi, true_implies]`. Conclude with `isOpen_ne_fun (continuous_apply i) continuous_const`. Simplify using `[hi]`.
+-/
 theorem isOpen_punct (n a : ℕ) (ρ : ℝ) : IsOpen (punct n a ρ) := by
   have h : punct n a ρ = Metric.ball 0 ρ ∩ ⋂ i : Fin n, {z : Fin n → ℂ | (i : ℕ) < a → z i ≠ 0} := by
     ext z
@@ -24,6 +29,19 @@ theorem isOpen_punct (n a : ℕ) (ρ : ℝ) : IsOpen (punct n a ρ) := by
     exact isOpen_ne_fun (continuous_apply i) continuous_const
   · simp [hi]
 
+/- English proof (translation)
+Introduce `U f`. Establish `hpre : ∀ x : Sp ℂ ⟶ X, (x ≫ j) ⁻¹ᵁ (j ''ᵁ U) = x ⁻¹ᵁ U`. Introduce `x`. Use extensionality with `p`. Simplify using the standard rewrite rules.
+
+Establish `key : ∀ (x : Sp ℂ ⟶ X) (h1 : ⊤ ≤ (x ≫ j) ⁻¹ᵁ (j ''ᵁ U)) (h2 : ⊤ ≤ x ⁻¹ᵁ U), valAt (x ≫ j) (j ''ᵁ U) h1 ((j.appIso U).inv f) = valAt x U h2 f`. Introduce `x h1 h2`. Establish `e : (j.appIso U).inv ≫ (x ≫ j).appLE (j ''ᵁ U) ⊤ h1 = x.appLE U ⊤ h2`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE x j (j ''ᵁ U) U ⊤ (j.preimage_image_eq U).ge h2]`. Rewrite using `[← Category.assoc, Scheme.Hom.appIso_inv_appLE]`.
+
+Simplify using the standard rewrite rules. Unfold `valAt`. Rewrite using `[← e]`. Both sides reduce to the same expression. Establish `hval : ∀ b, valAt' (y b ≫ j) (j ''ᵁ U) ((j.appIso U).inv f) = valAt' (y b) U f`.
+
+Introduce `b`. Unfold `valAt'`. Distinguish the cases in `hb : ⊤ ≤ y b ⁻¹ᵁ U`. Establish `hb' : ⊤ ≤ (y b ≫ j) ⁻¹ᵁ (j ''ᵁ U)` using `by rw [hpre]; exact hb`. Rewrite using `[dif_pos hb, dif_pos hb']`.
+
+Conclude with `key _ hb' hb`. Establish `hb' : ¬ ⊤ ≤ (y b ≫ j) ⁻¹ᵁ (j ''ᵁ U)` using `by rw [hpre]; exact hb`. Rewrite using `[dif_neg hb, dif_neg hb']`. Take `⟨ho, hd⟩` from `h (j ''ᵁ U) ((j.appIso U).inv f)`. Simplify using `only [hpre] at ho hd`.
+
+Conclude with `⟨ho, by simpa only [hval] using hd⟩`.
+-/
 theorem isHolTo_of_comp_openImmersion {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] {X Y : Scheme.{0}}
     (j : X ⟶ Y) [IsOpenImmersion j] {B : Set W} {y : W → (Sp ℂ ⟶ X)}
     (h : IsHolTo B fun b => y b ≫ j) : IsHolTo B y := by
@@ -55,6 +73,11 @@ theorem isHolTo_of_comp_openImmersion {W : Type} [NormedAddCommGroup W] [NormedS
   simp only [hpre] at ho hd
   exact ⟨ho, by simpa only [hval] using hd⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ n a C`. Use `haveI := C.j_open`. Apply `isHolTo_of_comp_openImmersion C.j` to reduce the goal to its premises. Establish `hB : IsOpen (punct n a 1)` using `isOpen_punct n a 1`. Establish `hsub : punct n a 1 ⊆ Metric.ball 0 1` using `fun z hz => hz.1`.
+
+Establish `h0 : IsHolTo (punct n a 1) fun z => ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (C.ψ z)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_spMap hB fun r => (C.hol.2 r).mono hsub`. Conclude with `GlobalTheory.FiniteOrderConst.isHolTo_of_eqOn h0 fun z hz => (C.pt_eq z hz).1`.
+-/
 theorem isHolTo_pt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : BdryChart Xo σ n a), IsHolTo (punct n a 1) C.pt := by
   intro E _ _ _ H D l Xo σ n a C

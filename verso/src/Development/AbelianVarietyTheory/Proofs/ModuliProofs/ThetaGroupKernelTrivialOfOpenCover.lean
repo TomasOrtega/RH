@@ -12,6 +12,13 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.CoverGlue
 
+/- English proof (translation)
+Introduce `S I U A _ G _ ψ hU hG L M hL hM hLM hA hGA hK`. Rewrite using `[GlobalTheory.UU.kTriv_iff_forall]`. Introduce `T x hx`. Apply `over_ext hU` to reduce the goal to its premises. Introduce `i T' r`.
+
+Take `⟨y, hy⟩` from `exists_lift (hG i).1 (r ≫ x)`. Establish `hpush : pushPt (hG i).1.w y = r ≫ x` using `by ext1`. Conclude with `hy.symm`. Establish `hyK : GlobalTheory.UU.InK (G i) (M i) y` using `GlobalTheory.UU.inK_of_push (hG i) hL (hM i) (hLM i) y (hpush ▸ hx.comp r)`. Establish `hy1 : y = 1` using `(GlobalTheory.UU.kTriv_iff_forall.1 (hK i)) T' y hyK`.
+
+Establish `hsq : (r ≫ x) * (r ≫ x) = r ≫ x` using `by ext1`. Rewrite using `[((hG i).2 T' y y (r ≫ x) (r ≫ x) hy hy), hy, hy1, _root_.mul_one]`. Establish `h1 : r ≫ x = 1` using `by simpa using hsq`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+-/
 theorem kTriv_of_cover : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (A : Over S) [GrpObj A] (G : ∀ i, Over (U i).toScheme) [∀ i, GrpObj (G i)] (ψ : ∀ i, (G i).left ⟶ A.left), iSup U = ⊤ → (∀ i, IsGrpPullback (G i) A (U i).ι (ψ i)) → ∀ (L : LB A.left) (M : ∀ i, LB (G i).left), L.IsLB → (∀ i, (M i).IsLB) → (∀ i, LBIso (M i) (L.pull (ψ i))) → IsAbelianScheme A → (∀ i, IsAbelianScheme (G i)) → (∀ i, Out.KTriv (G i) (M i)) → Out.KTriv A L := by
   intro S I U A _ G _ ψ hU hG L M hL hM hLM hA hGA hK
   rw [GlobalTheory.UU.kTriv_iff_forall]

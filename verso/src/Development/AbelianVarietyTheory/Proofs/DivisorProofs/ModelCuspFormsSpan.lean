@@ -9,6 +9,11 @@ namespace GlobalTheory.ShareOn.Reading
 section Onto
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Substitute `hX` using the available equality. Establish `hw : castWt h1 la = la'`. Use function extensionality and compare the values at `τ a`. Conclude with `hla τ.1 _ τ.2 a`. Rewrite using `[← hw]`.
+
+Conclude with `hg`.
+-/
 theorem ss_transport {X X' : Data E r} (hX : X = X') {Ψ : Finset (E →+* ℂ)} (h1 : X.Ψ = Ψ) (h2 : X'.Ψ = Ψ)
     (g : Frame Ψ r → ℂ) (la : Wt Ψ r) (la' : Wt X'.Ψ r)
     (hla : ∀ τ (t1 : τ ∈ Ψ) (t2 : τ ∈ X'.Ψ) a, la ⟨τ, t1⟩ a = la' ⟨τ, t2⟩ a)
@@ -23,6 +28,21 @@ theorem ss_transport {X X' : Data E r} (hX : X = X') {Ψ : Finset (E →+* ℂ)}
 
 end Onto
 
+/- English proof (translation)
+Introduce `hN hnV G hG`. Establish `ha' : ∀ k, (M.comp (e.symm k)).toData = ((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X k` using `fun k => by`. Rewrite using `[ha (e.symm k), e.apply_symm_apply]`. Establish `hΨk : ∀ k, M.Ψ = (((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X k).Ψ` using `fun k => by`. Rewrite using `[← ha' k]`.
+
+Conclude with `(M.comp_Ψ _).symm`. Establish `hb' : ∀ k τ (h1 : τ ∈ M.Ψ) (h2 : τ ∈ (((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X k).Ψ) a, ka ⟨τ, h1⟩ a = laR (r.used v).full.toTop ((i : ℕ) + 1) (p.κ i) k ⟨τ, h2⟩ a`. Introduce `k`. Take `⟨c, rfl⟩` from `e.surjective k`. Conclude with `hb c`.
+
+Establish `hf : 0 < D.R.f` using `lt_of_lt_of_le (lt_of_le_of_lt (Nat.zero_le _) i.2) D.R.m_le_f`. Establish `hTau : Nonempty D.what₂.Tau`. Rewrite using `[← Fintype.card_pos_iff, D.what₂.card_Tau]`. Conclude with `hf`. Take `⟨τ0⟩` from `hTau`.
+
+Establish `hn : 8 * D.R.f * D.R.r + 4 ≤ (p.κ i).n`. Rewrite using `[(p.fw.kap i τ0).2.2]`. Conclude with `hnV`. Establish `hOnto : RdOnto (h.laws v).p ((i : ℕ) + 1) (p.κ i)` using `GlobalTheory.Shares.rdOnto_rec GlobalTheory.chartIndependence_unconditional D (r.used v).full.toTop (h.laws v).p ((i : ℕ) + 1) (GlobalTheory.OnTies.inR_succ i) (h.laws v).sh (GlobalTheory.RunIn.gamAt_of_lawsCore D _ (h.laws v).p.toLawsCore) hN (GlobalTheory.Dict.gram_xi_eq_of_law …`. Set `f : ∀ k : ((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).Comp, Frame (((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X k).Ψ D.R.r → ℂ` to `fun k y => G (e.symm k) (castFrame (hΨk k).symm y)`.
+
+Establish `hfm : ∀ k, f k ∈ (((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X k).SS (laR (r.used v).full.toTop ((i : ℕ) + 1) (p.κ i) k)` using `fun k => ss_transport (ha' k) (M.comp_Ψ (e.symm k)) (hΨk k).symm (G (e.symm k)) ka _ (hb' k) (hG (e.symm k))`. Take `⟨m, α, Fs, -, hsum⟩` from `hOnto f hfm`. Use `⟨m, α, Fs, fun c x hx => ?_⟩` and prove the remaining obligations. Establish `hy` using `(mem_dom_iff ha c x).2 hx`. Establish `key` using `hsum (e c) _ hy`.
+
+Establish `hl : f (e c) (castFrame (psi_eq ha c) x) = G c x` using `by show G (e.symm (e c)) (castFrame (hΨk (e c)).symm (castFrame (psi_eq ha c) x)) = G c x`. Establish `hc : e.symm (e c) = c` using `e.symm_apply_apply c`. Establish `hx' : castFrame (hΨk (e c)).symm (castFrame (psi_eq ha c) x) = x` using `rfl`. Rewrite using `[hx', hc]`. Rewrite using `[← hl, key]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rdFun_onto {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} {p : PtAt ex Csz}
     {r : TwoRuns p.T p.P.Gp} (h : RunsOk (fw2 p) r) {i : Fin D.R.m} {C : Type} [MulAction p.P.Gp C]

@@ -25,6 +25,11 @@ end Arith
 variable {D : D7} {N N' : ℕ}
 variable (A : Matrix.unitaryGroup (Fin N) D.host.E) (A' : Matrix.unitaryGroup (Fin N') D.host.E)
 variable (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
+/- English proof (translation)
+Introduce `_ hI D δ t0 hC ht N N' e0 he _ M M' hM hM' A A'`. Take `⟨ε, h1, h2⟩` from `iop_move A A' D.host.ccK δ (hI D) hC ht he.2.2.2.1 hM hM'`. Establish `hc : ∀ σ : Qbar →+* ℂ, NormOne σ ε` using `fun σ => h1 ℂ σ fun τ => ⟨(norm_det_complex _ A').1, (norm_det_complex _ A).2⟩`. Use `⟨ε, ⟨(hc (algebraMap Qbar ℂ)).1, fun σ => (hc σ).2⟩, fun q _ a1 a2 a3 a4 lam => ?_, h2⟩` and prove the remaining obligations. Take `⟨h3, h4⟩` from `h1 ℂ_[q] lam fun τ => ⟨(norm_det_padic _ A' a2 a4).1, (norm_det_padic _ A a1 a3).2⟩`.
+
+Rewrite using `[lamC, dif_pos h3]`. Conclude with `h4`.
+-/
 theorem twist_pairing_pullback_of_rational : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {δ t0 : ℂ}, Crv D D.host.ccK δ →
     GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D D.host.ccK δ) t0 → ∀ {N N' : ℕ} {e0 : VC D N N' → ℂ}, oddE0 D D.host.ccK δ t0 N N' e0 → Even (N * N') →
     ∀ (M : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (M' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), SD D M → SD D M' →
@@ -61,6 +66,9 @@ open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 open GlobalTheory.RatMoveJets
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RatMoveIop.twist_pairing_pullback_of_rational | exact _root_.GlobalTheory.RatMoveIop.twist_pairing_pullback_of_rational | (intros; apply _root_.GlobalTheory.RatMoveIop.twist_pairing_pullback_of_rational <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_pairing_rational_pullback_eq : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {δ t0 : ℂ}, Crv D D.host.ccK δ →
     GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D D.host.ccK δ) t0 → ∀ {N N' : ℕ} {e0 : VC D N N' → ℂ}, oddE0 D D.host.ccK δ t0 N N' e0 → Even (N * N') →
     ∀ (M : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (M' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), SD D M → SD D M' →

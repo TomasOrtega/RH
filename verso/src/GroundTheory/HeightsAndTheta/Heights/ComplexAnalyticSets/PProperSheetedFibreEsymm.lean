@@ -19,6 +19,9 @@ noncomputable def fibreEsymm {σ : Type} {d : ℕ} (Y : Set (σ → ℂ)) (A : (
     (l : (σ → ℂ) →L[ℂ] ℂ) (j : ℕ) (t : Fin d → ℂ) : ℂ :=
   if h : {x | x ∈ Y ∧ A x = t}.Finite then (h.toFinset.val.map l).esymm j else 0
 
+/- English proof (translation)
+Establish `h : {x | x ∈ Y ∧ A x = t}.Finite` using `hs ▸ s.finite_toSet`. Establish `hs' : h.toFinset = s` using `Finset.coe_injective (by rw [Set.Finite.coe_toFinset, hs])`. Rewrite using `[fibreEsymm, dif_pos h, hs']`.
+-/
 theorem fibreEsymm_eq {σ : Type} {d : ℕ} {Y : Set (σ → ℂ)} {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)}
     {l : (σ → ℂ) →L[ℂ] ℂ} {j : ℕ} {t : Fin d → ℂ} (s : Finset (σ → ℂ))
     (hs : (↑s : Set (σ → ℂ)) = {x | x ∈ Y ∧ A x = t}) : fibreEsymm Y A l j t = (s.val.map l).esymm j := by
@@ -26,6 +29,31 @@ theorem fibreEsymm_eq {σ : Type} {d : ℕ} {Y : Set (σ → ℂ)} {A : (σ → 
   have hs' : h.toFinset = s := Finset.coe_injective (by rw [Set.Finite.coe_toFinset, hs])
   rw [fibreEsymm, dif_pos h, hs']
 
+/- English proof (translation)
+Use `choose! O V g hO hV hxV hg hsec hYV using hchart`. Establish `key : ∀ x ∈ Y, δ (A x) ≠ 0 → ∀ z ∈ Y, z ∈ V x → A z ∈ O x ∧ g x (A z) = z`. Introduce `x hx hδ z hz hzV`. Take `⟨w, hw, rfl⟩ : z ∈ g x '' O x` from `hYV x hx hδ ▸ ⟨hz, hzV⟩`. Rewrite using `[hsec x hx hδ w hw]`.
+
+Conclude with `⟨hw, rfl⟩`. Use `set F := {x | x ∈ Y ∧ A x = y} with hFdef`. Establish `hFδ : ∀ x ∈ F, δ (A x) ≠ 0` using `fun x hx => hx.2 ▸ hδy`. Establish `hyO : ∀ x ∈ F, y ∈ O x` using `fun x hx => hx.2 ▸ (key x hx.1 (hFδ x hx) x hx.1 (hxV x hx.1 (hFδ x hx))).1`. Establish `hgy : ∀ x ∈ F, g x y = x` using `fun x hx => hx.2 ▸ (key x hx.1 (hFδ x hx) x hx.1 (hxV x hx.1 (hFδ x hx))).2`.
+
+Establish `hFc : IsCompact F`. Simplify `hprop {y} (singleton_subset_iff.2 hyD) isCompact_singleton` using `[hFdef]`. Establish `hFfin : F.Finite`. Take `⟨t, htF, hcov⟩` from `hFc.elim_nhds_subcover V (fun x hx => (hV x hx.1 (hFδ x hx)).mem_nhds (hxV x hx.1 (hFδ x hx)))`. Use `t.finite_toSet.subset fun z hz => ?_` and prove the remaining obligations.
+
+Take `⟨x, hxt, hzx⟩` from `mem_iUnion₂.1 (hcov hz)`. Establish `hx` using `htF x hxt`. Use `(key x hx.1 (hFδ x hx) z hz.1 hzx).2` as an intermediate fact. Rewrite `this` using `[hz.2, hgy x hx]`. Conclude with `this ▸ hxt`.
+
+Use `⟨hFfin.toFinset, g, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Conclude with `hg x hx.1 (hFδ x hx) y (hyO x hx)`. Rewrite using `[Set.Finite.coe_toFinset]`. Establish `hev1 : ∀ᶠ y' in 𝓝 y, ∀ x ∈ F, y' ∈ O x` using `(eventually_all_finite hFfin).2 fun x hx => (hO x hx.1 (hFδ x hx)).mem_nhds (hyO x hx)`.
+
+Establish `hev2 : ∀ᶠ y' in 𝓝 y, ∀ p ∈ F ×ˢ F, p.1 ≠ p.2 → g p.1 y' ≠ g p.2 y'`. Use `(eventually_all_finite (hFfin.prod hFfin)).2 fun p hp => ?_` and prove the remaining obligations. Distinguish the cases in `hne : p.1 = p.2`. Conclude with `Eventually.of_forall fun _ h => absurd hne h`. Establish `c1` using `(hg p.1 hp.1.1 (hFδ _ hp.1) y (hyO _ hp.1)).continuousAt`.
+
+Establish `c2` using `(hg p.2 hp.2.1 (hFδ _ hp.2) y (hyO _ hp.2)).continuousAt`. Establish `hne' : g p.1 y ≠ g p.2 y` using `by rwa [hgy _ hp.1, hgy _ hp.2]`. Conclude with `((c1.tendsto.prodMk_nhds c2.tendsto).eventually (isClosed_diagonal.isOpen_compl.mem_nhds hne')).mono fun _ h _ => h`. Establish `hev3 : ∀ᶠ y' in 𝓝 y, ∀ z ∈ Y, A z = y' → ∃ x ∈ F, z ∈ V x`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hD y hyD`.
+
+Use `set K := Metric.closedBall y (ε / 2)`. Establish `hKD : K ⊆ D` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Use `set W := ⋃ x ∈ F, V x`. Establish `hW : IsOpen W` using `isOpen_biUnion fun x hx => hV x hx.1 (hFδ x hx)`. Establish `hC : IsCompact ({z | z ∈ Y ∧ A z ∈ K} \ W)` using `(hprop K hKD (isCompact_closedBall y _)).diff hW`.
+
+Establish `hyn : y ∉ A '' ({z | z ∈ Y ∧ A z ∈ K} \ W)`. Introduce and unpack `⟨z, ⟨⟨hzY, -⟩, hzW⟩, hzy⟩`. Conclude with `hzW (mem_iUnion₂.2 ⟨z, ⟨hzY, hzy⟩, hxV z hzY (hzy ▸ hδy)⟩)`. Use `filter_upwards [Metric.closedBall_mem_nhds y (half_pos hε), (hC.image A.continuous).isClosed.isOpen_compl.mem_nhds hyn] with y' hy'K hy'C z hzY hzy`. Assume the negation of the conclusion as `hno`.
+
+Conclude with `hy'C ⟨z, ⟨⟨hzY, hzy ▸ hy'K⟩, fun h => hno (by simpa [W] using h)⟩, hzy⟩`. Use `filter_upwards [hev1, hev2, hev3] with y' h1 h2 h3`. Use `⟨fun a ha b hb hab => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `h2 (a, b) ⟨ha, hb⟩ hne hab`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzY, hzy⟩`. Take `⟨x, hx, hzx⟩` from `h3 z hzY hzy`. Conclude with `⟨x, hx, by simpa [hzy] using (key x hx.1 (hFδ x hx) z hzY hzx).2⟩`.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hm : g x y' ∈ Y ∩ V x` using `hYV x hx.1 (hFδ x hx) ▸ mem_image_of_mem _ (h1 x hx)`. Conclude with `⟨hm.1, hsec x hx.1 (hFδ x hx) y' (h1 x hx)⟩`.
+-/
 theorem fibre_sections {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)}
     {D : Set (Fin d → ℂ)} {δ : (Fin d → ℂ) → ℂ} (hD : IsOpen D)
     (hprop : ∀ K ⊆ D, IsCompact K → IsCompact {x | x ∈ Y ∧ A x ∈ K})
@@ -103,6 +131,11 @@ theorem fibre_sections {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {d : ℕ}
     have hm : g x y' ∈ Y ∩ V x := hYV x hx.1 (hFδ x hx) ▸ mem_image_of_mem _ (h1 x hx)
     exact ⟨hm.1, hsec x hx.1 (hFδ x hx) y' (h1 x hx)⟩
 
+/- English proof (translation)
+Take `⟨F, g, hga, hev⟩` from `fibre_sections hD hprop hchart hyD hδy`. Establish `hP : AnalyticAt ℂ (fun t => ∑ u ∈ F.powersetCard j, ∏ x ∈ u, l (g x t)) y` using `Finset.analyticAt_fun_sum _ fun u hu => Finset.analyticAt_fun_prod _ fun x hx => (l.analyticAt _).comp (hga x ((Finset.mem_powersetCard.1 hu).1 hx))`. Use `hP.congr ?_` and prove the remaining obligations. Use `filter_upwards [hev] with t ht`. Rewrite using `[fibreEsymm_eq (F.image fun x => g x t) (by rw [Finset.coe_image, ht.2]), Finset.image_val_of_injOn ht.1, Multiset.map_map, Finset.esymm_map_val]`.
+
+Both sides reduce to the same expression.
+-/
 theorem fibreEsymm_analyticAt {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {d : ℕ}
     {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)} {D : Set (Fin d → ℂ)} {δ : (Fin d → ℂ) → ℂ} (l : (σ → ℂ) →L[ℂ] ℂ) (j : ℕ)
     (hD : IsOpen D) (hprop : ∀ K ⊆ D, IsCompact K → IsCompact {x | x ∈ Y ∧ A x ∈ K})
@@ -120,6 +153,11 @@ theorem fibreEsymm_analyticAt {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {d
     Finset.image_val_of_injOn ht.1, Multiset.map_map, Finset.esymm_map_val]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Finset.esymm_map_val]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun u hu => ?_` and prove the remaining obligations. Take `⟨hu1, hu2⟩` from `Finset.mem_powersetCard.1 hu`. Rewrite using `[norm_prod, ← hu2, ← Finset.prod_const]`.
+
+Conclude with `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun x hx => hC x (hu1 hx)`. Use `_ = _ := by rw [Finset.sum_const, Finset.card_powersetCard, nsmul_eq_mul]`.
+-/
 theorem norm_esymm_map_le {ι : Type*} (S : Finset ι) (f : ι → ℂ) (j : ℕ) {C : ℝ} (hC : ∀ x ∈ S, ‖f x‖ ≤ C) :
     ‖(S.val.map f).esymm j‖ ≤ (S.card.choose j : ℝ) * C ^ j := by
   rw [Finset.esymm_map_val]
@@ -131,6 +169,23 @@ theorem norm_esymm_map_le {ι : Type*} (S : Finset ι) (f : ι → ℂ) (j : ℕ
         exact Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun x hx => hC x (hu1 hx)
     _ = _ := by rw [Finset.sum_const, Finset.card_powersetCard, nsmul_eq_mul]
 
+/- English proof (translation)
+Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hD τ hτ`. Use `set B := Metric.ball τ (ε / 2)`. Establish `hKD : Metric.closedBall τ (ε / 2) ⊆ D` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Establish `hBD : B ⊆ D` using `Metric.ball_subset_closedBall.trans hKD`. Take `⟨n, hn⟩` from `hcount σ (Y ∩ A ⁻¹' B) d A B δ Metric.isOpen_ball (convex_ball τ _).isPreconnected (fun x hx => hx.2) (fun K hK hKc => by`.
+
+Use `hprop K (hK.trans hBD) hKc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x; exact ⟨fun h => ⟨h.1.1, h.2⟩, fun h => ⟨⟨h.1, hK h.2⟩, h.2⟩⟩) (hδ.mono hBD) (by`. Introduce `x hx hδx`. Take `⟨O, V, g, hO, hV, hxV, hg, hsec, hYV⟩` from `hchart x hx.1 hδx`. Use `⟨O ∩ B, V, g, hO.inter Metric.isOpen_ball, hV, hxV, hg.continuousOn.mono inter_subset_left, fun y hy => hsec y hy.1, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hzY, hzB⟩, hzV⟩`. Take `⟨w, hw, rfl⟩ : z ∈ g '' O` from `hYV ▸ ⟨hzY, hzV⟩`. Use `⟨w, ⟨hw, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Establish `: A (g w) ∈ B` using `hzB`. Rewrite `this` using `[hsec w hw]`. Then use the resulting hypothesis. Introduce and unpack `⟨w, ⟨hw, hwB⟩, rfl⟩`. Establish `hm : g w ∈ Y ∩ V` using `hYV ▸ mem_image_of_mem g hw`. Use `⟨⟨hm.1, ?_⟩, hm.2⟩` and prove the remaining obligations.
+
+Use `show A (g w) ∈ B`. Rewrite using `[hsec w hw])` and apply the resulting hypothesis. Take `⟨C, hC⟩` from `(hprop _ hKD (isCompact_closedBall τ _)).exists_bound_of_continuousOn l.continuous.continuousOn`. Use `⟨B, Metric.ball_mem_nhds τ (half_pos hε), (Metric.isBounded_iff_subset_closedBall 0).2 ⟨(n.choose j : ℝ) * C ^ j, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨⟨htB, -⟩, htδ⟩, rfl⟩`.
+
+Establish `hfib : {x | x ∈ Y ∩ A ⁻¹' B ∧ A x = t} = {x | x ∈ Y ∧ A x = t}`. Use extensionality with `x`. Conclude with `⟨fun h => ⟨h.1.1, h.2⟩, fun h => ⟨⟨h.1, show A x ∈ B from h.2 ▸ htB⟩, h.2⟩⟩`. Establish `hcard` using `hn t htB htδ`. Rewrite `hcard` using `[hfib]`.
+
+Establish `hfin : {x | x ∈ Y ∧ A x = t}.Finite` using `Set.finite_of_encard_eq_coe hcard`. Rewrite `hcard` using `[hfin.encard_eq_coe_toFinset_card, Nat.cast_inj]`. Rewrite using `[Metric.mem_closedBall, dist_zero_right, fibreEsymm_eq hfin.toFinset hfin.coe_toFinset, ← hcard]`. Use `norm_esymm_map_le _ _ _ fun x hx => hC x ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`.
+
+Conclude with `⟨hx.1, hx.2 ▸ Metric.ball_subset_closedBall htB⟩`.
+-/
 theorem fibreEsymm_locally_bounded (hcount : UnbranchedProperCountConstant.Statement) {σ : Type} [Fintype σ]
     {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)} {D : Set (Fin d → ℂ)} {δ : (Fin d → ℂ) → ℂ}
     (l : (σ → ℂ) →L[ℂ] ℂ) (j : ℕ) (hD : IsOpen D)
@@ -181,6 +236,11 @@ theorem fibreEsymm_locally_bounded (hcount : UnbranchedProperCountConstant.State
   rw [Set.Finite.mem_toFinset] at hx
   exact ⟨hx.1, hx.2 ▸ Metric.ball_subset_closedBall htB⟩
 
+/- English proof (translation)
+Establish `h` using `hcirc (Fin k) (fun p => F p.1 * p.2⁻¹) (U ×ˢ {s | s ≠ 0}) U 0 1 zero_le_one (hU.prod isOpen_ne) hU ((hF.comp differentiable_fst.differentiableOn fun p hp => hp.1).mul (differentiable_snd.differentiableOn.inv fun p hp => hp.2)) (fun x hx s hs => ⟨hx, by rintro rfl; simp at hs⟩)`. Establish `hinv : (∮ z in C(0, 1), z⁻¹) = 2 * π * I`. Simplify using `using circleIntegral.integral_sub_inv_of_mem_ball (c := 0) (w := 0) (R := 1) (by simp)`. Introduce `x hx`. Use `((h x hx).mul (analyticAt_const (v := (2 * π * I)⁻¹))).congr (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Establish `h2 : (2 * π * I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, I_ne_zero]`. Simplify using `only [Pi.mul_apply, circleIntegral.integral_const_mul, hinv]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem analyticOnNhd_of_differentiableOn (hcirc : ParametricCircleIntegralAnalytic.Statement) {k : ℕ}
     {U : Set (Fin k → ℂ)} {F : (Fin k → ℂ) → ℂ} (hU : IsOpen U) (hF : DifferentiableOn ℂ F U) :
     AnalyticOnNhd ℂ F U := by
@@ -201,6 +261,9 @@ end ProperSheetedFibreEsymm
 
 open ProperSheetedFibreEsymm in
 
+/- English proof (translation)
+Introduce `σ _ Y d A D δ l j hD _ hprop hδ hW hchart`. Take `⟨F, hFd, hFeq⟩` from `hriem d D δ (fibreEsymm Y A l j) hD hδ.differentiableOn hW (fun t ht => (fibreEsymm_analyticAt l j hD hprop hchart ht.1 ht.2).differentiableAt.differentiableWithinAt) (fun τ hτ => fibreEsymm_locally_bounded hcount l j hD hprop hδ hchart hτ)`. Use `⟨F, analyticOnNhd_of_differentiableOn hcirc hD hFd, fun t ht hδt s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[hFeq ⟨ht, hδt⟩, fibreEsymm_eq s hs]`.
+-/
 theorem ProperSheetedFibreEsymm.proof (hcount : UnbranchedProperCountConstant.Statement)
     (hriem : RiemannExtensionAnalytic.Statement) (hcirc : ParametricCircleIntegralAnalytic.Statement) :
     ProperSheetedFibreEsymm.Statement := by

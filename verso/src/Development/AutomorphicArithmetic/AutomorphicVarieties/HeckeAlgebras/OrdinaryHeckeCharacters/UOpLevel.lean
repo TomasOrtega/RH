@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.IwMemMul
 open IsLocalRing Matrix UpperTheory.V.Hi
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨n, hn, e⟩` from `Subgroup.mem_map.1 h`. Establish `e2 : a * n * a⁻¹ = x` using `e`. Establish `: a⁻¹ * x * a = n` using `by rw [← e2]; group`.
+
+Rewrite using `[this]` and apply the resulting hypothesis. Introduce `h`. Use `Subgroup.mem_map.2 ⟨_, h, ?_⟩` and prove the remaining obligations. Use `show a * (a⁻¹ * x * a) * a⁻¹ = x`. Use `group`.
+-/
 private theorem uOpLevel_mem {G : Type} [Group G] (I : Iwa G) (a x : G) :
     x ∈ I.Nconj a ↔ a⁻¹ * x * a ∈ I.N := by
   constructor
@@ -17,6 +22,19 @@ private theorem uOpLevel_mem {G : Type} [Group G] (I : Iwa G) (a x : G) :
     show a * (a⁻¹ * x * a) * a⁻¹ = x
     group
 
+/- English proof (translation)
+Introduce `y hy`. Establish `mul : ∀ (g h : G) (w : M), π (g * h) w = π g (π h w)` using `fun g h w => by`. Rewrite using `[map_mul π g h, Module.End.mul_apply]`. Take `⟨⟨s, hs, hu⟩, h2⟩` from `uOpSum G I A M π a ha`. Establish `key : ∀ u : s, ∃ u' : s, ∃ k ∈ I.Iw c, π k v = v ∧ y * (u * a) = u' * a * k`.
+
+Introduce `u`. Take `⟨x, hx, t, ht, y', hy', e⟩` from `I.swap c y hy u (hs _ u.2)`. Take `⟨u', ⟨hu', hx'⟩, -⟩` from `hu x hx`. Rewrite `hx'` using `[uOpLevel_mem]`. Establish `hc : t * a = a * t` using `I.comm t (I.T_le (I.Tc_le c ht)) a (I.P_le a ha)`.
+
+Use `⟨⟨u', hu'⟩, (a⁻¹ * (u'⁻¹ * x) * a) * t * (a⁻¹ * y' * a), (iwMem G I c _).1.2 ⟨_, hx', t, I.Tc_le c ht, _, I.P_Nm c a ha y' hy', rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul, hm y' hy', mul, hT t ht, hN _ hx']`. Establish `h2 : t = a * t * a⁻¹` using `by rw [← hc]; group`. Combine the equalities or inequalities in the displayed calculation. Use `choose σ k hk hkv he using key`.
+
+Establish `inj : Function.Injective σ`. Introduce `u w h`. Establish `e : a⁻¹ * ((u : G)⁻¹ * w) * a = (k u)⁻¹ * k w`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : a⁻¹ * ((u : G)⁻¹ * w) * a ∈ I.Nf`.
+
+Simplify using `using I.Tf_Nf a⁻¹ (inv_mem (I.P_le a ha)) _ (I.N_le (mul_mem (inv_mem (hs _ u.2)) (hs _ w.2)))`. Establish `h3` using `(iwMem G I c _).2.2 h1 (e ▸ mul_mem (inv_mem (hk u)) (hk w))`. Conclude with `Subtype.ext ((hu w (hs _ w.2)).unique ⟨u.2, (uOpLevel_mem I a _).2 h3⟩ ⟨w.2, by simp⟩)`. Rewrite using `[(h2 s hs hu).2 v hN, map_sum, ← Finset.sum_coe_sort s, ← Finset.sum_coe_sort s, ← (Finite.injective_iff_bijective.1 inj).sum_comp (fun u : s => π (u * a) v)]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul, he u, mul, hkv u]`.
+-/
 private theorem uOpLevel_core {G : Type} [Group G] (I : Iwa G) {A M : Type} [CommRing A] [AddCommGroup M]
     [Module A M] (π : Representation A G M) (c : ℕ) {a : G} (ha : a ∈ I.P) {v : M} (hN : v ∈ fixd π I.N)
     (hT : v ∈ fixd π (I.Tc c)) (hm : ∀ y ∈ I.Nm c, π (a⁻¹ * y * a) v = v) :
@@ -55,6 +73,11 @@ private theorem uOpLevel_core {G : Type} [Group G] (I : Iwa G) {A M : Type} [Com
   refine Finset.sum_congr rfl fun u _ => ?_
   rw [← mul, he u, mul, hkv u]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun u hu => h u (Subgroup.mem_sup_left (Subgroup.mem_sup_left hu)), fun u hu => h u (Subgroup.mem_sup_left (Subgroup.mem_sup_right hu)), fun u hu => h u (Subgroup.mem_sup_right hu)⟩`. Introduce and unpack `⟨h1, h2, h3⟩ g hg`. Take `⟨x, hx, t, ht, y, hy, rfl⟩` from `(iwMem G I c g).2.1.1 hg`.
+
+Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h3 y hy, h2 t ht, h1 x hx]`.
+-/
 private theorem fixed_pro_unipotent_iff {G : Type} [Group G] (I : Iwa G) {A M : Type} [CommRing A] [AddCommGroup M]
     [Module A M] (π : Representation A G M) (c : ℕ) (v : M) :
     v ∈ fixd π (I.I1 c) ↔ v ∈ fixd π I.N ∧ v ∈ fixd π (I.Tc c) ∧ v ∈ fixd π (I.Nm c) := by
@@ -67,6 +90,15 @@ private theorem fixed_pro_unipotent_iff {G : Type} [Group G] (I : Iwa G) {A M : 
     obtain ⟨x, hx, t, ht, y, hy, rfl⟩ := (iwMem G I c g).2.1.1 hg
     rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h3 y hy, h2 t ht, h1 x hx]
 
+/- English proof (translation)
+Introduce `G _ I A M _ _ _ π c`. Establish `gen : ∀ a ∈ I.P, ∀ v, v ∈ fixd π I.N → v ∈ fixd π (I.Tc c) → (∀ y ∈ I.Nm c, π (a⁻¹ * y * a) v = v) → I.uOp π a v ∈ fixd π (I.I1 c)`. Introduce `a ha v hN hT hm`. Take `⟨h1, -, -, h2, -⟩` from `uOpMul G I A M π a a ha ha v hN`. Conclude with `(fixed_pro_unipotent_iff I π c _).2 ⟨h1, fun t ht => by rw [h2 t (I.Tc_le c ht), hT t ht], uOpLevel_core I π c ha hN hT hm⟩`.
+
+Use `⟨fun a ha v hv => ?_, fun v hN hT hm => gen _ I.z_mem v hN hT fun y hy => hm _ (I.z_Nm c y hy), fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨hN, hT, hm⟩` from `(fixed_pro_unipotent_iff I π c v).1 hv`. Conclude with `gen a ha v hN hT fun y hy => hm _ (I.P_Nm c a ha y hy)`. Establish `gen' : ∀ a ∈ I.P, ∀ v, v ∈ fixd π I.N → (∀ t : I.T, π t v = (((φ t)⁻¹ : Aˣ) : A) • v) → (∀ y ∈ I.Nm c, π (a⁻¹ * y * a) v = v) → I.uOp π a v ∈ I.eig π c φ`. Introduce `a ha v hN hT hm`.
+
+Establish `hT' : v ∈ fixd π (I.Tc c)` using `fun t ht => by`. Use `hT ⟨t, I.Tc_le c ht⟩` as an intermediate fact. Rewrite `this` using `[hφ _ ht]`. Simplify using `using this`. Take `⟨h1, -, -, h2, -⟩` from `uOpMul G I A M π a a ha ha v hN`.
+
+Conclude with `⟨h1, uOpLevel_core I π c ha hN hT' hm, fun t => by rw [h2 t t.2, hT t, map_smul]⟩`. Conclude with `⟨fun a ha v hv => gen' a ha v hv.1 hv.2.2 fun y hy => hv.2.1 _ (I.P_Nm c a ha y hy), fun v hv => gen' _ I.z_mem v hv.1 hv.2.2 fun y hy => hv.2.1 _ (I.z_Nm c y hy)⟩`.
+-/
 theorem UpperTheory.V.Hi.uOpLevel :
     ∀ (G : Type) [Group G] (I : Iwa G) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (π : Representation A G M) (c : ℕ), (∀ a ∈ I.P, ∀ v ∈ fixd π (I.I1 c), I.uOp π a v ∈ fixd π (I.I1 c)) ∧ (∀ v, v ∈ fixd π I.N → v ∈ fixd π (I.Tc c) → v ∈ fixd π (I.Nm (c + 1)) → I.uOp π I.z v ∈ fixd π (I.I1 c)) ∧ ∀ φ : I.T →* Aˣ, (∀ t : I.T, (t : G) ∈ I.Tc c → φ t = 1) → (∀ a ∈ I.P, ∀ v ∈ I.eig π c φ, I.uOp π a v ∈ I.eig π c φ) ∧ ∀ v ∈ I.eig π (c + 1) φ, I.uOp π I.z v ∈ I.eig π c φ := by
   intro G _ I A M _ _ _ π c

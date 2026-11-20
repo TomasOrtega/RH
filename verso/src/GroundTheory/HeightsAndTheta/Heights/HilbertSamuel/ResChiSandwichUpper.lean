@@ -15,6 +15,19 @@ noncomputable section
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {D : ℕ}
 
+/- English proof (translation)
+Take `⟨Δ, hΔ0, hΔ⟩` from `exists_isDiscr hfr`. Establish `hFc : Continuous fun w : Fin (D + 1) → ℂ => ‖∑ k, c k * eval w (map (Int.castRingHom ℂ) (g k))‖` using `(continuous_finsetSum _ fun k _ => continuous_const.mul (continuous_eval _)).norm`. Establish `hGc : Continuous fun w : Fin (D + 1) → ℂ => (projDeg x e : ℝ) * S * Real.sqrt (sqN w) ^ N`. Unfold `sqN`. Use `fun_prop`.
+
+Establish `hgood : ∀ w ∈ {w : Fin (D + 1) → ℂ | eval w Δ ≠ 0}, w ∈ {w : Fin (D + 1) → ℂ | ‖∑ k, c k * eval w (map (Int.castRingHom ℂ) (g k))‖ ≤ (projDeg x e : ℝ) * S * Real.sqrt (sqN w) ^ N}`. Introduce `w hw`. Take `⟨hfin, hcard, -, htrace⟩` from `hΔ w hw`. Simplify using `only [Set.mem_ofPred_eq]`. Establish `hsum : ∑ k, c k * eval w (map (Int.castRingHom ℂ) (g k)) = ∑ z ∈ hfin.toFinset, ∑ k, c k * eval z (map (Int.castRingHom ℂ) (f k))`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[htrace N (f k) (g k) (hf k) (hg k) (htr k), finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum]`. Rewrite using `[hsum]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+
+Establish `hb : ∀ z ∈ hfin.toFinset, ‖∑ k, c k * eval z (map (Int.castRingHom ℂ) (f k))‖ ≤ S * Real.sqrt (sqN w) ^ N`. Introduce `z hz`. Rewrite `hz` using `[Set.Finite.mem_toFinset]`. Establish `h` using `hS z hz.1`. Establish `hw' : z ∘ e = w` using `funext hz.2`.
+
+Rewrite `h` using `[pnorm_eq_sqN, hw']`. Then use the resulting hypothesis. Use `(Finset.sum_le_sum hb).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul, ← Set.ncard_eq_toFinset_card _ hfin, hcard, mul_assoc]`. Establish `hcl` using `closure_minimal hgood (isClosed_le hFc hGc)`. Rewrite `hcl` using `[(dense_eval_ne_zero hΔ0).closure_eq]`.
+
+Conclude with `hcl (Set.mem_univ w)`.
+-/
 theorem trace_comb_le {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) {N r : ℕ}
     (f : Fin r → MvPolynomial (Ix κ) ℤ) (g : Fin r → MvPolynomial (Fin (D + 1)) ℤ)
     (hf : ∀ k, (f k).IsHomogeneous N) (hg : ∀ k, (g k).IsHomogeneous N)
@@ -58,6 +71,19 @@ theorem trace_comb_le {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsPr
   rw [(dense_eval_ne_zero hΔ0).closure_eq] at hcl
   exact hcl (Set.mem_univ w)
 
+/- English proof (translation)
+Use `choose F hFh hFb using hb.1`. Use `set β := bNormSq μ (fun j => secFun (b j)) (wgt m n) c with hβ`. Establish `hβ0 : 0 ≤ β` using `bNormSq_nonneg' μ m _ c`. Use `set S := Cε * Real.sqrt (B * β) with hSdef`. Establish `hl : ∀ l, ∫ w, ‖∑ j, c j * eval w (map (Int.castRingHom ℂ) (g j l))‖ ^ 2 ∂(sphProb (D + 1)) ≤ ((projDeg x e : ℝ) * S) ^ 2`.
+
+Introduce `l`. Establish `htr : ∀ j, aeval (x ∘ e) (g j l) = secTrace x e (n + k) (aeval x (F j * H l))` using `fun j => by`. Rewrite using `[hgv, map_mul, hFb j, aeval_map_intQ]`. Establish `hS : ∀ z ∈ pts (coordIdeal ℤ x), ‖∑ j, c j * eval z (map (Int.castRingHom ℂ) (F j * H l))‖ ≤ S * pnorm e z ^ (n + k)`. Introduce `z hz`.
+
+Establish `hmz : m.ρ z = pnorm e z` using `hFS z hz`. Establish `e1 : ∑ j, c j * eval z (map (Int.castRingHom ℂ) (F j * H l)) = (∑ j, c j * secFun (b j) z) * eval z (map (Int.castRingHom ℂ) (H l))`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hFb j, secFun_map_intQ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, norm_mul, hSdef, pow_add, ← hmz]`. Establish `h1` using `norm_le_of_sq_wgt_le hz.1 (norm_nonneg _) (mul_nonneg hB hβ0) (hsup c z hz)`. Establish `h2` using `hCε l z hz`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `integral_sphProb_le _ (fun w => sq_nonneg _) fun w hw => ?_` and prove the remaining obligations. Establish `ht` using `trace_comb_le hfr (fun j => F j * H l) (fun j => g j l) (fun j => (hFh j).mul (hH l)) (fun j => hgh j l) htr c hS w`. Rewrite `ht` using `[hw, Real.sqrt_one, one_pow, mul_one]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) ht 2`. Rewrite using `[quad_conj, quad_monoDiag]`.
+
+Repeatedly rewrite using `[sum_monoNormSq_traceMat g hgh c]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, hSdef, mul_pow, mul_pow, Real.sq_sqrt (mul_nonneg hB hβ0)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quad_upper_pull {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
     {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) (hFS : IsPullFS x e m)
     {n k r : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ} (hb : IsSecBasis x n b)
@@ -113,6 +139,33 @@ theorem quad_upper_pull {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Me
         Real.sq_sqrt (mul_nonneg hB hβ0)]
       ring
 
+/- English proof (translation)
+Establish `hrat` using `hfr.isRatProjFrame`. Take `⟨k, ε, hε, hli⟩` from `exists_indep_sections x e hrat`. Establish `hεH : ∀ l, ∃ Hl : MvPolynomial (Ix κ) ℤ, Hl.IsHomogeneous k ∧ aeval x Hl = ε l` using `fun l => by`. Take `⟨p, hp, hpe⟩` from `Submodule.mem_map.mp (hε l)`. Conclude with `⟨p, (mem_homogeneousSubmodule _ _).mp hp, hpe⟩`.
+
+Use `choose H hHh hHe using hεH`. Establish `hHe' : (fun l => aeval x (H l)) = ε` using `funext hHe`. Establish `hCl : ∀ l, ∃ S : ℝ, 0 ≤ S ∧ ∀ z ∈ pts (coordIdeal ℤ x), ‖eval z (map (Int.castRingHom ℂ) (H l))‖ ≤ S * pnorm e z ^ k` using `fun l => form_le_pnorm hfr k _ ((hHh l).map _)`. Use `choose Cl _ hCl using hCl`. Use `set Cε := ∑ l, |Cl l| with hCεdef`.
+
+Establish `hCε : ∀ l, ∀ z ∈ pts (coordIdeal ℤ x), ‖eval z (map (Int.castRingHom ℂ) (H l))‖ ≤ Cε * m.ρ z ^ k` using `fun l z hz => by`. Establish `hmz : m.ρ z = pnorm e z` using `hFS z hz`. Rewrite using `[hmz]`. Conclude with `(hCl l z hz).trans (mul_le_mul_of_nonneg_right ((le_abs_self _).trans (Finset.single_le_sum (f := fun i => |Cl i|) (fun i _ => abs_nonneg _) (Finset.mem_univ l))) (pow_nonneg (pnorm_nonneg e z) _))`. Take `⟨K, hK⟩` from `hsup`.
+
+Take `⟨k', hk'⟩` from `finrank_sec_le x e hfr`. Use `set T : ℝ := max 1 ((projDeg x e : ℝ) ^ 3 * Cε ^ 2 * |K|) with hTdef`. Establish `hT1 : 1 ≤ T` using `le_max_left _ _`. Use `⟨k, (projDeg x e : ℝ) * ((1 + k' + D : ℕ) : ℝ) ^ D * ((1 / 2) * (Real.log T / Real.log 2 + D)), fun n hn r b hb => ?_⟩` and prove the remaining obligations. Take `rfl` from `hb.card_eq`.
+
+Use `choose F hFh hFb using hb.1`. Establish `hbF : ∀ j, aeval x (b j) = aeval x (F j)` using `fun j => by rw [hFb j, aeval_map_intQ]`. Establish `hgex : ∀ j l, ∃ p : MvPolynomial (Fin (D + 1)) ℤ, p.IsHomogeneous (n + k) ∧ aeval (x ∘ e) p = secTrace x e (n + k) (aeval x (b j) * aeval x (H l))` using `fun j l => by`. Establish `hmem : aeval x (b j) * aeval x (H l) ∈ sec ℤ x (n + k)`. Rewrite using `[hbF j, ← map_mul]`.
+
+Conclude with `Submodule.mem_map.mpr ⟨F j * H l, (mem_homogeneousSubmodule _ _).mpr ((hFh j).mul (hHh l)), rfl⟩`. Take `⟨p, hp, hpe⟩` from `Submodule.mem_map.mp (secTrace_mem x e hfr (n + k) hmem)`. Conclude with `⟨p, (mem_homogeneousSubmodule _ _).mp hp, hpe⟩`. Use `choose g hgh hgv using hgex`. Establish `hinj` using `traceMat_injective hrat hb H hHh (by rw [hHe']; exact hli) g hgh hgv`.
+
+Establish `hr` using `le_of_injective_mulVec _ hinj`. Establish `hG'` using `hpd n _ b hb`. Establish `hG` using `monoDiag_posDef D (n + k) (projDeg x e)`. Use `set A := Real.sqrt (T * (n : ℝ) ^ D) with hAdef`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+
+Establish `hTn : 1 ≤ T * (n : ℝ) ^ D` using `one_le_mul_of_one_le_of_one_le hT1 (one_le_pow₀ hn1)`. Establish `hA : 0 < A` using `Real.sqrt_pos.mpr (by linarith)`. Establish `hA2 : A ^ 2 = T * (n : ℝ) ^ D` using `Real.sq_sqrt (by linarith)`. Establish `hnorm : (((A : ℂ) ^ 2) • bGram μ (fun j => secFun (b j)) (wgt m n) - ((traceMat D (n + k) g).map (Int.cast : ℤ → ℂ))ᴴ * monoDiag D (n + k) (projDeg x e) * (traceMat D (n + k) g).map (Int.cast : ℤ → ℂ)).PosSemidef`. Use `psd_sub_of_quad_le (isHermitian_sq_smul hG'.isHermitian A) (Matrix.isHermitian_conjTranspose_mul_mul _ hG.isHermitian) fun c => ?_` and prove the remaining obligations.
+
+Establish `hq` using `quad_upper_pull hfr hFS hb H hHh g hgh hgv hCε (mul_nonneg (abs_nonneg K) (pow_nonneg (Nat.cast_nonneg n) D)) (fun c z hz => (hK n _ b hn hb c z hz).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self K) (pow_nonneg (Nat.cast_nonneg n) D)) (bNormSq_nonneg' …`. Establish `hβ0` using `bNormSq_nonneg' μ m (n := n) (fun j => secFun (b j)) c`. Establish `hre : (star c ⬝ᵥ (((A : ℂ) ^ 2) • bGram μ (fun j => secFun (b j)) (wgt m n)) *ᵥ c).re = A ^ 2 * bNormSq μ (fun j => secFun (b j)) (wgt m n) c`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, ← Complex.ofReal_pow, Complex.re_ofReal_mul, bNormSq_eq_re μ _ _ (hint n _ b hb)]`. Rewrite using `[hre, hA2]`.
+
+Use `hq.trans (mul_le_mul_of_nonneg_right ?_ hβ0)` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) (pow_nonneg (Nat.cast_nonneg n) D)`. Establish `hsmall : ∀ i, ((((1 : Matrix (Fin (projDeg x e * (Finset.Nat.antidiagonalTuple (D + 1) (n + k)).card)) (Fin (projDeg x e * (Finset.Nat.antidiagonalTuple (D + 1) (n + k)).card)) ℤ).map (Int.cast : ℤ → ℂ))ᴴ * monoDiag D (n + k) (projDeg x e) * (1 : Matrix (Fin (projDeg x e * (Finse …`. Introduce `i`.
+
+Rewrite using `[Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one, monoDiag, Matrix.diagonal_apply_eq, Complex.ofReal_re, one_pow]`. Conclude with `monoNormSq_le_one _`. Establish `key` using `neg_log_det_le hr hG' hG _ hinj 1 (by simp) hA one_pos hnorm hsmall`. Rewrite `key` using `[Real.log_one, mul_zero, add_zero, neg_log_det_monoDiag]`. Take `⟨hL0, hL⟩` from `log_sqrt_bound D hT1 hn`.
+
+Establish `hrb : ((finrank ℤ (sec ℤ x n) : ℕ) : ℝ) ≤ (projDeg x e : ℝ) * ((1 + k' + D : ℕ) : ℝ) ^ D * (n : ℝ) ^ D`. Establish `h1 : ((finrank ℤ (sec ℤ x n) : ℕ) : ℝ) ≤ (projDeg x e : ℝ) * (((n + k' + D).choose D : ℕ) : ℝ)`. Conclude with `hk' n` after adjusting the coercions. Rewrite using `[mul_assoc]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left (choose_bound k' D hn) (Nat.cast_nonneg _))`.
+
+Establish `hX : 0 ≤ (projDeg x e : ℝ) * ((1 + k' + D : ℕ) : ℝ) ^ D * (n : ℝ) ^ D` using `by positivity`. Establish `h3 : ((finrank ℤ (sec ℤ x n) : ℕ) : ℝ) * Real.log A ≤ (projDeg x e : ℝ) * ((1 + k' + D : ℕ) : ℝ) ^ D * (n : ℝ) ^ D * ((1 / 2) * (Real.log T / Real.log 2 + D) * Real.log (n + 1))` using `(mul_le_mul_of_nonneg_right hrb hL0).trans (mul_le_mul_of_nonneg_left hL hX)`. Establish `h4 : (projDeg x e : ℝ) * ((1 + k' + D : ℕ) : ℝ) ^ D * (n : ℝ) ^ D * ((1 / 2) * (Real.log T / Real.log 2 + D) * Real.log (n + 1)) = (projDeg x e : ℝ) * ((1 + k' + D : ℕ) : ℝ) ^ D * ((1 / 2) * (Real.log T / Real.log 2 + D)) * (n : ℝ) ^ D * Real.log (n + 1)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem upper {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
     {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) (hFS : IsPullFS x e m)
     (hint : ∀ (n r : ℕ) (b : Fin r → MvPolynomial (Ix κ) ℚ), IsSecBasis x n b → ∀ i j,

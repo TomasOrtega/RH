@@ -13,6 +13,9 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `g`. Establish `h` using `dCMul k V 2 d d' hd hd' g`. Establish `hm : dg (d * d') = dg d * dg d'` using `map_mul _ _ _`. Simplify using `only [Lev.DC, hm] at h`. Conclude with `h`.
+-/
 private theorem uf_dg {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (V : Lev k) (d d' : Fin 2 → kˣ) (hd : Dom d) (hd' : Dom d') : UF (V.J 2) (dg d) (dg d') := by
   intro g
@@ -21,6 +24,19 @@ private theorem uf_dg {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   simp only [Lev.DC, hm] at h
   exact h
 
+/- English proof (translation)
+Introduce `F _ _ Δ A hA g d hg`. Set `P` to `rpg (fun v => ↥(DX ((cv v) Δ))) (fun v => KD ((cv v) Δ) (Ov v))`. Establish `hpv : ∀ (x : DA Δ) v, P.p v x = (x : (v : Pl F) → ↥(DX ((cv v) Δ))) v` using `fun _ _ => rfl`. Establish `hU : ∀ v ∉ A.Sg, A.dat.J2v v = KD ((cv v) Δ) (Ov v)`. Introduce `v hv`.
+
+Simplify using `[Dat.J2v, SD.dat, hv]`. Establish `hJ : ∀ v (hv : v ∈ A.Sg), A.dat.J2v v = Subgroup.comap (eD (A.hs v hv)) ((A.V v).J 2)`. Introduce `v hv`. Simplify using `[Dat.J2v, SD.dat, hv, Lev.data]`. Establish `hok` using `datOk F Δ A hA`.
+
+Establish `hout : ∀ (x : DA Δ) (e : ParN F 2), A.IsElD x e → ∀ v ∉ A.Sg, P.p v x ∈ A.dat.J2v v`. Introduce `x e hx v hv`. Rewrite using `[hU v hv, hpv, hx.2 v hv]`. Conclude with `one_mem _`. Establish `hbox` using `uFBox (Pl F) (DA Δ) (fun v => ↥(DX ((cv v) Δ))) (fun v => KD ((cv v) Δ) (Ov v)) A.dat.J2v P A.Sg hU g (hout g d hg)`.
+
+Establish `key : ∀ v (hv : v ∈ A.Sg), UpperTheory.V.AlgebraTools.FinOrb (A.dat.J2v v) (A.dat.J2v v) (P.p v g) ∧ ∀ (g' : DA Δ) (d' : ParN F 2), A.IsElD g' d' → Dom (d v) → Dom (d' v) → UF (A.dat.J2v v) (P.p v g) (P.p v g')`. Introduce `v hv`. Take `⟨hI, h2, hs0, -, -⟩` from `hok.2.2.1 v hv`. Establish `hb` using `(eD_facts (Kv v) (Ov v) hI h2 ((cv v) Δ) (A.s v) (A.hs v hv) hs0).1`. Rewrite using `[hJ v hv]`.
+
+Prove the components needed by the constructor for the conclusion. Establish `dm` using `dcMap _ _ ℂ (eD (A.hs v hv)) hb ((A.V v).J 2) (P.p v g) (P.p v g)`. Rewrite using `[dm.2.1, hpv, hg.1 v hv]`. Conclude with `((finFacts (Kv v) (A.V v)).2.2.2.2.2 2).1 _`. Introduce `g' d' hg' hd hd'`.
+
+Establish `dm` using `dcMap _ _ ℂ (eD (A.hs v hv)) hb ((A.V v).J 2) (P.p v g) (P.p v g')`. Rewrite using `[dm.2.2.1, hpv, hpv, hg.1 v hv, hg'.1 v hv]`. Conclude with `uf_dg (A.V v) (d v) (d' v) hd hd'`. Use `⟨hbox.2.1 (fun v hv => (key v hv).1), fun g' d' hg' hd hd' => ?_⟩` and prove the remaining obligations. Conclude with `hbox.2.2 g' (hout g' d' hg') (fun v hv => (key v hv).2 g' d' hg' (hd v hv) (hd' v hv))`.
+-/
 theorem UpperTheory.V.Z.Sym.So.dMul :
     UpperTheory.V.Z.Sym.So.DMul := by
   intro F _ _ Δ A hA g d hg

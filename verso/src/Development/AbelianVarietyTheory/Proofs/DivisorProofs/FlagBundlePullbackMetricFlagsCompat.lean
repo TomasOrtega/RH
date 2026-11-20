@@ -16,6 +16,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlagPullSquare
 
+/- English proof (translation)
+Unfold `GlobalTheory.GoodMetric.rootDiscr`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Conclude with `Finset.prod_comm' (fun j i => by simp [and_comm])`.
+-/
 theorem prod_Ioi_eq_rootDiscr {ι : Type} [Fintype ι] (r : ι → ℕ) :
     (∏ a, ∏ i : Fin (r a), ∏ i' ∈ Finset.Ioi i,
       (MvPolynomial.X (⟨a, i'⟩ : Σ a, Fin (r a)) - MvPolynomial.X ⟨a, i⟩) : MvPolynomial (Σ a, Fin (r a)) ℝ) =
@@ -24,6 +27,11 @@ theorem prod_Ioi_eq_rootDiscr {ι : Type} [Fintype ι] (r : ι → ℕ) :
   refine Finset.prod_congr rfl fun a _ => ?_
   exact Finset.prod_comm' (fun j i => by simp [and_comm])
 
+/- English proof (translation)
+Establish `h : (GlobalTheory.GoodMetric.rootDiscr r).IsHomogeneous (∑ a, ∑ j : Fin (r a), ∑ _i ∈ Finset.Iio j, 1)`. Unfold `GlobalTheory.GoodMetric.rootDiscr`. Use `IsHomogeneous.prod _ _ _ fun a _ => ?_` and prove the remaining obligations. Use `IsHomogeneous.prod _ _ _ fun j _ => ?_` and prove the remaining obligations. Use `IsHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `(isHomogeneous_X _ _).sub (isHomogeneous_X _ _)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one, Fin.card_Iio]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => j) (r a), Finset.sum_range_id]`.
+-/
 theorem isHomogeneous_rootDiscr {ι : Type} [Fintype ι] (r : ι → ℕ) :
     (GlobalTheory.GoodMetric.rootDiscr r).IsHomogeneous (∑ a, r a * (r a - 1) / 2) := by
   have h : (GlobalTheory.GoodMetric.rootDiscr r).IsHomogeneous (∑ a, ∑ j : Fin (r a), ∑ _i ∈ Finset.Iio j, 1) := by
@@ -37,6 +45,11 @@ theorem isHomogeneous_rootDiscr {ι : Type} [Fintype ι] (r : ι → ℕ) :
   simp only [Finset.sum_const, smul_eq_mul, mul_one, Fin.card_Iio]
   rw [Fin.sum_univ_eq_sum_range (fun j => j) (r a), Finset.sum_range_id]
 
+/- English proof (translation)
+Unfold `GlobalTheory.GoodMetric.antisymm`. Establish `key (w : ∀ a, Equiv.Perm (Fin (r a))) : ((∏ a, Equiv.Perm.sign (w a) : ℤˣ) : ℤ) • rename (fun x : GlobalTheory.GoodMetric.Root r => (⟨x.1, w x.1 x.2⟩ : GlobalTheory.GoodMetric.Root r)) (GlobalTheory.GoodMetric.rootDiscr r) = GlobalTheory.GoodMetric.rootDiscr r`. Establish `e` using `GlobalTheory.GoodMetric.rename_sigmaCongrRight_rootDiscr ι r w`. Establish `e' : (fun x : GlobalTheory.GoodMetric.Root r => (⟨x.1, w x.1 x.2⟩ : GlobalTheory.GoodMetric.Root r)) = Equiv.sigmaCongrRight w`. Use function extensionality and compare the values at `x`.
+
+Break down `x with ⟨a, i⟩` into its components or cases. Both sides reduce to the same expression. Rewrite using `[e', e, smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]`. Rewrite using `[Finset.sum_congr rfl fun w _ => key w, Finset.sum_const, Finset.card_univ, Fintype.card_pi, ← Nat.cast_smul_eq_nsmul ℝ]`. Simplify using `[Fintype.card_perm]`.
+-/
 theorem antisymm_rootDiscr {ι : Type} [Fintype ι] (r : ι → ℕ) :
     GlobalTheory.GoodMetric.antisymm (GlobalTheory.GoodMetric.rootDiscr r) =
       (∏ a, ((r a).factorial : ℝ)) • GlobalTheory.GoodMetric.rootDiscr r := by
@@ -55,6 +68,13 @@ theorem antisymm_rootDiscr {ι : Type} [Fintype ι] (r : ι → ℕ) :
     ← Nat.cast_smul_eq_nsmul ℝ]
   simp [Fintype.card_perm]
 
+/- English proof (translation)
+Introduce `HP k _ B Y _ _ q p D hq hp π w ι _ E r h H fl hfl m s hs Ψ hΨ`. Establish `hq'` using `hq.toIsArithVar`. Establish `hE : ∀ a, GlobalTheory.VB.IsVB (E a) (r a)` using `fun a => (h a).isVB`. Establish `hD : D - 1 = ∑ a, r a * (r a - 1) / 2`. Use `GlobalTheory.T.flag_bundle_smooth_relative_dimension B Y π ι E r fl hE hfl` as an intermediate fact.
+
+Use `hq'.isLocallyNoetherian` as an intermediate fact. Establish `h₁` using `(GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective B Y π (∑ a, r a * (r a - 1) / 2) 1 (GlobalTheory.FlagSurj.isFlagBundle_surjective B Y π ι E r fl hE hfl) hq'.dim_eq).symm.trans hp.dim_eq`. Establish `h₂ : 1 + (∑ a, r a * (r a - 1) / 2) + 1 = D + 1` using `by exact_mod_cast h₁`. Use linear arithmetic over natural numbers and integers. Take `⟨Φ, hΦ⟩` from `((HP.p4.arExists k B q 1 hq').2 (Σ a, Fin (r a)) fun z : Σ a, Fin (r a) => VMetric.grLB (m z.1) z.2 (H z.1)).1`.
+
+Establish `hP : (∑ z : Σ a, Fin (r a), MvPolynomial.X z ^ 2 : MvPolynomial (Σ a, Fin (r a)) ℝ).IsHomogeneous (1 + 1)` using `IsHomogeneous.sum _ _ _ fun z _ => isHomogeneous_X_pow z 2`. Establish `key` using `GlobalTheory.T.flag_bundle_metric_setup HP k B Y q p 1 D hq' hq.regular hp π w ι E r h H fl hfl (Σ a, Fin (r a)) (fun z : Σ a, Fin (r a) => VMetric.grLB (m z.1) z.2 (H z.1)) Φ Ψ hΦ hΨ _ _ _ hP (hD ▸ isHomogeneous_rootDiscr r) (antisymm_rootDiscr r)`. Rewrite using `[prod_Ioi_eq_rootDiscr, mul_comm, key, map_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun z _ => HermLB.IsSelfInter.unique hq' (((HP.p4.arIso k B q 1 hq').2 _ _ Φ hΦ).1 z) (hs z)`.
+-/
 theorem powerSum_pull_vandermonde : Hypotheses2 → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (D : ℕ), IsRegSurf q → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ (m : ∀ a, Vert.Flag (E a) (r a)) (s : (Σ a, Fin (r a)) → ℝ), (∀ z, (VMetric.grLB (m z.1) z.2 (H z.1)).IsSelfInter (s z)) → ∀ Ψ : MvPolynomial ((Σ a, Fin (r a)) ⊕ (Σ a, Fin (r a))) ℝ →ₗ[ℝ] ℝ, IsArFun (Sum.elim (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) (fun z : Σ a, Fin (r a) => (VMetric.grLB (m z.1) z.2 (H z.1)).pull π w)) D Ψ → Ψ (rename Sum.inr (∑ z : Σ a, Fin (r a), MvPolynomial.X z ^ 2) * rename Sum.inl (∏ a, ∏ i : Fin (r a), ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (⟨a, i'⟩ : Σ a, Fin (r a)) - MvPolynomial.X ⟨a, i⟩))) = (∏ a, ((r a).factorial : ℝ)) * ∑ z, s z := by
   intro HP k _ B Y _ _ q p D hq hp π w ι _ E r h H fl hfl m s hs Ψ hΨ
   have hq' := hq.toIsArithVar

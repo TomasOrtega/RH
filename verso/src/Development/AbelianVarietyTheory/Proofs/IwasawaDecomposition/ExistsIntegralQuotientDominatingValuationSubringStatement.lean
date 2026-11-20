@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DomValInt.exists_integral_quotient | exact GlobalTheory.DomValInt.exists_integral_quotient | (intros; apply GlobalTheory.DomValInt.exists_integral_quotient <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_integral_quotient_dominating_valuationSubring : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (F : Type) [Field F]
     [Algebra (FractionRing W) F] [Algebra.IsAlgebraic (FractionRing W) F] [Algebra W F]
     [IsScalarTower W (FractionRing W) F] (O : ValuationSubring F),

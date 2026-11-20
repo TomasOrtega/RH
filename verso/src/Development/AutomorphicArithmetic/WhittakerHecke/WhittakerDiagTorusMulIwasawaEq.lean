@@ -8,9 +8,15 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem sc_val {R : Type} [CommRing R] (z : Rˣ) :
     (Matrix.GeneralLinearGroup.scalar (Fin 2) z).val = Matrix.diagonal fun _ => (z : R) := rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Units.val_mul, Units.val_mul, gl_val, gl_val]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aE, nU, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+-/
 private theorem aE_nU (y : (A ℚ)ˣ) (b : A ℚ) :
     aE y * gl (nU b) = gl (nU ((y : A ℚ) * b)) * aE y := by
   refine Units.ext ?_
@@ -18,6 +24,11 @@ private theorem aE_nU (y : (A ℚ)ˣ) (b : A ℚ) :
   rw [Units.val_mul, Units.val_mul, gl_val, gl_val]
   fin_cases i <;> fin_cases j <;> simp [aE, nU, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Units.val_mul, Units.val_mul, gl_val, sc_val]`. Establish `hz : ((ζ⁻¹ : (A ℚ)ˣ) : A ℚ) * (ζ : A ℚ) = 1` using `Units.inv_mul ζ`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aE, mD, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]`.
+
+Take the linear combination `(-(y : A ℚ) * (ζ : A ℚ)) * hz`.
+-/
 private theorem aE_mD (y ζ : (A ℚ)ˣ) :
     aE y * gl (mD ζ) = Matrix.GeneralLinearGroup.scalar (Fin 2) ζ⁻¹ * aE (y * ζ ^ 2) := by
   refine Units.ext ?_
@@ -27,6 +38,9 @@ private theorem aE_mD (y ζ : (A ℚ)ˣ) :
   fin_cases i <;> fin_cases j <;> simp [aE, mD, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]
   linear_combination (-(y : A ℚ) * (ζ : A ℚ)) * hz
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [UpperTheory.ConvolutionTheory.RankTwoDescent.em, nE, Matrix.GeneralLinearGroup.map_apply, gl_val]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nU, Dat.mkE]`.
+-/
 private theorem em_nU {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (x : A ℚ) :
     em E (gl (nU x)) = nE D ![x, 0] := by
   refine Units.ext ?_
@@ -34,6 +48,9 @@ private theorem em_nU {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (x : 
   simp only [UpperTheory.ConvolutionTheory.RankTwoDescent.em, nE, Matrix.GeneralLinearGroup.map_apply, gl_val]
   fin_cases i <;> fin_cases j <;> simp [nU, Dat.mkE]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [UpperTheory.ConvolutionTheory.RankTwoDescent.em, Matrix.GeneralLinearGroup.map_apply, sc_val, coe_ideleEmbedding]`. Apply the tactic sequence `by_cases e : i = j <;> simp [e, Matrix.diagonal]`.
+-/
 private theorem em_sc {E : Type} [Field E] [NumberField E] (z : (A ℚ)ˣ) :
     em E (Matrix.GeneralLinearGroup.scalar (Fin 2) z) = Matrix.GeneralLinearGroup.scalar (Fin 2) (ideleEmbedding ℚ E z) := by
   refine Units.ext ?_
@@ -41,6 +58,9 @@ private theorem em_sc {E : Type} [Field E] [NumberField E] (z : (A ℚ)ˣ) :
   simp only [UpperTheory.ConvolutionTheory.RankTwoDescent.em, Matrix.GeneralLinearGroup.map_apply, sc_val, coe_ideleEmbedding]
   by_cases e : i = j <;> simp [e, Matrix.diagonal]
 
+/- English proof (translation)
+Unfold `Wo`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[← mul_assoc, hl κ hκ]`.
+-/
 private theorem Wo_lev {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) {φ : GL (Fin 2) (A E) → ℂ} {N : ℕ}
     (hl : ∀ k, Lev N k → ∀ g, φ (g * em E k) = φ g) {κ : GL (Fin 2) (A ℚ)} (hκ : Lev N κ) (h : GL (Fin 2) (A E)) :
     Wo D φ (h * em E κ) = Wo D φ h := by
@@ -49,6 +69,13 @@ private theorem Wo_lev {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) {φ 
   simp only []
   rw [← mul_assoc, hl κ hκ]
 
+/- English proof (translation)
+Introduce `E _ _ D ω φ hφ N hl y ζ b r κ hκ`. Take `⟨-, -, hn, hz⟩` from `UpperTheory.whittakerFunction_continuous_bounded_equivariant E D ω φ hφ`. Establish `e : aE y * (gl (nU b) * gl (mD ζ) * r * κ) = gl (nU ((y : A ℚ) * b)) * (Matrix.GeneralLinearGroup.scalar (Fin 2) ζ⁻¹ * (aE (y * ζ ^ 2) * r)) * κ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+
+Use `_ = gl (nU ((y : A ℚ) * b)) * (aE y * gl (mD ζ)) * r * κ := by`. Rewrite using `[aE_nU]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [aE_mD]; simp only [mul_assoc]`. Establish `hN : ideleNorm ℚ E (ideleEmbedding ℚ E ζ⁻¹) = ζ⁻¹ ^ 2`.
+
+Rewrite using `[ideleNorm_ideleEmbedding, Module.finrank_eq_card_basis D.b, Fintype.card_fin]`. Rewrite using `[e, map_mul, Wo_lev D hl hκ, map_mul, map_mul, em_nU D, em_sc, hn, hz, hN, map_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.whittaker_diagTorus_mul_iwasawa_eq :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ →
         ∀ (N : ℕ), (∀ k, Lev N k → ∀ g, φ (g * em E k) = φ g) → ∀ (y ζ : (A ℚ)ˣ) (b : A ℚ) (r κ : GL (Fin 2) (A ℚ)), Lev N κ →

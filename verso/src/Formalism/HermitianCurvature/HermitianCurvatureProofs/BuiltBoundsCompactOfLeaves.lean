@@ -11,12 +11,24 @@ open Formalism.FourierDecayAlt NumberField
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `hA Cb`. Use `⟨28 * Real.exp 1, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB`. Conclude with `wave_local_positive_compact_support hA (hPSC hA) Cb _ E Wp Wq S p f χ A₀ le_rfl hB`.
+-/
 theorem waveLocB_of_cpt (hPSC : P5.ThmPActualCpt → StandardPairingDecay.PStdC) : P5.ThmPActualCpt → WaveLocB := by
   intro hA Cb
   refine ⟨28 * Real.exp 1, ?_⟩
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB
   exact wave_local_positive_compact_support hA (hPSC hA) Cb _ E Wp Wq S p f χ A₀ le_rfl hB
 
+/- English proof (translation)
+Introduce `hA Cb`. Use `⟨28 * Real.exp 1, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB`. Take `⟨Λ0, hΛ0, hl⟩` from `lift_local_positive_compact_support hA hDL Cb _ E Wp Wq S p f χ A₀ le_rfl hB`. Use `⟨fun b s v => if 1 ≤ b ∧ 1 ≤ s ∧ b + s ≤ S.G.r + 1 then Λ0 b s v else 0, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `b s v beta_reduce`. Distinguish the cases in `h : 1 ≤ b ∧ 1 ≤ s ∧ b + s ≤ S.G.r + 1`. Rewrite using `[if_pos h]`. Conclude with `(hΛ0 b s h.1 h.2.1 h.2.2 v).1`. Rewrite using `[if_neg h]`.
+
+Introduce `b s hb hs hbs v beta_reduce`. Rewrite using `[if_pos ⟨hb, hs, hbs⟩]`. Conclude with `(hΛ0 b s hb hs hbs v).2`. Introduce `F hF v b s hb hs hbs`. Establish `h : (if 1 ≤ b ∧ 1 ≤ s ∧ b + s ≤ S.G.r + 1 then Λ0 b s v else 0) = Λ0 b s v` using `if_pos ⟨hb, hs, hbs⟩`.
+
+Simplify using `only [h]`. Conclude with `hl F hF v b s hb hs hbs`.
+-/
 theorem liftLocB_of_cpt (hDL : KB.DegLift) : P5.ThmPActualCpt → LiftLocB := by
   intro hA Cb
   refine ⟨28 * Real.exp 1, ?_⟩
@@ -42,6 +54,9 @@ def BuiltBounds2CptOfLeaves : Prop :=
   KB.RadHead → KB.HeadTop → KB.DegLift → PBL.TopLocB → KB.DegTop → PBL.TopRatio → GermPartsC →
   (P5.ThmPActualCpt → DecayUnif) → KB.BuiltBounds2Cpt
 
+/- English proof (translation)
+Introduce `hRH hHT hDL hTL hDT hTR hGP hD`. Establish `hPSC : P5.ThmPActualCpt → StandardPairingDecay.PStdC` using `fun hA => StandardPairingDecay.pStdC_of hA hRH hHT`. Establish `hI : P5.ThmPActualCpt → IntB` using `fun hA => integral_bound_of_parts (hPSC hA) (hD hA)`. Conclude with `builtBounds2CptOfParts (waveLocB_of_cpt hPSC) (liftLocB_of_cpt hDL) hTL (fun _ => hDT) (fun _ => vector_valued_types) (fun _ => hTR) (fun hA => germLocB_of (hI hA) hGP) positivity_bound hI hD (fun _ => thrPos)`.
+-/
 theorem builtBounds2CptOfLeaves : BuiltBounds2CptOfLeaves := by
   intro hRH hHT hDL hTL hDT hTR hGP hD
   have hPSC : P5.ThmPActualCpt → StandardPairingDecay.PStdC := fun hA => StandardPairingDecay.pStdC_of hA hRH hHT
@@ -54,6 +69,9 @@ end Formalism.FourierDecayAlt.P.PBASM
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `PBASM.builtBounds2CptOfLeaves`.
+-/
 theorem built_bounds_compact_of_leaves : PBASM.BuiltBounds2CptOfLeaves := PBASM.builtBounds2CptOfLeaves
 
 end Formalism.FourierDecayAlt.P

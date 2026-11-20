@@ -4,5 +4,8 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StIrreducibleGer
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFiniteFibreGermIntegral
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets Topology Filter
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ComplexSets.irreducibleGermMeetOverHypersurface_of_finiteFibreGermIntegral | exact GlobalTheory.CompanionTheory.ComplexSets.irreducibleGermMeetOverHypersurface_of_finiteFibreGermIntegral | (intros; apply GlobalTheory.CompanionTheory.Com …`.
+-/
 theorem _root_.GlobalTheory.T.meet_over_hypersurface_of_germ : FiniteFibreGermIntegral.Statement → IrreducibleGermMeetOverHypersurface.Statement := by
   first | exact @GlobalTheory.CompanionTheory.ComplexSets.irreducibleGermMeetOverHypersurface_of_finiteFibreGermIntegral | exact GlobalTheory.CompanionTheory.ComplexSets.irreducibleGermMeetOverHypersurface_of_finiteFibreGermIntegral | (intros; apply GlobalTheory.CompanionTheory.ComplexSets.irreducibleGermMeetOverHypersurface_of_finiteFibreGermIntegral <;> assumption)

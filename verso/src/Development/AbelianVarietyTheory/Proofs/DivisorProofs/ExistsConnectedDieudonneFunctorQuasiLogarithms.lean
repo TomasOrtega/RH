@@ -37,6 +37,13 @@ section Pull
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hσμ` using `GlobalTheory.T.isCommFormalGroupLaw_map k k' σ d μ hμ`. Establish `hB` using `GlobalTheory.T.map_formalGroupLawQuasiLogarithms p k k' σ d μ hμ hσμ`. Take `⟨m1, hm1⟩` from `GlobalTheory.Katz.ModHom.map_exists p k' e d ν _ hν hσμ φ hφ`. Set `L0 : quasiLog p hμ →ₛₗ[WittVector.map (p` to `p) σ] quasiLog p hσμ := { toFun := fun f => ⟨MvPowerSeries.map (frMap p σ) f.1, (hB f.1 f.2).1⟩ map_add' := fun f g => Subtype.ext (map_add _ _ _) map_smul' := fun r f => Subtype.ext (by`. Use extensionality with `α`.
+
+Express the relevant statement in the definitionally equal form `coeff α (MvPowerSeries.map (frMap p σ) (r • f.1)) = coeff α ((WittVector.map (p := p) σ r) • MvPowerSeries.map (frMap p σ) f.1)`. Rewrite using `[← algebraMap_smul (Fr p k) r f.1, ← algebraMap_smul (Fr p k') (WittVector.map (p := p) σ r), coeff_map, coeff_smul, coeff_smul, coeff_map]`. Simplify using `only [smul_eq_mul, map_mul, frMap_algebraMap]) }`. Set `m0 : Mod p hμ →ₛₗ[WittVector.map (p` to `p) σ] Mod p hσμ := Submodule.mapQ _ _ L0 (fun f hf => (hB f.1 f.2).2.1 hf)`. Use `⟨m1.comp m0, fun f => ?_⟩` and prove the remaining obligations.
+
+Take `⟨g, hg, hmg⟩` from `hm1 (L0 f)`. Conclude with `⟨g, hg, hmg⟩`.
+-/
 theorem semiPull_exists {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p]
     [PerfectRing k' p] (σ : k →+* k') {d e : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k}
     {ν : Fin e → MvPowerSeries (Fin e ⊕ Fin e) k'} (hμ : IsLaw μ) (hν : IsLaw ν)
@@ -78,6 +85,9 @@ def IsChartPull {k k' : Type} [Field k] [CharP k p] [Field k'] [CharP k' p] {σ 
       g.1 = subst (fun j => Katz.lift p (φ j)) (MvPowerSeries.map (frMap p σ) f.1) ∧
       m (Submodule.Quotient.mk f) = Submodule.Quotient.mk g
 
+/- English proof (translation)
+Take `⟨φ, hφ, huniq⟩` from `GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k k' σ d e G G' c c' s`. Take `⟨m, hm⟩` from `semiPull_exists σ hμ hν φ (GlobalTheory.T.connectedPDivGroupChart_semilinearHom_isFormalGroupHom p k k' σ d e G G' c c' s μ ν φ hc hc' hφ)`. Use `⟨m, fun ψ hψ f => ?_⟩` and prove the remaining obligations. Rewrite using `[huniq ψ hψ]`. Conclude with `hm f`.
+-/
 theorem chartPull_exists {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p]
     [PerfectRing k' p] {σ : k →+* k'} {G : PDivGroup p k} {G' : PDivGroup p k'} {d e : ℕ}
     (c : Chart G d) (c' : Chart G' e) {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k}
@@ -90,6 +100,9 @@ theorem chartPull_exists {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [
   rw [huniq ψ hψ]
   exact hm f
 
+/- English proof (translation)
+Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((f - g : quasiLog p hμ) : MvPowerSeries (Fin d) (Fr p k)) ∈ intBy p k (Fin d) 1`. Rewrite using `[Submodule.coe_sub]`. Conclude with `h`.
+-/
 theorem mk_eq_mk_of_sub {k : Type} [Field k] [CharP k p] {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k} {hμ : IsLaw μ} (f g : quasiLog p hμ)
     (h : f.1 - g.1 ∈ intBy p k (Fin d) 1) :
@@ -100,6 +113,17 @@ theorem mk_eq_mk_of_sub {k : Type} [Field k] [CharP k p] {d : ℕ}
   rw [Submodule.coe_sub]
   exact h
 
+/- English proof (translation)
+Take `rfl` from `ringHom_eq_of_app s t u hu`. Proceed by induction on `x using Submodule.Quotient.induction_on with | _ f => ?_`. Take `⟨φs, hφs, -⟩` from `GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k k' σ d e G G' c c' s`. Take `⟨φt, hφt, -⟩` from `GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k' k'' τ e e' G' G'' c' c'' t`. Establish `h3s` using `GlobalTheory.T.semilinearPDivGroupHom_chart_constantCoeff_subst p k k' σ d e G G' c c' s φs hφs`.
+
+Establish `h3t` using `GlobalTheory.T.semilinearPDivGroupHom_chart_constantCoeff_subst p k' k'' τ e e' G' G'' c' c'' t φt hφt`. Set `ψ : Fin d → MvPowerSeries (Fin e) k''` to `fun j => MvPowerSeries.map τ (φs j)`. Establish `hψ0 : ∀ j, constantCoeff (ψ j) = 0` using `fun j => by`. Simplify using `only [ψ, constantCoeff_map, h3s.1 j, map_zero]`. Establish `hφu : ∀ n j, c''.ev n (subst φt (ψ j)) = u.app n (c.x n j)` using `fun n j => by`.
+
+Rewrite using `[h3t.2 n, hφs, hu]`. Take `⟨gs, hgs, hms⟩` from `hs φs hφs f`. Take `⟨gt, hgt, hmt⟩` from `ht φt hφt gs`. Take `⟨gu, hgu, hmu'⟩` from `hmu (fun j => subst φt (ψ j)) hφu f`. Rewrite using `[hmu', hms, hmt]`.
+
+Use `mk_eq_mk_of_sub gu gt ?_` and prove the remaining obligations. Establish `hσμ` using `GlobalTheory.T.isCommFormalGroupLaw_map k k'' (τ.comp σ) d μ hμ`. Establish `hF` using `(GlobalTheory.T.map_formalGroupLawQuasiLogarithms p k k'' (τ.comp σ) d μ hμ hσμ f.1 f.2).1`. Establish `key` using `(GlobalTheory.Katz.PullQuasiLog.main p k'' e d (fun i => MvPowerSeries.map (τ.comp σ) (μ i)) hσμ _ hF).2.1 e' φt ψ (h3t.1) hψ0`. Rewrite using `[hgu, hgt, hgs, map_subst_lift p τ φs h3s.1, MvPowerSeries.map_map, ← frMap_comp]`.
+
+Conclude with `key`.
+-/
 theorem chartPull_comp {k k' k'' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p]
     [PerfectRing k' p] [Field k''] [CharP k'' p] [PerfectRing k'' p] {σ : k →+* k'} {τ : k' →+* k''}
     {υ : k →+* k''} {G : PDivGroup p k} {G' : PDivGroup p k'} {G'' : PDivGroup p k''} {d e e' : ℕ}
@@ -140,6 +164,11 @@ section ChartRules
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with | _ f => ?_`. Take `⟨g, hg, hmg⟩` from `hm (fun j => X j) (fun n j => by`. Rewrite using `[SemiHom.ofHom_app, id_app]`. Conclude with `GlobalTheory.Katz.evA_X k (Fin d) (G.A n) (c.x n) (c.nil n) j) f`. Rewrite using `[hmg]`.
+
+Use `mk_eq_mk_of_sub g f ?_` and prove the remaining obligations. Rewrite using `[hg, frMap_id, MvPowerSeries.map_id, RingHom.id_apply, (GlobalTheory.Katz.PullQuasiLog.main p k d d μ hμ f.1 f.2).1, sub_self]`. Conclude with `zero_mem _`.
+-/
 theorem chartPull_id {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G : PDivGroup p k} {d : ℕ}
     (c : Chart G d) {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k} (hμ : IsLaw μ)
     (m : Mod p hμ → Mod p hμ) (hm : IsChartPull c c hμ hμ (SemiHom.ofHom (𝟙 G)) m) (x : Mod p hμ) :
@@ -154,6 +183,13 @@ theorem chartPull_id {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G : PDi
     (GlobalTheory.Katz.PullQuasiLog.main p k d d μ hμ f.1 f.2).1, sub_self]
   exact zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with | _ y => ?_`. Take `⟨φf, hφf, -⟩` from `GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k k (RingHom.id k) e d H G cH cG (SemiHom.ofHom f)`. Take `⟨φg, hφg, -⟩` from `GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k k (RingHom.id k) e d H G cH cG (SemiHom.ofHom g)`. Establish `c1` using `(GlobalTheory.T.semilinearPDivGroupHom_chart_constantCoeff_subst p k k (RingHom.id k) e d H G cH cG _ φf hφf).1`. Establish `c2` using `(GlobalTheory.T.semilinearPDivGroupHom_chart_constantCoeff_subst p k k (RingHom.id k) e d H G cH cG _ φg hφg).1`.
+
+Establish `hsum : cG.IsMapOf cH (f + g) (op ν φf φg)` using `GlobalTheory.T.isMapOf_add_formalGroupLawEvalPoints p k d e G H cG cH ν f g φf φg hcH (fun n j => hφf n j) (fun n j => hφg n j)`. Take `⟨a, ha, hma⟩` from `hf φf hφf y`. Take `⟨b, hb, hmb⟩` from `hg φg hφg y`. Take `⟨s, hs, hms⟩` from `hfg (op ν φf φg) (fun n j => hsum n j) y`. Rewrite using `[hma, hmb, hms, ← Submodule.Quotient.mk_add]`.
+
+Use `mk_eq_mk_of_sub s (a + b) ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_add, hs, ha, hb, frMap_id, MvPowerSeries.map_id, RingHom.id_apply, ← sub_sub]`. Conclude with `(GlobalTheory.Katz.PullQuasiLog.main p k d e ν hν y.1 y.2).2.2 φf φg c1 c2`.
+-/
 theorem chartPull_add {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G H : PDivGroup p k} {d e : ℕ}
     (cG : Chart G d) (cH : Chart H e) {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k}
     {ν : Fin e → MvPowerSeries (Fin e ⊕ Fin e) k} (hμ : IsLaw μ) (hν : IsLaw ν) (hcH : cH.IsLawOf ν)
@@ -176,6 +212,13 @@ theorem chartPull_add {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G H : 
   rw [Submodule.coe_add, hs, ha, hb, frMap_id, MvPowerSeries.map_id, RingHom.id_apply, ← sub_sub]
   exact (GlobalTheory.Katz.PullQuasiLog.main p k d e ν hν y.1 y.2).2.2 φf φg c1 c2
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with | _ f => ?_`. Take `⟨φ, hφ, -⟩` from `GlobalTheory.T.existsUnique_powerSeries_semilinear_pDivGroupHom_chart p k k' σ d e G G' c c' s`. Establish `hhom` using `GlobalTheory.T.connectedPDivGroupChart_semilinearHom_isFormalGroupHom p k k' σ d e G G' c c' s μ ν φ hc hc' hφ`. Take `⟨g, hg, hmg⟩` from `hm φ hφ f`. Establish `hD` using `GlobalTheory.T.quasiLog_reduces_to_cocycle p k d μ hμ`.
+
+Take `⟨t, w, ht, hw⟩` from `hD.1 f.1 f.2`. Establish `hcoc` using `hD.2 f.1 f.2 t ht`. Establish `hσμ` using `GlobalTheory.T.isCommFormalGroupLaw_map k k' σ d μ hμ`. Establish `hB` using `GlobalTheory.T.map_formalGroupLawQuasiLogarithms p k k' σ d μ hμ hσμ f.1 f.2`. Establish `hP` using `GlobalTheory.KatzPull.quasiLog_pull p k' e d ν _ hν hσμ φ hhom _ hB.1`.
+
+Rewrite using `[hmg, hr f t w ht hw, hr' g (pull2 φ (MvPowerSeries.map σ t)) (pullLin φ (fun i => σ (w i))) (by rw [hg]; exact hP.2.1 _ (hB.2.2.1 t ht)) (by rw [hg]; exact hP.2.2 _ (hB.2.2.2 w hw))]`. Conclude with `GlobalTheory.T.rigidifiedExtension_presentation_natural_semilinear p k k' σ d e G G' c c' s μ φ ρ ρ' hc hφ hρ hρ' t w hcoc`.
+-/
 theorem chartPull_red {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p]
     [PerfectRing k' p] {σ : k →+* k'} {G : PDivGroup p k} {G' : PDivGroup p k'} {d e : ℕ}
     (c : Chart G d) (c' : Chart G' e) {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k}
@@ -208,6 +251,11 @@ theorem chartPull_red {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Fie
     (by rw [hg]; exact hP.2.1 _ (hB.2.2.1 t ht)) (by rw [hg]; exact hP.2.2 _ (hB.2.2.2 w hw))]
   exact GlobalTheory.T.rigidifiedExtension_presentation_natural_semilinear p k k' σ d e G G' c c' s μ φ ρ ρ' hc hφ hρ hρ' t w hcoc
 
+/- English proof (translation)
+Introduce `f`. Take `⟨g, hg, hmg⟩` from `hm (fun j => X j ^ p) (fun n j => by`. Rewrite using `[absFrob_app, map_pow]`. Use `congr 1`. Conclude with `GlobalTheory.Katz.evA_X k (Fin d) (G.A n) (c.x n) (c.nil n) j) f`.
+
+Conclude with `⟨g, hg.trans (subst_lift_X_pow_frob p _ f.1), hmg⟩`.
+-/
 theorem chartPull_frob {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G : PDivGroup p k} {d : ℕ}
     (c : Chart G d) {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k} (hμ : IsLaw μ)
     (m : Mod p hμ → Mod p hμ) (hm : IsChartPull c c hμ hμ (absFrob (Dieu.p_eq_zero p k) G) m) :
@@ -219,6 +267,9 @@ theorem chartPull_frob {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G : P
     exact GlobalTheory.Katz.evA_X k (Fin d) (G.A n) (c.x n) (c.nil n) j) f
   exact ⟨g, hg.trans (subst_lift_X_pow_frob p _ f.1), hmg⟩
 
+/- English proof (translation)
+Introduce `x`. Take `⟨g, hg, hmg⟩` from `hm φ (fun n j => hφ n j) x`. Use `⟨g, ?_, hmg⟩` and prove the remaining obligations. Rewrite using `[hg, frMap_id, MvPowerSeries.map_id, RingHom.id_apply]`.
+-/
 theorem chartPull_isPull {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G H : PDivGroup p k} {d e : ℕ}
     (c : Chart G d) (c' : Chart H e) {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k}
     {ν : Fin e → MvPowerSeries (Fin e ⊕ Fin e) k} (hμ : IsLaw μ) (hν : IsLaw ν) (f : G ⟶ H)
@@ -235,6 +286,9 @@ section Main
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Take `⟨mu, hmu⟩` from `chartPull_exists c c'' hμ hκ hc hc'' u`. Establish `e : (mu : Mod p hμ → Mod p hκ) = fun x => mt (ms x)`. Use function extensionality and compare the values at `(chartPull_comp c c' c'' hμ hν hκ s t u hu ms mt mu hs ht hmu)`. Rewrite using `[← e]`. Conclude with `hmu`.
+-/
 theorem isChartPull_comp {k k' k'' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p]
     [PerfectRing k' p] [Field k''] [CharP k'' p] [PerfectRing k'' p] {σ : k →+* k'} {τ : k' →+* k''}
     {υ : k →+* k''} {G : PDivGroup p k} {G' : PDivGroup p k'} {G'' : PDivGroup p k''} {d e e' : ℕ}
@@ -253,6 +307,19 @@ theorem isChartPull_comp {k k' k'' : Type} [Field k] [CharP k p] [PerfectRing k 
   rw [← e]
   exact hmu
 
+/- English proof (translation)
+Introduce `p _`. Establish `hch : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k), G.IsConn → ∃ (d : ℕ) (c : Chart G d) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k), c.IsLawOf μ`. Introduce `k _ _ _ G hG`. Take `⟨d, ⟨c⟩⟩` from `GlobalTheory.T.exists_connectedPDivGroupChart_of_isConn p k (CharP.cast_eq_zero k p) G hG`. Take `⟨μ, hμ⟩` from `(GlobalTheory.T.connectedPDivGroup_formalLaw_coordinates p k d G c).1`.
+
+Conclude with `⟨d, c, μ, hμ⟩`. Use `choose d c μ hc using hch`. Establish `hlaw : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (hG : G.IsConn), IsLaw (μ k G hG)` using `fun k _ _ _ G hG => GlobalTheory.T.isCommFormalGroupLaw_of_isLawOf p k _ G _ _ (hc k G hG)`. Use `choose ρ hρ using fun (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (hG : G.IsConn) => GlobalTheory.T.exists_rigidifiedExtension_of_series_pair p k (d k G hG) G (c k G hG)`. Use `choose r hr hsurj hker using fun (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (hG : G.IsConn) => GlobalTheory.Katz.reductionMap p k (d k G hG) (μ k G hG) (hlaw k G hG) G.RigExt (ρ k G hG) (GlobalTheory.T.rigidifiedExtension_presentation_of_series_pairs p …`.
+
+Use `choose P hP using fun (k k' : Type) [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p] [PerfectRing k' p] (σ : k →+* k') (G : PDivGroup p k) (G' : PDivGroup p k') (d e : ℕ) (cc : Chart G d) (cc' : Chart G' e) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k) (ν' : Fin e …`. Establish `hff : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (hG : G.IsConn), Module.Free (WittVector p k) (Mod p (hlaw k G hG)) ∧ Module.Finite (WittVector p k) (Mod p (hlaw k G hG))`. Introduce `k _ _ _ G hG`. Use `haveI : Module.Finite k G.RigExt := (GlobalTheory.PDivGroup.finrank_rigExt_omega p k (CharP.cast_eq_zero k p) G).2.1`. Conclude with `GlobalTheory.wittModule_free_finite_of_reduction p k _ G.RigExt (r k G hG) (GlobalTheory.Katz.WittHaus.haus p k _ _ (hlaw k G hG)) (GlobalTheory.Katz.mod_noPTorsion p k _ _ (hlaw k G hG) (GlobalTheory.T.eq_zero_of_formalGroupLawCoboundaryOne_eq_zero p k (CharP.cast_eq_zero k p) _ …`.
+
+Set `B : GlobalTheory.Dieu.Base p (fun _ _ G => G.IsConn)` to `{ M := @fun k _ _ _ G hG => ModuleCat.of (WittVector p k) (Mod p (hlaw k G hG)) smap := @fun k k' _ _ _ _ _ _ σ G' G h' h s => (P k k' σ G G' _ _ (c k G h) (c k' G' h') _ _ (hlaw k G h) (hlaw k' G' h') (hc k G h) (hc k' G' h') s).toAddMonoidHom red := @fun k _ _ _ G hG => r k G h …`. Establish `hid : ∀ {k : Type} [Field k] (G : PDivGroup p k) (n : ℕ) (a : G.A n), (SemiHom.ofHom (𝟙 G)).app n a = a` using `fun G n a => rfl`. Use `⟨B, @fun k _ _ _ G h d' cc μ' hμ' hcc => { toFun := P k k (RingHom.id k) G G _ _ (c k G h) cc _ _ (hlaw k G h) hμ' (hc k G h) hcc (SemiHom.ofHom (𝟙 G)) invFun := P k k (RingHom.id k) G G _ _ cc (c k G h) _ _ hμ' (hlaw k G h) hcc (hc k G h) (SemiHom.ofHom (𝟙 G)) map_add' := map_ad …` and prove the remaining obligations. Use `(LinearMap.map_smulₛₗ _ a x).trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `left_inv := fun x => (chartPull_comp (c k G h) cc (c k G h) (hlaw k G h) hμ' (hlaw k G h) (SemiHom.ofHom (𝟙 G)) (SemiHom.ofHom (𝟙 G)) (SemiHom.ofHom (𝟙 G)) (fun n a => rfl) _ _ _ (hP k k (RingHom.id k) G G _ _ (c k G h) cc _ _ (hlaw k G h) hμ' (hc k G h) hcc _) (hP k k (RingHom.i …`. Use `right_inv := fun x => (chartPull_comp cc (c k G h) cc hμ' (hlaw k G h) hμ' (SemiHom.ofHom (𝟙 G)) (SemiHom.ofHom (𝟙 G)) (SemiHom.ofHom (𝟙 G)) (fun n a => rfl) _ _ _ (hP k k (RingHom.id k) G G _ _ cc (c k G h) _ _ hμ' (hlaw k G h) hcc (hc k G h) _) (hP k k (RingHom.id k) G G _ _ (c …`. Introduce `k _ _ _ G h d' cc μ' hμ' hcc`. Use `⟨chartPull_frob cc hμ' _ ?_, ?_⟩` and prove the remaining obligations. Establish `hin` using `isChartPull_comp cc (c k G h) (c k G h) hμ' (hlaw k G h) (hlaw k G h) hcc (hc k G h) (SemiHom.ofHom (𝟙 G)) (absFrob (Dieu.p_eq_zero p k) G) (absFrob (Dieu.p_eq_zero p k) G) (fun n a => rfl) _ _ (hP k k (RingHom.id k) G G _ _ cc (c k G h) _ _ hμ' (hlaw k G h) hcc (hc k G h) _) (hP …`.
+
+Conclude with `isChartPull_comp cc (c k G h) cc hμ' (hlaw k G h) hμ' hcc hcc (absFrob (Dieu.p_eq_zero p k) G) (SemiHom.ofHom (𝟙 G)) (absFrob (Dieu.p_eq_zero p k) G) (fun n a => rfl) _ _ hin (hP k k (RingHom.id k) G G _ _ (c k G h) cc _ _ (hlaw k G h) hμ' (hc k G h) hcc _)`. Introduce `H h' d'' c' ν hν hc' f φ _ hφ`. Use `chartPull_isPull cc c' hμ' hν f φ hφ _ ?_` and prove the remaining obligations. Establish `hin` using `isChartPull_comp c' (c k H h') (c k G h) hν (hlaw k H h') (hlaw k G h) hc' (hc k G h) (SemiHom.ofHom (𝟙 H)) (SemiHom.ofHom f) (SemiHom.ofHom f) (fun n a => rfl) _ _ (hP k k (RingHom.id k) H H _ _ c' (c k H h') _ _ hν (hlaw k H h') hc' (hc k H h') _) (hP k k _ H G _ _ (c k H h') ( …`. Conclude with `isChartPull_comp c' (c k G h) cc hν (hlaw k G h) hμ' hc' hcc (SemiHom.ofHom f) (SemiHom.ofHom (𝟙 G)) (SemiHom.ofHom f) (fun n a => rfl) _ _ hin (hP k k (RingHom.id k) G G _ _ (c k G h) cc _ _ (hlaw k G h) hμ' (hc k G h) hcc _)`.
+-/
 theorem exists_base_isConn_katz : ∀ (p : ℕ) [Fact p.Prime],
     ∃ B : GlobalTheory.Dieu.Base p (fun _ _ G => G.IsConn), B.Katz := by
   intro p _

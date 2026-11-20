@@ -23,6 +23,13 @@ open Filter Topology
 
 namespace GlobalTheory.CuspSpan
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.FlatAnyLevel.neatUnf_of_good D T j Y e o hG).pos`. Take `⟨M, hsm, hb, hk⟩` from `hP.p1 _ _ _ h1 _ Y.d.Xo₂ Y.d.c₂`. Take `⟨TF⟩` from `GlobalTheory.CompHS.TorFlagEx.torFlag_of_model M hsm hb hk (GlobalTheory.CompHS.TorFlagEx.pushInvertible_of_hasTheta M (GlobalTheory.ThetaNormal.hasTheta_of_smooth _ _ _ h1 _ _ _ M hsm))`. Establish `ha` using `UpperTheory.holomorphic_reduction_span D T j Y e o hG Z TF la σ hσ m ε (fun i => ⟨g i, hg i⟩) hs`. Take `⟨t, ht, hti⟩` from `UpperTheory.vanishing_sections_toroidal_flag_independent _ _ _ _ _ _ TF Z la σ (GlobalTheory.T.flagSpace_component_smooth_projective_connected _ _ _ _ _ _ TF Z hG.geo) m ε hε _ ha i`.
+
+Take `⟨f, hfs⟩` from `GlobalTheory.HSApp.vanBd_le_space D T j Y e o hG hf Z TF la ht`. Set `g' : secZ Y.d.Xo₂ Y.d.c₂ (exOf (T.Q.Dw j) la 0)` to `⟨g i, hg i⟩`. Set `f' : secZ Y.d.Xo₂ Y.d.c₂ (exOf (T.Q.Dw j) la 0)` to `⟨f.1, GlobalTheory.CompHS.cusp_le_secZ Z Y.U la f.2⟩`. Establish `h3 : GlobalTheory.CompHS.sec₀ TF.X Z _ f' = GlobalTheory.CompHS.sec₀ TF.X Z _ g'` using `hfs.trans hti`. Establish `h4 : (g' - f').1 ∈ suppOn Z` using `sub_mem (hZ i) f.2.2`.
+
+Establish `h0 : g' - f' = 0` using `GlobalTheory.CompHS.eq_zero_of_sec₀ TF.X Z h4 (((GlobalTheory.CompHS.sec₀ TF.X Z _).map_sub g' f').trans (sub_eq_zero.2 h3.symm))`. Establish `h2 : g i = f.1` using `congrArg Subtype.val (sub_eq_zero.1 h0)`. Rewrite using `[h2]`. Conclude with `f.2`.
+-/
 theorem mem_cuspOn_of_comb (hP : Hypotheses2) {D : D7} {T : Core D} {j : ℕ} {Y : Deep T j} {e : ℕ} {o : ℝ}
     (hG : Y.Good e o) (hf : 2 < Module.finrank ℚ D.host.E / 2) (Z : Comp Y.d.Xo₂ Y.d.c₂)
     (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)) {σ : Y.d.c₂.F →+* ℂ} (hσ : GoodEmb Y.d.c₂ σ) {m : ℕ} {ε : Fin m → ℂ}
@@ -47,6 +54,37 @@ theorem mem_cuspOn_of_comb (hP : Hypotheses2) {D : D7} {T : Core D} {j : ℕ} {Y
   rw [h2]
   exact f.2
 
+/- English proof (translation)
+Introduce `P hPm`. Establish `hL` using `GlobalTheory.FlatAnyLevel.neatUnf_of_good D T j Y e o hG`. Take `⟨k, hk⟩` from `GlobalTheory.FlatAnyLevel.framesOn_model _ _ _ _ _ _ _ Y.U hL Z σ hσ`. Set `P₀ : FDSec (Y.U σ).X` to `Pi.single k (((Y.U σ).X k).dom.indicator (P k))`. Establish `hP₀ : P₀ ∈ holSub (Y.U σ).X (modelWt (Y.U σ) (wtOf (T.Q.Dw j) la 0))`.
+
+Use `holCusp_mem_holSub _ _ fun k' => ?_` and prove the remaining obligations. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Simplify using `only [P₀, Pi.single_eq_same]`. Conclude with `(GlobalTheory.DomCongr.bddSec_cusp_congr _ _ _ _ _ _ (fun x hx => (Set.indicator_of_mem hx _).symm)).2 ((GlobalTheory.DegTop.mem_holSub_iff _ _ _).1 hPm k')`.
+
+Simplify using `only [P₀, Pi.single_eq_of_ne h]`. Conclude with `GlobalTheory.FlatCore.MulSpan.zero_mem_SS' _ _`. Establish `hoff : ∀ k' y, (⟨k', y⟩ : Σ k, Frame ((Y.U σ).X k).Ψ D.R.r) ∉ framesOn (Y.U σ) Z → P₀ k' y = 0`. Introduce `k' y hy`. Distinguish the cases in `h : k' = k`.
+
+Substitute `h` using the available equality. Simplify using `only [P₀, Pi.single_eq_same]`. Conclude with `Set.indicator_of_notMem (fun hd => hy (by rw [hk]; exact ⟨rfl, hd⟩)) _`. Simplify using `only [P₀, Pi.single_eq_of_ne h, Pi.zero_apply]`. Establish `hon : ∀ z ∈ framesOn (Y.U σ) Z, P z.1 z.2 = P₀ z.1 z.2`.
+
+Introduce and unpack `⟨k', y⟩ hz`. Rewrite `hz` using `[hk]`. Take `⟨rfl, hy⟩ : k' = k ∧ y ∈ ((Y.U σ).X k').dom` from `hz`. Simplify using `only [P₀, Pi.single_eq_same]`. Conclude with `(Set.indicator_of_mem hy _).symm`.
+
+Use `⟨P₀, ?_, hon⟩` and prove the remaining obligations. Take `⟨G₀, h, hh, hh0, hmul⟩` from `UpperTheory.cusp_form_weight_reduction _ _ _ _ _ _ _ Y.U hL Z la w hw hw0`. Take `⟨m, ε, g, hε, hg, hsum⟩` from `UpperTheory.exists_linearly_disjoint_span _ _ _ σ (rdU (Y.U σ)) _ _ (hmul σ hσ P₀ hP₀ hoff)`. Establish `hcP : ∀ k', ContinuousOn (P₀ k') ((Y.U σ).X k').dom` using `fun k' => (GlobalTheory.FlatCore.differentiableOn_of_mem_holSub hP₀ k').continuousOn`. Establish `hsum' : ∀ k' y, ∑ i, ε i * rdU (Y.U σ) (g i) k' y = P₀ k' y * rdU (Y.U σ) h k' y` using `fun k' y => by`.
+
+Use `congrFun (congrFun hsum k') y` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.mul_apply] at this`. Conclude with `this.symm`. Use `choose s hs hsZ hsh using UpperTheory.unfolding_component_linear_independence _ _ _ _ _ _ _ σ (Y.U σ) hσ (hL.unf σ hσ) Z m ε hε _ _ h g (cuspW_le_secZ _ hh.1) hh.2 hh0 (fun i => cuspW_le_secZ _ (hg i).1) (fun i => (hg i).2) P₀ hcP (fun z _ => hsum' z.1 z.2)`. Establish `hex : exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) la 0 + G₀) - exZ (T.Q.Dw j) G₀ = exOf (T.Q.Dw j) la 0`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Pi.sub_apply, exZ_add, exOf, add_sub_cancel_right]`. Rewrite `hs` using `[hex]`. Establish `hex0 : exOf (T.Q.Dw j) la 0 none = 0` using `rfl`. Establish `hne : ∃ y ∈ ((Y.U σ).X k).dom, rdU (Y.U σ) h k y ≠ 0`.
+
+Take `⟨⟨k₀, y₀⟩, hz₀, hne⟩` from `GlobalTheory.FlatAnyLevel.exists_frame_ne hL hσ hh hh0`. Rewrite `hz₀` using `[hk]`. Take `⟨h1, hy₀⟩` from `hz₀`. Substitute `h1` using the available equality. Conclude with `⟨y₀, hy₀, hne⟩`.
+
+Establish `hint` using `interior_closure_zero ((Y.U σ).X k) (GlobalTheory.FlatCore.differentiableOn_of_mem_holSub ((mem_cuspW.1 hh.1).2 σ hσ) k) hne`. Establish `hcont : ContinuousOn (fun y => ∑ i, ε i * rdU (Y.U σ) (s i) k y - P₀ k y) ((Y.U σ).X k).dom` using `(continuousOn_finset_sum _ fun i _ => continuousOn_const.mul (GlobalTheory.FlatAnyLevel.contOn_rdU _ _ _ _ _ _ _ Y.U hL _ hex0 _ (hs i) σ hσ k)).sub (hcP k)`. Establish `hO` using `FourierCoefficientDomain.isOpen_dom ((Y.U σ).X k)`. Establish `key : ∀ y ∈ ((Y.U σ).X k).dom, ∑ i, ε i * rdU (Y.U σ) (s i) k y = P₀ k y`. Introduce `y hy`.
+
+Assume the negation of the conclusion as `hn`. Establish `hev : ∀ᶠ v in 𝓝 y, ∑ i, ε i * rdU (Y.U σ) (s i) k v - P₀ k v ≠ 0 ∧ v ∈ ((Y.U σ).X k).dom` using `((hcont.continuousAt (hO.mem_nhds hy)).eventually_ne (sub_ne_zero.2 hn)).and (hO.mem_nhds hy)`. Establish `hsub : {v | ∑ i, ε i * rdU (Y.U σ) (s i) k v - P₀ k v ≠ 0 ∧ v ∈ ((Y.U σ).X k).dom} ⊆ closure {v | v ∈ ((Y.U σ).X k).dom ∧ rdU (Y.U σ) h k v = 0}`. Introduce and unpack `v ⟨hv, hvd⟩`. Use `subset_closure ⟨hvd, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : (∑ i, ε i * rdU (Y.U σ) (s i) k v - P₀ k v) * rdU (Y.U σ) h k v = 0`. Rewrite using `[sub_mul, sub_eq_zero, ← hsum', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hsh i, GlobalTheory.AllWt.rdU_mul (Y.U σ), Pi.mul_apply, Pi.mul_apply, mul_assoc]`. Conclude with `(mul_eq_zero.1 h2).resolve_left hv`.
+
+Establish `hy'` using `interior_mono hsub (mem_interior_iff_mem_nhds.2 hev)`. Rewrite `hy'` using `[hint]`. Conclude with `hy'`. Establish `hall : ∑ i, ε i • rdU (Y.U σ) (s i) = P₀`. Use function extensionality and compare the values at `k' y`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hz : (⟨k', y⟩ : Σ k, Frame ((Y.U σ).X k).Ψ D.R.r) ∈ framesOn (Y.U σ) Z`. Rewrite `hz` using `[hk]`. Take `⟨rfl, hy⟩ : k' = k ∧ y ∈ ((Y.U σ).X k').dom` from `hz`. Conclude with `key y hy`.
+
+Rewrite using `[hoff k' y hz]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [rdU_eq_zero (Y.U σ) (hsZ i) hz, mul_zero]`. Establish `hc` using `mem_cuspOn_of_comb hP hG hf Z la hσ hε hs hsZ (hall.symm ▸ hP₀)`. Rewrite using `[← hall]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨s i, hc i, rfl⟩)`.
+-/
 theorem exists_mem_span (hP : Hypotheses2) {D : D7} {T : Core D} {j : ℕ} {Y : Deep T j} {e : ℕ} {o : ℝ}
     (hG : Y.Good e o) (hf : 2 < Module.finrank ℚ D.host.E / 2) (Z : Comp Y.d.Xo₂ Y.d.c₂)
     (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)) {w : Rul Y.d.Xo₂ Y.d.c₂} (hw : w ∈ cuspOn Y.U Z (wtOf (T.Q.Dw j) la 0))

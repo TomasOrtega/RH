@@ -12,18 +12,27 @@ open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO
 
 variable {D : D7} {N N' : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [Hf]`. Consider the case `succ n ih => rw [succ_nsmul, Hf_add_left, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Hf_nsmul_left (T : Tor D) (n : ℕ) (x y : VC D N N') :
     Hf D T (n • x) y = (n : ℂ) * Hf D T x y := by
   induction n with
   | zero => simp [Hf]
   | succ n ih => rw [succ_nsmul, Hf_add_left, ih]; push_cast; ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [Hf]`. Consider the case `succ n ih => rw [succ_nsmul, Hf_add_right, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Hf_nsmul_right (T : Tor D) (n : ℕ) (x y : VC D N N') :
     Hf D T x (n • y) = (n : ℂ) * Hf D T x y := by
   induction n with
   | zero => simp [Hf]
   | succ n ih => rw [succ_nsmul, Hf_add_right, ih]; push_cast; ring
 
+/- English proof (translation)
+Unfold `qH`. Rewrite using `[Hf_nsmul_left, Hf_nsmul_right, ← Complex.ofReal_natCast, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qH_nsmul (T : Tor D) (n : ℕ) (x : VC D N N') :
     qH D T (n • x) = (n : ℝ) ^ 2 * qH D T x := by
   unfold qH
@@ -31,6 +40,11 @@ theorem qH_nsmul (T : Tor D) (n : ℕ) (x : VC D N N') :
     Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Take `⟨m, h1, h2⟩` from `self_int T hI hw`. Establish `hs` using `sqrt_d_pos D`. Use `⟨m, ?_, ?_⟩` and prove the remaining obligations. Unfold `qH`. Rewrite using `[h1]`.
+
+Clear the denominators using the available nonvanishing facts. Unfold `al`. Rewrite using `[h2]`.
+-/
 theorem qH_int (T : Tor D) {Λ : AddSubgroup (VC D N N')} (hI : HfInt T Λ) {w : VC D N N'} (hw : w ∈ Λ) :
     ∃ m : ℤ, qH D T w = m ∧ al D T w = (-1 : ℂ) ^ m := by
   obtain ⟨m, h1, h2⟩ := self_int T hI hw
@@ -42,6 +56,9 @@ theorem qH_int (T : Tor D) {Λ : AddSubgroup (VC D N N')} (hI : HfInt T Λ) {w :
   · unfold al
     rw [h2]
 
+/- English proof (translation)
+Unfold `qH`. Rewrite using `[Hf_add_left, Hf_add_right, Hf_add_right, Complex.add_re, Complex.add_re, Complex.add_re, Hf_re_swap T x w]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qH_add (T : Tor D) (x w : VC D N N') :
     qH D T (x + w) = qH D T x + qH D T w + Real.sqrt D.host.d * (Hf D T x w).re := by
   unfold qH
@@ -49,6 +66,13 @@ theorem qH_add (T : Tor D) (x w : VC D N N') :
     Hf_re_swap T x w]
   ring
 
+/- English proof (translation)
+Distinguish the cases in `h2 : p = 2`. Unfold `wPh`. Rewrite using `[if_pos h2, if_pos h2, hy, ← GlobalTheory.GalThetaSign.exp_int_pi, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hM' : (p : ℝ) ^ k * qH D T y = ((M + ((p ^ k : ℕ) : ℤ) * n : ℤ) : ℝ)`. Rewrite using `[hy, mul_add, hM]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[GlobalTheory.GalThetaSign.wPh_eq D T x hp h2 hM, GlobalTheory.GalThetaSign.wPh_eq D T y hp h2 hM', zpow_add₀ (by norm_num), zpow_mul, zpow_natCast, ((hp.odd_of_ne_two h2).pow : Odd (p ^ k)).neg_one_pow]`.
+-/
 theorem wPh_shift (T : Tor D) {p : ℕ} (hp : p.Prime) {x y : VC D N N'} {k : ℕ} {M n : ℤ}
     (hM : (p : ℝ) ^ k * qH D T x = M) (hy : qH D T y = qH D T x + n) :
     wPh D T p y = wPh D T p x * (-1 : ℂ) ^ n := by
@@ -66,6 +90,19 @@ theorem wPh_shift (T : Tor D) {p : ℕ} (hp : p.Prime) {x y : VC D N N'} {k : �
       zpow_add₀ (by norm_num), zpow_mul, zpow_natCast,
       ((hp.odd_of_ne_two h2).pow : Odd (p ^ k)).neg_one_pow]
 
+/- English proof (translation)
+Introduce `D T N N' Λ p hp hI G hG x w hw ⟨k, hk⟩ ⟨a, b, hab, h⟩`. Establish `hs` using `sqrt_d_pos D`. Take `⟨m, hm, hal⟩` from `qH_int T hI hw`. Take `⟨M, hM, -⟩` from `qH_int T hI hk`. Establish `hM' : (p : ℝ) ^ (k * 2) * qH D T x = M`.
+
+Rewrite using `[← hM, qH_nsmul, pow_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hre : (Hf D T x w).re = a / Real.sqrt D.host.d` using `by rw [h]; simp`. Establish `him : (Hf D T x w).im = b` using `by rw [h]; simp`.
+
+Establish `hq : qH D T (x + w) = qH D T x + ((m + a : ℤ) : ℝ)`. Rewrite using `[qH_add, hm, hre]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hph` using `wPh_shift T hp hM' hq`. Use function extensionality and compare the values at `z`. Establish `hU : U D T x G z = al D T w * cf T x w * U D T (x + w) G z` using `by conv_lhs => rw [← fix_eq T hG hw]`. Rewrite using `[U_smul, U_U]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsgn : (-1 : ℂ) ^ (m + a) = (-1 : ℂ) ^ m * (-1 : ℂ) ^ (-b)`. Rewrite using `[← zpow_add₀ (by norm_num : (-1 : ℂ) ≠ 0)]`. Apply `neg_one_zpow_congr` to reduce the goal to its premises. Establish `: m + a - (m + -b) = (a - b) + 2 * b` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `hab.add (even_two_mul b)`. Unfold `Wop`. Rewrite using `[hU, hph, hal, cf_int T x w b him, hsgn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Wop_add_lattice : ∀ (D : D7) (T : Tor D) (N N' : ℕ) (Λ : AddSubgroup (VC D N N')) (p : ℕ), p.Prime → Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.HfInt T Λ → ∀ G ∈ ThSp D T Λ, ∀ x w : VC D N N', w ∈ Λ → (∃ k : ℕ, p ^ k • x ∈ Λ) → (∃ a b : ℤ, Even (a - b) ∧ Hf D T x w = (((a : ℝ) / Real.sqrt D.host.d : ℝ) : ℂ) + (b : ℂ) * Complex.I) → Wop D T p (x + w) G = Wop D T p x G := by
   intro D T N N' Λ p hp hI G hG x w hw ⟨k, hk⟩ ⟨a, b, hab, h⟩
   have hs := sqrt_d_pos D

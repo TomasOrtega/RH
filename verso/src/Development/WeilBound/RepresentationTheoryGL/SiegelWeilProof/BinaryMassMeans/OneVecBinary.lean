@@ -16,11 +16,17 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneVectorFormul
 
 namespace PositivityTheory.Rg.Mass
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.one_vector_formula_of_parts (GlobalTheory.T.vector_length_formula_of_parts GlobalTheory.T.cocompactness GlobalTheory.T.local_mass_formula) GlobalTheory.T.similitude_invariance GlobalTheory.T.hasse_principle (GlobalTheory.T.counting_formula GlobalTheory.T.test_funct …`.
+-/
 theorem e1 : E1 :=
   GlobalTheory.T.one_vector_formula_of_parts (GlobalTheory.T.vector_length_formula_of_parts GlobalTheory.T.cocompactness GlobalTheory.T.local_mass_formula) GlobalTheory.T.similitude_invariance GlobalTheory.T.hasse_principle
     (GlobalTheory.T.counting_formula GlobalTheory.T.test_function_exists (GlobalTheory.T.left_side_formula GlobalTheory.T.equidistribution GlobalTheory.T.cocompactness)
       (PositivityTheory.Rg.Mass.LiteralAutomorphy.srside (GlobalTheory.T.mean_value_formula GlobalTheory.T.equidistribution GlobalTheory.T.counting_bound_alt) GlobalTheory.T.local_mass_formula))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hc M J hJ hM hA T hT hd`. Substitute `hM` using the available equality. Conclude with `e1 F E σ hc J hJ (fun x hx => by_contra fun h => hA x h hx) T hT hd`.
+-/
 theorem oneVecBinary : PositivityTheory.PfSWUS.HMass.OneVecBinary := by
   intro F E _ _ _ _ _ σ hc M J hJ hM hA T hT hd
   subst hM

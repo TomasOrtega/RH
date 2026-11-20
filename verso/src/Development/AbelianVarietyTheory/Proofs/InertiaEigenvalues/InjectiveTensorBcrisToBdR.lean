@@ -10,6 +10,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.LocTensorK
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℚ_[l] (c : Om l)` using `Algebra.IsIntegral.isIntegral _`. Take `⟨K, hc⟩ : ∃ K : FinExt l, (c : Om l) ∈ K0 K` from `⟨⟨IntermediateField.adjoin ℚ_[l] {(c : Om l)}, IntermediateField.adjoin.finiteDimensional hint⟩, IntermediateField.mem_adjoin_simple_self ℚ_[l] (c : Om l), c.2⟩`. Establish `h` using `(P.PD K).ι.commutes (⟨c, hc⟩ : ↥(K0 K))`. Rewrite `h` using `[P.PD_ι]`. Conclude with `h`.
+-/
 private theorem ιB_algebraMap_Kur {l : ℕ} [Fact l.Prime] (P : LocPrime l) (c : ↥(MaximalUnramifiedExtension l)) :
     P.ιB (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c) = algebraMap (Om l) P.R.BdR (c : Om l) := by
   have hint : IsIntegral ℚ_[l] (c : Om l) := Algebra.IsIntegral.isIntegral _
@@ -21,6 +24,19 @@ private theorem ιB_algebraMap_Kur {l : ℕ} [Fact l.Prime] (P : LocPrime l) (c 
   rw [P.PD_ι] at h
   exact h
 
+/- English proof (translation)
+Use `letI : Field D := hD.toField`. Establish `hcl : ∀ y : D, y ∈ Subring.closure (Set.range ι) ↔ ∃ a, ι a = y`. Introduce `y`. Establish `: Subring.closure (Set.range ι) = ι.range`. Rewrite using `[← RingHom.coe_range, Subring.closure_eq]`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Establish `key` using `GlobalTheory.T.eq_zero_of_sum_map_mul_eq_zero_of_linearIndependent k Ω D o (Subfield.closure (Set.range ι)) (by`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Take `⟨u, hu, v, hv, huv⟩` from `Subfield.mem_closure_iff.1 hy`. Take `⟨a, rfl⟩` from `(hcl u).1 hu`. Take `⟨c, rfl⟩` from `(hcl v).1 hv`. Distinguish the cases in `hc : c = 0`.
+
+Substitute `hc` using the available equality. Rewrite `huv` using `[map_zero, div_zero]`. Establish `: y = 0` using `o.injective (by rw [map_zero]; exact huv.symm)`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+
+Establish `hc' : ι c ≠ 0` using `fun h => hc (hι (by rw [h, map_zero]))`. Use `hfrac a c y hc ?_` and prove the remaining obligations. Rewrite using `[← huv, div_mul_cancel₀ _ hc']`. Introduce and unpack `⟨c, rfl⟩`. Take `⟨a, ha⟩` from `hk c`.
+
+Conclude with `Subfield.subset_closure ⟨a, ha⟩) m x hx (fun i => ι (b i))`. Use the proof step `(fun i => Subfield.subset_closure ⟨b i, rfl⟩) hb`. Introduce `i`. Conclude with `hι (by rw [map_zero]; exact key i)`.
+-/
 private theorem indep_of_frac {k Ω B D : Type} [Field k] [Field Ω] [CommRing B] [CommRing D] [Algebra k Ω]
     [IsGalois k Ω] (hD : IsField D) (o : Ω →+* D) (ι : B →+* D) (hι : Function.Injective ι)
     (hk : ∀ c : k, ∃ a : B, ι a = o (algebraMap k Ω c))
@@ -55,6 +71,11 @@ private theorem indep_of_frac {k Ω B D : Type} [Field k] [Field Ω] [CommRing B
   intro i
   exact hι (by rw [map_zero]; exact key i)
 
+/- English proof (translation)
+Introduce `l _ P AI T m x hx b hb`. Take `⟨hD, -, hι, -⟩` from `GlobalTheory.Per.TiedField.tied_field l P AI T`. Use `haveI : IsGalois ℚ_[l] (Om l) := inferInstance`. Use `haveI : IsGalois ↥(MaximalUnramifiedExtension l) (Om l) := inferInstance`. Use `indep_of_frac (k := ↥(MaximalUnramifiedExtension l)) hD (algebraMap (Om l) P.R.BdR) (P.ιB : P.R.B →+* P.R.BdR) hι (fun c => ⟨algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c, ιB_algebraMap_Kur P c⟩) ?_ m x hx b hb` and prove the remaining obligations.
+
+Introduce `a c y hc h`. Conclude with `⟨⟨y, GlobalTheory.T.mem_maxUnramified_of_crystallineRatio l P AI T a c y hc h⟩, rfl⟩`.
+-/
 private theorem tied_tensor_inj : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (m : ℕ) (x : Fin m → Om l), LinearIndependent ↥(MaximalUnramifiedExtension l) x → ∀ b : Fin m → P.R.B, ∑ i, algebraMap (Om l) P.R.BdR (x i) * P.ιB (b i) = 0 → ∀ i, b i = 0 := by
   intro l _ P AI T m x hx b hb
   obtain ⟨hD, -, hι, -⟩ := GlobalTheory.Per.TiedField.tied_field l P AI T
@@ -68,6 +89,9 @@ private theorem tied_tensor_inj : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) 
 end GlobalTheory.LocTensorK
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `l _ P AI hT K m x hx b hb`. Use `GlobalTheory.LocTensorK.tied_tensor_inj l P AI hT m (fun i => (x i : Om l)) (GlobalTheory.UnramDisjoint.linearIndependent_Kur l K m x hx) b ?_` and prove the remaining obligations. Conclude with `hb`.
+-/
 theorem _root_.GlobalTheory.T.injective_tensor_Bcris_to_BdR : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (m : ℕ) (x : Fin m → ↥K.1), LinearIndependent ↥(K0 K) x → ∀ b : Fin m → P.R.B, ∑ i, algebraMap ↥K.1 P.R.BdR (x i) * P.ιB (b i) = 0 → ∀ i, b i = 0 := by
   intro l _ P AI hT K m x hx b hb
   refine GlobalTheory.LocTensorK.tied_tensor_inj l P AI hT m (fun i => (x i : Om l))

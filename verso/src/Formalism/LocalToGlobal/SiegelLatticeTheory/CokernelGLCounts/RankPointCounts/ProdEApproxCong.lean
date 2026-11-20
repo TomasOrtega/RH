@@ -14,6 +14,9 @@ section Cong
 variable {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
   (δ : ∀ p : PlF D, (D.s.atP p).Fp) (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1))
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `(M p).R.one_mem`. Conclude with `(M p).R.zero_mem`.
+-/
 theorem one_mem_R {p : PlF D} (a b : Fin (D.R.rS + 1)) :
     (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep) a b ∈ (M p).R := by
   rw [Matrix.one_apply]
@@ -21,6 +24,9 @@ theorem one_mem_R {p : PlF D} (a b : Fin (D.R.rS + 1)) :
   · exact (M p).R.one_mem
   · exact (M p).R.zero_mem
 
+/- English proof (translation)
+Establish `e : X a b = (X - 1) a b + (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep) a b`. Rewrite using `[Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(M p).R.add_mem (latS_R hA (h a b)) (one_mem_R M a b)`.
+-/
 theorem mem_R_of_sub_one {p : PlF D} (hA : Agree δ M p) {X : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep}
     (h : EntIn (latS (D.s.atP p) (ellP p)) (X - 1)) (a b : Fin (D.R.rS + 1)) : X a b ∈ (M p).R := by
   have e : X a b = (X - 1) a b + (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep) a b := by
@@ -28,6 +34,21 @@ theorem mem_R_of_sub_one {p : PlF D} (hA : Agree δ M p) {X : Matrix (Fin (D.R.r
   rw [e]
   exact (M p).R.add_mem (latS_R hA (h a b)) (one_mem_R M a b)
 
+/- English proof (translation)
+Use `set Lp := lOf δ M p L U`. Use `set Lpi := lOf δ M p L⁻¹ U⁻¹`. Use `set Up := ρOf δ M p L U`. Use `set Upi := ρOf δ M p L⁻¹ U⁻¹`. Establish `hLi` using `ZsVolGrp.isLoUni_inv hL`.
+
+Establish `hUi` using `ZsVolGrp.isUpUni_inv hU`. Establish `hLL : Lp * Lpi = 1`. Rewrite using `[← lOf_mul δ M hA, hLi.2.2, hUi.2.1, lOf_one δ M hA]`. Establish `hUU : Upi * Up = 1`. Rewrite using `[← ρOf_mul δ M hA, hLi.2.2, hUi.2.1, ρOf_one δ M hA]`.
+
+Establish `hLp` using `ProdE.lOf_loUni M δ hA L U hL hU`. Establish `hLpi` using `ProdE.lOf_loUni M δ hA L⁻¹ U⁻¹ hLi.1 hUi.1`. Establish `hUp` using `ProdE.ρOf_upUni M δ hA L U hL hU`. Establish `hUpi` using `ProdE.ρOf_upUni M δ hA L⁻¹ U⁻¹ hLi.1 hUi.1`. Take `⟨s1, hs10, hs1O, hs1⟩` from `bounded_mat (L := D.s.atP p) Lp`.
+
+Take `⟨s2, hs20, hs2O, hs2⟩` from `bounded_mat (L := D.s.atP p) Lpi`. Take `⟨s3, hs30, hs3O, hs3⟩` from `bounded_mat (L := D.s.atP p) Up`. Take `⟨s4, hs40, hs4O, hs4⟩` from `bounded_mat (L := D.s.atP p) Upi`. Use `⟨ellP p * (s1 * s2 * s3 * s4), mul_ne_zero (ellP_ne p) (mul_ne_zero (mul_ne_zero (mul_ne_zero hs10 hs20) hs30) hs40), Subring.mul_mem _ (ellP_mem p) (Subring.mul_mem _ (Subring.mul_mem _ (Subring.mul_mem _ hs1O hs2O) hs3O) hs4O), fun k h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨hk1, hk2, -⟩` from `k.2`.
+
+Establish `hO12 : s1 * s2 * s3 * s4 ∈ 𝒪[(D.s.atP p).Fp]` using `Subring.mul_mem _ (Subring.mul_mem _ (Subring.mul_mem _ hs1O hs2O) hs3O) hs4O`. Establish `h1l : EntIn (latS (D.s.atP p) (ellP p)) ((k.1.1 : ProdE.MP p) - 1)` using `entIn_latS_of_eq (t := s1 * s2 * s3 * s4) rfl hO12 h1`. Establish `h2l : EntIn (latS (D.s.atP p) (ellP p)) ((k.1.2.unop : ProdE.MP p) - 1)` using `entIn_latS_of_eq (t := s1 * s2 * s3 * s4) rfl hO12 h2`. Establish `h1c : EntIn (latS (D.s.atP p) (ellP p)) (Lp * ((k.1.1 : ProdE.MP p) - 1) * Lpi)` using `entIn_sandwich hs1 hs2 (entIn_latS_of_eq (t := s3 * s4) (by ring) (Subring.mul_mem _ hs3O hs4O) h1)`. Establish `h2c : EntIn (latS (D.s.atP p) (ellP p)) (Upi * ((k.1.2.unop : ProdE.MP p) - 1) * Up)` using `entIn_sandwich hs4 hs3 (entIn_latS_of_eq (t := s1 * s2) (by ring) (Subring.mul_mem _ hs1O hs2O) h2)`.
+
+Establish `e1 : Lp * (k.1.1 : ProdE.MP p) * Lpi - 1 = Lp * ((k.1.1 : ProdE.MP p) - 1) * Lpi`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hLL]`. Establish `e2 : Upi * (k.1.2.unop : ProdE.MP p) * Up - 1 = Upi * ((k.1.2.unop : ProdE.MP p) - 1) * Up`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hUU]`. Establish `hc1` using `ZsVolGrp.isLoUni_mul (ZsVolGrp.isLoUni_mul hLp hk1) hLpi`.
+
+Establish `hc2` using `ZsVolGrp.isUpUni_mul (ZsVolGrp.isUpUni_mul hUpi hk2) hUp`. Use `Subgroup.mem_inf.2 ⟨⟨⟨fun a => (hk1 a a).2 rfl, fun a b h => (hk1 a b).1 h, mem_R_of_sub_one M δ hA h1l⟩, ⟨fun a => (hk2 a a).2 rfl, fun a b h => (hk2 a b).1 h, mem_R_of_sub_one M δ hA h2l⟩⟩, ⟨⟨fun a => (hc1 a a).2 rfl, fun a b h => (hc1 a b).1 h, mem_R_of_sub_one M δ hA (by rw [ …` and prove the remaining obligations.
+-/
 theorem cong_at {p : PlF D} (hA : Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U) :
     ∃ c : (D.s.atP p).Fp, c ≠ 0 ∧ c ∈ 𝒪[(D.s.atP p).Fp] ∧ ∀ k : ProdE.StP M δ u u' w p,
       EntIn (latS (D.s.atP p) c) ((k.1.1 : ProdE.MP p) - 1) → EntIn (latS (D.s.atP p) c) ((k.1.2.unop : ProdE.MP p) - 1) →

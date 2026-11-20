@@ -11,18 +11,29 @@ noncomputable def imgR {R : Type*} [CommRing R] {D N : ℕ} (j0 : Fin (N + 1)) (
       else -∑ k, MvPolynomial.X (Sum.inr (p.1, k)) * MvPolynomial.C (ρ k))
     (fun k => MvPolynomial.X (Sum.inr (p.1, k))) p.2
 
+/- English proof (translation)
+Unfold `imgR`. Conclude with `sac_same j0 _ _`.
+-/
 theorem imgR_same {R : Type*} [CommRing R] {D N : ℕ} (j0 : Fin (N + 1)) (ρ : Fin N → R)
     (i : Fin (D + 1)) : imgR (D := D) j0 ρ (i, j0) = if i = 0 then MvPolynomial.X (Sum.inl ())
       else -∑ k, MvPolynomial.X (Sum.inr (i, k)) * MvPolynomial.C (ρ k) := by
   unfold imgR
   exact sac_same j0 _ _
 
+/- English proof (translation)
+Unfold `imgR`. Conclude with `sac_succAbove j0 _ _ k`.
+-/
 theorem imgR_succAbove {R : Type*} [CommRing R] {D N : ℕ} (j0 : Fin (N + 1)) (ρ : Fin N → R)
     (i : Fin (D + 1)) (k : Fin N) :
     imgR (D := D) j0 ρ (i, j0.succAbove k) = MvPolynomial.X (Sum.inr (i, k)) := by
   unfold imgR
   exact sac_succAbove j0 _ _ k
 
+/- English proof (translation)
+Take `⟨i, j⟩` from `t`. Break down `Fin.eq_self_or_eq_succAbove j0 j with rfl | ⟨k, rfl⟩` into its components or cases. Rewrite using `[imgR_same, imgR_same] split_ifs`. Conclude with `MvPolynomial.map_X φ _`. Simplify using `only [map_neg, map_sum, map_mul, MvPolynomial.map_X, MvPolynomial.map_C]`.
+
+Rewrite using `[imgR_succAbove, imgR_succAbove, MvPolynomial.map_X]`.
+-/
 theorem imgR_map {R R' : Type*} [CommRing R] [CommRing R'] {D N : ℕ} (φ : R →+* R')
     (j0 : Fin (N + 1)) (ρ : Fin N → R) (t : TVar D N) :
     MvPolynomial.map φ (imgR j0 ρ t) = imgR j0 (fun k => φ (ρ k)) t := by
@@ -39,6 +50,9 @@ section Ker
 variable {K : Type} [Field K] {Ω : Type} [Field Ω] [Algebra K Ω] {D N : ℕ}
   (v : AddValuation Ω (WithTop ℤ))
 
+/- English proof (translation)
+Rewrite using `[mem_vRing_iff]`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hv x hx]`.
+-/
 theorem alg_mem (hv : IsTrivOn K v) (x : K) : algebraMap K Ω x ∈ vRing v := by
   rw [mem_vRing_iff]
   by_cases hx : x = 0
@@ -58,6 +72,13 @@ noncomputable def psiR (hv : IsTrivOn K v) (j0 : Fin (N + 1)) (ρ : Fin N → vR
     MvPolynomial (TVar D N) K →+* MvPolynomial (SVar D N) (IsLocalRing.ResidueField (vRing v)) :=
   (MvPolynomial.map (IsLocalRing.residue (vRing v))).comp (psiT (D := D) v hv j0 ρ)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval₂_eq]`. Use `Finset.sum_induction _ (fun x => 0 < w x) (fun a b ha hb => lt_of_lt_of_le (lt_min ha hb) (AddValuation.map_add w a b)) (by simp) ?_` and prove the remaining obligations. Introduce `d _`. Establish `hprod : 0 ≤ w (∏ s ∈ d.support, e s ^ d s)` using `Finset.prod_induction _ (fun x => 0 ≤ w x) (fun a b ha hb => by rw [AddValuation.map_mul]; exact add_nonneg ha hb) (le_of_eq (AddValuation.map_one w).symm) (fun s _ => by rw [AddValuation.map_pow]; exact nsmul_nonneg (he s) _)`. Establish `hnu : ¬ IsUnit (q.coeff d)`.
+
+Establish `h0` using `congrArg (MvPolynomial.coeff d) hq`. Rewrite `h0` using `[MvPolynomial.coeff_map, MvPolynomial.coeff_zero]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp ((IsLocalRing.residue_eq_zero_iff _).mp h0)`. Establish `hc : 0 < w (((algebraMap Ω (OmS Ω D N)).comp (vRing v).subtype) (q.coeff d))`. Rewrite using `[RingHom.comp_apply, hw]`.
+
+Conclude with `pos_of_not_isUnit v _ hnu`. Rewrite using `[AddValuation.map_mul]`. Conclude with `lt_of_lt_of_le hc (le_add_of_nonneg_right hprod)`.
+-/
 theorem pos_of_ker {w : AddValuation (OmS Ω D N) (WithTop ℤ)}
     (hw : ∀ a : Ω, w (algebraMap Ω (OmS Ω D N) a) = v a)
     (e : SVar D N → OmS Ω D N) (he : ∀ s, 0 ≤ w (e s))

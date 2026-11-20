@@ -15,9 +15,15 @@ set_option maxHeartbeats 2000000
 
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩`.
+-/
 theorem kept_refl {D : D7} (c : NChoice D) : Kept c c :=
   ⟨by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩`.
+-/
 theorem kept_withLoc {D : D7} (L : LocAll (lay0 D)) (c : NChoice D) : Kept c (chL L c) :=
   ⟨by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩
 
@@ -25,14 +31,28 @@ def levelThreeIndependentOfChoices {N : NExt hL} {S S' : SExt} {Γ Γ' : GeoP} {
   { g := v.g, coh := v.coh, Wt := v.Wt, p0 := v.p0, what₂ := v.what₂, rx := v.rx, nch := v.nch, n := v.n, xd := v.xd, chiT := v.chiT,
     nx := v.nx }
 
+/- English proof (translation)
+The claim follows from `let ⟨Z, ⟨v⟩⟩ := h ⟨Z, ⟨⟨⟨v.g, v.coh, v.Wt, v.p0, v.what₂, v.rx⟩, v.nch, v.n, v.xd, v.chiT, ⟨v.nx.1, v.nx.2.1⟩⟩⟩⟩`.
+-/
 theorem third_level_of_good_twists {S : SExt} {Γ : GeoP} (h : Has3 (prmR (NEg hL) S Γ).s K B f T w) : Has3 (prmR (NEb hL) S Γ).s K B f T w :=
   let ⟨Z, ⟨v⟩⟩ := h
   ⟨Z, ⟨⟨⟨v.g, v.coh, v.Wt, v.p0, v.what₂, v.rx⟩, v.nch, v.n, v.xd, v.chiT, ⟨v.nx.1, v.nx.2.1⟩⟩⟩⟩
 
+/- English proof (translation)
+The claim follows from `if_neg h`.
+-/
 theorem qOf_off (v : B.places.Pl) (h : v ∉ P.Wt) : QOf P v = ∅ := if_neg h
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem qOf_on (v : B.places.Pl) (h : v ∈ P.Wt) : QOf P v = T.Q v := if_pos h
 
+/- English proof (translation)
+Distinguish the cases in `h : v ∈ P.Wt`. Conclude with `qOf_on v h`. Rewrite using `[qOf_off v h]`. Use `(Finset.eq_empty_of_forall_notMem fun u hu => ?_).symm` and prove the remaining obligations. Establish `h1` using `((T.psi_is v).ram u).1 (by rw [P.supp v h]; exact fun _ _ => rfl)`.
+
+Conclude with `h1 hu`.
+-/
 theorem qOf_eq (v : B.places.Pl) : QOf P v = T.Q v := by
   by_cases h : v ∈ P.Wt
   · exact qOf_on v h
@@ -41,10 +61,28 @@ theorem qOf_eq (v : B.places.Pl) : QOf P v = T.Q v := by
     have h1 := ((T.psi_is v).ram u).1 (by rw [P.supp v h]; exact fun _ _ => rfl)
     exact h1 hu
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hv`. Conclude with `h (P.q.mu.off v hv)`.
+-/
 theorem mem_of_twisted (x : St P) (v : B.places.Pl) (h : TwistedAt (Dof x) v) : v ∈ P.Wt := by
   by_contra hv
   exact h (P.q.mu.off v hv)
 
+/- English proof (translation)
+Introduce `h`. Choose the witnesses or unpack the hypotheses as in `⟨Q, hQ, hpQ⟩ : ∃ Q : Ideal (𝓞 B.host.E), Q.IsMaximal ∧ ((p : ℕ) : 𝓞 B.host.E) ∈ Q := by`. Establish `hne : Ideal.span {((p : ℕ) : 𝓞 B.host.E)} ≠ ⊤`. Introduce `ht`. Use `congrArg Ideal.absNorm ht` as an intermediate fact.
+
+Rewrite `this` using `[Ideal.absNorm_span_singleton, Ideal.absNorm_top]`. Establish `h2 : Algebra.norm ℤ ((p : ℕ) : 𝓞 B.host.E) = (p : ℤ) ^ Module.finrank ℤ (𝓞 B.host.E)`. Rewrite using `[← map_natCast (algebraMap ℤ (𝓞 B.host.E)), Algebra.norm_algebraMap]`. Rewrite `this` using `[h2, Int.natAbs_pow, Int.natAbs_natCast]`. Break down `Nat.pow_eq_one.1 this with h3 | h3` into its components or cases.
+
+Conclude with `hp.one_lt.ne' h3`. Conclude with `Module.finrank_pos.ne' h3`. Take `⟨Q, hQ, hle⟩` from `Ideal.exists_le_maximal _ hne`. Conclude with `⟨Q, hQ, hle (Ideal.subset_span rfl)⟩`. Establish `hQ0 : Q ≠ ⊥`.
+
+Introduce and unpack `rfl`. Conclude with `hp.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hpQ))`. Set `u : HeightOneSpectrum (𝓞 B.host.E)` to `⟨Q, hQ.isPrime, hQ0⟩`. Establish `hu : OverP B.host p u` using `hpQ`. Establish `hψ : (T.psi v).UnrAt u`.
+
+Assume the negation of the conclusion as `hn`. Take `⟨-, h1, -, h2⟩` from `(T.psi_tw v).2.2.2 u hn`. Establish `h3 : ((Ideal.absNorm u.asIdeal : ℕ) : 𝓞 B.host.E) ∈ u.asIdeal` using `Ideal.absNorm_mem _`. Distinguish the cases in `e : Ideal.absNorm u.asIdeal = p`. Conclude with `h2 (e ▸ hS)`.
+
+Take `⟨a, b, hab⟩ : IsCoprime ((Ideal.absNorm u.asIdeal : ℕ) : 𝓞 B.host.E) (p : 𝓞 B.host.E)` from `Nat.Coprime.cast ((Nat.coprime_primes h1 hp).2 e)`. Conclude with `u.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h3) (Ideal.mul_mem_left _ _ hpQ)))`. Establish `h15` using `(hδ.ine u hu 1).1 fun x hx => by`. Establish `e` using `congrArg (fun χ : HChar B.host.E => χ.loc u x) h`. Simplify using `only [HChar.loc_mul, hψ x hx, mul_one] at e`.
+
+Rewrite using `[pow_one, e]`. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
+-/
 theorem del_mul_ne_one {p : ℕ} (hp : p.Prime) (hS : p ∈ offSet B.toPre) {δ : HChar B.host.E} (hδ : IsDelta (H := B.host) p δ)
     (v : B.places.Pl) : δ * T.psi v ≠ 1 := by
   intro h
@@ -82,6 +120,11 @@ theorem del_mul_ne_one {p : ℕ} (hp : p.Prime) (hS : p ∈ offSet B.toPre) {δ 
     rfl
   omega
 
+/- English proof (translation)
+Use `⟨mem_of_twisted x v, fun hv h => ?_⟩` and prove the remaining obligations. Establish `h1 : P.q.W₀.muTw v = w.C.mu0` using `(P.q.mu.on v hv).symm.trans h`. Establish `h2` using `P.q.mu.tw v`. Rewrite `h2` using `[h1]`. Establish `h3 : T.xiTw f v = 1` using `h2.symm.trans w.ok.trueColumnChoices_heckeChar_reference_eq_one`.
+
+Unfold `TwDat.xiTw at h3`. Use `split_ifs at h3`. Conclude with `del_mul_ne_one B.host.pde'_prime (by simp [offSet]) f.isDel' v h3`. Conclude with `del_mul_ne_one B.host.pde_prime (by simp [offSet]) f.isDel v h3`.
+-/
 theorem twisted_iff (x : St P) (v : B.places.Pl) : TwistedAt (Dof x) v ↔ v ∈ P.Wt := by
   refine ⟨mem_of_twisted x v, fun hv h => ?_⟩
   have h1 : P.q.W₀.muTw v = w.C.mu0 := (P.q.mu.on v hv).symm.trans h
@@ -93,12 +136,22 @@ theorem twisted_iff (x : St P) (v : B.places.Pl) : TwistedAt (Dof x) v ↔ v ∈
   · exact del_mul_ne_one B.host.pde'_prime (by simp [offSet]) f.isDel' v h3
   · exact del_mul_ne_one B.host.pde_prime (by simp [offSet]) f.isDel v h3
 
+/- English proof (translation)
+Establish `h` using `x.o.N.etaJ_tie j v h1 h2`. Establish `hE : IsEmpty x.o.N.nd.Loc` using `l.a.A.bare`. Rewrite `h` using `[Finset.eq_empty_of_isEmpty (x.o.N.nd.locs j v), Finset.sum_empty]`. Conclude with `h`.
+-/
 theorem eta_zero {x : St P} (l : LA hL x) (j : ℕ) (v : B.places.Pl) (h1 : 1 ≤ j) (h2 : j ≤ B.R.m) : x.o.η j v = 0 := by
   have h := x.o.N.etaJ_tie j v h1 h2
   have hE : IsEmpty x.o.N.nd.Loc := l.a.A.bare
   rw [Finset.eq_empty_of_isEmpty (x.o.N.nd.locs j v), Finset.sum_empty] at h
   exact h
 
+/- English proof (translation)
+Use `(h0.and (StepW.and hA (StepW.and hM (StepW.and hR (StepW.and hC (StepW.and b0 (StepW.and b1 (StepW.and b2 (StepW.and hc hF))))))))).trans (StepW.of_all ?_)` and prove the remaining obligations. Introduce and unpack `K B f T w - - ⟨⟨P, x, hx, -⟩, hA, hM, hR, hC, b0, b1, b2, hc, hF⟩`. Take `⟨x1, ⟨a⟩, -⟩` from `hA P x hx`. Take `⟨m⟩` from `hM P x1`. Take `⟨r⟩` from `hR P x1 a`.
+
+Take `⟨x2, ⟨l0⟩⟩` from `b0 P x1 { toLA := a, mt := m, rat := r, cusp := hC P x1 a }`. Take `⟨x3, ⟨l1⟩⟩` from `b1 P x2 l0`. Take `⟨x4, ⟨l2⟩⟩` from `b2 P x3 l1`. Take `⟨c⟩` from `hc P x4 l2`. Take `⟨Z, v, -⟩` from `hF P x4 { toStrictHenselianAcyclic := l2, c := c } S Γ`.
+
+Conclude with `⟨Z, ⟨v⟩⟩`.
+-/
 theorem chain (h0 : StepW Start HasBare) (hA : SA hL) (hM : SMt) (hR : SRat hL) (hC : SCusp hL) (b0 : SettingsFormsExist hL) (b1 : SeriesExist hL)
     (b2 : SB2 hL) (hc : SC hL) (hF : SFin hL) (S : SExt) (Γ : GeoP) : StepW Start (Has3 (prmR (NEb hL) S Γ).s) := by
   refine (h0.and (StepW.and hA (StepW.and hM (StepW.and hR (StepW.and hC (StepW.and b0 (StepW.and b1 (StepW.and b2

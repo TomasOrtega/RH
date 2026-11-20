@@ -20,6 +20,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X X' :
   {f : X' ⟶ X} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ : Sp Ω ⟶ X} {ξ' : Sp Ω' ⟶ X'} {i : Ω →+* Ω'}
   {Li Li' : Type} [AddCommGroup Li] [Module Ω Li] [AddCommGroup Li'] [Module Ω' Li']
 
+/- English proof (translation)
+Take `⟨Vz, _, _, ⟨MR⟩⟩` from `lieModel_exists X t.G ℂ z`. Take `⟨ev, hev1, -, -⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring X t.G Ω ξ Li M ℂ z hq Vz MR hξ t.semi.smooth`. Take `⟨x, rfl⟩` from `MR.onto w (GrNorm.tan_of_valAt hw)`. Take `⟨he, e2⟩` from `(hev1 _ _).1 hw`. Use `⟨he, fun w' hw' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x', rfl⟩` from `MR.onto w' (GrNorm.tan_of_valAt hw')`. Take `⟨_, e3⟩` from `(hev1 _ _).1 hw'`. Rewrite using `[← e2, ← e3]`.
+-/
 theorem val_unique (hξ : IsCptGen ξ) (M : LieModel t.G ξ Li) {z : Sp ℂ ⟶ X} (hq : genPt ξ ⤳ centre z) {e : Li}
     {w : epsAt z ⟶ t.G} (hw : M.ValAt z e w) : e ∈ M.lat ⟨centre z, hq⟩ ∧ ∀ w', M.ValAt z e w' → w' = w := by
   obtain ⟨Vz, _, _, ⟨MR⟩⟩ := lieModel_exists X t.G ℂ z
@@ -31,6 +36,25 @@ theorem val_unique (hξ : IsCptGen ξ) (M : LieModel t.G ξ Li) {z : Sp ℂ ⟶ 
   obtain ⟨_, e3⟩ := (hev1 _ _).1 hw'
   rw [← e2, ← e3]
 
+/- English proof (translation)
+Use `set p' : Cpt ξ' := ⟨centre z, hq⟩ with hp'`. Take `⟨Vz, _, _, ⟨MR⟩⟩` from `lieModel_exists X' t'.G ℂ z`. Take `⟨ev, hev1, hev2, -⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring X' t'.G Ω' ξ' Li' M' ℂ z hq Vz MR hξ' t'.semi.smooth`. Set `eA : X'.presheaf.stalk p'.1 ≃+* regAt ξ' p'` to `RingEquiv.ofBijective (genMap ξ' p').rangeRestrict ⟨fun a b e => hξ'.inj p' (congrArg Subtype.val e), (genMap ξ' p').rangeRestrict_surjective⟩`. Set `φ : regAt ξ' p' →+* ℂ` to `(Scheme.stalkClosedPointTo z).hom.comp (eA.symm : regAt ξ' p' →+* X'.presheaf.stalk p'.1)`.
+
+Establish `hφ : ∀ a : regAt ξ' p', ValAt ξ' z (a : Ω') (φ a)` using `fun a => ⟨hq, eA.symm a, congrArg Subtype.val (eA.apply_symm_apply a), rfl⟩`. Use `⟨φ, hφ, fun r b Γ b' P ⟨v, hv, hI⟩ hP => ?_⟩` and prove the remaining obligations. Set `val : Li' → Vz` to `fun e => if he : e ∈ M'.lat p' then ev ⟨e, he⟩ else 0`. Establish `hval : ∀ e (he : e ∈ M'.lat p'), val e = ev ⟨e, he⟩` using `fun e he => dif_pos he`. Establish `h0 : val 0 = 0`.
+
+Rewrite using `[hval 0 (zero_mem _)]`. Conclude with `map_zero ev`. Establish `hadd : ∀ e ∈ M'.lat p', ∀ e' ∈ M'.lat p', val (e + e') = val e + val e'` using `fun e he e' he' => by`. Rewrite using `[hval _ (add_mem he he'), hval e he, hval e' he']`. Conclude with `map_add ev ⟨e, he⟩ ⟨e', he'⟩`.
+
+Establish `hsmul : ∀ a : regAt ξ' p', ∀ e ∈ M'.lat p', val ((a : Ω') • e) = φ a • val e` using `fun a e he => by`. Establish `hm : (a : Ω') • e ∈ M'.lat p'` using `(M'.lat p').smul_mem a he`. Rewrite using `[hval _ hm, hval e he]`. Conclude with `hev2 a (φ a) ⟨e, he⟩ (hφ a)`. Establish `hpick : ∀ e (w : epsAt z ⟶ t'.G), M'.ValAt z e w → e ∈ M'.lat p' ∧ w = MR.pt (val e)`.
+
+Introduce `e w hw`. Take `⟨x, hx⟩` from `MR.onto w (GrNorm.tan_of_valAt hw)`. Rewrite `hw`, the goal using `[← hx]`. Take `⟨he, e2⟩` from `(hev1 _ _).1 hw`. Conclude with `⟨he, by rw [hval e he, e2]⟩`.
+
+Establish `hu` using `fun k => val_unique hξ M (z := z ≫ f) hp (hv k)`. Establish `hdown` using `fun k => HodgePull.value_pull (M' := M') (j := j) hd m.cart hpt hq hp (hu k).1`. Use `choose w w' hw hw' hww using hdown`. Establish `hwv : ∀ k, w k = v k` using `fun k => (hu k).2 _ (hw k)`. Establish `hjL : ∀ k, j (b k) ∈ M'.lat p'` using `fun k => (hpick _ _ (hw' k)).1`.
+
+Establish `hw'e : ∀ k, w' k = MR.pt (val (j (b k)))` using `fun k => (hpick _ _ (hw' k)).2`. Establish `hb'L : ∀ k, b' k ∈ M'.lat p'` using `fun k => by`. Rewrite using `[hP k]`. Conclude with `Submodule.sum_mem _ fun l _ => (M'.lat p').smul_mem (P l k) (hjL l)`. Establish `hbv : ∀ k, val (b' k) = ∑ l, (P.map φ) l k • val (j (b l))` using `fun k => by`.
+
+Rewrite using `[hP k]`. Conclude with `GrNorm.val_sum h0 hadd hsmul hjL (fun l => P l k) Finset.univ`. Use `⟨fun k => MR.pt (val (b' k)), fun k => (hev1 _ _).2 ⟨hb'L k, (hval _ _).symm⟩, fun p q => ?_⟩` and prove the remaining obligations. Simplify using `only [hbv]`. Use `HodgePull.gram_comb MR (fun l => val (j (b l))) Γ p (fun a c => ?_) (HodgePull.hodgeInnerProduct_unique m) _ p q` and prove the remaining obligations.
+
+Rewrite using `[← hw'e, ← hw'e]`. Use `((GlobalTheory.T.hodge_inner_product_pullback_unique E H X' X t' t f m z (w' a) (w' c) (w a) (w c) (hww a) (hww c)).1 _).2 ?_` and prove the remaining obligations. Rewrite using `[hwv, hwv]`. Conclude with `hI a c`.
+-/
 theorem gram_up (m : SABMap t' t f) (hξ : IsCptGen ξ) (hξ' : IsCptGen ξ') (hd : GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i)
     (M : LieModel t.G ξ Li) (M' : LieModel t'.G ξ' Li') (j : Li →+ Li')
     (hpt : ∀ e, (M'.pt (j e)).left ≫ m.φ = Spec.map (CommRingCat.ofHom (dualMap i)) ≫ (M.pt e).left)
@@ -94,6 +118,13 @@ section Alg
 
 variable {Ω : Type} [Field Ω] {V : Type} [AddCommGroup V] [Module Ω V] {r : ℕ}
 
+/- English proof (translation)
+Use `choose d hd0 hd using fun k => GrNorm.exists_coeff_of_mem_flagStep (ht k)`. Establish `key : ∀ k, (fun l => Q l k) = fun l => d k l + (Pi.single k (t k) : Fin r → Ω) l` using `fun k => GrNorm.coeff_eq_of_li hb₀ (by`. Rewrite using `[← hQ k]`. Simplify using `only [add_smul, Finset.sum_add_distrib, ← hd k]`. Simplify using `[Pi.single_apply, ite_smul])`.
+
+Establish `h1 : Q.BlockTriangular id` using `fun l k hlk => by`. Establish `h` using `congrFun (key k) l`. Establish `hlk' : k < l` using `hlk`. Rewrite `h` using `[hd0 k l hlk'.le, Pi.single_eq_of_ne hlk'.ne', add_zero]`. Conclude with `h`.
+
+Rewrite using `[Matrix.det_of_upperTriangular h1]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h` using `congrFun (key k) k`. Rewrite `h` using `[hd0 k k le_rfl, Pi.single_eq_same, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem det_tri {b₀ c : Fin r → V} (hb₀ : LinearIndependent Ω b₀) {t : Fin r → Ω}
     (ht : ∀ k : Fin r, c k - t k • b₀ k ∈ flagStep Ω b₀ k) (Q : Matrix (Fin r) (Fin r) Ω) (hQ : ∀ k, c k = ∑ l, Q l k • b₀ l) :
     Q.det = ∏ k, t k := by
@@ -114,6 +145,15 @@ theorem det_tri {b₀ c : Fin r → V} (hb₀ : LinearIndependent Ω b₀) {t : 
   have h := congrFun (key k) k
   rwa [hd0 k k le_rfl, Pi.single_eq_same, zero_add] at h
 
+/- English proof (translation)
+Use `choose c hc using fun k => (Submodule.mem_span_range_iff_exists_fun A).1 (show b' k ∈ Submodule.span A (Set.range b) from hs ▸ Submodule.subset_span ⟨k, rfl⟩)`. Use `choose c' hc' using fun k => (Submodule.mem_span_range_iff_exists_fun A).1 (show b k ∈ Submodule.span A (Set.range b') from hs ▸ Submodule.subset_span ⟨k, rfl⟩)`. Set `P : Matrix (Fin r) (Fin r) A` to `Matrix.of fun l k => c k l`. Set `P' : Matrix (Fin r) (Fin r) A` to `Matrix.of fun l k => c' k l`. Establish `h1 : P' * P = 1`.
+
+Use extensionality with `l k`. Establish `key : (fun l => ((P' * P) l k : Ω)) = (Pi.single k 1 : Fin r → Ω)` using `GrNorm.coeff_eq_of_li hb' (by`. Establish `e1 : ∑ l, (Pi.single k 1 : Fin r → Ω) l • b' l = b' k` using `by simp [Pi.single_apply, ite_smul]`. Rewrite using `[e1, ← hc k]`. Simplify using `only [← hc', Finset.smul_sum, smul_smul, Matrix.mul_apply, P, P', Matrix.of_apply, AddSubmonoidClass.coe_finset_sum, Finset.sum_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use the proof step `rfl)`. Rewrite using `[congrFun key l, Matrix.one_apply, Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Conclude with `⟨P, fun k => (hc k).symm, Matrix.isUnit_det_of_left_inverse h1⟩`.
+-/
 theorem frame_mat (A : Subring Ω) {b b' : Fin r → V} (hb' : LinearIndependent Ω b')
     (hs : Submodule.span A (Set.range b) = Submodule.span A (Set.range b')) :
     ∃ P : Matrix (Fin r) (Fin r) A, (∀ k, b' k = ∑ l, (P l k : Ω) • b l) ∧ IsUnit P.det := by
@@ -139,6 +179,11 @@ theorem frame_mat (A : Subring Ω) {b b' : Fin r → V} (hb' : LinearIndependent
     split_ifs <;> simp
   exact ⟨P, fun k => (hc k).symm, Matrix.isUnit_det_of_left_inverse h1⟩
 
+/- English proof (translation)
+Establish `key : ∀ n, n ≤ r → ∏ k ∈ Finset.range n, Real.sqrt (leadMinor Γ (k + 1) / leadMinor Γ k) = Real.sqrt (leadMinor Γ n)`. Introduce `n hn`. Proceed by induction on `n with`. Consider the case `zero => simp [leadMinor_size_zero]`. Consider the case `succ n ih`.
+
+Establish `h1` using `leadMinor_pos_of_posDef h (Nat.le_of_succ_le hn)`. Rewrite using `[Finset.prod_range_succ, ih (Nat.le_of_succ_le hn), ← Real.sqrt_mul h1.le, mul_div_cancel₀ _ h1.ne']`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun k => Real.sqrt (leadMinor Γ (k + 1) / leadMinor Γ k)), key r le_rfl, leadMinor_size_self]`.
+-/
 theorem prod_sqrt_lead {Γ : Matrix (Fin r) (Fin r) ℂ} (h : Γ.PosDef) :
     ∏ k : Fin r, Real.sqrt (leadMinor Γ (k + 1) / leadMinor Γ k) = Real.sqrt Γ.det.re := by
   have key : ∀ n, n ≤ r → ∏ k ∈ Finset.range n, Real.sqrt (leadMinor Γ (k + 1) / leadMinor Γ k) =
@@ -152,6 +197,11 @@ theorem prod_sqrt_lead {Γ : Matrix (Fin r) (Fin r) ℂ} (h : Γ.PosDef) :
   rw [Fin.prod_univ_eq_prod_range (fun k => Real.sqrt (leadMinor Γ (k + 1) / leadMinor Γ k)), key r le_rfl,
     leadMinor_size_self]
 
+/- English proof (translation)
+Establish `e : (Cᴴ * Γ * C).det = ((‖C.det‖ ^ 2 : ℝ) : ℂ) * Γ.det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, mul_right_comm]`. Use `congr 1`. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, Complex.re_ofReal_mul, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem sqrt_det_conj (Γ C : Matrix (Fin r) (Fin r) ℂ) :
     Real.sqrt (Cᴴ * Γ * C).det.re = ‖C.det‖ * Real.sqrt Γ.det.re := by
   have e : (Cᴴ * Γ * C).det = ((‖C.det‖ ^ 2 : ℝ) : ℂ) * Γ.det := by
@@ -168,6 +218,9 @@ section Sec
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
   {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj, ← ih, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => zpow_add₀ (hz k) _ _`.
+-/
 theorem mono_sum {F : Type} [Field F] {I : Type} (z : K → F) (hz : ∀ k, z k ≠ 0) (s : Finset I) (a : I → K → ℤ) :
     ∏ k, z k ^ (∑ j ∈ s, a j) k = ∏ j ∈ s, ∏ k, z k ^ a j k := by
   classical
@@ -177,6 +230,9 @@ theorem mono_sum {F : Type} [Field F] {I : Type} (z : K → F) (hz : ∀ k, z k 
     rw [Finset.sum_insert hj, Finset.prod_insert hj, ← ih, ← Finset.prod_mul_distrib]
     exact Finset.prod_congr rfl fun k _ => zpow_add₀ (hz k) _ _
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨hq, 1, by simp, by rw [Finset.prod_empty]; exact map_one _⟩`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj]`. Conclude with `CxVal.mul (h j) ih`.
+-/
 theorem valAt_prod {I : Type} {z : Sp ℂ ⟶ X} (hq : genPt ξ ⤳ centre z) (s : Finset I) {a : I → Ω} {u : I → ℂ}
     (h : ∀ j, ValAt ξ z (a j) (u j)) : ValAt ξ z (∏ j ∈ s, a j) (∏ j ∈ s, u j) := by
   classical
@@ -186,6 +242,11 @@ theorem valAt_prod {I : Type} {z : Sp ℂ ⟶ X} (hq : genPt ξ ⤳ centre z) (s
     rw [Finset.prod_insert hj, Finset.prod_insert hj]
     exact CxVal.mul (h j) ih
 
+/- English proof (translation)
+Use `⟨Finset.prod_ne_zero_iff.2 fun j _ => (h j).1, hw, fun c hc => ?_⟩` and prove the remaining obligations. Use `choose u hu hν using fun j => (h j).2.2 c hc`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (hw.2 k (c k) (isUnit_iff_ne_zero.2 (hc k))).1`. Use `⟨∏ j, u j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, mono_sum _ hy, ← Finset.prod_mul_distrib, ← Finset.prod_div_distrib]`.
+
+Conclude with `valAt_prod hq _ hu`. Rewrite using `[ha, mono_sum (fun k => ‖w ⟨k, c k⟩‖) (fun k => norm_ne_zero_iff.2 (hc k)), hh, norm_prod, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun j _ => hν j`.
+-/
 theorem secNorm_prod {I : Type} [Fintype I] {z : Sp ℂ ⟶ X} (hq : genPt ξ ⤳ centre z) {w : (Σ k, J k) → ℂ}
     (hw : CoordsAt ξ y z w) {L : I → HermLine J} {e t : I → Ω} {ν : I → ℝ}
     (h : ∀ j, SecNorm ξ y (L j) (e j) z w (t j) (ν j)) {A : HermLine J} (ha : A.a = ∑ j, (L j).a)

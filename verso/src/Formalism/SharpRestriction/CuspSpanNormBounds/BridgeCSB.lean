@@ -36,6 +36,9 @@ variable {k r : ℕ}
 
 def mulP (p : Mt k r × Mt k r) : Mt k r := fun i j => (Matrix.of p.1 * Matrix.of p.2) i j
 
+/- English proof (translation)
+Unfold `mulP`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem continuous_mulP : Continuous (mulP (k := k) (r := r)) := by
   unfold mulP
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -45,6 +48,11 @@ theorem continuous_mulP : Continuous (mulP (k := k) (r := r)) := by
 def hPart (x : Mt k r) : Mt k r := fun i j =>
   if (r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k) then x i j else if i = j then 1 else 0
 
+/- English proof (translation)
+Unfold `hPart`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `(continuous_apply j).comp (continuous_apply i)`. Conclude with `continuous_const`.
+
+Conclude with `continuous_const`.
+-/
 theorem continuous_hPart : Continuous (hPart (k := k) (r := r)) := by
   unfold hPart
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -55,6 +63,15 @@ theorem continuous_hPart : Continuous (hPart (k := k) (r := r)) := by
 
 def dag (x : Mt k r) : Mt k r := fun i j => (Hpk k r * (Matrix.of x)ᴴ * Hpk k r) i j
 
+/- English proof (translation)
+Establish `h : (dag (k` using `k) (r := r)) = fun x => fun i j => sgn k r i * (star (x (tau k r j) (tau k r i)) * sgn k r j) := by`. Use function extensionality and compare the values at `x i j`. Unfold `dag`. Rewrite using `[Matrix.mul_assoc, hpk_mul_apply, Matrix.mul_apply, Finset.sum_eq_single (tau k r j)]`. Rewrite using `[hpk_row, tau_tau, if_pos rfl, sgn_tau]`.
+
+Both sides reduce to the same expression. Introduce `m _ hm`. Rewrite using `[hpk_row, if_neg, mul_zero]`. Introduce `e`. Apply `hm` to reduce the goal to its premises.
+
+Rewrite using `[e, tau_tau]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Rewrite using `[h]`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+
+Use `fun_prop`.
+-/
 theorem continuous_dag : Continuous (dag (k := k) (r := r)) := by
   have h : (dag (k := k) (r := r)) = fun x => fun i j => sgn k r i * (star (x (tau k r j) (tau k r i)) * sgn k r j) := by
     funext x i j
@@ -69,18 +86,40 @@ theorem continuous_dag : Continuous (dag (k := k) (r := r)) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   fun_prop
 
+/- English proof (translation)
+Establish `h1 : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Use `show Hpk k r * gᴴ * Hpk k r * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h1, hpk_sq]`.
+-/
 theorem dag_mul_self {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r)) :
     Matrix.of (dag (k := k) (r := r) g) * g = 1 := by
   have h1 : gᴴ * Hpk k r * g = Hpk k r := hg
   show Hpk k r * gᴴ * Hpk k r * g = 1
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h1, hpk_sq]
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.1 (dag_mul_self hg)`.
+-/
 theorem self_mul_dag {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r)) :
     g * Matrix.of (dag (k := k) (r := r) g) = 1 := mul_eq_one_comm.1 (dag_mul_self hg)
 
+/- English proof (translation)
+The claim follows from `(Matrix.inv_eq_left_inv (dag_mul_self hg)).symm`.
+-/
 theorem dag_eq_inv {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r)) :
     Matrix.of (dag (k := k) (r := r) g) = g⁻¹ := (Matrix.inv_eq_left_inv (dag_mul_self hg)).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Unfold `hPart`. Use `split_ifs with h1 h2`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[hn j j h1.2.2 (Or.inl le_rfl), if_pos rfl, mul_one]`.
+
+Introduce `l _ hl`. Distinguish the cases in `hlW : r ≤ l.val`. Rewrite using `[hn l j h1.2.2 (Or.inr hlW), if_neg hl, mul_zero]`. Rewrite using `[hh.1 i l (Or.inl (by omega)), if_neg, zero_mul]`. Introduce `e`.
+
+Rewrite `h1` using `[e]`. Use linear arithmetic over natural numbers and integers. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Substitute `h2` using the available equality.
+
+Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hh.1 i i hi, if_pos rfl]`. It suffices to derive a contradiction. Apply `h1` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+
+Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hh.2 i j hi, if_neg h2]`. Establish `hj : j.val < r ∨ r + k < j.val`. Assume the negation of the conclusion as `hj`. Apply `h1` to reduce the goal to its premises.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hh.1 i j hj, if_neg h2]`.
+-/
 theorem hPart_mul {h n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : block k r h) (hn : col k r n) :
     hPart (k := k) (r := r) (h * n) = h := by
   funext i j
@@ -106,9 +145,17 @@ theorem hPart_mul {h n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
 
 def splitP (x : Mt k r) : Mt k r × Mt k r := (hPart x, mulP (dag (hPart x), x))
 
+/- English proof (translation)
+The claim follows from `continuous_hPart.prodMk (continuous_mulP.comp ((continuous_dag.comp continuous_hPart).prodMk continuous_id))`.
+-/
 theorem continuous_splitP : Continuous (splitP (k := k) (r := r)) :=
   continuous_hPart.prodMk (continuous_mulP.comp ((continuous_dag.comp continuous_hPart).prodMk continuous_id))
 
+/- English proof (translation)
+Establish `e1 : hPart (mulP p) = p.1` using `hPart_mul (uw_block h1) ((nset_iff _).1 h2).2`. Unfold `splitP`. Rewrite using `[e1]`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show (Matrix.of (dag p.1) * (Matrix.of p.1 * Matrix.of p.2) : Matrix _ _ ℂ) = Matrix.of p.2`.
+
+Rewrite using `[← Matrix.mul_assoc]`. Use `dag_mul_self h1.1` as an intermediate fact. Rewrite using `[show Matrix.of (dag p.1) * Matrix.of p.1 = (1 : Matrix _ _ ℂ) from this, Matrix.one_mul]`.
+-/
 theorem splitPair_mulPair {z : Fin (2 * r + k + 1) → ℂ} {p : Mt k r × Mt k r} (h1 : Matrix.of p.1 ∈ UWset k r z)
     (h2 : Matrix.of p.2 ∈ Nset k r) : splitP (mulP p) = p := by
   have e1 : hPart (mulP p) = p.1 := hPart_mul (uw_block h1) ((nset_iff _).1 h2).2
@@ -120,6 +167,13 @@ theorem splitPair_mulPair {z : Fin (2 * r + k + 1) → ℂ} {p : Mt k r × Mt k 
   have := dag_mul_self h1.1
   rw [show Matrix.of (dag p.1) * Matrix.of p.1 = (1 : Matrix _ _ ℂ) from this, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `: {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)} = {x | mulP (dag x, x) = (1 : Matrix _ _ ℂ)}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `dag_mul_self h`.
+
+Introduce `h`. Establish `h' : Hpk k r * (Matrix.of x)ᴴ * Hpk k r * Matrix.of x = 1` using `h`. Use `show (Matrix.of x)ᴴ * Hpk k r * Matrix.of x = Hpk k r`. Use `congrArg (fun M => Hpk k r * M) h'` as an intermediate fact. Simplify using `only [Matrix.mul_one] at this`.
+
+Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (Hpk k r) (Hpk k r), hpk_sq, Matrix.one_mul, ← Matrix.mul_assoc]`. Conclude with `this`. Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_mulP.comp (continuous_dag.prodMk continuous_id)) continuous_const`.
+-/
 theorem isClosed_UH : IsClosed {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)} := by
   have : {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)} = {x | mulP (dag x, x) = (1 : Matrix _ _ ℂ)} := by
     ext x
@@ -136,6 +190,15 @@ theorem isClosed_UH : IsClosed {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)} := by
   rw [this]
   exact isClosed_eq (continuous_mulP.comp (continuous_dag.prodMk continuous_id)) continuous_const
 
+/- English proof (translation)
+Establish `: {x : Mt k r | Matrix.of x ∈ Nset k r} = {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)} ∩ ⋂ (i : Fin (2 * r + k + 1)) (j : Fin (2 * r + k + 1)), {x : Mt k r | j.val ≤ r + k → (j.val ≤ i.val ∨ r ≤ i.val) → x i j = if i = j then 1 else 0}`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter, nset_iff]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Use `isClosed_UH.inter (isClosed_iInter fun i => isClosed_iInter fun j => ?_)` and prove the remaining obligations. Distinguish the cases in `hc : j.val ≤ r + k ∧ (j.val ≤ i.val ∨ r ≤ i.val)`. Establish `: {x : Mt k r | j.val ≤ r + k → (j.val ≤ i.val ∨ r ≤ i.val) → x i j = if i = j then 1 else 0} = {x | x i j = if i = j then 1 else 0}`. Use extensionality with `x`. Conclude with `⟨fun h => h hc.1 hc.2, fun h _ _ => h⟩`.
+
+Rewrite using `[this]`. Conclude with `isClosed_eq ((continuous_apply j).comp (continuous_apply i)) continuous_const`. Establish `: {x : Mt k r | j.val ≤ r + k → (j.val ≤ i.val ∨ r ≤ i.val) → x i j = if i = j then 1 else 0} = Set.univ`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_univ, iff_true]`.
+
+Introduce `a b`. Conclude with `absurd ⟨a, b⟩ hc`. Rewrite using `[this]`. Conclude with `isClosed_univ`.
+-/
 theorem isClosed_N : IsClosed {x : Mt k r | Matrix.of x ∈ Nset k r} := by
   have : {x : Mt k r | Matrix.of x ∈ Nset k r} = {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)} ∩
       ⋂ (i : Fin (2 * r + k + 1)) (j : Fin (2 * r + k + 1)),
@@ -156,11 +219,17 @@ theorem isClosed_N : IsClosed {x : Mt k r | Matrix.of x ∈ Nset k r} := by
       intro a b; exact absurd ⟨a, b⟩ hc
     rw [this]; exact isClosed_univ
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem continuous_mulVecM (v : Fin (2 * r + k + 1) → ℂ) : Continuous fun x : Mt k r => Matrix.of x *ᵥ v := by
   refine continuous_pi fun i => ?_
   simp only [Matrix.mulVec, dotProduct, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Establish `: {x : Mt k r | Matrix.of x ∈ UWset k r z} = {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)} ∩ ((⋂ a : Fin r, ({x : Mt k r | Matrix.of x *ᵥ bvec (eI k r a) = bvec (eI k r a)} ∩ {x : Mt k r | Matrix.of x *ᵥ bvec (esI k r a) = bvec (esI k r a)})) ∩ {x : Mt k r | Matrix.of x *ᵥ z = z})`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter, UWset]`. Rewrite using `[this]`. Conclude with `isClosed_UH.inter ((isClosed_iInter fun a => (isClosed_eq (continuous_mulVecM _) continuous_const).inter (isClosed_eq (continuous_mulVecM _) continuous_const)).inter (isClosed_eq (continuous_mulVecM _) continuous_const))`.
+-/
 theorem isClosed_UW (z : Fin (2 * r + k + 1) → ℂ) : IsClosed {x : Mt k r | Matrix.of x ∈ UWset k r z} := by
   have : {x : Mt k r | Matrix.of x ∈ UWset k r z} = {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)} ∩
       ((⋂ a : Fin r, ({x : Mt k r | Matrix.of x *ᵥ bvec (eI k r a) = bvec (eI k r a)} ∩
@@ -186,12 +255,38 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.QuantumDete
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `: (lmulM (k` using `k) (r := r) a) = fun x => mulP (a, x) := rfl`. Rewrite using `[this]`. Conclude with `continuous_mulP.comp (continuous_const.prodMk continuous_id)`.
+-/
 theorem continuous_lmulM (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Continuous (lmulM (k := k) (r := r) a) := by
   have : (lmulM (k := k) (r := r) a) = fun x => mulP (a, x) := rfl
   rw [this]
   exact continuous_mulP.comp (continuous_const.prodMk continuous_id)
 
+/- English proof (translation)
+Use `hW.1` as an intermediate fact. Use `hN.1` as an intermediate fact. Establish `mP : Measurable (mulP (k` using `k) (r := r)) := continuous_mulP.measurable`. Establish `aW : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z` using `by rw [ae_iff]; exact hW.2.2.1`. Establish `aN : ∀ᵐ x ∂μN, Matrix.of x ∈ Nset k r` using `by rw [ae_iff]; exact hN.2.2.1`.
+
+Establish `hae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae aW).and (Measure.quasiMeasurePreserving_snd.ae aN)`. Establish `hmap : ((μW.prod μN).map mulP).map splitP = μW.prod μN`. Rewrite using `[Measure.map_map continuous_splitP.measurable mP]`. Use `conv_rhs => rw [← Measure.map_id (μ := μW.prod μN)]`. Conclude with `Measure.map_congr (hae.mono fun p hp => splitPair_mulPair hp.1 hp.2)`.
+
+Use `⟨SigmaFinite.of_map _ continuous_splitP.aemeasurable (by rw [hmap]; infer_instance), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `hmap` using `[h0, Measure.map_zero]`. Establish `h1 : (μW.prod μN) (Set.univ ×ˢ Set.univ) = 0` using `by rw [← hmap]; rfl`. Rewrite `h1` using `[Measure.prod_prod, mul_eq_zero, Measure.measure_univ_eq_zero, Measure.measure_univ_eq_zero]`.
+
+Conclude with `h1.elim hW.2.1 hN.2.1`. Use `set M : Set (Mt k r) := splitP ⁻¹' ({x : Mt k r | Matrix.of x ∈ UWset k r z} ×ˢ {x : Mt k r | Matrix.of x ∈ Nset k r}) with hM`. Establish `hMm : MeasurableSet M` using `continuous_splitP.measurable ((isClosed_UW z).measurableSet.prod isClosed_N.measurableSet)`. Establish `hsub : {x : Mt k r | Matrix.of x ∉ Sset k r z} ⊆ Mᶜ`. Introduce `x hx hxM`.
+
+Apply `hx` to reduce the goal to its premises. Take `⟨h1, h2⟩` from `hxM`. Use `⟨_, h1, _, h2, ?_⟩` and prove the remaining obligations. Use `show Matrix.of x = Matrix.of (hPart x) * (Matrix.of (dag (hPart x)) * Matrix.of x)`. Rewrite using `[← Matrix.mul_assoc]`.
+
+Use `self_mul_dag h1.1` as an intermediate fact. Rewrite using `[show Matrix.of (hPart x) * Matrix.of (dag (hPart x)) = (1 : Matrix _ _ ℂ) from this, Matrix.one_mul]`. Use `measure_mono_null hsub ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply mP hMm.compl]`. Establish `: ∀ᵐ p ∂(μW.prod μN), (mulP p : Mt k r) ∈ M` using `hae.mono fun p hp => by show splitP (mulP p) ∈ ({x : Mt k r | Matrix.of x ∈ UWset k r z} ×ˢ {x : Mt k r | Matrix.of x ∈ Nset k r})`.
+
+Rewrite using `[splitPair_mulPair hp.1 hp.2]`. Conclude with `⟨hp.1, hp.2⟩`. Rewrite `this` using `[ae_iff]`. Conclude with `this`. Introduce `s hs`.
+
+Take `⟨h0, hh0, n0, hn0, rfl⟩` from `hs`. Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations. Establish `hl : Measurable (lmulM (k` using `k) (r := r) (h0 * n0)) := (continuous_lmulM _).measurable`. Rewrite using `[lintegral_map hf hl, lintegral_map (f := fun x => f (lmulM (h0 * n0) x)) (hf.comp hl) mP, lintegral_map hf mP, lintegral_prod (fun p => f (lmulM (h0 * n0) (mulP p))) ((hf.comp hl).comp mP).aemeasurable, lintegral_prod (fun p => f (mulP p)) (hf.comp mP).aemeasurable]`. Use `set F : Mt k r → ℝ≥0∞ := fun h => ∫⁻ n, f (mulP (h, n)) ∂μN with hFd`.
+
+Establish `hF : Measurable F` using `(hf.comp mP).lintegral_prod_right'`. Establish `step1 : ∀ᵐ h ∂μW, ∫⁻ n, f (lmulM (h0 * n0) (mulP (h, n))) ∂μN = F (lmulM h0 h)`. Use `aW.mono fun h hh => ?_` and prove the remaining obligations. Establish `hu` using `isUnit_of_uh hh.1`. Establish `hn1 : (Matrix.of h)⁻¹ * n0 * Matrix.of h ∈ Nset k r`.
+
+Use `(uWNormal k r z hz _ (uw_inv hh) n0 hn0).1` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv _ hu]`. Then use the resulting hypothesis. Establish `hm1 : Measurable fun n : Mt k r => f (mulP (lmulM h0 h, n))` using `hf.comp (mP.comp (measurable_const.prodMk measurable_id))`. Use `show _ = ∫⁻ n, f (mulP (lmulM h0 h, n)) ∂μN`. Use `conv_rhs => rw [← hN.2.2.2 _ hn1, lintegral_map hm1 (continuous_lmulM _).measurable]`.
+
+Use `lintegral_congr fun n => congrArg f ?_` and prove the remaining obligations. Use `show (h0 * n0 * (Matrix.of h * Matrix.of n) : Matrix _ _ ℂ) = h0 * Matrix.of h * ((Matrix.of h)⁻¹ * n0 * Matrix.of h * Matrix.of n)`. Establish `e : Matrix.of h * (Matrix.of h)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem haarS {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {μW μN : Measure (Mt k r)}
     (hW : IsHaarOn (UWset k r z) μW) (hN : IsHaarOn (Nset k r) μN) :
     IsHaarOn (Sset k r z) ((μW.prod μN).map mulP) := by
@@ -273,6 +368,17 @@ open MeasureTheory
 
 namespace Formalism.MainNotions.BridgeCSB
 
+/- English proof (translation)
+Set `e` to `MeasurableEquiv.piEquivPiSubtypeProd (fun _ : ι => ℝ) (fun i => ht i ≠ p)`. Establish `he : MeasurePreserving e volume volume` using `volume_preserving_piEquivPiSubtypeProd (fun _ : ι => ℝ) _`. Set `gg : ({i // ht i ≠ p} → ℝ) → ({i // ¬ ht i ≠ p} → ℝ)` to `fun v i => S (e.symm (v, 0)) i - e.symm (v, 0) i`. Establish `hgg : Measurable gg`. Use `measurable_pi_lambda _ fun i => ?_` and prove the remaining obligations.
+
+Conclude with `((measurable_pi_apply _).comp (hS.comp (e.symm.measurable.comp (measurable_id.prodMk measurable_const)))).sub ((measurable_pi_apply _).comp (e.symm.measurable.comp (measurable_id.prodMk measurable_const)))`. Establish `hF : MeasurePreserving (fun q : ({i // ht i ≠ p} → ℝ) × ({i // ¬ ht i ≠ p} → ℝ) => (id q.1, q.2 + gg q.1)) volume volume`. Use `MeasurePreserving.skew_product (μc := (volume : Measure ({i // ¬ ht i ≠ p} → ℝ))) (μd := (volume : Measure ({i // ¬ ht i ≠ p} → ℝ))) (MeasurePreserving.id (volume : Measure ({i // ht i ≠ p} → ℝ))) (g := fun v u => u + gg v) ?_ ?_` and prove the remaining obligations. Conclude with `measurable_snd.add (hgg.comp measurable_fst)`. Conclude with `Filter.Eventually.of_forall fun v => map_add_right_eq_self (volume : Measure ({i // ¬ ht i ≠ p} → ℝ)) (gg v)`.
+
+Establish `hcomp` using `(he.symm.comp hF).comp he`. Use `hcomp using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y i`. Simplify using `only [Function.comp, e, MeasurableEquiv.piEquivPiSubtypeProd_symm_apply, MeasurableEquiv.piEquivPiSubtypeProd_apply, id, gg]`. Distinguish the cases in `hi : ht i = p`.
+
+Establish `hni : ¬ ht i ≠ p` using `fun h => h hi`. Use `hsh i y (e.symm ((fun j : {j // ht j ≠ p} => y j), 0)) (fun j hj => by` as an intermediate fact. Establish `hj' : ht j ≠ p` using `by omega`. Simplify using `[e, MeasurableEquiv.piEquivPiSubtypeProd_symm_apply, hj'])`. Simplify using `only [e] at this`.
+
+Simplify using `[hi] at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hi, if_false, dif_pos hi]`.
+-/
 theorem shear_step {ι : Type} [Fintype ι] [DecidableEq ι] (ht : ι → ℕ) (S : (ι → ℝ) → (ι → ℝ)) (hS : Measurable S)
     (hsh : ∀ (i : ι) (x y : ι → ℝ), (∀ j, ht j < ht i → x j = y j) → S x i - x i = S y i - y i) (p : ℕ) :
     MeasurePreserving (fun y : ι → ℝ => fun i => if ht i = p then S y i else y i) volume volume := by
@@ -306,6 +412,23 @@ theorem shear_step {ι : Type} [Fintype ι] [DecidableEq ι] (ht : ι → ℕ) (
     linarith
   · simp only [hi, if_false, dif_pos hi]
 
+/- English proof (translation)
+Introduce `ι _ _ ht S hS hsh`. Set `Sp : ℕ → (ι → ℝ) → (ι → ℝ)` to `fun p x i => if p ≤ ht i then S x i else x i`. Establish `hSp0 : Sp 0 = S` using `by funext x i; simp [Sp]`. Take `⟨P, hP⟩ : ∃ P, ∀ i, ht i < P` from `⟨Finset.univ.sup ht + 1, fun i => Nat.lt_succ_of_le (Finset.le_sup (Finset.mem_univ i))⟩`. Establish `hSpP : Sp P = id` using `by funext x i; simp [Sp, not_le.2 (hP i)]`.
+
+Establish `hmeas : ∀ p, Measurable (Sp p)` using `fun p => measurable_pi_lambda _ fun i => by`. Distinguish the cases in `h : p ≤ ht i`. Simplify using `only [Sp, h, if_true]`. Conclude with `(measurable_pi_apply i).comp hS`. Simplify using `only [Sp, h, if_false]`.
+
+Conclude with `measurable_pi_apply i`. Establish `hfac : ∀ p, Sp p = (fun y : ι → ℝ => fun i => if ht i = p then S y i else y i) ∘ Sp (p + 1)`. Introduce `p`. Use function extensionality and compare the values at `x i`. Simplify using `only [Function.comp, Sp]`.
+
+Distinguish the cases in `hi : ht i = p`. Simplify using `only [hi, le_refl, if_true, show ¬ (p + 1 ≤ p) by omega, if_false]`. Use `hsh i x (fun j => if p + 1 ≤ ht j then S x j else x j) (fun j hj => by` as an intermediate fact. Simplify using `only [show ¬ (p + 1 ≤ ht j) by omega, if_false])`. Simplify using `only [show ¬ (p + 1 ≤ ht i) by omega, if_false] at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h2 : p + 1 ≤ ht i`. Simplify using `only [hi, if_false, h2, if_true, show p ≤ ht i by omega]`. Simplify using `only [hi, if_false, h2, show ¬ p ≤ ht i by omega]`. Establish `key : ∀ q, q ≤ P → MeasurePreserving (Sp (P - q)) volume volume`.
+
+Introduce `q`. Proceed by induction on `q with`. Consider the case `zero => intro _`. Simplify `MeasurePreserving.id (volume : Measure (ι → ℝ))` using `[hSpP]`. Consider the case `succ q ih`.
+
+Introduce `hq`. Establish `e1 : P - q = P - (q + 1) + 1` using `by omega`. Establish `h` using `ih (by omega)`. Rewrite `h` using `[e1]`. Rewrite using `[hfac]`.
+
+Conclude with `(shear_step ht S hS hsh _).comp h`. Use `key P le_rfl` as an intermediate fact. Simplify `this` using `[hSp0]`.
+-/
 theorem shearMP : ShearMP := by
   intro ι _ _ ht S hS hsh
   classical
@@ -362,12 +485,21 @@ variable {k r : ℕ}
 def dg (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℕ :=
   if i.val < r then i.val else if i.val ≤ r + k then r else i.val - k
 
+/- English proof (translation)
+Apply the tactic sequence `have := i.isLt; unfold dg; split_ifs <;> omega`.
+-/
 theorem dg_le (i : Fin (2 * r + k + 1)) : dg k r i ≤ 2 * r := by
   have := i.isLt; unfold dg; split_ifs <;> omega
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tau_val (i : Fin (2 * r + k + 1)) :
     (tau k r i).val = if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val := rfl
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Unfold `dg`. Rewrite using `[tau_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem dg_tau (i : Fin (2 * r + k + 1)) : dg k r (tau k r i) = 2 * r - dg k r i := by
   have := i.isLt
   unfold dg
@@ -378,29 +510,55 @@ abbrev Mat (k r : ℕ) := Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ
 
 def Fil (p : ℕ) (X : Mat k r) : Prop := ∀ i j, dg k r j < dg k r i + p → X i j = 0
 
+/- English proof (translation)
+Introduce `i j hij` and use `h i j (by omega)`.
+-/
 theorem Fil.mono {p q : ℕ} {X : Mat k r} (hpq : p ≤ q) (h : Fil q X) : Fil p X :=
   fun i j hij => h i j (by omega)
 
+/- English proof (translation)
+Introduce `_ _ _` and use `rfl`.
+-/
 theorem Fil.zero (p : ℕ) : Fil p (0 : Mat k r) := fun _ _ _ => rfl
 
+/- English proof (translation)
+Introduce `i j h` and use `by rw [Matrix.add_apply, hX i j h, hY i j h, add_zero]`.
+-/
 theorem Fil.add {p : ℕ} {X Y : Mat k r} (hX : Fil p X) (hY : Fil p Y) : Fil p (X + Y) :=
   fun i j h => by rw [Matrix.add_apply, hX i j h, hY i j h, add_zero]
 
+/- English proof (translation)
+Introduce `i j h` and use `by rw [Matrix.neg_apply, hX i j h, neg_zero]`.
+-/
 theorem Fil.neg {p : ℕ} {X : Mat k r} (hX : Fil p X) : Fil p (-X) :=
   fun i j h => by rw [Matrix.neg_apply, hX i j h, neg_zero]
 
+/- English proof (translation)
+Introduce `i j h` and use `by rw [Matrix.sub_apply, hX i j h, hY i j h, sub_zero]`.
+-/
 theorem Fil.sub {p : ℕ} {X Y : Mat k r} (hX : Fil p X) (hY : Fil p Y) : Fil p (X - Y) :=
   fun i j h => by rw [Matrix.sub_apply, hX i j h, hY i j h, sub_zero]
 
+/- English proof (translation)
+Introduce `i j h` and use `by rw [Matrix.smul_apply, hX i j h, smul_zero]`.
+-/
 theorem Fil.smul {p : ℕ} {X : Mat k r} (c : ℂ) (hX : Fil p X) : Fil p (c • X) :=
   fun i j h => by rw [Matrix.smul_apply, hX i j h, smul_zero]
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.sum_apply]`. Conclude with `Finset.sum_eq_zero fun a ha => h a ha i j hij`.
+-/
 theorem Fil.sum {p : ℕ} {ι : Type*} (s : Finset ι) (X : ι → Mat k r) (h : ∀ a ∈ s, Fil p (X a)) :
     Fil p (∑ a ∈ s, X a) := by
   intro i j hij
   rw [Matrix.sum_apply]
   exact Finset.sum_eq_zero fun a ha => h a ha i j hij
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : dg k r l < dg k r i + a`. Rewrite using `[hX i l hl, zero_mul]`.
+
+Rewrite using `[hY l j (by omega), mul_zero]`.
+-/
 theorem Fil.mul {a b : ℕ} {X Y : Mat k r} (hX : Fil a X) (hY : Fil b Y) : Fil (a + b) (X * Y) := by
   intro i j h
   rw [Matrix.mul_apply]
@@ -409,20 +567,34 @@ theorem Fil.mul {a b : ℕ} {X Y : Mat k r} (hX : Fil a X) (hY : Fil b Y) : Fil 
   · rw [hX i l hl, zero_mul]
   · rw [hY l j (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.one_apply, if_neg]`. Introduce `e`. Rewrite `h` using `[e]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Fil.one : Fil 0 (1 : Mat k r) := by
   intro i j h
   rw [Matrix.one_apply, if_neg]
   intro e; rw [e] at h; omega
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `h i j (by have := dg_le (k := k) (r := r) j; omega)`.
+-/
 theorem Fil.eq_zero {X : Mat k r} {p : ℕ} (hp : 2 * r + 1 ≤ p) (h : Fil p X) : X = 0 := by
   ext i j
   exact h i j (by have := dg_le (k := k) (r := r) j; omega)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero]`. Conclude with `Fil.one`. Consider the case `succ m ih => rw [pow_succ]`. Conclude with `ih.mul hX`.
+-/
 theorem Fil.pow {X : Mat k r} (hX : Fil 1 X) (m : ℕ) : Fil m (X ^ m) := by
   induction m with
   | zero => rw [pow_zero]; exact Fil.one
   | succ m ih => rw [pow_succ]; exact ih.mul hX
 
+/- English proof (translation)
+Establish `h : X ^ (2 * r + 2) = 0` using `(hX.pow _).eq_zero (by omega)`. Rewrite using `[NormedSpace.exp_eq_tsum ℂ]`. Simplify using `only []`. Rewrite using `[tsum_eq_sum (s := Finset.range (2 * r + 2))]`. Introduce `m hm`.
+
+Establish `hm2 : 2 * r + 2 ≤ m` using `by simpa using hm`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hm2`. Rewrite using `[pow_add, h]`. Simplify using the standard rewrite rules.
+-/
 theorem exp_eq_sum {X : Mat k r} (hX : Fil 1 X) :
     NormedSpace.exp X = ∑ m ∈ Finset.range (2 * r + 2), ((m.factorial : ℂ)⁻¹) • X ^ m := by
   have h : X ^ (2 * r + 2) = 0 := (hX.pow _).eq_zero (by omega)
@@ -435,12 +607,20 @@ theorem exp_eq_sum {X : Mat k r} (hX : Fil 1 X) :
   rw [pow_add, h]
   simp
 
+/- English proof (translation)
+Rewrite using `[exp_eq_sum hX, Finset.sum_range_succ']`. Simplify using `only [pow_zero, Nat.factorial_zero, Nat.cast_one, inv_one, one_smul, add_sub_cancel_right]`. Use `Fil.sum _ _ fun m _ => Fil.smul _ ?_` and prove the remaining obligations. Conclude with `(hX.pow (m + 1)).mono (by omega)`.
+-/
 theorem Fil.exp_sub_one {X : Mat k r} (hX : Fil 1 X) : Fil 1 (NormedSpace.exp X - 1) := by
   rw [exp_eq_sum hX, Finset.sum_range_succ']
   simp only [pow_zero, Nat.factorial_zero, Nat.cast_one, inv_one, one_smul, add_sub_cancel_right]
   refine Fil.sum _ _ fun m _ => Fil.smul _ ?_
   exact (hX.pow (m + 1)).mono (by omega)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using h`. Consider the case `succ m ih`. Establish `e : X ^ (m + 1 + 1) - Y ^ (m + 1 + 1) = X * (X ^ (m + 1) - Y ^ (m + 1)) + (X - Y) * Y ^ (m + 1)`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, ← pow_succ', ← pow_succ']`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `Fil.add ?_ ?_` and prove the remaining obligations. Conclude with `(hX.mul ih).mono (by omega)`. Conclude with `(h.mul (hY.pow (m + 1))).mono (by omega)`.
+-/
 theorem Fil.pow_sub_pow {X Y : Mat k r} {p : ℕ} (hX : Fil 1 X) (hY : Fil 1 Y) (h : Fil p (X - Y)) (m : ℕ) :
     Fil (p + m) (X ^ (m + 1) - Y ^ (m + 1)) := by
   induction m with
@@ -453,6 +633,11 @@ theorem Fil.pow_sub_pow {X Y : Mat k r} {p : ℕ} (hX : Fil 1 X) (hY : Fil 1 Y) 
     · exact (hX.mul ih).mono (by omega)
     · exact (h.mul (hY.pow (m + 1))).mono (by omega)
 
+/- English proof (translation)
+Rewrite using `[exp_eq_sum hX, exp_eq_sum hY, ← Finset.sum_sub_distrib, Finset.sum_range_succ', Finset.sum_range_succ']`. Simplify using `only [pow_zero, Nat.factorial_zero, Nat.cast_one, inv_one, one_smul, sub_self, add_zero, zero_add, pow_one, Nat.factorial_one]`. Establish `e : ∀ s : Mat k r, s + (X - Y) - (X - Y) = s` using `fun s => by abel`. Rewrite using `[e]`. Use `Fil.sum _ _ fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← smul_sub]`. Conclude with `Fil.smul _ ((Fil.pow_sub_pow hX hY h (m + 1)).mono (by omega))`.
+-/
 theorem Fil.exp_sub_exp {X Y : Mat k r} {p : ℕ} (hX : Fil 1 X) (hY : Fil 1 Y) (h : Fil p (X - Y)) :
     Fil (p + 1) ((NormedSpace.exp X - NormedSpace.exp Y) - (X - Y)) := by
   rw [exp_eq_sum hX, exp_eq_sum hY, ← Finset.sum_sub_distrib, Finset.sum_range_succ', Finset.sum_range_succ']
@@ -464,6 +649,13 @@ theorem Fil.exp_sub_exp {X Y : Mat k r} {p : ℕ} (hX : Fil 1 X) (hY : Fil 1 Y) 
   rw [← smul_sub]
   exact Fil.smul _ ((Fil.pow_sub_pow hX hY h (m + 1)).mono (by omega))
 
+/- English proof (translation)
+Establish `key : ∀ q, q ≤ p → Fil q (X - Y)`. Introduce `q`. Proceed by induction on `q with`. Consider the case `zero => intro _`. Conclude with `(hX.sub hY).mono (Nat.zero_le 1)`.
+
+Consider the case `succ q ih`. Introduce `hq`. Establish `h1` using `Fil.exp_sub_exp hX hY (ih (by omega))`. Establish `h2 : Fil (q + 1) (NormedSpace.exp X - NormedSpace.exp Y)` using `h.mono hq`. Use `h2.sub h1` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `key p le_rfl`.
+-/
 theorem Fil.of_exp {X Y : Mat k r} {p : ℕ} (hX : Fil 1 X) (hY : Fil 1 Y)
     (h : Fil p (NormedSpace.exp X - NormedSpace.exp Y)) : Fil p (X - Y) := by
   have key : ∀ q, q ≤ p → Fil q (X - Y) := by
@@ -478,6 +670,9 @@ theorem Fil.of_exp {X Y : Mat k r} {p : ℕ} (hX : Fil 1 X) (hY : Fil 1 Y)
       simpa using this
   exact key p le_rfl
 
+/- English proof (translation)
+Establish `: Fil (2 * r + 1) (X - Y)` using `Fil.of_exp hX hY (by rw [h, sub_self]; exact Fil.zero _)`. Conclude with `sub_eq_zero.1 (this.eq_zero le_rfl)`.
+-/
 theorem exp_injOn {X Y : Mat k r} (hX : Fil 1 X) (hY : Fil 1 Y) (h : NormedSpace.exp X = NormedSpace.exp Y) :
     X = Y := by
   have : Fil (2 * r + 1) (X - Y) := Fil.of_exp hX hY (by rw [h, sub_self]; exact Fil.zero _)
@@ -485,6 +680,13 @@ theorem exp_injOn {X Y : Mat k r} (hX : Fil 1 X) (hY : Fil 1 Y) (h : NormedSpace
 
 def adjH (X : Mat k r) : Mat k r := Hpk k r * Xᴴ * Hpk k r
 
+/- English proof (translation)
+Unfold `adjH`. Rewrite using `[Matrix.mul_assoc, hpk_mul_apply, Matrix.mul_apply, Finset.sum_eq_single (tau k r j)]`. Rewrite using `[hpk_row, tau_tau, if_pos rfl, sgn_tau, Matrix.conjTranspose_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `m _ hm`.
+
+Rewrite using `[hpk_row, if_neg, mul_zero]`. Introduce `e`. Apply `hm` to reduce the goal to its premises. Rewrite using `[e, tau_tau]`. Introduce `h'`.
+
+Conclude with `absurd (Finset.mem_univ _) h'`.
+-/
 theorem adjH_apply (X : Mat k r) (i j : Fin (2 * r + k + 1)) :
     adjH X i j = sgn k r i * star (X (tau k r j) (tau k r i)) * sgn k r j := by
   unfold adjH
@@ -495,15 +697,24 @@ theorem adjH_apply (X : Mat k r) (i j : Fin (2 * r + k + 1)) :
     intro e; apply hm; rw [e, tau_tau]
   · intro h'; exact absurd (Finset.mem_univ _) h'
 
+/- English proof (translation)
+Apply the tactic sequence `unfold sgn; split_ifs <;> simp`.
+-/
 theorem star_sgn (i : Fin (2 * r + k + 1)) : star (sgn k r i) = sgn k r i := by
   unfold sgn; split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `adjH`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Hpk k r) (Hpk k r), hpk_sq, Matrix.one_mul]`.
+-/
 theorem adjH_mul (X Y : Mat k r) : adjH (X * Y) = adjH Y * adjH X := by
   unfold adjH
   rw [Matrix.conjTranspose_mul]
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (Hpk k r) (Hpk k r), hpk_sq, Matrix.one_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[adjH_apply, adjH_apply, tau_tau, tau_tau, sgn_tau, sgn_tau, star_mul, star_mul, star_star, star_sgn, star_sgn]`. Establish `hi` using `sgn_mul_self (k := k) (r := r) i`. Establish `hj` using `sgn_mul_self (k := k) (r := r) j`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem adjH_adjH (X : Mat k r) : adjH (adjH X) = X := by
   ext i j
   rw [adjH_apply, adjH_apply, tau_tau, tau_tau, sgn_tau, sgn_tau, star_mul, star_mul, star_star, star_sgn, star_sgn]
@@ -512,38 +723,69 @@ theorem adjH_adjH (X : Mat k r) : adjH (adjH X) = X := by
   calc sgn k r i * (sgn k r i * (X i j * sgn k r j)) * sgn k r j = (sgn k r i * sgn k r i) * (sgn k r j * sgn k r j) * X i j := by ring
     _ = X i j := by rw [hi, hj]; ring
 
+/- English proof (translation)
+Unfold `adjH`. Rewrite using `[Matrix.conjTranspose_one, Matrix.mul_one, hpk_sq]`.
+-/
 theorem adjH_one : adjH (1 : Mat k r) = 1 := by
   unfold adjH; rw [Matrix.conjTranspose_one, Matrix.mul_one, hpk_sq]
 
+/- English proof (translation)
+Unfold `adjH`. Rewrite using `[Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem adjH_add (X Y : Mat k r) : adjH (X + Y) = adjH X + adjH Y := by
   unfold adjH; rw [Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Unfold `adjH`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]`.
+-/
 theorem adjH_sub (X Y : Mat k r) : adjH (X - Y) = adjH X - adjH Y := by
   unfold adjH; rw [Matrix.conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]
 
+/- English proof (translation)
+Unfold `adjH`. Rewrite using `[Matrix.conjTranspose_neg, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem adjH_neg (X : Mat k r) : adjH (-X) = -adjH X := by
   unfold adjH; rw [Matrix.conjTranspose_neg, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Unfold `adjH`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem adjH_smul (c : ℂ) (X : Mat k r) : adjH (c • X) = star c • adjH X := by
   unfold adjH; rw [Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [adjH_one]`. Consider the case `succ m ih => rw [pow_succ, adjH_mul, ih, ← pow_succ']`.
+-/
 theorem adjH_pow (X : Mat k r) (m : ℕ) : adjH (X ^ m) = adjH X ^ m := by
   induction m with
   | zero => simp [adjH_one]
   | succ m ih => rw [pow_succ, adjH_mul, ih, ← pow_succ']
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [adjH]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, adjH_add, ih]`.
+-/
 theorem adjH_sum {ι : Type*} (s : Finset ι) (X : ι → Mat k r) : adjH (∑ a ∈ s, X a) = ∑ a ∈ s, adjH (X a) := by
   classical
   induction s using Finset.induction_on with
   | empty => simp [adjH]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, adjH_add, ih]
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[adjH_apply, h (tau k r j) (tau k r i) (by`. Rewrite using `[dg_tau, dg_tau]`. Use `dg_le (k := k) (r := r) i` as an intermediate fact. Use `dg_le (k := k) (r := r) j` as an intermediate fact.
+
+Use the proof step `omega), star_zero,`. Use the proof step `mul_zero, zero_mul]`.
+-/
 theorem Fil.adjH {p : ℕ} {X : Mat k r} (h : Fil p X) : Fil p (adjH X) := by
   intro i j hij
   rw [adjH_apply, h (tau k r j) (tau k r i) (by
     rw [dg_tau, dg_tau]; have := dg_le (k := k) (r := r) i; have := dg_le (k := k) (r := r) j; omega), star_zero,
     mul_zero, zero_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `dag_mul_self h`. Introduce `h show gᴴ * Hpk k r * g = Hpk k r`. Use `congrArg (fun M => Hpk k r * M) h` as an intermediate fact.
+
+Simplify using `only [Matrix.mul_one, adjH] at this`. Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (Hpk k r) (Hpk k r), hpk_sq, Matrix.one_mul, ← Matrix.mul_assoc]`. Conclude with `this`.
+-/
 theorem mem_UH_iff (g : Mat k r) : g ∈ UH (Hpk k r) ↔ adjH g * g = 1 := by
   constructor
   · intro h; exact dag_mul_self h
@@ -555,6 +797,9 @@ theorem mem_UH_iff (g : Mat k r) : g ∈ UH (Hpk k r) ↔ adjH g * g = 1 := by
       ← Matrix.mul_assoc] at this
     exact this
 
+/- English proof (translation)
+Rewrite using `[exp_eq_sum hX, exp_eq_sum hX.adjH, adjH_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[adjH_smul, adjH_pow]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem adjH_exp {X : Mat k r} (hX : Fil 1 X) : adjH (NormedSpace.exp X) = NormedSpace.exp (adjH X) := by
   rw [exp_eq_sum hX, exp_eq_sum hX.adjH, adjH_sum]
   refine Finset.sum_congr rfl fun m _ => ?_
@@ -576,6 +821,19 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.QuantumDete
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[nset_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU, hc⟩`. Use `⟨hU, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`.
+
+Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Distinguish the cases in `hjk : j.val ≤ r + k`. Apply the tactic sequence `rw [hc i j hjk (by unfold dg at hij; split_ifs at hij <;> omega), sub_self]`. Establish `hg' : adjH g ∈ Nset k r`.
+
+Use `mem_n_inv ((nset_iff g).2 ⟨hU, hc⟩)` as an intermediate fact. Rewrite `this` using `[← dag_eq_inv hU]`. Then use the resulting hypothesis. Establish `hc'` using `((nset_iff _).1 hg').2`. Apply the tactic sequence `have hi2 : r + k < i.val := by unfold dg at hij; split_ifs at hij <;> omega`. Establish `e : g i j = adjH (adjH g) i j` using `by rw [adjH_adjH]`.
+
+Establish `hτi : (tau k r i).val = 2 * r + k - i.val`. Apply the tactic sequence `rw [tau_val, if_pos (Or.inr (by unfold dg at hij; split_ifs at hij <;> omega))]`. Establish `hτj : (tau k r j).val = 2 * r + k - j.val` using `by rw [tau_val, if_pos (Or.inr (by omega))]`. Apply the tactic sequence `rw [e, adjH_apply, hc' (tau k r j) (tau k r i) (by omega) (by unfold dg at hij; split_ifs at hij <;> omega)]`. Distinguish the cases in `hij' : i = j`.
+
+Substitute `hij'` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, star_one, mul_one, sgn_mul_self, sub_self]`. Rewrite using `[if_neg (fun e' => hij' (by rw [← tau_tau (k := k) (r := r) i, ← e', tau_tau])), if_neg hij', star_zero, mul_zero, zero_mul, sub_zero]`. Introduce and unpack `⟨hU, hF⟩`. Use `⟨hU, fun i j hj hi => ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `have := hF i j (by unfold dg; split_ifs <;> omega)`. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem mem_N_iff (g : Mat k r) : g ∈ Nset k r ↔ g ∈ UH (Hpk k r) ∧ Fil 1 (g - 1) := by
   rw [nset_iff]
   constructor
@@ -609,16 +867,29 @@ theorem mem_N_iff (g : Mat k r) : g ∈ Nset k r ↔ g ∈ UH (Hpk k r) ∧ Fil 
 
 def lieN (k r : ℕ) : Set (Mat k r) := {X | Fil 1 X ∧ adjH X + X = 0}
 
+/- English proof (translation)
+Use `⟨hX.1.smul _, ?_⟩` and prove the remaining obligations. Rewrite using `[adjH_smul, Complex.star_def, Complex.conj_ofReal, ← smul_add, hX.2, smul_zero]`.
+-/
 theorem lieN_smul {X : Mat k r} (hX : X ∈ lieN k r) (t : ℝ) : ((t : ℂ) • X) ∈ lieN k r := by
   refine ⟨hX.1.smul _, ?_⟩
   rw [adjH_smul, Complex.star_def, Complex.conj_ofReal, ← smul_add, hX.2, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[mem_N_iff]`. Use `⟨?_, hX.1.exp_sub_one⟩` and prove the remaining obligations. Rewrite using `[mem_UH_iff, adjH_exp hX.1, eq_neg_of_add_eq_zero_left hX.2, Matrix.exp_neg]`. Conclude with `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_exp X).map Matrix.detMonoidHom)`.
+-/
 theorem exp_mem_N {X : Mat k r} (hX : X ∈ lieN k r) : NormedSpace.exp X ∈ Nset k r := by
   rw [mem_N_iff]
   refine ⟨?_, hX.1.exp_sub_one⟩
   rw [mem_UH_iff, adjH_exp hX.1, eq_neg_of_add_eq_zero_left hX.2, Matrix.exp_neg]
   exact Matrix.nonsing_inv_mul _ ((Matrix.isUnit_exp X).map Matrix.detMonoidHom)
 
+/- English proof (translation)
+Use `letI : SeminormedRing (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpSemiNormedRing`. Use `letI : NormedRing (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `hA : HasDerivAt (fun u : ℝ => NormedSpace.exp (u • A)) (NormedSpace.exp ((0 : ℝ) • A) * A) 0` using `hasDerivAt_exp_smul_const A 0`. Establish `hB : HasDerivAt (fun u : ℝ => NormedSpace.exp (u • B)) (NormedSpace.exp ((0 : ℝ) • B) * B) 0` using `hasDerivAt_exp_smul_const B 0`.
+
+Establish `e : (fun u : ℝ => NormedSpace.exp (u • A)) = fun u : ℝ => NormedSpace.exp (u • B)`. Use function extensionality and compare the values at `u`. Establish `hu : ∀ M : Matrix (Fin d) (Fin d) ℂ, u • M = ((u : ℂ) • M)` using `fun M => (Complex.coe_smul u M).symm`. Rewrite using `[hu, hu]`. Conclude with `h u`.
+
+Rewrite `hA` using `[e]`. Use `hA.unique hB` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exp_smul_inj {d : ℕ} (A B : Matrix (Fin d) (Fin d) ℂ)
     (h : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • A) = NormedSpace.exp ((t : ℂ) • B)) : A = B := by
   letI : SeminormedRing (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpSemiNormedRing
@@ -637,6 +908,13 @@ theorem exp_smul_inj {d : ℕ} (A B : Matrix (Fin d) (Fin d) ℂ)
   have := hA.unique hB
   simpa using this
 
+/- English proof (translation)
+Use `letI : SeminormedRing (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpSemiNormedRing`. Use `letI : NormedRing (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `h1 : HasDerivAt (fun u : ℝ => NormedSpace.exp (u • X)) (NormedSpace.exp ((0 : ℝ) • X) * X) 0` using `hasDerivAt_exp_smul_const X 0`. Set `L : Matrix (Fin d) (Fin d) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`.
+
+Establish `h2` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Establish `h3 : (L ∘ fun u : ℝ => NormedSpace.exp (u • X)) = fun _ => c`. Use function extensionality and compare the values at `u`. Establish `hu : (u • X) = ((u : ℂ) • X)` using `(Complex.coe_smul u X).symm`. Simplify using `only [Function.comp, hu]`.
+
+Conclude with `h u`. Rewrite `h2` using `[h3]`. Establish `h4` using `h2.unique (hasDerivAt_const (0 : ℝ) c)`. Establish `h5 : (NormedSpace.exp ((0 : ℝ) • X) * X) i j = 0` using `h4`. Simplify using `using h5`.
+-/
 theorem entry_zero_of_const' {d : ℕ} (X : Matrix (Fin d) (Fin d) ℂ) (i j : Fin d) (c : ℂ)
     (h : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) i j = c) : X i j = 0 := by
   letI : SeminormedRing (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpSemiNormedRing
@@ -656,10 +934,19 @@ theorem entry_zero_of_const' {d : ℕ} (X : Matrix (Fin d) (Fin d) ℂ) (i j : F
   have h5 : (NormedSpace.exp ((0 : ℝ) • X) * X) i j = 0 := h4
   simpa using h5
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv hpk_sq`.
+-/
 theorem hpk_inv : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_left_inv hpk_sq
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨Hpk k r, Hpk k r, hpk_sq, hpk_sq⟩, rfl⟩`.
+-/
 theorem isUnit_hpk : IsUnit (Hpk k r) := ⟨⟨Hpk k r, Hpk k r, hpk_sq, hpk_sq⟩, rfl⟩
 
+/- English proof (translation)
+Unfold `adjH`. Rewrite using `[← Matrix.exp_conjTranspose]`. Use `conv_lhs => rw [← hpk_inv (k := k) (r := r)]`. Use `conv_rhs => rw [show Hpk k r * Aᴴ * Hpk k r = Hpk k r * Aᴴ * (Hpk k r)⁻¹ by rw [hpk_inv]]`. Rewrite using `[Matrix.exp_conj _ _ isUnit_hpk, hpk_inv]`.
+-/
 theorem adjH_exp_gen (A : Mat k r) : adjH (NormedSpace.exp A) = NormedSpace.exp (adjH A) := by
   unfold adjH
   rw [← Matrix.exp_conjTranspose]
@@ -667,6 +954,19 @@ theorem adjH_exp_gen (A : Mat k r) : adjH (NormedSpace.exp A) = NormedSpace.exp 
   conv_rhs => rw [show Hpk k r * Aᴴ * Hpk k r = Hpk k r * Aᴴ * (Hpk k r)⁻¹ by rw [hpk_inv]]
   rw [Matrix.exp_conj _ _ isUnit_hpk, hpk_inv]
 
+/- English proof (translation)
+Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce `hX`. Establish `hadj : adjH X = -X`. Apply `exp_smul_inj` to reduce the goal to its premises.
+
+Introduce `t`. Establish `hg` using `hX t`. Establish `hU` using `((mem_N_iff _).1 hg).1`. Establish `h1 : adjH (NormedSpace.exp ((t : ℂ) • X)) = (NormedSpace.exp ((t : ℂ) • X))⁻¹` using `Matrix.inv_eq_left_inv ((mem_UH_iff _).1 hU) |>.symm`. Rewrite `h1` using `[adjH_exp_gen, adjH_smul, Complex.star_def, Complex.conj_ofReal, ← Matrix.exp_neg]`.
+
+Rewrite using `[h1, smul_neg]`. Establish `hcol : ∀ i j : Fin (2 * r + k + 1), j.val ≤ r + k → (j.val ≤ i.val ∨ r ≤ i.val) → X i j = 0`. Introduce `i j hj hi`. Conclude with `entry_zero_of_const' X i j (if i = j then 1 else 0) fun t => ((nset_iff _).1 (hX t)).2 i j hj hi`. Use `⟨fun i j hij => ?_, by rw [hadj, neg_add_cancel]⟩` and prove the remaining obligations.
+
+Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Distinguish the cases in `hjk : j.val ≤ r + k`. Apply the tactic sequence `exact hcol i j hjk (by unfold dg at hij; split_ifs at hij <;> omega)`. Apply the tactic sequence `have hi2 : r + k < i.val := by unfold dg at hij; split_ifs at hij <;> omega`.
+
+Establish `hτi : (tau k r i).val = 2 * r + k - i.val`. Apply the tactic sequence `rw [tau_val, if_pos (Or.inr (by unfold dg at hij; split_ifs at hij <;> omega))]`. Establish `hτj : (tau k r j).val = 2 * r + k - j.val` using `by rw [tau_val, if_pos (Or.inr (by omega))]`. Establish `e : X i j = -(adjH X i j)` using `by rw [hadj, Matrix.neg_apply, neg_neg]`. Apply the tactic sequence `rw [e, adjH_apply, hcol (tau k r j) (tau k r i) (by omega) (by unfold dg at hij; split_ifs at hij <;> omega), star_zero, mul_zero, zero_mul, neg_zero]`.
+
+Introduce `hX t`. Conclude with `exp_mem_N (lieN_smul hX t)`.
+-/
 theorem lieOf_N : lieOf (Nset k r) = lieN k r := by
   ext X
   constructor
@@ -700,6 +1000,11 @@ theorem lieOf_N : lieOf (Nset k r) = lieN k r := by
 
 def Pg (p : ℕ) (M : Mat k r) : Mat k r := fun i j => if dg k r j = dg k r i + p then M i j else 0
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.sub_apply]`. Unfold `Pg`. Distinguish the cases in `e : dg k r j = dg k r i + p`. Rewrite using `[if_pos e, sub_self]`.
+
+Rewrite using `[if_neg e, h i j (by omega), sub_zero]`.
+-/
 theorem Fil.sub_Pg {p : ℕ} {M : Mat k r} (h : Fil p M) : Fil (p + 1) (M - Pg p M) := by
   intro i j hij
   rw [Matrix.sub_apply]
@@ -708,11 +1013,17 @@ theorem Fil.sub_Pg {p : ℕ} {M : Mat k r} (h : Fil p M) : Fil (p + 1) (M - Pg p
   · rw [if_pos e, sub_self]
   · rw [if_neg e, h i j (by omega), sub_zero]
 
+/- English proof (translation)
+Introduce `i j hij`. Unfold `Formalism.MainNotions.BridgeCSB.Pg`. Rewrite using `[if_neg (by omega)]`.
+-/
 theorem Fil.Pg (p : ℕ) (M : Mat k r) : Fil p (Pg p M) := by
   intro i j hij
   unfold Formalism.MainNotions.BridgeCSB.Pg
   rw [if_neg (by omega)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Unfold `Pg`. Use `split_ifs with e`. Conclude with `h i j (by omega)`. Both sides reduce to the same expression.
+-/
 theorem Pg_of_Fil {p : ℕ} {M : Mat k r} (h : Fil (p + 1) M) : Pg p M = 0 := by
   ext i j
   unfold Pg
@@ -720,6 +1031,11 @@ theorem Pg_of_Fil {p : ℕ} {M : Mat k r} (h : Fil (p + 1) M) : Pg p M = 0 := by
   · exact h i j (by omega)
   · rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.add_apply]`. Unfold `Pg`. Use `split_ifs`. Both sides reduce to the same expression.
+
+Rewrite using `[add_zero]`.
+-/
 theorem Pg_add (p : ℕ) (A B : Mat k r) : Pg p (A + B) = Pg p A + Pg p B := by
   ext i j
   rw [Matrix.add_apply]
@@ -728,6 +1044,11 @@ theorem Pg_add (p : ℕ) (A B : Mat k r) : Pg p (A + B) = Pg p A + Pg p B := by
   · rfl
   · rw [add_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[adjH_apply]`. Unfold `Pg`. Establish `hi` using `dg_le (k := k) (r := r) i`. Establish `hj` using `dg_le (k := k) (r := r) j`.
+
+Distinguish the cases in `e : dg k r j = dg k r i + p`. Rewrite using `[if_pos e, if_pos (by rw [dg_tau, dg_tau]; omega), adjH_apply]`. Rewrite using `[if_neg e, if_neg (by rw [dg_tau, dg_tau]; omega), star_zero, mul_zero, zero_mul]`.
+-/
 theorem Pg_adjH (p : ℕ) (M : Mat k r) : Pg p (adjH M) = adjH (Pg p M) := by
   ext i j
   rw [adjH_apply]
@@ -738,6 +1059,11 @@ theorem Pg_adjH (p : ℕ) (M : Mat k r) : Pg p (adjH M) = adjH (Pg p M) := by
   · rw [if_pos e, if_pos (by rw [dg_tau, dg_tau]; omega), adjH_apply]
   · rw [if_neg e, if_neg (by rw [dg_tau, dg_tau]; omega), star_zero, mul_zero, zero_mul]
 
+/- English proof (translation)
+Use `⟨hX.1.add hY.1, ?_⟩` and prove the remaining obligations. Rewrite using `[adjH_add]`. Use `congrArg₂ (· + ·) hX.2 hY.2` as an intermediate fact. Simplify using `only [add_zero] at this`. Rewrite using `[← this]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem lieN_add {X Y : Mat k r} (hX : X ∈ lieN k r) (hY : Y ∈ lieN k r) : X + Y ∈ lieN k r := by
   refine ⟨hX.1.add hY.1, ?_⟩
   rw [adjH_add]
@@ -745,8 +1071,32 @@ theorem lieN_add {X Y : Mat k r} (hX : X ∈ lieN k r) (hY : Y ∈ lieN k r) : X
   simp only [add_zero] at this
   rw [← this]; abel
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Fil.zero _, by simp [adjH]⟩`.
+-/
 theorem zero_mem_lieN : (0 : Mat k r) ∈ lieN k r := ⟨Fil.zero _, by simp [adjH]⟩
 
+/- English proof (translation)
+Take `⟨hgU, hg1⟩` from `(mem_N_iff g).1 hg`. Establish `key : ∀ p, 1 ≤ p → ∃ X ∈ lieN k r, Fil p (g - NormedSpace.exp X)`. Introduce `p hp`. Proceed by induction on `p with`. Consider the case `zero => omega`.
+
+Consider the case `succ p ih`. Break down `Nat.eq_zero_or_pos p with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Conclude with `⟨0, zero_mem_lieN, by rw [NormedSpace.exp_zero]; exact hg1⟩`. Take `⟨X, hX, hM⟩` from `ih hpos`.
+
+Take `⟨h, hhd⟩ : ∃ h, h = NormedSpace.exp X` from `⟨_, rfl⟩`. Take `⟨M, hMd⟩ : ∃ M, M = g - h` from `⟨_, rfl⟩`. Rewrite `hM` using `[← hhd, ← hMd]`. Establish `hhN : h ∈ Nset k r` using `hhd ▸ exp_mem_N hX`. Take `⟨hhU, hh1⟩` from `(mem_N_iff h).1 hhN`.
+
+Take `⟨Z, hZd⟩ : ∃ Z, Z = Pg p M` from `⟨_, rfl⟩`. Establish `hgM : g = h + M` using `by rw [hMd]; abel`. Establish `hsum : Fil (p + 1) (adjH M + M)`. Establish `e1` using `(mem_UH_iff g).1 hgU`. Establish `e2` using `(mem_UH_iff h).1 hhU`.
+
+Rewrite `e1` using `[hgM, adjH_add, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, e2]`. Establish `e3 : adjH M + M = -((adjH h - 1) * M + adjH M * (h - 1) + adjH M * M)`. Establish `h0 : adjH h * M + (adjH M * h + adjH M * M) = 0`. Rewrite using `[show adjH h * M + (adjH M * h + adjH M * M) = (1 + adjH h * M + (adjH M * h + adjH M * M)) - 1 by abel, e1, sub_self]`. Establish `h5 : (adjH h - 1) * M + adjH M * (h - 1) + adjH M * M = (adjH h * M + (adjH M * h + adjH M * M)) - M - adjH M`.
+
+Simplify using `only [sub_mul, mul_sub, one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[h5, h0]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3]`.
+
+Use `Fil.neg (Fil.add (Fil.add ?_ ?_) ?_)` and prove the remaining obligations. Use `(show Fil 1 (adjH h - 1) by rw [← adjH_one, ← adjH_sub]; exact hh1.adjH).mul hM` as an intermediate fact. Conclude with `this.mono (by omega)`. Conclude with `(hM.adjH.mul hh1).mono (by omega)`. Conclude with `(hM.adjH.mul hM).mono (by omega)`.
+
+Establish `hZ : Z ∈ lieN k r`. Use `⟨hZd ▸ (Fil.Pg p M).mono hpos, ?_⟩` and prove the remaining obligations. Use `Pg_of_Fil hsum` as an intermediate fact. Rewrite `this` using `[Pg_add, Pg_adjH, ← hZd]`. Then use the resulting hypothesis. Use `⟨X + Z, lieN_add hX hZ, ?_⟩` and prove the remaining obligations.
+
+Establish `e4 : g - NormedSpace.exp (X + Z) = (M - Z) - ((NormedSpace.exp (X + Z) - NormedSpace.exp X) - ((X + Z) - X))`. Rewrite using `[hMd, ← hhd]`. Normalize the expressions using the abelian group laws. Rewrite using `[e4]`. Use `Fil.sub (hZd ▸ hM.sub_Pg) (Fil.exp_sub_exp (hX.1.add hZ.1) hX.1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[add_sub_cancel_left, hZd]`. Conclude with `Fil.Pg p M`. Take `⟨X, hX, h⟩` from `key (2 * r + 1) (by omega)`. Conclude with `⟨X, hX, (sub_eq_zero.1 (h.eq_zero le_rfl)).symm⟩`.
+-/
 theorem exp_surj {g : Mat k r} (hg : g ∈ Nset k r) : ∃ X ∈ lieN k r, NormedSpace.exp X = g := by
   obtain ⟨hgU, hg1⟩ := (mem_N_iff g).1 hg
   have key : ∀ p, 1 ≤ p → ∃ X ∈ lieN k r, Fil p (g - NormedSpace.exp X) := by
@@ -823,9 +1173,15 @@ def lieNS (k r : ℕ) : Submodule ℝ (Mat k r) where
     show c • X ∈ lieN k r
     rw [← Complex.coe_smul]; exact lieN_smul hX c
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Pg_apply (p : ℕ) (M : Mat k r) (i j : Fin (2 * r + k + 1)) :
     Pg p M i j = if dg k r j = dg k r i + p then M i j else 0 := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Pg_apply, Pg_apply, Matrix.smul_apply]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[smul_zero]`.
+-/
 theorem Pg_smul (p : ℕ) (c : ℝ) (M : Mat k r) : Pg p (c • M) = c • Pg p M := by
   ext i j
   rw [Matrix.smul_apply, Pg_apply, Pg_apply, Matrix.smul_apply]
@@ -833,6 +1189,11 @@ theorem Pg_smul (p : ℕ) (c : ℝ) (M : Mat k r) : Pg p (c • M) = c • Pg p 
   · rfl
   · rw [smul_zero]
 
+/- English proof (translation)
+Distinguish the cases in `h : p = q`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Use extensionality with `i j`. Rewrite using `[Pg_apply, Pg_apply]`.
+
+Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[if_neg h]`. Use extensionality with `i j`. Rewrite using `[Pg_apply, Pg_apply, Matrix.zero_apply]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+-/
 theorem Pg_Pg (p q : ℕ) (M : Mat k r) : Pg q (Pg p M) = if p = q then Pg p M else 0 := by
   by_cases h : p = q
   · subst h
@@ -845,9 +1206,17 @@ theorem Pg_Pg (p q : ℕ) (M : Mat k r) : Pg q (Pg p M) = if p = q then Pg p M e
     rw [Pg_apply, Pg_apply, Matrix.zero_apply]
     split_ifs <;> first | rfl | omega
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; rw [Pg_apply, Matrix.zero_apply]; split_ifs <;> rfl`.
+-/
 theorem Pg_zero (p : ℕ) : Pg p (0 : Mat k r) = 0 := by
   ext i j; rw [Pg_apply, Matrix.zero_apply]; split_ifs <;> rfl
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pg_apply] split_ifs with h`. Conclude with `hX.1 i j hij`. Both sides reduce to the same expression. Use `congrArg (Pg p) hX.2` as an intermediate fact.
+
+Rewrite `this` using `[Pg_add, Pg_adjH, Pg_zero]`. Conclude with `this`.
+-/
 theorem Pg_mem {X : Mat k r} (hX : X ∈ lieN k r) (p : ℕ) : Pg p X ∈ lieN k r := by
   refine ⟨fun i j hij => ?_, ?_⟩
   · rw [Pg_apply]
@@ -865,10 +1234,16 @@ def PgL (p : ℕ) : Mat k r →ₗ[ℝ] Mat k r where
 
 def nP (p : ℕ) : Submodule ℝ (Mat k r) := (lieNS k r).map (PgL p)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨X, hX, rfl⟩`. Conclude with `Pg_mem hX p`.
+-/
 theorem nP_le_nW (p : ℕ) : nP (k := k) (r := r) p ≤ lieNS k r := by
   rintro _ ⟨X, hX, rfl⟩
   exact Pg_mem hX p
 
+/- English proof (translation)
+Take `⟨X, _, rfl⟩` from `hY`. Conclude with `Pg_Pg p q X`.
+-/
 theorem Pg_of_mem_nP {p q : ℕ} {Y : Mat k r} (hY : Y ∈ nP (k := k) (r := r) p) :
     Pg q Y = if p = q then Y else 0 := by
   obtain ⟨X, _, rfl⟩ := hY
@@ -883,17 +1258,35 @@ def htI (i : Ix k r) : ℕ := i.1.val
 
 def bv (i : Ix k r) : Mat k r := ((bs i.1 i.2 : nP (k := k) (r := r) i.1) : Mat k r)
 
+/- English proof (translation)
+The claim follows from `(bs i.1 i.2).2`.
+-/
 theorem bv_mem (i : Ix k r) : bv i ∈ nP (k := k) (r := r) i.1 := (bs i.1 i.2).2
 
 def Lc : (Ix k r → ℝ) →ₗ[ℝ] Mat k r := ∑ i : Ix k r, (LinearMap.proj i).smulRight (bv i)
 
+/- English proof (translation)
+Simplify using `[Lc, LinearMap.sum_apply]`.
+-/
 theorem Lc_apply (x : Ix k r → ℝ) : Lc x = ∑ i, x i • bv i := by
   simp [Lc, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[Lc_apply]`. Conclude with `Submodule.sum_mem (lieNS k r) fun i _ => Submodule.smul_mem _ _ (nP_le_nW _ (bv_mem i))`.
+-/
 theorem Lc_mem (x : Ix k r → ℝ) : Lc x ∈ lieN k r := by
   rw [Lc_apply]
   exact Submodule.sum_mem (lieNS k r) fun i _ => Submodule.smul_mem _ _ (nP_le_nW _ (bv_mem i))
 
+/- English proof (translation)
+Rewrite using `[Lc_apply]`. Establish `: Pg q.val (∑ i, x i • bv i) = PgL q.val (∑ i, x i • bv (k` using `k) (r := r) i) := rfl`. Rewrite using `[this, map_sum]`. Simplify using `only [map_smul]`. Establish `e : ∀ i : Ix k r, PgL q.val (bv i) = if i.1 = q then bv i else 0`.
+
+Introduce `i`. Use `show Pg q.val (bv i) = _`. Rewrite using `[Pg_of_mem_nP (bv_mem i)]`. Distinguish the cases in `h : i.1 = q`. Rewrite using `[if_pos (by rw [h]), if_pos h]`.
+
+Rewrite using `[if_neg (fun e => h (Fin.ext e)), if_neg h]`. Simplify using `only [e, smul_ite, smul_zero]`. Rewrite using `[Fintype.sum_sigma]`. Rewrite using `[Finset.sum_eq_single q]`. Simplify using the standard rewrite rules.
+
+Introduce `p _ hp`. Simplify using `[hp]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem Pg_Lc (q : Fin (2 * r + 1)) (x : Ix k r → ℝ) :
     Pg q.val (Lc x) = ∑ a, x ⟨q, a⟩ • bv (⟨q, a⟩ : Ix k r) := by
   rw [Lc_apply]
@@ -914,6 +1307,15 @@ theorem Pg_Lc (q : Fin (2 * r + 1)) (x : Ix k r → ℝ) :
   · intro p _ hp; simp [hp]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i hi`. Take `⟨q, a⟩` from `i`. Establish `h0 : Pg q.val (Lc v) = 0` using `Pg_of_Fil (h.mono (by unfold htI at hi; simp at hi; omega))`. Rewrite `h0` using `[Pg_Lc]`.
+
+Establish `h1 : (∑ b, v ⟨q, b⟩ • (bs (k` using `k) (r := r) q b)) = 0 := by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `h0` using `[bv]`. Conclude with `Fintype.linearIndependent_iff.1 (bs q).linearIndependent _ h1 a`. Introduce `h a b hab`.
+
+Rewrite using `[Lc_apply, Matrix.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : htI i < p`. Rewrite using `[h i hi, zero_smul, Matrix.zero_apply]`. Establish `hY : bv i = Pg i.1.val (bv i)` using `by rw [Pg_of_mem_nP (bv_mem i), if_pos rfl]`.
+
+Rewrite using `[Matrix.smul_apply, hY, Pg_apply, if_neg (by unfold htI at hi; omega), smul_zero]`.
+-/
 theorem Fil_Lc_iff (p : ℕ) (v : Ix k r → ℝ) : Fil p (Lc v) ↔ ∀ i, htI i < p → v i = 0 := by
   constructor
   · intro h i hi
@@ -932,6 +1334,9 @@ theorem Fil_Lc_iff (p : ℕ) (v : Ix k r → ℝ) : Fil p (Lc v) ↔ ∀ i, htI 
     · have hY : bv i = Pg i.1.val (bv i) := by rw [Pg_of_mem_nP (bv_mem i), if_pos rfl]
       rw [Matrix.smul_apply, hY, Pg_apply, if_neg (by unfold htI at hi; omega), smul_zero]
 
+/- English proof (translation)
+Introduce `x y h`. Establish `: Fil (2 * r + 1) (Lc (x - y))` using `by rw [map_sub, h, sub_self]; exact Fil.zero _`. Use function extensionality and compare the values at `i`. Use `(Fil_Lc_iff _ _).1 this i (by unfold htI; exact i.1.isLt)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+-/
 theorem Lc_injective : Function.Injective (Lc (k := k) (r := r)) := by
   intro x y h
   have : Fil (2 * r + 1) (Lc (x - y)) := by rw [map_sub, h, sub_self]; exact Fil.zero _
@@ -939,6 +1344,15 @@ theorem Lc_injective : Function.Injective (Lc (k := k) (r := r)) := by
   have := (Fil_Lc_iff _ _).1 this i (by unfold htI; exact i.1.isLt)
   simpa [sub_eq_zero] using this
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Pg_apply]`. Distinguish the cases in `h : dg k r i ≤ dg k r j`. Establish `hb` using `dg_le (k := k) (r := r) j`.
+
+Rewrite using `[Finset.sum_eq_single ⟨dg k r j - dg k r i, by omega⟩]`. Rewrite using `[if_pos (by simp; omega)]`. Introduce `q _ hq`. Rewrite using `[if_neg]`. Introduce `e`.
+
+Apply `hq` to reduce the goal to its premises. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce `h'`.
+
+Conclude with `absurd (Finset.mem_univ _) h'`. Rewrite using `[hX i j (by omega)]`. Apply the tactic sequence `exact Finset.sum_eq_zero fun q _ => by split_ifs <;> rfl`.
+-/
 theorem sum_Pg {X : Mat k r} (hX : Fil 0 X) : ∑ q : Fin (2 * r + 1), Pg q.val X = X := by
   ext i j
   rw [Matrix.sum_apply]
@@ -954,6 +1368,11 @@ theorem sum_Pg {X : Mat k r} (hX : Fil 0 X) : ∑ q : Fin (2 * r + 1), Pg q.val 
   · rw [hX i j (by omega)]
     exact Finset.sum_eq_zero fun q _ => by split_ifs <;> rfl
 
+/- English proof (translation)
+Establish `hm : ∀ q : Fin (2 * r + 1), Pg q.val X ∈ nP (k` using `k) (r := r) q := fun q => ⟨X, hX, rfl⟩`. Use `⟨fun i => (bs i.1).repr ⟨Pg i.1.val X, hm i.1⟩ i.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Lc_apply, Fintype.sum_sigma]`. Use `conv_rhs => rw [← sum_Pg (hX.1.mono (Nat.zero_le 1))]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Establish `h2` using `congrArg (fun y : nP (k := k) (r := r) q => (y : Mat k r)) ((bs q).sum_repr ⟨Pg q.val X, hm q⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Conclude with `h2`.
+-/
 theorem Lc_surj {X : Mat k r} (hX : X ∈ lieN k r) : ∃ x, Lc x = X := by
   have hm : ∀ q : Fin (2 * r + 1), Pg q.val X ∈ nP (k := k) (r := r) q := fun q => ⟨X, hX, rfl⟩
   refine ⟨fun i => (bs i.1).repr ⟨Pg i.1.val X, hm i.1⟩ i.2, ?_⟩
@@ -987,6 +1406,9 @@ section Cont
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Establish `h1 : Continuous fun x : Ix k r → ℝ => Lc (k` using `k) (r := r) x := LinearMap.continuous_of_finiteDimensional _`. Establish `h2 : Continuous fun M : Mat k r => NormedSpace.exp M` using `NormedSpace.exp_continuous`. Conclude with `h2.comp h1`.
+-/
 theorem continuous_Ex : Continuous (Ex (k := k) (r := r)) := by
   have h1 : Continuous fun x : Ix k r → ℝ => Lc (k := k) (r := r) x := LinearMap.continuous_of_finiteDimensional _
   have h2 : Continuous fun M : Mat k r => NormedSpace.exp M := NormedSpace.exp_continuous
@@ -994,24 +1416,56 @@ theorem continuous_Ex : Continuous (Ex (k := k) (r := r)) := by
 
 end Cont
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem of_Ex (x : Ix k r → ℝ) : Matrix.of (Ex x) = NormedSpace.exp (Lc x) := rfl
 
+/- English proof (translation)
+The claim follows from `exp_mem_N (Lc_mem x)`.
+-/
 theorem Ex_mem (x : Ix k r → ℝ) : Matrix.of (Ex x) ∈ Nset k r := exp_mem_N (Lc_mem x)
 
+/- English proof (translation)
+Introduce `x y h`. Establish `h' : NormedSpace.exp (Lc x) = NormedSpace.exp (Lc (k` using `k) (r := r) y) := by`. Rewrite using `[← of_Ex, ← of_Ex, h]`. Conclude with `Lc_injective (exp_injOn (Lc_mem x).1 (Lc_mem y).1 h')`.
+-/
 theorem Ex_injective : Function.Injective (Ex (k := k) (r := r)) := by
   intro x y h
   have h' : NormedSpace.exp (Lc x) = NormedSpace.exp (Lc (k := k) (r := r) y) := by
     rw [← of_Ex, ← of_Ex, h]
   exact Lc_injective (exp_injOn (Lc_mem x).1 (Lc_mem y).1 h')
 
+/- English proof (translation)
+Take `⟨X, hX, he⟩` from `exp_surj hm`. Take `⟨x, rfl⟩` from `Lc_surj hX`. Conclude with `⟨x, by funext i j; exact congrFun (congrFun he i) j⟩`.
+-/
 theorem Ex_surj {m : Mt k r} (hm : Matrix.of m ∈ Nset k r) : ∃ x, Ex x = m := by
   obtain ⟨X, hX, he⟩ := exp_surj hm
   obtain ⟨x, rfl⟩ := Lc_surj hX
   exact ⟨x, by funext i j; exact congrFun (congrFun he i) j⟩
 
+/- English proof (translation)
+The claim follows from `(continuous_Ex.measurableEmbedding Ex_injective).exists_measurable_extend measurable_id fun _ => ⟨0⟩`.
+-/
 theorem exists_Einv : ∃ E' : Mt k r → (Ix k r → ℝ), Measurable E' ∧ E' ∘ Ex = id :=
   (continuous_Ex.measurableEmbedding Ex_injective).exists_measurable_extend measurable_id fun _ => ⟨0⟩
 
+/- English proof (translation)
+Use `set p := htI i`. Establish `hXY : Fil p (Lc x - Lc y)`. Rewrite using `[← map_sub, Fil_Lc_iff]`. Introduce `j hj`. Simplify using `[hxy j hj]`.
+
+Establish `eX : NormedSpace.exp (Lc (T x)) = n0 * NormedSpace.exp (Lc x)` using `by rw [← of_Ex, hT]; rfl`. Establish `eY : NormedSpace.exp (Lc (T y)) = n0 * NormedSpace.exp (Lc y)` using `by rw [← of_Ex, hT]; rfl`. Establish `hX` using `(Lc_mem x).1`. Establish `hY` using `(Lc_mem y).1`. Establish `hX'` using `(Lc_mem (T x)).1`.
+
+Establish `hY'` using `(Lc_mem (T y)).1`. Establish `h1` using `Fil.exp_sub_exp hX hY hXY`. Establish `h2 : Fil p (NormedSpace.exp (Lc x) - NormedSpace.exp (Lc y))`. Use `(h1.mono (Nat.le_succ p)).add hXY` as an intermediate fact. Simplify using `using this`.
+
+Establish `hn1 : Fil 1 (n0 - 1)` using `((mem_N_iff n0).1 hn0).2`. Establish `h4 : Fil (p + 1) ((n0 - 1) * (NormedSpace.exp (Lc x) - NormedSpace.exp (Lc y)))`. Use `hn1.mul h2` as an intermediate fact. Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Establish `h3 : NormedSpace.exp (Lc (T x)) - NormedSpace.exp (Lc (T y)) = (NormedSpace.exp (Lc x) - NormedSpace.exp (Lc y)) + (n0 - 1) * (NormedSpace.exp (Lc x) - NormedSpace.exp (Lc y))`.
+
+Rewrite using `[eX, eY, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws. Establish `h5 : Fil p (NormedSpace.exp (Lc (T x)) - NormedSpace.exp (Lc (T y)))`. Rewrite using `[h3]`. Conclude with `h2.add (h4.mono (Nat.le_succ p))`.
+
+Establish `h6` using `Fil.of_exp hX' hY' h5`. Establish `h7` using `Fil.exp_sub_exp hX' hY' h6`. Establish `h8 : Fil (p + 1) (Lc (((T x) - x) - ((T y) - y)))`. Establish `e : Lc (((T x) - x) - ((T y) - y)) = ((NormedSpace.exp (Lc x) - NormedSpace.exp (Lc y) - (Lc x - Lc y)) + (n0 - 1) * (NormedSpace.exp (Lc x) - NormedSpace.exp (Lc y))) - ((NormedSpace.exp (Lc (T x)) - NormedSpace.exp (Lc (T y))) - (Lc (T x) - Lc (T y)))`. Rewrite using `[h3]`.
+
+Simplify using `only [map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(h1.add h4).sub h7`. Use `(Fil_Lc_iff (p + 1) _).1 h8 i (Nat.lt_succ_self p)` as an intermediate fact.
+
+Simplify using `only [Pi.sub_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem shear_translate {n0 : Mat k r} (hn0 : n0 ∈ Nset k r) (T : (Ix k r → ℝ) → (Ix k r → ℝ))
     (hT : ∀ x, Ex (T x) = lmulM n0 (Ex x)) (i : Ix k r) (x y : Ix k r → ℝ)
     (hxy : ∀ j, htI j < htI i → x j = y j) : T x i - x i = T y i - y i := by
@@ -1053,6 +1507,21 @@ theorem shear_translate {n0 : Mat k r} (hn0 : n0 ∈ Nset k r) (T : (Ix k r → 
 
 def nuN (k r : ℕ) : Measure (Mt k r) := (volume : Measure (Ix k r → ℝ)).map Ex
 
+/- English proof (translation)
+Take `⟨E', hE'm, hE'⟩` from `exists_Einv (k := k) (r := r)`. Establish `mEx : Measurable (Ex (k` using `k) (r := r)) := continuous_Ex.measurable`. Establish `hback : (nuN k r).map E' = volume`. Rewrite using `[nuN, Measure.map_map hE'm mEx, hE', Measure.map_id]`. Use `⟨SigmaFinite.of_map _ hE'm.aemeasurable (by rw [hback]; infer_instance), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h`. Establish `h1 : (nuN k r) Set.univ = 0` using `by rw [h]; rfl`. Rewrite `h1` using `[nuN, Measure.map_apply mEx MeasurableSet.univ, Set.preimage_univ]`. Conclude with `(Measure.measure_univ_ne_zero.2 (NeZero.ne _)) h1`. Establish `hm : MeasurableSet {x : Mt k r | Matrix.of x ∉ Nset k r}` using `isClosed_N.measurableSet.compl`.
+
+Rewrite using `[nuN, Measure.map_apply mEx hm]`. Establish `: Ex ⁻¹' {x : Mt k r | Matrix.of x ∉ Nset k r} = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]`. Conclude with `Ex_mem x`.
+
+Rewrite using `[this, measure_empty]`. Introduce `n0 hn0`. Establish `hsurj : ∀ x, ∃ y, Ex y = lmulM n0 (Ex x)` using `fun x => Ex_surj (mem_n_mul hn0 (Ex_mem x))`. Set `T : (Ix k r → ℝ) → (Ix k r → ℝ)` to `fun x => E' (lmulM n0 (Ex x))`. Establish `hT : ∀ x, Ex (T x) = lmulM n0 (Ex x)`.
+
+Introduce `x`. Take `⟨y, hy⟩` from `hsurj x`. Establish `: T x = y` using `by show E' (lmulM n0 (Ex x)) = y`. Rewrite using `[← hy]`. Conclude with `congrFun hE' y`.
+
+Rewrite using `[this, hy]`. Establish `hTm : Measurable T` using `hE'm.comp ((continuous_lmulM n0).measurable.comp mEx)`. Establish `hmp : MeasurePreserving T volume volume` using `shearMP (Ix k r) htI T hTm (shear_translate hn0 T hT)`. Rewrite using `[nuN, Measure.map_map (continuous_lmulM n0).measurable mEx]`. Establish `e : lmulM n0 ∘ Ex = Ex ∘ T` using `by funext x; exact (hT x).symm`.
+
+Rewrite using `[e, ← Measure.map_map mEx hTm, hmp.map_eq]`.
+-/
 theorem isHaarOn_nuN : IsHaarOn (Nset k r) (nuN k r) := by
   obtain ⟨E', hE'm, hE'⟩ := exists_Einv (k := k) (r := r)
   have mEx : Measurable (Ex (k := k) (r := r)) := continuous_Ex.measurable
@@ -1106,6 +1575,11 @@ variable {k r : ℕ}
 
 open MeasureTheory.Measure
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun x : EuclideanSpace ℝ (Fin m × Fin m × Bool) => x (i, j, false)` using `(EuclideanSpace.proj (𝕜 := ℝ) (i, j, false)).continuous`. Establish `h2 : Continuous fun x : EuclideanSpace ℝ (Fin m × Fin m × Bool) => x (i, j, true)` using `(EuclideanSpace.proj (𝕜 := ℝ) (i, j, true)).continuous`. Establish `: (fun x : EuclideanSpace ℝ (Fin m × Fin m × Bool) => unrealify x i j) = fun x => ((x (i, j, false) : ℝ) : ℂ) + ((x (i, j, true) : ℝ) : ℂ) * Complex.I`. Use function extensionality and compare the values at `x`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`. Rewrite using `[this]`. Conclude with `(Complex.continuous_ofReal.comp h1).add ((Complex.continuous_ofReal.comp h2).mul continuous_const)`.
+-/
 theorem continuous_unrealify' (m : ℕ) : Continuous (unrealify (m := m)) := by
   refine continuous_matrix fun i j => ?_
   have h1 : Continuous fun x : EuclideanSpace ℝ (Fin m × Fin m × Bool) => x (i, j, false) :=
@@ -1123,6 +1597,9 @@ section Cont2
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Establish `h2 : Continuous fun M : Mat k r => NormedSpace.exp M` using `NormedSpace.exp_continuous`. Conclude with `h2.comp ((continuous_unrealify' _).comp continuous_subtype_val)`.
+-/
 theorem continuous_expLie (S : Set (Mat k r)) :
     Continuous fun x : lieE S => (fun i j => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ _)) i j : Mt k r) := by
   have h2 : Continuous fun M : Mat k r => NormedSpace.exp M := NormedSpace.exp_continuous
@@ -1141,22 +1618,36 @@ def RL : Mat k r →ₗ[ℝ] EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 *
     rcases p with ⟨i, j, b⟩
     cases b <;> simp [realifyFun]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify, RL, realifyFun]`.
+-/
 theorem unrealify_RL (X : Mat k r) : unrealify (RL X) = X := by
   ext i j
   apply Complex.ext <;> simp [unrealify, RL, realifyFun]
 
+/- English proof (translation)
+Unfold `lieE`. Rewrite using `[lieOf_N]`. Establish `: (fun X => (WithLp.equiv 2 _).symm (realifyFun X)) '' lieN k r = (RL : Mat k r → _) '' (lieNS k r : Set (Mat k r))` using `rfl`. Rewrite using `[this, Submodule.span_image, Submodule.span_eq]`.
+-/
 theorem lieE_N : lieE (Nset k r) = (lieNS k r).map RL := by
   unfold lieE
   rw [lieOf_N]
   have : (fun X => (WithLp.equiv 2 _).symm (realifyFun X)) '' lieN k r = (RL : Mat k r → _) '' (lieNS k r : Set (Mat k r)) := rfl
   rw [this, Submodule.span_image, Submodule.span_eq]
 
+/- English proof (translation)
+Introduce `X Y h` and use `by rw [← unrealify_RL X, ← unrealify_RL Y, h]`.
+-/
 theorem RL_injective : Function.Injective (RL (k := k) (r := r)) := fun X Y h => by
   rw [← unrealify_RL X, ← unrealify_RL Y, h]
 
 def eL : (Ix k r → ℝ) →ₗ[ℝ] lieE (Nset k r) :=
   (RL ∘ₗ Lc).codRestrict (lieE (Nset k r)) fun x => by rw [lieE_N]; exact ⟨Lc x, Lc_mem x, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Use `congrArg Subtype.val h` as an intermediate fact. Conclude with `Lc_injective (RL_injective this)`. Introduce and unpack `⟨y, hy⟩`.
+
+Rewrite `hy` using `[lieE_N]`. Take `⟨X, hX, rfl⟩` from `hy`. Take `⟨x, rfl⟩` from `Lc_surj hX`. Conclude with `⟨x, rfl⟩`.
+-/
 theorem eL_bijective : Function.Bijective (eL (k := k) (r := r)) := by
   constructor
   · intro x y h
@@ -1168,6 +1659,13 @@ theorem eL_bijective : Function.Bijective (eL (k := k) (r := r)) := by
     obtain ⟨x, rfl⟩ := Lc_surj hX
     exact ⟨x, rfl⟩
 
+/- English proof (translation)
+Use `h.1` as an intermediate fact. Use `⟨inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1 : (a • μ) Set.univ = 0` using `by rw [h0]; rfl`. Rewrite `h1` using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, mul_eq_zero]`.
+
+Break down `h1 with h1 | h1` into its components or cases. Conclude with `ha (by exact_mod_cast h1)`. Conclude with `h.2.1 (Measure.measure_univ_eq_zero.1 h1)`. Rewrite using `[Measure.smul_apply, h.2.2.1, smul_zero]`. Introduce `s hs`.
+
+Rewrite using `[Measure.map_smul, h.2.2.2 s hs]`.
+-/
 theorem IsHaarOn.smul_nnreal {S : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn S μ) {a : ℝ≥0} (ha : a ≠ 0) :
     IsHaarOn S (a • μ) := by
   have := h.1
@@ -1182,6 +1680,17 @@ theorem IsHaarOn.smul_nnreal {S : Set (Mat k r)} {μ : Measure (Mt k r)} (h : Is
   · intro s hs
     rw [Measure.map_smul, h.2.2.2 s hs]
 
+/- English proof (translation)
+Set `E` to `(LinearEquiv.ofBijective (eL (k := k) (r := r)) eL_bijective).toContinuousLinearEquiv`. Establish `hE : IsAddHaarMeasure ((volume : Measure (Ix k r → ℝ)).map E)` using `E.isAddHaarMeasure_map _`. Use `set c := addHaarScalarFactor ((volume : Measure (Ix k r → ℝ)).map E) (volume : Measure (lieE (Nset k r))) with hc`. Establish `hcpos : 0 < c` using `addHaarScalarFactor_pos_of_isAddHaarMeasure _ _`. Establish `hμ : (volume : Measure (Ix k r → ℝ)).map E = c • (volume : Measure (lieE (Nset k r)))` using `isAddLeftInvariant_eq_smul _ _`.
+
+Set `F : lieE (Nset k r) → Mt k r` to `fun x => fun i j => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ _)) i j`. Establish `hFE : F ∘ E = Ex`. Use function extensionality and compare the values at `x`. Use `show (fun i j => NormedSpace.exp (unrealify (RL (Lc x))) i j) = Ex x`. Rewrite using `[unrealify_RL]`.
+
+Both sides reduce to the same expression. Establish `hFm : Measurable F` using `(continuous_expLie (Nset k r)).measurable`. Use `⟨c⁻¹, inv_ne_zero hcpos.ne', fun κ => ?_⟩` and prove the remaining obligations. Establish `h2 : (volume : Measure (lieE (Nset k r))).map F = c⁻¹ • nuN k r`. Establish `h3 : ((volume : Measure (Ix k r → ℝ)).map E).map F = nuN k r`.
+
+Rewrite using `[Measure.map_map hFm E.continuous.measurable, hFE]`. Both sides reduce to the same expression. Rewrite `h3` using `[hμ, Measure.map_smul]`. Rewrite using `[← h3, smul_smul, inv_mul_cancel₀ hcpos.ne', one_smul]`. Rewrite using `[← h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem haarLie_N_eq : ∃ c : ℝ≥0, c ≠ 0 ∧ ∀ κ : ℝ≥0∞, haarLie (Nset k r) κ = κ • (c • nuN k r) := by
   let E := (LinearEquiv.ofBijective (eL (k := k) (r := r)) eL_bijective).toContinuousLinearEquiv
   have hE : IsAddHaarMeasure ((volume : Measure (Ix k r → ℝ)).map E) := E.isAddHaarMeasure_map _
@@ -1217,6 +1726,13 @@ namespace Formalism.MainNotions.BridgeCSB
 
 open Formalism.QuantumDeterminants Formalism.MainNotions.S
 
+/- English proof (translation)
+Introduce `k r κ h0 htop`. Take `⟨c, hc, he⟩` from `haarLie_N_eq (k := k) (r := r)`. Rewrite using `[he κ]`. Establish `e : κ • (c • nuN k r) = (κ.toNNReal * c) • nuN k r`. Use extensionality with `s _`.
+
+Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ENNReal.coe_mul, ENNReal.coe_toNNReal htop]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `IsHaarOn.smul_nnreal (isHaarOn_nuN (k := k) (r := r)) (mul_ne_zero ?_ hc)` and prove the remaining obligations. Introduce `h`.
+
+Conclude with `h0 ((ENNReal.toNNReal_eq_zero_iff κ).1 h |>.resolve_right htop)`.
+-/
 theorem haarLieN : HaarLieN := by
   intro k r κ h0 htop
   obtain ⟨c, hc, he⟩ := haarLie_N_eq (k := k) (r := r)
@@ -1243,6 +1759,13 @@ namespace Formalism.MainNotions.BridgeCSB
 
 open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.BasicNotions
 
+/- English proof (translation)
+Introduce `τ w w' θ W hW`. Take `⟨_, _, hz, _, _, _, hG, hUW, _, _, _, hN, hQ, _⟩` from `hW`. Establish `hκtop : kapN D θ ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hκ0 : kapN D θ ≠ 0`. Introduce `h0`.
+
+Establish `hμN : W.μN = 0` using `by rw [hN, h0]; unfold haarLie; rw [zero_smul]`. Establish `hS : muS W.μW W.μN = 0` using `by unfold muS; rw [hμN, Measure.prod_zero, Measure.map_zero]`. Establish `h1` using `hQ (fun _ => 1) measurable_const`. Rewrite `h1` using `[hS]`. Simplify using `at h1`.
+
+Conclude with `hG.2.1 h1`. Establish `hNH : IsHaarOn (Nset D.R.k D.R.rS) W.μN` using `by rw [hN]; exact haarLieN _ _ _ hκ0 hκtop`. Conclude with `haarS hz hUW hNH`.
+-/
 theorem muSHaar_of (D : D7) : Formalism.MainNotions.S.Bridge.MuSHaar D := by
   intro τ w w' θ W hW
   obtain ⟨_, _, hz, _, _, _, hG, hUW, _, _, _, hN, hQ, _⟩ := hW

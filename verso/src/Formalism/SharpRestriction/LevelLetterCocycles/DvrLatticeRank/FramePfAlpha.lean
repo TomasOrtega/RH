@@ -17,14 +17,23 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     {W : LocWach PD LL O v n} {T : LocLat G Qp LL O}
 
+/- English proof (translation)
+Use `W.φD_smul T (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.φE_ext, algebraMap_smul]`. Conclude with `this`.
+-/
 theorem framepf_φD_smul (a : LetA O n) (x : W.DD T) : W.φD T (a • x) = W.φA a • W.φD T x := by
   have := W.φD_smul T (algebraMap (LetA O n) W.EE a) x
   rw [algebraMap_smul, W.φE_ext, algebraMap_smul] at this
   exact this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem framepf_smulLA_tmul (π' : LetA O n) (c : ZMod n) (a : LetA O n) (e : W.EE)
     (ℓ : LcQ W T π' c) : smulLA W T π' c a (e ⊗ₜ ℓ) = (algebraMap (LetA O n) W.EE a * e) ⊗ₜ ℓ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem framepf_toLA_tmul (π' : LetA O n) (c : ZMod n) (S : Submodule O (LcQ W T π' c)) (a : ↥W.AΔ)
     (s : ↥S) : toLA W T π' c S (a ⊗ₜ s) =
       algebraMap (LetA O n) W.EE ((letE c : LetA O n) * a) ⊗ₜ (s : LcQ W T π' c) := rfl
@@ -38,6 +47,9 @@ variable (Bs : FramepfBas W T) (π' : LetA O n) (c : ZMod n)
     (hu : IsUnit (algebraMap (LetA O n) W.EE π'))
 
 include hπ0 hΔπ γ0 in
+/- English proof (translation)
+Establish `h` using `framepf_ι_letγ π' i (hπ0 i) (W.γ₀ δ) (γ0 δ hδ) PowerSeries.X (by simp) (by rw [PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 i))];`. Conclude with `congrFun (hΔπ δ hδ) i) g`. Rewrite `h` using `[PowerSeries.X_subst]`. Conclude with `h`.
+-/
 theorem framepf_ι_Δ (i : ZMod n) (g : PowerSeries O) (δ : W.Gam) (hδ : δ ∈ W.DelF) :
     W.γA δ (framepf_ι π' i g) = framepf_ι π' i g := by
   have h := framepf_ι_letγ π' i (hπ0 i) (W.γ₀ δ) (γ0 δ hδ) PowerSeries.X (by simp)
@@ -47,6 +59,11 @@ theorem framepf_ι_Δ (i : ZMod n) (g : PowerSeries O) (δ : W.Gam) (hδ : δ �
   exact h
 
 include hπ0 hΔπ γ0 in
+/- English proof (translation)
+Unfold `framepf_vec`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mem_NcS]`. Take `⟨hN, hΔ⟩` from `Bs.mem m`. Use `⟨(W.N T).smul_mem _ hN, fun δ hδ => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[gradNPf_γD_smul, framepf_ι_Δ π' hπ0 hΔπ γ0 _ _ δ hδ, hΔ δ hδ]`. Rewrite using `[smul_smul, framepf_letE_ι π' (c - 1) hπ0]`.
+-/
 theorem framepf_vec_mem (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (k : Fin Bs.r) :
     framepf_vec Bs π' (c - 1) H k ∈ NcS W T (c - 1) := by
   unfold framepf_vec
@@ -58,6 +75,9 @@ theorem framepf_vec_mem (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (k : 
   · rw [smul_smul, framepf_letE_ι π' (c - 1) hπ0]
 
 include hπ0 hΔπ γ0 in
+/- English proof (translation)
+Unfold `framepf_hh`. Rewrite using `[LinearMap.comp_apply, Fintype.linearCombination_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (framepf_vec_mem Bs π' c hπ0 hΔπ γ0 H k)`.
+-/
 theorem framepf_hh_mem (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (ℓ : LcQ W T π' c) :
     framepf_hh Bs π' c hπ0 hΔπ hR2 γ0 hu H ℓ ∈ NcS W T (c - 1) := by
   unfold framepf_hh
@@ -68,12 +88,18 @@ def framepf_Ψα (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) :
     W.EE ⊗[O] LcQ W T π' c →ₗ[W.EE] W.DD T :=
   LinearMap.liftBaseChange W.EE ((W.φD T).comp (framepf_hh Bs π' c hπ0 hΔπ hR2 γ0 hu H))
 
+/- English proof (translation)
+Unfold `framepf_Ψα`. Rewrite using `[LinearMap.liftBaseChange_tmul, LinearMap.comp_apply]`.
+-/
 theorem framepf_Ψα_tmul (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (e : W.EE) (ℓ : LcQ W T π' c) :
     framepf_Ψα Bs π' c hπ0 hΔπ hR2 γ0 hu H (e ⊗ₜ ℓ) =
       e • W.φD T (framepf_hh Bs π' c hπ0 hΔπ hR2 γ0 hu H ℓ) := by
   unfold framepf_Ψα
   rw [LinearMap.liftBaseChange_tmul, LinearMap.comp_apply]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e ℓ`. Rewrite using `[framepf_smulLA_tmul, framepf_Ψα_tmul, framepf_Ψα_tmul, mul_smul, algebraMap_smul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`.
+-/
 theorem framepf_Ψα_smulLA (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (a : LetA O n)
     (x : W.EE ⊗[O] LcQ W T π' c) :
     framepf_Ψα Bs π' c hπ0 hΔπ hR2 γ0 hu H (smulLA W T π' c a x) =
@@ -86,6 +112,17 @@ theorem framepf_Ψα_smulLA (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (
 
 include hπ0 hΔπ γ0 in
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a s`. Rewrite using `[framepf_toLA_tmul, framepf_Ψα_tmul, algebraMap_smul]`. Establish `hh` using `framepf_hh_mem Bs π' c hπ0 hΔπ hR2 γ0 hu H (s : LcQ W T π' c)`.
+
+Rewrite `hh` using `[mem_NcS]`. Take `⟨hN, hΔ, hl⟩` from `hh`. Unfold `PcS`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem]`.
+
+Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← hl]`. Conclude with `⟨_, hN, rfl⟩`.
+
+Rewrite using `[mem_DelS]`. Introduce `δ hδ`. Rewrite using `[gradNPf_γD_smul, map_mul, ← W.φγ_comm, hΔ δ hδ, a.2 δ hδ, Formalism.MainNotions.LiftingTheory.wmap_γA_letE]`. Rewrite using `[mem_letS, smul_smul, ← mul_assoc]`. Unfold `letE`.
+
+Rewrite using `[← Pi.single_mul, mul_one]`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+-/
 theorem framepf_Ψα_toLA (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O))
     (t : ↥W.AΔ ⊗[O] ↥(⊤ : Submodule O (LcQ W T π' c))) :
     framepf_Ψα Bs π' c hπ0 hΔπ hR2 γ0 hu H (toLA W T π' c ⊤ t) ∈ PcS W T c := by
@@ -117,6 +154,11 @@ variable (Eπ : LetA O n) (hEu : IsUnit (algebraMap (LetA O n) W.EE Eπ))
 
 include hEu hEΔ in
 
+/- English proof (translation)
+Establish `hu' : IsUnit (algebraMap (LetA O n) W.EE (Eπ ^ h'))` using `by rw [map_pow]; exact hEu.pow _`. Use `⟨fun δ hδ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `gradNPf_tf W T _ hu'` to reduce the goal to its premises. Establish `h1` using `hΔ δ hδ`.
+
+Rewrite `h1` using `[gradNPf_γD_smul, map_pow, hEΔ δ hδ]`. Rewrite using `[smul_sub, h1, sub_self]`. Rewrite using `[← sub_eq_zero]`. Apply `gradNPf_tf W T _ hu'` to reduce the goal to its premises. Rewrite using `[smul_sub, smul_smul, mul_comm, ← smul_smul, hl, sub_self]`.
+-/
 theorem framepf_Lam_cancel {y : W.DD T} (hΔ : ∀ δ ∈ W.DelF, W.γD T δ (Eπ ^ h' • y) = Eπ ^ h' • y)
     (hl : (letE c : LetA O n) • (Eπ ^ h' • y) = Eπ ^ h' • y) :
     (∀ δ ∈ W.DelF, W.γD T δ y = y) ∧ (letE c : LetA O n) • y = y := by
@@ -133,6 +175,13 @@ theorem framepf_Lam_cancel {y : W.DD T} (hΔ : ∀ δ ∈ W.DelF, W.γD T δ (E�
 
 include hπ0 hΔπ γ0 hEu hEΔ in
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `Submodule.mem_comap.1 hx`. Establish `hP` using `framepf_Ψα_toLA Bs π' c hπ0 hΔπ hR2 γ0 hu H t`. Rewrite `hP` using `[ht, framepf_Ψα_smulLA]`. Unfold `PcS at hP`. Take `⟨hP12, hP3⟩` from `Submodule.mem_inf.1 hP`.
+
+Take `⟨hP1, hP2⟩` from `Submodule.mem_inf.1 hP12`. Rewrite `hP2` using `[mem_DelS]`. Rewrite `hP3` using `[mem_letS]`. Rewrite `hP1` using `[Submodule.restrictScalars_mem]`. Take `⟨hΔ, hl⟩` from `framepf_Lam_cancel c Eπ hEu hEΔ h' hP2 hP3`.
+
+Rewrite using `[mem_LamPS]`. Conclude with `⟨hP1, hΔ, hl⟩`.
+-/
 theorem framepf_Ψα_Lam (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (x : W.EE ⊗[O] LcQ W T π' c)
     (hx : x ∈ LamLA W T π' Eπ h' c ⊤) :
     framepf_Ψα Bs π' c hπ0 hΔπ hR2 γ0 hu H x ∈ LamPS W T Eπ h' c := by
@@ -155,6 +204,9 @@ def framepf_α (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) :
     (((framepf_Ψα Bs π' c hπ0 hΔπ hR2 γ0 hu H).restrictScalars O).comp (LamLA W T π' Eπ h' c ⊤).subtype)
     (fun x => framepf_Ψα_Lam Bs π' c hπ0 hΔπ hR2 γ0 hu Eπ hEu hEΔ h' H x x.2))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem framepf_α_apply (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (x : W.EE ⊗[O] LcQ W T π' c)
     (hx : x ∈ LamLA W T π' Eπ h' c ⊤) :
     framepf_α Bs π' c hπ0 hΔπ hR2 γ0 hu Eπ hEu hEΔ h' M H ⟨x, hx⟩ =
@@ -163,6 +215,9 @@ theorem framepf_α_apply (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (x :
 
 include hπ0 hΔπ γ0 in
 
+/- English proof (translation)
+Take `⟨z, ⟨t, rfl⟩, rfl⟩` from `Submodule.mem_map.1 hx`. Rewrite using `[framepf_Ψα_smulLA]`. Conclude with `Submodule.mem_map.2 ⟨_, framepf_Ψα_toLA Bs π' c hπ0 hΔπ hR2 γ0 hu H t, rfl⟩`.
+-/
 theorem framepf_Ψα_J (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (x : W.EE ⊗[O] LcQ W T π' c)
     (hx : x ∈ JLA W T π' Eπ h' M c) :
     framepf_Ψα Bs π' c hπ0 hΔπ hR2 γ0 hu H x ∈ JP W T π' Eπ h' M c := by
@@ -172,6 +227,9 @@ theorem framepf_Ψα_J (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (x : W
 
 include hπ0 hΔπ γ0 in
 
+/- English proof (translation)
+Rewrite using `[framepf_α_apply]`. Unfold `mkP`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype]`. Conclude with `framepf_Ψα_J Bs π' c hπ0 hΔπ hR2 γ0 hu Eπ h' M H x hJ`.
+-/
 theorem framepf_α_J (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (x : W.EE ⊗[O] LcQ W T π' c)
     (hx : x ∈ LamLA W T π' Eπ h' c ⊤) (hJ : x ∈ JLA W T π' Eπ h' M c) :
     framepf_α Bs π' c hπ0 hΔπ hR2 γ0 hu Eπ hEu hEΔ h' M H ⟨x, hx⟩ = 0 := by

@@ -9,6 +9,23 @@ noncomputable section
 namespace GlobalTheory.RootEx.RowSupport
 open GlobalTheory.RootEx.ExchangeSupport
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `AddChar.ne_one_iff.mp hψ`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `ha (AddChar.map_zero_eq_one ψ)`. Establish `hU : ∀ s : n, {x : k | (Pi.single s x : n → k) ∈ W} ∈ 𝓝 (0 : k)`.
+
+Introduce `s`. Establish `hcont : Continuous fun x : k => (Pi.single s x : n → k)`. Use `continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Pi.single_apply]`. Use `split_ifs`.
+
+Conclude with `continuous_id`. Conclude with `continuous_const`. Conclude with `hcont.continuousAt.preimage_mem_nhds (by simpa using hW)`. Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff _).mp (Filter.iInter_mem.mpr hU)`. Use `⟨Set.univ.pi fun _ => {x : k | valuation k x ≤ valuation k a / (γ : ValueGroupWithZero k)}, isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k _, ?_⟩` and prove the remaining obligations.
+
+Introduce `u hu`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, Set.mem_ofPred_eq, not_forall, not_le] at hu`. Take `⟨s, hs⟩` from `hu`. Establish `hus : u s ≠ 0`. Introduce `h`.
+
+Rewrite `hs` using `[h, map_zero]`. Conclude with `not_lt.mpr zero_le hs`. Establish `hv : 0 < valuation k (u s)`. Rewrite using `[zero_lt_iff]`. Conclude with `(Valuation.ne_zero_iff _).mpr hus`.
+
+Use `⟨Pi.single s (a / u s), ?_, ?_⟩` and prove the remaining obligations. Establish `hsmall : valuation k (a / u s) < γ`. Rewrite using `[map_div₀, div_lt_iff₀ hv]`. Establish `hg : (0 : ValueGroupWithZero k) < γ`. Rewrite using `[zero_lt_iff]`.
+
+Conclude with `γ.ne_zero`. Rewrite `hs` using `[div_lt_iff₀ hg]`. Simplify `hs` using `[mul_comm]`. Conclude with `Set.mem_iInter.mp (hγ hsmall) s`. Rewrite using `[dotProduct_single, mul_div_cancel₀ _ hus]`.
+
+Conclude with `ha`.
+-/
 theorem exists_box {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : Type} [Fintype n] [DecidableEq n]
     {ψ : AddChar k Circle} (hψ : ψ ≠ 1) (W : Set (n → k)) (hW : W ∈ 𝓝 (0 : n → k)) :
@@ -52,6 +69,21 @@ theorem exists_box {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   · rw [dotProduct_single, mul_div_cancel₀ _ hus]
     exact ha
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n _ _ c p hp hc ψ hψ A _ _ σ hσ F Ω hΩ`. Use `set S : Set (GL (n ⊕ Fin c) k) := {g | σ g F = F} with hSdef`. Establish `hS : IsOpen S` using `hσ F`. Establish `hcol : Continuous fun β : n → k => colE (k` using `k) c (p + 1) β := ExchangeSupport.continuous_colE`. Establish `hfix : ∀ᶠ β in 𝓝 (0 : n → k), ∀ w ∈ Ω, σ (colE c (p + 1) β) (σ w F) = σ w F`.
+
+Use `hΩ.eventually_forall_of_forall_eventually fun w _ => ?_` and prove the remaining obligations. Establish `hc2 : Continuous fun z : (n → k) × GL (n ⊕ Fin c) k => z.2⁻¹ * colE c (p + 1) z.1 * z.2` using `((continuous_snd.inv).mul (hcol.comp continuous_fst)).mul continuous_snd`. Establish `hmem : ((0 : n → k), w).2⁻¹ * colE c (p + 1) ((0 : n → k), w).1 * ((0 : n → k), w).2 ∈ S`. Simplify using `[hSdef, ExchangeSupport.colE_zero]`. Use `filter_upwards [hc2.continuousAt.preimage_mem_nhds (hS.mem_nhds hmem)] with z hz`.
+
+Establish `hz' : σ (z.2⁻¹ * colE c (p + 1) z.1 * z.2) F = F` using `hz`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul σ z.2, Module.End.mul_apply, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[← Module.End.mul_apply (σ z.2), ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Use `_ = σ z.2 F := by rw [map_mul, Module.End.mul_apply, hz']`.
+
+Take `⟨B, hB, hBout⟩` from `exists_box hψ {β | ∀ w ∈ Ω, σ (colE c (p + 1) β) (σ w F) = σ w F} hfix`. Use `⟨B, hB, fun l hl w hw u hu => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ, hne⟩` from `hBout u hu`. Take `⟨hN, hsum⟩` from `ExchangeSupport.conj_col (k := k) (n := n) hp hc u β`. Establish `key` using `hl _ hN (σ (rowE c p u) (σ w F))`.
+
+Rewrite `key` using `[hsum]`. Establish `lhs : σ (rowE c p u * colE c (p + 1) β * (rowE c p u)⁻¹) (σ (rowE c p u) (σ w F)) = σ (rowE c p u) (σ w F)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, map_mul, Module.End.mul_apply, hβ w hw]`. Rewrite `key` using `[lhs]`. Establish `hne' : (ψ (u ⬝ᵥ β) : ℂ) ≠ 1`.
+
+Introduce `h`. Conclude with `hne (Subtype.ext (by simpa using h))`. Establish `: (1 - (ψ (u ⬝ᵥ β) : ℂ)) * l (σ (rowE c p u) (σ w F)) = 0`. Rewrite using `[sub_mul, one_mul, ← key, sub_self]`. Break down `mul_eq_zero.mp this with h | h` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.mp h).symm hne'`. Conclude with `h`.
+-/
 theorem row_support_uniform : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ) (_ : 1 ≤ p) (_ : p < c) (ψ : AddChar k Circle) (_ : ψ ≠ 1) (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (_ : IsSmoothRep σ) (F : A) (Ω : Set (GL (n ⊕ Fin c) k)) (_ : IsCompact Ω), ∃ B : Set (n → k), IsCompact B ∧ ∀ l : A →ₗ[ℂ] ℂ, IsNEquiv ψ p σ l → ∀ w ∈ Ω, ∀ u, u ∉ B → l (σ (rowE c p u) (σ w F)) = 0 := by
   intro k _ _ _ _ n _ _ c p hp hc ψ hψ A _ _ σ hσ F Ω hΩ
   set S : Set (GL (n ⊕ Fin c) k) := {g | σ g F = F} with hSdef

@@ -18,16 +18,25 @@ namespace GlobalTheory.TorsionForm.OneVec
 
 namespace HeatPull
 
+/- English proof (translation)
+Simplify using `[pullOp, ContinuousLinearMap.sum_apply]`.
+-/
 theorem pullOp_apply {n g : ℕ} (a : Fin n → ℂ) (K : Ext (n + n + g) →L[ℂ] Ext (n + n + g))
     (w : Ext (1 + 1 + g)) :
     pullOp a K w = ∑ S : Finset (Fin (1 + 1)), lamL S (pullFullL a (K (rhoL S w))) := by
   simp [pullOp, ContinuousLinearMap.sum_apply]
 
+/- English proof (translation)
+Use `ext1 w`. Simplify using `[pullOp_apply, Finset.sum_add_distrib]`.
+-/
 theorem pullOp_add {n g : ℕ} (a : Fin n → ℂ) (K K' : Ext (n + n + g) →L[ℂ] Ext (n + n + g)) :
     pullOp a (K + K') = pullOp a K + pullOp a K' := by
   ext1 w
   simp [pullOp_apply, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use `ext1 w`. Simplify using `[pullOp_apply, Finset.smul_sum]`.
+-/
 theorem pullOp_smul {n g : ℕ} (a : Fin n → ℂ) (c : ℂ) (K : Ext (n + n + g) →L[ℂ] Ext (n + n + g)) :
     pullOp a (c • K) = c • pullOp a K := by
   ext1 w
@@ -40,6 +49,11 @@ def pullOpL {n g : ℕ} (a : Fin n → ℂ) :
       map_add' := pullOp_add a
       map_smul' := pullOp_smul a }
 
+/- English proof (translation)
+Establish `e : (fun i => (((x + y) (Sum.inl i) : ℝ) : ℂ)) = (fun i => (x (Sum.inl i) : ℂ)) + fun i => (y (Sum.inl i) : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Simplify using `only [per, e, Matrix.add_vecMul]`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem per_add {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) :
     per τ (x + y) = per τ x + per τ y := by
   have e : (fun i => (((x + y) (Sum.inl i) : ℝ) : ℂ)) =
@@ -48,11 +62,19 @@ theorem per_add {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) :
   simp only [per, e, Matrix.add_vecMul]
   funext i; simp; ring
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [per, Matrix.vecMul, dotProduct, Pi.add_apply]`. Use `fun_prop`.
+-/
 theorem continuous_per {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) : Continuous (per τ) := by
   refine continuous_pi fun i => ?_
   simp only [per, Matrix.vecMul, dotProduct, Pi.add_apply]
   fun_prop
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `fun u hu _ => ⟨univ, univ_mem, .of_forall fun _ _ _ => refl_mem_uniformity hu⟩`. Consider the case `insert i s hi ih`.
+
+Simplify using `only [Finset.sum_insert hi]`. Conclude with `(hF i (Finset.mem_insert_self i s)).add (ih fun k hk => hF k (Finset.mem_insert_of_mem hk))`.
+-/
 theorem tendstoLocallyUniformly_finsetSum {ι X V : Type*} [TopologicalSpace X]
     [NormedAddCommGroup V] {l : Filter ℝ} (s : Finset ι) (F : ι → ℝ → X → V) (f : ι → X → V)
     (hF : ∀ i ∈ s, TendstoLocallyUniformly (F i) (f i) l) :
@@ -71,6 +93,25 @@ end HeatPull
 
 open HeatPull
 
+/- English proof (translation)
+Take `⟨hsm, hq, hheat, hinit⟩` from `hK`. Establish `hsl : ∀ t > 0, ∀ (z' : Fin g → ℂ) (v : Ext (n + n + g)), ContDiff ℝ ∞ fun y => K t y z' v` using `fun t ht z' v => ((ContinuousLinearMap.apply ℂ (Ext (n + n + g)) v).restrictScalars ℝ).contDiff.comp (hsm.comp_contDiff (f := fun y : Fin g → ℂ => (t, y, z')) (by fun_prop) (fun _ => Set.mk_mem_prod ht (mem_univ _)))`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((pullOpL (g := g) a).restrictScalars ℝ).contDiff.comp_contDiffOn hsm`. Introduce `t ht l hl z z'`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[(hq t ht l hl z z').1, pullOp_smul]`. Simplify using `only`. Rewrite using `[← pullOp_smul, (hq t ht l hl z z').2]`.
+
+Introduce `t ht z z' w`. Simplify using `only [pullOp_apply]`. Establish `hS : ∀ S : Finset (Fin (1 + 1)), HasDerivAt (fun t' => lamL S (pullFullL a (K t' z z' (rhoL S w)))) (lamL S (pullFullL a (-curv τ h β b u (fun y => K t y z' (rhoL S w)) z))) t` using `fun S => (((lamL S).comp (pullFullL a)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t (hheat t ht z z' (rhoL S w))`. Establish `hd` using `HasDerivAt.fun_sum (u := (Finset.univ : Finset (Finset (Fin (1 + 1))))) fun S _ => hS S`. Use `(congrArg (HasDerivAt _ · t) ?_).mpr hd` and prove the remaining obligations.
+
+Establish `e1` using `GlobalTheory.T.curvature_sum_of_sections hD ![∑ i, a i • β i] hb Finset.univ (fun (S : Finset (Fin (1 + 1))) y => lamL S (pullFullL a (K t y z' (rhoL S w)))) (fun S => (((lamL S).comp (pullFullL a)).restrictScalars ℝ).contDiff.comp (hsl t ht z' _)) u z`. Use `beta_reduce at e1`. Rewrite using `[e1, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.curvature_pullback_one_vector hD β a hb S _ (hsl t ht z' _), map_neg, map_neg]`.
+
+Introduce `f hf`. Establish `hM : IsLat M` using `hD.2.1`. Establish `hcont : ∀ t > 0, ∀ z (S : Finset (Fin (1 + 1))), Continuous fun x => K t z (per (τ b) x) (rhoL S (f (per (τ b) x)))`. Introduce `t ht z S`. Establish `h1 : Continuous fun x : Fl g => K t z (per (τ b) x)` using `hsm.continuousOn.comp_continuous (f := fun x : Fl g => (t, z, per (τ b) x)) (continuous_const.prodMk (continuous_const.prodMk (continuous_per _))) (fun _ => Set.mk_mem_prod ht (mem_univ _))`.
+
+Conclude with `h1.clm_apply ((rhoL S).continuous.comp (hf.1.continuous.comp (continuous_per _)))`. Establish `hper : ∀ t > 0, ∀ z (S : Finset (Fin (1 + 1))), ∀ l ∈ M, ∀ x, K t z (per (τ b) (x + l)) (rhoL S (f (per (τ b) (x + l)))) = K t z (per (τ b) x) (rhoL S (f (per (τ b) x)))`. Introduce `t ht z S l hl x`. Rewrite using `[per_add, hf.2 l hl, map_smul, map_smul]`. Use `conv_rhs => rw [← (hq t ht l hl z (per (τ b) x)).2]`.
+
+Both sides reduce to the same expression. Establish `hint : ∀ t > 0, ∀ z (S : Finset (Fin (1 + 1))), IntegrableOn (fun x => K t z (per (τ b) x) (rhoL S (f (per (τ b) x)))) D` using `fun t ht z S => GlobalTheory.T.integrableOn_periodic_fundamental_domain M hM D hDom _ (hcont t ht z S) (hper t ht z S)`. Establish `hsec : ∀ S : Finset (Fin (1 + 1)), IsSec τ M j b fun z => rhoL (n` using `n) S (f z) := fun S => ⟨((rhoL S).restrictScalars ℝ).contDiff.comp hf.1, fun l hl z => by simp only; rw [hf.2 l hl z, map_smul]⟩`. Establish `hlim` using `tendstoLocallyUniformly_finsetSum Finset.univ (fun (S : Finset (Fin (1 + 1))) t z => lamL S (pullFullL a (∫ x in D, K t z (per (τ b) x) (rhoL S (f (per (τ b) x)))))) (fun S z => lamL S (pullFullL a (rhoL S (f z)))) (fun S _ => ((lamL S).comp (pullFullL a)).uniformContinuous.comp_ …`. Establish `hf' : (fun z => ∑ S : Finset (Fin (1 + 1)), lamL S (pullFullL a (rhoL S (f z)))) = f`.
+
+Use function extensionality and compare the values at `fun z => GlobalTheory.T.sum_lambda_pull_rho_identity a (f z)`. Rewrite `hlim` using `[hf']`. Establish `heq : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z, (∫ x in D, pullOp a (K t z (per (τ b) x)) (f (per (τ b) x))) = ∑ S : Finset (Fin (1 + 1)), lamL S (pullFullL a (∫ x in D, K t z (per (τ b) x) (rhoL S (f (per (τ b) x)))))` using `by filter_upwards [self_mem_nhdsWithin] with t ht z`. Simplify using `only [pullOp_apply]`. Rewrite using `[integral_finset_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun S _ => ((lamL S).comp (pullFullL a)).integral_comp_comm (hint t ht z S)`. Conclude with `fun S _ => ((lamL S).comp (pullFullL a)).integrable_comp (hint t ht z S)`. Introduce `s hs x`. Take `⟨U, hU, hev⟩` from `hlim s hs x`. Conclude with `⟨U, hU, (hev.and heq).mono fun r hr y hy => by beta_reduce; rw [hr.2 y]; exact hr.1 y hy⟩`.
+-/
 theorem isHeatKernel_pullOp {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {g n : ℕ} {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)}
     {j : Fl g → Pt E g → ℂ} {h : Pt E g → ℝ} (hD : IsDatum B τ M j h) (β : Fin n → E)

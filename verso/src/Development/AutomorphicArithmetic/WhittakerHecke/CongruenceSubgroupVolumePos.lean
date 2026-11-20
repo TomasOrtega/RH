@@ -8,6 +8,17 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨hKs, hC⟩` from `UpperTheory.ConvolutionTheory.R2.M.kkCpt ℚ`. Establish `hmem : ∀ x ∈ KK ℚ, ∀ y ∈ KK ℚ, x * y⁻¹ ∈ KK ℚ`. Introduce `x hx y hy`. Rewrite `hx`, `hy`, the goal using `[hKs]`.
+
+Conclude with `(UpperTheory.ConvolutionTheory.R2.M.Ks ℚ).mul_mem hx ((UpperTheory.ConvolutionTheory.R2.M.Ks ℚ).inv_mem hy)`. Establish `hnull : ∀ c ∈ KK ℚ, M.κ ((fun x => c * x) ⁻¹' U) = 0`. Introduce `c hc`. Establish `hm : Measurable (fun x : G1 ℚ => c * x)` using `(continuous_const.mul continuous_id).measurable`. Rewrite using `[← Measure.map_apply hm hU.measurableSet, M.κ_left c hc]`.
+
+Conclude with `h0`. Take `⟨t, ht, hcov⟩` from `hC.elim_nhds_subcover (fun x => (fun y => (k * x⁻¹) * y) ⁻¹' U) (by`. Introduce `x hx`. Use `((continuous_const.mul continuous_id).isOpen_preimage _ hU).mem_nhds ?_` and prove the remaining obligations. Simplify using `using hkU)`.
+
+Establish `hK0 : M.κ (KK ℚ) = 0`. Use `measure_mono_null hcov ?_` and prove the remaining obligations. Conclude with `(measure_biUnion_null_iff t.countable_toSet).2 fun x hx => hnull _ (hmem k hk x (ht x hx))`. Use `haveI := M.prob`. Establish `hle : M.κ Set.univ ≤ M.κ (KK ℚ) + M.κ (KK ℚ)ᶜ`.
+
+Rewrite using `[← Set.union_compl_self (KK ℚ)]`. Conclude with `measure_union_le _ _`. Rewrite `hle` using `[hK0, M.supp, measure_univ]`. Simplify using `at hle`.
+-/
 private theorem kappa_ne_zero (M : Meas ℚ)
     {U : Set (G1 ℚ)} (hU : IsOpen U) {k : G1 ℚ} (hk : k ∈ KK ℚ) (hkU : k ∈ U) : M.κ U ≠ 0 := by
   intro h0
@@ -35,12 +46,22 @@ private theorem kappa_ne_zero (M : Meas ℚ)
   rw [hK0, M.supp, measure_univ] at hle
   simp at hle
 
+/- English proof (translation)
+Establish `h1 : Continuous (pLoc ℚ v)` using `RestrictedProduct.continuous_eval (R := fun v : H.P ℚ => v.adicCompletion ℚ) v`. Establish `h2 : Continuous (pFin ℚ)` using `continuous_snd`. Conclude with `h1.comp h2`.
+-/
 private theorem cp_cont (v : H.P ℚ) : Continuous (H.cp v) := by
   have h1 : Continuous (pLoc ℚ v) :=
     RestrictedProduct.continuous_eval (R := fun v : H.P ℚ => v.adicCompletion ℚ) v
   have h2 : Continuous (pFin ℚ) := continuous_snd
   exact h1.comp h2
 
+/- English proof (translation)
+Establish `hN0 : (N : H.Kv v) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hv0 : Valued.v (N : H.Kv v) ≠ 0` using `(Valuation.ne_zero_iff _).2 hN0`. Establish `hO : IsOpen ((v.adicCompletionIntegers ℚ : ValuationSubring (H.Kv v)) : Set (H.Kv v))` using `Valued.isOpen_valuationSubring _`. Establish `hc : Continuous fun k : G1 ℚ => H.cp v (k 1 0) * (N : H.Kv v)⁻¹`. Establish `hk : Continuous fun k : G1 ℚ => (k.1 : Matrix (Fin 2) (Fin 2) (A ℚ)) 1 0` using `(Matrix.SpecialLinearGroup.isClosedEmbedding_val.continuous).matrix_elem 1 0`.
+
+Conclude with `((cp_cont v).comp hk).mul continuous_const`. Establish `: {k : G1 ℚ | Dv N v (k 1 0)} = (fun k : G1 ℚ => H.cp v (k 1 0) * (N : H.Kv v)⁻¹) ⁻¹' ((v.adicCompletionIntegers ℚ : ValuationSubring (H.Kv v)) : Set (H.Kv v))`. Use extensionality with `k`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe, Dv]`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_inv₀]`.
+
+Rewrite using `[← div_eq_mul_inv]`. Conclude with `(div_le_one₀ (zero_lt_iff.2 hv0)).symm`. Rewrite using `[this]`. Conclude with `hO.preimage hc`.
+-/
 private theorem isOpen_dv {N : ℕ} (hN : 0 < N) (v : H.P ℚ) :
     IsOpen {k : G1 ℚ | Dv N v (k 1 0)} := by
   have hN0 : (N : H.Kv v) ≠ 0 := Nat.cast_ne_zero.2 hN.ne'
@@ -61,12 +82,22 @@ private theorem isOpen_dv {N : ℕ} (hN : 0 < N) (v : H.P ℚ) :
   rw [this]
   exact hO.preimage hc
 
+/- English proof (translation)
+Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (n : K)]`. Use `congr 1`. Conclude with `(map_natCast (algebraMap K (H.Kv v)) n).symm`.
+-/
 private theorem val_nat {K : Type} [Field K] [NumberField K] (v : H.P K) (n : ℕ) :
     Valued.v (n : H.Kv v) = v.valuation K (n : K) := by
   rw [← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (n : K)]
   congr 1
   exact (map_natCast (algebraMap K (H.Kv v)) n).symm
 
+/- English proof (translation)
+Establish `h1 : ¬ 1 < v.valuation ℚ ((N : ℚ)⁻¹)` using `hv`. Establish `hN0 : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `h2 : (1 : _) ≤ v.valuation ℚ (N : ℚ)`. Rewrite `h1` using `[map_inv₀]`. Establish `h3` using `not_lt.1 h1`.
+
+Establish `hp : 0 < v.valuation ℚ (N : ℚ)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hN0)`. Conclude with `(inv_le_one₀ hp).1 h3`. Establish `h4 : Valued.v (N : H.Kv v) = v.valuation ℚ (N : ℚ)` using `val_nat v N`. Use `hx.trans ?_` and prove the remaining obligations. Rewrite using `[h4]`.
+
+Conclude with `h2`.
+-/
 private theorem dv_of_int {N : ℕ} (hN : 0 < N) (v : H.P ℚ)
     (hv : v ∉ HeightOneSpectrum.Support (𝓞 ℚ) ((N : ℚ)⁻¹)) {x : A ℚ}
     (hx : Valued.v (H.cp v x) ≤ 1) : Dv N v x := by
@@ -82,6 +113,17 @@ private theorem dv_of_int {N : ℕ} (hN : 0 < N) (v : H.P ℚ)
   rw [h4]
   exact h2
 
+/- English proof (translation)
+Introduce `M N hN`. Use `haveI := M.prob`. Establish `hfin` using `HeightOneSpectrum.Support.finite (𝓞 ℚ) ((N : ℚ)⁻¹)`. Use `set T := HeightOneSpectrum.Support (𝓞 ℚ) ((N : ℚ)⁻¹) with hT`. Use `set U : Set (G1 ℚ) := ⋂ v ∈ T, {k : G1 ℚ | Dv N v (k 1 0)} with hU`.
+
+Establish `hUo : IsOpen U` using `hfin.isOpen_biInter fun v _ => isOpen_dv hN v`. Establish `h1K : (1 : G1 ℚ) ∈ KK ℚ`. Rewrite using `[(UpperTheory.ConvolutionTheory.R2.M.kkCpt ℚ).1]`. Conclude with `(UpperTheory.ConvolutionTheory.R2.M.Ks ℚ).one_mem`. Establish `h1U : (1 : G1 ℚ) ∈ U`.
+
+Use `Set.mem_iInter₂.2 fun v _ => ?_` and prove the remaining obligations. Simplify using `[Dv]`. Establish `hne` using `kappa_ne_zero M hUo h1K h1U`. Use `ENNReal.toReal_pos (fun h0 => hne ?_) (measure_ne_top _ _)` and prove the remaining obligations. Use `measure_mono_null (t := (SS N ∩ KK ℚ) ∪ (KK ℚ)ᶜ) ?_ (measure_union_null h0 M.supp)` and prove the remaining obligations.
+
+Introduce `k hk`. Distinguish the cases in `hkK : k ∈ KK ℚ`. Use `Or.inl ⟨fun v => ?_, hkK⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ T`. Conclude with `Set.mem_iInter₂.1 hk v hv`.
+
+Use `dv_of_int hN v hv ?_` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hkK.2 v 1 0)`. Conclude with `Or.inr hkK`.
+-/
 theorem UpperTheory.congruenceSubgroup_volume_pos :
     ∀ (M : Meas ℚ) (N : ℕ), 0 < N → 0 < cK M N := by
   intro M N hN

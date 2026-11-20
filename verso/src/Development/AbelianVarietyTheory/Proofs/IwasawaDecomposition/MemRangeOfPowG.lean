@@ -15,6 +15,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hval : Valued.v ((algebraMap (𝓞 F) (v.adicCompletionIntegers F) (p : 𝓞 F) : v.adicCompletion F)) < 1`. Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(v.valuation_lt_one_iff_mem (K := F) _).2 h`. Establish `hmax : algebraMap (𝓞 F) (v.adicCompletionIntegers F) (p : 𝓞 F) ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)` using `(Valuation.mem_maximalIdeal_iff _ Valued.v).2 hval`. Establish `hres` using `(IsLocalRing.residue_eq_zero_iff _).2 hmax`.
+
+Simplify using `using hres`.
+-/
 theorem natCast_kv_eq_zero (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) (h : (p : 𝓞 F) ∈ v.asIdeal) : (p : kv F v) = 0 := by
 
@@ -29,6 +34,13 @@ theorem natCast_kv_eq_zero (F : Type) [Field F] [NumberField F]
   have hres := (IsLocalRing.residue_eq_zero_iff _).2 hmax
   simpa using hres
 
+/- English proof (translation)
+Establish `hp : (B.host.g i).Prime` using `B.host.g_prime i`. Apply the tactic sequence `have hmem : B.host.g i * (B.host.g i - 1) ∈ [B.toPre.restRowsFiniteGroupCard, B.host.g 0 * (B.host.g 0 - 1), B.host.g 1 * (B.host.g 1 - 1), 3 ^ 4, 5 ^ 4] := by fin_cases i <;> simp`. Take `⟨z0, -, hz0⟩` from `B.roots_Ks _ hmem`. Establish `hN : B.host.g i * (B.host.g i - 1) ≠ 0` using `Nat.mul_ne_zero hp.ne_zero (by have := hp.two_le; omega)`. Establish `hprim : IsPrimitiveRoot (B.embLL z0) (B.host.g i * (B.host.g i - 1))`.
+
+Rewrite using `[hz0]`. Conclude with `Complex.isPrimitiveRoot_exp _ hN`. Establish `hprim' : IsPrimitiveRoot (B.embLL z0 ^ (B.host.g i - 1)) (B.host.g i)` using `hprim.pow (Nat.pos_of_ne_zero hN) (mul_comm _ _)`. Establish `: NeZero (B.host.g i)` using `⟨hp.ne_zero⟩`. Take `⟨k, -, hk⟩` from `hprim'.eq_pow_of_pow_eq_one hz`.
+
+Conclude with `⟨(z0 ^ (B.host.g i - 1)) ^ k, by rw [map_pow, map_pow, hk]⟩`.
+-/
 theorem mem_range_of_pow_g (B : Base) (i : Fin 2) (z : ℂ) (hz : z ^ B.host.g i = 1) : ∃ r : B.LL, B.embLL r = z := by
   have hp : (B.host.g i).Prime := B.host.g_prime i
 
@@ -47,6 +59,9 @@ theorem mem_range_of_pow_g (B : Base) (i : Fin 2) (z : ℂ) (hz : z ^ B.host.g i
   obtain ⟨k, -, hk⟩ := hprim'.eq_pow_of_pow_eq_one hz
   exact ⟨(z0 ^ (B.host.g i - 1)) ^ k, by rw [map_pow, map_pow, hk]⟩
 
+/- English proof (translation)
+Introduce `i v h x`. Establish `hx : ((T u).gl.psi0 i v h x) ^ X.toD7.host.g i = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, natCast_kv_eq_zero _ v _ h, zero_mul, AddChar.map_zero_eq_one]`. Conclude with `mem_range_of_pow_g X.B i _ hx`.
+-/
 theorem psi0Rat (X : Stages) (T : ∀ u, Forms0 X.toD7 u) (u : X.toD7.what₂.Word) : Formalism.L2.G.LevelZeroCharacterRational T u := by
   intro i v h x
 
@@ -63,20 +78,37 @@ def formsOf (C : ColsTiedSym D) (u : D.what₂.Word) : Forms0 D u := (C.forms u)
 
 def errOf (H : Formalism.L2.Herm.ColsHermS D) : ErrX D := (GlobalTheory.Mem.ErrTies.exists_errX D H).choose
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.ErrTies.exists_errX D H).choose_spec.1`.
+-/
 theorem errOf_piG (H : Formalism.L2.Herm.ColsHermS D) : (errOf H).piG = (H.levelZeroCompatibility D.u₀).piG :=
   (GlobalTheory.Mem.ErrTies.exists_errX D H).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.ErrTies.exists_errX D H).choose_spec.2.1 u`.
+-/
 theorem errOf_piT (H : Formalism.L2.Herm.ColsHermS D) (u : D.what₂.Word) : (errOf H).piT u = (H.atT u).piU :=
   (GlobalTheory.Mem.ErrTies.exists_errX D H).choose_spec.2.1 u
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.ErrTies.exists_errX D H).choose_spec.2.2.1 u v`.
+-/
 theorem errOf_vPl (H : Formalism.L2.Herm.ColsHermS D) (u : D.what₂.Word) (v : (D.mem u).A.vT) :
     (errOf H).vPl u v = (H.base.vT u v).1 :=
   (GlobalTheory.Mem.ErrTies.exists_errX D H).choose_spec.2.2.1 u v
 
+/- English proof (translation)
+Unfold `levOf formsOf`. Conclude with `C.joint0 u`.
+-/
 theorem joint0 (C : ColsTiedSym D) (u : D.what₂.Word) : Joint0 (levOf C) u (formsOf C u) := by
   unfold levOf formsOf
   exact C.joint0 u
 
+/- English proof (translation)
+Introduce `M hM u`. Establish `hc : (X.toD7.mem u).C = X.C.chTw u X.C.mu0` using `(X.C.memberColumns_twistedChain_base u).symm`. Rewrite using `[hc, hDG u X.C.mu0]`. Establish `hf : X.B.fields.f = X.B.R.f` using `(GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws X.B).2`. Use `GlobalTheory.Mem.Col2.DGam_dvd_of_minkMult X.B.R (GlobalTheory.Mem.FieldsLaws.fields_ok (B := X.B)) M ?_` and prove the remaining obligations.
+
+Rewrite using `[hf]`. Conclude with `hM`.
+-/
 theorem dGamChoice_of_lcm (X : Stages) (hDG : ∀ u μ, (X.C.chTw u μ).DGam = GlobalTheory.Mem.Col2.DGam X.B.fields.E X.B.R) :
     DGamChoice_at X.toD7 := by
   intro M hM u
@@ -88,6 +120,9 @@ theorem dGamChoice_of_lcm (X : Stages) (hDG : ∀ u μ, (X.C.chTw u μ).DGam = G
   rw [hf]
   exact hM
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.ErrTies.exists_errX X.toD7 H).choose_spec.2.2.2.1 piT_lev := (GlobalTheory.Mem.ErrTies.exists_errX X.toD7 H).choose_spec.2.2.2.2.1 seen := (GlobalTheory.Mem.ErrTies.exists_errX X.toD7 H).choose_spec.2.2.2.2.2.1 tauOf := (GlobalTheory.Mem.ErrTies.exists_errX X.to …`.
+-/
 theorem colLay_of_herm (X : Stages) (hX : Nonempty (PreX X.B.toPre))
     (hDG : ∀ u μ, (X.C.chTw u μ).DGam = GlobalTheory.Mem.Col2.DGam X.B.fields.E X.B.R)
     (H : Formalism.L2.Herm.ColsHermS X.toD7) (T : ∀ u, Forms0 X.toD7 u) (hJ : ∀ u, Joint0 H.base.lev0 u (T u)) :
@@ -103,6 +138,9 @@ theorem colLay_of_herm (X : Stages) (hX : Nonempty (PreX X.B.toPre))
   mink := dGamChoice_of_lcm X hDG
   atT := GlobalTheory.T.heckeUOperator_rational_invertible_ramifiedForms X hX H T hJ (fun u => psi0Rat X T u)
 
+/- English proof (translation)
+The claim follows from `colLay_of_herm X hX hDG C.herm (formsOf C) (joint0 C)`.
+-/
 theorem colLay_of_tied (X : Stages) (hX : Nonempty (PreX X.B.toPre))
     (hDG : ∀ u μ, (X.C.chTw u μ).DGam = GlobalTheory.Mem.Col2.DGam X.B.fields.E X.B.R) (C : ColsTiedSym X.toD7) :
     ColLay X.toD7 (levOf C) (errOf C.herm) :=

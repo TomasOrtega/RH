@@ -10,6 +10,15 @@ namespace UpperTheory.Bc
 abbrev prodW (W : Scheme.{0}) : Scheme.{0} ⥤ Scheme.{0} := prod.functor.obj W
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ℱ Z T x hx Y₁ Y₂ X f₁ f₂ g₁ g₂ hg₁ hg₂ e`. Establish `hfst : f₁ ≫ prod.fst = f₂ ≫ prod.fst`. Establish `h` using `congrArg (· ≫ (prod.fst : W ⨯ Z ⟶ W)) e`. Simplify using `using h`.
+
+Establish `hsnd : (f₁ ≫ prod.snd) ≫ g₁ = (f₂ ≫ prod.snd) ≫ g₂`. Establish `h` using `congrArg (· ≫ (prod.snd : W ⨯ Z ⟶ Z)) e`. Simplify using `using h`. Set `u : X ⟶ (prodW W).obj X` to `prod.lift (f₁ ≫ prod.fst) (𝟙 X)`. Establish `k₁ : f₁ = u ≫ (prodW W).map (f₁ ≫ prod.snd)`.
+
+Apply the tactic sequence `apply prod.hom_ext <;> simp [u]`. Establish `k₂ : f₂ = u ≫ (prodW W).map (f₂ ≫ prod.snd)`. Apply the tactic sequence `apply prod.hom_ext <;> simp [u, hfst]`. Establish `hc` using `hx (f₁ ≫ prod.snd) (f₂ ≫ prod.snd) hg₁ hg₂ hsnd`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← FunctorToTypes.map_comp_apply, ← op_comp, ← k₁]`. Use `_ = ℱ.obj.map u.op (ℱ.obj.map ((prodW W).map (f₂ ≫ prod.snd)).op (x g₂ hg₂)) := congrArg _ hc`. Use `_ = ℱ.obj.map f₂.op (x g₂ hg₂) := by`. Rewrite using `[← FunctorToTypes.map_comp_apply, ← op_comp, ← k₂]`.
+-/
 theorem prodW_compatible (W : Scheme.{0}) :
     CompatiblePreserving Scheme.etaleTopology.{0} (prodW W) := by
   constructor
@@ -35,6 +44,13 @@ theorem prodW_compatible (W : Scheme.{0}) :
         rw [← FunctorToTypes.map_comp_apply, ← op_comp, ← k₂]
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `U S hS`. Rewrite using `[GlobalTheory.T.mem_etale_covering_sieves_iff_points]`. Introduce `u`. Take `⟨V, j, v, hj, hv, hS'⟩` from `(GlobalTheory.T.mem_etale_covering_sieves_iff_points U S).1 hS ((prod.snd : W ⨯ U ⟶ U) u)`.
+
+Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := (prod.snd : W ⨯ U ⟶ U)) (g := j) u v hv.symm`. Use `haveI := hj`. Use `⟨pullback (prod.snd : W ⨯ U ⟶ U) j, pullback.fst _ _, z, ?_, hz1, ?_⟩` and prove the remaining obligations. Conclude with `MorphismProperty.pullback_fst _ _ hj`. Use `⟨V, j, prod.lift (pullback.fst _ _ ≫ prod.fst) (pullback.snd _ _), hS', ?_⟩` and prove the remaining obligations.
+
+Apply `Limits.prod.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `[pullback.condition]`.
+-/
 theorem prodW_cover (W : Scheme.{0}) :
     CoverPreserving Scheme.etaleTopology.{0} Scheme.etaleTopology.{0} (prodW W) := by
   constructor

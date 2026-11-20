@@ -14,6 +14,19 @@ noncomputable section
 
 namespace GlobalTheory.SiegLevDescent
 
+/- English proof (translation)
+Introduce `h M M₀ d d₀ B B₀ _ _ ζ ζ₀ X Y _ s s₀ π c c₀ hfin het hsurj m hc`. Take `⟨φ, pb, ⟨φ₂, sq, iso⟩, -⟩` from `m`. Take `⟨h₁, h₂⟩` from `hc`. Use `⟨(relAmple_kTriv_of_finite_etale_cover Y X π c₀.A c.A φ c₀.diag c.diag hfin het hsurj c₀.ab (pull_isLB c₀.isLB _) (pull_isLB c.isLB _) pb (GlobalTheory.SiegelPull.diag_iso sq iso)).1 h₁, ?_⟩` and prove the remaining obligations. Introduce `T x ⟨t, ht⟩`.
+
+Use `haveI := het`. Use `haveI := hsurj`. Set `T' : Over X` to `Over.mk (pullback.snd T.hom π)`. Set `p : T'.left ⟶ T.left` to `pullback.fst T.hom π`. Establish `hp : p ≫ T.hom = T'.hom ≫ π` using `pullback.condition`.
+
+Use `haveI : Epi p := Flat.epi_of_flat_of_surjective _`. Take `⟨ρ, hρ⟩` from `GlobalTheory.SiegelDescent.exists_liftHom pb T' T p hp`. Establish `hx' : (ρ x).left ≫ φ = p ≫ x.left` using `(hρ x (ρ x)).1 rfl`. Establish `w₁ : (fst c.A T').left ≫ φ ≫ c₀.A.hom = ((snd c.A T').left ≫ p) ≫ T.hom`. Rewrite using `[pb.1.w, ← Category.assoc, Over.w (fst c.A T'), Category.assoc, hp, ← Category.assoc, Over.w (snd c.A T')]`.
+
+Set `χ : (c.A ⊗ T').left ⟶ (c₀.A ⊗ T).left` to `pullback.lift ((fst c.A T').left ≫ φ) ((snd c.A T').left ≫ p) w₁`. Establish `χ₁ : χ ≫ (fst c₀.A T).left = (fst c.A T').left ≫ φ` using `pullback.lift_fst _ _ _`. Establish `χ₂ : χ ≫ (snd c₀.A T).left = (snd c.A T').left ≫ p` using `pullback.lift_snd _ _ _`. Establish `e : (lift (snd c.A T' ≫ ρ x) (fst c.A T')).left ≫ φ₂ = χ ≫ (lift (snd c₀.A T ≫ x) (fst c₀.A T)).left` using `GlobalTheory.SiegelDescent.lift_square sq (τ := χ) (by rw [Over.comp_left, Over.comp_left, Category.assoc, hx', ← Category.assoc χ, χ₂, Category.assoc]) χ₁.symm`. Establish `H` using `GlobalTheory.SiegelDescent.lbIso_square c.isLB c₀.isLB iso e`.
+
+Take `⟨t₁, ht₁⟩` from `gen_chartPull (chartPullPull (c₀.P.pull (lift (snd c₀.A T ≫ x) (fst c₀.A T)).left) χ) t ht`. Establish `hg` using `GlobalTheory.SiegelDescent.exists_gen_of_lbIso (pull_isLB (pull_isLB c₀.isLB _) _) (pull_isLB c.isLB _) H.symm ⟨t₁, ht₁⟩`. Establish `h₃ : ρ x = 1` using `h₂ T' (ρ x) hg`. Establish `h₄ : p ≫ x.left = p ≫ (1 : T ⟶ c₀.A).left`. Rewrite using `[← hx', h₃, GlobalTheory.SiegelDescent.one_comp pb T' T p hp]`.
+
+Conclude with `Over.OverMorphism.ext ((cancel_epi p).1 h₄)`.
+-/
 theorem principal_of_sRel_finite_etale : ∀ (h M M₀ d d₀ : ℕ) (B B₀ : Type) [CommRing B] [CommRing B₀] (ζ : B) (ζ₀ : B₀) (X Y : Scheme.{0}) [IsLocallyNoetherian Y] (s : X ⟶ Sp B) (s₀ : Y ⟶ Sp B₀) (π : X ⟶ Y) (c : SiegPre h M ζ s) (c₀ : SiegPre h M₀ ζ₀ s₀), IsFinite π → Etale π → Surjective π → SRel c c₀ d d₀ π → c.Principal → c₀.Principal := by
   intro h M M₀ d d₀ B B₀ _ _ ζ ζ₀ X Y _ s s₀ π c c₀ hfin het hsurj m hc
   obtain ⟨φ, pb, ⟨φ₂, sq, iso⟩, -⟩ := m

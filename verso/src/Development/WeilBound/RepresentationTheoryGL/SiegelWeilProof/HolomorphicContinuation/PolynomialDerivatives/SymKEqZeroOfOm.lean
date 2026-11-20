@@ -13,6 +13,9 @@ variable {m n : ℕ} {ε : Fin m → Bool}
 def psi (p q : Sym m n) : ℂ :=
   ∑ u ∈ p.support ∪ q.support, star (p.coeff u) * q.coeff u * ∏ k ∈ u.support, ((u k).factorial : ℂ)
 
+/- English proof (translation)
+Unfold `psi`. Use `Finset.sum_subset h fun u _ hu => ?_` and prove the remaining obligations. Rewrite `hu` using `[Finset.mem_union, not_or, mem_support_iff, mem_support_iff, not_not, not_not]`. Simplify using `[hu.1, hu.2]`.
+-/
 theorem psi_eq (p q : Sym m n) (T : Finset _) (h : p.support ∪ q.support ⊆ T) :
     psi p q = ∑ u ∈ T, star (p.coeff u) * q.coeff u * ∏ k ∈ u.support, ((u k).factorial : ℂ) := by
   unfold psi
@@ -20,6 +23,13 @@ theorem psi_eq (p q : Sym m n) (T : Finset _) (h : p.support ∪ q.support ⊆ T
   rw [Finset.mem_union, not_or, mem_support_iff, mem_support_iff, not_not, not_not] at hu
   simp [hu.1, hu.2]
 
+/- English proof (translation)
+Establish `h0 : (q₁ + q₂).support ⊆ q₁.support ∪ q₂.support` using `support_add`. Rewrite using `[psi_eq p (q₁ + q₂) (p.support ∪ q₁.support ∪ q₂.support) (by`. Introduce `u hu`. Break down `Finset.mem_union.1 hu with h | h` into its components or cases. Conclude with `Finset.mem_union_left _ (Finset.mem_union_left _ h)`.
+
+Break down `Finset.mem_union.1 (h0 h) with h' | h'` into its components or cases. Conclude with `Finset.mem_union_left _ (Finset.mem_union_right _ h')`. Conclude with `Finset.mem_union_right _ h'),`. Use `psi_eq p q₁ (p.support ∪ q₁.support ∪ q₂.support) (Finset.union_subset_left le_rfl),`. Use `psi_eq p q₂ (p.support ∪ q₁.support ∪ q₂.support) (Finset.union_subset (Finset.subset_union_left.trans Finset.subset_union_left) Finset.subset_union_right),`.
+
+Use the proof step `← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_add_right (p q₁ q₂ : Sym m n) : psi p (q₁ + q₂) = psi p q₁ + psi p q₂ := by
   classical
   have h0 : (q₁ + q₂).support ⊆ q₁.support ∪ q₂.support := support_add
@@ -36,6 +46,9 @@ theorem psi_add_right (p q₁ q₂ : Sym m n) : psi p (q₁ + q₂) = psi p q₁
   refine Finset.sum_congr rfl fun u _ => ?_
   rw [coeff_add]; ring
 
+/- English proof (translation)
+Rewrite using `[psi_eq p (r • q) (p.support ∪ q.support) (Finset.union_subset_union le_rfl support_smul), psi, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_smul_right (p q : Sym m n) (r : ℂ) : psi p (r • q) = r * psi p q := by
   classical
   rw [psi_eq p (r • q) (p.support ∪ q.support) (Finset.union_subset_union le_rfl support_smul),
@@ -43,6 +56,9 @@ theorem psi_smul_right (p q : Sym m n) (r : ℂ) : psi p (r • q) = r * psi p q
   refine Finset.sum_congr rfl fun u _ => ?_
   rw [coeff_smul, smul_eq_mul]; ring
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[Finset.union_comm, star_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `only [star_mul', star_star, star_prod, star_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_herm (p q : Sym m n) : psi q p = star (psi p q) := by
   unfold psi
   rw [Finset.union_comm, star_sum]
@@ -50,6 +66,13 @@ theorem psi_herm (p q : Sym m n) : psi q p = star (psi p q) := by
   simp only [star_mul', star_star, star_prod, star_natCast]
   ring
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[Finset.union_self, Complex.re_sum]`. Establish `hterm : ∀ u, (star (p.coeff u) * p.coeff u * ∏ k ∈ u.support, ((u k).factorial : ℂ)).re = Complex.normSq (p.coeff u) * ∏ k ∈ u.support, ((u k).factorial : ℝ)`. Introduce `u`. Establish `: star (p.coeff u) * p.coeff u = (Complex.normSq (p.coeff u) : ℂ)`.
+
+Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression. Rewrite using `[this, show (∏ k ∈ u.support, ((u k).factorial : ℂ)) = ((∏ k ∈ u.support, ((u k).factorial : ℝ) : ℝ) : ℂ) by push_cast; rfl, ← Complex.ofReal_mul, Complex.ofReal_re]`. Repeatedly rewrite using `[hterm]`. Take `⟨u, hu⟩` from `Finset.nonempty_iff_ne_empty.2 (mt support_eq_empty.1 hp)`.
+
+Use `Finset.sum_pos' (fun v _ => mul_nonneg (Complex.normSq_nonneg _) (Finset.prod_nonneg fun _ _ => Nat.cast_nonneg _)) ⟨u, hu, mul_pos ?_ (Finset.prod_pos fun _ _ => by` and prove the remaining obligations. Conclude with `Nat.factorial_pos _)⟩` after adjusting the coercions. Conclude with `Complex.normSq_pos.2 (mem_support_iff.1 hu)`.
+-/
 theorem psi_pos (p : Sym m n) (hp : p ≠ 0) : 0 < (psi p p).re := by
   unfold psi
   rw [Finset.union_self, Complex.re_sum]
@@ -67,6 +90,9 @@ theorem psi_pos (p : Sym m n) (hp : p ≠ 0) : 0 < (psi p p).re := by
       exact_mod_cast Nat.factorial_pos _)⟩
   exact Complex.normSq_pos.2 (mem_support_iff.1 hu)
 
+/- English proof (translation)
+Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simp [psi]`. Consider the case `insert a F ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, psi_add_right, ih]`.
+-/
 theorem psi_sum_right {ι : Type*} (p : Sym m n) (F : Finset ι) (f : ι → Sym m n) :
     psi p (∑ x ∈ F, f x) = ∑ x ∈ F, psi p (f x) := by
   classical
@@ -74,6 +100,9 @@ theorem psi_sum_right {ι : Type*} (p : Sym m n) (F : Finset ι) (f : ι → Sym
   | empty => simp [psi]
   | insert a F ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, psi_add_right, ih]
 
+/- English proof (translation)
+Rewrite using `[psi_herm, psi_sum_right, star_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => (psi_herm _ _).symm`.
+-/
 theorem psi_sum_left {ι : Type*} (p : Sym m n) (F : Finset ι) (f : ι → Sym m n) :
     psi (∑ x ∈ F, f x) p = ∑ x ∈ F, psi (f x) p := by
   rw [psi_herm, psi_sum_right, star_sum]
@@ -84,9 +113,15 @@ variable (ε) in
 def Om : Module.End ℂ (Sym m n) :=
   ∑ ij : Fin n × Fin n, (symK ε ij.1 ij.2).toLinearMap * (symK ε ij.2 ij.1).toLinearMap
 
+/- English proof (translation)
+Simplify using `[Om, LinearMap.sum_apply]`.
+-/
 theorem Om_apply (s : Sym m n) : Om ε s = ∑ ij : Fin n × Fin n, symK ε ij.1 ij.2 (symK ε ij.2 ij.1 s) := by
   simp [Om, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[Om_apply]`. Conclude with `Submodule.sum_mem _ fun ij _ => symK_mem _ _ (symK_mem _ _ hs)`.
+-/
 theorem Om_mem {N : ℕ} {s : Sym m n} (hs : s ∈ S ε N) : Om ε s ∈ S ε N := by
   rw [Om_apply]
   exact Submodule.sum_mem _ fun ij _ => symK_mem _ _ (symK_mem _ _ hs)
@@ -100,15 +135,28 @@ section adj
 variable (hadj : ∀ (i j : Fin n) (s t : Sym m n), psi (symK ε i j s) t = psi s (symK ε j i t))
 include hadj
 
+/- English proof (translation)
+Rewrite using `[Om_apply, Om_apply, psi_sum_left, psi_sum_right]`. Use `Finset.sum_congr rfl fun ij _ => ?_` and prove the remaining obligations. Rewrite using `[hadj, ← hadj ij.2 ij.1]`.
+-/
 theorem psi_Om (a b : Sym m n) : psi (Om ε a) b = psi a (Om ε b) := by
   rw [Om_apply, Om_apply, psi_sum_left, psi_sum_right]
   refine Finset.sum_congr rfl fun ij _ => ?_
   rw [hadj, ← hadj ij.2 ij.1]
 
+/- English proof (translation)
+Rewrite using `[Om_apply, psi_sum_right]`. Conclude with `Finset.sum_congr rfl fun ij _ => (hadj ij.2 ij.1 a _).symm`.
+-/
 theorem psi_Om_diag (a : Sym m n) : psi a (Om ε a) = ∑ ij : Fin n × Fin n, psi (symK ε ij.2 ij.1 a) (symK ε ij.2 ij.1 a) := by
   rw [Om_apply, psi_sum_right]
   exact Finset.sum_congr rfl fun ij _ => (hadj ij.2 ij.1 a _).symm
 
+/- English proof (translation)
+Establish `h0` using `psi_Om_diag hadj a`. Rewrite `h0` using `[h, show psi a 0 = 0 by simp [psi]]`. Establish `hre` using `congrArg Complex.re h0`. Rewrite `hre` using `[Complex.re_sum, Complex.zero_re]`. Establish `hnn : ∀ ij ∈ (Finset.univ : Finset (Fin n × Fin n)), 0 ≤ (psi (symK ε ij.2 ij.1 a) (symK ε ij.2 ij.1 a)).re` using `fun ij _ => by`.
+
+Distinguish the cases in `hz : symK ε ij.2 ij.1 a = 0`. Rewrite using `[hz]`. Simplify using `[psi]`. Conclude with `(psi_pos _ hz).le`. Use `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 hre.symm (j, i) (Finset.mem_univ _)` as an intermediate fact.
+
+Assume the negation of the conclusion as `hz`. Conclude with `(psi_pos _ hz).ne' this`.
+-/
 theorem symK_eq_zero_of_Om (a : Sym m n) (h : Om ε a = 0) (i j : Fin n) : symK ε i j a = 0 := by
   have h0 := psi_Om_diag hadj a
   rw [h, show psi a 0 = 0 by simp [psi]] at h0
@@ -123,6 +171,13 @@ theorem symK_eq_zero_of_Om (a : Sym m n) (h : Om ε a = 0) (i j : Fin n) : symK 
   by_contra hz
   exact (psi_pos _ hz).ne' this
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h1`. Establish `h0' : Om ε (OmS ε N u).1 = 0` using `congrArg Subtype.val h0`. Establish `: psi (OmS ε N u).1 (OmS ε N u).1 = 0`. Express the relevant statement in the definitionally equal form `psi (Om ε u.1) (Om ε u.1) = 0`. Rewrite using `[psi_Om hadj]`.
+
+Express the relevant statement in the definitionally equal form `psi u.1 (Om ε (OmS ε N u).1) = 0`. Rewrite using `[h0']`. Simplify using `[psi]`. Assume the negation of the conclusion as `hne`. Establish `hne' : (OmS ε N u).1 ≠ 0` using `fun h => hne (Subtype.ext h)`.
+
+Conclude with `(psi_pos _ hne').ne' (by rw [this]; simp)`.
+-/
 theorem ker_inf_range {N : ℕ} (v : S (n := n) ε N) (h0 : OmS ε N v = 0) (h1 : ∃ u, OmS ε N u = v) : v = 0 := by
   obtain ⟨u, rfl⟩ := h1
   have h0' : Om ε (OmS ε N u).1 = 0 := congrArg Subtype.val h0
@@ -135,6 +190,11 @@ theorem ker_inf_range {N : ℕ} (v : S (n := n) ε N) (h0 : OmS ε N v = 0) (h1 
   have hne' : (OmS ε N u).1 ≠ 0 := fun h => hne (Subtype.ext h)
   exact (psi_pos _ hne').ne' (by rw [this]; simp)
 
+/- English proof (translation)
+Proceed by induction on `k generalizing v with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Establish `h' : (OmS ε N ^ (k + 1)) (OmS ε N v) = 0`. Rewrite using `[← Module.End.mul_apply, ← pow_succ]`.
+
+Conclude with `h`. Conclude with `ker_inf_range hadj _ (ih _ h') ⟨v, rfl⟩`.
+-/
 theorem pow_kill {N : ℕ} (k : ℕ) (v : S (n := n) ε N) (h : (OmS ε N ^ (k + 1)) v = 0) : OmS ε N v = 0 := by
   induction k generalizing v with
   | zero => simpa using h
@@ -143,6 +203,15 @@ theorem pow_kill {N : ℕ} (k : ℕ) (v : S (n := n) ε N) (h : (OmS ε N ^ (k +
       rw [← Module.End.mul_apply, ← pow_succ]; exact h
     exact ker_inf_range hadj _ (ih _ h') ⟨v, rfl⟩
 
+/- English proof (translation)
+Use `set T := OmS (n := n) ε N`. Establish `hp : T.charpoly ≠ 0` using `(LinearMap.charpoly_monic T).ne_zero`. Take `⟨g, hpg, hg⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd _ hp 0`. Rewrite `hpg`, `hg` using `[map_zero, sub_zero]`. Establish `hg0 : g.eval 0 ≠ 0`.
+
+Rewrite using `[← Polynomial.coeff_zero_eq_eval_zero]`. Conclude with `fun h => hg (Polynomial.X_dvd_iff.2 h)`. Use `⟨Polynomial.C (g.eval 0)⁻¹ * g, by simp [hg0], fun v => ?_⟩` and prove the remaining obligations. Establish `hz : (Polynomial.aeval T T.charpoly) v = 0` using `by rw [LinearMap.aeval_self_charpoly]; rfl`. Rewrite `hz` using `[hpg, map_mul, map_pow, Polynomial.aeval_X, Module.End.mul_apply]`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply, map_smul]`. Break down `Nat.eq_zero_or_pos (Polynomial.rootMultiplicity 0 T.charpoly) with hk | hk` into its components or cases. Rewrite `hz` using `[hk, pow_zero, Module.End.one_apply]`. Rewrite using `[hz, map_zero, smul_zero]`. Take `⟨k, hk'⟩` from `Nat.exists_eq_add_of_lt hk`.
+
+Rewrite `hz` using `[hk', zero_add]`. Rewrite using `[pow_kill hadj k _ hz, smul_zero]`.
+-/
 theorem exists_q (N : ℕ) : ∃ q : Polynomial ℂ, q.eval 0 = 1 ∧ ∀ v, OmS ε N (Polynomial.aeval (OmS (n := n) ε N) q v) = 0 := by
   set T := OmS (n := n) ε N
   have hp : T.charpoly ≠ 0 := (LinearMap.charpoly_monic T).ne_zero

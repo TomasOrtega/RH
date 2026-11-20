@@ -14,6 +14,17 @@ noncomputable section
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Introduce `F _ σ X s T y hT hd hdi`. Use `⟨?_, fun c hc a b => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `exists_ratVal_hom y`. Set `T' : Matrix (Fin s) (Fin s) ((ratOf X).O (under y)).toSubring` to `Matrix.of fun i j => ⟨T i j, mem_O_ratOf.2 (hT i j)⟩`. Establish `e1 : T.map (ratVal · y) = T'.map ψ`.
+
+Use extensionality with `i j`. Conclude with `hψ (T' i j)`. Establish `e2 : ((T'.det : ((ratOf X).O (under y)).toSubring) : X.Fn) = T.det` using `(RingHom.map_det (((ratOf X).O (under y)).toSubring.subtype) T').trans rfl`. Establish `hu : UnitAt (under y) T.det` using `(unitAt_iff hd).2 ⟨e2 ▸ mem_O_ratOf.1 T'.det.2, hdi⟩`. Establish `hne` using `ratVal_ne_zero (y := y) hu`.
+
+Rewrite `hne` using `[← e2, hψ]`. Use `show IsUnit (T.map (ratVal · y)).det`. Rewrite using `[e1, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `isUnit_iff_ne_zero.2 hne`. Take `⟨U, hU, g, e⟩` from `(hT a b).exists_fnOf`.
+
+Establish `hyU : y ∈ ptsIn X.str σ U` using `mem_ptsIn.2 hU`. Use `filter_upwards [(GlobalTheory.ChartGlue.isOpen_over c.e (isOpen_ptsIn U)).mem_nhds (GlobalTheory.ChartGlue.mem_over c.e hc hyU)] with v hv`. Establish `hdv : DifferentiableAt ℂ (ev X.str σ U g ∘ c.e.symm) v` using `(c.holo U g).differentiableAt ((GlobalTheory.ChartGlue.isOpen_over c.e (isOpen_ptsIn U)).mem_nhds hv)`. Use `hdv.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(GlobalTheory.ChartGlue.isOpen_over c.e (isOpen_ptsIn U)).mem_nhds hv] with u hu`.
+
+Use `show ratVal (T a b) (c.e.symm u) = ev X.str σ U g (c.e.symm u)`. Rewrite using `[← e, ratVal_fnOf hu.2]`.
+-/
 theorem holUnitAt_ratVal : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (s : ℕ) (T : Matrix (Fin s) (Fin s) X.Fn)
     (y : CxPts X.str σ), (∀ i j, RegAt (under y) (T i j)) → T.det ≠ 0 → RegAt (under y) (T.det)⁻¹ →
     HolUnitAt (atlas X σ) (fun z => T.map (ratVal · z)) y := by

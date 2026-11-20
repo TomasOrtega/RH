@@ -18,6 +18,9 @@ section Approx
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}
   (A : ∀ p : HeightOneSpectrum (𝓞 F), Formalism.MainNotions.S.Loc.LocAt F E sig p)
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.ApproximationIntegralOutsideFinset.approxF <;> assumption`.
+-/
 theorem approxF (S : Finset (HeightOneSpectrum (𝓞 F))) (c : 𝓞 F) (hc : c ≠ 0) (b : ∀ p, (A p).Fp) :
     ∃ f : F, (∀ p ∈ S, haveI := (A p).lf
         valuation (A p).Fp ((A p).ιF f - b p) ≤ valuation (A p).Fp ((A p).ιF (algebraMap (𝓞 F) F c))) ∧
@@ -31,12 +34,18 @@ section ApproxE
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}
   (A : ∀ p : HeightOneSpectrum (𝓞 F), Formalism.MainNotions.S.Loc.LocAt F E sig p)
 
+/- English proof (translation)
+Use `haveI := (A p).lf`. Rewrite using `[(A p).O_def]`. Establish `h : IsIntegral ℤ ((A p).ιE (e : E))` using `e.2.map (A p).ιE.toIntAlgHom`. Conclude with `h.tower_top`.
+-/
 theorem iotaE_mem_O (p : HeightOneSpectrum (𝓞 F)) (e : 𝓞 E) : (A p).ιE (e : E) ∈ (A p).O := by
   haveI := (A p).lf
   rw [(A p).O_def]
   have h : IsIntegral ℤ ((A p).ιE (e : E)) := e.2.map (A p).ιE.toIntAlgHom
   exact h.tower_top
 
+/- English proof (translation)
+Use `haveI := (A p).lf`. Rewrite using `[(A p).O_def]`. Establish `h` using `isIntegral_algebraMap (R := 𝒪[(A p).Fp]) (A := (A p).Ep) (x := ⟨t, ht⟩)`. Rewrite `h` using `[IsScalarTower.algebraMap_apply 𝒪[(A p).Fp] (A p).Fp (A p).Ep]`. Conclude with `h`.
+-/
 theorem alg_mem_O (p : HeightOneSpectrum (𝓞 F)) {t : (A p).Fp} (ht : t ∈ (haveI := (A p).lf; 𝒪[(A p).Fp])) :
     algebraMap (A p).Fp (A p).Ep t ∈ (A p).O := by
   haveI := (A p).lf
@@ -45,6 +54,15 @@ theorem alg_mem_O (p : HeightOneSpectrum (𝓞 F)) {t : (A p).Fp} (ht : t ∈ (h
   rw [IsScalarTower.algebraMap_apply 𝒪[(A p).Fp] (A p).Fp (A p).Ep] at h
   exact h
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F E`. Establish `hm : ∀ i, ∃ k : ℤ, k ≠ 0 ∧ IsIntegral ℤ ((k : E) * b i)` using `fun i => by`. Establish `hx : IsAlgebraic ℤ (b i)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic (b i))`. Take `⟨k, hk0, hk⟩` from `hx.exists_integral_multiple`. Conclude with `⟨k, hk0, by simpa [zsmul_eq_mul, Algebra.smul_def] using hk⟩`.
+
+Use `choose k hk0 hk using hm`. Use `⟨Module.finrank F E, fun i => ⟨(k i : E) * b i, hk i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[← b.sum_repr x]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `e1 : b.repr x i • b i = (b.repr x i * ((k i : F))⁻¹) • ((k i : E) * b i)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, map_inv₀, map_intCast]`. Establish `hk' : ((k i : ℤ) : E) ≠ 0` using `by exact_mod_cast hk0 i`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem exists_int_span : ∃ (n : ℕ) (e : Fin n → 𝓞 E), Submodule.span F (Set.range fun j => (e j : E)) = ⊤ := by
   let b := Module.finBasis F E
   have hm : ∀ i, ∃ k : ℤ, k ≠ 0 ∧ IsIntegral ℤ ((k : E) * b i) := fun i => by
@@ -65,6 +83,25 @@ theorem exists_int_span : ∃ (n : ℕ) (e : Fin n → 𝓞 E), Submodule.span F
   rw [e1]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Take `⟨n, e, he⟩` from `exists_int_span (F := F) (E := E)`. Establish `hco : ∀ p, ∃ l : Fin n → (A p).Fp, ∑ j, l j • (A p).ιE (e j : E) = a p`. Introduce `p`. Establish `hsp : Submodule.span (A p).Fp (Set.range fun j => (A p).ιE (e j : E)) = ⊤`. Rewrite using `[eq_top_iff, ← (A p).span, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x ∈ Submodule.span F (Set.range fun j => (e j : E))` using `by rw [he]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`.
+
+Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`.
+
+Consider the case `smul t y _ hy`. Rewrite using `[Algebra.smul_def, map_mul, (A p).compat, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ hy`. Establish `ha : a p ∈ Submodule.span (A p).Fp (Set.range fun j => (A p).ιE (e j : E))` using `by rw [hsp]; trivial`. Conclude with `(Submodule.mem_span_range_iff_exists_fun _).1 ha`.
+
+Use `choose l hl using hco`. Establish `hf` using `fun j : Fin n => approxF A S c hc (fun p => l p j)`. Use `choose f hfS hfO using hf`. Use `⟨∑ j, algebraMap F E (f j) * (e j : E), fun p hp => ?_, fun q hq => ?_⟩` and prove the remaining obligations. Use `haveI := (A p).lf`.
+
+Establish `hcF : (A p).ιF (algebraMap (𝓞 F) F c) ≠ 0`. Rewrite using `[map_ne_zero_iff _ (A p).ιF.injective, Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 F) F)]`. Conclude with `hc`. Establish `hv0 : valuation (A p).Fp ((A p).ιF (algebraMap (𝓞 F) F c)) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`.
+
+Conclude with `hcF`. Use `⟨∑ j, algebraMap (A p).Fp (A p).Ep (((A p).ιF (f j) - l p j) / (A p).ιF (algebraMap (𝓞 F) F c)) * (A p).ιE (e j : E), ?_, ?_⟩` and prove the remaining obligations. Use `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (alg_mem_O A p ?_) (iotaE_mem_O A p (e j))` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, map_div₀, div_le_one₀ (zero_lt_iff.2 hv0)]`. Conclude with `hfS j p hp`.
+
+Rewrite using `[← hl p, map_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, (A p).compat, Algebra.smul_def, ← mul_assoc, ← map_mul, mul_div_cancel₀ _ hcF, ← sub_mul, map_sub]`. Use `haveI := (A q).lf`. Rewrite using `[map_sum]`.
+
+Use `Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, (A q).compat]`. Conclude with `Subring.mul_mem _ (alg_mem_O A q (hfO j q hq)) (iotaE_mem_O A q (e j))`.
+-/
 theorem approxE (S : Finset (HeightOneSpectrum (𝓞 F))) (c : 𝓞 F) (hc : c ≠ 0) (a : ∀ p, (A p).Ep) :
     ∃ x : E, (∀ p ∈ S, ∃ o ∈ (A p).O,
         (A p).ιE x - a p = algebraMap (A p).Fp (A p).Ep ((A p).ιF (algebraMap (𝓞 F) F c)) * o) ∧

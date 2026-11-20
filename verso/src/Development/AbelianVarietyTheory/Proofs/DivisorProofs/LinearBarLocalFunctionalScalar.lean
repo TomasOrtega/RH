@@ -39,6 +39,11 @@ open scoped Matrix
 
 namespace GlobalTheory.WRightNorm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v h φ φ₁ hφ hφ₁ hact μ hμ`. Take `⟨r, K, hrm, hinv, hsch, hK, hKi, hint⟩` from `GlobalTheory.T.exists_periodic_measurable_schwartz_bound (κ := Fin a' × Fin (a + a')) v`. Use `letI mA : MeasurableSpace (Fin a' × Fin (a + a') → AF F) := borel _`. Use `haveI : BorelSpace (Fin a' × Fin (a + a') → AF F) := ⟨rfl⟩`. Establish `hμA : MeasureTheory.Measure.IsAddHaarMeasure (MeasureTheory.Measure.addHaar : MeasureTheory.Measure (Fin a' × Fin (a + a') → AF F))` using `inferInstance`.
+
+Take `⟨C, hC0, hCt, hC⟩` from `GlobalTheory.T.lintegral_normSq_componentTensor_eq_const_mul v r hrm hinv _ hμA μ hμ K hK hKi (hint _ hμA).1 (hint _ hμA).2`. Establish `hU` using `(GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil').unit`. Establish `e` using `hU _ hμA (1, h) _ (hsch φ hφ)`. Rewrite `e` using `[hact r ⟨hinv, hsch φ hφ⟩, hC φ₁ hφ₁.1.continuous hφ₁.2, hC φ hφ.1.continuous hφ.2]`. Conclude with `(ENNReal.mul_right_inj hC0 hCt).mp e`.
+-/
 theorem lemE : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ (v : Pl F) (h : UA σ G.W.J),
@@ -58,6 +63,21 @@ theorem lemE : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
   rw [hact r ⟨hinv, hsch φ hφ⟩, hC φ₁ hφ₁.1.continuous hφ₁.2, hC φ hφ.1.continuous hφ.2] at e
   exact (ENNReal.mul_right_inj hC0 hCt).mp e
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hTr ι hι h hh c hc`. Take `⟨K, hK⟩` from `GlobalTheory.T.exists_local_GL_embedding_unitary F E σ B a a' G X om om' hTr B.v₁ hTr.chars.good B.τ₁`. Use `choose SV hSV using fun g => GlobalTheory.T.weilRepresentationLocality_unitaryGroupV' B G X om om' hTr B.v₁ (K g) (hK g).1`. Establish `hSplit` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil'`. Establish `restS : ∀ g φ r, φ ∈ GlobalTheory.WeilM.SB _ → Rest (evFin F B.v₁) φ r → Rest (evFin F B.v₁) (SV g φ) r` using `fun g φ r hφ hr => ⟨hr.1, by rw [← (hSV g φ hφ).2 r hr]; exact hSplit.pres _ _ hr.2⟩`.
+
+Establish `h1 : ∀ g, ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁), SV g φ ∈ GlobalTheory.WeilM.SB _` using `fun g φ hφ => (hSV g φ hφ).1`. Establish `hψ : Continuous B.ψ` using `hTr.base.std.1`. Establish `atAct : ∀ g (γ : Matrix (Fin a') (Fin (a + a')) (AE F E)), At (evFin F B.v₁) γ → At (evFin F B.v₁) (GlobalTheory.WeilM.actAB (cA σ) (K g, (1 : UA σ G.W.J)) γ)`. Introduce `g γ hγ u hu`. Simplify using `only [GlobalTheory.WeilM.actAB]`.
+
+Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hγ u hu, Matrix.mul_zero, Matrix.zero_mul]`. Establish `h4 : ∀ g (γ : Matrix (Fin a') (Fin (a + a')) (AE F E)), At (evFin F B.v₁) γ → ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁), SV g (GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt B.ψ B.v₁) (GlobalTheory.LatVac.locCo G.M'.co B.v₁ γ) φ) = GlobalTheory.WeilM.sch …`. Introduce `g γ hγ φ hφ`. Establish `hw` using `GlobalTheory.T.schrodinger_preserves_schwartz_bruhat B.ψ hψ B.v₁ (GlobalTheory.LatVac.locCo G.M'.co B.v₁ γ) φ hφ`. Use `GlobalTheory.T.eq_of_componentTensorAdelicFunction_eq B.v₁ φ _ _ hφ fun r hr => ?_` and prove the remaining obligations.
+
+Establish `hb1` using `GlobalTheory.T.adelicHeisenberg_acts_by_local_schrodinger G.M'.co B.ψ B.v₁ γ hγ φ r hr`. Establish `hRw : Rest (evFin F B.v₁) (GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt B.ψ B.v₁) (GlobalTheory.LatVac.locCo G.M'.co B.v₁ γ) φ) r` using `⟨hr.1, by rw [← hb1]; exact GlobalTheory.T.weil_representation_preserves_schwartz G.M' B.ψ hTr.base.std γ _ hr.2⟩`. Rewrite using `[← (hSV g _ hw).2 r hRw, ← hb1, hSplit.impl _ _ _ hr.2, (hSV g φ hφ).2 r hr, GlobalTheory.T.adelicHeisenberg_acts_by_local_schrodinger G.M'.co B.ψ B.v₁ _ (atAct g γ hγ) (SV g φ) r (restS g φ r hφ hr)]`. Take `⟨hψc, hψ1, wT, wM, hA⟩` from `GlobalTheory.T.linearModel_heisenbergOperators_translation_char B G X om om' hTr K hK SV h1 h4`. Take `⟨hTι, hMι, -, -⟩` from `hA ι hι`.
+
+Establish `hU0 : ∀ (w : (Fin a' × Fin (a + a') → Fv F B.v₁) × (Fin a' × Fin (a + a') → Fv F B.v₁)), ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁), GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt B.ψ B.v₁) w φ ∈ GlobalTheory.WeilM.SB _` using `fun w => GlobalTheory.T.schroedingerOperatorHeisenberg_preserves_schwartzBruhat (GlobalTheory.LatVac.psiAt B.ψ B.v₁) hψc w`. Take `⟨S, χ, hS, hSι, hid⟩` from `GlobalTheory.T.linear_bar_intertwiner_exists hP F E σ B a a' G X om om' hTr ι hι`. Establish `hSB : ∀ g, ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁), S g φ ∈ GlobalTheory.WeilM.SB _` using `fun g φ hφ => by`. Take `⟨h', -, hS'⟩` from `hS g`. Conclude with `(hS' φ hφ).1`.
+
+Establish `hSI : ∀ g, ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁), ∀ μ : @MeasureTheory.Measure (Fin a' × Fin (a + a') → Fv F B.v₁) (borel _), @MeasureTheory.Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∫⁻ y, ‖S g φ y‖ₑ ^ 2 ∂μ = ∫⁻ y, ‖φ y‖ₑ ^ 2 ∂μ`. Introduce `g φ hφ μ hμ`. Take `⟨h', -, hS'⟩` from `hS g`. Conclude with `lemE F E σ B a a' G X om om' hTr B.v₁ h' φ (S g φ) hφ (hS' φ hφ).1 (hS' φ hφ).2 μ hμ`. Take `⟨ν, hν1, hν⟩` from `GlobalTheory.T.weil_matrix_transport_schwartz (GlobalTheory.LatVac.psiAt B.ψ B.v₁) hψc hψ1 ι hι.bij (fun C => GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt B.ψ B.v₁) (wT C)) (fun l => GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt B.ψ B.v₁) (wM l)) (fun C φ hφ => ⟨hU0 _ …`.
+
+Rewrite using `[hid h hh c hc, hν, norm_mul, hν1, one_mul]`.
+-/
 theorem norm_scalar_eq : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ ι, G.M'.IsLinBar B.ψ B.τ₁ 1 1 ι → ∀ h ∈ UAt σ G.W (evFin F B.v₁), ∀ c : ℂ,

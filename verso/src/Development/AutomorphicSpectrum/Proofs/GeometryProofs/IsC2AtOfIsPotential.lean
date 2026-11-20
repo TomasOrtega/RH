@@ -18,6 +18,13 @@ section Lines
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Use `contDiffOn_prod fun a _ => ?_` and prove the remaining obligations. Introduce `z hz`. Establish `h0 : (A a).h z ≠ 0` using `((A a).pos z hz).ne'`. Establish `hf` using `hA a z hz`. Establish `key : ∀ m : ℤ, ContDiffWithinAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => (A a).h z ^ m) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} z`.
+
+Introduce `m`. Consider the cases of `m with`. Consider the case `ofNat k => simpa only [Int.ofNat_eq_natCast, zpow_natCast] using hf.pow k`. Consider the case `negSucc k`. Simplify using `only [zpow_negSucc]`.
+
+Conclude with `(hf.pow (k + 1)).inv (pow_ne_zero _ h0)`. Conclude with `key _`.
+-/
 theorem isSmoothHerm_combLine {σ : Type} [Fintype σ] {A : σ → HermLine ι} (hA : ∀ a, IsSmoothHerm (A a))
     (n : σ → ℤ) : IsSmoothHerm (GlobalTheory.CompanionTheory.Ar.PB.combLine A n) := by
   refine contDiffOn_prod fun a _ => ?_
@@ -34,6 +41,11 @@ theorem isSmoothHerm_combLine {σ : Type} [Fintype σ] {A : σ → HermLine ι} 
       exact (hf.pow (k + 1)).inv (pow_ne_zero _ h0)
   exact key _
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hopen` using `(A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)`. Establish `hm : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x` using `⟨(A.chart j).map_source hj, by`. Rewrite using `[Set.mem_preimage, (A.chart j).left_inv hj]`. Conclude with `P.mem_U x⟩`.
+
+Apply the tactic sequence `exact ((hP.1 x j).contDiffAt (hopen.mem_nhds hm)).of_le (by first | exact ENat.LEInfty.out | exact (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)) | simp)`.
+-/
 theorem isC2At_of_isPotential {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {P : LocPot X}
     (hP : IsPotential A P) (x : X) : IsTwiceDifferentiableAt A P x := by
   intro j hj
@@ -43,6 +55,15 @@ theorem isC2At_of_isPotential {e : ℕ} {X : Type} [TopologicalSpace X] (A : Fin
       rw [Set.mem_preimage, (A.chart j).left_inv hj]; exact P.mem_U x⟩
   exact ((hP.1 x j).contDiffAt (hopen.mem_nhds hm)).of_le (by first | exact ENat.LEInfty.out | exact (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)) | simp)
 
+/- English proof (translation)
+Set `B : Fin e → HermLine ι` to `fun j => GlobalTheory.CompanionTheory.Ar.PB.combLine ![L j, L' j] ![1, -1]`. Establish `hB0 : ∀ j, (B j).a = 0` using `fun j => by`. Rewrite using `[(combLine_div (L j) (L' j)).1, ha j, sub_self]`. Establish `hBs : ∀ j, IsSmoothHerm (B j)` using `fun j => isSmoothHerm_combLine (fun a => by fin_cases a`. Conclude with `hL j`.
+
+Conclude with `hL' j) _`. Set `u : Fin e → R.X → ℝ` to `fun j x => Real.log ((B j).h (R.lift x x))`. Establish `hu : ∀ j, R.A.Smooth (u j)` using `fun j => smooth_diag R (hBs j) (hB0 j)`. Establish `h1 : mInt R.A (fun j => potOf R (L j)) (fun _ => 1) = mInt R.A (fun j => potOf R (L' j) + LocPot.ofFun (u j)) (fun _ => 1)`. Use `mInt_congr _ (locDens_congr_of_eqOn R fun i x y hy => ?_) fun _ => rfl` and prove the remaining obligations.
+
+Use `show Real.log ((L i).h (R.lift x y)) = Real.log ((L' i).h (R.lift x y)) + Real.log ((B i).h (R.lift y y))`. Establish `hm` using `(R.mem x y hy).1`. Rewrite using `[← h_eq_of_sameOrbit (hB0 i) (R.compat x y y ⟨hy, R.mem_U y⟩), (combLine_div (L i) (L' i)).2, Real.log_div ((L i).pos _ hm).ne' ((L' i).pos _ hm).ne']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`.
+
+Conclude with `massIndep R.A _ u (fun i => isPotential_potOf R (hL' i)) hu`.
+-/
 theorem mInt_potOf_eq_of_deg {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J e) {L L' : Fin e → HermLine ι}
     (hL : ∀ j, IsSmoothHerm (L j)) (hL' : ∀ j, IsSmoothHerm (L' j)) (ha : ∀ j, (L j).a = (L' j).a) :
     mInt R.A (fun j => potOf R (L j)) (fun _ => 1) = mInt R.A (fun j => potOf R (L' j)) (fun _ => 1) := by
@@ -76,6 +97,15 @@ variable {Ψ : Type} [DecidableEq Ψ] {N : ℕ}
 def rootCoef (r p : Ψ × Fin N) : ℤ :=
   (if p.1 = r.1 ∧ (p.2 : ℕ) + 1 = r.2 then 1 else 0) - (if p = r then 1 else 0)
 
+/- English proof (translation)
+Take `⟨τ, i⟩` from `r`. Simplify using `only [rootCoef, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul]`. Use `congr 1`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single (τ, ⟨(i : ℕ) - 1, lt_of_le_of_lt (Nat.sub_le _ _) i.isLt⟩)]`.
+
+Rewrite using `[if_pos ⟨rfl, by simp only; omega⟩]`. Introduce and unpack `⟨τ', l⟩ - hne`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Simplify using `only at h1 h2`.
+
+Substitute `h1` using the available equality. Conclude with `hne (by simp only [Prod.mk.injEq, true_and]; ext; simp only; omega)`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun p _ => if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨-, h2⟩`.
+
+Establish `h2' : (p.2 : ℕ) + 1 = i` using `h2`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+-/
 theorem sum_rootCoef_mul [Fintype Ψ] (r : Ψ × Fin N) (f : Ψ × Fin N → ℤ) :
     ∑ p, rootCoef r p * f p =
       (if h : 0 < (r.2 : ℕ) then f (r.1, ⟨(r.2 : ℕ) - 1, lt_of_le_of_lt (Nat.sub_le _ _) r.2.isLt⟩) else 0) - f r := by
@@ -98,6 +128,19 @@ theorem sum_rootCoef_mul [Fintype Ψ] (r : Ψ × Fin N) (f : Ψ × Fin N → ℤ
       omega
   · simp
 
+/- English proof (translation)
+Take `⟨τ, l⟩` from `p`. Establish `h2 : ∑ r : Ψ × Fin N, lam r * (if (τ, l) = r then (1 : ℝ) else 0) = lam (τ, l)` using `by simp`. Establish `h1 : ∑ r : Ψ × Fin N, lam r * (if (τ, l).1 = r.1 ∧ (((τ, l).2 : Fin N) : ℕ) + 1 = r.2 then (1 : ℝ) else 0) = if h : (l : ℕ) + 1 < N then lam (τ, ⟨(l : ℕ) + 1, h⟩) else 0` using `by split_ifs with h`. Rewrite using `[Finset.sum_eq_single (τ, ⟨(l : ℕ) + 1, h⟩)]`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `⟨τ', m⟩ - hne`. Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `⟨h1, h2⟩`. Simplify using `only at h1 h2`. Substitute `h1` using the available equality.
+
+Conclude with `hne (by simp only [Prod.mk.injEq, true_and]; ext; simp only; omega)`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `⟨-, h2⟩`.
+
+Use `r.2.isLt` as an intermediate fact. Simplify using `only at h2`. Use linear arithmetic over natural numbers and integers. Establish `h3 : GlobalTheory.CompanionTheory.Ar.PB.gap lam (τ, l) = lam (τ, l) - if h : (l : ℕ) + 1 < N then lam (τ, ⟨(l : ℕ) + 1, h⟩) else 0`. Unfold `GlobalTheory.CompanionTheory.Ar.PB.gap gapX`.
+
+Apply the tactic sequence `split_ifs with h <;> simp [h]`. Rewrite using `[h3, ← h1, ← h2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `only [rootCoef]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_neg_mul_rootCoef [Fintype Ψ] (lam : Ψ × Fin N → ℝ) (p : Ψ × Fin N) :
     ∑ r, -lam r * (rootCoef r p : ℝ) = GlobalTheory.CompanionTheory.Ar.PB.gap lam p := by
   obtain ⟨τ, l⟩ := p
@@ -136,6 +179,9 @@ section Real
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `hth : ∀ a, IsPotential S.A (S.th a)` using `fun a => (S.sing a).1`. Establish `hpb : ∀ a, IsPotential Re.R.A ((S.th a).pullback Re.π Re.holo.1)` using `fun a => isPotentialPullback S.A Re.R.A Re.π Re.holo (S.th a) (hth a)`. Establish `h1` using `(GlobalTheory.T.monge_ampere_integral_congr_potentials D Re.R.X Re.R.A Set.univ (fun j => potOf Re.R (Re.ref (w j))) (fun j => (S.th (w j)).pullback Re.π Re.holo.1) (fun _ => 1) (fun _ => 1) (fun j => by simp) (fun i => Re.ref_pot (w i)) (fun i x _ => isC2At_of_isPotential _ (hpb …`. Rewrite using `[h1]`. Conclude with `(degreeFormulaInt S.A Re.R.A Re.π Re.holo Re.deg Re.br Re.degree (fun j => S.th (w j)) (fun i => hth _) (fun _ => 1) (mIntegrableCont S.A _ (fun i => hth _) _ continuous_const)).2`.
+-/
 theorem mInt_ref_eq {D : ℕ} {σ : Type} {S : AnSys D σ} {P : Ideal (MRing ι)} (Re : Realis S P) (w : Fin D → σ) :
     mInt Re.R.A (fun j => potOf Re.R (Re.ref (w j))) (fun _ => 1) = Re.deg * S.degNum w := by
   have hth : ∀ a, IsPotential S.A (S.th a) := fun a => (S.sing a).1
@@ -149,6 +195,13 @@ theorem mInt_ref_eq {D : ℕ} {σ : Type} {S : AnSys D σ} {P : Ideal (MRing ι)
   exact (degreeFormulaInt S.A Re.R.A Re.π Re.holo Re.deg Re.br Re.degree (fun j => S.th (w j)) (fun i => hth _)
     (fun _ => 1) (mIntegrableCont S.A _ (fun i => hth _) _ continuous_const)).2
 
+/- English proof (translation)
+Establish `hP : ∀ a, IsPotential Re.R.A (potOf Re.R (Re.ref a))` using `fun a => isPotential_potOf Re.R (Re.ref_smooth a)`. Establish `h1 : mInt Re.R.A (fun j => potOf Re.R (GlobalTheory.CompanionTheory.Ar.PB.combLine Re.ref (n j))) (fun _ => 1) = mInt Re.R.A (fun j => sumPot (fun a => (n j a : ℝ)) fun a => potOf Re.R (Re.ref a)) (fun _ => 1)`. Use `mInt_congr _ (fun j y hy => ?_) fun _ => rfl` and prove the remaining obligations. Use `ReciprocityTheory.ChartRestriction.G.Geo.maDens_congr fun i => ?_` and prove the remaining obligations. Use `filter_upwards [((Re.R.A.chart j).isOpen_inter_preimage_symm (Re.R.isOpen_U ((Re.R.A.chart j).symm y))).mem_nhds ⟨hy, Re.R.mem_U _⟩] with y' hy'`.
+
+Establish `hm` using `(Re.R.mem _ _ hy'.2).1`. Use `show Real.log (∏ a, (Re.ref a).h _ ^ n i a) = ∑ a, (n i a : ℝ) * Real.log ((Re.ref a).h _)`. Rewrite using `[Real.log_prod fun a _ => (zpow_pos ((Re.ref a).pos _ hm) _).ne']`. Conclude with `Finset.sum_congr rfl fun a _ => Real.log_zpow _ _`. Rewrite using `[h1, (GlobalTheory.T.monge_ampere_integral_multilinear_expansion D Re.R.X Re.R.A σ Set.univ (fun a => potOf Re.R (Re.ref a)) (fun j a => (n j a : ℝ)) (fun _ => 1) (fun j => by simp) (fun a x _ => isC2At_of_isPotential _ (hP a) x) (fun w => mIntegrableCont _ _ (fun i => hP _) _ co …`.
+
+Conclude with `Finset.sum_congr rfl fun w _ => by rw [mInt_ref_eq Re w]`.
+-/
 theorem mInt_combLine_eq {D : ℕ} {σ : Type} [Fintype σ] {S : AnSys D σ} {P : Ideal (MRing ι)} (Re : Realis S P)
     (n : Fin D → σ → ℤ) :
     mInt Re.R.A (fun j => potOf Re.R (GlobalTheory.CompanionTheory.Ar.PB.combLine Re.ref (n j))) (fun _ => 1) =
@@ -175,6 +228,19 @@ section Main
 
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
+/- English proof (translation)
+Establish `hmap : Finsupp.mapDomain some (∑ j, Finsupp.single (w j) 1) = ∑ j, Finsupp.single (some (w j)) (1 : ℕ)`. Rewrite using `[Finsupp.mapDomain_finset_sum]`. Simplify using `[Finsupp.mapDomain_single]`. Rewrite using `[hmap]`. Establish `hdeg : (∑ j, Finsupp.single (some (w j)) (1 : ℕ)).degree = GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N`.
+
+Rewrite using `[map_sum]`. Simplify using `[Finsupp.degree_single]`. Establish `hnone : (∑ j, Finsupp.single (some (w j)) (1 : ℕ)) none = 0`. Simplify using `[Finsupp.finset_sum_apply]`. Establish `hms : Finsupp.toMultiset (∑ j, Finsupp.single (some (w j)) (1 : ℕ)) = Multiset.map (fun j => some (w j)) Finset.univ.val`.
+
+Rewrite using `[Finsupp.toMultiset_sum]`. Simplify using `only [Finsupp.toMultiset_single, one_smul]`. Rewrite using `[Finset.sum_eq_multiset_sum]`. Establish `e : (fun i => ({some (w i)} : Multiset (Option (Ψ × Fin N)))) = (fun p => {p}) ∘ fun j => some (w j)` using `rfl`. Rewrite using `[e, ← Multiset.map_map, Multiset.sum_map_singleton]`.
+
+Take `⟨ρ, hρ⟩` from `GroundTheory.Heights₂.Heights.LowerBoundFree.FlagHeightMultilinear.exists_perm_toList fun j => some (w j)`. Establish `hML : GlobalTheory.CompanionTheory.Ar.Top.monoLines (M.line 1) (∑ j, Finsupp.single (some (w j)) (1 : ℕ)) (GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N) = (fun i => M.x 1 (w i)) ∘ ρ`. Use function extensionality and compare the values at `k`. Establish `hk : (k : ℕ) < (Multiset.map (fun j => some (w j)) Finset.univ.val).toList.length`. Use `k.2` as an intermediate fact.
+
+Simplify using `[Multiset.length_toList]`. Unfold `GlobalTheory.CompanionTheory.Ar.Top.monoLines`. Rewrite using `[hms, dif_pos hk, hρ k hk]`. Both sides reduce to the same expression. Unfold `GlobalTheory.CompanionTheory.Ar.Top.RootModel.geoMono`.
+
+Rewrite using `[if_pos hdeg, hnone, pow_zero, mul_one, hML]`. Use `congr 1`. Use `(ptsIntegral_one_eq_mInt hE resBridge R M.arith (L := (fun i => M.x 1 (w i)) ∘ ρ) (fun j => M.x_smooth 1 _)).trans ?_` and prove the remaining obligations. Conclude with `mIntSymm R.A (fun j => potOf R (M.x 1 (w j))) ρ _`.
+-/
 theorem geoMono_word (hE : ResExistsStatement) (M : GlobalTheory.CompanionTheory.Ar.Top.RootModel Ψ N) {J : Ideal (MRing M.ι)}
     (R : AnLogRes M.P J (GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N)) (w : Fin (GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N) → Ψ × Fin N) :
     M.geoMono (Finsupp.mapDomain some (∑ j, Finsupp.single (w j) 1)) =

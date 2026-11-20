@@ -16,6 +16,11 @@ open Module
 
 variable {K M : Type} [Field K] [AddCommGroup M] [Module K M]
 
+/- English proof (translation)
+Rewrite using `[Basis.ExteriorAlgebra, Basis.repr_reindex_apply]`. Establish `h1 : (Set.powersetCard.prodEquiv.symm (Finset.univ : Finset (Fin N))).1 = N`. Simplify using `[Set.powersetCard.prodEquiv]`. Break down `e : Set.powersetCard.prodEquiv.symm (Finset.univ : Finset (Fin N)) with ⟨j, a⟩` into its components or cases. Rewrite `h1` using `[e]`.
+
+Conclude with `DirectSum.IsInternal.collectedBasis_repr_of_mem_ne _ _ (fun h => hk (h.trans h1)) hx`.
+-/
 theorem exterior_repr_univ_of_mem {N k : ℕ} (b : Basis (Fin N) K M) (hk : k ≠ N) {x : ExteriorAlgebra K M}
     (hx : x ∈ ⋀[K]^k M) : b.ExteriorAlgebra.repr x Finset.univ = 0 := by
   rw [Basis.ExteriorAlgebra, Basis.repr_reindex_apply]
@@ -25,6 +30,15 @@ theorem exterior_repr_univ_of_mem {N k : ℕ} (b : Basis (Fin N) K M) (hk : k �
   rw [e] at h1
   exact DirectSum.IsInternal.collectedBasis_repr_of_mem_ne _ _ (fun h => hk (h.trans h1)) hx
 
+/- English proof (translation)
+Establish `key : ∀ s, b.ExteriorAlgebra.repr (ExteriorAlgebra.map f (b.ExteriorAlgebra s)) Finset.univ = LinearMap.det f * b.ExteriorAlgebra.repr (b.ExteriorAlgebra s) Finset.univ`. Introduce `s`. Distinguish the cases in `hs : s = Finset.univ`. Substitute `hs set g : M [⋀^Fin N]→ₗ[K] K := (Finsupp.lapply Finset.univ ∘ₗ b.ExteriorAlgebra.repr.toLinearMap).compAlternatingMap (ExteriorAlgebra.ιMulti K N) with hg` using the available equality. Establish `hb : ∀ w : Fin N → M, g w = b.ExteriorAlgebra.repr (ExteriorAlgebra.ιMulti K N w) Finset.univ` using `fun _ => rfl`.
+
+Establish `he` using `AlternatingMap.eq_smul_basis_det b g`. Rewrite using `[ExteriorAlgebra.basis_apply_ofCard _ (by simp : (Finset.univ : Finset (Fin N)).card = N)]`. Simplify using `only [ExteriorAlgebra.ιMulti_family]`. Rewrite using `[ExteriorAlgebra.map_apply_ιMulti, ← hb, ← hb, he, AlternatingMap.smul_apply, AlternatingMap.smul_apply, Basis.det_comp, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hc : s.card ≠ N` using `fun h => hs (Finset.eq_univ_of_card s (by simpa using h))`. Rewrite using `[Basis.repr_self, Finsupp.single_apply, if_neg hs, mul_zero, ExteriorAlgebra.basis_apply]`. Simplify using `only [ExteriorAlgebra.ιMulti_family]`. Rewrite using `[ExteriorAlgebra.map_apply_ιMulti]`. Conclude with `exterior_repr_univ_of_mem b hc (ExteriorAlgebra.ιMulti_range K _ ⟨_, rfl⟩)`.
+
+Use `b.ExteriorAlgebra.ext (f₁ := Finsupp.lapply Finset.univ ∘ₗ b.ExteriorAlgebra.repr.toLinearMap ∘ₗ (ExteriorAlgebra.map f).toLinearMap) (f₂ := LinearMap.det f • (Finsupp.lapply Finset.univ ∘ₗ b.ExteriorAlgebra.repr.toLinearMap)) (fun s => by simpa using key s)` as an intermediate fact. Simplify using `using LinearMap.congr_fun this x`.
+-/
 theorem exterior_repr_univ_map {N : ℕ} (b : Basis (Fin N) K M) (f : M →ₗ[K] M) (x : ExteriorAlgebra K M) :
     b.ExteriorAlgebra.repr (ExteriorAlgebra.map f x) Finset.univ =
       LinearMap.det f * b.ExteriorAlgebra.repr x Finset.univ := by
@@ -55,6 +69,11 @@ theorem exterior_repr_univ_map {N : ℕ} (b : Basis (Fin N) K M) (f : M →ₗ[K
     (fun s => by simpa using key s)
   simpa using LinearMap.congr_fun this x
 
+/- English proof (translation)
+Rewrite using `[LinearMap.det_toLin', det_fromBlocks_zero₂₁]`. Establish `hP : (of fun b a => L (coordVec b) a).det = L.det`. Rewrite using `[ContinuousLinearMap.det, ← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Fin n) ℂ).toBasis, ← det_transpose]`. Use `congr 1`. Establish `hQ : (of fun b a => conj (L (coordVec b) a)) = (starRingEnd ℂ).mapMatrix (of fun b a => L (coordVec b) a)`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hQ, ← RingHom.map_det, hP, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem det_pull_gen {n : ℕ} (L : V n →L[ℂ] V n) :
     LinearMap.det (Matrix.toLin' (fromBlocks (of fun b a => L (coordVec b) a) 0 0
       (of fun b a => conj (L (coordVec b) a)))) = ((‖L.det‖ ^ 2 : ℝ) : ℂ) := by
@@ -67,6 +86,9 @@ theorem det_pull_gen {n : ℕ} (L : V n →L[ℂ] V n) :
     ext i j; simp
   rw [hQ, ← RingHom.map_det, hP, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Simplify using `only [dens, pull, bas]`. Rewrite using `[exterior_repr_univ_map, det_pull_gen, mul_div_assoc]`.
+-/
 theorem dens_pull {n : ℕ} (L : V n →L[ℂ] V n) (ω : Alt n) :
     dens (pull L ω) = ((‖L.det‖ ^ 2 : ℝ) : ℂ) * dens ω := by
   simp only [dens, pull, bas]

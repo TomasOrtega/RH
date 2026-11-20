@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Residue.residue_dForm | exact GlobalTheory.Residue.residue_dForm | (intros; apply GlobalTheory.Residue.residue_dForm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.residue_topForm_along_primeDivisor_adjunction : ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K) (n : ℕ) (S : Place cL) (ψ : S.ring →+* K),
   Function.Surjective ψ → (∀ a, ψ (S.const a) = cK a) → ∀ (t f : S.ring) (v w : Fin n → S.ring) (H : L),
   Irreducible t → Irreducible f → TrBasis cK (fun i => ψ (v i)) →

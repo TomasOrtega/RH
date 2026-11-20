@@ -15,6 +15,17 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `hPr hK hM hI hB`. Take `⟨cA, hA⟩` from `_root_.GlobalTheory.T.bottom_classSum_smallStage_eq hPr hK hM hI hB`. Take `⟨cB, hB'⟩` from `_root_.GlobalTheory.T.smallStage_bottomKernel_eq_term hPr hK hM hI hB`. Use `⟨max cA cB, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨CA, xA, hA⟩` from `hA ε CF (le_trans (le_max_left _ _) hCF)`.
+
+Take `⟨CB, xB, hB'⟩` from `hB' ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max CA CB, max xA xB, fun C hC0 D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations. Establish `hA` using `hA C (le_trans (le_max_left _ _) hC0) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hL G`. Establish `hB'` using `hB' C (le_trans (le_max_right _ _) hC0) D large₂ he (le_trans (le_max_right _ _) hx) hR T Lc μ₀ hL G`. Introduce `W hψ i j A A' WW X δ t0 hX hβ`.
+
+Take `⟨Ω₁, h1, HA⟩` from `hA W hψ i j A A' WW X δ t0 hX`. Take `⟨Ω₂, h2, HB⟩` from `hB' W hψ i j A A' WW X δ t0 hX hβ`. Use `⟨Ω₁ * Ω₂, mul_ne_zero h1 h2, fun s Q P P' hP => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, huQ, huU, HB⟩` from `HB s Q P P' hP`. Use `⟨u, hu, huQ, huU, fun ea ed h g hg T' => ?_⟩` and prove the remaining obligations.
+
+Establish `hgx : ∀ x : GlobalTheory.NormSum.Cls D P'.a (GlobalTheory.NormSum.intG D P'.a), ∃ g', GlobalTheory.BotFormula.IsFinPt A' g' x.out` using `fun x => GlobalTheory.BotFormula.exists_isFinPt_of_gram_one A' hX.std'.1 x.out ea.symm`. Use `choose gx hgx using hgx`. Rewrite using `[HA s Q P P' hP ea ed h g hg gx hgx T', Pair.coord]`. Establish `e : ∀ x : GlobalTheory.NormSum.Cls D P'.a (GlobalTheory.NormSum.intG D P'.a), ((GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.intG D P'.a) x.out : ℂ))⁻¹ * X.ker' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T') g (gx x) = (Ω₂ * u) * (((GlobalTheory.NormSum.gam D (GlobalTheo …`. Introduce `x`.
+
+Rewrite using `[HB ea ed h g hg x.out (gx x) (hgx x) T']`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[← mul_finsum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.BotFormula.rallis_bottom_formula_small_rank : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
@@ -61,6 +72,9 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotFormula.rallis_bottom_formula_small_rank | exact _root_.GlobalTheory.BotFormula.rallis_bottom_formula_small_rank | (intros; apply _root_.GlobalTheory.BotFormula.rallis_bottom_formula_small_rank <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_bottom_formula_small : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)

@@ -14,6 +14,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
+/- English proof (translation)
+Use `show ∏ s : Fin ((D.parOf S v).k + 2 * (D.parOf S v).r + 1), (Y + (S.G.place (S.pl v)).lam ((s : ℕ) + 1)) = (S.G.place (S.pl v)).P Y`. Establish `hm : (S.G.place (S.pl v)).k + (S.G.place (S.pl v)).m - 1 = (D.parOf S v).k + 2 * (D.parOf S v).r + 1` using `by show S.G.k + (2 * S.G.r + 2) - 1 = S.G.k + 2 * S.G.r + 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Sz.Cfg.P, hm]`. Establish `e1 : ∏ s : Fin ((D.parOf S v).k + 2 * (D.parOf S v).r + 1), (Y + (S.G.place (S.pl v)).lam ((s : ℕ) + 1)) = ∏ i ∈ Finset.range ((D.parOf S v).k + 2 * (D.parOf S v).r + 1), (Y + (S.G.place (S.pl v)).lam (i + 1))` using `Fin.prod_univ_eq_prod_range (fun i => Y + (S.G.place (S.pl v)).lam (i + 1)) _`.
+
+Rewrite using `[e1, Finset.range_eq_Ico, Finset.prod_Ico_add' (fun i => Y + (S.G.place (S.pl v)).lam i), zero_add]`. Both sides reduce to the same expression.
+-/
 theorem prod_lamCfg (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (Y : ℝ) : ∏ s, (Y + lamCfg S v s) = S.P v Y := by
   show ∏ s : Fin ((D.parOf S v).k + 2 * (D.parOf S v).r + 1),
       (Y + (S.G.place (S.pl v)).lam ((s : ℕ) + 1)) = (S.G.place (S.pl v)).P Y
@@ -30,6 +35,11 @@ theorem prod_lamCfg (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (Y : ℝ) : ∏ s,
   rw [e1, Finset.range_eq_Ico, Finset.prod_Ico_add' (fun i => Y + (S.G.place (S.pl v)).lam i), zero_add]
   rfl
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hA`. Use `⟨⟨fun x hx => hI x hx, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[List.pairwise_iff_getElem]`. Introduce `i i' hi hi' hii`. Use `w.2.1.2 v i i' hi hi' (Nat.ne_of_lt hii) 0 (by norm_num) (by norm_num)` as an intermediate fact.
+
+Simplify using `using this`. Use `show ((w.1 v).map fun x => |∏ s, (x.2 + lamCfg S v s)|).prod = _`. Rewrite using `[C.HidaSetting.sizeAt]`. Simplify using `only [prod_lamCfg]`.
+-/
 theorem level_system_admissible_size (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (a : List C.Letter) (hA : D.AdmAt S v a)
     (hI : ∀ x ∈ a, x.2 ∈ Set.Icc (S.cutLo v) (S.cutHi v)) (l : ℕ)
     (L : R.LevelData (MA.A (D.parOf S v) (MA.DQ (D.parOf S v))) (D.parOf S v).r)

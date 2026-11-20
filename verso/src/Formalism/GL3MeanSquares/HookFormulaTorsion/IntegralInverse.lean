@@ -11,6 +11,9 @@ namespace Formalism.HermitianLattices.ExpSeriesBivariate
 
 open Finset
 
+/- English proof (translation)
+Introduce `d`. Rewrite using `[map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul, norm_mul]`. Conclude with `mul_le_one₀ (ha k) (norm_nonneg _) (hg k d)`.
+-/
 private theorem g3cw2_lin_integral {K : Type} [NormedField K] [IsUltrametricDist K] {σ τ : Type}
     [Fintype σ] (a : σ → K) (ha : ∀ k, ‖a k‖ ≤ 1) (g : σ → MvPowerSeries τ K)
     (hg : ∀ k, Formalism.G.IntegralMv (g k)) :
@@ -21,6 +24,9 @@ private theorem g3cw2_lin_integral {K : Type} [NormedField K] [IsUltrametricDist
   rw [MvPowerSeries.coeff_C_mul, norm_mul]
   exact mul_le_one₀ (ha k) (norm_nonneg _) (hg k d)
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coe_substAlgHom (R := K) hh, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_C]`.
+-/
 private theorem g3cw2_subst_lin {K : Type} [Field K] {σ ρ τ : Type} [Fintype σ]
     (a : σ → K) (g : σ → MvPowerSeries ρ K) (h : ρ → MvPowerSeries τ K)
     (hh : MvPowerSeries.HasSubst h) :
@@ -30,6 +36,11 @@ private theorem g3cw2_subst_lin {K : Type} [Field K] {σ ρ τ : Type} [Fintype 
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_mul, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_C]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[Finset.mul_sum, ← mul_assoc, ← map_mul]`. Use `_ = ∑ k, ∑ j, MvPowerSeries.C (J i j * J' j k) * a k := Finset.sum_comm`. Use `_ = ∑ k, MvPowerSeries.C ((J * J') i k) * a k := by`. Repeatedly rewrite using `[← Finset.sum_mul, ← map_sum, Matrix.mul_apply]`.
+
+Use `_ = a i := by`. Rewrite using `[hJ]`. Simplify using `[Matrix.one_apply]`.
+-/
 private theorem g3cw2_inv_lin {K : Type} [Field K] {σ τ : Type} [Fintype σ] [DecidableEq σ]
     (J J' : Matrix σ σ K) (hJ : J * J' = 1) (a : σ → MvPowerSeries τ K) (i : σ) :
     ∑ j, MvPowerSeries.C (J i j) * ∑ k, MvPowerSeries.C (J' j k) * a k = a i := by
@@ -43,6 +54,27 @@ private theorem g3cw2_inv_lin {K : Type} [Field K] {σ τ : Type} [Fintype σ] [
         rw [hJ]
         simp [Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `K _ _ σ _ _ T J' hT0 hTI hJ'I hLJ`. Use `set L : Matrix σ σ K := Matrix.of fun i j => MvPowerSeries.coeff (Finsupp.single j 1) (T i) with hL`. Establish `hJL : J' * L = 1` using `(Matrix.mul_eq_one_comm_of_card_eq σ σ K rfl).mp hLJ`. Establish `hTs : MvPowerSeries.HasSubst T` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hT0`. Set `f : σ → MvPowerSeries σ K` to `fun j => ∑ i, MvPowerSeries.C (J' j i) * T i`.
+
+Establish `hf0 : ∀ j, MvPowerSeries.constantCoeff (f j) = 0`. Introduce `j`. Simplify using `[f, map_sum, hT0]`. Establish `hfI : ∀ j, Formalism.G.IntegralMv (f j)` using `fun j => g3cw2_lin_integral _ (fun i => hJ'I j i) _ hTI`. Establish `hfId : Formalism.FG.IsIdMod2 f`.
+
+Use `⟨hf0, fun j m => ?_⟩` and prove the remaining obligations. Establish `h1 : MvPowerSeries.coeff (Finsupp.single m 1) (f j) = (J' * L) j m`. Simplify using `only [f, map_sum, MvPowerSeries.coeff_C_mul, Matrix.mul_apply, hL, Matrix.of_apply]`. Rewrite using `[h1, hJL, Matrix.one_apply]`. Simplify using `[eq_comm]`.
+
+Establish `hTf : ∀ i, T i = ∑ j, MvPowerSeries.C (L i j) * f j` using `fun i => (g3cw2_inv_lin L J' hLJ T i).symm`. Establish `hXI : ∀ k : σ, Formalism.G.IntegralMv (MvPowerSeries.X k : MvPowerSeries σ K)`. Introduce `k d`. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Set `G : σ → MvPowerSeries σ K` to `fun j => ∑ k, MvPowerSeries.C (J' j k) * MvPowerSeries.X k`. Establish `hG0 : ∀ j, MvPowerSeries.constantCoeff (G j) = 0`. Introduce `j`. Simplify using `[G, map_sum]`. Take `⟨X', hX'0, hX'⟩` from `Formalism.FG.solve_exists_vector K σ σ f G hfId hG0`.
+
+Establish `hX's : MvPowerSeries.HasSubst X'` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hX'0`. Establish `hX'I : ∀ i, Formalism.G.IntegralMv (X' i)`. Use `Formalism.FG.inverse_integral_vector K σ σ (fun D => ∀ j, Formalism.G.IntegralMv (D j)) f hfId ?_ ?_ ?_ X' hX'0 ?_` and prove the remaining obligations. Introduce `a b ha hb j d`. Rewrite using `[Pi.sub_apply, map_sub]`.
+
+Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha j d) (by rw [norm_neg]; exact hb j d))`. Introduce `P hP0 hPI j`. Conclude with `Formalism.FG.IntegralSubstitution.integralSubstV (f j) P (hfI j) hP0 hPI`. Introduce `D hD N _ _ j d _`.
+
+Conclude with `hD j d`. Introduce `j show Formalism.G.IntegralMv (MvPowerSeries.subst X' (f j))`. Rewrite using `[hX' j]`. Conclude with `g3cw2_lin_integral _ (fun k => hJ'I j k) _ hXI`. Use `⟨X', hX'0, hX'I, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hTf i, g3cw2_subst_lin _ f X' hX's]`. Repeatedly rewrite using `[hX']`. Conclude with `g3cw2_inv_lin L J' hLJ (fun k => MvPowerSeries.X k) i`. Establish `key` using `Formalism.FG.subst_injective_vector K σ σ f (fun i => MvPowerSeries.subst T (X' i)) (fun i => MvPowerSeries.X i) hfId (fun i => MvPowerSeries.constantCoeff_subst_eq_zero hTs hT0 (hX'0 i)) (fun i => MvPowerSeries.constantCoeff_X i) (fun j => ?_)`. Conclude with `congrFun key i`.
+
+Rewrite using `[← MvPowerSeries.subst_comp_subst_apply hX's hTs, hX' j] show MvPowerSeries.subst T (G j) = MvPowerSeries.subst MvPowerSeries.X (f j)`. Rewrite using `[MvPowerSeries.subst_self, g3cw2_subst_lin _ _ T hTs]`. Repeatedly rewrite using `[MvPowerSeries.subst_X hTs]`. Both sides reduce to the same expression.
+-/
 theorem integralInverse_statement : IntegralInverse := by
   intro K _ _ σ _ _ T J' hT0 hTI hJ'I hLJ
   set L : Matrix σ σ K := Matrix.of fun i j => MvPowerSeries.coeff (Finsupp.single j 1) (T i) with hL

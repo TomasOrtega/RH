@@ -10,6 +10,11 @@ open Formalism.REAL Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P
 
 variable {A : Type} [Ring A] [Algebra ℂ A]
 
+/- English proof (translation)
+Rewrite using `[Qx6.expFCE E expansion_first_column]`. Use `Qx6.add_eq_sub_of ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[Qx6.qm_dropE E expansion_last_line quantumMinorRowSkew_holds hE, Finset.mul_sum, Finset.smul_sum, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[Qx6.Tm_ne E _ (hf w), Qx6.Tm_ne E _ (hb x).symm, ← zsmul_eq_mul, mul_smul_comm, smul_smul, ← pow_add, ← neg_smul, show u - 1 - 1 = u - 2 by ring, mul_assoc]`. Use `congr 1`. Rewrite using `[show (w : ℕ) + 1 + (x : ℕ) = (w : ℕ) + (x : ℕ) + 1 by ring, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quantum_minor_border_expansion_first {n m : ℕ} (E : Fin n → Fin n → A) (e : Fin n) (f b : Fin m → Fin n) (hE : GlRel E)
     (hf : ∀ j, f j ≠ e) (hb : ∀ j, b j ≠ e) (u : ℂ) :
     qminor E (bE e f) (bE e b) u = Tm E u e e * qminor E f b (u - 1) -

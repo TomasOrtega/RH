@@ -13,6 +13,13 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 
 namespace GlobalTheory.TriFrame
 
+/- English proof (translation)
+Establish `hb : U.BlockTriangular id` using `fun l j h => hU l j h`. Use `letI : Invertible U := invertibleOfRightInverse U N hUN`. Establish `hN : N.BlockTriangular id`. Use `Matrix.blockTriangular_inv_of_blockTriangular hb` as an intermediate fact. Rewrite `this` using `[Matrix.inv_eq_right_inv hUN]`. Then use the resulting hypothesis.
+
+Use `⟨fun i l h => hN h, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun hUN i) i`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_eq, Finset.sum_eq_single i]`. Combine the equalities or inequalities in the displayed calculation. Introduce `k _ hk`.
+
+Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hU i k h, zero_mul]`. Rewrite using `[hN h, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem tri_of_mul_eq_one {R : Type} [CommRing R] {r : ℕ} (U N : Matrix (Fin r) (Fin r) R) (ρ : Fin r → R)
     (hUN : U * N = 1) (hU : ∀ l j, j < l → U l j = 0) (hρ : ∀ j, U j j * ρ j = 1) :
     (∀ i l, i < l → N l i = 0) ∧ ∀ i, N i i = ρ i := by
@@ -33,6 +40,9 @@ theorem tri_of_mul_eq_one {R : Type} [CommRing R] {r : ℕ} (U N : Matrix (Fin r
     · rw [hN h, mul_zero]
   · simp
 
+/- English proof (translation)
+Introduce `W h` and use `by have hM' : IsUnit (M.map (resG X h)) := hM.map (resG X h).mapMatrix have hb : Function.Bijective (M.map (resG X h)).mulVec := ⟨Matrix.mulVec_injective_of_isUnit hM', Matrix.mulVec_surjective_iff_isUnit.2 hM'⟩ have key : ⇑(Fintype.linearCombination Γ(X, W) fun j => resM F h (∑ …`.
+-/
 theorem isFrame_sum_smul {X : Scheme.{0}} {F : X.Modules} {V : X.Opens} {m : ℕ} {e : Fin m → Γ(F, V)}
     (he : IsFrame e) (M : Matrix (Fin m) (Fin m) Γ(X, V)) (hM : IsUnit M) :
     IsFrame fun j => ∑ l, M l j • e l := fun W h => by
@@ -49,6 +59,17 @@ theorem isFrame_sum_smul {X : Scheme.{0}} {F : X.Modules} {V : X.Opens} {m : ℕ
   rw [key]
   exact (he W h).comp hb
 
+/- English proof (translation)
+Introduce `X A V V' h F r s hs e he P ρ hU hρ`. Set `Q : Matrix (Fin r) (Fin r) Γ(X, V')` to `((P⁻¹ : GL (Fin r) Γ(X, V')) : Matrix (Fin r) (Fin r) Γ(X, V'))`. Set `e' : Fin r → Γ(F, V')` to `fun j => ∑ l, Q l j • resM F h (e l)`. Establish `hVA : V' ⊓ A ≤ V` using `inf_le_left.trans h`. Set `be` to `he.basis hVA`.
+
+Set `bs` to `hs.basis (inf_le_right : V' ⊓ A ≤ A)`. Set `N : Matrix (Fin r) (Fin r) Γ(X, V' ⊓ A)` to `bs.toMatrix fun i => resM F inf_le_left (e' i)`. Establish `hM : (Matrix.of (GlobalTheory.ChainPts.coef false he hs)).map (resG X (inf_le_inf_right A h)) = be.toMatrix bs`. Use extensionality with `l j : 1`. Rewrite using `[Matrix.map_apply, Matrix.of_apply, Module.Basis.toMatrix_apply, GlobalTheory.ChainPts.coef, ← he.repr_resM inf_le_left (inf_le_inf_right A h), GlobalTheory.Twist.resM_resM, hs.basis_apply]`.
+
+Establish `hQ : be.toMatrix (fun i => resM F inf_le_left (e' i)) = Q.map (resG X (inf_le_left : V' ⊓ A ≤ V'))`. Use extensionality with `l j : 1`. Rewrite using `[Matrix.map_apply, Module.Basis.toMatrix_apply]`. Simplify using `only [e', map_sum (resM F _), GlobalTheory.Twist.resM_smul, GlobalTheory.Twist.resM_resM]`. Simplify using `only [← he.basis_apply hVA]`.
+
+Rewrite using `[Module.Basis.repr_sum_self]`. Establish `hUN : ((P : Matrix (Fin r) (Fin r) Γ(X, V')).map (resG X (inf_le_left : V' ⊓ A ≤ V')) * (Matrix.of (GlobalTheory.ChainPts.coef false he hs)).map (resG X (inf_le_inf_right A h))) * N = 1`. Rewrite using `[hM, Matrix.mul_assoc, Module.Basis.toMatrix_mul_toMatrix, hQ, ← Matrix.map_mul, Units.mul_inv]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Take `⟨h₁, h₂⟩` from `tri_of_mul_eq_one _ N ρ hUN hU hρ`.
+
+Conclude with `⟨e', isFrame_sum_smul (he.res h) Q (Units.isUnit _), h₁, h₂⟩`.
+-/
 theorem exists_isTri_of_mul_coef : ∀ (X : Scheme.{0}) (A V V' : X.Opens) (h : V' ≤ V) (F : X.Modules) (r : ℕ) (s : Fin r → Γ(F, A)) (hs : IsFrame s) (e : Fin r → Γ(F, V)) (he : IsFrame e) (P : GL (Fin r) Γ(X, V')) (ρ : Fin r → Γ(X, V' ⊓ A)), (∀ l j, j < l → ((P : Matrix (Fin r) (Fin r) Γ(X, V')).map (resG X (inf_le_left : V' ⊓ A ≤ V')) * (Matrix.of (GlobalTheory.ChainPts.coef false he hs)).map (resG X (inf_le_inf_right A h))) l j = 0) → (∀ j, ((P : Matrix (Fin r) (Fin r) Γ(X, V')).map (resG X (inf_le_left : V' ⊓ A ≤ V')) * (Matrix.of (GlobalTheory.ChainPts.coef false he hs)).map (resG X (inf_le_inf_right A h))) j j * ρ j = 1) → ∃ e' : Fin r → Γ(F, V'), IsFrame e' ∧ IsTri hs e' ∧ ∀ i, coordIn hs e' i i = ρ i := by
   intro X A V V' h F r s hs e he P ρ hU hρ
   let Q : Matrix (Fin r) (Fin r) Γ(X, V') := ((P⁻¹ : GL (Fin r) Γ(X, V')) : Matrix (Fin r) (Fin r) Γ(X, V'))

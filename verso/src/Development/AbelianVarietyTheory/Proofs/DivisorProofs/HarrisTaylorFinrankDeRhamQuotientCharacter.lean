@@ -18,6 +18,11 @@ open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.HTRank
 
+/- English proof (translation)
+Introduce `k _ _ C _ _ _ H _ _ _ σ r hP hc χ`. Establish `e1` using `GlobalTheory.T.finrank_jointWeightSpace_eq_of_charpoly k C H σ r hc χ`. Establish `e2` using `GlobalTheory.T.finrank_weightSpace_projective_tensor_eq k C H σ hP χ`. Establish `hpos` using `GlobalTheory.T.weightSpace_tensor_ringHom_finrank_pos k C χ`. Rewrite `e2` using `[e1]`.
+
+Conclude with `(Nat.eq_of_mul_eq_mul_right hpos e2).symm`.
+-/
 theorem finrank_quot_mSub : ∀ (k : Type) [Field k] [IsAlgClosed k] (C : Type) [CommRing C] [Module.Free ℤ C] [Module.Finite ℤ C] (H : Type 1) [AddCommGroup H] [Module k H] [FiniteDimensional k H] (σ : C →+* Module.End k H) (r : ℕ), (letI : Module (k ⊗[ℤ] C) H := Module.compHom H (Algebra.TensorProduct.lift (Algebra.ofId k (Module.End k H)) σ.toIntAlgHom (fun _ _ => Algebra.commutes _ _)).toRingHom; Module.Projective (k ⊗[ℤ] C) H) → (∀ c : C, LinearMap.charpoly (σ c) = ((LinearMap.charpoly (LinearMap.mulLeft ℤ c)) ^ r).map (Int.castRingHom k)) → ∀ χ : C →+* k, Module.finrank k (H ⧸ GlobalTheory.HTRho.mSub σ χ ⊤) = r := by
   intro k _ _ C _ _ _ H _ _ _ σ r hP hc χ
   have e1 := GlobalTheory.T.finrank_jointWeightSpace_eq_of_charpoly k C H σ r hc χ
@@ -26,6 +31,17 @@ theorem finrank_quot_mSub : ∀ (k : Type) [Field k] [IsAlgClosed k] (C : Type) 
   rw [e1] at e2
   exact (Nat.eq_of_mul_eq_mul_right hpos e2).symm
 
+/- English proof (translation)
+Introduce `p _ D R _ b N hN hNp k _ _ t o₀ β ht i`. Establish `H` using `GlobalTheory.abelianDeRham`. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim k o₀.A o₀.ab`. Take `⟨hfd, -, -⟩` from `GlobalTheory.finrank_HdR_Fil_of_field H.1 H.2.1 k o₀.A g o₀.ab hg`. Use `haveI := hfd`.
+
+Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Take `⟨l, hlp, hl⟩` from `Nat.exists_infinite_primes (p + 1)`. Establish `hcop : l.Coprime p` using `(Nat.coprime_primes hl (Fact.out : p.Prime)).2 (by omega)`. Establish `hcopj : ∀ j : ℕ, (l ^ j).Coprime p` using `fun j => Nat.Coprime.pow_left j hcop`.
+
+Establish `hposj : ∀ j : ℕ, 0 < l ^ j` using `fun j => pow_pos hl.pos j`. Establish `hlk : (l : k) ≠ 0`. Establish `hu` using `(b.unit l hcop).map β`. Rewrite `hu` using `[map_natCast]`. Conclude with `hu.ne_zero`.
+
+Take `⟨I, -⟩` from `o₀.geom k (𝟙 _) β (by rw [Category.id_comp, ht])`. Establish `hc : ∀ c : 𝓞 D.F, LinearMap.charpoly (GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O c)) = ((LinearMap.charpoly (LinearMap.mulLeft ℤ c)) ^ (D.m * D.n)).map (Int.castRingHom k)`. Introduce `c`. Use `haveI := o₀.act.hom (algebraMap (𝓞 D.F) D.O c)`. Establish `e` using `GlobalTheory.T.charpoly_deRhamHomology_endomorphism_eq_map_ladic k o₀.A o₀.ab (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) D.La (DistribMulAction.toLinearMap ℤ D.La (algebraMap (𝓞 D.F) D.O c)) l hl hlk (fun j => I.ev (l ^ j)) (fun j x y => I.add (l ^ j) x y) (fun j x => I.lin (l ^ j) …`.
+
+Rewrite using `[GlobalTheory.HTCount.crysAct_apply, e, GlobalTheory.T.charpoly_la_eq_pow p D c]`. Establish `hproj` using `GlobalTheory.CrysProj.hdR_projective D.F k o₀.A o₀.ab (o₀.act.toF D)`. Conclude with `finrank_quot_mSub k (𝓞 D.F) (HdR o₀.A) ((GlobalTheory.HTCount.crysAct o₀).comp (algebraMap (𝓞 D.F) D.O)) (D.m * D.n) hproj hc (β.comp (b.t i))`.
+-/
 theorem finrank_quot : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ i, Module.finrank k (HdR o₀.A ⧸ GlobalTheory.HTRho.mSub (GlobalTheory.HTCount.crysAct o₀) (β.comp (b.t i)) ⊤) = D.m * D.n := by
   intro p _ D R _ b N hN hNp k _ _ t o₀ β ht i
   have H := GlobalTheory.abelianDeRham

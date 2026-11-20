@@ -11,6 +11,13 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Use `letI := ρ.toAlgebra`. Use `haveI : Module.Flat R R₁ := hρ`. Use `haveI : Algebra.HasGoingDown R R₁ := Algebra.HasGoingDown.of_flat`. Use `haveI : (q.comap ρ).IsPrime := Ideal.comap_isPrime ρ q`. Use `haveI : q.LiesOver (q.comap ρ) := ⟨rfl⟩`.
+
+Establish `h` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (q.comap ρ) q`. Establish `hle : (q.comap ρ).height ≤ 1` using `by rw [← hq, h]; exact le_self_add`. Use `le_antisymm hle ?_` and prove the remaining obligations. Rewrite using `[ENat.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot]`. Introduce `hb`.
+
+Establish `: f ∈ q.comap ρ` using `hfq`. Rewrite `this` using `[hb, Ideal.mem_bot]`. Conclude with `hf this`.
+-/
 theorem height_comap_eq_one_of_flat_of_mem {R R₁ : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     [CommRing R₁] [IsNoetherianRing R₁] (ρ : R →+* R₁) (hρ : ρ.Flat) {f : R} (hf : f ≠ 0)
     (q : Ideal R₁) [q.IsPrime] (hq : q.height = 1) (hfq : ρ f ∈ q) : (q.comap ρ).height = 1 := by
@@ -32,11 +39,35 @@ end GlobalTheory.Desc
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Introduce and unpack `v ⟨n, r, t, ht, rfl⟩`. Conclude with `⟨n, r, t, fun i => h (ht i), rfl⟩`.
+-/
 theorem spanBy_mono {R₁ F₁ : Type} [CommRing R₁] [CommRing F₁] (c : R₁ →+* F₁) {T T' : Set F₁}
     (h : T ⊆ T') : spanBy c T ⊆ spanBy c T' := by
   rintro v ⟨n, r, t, ht, rfl⟩
   exact ⟨n, r, t, fun i => h (ht i), rfl⟩
 
+/- English proof (translation)
+Introduce `R R₁ F F₁ _ _ _ _ _ _ _ _ _ _ ρ c₀ c₁ θ f hf hρ hρi hc₀ hcomm hlin V₀ hV0 hVadd hVsmul _ W W₁ htor hWcl hgauss`. Establish `hW0 : ∀ p : Ideal R, p.IsPrime → f ∈ p → (0 : F) ∈ W p` using `fun p hp hfp => by`. Take `⟨m, hm⟩` from `htor p hp hfp 0`. Simplify using `using hm`. Use `set P := {p : PrimeSpectrum R | p.asIdeal.height = 1 ∧ f ∈ p.asIdeal} with hPdef`.
+
+Establish `hP : P.Finite` using `GlobalTheory.finite_height_eq_one_mem hf`. Establish `key : ∀ S : Finset (PrimeSpectrum R), (∀ p ∈ S, p ∈ P) → spanBy c₁ (θ '' {u | u ∈ V₀ ∧ ∀ p ∈ S, u ∈ W p.asIdeal}) = spanBy c₁ (θ '' V₀) ∩ {x | ∀ p ∈ S, x ∈ spanBy c₁ (θ '' W p.asIdeal)}`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro _`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Consider the case `insert a S ha ih`. Introduce `hS`. Establish `haP` using `hS a (Finset.mem_insert_self a S)`.
+
+Take `⟨hadd, hsmul, -⟩` from `hWcl a.asIdeal a.2 haP.1 haP.2`. Establish `hSP : ∀ p ∈ S, p ∈ P` using `fun p hp => hS p (Finset.mem_insert_of_mem hp)`. Establish `e : {u | u ∈ V₀ ∧ ∀ p ∈ insert a S, u ∈ W p.asIdeal} = {u | u ∈ V₀ ∧ ∀ p ∈ S, u ∈ W p.asIdeal} ∩ W a.asIdeal`. Use extensionality with `u`. Simplify using `only [Finset.mem_insert, Set.mem_setOf_eq, Set.mem_inter_iff, forall_eq_or_imp]`.
+
+The claim follows by propositional logic. Rewrite using `[e, GlobalTheory.T.span_image_inter_of_flat_linearlyDisjoint R R₁ F F₁ ρ c₀ c₁ θ hρ hc₀ hcomm hlin {u | u ∈ V₀ ∧ ∀ p ∈ S, u ∈ W p.asIdeal} (W a.asIdeal) ⟨hV0, fun p hp => hW0 p.asIdeal p.2 (hSP p hp).2⟩ (fun a' ha' b hb => ⟨hVadd a' ha'.1 b hb.1, fun p hp => (hWcl p.asIdeal p.2 ( …`. Use extensionality with `x`. Simplify using `only [Finset.mem_insert, Set.mem_setOf_eq, Set.mem_inter_iff, forall_eq_or_imp]`. The claim follows by propositional logic.
+
+Establish `hS` using `key hP.toFinset (fun p hp => hP.mem_toFinset.mp hp)`. Establish `e1 : {u | u ∈ V₀ ∧ ∀ p : Ideal R, p.IsPrime → p.height = 1 → f ∈ p → u ∈ W p} = {u | u ∈ V₀ ∧ ∀ p ∈ hP.toFinset, u ∈ W p.asIdeal}`. Use extensionality with `u`. Simplify using `only [Set.mem_setOf_eq, Set.Finite.mem_toFinset, hPdef]`. Conclude with `and_congr_right fun _ => ⟨fun h p hp => h p.asIdeal p.2 hp.1 hp.2, fun h p hp h1 hfp => h ⟨p, hp⟩ ⟨h1, hfp⟩⟩`.
+
+Rewrite using `[e1, hS]`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.Finite.mem_toFinset, hPdef]`. Use `and_congr_right fun hx => ?_` and prove the remaining obligations. Establish `hxr : x ∈ spanBy c₁ (Set.range θ)` using `spanBy_mono c₁ (Set.image_subset_range θ V₀) hx`.
+
+Establish `hd : ∃ d : R₁, d ≠ 0 ∧ c₁ d * x ∈ spanBy c₁ (Set.range θ)` using `⟨1, one_ne_zero, by simpa⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h q hq hq1 hfq`. Establish `h1` using `height_comap_eq_one_of_flat_of_mem ρ hρ hf q hq1 hfq`. Use `((hgauss q hq hq1 hfq) x hd).mpr ⟨1, (Ideal.ne_top_iff_one q).mp hq.ne_top, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using h ⟨q.comap ρ, Ideal.comap_isPrime ρ q⟩ ⟨h1, hfq⟩`. Introduce `h p hp`. Take `⟨hadd, hsmul, hinv⟩` from `hWcl p.asIdeal p.2 hp.1 hp.2`. Use `GlobalTheory.T.mem_span_image_of_forall_height_one_over_prime R R₁ F F₁ ρ c₀ c₁ θ f hf hρ hρi hc₀ hcomm hlin p.asIdeal p.2 hp.1 hp.2 (W p.asIdeal) (htor p.asIdeal p.2 hp.2) hadd hsmul hinv x hxr fun q hq hq1 hfq hqp => ?_` and prove the remaining obligations. Use `((hgauss q hq hq1 hfq) x hd).mp (h q hq hq1 hfq)` as an intermediate fact.
+
+Rewrite `this` using `[hqp]`. Then use the resulting hypothesis.
+-/
 theorem spanBy_sections_eq_of_flat : ∀ (R R₁ F F₁ : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CommRing R₁] [IsDomain R₁] [IsNoetherianRing R₁] [IsIntegrallyClosed R₁] [Field F] [Field F₁] (ρ : R →+* R₁) (c₀ : R →+* F) (c₁ : R₁ →+* F₁) (θ : F →+* F₁) (f : R), f ≠ 0 → ρ.Flat → Function.Injective ρ → Function.Injective c₀ → θ.comp c₀ = c₁.comp ρ → LinDisj c₀ c₁ θ → ∀ (V₀ : Set F), (0 : F) ∈ V₀ → (∀ a ∈ V₀, ∀ b ∈ V₀, a + b ∈ V₀) → (∀ r, ∀ a ∈ V₀, c₀ r * a ∈ V₀) → (∀ a ∈ V₀, (c₀ f)⁻¹ * a ∈ V₀) → ∀ (W : Ideal R → Set F) (W₁ : Ideal R₁ → Set F₁), (∀ p : Ideal R, p.IsPrime → f ∈ p → ∀ u, ∃ m : ℕ, c₀ f ^ m * u ∈ W p) → (∀ p : Ideal R, p.IsPrime → p.height = 1 → f ∈ p → (∀ a ∈ W p, ∀ b ∈ W p, a + b ∈ W p) ∧ (∀ r, ∀ a ∈ W p, c₀ r * a ∈ W p) ∧ (∀ s, s ∉ p → ∀ a ∈ W p, (c₀ s)⁻¹ * a ∈ W p)) → (∀ q : Ideal R₁, q.IsPrime → q.height = 1 → ρ f ∈ q → GaussAt c₁ q θ (W (q.comap ρ)) (W₁ q)) → spanBy c₁ (θ '' {u | u ∈ V₀ ∧ ∀ p : Ideal R, p.IsPrime → p.height = 1 → f ∈ p → u ∈ W p}) = spanBy c₁ (θ '' V₀) ∩ {v | ∀ q : Ideal R₁, q.IsPrime → q.height = 1 → ρ f ∈ q → v ∈ W₁ q} := by
   intro R R₁ F F₁ _ _ _ _ _ _ _ _ _ _ ρ c₀ c₁ θ f hf hρ hρi hc₀ hcomm hlin V₀ hV0 hVadd hVsmul _ W W₁
     htor hWcl hgauss

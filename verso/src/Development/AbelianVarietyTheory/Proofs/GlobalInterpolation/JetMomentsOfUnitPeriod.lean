@@ -16,6 +16,45 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.MainNoti
 
 open Formalism.MainNotions.TaylorLogMetric in
 
+/- English proof (translation)
+Introduce `D hD H s cc δ B χ cD ⟨hs, _, hcc, hδ, hχ, hcD⟩ u _ hcop w ι hw`. Take `⟨lam, hlam⟩` from `(_root_.GlobalTheory.MomPlace.places D.X.K (D.Pr.T u) s.σ₀ ι).1`. Take `⟨⟨hTs, hTq⟩, -⟩ : (D.Pr.T u ∉ H.host.small ∧ D.Pr.T u ≠ H.host.q) ∧ ∀ i, D.Pr.g i ∉ H.host.small ∧ D.Pr.g i ≠ H.host.q` from `⟨(_root_.GlobalTheory.AAUnitAway.locP_AA_and_primes_ne.2 D H s hD).1 u, (_root_.GlobalTheory.AAUnitAway.locP_AA_and_primes_ne.2 D H s hD).2⟩`. Establish `hT2 : D.Pr.T u ≠ 2` using `UpperTheory.Small.ne_two H.host hTs`. Establish `hP` using `hD.primes`.
+
+Establish `hp` using `hP.T_prime u`. Establish `hn` using `hP.piT_norm u`. Take `⟨Ω, hΩ, hmom⟩` from `hM H cc δ B χ hcc hδ hχ (D.Pr.T u) lam hT2 ((_root_.GlobalTheory.MomT.SplitK.splitk H D.X s (D.Pr.piT u) _ hs (hP.piT_Kq u)).2 hp hT2 hn (hP.piT_cop u)) hcop`. Take `⟨M, _, hMe, hMs⟩` from `hcD`. Establish `hcQ : ∀ τ, cD τ ∈ TaylorLogMetric.Qbar`.
+
+Introduce `τ`. Take `⟨x, hx, -⟩` from `hMs τ`. Rewrite using `[← hx]`. Conclude with `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom (algebraMap M ℂ).toRatAlgHom)`. Use `⟨fun τ => TaylorLogMetric.lamC lam (cD (s.iT τ)) / Ω, fun τ => ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx, hx'⟩` from `hMs (s.iT τ)`. Rewrite using `[norm_div, hΩ, div_one, ← hx]`. Conclude with `GlobalTheory.EigenGenerator.norm_generator_eq_one H _ lam hTs hTq M hMe _ x hx'`. Introduce `sel S mu cst hsel hS hcq i b _ hb SG SG' d d' hd hd' Ξ₀ hΞ`. Establish `hev : ∀ j, Even (D.R.N j)` using `fun j => D.R.k_even.add ((D.R.t_odd.add_one).mul_left j)`.
+
+Establish `ha` using `hev i`. Establish `hb' : Even b` using `hb ▸ hev _`. Take `⟨hla, hsm⟩` from `hL H D.X s cc δ B χ cD hD.fields hs hcc hδ hχ _ _ ha hb'`. Establish `hπ0 : D.Pr.piT u ≠ 0`. Introduce `h0`.
+
+Rewrite `hn` using `[h0, zero_mul]`. Conclude with `hp.ne_zero (by exact_mod_cast hn.symm)`. Establish `hπ0' : D.X.conjO (D.Pr.piT u) ≠ 0`. Introduce `h0`. Rewrite `hn` using `[h0, mul_zero]`.
+
+Conclude with `hp.ne_zero (by exact_mod_cast hn.symm)`. Apply the tactic sequence `obtain ⟨hfree, hrow⟩ := _root_.GlobalTheory.Proof.AbsNormSplitPlace.main D u sel S mu hD hsel (hS (Or.inr ⟨u, rfl⟩)) (fun k => hS (Or.inl (by fin_cases k <;> simp)))`. Establish `hUT : ∀ P : HeightOneSpectrum (𝓞 D.X.E), ((D.Pr.T u : ℕ) : 𝓞 D.X.E) ∈ P.asIdeal → localization₂ P.asIdeal (ambOf s B χ cD).AA = localization₂ P.asIdeal (1 : Submodule (𝓞 D.X.E) D.X.E)` using `fun P h => _root_.GlobalTheory.AAUnitAway.locP_AA_and_primes_ne.1 H D.X s cc δ B χ cD P _ hp hTs hTq h hcop`. Establish `hmemS : ∀ P, P ∈ Sall sel mu u ↔ D.Pr.piT u ∈ P.asIdeal ∨ P ∈ rowSG D.Pr sel mu`. Introduce `P`.
+
+Unfold `Sall`. Rewrite using `[Finset.mem_union, Primes.vT, mem_divs hπ0]`. Establish `hU : (ambOf s B χ cD).AAUnit (Sall sel mu u)`. Introduce `P hPS`. Break down `(hmemS P).1 hPS with h | h` into its components or cases.
+
+Conclude with `hUT P (hn ▸ Ideal.mul_mem_right _ _ h)`. Apply the tactic sequence `have bad := _root_.GlobalTheory.ThetaMove.BadPrimes.bad_primes D.X D.Pr sel S mu u hD.fields hP hsel (hS (Or.inr ⟨u, rfl⟩)) (fun k => hS (Or.inl (by fin_cases k <;> simp))) P hPS`. Conclude with `_root_.GlobalTheory.PeriodIdealUnit.locP_AA_eq_one D.X H s cc δ B χ cD P bad.2.1 bad.2.2.1 (hcq P h)`. Establish `hG : Nat.Coprime (∏ P : rowSG D.Pr sel mu, Formalism.L2.Col.qOf P.1) (D.Pr.T u)` using `Nat.Coprime.prod_left fun P _ => (Nat.coprime_primes (hrow P.1 P.2).1 hp).2 (hrow P.1 P.2).2.1`. Establish `hctx : Ctx (ambOf s B χ cD) (D.R.N i) b (Sall sel mu u) (rowSG D.Pr sel mu) (D.Pr.piT u) (D.Pr.T u) ((∏ P : rowSG D.Pr sel mu, Formalism.L2.Col.qOf P.1) ^ cst.B) (cAof sel mu cst)` using `⟨hD.fields, ⟨hla.1, hla.2.1, hfree, hU, hla.2.2.2.2⟩, fun P h => hUT P (hn ▸ Ideal.mul_mem_left _ _ ((mem_divs hπ0' P).1 h)), hsm, hp, hn, hP.piT_cop u, hmemS, fun P h => (hrow P h).2.2.1, hG.pow_left _, hG.pow_left _⟩`.
+
+Establish `hN : IsSdLat d.1.N` using `⟨d.2.lat, d.2.uni⟩`. Establish `hN' : IsSdLat d'.1.N` using `⟨d'.2.lat, d'.2.uni⟩`. Take `⟨c1, c1'⟩` from `_root_.GlobalTheory.MomT.ChiUnit.chi_det_unit H D.X s χ _ lam (D.Pr.piT u) _ d.1.N hD.fields hs hχ hn hN fun P h => hd ⟨P, (mem_divs hπ0 P).2 h⟩`. Take `⟨c2, c2'⟩` from `_root_.GlobalTheory.MomT.ChiUnit.chi_det_unit H D.X s χ _ lam (D.Pr.piT u) _ d'.1.N hD.fields hs hχ hn hN' fun P h => hd' ⟨P, (mem_divs hπ0 P).2 h⟩`. Establish `hF : (ambOf s B χ cD).chiF (D.R.N i) b d.1.N d'.1.N ∈ TaylorLogMetric.Qbar` using `mul_mem (zpow_mem c1 _) (zpow_mem c2 _)`.
+
+Establish `hF1 : ‖TaylorLogMetric.lamC lam ((ambOf s B χ cD).chiF (D.R.N i) b d.1.N d'.1.N)‖ = 1`. Use `(congrArg norm (lamC_mul lam (zpow_mem c1 _) (zpow_mem c2 _))).trans ?_` and prove the remaining obligations. Rewrite using `[lamC_zpow lam c1, lamC_zpow lam c2, norm_mul, norm_zpow, norm_zpow, c1', c2', one_zpow, one_zpow, one_mul]`. Use `⟨fun hseen => ?_, fun hseen => ?_⟩` and prove the remaining obligations. Use `type_bar hctx hlam hw d d' hF hF1 Ξ₀ hΞ ?_` and prove the remaining obligations.
+
+Use `_root_.GlobalTheory.MomT.PtMoments.ptMom H D.X s cc δ B χ cD _ lam ι Ω (D.X.conjO (D.Pr.piT u)) (D.R.N i) b hD.fields hs hcc hT2 hcop (fun k => (hlam k).2) hcQ (fun τ τ' => ?_) (by rw [conjO_conjO, mul_comm, hn]) (by rw [conjO_conjO]; exact (hP.piT_cop u).symm) (fun τ => (hw _).1 …` as an intermediate fact. Establish `e : ((D.X.conjO (D.Pr.piT u) : 𝓞 D.X.E) : D.X.E) = star ((D.Pr.piT u : 𝓞 D.X.E) : D.X.E)` using `rfl`. Rewrite `this` using `[e, star_star]`. Then use the resulting hypothesis. Establish `e : ((D.X.conjO (D.Pr.piT u) : 𝓞 D.X.E) : D.X.E) = star ((D.Pr.piT u : 𝓞 D.X.E) : D.X.E)` using `rfl`. Rewrite using `[e, hD.fields.emb_star, hD.fields.emb_star, hP.piT_Kq u τ τ']`.
+
+Establish `hsq : ∀ P ∈ divs (D.Pr.piT u), D.Pr.piT u ∉ P.asIdeal ^ 2`. Introduce `P hPm h2`. Use `GlobalTheory.SplitUnram.natCast_notMem_sq D.X.E D.X.conjO (D.Pr.piT u) _ conjO_conjO hp hn (hP.piT_cop u) ?_ (hP.vT_norm u) P hPm (hn ▸ Ideal.mul_mem_right _ _ h2)` and prove the remaining obligations. Establish `h1 : (divs (D.Pr.piT u)).card = Module.finrank ℚ D.X.F` using `(hP.vT_card u).trans hD.fields.card_Tau`. Rewrite using `[h1, ← Module.finrank_mul_finrank ℚ D.X.F D.X.E, hD.fields.rankE, mul_comm]`.
+
+Take `⟨N'', hN'', hc⟩` from `_root_.GlobalTheory.MomT.MomentCompanion.companion D.X b SG' (D.Pr.piT u) d' hD.fields hπ0 (hP.piT_cop u) hsq`. Establish `hval` using `_root_.GlobalTheory.MomT.ChiMove.chi_move H D.X s χ b SG' (D.Pr.piT u) d' N'' hD.fields hs hχ hπ0 (hP.piT_cop u) hsq hN'' hc`. Use `set k : D.X.K := ∏ τ, (D.X.emb τ (((D.Pr.piT u : 𝓞 D.X.E) : D.X.E) / star ((D.Pr.piT u : 𝓞 D.X.E) : D.X.E)))⁻¹ with hk`. Establish `hval' : χ (TaylorLogMetric.detId H (s.lat d'.1.N) (s.lat N'')) = s.σ₀ k`. Rewrite using `[hval, hk, map_prod]`.
+
+Conclude with `Finset.prod_congr rfl fun τ _ => (map_inv₀ _ _).symm`. Establish `hk0 : k ≠ 0`. Establish `h0 : ((D.Pr.piT u : 𝓞 D.X.E) : D.X.E) ≠ 0` using `by exact_mod_cast hπ0`. Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => inv_ne_zero ((map_ne_zero _).2 (div_ne_zero h0 (star_ne_zero.2 h0)))`. Establish `hkn : ‖ι k‖ ≤ (D.Pr.T u : ℝ) ^ D.X.f`.
+
+Rewrite using `[hk, map_prod, norm_prod]`. Use `(Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun τ _ => ?_).trans_eq (Finset.prod_const (D.Pr.T u : ℝ))` and prove the remaining obligations. Rewrite using `[map_inv₀]`. Conclude with `norm_ratio_le (ι.comp (D.X.emb τ)) hn`. Establish `hcard : (divs (D.Pr.piT u)).card = D.X.f` using `hP.vT_card u`.
+
+Establish `key` using `type_p hctx hlam hw d d' hd hF hF1 Ξ₀ hΞ (_root_.GlobalTheory.MomT.PtMoments.ptMom H D.X s cc δ B χ cD _ lam ι Ω (D.Pr.piT u) (D.R.N i) b hD.fields hs hcc hT2 hcop (fun k => (hlam k).2) hcQ (hP.piT_Kq u) hn (hP.piT_cop u) (fun τ => (hw _).1 (hseen τ)) ha hb' hla hsm hmom) (hP.vT_ …`. Rewrite `key` using `[hcard]`. Conclude with `key`. Rewrite using `[(hlam _).2, map_pow, norm_pow, ← pow_mul, Nat.div_two_mul_two_of_even ha, hcard, pow_mul]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hkn _`.
+
+Introduce `R hR z`. Establish `hmv` using `_root_.GlobalTheory.MomT.Move.move H D.X s cc δ B χ cD _ b d.1.N d'.1.N N'' hD.fields hs (hE H cc δ B χ hcc hδ hχ) ha hb' hla hN hN' hN'' R hR z`. Establish `hR0 : ((Real.sqrt (R.card : ℝ) : ℝ) : ℂ) ≠ 0`. Take `⟨x, hx, -⟩` from `hR.2.2 0 (zero_mem _)`. Establish `: (0 : ℝ) < R.card` using `by exact_mod_cast Finset.card_pos.2 ⟨x, hx⟩`.
+
+Conclude with `(Real.sqrt_pos.2 this).ne'` after adjusting the coercions. Establish `hσ : s.σ₀ k ≠ 0` using `(map_ne_zero _).2 hk0`. Rewrite using `[hmv, hval', map_pow, zpow_neg, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem jetMoments_of_unitPeriod
     (hM : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : IdE D → ℂ), IsCurveIdeal D cc →
       IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IsChi D χ → ∀ (p : ℕ) [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]), p ≠ 2 →

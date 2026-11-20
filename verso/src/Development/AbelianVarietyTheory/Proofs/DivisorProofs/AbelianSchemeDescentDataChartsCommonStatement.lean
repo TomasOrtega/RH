@@ -7,5 +7,8 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Desc.setup_common | exact GlobalTheory.Desc.setup_common | (intros; apply GlobalTheory.Desc.setup_common <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.abelianSchemeDescentData_charts_common : ∀ σ : Setup, σ.Common := by
   first | exact @GlobalTheory.Desc.setup_common | exact GlobalTheory.Desc.setup_common | (intros; apply GlobalTheory.Desc.setup_common <;> assumption)

@@ -27,11 +27,22 @@ section Trace
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.splitCentreDerivative_eq_sum_diagonalMatrixUnits E a`.
+-/
 theorem zc_eq_sum_Eop : zc E a = ∑ τ : E →+* ℂ, ∑ i : Fin a, Eop τ i i := GlobalTheory.T.splitCentreDerivative_eq_sum_diagonalMatrixUnits E a
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cuspidal_traceMatrixUnits_acts_by_sum_infinitesimalCharacter E a π τ m h φ hφ`.
+-/
 theorem sum_Eop_apply {π : CuspSub E a} {τ : E →+* ℂ} {m : Multiset ℂ} (h : π.HasInfChar τ m) {φ : Sm E a}
     (hφ : φ ∈ π.V) : (∑ i : Fin a, Eop τ i i) φ = m.sum • φ := GlobalTheory.T.cuspidal_traceMatrixUnits_acts_by_sum_infinitesimalCharacter E a π τ m h φ hφ
 
+/- English proof (translation)
+Use `(letter_centralExponent E ⟨a, π⟩).2.2.2.2 _ ?_` and prove the remaining obligations. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `⟨φ, hφ, h0, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `zc E a φ = _`. Rewrite using `[zc_eq_sum_Eop, LinearMap.sum_apply, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_congr rfl fun τ _ => sum_Eop_apply (ParLaws.hasInfChar_infChar (CG.mk π) τ) hφ`.
+-/
 theorem cex_eq (π : CuspSub E a) : cex (⟨a, π⟩ : Letter E) = ∑ τ : E →+* ℂ, ((CG.mk π).infChar τ).sum := by
   refine (letter_centralExponent E ⟨a, π⟩).2.2.2.2 _ ?_
   obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 π.ne_bot
@@ -50,6 +61,13 @@ open GlobalTheory.ResW
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
+/- English proof (translation)
+Use `set c : E →+* E := (IsCMField.complexConj E).toRingEquiv.toRingHom`. Establish `hc : Function.Bijective fun τ : E →+* ℂ => τ.comp c`. Use `Finite.injective_iff_bijective.1 fun τ τ' e => RingHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(IsCMField.complexConj E).surjective x`. Conclude with `RingHom.congr_fun e y`.
+
+Establish `h1 : ∑ τ : E →+* ℂ, ((CG.mk π).infChar (τ.comp c)).sum = ∑ τ : E →+* ℂ, ((CG.mk π).infChar τ).sum` using `Function.Bijective.sum_comp hc (fun τ => ((CG.mk π).infChar τ).sum)`. Establish `h2 : ∀ τ : E →+* ℂ, ((CG.mk π).infChar (τ.comp c)).sum = (a : ℂ) * ((a : ℂ) - 1 - (wt : ℂ)) - ((CG.mk π).infChar τ).sum` using `fun τ => by`. Rewrite using `[h τ, Multiset.sum_map_sub, Multiset.map_const', Multiset.sum_replicate, CG.card_infChar, Multiset.map_id', nsmul_eq_mul]`. Establish `h3` using `Embeddings.card E ℂ`. Simplify using `only [h2, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, h3, nsmul_eq_mul] at h1`.
+
+Take the linear combination `-h1 / 2`.
+-/
 theorem sum_infChar_of_isWeight {π : CuspSub E a} {wt : ℤ} (h : IsWeight π wt) :
     ∑ τ : E →+* ℂ, ((CG.mk π).infChar τ).sum =
       (Module.finrank ℚ E : ℂ) * ((a : ℂ) * ((a : ℂ) - 1 - (wt : ℂ))) / 2 := by
@@ -74,6 +92,13 @@ namespace GlobalTheory.UnitLocWeight
 
 open GlobalTheory.ResW
 
+/- English proof (translation)
+Establish `e` using `(cex_eq π).trans (sum_infChar_of_isWeight h)`. Establish `hd : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Establish `ha' : (0 : ℝ) < a` using `by exact_mod_cast ha`. Establish `e2 : (cex (⟨a, π⟩ : Letter E)).re = (Module.finrank ℚ E : ℝ) * ((a : ℝ) * ((a : ℝ) - 1 - wt)) / 2`. Rewrite using `[e]`.
+
+Establish `: (Module.finrank ℚ E : ℂ) * ((a : ℂ) * ((a : ℂ) - 1 - (wt : ℂ))) / 2 = (((Module.finrank ℚ E : ℝ) * ((a : ℝ) * ((a : ℝ) - 1 - wt)) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.ofReal_re]`. Unfold `rexp`. Express the relevant statement in the definitionally equal form `(cex (⟨a, π⟩ : Letter E)).re / ((a : ℝ) * Module.finrank ℚ E) = _`. Rewrite using `[e2]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem rexp_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} (ha : 1 ≤ a) {π : CuspSub E a} {wt : ℤ}
     (h : IsWeight π wt) : rexp (⟨a, π⟩ : Letter E) = ((a : ℝ) - 1 - wt) / 2 := by
   have e := (cex_eq π).trans (sum_infChar_of_isWeight h)
@@ -89,6 +114,19 @@ theorem rexp_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} (ha
   rw [e2]
   field_simp
 
+/- English proof (translation)
+Introduce `_ E _ _ _ a ha π wt hw w σ hσ`. Use `set t : ℝ := ((a : ℝ) - 1 - wt) / 2 with ht`. Establish `hr` using `rexp_eq ha hw`. Establish `hu : (π.twist (nu E (-t))).IsUnitary`. Establish `e` using `(letter_centralExponent E ⟨a, π⟩).2.2.1 ha (-t)`.
+
+Use `((rexp_eq_zero_iff_isUnitary E (tw ⟨a, π⟩ (-t)) ha).1.1 ?_)` and prove the remaining obligations. Rewrite using `[e, hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hU` using `isUnitarisable_of_isLocComp_cusp E a _ ha hu w _ (hσ.twist (nu E (-t)))`. Establish `hloc : (nu E (-t)).loc w = GlobalTheory.SmGL.absPow (w.adicCompletion E) ((-t : ℝ) : ℂ)` using `GlobalTheory.HeightCounting.Blocks.loc_of_isAbsPow (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E (-t)) w`.
+
+Use `set σ' := σ.twist (CuspSub.locDet a (nu E (-t)) w) (CuspSub.isOpen_ker_locDet (nu E (-t)) w) with hσ'`. Establish `key : (algNorm σ).nu (((wt : ℝ) / 2 : ℝ) : ℂ) = IrrGL.of σ'.ρ σ'.smooth σ'.irred`. Establish `e1 : (((1 - (a : ℝ)) / 2 : ℝ) : ℂ) + (((wt : ℝ) / 2 : ℝ) : ℂ) = ((-t : ℝ) : ℂ)`. Rewrite using `[ht]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `algNorm`. Rewrite using `[IrrGL.nu_nu, e1]`. Unfold `IrrGL.nu`. Rewrite using `[IrrGL.tw_of]`.
+
+Use `IrrGL.of_eq_of.2 ⟨?_⟩` and prove the remaining obligations. Establish `e2 : GlobalTheory.SmGL.twist σ.ρ (GlobalTheory.SmGL.detChar (Fin a) (GlobalTheory.SmGL.absPow (w.adicCompletion E) ((-t : ℝ) : ℂ))) = σ'.ρ`. Use extensionality with `g v`. Express the relevant statement in the definitionally equal form `((GlobalTheory.SmGL.detChar (Fin a) (GlobalTheory.SmGL.absPow (w.adicCompletion E) ((-t : ℝ) : ℂ)) g : ℂˣ) : ℂ) • σ.ρ g v = ((CuspSub.locDet a (nu E (-t)) w g : ℂˣ) : ℂ) • σ.ρ g v`. Use `congr 2`.
+
+Simplify using `[CuspSub.locDet, hloc, GlobalTheory.SmGL.detChar]`. Rewrite using `[e2]`. Conclude with `.refl _`. Rewrite using `[key]`. Conclude with `GlobalTheory.GenericUnitary.isUnitarisable_of_equiv (IrrGL.equivOf σ'.ρ σ'.smooth σ'.irred) hU`.
+-/
 theorem main : AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ), 1 ≤ a →
     ∀ (π : CuspSub E a) (wt : ℤ), IsWeight π wt → ∀ (w : HeightOneSpectrum (𝓞 E)) σ, π.IsLocComp w σ →
       GlobalTheory.SmGL.IsUnitarisable ((algNorm σ).nu (((wt : ℝ) / 2 : ℝ) : ℂ)).rep := by

@@ -21,34 +21,90 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 def toR {n : ℕ} (A : Matrix (Fin n) (Fin n) E) (h : ∀ i j, A i j ∈ Mp.R) : Matrix (Fin n) (Fin n) Mp.R :=
   Matrix.of fun i j => ⟨A i j, h i j⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem toR_map {n : ℕ} (A : Matrix (Fin n) (Fin n) E) (h : ∀ i j, A i j ∈ Mp.R) :
     (toR Mp A h).map Mp.R.subtype = A := by
   ext i j
   rfl
 
+/- English proof (translation)
+Apply `Matrix.map_injective (f := Mp.R.subtype) Subtype.val_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, toR_map, toR_map, toR_map]`.
+-/
 theorem toR_mul {n : ℕ} (A B : Matrix (Fin n) (Fin n) E) (hA : ∀ i j, A i j ∈ Mp.R) (hB : ∀ i j, B i j ∈ Mp.R)
     (hAB : ∀ i j, (A * B) i j ∈ Mp.R) : toR Mp (A * B) hAB = toR Mp A hA * toR Mp B hB := by
   apply Matrix.map_injective (f := Mp.R.subtype) Subtype.val_injective
   dsimp only
   rw [Matrix.map_mul, toR_map, toR_map, toR_map]
 
+/- English proof (translation)
+Apply `Matrix.map_injective (f := Mp.R.subtype) Subtype.val_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[toR_map, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem toR_one {n : ℕ} (h : ∀ i j, (1 : Matrix (Fin n) (Fin n) E) i j ∈ Mp.R) :
     toR Mp (1 : Matrix (Fin n) (Fin n) E) h = 1 := by
   apply Matrix.map_injective (f := Mp.R.subtype) Subtype.val_injective
   dsimp only
   rw [toR_map, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Substitute `hA` using the available equality. Conclude with `toR_one Mp h`.
+-/
 theorem toR_eq_one {n : ℕ} (A : Matrix (Fin n) (Fin n) E) (h : ∀ i j, A i j ∈ Mp.R) (hA : A = 1) :
     toR Mp A h = 1 := by
   subst hA
   exact toR_one Mp h
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)`.
+-/
 theorem int_mul' {n : ℕ} {A B : Matrix (Fin n) (Fin n) E} (hA : ∀ i j, A i j ∈ Mp.R) (hB : ∀ i j, B i j ∈ Mp.R) :
     ∀ i j, (A * B) i j ∈ Mp.R := by
   intro i j
   rw [Matrix.mul_apply]
   exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)
 
+/- English proof (translation)
+Establish `hint : (∀ a b, (A * X * B) a b ∈ Mp.R) ↔ ∀ a b, X a b ∈ Mp.R`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e : X = Ai * (A * X * B) * Bi`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul, Matrix.mul_assoc, h3, Matrix.mul_one]`.
+
+Rewrite using `[e]`. Conclude with `int_mul' Mp (int_mul' Mp hAi h) hBi`. Introduce `h`. Conclude with `int_mul' Mp (int_mul' Mp hA h) hB`. Establish `dA : IsUnit A.det` using `IsUnit.of_mul_eq_one Ai.det (by rw [← Matrix.det_mul, h1, Matrix.det_one])`.
+
+Establish `dB : IsUnit B.det` using `IsUnit.of_mul_eq_one Bi.det (by rw [← Matrix.det_mul, h3, Matrix.det_one])`. Establish `hdet : IsUnit (A * X * B).det ↔ IsUnit X.det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, IsUnit.mul_iff, IsUnit.mul_iff]`. The claim follows by propositional logic. Unfold `clsOf`.
+
+Distinguish the cases in `hX : (∀ a b, X a b ∈ Mp.R) ∧ IsUnit X.det`. Establish `hY : (∀ a b, (A * X * B) a b ∈ Mp.R) ∧ IsUnit (A * X * B).det` using `⟨hint.2 hX.1, hdet.2 hX.2⟩`. Rewrite using `[dif_pos hY, dif_pos hX]`. Use `congr 1`. Apply `Quotient.sound` to reduce the goal to its premises.
+
+Use `set AR := toR Mp A hA`. Use `set AiR := toR Mp Ai hAi`. Use `set BR := toR Mp B hB`. Use `set BiR := toR Mp Bi hBi`. Use `set XR : Matrix (Fin (m + 1)) (Fin (m + 1)) Mp.R := Matrix.of fun a b => ⟨X a b, hX.1 a b⟩`.
+
+Use `set YR : Matrix (Fin (m + 1)) (Fin (m + 1)) Mp.R := Matrix.of fun a b => ⟨(A * X * B) a b, hY.1 a b⟩`. Establish `hXR : XR = toR Mp X hX.1` using `rfl`. Establish `hYR : YR = AR * XR * BR`. Rewrite using `[show YR = toR Mp (A * X * B) hY.1 from rfl, hXR, toR_mul Mp (A * X) B (int_mul' Mp hA hX.1) hB hY.1, toR_mul Mp A X hA hX.1 (int_mul' Mp hA hX.1)]`. Establish `h1R : AR * AiR = 1`.
+
+Rewrite using `[← toR_mul Mp A Ai hA hAi (int_mul' Mp hA hAi)]`. Conclude with `toR_eq_one Mp _ _ h1`. Establish `h2R : AiR * AR = 1`. Rewrite using `[← toR_mul Mp Ai A hAi hA (int_mul' Mp hAi hA)]`. Conclude with `toR_eq_one Mp _ _ h2`.
+
+Establish `h3R : BR * BiR = 1`. Rewrite using `[← toR_mul Mp B Bi hB hBi (int_mul' Mp hB hBi)]`. Conclude with `toR_eq_one Mp _ _ h3`. Set `f : (Fin (m + 1) → Mp.R) ≃ₗ[Mp.R] (Fin (m + 1) → Mp.R)` to `LinearEquiv.ofLinear AiR.mulVecLin AR.mulVecLin (by rw [← Matrix.mulVecLin_mul, h2R, Matrix.mulVecLin_one]) (by rw [← Matrix.mulVecLin_mul, h1R, Matrix.mulVecLin_one])`. Establish `hsurjB : LinearMap.range BR.mulVecLin = ⊤`.
+
+Rewrite using `[LinearMap.range_eq_top]`. Introduce `v`. Use `⟨BiR.mulVecLin v, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← Matrix.mulVecLin_mul, h3R, Matrix.mulVecLin_one, LinearMap.id_apply]`. Establish `hmap : (LinearMap.range YR.mulVecLin).map (f : (Fin (m + 1) → Mp.R) →ₗ[Mp.R] (Fin (m + 1) → Mp.R)) = LinearMap.range XR.mulVecLin`.
+
+Establish `hf : (f : (Fin (m + 1) → Mp.R) →ₗ[Mp.R] (Fin (m + 1) → Mp.R)) = AiR.mulVecLin` using `rfl`. Rewrite using `[hf, ← LinearMap.range_comp, ← Matrix.mulVecLin_mul, hYR, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2R, Matrix.one_mul, Matrix.mulVecLin_mul, LinearMap.range_comp_of_range_eq_top _ hsurjB]`. Establish `hAil : ∀ i, Ai i (Fin.last m) = if i = Fin.last m then 1 else 0`. Introduce `i`. Establish `e` using `congrFun (congrFun h2 i) (Fin.last m)`.
+
+Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last m)]`. Rewrite `e` using `[hAl, if_pos rfl, mul_one]`. Rewrite using `[e, Matrix.one_apply]`. Introduce `k _ hk`. Rewrite using `[hAl, if_neg hk, mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hinv : (A * X * B)⁻¹ = Bi * X⁻¹ * Ai`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.inv_eq_right_inv h3, Matrix.inv_eq_right_inv h1, Matrix.mul_assoc]`. Use `⟨⟨Submodule.Quotient.equiv _ _ f hmap, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Use `show Submodule.Quotient.mk (f (Pi.single (Fin.last m) 1)) = Submodule.Quotient.mk (Pi.single (Fin.last m) 1)`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((AiR *ᵥ Pi.single (Fin.last m) 1) i : E) = ((Pi.single (Fin.last m) (1 : Mp.R) : Fin (m + 1) → Mp.R) i : E)`.
+
+Rewrite using `[Matrix.mulVec_single_one]`. Use `show Ai i (Fin.last m) = _`. Rewrite using `[hAil]`. Distinguish the cases in `hi : i = Fin.last m`. Substitute `hi` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hi, Pi.single_eq_of_ne hi]`. Both sides reduce to the same expression. Introduce `v`. Proceed by induction on `v using Submodule.Quotient.induction_on with`.
+
+Consider the case `H x => show Mp.lam _ (Submodule.Quotient.mk (f x)) = Mp.lam _ (Submodule.Quotient.mk x)`. Simplify using `only [Loc.Model.lam, Submodule.liftQ_apply, Loc.Model.lamRaw, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, LinearMap.proj_apply, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply]`. Use `congr 1`. Establish `hfx : ((Algebra.linearMap Mp.R E).compLeft (Fin (m + 1))) (f x) = Ai *ᵥ ((Algebra.linearMap Mp.R E).compLeft (Fin (m + 1))) x`. Use function extensionality and compare the values at `i`.
+
+Use `show ((AiR *ᵥ x) i : E) = (Ai *ᵥ (fun j => (x j : E))) i`. Rewrite using `[← toR_map Mp Ai hAi]`. Conclude with `RingHom.map_mulVec Mp.R.subtype AiR x i`. Establish `hXm : (Matrix.of fun a b => (⟨X a b, hX.1 a b⟩ : Mp.R)).map Mp.R.subtype = X` using `rfl`. Establish `hYm : (Matrix.of fun a b => (⟨(A * X * B) a b, hY.1 a b⟩ : Mp.R)).map Mp.R.subtype = A * X * B` using `rfl`.
+
+Establish `hBv : ∀ y : Fin (m + 1) → E, (Bi *ᵥ y) (Fin.last m) = y (Fin.last m)`. Introduce `y`. Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (Fin.last m)]`. Rewrite using `[hBl, if_pos rfl, one_mul]`. Introduce `k _ hk`.
+
+Rewrite using `[hBl, if_neg hk, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hXm, hYm, hfx, hinv, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hBv]`. Establish `hY : ¬ ((∀ a b, (A * X * B) a b ∈ Mp.R) ∧ IsUnit (A * X * B).det)` using `fun h => hX ⟨hint.1 h.1, hdet.1 h.2⟩`.
+
+Rewrite using `[dif_neg hY, dif_neg hX]`.
+-/
 theorem clsOf_mul (X A Ai B Bi : Matrix (Fin (m + 1)) (Fin (m + 1)) E)
     (hA : ∀ i j, A i j ∈ Mp.R) (hAi : ∀ i j, Ai i j ∈ Mp.R) (hB : ∀ i j, B i j ∈ Mp.R)
     (hBi : ∀ i j, Bi i j ∈ Mp.R) (h1 : A * Ai = 1) (h2 : Ai * A = 1) (h3 : B * Bi = 1) (h4 : Bi * B = 1)
@@ -172,6 +228,9 @@ section ThInv
 variable {D : Formalism.BasicNotions.D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
   (δ : ∀ p : PlF D, (D.s.atP p).Fp)
 
+/- English proof (translation)
+Unfold `sgnP`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+-/
 theorem permSign_mul_self₂ (p : PlF D) : sgnP (D := D) p * sgnP p = 1 := by
   unfold sgnP
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -179,6 +238,9 @@ theorem permSign_mul_self₂ (p : PlF D) : sgnP (D := D) p * sgnP p = 1 := by
   funext b
   rw [← mul_pow, neg_one_mul, neg_neg, one_pow]
 
+/- English proof (translation)
+Unfold `sgnP`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `Subring.pow_mem _ (Subring.neg_mem _ (Subring.one_mem _)) _`. Conclude with `Subring.zero_mem _`.
+-/
 theorem sgnP_int (p : PlF D) (i j : Fin (D.R.rS + 1)) : sgnP (D := D) p i j ∈ (M p).R := by
   unfold sgnP
   rw [Matrix.diagonal_apply]
@@ -186,6 +248,11 @@ theorem sgnP_int (p : PlF D) (i j : Fin (D.R.rS + 1)) : sgnP (D := D) p i j ∈ 
   · exact Subring.pow_mem _ (Subring.neg_mem _ (Subring.one_mem _)) _
   · exact Subring.zero_mem _
 
+/- English proof (translation)
+Unfold `sgnP`. Rewrite using `[Matrix.diagonal_apply]`. Distinguish the cases in `h : j = Fin.last D.R.rS`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg (Ne.symm h), if_neg h]`.
+-/
 theorem sgnP_last (p : PlF D) (j : Fin (D.R.rS + 1)) :
     sgnP (D := D) p (Fin.last D.R.rS) j = if j = Fin.last D.R.rS then 1 else 0 := by
   unfold sgnP
@@ -195,16 +262,31 @@ theorem sgnP_last (p : PlF D) (j : Fin (D.R.rS + 1)) :
     simp
   · rw [if_neg (Ne.symm h), if_neg h]
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+-/
 theorem one_int (p : PlF D) (i j : Fin (D.R.rS + 1)) : (1 : MatP D p) i j ∈ (M p).R := by
   rw [Matrix.one_apply]
   split_ifs
   · exact Subring.one_mem _
   · exact Subring.zero_mem _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 1, Formalism.L2.SG.Pf.LocOrbCut.intLow_one (M p), Formalism.L2.SG.Pf.LocOrbCut.intUp_one (M p), by rw [Matrix.one_mul, Matrix.mul_one]⟩`.
+-/
 theorem mem_kkOrb_self (p : PlF D) (Y : MatP D p) : Y ∈ kkOrb M p Y :=
   ⟨1, 1, Formalism.L2.SG.Pf.LocOrbCut.intLow_one (M p), Formalism.L2.SG.Pf.LocOrbCut.intUp_one (M p), by
     rw [Matrix.one_mul, Matrix.mul_one]⟩
 
+/- English proof (translation)
+Take `⟨l, ρ, hl, hρ, rfl⟩` from `h`. Unfold `thL`. Use `set C : MatP D p := Matrix.of fun a b => if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then cornerSh δ T T' p w else 0 with hCdef`. Establish `hC1 : l * C * ρ = C` using `Formalism.L2.SG.Pf.LocOrbSumPf.mul_of_mul l ρ _ (Formalism.L2.SG.Pf.LocOrbSumPf.last_of_low l hl.1 hl.2.1) (Formalism.L2.SG.Pf.LocOrbSumPf.last_of_up ρ hρ.1 hρ.2.1)`. Establish `hC2 : C * sgnP p = C`.
+
+Use `Formalism.L2.SG.Pf.LocOrbSumPf.mul_of_mul (1 : MatP D p) (sgnP p) (cornerSh δ T T' p w) (Formalism.L2.SG.Pf.LocOrbSumPf.last_of_low 1 (fun a => Matrix.one_apply_eq a) (fun a b h => Matrix.one_apply_ne (ne_of_lt h))) (sgnP_last p)` as an intermediate fact. Rewrite `this` using `[Matrix.one_mul]`. Conclude with `this`. Establish `e : l * (Y' * sgnP p) * ρ + C = l * ((Y' + C) * sgnP p) * ρ`. Rewrite using `[add_mul, mul_add, add_mul, hC2, hC1]`.
+
+Rewrite using `[e]`. Establish `hli` using `Formalism.L2.SG.Pf.LocOrbCut.intLow_inv (M p) hl`. Establish `hρi` using `Formalism.L2.SG.Pf.LocOrbCut.intUp_inv (M p) hρ`. Establish `dl : l.det = 1` using `Formalism.DoubleCosetMeasures.isLowUni_det _ (Formalism.L2.SG.Pf.LocOrbCut.lowUni_of (M p) hl)`. Establish `dρ : ρ.det = 1` using `Formalism.DoubleCosetMeasures.isUpUni_det _ (Formalism.L2.SG.Pf.LocOrbCut.upUni_of (M p) hρ)`.
+
+Establish `ul : IsUnit l.det` using `by rw [dl]; exact isUnit_one`. Establish `uρ : IsUnit ρ.det` using `by rw [dρ]; exact isUnit_one`. Rewrite using `[clsOf_mul (M p) ((Y' + C) * sgnP p) l l⁻¹ ρ ρ⁻¹ hl.2.2 hli.2.2 hρ.2.2 hρi.2.2 (Matrix.mul_nonsing_inv l ul) (Matrix.nonsing_inv_mul l ul) (Matrix.mul_nonsing_inv ρ uρ) (Matrix.nonsing_inv_mul ρ uρ) (Formalism.L2.SG.Pf.LocOrbSumPf.last_of_low l hl.1 hl.2.1) (Formalism.L2.SG.Pf.Lo …`. Establish `e2 : (Y' + C) * sgnP p = 1 * (Y' + C) * sgnP p` using `by rw [Matrix.one_mul]`. Rewrite using `[e2, clsOf_mul (M p) (Y' + C) 1 1 (sgnP p) (sgnP p) (one_int M p) (one_int M p) (sgnP_int M p) (sgnP_int M p) (Matrix.mul_one 1) (Matrix.mul_one 1) (permSign_mul_self₂ p) (permSign_mul_self₂ p) (Formalism.L2.SG.Pf.LocOrbSumPf.last_of_low 1 (fun a => Matrix.one_apply_eq a) (fun a …`.
+-/
 theorem thL_inv (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (Y Y' : MatP D p)
     (h : Y ∈ kkOrb M p (Y' * sgnP p)) : thL M δ T T' p w Y = thL M δ T T' p w Y' := by
   obtain ⟨l, ρ, hl, hρ, rfl⟩ := h
@@ -242,6 +324,11 @@ theorem thL_inv (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (Y Y'
 variable (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u))
   (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
 
+/- English proof (translation)
+Introduce `hN hrows hRel γ w hγ Z hZ hloc`. Use function extensionality and compare the values at `p`. Establish `hpt` using `ptT_eq hN hrows hγ (hRel γ w hγ)`. Use `show thL M δ (D.mem u).A.T (D.mem u').A.T p (ptT γ) (CntLocal.ZZP (M := M) δ u u' p (zT γ)) = thL M δ (D.mem u).A.T (D.mem u').A.T p w (CntLocal.ZZP (M := M) δ u u' p Z)`. Rewrite using `[hpt]`.
+
+Establish `hl : kkOrb M p (CntLocal.ZZP (M` using `M) δ u u' p (zT γ) * sgnP p) = kkOrb M p (CntLocal.ZZP (M := M) δ u u' p Z * sgnP p) := congrFun hloc p`. Establish `hmem : CntLocal.ZZP (M` using `M) δ u u' p Z * sgnP p ∈ kkOrb M p (CntLocal.ZZP (M := M) δ u u' p (zT γ) * sgnP p) := by`. Rewrite using `[hl]`. Conclude with `mem_kkOrb_self M p _`. Rewrite using `[← thL_inv M δ _ _ p w _ _ hmem, thL_inv M δ _ _ p w _ _ (mem_kkOrb_self M p (CntLocal.ZZP (M := M) δ u u' p Z * sgnP p))]`.
+-/
 theorem theta_of_tuple : ThOfTup M δ u u' F0 what₂ := by
   intro hN hrows hRel γ w hγ Z hZ hloc
   funext p
@@ -258,6 +345,11 @@ theorem theta_of_tuple : ThOfTup M δ u u' F0 what₂ := by
   rw [← thL_inv M δ _ _ p w _ _ hmem,
     thL_inv M δ _ _ p w _ _ (mem_kkOrb_self M p (CntLocal.ZZP (M := M) δ u u' p Z * sgnP p))]
 
+/- English proof (translation)
+Introduce `w Z hZ p hcls`. Establish `hrep : repL M δ (D.mem u).A.T (D.mem u').A.T p w (tupZ M δ u u' Z p) = hcls.choose` using `dif_pos hcls`. Take `⟨-, -, hO⟩` from `hcls.choose_spec`. Rewrite using `[hrep]`. Establish `hmem : hcls.choose ∈ kkOrb M p (CntLocal.ZZP (M` using `M) δ u u' p Z * sgnP p) := by`.
+
+Establish `h` using `mem_kkOrb_self M p hcls.choose`. Rewrite `h` using `[← hO]`. Conclude with `h`. Conclude with `thL_inv M δ _ _ p w _ _ hmem`.
+-/
 theorem theta_of_class : ThOfCls M δ u u' := by
   intro w Z hZ p hcls
   have hrep : repL M δ (D.mem u).A.T (D.mem u').A.T p w (tupZ M δ u u' Z p) = hcls.choose := dif_pos hcls
@@ -277,6 +369,9 @@ variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP 
   {δ : ∀ p : PlF D, (D.s.atP p).Fp} {L : CntLocal.LocSp D M} {u u' : D.what₂.Word}
   {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
+/- English proof (translation)
+The claim follows from `fiberCount_of hA hT hPH hU hR hrows hN hRel (Formalism.L2.SG.Pf.pcount_restr hA hrows hN) hE hTS (theta_of_tuple M δ u u' F0 what₂) (theta_of_class M δ u u') hFS hNN hDT (leadingMinors_of_matrix u u') hEP`.
+-/
 theorem fiberCount_of_rest {θ0 : ∀ p, Option ((M p).Cls D.R.rS)}
     (hA : ∀ p, Agree δ M p) (hT : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2])
     (hPH : PrimeHyp D u (Tu D u')) (hU : LocUnram M δ u u' θ0) (hR : ThRestricted M δ u u' F0 what₂ θ0)

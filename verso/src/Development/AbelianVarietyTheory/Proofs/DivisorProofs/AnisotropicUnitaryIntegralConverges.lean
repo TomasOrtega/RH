@@ -16,6 +16,21 @@ noncomputable section
 
 namespace GlobalTheory.ThK.LiftContDef
 
+/- English proof (translation)
+Establish `hle : μ 𝓕 ≤ μ C`. Rewrite using `[h𝓕.measure_eq_tsum C]`. Use `le_trans (measure_mono ?_) (measure_iUnion_le _)` and prove the remaining obligations. Introduce `h hh`. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov h`.
+
+Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨c, hc, rfl⟩, hh⟩`. Establish `hfin : μ 𝓕 < ⊤` using `hle.trans_lt hC.measure_lt_top`. Establish `hint : ∀ p, IntegrableOn (fun g => K g p) 𝓕 μ` using `fun p => by`. Establish `hF : Continuous fun g => K g p` using `hK.comp (continuous_id.prodMk continuous_const)`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hF.continuousOn`.
+
+Use `Measure.integrableOn_of_bounded (M := M) hfin.ne hF.aestronglyMeasurable (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov h`. Rewrite using `[hinv γ hγ]`. Conclude with `hM c hc`. Use `continuous_iff_continuousAt.2 fun p₀ => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations.
+
+Establish `hm : 0 ≤ μ.real 𝓕` using `measureReal_nonneg`. Establish `hδ : 0 < ε / (μ.real 𝓕 + 1)` using `by positivity`. Establish `hcl : ∀ᶠ p in 𝓝 p₀, ∀ g ∈ C, ‖K g p - K g p₀‖ < ε / (μ.real 𝓕 + 1)`. Use `hC.eventually_forall_of_forall_eventually (P := fun p g => ‖K g p - K g p₀‖ < ε / (μ.real 𝓕 + 1)) fun g _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun z : P × Gr => K z.2 z.1` using `hK.comp (continuous_snd.prodMk continuous_fst)`.
+
+Establish `h2 : Continuous fun z : P × Gr => K z.2 p₀` using `hK.comp (continuous_snd.prodMk continuous_const)`. Establish `hc : Continuous fun z : P × Gr => ‖K z.2 z.1 - K z.2 p₀‖` using `(h1.sub h2).norm`. Conclude with `hc.continuousAt.eventually_lt continuousAt_const (by simpa using hδ)`. Use `filter_upwards [hcl] with p hp`. Establish `hp' : ∀ g, ‖K g p - K g p₀‖ ≤ ε / (μ.real 𝓕 + 1)` using `fun g => by`.
+
+Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov g`. Rewrite using `[hinv γ hγ, hinv γ hγ]`. Conclude with `(hp c hc).le`. Rewrite using `[dist_eq_norm, ← integral_sub (hint p) (hint p₀)]`. Use `lt_of_le_of_lt (norm_setIntegral_le_of_norm_le_const hfin fun g _ => hp' g) ?_` and prove the remaining obligations.
+
+Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem continuous_setIntegral_cocompact {Gr P : Type} [Group Gr] [TopologicalSpace Gr] [IsTopologicalGroup Gr]
     [MeasurableSpace Gr] [BorelSpace Gr] [TopologicalSpace P] (Γ : Subgroup Gr) [Countable Γ] (μ : Measure Gr)
     [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ] (𝓕 C : Set Gr) (h𝓕 : IsFundamentalDomain Γ 𝓕 μ)
@@ -59,6 +74,15 @@ theorem continuous_setIntegral_cocompact {Gr P : Type} [Group Gr] [TopologicalSp
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hW : GlobalTheory.SiegelSet.IsWittFrame σ (c • J.map σ) (0 : Matrix (Fin n) (Fin 0) E) 0` using `⟨Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, fun z _ _ hz => han z (by`. Establish `e : hE σ (c • J.map σ) z z = c * hE σ (J.map σ) z z`. Simplify using `only [hE, Formalism.UG.hform, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hz` using `[e]`. Rewrite using `[GlobalTheory.ThK.AnConv.form_eq hσ, (mul_eq_zero.1 hz).resolve_left hc, map_zero])⟩`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.SiegelSet.Model.compact_quotient hP hcm hJ hW`. Set `e : UA σ J ≃* GAd σ (c • J.map σ)` to `MulEquiv.subgroupCongr (GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := J) hσ hc)`.
+
+Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Use `⟨e.symm '' C, hC.image he', fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, hgs⟩` from `hcov (e g)`. Take `⟨u, -, hu⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hγ)`. Use `⟨e.symm γ, Subgroup.mem_subgroupOf.2 ⟨u, hu⟩, e.symm s, ⟨s, hs, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_mul, ← hgs, MulEquiv.symm_apply_apply]`.
+-/
 theorem cocompact_of_aniso (hP : GlobalTheory.Published.SiegelSetUnitary) (hcm : IsCMExt F E σ) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     {c : E} (hc : c ≠ 0) (hJ : IsHermND σ (c • J.map σ)) (han : ∀ x, form σ J x x = 0 → x = 0) :
     ∃ C : Set (UA σ J), IsCompact C ∧ ∀ h : UA σ J, ∃ γ ∈ ratU σ J, ∃ s ∈ C, h = γ * s := by
@@ -81,6 +105,11 @@ theorem cocompact_of_aniso (hP : GlobalTheory.Published.SiegelSetUnitary) (hcm :
   refine ⟨e.symm γ, Subgroup.mem_subgroupOf.2 ⟨u, hu⟩, e.symm s, ⟨s, hs, rfl⟩, ?_⟩
   rw [← map_mul, ← hgs, MulEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨hs, A, hA⟩` from `h`. Use `⟨by omega, A.submatrix id Sum.swap, ?_⟩` and prove the remaining obligations. Use extensionality with `(i | i) (j | j)`. Conclude with `i.elim0`. Conclude with `i.elim0`.
+
+Conclude with `j.elim0`. Use `congrFun (congrFun hA (Sum.inl i)) (Sum.inl j)` as an intermediate fact. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply] at this`. Simplify using `only [Matrix.fromBlocks_apply₂₂, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply, id, Sum.swap_inr, Matrix.neg_apply, mul_neg, Finset.sum_neg_distrib, neg_mul, this]`.
+-/
 theorem hasSig_neg {n r : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r 0) : HasSig (-M) 0 r := by
   obtain ⟨hs, A, hA⟩ := h
   refine ⟨by omega, A.submatrix id Sum.swap, ?_⟩
@@ -93,6 +122,15 @@ theorem hasSig_neg {n r : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r 
     simp only [Matrix.fromBlocks_apply₂₂, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply,
       Matrix.submatrix_apply, id, Sum.swap_inr, Matrix.neg_apply, mul_neg, Finset.sum_neg_distrib, neg_mul, this]
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Set `τ : E →+* ℂ` to `(B.emb w).1`. Establish `hcm : ∀ z : E, τ (σ z) = star (τ z)` using `fun z => hB.cm.2.2.2 τ z`. Establish `hy : (fun i => τ (x i)) ⬝ᵥ (X.J.map τ) *ᵥ star (fun i => τ (x i)) = 0`.
+
+Use `congrArg τ hx` as an intermediate fact. Rewrite `this` using `[map_zero]`. Establish `hs : (star fun i => τ (x i)) = τ ∘ fun i => σ (x i)`. Use extensionality with `i`. Simplify using `[hcm]`.
+
+Rewrite using `[← this, hs, form, RingHom.map_dotProduct]`. Use `show (τ ∘ x) ⬝ᵥ _ = (τ ∘ x) ⬝ᵥ _`. Use `congr 1`. Use extensionality with `i`. Conclude with `(RingHom.map_mulVec τ X.J _ i).symm`.
+
+Establish `hy' : (fun i => τ (x i)) ⬝ᵥ (-(Complex.I • X.J.map τ)) *ᵥ star (fun i => τ (x i)) = 0`. Rewrite using `[Matrix.neg_mulVec, Matrix.smul_mulVec, dotProduct_neg, dotProduct_smul, hy, smul_zero, neg_zero]`. Use `GlobalTheory.ThK.AnConv.aniso_sig (hasSig_neg (h.sig w)) _ hy'` as an intermediate fact. Use function extensionality and compare the values at `i`. Conclude with `τ.injective (by simpa using congrFun this i)`.
+-/
 theorem aniso_skew {n r : ℕ} (B : Base F E) (hB : B.IsGood σ) (X : Spc F E n) (h : X.IsSkew σ B r 0) :
     ∀ x, form σ X.J x x = 0 → x = 0 := by
   intro x hx
@@ -115,12 +153,28 @@ theorem aniso_skew {n r : ℕ} (B : Base F E) (hB : B.IsGood σ) (X : Spc F E n)
   funext i
   exact τ.injective (by simpa using congrFun this i)
 
+/- English proof (translation)
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, -, φ, hSB, hev, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hM.std).mono fun v h => h.1.trans h.2)`.
+-/
 theorem polData_le_schA {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F E) (M : Model σ X W)
     (hM : M.IsGood B.ψ) : PolData B M ≤ schA F (Fin n × Fin d) := by
   refine Submodule.span_le.mpr ?_
   rintro Φ ⟨f, -, φ, hSB, hev, rfl⟩
   exact GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hM.std).mono fun v h => h.1.trans h.2)
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hp hq μ 𝓕 hμ h𝓕 Φ₂ hΦ₂ Ψ' hΨ'`. Establish `hT` using `hM.triple`. Establish `hcm` using `hT.base.cm`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hb` using `(GlobalTheory.T.theta_basic_properties hKP.base F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ (Check.isPair_of_isTriple hT).2).1`.
+
+Take `⟨c₁, i₁, -⟩` from `hb Ψ' (polData_le_schA B G.M' hT.geo.hM' (Submodule.mem_inf.1 hΨ').1)`. Take `⟨c₂, i₂, -⟩` from `hb Φ₂ (polData_le_schA B G.M' hT.geo.hM' (Submodule.mem_inf.1 hΦ₂).1)`. Establish `hV'` using `hT.geo.hV'`. Rewrite `hV'` using `[hq]`. Establish `hW` using `hT.geo.hW`.
+
+Rewrite `hW` using `[hp, hq]`. Take `⟨C₁, hC₁, hcov₁⟩` from `cocompact_of_aniso hKP.siegelSetUnitary hcm G.V'.J (one_ne_zero : (1 : E) ≠ 0) (by rw [one_smul]; exact GlobalTheory.UnitaryVol.isHermND_map hσ hV') (GlobalTheory.ThK.AnConv.aniso_herm B hT.base G.V' hV')`. Take `⟨c, hc, hσc⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hcm`. Take `⟨C₂, hC₂, hcov₂⟩` from `cocompact_of_aniso hKP.siegelSetUnitary hcm G.W.J hc (GlobalTheory.ThK.SqIntHerm.isHermND_smul_map F E σ B _ G.W _ _ hW c hc hσc) (aniso_skew B hT.base G.W hW)`. Take `⟨hTG, -, -, -⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ a' G.V'.J`.
+
+Take `⟨hTG', -, -, -⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (a + a') G.W.J`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI := hT.geo.hM'.haar`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ G.V'.J`.
+
+Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ G.W.J`. Establish `hI : Continuous (G.M'.I om' Ψ')` using `continuous_setIntegral_cocompact (ratU σ G.V'.J) G.M'.μ G.M'.dom C₁ hT.geo.hM'.dom hC₁ hcov₁ (fun g h => theta om' Ψ' g h) c₁ fun γ hγ g h => by simpa using i₁ γ hγ 1 (one_mem _) g h`. Establish `hIinv : ∀ γ ∈ ratU σ G.W.J, ∀ h, G.M'.I om' Ψ' (γ * h) = G.M'.I om' Ψ' h` using `fun γ hγ h => by`. Establish `e : ∀ g, theta om' Ψ' g (γ * h) = theta om' Ψ' g h` using `fun g => by`. Simplify using `using i₁ 1 (one_mem _) γ hγ g h`.
+
+Simplify using `only [Model.I, e]`. Conclude with `continuous_setIntegral_cocompact (ratU σ G.W.J) μ 𝓕 C₂ h𝓕 hC₂ hcov₂ (fun h g => G.M'.I om' Ψ' h * starRingEnd ℂ (theta om' Φ₂ g h)) ((hI.comp continuous_fst).mul (Complex.continuous_conj.comp (c₂.comp (continuous_snd.prodMk continuous_fst)))) fun γ hγ h g => by`. Establish `e : theta om' Φ₂ g (γ * h) = theta om' Φ₂ g h` using `by simpa using i₂ 1 (one_mem _) γ hγ g h`. Simplify using `only [hIinv γ hγ h, e]`.
+-/
 theorem continuous_liftW_small : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.p = 0 → G.q = 0 →
     ∀ (μ : Measure (UA σ G.W.J)) (𝓕 : Set (UA σ G.W.J)), μ.IsHaarMeasure → IsFundamentalDomain (ratU σ G.W.J) 𝓕 μ →

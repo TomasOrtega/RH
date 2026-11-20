@@ -4,6 +4,19 @@ open Complex
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `I T K f g c hK hd h`. Distinguish the cases in `h0 : ∀ i w, T < w.im → g i w = 0`. Use `⟨K, by simp [abs_of_pos hK], fun i w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[(h i w hw).1, h0 i w hw]`. Simplify using the standard rewrite rules.
+
+Use `push_neg at h0`. Take `⟨i₀, w₀, hw₀, hg₀⟩` from `h0`. Establish `hU : IsOpen {w : ℂ | T < w.im}` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `hUc : IsPreconnected {w : ℂ | T < w.im}` using `(convex_halfSpace_im_gt T).isPreconnected`. Establish `hca : ContinuousAt (g i₀) w₀` using `(hd i₀).2.continuousOn.continuousAt (hU.mem_nhds hw₀)`.
+
+Establish `hev : ∀ᶠ w in nhds w₀, T < w.im ∧ g i₀ w ≠ 0` using `(hU.eventually_mem hw₀).and (hca.eventually_ne hg₀)`. Take `⟨r, hr, hB⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Establish `hsub : Metric.ball w₀ r ⊆ {w : ℂ | T < w.im}` using `fun w hw => (hB w hw).1`. Establish `hcq : ∀ w ∈ Metric.ball w₀ r, c w = f i₀ w / g i₀ w` using `fun w hw => by`. Rewrite using `[(h i₀ w (hB w hw).1).1, mul_div_cancel_right₀ _ (hB w hw).2]`.
+
+Establish `hcd : DifferentiableOn ℂ c (Metric.ball w₀ r)` using `(((hd i₀).1.mono hsub).div ((hd i₀).2.mono hsub) fun w hw => (hB w hw).2).congr hcq`. Establish `hcn : ∀ w ∈ Metric.ball w₀ r, ‖c w‖ = K` using `fun w hw => by`. Rewrite using `[hcq w hw, norm_div, (h i₀ w (hB w hw).1).2, mul_div_cancel_right₀ _ (norm_ne_zero_iff.2 (hB w hw).2)]`. Establish `hm : w₀ ∈ Metric.ball w₀ r` using `Metric.mem_ball_self hr`. Establish `hconst` using `Complex.eqOn_of_isPreconnected_of_isMaxOn_norm (convex_ball w₀ r).isPreconnected Metric.isOpen_ball hcd hm (fun w hw => by show ‖c w‖ ≤ ‖c w₀‖`.
+
+Rewrite using `[hcn w hw, hcn w₀ hm])`. Use `⟨c w₀, hcn w₀ hm, fun i w hw => ?_⟩` and prove the remaining obligations. Establish `ha : AnalyticOnNhd ℂ (f i) {w : ℂ | T < w.im}` using `(hd i).1.analyticOnNhd hU`. Establish `hb : AnalyticOnNhd ℂ (fun w => c w₀ * g i w) {w : ℂ | T < w.im}` using `((hd i).2.const_mul (c w₀)).analyticOnNhd hU`. Establish `he : f i =ᶠ[nhds w₀] fun w => c w₀ * g i w` using `by filter_upwards [Metric.ball_mem_nhds w₀ hr] with z hz`.
+
+Rewrite using `[(h i z (hB z hz).1).1, hconst hz]`. Both sides reduce to the same expression. Conclude with `ha.eqOn_of_preconnected_of_eventuallyEq hb hUc hw₀ he hw`.
+-/
 theorem exists_const_ratio_of_norm_eq :
     ∀ (I : Type) (T K : ℝ) (f g : I → ℂ → ℂ) (c : ℂ → ℂ), 0 < K →
       (∀ i, DifferentiableOn ℂ (f i) {w | T < w.im} ∧ DifferentiableOn ℂ (g i) {w | T < w.im}) →

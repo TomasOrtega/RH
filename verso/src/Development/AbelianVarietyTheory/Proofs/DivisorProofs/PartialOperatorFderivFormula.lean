@@ -14,6 +14,9 @@ namespace GlobalTheory.SliceOpDeriv
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
   {κ κ' κ₁' : Type} [Fintype κ] [Fintype κ'] [Fintype κ₁']
 
+/- English proof (translation)
+Establish `e : (padL (κ'` using `κ') (h + h') : κ ⊕ κ' → V) = padL h + padL h' := by`. Apply the tactic sequence `funext i; cases i <;> simp [padL]`. Use extensionality with `z`. Rewrite using `[SchwartzMap.add_apply, pd_apply, pd_apply, pd_apply, e, map_add]`.
+-/
 theorem pd_padL_add (f : SchwartzMap (κ ⊕ κ' → V) ℂ) (h h' : κ → V) :
     pd (padL (κ' := κ') (h + h')) f = pd (padL h) f + pd (padL h') f := by
   have e : (padL (κ' := κ') (h + h') : κ ⊕ κ' → V) = padL h + padL h' := by
@@ -21,6 +24,9 @@ theorem pd_padL_add (f : SchwartzMap (κ ⊕ κ' → V) ℂ) (h h' : κ → V) :
   ext z
   rw [SchwartzMap.add_apply, pd_apply, pd_apply, pd_apply, e, map_add]
 
+/- English proof (translation)
+Establish `e : (padL (κ'` using `κ') (c • h) : κ ⊕ κ' → V) = c • padL h := by`. Apply the tactic sequence `funext i; cases i <;> simp [padL]`. Use extensionality with `z`. Rewrite using `[SchwartzMap.smul_apply, pd_apply, pd_apply, e, map_smul, Complex.real_smul, smul_eq_mul]`.
+-/
 theorem pd_padL_smul (f : SchwartzMap (κ ⊕ κ' → V) ℂ) (c : ℝ) (h : κ → V) :
     pd (padL (κ' := κ') (c • h)) f = (c : ℂ) • pd (padL h) f := by
   have e : (padL (κ' := κ') (c • h) : κ ⊕ κ' → V) = c • padL h := by
@@ -43,6 +49,9 @@ def xPart (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) 
     (x : κ → V) (y : κ₁' → V) : (κ → V) →L[ℝ] ℂ :=
   LinearMap.toContinuousLinearMap (xPartL P f x y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xPart_apply (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (f : SchwartzMap (κ ⊕ κ' → V) ℂ)
     (x : κ → V) (y : κ₁' → V) (h : κ → V) :
     xPart P f x y h = P (sliceR (pd (padL (κ' := κ') h) f) x) y := rfl
@@ -55,6 +64,17 @@ open GlobalTheory.SliceSchwartz GlobalTheory.SliceOp
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
   {κ κ' κ₁' : Type} [Fintype κ] [Fintype κ'] [Fintype κ₁']
 
+/- English proof (translation)
+Take `⟨s', C, hC, hP⟩` from `clm_sup_bound P {((0 : ℕ), (0 : ℕ))}`. Use `set M : ℝ := s'.sup (fun m : ℕ × ℕ => SchwartzMap.seminorm ℂ m.1 (m.2 + 2)) f`. Establish `hM : 0 ≤ M` using `by positivity`. Establish `hb : ∀ h : κ → V, ‖P (sliceR f (x + h)) y - P (sliceR f x) y - xPart P f x y h‖ ≤ C * M * ‖h‖ ^ 2`. Introduce `h`.
+
+Use `set D := sliceR f (x + h) - sliceR f x - sliceR (pd (padL (κ' := κ') h) f) x`. Establish `e : P (sliceR f (x + h)) y - P (sliceR f x) y - xPart P f x y h = P D y`. Simplify using `only [D, xPart_apply, map_sub, SchwartzMap.sub_apply]`. Rewrite using `[e]`. Establish `h1 : ‖P D y‖ ≤ ({((0 : ℕ), (0 : ℕ))} : Finset (ℕ × ℕ)).sup (schwartzSeminormFamily ℂ (κ₁' → V) ℂ) (P D)`.
+
+Simplify `SchwartzMap.norm_le_seminorm ℂ (P D) y` using `[schwartzSeminormFamily]`. Establish `h2 : s'.sup (schwartzSeminormFamily ℂ (κ' → V) ℂ) D ≤ ‖h‖ ^ 2 * M`. Use `Seminorm.finset_sup_apply_le (by positivity) fun i hi => ?_` and prove the remaining obligations. Use `(GlobalTheory.SliceTaylor.seminorm_slice_taylor_le V κ κ' f i.1 i.2 x h).trans ?_` and prove the remaining obligations. Use `gcongr`.
+
+Conclude with `Seminorm.le_finset_sup_apply (p := fun m : ℕ × ℕ => (SchwartzMap.seminorm ℂ m.1 (m.2 + 2) : Seminorm ℂ (SchwartzMap (κ ⊕ κ' → V) ℂ))) (x := f) hi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hasFDerivAt_iff_isLittleO_nhds_zero]`. Use `Asymptotics.IsBigO.trans_isLittleO ?_ (Asymptotics.isLittleO_norm_pow_id one_lt_two)` and prove the remaining obligations. Use `Asymptotics.IsBigO.of_bound (C * M) (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Use `(hb h).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (by positivity)]`.
+-/
 theorem hasFDerivAt_sliceR_apply (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (f : SchwartzMap (κ ⊕ κ' → V) ℂ)
     (x : κ → V) (y : κ₁' → V) :
     HasFDerivAt (fun x' => P (sliceR f x') y) (xPart P f x y) x := by
@@ -91,6 +111,11 @@ open GlobalTheory.SliceSchwartz GlobalTheory.SliceOp
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
   {κ κ' κ₁' : Type} [Fintype κ] [Fintype κ'] [Fintype κ₁']
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `inl i => simp only [Sum.elim_inl]`. Use `fun_prop`. Consider the case `inr j => simp only [Sum.elim_inr]`.
+
+Use `fun_prop`.
+-/
 theorem continuous_elim_pair :
     Continuous (fun p : (κ → V) × (κ₁' → V) => (Sum.elim p.1 p.2 : κ ⊕ κ₁' → V)) := by
   refine continuous_pi fun i => ?_
@@ -98,10 +123,18 @@ theorem continuous_elim_pair :
   | inl i => simp only [Sum.elim_inl]; fun_prop
   | inr j => simp only [Sum.elim_inr]; fun_prop
 
+/- English proof (translation)
+Simplify using `[qOp]`.
+-/
 theorem qOp_elim (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (f : SchwartzMap (κ ⊕ κ' → V) ℂ)
     (x : κ → V) (y : κ₁' → V) : qOp P f (Sum.elim x y) = P (sliceR f x) y := by
   simp [qOp]
 
+/- English proof (translation)
+Use `continuous_clm_apply.2 fun h => ?_` and prove the remaining obligations. Establish `e : (fun p : (κ → V) × (κ₁' → V) => xPart P f p.1 p.2 h) = fun p => qOp P (pd (padL (κ'` using `κ') h) f) (Sum.elim p.1 p.2) := by`. Use function extensionality and compare the values at `p`. Rewrite using `[qOp_elim, xPart_apply]`. Rewrite using `[e]`.
+
+Conclude with `(continuous_qOp V κ κ' κ₁' P _).comp continuous_elim_pair`.
+-/
 theorem continuous_xPart (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ)
     (f : SchwartzMap (κ ⊕ κ' → V) ℂ) :
     Continuous (fun p : (κ → V) × (κ₁' → V) => xPart P f p.1 p.2) := by
@@ -112,6 +145,11 @@ theorem continuous_xPart (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap 
   rw [e]
   exact (continuous_qOp V κ κ' κ₁' P _).comp continuous_elim_pair
 
+/- English proof (translation)
+Use `continuous_clm_apply.2 fun w => ?_` and prove the remaining obligations. Establish `e : (fun p : (κ → V) × (κ₁' → V) => fderiv ℝ (P (sliceR f p.1)) p.2 w) = fun p => qOp ((pd w).comp P) f (Sum.elim p.1 p.2)`. Use function extensionality and compare the values at `p`. Rewrite using `[qOp_elim, ContinuousLinearMap.comp_apply, pd_apply]`. Rewrite using `[e]`.
+
+Conclude with `(continuous_qOp V κ κ' κ₁' _ _).comp continuous_elim_pair`.
+-/
 theorem continuous_yPart (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ)
     (f : SchwartzMap (κ ⊕ κ' → V) ℂ) :
     Continuous (fun p : (κ → V) × (κ₁' → V) => fderiv ℝ (P (sliceR f p.1)) p.2) := by
@@ -126,6 +164,9 @@ def splitL : (κ ⊕ κ₁' → V) →L[ℝ] (κ → V) × (κ₁' → V) :=
   (ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : κ ⊕ κ₁' => V) (Sum.inl i)).prod
     (ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : κ ⊕ κ₁' => V) (Sum.inr j))
 
+/- English proof (translation)
+Set `F : (κ → V) → (κ₁' → V) → ℂ` to `fun x y => P (sliceR f x) y`. Establish `key` using `hasStrictFDerivAt_uncurry_coprod (𝕜 := ℝ) (u := splitL s) (f := F) (f₁ := fun x y => xPart P f x y) (f₂ := fun x y => fderiv ℝ (P (sliceR f x)) y) (Filter.Eventually.of_forall fun v => hasFDerivAt_sliceR_apply P f v.1 v.2) (Filter.Eventually.of_forall fun v => ((P (sliceR f v.1)) …`. Establish `h2` using `key.hasFDerivAt.comp s ((splitL (V := V) (κ := κ) (κ₁' := κ₁')).hasFDerivAt (x := s))`. Conclude with `h2`.
+-/
 theorem hasFDerivAt_qOp (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ)
     (f : SchwartzMap (κ ⊕ κ' → V) ℂ) (s : κ ⊕ κ₁' → V) :
     HasFDerivAt (qOp P f)
@@ -143,6 +184,9 @@ theorem hasFDerivAt_qOp (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (
 end GlobalTheory.SliceOpDeriv
 
 open GlobalTheory.SliceSchwartz GlobalTheory.SliceOp in
+/- English proof (translation)
+Introduce `V _ _ _ κ κ' κ₁' _ _ _ P f`. Use `⟨fun s => (GlobalTheory.SliceOpDeriv.hasFDerivAt_qOp P f s).differentiableAt, fun s v => ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.SliceOpDeriv.hasFDerivAt_qOp P f s).fderiv]`. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.coprod_apply]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.SliceOp.differentiable_qOp_and_fderiv : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (κ κ' κ₁' : Type) [Fintype κ] [Fintype κ'] [Fintype κ₁']
     (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (f : SchwartzMap (κ ⊕ κ' → V) ℂ),
     Differentiable ℝ (qOp P f) ∧ ∀ (s v : κ ⊕ κ₁' → V),

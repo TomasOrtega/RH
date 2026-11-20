@@ -18,6 +18,21 @@ namespace GlobalTheory.UPoinc
 
 open GlobalTheory.Poinc.TraitLift in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c C X₁ hcl T ξ hξ hc`. Use `haveI : IsFinite X₁.π := X₁.fin`. Take `⟨hdvr, hcpl, hch⟩` from `T.cdvr`. Use `haveI := hdvr`. Use `haveI := hcpl`.
+
+Use `haveI := hch`. Establish `hgen : (jK T.V ≫ ξ) (closedPoint (FractionRing T.V)) ∈ Set.range X₁.π` using `mem_of_closedPoint _ hcl.isOpen T.V ξ hc _`. Take `⟨L, _, _, _, η, hη⟩` from `exists_finite_point X₁.π (FractionRing T.V) (jK T.V ≫ ξ) hgen`. Take `⟨V₂, _, _, _, j, e, hB, hD, hj, hjl, he⟩` from `exists_closure T.V L`. Establish `hring : (algebraMap V₂ (FractionRing V₂)).comp j = (e.comp (algebraMap (FractionRing T.V) L)).comp (algebraMap T.V (FractionRing T.V))` using `RingHom.ext fun a => (he a).symm`.
+
+Use `haveI : ValuationRing V₂ := inferInstance`. Establish `hsq : (spMap e ≫ η) ≫ X₁.π = jK V₂ ≫ (spMap j ≫ ξ)`. Rewrite using `[Category.assoc, hη, ← Category.assoc, spMap_comp', ← Category.assoc, ← Category.assoc, spMap_comp', show jK V₂ = spMap (algebraMap V₂ (FractionRing V₂)) from rfl, spMap_comp', hring]`. Take `⟨l₁, hl1, -⟩` from `exists_lift_of_isFinite X₁.π V₂ (spMap e ≫ η) (spMap j ≫ ξ) hsq`. Take `⟨T', f'', fK'', hinj'', hloc'', -, hc'', hy''⟩` from `hExt E H Dw l Xo c V₂ hB hD (spMap (e.comp (algebraMap (FractionRing T.V) L)) ≫ T.y)`.
+
+Establish `hring2 : (algebraMap T'.V (FractionRing T'.V)).comp (f''.comp j) = (fK''.comp (e.comp (algebraMap (FractionRing T.V) L))).comp (algebraMap T.V (FractionRing T.V))`. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← hc'', ← he]`. Establish `key : jK T'.V ≫ spMap (f''.comp j) = spMap (fK''.comp (e.comp (algebraMap (FractionRing T.V) L))) ≫ jK T.V`.
+
+Rewrite using `[show jK T'.V = spMap (algebraMap T'.V (FractionRing T'.V)) from rfl, show jK T.V = spMap (algebraMap T.V (FractionRing T.V)) from rfl, spMap_comp', spMap_comp', hring2]`. Use `haveI := hloc''`. Use `⟨T', f''.comp j, fK''.comp (e.comp (algebraMap (FractionRing T.V) L)), spMap f'' ≫ l₁, hinj''.comp hj, inferInstance, fun a => (RingHom.congr_fun hring2 a).symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy'', ← Category.assoc, spMap_comp']`. Rewrite using `[Category.assoc, hl1, ← Category.assoc, spMap_comp']`.
+
+Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, hl1, ← spMap_comp', Category.assoc]`. Use `_ = spMap (fK''.comp (e.comp (algebraMap (FractionRing T.V) L))) ≫ jK T.V ≫ ξ := by`. Rewrite using `[← Category.assoc, key, Category.assoc]`.
+
+Use `_ = T'.y ≫ C.i := by`. Rewrite using `[← hξ, hy'', ← spMap_comp']`. Simplify using `only [Category.assoc]`.
+-/
 theorem exists_uTrait_lift_setup (hExt : UTraitExtSt) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C), IsClopen (Set.range X₁.π) → ∀ (T : UTrait Xo c) (ξ : Sp T.V ⟶ C.Z), T.y ≫ C.i = jK T.V ≫ ξ → ξ (closedPoint T.V) ∈ Set.range X₁.π → ∃ (T' : UTrait Xo c) (f : T.V →+* T'.V) (fK : FractionRing T.V →+* FractionRing T'.V) (ξ₁ : Sp T'.V ⟶ X₁.M.Z), Function.Injective f ∧ IsLocalHom f ∧ (∀ a, fK (algebraMap T.V (FractionRing T.V) a) = algebraMap T'.V (FractionRing T'.V) (f a)) ∧ T'.y = spMap fK ≫ T.y ∧ spMap f ≫ ξ = ξ₁ ≫ X₁.π ∧ T'.y ≫ C.i = jK T'.V ≫ ξ₁ ≫ X₁.π := by
   intro E _ _ _ H Dw l Xo c C X₁ hcl T ξ hξ hc
   haveI : IsFinite X₁.π := X₁.fin
@@ -61,6 +76,9 @@ theorem exists_uTrait_lift_setup (hExt : UTraitExtSt) : ∀ (E : Type) [Field E]
           rw [← hξ, hy'', ← spMap_comp']
           simp only [Category.assoc]
 
+/- English proof (translation)
+The claim follows from `exists_uTrait_lift_setup GlobalTheory.T.exists_unitaryTrait_through_moduliGenericPoint`.
+-/
 theorem uTraitLift_setup : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C), IsClopen (Set.range X₁.π) → ∀ (T : UTrait Xo c) (ξ : Sp T.V ⟶ C.Z), T.y ≫ C.i = jK T.V ≫ ξ → ξ (closedPoint T.V) ∈ Set.range X₁.π → ∃ (T' : UTrait Xo c) (f : T.V →+* T'.V) (fK : FractionRing T.V →+* FractionRing T'.V) (ξ₁ : Sp T'.V ⟶ X₁.M.Z), Function.Injective f ∧ IsLocalHom f ∧ (∀ a, fK (algebraMap T.V (FractionRing T.V) a) = algebraMap T'.V (FractionRing T'.V) (f a)) ∧ T'.y = spMap fK ≫ T.y ∧ spMap f ≫ ξ = ξ₁ ≫ X₁.π ∧ T'.y ≫ C.i = jK T'.V ≫ ξ₁ ≫ X₁.π :=
   exists_uTrait_lift_setup GlobalTheory.T.exists_unitaryTrait_through_moduliGenericPoint
 

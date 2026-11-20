@@ -6,6 +6,11 @@ namespace Formalism.MainNotions.LatticeGluingRadicals
 open NumberField
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Establish `hloc : IsLocalization (Algebra.algebraMapSubmonoid (𝓞 E) ℤ⁰) E` using `IsIntegralClosure.isLocalization ℤ ℚ E (𝓞 E)`. Take `⟨⟨b, hb⟩, hf⟩` from `IsLocalization.exist_integer_multiples_of_finite (Algebra.algebraMapSubmonoid (𝓞 E) ℤ⁰) f`. Take `⟨m, hm, rfl⟩` from `hb`. Use `⟨m, nonZeroDivisors.ne_zero hm, fun i => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hf i`.
+
+Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, Algebra.smul_def]`. Simplify using the standard rewrite rules.
+-/
 theorem common_int_denomL {E : Type} [Field E] [NumberField E] {k : ℕ} (f : Fin k → E) :
     ∃ m : ℤ, m ≠ 0 ∧ ∀ i, ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = (m : E) * f i := by
   have hloc : IsLocalization (Algebra.algebraMapSubmonoid (𝓞 E) ℤ⁰) E :=
@@ -19,6 +24,15 @@ theorem common_int_denomL {E : Type} [Field E] [NumberField E] {k : ℕ} (f : Fi
   rw [hr, Algebra.smul_def]
   simp
 
+/- English proof (translation)
+Take `⟨k, f, g, hsum⟩` from `Submodule.mem_span_set'.mp hx`. Take `⟨m, hm0, hr⟩` from `common_int_denomL f`. Use `choose r hr using hr`. Establish `hmx : m • x ∈ M`. Establish `hcomb : m • x = ∑ i, r i • (g i : V)`.
+
+Rewrite using `[← hsum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul E (r i) (g i : V), hr i, mul_smul, Int.cast_smul_eq_zsmul]`. Rewrite using `[hcomb]`. Conclude with `Submodule.sum_mem _ fun i _ => M.smul_mem _ (g i).2`.
+
+Establish `key : ((m.natAbs : ℤ)) • x ∈ M`. Break down `Int.natAbs_eq m with h | h` into its components or cases. Rewrite using `[← h]` and apply the resulting hypothesis. Rewrite `hmx` using `[h, neg_smul]`. Conclude with `M.neg_mem_iff.mp hmx`.
+
+Use `⟨m.natAbs, Int.natAbs_pos.mpr hm0, ?_⟩` and prove the remaining obligations. Rewrite `key` using `[natCast_zsmul]`. Then use the resulting hypothesis.
+-/
 theorem j_exists_nat_smul_memL {E : Type} [Field E] [NumberField E] {V : Type}
     [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
     (M : Submodule (𝓞 E) V) {x : V} (hx : x ∈ Submodule.span E (M : Set V)) :
@@ -41,6 +55,9 @@ theorem j_exists_nat_smul_memL {E : Type} [Field E] [NumberField E] {V : Type}
   refine ⟨m.natAbs, Int.natAbs_pos.mpr hm0, ?_⟩
   rwa [natCast_zsmul] at key
 
+/- English proof (translation)
+Take `⟨n, hn, hnx⟩` from `j_exists_nat_smul_memL M hx`. Use `⟨(n : 𝓞 E), Nat.cast_ne_zero.mpr hn.ne', ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]` and apply the resulting hypothesis.
+-/
 theorem m_exists_smul_memL {E : Type} [Field E] [NumberField E] [StarRing E]
     {S : Formalism.BasicNotions.HSpace E} (M : Submodule (𝓞 E) S.V) {x : S.V}
     (hx : x ∈ Submodule.span E (M : Set S.V)) : ∃ d : 𝓞 E, d ≠ 0 ∧ d • x ∈ M := by
@@ -48,11 +65,17 @@ theorem m_exists_smul_memL {E : Type} [Field E] [NumberField E] [StarRing E]
   refine ⟨(n : 𝓞 E), Nat.cast_ne_zero.mpr hn.ne', ?_⟩
   rwa [Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+The claim follows from `m_exists_smul_memL Λ (by rw [hΛ.span_eq_top]; exact Submodule.mem_top)`.
+-/
 theorem c_lat_multL {E : Type} [Field E] [NumberField E] [StarRing E]
     {S : Formalism.BasicNotions.HSpace E} {Λ : Submodule (𝓞 E) S.V} (hΛ : Submodule.IsLattice E Λ)
     (v : S.V) : ∃ n : 𝓞 E, n ≠ 0 ∧ n • v ∈ Λ :=
   m_exists_smul_memL Λ (by rw [hΛ.span_eq_top]; exact Submodule.mem_top)
 
+/- English proof (translation)
+The claim follows from `c_lat_multL hΛ x`.
+-/
 theorem a_exists_smul_memL {E : Type} [Field E] [NumberField E] [StarRing E]
     {S : Formalism.BasicNotions.HSpace E} (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ)
     (x : S.V) : ∃ c : 𝓞 E, c ≠ 0 ∧ c • x ∈ Λ :=

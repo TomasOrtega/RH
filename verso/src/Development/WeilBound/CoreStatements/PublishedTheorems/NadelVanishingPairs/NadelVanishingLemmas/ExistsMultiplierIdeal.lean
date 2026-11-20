@@ -13,12 +13,20 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 
 namespace GlobalTheory.MultIdealExists
 
+/- English proof (translation)
+Take `⟨N, i, hi, rfl⟩` from `h`. Use `isProper_str R N` as an intermediate fact. Use `infer_instance`.
+-/
 theorem isProper_of_isProjOver' {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
     (h : IsProjOver f) : IsProper f := by
   obtain ⟨N, i, hi, rfl⟩ := h
   have := isProper_str R N
   infer_instance
 
+/- English proof (translation)
+Introduce `k _ _ X _ p n hp η m G Y _ _ s _ K B hη hm hres`. Use `haveI : SmoothOfRelativeDimension n (s ≫ p) := hres.smooth`. Use `haveI : IsProper (s ≫ p) := isProper_of_isProjOver' hres.proj`. Use `haveI : IsProper p := isProper_of_isProjOver' hp`. Use `haveI : QuasiCompact s := QuasiCompact.of_comp s p`.
+
+Take `⟨F, hF, -⟩` from `GlobalTheory.T.exists_rounded_down_divisor k Y (s ≫ p) n hres.proj (pullCart s G - m • K) m`. Take `⟨J, hJ⟩` from `GlobalTheory.T.exists_pushforward_regular_ideal X Y s (-F)`. Conclude with `⟨J, (GlobalTheory.T.multiplier_ideal_independent k X p n hp η m G Y s K B F hη hm hres hF J).2 hJ⟩`.
+-/
 theorem exists_isMultIdeal : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → ∀ (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y), η ≠ 0 → 0 < m → IsLogRes p n η m G s K B → ∃ J : X.IdealSheafData, IsMultIdeal p n η m G J := by
   intro k _ _ X _ p n hp η m G Y _ _ s _ K B hη hm hres
   haveI : SmoothOfRelativeDimension n (s ≫ p) := hres.smooth

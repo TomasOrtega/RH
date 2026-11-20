@@ -4,12 +4,22 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Wign
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `hs : Continuous (sInf E : Cinf E → Ad E)` using `(GlobalTheory.CuspRep.continuous_infEq E).prodMk continuous_const`. Conclude with `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map hs))`.
+-/
 private theorem op_cont_inf (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) :
     Continuous (infGL E a) := by
   have hs : Continuous (sInf E : Cinf E → Ad E) := (GlobalTheory.CuspRep.continuous_infEq E).prodMk continuous_const
   exact Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map hs))
 
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+Set `c : ℝ → GL (Fin a) (Cinf E)` to `fun t => (Matrix.isUnit_exp (t • Y)).unit`. Establish `hc : ∀ t, (c t).val = NormedSpace.exp (t • Y)` using `fun t => rfl`. Establish `h0 : c 0 = 1` using `Units.ext (by simp [c])`. Establish `hadd : ∀ s t, c (s + t) = c s * c t` using `fun s t => Units.ext (by`. Rewrite using `[Units.val_mul, hc, hc, hc, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Y).smul_left s).smul_right t)])`.
+
+Establish `hv : Continuous fun t : ℝ => NormedSpace.exp (t • Y)` using `continuous_iff_continuousAt.2 fun t => (hasDerivAt_exp_smul_const (𝕂 := ℝ) Y t).continuousAt`. Establish `hinv : ∀ t, (c t)⁻¹ = c (-t)` using `fun t => inv_eq_of_mul_eq_one_right (by rw [← hadd, add_neg_cancel, h0])`. Use `⟨c, h0, hadd, Units.continuous_iff.2 ⟨hv, ?_⟩, ?_, hc⟩` and prove the remaining obligations. Simplify using `only [hinv, hc]`. Conclude with `hv.comp continuous_neg`.
+
+Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) Y 0`. Rewrite `h` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `h`.
+-/
 private theorem exists_one_parameter_exp {E : Type} [Field E] [NumberField E] {a : ℕ} (Y : Matrix (Fin a) (Fin a) (Cinf E)) :
     ∃ c : ℝ → GL (Fin a) (Cinf E), c 0 = 1 ∧ (∀ s t, c (s + t) = c s * c t) ∧ Continuous c ∧
       HasDerivAt (fun t => toL (c t).val) (toL Y) 0 ∧ ∀ t : ℝ, (c t).val = NormedSpace.exp (t • Y) := by
@@ -30,6 +40,9 @@ private theorem exists_one_parameter_exp {E : Type} [Field E] [NumberField E] {a
     rw [zero_smul, NormedSpace.exp_zero, one_mul] at h
     exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ a X`. Take `⟨c, h0, hadd, hc, hd, he⟩` from `exists_one_parameter_exp (E := E) (Matrix.of X)`. Conclude with `⟨c, h0, hadd, (op_cont_inf E a).comp hc, hd, he⟩`.
+-/
 theorem UpperTheory.V.Lit.Bor.oneParam :
     UpperTheory.V.Lit.Bor.OneParam := by
   intro E _ _ _ a X

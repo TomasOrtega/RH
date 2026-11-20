@@ -14,16 +14,25 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Simplify using `[chartMonomial, pow_add, Finset.prod_mul_distrib]`.
+-/
 theorem chartMonomial_add (c : (k : ι) → Fin (n k + 1)) (e e' : ι → ℕ) :
     chartMonomial c (e + e') = chartMonomial c e * chartMonomial c e' := by
   simp [chartMonomial, pow_add, Finset.prod_mul_distrib]
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Simplify using `[chartMonomial]`.
+-/
 theorem chartMonomial_zero (c : (k : ι) → Fin (n k + 1)) :
     chartMonomial c (0 : ι → ℕ) = 1 := by
   simp [chartMonomial]
 
+/- English proof (translation)
+Rewrite using `[chartMonomial, Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 theorem chartMonomial_single (c : (k : ι) → Fin (n k + 1)) (k : ι) :
     chartMonomial c (Pi.single k 1) = X ⟨k, c k⟩ := by
   rw [chartMonomial, Finset.prod_eq_single k]
@@ -32,10 +41,26 @@ theorem chartMonomial_single (c : (k : ι) → Fin (n k + 1)) (k : ι) :
     simp [hb]
   · simp
 
+/- English proof (translation)
+Simplify using `[chartMonomial, map_prod, map_pow]`.
+-/
 theorem mkF_chartMonomial (P : ArithVariety n) (c : (k : ι) → Fin (n k + 1)) (e : ι → ℕ) :
     P.mkF (chartMonomial c e) = ∏ k, P.mkF (X ⟨k, c k⟩) ^ e k := by
   simp [chartMonomial, map_prod, map_pow]
 
+/- English proof (translation)
+Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨v, rfl⟩` from `hx`. Establish `hne : P.mkF (X ⟨v.1, c v.1⟩) ≠ 0` using `fun h ↦ hc v.1 ((P.mkF_eq_zero_iff _).mp h)`. Use `⟨X v, Pi.single v.1 1, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `isWeightedHomogeneous_X (R := ℤ) (coordDeg n) v`. Simplify `h` using `[coordDeg]`. Rewrite using `[chartMonomial_single, ArithVariety.chartCoord, div_mul_cancel₀ _ hne]`. Consider the case `zero => exact ⟨0, 0, isWeightedHomogeneous_zero _ _ _, by simp⟩`. Consider the case `one => exact ⟨1, 0, isWeightedHomogeneous_one _ _, by simp [chartMonomial_zero]⟩`.
+
+Consider the case `add x y _ _ ihx ihy`. Take `⟨F, e, hF, hxF⟩` from `ihx`. Take `⟨F', e', hF', hyF⟩` from `ihy`. Use `⟨F * chartMonomial c e' + F' * chartMonomial c e, e + e', ?_, ?_⟩` and prove the remaining obligations. Use `(hF.mul (isWeightedHomogeneous_chartMonomial c e')).add ?_` and prove the remaining obligations.
+
+Rewrite using `[add_comm e e']`. Conclude with `hF'.mul (isWeightedHomogeneous_chartMonomial c e)`. Rewrite using `[chartMonomial_add, map_add, map_mul, map_mul, map_mul, ← hxF, ← hyF]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ ih`.
+
+Take `⟨F, e, hF, hxF⟩` from `ih`. Conclude with `⟨-F, e, hF.neg, by rw [map_neg, ← hxF, neg_mul]⟩`. Consider the case `mul x y _ _ ihx ihy`. Take `⟨F, e, hF, hxF⟩` from `ihx`. Take `⟨F', e', hF', hyF⟩` from `ihy`.
+
+Use `⟨F * F', e + e', hF.mul hF', ?_⟩` and prove the remaining obligations. Rewrite using `[chartMonomial_add, map_mul, map_mul, ← hxF, ← hyF]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_form_of_mem_chartRing (P : ArithVariety n) (c : (k : ι) → Fin (n k + 1))
     (hc : P.IsLive c) {x : P.FunField} (hx : x ∈ P.chartRing c) :
     ∃ (F : MvPolynomial (Coord n) ℤ) (e : ι → ℕ), IsWeightedHomogeneous (coordDeg n) F e ∧
@@ -73,6 +98,27 @@ end ChartFormsAlt
 
 open ChartFormsAlt in
 
+/- English proof (translation)
+Introduce `ι _ _ n P D`. Establish `hrep : ∀ (c : (k : ι) → Fin (n k + 1)) (j : Fin (D.size + 1)), ∃ (F : MvPolynomial (Coord n) ℤ) (e : ι → ℕ), IsWeightedHomogeneous (coordDeg n) F e ∧ (P.IsLive c → D.elt j / P.chartPow c D.deg * P.mkF (chartMonomial c e) = P.mkF F)`. Introduce `c j`. Distinguish the cases in `hc : P.IsLive c`. Take `⟨F, e, hF, h⟩` from `exists_form_of_mem_chartRing P c hc (D.chart_mem c hc j)`.
+
+Conclude with `⟨F, e, hF, fun _ ↦ h⟩`. Conclude with `⟨0, 0, isWeightedHomogeneous_zero _ _ _, fun h ↦ absurd h hc⟩`. Use `choose F e hF hFe using hrep`. Use `⟨fun k ↦ 1 + (∑ c, ∑ j, e c j k) + (-D.deg k).toNat, fun d hd ↦ ?_⟩` and prove the remaining obligations. Establish `hle : ∀ c j k, e c j k ≤ ∑ c, ∑ j, e c j k` using `fun c j k ↦ (Finset.single_le_sum (f := fun j ↦ e c j k) (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun c ↦ ∑ j, e c j k) (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ c))`.
+
+Establish `hdk : ∀ k, 1 + (∑ c, ∑ j, e c j k) + (-D.deg k).toNat ≤ d k` using `fun k ↦ hd k`. Establish `ht : ∀ c j k, (e c j k : ℤ) ≤ d k + D.deg k`. Introduce `c j k`. Establish `h1` using `hle c j k`. Establish `h2` using `hdk k`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hnn : ∀ k, 0 ≤ (d k : ℤ) + D.deg k`. Introduce `k`. Establish `h2` using `hdk k`. Use linear arithmetic over natural numbers and integers.
+
+Set `t : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → ι → ℕ` to `fun c j k ↦ ((d k : ℤ) + D.deg k - e c j k).toNat`. Use `⟨fun c j ↦ if P.IsLive c then F c j * chartMonomial c (t c j) else 0, ?_⟩` and prove the remaining obligations. Use `⟨fun k ↦ ?_, hnn, fun c j ↦ ?_, fun c hc j ↦ ?_, fun c hc j ↦ ?_⟩` and prove the remaining obligations. Establish `h2` using `hdk k`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨fun k ↦ ((d k : ℤ) + D.deg k).toNat, ?_, fun k ↦ Int.toNat_of_nonneg (hnn k)⟩ split_ifs with hc` and prove the remaining obligations. Establish `hd' : e c j + t c j = fun k ↦ ((d k : ℤ) + D.deg k).toNat`. Use function extensionality and compare the values at `k`. Establish `h1` using `ht c j k`. Simplify using `only [Pi.add_apply, t]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[← hd']`. Conclude with `(hF c j).mul (isWeightedHomogeneous_chartMonomial c (t c j))`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Simplify using `only [if_pos hc]`.
+
+Establish `hy : ∀ k, P.mkF (X ⟨k, c k⟩) ≠ 0` using `fun k h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)`. Establish `hC : P.chartPow c D.deg ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ zpow_ne_zero _ (hy k)`. Establish `key : P.mkF (chartMonomial c (e c j)) * P.mkF (chartMonomial c (t c j)) = P.mkF (chartMonomial c d) * P.chartPow c D.deg`. Rewrite using `[mkF_chartMonomial, mkF_chartMonomial, mkF_chartMonomial, ArithVariety.chartPow, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hy k), ← zpow_add₀ (hy k)]`. Use `congr 1`. Establish `h1` using `ht c j k`. Simplify using `only [t]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[map_mul, ← hFe c j hc, mul_assoc, key]`. Clear the denominators using the available nonvanishing facts. Simplify using `[if_neg hc]`.
+-/
 theorem ChartFormsAlt.proof : ChartFormsAlt.Statement := by
   classical
   intro ι _ _ n P D

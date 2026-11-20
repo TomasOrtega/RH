@@ -29,6 +29,17 @@ noncomputable section
 
 namespace GlobalTheory.SeeSaw.GValMid
 
+/- English proof (translation)
+Introduce `D c v G hc hv j σ h`. Establish `hs` using `G.hs`. Establish `H : j + 1 + 1 + 2 * σ = G.s` using `by omega`. Take `⟨C, hC, key⟩` from `GlobalTheory.LocMod.GValProof.gval_of_laws D (GlobalTheory.T.flatMap_besselToFourierJacobi_localModel D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) (GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D) (GlobalTheory.T.weilDatum_localModel_formula D)) (GlobalTheory. …`. Use `⟨C, hC, fun s₁ s₂ f₁ f₂ h₁ h₂ => ?_⟩` and prove the remaining obligations.
+
+Establish `a₀ : j + (2 * σ + 1 + 1 + 1) = G.s + 1` using `by omega`. Establish `a₁ : j + 1 + (2 * σ + 1 + 1) = G.s + 1` using `by omega`. Establish `a₂ : j + 1 + 1 + (2 * σ + 1) = G.s + 1` using `by omega`. Establish `hne : G.sc j ≠ 0` using `fun e => by`. Use `G.sc_unit j` as an intermediate fact.
+
+Rewrite `this` using `[e, map_zero]`. Conclude with `zero_ne_one this`. Set `F : GlobalTheory.LocMod.Dbl (GlobalTheory.LocMod.ofSplit G.q) (c.B j (σ + 1) h) (c.J j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) _ _ _ (2 * σ)` to `⟨G.sc j, hne, G.FX j (by omega), G.FX (j + 1) (by omega), G.FX (j + 1 + 1) (by omega), G.FY j _ a₀, G.FY (j + 1) _ a₁, G.FY (j + 1 + 1) _ a₂, G.bes j (σ + 1) h _ a₀, G.jac j (σ + 1) h _ a₁, G.sc_step j ▸ G.bes (j + 1 + 1) σ (idx_step h) _ a₂⟩`. Take `⟨T₁, m₁, e₁⟩` from `(GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D G.k G.q G.unit _ _ _ _ (G.FY j _ a₀) (G.FY (j + 1) _ a₁) c.ψ G.S.ψ hc.std G.char G.S.cond _ _ (hv.sd j (by omega)) (hv.sd (j + 1) (by omega)) (G.latY j _ a₀) (G.latY (j + 1) _ a₁)).2 f₁ h₁`. Take `⟨T₂, m₂, e₂⟩` from `(GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D G.k G.q G.unit _ _ _ _ (G.FY (j + 1) _ a₁) (G.FY (j + 1 + 1) _ a₂) c.ψ G.S.ψ hc.std G.char G.S.cond _ _ (hv.sd (j + 1) (by omega)) (hv.sd (j + 1 + 1) (by omega)) (G.latY (j + 1) _ a₁) (G.latY (j + 1 + 1) _ a₂)).2 f₂ …`.
+
+Take `⟨O₁, o₁, -⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := G.k) (Y := GlobalTheory.StepData.XIx (Fin D.R.k) (Fin D.R.t) (j + 1) ⊕ Fin (2 * σ + 1 + 1)) (Y' := GlobalTheory.StepData.XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin (2 * σ + 1 + 1 + 1))`. Take `⟨O₂, o₂, -⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := G.k) (Y := GlobalTheory.StepData.XIx (Fin D.R.k) (Fin D.R.t) (j + 1 + 1) ⊕ Fin (2 * σ + 1)) (Y' := GlobalTheory.StepData.XIx (Fin D.R.k) (Fin D.R.t) (j + 1) ⊕ Fin (2 * σ + 1 + 1))`. Establish `b₁ : j + (2 * σ + 1 + 1) = G.s` using `by omega`. Establish `b₂ : j + 1 + (2 * σ + 1) = G.s` using `by omega`. Establish `g₁` using `(G.eg_is j _ b₁).2 T₁ m₁ O₁ ⟨_, (GModel.phi_sb G).1 j _ b₁⟩ o₁ rfl`.
+
+Establish `g₂` using `(G.eg_is (j + 1) _ b₂).2 T₂ m₂ O₂ ⟨_, (GModel.phi_sb G).1 (j + 1) _ b₂⟩ o₂ rfl`. Use `key σ _ _ _ F s₁ s₂ (c.lnk j σ h) (c.vL j σ h) (G.cg j) (G.cg (j + 1)) (G.cg_mid j _ b₂) (G.cg_mid (j + 1) _ H) T₁ T₂ m₁ m₂ ⟨_, (GModel.phi_sb G).1 j _ b₁⟩ ⟨_, (GModel.phi_sb G).1 (j + 1) _ b₂⟩ O₁ O₂ rfl rfl o₁ o₂` as an intermediate fact. Rewrite using `[← e₁ O₁ o₁, ← e₂ O₂ o₂, ← g₁, ← g₂]`. Conclude with `this`.
+-/
 theorem one_place : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), c.Is → v.Is → ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), ∃ C : ℂ, C ≠ 0 ∧
   ∀ (s₁ : StepBF c.ψ (c.B j (σ + 1) h) (c.J j (σ + 1) h)) (s₂ : StepFB c.ψ (c.J j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h))) f₁ f₂,
     Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = G.q.v) f₁ → Vac c.ψ _ _ (v.N (j + 1)) (v.N (j + 1 + 1)) (· = G.q.v) f₂ →
@@ -72,6 +83,11 @@ theorem one_place : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), c.Is �
   rw [← e₁ O₁ o₁, ← e₂ O₂ o₂, ← g₁, ← g₂]
   exact this
 
+/- English proof (translation)
+Introduce `D c v n G hc _ hG j hj i L hi Ψ hΨ`. Proceed by induction on `L with`. Consider the case `nil => exact GlobalTheory.SeeSawRhs.vac_mono (fun p hp => (hG.places p).2 ⟨i, hp⟩) hΨ`. Consider the case `cons a L ih`. Establish `hs` using `(G a).hs`.
+
+Establish `hai : (G a).q.v ≠ (G i).q.v` using `fun e => hi (by rw [hG.inj e]; exact List.mem_cons_self)`. Establish `hat : CombAt (· = (G a).q.v) ((G a).eg j)` using `fun u hu r s => by`. Rewrite using `[← ((G a).eg_is j ((G a).s - j) (by omega)).1 u hu r s]`. Conclude with `Ideal.mul_mem_right _ _ (GlobalTheory.FinPl.FrameLat.sum_mem_idAt (G a).q)`. Conclude with `((GlobalTheory.DisjComb.main D c.ψ hc.std _ _ (· = (G a).q.v) (· = (G i).q.v) fun p h1 h2 => hai (h1.symm.trans h2)).2.1 _ hat).2 _ _ _ (ih fun hm => hi (List.mem_cons_of_mem _ hm))`.
+-/
 theorem vac_foldr : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : Fin n → GLoc v), c.Is → v.Is → GPin G → ∀ j, j + 1 + 1 ≤ D.R.m →
   ∀ (i : Fin n) (L : List (Fin n)), i ∉ L → ∀ Ψ, Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ v.gP) Ψ →
     Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = (G i).q.v) (L.foldr (fun i' f => comb c.ψ _ _ ((G i').eg j) f) Ψ) := by
@@ -91,6 +107,11 @@ section Alg
 
 variable {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {A S A' : HSp D} {ι : Type} (a : ι → WO A S →₀ ℂ) (b : ι → WO S A' →₀ ℂ)
 
+/- English proof (translation)
+Proceed by induction on `L generalizing u with`. Consider the case `nil => rfl`. Consider the case `cons i L ih`. Simplify using `only [List.foldr_cons]`. Use `(GlobalTheory.SeeSawRhs.comb_comm2 ψ A S A' (a i) d (fun u'' w' => L.foldr (fun i f => comb ψ A S (a i) f) (fun u' => C u' w') u'') u w).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `u''`. Conclude with `ih u''`.
+-/
 theorem comb_foldr (d : WO S A' →₀ ℂ) (C : WO A S → WO S A' → ℂ) (L : List ι) (u : WO A S) (w : WO S A') :
     comb ψ S A' d (fun w' => L.foldr (fun i f => comb ψ A S (a i) f) (fun u' => C u' w') u) w =
       L.foldr (fun i f => comb ψ A S (a i) f) (fun u' => comb ψ S A' d (C u') w) u := by
@@ -104,6 +125,13 @@ theorem comb_foldr (d : WO S A' →₀ ℂ) (C : WO A S → WO S A' → ℂ) (L 
     funext u''
     exact ih u''
 
+/- English proof (translation)
+Proceed by induction on `L generalizing u w with`. Consider the case `nil => rfl`. Consider the case `cons i L ih`. Simplify using `only [List.foldr_cons]`. Unfold `biComb`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u'`. Use `Eq.trans ?_ (comb_foldr ψ a (b i) (fun u'' => L.foldr (fun i f => comb ψ S A' (b i) f) (C u'')) L u' w)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `w'`.
+
+Conclude with `ih u' w'`.
+-/
 theorem biComb_foldr (C : WO A S → WO S A' → ℂ) (L : List ι) (u : WO A S) (w : WO S A') :
     L.foldr (fun i C' => biComb ψ A S A' (a i) (b i) C') C u w =
       L.foldr (fun i f => comb ψ A S (a i) f) (fun u' => L.foldr (fun i f => comb ψ S A' (b i) f) (C u') w) u := by
@@ -119,6 +147,9 @@ theorem biComb_foldr (C : WO A S → WO S A' → ℂ) (L : List ι) (u : WO A S)
     funext w'
     exact ih u' w'
 
+/- English proof (translation)
+Proceed by induction on `L generalizing w with`. Consider the case `nil => exact hC w`. Consider the case `cons i L ih => exact GlobalTheory.SeeSawRhs.theta_comb_left (fun u => L.foldr (fun i f => comb ψ S A' (b i) f) (C u)) ih (b i) w`.
+-/
 theorem theta_foldr (C : WO A S → WO S A' → ℂ) (hC : ∀ w, IsThetaFunO ψ A S fun u => C u w) (L : List ι) (w : WO S A') :
     IsThetaFunO ψ A S fun u => L.foldr (fun i f => comb ψ S A' (b i) f) (C u) w := by
   induction L generalizing w with
@@ -127,12 +158,18 @@ theorem theta_foldr (C : WO A S → WO S A' → ℂ) (hC : ∀ w, IsThetaFunO ψ
 
 variable {ψ}
 
+/- English proof (translation)
+Take `⟨U, hU, hl⟩` from `h.levL`. Use `⟨fun γ u => h.quasiL γ u w, ⟨U, hU, fun x hx h0 => hl x hx h0 w⟩, h.cont.comp (continuous_id.prodMk continuous_const), fun k L hL h0 u => ?_⟩` and prove the remaining obligations. Simplify using `using h.smooth k L 0 hL continuous_const h0 (fun t => Matrix.map_zero _ (finPart D).map_zero) u w`.
+-/
 theorem theta_left {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C) (w : WO S A') : IsThetaFunO ψ A S fun u => C u w := by
   obtain ⟨U, hU, hl⟩ := h.levL
   refine ⟨fun γ u => h.quasiL γ u w, ⟨U, hU, fun x hx h0 => hl x hx h0 w⟩,
     h.cont.comp (continuous_id.prodMk continuous_const), fun k L hL h0 u => ?_⟩
   simpa using h.smooth k L 0 hL continuous_const h0 (fun t => Matrix.map_zero _ (finPart D).map_zero) u w
 
+/- English proof (translation)
+Take `⟨U, hU, hl⟩` from `h.levR`. Use `⟨fun γ w => h.quasiR γ u w, ⟨U, hU, fun x hx h0 => hl x hx h0 u⟩, h.cont.comp (continuous_const.prodMk continuous_id), fun k L hL h0 w => ?_⟩` and prove the remaining obligations. Simplify using `using h.smooth k 0 L continuous_const hL (fun t => Matrix.map_zero _ (finPart D).map_zero) h0 u w`.
+-/
 theorem theta_right {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C) (u : WO A S) : IsThetaFunO ψ S A' (C u) := by
   obtain ⟨U, hU, hl⟩ := h.levR
   refine ⟨fun γ w => h.quasiR γ u w, ⟨U, hU, fun x hx h0 => hl x hx h0 u⟩,
@@ -141,6 +178,11 @@ theorem theta_right {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C)
 
 end Alg
 
+/- English proof (translation)
+Introduce `D c v n G hG j hj C h₁ h₂`. Use function extensionality and compare the values at `u w`. Rewrite using `[biComb_foldr, ← hG.dG j (by omega) _ (theta_foldr c.ψ (fun i => (G i).cg (j + 1)) C h₁ _ w)]`. Unfold `biComb`. Use `congr 1`.
+
+Use function extensionality and compare the values at `u'`. Rewrite using `[hG.dG (j + 1) hj _ (h₂ u')]`.
+-/
 theorem biComb_dG : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : Fin n → GLoc v), GPin G → ∀ j, j + 1 < D.R.m →
   ∀ C : WO (c.X j) (c.X (j + 1)) → WO (c.X (j + 1)) (c.X (j + 1 + 1)) → ℂ,
     (∀ w, IsThetaFunO c.ψ _ _ fun u => C u w) → (∀ u, IsThetaFunO c.ψ _ _ (C u)) →
@@ -154,6 +196,13 @@ theorem biComb_dG : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : Fin n 
   funext u'
   rw [hG.dG (j + 1) hj _ (h₂ u')]
 
+/- English proof (translation)
+Introduce `D c v n G hc hv hG j σ h`. Use `choose C hC key using fun i => one_place D c v (G i) hc hv j σ h`. Use `⟨((List.finRange n).map C).prod, List.prod_ne_zero fun h0 => ?_, fun s₁ s₂ Ψ₁ Ψ₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨i, -, hi⟩` from `List.mem_map.1 h0`. Conclude with `hC i hi`.
+
+Establish `ind : ∀ L : List (Fin n), L.Nodup → c.ctr j σ h s₁ s₂ (L.foldr (fun i f => comb c.ψ _ _ ((G i).eg j) f) Ψ₁) (L.foldr (fun i f => comb c.ψ _ _ ((G i).eg (j + 1)) f) Ψ₂) = (L.map C).prod • L.foldr (fun i C' => biComb c.ψ _ _ _ ((G i).cg j) ((G i).cg (j + 1)) C') (c.ctr j σ h s₁ s₂ …`. Introduce `L hL`. Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons i L ih`.
+
+Take `⟨hi, hL'⟩` from `List.nodup_cons.1 hL`. Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons]`. Rewrite using `[key i s₁ s₂ _ _ (vac_foldr D c v n G hc hv hG j (by omega) i L hi Ψ₁ h₁) (vac_foldr D c v n G hc hv hG (j + 1) (by omega) i L hi Ψ₂ h₂), ih hL', GlobalTheory.SeeSawRhs.biComb_smul, smul_smul]`. Establish `hb : IsBiTheta c.ψ _ _ _ (c.ctr j σ h s₁ s₂ Ψ₁ Ψ₂)` using `(GlobalTheory.T.besselThetaContraction_extendByZero_vacuum_smooth D c.ψ hc.std _ _ (c.B j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h) (flatBF s₁ Ψ₁) (flatFB s₂ Ψ₂) (((GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D c.ψ fun _ => True) …`. Rewrite using `[hG.eG j (by omega) _ h₁.1, hG.eG (j + 1) (by omega) _ h₂.1, ind _ (List.nodup_finRange n), biComb_dG D c v n G hG j (by omega) _ (theta_left hb) (theta_right hb)]`.
+-/
 theorem gValue_mid : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : Fin n → GLoc v), c.Is → v.Is → GPin G →
   ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), ∃ C : ℂ, C ≠ 0 ∧
   ∀ (s₁ : StepBF c.ψ (c.B j (σ + 1) h) (c.J j (σ + 1) h)) (s₂ : StepFB c.ψ (c.J j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)))

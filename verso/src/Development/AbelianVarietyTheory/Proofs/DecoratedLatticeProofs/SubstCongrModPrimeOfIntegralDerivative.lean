@@ -9,6 +9,21 @@ noncomputable section
 
 namespace GlobalTheory.Honda
 
+/- English proof (translation)
+Introduce `K _ _ _ l hl hlt f hf s A B hA0 hB0 hA hB hAB m`. Establish `hsA : HasSubst A` using `HasSubst.of_constantCoeff_zero hA0`. Establish `hsB : HasSubst B` using `HasSubst.of_constantCoeff_zero hB0`. Establish `hterm : ∀ d : ℕ, ‖coeff d f * MvPowerSeries.coeff m (A ^ d - B ^ d)‖ ≤ ‖(l : K)‖`. Introduce `d`.
+
+Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Simplify using the standard rewrite rules. Establish `hcong` using `Formalism.LT.PowCongr_valid K s l hl A B hA hB 1 le_rfl (by intro e; simpa using hAB e) (padicValNat l d) (d / l ^ padicValNat l d) m`. Establish `hdecomp : l ^ padicValNat l d * (d / l ^ padicValNat l d) = d` using `Nat.mul_div_cancel' pow_padicValNat_dvd`. Rewrite `hcong` using `[hdecomp, norm_pow, pow_add, pow_one]`.
+
+Establish `hnd : ‖(d : K)‖ = ‖(l : K)‖ ^ padicValNat l d` using `Formalism.DworkPowerSeriesWeights.norm_natCast_eq_pow_padicValNat hl hlt hd.ne'`. Establish `hder : ‖coeff d f‖ * ‖(d : K)‖ ≤ 1`. Take `⟨k, rfl⟩ : ∃ k, d = k + 1` from `⟨d - 1, by omega⟩`. Use `hf k` as an intermediate fact. Rewrite `this` using `[coeff_derivative, norm_mul]`.
+
+Simplify using `using this`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hnd]`. Conclude with `mul_le_mul_of_nonneg_left hcong (norm_nonneg _)`.
+
+Use `_ = ‖(l : K)‖ * (‖coeff d f‖ * ‖(d : K)‖) := by ring`. Use `_ ≤ ‖(l : K)‖ * 1 := mul_le_mul_of_nonneg_left hder (norm_nonneg _)`. Use `_ = ‖(l : K)‖ := mul_one _`. Rewrite using `[map_sub, coeff_subst hsA, coeff_subst hsB, ← finsum_sub_distrib (coeff_subst_finite hsA f m) (coeff_subst_finite hsB f m)]`. Establish `heq : (fun d : ℕ => coeff d f • MvPowerSeries.coeff m (A ^ d) - coeff d f • MvPowerSeries.coeff m (B ^ d)) = fun d => coeff d f * MvPowerSeries.coeff m (A ^ d - B ^ d)`.
+
+Use function extensionality and compare the values at `d`. Rewrite using `[map_sub, smul_eq_mul, smul_eq_mul, mul_sub]`. Establish `hfin : (Function.support fun d : ℕ => coeff d f * MvPowerSeries.coeff m (A ^ d - B ^ d)).Finite`. Rewrite using `[← heq]`. Conclude with `((coeff_subst_finite hsA f m).union (coeff_subst_finite hsB f m)).subset (Function.support_sub _ _)`.
+
+Rewrite using `[heq, finsum_eq_sum _ hfin]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun d _ => hterm d`.
+-/
 theorem subst_congr_of_derivative_integral :
     ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l : ℕ), l.Prime → ‖(l : K)‖ < 1 →
     ∀ (f : K⟦X⟧), CoefLe 1 (derivative K f) → ∀ (s : Type) (A B : MvPowerSeries s K),

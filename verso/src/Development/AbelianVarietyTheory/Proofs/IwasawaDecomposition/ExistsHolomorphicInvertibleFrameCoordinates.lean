@@ -25,17 +25,40 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, g, e, F, ik, φ, hiso, hP⟩` from `hU`. Use `choose Pm h1 h2 h3 h4 h5 using hP`. Conclude with `⟨⟨g, e, F, ik, φ, hiso, Pm, h1, h2, fun k x => ⟨h3 k x, h4 k x⟩, h5⟩⟩`.
+-/
 theorem nonempty_unfWit {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.PjFree.IsUnf U) : Nonempty (UnfWit U) := by
   obtain ⟨-, -, -, -, -, g, e, F, ik, φ, hiso, hP⟩ := hU
   choose Pm h1 h2 h3 h4 h5 using hP
   exact ⟨⟨g, e, F, ik, φ, hiso, Pm, h1, h2, fun k x => ⟨h3 k x, h4 k x⟩, h5⟩⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨G, fun _ _ => rfl, fun _ _ => rfl⟩`.
+-/
 theorem exists_transport {p q : CxPts (genStr Z) σ} (h : p = q) (G : EigFrame Z σ (p.1 ≫ genι Z)) :
     ∃ G' : EigFrame Z σ (q.1 ≫ genι Z), (∀ τ i, G'.v τ i = G.v τ i) ∧
       ∀ (M : EigMet Z σ) τ, M.gram q G' τ = M.gram p G τ := by
   subst h
   exact ⟨G, fun _ _ => rfl, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨W⟩` from `nonempty_unfWit hU`. Set `L` to `EuclideanSpace.equiv (Fin n) ℂ`. Use `set B₁ : Set (Fin n → ℂ) := L.symm ⁻¹' B with hB₁`. Establish `hB₁o : IsOpen B₁` using `hB.preimage L.symm.continuous`. Set `x : (Fin n → ℂ) → (U.X k).dom` to `fun v => if h : L.symm v ∈ B then ⟨s (L.symm v), hs _ h⟩ else ⟨s b₀, hs _ hb₀⟩`.
+
+Establish `hx : ∀ v ∈ B₁, (x v).1 = s (L.symm v)` using `fun v hv => by`. Simplify using `only [x, dif_pos (show L.symm v ∈ B from hv)]`. Establish `hxL : ∀ b (hb : b ∈ B), x (L b) = ⟨s b, hs b hb⟩` using `fun b hb => Subtype.ext ((hx _ (by simpa [hB₁] using hb)).trans (by rw [ContinuousLinearEquiv.symm_apply_apply]))`. Establish `hsd : DifferentiableOn ℂ (fun v => s (L.symm v)) B₁` using `hd.comp L.symm.differentiableOn fun v hv => hv`. Establish `hPd : ∀ a, DifferentiableOn ℂ (fun v => W.Pm k (x v) a) B₁` using `fun a => differentiableOn_pi.2 fun j => (GlobalTheory.TrueCx.TorHolo.differentiableOn_perFr (U.X k) (x := fun v => s (L.symm v)) (fun v hv => hs _ hv) (fun τ a a' => differentiableOn_pi.1 (differentiableOn_pi.1 (differentiableOn_pi.1 hsd τ) a) a') _ _ _).congr fun v hv => by rw [ …`.
+
+Set `p : (Fin n → ℂ) → (Sp ℂ ⟶ Xo.XF c)` to `fun v => GlobalTheory.AllWt.ptF (S := CAt σ) (U.un k (x v))`. Establish `hu : ∀ v, W.F.u (W.ik k) (W.Pm k (x v)) = p v ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)` using `fun v => (W.lie k (x v)).1.symm.trans (ptF_fst (U.un k (x v))).symm`. Establish `hp : ∀ v, p v ≫ pullback.snd _ _ = spMap σ` using `fun v => ptF_snd (U.un k (x v))`. Use `choose Y hY hYd using fun (a : Σ τ : E →+* ℂ, Fin (Dw.mult τ)) => GlobalTheory.ModelExpCoord.coord_holomorphic _ _ _ _ _ _ _ _ Z σ W.g _ W.F (W.ik k) n B₁ (fun v => W.Pm k (x v)) p hu V (Φ.v a.1 a.2) hB₁o (fun v => W.period k (x v)) hPd hp (Φ.tan a.1 a.2)`. Use `⟨fun b τ => of fun a a' => Y ⟨τ, a'⟩ (L b) (W.e.symm ⟨τ, a⟩), fun τ a a' => ?_, fun b hb y hq hy G f hG hf τ => ?_⟩` and prove the remaining obligations.
+
+Use `differentiableOn_pi.1 ((hY ⟨τ, a'⟩).comp L.differentiableOn fun b hb => ⟨by simpa [hB₁] using hb, ?_⟩) _ show ⊤ ≤ (cxPt Z (U.un k (x (L b)))).1 ⁻¹ᵁ V.1` and prove the remaining obligations. Rewrite using `[hxL b hb]`. Conclude with `hV b hb`. Use extensionality with `a a'`. Take `⟨w, hwt, hwm, hwc⟩` from `GlobalTheory.HodgeSmooth.exists_lift_comb _ hq G f hG τ a'`.
+
+Establish `h1` using `hYd ⟨τ, a'⟩ (L b) (by simpa [hB₁] using hb) y hy (by show _ = (cxPt Z (U.un k (x (L b)))).1`. Rewrite using `[hxL b hb, hq])`. Establish `hfv : spMap (dualMap (evHom hy)) ≫ Φ.v τ a' = w ≫ Z.m.φ` using `by rw [hwm, hf τ a']`. Rewrite `h1` using `[hfv]`. Establish `hbase : w ≫ Z.oF.t.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ p (L b)` using `by show _ = _ ≫ GlobalTheory.AllWt.ptF (S := CAt σ) (U.un k (x (L b)))`.
+
+Rewrite using `[hxL b hb]`. Conclude with `hwt.1`. Establish `h2` using `isDerivAt0_ex_of_push Z W.F (p (L b)) (W.ik k) (W.Pm k (x (L b))) (W.period k _) (hu _) hbase h1`. Rewrite `h2` using `[hxL b hb]`. Establish `per` using `W.period k ⟨s b, hs b hb⟩`.
+
+Take `⟨hPx, hv⟩` from `W.lie k ⟨s b, hs b hb⟩`. Establish `h3` using `(DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ _ _ W.F _ _ per _ ((U.un k ⟨s b, hs b hb⟩).u τ) _ (hv τ) _ _).1 (hPx ▸ hwc)`. Establish `tn` using `isDerivAt0_ex_isTanAt E H Dw l Xo _ _ _ W.F _ _ per`. Establish `h4` using `congrFun ((tn.2.2 _ (tn.1 _ _ h2)).unique h2 h3) (W.e.symm ⟨τ, a⟩)`. Establish `hi : ∀ j j' : Fin (Dw.mult τ), W.e.symm ⟨τ, j⟩ = W.e.symm ⟨τ, j'⟩ ↔ j = j'` using `fun j j' => by simp`.
+
+Use `Eq.trans ?_ h4.symm` and prove the remaining obligations. Simplify using `[Finset.sum_apply, Pi.single_apply, hi]`.
+-/
 theorem exists_coords {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.PjFree.IsUnf U) (k : U.Comp) {n : ℕ}
     {B : Set (ReciprocityTheory.L2DbarEstimates.V n)} (hB : IsOpen B) {b₀ : ReciprocityTheory.L2DbarEstimates.V n} (hb₀ : b₀ ∈ B)
     {s : ReciprocityTheory.L2DbarEstimates.V n → ReciprocityTheory.ChartRestriction.G.FD.Frame (U.X k).Ψ r} (hs : ∀ b ∈ B, s b ∈ (U.X k).dom)
@@ -101,11 +124,19 @@ theorem exists_coords {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2
 
 variable {F : Type} [Field F] {X : Var F} {σ' : F →+* ℂ}
 
+/- English proof (translation)
+Take `⟨W, hW, a, rfl⟩` from `hg.exists_fnOf`. Use `filter_upwards [(isOpen_ptsIn W).mem_nhds (mem_ptsIn.2 hW)] with z hz`. Conclude with `regAt_fnOf (mem_ptsIn.1 hz) _ a`.
+-/
 theorem eventually_regAt {y : CxPts X.str σ'} {g : X.Fn} (hg : RegAt (under y) g) : ∀ᶠ z in 𝓝 y, RegAt (under z) g := by
   obtain ⟨W, hW, a, rfl⟩ := hg.exists_fnOf
   filter_upwards [(isOpen_ptsIn W).mem_nhds (mem_ptsIn.2 hW)] with z hz
   exact regAt_fnOf (mem_ptsIn.1 hz) _ a
 
+/- English proof (translation)
+Take `⟨U, B, hU, hB, hS⟩` from `S.loc (under y)`. Establish `hP` using `(hS _ hU A).1 hA`. Establish `hU' : ∀ᶠ z in 𝓝 y, under z ∈ U` using `by filter_upwards [(isOpen_ptsIn U).mem_nhds (mem_ptsIn.2 hU)] with z hz`. Conclude with `mem_ptsIn.1 hz`. Establish `h1 : ∀ᶠ z in 𝓝 y, ∀ τ, (∀ i j, RegAt (under z) ((A * B⁻¹) τ i j)) ∧ RegAt (under z) ((A * B⁻¹) τ).det⁻¹` using `Filter.eventually_all.2 fun τ => (Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => eventually_regAt (mem_O_ratOf.1 ((hP τ).1 i j))).and (eventually_regAt (mem_O_ratOf.1 (hP τ).2.2.1))`.
+
+Use `filter_upwards [hU', h1] with z hz hz1`. Conclude with `(hS _ hz A).2 fun τ => ⟨fun i j => mem_O_ratOf.2 ((hz1 τ).1 i j), (hP τ).2.1, mem_O_ratOf.2 (hz1 τ).2, fun i j hi => absurd hi (by simp)⟩`.
+-/
 theorem eventually_mem {ι : Type} [Finite ι] {m : ι → ℕ} {S : Fr (ratOf X) m 0} {y : CxPts X.str σ'} {A : Mat m X.Fn}
     (hA : A ∈ S.S (under y)) : ∀ᶠ z in 𝓝 y, A ∈ S.S (under z) := by
   obtain ⟨U, B, hU, hB, hS⟩ := S.loc (under y)
@@ -120,6 +151,9 @@ theorem eventually_mem {ι : Type} [Finite ι] {m : ι → ℕ} {S : Fr (ratOf X
   exact (hS _ hz A).2 fun τ => ⟨fun i j => mem_O_ratOf.2 ((hz1 τ).1 i j), (hP τ).2.1, mem_O_ratOf.2 (hz1 τ).2,
     fun i j hi => absurd hi (by simp)⟩
 
+/- English proof (translation)
+Take `⟨W, hW, a, rfl⟩` from `hg.exists_fnOf`. Use `GlobalTheory.SCV.analyticAt_of_differentiableOn ((ch.holo W a).congr fun w hw => ratVal_fnOf hw.2 _ a) ((GlobalTheory.ChartGlue.isOpen_over ch.e (isOpen_ptsIn W)).mem_nhds ⟨ch.e.map_source hy, ?_⟩)` and prove the remaining obligations. Use `show ch.e.symm (ch.e y) ∈ ptsIn X.str σ' W`. Rewrite using `[ch.e.left_inv hy]`. Conclude with `mem_ptsIn.2 hW`.
+-/
 theorem analyticAt_ratVal {d : ℕ} (ch : AlgChart X.str σ' d) {y : CxPts X.str σ'} (hy : y ∈ ch.e.source) {g : X.Fn}
     (hg : RegAt (under y) g) : AnalyticAt ℂ (fun w => ratVal g (ch.e.symm w)) (ch.e y) := by
   obtain ⟨W, hW, a, rfl⟩ := hg.exists_fnOf
@@ -139,6 +173,23 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.PointChern Filter Topology
 open scoped Matrix
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U _ hU X j f₀ Eb A₀ hj hoi hT y _ c' hyc A hA k' s hs hlift`. Take `⟨V₀, hV₀, φ, Φ, hzV, hφ, -⟩` from `EigSpread.exists_stable_eigFrame E H Dw l Xo c O β T.Z ((cxOf e σ hj y).1 (IsLocalRing.closedPoint ℂ))`. Set `V : (gen T.Z).affineOpens` to `⟨V₀, hV₀⟩`. Establish `hφ' : LogKS.chart V ≫ genStr T.Z = spMap φ` using `hφ`. Establish `hyV : cxOf e σ hj y ∈ ptsIn (genStr T.Z) σ V.1` using `mem_ptsIn.2 hzV`.
+
+Take `⟨M, hM⟩` from `GlobalTheory.T.frame_coordinates_eq_rational_matrix_values_chart E H Dw l Xo c O β T.Z σ F e X j f₀ Eb A₀ hj hoi hT V φ Φ hφ' A`. Establish `hpre : ∀ z : GlobalTheory.CxPts X.str (σ.comp e.toRingHom), z ∈ ptsIn X.str (σ.comp e.toRingHom) (j ⁻¹ᵁ V.1) ↔ cxOf e σ hj z ∈ ptsIn (genStr T.Z) σ V.1` using `fun z => mem_ptsIn_preimage (m := cxOf e σ hj) (f := j) (fun _ => rfl)`. Establish `hVn : ∀ᶠ z in 𝓝 y, cxOf e σ hj z ∈ ptsIn (genStr T.Z) σ V.1` using `by filter_upwards [(isOpen_ptsIn _).mem_nhds ((hpre y).2 hyV)] with z hz`. Conclude with `(hpre z).1 hz`. Establish `htend : Tendsto c'.e.symm (𝓝 (c'.e y)) (𝓝 y)` using `c'.e.tendsto_symm hyc`.
+
+Take `⟨B, hBall, hB, hb₀⟩` from `eventually_nhds_iff.1 ((hlift.and hs.eventually_analyticAt).and (htend.eventually (hVn.and (GlobalTheory.FrameLift.eventually_mem hA))))`. Use `choose hsB hpt using fun b hb => (hBall b hb).1.1`. Take `⟨N, hN, hNco⟩` from `GlobalTheory.FrameLift.exists_coords (Z := T.Z) hU k' hB hb₀ hsB (fun b hb => (hBall b hb).1.2.differentiableAt.differentiableWithinAt) V Φ (fun b hb => by rw [hpt b hb]; exact (hBall b hb).2.1)`. Establish `key : ∀ b (hb : b ∈ B) (G g : EigFrame T.Z σ ((cxOf e σ hj (c'.e.symm b)).1 ≫ genι T.Z)), (∀ τ i, G.v τ i = (cxFrame T.Z (U.un k' ⟨s b, hsB b hb⟩)).v τ i) → FrameAt e f₀ A₀ A (c'.e.symm b) g → ∀ τ, G.co g τ = N b τ * (M τ).map fun r => ratVal r (c'.e.symm b)`. Introduce `b hb G g hG hg τ`.
+
+Take `⟨-, hzV, hzS⟩` from `hBall b hb`. Establish `hov : σ = (evHom hzV).comp φ`. Generalize the expression as in `cxOf e σ hj (c'.e.symm b) = z at hzV`. Conclude with `GlobalTheory.ShFam.EigLoc.spMap_inj (z.2.symm.trans (by`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap, ← hφ', ← Category.assoc, GlobalTheory.LieMet.spMap_evHom hzV]))`.
+
+Establish `hx : (cxOf e σ hj (c'.e.symm b)).1 ≫ genι T.Z = spMap (evHom hzV) ≫ LogKS.chart V ≫ genι T.Z`. Rewrite using `[← Category.assoc, GlobalTheory.LieMet.spMap_evHom hzV]`. Take `⟨f, hf⟩` from `Φ.exists_isMap (evHom hzV) hov hx`. Rewrite using `[← hNco b hb _ (hpt b hb) hzV G f hG hf τ, ← (hM _ hzS hzV).2.2 g hg f hf τ, EigFrame.co_mul]`. Establish `hex : ∀ b ∈ B, ∃ g : EigFrame T.Z σ ((cxOf e σ hj (c'.e.symm b)).1 ≫ genι T.Z), FrameAt e f₀ A₀ A (c'.e.symm b) g` using `fun b hb => (hM _ (hBall b hb).2.2 (hBall b hb).2.1).2.1`.
+
+Use `⟨fun b τ => N b τ * (M τ).map fun r => ratVal r (c'.e.symm b), fun τ a a' => ?_, fun τ => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.map_apply]`. Conclude with `Finset.analyticAt_fun_sum _ fun i _ => (GlobalTheory.SCV.analyticAt_of_differentiableOn (hN τ a i) (hB.mem_nhds hb₀)).mul (GlobalTheory.FrameLift.analyticAt_ratVal c' hyc ((hM y hA hyV).1 τ i a'))`. Take `⟨g, hg⟩` from `hex _ hb₀`. Take `⟨G, hG, -⟩` from `GlobalTheory.FrameLift.exists_transport (hpt _ hb₀) (cxFrame T.Z _)`.
+
+Use `show IsUnit (N (c'.e y) τ * (M τ).map fun r => ratVal r (c'.e.symm (c'.e y))).det`. Rewrite using `[← key _ hb₀ G g hG hg τ]`. Conclude with `G.isUnit_det_co g τ`. Use `filter_upwards [hB.mem_nhds hb₀] with b hb`. Use `⟨hex b hb, fun hsb g hg Me τ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨G, hG, hGm⟩` from `GlobalTheory.FrameLift.exists_transport (hpt b hb) (cxFrame T.Z _)`. Rewrite using `[← key b hb G g hG hg τ, ← hGm Me τ]`. Conclude with `Me.change _ G g τ`.
+-/
 theorem GlobalTheory.FrameLift.exists_holomorphic_frame_coords : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsOpenImmersion j → Tied e X j f₀ Eb A₀ → ∀ y ∈ ptsIn X.str (σ.comp e.toRingHom) (openPart j), ∀ c' : AlgChart X.str (σ.comp e.toRingHom) X.dim, y ∈ c'.e.source → ∀ A ∈ Eb.S (under y), ∀ (k' : U.Comp) (s : ReciprocityTheory.L2DbarEstimates.V X.dim → ReciprocityTheory.ChartRestriction.G.FD.Frame (U.X k').Ψ (Dw.p + Dw.q)), AnalyticAt ℂ s (c'.e y) → (∀ᶠ w in 𝓝 (c'.e y), ∃ hs : s w ∈ (U.X k').dom, cxPt T.Z (U.un k' ⟨s w, hs⟩) = cxOf e σ hj (c'.e.symm w)) → ∃ K : ReciprocityTheory.L2DbarEstimates.V X.dim → Mat Dw.mult ℂ, (∀ τ a b, AnalyticAt ℂ (fun w => K w τ a b) (c'.e y)) ∧ (∀ τ, IsUnit (K (c'.e y) τ).det) ∧ ∀ᶠ w in 𝓝 (c'.e y), (∃ g : EigFrame T.Z σ ((cxOf e σ hj (c'.e.symm w)).1 ≫ genι T.Z), FrameAt e f₀ A₀ A (c'.e.symm w) g) ∧ ∀ (hs : s w ∈ (U.X k').dom) (g : EigFrame T.Z σ ((cxOf e σ hj (c'.e.symm w)).1 ≫ genι T.Z)), FrameAt e f₀ A₀ A (c'.e.symm w) g → ∀ (M : EigMet T.Z σ) (τ : E →+* ℂ), M.gram (cxOf e σ hj (c'.e.symm w)) g τ = (K w τ)ᴴ * M.gram (cxPt T.Z (U.un k' ⟨s w, hs⟩)) (cxFrame T.Z (U.un k' ⟨s w, hs⟩)) τ * K w τ := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U _ hU X j f₀ Eb A₀ hj hoi hT y _ c' hyc A hA k' s hs hlift
   obtain ⟨V₀, hV₀, φ, Φ, hzV, hφ, -⟩ := EigSpread.exists_stable_eigFrame E H Dw l Xo c O β T.Z

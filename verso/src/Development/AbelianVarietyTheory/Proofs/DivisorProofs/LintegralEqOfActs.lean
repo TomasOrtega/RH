@@ -20,6 +20,55 @@ namespace GlobalTheory.HoweLocal.LocUnitNonsplit
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `letI mA : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `letI mV : MeasurableSpace (κ → Fv F v) := borel _`. Use `haveI : BorelSpace (κ → Fv F v) := ⟨rfl⟩`. Use `haveI := hμ`.
+
+Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest κ v`. Set `ev : (κ → AF F) → (κ → Fv F v)` to `fun x i => evFin F v (x i)`. Establish `hevc : Continuous ev` using `continuous_pi fun i => (GlobalTheory.LatAtClosed.continuous_evFin' v).comp (continuous_apply i)`. Establish `hevm : Measurable ev` using `hevc.measurable`. Set `φ₀ : (κ → Fv F v) → ℂ` to `Set.indicator {x | ∀ k, x k ∈ v.adicCompletionIntegers F} 1`.
+
+Establish `hφ₀ : φ₀ ∈ SB (κ → Fv F v)` using `GlobalTheory.StdVacuum.indicator_mem_SB v`. Establish `hφ₀0 : φ₀ 0 = 1` using `by show Set.indicator _ 1 0 = 1`. Rewrite using `[Set.indicator_of_mem (show (0 : κ → Fv F v) ∈ {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} from fun k => zero_mem _)]`. Both sides reduce to the same expression. Set `lift : (κ → Fv F v) → (κ → AF F)` to `fun a i => GlobalTheory.LatVac.liftV v (a i)`.
+
+Establish `hlc : Continuous lift` using `continuous_pi fun i => (GlobalTheory.LatAtClosed.continuous_liftV v).comp (continuous_apply i)`. Establish `hat : ∀ a, At (evFin F v) (lift a)` using `fun a u hu => by`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v (a i) u hu`. Establish `hevl : ∀ a, ev (lift a) = a` using `fun a => by`.
+
+Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.evFin_liftV v (a i)`. Establish `hev_add : ∀ x y, ev (x + y) = ev x + ev y` using `fun x y => by`. Use function extensionality and compare the values at `i`. Conclude with `map_add (evFin F v) (x i) (y i)`.
+
+Establish `hRc : Continuous R`. Establish `e : R = fun x => tens (evFin F v) φ₀ R (x - lift (ev x))`. Use function extensionality and compare the values at `x`. Establish `h1 : R (x - lift (ev x)) = R x`. Rewrite using `[sub_eq_add_neg]`.
+
+Use `(hR φ₀ hφ₀).1 x _ ?_` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[smul_neg, hat (ev x) u hu, neg_zero]`. Establish `h2 : (fun i => evFin F v ((x - lift (ev x)) i)) = 0`. Use function extensionality and compare the values at `i`.
+
+Use `show evFin F v (x i - GlobalTheory.LatVac.liftV v (evFin F v (x i))) = 0`. Rewrite using `[map_sub, GlobalTheory.LatVac.evFin_liftV, sub_self]`. Use `show R x = φ₀ (fun i => evFin F v ((x - lift (ev x)) i)) * R (x - lift (ev x))`. Rewrite using `[h2, hφ₀0, one_mul, h1]`. Rewrite using `[e]`.
+
+Conclude with `(GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F (hR φ₀ hφ₀).2).comp (continuous_id.sub (hlc.comp hevc))`. Take `⟨ν, hν⟩ : ∃ ν : Measure (κ → AF F), ν.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Set `d : (κ → AF F) → ENNReal` to `fun x => ‖R x‖ₑ ^ 2`. Establish `hd : Measurable d` using `hRc.measurable.enorm.pow_const 2`. Set `m : Measure (κ → Fv F v)` to `(ν.withDensity d).map ev`.
+
+Establish `hmint : ∀ f : (κ → Fv F v) → ENNReal, Measurable f → ∫⁻ y, f y ∂m = ∫⁻ x, d x * f (ev x) ∂ν`. Introduce `f hf`. Rewrite using `[lintegral_map hf hevm]`. Conclude with `lintegral_withDensity_eq_lintegral_mul ν hd (hf.comp hevm)`. Establish `hsq : ∀ ψ' ∈ SB (κ → Fv F v), ∫⁻ y, ‖ψ' y‖ₑ ^ 2 ∂m = ∫⁻ x, ‖tens (evFin F v) ψ' R x‖ₑ ^ 2 ∂ν`.
+
+Introduce `ψ' hψ'`. Rewrite using `[hmint _ (hψ'.1.continuous.measurable.enorm.pow_const 2)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, d, ev, enorm_mul, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `haveI hinv : m.IsAddLeftInvariant := by`. Prove the components needed by the constructor for the conclusion. Introduce `a`. Use extensionality with `s hs`.
+
+Rewrite using `[Measure.map_apply (measurable_const_add a) hs]`. Establish `hs' : MeasurableSet ((fun y => a + y) ⁻¹' s)` using `measurable_const_add a hs`. Rewrite using `[← lintegral_indicator_one hs', ← lintegral_indicator_one hs, hmint _ (measurable_one.indicator hs'), hmint _ (measurable_one.indicator hs)]`. Use `Eq.trans ?_ (lintegral_add_right_eq_self (fun x => d x * s.indicator 1 (ev x)) (lift a))` and prove the remaining obligations. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Establish `e1 : d (x + lift a) = d x` using `by show ‖R (x + lift a)‖ₑ ^ 2 = ‖R x‖ₑ ^ 2`. Rewrite using `[(hR φ₀ hφ₀).1 x _ (hat a)]`. Establish `e2 : ev (x + lift a) = a + ev x` using `by rw [hev_add, hevl, add_comm]`. Use `show d x * ((fun y => a + y) ⁻¹' s).indicator 1 (ev x) = d (x + lift a) * s.indicator 1 (ev (x + lift a))`.
+
+Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Set `U : Set (κ → Fv F v)` to `φ₀ ⁻¹' {1}`. Establish `hUo : IsOpen U` using `hφ₀.1.isOpen_fiber 1`. Establish `hU0 : (0 : κ → Fv F v) ∈ U` using `hφ₀0`.
+
+Establish `hUm : m U < ⊤`. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ ∫⁻ y, ‖φ₀ y‖ₑ ^ 2 ∂m := lintegral_mono fun y => by`. Distinguish the cases in `hy : y ∈ U`. Rewrite using `[Set.indicator_of_mem hy]`.
+
+Establish `h1 : φ₀ y = 1` using `hy`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Simplify using `[hy]`. Use `_ = ∫⁻ x, ‖tens (evFin F v) φ₀ R x‖ₑ ^ 2 ∂ν := hsq φ₀ hφ₀`.
+
+Use `_ < ⊤ := by`. Establish `hL` using `GlobalTheory.TorusDilate.memLp_of_mem_schA ν hν (hR φ₀ hφ₀).2`. Establish `h2` using `lintegral_rpow_enorm_lt_top_of_eLpNorm_lt_top two_ne_zero ENNReal.ofNat_ne_top hL.eLpNorm_lt_top`. Simplify using `using h2`. Use `haveI : IsLocallyFiniteMeasure m := ⟨fun y => ⟨(fun z => -y + z) ⁻¹' U, (continuous_const.add continuous_id).continuousAt.preimage_mem_nhds (hUo.mem_nhds (by simpa using hU0)), by rw [measure_preimage_add]; exact hUm⟩⟩`.
+
+Set `c` to `m.addHaarScalarFactor μ`. Establish `hmc : ∀ ψ' ∈ SB (κ → Fv F v), ∫⁻ y, ‖ψ' y‖ₑ ^ 2 ∂m = c * ∫⁻ y, ‖ψ' y‖ₑ ^ 2 ∂μ`. Introduce `ψ' hψ'`. Establish `hc : Continuous fun y => ‖ψ' y‖ ^ 2` using `hψ'.1.continuous.norm.pow 2`. Establish `hcs : HasCompactSupport fun y => ‖ψ' y‖ ^ 2` using `hψ'.2.comp_left (g := fun z : ℂ => ‖z‖ ^ 2) (by simp)`.
+
+Establish `key` using `Measure.integral_isAddLeftInvariant_eq_smul_of_hasCompactSupport m μ hc hcs`. Establish `conv : ∀ ρ : Measure (κ → Fv F v), IsFiniteMeasureOnCompacts ρ → ∫⁻ y, ‖ψ' y‖ₑ ^ 2 ∂ρ = ENNReal.ofReal (∫ y, ‖ψ' y‖ ^ 2 ∂ρ)`. Introduce `ρ _`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal (hc.integrable_of_hasCompactSupport hcs) (Filter.Eventually.of_forall fun _ => by positivity)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Rewrite using `[conv m inferInstance, key, ← conv _ inferInstance, lintegral_smul_measure]`. Both sides reduce to the same expression. Establish `hc0 : (c : ENNReal) ≠ 0`.
+
+Introduce `h0`. Establish `h1` using `hmc φ₀ hφ₀`. Rewrite `h1` using `[h0, zero_mul, hsq φ₀ hφ₀]`. Use `GlobalTheory.TorusDilate.lintegral_sq_ne_zero ν hν (GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F (hR φ₀ hφ₀).2) ?_ h1` and prove the remaining obligations. Use `show φ₀ (fun i => evFin F v ((0 : κ → AF F) i)) * R 0 ≠ 0`.
+
+Establish `h2 : (fun i => evFin F v ((0 : κ → AF F) i)) = 0` using `by funext i; exact map_zero _`. Rewrite using `[h2, hφ₀0, one_mul]`. Conclude with `hR0`. Establish `hU` using `hT ν hν _ (hR φ hφ).2`. Rewrite `hU` using `[hact R (hR φ hφ)]`.
+
+Establish `hmm : ∫⁻ y, ‖φ₁ y‖ₑ ^ 2 ∂m = ∫⁻ y, ‖φ y‖ₑ ^ 2 ∂m` using `by rw [hsq φ₁ hφ₁, hsq φ hφ, hU]`. Rewrite `hmm` using `[hmc φ₁ hφ₁, hmc φ hφ]`. Conclude with `(ENNReal.mul_right_inj hc0 ENNReal.coe_ne_top).1 hmm`.
+-/
 theorem lintegral_eq_of_acts {κ : Type} [Fintype κ] (v : Pl F)
     (T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ)
     (hT : ∀ ν : @Measure (κ → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) ν →
@@ -164,6 +213,9 @@ end GlobalTheory.HoweLocal.LocUnitNonsplit
 
 open GlobalTheory.HoweLocal.LocUnitNonsplit in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a b JA B κ _ dA ψ omB hstd hsplit v hv _ eB hcomp omL hL co hco`. Introduce `μ hμ g φ hφ`. Conclude with `lintegral_eq_of_acts v (omB (eB.symm g).1) (fun ν hν Φ hΦ => hsplit.unit ν hν _ Φ hΦ) hφ (hL g φ hφ).1 (hL g φ hφ).2 μ hμ`.
+-/
 theorem GlobalTheory.HoweLocal.LocUnitNonsplit.isUnitaryOn_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (a b : ℕ)
     (JA : Matrix (Fin a) (Fin a) E) (B : Spc F E b) (κ : Type) [Fintype κ]
     (dA : Darboux (symp (R := AF F) (cA σ) (-1) (incM F JA) (incM F B.J)) κ) (ψ : AddChar (AF F) ℂ)

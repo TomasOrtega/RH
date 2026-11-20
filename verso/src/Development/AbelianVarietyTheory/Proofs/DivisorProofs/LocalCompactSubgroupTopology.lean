@@ -13,6 +13,11 @@ open GlobalTheory.ThK.LemF.QuotInv
 
 namespace GlobalTheory.ThK.LemF.QuotInv.KAtCompact
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' _ X om om' om₁ om₁' hT _ v K hK`. Take `⟨_, _, hsc, ht2⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (b + 2) G.V.J`. Establish `hc : IsCompact (K : Set (UA σ G.V.J))`. Take `⟨C, hC, hsub⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B (b + 2) G.V _ _ hT.base hT.geo.hV`. Establish `e : K = GlobalTheory.StabHaar.stabK B G.V`.
+
+Use extensionality with `g`. Rewrite using `[hK g, GlobalTheory.StabHaar.isStab_stabK B G.V g]`. Substitute `e` using the available equality. Conclude with `hC.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B G.V (GlobalTheory.T.isClosed_adelic_lattice_closure F E (b + 2) G.V hT.geo.hV.lat)) hsub`. Conclude with `⟨isCompact_iff_compactSpace.mp (isCompact_KAt hc _), inferInstance, inferInstance⟩`.
+-/
 theorem kAt_compact_secondCountable_t2 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ X om om' om₁ om₁', IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' → ∀ (v : Pl F),

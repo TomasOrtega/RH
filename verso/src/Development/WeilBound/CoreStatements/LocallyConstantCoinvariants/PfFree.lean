@@ -9,6 +9,11 @@ open scoped Pointwise
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `haveI : P.LiesOver (v.asIdeal.under ℤ) := ⟨by rw [P.over_def v.asIdeal, Ideal.under_under]⟩`. Establish `h1` using `MulAction.index_stabilizer Gal(E/ℚ) P`. Rewrite `h1` using `[Algebra.IsInvariant.orbit_eq_primesOver ℤ (𝓞 E) Gal(E/ℚ) (v.asIdeal.under ℤ) P, hv, ← IsGalois.card_aut_eq_finrank]`. Establish `h2` using `(MulAction.stabilizer Gal(E/ℚ) P).card_mul_index`. Rewrite `h2` using `[h1]`.
+
+Establish `h3 : Nat.card (MulAction.stabilizer Gal(E/ℚ) P) = 1` using `(mul_left_eq_self₀.1 h2).resolve_right Nat.card_pos.ne'`. Conclude with `(Subgroup.mem_bot).1 (Subgroup.card_eq_one.1 h3 ▸ (MulAction.mem_stabilizer_iff.2 h))`.
+-/
 theorem eq_one_of_smul [IsGalois ℚ E] {v : Pl F} (hv : SplitsFully E v) (P : Ideal (𝓞 E)) [P.IsPrime] [P.LiesOver v.asIdeal]
     (g : Gal(E/ℚ)) (h : g • P = P) : g = 1 := by
   haveI : P.LiesOver (v.asIdeal.under ℤ) := ⟨by rw [P.over_def v.asIdeal, Ideal.under_under]⟩
@@ -25,6 +30,9 @@ def conjQ (h : IsCMExt F E σ) : Gal(E/ℚ) :=
   AlgEquiv.ofRingEquiv (f := RingEquiv.ofBijective (σ : E →+* E)
     (Function.Involutive.bijective (f := σ) (cm_conj_conj h))) fun x => by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjQ_apply (h : IsCMExt F E σ) (x : E) : conjQ h x = σ x := rfl
 
 end PositivityTheory.KCo

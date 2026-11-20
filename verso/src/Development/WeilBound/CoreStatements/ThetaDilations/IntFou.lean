@@ -10,11 +10,45 @@ noncomputable section
 
 namespace PositivityTheory.PlacePermOperatorBicommutantSpan
 
+/- English proof (translation)
+Use `(fou_sb h hf).2 0` as an intermediate fact. Simplify `this` using `only [fou, neg_zero, chi_sym h _ 0, chi_zero h, mul_one]`.
+-/
 theorem int_fou {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] {χ : V → V → ℂ} {μ : Measure V}
     (h : NADual V χ μ) {f : V → ℂ} (hf : SB f) : ∫ y, fou χ μ f y ∂μ = f 0 := by
   have := (fou_sb h hf).2 0
   simpa only [fou, neg_zero, chi_sym h _ 0, chi_zero h, mul_one] using this
 
+/- English proof (translation)
+Introduce `F _ _ _ _ lf hlf h1 ψ hψ ι _ _ M B ρ P hQ φ hφ τ hτ b hb`. Establish `H` using `GlobalTheory.T.weil_representation_quadratic_datum F lf hlf h1 ψ hψ ι B hQ.2.2.1 hQ.2.2.2.1`. Establish `hD` using `H.2.2.2.2.2`. Use `set m : ℝ := |((Algebra.norm ℚ (b⁻¹ : F) : ℚ) : ℝ)|⁻¹ ^ M with hm`. Establish `hm0 : 0 < m` using `pow_pos (inv_pos.2 (abs_pos.2 (by exact_mod_cast Algebra.norm_ne_zero_iff.2 (inv_ne_zero hb)))) M`.
+
+Take `⟨γ, -, hγ⟩` from `weil_id H (uA (Units.mk0 b hb)) hm0 (mod_rat hlf h1 hQ.2.1 B (Units.mk0 b hb)⁻¹)`. Use `set c : A F := algebraMap F (A F) b⁻¹ with hc`. Establish `hγ' : ∀ φ, SB φ → opU ψ (hf F) (Bf B) (algebraMap F (A F) b) (fou (chiB ψ (Bf B)) (muF B lf) φ) = (γ * m) • fou (chiB ψ (Bf B)) (muF B lf) (opU ψ (hf F) (Bf B) (algebraMap F (A F) (-b⁻¹)) (opD 1 c (fou (chiB ψ (Bf B)) (muF B lf) (opU ψ (hf F) (Bf B) (algebraMap F (A F) (-b⁻¹)) φ) …`. Introduce `φ hφ`. Use `(hγ φ hφ).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul, ← fou_smul (m : ℂ), map_neg]`. Use `congr 2`. Use function extensionality and compare the values at `u`. Simplify using `only [opU, opD, Pi.smul_apply, smul_eq_mul, Complex.ofReal_one, one_mul, mul_left_comm (m : ℂ)]`. Both sides reduce to the same expression.
+
+Establish `hO : IsOrth B ρ 1 fun _ => 1` using `⟨by simp, fun _ => by simp⟩`. Establish `hU` using `fun φ τ => (GlobalTheory.T.theta_function_modularity F ψ hψ ι M B ρ P hQ _ _ hO φ τ)`. Establish `hW` using `GlobalTheory.T.theta_function_automorphy F lf hlf h1 ψ hψ ι M B ρ P hQ _ _ hO`. Establish `hG` using `GlobalTheory.T.archimedean_gaussian_fourier F ι M B ρ P hQ`. Take `⟨φ₀, hφ₀, hne⟩` from `(GlobalTheory.T.theta_series_summable F ι M B ρ P hQ _ _ hO τ hτ).2`.
+
+Establish `hρ : ∀ w, ((ρ w b : ℝ) : ℂ) ≠ 0` using `fun w => by exact_mod_cast (map_ne_zero (ρ w)).2 hb`. Establish `him : ∀ {σ : InfinitePlace F → ℂ}, (∀ w, 0 < (σ w).im) → ∀ w, 0 < (-(σ w)⁻¹).im` using `fun h w => by`. Rewrite using `[Complex.neg_im, Complex.inv_im, neg_div, neg_neg]`. Conclude with `div_pos (h w) (Complex.normSq_pos.2 fun h0 => by simpa [h0] using h w)`. Use `set τ₁ : InfinitePlace F → ℂ := fun w => τ w + (ρ w (-b⁻¹) : ℝ) with hτ₁`.
+
+Establish `p1 : ∀ w, 0 < (τ₁ w).im` using `fun w => by simpa [hτ₁] using hτ w`. Use `set τ₄ : InfinitePlace F → ℂ := fun w => ((ρ w b⁻¹ : ℝ) : ℂ) ^ 2 * -(τ₁ w)⁻¹ + (ρ w (-b⁻¹) : ℝ) with hτ₄`. Establish `p4 : ∀ w, 0 < (τ₄ w).im` using `fun w => by`. Simplify using `only [hτ₄, Complex.add_im, Complex.ofReal_im, add_zero, ← Complex.ofReal_pow, Complex.im_ofReal_mul]`. Conclude with `mul_pos (sq_pos_of_ne_zero ((map_ne_zero (ρ w)).2 (inv_ne_zero hb))) (him p1 w)`.
+
+Establish `e4 : (fun w => -(τ₄ w)⁻¹) = fun w => -(τ w)⁻¹ + (ρ w b : ℝ)`. Use function extensionality and compare the values at `w`. Establish `h0 : τ w ≠ 0` using `fun h => by simpa [h] using hτ w`. Establish `h2 : τ₁ w ≠ 0` using `fun h => by simpa [h] using p1 w`. Establish `h3 : τ w * (ρ w b : ℝ) - 1 ≠ 0` using `fun h => h2 (by`.
+
+Simplify using `only [hτ₁, map_neg, map_inv₀, Complex.ofReal_neg, Complex.ofReal_inv]`. Clear denominators, using `[hρ w]` for the nonvanishing conditions. Take the linear combination `h)`. Establish `h5 : τ₄ w = -(τ w / (τ w * (ρ w b : ℝ) - 1))`. Establish `h6 : τ₁ w = (τ w * (ρ w b : ℝ) - 1) / (ρ w b : ℝ)`.
+
+Simplify using `only [hτ₁, map_neg, map_inv₀, Complex.ofReal_neg, Complex.ofReal_inv]`. Clear denominators, using `[hρ w]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree. Establish `h7` using `hρ w`. Simplify using `only [hτ₄, h6, map_neg, map_inv₀, Complex.ofReal_neg, Complex.ofReal_inv]`.
+
+Generalize the expression as in `((ρ w b : ℝ) : ℂ) = r at h3 h7 ⊢`. Rewrite using `[inv_div, div_eq_mul_inv, div_eq_mul_inv]`. Establish `h8` using `mul_inv_cancel₀ h3`. Establish `h9` using `mul_inv_cancel₀ h7`. Take the linear combination `(-(r⁻¹ * (τ w * r - 1)⁻¹) - τ w * (τ w * r - 1)⁻¹) * h9 + r⁻¹ * h8`.
+
+Rewrite using `[h5]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `s1` using `sb_opU H (algebraMap F (A F) (-b⁻¹)) hφ₀`. Establish `s3 : SB (opD 1 c (fou (chiB ψ (Bf B)) (muF B lf) (opU ψ (hf F) (Bf B) (algebraMap F (A F) (-b⁻¹)) φ₀)))` using `sb_opD H 1 (uA (Units.mk0 b hb)⁻¹) (fou_sb hD s1).1`.
+
+Establish `t1` using `(hW _ s1 τ₁ p1).trans ((hU φ₀ τ).1 (-b⁻¹))`. Establish `t4` using `(hW _ (sb_opU H (algebraMap F (A F) (-b⁻¹)) s3) τ₄ p4).trans (((hU _ _).1 (-b⁻¹)).trans ((hU _ fun w => -(τ₁ w)⁻¹).2.1 b⁻¹ (inv_ne_zero hb)))`. Establish `t0` using `hW φ₀ hφ₀ τ hτ`. Rewrite `t0` using `[← (hU _ fun w => -(τ w)⁻¹).1 b, hγ' φ₀ hφ₀, (hU _ _).2.2, ← e4]`. Establish `t5` using `(hG τ₄ p4).2.2.1`.
+
+Establish `key : cG B ρ P τ * (γ * m) * cG B ρ P (fun w => -(τ₄ w)⁻¹) = cG B ρ P τ₁`. Use `mul_right_cancel₀ hne ?_` and prove the remaining obligations. Use `conv_rhs => rw [← t0]`. Use `conv_lhs => rw [← t1, ← t4]`. Take the linear combination `(cG B ρ P τ * (γ * m) * cG B ρ P τ₁ * theta B ρ P 1 (fun _ => 1) (fou (chiB ψ (Bf B)) (muF B lf) (opU ψ (hf F) (Bf B) (algebraMap F (A F) (-b⁻¹)) (opD 1 c (fou (chiB ψ (Bf B)) (muF B lf) (opU ψ (hf F) (Bf B) (algebraMap F (A F) (-b⁻¹)) φ₀))))) fun w => -(τ₄ w)⁻¹) * t5`.
+
+Establish `s1'` using `sb_opU H (algebraMap F (A F) (-b⁻¹)) hφ`. Establish `s3' : SB (opD 1 c (fou (chiB ψ (Bf B)) (muF B lf) (opU ψ (hf F) (Bf B) (algebraMap F (A F) (-b⁻¹)) φ)))` using `sb_opD H 1 (uA (Units.mk0 b hb)⁻¹) (fou_sb hD s1').1`. Establish `f1 : fstar ψ (hf F) (Bf B) (muF B lf) (fou (chiB ψ (Bf B)) (muF B lf) φ) (algebraMap F (A F) b) = γ * m * fstar ψ (hf F) (Bf B) (muF B lf) φ (algebraMap F (A F) (-b⁻¹))`. Rewrite using `[fstar, hγ' φ hφ]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, integral_const_mul, int_fou hD (sb_opU H _ s3')]`.
+
+Simplify using `[opU, opD, qf, fou, chiB, fstar]`. Rewrite using `[eiTerm, eiTerm, f1, ← e4, ← key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem recip : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ ψ : AddChar (A F) ℂ, IsStdChar F ψ → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → ∀ φ : (ι → A F) → ℂ, SB φ → ∀ τ : InfinitePlace F → ℂ, (∀ w, 0 < (τ w).im) → ∀ b : F, b ≠ 0 → cG B ρ P τ * eiTerm ψ lf B ρ P (fou (chiB ψ (Bf B)) (muF B lf) φ) (fun w => -(τ w)⁻¹) b = eiTerm ψ lf B ρ P φ τ (-b⁻¹) := by
   intro F _ _ _ _ lf hlf h1 ψ hψ ι _ _ M B ρ P hQ φ hφ τ hτ b hb
   have H := GlobalTheory.T.weil_representation_quadratic_datum F lf hlf h1 ψ hψ ι B hQ.2.2.1 hQ.2.2.2.1

@@ -10,6 +10,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hi : ∀ x y, (VS D).hT (φ x) (φ y) = (VS D).hT x y` using `hφ`. Use extensionality with `v`. Simplify using `only [Formalism.MainNotions.S.Lat.orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+
+Use `(Submodule.mem_map).2 ⟨φ.symm v, ?_, by simp⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Establish `h1` using `hv (φ x) (Submodule.mem_map_of_mem hx)`. Rewrite using `[← hi x (φ.symm v)]`.
+
+Simplify using `using h1`. Introduce `hv x hx`. Take `⟨w, hw, rfl⟩` from `(Submodule.mem_map).1 hv`. Take `⟨y, hy, rfl⟩` from `(Submodule.mem_map).1 hx`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at hw`.
+
+Simplify using `only [LinearEquiv.coe_coe]`. Rewrite using `[hi]`. Conclude with `hw y hy`.
+-/
 private theorem orth_map_isom_eq_map_orth (D : D7) (φ : GV D) (hφ : φ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (U : Submodule D.host.E (VS D).V) :
     Formalism.MainNotions.S.Lat.orth (VS D) (U.map (φ : (VS D).V →ₗ[D.host.E] (VS D).V)) =
@@ -33,6 +42,9 @@ private theorem orth_map_isom_eq_map_orth (D : D7) (φ : GV D) (hφ : φ ∈ For
     rw [hi]
     exact hw y hy
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [Formalism.MainNotions.S.Lat.toO, Submodule.mem_map, Submodule.restrictScalars_mem, LinearMap.coe_restrictScalars]`.
+-/
 private theorem toO_map_eq_toO_map (D : D7) (φ : GV D) (U : Submodule D.host.E (VS D).V) :
     (Formalism.MainNotions.S.Lat.toO (VS D) U).map
               ((φ : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E)) =
@@ -41,6 +53,9 @@ private theorem toO_map_eq_toO_map (D : D7) (φ : GV D) (U : Submodule D.host.E 
   simp only [Formalism.MainNotions.S.Lat.toO, Submodule.mem_map, Submodule.restrictScalars_mem,
     LinearMap.coe_restrictScalars]
 
+/- English proof (translation)
+Introduce `D T F₁ F₂ φ M hφ hX`. Establish `hinj : Function.Injective ((φ : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E))` using `φ.injective`. Unfold `Formalism.MainNotions.S.Lat.Lsub Formalism.MainNotions.S.Lat.Lrep Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_inf _ hinj, Submodule.map_sup, Submodule.map_inf _ hinj, toO_map_eq_toO_map, toO_map_eq_toO_map, ← orth_map_isom_eq_map_orth D φ hφ, hX]`.
+-/
 theorem lsub_gmap_of_map_Xsp_eq :
     ∀ (D : D7) (T : D.host.E) (F₁ F₂ : LFlag (VS D) D.R.rS T) (φ : GV D) (M : LV D),
       φ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT →

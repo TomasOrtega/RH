@@ -11,5 +11,8 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.AnPer
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AnPer.ChernClause.pchern | exact GlobalTheory.AnPer.ChernClause.pchern | (intros; apply GlobalTheory.AnPer.ChernClause.pchern <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pChern_neg_one : GlobalTheory.AnPer.PChern (-1) := by
   first | exact @GlobalTheory.AnPer.ChernClause.pchern | exact GlobalTheory.AnPer.ChernClause.pchern | (intros; apply GlobalTheory.AnPer.ChernClause.pchern <;> assumption)

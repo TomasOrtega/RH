@@ -7,6 +7,23 @@ open TensorProduct
 
 namespace GlobalTheory.CommSwap
 
+/- English proof (translation)
+Introduce `p O A _ _ _ _ _ d x E₂ μ hnil hE hμ i`. Use `set y : Fin d ⊕ Fin d → A ⊗[O] A := Sum.elim (fun i => x i ⊗ₜ[O] (1 : A)) fun i => (1 : A) ⊗ₜ[O] x i with hy`. Establish `hny : ∀ j, ∃ N : ℕ, (p : A ⊗[O] A) ∣ y j ^ N`. Introduce `j`. Break down `j with j | j` into its components or cases.
+
+Take `⟨N, a, ha⟩` from `hnil j`. Use `⟨N, a ⊗ₜ[O] 1, ?_⟩` and prove the remaining obligations. Establish `h1` using `map_mul (Algebra.TensorProduct.includeLeftRingHom (R := O) (A := A) (B := A)) (p : A) a`. Simplify using `only [Algebra.TensorProduct.includeLeftRingHom_apply, map_natCast] at h1`. Simplify using `only [hy, Sum.elim_inl, Algebra.TensorProduct.tmul_pow, one_pow, ha, h1]`.
+
+Take `⟨N, a, ha⟩` from `hnil j`. Use `⟨N, 1 ⊗ₜ[O] a, ?_⟩` and prove the remaining obligations. Establish `h1` using `map_mul (Algebra.TensorProduct.includeRight (R := O) (A := A) (B := A)) (p : A) a`. Simplify using `only [Algebra.TensorProduct.includeRight_apply, map_natCast] at h1`. Simplify using `only [hy, Sum.elim_inr, Algebra.TensorProduct.tmul_pow, one_pow, ha, h1]`.
+
+Use `set T := (Algebra.TensorProduct.comm O A A).toAlgHom`. Use `set E' := T.comp E₂`. Use `set u : Fin d ⊕ Fin d → MvPowerSeries (Fin d ⊕ Fin d) O := Sum.elim (fun i => X (Sum.inr i)) (fun i => X (Sum.inl i)) with hu`. Establish `hu0 : ∀ j, constantCoeff (u j) = 0`. Apply the tactic sequence `intro j; rcases j with j | j <;> simp [hu]`.
+
+Establish `hE' : IsEval p (fun j => E₂ (u j)) E'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Break down `j with j | j` into its components or cases. Simplify using `[E', T, hu, hE.1, hy]`.
+
+Simplify using `[E', T, hu, hE.1, hy]`. Introduce `m`. Take `⟨N, hN⟩` from `hE.2 m`. Use `⟨N, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hN f hf`.
+
+Use `⟨T c, ?_⟩` and prove the remaining obligations. Simplify using `[E', hc, map_mul, map_pow, map_natCast]`. Establish `key` using `((GlobalTheory.CEval.continuous_eval p O (A ⊗[O] A) (Fin d ⊕ Fin d) y hny).2 E₂ hE).1 (Fin d ⊕ Fin d) u E' hu0 hE' (μ i)`. Establish `hs : swap (μ i) = subst u (μ i)` using `rfl`. Rewrite using `[hs, key, hμ i]`.
+
+Simplify using `only [E', T, AlgHom.comp_apply, hμ i]`. Conclude with `Coalgebra.comm_comul (R := O) (x i)`.
+-/
 theorem eval_swap_eq : ∀ (p : ℕ) (O A : Type) [CommRing O] [CommRing A] [Bialgebra O A] [Coalgebra.IsCocomm O A] [IsAdicComplete (Ideal.span {(p : A ⊗[O] A)}) (A ⊗[O] A)] {d : ℕ} (x : Fin d → A) (E₂ : MvPowerSeries (Fin d ⊕ Fin d) O →ₐ[O] A ⊗[O] A) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O), (∀ i, ∃ N : ℕ, (p : A) ∣ x i ^ N) → IsEval p (Sum.elim (fun i => x i ⊗ₜ[O] (1 : A)) fun i => (1 : A) ⊗ₜ[O] x i) E₂ → (∀ i, E₂ (μ i) = Coalgebra.comul (R := O) (x i)) → ∀ i, E₂ (swap (μ i)) = E₂ (μ i) := by
   intro p O A _ _ _ _ _ d x E₂ μ hnil hE hμ i
   set y : Fin d ⊕ Fin d → A ⊗[O] A := Sum.elim (fun i => x i ⊗ₜ[O] (1 : A)) fun i => (1 : A) ⊗ₜ[O] x i with hy

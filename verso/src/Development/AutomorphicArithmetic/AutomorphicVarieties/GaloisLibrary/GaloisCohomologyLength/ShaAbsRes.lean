@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ F' Ω' _ _ _ _ _ S S' φ hφ h R _ M _ _ _ _ _ ρ`. Establish `h1 : ∀ x ∈ ShaAbs ρ S, resH1 ρ φ hφ x ∈ ShaAbs (ρ.comp φ) S'`. Introduce `x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨ha, hb⟩` from `(mk_mem_ShaAbs ρ S z).1 hx`.
+
+Use `(mk_mem_ShaAbs (ρ.comp φ) S' (restrictCocycles1 ρ φ hφ z)).2 ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `v' hv' A' hA'`. Take `⟨v, A, hA, hS, hD, -⟩` from `h v' A' hA'`. Take `⟨m, hm⟩` from `ha v (hS.2 hv') A hA`. Conclude with `⟨m, fun g hg => hm (φ g) (hD g hg)⟩`.
+
+Introduce `v' hv' A' hA'`. Take `⟨v, A, hA, hS, -, hI⟩` from `h v' A' hA'`. Take `⟨m, hm⟩` from `hb v (fun hv => hv' (hS.1 hv)) A hA`. Conclude with `⟨m, fun g hg => hm (φ g) (hI g hg)⟩`. Use `⟨h1, fun hs => ?_⟩` and prove the remaining obligations.
+
+Establish `hinj : Function.Injective (resH1 ρ φ hφ)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hx' : (Submodule.Quotient.mk (restrictCocycles1 ρ φ hφ z) : H1 (ρ.comp φ)) = 0` using `hx`.
+
+Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 hx')`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((mem_coboundaries1 _ _).2 ⟨m, fun g => ?_⟩)` and prove the remaining obligations. Take `⟨g', rfl⟩` from `hs g`. Conclude with `hm g'`. Use `Module.length_le_of_injective ((resH1 ρ φ hφ).restrict h1) ?_` and prove the remaining obligations.
+
+Introduce `x y hxy`. Conclude with `Subtype.ext (hinj (congrArg Subtype.val hxy))`.
+-/
 theorem UpperTheory.V.LDataCardLeFinrank.shaAbsRes :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (F' Ω' : Type) [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (S : Set (HeightOneSpectrum (𝓞 F))) (S' : Set (HeightOneSpectrum (𝓞 F'))) (φ : G F' Ω' →* G F Ω) (hφ : Continuous φ),
       (∀ (v' : HeightOneSpectrum (𝓞 F')) (A' : ValuationSubring Ω'), IsPlaceOver A' v' → ∃ (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), IsPlaceOver A v ∧ (v ∈ S ↔ v' ∈ S') ∧

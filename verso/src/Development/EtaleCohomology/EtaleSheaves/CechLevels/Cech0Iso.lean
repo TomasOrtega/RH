@@ -14,6 +14,9 @@ def cech0Iso (f : Arrow PSh) : f.cechNerve.obj (op (SimplexCategory.mk 0)) ≅ f
     · rw [Category.assoc]; erw [WidePullback.lift_base, Category.id_comp]; exact WidePullback.π_arrow _ 0
   inv_hom_id := by erw [WidePullback.lift_π]
 
+/- English proof (translation)
+Introduce `A A' _ _ φ I`. Use `⟨Arrow.isoMk (cech0Iso _) (cech0Iso _) ?_⟩` and prove the remaining obligations. Simplify using `only [cech0Iso, psi, Arrow.mk_hom, Arrow.mapCechNerve_app]`. Use `erw [WidePullback.lift_π]`. Both sides reduce to the same expression.
+-/
 theorem level0 : Level0 := by
   intro A A' _ _ φ I
   refine ⟨Arrow.isoMk (cech0Iso _) (cech0Iso _) ?_⟩
@@ -21,6 +24,9 @@ theorem level0 : Level0 := by
   erw [WidePullback.lift_π]
   rfl
 
+/- English proof (translation)
+The claim follows from `CechLevels_of hL level0`.
+-/
 theorem CechLevels_of' (hL : Levels) : LateralTheory.E.t_E1Cut.CechLevels := CechLevels_of hL level0
 
 end LateralTheory.E.CechLevelsPf

@@ -16,6 +16,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ResidueLatticeCount.Sum
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ResidueLatticeCount.ThirdLeLog
 
 open PI.Residue in
+/- English proof (translation)
+The claim follows from `residueBound_of zetaLePow zetaRLe (heckeLower_of (classLower_of (countIntegral_of boxVolume) shellVolume (unfold_of unitPreserving) (hitBound_of boxVolume) idealSetSum) classSum) optimise`.
+-/
 theorem dedekind_residue_bound : PI.ResidueBound :=
   residueBound_of zetaLePow zetaRLe
     (heckeLower_of

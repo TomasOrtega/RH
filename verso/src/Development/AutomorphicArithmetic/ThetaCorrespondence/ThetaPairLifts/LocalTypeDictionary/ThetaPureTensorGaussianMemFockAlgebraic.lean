@@ -15,6 +15,13 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 noncomputable section
 namespace GlobalTheory.ThetaGaussAlg
 variable {D : D7}
+/- English proof (translation)
+Introduce `_ _ D ψ θ _ hθ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hM f₀ φ hg hφ hvac`. Take `⟨f, hf, hD⟩` from `GlobalTheory.T.thetaTransform_gaussianVacuum_isFiniteDatum D ψ θ hθ false W₁ X A₁ B e.symm Bs hM.triple.base h.ψ Γ.V' Γ.W _ _ _ _ (by simpa using h.JW₁) h.JX hM.triple.geo.hV' hM.triple.geo.hW (fun w => by`. Take `⟨τ, h1, -, h3, h4⟩` from `h.cart w`. Conclude with `⟨τ, h1, by simpa using h3, h4⟩)`. Use the proof step `Γ.M' hM.triple.geo.hM' (crd W₁ X e) (fun u => by simp only [Bool.false_eq_true, if_false, one_smul]; rfl)`.
+
+Use `f₀ φ hg hφ hvac`. Establish `e1 : GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ φ) = f`. Use function extensionality and compare the values at `x`. Conclude with `(hD.2 ((crd W₁ X e).symm x)).trans (congrArg f ((crd W₁ X e).apply_symm_apply x))`. Rewrite using `[e1]`.
+
+Conclude with `Submodule.subset_span ⟨f, 1, hf, (fockF_one ψ θ false A₁ B f).symm⟩`.
+-/
 theorem theta_pure_tensor_gaussian_mem_fockAlgebraic : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
@@ -57,6 +64,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThetaGaussAlg.theta_pure_tensor_gaussian_mem_fockAlgebraic | exact _root_.GlobalTheory.ThetaGaussAlg.theta_pure_tensor_gaussian_mem_fockAlgebraic | (intros; apply _root_.GlobalTheory.ThetaGaussAlg.theta_pure_tensor_gaussian_mem_fockAlgebraic <;> …`.
+-/
 theorem _root_.GlobalTheory.T.pure_gaussian_theta_lift_algebraic : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

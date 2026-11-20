@@ -4,6 +4,11 @@ namespace GlobalTheory.TensorRingHomExtensionality
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul s b`. Establish `h : s ⊗ₜ[R] b = (s ⊗ₜ[R] (1 : B)) * ((1 : S) ⊗ₜ[R] b)`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[h, map_mul, map_mul, h₁, h₂]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem ringHom_ext_tensor {R S B C : Type} [CommRing R] [CommRing S] [CommRing B] [CommRing C]
     [Algebra R S] [Algebra R B] (φ ψ : TensorProduct R S B →+* C)
     (h₁ : ∀ s : S, φ (s ⊗ₜ[R] (1 : B)) = ψ (s ⊗ₜ[R] (1 : B)))

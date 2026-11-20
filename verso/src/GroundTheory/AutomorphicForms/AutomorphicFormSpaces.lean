@@ -23,9 +23,17 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 open Reduction
 
+/- English proof (translation)
+Simplify using `only [archPart, prodEquiv_infEmb, ContinuousMulEquiv.apply_symm_apply]`.
+-/
 theorem archPart_infEmb (a : archGroup K n) : archPart (infEmb K n a) = a := by
   simp only [archPart, prodEquiv_infEmb, ContinuousMulEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `⟨infEmb K n a, ha, archPart_infEmb a⟩`. Introduce and unpack `⟨k, hk, rfl⟩`.
+
+Conclude with `archPart_mem_archCompact hk`.
+-/
 theorem archCompact_eq_image :
     (archCompact K n : Set (archGroup K n)) =
       archPart '' (maxCompact (K := K) (n := n) : Set (AdelicGLn.AdelicGL K n)) := by
@@ -38,17 +46,26 @@ theorem archCompact_eq_image :
 
 variable (K n) in
 
+/- English proof (translation)
+Rewrite using `[archCompact_eq_image]`. Conclude with `isCompact_maxCompact.image ((archEquiv K n).continuous.comp (continuous_fst.comp (AdelicGLn.prodEquiv K n).continuous))`.
+-/
 theorem isCompact_archCompact : IsCompact (archCompact K n : Set (archGroup K n)) := by
   rw [archCompact_eq_image]
   exact isCompact_maxCompact.image ((archEquiv K n).continuous.comp
     (continuous_fst.comp (AdelicGLn.prodEquiv K n).continuous))
 
+/- English proof (translation)
+Introduce `_` and use `by letI := (isExpLieAlgebra K n).chartedSpace exact contMDiff_const`.
+-/
 theorem isArchSmooth_one : IsArchSmooth (1 : AdelicGLn.AdelicGL K n → ℂ) := fun _ => by
   letI := (isExpLieAlgebra K n).chartedSpace
   exact contMDiff_const
 
 def oneSmooth : archSmooth K n := ⟨1, isArchSmooth_one⟩
 
+/- English proof (translation)
+Rewrite using `[unipMeasure, unipFundamentalDomain, Measure.pi_pi]`. Simplify using `[GroundTheory.Global.adeleMeasure_fundamentalSet]`.
+-/
 theorem unipMeasure_unipFundamentalDomain (r : ℕ) :
     unipMeasure K n r (unipFundamentalDomain K n r) = 1 := by
   rw [unipMeasure, unipFundamentalDomain, Measure.pi_pi]

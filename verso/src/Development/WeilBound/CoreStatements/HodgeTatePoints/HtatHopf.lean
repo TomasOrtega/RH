@@ -17,6 +17,13 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
 namespace PositivityTheory.HtPt.Htat.HopfOrderTop
 
+/- English proof (translation)
+Use `haveI := Γ'.separated`. Use `haveI := Γ'.quasiCompact`. Use `haveI := Γ'.quasiFinite`. Use `haveI := Γ'.finPres`. Establish `hU : Γ'.IsFinOpenSub (GlobalTheory.finitePart Γ'.G.hom)`.
+
+Apply `QFGroup.isFinOpenSub_of_closedFibre` to reduce the goal to its premises. Conclude with `GlobalTheory.isFinite_finitePart (R := CommRingCat.of R') Γ'.G.hom`. Introduce `x hx`. Conclude with `GlobalTheory.mem_finitePart_of_eq_closedPoint (R := CommRingCat.of R') _ x hx`. Rewrite using `[← PositivityTheory.HtPt.Htat.HopfOrderEqTop.btOrder_eq_top hHenselian hBaseChange hRegular R' T Γ' _ hU]`.
+
+Conclude with `PositivityTheory.HtPt.Htat.SubgroupHopfOrder.btOrder_isHopfOrder_of_finOpenSub R' T Γ' _ hU`.
+-/
 private theorem btOrder_top_isHopfOrder' (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group)
     (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) (R' : Type) [CommRing R'] [IsDomain R'] [IsIntegrallyClosed R']
     [HenselianLocalRing R'] (T : Type) [CommGroup T] [Finite T] (Γ' : QFGroup R' T) :
@@ -33,6 +40,27 @@ private theorem btOrder_top_isHopfOrder' (hHenselian : type_of% @GlobalTheory.T.
   rw [← PositivityTheory.HtPt.Htat.HopfOrderEqTop.btOrder_eq_top hHenselian hBaseChange hRegular R' T Γ' _ hU]
   exact PositivityTheory.HtPt.Htat.SubgroupHopfOrder.btOrder_isHopfOrder_of_finOpenSub R' T Γ' _ hU
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ extOrder (algebraMap R K) A, ∃ s : R, s ≠ 0 ∧ ∃ a ∈ A, algebraMap R K s • x = fun t => algebraMap R K (a t)`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`.
+
+Conclude with `⟨1, one_ne_zero, a, ha, by simp⟩`. Consider the case `algebraMap k`. Take `⟨⟨n, ⟨s, hs⟩⟩, hk⟩` from `IsLocalization.surj (nonZeroDivisors R) k`. Use `⟨s, nonZeroDivisors.ne_zero hs, algebraMap R (T → R) n, Subalgebra.algebraMap_mem A n, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite using `[mul_comm]`. Conclude with `hk`. Consider the case `add x y _ _ hx hy`. Take `⟨s1, hs1, a1, ha1, e1⟩` from `hx`.
+
+Take `⟨s2, hs2, a2, ha2, e2⟩` from `hy`. Use `⟨s1 * s2, mul_ne_zero hs1 hs2, s2 • a1 + s1 • a2, A.add_mem (A.smul_mem ha1 _) (A.smul_mem ha2 _), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Establish `h1` using `congrFun e1 t`. Establish `h2` using `congrFun e2 t`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.add_apply, map_mul, map_add] at h1 h2 ⊢`. Take the linear combination `(algebraMap R K s2) * h1 + (algebraMap R K s1) * h2`. Consider the case `mul x y _ _ hx hy`. Take `⟨s1, hs1, a1, ha1, e1⟩` from `hx`. Take `⟨s2, hs2, a2, ha2, e2⟩` from `hy`.
+
+Use `⟨s1 * s2, mul_ne_zero hs1 hs2, a1 * a2, A.mul_mem ha1 ha2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Establish `h1` using `congrFun e1 t`. Establish `h2` using `congrFun e2 t`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.mul_apply, map_mul] at h1 h2 ⊢`.
+
+Take the linear combination `(algebraMap R K s2 * y t) * h1 + (algebraMap R K (a1 t)) * h2`. Use `choose s hs a ha e using fun t : T => key _ (hA (fun u => algebraMap R K ((Pi.single t (1 : R) : T → R) u)))`. Use `haveI := Fintype.ofFinite T`. Establish `hδ : ∀ t, s t • (Pi.single t (1 : R) : T → R) = a t`. Introduce `t`.
+
+Use function extensionality and compare the values at `u`. Apply `IsFractionRing.injective R K` to reduce the goal to its premises. Use `congrFun (e t) u` as an intermediate fact. Simplify `this` using `[Algebra.smul_def]`. Use `⟨∏ t, s t, Finset.prod_ne_zero_iff.mpr fun t _ => hs t, fun f => ?_⟩` and prove the remaining obligations.
+
+Establish `hmem : (∏ t, s t) • f = ∑ t, (f t * ∏ t' ∈ Finset.univ.erase t, s t') • a t`. Use function extensionality and compare the values at `u`. Simplify using `only [← hδ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← Finset.mul_prod_erase _ s (Finset.mem_univ u)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hmem]`. Conclude with `A.sum_mem fun t _ => A.smul_mem (ha t) _`.
+-/
 private theorem exists_smul_mem_of_extOrder {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] {T : Type} [CommGroup T] [Finite T] (A : Subalgebra R (T → R))
     (hA : ∀ g : T → K, g ∈ extOrder (algebraMap R K) A) :
@@ -89,6 +117,13 @@ private theorem exists_smul_mem_of_extOrder {R K : Type} [CommRing R] [IsDomain 
   rw [hmem]
   exact A.sum_mem fun t _ => A.smul_mem (ha t) _
 
+/- English proof (translation)
+Use `PositivityTheory.HtPt.Htat.HopfOrderFlatLocal.isHopfOrder_of_flat_local R T _ ?_ ?_` and prove the remaining obligations. Take `⟨ΓK, F, hbc⟩` from `hBaseChange R T Γ (FractionRing R) (algebraMap R (FractionRing R)) (IsFractionRing.injective R _)`. Establish `hK` using `btOrder_top_isHopfOrder' hHenselian hBaseChange hRegular (FractionRing R) T ΓK`. Rewrite `hK` using `[PositivityTheory.HtPt.Htat.ValuationInjectivePi.btOrder_flat_baseChange R T Γ _ ΓK F hbc inferInstance]`. Take `⟨d', hd', hd'm⟩` from `hK.full`.
+
+Use `exists_smul_mem_of_extOrder (K := FractionRing R) _ fun g => ?_` and prove the remaining obligations. Use `hd'm (d'⁻¹ • g)` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_inv_cancel₀ hd', one_smul]`. Then use the resulting hypothesis. Introduce `P hP haveI := hP.isPrime`. Take `⟨R', iR, iD, iH, iA, hic, hfl, hcomap⟩` from `hHenselian R P`.
+
+Establish `hinj : Function.Injective (algebraMap R R')` using `PositivityTheory.HtPt.Htat.ValuationInjectivePi.flat_inj`. Take `⟨Γ', F, hbc⟩` from `hBaseChange R T Γ R' (algebraMap R R') hinj`. Use `⟨R', iR, iD, inferInstance, iA, hfl, hcomap, ?_⟩` and prove the remaining obligations. Rewrite using `[← PositivityTheory.HtPt.Htat.ValuationInjectivePi.btOrder_flat_baseChange R T Γ R' Γ' F hbc hfl]`. Conclude with `btOrder_top_isHopfOrder' hHenselian hBaseChange hRegular R' T Γ'`.
+-/
 theorem btOrder_top_isHopfOrder (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group) (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R]
     (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) : IsHopfOrder (Γ.btOrder ⊤) := by
   classical
@@ -112,5 +147,8 @@ theorem btOrder_top_isHopfOrder (hHenselian : type_of% @GlobalTheory.T.exists_he
 
 end PositivityTheory.HtPt.Htat.HopfOrderTop
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.HtPt.Htat.HopfOrderTop.btOrder_top_isHopfOrder hHenselian hBaseChange hRegular`.
+-/
 theorem PositivityTheory.HtPt.Htat.bt_hopf_of (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group) (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T), IsHopfOrder (Γ.btOrder ⊤) :=
   @PositivityTheory.HtPt.Htat.HopfOrderTop.btOrder_top_isHopfOrder hHenselian hBaseChange hRegular

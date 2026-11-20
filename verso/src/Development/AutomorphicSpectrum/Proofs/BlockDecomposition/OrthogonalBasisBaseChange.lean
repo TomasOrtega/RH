@@ -10,18 +10,35 @@ open scoped TensorProduct Topology
 
 namespace GlobalTheory.CompanionTheory.SaGen
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+-/
 theorem isCMExt_sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (t : E) : σ (σ t) = t := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, hf, incV, JR, map_sum, map_mul, Matrix.map_apply]`. Both sides reduce to the same expression.
+-/
 theorem hform_incV {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (K : Type) [CommRing K] [Algebra F K] (x y : Fin M → E) :
     Formalism.UG.hform (sigR K σ) (JR K J) (incV K x) (incV K y) = inclR K (hf σ J x y) := by
   simp only [Formalism.UG.hform, hf, incV, JR, map_sum, map_mul, Matrix.map_apply]
   rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ K _ _`. Establish `hcc` using `isCMExt_sigma_sigma hσ`. Take `⟨P, d, hP, hd, -, hd0⟩` from `GlobalTheory.HermDiag.exists_congr_diagonal (c := (σ : E →+* E)) (G := J) two_ne_zero hcc (fun a b => hJ.1 b a)`. Establish `hd0'` using `hd0 hJ.2`. Set `x : Fin M → Fin M → E` to `fun i k => σ (P k i)`.
+
+Establish `hx : ∀ i j, hf σ J (x i) (x j) = (Matrix.diagonal d) i j`. Introduce `i j`. Rewrite using `[← hd]`. Simplify using `only [hf, x, hcc, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+
+Use `⟨fun i => incV K (x i), fun i j hij => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hform_incV, hx, Matrix.diagonal_apply_ne _ hij, map_zero]`. Rewrite using `[hform_incV, hx, Matrix.diagonal_apply_eq]`. Conclude with `(IsUnit.mk0 _ (hd0' i)).map _`. Establish `hm : Matrix.of (fun i => incV (F` using `F) K (x i)) = ((P.map σ).transpose).map (inclR K) := by`.
+
+Use extensionality with `i k`. Both sides reduce to the same expression. Rewrite using `[hm, ← RingHom.mapMatrix_apply, ← RingHom.map_det, Matrix.det_transpose]`. Establish `: (P.map σ).det = σ P.det` using `(RingHom.map_det (σ : E →+* E) P).symm`. Rewrite using `[this]`.
+
+Conclude with `(IsUnit.mk0 _ ((map_ne_zero σ).2 hP)).map _`.
+-/
 theorem exists_rational_orth : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ {M : ℕ} (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
     ∀ (K : Type) [Field K] [Algebra F K], ∃ e : Fin M → Fin M → K ⊗[F] E,

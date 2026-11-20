@@ -12,6 +12,11 @@ open scoped Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hG : IsGalois ℚ H.E` using `H.hostE_isGalois`. Set `c : H.E →+* PadicAlgCl (N.l i)` to `(nbr i w hw).j.comp (algebraMap H.E N.Om)`. Establish `hK : (nbr i w hw).Kw.1 = IntermediateField.adjoin ℚ_[N.l i] (Set.range c)` using `GlobalTheory.T.padicAlgCl_finite_dense_eq_adjoin' (N.l i) H.E c (nbr i w hw).Kw.1 (nbr i w hw).j_E (nbr i w hw).Kw.2 (nbr i w hw).j_dense`. Take `⟨v, hv, hc⟩` from `GlobalTheory.T.exists_place_over_prime_of_padicAlgCl_embedding (N.l i) H.E c`. Establish `h1` using `GlobalTheory.T.finrank_local_field_eq_card_decomposition_group (N.l i) H.E c v hc`.
+
+Establish `h2` using `GlobalTheory.T.card_decomposition_group_eq_local_degree (N.l i) H.E v w hv hw`. Establish `h3 : Module.finrank ℚ_[N.l i] (nbr i w hw).Kw.1 = locDeg H.E w`. Rewrite using `[hK, h1, h2]`. Conclude with `h3`.
+-/
 theorem bridge_degW {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} (nbr : Br.NBr N)
     (i : N.Loc) (w : HeightOneSpectrum (𝓞 H.E)) (hw : w ∈ placesOver H.E (N.l i)) :
     Br.DegW nbr i w hw := by

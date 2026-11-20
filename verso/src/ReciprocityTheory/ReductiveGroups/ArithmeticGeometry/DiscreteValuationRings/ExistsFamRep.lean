@@ -17,6 +17,11 @@ open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Establish `h'` using `h (fun k => J (r ≫ φ k))`. Unfold `sval`. Rewrite using `[h']`. Unfold `gs`. Rewrite using `[dif_pos hm]`.
+
+Use `erw [map_zero, map_zero]`.
+-/
 theorem sval_zero_of {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {s : LB.Sec (LB.LinComb L φ ε)} (h : ∀ j, s.f j = 0) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι)
     (hm : r z ∈ LB.wchart L φ (fun k => J (r ≫ φ k))) : sval s r z J = 0 := by
@@ -27,14 +32,25 @@ theorem sval_zero_of {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ 
   rw [dif_pos hm]
   erw [map_zero, map_zero]
 
+/- English proof (translation)
+Simplify using `only [trF_eq, trPt_mul, cPoint_add]`.
+-/
 theorem trF_add (a b : D.X) : DegPre.trF D F a ≫ DegPre.trF D F b = DegPre.trF D F (a + b) := by
   simp only [trF_eq, trPt_mul, cPoint_add]
 
+/- English proof (translation)
+Establish `h0` using `cPoint_nsmul (D := D) (TF (R := R) F) 0 (0 : D.X)`. Rewrite `h0` using `[zero_smul, pow_zero]`. Rewrite using `[trF_eq, h0, trPt_one]`.
+-/
 theorem trF_zero : DegPre.trF D F 0 = 𝟙 _ := by
   have h0 := cPoint_nsmul (D := D) (TF (R := R) F) 0 (0 : D.X)
   rw [zero_smul, pow_zero] at h0
   rw [trF_eq, h0, trPt_one]
 
+/- English proof (translation)
+Establish `h'` using `h (fun k => J (r ≫ φ k))`. Unfold `sval`. Rewrite using `[h']`. Unfold `gs`. Use `split_ifs with hm`.
+
+Use `erw [map_zero, map_zero]`. Both sides reduce to the same expression.
+-/
 private theorem sval_eq_zero_of_sec_f_eq_zero {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {s : LB.Sec (LB.LinComb L φ ε)} (h : ∀ j, s.f j = 0) (r : Z ⟶ Y) (z : Z)
     (J : (Z ⟶ X) → L.ι) : sval s r z J = 0 := by
@@ -46,6 +62,33 @@ private theorem sval_eq_zero_of_sec_f_eq_zero {X Y Z : Scheme.{0}} {L : LB X} {K
   · erw [map_zero, map_zero]
   · rfl
 
+/- English proof (translation)
+Establish `hL : D.P.L.IsLB` using `D.P.isLB`. Use `choose u hu hcu using fun mu : D.X => (gen_fe (F := F) hG k mu ρ).1`. Establish `hval : ∀ (mu : D.X) (T : Over (Spec (CommRingCat.of R))) (ρ' : T ⟶ DegPre.BF D F) (z : T.left) (J), Good D.P.L z J → val (u mu) ρ'.left z J = uVal D F k ρ (cP D _ mu) ρ' z J * val (DegPre.famMult D F k mu ρ) (ρ' ≫ fst _ _).left z J` using `fun mu => (gen_fe (F := F) hG k mu ρ).2 (u mu) (hu mu) (hcu mu)`. Establish `hF : ∀ mu : D.X, FormEq (Sum.elim (fun i => (DegPre.trF D F mu).left ≫ DegPre.famφ D F ρ i) (DegPre.deltaφ D F k ρ mu)) (Sum.elim (DegPre.famε k) (DegPre.deltaε k)) (DegPre.famφ D F (ρ + k • mu)) (DegPre.famε k)`. Introduce `mu U _ h`.
+
+Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, DegPre.deltaφ, DegPre.deltaε, zpow_neg]`. Rewrite using `[Finset.prod_inv_distrib, mul_left_comm, mul_inv_cancel, _root_.mul_one]`. Use `choose tm htm using fun mu : D.X => exists_sec hL (hF mu) (pullMulSec σ (DegPre.trF D F mu).left (u mu) (hu mu))`. Establish `hX0 : ∀ (T : Over (Spec (CommRingCat.of R))) (ρ' : T ⟶ DegPre.BF D F) (z : T.left) (J), Good D.P.L z J → uVal D F k ρ (cP D _ 0) ρ' z J * val (DegPre.famMult D F k 0 ρ) (ρ' ≫ fst _ _).left z J = 1`. Introduce `T ρ' z J hJ`.
+
+Establish `e` using `fe_cocycle hB ρ' hJ k ρ 0 0`. Rewrite `e` using `[trF_zero, Category.comp_id, smul_zero, add_zero, add_zero]`. Conclude with `mul_eq_left.mp e`. Set `cst : ∀ {a b : D.X}, a = b → LB.Sec (LB.LinComb D.P.L (DegPre.famφ D F a) (DegPre.famε k)) → LB.Sec (LB.LinComb D.P.L (DegPre.famφ D F b) (DegPre.famε k))` to `fun h x => h ▸ x`. Set `S : ∀ β : D.X, LB.Sec (LB.LinComb D.P.L (DegPre.famφ D F β) (DegPre.famε k))` to `fun β => if hβ : ρ = β then cst hβ σ else if h : ∃ mu, ρ + k • mu = β then cst h.choose_spec (tm h.choose) else (0 : Fam D F k).s β`.
+
+Establish `hSρ : S ρ = σ` using `by dsimp only [S]`. Rewrite using `[dif_pos rfl]`. Establish `hA : ∀ (mu β : D.X), ρ + k • mu = β → ∀ (T : Over (Spec (CommRingCat.of R))) (ρ' : T ⟶ DegPre.BF D F) (z : T.left) (J), Good D.P.L z J → sval (S β) ρ'.left z J = sval σ (ρ' ≫ DegPre.trF D F mu).left z J * (uVal D F k ρ (cP D _ mu) ρ' z J * val (DegPre.famMult D F k mu ρ) (ρ' ≫ fs …`. Introduce `mu β e T ρ' z J hJ`. Distinguish the cases in `hβ : ρ = β`.
+
+Substitute `hβ` using the available equality. Take `rfl : mu = 0` from `hcls _ _ (by rw [smul_zero, add_zero]; exact e)`. Rewrite using `[hSρ, hX0 T ρ' z J hJ, trF_zero, Category.comp_id, Units.val_one, _root_.mul_one]`. Substitute `e` using the available equality. Establish `hex : ∃ mu', ρ + k • mu' = ρ + k • mu` using `⟨mu, rfl⟩`.
+
+Establish `key : ∀ (c : D.X) (ec : ρ + k • c = ρ + k • mu), sval (cst ec (tm c)) ρ'.left z J = sval σ (ρ' ≫ DegPre.trF D F mu).left z J * (uVal D F k ρ (cP D _ mu) ρ' z J * val (DegPre.famMult D F k mu ρ) (ρ' ≫ fst _ _).left z J).val`. Introduce `c ec`. Take `rfl : c = mu` from `hcls _ _ ec`. Express the relevant statement in the definitionally equal form `sval (tm c) ρ'.left z J = _`. Rewrite using `[htm c _ ρ'.left z J hJ, sval_pullMulSec _ _ _ _ _ _ hJ, hval c T ρ' z J hJ]`.
+
+Simplify using `only [Over.comp_left]`. Simplify using `only [S]`. Rewrite using `[dif_neg hβ, dif_pos hex]`. Conclude with `key _ _`. Establish `hZ : ∀ β : D.X, (∀ mu, ρ + k • mu ≠ β) → ∀ j, (S β).f j = 0`.
+
+Introduce `β hβ j`. Establish `h1 : ¬ ρ = β` using `fun h => hβ 0 (by rw [smul_zero, add_zero]; exact h)`. Establish `h2 : ¬ ∃ mu, ρ + k • mu = β` using `fun ⟨mu, h⟩ => hβ mu h`. Simplify using `only [S]`. Rewrite using `[dif_neg h1, dif_neg h2]`.
+
+Conclude with `zero_f _ _`. Use `⟨⟨S, ?_⟩, hSρ, hZ⟩` and prove the remaining obligations. Introduce `mu' α v hv hcv`. Establish `hvv` using `(gen_fe (F := F) hG k mu' α).2 v hv hcv`. Use `(secRel_iff hL _ _ _ _ _ _ _ _ _ v).2 ?_` and prove the remaining obligations.
+
+Introduce `y J hJ`. Distinguish the cases in `hα : ∃ nu, ρ + k • nu = α`. Take `⟨nu, rfl⟩` from `hα`. Establish `hfst : DegPre.trF D F mu' ≫ fst (TF (R` using `R) F) D.P.A = fst _ _ := by`. Simplify using `[DegPre.trF]`.
+
+Establish `c1` using `fe_cocycle hB (𝟙 (DegPre.BF D F)) hJ k ρ nu mu'`. Establish `e1` using `hA (nu + mu') (ρ + k • nu + k • mu') (by rw [smul_add, add_assoc]) _ (𝟙 (DegPre.BF D F)) y J hJ`. Establish `e2` using `hA nu (ρ + k • nu) rfl _ (DegPre.trF D F mu') y J hJ`. Establish `e3` using `hvv _ (𝟙 (DegPre.BF D F)) y J hJ`. Simplify using `only [Over.id_left, Category.id_comp, hfst] at c1 e1 e2 e3`.
+
+Rewrite using `[Category.id_comp, e1, e2, e3, trF_add, add_comm mu' nu, ← c1]`. Simplify using `only [Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∀ mu, ρ + k • mu ≠ α + k • mu'` using `fun mu h => hα ⟨mu - mu', by rw [smul_sub, ← add_sub_assoc, h, add_sub_cancel_right]⟩`. Establish `h2 : ∀ mu, ρ + k • mu ≠ α` using `fun mu h => hα ⟨mu, h⟩`.
+
+Rewrite using `[sval_eq_zero_of_sec_f_eq_zero (hZ _ h1), sval_eq_zero_of_sec_f_eq_zero (hZ _ h2), zero_mul]`.
+-/
 theorem exists_fam_rep (hG : GlobalFnsSt) (hB : D.TauBimult) (k : ℕ) (ρ : D.X)
     (hcls : ∀ a b : D.X, ρ + k • a = ρ + k • b → a = b)
     (σ : LB.Sec (LB.LinComb D.P.L (DegPre.famφ D F ρ) (DegPre.famε k))) :

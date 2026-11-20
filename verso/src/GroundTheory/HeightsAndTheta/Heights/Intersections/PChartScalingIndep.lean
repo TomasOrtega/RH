@@ -16,6 +16,9 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 variable {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] {K : Type} [Fintype K] [DecidableEq K]
   {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `hV`. Use `Ideal.homogeneous_span _ S fun f hf => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨a, mem_weighted_of_isMultiHomog ha⟩`.
+-/
 theorem isHomogeneous_mw {V : Ideal (MRingOver F ι)} (hV : IsMultiHomogIdeal V) :
     V.IsHomogeneous (weightedHomogeneousSubmodule F (mw (ι := ι))) := by
   obtain ⟨S, hS, rfl⟩ := hV
@@ -23,6 +26,27 @@ theorem isHomogeneous_mw {V : Ideal (MRingOver F ι)} (hV : IsMultiHomogIdeal V)
   obtain ⟨a, ha⟩ := hS f hf
   exact ⟨a, mem_weighted_of_isMultiHomog ha⟩
 
+/- English proof (translation)
+Use `set y : (Σ k, ι k) → Ω := fun q => x q / x ⟨q.1, i q.1⟩ with hy`. Establish `hxy : x = fun q => x ⟨q.1, i q.1⟩ * y q`. Use function extensionality and compare the values at `q`. Use `show x q = x ⟨q.1, i q.1⟩ * (x q / x ⟨q.1, i q.1⟩)`. Rewrite using `[mul_div_cancel₀ _ (hx q.1)]`.
+
+Use `choose e₀ he₀ using fun α => exists_homog_chart (⊥ : Ideal (MRingOver F ι)) i (g α)`. Use `set M : K → ℕ := s.sup e₀ with hM`. Establish `hGex : ∀ α, ∃ G : MRingOver F ι, α ∈ s → G ∈ weightedHomogeneousSubmodule F (mw (ι` using `ι)) M ∧ Ideal.Quotient.mk (chartIdeal ⊥ i) G = Ideal.Quotient.mk (chartIdeal ⊥ i) (g α) := by`. Introduce `α`. Distinguish the cases in `hα : α ∈ s`.
+
+Take `⟨G, h1, h2⟩` from `he₀ α M (Finset.le_sup (f := e₀) hα)`. Conclude with `⟨G, fun _ => ⟨h1, h2⟩⟩`. Conclude with `⟨0, fun h => absurd h hα⟩`. Use `choose G hG using hGex`. Establish `hker : chartIdeal (⊥ : Ideal (MRingOver F ι)) i ≤ RingHom.ker (aeval y : MRingOver F ι →ₐ[F] Ω)`.
+
+Unfold `chartIdeal`. Use `sup_le bot_le (Ideal.span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, map_sub, aeval_X, map_one]`. Use `show x ⟨k, i k⟩ / x ⟨k, i k⟩ - 1 = 0`.
+
+Rewrite using `[div_self (hx k), sub_self]`. Establish `hGx : ∀ α ∈ s, aeval x (G α) = (∏ k, x ⟨k, i k⟩ ^ M k) * aeval y (g α)`. Introduce `α hα`. Establish `h0` using `hker (Ideal.Quotient.eq.mp (hG α hα).2)`. Rewrite `h0` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`.
+
+Rewrite using `[← h0]`. Establish `h` using `aeval_blockScale (isMultiHomog_of_mem_weighted (hG α hα).1) (fun k => x ⟨k, i k⟩) y`. Conclude with `(congrArg (fun z => aeval z (G α)) hxy).trans h`. Establish `hxc : ∀ α : K →₀ ℕ, aeval x (∏ k, (X ⟨k, i k⟩ : MRingOver F ι) ^ α k) = ∏ k, x ⟨k, i k⟩ ^ α k`. Introduce `α`.
+
+Simplify using `[map_prod]`. Establish `hcM : (∏ k, x ⟨k, i k⟩ ^ M k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hx k)`. Establish `hH : (∑ α ∈ s, G α * ∏ k, (X ⟨k, i k⟩ : MRingOver F ι) ^ α k) ∈ RingHom.ker (aeval x : MRingOver F ι →ₐ[F] Ω)`. Rewrite using `[RingHom.mem_ker, map_sum]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hmem : ∀ α ∈ s, G α * ∏ k, (X ⟨k, i k⟩ : MRingOver F ι) ^ α k ∈ weightedHomogeneousSubmodule F (mw (ι` using `ι)) (M + ⇑α) := fun α hα => SetLike.mul_mem_graded (hG α hα).1 (mem_weighted_of_isMultiHomog (isMultiHomog_coordProd i ⇑α))`. Introduce `β hβ`. Establish `hcomp : weightedHomogeneousComponent (mw (ι` using `ι)) (M + ⇑β) (∑ α ∈ s, G α * ∏ k, (X ⟨k, i k⟩ : MRingOver F ι) ^ α k) = G β * ∏ k, (X ⟨k, i k⟩ : MRingOver F ι) ^ β k := by`. Rewrite using `[map_sum, Finset.sum_eq_single β]`. Rewrite using `[weightedHomogeneousComponent_of_mem (hmem β hβ), if_pos rfl]`.
+
+Introduce `α hα hne`. Rewrite using `[weightedHomogeneousComponent_of_mem (hmem α hα), if_neg]`. Introduce `h`. Conclude with `hne (DFunLike.coe_injective (add_left_cancel h)).symm`. Introduce `h`.
+
+Conclude with `absurd hβ h`. Establish `hβV` using `weightedHomogeneousComponent_mem_of_mem F (mw (ι := ι)) (isHomogeneous_mw hV) hH (M + ⇑β)`. Rewrite `hβV` using `[hcomp, RingHom.mem_ker, map_mul, hGx β hβ, hxc]`. Establish `hcβ : (∏ k, x ⟨k, i k⟩ ^ β k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hx k)`. Conclude with `(mul_eq_zero.mp ((mul_eq_zero.mp hβV).resolve_right hcβ)).resolve_left hcM`.
+-/
 theorem coeff_eq_zero (x : (Σ k, ι k) → Ω) (i : ∀ k, ι k) (hx : ∀ k, x ⟨k, i k⟩ ≠ 0)
     (hV : IsMultiHomogIdeal (RingHom.ker (aeval x : MRingOver F ι →ₐ[F] Ω)))
     (s : Finset (K →₀ ℕ)) (g : (K →₀ ℕ) → MRingOver F ι)
@@ -99,6 +123,25 @@ theorem coeff_eq_zero (x : (Σ k, ι k) → Ω) (i : ∀ k, ι k) (hx : ∀ k, x
 
 end ChartScalingIndep
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ K _ ι _ x i hx hV`. Use `set y : (Σ k, ι k) → Ω := fun q => x q / x ⟨q.1, i q.1⟩ with hy`. Rewrite using `[algebraicIndependent_iff]`. Introduce `p hp`. Establish `hq : ∀ α, ∃ a b : MRingOver F ι, aeval y b ≠ 0 ∧ ((p.coeff α : IntermediateField.adjoin F (Set.range y)) : Ω) * aeval y b = aeval y a`.
+
+Introduce `α`. Take `⟨r, hr, t, ht, he⟩` from `IntermediateField.mem_adjoin_iff_div.mp (p.coeff α).2`. Rewrite `hr`, `ht` using `[Algebra.adjoin_range_eq_range_aeval]`. Take `⟨a, rfl⟩` from `hr`. Take `⟨b, rfl⟩` from `ht`.
+
+Express the relevant statement in the definitionally equal form `((p.coeff α : IntermediateField.adjoin F (Set.range y)) : Ω) = aeval y a / aeval y b at he`. Distinguish the cases in `hb : aeval y b = 0`. Use `⟨0, 1, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[he, hb, div_zero]`. Simplify using the standard rewrite rules.
+
+Conclude with `⟨a, b, hb, by rw [he, div_mul_cancel₀ _ hb]⟩`. Use `choose a b hb hab using hq`. Use `set D : MRingOver F ι := ∏ α ∈ p.support, b α with hD`. Establish `hD0 : aeval y D ≠ 0`. Rewrite using `[hD, map_prod]`.
+
+Conclude with `Finset.prod_ne_zero_iff.mpr fun α _ => hb α`. Use `set g : (K →₀ ℕ) → MRingOver F ι := fun α => a α * ∏ β ∈ p.support.erase α, b β with hg`. Establish `hgD : ∀ α ∈ p.support, aeval y (g α) = aeval y D * ((p.coeff α : IntermediateField.adjoin F (Set.range y)) : Ω)`. Introduce `α hα`. Rewrite using `[hg, hD, map_mul, map_prod, map_prod, ← Finset.mul_prod_erase _ _ hα, ← hab α]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1 : aeval (fun k => x ⟨k, i k⟩) p = ∑ α ∈ p.support, ((p.coeff α : IntermediateField.adjoin F (Set.range y)) : Ω) * ∏ k, x ⟨k, i k⟩ ^ α k` using `by conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, Finsupp.prod_fintype _ _ (fun k => pow_zero _)]`.
+
+Both sides reduce to the same expression. Establish `hsum : ∑ α ∈ p.support, aeval y (g α) * ∏ k, x ⟨k, i k⟩ ^ α k = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun α hα => by rw [hgD α hα, mul_assoc]`.
+
+Use `_ = 0 := by rw [hp, mul_zero]`. Establish `h0` using `ChartScalingIndep.coeff_eq_zero x i hx hV p.support g hsum`. Use `MvPolynomial.ext _ _ fun α => ?_` and prove the remaining obligations. Rewrite using `[coeff_zero]`. Distinguish the cases in `hα : α ∈ p.support`.
+
+Establish `h2` using `h0 α hα`. Rewrite `h2` using `[hgD α hα]`. Establish `h3` using `(mul_eq_zero.mp h2).resolve_left hD0`. Conclude with `h3` after adjusting the coercions. Conclude with `notMem_support_iff.mp hα`.
+-/
 theorem ChartScalingIndep.proof : ChartScalingIndep.Statement := by
   classical
   intro F Ω _ _ _ K _ ι _ x i hx hV

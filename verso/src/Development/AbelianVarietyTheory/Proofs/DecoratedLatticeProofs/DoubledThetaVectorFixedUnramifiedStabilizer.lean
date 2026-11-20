@@ -18,6 +18,17 @@ open GlobalTheory.Core.Rk.IP
 
 namespace GlobalTheory.Core.Rk.IP.VacFix
 
+/- English proof (translation)
+Introduce `D ψ A B χB omh hW LA LB Sf Φ₁ Φ₂ h1 h2 hU v hv k hk`. Establish `hstd` using `hW.std`. Take `⟨hsd, hvac⟩` from `GlobalTheory.T.doubling_sphericalVacua_to_doubled_lattice_vacuum D ψ A B LA LB hstd hU.sdA`. Establish `hth` using `GlobalTheory.T.isThetaFunction_doublingSeesaw_of_standard_char D ψ A B hstd Φ₁ Φ₂ h1 h2`. Establish `hlv` using `hvac Sf Φ₁ Φ₂ hU.sph₁ hU.sph₂ v hv`.
+
+Establish `u1 : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.UnramAt (1 : (AE D)ˣ →* Circle) v` using `fun _ _ _ _ => rfl`. Establish `u2 : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.UnramAt χB v`. Take `⟨χ, hc⟩` from `GlobalTheory.T.exists_heckeCharacter_of_unitary_tensorIdeles D χB hW.hecT`. Use `GlobalTheory.UnramOver.unramAt_of_unrAt D χB χ hc v _ ?_ ?_` and prove the remaining obligations. Use `⟨singleV _ v 1, rfl, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletionIntegers D.host.F) v 1`. Introduce `v' hv' classical`. Conclude with `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletionIntegers D.host.F) 1 hv'`. Introduce `P hP`. Conclude with `(GlobalTheory.LFun.unrAt_iff_of_chrEq hc P).1 (hU.unr P (by`.
+
+Simplify using `only [GlobalTheory.LFun.above, Set.mem_setOf_eq, hP]`. Conclude with `hv))` after adjusting the coercions. Establish `key : ∀ C, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.VacuumFixedOn D C → C v → omh (emb D.sp.cm.sig (dblSp A).gram v k, 1) (delta A B Φ₁ Φ₂) = delta A B Φ₁ Φ₂`. Introduce `C hC hCv`. Use `hC ψ (dblSp A) B 1 χB omh (sumLat finSumFinEquiv LA LA) LB hW hsd hU.sdB v hCv u1 u2 _ hth hlv k hk 1 (one_mem _)` as an intermediate fact.
+
+Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Distinguish the cases in `hs : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.IsSplitPlace D v`. Conclude with `key _ (GlobalTheory.PlaceTensor.splitVacuumFixed D) hs`. Conclude with `key _ (GlobalTheory.PlaceTensor.inertVacuumFixed D) hs`.
+-/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) B), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (LA : Lat A) (LB : Lat B) (Sf : Finset (FinPl D)) (Φ₁ Φ₂ : WO A B → ℂ), IsThetaFunO ψ A B Φ₁ → IsThetaFunO ψ A B Φ₂ → Unram ψ A B χB LA LB Sf Φ₁ Φ₂ → ∀ v ∉ Sf, ∀ k ∈ KFin D.sp.cm.sig (dblSp A).gram LA v, omh (emb D.sp.cm.sig (dblSp A).gram v k, 1) (delta A B Φ₁ Φ₂) = delta A B Φ₁ Φ₂ := by
   intro D ψ A B χB omh hW LA LB Sf Φ₁ Φ₂ h1 h2 hU v hv k hk
   have hstd := hW.std

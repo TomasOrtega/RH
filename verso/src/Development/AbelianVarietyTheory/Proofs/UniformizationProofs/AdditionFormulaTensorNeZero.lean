@@ -24,6 +24,9 @@ noncomputable def svalHom (p : Y ⟶ Spec (CommRingCat.of F)) (φ : K → (Y ⟶
     {J : (T ⟶ Z) → L.ι} (hJ : Good L z J) : SecMod p (LB.LinComb L φ ε) →+ T.presheaf.stalk z :=
   AddMonoidHom.mk' (fun s => sval s.sec r z J) (fun _ _ => gs_add r z _ (hJ.mem φ r) _ _)
 
+/- English proof (translation)
+The claim follows from `(gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) ((gs_res r z le_top (hJ.mem φ r) (scal p c)).trans (gs_pull r p z ⊤ trivial _)))`.
+-/
 theorem svalHom_smul (p : Y ⟶ Spec (CommRingCat.of F)) (φ : K → (Y ⟶ Z)) (ε : K → ℤ) (r : T ⟶ Y) (z : T)
     {J : (T ⟶ Z) → L.ι} (hJ : Good L z J) (c : F) (s : SecMod p (LB.LinComb L φ ε)) :
     svalHom p φ ε r z hJ (c • s) =
@@ -33,6 +36,11 @@ theorem svalHom_smul (p : Y ⟶ Spec (CommRingCat.of F)) (φ : K → (Y ⟶ Z)) 
 
 end
 
+/- English proof (translation)
+Set `f : SecMod p₁ (LB.LinComb L φ₁ ε₁) →+ SecMod p₂ (LB.LinComb L φ₂ ε₂) →+ T.presheaf.stalk z` to `(((AddMonoidHom.mul (R := T.presheaf.stalk z)).comp (svalHom p₁ φ₁ ε₁ r₁ z hJ)).flip.comp (svalHom p₂ φ₂ ε₂ r₂ z hJ)).flip`. Establish `hf : ∀ s t, f s t = svalHom p₁ φ₁ ε₁ r₁ z hJ s * svalHom p₂ φ₂ ε₂ r₂ z hJ t` using `fun _ _ => rfl`. Establish `hb : ∀ (c : F) s t, f (c • s) t = f s (c • t)` using `fun c s t => by`. Rewrite using `[hf, hf, svalHom_smul, svalHom_smul, e]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `congrArg (TensorProduct.liftAddHom f hb) h` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Simplify using `only [TensorProduct.liftAddHom_tmul] at this`. Conclude with `this`.
+-/
 theorem sum_sval_mul_eq_zero {F : Type} [CommRing F] {Z Y₁ Y₂ T : Scheme.{0}} {L : LB Z}
     (p₁ : Y₁ ⟶ Spec (CommRingCat.of F)) (p₂ : Y₂ ⟶ Spec (CommRingCat.of F)) {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
     (φ₁ : K₁ → (Y₁ ⟶ Z)) (ε₁ : K₁ → ℤ) (φ₂ : K₂ → (Y₂ ⟶ Z)) (ε₂ : K₂ → ℤ) {n : ℕ}
@@ -55,6 +63,15 @@ end GlobalTheory.AdditionTensor
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S P F _ p th n t t' hadd hth h0`. Take `⟨κ, -, hκ⟩` from `hadd`. Use `P.isAb.smooth` as an intermediate fact. Use `P.isAb.geomConnected` as an intermediate fact. Establish `: IsIntegral (Over.mk p).left` using `inferInstanceAs (IsIntegral (Spec (CommRingCat.of F)))`.
+
+Establish `hI : IsIntegral (Over.mk p ⊗ P.A).left` using `isIntegral_tensor_left_of_smooth_grpObj S P.A (Over.mk p)`. Take `⟨z⟩ : Nonempty (Over.mk p ⊗ P.A).left` from `inferInstance`. Take `⟨J, hJ, -⟩` from `exists_good P.L P.isLB z (K := PEmpty) (fun k => k.elim) (fun k => k.elim) (fun k => k.elim) (fun k => k.elim)`. Establish `hne : ∃ j, th.sec.f j ≠ 0`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hth (DVR.SecOps.sec_ext hc)`. Establish `hv` using `sval_ne_zero_of_isIso P.A.left (Over.mk p ⊗ P.A).left P.L P.isLB (Fin 1) (fun _ => (snd (Over.mk p) P.A).left) (fun _ => ((1 : ℕ) : ℤ)) th.sec hne _ (𝟙 _) z J hJ`. Establish `h1` using `hκ (Over.mk p ⊗ P.A) (fst _ _) (snd _ _) 1 z J hJ`. Establish `h2` using `AdditionTensor.sum_sval_mul_eq_zero (fst (Over.mk p) P.A).left (fst (Over.mk p) P.A).left (fun _ : Fin 1 => (snd (Over.mk p) P.A).left) (fun _ => ((2 : ℕ) : ℤ)) (fun _ : Fin 1 => (snd (Over.mk p) P.A).left) (fun _ => ((2 : ℕ) : ℤ)) t t' h0 (lift (fst (Over.mk p) P.A) (snd (Over.m …`.
+
+Establish `h3` using `h1.symm.trans h2`. Rewrite `h3` using `[inv_one, _root_.mul_one, lift_fst_snd, Units.mul_right_eq_zero, mul_self_eq_zero]`. Conclude with `hv h3`.
+-/
 theorem addition_tensor_ne_zero : ∀ (S : Scheme.{0}) (P : PolAV S) (F : Type) [Field F] (p : Spec (CommRingCat.of F) ⟶ S) (th : EA P p 1) (n : ℕ) (t t' : Fin n → EA P p 2), AddA P (Over.mk p) th.sec (fun i => (t i).sec) (fun i => (t' i).sec) → th ≠ 0 → ∑ i, TensorProduct.tmul F (t i) (t' i) ≠ 0 := by
   intro S P F _ p th n t t' hadd hth h0
   obtain ⟨κ, -, hκ⟩ := hadd

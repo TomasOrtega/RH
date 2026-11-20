@@ -7,6 +7,17 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.AdT.Opn
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n T f J bad S v hJ`. Substitute `hJ` using the available equality. Take `⟨M, hM, hMU⟩` from `GlobalTheory.Mem.Col2.AdT.Opn.exists_princ σ S.U S.U_open`. Use `⟨M, Nat.pos_of_ne_zero hM, fun y hy hc => ?_⟩` and prove the remaining obligations. Use `choose C hC hyC using hc`.
+
+Establish `hz` using `Formalism.UG.P.afsplitU_mem v σ 1 y 1 hy (one_mem _)`. Establish `hzU : Formalism.UG.P.afsplitU v y 1 ∈ S.U`. Use `hMU _ hz fun a b => ?_` and prove the remaining obligations. Establish `hyab : (y : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) a b = (1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) a b + M • C a b`. Rewrite using `[nsmul_eq_mul, ← hyC a b, Matrix.sub_apply, add_sub_cancel]`.
+
+Establish `e : (((Formalism.UG.P.afsplitU v y 1 : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1) a b = (M : E ⊗[F] FiniteAdeleRing (𝓞 F) F) * Formalism.UG.P.afsplitIE v (C a b)`. Rewrite using `[Matrix.sub_apply, Formalism.UG.P.afsplitU_coe, Formalism.UG.P.afsplitC_apply, Units.val_one, hyab, map_add, map_nsmul, nsmul_eq_mul]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `only [Matrix.one_apply_eq, Formalism.UG.P.afsplitEps]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[Matrix.one_apply_ne hab]`. Rewrite using `[e, ← mul_assoc, ← map_natCast (Formalism.L2.Col.iA F E), ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hM), map_one, one_mul]`. Conclude with `Formalism.UG.P.afsplit_IE_int v _ (hC a b)`. Establish `h` using `((S.U_eq _).1 hzU).2 v`.
+
+Rewrite `h` using `[Formalism.UG.P.afsplit_right1]`. Then use the resulting hypothesis.
+-/
 theorem exists_princ_loc_step : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n T f : ℕ} {J : Matrix (Fin n) (Fin n) E} {bad : Set (HeightOneSpectrum (𝓞 F))} (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F)), J = 1 → ∃ M : ℕ, 0 < M ∧ ∀ y ∈ UPts σ J (v.adicCompletion F), (∀ a b, ∃ c ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring, ((y : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) - 1) a b = (M : E ⊗[F] v.adicCompletion F) * c) → y ∈ S.Uloc v := by
   intro F E _ _ _ _ _ σ n T f J bad S v hJ
   subst hJ

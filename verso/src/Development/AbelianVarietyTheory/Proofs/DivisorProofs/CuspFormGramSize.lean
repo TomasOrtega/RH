@@ -8,6 +8,23 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 
 namespace GlobalTheory.TrBasisQuot
 
+/- English proof (translation)
+Use `haveI : (Ideal.span {p}).IsPrime := (Ideal.span_singleton_prime hp.ne_zero).2 hp`. Set `φ : MvPolynomial (Fin m) k →ₐ[k] Polynomial (MvPolynomial (Fin m) k) ⧸ Ideal.span {p}` to `(Ideal.Quotient.mkₐ k (Ideal.span {p})).comp (IsScalarTower.toAlgHom k (MvPolynomial (Fin m) k) _)`. Establish `hφ : ∀ b, φ b = Ideal.Quotient.mk (Ideal.span {p}) (Polynomial.C b)` using `fun b => rfl`. Establish `hinj : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `b hb`. Rewrite `hb` using `[hφ, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Assume the negation of the conclusion as `hb0`. Use `Polynomial.natDegree_le_of_dvd hb (Polynomial.C_ne_zero.2 hb0)` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_C]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `haev : MvPolynomial.aeval (fun j : Fin m => Ideal.Quotient.mk (Ideal.span {p}) (Polynomial.C (MvPolynomial.X j))) = φ` using `MvPolynomial.algHom_ext fun j => by simp [hφ]`. Establish `hind : AlgebraicIndependent k (fun j : Fin m => Ideal.Quotient.mk (Ideal.span {p}) (Polynomial.C (MvPolynomial.X j)))`. Rewrite using `[algebraicIndependent_iff_injective_aeval, haev]`. Conclude with `hinj`.
+
+Rewrite using `[hind.isTranscendenceBasis_iff_isAlgebraic]`. Establish `hS : ∀ b, φ b ∈ Algebra.adjoin k (Set.range fun j : Fin m => Ideal.Quotient.mk (Ideal.span {p}) (Polynomial.C (MvPolynomial.X j)))`. Introduce `b`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval, haev]`. Conclude with `AlgHom.mem_range_self φ b`.
+
+Set `ψ` to `RingHom.codRestrict φ.toRingHom (Algebra.adjoin k (Set.range fun j : Fin m => Ideal.Quotient.mk (Ideal.span {p}) (Polynomial.C (MvPolynomial.X j)))) (fun b => hS b)`. Establish `hψ : Function.Injective ψ` using `fun a b h => hinj (congrArg Subtype.val h)`. Establish `hr : IsAlgebraic (Algebra.adjoin k (Set.range fun j : Fin m => Ideal.Quotient.mk (Ideal.span {p}) (Polynomial.C (MvPolynomial.X j)))) (Ideal.Quotient.mk (Ideal.span {p}) Polynomial.X)`. Use `⟨p.map ψ, (Polynomial.map_ne_zero_iff hψ).2 hp.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`.
+
+Establish `hc : (algebraMap _ (Polynomial (MvPolynomial (Fin m) k) ⧸ Ideal.span {p})).comp ψ = (Ideal.Quotient.mk (Ideal.span {p})).comp Polynomial.C` using `RingHom.ext fun b => rfl`. Rewrite using `[hc, ← Polynomial.hom_eval₂, Polynomial.eval₂_C_X, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self p`. Establish `htop : Algebra.adjoin (Algebra.adjoin k (Set.range fun j : Fin m => Ideal.Quotient.mk (Ideal.span {p}) (Polynomial.C (MvPolynomial.X j)))) {Ideal.Quotient.mk (Ideal.span {p}) Polynomial.X} = ⊤`. Rewrite using `[eq_top_iff]`.
+
+Introduce and unpack `z -`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Use `Polynomial.induction_on q (fun b => ?_) (fun f g hf hg => ?_) (fun n b ih => ?_)` and prove the remaining obligations. Conclude with `Subalgebra.algebraMap_mem _ (⟨φ b, hS b⟩ : Algebra.adjoin k _)`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem hf hg`. Rewrite using `[pow_succ, ← mul_assoc, map_mul]`. Conclude with `mul_mem ih (Algebra.subset_adjoin rfl)`. Establish `h1` using `(Algebra.isAlgebraic_adjoin_singleton_iff).2 hr`. Conclude with `⟨fun z => h1 z (by rw [htop]; trivial)⟩`.
+-/
 theorem isTranscendenceBasis_quot_polynomial {k : Type} [Field k] {m : ℕ}
     (p : Polynomial (MvPolynomial (Fin m) k)) (hp : Prime p) (hdeg : 0 < p.natDegree) :
     IsTranscendenceBasis k (fun j : Fin m =>
@@ -65,6 +82,25 @@ theorem isTranscendenceBasis_quot_polynomial {k : Type} [Field k] {m : ℕ}
   have h1 := (Algebra.isAlgebraic_adjoin_singleton_iff).2 hr
   exact ⟨fun z => h1 z (by rw [htop]; trivial)⟩
 
+/- English proof (translation)
+Introduce `k F _ _ _ d u hu A hA t ht`. Substitute `hA` using the available equality. Establish `ht0 : Irreducible (hu.aevalEquiv.symm t)` using `(MulEquiv.irreducible_iff hu.aevalEquiv.symm.toMulEquiv).2 ht`. Consider the cases of `d with`. Consider the case `zero`.
+
+It suffices to derive a contradiction. Establish `h` using `MvPolynomial.eq_C_of_isEmpty (hu.aevalEquiv.symm t)`. Apply `ht0.not_isUnit` to reduce the goal to its premises. Rewrite using `[h]`. Use `IsUnit.map _ (isUnit_iff_ne_zero.2 fun hc => ht0.ne_zero ?_)` and prove the remaining obligations.
+
+Rewrite using `[h, hc, map_zero]`. Consider the case `succ m`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, (hu.aevalEquiv.symm t).degreeOf i ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Establish `h0 : (hu.aevalEquiv.symm t).totalDegree = 0`. Rewrite using `[MvPolynomial.totalDegree_eq_zero_iff]`. Introduce `mm hmm x`. Use `MvPolynomial.monomial_le_degreeOf x hmm` as an intermediate fact. Rewrite `this` using `[hcon x]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h0` using `[MvPolynomial.totalDegree_eq_zero_iff_eq_C]`. Apply `ht0.not_isUnit` to reduce the goal to its premises. Rewrite using `[h0]`. Use `IsUnit.map _ (isUnit_iff_ne_zero.2 fun hc => ht0.ne_zero ?_)` and prove the remaining obligations.
+
+Rewrite using `[h0, hc, map_zero]`. Set `E` to `hu.aevalEquiv.symm.trans ((MvPolynomial.renameEquiv k (Equiv.swap (0 : Fin (m + 1)) i)).trans (MvPolynomial.finSuccEquiv k m))`. Establish `hdeg : 0 < (E t).natDegree`. Establish `h1 : (E t).natDegree = ((MvPolynomial.rename (Equiv.swap (0 : Fin (m + 1)) i)) (hu.aevalEquiv.symm t)).degreeOf 0` using `MvPolynomial.natDegree_finSuccEquiv _`. Establish `h2` using `MvPolynomial.degreeOf_rename_of_injective (Equiv.swap (0 : Fin (m + 1)) i).injective (p := hu.aevalEquiv.symm t) i`.
+
+Rewrite `h2` using `[Equiv.swap_apply_right]`. Rewrite using `[h1, h2]`. Use linear arithmetic over natural numbers and integers. Establish `hpE : Prime (E t)` using `((MulEquiv.irreducible_iff E.toMulEquiv).2 ht).prime`. Establish `hpt : Prime t` using `(MulEquiv.prime_iff E.toMulEquiv).1 hpE`.
+
+Use `⟨hpt, m, rfl, fun j => E.symm (Polynomial.C (MvPolynomial.X j)), ?_⟩` and prove the remaining obligations. Establish `hI : Ideal.span {E t} = (Ideal.span {t}).map (E : _ →+* _)`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Establish `hb` using `(Ideal.quotientEquivAlg (Ideal.span {t}) (Ideal.span {E t}) E hI).symm.isTranscendenceBasis (GlobalTheory.TrBasisQuot.isTranscendenceBasis_quot_polynomial (E t) hpE hdeg)`.
+
+Establish `hfun : (⇑((Ideal.span {t}).quotientEquivAlg (Ideal.span {E t}) E hI).symm ∘ fun j : Fin m => (Ideal.Quotient.mk (Ideal.span {E t})) (Polynomial.C (MvPolynomial.X j))) = fun j => Ideal.Quotient.mk (Ideal.span {t}) (E.symm (Polynomial.C (MvPolynomial.X j)))`. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, Ideal.quotientEquivAlg_symm, Ideal.quotientEquivAlg_mk]`. Rewrite `hb` using `[hfun]`. Conclude with `hb`.
+-/
 theorem trBasis_mod_irreducible : ∀ (k F : Type) [Field k] [Field F] [Algebra k F] (d : ℕ) (u : Fin d → F),
     AlgebraicIndependent k u → ∀ (A : Subalgebra k F), A = Algebra.adjoin k (Set.range u) →
     ∀ t : A, Irreducible t → Prime t ∧ ∃ m : ℕ, d = m + 1 ∧ ∃ y : Fin m → A,

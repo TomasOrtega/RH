@@ -15,6 +15,9 @@ open scoped ComplexConjugate TensorProduct
 noncomputable section
 namespace GlobalTheory.RealSigns
 
+/- English proof (translation)
+The claim follows from `of_cosets GlobalTheory.T.real_place_compact_torus_classes_compactWeyl_cosets`.
+-/
 theorem signs_real : ∀ {D : D7} (V : HSp D) {S : D.what₂.Tau → SPar} (M : DSModel V S) (ρ : D.what₂.Tau)
     (P : PPol D.sp.cm.sig V.rank), CompactSpace (Tor P (placeOf D ρ).Completion) →
     (XSet P (placeOf D ρ).Completion V.gram).Finite ∧

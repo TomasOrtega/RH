@@ -8,6 +8,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 
 namespace GlobalTheory.CompanionTheory.GrForm.AffCover
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `g`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ih`. Introduce `g`. Rewrite using `[Fin.prod_univ_succ, Scheme.basicOpen_mul, ← ih (fun k => g k.succ)]`. Conclude with `le_antisymm (le_inf (iInf_le _ 0) (le_iInf fun a => iInf_le _ a.succ)) (le_iInf fun a => Fin.cases inf_le_left (fun b => inf_le_right.trans (iInf_le _ b)) a)`.
+-/
 theorem iInf_basicOpen {X : Scheme.{0}} {V : X.Opens} : ∀ (n : ℕ) (g : Fin (n + 1) → Γ(X, V)),
     (⨅ a, X.basicOpen (g a)) = X.basicOpen (∏ k, g k) := by
   intro n
@@ -21,6 +26,15 @@ theorem iInf_basicOpen {X : Scheme.{0}} {V : X.Opens} : ∀ (n : ℕ) (g : Fin (
     exact le_antisymm (le_inf (iInf_le _ 0) (le_iInf fun a => iInf_le _ a.succ))
       (le_iInf fun a => Fin.cases inf_le_left (fun b => inf_le_right.trans (iInf_le _ b)) a)
 
+/- English proof (translation)
+Introduce `O _ X q _ V hV`. Establish `loc : ∀ x : V, ∃ (f : Γ(X, V)) (d : ℕ), x.1 ∈ X.basicOpen f ∧ Nonempty (Coord q (X.basicOpen f) d)`. Introduce `x`. Establish `h : RingHom.Locally RingHom.IsStandardSmooth (q.appLE ⊤ V le_top).hom` using `RingHom.smooth_iff_locally_isStandardSmooth.1 (q.smooth_appLE (isAffineOpen_top _) hV le_top)`. Take `⟨f, hf, hst⟩` from `GlobalTheory.CompanionTheory.CovEx.exists_basicOpen RingHom.IsStandardSmooth RingHom.isStandardSmooth_respectsIso q hV h x.2`.
+
+Take `⟨n, g, hg, he⟩` from `hst.exists_etale_mvPolynomial`. Conclude with `⟨f, n, hf, GlobalTheory.CompanionTheory.CovEx.coord_basicOpen q hV f g hg he⟩`. Use `choose f d hx hc using loc`. Take `⟨t, ht⟩` from `hV.isCompact.elim_finite_subcover (fun x : V => (X.basicOpen (f x) : Set X)) (fun x => (X.basicOpen (f x)).2) (fun x hxV => Set.mem_iUnion.2 ⟨⟨x, hxV⟩, hx _⟩)`. Use `⟨t, inferInstance, fun a => X.basicOpen (f a.1), fun a => d a.1, fun a => (hc a.1).some, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `le_antisymm (iSup_le fun a => X.basicOpen_le _) fun x hxV => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Set.mem_iUnion.1 (ht hxV)`. Take `⟨hy, hxy⟩` from `Set.mem_iUnion.1 hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, hy⟩, hxy⟩`. Introduce `n i`.
+
+Establish `e : capO (fun a : t => X.basicOpen (f a.1)) i = X.basicOpen (∏ k, f (i k).1)` using `iInf_basicOpen n (fun k => f (i k).1)`. Rewrite using `[e]`. Conclude with `hV.basicOpen _`.
+-/
 theorem stCover : GlobalTheory.CompanionTheory.GrForm.StCover := by
   intro O _ X q _ V hV
   classical

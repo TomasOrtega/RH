@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowForm
 open MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TermEst.main | exact GlobalTheory.TermEst.main | (intros; apply GlobalTheory.TermEst.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gaussianConvolutionSeriesCoefficient_descFactorial_estimate : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (b c θ α : ℝ), 0 < c → 1 ≤ θ → 0 < α → c * θ ^ 2 ≤ α * (b + c) →
     ∀ (h : SchwartzMap E ℂ) (j i : ℕ) (y : E),

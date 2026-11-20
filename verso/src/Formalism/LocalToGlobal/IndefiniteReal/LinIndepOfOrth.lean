@@ -15,14 +15,23 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 def cj (f : Formalism.AUTREP.GAf L n → ℂ) : Formalism.AUTREP.GAf L n → ℂ := fun g => star (f g)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[cj]`.
+-/
 theorem cj_cj (f : Formalism.AUTREP.GAf L n → ℂ) : cj (cj f) = f := by
   funext g
   simp [cj]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[cj]`.
+-/
 theorem cj_add (f f' : Formalism.AUTREP.GAf L n → ℂ) : cj (f + f') = cj f + cj f' := by
   funext g
   simp [cj]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[cj, mul_comm]`.
+-/
 theorem cj_smul (a : ℂ) (f : Formalism.AUTREP.GAf L n → ℂ) : cj (a • f) = star a • cj f := by
   funext g
   simp [cj, mul_comm]
@@ -49,9 +58,21 @@ def conjMap {U U' : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)} (T : U →
     show cj ((T (toU (a • f)) : U') : Formalism.AUTREP.GAf L n → ℂ) = a • cj ((T (toU f) : U') : Formalism.AUTREP.GAf L n → ℂ)
     rw [this, map_smul, Submodule.coe_smul, cj_smul, star_star]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (cj_cj u.1)`.
+-/
 theorem toU_ofU {U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)} (u : U) : toU (ofU u) = u :=
   Subtype.ext (cj_cj u.1)
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `h`. Set `E : conjSub π.S ≃ₗ[ℂ] conjSub π'.S` to `{ conjMap T.toLinearMap with invFun := conjMap T.symm.toLinearMap left_inv := fun f => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show cj ((T.symm (toU (ofU (T (toU f)))) : π.S) : Formalism.AUTREP.GAf L n → ℂ) = f.1`. Rewrite using `[toU_ofU, LinearEquiv.symm_apply_apply]`.
+
+Conclude with `cj_cj f.1`. Use `right_inv := fun f => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show cj ((T (toU (ofU (T.symm (toU f)))) : π'.S) : Formalism.AUTREP.GAf L n → ℂ) = f.1`. Rewrite using `[toU_ofU, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `cj_cj f.1 }`. Use `⟨E, fun h f f' hf => ?_⟩` and prove the remaining obligations. Use `show cj ((T (toU f') : π'.S) : Formalism.AUTREP.GAf L n → ℂ) = Formalism.L2.NG.rt L n h (cj ((T (toU f) : π'.S) : Formalism.AUTREP.GAf L n → ℂ))`. Establish `h1 : ((toU f' : π.S) : Formalism.AUTREP.GAf L n → ℂ) = Formalism.L2.NG.rt L n h ((toU f : π.S) : Formalism.AUTREP.GAf L n → ℂ)` using `by show cj f'.1 = Formalism.L2.NG.rt L n h (cj f.1)`. Rewrite using `[hf]`.
+
+Both sides reduce to the same expression. Rewrite using `[hT h _ _ h1]`. Both sides reduce to the same expression.
+-/
 theorem conjT_iso {π π' : Formalism.L2.NG.FinTyp L n} (h : π.Iso π') : (FinTyp.conjT π).Iso (FinTyp.conjT π') := by
   obtain ⟨T, hT⟩ := h
   let E : conjSub π.S ≃ₗ[ℂ] conjSub π'.S :=
@@ -76,6 +97,9 @@ theorem conjT_iso {π π' : Formalism.L2.NG.FinTyp L n} (h : π.Iso π') : (FinT
   rw [hT h _ _ h1]
   rfl
 
+/- English proof (translation)
+Introduce `hc`. Apply `h` to reduce the goal to its premises. Use `conjT_iso hc` as an intermediate fact. Unfold `Formalism.L2.NG.FinTyp.Iso at this ⊢`. Rewrite `this` using `[conjT_S, conjT_S, conjT_S, conjT_S, conjSub_conjSub, conjSub_conjSub]`. Then use the resulting hypothesis.
+-/
 theorem not_iso_conjT {π π' : Formalism.L2.NG.FinTyp L n} (h : ¬ π.Iso π') : ¬ (FinTyp.conjT π).Iso (FinTyp.conjT π') := by
   intro hc
   apply h
@@ -89,6 +113,9 @@ section LinIndep
 
 variable {A : Type} [AddCommGroup A] [Module ℂ A]
 
+/- English proof (translation)
+Establish `h1` using `hp.herm x (a • y)`. Establish `h2` using `hp.smul a y x`. Establish `h3` using `hp.herm y x`. Rewrite `h1` using `[Submodule.coe_smul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hp_smul_right {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : PeterssonHilbertSpace.IsHermPos C ip) (x y : C) (a : ℂ) :
     ip x (a • (y : A)) = a * ip x y := by
   have h1 := hp.herm x (a • y)
@@ -101,6 +128,15 @@ theorem hp_smul_right {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : Peterss
     _ = a * starRingEnd ℂ (ip y x) := by simp
     _ = a * ip x y := by rw [h3]
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff']`. Introduce `s g hg j hj`. Establish `h0` using `congrArg (fun z : C => ip (x j) (z : A)) hg`. Simplify using `only [Submodule.coe_zero, Submodule.coe_sum] at h0`. Rewrite `h0` using `[hp_zero_right hp, hp_sum_right hp (x j) s (fun i => g i • x i)]`.
+
+Establish `hterm : ∀ i ∈ s, ip (x j) ((g i • x i : C) : A) = if i = j then g j * ip (x j) (x j) else 0`. Introduce `i _`. Rewrite using `[Submodule.coe_smul, hp_smul_right hp]`. Use `split_ifs with hij`. Rewrite using `[hij]`.
+
+Rewrite using `[horth j i (Ne.symm hij), mul_zero]`. Rewrite `h0` using `[Finset.sum_congr rfl hterm, Finset.sum_ite_eq' s j, if_pos hj]`. Establish `hne : ip (x j) (x j) ≠ 0`. Introduce `h`. Use `hp.pos (x j) (hx j)` as an intermediate fact.
+
+Rewrite `this` using `[h, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Conclude with `(mul_eq_zero.1 h0).resolve_right hne`.
+-/
 theorem linIndep_of_orth {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : PeterssonHilbertSpace.IsHermPos C ip) {ι : Type} (x : ι → C)
     (hx : ∀ i, x i ≠ 0) (horth : ∀ i j, i ≠ j → ip (x i) (x j) = 0) : LinearIndependent ℂ x := by
   classical
@@ -134,6 +170,13 @@ local instance instCMHostN (D : Formalism.BasicNotions.D7) : IsCMField D.host.E 
 variable {D : Formalism.BasicNotions.D7} {Y : Formalism.BasicNotions.TH.HSp D} {n : ℕ} {Sp : D.what₂.Tau → SPar}
 variable (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
 
+/- English proof (translation)
+Establish `hfin : ∀ b, Finite {σ : FTR θ P M J χ e // isotE θ P M (J b) (χ b) (e b) (rowRepR θ σ) ≠ ⊥}`. Introduce `b`. Use `haveI := (hp b).fd`. Set `x : {σ : FTR θ P M J χ e // isotE θ P M (J b) (χ b) (e b) (rowRepR θ σ) ≠ ⊥} → Mult.goodPart θ M (J b) (χ b) (e b)` to `fun σ => ⟨(Submodule.exists_mem_ne_zero_of_ne_bot σ.2).choose, ((Submodule.exists_mem_ne_zero_of_ne_bot σ.2).choose_spec.1).1⟩`. Establish `hx0 : ∀ σ, x σ ≠ 0` using `fun σ h0 => (Submodule.exists_mem_ne_zero_of_ne_bot σ.2).choose_spec.2 (congrArg Subtype.val h0)`.
+
+Establish `horth : ∀ σ σ', σ ≠ σ' → Mult.ipM M (μ b) (𝓕 b) (x σ) (x σ') = 0`. Introduce `σ σ' hne`. Use `(hD b).2 _ _ (not_iso_conjT fun h => hne (Subtype.ext (rowRepR_inj θ σ.1 σ'.1 h))) _ (Submodule.exists_mem_ne_zero_of_ne_bot σ.2).choose_spec.1 _ (Submodule.exists_mem_ne_zero_of_ne_bot σ'.2).choose_spec.1` and prove the remaining obligations. Conclude with `(linIndep_of_orth (hp b) x hx0 horth).finite`. Establish `hcover : ∀ σ : FTR θ P M J χ e, ∃ b, isotE θ P M (J b) (χ b) (e b) (rowRepR θ σ) ≠ ⊥` using `fun σ => rowRepR_occ θ σ`.
+
+Establish `: Finite ((Σ b : Bool, {σ : FTR θ P M J χ e // isotE θ P M (J b) (χ b) (e b) (rowRepR θ σ) ≠ ⊥}))` using `by haveI := hfin true haveI := hfin false infer_instance`. Conclude with `Finite.of_surjective (fun p : (Σ b : Bool, {σ : FTR θ P M J χ e // isotE θ P M (J b) (χ b) (e b) (rowRepR θ σ) ≠ ⊥}) => p.2.1) fun σ => by`. Take `⟨b, hb⟩` from `hcover σ`. Conclude with `⟨⟨b, σ, hb⟩, rfl⟩`.
+-/
 theorem finite_FTR (P : RowPsi Y n) (M : Mult.DSModel Y Sp) (J : Bool → Set (GA D Y)) (χ : Bool → GA D Y → ℂ)
     (e : Bool → (GA D Y → ℂ) →ₗ[ℂ] (GA D Y → ℂ)) (μ : Bool → Measure (GA D Y)) (𝓕 : Bool → Set (GA D Y))
     (hD : ∀ b, IsotDecomp θ P M (J b) (χ b) (e b) (μ b) (𝓕 b))

@@ -9,6 +9,17 @@ open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar 
 
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
+/- English proof (translation)
+Introduce `Ψ _ _ N T II hII hprop φ hL`. Introduce `B₀ B hB₀ hB c τ k hk1 hkN Q hQ`. Take `⟨M, R, S, hS, hMc, hRc, hMPP, hRPP, hgeo, hch, hloc⟩` from `hL B₀ B hB₀ hB c`. Establish `hstep` using `GlobalTheory.T.limit_height_constant_shift Ψ N M R.model II hMc hRc (toA (pk τ k * Q)) (∑ p ∈ S, Real.log (p : ℕ) * M.geoFun (toA (bracket T.j (φ p) p k τ * Q))) (fun t ht => GlobalTheory.T.power_sum_height_change_model Ψ N M R II hII S T.j φ hch hloc t ht τ k hk1 hkN Q hQ)`. Rewrite `hstep` using `[hMPP, hRPP]`.
+
+Rewrite using `[hstep]`. Use `congr 1`. Establish `hSeq : S.map ⟨(fun p : Nat.Primes => (p : ℕ)), Nat.Primes.coe_nat_injective⟩ = (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ T.bad)`. Use extensionality with `n`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_Ioc, Function.Embedding.coeFn_mk]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Establish `h` using `(hS p).1 hp`. Conclude with `⟨⟨h.1, h.2.1⟩, p.2, h.2.2⟩`. Introduce and unpack `⟨⟨h1, h2⟩, hpr, hbad⟩`.
+
+Conclude with `⟨⟨n, hpr⟩, (hS _).2 ⟨h1, h2, hbad⟩, rfl⟩`. Rewrite using `[← hSeq, Finset.sum_map, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = T.vol c * deltaTerm T.j (p : ℕ) τ (fun n => (φ (p : ℕ) ^ (n + 1)) (Sum.inl τ)) k Q`. Rewrite using `[hgeo, hprop.2.1, ← log_mul_degFl_bracket_mul Ψ N T.j p k p.2.two_le hk1 (φ p) τ Q]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem power_sum_term_linked_tower : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) (II : IntersectionSystem), IsIntersectionSystem II → T.Proportional → ∀ φ : ℕ → Equiv.Perm (Ψ ⊕ Ψ), LinkedTower T II φ → T.Prop6 II fun p τ n => (φ p ^ (n + 1)) (Sum.inl τ) := by
   intro Ψ _ _ N T II hII hprop φ hL
   intro B₀ B hB₀ hB c τ k hk1 hkN Q hQ

@@ -20,6 +20,9 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct
 
 namespace CrystallineSemistableComparison
 
+/- English proof (translation)
+The claim follows from `R.forE l et l _ K := E.etMap l K uniq := E.Main.firstChern_unique main l _ := B.main l compat l _ := B.compat l compatH l _ := B.compatH l c1 l _ := B.firstChern_compatible_l l p := hP`.
+-/
 theorem chapters_of (hP : BocksteinBaseChangeP) : Chapters where
   rin l _ := R.forE l
   et l _ K := E.etMap l K
@@ -30,11 +33,20 @@ theorem chapters_of (hP : BocksteinBaseChangeP) : Chapters where
   c1 l _ := B.firstChern_compatible_l l
   p := hP
 
+/- English proof (translation)
+Introduce `l _ K _` and use `(etSide (zIn formalIn h4 h8) l K).1`.
+-/
 theorem etSideS (h4 : GlobalTheory.EtC.E4) (h8 : GlobalTheory.EtC.E8) : EtSideS := fun l _ K _ => (etSide (zIn formalIn h4 h8) l K).1
 
+/- English proof (translation)
+The claim follows from `cstSmooth_of_etSide glueL glueE glueB factsC resEx h (chapters_of hP)`.
+-/
 theorem cstSmooth_of_p (hP : BocksteinBaseChangeP) (h : EtSideS) : CstSmooth :=
   cstSmooth_of_etSide glueL glueE glueB factsC resEx h (chapters_of hP)
 
+/- English proof (translation)
+The claim follows from `glueP factsC h (chapters_of hP) (fun _ _ K ζ => HT.etMapP K ζ) hF`.
+-/
 theorem crysPhiP_of_p (hP : BocksteinBaseChangeP) (hF : FSeamP) (h : EtSideS) : CrysPhiP :=
   glueP factsC h (chapters_of hP) (fun _ _ K ζ => HT.etMapP K ζ) hF
 

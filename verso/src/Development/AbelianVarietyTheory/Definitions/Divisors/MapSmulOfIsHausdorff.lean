@@ -44,19 +44,40 @@ def lev (t : Tate p M) (n : ℕ) : M := (Additive.toMul (α := tateSeq p M) t).1
 def mk (s : ℕ → M) (h : ∀ n, s n ^ p ^ n = 1 ∧ s (n + 1) ^ p = s n) : Tate p M :=
   Additive.ofMul (α := tateSeq p M) ⟨s, h⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lev_mk (s : ℕ → M) (h : ∀ n, s n ^ p ^ n = 1 ∧ s (n + 1) ^ p = s n) (n : ℕ) :
     (mk s h).lev n = s n := rfl
 
+/- English proof (translation)
+The claim follows from `((Additive.toMul (α := tateSeq p M) t).2 n).1`.
+-/
 theorem lev_pow (t : Tate p M) (n : ℕ) : t.lev n ^ p ^ n = 1 := ((Additive.toMul (α := tateSeq p M) t).2 n).1
 
+/- English proof (translation)
+The claim follows from `((Additive.toMul (α := tateSeq p M) t).2 n).2`.
+-/
 theorem lev_succ (t : Tate p M) (n : ℕ) : t.lev (n + 1) ^ p = t.lev n := ((Additive.toMul (α := tateSeq p M) t).2 n).2
 
+/- English proof (translation)
+The claim follows from `Additive.toMul.injective (Subtype.ext (funext h))`.
+-/
 @[ext] theorem ext {s t : Tate p M} (h : ∀ n, s.lev n = t.lev n) : s = t := Additive.toMul.injective (Subtype.ext (funext h))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lev_add (s t : Tate p M) (n : ℕ) : (s + t).lev n = s.lev n * t.lev n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lev_zero (n : ℕ) : (0 : Tate p M).lev n = 1 := rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_one]`. Both sides reduce to the same expression. Consider the case `succ k ih => show t.lev (n + k + 1) ^ p ^ (k + 1) = t.lev n`. Rewrite using `[pow_succ', pow_mul, t.lev_succ, ih]`.
+-/
 theorem lev_add_pow (t : Tate p M) (n k : ℕ) : t.lev (n + k) ^ p ^ k = t.lev n := by
   induction k with
   | zero => rw [pow_zero, pow_one]; rfl
@@ -71,6 +92,9 @@ instance : SMul ℤ_[p] (Tate p M) where
     ⟨by rw [← pow_mul, mul_comm, pow_mul, lev_pow, one_pow],
       by rw [← pow_mul, mul_comm, pow_mul, lev_succ, pow_digit_succ (t.lev_pow n)]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_smul (a : ℤ_[p]) (t : Tate p M) (n : ℕ) : (a • t).lev n = t.lev n ^ digit n a := rfl
 
 instance : Module ℤ_[p] (Tate p M) where
@@ -89,12 +113,25 @@ def map {M' : Type} [CommGroup M'] (f : M →* M') : Tate p M →ₗ[ℤ_[p]] Ta
   map_add' _ _ := ext fun _ => map_mul f _ _
   map_smul' _ _ := ext fun _ => map_pow f _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lev_map {M' : Type} [CommGroup M'] (f : M →* M') (t : Tate p M) (n : ℕ) :
     (map p f t).lev n = f (t.lev n) := rfl
 
+/- English proof (translation)
+Introduce `s t h` and use `Tate.ext fun n => hf (by simpa using congrArg (fun u => Tate.lev u n) h)`.
+-/
 theorem map_injective {M' : Type} [CommGroup M'] {f : M →* M'} (hf : Function.Injective f) :
     Function.Injective (map p f) := fun s t h => Tate.ext fun n => hf (by simpa using congrArg (fun u => Tate.lev u n) h)
 
+/- English proof (translation)
+Establish `hH : IsHausdorff (Ideal.span {(p : O)}) O` using `inferInstance`. Use `sub_eq_zero.1 (hH.haus _ fun n => ?_)` and prove the remaining obligations. Take `⟨b, hb⟩` from `pow_dvd_sub_digit (p := p) n a`. Establish `ha : a = ((digit n a : ℕ) : ℤ_[p]) + ((p ^ n : ℕ) : ℤ_[p]) * b`. Rewrite using `[Nat.cast_pow, ← hb]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∀ (m : ℕ) (x : T), f ((m : ℤ_[p]) • x) = (m : O) * f x` using `fun m x => by`. Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul, nsmul_eq_mul]`. Establish `key : f (a • t) - a • f t = (p : O) ^ n * (f (b • t) - algebraMap ℤ_[p] O b * f t)`. Rewrite using `[ha, add_smul, map_add, mul_smul, e1, e1, Algebra.smul_def]`.
+
+Simplify using `only [map_add, map_mul, map_pow, map_natCast, Nat.cast_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SModEq.sub_mem, sub_zero, key, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) n)`.
+-/
 theorem map_smul_of_isHausdorff {T O : Type} [AddCommGroup T] [Module ℤ_[p] T] [CommRing O]
     [Algebra ℤ_[p] O] [IsHausdorff (Ideal.span {(p : O)}) O] (f : T →+ O) (a : ℤ_[p]) (t : T) :
     f (a • t) = a • f t := by
@@ -124,6 +161,13 @@ def Eps : Type := {ε : Tate p Cˣ // IsPrimitiveRoot (ε.lev 1) p}
 
 variable {p C}
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Consider the cases of `n with`. Consider the case `zero => simpa [IsPrimitiveRoot.one_right_iff] using ε.1.lev_pow 0`. Consider the case `succ n`. Establish `hord : orderOf (ε.1.lev (n + 1)) = p ^ (n + 1)`.
+
+Apply `orderOf_eq_prime_pow` to reduce the goal to its premises. Introduce `h`. Establish `h1` using `ε.1.lev_add_pow 1 n`. Rewrite `h1` using `[Nat.add_comm 1 n, h]`. Conclude with `ε.2.ne_one hp.one_lt h1.symm`.
+
+Conclude with `ε.1.lev_pow (n + 1)`. Rewrite using `[← hord]`. Conclude with `IsPrimitiveRoot.orderOf _`.
+-/
 theorem Eps.isPrimitiveRoot (ε : Eps p C) (n : ℕ) : IsPrimitiveRoot (ε.1.lev n) (p ^ n) := by
   have hp : p.Prime := Fact.out
   cases n with
@@ -139,6 +183,31 @@ theorem Eps.isPrimitiveRoot (ε : Eps p C) (n : ℕ) : IsPrimitiveRoot (ε.1.lev
     rw [← hord]
     exact IsPrimitiveRoot.orderOf _
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hε` using `ε.isPrimitiveRoot`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+
+Use `PadicInt.ext_of_toZModPow.1 fun n => ?_` and prove the remaining obligations. Establish `h1 : ε.1.lev n ^ digit n a = 1`. Establish `h2` using `congrArg (fun u => Tate.lev u n) ha`. Simplify `h2` using `only [LinearMap.toSpanSingleton_apply, Tate.lev_smul, Tate.lev_zero]`. Rewrite using `[map_zero, ← cast_digit, CharP.cast_eq_zero_iff (ZMod (p ^ n)) (p ^ n)]`.
+
+Conclude with `((hε n).pow_eq_one_iff_dvd _).1 h1`. Introduce `t`. Establish `hex : ∀ n, ∃ i : ℕ, ε.1.lev n ^ i = t.lev n` using `fun n => by`. Establish `hC : IsPrimitiveRoot ((ε.1.lev n : Cˣ) : C) (p ^ n)` using `IsPrimitiveRoot.coe_units_iff.2 (hε n)`. Take `⟨i, -, hi⟩` from `hC.eq_pow_of_pow_eq_one (ξ := ((t.lev n : Cˣ) : C)) (by rw [← Units.val_pow_eq_pow_val, t.lev_pow, Units.val_one])`.
+
+Conclude with `⟨i, Units.ext (by rw [Units.val_pow_eq_pow_val, hi])⟩`. Use `choose k hk using hex`. Establish `hstep : ∀ n, ((k (n + 1) : ℕ) : ZMod (p ^ n)) = k n` using `fun n => by`. Establish `h3 : ε.1.lev n ^ k (n + 1) = ε.1.lev n ^ k n`. Rewrite using `[hk n, ← ε.1.lev_succ n, ← pow_mul, mul_comm, pow_mul, hk (n + 1), t.lev_succ]`.
+
+Establish `h9` using `pow_eq_pow_iff_modEq.1 h3`. Rewrite `h9` using `[← (hε n).eq_orderOf]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).2 h9`. Establish `hcomp : ∀ n m, n ≤ m → ((k m : ℕ) : ZMod (p ^ n)) = k n` using `fun n m hnm => by`. Proceed by induction on `m, hnm using Nat.le_induction with`.
+
+Consider the case `base => rfl`. Consider the case `succ m hnm ih`. Rewrite using `[← ih]`. Establish `h4` using `congrArg (ZMod.castHom (pow_dvd_pow p hnm) (ZMod (p ^ n))) (hstep m)`. Simplify `h4` using `only [map_natCast]`.
+
+Use `set x : ℕ → ℤ_[p] := fun m => (k m : ℤ_[p]) with hx`. Establish `hmem : ∀ n m, n ≤ m → x m - x n ∈ Ideal.span {(p : ℤ_[p]) ^ n}` using `fun n m hnm => by`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, hx]`. Simplify using `only [map_natCast]`. Rewrite using `[hcomp n m hnm, sub_self]`.
+
+Establish `hnorm : ∀ n m, n ≤ m → ‖x m - x n‖ ≤ (p : ℝ) ^ (-(n : ℤ))` using `fun n m hnm => (PadicInt.norm_le_pow_iff_mem_span_pow _ _).2 (hmem n m hnm)`. Establish `hlim : Filter.Tendsto (fun N : ℕ => (p : ℝ) ^ (-(N : ℤ))) Filter.atTop (nhds 0)`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Establish `h5` using `tendsto_pow_atTop_nhds_zero_of_lt_one (inv_nonneg.2 (zero_le_one.trans hp1.le)) (inv_lt_one_of_one_lt₀ hp1)`. Use `h5.congr fun N => ?_` and prove the remaining obligations.
+
+Rewrite using `[zpow_neg, zpow_natCast, inv_pow]`. Establish `hcau : CauchySeq x`. Use `cauchySeq_of_le_tendsto_0 (fun N : ℕ => (p : ℝ) ^ (-(N : ℤ))) (fun m m' N hm hm' => ?_) hlim` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Establish `h6 : x m - x m' = (x m - x N) - (x m' - x N)` using `by ring`.
+
+Rewrite using `[h6]`. Conclude with `(PadicInt.norm_le_pow_iff_mem_span_pow _ _).2 (Ideal.sub_mem _ (hmem N m hm) (hmem N m' hm'))`. Take `⟨a, ha⟩` from `cauchySeq_tendsto_of_complete hcau`. Establish `hA : ∀ n, PadicInt.toZModPow n a = (k n : ZMod (p ^ n))` using `fun n => by`. Establish `h7 : ‖a - x n‖ ≤ (p : ℝ) ^ (-(n : ℤ))` using `le_of_tendsto ((ha.sub_const (x n)).norm) (Filter.eventually_atTop.2 ⟨n, fun m hm => hnorm n m hm⟩)`.
+
+Establish `h8` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ _).1 h7`. Rewrite `h8` using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[h8, hx]`. Simplify using `only [map_natCast]`. Conclude with `⟨a, Tate.ext fun n => by`.
+
+Rewrite using `[LinearMap.toSpanSingleton_apply, Tate.lev_smul, pow_digit_eq (ε.1.lev_pow n) (hA n).symm, hk]⟩`.
+-/
 theorem Eps.bijective (ε : Eps p C) :
     Function.Bijective (LinearMap.toSpanSingleton ℤ_[p] (Tate p Cˣ) ε.1) := by
   have hp : p.Prime := Fact.out
@@ -204,6 +273,9 @@ theorem Eps.bijective (ε : Eps p C) :
 def Eps.equiv (ε : Eps p C) : ℤ_[p] ≃ₗ[ℤ_[p]] Tate p Cˣ :=
   LinearEquiv.ofBijective _ ε.bijective
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Eps.lev_equiv (ε : Eps p C) (a : ℤ_[p]) (n : ℕ) :
     (ε.equiv a).lev n = ε.1.lev n ^ digit n a := rfl
 
@@ -243,28 +315,51 @@ def weil : ℕ → Pts A.A → Pts A.A → Cˣ := (exists_weil_function C A).cho
 
 variable {A} {k : ℕ}
 
+/- English proof (translation)
+The claim follows from `((exists_weil_function C A).choose_spec k hk).1 z s hz hs w`.
+-/
 theorem weilIs_iff (hk : 1 ≤ k) {z s : Pts A.A} (hz : z ^ k = 1) (hs : s ^ k = 1) (w : Cˣ) :
     Out.WeilIs A.A A.L (k : ℤ) z s (unitOn w) ↔ w = weil A k z s := ((exists_weil_function C A).choose_spec k hk).1 z s hz hs w
 
+/- English proof (translation)
+The claim follows from `(((exists_weil_function C A).choose_spec k hk).2.1 z z' s hz hz' hs).1`.
+-/
 theorem weil_mul_left (hk : 1 ≤ k) {z z' s : Pts A.A} (hz : z ^ k = 1) (hz' : z' ^ k = 1)
     (hs : s ^ k = 1) : weil A k (z * z') s = weil A k z s * weil A k z' s := (((exists_weil_function C A).choose_spec k hk).2.1 z z' s hz hz' hs).1
 
+/- English proof (translation)
+The claim follows from `(((exists_weil_function C A).choose_spec k hk).2.1 z z' s hz hz' hs).2`.
+-/
 theorem weil_mul_right (hk : 1 ≤ k) {z z' s : Pts A.A} (hz : z ^ k = 1) (hz' : z' ^ k = 1)
     (hs : s ^ k = 1) : weil A k s (z * z') = weil A k s z * weil A k s z' := (((exists_weil_function C A).choose_spec k hk).2.1 z z' s hz hz' hs).2
 
+/- English proof (translation)
+The claim follows from `((exists_weil_function C A).choose_spec k hk).2.2.1 l z s hl hz hs`.
+-/
 theorem weil_level (hk : 1 ≤ k) {l : ℕ} (hl : 1 ≤ l) {z s : Pts A.A} (hz : z ^ k = 1)
     (hs : s ^ (k * l) = 1) : weil A (k * l) z s = weil A k z (s ^ l) := ((exists_weil_function C A).choose_spec k hk).2.2.1 l z s hl hz hs
 
+/- English proof (translation)
+The claim follows from `((exists_weil_function C A).choose_spec k hk).2.2.2 κ hκ`.
+-/
 theorem weil_perfect (hk : 1 ≤ k) (κ : Pts A.A → Cˣ)
     (hκ : ∀ z z', z ^ k = 1 → z' ^ k = 1 → κ (z * z') = κ z * κ z') :
     ∃! s : Pts A.A, s ^ k = 1 ∧ ∀ z, z ^ k = 1 → weil A k z s = κ z := ((exists_weil_function C A).choose_spec k hk).2.2.2 κ hκ
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.1 : Out.WeilSt)`. Unfold `Out.WeilSt at h1`. Establish `h2` using `(h1 _ A k _).2.2.1 z hz`. Conclude with `((weilIs_iff hk hz hz 1).1 (by rw [unitOn_one']; exact h2)).symm`.
+-/
 theorem weil_self (hk : 1 ≤ k) {z : Pts A.A} (hz : z ^ k = 1) : weil A k z z = 1 := by
   have h1 := (GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.1 : Out.WeilSt)
   unfold Out.WeilSt at h1
   have h2 := (h1 _ A k _).2.2.1 z hz
   exact ((weilIs_iff hk hz hz 1).1 (by rw [unitOn_one']; exact h2)).symm
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Simplify using `only [pow_zero]`. Establish `h` using `weil_mul_left (A := A) hk (one_pow k) (one_pow k) hs`. Rewrite `h` using `[_root_.mul_one]`.
+
+Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_succ, weil_mul_left hk (by rw [← pow_mul, mul_comm, pow_mul, hz, one_pow]) hz hs, ih]`.
+-/
 theorem weil_pow_left (hk : 1 ≤ k) {z s : Pts A.A} (hz : z ^ k = 1) (hs : s ^ k = 1) (m : ℕ) :
     weil A k (z ^ m) s = weil A k z s ^ m := by
   induction m with
@@ -276,6 +371,11 @@ theorem weil_pow_left (hk : 1 ≤ k) {z s : Pts A.A} (hz : z ^ k = 1) (hs : s ^ 
   | succ m ih =>
     rw [pow_succ, pow_succ, weil_mul_left hk (by rw [← pow_mul, mul_comm, pow_mul, hz, one_pow]) hz hs, ih]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Simplify using `only [pow_zero]`. Establish `h` using `weil_mul_right (A := A) hk (one_pow k) (one_pow k) hs`. Rewrite `h` using `[_root_.mul_one]`.
+
+Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_succ, weil_mul_right hk (by rw [← pow_mul, mul_comm, pow_mul, hz, one_pow]) hz hs, ih]`.
+-/
 theorem weil_pow_right (hk : 1 ≤ k) {z s : Pts A.A} (hz : z ^ k = 1) (hs : s ^ k = 1) (m : ℕ) :
     weil A k s (z ^ m) = weil A k s z ^ m := by
   induction m with
@@ -290,6 +390,9 @@ theorem weil_pow_right (hk : 1 ≤ k) {z s : Pts A.A} (hz : z ^ k = 1) (hs : s ^
 variable (p : ℕ) [Fact p.Prime]
 
 omit [IsAlgClosed C] [CharZero C] in
+/- English proof (translation)
+The claim follows from `Nat.one_le_pow _ _ (Fact.out : p.Prime).pos`.
+-/
 theorem one_le_ppow (n : ℕ) : 1 ≤ p ^ n := Nat.one_le_pow _ _ (Fact.out : p.Prime).pos
 
 variable (A)
@@ -312,6 +415,9 @@ def weilT : TateA A p →ₗ[ℤ_[p]] TateA A p →ₗ[ℤ_[p]] Tate p Cˣ :=
       weil_mul_right (one_le_ppow p n) (t.lev_pow n) (t'.lev_pow n) (s.lev_pow n))
     (fun _ s t => Tate.ext fun n => weil_pow_right (one_le_ppow p n) (t.lev_pow n) (s.lev_pow n) _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_weilT (s t : TateA A p) (n : ℕ) :
     (weilT A p s t).lev n = weil A (p ^ n) (s.lev n) (t.lev n) := rfl
 
@@ -320,11 +426,17 @@ variable {p}
 def pairT (ε : Eps p C) : LinearMap.BilinForm ℤ_[p] (TateA A p) :=
   (weilT A p).compr₂ ε.equiv.symm.toLinearMap
 
+/- English proof (translation)
+Establish `h : pairT A ε s t = ε.equiv.symm (weilT A p s t)` using `rfl`. Rewrite using `[h, ← Eps.lev_equiv, LinearEquiv.apply_symm_apply, lev_weilT]`.
+-/
 theorem pow_pairT (ε : Eps p C) (s t : TateA A p) (n : ℕ) :
     ε.1.lev n ^ digit n (pairT A ε s t) = weil A (p ^ n) (s.lev n) (t.lev n) := by
   have h : pairT A ε s t = ε.equiv.symm (weilT A p s t) := rfl
   rw [h, ← Eps.lev_equiv, LinearEquiv.apply_symm_apply, lev_weilT]
 
+/- English proof (translation)
+Introduce `s`. Establish `h0 : weilT A p s s = 0` using `Tate.ext fun n => by`. Rewrite using `[lev_weilT, Tate.lev_zero, weil_self (one_le_ppow p n) (s.lev_pow n)]`. Establish `e : pairT A ε s s = ε.equiv.symm (weilT A p s s)` using `rfl`. Rewrite using `[e, h0, map_zero]`.
+-/
 theorem isAlt_pairT (ε : Eps p C) : (pairT A ε).IsAlt := by
   intro s
   have h0 : weilT A p s s = 0 := Tate.ext fun n => by
@@ -343,6 +455,9 @@ def actPts (T : Over S) (a : Λ) : (T ⟶ G) →* (T ⟶ G) :=
   haveI := α.hom a
   MonoidHom.mk' (fun x => x ≫ α.act a) fun x y => MonObj.mul_comp x y _
 
+/- English proof (translation)
+Rewrite using `[α.map_add]`. Conclude with `MonObj.comp_mul _ _ _`.
+-/
 theorem actPts_add (T : Over S) (a b : Λ) (x : T ⟶ G) :
     x ≫ α.act (a + b) = (x ≫ α.act a) * (x ≫ α.act b) := by rw [α.map_add]; exact MonObj.comp_mul _ _ _
 
@@ -356,6 +471,9 @@ def actTate (p : ℕ) [Fact p.Prime] (T : Over S) : Λ →+* Module.End ℤ_[p] 
         rw [α.map_mul, Category.assoc]))
     fun a b => LinearMap.ext fun t => Tate.ext fun n => actPts_add α T a b (t.lev n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_actTate (p : ℕ) [Fact p.Prime] (T : Over S) (a : Λ) (t : Tate p (T ⟶ G)) (n : ℕ) :
     (actTate α p T a t).lev n = t.lev n ≫ α.act a := rfl
 
@@ -366,6 +484,13 @@ section Rosati
 variable {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {A : Out.PolAV (Sp C)}
   {Λ : Type} [CommRing Λ] [StarRing Λ] (o : A.OAct Λ)
 
+/- English proof (translation)
+Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hC : Out.CubeSt` using `GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.1`. Use `haveI := o.toRingAct.hom a`. Use `haveI := o.toRingAct.hom (star a)`. Establish `hz' : (z ≫ o.act a) ^ k = 1`.
+
+Establish `h3` using `map_pow (actPts o.toRingAct _ a) z k`. Rewrite `h3` using `[hz, map_one]`. Conclude with `h3.symm`. Establish `hs' : (s ≫ o.act (star a)) ^ k = 1`. Establish `h3` using `map_pow (actPts o.toRingAct _ (star a)) s k`.
+
+Rewrite `h3` using `[hs, map_one]`. Conclude with `h3.symm`. Establish `h1` using `(weilIs_iff hk hz hs' (weil A k z (s ≫ o.act (star a)))).2 rfl`. Establish `h2` using `(GlobalTheory.weilIs_rosati_iff hG hC A (o.act a) (o.act (star a)) (o.rosati a) k z s hz hs _).2 h1`. Conclude with `((weilIs_iff hk hz' hs _).1 h2).symm`.
+-/
 theorem weil_act {k : ℕ} (hk : 1 ≤ k) (a : Λ) {z s : Pts A.A} (hz : z ^ k = 1) (hs : s ^ k = 1) :
     weil A k (z ≫ o.act a) s = weil A k z (s ≫ o.act (star a)) := by
   have hG : Out.GlobalFnsSt := GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
@@ -384,6 +509,9 @@ theorem weil_act {k : ℕ} (hk : 1 ≤ k) (a : Λ) {z s : Pts A.A} (hz : z ^ k =
   have h2 := (GlobalTheory.weilIs_rosati_iff hG hC A (o.act a) (o.act (star a)) (o.rosati a) k z s hz hs _).2 h1
   exact ((weilIs_iff hk hz' hs _).1 h2).symm
 
+/- English proof (translation)
+Establish `h : weilT A p (actTate o.toRingAct p _ a s) t = weilT A p s (actTate o.toRingAct p _ (star a) t)` using `Tate.ext fun n => by`. Rewrite using `[lev_weilT, lev_weilT, lev_actTate, lev_actTate]`. Conclude with `weil_act o (one_le_ppow p n) a (s.lev_pow n) (t.lev_pow n)`. Establish `e : ∀ x y, pairT A ε x y = ε.equiv.symm (weilT A p x y)` using `fun _ _ => rfl`. Rewrite using `[e, e, h]`.
+-/
 theorem pairT_act {p : ℕ} [Fact p.Prime] (ε : Eps p C) (a : Λ) (s t : TateA A p) :
     pairT A ε (actTate o.toRingAct p _ a s) t = pairT A ε s (actTate o.toRingAct p _ (star a) t) := by
   have h : weilT A p (actTate o.toRingAct p _ a s) t = weilT A p s (actTate o.toRingAct p _ (star a) t) :=

@@ -11,6 +11,17 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq
 
+/- English proof (translation)
+Establish `hz : FA.Re.R.lift x₀ x₀ ∈ mcPts (mCoordIdeal y)` using `FA.Re.R.mem x₀ x₀ (FA.Re.R.mem_U x₀)`. Take `⟨h, hh, horb⟩` from `GlobalTheory.T.exists_flag_point_in_orbit K ι Φ y Ψ N j M n BM l _ hO _ hz (FA.pr_eq x₀)`. Take `⟨hbm, hbg, -, -⟩` from `GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec_good K ι Φ y Ψ N j M n BM l _ hO`. Establish `hmin : ∀ τ' (i : Fin N), IsProperStep N j i → minorIJ (h τ') (stepCols N j i) (stepCols N j i) ≠ 0`. Introduce `τ' i hi`.
+
+Take `⟨k, hk⟩ : ∃ k, M.blk (τ', i) = some k` from `Option.ne_none_iff_exists'.1 fun e => (M.blk_none _).1 e hi`. Establish `h1` using `(GlobalTheory.T.plucker_nonvanishing_orbit_invariant K ι Φ y Ψ N j M (BM.F l) _ _ _ (τ', i) horb).1 (hplk (τ', i))`. Rewrite `h1` using `[GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.plk_flagPt K ι Φ y Ψ N j M (BM.F l) _ h (τ', i) k (BM.isFrame l) hbm hbg (fun τ'' => (hh τ'').1) hk]`. Then use the resulting hypothesis. Use `choose B hBd hBt hBdet hBL using fun τ' => GlobalTheory.CompanionTheory.Ar.PB.WSq.BigCell.exists_upper_of_minors N j (h τ') M.j_le (hh τ').1 (hh τ').2 (hmin τ')`. Take `⟨-, -, hlc, -, -⟩` from `GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.LcFam.lc_main Ψ N j τ ca cb hab hblk`.
+
+Establish `hL : ∀ τ', IsBlockDiag j (h τ' * B τ') ∧ IsLowerUni (h τ' * B τ')`. Introduce `τ'`. Use `⟨fun r s hrs => ?_, hBL τ'⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `ht : ((r : ℕ) < N - j ↔ (t : ℕ) < N - j)`. Rewrite using `[hBd τ' t s (fun e => hrs (ht.trans e)), mul_zero]`. Rewrite using `[(hh τ').1 r t ht, zero_mul]`. Take `⟨c, a, e⟩` from `hlc _ hL`. Use `⟨c, a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `orbit_trans horb (orbit_symm (GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.sameOrbit_flagPt_mul K ι Φ y Ψ N j M (BM.F l) _ h B fun τ' => ⟨hBd τ', hBt τ', hBdet τ'⟩))`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.exists_Lca_of_plk_ne
     (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type)
     [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d)

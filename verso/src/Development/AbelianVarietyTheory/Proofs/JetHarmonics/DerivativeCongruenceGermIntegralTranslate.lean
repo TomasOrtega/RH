@@ -26,6 +26,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt FB FGLaw ev pt Dof
 open GlobalTheory.FieldBaseChange (constVal constVal_specMap gs_scal)
 open GlobalTheory.JetSer (fnVal IsSer1)
 
+/- English proof (translation)
+Rewrite using `[fnVal, dif_pos h, constVal]`. Establish `i : ∀ b, (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom b) = b` using `fun b => congrArg (fun q => q.hom b) (Scheme.ΓSpecIso (CommRingCat.of A)).hom_inv_id`. Rewrite using `[i]`. Conclude with `(gs_pull e p z U (h trivial) a).symm.trans (gs_res e z h trivial _).symm`.
+-/
 theorem gs_comp_eq_constVal {A : Type} [CommRing A] {X Z : Scheme.{0}} (e : Z ⟶ Spec (CommRingCat.of A))
     (p : Spec (CommRingCat.of A) ⟶ X) (U : X.Opens) (h : ⊤ ≤ p ⁻¹ᵁ U) (a : Γ(X, U)) (z : Z) :
     gs (e ≫ p) z U a = constVal e z (fnVal p U a) := by
@@ -35,6 +38,21 @@ theorem gs_comp_eq_constVal {A : Type} [CommRing A] {X Z : Scheme.{0}} (e : Z �
   rw [i]
   exact (gs_pull e p z U (h trivial) a).symm.trans (gs_res e z h trivial _).symm
 
+/- English proof (translation)
+Use `letI : Algebra V (O ⧸ I) := ((Ideal.Quotient.mk I).comp β).toAlgebra`. Establish `hc : φ.comp (algebraMap V _) = (algebraMap O (DualNumber (O ⧸ I))).comp β`. Establish `h₁ : Spec.map (CommRingCat.ofHom φ) ≫ Spec.map (CommRingCat.ofHom (algebraMap V _)) = Spec.map (CommRingCat.ofHom (algebraMap O (DualNumber (O ⧸ I)))) ≫ Spec.map (CommRingCat.ofHom β)`. Establish `a₁ : (x 1).left ≫ G.hom = Spec.map (CommRingCat.ofHom (algebraMap V _))` using `Over.w (x 1)`. Establish `a₂ : w.left ≫ Z.hom = Spec.map (CommRingCat.ofHom (algebraMap O (DualNumber (O ⧸ I))))` using `Over.w w`.
+
+Rewrite using `[← a₁, ← a₂, ← Category.assoc, ← hw, Category.assoc, Category.assoc, hj]`. Rewrite `h₁` using `[← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg (fun q => q.hom) (Spec.map_injective h₁)`. Set `φ' : Chart.JetR V (Fin d) 1 →ₐ[V] DualNumber (O ⧸ I)` to `{ φ with commutes' := fun v => RingHom.congr_fun hc v }`. Establish `e₀ : MvPowerSeries.map (Ideal.Quotient.mk I) (∑ i, MvPowerSeries.C (c i) * MvPowerSeries.map β (S i)) = ∑ i, MvPowerSeries.C (Ideal.Quotient.mk I (c i)) * MvPowerSeries.map (algebraMap V (O ⧸ I)) (S i)`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.map_C]`. Use `congr 1`. Rewrite using `[e₀]`.
+
+Use `dof_baseChange hJ hRep hSer hx Gl hGl hU s S hS _ _ _ φ' hφ fun A _ _ θ r h₁ h₂ => ?_` and prove the remaining obligations. Use `JetSer.FBOf.eq_of_germ fun z => ?_` and prove the remaining obligations. Establish `H` using `hall (Chart.sp (R₀ := V) A) (Spec.map (CommRingCat.ofHom θ.toRingHom) ≫ w.left) r (Chart.spMap θ ≫ Chart.spMap φ' ≫ x 1) (by rw [Category.assoc, hw]; rfl) z (h₁ trivial) (h₂ trivial)`. Set `Φ` to `((Spec (CommRingCat.of A)).presheaf.germ ⊤ z trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom`. Establish `c₀ : ∀ b, constVal (𝟙 (Spec (CommRingCat.of A))) z b = Φ b` using `fun b => gs_eq _ z ⊤ trivial _`.
+
+Establish `c₁ : ∀ o, constVal ((Spec.map (CommRingCat.ofHom θ.toRingHom) ≫ w.left) ≫ Z.hom) z o = Φ (θ (TrivSqZeroExt.inl (Ideal.Quotient.mk I o)))` using `fun o => by`. Establish `a₂ : w.left ≫ Z.hom = Spec.map (CommRingCat.ofHom (algebraMap O (DualNumber (O ⧸ I))))` using `Over.w w`. Rewrite using `[Category.assoc, a₂, constVal_specMap, ← Category.id_comp (Spec.map _), constVal_specMap, c₀]`. Both sides reduce to the same expression. Establish `c₂ : gs (Spec.map (CommRingCat.ofHom θ.toRingHom) ≫ w.left) z ⊤ k = Φ (θ (1 + TrivSqZeroExt.inr (Ideal.Quotient.mk I yy)))`.
+
+Rewrite using `[gs_comp_eq_constVal _ _ ⊤ le_top, hk, ← Category.id_comp (Spec.map _), constVal_specMap, c₀]`. Both sides reduce to the same expression. Establish `c₃` using `fun i => PullGerm.gs_eq_germ_fnVal _ U h₁ (s i) z`. Establish `c₄` using `fun i => PullGerm.gs_eq_germ_fnVal _ U h₂ (s i) z`. Use `show Φ _ = Φ _`.
+
+Rewrite using `[map_mul, map_sum, map_sum, ← c₂]`. Simplify using `only [map_mul, ← c₁]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => congrArg _ (c₄ i).symm) (H.trans ?_)` and prove the remaining obligations. Conclude with `congrArg _ (Finset.sum_congr rfl fun i _ => congrArg _ (c₃ i))`.
+-/
 theorem dof_of_tangent (hJ : JetSer.JetAlgSt) (hRep : JetSer.RepSt) (hSer : JetSer.SerSt) {V O : Type} [CommRing V]
     [IsLocalRing V] [CommRing O] (β : V →+* O) (I : Ideal O)
     {G : Over (Spec (CommRingCat.of V))} [GrpObj G] {d : ℕ} {x : JetSer.Fam G (Fin d)} (hx : Chart.IsUnivChart G d x)
@@ -96,6 +114,13 @@ theorem dof_of_tangent (hJ : JetSer.JetAlgSt) (hRep : JetSer.RepSt) (hSer : JetS
   refine Eq.trans (Finset.sum_congr rfl fun i _ => congrArg _ (c₄ i).symm) (H.trans ?_)
   exact congrArg _ (Finset.sum_congr rfl fun i _ => congrArg _ (c₃ i))
 
+/- English proof (translation)
+Set `P` to `pushHom (isGrpPullback_pullback G f) T`. Establish `e : P (x ≫ (Over.pullback f).map a) = P 1`. Rewrite using `[map_one, ← MonObj.comp_one (P x)]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `Eq.trans ?_ h` and prove the remaining obligations.
+
+Use `show (x.left ≫ ((Over.pullback f).map a).left) ≫ pullback.fst G.hom f = _`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg _ (pullback.lift_fst _ _ _)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Conclude with `congrArg (fun q => q.left) e`. Conclude with `(Over.w _).trans (Over.w _).symm`.
+-/
 theorem comp_map_eq_one {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} [GrpObj G] (a : G ⟶ G) {T : Over S'}
     (x : T ⟶ (Over.pullback f).obj G)
     (h : (x.left ≫ pullback.fst G.hom f) ≫ a.left = (x.left ≫ pullback.fst G.hom f) ≫ (1 : G ⟶ G).left) :
@@ -113,6 +138,9 @@ theorem comp_map_eq_one {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} [GrpObj 
   · exact congrArg (fun q => q.left) e
   · exact (Over.w _).trans (Over.w _).symm
 
+/- English proof (translation)
+Rewrite using `[sval_of σ ψ z J (fun _ => j) fun i => hJ _ (Set.mem_iInter.1 (hle hz) i), val_of mu ψ z J (fun _ => j) fun i => hJ _ (Set.mem_iInter.1 hz i), ← hm]`. Use `(gs_res ψ z hle hz _).symm.trans ((congrArg (gs ψ z _) hs.symm).trans ?_)` and prove the remaining obligations. Rewrite using `[gs_mul ψ z _ hz, ← Units.val_pow_eq_pow_val, gs_unit ψ z _ hz, map_pow, Units.val_pow_eq_pow_val]`.
+-/
 theorem gs_div_mul {X Z : Scheme.{0}} {L : LB X} (f : X ⟶ X) {N q : ℕ} (k : ℕ) (j : L.ι)
     (mu : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 X, f] ![(N : ℤ), -1])) (σ : H0 L q)
     (hle : LB.wchart L ![𝟙 X, f] (fun _ => j) ≤ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => j))
@@ -127,6 +155,11 @@ theorem gs_div_mul {X Z : Scheme.{0}} {L : LB X} (f : X ⟶ X) {N q : ℕ} (k : 
   refine (gs_res ψ z hle hz _).symm.trans ((congrArg (gs ψ z _) hs.symm).trans ?_)
   rw [gs_mul ψ z _ hz, ← Units.val_pow_eq_pow_val, gs_unit ψ z _ hz, map_pow, Units.val_pow_eq_pow_val]
 
+/- English proof (translation)
+Establish `a₁ : f * (K * E) ^ k * M ^ k = S * M ^ k`. Establish `b₁ : (W * R ^ p) ^ k = (K * M * E) ^ k` using `by rw [h₁]`. Establish `b₂ : (R * R') ^ (k * p) = 1` using `by rw [hR, one_pow]`. Rewrite `b₁` using `[mul_pow, ← pow_mul, mul_comm p k]`. Rewrite `b₂` using `[mul_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `a₂` using `(hM.pow k).mul_right_cancel a₁`. Establish `a₃ : (K * K' * (E * E')) ^ k = 1` using `by rw [hK, hE, _root_.mul_one, one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem solve_germ {A : Type} [CommRing A] {f W R R' M K K' E E' S : A} {k p : ℕ} (hM : IsUnit M)
     (h₁ : W * R ^ p = K * M * E) (hR : R * R' = 1) (hE : E * E' = 1) (hK : K * K' = 1)
     (h₂ : f * W ^ k = S * (M ^ k * R' ^ (k * p))) : f = K' ^ k * S * E' ^ k := by
@@ -144,6 +177,23 @@ theorem solve_germ {A : Type} [CommRing A] {f W R R' M K K' E E' S : A} {k p : �
   calc f = f * (K * K' * (E * E')) ^ k := by rw [a₃, _root_.mul_one]
     _ = _ := by rw [← a₂]; ring
 
+/- English proof (translation)
+Set `_` to `H.starRing`. Establish `hG` using `hL.globalFns`. Establish `hLB` using `P.U.LG.isLB`. Establish `hk₁ : 1 ≤ k` using `by omega`. Establish `hq : 1 ≤ k * N` using `Nat.mul_pos hk₁ hN`.
+
+Take `⟨u, hu, hc, vu⟩` from `PullGerm.exists_generic P.U.LG (t.act.act a) N k mu hmu hn`. Take `⟨wI, hwI⟩` from `P.U.ext`. Take `⟨θ, rfl, hθ⟩` from `ThetaTranslate.exists_theta_actVal P.U F hG hL.kerPow hq pt b hb wI hwI w hw`. Take `⟨σ₀, hσ₀⟩` from `((FieldBaseChange.expandsG_bijective P.U.toUnifPre F hG hk₁ (P.U.expand k hk₁)).2 s).exists`. Establish `g₂` using `(FieldBaseChange.expandsG_bijective P.U.toUnifPre F hG hq (P.U.expand _ hq)).2`.
+
+Establish `f₂` using `(FieldBaseChange.expandsF_bijective P.U.toUnifPre F hG hq (P.U.expand _ hq) hwI).2`. Establish `e₁ : (TFK (R` using `V) F ◁ (Over.pullback (jK V)).map (t.act.act a)).left ≫ UnifPre.gFK (G := t.G) F = UnifPre.gFK (G := t.G) F ≫ (t.act.act a).left := by`. Rewrite using `[← Category.assoc, ← Over.comp_left, whiskerLeft_snd, Over.comp_left, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (pullback.lift_fst _ _ _)`. Establish `hpow` using `DVR.pullGen_isGen _ _ _ _ (FrameGeo.powGen_isGen _ _ _ _ hmu k) (UnifPre.gFK (G := t.G) F)`.
+
+Take `⟨σ', hσ'⟩` from `exists_sec hLB (φ' := fun _ : Fin 1 => UnifPre.gFK (G := t.G) F) (ε' := fun _ => ((k * N : ℕ) : ℤ)) (fun W _ g => by`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Finset.univ_unique, Finset.prod_singleton, Matrix.cons_val_zero, Matrix.cons_val_one, mul_neg, _root_.mul_one, zpow_neg, Category.comp_id, Nat.cast_mul, e₁]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one])`. Use the proof step `(pullMulSec σ₀ (TFK (R := V) F ◁ (Over.pullback (jK V)).map (t.act.act a)).left _ hpow)`. Establish `v' : ∀ (y : (UnifPre.GF (G` using `t.G) F).left) (J), Good P.U.LG.L y J → sval σ' (𝟙 _) y J = sval σ₀ (TFK (R := V) F ◁ (Over.pullback (jK V)).map (t.act.act a)).left y J * (val mu (UnifPre.gFK (G := t.G) F) y J).val ^ k := fun y J hJ => by`.
+
+Use `(hσ' _ _ y J hJ).trans ((sval_pullMulSec _ _ _ hpow _ y hJ).trans ?_)` and prove the remaining obligations. Rewrite using `[val_pull hJ, FrameGeo.val_powGen, Category.id_comp, Category.id_comp, Units.val_pow_eq_pow_val]`. Take `⟨s'', hs'', hE⟩` from `PullExpField.of_generic hL P.U P.oD a (t.act.act a) k N hk₁ (GlobalTheory.T.expansion_commutes_pullback_cmEndo_four_le hL V E H t P a N ha hN k hk) u hu hc F σ₀ s hσ₀ σ' (fun y J hJ => by`. Rewrite using `[v' y J hJ, vu _ _ y J hJ, Units.val_pow_eq_pow_val])`. Take `rfl` from `PullLin.pullAl_unique hG _ a k N hP hs''`.
+
+Take `⟨tA', ht'⟩` from `(f₂ s').exists`. Take `⟨tA, ht⟩` from `(f₂ t').exists`. Establish `hact` using `((hθ tA' tA s' t' ht' ht).1 hΦ).isActOf P.A.isLB`. Take `⟨σ₂, r₂, x₂⟩` from `ht'`. Take `rfl` from `(g₂ s').unique hE x₂`.
+
+Take `⟨τ, r₃, x₃⟩` from `ht`. Establish `lin` using `(FieldBaseChange.secLin_iff hLB (∑ i, c i • FieldBaseChange.extendSec P.U.toUnifPre F (k * N) (FieldBaseChange.genericSec P.U.toUnifPre (k * N) (σ i)) : FieldBaseChange.GroupSec P.U.toUnifPre F (k * N)) σ (UnifPre.gFK (G := t.G) F) c (fun i => FieldBaseChange.extendSec P.U.toUnif …`. Establish `eτ` using `(g₂ t').unique x₃ ⟨l, c, σ, f, hσ, lin, hlin⟩`. Rewrite `lin` using `[← eτ]`. Take `⟨ρ, a₁, a₂, a₃, a₄⟩` from `GlobalTheory.T.exists_lift_point_translation_fieldPoint V t.G F (z₀ ≫ P.U.gen.inv) T e r g hg`.
+
+Establish `key` using `GlobalTheory.T.eigenEquation_translation_kernel_genericFibre V _ P.D P.A t.G P.U.toUnifPre F (t.act.act a) (P.oA.act a) (P.oA.hom a) (P.lin.ext a) N k mu hmu wI hwI σ₀ σ' τ tA' tA v' r₂ r₃ θ hact z₀ ε hz₀ hW _ ρ z J hJ`. Rewrite `key` using `[PullExpField.secLin_val lin _ z hJ, PullExpField.secLin_val lin _ z hJ]`. Simplify using `only [gs_scal, FieldBaseChange.groupBase] at key`. Rewrite `key` using `[a₁, a₂, a₃, a₄]`. Conclude with `key`.
+-/
 theorem eigen_at_field_points (hL : Laws) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {V : Type}
     [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {t : SAB H (Sp V)} (P : PELUnif (maximalIdeal V) t)
     (F : Type) [Field F] [Algebra (FractionRing V) F] (a : 𝓞 E) {N k : ℕ} (hN : 1 ≤ N) (hk : 4 ≤ k)
@@ -223,6 +273,43 @@ theorem eigen_at_field_points (hL : Laws) {E : Type} [Field E] [NumberField E] [
   rw [a₁, a₂, a₃, a₄] at key
   exact key
 
+/- English proof (translation)
+Introduce `hL _ _ hJet hRep hSer hEx hRos _ hGerm E _ _ _ H V _ _ _ F _ _ _ _ _ _ y a p k hp hk ha Λ e yy α hα he ⟨κ, Z, jZ, kZ, hκ, hfin, hflat, hred, hjZ, hja, hval, htan⟩ Dw I hco ⟨u₁, u₂, huu⟩`. Set `_` to `H.starRing`. Use `y.P.U.smooth` as an intermediate fact. Use `y.t.act.hom a` as an intermediate fact. Establish `hLB` using `y.P.U.LG.isLB`.
+
+Establish `hk₁ : 1 ≤ k` using `by omega`. Establish `hq : 1 ≤ k * p` using `Nat.mul_pos hk₁ hp.pos`. Take `⟨b, hb, hW⟩` from `character_eq_weil_pairing E H V F y.P.A y.P.oA Dw I p k hp.pos hk₁ hco a u₁ u₂ ha huu κ hκ`. Take `⟨fT, h₁, h₂, -⟩` from `y.tors F (k * p) hq`. Take `⟨pt, hpt⟩` from `h₂ b (by rw [pow_mul', pow_eq_one_of_kill y.P.oA.toRingAct ha b hb, one_pow])`.
+
+Establish `hTo` using `(h₁ pt b).2 hpt.symm`. Use `⟨pt, b, hTo, hb, fun w hw s s' t' c hP hΦ hV h ω hh hω f hf l mo => ?_⟩` and prove the remaining obligations. Take `⟨s₂, s₃⟩` from `surjective_appTop_sq_cube y.P.U.toUnifPre`. Take `⟨⟨mu₀, hmu₀⟩, hgeo⟩` from `FrameGeo.frame_pullback_geo hJet hRep hSer hEx hRos V y.t.G (PullGerm.surjective_appTop s₂) s₂ s₃ y.P.U.LG y.P.U.cubG (𝓞 E) y.t.act y.u y.hu y.d y.x y.hx y.j y.hj y.B y.hB H.w0 y.ρ y.hρ a p ha`. Take `⟨mu, hmu, hn⟩` from `PullGerm.exists_norm y.P.U.LG (y.t.act.act a) hp.pos mu₀ hmu₀`.
+
+Take `⟨r, hr⟩` from `y.exists_frameSer`. Set `U : y.t.G.left.Opens` to `LB.wchart y.P.U.LG.L ![𝟙 y.t.G.left, (y.t.act.act a).left] (fun _ => y.j)`. Establish `hU : ⊤ ≤ η[y.t.G].left ⁻¹ᵁ U`. Use `GermExist.top_le_preimage_wchart _ _ _ _ fun i => ?_` and prove the remaining obligations. Establish `key : η[y.t.G].left ≫ (![𝟙 y.t.G.left, (y.t.act.act a).left] : Fin 2 → _) i = η[y.t.G].left` using `by fin_cases i`.
+
+Conclude with `Category.comp_id _`. Use `show η[y.t.G].left ≫ (y.t.act.act a).left = _`. Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`. Rewrite using `[key]`. Conclude with `y.hj`.
+
+Establish `hle : U ≤ LB.wchart y.P.U.LG.L (fun _ : Fin 1 => 𝟙 y.t.G.left) (fun _ => y.j)` using `fun x hx => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx 0`. Establish `ser` using `fun g => ((hEx V y.t.G y.d y.x y.hx).1 U hU g).exists`. Take `⟨M, hM⟩` from `ser (mu.s (fun _ => y.j)).val`. Take `⟨w₁, κ₁, hw₁, hexp⟩` from `hgeo mu hmu M r hM hr`. Take `⟨r', hr'⟩` from `(GermExist.isUnit_of_isSer1 hRep hSer y.hx (Units.isUnit _) hr).exists_right_inv`.
+
+Establish `hMu` using `GermExist.isUnit_of_isSer1 hRep hSer y.hx (Units.isUnit _) hM`. Take `⟨n, cc, σ, fi, hcc, hσ, hlin⟩` from `GlobalTheory.T.exists_integralExpansions_of_valuation_ge hL V y.ϖ y.hϖ y.P.D y.P.A y.t.G y.P.U y.Q y.hQ F y.v y.hv (k * p) hq (c • t') 0 hV`. Set `cO : Fin n → TWO.Ov y.v` to `fun i => ⟨cc i, hcc i⟩`. Take `⟨m, hm⟩ : ∃ m : Γ(y.t.G.left, U)ˣ, m = mu.s (fun _ => y.j)` from `⟨_, rfl⟩`. Take `⟨sl, hsl⟩ : ∃ sl : Fin n → Γ(y.t.G.left, U), ∀ i, sl i * m.val ^ k = (y.t.G.left.presheaf.map (homOfLE hle).op).hom ((σ i).f (fun _ => y.j))` from `⟨fun i => (y.t.G.left.presheaf.map (homOfLE hle).op).hom ((σ i).f (fun _ => y.j)) * (m⁻¹).val ^ k, fun i => by`.
+
+Rewrite using `[_root_.mul_assoc, ← mul_pow, Units.inv_mul, one_pow, _root_.mul_one]⟩`. Use `choose S hS using fun i => ser (sl i)`. Establish `hS' : ∀ i, IsSer1 y.x _ ((σ i).f (fun _ => y.j)) (S i * M ^ k)` using `fun i => by`. Use `isSer1_res hle ?_` and prove the remaining obligations. Rewrite using `[← hsl i]`.
+
+Conclude with `isSer1_mul_pow hJet (hS i) (by rw [hm]; exact hM) k`. Take `⟨gm₀, hgm⟩` from `hGerm E H V F y (k * p) hq`. Establish `hfe` using `((hgm _ _).1 hf).trans ((hgm _ _).1 ⟨n, cc, σ, fi, fun i => S i * (M ^ k * r' ^ (k * p)), r, hσ, hlin, hr, fun i => ⟨_, hS' i, by`. Rewrite using `[_root_.mul_assoc, _root_.mul_assoc, ← mul_pow, _root_.mul_comm r', hr', one_pow, _root_.mul_one]⟩, rfl⟩).symm`. Take `⟨Φ, hΦ'⟩` from `phiFun_of hL V (maximalIdeal V) y.P.D F (k * p) hq pt w hw`.
+
+Establish `hΦc : PhiRel y.P.D.toPre F (k * p) pt w (c • s') (c • t')` using `(hΦ' _ _).2 (by rw [(hΦ' _ _).1 hΦ, map_smul])`. Establish `hall` using `GlobalTheory.T.fn_eigen_equation_of_forall_geometric_point_alt V (TWO.Ov y.v) F Subtype.val_injective (TWO.fO y.v y.hϖ y.hv) y.t.G inferInstance Z hfin hflat hred jZ hjZ U n cO sl kZ (fun T e c₀ r g hg z hz hz' => by`. Establish `w₀ : (c₀.left ≫ jZ) ≫ y.t.G.hom = jFK (R` using `V) F ≫ jK V := by`. Establish `a₁ : c₀.left ≫ Z.hom = Spec.map (CommRingCat.ofHom (algebraMap (TWO.Ov y.v) F))` using `Over.w c₀`. Rewrite using `[Category.assoc, hjZ, ← Category.assoc, a₁, PullExpField.hom_TF, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Set `x₀ : TFK (R` to `V) F ⟶ (Over.pullback (jK V)).obj y.t.G := Over.homMk (pullback.lift (c₀.left ≫ jZ) (jFK (R := V) F) w₀) (pullback.lift_snd _ _ _)`. Establish `hx₀ : x₀.left ≫ pullback.fst y.t.G.hom (jK V) = c₀.left ≫ jZ` using `pullback.lift_fst _ _ _`. Establish `hx₁ : ((x₀ ≫ y.P.U.gen.hom) ≫ y.P.U.gen.inv).left ≫ pullback.fst y.t.G.hom (jK V) = c₀.left ≫ jZ`. Rewrite using `[Category.assoc, Iso.hom_inv_id, Category.comp_id, hx₀]`.
+
+Establish `hkill : (x₀ ≫ y.P.U.gen.hom) ≫ y.P.oA.act a = 1`. Use `y.P.U.gen_hom` as an intermediate fact. Establish `e₂ : (Over.pullback (jK V)).map (y.t.act.act a) ≫ y.P.U.gen.hom = y.P.U.gen.hom ≫ y.P.oA.act a` using `y.P.lin.ext a`. Rewrite using `[Category.assoc, ← e₂, ← Category.assoc, comp_map_eq_one (jK V) _ x₀ (by rw [hx₀, Category.assoc, Category.assoc, hja]), MonObj.one_comp]`. Take `⟨J, hJ, hJ'⟩` from `JetSer.FBOf.exists_good_const _ hLB y.j z`.
+
+Establish `key` using `eigen_at_field_points hL y.P F a hp.pos hk ha mu hmu hn pt b hTo w hw (c • s) (c • s') (c • t') (PullLin.pullAl_smul _ a k p c hP) hΦc cc σ fi hσ hlin _ _ hkill (hW _ hkill) T e r g (by rw [hx₁, hg, Category.assoc]) z J hJ`. Simplify using `only [fun i => gs_div_mul _ k y.j mu (σ i) hle m hm _ (hsl i) _ z hz hJ', fun i => gs_div_mul _ k y.j mu (σ i) hle m hm _ (hsl i) _ z hz' hJ', ← _root_.mul_assoc, ← Finset.sum_mul] at key`. Rewrite using `[gs_comp_eq_constVal e c₀.left ⊤ le_top, hval c₀ _ hx₁]`. Use `(((val mu (r * g).left z J).isUnit.pow k).mul ((val mu r.left z J).isUnit.pow k)).mul_right_cancel ?_` and prove the remaining obligations. Use `(_root_.mul_assoc _ _ _).symm.trans (key.trans ?_)` and prove the remaining obligations.
+
+Conclude with `(mul_right_comm _ _ _).trans (_root_.mul_assoc _ _ _))`. Take `⟨wt, φ, hφ, hwφ, hwk⟩` from `htan l`. Establish `hD` using `dof_of_tangent hJet hRep hSer (TWO.fO y.v y.hϖ y.hv) _ y.hx y.B.G y.hB.law hU sl S hS cO jZ hjZ kZ hall (e l) (yy l) wt φ hφ hwφ hwk`. Establish `eV : TWO.algVF (V` using `V) (F := F) = algebraMap V F := (IsScalarTower.algebraMap_eq V _ F).symm`. Establish `hβ : (algebraMap (TWO.Ov y.v) F).comp (TWO.fO y.v y.hϖ y.hv) = algebraMap V F` using `eV`.
+
+Take `⟨Ψ, hΨ⟩` from `exists_evHom (a := ![y.B.A.act a]) (TB.WickVanishing.single_point_zero_constant (y.B.A.const a))`. Take `⟨x, hx, hxe⟩` from `coeff_dof_sub_mem (TWO.fO y.v y.hϖ y.hv) (algebraMap (TWO.Ov y.v) F) Subtype.val_injective hβ _ y.B a (e l) (α l) (yy l) (hα l) (he l) _ hD r' ((κ₁⁻¹ ^ k : Vˣ) : V) k f (by`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, map_pow]`. Use `solve_germ (W := FB.toK F ω) (R := FB.toK F r) (R' := FB.toK F r') (M := FB.toK F M) (K := MvPowerSeries.C (algebraMap V F κ₁)) (E := FB.toK F (ev (n := 1) ![y.B.A.act a] r)) (p := p) (hMu.map _) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hω, ← hexp F h hh, ← map_pow, ← map_mul, hw₁, map_mul, map_mul, MvPowerSeries.map_C]`.
+
+Rewrite using `[← map_mul, hr', map_one]`. Rewrite using `[← map_mul, hΨ, hΨ, ← map_mul, hr', map_one, map_one]`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Rewrite using `[hfe, map_sum, Finset.sum_mul, eV]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `mm : MvPowerSeries.map (algebraMap (TWO.Ov y.v) F) (MvPowerSeries.map (TWO.fO y.v y.hϖ y.hv) (S i)) = MvPowerSeries.map (algebraMap V F) (S i)`. Rewrite using `[← hβ]`. Both sides reduce to the same expression. Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_mul, MvPowerSeries.map_C, mm, _root_.mul_assoc]`. Use the proof step `rfl) mo`.
+
+Take `⟨x', rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Use `le_of_le_of_eq ?_ (congrArg y.v hxe).symm` and prove the remaining obligations. Rewrite using `[map_mul, map_natCast (algebraMap (TWO.Ov y.v) F), AddValuation.map_mul]`. Conclude with `le_add_of_nonneg_left (TWO.v_nonneg y.v x')`.
+-/
 theorem eigen_germ : Laws → Laws4 → TwistBCSpanStatement → JetSer.JetAlgSt → JetSer.RepSt → JetSer.SerSt →
     JetSer.SerExSt → JetSer.RosIdSt → JetSer.ChartBCSt → FamGerm.GermExSt → EigGermSt := by
   intro hL _ _ hJet hRep hSer hEx hRos _ hGerm E _ _ _ H V _ _ _ F _ _ _ _ _ _ y a p k hp hk ha Λ e yy α hα he

@@ -16,6 +16,9 @@ namespace GlobalTheory.Katz.CobCoord
 
 variable {p : ℕ} {k : Type} [CommRing k] {d : ℕ} {G : PDivGroup p k}
 
+/- English proof (translation)
+Establish `hy : ∀ j, IsNilpotent (g (c.x₂ n j))` using `fun j => (c.nil₂ n j).map g`. Apply the tactic sequence `have h1 := (GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin d ⊕ Fin d) B).1 τ E hE (Sum.elim u v) (by rintro (i | i) <;> simp [hu, hv]) (fun j => g (c.x₂ n j)) hy (by rintro (i | i) <;> simp [Chart.x₂, hgu, hgv]) s`. Establish `h2` using `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin d ⊕ Fin d) (G.A n ⊗[k] G.A n)).2 B g (c.x₂ n) (c.nil₂ n) (fun j => g (c.x₂ n j)) hy (fun _ => rfl) s`. Unfold `at2`. Rewrite using `[h1, Chart.ev₂, h2]`.
+-/
 theorem connectedPDivGroupChart_eval_nilpotent_pair (c : Chart G d) (n : ℕ) {B : Type} [CommRing B] [Algebra k B] {τ : Type} [Finite τ]
     (E : MvPowerSeries τ k →ₐ[k] B) (hE : ∀ t, IsNilpotent (E (X t)))
     (u v : Fin d → MvPowerSeries τ k) (hu : ∀ i, constantCoeff (u i) = 0)
@@ -47,6 +50,11 @@ abbrev gSumR : A ⊗[k] A →ₐ[k] A ⊗[k] (A ⊗[k] A) :=
 abbrev gFst : A ⊗[k] A →ₐ[k] A ⊗[k] (A ⊗[k] A) :=
   Algebra.TensorProduct.map (AlgHom.id k A) (Algebra.TensorProduct.includeLeft (S := k))
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul x b`. Proceed by induction on `x with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a a' => simp`. Consider the case `add x y hx hy => simp only [add_tmul, map_add, hx, hy]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem algAssoc_apply (w : (A ⊗[k] A) ⊗[k] A) :
     Algebra.TensorProduct.assoc k k k A A A w = TensorProduct.assoc k A A A w := by
   induction w with
@@ -58,6 +66,9 @@ theorem algAssoc_apply (w : (A ⊗[k] A) ⊗[k] A) :
     | add x y hx hy => simp only [add_tmul, map_add, hx, hy]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [algAssoc_apply]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem gSumL_apply (t : A ⊗[k] A) :
     gSumL k A t = TensorProduct.assoc k A A A (Coalgebra.comul.rTensor A t) := by
   induction t with
@@ -65,12 +76,18 @@ theorem gSumL_apply (t : A ⊗[k] A) :
   | tmul a b => simp [algAssoc_apply]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem gSumR_apply (t : A ⊗[k] A) : gSumR k A t = Coalgebra.comul.lTensor A t := by
   induction t with
   | zero => simp
   | tmul a b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem gFst_apply (t : A ⊗[k] A) :
     gFst k A t = ((TensorProduct.mk k A A).flip 1).lTensor A t := by
   induction t with
@@ -78,6 +95,9 @@ theorem gFst_apply (t : A ⊗[k] A) :
   | tmul a b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_tmul]`.
+-/
 theorem gFst_eq_assoc (t : A ⊗[k] A) :
     gFst k A t = Algebra.TensorProduct.assoc k k k A A A (t ⊗ₜ 1) := by
   induction t with
@@ -85,6 +105,9 @@ theorem gFst_eq_assoc (t : A ⊗[k] A) :
   | tmul a b => simp
   | add x y hx hy => simp only [map_add, hx, hy, add_tmul]
 
+/- English proof (translation)
+Rewrite using `[cobTwo_apply, gSumL_apply, gSumR_apply, gFst_apply, Algebra.TensorProduct.includeRight_apply]`.
+-/
 theorem cobTwo_eq (t : A ⊗[k] A) : cobTwo k A t =
     Algebra.TensorProduct.includeRight t - gSumL k A t + gSumR k A t - gFst k A t := by
   rw [cobTwo_apply, gSumL_apply, gSumR_apply, gFst_apply, Algebra.TensorProduct.includeRight_apply]
@@ -93,6 +116,19 @@ end GlobalTheory.Katz.CobCoord
 
 namespace GlobalTheory.Katz.CobCoord
 
+/- English proof (translation)
+Introduce `p k _ d G c μ hμ n h`. Establish `hX` using `GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k _ _ _ h`. Establish `hE : ∀ t, IsNilpotent (evA k _ h (X t))` using `fun t => by rw [hX]; exact h t`. Establish `hμ0` using `((GlobalTheory.T.connectedPDivGroup_formalLaw_coordinates p k d G c).2 μ hμ).1`. Establish `e1 : ∀ i, evA k _ h (x1 i) = c.x n i ⊗ₜ 1` using `fun i => hX (Sum.inl i)`.
+
+Establish `e2 : ∀ i, evA k _ h (x2 i) = 1 ⊗ₜ (c.x n i ⊗ₜ 1)` using `fun i => hX (Sum.inr (Sum.inl i))`. Establish `e3 : ∀ i, evA k _ h (x3 i) = 1 ⊗ₜ (1 ⊗ₜ c.x n i)` using `fun i => hX (Sum.inr (Sum.inr i))`. Establish `c1 : ∀ i, constantCoeff (x1 i : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) k) = 0` using `fun _ => constantCoeff_X _`. Establish `c2 : ∀ i, constantCoeff (x2 i : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) k) = 0` using `fun _ => constantCoeff_X _`. Establish `c3 : ∀ i, constantCoeff (x3 i : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) k) = 0` using `fun _ => constantCoeff_X _`.
+
+Establish `cop : ∀ u v : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) k, (∀ i, constantCoeff (u i) = 0) → (∀ i, constantCoeff (v i) = 0) → ∀ i, constantCoeff (op μ u v i) = 0`. Introduce `u v hu hv i`. Apply the tactic sequence `have hs : ∀ j, constantCoeff (Sum.elim u v j) = 0 := by rintro (j | j) <;> simp [hu, hv]`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hs) hs (hμ0 i)`. Establish `o12 : ∀ i, evA k _ h (op μ x1 x2 i) = gFst k (G.A n) (Coalgebra.comul (c.x n i))`.
+
+Introduce `i`. Rewrite using `[op, connectedPDivGroupChart_eval_nilpotent_pair c n _ hE x1 x2 c1 c2 (gFst k (G.A n)) (fun j => by rw [e1]; simp [Algebra.TensorProduct.one_def]) (fun j => by rw [e2]; simp [Algebra.TensorProduct.one_def]), hμ n i]`. Establish `o23 : ∀ i, evA k _ h (op μ x2 x3 i) = Algebra.TensorProduct.includeRight (Coalgebra.comul (c.x n i))`. Introduce `i`. Rewrite using `[op, connectedPDivGroupChart_eval_nilpotent_pair c n _ hE x2 x3 c2 c3 Algebra.TensorProduct.includeRight (fun j => by rw [e2]; simp [Algebra.TensorProduct.one_def]) (fun j => by rw [e3]; simp [Algebra.TensorProduct.one_def]), hμ n i]`.
+
+Establish `a2` using `connectedPDivGroupChart_eval_nilpotent_pair c n _ hE (op μ x1 x2) x3 (cop _ _ c1 c2) c3 (gSumL k (G.A n)) (fun j => by rw [o12, gFst_eq_assoc]; simp) (fun j => by rw [e3]; simp [Algebra.TensorProduct.one_def])`. Establish `a3` using `connectedPDivGroupChart_eval_nilpotent_pair c n _ hE x1 (op μ x2 x3) c1 (cop _ _ c2 c3) (gSumR k (G.A n)) (fun j => by rw [e1]; simp [Algebra.TensorProduct.one_def]) (fun j => by rw [o23]; simp)`. Use `⟨fun s => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `a1` using `connectedPDivGroupChart_eval_nilpotent_pair c n _ hE x2 x3 c2 c3 Algebra.TensorProduct.includeRight (fun j => by rw [e2]; simp [Algebra.TensorProduct.one_def]) (fun j => by rw [e3]; simp [Algebra.TensorProduct.one_def]) s`. Establish `a4` using `connectedPDivGroupChart_eval_nilpotent_pair c n _ hE x1 x2 c1 c2 (gFst k (G.A n)) (fun j => by rw [e1]; simp [Algebra.TensorProduct.one_def]) (fun j => by rw [e2]; simp [Algebra.TensorProduct.one_def]) s`.
+
+Rewrite using `[cob2, map_sub, map_add, map_sub, a1, a2, a3, a4, cobTwo_eq]`. Express the relevant statement in the definitionally equal form `evA k _ h (at2 (μ i) (op μ x1 x2) x3) = evA k _ h (at2 (μ i) x1 (op μ x2 x3))`. Rewrite using `[a2, a3, hμ n i, gSumL_apply, gSumR_apply, Coalgebra.coassoc_apply]`.
+-/
 theorem evA_cob2_eq_cobTwo_and_op_assoc : ∀ (p : ℕ) (k : Type) [CommRing k] (d : ℕ) (G : PDivGroup p k) (c : Chart G d),
     ∀ (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k), c.IsLawOf μ →
     ∀ n (h : ∀ i, IsNilpotent ((Sum.elim (fun i => c.x n i ⊗ₜ[k] (1 : G.A n ⊗[k] G.A n))

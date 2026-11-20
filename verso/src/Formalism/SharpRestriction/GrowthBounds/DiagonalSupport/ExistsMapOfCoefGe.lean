@@ -100,6 +100,13 @@ def LabAt : Prop :=
 
 end At
 
+/- English proof (translation)
+Use `conv_rhs => rw [F.as_sum]`. Use `symm`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := F.support) (t := F.support.image (fun mo => fun i => multideg mo i)) (g := fun mo => fun i => multideg mo i) (fun mo hmo => Finset.mem_image_of_mem _ hmo)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `δ _`.
+
+Unfold `homComp`. Apply `Finset.sum_congr` to reduce the goal to its premises. Use extensionality with `mo`. Simplify using `only [Finset.mem_filter, funext_iff]`. Introduce `_ _`.
+
+Both sides reduce to the same expression.
+-/
 theorem sum_homComp {R : Type} [CommRing R] {ι : Type} {n : ℕ} (F : MvPolynomial (ι × Fin n) R) :
     ∑ δ ∈ F.support.image (fun mo => fun i => multideg mo i), homComp δ F = F := by
   classical
@@ -117,6 +124,25 @@ theorem sum_homComp {R : Type} [CommRing R] {ι : Type} {n : ℕ} (F : MvPolynom
   · intro _ _
     rfl
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by rw [hx, map_zero]⟩`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors O) x`. Establish `hb : (b : O) ≠ 0` using `nonZeroDivisors.coe_ne_zero b`. Establish `hbK : algebraMap O (KK O) (b : O) ≠ 0` using `fun h0 => hb ((IsFractionRing.injective O (KK O)) (h0.trans (map_zero _).symm))`.
+
+Establish `ha : a ≠ 0`. Introduce `ha0`. Apply `hx` to reduce the goal to its premises. Rewrite `hab` using `[ha0, map_zero]`. Conclude with `(mul_eq_zero.mp hab).resolve_right hbK`.
+
+Establish `hord` using `Formalism.MainNotions.G.Joints.ordW_eq x a b ha hb hab`. Establish `hp0 : IsDiscreteValuationRing.addVal O (p : O) ≠ 0`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_zero_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp S.p_mem`. Establish `hpt : IsDiscreteValuationRing.addVal O (p : O) ≠ ⊤`.
+
+Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `S.p_ne`. Establish `hram : 0 < ramE p O`. Unfold `ramE`. Break down `ENat.ne_top_iff_exists.mp hpt with ⟨k, hk⟩` into its components or cases.
+
+Rewrite `hp0`, the goal using `[← hk]`. Simplify using `only [ENat.toNat_coe]`. Conclude with `Nat.pos_of_ne_zero (by exact_mod_cast hp0)`. Establish `hq` using `h ((((Formalism.MainNotions.G.Joints.nv a : ℤ) - (Formalism.MainNotions.G.Joints.nv (b : O) : ℤ) : ℤ) : ℚ) / (ramE p O : ℚ)) (by rw [vK, hord, WithTop.map_coe])`. Establish `hq' : (0 : ℚ) ≤ (((Formalism.MainNotions.G.Joints.nv a : ℤ) - (Formalism.MainNotions.G.Joints.nv (b : O) : ℤ) : ℤ) : ℚ) / (ramE p O : ℚ)` using `by exact_mod_cast hq`.
+
+Establish `hd : (0 : ℚ) < ramE p O` using `by exact_mod_cast hram`. Establish `hnum : (0 : ℚ) ≤ (((Formalism.MainNotions.G.Joints.nv a : ℤ) - (Formalism.MainNotions.G.Joints.nv (b : O) : ℤ) : ℤ) : ℚ)` using `(div_nonneg_iff.mp hq').elim (fun h => h.1) (fun h => absurd h.2 (not_le.mpr hd))`. Establish `hle : Formalism.MainNotions.G.Joints.nv (b : O) ≤ Formalism.MainNotions.G.Joints.nv a`. Establish `: (0 : ℤ) ≤ (Formalism.MainNotions.G.Joints.nv a : ℤ) - (Formalism.MainNotions.G.Joints.nv (b : O) : ℤ)` using `by exact_mod_cast hnum`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hat : IsDiscreteValuationRing.addVal O a ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `ha`. Establish `hbt : IsDiscreteValuationRing.addVal O (b : O) ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`.
+
+Conclude with `hb`. Establish `hvle : IsDiscreteValuationRing.addVal O (b : O) ≤ IsDiscreteValuationRing.addVal O a`. Rewrite using `[← ENat.coe_toNat hat, ← ENat.coe_toNat hbt]`. Conclude with `hle` after adjusting the coercions. Take `⟨c, hc⟩` from `IsDiscreteValuationRing.addVal_le_iff_dvd.mp hvle`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite `hab` using `[hc, map_mul]`. Conclude with `(mul_left_cancel₀ hbK (by rw [← hab, mul_comm])).symm`.
+-/
 private theorem mem_range_algebraMap_of_vK_nonneg {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (S : UniformizedDVR p O) (x : KK O) (h : geQ (vK p x) 0) : x ∈ Set.range (algebraMap O (KK O)) := by
   by_cases hx : x = 0
@@ -165,6 +191,11 @@ private theorem mem_range_algebraMap_of_vK_nonneg {p : ℕ} {O : Type} [CommRing
   rw [hc, map_mul] at hab
   exact (mul_left_cancel₀ hbK (by rw [← hab, mul_comm])).symm
 
+/- English proof (translation)
+Establish `hrange : F ∈ Set.range (MvPolynomial.map (algebraMap O (KK O)))`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `x hx`. Take `⟨mo, -, rfl⟩` from `MvPolynomial.mem_coeffs_iff.mp hx`. Conclude with `mem_range_algebraMap_of_vK_nonneg S _ (h mo)`.
+
+Take `⟨Fo, hFo⟩` from `hrange`. Conclude with `⟨Fo, hFo⟩`.
+-/
 theorem exists_map_of_coefGe {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (S : UniformizedDVR p O) {σ : Type} (F : MvPolynomial σ (KK O)) (h : CoefGe p F 0) :
     ∃ Fo : MvPolynomial σ O, MvPolynomial.map (algebraMap O (KK O)) Fo = F := by
@@ -176,10 +207,26 @@ theorem exists_map_of_coefGe {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsD
   obtain ⟨Fo, hFo⟩ := hrange
   exact ⟨Fo, hFo⟩
 
+/- English proof (translation)
+Conclude with `MvPolynomial.support_map_of_injective _ (IsFractionRing.injective O (KK O))`.
+-/
 theorem support_of_map {O : Type} [CommRing O] [IsDomain O] {σ : Type} (Fo : MvPolynomial σ O) :
     (MvPolynomial.map (algebraMap O (KK O)) Fo).support = Fo.support := by
   exact MvPolynomial.support_map_of_injective _ (IsFractionRing.injective O (KK O))
 
+/- English proof (translation)
+Use `set S := (xiPl Fr O Dt.nL Go).support.image (fun mo => fun i => multideg mo i) with hS`. Establish `hocc : ∀ δ ∈ S, Occ p O Fr Dt Go δ`. Introduce `δ hδ`. Take `⟨mo, hmo, rfl⟩` from `Finset.mem_image.mp hδ`. Conclude with `⟨mo, hmo, fun i => rfl⟩`.
+
+Set `e` to `S.equivFin`. Set `δq : Fin S.card → (ZMod J × ℤ → ℕ)` to `fun q => ((e.symm q : S) : ZMod J × ℤ → ℕ)`. Set `G : (ZMod J × ℤ → ℕ) → MvPolynomial (Fin n' × Fin (r + K)) O` to `fun δ => monomial (labO Fr K Dt.nL rho) 1 * (PhiPl Fr p O K J (homComp δ (xiPl Fr O Dt.nL Go)) * PhiNo Fr p O K J (xiNo Fr O K Dt.nL No))`. Establish `hoc : ∀ q, Occ p O Fr Dt Go (δq q)` using `fun q => hocc _ (e.symm q).2`. Use `choose o ho using fun q => (hDeg (δq q) (hoc q)).2`.
+
+Use `⟨S.card, o, fun q => toKK hk (G (δq q)), fun q => ⟨(hDeg (δq q) (hoc q)).1, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨n, obd, xi, dd, h1, h2, h3⟩` from `hDec (δq q) (hoc q)`. Establish `hmon : monPh O K p Fr (labO Fr K Dt.nL rho) xi = G (δq q)`. Simplify using `only [monPh, G, h3]`. Use `⟨n, obd, xi, dd, labO Fr K Dt.nL rho, h1, h2, hLab.1, hLab.2, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hmon]`. Conclude with `ho q`. Rewrite using `[hmon]`. Both sides reduce to the same expression. Establish `hAlg' : toKK hk (monomial (labO Fr K Dt.nL rho) 1 * (PhiPl Fr p O K J (xiPl Fr O Dt.nL Go) * PhiNo Fr p O K J (xiNo Fr O K Dt.nL No))) = asm Fr p O hk Dt.nL rho (Dt.ph (MvPolynomial.map (algebraMap O (KK O)) Go)) (MvPolynomial.map (algebraMap O (KK O)) No)` using `hAlg`.
+
+Rewrite using `[← hAlg']`. Establish `hsum : ∑ q, toKK hk (G (δq q)) = ∑ δ ∈ S, toKK hk (G δ)`. Rewrite using `[Equiv.sum_comp e.symm (fun x : S => toKK hk (G x)), Finset.sum_coe_sort S (fun δ => toKK hk (G δ))]`. Rewrite using `[hsum]`. Establish `e2 : ∑ δ ∈ S, toKK hk (G δ) = toKK hk (∑ δ ∈ S, G δ)`.
+
+Simplify using `only [toKK, map_sum]`. Rewrite using `[e2]`. Use `congr 1`. Simplify using `only [G]`. Rewrite using `[← Finset.mul_sum, ← Finset.sum_mul, ← map_sum, hS, sum_homComp]`.
+-/
 theorem membAt_core (p : ℕ) {n' r K m : ℕ} [NeZero n'] [NeZero r] [NeZero K] (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (hk : m + 1 = r + K) (Fr : Frames n' r) (deg : Fin n' → ℕ) (Y : ℝ) (N₁ G' cP : ℕ)
     (d : Fin n' → ℕ) {J : ℕ} [NeZero J] (Dt : SignedChainData p O r J)

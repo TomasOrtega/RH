@@ -21,6 +21,17 @@ def th (T : nF σ d.Y d.b) (β : nA σ d.Y d.b) : ℂ := d.B.ψ (-(Algebra.trace
 def th' (T' : nF σ L.Y L.b) (β : nA σ L.Y L.b) : ℂ :=
   d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T'.1.1 * β.1))))
 
+/- English proof (translation)
+Establish `: Countable (rat2 σ d.Y)` using `GlobalTheory.EisBL.DoubledGroupTopology.countable_rational_points_doubled σ d.Y`. Establish `: Countable (Cs d)` using `Quotient.countable`. Establish `: IsFiniteMeasure (ν.restrict 𝓤)` using `isFiniteMeasure_restrict.2 (by simp [hν])`. Establish `: IsFiniteMeasure (lam.restrict 𝓖)` using `isFiniteMeasure_restrict.2 (by simp [hlam])`. Use `set μ := (ν.restrict 𝓤).prod (lam.restrict 𝓖) with hμ`.
+
+Set `g : {q : Cs d // ¬ LagrangianCondition L (rep q)} → (Fin L.n → AE F E) × nA σ d.Y d.b → ℂ` to `fun q => kq L f s₁ z nb T uM (rep q.1) x`. Establish `hgi : ∀ q, Integrable (g q) μ` using `fun q => hi q.1`. Establish `hgs : Summable fun q => ∫ p, ‖g q p‖ ∂μ` using `hs.subtype _`. Establish `htm : ∀ q : {q : Cs d // ¬ LagrangianCondition L (rep q)}, tm L f s₁ z nb lam 𝓖 T uM ν 𝓤 (rep q.1) x = ∫ p, g q p ∂μ`. Introduce `q`.
+
+Rewrite using `[hμ, integral_prod _ (hgi q)]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Unfold `sec2`. Repeatedly rewrite using `[htm]`.
+
+Rewrite using `[(hasSum_integral_of_summable_integral_norm hgi hgs).tsum_eq]`. Use `integral_congr_ae (ae_of_all _ fun p => ?_)` and prove the remaining obligations. Simplify using `only [g, kq, E2, th]`. Rewrite using `[tsum_mul_right]`. Establish `hm : ∀ q, AEMeasurable (fun p => ‖g q p‖ₑ) μ` using `fun q => (hgi q).aemeasurable.enorm`.
+
+Establish `e1 : ∫⁻ p, ∑' q : {q : Cs d // ¬ LagrangianCondition L (rep q)}, ‖phz d f s₁ z (rep q.1 * (nb p.2 * (uM p.1 * x))) * th T p.2‖ₑ ∂μ = ∑' q, ENNReal.ofReal (∫ p, ‖g q p‖ ∂μ)`. Rewrite using `[show (fun p => ∑' q : {q : Cs d // ¬ LagrangianCondition L (rep q)}, ‖phz d f s₁ z (rep q.1 * (nb p.2 * (uM p.1 * x))) * th T p.2‖ₑ) = fun p => ∑' q, ‖g q p‖ₑ from rfl, lintegral_tsum hm]`. Conclude with `tsum_congr fun q => (ofReal_integral_norm_eq_lintegral_enorm (hgi q)).symm`. Rewrite using `[e1, ← ENNReal.ofReal_tsum_of_nonneg (fun q => integral_nonneg fun p => norm_nonneg _) hgs]`. Conclude with `ENNReal.ofReal_lt_top`.
+-/
 theorem section_sum_integral_expand {f : d.G → ℂ} {s₁ z : ℂ} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)} {T : nF σ d.Y d.b}
     {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)} (hν : ν 𝓤 = 1) (hlam : lam 𝓖 = 1) (x : d.G)
     (hi : ∀ q : Cs d, Integrable (kq L f s₁ z nb T uM (rep q) x) ((ν.restrict 𝓤).prod (lam.restrict 𝓖)))

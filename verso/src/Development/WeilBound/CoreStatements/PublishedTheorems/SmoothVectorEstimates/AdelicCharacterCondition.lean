@@ -13,6 +13,9 @@ namespace PositivityTheory.jumpWindows
 
 namespace AdelicCharacterCondition
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 E)`. Establish `hb : M ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField E)`. Take `⟨y, hy⟩` from `hψ.loc ⟨M, hM.isPrime, hb⟩`. Conclude with `⟨hψ.cont, hψ.norm, hψ.rat, _, hy⟩`.
+-/
 theorem isCharAF_of {E : Type} [Field E] [NumberField E] {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCharAF E ψ := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 E)
@@ -20,6 +23,9 @@ theorem isCharAF_of {E : Type} [Field E] [NumberField E] {ψ : AddChar (Ad E) �
   obtain ⟨y, hy⟩ := hψ.loc ⟨M, hM.isPrime, hb⟩
   exact ⟨hψ.cont, hψ.norm, hψ.rat, _, hy⟩
 
+/- English proof (translation)
+Establish `h` using `_root_.PI.VolStabSW.VolAAW.condAA_of (_root_.PI.VolStabSW.VolAAW.condExact_of _root_.PI.VolStabSW.sAf_holds (_root_.PI.VolStabSW.chInf_of_lift _root_.PI.VolStabSW.chLift_holds)) E ψ (isCharAF_of hψ)`. Use `filter_upwards [h] with v hv t`. Simplify using `only [sFin_sLoc_eq]`. Conclude with `hv t`.
+-/
 theorem condAA {E : Type} [Field E] [NumberField E] {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) :
     ∀ᶠ v in (cofinite : Filter (HeightOneSpectrum (𝓞 E))), ∀ t : v.adicCompletion E,
       (∀ s ∈ v.adicCompletionIntegers E, ψ (sFin E (sLoc E v (s * t))) = 1) ↔ t ∈ v.adicCompletionIntegers E := by
@@ -31,6 +37,17 @@ theorem condAA {E : Type} [Field E] [NumberField E] {ψ : AddChar (Ad E) ℂ} (h
 
 end AdelicCharacterCondition
 
+/- English proof (translation)
+Introduce `E _ _ _`. Take `⟨ψ, hψ⟩` from `exists_stdPsi E`. Use `⟨ψ, hψ, ?_⟩` and prove the remaining obligations. Use `filter_upwards [AdelicCharacterCondition.condAA hψ] with w hw`. Establish `hint : ∀ y ∈ Ov E w, ψ (sFin E (sLoc E w y)) = 1`.
+
+Introduce `y hy`. Use `(hw 1).2 (one_mem _) y hy` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Use `⟨hint, ?_⟩` and prove the remaining obligations. Use `set ϖ := _root_.PI.VolStabSW.unifV w with hϖ`.
+
+Establish `hϖ0 : ϖ ≠ 0` using `(_root_.PI.VolStabSW.unifV_spec w).1`. Establish `hu : IsUnifV E w ϖ` using `_root_.PI.VolStabSW.unifV_val w`. Establish `hnot : ϖ⁻¹ ∉ w.adicCompletionIntegers E`. Introduce `h`. Rewrite `h` using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀]`.
+
+Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `_root_.PI.VolStabSW.unifV_val w`. Rewrite `h` using `[hv]`. Conclude with `absurd h (by decide)`. Establish `hex : ¬ ∀ s ∈ w.adicCompletionIntegers E, ψ (sFin E (sLoc E w (s * ϖ⁻¹))) = 1` using `fun h => hnot ((hw _).1 h)`. Use `push Not at hex`.
+
+Take `⟨s, hs, hne⟩` from `hex`. Use `⟨ϖ, s * ϖ⁻¹, hu, ?_, hne⟩` and prove the remaining obligations. Rewrite using `[mul_comm s, ← mul_assoc, mul_inv_cancel₀ hϖ0, one_mul]`. Conclude with `hs`.
+-/
 theorem adelic_character_holds : StandardCharacterExists := by
   intro E _ _ _
   obtain ⟨ψ, hψ⟩ := exists_stdPsi E

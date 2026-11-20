@@ -12,6 +12,17 @@ noncomputable section
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Set `ts : Equiv.Perm (Fin t) → List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))` to `fun σ => List.ofFn fun j : Fin t => (u - ((j : ℕ) : ℂ), a (σ j), b j)`. Use `⟨(Finset.univ : Finset (Equiv.Perm (Fin t))).toList.flatMap (fun σ => (expand k r (ts σ)).map fun cw => (((Equiv.Perm.sign σ : ℤ) : ℂ) * cw.1, cw.2)), ?_, ?_⟩` and prove the remaining obligations. Introduce `cw hcw`. Simplify using `only [List.mem_flatMap, List.mem_map] at hcw`. Take `⟨σ, _, cw', hm', rfl⟩` from `hcw`.
+
+Use `expand_words (k := k) (r := r) (ts σ) cw' hm'` as an intermediate fact. Use `⟨this.1, this.2.trans ?_⟩` and prove the remaining obligations. Simplify using `[ts]`. Introduce `E _ _ UU f hf g hgU hg`. Establish `hloc : ∀ σ, Loc ((ts σ).length : ℕ∞) f g`.
+
+Introduce `σ`. Take `⟨U, f', a, b, c, d⟩` from `hf g hgU`. Use `⟨U, f', a, b, ?_, d⟩` and prove the remaining obligations. Simplify `c` using `[ts]`. Establish `e1 : qminorOp (Q.EH k r) a b u f g = ∑ σ, (((Equiv.Perm.sign σ : ℤ) : ℂ)) • foldT (ts σ) f g`.
+
+Simplify using `only [qminorOp, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Use `congr 1`. Simplify using `only [foldT, ts, List.map_ofFn]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, sum_flatMap, Finset.sum_map_toList]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[expand_eq (ts σ) f g hg (hloc σ), List.map_map, ← sum_map_mul_smul]`. Both sides reduce to the same expression.
+-/
 theorem qminorWordSum (k r t : ℕ) (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) :
     ∃ L : List (ℂ × List (B.Mat k r)),
       (∀ cw ∈ L, (∀ X ∈ cw.2, B.unitLie k r X) ∧ cw.2.length ≤ t) ∧
@@ -50,6 +61,9 @@ section terms
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem hsv_smul (c : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (c • A) = c • B.hsVec A := by
   unfold B.hsVec
   ext i
@@ -71,11 +85,17 @@ def pTerm (P : B.Mat k r → ℂ) (w : List (B.Mat k r)) : B.DTerm k r Wp Wq whe
       inner_smul_left, inner_smul_right]
     simp
 
+/- English proof (translation)
+Simplify using `only [pTerm]`. Rewrite using `[if_pos hw]`.
+-/
 theorem pTerm_word {P : B.Mat k r → ℂ} {w : List (B.Mat k r)} (hw : ∀ X ∈ w, B.inLie k r X) :
     (pTerm (Wp := Wp) (Wq := Wq) P w).word = w := by
   simp only [pTerm]
   rw [if_pos hw]
 
+/- English proof (translation)
+Simplify using `only [pTerm]`. Use `split_ifs`. Conclude with `le_refl _`. Simplify using the standard rewrite rules.
+-/
 theorem pTerm_word_le (P : B.Mat k r → ℂ) (w : List (B.Mat k r)) :
     (pTerm (Wp := Wp) (Wq := Wq) P w).word.length ≤ w.length := by
   simp only [pTerm]
@@ -83,10 +103,18 @@ theorem pTerm_word_le (P : B.Mat k r → ℂ) (w : List (B.Mat k r)) :
   · exact le_refl _
   · simp
 
+/- English proof (translation)
+Unfold `B.inLie`. Simplify using the standard rewrite rules.
+-/
 theorem inLie_zero : B.inLie k r 0 := by
   unfold B.inLie
   simp
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _`. Simplify using the standard rewrite rules. Consider the case `cons a l ih`.
+
+Introduce `h`. Simplify using `only [List.foldr_cons]`. Conclude with `max_le (h a (by simp)) (ih fun x hx => h x (by simp [hx]))`.
+-/
 private theorem foldr_max_le_lemma (t : ℕ) : ∀ l : List ℕ, (∀ x ∈ l, x ≤ t) → l.foldr max 0 ≤ t := by
   intro l
   induction l with
@@ -96,6 +124,11 @@ private theorem foldr_max_le_lemma (t : ℕ) : ∀ l : List ℕ, (∀ x ∈ l, x
     simp only [List.foldr_cons]
     exact max_le (h a (by simp)) (ih fun x hx => h x (by simp [hx]))
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro x hx`. Simplify using `at hx`. Consider the case `cons a l ih`.
+
+Introduce `x hx`. Simplify using `only [List.foldr_cons]`. Break down `List.mem_cons.mp hx with rfl | hx` into its components or cases. Conclude with `le_max_left _ _`. Conclude with `le_trans (ih x hx) (le_max_right _ _)`.
+-/
 private theorem le_foldr_max_lemma_2 : ∀ (l : List ℕ) (x : ℕ), x ∈ l → x ≤ l.foldr max 0 := by
   intro l
   induction l with
@@ -107,12 +140,34 @@ private theorem le_foldr_max_lemma_2 : ∀ (l : List ℕ) (x : ℕ), x ∈ l →
     · exact le_max_left _ _
     · exact le_trans (ih x hx) (le_max_right _ _)
 
+/- English proof (translation)
+Introduce `l hl ht`. Conclude with `le_antisymm (foldr_max_le_lemma t l hl) (le_foldr_max_lemma_2 l t ht)`.
+-/
 theorem foldr_max_eq (t : ℕ) : ∀ l : List ℕ, (∀ x ∈ l, x ≤ t) → t ∈ l → l.foldr max 0 = t := by
   intro l hl ht
   exact le_antisymm (foldr_max_le_lemma t l hl) (le_foldr_max_lemma_2 l t ht)
 
 end terms
 
+/- English proof (translation)
+Establish `h` using `fun j => qminorWordSum k r t a (b j) u`. Use `choose L hL hE using h`. Set `Θ₁ : B.DiffOp k r Wp Wq` to `s.toList.flatMap fun j => (L j).map fun cw => pTerm (fun g => β j g * cw.1) cw.2`. Set `T₀ : B.DTerm k r Wp Wq` to `pTerm (fun _ => 0) (List.replicate t 0)`. Establish `hT₀ : T₀.word = List.replicate t 0` using `pTerm_word (fun X hX => by`.
+
+Rewrite using `[List.eq_of_mem_replicate hX]`. Conclude with `inLie_zero)`. Use `⟨Θ₁ ++ [T₀], ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Tm hTm`. Break down `List.mem_append.1 hTm with h1 | h1` into its components or cases.
+
+Simplify using `only [Θ₁, List.mem_flatMap, List.mem_map, Finset.mem_toList] at h1`. Take `⟨j, hj, cw, hcw, rfl⟩` from `h1`. Use `⟨(pTerm_word_le _ _).trans (hL j cw hcw).2, fun g => β j g * cw.1, ?_, fun g => rfl, fun g => rfl⟩` and prove the remaining obligations. Use `Formalism.FourierDecayAlt.P.PartialDerivativeAlgebra.pd_mul (hβ j hj) (Formalism.FourierDecayAlt.P.PartialDerivativeAlgebra.pd_const cw.1 0)` as an intermediate fact. Simplify using `using this`.
+
+Rewrite `h1` using `[List.mem_singleton]`. Substitute `h1` using the available equality. Use `⟨by rw [hT₀]; simp, fun _ => 0, Formalism.FourierDecayAlt.P.PartialDerivativeAlgebra.pd_const 0 κ, fun g => rfl, fun g => rfl⟩` and prove the remaining obligations. Unfold `B.opOrder`. Apply `foldr_max_eq` to reduce the goal to its premises.
+
+Introduce `x hx`. Simplify using `only [List.mem_map, List.mem_append, List.mem_singleton] at hx`. Take `⟨Tm, hTm | rfl, rfl⟩` from `hx`. Simplify using `only [Θ₁, List.mem_flatMap, List.mem_map, Finset.mem_toList] at hTm`. Take `⟨j, _, cw, hcw, rfl⟩` from `hTm`.
+
+Conclude with `(pTerm_word_le _ _).trans (hL j cw hcw).2`. Rewrite using `[hT₀]`. Simplify using the standard rewrite rules. Simplify using `only [List.mem_map, List.mem_append, List.mem_singleton]`. Conclude with `⟨T₀, Or.inr rfl, by rw [hT₀]; simp⟩`.
+
+Introduce `UU F hF g hgU hg`. Establish `hT₀a : T₀.coef g (B.Rw T₀.word F g) = 0`. Express the relevant statement in the definitionally equal form `((0 : ℂ) • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)) (B.Rw T₀.word F g) = 0`. Simplify using the standard rewrite rules. Simplify using `only [B.opApply, List.map_append, List.sum_append, List.map_singleton, List.sum_singleton, hT₀a, add_zero, Θ₁]`.
+
+Rewrite using `[sum_flatMap, Finset.sum_map_toList]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[hE j _ UU F hF g hgU hg, List.map_map, ← sum_map_mul_smul]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+
+Introduce `cw hcw`. Simplify using `only [Function.comp_apply]`. Rewrite using `[pTerm_word (fun X hX => ((hL j cw hcw).1 X hX).1)]`. Express the relevant statement in the definitionally equal form `((β j g * cw.1) • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)) (B.Rw cw.2 F g) = _`. Both sides reduce to the same expression.
+-/
 theorem qminOpRep {k r t κ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {ι : Type} (s : Finset ι)
     (a : Fin t → Fin (2 * r + k + 1)) (b : ι → Fin t → Fin (2 * r + k + 1)) (β : ι → B.Mat k r → ℂ)
@@ -171,6 +226,9 @@ section basic₂
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `PolyOp at *`. Introduce `Tm hTm`. Take `⟨h1, P, hP, h2, h3⟩` from `h Tm hTm`. Take `⟨q, hq, hq'⟩` from `hP`. Conclude with `⟨h1.trans ho, P, ⟨q, hq.trans hκ, hq'⟩, h2, h3⟩`.
+-/
 theorem polyOp_mono {o o' κ κ' : ℕ} {Θ : B.DiffOp k r Wp Wq} (h : PolyOp o κ Θ) (ho : o ≤ o') (hκ : κ ≤ κ') :
     PolyOp o' κ' Θ := by
   unfold PolyOp at *
@@ -179,6 +237,9 @@ theorem polyOp_mono {o o' κ κ' : ℕ} {Θ : B.DiffOp k r Wp Wq} (h : PolyOp o 
   obtain ⟨q, hq, hq'⟩ := hP
   exact ⟨h1.trans ho, P, ⟨q, hq.trans hκ, hq'⟩, h2, h3⟩
 
+/- English proof (translation)
+Unfold `PolyOp at *`. Introduce `Tm hTm`. Break down `List.mem_append.mp hTm with h | h` into its components or cases. Conclude with `h₁ Tm h`. Conclude with `h₂ Tm h`.
+-/
 theorem polyOp_append {o κ : ℕ} {Θ₁ Θ₂ : B.DiffOp k r Wp Wq} (h₁ : PolyOp o κ Θ₁) (h₂ : PolyOp o κ Θ₂) :
     PolyOp o κ (Θ₁ ++ Θ₂) := by
   unfold PolyOp at *
@@ -187,11 +248,19 @@ theorem polyOp_append {o κ : ℕ} {Θ₁ Θ₂ : B.DiffOp k r Wp Wq} (h₁ : Po
   · exact h₁ Tm h
   · exact h₂ Tm h
 
+/- English proof (translation)
+Unfold `B.opApply`. Rewrite using `[List.map_append, List.sum_append]`.
+-/
 theorem opApply_append (Θ₁ Θ₂ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (g : B.Mat k r) :
     B.opApply (Θ₁ ++ Θ₂) F g = B.opApply Θ₁ F g + B.opApply Θ₂ F g := by
   unfold B.opApply
   rw [List.map_append, List.sum_append]
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro b`. Simplify using the standard rewrite rules. Consider the case `cons a l ih`.
+
+Introduce `b`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih b, max_assoc]`.
+-/
 private theorem foldr_max_init_lemma_3 : ∀ (l : List ℕ) (b : ℕ), l.foldr max b = max (l.foldr max 0) b := by
   intro l
   induction l with
@@ -201,6 +270,9 @@ private theorem foldr_max_init_lemma_3 : ∀ (l : List ℕ) (b : ℕ), l.foldr m
     simp only [List.foldr_cons]
     rw [ih b, max_assoc]
 
+/- English proof (translation)
+Unfold `B.opOrder`. Rewrite using `[List.map_append, List.foldr_append]`. Conclude with `foldr_max_init_lemma_3 _ _`.
+-/
 theorem opOrder_append (Θ₁ Θ₂ : B.DiffOp k r Wp Wq) :
     B.opOrder (Θ₁ ++ Θ₂) = max (B.opOrder Θ₁) (B.opOrder Θ₂) := by
   unfold B.opOrder

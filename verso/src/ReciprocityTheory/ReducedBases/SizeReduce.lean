@@ -6,6 +6,17 @@ namespace ReciprocityTheory.ReducedBases.T2
 
 open Finset InnerProductSpace Submodule
 
+/- English proof (translation)
+Use `set w : Fin d → M := fun i => v i - ∑ l, W i l • v l with hw`. Establish `key : ∀ i, i ∈ S → v i ∈ span R (w '' S)`. Introduce `i`. Use `WellFoundedLT.induction (motive := fun i => i ∈ S → v i ∈ span R (w '' S)) i ?_` and prove the remaining obligations. Introduce `i ih hi`.
+
+Establish `hv : v i = w i + ∑ l, W i l • v l` using `(sub_add_cancel _ _).symm`. Rewrite using `[hv]`. Use `Submodule.add_mem _ (Submodule.subset_span ⟨i, hi, rfl⟩) (Submodule.sum_mem _ fun l _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hl : l < i`. Conclude with `Submodule.smul_mem _ _ (ih l hl (hS i hi l hl))`.
+
+Rewrite using `[hW i l (not_lt.mp hl), zero_smul]`. Conclude with `Submodule.zero_mem _`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+
+Conclude with `key i hi`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Use `show v i - ∑ l, W i l • v l ∈ span R (v '' S)`. Use `Submodule.sub_mem _ (Submodule.subset_span ⟨i, hi, rfl⟩) (Submodule.sum_mem _ fun l _ => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hl : l < i`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, hS i hi l hl, rfl⟩)`. Rewrite using `[hW i l (not_lt.mp hl), zero_smul]`. Conclude with `Submodule.zero_mem _`.
+-/
 lemma span_tri {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] {d : ℕ} (v : Fin d → M)
     (W : Fin d → Fin d → R) (hW : ∀ i l, i ≤ l → W i l = 0) (S : Set (Fin d))
     (hS : ∀ i ∈ S, ∀ l < i, l ∈ S) :
@@ -37,6 +48,9 @@ lemma span_tri {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] {d : ℕ} (v
     · rw [hW i l (not_lt.mp hl), zero_smul]
       exact Submodule.zero_mem _
 
+/- English proof (translation)
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.mpr (gramSchmidt_orthogonal (𝕜 := ℝ) (f := b) (ne_of_lt hi).symm)`.
+-/
 private lemma span_gs_Iio_le_orthogonal {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
     (b : Fin d → E) (j : Fin d) : span ℝ (gs b '' Set.Iio j) ≤ (ℝ ∙ gs b j)ᗮ := by
   rw [Submodule.span_le]
@@ -44,6 +58,9 @@ private lemma span_gs_Iio_le_orthogonal {E : Type*} [NormedAddCommGroup E] [Inne
   exact Submodule.mem_orthogonal_singleton_iff_inner_right.mpr
     (gramSchmidt_orthogonal (𝕜 := ℝ) (f := b) (ne_of_lt hi).symm)
 
+/- English proof (translation)
+Establish `h` using `gramSchmidt_def'' (𝕜 := ℝ) (f := b) (n := j)`. Use `nth_rewrite 1 [h]`. Rewrite using `[add_sub_cancel_left]`. Conclude with `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, Finset.mem_Iio.mp hi, rfl⟩)`.
+-/
 private lemma sub_gs_mem_span_gs_Iio {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
     (b : Fin d → E) (j : Fin d) : b j - gs b j ∈ span ℝ (gs b '' Set.Iio j) := by
   have h := gramSchmidt_def'' (𝕜 := ℝ) (f := b) (n := j)
@@ -52,6 +69,11 @@ private lemma sub_gs_mem_span_gs_Iio {E : Type*} [NormedAddCommGroup E] [InnerPr
   exact Submodule.sum_mem _ fun i hi =>
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, Finset.mem_Iio.mp hi, rfl⟩)
 
+/- English proof (translation)
+Establish `hm : b l ∈ span ℝ (gs b '' Set.Iio j)`. Establish `h1` using `mem_span_gramSchmidt (𝕜 := ℝ) (f := b) (le_refl l)`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Conclude with `Set.image_mono (fun i hi => lt_of_le_of_lt hi hlj)`. Establish `h0` using `Submodule.mem_orthogonal_singleton_iff_inner_right.mp (span_gs_Iio_le_orthogonal b j hm)`.
+
+Simplify using `only [mu]`. Rewrite using `[h0, zero_div]`.
+-/
 private lemma mu_eq_zero_of_lt {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
     (b : Fin d → E) {l j : Fin d} (hlj : l < j) : mu b l j = 0 := by
   have hm : b l ∈ span ℝ (gs b '' Set.Iio j) := by
@@ -62,6 +84,11 @@ private lemma mu_eq_zero_of_lt {E : Type*} [NormedAddCommGroup E] [InnerProductS
   simp only [mu]
   rw [h0, zero_div]
 
+/- English proof (translation)
+Establish `hne : gs b j ≠ 0` using `gramSchmidt_ne_zero (𝕜 := ℝ) (n := j) hli`. Establish `h0` using `Submodule.mem_orthogonal_singleton_iff_inner_right.mp (span_gs_Iio_le_orthogonal b j (sub_gs_mem_span_gs_Iio b j))`. Rewrite `h0` using `[inner_sub_right]`. Simplify using `only [mu]`. Rewrite using `[sub_eq_zero.mp h0, real_inner_self_eq_norm_sq]`.
+
+Conclude with `div_self (pow_ne_zero 2 (norm_ne_zero_iff.mpr hne))`.
+-/
 private lemma mu_diag_eq_one {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
     (b : Fin d → E) (hli : LinearIndependent ℝ b) (j : Fin d) : mu b j j = 1 := by
   have hne : gs b j ≠ 0 := gramSchmidt_ne_zero (𝕜 := ℝ) (n := j) hli
@@ -71,6 +98,19 @@ private lemma mu_diag_eq_one {E : Type*} [NormedAddCommGroup E] [InnerProductSpa
   rw [sub_eq_zero.mp h0, real_inner_self_eq_norm_sq]
   exact div_self (pow_ne_zero 2 (norm_ne_zero_iff.mpr hne))
 
+/- English proof (translation)
+Use `set b' : Fin d → E := fun i => b i - ∑ l, c i l • b l with hb'`. Use function extensionality and compare the values at `n`. Establish `hV : span ℝ (b' '' Set.Iio n) = span ℝ (b '' Set.Iio n)` using `(span_tri b c hc (Set.Iio n) (fun i hi l hl => lt_trans hl hi)).symm`. Establish `hV' : span ℝ (gs b' '' Set.Iio n) = span ℝ (gs b '' Set.Iio n)`. Rewrite using `[span_gramSchmidt_Iio, span_gramSchmidt_Iio, hV]`.
+
+Establish `hu : gs b n - gs b' n ∈ span ℝ (gs b '' Set.Iio n)`. Establish `e1 : gs b n - gs b' n = (b' n - gs b' n) - (b n - gs b n) + (b n - b' n)` using `by abel`. Rewrite using `[e1]`. Use `add_mem (sub_mem ?_ (sub_gs_mem_span_gs_Iio b n)) ?_` and prove the remaining obligations. Rewrite using `[← hV']`.
+
+Conclude with `sub_gs_mem_span_gs_Iio b' n`. Rewrite using `[span_gramSchmidt_Iio] show b n - (b n - ∑ l, c n l • b l) ∈ span ℝ (b '' Set.Iio n)`. Rewrite using `[sub_sub_cancel]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l < n`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, hl, rfl⟩)`. Rewrite using `[hc n l (not_lt.mp hl), zero_smul]`. Conclude with `Submodule.zero_mem _`. Establish `hu' : gs b n - gs b' n ∈ span ℝ (gs b' '' Set.Iio n)`. Rewrite using `[hV']`.
+
+Conclude with `hu`. Establish `hu1` using `Submodule.mem_orthogonal_singleton_iff_inner_right.mp (span_gs_Iio_le_orthogonal b n hu)`. Establish `hu2` using `Submodule.mem_orthogonal_singleton_iff_inner_right.mp (span_gs_Iio_le_orthogonal b' n hu')`. Establish `h3` using `inner_sub_left (𝕜 := ℝ) (gs b n) (gs b' n) (gs b n - gs b' n)`. Rewrite `h3` using `[hu1, hu2, sub_zero]`.
+
+Establish `h4` using `inner_self_eq_zero.mp h3`. Conclude with `(sub_eq_zero.mp h4).symm`.
+-/
 private lemma gs_sub_sum_lower_smul {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
     (b : Fin d → E) (c : Fin d → Fin d → ℝ) (hc : ∀ i l, i ≤ l → c i l = 0) :
     gs (fun i => b i - ∑ l, c i l • b l) = gs b := by
@@ -104,6 +144,15 @@ private lemma gs_sub_sum_lower_smul {E : Type*} [NormedAddCommGroup E] [InnerPro
   have h4 := inner_self_eq_zero.mp h3
   exact (sub_eq_zero.mp h4).symm
 
+/- English proof (translation)
+Use `set v : Fin d → (Fin d → ℤ) := fun i => e0 i - ∑ l, W i l • e0 l with hv`. Establish `hfv : (fun i => f (v i)) = fun i => f (e0 i) - ∑ l, (W i l : ℝ) • f (e0 l)`. Use function extensionality and compare the values at `i`. Simplify using `only [hv, map_sub, map_sum, map_zsmul, Int.cast_smul_eq_zsmul]`. Establish `hspR : span ℝ (Set.range (fun i => f (v i))) = span ℝ (Set.range (fun i => f (e0 i)))`.
+
+Rewrite using `[hfv, ← Set.image_univ, ← Set.image_univ]`. Conclude with `(span_tri (fun i => f (e0 i)) (fun i l => (W i l : ℝ)) (fun i l h => by simp [hW i l h]) Set.univ (fun i _ l _ => Set.mem_univ l)).symm`. Establish `hliR : LinearIndependent ℝ (fun i => f (v i))`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Set.finrank, hspR]`. Conclude with `linearIndependent_iff_card_eq_finrank_span.mp (hli e0)`.
+
+Establish `hliZ : LinearIndependent ℤ v` using `LinearIndependent.of_comp f (hliR.restrict_scalars (fun (a b : ℤ) (h : a • (1 : ℝ) = b • (1 : ℝ)) => by simpa using h))`. Establish `hspZ : ⊤ ≤ span ℤ (Set.range v)`. Establish `h` using `span_tri e0 W hW Set.univ (fun i _ l _ => Set.mem_univ l)`. Rewrite `h` using `[Set.image_univ, Set.image_univ, e0.span_eq]`. Conclude with `le_of_eq h`.
+
+Conclude with `⟨Module.Basis.mk hliZ hspZ, fun i => Module.Basis.mk_apply hliZ hspZ i⟩`.
+-/
 private lemma exists_basis_sub_sum_lower {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
     (f : (Fin d → ℤ) →ₗ[ℤ] E)
     (hli : ∀ e : Module.Basis (Fin d) ℤ (Fin d → ℤ), LinearIndependent ℝ (fun i => f (e i)))
@@ -130,6 +179,21 @@ private lemma exists_basis_sub_sum_lower {E : Type*} [NormedAddCommGroup E] [Inn
     exact le_of_eq h
   exact ⟨Module.Basis.mk hliZ hspZ, fun i => Module.Basis.mk_apply hliZ hspZ i⟩
 
+/- English proof (translation)
+Use `set b : Fin d → E := fun i => f (e0 i) with hb`. Take `⟨e1, he1⟩` from `exists_basis_sub_sum_lower f hli e0 (fun i l => if l = j ∧ j < i then round (mu b i j) else 0) (fun i l h => if_neg (by rintro ⟨rfl, h2⟩; exact absurd h (not_le.mpr h2)))`. Establish `hfe1 : (fun i => f (e1 i)) = fun i => b i - ∑ l, ((if l = j ∧ j < i then round (mu b i j) else 0 : ℤ) : ℝ) • b l`. Use function extensionality and compare the values at `i`. Rewrite using `[he1 i]`.
+
+Simplify using `only [map_sub, map_sum, map_zsmul, Int.cast_smul_eq_zsmul, hb]`. Establish `hsum : ∀ i, ∑ l, ((if l = j ∧ j < i then round (mu b i j) else 0 : ℤ) : ℝ) • b l = ((if j < i then round (mu b i j) else 0 : ℤ) : ℝ) • b j`. Introduce `i`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+
+Introduce `l _ hl`. Simplify using `[hl]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Establish `hfe : ∀ i, f (e1 i) = b i - ((if j < i then round (mu b i j) else 0 : ℤ) : ℝ) • b j`.
+
+Introduce `i`. Establish `h` using `congrFun hfe1 i`. Rewrite using `[h, hsum i]`. Establish `hgs : gs (fun i => f (e1 i)) = gs b`. Rewrite using `[hfe1]`.
+
+Conclude with `gs_sub_sum_lower_smul b (fun i l => ((if l = j ∧ j < i then round (mu b i j) else 0 : ℤ) : ℝ)) (fun i l h => by show ((if l = j ∧ j < i then round (mu b i j) else 0 : ℤ) : ℝ) = 0`. Rewrite using `[if_neg (by rintro ⟨rfl, h2⟩; exact absurd h (not_le.mpr h2)), Int.cast_zero])`. Establish `hmu : ∀ i j', mu (fun i => f (e1 i)) i j' = mu b i j' - ((if j < i then round (mu b i j) else 0 : ℤ) : ℝ) * mu b j j'`. Introduce `i j'`. Establish `hfi` using `hfe i`.
+
+Generalize the expression as in `((if j < i then round (mu b i j) else 0 : ℤ) : ℝ) = r at hfi ⊢`. Simplify using `only [mu]`. Rewrite using `[hgs, hfi, inner_sub_right, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨e1, hgs, fun i hi => ?_, fun i j' hj' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hmu, if_pos hi, mu_diag_eq_one b (hli e0) j, mul_one]`. Conclude with `abs_sub_round _`. Rewrite using `[hmu, mu_eq_zero_of_lt b hj', mul_zero, sub_zero]`.
+-/
 private lemma exists_basis_size_reduce_column {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
     (f : (Fin d → ℤ) →ₗ[ℤ] E)
     (hli : ∀ e : Module.Basis (Fin d) ℤ (Fin d → ℤ), LinearIndependent ℝ (fun i => f (e i)))
@@ -179,6 +243,17 @@ private lemma exists_basis_size_reduce_column {E : Type*} [NormedAddCommGroup E]
     exact abs_sub_round _
   · rw [hmu, mu_eq_zero_of_lt b hj', mul_zero, sub_zero]
 
+/- English proof (translation)
+Establish `key : ∀ k : ℕ, ∃ e' : Module.Basis (Fin d) ℤ (Fin d → ℤ), gs (fun i => f (e' i)) = gs (fun i => f (e i)) ∧ ∀ i j : Fin d, d ≤ j.val + k → j < i → |mu (fun i => f (e' i)) i j| ≤ 1 / 2`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨e, rfl, fun i j h _ => absurd h (by have := j.isLt; omega)⟩`. Consider the case `succ k ih`.
+
+Take `⟨e', hgs', hred⟩` from `ih`. Distinguish the cases in `hk : k < d`. Take `⟨e'', hgs'', hred'', hsame⟩` from `exists_basis_size_reduce_column f hli e' ⟨d - k - 1, by omega⟩`. Use `⟨e'', hgs''.trans hgs', fun i j hj hji => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hjv : j.val = d - k - 1`.
+
+Establish `hj0 : j = ⟨d - k - 1, by omega⟩` using `Fin.ext hjv`. Rewrite `hji`, the goal using `[hj0]`. Conclude with `hred'' i hji`. Establish `hlt : (⟨d - k - 1, by omega⟩ : Fin d) < j`. Rewrite using `[Fin.lt_iff_val_lt_val]`.
+
+Use `show d - k - 1 < j.val`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hsame i j hlt]`. Conclude with `hred i j (by omega) hji`. Conclude with `⟨e', hgs', fun i j _ hji => hred i j (by omega) hji⟩`.
+
+Take `⟨e', hgs', hred⟩` from `key d`. Conclude with `⟨e', hgs', fun i j hji => hred i j (by omega) hji⟩`.
+-/
 lemma size_reduce {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
     (f : (Fin d → ℤ) →ₗ[ℤ] E)
     (hli : ∀ e : Module.Basis (Fin d) ℤ (Fin d → ℤ), LinearIndependent ℝ (fun i => f (e i)))

@@ -15,6 +15,15 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D T L sc G W fr X r U h`. Take `⟨γ, hγ, hf, hm⟩` from `h`. Establish `hk : γ⁻¹ * (r : GA D (G.V X)) ∈ GinfC (G.V X)` using `by show finHom (G.V X) (γ⁻¹ * (r : GA D (G.V X))) = 1`. Rewrite using `[map_mul, map_inv, hf, inv_mul_cancel]`. Use `⟨γ, hγ, γ⁻¹ * (r : GA D (G.V X)), hk, fun x => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hc` using `GlobalTheory.AdelicSplit.commute_GinfC_GfC (G.V X) hk x.2`. Rewrite using `[← hc, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul]`. Both sides reduce to the same expression. Establish `hrat : Bridge.IsRatMat (G.V X) ⟨γ, hγ⟩ (fr X * Unitary.toUnits U * (fr X)⁻¹)` using `Units.ext hm`. Establish `hin : GlobalTheory.DefStep.realIn W.θ fr X γ = embGL (tauE D) (Unitary.toUnits U)`.
+
+Use function extensionality and compare the values at `τ`. Establish `h1` using `GlobalTheory.CoefModel.realGL_rat W.θ_is (G.V X) ⟨γ, hγ⟩ _ hrat τ`. Establish `h2 : GlobalTheory.DefStep.realIn W.θ fr X γ τ = (GlobalTheory.DefStep.frGL fr X τ)⁻¹ * GlobalTheory.CoefModel.realGL W.θ (G.V X) γ τ * GlobalTheory.DefStep.frGL fr X τ`. Simplify using `[GlobalTheory.DefStep.realIn]`. Rewrite using `[h2, h1, map_mul, map_mul, map_inv, GlobalTheory.DefStep.frGL]`.
+
+Use `show _ = Formalism.UG.bc (tauE D τ) (Unitary.toUnits U)`. Use `group`. Rewrite using `[_root_.mul_inv_rev, inv_inv, map_mul, GlobalTheory.DefStep.realAct_fin W.θ fr X (inv_mem r.2), one_mul, GlobalTheory.DefStep.realAct, MonoidHom.comp_apply, MonoidHom.comp_apply, hin]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.WildA.ratReal :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (W : G.Weil) (fr : ∀ X : Node, GL (Fin (G.V X).rank) D.host.E) (X : Node) (r : FinPt G X)
       (U : Matrix.unitaryGroup (Fin (G.V X).rank) D.host.E), GlobalTheory.RatMoveJets.RatCoord _ (fr X) r U →

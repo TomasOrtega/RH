@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.KUTransfer
 
+/- English proof (translation)
+Introduce `L _ _ _ n w σ b hb p hp x`. Establish `hO : Formalism.UG.Ov L w = Formalism.UG.intL (w.adicCompletion L)` using `Subring.ext fun _ => Iff.rfl`. Establish `hK : ∀ g : GL (Fin n) (w.adicCompletion L), g ∈ GlobalTheory.LFun.KGL w n ↔ g ∈ (Formalism.UG.bc (n` using `Fin n) (Formalism.UG.intL (w.adicCompletion L)).subtype).range := by`. Introduce `g`. Use `show g ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov L w) ↔ _`.
+
+Rewrite using `[hO]`. Both sides reduce to the same expression. Establish `h1 : p x ∈ Formalism.UG.KU σ n ↔ (p x).val ∈ GlobalTheory.LFun.KGL w n`. Rewrite using `[hK]`. Use `show (p x).val ∈ Formalism.UG.intPts (Formalism.UG.intL _).subtype (Formalism.UG.GU σ n) ↔ _`.
+
+Conclude with `⟨fun h => h.2, fun h => ⟨(p x).2, h⟩⟩`. Rewrite using `[h1, hp]`. Establish `hbi : b⁻¹ ∈ GlobalTheory.LFun.KGL w n` using `inv_mem hb`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `(GlobalTheory.LFun.KGL w n).mul_mem (( GlobalTheory.LFun.KGL w n).mul_mem hb h) hbi` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `h`. Conclude with `(GlobalTheory.LFun.KGL w n).mul_mem ((GlobalTheory.LFun.KGL w n).mul_mem hbi h) hb`.
+-/
 theorem ku_iff : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (w : HeightOneSpectrum (𝓞 L)) (σ : w.adicCompletion L →+* w.adicCompletion L) (b : GL (Fin n) (w.adicCompletion L)), b ∈ GlobalTheory.LFun.KGL w n → ∀ p : locU n w →* Formalism.UG.GU σ n, (∀ x, (p x).val = b⁻¹ * cLoc w x.val * b) → ∀ x, (p x ∈ Formalism.UG.KU σ n ↔ cLoc w x.val ∈ GlobalTheory.LFun.KGL w n) := by
   intro L _ _ _ n w σ b hb p hp x
   have hO : Formalism.UG.Ov L w = Formalism.UG.intL (w.adicCompletion L) := Subring.ext fun _ => Iff.rfl

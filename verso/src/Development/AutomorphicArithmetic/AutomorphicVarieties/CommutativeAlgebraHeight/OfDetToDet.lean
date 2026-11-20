@@ -43,6 +43,9 @@ def ker : TwoSidedIdeal E := TwoSidedIdeal.mk'
     have : ((1 : S) ⊗ₜ[A] (x * z)) = (1 ⊗ₜ x) * (1 ⊗ₜ z) := by simp
     rw [this, ← mul_assoc, mul_assoc (u * _)]; exact h S y u _)
 
+/- English proof (translation)
+The claim follows from `TwoSidedIdeal.mem_mk' _ _ _ _ _ _ _`.
+-/
 theorem mem_ker {x : E} : x ∈ D.ker ↔ ∀ (S : Type) [CommRing S] [Algebra A S] (y u v : S ⊗[A] E),
     D.D S (y + u * (1 ⊗ₜ x) * v) = D.D S y := TwoSidedIdeal.mem_mk' _ _ _ _ _ _ _
 
@@ -51,6 +54,9 @@ def repS {ι : Type} [Fintype ι] [DecidableEq ι] (r : E →ₐ[A] Matrix ι ι
   Algebra.TensorProduct.lift (Algebra.ofId S _) ((Algebra.ofId A S).mapMatrix.comp r)
     fun s _ => Algebra.commute_algebraMap_left s _
 
+/- English proof (translation)
+Conclude with `(Algebra.TensorProduct.lift_tmul _ _ _ s x).trans (Algebra.smul_def _ _).symm`.
+-/
 theorem repS_tmul {ι : Type} [Fintype ι] [DecidableEq ι] (r : E →ₐ[A] Matrix ι ι A) (S : Type) [CommRing S]
     [Algebra A S] (s : S) (x : E) : repS r S (s ⊗ₜ x) = s • (r x).map (algebraMap A S) := by
   exact (Algebra.TensorProduct.lift_tmul _ _ _ s x).trans (Algebra.smul_def _ _).symm
@@ -75,6 +81,9 @@ def cancel (A E B S : Type) [CommRing A] [Ring E] [Algebra A E] [CommRing B] [Al
     (Algebra.TensorProduct.map (Algebra.ofId B S) (AlgHom.id A E)) fun s y =>
       Algebra.commute_algebraMap_left s _
 
+/- English proof (translation)
+Use `(Algebra.TensorProduct.lift_tmul _ _ _ s (b ⊗ₜ x)).trans ?_` and prove the remaining obligations. Simplify using `[Algebra.ofId_apply]`.
+-/
 theorem cancel_tmul (B S : Type) [CommRing B] [Algebra A B] [CommRing S]
     [Algebra B S] [Algebra A S] [IsScalarTower A B S] (s : S) (b : B) (x : E) :
     cancel A E B S (s ⊗ₜ (b ⊗ₜ x)) = (s * algebraMap B S b) ⊗ₜ x := by
@@ -111,6 +120,9 @@ def unopS (A E S : Type) [CommRing A] [Ring E] [Algebra A E] [CommRing S] [Algeb
     S ⊗[A] Eᵐᵒᵖ →ₗ[S] S ⊗[A] E :=
   (MulOpposite.opLinearEquiv A : E ≃ₗ[A] Eᵐᵒᵖ).symm.toLinearMap.baseChange S
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qk3.unopS_mul S x y`.
+-/
 theorem unopS_mul (S : Type) [CommRing S] [Algebra A S] (x y : S ⊗[A] Eᵐᵒᵖ) :
     unopS A E S (x * y) = unopS A E S y * unopS A E S x :=
   _root_.UpperTheory.Reformulated.B.Qk3.unopS_mul S x y
@@ -132,6 +144,9 @@ def op : Det n A Eᵐᵒᵖ where
     exact (congrArg (D.D T) this).trans (D.nat S T φ _)
   homog S _ _ s x := (congrArg (D.D S) (map_smul (unopS A E S) s x)).trans (D.homog S s _)
 
+/- English proof (translation)
+Consider the cases of `D`. Consider the cases of `D'`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `S _ _`. Conclude with `MonoidHom.ext (h S)`.
+-/
 theorem ext' {D D' : Det n A E} (h : ∀ (S : Type) [CommRing S] [Algebra A S] (x), D.D S x = D'.D S x) : D = D' := by
   cases D; cases D'; congr; funext S _ _; exact MonoidHom.ext (h S)
 
@@ -151,19 +166,33 @@ def ofT : S ⊗[A] MonoidAlgebra A G →ₐ[S] MonoidAlgebra S G :=
 
 variable {A G S}
 
+/- English proof (translation)
+Simplify using `[toT, smul_tmul']`.
+-/
 theorem toT_single (g : G) (s : S) : toT A G S (MonoidAlgebra.single g s) = s ⊗ₜ MonoidAlgebra.single g 1 := by
   simp [toT, smul_tmul']
 
+/- English proof (translation)
+Conclude with `(Algebra.TensorProduct.lift_tmul _ _ _ s x).trans (Algebra.smul_def _ _).symm`.
+-/
 theorem ofT_tmul (s : S) (x : MonoidAlgebra A G) :
     ofT A G S (s ⊗ₜ x) = s • MonoidAlgebra.mapRingHom G (algebraMap A S) x := by
   exact (Algebra.TensorProduct.lift_tmul _ _ _ s x).trans (Algebra.smul_def _ _).symm
 
+/- English proof (translation)
+Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g s => simp [toT_single, ofT_tmul]`.
+-/
 theorem ofT_toT (x : MonoidAlgebra S G) : ofT A G S (toT A G S x) = x := by
   induction x using MonoidAlgebra.induction_linear with
   | zero => simp
   | add a b ha hb => simp only [map_add, ha, hb]
   | single g s => simp [toT_single, ofT_tmul]
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul s y`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add, ha, hb]`. Consider the case `single g a`. Rewrite using `[ofT_tmul, map_smul, MonoidAlgebra.mapRingHom_single, toT_single, smul_tmul', smul_eq_mul, mul_comm, ← Algebra.smul_def, smul_tmul, MonoidAlgebra.smul_single, smul_eq_mul, mul_one]`.
+-/
 theorem toT_ofT (x : S ⊗[A] MonoidAlgebra A G) : toT A G S (ofT A G S x) = x := by
   induction x with
   | zero => simp
@@ -206,6 +235,9 @@ def ofDet (D : Det n A (MonoidAlgebra A G)) : GDet n A G where
     exact (congrArg (D.D T) this).trans (D.nat S T ψ _)
   homog S _ _ s x := (congrArg (D.D S) (map_smul (toT A G S) s x)).trans (D.homog S s _)
 
+/- English proof (translation)
+The claim follows from `GDet.ext fun S _ _ x => congrArg (D.D S) (ofT_toT (A := A) x)`.
+-/
 theorem ofDet_toDet (D : GDet n A G) : ofDet D.toDet = D :=
   GDet.ext fun S _ _ x => congrArg (D.D S) (ofT_toT (A := A) x)
 

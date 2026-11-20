@@ -8,6 +8,11 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial Topology
 
+/- English proof (translation)
+Introduce `σ _ I w t hI hic hdim hw ht`. Take `⟨k, f, hk, hfI, hli⟩` from `hgrad σ I w t hI hic hdim hw ht`. Take `⟨U, hU, hinj⟩` from `hchart σ k t f w hk hli`. Use `⟨U, hU, hinj.mono ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hz, hzU⟩`.
+
+Conclude with `⟨hzU, fun j ↦ hz (f j) (hfI j)⟩`.
+-/
 theorem UniformiserLocallyInjective.proof (hgrad : UniformiserGradientIndependent.Statement)
     (hchart : PolynomialChartInjective.Statement) : UniformiserLocallyInjective.Statement := by
   intro σ _ I w t hI hic hdim hw ht

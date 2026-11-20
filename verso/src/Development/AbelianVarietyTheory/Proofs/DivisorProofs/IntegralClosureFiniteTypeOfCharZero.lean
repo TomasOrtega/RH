@@ -4,6 +4,13 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k F K _ _ _ _ _ _ _ _ _ d u hu A _ hA B hB`. Substitute `hB` using the available equality. Establish `e : MvPolynomial (Fin d) k ≃ₐ[k] A`. Substitute `hA` using the available equality. Conclude with `hu.aevalEquiv`.
+
+Establish `hAft : Algebra.FiniteType k A` using `Algebra.FiniteType.equiv inferInstance e`. Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing k A`. Establish `: IsIntegrallyClosed A` using `IsIntegrallyClosed.of_equiv e.toRingEquiv`. Establish `: CharZero F` using `charZero_of_injective_algebraMap (algebraMap k F).injective`. Establish `: Algebra.IsSeparable F K` using `inferInstance`.
+
+Establish `: Module.Finite A (integralClosure A K)` using `IsIntegralClosure.finite A F K (integralClosure A K)`. Establish `: Algebra.FiniteType A (integralClosure A K)` using `inferInstance`. Establish `: Algebra.FiniteType k (integralClosure A K)` using `Algebra.FiniteType.trans hAft this`. Conclude with `this`.
+-/
 theorem integralClosure_finiteType_of_charZero :
     ∀ (k F K : Type) [Field k] [CharZero k] [Field F] [Field K] [Algebra k F] [Algebra k K]
       [Algebra F K] [IsScalarTower k F K] [FiniteDimensional F K] (d : ℕ) (u : Fin d → F),

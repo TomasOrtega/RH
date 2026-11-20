@@ -7,6 +7,9 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 
 namespace GlobalTheory.K5.DenseAlg
 
+/- English proof (translation)
+Introduce `Ω _ _ _ p _ A Ωl _ _ hclo j hA k e he halg`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Take `⟨a, ha, hc⟩` from `GlobalTheory.K5.Dense.exists_cong p Ωl hclo Ω j k e he halg`. Conclude with `⟨a, (hA a).2 ha, hc⟩`.
+-/
 theorem exists_mem_cong : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (p : ℕ) [Fact p.Prime]
     (A : ValuationSubring Ω) (Ωl : Type) [Field Ωl] [Algebra (O0 p) Ωl], IsClo p Ωl → ∀ j : Ω →+* Ωl,
     (∀ x, x ∈ A ↔ IsInt p (j x)) → ∀ (k : ℕ) (e : Ωl), IsInt p e → IsAlgZp p e → ∃ a ∈ A, Cong p k e (j a) := by

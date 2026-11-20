@@ -11,6 +11,19 @@ namespace GlobalTheory.InducedPBW
 
 attribute [local instance] LieRing.ofAssociativeRing LieAlgebra.ofAssociativeAlgebra
 
+/- English proof (translation)
+Establish `htop : Algebra.adjoin ℂ (Set.range (ugι p q)) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Establish `hs : Function.Surjective (UniversalEnvelopingAlgebra.mkAlgHom ℂ (Mat p q))` using `RingCon.mkₐ_surjective _`. Take `⟨t, rfl⟩` from `hs x`.
+
+Proceed by induction on `t using TensorAlgebra.induction with`. Consider the case `algebraMap r`. Rewrite using `[AlgHom.commutes]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `ι y => exact Algebra.subset_adjoin ⟨y, rfl⟩`.
+
+Consider the case `mul a b ha hb`. Rewrite using `[map_mul]`. Conclude with `mul_mem ha hb`. Consider the case `add a b ha hb`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem ha hb`. Establish `hu : u ∈ Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range (ugι p q)))`. Rewrite using `[Subalgebra.mem_toSubmodule, htop]`. Conclude with `Algebra.mem_top`. Rewrite `hu` using `[Algebra.adjoin_eq_span]`.
+
+Use `Submodule.span_mono (fun x hx => ?_) hu` and prove the remaining obligations. Proceed by induction on `hx using Submonoid.closure_induction with`. Consider the case `mem y hy`. Take `⟨m, rfl⟩` from `hy`. Conclude with `⟨[m], by simp⟩`.
+
+Consider the case `one => exact ⟨[], by simp⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨la, rfl⟩` from `ha`. Take `⟨lb, rfl⟩` from `hb`. Conclude with `⟨la ++ lb, by simp [List.map_append, List.prod_append]⟩`.
+-/
 theorem ug_mem_span_listProd (p q : ℕ) (u : Ug p q) :
     u ∈ Submodule.span ℂ {u : Ug p q | ∃ l : List (Mat p q), u = (l.map (ugι p q)).prod} := by
   have htop : Algebra.adjoin ℂ (Set.range (ugι p q)) = ⊤ := by
@@ -45,6 +58,17 @@ theorem ug_mem_span_listProd (p q : ℕ) (u : Ug p q) :
     obtain ⟨lb, rfl⟩ := hb
     exact ⟨la ++ lb, by simp [List.map_append, List.prod_append]⟩
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Take `⟨t, rfl⟩` from `Submodule.mkQ_surjective (indRel act) z`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Consider the case `tmul u v`. Establish `hu` using `ug_mem_span_listProd p q u`.
+
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨l, rfl⟩` from `hw`. Use `Submodule.mem_iSup_of_mem l.length (Submodule.subset_span ⟨_, ?_, v, rfl⟩)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨l, le_rfl, rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[TensorProduct.add_tmul, map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`.
+
+Rewrite using `[← TensorProduct.smul_tmul', map_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem iSup_indF_eq_top (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) : (⨆ k, indF act k) = ⊤ := by
   rw [eq_top_iff]

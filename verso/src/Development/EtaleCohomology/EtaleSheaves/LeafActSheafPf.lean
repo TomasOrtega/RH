@@ -9,39 +9,67 @@ open LateralTheory.E.CupProductRingLaws LateralTheory.E.LeafUnitActPfAug Lateral
 section Basic
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(F.obj.map k.op).hom ((F.obj.map g.op).hom y) = (F.obj.map (k ≫ g).op).hom y`. Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_comp (F : Shv R) {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (y : Sec F U) :
     Sec.res k (Sec.res g y) = Sec.res (k ≫ g) y := by
   change (F.obj.map k.op).hom ((F.obj.map g.op).hom y) = (F.obj.map (k ≫ g).op).hom y
   rw [op_comp, Functor.map_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `map_smul (F.obj.map g.op).hom c y`.
+-/
 theorem res_smul (F : Shv R) {V U : Scheme.{0}} (g : V ⟶ U) (c : ULift.{1} R) (y : Sec F U) :
     Sec.res g (c • y) = c • Sec.res g y := map_smul (F.obj.map g.op).hom c y
 
+/- English proof (translation)
+The claim follows from `map_add (F.obj.map g.op).hom y z`.
+-/
 theorem res_add (F : Shv R) {V U : Scheme.{0}} (g : V ⟶ U) (y z : Sec F U) :
     Sec.res g (y + z) = Sec.res g y + Sec.res g z := map_add (F.obj.map g.op).hom y z
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f => f.hom y) (φ.hom.naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h`. Conclude with `h.symm`.
+-/
 theorem map_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (y : Sec F U) :
     Sec.res g (Sec.map φ y) = Sec.map φ (Sec.res g y) := by
   have h := congrArg (fun f => f.hom y) (φ.hom.naturality g.op)
   simp only [ModuleCat.hom_comp, LinearMap.comp_apply] at h
   exact h.symm
 
+/- English proof (translation)
+The claim follows from `map_smul (φ.hom.app (op U)).hom c y`.
+-/
 theorem map_smul' {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (c : ULift.{1} R) (y : Sec F U) :
     Sec.map φ (c • y) = c • Sec.map φ y := map_smul (φ.hom.app (op U)).hom c y
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f => f.hom x) ((toSheafify Scheme.etaleTopology.{0} (Scheme.Γ ⋙ M)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h`. Conclude with `h.symm`.
+-/
 theorem sec_res (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) {V U : Scheme.{0}} (g : V ⟶ U) (x : M.obj Γ(U, ⊤)) :
     Sec.res (F := ofRings R M) g (ofRings.sec M U x) = ofRings.sec M V ((M.map g.appTop).hom x) := by
   have h := congrArg (fun f => f.hom x) ((toSheafify Scheme.etaleTopology.{0} (Scheme.Γ ⋙ M)).naturality g.op)
   simp only [ModuleCat.hom_comp, LinearMap.comp_apply] at h
   exact h.symm
 
+/- English proof (translation)
+Take `⟨S, hS, h1⟩` from `hP`. Take `⟨T, hT, h2⟩` from `hQ`. Conclude with `⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨h1 V g hg.1, h2 V g hg.2⟩⟩`.
+-/
 theorem loc_and {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P) (hQ : Loc U Q) :
     Loc U fun V g => P V g ∧ Q V g := by
   obtain ⟨S, hS, h1⟩ := hP
   obtain ⟨T, hT, h2⟩ := hQ
   exact ⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨h1 V g hg.1, h2 V g hg.2⟩⟩
 
+/- English proof (translation)
+Establish `hsh` using `F.property (ModuleCat.of (ULift.{1} R) (ULift.{1} R)) S hS`. Set `x : Presieve.FamilyOfElements (F.obj ⋙ coyoneda.obj (op (ModuleCat.of (ULift.{1} R) (ULift.{1} R)))) S.arrows` to `fun V g hg => ModuleCat.ofHom (LinearMap.toSpanSingleton _ _ (s g hg))`. Establish `hx : x.Compatible`. Rewrite using `[Presieve.compatible_iff_sieveCompatible]`. Introduce `V W g h hg`.
+
+Use `ModuleCat.hom_ext (LinearMap.ext_ring ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(LinearMap.toSpanSingleton _ _ (s (h ≫ g) _)) 1 = (F.obj.map h.op).hom ((LinearMap.toSpanSingleton _ _ (s g hg)) 1)`. Simplify using `only [LinearMap.toSpanSingleton_apply, one_smul]`. Conclude with `(hs g hg h).symm`. Take `⟨t, ht, -⟩` from `hsh x hx`.
+
+Use `⟨t.hom 1, fun V g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun f => f.hom (1 : ULift.{1} R)) (ht g hg)`. Express the relevant statement in the definitionally equal form `(F.obj.map g.op).hom (t.hom 1) = (LinearMap.toSpanSingleton _ _ (s g hg)) 1 at h1`. Simplify `h1` using `[LinearMap.toSpanSingleton_apply]`.
+-/
 theorem glue (F : Shv R) {U : Scheme.{0}} (S : Sieve U) (hS : S ∈ Scheme.etaleTopology.{0} U)
     (s : ∀ ⦃V : Scheme.{0}⦄ (g : V ⟶ U), S.arrows g → Sec F V)
     (hs : ∀ ⦃V W : Scheme.{0}⦄ (g : V ⟶ U) (hg : S.arrows g) (h : W ⟶ V),
@@ -67,24 +95,42 @@ end Basic
 
 variable {q : ℕ}
 
+/- English proof (translation)
+The claim follows from `sec_res (twF q 0) g x`.
+-/
 theorem etaleTwistZero_sheafifiedSection_of_ring_restrict {V U : Scheme.{0}} (g : V ⟶ U) (x : (twF q 0).obj Γ(U, ⊤)) :
     Sec.res (F := tw q 0) g (ofRings.sec (twF q 0) U x) = ofRings.sec (twF q 0) V (((twF q 0).map g.appTop).hom x) :=
   sec_res (twF q 0) g x
 
+/- English proof (translation)
+Unfold `ofRings.sec`. Conclude with `map_add _ x y`.
+-/
 theorem etaleTwistZero_sheafifiedSection_of_ring_add {U : Scheme.{0}} (x y : (twF q 0).obj Γ(U, ⊤)) :
     ofRings.sec (twF q 0) U (x + y) = ofRings.sec (twF q 0) U x + ofRings.sec (twF q 0) U y := by
   unfold ofRings.sec; exact map_add _ x y
 
+/- English proof (translation)
+Unfold `ofRings.sec`. Conclude with `map_smul _ c x`.
+-/
 theorem sec_smul0 {U : Scheme.{0}} (c : ULift.{1} (ZMod q)) (x : (twF q 0).obj Γ(U, ⊤)) :
     ofRings.sec (twF q 0) U (c • x) = c • ofRings.sec (twF q 0) U x := by
   unfold ofRings.sec; exact map_smul _ c x
 
+/- English proof (translation)
+The claim follows from `map_add _ _ _`.
+-/
 theorem etaleTwistZero_augmentation_map_add {V : Scheme.{0}} (x y : (twF q 0).obj Γ(V, ⊤)) :
     aug q Γ(V, ⊤) (x + y) = aug q Γ(V, ⊤) x + aug q Γ(V, ⊤) y := map_add _ _ _
 
+/- English proof (translation)
+The claim follows from `map_smul _ _ _`.
+-/
 theorem aug_smul0 {V : Scheme.{0}} (c : ULift.{1} (ZMod q)) (x : (twF q 0).obj Γ(V, ⊤)) :
     aug q Γ(V, ⊤) (c • x) = c • aug q Γ(V, ⊤) x := map_smul _ _ _
 
+/- English proof (translation)
+Apply `sec_eq_of_loc` to reduce the goal to its premises. Take `⟨S, hS, hP⟩` from `etale_tate_twist_zero_sections_eq_locally_of_sheafified_eq q x y h`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[res_smul, res_smul, ← aug_map q g.appTop x, ← aug_map q g.appTop y, hP V g hg]`.
+-/
 theorem aug_smul_eq (F : Shv (ZMod q)) {W : Scheme.{0}} (x y : (twF q 0).obj Γ(W, ⊤))
     (h : ofRings.sec (twF q 0) W x = ofRings.sec (twF q 0) W y) (z : Sec F W) :
     aug q Γ(W, ⊤) x • z = aug q Γ(W, ⊤) y • z := by
@@ -98,6 +144,11 @@ def Good (F : Shv (ZMod q)) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b t : Sec F U
   ∀ (V : Scheme.{0}) (g : V ⟶ U) (x : (twF q 0).obj Γ(V, ⊤)), Sec.res g a = ofRings.sec (twF q 0) V x →
     Sec.res g t = aug q Γ(V, ⊤) x • Sec.res g b
 
+/- English proof (translation)
+Introduce `V g x hx`. Take `⟨S, hS, hP⟩` from `h`. Use `sec_eq_of_loc F _ _ ⟨S.pullback g, Scheme.etaleTopology.pullback_stable g hS, fun W k hk => ?_⟩` and prove the remaining obligations. Take `⟨x', hx', ht⟩` from `hP W (k ≫ g) hk`. Rewrite using `[res_comp, ht, res_smul, res_comp, ← aug_map q k.appTop x]`.
+
+Apply `aug_smul_eq` to reduce the goal to its premises. Rewrite using `[← hx', ← res_comp, hx, etaleTwistZero_sheafifiedSection_of_ring_restrict]`.
+-/
 theorem good_of_loc (F : Shv (ZMod q)) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b t : Sec F U)
     (h : Loc U fun V g => ∃ x : (twF q 0).obj Γ(V, ⊤), Sec.res g a = ofRings.sec (twF q 0) V x ∧
       Sec.res g t = aug q Γ(V, ⊤) x • Sec.res g b) : Good F a b t := by
@@ -109,6 +160,9 @@ theorem good_of_loc (F : Shv (ZMod q)) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b 
   apply aug_smul_eq
   rw [← hx', ← res_comp, hx, etaleTwistZero_sheafifiedSection_of_ring_restrict]
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `etale_tate_twist_zero_section_locally_lifts_to_ring_value q a`. Use `sec_eq_of_loc F t₁ t₂ ⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hP V g hg`. Rewrite using `[h₁ V g x hx, h₂ V g x hx]`.
+-/
 theorem good_unique (F : Shv (ZMod q)) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b t₁ t₂ : Sec F U)
     (h₁ : Good F a b t₁) (h₂ : Good F a b t₂) : t₁ = t₂ := by
   obtain ⟨S, hS, hP⟩ := etale_tate_twist_zero_section_locally_lifts_to_ring_value q a
@@ -116,6 +170,11 @@ theorem good_unique (F : Shv (ZMod q)) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b 
   obtain ⟨x, hx⟩ := hP V g hg
   rw [h₁ V g x hx, h₂ V g x hx]
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `etale_tate_twist_zero_section_locally_lifts_to_ring_value q a`. Establish `key : ∀ {V W : Scheme.{0}} (g : V ⟶ U) (h : W ⟶ V) (x : (twF q 0).obj Γ(V, ⊤)) (x' : (twF q 0).obj Γ(W, ⊤)), Sec.res g a = ofRings.sec (twF q 0) V x → Sec.res (h ≫ g) a = ofRings.sec (twF q 0) W x' → Sec.res h (aug q Γ(V, ⊤) x • Sec.res g b) = aug q Γ(W, ⊤) x' • Sec.res (h ≫ g) b`. Introduce `V W g h x x' e1 e2`. Rewrite using `[res_smul, res_comp, ← aug_map q h.appTop x]`. Apply `aug_smul_eq` to reduce the goal to its premises.
+
+Rewrite using `[← etaleTwistZero_sheafifiedSection_of_ring_restrict, ← e1, res_comp, e2]`. Take `⟨t, ht⟩` from `glue F S hS (fun V g hg => aug q Γ(V, ⊤) (hP V g hg).choose • Sec.res g b) (fun V W g hg h => key g h _ _ (hP V g hg).choose_spec (hP W (h ≫ g) (S.downward_closed hg h)).choose_spec)`. Conclude with `⟨t, good_of_loc F a b t ⟨S, hS, fun V g hg => ⟨_, (hP V g hg).choose_spec, ht V g hg⟩⟩⟩`.
+-/
 theorem good_exists (F : Shv (ZMod q)) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b : Sec F U) : ∃ t, Good F a b t := by
   obtain ⟨S, hS, hP⟩ := etale_tate_twist_zero_section_locally_lifts_to_ring_value q a
   have key : ∀ {V W : Scheme.{0}} (g : V ⟶ U) (h : W ⟶ V) (x : (twF q 0).obj Γ(V, ⊤)) (x' : (twF q 0).obj Γ(W, ⊤)),
@@ -131,9 +190,17 @@ theorem good_exists (F : Shv (ZMod q)) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b 
 
 def act (F : Shv (ZMod q)) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b : Sec F U) : Sec F U := (good_exists F a b).choose
 
+/- English proof (translation)
+The claim follows from `(good_exists F a b).choose_spec`.
+-/
 theorem act_good (F : Shv (ZMod q)) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b : Sec F U) : Good F a b (act F a b) :=
   (good_exists F a b).choose_spec
 
+/- English proof (translation)
+Use `good_unique F _ b _ _ (act_good F _ b) (good_of_loc F _ b _ ?_)` and prove the remaining obligations. Take `⟨S, hS, hP⟩` from `loc_and (etale_tate_twist_zero_section_locally_lifts_to_ring_value q a₁) (etale_tate_twist_zero_section_locally_lifts_to_ring_value q a₂)`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨⟨x₁, h₁⟩, ⟨x₂, h₂⟩⟩` from `hP V g hg`. Use `⟨x₁ + x₂, by rw [res_add, h₁, h₂]; exact (etaleTwistZero_sheafifiedSection_of_ring_add x₁ x₂).symm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[res_add, act_good F a₁ b V g x₁ h₁, act_good F a₂ b V g x₂ h₂, etaleTwistZero_augmentation_map_add, add_smul]`.
+-/
 theorem act_add_left (F : Shv (ZMod q)) {U : Scheme.{0}} (a₁ a₂ : Sec (tw q 0) U) (b : Sec F U) :
     act F (a₁ + a₂) b = act F a₁ b + act F a₂ b := by
   refine good_unique F _ b _ _ (act_good F _ b) (good_of_loc F _ b _ ?_)
@@ -143,6 +210,11 @@ theorem act_add_left (F : Shv (ZMod q)) {U : Scheme.{0}} (a₁ a₂ : Sec (tw q 
   refine ⟨x₁ + x₂, by rw [res_add, h₁, h₂]; exact (etaleTwistZero_sheafifiedSection_of_ring_add x₁ x₂).symm, ?_⟩
   rw [res_add, act_good F a₁ b V g x₁ h₁, act_good F a₂ b V g x₂ h₂, etaleTwistZero_augmentation_map_add, add_smul]
 
+/- English proof (translation)
+Use `good_unique F _ b _ _ (act_good F _ b) (good_of_loc F _ b _ ?_)` and prove the remaining obligations. Take `⟨S, hS, hP⟩` from `etale_tate_twist_zero_section_locally_lifts_to_ring_value q a`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, h⟩` from `hP V g hg`. Use `⟨c • x, by rw [res_smul, h]; exact (sec_smul0 c x).symm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[res_smul, act_good F a b V g x h, aug_smul0, smul_eq_mul, mul_smul]`.
+-/
 theorem act_smul_left (F : Shv (ZMod q)) {U : Scheme.{0}} (c : ULift.{1} (ZMod q)) (a : Sec (tw q 0) U) (b : Sec F U) :
     act F (c • a) b = c • act F a b := by
   refine good_unique F _ b _ _ (act_good F _ b) (good_of_loc F _ b _ ?_)
@@ -152,27 +224,44 @@ theorem act_smul_left (F : Shv (ZMod q)) {U : Scheme.{0}} (c : ULift.{1} (ZMod q
   refine ⟨c • x, by rw [res_smul, h]; exact (sec_smul0 c x).symm, ?_⟩
   rw [res_smul, act_good F a b V g x h, aug_smul0, smul_eq_mul, mul_smul]
 
+/- English proof (translation)
+Use `good_unique F a _ _ _ (act_good F a _) (fun V g x hx => ?_)` and prove the remaining obligations. Rewrite using `[res_add, res_add, act_good F a b₁ V g x hx, act_good F a b₂ V g x hx, smul_add]`.
+-/
 theorem act_add_right (F : Shv (ZMod q)) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b₁ b₂ : Sec F U) :
     act F a (b₁ + b₂) = act F a b₁ + act F a b₂ := by
   refine good_unique F a _ _ _ (act_good F a _) (fun V g x hx => ?_)
   rw [res_add, res_add, act_good F a b₁ V g x hx, act_good F a b₂ V g x hx, smul_add]
 
+/- English proof (translation)
+Use `good_unique F a _ _ _ (act_good F a _) (fun V g x hx => ?_)` and prove the remaining obligations. Rewrite using `[res_smul, res_smul, act_good F a b V g x hx, smul_comm]`.
+-/
 theorem act_smul_right (F : Shv (ZMod q)) {U : Scheme.{0}} (c : ULift.{1} (ZMod q)) (a : Sec (tw q 0) U) (b : Sec F U) :
     act F a (c • b) = c • act F a b := by
   refine good_unique F a _ _ _ (act_good F a _) (fun V g x hx => ?_)
   rw [res_smul, res_smul, act_good F a b V g x hx, smul_comm]
 
+/- English proof (translation)
+Use `good_unique F _ _ _ _ (fun W k x hx => ?_) (act_good F _ _)` and prove the remaining obligations. Rewrite using `[res_comp, res_comp]`. Conclude with `act_good F a b W (k ≫ g) x (by rw [← res_comp]; exact hx)`.
+-/
 theorem act_res (F : Shv (ZMod q)) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec (tw q 0) U) (b : Sec F U) :
     Sec.res g (act F a b) = act F (Sec.res g a) (Sec.res g b) := by
   refine good_unique F _ _ _ _ (fun W k x hx => ?_) (act_good F _ _)
   rw [res_comp, res_comp]
   exact act_good F a b W (k ≫ g) x (by rw [← res_comp]; exact hx)
 
+/- English proof (translation)
+Use `good_unique G a _ _ _ (fun V g x hx => ?_) (act_good G a _)` and prove the remaining obligations. Rewrite using `[map_res, act_good F a b V g x hx, map_smul', map_res]`.
+-/
 theorem act_map {F G : Shv (ZMod q)} (φ : F ⟶ G) {U : Scheme.{0}} (a : Sec (tw q 0) U) (b : Sec F U) :
     Sec.map φ (act F a b) = act G a (Sec.map φ b) := by
   refine good_unique G a _ _ _ (fun V g x hx => ?_) (act_good G a _)
   rw [map_res, act_good F a b V g x hx, map_smul', map_res]
 
+/- English proof (translation)
+Use `good_unique F _ b _ _ (act_good F _ b) (fun V g x hx => ?_)` and prove the remaining obligations. Set `y : (twF q 0).obj Γ(U, ⊤)` to `Submodule.Quotient.mk (Finsupp.single ζ 1)`. Establish `e : aug q Γ(V, ⊤) (((twF q 0).map g.appTop).hom y) = 1` using `(aug_map q g.appTop y).trans (aug_mk_single q ζ)`. Establish `hs : ofRings.sec (twF q 0) V (((twF q 0).map g.appTop).hom y) = ofRings.sec (twF q 0) V x`. Rewrite using `[← hx]`.
+
+Conclude with `(etaleTwistZero_sheafifiedSection_of_ring_restrict g y).symm`. Conclude with `(one_smul _ _).symm.trans ((congrArg (· • Sec.res g b) e).symm.trans (aug_smul_eq F _ x hs _))`.
+-/
 theorem act_gen (F : Shv (ZMod q)) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (b : Sec F U) : act F (twGen 0 ζ) b = b := by
   refine good_unique F _ b _ _ (act_good F _ b) (fun V g x hx => ?_)
   let y : (twF q 0).obj Γ(U, ⊤) := Submodule.Quotient.mk (Finsupp.single ζ 1)
@@ -181,6 +270,11 @@ theorem act_gen (F : Shv (ZMod q)) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (b 
     rw [← hx]; exact (etaleTwistZero_sheafifiedSection_of_ring_restrict g y).symm
   exact (one_smul _ _).symm.trans ((congrArg (· • Sec.res g b) e).symm.trans (aug_smul_eq F _ x hs _))
 
+/- English proof (translation)
+Introduce `q _`. Use `⟨fun F U => LinearMap.mk₂ (ULift.{1} (ZMod q)) (fun a b => act F a b) (act_add_left F) (act_smul_left F) (act_add_right F) (act_smul_right F), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `F V U g a b`. Conclude with `act_res F g a b`. Introduce `F G φ U a b`.
+
+Conclude with `act_map φ a b`. Introduce `F U ζ b`. Conclude with `act_gen F ζ b`.
+-/
 theorem LeafActSheaf_of : LeafActSheaf := by
   intro q _
   refine ⟨fun F U => LinearMap.mk₂ (ULift.{1} (ZMod q)) (fun a b => act F a b)

@@ -12,11 +12,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem torsMap_left_apply {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ}
     {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C) (z : Tors G N B)
     (x : PrimeSpectrum C) :
     (torsMap φ z).1.left x = z.1.left (PrimeSpectrum.comap (φ : B →+* C) x) := rfl
 
+/- English proof (translation)
+Introduce `R _ G _ _ N B _ _ z W P h`. Establish `hP : z.1.left P ∈ W`. Use `h ⟨(⊥ : PrimeSpectrum P.asIdeal.ResidueField), rfl⟩` as an intermediate fact. Rewrite `this` using `[torsMap_left_apply]`. Establish `e : PrimeSpectrum.comap ((IsScalarTower.toAlgHom R B P.asIdeal.ResidueField : B →ₐ[R] _) : B →+* P.asIdeal.ResidueField) ⊥ = P` using `by ext1`.
+
+Conclude with `Ideal.ker_algebraMap_residueField P.asIdeal`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hopen : IsOpen {x : PrimeSpectrum B | z.1.left x ∈ W}` using `(z.1.left ⁻¹ᵁ W).isOpen`. Take `⟨_, ⟨f, rfl⟩, hf, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (show P ∈ {x : PrimeSpectrum B | z.1.left x ∈ W} from hP) hopen`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `g ⟨c, rfl⟩ _ ⟨x, rfl⟩`. Establish `hx : PrimeSpectrum.comap (algebraMap B (Localization.Away (f * c))) x ∈ (PrimeSpectrum.basicOpen (f * c) : Set (PrimeSpectrum B))`. Rewrite using `[← PrimeSpectrum.localization_away_comap_range (Localization.Away (f * c)) (f * c)]`. Conclude with `⟨x, rfl⟩`. Conclude with `hsub (PrimeSpectrum.basicOpen_mul_le_left f c hx)`.
+-/
 theorem torsion_mem_open_shrink : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (B : Type) [CommRing B] [Algebra R B], ∀ (z : Tors G N B) (W : G.left.Opens) (P : PrimeSpectrum B), Set.range (torsMap (IsScalarTower.toAlgHom R B P.asIdeal.ResidueField) z).1.left ⊆ W → ∃ f : B, f ∉ P.asIdeal ∧ ∀ g : B, f ∣ g → Set.range (torsMap (IsScalarTower.toAlgHom R B (Localization.Away g)) z).1.left ⊆ W := by
   intro R _ G _ _ N B _ _ z W P h
   have hP : z.1.left P ∈ W := by

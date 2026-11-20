@@ -7,6 +7,13 @@ open PowerSeries GlobalTheory.Honda Formalism.L2.Th1.CM
 
 namespace GlobalTheory.Honda
 
+/- English proof (translation)
+Introduce `L l _ hl ι hg2 hg3 hD u v hu hv huv hmuv hpu hpv hpuv hpmuv`. Establish `hgood : GlobalTheory.Klein.Good ι L 0`. Use `⟨by omega, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `using hg2`.
+
+Simplify using `using hg3`. Rewrite using `[map_sub, map_pow, map_mul, map_pow, map_ofNat]`. Conclude with `hD`. Establish `hred : ∀ z, z ∉ L.lattice → ‖ι (L.weierstrassP z)‖ ≤ 1 → GlobalTheory.Klein.Red ι L 0 z` using `fun z hz hp => ⟨hz, by simpa using hp⟩`. Establish `h` using `GlobalTheory.Klein.norm_weierstrassP_sub_eq_one l ι L 0 hgood u v (hred u hu hpu) (hred v hv hpv) (hred _ huv hpuv) (hred _ hmuv hpmuv)`.
+
+Simplify `h` using `[map_sub]`.
+-/
 theorem norm_weierstrassP_sub_eq_one_of_good :
     ∀ (L : PeriodPair) (l : ℕ) [Fact l.Prime], 5 ≤ l → ∀ (ι : ℂ ≃+* ℂ_[l]), ‖ι L.g₂‖ ≤ 1 → ‖ι L.g₃‖ ≤ 1 →
       ‖ι L.g₂ ^ 3 - 27 * ι L.g₃ ^ 2‖ = 1 → ∀ u v : ℂ, u ∉ L.lattice → v ∉ L.lattice → u + v ∉ L.lattice →

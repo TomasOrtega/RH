@@ -13,6 +13,11 @@ namespace UpperTheory.ConvolutionTheory.R2.G
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `Matrix.SpecialLinearGroup.isClosedEmbedding_val.isInducing.continuous_iff.2 ?_` and prove the remaining obligations. Establish `he : ∀ i j, Continuous fun g : G1 F => g.1 i j` using `fun i j => (Matrix.SpecialLinearGroup.isClosedEmbedding_val.continuous).matrix_elem i j`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `he 0 0`.
+
+Conclude with `(he 0 1).mul continuous_const`. Conclude with `continuous_const.mul (he 1 0)`. Conclude with `he 1 1`.
+-/
 private theorem continuous_cD (s : (A F)ˣ) : Continuous (cD s : G1 F → G1 F) := by
   refine Matrix.SpecialLinearGroup.isClosedEmbedding_val.isInducing.continuous_iff.2 ?_
   have he : ∀ i j, Continuous fun g : G1 F => g.1 i j := fun i j =>
@@ -24,10 +29,22 @@ private theorem continuous_cD (s : (A F)ˣ) : Continuous (cD s : G1 F → G1 F) 
   · exact continuous_const.mul (he 1 0)
   · exact he 1 1
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cD, mul_assoc]`.
+-/
 private theorem cD_cD_inv (s : (A F)ˣ) (k : G1 F) : cD s (cD s⁻¹ k) = k := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [cD, mul_assoc]
 
+/- English proof (translation)
+Establish `hm : ∀ a b : A F, (a * b).1 = a.1 * b.1` using `fun _ _ => rfl`. Establish `hent : ∀ i j, ((cD s k).1 i j).1 = (k.1 i j).1`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `(k.1 0 1 * ((s⁻¹ : (A F)ˣ) : A F)).1 = _`. Rewrite using `[hm, h2, mul_one]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((s : A F) * k.1 1 0).1 = _`. Rewrite using `[hm, h1, one_mul]`.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression. Introduce `i j`. Establish `e : ∀ a b c d : A F, (a * b + c * d).1 = a.1 * b.1 + c.1 * d.1` using `fun _ _ _ _ => rfl`. Establish `h` using `hk i j`.
+
+Rewrite `h`, the goal using `[Matrix.mul_apply, Fin.sum_univ_two, e, Matrix.transpose_apply, Matrix.transpose_apply]`. Rewrite using `[hent, hent, hent, hent]`. Conclude with `h`.
+-/
 private theorem infOrth_cD {s : (A F)ˣ} (h1 : (s : A F).1 = 1) (h2 : ((s⁻¹ : (A F)ˣ) : A F).1 = 1)
     {k : G1 F} (hk : InfOrth k) : InfOrth (cD s k) := by
   have hm : ∀ a b : A F, (a * b).1 = a.1 * b.1 := fun _ _ => rfl
@@ -49,14 +66,31 @@ private theorem infOrth_cD {s : (A F)ˣ} (h1 : (s : A F).1 = 1) (h2 : ((s⁻¹ :
   rw [hent, hent, hent, hent]
   exact h
 
+/- English proof (translation)
+The claim follows from `Finset.prod_le_prod (fun _ _ => GlobalTheory.CompanionTheory.EpConvB.adeleWeight_nonneg _ _ _) fun i _ => GlobalTheory.CompanionTheory.EpConvB.adeleWeight_mono h N (v i)`.
+-/
 private theorem adelicWeightFour_mono {L L' : (FractionalIdeal (𝓞 F)⁰ F)ˣ}
     (h : (L : FractionalIdeal (𝓞 F)⁰ F) ≤ L') (N : ℕ) (v : V4 F) : wt4 L N v ≤ wt4 L' N v :=
   Finset.prod_le_prod (fun _ _ => GlobalTheory.CompanionTheory.EpConvB.adeleWeight_nonneg _ _ _)
     fun i _ => GlobalTheory.CompanionTheory.EpConvB.adeleWeight_mono h N (v i)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_nonneg fun _ _ => GlobalTheory.CompanionTheory.EpConvB.adeleWeight_nonneg _ _ _`.
+-/
 private theorem adelicWeightFour_nonneg (L : (FractionalIdeal (𝓞 F)⁰ F)ˣ) (N : ℕ) (v : V4 F) : 0 ≤ wt4 L N v :=
   Finset.prod_nonneg fun _ _ => GlobalTheory.CompanionTheory.EpConvB.adeleWeight_nonneg _ _ _
 
+/- English proof (translation)
+Establish `one : ∀ i, ∃ (B : ℝ) (L : (FractionalIdeal (𝓞 F)⁰ F)ˣ), 0 ≤ B ∧ ∀ v, ‖Ψ i v‖ ≤ B * wt4 L N v`. Introduce `i`. Take `⟨M, L, hM, hb⟩` from `GlobalTheory.CompanionTheory.EpConvB.exists_majorant (hΨ i) (isCompact_singleton (x := (1 : GL (Fin 4) (A F)))) N`. Use `⟨M, L, hM, fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `hb 1 rfl v`.
+
+Simplify `h` using `[wt4]`. Use `choose B L hB hb using one`. Establish `key : ∀ s : Finset (Fin n), ∃ (B' : ℝ) (L' : (FractionalIdeal (𝓞 F)⁰ F)ˣ), 0 ≤ B' ∧ ∀ i ∈ s, ∀ v, ‖Ψ i v‖ ≤ B' * wt4 L' N v`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => exact ⟨0, 1, le_rfl, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨B', L', h0, h⟩` from `ih`. Use `⟨B a + B', fractionalIdealSupUnit (L a) L', add_nonneg (hB a) h0, fun i hi v => ?_⟩` and prove the remaining obligations. Establish `hl : wt4 (L a) N v ≤ wt4 (fractionalIdealSupUnit (L a) L') N v` using `adelicWeightFour_mono le_sup_left N v`.
+
+Establish `hr : wt4 L' N v ≤ wt4 (fractionalIdealSupUnit (L a) L') N v` using `adelicWeightFour_mono le_sup_right N v`. Establish `hw` using `adelicWeightFour_nonneg (fractionalIdealSupUnit (L a) L') N v`. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨B', L', h0, h⟩` from `key Finset.univ`. Conclude with `⟨B', L', h0, fun i v => h i (Finset.mem_univ i) v⟩`.
+-/
 private theorem common_majorant {n : ℕ} (Ψ : Fin n → V4 F → ℂ)
     (hΨ : ∀ i, Ψ i ∈ schwartzBruhatPi F (Fin 4)) (N : ℕ) :
     ∃ (B : ℝ) (L : (FractionalIdeal (𝓞 F)⁰ F)ˣ), 0 ≤ B ∧ ∀ i v, ‖Ψ i v‖ ≤ B * wt4 L N v := by
@@ -98,6 +132,21 @@ private theorem common_majorant {n : ℕ} (Ψ : Fin n → V4 F → ℂ)
 
 end UpperTheory.ConvolutionTheory.R2.G
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W φ hφ h ht N`. Establish `hinv : (((nu F h)⁻¹ : (A F)ˣ) : A F).1 = 1`. Establish `h1 : (((nu F h : (A F)ˣ) : A F) * (((nu F h)⁻¹ : (A F)ˣ) : A F)).1 = (1 : A F).1`. Rewrite using `[Units.mul_inv]`. Establish `h2 : (((nu F h : (A F)ˣ) : A F) * (((nu F h)⁻¹ : (A F)ˣ) : A F)).1 = ((nu F h : (A F)ˣ) : A F).1 * (((nu F h)⁻¹ : (A F)ˣ) : A F).1` using `rfl`.
+
+Rewrite `h1` using `[h2, ht, one_mul]`. Conclude with `h1`. Establish `hC : IsCompact (cD (nu F h)⁻¹ '' KK F)` using `(UpperTheory.ConvolutionTheory.R2.M.kkCpt F).2.image (continuous_cD _)`. Establish `hO : ∀ k ∈ cD (nu F h)⁻¹ '' KK F, InfOrth k`. Introduce and unpack `_ ⟨k, hk, rfl⟩`.
+
+Conclude with `infOrth_cD hinv (by rw [inv_inv]; exact ht) hk.1`. Take `⟨U, -, hU, hm⟩` from `(fockSt F E D W).om φ hφ _ hC hO`. Take `⟨n, b, c, B, -, -, hb⟩` from `coefBd F E D W φ _ U hC hU hm`. Take `⟨H, hH⟩` from `hatLin F`. Take `⟨B', L, hB', hmaj⟩` from `common_majorant (fun i => (H (W.L h (b i))).1) (fun i => (H (W.L h (b i))).2) N`.
+
+Use `⟨n * (|B| * B'), L, by positivity, fun k hk v => ?_⟩` and prove the remaining obligations. Take `⟨hc, he⟩` from `hb _ ⟨k, hk, rfl⟩`. Establish `hcomm : W.Om k (W.L h φ) = W.L h (W.Om (cD (nu F h)⁻¹ k) φ)`. Establish `h1` using `LinearMap.congr_fun (W.comm h (cD (nu F h)⁻¹ k)) φ`. Rewrite `h1` using `[cD_cD_inv]`.
+
+Conclude with `h1.symm`. Establish `hexp : hat (W.Om k (W.L h φ)).1 v = ∑ i, c i (cD (nu F h)⁻¹ k) * (H (W.L h (b i))).1 v`. Rewrite using `[hcomm, he, ← hH, map_sum, map_sum]`. Simplify using `only [map_smul, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hexp]`.
+
+Establish `hw` using `adelicWeightFour_nonneg L N v`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ((hc i).trans (le_abs_self B)) (hmaj i v) (norm_nonneg _) (abs_nonneg B)`.
+
+Use `_ = n * (|B| * B') * wt4 L N v := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.majL :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), ∀ φ ∈ Fock D.δ, ∀ h : GL (Fin 2) (A E), ((nu F h : (A F)ˣ) : A F).1 = 1 → ∀ N : ℕ,
     ∃ (B : ℝ) (L : (FractionalIdeal (𝓞 F)⁰ F)ˣ), 0 ≤ B ∧ ∀ k ∈ KK F, ∀ v, ‖hat (W.Om k (W.L h φ)).1 v‖ ≤ B * wt4 L N v := by

@@ -24,6 +24,9 @@ open CategoryTheory AlgebraicGeometry IsDedekindDomain GlobalTheory.TrueGeo Glob
 open Classical GlobalTheory.HtAdd
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HtAdd.SumLines.lgOf_sum_single | exact GlobalTheory.HtAdd.SumLines.lgOf_sum_single | (intros; apply GlobalTheory.HtAdd.SumLines.lgOf_sum_single <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.equation_ratio_unit_local : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
     {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) {ι : Type} (s : Finset ι) (a : ι → Sym E)

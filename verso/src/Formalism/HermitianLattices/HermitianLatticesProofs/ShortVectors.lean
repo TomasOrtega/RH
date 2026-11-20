@@ -9,6 +9,9 @@ noncomputable section
 
 namespace Formalism.HermitianLatticesTheory
 
+/- English proof (translation)
+Take `⟨v, hv, rfl⟩` from `hu`. Rewrite `hv` using `[mem_closedBall_zero_iff]`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_pos ht]`. Conclude with `mul_le_of_le_one_right ht.le hv`.
+-/
 private lemma shortVectors_norm_le {N : ℕ} {t : ℝ} (ht : 0 < t) {u : EuclideanSpace ℝ (Fin N)}
     (hu : u ∈ t • closedBall (0 : EuclideanSpace ℝ (Fin N)) 1) : ‖u‖ ≤ t := by
   obtain ⟨v, hv, rfl⟩ := hu
@@ -16,6 +19,11 @@ private lemma shortVectors_norm_le {N : ℕ} {t : ℝ} (ht : 0 < t) {u : Euclide
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos ht]
   exact mul_le_of_le_one_right ht.le hv
 
+/- English proof (translation)
+Rewrite using `[← Finset.mul_prod_erase Finset.univ lam (Finset.mem_univ j)]`. Establish `hcard : (Finset.univ.erase j).card = n - 1`. Rewrite using `[Finset.card_erase_of_mem (Finset.mem_univ j), Finset.card_univ, Fintype.card_fin]`. Establish `h1 : c ^ (n - 1) ≤ ∏ i ∈ Finset.univ.erase j, lam i`. Rewrite using `[← hcard, ← Finset.prod_const]`.
+
+Conclude with `Finset.prod_le_prod (fun i _ => hc.le) (fun i _ => hlow i)`. Establish `hj : 0 ≤ lam j` using `le_trans hc.le (hlow j)`. Conclude with `mul_le_mul_of_nonneg_left h1 hj`.
+-/
 private lemma shortVectors_prod_ge {n : ℕ} {c : ℝ} (hc : 0 < c) (lam : Fin n → ℝ)
     (hlow : ∀ i, c ≤ lam i) (j : Fin n) : lam j * c ^ (n - 1) ≤ ∏ i, lam i := by
   classical
@@ -28,11 +36,29 @@ private lemma shortVectors_prod_ge {n : ℕ} {c : ℝ} (hc : 0 < c) (lam : Fin n
   have hj : 0 ≤ lam j := le_trans hc.le (hlow j)
   exact mul_le_mul_of_nonneg_left h1 hj
 
+/- English proof (translation)
+Use `show 0 < (volume (closedBall (0 : EuclideanSpace ℝ (Fin N)) 1)).toReal`. Conclude with `ENNReal.toReal_pos (measure_closedBall_pos volume _ one_pos).ne' measure_closedBall_lt_top.ne`.
+-/
 private lemma shortVectors_vol_pos (N : ℕ) :
     0 < volume.real (closedBall (0 : EuclideanSpace ℝ (Fin N)) 1) := by
   show 0 < (volume (closedBall (0 : EuclideanSpace ℝ (Fin N)) 1)).toReal
   exact ENNReal.toReal_pos (measure_closedBall_pos volume _ one_pos).ne' measure_closedBall_lt_top.ne
 
+/- English proof (translation)
+Introduce `N c C hc`. Use `⟨2 ^ finrank ℝ (EuclideanSpace ℝ (Fin N)) * C / (volume.real (closedBall (0 : EuclideanSpace ℝ (Fin N)) 1) * c ^ (finrank ℝ (EuclideanSpace ℝ (Fin N)) - 1)), ?_⟩` and prove the remaining obligations. Introduce `Λ _ _ hmin hcov`. Establish `hK : IsCompact (closedBall (0 : EuclideanSpace ℝ (Fin N)) 1)` using `isCompact_closedBall 0 1`. Establish `hconv : Convex ℝ (closedBall (0 : EuclideanSpace ℝ (Fin N)) 1)` using `convex_closedBall 0 1`.
+
+Establish `hsym : ∀ x ∈ closedBall (0 : EuclideanSpace ℝ (Fin N)) 1, -x ∈ closedBall (0 : EuclideanSpace ℝ (Fin N)) 1`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_closedBall_zero_iff]`. Rewrite using `[norm_neg]` and apply the resulting hypothesis. Establish `hint : (0 : EuclideanSpace ℝ (Fin N)) ∈ interior (closedBall (0 : EuclideanSpace ℝ (Fin N)) 1)`.
+
+Rewrite using `[interior_closedBall _ one_ne_zero]`. Conclude with `mem_ball_self one_pos`. Take `⟨v, hli, hvL, hvK, hpos, -, -⟩` from `Formalism.FN.existsSuccessiveMinimaVectors Λ _ hK hconv hsym hint`. Establish `hM` using `Formalism.FN.minkowskiIIUpper (volume : Measure (EuclideanSpace ℝ (Fin N))) Λ _ hK hconv hsym hint`. Establish `hV` using `shortVectors_vol_pos N`.
+
+Establish `hlow : ∀ i : Fin (finrank ℝ (EuclideanSpace ℝ (Fin N))), c ≤ Formalism.FN.succMin Λ (closedBall (0 : EuclideanSpace ℝ (Fin N)) 1) ((i : ℕ) + 1)`. Introduce `i`. Conclude with `le_trans (hmin _ (hvL i) (hli.ne_zero i)) (shortVectors_norm_le (hpos i) (hvK i))`. Establish `hN : finrank ℝ (EuclideanSpace ℝ (Fin N)) = N` using `finrank_euclideanSpace_fin`. Use `⟨fun i => v (Fin.cast hN.symm i), fun i => hvL _, hli.comp _ (Fin.cast_injective _), fun i => ?_⟩` and prove the remaining obligations.
+
+Use `le_trans (shortVectors_norm_le (hpos _) (hvK _)) ?_` and prove the remaining obligations. Establish `hcp : 0 < c ^ (finrank ℝ (EuclideanSpace ℝ (Fin N)) - 1)` using `pow_pos hc _`. Rewrite using `[le_div_iff₀ (mul_pos hV hcp)]`. Establish `h1` using `shortVectors_prod_ge hc (fun i => Formalism.FN.succMin Λ (closedBall (0 : EuclideanSpace ℝ (Fin N)) 1) ((i : ℕ) + 1)) hlow (Fin.cast hN.symm i)`. Establish `h2 : (2 : ℝ) ^ finrank ℝ (EuclideanSpace ℝ (Fin N)) * ZLattice.covolume Λ ≤ 2 ^ finrank ℝ (EuclideanSpace ℝ (Fin N)) * C` using `mul_le_mul_of_nonneg_left hcov (by positivity)`.
+
+Establish `h3` using `mul_le_mul_of_nonneg_left h1 hV.le`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := h3`. Use `_ ≤ _ := hM`.
+
+Use `_ ≤ _ := h2`.
+-/
 theorem shortVectors : ShortVectors := by
   intro N c C hc
   refine ⟨2 ^ finrank ℝ (EuclideanSpace ℝ (Fin N)) * C /

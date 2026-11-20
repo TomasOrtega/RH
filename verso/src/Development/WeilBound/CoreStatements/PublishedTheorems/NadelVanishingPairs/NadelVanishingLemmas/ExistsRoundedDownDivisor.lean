@@ -16,6 +16,19 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI := hufd v`. Use `haveI : Ring.KrullDimLE 1 (X.presheaf.stalk v) := krullDimLE_of_coheight_le hv.le`. Distinguish the cases in `hF : IsField (X.presheaf.stalk v)`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := X.presheaf.stalk v) h`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+
+Take `⟨b', hbb'⟩` from `hF.mul_inv_cancel hb0`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← hab, map_zero, zero_div]`.
+
+Take `⟨a', haa'⟩` from `hF.mul_inv_cancel ha0`. Use `⟨a * b', ?_, ?_⟩` and prove the remaining obligations. Use `isUnit_iff_exists_inv.mpr ⟨a' * b, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hab, map_mul]`.
+
+Establish `: algebraMap (X.presheaf.stalk v) X.functionField b * algebraMap (X.presheaf.stalk v) X.functionField b' = 1`. Rewrite using `[← map_mul, hbb', map_one]`. Rewrite using `[eq_div_iff (fun h' => hb0 (IsFractionRing.injective (X.presheaf.stalk v) X.functionField (by rw [h', map_zero]))), mul_assoc, mul_comm _ (algebraMap _ _ b), this, mul_one]`. Use `haveI : IsDiscreteValuationRing (X.presheaf.stalk v) := by`. Establish `hmax : ∀ I : Ideal (X.presheaf.stalk v), I ≠ ⊥ → I.IsPrime → I.IsMaximal` using `Ring.krullDimLE_one_iff_of_isPrime_bot.mp inferInstance`.
+
+Establish `hne : IsLocalRing.maximalIdeal (X.presheaf.stalk v) ≠ ⊥` using `IsLocalRing.isField_iff_maximalIdeal_eq.not.mp hF`. Establish `key` using `(IsDiscreteValuationRing.TFAE (X.presheaf.stalk v) hF).out 3 0`. Conclude with `key.mp ⟨inferInstance, ⟨IsLocalRing.maximalIdeal _, ⟨hne, inferInstance⟩, fun P hP => IsLocalRing.eq_maximalIdeal (hmax P hP.1 hP.2)⟩⟩`. Establish `h1 : Scheme.ordHom v hv h = 1`. Use `(Scheme.ord_eq_iff hv h0 (n := 0)).mp hord` as an intermediate fact.
+
+Simplify using `using this`. Establish `hmem : h ∈ MonoidHom.mker (Ring.ordFrac (X.presheaf.stalk v) (K` using `X.functionField)) := MonoidHom.mem_mker.mpr h1`. Rewrite `hmem` using `[Ring.mker_ordFrac_eq_isUnitSubmonoid]`. Take `⟨a, ha, rfl⟩` from `hmem`. Conclude with `⟨a, ha, rfl⟩`.
+-/
 private theorem unitAt_of_ord_eq_zero_coheight_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hufd : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) {v : X}
     (hv : Order.coheight v = 1) {h : X.functionField} (h0 : h ≠ 0)
@@ -58,12 +71,18 @@ private theorem unitAt_of_ord_eq_zero_coheight_one {X : Scheme.{0}} [IsIntegral 
     obtain ⟨a, ha, rfl⟩ := hmem
     exact ⟨a, ha, rfl⟩
 
+/- English proof (translation)
+Establish `h` using `Scheme.ord_mul (x := v) (one_ne_zero : (1 : X.functionField) ≠ 0) one_ne_zero`. Rewrite `h` using `[mul_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem Scheme_ord_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (v : X) :
     Scheme.ord (1 : X.functionField) v = 0 := by
   have h := Scheme.ord_mul (x := v) (one_ne_zero : (1 : X.functionField) ≠ 0) one_ne_zero
   rw [mul_one] at h
   omega
 
+/- English proof (translation)
+Establish `h` using `Scheme.ord_mul (x := v) g.ne_zero (g⁻¹).ne_zero`. Rewrite `h` using `[Units.mul_inv, Scheme_ord_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem Scheme_ord_units_inv {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (g : (X.functionField)ˣ) (v : X) :
     Scheme.ord ((g⁻¹ : (X.functionField)ˣ) : X.functionField) v =
@@ -72,6 +91,13 @@ private theorem Scheme_ord_units_inv {X : Scheme.{0}} [IsIntegral X] [IsLocallyN
   rw [Units.mul_inv, Scheme_ord_one] at h
   omega
 
+/- English proof (translation)
+Use `haveI : GlobalTheory.IsNormalScheme X := ⟨fun x => inferInstance, fun x => by haveI := hufd x; infer_instance⟩`. Establish `key : ∀ g : (X.functionField)ˣ, (∀ v ∈ U, Scheme.ord (g : X.functionField) v = 0) → RegAt y (g : X.functionField)`. Introduce `g hg`. Apply `regAt_of_forall_coheight_eq_one` to reduce the goal to its premises. Introduce `z hz hz1`.
+
+Conclude with `(unitAt_of_ord_eq_zero_coheight_one hufd hz1 g.ne_zero (hg z (hz.mem_open U.isOpen hy))).regAt`. Take `⟨a, ha⟩` from `key h hord`. Take `⟨b, hb⟩` from `key h⁻¹ (fun v hv => by rw [Scheme_ord_units_inv, hord v hv, neg_zero])`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Establish `hab : algebraMap (X.presheaf.stalk y) X.functionField (a * b) = algebraMap (X.presheaf.stalk y) X.functionField 1`.
+
+Rewrite using `[map_mul, ha, hb, map_one, Units.mul_inv]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨b, IsFractionRing.injective _ _ hab⟩`.
+-/
 private theorem unitAt_of_ord_eq_zero_on_open {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hufd : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) {y : X} (U : X.Opens)
     (hy : y ∈ U) (h : (X.functionField)ˣ)
@@ -92,6 +118,17 @@ private theorem unitAt_of_ord_eq_zero_on_open {X : Scheme.{0}} [IsIntegral X] [I
     rw [map_mul, ha, hb, map_one, Units.mul_inv]
   exact isUnit_iff_exists_inv.mpr ⟨b, IsFractionRing.injective _ _ hab⟩
 
+/- English proof (translation)
+Introduce `k _ _ Y _ _ q n _ hproj Γ m`. Use `haveI : Smooth q := SmoothOfRelativeDimension.smooth n q`. Establish `hufd : ∀ x : Y, UniqueFactorizationMonoid (Y.presheaf.stalk x)` using `fun x => AbelianProjective.ufd_stalk (K := k) q x`. Use `haveI : NoetherianSpace Y := ModelSum.noetherianSpace_of_isProjOver hproj`. Use `haveI : CompactSpace Y := ⟨NoetherianSpace.isCompact _⟩`.
+
+Establish `hsupp : Function.support (fun z => Γ.mult z / (m : ℤ)) ⊆ Function.support Γ.mult`. Introduce `z hz h0`. Apply `hz` to reduce the goal to its premises. Simplify using `only [h0, Int.zero_ediv]`. Take `⟨F, hF⟩` from `CartierDiv.exists_mult_eq_of_locallyFactorial Y hufd (fun z => Γ.mult z / (m : ℤ)) ((CartierDiv.finite_support_mult Γ).subset hsupp) (fun z hz => CartierDiv.coheight_eq_one_of_mult_ne_zero (hsupp hz))`.
+
+Use `⟨F, hF, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `hxΓ`. Establish `hΓx : Γ.IsEqn x 1`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hxΓ h`. Take `⟨W, hxW, hW⟩` from `hΓx.exists_nhds`. Take `⟨g, hg⟩` from `F.exists_isEqn x`. Take `⟨V, hxV, hV⟩` from `hg.exists_nhds`. Establish `hunit : UnitAt x (g : Y.functionField)` using `unitAt_of_ord_eq_zero_on_open hufd (W ⊓ V) ⟨hxW, hxV⟩ g (fun v hv => by`.
+
+Rewrite using `[← (hV v hv.2).mult_eq, hF v, (hW v hv.1).mult_eq, Units.val_one, Scheme_ord_one, Int.zero_ediv])`. Conclude with `(hg.mem_supp_iff.mp hx) hunit`.
+-/
 theorem exists_cartierDiv_mult_ediv : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q], IsProjOver q → ∀ (Γ : CartierDiv Y) (m : ℕ), ∃ F : CartierDiv Y, (∀ z, F.mult z = Γ.mult z / (m : ℤ)) ∧ F.supp ≤ Γ.supp := by
   intro k _ _ Y _ _ q n _ hproj Γ m
   haveI : Smooth q := SmoothOfRelativeDimension.smooth n q

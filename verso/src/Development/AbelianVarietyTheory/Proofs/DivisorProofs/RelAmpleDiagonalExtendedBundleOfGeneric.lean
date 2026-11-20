@@ -21,6 +21,9 @@ noncomputable section
 
 namespace GlobalTheory.DiagAmpleExt
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ ≫ (lift (𝟙 G) (𝟙 G)).left ≫ (fst G G).left = (lift (𝟙 A) (𝟙 A)).left ≫ φ₂ ≫ (fst G G).left`. Rewrite using `[h.1, ← Over.comp_left, lift_fst, Over.id_left, Category.comp_id, ← Category.assoc, ← Over.comp_left, lift_fst, Over.id_left, Category.id_comp]`. Express the relevant statement in the definitionally equal form `φ ≫ (lift (𝟙 G) (𝟙 G)).left ≫ (snd G G).left = (lift (𝟙 A) (𝟙 A)).left ≫ φ₂ ≫ (snd G G).left`. Rewrite using `[h.2, ← Over.comp_left, lift_snd, Over.id_left, Category.comp_id, ← Category.assoc, ← Over.comp_left, lift_snd, Over.id_left, Category.id_comp]`.
+-/
 theorem diag_comm {S S' : Scheme.{0}} {G : Over S} {A : Over S'} (φ : A.left ⟶ G.left)
     (φ₂ : (G2 A).left ⟶ (G2 G).left) (h : IsSquare φ φ₂) :
     φ ≫ (lift (𝟙 G) (𝟙 G)).left = (lift (𝟙 A) (𝟙 A)).left ≫ φ₂ := by
@@ -32,6 +35,13 @@ theorem diag_comm {S S' : Scheme.{0}} {G : Over S} {A : Over S'} (φ : A.left �
     rw [h.2, ← Over.comp_left, lift_snd, Over.id_left, Category.comp_id, ← Category.assoc,
       ← Over.comp_left, lift_snd, Over.id_left, Category.id_comp]
 
+/- English proof (translation)
+Introduce `W L _ _ _ _ _ _ G _ A _ φ φ₂ hG hφ hsq P P' hP hP' e hA`. Establish `hAab : IsAbelianScheme A` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hG hφ`. Use `hAab.proper` as an intermediate fact. Use `set dG := (lift (𝟙 G) (𝟙 G)).left`. Use `set dA := (lift (𝟙 A) (𝟙 A)).left`.
+
+Establish `hM : (P'.pull dG).IsLB` using `pull_isLB hP' _`. Use `GlobalTheory.ModelAmpleExt.relAmple_of_generic W L G A φ hG hφ (P'.pull dG) hM ?_` and prove the remaining obligations. Establish `i1 : LBIso ((P'.pull dG).pull φ) (P'.pull (φ ≫ dG))` using `GlobalTheory.OriginCohom.lbIso_pull_pull_comp hP' dG φ`. Establish `i2 : LBIso (P'.pull (dA ≫ φ₂)) ((P'.pull φ₂).pull dA)` using `GlobalTheory.GenSpread.lbIso_pull_pull hP' dA rfl`. Establish `i3 : LBIso ((P'.pull φ₂).pull dA) (P.pull dA)` using `GlobalTheory.GenSpread.lbIso_pullback e.symm dA`.
+
+Rewrite `i1` using `[diag_comm φ φ₂ hsq]`. Establish `hφ2` using `pull_isLB hP' φ₂`. Establish `j : LBIso (P.pull dA) ((P'.pull dG).pull φ)` using `(LBIso.trans (pull_isLB hM φ) (pull_isLB hP' _) (pull_isLB hP dA) i1 (LBIso.trans (pull_isLB hP' _) (pull_isLB hφ2 dA) (pull_isLB hP dA) i2 i3)).symm`. Establish `hsq' : IsPullback (𝟙 A.left) A.hom A.hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Conclude with `GlobalTheory.ModelAbLocus.relAmple_of_lbIso_pull hsq' (pull_isLB hP dA) (pull_isLB hM φ) (LBIso.trans (pull_isLB hM φ) (pull_isLB hP dA) (pull_isLB (pull_isLB hP dA) _) j.symm (GlobalTheory.GenSpread.lbIso_pull_pull hP (𝟙 _) (a := dA) (Category.id_comp _).symm)) hA`.
+-/
 theorem relAmple_diag_of_generic : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] (A : Over (Sp L)) [GrpObj A] (φ : A.left ⟶ G.left) (φ₂ : (G2 A).left ⟶ (G2 G).left), IsAbelianScheme G → IsGrpPullback A G (spMap (algebraMap W L)) φ → IsSquare φ φ₂ → ∀ (P : LB (G2 A).left) (P' : LB (G2 G).left), P.IsLB → P'.IsLB → LBIso P (P'.pull φ₂) → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → Out.RelAmple G (P'.pull (lift (𝟙 G) (𝟙 G)).left) := by
   intro W L _ _ _ _ _ _ G _ A _ φ φ₂ hG hφ hsq P P' hP hP' e hA
   have hAab : IsAbelianScheme A := GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hG hφ

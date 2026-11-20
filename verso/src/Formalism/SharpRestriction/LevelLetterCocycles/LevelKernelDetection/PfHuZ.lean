@@ -16,6 +16,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
     {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hz`. Rewrite using `[map_mul, map_pow, map_natCast, map_mul, map_pow, map_natCast, AddValuation.map_mul, AddValuation.map_pow, W.v_l, nsmul_one]`. Conclude with `le_add_of_nonneg_right (hv_int _)`.
+-/
 theorem Pf_HuZ_v_dvd (W : LocWach PD LL O v n) (hv_int : ∀ x : O, 0 ≤ v (algebraMap O LL x))
     (k : ℕ) (z : ℤ_[PD.p]) (hz : (PD.p : ℤ_[PD.p]) ^ k ∣ z) :
     (k : WithTop ℚ) ≤ v (algebraMap O LL (ιZ z)) := by
@@ -24,11 +27,19 @@ theorem Pf_HuZ_v_dvd (W : LocWach PD LL O v n) (hv_int : ∀ x : O, 0 ≤ v (alg
     AddValuation.map_pow, W.v_l, nsmul_one]
   exact le_add_of_nonneg_right (hv_int _)
 
+/- English proof (translation)
+Introduce `s z hz` and use `Pf_HuZ_v_dvd W hv_int (s + 1) z hz`.
+-/
 theorem hv_holds (W : LocWach PD LL O v n) (hv_int : ∀ x : O, 0 ≤ v (algebraMap O LL x)) :
     ∀ (s : ℕ) (z : ℤ_[PD.p]), (PD.p : ℤ_[PD.p]) ^ (s + 1) ∣ z →
       ((s + 1 : ℕ) : WithTop ℚ) ≤ v (algebraMap O LL (ιZ z)) :=
   fun s z hz => Pf_HuZ_v_dvd W hv_int (s + 1) z hz
 
+/- English proof (translation)
+Introduce `k`. Establish `: NeZero (PD.p ^ k)` using `⟨pow_ne_zero _ (Fact.out : PD.p.Prime).ne_zero⟩`. Establish `hdvd : (PD.p : ℤ_[PD.p]) ^ k ∣ (uZ : ℤ_[PD.p]) - ((PadicInt.toZModPow k (uZ : ℤ_[PD.p])).val : ℤ_[PD.p])`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Establish `h` using `Pf_HuZ_v_dvd (ιZ := ιZ) W hv_int k _ hdvd`.
+
+Rewrite `h` using `[map_sub, map_natCast, hu, map_sub, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem huZ_holds (hu : ιZ uZ = (W.χΓ W.gam : O)) (hv_int : ∀ x : O, 0 ≤ v (algebraMap O LL x)) :
     ∀ k : ℕ, (k : WithTop ℚ) ≤
       v (algebraMap O LL (W.χΓ W.gam : O) - ((PadicInt.toZModPow k (uZ : ℤ_[PD.p])).val : LL)) := by

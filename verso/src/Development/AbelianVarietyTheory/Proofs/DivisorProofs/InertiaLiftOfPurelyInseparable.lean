@@ -7,11 +7,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.InertiaLift
 
+/- English proof (translation)
+Rewrite using `[← A.valuation_le_one_iff, ← A.valuation_le_one_iff, map_pow]`. Conclude with `(pow_le_one_iff_of_nonneg zero_le' hm.ne').symm`.
+-/
 theorem mem_iff_pow_mem {F : Type} [Field F] (A : ValuationSubring F) {m : ℕ} (hm : 0 < m) (y : F) :
     y ∈ A ↔ y ^ m ∈ A := by
   rw [← A.valuation_le_one_iff, ← A.valuation_le_one_iff, map_pow]
   exact (pow_le_one_iff_of_nonneg zero_le' hm.ne').symm
 
+/- English proof (translation)
+Rewrite `h` using `[map_pow]`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`. Conclude with `absurd h (not_lt.2 (one_le_pow₀ h'))`.
+-/
 theorem nonunit_of_pow {F : Type} [Field F] (A : ValuationSubring F) {m : ℕ} (hm : 0 < m) (z : F)
     (h : A.valuation (z ^ m) < 1) : A.valuation z < 1 := by
   rw [map_pow] at h
@@ -22,6 +28,25 @@ theorem nonunit_of_pow {F : Type} [Field F] (A : ValuationSubring F) {m : ℕ} (
 end GlobalTheory.InertiaLift
 
 open GlobalTheory.InertiaLift in
+/- English proof (translation)
+Introduce `K L Ω Ω' _ _ _ _ _ _ _ j hpi V' σ σ' hcomm hσ`. Rewrite `hσ`, the goal using `[mem_inertia_iff]`. Take `⟨hσV, hσv⟩` from `hσ`. Use `set V := V'.comap (j : Ω →+* Ω') with hV`. Establish `hmemV : ∀ x, j x ∈ V' ↔ x ∈ V` using `fun x => Iff.rfl`.
+
+Establish `hσmem : ∀ x, σ x ∈ V ↔ x ∈ V`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2 : σ x ∈ σ • V` using `by rw [hσV]; exact h`.
+
+Rewrite `h2` using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Simplify using `using h2`. Introduce `h`. Establish `h2 : σ • x ∈ σ • V` using `ValuationSubring.smul_mem_pointwise_smul σ x V h`. Rewrite `h2` using `[hσV]`.
+
+Conclude with `h2`. Establish `hσ'mem : ∀ y, σ' y ∈ V' ↔ y ∈ V'`. Introduce `y`. Take `⟨m, x, hm, hyx, -⟩` from `hpi y`. Rewrite using `[mem_iff_pow_mem V' hm, mem_iff_pow_mem V' hm y, ← map_pow, hyx, hcomm, hmemV, hmemV, hσmem]`.
+
+Establish `hlt : ∀ w, V.valuation w < 1 → V'.valuation (j w) < 1`. Introduce `w hw`. Rewrite `hw`, the goal using `[← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or]`. Break down `hw with hw | hw` into its components or cases. Use `left`.
+
+Simplify using `[hw]`. Use `right`. Rewrite using `[← map_inv₀]`. Conclude with `hw`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `z`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Use `hσ'mem (σ'⁻¹ • z)` as an intermediate fact. Simplify using `only [AlgEquiv.smul_def] at this ⊢`. Rewrite using `[← this]`.
+
+Simplify using the standard rewrite rules. Introduce `y hy`. Take `⟨m, x, hm, hyx, hfrob⟩` from `hpi y`. Establish `hx : x ∈ V` using `by rw [← hmemV, ← hyx]; exact (mem_iff_pow_mem V' hm y).1 hy`. Apply `nonunit_of_pow V' hm` to reduce the goal to its premises.
+
+Rewrite using `[hfrob, ← map_pow, hyx, hcomm, ← map_sub]`. Conclude with `hlt _ (hσv x hx)`.
+-/
 theorem GlobalTheory.inertia_lift_of_purelyInseparable : ∀ (K L Ω Ω' : Type) [Field K] [Field L] [Field Ω] [Field Ω'] [Algebra K Ω] [Algebra L Ω'] [Algebra K Ω'] (j : Ω →ₐ[K] Ω'), (∀ y : Ω', ∃ (m : ℕ) (x : Ω), 0 < m ∧ y ^ m = j x ∧ ∀ a b : Ω', (a - b) ^ m = a ^ m - b ^ m) → ∀ (V' : ValuationSubring Ω') (σ : Ω ≃ₐ[K] Ω) (σ' : Ω' ≃ₐ[L] Ω'), (∀ x, σ' (j x) = j (σ x)) → σ ∈ inertia K (V'.comap (j : Ω →+* Ω')) → σ' ∈ inertia L V' := by
   intro K L Ω Ω' _ _ _ _ _ _ _ j hpi V' σ σ' hcomm hσ
   rw [mem_inertia_iff] at hσ ⊢

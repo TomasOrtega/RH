@@ -78,6 +78,9 @@ variable {A} in
 def RepClauses (T : NTypes A) (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) : Prop :=
   ClauseB N A i ρ ∧ ClauseC N A i ρ ∧ ClauseD N T i ρ ∧ ClauseTame N i ρ
 
+/- English proof (translation)
+The claim follows from `let ⟨π, h1, _⟩ := h; ⟨π, h1⟩`.
+-/
 theorem ClauseA.cusp {Sig : List (Part A.CG)} (h : ClauseA N A Sig) : IsCuspIso N A Sig :=
   let ⟨π, h1, _⟩ := h; ⟨π, h1⟩
 

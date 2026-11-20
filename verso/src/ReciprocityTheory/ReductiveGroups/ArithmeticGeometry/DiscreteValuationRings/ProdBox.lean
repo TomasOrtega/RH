@@ -19,6 +19,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {j : ℕ}
   {G G' : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
   {LG : LB G.left} {LG' : LB G'.left}
 
+/- English proof (translation)
+Substitute `h2` using the available equality. Rewrite using `[h1, ← _root_.mul_assoc, Units.mul_inv, _root_.one_mul]`.
+-/
 lemma unit_cancel {S : Type*} [CommRing S] (a b : Sˣ) (X Y : S) (h1 : X = ((a⁻¹ : Sˣ) : S) * Y) (h2 : a = b) :
     (b : S) * X = Y := by
   subst h2
@@ -31,6 +34,15 @@ def boxSecG (pG : IsPowGrp G' G j) (w : LB.Iso LG' (boxLB LG pG.pr)) (hw : w.IsG
     (linComb_isLB LG' hLG' _ _) (linComb_isLB _ (linComb_isLB LG hLG _ _) _ _)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `jN jL`. Use `set V := (LB.div (boxLB LG pG.pr) LG').U (jN, jL) with hVdef`. Establish `hVab : V ≤ LB.wchart LG' (fun _ : Fin 1 => 𝟙 G'.left) (fun _ => jL) ⊓ LB.wchart (boxLB LG pG.pr) (fun _ : Fin 1 => 𝟙 G'.left) (fun _ => jN)` using `fun _ hy => ⟨Set.mem_iInter.2 fun _ => hy.2, Set.mem_iInter.2 fun _ => hy.1⟩`. Establish `hspec` using `congrArg (rs hVab) (secOfIso_spec (u := LB.linCombIso w (fun _ : Fin 1 => 𝟙 G'.left) (fun _ => (k : ℤ))) (boxSec LG (fun i => (pG.pr i).left) (k : ℤ) σ) (linCombIso_isGen w hw _ _) (linComb_isLB LG' hLG' _ _) (linComb_isLB _ (linComb_isLB LG hLG _ _) _ _) (fun _ => jL) (fun _ => …`. Use `erw [rs_rs] at hspec`.
+
+Establish `hspec2` using `hspec.trans (isoCand_rs (LB.linCombIso w (fun _ : Fin 1 => 𝟙 G'.left) (fun _ => (k : ℤ))) (boxSec LG (fun i => (pG.pr i).left) (k : ℤ) σ) (fun _ => jL) (fun _ => jN) hVab)`. Establish `hVd : V ≤ (LB.div (LB.LinComb (boxLB LG pG.pr) (fun _ : Fin 1 => 𝟙 G'.left) (fun _ => (k : ℤ))) (LB.LinComb LG' (fun _ : Fin 1 => 𝟙 G'.left) (fun _ => (k : ℤ)))).U ((fun _ => jN), (fun _ => jL))` using `fun _ hy => ⟨Set.mem_iInter.2 fun _ => hy.1, Set.mem_iInter.2 fun _ => hy.2⟩`. Establish `hu : res hVd ((LB.linCombIso w (fun _ : Fin 1 => 𝟙 G'.left) (fun _ => (k : ℤ))).s ((fun _ => jN), (fun _ => jL))) = w.s (jN, jL) ^ k` using `by erw [linCombIso_res, Fin.prod_univ_one] show tu (LB.div (boxLB LG pG.pr) LG').U w.s V (𝟙 G'.left) (jN, jL) ^ (k : ℤ) = _`. Rewrite using `[tu_def (U := (LB.div (boxLB LG pG.pr) LG').U) (u := w.s) (ψ := 𝟙 G'.left) (p := (jN, jL)) (V := V) (fun _ hy => hy), zpow_natCast]`. Use `congr 1`.
+
+Use `ext`. Simplify using `only [res, pullU, Units.coe_map, MonoidHom.coe_coe, Scheme.Hom.id_app]`. Use `show (G'.left.presheaf.map (homOfLE _).op).hom ((w.s (jN, jL)).val) = (w.s (jN, jL)).val`. Rewrite using `[show (homOfLE (le_refl V)).op = 𝟙 _ from Subsingleton.elim _ _, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+
+Establish `key` using `unit_cancel _ _ _ _ hspec2 hu`. Use `key.trans ?_` and prove the remaining obligations. Simplify using `only [boxSec, boxSecF]`. Use `(map_prod ((G'.left.presheaf.map (homOfLE _).op).hom) _ _).trans (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Conclude with `rs_rs _ _ _`.
+-/
 theorem isBoxSecG_boxSecG (pG : IsPowGrp G' G j) (w : LB.Iso LG' (boxLB LG pG.pr)) (hw : w.IsGen)
     (hLG : LG.IsLB) (hLG' : LG'.IsLB) (k : ℕ) (σ : Fin j → H0 LG k) :
     IsBoxSecG pG w k (boxSecG pG w hw hLG hLG' k σ) σ := by
@@ -80,6 +92,13 @@ def boxSecGenF (σ : ∀ i, LB.Sec (LB.LinComb L (φ i) ε)) (jN : K → (Fin j 
 
 set_option maxHeartbeats 1000000 in
 include hφ in
+/- English proof (translation)
+Use `erw [linComb_g_res]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h0 : V ≤ φ' a ⁻¹ᵁ ((LB.LinComb L pr (fun _ => 1)).U (jN a) ⊓ (LB.LinComb L pr (fun _ => 1)).U (jN' a))` using `fun y hy => ⟨Set.mem_iInter.1 (h hy).1 a, Set.mem_iInter.1 (h hy).2 a⟩`. Rewrite using `[tr_def _ h0]`.
+
+Establish `h1 : V ≤ LB.wchart L (fun i => φ' a ≫ pr i) (jN a) ⊓ LB.wchart L (fun i => φ' a ≫ pr i) (jN' a)` using `fun y hy => ⟨Set.mem_iInter.2 fun i => Set.mem_iInter.1 (Set.mem_iInter.1 (h hy).1 a) i, Set.mem_iInter.2 fun i => Set.mem_iInter.1 (Set.mem_iInter.1 (h hy).2 a) i⟩`. Establish `e` using `linComb_g_comp (L := L) pr (fun _ => 1) (φ' a) (jN a) (jN' a)`. Establish `e2` using `congrArg (res h1) e`. Use `erw [res_res'] at e2`. Use `erw [← e2, linComb_g_res]`.
+
+Simplify using `only [zpow_one]`. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hφ i a]`.
+-/
 lemma boxGen_g_res (jN jN' : K → (Fin j → L.ι)) {V : Y'.Opens}
     (h : V ≤ LB.wchart (LB.LinComb L pr (fun _ => 1)) φ' jN ⊓ LB.wchart (LB.LinComb L pr (fun _ => 1)) φ' jN') :
     res h ((LB.LinComb (LB.LinComb L pr (fun _ => 1)) φ' ε).g jN jN') =
@@ -103,6 +122,11 @@ lemma boxGen_g_res (jN jN' : K → (Fin j → L.ι)) {V : Y'.Opens}
   rw [hφ i a]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Simplify using `only [LB.LinComb, map_prod, map_zpow]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hle : LB.wchart L ψ a ⊓ LB.wchart L ψ b ≤ ψ c ⁻¹ᵁ (L.U (a c) ⊓ L.U (b c))` using `le_inf (inf_le_left.trans (LB.wchart_le L ψ a c)) (inf_le_right.trans (LB.wchart_le L ψ b c))`. Establish `e : res hle (pullU (ψ c) _ (L.g (a c) (b c))) = tr L _ (ψ c) (a c) (b c)`.
+
+Rewrite using `[tr_eq_tu, tu, dif_pos hle]`. Use `erw [e]`. Conclude with `tr_pull L h hW hle`.
+-/
 lemma g_pull_gen {Z : Scheme.{0}} (h : Z ⟶ Y) (ψ : K → (Y ⟶ X)) (a b : K → L.ι) {W : Z.Opens}
     (hW : W ≤ h ⁻¹ᵁ (LB.wchart L ψ a ⊓ LB.wchart L ψ b)) :
     res hW (pullU h _ ((LB.LinComb L ψ ε).g a b)) = ∏ c, tr L W (h ≫ ψ c) (a c) (b c) ^ ε c := by
@@ -117,6 +141,13 @@ lemma g_pull_gen {Z : Scheme.{0}} (h : Z ⟶ Y) (ψ : K → (Y ⟶ X)) (a b : K 
   exact tr_pull L h hW hle
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Use `set W := LB.wchart (LB.LinComb L pr (fun _ => 1)) φ' jN ⊓ LB.wchart (LB.LinComb L pr (fun _ => 1)) φ' jN' with hWdef`. Establish `hfac : ∀ i, rs (inf_le_left : W ≤ _) (rs (box_le_of_comp L pr φ' (φ i) (p i) i (hφ i) jN) (((p i).app _).hom ((σ i).f (fun a => jN a i)))) = ((∏ c, tr L W (p i ≫ φ i c) (jN c i) (jN' c i) ^ ε c : Γ(Y', W)ˣ) : Γ(Y', W)) * rs (inf_le_right : W ≤ _) (rs (box_le_of_comp L pr φ' (φ i) …` using `fun i => app_compat_generic (p i) (box_le_of_comp L pr φ' (φ i) (p i) i (hφ i) jN) (box_le_of_comp L pr φ' (φ i) (p i) i (hφ i) jN') _ _ _ ((σ i).compat _ _) _ (g_pull_gen L ε (p i) (φ i) (fun a => jN a i) (fun a => jN' a i) _).symm`. Establish `hg` using `boxGen_g_res L pr φ' ε p φ hφ jN jN' (le_refl W)`. Use `erw [res_refl'] at hg`. Simplify using `only [boxSecGenF]`.
+
+Use `(map_prod ((Y'.presheaf.map (homOfLE _).op).hom) _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans (Finset.prod_congr rfl (fun i _ => hfac i)) ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Use `erw [hg, Units.coe_prod]`.
+
+Conclude with `(map_prod ((Y'.presheaf.map (homOfLE _).op).hom) _ _).symm`.
+-/
 lemma boxSecGenF_compat (σ : ∀ i, LB.Sec (LB.LinComb L (φ i) ε)) (jN jN' : K → (Fin j → L.ι)) :
     rs (inf_le_left : LB.wchart (LB.LinComb L pr (fun _ => 1)) φ' jN ⊓
         LB.wchart (LB.LinComb L pr (fun _ => 1)) φ' jN' ≤ LB.wchart (LB.LinComb L pr (fun _ => 1)) φ' jN)

@@ -15,6 +15,19 @@ def LateVectorsDistinctLeadingTerms : Prop :=
 
 open Classical in
 
+/- English proof (translation)
+Introduce `h`. Set `v : Fin n' × Fin (r + K) → R` to `fun tc => if ∃ a : Fin r, posOf n' (X.row j x a) = tc.1 ∧ tc.2 = Fin.castAdd K a then 1 else 0`. Set `f : MvPolynomial (ℤ × Fin r) R →+* R` to `(MvPolynomial.eval v).comp ((phSeg R K p X.F j).toRingHom.comp (plEmb R r K).toRingHom)`. Establish `h1 : f (X.detPl R j x) = 0` using `by show MvPolynomial.eval v (phSeg R K p X.F j (plEmb R r K (X.detPl R j x))) = 0`. Rewrite using `[h, map_zero]`.
+
+Establish `hm : f.mapMatrix (Matrix.of fun a b : Fin r => MvPolynomial.X (X.row j x a, b)) = 1`. Use extensionality with `a b`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Use `show MvPolynomial.eval v (phSeg R K p X.F j (plEmb R r K (MvPolynomial.X (X.row j x a, b)))) = (1 : Matrix (Fin r) (Fin r) R) a b`. Simplify using `only [plEmb, rename_X, phSeg, aeval_X, map_pow, eval_X]`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Establish `hv : v (posOf n' (X.row j x a), Fin.castAdd K a) = 1` using `if_pos ⟨a, rfl, rfl⟩`. Rewrite using `[hv, one_pow, Matrix.one_apply_eq]`. Establish `hv : v (posOf n' (X.row j x a), Fin.castAdd K b) = 0`.
+
+Apply `if_neg` to reduce the goal to its premises. Introduce and unpack `⟨a', ha, hb⟩`. Establish `e1 : a' = a` using `hinj ha`. Establish `e2 : b = a'` using `Fin.castAdd_injective _ _ hb`. Conclude with `hab (e2.trans e1).symm`.
+
+Rewrite using `[hv, zero_pow (pow_ne_zero _ hp.ne'), Matrix.one_apply_ne hab]`. Establish `h2 : f (X.detPl R j x) = 1`. Unfold `Dat.detPl`. Rewrite using `[RingHom.map_det, hm, Matrix.det_one]`. Rewrite `h2` using `[h1]`.
+
+Conclude with `zero_ne_one h2`.
+-/
 theorem ph_detPl_ne_zero {R : Type} [CommRing R] [Nontrivial R] {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ)
     (hp : 0 < p) (j x : ℤ) (hinj : Function.Injective fun a : Fin r => posOf n' (X.row j x a)) :
     phSeg R K p X.F j (plEmb R r K (X.detPl R j x)) ≠ 0 := by
@@ -48,6 +61,13 @@ theorem ph_detPl_ne_zero {R : Type} [CommRing R] [Nontrivial R] {n' r : ℕ} [Ne
   rw [h1] at h2
   exact zero_ne_one h2
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X O _ _ _ hX`. Establish `hp : 0 < p` using `hX.prime.pos`. Establish `hpl : ∀ P : MvPolynomial (ℤ × Fin r) O, map (IsLocalRing.residue O) (plEmb O r K P) = plEmb _ r K (map (IsLocalRing.residue O) P)`. Introduce `P`. Simplify using `[plEmb, MvPolynomial.map_rename]`.
+
+Simplify using `only [Dat.Dl, Dat.DlSeg, map_prod, map_pow, map_phSeg, hpl, map_detPl]`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j _`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `x hx`.
+
+Conclude with `pow_ne_zero _ (ph_detPl_ne_zero X p K hp _ _ (hInj p n' r K X hX _ x hx))`.
+-/
 theorem discriminant_nonzero_of_injective_tops (hInj : LateVectorsDistinctLeadingTerms) : DiscriminantNonzeroModUniformiser := by
   intro p n' r K _ _ _ X O _ _ _ hX
   have hp : 0 < p := hX.prime.pos

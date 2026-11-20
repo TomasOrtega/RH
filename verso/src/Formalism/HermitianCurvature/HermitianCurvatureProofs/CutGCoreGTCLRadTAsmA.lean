@@ -13,9 +13,15 @@ open Classical
 
 def Ann {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) : Set ℂ := {ζ | Tz k r z * Tz k r z' < Complex.normSq ζ}
 
+/- English proof (translation)
+The claim follows from `isOpen_lt continuous_const Complex.continuous_normSq`.
+-/
 theorem ann_open {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) : IsOpen (Ann z z') :=
   isOpen_lt continuous_const Complex.continuous_normSq
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `S.exists_isCompl`. Use `⟨S.subtype ∘ₗ S.linearProjOfIsCompl q hq, fun x => (S.linearProjOfIsCompl q hq x).2, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hq ⟨x, hx⟩)`.
+-/
 theorem exists_pr {V : Type} [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V) :
     ∃ Pr : V →ₗ[ℂ] V, (∀ x, Pr x ∈ S) ∧ ∀ x ∈ S, Pr x = x := by
   obtain ⟨q, hq⟩ := S.exists_isCompl
@@ -26,6 +32,9 @@ def e2 : Fin 2 → ℂ := ![1, Complex.I]
 
 def crd : Fin 2 → (ℂ →L[ℝ] ℝ) := ![Complex.reCLM, Complex.imCLM]
 
+/- English proof (translation)
+Simplify using `only [Fin.sum_univ_two, crd, e2, Matrix.cons_val_zero, Matrix.cons_val_one, Complex.reCLM_apply, Complex.imCLM_apply, Complex.real_smul, mul_one]`. Conclude with `Complex.re_add_im v`.
+-/
 theorem sum_crd (v : ℂ) : ∑ t : Fin 2, crd t v • e2 t = v := by
   simp only [Fin.sum_univ_two, crd, e2, Matrix.cons_val_zero, Matrix.cons_val_one,
     Complex.reCLM_apply, Complex.imCLM_apply, Complex.real_smul, mul_one]
@@ -35,6 +44,9 @@ section
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Establish `h : (fun _ : Fin j => v) = fun _ => ∑ t : Fin 2, crd t v • e2 t` using `funext fun _ => (sum_crd v).symm`. Rewrite using `[h, m.map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Conclude with `m.map_smul_univ (fun i => crd (s i) v) (fun i => e2 (s i))`.
+-/
 theorem ml_expand {j : ℕ} (m : ContinuousMultilinearMap ℝ (fun _ : Fin j => ℂ) E) (v : ℂ) :
     m (fun _ => v) = ∑ s : Fin j → Fin 2, (∏ i, crd (s i) v) • m (fun i => e2 (s i)) := by
   have h : (fun _ : Fin j => v) = fun _ => ∑ t : Fin 2, crd t v • e2 t := funext fun _ => (sum_crd v).symm
@@ -62,12 +74,18 @@ def fibS (z z' : Fin (2 * r + k + 1) → ℂ) (μs : ℂ → Matrix (Fin (k + 1)
     intro s X hX p hp
     rw [ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, hX p hp]
 
+/- English proof (translation)
+Unfold `NF.radR`. Rewrite using `[Set.indicator_of_mem hq]`.
+-/
 theorem radR_apply {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z z' : Fin (2 * r + k + 1) → ℂ}
     {μs : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (Φ : Q.Fn k r E) {q : (Fin r → ℂ) × ℂ}
     (hq : q ∈ NF.QR k r z z') : NF.radR k r z z' μs Φ q = Φ q.1 (NF.muZ k r μs q.2) := by
   unfold NF.radR
   rw [Set.indicator_of_mem hq]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Unfold `NF.radR`. Apply the tactic sequence `by_cases hq : q ∈ NF.QR k r z z' <;> simp [hq]`.
+-/
 theorem radR_add {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z z' : Fin (2 * r + k + 1) → ℂ}
     {μs : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (Φ Ψ : Q.Fn k r E) :
     NF.radR k r z z' μs (Φ + Ψ) = NF.radR k r z z' μs Φ + NF.radR k r z z' μs Ψ := by
@@ -75,6 +93,9 @@ theorem radR_add {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z z' : F
   unfold NF.radR
   by_cases hq : q ∈ NF.QR k r z z' <;> simp [hq]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Unfold `NF.radR`. Apply the tactic sequence `by_cases hq : q ∈ NF.QR k r z z' <;> simp [hq]`.
+-/
 theorem radR_sub {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z z' : Fin (2 * r + k + 1) → ℂ}
     {μs : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (Φ Ψ : Q.Fn k r E) :
     NF.radR k r z z' μs (Φ - Ψ) = NF.radR k r z z' μs Φ - NF.radR k r z z' μs Ψ := by
@@ -82,6 +103,9 @@ theorem radR_sub {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z z' : F
   unfold NF.radR
   by_cases hq : q ∈ NF.QR k r z z' <;> simp [hq]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Unfold `NF.radR`. Apply the tactic sequence `by_cases hq : q ∈ NF.QR k r z z' <;> simp [hq]`.
+-/
 theorem radR_smul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z z' : Fin (2 * r + k + 1) → ℂ}
     {μs : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (s : ℂ) (Φ : Q.Fn k r E) :
     NF.radR k r z z' μs (s • Φ) = s • NF.radR k r z z' μs Φ := by
@@ -89,6 +113,9 @@ theorem radR_smul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z z' : 
   unfold NF.radR
   by_cases hq : q ∈ NF.QR k r z z' <;> simp [hq]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Unfold `NF.radR`. Apply the tactic sequence `by_cases hq : q ∈ NF.QR k r z z' <;> simp [hq]`.
+-/
 theorem radR_zero {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z z' : Fin (2 * r + k + 1) → ℂ}
     {μs : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} :
     NF.radR k r z z' μs (0 : Q.Fn k r E) = 0 := by
@@ -118,9 +145,17 @@ def Gd (z z' : Fin (2 * r + k + 1) → ℂ) (μs : ℂ → Matrix (Fin (k + 1)) 
     (π : Q.Mx k r → (Wp →L[ℂ] Wp)) (π' : Q.Mx k r → (Wq →L[ℂ] Wq)) (Pr : (Wq →L[ℂ] Wp) →ₗ[ℂ] (Wq →L[ℂ] Wp)) : Prop :=
   NF.RadBase k r z z' μs π π' ∧ ∀ x, ∀ ζ ∈ Ann z z', Pr x ∈ NF.Fib k r z z' μs π π' ζ
 
+/- English proof (translation)
+The claim follows from `(LinearMap.toContinuousLinearMap (Pr.restrictScalars ℝ)).contDiff`.
+-/
 theorem pr_contDiff (Pr : (Wq →L[ℂ] Wp) →ₗ[ℂ] (Wq →L[ℂ] Wp)) : ContDiff ℝ ∞ (fun x => Pr x) :=
   (LinearMap.toContinuousLinearMap (Pr.restrictScalars ℝ)).contDiff
 
+/- English proof (translation)
+Use `⟨?_, fun q hq => ?_, fun q hq => ?_⟩` and prove the remaining obligations. Use `((pr_contDiff Pr).comp (hp.comp contDiff_snd)).contDiffOn.congr fun q hq => ?_` and prove the remaining obligations. Simplify using `only [phiP, Set.indicator_of_mem hq, Function.comp]`. Simplify using `only [phiP, Set.indicator_of_mem hq]`. Conclude with `hG.2 _ _ hq.2`.
+
+Simplify using `only [phiP, Set.indicator_of_notMem hq]`.
+-/
 theorem phiP_mem (hG : Gd z z' μs π π' Pr) {p : ℂ → (Wq →L[ℂ] Wp)} (hp : ContDiff ℝ ∞ p) :
     phiP z z' Pr p ∈ NF.RadSec k r z z' μs π π' := by
   refine ⟨?_, fun q hq => ?_, fun q hq => ?_⟩
@@ -140,6 +175,9 @@ def PhiP (z z' : Fin (2 * r + k + 1) → ℂ) (μs : ℂ → Matrix (Fin (k + 1)
       (phiP_mem h.1 h.2))).1⟩
   else 0
 
+/- English proof (translation)
+Unfold `PhiP`. Rewrite using `[dif_pos ⟨hG, hp⟩]`. Conclude with `(Classical.choose_spec (Formalism.FourierDecayAlt.P.radical_reduction_surjective Wp Wq k r z z' μs π π' hG.1 (phiP z z' Pr p) (phiP_mem hG hp))).2`.
+-/
 theorem radR_PhiP (hG : Gd z z' μs π π' Pr) {p : ℂ → (Wq →L[ℂ] Wp)} (hp : ContDiff ℝ ∞ p) :
     NF.radR k r z z' μs ((PhiP z z' μs π π' Pr p : Q.RadSp k r z z' π π') : Q.Fn k r (Wq →L[ℂ] Wp)) =
       phiP z z' Pr p := by
@@ -148,11 +186,17 @@ theorem radR_PhiP (hG : Gd z z' μs π π' Pr) {p : ℂ → (Wq →L[ℂ] Wp)} (
   exact (Classical.choose_spec (Formalism.FourierDecayAlt.P.radical_reduction_surjective Wp Wq k r z z' μs π π' hG.1 (phiP z z' Pr p)
       (phiP_mem hG hp))).2
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Formalism.FourierDecayAlt.P.radical_reduction_injective Wp Wq k r z z' μs π π' hG.1 Φ Φ.2 Ψ Ψ.2 h)`.
+-/
 theorem eq_of_radR (hG : Gd z z' μs π π' Pr) {Φ Ψ : Q.RadSp k r z z' π π'}
     (h : NF.radR k r z z' μs (Φ : Q.Fn k r (Wq →L[ℂ] Wp)) = NF.radR k r z z' μs (Ψ : Q.Fn k r (Wq →L[ℂ] Wp))) :
     Φ = Ψ :=
   Subtype.ext (Formalism.FourierDecayAlt.P.radical_reduction_injective Wp Wq k r z z' μs π π' hG.1 Φ Φ.2 Ψ Ψ.2 h)
 
+/- English proof (translation)
+Use `eq_of_radR hG ?_` and prove the remaining obligations. Rewrite using `[radR_PhiP hG (hp.add hp'), Submodule.coe_add, radR_add, radR_PhiP hG hp, radR_PhiP hG hp']`. Use function extensionality and compare the values at `q`. Apply the tactic sequence `by_cases hq : q ∈ NF.QR k r z z' <;> simp [phiP, hq]`.
+-/
 theorem PhiP_add (hG : Gd z z' μs π π' Pr) {p p' : ℂ → (Wq →L[ℂ] Wp)} (hp : ContDiff ℝ ∞ p)
     (hp' : ContDiff ℝ ∞ p') :
     PhiP z z' μs π π' Pr (fun ζ => p ζ + p' ζ) = PhiP z z' μs π π' Pr p + PhiP z z' μs π π' Pr p' := by
@@ -161,6 +205,9 @@ theorem PhiP_add (hG : Gd z z' μs π π' Pr) {p p' : ℂ → (Wq →L[ℂ] Wp)}
   funext q
   by_cases hq : q ∈ NF.QR k r z z' <;> simp [phiP, hq]
 
+/- English proof (translation)
+Use `eq_of_radR hG ?_` and prove the remaining obligations. Rewrite using `[radR_PhiP hG (hp.const_smul s), Submodule.coe_smul, radR_smul, radR_PhiP hG hp]`. Use function extensionality and compare the values at `q`. Apply the tactic sequence `by_cases hq : q ∈ NF.QR k r z z' <;> simp [phiP, hq]`.
+-/
 theorem PhiP_smul (hG : Gd z z' μs π π' Pr) {p : ℂ → (Wq →L[ℂ] Wp)} (hp : ContDiff ℝ ∞ p) (s : ℂ) :
     PhiP z z' μs π π' Pr (fun ζ => s • p ζ) = s • PhiP z z' μs π π' Pr p := by
   refine eq_of_radR hG ?_
@@ -168,6 +215,9 @@ theorem PhiP_smul (hG : Gd z z' μs π π' Pr) {p : ℂ → (Wq →L[ℂ] Wp)} (
   funext q
   by_cases hq : q ∈ NF.QR k r z z' <;> simp [phiP, hq]
 
+/- English proof (translation)
+Use `eq_of_radR hG ?_` and prove the remaining obligations. Rewrite using `[radR_PhiP hG contDiff_const, Submodule.coe_zero, radR_zero]`. Use function extensionality and compare the values at `q`. Apply the tactic sequence `by_cases hq : q ∈ NF.QR k r z z' <;> simp [phiP, hq]`.
+-/
 theorem PhiP_zero (hG : Gd z z' μs π π' Pr) : PhiP z z' μs π π' Pr (fun _ => 0) = 0 := by
   refine eq_of_radR hG ?_
   rw [radR_PhiP hG contDiff_const, Submodule.coe_zero, radR_zero]
@@ -181,6 +231,9 @@ def VV (z z' : Fin (2 * r + k + 1) → ℂ) (μs : ℂ → Matrix (Fin (k + 1)) 
 
 variable {T : Module.End ℂ (Q.RadSp k r z z' π π')} {c0 : Fin r → ℂ}
 
+/- English proof (translation)
+Unfold `VV`. Rewrite using `[PhiP_add hG hp hp', map_add, Submodule.coe_add, radR_add]`. Both sides reduce to the same expression.
+-/
 theorem VV_add (hG : Gd z z' μs π π' Pr) {p p' : ℂ → (Wq →L[ℂ] Wp)} (hp : ContDiff ℝ ∞ p)
     (hp' : ContDiff ℝ ∞ p') (ζ : ℂ) :
     VV z z' μs π π' Pr T c0 (fun ζ => p ζ + p' ζ) ζ = VV z z' μs π π' Pr T c0 p ζ + VV z z' μs π π' Pr T c0 p' ζ := by
@@ -188,23 +241,35 @@ theorem VV_add (hG : Gd z z' μs π π' Pr) {p p' : ℂ → (Wq →L[ℂ] Wp)} (
   rw [PhiP_add hG hp hp', map_add, Submodule.coe_add, radR_add]
   rfl
 
+/- English proof (translation)
+Unfold `VV`. Rewrite using `[PhiP_smul hG hp, map_smul, Submodule.coe_smul, radR_smul]`. Both sides reduce to the same expression.
+-/
 theorem VV_smul (hG : Gd z z' μs π π' Pr) {p : ℂ → (Wq →L[ℂ] Wp)} (hp : ContDiff ℝ ∞ p) (s : ℂ) (ζ : ℂ) :
     VV z z' μs π π' Pr T c0 (fun ζ => s • p ζ) ζ = s • VV z z' μs π π' Pr T c0 p ζ := by
   unfold VV
   rw [PhiP_smul hG hp, map_smul, Submodule.coe_smul, radR_smul]
   rfl
 
+/- English proof (translation)
+Establish `h` using `VV_smul (T := T) (c0 := c0) hG hp (s : ℂ) ζ`. Simplify using `only [Complex.coe_smul] at h`. Conclude with `h`.
+-/
 theorem VV_smulR (hG : Gd z z' μs π π' Pr) {p : ℂ → (Wq →L[ℂ] Wp)} (hp : ContDiff ℝ ∞ p) (s : ℝ) (ζ : ℂ) :
     VV z z' μs π π' Pr T c0 (fun ζ => s • p ζ) ζ = s • VV z z' μs π π' Pr T c0 p ζ := by
   have h := VV_smul (T := T) (c0 := c0) hG hp (s : ℂ) ζ
   simp only [Complex.coe_smul] at h
   exact h
 
+/- English proof (translation)
+Unfold `VV`. Rewrite using `[PhiP_zero hG, map_zero, Submodule.coe_zero, radR_zero]`. Both sides reduce to the same expression.
+-/
 theorem VV_zero (hG : Gd z z' μs π π' Pr) (ζ : ℂ) : VV z z' μs π π' Pr T c0 (fun _ => 0) ζ = 0 := by
   unfold VV
   rw [PhiP_zero hG, map_zero, Submodule.coe_zero, radR_zero]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using VV_zero (T := T) (c0 := c0) hG ζ`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.sum_insert hi]`. Rewrite using `[VV_add hG (hp i) (ContDiff.sum fun j _ => hp j), ih]`.
+-/
 theorem VV_sum (hG : Gd z z' μs π π' Pr) {ι : Type} (s : Finset ι) (p : ι → ℂ → (Wq →L[ℂ] Wp))
     (hp : ∀ i, ContDiff ℝ ∞ (p i)) (ζ : ℂ) :
     VV z z' μs π π' Pr T c0 (fun ζ => ∑ i ∈ s, p i ζ) ζ = ∑ i ∈ s, VV z z' μs π π' Pr T c0 (p i) ζ := by
@@ -214,6 +279,9 @@ theorem VV_sum (hG : Gd z z' μs π π' Pr) {ι : Type} (s : Finset ι) (p : ι 
     simp only [Finset.sum_insert hi]
     rw [VV_add hG (hp i) (ContDiff.sum fun j _ => hp j), ih]
 
+/- English proof (translation)
+Establish `hm` using `Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq k r z z' μs π π' hG.1 ((T (PhiP z z' μs π π' Pr p) : Q.RadSp k r z z' π π') : Q.Fn k r (Wq →L[ℂ] Wp)) (T (PhiP z z' μs π π' Pr p)).2`. Conclude with `hm.1.comp (contDiff_const.prodMk contDiff_id).contDiffOn fun ζ hζ => ⟨hc0, hζ⟩`.
+-/
 theorem VV_smooth (hG : Gd z z' μs π π' Pr) {p : ℂ → (Wq →L[ℂ] Wp)} (hc0 : c0 ∈ OmX r) :
     ContDiffOn ℝ ∞ (VV z z' μs π π' Pr T c0 p) (Ann z z') := by
   have hm := Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq k r z z' μs π π' hG.1

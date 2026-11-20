@@ -9,6 +9,13 @@ open scoped ENNReal Pointwise
 
 namespace GlobalTheory.CompanionTheory.TwUnfold
 
+/- English proof (translation)
+Establish `hW : MeasurableSet (⋃ g : Γ, g • K)` using `MeasurableSet.iUnion fun g => hK.const_smul g`. Establish `h1 : ∫⁻ x in Fd, Ψ x ∂μ = ∫⁻ x in Fd, (⋃ g : Γ, g • K).indicator Ψ x ∂μ`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : Ψ x = 0`. Distinguish the cases in `hm : x ∈ ⋃ g : Γ, g • K`.
+
+Rewrite using `[indicator_of_mem hm]`. Rewrite using `[indicator_of_notMem hm, hx]`. Take `⟨γ, hγ, k, hk, rfl⟩` from `hsupp x hx`. Rewrite using `[indicator_of_mem]`. Conclude with `mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨k, hk, rfl⟩⟩`.
+
+Rewrite using `[h1, setLIntegral_indicator hW, iUnion_inter, hFd.setLIntegral_eq_tsum' Ψ K]`. Use `(lintegral_iUnion_le _ _).trans (ENNReal.tsum_le_tsum fun g => le_of_eq ?_)` and prove the remaining obligations. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Conclude with `(hinv _ (g⁻¹ : Γ).2 x).symm`.
+-/
 theorem lintegral_fd_le {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] {Γ : Subgroup G} [Countable Γ]
     {μ : Measure G} [μ.IsMulLeftInvariant] {Fd K : Set G} (hFd : IsFundamentalDomain Γ Fd μ) (hK : MeasurableSet K)
     (Ψ : G → ℝ≥0∞) (hinv : ∀ γ ∈ Γ, ∀ x, Ψ (γ * x) = Ψ x) (hsupp : ∀ x, Ψ x ≠ 0 → ∃ γ ∈ Γ, ∃ k ∈ K, x = γ * k) :
@@ -32,6 +39,9 @@ section Orbit
 
 variable {G R : Type*} [Group G] [Group R]
 
+/- English proof (translation)
+Simplify using `only [twConj, map_mul, map_inv, hθ]`. Use `group`.
+-/
 theorem twConj_map_mul (ι : R →* G) (θ : Monoid.End G) (θR : Monoid.End R) (hθ : ∀ r, ι (θR r) = θ (ι r))
     (r d : R) (x : G) : twConj θ (ι r * x) (ι d) = twConj θ x (ι (twConj θR r d)) := by
   simp only [twConj, map_mul, map_inv, hθ]
@@ -39,12 +49,18 @@ theorem twConj_map_mul (ι : R →* G) (θ : Monoid.End G) (θR : Monoid.End R) 
 
 def repR (ι : R →* G) {S : Subgroup ι.range} (q : ι.range ⧸ S) : R := (q.out).2.choose
 
+/- English proof (translation)
+The claim follows from `(q.out).2.choose_spec`.
+-/
 theorem map_repR (ι : R →* G) {S : Subgroup ι.range} (q : ι.range ⧸ S) : ι (repR ι q) = (q.out : G) :=
   (q.out).2.choose_spec
 
 def orbPt (ι : R →* G) (θR : Monoid.End R) (δ : R) {S : Subgroup ι.range} (q : ι.range ⧸ S) : R :=
   twConj θR (repR ι q)⁻¹ δ
 
+/- English proof (translation)
+Rewrite using `[← map_repR ι q, ← map_inv, twConj_map_mul ι θ θR hθ]`. Both sides reduce to the same expression.
+-/
 theorem twConj_out (ι : R →* G) (θ : Monoid.End G) (θR : Monoid.End R) (hθ : ∀ r, ι (θR r) = θ (ι r)) (δ : R)
     {S : Subgroup ι.range} (q : ι.range ⧸ S) (x : G) :
     twConj θ ((q.out : G)⁻¹ * x) (ι δ) = twConj θ x (ι (orbPt ι θR δ q)) := by
@@ -53,6 +69,13 @@ theorem twConj_out (ι : R →* G) (θ : Monoid.End G) (θR : Monoid.End R) (hθ
 
 variable {ι : R →* G} {θR : Monoid.End R} {δ : R} {H : Subgroup G}
 
+/- English proof (translation)
+Introduce `q₁ q₂ h`. Establish `hu : twConj θR ((repR ι q₂)⁻¹ * repR ι q₁) δ = δ`. Simplify using `only [orbPt, twConj, inv_inv, map_inv] at h`. Simplify using `only [twConj, map_mul, map_inv, mul_inv_rev, inv_inv]`. Establish `: (repR ι q₁)⁻¹ * repR ι q₂ * δ * ((θR (repR ι q₂))⁻¹ * θR (repR ι q₁)) = (repR ι q₁)⁻¹ * (repR ι q₂ * δ * (θR (repR ι q₂))⁻¹) * θR (repR ι q₁)` using `by group`.
+
+Rewrite using `[this, ← h]`. Use `group`. Establish `hm : (q₂.out)⁻¹ * q₁.out ∈ H.subgroupOf ι.range`. Rewrite using `[Subgroup.mem_subgroupOf, hH]`. Use `⟨_, ?_, hu⟩` and prove the remaining obligations.
+
+Simplify using `[map_repR]`. Use `QuotientGroup.eq.2 hm` as an intermediate fact. Rewrite `this` using `[QuotientGroup.out_eq', QuotientGroup.out_eq']`. Conclude with `this.symm`.
+-/
 theorem orbPt_injective (hH : ∀ g, g ∈ H ↔ ∃ t, ι t = g ∧ twConj θR t δ = δ) :
     Injective (orbPt ι θR δ (S := H.subgroupOf ι.range)) := by
   intro q₁ q₂ h
@@ -71,6 +94,13 @@ theorem orbPt_injective (hH : ∀ g, g ∈ H ↔ ∃ t, ι t = g ∧ twConj θR 
   rw [QuotientGroup.out_eq', QuotientGroup.out_eq'] at this
   exact this.symm
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hd`. Set `γ : ι.range` to `⟨ι g⁻¹, g⁻¹, rfl⟩`. Use `⟨(γ : ι.range ⧸ H.subgroupOf ι.range), ?_⟩` and prove the remaining obligations. Use `set q : ι.range ⧸ H.subgroupOf ι.range := (γ : ι.range ⧸ H.subgroupOf ι.range) with hq`. Establish `h1 : (q.out : ι.range ⧸ H.subgroupOf ι.range) = γ` using `QuotientGroup.out_eq' q`.
+
+Establish `h2` using `QuotientGroup.eq.1 h1`. Rewrite `h2` using `[Subgroup.mem_subgroupOf, hH]`. Take `⟨t, ht, htδ⟩` from `h2`. Establish `h3 : t = (repR ι q)⁻¹ * g⁻¹` using `hι (by`. Rewrite using `[ht, map_mul, map_inv, map_repR]`.
+
+Use the proof step `rfl)`. Establish `h4 : (repR ι q)⁻¹ = t * g` using `by rw [h3]; group`. Rewrite using `[orbPt, h4]`. Conclude with `twConj_mul_left θR δ htδ g`.
+-/
 theorem exists_orbPt (hι : Injective ι) (hH : ∀ g, g ∈ H ↔ ∃ t, ι t = g ∧ twConj θR t δ = δ) {d : R}
     (hd : TwConjugate θR δ d) : ∃ q : ι.range ⧸ H.subgroupOf ι.range, orbPt ι θR δ q = d := by
   obtain ⟨g, rfl⟩ := hd
@@ -101,6 +131,11 @@ def twPerm (θR : Monoid.End R) (r : R) : R ≃ R where
   left_inv d := by simp only [twConj, map_inv, inv_inv]; group
   right_inv d := by simp only [twConj, map_inv, inv_inv]; group
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `(hcls (cls d) d).1 rfl`. Use `(hcls _ _).2 ⟨g * r, ?_⟩` and prove the remaining obligations. Generalize the expression as in `rep (cls d) = δ at hg ⊢`. Rewrite using `[hg]`. Simplify using `only [twConj, map_mul]`.
+
+Use `group`.
+-/
 theorem cls_twConj (hcls : ∀ c d, cls d = c ↔ TwConjugate θR (rep c) d) (r d : R) :
     cls (twConj θR r d) = cls d := by
   obtain ⟨g, hg⟩ := (hcls (cls d) d).1 rfl
@@ -110,6 +145,9 @@ theorem cls_twConj (hcls : ∀ c d, cls d = c ↔ TwConjugate θR (rep c) d) (r 
   simp only [twConj, map_mul]
   group
 
+/- English proof (translation)
+Take `⟨r, k, hk, rfl⟩` from `hχK x (left_ne_zero_of_mul h)`. Establish `h2` using `right_ne_zero_of_mul h`. Rewrite `h2` using `[twConj_map_mul ι θ θR hθ]`. Conclude with `⟨_, ⟨k, hk, h2⟩, cls_twConj hcls r d⟩`.
+-/
 theorem cls_mem_of_ne {K : Set G} (hθ : ∀ r, ι (θR r) = θ (ι r))
     (hcls : ∀ c d, cls d = c ↔ TwConjugate θR (rep c) d) {χ φ : G → ℂ}
     (hχK : ∀ x, χ x ≠ 0 → ∃ r, ∃ k ∈ K, x = ι r * k) {x : G} {d : R} (h : χ x * φ (twConj θ x (ι d)) ≠ 0) :
@@ -119,6 +157,21 @@ theorem cls_mem_of_ne {K : Set G} (hθ : ∀ r, ι (θR r) = θ (ι r))
   rw [twConj_map_mul ι θ θR hθ] at h2
   exact ⟨_, ⟨k, hk, h2⟩, cls_twConj hcls r d⟩
 
+/- English proof (translation)
+Use `set A := hfin.toFinset with hA`. Establish `hg : ∀ c (q : ι.range ⧸ (H c).subgroupOf ι.range), χ ((q.out : G)⁻¹ * x) * φ (twConj θ ((q.out : G)⁻¹ * x) (ι (rep c))) = χ x * φ (twConj θ x (ι (orbPt ι θR (rep c) q)))`. Introduce `c q`. Rewrite using `[twConj_out ι θ θR hθ]`. Use `congr 1`.
+
+Rewrite using `[← map_repR ι q, ← map_inv, hχi]`. Establish `hc : ∀ c, ∑' q : ι.range ⧸ (H c).subgroupOf ι.range, χ ((q.out : G)⁻¹ * x) * φ (twConj θ ((q.out : G)⁻¹ * x) (ι (rep c))) = ∑ d ∈ A, if cls d = c then χ x * φ (twConj θ x (ι d)) else 0`. Introduce `c`. Establish `hinj` using `orbPt_injective (ι := ι) (θR := θR) (δ := rep c) (H := H c) (hH c)`. Establish `e1 : ∀ q : ι.range ⧸ (H c).subgroupOf ι.range, χ ((q.out : G)⁻¹ * x) * φ (twConj θ ((q.out : G)⁻¹ * x) (ι (rep c))) = (fun d => if cls d = c then χ x * φ (twConj θ x (ι d)) else 0) (orbPt ι θR (rep c) q)`.
+
+Introduce `q`. Establish `: cls (orbPt ι θR (rep c) q) = c` using `(hcls _ _).2 ⟨_, rfl⟩`. Simplify using `only [this, if_true]`. Conclude with `hg c q`. Establish `hs : support (fun d => if cls d = c then χ x * φ (twConj θ x (ι d)) else 0) ⊆ range (orbPt ι θR (rep c) (S` using `(H c).subgroupOf ι.range)) := by`.
+
+Introduce `d hd`. Establish `h1 : cls d = c`. Assume the negation of the conclusion as `h`. Simplify using `[h] at hd`. Conclude with `exists_orbPt hι (hH c) ((hcls _ _).1 h1)`.
+
+Rewrite using `[tsum_congr e1, hinj.tsum_eq hs]`. Use `tsum_eq_sum fun d hd => ?_` and prove the remaining obligations. Establish `: φ (twConj θ x (ι d)) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hd (hfin.mem_toFinset.2 h)`.
+
+Simplify using `[this]`. Repeatedly rewrite using `[hc]`. Rewrite using `[Finset.sum_comm, finsum_eq_sum_of_support_subset (s := A) _ (fun d hd => hfin.mem_toFinset.2 hd), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`.
+
+Distinguish the cases in `h : χ x * φ (twConj θ x (ι d)) = 0`. Simplify using `[h]`. Simplify using `[hT d h]`.
+-/
 theorem kernel_decomp (hι : Injective ι) (hθ : ∀ r, ι (θR r) = θ (ι r))
     (hcls : ∀ c d, cls d = c ↔ TwConjugate θR (rep c) d) {H : C → Subgroup G}
     (hH : ∀ c g, g ∈ H c ↔ ∃ t, ι t = g ∧ twConj θR t (rep c) = rep c) {χ φ : G → ℂ}
@@ -168,6 +221,21 @@ theorem kernel_decomp (hι : Injective ι) (hθ : ∀ r, ι (θR r) = θ (ι r))
   · simp [h]
   · simp [hT d h]
 
+/- English proof (translation)
+Use `haveI : Countable ι.range := (Set.countable_range ι).to_subtype`. Use `haveI : MeasurableMul G := inferInstance`. Use `set Ψ : G → ℝ≥0∞ := fun x => ∑' d : R, ‖χ x * φ (twConj θ x (ι d))‖ₑ with hΨ`. Establish `hinv : ∀ γ ∈ ι.range, ∀ x, Ψ (γ * x) = Ψ x`. Introduce and unpack `_ ⟨r, rfl⟩ x`.
+
+Simplify using `only [hΨ, hχi]`. Rewrite using `[← (twPerm θR r).tsum_eq (fun d => ‖χ x * φ (twConj θ x (ι d))‖ₑ)]`. Use `tsum_congr fun d => ?_` and prove the remaining obligations. Rewrite using `[twConj_map_mul ι θ θR hθ]`. Both sides reduce to the same expression.
+
+Establish `hsupp : ∀ x, Ψ x ≠ 0 → ∃ γ ∈ ι.range, ∃ k ∈ K, x = γ * k`. Introduce `x hx`. Establish `: χ x ≠ 0`. Introduce `h`. Conclude with `hx (by simp [hΨ, h])`.
+
+Take `⟨r, k, hk, rfl⟩` from `hχK x this`. Conclude with `⟨_, ⟨r, rfl⟩, k, hk, rfl⟩`. Establish `hB : ∀ k ∈ K, Ψ k ≤ hfin.toFinset.card • ENNReal.ofReal B`. Introduce `k hk`. Establish `h1 : Ψ k = ∑ d ∈ hfin.toFinset, ‖χ k * φ (twConj θ k (ι d))‖ₑ`.
+
+Use `tsum_eq_sum fun d hd => ?_` and prove the remaining obligations. Establish `: φ (twConj θ k (ι d)) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hd (hfin.mem_toFinset.2 ⟨k, hk, h⟩)`. Simplify using `[this]`.
+
+Rewrite using `[h1]`. Use `Finset.sum_le_card_nsmul _ _ _ fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm_eq_enorm, norm_mul]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `ne_of_lt (lt_of_le_of_lt (lintegral_fd_le hFd hK.measurableSet Ψ hinv hsupp) ?_)` and prove the remaining obligations. Use `lt_of_le_of_lt (setLIntegral_mono' hK.measurableSet hB) ?_` and prove the remaining obligations. Rewrite using `[setLIntegral_const]`. Conclude with `ENNReal.mul_lt_top (by simp [ENNReal.mul_lt_top]) hK.measure_lt_top`.
+-/
 theorem lintegral_kernel_ne_top [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [Countable R]
     [MeasurableSpace G] [BorelSpace G] {μ : Measure G} [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ]
     (hθ : ∀ r, ι (θR r) = θ (ι r)) {Fd K : Set G} (hFd : IsFundamentalDomain ι.range Fd μ) (hK : IsCompact K)
@@ -213,6 +281,27 @@ theorem lintegral_kernel_ne_top [TopologicalSpace G] [IsTopologicalGroup G] [T2S
   rw [setLIntegral_const]
   exact ENNReal.mul_lt_top (by simp [ENNReal.mul_lt_top]) hK.measure_lt_top
 
+/- English proof (translation)
+Use `haveI : Countable ι.range := (Set.countable_range ι).to_subtype`. Establish `hfinK` using `hfin K hK`. Use `set T : Finset C := (hfinK.image cls).toFinset with hTdef`. Establish `hT : ∀ (x : G) (d : R), χ x * φ (twConj θ x (ι d)) ≠ 0 → cls d ∈ T` using `fun x d h => (hfinK.image cls).mem_toFinset.2 (cls_mem_of_ne hθ hcls hχK h)`. Establish `hle : ∀ c, H c ≤ ι.range` using `fun c g hg => by`.
+
+Take `⟨t, rfl, -⟩` from `(hH c g).1 hg`. Conclude with `⟨t, rfl⟩`. Establish `hdisc : ∀ c, DiscreteTopology (H c)` using `fun c => DiscreteTopology.of_subset (s := (ι.range : Set G)) inferInstance (hle c)`. Establish `hFm : ∀ c, Measurable fun x => χ x * φ (twConj θ x (ι (rep c)))` using `fun c => hχm.mul (hφm _)`. Establish `hFH : ∀ c, ∀ h ∈ H c, ∀ g, χ (h * g) * φ (twConj θ (h * g) (ι (rep c))) = χ g * φ (twConj θ g (ι (rep c)))`.
+
+Introduce `c h hh g`. Take `⟨t, rfl, ht⟩` from `(hH c h).1 hh`. Rewrite using `[hχi, twConj_map_mul ι θ θR hθ, ht]`. Establish `hsing : ∀ x, {d | φ (twConj θ x (ι d)) ≠ 0}.Finite` using `fun x => (hfin {x} isCompact_singleton).subset fun d hd => ⟨x, rfl, hd⟩`. Establish `hΨ` using `lintegral_kernel_ne_top (μ := μ) hθ hFd hK hχb hχi hχK hφb hfinK`.
+
+Establish `hint : ∀ c, ∫⁻ x in Fd, ∑' q : ι.range ⧸ (H c).subgroupOf ι.range, ‖χ ((q.out : G)⁻¹ * x) * φ (twConj θ ((q.out : G)⁻¹ * x) (ι (rep c)))‖ₑ ∂μ ≠ ∞`. Introduce `c`. Use `ne_top_of_le_ne_top hΨ (lintegral_mono fun x => ?_)` and prove the remaining obligations. Establish `e1 : ∀ q : ι.range ⧸ (H c).subgroupOf ι.range, ‖χ ((q.out : G)⁻¹ * x) * φ (twConj θ ((q.out : G)⁻¹ * x) (ι (rep c)))‖ₑ = (fun d => ‖χ x * φ (twConj θ x (ι d))‖ₑ) (orbPt ι θR (rep c) q)`. Introduce `q`.
+
+Simplify using `only`. Rewrite using `[twConj_out ι θ θR hθ, ← map_repR ι q, ← map_inv, hχi]`. Repeatedly rewrite using `[e1]`. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective (orbPt_injective (hH c)) _`. Establish `hterm : ∀ c, (quotIntegral μ (H c) Measure.count fun x => χ x * φ (twConj θ x (ι (rep c)))) = ∫ x in Fd, ∑' q : ι.range ⧸ (H c).subgroupOf ι.range, χ ((q.out : G)⁻¹ * x) * φ (twConj θ ((q.out : G)⁻¹ * x) (ι (rep c))) ∂μ` using `fun c => by haveI := hdisc c`.
+
+Conclude with `GlobalTheory.CompanionTheory.QuotUnfold.quotIntegral_unfold (hle c) hFd (hFm c) (hFH c) (hint c)`. Establish `hzero : ∀ c, c ∉ T → (quotIntegral μ (H c) Measure.count fun x => χ x * φ (twConj θ x (ι (rep c)))) = 0`. Introduce `c hc`. Establish `: (fun x => χ x * φ (twConj θ x (ι (rep c)))) = fun _ => 0`. Use function extensionality and compare the values at `x`.
+
+Assume the negation of the conclusion as `h`. Use `hc ?_` and prove the remaining obligations. Use `hT x (rep c) h` as an intermediate fact. Rewrite `this` using `[((hcls c (rep c)).2 ⟨1, by simp [twConj]⟩)]`. Then use the resulting hypothesis. Rewrite using `[this]`.
+
+Unfold `quotIntegral`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hsub : (support fun c => quotIntegral μ (H c) Measure.count fun x => χ x * φ (twConj θ x (ι (rep c)))) ⊆ T` using `fun c hc => by`. Assume the negation of the conclusion as `h`. Conclude with `hc (hzero c h)`.
+
+Use `⟨T.finite_toSet.subset hsub, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_support_subset _ hsub]`. Establish `hdec : ∀ x, χ x * ∑ᶠ d : R, φ (twConj θ x (ι d)) = ∑ c ∈ T, ∑' q : ι.range ⧸ (H c).subgroupOf ι.range, χ ((q.out : G)⁻¹ * x) * φ (twConj θ ((q.out : G)⁻¹ * x) (ι (rep c)))` using `fun x => kernel_decomp hι hθ hcls hH hχi x (hsing x) T (hT x)`. Repeatedly rewrite using `[hdec]`. Rewrite using `[integral_finset_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => (hterm c).symm`. Introduce `c _ haveI := hdisc c`. Conclude with `GlobalTheory.CompanionTheory.QuotUnfold.integrableOn_unfold (hFm c) (hint c)`.
+-/
 theorem unfold_abs [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] [Countable R] {μ : Measure G} [μ.IsMulLeftInvariant] [SFinite μ]
     [IsFiniteMeasureOnCompacts μ] (hι : Injective ι) [DiscreteTopology ι.range] (hθ : ∀ r, ι (θR r) = θ (ι r))

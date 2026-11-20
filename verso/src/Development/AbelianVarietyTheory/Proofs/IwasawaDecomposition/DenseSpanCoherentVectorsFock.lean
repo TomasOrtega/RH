@@ -12,6 +12,9 @@ namespace GlobalTheory.CoherentDense
 
 open MvPolynomial
 
+/- English proof (translation)
+Establish `h1 : HasFPowerSeriesAt (0 : ℂ → ℂ) (FormalMultilinearSeries.ofScalars ℂ a) 0`. Rewrite using `[hasFPowerSeriesAt_iff]`. Conclude with `Filter.Eventually.of_forall fun t => by`. Simplify `h t` using `[FormalMultilinearSeries.coeff_ofScalars]`. Conclude with `(FormalMultilinearSeries.ofScalars_series_eq_zero ℂ).1 h1.eq_zero`.
+-/
 theorem eq_zero_of_hasSum_pow (a : ℕ → ℂ) (h : ∀ t : ℂ, HasSum (fun n => t ^ n * a n) 0) : a = 0 := by
   have h1 : HasFPowerSeriesAt (0 : ℂ → ℂ) (FormalMultilinearSeries.ofScalars ℂ a) 0 := by
     rw [hasFPowerSeriesAt_iff]
@@ -19,6 +22,17 @@ theorem eq_zero_of_hasSum_pow (a : ℕ → ℂ) (h : ∀ t : ℂ, HasSum (fun n 
       simpa [FormalMultilinearSeries.coeff_ofScalars] using h t
   exact (FormalMultilinearSeries.ofScalars_series_eq_zero ℂ).1 h1.eq_zero
 
+/- English proof (translation)
+Set `S : ℕ → Finset (σ →₀ ℕ)` to `fun n => (Finsupp.finite_of_degree_eq (σ := σ) n).toFinset`. Establish `hS : ∀ n α, α ∈ S n ↔ α.degree = n` using `fun n α => by simp [S]`. Establish `key : ∀ n, (∑ α ∈ S n, monomial α (c α) : MvPolynomial σ ℂ) = 0`. Introduce `n`. Use `MvPolynomial.funext fun x => ?_` and prove the remaining obligations.
+
+Establish `h1 : (fun m => eval x (∑ α ∈ S m, monomial α (c α) : MvPolynomial σ ℂ)) = 0`. Use `eq_zero_of_hasSum_pow _ fun t => ?_` and prove the remaining obligations. Establish `h2` using `(h (t • x)).tsum_fiberwise (fun α => α.degree)`. Use `h2.congr_fun fun m => ?_` and prove the remaining obligations. Establish `e : ((fun α : σ →₀ ℕ => α.degree) ⁻¹' {m}) = (S m : Set (σ →₀ ℕ))`.
+
+Use extensionality with `α`. Simplify using `[hS]`. Rewrite using `[e, Finset.tsum_subtype' (S m) (fun α : σ →₀ ℕ => c α * α.prod fun l k => (t • x) l ^ k), map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite using `[eval_monomial, ← (hS m α).1 hα, Finsupp.degree_apply, ← Finset.prod_pow_eq_pow_sum]`.
+
+Simplify using `only [Finsupp.prod, Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `using congrFun h1 n`. Use function extensionality and compare the values at `α`. Establish `h3` using `congrArg (coeff α) (key α.degree)`.
+
+Rewrite `h3` using `[coeff_sum, Finset.sum_eq_single α (fun β _ hβ => by simp [coeff_monomial, hβ]) (fun hα => absurd ((hS _ α).2 rfl) hα)]`. Simplify using `using h3`.
+-/
 theorem eq_zero_of_hasSum_monomial {σ : Type} [Fintype σ] (c : (σ →₀ ℕ) → ℂ)
     (h : ∀ x : σ → ℂ, HasSum (fun α : σ →₀ ℕ => c α * α.prod fun l k => x l ^ k) 0) : c = 0 := by
   classical
@@ -46,6 +60,15 @@ theorem eq_zero_of_hasSum_monomial {σ : Type} [Fintype σ] (c : (σ →₀ ℕ)
     (fun hα => absurd ((hS _ α).2 rfl) hα)] at h3
   simpa using h3
 
+/- English proof (translation)
+Establish `hdeg : (α.sum fun _ e => e) = α.degree`. Rewrite using `[Finsupp.degree_apply]`. Both sides reduce to the same expression. Rewrite using `[MvPowerSeries.coeff_apply, expPS, Finset.sum_eq_single α.degree]`. Rewrite using `[coeff_linearCombination_X_pow_of_fintype, if_pos hdeg]`.
+
+Establish `hs : (α.prod fun _ k => k.factorial) * α.multinomial = α.degree.factorial`. Rewrite using `[Finsupp.multinomial_eq, Finsupp.degree_apply, ← Nat.multinomial_spec]`. Both sides reduce to the same expression. Establish `hs' : α.prod (fun _ k => (k.factorial : ℂ)) * (α.multinomial : ℂ) = (α.degree.factorial : ℂ)`. Rewrite using `[← hs]`.
+
+Simplify using `[Finsupp.prod]`. Establish `h0 : (α.degree.factorial : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Rewrite using `[← mul_div_assoc, ← mul_assoc, hs', mul_div_cancel_left₀ _ h0]`. Introduce `k _ hk`. Rewrite using `[coeff_linearCombination_X_pow_of_fintype, if_neg (by rw [hdeg]; exact Ne.symm hk), zero_div]`.
+
+Introduce `h`. Conclude with `absurd (Finset.self_mem_range_succ _) h`.
+-/
 theorem factorial_mul_coeff_expPS {σ : Type} [Fintype σ] (x : σ → ℂ) (α : σ →₀ ℕ) :
     α.prod (fun _ k => (k.factorial : ℂ)) * MvPowerSeries.coeff α (expPS (∑ l, x l • X l)) =
       α.prod fun l k => x l ^ k := by
@@ -65,6 +88,11 @@ theorem factorial_mul_coeff_expPS {σ : Type} [Fintype σ] (x : σ → ℂ) (α 
   · intro h
     exact absurd (Finset.self_mem_range_succ _) h
 
+/- English proof (translation)
+Use `F.dense.eq_zero_of_inner_left ℂ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `add f g hf hg => rw [map_add, inner_add_right, hf, hg, add_zero]`. Consider the case `monomial β c`.
+
+Establish `e : (monomial β c : MvPolynomial σ ℂ) = c • monomial β 1` using `by simp [smul_monomial]`. Rewrite using `[e, map_smul, inner_smul_right, h, mul_zero]`.
+-/
 theorem eq_zero_of_inner_monomial {σ : Type} [DecidableEq σ] (F : Fock σ) (u : F.H)
     (h : ∀ α, inner ℂ u (F.ι (monomial α 1)) = 0) : u = 0 := by
   refine F.dense.eq_zero_of_inner_left ℂ ?_
@@ -75,6 +103,21 @@ theorem eq_zero_of_inner_monomial {σ : Type} [DecidableEq σ] (F : Fock σ) (u 
     have e : (monomial β c : MvPolynomial σ ℂ) = c • monomial β 1 := by simp [smul_monomial]
     rw [e, map_smul, inner_smul_right, h, mul_zero]
 
+/- English proof (translation)
+Set `m : (σ →₀ ℕ) → ℝ` to `fun α => α.prod fun _ k => (k.factorial : ℝ)`. Establish `hm : ∀ α, 0 < m α` using `fun α => Finset.prod_pos fun _ _ => Nat.cast_pos.2 (Nat.factorial_pos _)`. Establish `hm' : ∀ α : σ →₀ ℕ, α.prod (fun _ k => (k.factorial : ℂ)) = (m α : ℂ)` using `fun α => by`. Simplify using `[m, Finsupp.prod]`. Set `r : (σ →₀ ℕ) → ℂ` to `fun α => (((√(m α))⁻¹ : ℝ) : ℂ)`.
+
+Establish `hr : ∀ α, (starRingEnd ℂ) (r α) = r α` using `fun α => Complex.conj_ofReal _`. Establish `hr2 : ∀ α, r α * r α = (m α : ℂ)⁻¹` using `fun α => by`. Simplify using `only [r]`. Rewrite using `[← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (hm α).le, Complex.ofReal_inv]`. Establish `hm0 : ∀ α, (m α : ℂ) ≠ 0` using `fun α => by exact_mod_cast (hm α).ne'`.
+
+Establish `hr0 : ∀ α, r α ≠ 0` using `fun α h => inv_ne_zero (hm0 α) (by rw [← hr2, h, mul_zero])`. Set `b : (σ →₀ ℕ) → F.H` to `fun α => r α • F.ι (monomial α 1)`. Establish `hb : Orthonormal ℂ b`. Rewrite using `[orthonormal_iff_ite]`. Introduce `α β`.
+
+Simplify using `only [b, inner_smul_left, inner_smul_right, F.fockIP, hr]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[← mul_assoc, hr2, hm', inv_mul_cancel₀ (hm0 α)]`. Simplify using the standard rewrite rules.
+
+Establish `hsp : (Submodule.span ℂ (Set.range b))ᗮ = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `w hw`. Use `eq_zero_of_inner_monomial F w fun α => ?_` and prove the remaining obligations. Use `Submodule.inner_left_of_mem_orthogonal (Submodule.subset_span (Set.mem_range_self α)) hw` as an intermediate fact.
+
+Simplify `this` using `[b, inner_smul_right, hr0]`. Establish `h` using `(HilbertBasis.mkOfOrthogonalEqBot hb hsp).hasSum_inner_mul_inner u v`. Use `h.congr_fun fun α => ?_` and prove the remaining obligations. Rewrite using `[HilbertBasis.coe_mkOfOrthogonalEqBot]`. Simplify using `only [b, inner_smul_left, inner_smul_right, hr, hm', div_eq_mul_inv, ← hr2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasSum_inner {σ : Type} [DecidableEq σ] (F : Fock σ) (u v : F.H) :
     HasSum (fun α : σ →₀ ℕ => inner ℂ u (F.ι (monomial α 1)) / α.prod (fun _ k => (k.factorial : ℂ)) *
       inner ℂ (F.ι (monomial α 1)) v) (inner ℂ u v) := by
@@ -114,6 +157,13 @@ end GlobalTheory.CoherentDense
 
 open GlobalTheory.CoherentDense in
 
+/- English proof (translation)
+Introduce `P Q F e he`. Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top, Submodule.topologicalClosure_eq_top_iff, Submodule.eq_bot_iff]`. Introduce `u hu`. Establish `hg : ∀ x : Ix P Q → ℂ, gaussPoly (0 : Matrix (Fin P) (Fin Q) ℂ) x = ∑ l, x l • MvPolynomial.X l` using `fun x => by`. Simplify using `[gaussPoly, MvPolynomial.smul_eq_C_mul]`.
+
+Establish `h` using `eq_zero_of_hasSum_monomial (fun α => inner ℂ u (F.ι (MvPolynomial.monomial α 1)) / α.prod (fun _ k => (k.factorial : ℂ))) fun x => by`. Establish `h1` using `hasSum_inner F u (e x)`. Rewrite `h1` using `[Submodule.inner_left_of_mem_orthogonal (Submodule.subset_span (Set.mem_range_self x)) hu]`. Simplify `h1` using `only [he x _, hg, factorial_mul_coeff_expPS]`. Use `eq_zero_of_inner_monomial F u fun α => ?_` and prove the remaining obligations.
+
+Establish `h2` using `congrFun h α`. Establish `h0 : α.prod (fun _ k => (k.factorial : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Simplify `h2` using `[h0]`.
+-/
 theorem GlobalTheory.dense_span_coherent : ∀ (P Q : ℕ) (F : Fock (Ix P Q)) (e : (Ix P Q → ℂ) → F.H), (∀ x, HasCoeff F (e x) (expPS (gaussPoly (0 : Matrix (Fin P) (Fin Q) ℂ) x))) → Dense (Submodule.span ℂ (Set.range e) : Set F.H) := by
   intro P Q F e he
   rw [Submodule.dense_iff_topologicalClosure_eq_top, Submodule.topologicalClosure_eq_top_iff,

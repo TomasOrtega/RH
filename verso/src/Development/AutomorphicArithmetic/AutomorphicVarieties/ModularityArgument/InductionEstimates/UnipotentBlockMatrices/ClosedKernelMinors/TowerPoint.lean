@@ -8,6 +8,19 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Rewrite using `[← (Equiv.sigmaFiberEquiv (fun γ : Γ => (Quotient.mk (QuotientGroup.rightRel P) γ))).tsum_eq, ENNReal.tsum_sigma']`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Take `⟨⟨δ, hδ⟩, hδE, huniq⟩` from `hE (((q.out : Γ) : G) * y)`. Take `⟨p, hp, rfl⟩` from `Subgroup.mem_map.1 hδ`. Establish `hmk : Quotient.mk (QuotientGroup.rightRel P) (p * q.out) = q` using `by conv_rhs => rw [← Quotient.out_eq q]`.
+
+Use `Quotient.sound ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(QuotientGroup.rightRel P) _ _`. Rewrite using `[QuotientGroup.rightRel_apply]`. Simplify using `using P.inv_mem hp`. Establish `hδE' : (p : G) * (((q.out : Γ) : G) * y) ∈ E` using `hδE`.
+
+Rewrite using `[tsum_eq_single ⟨p * q.out, hmk⟩]`. Simplify using `only [Equiv.sigmaFiberEquiv_apply, Subgroup.coe_mul, mul_assoc]`. Rewrite using `[indicator_of_mem hδE']`. Conclude with `hΨ _ hδ _`. Introduce and unpack `⟨γ, hγ⟩ hne`.
+
+Simplify using `only [Equiv.sigmaFiberEquiv_apply]`. Use `indicator_of_notMem (fun hmem => hne ?_) _` and prove the remaining obligations. Establish `hrel : (QuotientGroup.rightRel P) q.out γ`. Use `Quotient.exact ?_` and prove the remaining obligations. Rewrite using `[Quotient.out_eq, hγ]`.
+
+Rewrite `hrel` using `[QuotientGroup.rightRel_apply]`. Establish `h1` using `huniq ⟨((γ * q.out⁻¹ : Γ) : G), Subgroup.mem_map.2 ⟨_, hrel, rfl⟩⟩ (by`. Express the relevant statement in the definitionally equal form `((γ * q.out⁻¹ : Γ) : G) * (((q.out : Γ) : G) * y) ∈ E`. Simplify `hmem)` using `[mul_assoc]`. Establish `h2 : γ * q.out⁻¹ = p` using `Subtype.ext (congrArg (fun z : P.map Γ.subtype => (z : G)) h1)`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `γ = p * q.out`. Rewrite using `[← h2]`. Simplify using the standard rewrite rules.
+-/
 private theorem tower_point {G : Type*} [Group G] (Γ : Subgroup G) (P : Subgroup Γ) (E : Set G)
     (hE : ∀ x : G, ∃! γ : P.map Γ.subtype, γ • x ∈ E) (Ψ : G → ℝ≥0∞)
     (hΨ : ∀ γ ∈ P.map Γ.subtype, ∀ g, Ψ (γ * g) = Ψ g) (y : G) :
@@ -45,6 +58,11 @@ private theorem tower_point {G : Type*} [Group G] (Γ : Subgroup G) (P : Subgrou
     change γ = p * q.out
     rw [← h2]; simp
 
+/- English proof (translation)
+Introduce `K _ _ μ _ E hEm hE Ψ hΨm hΨ`. Use `haveI : Countable (Gam K (2 + 2)) := inferInstance`. Establish `hD` using `isFundamentalDomain_fundamentalDomain (Gam K (2 + 2)) μ`. Rewrite using `[← lintegral_indicator hEm, hD.lintegral_eq_tsum'', ← lintegral_tsum]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+
+Conclude with `(tower_point (Gam K (2 + 2)) (ParΓ K 2 2) E hE Ψ hΨ y).symm`. Introduce `γ`. Conclude with `((hΨm.indicator hEm).comp (measurable_const_mul (γ : G1 K (2 + 2)))).aemeasurable`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.tower :
     ∀ {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (E : Set (G1 K (2 + 2))), MeasurableSet E → (∀ x : G1 K (2 + 2), ∃! γ : PK K, γ • x ∈ E) →
       ∀ Ψ : G1 K (2 + 2) → ℝ≥0∞, Measurable Ψ → (∀ γ ∈ PK K, ∀ g, Ψ (γ * g) = Ψ g) →

@@ -16,6 +16,11 @@ open GlobalTheory.Poinc.Sep
 
 namespace GlobalTheory.Poinc.Sep
 
+/- English proof (translation)
+Take `⟨N, -, -, -, hS⟩` from `h`. Take `⟨S, hS⟩` from `hS 1`. Establish `h1` using `Submodule.smul_mono (le_refl (I ^ 1)) (le_top : N ≤ ⊤) (hS (insert i₀ S) (Finset.subset_insert _ _))`. Rewrite `h1` using `[pow_one, smul_eq_mul, Ideal.mul_top, ← Finset.add_sum_erase _ _ (Finset.mem_insert_self i₀ S)]`. Establish `h2 : ∑ j ∈ (insert i₀ S).erase i₀, y j ∈ I` using `Submodule.sum_mem _ fun j hj => hy j (Finset.ne_of_mem_erase hj)`.
+
+Use `add_mem h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sub_mem_of_sumI {V Ix : Type} [CommRing V] {I : Ideal V} {y : Ix → V} {v : V} (h : SumI I y v) (i₀ : Ix)
     (hy : ∀ j, j ≠ i₀ → y j ∈ I) : v - y i₀ ∈ I := by
   classical
@@ -29,6 +34,9 @@ theorem sub_mem_of_sumI {V Ix : Type} [CommRing V] {I : Ideal V} {y : Ix → V} 
   convert this using 1
   ring
 
+/- English proof (translation)
+Take `⟨x, fr, th, w₀, s, g', w, -, -, hth, -, hs, hc, hT⟩` from `h`. Use `(hc c).2.2 1 le_rfl (w c) (fun z J _ => (pow_one _).symm) (hc c).2.1 th s _ hs (hth (lab c))` as an intermediate fact. Use `this using 2 with χ` and compare the differences between its conclusion and the goal. Rewrite using `[hT, AddEquiv.apply_symm_apply]`.
+-/
 private theorem sum_terms_universal_member {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
     {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V} {X : Type} [AddCommGroup X]
@@ -42,6 +50,15 @@ private theorem sum_terms_universal_member {g n : ℕ} {F : SFam g n (zetaAway n
   convert this using 2 with χ
   rw [hT, AddEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ z₁ act x₀ hd V _ _ _ ev X _ m t δ 𝔪 C lab hlab T hT c r hr`. Use `haveI : IsNoetherianRing V := 𝔪.cn.1`. Use `haveI : IsLocalHom ev := 𝔪.loc`. Establish `hθ` using `UMem.yK_th_ne_zero g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x₀ hd`. Establish `sp : ∀ w, X₁.M.Z.fromSpecStalk z₁ w ⤳ z₁` using `fun w => by`.
+
+Establish `: X₁.M.Z.fromSpecStalk z₁ w ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hd'` using `hd.of_specializes (ξ := (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint (FractionRing V))) (sp _)`. Establish `hs : ∀ w, (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) w ⤳ (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint (FractionRing V))` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ _)`. Establish `e` using `RatModel.val_mul hs (hd'.2 (lab c)) (𝔪.reg _ (X₁.S.th_mem x₀))`.
+
+Rewrite `e` using `[div_mul_cancel₀ _ hd.1, ← hr, TwistSum₂.val_stalkHom]`. Establish `e' : 𝔪.yK ⟨X₁.S.th (lab c), X₁.S.th_mem _⟩ = algebraMap V (FractionRing V) (ev r) * 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩`. Rewrite using `[𝔪.yK_eq, 𝔪.yK_eq]`. Conclude with `e`. Establish `hS` using `sum_terms_universal_member 𝔪 hT c`.
+
+Rewrite `hS` using `[e']`. Establish `hI` using `TwistSum₂.sumI_of_sumF_mul (fun χ => T (𝔪.e₈.symm χ) c) (ev r) _ hθ hS`. Use `sub_mem_of_sumI hI 0 fun j hj => GlobalTheory.T.thetaModelMember_term_mem_maximalIdeal g n F W Z i X₁ z₁ act x₀ hd V ev X m t δ 𝔪 C lab hlab T hT c _ (𝔪.e₈.symm.map_ne_zero_iff.2 hj)` as an intermediate fact. Simplify `this` using `only [map_zero]`.
+-/
 theorem UMem.const_term_sub_mem : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V1 : Type) [CommRing V1] [IsDomain V1] [IsLocalRing V1] (ev1 : X₁.M.Z.presheaf.stalk z₁ →+* V1) (Y1 : Type) [AddCommGroup Y1] (m1 : ℕ) (t1 : Fin m1 → V1) (δ1 : Fin m1 → LinearMap.BilinForm ℤ Y1) (𝔪1 : UMem X₁ z₁ act V1 ev1 Y1 t1 δ1) (C : Type) (lab : C → X₁.S.Gam), (∀ c, lab c ∈ X₁.S.HH X₁.M z₁) → ∀ T : (Fin 8 → Y1) → C → V1, 𝔪1.Terms x₀ lab T → ∀ (c : C) (r : X₁.M.Z.presheaf.stalk z₁), X₁.M.stalkHom z₁ r = X₁.S.th (lab c) / X₁.S.th x₀ → ev1 r - T 0 c ∈ maximalIdeal V1 := by
   intro g n F W Z i X₁ z₁ act x₀ hd V _ _ _ ev X _ m t δ 𝔪 C lab hlab T hT c r hr
   haveI : IsNoetherianRing V := 𝔪.cn.1

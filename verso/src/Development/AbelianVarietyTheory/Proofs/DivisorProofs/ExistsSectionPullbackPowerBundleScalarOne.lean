@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.SecRestr
 
+/- English proof (translation)
+Introduce `X₂ Y L₂ f₂ k σ`. Use `⟨ReciprocityTheory.ChartRestriction.G.DVR.TG.pullSec' L₂ _ _ σ f₂ (fun _ => f₂) (fun _ => (Category.comp_id _).symm), ?_⟩` and prove the remaining obligations. Introduce `j₁ j₂ hc`. Establish `hj : j₁ = j₂` using `funext fun i => by`. Rewrite using `[Subsingleton.elim i 0]`.
+
+Conclude with `hc (Sum.inl 0) (Sum.inr 0) (Category.comp_id _).symm`. Substitute `hj` using the available equality. Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.TG.pullSec'_f]`. Establish `h1 : ReciprocityTheory.ChartRestriction.G.Out.resTop (LB.wchart L₂ (fun _ : Fin 1 => f₂) j₁ ⊓ LB.wchart L₂ (fun _ : Fin 1 => f₂ ≫ 𝟙 X₂) j₁) (1 : Γ(Y, ⊤)) = 1` using `map_one _`. Rewrite using `[h1, _root_.one_mul, ← CommRingCat.comp_apply, ← Functor.map_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_restr : ∀ (X₂ Y : Scheme.{0}) (L₂ : LB X₂) (f₂ : Y ⟶ X₂) (k : ℕ) (σ : SecM (𝟙 X₂) L₂ k), ∃ s : LB.Sec (LB.LinComb L₂ (K := Fin 1) (fun _ => f₂) (fun _ => (k : ℤ))), GeneratorPullback.SecScal L₂ (fun _ : Fin 1 => f₂) (fun _ => (k : ℤ)) s (fun _ : Fin 1 => 𝟙 X₂) (fun _ => (k : ℤ)) σ f₂ 1 := by
   intro X₂ Y L₂ f₂ k σ
   refine ⟨ReciprocityTheory.ChartRestriction.G.DVR.TG.pullSec' L₂ _ _ σ f₂ (fun _ => f₂) (fun _ => (Category.comp_id _).symm), ?_⟩

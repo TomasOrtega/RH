@@ -19,12 +19,18 @@ def mapComp {F F' F'' : B.Fn O} (u : B.Fn.Map F F') (v : B.Fn.Map F' F'') : B.Fn
   ov h := v.ov (u.ov h)
 
 omit [CommRing O] in
+/- English proof (translation)
+Consider the cases of `u`. Consider the cases of `v`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem map_ext [CommRing O] {F F' : B.Fn O} {u v : B.Fn.Map F F'} (h : u.u = v.u) : u = v := by
   cases u
   cases v
   cases h
   rfl
 
+/- English proof (translation)
+Use `(cr_pull_eq (Wc.pullMor l ρ (mapId F) m) (CH.Mor.id _) (fun T => crHom (RingHom.id _) (fun _ => rfl) (DPMorphism.id _).isDPMorphism fun h => pt_id _ h _) (fun _ _ => rfl) (fun _ _ => rfl) j x).trans ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem pullMor_id (F : B.Fn O) (m j : ℕ) (x : CH.H (Wc.OM l F ρ m) j) : (Wc.pullMor l ρ (mapId F) m).pull j x = x := by
   refine (cr_pull_eq (Wc.pullMor l ρ (mapId F) m) (CH.Mor.id _)
     (fun T => crHom (RingHom.id _) (fun _ => rfl) (DPMorphism.id _).isDPMorphism fun h => pt_id _ h _)
@@ -32,21 +38,33 @@ theorem pullMor_id (F : B.Fn O) (m j : ℕ) (x : CH.H (Wc.OM l F ρ m) j) : (Wc.
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => Subtype.ext (funext fun m => pullMor_id l ρ F m j (x.1 m))`.
+-/
 theorem limS_id (F : B.Fn O) (j : ℕ) : (Wc.pullS l ρ (mapId F) j).lim = LinearMap.id :=
   LinearMap.ext fun x => Subtype.ext (funext fun m => pullMor_id l ρ F m j (x.1 m))
 
+/- English proof (translation)
+Unfold `Wc.pullD`. Rewrite using `[limS_id, LinearMap.baseChange_id]`. Both sides reduce to the same expression.
+-/
 theorem pullD_id (F : B.Fn O) (j : ℕ) (x : Wc.D l F ρ j) : Wc.pullD l ρ (mapId F) j x = x := by
   unfold Wc.pullD
   rw [limS_id, LinearMap.baseChange_id]
   rfl
 
 omit [Fact l.Prime] [Field k] [CharP k l] [PerfectRing k l] in
+/- English proof (translation)
+Use `map_ext ?_` and prove the remaining obligations. Use extensionality with `B₀ y`. Conclude with `Category.comp_id y`.
+-/
 theorem schMap_id {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (h : 𝟙 X ≫ q = q) :
     B.schMap (𝟙 X) h = mapId (B.schFn q) := by
   refine map_ext ?_
   ext B₀ y
   exact Category.comp_id y
 
+/- English proof (translation)
+Rewrite using `[schMap_id, pullD_id]`.
+-/
 theorem pullD_schMap_id {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (h : 𝟙 X ≫ q = q) (j : ℕ)
     (x : Wc.D l (B.schFn q) ρ j) : Wc.pullD l ρ (B.schMap (𝟙 X) h) j x = x := by
   rw [schMap_id, pullD_id]

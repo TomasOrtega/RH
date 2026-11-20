@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.ArithFnField
 
+/- English proof (translation)
+Introduce `k _ X _ p D h`. Use `⟨?_, ArithTrdeg.trdeg_functionField_eq h⟩` and prove the remaining obligations. Establish `hc0 : CharZero Γ(X, ⊤)` using `(flat_int_iff_charZero _).1 h.flat`. Conclude with `((X.germToFunctionField ⊤).hom.charZero_iff (X.germToFunctionField_injective ⊤)).1 hc0`.
+-/
 theorem charZero_and_trdeg_functionField : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     CharZero X.functionField ∧ Algebra.trdeg ℤ X.functionField = D := by

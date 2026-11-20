@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.VolMeasure
 
+/- English proof (translation)
+Introduce `D V hV`. Establish `hτ : GlobalTheory.Mem.Vol.IsCMFam (tauE D)` using `GlobalTheory.CMTypePlaces.mk_tauE_bijective D`. Take `⟨μ, hμ⟩` from `GlobalTheory.Mem.VolExists.exists_isVolMeasF _ _ D.sp.cm _ (tauE D) D.cd V hτ hV`. Conclude with `⟨μ, hμ, fun ν hν => GlobalTheory.Mem.VolUnique.volMeas_unique _ _ D.sp.cm _ (tauE D) D.cd V hτ hV ν μ hν hμ⟩`.
+-/
 theorem existsUnique_isVolMeasG : ∀ (D : D7) (V : HSp D), V.SigOK →
     ∃! μ, IsVolMeasG D V (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2) μ := by
   intro D V hV

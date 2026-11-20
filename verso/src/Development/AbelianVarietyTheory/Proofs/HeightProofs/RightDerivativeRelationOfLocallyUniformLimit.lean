@@ -7,6 +7,17 @@ open scoped Topology ContDiff
 
 namespace GlobalTheory.TypeSum.CoefClos
 
+/- English proof (translation)
+Establish `i0 : Integrable h μ` using `hh.integrable_of_hasCompactSupport hs`. Establish `i1 : Integrable h' μ` using `hh'.integrable_of_hasCompactSupport hs'`. Establish `pt : ∀ x, ∫ t in Set.Ioc (0 : ℝ) 1, h' (x * c t) = h (x * c 1) - h x`. Introduce `x`. Rewrite using `[← intervalIntegral.integral_of_le zero_le_one]`.
+
+Use `intervalIntegral.integral_eq_sub_of_hasDerivAt (a := 0) (b := 1) (f := fun t => h (x * c t)) (f' := fun t => h' (x * c t)) (fun r _ => ?_) ((hh'.comp (continuous_const.mul hc)).intervalIntegrable 0 1)` as an intermediate fact. Simplify `this` using `only [h0, mul_one]`. Establish `h1 : HasDerivAt (fun t => h (x * c r * c t)) (h' (x * c r)) (r - r)`. Rewrite using `[sub_self]`. Conclude with `hd _`.
+
+Establish `h2` using `h1.comp_sub_const r r`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc, ← hadd, add_sub_cancel]`. Establish `hint : Integrable (Function.uncurry fun (x : G) (t : ℝ) => h' (x * c t)) (μ.prod (volume.restrict (Set.Ioc (0 : ℝ) 1)))`. Establish `hcont : Continuous (Function.uncurry fun (x : G) (t : ℝ) => h' (x * c t))` using `hh'.comp (continuous_fst.mul (hc.comp continuous_snd))`.
+
+Rewrite using `[integrable_prod_iff' hcont.aestronglyMeasurable]`. Use `⟨Filter.Eventually.of_forall fun t => i1.comp_mul_right (c t), ?_⟩` and prove the remaining obligations. Simplify using `only [Function.uncurry_apply_pair, fun t => integral_mul_right_eq_self (μ := μ) (fun x => ‖h' x‖) (c t)]`. Conclude with `integrable_const _`. Establish `sw` using `integral_integral_swap hint`.
+
+Simplify using `only [pt, fun t => integral_mul_right_eq_self (μ := μ) h' (c t)] at sw`. Rewrite `sw` using `[integral_sub (i0.comp_mul_right _) i0, integral_mul_right_eq_self h, sub_self]`. Simplify using `using sw.symm`.
+-/
 theorem integral_rder_eq_zero {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [SFinite μ]
     [IsFiniteMeasureOnCompacts μ] [μ.IsMulRightInvariant] (c : ℝ → G) (hc : Continuous c) (h0 : c 0 = 1)
@@ -45,14 +56,32 @@ variable {n : ℕ} {ε : Fin n → Bool}
 noncomputable def mkU (g : Mx n) (hg : g ∈ UJset ε) : UJ ε :=
   ⟨(isUnit_of_UJ hg).unit, show inUJ ε _ from hg⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem umat_mkU (g : Mx n) (hg : g ∈ UJset ε) : umat (mkU g hg) = g := rfl
 
+/- English proof (translation)
+The claim follows from `(isClosedEmbeddingMatrix n ε).1`.
+-/
 theorem umat_emb (ε : Fin n → Bool) : Topology.IsClosedEmbedding (fun g : UJ ε => umat g) := (isClosedEmbeddingMatrix n ε).1
 
+/- English proof (translation)
+Take `⟨F, h1, -, h3⟩` from `h`. Conclude with `((h3 [] (by simp)).congr fun g hg => (h1 g hg).symm).comp_continuous (umat_emb ε).continuous fun g => g.2`.
+-/
 theorem CSm.continuous {f : Mx n → ℂ} (h : CSm ε f) : Continuous fun g : UJ ε => f (umat g) := by
   obtain ⟨F, h1, -, h3⟩ := h
   exact ((h3 [] (by simp)).congr fun g hg => (h1 g hg).symm).comp_continuous (umat_emb ε).continuous fun g => g.2
 
+/- English proof (translation)
+Use `letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin n) (α := ℂ)`. Establish `hφ' : ContDiff ℝ ∞ φ`. Set `L : Mx n →L[ℝ] (Fin n → Fin n → ℂ)` to `LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).symm.toLinearMap`. Conclude with `hφ.comp L.contDiff`.
+
+Set `F : List (Mx n) → Mx n → ℂ` to `fun l => l.foldr (fun X f g => fderiv ℝ f g (g * X)) φ`. Establish `hF : ∀ l, ContDiff ℝ ∞ (F l)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact hφ'`.
+
+Consider the case `cons X l ih`. Conclude with `(ih.fderiv_right (m := ∞) (by simp)).clm_apply (contDiff_id.mul contDiff_const)`. Use `⟨F, fun _ _ => rfl, fun l _ X _ g _ => ?_, fun l _ => (hF l).continuous.continuousOn⟩` and prove the remaining obligations. Establish `h1` using `(hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)).const_mul g`. Establish `h2 : HasFDerivAt (F l) (fderiv ℝ (F l) g) (g * NormedSpace.exp ((0 : ℝ) • X))`.
+
+Rewrite using `[zero_smul, NormedSpace.exp_zero, Matrix.mul_one]`. Conclude with `(((hF l).differentiable (by simp)) g).hasFDerivAt`. Establish `h3` using `h2.comp_hasDerivAt (0 : ℝ) h1`. Rewrite `h3` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `h3`.
+-/
 theorem cSm_of_contDiff (φ : Mx n → ℂ) (hφ : ContDiff ℝ ∞ (fun y : Fin n → Fin n → ℂ => φ (Matrix.of y))) :
     CSm ε φ := by
   letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)
@@ -79,10 +108,30 @@ theorem cSm_of_contDiff (φ : Mx n → ℂ) (hφ : ContDiff ℝ ∞ (fun y : Fin
 
 def IsTest (ε : Fin n → Bool) (φ : Mx n → ℂ) : Prop := CSm ε φ ∧ HasCompactSupport fun g : UJ ε => φ (umat g)
 
+/- English proof (translation)
+The claim follows from `(hφ.1.continuous.mul hF.continuous).integrable_of_hasCompactSupport hφ.2.mul_right`.
+-/
 theorem IsTest.integrable {φ F : Mx n → ℂ} (hφ : IsTest ε φ) (hF : CSm ε F) :
     Integrable (fun g : UJ ε => φ (umat g) * F (umat g)) (muG ε) :=
   (hφ.1.continuous.mul hF.continuous).integrable_of_hasCompactSupport hφ.2.mul_right
 
+/- English proof (translation)
+Use `haveI : (muG ε).IsMulRightInvariant := ⟨fun g => indefinite_unitary_unimodular n ε g⟩`. Break down `x with ⟨X, hX⟩ | ⟨k, hk⟩` into its components or cases. Set `c : ℝ → UJ ε` to `fun t => mkU (NormedSpace.exp (t • X)) (exp_mem_UJ hX t)`. Establish `hc : Continuous c` using `(umat_emb ε).isInducing.continuous_iff.2 (continuous_exp_smul X)`. Establish `h0 : c 0 = 1` using `(umat_emb ε).injective (by`.
+
+Express the relevant statement in the definitionally equal form `NormedSpace.exp ((0 : ℝ) • X) = 1`. Use the proof step `simp)`. Establish `hadd : ∀ a b, c (a + b) = c a * c b` using `fun a b => (umat_emb ε).injective (exp_add_smul X a b)`. Establish `ht : IsTest ε (rder X φ)`. Use `⟨hφ.1.rder hX, hφ.2.mono' fun g hg => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hn`. Apply `hg` to reduce the goal to its premises. Establish `h1` using `notMem_tsupport_iff_eventuallyEq.1 hn`. Establish `h2 : Filter.Tendsto (fun t => g * c t) (𝓝 0) (𝓝 g)`. Establish `h4 : Continuous fun t => g * c t` using `continuous_const.mul hc`.
+
+Simplify `h4.tendsto 0` using `only [h0, mul_one]`. Establish `h3 : (fun t : ℝ => φ (umat g * NormedSpace.exp (t • X))) =ᶠ[𝓝 0] fun _ => 0` using `h2.eventually h1`. Use `show deriv _ 0 = 0`. Rewrite using `[h3.deriv_eq, deriv_const]`. Use `⟨(-1 : ℂ) • rder X φ, ⟨ht.1.smul _, ht.2.mul_left⟩, fun F hF => ?_⟩` and prove the remaining obligations.
+
+Establish `key` using `integral_rder_eq_zero (muG ε) c hc h0 hadd (fun g => φ (umat g) * F (umat g)) (fun g => rder X φ (umat g) * F (umat g) + φ (umat g) * rder X F (umat g)) (hφ.1.continuous.mul hF.continuous) ((ht.1.continuous.mul hF.continuous).add (hφ.1.continuous.mul (hF.rder hX).continuous)) hφ. …`. Use `(hφ.1.hasDerivAt hX g.2).fun_mul (hF.hasDerivAt hX g.2)` as an intermediate fact. Simplify using `only [zero_smul, NormedSpace.exp_zero, Matrix.mul_one] at this`. Conclude with `this)`. Rewrite `key` using `[integral_add (ht.integrable hF) (hφ.integrable (hF.rder hX))]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, neg_mul, one_mul, integral_neg]`. Conclude with `eq_neg_of_add_eq_zero_right key`. Establish `hkU` using `K_le_UJ hk`. Establish `hk' : k⁻¹ ∈ Kset ε`. Use `((maximal_compact_facts n ε).2.2.2.2 _).2 ⟨inv_mem_UJ hkU, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.1 hk.1)]`. Conclude with `Unitary.star_mem hk.1`. Use `⟨fun g => φ (g * k⁻¹), ⟨hφ.1.rt hk', ?_⟩, fun F hF => ?_⟩` and prove the remaining obligations. Conclude with `hφ.2.comp_homeomorph (Homeomorph.mulRight (mkU k⁻¹ (K_le_UJ hk')))`. Rewrite using `[← integral_mul_right_eq_self (fun g : UJ ε => φ (umat g * k⁻¹) * F (umat g)) (mkU k hkU)]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show φ (umat g) * F (umat g * k) = φ (umat g * k * k⁻¹) * F (umat g * k)`. Rewrite using `[Matrix.mul_assoc, mul_inv_UJ hkU, Matrix.mul_one]`.
+-/
 theorem exists_adjoint_ltr (x : Ltr ε) {φ : Mx n → ℂ} (hφ : IsTest ε φ) : ∃ ψ, IsTest ε ψ ∧ ∀ F, CSm ε F →
     ∫ g : UJ ε, φ (umat g) * ltrF x F (umat g) ∂(muG ε) = ∫ g : UJ ε, ψ (umat g) * F (umat g) ∂(muG ε) := by
   haveI : (muG ε).IsMulRightInvariant := ⟨fun g => indefinite_unitary_unimodular n ε g⟩
@@ -128,6 +177,11 @@ theorem exists_adjoint_ltr (x : Ltr ε) {φ : Mx n → ℂ} (hφ : IsTest ε φ)
       show φ (umat g) * F (umat g * k) = φ (umat g * k * k⁻¹) * F (umat g * k)
       rw [Matrix.mul_assoc, mul_inv_UJ hkU, Matrix.mul_one]
 
+/- English proof (translation)
+Proceed by induction on `u with`. Consider the case `nil => exact fun hφ => ⟨_, hφ, fun _ _ => rfl⟩`. Consider the case `cons x u ih`. Introduce `φ hφ`. Take `⟨ψ, h1, h2⟩` from `exists_adjoint_ltr x hφ`.
+
+Take `⟨χ, h3, h4⟩` from `ih h1`. Conclude with `⟨χ, h3, fun F hF => (h2 _ (hF.wordF u)).trans (h4 F hF)⟩`.
+-/
 theorem exists_adjoint_word (u : List (Ltr ε)) : ∀ {φ : Mx n → ℂ}, IsTest ε φ → ∃ ψ, IsTest ε ψ ∧ ∀ F, CSm ε F →
     ∫ g : UJ ε, φ (umat g) * wordF u F (umat g) ∂(muG ε) = ∫ g : UJ ε, ψ (umat g) * F (umat g) ∂(muG ε) := by
   induction u with
@@ -138,6 +192,19 @@ theorem exists_adjoint_word (u : List (Ltr ε)) : ∀ {φ : Mx n → ℂ}, IsTes
     obtain ⟨χ, h3, h4⟩ := ih h1
     exact ⟨χ, h3, fun F hF => (h2 _ (hF.wordF u)).trans (h4 F hF)⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hy`. Establish `hc : Continuous fun g => (star (H y) * H g).re` using `by fun_prop`. Establish `hpos : 0 < (star (H y) * H y).re`. Rewrite using `[Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`. Check the signs of the components of the expression.
+
+Establish `hU : {g | 0 < (star (H y) * H g).re} ∈ 𝓝 y` using `(isOpen_lt continuous_const hc).mem_nhds hpos`. Establish `hemb : Topology.IsClosedEmbedding (fun g : UJ ε => (Matrix.of.symm (umat g) : Fin n → Fin n → ℂ))` using `umat_emb ε`. Rewrite `hU` using `[hemb.isInducing.nhds_eq_comap]`. Take `⟨V, hV, hVU⟩` from `Filter.mem_comap.1 hU`. Take `⟨φ, hφs, hφc, hφd, hφr, hφ1⟩` from `exists_contDiff_tsupport_subset (n := ⊤) hV`.
+
+Establish `hψ : Continuous fun g : UJ ε => φ (Matrix.of.symm (umat g))` using `hφd.continuous.comp hemb.continuous`. Establish `hψc : HasCompactSupport fun g : UJ ε => φ (Matrix.of.symm (umat g))` using `hφc.comp_isClosedEmbedding hemb`. Establish `ht : IsTest ε (fun g => (φ (Matrix.of.symm g) : ℂ))` using `⟨cSm_of_contDiff _ (Complex.ofRealCLM.contDiff.comp hφd), hψc.comp_left Complex.ofReal_zero⟩`. Establish `hi : Integrable (fun g : UJ ε => star (H y) * ((φ (Matrix.of.symm (umat g)) : ℂ) * H g)) (muG ε)` using `((ht.1.continuous.mul hH).integrable_of_hasCompactSupport ht.2.mul_right).const_mul _`. Establish `h1` using `integral_re hi`.
+
+Rewrite `h1` using `[integral_const_mul, h _ ht]`. Establish `h2 : 0 < ∫ g : UJ ε, φ (Matrix.of.symm (umat g)) * (star (H y) * H g).re ∂(muG ε)`. Use `(hψ.mul hc).integral_pos_of_hasCompactSupport_nonneg_nonzero (x := y) hψc.mul_right (fun g => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `h0 : φ (Matrix.of.symm (umat g)) = 0`. Simplify using `[h0]`.
+
+Conclude with `mul_nonneg (hφr ⟨_, rfl⟩).1 (le_of_lt (hVU (hφs (subset_tsupport _ h0))))`. Rewrite using `[hφ1, one_mul]`. Conclude with `hpos.ne'`. Use `h2.ne' ?_` and prove the remaining obligations. Simplify using `only [mul_left_comm (star (H y)), RCLike.re_to_complex, Complex.re_ofReal_mul] at h1`.
+
+Simplify using `using h1`.
+-/
 theorem eq_zero_of_test (H : UJ ε → ℂ) (hH : Continuous H)
     (h : ∀ φ, IsTest ε φ → ∫ g : UJ ε, φ (umat g) * H g ∂(muG ε) = 0) (y : UJ ε) : H y = 0 := by
   by_contra hy

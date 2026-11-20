@@ -16,6 +16,9 @@ def HModelAll : Prop :=
   ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (_hK : X.LevelSubgroupCharacter) (u : D.what₂.Word),
     X.MeasTie hb → X.LevelSubgroupNormalized → ∀ p : TypX X, HModelU X hb u p
 
+/- English proof (translation)
+The claim follows from `idxCountStep_of_models h`.
+-/
 theorem idxCountStep_of_modelAll (h : HModelAll) : IdxCountStep := idxCountStep_of_models h
 
 end PIW.MassDataColumns

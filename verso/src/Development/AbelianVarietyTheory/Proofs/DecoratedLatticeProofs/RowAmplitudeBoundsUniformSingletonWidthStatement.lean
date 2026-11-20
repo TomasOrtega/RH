@@ -42,5 +42,8 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLat
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S GlobalTheory.Core.Deg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AmpRecordGap.ampOn_singleton | exact GlobalTheory.AmpRecordGap.ampOn_singleton | (intros; apply GlobalTheory.AmpRecordGap.ampOn_singleton <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rowAmplitudeBoundsUniform_singleton_width : ∀ c : ℝ, AmpOn {c} := by
   first | exact @GlobalTheory.AmpRecordGap.ampOn_singleton | exact GlobalTheory.AmpRecordGap.ampOn_singleton | (intros; apply GlobalTheory.AmpRecordGap.ampOn_singleton <;> assumption)

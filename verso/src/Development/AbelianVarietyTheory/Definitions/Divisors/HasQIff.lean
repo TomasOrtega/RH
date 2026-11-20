@@ -43,6 +43,11 @@ def tauPair (τ : ℍ) : PeriodPair where
     subst hs
     exact ⟨rfl, by simpa using hre⟩
 
+/- English proof (translation)
+Take `⟨hone, hmul⟩` from `h`. Introduce `γ`. Use `Function.bijective_iff_has_inverse.mpr ⟨fun i => act i γ⁻¹, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show act (act i γ) γ⁻¹ = i`. Rewrite using `[hmul, mul_inv_cancel, hone]`.
+
+Use `show act (act i γ⁻¹) γ = i`. Rewrite using `[hmul, inv_mul_cancel, hone]`.
+-/
 theorem IsRAct.actBij {ι : Type} {act : ι → SL(2, ℤ) → ι} (h : IsRAct act) : ActBij act := by
   obtain ⟨hone, hmul⟩ := h
   intro γ
@@ -52,6 +57,11 @@ theorem IsRAct.actBij {ι : Type} {act : ι → SL(2, ℤ) → ι} (h : IsRAct a
   · show act (act i γ⁻¹) γ = i
     rw [hmul, inv_mul_cancel, hone]
 
+/- English proof (translation)
+Establish `key : ∀ (τ : ℍ) (n : ℕ), Complex.exp (2 * Real.pi * Complex.I * n * τ / N) = Complex.exp (2 * Real.pi * Complex.I * τ / N) ^ n`. Introduce `τ n`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [HasQ, key]`.
+-/
 theorem hasQ_iff (N : ℕ) (f : ℍ → ℂ) (a : ℕ → ℂ) :
     HasQ N f a ↔ ∀ τ : ℍ, HasSum (fun n : ℕ => a n * Complex.exp (2 * Real.pi * Complex.I * τ / N) ^ n) (f τ) := by
   have key : ∀ (τ : ℍ) (n : ℕ), Complex.exp (2 * Real.pi * Complex.I * n * τ / N)

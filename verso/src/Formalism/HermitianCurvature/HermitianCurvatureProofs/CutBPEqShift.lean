@@ -13,6 +13,15 @@ section poly
 variable {k r : ℕ} {Wq Wq' : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq']
 
+/- English proof (translation)
+Take `⟨n, c, L, hc, hAe⟩` from `hA`. Establish `hconst : ∀ i, B.CkOn ⊤ (B.GV k r) (fun _ : B.Mat k r => L i)` using `fun i _ _ => ⟨Set.univ, fun _ => L i, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`. Establish `hterm : ∀ i, B.CkOn ⊤ (B.GV k r) (fun g => c i g • L i)` using `fun i => (Formalism.FourierDecayAlt.P.CutBP.pd_good_of_poly (Wp := Wq) (Wq := Wq') (hc i)).1 _ (hconst i)`. Establish `hsum : ∀ s : Finset (Fin n), B.CkOn ⊤ (B.GV k r) (fun g => ∑ i ∈ s, c i g • L i)`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact fun _ _ => ⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun g _ _ => by simp⟩`. Consider the case `insert a s ha ih`. Establish `e : (fun g => ∑ i ∈ insert a s, c i g • L i) = (fun g => c a g • L a) + fun g => ∑ i ∈ s, c i g • L i`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[Finset.sum_insert ha]`. Rewrite using `[e]`. Conclude with `Formalism.FourierDecayAlt.P.B4.ckOn_add (hterm a) ih`. Establish `e : A = fun g => ∑ i, c i g • L i` using `funext hAe`. Rewrite using `[e]`.
+
+Conclude with `hsum Finset.univ`.
+-/
 theorem ckOn_of_polyOp {d : ℕ} {A : B.Mat k r → (Wq' →L[ℂ] Wq)} (hA : PolyOp d A) : B.CkOn ⊤ (B.GV k r) A := by
   obtain ⟨n, c, L, hc, hAe⟩ := hA
   have hconst : ∀ i, B.CkOn ⊤ (B.GV k r) (fun _ : B.Mat k r => L i) := fun i _ _ =>
@@ -63,6 +72,9 @@ structure ShiftAt {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
 
 attribute [instance] ShiftAt.iNp ShiftAt.iIp ShiftAt.iFp ShiftAt.iNm ShiftAt.iIm ShiftAt.iFm
 
+/- English proof (translation)
+Take `⟨C₄, c₃, Cc, Cc', h⟩` from `thmBpAt_eq hA hN Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Use `⟨C₄, c₃, Cc, Cc', ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p f b n₀ S Λ A₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hK hKN hχ hnnp hnnm hDDp hDDm hf hfA hth1 hth2 hth3 hexp hWGp hLGp hWGm hLGm hI5p hI5m hDp hDm hBdp hBdm`. Conclude with `h P Wp Wq S.Wqp S.Wqm S.up S.up' S.um S.um' p S.pp S.pm f S.Ap S.Am S.ApPt S.AmPt b Λ (A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - n₀) n₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ S.hzp S.hzp' S.hzm S.hzm' hK hKN hχ hnnp hnnm hDDp hDDm hf (ckOn_of_polyOp S.polyP) (ckOn_of_polyOp S.po …`.
+-/
 theorem thmBpAt_eq_of_shift (hA : P5.ThmPActual) (hN : NormAtShOfAmaps) (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃)
     (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :
     ∃ C₄ c₃ Cc Cc' : ℝ, ∀ (P : M.Par) (Wp Wq : Type)

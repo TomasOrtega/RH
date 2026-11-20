@@ -22,6 +22,11 @@ def toH (η : HeckeCharacter ℚ) : Formalism.L2.Host.HChar ℚ :=
       exact continuous_subtype_val.comp (η.continuous_toIdele.comp continuous_inv)
     · exact (congrArg Circle.toUnits (η.toIdele_diagonal k)).trans (map_one _)⟩
 
+/- English proof (translation)
+Establish `h1` using `norm_eq_absNorm_zpow_neg_ord v hx`. Establish `h2` using `normalizedAbv_eq_zpow v hx`. Rewrite `h2` using `[normalizedAbv_apply]`. Establish `hq : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)` using `by exact_mod_cast one_lt_absNorm_asIdeal v`. Use `zpow_right_injective₀ (by linarith) hq.ne' (h1.symm.trans h2)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_eq (v : Ad3.Pl) {x : Ad3.Qv v} (hx : x ≠ 0) : ord x = -WithZero.log (Valued.v x) := by
   have h1 := norm_eq_absNorm_zpow_neg_ord v hx
   have h2 := normalizedAbv_eq_zpow v hx
@@ -30,8 +35,18 @@ theorem ord_eq (v : Ad3.Pl) {x : Ad3.Qv v} (hx : x ≠ 0) : ord x = -WithZero.lo
   have := zpow_right_injective₀ (by linarith) hq.ne' (h1.symm.trans h2)
   omega
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem loc_eq (η : HeckeCharacter ℚ) (v : Ad3.Pl) (x : (Ad3.Qv v)ˣ) : (toH η).loc v x = localChar η v x := rfl
 
+/- English proof (translation)
+Establish `hu : Valued.v ((Formalism.L2.Host.atFin v (Formalism.L2.Host.unif v) : (Ad3.Qv v)ˣ) : Ad3.Qv v) = WithZero.exp (-1 : ℤ)` using `Formalism.L2.Host.unif_spec v`. Establish `h1 : ord ((Formalism.L2.Host.atFin v (Formalism.L2.Host.unif v) : (Ad3.Qv v)ˣ) : Ad3.Qv v) = 1`. Rewrite using `[ord_eq v (Units.ne_zero _), hu, WithZero.log_exp, neg_neg]`. Establish `hord : ord (((unifUnit (Ad3.Qv v)) * (Formalism.L2.Host.atFin v (Formalism.L2.Host.unif v))⁻¹ : (Ad3.Qv v)ˣ) : Ad3.Qv v) = 0`. Rewrite using `[ord_units_mul, ord_units_inv, h1, ord_unifUnit]`.
+
+Evaluate the numerical expressions. Establish `h2` using `isUnramifiedChar_iff.1 h _ hord`. Rewrite `h2` using `[map_mul, map_inv, mul_inv_eq_one]`. Use `show (toH η).loc v (Formalism.L2.Host.atFin v (Formalism.L2.Host.unif v)) = _`. Rewrite using `[loc_eq]`.
+
+Conclude with `h2.symm`.
+-/
 theorem val_eq {η : HeckeCharacter ℚ} {v : Ad3.Pl} (h : IsUnramifiedChar (localChar η v)) :
     (toH η).val v = localChar η v (unifUnit (Ad3.Qv v)) := by
   have hu : Valued.v ((Formalism.L2.Host.atFin v (Formalism.L2.Host.unif v) : (Ad3.Qv v)ˣ) : Ad3.Qv v) = WithZero.exp (-1 : ℤ) :=
@@ -47,13 +62,26 @@ theorem val_eq {η : HeckeCharacter ℚ} {v : Ad3.Pl} (h : IsUnramifiedChar (loc
   rw [loc_eq]
   exact h2.symm
 
+/- English proof (translation)
+Rewrite using `[Formalism.ConjugateSelfDual.normV, Ad3.pOf, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem normV_eq (v : Ad3.Pl) : Formalism.ConjugateSelfDual.normV v = Ad3.pOf v := by
   rw [Formalism.ConjugateSelfDual.normV, Ad3.pOf, Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
+/- English proof (translation)
+Simplify using `[UpperTheory.V.Af.algSat]`.
+-/
 theorem algSat_eq (n q : ℕ) (B : Multiset ℂˣ) :
     UpperTheory.V.Af.algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ) := by
   simp [UpperTheory.V.Af.algSat]
 
+/- English proof (translation)
+Rewrite `h` using `[algSat_eq]`. Establish `hcard` using `natDegree_multiset_prod_X_sub_C_eq_card (B.map fun α : ℂˣ => (((q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ))`. Rewrite `hcard` using `[h, map_zero, zero_mul, sub_zero, natDegree_X_pow_add_C, Multiset.card_map]`. Take `⟨α, β, rfl⟩` from `Multiset.card_eq_two.1 hcard.symm`. Use `⟨α, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Multiset.prod_cons, Multiset.prod_singleton] at h`. Use `set s : ℂ := (((q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) : ℝ) : ℂ) with hs`. Establish `hs0 : s ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos (Nat.cast_pos.2 hq) _).ne'`. Establish `h0` using `congrArg (eval 0) h`. Establish `h1` using `congrArg (eval 1) h`.
+
+Simplify using `only [eval_mul, eval_sub, eval_add, eval_pow, eval_X, eval_C] at h0 h1`. Establish `hsum : s * ((α : ℂ) + β) = 0` using `by linear_combination h0 - h1`. Establish `hab : (α : ℂ) + β = 0` using `(mul_eq_zero.1 hsum).resolve_left hs0`. Establish `hb : β = -α` using `Units.ext (by rw [Units.val_neg]; linear_combination hab)`. Rewrite using `[hb]`.
+-/
 theorem pair_of (q : ℕ) (hq : 0 < q) {B : Multiset ℂˣ} {c : ℂ}
     (h : ((UpperTheory.V.Af.algSat 2 q B).map fun b => X - C b).prod = X ^ 2 - C 0 * X + C c) :
     ∃ α : ℂˣ, B = {α, -α} := by

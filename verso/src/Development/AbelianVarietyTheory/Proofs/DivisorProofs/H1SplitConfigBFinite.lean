@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.IndLine
 
+/- English proof (translation)
+Introduce `r _ x`. Establish `e : tens (evI F) (⇑(0 : SInf F κ)) r = 0` using `by funext y; simp [tens]`. Rewrite using `[e]`. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `hasDerivAt_const _ _`.
+-/
 theorem actsD_zero_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (T : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) :
     ActsD (evI F) (fun t => ⇑(T t)) ⇑(0 : SInf F κ) ⇑(0 : SInf F κ) := by
@@ -26,6 +29,11 @@ theorem actsD_zero_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintyp
   simp only [map_zero, Pi.zero_apply]
   exact hasDerivAt_const _ _
 
+/- English proof (translation)
+Establish `hN` using `hG (LinearMap.ker φ) (fun v hv => LinearMap.mem_ker.2 (h0 v hv)) (fun γ hγ hu f hf f₁ h1 _ => LinearMap.mem_ker.2 (hφ.unip γ hγ hu f hf f₁ h1)) (fun γ hγ ⟨t, γ₁, hγ₁, hL⟩ f hf f₁ h1 hpf => by`. Take `⟨c, hc⟩` from `GlobalTheory.T.hecke_line_levi_eigenvalue F E σ B _ _ G.W G₁.W H' _ _ hC.hH' X.β hX ((a : ℝ) / 2) γ hγ γ₁ t hL`. Establish `e` using `hφ.lie γ hγ γ₁ hγ₁ t hL f hf f₁ h1 0 (zero_mem _) 0 (actsD_zero_zero (fun s => om₁ (1, γ₁ (Multiplicative.ofAdd s)))) (by rw [LinearMap.mem_ker.1 hpf, map_zero]) c hc`. Rewrite `e` using `[LinearMap.mem_ker.1 hpf, map_zero, smul_zero, add_zero]`. Conclude with `LinearMap.mem_ker.2 e)`.
+
+Conclude with `LinearMap.ker_eq_top.1 hN`.
+-/
 theorem eq_zero_of_pGen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : Base F E} {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b} {H : Plane E (b + 2) b}
     {H' : Plane E (a + (b + 2)) (a + b)} (hC : CfgB B G G₁ H H') {X : Chars F E} (hX : IsHecke F E X.β)
@@ -43,6 +51,11 @@ theorem eq_zero_of_pGen {F E : Type} [Field F] [NumberField F] [Field E] [Number
       exact LinearMap.mem_ker.2 e)
   exact LinearMap.ker_eq_top.1 hN
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ φ φ' hφ hφ'`. Take `⟨V, hV0, hVK, hV⟩` from `GlobalTheory.T.config_b_theta_nonvanishing hKP F E σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hG` using `GlobalTheory.T.config_b_theta_unfolding hKP F E σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ V hV0 hVK`. Establish `hX : IsHecke F E X.β` using `hM.triple.chars.heckeβ`. Break down `hV φ φ' hφ hφ' with h0 | ⟨c, hc⟩` into its components or cases.
+
+Conclude with `Or.inl (eq_zero_of_pGen hC hX hφ hG h0)`. Use `Or.inr ⟨c, ?_⟩` and prove the remaining obligations. Establish `e` using `eq_zero_of_pGen hC hX (GlobalTheory.T.config_b_theta_integrability hKP F E σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ φ φ' hφ hφ' c) hG (fun v hv => by rw [LinearMap.sub_apply, LinearMap.smul_apply, hc v hv, sub_self])`. Conclude with `sub_eq_zero.1 e`.
+-/
 theorem indLineInf_beta_of_isMatched : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

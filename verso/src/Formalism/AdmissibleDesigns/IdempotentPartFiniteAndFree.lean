@@ -20,6 +20,11 @@ section FinT
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X' d : Type} [Fintype d] [DecidableEq d]
   {R' : Subalgebra O (X' → Matrix d d (FractionRing O))}
 
+/- English proof (translation)
+Use `haveI hK : Module.IsTorsionFree O (FractionRing O) := inferInstance`. Use `haveI : Module.IsTorsionFree O (X' → Matrix d d (FractionRing O)) := Module.IsTorsionFree.mk fun r hr x y hxy => by`. Use function extensionality and compare the values at `a i j`. Establish `h` using `congrFun (congrFun (congrFun hxy a) i) j`. Conclude with `hK.isSMulRegular hr h`.
+
+Use `haveI : Module.IsTorsionFree O R' := inferInstance`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem rFree [Module.Finite O R'] : Module.Free O R' := by
   haveI hK : Module.IsTorsionFree O (FractionRing O) := inferInstance
   haveI : Module.IsTorsionFree O (X' → Matrix d d (FractionRing O)) :=
@@ -30,10 +35,18 @@ theorem rFree [Module.Finite O R'] : Module.Free O R' := by
   haveI : Module.IsTorsionFree O R' := inferInstance
   exact Module.free_of_finite_type_torsion_free'
 
+/- English proof (translation)
+Use `haveI : IsNoetherian O R' := isNoetherian_of_isNoetherianRing_of_finite O R'`. Conclude with `Module.Finite.of_injective (FirstSummandSubmodule O e₁).subtype Subtype.val_injective`.
+-/
 theorem idempotent_submodule_finite [Module.Finite O R'] (e₁ : R') : Module.Finite O (FirstSummandSubmodule O e₁) := by
   haveI : IsNoetherian O R' := isNoetherian_of_isNoetherianRing_of_finite O R'
   exact Module.Finite.of_injective (FirstSummandSubmodule O e₁).subtype Subtype.val_injective
 
+/- English proof (translation)
+Use `haveI := idempotent_submodule_finite (R' := R') e₁`. Use `haveI hK : Module.IsTorsionFree O (FractionRing O) := inferInstance`. Use `haveI : Module.IsTorsionFree O (X' → Matrix d d (FractionRing O)) := Module.IsTorsionFree.mk fun r hr x y hxy => by`. Use function extensionality and compare the values at `a i j`. Establish `h` using `congrFun (congrFun (congrFun hxy a) i) j`.
+
+Conclude with `hK.isSMulRegular hr h`. Use `haveI : Module.IsTorsionFree O R' := inferInstance`. Use `haveI : Module.IsTorsionFree O (FirstSummandSubmodule O e₁) := inferInstance`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem idempotent_submodule_free [Module.Finite O R'] (e₁ : R') : Module.Free O (FirstSummandSubmodule O e₁) := by
   haveI := idempotent_submodule_finite (R' := R') e₁
   haveI hK : Module.IsTorsionFree O (FractionRing O) := inferInstance
@@ -56,6 +69,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (π : D.nd.X i) (g0 : GE D.nd) (eB e₁ s : D.nd.X i → MatN D.nd i)
   (Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
 
+/- English proof (translation)
+Use `haveI := Formalism.MainNotions.N.K.Topo.finite_R' hD`. Conclude with `⟨idempotent_submodule_finite Dd.e₁, idempotent_submodule_free Dd.e₁⟩`.
+-/
 theorem idempotent_part_finite_and_free (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd) :
     Module.Finite (D.nd.O i) (FirstSummandSubmodule (D.nd.O i) Dd.e₁) ∧ Module.Free (D.nd.O i) (FirstSummandSubmodule (D.nd.O i) Dd.e₁) := by
   haveI := Formalism.MainNotions.N.K.Topo.finite_R' hD
@@ -70,6 +86,25 @@ def eL {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) :
       c * eK (D.nbr i _ hn) (show FractionRing (D.nd.O i) from k)
     rw [map_mul, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use `haveI := K.Topo.finite_RD i r π g0 eB e₁ s Dd hD`. Use `haveI : Module.Free (D.nd.O i) Dd.R' := rFree`. Use `haveI := K.Topo.rTop_isModuleTopology (D.nd.O i) Dd.R'`. Use `haveI := K.Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD`. Use `haveI := K.Topo.rTop_smul (D.nd.O i) Dd.R'`.
+
+Introduce `n _ hw c hc`. Set `b` to `Module.Free.chooseBasis (D.nd.O i) Dd.R'`. Establish `hco : ∀ j, Continuous fun γ => b.equivFun ((c γ : Dd.R')) j`. Introduce `j`. Set `f : FirstSummandSubmodule (D.nd.O i) Dd.e₁ →ₗ[D.nd.O i] FractionRing (D.nd.O i)` to `(Algebra.linearMap (D.nd.O i) (FractionRing (D.nd.O i))) ∘ₗ (b.coord j) ∘ₗ (FirstSummandSubmodule (D.nd.O i) Dd.e₁).subtype`.
+
+Set `ℓ` to `(eL i dc hw).comp (trL (eK (D.nbr i _ hw)) (liftK f))`. Establish `hℓ : Continuous ℓ` using `IsModuleTopology.continuous_of_linearMap ℓ`. Establish `h1 : Continuous fun g => eK (D.nbr i _ hw) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (b.coord j ((c (Br.iota D.nbr i _ hw g) : Dd.R'))))`. Establish `e1 : (fun g => eK (D.nbr i _ hw) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (b.coord j ((c (Br.iota D.nbr i _ hw g) : Dd.R'))))) = fun g => ℓ (KRow.tr (eK (D.nbr i _ hw)) (mkK (O` using `D.nd.O i) (c (Br.iota D.nbr i _ hw g)))) := by`. Use function extensionality and compare the values at `g`.
+
+Use `show _ = eK (D.nbr i _ hw) (liftK f (mkK (c (Br.iota D.nbr i _ hw g))))`. Rewrite using `[liftK_mkK]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `hℓ.comp hc`.
+
+Establish `h2 : Continuous fun g => (D.nbr i _ hw).eO (b.coord j ((c (Br.iota D.nbr i _ hw g) : Dd.R')))`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `e2 : ((↑) ∘ fun g => (D.nbr i _ hw).eO (b.coord j ((c (Br.iota D.nbr i _ hw g) : Dd.R')))) = fun g => eK (D.nbr i _ hw) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (b.coord j ((c (Br.iota D.nbr i _ hw g) : Dd.R'))))`. Use function extensionality and compare the values at `fun g => (Br.toLLK_alg (D.nbr i _ hw) _).symm`. Rewrite using `[e2]`.
+
+Conclude with `h1`. Establish `h3 : Continuous fun g => b.coord j ((c (Br.iota D.nbr i _ hw g) : Dd.R'))`. Use `(D.nbr i _ hw).eO_symm_cont.comp h2` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `heq : (fun γ => b.equivFun ((c γ : Dd.R')) j) = (fun g => b.coord j ((c (Br.iota D.nbr i _ hw g) : Dd.R'))) ∘ (Br.ιHomeo (D.nbr i _ hw)).symm`.
+
+Use function extensionality and compare the values at `γ`. Simplify using `only [Basis.equivFun_apply, Basis.coord_apply]`. Conclude with `congrArg (fun γ' => b.repr ((c γ' : Dd.R')) j) (((D.nbr i _ hw).e.symm_apply_apply γ).symm)`. Rewrite using `[heq]`. Conclude with `h3.comp (Br.ιHomeo (D.nbr i _ hw)).symm.continuous`.
+
+Establish `hv : Continuous fun γ => ((c γ : Dd.R'))`. Establish `e3 : (fun γ => ((c γ : Dd.R'))) = fun γ => b.equivFun.symm (fun j => b.equivFun ((c γ : Dd.R')) j)`. Use function extensionality and compare the values at `fun γ => (b.equivFun.symm_apply_apply _).symm`. Rewrite using `[e3]`. Conclude with `(IsModuleTopology.continuous_of_linearMap b.equivFun.symm.toLinearMap).comp (continuous_pi hco)`.
+
+Conclude with `continuous_induced_rng.2 hv`.
+-/
 theorem rowTop1_S (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd) :
     KRow.RowTop1 i dc (T₁ := FirstSummandSubmodule (D.nd.O i) Dd.e₁) := by
   haveI := K.Topo.finite_RD i r π g0 eB e₁ s Dd hD

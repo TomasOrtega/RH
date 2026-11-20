@@ -64,6 +64,13 @@ open AlgebraicGeometry CategoryTheory NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H}
   {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.IsHeckePrime`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hmax, hsplit, hM, hp, hpP⟩`. Use `⟨hmax, hsplit, hp, hpP, fun hdvd => hM ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hdvd`.
+
+Rewrite using `[hk, Nat.cast_mul]`. Conclude with `P.mul_mem_right _ hpP`. Introduce and unpack `⟨hmax, hsplit, hp, hpP, hndvd⟩`. Use `⟨hmax, hsplit, fun hM => hmax.ne_top ?_, hp, hpP⟩` and prove the remaining obligations. Establish `hcop : IsCoprime (p : ℤ) (l.M' : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.Prime.coprime_iff_not_dvd hp).mpr hndvd)`.
+
+Take `⟨u, v, huv⟩` from `hcop.map (Int.castRingHom (𝓞 E))`. Rewrite using `[Ideal.eq_top_iff_one, ← huv]`. Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `P.add_mem (P.mul_mem_left _ hpP) (P.mul_mem_left _ hM)`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.isHeckePrime_iff {P : Ideal (𝓞 E)} {p : ℕ} :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.IsHeckePrime l P p ↔ P.IsMaximal ∧ P ⊔ P.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ ∧
       p.Prime ∧ (p : 𝓞 E) ∈ P ∧ ¬ p ∣ l.M' := by
@@ -83,6 +90,9 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.isHec
     simp only [eq_intCast, Int.cast_natCast]
     exact P.add_mem (P.mul_mem_left _ hpP) (P.mul_mem_left _ hM)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (Xo : Moduli Dw l) (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     DetectAt Xo c a n ↔ ∀ g ∈ sec Xo c a n,
       (∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω), evR Xo c g y = 0) → g = 0 := Iff.rfl

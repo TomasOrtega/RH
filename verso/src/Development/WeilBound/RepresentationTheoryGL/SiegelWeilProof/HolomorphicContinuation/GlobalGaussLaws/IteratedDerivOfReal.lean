@@ -15,6 +15,11 @@ namespace PositivityTheory.Rg.Sw.Glob.DilCH
 
 variable {D : D7} {n : ℕ} {θ : InfFam D} {V : HSp D} {τ : D.what₂.Tau} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Take `⟨x, hxu, hxo, hxf⟩` from `DilBH.pointAt θ hθ τ fr hfr x₀ u`. Establish `hΨx : Ψ x = Ψ x₀` using `hΨ.1 x x₀ hxo hxf`. Use `congrFun h x` as an intermediate fact. Simplify using `only [tens, hxu, hΨx] at this`.
+
+Conclude with `mul_right_cancel₀ hx₀ this`.
+-/
 theorem tens_cancel (hθ : IsInfFam θ) (hfr : IsUnit fr.det) {Ψ : Mx D V.rank n → ℂ} (hΨ : AwayCls θ τ fr Ψ)
     {x₀ : Mx D V.rank n} (hx₀ : Ψ x₀ ≠ 0) {F G : (Fin V.rank → Fin n → ℂ) → ℂ}
     (h : tens θ τ fr F Ψ = tens θ τ fr G Ψ) : F = G := by
@@ -28,6 +33,11 @@ theorem tens_cancel (hθ : IsInfFam θ) (hfr : IsUnit fr.det) {Ψ : Mx D V.rank 
 variable {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} {ι : GR n →* G D n}
   {L : GR n → ((Fin V.rank → Fin n → ℂ) → ℂ) → ((Fin V.rank → Fin n → ℂ) → ℂ)}
 
+/- English proof (translation)
+Establish `h` using `hL.2 y Ψ hΨ (f - g) (SchwartzDifferenceQuotient.isSch_sub hf hg)`. Establish `e : (⟨tens θ τ fr (f - g) Ψ, hΨ.2 _ (SchwartzDifferenceQuotient.isSch_sub hf hg)⟩ : schwartzA θ V.rank n) = ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩ - ⟨tens θ τ fr g Ψ, hΨ.2 g hg⟩` using `Subtype.ext (by funext x; simp only [tens, Submodule.coe_sub]; show (f _ - g _) * _ = f _ * _ - g _ * _; ring)`. Rewrite `h` using `[e, map_sub, Submodule.coe_sub, hL.2 y Ψ hΨ f hf, hL.2 y Ψ hΨ g hg]`. Use `tens_cancel hθ hfr hΨ hx₀ ?_` and prove the remaining obligations. Rewrite using `[← h]`.
+
+Use function extensionality and compare the values at `x`. Use `show tens θ τ fr (L y f) Ψ x - tens θ τ fr (L y g) Ψ x = _`. Simplify using `only [tens]`. Use `show _ = (L y f _ - L y g _) * _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem L_sub (hL : IsLocFact ω τ fr ι L) (hθ : IsInfFam θ) (hfr : IsUnit fr.det) {Ψ : Mx D V.rank n → ℂ}
     (hΨ : AwayCls θ τ fr Ψ) {x₀ : Mx D V.rank n} (hx₀ : Ψ x₀ ≠ 0) (y : GR n) {f g : (Fin V.rank → Fin n → ℂ) → ℂ}
     (hf : IsSch f) (hg : IsSch g) : L y (f - g) = L y f - L y g := by
@@ -43,6 +53,11 @@ theorem L_sub (hL : IsLocFact ω τ fr ι L) (hθ : IsInfFam θ) (hfr : IsUnit f
   show _ = (L y f _ - L y g _) * _
   ring
 
+/- English proof (translation)
+Establish `h` using `hL.2 y Ψ hΨ _ (SchwartzDifferenceQuotient.isSch_smul a hf)`. Establish `e : (⟨tens θ τ fr (fun u => a * f u) Ψ, hΨ.2 _ (SchwartzDifferenceQuotient.isSch_smul a hf)⟩ : schwartzA θ V.rank n) = a • ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩` using `Subtype.ext (by funext x; simp [tens, mul_assoc])`. Rewrite `h` using `[e, map_smul, Submodule.coe_smul, hL.2 y Ψ hΨ f hf]`. Use `tens_cancel hθ hfr hΨ hx₀ ?_` and prove the remaining obligations. Rewrite using `[← h]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`.
+-/
 theorem L_smul (hL : IsLocFact ω τ fr ι L) (hθ : IsInfFam θ) (hfr : IsUnit fr.det) {Ψ : Mx D V.rank n → ℂ}
     (hΨ : AwayCls θ τ fr Ψ) {x₀ : Mx D V.rank n} (hx₀ : Ψ x₀ ≠ 0) (y : GR n) (a : ℂ) {f : (Fin V.rank → Fin n → ℂ) → ℂ}
     (hf : IsSch f) : L y (fun u => a * f u) = fun u => a * L y f u := by
@@ -54,6 +69,9 @@ theorem L_smul (hL : IsLocFact ω τ fr ι L) (hθ : IsInfFam θ) (hfr : IsUnit 
   refine tens_cancel hθ hfr hΨ hx₀ ?_
   rw [← h]; funext x; simp [tens, mul_assoc]
 
+/- English proof (translation)
+Establish `h` using `hL.2 (y * y') Ψ hΨ f hf`. Establish `h' : ω (ι y') ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩ = ⟨tens θ τ fr (L y' f) Ψ, hΨ.2 _ (hL.1 y' f hf)⟩` using `Subtype.ext (hL.2 y' Ψ hΨ f hf)`. Rewrite `h` using `[map_mul, map_mul, Module.End.mul_apply, h', hL.2 y Ψ hΨ _ (hL.1 y' f hf)]`. Conclude with `tens_cancel hθ hfr hΨ hx₀ h.symm`.
+-/
 theorem L_mul (hL : IsLocFact ω τ fr ι L) (hθ : IsInfFam θ) (hfr : IsUnit fr.det) {Ψ : Mx D V.rank n → ℂ}
     (hΨ : AwayCls θ τ fr Ψ) {x₀ : Mx D V.rank n} (hx₀ : Ψ x₀ ≠ 0) (y y' : GR n) {f : (Fin V.rank → Fin n → ℂ) → ℂ}
     (hf : IsSch f) : L (y * y') f = L y (L y' f) := by
@@ -63,12 +81,20 @@ theorem L_mul (hL : IsLocFact ω τ fr ι L) (hθ : IsInfFam θ) (hfr : IsUnit f
   rw [map_mul, map_mul, Module.End.mul_apply, h', hL.2 y Ψ hΨ _ (hL.1 y' f hf)] at h
   exact tens_cancel hθ hfr hΨ hx₀ h.symm
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => simpa using hf`. Consider the case `succ r ih => rw [iteratedDeriv_succ]`. Conclude with `ih.deriv hU`.
+-/
 theorem diffOn_iteratedDeriv {f : ℂ → ℂ} {U : Set ℂ} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U) (r : ℕ) :
     DifferentiableOn ℂ (iteratedDeriv r f) U := by
   induction r with
   | zero => simpa using hf
   | succ r ih => rw [iteratedDeriv_succ]; exact ih.deriv hU
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `t`.
+
+Establish `hd : DifferentiableAt ℂ (iteratedDeriv r f) t` using `(diffOn_iteratedDeriv hU hf r).differentiableAt (hU.mem_nhds (hR t))`. Rewrite using `[iteratedDeriv_succ]`. Conclude with `(hd.hasDerivAt.comp_ofReal).deriv`.
+-/
 theorem iteratedDeriv_ofReal {f : ℂ → ℂ} {U : Set ℂ} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U)
     (hR : ∀ s : ℝ, (s : ℂ) ∈ U) (r : ℕ) : iteratedDeriv r (fun t : ℝ => f t) = fun t : ℝ => iteratedDeriv r f t := by
   induction r with

@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RieszEigenvect
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HermitianAdjointExistsUniqueOfPosDef
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.riesz_and_eigenvector_of_sesq_on_fun_space | exact GlobalTheory.riesz_and_eigenvector_of_sesq_on_fun_space | (intros; apply GlobalTheory.riesz_and_eigenvector_of_sesq_on_fun_space <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.riesz_eigenvector_sesquilinear_function_space : ∀ (X : Type) (C : Submodule ℂ (X → ℂ)), FiniteDimensional ℂ C →
     ∀ (ip Φ : (X → ℂ) → (X → ℂ) → ℂ),
     (∀ (a : ℂ) (f f' g : X → ℂ), f ∈ C → f' ∈ C → g ∈ C → ip (a • f + f') g = star a * ip f g + ip f' g) →

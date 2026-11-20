@@ -23,10 +23,16 @@ def diagEnd {U V : Type} [AddCommGroup U] [Module ℝ U] [AddCommGroup V] [Modul
     (e : U ≃ₗ[ℝ] (Fin n → V)) (f : V →ₗ[ℝ] V) : U →ₗ[ℝ] U :=
   e.symm.toLinearMap ∘ₗ (LinearMap.pi fun i => f ∘ₗ LinearMap.proj i) ∘ₗ e.toLinearMap
 
+/- English proof (translation)
+Simplify using `[diagEnd]`.
+-/
 theorem diagEnd_apply {U V : Type} [AddCommGroup U] [Module ℝ U] [AddCommGroup V] [Module ℝ V] {n : ℕ}
     (e : U ≃ₗ[ℝ] (Fin n → V)) (f : V →ₗ[ℝ] V) (x : U) (i : Fin n) : e (diagEnd e f x) i = f (e x i) := by
   simp [diagEnd]
 
+/- English proof (translation)
+Use extensionality with `x`. Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `[diagEnd_apply]`.
+-/
 theorem diagEnd_comp {U V : Type} [AddCommGroup U] [Module ℝ U] [AddCommGroup V] [Module ℝ V] {n : ℕ}
     (e : U ≃ₗ[ℝ] (Fin n → V)) (f g : V →ₗ[ℝ] V) : diagEnd e f ∘ₗ diagEnd e g = diagEnd e (f ∘ₗ g) := by
   ext x
@@ -34,6 +40,15 @@ theorem diagEnd_comp {U V : Type} [AddCommGroup U] [Module ℝ U] [AddCommGroup 
   funext i
   simp [diagEnd_apply]
 
+/- English proof (translation)
+Establish `h1 : diagEnd e f = e.symm.conj (LinearMap.pi fun i => f ∘ₗ LinearMap.proj i)`. Use extensionality with `x`. Simplify using `[diagEnd, LinearEquiv.conj_apply]`. Establish `h2 : (LinearMap.pi fun i => f ∘ₗ LinearMap.proj i : (Fin n → V) →ₗ[ℝ] (Fin n → V)) = ∑ i, LinearMap.single ℝ (fun _ : Fin n => V) i ∘ₗ (f ∘ₗ LinearMap.proj i)`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `x`. Use function extensionality and compare the values at `j`. Simplify using `[LinearMap.sum_apply, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[h1, LinearMap.trace_conj', h2, map_sum]`. Establish `h3 : ∀ i : Fin n, LinearMap.trace ℝ _ (LinearMap.single ℝ (fun _ : Fin n => V) i ∘ₗ (f ∘ₗ LinearMap.proj i)) = LinearMap.trace ℝ V f`.
+
+Introduce `i`. Rewrite using `[LinearMap.trace_comp_comm']`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Simplify using `[h3]`.
+-/
 theorem trace_diagEnd {U V : Type} [AddCommGroup U] [Module ℝ U] [AddCommGroup V] [Module ℝ V]
     [Module.Finite ℝ V] {n : ℕ} (e : U ≃ₗ[ℝ] (Fin n → V)) (f : V →ₗ[ℝ] V) :
     LinearMap.trace ℝ U (diagEnd e f) = n * LinearMap.trace ℝ V f := by
@@ -57,10 +72,16 @@ def powForm {L : Type} [AddCommGroup L] (B : LinearMap.BilinForm ℤ L) (n : ℕ
     LinearMap.BilinForm ℤ (Fin n → L) :=
   ∑ i, B.compl₁₂ (LinearMap.proj i) (LinearMap.proj i)
 
+/- English proof (translation)
+Simplify using `[powForm, LinearMap.sum_apply]`.
+-/
 theorem powForm_apply {L : Type} [AddCommGroup L] (B : LinearMap.BilinForm ℤ L) (n : ℕ) (x y : Fin n → L) :
     powForm B n x y = ∑ i, B (x i) (y i) := by
   simp [powForm, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[powForm_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules.
+-/
 theorem powForm_single {L : Type} [AddCommGroup L] (B : LinearMap.BilinForm ℤ L) (n : ℕ) (x : Fin n → L)
     (i : Fin n) (y : L) : powForm B n x (Pi.single i y) = B (x i) y := by
   rw [powForm_apply, Finset.sum_eq_single i]
@@ -68,6 +89,13 @@ theorem powForm_single {L : Type} [AddCommGroup L] (B : LinearMap.BilinForm ℤ 
   · intro j _ hj; simp [Pi.single_eq_of_ne hj]
   · simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Use function extensionality and compare the values at `i`. Apply `hB.1` to reduce the goal to its premises. Use extensionality with `z`.
+
+Rewrite using `[← powForm_single, ← powForm_single, h]`. Introduce `φ choose x hx using fun i : Fin n => hB.2 (φ ∘ₗ LinearMap.single ℤ (fun _ : Fin n => L) i)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Apply `LinearMap.pi_ext` to reduce the goal to its premises. Introduce `i z`.
+
+Rewrite using `[powForm_single, hx]`. Both sides reduce to the same expression.
+-/
 theorem powForm_bijective {L : Type} [AddCommGroup L] (B : LinearMap.BilinForm ℤ L) (hB : Function.Bijective B)
     (n : ℕ) : Function.Bijective (powForm B n) := by
   constructor
@@ -84,6 +112,11 @@ theorem powForm_bijective {L : Type} [AddCommGroup L] (B : LinearMap.BilinForm �
     rw [powForm_single, hx]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, Pi.add_apply, ha, hb, Finset.sum_add_distrib]`. Consider the case `tmul r u`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb, Finset.sum_add_distrib]`. Consider the case `tmul s v => simp [powForm_apply, Finset.sum_smul, Finset.sum_mul]`.
+-/
 theorem powForm_baseChange {L : Type} [AddCommGroup L] (B : LinearMap.BilinForm ℤ L) (n : ℕ)
     (x y : ℝ ⊗[ℤ] (Fin n → L)) :
     (powForm B n).baseChange ℝ x y =
@@ -170,6 +203,9 @@ def powDatum (D : Datum H) (n : ℕ) : Datum H where
       · rw [Complex.mul_re, Complex.natCast_re, Complex.natCast_im]; ring
       · rw [Complex.mul_im, Complex.natCast_re, Complex.natCast_im]; ring
 
+/- English proof (translation)
+Introduce `E _ _ _ _ Dw n` and use `⟨powDatum Dw n, LinearEquiv.refl (𝓞 E) (Fin n → Dw.La), fun x y => powForm_apply Dw.EF n x y, rfl, rfl⟩`.
+-/
 theorem exists_datum_pow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (n : ℕ),
     ∃ (Dw' : Datum H) (e : Dw'.La ≃ₗ[𝓞 E] (Fin n → Dw.La)),
       (∀ x y, Dw'.EF x y = ∑ i, Dw.EF (e x i) (e y i)) ∧ Dw'.p = n * Dw.p ∧ Dw'.q = n * Dw.q :=

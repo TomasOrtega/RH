@@ -8,6 +8,9 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
+/- English proof (translation)
+Unfold `cc`. Conclude with `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hP.2.2.2.2.2.2.1 (sq_nonneg _)) (Nat.cast_nonneg _)`.
+-/
 theorem cc_le_cc {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp} {C2 A2 CR Ch Ah Cq Aq Gc PH Prw Pet Pd : ℝ} {ka : WeightFamilies.Wt D j}
     (hP : PolyDom (j := j) D B large₂ K H C2 A2 CR Ch Ah Cq Aq Gc PH Prw Pet Pd ka) (wL : WeightFamilies.Wt D j) :
     cc D large₂ H.Cc H.Ac H.CRc wL ≤ cc D large₂ C2 A2 CR wL := by
@@ -19,6 +22,11 @@ variable {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} {G : GlobalFamilyDa
 def vEt (Q : LocalPointData G la) (ζ : PtsG G la) : ℝ :=
   if j < D.R.m then (X.vAt la (Q.y ζ) (X.inc _ G.et)).toReal / (2 * (G.iet : ℝ)) else 0
 
+/- English proof (translation)
+Unfold `vEt`. Use `split_ifs with hj`. Take `⟨hi, h⟩` from `hEt hj`. Establish `hi' : (0 : ℝ) < 2 * (G.iet : ℝ)` using `by positivity`. Rewrite using `[le_div_iff₀ hi']`.
+
+Establish `h1` using `h (Q.y ζ)`. Rewrite `h1` using `[← EReal.coe_toReal (hfin hj) (X.vAt_ne_bot la (Q.y ζ) _), EReal.coe_le_coe_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `PJ.phiC`. Rewrite using `[if_neg hj]`.
+-/
 theorem phiC_le_vEt (Q : LocalPointData G la) (ζ : PtsG G la)
     (hfin : j < D.R.m → X.vAt la (Q.y ζ) (X.inc _ G.et) ≠ ⊤)
     (hEt : j < D.R.m → 0 < G.iet ∧
@@ -35,6 +43,9 @@ theorem phiC_le_vEt (Q : LocalPointData G la) (ζ : PtsG G la)
   · unfold PJ.phiC
     rw [if_neg hj]
 
+/- English proof (translation)
+The claim follows from `(Formalism.MainNotions.Gaps.T0.phiC_nonneg X la (Q.y ζ)).trans (phiC_le_vEt Q ζ hfin hEt)`.
+-/
 theorem vEt_nonneg (Q : LocalPointData G la) (ζ : PtsG G la)
     (hfin : j < D.R.m → X.vAt la (Q.y ζ) (X.inc _ G.et) ≠ ⊤)
     (hEt : j < D.R.m → 0 < G.iet ∧
@@ -42,6 +53,11 @@ theorem vEt_nonneg (Q : LocalPointData G la) (ζ : PtsG G la)
     0 ≤ vEt Q ζ :=
   (Formalism.MainNotions.Gaps.T0.phiC_nonneg X la (Q.y ζ)).trans (phiC_le_vEt Q ζ hfin hEt)
 
+/- English proof (translation)
+Establish `h1` using `hH1.2.2.2 la (Q.y ζ)`. Rewrite `h1` using `[← EReal.coe_toReal hd1 hd2, EReal.coe_le_coe_iff]`. Establish `h2` using `Formalism.MainNotions.Gaps.T0.phiC_nonneg X la (Q.y ζ)`. Establish `h3` using `phiC_le_vEt Q ζ hfin hEt`. Establish `h4 : cc D large₂ H.Cc H.Ac H.CRc wL * X.phiC la (Q.y ζ) ≤ max 0 c * X.phiC la (Q.y ζ)` using `mul_le_mul_of_nonneg_right (hc.trans (le_max_right _ _)) h2`.
+
+Establish `h5 : max 0 c * X.phiC la (Q.y ζ) ≤ max 0 c * vEt Q ζ` using `mul_le_mul_of_nonneg_left h3 (le_max_left _ _)`. Unfold `LocalPointData.nu`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nu_le_of {large₂ : SizeData₂ D} {H : KHyp} {S : Scal B} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
     (hH1 : H1 large₂ X H S wL nus) (Q : LocalPointData G la) (ζ : PtsG G la) (c : ℝ) (hc : cc D large₂ H.Cc H.Ac H.CRc wL ≤ c)
     (hd1 : X.depth S.sW wL la (Q.y ζ) ≠ ⊤) (hd2 : X.depth S.sW wL la (Q.y ζ) ≠ ⊥)
@@ -59,17 +75,26 @@ theorem nu_le_of {large₂ : SizeData₂ D} {H : KHyp} {S : Scal B} {nus : Heigh
   unfold LocalPointData.nu
   linarith
 
+/- English proof (translation)
+Introduce `hj` and use `⟨(hT.2.2.2.2.2.2.2.2.2.2.2.2.2 hj).1, fun y => (hT.2.2.2.2.2.2.2.2.2.2.2.2.2 hj).2.2.2.1 la y⟩`.
+-/
 theorem tied_et {large₂ : SizeData₂ D} {S : Scal B} {CRm : ℝ} {T : ℕ} {c Gc Prw Ch Ah Cf Af : ℝ}
     (hT : G.Tied large₂ S CRm T c Gc Prw Ch Ah Cf Af) (la : HeightOneSpectrum (𝓞 B.KO)) :
     j < D.R.m → 0 < G.iet ∧
       ∀ y : X.Pt la, ((2 * G.iet * X.phiC la y : ℝ) : EReal) ≤ X.vAt la y (X.inc _ G.et) := fun hj =>
   ⟨(hT.2.2.2.2.2.2.2.2.2.2.2.2.2 hj).1, fun y => (hT.2.2.2.2.2.2.2.2.2.2.2.2.2 hj).2.2.2.1 la y⟩
 
+/- English proof (translation)
+The claim follows from `vEt_nonneg Q ζ (hTie ζ).2.2.1 (tied_et hT la)`.
+-/
 theorem vEt_nonneg_of_tied {large₂ : SizeData₂ D} {S : Scal B} {CRm : ℝ} {T : ℕ} {c Gc Prw Ch Ah Cf Af : ℝ}
     (hT : G.Tied large₂ S CRm T c Gc Prw Ch Ah Cf Af) (Q : LocalPointData G la) (hTie : Q.InTie S) (ζ : PtsG G la) :
     0 ≤ vEt Q ζ :=
   vEt_nonneg Q ζ (hTie ζ).2.2.1 (tied_et hT la)
 
+/- English proof (translation)
+The claim follows from `nu_le_of hH1 Q ζ _ (cc_le_cc hP wL) (hTie ζ).1 (hTie ζ).2.1 (hTie ζ).2.2.1 (tied_et hT la)`.
+-/
 theorem nu_le {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp} {S : Scal B} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
     {C2 A2 CR Ch Ah Cq Aq Gc PH Prw Pet Pd CRm c Cf Af : ℝ} {T : ℕ}
     (hH1 : H1 large₂ X H S wL nus) (hT : G.Tied large₂ S CRm T c Gc Prw Ch Ah Cf Af)
@@ -78,9 +103,17 @@ theorem nu_le {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp} {S : Scal B} {nus
     Q.nu S ζ ≤ nus la + max 0 (cc D large₂ C2 A2 CR wL) * vEt Q ζ :=
   nu_le_of hH1 Q ζ _ (cc_le_cc hP wL) (hTie ζ).1 (hTie ζ).2.1 (hTie ζ).2.2.1 (tied_et hT la)
 
+/- English proof (translation)
+The claim follows from `(hTie ζ).2.2.2.1`.
+-/
 theorem ep_nu_int {S : Scal B} (Q : LocalPointData G la) (hTie : Q.InTie S) (ζ : PtsG G la) :
     ∃ n : ℤ, (ep (unifO X la G.N) ζ : ℝ) * Q.nu S ζ = n := (hTie ζ).2.2.2.1
 
+/- English proof (translation)
+Use `split_ifs with hj`. Unfold `LocalPointData.Net vEt`. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [if_pos hj]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun ζ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Unfold `vEt`. Simplify using `only [if_neg hj, mul_zero, Finset.sum_const_zero]`.
+-/
 theorem levels_eq [Fintype (PtsG G la)] (Q : LocalPointData G la) (T : ℕ) (c : ℝ) :
     (T : ℝ) * max 0 c * ∑ ζ, ((ep (unifO X la G.N) ζ : ℝ) * (fdeg ζ : ℝ)) * vEt Q ζ =
       if j < D.R.m then (T : ℝ) * (max 0 c / (2 * (G.iet : ℝ))) * Q.Net else 0 := by

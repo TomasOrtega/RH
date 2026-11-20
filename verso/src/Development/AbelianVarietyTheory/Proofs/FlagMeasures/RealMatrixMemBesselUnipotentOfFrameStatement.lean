@@ -7,6 +7,9 @@ import Formalism.FormalDegreeBessel.StatementG
 import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DegVol.FrameUnip.mem_Nset | exact GlobalTheory.DegVol.FrameUnip.mem_Nset | (intros; apply GlobalTheory.DegVol.FrameUnip.mem_Nset <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.realMatrix_mem_besselUnipotent_of_frame : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {k r : ℕ} (σ : K →+* ℂ) (Φ : V → Fin (2 * r + k + 1) → ℂ),
     GlobalTheory.DegVol.IsReal H k r σ Φ → ∀ (e f : Fin r → V) (ρ ρ' : Fin r → ℂ), (∀ a, ρ a ≠ 0) → (∀ a, ρ' a ≠ 0) →

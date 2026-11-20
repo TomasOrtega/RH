@@ -10,6 +10,15 @@ namespace GlobalTheory.LevelBudget
 
 variable {D : D7} {L : SizeData₂ D}
 
+/- English proof (translation)
+Establish `hb` using `GlobalTheory.HCEntries.one_le_b L`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Unfold `Formalism.MainNotions.product_first_zeroth_parts.ETpi`. Establish `hN` using `GlobalTheory.LevelLoss.N_le_b h P`. Establish `hNe : (D.R.N D.R.m : ℝ) = D.R.k + D.R.m * (D.R.t + 1)` using `by unfold Ranks.N; push_cast; ring`.
+
+Establish `r2` using `(GlobalTheory.FockDegreeGap.ranks_le D).2`. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `h1 : ∑ τ : D.what₂.Tau, (Formalism.MainNotions.product_first_zeroth_parts.Wt D u τ : ℝ) ≤ D.R.f * (5 * L.sc.b)`. Use `Finset.sum_le_card_nsmul Finset.univ (fun τ : D.what₂.Tau => (Formalism.MainNotions.product_first_zeroth_parts.Wt D u τ : ℝ)) _ (fun τ _ => GlobalTheory.LevelLoss.Wtau_le h P hx u τ)` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, D.what₂.card_Tau, nsmul_eq_mul]`. Then use the resulting hypothesis.
+
+Establish `h2 : ((Formalism.MainNotions.product_first_zeroth_parts.tops D).card : ℝ) ≤ D.R.f`. Use `Finset.card_le_univ (Formalism.MainNotions.product_first_zeroth_parts.tops D)` as an intermediate fact. Rewrite `this` using `[D.what₂.card_Tau]`. Conclude with `this` after adjusting the coercions. Establish `h3 : ((D.R.t : ℝ) + 1) * ((D.R.m : ℝ) + 1) ≤ L.sc.b` using `by nlinarith`.
+
+Establish `h4 : ((Formalism.MainNotions.product_first_zeroth_parts.tops D).card : ℝ) * (((D.R.t : ℝ) + 1) * ((D.R.m : ℝ) + 1)) ≤ D.R.f * L.sc.b` using `mul_le_mul h2 h3 (by positivity) hf0`. Establish `h5 : (D.R.f : ℝ) * D.R.N D.R.m ≤ D.R.f * L.sc.b` using `mul_le_mul_of_nonneg_left (by linarith [Nat.cast_nonneg (α := ℝ) (D.R.N D.R.m)]) hf0`. Establish `h6 : 0 ≤ (D.R.f : ℝ) * L.sc.b` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem ETpi_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (u : D.what₂.Word) :
     Formalism.MainNotions.product_first_zeroth_parts.ETpi D u ≤ 12 * D.R.f * L.sc.b := by
   have hb := GlobalTheory.HCEntries.one_le_b L
@@ -35,6 +44,11 @@ theorem ETpi_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (
   have h6 : 0 ≤ (D.R.f : ℝ) * L.sc.b := by positivity
   nlinarith
 
+/- English proof (translation)
+Introduce `eps Fm _ _ ⟨x₁, h1⟩`. Use `⟨max (12 * Fm.CTu) 0, max 2 x₁, le_max_right _ _, fun x hx0 hx i u => ⟨fun S hS => GlobalTheory.SeenHalf.seen_half Fm x hx i u S hS, ?_⟩⟩` and prove the remaining obligations. Establish `a` using `ETpi_le (Fm.sizes x hx i) (Fm.params x hx i) (by rw [Fm.L_x x i hx]; exact (le_max_left _ _).trans hx0) u`. Establish `b` using `(h1 x ((le_max_right _ _).trans hx0) i).2 u`. Establish `hb` using `GlobalTheory.HCEntries.one_le_b (Fm.L x i)`.
+
+Establish `hT : (1 : ℝ) ≤ (((Fm.D x i).mem u).A.T : ℝ)` using `by exact_mod_cast ((Fm.D x i).mem u).A.T_prime.one_le`. Establish `hl : 0 ≤ Real.log (((Fm.D x i).mem u).A.T : ℝ)` using `Real.log_nonneg hT`. Establish `e : (Fm.L x i).B0 = (Fm.D x i).R.f * (Fm.D x i).R.m * (Fm.L x i).sc.b * (Fm.L x i).sc.L` using `rfl`. Establish `hB : 0 ≤ (Fm.L x i).B0` using `Formalism.MainNotions.WeightDegreeSizes.loss_bound_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem admissible_off_type_level_budget : ∀ {eps : ℝ} (Fm : FamP eps), 0 < eps → eps < 1 / 52 → TuSize Fm → ∃ C x0 : ℝ, 0 ≤ C ∧ ∀ x, x0 ≤ x → ∀ hx : Fm.x1 < x, ∀ i : Fm.Ix x, Formalism.MainNotions.WeightDegreeSizes.LevelPrimeBudget (Fm.D x i) (Fm.L x i) C := by
   intro eps Fm _ _ ⟨x₁, h1⟩
   refine ⟨max (12 * Fm.CTu) 0, max 2 x₁, le_max_right _ _, fun x hx0 hx i u => ⟨fun S hS => GlobalTheory.SeenHalf.seen_half Fm x hx i u S hS, ?_⟩⟩

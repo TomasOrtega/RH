@@ -7,6 +7,9 @@ noncomputable section
 
 namespace GlobalTheory.JR.GLift
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA i k) (norm_nonneg _) (hB k j)`.
+-/
 theorem norm_mul_apply_le_one {F : Type} [NormedField F] [IsUltrametricDist F] {n : ℕ}
     (A B : Matrix (Fin n) (Fin n) F) (hA : ∀ i j, ‖A i j‖ ≤ 1) (hB : ∀ i j, ‖B i j‖ ≤ 1) (i j : Fin n) :
     ‖(A * B) i j‖ ≤ 1 := by
@@ -15,6 +18,9 @@ theorem norm_mul_apply_le_one {F : Type} [NormedField F] [IsUltrametricDist F] {
   rw [norm_mul]
   exact mul_le_one₀ (hA i k) (norm_nonneg _) (hB k j)
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem norm_one_apply_le_one {F : Type} [NormedField F] {n : ℕ} (i j : Fin n) :
     ‖(1 : Matrix (Fin n) (Fin n) F) i j‖ ≤ 1 := by
   rw [Matrix.one_apply]
@@ -38,6 +44,9 @@ def glOSub (n : ℕ) (F : Type) [NormedField F] [IsUltrametricDist F] : Subgroup
     rw [inv_inv]
     exact ⟨(ha i j).2, (ha i j).1⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_glOSub (n : ℕ) (F : Type) [NormedField F] [IsUltrametricDist F] :
     (glOSub n F : Set (GL (Fin n) F)) = glO n F := rfl
 

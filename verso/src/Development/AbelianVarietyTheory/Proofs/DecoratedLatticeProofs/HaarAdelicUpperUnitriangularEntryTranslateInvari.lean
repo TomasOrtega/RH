@@ -22,17 +22,38 @@ namespace GlobalTheory.UnitTransl
 
 variable {D : D7} {ρ : ℕ}
 
+/- English proof (translation)
+Take `⟨-, -, -, i4, -⟩` from `lattice_Mx D 1 1`. Conclude with `@T2Space.of_injective_continuous (AE D) (Matrix (Fin 1) (Fin 1) (AE D)) _ _ i4 (fun x : AE D => Matrix.of fun _ _ => x) (fun a b h => congrFun (congrFun h 0) 0) (continuous_pi fun _ => continuous_pi fun _ => continuous_id)`.
+-/
 theorem t2AE (D : D7) : T2Space (AE D) := by
   obtain ⟨-, -, -, i4, -⟩ := lattice_Mx D 1 1
   exact @T2Space.of_injective_continuous (AE D) (Matrix (Fin 1) (Fin 1) (AE D)) _ _ i4
     (fun x : AE D => Matrix.of fun _ _ => x)
     (fun a b h => congrFun (congrFun h 0) 0) (continuous_pi fun _ => continuous_pi fun _ => continuous_id)
 
+/- English proof (translation)
+The claim follows from `(lattice_Mx D ρ ρ).1`.
+-/
 theorem tagMx (D : D7) (ρ : ℕ) : IsTopologicalAddGroup (Mx D ρ ρ) := (lattice_Mx D ρ ρ).1
+/- English proof (translation)
+The claim follows from `(lattice_Mx D ρ ρ).2.1`.
+-/
 theorem lcMx (D : D7) (ρ : ℕ) : LocallyCompactSpace (Mx D ρ ρ) := (lattice_Mx D ρ ρ).2.1
+/- English proof (translation)
+The claim follows from `(lattice_Mx D ρ ρ).2.2.1`.
+-/
 theorem scMx (D : D7) (ρ : ℕ) : SecondCountableTopology (Mx D ρ ρ) := (lattice_Mx D ρ ρ).2.2.1
+/- English proof (translation)
+The claim follows from `(lattice_Mx D ρ ρ).2.2.2.1`.
+-/
 theorem t2Mx (D : D7) (ρ : ℕ) : T2Space (Mx D ρ ρ) := (lattice_Mx D ρ ρ).2.2.2.1
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem borelMx (D : D7) (ρ : ℕ) : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem borelUX (D : D7) (ρ : ℕ) : BorelSpace (UX D ρ) := ⟨rfl⟩
 
 attribute [local instance] t2AE tagMx lcMx scMx t2Mx borelMx borelUX
@@ -47,6 +68,11 @@ def supMx (D : D7) (ρ : ℕ) : AddSubgroup (Mx D ρ ρ) where
     change -x i j = 0
     rw [hx i j h, neg_zero]
 
+/- English proof (translation)
+Establish `: (supMx D ρ : Set (Mx D ρ ρ)) = ⋂ i, ⋂ j, {s : Mx D ρ ρ | ¬ i < j → s i j = 0}`. Use extensionality with `s`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Use `isClosed_iInter fun i => isClosed_iInter fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : i < j`. Simplify using `only [h, not_true_eq_false, false_implies, Set.setOf_true, isClosed_univ]`. Simplify using `only [h, not_false_eq_true, true_implies]`. Conclude with `isClosed_eq ((continuous_apply j).comp (continuous_apply i)) continuous_const`.
+-/
 theorem isClosed_supMx : IsClosed (supMx D ρ : Set (Mx D ρ ρ)) := by
   have : (supMx D ρ : Set (Mx D ρ ρ)) = ⋂ i, ⋂ j, {s : Mx D ρ ρ | ¬ i < j → s i j = 0} := by
     ext s
@@ -59,6 +85,9 @@ theorem isClosed_supMx : IsClosed (supMx D ρ : Set (Mx D ρ ρ)) := by
   · simp only [h, not_false_eq_true, true_implies]
     exact isClosed_eq ((continuous_apply j).comp (continuous_apply i)) continuous_const
 
+/- English proof (translation)
+The claim follows from `(isClosed_supMx (D := D) (ρ := ρ)).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+-/
 theorem lcSup (D : D7) (ρ : ℕ) : LocallyCompactSpace (supMx D ρ) :=
   (isClosed_supMx (D := D) (ρ := ρ)).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
@@ -76,6 +105,11 @@ def triGrp (D : D7) (ρ : ℕ) : Subgroup (GL (Fin ρ) (AE D)) where
     rw [Matrix.coe_units_inv]
     exact blockTriangular_inv_of_blockTriangular hx
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l < i`. Rewrite using `[hg hl, zero_mul]`.
+
+Rewrite using `[hs l j (fun h => hij (lt_of_le_of_lt (not_lt.1 hl) h)), mul_zero]`.
+-/
 theorem mul_mem_supMx {g : Matrix (Fin ρ) (Fin ρ) (AE D)} (hg : BlockTriangular g id) {s : Mx D ρ ρ}
     (hs : s ∈ supMx D ρ) : g * s ∈ supMx D ρ := by
   intro i j hij
@@ -92,6 +126,9 @@ instance actSup : DistribMulAction (triGrp D ρ) (supMx D ρ) where
   smul_zero g := Subtype.ext (Matrix.mul_zero _)
   smul_add g s t := Subtype.ext (Matrix.mul_add _ _ _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun g => Continuous.subtype_mk (continuous_const.matrix_mul continuous_subtype_val) _⟩`.
+-/
 theorem ccs (D : D7) (ρ : ℕ) : ContinuousConstSMul (triGrp D ρ) (supMx D ρ) :=
   ⟨fun g => Continuous.subtype_mk (continuous_const.matrix_mul continuous_subtype_val) _⟩
 
@@ -99,6 +136,11 @@ attribute [local instance] ccs
 
 abbrev modChar (D : D7) (ρ : ℕ) : triGrp D ρ →* ℝ≥0 := distribHaarChar (supMx D ρ)
 
+/- English proof (translation)
+Establish `h1` using `congrArg (modChar D ρ) h`. Rewrite `h1` using `[map_mul, map_mul, map_mul]`. Establish `h2 : modChar D ρ d * modChar D ρ d⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `h3 : modChar D ρ a * modChar D ρ a = modChar D ρ a * 1`. Rewrite using `[← h1, ← h2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ (distribHaarChar_pos (A := supMx D ρ)).ne' h3`.
+-/
 theorem modChar_eq_one_of_sq {a d : triGrp D ρ} (h : d * a * d⁻¹ = a * a) : modChar D ρ a = 1 := by
   have h1 := congrArg (modChar D ρ) h
   rw [map_mul, map_mul, map_mul] at h1
@@ -107,20 +149,34 @@ theorem modChar_eq_one_of_sq {a d : triGrp D ρ} (h : d * a * d⁻¹ = a * a) : 
     rw [← h1, ← h2]; ring
   exact mul_left_cancel₀ (distribHaarChar_pos (A := supMx D ρ)).ne' h3
 
+/- English proof (translation)
+Rewrite using `[add_mul, one_mul, mul_sub, mul_one, hx, sub_zero, sub_add_cancel]`.
+-/
 theorem one_add_mul_one_sub {x : Mx D ρ ρ} (hx : x * x = 0) : (1 + x) * (1 - x) = 1 := by
   rw [add_mul, one_mul, mul_sub, mul_one, hx, sub_zero, sub_add_cancel]
 
+/- English proof (translation)
+Rewrite using `[sub_mul, one_mul, mul_add, mul_one, hx, add_zero, add_sub_cancel_right]`.
+-/
 theorem one_sub_mul_one_add {x : Mx D ρ ρ} (hx : x * x = 0) : (1 - x) * (1 + x) = 1 := by
   rw [sub_mul, one_mul, mul_add, mul_one, hx, add_zero, add_sub_cancel_right]
 
 def colU (x : Mx D ρ ρ) (hx : x * x = 0) : GL (Fin ρ) (AE D) :=
   ⟨1 + x, 1 - x, one_add_mul_one_sub hx, one_sub_mul_one_add hx⟩
 
+/- English proof (translation)
+Introduce `i j h`. Establish `h' : j < i` using `h`. Rewrite using `[Matrix.add_apply, one_apply_ne (ne_of_lt h').symm, hx i j (not_lt.2 (le_of_lt h')), add_zero]`.
+-/
 theorem upper_one_add {x : Mx D ρ ρ} (hx : x ∈ supMx D ρ) : BlockTriangular (1 + x) id := by
   intro i j h
   have h' : j < i := h
   rw [Matrix.add_apply, one_apply_ne (ne_of_lt h').symm, hx i j (not_lt.2 (le_of_lt h')), add_zero]
 
+/- English proof (translation)
+Use extensionality with `i k`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality.
+
+Distinguish the cases in `hk : k = l`. Substitute `hk` using the available equality. Rewrite using `[hx k k (lt_irrefl k), mul_zero]`. Rewrite using `[hcol l k hk, mul_zero]`. Rewrite using `[hcol i l hl, zero_mul]`.
+-/
 theorem sq_col {x : Mx D ρ ρ} (hx : x ∈ supMx D ρ) {j : Fin ρ} (hcol : ∀ i k, k ≠ j → x i k = 0) :
     x * x = 0 := by
   ext i k
@@ -135,6 +191,9 @@ theorem sq_col {x : Mx D ρ ρ} (hx : x ∈ supMx D ρ) {j : Fin ρ} (hcol : ∀
 
 def twoInv (D : D7) : AE D := algebraMap D.host.F (AE D) 2⁻¹
 
+/- English proof (translation)
+Rewrite using `[twoInv, ← map_ofNat (algebraMap D.host.F (AE D)) 2, ← map_mul, mul_inv_cancel₀ two_ne_zero, map_one]`.
+-/
 theorem two_mul_twoInv : (2 : AE D) * twoInv D = 1 := by
   rw [twoInv, ← map_ofNat (algebraMap D.host.F (AE D)) 2, ← map_mul, mul_inv_cancel₀ two_ne_zero, map_one]
 
@@ -153,6 +212,17 @@ def diagU (D : D7) {ρ : ℕ} (j : Fin ρ) : GL (Fin ρ) (AE D) :=
       · exact mul_one 1
       · rw [mul_comm]; exact two_mul_twoInv⟩
 
+/- English proof (translation)
+Establish `hsq` using `sq_col hx hcol`. Set `d : triGrp D ρ` to `⟨diagU D j, blockTriangular_diagonal _⟩`. Use `modChar_eq_one_of_sq (d := d) (Subtype.ext (Units.ext ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `diagonal (fun i => if i = j then (1 : AE D) else 2) * (1 + x) * diagonal (fun i => if i = j then 1 else twoInv D) = (1 + x) * (1 + x)`. Establish `e : (1 + x) * (1 + x) = 1 + (x + x)`.
+
+Rewrite using `[add_mul, one_mul, mul_add, mul_one, hsq, add_zero, add_assoc]`. Rewrite using `[e]`. Use extensionality with `i k`. Rewrite using `[mul_diagonal, diagonal_mul, Matrix.add_apply, Matrix.add_apply, Matrix.add_apply]`. Distinguish the cases in `hik : i = k`.
+
+Substitute `hik` using the available equality. Rewrite using `[hx i i (lt_irrefl i), one_apply_eq]`. Use `split_ifs`. Simplify using the standard rewrite rules. Simplify using `[two_mul_twoInv]`.
+
+Rewrite using `[one_apply_ne hik, zero_add, zero_add]`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Rewrite using `[if_pos rfl, if_neg hik, mul_one, two_mul]`. Rewrite using `[hcol i k hk]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem modChar_col {x : Mx D ρ ρ} (hx : x ∈ supMx D ρ) {j : Fin ρ} (hcol : ∀ i k, k ≠ j → x i k = 0) :
     modChar D ρ ⟨colU x (sq_col hx hcol), upper_one_add hx⟩ = 1 := by
   have hsq := sq_col hx hcol
@@ -184,22 +254,41 @@ def trunc (u : Mx D ρ ρ) (k : ℕ) : Mx D ρ ρ :=
 def colPart (u : Mx D ρ ρ) (k : ℕ) : Mx D ρ ρ :=
   Matrix.of fun i j => if j.1 = k ∧ i < j then u i j else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[trunc]`.
+-/
 theorem trunc_zero (u : Mx D ρ ρ) : trunc u 0 = 1 := by
   ext i j; simp [trunc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[trunc, j.2]`.
+-/
 theorem trunc_top (u : Mx D ρ ρ) : trunc u ρ = u := by
   ext i j; simp [trunc, j.2]
 
+/- English proof (translation)
+Introduce `i j h`. Express the relevant statement in the definitionally equal form `(if j.1 = k ∧ i < j then u i j else 0) = 0`. Rewrite using `[if_neg (fun h' => h h'.2)]`.
+-/
 theorem colPart_mem (u : Mx D ρ ρ) (k : ℕ) : colPart u k ∈ supMx D ρ := by
   intro i j h
   change (if j.1 = k ∧ i < j then u i j else 0) = 0
   rw [if_neg (fun h' => h h'.2)]
 
+/- English proof (translation)
+Introduce `i l hl`. Express the relevant statement in the definitionally equal form `(if l.1 = k ∧ i < l then u i l else 0) = 0`. Rewrite using `[if_neg (fun h => hl (Fin.ext h.1))]`.
+-/
 theorem colPart_col (u : Mx D ρ ρ) {k : ℕ} (hk : k < ρ) : ∀ i l, l ≠ ⟨k, hk⟩ → colPart u k i l = 0 := by
   intro i l hl
   change (if l.1 = k ∧ i < l then u i l else 0) = 0
   rw [if_neg (fun h => hl (Fin.ext h.1))]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [trunc, colPart, of_apply, Matrix.add_apply]`. Break down `lt_trichotomy j.1 k with h | h | h` into its components or cases. Simplify using `[h, Nat.lt_succ_of_lt h, h.ne]`. Establish `h1 : j.1 < k + 1` using `by omega`.
+
+Establish `h2 : ¬ j.1 < k` using `by omega`. Simplify using `only [h1, if_true, h2, if_false, h, true_and]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Simplify using `[hij, one_apply_ne hij.ne]`. Simplify using `[(hu i i).2]`.
+
+Simplify using `[(hu i j).1 hij, one_apply_ne hij.ne', not_lt.2 hij.le]`. Establish `h1 : ¬ j.1 < k + 1` using `by omega`. Establish `h2 : ¬ j.1 < k` using `by omega`. Simplify using `[h1, h2, h.ne']`.
+-/
 theorem trunc_succ {u : Mx D ρ ρ} (hu : u ∈ GlobalTheory.UnitU.uniSet D ρ) (k : ℕ) :
     trunc u (k + 1) = trunc u k + colPart u k := by
   ext i j
@@ -217,6 +306,13 @@ theorem trunc_succ {u : Mx D ρ ρ} (hu : u ∈ GlobalTheory.UnitU.uniSet D ρ) 
     have h2 : ¬ j.1 < k := by omega
     simp [h1, h2, h.ne']
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (⟨k, hk⟩ : Fin ρ)]`. Simplify using `only [colPart, trunc, of_apply]`. Distinguish the cases in `hj : j.1 < k`. Establish `h0 : u ⟨k, hk⟩ j = 0` using `(hu _ _).1 (Fin.lt_def.2 hj)`.
+
+Simplify using `[hj, h0, hj.ne]`. Distinguish the cases in `hjk : j = ⟨k, hk⟩`. Substitute `hjk` using the available equality. Simplify using the standard rewrite rules. Establish `: j.1 ≠ k` using `fun h => hjk (Fin.ext h)`.
+
+Simplify using `[hj, one_apply_ne (Ne.symm hjk), this]`. Introduce `l _ hl`. Rewrite using `[colPart_col u hk i l hl, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem colPart_mul_trunc {u : Mx D ρ ρ} (hu : u ∈ GlobalTheory.UnitU.uniSet D ρ) {k : ℕ} (hk : k < ρ) :
     colPart u k * trunc u k = colPart u k := by
   ext i j
@@ -233,6 +329,17 @@ theorem colPart_mul_trunc {u : Mx D ρ ρ} (hu : u ∈ GlobalTheory.UnitU.uniSet
     rw [colPart_col u hk i l hl, zero_mul]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ g hg`. Rewrite `hg` using `[trunc_zero]`.
+
+Establish `: g = 1` using `Subtype.ext (Units.ext hg)`. Rewrite using `[this, map_one]`. Consider the case `succ k ih`. Introduce `hk g hg`. Establish `hk' : k < ρ` using `hk`.
+
+Establish `hc` using `colPart_mem u k`. Establish `hsq : colPart u k * colPart u k = 0` using `sq_col hc (colPart_col u hk')`. Set `a : triGrp D ρ` to `⟨colU (colPart u k) hsq, upper_one_add hc⟩`. Establish `ha : modChar D ρ a = 1` using `modChar_col hc (colPart_col u hk')`. Establish `h2 : ((a⁻¹ * g : triGrp D ρ) : GL (Fin ρ) (AE D)).1 = trunc u k`.
+
+Express the relevant statement in the definitionally equal form `(1 - colPart u k) * (g : GL (Fin ρ) (AE D)).1 = trunc u k`. Rewrite using `[hg, trunc_succ hu]`. Establish `e : trunc u k + colPart u k = (1 + colPart u k) * trunc u k`. Rewrite using `[add_mul, one_mul, colPart_mul_trunc hu hk']`. Rewrite using `[e, ← Matrix.mul_assoc, one_sub_mul_one_add hsq, Matrix.one_mul]`.
+
+Establish `h3` using `ih (Nat.le_of_succ_le hk) _ h2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem modChar_of_trunc {u : Mx D ρ ρ} (hu : u ∈ GlobalTheory.UnitU.uniSet D ρ) :
     ∀ k ≤ ρ, ∀ g : triGrp D ρ, (g : GL (Fin ρ) (AE D)).1 = trunc u k → modChar D ρ g = 1 := by
   intro k
@@ -261,15 +368,24 @@ theorem modChar_of_trunc {u : Mx D ρ ρ} (hu : u ∈ GlobalTheory.UnitU.uniSet 
 
 def ofUX (u : UX D ρ) : triGrp D ρ := ⟨u.1, fun i j h => (u.2 i j).1 h⟩
 
+/- English proof (translation)
+The claim follows from `modChar_of_trunc u.2 ρ le_rfl _ (trunc_top _).symm`.
+-/
 theorem modChar_ofUX (u : UX D ρ) : modChar D ρ (ofUX u) = 1 :=
   modChar_of_trunc u.2 ρ le_rfl _ (trunc_top _).symm
 
+/- English proof (translation)
+Use extensionality with `S hS`. Rewrite using `[Measure.map_apply (continuous_const_smul _).measurable hS, Set.preimage_smul, ← distribHaarChar_mul, map_inv, modChar_ofUX, inv_one, ENNReal.coe_one, one_mul]`.
+-/
 theorem map_smul_addHaar (u : UX D ρ) :
     (Measure.addHaar : Measure (supMx D ρ)).map (fun s => ofUX u • s) = Measure.addHaar := by
   ext S hS
   rw [Measure.map_apply (continuous_const_smul _).measurable hS, Set.preimage_smul,
     ← distribHaarChar_mul, map_inv, modChar_ofUX, inv_one, ENNReal.coe_one, one_mul]
 
+/- English proof (translation)
+Introduce `i j h`. Express the relevant statement in the definitionally equal form `(u : GL (Fin ρ) (AE D)).1 i j - (1 : Mx D ρ ρ) i j = 0`. Break down `lt_or_eq_of_le (not_lt.1 h) with h' | rfl` into its components or cases. Rewrite using `[(u.2 i j).1 h', one_apply_ne h'.ne', sub_zero]`. Rewrite using `[(u.2 j j).2, one_apply_eq, sub_self]`.
+-/
 theorem sub_one_mem (u : UX D ρ) : (u : GL (Fin ρ) (AE D)).1 - 1 ∈ supMx D ρ := by
   intro i j h
   change (u : GL (Fin ρ) (AE D)).1 i j - (1 : Mx D ρ ρ) i j = 0
@@ -277,6 +393,9 @@ theorem sub_one_mem (u : UX D ρ) : (u : GL (Fin ρ) (AE D)).1 - 1 ∈ supMx D �
   · rw [(u.2 i j).1 h', one_apply_ne h'.ne', sub_zero]
   · rw [(u.2 j j).2, one_apply_eq, sub_self]
 
+/- English proof (translation)
+Introduce `i j` and use `⟨fun h => by change (1 : Mx D ρ ρ) i j + s i j = 0 rw [one_apply_ne h.ne', hs i j (not_lt.2 h.le), add_zero], by change (1 : Mx D ρ ρ) i i + s i i = 1 rw [hs i i (lt_irrefl i), one_apply_eq, add_zero]⟩`.
+-/
 theorem one_add_mem {s : Mx D ρ ρ} (hs : s ∈ supMx D ρ) : 1 + s ∈ GlobalTheory.UnitU.uniSet D ρ := fun i j =>
   ⟨fun h => by
     change (1 : Mx D ρ ρ) i j + s i j = 0
@@ -300,6 +419,9 @@ def coordU (D : D7) (ρ : ℕ) : UX D ρ ≃ₜ supMx D ρ where
     (GlobalTheory.UnitU.isClosedEmbedding_val D ρ).isInducing.continuous_iff.2
       (continuous_const.add continuous_subtype_val)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(g : GL (Fin ρ) (AE D)).1 * (u : GL (Fin ρ) (AE D)).1 - 1 = (g : GL (Fin ρ) (AE D)).1 * ((u : GL (Fin ρ) (AE D)).1 - 1) + ((g : GL (Fin ρ) (AE D)).1 - 1)`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem coordU_mul (g u : UX D ρ) : coordU D ρ (g * u) = ofUX g • coordU D ρ u + coordU D ρ g := by
   apply Subtype.ext
   change (g : GL (Fin ρ) (AE D)).1 * (u : GL (Fin ρ) (AE D)).1 - 1 =
@@ -307,6 +429,23 @@ theorem coordU_mul (g u : UX D ρ) : coordU D ρ (g * u) = ofUX g • coordU D �
   rw [Matrix.mul_sub, Matrix.mul_one]
   abel
 
+/- English proof (translation)
+Introduce `D ρ ν hν`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.UnitU.topology D ρ`. Establish `hemb` using `GlobalTheory.UnitU.isClosedEmbedding_val D ρ`. Establish `hΦ : Measurable (fun u : UX D ρ => (u.1.1 : Mx D ρ ρ))` using `hemb.continuous.measurable`. Use `⟨hΦ, ⟨fun K hK => ?_⟩, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Measure.map_apply hΦ hK.isClosed.measurableSet]`. Conclude with `(hemb.isCompact_preimage hK).measure_lt_top`. Set `lam : Measure (supMx D ρ)` to `Measure.addHaar`. Set `Ψ` to `coordU D ρ`. Set `ν' : Measure (UX D ρ)` to `lam.map Ψ.symm`.
+
+Establish `hΨs : Measurable Ψ.symm` using `Ψ.symm.continuous.measurable`. Use `haveI : IsFiniteMeasureOnCompacts ν' := Measure.IsFiniteMeasureOnCompacts.map _ _`. Use `haveI : ν'.IsOpenPosMeasure := Ψ.symm.continuous.isOpenPosMeasure_map Ψ.symm.surjective`. Use `haveI : ν'.IsMulLeftInvariant := by`. Use `⟨fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `hsm : Measurable (fun s : supMx D ρ => ofUX g • s)` using `(continuous_const_smul _).measurable`. Establish `e : (g * ·) ∘ Ψ.symm = Ψ.symm ∘ ((Ψ g + ·) ∘ (fun s : supMx D ρ => ofUX g • s))`. Use function extensionality and compare the values at `s`. Apply `Ψ.injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, Homeomorph.apply_symm_apply]`.
+
+Express the relevant statement in the definitionally equal form `coordU D ρ (g * Ψ.symm s) = _`. Rewrite using `[coordU_mul]`. Express the relevant statement in the definitionally equal form `ofUX g • Ψ (Ψ.symm s) + Ψ g = _`. Rewrite using `[Homeomorph.apply_symm_apply, add_comm]`. Express the relevant statement in the definitionally equal form `Measure.map (g * ·) (Measure.map Ψ.symm lam) = Measure.map Ψ.symm lam`.
+
+Rewrite using `[Measure.map_map (measurable_const_mul g) hΨs, e, ← Measure.map_map hΨs ((measurable_const_add _).comp hsm), ← Measure.map_map (measurable_const_add _) hsm, map_smul_addHaar, map_add_left_eq_self]`. Use `haveI : ν'.IsHaarMeasure := {}`. Establish `e1` using `Measure.isMulLeftInvariant_eq_smul ν ν'`. Establish `hf : Measurable (fun s : supMx D ρ => 1 + s.1)` using `(continuous_const.add continuous_subtype_val).measurable`. Establish `e2 : (fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)) ∘ Ψ.symm = fun s => 1 + s.1` using `rfl`.
+
+Rewrite using `[e1, Measure.map_smul, Measure.map_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `Measure.map (· + t) (Measure.map (fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)) (Measure.map Ψ.symm lam)) = Measure.map (fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)) (Measure.map Ψ.symm lam)`. Rewrite using `[Measure.map_map hΦ hΨs, e2, Measure.map_map (measurable_add_const t) hf]`. Establish `e3 : (· + t) ∘ (fun s : supMx D ρ => 1 + s.1) = (fun s : supMx D ρ => 1 + s.1) ∘ ((⟨t, ht⟩ : supMx D ρ) + ·)`.
+
+Use function extensionality and compare the values at `s`. Simplify using `only [Function.comp_apply, AddSubgroup.coe_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3, ← Measure.map_map hf (measurable_const_add _), map_add_left_eq_self]`.
+-/
 theorem haar_val_add_invariant : ∀ (D : D7) (ρ : ℕ) (ν : Measure (UX D ρ)), ν.IsHaarMeasure →
     Measurable (fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)) ∧
     IsFiniteMeasureOnCompacts (Measure.map (fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)) ν) ∧

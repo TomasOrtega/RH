@@ -23,6 +23,9 @@ def CurveHyp (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `_ ka wL wF G la S g0 hSp hBig hTh hNZ`. Establish `hH : CurveHyp h j hj hG ka wL wF G S g0` using `⟨hSp, hBig, hTh, hNZ⟩`. Establish `h1` using `LocalUnitReduction.finRed (Kp (recPlus h j hj) la G.N) ↥(Frac0 (recPlus h j hj) la G.w) (Jid (recPlus h j hj) la G.w) (Comp (T.Q.Xo j) T.Q.c) (fun Z => RZs (recPlus h j hj) la G.N (Om Z) (formsEvR j hG hT Z) G.w) (fun Z => phiI h j hj hG hT la G Z) (hinj _ _ _ G S g0 la hH) (hone …`. Take `⟨e, w', θ, hw, hθ⟩` from `hTh`. Conclude with `curveModel_of_fr (E := extAll h j hj) (hM := intAtExt_extAll h j hj) G la g0 h1.1 h1.2 θ hw (hH2 _ _ _ G S g0 la hH e w' θ hw hθ) (hH3 _ _ _ G S g0 la hH)`.
+-/
 theorem curveInst_of [Fintype (Comp (T.Q.Xo j) T.Q.c)]
     (hinj : ∀ ka wL wF G S g0 la, CurveHyp h j hj hG ka wL wF G S g0 →
       ∀ f : ↥(Frac0 (recPlus h j hj) la G.w), (∀ Z, phiI h j hj hG hT la G Z f = 0) → f = 0)

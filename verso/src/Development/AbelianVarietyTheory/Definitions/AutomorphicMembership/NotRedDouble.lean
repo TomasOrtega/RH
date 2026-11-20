@@ -14,6 +14,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {F : Type} [Field F] {Z : Model Xo c β} {e : F ≃+* c.F}
 
+/- English proof (translation)
+Use `Z.jQ_open` as an intermediate fact. Rewrite using `[← cancel_mono Z.jQ, ← cancel_mono (genι Z)]`. Establish `h1` using `(C.f0.tan τ i).1`. Rewrite `h1` using `[← hw, Category.assoc, Z.m.cart.1.w]`. Establish `h2` using `congrArg (· ≫ genι Z) C.y0_x`.
+
+Simplify using `only [Category.assoc] at h1 h2 ⊢`. Rewrite using `[h2]`. Conclude with `h1`.
+-/
 theorem join_over [Mono (genι Z)] (C : FlagCpt Z e) (τ : E →+* ℂ) (i : Fin (Dw.mult τ))
     (w : Sp (DualNumber C.Y.Fn) ⟶ Z.oF.t.G.left) (hw : w ≫ Z.m.φ = C.f0.v τ i) :
     w ≫ Z.oF.t.G.hom = spMap (algebraMap C.Y.Fn (DualNumber C.Y.Fn)) ≫
@@ -27,6 +32,9 @@ theorem join_over [Mono (genι Z)] (C : FlagCpt Z e) (τ : E →+* ℂ) (i : Fin
   rw [h2]
   exact h1
 
+/- English proof (translation)
+Establish `: Epi (CommRingCat.ofHom (algebraMap (𝓞 c.F) c.F))` using `IsLocalization.epi (nonZeroDivisors (𝓞 c.F)) c.F`. Establish `: Mono (spMap (algebraMap (𝓞 c.F) c.F))` using `Scheme.Spec.map_mono (CommRingCat.ofHom (algebraMap (𝓞 c.F) c.F)).op`. Use `infer_instance`.
+-/
 theorem mono_genι (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) : Mono (genι Y) := by
   have : Epi (CommRingCat.ofHom (algebraMap (𝓞 c.F) c.F)) :=
     IsLocalization.epi (nonZeroDivisors (𝓞 c.F)) c.F
@@ -34,6 +42,11 @@ theorem mono_genι (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) : Mono (genι Y)
     Scheme.Spec.map_mono (CommRingCat.ofHom (algebraMap (𝓞 c.F) c.F)).op
   infer_instance
 
+/- English proof (translation)
+Establish `h : GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ)) ((n / 2 : ℕ) : ℤ) = GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ) + ((n / 2 : ℕ) : ℤ)) 0`. Use function extensionality and compare the values at `τ j`. Simplify using `only [GlobalTheory.AllWt.weightOf]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[FlagCpt.Lw, h, GlobalTheory.AllWt.exOf_weightOf]`.
+
+Simplify using `only [FlagCpt.LEx, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[exKey, keyEx, ex, exZ]`.
+-/
 theorem Lw_weightOf (C : FlagCpt Z e) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     C.Lw (GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ)) ((n / 2 : ℕ) : ℤ)) = C.LEx (exKey Dw a n) := by
   have h : GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ)) ((n / 2 : ℕ) : ℤ) =
@@ -48,11 +61,19 @@ theorem Lw_weightOf (C : FlagCpt Z e) (a : (E →+* ℂ) × ℕ → ℕ) (n : �
   congr 1
   simp [exKey, keyEx, ex, exZ]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `hn`. Simplify using `only [exKey, keyEx, ex]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exKey_none (a : (E →+* ℂ) × ℕ → ℕ) {n : ℕ} (hn : Even n) : exKey Dw a n none = 0 := by
   obtain ⟨m, rfl⟩ := hn
   simp only [exKey, keyEx, ex]
   omega
 
+/- English proof (translation)
+Establish `h : (p + q).choose 2 = p * q + p.choose 2 + q.choose 2`. Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[← Nat.add_assoc, Nat.choose_succ_succ' (p + q), Nat.choose_succ_succ' q, ih]`.
+
+Simplify using `only [Nat.choose_one_right]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [← Nat.choose_two_right, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dim_count (f p q : ℕ) :
     f * ((p + q) * (p + q - 1) / 2) = f * p * q + f * (p * (p - 1) / 2) + f * (q * (q - 1) / 2) := by
   have h : (p + q).choose 2 = p * q + p.choose 2 + q.choose 2 := by
@@ -63,10 +84,18 @@ theorem dim_count (f p q : ℕ) :
       simp only [Nat.choose_one_right]; ring
   simp only [← Nat.choose_two_right, h]; ring
 
+/- English proof (translation)
+The claim follows from `(Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec Y.X).specializes trivial)).symm`.
+-/
 theorem genericPt_eq (Y : GlobalTheory.ProjVar.Var F) (y : Y.X) :
     genericPt Y = spMap (algebraMap (Y.X.presheaf.stalk y) Y.X.functionField) ≫ stalkPt Y y :=
   (Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec Y.X).specializes trivial)).symm
 
+/- English proof (translation)
+Set `k` to `AlgebraicClosure ((gen Z).residueField z)`. Set `x : Sp k ⟶ gen Z` to `spMap (algebraMap ((gen Z).residueField z) k) ≫ (gen Z).fromSpecResidueField z`. Set `φ : c.F →+* k` to `(Spec.preimage (x ≫ genStr Z)).hom`. Establish `hφ : x ≫ genStr Z = spMap φ` using `(Spec.map_preimage _).symm`. Take `⟨g⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c O β Z k φ x hφ`.
+
+Take `⟨p, ⟨hp, -⟩, -⟩` from `Φ.lifts k φ x hφ g`. Set `s : Sp k` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k)`. Use `⟨p.1, p.2 s, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hp]`. Conclude with `Scheme.fromSpecResidueField_apply z _`.
+-/
 theorem cover {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N}
     (Φ : FlagTor Z e U) (z : gen Z) : ∃ i, z ∈ Set.range (Φ.C i).π := by
   let k := AlgebraicClosure ((gen Z).residueField z)
@@ -80,12 +109,18 @@ theorem cover {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c �
   rw [← Scheme.Hom.comp_apply, hp]
   exact Scheme.fromSpecResidueField_apply z _
 
+/- English proof (translation)
+The claim follows from `congrArg Sigma.fst ((Φ.lifts k φ x hx g).unique (y₁ := ⟨i, p⟩) (y₂ := ⟨j, q⟩) ⟨hp, cp⟩ ⟨hq, cq⟩)`.
+-/
 theorem comp_eq {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N} (Φ : FlagTor Z e U) {k : Type} [Field k]
     [IsAlgClosed k] {φ : c.F →+* k} {x : Sp k ⟶ gen Z} (hx : x ≫ genStr Z = spMap φ) (g : EigFrame Z φ (x ≫ genι Z))
     {i j : U.Comp} {p : Sp k ⟶ (Φ.C i).Y.X} {q : Sp k ⟶ (Φ.C j).Y.X} (hp : p ≫ (Φ.C i).π = x) (hq : q ≫ (Φ.C j).π = x)
     (cp : (Φ.C i).Carries p g) (cq : (Φ.C j).Carries q g) : i = j :=
   congrArg Sigma.fst ((Φ.lifts k φ x hx g).unique (y₁ := ⟨i, p⟩) (y₂ := ⟨j, q⟩) ⟨hp, cp⟩ ⟨hq, cq⟩)
 
+/- English proof (translation)
+Use `CartierDiv.ext_of_isEqn fun y => ?_` and prove the remaining obligations. Establish `h1 : y ∉ C.bd.supp` using `fun hy => h y ((C.bd_supp y).1 hy)`. Take `⟨g', hg', hu⟩` from `CartierDiv.notMem_supp_iff.1 h1`. Use `⟨1, hg'.iff_unitAt.2 ?_, CartierDiv.isEqn_zero y⟩` and prove the remaining obligations. Simplify using `using hu.inv`.
+-/
 theorem bd_eq_zero (C : FlagCpt Z e) (h : ∀ y, C.π y ∉ genBd Z) : C.bd = 0 := by
   refine CartierDiv.ext_of_isEqn fun y => ?_
   have h1 : y ∉ C.bd.supp := fun hy => h y ((C.bd_supp y).1 hy)
@@ -93,6 +128,9 @@ theorem bd_eq_zero (C : FlagCpt Z e) (h : ∀ y, C.π y ∉ genBd Z) : C.bd = 0 
   refine ⟨1, hg'.iff_unitAt.2 ?_, CartierDiv.isEqn_zero y⟩
   simpa using hu.inv
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨g, hg⟩ := Δ.exists_isEqn y have hr : RegAt y (g : Y.Fn) := by simpa using hg.regularAt_iff.1 (hΔ y) have h2 := h y (g ^ 2) (hg.nsmul 2) g 2 hr (by simpa using (unitAt_one y).regAt) have h3 : RegAt y (g : Y.Fn)⁻¹ := by convert h2 using 1 rw [Units.val_pow_eq_pow_val]; f …`.
+-/
 theorem not_red_double (Y : GlobalTheory.ProjVar.Var F) (Δ : Y.Dv) (hΔ : Y.Eff Δ) (y : Y.X) (hy : y ∈ Y.supp Δ) :
     ¬ ∀ (y : Y.X) (g : Y.Fnˣ), (2 • Δ).IsEqn y g → ∀ (f : Y.Fn) (n : ℕ), RegAt y f → RegAt y (f ^ n / g) →
       RegAt y (f / g) := fun h => by

@@ -19,6 +19,11 @@ variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : 
 
 def levU : Subgroup (GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) := (JH hc n ST SG H).map (J0 hc n ST).subtype
 
+/- English proof (translation)
+Unfold `levU`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y.2, hy⟩`.
+
+Introduce and unpack `⟨h, hx⟩`. Conclude with `⟨⟨x, h⟩, hx, rfl⟩`.
+-/
 theorem mem_levU {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} :
     x ∈ levU hc n ST SG H ↔ ∃ h : x ∈ J0 hc n ST, redG hc n ST SG ⟨x, h⟩ ∈ H := by
   unfold levU
@@ -29,11 +34,20 @@ theorem mem_levU {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} :
   · rintro ⟨h, hx⟩
     exact ⟨⟨x, h⟩, hx, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Subgroup.map_subtype_le _`.
+-/
 theorem unipotentLevel_le_mirabolicLevel : levU hc n ST SG H ≤ J0 hc n ST := Subgroup.map_subtype_le _
 
+/- English proof (translation)
+Introduce `x hx` and use `(Subgroup.mem_inf.1 (Subgroup.mem_inf.1 (unipotentLevel_le_mirabolicLevel hc n ST SG H hx)).1).1`.
+-/
 theorem levU_le_UAd : levU hc n ST SG H ≤ UAd hc n := fun x hx =>
   (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 (unipotentLevel_le_mirabolicLevel hc n ST SG H hx)).1).1
 
+/- English proof (translation)
+Unfold `K1 levU`. Apply `Subgroup.map_mono` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[Subgroup.mem_comap, MonoidHom.mem_ker.1 hy]`. Conclude with `H.one_mem`.
+-/
 theorem kOne_le_unipotentLevel : K1 hc n ST SG ≤ levU hc n ST SG H := by
   unfold K1 levU
   apply Subgroup.map_mono
@@ -154,10 +168,16 @@ open Formalism.BasicNotions (Ranks)
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
+/- English proof (translation)
+Simplify using `only [Ranks.N, Nat.mul_add, Nat.mul_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem kj_le_N (R : Ranks) (j : ℕ) : R.k + j ≤ R.N j := by
   simp only [Ranks.N, Nat.mul_add, Nat.mul_one]
   omega
 
+/- English proof (translation)
+Simplify using `only [Ranks.N, Nat.mul_add, Nat.mul_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem N_eq_blocks (R : Ranks) (j : ℕ) : R.N j = (R.k + j) + j * R.t := by
   simp only [Ranks.N, Nat.mul_add, Nat.mul_one]
   omega

@@ -32,6 +32,11 @@ def preQ {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (Q : LB (A �
     rw [map_zero] at hz
     exact absurd hz z.ne_zero
 
+/- English proof (translation)
+Introduce `S A _ _ Q hQ r W hW`. Set `c` to `preQ A Q hQ`. Establish `hA' : Out.RelAmple c.A c.diag` using `hQ.2.2.2.2.2`. Set `pr : Fin r → (Out.powObj A r ⟶ A)` to `Out.powPr A`. Establish `hmon : ∀ u, IsMonHom (pr u)` using `fun u => inferInstance`.
+
+Establish `huniv : ∀ (T : Over S) (y : Fin r → (T ⟶ A)), ∃! x : T ⟶ Out.powObj A r, ∀ u, x ≫ pr u = y u` using `fun T y => ⟨(Out.powIsLimit A r).lift (Fan.mk T y), fun u => (Out.powIsLimit A r).fac (Fan.mk T y) ⟨u⟩, fun x hx => (Out.powIsLimit A r).uniq (Fan.mk T y) x fun u => hx u.as⟩`. Establish `hL : (formLB A Q pr W).IsLB` using `LB.isLB_linComb hQ.2.1 _ _`. Establish `hLW : cls (formLB A Q pr W) hL = PrincipalIntegral.quad (cls c.P c.isLB) W pr` using `cls_linComb hQ.2.1 _ _ _`. Establish `hadd` using `PrincipalIntegral.pair_mul c SemiRigid.globalFns hA'`. Conclude with `⟨GlobalTheory.isAbelianScheme_powObj_of_isAbelianScheme A hQ.1 r, hL, PrincipalIntegral.rigidified hadd hmon hL hLW, PosDefAmple.relAmple_linComb_of_posDef SemiRigid.globalFns 0 1 r ℤ 0 S _ c (Out.powObj A r) pr W hmon huniv hA' hW⟩`.
+-/
 theorem formLB_props : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (Q : LB (A ⊗ A).left), QHyp A Q →
     ∀ (r : ℕ) (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef →
       IsAbelianScheme (Out.powObj A r) ∧ (formLB A Q (Out.powPr A (n := r)) W).IsLB ∧

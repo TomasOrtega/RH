@@ -10,6 +10,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LocMod.TopFrames
 
+/- English proof (translation)
+Set `e : Y ≃ Fin N` to `Fintype.equivFinOfCardEq hc`. Establish `hinj : Function.Injective (M.submatrix id e.symm).mulVec`. Introduce `y y' h`. Establish `h0 : (M.submatrix id e.symm) *ᵥ (y - y') = 0` using `by rw [Matrix.mulVec_sub, h, sub_self]`. Rewrite `h0` using `[Matrix.submatrix_mulVec_equiv]`.
+
+Establish `h1` using `hM _ (by simpa using h0)`. Use function extensionality and compare the values at `i`. Use `congrFun h1 (e.symm i)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Take `⟨U, hU⟩` from `Matrix.mulVec_injective_iff_isUnit.mp hinj`.
+
+Establish `hM' : M = (U.val).submatrix id e`. Rewrite using `[hU]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Use `⟨⟨M, (U⁻¹).val.submatrix e id, ?_, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[hM', Matrix.submatrix_mul_equiv, Units.mul_inv]`. Both sides reduce to the same expression. Rewrite using `[hM']`. Use `Matrix.submatrix_mul_equiv (U⁻¹).val U.val e (Equiv.refl _) e` as an intermediate fact. Simplify using `only [Equiv.coe_refl] at this`.
+
+Rewrite using `[this, Units.inv_mul, Matrix.submatrix_one_equiv]`.
+-/
 theorem exists_frame {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y]
     (hc : Fintype.card Y = N) (M : Matrix (Fin N) Y k) (hM : ∀ y, M *ᵥ y = 0 → y = 0) :
     ∃ F : GlobalTheory.LocMod.Frame k N Y, F.β = M := by
@@ -33,6 +44,9 @@ theorem exists_frame {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [Deci
     simp only [Equiv.coe_refl] at this
     rw [this, Units.inv_mul, Matrix.submatrix_one_equiv]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `ha`. Take `⟨x, hx⟩` from `Valuation.IsNontrivial.exists_one_lt (v := valuation k)`. Use `h (x / a)` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ ha, Valuation.mem_integer_iff]`. Conclude with `absurd hx (not_lt.mpr this)`.
+-/
 theorem eq_zero_of_mul_int {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a : k) (h : ∀ c : k, c * a ∈ 𝒪[k]) : a = 0 := by
   by_contra ha
@@ -41,6 +55,33 @@ theorem eq_zero_of_mul_int {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   rw [div_mul_cancel₀ _ ha, Valuation.mem_integer_iff] at this
   exact absurd hx (not_lt.mpr this)
 
+/- English proof (translation)
+Introduce `D u d τ k _ _ _ _ q s hs hr hc a z₀ ha hτ hsp`. Take `⟨e, he⟩` from `PinModel.exists_ord _ _ _ _ _ hc`. Use `choose f hf using PinModel.toEAf_surj D`. Establish `hB : (d.top.β.val.map f).map (toEAf D) = d.top.β.val`. Use extensionality with `i j`.
+
+Conclude with `hf _`. Establish `H` using `hsp _ hB`. Use `set P := (d.top.β.val.map f).map (ofSplit q).π with hP`. Use `set A := (d.oT (s + 1 + 1) hs).iA.map (ofSplit q).pr with hA`. Use `set w := (d.oT (s + 1 + 1) hs).iB.map (ofSplit q).pr *ᵥ z₀ with hw`.
+
+Establish `H0 : ∀ (y : Fin D.sp.X'.rank → k) (b : k), A *ᵥ (P *ᵥ y) + b • w = 0 → y = 0 ∧ b = 0`. Introduce `y b h`. Establish `key : ∀ c : k, (∀ i, c * y i ∈ 𝒪[k]) ∧ c * b ∈ 𝒪[k]`. Introduce `c`. Use `(H (c • y) (c * b)).mp ?_` and prove the remaining obligations.
+
+Establish `: A *ᵥ (P *ᵥ (c • y)) + (c * b) • w = 0`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, mul_smul, ← smul_add, h, smul_zero]`. Rewrite using `[this]`. Simplify using `only [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`.
+
+Conclude with `⟨funext fun i => eq_zero_of_mul_int _ fun c => (key c).1 i, eq_zero_of_mul_int _ fun c => (key c).2⟩`. Establish `hsub : ∀ y, P.submatrix id e *ᵥ y = P *ᵥ (y ∘ e.symm)`. Introduce `y`. Rewrite using `[Matrix.submatrix_mulVec_equiv]`. Both sides reduce to the same expression.
+
+Take `⟨FT, hFT⟩` from `exists_frame hc (P.submatrix id e) (by`. Introduce `y hy`. Rewrite `hy` using `[hsub]`. Use `(H0 (y ∘ e.symm) 0 (by rw [hy]; simp)).1` as an intermediate fact. Use function extensionality and compare the values at `i`.
+
+Simplify using `using congrFun this (e i))`. Establish `hmul : ∀ y : Ix (Fin D.R.k ⊕ Fin (s + 1)) (Fin D.R.t) (s + 2) ⊕ Unit → k, fromCols (A * FT.β) (Matrix.of fun r (_ : Unit) => w r) *ᵥ y = A *ᵥ (P *ᵥ ((y ∘ Sum.inl) ∘ e.symm)) + y (Sum.inr ()) • w`. Introduce `y`. Rewrite using `[Matrix.fromCols_mulVec, ← Matrix.mulVec_mulVec, hFT, hsub]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `r`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Take `⟨FM, hFM⟩` from `exists_frame (N := (D.sp.X (s + 1 + 1)).rank) (Y := Ix (Fin D.R.k ⊕ Fin (s + 1)) (Fin D.R.t) (s + 2) ⊕ Unit) (by rw [Fintype.card_sum, hc, ← (d.oT (s + 1 + 1) hs).rank_add, hr]; simp) (fromCols (A * FT.β) (Matrix.of fun r (_ : Unit) => w r)) (by`. Introduce `y hy`. Rewrite `hy` using `[hmul]`.
+
+Take `⟨h1, h2⟩` from `H0 _ _ hy`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Simplify using `using congrFun h1 (e i)`. Conclude with `h2)`.
+
+Use `⟨FT, FM, a, ha, hFM, hτ, ?_, e, he, ?_⟩` and prove the remaining obligations. Introduce `y`. Rewrite using `[hFM, hmul, H]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨fun i => h _, h _⟩`. Introduce and unpack `⟨h1, h2⟩ (i | i)`. Simplify using `using h1 (e i)`. Conclude with `h2`. Introduce `b hb`.
+
+Establish `h1 : Formalism.L2.Theta.mt D.sp.X' 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[h1, Matrix.one_mul, hFT]`. Use extensionality with `i j`. Simplify using `only [hP, Matrix.map_apply, Matrix.submatrix_apply, id, Equiv.apply_symm_apply]`. Apply `PinModel.pi_congr` to reduce the goal to its premises.
+
+Rewrite using `[hf]`. Conclude with `congrFun (congrFun hb i) j`.
+-/
 theorem top_frames : ∀ (D : D7) (u : D.what₂.Word) (d : Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (s : ℕ) (hs : s + 1 + 1 = D.R.m), d.Lz.rank = 1 → Fintype.card (Ix (Fin D.R.k ⊕ Fin (s + 1)) (Fin D.R.t) (s + 2)) = D.sp.X'.rank → ∀ (a : k) (z₀ : Fin d.Lz.rank → k), valuation k a = 1 → (∀ h, (τ s h).map (ofSplit q).pr *ᵥ z₀ = (-((ofSplit q).xi * a)) • fun i => (ofSplit q).pr ((d.bes s 0 h).ζ i)) → (∀ B : Matrix (Fin D.sp.X'.rank) (Fin D.sp.X'.rank) (AE D), B.map (toEAf D) = d.top.β.val → ∀ (y : Fin D.sp.X'.rank → k) (b : k), (fun i => q.sec (((d.oT (s + 1 + 1) hs).iA.map (ofSplit q).pr *ᵥ (B.map (ofSplit q).π *ᵥ y) + b • ((d.oT (s + 1 + 1) hs).iB.map (ofSplit q).pr *ᵥ z₀)) i)) ∈ GlobalTheory.FinPl.latV (D.sp.X (s + 1 + 1)) (d.x (s + 1 + 1)).L (· = q.v) ↔ (∀ i, y i ∈ 𝒪[k]) ∧ b ∈ 𝒪[k]) → ∃ (FT : GlobalTheory.LocMod.Frame k D.sp.X'.rank (Ix (Fin D.R.k ⊕ Fin (s + 1)) (Fin D.R.t) (s + 2))) (FM : GlobalTheory.LocMod.Frame k (D.sp.X (s + 1 + 1)).rank (Ix (Fin D.R.k ⊕ Fin (s + 1)) (Fin D.R.t) (s + 2) ⊕ Unit)) (c : k), valuation k c = 1 ∧ FM.β = fromCols ((d.oT (s + 1 + 1) hs).iA.map (ofSplit q).pr * FT.β) (Matrix.of fun r _ => ((d.oT (s + 1 + 1) hs).iB.map (ofSplit q).pr *ᵥ z₀) r) ∧ (∀ h, (τ s h).map (ofSplit q).pr *ᵥ z₀ = (-((ofSplit q).xi * c)) • fun i => (ofSplit q).pr ((d.bes s 0 h).ζ i)) ∧ (∀ y : Ix (Fin D.R.k ⊕ Fin (s + 1)) (Fin D.R.t) (s + 2) ⊕ Unit → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((FM.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV (D.sp.X (s + 1 + 1)) (d.x (s + 1 + 1)).L (· = q.v)) ∧ ∃ e : Ix (Fin D.R.k ⊕ Fin (s + 1)) (Fin D.R.t) (s + 2) ≃ Fin D.sp.X'.rank, GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.zPos e ∧ MovedTo (ofSplit q) D.sp.X' 1 d.top.β (FT.β.submatrix id e.symm) := by
   intro D u d τ k _ _ _ _ q s hs hr hc a z₀ ha hτ hsp
   obtain ⟨e, he⟩ := PinModel.exists_ord _ _ _ _ _ hc

@@ -11,6 +11,9 @@ open scoped Matrix TensorProduct
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨θ, hθ, hε⟩` from `exists_split_eps X p`. Take `⟨P, hL⟩` from `exists_GL_latBasis_of_isSplitEquiv X p θ hθ`. Take `⟨o, hay, ho⟩` from `adaptIn_ay X hb u p θ P hθ hL`. Take `⟨hC, uu, huu, hdet⟩` from `adaptIn_det X hb u p θ P hθ hε hL`. Conclude with `⟨θ, hθ, P, hL, lF X u p θ, o, uu, fun s t hs ht => hac_frame X u p θ hθ s t hs ht, hay, fun s hs => (lF_unit X u p θ hb hθ s hs).1, fun s hs => (lF_unit X u p θ hb hθ s hs).2, ho, hC, huu, hdet⟩`.
+-/
 theorem adaptIn_holds (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X) :
     AdaptIn X hb u p := by
   obtain ⟨θ, hθ, hε⟩ := exists_split_eps X p
@@ -20,6 +23,9 @@ theorem adaptIn_holds (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what�
   exact ⟨θ, hθ, P, hL, lF X u p θ, o, uu, fun s t hs ht => hac_frame X u p θ hθ s t hs ht, hay,
     fun s hs => (lF_unit X u p θ hb hθ s hs).1, fun s hs => (lF_unit X u p θ hb hθ s hs).2, ho, hC, huu, hdet⟩
 
+/- English proof (translation)
+Introduce `X hb _ u _ _ p` and use `adaptIn_holds X hb u p`.
+-/
 theorem adapted_basis_every_place : AdaptInAll :=
   fun X hb _ u _ _ p => adaptIn_holds X hb u p
 

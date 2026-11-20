@@ -17,6 +17,25 @@ namespace GlobalTheory.TanVanish
 
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R}
 
+/- English proof (translation)
+Establish `hx` using `affPt_w s U`. Use `letI : Algebra (Sec s U.1) R' := ((TrivSqZeroExt.fstHom R R' R').comp α).toRingHom.toAlgebra`. Use `haveI : IsScalarTower R (Sec s U.1) R' := IsScalarTower.of_algebraMap_eq fun r ↦ (congrArg TrivSqZeroExt.fst (α.commutes r)).symm`. Set `δ : Derivation R (Sec s U.1) R'` to `{ toFun := fun b ↦ (α b).snd map_add' := fun a b ↦ by simp map_smul' := fun r b ↦ by`. Simplify using `[Algebra.smul_def, TrivSqZeroExt.algebraMap_eq_inl']`.
+
+Use the proof step `map_one_eq_zero' := by simp`. Use the proof step `leibniz' := fun a b ↦ by`. Simplify using `only [map_mul, TrivSqZeroExt.snd_mul, smul_eq_mul, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Simplify using `[MulOpposite.smul_eq_mul_unop]`. Use `ring }`.
+
+Set `δ'` to `δ.liftKaehlerDifferential`. Establish `hop : ∀ (b : Sec s U.1) (ω : Ω[Sec s U.1⁄R]), MulOpposite.op b • ω = b • ω` using `fun _ _ ↦ rfl`. Apply the tactic sequence `let Φ : TrivSqZeroExt (Sec s U.1) Ω[Sec s U.1⁄R] →ₐ[R] TrivSqZeroExt R' R' := { toFun := fun c ↦ TrivSqZeroExt.inl (algebraMap (Sec s U.1) R' c.fst) + TrivSqZeroExt.inr (δ' c.snd) map_one' := by ext <;> simp map_zero' := by ext <;> simp map_add' := fun a b ↦ by ext <;> simp <;> r …`. Use `ext`. Simplify using the standard rewrite rules.
+
+Simplify using `only [TrivSqZeroExt.snd_mul, hop, map_add, map_smul, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, smul_eq_mul, Algebra.smul_def]`. Simplify using `[MulOpposite.smul_eq_mul_unop]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `commutes' := fun r ↦ by`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl', ← IsScalarTower.algebraMap_apply] }`.
+
+Set `α₀ : Sec s U.1 →ₐ[R] R'` to `(TrivSqZeroExt.fstHom R R' R').comp α`. Establish `hπ : ∀ c, α₀ ((diagExt R (Sec s U.1)).π c) = (SqExt.ofModule R R' R').π (Φ c)` using `fun c ↦ by`. Simplify using `[Φ, α₀, RingHom.algebraMap_toAlgebra]`. Establish `e₀ : spMap (α₀ : Sec s U.1 →+* R') ≫ affPt s U = spMap ((SqExt.ofModule R R' R').π : TrivSqZeroExt R' R' →+* R') ≫ y`. Rewrite using `[← e, ← Category.assoc, ← Cris.spMap_comp]`.
+
+Both sides reduce to the same expression. Set `Ψ` to `(diagExt R (Sec s U.1)).thickHom (SqExt.ofModule R R' R') Φ α₀ hπ hx ((SqExt.ofModule R R' R').red_w hy) e₀`. Set `a1 : Thick.triv (Sec s U.1) (affPt s U) hx ⟶ Thick.triv R' _ ((SqExt.ofModule R R' R').red_w hy)` to `Thick.trivHom α₀ e₀`. Set `a2 : Thick.triv (Sec s U.1) (affPt s U) hx ⟶ Thick.triv (TrivSqZeroExt R' R') y hy` to `Thick.trivHom α e`. Establish `k1` using `Form.ev_sq f a1 ((SqExt.ofModule R R' R').secHom ((SqExt.ofModule R R' R').red_w hy) (SqExt.ofModule R R' R').i (SqExt.ofModule R R' R').π_i) ((diagExt R (Sec s U.1)).secHom hx (diagExt R (Sec s U.1)).i fun _ ↦ rfl) Ψ rfl rfl fun c ↦ by`.
+
+Express the relevant statement in the definitionally equal form `TrivSqZeroExt.inl (α₀ c) = Φ (TrivSqZeroExt.inl c)`. Apply the tactic sequence `ext <;> simp [Φ, α₀, RingHom.algebraMap_toAlgebra]`. Establish `k2` using `Form.ev_sq f a2 ((SqExt.ofModule R R' R').idHom hy) ((diagExt R (Sec s U.1)).secHom hx (diagSec R (Sec s U.1)) (fst_derSec _)) Ψ rfl rfl fun c ↦ by`. Express the relevant statement in the definitionally equal form `α c = Φ (diagSec R (Sec s U.1) c)`. Use `ext`.
+
+Simplify using `[Φ, RingHom.algebraMap_toAlgebra]`. Simplify using `only [Φ, AlgHom.coe_mk, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add, snd_derSec]`. Conclude with `(Derivation.liftKaehlerDifferential_comp_D δ c).symm`. Establish `hΦ : ∀ z, TrivSqZeroExt.snd (Φ z) = δ' z.snd` using `fun z ↦ by simp [Φ]`. Rewrite using `[SqExt.val_apply, k1, k2, add_sub_add_right_eq_sub]`.
+
+Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (Φ _ - Φ _) = 0`. Rewrite using `[← map_sub, hΦ]`. Establish `h0' : TrivSqZeroExt.snd (ev f.1 ((diagExt R (Sec s U.1)).secHom hx (diagExt R (Sec s U.1)).i fun _ ↦ rfl) - ev f.1 ((diagExt R (Sec s U.1)).secHom hx (diagSec R (Sec s U.1)) (fst_derSec _))) = 0` using `h0`. Rewrite using `[h0', map_zero]`.
+-/
 theorem snd_val_affine {R' : Type} [CommRing R'] [Algebra R R'] (U : X.affineOpens)
     (α : Sec s U.1 →ₐ[R] TrivSqZeroExt R' R') (y : Sp (TrivSqZeroExt R' R') ⟶ X)
     (hy : y ≫ s = spMap (algebraMap R (TrivSqZeroExt R' R')))
@@ -90,6 +109,25 @@ theorem snd_val_affine {R' : Type} [CommRing R'] [Algebra R R'] (U : X.affineOpe
       (fst_derSec _))) = 0 := h0
   rw [h0', map_zero]
 
+/- English proof (translation)
+Establish `loc : ∀ m : Ideal R, m.IsMaximal → ∃ t ∉ m, t * TrivSqZeroExt.snd (R` using `R) ((SqExt.dual R).val y hy f.1) = 0 := by`. Introduce `m hm`. Use `haveI := hm.isPrime`. Set `R'` to `Localization.AtPrime m`. Use `haveI : IsLocalRing (TrivSqZeroExt R' R') := IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun c ↦ by`.
+
+Simplify using `only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one]`. Conclude with `IsLocalRing.isUnit_or_isUnit_one_sub_self c.fst`. Apply the tactic sequence `let φ : DualNumber R →ₐ[R] TrivSqZeroExt R' R' := { toFun := fun c ↦ TrivSqZeroExt.inl (algebraMap R R' c.fst) + TrivSqZeroExt.inr (algebraMap R R' c.snd) map_one' := by ext <;> simp map_zero' := by ext <;> simp map_add' := fun a b ↦ by ext <;> simp <;> ring map_mul' := fun a b ↦ …`. Set `y'` to `spMap (φ : DualNumber R →+* TrivSqZeroExt R' R') ≫ y`. Establish `hy' : y' ≫ s = spMap (algebraMap R (TrivSqZeroExt R' R'))`.
+
+Express the relevant statement in the definitionally equal form `(spMap (φ : DualNumber R →+* TrivSqZeroExt R' R') ≫ y) ≫ s = _`. Rewrite using `[Category.assoc, hy, ← Cris.spMap_comp, φ.comp_algebraMap]`. Apply the tactic sequence `have hv := (SqExt.dual R).val_map (SqExt.ofModule R R' R') φ (Algebra.ofId R R') (fun c ↦ by simp [φ]) (fun b ↦ by ext <;> simp [φ, TrivSqZeroExt.algebraMap_eq_inl']) y hy y' hy' rfl f`. Take `⟨U, hU, hp, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := y' (IsLocalRing.closedPoint (TrivSqZeroExt R' R'))) trivial`. Establish `htop` using `Scheme.preimage_eq_top_of_closedPoint_mem y' hp`.
+
+Set `α₁ : Sec s U →+* TrivSqZeroExt R' R'` to `evalAt y' U htop.ge`. Establish `hα : spMap α₁ ≫ affPt s ⟨U, hU⟩ = y'`. Establish `k` using `IsAffineOpen.SpecMap_appLE_fromSpec y' hU (isAffineOpen_top _) htop.ge`. Rewrite `k` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Establish `e1 : spMap α₁ ≫ affPt s ⟨U, hU⟩ = Spec.map ((Scheme.ΓSpecIso (CommRingCat.of (TrivSqZeroExt R' R'))).hom) ≫ Spec.map (y'.appLE U ⊤ htop.ge) ≫ hU.fromSpec`.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Rewrite using `[k]`. Simplify using `only [← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+
+Establish `hc : α₁.comp (algebraMap R (Sec s U)) = algebraMap R (TrivSqZeroExt R' R')`. Establish `e2 : spMap (α₁.comp (algebraMap R (Sec s U))) = spMap (algebraMap R (TrivSqZeroExt R' R'))`. Rewrite using `[Cris.spMap_comp, ← affPt_w s ⟨U, hU⟩, ← Category.assoc, hα, hy']`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e2)`. Set `α : Sec s U →ₐ[R] TrivSqZeroExt R' R'` to `{ α₁ with commutes' := fun r ↦ RingHom.congr_fun hc r }`.
+
+Establish `h1` using `snd_val_affine ⟨U, hU⟩ α y' hy' hα f (h0 _)`. Rewrite `h1` using `[hv]`. Establish `h2 : algebraMap R R' (TrivSqZeroExt.snd (R` using `R) ((SqExt.dual R).val y hy f.1)) = 0 := by`. Simplify `h1` using `[φ]`. Take `⟨⟨t, ht⟩, ht'⟩` from `(IsLocalization.map_eq_zero_iff m.primeCompl R' _).1 h2`.
+
+Conclude with `⟨t, ht, ht'⟩`. Assume the negation of the conclusion as `hx`. Set `J : Ideal R` to `LinearMap.ker (LinearMap.toSpanSingleton R R (TrivSqZeroExt.snd (R := R) ((SqExt.dual R).val y hy f.1)))`. Establish `hJ : J ≠ ⊤` using `fun h ↦ hx (by`. Establish `: (1 : R) ∈ J` using `h ▸ Submodule.mem_top`.
+
+Simplify `this)` using `[J]`. Take `⟨m, hm, hJm⟩` from `Ideal.exists_le_maximal J hJ`. Take `⟨t, ht, ht'⟩` from `loc m hm`. Conclude with `ht (hJm (by simpa [J] using ht'))`.
+-/
 theorem snd_val_eq_zero (y : Sp (DualNumber R) ⟶ X)
     (hy : y ≫ s = spMap (algebraMap R (DualNumber R))) (f : Form s)
     (h0 : ∀ U : X.affineOpens, connForm f.1 (affPt s U) (affPt_w s U) = 0) :
@@ -153,6 +191,9 @@ theorem snd_val_eq_zero (y : Sp (DualNumber R) ⟶ X)
   obtain ⟨t, ht, ht'⟩ := loc m hm
   exact ht (hJm (by simpa [J] using ht'))
 
+/- English proof (translation)
+Introduce `R _ A v f hf`. Rewrite using `[tanVal_apply]`. Use `snd_val_eq_zero v.left (pt_w v) f fun U ↦ ?_` and prove the remaining obligations. Use `congrArg (fun g : ClosedForm (A.hom ≫ 𝟙 (Sp R)) ↦ g.1.1 (Opposite.op U)) hf` as an intermediate fact. Conclude with `(cmpForm_apply _ f (Opposite.op U)).symm.trans (this.trans rfl)`.
+-/
 theorem tanVal_eq_zero_of_cmpForm_eq_zero : ∀ (R : Type) [CommRing R] (A : Over (Sp R))
     (v : epsR R ⟶ A) (f : Form (A.hom ≫ 𝟙 (Sp R))),
     GlobalTheory.CechDR.cmpForm (A.hom ≫ 𝟙 (Sp R)) f = 0 → tanVal v f = 0 := by

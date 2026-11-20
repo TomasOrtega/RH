@@ -32,6 +32,9 @@ def box (ϖ : kˣ) (a a' : ℤ) : Set (Vars G) :=
 
 variable {G}
 
+/- English proof (translation)
+Establish `h1 : ∀ X, ((g X)⁻¹).val = diagonal fun i => (((d X i)⁻¹ : kˣ) : k)` using `fun X => by rw [hg]; rfl`. Simplify using `only [Grid.moveArgs, Assignment.read, invT_inv_val, invT_val]`. Rewrite using `[h1, hg, diagGL_val, diagonal_transpose, diagonal_transpose, mul_diagonal, diagonal_mul]`.
+-/
 theorem moveArgs_one_diag (g : G.VertexGroup) (d : ∀ X : ℕ × ℕ, Fin (G.rank X) → kˣ)
     (hg : ∀ X, g X = diagGL (d X)) (z : G.Args) (b : Edge) (r : Fin (G.rank b.tgt)) (s : Fin (G.rank b.src)) :
     G.moveArgs .one g z b r s = (d b.tgt r : k) * z b r s * ((d b.src s)⁻¹ : kˣ) := by
@@ -41,6 +44,9 @@ theorem moveArgs_one_diag (g : G.VertexGroup) (d : ∀ X : ℕ × ℕ, Fin (G.ra
 
 omit [ValuativeRel k] in
 
+/- English proof (translation)
+Break down `y with x | p` into its components or cases. Simplify using `[vtxExp, auxiliaryVectorUniformizerExponent, frame, finSumFinEquiv_apply_left, x.2]`. Simplify using `[vtxExp, auxiliaryVectorUniformizerExponent, frame, finSumFinEquiv_apply_right]`.
+-/
 theorem vtxExp_frame (a a' : ℤ) {t c b : ℕ} (h : t + c = b) (y : Fin t ⊕ Fin c) :
     vtxExp a a' c t (frame h y) = auxiliaryVectorUniformizerExponent a a' c y := by
   rcases y with x | p

@@ -17,6 +17,11 @@ variable {D : D7} (i : D.nd.Loc)
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨Dd, hD, ⟨i1, i2, -, i4, i5⟩, i3, hT⟩` from `ring_objects_exist (D.nd.O i) (D.nd.X i) (D.nd.T i) (Fin D.R.nV) (GE D.nd) (repX D.nd r) π D.R.t (one_le_letterBlockLength D.R) (blk D.R) (chiU D.nd i 1) (epsU D.nd i) (primHyp_of D.nd r ρ π hN hG1) (absIrr_of_res D.nd r ρ π hN hres) eB e₁ hI g0 s hX`. Establish `hFree` using `fun Z => displayFree (D.nd.O i) (D.nd.X i) (D.nd.T i) (Fin D.R.nV) (GE D.nd) (repX D.nd r) π D.R.t (one_le_letterBlockLength D.R) (blk D.R) (chiU D.nd i 1) (epsU D.nd i) (primHyp_of D.nd r ρ π hN hG1) (absIrr_of_res D.nd r ρ π hN hres) eB e₁ hI g0 s hX Dd hD hT Z`. Establish `hp : Dd.p Dd.π' = π`. Take `⟨-, -, -, -, h, -⟩` from `hD`. Conclude with `h`.
+
+Establish `hv : vcc (D.nd.T i) (D.nd.Z i : Set (D.nd.X i)) (Dd.p Dd.π') = Module.length (D.nd.O i) (D.nd.O i ⧸ ccAt (D.nd.T i) (D.nd.Z i) π)`. Rewrite using `[hp, Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.length_ccAt]`. Use `⟨Dd, hD, hv, i1, i2, i3, i4, i5, hT, ?_⟩` and prove the remaining obligations. Introduce `_ _ _ _ _ _ _`. Conclude with `realDisplayAllK_of (D.nd.l i) (D.nd.O i) (D.nd.X i) Dd.X' (D.nd.Z i : Set (D.nd.X i)) Dd.p (Fin D.R.nV) Dd.R' Dd.T' D.host.E D.nd.Om Dd.r Dd.χ Dd.E Dd.e₁ Dd.δ D.R.t (one_le_letterBlockLength D.R) (blk D.R) Dd.ρk Dd.δO (epsU D.nd i) g0 _ (D.nd.T i) Dd.T' Dd.q Dd.b Dd.π' Dd.ρπ Dd.s …`.
+-/
 theorem normalized_ring_data (hN : NormAt D.nd r ρ π)
     (hG1 : ∀ (γ : GE D.nd) (k : ℕ), (fun x : D.nd.X i => ((rO D.nd i r x γ).charpolyRev).coeff k) ∈ D.nd.T i)
     (hres : Submodule.span (kk D.nd i)

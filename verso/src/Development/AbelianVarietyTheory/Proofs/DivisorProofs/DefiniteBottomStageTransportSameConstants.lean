@@ -29,6 +29,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open GlobalTheory.TriMove in
 
+/- English proof (translation)
+Introduce `D T Lc sc G W i j A A' WW B B' WW₁ X Y hX hY`. Take `⟨hp, hq, rX1, negRightMulLetterShift, nX1, nX2, nX3, isX⟩` from `GlobalTheory.SqTower.IsBottomTri.isStageC hX`. Take `⟨-, -, rY1, rY2, nY1, nY2, nY3, isY⟩` from `hY`. Establish `e1 : B.rank = A.rank` using `by omega`. Establish `e2 : B'.rank = A'.rank` using `by omega`.
+
+Establish `e3 : WW₁.rank = WW.rank` using `by rw [← isY.rank, ← isX.rank, e1, e2]`. Take `⟨IA⟩` from `GlobalTheory.T.exists_isometry_posDef_hermitian_same_rank e1 nY1 nX1`. Take `⟨IA'⟩` from `GlobalTheory.T.exists_isometry_posDef_hermitian_same_rank e2 nY2 nX2`. Take `⟨IW⟩` from `GlobalTheory.T.exists_isometry_posDef_hermitian_same_rank e3 nY3 nX3`. Use `⟨triMove IA IA' IW Y, ⟨hp, hq, rX1, negRightMulLetterShift, nX1, nX2, nX3, ?_⟩, fun c hc => GlobalTheory.T.isConst_seesawTriple_transport_isometries IA IA' IW Y W.ψ W.θ isY.isVac.2.inf c hc⟩` and prove the remaining obligations.
+
+Conclude with `{ rank := isX.rank rigA := GlobalTheory.T.isometryMovedRigging_is IA _ isY.rigA rigA' := GlobalTheory.T.isometryMovedRigging_is IA' _ isY.rigA' rigW := GlobalTheory.T.isometryMovedRigging_is IW _ isY.rigW weil := fun t => GlobalTheory.T.isWeilDatumSignedHomPair_transport_isometri …`. Establish `h5` using `GlobalTheory.T.thetaAtIdempotent_hermitianHomIsometry_transport W.ψ true IA IW (Y.e t) Y.rA.Λ Y.rW.Λ Y.vac _ (Y.f t) (isY.fst t)`. Rewrite `h5` using `[← GlobalTheory.T.standardPairFirstMemberHalf_isometry_moved]`. Conclude with `h5`. Use `snd := fun t => by`.
+
+Establish `h5` using `GlobalTheory.T.thetaAtIdempotent_hermitianHomIsometry_transport W.ψ false IA' IW _ Y.rA'.Λ Y.rW.Λ Y.vac' _ (Y.f' t) (isY.snd t)`. Rewrite `h5` using `[← GlobalTheory.T.standardPairSecondMemberHalf_isometry_moved, e1]`. Conclude with `h5`. Use `meas := GlobalTheory.T.haar_fundamentalDomain_map_isometry_conj IA Y.m Y.fd isY.meas`. Use the proof step `meas' := GlobalTheory.T.haar_fundamentalDomain_map_isometry_conj IA' Y.m' Y.fd' isY.meas' }`.
+-/
 theorem GlobalTheory.TriMove.transport_bottom : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData Lc sc} (W : G.Weil) (i j : Fin D.R.m) {A A' WW B B' WW₁ : HSp D} (X : Tri T A A' WW) (Y : Tri T B B' WW₁),
   IsBottomTri W i j X → GlobalTheory.SqTower.IsStageC W i j 0 0 Y →
   ∃ Y' : Tri T A A' WW, GlobalTheory.SqTower.IsStageC W i j 0 0 Y' ∧ ∀ c : T → ℂ, Y.IsConst W.ψ W.θ c → Y'.IsConst W.ψ W.θ c := by

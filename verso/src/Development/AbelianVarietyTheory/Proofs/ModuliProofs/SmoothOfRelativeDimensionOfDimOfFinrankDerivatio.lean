@@ -11,12 +11,20 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.SmoothTangent
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, Algebra.FormallySmooth.comp_liftOfSurjective (AlgHom.id k F) π hπ ⟨2, h⟩⟩`.
+-/
 theorem exists_section_of_ker_sq_eq_bot {k B F : Type*} [CommRing k] [CommRing B] [CommRing F]
     [Algebra k B] [Algebra k F] [Algebra.FormallySmooth k F] (π : B →ₐ[k] F)
     (hπ : Function.Surjective π) (h : RingHom.ker π.toRingHom ^ 2 = ⊥) :
     ∃ g : F →ₐ[k] B, π.comp g = AlgHom.id k F :=
   ⟨_, Algebra.FormallySmooth.comp_liftOfSurjective (AlgHom.id k F) π hπ ⟨2, h⟩⟩
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective (IsScalarTower.toAlgHom k R F).kerSquareLift` using `fun x ↦ by`. Take `⟨y, rfl⟩` from `hs x`. Conclude with `⟨Ideal.Quotient.mk _ y, rfl⟩`. Establish `hnil : RingHom.ker (IsScalarTower.toAlgHom k R F).kerSquareLift.toRingHom ^ 2 = ⊥`. Rewrite using `[AlgHom.ker_kerSquareLift, Ideal.cotangentIdeal_square]`.
+
+Take `⟨g, hg⟩` from `exists_section_of_ker_sq_eq_bot _ hsurj hnil`. Take `⟨l, hl⟩` from `(retractionKerCotangentToTensorEquivSection (R := k) hs).symm ⟨g, hg⟩`. Conclude with `Function.LeftInverse.injective (g := l) fun x ↦ congr($hl x)`.
+-/
 theorem kerCotangentToTensor_injective (k R F : Type*) [CommRing k] [CommRing R] [CommRing F]
     [Algebra k R] [Algebra k F] [Algebra R F] [IsScalarTower k R F] [Algebra.FormallySmooth k F]
     (hs : Function.Surjective (algebraMap R F)) :
@@ -38,6 +46,11 @@ noncomputable def derivationEquivDual (k R C : Type*) [CommRing k] [CommRing R] 
       map_smul' := fun _ _ ↦ rfl } : (Ω[R⁄k] →ₗ[R] C) ≃ₗ[C] Derivation k R C).symm).trans
     (LinearMap.liftBaseChangeEquiv C)
 
+/- English proof (translation)
+Set `` to `Ideal.Quotient.field m`. Establish `: Module.Finite k (R ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing _ _`. Establish `: Algebra.FormallyEtale k (R ⧸ m)` using `Algebra.FormallyEtale.of_isSeparable k _`. Establish `hs : Function.Surjective (algebraMap R (R ⧸ m))` using `Ideal.Quotient.mk_surjective`. Establish `hinj` using `kerCotangentToTensor_injective k R (R ⧸ m) hs`.
+
+Set `e : m.Cotangent →ₗ[R] (R ⧸ m) ⊗[R] Ω[R⁄k]` to `KaehlerDifferential.kerCotangentToTensor k R (R ⧸ m) ∘ₗ (Ideal.Cotangent.equivOfEq _ _ Ideal.mk_ker.symm).toLinearMap`. Establish `he : Function.Injective (e.extendScalarsOfSurjective hs)` using `hinj.comp (Ideal.Cotangent.equivOfEq _ _ Ideal.mk_ker.symm).injective`. Rewrite using `[(derivationEquivDual k R C).finrank_eq, Subspace.dual_finrank_eq, ← (TensorProduct.AlgebraTensorModule.cancelBaseChange R (R ⧸ m) C C Ω[R⁄k]).finrank_eq, Module.finrank_baseChange]`. Conclude with `LinearMap.finrank_le_finrank_of_injective he`.
+-/
 theorem finrank_cotangent_le_finrank_derivation (k : Type*) [Field k] [PerfectField k]
     {R : Type*} [CommRing R] [Algebra k R] [Algebra.FiniteType k R] (m : Ideal R) [m.IsMaximal]
     (C : Type*) [Field C] [Algebra k C] [Algebra R C] [IsScalarTower k R C]
@@ -58,6 +71,15 @@ theorem finrank_cotangent_le_finrank_derivation (k : Type*) [Field k] [PerfectFi
     Module.finrank_baseChange]
   exact LinearMap.finrank_le_finrank_of_injective he
 
+/- English proof (translation)
+Take `⟨p, hp, hpm⟩` from `Ideal.exists_minimalPrimes_le (bot_le : ⊥ ≤ m)`. Use `hp.1.1` as an intermediate fact. Take `⟨n, h₁, h₂⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq k (R ⧸ p)`. Establish `hdn : (d : ℕ∞) ≤ n`. Use `hd p hp` as an intermediate fact.
+
+Rewrite `this` using `[h₁]`. Conclude with `this` after adjusting the coercions. Establish `hψ : Function.Surjective (Ideal.Quotient.mk p)` using `Ideal.Quotient.mk_surjective`. Establish `hcm : (m.map (Ideal.Quotient.mk p)).comap (Ideal.Quotient.mk p) = m`. Rewrite using `[Ideal.comap_map_of_surjective _ hψ, sup_eq_left]`.
+
+Conclude with `Ideal.mk_ker.le.trans hpm`. Establish `: (m.map (Ideal.Quotient.mk p)).IsMaximal`. Use `(Ideal.map_eq_top_or_isMaximal_of_surjective _ hψ inferInstance).resolve_left fun h ↦ ?_` and prove the remaining obligations. Rewrite `hcm` using `[h, Ideal.comap_top]`. Conclude with `Ideal.IsMaximal.ne_top inferInstance hcm.symm`.
+
+Establish `h` using `height_le_height_comap_of_surjective _ hψ (m.map (Ideal.Quotient.mk p))`. Rewrite `h` using `[hcm, ReciprocityTheory.CA.height_eq_of_isMaximal_of_trdeg_eq_field n h₂]`. Conclude with `hdn.trans h`.
+-/
 theorem le_height_of_forall_minimalPrimes (k : Type) [Field k] {R : Type} [CommRing R]
     [Algebra k R] [Algebra.FiniteType k R] {d : ℕ}
     (hd : ∀ q ∈ minimalPrimes R, (d : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ q))
@@ -87,6 +109,19 @@ namespace GlobalTheory
 
 open SmoothTangent
 
+/- English proof (translation)
+Introduce `k _ _ e R _ _ d _ hd ht`. Establish `: Algebra.FinitePresentation k R` using `Algebra.FinitePresentation.of_finiteType.mp ‹_›`. Establish `key (m : Ideal R) (hm : m.IsMaximal) : ∃ f ∉ m, Algebra.IsStandardSmoothOfRelativeDimension d k (Localization.Away f)`. Establish `h₁ : (d : WithBot ℕ∞) ≤ ringKrullDim (Localization.AtPrime m)`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height m (Localization.AtPrime m)]`.
+
+Conclude with `le_height_of_forall_minimalPrimes k hd m` after adjusting the coercions. Establish `h₂ : Module.finrank (R ⧸ m) m.Cotangent ≤ d`. Set `` to `Ideal.Quotient.field m`. Establish `: Module.Finite k (R ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing _ _`. Set `: Algebra k ℂ` to `e.toAlgebra`.
+
+Set `φ : (R ⧸ m) →ₐ[k] ℂ` to `IsAlgClosed.lift`. Set `: Algebra (R ⧸ m) ℂ` to `φ.toRingHom.toAlgebra`. Set `: Algebra R ℂ` to `(φ.toRingHom.comp (Ideal.Quotient.mk m)).toAlgebra`. Establish `: IsScalarTower R (R ⧸ m) ℂ` using `.of_algebraMap_eq fun _ ↦ rfl`. Establish `: IsScalarTower k R ℂ` using `.of_algebraMap_eq fun x ↦ (φ.commutes x).symm`.
+
+Conclude with `(finrank_cotangent_le_finrank_derivation k m ℂ).trans (ht rfl)`. Take `⟨-, -, -, h₃, -, h₄⟩` from `isSmoothAt_of_finrank_cotangent_le_of_perfectField k m h₁ h₂`. Conclude with `exists_isStandardSmoothOfRelativeDimension_of_isSmoothAt k m h₄`. Use `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension d)).mpr ?_` and prove the remaining obligations. Use `⟨{f | Algebra.IsStandardSmoothOfRelativeDimension d k (Localization.Away f)}, ?_, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ h`. Take `⟨f, hf, hs⟩` from `key m hm`. Conclude with `hf (hle (Ideal.subset_span hs))`. Introduce `f hf`.
+
+Use `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap d).mpr hf` as an intermediate fact. Rewrite `this` using `[IsScalarTower.algebraMap_eq k R]`. Then use the resulting hypothesis.
+-/
 theorem smoothOfRelativeDimension_of_dim_of_finrank_derivation_le :
     ∀ (k : Type) [Field k] [CharZero k] (e : k →+* ℂ) (R : Type) [CommRing R] [Algebra k R] (d : ℕ),
       Algebra.FiniteType k R →

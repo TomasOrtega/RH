@@ -17,6 +17,19 @@ namespace GlobalTheory.ChernReg
 
 open Set
 
+/- English proof (translation)
+Introduce `F _ _ Y σ a ha`. Use `haveI : T2Space (CxPts Y.str σ) := CxPts.t2Space_cxPts_of_isProjOver σ Y.isProjOver`. Use `haveI : CompactSpace (CxPts Y.str σ) := CxPts.compactSpace σ Y.isProjOver`. Establish `hloc : ∀ y : CxPts Y.str σ, ∃ (c : AlgChart Y.str σ Y.dim) (E : ChartMap Y.str σ Y.dim) (W : Set (CxPts Y.str σ)) (ε : ℝ), IsOpen W ∧ y ∈ W ∧ W ⊆ c.e.source ∧ 0 < ε ∧ ExphOn.IsExphOn a E W ε` using `fun y => by`. Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (D := Y.dim) (p := Y.str) (σ := σ) y`.
+
+Conclude with `⟨c, GlobalTheory.ChernReg.ExphLoc.exists_isExphOn F Y.X Y.str σ Y.dim (Y.an σ) a ha c y hc⟩`. Use `choose c E W ε hWo hyW hWc hε hE using hloc`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover W hWo (fun y _ => mem_iUnion.2 ⟨y, hyW y⟩)`. Take `⟨v, hv, hvo, hvc⟩` from `exists_subset_iUnion_closure_subset (ι := t) isClosed_univ (fun i => hWo i) (fun _ _ => Set.toFinite _) (fun y _ => by`. Take `⟨i, hi, hy⟩` from `mem_iUnion₂.1 (ht (mem_univ y))`.
+
+Conclude with `mem_iUnion.2 ⟨⟨i, hi⟩, hy⟩)`. Establish `key : ∀ s : Finset t, ∃ (E' : ChartMap Y.str σ Y.dim) (W' : Set (CxPts Y.str σ)) (ε' : ℝ), IsOpen W' ∧ (⋃ i ∈ s, closure (v i)) ⊆ W' ∧ 0 < ε' ∧ ExphOn.IsExphOn a E' W' ε'`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨_, ∅, 1, isOpen_empty, by simp, one_pos, ExphOn.isExphOn_empty a 1⟩`.
+
+Consider the case `insert i s hi ih`. Take `⟨E₀, W₀, ε₀, hW₀, hK₀, hε₀, hE₀⟩` from `ih`. Take `⟨E₁, W₁, ε₁, hW₁, hK₁, hε₁, hE₁⟩` from `GlobalTheory.ChernReg.ExphOn.exists_isExphOn_union F Y.X Y.str σ Y.dim (Y.an σ) a ha (c i) E₀ (E i) W₀ (W i) (⋃ j ∈ s, closure (v j)) (closure (v i)) ε₀ (ε i) hW₀ (hWo i) (hWc i) (s.isCompact_biUnion fun j _ => isClosed_closure.isCompact) isClosed_closure.isCompact hK₀ (hvc i) hε …`. Use `⟨E₁, W₁, ε₁, hW₁, ?_, hε₁, hE₁⟩` and prove the remaining obligations. Rewrite using `[Finset.set_biUnion_insert]`.
+
+Conclude with `union_comm _ _ ▸ hK₁`. Take `⟨E', W', ε', -, hK, hε', hE'⟩` from `key Finset.univ`. Establish `hU : W' = univ` using `eq_univ_of_univ_subset fun y _ => hK (by`. Take `⟨i, hi⟩` from `mem_iUnion.1 (hv (mem_univ y))`. Conclude with `mem_iUnion₂.2 ⟨i, Finset.mem_univ _, subset_closure hi⟩)`.
+
+Conclude with `GlobalTheory.ChernReg.ExphOn.exists_isExph_of_isExphOn_univ F Y.X Y.str σ Y.dim (Y.an σ) a E' ε' ha hε' (hU ▸ hE')`.
+-/
 theorem exists_isExph : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (σ : F →+* ℂ) (a : ChartForm Y.str σ Y.dim),
     IsKaehlerForm (Y.an σ) a → ∃ E : ChartMap Y.str σ Y.dim, IsExph a E := by
   intro F _ _ Y σ a ha

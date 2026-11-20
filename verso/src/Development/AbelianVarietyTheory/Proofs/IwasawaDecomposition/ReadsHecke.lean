@@ -27,6 +27,9 @@ def FrameAut (θ : GAf L n ≃* GAf L n) : Prop :=
 
 def cx {K : Type} [Field K] (e : K →+* ℂ) {J : Subgroup (GAf L n)} (χ : J →* Kˣ) : J →* ℂˣ := (Units.map e.toMonoidHom).comp χ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cx_apply {K : Type} [Field K] (e : K →+* ℂ) {J : Subgroup (GAf L n)} (χ : J →* Kˣ) (κ : J) :
     ((cx e χ κ : ℂˣ) : ℂ) = e (χ κ : Kˣ) := rfl
 
@@ -38,6 +41,9 @@ def WtMatch {K : Type} [Field K] (e : K →+* ℂ) {W W' : Type} [AddCommGroup W
   ∃ (ι : Type) (_ : Fintype ι) (_ : DecidableEq ι) (b : Module.Basis ι K W) (b' : Module.Basis ι ℂ W'),
     ∀ γ, LinearMap.toMatrix b' b' (ρ' γ) = (LinearMap.toMatrix b b (ρ γ)).map e
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => Iff.rfl, fun _ _ => Iff.rfl⟩`.
+-/
 example : FrameAut (MulEquiv.refl (GAf L n)) := ⟨fun _ => Iff.rfl, fun _ _ => Iff.rfl⟩
 
 end Gen

@@ -83,6 +83,9 @@ def actG : G.GAf →* Module.End (AfP p) (AfP p ⊗[ℚ] VQ D) :=
 
 def CongOne (N : ℕ) (g : G.GAf) : Prop := ∀ v ∈ LaHat D, ∃ w ∈ LaHat D, L.actG g v = v + N • w
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨w, hw, e1⟩` from `hh v hv`. Take `⟨w', hw', e2⟩` from `hg (v + N • w) (add_mem hv (nsmul_mem hw N))`. Use `⟨w + w', add_mem hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply, e1, e2, smul_add, add_assoc]`.
+-/
 theorem CongOne.mul {N : ℕ} {g h : G.GAf} (hg : L.CongOne N g) (hh : L.CongOne N h) : L.CongOne N (g * h) := by
   intro v hv
   obtain ⟨w, hw, e1⟩ := hh v hv

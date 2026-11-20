@@ -18,6 +18,19 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X' W _ h _ q _ V _ ℓ _ Ω _ y hy`. Establish `hinj : Function.Injective (h.stalkMap q).hom`. Use `letI := (h.stalkMap q).hom.toAlgebra`. Use `haveI : Module.Flat (X'.presheaf.stalk (h q)) (W.presheaf.stalk q) := Flat.stalkMap h q`. Use `haveI : IsLocalHom (algebraMap (X'.presheaf.stalk (h q)) (W.presheaf.stalk q)) := (inferInstance : IsLocalHom (h.stalkMap q).hom)`.
+
+Use `haveI : Module.FaithfullyFlat (X'.presheaf.stalk (h q)) (W.presheaf.stalk q) := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `FaithfulSMul.algebraMap_injective _ _`. Establish `hrange : Set.range (y ≫ W.fromSpecStalk q ≫ h) ⊆ Set.range ℓ`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `key : (y ≫ W.fromSpecStalk q ≫ h) x = X'.fromSpecStalk (h q) (Spec.map (h.stalkMap q) (y x))`.
+
+Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk]`. Both sides reduce to the same expression. Rewrite using `[key]`. Use `set p : Spec (X'.presheaf.stalk (h q)) := Spec.map (h.stalkMap q) (y x) with hpdef`. Establish `hp : p.asIdeal = ⊥` using `by show Ideal.comap (h.stalkMap q).hom (y x).asIdeal = ⊥`.
+
+Rewrite using `[hy x]`. Conclude with `Ideal.comap_bot_of_injective _ hinj`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : genericPoint X' ∈ Set.range (X'.fromSpecStalk (h q)) := by`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `(genericPoint_spec X').specializes (Set.mem_univ _)`.
+
+Establish `hps : p ⤳ s` using `(PrimeSpectrum.le_iff_specializes _ _).1 (by show p.asIdeal ≤ s.asIdeal`. Rewrite using `[hp]`. Conclude with `bot_le)`. Establish `hgen : genericPoint X' ∈ Set.range ℓ` using `((genericPoint_spec X').mem_open_set_iff ℓ.isOpenEmbedding.isOpen_range).2 (by simpa using Set.range_nonempty ℓ)`. Use `(hps.map (X'.fromSpecStalk (h q)).continuous).mem_open ℓ.isOpenEmbedding.isOpen_range (by rw [hs]; exact hgen)` as an intermediate fact.
+
+Conclude with `this`. Conclude with `⟨IsOpenImmersion.lift ℓ _ hrange, (IsOpenImmersion.lift_fac _ _ _).symm⟩`.
+-/
 theorem lift_of_stalk_generic_flat : ∀ {X' W : Scheme.{0}} [IsIntegral X'] (h : W ⟶ X') [Flat h] (q : W)
     [IsDomain (W.presheaf.stalk q)] {V : Scheme.{0}} [Nonempty V] (ℓ : V ⟶ X') [IsOpenImmersion ℓ]
     (Ω : Type) [Field Ω] (y : Sp Ω ⟶ Spec (W.presheaf.stalk q)) (hy : ∀ x, (y x).asIdeal = ⊥), ∃ z : Sp Ω ⟶ V, y ≫ W.fromSpecStalk q ≫ h = z ≫ ℓ := by

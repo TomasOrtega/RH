@@ -5,6 +5,13 @@ open scoped ComplexConjugate
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `TT ζ hTT hG`. Unfold `C7.GGz at hG`. Establish `hq : 0 < Complex.normSq ζ` using `by linarith`. Establish `hζ : ζ ≠ 0` using `by intro h; rw [h, Complex.normSq_zero] at hq; exact lt_irrefl _ hq`. Establish `hcζ : (starRingEnd ℂ) ζ ≠ 0` using `(map_ne_zero _).2 hζ`.
+
+Prove the components needed by the constructor for the conclusion. Unfold `C7.Wz C7.GGz`. Use `push_cast`. Rewrite using `[inv_div, ← Complex.mul_conj]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hn : 0 < ‖ζ‖` using `norm_pos_iff.2 hζ`. Rewrite using `[norm_div, norm_one, one_div]`. Rewrite using `[inv_lt_inv₀ hn (Real.sqrt_pos.2 hTT), Real.sqrt_lt' hn, ← Complex.normSq_eq_norm_sq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem weight_inverse : C7.WInv := by
   intro TT ζ hTT hG
   unfold C7.GGz at hG
@@ -21,11 +28,21 @@ theorem weight_inverse : C7.WInv := by
     rw [inv_lt_inv₀ hn (Real.sqrt_pos.2 hTT), Real.sqrt_lt' hn, ← Complex.normSq_eq_norm_sq]
     linarith
 
+/- English proof (translation)
+Introduce `TT Dr ζ h`. Unfold `C7.Wz`. Rewrite using `[Complex.normSq_mul]`. Establish `: Complex.normSq Dr ≠ 0` using `by simpa using h`. Rewrite using `[mul_div_mul_left _ _ this]`.
+-/
 theorem weight_exactness : C7.WExact := by
   intro TT Dr ζ h; unfold C7.Wz; rw [Complex.normSq_mul]
   have : Complex.normSq Dr ≠ 0 := by simpa using h
   rw [mul_div_mul_left _ _ this]
 
+/- English proof (translation)
+Introduce `N i i' D Gv c hD hG hc hii`. Establish `hd : 0 < ‖D‖` using `norm_pos_iff.2 hD`. Establish `h1 : ‖D ^ i * (starRingEnd ℂ) D ^ i'‖ = (‖D‖ ^ N)⁻¹`. Rewrite using `[norm_mul, norm_zpow, norm_zpow, Complex.norm_conj, ← zpow_add₀ hd.ne', hii, zpow_neg, zpow_natCast]`. Establish `hGN : 0 < Gv ^ ((N : ℝ) / 2)` using `Real.rpow_pos_of_pos hG _`.
+
+Establish `key : (Complex.normSq D / Gv) ^ N * c = (‖D‖ ^ N * (Gv ^ ((N : ℝ) / 2))⁻¹) ^ 2 * c`. Establish `e : (Gv ^ ((N : ℝ) / 2)) ^ 2 = Gv ^ N`. Rewrite using `[← Real.rpow_natCast (Gv ^ ((N : ℝ) / 2)) 2, ← Real.rpow_mul hG.le]`. Evaluate the numerical expressions. Rewrite using `[mul_pow, inv_pow, e, Complex.normSq_eq_norm_sq, div_pow, ← pow_mul, ← pow_mul, mul_comm 2 N]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (by positivity), h1, neg_div, Real.rpow_neg hG.le]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem normal_form_weight : C7.NFWeight := by
   intro N i i' D Gv c hD hG hc hii
   have hd : 0 < ‖D‖ := norm_pos_iff.2 hD
@@ -41,6 +58,9 @@ theorem normal_form_weight : C7.NFWeight := by
   rw [key, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (by positivity), h1, neg_div, Real.rpow_neg hG.le]
   field_simp
 
+/- English proof (translation)
+Introduce `f g p x hf hg`. Unfold `LE.ld`. Establish `hle : ((p : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `by exact_mod_cast le_top`. Establish `e : (fun u : ℝ => (fun y => f y * g y) (Real.exp u)) = (fun u => f (Real.exp u)) * (fun u => g (Real.exp u))` using `rfl`. Rewrite using `[e, iteratedDeriv_mul ((hf.of_le hle).contDiffAt) ((hg.of_le hle).contDiffAt)]`.
+-/
 theorem leibniz_log_derivative : C7.LdLeibniz := by
   intro f g p x hf hg
   unfold LE.ld
@@ -49,6 +69,25 @@ theorem leibniz_log_derivative : C7.LdLeibniz := by
       (fun u => f (Real.exp u)) * (fun u => g (Real.exp u)) := rfl
   rw [e, iteratedDeriv_mul ((hf.of_le hle).contDiffAt) ((hg.of_le hle).contDiffAt)]
 
+/- English proof (translation)
+Introduce `TT N f ζ hTT hG hf`. Unfold `C7.GGz at hG`. Establish `hq : 0 < Complex.normSq ζ` using `by linarith`. Establish `hζ : ζ ≠ 0` using `by intro h; rw [h, Complex.normSq_zero] at hq; exact lt_irrefl _ hq`. Set `q : ℂ → ℝ` to `fun x => x.re * x.re + x.im * x.im`.
+
+Establish `hqn : ∀ x, Complex.normSq x = q x` using `fun x => Complex.normSq_apply x`. Establish `hWfun : (fun x => ((C7.Wz TT x : ℝ) : ℂ) ^ N * f x) = fun x => (((q x / (q x - TT)) ^ N : ℝ) : ℂ) * f x`. Use function extensionality and compare the values at `x`. Simplify using `only [C7.Wz, C7.GGz, hqn]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hre : HasFDerivAt (fun x : ℂ => x.re) Complex.reCLM ζ` using `Complex.reCLM.hasFDerivAt`. Establish `him : HasFDerivAt (fun x : ℂ => x.im) Complex.imCLM ζ` using `Complex.imCLM.hasFDerivAt`. Establish `hqd : HasFDerivAt q ((ζ.re • Complex.reCLM + ζ.re • Complex.reCLM) + (ζ.im • Complex.imCLM + ζ.im • Complex.imCLM)) ζ` using `(hre.mul hre).add (him.mul him)`. Establish `hq0 : q ζ - TT ≠ 0` using `by rw [← hqn]; linarith`.
+
+Establish `hφ : HasDerivAt (fun s : ℝ => (s / (s - TT)) ^ N) ((N : ℝ) * (q ζ / (q ζ - TT)) ^ (N - 1) * ((1 * (q ζ - TT) - q ζ * 1) / (q ζ - TT) ^ 2)) (q ζ)` using `((hasDerivAt_id (q ζ)).div ((hasDerivAt_id (q ζ)).sub_const TT) hq0).pow N`. Establish `hWc` using `Complex.ofRealCLM.hasFDerivAt.comp ζ (hφ.comp_hasFDerivAt ζ hqd)`. Establish `hP : HasFDerivAt (fun x => (((q x / (q x - TT)) ^ N : ℝ) : ℂ) * f x) _ ζ` using `hWc.mul hf.hasFDerivAt`. Unfold `C7.dbar`. Rewrite using `[hWfun, hP.fderiv]`.
+
+Simplify using the standard rewrite rules. Establish `hWz : ((C7.Wz TT ζ : ℝ) : ℂ) = ((q ζ : ℝ) : ℂ) / (((q ζ : ℝ) : ℂ) - TT)`. Simplify using `only [C7.Wz, C7.GGz, hqn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hGz : ((C7.GGz TT ζ : ℝ) : ℂ) = ((q ζ : ℝ) : ℂ) - TT`. Simplify using `only [C7.GGz, hqn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ : ((q ζ : ℝ) : ℂ) = ζ * (starRingEnd ℂ) ζ` using `by rw [← hqn, Complex.mul_conj]`.
+
+Establish `hc : (starRingEnd ℂ) ζ ≠ 0` using `(map_ne_zero _).2 hζ`. Establish `hd : ζ * (starRingEnd ℂ) ζ - TT ≠ 0` using `by rw [← hQ]; exact_mod_cast hq0`. Rewrite using `[hWz, hGz, hQ, Complex.re_eq_add_conj, Complex.im_eq_sub_conj]`. Break down `N with _ | m` into its components or cases. Simplify using the standard rewrite rules.
+
+Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Establish `hI : Complex.I ≠ 0` using `Complex.I_ne_zero`. Establish `hre2 : (ζ + (starRingEnd ℂ) ζ) / 2 + (ζ + (starRingEnd ℂ) ζ) / 2 + Complex.I * ((ζ - (starRingEnd ℂ) ζ) / (2 * Complex.I) + (ζ - (starRingEnd ℂ) ζ) / (2 * Complex.I)) = 2 * ζ` using `by field_simp; ring`. Establish `hW : (ζ * (starRingEnd ℂ) ζ / (ζ * (starRingEnd ℂ) ζ - (TT : ℂ))) ^ (m + 1) / ((starRingEnd ℂ) ζ * (ζ * (starRingEnd ℂ) ζ - (TT : ℂ))) = (ζ * (starRingEnd ℂ) ζ / (ζ * (starRingEnd ℂ) ζ - (TT : ℂ))) ^ m * ζ / (ζ * (starRingEnd ℂ) ζ - (TT : ℂ)) ^ 2`.
+
+Rewrite using `[pow_succ]`. Generalize the expression as in `(ζ * (starRingEnd ℂ) ζ / (ζ * (starRingEnd ℂ) ζ - (TT : ℂ))) ^ m = P`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(f ζ * (((m : ℂ) + 1) * (ζ * (starRingEnd ℂ) ζ / (ζ * (starRingEnd ℂ) ζ - (TT : ℂ))) ^ m * (-(TT : ℂ) / (ζ * (starRingEnd ℂ) ζ - (TT : ℂ)) ^ 2)) / 2) * hre2 + (((m : ℂ) + 1) * (TT : ℂ) * f ζ) * hW`.
+-/
 theorem dbar_conjugation_weight : C7.DbarConjW := by
   intro TT N f ζ hTT hG hf
   unfold C7.GGz at hG

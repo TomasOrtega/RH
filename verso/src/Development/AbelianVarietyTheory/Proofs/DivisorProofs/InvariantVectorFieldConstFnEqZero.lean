@@ -19,6 +19,21 @@ noncomputable section
 
 namespace GlobalTheory.Heat
 
+/- English proof (translation)
+Establish `key : ∀ (U : G.left.Opens) (hU : IsAffineOpen U) (hle : U ≤ O), (G.left.presheaf.map (homOfLE hle).op).hom (dd O (constFn G.hom O r)) = 0`. Introduce `U hU hle`. Set `g : Sp Γ(G.left, U) ⟶ G.left` to `hU.fromSpec`. Set `φ : R →+* Γ(G.left, U)` to `(Spec.preimage (g ≫ G.hom)).hom`. Establish `hφ : g ≫ G.hom = spMap φ` using `by simp [φ, spMap]`.
+
+Establish `hgU : ⊤ ≤ g ⁻¹ᵁ U` using `hU.fromSpec_preimage_self.ge`. Establish `hgO : ⊤ ≤ g ⁻¹ᵁ O` using `hgU.trans (g.preimage_mono hle)`. Establish `e : (dualMap φ).comp (algebraMap R (DualNumber R)) = (algebraMap Γ(G.left, U) (DualNumber Γ(G.left, U))).comp φ`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hv : (tv v).left ≫ G.hom = spMap (algebraMap R (DualNumber R))` using `(Over.w (tv v)).trans (Category.comp_id _)`.
+
+Establish `h2 : (spMap (dualMap φ) ≫ (tv v).left) ≫ G.hom = (tEpsG (g ≫ G.hom)).hom` using `by show _ = spMap (algebraMap Γ(G.left, U) (DualNumber Γ(G.left, U))) ≫ g ≫ G.hom`. Use `(Category.assoc _ _ _).trans ((congrArg (spMap (dualMap φ) ≫ ·) hv).trans ?_)` and prove the remaining obligations. Rewrite using `[hφ, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, e]`. Set `g' : tEpsG (g ≫ G.hom) ⟶ G` to `Over.homMk (spMap (algebraMap Γ(G.left, U) (DualNumber Γ(G.left, U))) ≫ g) (Category.assoc _ _ _)`. Set `v' : tEpsG (g ≫ G.hom) ⟶ G` to `Over.homMk (spMap (dualMap φ) ≫ (tv v).left) h2`.
+
+Establish `htr : IsTr G φ g v (g' * v').left` using `⟨g', v', rfl, rfl, rfl⟩`. Establish `hval` using `hinv.2 _ φ g _ O (constFn G.hom O r) hφ hgO htr`. Establish `hw : (g' * v').left ≫ G.hom = spMap ((algebraMap Γ(G.left, U) (DualNumber Γ(G.left, U))).comp φ)`. Use `(Over.w (g' * v')).trans ?_` and prove the remaining obligations. Use `show spMap (algebraMap Γ(G.left, U) (DualNumber Γ(G.left, U))) ≫ g ≫ G.hom = _`.
+
+Rewrite using `[hφ, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `h0 : (valR (g' * v').left O (constFn G.hom O r)).snd = 0`. Distinguish the cases in `hO : ⊤ ≤ (g' * v').left ⁻¹ᵁ O`. Rewrite using `[GlobalTheory.ArcPts.SecValue.valR_constFn G.hom _ _ hw O hO r]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Rewrite using `[valR, dif_neg hO]`. Both sides reduce to the same expression. Rewrite `hval` using `[h0, ← GlobalTheory.HolHom.valR_res g hle _ hgU]`. Rewrite using `[← GlobalTheory.DetRatio.valR_fromSpec hU ((G.left.presheaf.map (homOfLE hle).op).hom (dd O (constFn G.hom O r)))]`. Conclude with `hval.symm`.
+
+Use `G.left.sheaf.eq_of_locally_eq' (fun k : {U : G.left.Opens // IsAffineOpen U ∧ U ≤ O} => k.1) O (fun k => homOfLE k.2.2) ?_ _ 0 fun k => ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨U, hU, hxU, hUO⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp G.left.isBasis_affineOpens hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, hUO⟩, hxU⟩`. Conclude with `(key k.1 k.2.1 k.2.2).trans (map_zero _).symm`.
+-/
 theorem IsInv.apply_constFn {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (v : TanM (𝟙 (Sp R)) G) (dd : Fld G.left) (hinv : IsInv G v dd) (O : G.left.Opens) (r : R) :
     dd O (constFn G.hom O r) = 0 := by

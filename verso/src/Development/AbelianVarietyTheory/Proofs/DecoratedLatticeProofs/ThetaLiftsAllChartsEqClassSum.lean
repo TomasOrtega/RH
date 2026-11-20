@@ -18,16 +18,25 @@ namespace GlobalTheory.SeeSaw.LiftSum
 
 variable {D : D7}
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Conclude with `h`.
+-/
 theorem ontoUni_inB (θ : InfFam D) (V : HSp D) (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) {n : ℕ} (hn : V.rank = n)
     (h : OntoUni fun k : GinfC V => inN θ V B hn k.1) : OntoUni fun k : GinfC V => inB θ V B k.1 := by
   subst hn
   exact h
 
+/- English proof (translation)
+Substitute `hp hq` using the available equality. Conclude with `⟨Q, MvPolynomial.rename_id_apply Q⟩`.
+-/
 theorem castP_surj {p q a b : ℕ} (hp : p = a) (hq : q = b) (Q : FP D.what₂.Tau a b) :
     ∃ P : PolF D q p, castP hp hq P = Q := by
   subst hp hq
   exact ⟨Q, MvPolynomial.rename_id_apply Q⟩
 
+/- English proof (translation)
+Use `Matrix.mem_unitaryGroup_iff.1 (hu τ)` as an intermediate fact. Introduce `h0`. Establish `h1` using `congrArg Matrix.det this`. Rewrite `h1` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h1`.
+-/
 theorem det_ne_zero_of_isUni {ι : Type} {a : ℕ} {u : ι → Matrix (Fin a) (Fin a) ℂ} (hu : IsUni u) (τ : ι) :
     (u τ).det ≠ 0 := by
   have := Matrix.mem_unitaryGroup_iff.1 (hu τ)
@@ -41,6 +50,9 @@ def trF {n : ℕ} {u : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ} (hu : IsUni
     rw [Matrix.det_mul]
     exact (isUnit_iff_ne_zero.2 (det_ne_zero_of_isUni hu τ)).mul (y.2 τ)⟩
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem isTr_trF {n : ℕ} {u : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ} (hu : IsUni u) (y : FrN D n) :
     IsTr u y (trF hu y) := fun _ => rfl
 
@@ -48,6 +60,9 @@ section Weil
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
 
+/- English proof (translation)
+Establish `: ((g, γ * x * κ) : GA D S × GA D T) = (1, γ) * ((g, x) * (1, κ))`. Simplify using `[mul_assoc]`. Rewrite using `[this, map_mul, Module.End.mul_apply, hw.om_aut 1 (one_mem _) γ hγ _ (hw.om_pres _ _ hf), map_mul, Module.End.mul_apply, hp, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem theta_snd (hw : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {γ : GA D T} (hγ : γ ∈ GQ T)
     (g : GA D S) (x κ : GA D T) {p : ℂ} (hp : om (1, κ) f = p • f) : om (g, γ * x * κ) f 0 = p * om (g, x) f 0 := by
   have : ((g, γ * x * κ) : GA D S × GA D T) = (1, γ) * ((g, x) * (1, κ)) := by
@@ -56,17 +71,26 @@ theorem theta_snd (hw : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf
     hp, map_smul]
   rfl
 
+/- English proof (translation)
+Establish `: ((γ * g, x) : GA D S × GA D T) = (γ, 1) * (g, x)` using `by simp`. Rewrite using `[this, map_mul, Module.End.mul_apply, hw.om_aut γ hγ 1 (one_mem _) _ (hw.om_pres _ _ hf)]`.
+-/
 theorem theta_fst_left (hw : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {γ : GA D S}
     (hγ : γ ∈ GQ S) (g : GA D S) (x : GA D T) : om (γ * g, x) f 0 = om (g, x) f 0 := by
   have : ((γ * g, x) : GA D S × GA D T) = (γ, 1) * (g, x) := by simp
   rw [this, map_mul, Module.End.mul_apply, hw.om_aut γ hγ 1 (one_mem _) _ (hw.om_pres _ _ hf)]
 
+/- English proof (translation)
+Establish `: ((g * κ, x) : GA D S × GA D T) = (g, x) * (κ, 1)` using `by simp`. Rewrite using `[this, map_mul, Module.End.mul_apply, hp, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem theta_fst_right {f : WO S T → ℂ} (g κ : GA D S) (x : GA D T) {p : ℂ} (hp : om (κ, 1) f = p • f) :
     om (g * κ, x) f 0 = p * om (g, x) f 0 := by
   have : ((g * κ, x) : GA D S × GA D T) = (g, x) * (κ, 1) := by simp
   rw [this, map_mul, Module.End.mul_apply, hp, map_smul]
   rfl
 
+/- English proof (translation)
+Establish `: ((g * k, x * k') : GA D S × GA D T) = (g, x) * (k, k')` using `rfl`. Rewrite using `[this, map_mul, Module.End.mul_apply, hp, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem theta_mul {f f' : WO S T → ℂ} (g k : GA D S) (x k' : GA D T) {p : ℂ} (hp : om (k, k') f = p • f') :
     om (g * k, x * k') f 0 = p * thetaKO om g x f' := by
   have : ((g * k, x * k') : GA D S × GA D T) = (g, x) * (k, k') := rfl
@@ -78,6 +102,9 @@ end Weil
 def formAt {ι : Type} {a b : ℕ} (Λ : FP ι a b →ₗ[ℂ] ℂ) (s : ι → ℂ) (u : ι → Matrix (Fin b) (Fin b) ℂ) : FP ι a b →ₗ[ℂ] ℂ :=
   Λ ∘ₗ (mvZ (fun _ => 1) fun τ => s τ • u τ).toLinearMap
 
+/- English proof (translation)
+Unfold `formAt`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, (substIdentities ι a b hab).2.1, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul]`.
+-/
 theorem formAt_mvZ {ι : Type} [Fintype ι] {a b : ℕ} (hab : a ≤ b) (Λ : FP ι a b →ₗ[ℂ] ℂ) (s : ι → ℂ)
     (u : ι → Matrix (Fin b) (Fin b) ℂ) (g : ι → Matrix (Fin a) (Fin a) ℂ) (Q : FP ι a b) :
     Λ (mvZ (fun _ => 1) (fun τ => s τ • 1) (mvZ g u Q)) = formAt Λ s u (mvZ g (fun _ => 1) Q) := by
@@ -85,12 +112,18 @@ theorem formAt_mvZ {ι : Type} [Fintype ι] {a b : ℕ} (hab : a ≤ b) (Λ : FP
   simp only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, (substIdentities ι a b hab).2.1, Matrix.mul_one, Matrix.smul_mul,
     Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `formAt`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, mvZ_subY, Matrix.smul_mul, Matrix.mul_smul]`.
+-/
 theorem formAt_subY {ι : Type} {a b : ℕ} (hab : a ≤ b) (Λ : FP ι a b →ₗ[ℂ] ℂ) (s : ι → ℂ)
     (u y' : ι → Matrix (Fin b) (Fin b) ℂ) (F : PY ι a) :
     formAt Λ s u (subY hab y' F) = Λ (subY hab (fun τ => u τ * s τ • y' τ) F) := by
   unfold formAt
   simp only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, mvZ_subY, Matrix.smul_mul, Matrix.mul_smul]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, mul_zpow, _root_.zpow_neg (u τ).det]`. Use `zpow_ne_zero (s τ) (hu τ)` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem prod_det_cancel {ι : Type} [Fintype ι] {a : ℕ} (u y : ι → Matrix (Fin a) (Fin a) ℂ) (hu : ∀ τ, (u τ).det ≠ 0) (s : ι → ℤ)
     (d : ι → ℂ) : (∏ τ, (u τ).det ^ s τ * d τ) * ∏ τ, (u τ * y τ).det ^ (-s τ) = (∏ τ, d τ) * ∏ τ, (y τ).det ^ (-s τ) := by
   rw [← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
@@ -99,6 +132,9 @@ theorem prod_det_cancel {ι : Type} [Fintype ι] {a : ℕ} (u y : ι → Matrix 
   have := zpow_ne_zero (s τ) (hu τ)
   field_simp
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, mul_zpow, _root_.zpow_neg (y τ).det]`. Use `zpow_ne_zero (s τ) (hy τ)` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem prod_det_cancel' {ι : Type} [Fintype ι] {a : ℕ} (u y : ι → Matrix (Fin a) (Fin a) ℂ) (hy : ∀ τ, (y τ).det ≠ 0) (s : ι → ℤ) :
     (∏ τ, (y τ).det ^ s τ) * ∏ τ, (u τ * y τ).det ^ (-s τ) = ∏ τ, (u τ).det ^ (-s τ) := by
   rw [← Finset.prod_mul_distrib]
@@ -109,6 +145,9 @@ theorem prod_det_cancel' {ι : Type} [Fintype ι] {a : ℕ} (u y : ι → Matrix
 
 variable {c : Comm D} {ρ : RealD c} {t : Tup c} {A : ClsK ρ t}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.finiteElements_act_fockVectors_through_datum D c.ψ c.θ hc.inf _ _ (c.x j) (c.x (j + 1)) (t.ker j α γ) (hc.x j (Nat.le_of_succ_le hj)) (hc.x _ hj) (ht.ker j hj α γ) P).2 _ ((hA.1.reps j (Nat.le_of_succ_le hj) α).le κ.2) _ ((hA.1.reps _ hj γ).le κ'.2) _ (hA.2.2.1 j …`.
+-/
 theorem lev_pt (hc : c.Is) (ht : t.Is) (hA : A.Is) {j : ℕ} (hj : j + 1 ≤ D.R.m) (α γ P) (κ : A.U j α) (κ' : A.U (j + 1) γ) :
     t.kom j (κ.1, κ'.1) ((t.ker j α γ).pt c.ψ c.θ (c.x j) (c.x (j + 1)) P) =
       (((A.chi j α κ : ℂˣ) : ℂ)⁻¹ * ((A.chi (j + 1) γ κ' : ℂˣ) : ℂ)) • (t.ker j α γ).pt c.ψ c.θ (c.x j) (c.x (j + 1)) P :=
@@ -116,6 +155,13 @@ theorem lev_pt (hc : c.Is) (ht : t.Is) (hA : A.Is) {j : ℕ} (hj : j + 1 ≤ D.R
     (ht.ker j hj α γ) P).2 _ ((hA.1.reps j (Nat.le_of_succ_le hj) α).le κ.2) _ ((hA.1.reps _ hj γ).le κ'.2) _
     (hA.2.2.1 j hj α γ κ κ')
 
+/- English proof (translation)
+Establish `hu : IsUni (ρ.r j (Nat.le_of_succ_le hj) k.1)` using `(hρ.uni j (Nat.le_of_succ_le hj)).uni k`. Take `⟨P', hP'⟩` from `castP_surj (ρ.hN j (Nat.le_of_succ_le hj)) (ρ.hN (j + 1) hj) (mvZ (fun τ => (ρ.r j (Nat.le_of_succ_le hj) k.1 τ)⁻¹) (ρ.r (j + 1) hj k'.1) (castP (ρ.hN j (Nat.le_of_succ_le hj)) (ρ.hN (j + 1) hj) P))`. Establish `h1` using `hA.2.1 j hj α γ k.1 k.2 k'.1 k'.2 P P' hP'`. Establish `h2` using `hA.2.2.2.1 j hj α γ a a' P'`. Establish `h3` using `hA.1.rd j (Nat.le_of_succ_le hj) ψ hψ α y 1 (one_mem _) a k.1 k.2 1 _ (isTr_trF hu (ρ.fr j y))`.
+
+Rewrite `h3` using `[hF]`. Simplify using `only [OneMemClass.coe_one, one_mul, mul_one, map_one, Units.val_one] at h3`. Rewrite `h2` using `[hP', formAt_mvZ hab]`. Establish `h4` using `prod_det_cancel (ρ.r j (Nat.le_of_succ_le hj) k.1) (ρ.fr j y).1 (det_ne_zero_of_isUni hu) (ρ.sS j) fun τ => (ρ.r (j + 1) hj k'.1 τ).det ^ (-ρ.sD j τ)`. Rewrite using `[theta_mul _ _ _ _ h1, h3]`.
+
+Simplify using `only [trF]`. Use `set e := GlobalTheory.KJInf.evalAt (fun τ => ρ.r j (Nat.le_of_succ_le hj) k.1 τ * (ρ.fr j y).1 τ) F`. Take the linear combination `((∏ τ, (ρ.r j (Nat.le_of_succ_le hj) k.1 τ).det ^ ρ.sS j τ * (ρ.r (j + 1) hj k'.1 τ).det ^ (-ρ.sD j τ)) * e * ∏ τ, (ρ.r j (Nat.le_of_succ_le hj) k.1 τ * (ρ.fr j y).1 τ).det ^ (-ρ.sS j τ)) * h2 + (t.cK j * e * formAt (A.abelian₂ j α γ a a') (ρ.sc j) (ρ.r (j + 1) hj k'.1) (mvZ (fun …`.
+-/
 theorem integrand_eq (hρ : ρ.Is) (hA : A.Is) {j : ℕ} (hj : j + 1 ≤ D.R.m) (hab : ρ.N j ≤ ρ.N (j + 1)) {ψ} (hψ : ψ ∈ t.Ram j)
     (α γ a a' y P) (F : PY D.what₂.Tau (ρ.N j))
     (hF : ∀ z, A.val j α ψ a z = GlobalTheory.KJInf.evalAt z.1 F * ∏ τ, (z.1 τ).det ^ (-ρ.sS j τ))
@@ -150,6 +196,21 @@ theorem integrand_eq (hρ : ρ.Is) (hA : A.Is) {j : ℕ} (hj : j + 1 ≤ D.R.m) 
         (mvZ (fun τ => (ρ.r j (Nat.le_of_succ_le hj) k.1 τ)⁻¹) (fun _ => 1)
           (castP (ρ.hN j (Nat.le_of_succ_le hj)) (ρ.hN (j + 1) hj) P))) * h4
 
+/- English proof (translation)
+Take `⟨χS, χT, hw⟩` from `(ht.ker j hj α γ).weil`. Establish `hw' : IsWeilDatumO c.ψ _ _ χS χT (t.kom j)` using `hw`. Establish `hf` using `(GlobalTheory.T.finiteElements_act_fockVectors_through_datum D c.ψ c.θ hc.inf _ _ (c.x j) (c.x (j + 1)) (t.ker j α γ) (hc.x j (Nat.le_of_succ_le hj)) (hc.x _ hj) (ht.ker j hj α γ) P).1`. Take `⟨hr1, hr2, -, -⟩` from `GlobalTheory.T.seesaw_scalar_forms_laws_on_class_data D c t ρ A hc hρ hA.1 j (Nat.le_of_succ_le hj) ψ hψ α`. Establish `hk'` using `lev_pt hc ht hA hj α γ P 1 κ'`.
+
+Simplify using `only [OneMemClass.coe_one, map_one, Units.val_one, inv_one, one_mul] at hk'`. Establish `hI` using `fun a (k : GinfC (c.X j)) => integrand_eq hρ hA hj hab hψ α γ a a' y P (F a) (hF a) k k'`. Establish `hk : ∀ κ : A.U j α, t.kom j (κ.1, 1) ((t.ker j α γ).pt c.ψ c.θ (c.x j) (c.x (j + 1)) P) = ((A.chi j α κ : ℂˣ) : ℂ)⁻¹ • (t.ker j α γ).pt c.ψ c.θ (c.x j) (c.x (j + 1)) P` using `fun κ => by`. Use `lev_pt hc ht hA hj α γ P κ 1` as an intermediate fact. Simplify `this` using `only [OneMemClass.coe_one, map_one, Units.val_one, mul_one]`.
+
+Unfold `KerDat.lift`. Rewrite using `[liftT_apply]`. Generalize the expression as in `(t.ker j α γ).pt c.ψ c.θ (c.x j) (c.x (j + 1)) P = f at *`. Express the relevant statement in the definitionally equal form `∫ g in (c.x j).vol.𝓕, t.kom j (g, g' * (A.h (j + 1) γ a' * k'.1) * κ'.1) f 0 * t.rd j α ψ y g ∂(c.x j).vol.μ = _`. Simplify using `only [theta_snd hw' hf hg' _ _ _ hk', mul_assoc ((A.chi (j + 1) γ κ' : ℂˣ) : ℂ)]`.
+
+Rewrite using `[integral_const_mul, hcl (fun g => t.kom j (g, A.h (j + 1) γ a' * k'.1) f 0 * t.rd j α ψ y g)]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun φ : GinfC (c.X j) → ℂ => ∫ k, φ k ∂ν) (funext (hI a))`. Simplify using `only [integral_const_mul] at h1`.
+
+Take the linear combination `(((A.chi (j + 1) γ κ' : ℂˣ) : ℂ) * ((stabOrd (A.U j α) (A.h j α a) : ℕ) : ℂ)⁻¹) * h1`. Conclude with `((hw'.om_cont f hf 0).comp (continuous_id.prodMk continuous_const)).mul (hr1 y).2`. Introduce `γ₀ hγ₀ g`. Simplify using `only [theta_fst_left hw' hf hγ₀, (hr1 y).1 γ₀ hγ₀ g]`. Introduce `κ hκ g`.
+
+Establish `h1` using `hr2 y g ⟨κ, hκ⟩`. Establish `h2` using `theta_fst_right g κ (A.h (j + 1) γ a' * k'.1) (hk ⟨κ, hκ⟩)`. Simplify using `only at h1 ⊢`. Rewrite using `[h1, h2]`. Use `(A.chi j α ⟨κ, hκ⟩).ne_zero` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem lift_eq (hc : c.Is) (hρ : ρ.Is) (ht : t.Is) (hA : A.Is) {j : ℕ} (hj : j + 1 ≤ D.R.m) (hab : ρ.N j ≤ ρ.N (j + 1))
     {ψ} (hψ : ψ ∈ t.Ram j) (α γ a' y P) (ν : Measure (GinfC (c.X j)))
     (hcl : ∀ Φ : GA D (c.X j) → ℂ, Continuous Φ → (∀ γ ∈ GQ (c.X j), ∀ g, Φ (γ * g) = Φ g) →
@@ -205,6 +266,19 @@ namespace GlobalTheory.SeeSaw
 
 open LiftSum
 
+/- English proof (translation)
+Introduce `D c ρ hc hρ j hj hab`. Take `⟨hB, -, -, ν, hν1, hν2, hcl⟩` from `integral_eq_classSum D c.θ (c.X j) (c.x j).B hc.inf (ontoUni_inB _ _ _ _ (hρ.uni j (Nat.le_of_succ_le hj)))`. Use `⟨hB, ν, hν1, hν2, ?_⟩` and prove the remaining obligations. Introduce `m y P m' y' y'' s hy hav t A ht hA ψ hψ γ`. Establish `hV` using `fun α a => ((valC_poly _ _ _ (ρ.lam j)).1 (ρ.n j) (ρ.sS j) (hρ.n j hj) _).1 (hA.1.valC j (Nat.le_of_succ_le hj) ψ hψ α a)`.
+
+Use `choose F hF1 hF2 using hV`. Use function extensionality and compare the values at `h`. Take `⟨g', hg', a', k', hk', κ', hκ', rfl⟩` from `(hA.1.reps (j + 1) hj γ).dec h`. Establish `hu : IsUni (ρ.r (j + 1) hj k')` using `(hρ.uni (j + 1) hj).uni ⟨k', hk'⟩`. Establish `hL` using `fun i α => lift_eq hc hρ ht hA hj hab hψ α γ a' (y i) (P i) ν (hcl (c.x j).vol (A.U j α) _ (A.h j α) (hA.1.reps j (Nat.le_of_succ_le hj) α)).2.2 (F α) (hF2 α) hg' ⟨k', hk'⟩ ⟨κ', hκ'⟩`.
+
+Establish `hR` using `fun i => hA.1.rd (j + 1) hj _ (ht.stabK j hj ψ hψ) γ (y'' i) g' hg' a' k' hk' ⟨κ', hκ'⟩ _ (isTr_trF hu (ρ.fr (j + 1) (y'' i)))`. Establish `hK` using `fun i => hA.2.2.2.2 j hj hab ψ hψ F hF1 hF2 γ a' (trF hu (ρ.fr (j + 1) (y'' i)))`. Simplify using `only at hL hR`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hL, hR, hK]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `conv_rhs =>`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hav (F α a) (hF1 α a) (formAt (A.abelian₂ j α γ a a') (ρ.sc j) (ρ.r (j + 1) hj k')), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `prod_det_cancel' (ρ.r (j + 1) hj k') (ρ.fr (j + 1) (y'' i)).1 (fun τ => ((ρ.fr (j + 1) (y'' i)).2 τ).ne_zero) (ρ.sD j)`.
+
+Rewrite using `[formAt_subY]`. Simplify using `only [trF, ← hy i]`. Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lift_eq_classSum : ∀ (D : D7) (c : Comm D) (ρ : RealD c), c.Is → ρ.Is → ∀ j (hj : j + 1 ≤ D.R.m) (hab : ρ.N j ≤ ρ.N (j + 1)), BorelSpace (GinfC (c.X j)) ∧ ∃ ν : Measure (GinfC (c.X j)), IsProbabilityMeasure ν ∧ ν.IsMulLeftInvariant ∧ ∀ (m : ℕ) (y : Fin m → c.Fr j) (P : Fin m → PolF D (c.X (j + 1)).rank (c.X j).rank) (m' : ℕ) (y' : Fin m' → D.what₂.Tau → Matrix (Fin (ρ.N (j + 1))) (Fin (ρ.N (j + 1))) ℂ) (y'' : Fin m' → c.Fr (j + 1)) (s : Fin m' → ℂ), (∀ i τ, (ρ.fr (j + 1) (y'' i)).1 τ = ρ.sc j τ • y' i τ) → (∀ F ∈ Vn (ρ.lam j) (ρ.n j), ∀ Λ : FP D.what₂.Tau (ρ.N j) (ρ.N (j + 1)) →ₗ[ℂ] ℂ, ∑ i, (∏ τ, ((ρ.fr j (y i)).1 τ).det ^ (-ρ.sS j τ)) * ∫ k, Λ (mvZ (fun τ => (ρ.r j (Nat.le_of_succ_le hj) k.1 τ)⁻¹) (fun _ => 1) (castP (ρ.hN j (Nat.le_of_succ_le hj)) (ρ.hN (j + 1) hj) (P i))) * evalAt (fun τ => ρ.r j (Nat.le_of_succ_le hj) k.1 τ * (ρ.fr j (y i)).1 τ) F ∂ν = ∑ i, s i * Λ (subY hab (y' i) F)) → ∀ (t : Tup c) (A : ClsK ρ t), t.Is → A.Is → ∀ ψ ∈ t.Ram j, ∀ γ, ∑ i, ∑ α, (t.ker j α γ).lift c.ψ c.θ (c.x j) (c.x (j + 1)) (P i) (t.rd j α ψ (y i)) = t.cK j • ∑ i, (s i * ∏ τ, ((ρ.fr (j + 1) (y'' i)).1 τ).det ^ ρ.sD j τ) • t.rd (j + 1) γ (t.K j ψ) (y'' i) := by
   intro D c ρ hc hρ j hj hab
   obtain ⟨hB, -, -, ν, hν1, hν2, hcl⟩ := integral_eq_classSum D c.θ (c.X j) (c.x j).B hc.inf

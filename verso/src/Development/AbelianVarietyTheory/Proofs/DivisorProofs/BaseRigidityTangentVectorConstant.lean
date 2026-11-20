@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RigBase
 
+/- English proof (translation)
+Establish `hc` using `(hπ.comp hβ).congr hg rfl`. Establish `w : (π ≫ β) ≫ D.hom = (B'.hom ≫ g) ≫ 𝟙 S` using `by rw [Category.comp_id]; exact hc.1.w`. Conclude with `⟨hφ.1.lift (π ≫ β) (B'.hom ≫ g) w, hφ.1.lift_fst _ _ _, hφ.1.lift_snd _ _ _, hφ.cancel (hc.congr (Category.comp_id g).symm (hφ.1.lift_fst _ _ _).symm) (hφ.1.lift_snd _ _ _)⟩`.
+-/
 theorem grp_through {S S₁ S₂ : Scheme.{0}} {B' : Over S₂} {Q : Over S₁} {D O : Over S} [GrpObj B'] [GrpObj Q]
     [GrpObj D] [GrpObj O] {g : S₂ ⟶ S} {π : B'.left ⟶ Q.left} {β : Q.left ⟶ D.left} {φB : O.left ⟶ D.left}
     {ρ₁ : S₂ ⟶ S₁} {j : S₁ ⟶ S} (hπ : IsGrpPullback B' Q ρ₁ π) (hβ : IsGrpPullback Q D j β)
@@ -21,6 +24,11 @@ theorem grp_through {S S₁ S₂ : Scheme.{0}} {B' : Over S₂} {Q : Over S₁} 
   exact ⟨hφ.1.lift (π ≫ β) (B'.hom ≫ g) w, hφ.1.lift_fst _ _ _, hφ.1.lift_snd _ _ _,
     hφ.cancel (hc.congr (Category.comp_id g).symm (hφ.1.lift_fst _ _ _).symm) (hφ.1.lift_snd _ _ _)⟩
 
+/- English proof (translation)
+Establish `key : ∀ {A : Scheme.{0}} {L' : LB A} {F : A ⟶ Y}, LBIso L' (L.pull F) → ∀ j : T ⟶ A, LBIso (L'.pull j) (L.pull (j ≫ F))` using `fun H j => LBIso.chartPull (chartPullPull _ _) (chartPullSame L _ _ _ j fun _ => rfl) H`. Establish `a₁` using `key h₀ π₁'`. Establish `a₂` using `key h₀ π₂'`. Establish `b₁` using `key hβ π₁`. Establish `b₂` using `key hβ π₂`.
+
+Rewrite `a₁` using `[e₁]`. Rewrite `a₂` using `[e₂]`. Conclude with `LBIso.trans (pull_isLB hL₀ _) (pull_isLB hL _) (pull_isLB hL₀ _) (LBIso.trans (pull_isLB hL₀ _) (pull_isLB hM _) (pull_isLB hL _) (LBIso.trans (pull_isLB hL₀ _) (pull_isLB hM _) (pull_isLB hM _) (LBIso.trans (pull_isLB hL₀ _) (pull_isLB hL _) (pull_isLB hM _) a₁ b₁.symm) h) b₂) a …`.
+-/
 theorem lb_through {X Y Z T : Scheme.{0}} {L₀ : LB X} {L : LB Y} {M : LB Z} (hL₀ : L₀.IsLB) (hL : L.IsLB)
     (hM : M.IsLB) {φB : X ⟶ Y} {β : Z ⟶ Y} {π₁ π₂ : T ⟶ Z} {π₁' π₂' : T ⟶ X} (h₀ : LBIso L₀ (L.pull φB))
     (hβ : LBIso M (L.pull β)) (h : LBIso (M.pull π₁) (M.pull π₂)) (e₁ : π₁' ≫ φB = π₁ ≫ β)
@@ -37,6 +45,27 @@ theorem lb_through {X Y Z T : Scheme.{0}} {L₀ : LB X} {L : LB Y} {M : LB Z} (h
   exact LBIso.trans (pull_isLB hL₀ _) (pull_isLB hL _) (pull_isLB hL₀ _) (LBIso.trans (pull_isLB hL₀ _) (pull_isLB hM _) (pull_isLB hL _)
     (LBIso.trans (pull_isLB hL₀ _) (pull_isLB hM _) (pull_isLB hM _) (LBIso.trans (pull_isLB hL₀ _) (pull_isLB hL _) (pull_isLB hM _) a₁ b₁.symm) h) b₂) a₂.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ R _ _ _ _ C Cn k _ ρ a hC`. Take `⟨B', _, π₁, π₂, w, c', h₁, h₂, h0, hw, hc', -⟩` from `hC`. Take `⟨g, hD, -, hxe, -⟩` from `Cn.data`. Use `haveI := hD.e_hom`. Establish `hβ : IsGrpPullback C.P.D.toPre.P.A Cn.L.D.P.A (specOf (Cn.ψ.comp MvPolynomial.C)) (hD.e.hom.left ≫ pullback.fst Cn.L.D.P.A.hom (specOf (Cn.ψ.comp MvPolynomial.C)))` using `((isGrpPullback_of_iso hD.e).comp (isGrpPullback_pullback _ _)).congr (Category.id_comp _) rfl`.
+
+Establish `hsp : ∀ ρ' : R →+* DualNumber k, spMap ρ' ≫ specOf (Cn.ψ.comp MvPolynomial.C) = spMap (ρ'.comp (Cn.ψ.comp MvPolynomial.C))` using `fun ρ' => by`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨π₁', e₁, w₁, g₁⟩` from `grp_through h₁ hβ Cn.L.ab.1 (hsp ρ)`. Take `⟨π₂', e₂, w₂, g₂⟩` from `grp_through h₂ hβ Cn.L.ab.1 (hsp _ : _ = spMap (GlobalTheory.RigChart.constHom (ρ.comp (Cn.ψ.comp MvPolynomial.C))))`.
+
+Establish `hfst : spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap (ρ.comp (Cn.ψ.comp MvPolynomial.C)) = spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap (GlobalTheory.RigChart.constHom (ρ.comp (Cn.ψ.comp MvPolynomial.C)))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Establish `agree : ∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁' = x ≫ π₂'`. Introduce `Z x y hx`.
+
+Apply `Cn.L.ab.1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, e₁, e₂, ← Category.assoc, ← Category.assoc, h0 Z x y hx]`. Rewrite using `[Category.assoc, Category.assoc, w₁, w₂, ← Category.assoc, ← Category.assoc, hx, Category.assoc, Category.assoc, hfst]`. Take `⟨w₀, hw₀⟩` from `Cn.L.ab.2.2`. Establish `hLB : LBIso (Cn.L.o.t.PP.L.pull π₁') (Cn.L.o.t.PP.L.pull π₂')` using `lb_through Cn.L.o.t.PP.isLB Cn.L.D.P.isLB C.P.D.toPre.P.isLB ⟨w₀, hw₀⟩ ⟨hD.w, hD.w_gen⟩ ⟨w, hw⟩ e₁ e₂`.
+
+Take `⟨o', m₁, m₂, io, hio, hm₁, hm₂⟩` from `GlobalTheory.T.exists_objectMaps_of_dualNumber_identifications c Cn.L.W Cn.L.b Cn.L.o k (ρ.comp (Cn.ψ.comp MvPolynomial.C)) B' π₁' π₂' g₁ g₂ agree hLB`. Establish `hn : ((l.M' : ℕ) : k) ≠ 0`. Introduce `h0'`. Establish `hM : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`. Establish `hk : ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ((ρ.comp (Cn.ψ.comp MvPolynomial.C)).comp Cn.L.b)) (l.M' : c.F) = 0` using `by rw [map_natCast]; exact h0'`.
+
+Rewrite `hk` using `[map_eq_zero_iff _ (RingHom.injective _)]`. Conclude with `hM (by exact_mod_cast hk)`. Establish `agree' : ∀ (Z : Scheme.{0}) (x : Z ⟶ o'.t.G.left) (y : Z ⟶ Sp k), x ≫ o'.t.G.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ m₁.toSABMap.φ = x ≫ m₂.toSABMap.φ`. Introduce `Z x y hx`. Rewrite using `[hm₁, hm₂, ← Category.assoc, ← Category.assoc]`.
+
+Conclude with `agree Z _ y (by rw [Category.assoc, hio, hx])`. Establish `hinv : io.inv ≫ o'.t.G.hom = B'.hom` using `by rw [← hio, Iso.inv_hom_id_assoc]`. Establish `hc : ∀ y, (C.P.D.toPre.c (Cn.e.symm y)).left ≫ hD.e.hom.left ≫ pullback.fst Cn.L.D.P.A.hom (specOf (Cn.ψ.comp MvPolynomial.C)) = specOf (Cn.ψ.comp MvPolynomial.C) ≫ (Cn.L.D.c (l.M' • y)).left` using `fun y => by`. Use `hD.c_pr (Cn.e.symm y)` as an intermediate fact. Rewrite `this` using `[hxe, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `this`. Take `⟨x, hx₁, hx₂, hx₀⟩` from `GlobalTheory.T.dualNumber_points_pulledBack_object_from_base Cn.L k (ρ.comp (Cn.ψ.comp MvPolynomial.C)) o' m₁ m₂ l.M' hn agree' (fun y => c' (Cn.e.symm y) ≫ io.inv) (fun y => by rw [Category.assoc, hinv, (hc' _).1]) (fun y => by`. Rewrite using `[hm₁]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Rewrite using `[e₁, ← Category.assoc, (hc' _).2.1, Category.assoc, hc, ← Category.assoc, hsp])`.
+
+Use the proof step `(fun y => by`. Rewrite using `[hm₂]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Rewrite using `[e₂, ← Category.assoc, (hc' _).2.2, Category.assoc, hc, ← Category.assoc, hsp]`. Use the proof step `rfl)`.
+
+Conclude with `Cn.L.fineEps k (ρ.comp (Cn.ψ.comp MvPolynomial.C)) o' m₁ m₂ x hx₁ hx₂ hx₀`.
+-/
 theorem const_on_base : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : MonoFam Xo c φ R) (Cn : Canon C), ∀ (k : Type) [Field k] (ρ : R →+* DualNumber k) (a : Fin C.m → k), GlobalTheory.RigChart.IsConstAlong C.P.D.toPre C.s (fun i => (l.M' : ℤ) • C.δ i) ρ a → ρ.comp (Cn.ψ.comp MvPolynomial.C) = GlobalTheory.RigChart.constHom (ρ.comp (Cn.ψ.comp MvPolynomial.C)) := by
   intro E _ _ _ H Dw l Xo c φ R _ _ _ _ C Cn k _ ρ a hC
   obtain ⟨B', _, π₁, π₂, w, c', h₁, h₂, h0, hw, hc', -⟩ := hC

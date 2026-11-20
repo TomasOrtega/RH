@@ -22,6 +22,25 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.WaveMult
 
+/- English proof (translation)
+Introduce `hL hU hR hS hE hQ h1 n _ _ μ _ E k k' val val' T T' hk hk'`. Take `⟨m, c, w, g, ks, hb, hs, hv⟩` from `hk`. Take `⟨m', c', w', g', ks', hb', hs', hv'⟩` from `hk'`. Establish `hreg : ∀ i, KReg (ks i)` using `fun i => ⟨(hb i).2.1.continuousOn, (hb i).2.2.1⟩`. Establish `hreg' : ∀ i, KReg (ks' i)` using `fun i => ⟨(hb' i).2.1.continuousOn, (hb' i).2.2.1⟩`.
+
+Establish `hbp : ∀ p : Fin m × Fin m', IsBump (gconv (g p.1) (g' p.2)) (T + T')` using `fun p => GlobalTheory.T.bump_convolution_support _ _ _ _ (hb p.1).1 (hb' p.2).1`. Use `choose K hK using fun p : Fin m × Fin m' => h1 n μ E (w p.1 ++ w' p.2) (gconv (g p.1) (g' p.2)) (T + T') (hbp p)`. Establish `hconv : ∀ y ∈ GLs n, conv μ E k k' y = ∑ p : Fin m × Fin m', (c p.1 * c' p.2) • K p y`. Introduce `y hy`. Rewrite using `[GlobalTheory.T.kernel_multiplier_linear hL n μ E c c' ks ks' k k' hreg hreg' hs hs' y hy, Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.wave_kernel_convolution hL hU hR hS hE hQ n μ E (w i) (w' j) (g i) (g' j) T T' (ks i) (ks' j) (K (i, j)) (hb i).1 (hb' j).1 (hb i).2 (hb' j).2 (hK (i, j)) y hy]`. Establish `hconv' : ∀ y ∈ GLs n, conv μ E k' k y = ∑ p : Fin m × Fin m', (c p.1 * c' p.2) • K p y`. Introduce `y hy`. Rewrite using `[GlobalTheory.T.kernel_multiplier_linear hL n μ E c' c ks' ks k' k hreg' hreg hs' hs y hy, Finset.sum_comm, Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hsw` using `GlobalTheory.T.wave_kernel_word_order_swap hS hR n μ E (w i) (w' j) _ (T + T') (K (i, j)) (hbp (i, j)) (hK (i, j))`. Rewrite `hsw` using `[gconv_comm]`. Rewrite using `[GlobalTheory.T.wave_kernel_convolution hL hU hR hS hE hQ n μ E (w' j) (w i) (g' j) (g i) T' T (ks' j) (ks i) (K (i, j)) (hb' j).1 (hb i).1 (hb' j).2 (hb i).2 hsw y hy, mul_comm]`. Use `⟨?_, fun y hy => by rw [hconv y hy, hconv' y hy], ?_, GlobalTheory.T.kernel_multiplier_on_eigenfunction hL n μ E k val T ⟨m, c, w, g, ks, hb, hs, hv⟩⟩` and prove the remaining obligations.
+
+Use `isMult_of_fintype μ E (fun p : Fin m × Fin m' => c p.1 * c' p.2) (fun p => w p.1 ++ w' p.2) (fun p => gconv (g p.1) (g' p.2)) K (fun p => ⟨hbp p, hK p⟩) hconv fun χ => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, hv χ, hv' χ, Finset.sum_mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[zVal_append, ← GlobalTheory.T.cosh_transform_convolution _ _ _ _ _ (hb i).1 (hb' j).1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `haveI := FiniteDimensional.complete ℂ E.V choose N d w₁ K₁ hK₁ hadj hval using fun i => GlobalTheory.T.wave_kernel_decomposition hL hU hR hS hE hQ h1 n μ E (w i) (g i) T (ks i) (hb i).1 (hb i).2`. Use `⟨fun χ => ∑ q : (Σ i, Fin (N i)), (conj (c q.1) * d q.1 q.2) * zVal (w₁ q.1 q.2) χ * coshT (g q.1) (cas χ), ?_, ?_⟩` and prove the remaining obligations. Use `isMult_of_fintype μ E (fun q : (Σ i, Fin (N i)) => conj (c q.1) * d q.1 q.2) (fun q => w₁ q.1 q.2) (fun q => g q.1) (fun q => K₁ q.1 q.2) (fun q => ⟨(hb q.1).1, hK₁ q.1 q.2⟩) (fun y hy => ?_) fun χ => rfl` and prove the remaining obligations. Rewrite using `[hs _ (inv_mem_GLs hy), map_sum, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `hadj i y hy` as an intermediate fact. Rewrite using `[map_smulₛₗ, this, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[smul_smul]`. Introduce `χ hχ`.
+
+Rewrite using `[hv χ, map_sum]`. Use `beta_reduce`. Rewrite using `[Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, GlobalTheory.T.cosh_transform_casimir_real n χ (g i) T hχ (hb i).1, hval i χ hχ, Finset.mul_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem asmMult_main : AsmMult := by
   intro hL hU hR hS hE hQ h1 n _ _ μ _ E k k' val val' T T' hk hk'
   obtain ⟨m, c, w, g, ks, hb, hs, hv⟩ := hk

@@ -62,6 +62,9 @@ def provisionalPadPkg (D : D7) (N j : ℕ) (hj : j ≤ N) (Comp : Type)
   arMix_HT := fun _ _ _ _ => rfl
   arMix_DR := fun _ _ _ _ => rfl
 
+/- English proof (translation)
+Introduce `D` and use `⟨ngJunk, fun N j Comp jC hj => ⟨provisionalPadPkg D N j hj Comp jC⟩⟩`.
+-/
 theorem nonempty_provisionalPadPkg :
     ∀ D : D7, ∃ ng : NgPkg, ∀ (N j : ℕ) (Comp : Type) (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)),
       j ≤ N → Nonempty (PadPkg D N j Comp jC ng) :=

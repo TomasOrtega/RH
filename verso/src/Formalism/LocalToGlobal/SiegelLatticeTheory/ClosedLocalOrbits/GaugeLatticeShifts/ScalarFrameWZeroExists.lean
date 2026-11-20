@@ -15,6 +15,9 @@ section Lin
 
 variable {n : ℕ} (ε : Fin n → Bool)
 
+/- English proof (translation)
+Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem Jm_mul_self : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   simp only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal]
   rw [← Matrix.diagonal_one]
@@ -22,6 +25,11 @@ theorem Jm_mul_self : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   funext a
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, hJ ε x (∑ i ∈ s, g i • y i) = ∑ i ∈ s, g i * hJ ε x (y i)`. Introduce `s`. Use `Finset.induction_on s (by simp [hJ]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hJ_add_r, hJ_smul_r, ih]`.
+
+Conclude with `key Finset.univ`.
+-/
 theorem hJ_fsum_r {ι : Type*} [Fintype ι] (x : Fin n → ℂ) (g : ι → ℂ)
     (y : ι → Fin n → ℂ) : hJ ε x (∑ i, g i • y i) = ∑ i, g i * hJ ε x (y i) := by
   classical
@@ -32,8 +40,20 @@ theorem hJ_fsum_r {ι : Type*} [Fintype ι] (x : Fin n → ℂ) (g : ι → ℂ)
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hJ_add_r, hJ_smul_r, ih]
   exact key Finset.univ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hJ_eq_dot (x y : Fin n → ℂ) : hJ ε x y = star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) := rfl
 
+/- English proof (translation)
+Establish `key : ∀ j : Fin m, ∃ w : Fin n → ℂ, ∀ i, ∑ k, V i k * w k = if i = j then 1 else 0`. Introduce `j`. Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Finsupp.lapply j).comp hV.repr)`. Use `⟨fun k => g (fun l => if k = l then 1 else 0), fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun hg ⟨V i, Submodule.subset_span ⟨i, rfl⟩⟩`.
+
+Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, Finsupp.lapply_apply] at h1`. Rewrite `h1` using `[hV.repr_eq_single i _ rfl, Finsupp.single_apply]`. Rewrite using `[← h1]`. Use `conv_rhs => rw [pi_eq_sum_univ (V i), map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+
+Use `choose w hw using key`. Use `⟨fun j => Formalism.REAL.Jm ε *ᵥ star (w j), fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hJ_eq_dot, Matrix.mulVec_mulVec, Jm_mul_self, Matrix.one_mulVec]`. Establish `h` using `hw j i`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [dotProduct, Pi.star_apply, map_sum, map_mul]`. Both sides reduce to the same expression. Apply the tactic sequence `_ = _ := by rw [h]; split_ifs <;> simp`.
+-/
 theorem dual_exists {m : ℕ} (V : Fin m → Fin n → ℂ) (hV : LinearIndependent ℂ V) :
     ∃ q : Fin m → Fin n → ℂ, ∀ i j, hJ ε (V i) (q j) = if i = j then 1 else 0 := by
   classical
@@ -62,6 +82,11 @@ section Frame
 
 variable {n r : ℕ} (ε : Fin n → Bool)
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, hJ ε (∑ i ∈ s, g i • x i) y = ∑ i ∈ s, conj (g i) * hJ ε (x i) y`. Introduce `s`. Use `Finset.induction_on s (by simp [hJ]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hJ_add_l, hJ_smul_l, ih]`.
+
+Conclude with `key Finset.univ`.
+-/
 theorem hJ_fsum_l {ι : Type*} [Fintype ι] (g : ι → ℂ) (x : ι → Fin n → ℂ) (y : Fin n → ℂ) :
     hJ ε (∑ i, g i • x i) y = ∑ i, conj (g i) * hJ ε (x i) y := by
   classical
@@ -72,6 +97,11 @@ theorem hJ_fsum_l {ι : Type*} [Fintype ι] (g : ι → ℂ) (x : ι → Fin n �
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hJ_add_l, hJ_smul_l, ih]
   exact key Finset.univ
 
+/- English proof (translation)
+Introduce `hmem`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hmem`. Apply `hzz` to reduce the goal to its premises. Establish `h1 : hJ ε z z = hJ ε (∑ a, c a • e a) z` using `by rw [hc]`. Rewrite using `[h1, hJ_fsum_l]`.
+
+Simplify using `[hez]`.
+-/
 theorem not_mem_span_of_orth (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (hez : ∀ a, hJ ε (e a) z = 0)
     (hzz : hJ ε z z ≠ 0) : z ∉ Submodule.span ℂ (Set.range e) := by
   intro hmem
@@ -81,6 +111,27 @@ theorem not_mem_span_of_orth (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (
   rw [h1, hJ_fsum_l]
   simp [hez]
 
+/- English proof (translation)
+Establish `hz : z ∉ Submodule.span ℂ (Set.range e)` using `not_mem_span_of_orth ε e z hez hzz`. Establish `hV : LinearIndependent ℂ (Fin.snoc e z : Fin (r + 1) → Fin n → ℂ)` using `linearIndependent_fin_snoc.2 ⟨he, hz⟩`. Take `⟨q, hq⟩` from `dual_exists ε (Fin.snoc e z : Fin (r + 1) → Fin n → ℂ) hV`. Establish `hEq : ∀ a b, hJ ε (e a) (q (Fin.castSucc b)) = if a = b then 1 else 0`. Introduce `a b`.
+
+Establish `h` using `hq (Fin.castSucc a) (Fin.castSucc b)`. Rewrite `h` using `[Fin.snoc_castSucc]`. Rewrite using `[h]`. Simplify using `[Fin.castSucc_inj]`. Establish `hZq : ∀ b, hJ ε z (q (Fin.castSucc b)) = 0`.
+
+Introduce `b`. Establish `h` using `hq (Fin.last r) (Fin.castSucc b)`. Rewrite `h` using `[Fin.snoc_last]`. Rewrite using `[h, if_neg (Fin.castSucc_lt_last b).ne']`. Establish `hqE : ∀ a d, hJ ε (q (Fin.castSucc a)) (e d) = if d = a then 1 else 0`.
+
+Introduce `a d`. Rewrite using `[hJ_cj ε (q (Fin.castSucc a)) (e d), hEq]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hEz : ∀ c, hJ ε z (e c) = 0` using `fun c => hJ_zero_of_cj ε (hez c)`. Establish `hA : ∀ a b, hJ ε (q (Fin.castSucc a)) (∑ d, (-(1 / 2 : ℂ) * hJ ε (q (Fin.castSucc d)) (q (Fin.castSucc b))) • e d) = -(1 / 2 : ℂ) * hJ ε (q (Fin.castSucc a)) (q (Fin.castSucc b))`.
+
+Introduce `a b`. Rewrite using `[hJ_fsum_r]`. Simplify using `only [hqE, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hB : ∀ a b, hJ ε (∑ c, (-(1 / 2 : ℂ) * hJ ε (q (Fin.castSucc c)) (q (Fin.castSucc a))) • e c) (q (Fin.castSucc b)) = -(1 / 2 : ℂ) * hJ ε (q (Fin.castSucc a)) (q (Fin.castSucc b))`. Introduce `a b`.
+
+Rewrite using `[hJ_fsum_l]`. Simplify using `only [hEq, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[map_mul, hJ_cj ε (q (Fin.castSucc a)) (q (Fin.castSucc b))]`. Establish `hc2 : conj (-(1 / 2 : ℂ)) = -(1 / 2)`. Rewrite using `[map_neg, map_div₀, map_one, map_ofNat]`.
+
+Rewrite using `[hc2]`. Establish `hC : ∀ a b, hJ ε (∑ c, (-(1 / 2 : ℂ) * hJ ε (q (Fin.castSucc c)) (q (Fin.castSucc a))) • e c) (∑ d, (-(1 / 2 : ℂ) * hJ ε (q (Fin.castSucc d)) (q (Fin.castSucc b))) • e d) = 0`. Introduce `a b`. Rewrite using `[hJ_fsum_l]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hJ_fsum_r]`. Simplify using `[hee]`. Use `⟨fun b => q (Fin.castSucc b) + ∑ c, (-(1 / 2 : ℂ) * hJ ε (q (Fin.castSucc c)) (q (Fin.castSucc b))) • e c, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b dsimp only`. Rewrite using `[hJ_add_r, hJ_fsum_r, hEq]`.
+
+Simplify using `[hee]`. Introduce `a b dsimp only`. Rewrite using `[hJ_add_l, hJ_add_r, hJ_add_r, hA, hB, hC]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b dsimp only`.
+
+Rewrite using `[hJ_add_r, hJ_fsum_r, hZq]`. Simplify using `[hEz]`.
+-/
 theorem partner_exists (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (he : LinearIndependent ℂ e)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hez : ∀ a, hJ ε (e a) z = 0) (hzz : hJ ε z z ≠ 0) :
     ∃ p : Fin r → Fin n → ℂ, (∀ a b, hJ ε (e a) (p b) = if a = b then 1 else 0) ∧
@@ -143,6 +194,37 @@ theorem partner_exists (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (he : L
     rw [hJ_add_r, hJ_fsum_r, hZq]
     simp [hEz]
 
+/- English proof (translation)
+Establish `hsl : ∀ x x' y : Fin n → ℂ, hJ ε (x - x') y = hJ ε x y - hJ ε x' y`. Introduce `x x' y`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ x', hJ_add_l, hJ_smul_l, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsr : ∀ x y y' : Fin n → ℂ, hJ ε x (y - y') = hJ ε x y - hJ ε x y'`.
+
+Introduce `x y y'`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ y', hJ_add_r, hJ_smul_r]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpe : ∀ a b, hJ ε (p a) (e b) = if a = b then 1 else 0`. Introduce `a b`.
+
+Rewrite using `[hJ_cj ε (p a) (e b), hep]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h), if_neg h, map_zero]`.
+
+Establish `hpz : ∀ a, hJ ε (p a) z = 0` using `fun a => hJ_zero_of_cj ε (hzp a)`. Establish `hze : ∀ a, hJ ε z (e a) = 0` using `fun a => hJ_zero_of_cj ε (hez a)`. Set `Ψ : (Fin n → ℂ) →ₗ[ℂ] (Fin r → ℂ) × (Fin r → ℂ) × ℂ` to `{ toFun := fun y => (fun a => hJ ε (e a) y, fun a => hJ ε (p a) y, hJ ε z y) map_add' := fun y y' => by`. Simplify using `only [hJ_add_r]`. Both sides reduce to the same expression.
+
+Use the proof step `map_smul' := fun c y => by`. Simplify using `only [hJ_smul_r, RingHom.id_apply]`. Use `rfl }`. Establish `hker : LinearMap.ker Ψ ≠ ⊥`. Apply `LinearMap.ker_ne_bot_of_finrank_lt` to reduce the goal to its premises.
+
+Simplify using `only [Module.finrank_prod, Module.finrank_fin_fun, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers. Take `⟨ξ, hξk, hξ0⟩` from `(Submodule.ne_bot_iff _).1 hker`. Establish `hΨ : Ψ ξ = 0` using `hξk`. Establish `hξe : ∀ a, hJ ε (e a) ξ = 0` using `fun a => congrFun (congrArg Prod.fst hΨ) a`.
+
+Establish `hξp : ∀ a, hJ ε (p a) ξ = 0` using `fun a => congrFun (congrArg (fun t => t.2.1) hΨ) a`. Establish `hξz : hJ ε z ξ = 0` using `congrArg (fun t => t.2.2) hΨ`. Set `nv : Fin (r + 1) → Fin n → ℂ` to `fun j => if h : (j : ℕ) < r then e ⟨j, h⟩ - p ⟨j, h⟩ else z`. Establish `horth : ∀ j k, j ≠ k → hJ ε (nv j) (nv k) = 0`. Introduce `j k hjk`.
+
+Simplify using `only [nv]`. Use `split_ifs with h1 h2 h2`. Establish `hab : (⟨j, h1⟩ : Fin r) ≠ ⟨k, h2⟩` using `fun h => hjk (Fin.ext (by simpa using congrArg Fin.val h))`. Rewrite using `[hsl, hsr, hsr, hee, hep, hpe, hpp]`. Simplify using `[hab]`.
+
+Rewrite using `[hsl, hez, hpz, sub_zero]`. Rewrite using `[hsr, hze, hzp, sub_zero]`. Conclude with `absurd (Fin.ext (by omega)) hjk`. Establish `hneg : ∀ j, (hJ ε (nv j) (nv j)).re < 0`. Introduce `j`.
+
+Simplify using `only [nv]`. Use `split_ifs with h1`. Rewrite using `[hsl, hsr, hsr, hee, hep, hpe, hpp]`. Evaluate the numerical expressions. Rewrite using `[hzz, Complex.neg_re, Complex.ofReal_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnvξ : ∀ j, hJ ε (nv j) ξ = 0`. Introduce `j`. Simplify using `only [nv]`. Use `split_ifs with h1`.
+
+Rewrite using `[hsl, hξe, hξp, sub_zero]`. Conclude with `hξz`. Establish `hpos : 0 < (hJ ε ξ ξ).re`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`.
+
+Establish `h` using `Formalism.L2.SG.PoincareInHH.Cut.card_le_of_orth' ε (r + 1) nv ξ horth hneg hnvξ hle hξ0`. Rewrite `h` using `[hsig]`. Use linear arithmetic over natural numbers and integers. Take `⟨ρ, hρ⟩ : ∃ ρ : ℝ, hJ ε ξ ξ = ρ` from `⟨_, (Complex.conj_eq_iff_re.1 (hJ_self_conj ε ξ)).symm⟩`. Establish `hρ0 : 0 < ρ` using `by rw [hρ, Complex.ofReal_re] at hpos; exact hpos`.
+
+Use `⟨(((Real.sqrt ρ)⁻¹ : ℝ) : ℂ) • ξ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ_smul_l, hJ_smul_r, Complex.conj_ofReal, hρ, ← Complex.ofReal_mul, ← Complex.ofReal_mul, Complex.ofReal_eq_one, ← mul_assoc, ← mul_inv, Real.mul_self_sqrt hρ0.le, inv_mul_cancel₀ hρ0.ne']`. Introduce `a`. Rewrite using `[hJ_smul_r, hξe a, mul_zero]`. Introduce `a`.
+
+Rewrite using `[hJ_smul_r, hξp a, mul_zero]`. Rewrite using `[hJ_smul_r, hξz, mul_zero]`.
+-/
 theorem scalar_frame_w_zero_exists (k : ℕ) (e p : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (T : ℝ)
     (hdim : n = 2 * r + 1 + k) (hk : 1 ≤ k) (hsig : (Finset.univ.filter fun i => ε i = false).card = r + 1)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hep : ∀ a b, hJ ε (e a) (p b) = if a = b then 1 else 0)
@@ -247,17 +329,26 @@ def tvmL (u : ι → Fin n → ℂ) (ξ : ι → ℂ) : (Fin n → ℂ) →ₗ[�
 
 def tvm (u : ι → Fin n → ℂ) (ξ : ι → ℂ) : Matrix (Fin n) (Fin n) ℂ := LinearMap.toMatrix' (tvmL ε u ξ)
 
+/- English proof (translation)
+Use `show LinearMap.toMatrix' (tvmL ε u ξ) *ᵥ v = _`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem tvm_apply (u : ι → Fin n → ℂ) (ξ : ι → ℂ) (v : Fin n → ℂ) :
     tvm ε u ξ *ᵥ v = v - ∑ b, (ξ b * hJ ε (u b) v) • u b := by
   show LinearMap.toMatrix' (tvmL ε u ξ) *ᵥ v = _
   rw [LinearMap.toMatrix'_mulVec]
   rfl
 
+/- English proof (translation)
+Rewrite using `[tvm_apply]`. Simplify using `[hv]`.
+-/
 theorem tvm_fix (u : ι → Fin n → ℂ) (ξ : ι → ℂ) {v : Fin n → ℂ} (hv : ∀ b, hJ ε (u b) v = 0) :
     tvm ε u ξ *ᵥ v = v := by
   rw [tvm_apply]
   simp [hv]
 
+/- English proof (translation)
+Rewrite using `[tvm_apply, Finset.sum_eq_single j, hj, one_smul]`. Introduce `b _ hb`. Rewrite using `[hv b hb, mul_zero, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 theorem tvm_one (u : ι → Fin n → ℂ) (ξ : ι → ℂ) (j : ι) {v : Fin n → ℂ} (hj : ξ j * hJ ε (u j) v = 1)
     (hv : ∀ b, b ≠ j → hJ ε (u b) v = 0) : tvm ε u ξ *ᵥ v = v - u j := by
   rw [tvm_apply, Finset.sum_eq_single j, hj, one_smul]
@@ -266,6 +357,19 @@ theorem tvm_one (u : ι → Fin n → ℂ) (ξ : ι → ℂ) (j : ι) {v : Fin n
   · intro h
     exact absurd (Finset.mem_univ j) h
 
+/- English proof (translation)
+Introduce `x y`. Establish `hsl : ∀ a a' b : Fin n → ℂ, hJ ε (a - a') b = hJ ε a b - hJ ε a' b`. Introduce `a a' b`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ a', hJ_add_l, hJ_smul_l, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsr : ∀ a b b' : Fin n → ℂ, hJ ε a (b - b') = hJ ε a b - hJ ε a b'`. Introduce `a b b'`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ b', hJ_add_r, hJ_smul_r]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : hJ ε x (∑ b, (ξ b * hJ ε (u b) y) • u b) = ∑ b, (ξ b * hJ ε (u b) y) * conj (hJ ε (u b) x)`.
+
+Rewrite using `[hJ_fsum_r]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hJ_cj ε x (u b)]`. Establish `h2 : hJ ε (∑ a, (ξ a * hJ ε (u a) x) • u a) y = ∑ a, conj (ξ a * hJ ε (u a) x) * hJ ε (u a) y` using `hJ_fsum_l ε _ _ _`. Establish `h12 : hJ ε (∑ a, (ξ a * hJ ε (u a) x) • u a) (∑ b, (ξ b * hJ ε (u b) y) • u b) = ∑ a, conj (ξ a * hJ ε (u a) x) * ((ξ a * hJ ε (u a) y) * hJ ε (u a) (u a))`.
+
+Rewrite using `[hJ_fsum_l]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hJ_fsum_r, Finset.sum_eq_single a]`. Introduce `b _ hb`. Rewrite using `[horth a b (Ne.symm hb), mul_zero]`.
+
+Introduce `ha`. Conclude with `absurd (Finset.mem_univ a) ha`. Rewrite using `[tvm_apply, tvm_apply, hsl, hsr, hsr, h1, h2, h12]`. Establish `hz : ∑ b, (ξ b * hJ ε (u b) y) * conj (hJ ε (u b) x) + ∑ a, conj (ξ a * hJ ε (u a) x) * hJ ε (u a) y - ∑ a, conj (ξ a * hJ ε (u a) x) * ((ξ a * hJ ε (u a) y) * hJ ε (u a) (u a)) = 0`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Take the linear combination `(conj (hJ ε (u b) x) * hJ ε (u b) y) * hξ b`. Take the linear combination `-hz`.
+-/
 theorem tvm_isIsom (u : ι → Fin n → ℂ) (ξ : ι → ℂ) (horth : ∀ a b, a ≠ b → hJ ε (u a) (u b) = 0)
     (hξ : ∀ b, ξ b + conj (ξ b) = ξ b * conj (ξ b) * hJ ε (u b) (u b)) : IsIsom ε (tvm ε u ξ) := by
   intro x y

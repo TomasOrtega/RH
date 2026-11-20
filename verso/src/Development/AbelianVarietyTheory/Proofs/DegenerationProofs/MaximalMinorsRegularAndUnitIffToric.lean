@@ -9,12 +9,42 @@ open Classical
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(RatModel.valHom y _ (RatModel.range_eq_singleton y (IsLocalRing.closedPoint K))).comp (Subalgebra.inclusion (RatModel.ringOn_le_O (hy ⟨_, rfl⟩))).toRingHom, fun _ => rfl⟩`.
+-/
 theorem RatModel.exists_ringHom_val {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
     {K : Type} [Field K] (y : Sp K ⟶ M.Z) {U : Set M.Z} (hy : Set.range y ⊆ U) :
     ∃ ψ : M.ringOn U →+* K, ∀ a, ψ a = M.val y a :=
   ⟨(RatModel.valHom y _ (RatModel.range_eq_singleton y (IsLocalRing.closedPoint K))).comp
     (Subalgebra.inclusion (RatModel.ringOn_le_O (hy ⟨_, rfl⟩))).toRingHom, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S M U₀ R' hR n a GG hO hR' hLL hT hsup hTT hcl hGG`. Take `⟨hLL, -⟩` from `hLL`. Take `⟨-, -, -, hcp⟩` from `hTT`. Use `set D : (S.J → Fin n) → Ω := fun k : S.J → Fin n => Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω)) with hD`. Use `set m := a * Fintype.card S.J with hm`.
+
+Establish `hDR : ∀ k, D k = ((Matrix.det (Matrix.of fun i j => GG (k i) j) : R') : Ω)` using `fun k => ((R'.val.toRingHom.map_det (Matrix.of fun i j => GG (k i) j))).symm`. Establish `hclosed : ∀ z : M.Z, IsClosed ({z} : Set M.Z) → ∀ x₀ ∈ S.supI M z, (∀ k, D k / S.th x₀ ^ m ∈ M.O z) ∧ (S.TT M z = ⊥ ↔ ∃ k, D k ≠ 0 ∧ S.th x₀ ^ m / D k ∈ M.O z)`. Introduce `z hz x₀ hx₀`. Establish `h0 : S.th x₀ ≠ 0` using `hx₀.1`. Establish `hth : S.th x₀ ∈ M.ringOn U₀` using `hO.le (S.th_mem x₀)`.
+
+Establish `hinv : (S.th x₀)⁻¹ ∈ M.ringOn U₀` using `hO.th_unit x₀ h0`. Establish `hDm : ∀ k, D k ∈ M.ringOn U₀` using `fun k => hDR k ▸ hR' (Subtype.prop _)`. Establish `hφ : ∀ k, D k / S.th x₀ ^ m ∈ M.ringOn U₀` using `fun k => by`. Rewrite using `[div_eq_mul_inv, ← inv_pow]`. Conclude with `mul_mem (hDm k) (pow_mem hinv m)`.
+
+Establish `htest : ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₀ z y → (∀ k, ‖M.val (gPt p ≫ y) (D k / S.th x₀ ^ m)‖ ≤ 1) ∧ ((∃ k, ‖M.val (gPt p ≫ y) (D k / S.th x₀ ^ m)‖ = 1) ↔ S.TT M z = ⊥)`. Introduce `p _ y hy`. Take `⟨ψ, hψ⟩` from `M.exists_ringHom_val (gPt p ≫ y) hy.2`. Take `⟨y₀, hAt, hb, ⟨τ⟩⟩` from `hT z p y hy`. Set `y' : R' →+* PadicAlgCl p` to `ψ.comp (Subalgebra.inclusion hR').toRingHom`.
+
+Establish `e : y₀ = y'.comp (Subalgebra.inclusion hR).toRingHom` using `RingHom.ext fun b => (hAt b).trans (hψ ⟨b, hO.le b.2⟩).symm`. Substitute `e` using the available equality. Take `⟨hs, hH⟩` from `hsup z p y _ τ hy hAt`. Establish `hδ` using `(hs x₀).1 hx₀`. Establish `hpos` using `τ.δ_pos`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.T.maximal_minors_dual_thetaTest_lattice_bound o Ω S p _ τ hb hcl n (τ.δ ^ a) (fun k j => y' (GG k j)) (pow_pos hpos a) (hGG p y' τ hb)`. Rewrite `h1`, `h2` using `[← pow_mul, ← hm]`. Establish `hpm : 0 < τ.δ ^ m` using `pow_pos hpos m`. Establish `hval : ∀ k, ‖M.val (gPt p ≫ y) (D k / S.th x₀ ^ m)‖ * τ.δ ^ m = ‖Matrix.det (Matrix.of fun i j => y' (GG (k i) j))‖`. Introduce `k`.
+
+Establish `e1 : (⟨_, hφ k⟩ : M.ringOn U₀) * ⟨_, hth⟩ ^ m = Subalgebra.inclusion hR' (Matrix.det (Matrix.of fun i j => GG (k i) j))` using `Subtype.ext ((div_mul_cancel₀ _ (pow_ne_zero m h0)).trans (hDR k))`. Establish `e2` using `congrArg (fun t => ‖ψ t‖) e1`. Simplify using `only [map_mul, map_pow, norm_mul, norm_pow] at e2`. Rewrite `e2` using `[hψ, hψ]`. Rewrite using `[← hδ]`.
+
+Use `e2.trans ?_` and prove the remaining obligations. Conclude with `congrArg norm (y'.map_det (Matrix.of fun i j => GG (k i) j))`. Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Use `h1 k` as an intermediate fact. Rewrite `this` using `[← hval]`.
+
+Conclude with `le_of_mul_le_mul_right (by simpa using this) hpm`. Rewrite using `[ThetaSys.TT, hH, ← h2]`. Use `exists_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[← hval]`. Conclude with `⟨fun h => by rw [h, _root_.one_mul], fun h => mul_right_cancel₀ hpm.ne' (h.trans (_root_.one_mul _).symm)⟩`.
+
+Take `⟨⟨p, _, y, hy⟩, hreg⟩` from `hLL U₀ le_rfl hO.ne z hz`. Establish `hmem : ∀ k, D k / S.th x₀ ^ m ∈ M.O z` using `fun k => hreg _ (hφ k) fun p _ y hy => (htest p y hy).1 k`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[← (htest p y hy).2]`. Use `exists_congr fun k => ?_` and prove the remaining obligations.
+
+Rewrite using `[RatModel.norm_val_eq_one_iff hy.1 (hmem k), RatModel.isUnit_O_iff]`. Simplify using `only [inv_div, ne_eq, div_eq_zero_iff, pow_ne_zero m h0, or_false]`. Introduce `z x₀ hx₀`. Establish `hTTeq : ∀ x : M.Z, S.supI M x = S.supI M z → S.TT M x = S.TT M z` using `fun x h => by`. Rewrite using `[ThetaSys.TT, ThetaSys.TT, ThetaSys.HH, ThetaSys.HH, h]`.
+
+Take `⟨x, -, hx, hzx, hs⟩` from `hcp z ⊤ trivial`. Take `⟨h1, h2⟩` from `hclosed x hx x₀ (hs ▸ hx₀)`. Use `⟨fun k => RatModel.O_le_of_specializes hzx (h1 k), fun h => ?_, fun ⟨k, hk, hk'⟩ => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hk'⟩` from `h2.1 ((hTTeq x hs).trans h)`. Conclude with `⟨k, hk, RatModel.O_le_of_specializes hzx hk'⟩`.
+
+Take `⟨x', hW, hx', -, hs'⟩` from `hcp z ⟨_, M.isOpen_setOf_mem_O (S.th x₀ ^ m / D k)⟩ hk'`. Conclude with `(hTTeq x' hs').symm.trans ((hclosed x' hx' x₀ (hs' ▸ hx₀)).2.2 ⟨k, hk, hW⟩)`.
+-/
 theorem minors_regular_and_unit_iff : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (M : RatModel o Ω) (U₀ : M.Z.Opens) (R' : Subalgebra o Ω) (hR : S.R ≤ R') (n a : ℕ) (GG : Fin n → S.J → R'), S.Over₀ M U₀ → R' ≤ M.ringOn U₀ → ((∀ U₁ : M.Z.Opens, U₁ ≤ U₀ → (U₁ : Set M.Z).Nonempty → ∀ z : M.Z, IsClosed ({z} : Set M.Z) → (∃ (p : ℕ) (_ : Fact p.Prime) (y : Sp (OO p) ⟶ M.Z), M.Cen U₁ z y) ∧ ∀ φ ∈ M.ringOn U₁, (∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₁ z y → ‖M.val (gPt p ≫ y) φ‖ ≤ 1) → φ ∈ M.O z) ∧ JacobsonSpace M.Z) → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₀ z y → ∃ y₀ : S.R →+* PadicAlgCl p, S.At M y y₀ ∧ (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) ∧ Nonempty (S.Test p y₀)) → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), M.Cen U₀ z y → S.At M y y₀ → (∀ x, x ∈ S.supI M z ↔ ‖M.val (gPt p ≫ y) (S.th x)‖ = τ.δ) ∧ S.HH M z = τ.yy.ker) → ((∀ ξ : M.Z, S.IsoFree (S.TT M ξ) ∧ S.perp (S.TT M ξ) = S.HH M ξ) ∧ (∀ ξ z : M.Z, ξ ⤳ z → S.supI M z ⊆ S.supI M ξ) ∧ (∀ ξ ∈ U₀, S.TT M ξ = ⊥) ∧ (∀ (ξ : M.Z) (W : M.Z.Opens), ξ ∈ W → ∃ x ∈ W, IsClosed ({x} : Set M.Z) ∧ ξ ⤳ x ∧ S.supI M x = S.supI M ξ)) → (∀ (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), (∀ c : S.perp τ.yy.ker →+ ZMod S.N, ∃ α : τ.X, (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) ∧ τ.wt α = c) ∧ ∀ (T : AddSubgroup S.Gam), S.IsoFree T → T ≤ S.perp τ.yy.ker → ∀ (w : S.Gam → τ.X), (∀ x, τ.yy x = QuotientAddGroup.mk (w x)) → ∀ (I : Set S.Gam), AddSubgroup.closure I = S.perp T → ∀ α : τ.X, (∀ (t : S.Gam) (h₂ : t ∈ S.perp τ.yy.ker), t ∈ T → τ.wt α ⟨t, h₂⟩ = 0) ↔ α ∈ AddSubgroup.closure (w '' I ∪ Set.range fun v₀ : τ.X => S.N • v₀)) → (∀ (p : ℕ) [Fact p.Prime] (y' : R' →+* PadicAlgCl p) (τ : S.Test p (y'.comp (Subalgebra.inclusion hR).toRingHom)), (∀ b : o, ‖y' (algebraMap o R' b)‖ ≤ 1) → ∀ w : S.J → PadicAlgCl p, w ∈ Submodule.span (OO p) (Set.range fun k j => y' (GG k j)) ↔ ∀ v ∈ τ.E, ‖w ⬝ᵥ v‖ ≤ τ.δ ^ a) → ∀ z : M.Z, ∀ x₀ ∈ S.supI M z, (∀ k, (fun k : S.J → Fin n => Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω))) k / S.th x₀ ^ (a * Fintype.card S.J) ∈ M.O z) ∧ (S.TT M z = ⊥ ↔ ∃ k, (fun k : S.J → Fin n => Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω))) k ≠ 0 ∧ S.th x₀ ^ (a * Fintype.card S.J) / (fun k : S.J → Fin n => Matrix.det (Matrix.of fun i j => (GG (k i) j : Ω))) k ∈ M.O z) := by
   intro o Ω _ _ _ _ S M U₀ R' hR n a GG hO hR' hLL hT hsup hTT hcl hGG
   obtain ⟨hLL, -⟩ := hLL

@@ -15,12 +15,20 @@ open GlobalTheory.KS
 
 namespace GlobalTheory.KS
 
+/- English proof (translation)
+Introduce `q _`. Take `rfl : q = p` from `Subsingleton.elim q p`. Conclude with `hp`.
+-/
 theorem top_le_preimage_of_mem {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (p : Sp ℂ) (U : X.Opens)
     (hp : x p ∈ U) : ⊤ ≤ x ⁻¹ᵁ U := by
   intro q _
   obtain rfl : q = p := Subsingleton.elim q p
   exact hp
 
+/- English proof (translation)
+Introduce `hL P₀ u Hm χ hU I O c h hcov hhol hcoc i`. Use `(GlobalTheory.T.existsUnique_section_of_locally_given_values P₀ u Hm χ hU (O i) (h i) ?_).exists` and prove the remaining obligations. Introduce `z hz`. Take `⟨p⟩ : Nonempty (Sp ℂ)` from `inferInstance`. Establish `hy : (u.ex z).left p ∈ O i` using `hz (Set.mem_univ p)`.
+
+Take `⟨n, σ, hyσ, hσ⟩` from `GlobalTheory.T.exists_nonzeroLocus_le_open_polarisation_complex hL P₀ (O i) _ hy`. Take `⟨a, ha⟩` from `GlobalTheory.T.primitive_regular_on_section_nonzeroLocus P₀ u Hm χ hU I O c h hcov hhol hcoc i n σ hσ`. Conclude with `⟨Out.nonzeroLocus σ, a, hσ, top_le_preimage_of_mem _ p _ hyσ, ha⟩`.
+-/
 theorem algebraic_coboundary_of_holomorphic_coboundary : Out.Laws → ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (I : Type) (O : I → P₀.A.left.Opens) (c : ∀ i i', Γ(P₀.A.left, O i ⊓ O i')) (h : I → (Fin P₀.g → ℂ) → ℂ), ⨆ i, O i = ⊤ → (∀ i, DifferentiableOn ℂ (h i) {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ O i} ∧ ∀ (l : u.Λ) z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ O i → h i (z + l) = h i z) → (∀ i i' z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (O i ⊓ O i') → valAt' (u.ex z).left (O i ⊓ O i') (c i i') = h i' z - h i z) → ∀ i, ∃ a : Γ(P₀.A.left, O i), ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ O i → valAt' (u.ex z).left (O i) a = h i z := by
   intro hL P₀ u Hm χ hU I O c h hcov hhol hcoc i
 

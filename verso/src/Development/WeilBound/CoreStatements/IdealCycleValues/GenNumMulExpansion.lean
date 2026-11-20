@@ -6,6 +6,23 @@ import Development.WeilBound.CoreStatements.IdealCycleValues.IntersectionNumbers
 
 open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.CompanionTheory.Ar.Num
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ σ V cls H G Q`. Establish `key : ∀ (P : MvPolynomial σ ℝ) (L : List (K → ℤ)) (s : Finset (σ →₀ ℕ)), P.support ⊆ s → genNum F V cls P L = ∑ κ ∈ s, MvPolynomial.coeff κ P * (intNumL F V (classList cls κ ++ L) : ℝ)`. Introduce `P L s hs`. Use `show ∑ κ ∈ P.support, MvPolynomial.coeff κ P * (intNumL F V (classList cls κ ++ L) : ℝ) = _`. Use `Finset.sum_subset hs (fun κ _ hκ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.notMem_support_iff.mp hκ, zero_mul]`. Establish `hadd : ∀ P P' : MvPolynomial σ ℝ, genNum F V cls (P + P') Q = genNum F V cls P Q + genNum F V cls P' Q`. Introduce `P P'`. Rewrite using `[key (P + P') Q (P.support ∪ P'.support) MvPolynomial.support_add, key P Q (P.support ∪ P'.support) Finset.subset_union_left, key P' Q (P.support ∪ P'.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun _ _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.coeff_add, add_mul]`. Establish `hzero : genNum F V cls (0 : MvPolynomial σ ℝ) Q = 0`. Rewrite using `[key 0 Q ∅ (by simp)]`. Simplify using the standard rewrite rules. Establish `hsum : ∀ (α : Type) (s : Finset α) (P : α → MvPolynomial σ ℝ), genNum F V cls (∑ a ∈ s, P a) Q = ∑ a ∈ s, genNum F V cls (P a) Q`.
+
+Introduce `α s P`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hzero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hadd, ih]`. Establish `hmon : ∀ (κ : σ →₀ ℕ) (c : ℝ), genNum F V cls (monomial κ c) Q = c * (intNumL F V (classList cls κ ++ Q) : ℝ)`.
+
+Introduce `κ c`. Rewrite using `[key _ Q {κ} MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`. Establish `hperm : ∀ ν μ : σ →₀ ℕ, intNumL F V (classList cls (ν + μ) ++ Q) = intNumL F V (classList cls ν ++ (classList cls μ ++ Q))`. Introduce `ν μ`. Establish `hp : (classList cls (ν + μ)).Perm (classList cls ν ++ classList cls μ)`.
+
+Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.coe_add]`. Simplify using `only [classList, Multiset.coe_toList, Finsupp.toMultiset_add, Multiset.map_add]`. Rewrite using `[← List.append_assoc]`. Conclude with `BaseChangeColon.intersection_numbers_perm_invariant.1 F K ι V _ _ (hp.append_right Q)`. Use `conv_lhs => rw [H.as_sum, G.as_sum, Finset.sum_mul_sum]`.
+
+Rewrite using `[hsum]`. Repeatedly rewrite using `[hsum, MvPolynomial.monomial_mul, hmon]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun μ _ => ?_)` and prove the remaining obligations. Rewrite using `[key H (classList cls μ ++ Q) H.support subset_rfl, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl (fun ν _ => ?_)` and prove the remaining obligations. Rewrite using `[hperm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem BaseChangeColon.genNum_mul_expansion : ∀ (F : Type) [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (σ : Type) (V : Ideal (MRing ι F)) (cls : σ → K → ℤ) (H G : MvPolynomial σ ℝ) (Q : List (K → ℤ)), genNum F V cls (H * G) Q = ∑ μ ∈ G.support, G.coeff μ * genNum F V cls H (classList cls μ ++ Q) := by
   intro F _ K _ _ ι _ σ V cls H G Q
   classical

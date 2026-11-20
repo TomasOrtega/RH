@@ -2,6 +2,23 @@ import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.LefschetzSigmaSums.HeckeTraceSemi
 open UpperTheory.Gal.LocalSmoothExtension
 
+/- English proof (translation)
+Introduce `hflat p _ G v K m f a hfin A w c`. Establish `hU : (⋃ i, {z : Σ q : GlobalTheory.LKCx.FCls G, PtsOf G v K q × GlobalTheory.LKCx.grp G (Quot.out q).β | Seen G v K (f i) z.1 z.2.1 z.2.2}).Finite` using `Set.finite_iUnion hfin`. Establish `hS : ∀ i z, Seen G v K (f i) z.1 z.2.1 z.2.2 → z ∈ hU.toFinset`. Introduce `i z hz`. Rewrite using `[Set.Finite.mem_toFinset]`.
+
+Conclude with `Set.mem_iUnion.2 ⟨i, hz⟩`. Establish `hS' : ∀ z, Seen G v K (∑ i, a i • f i) z.1 z.2.1 z.2.2 → z ∈ hU.toFinset`. Introduce `z hz`. Take `⟨h1, h2, h3⟩` from `hz`. Rewrite `h2` using `[Finset.sum_apply]`.
+
+Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h2`. Use `hS i z ⟨h1, ?_, h3⟩` and prove the remaining obligations. Introduce `h0`. Apply `hi` to reduce the goal to its premises. Simplify using `[Pi.smul_apply, smul_eq_mul, h0]`.
+
+Establish `hR : ∀ α i, GlobalTheory.RootSumWeights.cxTotalM G v (c α) K (f i) (Kp G) (oneP G) = ∑ z ∈ hU.toFinset, summ G v (c α) K (f i) z` using `fun α i => hflat p G v (c α) K (f i) hU.toFinset (hS i)`. Establish `hT : ∀ z, summ G v (fun P μ => w.sum fun α r => r * c α P μ) K (∑ i, a i • f i) z = ∑ i, a i * w.sum fun α r => r * summ G v (c α) K (f i) z`. Introduce `z`. Unfold `summ`. Use `split_ifs with hfix`.
+
+Simplify using `only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `α _`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Finsupp.sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Simplify using `only [Finsupp.sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hR α i, Finset.mul_sum]`.
+-/
 theorem UpperTheory.Gal.LocalSmoothExtension.cxLin_of :
     CxFlat → CxLin := by
   intro hflat p _ G v K m f a hfin A w c

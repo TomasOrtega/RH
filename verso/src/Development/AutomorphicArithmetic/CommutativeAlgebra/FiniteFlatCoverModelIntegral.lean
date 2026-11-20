@@ -8,6 +8,19 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsReducedAlgebr
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.ES GlobalTheory.UPel.HT.EtLev GlobalTheory.crystallineComparison UpperTheory.SubgroupJ UpperTheory.D3
 
+/- English proof (translation)
+Set `F` to `FractionRing A`. Establish `hinj : Function.Injective (algebraMap A F)` using `IsLocalization.injective F le_rfl`. Set `e : F` to `IsLocalization.mk' F a (⟨a + b, hreg⟩ : nonZeroDivisors A)`. Establish `hu : IsUnit (algebraMap A F (a + b))` using `IsLocalization.map_units F (⟨a + b, hreg⟩ : nonZeroDivisors A)`. Establish `he : e * algebraMap A F (a + b) = algebraMap A F a` using `IsLocalization.mk'_spec F a ⟨a + b, hreg⟩`.
+
+Establish `hidem : e * e = e`. Apply `hu.mul_right_cancel` to reduce the goal to its premises. Apply `hu.mul_right_cancel` to reduce the goal to its premises. Establish `h2 : algebraMap A F a * algebraMap A F (a + b) = algebraMap A F a * algebraMap A F a`. Rewrite using `[← map_mul, ← map_mul, mul_add, hab, add_zero]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hint : IsIntegral A e`. Use `⟨Polynomial.X ^ 2 - Polynomial.X, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.monic_X_pow_sub (by simp)`. Simplify using `[Polynomial.eval₂_sub, pow_two, hidem]`.
+
+Take `⟨c, hc⟩` from `IsIntegrallyClosedIn.isIntegral_iff.1 hint`. Establish `hcc : c * c = c` using `hinj (by rw [map_mul, hc, hidem])`. Establish `hca : c * (a + b) = a` using `hinj (by rw [map_mul, hc, he])`. Establish `h01 : c = 0 ∨ c = 1`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self c with h | h` into its components or cases.
+
+Use `right`. Conclude with `h.mul_left_cancel (by rw [hcc, _root_.mul_one])`. Use `left`. Establish `: (1 - c) * c = 0` using `by rw [sub_mul, _root_.one_mul, hcc, sub_self]`. Conclude with `h.mul_right_eq_zero.1 this`.
+
+Break down `h01 with rfl | rfl` into its components or cases. Use `left`. Simplify using `using hca.symm`. Use `right`. Simplify using `using hca`.
+-/
 private theorem eq_zero_or_of_mul_eq_zero_of_add_reg {A : Type} [CommRing A] [IsLocalRing A] [IsIntegrallyClosed A]
     {a b : A} (hab : a * b = 0) (hreg : a + b ∈ nonZeroDivisors A) : a = 0 ∨ b = 0 := by
   let F := FractionRing A
@@ -45,6 +58,31 @@ private theorem eq_zero_or_of_mul_eq_zero_of_add_reg {A : Type} [CommRing A] [Is
   · right
     simpa using hca
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hdom`. Establish `hbot : ¬ (⊥ : Ideal A).IsPrime` using `fun h => hdom (IsDomain.of_bot_isPrime A)`. Establish `hfin : (minimalPrimes A).Finite` using `minimalPrimes.finite_of_isNoetherianRing A`. Establish `hzero : ∀ x : A, (∀ Q ∈ minimalPrimes A, x ∈ Q) → x = 0` using `fun x hx => by`. Establish `: x ∈ (⊥ : Ideal A).radical`.
+
+Rewrite using `[← Ideal.sInf_minimalPrimes]`. Conclude with `(Submodule.mem_sInf).2 hx`. Take `⟨n, hn⟩` from `this`. Conclude with `(IsNilpotent.eq_zero ⟨n, by simpa using hn⟩)`. Take `⟨P, hP, -⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal A)) (J := IsLocalRing.maximalIdeal A) bot_le`.
+
+Establish `hPp : P.IsPrime` using `Ideal.minimalPrimes_isPrime hP`. Establish `hprime : ∀ Q ∈ minimalPrimes A, Q.IsPrime` using `fun Q hQ => Ideal.minimalPrimes_isPrime hQ`. Establish `hle : ∀ Q ∈ minimalPrimes A, ∀ Q' ∈ minimalPrimes A, Q ≤ Q' → Q = Q'` using `fun Q hQ Q' hQ' h => le_antisymm h (hQ'.2 hQ.1 h)`. Set `T : Finset (Ideal A)` to `hfin.toFinset.erase P`. Establish `hT : ∀ Q ∈ T, Q ∈ minimalPrimes A ∧ Q ≠ P` using `fun Q hQ => by`.
+
+Use `Finset.mem_erase.1 hQ` as an intermediate fact. Conclude with `⟨hfin.mem_toFinset.1 this.2, this.1⟩`. Establish `hTm : ∀ Q ∈ minimalPrimes A, Q ≠ P → Q ∈ T` using `fun Q hQ h => Finset.mem_erase.2 ⟨h, hfin.mem_toFinset.2 hQ⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a, haP, ha⟩ : ∃ a ∈ P, a ∉ ⋃ i ∈ (↑(insert ⊥ T) : Set (Ideal A)), (i : Set A) := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Establish `hsub : (P : Set A) ⊆ ⋃ i ∈ (↑(insert ⊥ T) : Set (Ideal A)), ((id i : Ideal A) : Set A)` using `hcon`. Take `⟨Q, hQ, hPQ⟩` from `(Ideal.subset_union_prime (⊥ : Ideal A) (⊥ : Ideal A) (fun i hi h1 _ => (hT i ((Finset.mem_insert.1 hi).resolve_left h1)).1 |> hprime i)).1 hsub`. Break down `Finset.mem_insert.1 hQ with rfl | hQ` into its components or cases. Conclude with `hbot ((le_bot_iff.1 hPQ) ▸ hPp)`.
+
+Conclude with `(hT Q hQ).2 (hle P hP Q (hT Q hQ).1 hPQ).symm`. Establish `ha0 : a ≠ 0` using `fun h => ha (by`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨⊥, by simp, by simp [h]⟩)`. Establish `haT : ∀ Q ∈ T, a ∉ Q` using `fun Q hQ h => ha (by`.
+
+Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨Q, by simp [hQ], h⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨b, hbT, hbP⟩ : ∃ b ∈ T.inf id, b ∉ P := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Take `⟨Q, hQ, hQP⟩` from `(Ideal.IsPrime.inf_le' hPp).1 (show T.inf id ≤ P from hcon)`. Conclude with `(hT Q hQ).2 (hle Q (hT Q hQ).1 P hP hQP)`. Establish `hbT' : ∀ Q ∈ T, b ∈ Q` using `fun Q hQ => by`. Use `Finset.inf_le (f := id) hQ` as an intermediate fact. Conclude with `this hbT`.
+
+Establish `hab : a * b = 0` using `hzero _ fun Q hQ => by`. Distinguish the cases in `h : Q = P`. Conclude with `h ▸ Ideal.mul_mem_right _ _ haP`. Conclude with `Ideal.mul_mem_left _ _ (hbT' Q (hTm Q hQ h))`. Establish `hreg : a + b ∈ nonZeroDivisors A`.
+
+Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`. Use `hzero x fun Q hQ => ?_` and prove the remaining obligations. Establish `hQp` using `hprime Q hQ`. Establish `hx' : x * (a + b) ∈ Q` using `hx ▸ Q.zero_mem`.
+
+Use `(hQp.mem_or_mem hx').resolve_right fun hs => ?_` and prove the remaining obligations. Distinguish the cases in `h : Q = P`. Substitute `h` using the available equality. Conclude with `hbP ((Q.add_mem_iff_right haP).1 hs)`. Establish `hm` using `hTm Q hQ h`.
+
+Conclude with `haT Q hm ((Q.add_mem_iff_left (hbT' Q hm)).1 hs)`. Break down `eq_zero_or_of_mul_eq_zero_of_add_reg hab hreg with h | h` into its components or cases. Conclude with `ha0 h`. Conclude with `hbP (h ▸ P.zero_mem)`.
+-/
 private theorem isDomain_of_isReduced_of_isIntegrallyClosed (A : Type) [CommRing A] [IsLocalRing A]
     [IsNoetherianRing A] [IsReduced A] [IsIntegrallyClosed A] : IsDomain A := by
   classical
@@ -113,6 +151,15 @@ private theorem isDomain_of_isReduced_of_isIntegrallyClosed (A : Type) [CommRing
   · exact ha0 h
   · exact hbP (h ▸ P.zero_mem)
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `hne : ϖ ≠ 0` using `hϖ.ne_zero`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Conclude with `(IsUnit.mk0 _ ((map_ne_zero_iff _ hinj).2 hne)).pow n |>.map (RingHom.id K) |> fun h => by simpa using h`.
+
+Introduce `z`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := O) z`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ`. Use `⟨⟨a * ↑u⁻¹, ⟨ϖ ^ n, n, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : algebraMap O K (↑u) * algebraMap O K (↑u⁻¹ : O) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h2 : algebraMap O K (↑u) ≠ 0` using `fun h => by simp [h] at h1`. Establish `h3 : algebraMap O K ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hne`. Simplify using `only [map_mul, map_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[_root_.mul_assoc, h1, _root_.mul_one]`. Introduce `x y h`. Conclude with `⟨1, by rw [hinj h]⟩`.
+-/
 private theorem isLocalization_away_uniformizer (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Field K] [Algebra O K] [IsFractionRing O K] {ϖ : O} (hϖ : Irreducible ϖ) : IsLocalization.Away ϖ K := by
   have hinj : Function.Injective (algebraMap O K) := IsFractionRing.injective O K
@@ -135,6 +182,35 @@ private theorem isLocalization_away_uniformizer (O K : Type) [CommRing O] [IsDom
   · intro x y h
     exact ⟨1, by rw [hinj h]⟩
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Use `haveI := isLocalization_away_uniformizer O K hϖ`. Use `haveI he : IsOpenImmersion (spMap (algebraMap O K)) := IsOpenImmersion.of_isLocalization ϖ`. Set `j : fib K f ⟶ W` to `pullback.fst f (spMap (algebraMap O K))`. Use `haveI : IsOpenImmersion j := inferInstance`.
+
+Establish `hrange : Set.range j = f ⁻¹' (PrimeSpectrum.basicOpen ϖ : Set (PrimeSpectrum O))`. Establish `h1 : Set.range (spMap (algebraMap O K)) = (PrimeSpectrum.basicOpen ϖ : Set (PrimeSpectrum O))` using `PrimeSpectrum.localization_away_comap_range K ϖ`. Rewrite using `[← h1]`. Conclude with `Scheme.Pullback.range_fst f (spMap (algebraMap O K))`. Set `r : Γ(Sp O, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom ϖ`.
+
+Establish `hr : r ∈ nonZeroDivisors Γ(Sp O, ⊤)`. Rewrite using `[mem_nonZeroDivisors_iff_left]`. Introduce `a ha`. Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of O)).commRingCatIsoToRingEquiv`. Establish `hre : e r = ϖ` using `e.apply_symm_apply ϖ`.
+
+Use `e.injective ?_` and prove the remaining obligations. Establish `: ϖ * e a = 0` using `by rw [← hre, mul_comm, ← map_mul, mul_comm, ha, map_zero]`. Rewrite using `[map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left hϖ.ne_zero`. Establish `haff : ∀ V : W.Opens, IsAffineOpen V → ∀ g : Γ(W, V), IsNilpotent g → g = 0`.
+
+Introduce `V hV g hg`. Set `q : Γ(W, V)` to `(f.appLE ⊤ V le_top).hom r`. Set `U` to `W.basicOpen q`. Set `ρ : Γ(W, V) →+* Γ(W, U)` to `(W.presheaf.map (homOfLE (W.basicOpen_le q)).op).hom`. Use `letI : Algebra Γ(W, V) Γ(W, U) := ρ.toAlgebra`.
+
+Use `haveI : IsLocalization.Away q Γ(W, U) := hV.isLocalization_basicOpen q`. Establish `hUr : Set.range U.ι ⊆ Set.range j`. Rewrite using `[Scheme.Opens.range_ι, hrange]`. Introduce `x hx`. Establish `h2 : U = V ⊓ f ⁻¹ᵁ (Sp O).basicOpen r` using `Scheme.basicOpen_appLE f V ⊤ le_top r`.
+
+Establish `h3 : x ∈ f ⁻¹ᵁ (Sp O).basicOpen r`. Establish `: x ∈ U` using `hx`. Rewrite `this` using `[h2]`. Conclude with `this.2`. Establish `h4 : (Sp O).basicOpen r = PrimeSpectrum.basicOpen ϖ` using `basicOpen_eq_of_affine (R := CommRingCat.of O) ϖ`.
+
+Rewrite `h3` using `[h4]`. Conclude with `h3`. Set `i' : U.toScheme ⟶ fib K f` to `IsOpenImmersion.lift j U.ι hUr`. Use `haveI : IsOpenImmersion (i' ≫ j) := by`. Rewrite using `[IsOpenImmersion.lift_fac]`.
+
+Use `infer_instance`. Use `haveI : IsOpenImmersion i' := IsOpenImmersion.of_comp i' j`. Use `haveI : IsReduced U.toScheme := isReduced_of_isOpenImmersion i'`. Use `haveI : _root_.IsReduced Γ(W, U) := isReduced_of_injective (U.topIso.inv.hom) (U.topIso.commRingCatIsoToRingEquiv.symm.injective)`. Establish `h0 : algebraMap Γ(W, V) Γ(W, U) g = 0` using `(hg.map (algebraMap Γ(W, V) Γ(W, U))).eq_zero`.
+
+Take `⟨⟨_, k, rfl⟩, hk⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers q) _ g).1 h0`. Establish `hk' : q ^ k * g = 0` using `hk`. Establish `hfl : (f.appLE ⊤ V le_top).hom.Flat` using `HasRingHomProperty.appLE (P := @Flat) f inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ le_top`. Establish `hq : ∀ y : Γ(W, V), q * y = 0 → y = 0` using `fun y hy => by`. Use `letI := (f.appLE ⊤ V le_top).hom.toAlgebra`.
+
+Use `haveI : Module.Flat Γ(Sp O, ⊤) Γ(W, V) := hfl`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := Γ(W, V)) hr`. Use `hreg ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, mul_zero]`. Conclude with `hy`.
+
+Use `clear hk h0`. Proceed by induction on `k with`. Consider the case `zero => simpa using hk'`. Consider the case `succ k ih => exact ih (hq _ (by rw [pow_succ', _root_.mul_assoc] at hk'; exact hk'))`. Use `⟨fun U => ⟨fun s hs => ?_⟩⟩` and prove the remaining obligations.
+
+Use `W.sheaf.eq_of_locally_eq' (fun V : {V : W.affineOpens // V.1 ≤ U} => V.1.1) U (fun V => homOfLE V.2) ?_ s 0 fun V => ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨_, ⟨V, hV, rfl⟩, hyV, hVU⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open hy U.isOpen`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨V, hV⟩, hVU⟩, hyV⟩`. Rewrite using `[map_zero]`.
+
+Conclude with `haff V.1.1 V.1.2 _ (hs.map _)`.
+-/
 private theorem isReduced_of_flat_of_fib {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Field K] [Algebra O K] [IsFractionRing O K] {W : Scheme.{0}} (f : W ⟶ Sp O) [Flat f]
     [IsReduced (fib K f)] : IsReduced W := by
@@ -210,6 +286,13 @@ private theorem isReduced_of_flat_of_fib {O K : Type} [CommRing O] [IsDomain O] 
   · rw [map_zero]
     exact haff V.1.1 V.1.2 _ (hs.map _)
 
+/- English proof (translation)
+Introduce `p _ D O K k _ _ _ _ _ _ _ _ _ _ _ b N M W π hπ hfl hic het y`. Use `haveI := M.smooth`. Use `haveI : Smooth M.s := SmoothOfRelativeDimension.smooth (D.a * (D.n - 1)) M.s`. Use `haveI := hπ`. Use `haveI := hfl`.
+
+Use `haveI := het`. Use `haveI : IsLocallyNoetherian W := LocallyOfFiniteType.isLocallyNoetherian (π ≫ M.s)`. Use `haveI : IsReduced (fib K (π ≫ M.s)) := GlobalTheory.isReduced_of_smooth_of_isReduced (fibMap K (π ≫ M.s) M.s π rfl ≫ pullback.snd M.s (spMap (algebraMap O K)))`. Use `haveI : IsReduced W := isReduced_of_flat_of_fib (K := K) (π ≫ M.s)`. Use `haveI := hic y`.
+
+Conclude with `isDomain_of_isReduced_of_isIntegrallyClosed _`.
+-/
 theorem UpperTheory.finite_flat_cover_model_integral :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (O K k : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Field K] [Field k] [Algebra O K] [IsFractionRing O K] [Algebra O k], Function.Surjective (algebraMap O k) → RingHom.ker (algebraMap O k) = IsLocalRing.maximalIdeal O → ∀ (b : Base D O) (N : ℕ) (M : Model b N) (W : Scheme.{0}) (π : W ⟶ M.X), IsFinite π → Flat (π ≫ M.s) → (∀ y : W, IsIntegrallyClosed (W.presheaf.stalk y)) → Etale (fibMap K (π ≫ M.s) M.s π rfl) → ∀ y : W, IsDomain (W.presheaf.stalk y) := by
   intro p _ D O K k _ _ _ _ _ _ _ _ _ _ _ b N M W π hπ hfl hic het y

@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NablaOperatorFrameS
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvIsIntMapMap
 open GlobalTheory.IsoTriv
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IsoTriv.nabSt_of | exact GlobalTheory.IsoTriv.nabSt_of | (intros; apply GlobalTheory.IsoTriv.nabSt_of <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nablaOperatorFrameSeries_of_steps : InvDerSt → LinSt → FrameSt → NabSt := by
   first | exact @GlobalTheory.IsoTriv.nabSt_of | exact GlobalTheory.IsoTriv.nabSt_of | (intros; apply GlobalTheory.IsoTriv.nabSt_of <;> assumption)

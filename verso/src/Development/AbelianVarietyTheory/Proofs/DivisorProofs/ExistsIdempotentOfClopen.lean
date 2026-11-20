@@ -3,6 +3,27 @@ open AlgebraicGeometry CategoryTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X U hU`. Set `O : Bool → X.Opens` to `fun i => bif i then ⟨U, hU.isOpen⟩ else ⟨Uᶜ, hU.isClosed.isOpen_compl⟩`. Establish `hd : O true ⊓ O false = ⊥`. Use extensionality with `x`. Simplify using `[O]`.
+
+Establish `hcov : (⊤ : X.Opens) ≤ ⨆ i, O i` using `fun x _ => by`. Distinguish the cases in `hx : x ∈ U`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨true, hx⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨false, hx⟩`. Set `sf : ∀ i, Γ(X, O i)` to `fun i => bif i then 1 else 0`.
+
+Establish `sub : ∀ T : X.Opens, T = ⊥ → Subsingleton Γ(X, T)` using `fun T hT => by`. Substitute `hT` using the available equality. Use `infer_instance`. Establish `hcompat : TopCat.Presheaf.IsCompatible X.sheaf.1 O sf`. Introduce `i j`.
+
+Apply the tactic sequence `cases i <;> cases j`. Conclude with `(map_zero _).trans (map_zero _).symm`. Conclude with `(sub _ ((inf_comm _ _).trans hd)).elim _ _`. Conclude with `(sub _ hd).elim _ _`. Conclude with `(map_one _).trans (map_one _).symm`.
+
+Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' O ⊤ (fun i => homOfLE le_top) hcov sf hcompat`. Take `⟨t, hs'⟩ : ∃ t : Γ(X, ⊤), ∀ i, X.presheaf.map (homOfLE (le_top : O i ≤ ⊤)).op t = sf i` from `⟨s, hs⟩`. Use `clear hs s`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations. Use `X.sheaf.eq_of_locally_eq' O ⊤ (fun i => homOfLE le_top) hcov (t * t) t fun i => ?_` and prove the remaining obligations.
+
+Establish `e1 : X.presheaf.map (homOfLE (le_top : O i ≤ ⊤)).op (t * t) = sf i * sf i`. Rewrite using `[map_mul, hs' i]`. Use `e1.trans (Eq.trans ?_ (hs' i).symm)` and prove the remaining obligations. Consider the cases of `i`. Conclude with `mul_zero _`.
+
+Conclude with `mul_one _`. Establish `h1 : O true ⊓ X.basicOpen t = O true`. Rewrite using `[← Scheme.basicOpen_res, hs' true]`. Conclude with `X.basicOpen_of_isUnit isUnit_one`. Establish `h0 : O false ⊓ X.basicOpen t = ⊥`.
+
+Rewrite using `[← Scheme.basicOpen_res, hs' false]`. Conclude with `X.basicOpen_zero _`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Assume the negation of the conclusion as `hxU`. Establish `: x ∈ O false ⊓ X.basicOpen t` using `⟨hxU, hx⟩`. Rewrite `this` using `[h0]`. Conclude with `this`. Introduce `hx`.
+
+Establish `: x ∈ O true` using `hx`. Rewrite `this` using `[← h1]`. Conclude with `this.2`.
+-/
 theorem exists_idempotent_basicOpen_eq_of_isClopen :
     ∀ (X : Scheme.{0}) (U : Set X), IsClopen U →
       ∃ e : Γ(X, ⊤), e * e = e ∧ ((X.basicOpen e : X.Opens) : Set X) = U := by

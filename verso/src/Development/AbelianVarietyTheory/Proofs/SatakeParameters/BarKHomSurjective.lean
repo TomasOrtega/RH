@@ -21,16 +21,25 @@ def barKHom : Kinf E a →* Kinf E a where
     simp [Matrix.mul_apply, Matrix.star_apply, mul_comm])
 
 omit [NumberField E] [IsTotallyComplex E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem barKHom_apply (k : Kinf E a) : barKHom E a k = barK k := rfl
 
 omit [NumberField E] [IsTotallyComplex E] in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by ext i j simp [barK, Matrix.star_apply])`.
+-/
 theorem barK_barK (k : Kinf E a) : barK (barK k) = k := Subtype.ext (by
   ext i j
   simp [barK, Matrix.star_apply])
 
 omit [NumberField E] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Introduce `k` and use `⟨barK k, barK_barK k⟩`.
+-/
 theorem barKHom_surjective : Function.Surjective (barKHom E a) := fun k => ⟨barK k, barK_barK k⟩
 
 def cptOn (π : CuspSub E a) : Representation ℂ (Kinf E a) π.V where
@@ -42,9 +51,15 @@ def cptOn (π : CuspSub E a) : Representation ℂ (Kinf E a) π.V where
     ext φ
     simp [CuspSub.op, act, map_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cptOn_apply (π : CuspSub E a) (k : Kinf E a) (φ : π.V) :
     cptOn π k φ = π.op (.cpt k) φ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cptOn_val (π : CuspSub E a) (k : Kinf E a) (φ : π.V) :
     (cptOn π k φ).1 = cptRep E a k φ.1 := rfl
 

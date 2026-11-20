@@ -24,6 +24,13 @@ open ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key Reciproci
 
 namespace GlobalTheory.HolSec
 
+/- English proof (translation)
+Establish `le : ∀ J, (L.pull F).U J ≤ F ⁻¹ᵁ (W ⊓ L.U (J PUnit.unit))` using `fun J x hx => ⟨mem x, mem_pull.1 hx⟩`. Establish `ev : ∀ y J, y ∈ (L.pull F).U J → gs (𝟙 _) y _ ((F.appLE _ _ (le J)).hom (θ₀ _)) = gs F y _ (θ₀ (J PUnit.unit))` using `fun y J h => (gs_appLE F _ _ (le J) (𝟙 _) y h _).trans (by rw [Category.id_comp])`. Use `⟨⟨fun J => (F.appLE _ _ (le J)).hom (θ₀ _), fun J J' => fn_ext fun y hy => ?_⟩, fun j x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `mem_pull.1 hy.1`. Establish `h'` using `mem_pull.1 hy.2`.
+
+Establish `hm : F y ∈ W ⊓ L.U (J PUnit.unit) ⊓ L.U (J' PUnit.unit)` using `⟨⟨mem y, h⟩, h'⟩`. Establish `e` using `congrArg (gs F y _) (hθ₀ (J PUnit.unit) (J' PUnit.unit))`. Rewrite `e` using `[gs_res _ y _ hm, gs_mul _ y _ hm, gs_res _ y _ hm, gs_res _ y _ hm, gs_unit _ y (L.U _ ⊓ L.U _) ⟨h, h'⟩]`. Rewrite using `[gs_res _ y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_unit _ y _ hy, ev y J hy.1, ev y J' hy.2, gm_pull_g L F (𝟙 _) y J J' hy.1 hy.2, Category.id_comp]`. Conclude with `e`.
+
+Conclude with `valAt'_appLE x F _ _ (le _) _ (fun p hp => mem_pull.2 (hx hp))`.
+-/
 theorem exists_sec_pull {X X' : Scheme.{0}} (L : LB X) (F : X' ⟶ X) (W : X.Opens) (mem : ∀ x, F x ∈ W)
     (θ₀ : ∀ j, Γ(X, W ⊓ L.U j)) (hθ₀ : θ₀ ∈ secOn L W) :
     ∃ t : LB.Sec (L.pull F), ∀ j (x : Sp ℂ ⟶ X'), ⊤ ≤ (x ≫ F) ⁻¹ᵁ L.U j →

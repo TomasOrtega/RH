@@ -20,24 +20,43 @@ variable {m : ℕ}
 def blk (G : Matrix (Fin m) (Fin m) ℂ) (n : Low m → ℂ) (j : Fin (m + 1)) : Matrix (Fin j) (Fin j) ℂ :=
   (chg (uni n) G).submatrix (Fin.castLE (Nat.le_of_lt_succ j.isLt)) (Fin.castLE (Nat.le_of_lt_succ j.isLt))
 
+/- English proof (translation)
+Use extensionality with `x y`. Simplify using `[blk, chg, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem blk_add_smul (G K : Matrix (Fin m) (Fin m) ℂ) (a b : ℂ) (n : Low m → ℂ) (j : Fin (m + 1)) :
     blk (a • G + b • K) n j = a • blk G n j + b • blk K n j := by
   ext x y
   simp [blk, chg, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+The claim follows from `(posDef_chg ((isUnit_iff_isUnit_det _).2 (by rw [FlagFibre.det_uni]; exact isUnit_one)) h).submatrix (Fin.castLE_injective _)`.
+-/
 theorem posDef_blk {G : Matrix (Fin m) (Fin m) ℂ} (h : G.PosDef) (n : Low m → ℂ) (j : Fin (m + 1)) :
     (blk G n j).PosDef :=
   (posDef_chg ((isUnit_iff_isUnit_det _).2 (by rw [FlagFibre.det_uni]; exact isUnit_one)) h).submatrix
     (Fin.castLE_injective _)
 
+/- English proof (translation)
+The claim follows from `(h.mul_mul_conjTranspose_same (uni n)ᵀ).submatrix _`.
+-/
 theorem posSemidef_blk {G : Matrix (Fin m) (Fin m) ℂ} (h : G.PosSemidef) (n : Low m → ℂ) (j : Fin (m + 1)) :
     (blk G n j).PosSemidef :=
   (h.mul_mul_conjTranspose_same (uni n)ᵀ).submatrix _
 
+/- English proof (translation)
+The claim follows from `((FlagFibre.continuous_uni.matrix_transpose.matrix_mul continuous_const).matrix_mul FlagFibre.continuous_uni.matrix_conjTranspose.matrix_transpose).matrix_submatrix _ _`.
+-/
 theorem continuous_blk (G : Matrix (Fin m) (Fin m) ℂ) (j : Fin (m + 1)) : Continuous fun n => blk G n j :=
   ((FlagFibre.continuous_uni.matrix_transpose.matrix_mul continuous_const).matrix_mul
     FlagFibre.continuous_uni.matrix_conjTranspose.matrix_transpose).matrix_submatrix _ _
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro f`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+
+Introduce `f`. Use `ih fun i => f i.castSucc` as an intermediate fact. Rewrite using `[Fin.sum_univ_castSucc, Fin.sum_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last, Fin.succ_castSucc, Fin.castSucc_zero, Fin.succ_last] at this ⊢`. Rewrite using `[this]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem abel (a : ℝ) : ∀ (k : ℕ) (f : Fin (k + 1) → ℝ),
     ∑ i : Fin k, (a - 2 * (i : ℕ)) * (f i.castSucc - f i.succ) =
       -2 * ∑ i : Fin k, f i.castSucc + (a + 2) * f 0 - (a + 2 - 2 * k) * f (Fin.last k) := by
@@ -55,6 +74,19 @@ theorem abel (a : ℝ) : ∀ (k : ℕ) (f : Fin (k + 1) → ℝ),
 
 def logMinor (G : Matrix (Fin m) (Fin m) ℂ) (n : Low m → ℂ) (j : Fin (m + 1)) : ℝ := Real.log (blk G n j).det.re
 
+/- English proof (translation)
+Establish `h0 : logMinor G n 0 = 0`. Establish `: IsEmpty (Fin ((0 : Fin (m + 1)) : ℕ))` using `⟨fun x => x.elim0⟩`. Rewrite using `[logMinor, det_isEmpty]`. Simplify using the standard rewrite rules. Establish `hl : (blk G n (Fin.last m)).det = G.det`.
+
+Establish `: blk G n (Fin.last m) = chg (uni n) G` using `rfl`. Rewrite using `[this]`. Conclude with `(det_chg _ _).trans (by simp [FlagFibre.det_uni])`. Establish `hm (j : Fin (m + 1)) : ‖ReciprocityTheory.ChartRestriction.G.FD.lminor ((uni n)ᴴ * Gᵀ * uni n) j‖ = Real.exp (logMinor G n j)`. Take `⟨h1, h2⟩` from `FlagFibre.FlagInt.re_facts (posDef_blk h n j)`.
+
+Establish `: ReciprocityTheory.ChartRestriction.G.FD.lminor ((uni n)ᴴ * Gᵀ * uni n) j = (blk G n j).det`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.FD.lminor, ← det_transpose, transpose_submatrix, blk, chg]`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[this, logMinor, Real.exp_log h1]`. Use `conv_lhs => rw [h2, Complex.norm_real, Real.norm_of_nonneg h1.le]`.
+
+Establish `hd : G.det.re ^ (m - 1) = Real.exp (((m : ℝ) - 1) * logMinor G n (Fin.last m))`. Consider the cases of `m with`. Consider the case `zero => simp [h0]`. Consider the case `succ m`. Rewrite using `[logMinor, hl, Nat.add_sub_cancel]`.
+
+Use `push_cast`. Rewrite using `[add_sub_cancel_right, Real.exp_nat_mul, Real.exp_log (det_re_pos h)]`. Rewrite using `[abel, h0, jacDens, dens, hd, Finset.mul_sum]`. Simplify using `only [hm]`. Establish `e (x : ℝ) : Real.exp x ^ (-2 : ℤ) = Real.exp (-2 * x)`.
+
+Rewrite using `[neg_mul, Real.exp_neg, _root_.zpow_neg, show (2 : ℝ) * x = (2 : ℕ) * x by norm_num, Real.exp_nat_mul]`. Use `norm_cast`. Simplify using `only [e, ← Real.exp_sum, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jacDens_eq_exp {G : Matrix (Fin m) (Fin m) ℂ} (h : G.PosDef) (n : Low m → ℂ) :
     jacDens G n = Real.exp (∑ i : Fin m, ((m : ℝ) - 1 - 2 * (i : ℕ)) *
       (logMinor G n i.castSucc - logMinor G n i.succ)) := by
@@ -88,6 +120,11 @@ theorem jacDens_eq_exp {G : Matrix (Fin m) (Fin m) ℂ} (h : G.PosDef) (n : Low 
   congr 1
   ring
 
+/- English proof (translation)
+Use `ReciprocityTheory.GeometryOfNumbersTheory.hasDerivAt_log_det (fun s : ℝ => blk (G + (s : ℂ) • K) n j) (blk K n j) t (fun a b => ?_) (posDef_blk h n j)` and prove the remaining obligations. Establish `e (s : ℝ) : blk (G + (s : ℂ) • K) n j a b = blk G n j a b + (s : ℂ) * blk K n j a b`. Use `blk_add_smul G K 1 s n j` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Simplify using `only [e]`. Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := t)).mul_const (blk K n j a b)).const_add (blk G n j a b)`.
+-/
 theorem hasDerivAt_logMinor (G K : Matrix (Fin m) (Fin m) ℂ) {t : ℝ} (h : (G + (t : ℂ) • K).PosDef)
     (n : Low m → ℂ) (j : Fin (m + 1)) :
     HasDerivAt (fun s : ℝ => logMinor (G + (s : ℂ) • K) n j) (logMinorDer (G + (t : ℂ) • K) K n j) t := by
@@ -100,6 +137,11 @@ theorem hasDerivAt_logMinor (G K : Matrix (Fin m) (Fin m) ℂ) {t : ℝ} (h : (G
   simp only [e]
   simpa using ((Complex.ofRealCLM.hasDerivAt (x := t)).mul_const (blk K n j a b)).const_add (blk G n j a b)
 
+/- English proof (translation)
+Establish `hb` using `posDef_blk h n j`. Establish `e (s : ℝ) (hs : ((c : ℂ) • H + (s : ℂ) • K).PosSemidef) : 0 ≤ c * (j : ℕ) + s * logMinorDer H K n j`. Use `re_trace_mul_nonneg_of_posSemidef hb.inv.posSemidef (posSemidef_blk hs n j)` as an intermediate fact. Rewrite `this` using `[blk_add_smul, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, nonsing_inv_mul _ hb.det_pos.ne'.isUnit, trace_add, trace_smul, trace_smul, trace_one]`. Simplify `this` using `[logMinorDer, blk]`.
+
+Establish `e₁` using `e 1 (by simpa using h₁)`. Establish `e₂` using `e (-1) (by simpa using h₂)`. Establish `hj : c * (j : ℕ) ≤ c * m` using `mul_le_mul_of_nonneg_left (by exact_mod_cast Nat.le_of_lt_succ j.isLt) hc`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem abs_logMinorDer_le {H K : Matrix (Fin m) (Fin m) ℂ} {c : ℝ} (hc : 0 ≤ c) (h : H.PosDef)
     (h₁ : ((c : ℂ) • H + (1 : ℂ) • K).PosSemidef) (h₂ : ((c : ℂ) • H + (-1 : ℂ) • K).PosSemidef)
     (n : Low m → ℂ) (j : Fin (m + 1)) : |logMinorDer H K n j| ≤ c * m := by
@@ -115,6 +157,13 @@ theorem abs_logMinorDer_le {H K : Matrix (Fin m) (Fin m) ℂ} {c : ℝ} (hc : 0 
   rw [abs_le]
   constructor <;> linarith
 
+/- English proof (translation)
+Establish `hb : (Kᴴ * K + 1).PosSemidef` using `(posSemidef_conjTranspose_mul_self K).add PosSemidef.one`. Establish `h1` using `le_re_trace_mul_smul_inv hG.inv hb`. Establish `h0` using `re_trace_mul_nonneg_of_posSemidef hG.inv.posSemidef hb`. Rewrite `h1` using `[nonsing_inv_nonsing_inv _ hG.det_pos.ne'.isUnit, le_iff]`. Use `set c₀ := RCLike.re (G⁻¹ * (Kᴴ * K + 1)).trace`.
+
+Use `⟨c₀ + 1, by positivity, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h2` using `posSemidef_conjTranspose_mul_self (K + (u / 2 : ℝ) • (1 : Matrix (Fin m) (Fin m) ℂ))`. Establish `h3 : ((1 - (u / 2) ^ 2 : ℝ) • (1 : Matrix (Fin m) (Fin m) ℂ)).PosSemidef` using `PosSemidef.one.smul (by nlinarith [abs_le.1 hu])`. Use `Eq.subst (motive := PosSemidef) (Eq.symm ?_) (((h1.add h2).add h3).add hG.posSemidef)` and prove the remaining obligations. Rewrite using `[conjTranspose_add, conjTranspose_smul, conjTranspose_one, hK.eq]`.
+
+Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, star_trivial, Complex.coe_smul]`. Use `module`.
+-/
 theorem exists_sandwich {G K : Matrix (Fin m) (Fin m) ℂ} (hG : G.PosDef) (hK : K.IsHermitian) :
     ∃ c : ℝ, 0 < c ∧ ∀ u : ℝ, |u| ≤ 2 → ((c : ℂ) • G + (u : ℂ) • K).PosSemidef := by
   have hb : (Kᴴ * K + 1).PosSemidef := (posSemidef_conjTranspose_mul_self K).add PosSemidef.one
@@ -132,6 +181,15 @@ theorem exists_sandwich {G K : Matrix (Fin m) (Fin m) ℂ} (hG : G.PosDef) (hK :
     star_trivial, Complex.coe_smul]
   module
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `exists_sandwich hG hK`. Use `⟨c⁻¹, by positivity, c * m, fun t ht => ?_⟩` and prove the remaining obligations. Establish `ht' : |c * t| ≤ 1`. Rewrite `ht` using `[mem_ball_zero_iff, Real.norm_eq_abs]`. Rewrite using `[abs_mul, abs_of_pos hc]`.
+
+Conclude with `((mul_le_mul_of_nonneg_left ht.le hc.le).trans_eq (mul_inv_cancel₀ hc.ne'))`. Establish `hp : (G + (t : ℂ) • K).PosDef`. Establish `h1` using `(h (2 * (c * t)) (by rw [abs_mul]; norm_num; simpa using ht')).smul (show (0 : ℝ) ≤ (2 * c)⁻¹ by positivity)`. Use `(hG.smul (show (0 : ℝ) < 1 / 2 by norm_num)).add_posSemidef h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Complex.coe_smul, smul_add, smul_smul]`.
+
+Rewrite using `[show (2 * c)⁻¹ * c = 1 / 2 by field_simp, show (2 * c)⁻¹ * (2 * (c * t)) = t by field_simp]`. Use `module`. Establish `h'` using `abs_le.1 ht'`. Use `⟨hp, abs_logMinorDer_le hc.le hp ?_ ?_⟩` and prove the remaining obligations. Use `h (c * t + 1) (abs_le.2 ⟨by linarith, by linarith⟩) using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Use `module`. Use `h (c * t - 1) (abs_le.2 ⟨by linarith, by linarith⟩) using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Use `module`.
+-/
 theorem exists_bound {G K : Matrix (Fin m) (Fin m) ℂ} (hG : G.PosDef) (hK : K.IsHermitian) :
     ∃ ε : ℝ, 0 < ε ∧ ∃ C : ℝ, ∀ t ∈ Metric.ball (0 : ℝ) ε, (G + (t : ℂ) • K).PosDef ∧
       ∀ n j, |logMinorDer (G + (t : ℂ) • K) K n j| ≤ C := by
@@ -157,6 +215,9 @@ theorem exists_bound {G K : Matrix (Fin m) (Fin m) ℂ} (hG : G.PosDef) (hK : K.
     push_cast
     module
 
+/- English proof (translation)
+Establish `e (n : Low m → ℂ) : logMinorDer G K n j = ((blk G n j).det⁻¹ * ((blk G n j).adjugate * blk K n j).trace).re`. Express the relevant statement in the definitionally equal form `((blk G n j)⁻¹ * blk K n j).trace.re = _`. Rewrite using `[inv_def, Ring.inverse_eq_inv', Matrix.smul_mul, trace_smul, smul_eq_mul]`. Simplify using `only [e]`. Conclude with `Complex.measurable_re.comp ((continuous_blk G j).matrix_det.measurable.inv.mul ((continuous_blk G j).matrix_adjugate.matrix_mul (continuous_blk K j)).matrix_trace.measurable)`.
+-/
 theorem measurable_logMinorDer (G K : Matrix (Fin m) (Fin m) ℂ) (j : Fin (m + 1)) :
     Measurable fun n => logMinorDer G K n j := by
   have e (n : Low m → ℂ) : logMinorDer G K n j =
@@ -167,15 +228,28 @@ theorem measurable_logMinorDer (G K : Matrix (Fin m) (Fin m) ℂ) (j : Fin (m + 
   exact Complex.measurable_re.comp ((continuous_blk G j).matrix_det.measurable.inv.mul
     ((continuous_blk G j).matrix_adjugate.matrix_mul (continuous_blk K j)).matrix_trace.measurable)
 
+/- English proof (translation)
+The claim follows from `(FlagFibre.measurable_dens _).mul_const _`.
+-/
 theorem measurable_jacDens (G : Matrix (Fin m) (Fin m) ℂ) : Measurable (jacDens G) :=
   (FlagFibre.measurable_dens _).mul_const _
 
+/- English proof (translation)
+Use `Integrable.mul_const ⟨(FlagFibre.measurable_dens _).aestronglyMeasurable, ?_⟩ _` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (.of_forall (FlagFibre.dens_nonneg _)), FlagFibre.FlagInt.lintegral_dens m Gᵀ hG.transpose]`. Conclude with `ENNReal.ofReal_lt_top`.
+-/
 theorem integrable_jacDens {G : Matrix (Fin m) (Fin m) ℂ} (hG : G.PosDef) : Integrable (jacDens G) := by
   refine Integrable.mul_const ⟨(FlagFibre.measurable_dens _).aestronglyMeasurable, ?_⟩ _
   rw [hasFiniteIntegral_iff_ofReal (.of_forall (FlagFibre.dens_nonneg _)),
     FlagFibre.FlagInt.lintegral_dens m Gᵀ hG.transpose]
   exact ENNReal.ofReal_lt_top
 
+/- English proof (translation)
+Establish `h₁` using `GlobalTheory.FlagFibre.FlagInt.lintegral_dens m Gᵀ hG.transpose`. Establish `hd` using `det_re_pos hG`. Establish `hp` using `GlobalTheory.TrueCx.flagConst_pos m`. Simplify using `only [jacDens]`. Rewrite using `[integral_mul_const, integral_eq_lintegral_of_nonneg_ae (.of_forall (FlagFibre.dens_nonneg _)) (FlagFibre.measurable_dens _).aestronglyMeasurable, h₁, det_transpose, ENNReal.toReal_ofReal (by positivity)]`.
+
+Establish `e : G.det.re ^ (1 - (m : ℤ)) * G.det.re ^ (m - 1) = 1`. Consider the cases of `m with`. Consider the case `zero => simp`. Consider the case `succ m`. Rewrite using `[Nat.add_sub_cancel, ← zpow_natCast, ← zpow_add₀ hd.ne']`.
+
+Simplify using the standard rewrite rules. Rewrite using `[div_mul_eq_mul_div, e]`.
+-/
 theorem integral_jacDens_eq {G : Matrix (Fin m) (Fin m) ℂ} (hG : G.PosDef) :
     ∫ n, jacDens G n = 1 / GlobalTheory.TrueCx.flagConst m := by
   have h₁ := GlobalTheory.FlagFibre.FlagInt.lintegral_dens m Gᵀ hG.transpose
@@ -193,6 +267,21 @@ theorem integral_jacDens_eq {G : Matrix (Fin m) (Fin m) ℂ} (hG : G.PosDef) :
       simp
   rw [div_mul_eq_mul_div, e]
 
+/- English proof (translation)
+Introduce `m G K hG hK`. Take `⟨ε, hε, C, h⟩` from `exists_bound hG hK`. Set `L (t : ℝ) (n : Low m → ℂ) : ℝ` to `∑ i : Fin m, ((m : ℝ) - 1 - 2 * (i : ℕ)) * (logMinor (G + (t : ℂ) • K) n i.castSucc - logMinor (G + (t : ℂ) • K) n i.succ)`. Set `S (t : ℝ) (n : Low m → ℂ) : ℝ` to `∑ i : Fin m, ((m : ℝ) - 1 - 2 * (i : ℕ)) * theta (G + (t : ℂ) • K) K n i`. Set `B : ℝ` to `∑ i : Fin m, |(m : ℝ) - 1 - 2 * (i : ℕ)| * (C + C)`.
+
+Establish `hL (n) (t) (ht : t ∈ Metric.ball (0 : ℝ) ε) : HasDerivAt (L · n) (S t n) t` using `HasDerivAt.fun_sum fun i _ => ((hasDerivAt_logMinor G K (h t ht).1 n _).sub (hasDerivAt_logMinor G K (h t ht).1 n _)).const_mul _`. Establish `hS (n) (t) (ht : t ∈ Metric.ball (0 : ℝ) ε) : ‖S t n‖ ≤ B`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((abs_sub _ _).trans (add_le_add ((h t ht).2 n _) ((h t ht).2 n _))) (abs_nonneg _)`.
+
+Establish `h0` using `Metric.mem_ball_self (x := (0 : ℝ)) hε`. Establish `hB : 0 ≤ B` using `(norm_nonneg _).trans (hS 0 0 h0)`. Establish `hJ (n) (t) (ht : t ∈ Metric.ball (0 : ℝ) ε) : jacDens (G + (t : ℂ) • K) n = Real.exp (L t n)` using `jacDens_eq_exp (h t ht).1 n`. Establish `hG0 : G + ((0 : ℝ) : ℂ) • K = G` using `by simp`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := (volume : Measure (Low m → ℂ))) (F := fun (t : ℝ) n => jacDens (G + (t : ℂ) • K) n) (F' := fun (t : ℝ) n => jacDens (G + (t : ℂ) • K) n * S t n) (bound := fun n => jacDens G n * (Real.exp (B * ε) * B)) (Metric.ball_mem_nhds ( …`.
+
+Establish `h1` using `(convex_ball (0 : ℝ) ε).norm_image_sub_le_of_norm_hasDerivWithin_le (fun x hx => (hL n x hx).hasDerivWithinAt) (hS n) h0 ht`. Establish `h2 : L t n ≤ L 0 n + B * ε`. Establish `h3 : ‖t - 0‖ ≤ ε` using `(mem_ball_iff_norm.1 ht).le`. Use `(le_abs_self _).trans (h1.trans (mul_le_mul_of_nonneg_left h3 hB))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h4` using `hJ n 0 h0`. Rewrite `h4` using `[hG0]`. Rewrite using `[h4, hJ n t ht, norm_mul, Real.norm_of_nonneg (Real.exp_pos _).le, ← mul_assoc, ← Real.exp_add]`. Conclude with `mul_le_mul (Real.exp_le_exp.2 h2) (hS n t ht) (norm_nonneg _) (Real.exp_pos _).le)`. Use the proof step `((integrable_jacDens hG).mul_const _)`.
+
+Use the proof step `(.of_forall fun n t ht => by`. Rewrite using `[hJ n t ht]`. Use `(hL n t ht).exp.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [Metric.isOpen_ball.mem_nhds ht] with s hs using hJ n s hs)`. Establish `hc : HasDerivAt (fun t : ℝ => ∫ n, jacDens (G + (t : ℂ) • K) n) 0 0`.
+
+Use `(hasDerivAt_const (0 : ℝ) (1 / GlobalTheory.TrueCx.flagConst m)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds (0 : ℝ) hε] with s hs using integral_jacDens_eq (h s hs).1`. Use `key.2.unique hc` as an intermediate fact. Simplify `this` using `only [S, hG0]`.
+-/
 theorem integral_jacDens_mul_theta : ∀ (m : ℕ) (G K : Matrix (Fin m) (Fin m) ℂ), G.PosDef → K.IsHermitian →
     ∫ n : Low m → ℂ, jacDens G n * ∑ i : Fin m, ((m : ℝ) - 1 - 2 * (i : ℕ)) * theta G K n i = 0 := by
   intro m G K hG hK

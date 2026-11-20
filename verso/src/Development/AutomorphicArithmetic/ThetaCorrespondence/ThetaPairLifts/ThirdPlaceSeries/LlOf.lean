@@ -15,6 +15,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 namespace Old
 end Old
 namespace New
+/- English proof (translation)
+Introduce `h _ _ _ _ _ _ _ _ _ _ _` and use `h`.
+-/
 theorem llOf_alt : RecTExists → LocalConverseGL → DepthZeroInduction →
     BrauerDegreeZero → ChevalleyUnits → GlobalArtinReciprocity → LanglandsExhaustionGL → LanglandsMultisegments →
     StandardCosocleGL → ZelevinskyPolynomialRing → GeometricLemma → BernsteinZelevinskyFiniteness → RecTExists :=

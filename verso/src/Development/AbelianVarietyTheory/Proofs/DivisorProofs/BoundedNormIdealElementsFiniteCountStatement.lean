@@ -13,6 +13,9 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CountBox.count_ideal_points | exact GlobalTheory.CountBox.count_ideal_points | (intros; apply GlobalTheory.CountBox.count_ideal_points <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bounded_norm_ideal_elements_finite_count : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∃ C : ℝ, ∀ 𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E, 𝔞 ≠ 0 →
       ∀ T : InfinitePlace F → ℝ, (∀ w, 0 ≤ T w) →

@@ -7,10 +7,18 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.G.GLWeightTheory MvPolynomial
 
+/- English proof (translation)
+Simplify using `[fock]`.
+-/
 theorem ft_fock_zero_left {K : Type} [CommSemiring K] {σ : Type} (G : MvPolynomial σ K) :
     fock (0 : MvPolynomial σ K) G = 0 := by
   simp [fock]
 
+/- English proof (translation)
+Establish `key : ∀ (H : MvPolynomial σ K) (s : Finset (σ →₀ ℕ)), H.support ⊆ s → fock H G = ∑ m ∈ s, H.coeff m * G.coeff m * (expFact m : K)`. Introduce `H s hs`. Unfold `fock`. Use `Finset.sum_subset hs fun m _ hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.1 hm, zero_mul, zero_mul]`.
+
+Establish `hsub : (F + F').support ⊆ F.support ∪ F'.support` using `MvPolynomial.support_add`. Rewrite using `[key _ _ hsub, key F (F.support ∪ F'.support) Finset.subset_union_left, key F' (F.support ∪ F'.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fock_add_left {K : Type} [Field K] {σ : Type} (F F' G : MvPolynomial σ K) :
     fock (F + F') G = fock F G + fock F' G := by
   classical
@@ -27,6 +35,11 @@ theorem fock_add_left {K : Type} [Field K] {σ : Type} (F F' G : MvPolynomial σ
   rw [MvPolynomial.coeff_add]
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`. Consider the case `insert j s hj ih`. Take `⟨Y, hY⟩` from `ih`. Use `⟨x j * ∏ i ∈ s, a i + a j * Y + t * x j * Y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj, hY]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_add_mul {O ι : Type} [CommRing O] (s : Finset ι) (a x : ι → O) (t : O) :
     ∃ Y : O, ∏ i ∈ s, (a i + t * x i) = ∏ i ∈ s, a i + t * Y := by
   classical
@@ -38,6 +51,9 @@ theorem prod_add_mul {O ι : Type} [CommRing O] (s : Finset ι) (a x : ι → O)
     rw [Finset.prod_insert hj, Finset.prod_insert hj, hY]
     ring
 
+/- English proof (translation)
+Unfold `segForm`. Rewrite using `[finsum_eq_single _ b0]`. Introduce `b hb`. Rewrite using `[h b hb, ft_fock_zero_left, mul_zero]`.
+-/
 theorem segForm_single {O : Type} [CommRing O] [IsDomain O] (p r : ℕ) {s : ℕ} (S : SegData s)
     (u u' : SegVs O r s S.t) (b0 : SegBlock s r) (h : ∀ b, b ≠ b0 → u b = 0) :
     segForm O p r S u u' = ((specConst p S b0 : ℕ) : KK O) * fock (u b0) (u' b0) := by
@@ -46,11 +62,19 @@ theorem segForm_single {O : Type} [CommRing O] [IsDomain O] (p r : ℕ) {s : ℕ
   intro b hb
   rw [h b hb, ft_fock_zero_left, mul_zero]
 
+/- English proof (translation)
+Take `⟨q, hq, hqD⟩` from `h`. Conclude with `⟨q, hq, hqD.trans hD⟩`.
+-/
 theorem vLEO_mono {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} {x : O} {D D' : ℝ}
     (h : vLEO p x D) (hD : D ≤ D') : vLEO p x D' := by
   obtain ⟨q, hq, hqD⟩ := h
   exact ⟨q, hq, hqD.trans hD⟩
 
+/- English proof (translation)
+Use `⟨0, ?_, by simpa using hD⟩` and prove the remaining obligations. Unfold `vO vK ordW`. Rewrite using `[map_one, if_neg one_ne_zero]`. Establish `hspec` using `Classical.choose_spec (IsLocalization.surj (nonZeroDivisors O) (1 : KK O))`. Rewrite `hspec` using `[one_mul]`.
+
+Establish `heq : ((Classical.choose (IsLocalization.surj (nonZeroDivisors O) (1 : KK O))).2 : O) = (Classical.choose (IsLocalization.surj (nonZeroDivisors O) (1 : KK O))).1` using `IsFractionRing.injective O (KK O) hspec`. Simplify using `only`. Rewrite using `[heq, sub_self]`. Simplify using the standard rewrite rules.
+-/
 theorem vLEO_one {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} {w : O} (hw : Irreducible w)
     (h2 : w ^ 2 = (p : O)) {D : ℝ} (hD : 0 ≤ D) : vLEO p (1 : O) D := by
   refine ⟨0, ?_, by simpa using hD⟩
@@ -65,6 +89,9 @@ theorem vLEO_one {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O
   rw [heq, sub_self]
   simp
 
+/- English proof (translation)
+Establish `h` using `(Submodule.mem_pi.1 (hu j).1) (β j) (Set.mem_univ _)`. Rewrite `h` using `[if_pos (hβ j)]`. Then use the resulting hypothesis.
+-/
 theorem famOK_mem {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {C0 CE1 CE2 Cm : ℝ} {X : Loc}
     [NeZero X.m] {β : GlobalTheory X} {u : Vecs O C0 CE1 CE2 X} (hβ : KeptAll C0 CE1 CE2 X β) (hu : FamOK O C0 CE1 CE2 Cm X β u)
     (j : Fin (numSeg X.TT)) :
@@ -72,6 +99,35 @@ theorem famOK_mem {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   have h := (Submodule.mem_pi.1 (hu j).1) (β j) (Set.mem_univ _)
   rwa [if_pos (hβ j)] at h
 
+/- English proof (translation)
+Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc hc1`. Establish `hD1 : D1num X` using `⟨hS.1.prime, hS.1.five_le, hS.1.two_le, hS.1.even⟩`. Establish `St` using `hstd X hD1 hH hc`. Establish `hw : Irreducible w` using `hS.2.1`. Establish `hw2 : w ^ 2 = (X.p : O)` using `hS.1.w_sq`.
+
+Establish `hBX` using `hB X W Qq O Kf ι σ jO w hS hH hc hc1`. Establish `hex : ∀ (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m), ∃ (κ : O) (s s' : MvPolynomial (BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) (KK O) → MvPolynomial (BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) (KK O)), κ ≠ 0 ∧ vLEO X.p κ (((X.m + 2) * lgSeg X …` using `X.m) ∧ s' u ∈ (blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (X.m0 13) b).SSZ O (r := X.m)) ∧ ∀ u ∈ blockLat O X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (X.m0 Cm) b, ∀ u' ∈ blockLat O X.p X.m (X.seg C0 CE1 CE2 j) ( …`. Introduce `j b`. Distinguish the cases in `hk : Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b`. Take `⟨κ, s, s', a1, a2, a3, a4⟩` from `hBX j b hk`.
+
+Conclude with `⟨κ, s, s', a1, a2, fun _ => ⟨a3, a4⟩⟩`. Conclude with `⟨1, id, id, one_ne_zero, vLEO_one hw hw2 (Nat.cast_nonneg _), fun h => absurd h hk⟩`. Use `choose κb sb sb' hκ0 hκv hK using hex`. Use `⟨fun β => ∏ j, κb j (β j), fun β u j => sb j (β j) (u j (β j)), fun β u j => sb' j (β j) (u j (β j)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `β`.
+
+Establish `hp` using `vLEO_prod hw hw2 Finset.univ (fun j => κb j (β j)) (fun j => (((X.m + 2) * lgSeg X j : ℕ) : ℝ)) fun j _ => ⟨hκ0 j (β j), hκv j (β j)⟩`. Conclude with `⟨hp.1, vLEO_mono hp.2 (h5 X St)⟩`. Introduce `β u hβ hu`. Conclude with `⟨fun j => ((hK j (β j) (hβ j)).1 _ (famOK_mem hβ hu j)).1, fun j => ((hK j (β j) (hβ j)).1 _ (famOK_mem hβ hu j)).2⟩`. Introduce `β u β' u' hβ hβ' hu hu' a ha P hP Q hQ hPc hQc`.
+
+Establish `hs1 : InSSZ O C0 CE1 CE2 (X.m0 13) X β (fun j => sb j (β j) (u j (β j)))` using `fun j => ((hK j (β j) (hβ j)).1 _ (famOK_mem hβ hu j)).1`. Establish `hs2 : InSSZ O C0 CE1 CE2 (X.m0 13) X β' (fun j => sb' j (β' j) (u' j (β' j)))` using `fun j => ((hK j (β' j) (hβ' j)).1 _ (famOK_mem hβ' hu' j)).2`. Use `set σ₁ := symFam (KK O) X.p C0 CE1 CE2 X β (fun j => sb j (β j) (u j (β j))) with hσ₁`. Use `set σ₂ := symFam (KK O) X.p C0 CE1 CE2 X β' (fun j => sb' j (β' j) (u' j (β' j))) with hσ₂`. Establish `hσ1P` using `h3 X O hD1 hH hc _ β hβ _ hs1`.
+
+Establish `hσ2P` using `h3 X O hD1 hH hc _ β' hβ' _ hs2`. Establish `hσ1I : InA (O` using `O) σ₁ := symIntAt C0 CE1 CE2 X O _ β _ hs1`. Establish `hσ2I : InA (O` using `O) σ₂ := symIntAt C0 CE1 CE2 X O _ β' _ hs2`. Establish `hPI : InA (O` using `O) P := by`. Introduce `mm`.
+
+Take `⟨c1, e1⟩` from `hσ1I mm`. Take `⟨c2, e2⟩` from `hPc mm`. Use `⟨c1 + w ^ X.c * c2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← e1, ← e2, coeff_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨y1, hy1⟩` from `h4 X.p O hS.1.prime (dvrOfStd hS) w X.n' X.m X.TT X.aT X.bT (P - σ₁) (Submodule.sub_mem _ hP hσ1P) σ₂ X.c hPc hσ2I`. Take `⟨y2, hy2⟩` from `h4 X.p O hS.1.prime (dvrOfStd hS) w X.n' X.m X.TT X.aT X.bT (Q - σ₂) (Submodule.sub_mem _ hQ hσ2P) P X.c hQc hPI`. Establish `hdec : fock P Q = fock σ₁ σ₂ + fock (P - σ₁) σ₂ + fock (Q - σ₂) P`. Establish `e1 : fock P Q = fock P σ₂ + fock P (Q - σ₂)`. Rewrite using `[← fock_form_add_right]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : fock P σ₂ = fock σ₁ σ₂ + fock (P - σ₁) σ₂`. Rewrite using `[← fock_add_left]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, fock_form_symm P (Q - σ₂)]`. Establish `hmain : ∃ ν0 : O, zTen (KK O) X.p X.m X.TT X.aT X.bT * fock σ₁ σ₂ = algebraMap O (KK O) ((if β = β' then (∏ j, κb j (β j)) * ∏ j, a j else 0) + w ^ X.c * ν0)`. Rewrite using `[hσ₁, hσ₂, h2 X (KK O) St.seg2 β β' _ _, h6 X (KK O) St.seg2, ← Finset.prod_mul_distrib]`. Distinguish the cases in `hββ : β = β'`.
+
+Substitute `hββ` using the available equality. Establish `hx : ∀ j, ∃ x : O, zSeg (KK O) X j * fock (ioBlock (KK O) X.p C0 CE1 CE2 X j (β j) (sb j (β j) (u j (β j)))) (ioBlock (KK O) X.p C0 CE1 CE2 X j (β j) (sb' j (β j) (u' j (β j)))) = algebraMap O (KK O) (κb j (β j) * (a j + w ^ X.c * x))` using `fun j => (hK j (β j) (hβ j)).2 _ (famOK_mem hβ hu j) _ (famOK_mem hβ hu' j) (a j) (by`. Rewrite using `[← ha j, segForm_single X.p X.m (X.seg C0 CE1 CE2 j) (u j) (u' j) (β j) (hu j).2])`. Use `choose x hx using hx`. Take `⟨Y, hY⟩` from `prod_add_mul Finset.univ a x (w ^ X.c)`.
+
+Use `⟨(∏ j, κb j (β j)) * Y, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (fun j _ => hx j), ← map_prod, Finset.prod_mul_distrib, hY, if_pos rfl]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨j0, hj0⟩` from `Function.ne_iff.mp hββ`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j0) (by`. Rewrite using `[h1 X O _ hD1 j0 _ _ (hβ j0) (hβ' j0) hj0 _ (hs1 j0) _ (hs2 j0), mul_zero]), if_neg hββ]`. Simplify using the standard rewrite rules. Take `⟨ν0, h0⟩` from `hmain`.
+
+Use `⟨ν0 + y1 + y2, ?_⟩` and prove the remaining obligations. Rewrite using `[hdec, mul_add, mul_add, h0, hy1, hy2, ← map_add, ← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ}
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 1 X)
     (hB : BlockFormAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc) (h1 : OrthAt C0 CE1 CE2) (h2 : ProdAt C0 CE1 CE2)
@@ -175,6 +231,17 @@ theorem formAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ}
 
 def RestSymPol : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => SymPolAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
+/- English proof (translation)
+Introduce `Cc hCc`. Take `⟨A0, hA0, hA⟩` from `thr_std Cc hCc`. Take `⟨B0, hB0, hBB⟩` from `hB Cc hCc`. Take `⟨S0, hS0, hS⟩` from `h3 Cc hCc`. Use `⟨max A0 (max B0 S0), lt_max_of_lt_left hA0, fun C0 hC0 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨A1, hA1, hA'⟩` from `hA C0 ((le_max_left _ _).trans hC0)`. Take `⟨B1, hB1, hBB'⟩` from `hBB C0 (((le_max_left _ _).trans (le_max_right _ _)).trans hC0)`. Take `⟨S1, hS1, hS'⟩` from `hS C0 (((le_max_right _ _).trans (le_max_right _ _)).trans hC0)`. Use `⟨max A1 (max B1 S1), lt_max_of_lt_left hA1, fun CE1 CE2 Cm hE1 hE2 hm => ?_⟩` and prove the remaining obligations. Establish `l1 : A1 ≤ max A1 (max B1 S1)` using `le_max_left _ _`.
+
+Establish `l2 : B1 ≤ max A1 (max B1 S1)` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `l3 : S1 ≤ max A1 (max B1 S1)` using `(le_max_right _ _).trans (le_max_right _ _)`. Take `⟨A2, hA2, hA''⟩` from `hA' CE1 CE2 Cm (l1.trans hE1) (l1.trans hE2) (l1.trans hm)`. Take `⟨B2, hB2, hBB''⟩` from `hBB' CE1 CE2 Cm (l2.trans hE1) (l2.trans hE2) (l2.trans hm)`. Take `⟨S2, hS2, hS''⟩` from `hS' CE1 CE2 Cm (l3.trans hE1) (l3.trans hE2) (l3.trans hm)`.
+
+Use `⟨max A2 (max B2 S2), lt_max_of_lt_left hA2, fun CYb Cde Ck CD Cb h₁ h₂ h₃ h₄ h₅ => ?_⟩` and prove the remaining obligations. Establish `m1 : A2 ≤ max A2 (max B2 S2)` using `le_max_left _ _`. Establish `m2 : B2 ≤ max A2 (max B2 S2)` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `m3 : S2 ≤ max A2 (max B2 S2)` using `(le_max_right _ _).trans (le_max_right _ _)`. Establish `hstd` using `(hA'' CYb Cde Ck CD Cb (m1.trans h₁) (m1.trans h₂) (m1.trans h₃) (m1.trans h₄) (m1.trans h₅)).2`.
+
+Establish `hblk` using `hBB'' CYb Cde Ck CD Cb (m2.trans h₁) (m2.trans h₂) (m2.trans h₃) (m2.trans h₄) (m2.trans h₅)`. Establish `hsym` using `hS'' CYb Cde Ck CD Cb (m3.trans h₁) (m3.trans h₂) (m3.trans h₃) (m3.trans h₄) (m3.trans h₅)`. Conclude with `formAt_of hstd hblk (h1 C0 CE1 CE2) (h2 C0 CE1 CE2) hsym h4 (h5 C0 Cde CE1 CE2) h6`.
+-/
 theorem restForm_of' (hB : RestBlockForm) (h1 : ∀ C0 CE1 CE2, OrthAt C0 CE1 CE2) (h2 : ∀ C0 CE1 CE2, ProdAt C0 CE1 CE2)
     (h3 : RestSymPol) (h4 : IntAt) (h5 : ∀ C0 Cde CE1 CE2, NumAt C0 Cde CE1 CE2) (h6 : ZProdAt) : RestForm := by
   intro Cc hCc

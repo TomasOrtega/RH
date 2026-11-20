@@ -11,17 +11,26 @@ namespace UpperTheory.Gal.crystallineComparison.Br
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => congrFun (eq_galCp_of_continuous τ (galCp σ) (continuous_galCp σ) fun y => by rw [galCp_coe, h]) x`.
+-/
 private theorem cp_eq {K L : IntermediateField ℚ_[l] (PadicAlgCl l)}
     (σ : PadicAlgCl l ≃ₐ[K] PadicAlgCl l) (τ : PadicAlgCl l ≃ₐ[L] PadicAlgCl l)
     (h : ∀ y, σ y = τ y) : (galCp σ : ℂ_[l] →+* ℂ_[l]) = galCp τ :=
   RingHom.ext fun x => congrFun (eq_galCp_of_continuous τ (galCp σ) (continuous_galCp σ)
     fun y => by rw [galCp_coe, h]) x
 
+/- English proof (translation)
+The claim follows from `AInf.map_congr (cp_eq σ τ h) _ _`.
+-/
 private theorem ainf_eq {K L : IntermediateField ℚ_[l] (PadicAlgCl l)}
     (σ : PadicAlgCl l ≃ₐ[K] PadicAlgCl l) (τ : PadicAlgCl l ≃ₐ[L] PadicAlgCl l)
     (h : ∀ y, σ y = τ y) : AInf.galMap σ = AInf.galMap τ :=
   AInf.map_congr (cp_eq σ τ h) _ _
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers ((l : ℕ) : AInf ℂ_[l] l)) (RingHom.ext fun x => by rw [RingHom.comp_apply, RingHom.comp_apply, ACris.galAway_algebraMap, ACris.galAway_algebraMap, AInf.gal_smul_def, AInf.gal_smul_def, ainf_eq σ τ h])`.
+-/
 private theorem away_eq {K L : IntermediateField ℚ_[l] (PadicAlgCl l)}
     (σ : PadicAlgCl l ≃ₐ[K] PadicAlgCl l) (τ : PadicAlgCl l ≃ₐ[L] PadicAlgCl l)
     (h : ∀ y, σ y = τ y) : ACris.galAway σ = ACris.galAway τ :=
@@ -29,6 +38,9 @@ private theorem away_eq {K L : IntermediateField ℚ_[l] (PadicAlgCl l)}
     rw [RingHom.comp_apply, RingHom.comp_apply, ACris.galAway_algebraMap, ACris.galAway_algebraMap,
       AInf.gal_smul_def, AInf.gal_smul_def, ainf_eq σ τ h])
 
+/- English proof (translation)
+Establish `e : ACris.galZero σ = ACris.galZero τ` using `RingHom.ext fun y => Subtype.ext (by`. Rewrite using `[ACris.coe_galZero, ACris.coe_galZero, away_eq σ τ h])`. Rewrite using `[ACris.galCris, ACris.galCris, e]`.
+-/
 private theorem cris_eq {K L : IntermediateField ℚ_[l] (PadicAlgCl l)}
     (σ : PadicAlgCl l ≃ₐ[K] PadicAlgCl l) (τ : PadicAlgCl l ≃ₐ[L] PadicAlgCl l)
     (h : ∀ y, σ y = τ y) : ACris.galCris σ = ACris.galCris τ := by
@@ -36,6 +48,9 @@ private theorem cris_eq {K L : IntermediateField ℚ_[l] (PadicAlgCl l)}
     rw [ACris.coe_galZero, ACris.coe_galZero, away_eq σ τ h])
   rw [ACris.galCris, ACris.galCris, e]
 
+/- English proof (translation)
+Introduce `l _`. Use `⟨fun K g x => ?_, fun z => ?_⟩` and prove the remaining obligations. Conclude with `RingHom.congr_fun (cris_eq _ _ fun _ => rfl) x`. Establish `h : (algebraMap (AInf ℂ_[l] l) (ACris.ACris ℂ_[l] l)).comp ((Formalism.Per6.ainfMap l).comp (Formalism.Per6.zA l)) = zA l` using `ringHom_ext_padicInt _ _`. Conclude with `congrArg (Formalism.Per6.cB l) (RingHom.congr_fun h z)`.
+-/
 theorem actEq : ActEq := by
   intro l _
   refine ⟨fun K g x => ?_, fun z => ?_⟩

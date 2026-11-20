@@ -21,16 +21,30 @@ variable {K : Type} [Field K] {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
 def gen (U : X.Opens) (h : genericPoint X ∈ U) : Γ(X, U) →+* X.functionField :=
   (X.presheaf.germ U _ h).hom
 
+/- English proof (translation)
+The claim follows from `((genericPoint_spec X).mem_open_set_iff U.isOpen).2 ⟨x, trivial, hx⟩`.
+-/
 theorem generic_mem {U : X.Opens} {x : X} (hx : x ∈ U) : genericPoint X ∈ U :=
   ((genericPoint_spec X).mem_open_set_iff U.isOpen).2 ⟨x, trivial, hx⟩
 
+/- English proof (translation)
+The claim follows from `X.presheaf.germ_res_apply (homOfLE h) _ hV a`.
+-/
 theorem gen_rs {U V : X.Opens} (h : V ≤ U) (hV : genericPoint X ∈ V) (a : Γ(X, U)) :
     gen V hV (rs X h a) = gen U (h hV) a :=
   X.presheaf.germ_res_apply (homOfLE h) _ hV a
 
+/- English proof (translation)
+The claim follows from `germ_injective_of_isIntegral X _ h`.
+-/
 theorem gen_injective (U : X.Opens) (h : genericPoint X ∈ U) : Function.Injective (gen U h) :=
   germ_injective_of_isIntegral X _ h
 
+/- English proof (translation)
+Distinguish the cases in `hU : genericPoint X ∈ U`. Conclude with `gen_injective U hU (h hU)`. Establish `hb : U = ⊥`. Use extensionality with `x`. Conclude with `⟨fun hx => (hU (generic_mem hx)).elim, fun hx => hx.elim⟩`.
+
+Substitute `hb` using the available equality. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem eq_of_gen {U : X.Opens} {a b : Γ(X, U)} (h : ∀ hU, gen U hU a = gen U hU b) : a = b := by
   by_cases hU : genericPoint X ∈ U
   · exact gen_injective U hU (h hU)
@@ -40,6 +54,9 @@ theorem eq_of_gen {U : X.Opens} {a b : Γ(X, U)} (h : ∀ hU, gen U hU a = gen U
     subst hb
     exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Use `choose V hx a ha using hf`. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' (fun x : U => U ⊓ V x.1 x.2) U (fun x => homOfLE inf_le_left) (fun x hxU => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hxU⟩, hxU, hx x hxU⟩) (fun x => rs X inf_le_right (a x.1 x.2)) (fun x y => eq_of_gen (X := X) fun h => ((gen_rs inf_le_left h _).trans ( …`. Use `⟨s, fun hU => ?_⟩` and prove the remaining obligations. Establish `h1 : rs X (inf_le_left : U ⊓ V _ hU ≤ U) s = rs X inf_le_right (a _ hU)` using `hs ⟨_, hU⟩`. Conclude with `(gen_rs (inf_le_left : U ⊓ V _ hU ≤ U) ⟨hU, hx _ hU⟩ s).symm.trans ((congrArg _ h1).trans ((gen_rs _ _ _).trans (ha _ _)))`.
+-/
 theorem exists_gen_eq (U : X.Opens) (f : X.functionField)
     (hf : ∀ x ∈ U, ∃ (V : X.Opens) (hx : x ∈ V) (a : Γ(X, V)), gen V (generic_mem hx) a = f) :
     ∃ a : Γ(X, U), ∀ hU, gen U hU a = f := by
@@ -59,6 +76,9 @@ theorem exists_gen_eq (U : X.Opens) (f : X.functionField)
 def tr (N : LB X) (i j : N.ι) (hi : genericPoint X ∈ N.U i) (hj : genericPoint X ∈ N.U j) :
     X.functionField := gen (N.U i ⊓ N.U j) ⟨hi, hj⟩ (N.g i j).val
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun u => gen (N.U i ⊓ N.U j ⊓ N.U k) ⟨⟨hi, hj⟩, hk⟩ (Units.val u)) (hN.cocycle i j k)`. Simplify using `only [Units.val_mul, map_mul] at h`. Conclude with `(congrArg₂ (· * ·) (gen_rs _ _ _) (gen_rs _ _ _)).symm.trans (h.trans (gen_rs _ _ _))`.
+-/
 theorem tr_mul {N : LB X} (hN : N.IsLB) (i j k : N.ι) (hi) (hj) (hk) :
     tr N i j hi hj * tr N j k hj hk = tr N i k hi hk := by
   have h := congrArg (fun u => gen (N.U i ⊓ N.U j ⊓ N.U k) ⟨⟨hi, hj⟩, hk⟩ (Units.val u))
@@ -66,18 +86,30 @@ theorem tr_mul {N : LB X} (hN : N.IsLB) (i j k : N.ι) (hi) (hj) (hk) :
   simp only [Units.val_mul, map_mul] at h
   exact (congrArg₂ (· * ·) (gen_rs _ _ _) (gen_rs _ _ _)).symm.trans (h.trans (gen_rs _ _ _))
 
+/- English proof (translation)
+The claim follows from `((N.g i j).isUnit.map _).ne_zero`.
+-/
 theorem tr_ne_zero (N : LB X) (i j : N.ι) (hi) (hj) : tr N i j hi hj ≠ 0 :=
   ((N.g i j).isUnit.map _).ne_zero
 
+/- English proof (translation)
+The claim follows from `mul_left_cancel₀ (tr_ne_zero N i i hi hi) ((tr_mul hN i i i hi hi hi).trans (_root_.mul_one _).symm)`.
+-/
 theorem tr_self {N : LB X} (hN : N.IsLB) (i : N.ι) (hi) : tr N i i hi hi = 1 :=
   mul_left_cancel₀ (tr_ne_zero N i i hi hi) ((tr_mul hN i i i hi hi hi).trans (_root_.mul_one _).symm)
 
+/- English proof (translation)
+Establish `h` using `congrArg (gen (N.U i ⊓ N.U j) ⟨hi, hj⟩) (s.compat i j)`. Rewrite `h` using `[map_mul]`. Conclude with `(gen_rs _ _ _).symm.trans (h.trans (congrArg _ (gen_rs _ _ _)))`.
+-/
 theorem gen_sec {N : LB X} (s : N.Sec) (i j : N.ι) (hi) (hj) :
     gen _ hi (s.f i) = tr N i j hi hj * gen _ hj (s.f j) := by
   have h := congrArg (gen (N.U i ⊓ N.U j) ⟨hi, hj⟩) (s.compat i j)
   rw [map_mul] at h
   exact (gen_rs _ _ _).symm.trans (h.trans (congrArg _ (gen_rs _ _ _)))
 
+/- English proof (translation)
+Rewrite using `[← gen_rs le_top h]`. Use `congr 1`. Conclude with `(congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a)) (Scheme.Hom.appLE_map p (U := ⊤) (V := ⊤) (fun _ _ => trivial) (homOfLE (le_top : U ≤ ⊤)).op)).symm`.
+-/
 theorem gen_constFn (p : X ⟶ Sp K) (U : X.Opens) (h) (a : K) :
     gen U h (constFn p U a) = gen ⊤ trivial (constFn p ⊤ a) := by
   rw [← gen_rs le_top h]
@@ -85,6 +117,15 @@ theorem gen_constFn (p : X ⟶ Sp K) (U : X.Opens) (h) (a : K) :
   exact (congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a))
     (Scheme.Hom.appLE_map p (U := ⊤) (V := ⊤) (fun _ _ => trivial) (homOfLE (le_top : U ≤ ⊤)).op)).symm
 
+/- English proof (translation)
+Establish `H : ∀ j, ∃ a : Γ(X, N.U j), ∀ hj, gen _ hj a = tr N j j₀ hj h₀ * f`. Introduce `j`. Distinguish the cases in `hj : genericPoint X ∈ N.U j`. Take `⟨a, ha⟩` from `exists_gen_eq (N.U j) (tr N j j₀ hj h₀ * f) fun x hx => by`. Take `⟨i, hi⟩` from `hc x`.
+
+Take `⟨a, ha⟩` from `hf i`. Use `⟨N.U j ⊓ W i, ⟨hx, hi⟩, rs X (inf_le_inf_left _ (hW i)) (N.g j (c i)).val * rs X inf_le_right a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, gen_rs, gen_rs, ha, ← tr_mul hN j (c i) j₀ hj (hW i (hη i)) h₀]`. Unfold `tr`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `⟨a, ha⟩`. Conclude with `⟨0, fun h => (hj h).elim⟩`. Use `choose a ha using H`. Use `⟨⟨a, fun i j => eq_of_gen fun h => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Use `(gen_rs _ _ _).trans ((ha i h.1).trans ?_)` and prove the remaining obligations. Rewrite using `[← tr_mul hN i j j₀ h.1 h.2 h₀, _root_.mul_assoc, ← ha j h.2]`. Conclude with `congrArg _ (gen_rs (inf_le_right : N.U i ⊓ N.U j ≤ N.U j) h (a j)).symm`. Rewrite using `[ha, tr_self hN, _root_.one_mul]`.
+-/
 theorem exists_sec {N : LB X} (hN : N.IsLB) (j₀ : N.ι) (h₀) {κ : Type} (W : κ → X.Opens)
     (c : κ → N.ι) (hW : ∀ i, W i ≤ N.U (c i)) (hη : ∀ i, genericPoint X ∈ W i)
     (hc : ∀ x, ∃ i, x ∈ W i) (f : X.functionField)
@@ -111,6 +152,23 @@ theorem exists_sec {N : LB X} (hN : N.IsLB) (j₀ : N.ι) (h₀) {κ : Type} (W 
     exact congrArg _ (gen_rs (inf_le_right : N.U i ⊓ N.U j ≤ N.U j) h (a j)).symm
   · rw [ha, tr_self hN, _root_.one_mul]
 
+/- English proof (translation)
+Set `θ : N.Sec → V` to `fun s => ⟨gen _ h₀ (s.f j₀), (hV _).2 fun i => ⟨rs X (hW i) (s.f (c i)), by rw [gen_rs, gen_sec s (c i) j₀ _ h₀, _root_.mul_comm]⟩⟩`. Establish `hθ : Function.Surjective θ` using `fun f => by`. Take `⟨s, hs⟩` from `exists_sec hN j₀ h₀ W c hW hη hc f ((hV f).1 f.2)`. Conclude with `⟨s, Subtype.ext hs⟩`. Establish `key : ∀ (s : Fin r → N.Sec) (t : N.Sec) (a : Fin r → K), (∀ j, t.f j = ∑ i, constFn p _ (a i) * (s i).f j) ↔ ∑ i, a i • θ (s i) = θ t`.
+
+Introduce `s t a`. Establish `e : ∀ j hj, gen _ hj (∑ i, constFn p _ (a i) * (s i).f j) = tr N j j₀ hj h₀ * ((∑ i, a i • θ (s i) : V) : X.functionField)`. Introduce `j hj`. Rewrite using `[map_sum, AddSubmonoidClass.coe_finset_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, gen_constFn, ← halg, gen_sec (s i) j j₀ hj h₀, SetLike.val_smul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `e j₀ h₀` as an intermediate fact. Rewrite `this` using `[tr_self hN, _root_.one_mul, ← h j₀]`. Conclude with `this.symm`. Introduce `h j`. Use `eq_of_gen fun hj => ?_` and prove the remaining obligations.
+
+Rewrite using `[e, h, gen_sec t j j₀ hj h₀]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs⟩`. Establish `hb : Function.Bijective (Fintype.linearCombination K fun i => θ (s i))`. Rewrite using `[Function.bijective_iff_existsUnique]`.
+
+Introduce `f`. Take `⟨t, rfl⟩` from `hθ f`. Simplify `hs t` using `only [key, Fintype.linearCombination_apply]`. Establish `E` using `LinearEquiv.ofBijective _ hb`. Conclude with `⟨Module.Finite.equiv E, by rw [← E.finrank_eq, Module.finrank_fin_fun]⟩`.
+
+Introduce and unpack `⟨hf, hr⟩`. Set `b` to `Module.finBasisOfFinrankEq K V hr`. Use `choose s hs using fun i => hθ (b i)`. Use `⟨s, fun t => ?_⟩` and prove the remaining obligations. Simplify using `only [key, hs]`.
+
+Use `⟨b.equivFun (θ t), b.sum_equivFun _, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, ← b.equivFun_symm_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem lineBundle_global_sections_functionField_iff [Algebra K X.functionField] (p : X ⟶ Sp K)
     (halg : ∀ a, algebraMap K X.functionField a = gen ⊤ trivial (constFn p ⊤ a))
     {N : LB X} (hN : N.IsLB) (j₀ : N.ι) (h₀) {κ : Type} (W : κ → X.Opens)
@@ -164,6 +222,9 @@ def ffMap (ψ : X ⟶ Y) (hψ : ψ (genericPoint X) = genericPoint Y) :
   (Y.presheaf.stalkSpecializes (x := ψ (genericPoint X)) (y := genericPoint Y)
     (hψ ▸ specializes_rfl) ≫ ψ.stalkMap (genericPoint X)).hom
 
+/- English proof (translation)
+Use `Y.presheaf.germ_stalkSpecializes_apply (x := ψ (genericPoint X)) h (hψ ▸ specializes_rfl) a` as an intermediate fact. Conclude with `(congrArg (ψ.stalkMap (genericPoint X)).hom this).trans (ψ.germ_stalkMap_apply U _ h' a)`.
+-/
 theorem ffMap_gen (ψ : X ⟶ Y) (hψ) (U : Y.Opens) (h) (h') (a : Γ(Y, U)) :
     ffMap ψ hψ (gen U h a) = gen (ψ ⁻¹ᵁ U) h' ((ψ.app U).hom a) := by
   have := Y.presheaf.germ_stalkSpecializes_apply (x := ψ (genericPoint X)) h
@@ -172,6 +233,9 @@ theorem ffMap_gen (ψ : X ⟶ Y) (hψ) (U : Y.Opens) (h) (h') (a : Γ(Y, U)) :
     (ψ.germ_stalkMap_apply U _ h' a)
 
 omit [IsIntegral Y] in
+/- English proof (translation)
+Substitute `hε` using the available equality. Unfold `tr LB.LinComb`. Simplify using `only`. Rewrite using `[Fintype.prod_unique, zpow_natCast, Units.val_pow_eq_pow_val, map_pow]`. Conclude with `congrArg (· ^ e) (gen_rs _ _ _)`.
+-/
 theorem tr_linComb (N : LB Y) (ψ : X ⟶ Y) (ε : ℤ) (e : ℕ) (hε : ε = e) (J J' : PUnit → N.ι)
     (h) (h') (h'') :
     tr (LB.LinComb N (K := PUnit) (fun _ => ψ) (fun _ => ε)) J J' h h' =
@@ -182,11 +246,17 @@ theorem tr_linComb (N : LB Y) (ψ : X ⟶ Y) (ε : ℤ) (e : ℕ) (hε : ε = e)
   rw [Fintype.prod_unique, zpow_natCast, Units.val_pow_eq_pow_val, map_pow]
   exact congrArg (· ^ e) (gen_rs _ _ _)
 
+/- English proof (translation)
+Rewrite using `[tr_linComb N (𝟙 X) e e rfl J J' h h' ⟨k, k'⟩]`. Both sides reduce to the same expression.
+-/
 theorem tr_lbPow (N : LB X) (e : ℕ) (J J' : PUnit → N.ι) (h) (h') (k) (k') :
     tr (lbPow N e) J J' h h' = tr N (J ⟨⟩) (J' ⟨⟩) k k' ^ e := by
   rw [tr_linComb N (𝟙 X) e e rfl J J' h h' ⟨k, k'⟩]
   rfl
 
+/- English proof (translation)
+Establish `h'' : genericPoint X ∈ ψ ⁻¹ᵁ (N.U (J ⟨⟩) ⊓ N.U (J' ⟨⟩))` using `⟨LB.wchart_le N _ J ⟨⟩ h, LB.wchart_le N _ J' ⟨⟩ h'⟩`. Rewrite using `[tr_linComb N ψ 1 1 rfl J J' h h' h'', pow_one]`. Conclude with `(ffMap_gen ψ hψ _ _ _ _).symm`.
+-/
 theorem tr_pull (N : LB Y) (ψ : X ⟶ Y) (hψ) (J J' : PUnit → N.ι) (h) (h') (k) (k') :
     tr (N.pull ψ) J J' h h' = ffMap ψ hψ (tr N (J ⟨⟩) (J' ⟨⟩) k k') := by
   have h'' : genericPoint X ∈ ψ ⁻¹ᵁ (N.U (J ⟨⟩) ⊓ N.U (J' ⟨⟩)) :=
@@ -194,16 +264,29 @@ theorem tr_pull (N : LB Y) (ψ : X ⟶ Y) (hψ) (J J' : PUnit → N.ι) (h) (h')
   rw [tr_linComb N ψ 1 1 rfl J J' h h' h'', pow_one]
   exact (ffMap_gen ψ hψ _ _ _ _).symm
 
+/- English proof (translation)
+Unfold `tr pw`. Simplify using `only`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val, map_pow]`.
+-/
 theorem tr_pw (N : LB X) (d : ℕ) (i j : N.ι) (h) (h') :
     tr (pw N d) i j h h' = tr N i j h h' ^ d := by
   unfold tr pw
   dsimp only
   rw [zpow_natCast, Units.val_pow_eq_pow_val, map_pow]
 
+/- English proof (translation)
+The claim follows from `(X.mem_basicOpen a _ h).trans (isUnit_iff_ne_zero (G₀ := X.functionField))`.
+-/
 theorem mem_basicOpen_iff {U : X.Opens} (h) (a : Γ(X, U)) :
     genericPoint X ∈ X.basicOpen a ↔ gen U h a ≠ 0 :=
   (X.mem_basicOpen a _ h).trans (isUnit_iff_ne_zero (G₀ := X.functionField))
 
+/- English proof (translation)
+Use `hW.isLocalization_basicOpen u` as an intermediate fact. Establish `hb` using `(mem_basicOpen_iff h u).2 hu`. Take `⟨⟨b, _, m, rfl⟩, hm⟩` from `IsLocalization.surj (Submonoid.powers u) (rs X hD a)`. Establish `h1 : gen D hD' a * gen W h u ^ m = gen W h b`. Establish `h2` using `congrArg (gen _ hb) hm`.
+
+Rewrite `h2` using `[map_mul, gen_rs]`. Establish `h3 : ∀ x : Γ(X, W), gen _ hb (algebraMap Γ(X, W) Γ(X, X.basicOpen u) x) = gen W h x` using `fun x => gen_rs (X.basicOpen_le u) hb x`. Rewrite `h2` using `[h3, h3, map_pow]`. Conclude with `h2`. Use `filter_upwards [Filter.eventually_ge_atTop m] with n hn`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Conclude with `⟨b * u ^ k, by rw [map_mul, map_pow, ← h1, pow_add, _root_.mul_assoc]⟩`.
+-/
 theorem eventually_mul_pow {W D : X.Opens} (hW : IsAffineOpen W) (h) (u : Γ(X, W))
     (hu : gen W h u ≠ 0) (hD : X.basicOpen u ≤ D) (hD') (a : Γ(X, D)) :
     ∀ᶠ n : ℕ in Filter.atTop, ∃ b, gen W h b = gen D hD' a * gen W h u ^ n := by
@@ -221,6 +304,9 @@ theorem eventually_mul_pow {W D : X.Opens} (hW : IsAffineOpen W) (h) (u : Γ(X, 
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hn
   exact ⟨b * u ^ k, by rw [map_mul, map_pow, ← h1, pow_add, _root_.mul_assoc]⟩
 
+/- English proof (translation)
+Use `haveI : Nonempty D := ⟨⟨_, h⟩⟩`. Use `functionField_isFractionRing_of_isAffineOpen X D hD` as an intermediate fact. Take `⟨⟨a, b, hb⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors Γ(X, D)) t`. Conclude with `⟨a, b, fun h0 => nonZeroDivisors.ne_zero hb (gen_injective D h (h0.trans (map_zero _).symm)), hab⟩`.
+-/
 theorem exists_frac {D : X.Opens} (hD : IsAffineOpen D) (h) (t : X.functionField) :
     ∃ a b : Γ(X, D), gen D h b ≠ 0 ∧ t * gen D h b = gen D h a := by
   haveI : Nonempty D := ⟨⟨_, h⟩⟩

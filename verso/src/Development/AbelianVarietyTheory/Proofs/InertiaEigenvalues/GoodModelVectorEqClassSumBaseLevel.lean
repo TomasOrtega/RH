@@ -12,6 +12,11 @@ namespace GlobalTheory.TypeClassSum
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D X E Y hG i hB j b w hw hty`. Take `⟨t, hxi, hQ⟩` from `hB j b`. Choose the witnesses or unpack the hypotheses as in `⟨y0, rfl⟩ : w ∈ LinearMap.range (X.R.thG j t) := by`. Rewrite using `[hG j t]`. Conclude with `hw`.
+
+Take `⟨y, hlaw, heq⟩` from `GlobalTheory.T.projectedLift_unipotentType_baseLevelForm D X E Y i j b t hxi hQ y0 hty`. Take `⟨F, hF, hsum⟩` from `GlobalTheory.T.projectedThetaLift_extremalVector_eq_classSum D X E Y i j b t hxi hQ y hlaw`. Conclude with `⟨F, GlobalTheory.T.complex_forms_base_level_le_span_integral D X E Y i j b F hF, heq.symm.trans hsum⟩`.
+-/
 theorem goodModel_eq_classSum : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), (∀ j t, GlobalTheory.IndefiniteRowSideFullHecke.ThetaTranslateSize.GoodRangeAt X.R.toRealDat j t) →
     ∀ i, BaseTup Y i → ∀ (j : Fin D.R.m) (b : Bool), ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaTranslateSize.goodModel X.R.toRealDat j,
       (∀ (u : G0g D.nd) (hu : u ∈ D.nexp.U) (κ : GA D (Wc D j)),

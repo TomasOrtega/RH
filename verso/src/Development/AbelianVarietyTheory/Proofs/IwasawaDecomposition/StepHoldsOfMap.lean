@@ -15,6 +15,13 @@ namespace GlobalTheory.LocM.StepMono
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
+/- English proof (translation)
+Take `⟨τ, mu, u, i, t, fu, hi, hv⟩` from `h`. Take `⟨τ₁, mu₁, u₁, t₁, e₁, fu₁, fu₁'⟩` from `hf.2 k w (range_subset_opn Z' fu)`. Establish `f₂` using `flagAt_push hf.1.2.2 mu₁ e₁ fu₁ fu fu₁'`. Take `⟨τ₂, mu₂, -, t₂, -⟩` from `hg.2 k (w ≫ f) (range_subset_opn Z f₂)`. Take `⟨mu', hmu'⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ mu₂ mu₁`.
+
+Establish `t'` using `isTrans_comp hg.1.1 hf.1.1 t₂ t₁ mu' hmu'`. Take `⟨-, hmu⟩` from `TransUniq.trans_unique E H Dw Xo p W Y _ _ _ _ mu mu' (hg.1.2.1.trans hf.1.2.1) t t'`. Take `⟨a, φ, ha, gu, -⟩` from `fu`. Take `⟨y, hy, -⟩` from `exists_lift_chart Z' ha`. Use `⟨τ₂, mu₂, _, i, t₂, f₂, hi, hv.trans ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hmu k y _ _ _ (by rw [hy]; exact (gu.1 σ i).1.1), hmu', Category.assoc]`.
+-/
 theorem inStep_comp {Z' Z B : Mdl Y i₀} {f : Z'.X ⟶ Z.X} {g : Z.X ⟶ B.X} (hf : IsMap Z' Z f) (hg : IsMap Z B g)
     {σ : E →+* ℂ} {r : ℕ} {k : Type} [Field k] {w : Sp k ⟶ Z'.X} {v : Sp (DualNumber k) ⟶ B.t.G.left}
     (h : InStep Z' B σ r w v) : InStep Z B σ r (w ≫ f) v := by
@@ -30,15 +37,30 @@ theorem inStep_comp {Z' Z B : Mdl Y i₀} {f : Z'.X ⟶ Z.X} {g : Z.X ⟶ B.X} (
   refine ⟨τ₂, mu₂, _, i, t₂, f₂, hi, hv.trans ?_⟩
   rw [hmu k y _ _ _ (by rw [hy]; exact (gu.1 σ i).1.1), hmu', Category.assoc]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨hv, h, fun _ => rfl⟩`.
+-/
 theorem tanEv_congr {X : Scheme.{0}} (t : SAB H X) {k : Type} [CommRing k] {x x' : Sp k ⟶ X} (e : x = x')
     {v : Sp (DualNumber k) ⟶ t.G.left} (hv : IsTanAtG t x v) {V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V) :
     ∃ (hv' : IsTanAtG t x' v) (h' : ⊤ ≤ x' ⁻¹ᵁ V), ∀ s, tanEv t hv h s = tanEv t hv' h' s := by
   subst e
   exact ⟨hv, h, fun _ => rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_entry {R S T : Type} [CommRing R] [CommRing S] [CommRing T] {n : ℕ} (ψ : R →+* S) (φ : S →+* T)
     (a : GL (Fin n) R) (j l : Fin n) : φ (Matrix.GeneralLinearGroup.map ψ a j l) = φ.comp ψ (a j l) := rfl
 
+/- English proof (translation)
+Take `⟨hk, g, hg, H₀⟩` from `h`. Use `⟨hf.1.2.2 _ hk, f ≫ g, isMap_comp hf hg, fun x => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, V, n, m, a, hx, hUV, hm, H₁⟩` from `H₀ (f x)`. Take `⟨_, ⟨U', hU', rfl⟩, hx', hle⟩` from `Z'.X.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ ((f ⁻¹ᵁ U : Z'.X.Opens) : Set Z'.X) from hx) (f ⁻¹ᵁ U).2`. Establish `e : U' ≤ f ⁻¹ᵁ U` using `hle`.
+
+Use `⟨U', hU', V, n, m, Matrix.GeneralLinearGroup.map (f.appLE U U' e).hom a, hx', e.trans (f.preimage_mono hUV), hm, fun k _ φ v hv hh hs j hj => ?_⟩` and prove the remaining obligations. Establish `ep : (spMap φ ≫ hU'.fromSpec) ≫ f = spMap (φ.comp (f.appLE U U' e).hom) ≫ hU.fromSpec`. Rewrite using `[← sp_comp, Category.assoc, Category.assoc]`. Conclude with `congrArg (spMap φ ≫ ·) (IsAffineOpen.SpecMap_appLE_fromSpec f hU hU' e).symm`. Establish `eq : (spMap φ ≫ hU'.fromSpec) ≫ f ≫ g = (spMap (φ.comp (f.appLE U U' e).hom) ≫ hU.fromSpec) ≫ g`.
+
+Rewrite using `[← ep]`. Simplify using `only [Category.assoc]`. Establish `hs'` using `inStep_comp hf hg hs`. Rewrite `hs'` using `[ep]`. Take `⟨hv', hh', he⟩` from `tanEv_congr t.B.t eq hv hh`.
+
+Apply the tactic sequence `exact (Finset.sum_congr rfl fun l _ => congrArg₂ (· * ·) (map_entry _ φ a j l) (he _)).trans (H₁ k _ v hv' hh' hs' j hj)`.
+-/
 theorem holds_of_isMap (t : Step Y i₀) {Z Z' : Mdl Y i₀} {f : Z'.X ⟶ Z.X} (hf : IsMap Z' Z f) (h : t.Holds Z) :
     t.Holds Z' := by
   obtain ⟨hk, g, hg, H₀⟩ := h
@@ -61,6 +83,9 @@ theorem holds_of_isMap (t : Step Y i₀) {Z Z' : Mdl Y i₀} {f : Z'.X ⟶ Z.X} 
   exact (Finset.sum_congr rfl fun l _ => congrArg₂ (· * ·) (map_entry _ φ a j l) (he _)).trans
     (H₁ k _ v hv' hh' hs' j hj)
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ t _ _ ⟨_, hf⟩ h` and use `holds_of_isMap t hf h`.
+-/
 theorem holds_mono : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p), ∀ (t : Step Y i₀) (Z Z' : Mdl Y i₀), (∃ f, IsMap Z' Z f) → t.Holds Z → t.Holds Z' :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ t _ _ ⟨_, hf⟩ h => holds_of_isMap t hf h
 

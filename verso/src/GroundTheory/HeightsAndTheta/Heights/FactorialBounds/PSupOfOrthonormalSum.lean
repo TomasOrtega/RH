@@ -6,6 +6,13 @@ namespace GroundTheory.Heights₂.Heights
 
 open Finset
 
+/- English proof (translation)
+Introduce `V _ _ ι _ b p hb c`. Establish `h1 : p (∑ i, c i • b i) ≤ ∑ i, ‖c i‖`. Use `(Finset.le_sum_of_subadditive p (map_zero p).le (map_add_le_add p) _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : (∑ i, ‖c i‖) ^ 2 ≤ (Fintype.card ι : ℝ) * ∑ i, ‖c i‖ ^ 2`. Establish `hcs` using `Finset.sum_mul_sq_le_sq_mul_sq (univ : Finset ι) (fun _ => (1 : ℝ)) (fun i => ‖c i‖)`. Simplify `hcs` using `[Finset.card_univ]`. Establish `h3 : ∑ i, ‖c i‖ ≤ √(Fintype.card ι : ℝ) * √(∑ i, ‖c i‖ ^ 2)`. Rewrite using `[← Real.sqrt_mul (Nat.cast_nonneg _)]`.
+
+Conclude with `Real.le_sqrt_of_sq_le h2`. Conclude with `h1.trans h3`.
+-/
 theorem SupOfOrthonormalSum.proof : SupOfOrthonormalSum.Statement := by
   intro V _ _ ι _ b p hb c
 

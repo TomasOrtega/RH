@@ -42,10 +42,16 @@ instance galL : IsGalois ℚ D.L := IsCyclotomicExtension.isGalois {D.QS * D.q *
 def cyc : (D.L ≃ₐ[ℚ] D.L) ≃* (ZMod (D.QS * D.q * D.d))ˣ :=
   IsCyclotomicExtension.Rat.galEquivZMod (D.QS * D.q * D.d) D.L
 
+/- English proof (translation)
+The claim follows from `IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq _ _ τ hw`.
+-/
 theorem cyc_apply (τ : D.L ≃ₐ[ℚ] D.L) (w : D.L) (hw : w ^ (D.QS * D.q * D.d) = 1) :
     τ w = w ^ ((D.cyc τ : (ZMod (D.QS * D.q * D.d))ˣ) : ZMod (D.QS * D.q * D.d)).val :=
   IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq _ _ τ hw
 
+/- English proof (translation)
+Establish `h1` using `D.cyc_apply τ (Cond.z _) (Cond.z_spec _).pow_eq_one`. Rewrite `h1` using `[hτ]`. Establish `h2 : (u : ZMod (D.QS * D.q * D.d)).val = (D.cyc τ : ZMod (D.QS * D.q * D.d)).val` using `(Cond.z_spec _).pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h1`. Conclude with `Units.ext (ZMod.val_injective _ h2).symm`.
+-/
 theorem cyc_eq (u : (ZMod (D.QS * D.q * D.d))ˣ) (τ : D.L ≃ₐ[ℚ] D.L)
     (hτ : τ (Cond.z _) = Cond.z _ ^ (u : ZMod (D.QS * D.q * D.d)).val) : D.cyc τ = u := by
   have h1 := D.cyc_apply τ (Cond.z _) (Cond.z_spec _).pow_eq_one
@@ -56,8 +62,14 @@ theorem cyc_eq (u : (ZMod (D.QS * D.q * D.d))ˣ) (τ : D.L ≃ₐ[ℚ] D.L)
 
 def res : (D.L ≃ₐ[ℚ] D.L) →* φ.GG := D.art.comp D.cyc.toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem res_apply (τ : D.L ≃ₐ[ℚ] D.L) : D.res τ = D.art (D.cyc τ) := rfl
 
+/- English proof (translation)
+The claim follows from `D.art_surj.comp D.cyc.surjective`.
+-/
 theorem res_surj : Function.Surjective D.res :=
   D.art_surj.comp D.cyc.surjective
 
@@ -68,6 +80,9 @@ instance galE : IsGalois ℚ D.E := IsGalois.of_fixedField_normal_subgroup D.res
 def gal : (D.E ≃ₐ[ℚ] D.E) ≃* φ.GG :=
   (IsGalois.normalAutEquivQuotient D.res.ker).symm.trans (QuotientGroup.quotientKerEquivOfSurjective D.res D.res_surj)
 
+/- English proof (translation)
+Establish `h : (IsGalois.normalAutEquivQuotient D.res.ker).symm (τ.restrictNormal D.E) = (τ : (D.L ≃ₐ[ℚ] D.L) ⧸ D.res.ker)` using `(MulEquiv.symm_apply_eq _).mpr rfl`. Use `show QuotientGroup.quotientKerEquivOfSurjective D.res D.res_surj ((IsGalois.normalAutEquivQuotient D.res.ker).symm (τ.restrictNormal D.E)) = D.res τ`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem gal_restrict (τ : D.L ≃ₐ[ℚ] D.L) : D.gal (τ.restrictNormal D.E) = D.res τ := by
   have h : (IsGalois.normalAutEquivQuotient D.res.ker).symm (τ.restrictNormal D.E) =
       (τ : (D.L ≃ₐ[ℚ] D.L) ⧸ D.res.ker) :=
@@ -77,10 +92,22 @@ theorem gal_restrict (τ : D.L ≃ₐ[ℚ] D.L) : D.gal (τ.restrictNormal D.E) 
   rw [h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← D.gal_restrict τ, MulEquiv.symm_apply_apply]`. Conclude with `AlgEquiv.restrictNormal_commutes τ D.E x`.
+-/
 theorem gal_symm_apply (τ : D.L ≃ₐ[ℚ] D.L) (x : D.E) : ((D.gal.symm (D.res τ) x : D.E) : D.L) = τ x := by
   rw [← D.gal_restrict τ, MulEquiv.symm_apply_apply]
   exact AlgEquiv.restrictNormal_commutes τ D.E x
 
+/- English proof (translation)
+Use `Fact.mk hp` as an intermediate fact. Take `⟨g, hg⟩` from `Cond.sqrt_exists hp4 hN`. Establish `key : ∀ τ : D.L ≃ₐ[ℚ] D.L, τ g = (((s (D.res τ) : ℤˣ) : ℤ) : D.L) * g` using `fun τ => by`. Rewrite using `[D7.sqrt_act hp hp4 hN (D.cyc τ) τ (D.cyc_apply τ) g hg, D7.sgnN_val, res_apply, hs]`. Establish `hm : g ∈ D.E`.
+
+Rewrite using `[E, mem_fixedField_iff]`. Introduce `τ hτ`. Rewrite using `[key, MonoidHom.mem_ker.mp hτ]`. Simplify using the standard rewrite rules. Use `⟨⟨g, hm⟩, ?_, fun σ => ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `hg`. Take `⟨τ, hτ⟩` from `D.res_surj (D.gal σ)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h1` using `D.gal_symm_apply τ ⟨g, hm⟩`. Rewrite `h1` using `[hτ, MulEquiv.symm_apply_apply]`. Rewrite using `[h1, key, hτ]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exists_root {p : ℕ} (hp : p.Prime) (hp4 : p % 4 = 3) (hN : p ∣ D.QS * D.q * D.d) (s : φ.GG →* ℤˣ)
     (hs : ∀ u : (ZMod (D.QS * D.q * D.d))ˣ,
       ((s (D.art u) : ℤˣ) : ℤ) = jacobiSym (((u : ZMod (D.QS * D.q * D.d)).val : ℕ) : ℤ) p) :
@@ -106,6 +133,9 @@ theorem exists_root {p : ℕ} (hp : p.Prime) (hp4 : p % 4 = 3) (hN : p ∣ D.QS 
     push_cast
     rfl
 
+/- English proof (translation)
+The claim follows from `D.exists_root D.hyp.2.1 (by have := D.hyp.2.2.2.1; omega) (dvd_mul_left _ _) φ.chD D.art_ch`.
+-/
 theorem exists_sqd : ∃ y : D.E, y ^ 2 = -(D.d : D.E) ∧
     ∀ σ : D.E ≃ₐ[ℚ] D.E, σ y = ((((D.gal σ).1.2 : ℤˣ) : ℤ) : D.E) * y :=
   D.exists_root D.hyp.2.1 (by have := D.hyp.2.2.2.1; omega) (dvd_mul_left _ _) φ.chD D.art_ch
@@ -138,15 +168,43 @@ def toHostRaw : HostRaw φ where
   art_d := D.art_d
   art_q := D.art_q
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toHostRaw_q : D.toHostRaw.q = D.q := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toHostRaw_d : D.toHostRaw.d = D.d := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toHostRaw_QS : D.toHostRaw.QS = D.QS := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toHostRaw_art : D.toHostRaw.art = D.art := rfl
 
+/- English proof (translation)
+The claim follows from `D.exists_root D.hyp.1 (by have := D.hyp.2.2.1; omega) (Dvd.dvd.mul_right (dvd_mul_left _ _) _) φ.chQ h`.
+-/
 theorem exists_sqq (h : D.toHostRaw.PsQ) : ∃ s : D.toHostRaw.E, s ^ 2 = -(D.toHostRaw.q : D.toHostRaw.E) ∧
     ∀ σ : D.toHostRaw.E ≃ₐ[ℚ] D.toHostRaw.E, σ s = ((((D.toHostRaw.gal σ).1.1 : ℤˣ) : ℤ) : D.toHostRaw.E) * s :=
   D.exists_root D.hyp.1 (by have := D.hyp.2.2.1; omega) (Dvd.dvd.mul_right (dvd_mul_left _ _) _) φ.chQ h
 
+/- English proof (translation)
+Establish `hz` using `Cond.z_spec (D.QS * D.q * D.d)`. Establish `key : ∀ y : D.E, (y : D.L) ^ (D.QS * D.q * D.d) = 1 → y = 1 ∨ y = -1`. Introduce `y hy`. Establish `h2 : orderOf (y : D.L) ∣ 2`. Use `h _ (orderOf_dvd_of_pow_eq_one hy) fun u hu => ?_` and prove the remaining obligations.
+
+Establish `hfin : IsOfFinOrder (y : D.L)` using `isOfFinOrder_iff_pow_eq_one.2 ⟨_, Nat.pos_of_ne_zero (NeZero.ne _), hy⟩`. Establish `h1` using `(mem_fixedField_iff _ _).mp y.2 (D.cyc.symm u) (by rw [MonoidHom.mem_ker, res_apply, MulEquiv.apply_symm_apply, hu])`. Rewrite `h1` using `[D.cyc_apply _ _ hy, MulEquiv.apply_symm_apply]`. Conclude with `hfin.pow_eq_pow_iff_modEq.mp (h1.trans (pow_one _).symm)`. Establish `h3 : (y : D.L) ^ 2 = 1` using `orderOf_dvd_iff_pow_eq_one.mp h2`.
+
+Establish `h4 : y ^ 2 = 1` using `Subtype.ext (by push_cast; exact h3)`. Conclude with `sq_eq_one_iff.mp h4`. Introduce and unpack `(x : D.E) ⟨m, hm, hx⟩`. Establish `hfin : IsOfFinOrder (x : D.L)` using `isOfFinOrder_iff_pow_eq_one.2 ⟨m, hm, congrArg (fun t : D.E => (t : D.L)) hx⟩`. Establish `hprim : IsPrimitiveRoot (x : D.L) (orderOf (x : D.L))` using `IsPrimitiveRoot.orderOf _`.
+
+Establish `hdvd` using `hprim.dvd_of_isCyclotomicExtension (D.QS * D.q * D.d) (orderOf_pos_iff.2 hfin).ne'`. Establish `h2` using `key (x ^ 2) (by`. Establish `h3 : (x : D.L) ^ (2 * (D.QS * D.q * D.d)) = 1` using `orderOf_dvd_iff_pow_eq_one.mp hdvd`. Rewrite `h3` using `[pow_mul]`. Conclude with `h3)`.
+
+Break down `h2 with h2 | h2` into its components or cases. Conclude with `sq_eq_one_iff.mp h2`. Use `key x ?_` and prove the remaining obligations. Establish `h4 : x ^ 2 ^ 2 = 1` using `by rw [show (2 : ℕ) ^ 2 = 2 * 2 by norm_num, pow_mul, h2]; simp`. Establish `h5 : (x : D.L) ^ 2 ^ 2 = 1` using `congrArg (fun t : D.E => (t : D.L)) h4`.
+
+Establish `hc : 2 ^ 2 ∣ D.QS * D.q * D.d` using `(((pow_dvd_pow 2 (by omega)).trans D.tower_dvd).mul_right _).mul_right _`. Conclude with `orderOf_dvd_iff_pow_eq_one.mp ((orderOf_dvd_of_pow_eq_one h5).trans hc)`.
+-/
 theorem muPM (h : ∀ k : ℕ, k ∣ D.QS * D.q * D.d →
     (∀ u : (ZMod (D.QS * D.q * D.d))ˣ, D.art u = 1 → (u : ZMod (D.QS * D.q * D.d)).val ≡ 1 [MOD k]) → k ∣ 2) :
     D.toHostRaw.MuPM := by

@@ -4,6 +4,17 @@ namespace GlobalTheory.TensorUnitSpanTop
 
 open TensorProduct
 
+/- English proof (translation)
+Use `set N := Submodule.span (IsLocalRing.ResidueField R) (Set.range fun (i : ι) ↦ (1 : IsLocalRing.ResidueField R) ⊗ₜ[R] f i) with hN`. Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `tmul a m`. Establish `hm : m ∈ Submodule.span R (Set.range f)` using `hf ▸ Submodule.mem_top`. Establish `h1 : (1 : IsLocalRing.ResidueField R) ⊗ₜ[R] m ∈ N.restrictScalars R`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨i, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [tmul_add]`. Conclude with `add_mem hy hz`.
+
+Consider the case `smul r y _ hy => rw [tmul_smul]`. Conclude with `Submodule.smul_mem _ r hy`. Establish `h2 : a ⊗ₜ[R] m = a • ((1 : IsLocalRing.ResidueField R) ⊗ₜ[R] m)`. Rewrite using `[smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h2]`.
+
+Conclude with `N.smul_mem a h1`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+-/
 theorem span_one_tmul_eq_top {R M : Type} [CommRing R] [IsLocalRing R] [AddCommGroup M] [Module R M]
     {ι : Type} (f : ι → M) (hf : Submodule.span R (Set.range f) = ⊤) :
     Submodule.span (IsLocalRing.ResidueField R)
@@ -30,6 +41,9 @@ theorem span_one_tmul_eq_top {R M : Type} [CommRing R] [IsLocalRing R] [AddCommG
     exact N.smul_mem a h1
   | add x y hx hy => exact add_mem hx hy
 
+/- English proof (translation)
+Introduce `f hf` and use `span_one_tmul_eq_top f hf`.
+-/
 theorem main : ∀ {R M : Type} [inst : CommRing R] [inst_1 : IsLocalRing R] [inst_2 : AddCommGroup M] [inst_3 : Module R M] {ι : Type} (f : ι → M), Submodule.span R (Set.range f) = ⊤ → Submodule.span (IsLocalRing.ResidueField R) (Set.range fun (i : ι) ↦ (1 : IsLocalRing.ResidueField R) ⊗ₜ[R] f i) = ⊤ :=
   fun f hf => span_one_tmul_eq_top f hf
 

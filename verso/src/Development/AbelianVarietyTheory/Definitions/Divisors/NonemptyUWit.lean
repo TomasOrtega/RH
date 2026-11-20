@@ -29,6 +29,9 @@ structure UWit (X : USetup C) where
 
 attribute [instance] UWit.grp
 
+/- English proof (translation)
+Take `⟨G, _, α, β, hα, hβ, hL⟩` from `X.pulled_uΩ`. Conclude with `⟨{ G := G, α := α, β := β, hα := hα, hβ := hβ, hL := hL }⟩`.
+-/
 theorem nonempty_uWit (X : USetup C) : Nonempty (UWit X) := by
   obtain ⟨G, _, α, β, hα, hβ, hL⟩ := X.pulled_uΩ
   exact ⟨{ G := G, α := α, β := β, hα := hα, hβ := hβ, hL := hL }⟩
@@ -55,6 +58,9 @@ def UIsLabW (X : USetup C) (wi : UWit X) {p : ℕ} [Fact p.Prime] {z : X.M.Z} (c
             QkToAkU u.U.toUnifPre (PadicAlgCl p) m pk' x' → w ≫ α = x.left ≫ u.φ → w' ≫ α = x'.left ≫ u.φ →
             w' ≫ β = w ≫ β ≫ (Xo.univ.t.act.act a).left → CongMod m (j pk'.y) (a • j pk.y)
 
+/- English proof (translation)
+Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', u', h₁, h₂, h₃, h₄, G, _, α, β, h₅, h₆, h₇, -, h₈⟩` from `h`. Conclude with `⟨c₀, hc, R', fg, frac, hth, hev, ρ', u', h₁, h₂, h₃, h₄, G, _, α, β, h₅, h₆, h₇, h₈⟩`.
+-/
 theorem UIsLabW.uIsLab {X : USetup C} {wi : UWit X} {p : ℕ} [Fact p.Prime] {z : X.M.Z} {ct : UCTrait X p z}
     {yy : X.S.Gam →+ ModN (X.S.r * X.S.N) ct.T.P.D.toPre.X} (h : UIsLabW X wi ct yy) : UIsLab X ct yy := by
   obtain ⟨c₀, hc, R', fg, frac, hth, hev, ρ', u', h₁, h₂, h₃, h₄, G, _, α, β, h₅, h₆, h₇, -, h₈⟩ := h

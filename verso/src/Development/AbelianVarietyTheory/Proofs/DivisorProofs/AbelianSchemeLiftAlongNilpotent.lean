@@ -12,6 +12,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R R₀ _ _ π s hs A₀ _ g hA hg`. Establish `hAs` using `isGrpPullback_pullback A₀ (spMap s)`. Establish `hid : spMap π ≫ spMap s = 𝟙 (Sp R₀)`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hs]`. Conclude with `Spec.map_id _`.
+
+Establish `hBA` using `isGrpPullback_pullback ((Over.pullback (spMap s)).obj A₀) (spMap π)`. Establish `hB0` using `(hBA.comp hAs).congr hid rfl`. Take `⟨e, he, -⟩` from `grpPullback_iso hB0 (GlobalTheory.CrysConn.isGrpPullback_refl A₀)`. Use `haveI : IsMonHom e.symm.hom := inferInstanceAs (IsMonHom e.inv)`. Establish `h0B` using `isGrpPullback_of_iso e.symm`.
+
+Use `⟨(Over.pullback (spMap s)).obj A₀, inferInstance, _, (h0B.comp hBA).congr (Category.id_comp _) rfl, PolPull.isAbelianScheme_of_isGrpPullback hA hAs, ?_⟩` and prove the remaining obligations. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hg`.
+-/
 theorem abelianScheme_constLift : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀) (s : R₀ →+* R), π.comp s = RingHom.id R₀ →
     ∀ (A₀ : Over (Sp R₀)) [GrpObj A₀] (g : ℕ), IsAbelianScheme A₀ → SmoothOfRelativeDimension g A₀.hom →
       ∃ (A : Over (Sp R)) (_ : GrpObj A) (i : A₀.left ⟶ A.left) (_ : IsGrpPullback A₀ A (spMap π) i),

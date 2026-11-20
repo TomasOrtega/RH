@@ -13,6 +13,31 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.UnrTraceDual
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ hU e`. Establish `hfu : Algebra.FormallyUnramified (𝓞 F) (𝓞 E)` using `inferInstance`. Establish `hEq : differentIdeal ℤ (𝓞 E) = (differentIdeal ℤ (𝓞 F)).map (algebraMap (𝓞 F) (𝓞 E))`. Rewrite using `[differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 F) (𝓞 E), (GlobalTheory.formallyUnramified_ringOfIntegers_iff_differentIdeal_eq_top F E).1 hfu, Ideal.top_mul]`. Establish `hint : ∀ x : E, IsIntegral ℤ x ↔ x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)`.
+
+Introduce `x`. Rewrite using `[FractionalIdeal.mem_one_iff, IsIntegralClosure.isIntegral_iff (A := 𝓞 E)]`. Establish `h1 : (∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E (o * e))) ↔ e ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 E)⁰ E))]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a ha`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff (𝓞 E)⁰).1 ha`. Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `RingHom.mem_range.2 (IsIntegrallyClosed.isIntegral_iff.1 (h o))`. Introduce `h o`.
+
+Use `h (algebraMap (𝓞 E) E o) ((FractionalIdeal.mem_one_iff (𝓞 E)⁰).2 ⟨o, rfl⟩)` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `IsIntegrallyClosed.isIntegral_iff.2 (RingHom.mem_range.1 this)`. Establish `h2 : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E) = ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E)⁻¹`. Rewrite using `[coeIdeal_differentIdeal ℤ ℚ E (𝓞 E), inv_inv]`.
+
+Establish `hne : ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `differentIdeal_ne_bot`. Rewrite using `[h1, h2, FractionalIdeal.mem_inv_iff hne, hEq]`. Set `J : Ideal (𝓞 E)` to `{ carrier := {x | IsIntegral ℤ (algebraMap (𝓞 E) E x * e)} add_mem' := by`.
+
+Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, map_add, add_mul] at *`. Conclude with `ha.add hb`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq, map_zero, zero_mul]`.
+
+Conclude with `isIntegral_zero`. Use the proof step `smul_mem' := by`. Introduce `c x hx`. Establish `hx' : IsIntegral ℤ (algebraMap (𝓞 E) E x * e)` using `hx`. Establish `hc : IsIntegral ℤ (algebraMap (𝓞 E) E c)` using `RingOfIntegers.isIntegral_coe c`.
+
+Use `show IsIntegral ℤ (algebraMap (𝓞 E) E (c * x) * e)`. Rewrite using `[map_mul, mul_assoc]`. Conclude with `IsIntegral.mul hc hx' }`. Establish `hJ : ∀ x : 𝓞 E, x ∈ J ↔ IsIntegral ℤ (algebraMap (𝓞 E) E x * e)` using `fun _ => Iff.rfl`. Establish `hL : (∀ y ∈ (((differentIdeal ℤ (𝓞 F)).map (algebraMap (𝓞 F) (𝓞 E)) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E), e * y ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)) ↔ (differentIdeal ℤ (𝓞 F)).map (algebraMap (𝓞 F) (𝓞 E)) ≤ J`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Rewrite using `[hJ, hint, mul_comm]`. Conclude with `h _ (FractionalIdeal.mem_coeIdeal_of_mem _ hx)`. Introduce `h y hy`.
+
+Take `⟨x, hx, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`. Rewrite using `[mul_comm, ← hint]`. Conclude with `(hJ x).1 (h hx)`. Rewrite using `[hL, Ideal.map_le_iff_le_comap]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h d hd`. Use `(hJ _).1 (h hd)` as an intermediate fact. Rewrite `this` using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Then use the resulting hypothesis. Introduce `h d hd show algebraMap (𝓞 F) (𝓞 E) d ∈ J`. Rewrite using `[hJ, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]`.
+
+Conclude with `h d hd`.
+-/
 theorem traceDual_ringOfIntegers_iff_of_unramified : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ e : E, (∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E (o * e))) ↔ ∀ d ∈ differentIdeal ℤ (𝓞 F), IsIntegral ℤ (algebraMap F E (d : F) * e) := by
   intro F E _ _ _ _ _ hU e
   have hfu : Algebra.FormallyUnramified (𝓞 F) (𝓞 E) := inferInstance

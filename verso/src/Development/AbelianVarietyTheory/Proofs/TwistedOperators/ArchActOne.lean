@@ -23,6 +23,9 @@ def archAct (M : Model σ X W) (h : UA σ W.J)
     (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F) :=
   coordI M (actAB (cA σ) ((1 : UA σ X.J), h) (M.co.e.symm (liftV v.1, liftV v.2)))
 
+/- English proof (translation)
+Unfold `archOp`. Rewrite using `[dif_pos hx]`. Conclude with `hx.choose_spec`.
+-/
 theorem acts_archOp (om : Rep σ X W) (h : UA σ W.J) (f : SInf F (Fin n × Fin d))
     (hx : ∃ f₁ : SInf F (Fin n × Fin d), Acts (evI F) (om (1, h)) ⇑f ⇑f₁) :
     Acts (evI F) (om (1, h)) ⇑f ⇑(archOp om h f) := by
@@ -31,6 +34,9 @@ theorem acts_archOp (om : Rep σ X W) (h : UA σ W.J) (f : SInf F (Fin n × Fin 
   rw [dif_pos hx]
   exact hx.choose_spec
 
+/- English proof (translation)
+Unfold `archAct`. Simplify using `[actAB, coordI_lift]`.
+-/
 theorem archAct_one (M : Model σ X W)
     (v : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)) :
     archAct M 1 v = v := by

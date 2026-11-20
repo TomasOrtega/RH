@@ -14,6 +14,17 @@ open GlobalTheory.AboveL
 
 namespace GlobalTheory.DecCover
 
+/- English proof (translation)
+Introduce `Ω _ F _ _ _ _ v N hN`. Establish `: IsGalois F Ω` using `{}`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hN N.one_mem`. Establish `hcheb` using `fun g : G F Ω => GlobalTheory.Published.cheb_holds F Ω U.toSubgroup U.isOpen U.isNormal' g {v}`. Use `choose u hu _ _ B hB _ σ hσ hσU using hcheb`.
+
+Establish `hmem : ∀ g : G F Ω, (σ g)⁻¹ * g ∈ N`. Introduce `g`. Apply `hU` to reduce the goal to its premises. Establish `h1` using `U.isNormal'.conj_mem _ (hσU g) (σ g)⁻¹`. Establish `h2 : (σ g)⁻¹ * (σ g * g⁻¹) * (σ g)⁻¹⁻¹ = ((σ g)⁻¹ * g)⁻¹` using `by group`.
+
+Rewrite `h1` using `[h2]`. Establish `h3` using `U.toSubgroup.inv_mem h1`. Rewrite `h3` using `[inv_inv]`. Conclude with `h3`. Establish `hopen : ∀ g : G F Ω, IsOpen {h : G F Ω | (σ g)⁻¹ * h ∈ N}` using `fun g => hN.preimage (continuous_mul_left _)`.
+
+Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun g : G F Ω => {h : G F Ω | (σ g)⁻¹ * h ∈ N}) hopen (fun g _ => Set.mem_iUnion.2 ⟨g, hmem g⟩)`. Use `⟨t.image u, ?_, fun g => ?_⟩` and prove the remaining obligations. Introduce `hv`. Take `⟨i, -, hi⟩` from `Finset.mem_image.1 hv`. Conclude with `hu i (by simp [hi])`.
+
+Take `⟨i, hi, hgi⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ g))`. Use `⟨u i, Finset.mem_image_of_mem u hi, B i, hB i, σ i, (hσ i).1, (σ i)⁻¹ * g, hgi, ?_⟩` and prove the remaining obligations. Use `group`.
+-/
 theorem main : ∀ (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] [Algebra F Ω] [IsAlgClosure F Ω] (v : HeightOneSpectrum (𝓞 F)) (N : Subgroup (G F Ω)), IsOpen (N : Set (G F Ω)) → ∃ T : Finset (HeightOneSpectrum (𝓞 F)), v ∉ T ∧ ∀ g : G F Ω, ∃ u ∈ T, ∃ A' : ValuationSubring Ω, IsPlaceOver A' u ∧ ∃ x ∈ Dec (F := F) A', ∃ n ∈ N, g = x * n := by
   intro Ω _ F _ _ _ _ v N hN
   classical

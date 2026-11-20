@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ)
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc Formalism.L2.SG.RealObj.fam`. Simplify using `only [Complex.ofReal_one, one_pow, inv_one, one_smul]`. Use `Fin.lastCases ?_ (fun b => ?_) a` and prove the remaining obligations. Rewrite using `[FlagG.fvec, Fin.snoc_last, X.flagZVector u, Fin.snoc_last]`. Both sides reduce to the same expression.
+
+Rewrite using `[FlagG.fvec, Fin.snoc_castSucc, X.Fu_e u, Fin.snoc_castSucc]`. Both sides reduce to the same expression.
+-/
 theorem rv_crd_fvec (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) (a : Fin (D.R.rS + 1)) :
     rv X.B.I v (X.crd ((X.Fu u).fvec a)) = Formalism.L2.SG.RealObj.frm X u 1 v a := by
   unfold Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc Formalism.L2.SG.RealObj.fam
@@ -23,6 +28,13 @@ theorem rv_crd_fvec (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) (a : Fin (D
   · rw [FlagG.fvec, Fin.snoc_castSucc, X.Fu_e u, Fin.snoc_castSucc]
     rfl
 
+/- English proof (translation)
+Take `⟨_, hQQi, hH, _⟩` from `C.isT τ`. Establish `hA : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (Formalism.L2.SG.Pf.JointAmplitudePoints.gamP C u u' w τ) a b = hJ (X.B.I.ε (vOf X τ)) (C.Q τ *ᵥ Formalism.QuantumDeterminants.fvec D.R.k D.R.rS (zB X (C.Qi τ) u τ) a) (uMat ((Formalism. …`. Unfold `Formalism.QuantumDeterminants.Zhat Formalism.QuantumDeterminants.herm Formalism.L2.SG.Pf.JointAmplitudePoints.gamP Formalism.L2.SG.RealObj.trG hJ`. Rewrite using `[← hH, ← Formalism.L2.SG.Pf.LTL.star_dot_conjT]`. Use `congr 1`.
+
+Simplify using `only [Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite using `[show (C.Q τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * C.Q τ * (C.Qi τ * uMat ((Formalism.L2.SG.RealObj.gamW X u u' w) (vOf X τ)) * C.Q τ) = (C.Q τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (C.Q τ * C.Qi τ) * uMat ((Formalism.L2.SG.RealObj.gamW X u u' w) (vOf X τ)) * C.Q τ by`. Simplify using `only [Matrix.mul_assoc], hQQi]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`.
+
+Rewrite using `[hA, Formalism.L2.SG.Pf.LTL.Q_fvec C u τ a, Formalism.L2.SG.Pf.LTL.Q_fvec C u' τ b, Matrix.mulVec_smul, Formalism.L2.SG.Pf.LTL.hJ_smul_real, rv_crd_fvec, rv_crd_fvec]`. Both sides reduce to the same expression.
+-/
 theorem zhatP_eq (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (τ : D.what₂.Tau) (a b : Fin (D.R.rS + 1)) :
     Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (Formalism.L2.SG.Pf.JointAmplitudePoints.gamP C u u' w τ) a b =
       ((rhoF D a * rhoF D b : ℝ) : ℂ) *
@@ -48,6 +60,9 @@ theorem zhatP_eq (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (τ :
     Formalism.L2.SG.Pf.LTL.hJ_smul_real, rv_crd_fvec, rv_crd_fvec]
   rfl
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.BesselShellMomentBounds.alf rhoF`. Rewrite using `[← Real.rpow_intCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alf_eq (D : D7) (a : Fin (D.R.rS + 1)) : Formalism.MainNotions.BesselShellMomentBounds.alf D a = rhoF D a := by
   unfold Formalism.MainNotions.BesselShellMomentBounds.alf rhoF
   rw [← Real.rpow_intCast]
@@ -55,6 +70,9 @@ theorem alf_eq (D : D7) (a : Fin (D.R.rS + 1)) : Formalism.MainNotions.BesselShe
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h` using `Formalism.MainNotions.BesselShellMomentBounds.ptEntry_loc D τ w.1 0 a b`. Simplify using `only [Nat.zero_add] at h`. Apply the tactic sequence `change ptEntry (locBlocksFrom D (rhoReal D) τ 0 w.1) a b = _`. Rewrite using `[h, alf_eq D a, alf_eq D b]`. Both sides reduce to the same expression.
+-/
 theorem ptMat_ptLoc (τ : D.what₂.Tau) (w : Point D.host.E (D.R.rS + 1)) (a b : Fin (D.R.rS + 1)) :
     ptMat (ptLoc D τ w) a b = ((rhoF D a * rhoF D b : ℝ) : ℂ) * embS D τ (ptMat w a b) := by
   have h := Formalism.MainNotions.BesselShellMomentBounds.ptEntry_loc D τ w.1 0 a b
@@ -65,6 +83,13 @@ theorem ptMat_ptLoc (τ : D.what₂.Tau) (w : Point D.host.E (D.R.rS + 1)) (a b 
 
 variable (u u' : D.what₂.Word)
 
+/- English proof (translation)
+Establish `hrep : Formalism.L2.SG.RealObj.IsPtRep X u u' w (Formalism.L2.SG.RealObj.gamW X u u' w)`. Unfold `Formalism.L2.SG.RealObj.gamW`. Rewrite using `[dif_pos hw]`. Conclude with `hw.choose_spec`. Use extensionality with `a b`.
+
+Establish `h1` using `congrFun (congrFun (hrep (vOf X τ)) a) b`. Unfold `Formalism.L2.SG.RealObj.ZhatO Formalism.L2.SG.RealObj.ptC at h1`. Simplify using `only [Matrix.map_apply] at h1`. Rewrite `h1` using `[X.φ_eq, X.ιE.apply_symm_apply, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`. Unfold `ZhatO`.
+
+Rewrite using `[zhatP_eq C u u' w τ a b, ptMat_ptLoc τ w a b, ← h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zhatO_gamP (w : Point D.host.E (D.R.rS + 1)) (hw : ∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w g)
     (τ : D.what₂.Tau) :
     ZhatO D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (Formalism.L2.SG.Pf.JointAmplitudePoints.gamP C u u' w τ) =
@@ -82,6 +107,11 @@ theorem zhatO_gamP (w : Point D.host.E (D.R.rS + 1)) (hw : ∃ g, Formalism.L2.S
   rw [zhatP_eq C u u' w τ a b, ptMat_ptLoc τ w a b, ← h1]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Dmin`. Establish `hM : (ZhatO D.R.k D.R.rS z z' g).submatrix (Fin.castLE (Nat.le_of_lt_succ l.isLt)) (Fin.castLE (Nat.le_of_lt_succ l.isLt)) = (Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS z z' g).submatrix (Fin.castLE (Nat.le_of_lt_succ l.isLt)) (Fin.castLE (Nat.le_of_lt_succ l.isLt)) * Matrix …`. Use extensionality with `i j`. Simplify using `[ZhatO, Matrix.mul_diagonal, mul_comm]`. Rewrite using `[hM, Matrix.det_mul, Matrix.det_diagonal, map_mul, map_prod]`.
+
+Simplify using `[Complex.normSq_neg]`.
+-/
 theorem normSq_dmin (z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ)
     (g : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) (l : Fin (D.R.rS + 2)) :
     Complex.normSq (Formalism.QuantumDeterminants.Dmin D.R.k D.R.rS z z' g l) =
@@ -98,6 +128,9 @@ theorem normSq_dmin (z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ)
   rw [hM, Matrix.det_mul, Matrix.det_diagonal, map_mul, map_prod]
   simp [Complex.normSq_neg]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Gf Gpt`. Rewrite using `[normSq_dmin, normSq_dmin, zhatO_gamP C u u' w hw τ, Formalism.L2.SG.Pf.LTL.tz_zB C u τ, Formalism.L2.SG.Pf.LTL.tz_zB C u' τ]`. Both sides reduce to the same expression.
+-/
 theorem gf_gamP (w : Point D.host.E (D.R.rS + 1)) (hw : ∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w g)
     (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.Gf D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (Formalism.L2.SG.Pf.JointAmplitudePoints.gamP C u u' w τ) =
@@ -107,6 +140,11 @@ theorem gf_gamP (w : Point D.host.E (D.R.rS + 1)) (hw : ∃ g, Formalism.L2.SG.R
     Formalism.L2.SG.Pf.LTL.tz_zB C u' τ]
   rfl
 
+/- English proof (translation)
+Introduce `w hb hw τ`. Use `⟨Formalism.L2.SG.Pf.LTL.trG_mem _ _ _ (C.isT τ).2.1 (C.isT τ).2.2.1 _, ?_, ?_⟩` and prove the remaining obligations. Use `⟨(1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ), (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ), fun i j => ⟨fun h => Matrix.one_apply_ne (ne_of_lt h), fun h => by subst h; exact Matrix.one_apply_eq i⟩, fun i j => ⟨fun h => Matrix.one_apply_ne (ne_of_lt h).symm, fun h …` and prove the remaining obligations. Rewrite using `[Matrix.one_mul, Matrix.mul_one, zhatO_gamP C u u' w hw τ]`. Rewrite using `[gf_gamP C u u' w hw τ]`.
+
+Conclude with `(hb.2 τ).ne'`.
+-/
 theorem relPtExPR_holds : Formalism.L2.SG.Pf.BDatR.RelPtExPR u u' C := by
   intro w hb hw τ
   refine ⟨Formalism.L2.SG.Pf.LTL.trG_mem _ _ _ (C.isT τ).2.1 (C.isT τ).2.2.1 _, ?_, ?_⟩

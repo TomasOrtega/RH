@@ -18,6 +18,11 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 
 namespace GlobalTheory.Mean4
 
+/- English proof (translation)
+Establish `h : (linRoot u).IsHomogeneous 1`. Unfold `linRoot`. Establish `h1 : (∑ x : ι × Fin N, C (u x.1 x.2) * X x : MvPolynomial (ι × Fin N) ℝ).IsHomogeneous 1`. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `x _`.
+
+Simplify using `using (isHomogeneous_C _ (u x.1 x.2)).mul (isHomogeneous_X ℝ x)`. Conclude with `h1.neg`. Simplify using `using h.pow n`.
+-/
 theorem linRoot_pow_homog_lower {ι : Type} [Fintype ι] {N : ℕ} (u : ι → Fin N → ℝ) (n : ℕ) :
     (linRoot u ^ n).IsHomogeneous n := by
   have h : (linRoot u).IsHomogeneous 1 := by

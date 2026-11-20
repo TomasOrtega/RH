@@ -9,6 +9,37 @@ noncomputable section
 
 namespace ZeroLocusDimH
 
+/- English proof (translation)
+Use `set D : E × ℂ × ℂ → ℂ := fun z => ∑ k ∈ range N, c k z.1 * ∑ j ∈ range k, z.2.1 ^ j * z.2.2 ^ (k - 1 - j) with hDdef`. Establish `hDc : Continuous D`. Use `continuous_finsetSum _ fun k _ => ((hcont k).comp continuous_fst).mul ?_` and prove the remaining obligations. Conclude with `continuous_finsetSum _ fun j _ => by fun_prop`. Use `set D0 := ∑ k ∈ range N, c k y₀ * ((k : ℂ) * t₀ ^ (k - 1)) with hD0def`.
+
+Establish `hDz : D (y₀, t₀, t₀) = D0`. Simplify using `only [hDdef, hD0def]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => t₀ ^ (k - 1)), Finset.sum_const, Finset.card_range, nsmul_eq_mul]`.
+
+Introduce `j hj`. Rewrite using `[← pow_add]`. Use `congr 1`. Use `Finset.mem_range.1 hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hpos : 0 < ‖D0‖ / 2` using `by positivity`. Take `⟨δ2, hδ2, hD⟩` from `Metric.continuous_iff.1 hDc (y₀, t₀, t₀) _ hpos`. Use `choose L T hT hLT using hlip`. Establish `hS : (⋂ k ∈ range N, T k) ∈ 𝓝 y₀` using `(Filter.biInter_finset_mem _).2 fun k _ => hT k`. Take `⟨δ1, hδ1, hball⟩` from `Metric.mem_nhds_iff.1 hS`.
+
+Use `⟨min (min δ1 δ2) 1, by positivity, (∑ k ∈ range N, (L k : ℝ) * (‖t₀‖ + 1) ^ k) / (‖D0‖ / 2), by positivity, ?_⟩` and prove the remaining obligations. Introduce `y y' t t' hy hy' ht ht' h1 h2`. Establish `hyS : ∀ k ∈ range N, y ∈ T k`. Use `hball (Metric.mem_ball.2 (lt_of_lt_of_le hy ((min_le_left _ _).trans (min_le_left _ _))))` as an intermediate fact. Simplify using `using this`.
+
+Establish `hyS' : ∀ k ∈ range N, y' ∈ T k`. Use `hball (Metric.mem_ball.2 (lt_of_lt_of_le hy' ((min_le_left _ _).trans (min_le_left _ _))))` as an intermediate fact. Simplify using `using this`. Establish `hz : dist (y, t, t') (y₀, t₀, t₀) < δ2`. Establish `e2 : min (min δ1 δ2) 1 ≤ δ2` using `(min_le_left _ _).trans (min_le_right _ _)`.
+
+Rewrite using `[Prod.dist_eq, Prod.dist_eq]`. Conclude with `max_lt (hy.trans_le e2) (max_lt (ht.trans_le e2) (ht'.trans_le e2))`. Establish `hDlow : ‖D0‖ / 2 ≤ ‖D (y, t, t')‖`. Use `hD _ hz` as an intermediate fact. Rewrite `this` using `[hDz, dist_eq_norm]`.
+
+Establish `h3` using `norm_sub_norm_le D0 (D (y, t, t'))`. Rewrite `h3` using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht'b : ‖t'‖ ≤ ‖t₀‖ + 1`. Establish `: dist t' t₀ < 1` using `ht'.trans_le (min_le_right _ _)`.
+
+Rewrite `this` using `[dist_eq_norm]`. Use `norm_le_norm_add_norm_sub' t' t₀` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : (t - t') * D (y, t, t') = ∑ k ∈ range N, (c k y' - c k y) * t' ^ k`. Establish `e1 : (t - t') * D (y, t, t') = ∑ k ∈ range N, c k y * (t ^ k - t' ^ k)` using `by show (t - t') * ∑ k ∈ range N, c k y * ∑ j ∈ range k, t ^ j * t' ^ (k - 1 - j) = _`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← geom_sum₂_mul t t' k]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+
+Establish `: ∑ k ∈ range N, c k y * (t ^ k - t' ^ k) + ∑ k ∈ range N, (c k y - c k y') * t' ^ k = ∑ k ∈ range N, c k y * t ^ k - ∑ k ∈ range N, c k y' * t' ^ k`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[h1, h2, sub_zero]`.
+
+Establish `e3 : ∑ k ∈ range N, (c k y' - c k y) * t' ^ k = -∑ k ∈ range N, (c k y - c k y') * t' ^ k`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`.
+
+Take the linear combination `this`. Establish `hbound : ‖t - t'‖ * ‖D (y, t, t')‖ ≤ (∑ k ∈ range N, (L k : ℝ) * (‖t₀‖ + 1) ^ k) * ‖y - y'‖`. Rewrite using `[← norm_mul, key, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k hk => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`.
+
+Establish `hl` using `(hLT k).dist_le_mul y' (hyS' k hk) y (hyS k hk)`. Rewrite `hl` using `[dist_eq_norm, dist_eq_norm, ← norm_neg (y' - y), neg_sub]`. Establish `hp : ‖t'‖ ^ k ≤ (‖t₀‖ + 1) ^ k` using `pow_le_pow_left₀ (norm_nonneg _) ht'b k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hpos]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem root_lipschitz_core {E : Type*} [NormedAddCommGroup E] (N : ℕ) (c : ℕ → E → ℂ) (y₀ : E)
     (t₀ : ℂ) (hcont : ∀ k, Continuous (c k))
     (hlip : ∀ k, ∃ L : NNReal, ∃ T ∈ 𝓝 y₀, LipschitzOnWith L (c k) T)
@@ -99,6 +130,9 @@ theorem root_lipschitz_core {E : Type*} [NormedAddCommGroup E] (N : ℕ) (c : �
         mul_le_mul_of_nonneg_left hDlow (norm_nonneg _)
     _ ≤ _ := hbound
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simpa using contDiff_const`. Consider the case `add p q hp hq => simpa using hp.add hq`. Consider the case `mul_X p i hp => simpa using hp.mul (contDiff_apply ℂ ℂ i)`.
+-/
 theorem contDiff_eval_mvPolynomial {ι : Type*} [Fintype ι] (q : MvPolynomial ι ℂ) :
     ContDiff ℂ 1 (fun y : ι → ℂ => MvPolynomial.eval y q) := by
   induction q using MvPolynomial.induction_on with
@@ -109,10 +143,16 @@ theorem contDiff_eval_mvPolynomial {ι : Type*} [Fintype ι] (q : MvPolynomial �
 def paramMap {n r : ℕ} (π : Fin r → MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ) : Fin r → ℂ :=
   fun j => MvPolynomial.eval x (π j)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => MvPolynomial.continuous_eval _`.
+-/
 theorem continuous_paramMap {n r : ℕ} (π : Fin r → MvPolynomial (Fin n) ℂ) :
     Continuous (paramMap π) :=
   continuous_pi fun _ => MvPolynomial.continuous_eval _
 
+/- English proof (translation)
+Rewrite using `[Polynomial.eval_eq_sum_range' (n := Q.natDegree + 1) (lt_of_le_of_lt (Polynomial.natDegree_map_le) (Nat.lt_succ_self _))]`. Simplify using `[Polynomial.coeff_map]`.
+-/
 theorem eval_map_eq_sum {r : ℕ} (Q : Polynomial (MvPolynomial (Fin r) ℂ)) (y : Fin r → ℂ) (t : ℂ) :
     Polynomial.eval t (Q.map (MvPolynomial.eval y)) =
       ∑ k ∈ range (Q.natDegree + 1), MvPolynomial.eval y (Q.coeff k) * t ^ k := by
@@ -120,6 +160,9 @@ theorem eval_map_eq_sum {r : ℕ} (Q : Polynomial (MvPolynomial (Fin r) ℂ)) (y
     (lt_of_le_of_lt (Polynomial.natDegree_map_le) (Nat.lt_succ_self _))]
   simp [Polynomial.coeff_map]
 
+/- English proof (translation)
+Rewrite using `[← Polynomial.derivative_map, Polynomial.derivative_eval, Polynomial.sum_over_range' (n := Q.natDegree + 1) _ (fun _ => by simp) (lt_of_le_of_lt (Polynomial.natDegree_map_le) (Nat.lt_succ_self _))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_map_derivative_eq_sum {r : ℕ} (Q : Polynomial (MvPolynomial (Fin r) ℂ))
     (y : Fin r → ℂ) (t : ℂ) :
     Polynomial.eval t ((Polynomial.derivative Q).map (MvPolynomial.eval y)) =
@@ -131,6 +174,15 @@ theorem eval_map_derivative_eq_sum {r : ℕ} (Q : Polynomial (MvPolynomial (Fin 
   rw [Polynomial.coeff_map]
   ring
 
+/- English proof (translation)
+Establish `core : ∀ i, ∃ δ > 0, ∃ K : ℝ, 0 ≤ K ∧ ∀ y y' : Fin r → ℂ, ∀ t t' : ℂ, dist y (paramMap π x₀) < δ → dist y' (paramMap π x₀) < δ → dist t (x₀ i) < δ → dist t' (x₀ i) < δ → ∑ k ∈ range ((P i).natDegree + 1), MvPolynomial.eval y ((P i).coeff k) * t ^ k = 0 → ∑ k ∈ range ((P i).natDeg …` using `fun i => root_lipschitz_core _ (fun k y => MvPolynomial.eval y ((P i).coeff k)) _ _ (fun k => MvPolynomial.continuous_eval _) (fun k => by`. Take `⟨L, T, hT, hL⟩` from `((contDiff_eval_mvPolynomial ((P i).coeff k)).contDiffAt (x := paramMap π x₀)).exists_lipschitzOnWith`. Conclude with `⟨L, T, hT, hL⟩)`. Use the proof step `(by rw [← eval_map_derivative_eq_sum]; exact hx₀ i)`. Use `choose δ hδ K hK hcore using core`.
+
+Use `⟨{x | ∀ i, dist (paramMap π x) (paramMap π x₀) < δ i ∧ dist (x i) (x₀ i) < δ i}, ?_, ∑ i, K i, Finset.sum_nonneg fun i _ => hK i, ?_⟩` and prove the remaining obligations. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations. Conclude with `(((continuous_paramMap π).tendsto x₀).eventually (Metric.ball_mem_nhds _ (hδ i))).and (((continuous_apply i).tendsto x₀).eventually (Metric.ball_mem_nhds _ (hδ i)))`. Introduce and unpack `x ⟨hxV, hxU⟩ x' ⟨hxV', hxU'⟩`. Use `(pi_norm_le_iff_of_nonneg (mul_nonneg (Finset.sum_nonneg fun i _ => hK i) (norm_nonneg _))).2 fun i => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hV x hxV i`. Establish `h2` using `hV x' hxV' i`. Rewrite `h1`, `h2` using `[eval_map_eq_sum]`. Use `hcore i _ _ _ _ (hxU i).1 (hxU' i).1 (hxU i).2 (hxU' i).2 h1 h2` as an intermediate fact. Rewrite using `[Pi.sub_apply]`.
+
+Use `this.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := K) (fun j _ => hK j) (Finset.mem_univ i)`.
+-/
 theorem local_antilipschitz {n r : ℕ} (π : Fin r → MvPolynomial (Fin n) ℂ)
     (P : Fin n → Polynomial (MvPolynomial (Fin r) ℂ)) (V : Set (Fin n → ℂ))
     (hV : ∀ x ∈ V, ∀ i, Polynomial.eval (x i) ((P i).map (MvPolynomial.eval (paramMap π x))) = 0)
@@ -168,6 +220,15 @@ theorem local_antilipschitz {n r : ℕ} (π : Fin r → MvPolynomial (Fin n) ℂ
   refine this.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))
   exact Finset.single_le_sum (f := K) (fun j _ => hK j) (Finset.mem_univ i)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt0`. Establish `hlt` using `not_le.1 hlt0`. Take `⟨x₀, hx₀, hall⟩` from `exists_mem_nhdsWithin_lt_dimH_of_lt_dimH hlt`. Take `⟨U, hU, K, hK, hKU⟩` from `h x₀ hx₀`. Establish `hlt'` using `hall (S ∩ U) (inter_mem_nhdsWithin S hU)`.
+
+Use `(not_le.2 hlt') ?_` and prove the remaining obligations. Set `g : (S ∩ U : Set (Fin n → ℂ)) → (Fin r → ℂ)` to `fun a => f a`. Establish `hg : AntilipschitzWith ⟨K, hK⟩ g`. Use `AntilipschitzWith.of_le_mul_dist fun a b => ?_` and prove the remaining obligations. Rewrite using `[Subtype.dist_eq, dist_eq_norm, dist_eq_norm]`.
+
+Conclude with `hKU a a.2 b b.2`. Establish `e1 : dimH (S ∩ U) = dimH (Set.univ : Set (S ∩ U : Set (Fin n → ℂ)))`. Rewrite using `[← (isometry_subtype_coe).dimH_image Set.univ, Subtype.coe_image_univ]`. Establish `hfin : Module.finrank ℝ (Fin r → ℂ) = 2 * r`. Rewrite using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_comm]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dimH_le_of_local_antilipschitz {n r : ℕ} (f : (Fin n → ℂ) → (Fin r → ℂ))
     (S : Set (Fin n → ℂ))
     (h : ∀ x₀ ∈ S, ∃ U ∈ 𝓝 x₀, ∃ K : ℝ, 0 ≤ K ∧
@@ -195,6 +256,9 @@ theorem dimH_le_of_local_antilipschitz {n r : ℕ} (f : (Fin n → ℂ) → (Fin
     _ = Module.finrank ℝ (Fin r → ℂ) := Real.dimH_univ_eq_finrank _
     _ = 2 * (r : ENNReal) := by rw [hfin]; push_cast; ring
 
+/- English proof (translation)
+Use `dimH_le_of_local_antilipschitz (paramMap π) _ fun x₀ hx₀ => ?_` and prove the remaining obligations. Take `⟨U, hU, K, hK, hKU⟩` from `local_antilipschitz π P V hV x₀ hx₀.2`. Conclude with `⟨U, hU, K, hK, fun x hx x' hx' => hKU x ⟨hx.1.1, hx.2⟩ x' ⟨hx'.1.1, hx'.2⟩⟩`.
+-/
 theorem dimH_simple_roots_le {n r : ℕ} (π : Fin r → MvPolynomial (Fin n) ℂ)
     (P : Fin n → Polynomial (MvPolynomial (Fin r) ℂ)) (V : Set (Fin n → ℂ))
     (hV : ∀ x ∈ V, ∀ i, Polynomial.eval (x i) ((P i).map (MvPolynomial.eval (paramMap π x))) = 0) :

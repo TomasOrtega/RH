@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.ThetaTransformInj
 
+/- English proof (translation)
+Introduce `D n k Xs Ws Mo ψ' χX χW om τ hH hG d G e hdet F₁ hF₁ F₂ hF₂ h`. Take `⟨-, hstd, -, hdX, -, hdW, -⟩` from `hH`. Take `⟨T, hT, hTi⟩` from `GlobalTheory.ThetaTransformInj.linear_injective D Mo ψ' G e hG hstd hdX hdW hdet`. Rewrite `h` using `[← hT F₁ hF₁, ← hT F₂ hF₂, ← sub_eq_zero, ← map_sub]`. Conclude with `sub_eq_zero.1 (hTi _ (Submodule.sub_mem _ hF₁ hF₂) h)`.
+-/
 theorem thO_injective : ∀ (D : D7) {n k : ℕ} (Xs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E n) (Ws : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k)
     (Mo : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig Xs Ws) (ψ' : AddChar (AF D.host.F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Xs Ws)

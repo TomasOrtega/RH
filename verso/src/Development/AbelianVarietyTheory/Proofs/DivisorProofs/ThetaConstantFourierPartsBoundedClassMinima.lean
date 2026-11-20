@@ -20,6 +20,9 @@ namespace GlobalTheory.Poinc.CNorm
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : c = c'` from `AddMonoidHom.ext fun t => hc t t.2 t.2`. Conclude with `⟨rfl, fun k' => ⟨k', rfl⟩⟩`.
+-/
 theorem transport (S : ThetaSys o Ω) {T T' : AddSubgroup S.Gam} (h : T = T') (c : T →+ ZMod S.N)
     (c' : T' →+ ZMod S.N) (hc : ∀ t (h1 : t ∈ T) (h2 : t ∈ T'), c ⟨t, h1⟩ = c' ⟨t, h2⟩) :
     S.proj T c = S.proj T' c' ∧ ∀ k', ∃ k, S.FF T c k = S.FF T' c' k' := by
@@ -27,6 +30,17 @@ theorem transport (S : ThetaSys o Ω) {T T' : AddSubgroup S.Gam} (h : T = T') (c
   obtain rfl : c = c' := AddMonoidHom.ext fun t => hc t t.2 t.2
   exact ⟨rfl, fun k' => ⟨k', rfl⟩⟩
 
+/- English proof (translation)
+Use `set w : Sp (PadicAlgCl p) := IsLocalRing.closedPoint _`. Establish `hsp : ∀ w', (gPt p ≫ y) w' ⤳ (gPt p ≫ y) w` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ w)`. Establish `hR : ∀ b ∈ S.R, b ∈ M.O ((gPt p ≫ y) w)` using `fun b hb => RatModel.mem_ringOn.1 (hO.le hb) _ (hc.2 ⟨w, rfl⟩)`. Establish `hOx : ∀ b ∈ M.O x, b ∈ M.O ((gPt p ≫ y) w)` using `fun b hb => RatModel.O_le_of_specializes (RatModel.gPt_specializes hc.1 w) hb`. Establish `hval : ∀ b (hb : b ∈ S.R), y₀ ⟨b, hb⟩ = M.val (gPt p ≫ y) b` using `fun b hb => hat ⟨b, hb⟩`.
+
+Establish `key : ∀ a₁ ∈ S.supI M x, ∀ a', ‖y₀ ⟨S.th a', S.th_mem a'⟩‖ = ‖M.val (gPt p ≫ y) (S.th a' / S.th a₁)‖ * ‖y₀ ⟨S.th a₁, S.th_mem a₁⟩‖`. Introduce `a₁ h₁ a'`. Rewrite using `[hval, hval, ← norm_mul, ← RatModel.val_mul hsp (hOx _ (h₁.2 a')) (hR _ (S.th_mem a₁)), div_mul_cancel₀ _ h₁.1]`. Establish `hmax : ∀ a₁ ∈ S.supI M x, ‖y₀ ⟨S.th a₁, S.th_mem a₁⟩‖ = τ.δ`. Introduce `a₁ h₁`.
+
+Use `IsGreatest.unique (s := Set.range fun x => ‖y₀ ⟨S.th x, S.th_mem x⟩‖) ⟨⟨a₁, rfl⟩, ?_⟩ τ.δ_max` and prove the remaining obligations. Introduce and unpack `_ ⟨a', rfl⟩`. Use `show ‖y₀ ⟨S.th a', S.th_mem a'⟩‖ ≤ _`. Rewrite using `[key a₁ h₁ a']`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hc.norm_val_le_one (h₁.2 a'))`.
+
+Use `⟨hmax a, fun h => ?_⟩` and prove the remaining obligations. Take `⟨a₁, h₁⟩` from `hO.div x`. Establish `e` using `key a₁ h₁ a`. Rewrite `e` using `[h, hmax a₁ h₁]`. Establish `h1 : ‖M.val (gPt p ≫ y) (S.th a / S.th a₁)‖ = 1` using `mul_right_cancel₀ τ.δ_pos.ne' (e.symm.trans (_root_.one_mul _).symm)`.
+
+Conclude with `(RatModel.Div.div_iff_isUnit h₁ a).2 ((RatModel.norm_val_eq_one_iff hc.1 (h₁.2 a)).1 h1)`.
+-/
 theorem mem_supI_iff_norm {S : ThetaSys o Ω} {M : RatModel o Ω} {U₀ : M.Z.Opens} (hO : S.Over₀ M U₀) {x : M.Z}
     {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} (hc : M.Cen U₀ x y) {y₀ : S.R →+* PadicAlgCl p}
     (hat : S.At M y y₀) (τ : S.Test p y₀) (a : S.Gam) :
@@ -59,6 +73,9 @@ theorem mem_supI_iff_norm {S : ThetaSys o Ω} {M : RatModel o Ω} {U₀ : M.Z.Op
     mul_right_cancel₀ τ.δ_pos.ne' (e.symm.trans (_root_.one_mul _).symm)
   exact (RatModel.Div.div_iff_isUnit h₁ a).2 ((RatModel.norm_val_eq_one_iff hc.1 (h₁.2 a)).1 h1)
 
+/- English proof (translation)
+Rewrite using `[← τ.supp, ThetaSys.HH]`. Use `congr 1`. Use extensionality with `a`. Conclude with `mem_supI_iff_norm hO hc hat τ a`.
+-/
 theorem HH_eq {S : ThetaSys o Ω} {M : RatModel o Ω} {U₀ : M.Z.Opens} (hO : S.Over₀ M U₀) {x : M.Z}
     {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} (hc : M.Cen U₀ x y) {y₀ : S.R →+* PadicAlgCl p}
     (hat : S.At M y y₀) (τ : S.Test p y₀) : S.HH M x = τ.yy.ker := by
@@ -67,6 +84,11 @@ theorem HH_eq {S : ThetaSys o Ω} {M : RatModel o Ω} {U₀ : M.Z.Opens} (hO : S
   ext a
   exact mem_supI_iff_norm hO hc hat τ a
 
+/- English proof (translation)
+Use `set w : Sp (PadicAlgCl p) := IsLocalRing.closedPoint _`. Establish `hsp : ∀ w', (gPt p ≫ y) w' ⤳ (gPt p ≫ y) w` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ w)`. Establish `hU : ∀ b ∈ M.ringOn U₀, b ∈ M.O ((gPt p ≫ y) w)` using `fun b hb => RatModel.mem_ringOn.1 hb _ (hc.2 ⟨w, rfl⟩)`. Establish `hth` using `hU _ (hO.le (S.th_mem a))`. Establish `hinv` using `hU _ (hO.th_unit a ha)`.
+
+Establish `hval : ∀ b (hb : b ∈ S.R), y₀ ⟨b, hb⟩ = M.val (gPt p ≫ y) b` using `fun b hb => hat ⟨b, hb⟩`. Establish `e1 : M.val (gPt p ≫ y) (S.th a) * M.val (gPt p ≫ y) (S.th a)⁻¹ = 1`. Rewrite using `[← RatModel.val_mul hsp hth hinv, mul_inv_cancel₀ ha, RatModel.val_one]`. Rewrite using `[div_eq_mul_inv, RatModel.val_mul hsp (hU _ (hO.le hF)) hinv, hval, hval, norm_mul, div_eq_mul_inv, eq_inv_of_mul_eq_one_right e1, norm_inv]`.
+-/
 theorem norm_val_div {S : ThetaSys o Ω} {M : RatModel o Ω} {U₀ : M.Z.Opens} (hO : S.Over₀ M U₀) {x : M.Z}
     {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} (hc : M.Cen U₀ x y) {y₀ : S.R →+* PadicAlgCl p}
     (hat : S.At M y y₀) {F : Ω} (hF : F ∈ S.R) {a : S.Gam} (ha : S.th a ≠ 0) :
@@ -84,6 +106,11 @@ theorem norm_val_div {S : ThetaSys o Ω} {M : RatModel o Ω} {U₀ : M.Z.Opens} 
   rw [div_eq_mul_inv, RatModel.val_mul hsp (hU _ (hO.le hF)) hinv, hval, hval, norm_mul, div_eq_mul_inv,
     eq_inv_of_mul_eq_one_right e1, norm_inv]
 
+/- English proof (translation)
+Establish `hproj` using `(transport S hT c (τ.wt β) hc).1`. Use `Fintype.ofFinite T` as an intermediate fact. Rewrite using `[S.map_FF y₀ T c κ]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_pos τ.δ_pos (Real.exp_pos _)).le fun t _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, S.norm_ζ, one_pow, _root_.one_mul, hproj]`.
+
+Conclude with `τ.le β hβ t (τ.perp_ker_le_ker (hT ▸ t.2)) κ.1`.
+-/
 theorem norm_FF_le {S : ThetaSys o Ω} {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (τ : S.Test p y₀)
     {β : τ.X} (hβ : ∀ v0, τ.q β ≤ τ.q (β + S.N • v0)) {T : AddSubgroup S.Gam} (hT : T = S.perp τ.yy.ker)
     (c : T →+ ZMod S.N) (hc : ∀ t (h1 : t ∈ T) (h2 : t ∈ S.perp τ.yy.ker), c ⟨t, h1⟩ = τ.wt β ⟨t, h2⟩)
@@ -97,6 +124,29 @@ theorem norm_FF_le {S : ThetaSys o Ω} {p : ℕ} [Fact p.Prime] {y₀ : S.R →+
   rw [norm_mul, norm_pow, S.norm_ζ, one_pow, _root_.one_mul, hproj]
   exact τ.le β hβ t (τ.perp_ker_le_ker (hT ▸ t.2)) κ.1
 
+/- English proof (translation)
+Introduce `o' Ω _ _ _ _ S ρ hBig M U₀ EE FinalForm hAdm hEE x hx R _ _ _ j hBase hCpl G _ _ gm hpb D A U hLB hPsi`. Take `⟨yy, H⟩` from `GlobalTheory.T.complete_local_base_at_closed_point_group o' Ω S ρ hBig M U₀ EE FinalForm hAdm hEE x hx R j hBase hCpl G gm hpb D A U hLB hPsi`. Establish `hO` using `hAdm.1`. Take `⟨p₁, hp₁, y₁, hc₁⟩` from `GlobalTheory.Poinc.exists_cen_main o' Ω M x hx U₀ hO.ne`. Take `⟨V, _, _, _, ev₀, i, -, -, -, -, hcomp₁, -⟩` from `GlobalTheory.ClassicalPt.extend_completion o' Ω M x R j hCpl p₁ y₁ hc₁.1`.
+
+Take `⟨y₀₁, hat₁, -⟩` from `S.exists_at_of_cen M hO.le hc₁`. Take `⟨τ₁, ε₁, -, hlab₁⟩` from `H p₁ y₁ (i.comp ev₀) hc₁ hcomp₁ y₀₁ hat₁`. Establish `hTT₁ : S.TT M x = S.perp τ₁.yy.ker` using `by rw [ThetaSys.TT, HH_eq hO hc₁ hat₁ τ₁]`. Use `⟨by rw [hTT₁]; exact τ₁.isoFree, fun α₀ => ?_⟩` and prove the remaining obligations. Take `⟨a₀, ha₀⟩` from `τ₁.yy_onto (QuotientAddGroup.mk (ε₁ α₀))`.
+
+Establish `hya₀ : yy a₀ = QuotientAddGroup.mk α₀` using `(hlab₁ a₀ α₀).2 ha₀`. Set `c' : S.TT M x →+ ZMod S.N` to `{ toFun := fun t => ZMod.castHom (dvd_mul_left S.N S.r) (ZMod S.N) (eStd S.g _ (t : S.Gam) a₀) map_zero' := by simp map_add' := fun t t' => by simp [eStd_add_left] }`. Use `⟨c', ?_⟩` and prove the remaining obligations. Introduce `p _ y ev hc hcomp x₀ hx₀`. Take `⟨y₀, hat, -⟩` from `S.exists_at_of_cen M hO.le hc`.
+
+Take `⟨τ, ε, hnorm, hlab⟩` from `H p y ev hc hcomp y₀ hat`. Establish `hTT : S.TT M x = S.perp τ.yy.ker` using `by rw [ThetaSys.TT, HH_eq hO hc hat τ]`. Take `⟨v, hv⟩` from `τ.exists_shortest (ε α₀)`. Establish `hwt : ∀ t (h1 : t ∈ S.TT M x) (h2 : t ∈ S.perp τ.yy.ker), c' ⟨t, h1⟩ = τ.wt (ε α₀ + S.N • v) ⟨t, h2⟩`. Introduce `t h1 h2`.
+
+Establish `hτa : τ.yy a₀ = QuotientAddGroup.mk (ε α₀)` using `(hlab a₀ α₀).1 hya₀`. Rewrite using `[map_add, τ.wt_nsmul, add_zero, τ.wt_eq a₀ (ε α₀) hτa]`. Both sides reduce to the same expression. Establish `hqβ : ∀ α', CongMod S.N α' α₀ → τ.q (ε α₀ + S.N • v) ≤ τ.q (ε α')`. Introduce and unpack `α' ⟨w', rfl⟩`.
+
+Establish `e : ε (α₀ + S.N • w') = ε α₀ + S.N • v + S.N • (ε w' - v)`. Rewrite using `[map_add, map_nsmul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `hv _`.
+
+Establish `hα : CongMod S.N (ε.symm (ε α₀ + S.N • v)) α₀` using `⟨ε.symm v, by rw [map_add, map_nsmul, AddEquiv.symm_apply_apply]⟩`. Take `⟨s, hs⟩` from `(GlobalTheory.PeriodFormCompare.exists_psiCoord_iff D.toPre (ε.symm (ε α₀ + S.N • v))).2 (GlobalTheory.PeriodFormCompare.psiIn_top D _)`. Establish `hsn : ‖(ev s : PadicAlgCl p)‖ = Real.exp (-τ.q (ε α₀ + S.N • v))`. Rewrite using `[hnorm _ s hs, AddEquiv.apply_symm_apply]`. Establish `hN : (S.N : ℝ) ≠ 0` using `by have := S.N_ge; positivity`.
+
+Establish `hexp : Real.exp (-(τ.q (ε α₀ + S.N • v) / S.N)) ^ S.N = Real.exp (-τ.q (ε α₀ + S.N • v))`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hδ : ‖y₀ ⟨S.th x₀, S.th_mem x₀⟩‖ = τ.δ` using `(mem_supI_iff_norm hO hc hat τ x₀).1 hx₀`.
+
+Use `⟨fun κ => ⟨_, s, hα, hs, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_val_div hO hc hat (S.FF_mem _ c' κ) hx₀.1, hδ, hsn, ← hexp]`. Use `pow_le_pow_left₀ (div_nonneg (norm_nonneg _) τ.δ_pos.le) ?_ _` and prove the remaining obligations. Rewrite using `[div_le_iff₀ τ.δ_pos, mul_comm]`. Conclude with `norm_FF_le τ hv hTT c' hwt κ`.
+
+Take `⟨k, hk, hkeq⟩` from `τ.eq _ hv`. Take `⟨κ, hκ⟩` from `(transport S hTT c' _ hwt).2 k`. Use `⟨κ, fun α' s' hα' hs' => ?_⟩` and prove the remaining obligations. Establish `e : ‖M.val (gPt p ≫ y) (S.FF (S.TT M x) c' κ / S.th x₀)‖ ^ S.N = Real.exp (-τ.q (ε α₀ + S.N • v))`. Rewrite using `[norm_val_div hO hc hat (S.FF_mem _ c' κ) hx₀.1, hδ, show (⟨S.FF (S.TT M x) c' κ, S.FF_mem _ c' κ⟩ : S.R) = ⟨_, hk⟩ from Subtype.ext hκ, hkeq, mul_div_cancel_left₀ _ τ.δ_pos.ne', hexp]`.
+
+Rewrite using `[e, hnorm α' s' hs']`. Conclude with `Real.exp_le_exp.2 (neg_le_neg (hqβ α' hα'))`.
+-/
 theorem main : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real), S.Big → ∀ (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.admitted M U₀ → S.IsEE M U₀ EE → ∀ x : M.Z, IsClosed ({x} : Set M.Z) → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (j : M.Z.presheaf.stalk x →+* R), GlobalTheory.Mum.Base R → IsCpl j → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (gm : G.left ⟶ FinalForm.G.left), IsGrpPullback G FinalForm.G (spMap j ≫ M.Z.fromSpecStalk x) gm → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G), LBIso U.LG.L (FinalForm.L.L.pull gm) → (∀ y, PsiUnitOn D.toPre y ((spMap j ≫ M.Z.fromSpecStalk x) ⁻¹' abLocus FinalForm.G)) → S.IsoFree (S.TT M x) ∧ ∀ α₀ : D.toPre.X, ∃ c' : S.TT M x →+ ZMod S.N, ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (ev : R →+* OO p), M.Cen U₀ x y → spMap ev ≫ (spMap j ≫ M.Z.fromSpecStalk x) = y → ∀ x₀ ∈ S.supI M x, (∀ κ, ∃ α s, CongMod S.N α α₀ ∧ PsiCoord D.toPre α s ∧ ‖M.val (gPt p ≫ y) (S.FF (S.TT M x) c' κ / S.th x₀)‖ ^ S.N ≤ ‖(ev s : PadicAlgCl p)‖) ∧ ∃ κ, ∀ α s, CongMod S.N α α₀ → PsiCoord D.toPre α s → ‖(ev s : PadicAlgCl p)‖ ≤ ‖M.val (gPt p ≫ y) (S.FF (S.TT M x) c' κ / S.th x₀)‖ ^ S.N := by
   intro o' Ω _ _ _ _ S ρ hBig M U₀ EE FinalForm hAdm hEE x hx R _ _ _ j hBase hCpl G _ _ gm hpb D A U hLB hPsi
   obtain ⟨yy, H⟩ := GlobalTheory.T.complete_local_base_at_closed_point_group o' Ω S ρ hBig M U₀ EE FinalForm hAdm hEE x hx R j hBase hCpl G gm hpb D A U hLB hPsi

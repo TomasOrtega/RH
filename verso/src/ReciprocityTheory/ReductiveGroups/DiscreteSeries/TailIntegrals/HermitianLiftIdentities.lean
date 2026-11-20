@@ -9,6 +9,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Xi.DetB
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
+/- English proof (translation)
+Unfold `gN`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem entry_le_gN {k r : ℕ} (h : Mat k r) (m j : Fin (2 * r + k + 1)) : ‖h m j‖ ≤ gN h := by
   unfold gN
   apply Real.le_sqrt_of_sq_le
@@ -23,9 +26,17 @@ theorem entry_le_gN {k r : ℕ} (h : Mat k r) (m j : Fin (2 * r + k + 1)) : ‖h
 def cst {k r : ℕ} (H : Mat k r) (v w : Fin (2 * r + k + 1) → ℂ) : ℝ :=
   ∑ i, ∑ m, ∑ j, ‖w i‖ * ‖H i m‖ * ‖v j‖
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity`.
+-/
 theorem cst_nonneg {k r : ℕ} (H : Mat k r) (v w : Fin (2 * r + k + 1) → ℂ) : 0 ≤ cst H v w :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity
 
+/- English proof (translation)
+Establish `hb` using `entry_le_gN h`. Unfold `herm cst`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [dotProduct, mulVec, Pi.star_apply, Finset.mul_sum]`. Use `_ ≤ ∑ i, ∑ m, ∑ j, ‖star (w i) * (H i m * (h m j * v j))‖ := (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => (norm_sum_le _ _).trans (Finset.sum_le_sum fun m _ => norm_sum_le _ _))`.
+
+Use `_ ≤ ∑ i, ∑ m, ∑ j, ‖w i‖ * ‖H i m‖ * ‖v j‖ * gN h := by`. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun m _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_star]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (∑ i, ∑ m, ∑ j, ‖w i‖ * ‖H i m‖ * ‖v j‖) * gN h := by simp only [Finset.sum_mul]`.
+-/
 theorem herm_le {k r : ℕ} (H h : Mat k r) (v w : Fin (2 * r + k + 1) → ℂ) :
     ‖herm H (h *ᵥ v) w‖ ≤ cst H v w * gN h := by
   have hb := entry_le_gN h
@@ -44,9 +55,15 @@ theorem herm_le {k r : ℕ} (H h : Mat k r) (v w : Fin (2 * r + k + 1) → ℂ) 
 
 def K0 (k r : ℕ) : ℝ := ∑ a : Fin (r + 1), ∑ b : Fin (r + 1), cst (Hpk k r) (phiV' k r b) (phiV' k r a)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => cst_nonneg _ _ _`.
+-/
 theorem lipschitzConst_nonneg (k r : ℕ) : 0 ≤ K0 k r :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => cst_nonneg _ _ _
 
+/- English proof (translation)
+Unfold `K0`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hermForm_phi_le_bound (k r : ℕ) (a b : Fin (r + 1)) :
     cst (Hpk k r) (phiV' k r b) (phiV' k r a) ≤ K0 k r := by
   unfold K0
@@ -56,6 +73,11 @@ theorem hermForm_phi_le_bound (k r : ℕ) (a b : Fin (r + 1)) :
     _ ≤ _ := Finset.single_le_sum (f := fun a' => ∑ b', cst (Hpk k r) (phiV' k r b') (phiV' k r a'))
           (fun _ _ => Finset.sum_nonneg fun _ _ => cst_nonneg _ _ _) (Finset.mem_univ a)
 
+/- English proof (translation)
+Establish `hx : ∀ i j, NormedField.toAbsoluteValue ℂ ((Matrix.of fun a b : Fin (l.val + 1) => herm (Hpk k r) (h *ᵥ phiV' k r (Fin.castLE (by omega) b)) (phiV' k r (Fin.castLE (by omega) a))) i j) ≤ K0 k r * gN h`. Introduce `i j`. Use `show ‖herm (Hpk k r) (h *ᵥ phiV' k r _) (phiV' k r _)‖ ≤ _`. Conclude with `(herm_le _ _ _ _).trans (mul_le_mul_of_nonneg_right (hermForm_phi_le_bound _ _ _ _) (le_trans (norm_nonneg _) (entry_le_gN h 0 0)))`. Use `Matrix.det_le hx` as an intermediate fact.
+
+Simplify using `only [Fintype.card_fin, nsmul_eq_mul] at this`. Conclude with `this`.
+-/
 theorem Dl_le (k r : ℕ) (l : Fin (r + 1)) (h : Mat k r) :
     ‖Dl k r l h‖ ≤ (l.val + 1).factorial * (K0 k r * gN h) ^ (l.val + 1) := by
   have hx : ∀ i j, NormedField.toAbsoluteValue ℂ ((Matrix.of fun a b : Fin (l.val + 1) =>
@@ -71,10 +93,24 @@ theorem Dl_le (k r : ℕ) (l : Fin (r + 1)) (h : Mat k r) :
 
 def cl (k r : ℕ) (l : Fin (r + 1)) : ℝ := (l.val + 1).factorial * K0 k r ^ (l.val + 1) + 1
 
+/- English proof (translation)
+Use `lipschitzConst_nonneg k r` as an intermediate fact. Unfold `cl`. Check the signs of the components of the expression.
+-/
 theorem cl_pos (k r : ℕ) (l : Fin (r + 1)) : 0 < cl k r l := by
   have := lipschitzConst_nonneg k r
   unfold cl; positivity
 
+/- English proof (translation)
+Establish `hM0 : 0 < gN h` using `by linarith`. Establish `hc` using `cl_pos k r l`. Establish `hK` using `lipschitzConst_nonneg k r`. Establish `hD : ‖Dl k r l h‖ ≤ cl k r l * gN h ^ (l.val + 1)`. Use `Dl_le k r l h` as an intermediate fact.
+
+Rewrite `this` using `[mul_pow, ← mul_assoc]`. Use `this.trans ?_` and prove the remaining obligations. Unfold `cl`. Establish `: 0 ≤ gN h ^ (l.val + 1)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hb : 0 < cl k r l * gN h ^ (l.val + 1)` using `mul_pos hc (pow_pos hM0 _)`. Establish `h1 : (‖Dl k r l h‖₊ : ℝ≥0∞) ≤ ENNReal.ofReal (cl k r l * gN h ^ (l.val + 1))`. Rewrite using `[← ENNReal.ofReal_coe_nnreal, coe_nnnorm]`. Conclude with `ENNReal.ofReal_le_ofReal hD`. Establish `h2 : ENNReal.ofReal (cl k r l * gN h ^ (l.val + 1)) ^ (-s) ≤ (‖Dl k r l h‖₊ : ℝ≥0∞) ^ (-s)`.
+
+Rewrite using `[ENNReal.rpow_neg, ENNReal.rpow_neg]`. Conclude with `ENNReal.inv_le_inv.2 (ENNReal.rpow_le_rpow h1 hs)`. Use `le_trans (le_of_eq ?_) (mul_le_mul' le_rfl h2)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_rpow_of_pos hb, ← ENNReal.ofReal_mul (Real.rpow_nonneg hc.le _)]`. Use `congr 1`.
+
+Rewrite using `[Real.mul_rpow hc.le (pow_nonneg hM0.le _), Real.rpow_neg hc.le, ← Real.rpow_natCast, ← Real.rpow_mul hM0.le, ← mul_assoc, mul_inv_cancel₀ (Real.rpow_pos_of_pos hc s).ne', one_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fac_le (k r : ℕ) (l : Fin (r + 1)) (s : ℝ) (hs : 0 ≤ s) (h : Mat k r) (hM : 1 ≤ gN h) :
     ENNReal.ofReal (gN h ^ (-(((l.val : ℝ) + 1) * s))) ≤
       ENNReal.ofReal (cl k r l ^ s) * (‖Dl k r l h‖₊ : ℝ≥0∞) ^ (-s) := by
@@ -108,6 +144,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.Xi
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 DetB
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hGN, -⟩` from `hB2`. Introduce `k r s A _ hs hA`. Use `⟨∏ l, Real.toNNReal (cl k r l ^ s l), fun h hh => ?_⟩` and prove the remaining obligations. Establish `hM : 1 ≤ gN h` using `hGN k r h hh`. Establish `hM0 : 0 < gN h` using `by linarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_neg_distrib, Real.rpow_sum_of_pos hM0, ENNReal.ofReal_prod_of_nonneg (fun _ _ => Real.rpow_nonneg hM0.le _)]`. Use `_ ≤ ∏ l : Fin (r + 1), (ENNReal.ofReal (cl k r l ^ s l) * (‖Dl k r l h‖₊ : ℝ≥0∞) ^ (-s l)) := Finset.prod_le_prod' fun l _ => fac_le k r l (s l) (hs l) h hM`. Use `_ = _ := by`. Rewrite using `[Finset.prod_mul_distrib, FsE, ENNReal.ofNNReal_finsetProd]`.
+
+Both sides reduce to the same expression.
+-/
 theorem detH (hB2 : InductiveHeisenbergInputs) : DET := by
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hGN, -⟩ := hB2
   intro k r s A _ hs hA

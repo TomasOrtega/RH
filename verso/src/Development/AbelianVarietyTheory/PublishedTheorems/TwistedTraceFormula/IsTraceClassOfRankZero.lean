@@ -13,10 +13,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CuspSpectrum.Model
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Measure.haar, inferInstance, AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V _ inferInstance⟩`.
+-/
 theorem exists_measure (D : D7) (V : HSp D) :
     ∃ μ : Measure (GA D V), μ.IsHaarMeasure ∧ μ.IsMulRightInvariant :=
   ⟨Measure.haar, inferInstance, AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V _ inferInstance⟩
 
+/- English proof (translation)
+Take `⟨D⟩` from `Mem.nonempty_record_of_locStage`. Take `⟨μ, _, _⟩` from `exists_measure D (line D)`. Take `⟨v, hv, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (L2cusp_ne_bot μ (wittIndex_line D))`. Take `⟨f, hf, h⟩` from `exists_RcuspOp_ne_zero (v := ⟨v, hv⟩) fun e => h0 (congrArg Subtype.val e)`. Conclude with `⟨D, line D, μ, ‹_›, ‹_›, rfl, f, hf, fun e => h (by rw [e]; rfl)⟩`.
+-/
 theorem exists_ne_zero : ∃ (D : D7) (V : HSp D) (μ : Measure (GA D V)) (_ : μ.IsHaarMeasure)
     (_ : μ.IsMulRightInvariant), V.rank = 1 ∧ ∃ f ∈ CcGA V, RcuspOp V μ f ≠ 0 := by
   obtain ⟨D⟩ := Mem.nonempty_record_of_locStage
@@ -25,6 +31,9 @@ theorem exists_ne_zero : ∃ (D : D7) (V : HSp D) (μ : Measure (GA D V)) (_ : �
   obtain ⟨f, hf, h⟩ := exists_RcuspOp_ne_zero (v := ⟨v, hv⟩) fun e => h0 (congrArg Subtype.val e)
   exact ⟨D, line D, μ, ‹_›, ‹_›, rfl, f, hf, fun e => h (by rw [e]; rfl)⟩
 
+/- English proof (translation)
+Take `⟨D⟩` from `Mem.nonempty_record_of_locStage`. Take `⟨μ, _, _⟩` from `exists_measure D (plane D)`. Take `⟨φ, hφ, -, h1, -⟩` from `exists_bump_ccAd (J := (plane D).gram) (isCMExt_host D) univ_mem`. Conclude with `⟨D, plane D, μ, ‹_›, ‹_›, wittIndex_plane D, L2cusp_plane_ne_top μ, _, hφ, by simp [h1]⟩`.
+-/
 theorem exists_isotropic : ∃ (D : D7) (V : HSp D) (μ : Measure (GA D V)) (_ : μ.IsHaarMeasure)
     (_ : μ.IsMulRightInvariant), wittIndex V = 1 ∧ L2cusp V μ ≠ ⊤ ∧ ∃ f ∈ CcGA V, f 1 = 1 := by
   obtain ⟨D⟩ := Mem.nonempty_record_of_locStage
@@ -34,6 +43,11 @@ theorem exists_isotropic : ∃ (D : D7) (V : HSp D) (μ : Measure (GA D V)) (_ :
 
 variable {D : D7} {V : HSp D} {μ : Measure (GA D V)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
+/- English proof (translation)
+Establish `h1 : ∀ g, Rcusp V μ g v = v` using `fun g => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `RG V μ g (v : DividedPowerChartLift V μ) = _`. Rewrite using `[hv]`. Conclude with `right_translate_toL2 (memL2_const (Γ := GQ V) (μ := μ) 1) g)`. Rewrite using `[(isRepOp_RcuspOp hf v).2]`.
+
+Simplify using `only [h1]`. Conclude with `integral_smul_const f v`.
+-/
 theorem RcuspOp_one {v : L2cusp V μ} (hv : (v : DividedPowerChartLift V μ) = constantOneDividedPowerChartLift V μ) {f : GA D V → ℂ} (hf : f ∈ CcGA V) :
     RcuspOp V μ f v = (∫ g, f g ∂μ) • v := by
   have h1 : ∀ g, Rcusp V μ g v = v := fun g => Subtype.ext (by
@@ -44,6 +58,13 @@ theorem RcuspOp_one {v : L2cusp V μ} (hv : (v : DividedPowerChartLift V μ) = c
   simp only [h1]
   exact integral_smul_const f v
 
+/- English proof (translation)
+Establish `: IsEmpty (Fin V.rank)` using `h ▸ inferInstanceAs (IsEmpty (Fin 0))`. Establish `hs : Subsingleton (GA D V)` using `⟨fun a b => Subtype.ext (Units.ext (Subsingleton.elim _ _))⟩`. Establish `hq : Subsingleton (Quot (GQ V))` using `⟨fun a b => by`. Rewrite using `[← mk_sec a, ← mk_sec b, Subsingleton.elim (sec _ a) (sec _ b)]⟩`. Establish `: FiniteDimensional ℂ (DividedPowerChartLift V μ)`.
+
+Use `Module.Finite.of_surjective (LinearMap.toSpanSingleton ℂ _ (constantOneDividedPowerChartLift V μ)) fun F => ?_` and prove the remaining obligations. Use `⟨F (mk _ 1), Lp.ext ?_⟩` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_smul (F (mk _ 1)) (constantOneDividedPowerChartLift V μ), (memL2_const (Γ := GQ V) (μ := μ) 1).coeFn_toL2] with q a b`. Rewrite using `[LinearMap.toSpanSingleton_apply, a, Pi.smul_apply, show constantOneDividedPowerChartLift V μ q = _ from b, Subsingleton.elim q (mk _ 1)]`. Simplify using `[AutomorphicL2Unitary.descend]`.
+
+Conclude with `isTraceClass_of_finiteDimensional _`.
+-/
 theorem isTraceClass_of_rank_zero (h : V.rank = 0) (f : GA D V → ℂ) : IsTraceClass (RcuspOp V μ f) := by
   have : IsEmpty (Fin V.rank) := h ▸ inferInstanceAs (IsEmpty (Fin 0))
   have hs : Subsingleton (GA D V) := ⟨fun a b => Subtype.ext (Units.ext (Subsingleton.elim _ _))⟩

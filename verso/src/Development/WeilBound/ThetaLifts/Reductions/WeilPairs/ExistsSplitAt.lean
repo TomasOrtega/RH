@@ -16,6 +16,11 @@ open GlobalTheory.UnRep GlobalTheory.SplitCharTrivial GlobalTheory.SplitIdem
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨e, he, -, hc⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Establish `h : ∀ z, e.symm (infPartF F E z, finPartF F E z) = z` using `fun z => by`. Establish `: (infPartF F E z, finPartF F E z) = e z` using `Prod.ext (he z).1.symm (he z).2.symm`. Rewrite using `[this]`. Conclude with `e.symm_apply_apply z`.
+
+Use `(hc.tendsto _).comp (h1.prodMk_nhds h2)` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.congr fun k => h _`.
+-/
 theorem tendsto_AE {x : ℕ → AEF F E} {x₀ : AEF F E}
     (h1 : Tendsto (fun k => infPartF F E (x k)) atTop (𝓝 (infPartF F E x₀)))
     (h2 : Tendsto (fun k => finPartF F E (x k)) atTop (𝓝 (finPartF F E x₀))) : Tendsto x atTop (𝓝 x₀) := by
@@ -28,6 +33,9 @@ theorem tendsto_AE {x : ℕ → AEF F E} {x₀ : AEF F E}
   rw [h] at this
   exact this.congr fun k => h _
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (GlobalTheory.SplitDetCharF.adele_tensor_ext _ (by rw [map_sub, h1, sub_self]) (by rw [map_sub, h2, sub_self]))`.
+-/
 theorem parts_inj (x y : AEF F E) (h1 : infPartF F E x = infPartF F E y) (h2 : finPartF F E x = finPartF F E y) :
     x = y :=
   sub_eq_zero.1 (GlobalTheory.SplitDetCharF.adele_tensor_ext _ (by rw [map_sub, h1, sub_self]) (by rw [map_sub, h2, sub_self]))
@@ -46,14 +54,26 @@ def fj : Af F →ₙ+* AEF F E where
     congr 1
     exact Prod.ext (mul_zero _).symm rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cA_tmul (σ : E →ₐ[F] E) (a : AF F) (x : E) : cAF σ (a ⊗ₜ[F] x) = a ⊗ₜ[F] σ x := rfl
 
+/- English proof (translation)
+Use `show cAF σ (_ ⊗ₜ _) = _`. Rewrite using `[cA_tmul, map_one]`. Both sides reduce to the same expression.
+-/
 theorem cA_fj (σ : E →ₐ[F] E) (α : Af F) : cAF σ (fj E α) = fj E α := by
   show cAF σ (_ ⊗ₜ _) = _
   rw [cA_tmul, map_one]; rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext h)`.
+-/
 theorem afext {a b : Af F} (h : ∀ v, evalV F v a = evalV F v b) : a = b := Subtype.ext (funext h)
 
+/- English proof (translation)
+The claim follows from `afext fun w => by by_cases hw : w = v · subst hw; simp only [map_mul, evalV_singleV_same] · simp only [map_mul, evalV_singleV_ne _ v _ hw, mul_zero]`.
+-/
 theorem singleV_mul (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) (α : Af F) :
     α * singleV F v y = singleV F v (evalV F v α * y) := afext fun w => by
   by_cases hw : w = v
@@ -64,6 +84,11 @@ variable (E) in
 
 abbrev pl (v : HeightOneSpectrum (𝓞 F)) : AEF F E := fj E (singleV F v 1)
 
+/- English proof (translation)
+Establish `: singleV F v 1 * singleV F v' 1 = 0` using `afext fun w => by`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[evalV_singleV_ne _ v' _ h, mul_zero]`.
+
+Rewrite using `[evalV_singleV_ne _ v _ hw, zero_mul]`. Rewrite using `[← map_mul, this, map_zero]`.
+-/
 theorem pl_mul_pl {v v' : HeightOneSpectrum (𝓞 F)} (h : v ≠ v') : pl E v * pl E v' = 0 := by
   have : singleV F v 1 * singleV F v' 1 = 0 := afext fun w => by
     rw [map_mul, map_zero]
@@ -72,6 +97,11 @@ theorem pl_mul_pl {v v' : HeightOneSpectrum (𝓞 F)} (h : v ≠ v') : pl E v * 
     · rw [evalV_singleV_ne _ v _ hw, zero_mul]
   rw [← map_mul, this, map_zero]
 
+/- English proof (translation)
+Use `afext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[Finset.sum_eq_single w (fun v _ hv => evalV_singleV_ne _ v _ hv.symm) (fun h => absurd hw h), evalV_singleV_same]`. Establish `h1` using `congrArg (evalV F w) he`.
+
+Rewrite `h1` using `[map_mul]`. Conclude with `mul_left_cancel₀ ((hS w).1 hw) (h1.trans (mul_one _).symm)`. Rewrite using `[Finset.sum_eq_zero fun v hv => evalV_singleV_ne _ v _ (fun h : w = v => hw (h ▸ hv))]`. Assume the negation of the conclusion as `h`. Conclude with `hw ((hS w).2 h)`.
+-/
 theorem idem_eq_sum (e : Af F) (he : e * e = e) (S : Finset (HeightOneSpectrum (𝓞 F)))
     (hS : ∀ v, v ∈ S ↔ evalV F v e ≠ 0) : e = ∑ v ∈ S, singleV F v 1 := by
   refine afext fun w => ?_
@@ -86,6 +116,11 @@ theorem idem_eq_sum (e : Af F) (he : e * e = e) (S : Finset (HeightOneSpectrum (
     by_contra h
     exact hw ((hS w).2 h)
 
+/- English proof (translation)
+Take `⟨θ, d, hd, h1, h2, h3⟩` from `GlobalTheory.SplitDetCharF.exists_int_basis h`. Take `⟨u, w, rfl⟩` from `h3 x`. Establish `hθ : θ ≠ 0` using `fun h0 => hd ((algebraMap F E).injective (by rw [← h2, h0, mul_zero, map_zero]))`. Simplify using `only [Algebra.smul_def, map_add, map_mul, AlgHom.commutes, map_one, h1, add_right_inj] at hx`. Rewrite `hx` using `[← Algebra.smul_def, ← Algebra.smul_def, smul_neg]`.
+
+Establish `hw : w • θ = 0`. Establish `: (2 : E) * (w • θ) = 0` using `by linear_combination -hx`. Conclude with `(mul_eq_zero.1 this).resolve_left two_ne_zero`. Conclude with `⟨u, by rw [hw, add_zero, Algebra.algebraMap_eq_smul_one]⟩`.
+-/
 theorem exists_of_fixed {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {x : E} (hx : σ x = x) : ∃ t : F, algebraMap F E t = x := by
   obtain ⟨θ, d, hd, h1, h2, h3⟩ := GlobalTheory.SplitDetCharF.exists_int_basis h
   obtain ⟨u, w, rfl⟩ := h3 x
@@ -97,12 +132,26 @@ theorem exists_of_fixed {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {x : E} (hx : 
     exact (mul_eq_zero.1 this).resolve_left two_ne_zero
   exact ⟨u, by rw [hw, add_zero, Algebra.algebraMap_eq_smul_one]⟩
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_of_fixed h hx`. Establish `hi : IsIntegral ℤ t` using `(isIntegral_algebraMap_iff (algebraMap F E).injective).1 (ht ▸ x.2)`. Conclude with `⟨⟨t, hi⟩, RingOfIntegers.ext ht, ht⟩`.
+-/
 theorem exists_int {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : 𝓞 E) (hx : σ (x : E) = x) :
     ∃ t : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) t = x ∧ algebraMap F E (t : F) = x := by
   obtain ⟨t, ht⟩ := exists_of_fixed h hx
   have hi : IsIntegral ℤ t := (isIntegral_algebraMap_iff (algebraMap F E).injective).1 (ht ▸ x.2)
   exact ⟨⟨t, hi⟩, RingOfIntegers.ext ht, ht⟩
 
+/- English proof (translation)
+Take `⟨P, hP, hPv, a, ha, b, hb, hbP⟩` from `hv`. Establish `hcc : ∀ x, c (c x) = x` using `GlobalTheory.SplitDetCharF.sig_invol h`. Take `⟨t, ht, ht'⟩` from `exists_int h (a + b) (by show c ((a : E) + b) = (a : E) + b`. Rewrite using `[hb, map_add, hcc, add_comm])`. Take `⟨n, hn, hn'⟩` from `exists_int h (a * b) (by show c ((a : E) * b) = (a : E) * b`.
+
+Rewrite using `[hb, map_mul, hcc, mul_comm])`. Establish `htv : t ∉ v.asIdeal`. Rewrite using `[← hPv, Ideal.mem_comap, ht]`. Conclude with `fun h => hbP ((Ideal.add_mem_iff_right P ha).1 h)`. Establish `hnv : n ∈ v.asIdeal`.
+
+Rewrite using `[← hPv, Ideal.mem_comap, hn]`. Conclude with `Ideal.mul_mem_right _ _ ha`. Take `⟨r, u, hr, hu⟩` from `GlobalTheory.MovedSplit.exists_root F v t n htv hnv`. Establish `key` using `GlobalTheory.MovedSplit.idem_tensor (placeHom F v) (fun s y => by`. Use `Prod.ext (mul_zero _).symm ?_` and prove the remaining obligations.
+
+Use `show singleV F v _ = algebraMap F (Af F) s * singleV F v y`. Rewrite using `[singleV_mul, AlgHom.commutes])`. Use the proof step `(cAF (c : E →ₐ[F] E)) (a : E) (b : E) (t : F) (n : F) (r : Fv F v) (u : Fv F v)`. Use the proof step `(fun x => by rw [cA_tmul, map_one]) (fun x => by rw [cA_tmul, hb]; rfl) ht' hn'`. Use the proof step `(congrArg Subtype.val hr) (congrArg Subtype.val hu) _ rfl`.
+
+Conclude with `⟨_, ⟨key.1, key.2.1, v, _, ⟨_, rfl, evalV_singleV_same _ v 1, fun w hw => evalV_singleV_ne _ v _ hw⟩, key.2.2⟩, key.2.2⟩`.
+-/
 theorem exists_splitAt {c : E ≃ₐ[F] E} (h : IsCMExt F E (c : E →ₐ[F] E)) (v : HeightOneSpectrum (𝓞 F))
     (hv : SplitPl c v) : ∃ e : AEF F E, IsSplitIdemF (c : E →ₐ[F] E) e ∧ e + cAF (c : E →ₐ[F] E) e = pl E v := by
   obtain ⟨P, hP, hPv, a, ha, b, hb, hbP⟩ := hv
@@ -137,43 +186,79 @@ variable (σ J) in
 def cutA (ε : AEF F E) (hε : ε * ε = ε) (hσ : cAF σ ε = ε) : GAF σ J →* GAF σ J :=
   cutH (AF F) σ J ε hε hσ
 
+/- English proof (translation)
+The claim follows from `cut_val _ _ ε hε hσ g`.
+-/
 theorem mt_cutA (ε : AEF F E) (hε : ε * ε = ε) (hσ : cAF σ ε = ε) (g : GAF σ J) :
     mtF σ J (cutA σ J ε hε hσ g) = 1 + ε • (mtF σ J g - 1) := cut_val _ _ ε hε hσ g
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext e)`.
+-/
 theorem mt_ext {g h : GAF σ J} (e : mtF σ J g = mtF σ J h) : g = h := Subtype.ext (Units.ext e)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_mul (g h : GAF σ J) : mtF σ J (g * h) = mtF σ J g * mtF σ J h := rfl
 
+/- English proof (translation)
+The claim follows from `mt_ext (GlobalTheory.UnRep.SplitRep.mix_mul_mix ε hε hε' (matHomF σ J g))`.
+-/
 theorem cutA_mul (ε : AEF F E) (hε : ε * ε = ε) (hσ : cAF σ ε = ε)
     (hε' : (1 - ε) * (1 - ε) = 1 - ε) (hσ' : cAF σ (1 - ε) = 1 - ε) (g : GAF σ J) :
     cutA σ J ε hε hσ g * cutA σ J (1 - ε) hε' hσ' g = g :=
   mt_ext (GlobalTheory.UnRep.SplitRep.mix_mul_mix ε hε hε' (matHomF σ J g))
 
+/- English proof (translation)
+The claim follows from `TensorProduct.zero_tmul _ _`.
+-/
 theorem inf_fj (e : Af F) : infPartF F E (fj E e) = 0 := TensorProduct.zero_tmul _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fin_fj (e : Af F) : finPartF F E (fj E e) = e ⊗ₜ[F] 1 := rfl
 
+/- English proof (translation)
+Establish `: fj E (1 : Af F) * fj E 1 = fj E 1` using `by rw [← map_mul, mul_one]`. Take the linear combination `this`.
+-/
 theorem idem_inf : (1 - fj E (1 : Af F)) * (1 - fj E 1) = 1 - fj E 1 := by
   have : fj E (1 : Af F) * fj E 1 = fj E 1 := by rw [← map_mul, mul_one]
   linear_combination this
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_one, cA_fj]`.
+-/
 theorem conj_inf : cAF σ (1 - fj E (1 : Af F)) = 1 - fj E 1 := by rw [map_sub, map_one, cA_fj]
 
 variable (σ J) in
 
 def pInf : GAF σ J →* GAF σ J := cutA σ J (1 - fj E 1) idem_inf conj_inf
 
+/- English proof (translation)
+Rewrite using `[pInf, mt_cutA, map_cut, RingHom.map_sub, RingHom.map_one, inf_fj, sub_zero, one_smul, add_sub_cancel]`.
+-/
 theorem inf_pInf (g : GAF σ J) : (mtF σ J (pInf σ J g)).map (infPartF F E) = (mtF σ J g).map (infPartF F E) := by
   rw [pInf, mt_cutA, map_cut, RingHom.map_sub, RingHom.map_one, inf_fj, sub_zero, one_smul, add_sub_cancel]
 
+/- English proof (translation)
+Rewrite using `[pInf, mt_cutA, map_cut, RingHom.map_sub, RingHom.map_one, fin_fj, ← Algebra.TensorProduct.one_def, sub_self, zero_smul, add_zero]`.
+-/
 theorem fin_pInf (g : GAF σ J) : (mtF σ J (pInf σ J g)).map (finPartF F E) = 1 := by
   rw [pInf, mt_cutA, map_cut, RingHom.map_sub, RingHom.map_one, fin_fj, ← Algebra.TensorProduct.one_def, sub_self,
     zero_smul, add_zero]
 
+/- English proof (translation)
+The claim follows from `mt_ext (Matrix.ext fun i j => parts_inj _ _ (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j))`.
+-/
 theorem ga_ext {g h : GAF σ J} (h1 : (mtF σ J g).map (infPartF F E) = (mtF σ J h).map (infPartF F E))
     (h2 : (mtF σ J g).map (finPartF F E) = (mtF σ J h).map (finPartF F E)) : g = h :=
   mt_ext (Matrix.ext fun i j => parts_inj _ _ (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j))
 
+/- English proof (translation)
+Establish `: IsModuleTopology (AF F) (AEF F E)` using `⟨rfl⟩`. Establish `: ContinuousAdd (AEF F E)` using `IsModuleTopology.toContinuousAdd (AF F) _`. Establish `: ContinuousSMul (AF F) (AEF F E)` using `IsModuleTopology.toContinuousSMul _ _`. Conclude with `IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ).toLinearMap`.
+-/
 theorem continuous_cA : Continuous (cAF σ) := by
   have : IsModuleTopology (AF F) (AEF F E) := ⟨rfl⟩
   have : ContinuousAdd (AEF F E) := IsModuleTopology.toContinuousAdd (AF F) _
@@ -181,14 +266,25 @@ theorem continuous_cA : Continuous (cAF σ) := by
   exact IsModuleTopology.continuous_of_linearMap
       (Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ).toLinearMap
 
+/- English proof (translation)
+The claim follows from `map_scal_zero (infPartF F E) (fj E e) (incAF F E x) (inf_fj e)`.
+-/
 theorem inf_scal (e : Af F) (x : E) :
     infPartF F E (1 + (1 - fj E e) * (incAF F E x - 1)) = inclR (F := F) (Ainf F) x :=
   map_scal_zero (infPartF F E) (fj E e) (incAF F E x) (inf_fj e)
 
+/- English proof (translation)
+The claim follows from `(map_scal (finPartF F E) (fj E e) (incAF F E x)).trans (tmul_scal e x)`.
+-/
 theorem fin_scal (e : Af F) (x : E) :
     finPartF F E (1 + (1 - fj E e) * (incAF F E x - 1)) = 1 + (1 - e) ⊗ₜ[F] (x - 1) :=
   (map_scal (finPartF F E) (fj E e) (incAF F E x)).trans (tmul_scal e x)
 
+/- English proof (translation)
+Establish `: IsModuleTopology (Af F) (Af F ⊗[F] E)` using `⟨rfl⟩`. Establish `: ContinuousAdd (Af F ⊗[F] E)` using `IsModuleTopology.toContinuousAdd (Af F) _`. Use `tendsto_AE ?_ ?_` and prove the remaining obligations. Rewrite using `[inf_scal 1 u, funext fun k => inf_scal (e k) (w k)]`. Conclude with `t1`.
+
+Rewrite using `[fin_scal 1 u, sub_self, TensorProduct.zero_tmul, funext fun k => fin_scal (e k) (w k)]`. Conclude with `t2.const_add 1`.
+-/
 theorem tendsto_scal {w : ℕ → E} {u : E} {e : ℕ → Af F}
     (t1 : Tendsto (fun k => inclR (F := F) (Ainf F) (w k)) atTop (𝓝 (inclR (F := F) (Ainf F) u)))
     (t2 : Tendsto (fun k => ((1 - e k) ⊗ₜ[F] (w k - 1) : Af F ⊗[F] E)) atTop (𝓝 0)) :

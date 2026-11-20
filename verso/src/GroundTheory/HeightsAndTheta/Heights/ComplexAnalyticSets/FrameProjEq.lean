@@ -5,6 +5,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem graphOver_eq {k m : ℕ} (F : EuclideanSpace ℝ (Fin k) → EuclideanSpace ℝ (Fin m))
     (A : Set (EuclideanSpace ℝ (Fin k))) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.graphOver F A =

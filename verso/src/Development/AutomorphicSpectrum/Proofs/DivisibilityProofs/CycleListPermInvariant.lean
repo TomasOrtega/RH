@@ -6,6 +6,11 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
+/- English proof (translation)
+Use `haveI : LeftCommutative (diffStep : (K → ℤ) → ((K → ℤ) → ℤ) → ((K → ℤ) → ℤ)) := by`. Prove the components needed by the constructor for the conclusion. Introduce `a b g`. Use function extensionality and compare the values at `m`. Simplify using `only [diffStep]`.
+
+Rewrite using `[sub_right_comm m a b]`. Expand and normalize the polynomial expressions, which then agree. Unfold `intNumL intNum GroundTheory.Heights₂.Heights.NumbersDVR.mixedDiff`. Rewrite using `[List.ofFn_get, List.ofFn_get, h.foldr_eq]`.
+-/
 theorem intNumL_perm_of_perm (F : Type) [Field F] (K : Type) [DecidableEq K] (ι : K → Type)
     (V : Ideal (MRing ι F)) (l l' : List (K → ℤ)) (h : l.Perm l') :
     intNumL F V l = intNumL F V l' := by
@@ -19,6 +24,11 @@ theorem intNumL_perm_of_perm (F : Type) [Field F] (K : Type) [DecidableEq K] (ι
   unfold intNumL intNum GroundTheory.Heights₂.Heights.NumbersDVR.mixedDiff
   rw [List.ofFn_get, List.ofFn_get, h.foldr_eq]
 
+/- English proof (translation)
+Use `⟨fun F _ K _ _ ι _ V l l' h => intNumL_perm_of_perm F K ι V l l' h, ?_⟩` and prove the remaining obligations. Introduce `O _ _ _ K _ _ ι _ Z l l' h`. Unfold `cycList`. Use `congr 1`. Use function extensionality and compare the values at `W`.
+
+Conclude with `intNumL_perm_of_perm _ K ι (specialIdeal W) l l' h`.
+-/
 theorem numbers_list_perm : (∀ (F : Type) [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (V : Ideal (MRing ι F)) (l l' : List (K → ℤ)), l.Perm l' → intNumL F V l = intNumL F V l') ∧ (∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (Z : Ideal (MRing ι O) → ℤ) (l l' : List (K → ℤ)), l.Perm l' → cycList Z l = cycList Z l') := by
   refine ⟨fun F _ K _ _ ι _ V l l' h => intNumL_perm_of_perm F K ι V l l' h, ?_⟩
   intro O _ _ _ K _ _ ι _ Z l l' h

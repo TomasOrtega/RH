@@ -18,6 +18,15 @@ open Formalism.L2.Th1.H (CmOK cmL matH stdH stdLat pow4 imgLat relIdx StdData Th
 
 namespace MMIsom
 
+/- English proof (translation)
+Establish `hleg : legendreSym l (-(d : ℤ)) = -1` using `by rw [jacobiSym.legendreSym.to_jacobiSym]; exact hj`. Establish `hns : ¬ IsSquare (((-(d : ℤ)) : ℤ) : ZMod l)` using `(legendreSym.eq_neg_one_iff (p := l)).1 hleg`. Prove the components needed by the constructor for the conclusion. Introduce `hd`. Apply `hns` to reduce the goal to its premises.
+
+Establish `h0 : ((d : ℕ) : ZMod l) = 0` using `(ZMod.natCast_eq_zero_iff d l).2 hd`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `⟨a, ha⟩`. Apply `hns` to reduce the goal to its premises. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← ha]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inert_facts (d : ℕ) (l : ℕ) [Fact l.Prime] (hj : jacobiSym (-(d : ℤ)) l = -1) :
     ¬ l ∣ d ∧ ¬ ∃ a : ZMod l, a ^ 2 = -(d : ZMod l) := by
   have hleg : legendreSym l (-(d : ℤ)) = -1 := by rw [jacobiSym.legendreSym.to_jacobiSym]; exact hj
@@ -37,6 +46,9 @@ theorem inert_facts (d : ℕ) (l : ℕ) [Fact l.Prime] (hj : jacobiSym (-(d : �
     rw [← ha]
     ring
 
+/- English proof (translation)
+Unfold `kernel4 Formalism.L2.Th1.H.F0 Formalism.L2.Th1.H.stdLat`. Rewrite using `[KS.stdH_congr h, KS.thetaNull_congr_lattice h hω hn, h]`.
+-/
 theorem kernel4_congr {L L' : PeriodPair} (h : L.lattice = L'.lattice) {ω₀ ω₀' : ℂ}
     (hω : (ω₀ - ω₀') / 2 ∈ L'.lattice) (hn : ω₀' / 2 ∉ L'.lattice) {n : Type} [Fintype n] [DecidableEq n]
     (Λ : AddSubgroup (n → ℂ)) (c : ℝ) (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) :
@@ -44,6 +56,19 @@ theorem kernel4_congr {L L' : PeriodPair} (h : L.lattice = L'.lattice) {ω₀ ω
   unfold kernel4 Formalism.L2.Th1.H.F0 Formalism.L2.Th1.H.stdLat
   rw [KS.stdH_congr h, KS.thetaNull_congr_lattice h hω hn, h]
 
+/- English proof (translation)
+Take `⟨a₀, g, b₀, c₀, ha, hd, hl, Bc, hcm, -, hIs, hlat, -, -, -, hω, -, hth⟩` from `ReBase.theta_change_of_base D cc δ B hcc`. Establish `h : B.L.lattice = Bc.L.lattice` using `hlat.symm`. Establish `hω' : (B.ω₀ - Bc.ω₀) / 2 ∈ Bc.L.lattice` using `h ▸ hω`. Take `⟨G, e, hS, hidx, he, -, ht⟩` from `Kap.kappa_K1_hypothesis D cc δ Bc hcc hδ a₀ b₀ c₀ ha hd _ hl hcm hIs p h5 hj ι`. Establish `hfr : ∀ σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p, Formalism.InvariantFactorPaths.G7.UnrOK (MaximalUnramifiedExtension p) p σ → ∃ (γ : Matrix (Fin 4 × D.what₂.Tau) (Fin 4 × D.what₂.Tau) (MaximalUnramifiedExtension p)) (B' : Matrix D.what₂.Tau D.what₂.Tau ℂ …`.
+
+Introduce `σ hσ`. Take `⟨hL, -⟩` from `hIs`. Establish `hS0` using `Bc.stdOK hcc hδ`. Establish `iso` using `hS0.isom`. Establish `i1` using `hS0.idx₁`.
+
+Establish `i2` using `hS0.idx₂`. Establish `hsd` using `Kap.kap_selfDual_lamM Bc hcc hδ`. Establish `hst` using `Kap.kap_stable_lamM Bc b₀ (Kap.kap_odd hcm)`. Establish `hiso` using `hS.isom`. Establish `hidx'` using `hidx`.
+
+Rewrite `iso`, `i1`, `i2`, `hsd`, `hiso`, `hidx'` using `[hL]`. Take `⟨hnd, hin⟩` from `inert_facts D.host.d p hj`. Conclude with `Formalism.L2.Th1.Top.frameExistsH a₀ b₀ c₀ D.host.d ha hd _ hl hcm p h5 hnd hin ι σ hσ D.what₂.Tau _ Bc.lamM Bc.gC G ⟨iso, hsd, hst, i1, i2⟩ hiso hidx'`. Use `⟨G, e, ⟨?_, ?_, ?_, he.le, ?_⟩, hfr⟩` and prove the remaining obligations. Establish `hi` using `hS.isom`.
+
+Rewrite `hi` using `[← KS.hOne_congr h, ← KS.stdH_congr h]`. Conclude with `hi`. Rewrite using `[ReBase.stdLat_congr h]`. Conclude with `hidx`. Rewrite using `[ReBase.stdLat_congr h]`.
+
+Conclude with `hS.idx₂`. Rewrite using `[← hth, ht, kernel4_congr h hω' (Base.half_not_mem Bc)]`. Both sides reduce to the same expression.
+-/
 theorem isomStd_frames (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (hcc : TaylorLogMetric.IsCurveIdeal D cc)
     (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (p : ℕ) [Fact p.Prime] (h5 : 5 ≤ p) (hj : jacobiSym (-(D.host.d : ℤ)) p = -1)
     (ι : ℂ ≃+* ℂ_[p]) :
@@ -83,6 +108,11 @@ theorem isomStd_frames (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Bas
 
 end MMIsom
 
+/- English proof (translation)
+Introduce `D cc δ B hcc hδ p _ h5 hj lam ι hι`. Take `⟨g₁, e, hI, hfr⟩` from `MMIsom.isomStd_frames D cc δ B hcc hδ p h5 hj ι`. Take `⟨σ, hσ⟩` from `Formalism.L2.Th1.Top.frobExistsH p h5`. Take `⟨γ, B', hF'⟩` from `hfr σ hσ`. Take `⟨σp, hσp⟩` from `hC D p h5 hj lam`.
+
+Conclude with `⟨g₁, e, σ, γ, B', σp, hI, hσ, hF', hσp, hF D cc δ B hcc hδ p h5 hj lam ι hι g₁ hI.1 hI.2.1 hI.2.2.1 σ hσ γ B' hF' σp hσp⟩`.
+-/
 theorem isomONB_of (hC : ConjExt) (hF : FrameONB) : IsomONB := by
   intro D cc δ B hcc hδ p _ h5 hj lam ι hι
   obtain ⟨g₁, e, hI, hfr⟩ := MMIsom.isomStd_frames D cc δ B hcc hδ p h5 hj ι
@@ -94,29 +124,47 @@ theorem isomONB_of (hC : ConjExt) (hF : FrameONB) : IsomONB := by
 
 namespace MMIsom
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.GL3Theta.lamC_mem' lam hz]`. Conclude with `hι ⟨z, hz⟩`.
+-/
 theorem iota_lamC {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (ι : ℂ ≃+* ℂ_[p]) (hι : IotaExt lam ι) {z : ℂ}
     (hz : z ∈ TaylorLogMetric.Qbar) : ι z = TaylorLogMetric.lamC lam z := by
   rw [Formalism.MainNotions.GL3Theta.lamC_mem' lam hz]
   exact hι ⟨z, hz⟩
 
+/- English proof (translation)
+The claim follows from `map_mem_closure₂ (f := fun x y : ℂ_[p] => x + y) continuous_add ha hb hS`.
+-/
 theorem cl_add {p : ℕ} [Fact p.Prime] {S : Set ℂ_[p]} (hS : ∀ a ∈ S, ∀ b ∈ S, a + b ∈ S) {a b : ℂ_[p]}
     (ha : a ∈ closure S) (hb : b ∈ closure S) : a + b ∈ closure S :=
   map_mem_closure₂ (f := fun x y : ℂ_[p] => x + y) continuous_add ha hb hS
 
+/- English proof (translation)
+The claim follows from `map_mem_closure₂ (f := fun x y : ℂ_[p] => x * y) continuous_mul ha hb hS`.
+-/
 theorem cl_mul {p : ℕ} [Fact p.Prime] {S : Set ℂ_[p]} (hS : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S) {a b : ℂ_[p]}
     (ha : a ∈ closure S) (hb : b ∈ closure S) : a * b ∈ closure S :=
   map_mem_closure₂ (f := fun x y : ℂ_[p] => x * y) continuous_mul ha hb hS
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction u (· ∈ closure S) (fun _ _ ha hb => cl_add hS ha hb) (subset_closure h0) hu`.
+-/
 theorem cl_sum {p : ℕ} [Fact p.Prime] {α : Type*} (s : Finset α) {S : Set ℂ_[p]} (h0 : (0 : ℂ_[p]) ∈ S)
     (hS : ∀ a ∈ S, ∀ b ∈ S, a + b ∈ S) (u : α → ℂ_[p]) (hu : ∀ i ∈ s, u i ∈ closure S) :
     ∑ i ∈ s, u i ∈ closure S :=
   Finset.sum_induction u (· ∈ closure S) (fun _ _ ha hb => cl_add hS ha hb) (subset_closure h0) hu
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction u (fun x => ‖x‖ ≤ 1) (fun a b ha hb => (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)) (by simp) hu`.
+-/
 theorem norm_sum_le_one {p : ℕ} [Fact p.Prime] {α : Type*} (s : Finset α) (u : α → ℂ_[p]) (hu : ∀ i ∈ s, ‖u i‖ ≤ 1) :
     ‖∑ i ∈ s, u i‖ ≤ 1 :=
   Finset.sum_induction u (fun x => ‖x‖ ≤ 1)
     (fun a b ha hb => (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)) (by simp) hu
 
+/- English proof (translation)
+Establish `h1` using `Kap.kap_norm_ratCast p ι (s : ℚ)`. Rewrite `h1` using `[map_ratCast, Rat.cast_natCast, Rat.cast_natCast]`. Rewrite using `[h1]`. Conclude with `Padic.norm_natCast_eq_one_iff.2 hs.symm`.
+-/
 theorem norm_natCast_cp {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (s : ℕ) (hs : Nat.Coprime s p) : ‖(s : ℂ_[p])‖ = 1 := by
   have h1 := Kap.kap_norm_ratCast p ι (s : ℚ)
   rw [map_ratCast, Rat.cast_natCast, Rat.cast_natCast] at h1
@@ -127,6 +175,83 @@ end MMIsom
 
 open MMIsom in
 
+/- English proof (translation)
+Introduce `D cc δ B hcc hδ p _ h5 hj lam ι hι g₁ hiso hidx hidx2 σ hσ γ B' hF σp hσp`. Take `⟨b, hb, hG, hE⟩` from `hLB D p h5 hj lam`. Take `⟨c, hc, hcint, hcG⟩` from `hRC D cc δ B hcc hδ p h5 hj g₁ hiso hidx hidx2 b hb`. Use `set e := Fintype.equivFin D.what₂.Tau with he`. Use `set tE : D.host.E →+* ℂ_[p] := ThetaInverseLemmas.tauE D lam with htE`.
+
+Establish `htE' : ∀ x, tE x = TaylorLogMetric.lamC lam (D.host.φ₀ x)` using `ThetaInverseLemmas.tauE_apply D lam`. Use `set Sr : Set ℂ_[p] := Set.range fun x : D.host.K => TaylorLogMetric.lamC lam (D.host.φ₀ (x : D.host.E)) with hSr`. Establish `hSr_add : ∀ a ∈ Sr, ∀ b ∈ Sr, a + b ∈ Sr`. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Use `⟨x + y, ?_⟩` and prove the remaining obligations.
+
+Use `show TaylorLogMetric.lamC lam (D.host.φ₀ ((x + y : D.host.K) : D.host.E)) = TaylorLogMetric.lamC lam (D.host.φ₀ (x : D.host.E)) + TaylorLogMetric.lamC lam (D.host.φ₀ (y : D.host.E))`. Rewrite using `[← htE', ← htE', ← htE', IntermediateField.coe_add, map_add]`. Establish `hSr_mul : ∀ a ∈ Sr, ∀ b ∈ Sr, a * b ∈ Sr`. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Use `⟨x * y, ?_⟩` and prove the remaining obligations.
+
+Use `show TaylorLogMetric.lamC lam (D.host.φ₀ ((x * y : D.host.K) : D.host.E)) = TaylorLogMetric.lamC lam (D.host.φ₀ (x : D.host.E)) * TaylorLogMetric.lamC lam (D.host.φ₀ (y : D.host.E))`. Rewrite using `[← htE', ← htE', ← htE', IntermediateField.coe_mul, map_mul]`. Establish `hSr0 : (0 : ℂ_[p]) ∈ Sr` using `⟨0, by show TaylorLogMetric.lamC lam (D.host.φ₀ ((0 : D.host.K) : D.host.E)) = _`. Rewrite using `[← htE', IntermediateField.coe_zero, map_zero]⟩`. Use `set Cm : Matrix (Fin 4 × Fin (Fintype.card D.what₂.Tau)) (Fin 4 × D.what₂.Tau) ℂ_[p] := fun x w => tE ((c w x.1 x.2 : D.host.K) : D.host.E) with hCm`.
+
+Use `set Bb : D.what₂.Tau → Fin (Fintype.card D.what₂.Tau) → ℂ_[p] := fun τ m => TaylorLogMetric.lamC lam (TaylorLogMetric.embT D τ (b m 0 0)) with hBb`. Use `set G : Matrix (Fin (Fintype.card D.what₂.Tau)) (Fin (Fintype.card D.what₂.Tau)) ℂ_[p] := Matrix.of fun m n => TaylorLogMetric.lamC lam (D.host.φ₀ ((TaylorLogMetric.hYY D (b m) (b n) : D.host.K) : D.host.E)) with hGdef`. Use `set gc : Matrix (Fin 4 × D.what₂.Tau) (Fin 4 × D.what₂.Tau) ℂ_[p] := fun x w => ((γ x w : MaximalUnramifiedExtension p) : ℂ_[p]) with hgc`. Use `set sc : Matrix (Fin 4 × D.what₂.Tau) (Fin 4 × D.what₂.Tau) ℂ_[p] := fun x w => ((σ (γ x w) : MaximalUnramifiedExtension p) : ℂ_[p]) with hsc`. Establish `hU` using `hF.1`.
+
+Establish `hσσ : ∀ x w, σ (σ (γ x w)) = γ x w` using `fun x w => (hU.1 x w).2`. Establish `hM : (γ.map σ)ᵀ * γ = 1`. Use `Matrix.ext fun a b' => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Conclude with `hU.2 a b'`.
+
+Establish `hM' : γ * (γ.map σ)ᵀ = 1` using `mul_eq_one_comm.1 hM`. Establish `hA1 : gc * scᵀ = 1`. Use extensionality with `x y`. Establish `h` using `congrFun (congrFun hM' x) y`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Establish `h2` using `congrArg (MaximalUnramifiedExtension p).subtype h`. Rewrite `h2` using `[map_sum]`. Simplify using `only [map_mul, apply_ite (MaximalUnramifiedExtension p).subtype, map_one, map_zero] at h2`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Conclude with `h2`.
+
+Establish `hA2 : sc * gcᵀ = 1`. Use extensionality with `x y`. Establish `h` using `congrFun (congrFun hM' x) y`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `h2` using `congrArg (fun z => (MaximalUnramifiedExtension p).subtype (σ z)) h`.
+
+Simplify using `only [map_sum, map_mul, apply_ite σ, apply_ite (MaximalUnramifiedExtension p).subtype, map_one, map_zero, Matrix.transpose_apply, Matrix.map_apply, hσσ] at h2`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Conclude with `h2`. Establish `hfix : ∀ x w, σp (sc x w) = gc x w`. Introduce `x w`.
+
+Use `(hFC D p h5 hj lam ι hι σ hσ (σ (γ x w)) (by rw [hσσ])).2 σp hσp` as an intermediate fact. Rewrite `this` using `[hσσ]`. Conclude with `this`. Establish `hfix' : ∀ x w, σp (gc x w) = sc x w` using `fun x w => (hFC D p h5 hj lam ι hι σ hσ (γ x w) (hσσ x w)).2 σp hσp`. Establish `hscl : ∀ x w, sc x w ∈ closure Sr` using `fun x w => (hFC D p h5 hj lam ι hι σ hσ (σ (γ x w)) (by rw [hσσ])).1`.
+
+Establish `hscn : ∀ x w, ‖sc x w‖ ≤ 1`. Introduce `x w`. Rewrite using `[← hfix' x w, hσp.2]`. Conclude with `(hU.1 x w).1`. Establish `hσC : ∀ x w, σp (Cm x w) = tE (D.host.conj ((c w x.1 x.2 : D.host.K) : D.host.E))`.
+
+Introduce `x w`. Use `show σp (tE _) = _`. Rewrite using `[htE', htE']`. Conclude with `hσp.1 (c w x.1 x.2)`. Establish `hfr : ∀ i' τ w, ∑ j, B' τ j * gc (i', j) w = ∑ m, Bb τ m * Cm (i', m) w`.
+
+Introduce `i' τ w`. Rewrite using `[hF.2 i' τ w, hc w i' τ, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, iota_lamC lam ι hι (JetIntegrality.test_vector_mem_schwartz_bruhat (D := D) _), iota_lamC lam ι hι (AlgP.embT_mem_Qbar (D := D) τ _), ← htE', mul_comm]`. Establish `hcross : ∀ (x : Fin 4 × D.what₂.Tau) (i' : Fin 4) (τ : D.what₂.Tau), ∑ m, Bb τ m * (Cm * scᵀ) (i', m) x = if i' = x.1 then B' τ x.2 else 0`.
+
+Introduce `x i' τ`. Establish `e1 : ∑ m, Bb τ m * (Cm * scᵀ) (i', m) x = ∑ w, (∑ m, Bb τ m * Cm (i', m) w) * sc x w`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun m _ => by ring`.
+
+Rewrite using `[e1]`. Simplify using `only [← hfr, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `e2 : ∀ j, ∑ w, B' τ j * gc (i', j) w * sc x w = B' τ j * (gc * scᵀ) (i', j) x`. Introduce `j`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Finset.mul_sum, mul_assoc]`. Simplify using `only [e2, hA1, Matrix.one_apply, Prod.ext_iff, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `h : i' = x.1`. Simplify using `[h]`. Simplify using `[h]`.
+
+Use `set Q : Matrix (Fin (Fintype.card D.what₂.Tau)) D.what₂.Tau ℂ_[p] := fun m τ' => (Cm * scᵀ) (0, m) (0, τ') with hQ`. Establish `hBQ : ∀ τ τ', ∑ m, Bb τ m * Q m τ' = B' τ τ'`. Introduce `τ τ'`. Use `hcross (0, τ') 0 τ` as an intermediate fact. Simplify using `using this`.
+
+Establish `hblk : ∀ (i' : Fin 4) (m : Fin (Fintype.card D.what₂.Tau)) (x : Fin 4 × D.what₂.Tau), (Cm * scᵀ) (i', m) x = if i' = x.1 then Q m x.2 else 0`. Introduce `i' m x`. Set `v : D.what₂.Tau → ℂ_[p]` to `fun τ'' => (Cm * scᵀ) (i', e τ'') x - (if i' = x.1 then Q (e τ'') x.2 else 0)`. Establish `hv : (Matrix.of fun (τ τ'' : D.what₂.Tau) => TaylorLogMetric.lamC lam (TaylorLogMetric.embT D τ (b (e τ'') 0 0))) *ᵥ v = 0`. Use function extensionality and compare the values at `τ`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply, v, mul_sub]`. Rewrite using `[Finset.sum_sub_distrib]`. Establish `h1 : ∑ τ'', TaylorLogMetric.lamC lam (TaylorLogMetric.embT D τ (b (e τ'') 0 0)) * (Cm * scᵀ) (i', e τ'') x = ∑ m, Bb τ m * (Cm * scᵀ) (i', m) x` using `e.sum_comp (fun m => Bb τ m * (Cm * scᵀ) (i', m) x)`. Establish `h2 : ∑ τ'', TaylorLogMetric.lamC lam (TaylorLogMetric.embT D τ (b (e τ'') 0 0)) * (if i' = x.1 then Q (e τ'') x.2 else 0) = if i' = x.1 then B' τ x.2 else 0`. Establish `h3 : ∑ τ'', TaylorLogMetric.lamC lam (TaylorLogMetric.embT D τ (b (e τ'') 0 0)) * (if i' = x.1 then Q (e τ'') x.2 else 0) = ∑ m, Bb τ m * (if i' = x.1 then Q m x.2 else 0)` using `e.sum_comp (fun m => Bb τ m * (if i' = x.1 then Q m x.2 else 0))`.
+
+Rewrite using `[h3]`. Distinguish the cases in `h : i' = x.1`. Simplify using `only [h, if_true]`. Conclude with `hBQ τ x.2`. Simplify using `[h]`.
+
+Rewrite using `[h1, h2, hcross x i' τ, sub_self]`. Establish `h0` using `Matrix.eq_zero_of_mulVec_eq_zero hE hv`. Use `congrFun h0 (e.symm m)` as an intermediate fact. Simplify using `only [v, Pi.zero_apply, Equiv.apply_symm_apply, sub_eq_zero] at this`. Conclude with `this`.
+
+Establish `hΓ : ∑ i' : Fin 4, (Matrix.of fun m w => Cm (i', m) w)ᵀ * G * (Matrix.of fun m w => Cm (i', m) w).map σp = 1`. Use `Matrix.ext fun w w' => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sum_apply, Matrix.one_apply]`. Establish `h` using `congrArg tE (hcG w w')`. Simplify using `only [map_sum, map_mul, apply_ite tE, map_one, map_zero] at h`.
+
+Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hσC (i', n) w', hGdef, Matrix.of_apply, ← htE']`. Establish `hP : ∀ i' : Fin 4, (Matrix.of fun m w => Cm (i', m) w) * scᵀ = Matrix.of fun m (x : Fin 4 × D.what₂.Tau) => if i' = x.1 then Q m x.2 else 0`. Introduce `i'`. Use `Matrix.ext fun m x => ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, ← hblk i' m x]`.
+
+Both sides reduce to the same expression. Establish `hsσ : sc.map σp = gc` using `Matrix.ext fun x w => hfix x w`. Establish `hmain : sc * gcᵀ = ∑ i' : Fin 4, (Matrix.of fun m (x : Fin 4 × D.what₂.Tau) => if i' = x.1 then Q m x.2 else 0)ᵀ * G * (Matrix.of fun m (x : Fin 4 × D.what₂.Tau) => if i' = x.1 then Q m x.2 else 0).map σp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_sum, Matrix.sum_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[← hP i', Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, Matrix.transpose_map, hsσ]`. Apply the tactic sequence `try simp only [Matrix.mul_assoc]`.
+
+Establish `hUA : ∀ τ τ'', ∑ m, ∑ n, Q m τ * G m n * σp (Q n τ'') = if τ = τ'' then 1 else 0`. Introduce `τ τ''`. Establish `h` using `congrFun (congrFun (hmain.symm.trans hA2) (0, τ)) (0, τ'')`. Rewrite `h` using `[Matrix.sum_apply, Matrix.one_apply, Finset.sum_eq_single (0 : Fin 4)]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, if_true, Prod.mk.injEq, true_and] at h`.
+
+Rewrite using `[← h, Finset.sum_comm]`. Apply the tactic sequence `try simp only [Finset.sum_mul]`. Introduce `i' _ hi'`. Establish `hne : ¬ i' = ((0 : Fin 4), τ).1` using `hi'`. Establish `hne' : ¬ i' = ((0 : Fin 4), τ'').1` using `hi'`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, hne, hne', if_false, map_zero, mul_zero, zero_mul, Finset.sum_const_zero]`. Introduce `h0`. Conclude with `absurd (Finset.mem_univ _) h0`. Use `set A : Matrix (Fin (Fintype.card D.what₂.Tau)) (Fin (Fintype.card D.what₂.Tau)) ℂ_[p] := fun i m => Q m (e.symm i) with hA`. Establish `hAu : ∀ i j, ∑ m, ∑ n, A i m * TaylorLogMetric.lamC lam (D.host.φ₀ ((TaylorLogMetric.hYY D (b m) (b n) : D.host.K) : D.host.E)) * σp (A j n) = if i = j then 1 else 0`.
+
+Introduce `i j`. Use `hUA (e.symm i) (e.symm j)` as an intermediate fact. Rewrite `this` using `[e.symm.injective.eq_iff]`. Apply the tactic sequence `convert this <;> rfl`. Establish `hCmn : ∀ x w, ‖Cm x w‖ ≤ 1`.
+
+Introduce `x w`. Take `⟨s, hs, hint⟩` from `hcint w x.1 x.2`. Establish `h1 : ‖tE (((s : D.host.K) * c w x.1 x.2 : D.host.K) : D.host.E)‖ ≤ 1`. Rewrite using `[htE']`. Conclude with `JetIntegrality.isPadicIntegral_lamC_K (D := D) lam ⟨_, hint⟩`.
+
+Rewrite `h1` using `[IntermediateField.coe_mul, map_mul, show (((s : D.host.K) : D.host.E)) = (s : D.host.E) from by simp, map_natCast, norm_mul, norm_natCast_cp ι s hs, one_mul]`. Conclude with `h1`. Establish `hCcl : ∀ x w, Cm x w ∈ closure Sr` using `fun x w => subset_closure ⟨c w x.1 x.2, (htE' _).symm⟩`. Use `⟨b, A, hb, fun i j => ⟨?_, ?_⟩, ?_, hAu, ?_⟩` and prove the remaining obligations. Use `show ‖(Cm * scᵀ) (0, j) (0, e.symm i)‖ ≤ 1`.
+
+Rewrite using `[Matrix.mul_apply]`. Use `norm_sum_le_one _ _ fun w _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hCmn _ _) (norm_nonneg _) (hscn _ _)`. Use `show (Cm * scᵀ) (0, j) (0, e.symm i) ∈ closure Sr`.
+
+Rewrite using `[Matrix.mul_apply]`. Conclude with `cl_sum _ hSr0 hSr_add _ fun w _ => cl_mul hSr_mul (hCcl _ _) (hscl _ _)`. Establish `hm` using `ThetaInverseLemmas.unitary_mat σp A G hAu`. Establish `hd` using `congrArg Matrix.det hm`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`.
+
+Establish `hσd : (A.map σp).det = σp A.det` using `(RingHom.map_det σp A).symm`. Rewrite `hd` using `[hσd]`. Establish `hn` using `congrArg norm hd`. Rewrite `hn` using `[norm_mul, norm_mul, hσp.2, hG, mul_one, norm_one]`. Establish `h0 : 0 ≤ ‖A.det‖` using `norm_nonneg _`.
+
+Use polynomial arithmetic with `[hn]`. Introduce and unpack `i ⟨τ, a, a'⟩`. Establish `ha : a = 0` using `Subsingleton.elim _ _`. Establish `ha' : a' = 0` using `Subsingleton.elim _ _`. Substitute `ha ha'` using the available equality.
+
+Use `show B' τ (e.symm i) = _`. Rewrite using `[← hBQ τ (e.symm i)]`. Conclude with `Finset.sum_congr rfl fun m _ => mul_comm _ _`.
+-/
 theorem frameONB_of (hLB : LocBasisMM) (hRC : RatCoord) (hFC : FixConj) : FrameONB := by
   intro D cc δ B hcc hδ p _ h5 hj lam ι hι g₁ hiso hidx hidx2 σ hσ γ B' hF σp hσp
   obtain ⟨b, hb, hG, hE⟩ := hLB D p h5 hj lam
@@ -352,6 +477,9 @@ theorem frameONB_of (hLB : LocBasisMM) (hRC : RatCoord) (hFC : FixConj) : FrameO
     rw [← hBQ τ (e.symm i)]
     exact Finset.sum_congr rfl fun m _ => mul_comm _ _
 
+/- English proof (translation)
+The claim follows from `isomONB_of hC (frameONB_of hLB hRC hFC)`.
+-/
 theorem isomONB_of_facts (hC : ConjExt) (hLB : LocBasisMM) (hRC : RatCoord) (hFC : FixConj) : IsomONB :=
   isomONB_of hC (frameONB_of hLB hRC hFC)
 

@@ -24,6 +24,29 @@ open GlobalTheory.Doubling (absE)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `i k hik`. Set `L : (AE F E)ˣ → ℝ` to `fun t => Real.log (absE F E t : ℝ)`. Establish `hL0 : ∃ t, L t ≠ 0`. Take `⟨t, ht⟩` from `GlobalTheory.DivAbsBig.exists_idele_absE_gt_one F E`. Conclude with `⟨t, (Real.log_pos ht).ne'⟩`.
+
+Set `Φf : (AE F E)ˣ → ℂ` to `fun t => ctf H' μ 𝓕 f (mt t * h)`. Establish `hΦ : ∀ t, Φf t = ∑ i, ∑ k, c i k * ((χ i t : ℂˣ) : ℂ) * ((L t : ℝ) : ℂ) ^ (k : ℕ)` using `fun t => hexp t (mt t) (hml t)`. Take `⟨Etr, Ecn, Eloc⟩` from `hA _ L log_absE_mul hL0 N K χ c hinj Φf hΦ`. Establish `hloc : ∀ v, X.Good v → ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → (k : ℕ) = 0 ∧ ((∀ x ∈ (locIdele F w).range, χ i x = twAbs X.α ((a' : ℝ) / 2) x) ∨ ∀ x ∈ (locIdele F w).range, χ i x = twAbs X.β ((a : ℝ) / 2) x)`. Introduce `v hv w hw`.
+
+Use `Eloc (locIdele F w).range _ _ ?_ ?_ i k hik` and prove the remaining obligations. Take `⟨x, hx⟩` from `hP.2 w`. Conclude with `⟨locIdele F w x, ⟨x, rfl⟩, fun h0 => hx (log_absE_eq_zero.1 h0)⟩`. Introduce `s`. Take `⟨p, q, hpq⟩` from `hD v hv w hw (mt s * h)`.
+
+Use `⟨p, q, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `hpq x _ (hml (locIdele F w x))` as an intermediate fact. Simplify using `only [Φf, map_mul, mul_assoc]`. Conclude with `this`.
+
+Take `⟨v, hv⟩` from `hv`. Take `⟨w, hw⟩` from `hP.1 v`. Use `⟨(hloc v hv w hw).1, ?_⟩` and prove the remaining obligations. Establish `htriv : ∀ x : Eˣ, χ i (Units.map (inclR (F` using `F) (AF F)).toMonoidHom x) = 1 := by`. Introduce `x`.
+
+Use `Etr _ ?_ ?_ i k hik` and prove the remaining obligations. Use `show Real.log (absE F E _ : ℝ) = 0`. Rewrite using `[GlobalTheory.Doubling.absE_inclR]`. Simplify using the standard rewrite rules. Introduce `t`.
+
+Establish `hn : ∀ u ∈ unip σ G.W H', mt (Units.map (inclR (F` using `F) (AF F)).toMonoidHom x) * u * (mt (Units.map (inclR (F := F) (AF F)).toMonoidHom x))⁻¹ ∈ unip σ G.W H' ∧ (mt (Units.map (inclR (F := F) (AF F)).toMonoidHom x))⁻¹ * u * mt (Units.map (inclR (F := F) (AF F)).toMonoidHom x) ∈ unip σ G.W H' := fun u hu => by`. Use `⟨hmn _ u hu, ?_⟩` and prove the remaining obligations. Use `hmn (Units.map (inclR (F := F) (AF F)).toMonoidHom x)⁻¹ u hu` as an intermediate fact. Rewrite `this` using `[map_inv, inv_inv]`. Then use the resulting hypothesis. Simplify using `only [Φf, map_mul, mul_assoc]`.
+
+Conclude with `hB _ (hmr x) hn _`. Establish `hcont : Continuous fun t => ((χ i t : ℂˣ) : ℂ)`. Take `⟨n, s, b, hb⟩` from `Ecn i k hik`. Rewrite using `[show (fun t => ((χ i t : ℂˣ) : ℂ)) = fun t => ∑ j, b j * Φf (s j * t) from funext hb]`. Use `continuous_finset_sum _ fun j _ => continuous_const.mul ?_` and prove the remaining obligations.
+
+Establish `e : (fun t => Φf (s j * t)) = fun t => ctf H' μ 𝓕 f (mt t * (mt (s j) * h))` using `funext fun t => by`. Simplify using `only [Φf]`. Rewrite using `[mul_comm (s j) t, map_mul, mul_assoc]`. Rewrite using `[e]`. Conclude with `hC.comp (hmc _)`.
+
+Establish `hlocal : ∀ v, X.Good v → ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → (∀ x, χ i (locIdele F w x) = twAbs X.α ((a' : ℝ) / 2) (locIdele F w x)) ∨ ∀ x, χ i (locIdele F w x) = twAbs X.β ((a : ℝ) / 2) (locIdele F w x)`. Introduce `v hv w hw`. Break down `(hloc v hv w hw).2 with e | e` into its components or cases. Conclude with `Or.inl fun x => e _ ⟨x, rfl⟩`. Conclude with `Or.inr fun x => e _ ⟨x, rfl⟩`.
+
+Break down `hG (χ i) hcont htriv hlocal with e | e` into its components or cases. Conclude with `Or.inl fun t => by rw [e, coe_twAbs]`. Conclude with `Or.inr fun t => by rw [e, coe_twAbs]`.
+-/
 theorem typ_of_local {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {d₁ : ℕ} {W₁ : Spc F E d₁}
     {H' : Plane E (a + a') d₁} (mt : (AE F E)ˣ →* UA σ G.W.J) (hmc : ∀ g, Continuous fun t => mt t * g)
     (hml : ∀ t, IsLevi (W₁ := W₁) H' t 1 (mt t))
@@ -118,6 +141,11 @@ theorem typ_of_local {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {d₁ : ℕ}
   · exact Or.inl fun t => by rw [e, coe_twAbs]
   · exact Or.inr fun t => by rw [e, coe_twAbs]
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH`. Take `⟨mt, hmc, hml, hmr, hmn⟩` from `GlobalTheory.T.continuous_levi_idele_hom_exists F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH`. Take `⟨hth, hth'⟩` from `GlobalTheory.T.theta_integrals_continuous_automorphic hKP F E σ B a a' G X om om' hT`. Establish `hv : ∃ v, X.Good v` using `⟨B.v₁, hT.chars.good⟩`. Establish `hP` using `GlobalTheory.T.places_above_and_nontrivial_abs F E`.
+
+Establish `hG` using `GlobalTheory.T.hecke_character_unramified_at_good_places hKP F E σ B a a' G X om om' hT`. Use `⟨fun Φ hΦ μ 𝓕 hμ h𝓕 h1 h N K χ c hinj hexp => ?_, fun Φ' hΦ' μ 𝓕 hμ h𝓕 h1 h N K χ c hinj hexp => ?_⟩` and prove the remaining obligations. Conclude with `typ_of_local mt hmc hml hmr hmn μ 𝓕 _ (GlobalTheory.T.constant_term_unipotent_integral_alt F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH _ (hth Φ hΦ).1 (hth Φ hΦ).2 μ 𝓕 hμ h𝓕 h1) (GlobalTheory.T.constant_term_unipotent_integral_bound F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH _ …`. Conclude with `typ_of_local mt hmc hml hmr hmn μ 𝓕 _ (GlobalTheory.T.constant_term_unipotent_integral_alt F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH _ (hth' Φ' hΦ').1 (hth' Φ' hΦ').2 μ 𝓕 hμ h𝓕 h1) (GlobalTheory.T.constant_term_unipotent_integral_bound F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ …`.
+-/
 theorem typ : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → (∀ Φ ∈ PolData B G.M, ∀ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ → μ 𝓕 = 1 → ∀ h : UA σ G.W.J, ∀ (N K : ℕ) (χ : Fin N → (AE F E)ˣ →* ℂˣ) (c : Fin N → Fin (K + 1) → ℂ), Function.Injective χ → (∀ (t : (AE F E)ˣ) (m : UA σ G.W.J), IsLevi (W₁ := W₁) H' t 1 m → ∫ u in 𝓕, G.M.I om Φ (u.1 * (m * h)) ∂μ = ∑ i, ∑ k, c i k * ((χ i t : ℂˣ) : ℂ) * ((Real.log (absE F E t : ℝ) : ℝ) : ℂ) ^ (k : ℕ)) → ∀ i k, c i k ≠ 0 → (k : ℕ) = 0 ∧ ((∀ t, ((χ i t : ℂˣ) : ℂ) = (X.α t : ℂ) * (((absE F E t : ℝ) ^ ((a' : ℝ) / 2) : ℝ) : ℂ)) ∨ (∀ t, ((χ i t : ℂˣ) : ℂ) = (X.β t : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ)))) ∧ ∀ Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, ∀ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ → μ 𝓕 = 1 → ∀ h : UA σ G.W.J, ∀ (N K : ℕ) (χ : Fin N → (AE F E)ˣ →* ℂˣ) (c : Fin N → Fin (K + 1) → ℂ), Function.Injective χ → (∀ (t : (AE F E)ˣ) (m : UA σ G.W.J), IsLevi (W₁ := W₁) H' t 1 m → ∫ u in 𝓕, G.M'.I om' Φ' (u.1 * (m * h)) ∂μ = ∑ i, ∑ k, c i k * ((χ i t : ℂˣ) : ℂ) * ((Real.log (absE F E t : ℝ) : ℝ) : ℂ) ^ (k : ℕ)) → ∀ i k, c i k ≠ 0 → (k : ℕ) = 0 ∧ ((∀ t, ((χ i t : ℂˣ) : ℂ) = (X.α t : ℂ) * (((absE F E t : ℝ) ^ ((a' : ℝ) / 2) : ℝ) : ℂ)) ∨ (∀ t, ((χ i t : ℂˣ) : ℂ) = (X.β t : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ))) := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH
   obtain ⟨mt, hmc, hml, hmr, hmn⟩ := GlobalTheory.T.continuous_levi_idele_hom_exists F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH

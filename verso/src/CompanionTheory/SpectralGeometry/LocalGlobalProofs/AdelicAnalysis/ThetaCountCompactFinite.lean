@@ -20,11 +20,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   {σ : E →ₐ[F] E} {M n : ℕ} {J : Matrix (Fin M) (Fin M) E}
   {μ : Measure (HA (AF F) σ J)} {𝓕 : Set (HA (AF F) σ J)}
 
+/- English proof (translation)
+The claim follows from `lintegral_mono fun _ => ENNReal.tsum_le_tsum fun _ => h _`.
+-/
 theorem cntI_mono_fun {S : Set (Fin n → Fin M → E)}
     {Φ Ψ : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞} (h : ∀ Y, Φ Y ≤ Ψ Y) :
     cntI σ J μ 𝓕 S Φ ≤ cntI σ J μ 𝓕 S Ψ :=
   lintegral_mono fun _ => ENNReal.tsum_le_tsum fun _ => h _
 
+/- English proof (translation)
+Use `lintegral_mono fun g => ?_` and prove the remaining obligations. Rewrite using `[tsum_subtype S (fun X => Φ (actW (AF F) σ J g⁻¹ (ratTup (AF F) X))), tsum_subtype S' (fun X => Φ (actW (AF F) σ J g⁻¹ (ratTup (AF F) X)))]`. Use `ENNReal.tsum_le_tsum fun X => ?_` and prove the remaining obligations. Distinguish the cases in `hX : X ∈ S`. Distinguish the cases in `h0 : Φ (actW (AF F) σ J g⁻¹ (ratTup (AF F) X)) = 0`.
+
+Simplify using `[Set.indicator, h0]`. Simplify using `[Set.indicator, hX, h g X hX h0]`. Simplify using `[Set.indicator, hX]`.
+-/
 theorem cntI_le_of_contrib {S S' : Set (Fin n → Fin M → E)}
     {Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞}
     (h : ∀ (g : HA (AF F) σ J) (X : Fin n → Fin M → E), X ∈ S →
@@ -40,6 +48,9 @@ theorem cntI_le_of_contrib {S S' : Set (Fin n → Fin M → E)}
     · simp [Set.indicator, hX, h g X hX h0]
   · simp [Set.indicator, hX]
 
+/- English proof (translation)
+Unfold `cntI`. Rewrite using `[← lintegral_add_left (Measurable.ennreal_tsum fun X : S => hm X)]`. Conclude with `lintegral_mono fun g => ENNReal.tsum_union_le (fun X => Φ (actW (AF F) σ J g⁻¹ (ratTup (AF F) X))) S S'`.
+-/
 theorem cntI_union_le [Countable E] {S S' : Set (Fin n → Fin M → E)}
     {Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞}
     (hm : ∀ X : Fin n → Fin M → E,
@@ -52,6 +63,35 @@ theorem cntI_union_le [Countable E] {S S' : Set (Fin n → Fin M → E)}
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ hM μ 𝓕 hH hFD Ω hΩ`. Take `⟨⟨hAlc, hAsc, hAt2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := hAlc`. Use `haveI := hAsc`. Use `haveI := hAt2`.
+
+Take `⟨hTG, -, -, -, hBor, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ (AF F)`. Use `haveI := hTG`. Use `haveI := hBor`. Take `⟨-, -, -, hKt2, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)`. Use `haveI := hKt2`.
+
+Use `haveI : Countable E := ((Module.finBasis ℚ E).equivFun.toEquiv).injective.countable`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hcl : IsClosed Ω` using `hΩ.isClosed`. Use `set Φ : (Fin 1 → Fin M → AF F ⊗[F] E) → ℝ≥0∞ := Set.indicator Ω (fun _ => (1 : ℝ≥0∞)) with hΦ`. Establish `hm : ∀ X : Fin 1 → Fin M → E, Measurable fun g : HA (AF F) σ J => Φ (actW (AF F) σ J g⁻¹ (ratTup (AF F) X))`.
+
+Introduce `X`. Establish `hc : Continuous fun g : HA (AF F) σ J => actW (AF F) σ J g⁻¹ (ratTup (AF F) X)` using `(hact 1).1.comp (continuous_inv.prodMk continuous_const)`. Establish `hs : MeasurableSet ((fun g : HA (AF F) σ J => actW (AF F) σ J g⁻¹ (ratTup (AF F) X)) ⁻¹' Ω)` using `(hcl.preimage hc).measurableSet`. Establish `he : (fun g : HA (AF F) σ J => Φ (actW (AF F) σ J g⁻¹ (ratTup (AF F) X))) = Set.indicator ((fun g : HA (AF F) σ J => actW (AF F) σ J g⁻¹ (ratTup (AF F) X)) ⁻¹' Ω) (fun _ => (1 : ℝ≥0∞))`. Use function extensionality and compare the values at `g`.
+
+Apply the tactic sequence `by_cases hg : actW (AF F) σ J g⁻¹ (ratTup (AF F) X) ∈ Ω <;> simp [hΦ, Set.indicator, hg]`. Rewrite using `[he]`. Conclude with `measurable_const.indicator hs`. Establish `hzero : cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0 ∧ gramE σ J X = 0} Φ < ⊤`. Take `⟨-, hbox, -⟩` from `GlobalTheory.T.adelic_boxes_compact_exhaust F E σ hCM _ (Module.finBasis F E) 1 M`.
+
+Take `⟨N, r, hN, hr, hsub⟩` from `hbox Ω hΩ`. Take `⟨C, hC⟩` from `GlobalTheory.T.isotropic_vector_count_box_bound F E σ hCM M J hJ hM μ 𝓕 hH hFD _ (Module.finBasis F E) N hN`. Use `lt_of_le_of_lt (le_trans (cntI_mono_fun fun Y => ?_) (hC r hr)) ENNReal.ofReal_lt_top` and prove the remaining obligations. Conclude with `Set.indicator_le_indicator_of_subset hsub (fun _ => zero_le) Y`. Establish `hlen : ∀ t : F, t ≠ 0 → cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | gramE σ J X = fun _ _ => algebraMap F E t} Φ < ⊤`.
+
+Introduce `t ht`. Conclude with `GlobalTheory.T.finite_volume_induction_compact_sum F E σ hCM M J hJ (fun M' _ J' hJ' => GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM M' J' hJ') t ht μ 𝓕 hH hFD Ω hΩ`. Establish `hfinset : ∀ T : Finset F, (∀ t ∈ T, t ≠ 0) → cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | (X ≠ 0 ∧ gramE σ J X = 0) ∨ ∃ t ∈ T, gramE σ J X = fun _ _ => algebraMap F E t} Φ < ⊤`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`.
+
+Consider the case `empty`. Introduce `_`. Simplify using `using hzero`. Consider the case `insert a T _ ih`. Introduce `hT`.
+
+Establish `hsub : cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | (X ≠ 0 ∧ gramE σ J X = 0) ∨ ∃ t ∈ insert a T, gramE σ J X = fun _ _ => algebraMap F E t} Φ ≤ cntI σ J μ 𝓕 ({X : Fin 1 → Fin M → E | gramE σ J X = fun _ _ => algebraMap F E a} ∪ {X : Fin 1 → Fin M → E | (X ≠ 0 ∧ gramE σ J X = 0) ∨ ∃ t ∈ …`. Use `cntI_le_of_contrib fun g X hX _ => ?_` and prove the remaining obligations. Break down `hX with hX | ⟨t, ht, hX⟩` into its components or cases. Conclude with `Or.inr (Or.inl hX)`. Break down `Finset.mem_insert.1 ht with rfl | ht'` into its components or cases.
+
+Conclude with `Or.inl hX`. Conclude with `Or.inr (Or.inr ⟨t, ht', hX⟩)`. Use `lt_of_le_of_lt (hsub.trans (cntI_union_le hm)) (ENNReal.add_lt_top.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `hlen a (hT a (Finset.mem_insert_self a T))`. Conclude with `ih fun t ht => hT t (Finset.mem_insert_of_mem ht)`.
+
+Take `⟨hlenQ, hgram, hfin⟩` from `GlobalTheory.T.rational_gram_adelic_compact_finite F E σ hCM M J hJ`. Use `lt_of_le_of_lt ?_ (hfinset ((hfin Ω hΩ).toFinset.erase 0) fun t ht => (Finset.mem_erase.1 ht).1)` and prove the remaining obligations. Use `cntI_le_of_contrib fun g X hX hne => ?_` and prove the remaining obligations. Establish `hY : actW (AF F) σ J g⁻¹ (ratTup (AF F) X) ∈ Ω`. Assume the negation of the conclusion as `hY`.
+
+Conclude with `hne (by simp [hΦ, Set.indicator, hY])`. Take `⟨t, ht⟩` from `hlenQ X`. Distinguish the cases in `h0 : t = 0`. Use `Or.inl ⟨hX, ?_⟩` and prove the remaining obligations. Rewrite using `[ht, h0]`.
+
+Use function extensionality and compare the values at `a b`. Simplify using the standard rewrite rules. Use `Or.inr ⟨t, Finset.mem_erase.2 ⟨h0, ?_⟩, ht⟩` and prove the remaining obligations. Use `(Set.Finite.mem_toFinset _).2 ⟨_, hY, ?_⟩` and prove the remaining obligations. Rewrite using `[((hact 1).2.2.2 g⁻¹ (ratTup (AF F) X)), hgram 1 X, ht]`.
+
+Use function extensionality and compare the values at `a b`. Both sides reduce to the same expression.
+-/
 theorem cntI_nonzero_lt_top : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M →
     ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 →

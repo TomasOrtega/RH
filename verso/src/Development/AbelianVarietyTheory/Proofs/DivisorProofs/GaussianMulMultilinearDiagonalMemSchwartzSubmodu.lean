@@ -6,6 +6,11 @@ open MeasureTheory Filter Topology
 noncomputable section
 namespace GlobalTheory.ConvSeries
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro ℓ; exact ⟨G, hG, fun y => by simp⟩`. Consider the case `succ m ih`. Introduce `ℓ`.
+
+Take `⟨t, ht, hty⟩` from `ih (fun i => ℓ i.succ)`. Establish `hg : (fun x : E => ((ℓ 0 x : ℝ) : ℂ)).HasTemperateGrowth` using `(Complex.ofRealCLM.comp (ℓ 0)).hasTemperateGrowth`. Use `⟨SchwartzMap.smulLeftCLM ℂ (fun x : E => ((ℓ 0 x : ℝ) : ℂ)) t, hM (ℓ 0) t _ ht (fun x => by rw [SchwartzMap.smulLeftCLM_apply_apply hg, smul_eq_mul]), fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply hg, smul_eq_mul, hty, Fin.prod_univ_succ, mul_assoc]`.
+-/
 theorem exists_mem_prod_mul_gauss {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (M : Submodule ℂ (SchwartzMap E ℂ))
     (hM : ∀ (ℓ : E →L[ℝ] ℝ) (f f₁ : SchwartzMap E ℂ), f ∈ M → (∀ x, f₁ x = (ℓ x : ℂ) * f x) → f₁ ∈ M)
@@ -23,6 +28,21 @@ theorem exists_mem_prod_mul_gauss {E : Type} [NormedAddCommGroup E] [InnerProduc
       hM (ℓ 0) t _ ht (fun x => by rw [SchwartzMap.smulLeftCLM_apply_apply hg, smul_eq_mul]), fun y => ?_⟩
     rw [SchwartzMap.smulLeftCLM_apply_apply hg, smul_eq_mul, hty, Fin.prod_univ_succ, mul_assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ M hM c hc hGM k B`. Establish `hin : ∀ x : E, innerSL ℝ x x = ‖x‖ ^ 2` using `fun x => by first`. Consider the case `rw [innerSL_apply_apply, real_inner_self_eq_norm_sq]`. Consider the case `simp [real_inner_self_eq_norm_sq]`. Consider the case `exact real_inner_self_eq_norm_sq x`.
+
+Take `⟨G, hG⟩` from `GlobalTheory.GaussSchwartz.exists_schwartz_exp_diag (-c • innerSL ℝ : E →L[ℝ] E →L[ℝ] ℝ) (fun x hx => by`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[hin]`. Establish `: 0 < ‖x‖ ^ 2` using `by positivity`. Use the proof step `nlinarith)`.
+
+Establish `hG' : ∀ y, G y = Complex.exp (-((c * ‖y‖ ^ 2 : ℝ) : ℂ))` using `fun y => by`. Rewrite using `[hG, Complex.ofReal_exp]`. Use `congr 1`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[hin]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hGmem` using `hGM G hG'`. Set `b` to `stdOrthonormalBasis ℝ E`. Establish `key : ∀ r : Fin k → Fin (Module.finrank ℝ E), ∃ t ∈ M, ∀ y, t y = (∏ j, ((innerSL ℝ (b (r j)) y : ℝ) : ℂ)) * G y` using `fun r => exists_mem_prod_mul_gauss M hM G hGmem k (fun j => innerSL ℝ (b (r j)))`.
+
+Use `choose t ht hty using key`. Use `⟨∑ r, B (fun j => b (r j)) • t r, M.sum_mem fun r _ => M.smul_mem _ (ht r), fun y => ?_⟩` and prove the remaining obligations. Establish `hy : (fun _ : Fin k => y) = fun _ : Fin k => ∑ i, (inner ℝ (b i) y) • b i`. Use function extensionality and compare the values at `_`. Conclude with `(b.sum_repr' y).symm`.
+
+Rewrite using `[hy, ContinuousMultilinearMap.map_sum, Finset.mul_sum, SchwartzMap.sum_apply]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[B.map_smul_univ (fun j => inner ℝ (b (r j)) y) (fun j => b (r j)), SchwartzMap.smul_apply, hty, hG', Complex.real_smul, smul_eq_mul]`. Establish `hi : ∀ v : E, innerSL ℝ v y = inner ℝ v y` using `fun v => rfl`. Simplify using `only [hi]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gauss_mul_diag_mem : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     (M : Submodule ℂ (SchwartzMap E ℂ)),
     (∀ (ℓ : E →L[ℝ] ℝ) (f f₁ : SchwartzMap E ℂ), f ∈ M → (∀ x, f₁ x = (ℓ x : ℂ) * f x) → f₁ ∈ M) →

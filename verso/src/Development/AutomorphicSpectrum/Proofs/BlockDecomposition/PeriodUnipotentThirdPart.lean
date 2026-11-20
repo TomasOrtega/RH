@@ -10,6 +10,21 @@ open scoped FourierTransform SchwartzMap RealInnerProductSpace
 
 namespace GlobalTheory.CompanionTheory.PerUThree
 
+/- English proof (translation)
+Establish `hR : (volume : Measure ℝ).restrict ({0}ᶜ : Set ℝ) = volume` using `Measure.restrict_eq_self_of_ae_mem (compl_mem_ae_iff.2 (by simp))`. Establish `hs : MeasurableSet ({0}ᶜ : Set ℝ)` using `(measurableSet_singleton 0).compl`. Establish `himg : (fun r : ℝ => -r⁻¹) '' ({0}ᶜ : Set ℝ) = {0}ᶜ`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨r, hr, rfl⟩`. Simplify using `using hr`. Introduce `hy`. Use `⟨-y⁻¹, by simpa using hy, by simp⟩` and prove the remaining obligations. Establish `hd : ∀ x ∈ ({0}ᶜ : Set ℝ), HasDerivWithinAt (fun r : ℝ => -r⁻¹) ((x ^ 2)⁻¹) {0}ᶜ x`.
+
+Introduce `x hx`. Establish `h` using `(hasDerivAt_inv (show x ≠ 0 from hx)).fun_neg`. Rewrite `h` using `[neg_neg]`. Conclude with `h.hasDerivWithinAt`. Establish `hinj : Set.InjOn (fun r : ℝ => -r⁻¹) ({0}ᶜ : Set ℝ)`.
+
+Introduce `a _ b _ hab`. Simplify using `using hab`. Establish `key` using `integral_image_eq_integral_abs_deriv_smul hs hd hinj (fun x : ℝ => ((|x|⁻¹ : ℝ) : ℂ) * G x)`. Rewrite `key` using `[himg, hR]`. Rewrite using `[key]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℝ))] with r hr`. Establish `hr0 : r ≠ 0` using `hr`. Establish `ha : |r| ≠ 0` using `abs_ne_zero.2 hr0`. Rewrite using `[Complex.real_smul]`.
+
+Simplify using `only [abs_neg, abs_inv, inv_inv, abs_pow, sq_abs]`. Rewrite using `[← mul_assoc]`. Use `congr 1`. Use `push_cast`. Establish `hc : ((|r| : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast ha`.
+
+Establish `h2 : (r : ℂ) ^ 2 = ((|r| : ℝ) : ℂ) ^ 2` using `by exact_mod_cast (sq_abs r).symm`. Rewrite using `[h2]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integral_inv_neg (G : ℝ → ℂ) :
     ∫ x : ℝ, ((|x|⁻¹ : ℝ) : ℂ) * G x = ∫ r : ℝ, ((|r|⁻¹ : ℝ) : ℂ) * G (-r⁻¹) := by
   have hR : (volume : Measure ℝ).restrict ({0}ᶜ : Set ℝ) = volume :=
@@ -48,6 +63,15 @@ theorem integral_inv_neg (G : ℝ → ℂ) :
   rw [h2]
   field_simp
 
+/- English proof (translation)
+Establish `ha : (0 : ℝ) < |r|` using `abs_pos.2 hr`. Establish `hc : ((|r| : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`. Establish `hpow : ((|(-r⁻¹)| : ℝ) : ℂ) ^ s * ((|r| : ℝ) : ℂ) = ((|r| : ℝ) : ℂ) ^ (1 - s)`. Establish `: ((|(-r⁻¹)| : ℝ) : ℂ) = (((|r| : ℝ) : ℂ))⁻¹` using `by simp`. Rewrite using `[this, Complex.inv_cpow _ _ (by`.
+
+Rewrite using `[Complex.arg_ofReal_of_nonneg ha.le]`. Conclude with `Real.pi_pos.ne), Complex.cpow_sub _ _ hc,`. Use the proof step `Complex.cpow_one]`. Clear the denominators using the available nonvanishing facts. Establish `habs : ((|(-r⁻¹)|⁻¹ : ℝ) : ℂ) = ((|r| : ℝ) : ℂ)` using `by simp`.
+
+Break down `lt_or_gt_of_ne hr with h | h` into its components or cases. Establish `h1 : ¬ (-r⁻¹ < 0)`. Use `inv_lt_zero.2 h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `cases δ <;> simp [cr, sg, h, h1] at hpow ⊢ <;> exact hpow`.
+
+Establish `h1 : -r⁻¹ < 0`. Use `inv_pos.2 h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ¬ r < 0` using `not_lt.2 h.le`. Apply the tactic sequence `cases δ <;> simp [cr, sg, h1, h2] at hpow ⊢ <;> exact hpow`.
+-/
 theorem sign_id (δ : Bool) (s : ℂ) {r : ℝ} (hr : r ≠ 0) :
     cr δ s (-r⁻¹) * sg (-r⁻¹) * ((|(-r⁻¹)|⁻¹ : ℝ) : ℂ) =
       cr (!δ) 0 (-1) * cr (!δ) (1 - s) r := by
@@ -71,6 +95,25 @@ theorem sign_id (δ : Bool) (s : ℂ) {r : ℝ} (hr : r ≠ 0) :
     have h2 : ¬ r < 0 := not_lt.2 h.le
     cases δ <;> simp [cr, sg, h1, h2] at hpow ⊢ <;> exact hpow
 
+/- English proof (translation)
+Use `set f : ℝ → ℝ := fun w => |w| ^ a * ((1 + |w|) ^ 2)⁻¹ with hf`. Establish `hfm : Measurable f`. Apply `Measurable.mul` to reduce the goal to its premises. Conclude with `(measurable_id.abs).pow_const a`. Use `fun_prop`.
+
+Establish `hA : IntegrableOn f (Set.Ioc 0 1)`. Establish `hb : IntegrableOn (fun x : ℝ => x ^ a) (Set.Ioc 0 1)` using `(intervalIntegrable_iff_integrableOn_Ioc_of_le zero_le_one).1 (intervalIntegral.intervalIntegrable_rpow' h1)`. Use `Integrable.mono' hb hfm.aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_Ioc] with w hw`. Establish `hw0 : 0 < w` using `hw.1`.
+
+Rewrite using `[hf]`. Simplify using `only [abs_of_pos hw0, Real.norm_eq_abs]`. Rewrite using `[abs_of_nonneg (by positivity)]`. Establish `: ((1 + w) ^ 2)⁻¹ ≤ 1`. Apply `inv_le_one_of_one_le₀` to reduce the goal to its premises.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Establish `hB : IntegrableOn f (Set.Ioi 1)`. Establish `hb : IntegrableOn (fun x : ℝ => x ^ (a - 2)) (Set.Ioi 1)` using `integrableOn_Ioi_rpow_of_lt (by linarith) one_pos`. Use `Integrable.mono' hb hfm.aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_restrict_mem measurableSet_Ioi] with w hw`. Establish `hw0 : 0 < w` using `lt_trans one_pos hw`. Rewrite using `[hf]`. Simplify using `only [abs_of_pos hw0, Real.norm_eq_abs]`. Rewrite using `[abs_of_nonneg (by positivity), Real.rpow_sub hw0, Real.rpow_two, div_eq_mul_inv]`.
+
+Establish `: ((1 + w) ^ 2)⁻¹ ≤ (w ^ 2)⁻¹`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Use `gcongr`. Establish `hC : IntegrableOn f (Set.Ioi 0)`.
+
+Establish `: Set.Ioi (0 : ℝ) = Set.Ioc 0 1 ∪ Set.Ioi 1` using `(Set.Ioc_union_Ioi_eq_Ioi zero_le_one).symm`. Rewrite using `[this]`. Conclude with `hA.union hB`. Establish `hg : Integrable ((Set.Ioi (0 : ℝ)).indicator f)` using `hC.integrable_indicator measurableSet_Ioi`. Use `(hg.add hg.comp_neg).congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℝ))] with w hw`. Establish `hw0 : w ≠ 0` using `hw`. Establish `hfe : f (-w) = f w` using `by simp [hf]`. Break down `lt_or_gt_of_ne hw0 with h | h` into its components or cases. Simplify using `[Set.indicator, h, not_lt.2 h.le, hfe]`.
+
+Simplify using `[Set.indicator, h, not_lt.2 h.le]`.
+-/
 theorem integrable_K {a : ℝ} (h1 : -1 < a) (h2 : a < 1) :
     Integrable (fun w : ℝ => |w| ^ a * ((1 + |w|) ^ 2)⁻¹) := by
   set f : ℝ → ℝ := fun w => |w| ^ a * ((1 + |w|) ^ 2)⁻¹ with hf
@@ -137,11 +180,19 @@ def ell (h : M22) : E2 →ₗ[ℝ] M23 where
     funext i j
     fin_cases j <;> simp <;> ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Apply the tactic sequence `fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, blk, cst, ell, Fin.sum_univ_three]`.
+-/
 theorem affine_eq (h : M22) (y : E2) :
     Matrix.of.symm (Matrix.of h * blk y.ofLp) = cst h + ell h y := by
   funext i j
   fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, blk, cst, ell, Fin.sum_univ_three]
 
+/- English proof (translation)
+Use `LinearMap.ker_eq_bot'.2 fun y hy => ?_` and prove the remaining obligations. Establish `h1 : ∀ i, h i 0 * y 0 + h i 1 * y 1 = 0`. Introduce `i`. Simplify `congr_fun (congr_fun hy i) 2` using `[ell]`. Establish `h2 : (Matrix.of h).mulVec y.ofLp = 0`.
+
+Use function extensionality and compare the values at `i`. Simplify `h1 i` using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Establish `h3` using `Matrix.eq_zero_of_mulVec_eq_zero hdet h2`. Use extensionality with `i`. Simplify using `using congr_fun h3 i`.
+-/
 theorem ell_ker (h : M22) (hdet : (Matrix.of h).det ≠ 0) : LinearMap.ker (ell h) = ⊥ := by
   refine LinearMap.ker_eq_bot'.2 fun y hy => ?_
   have h1 : ∀ i, h i 0 * y 0 + h i 1 * y 1 = 0 := by
@@ -169,6 +220,11 @@ def psiS (Ψ : M23 → ℂ) (hsm : ContDiff ℝ (⊤ : ℕ∞) Ψ)
       _ ≤ (1 + ‖x‖) ^ (max k n) :=
         pow_le_pow_right₀ (by linarith [norm_nonneg x]) (le_max_left _ _)
 
+/- English proof (translation)
+Take `⟨K, -, hK⟩` from `LinearMap.exists_antilipschitzWith (ell h) (ell_ker h hdet)`. Establish `hA : AntilipschitzWith K (fun y : E2 => cst h + ell h y)` using `AntilipschitzWith.of_le_mul_dist fun a b => by`. Simplify `hK.le_mul_dist a b` using `[dist_add_left]`. Establish `hT : Function.HasTemperateGrowth (fun y : E2 => cst h + ell h y)` using `(Function.HasTemperateGrowth.const (cst h)).add (LinearMap.toContinuousLinearMap (ell h)).hasTemperateGrowth`. Use `⟨SchwartzMap.compCLMOfAntilipschitz ℂ hT hA (psiS Ψ hsm hdec), fun y => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [SchwartzMap.compCLMOfAntilipschitz_apply, Function.comp, gx]`. Rewrite using `[affine_eq]`. Both sides reduce to the same expression.
+-/
 theorem exists_schwartz (Ψ : M23 → ℂ) (hsm : ContDiff ℝ (⊤ : ℕ∞) Ψ)
     (hdec : ∀ n : ℕ, ∃ C : ℝ, ∀ m ≤ n, ∀ X : M23, (1 + ‖X‖) ^ n * ‖iteratedFDeriv ℝ m Ψ X‖ ≤ C)
     (h : M22) (hdet : (Matrix.of h).det ≠ 0) :
@@ -185,6 +241,9 @@ theorem exists_schwartz (Ψ : M23 → ℂ) (hsm : ContDiff ℝ (⊤ : ℕ∞) Ψ
   rw [affine_eq]
   rfl
 
+/- English proof (translation)
+Use `⟨2 ^ k * (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) S, by positivity, fun y => ?_⟩` and prove the remaining obligations. Use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (k, 0)) (k := k) (n := 0) le_rfl le_rfl S y` as an intermediate fact. Simplify using `using this`.
+-/
 theorem schwartz_bd (S : 𝓢(E2, ℂ)) (k : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ y, (1 + ‖y‖) ^ k * ‖S y‖ ≤ C := by
   refine ⟨2 ^ k * (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) S,
     by positivity, fun y => ?_⟩
@@ -192,6 +251,13 @@ theorem schwartz_bd (S : 𝓢(E2, ℂ)) (k : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀
     le_rfl le_rfl S y
   simpa using this
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `schwartz_bd S 4`. Use `⟨C, hC0, fun a b => ?_⟩` and prove the remaining obligations. Use `set y : E2 := WithLp.toLp 2 ![a, b] with hy`. Establish `hya : |a| ≤ ‖y‖` using `by simpa [hy] using PiLp.norm_apply_le y 0`. Establish `hyb : |b| ≤ ‖y‖` using `by simpa [hy] using PiLp.norm_apply_le y 1`.
+
+Establish `h1` using `hC y`. Rewrite `h1` using `[hS y, show y.ofLp = ![a, b] from rfl]`. Establish `hp : 0 < (1 + |a|) ^ 2 * (1 + |b|) ^ 2` using `by positivity`. Rewrite using `[← mul_inv, ← div_eq_mul_inv, le_div_iff₀ hp]`. Use `le_trans ?_ h1` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Use `gcongr ?_ * _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gx_decay {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ y : E2, S y = gx Ψ h y.ofLp) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ a b : ℝ, ‖gx Ψ h ![a, b]‖ ≤ C * (((1 + |a|) ^ 2)⁻¹ * ((1 + |b|) ^ 2)⁻¹) := by
   obtain ⟨C, hC0, hC⟩ := schwartz_bd S 4
@@ -209,6 +275,13 @@ theorem gx_decay {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ y : 
   calc (1 + |a|) ^ 2 * (1 + |b|) ^ 2 ≤ (1 + ‖y‖) ^ 2 * (1 + ‖y‖) ^ 2 := by gcongr
     _ = (1 + ‖y‖) ^ 4 := by ring
 
+/- English proof (translation)
+Rewrite using `[SchwartzMap.fourier_coe, Real.fourier_eq']`. Establish `hmp` using `PiLp.volume_preserving_toLp (Fin 2)`. Rewrite using `[← hmp.integral_comp (MeasurableEquiv.toLp 2 (Fin 2 → ℝ)).measurableEmbedding]`. Unfold `B.innB`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Establish `hin : inner ℝ (WithLp.toLp 2 x : E2) (WithLp.toLp 2 ![0, -β] : E2) = -β * x 1`. Simplify using `[PiLp.inner_apply, Fin.sum_univ_two, mul_comm]`. Use `beta_reduce`. Rewrite using `[hin, hS, smul_eq_mul, mul_comm]`. Simplify using `only [gx, psiR, WithLp.ofLp_toLp]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem innB_eq {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ y : E2, S y = gx Ψ h y.ofLp)
     (β : ℝ) : B.innB Ψ h β = (𝓕 S : 𝓢(E2, ℂ)) (WithLp.toLp 2 ![0, -β]) := by
   rw [SchwartzMap.fourier_coe, Real.fourier_eq']
@@ -225,12 +298,20 @@ theorem innB_eq {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ y : E
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hmp` using `(volume_preserving_finTwoArrow ℝ).symm`. Rewrite using `[← hmp.integral_comp']`. Conclude with `integral_prod_symm (f := fun p : ℝ × ℝ => F ![p.1, p.2]) hF`.
+-/
 theorem fin_two_integral (F : (Fin 2 → ℝ) → ℂ) (hF : Integrable (fun p : ℝ × ℝ => F ![p.1, p.2])) :
     ∫ x, F x = ∫ w : ℝ, ∫ x0 : ℝ, F ![x0, w] := by
   have hmp := (volume_preserving_finTwoArrow ℝ).symm
   rw [← hmp.integral_comp']
   exact integral_prod_symm (f := fun p : ℝ × ℝ => F ![p.1, p.2]) hF
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun p : ℝ × ℝ => (WithLp.toLp 2 ![p.1, p.2] : E2))`. Use `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp <;> fun_prop`. Establish `h2` using `S.continuous.comp h1`. Use `h2.congr fun p => ?_` and prove the remaining obligations.
+
+Simplify using `using hS (WithLp.toLp 2 ![p.1, p.2])`.
+-/
 theorem continuous_G {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ y : E2, S y = gx Ψ h y.ofLp) :
     Continuous (fun p : ℝ × ℝ => gx Ψ h ![p.1, p.2]) := by
   have h1 : Continuous (fun p : ℝ × ℝ => (WithLp.toLp 2 ![p.1, p.2] : E2)) := by
@@ -240,6 +321,13 @@ theorem continuous_G {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ 
   refine h2.congr fun p => ?_
   simpa using hS (WithLp.toLp 2 ![p.1, p.2])
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `gx_decay hS`. Establish `hu : Integrable (fun w : ℝ => ((1 + |w|) ^ 2)⁻¹)`. Simplify using `using integrable_K (a := 0) (by norm_num) (by norm_num)`. Establish `hv` using `integrable_K h1 h2`. Establish `hd` using `(hu.mul_prod hv).const_mul C`.
+
+Use `hd.mono' ?_ (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `((hWm.comp measurable_snd).aestronglyMeasurable).mul (continuous_G hS).aestronglyMeasurable`. Rewrite using `[norm_mul]`. Establish `e` using `hC p.1 p.2`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hW _`. Use `_ = _ := by ring`.
+-/
 theorem joint_int {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ y : E2, S y = gx Ψ h y.ofLp)
     {W : ℝ → ℂ} (hWm : Measurable W) {a : ℝ} (h1 : -1 < a) (h2 : a < 1)
     (hW : ∀ w, ‖W w‖ ≤ |w| ^ a) :
@@ -260,6 +348,9 @@ theorem joint_int {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ y :
           exact hW _
       _ = _ := by ring
 
+/- English proof (translation)
+Rewrite using `[fin_two_integral (fun x => W (x 1) * gx Ψ h x) (by simpa using hJ)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Qf]`. Rewrite using `[← integral_const_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem integral_fubini_last_coordinate {Ψ : M23 → ℂ} {h : M22} {W : ℝ → ℂ}
     (hJ : Integrable (fun p : ℝ × ℝ => W p.2 * gx Ψ h ![p.1, p.2])) :
     ∫ x, W (x 1) * gx Ψ h x = ∫ w, W w * Qf Ψ h w := by
@@ -269,6 +360,9 @@ theorem integral_fubini_last_coordinate {Ψ : M23 → ℂ} {h : M22} {W : ℝ �
   rw [← integral_const_mul]
   simp
 
+/- English proof (translation)
+Use `hJ.integral_prod_right.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Qf]`. Rewrite using `[← integral_const_mul]`.
+-/
 theorem marg_int {Ψ : M23 → ℂ} {h : M22} {W : ℝ → ℂ}
     (hJ : Integrable (fun p : ℝ × ℝ => W p.2 * gx Ψ h ![p.1, p.2])) :
     Integrable (fun w => W w * Qf Ψ h w) := by
@@ -276,16 +370,29 @@ theorem marg_int {Ψ : M23 → ℂ} {h : M22} {W : ℝ → ℂ}
   simp only [Qf]
   rw [← integral_const_mul]
 
+/- English proof (translation)
+Unfold `psiR`. Use `fun_prop`.
+-/
 theorem psi_meas (r : ℝ) : Measurable (fun w : ℝ => psiR (r * w)) := by
   unfold psiR
   fun_prop
 
+/- English proof (translation)
+Establish `: -2 * (Real.pi : ℂ) * I * x = ((-2 * Real.pi * x : ℝ) : ℂ) * I`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[psiR, this, Complex.norm_exp_ofReal_mul_I]`.
+-/
 theorem psi_norm (x : ℝ) : ‖psiR x‖ = 1 := by
   have : -2 * (Real.pi : ℂ) * I * x = ((-2 * Real.pi * x : ℝ) : ℂ) * I := by
     push_cast
     ring
   rw [psiR, this, Complex.norm_exp_ofReal_mul_I]
 
+/- English proof (translation)
+Establish `hJ` using `joint_int hS (psi_meas r) (a := 0) (by norm_num) (by norm_num) (fun w => by simp [psi_norm])`. Establish `h1 : B.innB Ψ h (-r) = ∫ x, psiR (r * x 1) * gx Ψ h x`. Unfold `B.innB`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [gx, neg_mul, neg_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Use `Eq.trans ?_ (integral_fubini_last_coordinate (W := fun w => psiR (r * w)) hJ).symm` and prove the remaining obligations. Rewrite using `[Real.fourier_real_eq_integral_exp_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+
+Simplify using `only [psiR, smul_eq_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fourier_Q {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ y : E2, S y = gx Ψ h y.ofLp)
     (r : ℝ) : 𝓕 (Qf Ψ h) r = B.innB Ψ h (-r) := by
   have hJ := joint_int hS (psi_meas r) (a := 0) (by norm_num) (by norm_num)
@@ -304,6 +411,17 @@ theorem fourier_Q {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ y :
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `schwartz_bd (𝓕 S : 𝓢(E2, ℂ)) 2`. Establish `hF : ∀ r, 𝓕 (Qf Ψ h) r = (𝓕 S : 𝓢(E2, ℂ)) (WithLp.toLp 2 ![0, r])`. Introduce `r`. Rewrite using `[fourier_Q hS, innB_eq hS, neg_neg]`. Establish `hc : Continuous (fun r : ℝ => (𝓕 S : 𝓢(E2, ℂ)) (WithLp.toLp 2 ![0, r]))`.
+
+Use `(𝓕 S : 𝓢(E2, ℂ)).continuous.comp ((PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => ?_))` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp <;> fun_prop`. Establish `hv` using `(integrable_K (a := -σ) (by linarith) (by linarith)).const_mul C`. Simplify using `only [hF]`. Use `hv.mono' (hc.aestronglyMeasurable.mul ?_) (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations.
+
+Conclude with `(Complex.measurable_ofReal.comp ((measurable_id.abs).pow_const (-σ))).aestronglyMeasurable`. Use `set y : E2 := WithLp.toLp 2 ![0, r] with hy`. Establish `hyr : |r| ≤ ‖y‖` using `by simpa [hy] using PiLp.norm_apply_le y 1`. Establish `h2` using `hC y`. Establish `hp : 0 < (1 + |r|) ^ 2` using `by positivity`.
+
+Establish `h3 : ‖(𝓕 S : 𝓢(E2, ℂ)) y‖ ≤ C * ((1 + |r|) ^ 2)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hp]`. Use `le_trans ?_ h2` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `gcongr`.
+
+Establish `hn : 0 ≤ |r| ^ (-σ)` using `Real.rpow_nonneg (abs_nonneg _) _`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hn]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fourier_Q_int {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀ y : E2, S y = gx Ψ h y.ofLp)
     {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) :
     Integrable (fun r => 𝓕 (Qf Ψ h) r * ((|r| ^ (-σ) : ℝ) : ℂ)) := by
@@ -334,6 +452,9 @@ theorem fourier_Q_int {Ψ : M23 → ℂ} {h : M22} {S : 𝓢(E2, ℂ)} (hS : ∀
     calc ‖(𝓕 S : 𝓢(E2, ℂ)) y‖ * |r| ^ (-σ) ≤ C * ((1 + |r|) ^ 2)⁻¹ * |r| ^ (-σ) := by gcongr
       _ = _ := by ring
 
+/- English proof (translation)
+Establish `hc : ((|w| : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast abs_ne_zero.2 hw`. Simplify using `only [cr]`. Rewrite using `[Complex.cpow_sub _ _ hc, Complex.cpow_one]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem cr_sub_one (e : Bool) (s : ℂ) {w : ℝ} (hw : w ≠ 0) :
     ((|w|⁻¹ : ℝ) : ℂ) * cr e s w = cr e (s - 1) w := by
   have hc : ((|w| : ℝ) : ℂ) ≠ 0 := by exact_mod_cast abs_ne_zero.2 hw
@@ -342,6 +463,11 @@ theorem cr_sub_one (e : Bool) (s : ℂ) {w : ℝ} (hw : w ≠ 0) :
   push_cast
   field_simp
 
+/- English proof (translation)
+Unfold `cr`. Use `Measurable.mul ?_ ?_` and prove the remaining obligations. Consider the cases of `e`. Simplify using the standard rewrite rules. Simplify using `using Measurable.ite measurableSet_Iio measurable_const measurable_const`.
+
+Conclude with `(Complex.measurable_ofReal.comp measurable_id.abs).pow_const s`.
+-/
 theorem cr_meas (e : Bool) (s : ℂ) : Measurable (cr e s) := by
   unfold cr
   refine Measurable.mul ?_ ?_
@@ -350,11 +476,19 @@ theorem cr_meas (e : Bool) (s : ℂ) : Measurable (cr e s) := by
     · simpa using Measurable.ite measurableSet_Iio measurable_const measurable_const
   · exact (Complex.measurable_ofReal.comp measurable_id.abs).pow_const s
 
+/- English proof (translation)
+Apply the tactic sequence `have h1 : ‖(if (e = true ∧ w < 0) then (-1 : ℂ) else 1)‖ = 1 := by split_ifs <;> simp`. Rewrite using `[cr, norm_mul, h1, one_mul, Complex.norm_cpow_eq_rpow_re_of_nonneg (abs_nonneg w) hs]`.
+-/
 theorem cr_norm (e : Bool) {s : ℂ} (hs : s.re ≠ 0) (w : ℝ) : ‖cr e s w‖ = |w| ^ s.re := by
   have h1 : ‖(if (e = true ∧ w < 0) then (-1 : ℂ) else 1)‖ = 1 := by
     split_ifs <;> simp
   rw [cr, norm_mul, h1, one_mul, Complex.norm_cpow_eq_rpow_re_of_nonneg (abs_nonneg w) hs]
 
+/- English proof (translation)
+Establish `h1 : z1 Q e s = ∫ a : ℝˣ, (fun x : ℝ => Q x * cr e s x) a ∂mulR` using `rfl`. Rewrite using `[h1, GlobalTheory.CompanionTheory.TateR.integral_mulR (fun x : ℝ => Q x * cr e s x)]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℝ))] with w hw`. Rewrite using `[← cr_sub_one e s hw]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zeta_integral_first_formula (Q : ℝ → ℂ) (e : Bool) (s : ℂ) : z1 Q e s = ∫ w, cr e (s - 1) w * Q w := by
   have h1 : z1 Q e s = ∫ a : ℝˣ, (fun x : ℝ => Q x * cr e s x) a ∂mulR := rfl
   rw [h1, GlobalTheory.CompanionTheory.TateR.integral_mulR (fun x : ℝ => Q x * cr e s x)]
@@ -363,6 +497,13 @@ theorem zeta_integral_first_formula (Q : ℝ → ℂ) (e : Bool) (s : ℂ) : z1 
   rw [← cr_sub_one e s hw]
   ring
 
+/- English proof (translation)
+Establish `h1 : ∫ t : ℝˣ, chR δ s t * sg t * (((|(t : ℝ)|)⁻¹ : ℝ) : ℂ) * B.innB Ψ h (t : ℝ)⁻¹ ∂mulR = ∫ t : ℝˣ, (fun x : ℝ => cr δ s x * sg x * ((|x|⁻¹ : ℝ) : ℂ) * B.innB Ψ h x⁻¹) t ∂mulR` using `rfl`. Establish `h2 : z1 F (!δ) (1 - s) = ∫ a : ℝˣ, (fun x : ℝ => F x * cr (!δ) (1 - s) x) a ∂mulR` using `rfl`. Rewrite using `[h1, h2, GlobalTheory.CompanionTheory.TateR.integral_mulR (fun x : ℝ => cr δ s x * sg x * ((|x|⁻¹ : ℝ) : ℂ) * B.innB Ψ h x⁻¹), GlobalTheory.CompanionTheory.TateR.integral_mulR (fun x : ℝ => F x * cr (!δ) (1 - s) x), integral_inv_neg, ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℝ))] with r hr`.
+
+Establish `hr0 : r ≠ 0` using `hr`. Establish `e` using `sign_id δ s hr0`. Simplify using `only [inv_neg, inv_inv]`. Rewrite using `[hF r]`. Simplify using `only [abs_neg, abs_inv, inv_inv] at e ⊢`.
+
+Take the linear combination `(((|r|⁻¹ : ℝ) : ℂ) * B.innB Ψ h (-r)) * e`.
+-/
 theorem left_side (δ : Bool) (s : ℂ) (Ψ : M23 → ℂ) (h : M22) (F : ℝ → ℂ)
     (hF : ∀ r, F r = B.innB Ψ h (-r)) :
     ∫ t : ℝˣ, chR δ s t * sg t * (((|(t : ℝ)|)⁻¹ : ℝ) : ℂ) * B.innB Ψ h (t : ℝ)⁻¹ ∂mulR =
@@ -383,6 +524,15 @@ theorem left_side (δ : Bool) (s : ℂ) (Ψ : M23 → ℂ) (h : M22) (F : ℝ �
   simp only [abs_neg, abs_inv, inv_inv] at e ⊢
   linear_combination (((|r|⁻¹ : ℝ) : ℂ) * B.innB Ψ h (-r)) * e
 
+/- English proof (translation)
+Introduce `hT Ψ δ s h0 h1 hsm hdec h hdet`. Take `⟨S, hS⟩` from `exists_schwartz Ψ hsm hdec h hdet`. Establish `hσ : (s - 1).re ≠ 0`. Simplify using `only [sub_re, one_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hQ1 : Integrable (Qf Ψ h)`. Use `marg_int (W := fun _ => 1) (joint_int hS (W := fun _ => 1) measurable_const (a := 0) (by norm_num) (by norm_num) (fun w => by simp))` as an intermediate fact. Simplify using `using this`. Establish `hQ2 : Integrable (fun w => Qf Ψ h w * ((|w| ^ (s.re - 1) : ℝ) : ℂ))`. Establish `hm : Measurable (fun w : ℝ => ((|w| ^ (s.re - 1) : ℝ) : ℂ))` using `Complex.measurable_ofReal.comp ((measurable_id.abs).pow_const _)`.
+
+Use `marg_int (W := fun w : ℝ => ((|w| ^ (s.re - 1) : ℝ) : ℂ)) (joint_int hS hm (a := s.re - 1) (by linarith) (by linarith) (fun w => by` as an intermediate fact. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]))`. Simplify `this` using `[mul_comm]`. Establish `hFE` using `hT (Qf Ψ h) (!δ) s h0 h1 hQ1 hQ2 (fourier_Q_int hS h0 h1)`. Establish `hJ` using `joint_int hS (cr_meas (!δ) (s - 1)) (a := s.re - 1) (by linarith) (by linarith) (fun w => by rw [cr_norm _ hσ]; simp)`.
+
+Rewrite using `[left_side δ s Ψ h (𝓕 (Qf Ψ h)) (fourier_Q hS), hFE, zeta_integral_first_formula]`. Establish `h3` using `integral_fubini_last_coordinate (W := cr (!δ) (s - 1)) hJ`. Simplify using `only [gx] at h3 ⊢`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : TateFunctionalEquationComplex → UnipotentTateFunctionalEquation := by
   intro hT Ψ δ s h0 h1 hsm hdec h hdet
   obtain ⟨S, hS⟩ := exists_schwartz Ψ hsm hdec h hdet

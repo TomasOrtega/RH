@@ -37,6 +37,9 @@ def CartierStatement : Prop :=
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Rewrite using `[← CutByFormField.vecCons_comp_finRotate]`. Conclude with `FieldNumbers.IntNumSymm.proof F K ι V (n + 1) _ _`.
+-/
 theorem intNum_snoc {F : Type u} [Field F] (V : Ideal (MRing ι F)) {n : ℕ} (L : Fin n → K → ℤ)
     (b : K → ℤ) :
     intNum F V (Fin.snoc (α := fun _ => K → ℤ) L b) = intNum F V (Matrix.vecCons b L) := by
@@ -45,10 +48,16 @@ theorem intNum_snoc {F : Type u} [Field F] (V : Ideal (MRing ι F)) {n : ℕ} (L
 
 variable {O : Type u} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+The claim follows from `intNum_snoc _ L b`.
+-/
 theorem vNum_snoc (W : Ideal (MRing ι O)) {n : ℕ} (L : Fin n → K → ℤ) (b : K → ℤ) :
     vNum W (Fin.snoc (α := fun _ => K → ℤ) L b) = vNum W (Matrix.vecCons b L) :=
   intNum_snoc _ L b
 
+/- English proof (translation)
+Rewrite using `[Objects.redEval_eq_cycEval]`. Use `congr 1`. Use function extensionality and compare the values at `W`. Conclude with `Objects.divO_eq_ratDiv P f g W`.
+-/
 theorem redEval_divO (J : Ideal (MRing ι (IsLocalRing.ResidueField O)) → ℤ)
     (P : Ideal (MRing ι O)) (f g : MRing ι O) :
     IndefiniteRowSideFullHecke.NumbersDVR.redEval J (IndefiniteRowSideFullHecke.NumbersDVR.divO P f g) =
@@ -58,6 +67,11 @@ theorem redEval_divO (J : Ideal (MRing ι (IsLocalRing.ResidueField O)) → ℤ)
   funext W
   exact Objects.divO_eq_ratDiv P f g W
 
+/- English proof (translation)
+Establish `hmin : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes ∧ IsRelevant W`. Assume the negation of the conclusion as `h`. Conclude with `hW (by unfold divCycle; rw [dif_neg h])`. Establish `hWp : W.IsPrime` using `hmin.1.1.1`. Establish `hWh : IsMultiHomogIdeal W` using `(Objects.isMultiHomogIdeal_iff W).mpr (ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isMultiHomogIdeal_of_mem_minimalPrimes ((Objects.isMultiHomogIdeal_iff P).mp hP.multiProj.multiHomog) ((Objects.isMultiHomog_iff f a).mp hf) hmin.1)`.
+
+Take `⟨hpr, -, hrel, -⟩` from `SpecialIdealCorresp.proof O ϖ hϖ K ι P W hWp hϖW`. Use `⟨(Objects.isMultiProjPrime_iff _).mp ⟨hpr, SpecialIdealMultiHomog.proof O K ι W hWh, hrel.mp hmin.2⟩, ?_⟩` and prove the remaining obligations. Use `SpecialQuotDim.proof O ϖ hϖ K ι W hϖW` as an intermediate fact. Rewrite `this` using `[hDim O ϖ hϖ K ι P d hP a f hf hfP W hW hϖW]`. Conclude with `this`.
+-/
 theorem isProjVarF_specialIdeal (hDim : ComponentDim.Statement.{u}) {ϖ : O} (hϖ : Irreducible ϖ)
     {P : Ideal (MRing ι O)} {d : ℕ} (hP : IsModelOver P d) {a : K → ℕ} {f : MRing ι O}
     (hf : IsMultiHomog f a) (hfP : f ∉ P) {W : Ideal (MRing ι O)} (hW : divCycle P f W ≠ 0)
@@ -78,6 +92,13 @@ theorem isProjVarF_specialIdeal (hDim : ComponentDim.Statement.{u}) {ϖ : O} (h�
   rw [hDim O ϖ hϖ K ι P d hP a f hf hfP W hW hϖW] at this
   exact this
 
+/- English proof (translation)
+Unfold `cycEval`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : ratDiv P f g W = 0`. Rewrite using `[h0, zero_mul, zero_mul]`. Establish `hϖW` using `hD.vertical W h0`.
+
+Take `⟨α, β, hα, hβ, -⟩` from `hD.degrees`. Establish `hV : ReciprocityTheory.ChartRestriction.G.AI.I1.IsProjVarF (specialIdeal W) (n + 1)`. Distinguish the cases in `hf : divCycle P f W = 0`. Establish `hg : divCycle P g W ≠ 0` using `fun hg => h0 (by rw [ratDiv, hf, hg, sub_zero])`. Conclude with `isProjVarF_specialIdeal hDim hϖ hP hβ hD.den_not_mem hg hϖW`.
+
+Conclude with `isProjVarF_specialIdeal hDim hϖ hP hα hD.num_not_mem hf hϖW`. Simplify using `only`. Rewrite using `[Numbers.agree_of hBase hCut FieldNumbers.ExistsForm.proof FieldNumbers.DivCycleSupport.proof Iκ hI (specialIdeal W) (n + 1) M hV]`. Both sides reduce to the same expression.
+-/
 theorem cycEval_family (hBase : FieldNumbers.IntNumBase.Statement.{u})
     (hCut : FieldNumbers.CutRational.Statement.{u}) (hDim : ComponentDim.Statement.{u}) {ϖ : O}
     (hϖ : Irreducible ϖ) {P : Ideal (MRing ι O)} {n : ℕ} (hP : IsModelOver P (n + 1)) {b : K → ℤ}
@@ -104,6 +125,9 @@ theorem cycEval_family (hBase : FieldNumbers.IntNumBase.Statement.{u})
 
 end VerticalDivisorsCommuting
 
+/- English proof (translation)
+Introduce `H O _ _ _ ϖ hϖ K _ _ ι _ P d hP b b' f g f' g' hD hD' L`. Establish `h` using `H O ϖ hϖ K ι P d b b' f g f' g' L (fun V _ M => intNum _ V M) ((Objects.isModelOver_iff P _).mp hP) hD hD' (hN _ K ι)`. Simplify using `only [VerticalDivisorsCommuting.redEval_divO, VerticalDivisorsCommuting.intNum_snoc] at h`. Conclude with `h`.
+-/
 theorem VerticalDivisorsCommuting.cartier_imp (hN : Numbers.Statement.{u}) :
     VerticalDivisorsCommuting.CartierStatement.{u} → VerticalDivisorsCommute.Statement.{u} := by
   intro H O _ _ _ ϖ hϖ K _ _ ι _ P d hP b b' f g f' g' hD hD' L
@@ -112,6 +136,9 @@ theorem VerticalDivisorsCommuting.cartier_imp (hN : Numbers.Statement.{u}) :
   simp only [VerticalDivisorsCommuting.redEval_divO, VerticalDivisorsCommuting.intNum_snoc] at h
   exact h
 
+/- English proof (translation)
+Introduce `H O _ _ _ ϖ hϖ K _ _ ι _ P n b b' f g f' g' L Iκ hP hD hD' hI`. Establish `hP'` using `(Objects.isModelOver_iff P _).mpr hP`. Rewrite using `[VerticalDivisorsCommuting.redEval_divO, VerticalDivisorsCommuting.redEval_divO, VerticalDivisorsCommuting.cycEval_family hBase hCut hDim hϖ hP' hD Iκ hI (Fin.snoc (α := fun _ => K → ℤ) L b'), VerticalDivisorsCommuting.cycEval_family hBase hCut hDim hϖ hP' hD' Iκ hI (Fin.snoc (α …`. Simplify using `only [VerticalDivisorsCommuting.vNum_snoc]`. Conclude with `H O ϖ hϖ K ι P n hP' b b' f g f' g' hD hD' L`.
+-/
 theorem VerticalDivisorsCommuting.imp_cartier (hBase : FieldNumbers.IntNumBase.Statement.{u})
     (hCut : FieldNumbers.CutRational.Statement.{u}) (hDim : ComponentDim.Statement.{u}) :
     VerticalDivisorsCommute.Statement.{u} → VerticalDivisorsCommuting.CartierStatement.{u} := by
@@ -123,6 +150,9 @@ theorem VerticalDivisorsCommuting.imp_cartier (hBase : FieldNumbers.IntNumBase.S
   simp only [VerticalDivisorsCommuting.vNum_snoc]
   exact H O ϖ hϖ K ι P n hP' b b' f g f' g' hD hD' L
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨VerticalDivisorsCommuting.imp_cartier hBase hCut hDim, VerticalDivisorsCommuting.cartier_imp (Numbers.proof hBase hCut)⟩`.
+-/
 theorem VerticalDivisorsCommuting.equiv (hBase : FieldNumbers.IntNumBase.Statement.{u})
     (hCut : FieldNumbers.CutRational.Statement.{u}) (hDim : ComponentDim.Statement.{u}) :
     VerticalDivisorsCommute.Statement.{u} ↔ VerticalDivisorsCommuting.CartierStatement.{u} :=

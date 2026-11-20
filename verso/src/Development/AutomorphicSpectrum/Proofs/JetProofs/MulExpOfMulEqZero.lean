@@ -26,9 +26,15 @@ def circleSpace (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (m : ℤ) 
   add_mem' := fun {x y} hx hy z hz => by rw [map_add, hx z hz, hy z hz, smul_add]
   smul_mem' := fun c x hx z hz => by rw [map_smul, hx z hz, smul_comm]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_circleSpace {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {m : ℤ} {x : H} :
     x ∈ circleSpace π m ↔ ∀ z : ℂ, ‖z‖ = 1 → π (z • (1 : Matrix (Fin n) (Fin n) ℂ)) x = z ^ m • x := Iff.rfl
 
+/- English proof (translation)
+Establish `: (circleSpace π m : Set H) = ⋂ z : ℂ, ⋂ _ : ‖z‖ = 1, {x | π (z • (1 : Matrix (Fin n) (Fin n) ℂ)) x = z ^ m • x}`. Use extensionality with `x`. Simplify using `[mem_circleSpace]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun z => isClosed_iInter fun _ => isClosed_eq (π _).continuous (continuous_const_smul _)`.
+-/
 theorem isClosed_circleSpace (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (m : ℤ) :
     IsClosed (circleSpace π m : Set H) := by
   have : (circleSpace π m : Set H) =

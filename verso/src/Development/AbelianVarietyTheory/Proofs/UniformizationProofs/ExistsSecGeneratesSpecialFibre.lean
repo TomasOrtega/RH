@@ -21,6 +21,11 @@ open TopologicalSpace Opposite
 
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Establish `h` using `congrArg X.basicOpen (s.compat a b)`. Rewrite `h` using `[Scheme.basicOpen_mul, X.basicOpen_of_isUnit (Units.isUnit _)]`. Establish `h₁` using `X.basicOpen_res (s.f a) (homOfLE (inf_le_left : L.U a ⊓ L.U b ≤ L.U a)).op`. Establish `h₂` using `X.basicOpen_res (s.f b) (homOfLE (inf_le_right : L.U a ⊓ L.U b ≤ L.U b)).op`. Establish `hab : x ∈ L.U a ⊓ L.U b` using `⟨ha, X.basicOpen_le _ hb⟩`.
+
+Conclude with `(h₁.le (h.ge ⟨hab, h₂.ge ⟨hab, hb⟩⟩)).2`.
+-/
 theorem mem_basicOpen_of_chart {L : LB X} (s : L.Sec) {a b : L.ι} {x : X} (ha : x ∈ L.U a)
     (hb : x ∈ X.basicOpen (s.f b)) : x ∈ X.basicOpen (s.f a) := by
   have h := congrArg X.basicOpen (s.compat a b)
@@ -48,6 +53,9 @@ noncomputable def secAlong {L : LB X} (s : L.Sec) (φ : Y ⟶ X) :
       (h.trans (congrArg (_ * ·) ?_))
     exact (PrimeSection.appLE_res φ _ _ _).trans (PrimeSection.res_appLE φ _ _ _).symm
 
+/- English proof (translation)
+Use `Opens.mem_iSup.2 ⟨fun _ ↦ a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y ∈ Y.basicOpen (φ.appLE _ _ _ _)`. Rewrite using `[Scheme.basicOpen_appLE]`. Conclude with `⟨Set.mem_iInter.2 fun _ ↦ X.basicOpen_le _ h, h⟩`.
+-/
 theorem mem_nonzeroLocus_secAlong {L : LB X} (s : L.Sec) (φ : Y ⟶ X) {y : Y} {a : L.ι}
     (h : φ y ∈ X.basicOpen (s.f a)) : y ∈ nonzeroLocus (secAlong s φ) := by
   refine Opens.mem_iSup.2 ⟨fun _ ↦ a, ?_⟩
@@ -55,6 +63,19 @@ theorem mem_nonzeroLocus_secAlong {L : LB X} (s : L.Sec) (φ : Y ⟶ X) {y : Y} 
   rw [Scheme.basicOpen_appLE]
   exact ⟨Set.mem_iInter.2 fun _ ↦ X.basicOpen_le _ h, h⟩
 
+/- English proof (translation)
+Take `⟨W, hW, hxW, hWU⟩` from `exists_isAffineOpen_mem_and_subset (U := L.U a ⊓ ⟨Zᶜ, hZ.isOpen_compl⟩) (x := x) ⟨ha, fun h ↦ hx (hZt h)⟩`. Establish `hWa : W ≤ L.U a` using `fun y hy ↦ (hWU hy).1`. Establish `hξW : ξ ∈ W` using `((hξ x).1 hx).mem_open W.isOpen hxW`. Establish `: Nonempty W` using `⟨⟨x, hxW⟩⟩`. Establish `hpr` using `hp W hW hξW`.
+
+Use `set p := X.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op t with hpd`. Use `set σ := X.presheaf.map (homOfLE hWa).op (s.f a) with hσd`. Establish `hpb : X.basicOpen p = W ⊓ X.basicOpen t` using `X.basicOpen_res _ _`. Establish `hσb : X.basicOpen σ = W ⊓ X.basicOpen (s.f a)` using `X.basicOpen_res _ _`. Establish `hle : X.basicOpen p ≤ X.basicOpen σ` using `fun y hy ↦ by`.
+
+Take `⟨h₁, h₂⟩` from `hpb.le hy`. Take `⟨c, hc⟩` from `hs y h₂ (hWU h₁).2`. Conclude with `hσb.ge ⟨h₁, mem_basicOpen_of_chart s (hWa h₁) hc⟩`. Establish `hrad : p ∈ (Ideal.span {σ}).radical`. Rewrite using `[← PrimeSpectrum.basicOpen_le_basicOpen_iff]`.
+
+Use `hW.fromSpec.preimage_mono hle` as an intermediate fact. Rewrite `this` using `[hW.fromSpec_preimage_basicOpen, hW.fromSpec_preimage_basicOpen]`. Then use the resulting hypothesis. Take `⟨m, hm⟩` from `hrad`. Take `⟨i, -, hi⟩` from `(dvd_prime_pow hpr m).1 (Ideal.mem_span_singleton.1 hm)`. Take `rfl | hi0` from `eq_or_ne i 0`.
+
+Establish `hu : IsUnit σ` using `associated_one_iff_isUnit.1 (by simpa using hi)`. Conclude with `(hσb.le ((X.basicOpen_of_isUnit hu).ge hxW)).2`. Take `⟨q, hq⟩` from `(dvd_pow_self p hi0).trans hi.symm.dvd`. Establish `h₁ : ξ ∈ X.basicOpen σ` using `hσb.ge ⟨hξW, mem_basicOpen_of_chart s (hWa hξW) hb⟩`. Rewrite `h₁` using `[hq, Scheme.basicOpen_mul]`.
+
+Conclude with `absurd (hpb.le h₁.1).2 ((hξ ξ).2 specializes_rfl)`.
+-/
 theorem mem_basicOpen_of_isClosed [AlgebraicGeometry.IsIntegral X] {t : Γ(X, ⊤)} {ξ : X}
     (hξ : ∀ x : X, x ∉ X.basicOpen t ↔ ξ ⤳ x)
     (hp : ∀ U : X.Opens, IsAffineOpen U → ξ ∈ U →
@@ -95,6 +116,19 @@ end SpecialFibreGenerator
 
 open SpecialFibreGenerator TopologicalSpace in
 
+/- English proof (translation)
+Introduce `V _ _ _ G _ _ hG N hN s ⟨a₀, ha₀⟩ hZ`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Use `grpObj_geometricallyIntegral_of_smooth _ G` as an intermediate fact. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+
+Establish `hK` using `IsPullback.of_hasPullback G.hom (jK V)`. Establish `hs` using `IsPullback.of_hasPullback G.hom (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)))`. Use `DvrModel.isIntegral_of_geometricallyIntegral hK` as an intermediate fact. Use `DvrModel.isIntegral_of_geometricallyIntegral hs` as an intermediate fact. Use `DvrModel.isOpenImmersion_generic hK` as an intermediate fact.
+
+Use `DvrModel.isIntegral hK` as an intermediate fact. Take `⟨n, ⟨σ, hσ, b, x₀, hx₀, hb⟩, -⟩` from `DvrModel.existsUnique_zpow_mul_sec hK hs hϖ hN s (by`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 ha₀`. Conclude with `⟨k, fun h ↦ by rw [h, Scheme.basicOpen_zero] at hk; exact hk⟩)`. Establish `hξ` using `DvrModel.notMem_basicOpen_iff_specializes hϖ hs`.
+
+Establish `hr` using `DvrModel.opensRange_generic hϖ hK`. Use `⟨secAlong σ (𝟙 _), fun x hx ↦ ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `LB.mem_of_cover hN x`. Use `mem_nonzeroLocus_secAlong σ (𝟙 _) (a := a) ?_` and prove the remaining obligations. Use `mem_basicOpen_of_isClosed hξ (DvrModel.prime_res_generic hϖ hs) σ (b := b) (((hξ x₀).1 ((DvrModel.notMem_basicOpen_iff _ hϖ x₀).2 hx₀)).mem_open (Scheme.basicOpen _ _).isOpen hb) hZ ?_ (fun y hy hyZ ↦ ?_) ((DvrModel.notMem_basicOpen_iff _ hϖ x).2 hx) ha` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `hr.le ⟨y, rfl⟩`. Take `⟨z, rfl⟩` from `hr.ge hy`. Establish `hz : z ∈ nonzeroLocus s` using `by_contra fun h ↦ hyZ ⟨z, h, rfl⟩`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 hz`.
+
+Use `⟨k ⟨⟩, ?_⟩` and prove the remaining obligations. Establish `h0 : algebraMap V (FractionRing V) ϖ ^ n ≠ 0` using `zpow_ne_zero _ ((map_ne_zero_iff _ (IsFractionRing.injective V _)).2 hϖ.ne_zero)`. Establish `h` using `congrArg (Scheme.basicOpen _) (hσ k)`. Rewrite `h` using `[Scheme.basicOpen_mul, Scheme.basicOpen_appLE, Scheme.basicOpen_of_isUnit _ (((h0.isUnit.map _).map _).map _)]`. Conclude with `(h.ge ⟨Scheme.basicOpen_le _ _ hk, hk⟩).2`.
+-/
 theorem exists_sec_generates_specialFibre : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : LB G.left), N.IsLB → ∀ s : LB.Sec (N.pull (pullback.fst G.hom (jK V))), (∃ a, a ∈ nonzeroLocus s) → IsClosed ((pullback.fst G.hom (jK V)) '' {a | a ∉ nonzeroLocus s}) → ∃ θ : H0 N 1, ∀ x : G.left, G.hom x = IsLocalRing.closedPoint V → x ∈ nonzeroLocus θ := by
   intro V _ _ _ G _ _ hG N hN s ⟨a₀, ha₀⟩ hZ
   have := hG.smooth

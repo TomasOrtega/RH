@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.GeA
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.PtInSmul
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
+/- English proof (translation)
+Establish `r01 : P 0 1 ↔ P 2 3` using `⟨h3 0 1, h3 2 3⟩`. Establish `r10 : P 1 0 ↔ P 3 2` using `⟨h3 1 0, h3 3 2⟩`. Establish `r02 : P 0 2 ↔ P 1 3` using `⟨h3 0 2, h3 1 3⟩`. Establish `r20 : P 2 0 ↔ P 3 1` using `⟨h3 2 0, h3 3 1⟩`. Establish `a01` using `h4 0 1 (by decide)`.
+
+Establish `a03` using `h4 0 3 (by decide)`. Establish `a21` using `h4 2 1 (by decide)`. Establish `a23` using `h4 2 3 (by decide)`. Establish `e0` using `h1 0`. Establish `e1` using `h1 1`.
+
+Establish `e2` using `h1 2`. Establish `e3` using `h1 3`. Simplify using `only [Fin.exists_fin_succ, Fin.forall_fin_succ, lamW] at *`. Simplify using `at *`. Use `grind (splits := 200)`.
+-/
 private theorem UpperTheory.V.GradeZeroInterpolatingElement.tri_comb (P : Fin 4 → Fin 4 → Prop) (h1 : ∀ i, P i i)
     (h2 : ∀ i j k, P i j → P j k → P i k) (h3 : ∀ i j, P i j → P j.rev i.rev)
     (h4 : ∀ i j, lamW i ≠ lamW j → P i j → P j i → ∃ k, k ≠ i ∧ k ≠ j ∧ P i k ∧ P k i) :
@@ -25,6 +32,9 @@ private theorem UpperTheory.V.GradeZeroInterpolatingElement.tri_comb (P : Fin 4 
   simp at *
   grind (splits := 200)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD hP r hr`. Take `⟨hm, -, -, -, -, he, -⟩` from `ptIn D hD (PadicAlgCl l) r hr`. Take `⟨-, h1, h2, h3, h5, -⟩` from `geAlg (PadicAlgCl l) r _ hm he`. Rewrite using `[h5]`. Conclude with `tri_comb (Ge r) h1 h2 h3 (exists_third_index_linked_pair D hD hP r hr)`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.tri :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → Loc.LocalPublishedTheorems → ∀ r, D.EPt r → Irr r ∨ DiagType r ∨ (Ge r 0 2 ∧ Ge r 2 0 ∧ ((∀ i j, lamW i < lamW j → ¬ Ge r i j) ∨ ∀ i j, lamW j < lamW i → ¬ Ge r i j)) := by
   intro Ω _ _ _ l _ c D hD hP r hr

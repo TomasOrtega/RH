@@ -12,15 +12,24 @@ namespace GlobalTheory.FullRankTest
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂}
   {X : NTw D.R D.host D.what₂ D.LL0 N} (Y : NExp D.R D.host D.what₂ D.LL0 N X)
 
+/- English proof (translation)
+The claim follows from `(RingHom.charZero_iff ((IsFractionRing.map (A := X.O0 i) (B := X.O i) (K := FractionRing (X.O0 i)) (L := FractionRing (X.O i)) (X.O_inj i)).comp (X.emb0 i)).injective).1 inferInstance`.
+-/
 theorem charZero_K (i : X.Tw) : CharZero (FractionRing (X.O i)) :=
   (RingHom.charZero_iff ((IsFractionRing.map (A := X.O0 i) (B := X.O i) (K := FractionRing (X.O0 i))
       (L := FractionRing (X.O i)) (X.O_inj i)).comp (X.emb0 i)).injective).1 inferInstance
 
+/- English proof (translation)
+Use `show ((D.what₂.restRowsFiniteGroupCard : ℕ) : X.O i) • eG Y i j b x = _`. Rewrite using `[← map_natCast (algebraMap (X.O i) (FractionRing (X.O i))), algebraMap_smul]`.
+-/
 theorem AO_apply (i : X.Tw) (j : ℕ) (b : Bool) (x : Y.Fm i j b) :
     AO Y i j b x = ((D.what₂.restRowsFiniteGroupCard : ℕ) : FractionRing (X.O i)) • eG Y i j b x := by
   show ((D.what₂.restRowsFiniteGroupCard : ℕ) : X.O i) • eG Y i j b x = _
   rw [← map_natCast (algebraMap (X.O i) (FractionRing (X.O i))), algebraMap_smul]
 
+/- English proof (translation)
+Simplify using `only [Fm0, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `u`. Use `E.theta_base_equivariant i j b a ha u` as an intermediate fact. Simplify using `[this]`.
+-/
 theorem thetaSeriesDatum_mem_levelTypeForms (E : ExpDat Y) (i : X.Tw) (j : ℕ) (b : Bool) (a : Y.Dat i j b) (ha : a ∈ E.Dat0 i j b) :
     Y.th i j b a ∈ Fm0 Y i j b := by
   simp only [Fm0, Submodule.mem_iInf, LinearMap.mem_ker]
@@ -28,18 +37,31 @@ theorem thetaSeriesDatum_mem_levelTypeForms (E : ExpDat Y) (i : X.Tw) (j : ℕ) 
   have := E.theta_base_equivariant i j b a ha u
   simp [this]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `thetaSeriesDatum_mem_levelTypeForms Y E i j b a (h ha)`.
+-/
 theorem theta_le_integral_forms (E : ExpDat Y) (i : X.Tw) (j : ℕ) (b : Bool) {Sg : Set (Y.Dat i j b)} (h : Sg ⊆ E.Dat0 i j b) :
     Th Y i j b Sg ≤ (Fm0 Y i j b).restrictScalars (X.O i) := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨a, ha, rfl⟩
   exact thetaSeriesDatum_mem_levelTypeForms Y E i j b a (h ha)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[AO_apply]`. Conclude with `Submodule.smul_mem _ _ ⟨y, theta_le_integral_forms Y E i j b h hy, rfl⟩`.
+-/
 theorem clause_two (E : ExpDat Y) (i : X.Tw) (j : ℕ) (b : Bool) {Sg : Set (Y.Dat i j b)} (h : Sg ⊆ E.Dat0 i j b) :
     ∀ x ∈ (Th Y i j b Sg).map (AO Y i j b), x ∈ V0 Y i j b := by
   rintro _ ⟨y, hy, rfl⟩
   rw [AO_apply]
   exact Submodule.smul_mem _ _ ⟨y, theta_le_integral_forms Y E i j b h hy, rfl⟩
 
+/- English proof (translation)
+Use `haveI := charZero_K (X := X) i`. Establish `hc : ((D.what₂.restRowsFiniteGroupCard : ℕ) : FractionRing (X.O i)) ≠ 0` using `Nat.cast_ne_zero.2 D.what₂.restRowsFiniteGroupCard_pos.ne'`. Apply the tactic sequence `apply le_antisymm <;> refine Submodule.span_le.2 ?_`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[AO_apply]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, hy, rfl⟩)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `: eO Y i j b y = ((D.what₂.restRowsFiniteGroupCard : ℕ) : FractionRing (X.O i))⁻¹ • AO Y i j b y`. Rewrite using `[AO_apply, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, hy, rfl⟩)`.
+-/
 theorem span_A_eq (i : X.Tw) (j : ℕ) (b : Bool) (T : Submodule (X.O i) (Y.Fm i j b)) :
     Submodule.span (FractionRing (X.O i)) ((T.map (AO Y i j b) : Submodule (X.O i) (Y.Fm i j b)) : Set (Y.Fm i j b)) =
       Submodule.span (FractionRing (X.O i)) ((T.map (eO Y i j b) : Submodule (X.O i) (Y.Fm i j b)) : Set (Y.Fm i j b)) := by
@@ -55,6 +77,9 @@ theorem span_A_eq (i : X.Tw) (j : ℕ) (b : Bool) (T : Submodule (X.O i) (Y.Fm i
     rw [this]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, hy, rfl⟩)
 
+/- English proof (translation)
+Unfold `FullRk eTh`. Rewrite using `[← span_A_eq]`. Use `⟨fun h => h.2.2.ge, fun h => ⟨subset_rfl, clause_two Y E i j b subset_rfl, le_antisymm (Submodule.span_le.2 (clause_two Y E i j b subset_rfl)) h⟩⟩` and prove the remaining obligations.
+-/
 theorem fullRk_iff (E : ExpDat Y) (i : X.Tw) (j : ℕ) (b : Bool) :
     FullRk Y E i j b (SgJ Y E i j b) ↔
       V0 Y i j b ≤ Submodule.span (FractionRing (X.O i)) (eTh Y i j b (SgJ Y E i j b) : Set (Y.Fm i j b)) := by
@@ -99,6 +124,17 @@ def ClassSumIn (E : ExpDat Y) (i : X.Tw) (j : ℕ) (b : Bool) (k : ℕ) : Prop :
 def ClassSumOnto (i : X.Tw) (j : ℕ) (b : Bool) (k : ℕ) : Prop :=
   ∀ x ∈ V0 Y i j b, ∃ c : X.Ok i k, c ≠ 0 ∧ c • ((1 : X.Ok i k) ⊗ₜ[X.O i] x) ∈ eThPMt Y i j b k ∅ 1
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Take `⟨l, hl1, hl0⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hx inferInstance`. Set `ι : FractionRing O →+* FractionRing O'` to `IsFractionRing.map (A := O) (B := O') (K := FractionRing O) (L := FractionRing O') hinj`. Establish `hι : ∀ a : O, ι (algebraMap O (FractionRing O) a) = algebraMap O' (FractionRing O') (algebraMap O O' a)` using `fun a => by simp [ι, IsFractionRing.map]`. Set `m : V →ₗ[O] FractionRing O'` to `{ toFun := fun v => ι (l v) map_add' := fun v w => by simp map_smul' := fun a v => by`.
+
+Rewrite using `[← algebraMap_smul (FractionRing O) a v, map_smul, smul_eq_mul, map_mul, hι, RingHom.id_apply, ← algebraMap_smul O' a, Algebra.smul_def] }`. Set `M : O' ⊗[O] V →ₗ[O'] FractionRing O'` to `m.liftBaseChange O'`. Establish `hT : T.baseChange O' ≤ LinearMap.ker M`. Rewrite using `[Submodule.baseChange_eq_span, Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+
+Establish `: l v = 0`. Establish `: l v ∈ (Submodule.span (FractionRing O) (T : Set V)).map l` using `⟨v, Submodule.subset_span hv, rfl⟩`. Rewrite `this` using `[hl0, Submodule.mem_bot]`. Then use the resulting hypothesis. Use `show M ((1 : O') ⊗ₜ[O] v) = 0`. Simplify using `[M, m, this]`.
+
+Establish `h0` using `hT h`. Rewrite `h0` using `[LinearMap.mem_ker, map_smul]`. Establish `h1 : M ((1 : O') ⊗ₜ[O] x) = ι (l x)` using `by simp [M, m]`. Rewrite `h0` using `[h1, Algebra.smul_def, mul_eq_zero]`. Break down `h0 with h0 | h0` into its components or cases.
+
+Conclude with `hc ((IsFractionRing.injective O' (FractionRing O')) (by simpa using h0))`. Conclude with `hl1 (ι.injective (by simpa using h0))`.
+-/
 theorem descent {O O' V : Type} [CommRing O] [IsDomain O] [CommRing O'] [IsDomain O'] [Algebra O O']
     (hinj : Function.Injective (algebraMap O O')) [AddCommGroup V] [Module (FractionRing O) V] [Module O V]
     [IsScalarTower O (FractionRing O) V] (T : Submodule O V) (x : V) (c : O') (hc : c ≠ 0)

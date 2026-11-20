@@ -20,6 +20,11 @@ open GlobalTheory.SeeSaw GlobalTheory.Unf
 
 namespace GlobalTheory.AdForm.VacAll
 
+/- English proof (translation)
+Introduce `g hg h hh N N' hN hN' x y hx hy`. Establish `e` using `GlobalTheory.WeilChange.weilData_differ_by_splitFac _ ψ _ _ μ₀ μ₀ μ μ om₀ om h0 h1 g h x y hx hy vac hv`. Rewrite using `[e, xiS_smul, H g hg h hh N N' hN hN' x y hx hy]`. Use function extensionality and compare the values at `z`. Establish `a1 : (μ₀ x : ℂ) ≠ 0` using `Circle.coe_ne_zero _`.
+
+Establish `a2 : (μ₀ y : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Simplify using `only [splitFacO, Circle.coe_mul, Circle.coe_inv]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem vacT_twist {B : Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {θ : InfFam (I.rec7 l Z)}
     {i : ℕ} {hi : i + 1 ≤ B.R.m} {c₀ : ℂ} {ψ : AddChar (AF (I.rec7 l Z).host.F) ℂ} {μ₀ μ : (AE (I.rec7 l Z))ˣ →* Circle}
     {om₀ om : Om ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1))}
@@ -39,6 +44,15 @@ end GlobalTheory.AdForm.VacAll
 
 namespace GlobalTheory.AdForm.VacAll
 
+/- English proof (translation)
+Introduce `hSA B X I hI hP l Z ψ θ hψ hθ i hi vac hvac a μ om hc hw`. Take `⟨c₀, hc₀, h1⟩` from `GlobalTheory.T.movedVacuum_at_identity_nonzero_constant I hI hP l Z ψ θ hψ hθ i hi vac hvac a μ om hc hw`. Establish `hstd` using `(GlobalTheory.AdForm.StdStepsT.stdPair_steps_all I hI hP l Z ψ θ hψ hθ).1 i hi`. Use `⟨c₀, hc₀, vacT_iff.2 fun g hg h hh => ?_⟩` and prove the remaining obligations. Take `⟨r, s, k, hr, hs, hk, hkL, rfl⟩` from `GlobalTheory.SplitDec.exists_rat_split_stab hSA _ _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) hstd.gS g hg`.
+
+Take `⟨r', s', k', hr', hs', hk', hkL', rfl⟩` from `GlobalTheory.SplitDec.exists_rat_split_stab hSA _ _ _ (rankN (I.rec7 l Z) (i + 1) hi) hstd.gT h hh`. Establish `h2` using `GlobalTheory.T.movedVacuum_invariant_under_stdLattice_stabilizers I hI hP l Z ψ θ hψ hθ i hi vac hvac a μ om hc hw c₀ 1 1 (one_mem _) (one_mem _) h1 k hk k' hk' hkL hkL'`. Rewrite `h2` using `[one_mul, one_mul]`. Establish `h3` using `GlobalTheory.AdForm.VacConst.split_induction _ (fun g => MoveT I l Z θ i hi c₀ μ om vac g k') (fun g hg H e he t ht => by`. Use `GlobalTheory.T.movedVacuum_invariant_under_singleSplitPlace I hI hP l Z ψ θ hψ hθ i hi vac hvac a μ om hc hw c₀ g k' hg hk' H e he t 1 ht (GlobalTheory.AdForm.VacConst.suppAt_one e _)` as an intermediate fact.
+
+Rewrite using `[one_mul] at this) hs` and apply the resulting hypothesis. Establish `hsk` using `mul_mem h3.1 hk`. Establish `h4` using `GlobalTheory.AdForm.VacConst.split_induction _ (fun h => MoveT I l Z θ i hi c₀ μ om vac (s * k) h) (fun h hh H e he t ht => by`. Use `GlobalTheory.T.movedVacuum_invariant_under_singleSplitPlace I hI hP l Z ψ θ hψ hθ i hi vac hvac a μ om hc hw c₀ (s * k) h hsk hh H e he 1 t (GlobalTheory.AdForm.VacConst.suppAt_one e _) ht` as an intermediate fact. Rewrite using `[one_mul] at this) hs'` and apply the resulting hypothesis.
+
+Establish `h5` using `GlobalTheory.T.movedVacuum_invariant_rationalFiniteParts I hI hP l Z ψ θ hψ hθ i hi vac hvac a μ om hc hw c₀ _ _ hsk (mul_mem h4.1 hk') (h4.2 k' hk' (h3.2 k hk h2)) r r' hr hr'`. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `h5`.
+-/
 theorem vacT_one : GlobalTheory.Published.StrongApproxSU → ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) ψ θ, IsStdChar (I.rec7 l Z) ψ (-1) → IsInfFam θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m) vac, IsVacO ψ θ ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) (fun _ => 1) (fun _ => 1) (intVec _ _) (intVec _ _) vac → ∀ (a : I.ι) μ om, ChrEq μ (I.C.mu0 ⟨i, hi⟩ * I.xi a) → IsWeilDatumO ψ _ _ μ μ om → ∃ c₀ : ℂ, c₀ ≠ 0 ∧ VacT I l Z θ i hi c₀ μ om vac := by
   intro hSA B X I hI hP l Z ψ θ hψ hθ i hi vac hvac a μ om hc hw
   obtain ⟨c₀, hc₀, h1⟩ := GlobalTheory.T.movedVacuum_at_identity_nonzero_constant I hI hP l Z ψ θ hψ hθ i hi vac hvac a μ om hc hw
@@ -64,6 +78,11 @@ theorem vacT_one : GlobalTheory.Published.StrongApproxSU → ∀ {B : Base} {X :
   rw [mul_assoc, mul_assoc]
   exact h5
 
+/- English proof (translation)
+Introduce `hSA B X I hI hP l Z ψ θ hψ hθ i hi vac hvac`. Distinguish the cases in `hex : ∃ (a : I.ι) (μ : (AE (I.rec7 l Z))ˣ →* Circle) (om : Om ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1))), ChrEq μ (I.C.mu0 ⟨i, hi⟩ * I.xi a) ∧ IsWeilDatumO ψ _ _ μ μ om`. Take `⟨a₀, μ₀, om₀, hc0, hw0⟩` from `hex`. Take `⟨c₀, hc, H⟩` from `vacT_one hSA I hI hP l Z ψ θ hψ hθ i hi vac hvac a₀ μ₀ om₀ hc0 hw0`. Conclude with `⟨c₀, hc, fun a μ om _ hw => vacT_twist hvac.2.2 hw0 hw H⟩`.
+
+Conclude with `⟨1, one_ne_zero, fun a μ om hc hw => (hex ⟨a, μ, om, hc, hw⟩).elim⟩`.
+-/
 theorem vacT_all : GlobalTheory.Published.StrongApproxSU → ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ ψ θ, IsStdChar (I.rec7 l Z) ψ (-1) → IsInfFam θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m) vac, IsVacO ψ θ ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) (fun _ => 1) (fun _ => 1) (intVec _ _) (intVec _ _) vac → ∃ c₀ : ℂ, c₀ ≠ 0 ∧ ∀ (a : I.ι) μ om, ChrEq μ (I.C.mu0 ⟨i, hi⟩ * I.xi a) → IsWeilDatumO ψ _ _ μ μ om → VacT I l Z θ i hi c₀ μ om vac := by
   intro hSA B X I hI hP l Z ψ θ hψ hθ i hi vac hvac
   by_cases hex : ∃ (a : I.ι) (μ : (AE (I.rec7 l Z))ˣ →* Circle) (om : Om ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1))),

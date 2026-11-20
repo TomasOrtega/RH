@@ -23,6 +23,13 @@ namespace GlobalTheory.AdForm.RatLatPer
 
 open GlobalTheory.LatVac
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hP N N' ΛS ΛT hΛS hΛT h1 h2 x hx`. Substitute `hS hT` using the available equality. Establish `e1 : N = ΛS` using `(SetLike.coe_injective h1).symm`. Establish `e2 : N' = ΛT` using `(SetLike.coe_injective h2).symm`. Substitute `e1 e2` using the available equality.
+
+Establish `hr : (LinearMap.toMatrix' x).reindex (finCongr (rfl : T.rank = T.rank)) (finCongr (rfl : S.rank = S.rank)) = LinearMap.toMatrix' x`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[hr, GlobalTheory.LatVacSign.finRat_eq]`. Use `GlobalTheory.LatVac.finTens_mem_latO (one_mem_intAf _) ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.AdForm.RatLat.mem_latRat_iff_perO N' hΛS, Matrix.toLin'_toMatrix', GlobalTheory.AdForm.RatLat.AA_eq hP.cc]`. Conclude with `hx`.
+-/
 theorem finRat_mem_latO_of_perO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)), ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → (ΛS : Set (Fin S.rank → D.host.E)) = latFr S hS N → (ΛT : Set (Fin T.rank → D.host.E)) = latFr T hT N' → ∀ x ∈ perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N', GlobalTheory.VacUnique.finRat S T ((LinearMap.toMatrix' (x)).reindex (finCongr hT.symm) (finCongr hS.symm)) ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) := by
   intro D ψ θ S T a b hS hT δ sc hP N N' ΛS ΛT hΛS hΛT h1 h2 x hx
   subst hS hT

@@ -10,6 +10,13 @@ import Mathlib
     fun {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') ↦ AlgebraicGeometry.Spec.map (CommRingCat.ofHom f)
 
 open CategoryTheory AlgebraicGeometry in
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Establish `hmem : ∀ a : A, ψ a ∈ (algebraMap R K).range`. Introduce `a`. Establish `hi : (algebraMap R K).IsIntegralElem (ψ a)`. Rewrite using `[← h]`.
+
+Conclude with `(hφ.to_isIntegral a).map ψ`. Conclude with `IsIntegrallyClosed.isIntegral_iff.mp hi`. Set `e : R ≃+* (algebraMap R K).range` to `RingEquiv.ofBijective (algebraMap R K).rangeRestrict ⟨fun a b hab => hinj (congrArg Subtype.val hab), (algebraMap R K).rangeRestrict_surjective⟩`. Establish `key : ∀ a : A, algebraMap R K (e.symm ⟨ψ a, hmem a⟩) = ψ a` using `fun a => congrArg Subtype.val (e.apply_symm_apply ⟨ψ a, hmem a⟩)`. Use `⟨e.symm.toRingHom.comp (ψ.codRestrict _ hmem), ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `r`. Apply `hinj` to reduce the goal to its premises. Conclude with `(key (φ r)).trans (RingHom.congr_fun h r)`. Use extensionality with `a`. Conclude with `key a`.
+-/
 private theorem UpperTheory.Reformulated.B.Yt7.ring_lift {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] [IsIntegrallyClosed R] {A : Type} [CommRing A] (φ : R →+* A) (hφ : φ.Finite)
     (ψ : A →+* K) (h : ψ.comp φ = algebraMap R K) :
@@ -34,6 +41,15 @@ private theorem UpperTheory.Reformulated.B.Yt7.ring_lift {R K : Type} [CommRing 
     exact key a
 
 open CategoryTheory AlgebraicGeometry in
+/- English proof (translation)
+Establish `: IsAffine P` using `isAffine_of_isAffineHom g`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (P.isoSpec.inv ≫ g)`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (s ≫ P.isoSpec.hom)`. Establish `hfin : φ.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hφ]`.
+
+Use `infer_instance`. Establish `hc : φ ≫ ψ = CommRingCat.ofHom (algebraMap R K)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ, hψ, ← h]`. Simplify using the standard rewrite rules.
+
+Take `⟨σ, h1, h2⟩` from `UpperTheory.Reformulated.B.Yt7.ring_lift (K := K) φ.hom hfin ψ.hom (congrArg CommRingCat.Hom.hom hc)`. Establish `h1' : φ ≫ CommRingCat.ofHom σ = 𝟙 _` using `CommRingCat.hom_ext h1`. Establish `h2' : CommRingCat.ofHom σ ≫ CommRingCat.ofHom (algebraMap R K) = ψ` using `CommRingCat.hom_ext h2`. Use `⟨Spec.map (CommRingCat.ofHom σ) ≫ P.isoSpec.inv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp, h1', Spec.map_id]`.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp, h2', hψ]`. Simplify using the standard rewrite rules.
+-/
 private theorem UpperTheory.Reformulated.B.Yt7.section_lift {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] [IsIntegrallyClosed R] {P : Scheme} (g : P ⟶ Spec (CommRingCat.of R)) [IsFinite g]
     (s : Spec (CommRingCat.of K) ⟶ P)
@@ -59,6 +75,9 @@ private theorem UpperTheory.Reformulated.B.Yt7.section_lift {R K : Type} [CommRi
   · rw [← Category.assoc, ← Spec.map_comp, h2', hψ]
     simp
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ X S f _ y w h`. Take `⟨t, ht1, ht2⟩` from `UpperTheory.Reformulated.B.Yt7.section_lift (K := K) (CategoryTheory.Limits.pullback.snd f y) (CategoryTheory.Limits.pullback.lift w _ h) (CategoryTheory.Limits.pullback.lift_snd _ _ _)`. Use `⟨CategoryTheory.CategoryStruct.comp t (CategoryTheory.Limits.pullback.fst f y), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CategoryTheory.Category.assoc, CategoryTheory.Limits.pullback.condition, ← CategoryTheory.Category.assoc, ht1, CategoryTheory.Category.id_comp]`. Rewrite using `[← CategoryTheory.Category.assoc, ht2, CategoryTheory.Limits.pullback.lift_fst]`.
+-/
 theorem UpperTheory.Reformulated.B.Yt7.lift_finite :
     ∀ {R K : Type} [inst : CommRing R] [IsDomain R] [inst_2 : Field K] [inst_3 : Algebra R K] [IsFractionRing R K]
       [IsIntegrallyClosed R] {X S : AlgebraicGeometry.Scheme} (f : X ⟶ S) [AlgebraicGeometry.IsFinite f]

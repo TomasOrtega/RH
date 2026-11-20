@@ -14,6 +14,13 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {r : ℕ} {T T' : E}
 
+/- English proof (translation)
+Establish `h1 : j ≤ r + 1` using `by omega`. Establish `key : ∀ a : Fin j, F.fvec (Fin.castLE h1 a) = F.e (Fin.castLE hj a)` using `fun a => by`. Establish `hc : (Fin.castLE h1 a : Fin (r + 1)) = Fin.castSucc (Fin.castLE hj a)` using `Fin.ext rfl`. Rewrite using `[hc]`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`.
+
+Establish `key' : ∀ b : Fin j, F'.fvec (Fin.castLE h1 b) = F'.e (Fin.castLE hj b)` using `fun b => by`. Establish `hc : (Fin.castLE h1 b : Fin (r + 1)) = Fin.castSucc (Fin.castLE hj b)` using `Fin.ext rfl`. Rewrite using `[hc]`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Unfold `Dl leadMinorE`.
+
+Rewrite using `[dif_pos h1]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, Zhat, brS]`. Rewrite using `[key a, key' b]`.
+-/
 theorem dl_eq_det (F : FlagG S r T) (F' : FlagG S r T') {j : ℕ} (hj : j ≤ r) :
     (Matrix.of fun a b : Fin j => S.hT (F.e (Fin.castLE hj a)) (F'.e (Fin.castLE hj b))).det =
       Dl F F' j := by
@@ -33,11 +40,17 @@ theorem dl_eq_det (F : FlagG S r T) (F' : FlagG S r T') {j : ℕ} (hj : j ≤ r)
   simp only [Matrix.of_apply, Matrix.submatrix_apply, Zhat, brS]
   rw [key a, key' b]
 
+/- English proof (translation)
+Unfold `frameExp`. Rewrite using `[Finset.sum_Icc_succ_top (by omega)]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem frameExp_succ (r j : ℕ) : frameExp r (j + 1) = frameExp r j + (r - j) := by
   unfold frameExp
   rw [Finset.sum_Icc_succ_top (by omega)]
   omega
 
+/- English proof (translation)
+The claim follows from `| 0, _ => by simp [frameExp] | j + 1, hj => by rw [Fin.prod_univ_castSucc] simp only [Fin.val_castSucc, Fin.val_last] rw [prod_zpow_frame N hN r j (by omega), frameExp_succ] rw [← zpow_natCast, ← zpow_mul, ← zpow_add₀ hN] congr 1 push_cast [show j ≤ r by omega] ring`.
+-/
 theorem prod_zpow_frame (N : ℝ) (hN : N ≠ 0) (r : ℕ) :
     ∀ j : ℕ, j ≤ r → ∏ a : Fin j, (N ^ (-((r : ℤ) - (a : ℕ)))) ^ 2 = N ^ (-(2 * (frameExp r j : ℤ)))
   | 0, _ => by simp [frameExp]
@@ -50,6 +63,11 @@ theorem prod_zpow_frame (N : ℝ) (hN : N ≠ 0) (r : ℕ) :
     push_cast [show j ≤ r by omega]
     ring
 
+/- English proof (translation)
+Establish `h0 : FractionalIdeal.absNorm dd ≠ 0` using `by first`. Consider the case `exact (map_ne_zero _).mpr hdd`. Consider the case `exact FractionalIdeal.absNorm_eq_zero_iff.not.mpr hdd`. Establish `hN : ((FractionalIdeal.absNorm dd : ℚ) : ℝ) ≠ 0` using `by exact_mod_cast h0`. Establish `hp` using `prod_zpow_frame ((FractionalIdeal.absNorm dd : ℚ) : ℝ) hN r j hj`.
+
+Unfold `Nloc`. Simplify using `only [map_mul, map_zpow₀, FractionalIdeal.absNorm_span_singleton]`. Use `push_cast`. Rewrite using `[hp]`.
+-/
 theorem nloc_eq (dd : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hdd : dd ≠ 0) {r j : ℕ} (hj : j ≤ r) (x : E) :
     ((Nloc dd r j x : ℚ) : ℝ) = |((Algebra.norm ℚ x : ℚ) : ℝ)| *
       ∏ a : Fin j, ((FractionalIdeal.absNorm (dd ^ (-((r : ℤ) - (a : ℕ)))) : ℚ) : ℝ) ^ 2 := by

@@ -11,8 +11,14 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 noncomputable def evIHom : AF F →+* mixedEmbedding.mixedSpace F :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma evI_eq (a : AF F) : evI F a = evIHom a := rfl
 
+/- English proof (translation)
+Simplify using `[evI, realAd]`.
+-/
 lemma evI_realAd' (r : ℝ) : evI F (realAd F r) = algebraMap ℝ (mixedEmbedding.mixedSpace F) r := by
   simp [evI, realAd]
 
@@ -24,21 +30,38 @@ noncomputable def trPair (w : κ → mixedEmbedding.mixedSpace F) :
   map_smul' c a := by
     simp [smul_mul_assoc, ← Finset.smul_sum, Complex.real_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma trPair_apply (w y : κ → mixedEmbedding.mixedSpace F) :
     trPair w y = ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, y i * w i) : ℝ) : ℂ) := rfl
 
+/- English proof (translation)
+Simplify using `only [trPair_apply, Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add, Complex.ofReal_add]`.
+-/
 lemma trPair_add (w w' y : κ → mixedEmbedding.mixedSpace F) :
     trPair (w + w') y = trPair w y + trPair w' y := by
   simp only [trPair_apply, Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add, Complex.ofReal_add]
 
+/- English proof (translation)
+Simplify using `[trPair_apply, mul_smul_comm, ← Finset.smul_sum]`.
+-/
 lemma trPair_smul (r : ℝ) (w y : κ → mixedEmbedding.mixedSpace F) :
     trPair (r • w) y = (r : ℂ) * trPair w y := by
   simp [trPair_apply, mul_smul_comm, ← Finset.smul_sum]
 
+/- English proof (translation)
+The claim follows from `(LinearMap.toContinuousLinearMap (trPair w)).hasFDerivAt`.
+-/
 lemma hasFDerivAt_trPair (w x : κ → mixedEmbedding.mixedSpace F) :
     HasFDerivAt (fun y => trPair w y) (LinearMap.toContinuousLinearMap (trPair w)) x :=
   (LinearMap.toContinuousLinearMap (trPair w)).hasFDerivAt
 
+/- English proof (translation)
+Establish `hf2 : DifferentiableAt ℝ (fderiv ℝ (⇑f)) x` using `((f.smooth ⊤).fderiv_right (m := 1) (WithTop.coe_le_coe.2 le_top)).differentiable one_ne_zero x`. Establish `h1 : HasFDerivAt (fun y => fderiv ℝ (⇑f) y v') ((fderiv ℝ (⇑f) x).comp 0 + (fderiv ℝ (fderiv ℝ (⇑f)) x).flip v') x` using `hf2.hasFDerivAt.clm_apply (hasFDerivAt_const v' x)`. Establish `h2` using `((hasFDerivAt_trPair w x).const_mul c).mul (f.differentiableAt (x := x)).hasFDerivAt`. Establish `h3 : HasFDerivAt (fun y => fderiv ℝ (⇑f) y v' - c * trPair w y * f y) _ x` using `h1.sub h2`. Rewrite using `[h3.fderiv]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma fderiv_step (f : SInf F κ) (c : ℂ) (w v' x v : κ → mixedEmbedding.mixedSpace F) :
     fderiv ℝ (fun y => fderiv ℝ (⇑f) y v' - c * trPair w y * f y) x v =
       fderiv ℝ (fderiv ℝ (⇑f)) x v v' - c * (trPair w x * fderiv ℝ (⇑f) x v + f x * trPair w v) := by
@@ -54,21 +77,41 @@ lemma fderiv_step (f : SInf F κ) (c : ℂ) (w v' x v : κ → mixedEmbedding.mi
   simp
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show evI F (a i + b i) = evI F (a i) + evI F (b i)`. Rewrite using `[evI_eq, map_add]`. Both sides reduce to the same expression.
+-/
 lemma evV_add (a b : κ → AF F) :
     (fun i => evI F ((a + b) i)) = (fun i => evI F (a i)) + (fun i => evI F (b i)) := by
   funext i
   show evI F (a i + b i) = evI F (a i) + evI F (b i)
   rw [evI_eq, map_add]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show evI F (realAd F r * a i) = r • evI F (a i)`. Rewrite using `[evI_eq, map_mul, ← evI_eq, ← evI_eq, evI_realAd', Algebra.smul_def]`.
+-/
 lemma evV_smul (r : ℝ) (a : κ → AF F) :
     (fun i => evI F ((realAd F r • a) i)) = r • (fun i => evI F (a i)) := by
   funext i
   show evI F (realAd F r * a i) = r • evI F (a i)
   rw [evI_eq, map_mul, ← evI_eq, ← evI_eq, evI_realAd', Algebra.smul_def]
 
+/- English proof (translation)
+The claim follows from `((f.smooth ⊤).contDiffAt).isSymmSndFDerivAt (by simp; exact WithTop.coe_le_coe.2 le_top)`.
+-/
 lemma isSymm (f : SInf F κ) (x : κ → mixedEmbedding.mixedSpace F) : IsSymmSndFDerivAt ℝ (⇑f) x :=
   ((f.smooth ⊤).contDiffAt).isSymmSndFDerivAt (by simp; exact WithTop.coe_le_coe.2 le_top)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ JA JB d D hD`. Establish `at_add : ∀ u u' : Matrix α β (AE F E), At (evI F) u → At (evI F) u' → At (evI F) (u + u')` using `fun u u' h h' a ha => by rw [smul_add, h a ha, h' a ha, add_zero]`. Establish `at_smul : ∀ (u : Matrix α β (AE F E)) (r : AF F), At (evI F) u → At (evI F) (r • u)` using `fun u r h a ha => by rw [smul_comm, h a ha, smul_zero]`. Establish `hD' : ∀ u, At (evI F) u → ∀ (f : SInf F κ) x, D u f x = fderiv ℝ (⇑f) x (fun i => evI F ((d.e u).1 i)) - 2 * Real.pi * Complex.I * trPair (fun i => evI F ((d.e u).2 i)) x * f x` using `hD`. Use `⟨fun u u' hu hu' => ?_, fun u r hu => ?_, fun u u' hu hu' f => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `f x`. Rewrite using `[ContinuousLinearMap.add_apply, SchwartzMap.add_apply, hD' _ (at_add u u' hu hu'), hD' u hu, hD' u' hu', map_add, Prod.fst_add, Prod.snd_add, evV_add, evV_add, map_add, trPair_add]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `f x`. Rewrite using `[ContinuousLinearMap.smul_apply, SchwartzMap.smul_apply, hD' _ (at_smul u _ hu), hD' u hu, map_smul, Prod.smul_fst, Prod.smul_snd, evV_smul, evV_smul, map_smul, trPair_smul]`.
+
+Simplify using `only [Complex.real_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ⇑(D u f) = fun y => fderiv ℝ (⇑f) y (fun i => evI F ((d.e u).1 i)) - 2 * Real.pi * Complex.I * trPair (fun i => evI F ((d.e u).2 i)) y * f y` using `funext (hD' u hu f)`. Establish `e' : ⇑(D u' f) = fun y => fderiv ℝ (⇑f) y (fun i => evI F ((d.e u').1 i)) - 2 * Real.pi * Complex.I * trPair (fun i => evI F ((d.e u').2 i)) y * f y`. Use function extensionality and compare the values at `(hD' u' hu' f)`.
+
+Establish `key : ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (symp (R` using `AF F) (cA σ) (-1) JA JB u u')) : ℝ) : ℂ) = trPair (fun i => evI F ((d.e u').2 i)) (fun i => evI F ((d.e u).1 i)) - trPair (fun i => evI F ((d.e u).2 i)) (fun i => evI F ((d.e u').1 i)) := by`. Rewrite using `[d.form u u', evI_eq, map_sub]`. Simplify using `only [dotProduct, map_sum, map_mul, ← evI_eq, trPair_apply]`. Simplify using `only [map_sub, map_sum, Complex.ofReal_sub]`. Use extensionality with `x`.
+
+Rewrite using `[SchwartzMap.sub_apply, SchwartzMap.smul_apply, hD' u hu (D u' f), hD' u' hu' (D u f), e', e, fderiv_step, fderiv_step, (isSymm f x).eq (fun i => evI F ((d.e u').1 i)), key, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heis_deriv_laws : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {α β κ : Type}
     [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (JA : Matrix α α (AE F E))
     (JB : Matrix β β (AE F E)) (d : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ)

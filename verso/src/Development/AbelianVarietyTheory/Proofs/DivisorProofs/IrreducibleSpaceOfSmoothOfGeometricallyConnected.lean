@@ -6,6 +6,19 @@ open ReciprocityTheory.ChartRestriction.G.Out
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ G hs hc _`. Set `K` to `FractionRing R`. Set `g : Spec (CommRingCat.of K) ⟶ Spec (CommRingCat.of R)` to `Spec.map (CommRingCat.ofHom (algebraMap R K))`. Set `F : Scheme` to `pullback G.hom g`. Establish `hsnd : Smooth (pullback.snd G.hom g)` using `MorphismProperty.of_isPullback (P := @Smooth) (IsPullback.of_hasPullback G.hom g) hs`.
+
+Establish `hcon : ConnectedSpace F` using `GeometricallyConnected.geometrically_connectedSpace (f := G.hom) g (pullback.fst _ _) (pullback.snd _ _) (IsPullback.of_hasPullback _ _)`. Establish `hirr : IrreducibleSpace F` using `irreducibleSpace_of_smooth_field_of_connectedSpace K _ (pullback.snd G.hom g) hsnd hcon`. Establish `hgf : Flat g`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat K (nonZeroDivisors R))`.
+
+Establish `hG : Flat G.hom` using `inferInstance`. Establish `hη : genericPoint (Spec (CommRingCat.of R)) ∈ Set.range g` using `(Flat.generalizingMap g).stableUnderGeneralization_range (genericPoint_specializes (g (closedPoint K))) ⟨closedPoint K, rfl⟩`. Set `ξ : G.left` to `pullback.fst G.hom g (genericPoint F)`. Establish `hspec : ∀ z : G.left, ξ ⤳ z`. Introduce `z`.
+
+Take `⟨z', hz', e⟩` from `Flat.generalizingMap G.hom (genericPoint_specializes (G.hom z))`. Establish `hr : z' ∈ Set.range (pullback.fst G.hom g)`. Rewrite using `[Scheme.Pullback.range_fst, Set.mem_preimage, e]`. Conclude with `hη`. Take `⟨w, rfl⟩` from `hr`.
+
+Conclude with `((genericPoint_specializes w).map (pullback.fst G.hom g).continuous).trans hz'`. Establish `hcl : closure ({ξ} : Set G.left) = Set.univ` using `Set.eq_univ_of_forall fun z => specializes_iff_mem_closure.mp (hspec z)`. Rewrite using `[irreducibleSpace_def]`. Use `(isIrreducible_singleton (x := ξ)).closure` as an intermediate fact. Rewrite `this` using `[hcl]`.
+
+Conclude with `this`.
+-/
 theorem irreducibleSpace_of_smooth_of_geometricallyConnected_domain :
     ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Spec (CommRingCat.of R))), Smooth G.hom →
       GeometricallyConnected G.hom → Nonempty G.left → IrreducibleSpace G.left := by

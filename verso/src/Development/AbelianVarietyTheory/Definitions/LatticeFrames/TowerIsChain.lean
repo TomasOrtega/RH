@@ -55,6 +55,9 @@ def StepEqv (D : D7) : Prop := ForStep D fun c _ s s' p => c.P.H = ⊥ → ∀ �
 def ActCC (D : D7) : Prop := ForStage D fun c _ s => c.P.H = ⊥ →
   (∀ κ, s.InFlag κ → ∀ y : s.CC c, ∃ y', Moved κ y y') ∧ Lev.LiftsExist s.V s.β s.L
 
+/- English proof (translation)
+The claim follows from `HEq.rfl`.
+-/
 example (s : PiLocalization₂ D) (κ : GA D s.V) : SameBlock s s κ κ := HEq.rfl
 
 end GlobalTheory.ChainOnto

@@ -18,6 +18,13 @@ open GlobalTheory
 
 namespace GlobalTheory.FlagPull
 
+/- English proof (translation)
+Establish `e : b ∘ₗ hl.equiv.toLinearMap = hl'.equiv.toLinearMap ∘ₗ a.baseChange B`. Use extensionality with `m`. Simplify using `[hab]`. Establish `ha : Function.Injective (a.baseChange B)`. Establish `h : (r.baseChange B) ∘ₗ (a.baseChange B) = LinearMap.id`.
+
+Rewrite using `[← LinearMap.baseChange_comp, hr, LinearMap.baseChange_id]`. Conclude with `Function.LeftInverse.injective (g := r.baseChange B) fun x => by`. Rewrite using `[← LinearMap.comp_apply, h, LinearMap.id_apply]`. Establish `h : Function.Injective (b ∘ₗ hl.equiv.toLinearMap)`. Rewrite using `[e]`.
+
+Conclude with `hl'.equiv.injective.comp ha`. Conclude with `Function.Injective.of_comp_right h hl.equiv.surjective`.
+-/
 theorem injective_of_isBaseChange_of_retraction {A B M M' N N' : Type*} [CommRing A]
     [CommRing B] [Algebra A B] [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module A M']
     [AddCommGroup N] [Module A N] [Module B N] [IsScalarTower A B N] [AddCommGroup N']
@@ -38,6 +45,19 @@ theorem injective_of_isBaseChange_of_retraction {A B M M' N N' : Type*} [CommRin
     exact hl'.equiv.injective.comp ha
   exact Function.Injective.of_comp_right h hl.equiv.surjective
 
+/- English proof (translation)
+Use `hS.mono_f` as an intermediate fact. Use `hS.epi_g` as an intermediate fact. Establish `: S.X₃.IsQuasicoherent` using `h₃.isQuasicoherent`. Establish `hex (W : X.Opens) (t : Γ(S.X₂, W)) (ht : S.g.app W t = 0) : ∃ u, S.f.app W u = t` using `(QCoh.exact_app_of_exact_of_mono hS.exact W t).1 ht`. Use `QCoh.isQuasicoherent_of_forall_exists_affine _ fun x => ?_` and prove the remaining obligations.
+
+Take `⟨U, -, hxU, σ, hσ, hg⟩` from `DualExact.exists_local_section S.g h₃ (V := ⊤) (x := x) trivial`. Take `⟨_, ⟨U', hU', rfl⟩, hxU', hle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxU U.2`. Establish `hle : U' ≤ U` using `hle`. Use `⟨U', hU', hxU', fun a => (QCoh.isLocalizedModule_resBasicOpen_iff _ a).2 ⟨fun t => ?_, fun t ht => ?_⟩⟩` and prove the remaining obligations. Establish `hD : X.basicOpen a ≤ U'` using `X.basicOpen_le a`.
+
+Take `⟨n, t₃, ht₃⟩` from `QCoh.exists_pow_smul_eq_res S.X₃ hU' a hD rfl (S.g.app _ t)`. Take `⟨u, hu⟩` from `hex _ (t - σ _ (hD.trans hle) (S.g.app _ t)) (by rw [map_sub, hg, sub_self])`. Take `⟨m, u', hu'⟩` from `QCoh.exists_pow_smul_eq_res S.X₁ hU' a hD rfl u`. Use `⟨n + m, a ^ m • σ U' hle t₃ + a ^ n • S.f.app U' u', ?_⟩` and prove the remaining obligations. Establish `e₁ : S.X₂.presheaf.map (homOfLE hD).op (σ U' hle t₃) = σ _ (hD.trans hle) (S.X₃.presheaf.map (homOfLE hD).op t₃)` using `(hσ _ _ hle hD t₃).symm`.
+
+Establish `e₂ : S.X₂.presheaf.map (homOfLE hD).op (S.f.app U' u') = S.f.app _ (S.X₁.presheaf.map (homOfLE hD).op u')` using `(QCoh.app_res S.f hD u').symm`. Establish `e₃ : t = σ _ (hD.trans hle) (S.g.app _ t) + S.f.app _ u` using `by rw [hu]; abel`. Rewrite using `[map_add, S.X₂.map_smul, S.X₂.map_smul, e₁, e₂, ← ht₃, ← hu', map_smul, Scheme.Modules.Hom.app_smul, map_pow, map_pow, smul_smul, smul_smul]`. Use `conv_lhs => rw [e₃]`. Rewrite using `[smul_add, pow_add]`.
+
+Use `congr 1`. Rewrite using `[mul_comm]`. Establish `hD : X.basicOpen a ≤ U'` using `X.basicOpen_le a`. Take `⟨n, hn⟩` from `QCoh.exists_pow_smul_eq_zero S.X₃ hU' a hD rfl (S.g.app U' t) (by rw [← QCoh.app_res, ht, map_zero])`. Take `⟨u, hu⟩` from `hex U' (a ^ n • t) (by rw [Scheme.Modules.Hom.app_smul, hn])`.
+
+Take `⟨m, hm⟩` from `QCoh.exists_pow_smul_eq_zero S.X₁ hU' a hD rfl u (QCoh.injective_app_of_mono S.f _ (by`. Rewrite using `[QCoh.app_res, hu, S.X₂.map_smul, ht, smul_zero, map_zero]))`. Conclude with `⟨m + n, by rw [pow_add, mul_smul, ← hu, ← Scheme.Modules.Hom.app_smul, hm, map_zero]⟩`.
+-/
 theorem isQuasicoherent_X₂ {X : Scheme.{0}} (S : ShortComplex X.Modules) (hS : S.ShortExact)
     {s : ℕ} (h₃ : IsVB S.X₃ s) [S.X₁.IsQuasicoherent] : S.X₂.IsQuasicoherent := by
   have := hS.mono_f
@@ -78,6 +98,19 @@ theorem isQuasicoherent_X₂ {X : Scheme.{0}} (S : ShortComplex X.Modules) (hS :
         rw [QCoh.app_res, hu, S.X₂.map_smul, ht, smul_zero, map_zero]))
     exact ⟨m + n, by rw [pow_add, mul_smul, ← hu, ← Scheme.Modules.Hom.app_smul, hm, map_zero]⟩
 
+/- English proof (translation)
+Use `hS.mono_f` as an intermediate fact. Use `hS.epi_g` as an intermediate fact. Establish `hex (W : X.Opens) (t : Γ(S.X₂, W)) (ht : S.g.app W t = 0) : ∃ u, S.f.app W u = t` using `(QCoh.exact_app_of_exact_of_mono hS.exact W t).1 ht`. Establish `hz (W : X.Opens) (u : Γ(S.X₁, W)) : S.g.app W (S.f.app W u) = 0` using `(QCoh.exact_app_of_exact_of_mono hS.exact W _).2 ⟨u, rfl⟩`. Use `QCoh.mono_of_locally_app_injective _ fun W y hy => ?_` and prove the remaining obligations.
+
+Take `⟨U, -, hxU, σ, -, hg⟩` from `DualExact.exists_local_section S.g h₃ (V := ⊤) (x := f y) trivial`. Take `⟨_, ⟨V, hV, rfl⟩, hyV, hVU⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxU U.2`. Establish `hVU : V ≤ U` using `hVU`. Take `⟨_, ⟨U', hU', rfl⟩, hyU', hle⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ W ⊓ f ⁻¹ᵁ V from ⟨hy, hyV⟩) (W ⊓ f ⁻¹ᵁ V).2`. Establish `e : U' ≤ f ⁻¹ᵁ V` using `fun _ h => (hle h).2`.
+
+Use `⟨U', hyU', fun _ h => (hle h).1, ?_⟩` and prove the remaining obligations. Set `π : Γ(S.X₂, V) →ₗ[Γ(X, V)] Γ(S.X₂, V)` to `LinearMap.id - σ V hVU ∘ₗ QCoh.homAppLinear S.g V`. Establish `hc (t : Γ(S.X₂, V)) : ∃ u, QCoh.homAppLinear S.f V u = π t` using `hex V _ (by`. Express the relevant statement in the definitionally equal form `S.g.app V (t - σ V hVU (S.g.app V t)) = 0`. Rewrite using `[map_sub, hg, sub_self])`.
+
+Set `ρ : Γ(S.X₂, V) →ₗ[Γ(X, V)] Γ(S.X₁, V)` to `LinearMap.codRestrictOfInjective π (QCoh.homAppLinear S.f V) (QCoh.injective_app_of_mono S.f V) hc`. Establish `hρ : ρ ∘ₗ QCoh.homAppLinear S.f V = LinearMap.id`. Use `LinearMap.ext fun u => QCoh.injective_app_of_mono S.f V ?_` and prove the remaining obligations. Establish `h` using `LinearMap.codRestrictOfInjective_comp_apply π (QCoh.homAppLinear S.f V) (QCoh.injective_app_of_mono S.f V) hc (S.f.app V u)`. Express the relevant statement in the definitionally equal form `S.f.app V (ρ (S.f.app V u)) = S.f.app V u`.
+
+Use `h.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.f.app V u - σ V hVU (S.g.app V (S.f.app V u)) = S.f.app V u`. Rewrite using `[hz, map_zero, sub_zero]`. Use `letI := QCoh.appLEAlgebra f e`. Use `letI := QCoh.appLEModule f ((Scheme.Modules.pullback f).obj S.X₁) e`.
+
+Use `haveI := QCoh.appLE_isScalarTower f ((Scheme.Modules.pullback f).obj S.X₁) e`. Use `letI := QCoh.appLEModule f ((Scheme.Modules.pullback f).obj S.X₂) e`. Use `haveI := QCoh.appLE_isScalarTower f ((Scheme.Modules.pullback f).obj S.X₂) e`. Conclude with `injective_of_isBaseChange_of_retraction (QCoh.isBaseChange_pullbackSections f S.X₁ hU' hV e) (QCoh.isBaseChange_pullbackSections f S.X₂ hU' hV e) (QCoh.homAppLinear S.f V) (QCoh.homAppLinear ((Scheme.Modules.pullback f).map S.f) U') (QCoh.pullback_map_app_pullbackSections f S.f e …`.
+-/
 theorem mono_pullback_map_f {X Y : Scheme.{0}} (f : Y ⟶ X) (S : ShortComplex X.Modules)
     (hS : S.ShortExact) {s : ℕ} (h₃ : IsVB S.X₃ s) [S.X₁.IsQuasicoherent]
     [S.X₂.IsQuasicoherent] : Mono ((Scheme.Modules.pullback f).map S.f) := by
@@ -121,6 +154,13 @@ theorem mono_pullback_map_f {X Y : Scheme.{0}} (f : Y ⟶ X) (S : ShortComplex X
     (QCoh.homAppLinear ((Scheme.Modules.pullback f).map S.f) U')
     (QCoh.pullback_map_app_pullbackSections f S.f e) ρ hρ
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `nil h => exact ⟨QCoh.isQuasicoherent_of_isZero h, .nil (Functor.map_isZero _ h)⟩`. Consider the case `@cons L l S hS hL e h ih`. Take `⟨h₁, ih⟩` from `ih`. Establish `h₃ : IsVB S.X₃ 1` using `(isVB_toMod hL).of_iso e.symm`.
+
+Use `haveI := h₁`. Use `haveI h₂ : S.X₂.IsQuasicoherent := isQuasicoherent_X₂ S hS h₃`. Use `⟨h₂, ?_⟩` and prove the remaining obligations. Use `hS.epi_g` as an intermediate fact. Take `⟨φ⟩` from `nonempty_pullback_toMod_iso hL f`.
+
+Establish `hS' : (S.map (Scheme.Modules.pullback f)).ShortExact` using `ShortComplex.ShortExact.mk' (QCoh.exact_map_pullback f hS.exact).1 (mono_pullback_map_f f S hS h₃) (QCoh.exact_map_pullback f hS.exact).2`. Conclude with `.cons (S.map (Scheme.Modules.pullback f)) hS' (Semi.LB.isLB_pull hL f) ((Scheme.Modules.pullback f).mapIso e ≪≫ φ) ih`.
+-/
 theorem isQuasicoherent_and_hasFlag_pullback {X Y : Scheme.{0}} (f : Y ⟶ X) {E : X.Modules}
     {l : List (LB X)} (h : HasFlag E l) :
     E.IsQuasicoherent ∧ HasFlag ((Scheme.Modules.pullback f).obj E) (l.map fun L => L.pull f) := by
@@ -140,6 +180,9 @@ theorem isQuasicoherent_and_hasFlag_pullback {X Y : Scheme.{0}} (f : Y ⟶ X) {E
     exact .cons (S.map (Scheme.Modules.pullback f)) hS' (Semi.LB.isLB_pull hL f)
       ((Scheme.Modules.pullback f).mapIso e ≪≫ φ) ih
 
+/- English proof (translation)
+Introduce `_ _ f _ _ h` and use `(isQuasicoherent_and_hasFlag_pullback f h).2`.
+-/
 theorem hasFlag_pullback : ∀ (X Y : Scheme.{0}) (f : Y ⟶ X) (E : X.Modules) (l : List (LB X)),
     HasFlag E l → HasFlag ((Scheme.Modules.pullback f).obj E) (l.map fun L => L.pull f) :=
   fun _ _ f _ _ h => (isQuasicoherent_and_hasFlag_pullback f h).2

@@ -39,6 +39,9 @@ def ktTr {t : ColT w Z} {X : DivX (w.D Z)} {Gy : G.LatInst (w.D Z)} {ker : KerFa
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Take `⟨Pl, Bs, hh, e⟩` from `H`. Conclude with `⟨{ Pl with }, Bs, { hh with }, congrArg (fun E => ({ E with } : Formalism.BasicNotions.KerEnt (w.D (setDivZ Z N h)) (divTr (D := w.D Z) N h X) (w.tw (setDivZ Z N h)))) e⟩`.
+-/
 theorem entC_tr {t : ColT w Z} {X : DivX (w.D Z)} {Gy : G.LatInst (w.D Z)} {ker : KerFam (w.D Z) t.Gt t.cmp (w.tw Z) Gy}
     (kt : KerT t X Gy ker)
     (H : ∃ (Pl : Examples₂.EntPl (w.D Z)) (Bs : Formalism.L2.Ker.PlaceMatrixFamily (w.D Z)) (hh : Formalism.L2.Ker.KerEntHyp Pl kt.O Bs X (w.tw Z)),

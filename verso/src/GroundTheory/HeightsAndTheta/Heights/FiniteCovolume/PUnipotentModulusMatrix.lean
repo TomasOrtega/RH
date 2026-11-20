@@ -14,60 +14,108 @@ section Form
 
 variable (H : Matrix ι ι ℂ)
 
+/- English proof (translation)
+Simplify using `[hForm, star_add, add_dotProduct]`.
+-/
 theorem hForm_add_left (u u' z : ι → ℂ) : hForm H (u + u') z = hForm H u z + hForm H u' z := by
   simp [hForm, star_add, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hForm, mulVec_add, dotProduct_add]`.
+-/
 theorem hForm_add_right (u z z' : ι → ℂ) : hForm H u (z + z') = hForm H u z + hForm H u z' := by
   simp [hForm, mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `[hForm, star_sub, sub_dotProduct]`.
+-/
 theorem hForm_sub_left (u u' z : ι → ℂ) : hForm H (u - u') z = hForm H u z - hForm H u' z := by
   simp [hForm, star_sub, sub_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hForm, mulVec_sub, dotProduct_sub]`.
+-/
 theorem hForm_sub_right (u z z' : ι → ℂ) : hForm H u (z - z') = hForm H u z - hForm H u z' := by
   simp [hForm, mulVec_sub, dotProduct_sub]
 
+/- English proof (translation)
+Simplify using `[hForm, star_neg, neg_dotProduct]`.
+-/
 theorem hForm_neg_left (u z : ι → ℂ) : hForm H (-u) z = -hForm H u z := by
   simp [hForm, star_neg, neg_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hForm, mulVec_neg, dotProduct_neg]`.
+-/
 theorem hForm_neg_right (u z : ι → ℂ) : hForm H u (-z) = -hForm H u z := by
   simp [hForm, mulVec_neg, dotProduct_neg]
 
+/- English proof (translation)
+Simplify using `[hForm, star_smul, smul_dotProduct]`.
+-/
 theorem hForm_smul_left (c : ℂ) (u z : ι → ℂ) :
     hForm H (c • u) z = starRingEnd ℂ c * hForm H u z := by
   simp [hForm, star_smul, smul_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hForm, mulVec_smul, dotProduct_smul]`.
+-/
 theorem hForm_smul_right (c : ℂ) (u z : ι → ℂ) : hForm H u (c • z) = c * hForm H u z := by
   simp [hForm, mulVec_smul, dotProduct_smul]
 
+/- English proof (translation)
+Simplify using `[hForm]`.
+-/
 theorem hForm_zero_left (z : ι → ℂ) : hForm H 0 z = 0 := by simp [hForm]
 
+/- English proof (translation)
+Simplify using `[hForm]`.
+-/
 theorem hForm_zero_right (u : ι → ℂ) : hForm H u 0 = 0 := by simp [hForm]
 
+/- English proof (translation)
+Simplify using `only [hForm]`. Use `conv_rhs => rw [star_dotProduct, star_mulVec, hH.eq, ← dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem hForm_conj {H : Matrix ι ι ℂ} (hH : H.IsHermitian) (u z : ι → ℂ) :
     starRingEnd ℂ (hForm H u z) = hForm H z u := by
   simp only [hForm]
   conv_rhs => rw [star_dotProduct, star_mulVec, hH.eq, ← dotProduct_mulVec]
   rfl
 
+/- English proof (translation)
+The claim follows from `Complex.conj_eq_iff_im.1 (hForm_conj hH u u)`.
+-/
 theorem hForm_self_im {H : Matrix ι ι ℂ} (hH : H.IsHermitian) (u : ι → ℂ) :
     (hForm H u u).im = 0 :=
   Complex.conj_eq_iff_im.1 (hForm_conj hH u u)
 
+/- English proof (translation)
+Simplify using `only [hForm]`. Rewrite using `[star_mulVec, mulVec_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mul_assoc]`.
+-/
 theorem hForm_mulVec (M : Matrix ι ι ℂ) (u z : ι → ℂ) :
     hForm H (M *ᵥ u) (M *ᵥ z) = hForm (Mᴴ * H * M) u z := by
   simp only [hForm]
   rw [star_mulVec, mulVec_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[hForm_mulVec, hM]`.
+-/
 theorem hForm_mulVec_of_unitary {M : Matrix ι ι ℂ} (hM : Mᴴ * H * M = H) (u z : ι → ℂ) :
     hForm H (M *ᵥ u) (M *ᵥ z) = hForm H u z := by
   rw [hForm_mulVec, hM]
 
 variable [DecidableEq ι]
 
+/- English proof (translation)
+Simplify using `[hForm]`.
+-/
 theorem hForm_single (X : Matrix ι ι ℂ) (i j : ι) :
     hForm X (Pi.single i 1) (Pi.single j 1) = X i j := by
   simp [hForm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `hM (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hForm_mulVec, hForm_single, hForm_single]`. Conclude with `this`.
+-/
 theorem unitary_of_hForm {M : Matrix ι ι ℂ}
     (hM : ∀ u z, hForm H (M *ᵥ u) (M *ᵥ z) = hForm H u z) : Mᴴ * H * M = H := by
   ext i j
@@ -75,6 +123,11 @@ theorem unitary_of_hForm {M : Matrix ι ι ℂ}
   rw [hForm_mulVec, hForm_single, hForm_single] at this
   exact this
 
+/- English proof (translation)
+Establish `h1 : star u ᵥ* H = 0`. Use extensionality with `j`. Use `hu (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hForm, dotProduct_mulVec, dotProduct_single_one]`. Conclude with `this`.
+
+Establish `h2 : star u = 0`. Use `congrArg (fun r => r ᵥ* H⁻¹) h1` as an intermediate fact. Simplify `this` using `[vecMul_vecMul, mul_nonsing_inv H hd]`. Simplify using `using congrArg star h2`.
+-/
 theorem eq_zero_of_hForm {H : Matrix ι ι ℂ} (hd : IsUnit H.det) {u : ι → ℂ}
     (hu : ∀ z, hForm H u z = 0) : u = 0 := by
   have h1 : star u ᵥ* H = 0 := by
@@ -87,6 +140,9 @@ theorem eq_zero_of_hForm {H : Matrix ι ι ℂ} (hd : IsUnit H.det) {u : ι → 
     simpa [vecMul_vecMul, mul_nonsing_inv H hd] using this
   simpa using congrArg star h2
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (h (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[mulVec_single_one]`.
+-/
 theorem matrix_ext_mulVec {A B : Matrix ι ι ℂ} (h : ∀ z, A *ᵥ z = B *ᵥ z) : A = B := by
   ext i j
   have := congrFun (h (Pi.single j 1)) i
@@ -101,8 +157,14 @@ section S
 
 variable {H : Matrix ι ι ℂ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heisS_im (y : ι → ℂ) (t : ℝ) : (heisS H y t).im = t := rfl
 
+/- English proof (translation)
+Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [heisS, Complex.add_re, Complex.conj_re, Complex.zero_re]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [heisS, Complex.add_im, Complex.conj_im, Complex.zero_im, hForm_self_im hH]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisS_spec (hH : H.IsHermitian) (y : ι → ℂ) (t : ℝ) :
     heisS H y t + starRingEnd ℂ (heisS H y t) + hForm H y y = 0 := by
   apply Complex.ext
@@ -111,6 +173,11 @@ theorem heisS_spec (hH : H.IsHermitian) (y : ι → ℂ) (t : ℝ) :
   · simp only [heisS, Complex.add_im, Complex.conj_im, Complex.zero_im, hForm_self_im hH]
     ring
 
+/- English proof (translation)
+Apply `Complex.ext` to reduce the goal to its premises. Use `congrArg Complex.re hs` as an intermediate fact. Simplify using `only [Complex.add_re, Complex.conj_re, Complex.zero_re] at this`. Simplify using `only [heisS]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Both sides reduce to the same expression.
+-/
 theorem eq_heisS {y : ι → ℂ} {s : ℂ} (hs : s + starRingEnd ℂ s + hForm H y y = 0) :
     s = heisS H y s.im := by
   apply Complex.ext
@@ -131,22 +198,34 @@ section Heis
 
 variable {H : Matrix ι ι ℂ} {a : ι → ℂ}
 
+/- English proof (translation)
+Simplify using `[heisMat, sub_mulVec, add_mulVec, vecMulVec_mulVec, hForm, dotProduct_mulVec]`.
+-/
 theorem heisMat_mulVec (y : ι → ℂ) (s : ℂ) (z : ι → ℂ) :
     heisMat H a y s *ᵥ z = z + hForm H a z • (y + s • a) - hForm H y z • a := by
   simp [heisMat, sub_mulVec, add_mulVec, vecMulVec_mulVec, hForm, dotProduct_mulVec]
 
+/- English proof (translation)
+Simplify using `[heisMat]`.
+-/
 theorem heisMat_zero : heisMat H a 0 0 = 1 := by
   simp [heisMat]
 
 variable (hH : H.IsHermitian) (ha : hForm H a a = 0)
 include hH ha
 
+/- English proof (translation)
+Establish `hya : hForm H y a = 0` using `by rw [← hForm_conj hH, hy, map_zero]`. Rewrite using `[heisMat_mulVec, ha, hya]`. Simplify using the standard rewrite rules.
+-/
 theorem heisMat_mulVec_self {y : ι → ℂ} (hy : hForm H a y = 0) (s : ℂ) :
     heisMat H a y s *ᵥ a = a := by
   have hya : hForm H y a = 0 := by rw [← hForm_conj hH, hy, map_zero]
   rw [heisMat_mulVec, ha, hya]
   simp
 
+/- English proof (translation)
+Establish `hya : hForm H y₁ a = 0` using `by rw [← hForm_conj hH, h₁, map_zero]`. Use `matrix_ext_mulVec fun z => ?_` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, heisMat_mulVec, heisMat_mulVec, heisMat_mulVec]`. Simplify using `only [hForm_add_right, hForm_sub_right, hForm_smul_right, hForm_add_left, ha, h₂, hya]`. Use `module`.
+-/
 theorem heisMat_mul {y₁ y₂ : ι → ℂ} (h₁ : hForm H a y₁ = 0) (h₂ : hForm H a y₂ = 0)
     (s₁ s₂ : ℂ) :
     heisMat H a y₁ s₁ * heisMat H a y₂ s₂ =
@@ -157,6 +236,9 @@ theorem heisMat_mul {y₁ y₂ : ι → ℂ} (h₁ : hForm H a y₁ = 0) (h₂ :
   simp only [hForm_add_right, hForm_sub_right, hForm_smul_right, hForm_add_left, ha, h₂, hya]
   module
 
+/- English proof (translation)
+Establish `hya : hForm H y a = 0` using `by rw [← hForm_conj hH, hy, map_zero]`. Use `unitary_of_hForm H fun p q => ?_` and prove the remaining obligations. Rewrite using `[heisMat_mulVec, heisMat_mulVec]`. Simplify using `only [hForm_add_right, hForm_sub_right, hForm_smul_right, hForm_add_left, hForm_sub_left, hForm_smul_left, ha, hy, hya, hForm_conj hH]`. Take the linear combination `(hForm H a q * hForm H p a) * hs`.
+-/
 theorem heisMat_unitary {y : ι → ℂ} (hy : hForm H a y = 0) {s : ℂ}
     (hs : s + starRingEnd ℂ s + hForm H y y = 0) :
     (heisMat H a y s)ᴴ * H * heisMat H a y s = H := by
@@ -169,6 +251,9 @@ theorem heisMat_unitary {y : ι → ℂ} (hy : hForm H a y = 0) {s : ℂ}
 
 omit hH ha in
 
+/- English proof (translation)
+Use `matrix_ext_mulVec fun z => ?_` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, heisMat_mulVec, heisMat_mulVec]`. Use `conv_rhs => rw [← hga, hForm_mulVec_of_unitary H hg, hForm_mulVec_of_unitary H hg, hga]`. Simplify using `only [mulVec_add, mulVec_sub, mulVec_smul, hga]`.
+-/
 theorem heisMat_conj {g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (hga : g *ᵥ a = a) (y : ι → ℂ)
     (s : ℂ) : g * heisMat H a y s = heisMat H a (g *ᵥ y) s * g := by
   refine matrix_ext_mulVec fun z => ?_
@@ -178,6 +263,15 @@ theorem heisMat_conj {g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (hga : g *�
 
 omit ha in
 
+/- English proof (translation)
+Establish `hba : hForm H b a = 1` using `by rw [← hForm_conj hH, hab, map_one]`. Establish `hnba : hForm H (n *ᵥ b) a = 1` using `by conv_lhs => rw [← hna]`. Rewrite using `[hForm_mulVec_of_unitary H hn, hba]`. Use `matrix_ext_mulVec fun p => ?_` and prove the remaining obligations. Use `set p' := p - hForm H a p • b with hp'`.
+
+Establish `hap' : hForm H a p' = 0`. Rewrite using `[hp', hForm_sub_right, hForm_smul_right, hab, mul_one, sub_self]`. Establish `hp : p = p' + hForm H a p • b` using `by rw [hp']; abel`. Take `⟨c, hc⟩` from `hn' p' hap'`. Take `⟨d, hd⟩` from `hm' p' hap'`.
+
+Establish `e1` using `hForm_mulVec_of_unitary H hn b p'`. Establish `e2` using `hForm_mulVec_of_unitary H hm b p'`. Rewrite `e1` using `[hc]`. Rewrite `e2` using `[hd, ← hnb]`. Rewrite `e1`, `e2` using `[hForm_add_right, hForm_smul_right, hnba]`.
+
+Establish `hcd : c = d` using `by linear_combination e1 - e2`. Rewrite using `[hp, mulVec_add, mulVec_add, mulVec_smul, mulVec_smul, hc, hd, hcd, hnb]`.
+-/
 theorem eq_of_mulVec_partner {b : ι → ℂ} (hab : hForm H a b = 1) {n m : Matrix ι ι ℂ}
     (hn : nᴴ * H * n = H) (hm : mᴴ * H * m = H)
     (hna : n *ᵥ a = a)
@@ -203,6 +297,21 @@ theorem eq_of_mulVec_partner {b : ι → ℂ} (hab : hForm H a b = 1) {n m : Mat
   have hcd : c = d := by linear_combination e1 - e2
   rw [hp, mulVec_add, mulVec_add, mulVec_smul, mulVec_smul, hc, hd, hcd, hnb]
 
+/- English proof (translation)
+Establish `hba : hForm H b a = 1` using `by rw [← hForm_conj hH, hab, map_one]`. Use `set u := n *ᵥ b - b with hu`. Use `set s := hForm H b u with hs`. Use `set y := u - s • a with hy`. Establish `hanb : hForm H a (n *ᵥ b) = 1` using `by conv_lhs => rw [← hna]`.
+
+Rewrite using `[hForm_mulVec_of_unitary H hn, hab]`. Establish `hau : hForm H a u = 0` using `by rw [hu, hForm_sub_right, hanb, hab, sub_self]`. Establish `h1 : hForm H a y = 0` using `by rw [hy, hForm_sub_right, hForm_smul_right, hau, ha]; ring`. Establish `h2 : hForm H b y = 0` using `by rw [hy, hForm_sub_right, hForm_smul_right, hba, ← hs]; ring`. Establish `hya : hForm H y a = 0` using `by rw [← hForm_conj hH, h1, map_zero]`.
+
+Establish `hbb` using `hForm_mulVec_of_unitary H hn b b`. Establish `hnb : n *ᵥ b = b + u` using `by rw [hu]; abel`. Rewrite `hbb` using `[hnb, hb]`. Establish `hub : hForm H u b = starRingEnd ℂ s` using `by rw [hs, hForm_conj hH]`. Establish `huu : hForm H u u = hForm H y y`.
+
+Establish `: u = y + s • a` using `by rw [hy]; abel`. Rewrite using `[this]`. Simplify using `only [hForm_add_right, hForm_add_left, hForm_smul_right, hForm_smul_left, h1, hya, ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : s + starRingEnd ℂ s + hForm H y y = 0`.
+
+Simplify using `only [hForm_add_right, hForm_add_left, hb, hub, ← hs, huu] at hbb`. Take the linear combination `hbb`. Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations. Use `eq_of_mulVec_partner hH hab hn (heisMat_unitary hH ha h1 h3) hna hn' ?_ ?_` and prove the remaining obligations. Introduce `z hz`.
+
+Use `⟨-hForm H y z, ?_⟩` and prove the remaining obligations. Rewrite using `[heisMat_mulVec, hz]`. Simplify using `only [zero_smul, add_zero, neg_smul, sub_eq_add_neg]`. Establish `hyb : hForm H y b = 0` using `by rw [← hForm_conj hH, h2, map_zero]`. Rewrite using `[heisMat_mulVec, hab, hyb, hnb, hy]`.
+
+Simplify using `only [one_smul, zero_smul, sub_zero, sub_add_cancel]`.
+-/
 theorem eq_heisMat {b : ι → ℂ} (hb : hForm H b b = 0) (hab : hForm H a b = 1)
     {n : Matrix ι ι ℂ} (hn : nᴴ * H * n = H) (hna : n *ᵥ a = a)
     (hn' : ∀ z, hForm H a z = 0 → ∃ c : ℂ, n *ᵥ z = z + c • a) :

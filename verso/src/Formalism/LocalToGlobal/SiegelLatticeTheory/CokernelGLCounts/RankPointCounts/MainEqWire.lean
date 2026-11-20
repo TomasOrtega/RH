@@ -22,8 +22,20 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 
 namespace Formalism.L2.SG.Pf
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem stepThmBPinnedG_of_bdat (h : Formalism.L2.SG.Pf.BDat.StepThmBG) : StepThmBPinnedG := h
 
+/- English proof (translation)
+Introduce `D X Y u _ s₁ s₂ h1 h2 h3 h4 h5`. Establish `h'` using `h D X Y u u s₁ s₂ h1 h2 h3 h4`. Use `first`. Consider the case `unfold Full.tO at h5`. Consider the case `unfold Formalism.L2.SG.Full.Full.tO at h5`.
+
+Consider the case `unfold Formalism.L2.SG.Full.tO at h5`. Consider the case `simp only [Full.tO] at h5`. Consider the case `dsimp only at h5`. Use `first`. Consider the case `unfold tOf at h5`.
+
+Consider the case `simp only [tOf] at h5`. Consider the case `unfold Formalism.L2.SG.TermOp.tOf at h5`. Simplify using `only at h5`. Use `first`. Consider the case `unfold rowOf at h5`.
+
+Consider the case `simp only [rowOf] at h5`. Consider the case `unfold Formalism.L2.SG.TermOp.rowOf at h5`. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at h5`. Conclude with `(h' h5.1 h5.2.1).1 h5.2.2`.
+-/
 theorem liftIotaEqC_of (h : Formalism.L2.SG.Pf.IotaDictC) : LiftIotaEqC := by
   intro D X Y u _ s₁ s₂ h1 h2 h3 h4 h5
   have h' := h D X Y u u s₁ s₂ h1 h2 h3 h4
@@ -45,6 +57,9 @@ theorem liftIotaEqC_of (h : Formalism.L2.SG.Pf.IotaDictC) : LiftIotaEqC := by
   simp only [Prod.mk.injEq, Subtype.mk.injEq] at h5
   exact (h' h5.1 h5.2.1).1 h5.2.2
 
+/- English proof (translation)
+The claim follows from `rowMainEqC_of_pinned Formalism.FourierDecayAlt.P.norm_chain (stepClassG_of_liftIota (liftIotaEqC_of hI)) (Formalism.L2.SG.NGCut.NormalInvariants.Gen.stepNormalsG_of hNI hNC (Formalism.L2.SG.NGCut.LeadingMinorIntegrality.Gen.stepNormOneG_of hOV hAt)) (Formalism.L2.SG.Pf.MainEqPoin …`.
+-/
 theorem rowMainEqC_of_leaves (hI : Formalism.L2.SG.Pf.IotaDictC) (hNI : Formalism.L2.SG.NGCut.NormalInvariants.Gen.NmlInvG)
     (hNC : Formalism.L2.SG.NGCut.NormalInvariants.NormCount)
     (hOV : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -58,6 +73,9 @@ theorem rowMainEqC_of_leaves (hI : Formalism.L2.SG.Pf.IotaDictC) (hNI : Formalis
     (Formalism.L2.SG.Pf.MainEqPoints.stepPointsG_of hOV hAt) (Formalism.L2.SG.NGCut.LeadingMinorIntegrality.Gen.stepNormOneG_of hOV hAt)
     hTi hB hE (Formalism.L2.SG.Pf.MainEqVanish.stepTermVanishG_of_form hV) hL (stepThmBPinnedG_of_bdat hT)
 
+/- English proof (translation)
+The claim follows from `normExpDegC_of hilbert_schmidt_blocks (Formalism.L2.SG.Closed.FoldOKC_holds hFL) (Formalism.L2.SG.Closed.OOIntAllC_holds hOL) (Formalism.L2.SG.Closed.AbsConvC_holds hOL) Formalism.L2.SG.Closed.AmpWellDefC_holds Formalism.L2.SG.Closed.OOFundIndepC_holds (fun _ X => chi_n_bilinear …`.
+-/
 theorem normExpDegC_of_leaves (hFL : Formalism.L2.SG.Pf.FinLeviC) (hOL : Formalism.L2.SG.Pf.OOLintSumC) : NormExpDegC :=
   normExpDegC_of hilbert_schmidt_blocks (Formalism.L2.SG.Closed.FoldOKC_holds hFL) (Formalism.L2.SG.Closed.OOIntAllC_holds hOL)
     (Formalism.L2.SG.Closed.AbsConvC_holds hOL) Formalism.L2.SG.Closed.AmpWellDefC_holds Formalism.L2.SG.Closed.OOFundIndepC_holds

@@ -4,6 +4,11 @@ open AlgebraicGeometry CategoryTheory
 
 namespace GlobalTheory.FibreRegular
 
+/- English proof (translation)
+Set `P : PrimeSpectrum R` to `⟨p, inferInstance⟩`. Set `N : PrimeSpectrum.comap (algebraMap R S) ⁻¹' {P}` to `⟨⟨n, inferInstance⟩, PrimeSpectrum.ext hn⟩`. Take `⟨q, hq⟩ : ∃ q : PrimeSpectrum (p.Fiber S), q.asIdeal.comap (Algebra.TensorProduct.includeRight (R` from `R) (A := p.ResidueField)) = n := ⟨PrimeSpectrum.preimageEquivFiber R S P N, congrArg (fun z => z.1.asIdeal) ((PrimeSpectrum.preimageEquivFiber R S P).symm_apply_apply N)⟩`. Substitute `hq` using the available equality. Establish `hreg : IsRegularRing (p.Fiber S)` using `GlobalTheory.isRegularRing_of_smooth p.ResidueField (p.Fiber S)`.
+
+Use `isRegularRing_iff.mp hreg q.asIdeal` as an intermediate fact. Conclude with `IsRegularLocalRing.of_ringEquiv (Ideal.Fiber.algEquivAux₂ p q.asIdeal).toRingEquiv`.
+-/
 theorem quot_localization_regular (R S : Type) [CommRing R] [CommRing S] [Algebra R S]
     [Algebra.Smooth R S] (p : Ideal R) [p.IsPrime] (n : Ideal S) [n.IsPrime]
     (hn : n.comap (algebraMap R S) = p) :
@@ -24,6 +29,23 @@ end GlobalTheory.FibreRegular
 
 namespace GlobalTheory.FibreRegular
 
+/- English proof (translation)
+Introduce `X Y π _ y`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (π y)) isOpen_univ`. Take `⟨_, ⟨W, hW, rfl⟩, hyW, hWle⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ π ⁻¹ᵁ U from hxU) (π ⁻¹ᵁ U).isOpen`. Use `replace hWle : W ≤ π ⁻¹ᵁ U := hWle`. Establish `hs : (π.appLE U W hWle).hom.Smooth` using `HasRingHomProperty.appLE (P := @Smooth) π inferInstance ⟨U, hU⟩ ⟨W, hW⟩ hWle`.
+
+Use `letI := (π.appLE U W hWle).hom.toAlgebra`. Use `haveI : Algebra.Smooth Γ(X, U) Γ(Y, W) := hs`. Use `letI := X.presheaf.algebra_section_stalk (⟨π y, hxU⟩ : U)`. Use `haveI := hU.isLocalization_stalk ⟨π y, hxU⟩`. Use `letI := Y.presheaf.algebra_section_stalk (⟨y, hyW⟩ : W)`.
+
+Use `haveI := hW.isLocalization_stalk ⟨y, hyW⟩`. Use `set p := (hU.primeIdealOf ⟨π y, hxU⟩).asIdeal with hp`. Use `set n := (hW.primeIdealOf ⟨y, hyW⟩).asIdeal with hn`. Establish `e : ∀ r : Γ(X, U), (Y.presheaf.germ W y hyW).hom ((π.appLE U W hWle).hom r) = (π.stalkMap y).hom ((X.presheaf.germ U (π y) hxU).hom r)`. Establish `e' : π.appLE U W hWle ≫ Y.presheaf.germ W y hyW = X.presheaf.germ U (π y) hxU ≫ π.stalkMap y`.
+
+Use `Eq.trans ?_ (Scheme.Hom.germ_stalkMap π U y hxU).symm` and prove the remaining obligations. Rewrite using `[Scheme.Hom.appLE, Category.assoc, Y.presheaf.germ_res]`. Introduce `r`. Conclude with `congr($(e').hom r)`. Establish `hmemU : ∀ a : Γ(X, U), (X.presheaf.germ U (π y) hxU).hom a ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk (π y)) ↔ a ∈ p` using `fun a => IsLocalization.AtPrime.to_map_mem_maximal_iff (X.presheaf.stalk (π y)) p a`.
+
+Establish `hmemW : ∀ a : Γ(Y, W), (Y.presheaf.germ W y hyW).hom a ∈ IsLocalRing.maximalIdeal (Y.presheaf.stalk y) ↔ a ∈ n` using `fun a => IsLocalization.AtPrime.to_map_mem_maximal_iff (Y.presheaf.stalk y) n a`. Establish `hlies : n.comap (algebraMap Γ(X, U) Γ(Y, W)) = p`. Use extensionality with `r`. Rewrite using `[Ideal.mem_comap, ← hmemW, ← hmemU]`. Express the relevant statement in the definitionally equal form `(Y.presheaf.germ W y hyW).hom ((π.appLE U W hWle).hom r) ∈ _ ↔ _`.
+
+Rewrite using `[e, ← Ideal.mem_comap, IsLocalRing.maximalIdeal_comap]`. Establish `hreg` using `quot_localization_regular Γ(X, U) Γ(Y, W) p n hlies`. Establish `hI : (IsLocalRing.maximalIdeal (X.presheaf.stalk (π y))).map (π.stalkMap y).hom = (p.map (algebraMap Γ(X, U) Γ(Y, W))).map (algebraMap Γ(Y, W) (Y.presheaf.stalk y))`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal p (X.presheaf.stalk (π y)), Ideal.map_map, Ideal.map_map]`. Use `congr 1`.
+
+Use extensionality with `r`. Conclude with `(e r).symm`. Set `eA` to `IsLocalization.algEquiv n.primeCompl (Y.presheaf.stalk y) (Localization.AtPrime n)`. Set `eS : Y.presheaf.stalk y ≃+* Localization.AtPrime n` to `eA.toRingEquiv`. Establish `hcomp : (eS : Y.presheaf.stalk y →+* Localization.AtPrime n).comp (algebraMap Γ(Y, W) (Y.presheaf.stalk y)) = algebraMap Γ(Y, W) (Localization.AtPrime n)` using `RingHom.ext fun r => eA.commutes r`.
+
+Establish `hJ : (p.map (algebraMap Γ(X, U) Γ(Y, W))).map (algebraMap Γ(Y, W) (Localization.AtPrime n)) = ((IsLocalRing.maximalIdeal (X.presheaf.stalk (π y))).map (π.stalkMap y).hom).map (eS : Y.presheaf.stalk y →+* Localization.AtPrime n)`. Rewrite using `[hI, Ideal.map_map (algebraMap Γ(Y, W) (Y.presheaf.stalk y)), hcomp]`. Conclude with `IsRegularLocalRing.of_ringEquiv (Ideal.quotientEquiv _ _ eS hJ).symm`.
+-/
 theorem isRegularLocalRing_stalk_quot_maximalIdeal :
     ∀ (X Y : Scheme.{0}) (π : Y ⟶ X) [Smooth π] (y : Y),
       IsRegularLocalRing (Y.presheaf.stalk y ⧸

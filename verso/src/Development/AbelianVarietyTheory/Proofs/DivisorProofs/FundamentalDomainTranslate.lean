@@ -2,6 +2,15 @@ import Mathlib
 
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `h`. Establish `hmp : MeasurePreserving (fun g => m⁻¹ * g) μ μ` using `measurePreserving_mul_left μ m⁻¹`. Use `⟨?_, fun φ => hmp.setLIntegral_comp_emb (measurableEmbedding_mulLeft m⁻¹) φ 𝓓⟩` and prove the remaining obligations. Set `e : Q.map (MulAut.conj m⁻¹).toMonoidHom ≃ Q` to `(Subgroup.equivMapOfInjective Q (MulAut.conj m⁻¹).toMonoidHom (MulAut.conj m⁻¹).injective).symm.toEquiv`. Establish `hq : Measure.QuasiMeasurePreserving (Equiv.mulLeft m⁻¹).symm μ μ`.
+
+Establish `: MeasurePreserving (fun g => m * g) μ μ` using `measurePreserving_mul_left μ m`. Simplify `this.quasiMeasurePreserving` using `[Equiv.mulLeft_symm]`. Use `h.image_of_equiv (Equiv.mulLeft m⁻¹) hq e ?_` as an intermediate fact. Simplify using `using this`. Introduce `γ x`.
+
+Take `⟨γ, hγ⟩` from `γ`. Take `⟨q, hq, rfl⟩` from `Subgroup.mem_map.mp hγ`. Establish `he : e ⟨_, hγ⟩ = ⟨q, hq⟩` using `(Subgroup.equivMapOfInjective Q (MulAut.conj m⁻¹).toMonoidHom (MulAut.conj m⁻¹).injective).symm_apply_eq.mpr rfl`. Use `show m⁻¹ * ((e ⟨_, hγ⟩ : G) * x) = (MulAut.conj m⁻¹ q) * (m⁻¹ * x)`. Rewrite using `[he]`.
+
+Simplify using `[mul_assoc]`.
+-/
 theorem GlobalTheory.fundamentalDomain_translate_conj {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant] (Q : Subgroup G) (𝓓 : Set G) (m : G) : IsFundamentalDomain Q 𝓓 μ → IsFundamentalDomain (Q.map (MulAut.conj m⁻¹).toMonoidHom) ((fun g => m⁻¹ * g) '' 𝓓) μ ∧ ∀ φ : G → ENNReal, ∫⁻ g in 𝓓, φ (m⁻¹ * g) ∂μ = ∫⁻ g in (fun g => m⁻¹ * g) '' 𝓓, φ g ∂μ := by
   intro h
   have hmp : MeasurePreserving (fun g => m⁻¹ * g) μ μ := measurePreserving_mul_left μ m⁻¹

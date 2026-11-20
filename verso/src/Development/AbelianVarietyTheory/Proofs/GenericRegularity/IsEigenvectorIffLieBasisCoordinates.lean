@@ -19,6 +19,13 @@ variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 def comb {n : ℕ} (v : Fin n → (epsR R ⟶ G)) (c : Fin n → R) : epsR R ⟶ G :=
   ∏ i, epsScale (c i) ≫ v i
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite using `[List.prod_ofFn]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[hu i, Over.comp_left]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Use `⟨fun i => epsScale (c i) ≫ v i, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left]`.
+
+Both sides reduce to the same expression. Rewrite using `[List.prod_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem isLieComb_iff_comb {n : ℕ} (c : Fin n → R) (v : Fin n → (epsR R ⟶ G)) (w : epsR R ⟶ G) :
     IsLieComb c v w ↔ w = comb v c := by
   constructor
@@ -35,6 +42,9 @@ theorem isLieComb_iff_comb {n : ℕ} (c : Fin n → R) (v : Fin n → (epsR R �
     · rw [List.prod_ofFn]
       rfl
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, Finset.prod_empty]`. Conclude with `Chart.comp_one' g`. Introduce `a t ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, comp_mul, ih]`.
+-/
 theorem comp_finProd {X Y : Over (Sp R)} (g : X ⟶ Y) {κ : Type} (s : Finset κ) (u : κ → (Y ⟶ G)) :
     g ≫ ∏ i ∈ s, u i = ∏ i ∈ s, g ≫ u i := by
   classical
@@ -44,6 +54,9 @@ theorem comp_finProd {X Y : Over (Sp R)} (g : X ⟶ Y) {κ : Type} (s : Finset �
   · intro a t ha ih
     rw [Finset.prod_insert ha, Finset.prod_insert ha, comp_mul, ih]
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, Finset.prod_empty]`. Conclude with `one_comp g`. Introduce `a t ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, mul_comp, ih]`.
+-/
 theorem finProd_comp {X : Over (Sp R)} (g : G ⟶ G) [IsMonHom g] {κ : Type} (s : Finset κ) (u : κ → (X ⟶ G)) :
     (∏ i ∈ s, u i) ≫ g = ∏ i ∈ s, u i ≫ g := by
   classical
@@ -53,6 +66,9 @@ theorem finProd_comp {X : Over (Sp R)} (g : G ⟶ G) [IsMonHom g] {κ : Type} (s
   · intro a t ha ih
     rw [Finset.prod_insert ha, Finset.prod_insert ha, mul_comp, ih]
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.prod_empty]`. Conclude with `epsScale_zero_comp hw`. Introduce `b t hb ih`. Rewrite using `[Finset.sum_insert hb, Finset.prod_insert hb, epsScale_add_comp _ _ hw, ih]`.
+-/
 theorem epsScale_sum_comp {w : epsR R ⟶ G} (hw : IsTangent w) {κ : Type} (s : Finset κ) (a : κ → R) :
     epsScale (∑ i ∈ s, a i) ≫ w = ∏ i ∈ s, epsScale (a i) ≫ w := by
   classical
@@ -62,6 +78,9 @@ theorem epsScale_sum_comp {w : epsR R ⟶ G} (hw : IsTangent w) {κ : Type} (s :
   · intro b t hb ih
     rw [Finset.sum_insert hb, Finset.prod_insert hb, epsScale_add_comp _ _ hw, ih]
 
+/- English proof (translation)
+Unfold `comb`. Rewrite using `[comp_finProd]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, epsScale_mul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem epsScale_comb {n : ℕ} (v : Fin n → (epsR R ⟶ G)) (c : Fin n → R) (z : R) :
     epsScale z ≫ comb v c = comb v (z • c) := by
   unfold comb
@@ -69,6 +88,11 @@ theorem epsScale_comb {n : ℕ} (v : Fin n → (epsR R ⟶ G)) (c : Fin n → R)
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [← Category.assoc, epsScale_mul, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Unfold `comb`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [Pi.smul_apply, smul_eq_mul, mul_comm (c j)]`. Use `_ = ∏ i, ∏ j, epsScale (A i j * c j) ≫ v i := Finset.prod_comm`. Use `_ = comb v (A.mulVec c) := by`.
+
+Unfold `comb`. Conclude with `Finset.prod_congr rfl fun i _ => (epsScale_sum_comp (hv i) Finset.univ fun j => A i j * c j).symm`.
+-/
 theorem comb_comp {n : ℕ} {v : Fin n → (epsR R ⟶ G)} (hv : ∀ i, IsTangent (v i)) (g : G ⟶ G) [IsMonHom g]
     (A : Matrix (Fin n) (Fin n) R) (hA : ∀ j, v j ≫ g = comb v fun i => A i j) (c : Fin n → R) :
     comb v c ≫ g = comb v (A.mulVec c) := by
@@ -83,6 +107,9 @@ theorem comb_comp {n : ℕ} {v : Fin n → (epsR R ⟶ G)} (hv : ∀ i, IsTangen
         unfold comb
         exact Finset.prod_congr rfl fun i _ => (epsScale_sum_comp (hv i) Finset.univ fun j => A i j * c j).symm
 
+/- English proof (translation)
+Rewrite using `[isTangent_iff]`. Unfold `comb`. Rewrite using `[comp_finProd]`. Conclude with `Finset.prod_eq_one fun i _ => (isTangent_iff _).1 (isTangent_epsScale (c i) (hv i))`.
+-/
 theorem isTangent_comb {n : ℕ} {v : Fin n → (epsR R ⟶ G)} (hv : ∀ i, IsTangent (v i)) (c : Fin n → R) :
     IsTangent (comb v c) := by
   rw [isTangent_iff]
@@ -90,12 +117,18 @@ theorem isTangent_comb {n : ℕ} {v : Fin n → (epsR R ⟶ G)} (hv : ∀ i, IsT
   rw [comp_finProd]
   exact Finset.prod_eq_one fun i _ => (isTangent_iff _).1 (isTangent_epsScale (c i) (hv i))
 
+/- English proof (translation)
+Introduce `c d h`. Establish `hc : IsLieComb c v (comb v c)` using `(isLieComb_iff_comb c v (comb v c)).2 rfl`. Establish `hd : IsLieComb d v (comb v c)` using `(isLieComb_iff_comb d v (comb v c)).2 h`. Conclude with `(hv.2 _ (isTangent_comb hv.1 c)).unique hc hd`.
+-/
 theorem comb_injective {n : ℕ} {v : Fin n → (epsR R ⟶ G)} (hv : IsLieBasis v) : Function.Injective (comb v) := by
   intro c d h
   have hc : IsLieComb c v (comb v c) := (isLieComb_iff_comb c v (comb v c)).2 rfl
   have hd : IsLieComb d v (comb v c) := (isLieComb_iff_comb d v (comb v c)).2 h
   exact (hv.2 _ (isTangent_comb hv.1 c)).unique hc hd
 
+/- English proof (translation)
+Consider the cases of `m with`. Consider the case `mk cm cart base act lin`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `cart.1.hom_ext h ?_` and prove the remaining obligations. Rewrite using `[Over.w u, Over.w u']`.
+-/
 theorem pt_ext {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) {X : Over S'} {u u' : X ⟶ t'.G}
     (h : u.left ≫ m.φ = u'.left ≫ m.φ) : u = u' := by
@@ -109,6 +142,17 @@ end GlobalTheory.Reg.VecEig
 
 open GlobalTheory.Reg.VecEig GlobalTheory.GrpTangent in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y M R _ _ f x Λ τ cv w hw`. Take `⟨v', u', hv', hu', rfl⟩` from `hw`. Take `⟨v, hv0, hvb, hρ⟩` from `M.lie R f Λ.t' Λ.m2`. Take `rfl : v' = v` from `funext fun j => pt_ext Λ.m2 ((hv' j).trans (hv0 j).symm)`. Establish `hu` using `(isLieComb_iff_comb _ _ _).1 hu'`.
+
+Establish `hA` using `fun a j => (isLieComb_iff_comb _ _ _).1 (hρ a j)`. Unfold `IsEigAt MChart.Eig`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Establish `: IsMonHom (Λ.t'.act.act a)` using `Λ.t'.act.hom a`. Establish `e1 : (u'.left ≫ Λ.m1.φ) ≫ (Xo.univ.t.act.act a).left = (u' ≫ Λ.t'.act.act a).left ≫ Λ.m1.φ`.
+
+Rewrite using `[Over.comp_left, Category.assoc, Category.assoc]`. Conclude with `congrArg (u'.left ≫ ·) (Λ.m1.act a).symm`. Establish `e2 : spMap (epsMul (algebraMap c.F R (embK c τ a))) ≫ u'.left ≫ Λ.m1.φ = (epsScale (algebraMap c.F R (embK c τ a)) ≫ u').left ≫ Λ.m1.φ`. Rewrite using `[Over.comp_left, Category.assoc]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, e2, hu, comb_comp hvb.1 _ ((M.ρ a).map f) (hA a), epsScale_comb]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `comb_injective hvb (pt_ext Λ.m1 h)`. Introduce `h`.
+
+Rewrite using `[h]`.
+-/
 theorem GlobalTheory.Reg.isEigAt_iff_eig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), ∀ (R : Type) [CommRing R] [Algebra c.F R] (f : Γ(Y.X, M.U) →+* R) (x : Sp R ⟶ Xo.X) (Λ : M.Lift f x), ∀ (τ : E →+* ℂ) (cv : Fin M.n → R) (w : Sp (DualNumber R) ⟶ Xo.univ.t.G.left), Λ.Vec cv w → (IsEigAt c τ w ↔ M.Eig f τ cv) := by
   intro E _ _ _ H Dw l Xo c O _ β Y M R _ _ f x Λ τ cv w hw
   obtain ⟨v', u', hv', hu', rfl⟩ := hw

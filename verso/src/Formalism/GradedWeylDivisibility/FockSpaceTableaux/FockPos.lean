@@ -6,6 +6,11 @@ noncomputable section
 
 namespace Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Introduce `σ f hf`. Rewrite using `[LFockb_fockF_self]`. Use `⟨?_, Complex.ofReal_im _⟩` and prove the remaining obligations. Rewrite using `[Complex.ofReal_re]`. Apply `Finset.sum_pos` to reduce the goal to its premises.
+
+Introduce `m hm`. Apply `mul_pos` to reduce the goal to its premises. Conclude with `Complex.normSq_pos.mpr (mem_support_iff.mp hm)`. Conclude with `Nat.cast_pos.mpr (Finset.prod_pos fun k _ => Nat.factorial_pos _)`. Conclude with `Finset.nonempty_of_ne_empty fun h => hf (support_eq_empty.mp h)`.
+-/
 theorem fischerInnerPos : FockPos := by
   intro σ f hf
   rw [LFockb_fockF_self]

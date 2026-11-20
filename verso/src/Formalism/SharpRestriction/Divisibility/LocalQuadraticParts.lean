@@ -97,6 +97,15 @@ def PlancherelDifferenceBound (D : D7) (Z : DivX D) : Prop :=
 def PeterssonMetricHypotheses (D : D7) (Z : DivX D) (A : AmbForm D (RowSide.sharp D)) : Prop :=
   PeterssonBoundFixedEmbedding D Z A ∧ (∃ E : EigIdx D Z, DivisibilityLatticeMetricCondition D Z A E ∧ EigensystemOrthogonality D Z A E ∧ DegreeNormalizationFormula D Z A E) ∧ 0 < D.what₂.Drows ∧ PlancherelDifferenceBound D Z
 
+/- English proof (translation)
+Establish `hfin : (Set.range fun k => a (f k)).Finite` using `Set.finite_range _`. Establish `key : ∀ i, c * Real.exp (⨅ k, a (f k)) * n i ≤ c * Real.exp (a i) * n i ∧ c * Real.exp (a i) * n i ≤ c * Real.exp (⨆ k, a (f k)) * n i`. Introduce `i`. Distinguish the cases in `hi : ∃ k, f k = i`. Take `⟨k, rfl⟩` from `hi`.
+
+Establish `h1 : (⨅ k', a (f k')) ≤ a (f k)` using `ciInf_le hfin.bddBelow k`. Establish `h2 : a (f k) ≤ ⨆ k', a (f k')` using `le_ciSup hfin.bddAbove k`. Prove the components needed by the constructor for the conclusion. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr h1) hc) (hn _)`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr h2) hc) (hn _)`.
+
+Use `push_neg at hi`. Rewrite using `[h0 i hi]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_le_sum fun i _ => (key i).1`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun i _ => (key i).2`.
+-/
 theorem sum_between {ι κ : Type} [Fintype ι] [Finite κ] [Nonempty κ] (f : κ → ι) (a : ι → ℝ) (n : ι → ℝ) (hn : ∀ i, 0 ≤ n i)
     (h0 : ∀ i, (∀ k, f k ≠ i) → n i = 0) (c : ℝ) (hc : 0 ≤ c) :
     c * Real.exp (⨅ k, a (f k)) * ∑ i, n i ≤ ∑ i, c * Real.exp (a i) * n i ∧
@@ -121,6 +130,11 @@ theorem sum_between {ι κ : Type} [Fintype ι] [Finite κ] [Nonempty κ] (f : �
   · rw [Finset.mul_sum]
     exact Finset.sum_le_sum fun i _ => (key i).2
 
+/- English proof (translation)
+Introduce `σ j hj hbot`. Simplify using `only [SizeData₂.lifts, Finset.mem_Icc] at hj`. Establish `h1` using `hR j hj.1 hj.2 (D.what₂.ft σ)`. Rewrite `h1` using `[hbot, finrank_bot]`. Establish `h2` using `hn σ`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem isot_ne_bot {D : D7} (hR : Rows.IsotRank D.what₂) (hn : ∀ σ : Fin D.what₂.Drows, 0 < D.what₂.nRows0 (D.what₂.ft σ)) :
     ∀ σ : Fin D.what₂.Drows, ∀ j ∈ SizeData₂.lifts D, D.what₂.isot j (D.what₂.ft σ) ≠ ⊥ := by
   intro σ j hj hbot
@@ -130,6 +144,9 @@ theorem isot_ne_bot {D : D7} (hR : Rows.IsotRank D.what₂) (hn : ∀ σ : Fin D
   have h2 := hn σ
   omega
 
+/- English proof (translation)
+Establish `hex : ∃ π', E.cOf π' = E.cOf π ∧ D.what₂.isot j π' ≠ ⊥` using `⟨π, rfl, hπ⟩`. Unfold `logLamC`. Rewrite using `[dif_pos hex]`. Conclude with `E.lam_const j hj _ _ e hex.choose_spec.2 hπ hex.choose_spec.1`.
+-/
 theorem logLamC_cOf {D : D7} {Z : DivX D} (E : EigIdx D Z) {j : ℕ} (hj : j ∈ SizeData₂.lifts D) (π : D.what₂.FT)
     (hπ : D.what₂.isot j π ≠ ⊥) (e : D.what₂.LL →+* ℂ) : logLamC E j (E.cOf π) e = Z.logLam j π e := by
   have hex : ∃ π', E.cOf π' = E.cOf π ∧ D.what₂.isot j π' ≠ ⊥ := ⟨π, rfl, hπ⟩
@@ -137,6 +154,27 @@ theorem logLamC_cOf {D : D7} {Z : DivX D} (E : EigIdx D Z) {j : ℕ} (hj : j ∈
   rw [dif_pos hex]
   exact E.lam_const j hj _ _ e hex.choose_spec.2 hπ hex.choose_spec.1
 
+/- English proof (translation)
+Take `⟨h0, ⟨E, hm, ho, hd⟩, hD, hc⟩` from `h`. Establish `hLC : ∀ (c : E.Pi) (e : D.what₂.LL →+* ℂ), ∀ j ∈ SizeData₂.lifts D, logLamC E j c (ComplexEmbedding.conjugate e) = logLamC E j c e`. Introduce `c e j hj`. Unfold `logLamC`. Distinguish the cases in `hh : ∃ π, E.cOf π = c ∧ D.what₂.isot j π ≠ ⊥`.
+
+Rewrite using `[dif_pos hh, dif_pos hh]`. Conclude with `hc j hj _ hh.choose_spec.2 e`. Rewrite using `[dif_neg hh, dif_neg hh]`. Introduce `s`. Distinguish the cases in `hs : InfinitePlace.mk s = InfinitePlace.mk D.what₂.embLL`.
+
+Break down `InfinitePlace.mk_eq_iff.mp hs with h1 | h1` into its components or cases. Substitute `h1` using the available equality. Conclude with `h0`. Introduce `x q hq hx`. Establish `h2` using `h0 x q hq hx`.
+
+Rewrite `h2` using `[← h1, InfinitePlace.mk_conjugate_eq, Z.kapR_conj]`. Establish `hinf : ∀ σ : Fin D.what₂.Drows, (∑ j ∈ SizeData₂.lifts D, Z.logLam j (D.what₂.ft σ) (ComplexEmbedding.conjugate s)) = ∑ j ∈ SizeData₂.lifts D, Z.logLam j (D.what₂.ft σ) s` using `fun σ => Finset.sum_congr rfl fun j hj => hc j hj _ (hI σ j hj) s`. Simplify using `only [hinf] at h2`. Conclude with `h2`. Introduce `x q hq hx`.
+
+Take `⟨xs, qs, hpart, hxs, hqs, hz⟩` from `hd x q hq hx`. Establish `hk : Z.kapR (InfinitePlace.mk s).embedding = Z.kapR s`. Break down `InfinitePlace.embedding_mk_eq s with he | he` into its components or cases. Rewrite using `[he]`. Rewrite using `[he]`.
+
+Conclude with `Z.kapR_conj s`. Establish `hl : ∀ c, ∀ j ∈ SizeData₂.lifts D, logLamC E j c (InfinitePlace.mk s).embedding = logLamC E j c s`. Introduce `c j hj`. Break down `InfinitePlace.embedding_mk_eq s with he | he` into its components or cases. Rewrite using `[he]`.
+
+Rewrite using `[he]`. Conclude with `hLC c s j hj`. Establish `hmet : Formalism.HermitianLatticesTheory.normAt D.div.RR.b D.div.RR.X (InfinitePlace.mk s) x ^ 2 = ∑ c, Z.kapR s * Real.exp (∑ j ∈ SizeData₂.lifts D, logLamC E j c s) * qn A (InfinitePlace.mk s) (qs c) ^ 2`. Rewrite using `[← hxs, hm (InfinitePlace.mk s) hs xs qs (fun c => (hpart c).1.1) (fun c => (hpart c).2) (fun c => by rw [(hpart c).2]; exact (hpart c).1.2), hk]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_congr rfl (hl c)]`. Apply the tactic sequence `try rfl`. Establish `hqn : qn A (InfinitePlace.mk s) q ^ 2 = ∑ c, qn A (InfinitePlace.mk s) (qs c) ^ 2`. Rewrite using `[← hqs]`. Conclude with `ho _ qs (fun c => (hpart c).1)`.
+
+Use `haveI : Nonempty (Fin D.what₂.Drows) := ⟨⟨0, hD⟩⟩`. Establish `hsb` using `sum_between (ftP E) (fun c => ∑ j ∈ SizeData₂.lifts D, logLamC E j c s) (fun c => qn A (InfinitePlace.mk s) (qs c) ^ 2) (fun c => sq_nonneg _) (fun c hc' => by simp [hz c hc' (InfinitePlace.mk s)]) (Z.kapR s) (Z.kapR_pos s).le`. Establish `hI' : ∀ σ, (∑ j ∈ SizeData₂.lifts D, logLamC E j (ftP E σ) s) = ∑ j ∈ SizeData₂.lifts D, Z.logLam j (D.what₂.ft σ) s` using `fun σ => Finset.sum_congr rfl fun j hj => logLamC_cOf E hj _ (hI σ j hj) s`. Simplify using `only [hI'] at hsb`. Rewrite using `[hmet, hqn]`.
+
+Conclude with `hsb`.
+-/
 theorem all_embeddings_of_bounds {D : D7} {Z : DivX D} {A : AmbForm D (RowSide.sharp D)}
     (hI : ∀ σ : Fin D.what₂.Drows, ∀ j ∈ SizeData₂.lifts D, D.what₂.isot j (D.what₂.ft σ) ≠ ⊥)
     (h : PeterssonMetricHypotheses D Z A) : PeterssonBoundAllEmbeddings D Z A := by
@@ -201,6 +239,9 @@ theorem all_embeddings_of_bounds {D : D7} {Z : DivX D} {A : AmbForm D (RowSide.s
     rw [hmet, hqn]
     exact hsb
 
+/- English proof (translation)
+The claim follows from `h D.what₂.embLL`.
+-/
 theorem fixed_embedding_of_all {D : D7} {Z : DivX D} {A : AmbForm D (RowSide.sharp D)} (h : PeterssonBoundAllEmbeddings D Z A) : PeterssonBoundFixedEmbedding D Z A := h D.what₂.embLL
 
 def adm2 (D : D7) (L : SizeData₂ D) : Prop :=
@@ -215,6 +256,9 @@ def UnroundedValuationBound (D : D7) (L : SizeData₂ D) : Prop :=
       ∃ y : D.what₂.LL, D.what₂.embLL y = D.what₂.perCol u (D.what₂.muAt w) (D.jN u φ) F ∧
         (y = 0 ∨ ur D w (L.sg u w) ≤ (vAdd (D.plEq w) y : ℝ))
 
+/- English proof (translation)
+Introduce `u w φ hφ F hF hV`. Take `⟨y, hy, h'⟩` from `h u w φ hφ F hF hV`. Conclude with `⟨y, hy, h'.imp_right fun h'' => (Int.floor_le _).trans h''⟩`.
+-/
 theorem valuation_bound_of_unrounded (D : D7) (L : SizeData₂ D) (h : UnroundedValuationBound D L) : adm2 D L := by
   intro u w φ hφ F hF hV
   obtain ⟨y, hy, h'⟩ := h u w φ hφ F hF hV
@@ -281,6 +325,11 @@ def LowKernelRationality (D : D7) : Prop := ∀ u, ∀ i, i + 3 ≤ D.R.m → (D
 
 def HighKernelRationality (D : D7) : Prop := ∀ u, ∀ i < D.R.m, D.R.m < i + 3 → (D.fm u).KRat i
 
+/- English proof (translation)
+Unfold `KernelRationality LowKernelRationality HighKernelRationality`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hK, hP⟩`. Conclude with `⟨fun u i hi => hK u i (by omega), fun u i hi _ => hK u i hi, hP⟩`. Introduce and unpack `⟨hL, hT, hP⟩`.
+
+Use `⟨fun u i hi => ?_, hP⟩` and prove the remaining obligations. Distinguish the cases in `h3 : i + 3 ≤ D.R.m`. Conclude with `hL u i h3`. Conclude with `hT u i hi (by omega)`.
+-/
 theorem kernel_rationality_iff (D : D7) : KernelRationality D ↔ LowKernelRationality D ∧ HighKernelRationality D ∧ ∀ u, (D.fm u).PRat := by
   unfold KernelRationality LowKernelRationality HighKernelRationality
   constructor
@@ -342,6 +391,9 @@ def TWAt (D : D7) (N : NChoice D) (T : ThData D) : Prop :=
     ∃ (N0 : D.ntw.Tw → ℕ) (S : ∀ (i' : D.ntw.Tw) (j : ℕ) (b : Bool), Finset (D.nexp.Dat i' j b)),
       Formalism.MainNotions.TwGoodAt D N ⟨Formalism.MainNotions.twEOf T, N0, S⟩
 
+/- English proof (translation)
+Take `⟨x0, hx0⟩` from `h`. Conclude with `⟨x0, fun x hx hx1 i => hx0 x hx hx1 i⟩`.
+-/
 theorem twAt_of_twGood {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (h : Formalism.MainNotions.TwGood Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), TWAt (Fm.D x i) (Fm.ex x hx i).nch (Fm.ex x hx i).xd := by
   obtain ⟨x0, hx0⟩ := h
@@ -683,6 +735,9 @@ section Fam
 
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Fm.nprimeDef x hx i, Fm.nuDef x hx i, fun p hp => Fm.drop_iff x hx i p hp, fun w => Fm.fills x hx i w⟩`.
+-/
 theorem defs_fam {x : ℝ} (hx : Fm.x1 < x) (i : Fm.Ix x) : Defs (Fm.Gx x i) Fm.GK Fm.Cr :=
   ⟨Fm.nprimeDef x hx i, Fm.nuDef x hx i, fun p hp => Fm.drop_iff x hx i p hp, fun w => Fm.fills x hx i w⟩
 
@@ -797,6 +852,9 @@ def ClosedAbsoluteShare (𝒞 : Formalism.MainNotions.FamClass) : Prop :=
   Conclusion2 ∧ ∀ (Cabs : ℝ) (CF : List ℝ → ℝ), ∃ Cabs' C' : ℝ,
     Formalism.MainNotions.Closed 𝒞 (fun Fm CH => KudlaFamilyStatement Cabs (CF Fm.cOut) Cabs' C' Fm CH)
 
+/- English proof (translation)
+Take `⟨Cabs', C', hC⟩` from `h.2 Cabs (fun _ => CF)`. Conclude with `⟨Cabs', C', hC⟩`.
+-/
 theorem ClosedAbsoluteShare.const {𝒞 : Formalism.MainNotions.FamClass} (h : ClosedAbsoluteShare 𝒞) (Cabs CF : ℝ) :
     ∃ Cabs' C' : ℝ, Formalism.MainNotions.Closed 𝒞 (fun Fm CH => KudlaFamilyStatement Cabs CF Cabs' C' Fm CH) := by
   obtain ⟨Cabs', C', hC⟩ := h.2 Cabs (fun _ => CF)

@@ -12,6 +12,23 @@ namespace GlobalTheory.CompanionTheory.LocVan
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce `n _ _ μ _ f u d μd _ W₁ W₂ hf hfc hV hsep hW1 hle h12 h21 hu hub huK huT huN`. Establish `hTw : Continuous fun x : GL (Fin n) ℂ => twConj (thC n) x d` using `(continuous_inv.mul continuous_const).mul continuous_thC`. Use `hQ n μ d μd W₁ W₂ hsep hW1 hle h12 h21 _ (((hf.comp hTw).measurable).mul hu) (fun t ht x => ?_) (fun x k hk => ?_) ?_` and prove the remaining obligations. Use `show f (twConj (thC n) (t * x) d) * u (t * x) = f (twConj (thC n) x d) * u x`. Rewrite using `[twConj_mul_left _ _ ht, huT t ht]`.
+
+Use `show f (twConj (thC n) (x * k) d) * u (x * k) = f (twConj (thC n) x d) * u x`. Establish `: twConj (thC n) (x * k) d = twConj (thC n) k (twConj (thC n) x d)`. Simplify using `only [twConj, map_mul, _root_.mul_inv_rev, mul_assoc]`. Rewrite using `[this, hV.1 k _ hk, huK x k hk]`. Introduce `_ _ ν _ q`.
+
+Take `⟨Φ, hΦc, hΦ, hΦν⟩` from `hN n d W₁ W₂ hsep hW1 hle h12 h21`. Take `⟨c, hc⟩` from `hΦν ν`. Use `set g : nilrad W₁ W₂ → ℂ := fun Y => f (q⁻¹ * uOf Y * d * thC n q) with hg`. Establish `hgc : Continuous g` using `hf.comp (((continuous_const.mul continuous_uOf).mul continuous_const).mul continuous_const)`. Establish `e1 : ∀ X : nilrad W₁ W₂, f (twConj (thC n) (uOf X * q) d) * u (uOf X * q) = u q * g (Φ X)` using `fun X => by`.
+
+Establish `hm : (uOf X).val - 1 ∈ nilrad W₁ W₂` using `by simpa using X.2`. Rewrite using `[huN _ hm, mul_comm]`. Use `congr 2`. Simplify using `only [hg, hΦ, twConj, map_mul, _root_.mul_inv_rev]`. Use `group`.
+
+Establish `e2 : ∫ X, g (Φ X) ∂ν = (c : ℝ) • ∫ Y, g Y ∂ν`. Rewrite using `[← integral_map hΦc.measurable.aemeasurable hgc.aestronglyMeasurable, hc, integral_smul_measure]`. Simplify using the standard rewrite rules. Simplify using `only [e1]`. Rewrite using `[integral_const_mul, e2]`.
+
+It suffices to establish `h : ∫ Y, g Y ∂ν = 0 by simp [h]`. Use `letI : MeasurableSpace (nilrad (img q⁻¹ W₁) (img q⁻¹ W₂)) := borel _`. Use `haveI : BorelSpace (nilrad (img q⁻¹ W₁) (img q⁻¹ W₂)) := ⟨rfl⟩`. Establish `hcn` using `continuous_conjNil q W₁ W₂`. Use `haveI : (ν.map (conjNil q W₁ W₂)).IsAddHaarMeasure := (conjNil q W₁ W₂).isAddHaarMeasure_map ν hcn (continuous_conjNil_symm q W₁ W₂)`.
+
+Establish `key` using `hV.2 (twConj (thC n) q d) (img q⁻¹ W₁) (img q⁻¹ W₂) (img_ne_bot _ hW1) (img_le_img _ hle) (by rw [perpD_twConj, h12]) (by rw [perpD_twConj, h21]) uOf (fun X => uOf_val X) (ν.map (conjNil q W₁ W₂))`. Establish `hcont : Continuous fun Z : nilrad (img q⁻¹ W₁) (img q⁻¹ W₂) => f (uOf Z * twConj (thC n) q d)` using `hf.comp (continuous_uOf.mul continuous_const)`. Rewrite `key` using `[integral_map hcn.measurable.aemeasurable hcont.aestronglyMeasurable]`. Rewrite using `[← key]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun Y => ?_)` and prove the remaining obligations.
+
+Use `show f _ = f _`. Rewrite using `[uOf_conjNil]`. Use `congr 1`. Simplify using `only [twConj]`. Use `group`.
+-/
 theorem locVanish_of (hN : NilChange) (hQ : QuotVanish) : LocVanish := by
   intro n _ _ μ _ f u d μd _ W₁ W₂ hf hfc hV hsep hW1 hle h12 h21 hu hub huK huT huN
   have hTw : Continuous fun x : GL (Fin n) ℂ => twConj (thC n) x d :=
@@ -65,6 +82,9 @@ theorem locVanish_of (hN : NilChange) (hQ : QuotVanish) : LocVanish := by
     simp only [twConj]
     group
 
+/- English proof (translation)
+The claim follows from `locVanish_of GlobalTheory.T.nilradical_change_of_variables GlobalTheory.T.quotient_vanishing`.
+-/
 theorem locVanish : LocVanish := locVanish_of GlobalTheory.T.nilradical_change_of_variables GlobalTheory.T.quotient_vanishing
 
 end GlobalTheory.CompanionTheory.LocVan

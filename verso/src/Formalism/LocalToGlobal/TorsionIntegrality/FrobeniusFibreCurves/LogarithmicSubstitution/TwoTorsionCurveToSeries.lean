@@ -19,6 +19,9 @@ section Alg
 
 variable {K : Type} [Field K] [CharZero K]
 
+/- English proof (translation)
+The claim follows from `(Formalism.L2.Th1.C.curveFrame K ⊤ W ⟨trivial, trivial, trivial, trivial, trivial⟩).1`.
+-/
 theorem logPair (W : WeierstrassCurve K) : IsLogPair (logSer W) (expSer W) :=
   (Formalism.L2.Th1.C.curveFrame K ⊤ W ⟨trivial, trivial, trivial, trivial, trivial⟩).1
 
@@ -28,6 +31,9 @@ section Norm
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h2, Crv.two_torsion_x_root_of_cubic W xT yT hE h2, hx, hy, hW.1, Crv.norm_kap W xT yT hW h2 hx hy⟩`.
+-/
 theorem twoHyp (W : WeierstrassCurve K) (xT yT : K) (hW : IntModel W)
     (hE : W.toAffine.Equation xT yT) (h2 : 2 * yT + W.a₁ * xT + W.a₃ = 0) (hx : ‖xT‖ ≤ 1)
     (hy : ‖yT‖ ≤ 1) : TwoHyp (g₂ W) (g₃ W) (W.b₂ / 12) W.a₁ W.a₃ xT yT :=

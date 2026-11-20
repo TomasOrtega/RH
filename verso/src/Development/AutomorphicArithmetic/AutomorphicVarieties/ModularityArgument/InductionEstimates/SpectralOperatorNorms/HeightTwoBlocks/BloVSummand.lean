@@ -12,28 +12,46 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {S : Set (BW.
 
 noncomputable def bloV {r : ℕ} (b : Blo S r) : Submodule ℂ (LL (mu1 E r)) := b.summand.choose
 
+/- English proof (translation)
+The claim follows from `b.summand.choose_spec.1`.
+-/
 theorem bloV_summand {r : ℕ} (b : Blo S r) : IsSummand (mu1 E r) (bloV b) := b.summand.choose_spec.1
 
+/- English proof (translation)
+The claim follows from `b.summand.choose_spec.2`.
+-/
 theorem bloV_mem {r : ℕ} (b : Blo S r) :
     ((cuspToL2 (mu1 E r) ⟨b.f.1, b.cusp⟩ : cuspidalL2 (mu1 E r)) : LL (mu1 E r)) ∈ bloV b := b.summand.choose_spec.2
 
+/- English proof (translation)
+The claim follows from `| _, .nil => rfl | _, .cons b d => by have := blo_sum d exact (Fin.sum_univ_succ (n := d.len) _).trans (congrArg (_ + ·) this)`.
+-/
 private theorem blo_sum : ∀ {n : ℕ} (d : Dat S n), ∑ j, (d.blo j).1 = n
   | _, .nil => rfl
   | _, .cons b d => by
     have := blo_sum d
     exact (Fin.sum_univ_succ (n := d.len) _).trans (congrArg (_ + ·) this)
 
+/- English proof (translation)
+The claim follows from `| _, .nil, j => j.elim0 | _, .cons b d, j => by refine Fin.cases (motive := fun j : Fin (d.len + 1) => (Dat.cons b d).sat j = (Dat.blo (.cons b d) j).2.sat) rfl (fun i => blo_sat d i) j`.
+-/
 theorem blo_sat : ∀ {n : ℕ} (d : Dat S n) (j : Fin d.len), d.sat j = (d.blo j).2.sat
   | _, .nil, j => j.elim0
   | _, .cons b d, j => by
     refine Fin.cases (motive := fun j : Fin (d.len + 1) => (Dat.cons b d).sat j = (Dat.blo (.cons b d) j).2.sat) rfl
       (fun i => blo_sat d i) j
 
+/- English proof (translation)
+Simplify using `only [Fin.univ_val_map, List.ofFn_add, Multiset.coe_add]`. Both sides reduce to the same expression.
+-/
 private theorem map_addCases {r s : ℕ} (f : Fin (r + s) → ℂ) :
     Finset.univ.val.map f = (Finset.univ.val.map fun i => f (Fin.castAdd s i)) + Finset.univ.val.map fun i => f (Fin.natAdd r i) := by
   simp only [Fin.univ_val_map, List.ofFn_add, Multiset.coe_add]
   rfl
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _ => rfl | _, .cons b d, z => by have ih := blo_ms τ d fun j => z (j.succ : Fin (d.len + 1)) refine Eq.trans ?_ (Fin.sum_univ_succ (n := d.len) _).symm unfold msOf at ih ⊢ rw [map_addCases] congr 1 · rw [Multiset.map_map] refine Multiset.map_congr rfl fun i _ => ?_ hav …`.
+-/
 theorem blo_ms (τ : E →+* ℂ) : ∀ {n : ℕ} (d : Dat S n) (z : Fin d.len → ℂ),
     msOf (d.ptL z) τ = ∑ j, (Finset.univ.val.map ((d.blo j).2.Λ τ)).map (· + z j)
   | _, .nil, _ => rfl
@@ -69,11 +87,17 @@ noncomputable def datB {n : ℕ} (d : Dat S n) (h2 : 2 ≤ d.len) : Datum E n wh
   V := fun j => bloV (d.blo j).2
   summand := fun j => bloV_summand (d.blo j).2
 
+/- English proof (translation)
+The claim follows from `bloAt E S _ _ _ (bloV_summand _) (bloV_mem _)`.
+-/
 theorem datB_at {n : ℕ} (d : Dat S n) (h2 : 2 ≤ d.len) (j : Fin d.len) :
     At (mu1 E (d.blo j).1) S (bloV (d.blo j).2) (fun τ => Finset.univ.val.map ((d.blo j).2.Λ τ))
       fun w => ((d.blo j).2.sat w).map fun x : ℂˣ => (x : ℂ) :=
   bloAt E S _ _ _ (bloV_summand _) (bloV_mem _)
 
+/- English proof (translation)
+Establish `hb` using `bloAt E S r b (bloV b) (bloV_summand b) (bloV_mem b)`. Establish `hp` using `Dp.parEx E r b.pos (mu1 E r) (bloV b) (bloV_summand b)`. Conclude with `⟨fun τ => (hp.1 τ).unique (h.1 τ) (hb.1 τ), fun w hw => (hp.2.1 w (h.2 w hw).2.1).unique (h.2 w hw) (hb.2 w hw)⟩`.
+-/
 theorem bloV_unique {r : ℕ} (b : Blo S r) {m : (E →+* ℂ) → Multiset ℂ} {B : BW.Pl E → Multiset ℂ}
     (h : At (mu1 E r) S (bloV b) m B) :
     (∀ τ, m τ = Finset.univ.val.map (b.Λ τ)) ∧ ∀ w ∉ S, B w = (b.sat w).map fun x : ℂˣ => (x : ℂ) := by
@@ -81,6 +105,11 @@ theorem bloV_unique {r : ℕ} (b : Blo S r) {m : (E →+* ℂ) → Multiset ℂ}
   have hp := Dp.parEx E r b.pos (mu1 E r) (bloV b) (bloV_summand b)
   exact ⟨fun τ => (hp.1 τ).unique (h.1 τ) (hb.1 τ), fun w hw => (hp.2.1 w (h.2 w hw).2.1).unique (h.2 w hw) (hb.2 w hw)⟩
 
+/- English proof (translation)
+Establish `hu` using `fun j => bloV_unique (d.blo j).2 (hA j)`. Use `⟨lam, funext fun τ => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hΛ τ, blo_ms]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [(hu j).1 τ]`. Rewrite using `[ht w hw]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(hu j).2 w hw, blo_sat, Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 private theorem on_of {n : ℕ} (d : Dat S n) {Λ : (E →+* ℂ) → Multiset ℂ} {t : BW.Pl E → Multiset ℂ} (lam : Fin d.len → ℂ)
     (m : Fin d.len → (E →+* ℂ) → Multiset ℂ) (B : Fin d.len → BW.Pl E → Multiset ℂ)
     (hA : ∀ j, At (mu1 E (d.blo j).1) S (bloV (d.blo j).2) (m j) (B j))
@@ -95,6 +124,11 @@ private theorem on_of {n : ℕ} (d : Dat S n) {Λ : (E →+* ℂ) → Multiset �
     rw [(hu j).2 w hw, blo_sat, Multiset.map_map]
     rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨lam, m, B, hA, hΛ, ht⟩`. Conclude with `on_of d lam m B hA hΛ ht`. Introduce and unpack `⟨z, rfl, ht⟩`. Use `⟨z, _, _, fun j => datB_at d h2 j, fun τ => blo_ms τ d z, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ht w hw]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[blo_sat, Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 theorem datB_pt {n : ℕ} (d : Dat S n) (h2 : 2 ≤ d.len) (Λ : (E →+* ℂ) → Multiset ℂ) (t : BW.Pl E → Multiset ℂ) :
     (datB d h2).Pt S Λ t ↔ d.On Λ t := by
   constructor
@@ -109,6 +143,9 @@ theorem datB_pt {n : ℕ} (d : Dat S n) (h2 : 2 ≤ d.len) (Λ : (E →+* ℂ) �
 
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX
 
+/- English proof (translation)
+Introduce `E _ _ _ S n d h2`. Conclude with `⟨UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX.datB d h2, UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX.datB_pt d h2⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX.datOn :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (S : Set (BW.Pl E)) (n : ℕ) (d : Dat S n), 2 ≤ d.len →
       ∃ b : Datum E n, ∀ Λ t, b.Pt S Λ t ↔ d.On Λ t := by

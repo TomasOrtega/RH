@@ -12,6 +12,9 @@ namespace GlobalTheory.CuspRep.ConjZalg
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Formalism.REAL.qdet, Formalism.REAL.qminor, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `congr 3`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, Formalism.REAL.Tm, map_add, apply_ite f, map_zero, hf, map_sub, map_natCast]`.
+-/
 theorem map_qdet_semilinear {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →+* B) (σ : ℂ →+* ℂ)
     (hf : ∀ c, f (algebraMap ℂ A c) = algebraMap ℂ B (σ c)) (X : Fin a → Fin a → A) (u : ℂ) :
     f (Formalism.REAL.qdet X u) = Formalism.REAL.qdet (fun i j => f (X i j)) (σ u) := by
@@ -32,14 +35,25 @@ def conjBy (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) : Module.End ℂ (Sm E a) →+* Mo
   map_zero' := LinearMap.ext fun φ => by simp
   map_add' z w := LinearMap.ext fun φ => by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjBy_apply (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) (z : Module.End ℂ (Sm E a)) (φ : Sm E a) :
     conjBy C z φ = C.symm (z (C φ)) := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun φ => by rw [conjBy_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, LinearEquiv.map_smulₛₗ]; simp`.
+-/
 theorem conjBy_algebraMap (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) (c : ℂ) :
     conjBy C (algebraMap ℂ (Module.End ℂ (Sm E a)) c) = algebraMap ℂ _ (starRingEnd ℂ c) :=
   LinearMap.ext fun φ => by
     rw [conjBy_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, LinearEquiv.map_smulₛₗ]; simp
 
+/- English proof (translation)
+Establish `hl : ∀ x φ, C (lieS E a i j x φ) = lieS E a i j x (C φ)` using `fun x φ => (hC (Op.lie _) φ).symm`. Establish `e : atEmb τ (-Complex.I) = -atEmb τ Complex.I`. Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules. Simplify using `only [Eop, LinearMap.smul_apply, LinearMap.sub_apply, map_smulₛₗ, map_sub, hl, atEmb_conj, map_one, Complex.conj_I, e, map_neg, LinearMap.neg_apply]`.
+
+Establish `h2 : starRingEnd ℂ (1 / 2 : ℂ) = 1 / 2` using `by simp [map_div₀, map_ofNat]`. Rewrite using `[h2]`. Use `congr 1`. Simplify using `[sub_eq_add_neg, neg_smul, smul_neg]`.
+-/
 theorem C_Eop (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) (hC : ∀ o φ, act o (C φ) = C (act o φ)) (τ : E →+* ℂ) (i j : Fin a)
     (φ : Sm E a) : C (Eop τ i j φ) = Eop (ComplexEmbedding.conjugate τ) i j (C φ) := by
   have hl : ∀ x φ, C (lieS E a i j x φ) = lieS E a i j x (C φ) := fun x φ => (hC (Op.lie _) φ).symm
@@ -52,6 +66,9 @@ theorem C_Eop (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) (hC : ∀ o φ, act o (C φ) = 
   congr 1
   simp [sub_eq_add_neg, neg_smul, smul_neg]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun φ => by apply C.injective have hcc : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ := RingHom.ext fun x => by simp [ComplexEmbedding.conjugate_coe_eq] rw [conjBy_apply, LinearEquiv.apply_symm_apply, C_Eop C hC, hcc]`.
+-/
 theorem conjBy_Eop (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) (hC : ∀ o φ, act o (C φ) = C (act o φ)) (τ : E →+* ℂ) (i j : Fin a) :
     conjBy C (Eop τ i j) = Eop (ComplexEmbedding.conjugate τ) i j :=
   LinearMap.ext fun φ => by
@@ -60,6 +77,9 @@ theorem conjBy_Eop (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) (hC : ∀ o φ, act o (C �
       RingHom.ext fun x => by simp [ComplexEmbedding.conjugate_coe_eq]
     rw [conjBy_apply, LinearEquiv.apply_symm_apply, C_Eop C hC, hcc]
 
+/- English proof (translation)
+Rewrite using `[cap, map_qdet_semilinear (conjBy C) (starRingEnd ℂ) (conjBy_algebraMap C)]`. Simplify using `only [conjBy_Eop C hC, cap]`. Use `congr 1`. Simplify using `[map_div₀, map_ofNat, map_sub, map_natCast]`.
+-/
 theorem conjBy_cap (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) (hC : ∀ o φ, act o (C φ) = C (act o φ)) (τ : E →+* ℂ) (u : ℂ) :
     conjBy C (cap τ u) = cap (ComplexEmbedding.conjugate τ) (starRingEnd ℂ u) := by
   rw [cap, map_qdet_semilinear (conjBy C) (starRingEnd ℂ) (conjBy_algebraMap C)]
@@ -67,6 +87,13 @@ theorem conjBy_cap (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) (hC : ∀ o φ, act o (C �
   congr 1
   simp [map_div₀, map_ofNat, map_sub, map_natCast]
 
+/- English proof (translation)
+Set `S : Subalgebra ℂ (Module.End ℂ (Sm E a))` to `{ carrier := {z | conjBy C z ∈ Zalg E a} mul_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_setOf_eq, map_mul] at *`. Conclude with `Subalgebra.mul_mem _ hx hy`. Use the proof step `add_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_setOf_eq, map_add] at *`.
+
+Conclude with `Subalgebra.add_mem _ hx hy`. Use the proof step `algebraMap_mem' := fun c => by`. Simplify using `only [Set.mem_setOf_eq, conjBy_algebraMap]`. Conclude with `Subalgebra.algebraMap_mem _ _ }`. Use `(Algebra.adjoin_le (S := S) ?_) hz` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨τ, u, rfl⟩`. Express the relevant statement in the definitionally equal form `conjBy C (cap τ u) ∈ Zalg E a`. Rewrite using `[conjBy_cap C hC]`. Conclude with `Algebra.subset_adjoin ⟨_, _, rfl⟩`.
+-/
 theorem conjBy_mem_Zalg (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) (hC : ∀ o φ, act o (C φ) = C (act o φ))
     {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) : conjBy C z ∈ Zalg E a := by
   let S : Subalgebra ℂ (Module.End ℂ (Sm E a)) :=
@@ -83,6 +110,9 @@ theorem conjBy_mem_Zalg (C : Sm E a ≃ₗ⋆[ℂ] Sm E a) (hC : ∀ o φ, act o
   rw [conjBy_cap C hC]
   exact Algebra.subset_adjoin ⟨_, _, rfl⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ a C hC z hz`. Conclude with `⟨conjBy C z, conjBy_mem_Zalg C hC hz, fun φ => by rw [conjBy_apply, LinearEquiv.apply_symm_apply]⟩`.
+-/
 theorem conj_Zalg : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (C : Sm E a ≃ₗ⋆[ℂ] Sm E a),
     (∀ o φ, act o (C φ) = C (act o φ)) → ∀ z ∈ Zalg E a, ∃ z' ∈ Zalg E a, ∀ φ, z (C φ) = C (z' φ) := by
   intro E _ _ _ a C hC z hz

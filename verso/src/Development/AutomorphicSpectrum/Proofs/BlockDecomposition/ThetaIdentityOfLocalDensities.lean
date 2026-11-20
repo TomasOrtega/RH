@@ -21,6 +21,13 @@ section Alg
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hd : J 0 0 ≠ 0` using `by simpa [Matrix.det_unique] using hJ.2`. Simplify using `only [hE, hform, Finset.univ_unique, Finset.sum_singleton] at h`. Establish `h0 : x 0 = 0`. Break down `mul_eq_zero.1 h with h1 | h1` into its components or cases. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases.
+
+Simplify using `using h2`. Conclude with `absurd h2 hd`. Conclude with `h1`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`.
+
+Conclude with `h0`.
+-/
 theorem aniso_one {J : Matrix (Fin 1) (Fin 1) E} (hJ : IsHermND σ J) (x : Fin 1 → E) (h : hE σ J x x = 0) : x = 0 := by
   have hd : J 0 0 ≠ 0 := by simpa [Matrix.det_unique] using hJ.2
   simp only [hE, hform, Finset.univ_unique, Finset.sum_singleton] at h
@@ -34,6 +41,11 @@ theorem aniso_one {J : Matrix (Fin 1) (Fin 1) E} (hJ : IsHermND σ J) (x : Fin 1
   rw [Subsingleton.elim i 0]
   exact h0
 
+/- English proof (translation)
+Establish `hT : ∀ a b, σ (gramE σ J X b a) = gramE σ J X a b` using `fun a b => by`. Rewrite using `[Subsingleton.elim a b]`. Conclude with `GlobalTheory.CompanionTheory.RgMass.hE_self_fixed hcm hJ _`. Take `⟨β, e, h, -⟩` from `GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm _ hT`. Use `⟨β, h ?_, e⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_unique]`. Introduce `h0`. Conclude with `hX (funext fun a => by rw [Subsingleton.elim a default]; exact aniso_one hJ _ h0)`.
+-/
 theorem exists_len (hcm : IsCMExt F E σ) {J : Matrix (Fin 1) (Fin 1) E} (hJ : IsHermND σ J)
     {X : Fin 1 → Fin 1 → E} (hX : X ≠ 0) : ∃ β : F, β ≠ 0 ∧ X ∈ sph σ J β := by
   have hT : ∀ a b, σ (gramE σ J X b a) = gramE σ J X a b := fun a b => by
@@ -45,11 +57,17 @@ theorem exists_len (hcm : IsCMExt F E σ) {J : Matrix (Fin 1) (Fin 1) E} (hJ : I
   intro h0
   exact hX (funext fun a => by rw [Subsingleton.elim a default]; exact aniso_one hJ _ h0)
 
+/- English proof (translation)
+Establish `e : (fun _ _ => algebraMap F E β : Matrix (Fin 1) (Fin 1) E) = fun _ _ => algebraMap F E β'` using `h.symm.trans h'`. Conclude with `(algebraMap F E).injective (congrFun (congrFun e 0) 0)`.
+-/
 theorem sph_unique {J : Matrix (Fin 1) (Fin 1) E} {X : Fin 1 → Fin 1 → E} {β β' : F} (h : X ∈ sph σ J β)
     (h' : X ∈ sph σ J β') : β = β' := by
   have e : (fun _ _ => algebraMap F E β : Matrix (Fin 1) (Fin 1) E) = fun _ _ => algebraMap F E β' := h.symm.trans h'
   exact (algebraMap F E).injective (congrFun (congrFun e 0) 0)
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Use `hβ (sph_unique h ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `a c`. Simplify using `[gramE, hE, hform]`.
+-/
 theorem ne_zero_of_mem_sph {J : Matrix (Fin 1) (Fin 1) E} {X : Fin 1 → Fin 1 → E} {β : F} (hβ : β ≠ 0)
     (h : X ∈ sph σ J β) : X ≠ 0 := by
   rintro rfl
@@ -71,6 +89,9 @@ def sphEquiv (hcm : IsCMExt F E σ) {J : Matrix (Fin 1) (Fin 1) E} (hJ : IsHermN
       obtain ⟨β, h0, hβ⟩ := exists_len hcm hJ hX
       exact ⟨⟨⟨β, h0⟩, ⟨X, hβ⟩⟩, rfl⟩)
 
+/- English proof (translation)
+Use extensionality with `s hs`. Simplify using `only [thetaMeas, Measure.sum_apply _ hs, Measure.smul_apply, smul_eq_mul, ENNReal.tsum_mul_left]`. Use `congr 1`. Rewrite using `[← (sphEquiv hcm hJ).tsum_eq, ENNReal.tsum_sigma']`. Both sides reduce to the same expression.
+-/
 theorem thetaMeas_ne (hcm : IsCMExt F E σ) {J : Matrix (Fin 1) (Fin 1) E} (hJ : IsHermND σ J)
     (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)) :
     thetaMeas σ J μ 𝓕 {X : Fin 1 → Fin 1 → E | X ≠ 0} =
@@ -87,6 +108,9 @@ section Maps
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem map_sigR {R R' : Type} [CommRing R] [CommRing R'] [Algebra F R] [Algebra F R'] (g : R →ₐ[F] R') (y : R ⊗[F] E) :
     Algebra.TensorProduct.map g (AlgHom.id F E) (sigR R σ y) =
       sigR R' σ (Algebra.TensorProduct.map g (AlgHom.id F E) y) := by
@@ -100,9 +124,15 @@ def pI : AF F ⊗[F] E →ₐ[F] Ainf F ⊗[F] E := Algebra.TensorProduct.map (f
 def pV (v : HeightOneSpectrum (𝓞 F)) : AF F ⊗[F] E →ₐ[F] Fv F v ⊗[F] E :=
   Algebra.TensorProduct.map ((evalV F v).comp (sndA F)) (AlgHom.id F E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem projInf_apply {n M : ℕ} (X : Fin n → Fin M → AF F ⊗[F] E) (a : Fin n) (i : Fin M) :
     projInf X a i = pI (X a i) := rfl
 
+/- English proof (translation)
+Simplify using `only [projV, projFin, pV]`. Rewrite using `[← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem projV_projFin_apply (v : HeightOneSpectrum (𝓞 F)) {n M : ℕ} (X : Fin n → Fin M → AF F ⊗[F] E) (a : Fin n) (i : Fin M) :
     projV v (projFin X) a i = pV v (X a i) := by
   simp only [projV, projFin, pV]
@@ -115,16 +145,25 @@ section Lat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {d : ℕ}
 
+/- English proof (translation)
+Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`.
+-/
 theorem repr_one_tmul (b : Module.Basis (Fin d) F E) (R : Type) [CommRing R] [Algebra F R] (e : E) (k : Fin d) :
     (Algebra.TensorProduct.basis R b).repr ((1 : R) ⊗ₜ[F] e) k = algebraMap F R (b.repr e k) := by
   simp [Algebra.TensorProduct.basis_repr_tmul]
 
+/- English proof (translation)
+The claim follows from `(algebraMap F (Af F) c).2`.
+-/
 theorem ev_int (c : F) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite,
     algebraMap F (Fv F v) c ∈ v.adicCompletionIntegers F := (algebraMap F (Af F) c).2
 
 def GoodV (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) : Prop :=
   ∀ k l m, algebraMap F (Fv F v) (b.repr (b k * b l) m) ∈ v.adicCompletionIntegers F
 
+/- English proof (translation)
+Simplify using `only [GoodV, eventually_all]`. Conclude with `fun k l m => ev_int _`.
+-/
 theorem eventually_goodV (b : Module.Basis (Fin d) F E) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, GoodV b v := by
   simp only [GoodV, eventually_all]
   exact fun k l m => ev_int _
@@ -132,6 +171,13 @@ theorem eventually_goodV (b : Module.Basis (Fin d) F E) : ∀ᶠ v : HeightOneSp
 def IntE (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) : Prop :=
   ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F
 
+/- English proof (translation)
+Introduce `m`. Use `set c := Algebra.TensorProduct.basis (Fv F v) b with hc`. Establish `e : y * z = ∑ k, ∑ l, (c.repr y k * c.repr z l) • ((1 : Fv F v) ⊗ₜ[F] (b k * b l))` using `by conv_lhs => rw [← c.sum_repr y, ← c.sum_repr z]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [hc, Algebra.TensorProduct.basis_apply, smul_mul_smul_comm, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[e]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+
+Use `sum_mem fun k _ => sum_mem fun l _ => mul_mem (mul_mem (hy k) (hz l)) ?_` and prove the remaining obligations. Rewrite using `[hc, repr_one_tmul]`. Conclude with `hv k l m`.
+-/
 theorem IntE.mul {b : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)} (hv : GoodV b v) {y z : Fv F v ⊗[F] E}
     (hy : IntE b v y) (hz : IntE b v z) : IntE b v (y * z) := by
   intro m
@@ -149,9 +195,17 @@ theorem IntE.mul {b : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)}
   rw [hc, repr_one_tmul]
   exact hv k l m
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latV_iff {b : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)} {Y : Fin 1 → Fin 1 → Fv F v ⊗[F] E} :
     Y ∈ latV b v ↔ ∀ a i, IntE b v (Y a i) := Iff.rfl
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1).2.2.2.2.2.1 (projFin fun _ _ => x)`. Use `h.mono fun v hv => ?_` and prove the remaining obligations. Use `hv 0 0` as an intermediate fact. Introduce `k`. Establish `h2` using `this k`.
+
+Rewrite `h2` using `[projV_projFin_apply]`. Then use the resulting hypothesis.
+-/
 theorem eventually_int (hcm : IsCMExt F E σ) (b : Module.Basis (Fin d) F E) (x : AF F ⊗[F] E) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, IntE b v (pV v x) := by
   have h := (GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1).2.2.2.2.2.1 (projFin fun _ _ => x)
@@ -167,6 +221,13 @@ section Local
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `h1` using `(a : AF F).2.2`. Establish `h2` using `((a⁻¹ : (AF F)ˣ) : AF F).2.2`. Use `filter_upwards [h1, h2] with v e1 e2`. Establish `e1' : Valued.v ((a : AF F).2 v) ≤ 1` using `e1`. Establish `e2' : Valued.v (((a⁻¹ : (AF F)ˣ) : AF F).2 v) ≤ 1` using `e2`.
+
+Establish `e3 : (a : AF F).2 v * ((a⁻¹ : (AF F)ˣ) : AF F).2 v = 1`. Use `congrArg (fun z : AF F => z.2 v) (Units.mul_inv a)` as an intermediate fact. Conclude with `this`. Establish `e4` using `congrArg Valued.v e3`. Rewrite `e4` using `[map_mul, map_one]`.
+
+Use `le_antisymm e1' ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem idele_val (a : (AF F)ˣ) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, Valued.v ((a : AF F).2 v) = 1 := by
   have h1 := (a : AF F).2.2
   have h2 := ((a⁻¹ : (AF F)ˣ) : AF F).2.2
@@ -183,6 +244,13 @@ theorem idele_val (a : (AF F)ˣ) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofi
     _ ≤ Valued.v ((a : AF F).2 v) * 1 := mul_le_mul_right e2' _
     _ = _ := mul_one _
 
+/- English proof (translation)
+Establish `h0 : s ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hs`. Unfold `rv`. Rewrite using `[tsum_eq_single 0]`.
+
+Simplify using `[h0, hs]`. Introduce `i hi`. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, h⟩`. Rewrite `h` using `[hs]`.
+
+Establish `h3 : (1 : WithZero (Multiplicative ℤ)) = ((Multiplicative.ofAdd (0 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))` using `rfl`. Rewrite `h` using `[h3, WithZero.coe_le_coe, Multiplicative.ofAdd_le]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rv_unit (v : HeightOneSpectrum (𝓞 F)) (e : ℝ) {s : Fv F v} (hs : Valued.v s = 1) : rv v e s = 1 := by
   have h0 : s ≠ 0 := by
     rintro rfl
@@ -200,6 +268,9 @@ theorem rv_unit (v : HeightOneSpectrum (𝓞 F)) (e : ℝ) {s : Fv F v} (hs : Va
 
 end Local
 
+/- English proof (translation)
+Rewrite using `[tprod_eq_finprod hf, finprod_subtype_eq_finprod_cond, ← finprod_mem_univ f, ← finprod_mem_mul_diff' (Set.subset_univ (S : Set ι)) (by simpa using hf), finprod_mem_coe_finset]`. Use `congr 1`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Simplify using `[Set.mem_diff]`.
+-/
 theorem tprod_split {ι : Type} (S : Finset ι) (f : ι → ℝ) (hf : (Function.mulSupport f).Finite) :
     ∏' v, f v = (∏ v ∈ S, f v) * ∏ᶠ v : {v // v ∉ S}, f v.1 := by
   rw [tprod_eq_finprod hf, finprod_subtype_eq_finprod_cond, ← finprod_mem_univ f,
@@ -208,6 +279,9 @@ theorem tprod_split {ι : Type} (S : Finset ι) (f : ι → ℝ) (hf : (Function
   refine finprod_congr fun v => ?_
   simp [Set.mem_diff]
 
+/- English proof (translation)
+Introduce `h0`. Use `h ?_` and prove the remaining obligations. Rewrite using `[finprod_eq_prod f hf]`. Use `Finset.prod_eq_zero (i := i) ?_ h0` and prove the remaining obligations. Simplify using `[h0]`.
+-/
 theorem ne_zero_of_finprod {ι : Type} (f : ι → ℝ) (hf : (Function.mulSupport f).Finite) (h : ∏ᶠ v, f v ≠ 0) (i : ι) :
     f i ≠ 0 := by
   intro h0
@@ -221,11 +295,17 @@ section Fibre
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {J : Matrix (Fin 1) (Fin 1) E}
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_unique]`. Conclude with `hs.map (Algebra.TensorProduct.includeLeft : R →ₐ[F] R ⊗[F] E)`.
+-/
 theorem isUnit_hermScal (R : Type) [CommRing R] [Algebra F R] {s : R} (hs : IsUnit s) :
     IsUnit ((hermScal R σ s : HermR R σ 1) : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)).det := by
   rw [Matrix.det_unique]
   exact hs.map (Algebra.TensorProduct.includeLeft : R →ₐ[F] R ⊗[F] E)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `hU (measure_mono_null (fun X hX => ?_) (h.1 s))` and prove the remaining obligations. Introduce `h2`. Conclude with `hc X hX h2.1`.
+-/
 theorem exists_of_fib_ne {R : Type} [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R]
     {μ : Measure (Fin 1 → Fin 1 → R ⊗[F] E)} {ν : Measure (HermR R σ 1)}
     {m : HermR R σ 1 → Measure (Fin 1 → Fin 1 → R ⊗[F] E)} (h : IsGramFib R σ J 1 μ ν m) (s : HermR R σ 1)
@@ -237,6 +317,9 @@ theorem exists_of_fib_ne {R : Type} [CommRing R] [Algebra F R] [TopologicalSpace
   intro h2
   exact hc X hX h2.1
 
+/- English proof (translation)
+Take `⟨_, _, _, _, -⟩` from `hR`. Take `⟨_, -, -, -, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R`. Use `hB 1 1` as an intermediate fact. Use `Continuous.measurable ?_` and prove the remaining obligations. Conclude with `continuous_pi fun a => continuous_pi fun i => continuous_const.mul ((continuous_apply i).comp (continuous_apply a))`.
+-/
 theorem meas_mul (hcm : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R]
     [BorelSpace R] (hR : IsLocR R) (y : R ⊗[F] E) :
     Measurable (fun (X : Fin 1 → Fin 1 → R ⊗[F] E) (a : Fin 1) (i : Fin 1) => y * X a i) := by
@@ -247,6 +330,9 @@ theorem meas_mul (hcm : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R] [T
   exact continuous_pi fun a => continuous_pi fun i =>
     continuous_const.mul ((continuous_apply i).comp (continuous_apply a))
 
+/- English proof (translation)
+Rewrite using `[← hS F E σ hcm J hJ R hR μ ν m hμ hν hfib x n s hn hs, Measure.map_apply (meas_mul hcm R hR _) hB]`.
+-/
 theorem map_scal (hS : Scal) (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (hR : IsLocR R)
     {μ : Measure (Fin 1 → Fin 1 → R ⊗[F] E)} {ν : Measure (HermR R σ 1)}
@@ -261,6 +347,9 @@ def xI (x : (AF F ⊗[F] E)ˣ) : (Ainf F ⊗[F] E)ˣ := Units.map (pI : AF F ⊗
 def xV (v : HeightOneSpectrum (𝓞 F)) (x : (AF F ⊗[F] E)ˣ) : (Fv F v ⊗[F] E)ˣ :=
   Units.map (pV v : AF F ⊗[F] E →ₐ[F] Fv F v ⊗[F] E).toMonoidHom x
 
+/- English proof (translation)
+Establish `h1` using `congrArg (pI (F := F) (E := E)) h`. Rewrite `h1` using `[map_mul]`. Establish `h2 : pI (sigR (AF F) σ (x : AF F ⊗[F] E)) = sigR (Ainf F) σ (pI (x : AF F ⊗[F] E))` using `map_sigR (fstA F) _`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+-/
 theorem isNm_inf {x : (AF F ⊗[F] E)ˣ} {n : (AF F)ˣ} (h : IsNm σ x n) :
     (n : AF F).1 ⊗ₜ[F] (1 : E) = sigR (Ainf F) σ (xI x) * xI x := by
   have h1 := congrArg (pI (F := F) (E := E)) h
@@ -269,6 +358,9 @@ theorem isNm_inf {x : (AF F ⊗[F] E)ˣ} {n : (AF F)ˣ} (h : IsNm σ x n) :
   rw [h2] at h1
   exact h1
 
+/- English proof (translation)
+Establish `h1` using `congrArg (pV (F := F) (E := E) v) h`. Rewrite `h1` using `[map_mul]`. Establish `h2 : pV v (sigR (AF F) σ (x : AF F ⊗[F] E)) = sigR (Fv F v) σ (pV v (x : AF F ⊗[F] E))` using `map_sigR ((evalV F v).comp (sndA F)) _`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+-/
 theorem isNm_v (v : HeightOneSpectrum (𝓞 F)) {x : (AF F ⊗[F] E)ˣ} {n : (AF F)ˣ} (h : IsNm σ x n) :
     (n : AF F).2 v ⊗ₜ[F] (1 : E) = sigR (Fv F v) σ (xV v x) * xV v x := by
   have h1 := congrArg (pV (F := F) (E := E) v) h
@@ -278,12 +370,18 @@ theorem isNm_v (v : HeightOneSpectrum (𝓞 F)) {x : (AF F ⊗[F] E)ˣ} {n : (AF
   rw [h2] at h1
   exact h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `only [projInf_apply, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem projInf_mul (x : (AF F ⊗[F] E)ˣ) (X : Fin 1 → Fin 1 → AF F ⊗[F] E) :
     projInf (fun a i => (x : AF F ⊗[F] E) * X a i) = fun a i => (xI x : Ainf F ⊗[F] E) * projInf X a i := by
   funext a i
   simp only [projInf_apply, map_mul]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `only [projV_projFin_apply, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem projV_mul (v : HeightOneSpectrum (𝓞 F)) (x : (AF F ⊗[F] E)ˣ) (X : Fin 1 → Fin 1 → AF F ⊗[F] E) :
     projV v (projFin (fun a i => (x : AF F ⊗[F] E) * X a i)) =
       fun a i => (xV v x : Fv F v ⊗[F] E) * projV v (projFin X) a i := by
@@ -293,6 +391,13 @@ theorem projV_mul (v : HeightOneSpectrum (𝓞 F)) (x : (AF F ⊗[F] E)ˣ) (X : 
 
 variable {d : ℕ} {b : Module.Basis (Fin d) F E}
 
+/- English proof (translation)
+Establish `: BorelSpace (Ainf F)` using `⟨rfl⟩`. Establish `hR` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hcm.1`. Establish `hR'` using `hR`. Take `⟨_, _, _, _, -⟩` from `hR'`. Take `⟨-, k1, k2⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hcm (Ainf F) d b li hli.1`.
+
+Take `⟨_, -, -, -, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Ainf F)`. Use `hB 1 1` as an intermediate fact. Establish `e` using `hS F E σ hcm J hJ (Ainf F) hR _ _ mi (k1 1 1) (k2 1) hmi (xI x) (n : AF F).1 s (isNm_inf hxn) hs`. Establish `hmeas` using `meas_mul hcm (Ainf F) hR (xI x : Ainf F ⊗[F] E)`. Establish `hφm : Measurable fun X => ENNReal.ofReal (φ X)` using `hc.measurable.ennreal_ofReal`.
+
+Establish `hu : IsUnit ((n : AF F).1 * s)` using `(IsUnit.map (fstA F) n.isUnit).mul hs`. Establish `hint` using `(hmi.2.2 φ hc hcs hsu).1 _ (isUnit_hermScal (σ := σ) (E := E) (Ainf F) hu)`. Rewrite using `[Gi, ofReal_integral_eq_lintegral_ofReal hint (ae_of_all _ h0), ← e, lintegral_map hφm hmeas]`.
+-/
 theorem inf_factor (hS : Scal) (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) {li : Measure (Ainf F)} (hli : IsStdInf li)
     {mi : HermR (Ainf F) σ 1 → Measure (Fin 1 → Fin 1 → Ainf F ⊗[F] E)}
     (hmi : IsGramFib (Ainf F) σ J 1 (coordW (Ainf F) b li 1 1) (coordHerm (Ainf F) σ b li 1) mi)
@@ -322,20 +427,39 @@ section Term
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {J : Matrix (Fin 1) (Fin 1) E} {d : ℕ} {b : Module.Basis (Fin d) F E}
 
+/- English proof (translation)
+Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+-/
 theorem smul_apply' {α : Type} [MeasurableSpace α] (c : ℝ≥0) (ν : Measure α) (B : Set α) :
     (c • ν) B = (c : ℝ≥0∞) * ν B := by
   rw [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `(IsUnit.map ((evalV F v).comp (sndA F)) a.isUnit).ne_zero`.
+-/
 theorem idele_ne (a : (AF F)ˣ) (v : HeightOneSpectrum (𝓞 F)) : (a : AF F).2 v ≠ 0 :=
   (IsUnit.map ((evalV F v).comp (sndA F)) a.isUnit).ne_zero
 
+/- English proof (translation)
+The claim follows from `mul_comm _ _`.
+-/
 theorem pr_fst (t : Fˣ) (n : (AF F)ˣ) : ((pr t * n : (AF F)ˣ) : AF F).1 = (n : AF F).1 * algebraMap F (Ainf F) t :=
   mul_comm _ _
 
+/- English proof (translation)
+The claim follows from `mul_comm _ _`.
+-/
 theorem pr_snd (t : Fˣ) (n : (AF F)ˣ) (v : HeightOneSpectrum (𝓞 F)) :
     ((pr t * n : (AF F)ˣ) : AF F).2 v = (n : AF F).2 v * algebraMap F (Fv F v) t :=
   mul_comm _ _
 
+/- English proof (translation)
+Use `filter_upwards [eventually_goodV b, eventually_int hcm b (x : AF F ⊗[F] E), eventually_int hcm b ((x⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E)] with v g1 g2 g3`. Use extensionality with `Y`. Simplify using `only [Set.mem_preimage, mem_latV_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h a i`.
+
+Establish `e : Y a i = pV v ((x⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) * ((xV v x : Fv F v ⊗[F] E) * Y a i)`. Establish `e1 : (xV v x : Fv F v ⊗[F] E) = pV v (x : AF F ⊗[F] E)` using `rfl`. Rewrite using `[e1, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`. Rewrite using `[e]`. Conclude with `IntE.mul g1 g3 (h a i)`.
+
+Introduce `h a i`. Conclude with `IntE.mul g1 g2 (h a i)`.
+-/
 theorem eventually_preimage (hcm : IsCMExt F E σ) (x : (AF F ⊗[F] E)ˣ) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite,
       (fun (Y : Fin 1 → Fin 1 → Fv F v ⊗[F] E) a i => (xV v x : Fv F v ⊗[F] E) * Y a i) ⁻¹' latV b v = latV b v := by
@@ -353,6 +477,33 @@ theorem eventually_preimage (hcm : IsCMExt F E σ) (x : (AF F ⊗[F] E)ˣ) :
   · intro h a i
     exact IntE.mul g1 g2 (h a i)
 
+/- English proof (translation)
+Take `⟨hφc, hφs, hφ0, hφu, hAS, hAo⟩` from `ht`. Use `set a : (AF F)ˣ := pr t * n with ha`. Set `A' : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin 1 → Fin 1 → Fv F v ⊗[F] E)` to `fun v => (fun Y a i => (xV v x : Fv F v ⊗[F] E) * Y a i) ⁻¹' A v`. Establish `hco : ∀ v, IsCompact (A v) ∧ IsOpen (A v)` using `fun v => by`. Distinguish the cases in `hv : v ∈ S`.
+
+Conclude with `⟨(hAS v hv).1, (hAS v hv).2.1⟩`. Rewrite using `[hAo v hv]`. Conclude with `(GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1).2.2.2.1 v`. Establish `hloc : ∀ v, MeasurableSet (A' v) ∧ m v (hermScal (Fv F v) σ (algebraMap F (Fv F v) t)) (A' v) = m v (hermScal (Fv F v) σ ((a : AF F).2 v)) (A v) ∧ m v (hermScal (Fv F v) σ ((a : AF F).2 v)) (A v) < ⊤` using `fun v => by`. Establish `hRv` using `GlobalTheory.T.completion_is_local_ring F v`.
+
+Establish `hRv'` using `hRv`. Take `⟨_, _, _, _, -⟩` from `hRv'`. Establish `: BorelSpace (Fv F v)` using `⟨rfl⟩`. Take `⟨_, -, -, -, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)`. Use `hB 1 1` as an intermediate fact.
+
+Take `⟨-, k1, k2⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F v) d b (lam v) (hlam v).1`. Establish `hA` using `(hco v).2.measurableSet`. Use `⟨meas_mul hcm (Fv F v) hRv _ hA, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pr_snd]`. Conclude with `map_scal hS hcm hJ (Fv F v) hRv (k1 1 1) (k2 1) (hm v) (xV v x) (isNm_v v hxn) (t.isUnit.map _) hA`.
+
+Use `(GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm 1 J hJ (Fv F v) hRv 1 _ _ _ (k1 1 1) (k2 1) (hm v) (hermScal (Fv F v) σ ((a : AF F).2 v))).1` as an intermediate fact. Conclude with `(hco v).1.measure_lt_top`. Establish `hcof : ∀ᶠ v in cofinite, A' v = latV b v` using `by filter_upwards [eventually_preimage (b := b) hcm x, S.finite_toSet.eventually_cofinite_notMem] with v h1 h2`. Establish `h3 : v ∉ S` using `by simpa using h2`. Simplify using `only [A', hAo v h3]`.
+
+Conclude with `h1`. Establish `hφinf : Measurable fun Y : Fin 1 → Fin 1 → Ainf F ⊗[F] E => ENNReal.ofReal (φ (fun a i => (xI x : Ainf F ⊗[F] E) * Y a i))`. Establish `: BorelSpace (Ainf F)` using `⟨rfl⟩`. Establish `hR` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hcm.1`. Establish `hR'` using `hR`.
+
+Take `⟨_, _, _, _, -⟩` from `hR'`. Take `⟨_, -, -, -, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Ainf F)`. Use `hB 1 1` as an intermediate fact. Conclude with `(hφc.measurable.comp (meas_mul hcm (Ainf F) hR _)).ennreal_ofReal`. Establish `hEu : IsEulerProd b (thetaMeas σ J μ 𝓕 (sph σ J (t : F))) κ (mi (hermScal (Ainf F) σ (algebraMap F _ (t : F)))) (fun v => cfac E v • m v (hermScal (Fv F v) σ (algebraMap F _ (t : F))))` using `hEP`.
+
+Take `⟨-, e⟩` from `GlobalTheory.T.euler_product_measure_integral F E σ hcm d b 1 1 _ κ _ _ hEu _ A' hφinf (fun v => (hloc v).1) (fun v => by`. Rewrite using `[smul_apply', (hloc v).2.1]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (hloc v).2.2) hcof`. Establish `hfv : ∀ v, v ∉ S → gv m A v ((a : AF F).2 v) = rv v (eR E v) ((a : AF F).2 v)` using `fun v hv => by`. Rewrite using `[gv, hAo v hv]`.
+
+Conclude with `hL v hv _ (idele_ne a v)`. Establish `hg : ∀ v, ((cfac E v • m v (hermScal (Fv F v) σ (algebraMap F _ (t : F)))) (A' v)).toReal = gv m A v ((a : AF F).2 v)` using `fun v => by`. Rewrite using `[smul_apply', (hloc v).2.1, ENNReal.toReal_mul, ENNReal.coe_toReal]`. Both sides reduce to the same expression. Establish `hfin : (Function.mulSupport fun v => gv m A v ((a : AF F).2 v)).Finite`.
+
+Establish `h1 : ∀ᶠ v in cofinite, gv m A v ((a : AF F).2 v) = 1` using `by filter_upwards [idele_val a, S.finite_toSet.eventually_cofinite_notMem] with v h1 h2`. Rewrite using `[hfv v (by simpa using h2)]`. Conclude with `rv_unit _ _ h1`. Conclude with `Filter.eventually_cofinite.1 h1`. Establish `hprod : ∏' v, gv m A v ((a : AF F).2 v) = (∏ v ∈ S, gv m A v ((a : AF F).2 v)) * ∏ᶠ v : {v // v ∉ S}, rv v.1 (eR E v.1) ((a : AF F).2 v.1)`.
+
+Rewrite using `[tprod_split S _ hfin]`. Use `congr 1`. Conclude with `finprod_congr fun v => hfv v.1 v.2`. Establish `hG : ∫⁻ Y, ENNReal.ofReal (φ (fun a i => (xI x : Ainf F ⊗[F] E) * Y a i)) ∂(mi (hermScal (Ainf F) σ (algebraMap F _ (t : F)))) = ENNReal.ofReal (Gi mi φ (a : AF F).1)`. Rewrite using `[inf_factor hS hcm hJ hli hmi hφc hφs hφ0 hφu hxn (t.isUnit.map _), pr_fst]`.
+
+Establish `hG0 : 0 ≤ Gi mi φ (a : AF F).1` using `integral_nonneg hφ0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [projInf_mul, projV_mul]`. Both sides reduce to the same expression. Use `_ = _ := e`.
+
+Use `_ = _ := by`. Simplify using `only [hg]`. Rewrite using `[hG, hprod, mul_assoc, ← ENNReal.ofReal_mul hG0, PositivityTheory.Rg.Base1.pure, mul_assoc]`.
+-/
 theorem term_eq (hS : Scal) (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) {li : Measure (Ainf F)} (hli : IsStdInf li)
     {lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)} (hlam : ∀ v, IsStdV v (lam v))
     {μ : Measure (HA (AF F) σ J)} {𝓕 : Set (HA (AF F) σ J)}
@@ -453,6 +604,9 @@ section Support
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {J : Matrix (Fin 1) (Fin 1) E} {d : ℕ} {b : Module.Basis (Fin d) F E}
 
+/- English proof (translation)
+Substitute `hj` using the available equality. Simplify using `[gramR, hR, hform, JR, inclR, Matrix.map_apply]`. Both sides reduce to the same expression.
+-/
 theorem gramR_one (R : Type) [CommRing R] [Algebra F R] {j : F} (hj : J = fun _ _ => algebraMap F E j)
     (X : Fin 1 → Fin 1 → R ⊗[F] E) :
     gramR R σ J X 0 0 = sigR R σ (X 0 0) * ((1 : R) ⊗ₜ[F] algebraMap F E j) * X 0 0 := by
@@ -460,6 +614,39 @@ theorem gramR_one (R : Type) [CommRing R] [Algebra F R] {j : F} (hj : J = fun _ 
   simp [gramR, hR, hform, JR, inclR, Matrix.map_apply]
   rfl
 
+/- English proof (translation)
+Take `⟨hφc, hφs, hφ0, hφu, hAS, hAo⟩` from `ht`. Establish `h1 : Gi mi φ (a : AF F).1 * (∏ v ∈ S, gv m A v ((a : AF F).2 v)) * ∏ᶠ v : {v // v ∉ S}, rv v.1 (eR E v.1) ((a : AF F).2 v.1) ≠ 0`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[PositivityTheory.Rg.Base1.pure, h0]`.
+
+Simplify using the standard rewrite rules. Establish `hGne` using `left_ne_zero_of_mul (left_ne_zero_of_mul h1)`. Establish `hPne` using `right_ne_zero_of_mul (left_ne_zero_of_mul h1)`. Establish `hQne` using `right_ne_zero_of_mul h1`. Establish `hfinQ : (Function.mulSupport fun v : {v // v ∉ S} => rv v.1 (eR E v.1) ((a : AF F).2 v.1)).Finite`.
+
+Establish `h2 : ∀ᶠ v in cofinite, rv v (eR E v) ((a : AF F).2 v) = 1` using `(idele_val a).mono fun v hv => rv_unit _ _ hv`. Conclude with `((Filter.eventually_cofinite.1 h2).preimage Subtype.val_injective.injOn).subset fun v hv => hv`. Establish `hv : ∀ v, m v (hermScal (Fv F v) σ ((a : AF F).2 v)) (A v) ≠ 0` using `fun v => by`. Distinguish the cases in `hvS : v ∈ S`. Establish `h3` using `Finset.prod_ne_zero_iff.1 hPne v hvS`.
+
+Introduce `h0`. Apply `h3` to reduce the goal to its premises. Simplify using `[gv, h0]`. Establish `h3` using `ne_zero_of_finprod _ hfinQ hQne ⟨v, hvS⟩`. Simplify using `only at h3`.
+
+Rewrite `h3` using `[← hL v hvS _ (idele_ne a v)]`. Rewrite using `[hAo v hvS]`. Introduce `h0`. Apply `h3` to reduce the goal to its premises. Simplify using `[h0]`.
+
+Use `choose Z hZA hZg using fun v => exists_of_fib_ne (hm v) _ (hv v)`. Establish `hI : mi (hermScal (Ainf F) σ (a : AF F).1) {X | φ X ≠ 0} ≠ 0`. Introduce `h0`. Apply `hGne` to reduce the goal to its premises. Rewrite using `[Gi]`.
+
+Conclude with `integral_eq_zero_of_ae (ae_iff.2 h0)`. Take `⟨Y, -, hYg⟩` from `exists_of_fib_ne hmi _ hI`. Establish `hZl : ∀ᶠ v in cofinite, Z v ∈ latV b v` using `by filter_upwards [S.finite_toSet.eventually_cofinite_notMem] with v h2`. Rewrite using `[← hAo v (by simpa using h2)]`. Conclude with `hZA v`.
+
+Establish `hP` using `GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1`. Take `⟨X, hX1, hX2⟩` from `hP.2.2.2.2.2.2.2.1 Y Z hZl`. Take `⟨j, hj, hj0, -⟩` from `GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm J hJ.1`. Establish `hj1` using `hj0 hJ.2`. Use `set y : AF F ⊗[F] E := X 0 0 with hy`.
+
+Establish `hyI : pI y = Y 0 0`. Rewrite using `[← hX1]`. Both sides reduce to the same expression. Establish `hyV : ∀ v, pV v y = Z v 0 0` using `fun v => by`. Rewrite using `[← hX2 v, projV_projFin_apply]`.
+
+Establish `hw : sigR (AF F) σ y * ((1 : AF F) ⊗ₜ[F] algebraMap F E j) * y = (a : AF F) ⊗ₜ[F] (1 : E)`. Establish `key` using `hP.2.2.2.2.2.2.1 (fun _ _ => sigR (AF F) σ y * ((1 : AF F) ⊗ₜ[F] algebraMap F E j) * y) (fun _ _ => (a : AF F) ⊗ₜ[F] (1 : E)) ?_ ?_`. Conclude with `congrFun (congrFun key 0) 0`. Use function extensionality and compare the values at `c i`. Simplify using `only [projInf_apply, map_mul]`.
+
+Establish `e1 : pI (sigR (AF F) σ y) = sigR (Ainf F) σ (pI y)` using `map_sigR (fstA F) _`. Establish `e2 : pI ((1 : AF F) ⊗ₜ[F] algebraMap F E j) = (1 : Ainf F) ⊗ₜ[F] algebraMap F E j` using `rfl`. Establish `e3 : pI ((a : AF F) ⊗ₜ[F] (1 : E)) = (a : AF F).1 ⊗ₜ[F] (1 : E)` using `rfl`. Rewrite using `[e1, e2, e3, hyI, ← gramR_one (Ainf F) hj Y, hYg]`. Both sides reduce to the same expression.
+
+Introduce `v`. Use function extensionality and compare the values at `c i`. Simplify using `only [projV_projFin_apply, map_mul]`. Establish `e1 : pV v (sigR (AF F) σ y) = sigR (Fv F v) σ (pV v y)` using `map_sigR ((evalV F v).comp (sndA F)) _`. Establish `e2 : pV v ((1 : AF F) ⊗ₜ[F] algebraMap F E j) = (1 : Fv F v) ⊗ₜ[F] algebraMap F E j` using `rfl`.
+
+Establish `e3 : pV v ((a : AF F) ⊗ₜ[F] (1 : E)) = (a : AF F).2 v ⊗ₜ[F] (1 : E)` using `rfl`. Rewrite using `[e1, e2, e3, hyV, ← gramR_one (Fv F v) hj (Z v), hZg v]`. Both sides reduce to the same expression. Establish `hc : ((1 : AF F) ⊗ₜ[F] algebraMap F E j) = (algebraMap F (AF F) j) ⊗ₜ[F] (1 : E)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+
+Establish `hinv : y * ((((a⁻¹ : (AF F)ˣ) : AF F) ⊗ₜ[F] (1 : E)) * ((1 : AF F) ⊗ₜ[F] algebraMap F E j) * sigR (AF F) σ y) = 1`. Combine the equalities or inequalities in the displayed calculation. Set `xu : (AF F ⊗[F] E)ˣ` to `Units.mkOfMulEqOne y _ hinv`. Set `jU : Fˣ` to `Units.mk0 j hj1`. Establish `hn : IsNm σ xu ((pr jU)⁻¹ * a)`.
+
+Establish `e0 : (((pr jU)⁻¹ : (AF F)ˣ) : AF F) * algebraMap F (AF F) j = 1` using `Units.inv_mul (pr jU)`. Establish `e1 : ((((pr jU)⁻¹ * a : (AF F)ˣ) : AF F) ⊗ₜ[F] (1 : E)) = ((((pr jU)⁻¹ : (AF F)ˣ) : AF F) ⊗ₜ[F] (1 : E)) * ((a : AF F) ⊗ₜ[F] (1 : E))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, Units.val_mul]`. Establish `e2 : ((((pr jU)⁻¹ : (AF F)ˣ) : AF F) ⊗ₜ[F] (1 : E)) * ((algebraMap F (AF F) j) ⊗ₜ[F] (1 : E)) = 1`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, e0, mul_one]`.
+
+Both sides reduce to the same expression. Use `show ((((pr jU)⁻¹ * a : (AF F)ˣ) : AF F) ⊗ₜ[F] (1 : E)) = sigR (AF F) σ y * y`. Rewrite using `[e1, ← hw, hc]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(hH a).2 ⟨jU, xu, _, hn, (mul_inv_cancel_left _ _).symm⟩`.
+-/
 theorem mem_H (hcm : IsCMExt F E σ) (hJ : IsHermND σ J)
     {lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)} {li : Measure (Ainf F)}
     {mi : HermR (Ainf F) σ 1 → Measure (Fin 1 → Fin 1 → Ainf F ⊗[F] E)}
@@ -561,6 +748,13 @@ theorem mem_H (hcm : IsCMExt F E σ) (hJ : IsHermND σ J)
 
 end Support
 
+/- English proof (translation)
+Introduce `hS hLoc F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hli hlam hμ h𝓕 hmi hm κ hκ`. Establish `hL0` using `hLoc F E σ J d b li lam μ 𝓕 mi m hcm hJ hli hlam hμ h𝓕 hmi hm`. Use `⟨(Filter.eventually_cofinite.1 hL0).toFinset, fun S hS0 φ A ht => ?_⟩` and prove the remaining obligations. Establish `hL : ∀ v, v ∉ S → ∀ s : Fv F v, s ≠ 0 → (cfac E v : ℝ) * (m v (hermScal (Fv F v) σ s) (latV b v)).toReal = rv v (eR E v) s` using `fun v hv => by`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hv (hS0 (by simpa using hc))`. Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`. Use `⟨fun x n hxn => ?_, fun H hH a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[mean, thetaMeas_ne hcm hJ, Measure.restrict_sum_of_countable, lintegral_sum_measure, th, ← ENNReal.tsum_mul_left, ← (unitsEquivNeZero (G₀ := F)).tsum_eq]`. Use `tsum_congr fun t => ?_` and prove the remaining obligations.
+
+Conclude with `term_eq hS hcm hJ hli hlam hmi hm hL ht hxn t (hκ t t.ne_zero)`. Assume the negation of the conclusion as `h0`. Conclude with `ha (mem_H hcm hJ hmi hm hL ht hH a h0)`.
+-/
 theorem thetaId : Scal → LocR → ThetaId := by
   intro hS hLoc F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hli hlam hμ h𝓕 hmi hm κ hκ
   have hL0 := hLoc F E σ J d b li lam μ 𝓕 mi m hcm hJ hli hlam hμ h𝓕 hmi hm

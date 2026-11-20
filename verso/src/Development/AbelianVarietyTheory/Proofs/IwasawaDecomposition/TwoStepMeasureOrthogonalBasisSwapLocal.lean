@@ -17,6 +17,19 @@ noncomputable section
 
 namespace GlobalTheory.GaugeEx.SwapLoc
 
+/- English proof (translation)
+Use `set W : Set T := U₁ ∩ Φ ⁻¹' U₂ with hW`. Establish `hWo : IsOpen W` using `hU₁.inter (hU₂.preimage Φ.continuous)`. Establish `k₁ : ContinuousOn (fun s => ENNReal.ofReal ((c₁ : ℝ) * D₁ s)) W` using `ENNReal.continuous_ofReal.comp_continuousOn (continuousOn_const.mul (hD₁.mono Set.inter_subset_left))`. Establish `k₂ : ContinuousOn (fun s => ENNReal.ofReal ((c₂ : ℝ) * D₂ (Φ s))) W` using `ENNReal.continuous_ofReal.comp_continuousOn (continuousOn_const.mul (hD₂.comp Φ.continuous.continuousOn fun s hs => hs.2))`. Establish `hae : (fun s => ENNReal.ofReal ((c₂ : ℝ) * D₂ (Φ s))) =ᵐ[τ.restrict W] fun s => ENNReal.ofReal ((c₁ : ℝ) * D₁ s)`.
+
+Use `ae_eq_of_forall_setLIntegral_eq_of_sigmaFinite₀ (k₂.aemeasurable hWo.measurableSet) (k₁.aemeasurable hWo.measurableSet) fun s hs _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_restrict hs]`. Use `set S := s ∩ W with hS`. Establish `hSm : MeasurableSet S` using `hs.inter hWo.measurableSet`. Establish `e₁` using `h₁ S (fun z hz => hz.2.1) hSm`.
+
+Establish `e₂` using `h₂ (Φ '' S) (by rintro _ ⟨z, hz, rfl⟩; exact hz.2.2) (Φ.measurableEmbedding.measurableSet_image.2 hSm)`. Establish `a₁ : ∫⁻ X in g ⁻¹' (Φ '' S), ENNReal.ofReal (φ X) ∂μ = c₁ * ∫⁻ X in g ⁻¹' S, ENNReal.ofReal (φ (Γ X)) ∂μ` using `by conv_lhs => rw [hμ]`. Rewrite using `[Measure.restrict_smul, lintegral_smul_measure, Γ.measurableEmbedding.restrict_map, Γ.measurableEmbedding.lintegral_map]`. Establish `: Γ ⁻¹' (g ⁻¹' (Φ '' S)) = g ⁻¹' S`. Use extensionality with `X`.
+
+Simplify using `only [Set.mem_preimage, hg]`. Conclude with `Φ.injective.mem_set_image`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `a₂ : ∫⁻ t in Φ '' S, ENNReal.ofReal (D₂ t) ∂τ = c₂ * ∫⁻ t in S, ENNReal.ofReal (D₂ (Φ t)) ∂τ` using `by conv_lhs => rw [hτ]`.
+
+Rewrite using `[Measure.restrict_smul, lintegral_smul_measure, Φ.measurableEmbedding.restrict_map, Φ.measurableEmbedding.lintegral_map, Set.preimage_image_eq _ Φ.injective]`. Both sides reduce to the same expression. Simplify using `only [ENNReal.ofReal_mul (NNReal.coe_nonneg _), ENNReal.ofReal_coe_nnreal]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← a₂, ← e₂, a₁, e₁]`. Use `Measure.eqOn_open_of_ae_eq hae hWo k₂ k₁ (show t ∈ W from ⟨ht₁, ht₂⟩)` as an intermediate fact.
+
+Conclude with `(ENNReal.ofReal_eq_ofReal_iff (mul_nonneg c₂.2 h0₂) (mul_nonneg c₁.2 h0₁)).1 this`.
+-/
 theorem dens_compare {V T : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
     [TopologicalSpace T] [MeasurableSpace T] [BorelSpace T]
     (μ : Measure V) (τ : Measure T) [SigmaFinite τ] [τ.IsOpenPosMeasure]
@@ -70,22 +83,34 @@ theorem dens_compare {V T : Type} [TopologicalSpace V] [MeasurableSpace V] [Bore
   have := Measure.eqOn_open_of_ae_eq hae hWo k₂ k₁ (show t ∈ W from ⟨ht₁, ht₂⟩)
   exact (ENNReal.ofReal_eq_ofReal_iff (mul_nonneg c₂.2 h0₂) (mul_nonneg c₁.2 h0₁)).1 this
 
+/- English proof (translation)
+Simplify using `[lrAct]`.
+-/
 theorem lrAct_one_apply {S : Type} [CommRing S] {n M : ℕ} (γ : Matrix (Fin n) (Fin n) S)
     (X : Fin n → Fin M → S) (a : Fin n) (i : Fin M) :
     lrAct 1 γ X a i = ∑ c, X c i * γ c a := by
   simp [lrAct]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `only [lrAct_one_apply, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem lrAct_one_mul {S : Type} [CommRing S] {n M : ℕ} (γ δ : Matrix (Fin n) (Fin n) S)
     (X : Fin n → Fin M → S) : lrAct 1 δ (lrAct 1 γ X) = lrAct 1 (γ * δ) X := by
   funext a i
   simp only [lrAct_one_apply, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `[lrAct_one_apply, Matrix.one_apply]`.
+-/
 theorem lrAct_one_one {S : Type} [CommRing S] {n M : ℕ}
     (X : Fin n → Fin M → S) : lrAct 1 1 X = X := by
   funext a i
   simp [lrAct_one_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [lrAct_one_apply]`. Use `fun_prop`.
+-/
 theorem continuous_lrAct_one {S : Type} [CommRing S] [TopologicalSpace S] [IsTopologicalRing S]
     {n M : ℕ} (γ : Matrix (Fin n) (Fin n) S) :
     Continuous (lrAct (M := M) 1 γ) := by
@@ -108,10 +133,18 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E)
 
+/- English proof (translation)
+Simplify using `[hR, hE, Formalism.UG.hform, map_sum, JR, sigR, inclR]`.
+-/
 theorem hR_incl {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (x y : Fin M → E) :
     hR R σ J (fun i => inclR R (x i)) (fun i => inclR R (y i)) = inclR R (hE σ J x y) := by
   simp [hR, hE, Formalism.UG.hform, map_sum, JR, sigR, inclR]
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by omega)`. Establish `e : inclR (F` using `F) R (algebraMap F E a) = algebraMap R (R ⊗[F] E) (algebraMap F R a) := by`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E).commutes a`. Rewrite using `[qR, hR_incl, h, e, Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis R (Module.finBasisOfFinrankEq F E h2))]`.
+
+Rewrite using `[Fintype.card_fin, nsmul_eq_mul, ← mul_assoc]`. Establish `: algebraMap F R (1 / 2) * ((2 : ℕ) : R) = 1`. Rewrite using `[← map_natCast (algebraMap F R), ← map_mul]`. Evaluate the numerical expressions. Rewrite using `[this, one_mul]`.
+-/
 theorem qR_incl [CharZero F] (h2 : Module.finrank F E = 2) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (x : Fin M → E) (a : F) (h : hE σ J x x = algebraMap F E a) :
     qR R σ J (fun i => inclR R (x i)) = algebraMap F R a := by
@@ -126,6 +159,11 @@ theorem qR_incl [CharZero F] (h2 : Module.finrank F E = 2) {M : ℕ} (J : Matrix
     rw [← map_natCast (algebraMap F R), ← map_mul]; norm_num
   rw [this, one_mul]
 
+/- English proof (translation)
+Establish `k : ∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) E) (u v : Fin n → E), hE σ A u v = (fun i => σ (u i)) ⬝ᵥ A.mulVec v`. Introduce `n A u v`. Simplify using `[hE, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `: (fun i => σ (B.mulVec y i)) = Matrix.vecMul (fun i => σ (y i)) (Formalism.UG.cT (σ : E →+* E) B)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.mulVec, Matrix.vecMul, dotProduct, Formalism.UG.cT, mul_comm]`. Rewrite using `[k, k, this, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+-/
 theorem hE_mulVec {M M' : ℕ} (J : Matrix (Fin M) (Fin M) E) (B : Matrix (Fin M) (Fin M') E)
     (y : Fin M' → E) :
     hE σ J (B.mulVec y) (B.mulVec y) = hE σ (Formalism.UG.cT (σ : E →+* E) B * J * B) y y := by
@@ -138,6 +176,9 @@ theorem hE_mulVec {M M' : ℕ} (J : Matrix (Fin M) (Fin M) E) (B : Matrix (Fin M
     simp [Matrix.mulVec, Matrix.vecMul, dotProduct, Formalism.UG.cT, mul_comm]
   rw [k, k, this, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Establish `: hE σ J x (B.mulVec y) = ∑ j, hE σ J x (fun i => B i j) * y j`. Simplify using `only [hE, Formalism.UG.hform, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin M')))]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_comm`. Simplify using `[this, h]`.
+-/
 theorem hE_mulVec_zero {M M' : ℕ} (J : Matrix (Fin M) (Fin M) E) (B : Matrix (Fin M) (Fin M') E)
     (x : Fin M → E) (h : ∀ j, hE σ J x (fun i => B i j) = 0) (y : Fin M' → E) :
     hE σ J x (B.mulVec y) = 0 := by
@@ -147,6 +188,11 @@ theorem hE_mulVec_zero {M M' : ℕ} (J : Matrix (Fin M) (Fin M) E) (B : Matrix (
     exact Finset.sum_congr rfl fun i _ => Finset.sum_comm
   simp [this, h]
 
+/- English proof (translation)
+Take `⟨-, -, hx, hB, hJ, -⟩` from `h`. Use `Prod.ext (qR_incl R σ h2 J (x 0) a hx) (Prod.ext ?_ (qR_incl R σ h2 J (B.mulVec y) b ?_))` and prove the remaining obligations. Use `hR_incl R σ J (x 0) (B.mulVec y)` as an intermediate fact. Rewrite `this` using `[hE_mulVec_zero σ J B (x 0) hB, map_zero]`. Conclude with `this`.
+
+Rewrite using `[hE_mulVec, ← hJ, hy]`.
+-/
 theorem unitaryOrthogonalComplement_gram_step [CharZero F] (h2 : Module.finrank F E = 2) {M : ℕ}
     (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E) (x : Fin 1 → Fin (M + 1) → E) (a : F)
     (B : Matrix (Fin (M + 1)) (Fin M) E) (J' : Matrix (Fin M) (Fin M) E) (y : Fin M → E) (b : F)
@@ -159,6 +205,9 @@ theorem unitaryOrthogonalComplement_gram_step [CharZero F] (h2 : Module.finrank 
     exact this
   · rw [hE_mulVec, ← hJ, hy]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `[ratTup, lrAct_one_apply, map_sum]`.
+-/
 theorem ratTup_lrAct {n M : ℕ} (γ : Matrix (Fin n) (Fin n) E) (X : Fin n → Fin M → E) :
     ratTup (F := F) R (lrAct 1 γ X) = lrAct 1 (γ.map (inclR R)) (ratTup (F := F) R X) := by
   funext a i
@@ -166,6 +215,31 @@ theorem ratTup_lrAct {n M : ℕ} (γ : Matrix (Fin n) (Fin n) E) (X : Fin n → 
 
 end Alg
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J x₁ a₁ B₁ J₁' x₂ a₂ B₂ J₂' y₁ y₂ b₁ b₂ γ hS₁ hS₂ hb₁ hb₂ hy₁ hy₂ hγ`. Establish `hP₁` using `(GlobalTheory.T.unitary_stabilizer_anisotropic_vector_equiv_complement F E σ hσ (AF F) M J x₁ a₁ B₁ J₁' hS₁).1`. Establish `hP₂` using `(GlobalTheory.T.unitary_stabilizer_anisotropic_vector_equiv_complement F E σ hσ (AF F) M J x₂ a₂ B₂ J₂' hS₂).1`. Establish `hd : (γ : Matrix (Fin 2) (Fin 2) E).det ≠ 0` using `(Matrix.isUnits_det_units γ).ne_zero`. Use `set d := (γ : Matrix (Fin 2) (Fin 2) E).det with hdd`.
+
+Establish `hw₁ : (consCol x₁ B₁).det / algebraMap F E a₁ ≠ 0` using `div_ne_zero hP₁ ((map_ne_zero _).2 hS₁.2.1)`. Establish `hw₂ : (consCol x₂ B₂).det / algebraMap F E a₂ ≠ 0` using `div_ne_zero hP₂ ((map_ne_zero _).2 hS₂.2.1)`. Use `set w₁ := (consCol x₁ B₁).det / algebraMap F E a₁ with hw₁d`. Use `set w₂ := (consCol x₂ B₂).det / algebraMap F E a₂ with hw₂d`. Establish `hu : d ^ (M + 1) * w₁ / (d ^ 2 * w₂) ≠ 0` using `by positivity`.
+
+Use `⟨d ^ (M + 1) * w₁ / (d ^ 2 * w₂), hu, ?_⟩` and prove the remaining obligations. Establish `hue : d ^ (M + 1) * w₁ / (d ^ 2 * w₂) * (d ^ 2 * w₂) = d ^ (M + 1) * w₁` using `div_mul_cancel₀ _ (by positivity)`. Generalize the expression as in `d ^ (M + 1) * w₁ / (d ^ 2 * w₂) = u at hu hue ⊢`. Introduce `R _ _ _ _ _ _ _ _ _ hR lam ν m₁ m₂ m₁' m₂' N₁ N₂ hlam hν f₁ f₁' f₂ f₂' t₁ t₂`. Take `⟨hart, hred, -⟩` from `nice_tensor F E R hR`.
+
+Take `⟨hpos, hmul, hone, -⟩` from `modu_basic (R ⊗[F] E)`. Establish `un : ∀ {z : E}, z ≠ 0 → IsUnit (inclR (F` using `F) R z) := fun hz => (IsUnit.mk0 _ hz).map _`. Establish `unF : ∀ {z : F}, z ≠ 0 → IsUnit (algebraMap F R z)` using `fun hz => (IsUnit.mk0 _ hz).map _`. Establish `mm : ∀ {z w : E}, z ≠ 0 → w ≠ 0 → modu (R ⊗[F] E) (inclR R (z * w)) = modu (R ⊗[F] E) (inclR R z) * modu (R ⊗[F] E) (inclR R w)` using `fun hz hw => by`. Rewrite using `[map_mul, hmul _ _ (un hz) (un hw)]`.
+
+Establish `mp : ∀ k : ℕ, modu (R ⊗[F] E) (inclR R (d ^ k)) = modu (R ⊗[F] E) (inclR R d) ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [hone]`. Consider the case `succ k ih => rw [pow_succ, mm (pow_ne_zero _ hd) hd, ih, pow_succ]`.
+
+Establish `key : modu (R ⊗[F] E) (inclR R u) * (modu (R ⊗[F] E) (inclR R d) ^ 2 * modu (R ⊗[F] E) (inclR R w₂)) = modu (R ⊗[F] E) (inclR R d) ^ (M + 1) * modu (R ⊗[F] E) (inclR R w₁)`. Rewrite using `[← mp, ← mp, ← mm (pow_ne_zero _ hd) hw₂, ← mm (pow_ne_zero _ hd) hw₁, ← mm hu (by positivity), hue]`. Establish `fin₁ : IsFiniteMeasureOnCompacts N₁` using `GlobalTheory.T.twoStep_pair_measure_finite_on_compacts F E σ hσ R hR M J x₁ a₁ B₁ J₁' m₁ m₁' N₁ hS₁ (GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hσ R hR _ J x₁ a₁ lam ν m₁ hS₁.1 hS₁.2.1 hS₁.2.2.1 hlam hν f₁).2.1 (GlobalTheory.T.fibreFamily_hermitian_quadra …`. Establish `fin₂ : IsFiniteMeasureOnCompacts N₂` using `GlobalTheory.T.twoStep_pair_measure_finite_on_compacts F E σ hσ R hR M J x₂ a₂ B₂ J₂' m₂ m₂' N₂ hS₂ (GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hσ R hR _ J x₂ a₂ lam ν m₂ hS₂.1 hS₂.2.1 hS₂.2.2.1 hlam hν f₂).2.1 (GlobalTheory.T.fibreFamily_hermitian_quadra …`. Set `Γ : (Fin 2 → Fin (M + 1) → R ⊗[F] E) ≃ₜ (Fin 2 → Fin (M + 1) → R ⊗[F] E)` to `lrHomeo ((γ : Matrix (Fin 2) (Fin 2) E).map (inclR R)) (((γ⁻¹ : GL (Fin 2) E) : Matrix (Fin 2) (Fin 2) E).map (inclR R)) (by rw [← Matrix.map_mul, Units.mul_inv]; simp) (by rw [← Matrix.map_mul, Units.inv_mul]; simp)`.
+
+Express the relevant statement in the definitionally equal form `N₂ = modu (R ⊗[F] E) (inclR R u) • N₁.map Γ`. Take `⟨Φ, hΦ, hτ⟩` from `GlobalTheory.T.haar_measure_gram_GL2_action_tensor F E σ hσ R lam ν γ hlam hν`. Establish `hdet : ((γ : Matrix (Fin 2) (Fin 2) E).map (inclR (F` using `F) R)).det = inclR R d := ((inclR (F := F) R).map_det _).symm`. Establish `hμ` using `GlobalTheory.T.vectorTupleProductMeasure_two_sided_action (R ⊗[F] E) hart hred lam hlam 2 (M + 1) 1 ((γ : Matrix (Fin 2) (Fin 2) E).map (inclR R)) (by simp) (by rw [hdet]; exact un hd)`. Rewrite `hμ` using `[hdet, Matrix.det_one, hone, one_pow, one_mul]`.
+
+Establish `g₁` using `unitaryOrthogonalComplement_gram_step R σ hσ.2.2.1 J x₁ a₁ B₁ J₁' (y₁ 0) b₁ hS₁ hy₁`. Establish `g₂` using `unitaryOrthogonalComplement_gram_step R σ hσ.2.2.1 J x₂ a₂ B₂ J₂' (y₂ 0) b₂ hS₂ hy₂`. Rewrite `g₂` using `[hγ, ratTup_lrAct, hΦ _ J hS₁.1, g₁]`. Establish `fin₃ : IsFiniteMeasureOnCompacts (N₁.map Γ)` using `Measure.IsFiniteMeasureOnCompacts.map N₁ Γ`. Establish `: TopologicalSpace.PseudoMetrizableSpace (Fin 2 → Fin (M + 1) → R ⊗[F] E)` using `TopologicalSpace.PseudoMetrizableSpace.of_regularSpace_secondCountableTopology _`.
+
+Establish `r₂ : N₂.Regular` using `Measure.Regular.of_sigmaCompactSpace_of_isLocallyFiniteMeasure _`. Establish `r₁ : (N₁.map Γ).Regular` using `Measure.Regular.of_sigmaCompactSpace_of_isLocallyFiniteMeasure _`. Use `Measure.ext_of_integral_eq_on_compactlySupported_nnreal fun f => ?_` and prove the remaining obligations. Establish `fc : Continuous fun X => (f X : ℝ)` using `NNReal.continuous_coe.comp f.continuous`. Establish `fs : HasCompactSupport fun X => (f X : ℝ)` using `f.hasCompactSupport.comp_left (g := fun r : ℝ≥0 => (r : ℝ)) rfl`.
+
+Take `⟨U₂, D₂, o₂, e₂, c₂, n₂, i₂, v₂⟩` from `GlobalTheory.T.gramMap_pairs_continuous_density_near_diagonal F E σ hσ R hR M J x₂ a₂ B₂ J₂' y₂ b₂ lam ν m₂ m₂' N₂ hS₂ hb₂ hy₂ hlam hν f₂ f₂' t₂ (fun X => (f X : ℝ)) fc fs (fun X => (f X).2)`. Take `⟨U₁, D₁, o₁, e₁, c₁, n₁, i₁, v₁⟩` from `GlobalTheory.T.gramMap_pairs_continuous_density_near_diagonal F E σ hσ R hR M J x₁ a₁ B₁ J₁' y₁ b₁ lam ν m₁ m₁' N₁ hS₁ hb₁ hy₁ hlam hν f₁ f₁' t₁ (fun X => (f (Γ X) : ℝ)) (fc.comp Γ.continuous) (fs.comp_homeomorph Γ) (fun X => (f (Γ X)).2)`. Establish `cmp` using `dens_compare (tupMeas lam 2 (M + 1)) (ν.prod (lam.prod ν)) (gram3 R σ J) Γ Φ (hΦ _ J hS₁.1) _ _ hμ hτ (fun X => (f X : ℝ)) U₁ U₂ D₁ D₂ _ o₁ o₂ e₁ (g₂ ▸ e₂) c₁ c₂ (n₁ _ e₁) (n₂ _ (g₂ ▸ e₂)) i₁ i₂`. Rewrite `cmp` using `[g₂, v₁, v₂]`. Rewrite using `[integral_smul_nnreal_measure, Γ.measurableEmbedding.integral_map, NNReal.smul_def, smul_eq_mul]`.
+
+Establish `p₁ : (0 : ℝ) < modu (R ⊗[F] E) (inclR R d)` using `(hpos _ (un hd)).1`. Establish `p₂ : (0 : ℝ) < modu (R ⊗[F] E) (inclR R w₂)` using `(hpos _ (un hw₂)).1`. Establish `key'` using `congrArg (fun r : ℝ≥0 => (r : ℝ)) key`. Simplify using `only [NNReal.coe_mul, NNReal.coe_pow] at key' cmp`. Use `mul_left_cancel₀ (mul_pos (pow_pos p₁ 2) p₂).ne' ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, cmp, ← mul_assoc, ← key']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twoStep_swap_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E) (x₁ : Fin 1 → Fin (M + 1) → E) (a₁ : F) (B₁ : Matrix (Fin (M + 1)) (Fin M) E) (J₁' : Matrix (Fin M) (Fin M) E) (x₂ : Fin 1 → Fin (M + 1) → E) (a₂ : F) (B₂ : Matrix (Fin (M + 1)) (Fin M) E) (J₂' : Matrix (Fin M) (Fin M) E) (y₁ y₂ : Fin 1 → Fin M → E) (b₁ b₂ : F) (γ : GL (Fin 2) E), StepData σ J x₁ a₁ B₁ J₁' → StepData σ J x₂ a₂ B₂ J₂' → b₁ ≠ 0 → b₂ ≠ 0 → hE σ J₁' (y₁ 0) (y₁ 0) = algebraMap F E b₁ → hE σ J₂' (y₂ 0) (y₂ 0) = algebraMap F E b₂ → ![x₂ 0, B₂.mulVec (y₂ 0)] = lrAct 1 (γ : Matrix (Fin 2) (Fin 2) E) ![x₁ 0, B₁.mulVec (y₁ 0)] → ∃ u : E, u ≠ 0 ∧ ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R], Nice R → ∀ (lam : Measure (R ⊗[F] E)) (ν : Measure R) (m₁ m₂ : Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m₁' m₂' : Measure (Fin 1 → Fin M → R ⊗[F] E)) (N₁ N₂ : Measure (Fin 2 → Fin (M + 1) → R ⊗[F] E)), lam.IsAddHaarMeasure → ν.IsAddHaarMeasure → FibAt R σ J (tupMeas lam 1 (M + 1)) ν (algebraMap F R a₁) m₁ → FibAt R σ J₁' (tupMeas lam 1 M) ν (algebraMap F R b₁) m₁' → FibAt R σ J (tupMeas lam 1 (M + 1)) ν (algebraMap F R a₂) m₂ → FibAt R σ J₂' (tupMeas lam 1 M) ν (algebraMap F R b₂) m₂' → TwoStep R σ J x₁ B₁ m₁ m₁' N₁ → TwoStep R σ J x₂ B₂ m₂ m₂' N₂ → N₂ = modu (R ⊗[F] E) (inclR R u) • N₁.map (lrAct 1 ((γ : Matrix (Fin 2) (Fin 2) E).map (inclR R))) := by
   intro F E _ _ _ _ _ σ hσ M J x₁ a₁ B₁ J₁' x₂ a₂ B₂ J₂' y₁ y₂ b₁ b₂ γ hS₁ hS₂ hb₁ hb₂ hy₁ hy₂ hγ
   have hP₁ := (GlobalTheory.T.unitary_stabilizer_anisotropic_vector_equiv_complement F E σ hσ (AF F) M J x₁ a₁ B₁ J₁' hS₁).1

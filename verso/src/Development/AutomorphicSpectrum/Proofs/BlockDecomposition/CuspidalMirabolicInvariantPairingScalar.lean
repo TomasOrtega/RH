@@ -41,6 +41,9 @@ def quotRep (ρ : Representation ℂ G V) (S : Submodule ℂ V) (h : ∀ g, ∀ 
   map_one' := by ext v; simp
   map_mul' a b := by ext v; simp
 
+/- English proof (translation)
+Introduce `v` and use `by have : {g : G | subRep ρ S h g v = v} = {g : G | ρ g v.1 = v.1} := by ext g exact Subtype.ext_iff rw [this] exact hρ v.1`.
+-/
 theorem isSmooth_subRep [TopologicalSpace G] (ρ : Representation ℂ G V) (S : Submodule ℂ V) (h : ∀ g, ∀ v ∈ S, ρ g v ∈ S)
     (hρ : IsSmooth ρ) : IsSmooth (subRep ρ S h) := fun v => by
   have : {g : G | subRep ρ S h g v = v} = {g : G | ρ g v.1 = v.1} := by
@@ -49,6 +52,9 @@ theorem isSmooth_subRep [TopologicalSpace G] (ρ : Representation ℂ G V) (S : 
   rw [this]
   exact hρ v.1
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨v, rfl⟩ := Submodule.mkQ_surjective S x rw [isOpen_iff_mem_nhds] intro g hg have hO : IsOpen ((fun y => g⁻¹ * y) ⁻¹' {y : G | ρ y v = v}) := (hρ v).preimage (continuous_const.mul continuous_id) refine Filter.mem_of_superset (hO.mem_nhds (by simp)) fun y hy => ?_ have h …`.
+-/
 theorem isSmooth_quotRep [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representation ℂ G V) (S : Submodule ℂ V) (h : ∀ g, ∀ v ∈ S, ρ g v ∈ S)
     (hρ : IsSmooth ρ) : IsSmooth (quotRep ρ S h) := fun x => by
   obtain ⟨v, rfl⟩ := Submodule.mkQ_surjective S x
@@ -68,6 +74,15 @@ end General
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `ψ hc h1 N V _ _ π hs hi`. Establish `hadm : GroundTheory.Automorphic.IsAdmissible π` using `(GlobalTheory.CompanionTheory.AdmDict.isAdmissible_iff π).1 (GlobalTheory.CompanionTheory.BZCuspPair.irrAdm k N V π hs hi)`. Establish `hc0 : Continuous (Circle.coeHom.compAddChar ψ)` using `continuous_subtype_val.comp hc`. Establish `h10 : Circle.coeHom.compAddChar ψ ≠ 1`. Introduce `h`.
+
+Apply `h1` to reduce the goal to its premises. Use extensionality with `x`. Establish `h2 : Circle.coeHom (ψ x) = 1` using `by simpa using DFunLike.congr_fun h x`. Establish `h3 : ((ψ x : Circle) : ℂ) = 1` using `h2`. Simplify using `using h3`.
+
+Use `haveI := hi`. Establish `hle` using `GroundTheory.Automorphic.ContragredientTranspose.rank_whittaker_le_one (Circle.coeHom.compAddChar ψ) hc0 h10 π hadm`. Establish `cg : ∀ {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) {N N' : Subgroup G} (h : N = N') (χ : N → ℂ) (χ' : N' → ℂ) (hχ : ∀ u : N, χ u = χ' ⟨u, h ▸ u.2⟩), Module.rank ℂ (GroundTheory.Automorphic.Whittaker.equivariantFunctionals ρ χ) = Module.rank ℂ ( …`. Introduce `G V _ _ _ ρ N N' h χ χ' hχ`. Substitute `h` using the available equality.
+
+Establish `: χ = χ'` using `funext fun u => hχ u`. Rewrite using `[this]`. Rewrite using `[GlobalTheory.CompanionTheory.TwistedDual.rank_twJacquet_le_one_iff]`. Rewrite using `[cg π (GlobalTheory.CompanionTheory.IwasawaDict.unipB_eq_unipotent k N) _ (fun u => GroundTheory.Automorphic.Whittaker.psiN (Circle.coeHom.compAddChar ψ) (u : GL (Fin N) k)) (fun u => GlobalTheory.CompanionTheory.WhitDict.whitChar_eq_psiN k ψ N u)]`. Conclude with `hle`.
+-/
 theorem whitRankIrr : GlobalTheory.BZSeg.WhitRankIrr k := by
   intro ψ hc h1 N V _ _ π hs hi
   have hadm : GroundTheory.Automorphic.IsAdmissible π :=
@@ -98,6 +113,17 @@ theorem whitRankIrr : GlobalTheory.BZSeg.WhitRankIrr k := by
     (fun u => GlobalTheory.CompanionTheory.WhitDict.whitChar_eq_psiN k ψ N u)]
   exact hle
 
+/- English proof (translation)
+Use `GlobalTheory.CompanionTheory.PRep.JacExact.twKer_reflect ρ σ hρ hσ _ _ ?_ ?_ f hf hfi v hv` and prove the remaining obligations. Establish `hc : Continuous (Subgroup.subgroupOfEquivOfLe (derUnip_le_Mir k m n))` using `Continuous.subtype_mk (continuous_subtype_val.comp continuous_subtype_val) _`. Conclude with `(GlobalTheory.CompanionTheory.PRep.DerExact.isOpen_ker_derChar k ψ hψ (m + 1) n).preimage hc`. Introduce `s hs classical`. Take `⟨L, hL, hsL, hLc⟩` from `GlobalTheory.T.unipotent_finite_set_compact_subgroup k (m + 1) n (s.image Subtype.val) (by`.
+
+Introduce `g hg`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hg`. Take `⟨x, hx, rfl⟩` from `hg`. Conclude with `hs hx)`. Use `⟨L.subgroupOf (Mir k m), fun x hx => hL (Subgroup.mem_subgroupOf.1 hx), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Conclude with `Subgroup.mem_subgroupOf.2 (hsL (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (Finset.mem_coe.1 hx))))`. Establish `hLM : L ≤ Mir k m` using `hL.trans (derUnip_le_Mir k m n)`. Rewrite using `[Subtype.isCompact_iff]`. Establish `: (Subtype.val '' ((L.subgroupOf (Mir k m) : Subgroup (Mir k m)) : Set (Mir k m))) = (L : Set (GL (Fin (m + 1)) k))`.
+
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `Subgroup.mem_subgroupOf.1 hx`. Introduce `hg`.
+
+Conclude with `⟨⟨g, hLM hg⟩, Subgroup.mem_subgroupOf.2 hg, rfl⟩`. Rewrite using `[this]`. Conclude with `hLc`.
+-/
 theorem mir_reflect (ψ : AddChar k Circle) (hψ : Continuous ψ) (m n : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Mir k m) V) (σ : Representation ℂ (Mir k m) W)
     (hρ : IsSmooth ρ) (hσ : IsSmooth σ) (f : V →ₗ[ℂ] W) (hf : Function.Injective f)
@@ -133,11 +159,17 @@ theorem mir_reflect (ψ : AddChar k Circle) (hψ : Continuous ψ) (m n : ℕ) {V
 abbrev mres {m : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin (m + 1)) k) V) :
     Representation ℂ (Mir k m) V := (resM k π).ρ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.restriction_mirabolic_twisted_kernel k ψ m n V π`.
+-/
 theorem mres_twKer (ψ : AddChar k Circle) (m n : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (m + 1)) k) V) :
     twKer (mres π) (derUnipM k m n) (derCharM k ψ m n) = twKer π (derUnip k (m + 1) n) (derChar k ψ (m + 1) n) :=
   GlobalTheory.T.restriction_mirabolic_twisted_kernel k ψ m n V π
 
+/- English proof (translation)
+Take `⟨n, hn, ht⟩` from `GlobalTheory.T.exists_nontrivial_derivative k ψ hc h1 m V τ hτ hV`. Break down `Nat.eq_zero_or_pos n with rfl | hp` into its components or cases. Conclude with `Submodule.Quotient.nontrivial_iff.1 ht`. Conclude with `absurd (h n hp hn) (Submodule.Quotient.nontrivial_iff.1 ht)`.
+-/
 theorem twKer_ne_top_of_low (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (m : ℕ) {V : Type} [AddCommGroup V]
     [Module ℂ V] (τ : Representation ℂ (Mir k m) V) (hτ : IsSmooth τ) (hV : Nontrivial V)
     (h : ∀ n, 1 ≤ n → n ≤ m → twKer τ (derUnipM k m n) (derCharM k ψ m n) = ⊤) :
@@ -147,6 +179,11 @@ theorem twKer_ne_top_of_low (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : �
   · exact Submodule.Quotient.nontrivial_iff.1 ht
   · exact absurd (h n hp hn) (Submodule.Quotient.nontrivial_iff.1 ht)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Take `⟨a, b, hab⟩` from `hi.toNontrivial.exists_pair_ne`. Apply `hab` to reduce the goal to its premises. Use extensionality with `x`.
+
+Simplify using `[Subsingleton.elim x 0]`.
+-/
 theorem nontrivial_of_irr {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {π : Representation ℂ G V}
     (hi : π.IsIrreducible) : Nontrivial V := by
   by_contra hV
@@ -156,12 +193,24 @@ theorem nontrivial_of_irr {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
   ext x
   simp [Subsingleton.elim x 0]
 
+/- English proof (translation)
+Rewrite using `[mres_twKer ψ m 0 π, GlobalTheory.T.derivative_zero_whittaker_kernel k ψ (m + 1) V π]`. Conclude with `whitRankIrr ψ hc h1 (m + 1) V π hs hi`.
+-/
 theorem rank_top_le_one (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (m : ℕ) {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin (m + 1)) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible) :
     Module.rank ℂ (V ⧸ twKer (mres π) (derUnipM k m 0) (derCharM k ψ m 0)) ≤ 1 := by
   rw [mres_twKer ψ m 0 π, GlobalTheory.T.derivative_zero_whittaker_kernel k ψ (m + 1) V π]
   exact whitRankIrr ψ hc h1 (m + 1) V π hs hi
 
+/- English proof (translation)
+Establish `hg` using `GlobalTheory.CompanionTheory.BZDeriv.isGenericFor_of_isCuspidal k ψ hc h1 m V π hcu (nontrivial_of_irr hi)`. Establish `hr` using `rank_top_le_one ψ hc h1 m π hcu.1 hi`. Use `⟨?_, fun u w hu => ?_⟩` and prove the remaining obligations. Rewrite using `[mres_twKer ψ m 0 π, GlobalTheory.T.derivative_zero_whittaker_kernel k ψ (m + 1) V π]`. Conclude with `Submodule.Quotient.nontrivial_iff.1 hg`.
+
+Use `set K := twKer (mres π) (derUnipM k m 0) (derCharM k ψ m 0)`. Take `⟨v₀, hv₀⟩` from `rank_le_one_iff.1 hr`. Take `⟨r, hr⟩` from `hv₀ (K.mkQ u)`. Take `⟨s, hs⟩` from `hv₀ (K.mkQ w)`. Establish `hr0 : r ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hu` to reduce the goal to its premises. Rewrite `hr` using `[zero_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero K).1 hr.symm`. Use `⟨s / r, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero K]`. Use `show K.mkQ (w - (s / r) • u) = 0`. Rewrite using `[map_sub, map_smul, ← hr, ← hs, smul_smul, div_mul_cancel₀ _ hr0, sub_self]`.
+-/
 theorem whit_line (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (m : ℕ) {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin (m + 1)) k) V) (hcu : IsCuspidal π) (hi : π.IsIrreducible) :
     twKer (mres π) (derUnipM k m 0) (derCharM k ψ m 0) ≠ ⊤ ∧
@@ -186,12 +235,30 @@ theorem whit_line (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (
     show K.mkQ (w - (s / r) • u) = 0
     rw [map_sub, map_smul, ← hr, ← hs, smul_smul, div_mul_cancel₀ _ hr0, sub_self]
 
+/- English proof (translation)
+Rewrite using `[mres_twKer ψ m n π]`. Conclude with `GlobalTheory.T.cuspidal_twisted_kernel_top k ψ (m + 1) n V π hcu hn (by omega)`.
+-/
 theorem low_top (ψ : AddChar k Circle) (m : ℕ) {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin (m + 1)) k) V) (hcu : IsCuspidal π) (n : ℕ) (hn : 1 ≤ n) (hm : n ≤ m) :
     twKer (mres π) (derUnipM k m n) (derCharM k ψ m n) = ⊤ := by
   rw [mres_twKer ψ m n π]
   exact GlobalTheory.T.cuspidal_twisted_kernel_top k ψ (m + 1) n V π hcu hn (by omega)
 
+/- English proof (translation)
+Take `⟨ψ, hc, h1⟩` from `GlobalTheory.LocGL.exists_continuous_addChar_ne_one k`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨hb, ht⟩` from `hne`. Establish `hT : IsSmooth (mres π)` using `GlobalTheory.CompanionTheory.BZCuspPair.isSmooth_resM hcu.1`.
+
+Take `⟨-, hline⟩` from `whit_line ψ hc h1 m π hcu hi`. Establish `hlow` using `low_top ψ m π hcu`. Establish `hSn : Nontrivial S` using `Submodule.nontrivial_iff_ne_bot.2 hb`. Establish `hrefl : ∀ n, ∀ x : S, (x : V) ∈ twKer (mres π) (derUnipM k m n) (derCharM k ψ m n) → x ∈ twKer (subRep (mres π) S hS) (derUnipM k m n) (derCharM k ψ m n)` using `fun n x hx => mir_reflect ψ hc m n _ (mres π) (isSmooth_subRep _ S hS hT) hT S.subtype Subtype.val_injective (fun g v => rfl) x hx`. Establish `h₁` using `twKer_ne_top_of_low ψ hc h1 m (subRep (mres π) S hS) (isSmooth_subRep _ S hS hT) hSn (fun n hn hnm => by`.
+
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Conclude with `hrefl n x (by rw [hlow n hn hnm]; trivial))`. Take `⟨s, hs⟩` from `SetLike.exists_not_mem_of_ne_top _ h₁ rfl`. Establish `hs' : (s : V) ∉ twKer (mres π) (derUnipM k m 0) (derCharM k ψ m 0)` using `fun h => hs (hrefl 0 s h)`.
+
+Establish `hQn : Nontrivial (V ⧸ S)` using `Submodule.Quotient.nontrivial_iff.2 ht`. Establish `hmap : ∀ n, ∀ x ∈ twKer (mres π) (derUnipM k m n) (derCharM k ψ m n), S.mkQ x ∈ twKer (quotRep (mres π) S hS) (derUnipM k m n) (derCharM k ψ m n)` using `fun n x hx => twKer_le_comap_of (mres π) (quotRep (mres π) S hS) _ _ S.mkQ (fun g v => rfl) hx`. Establish `h₂` using `twKer_ne_top_of_low ψ hc h1 m (quotRep (mres π) S hS) (isSmooth_quotRep _ S hS hT) hQn (fun n hn hnm => by`. Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`.
+
+Take `⟨w, rfl⟩` from `S.mkQ_surjective x`. Conclude with `hmap n w (by rw [hlow n hn hnm]; trivial))`. Apply `h₂` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`.
+
+Take `⟨w, rfl⟩` from `S.mkQ_surjective x`. Take `⟨c, hcw⟩` from `hline s w hs'`. Establish `e : S.mkQ w = S.mkQ (w - c • (s : V))`. Rewrite using `[map_sub, map_smul]`. Establish `: S.mkQ (s : V) = 0` using `(Submodule.Quotient.mk_eq_zero S).2 s.2`.
+
+Rewrite using `[this, smul_zero, sub_zero]`. Rewrite using `[e]`. Conclude with `hmap 0 _ hcw`.
+-/
 theorem mir_irreducible (m : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin (m + 1)) k) V)
     (hcu : IsCuspidal π) (hi : π.IsIrreducible) (S : Submodule ℂ V)
     (hS : ∀ (p : Mir k m), ∀ v ∈ S, (mres π) p v ∈ S) : S = ⊥ ∨ S = ⊤ := by
@@ -236,6 +303,21 @@ theorem mir_irreducible (m : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (π
   rw [e]
   exact hmap 0 _ hcw
 
+/- English proof (translation)
+Take `⟨ψ, hc, h1⟩` from `GlobalTheory.LocGL.exists_continuous_addChar_ne_one k`. Take `⟨hK, hline⟩` from `whit_line ψ hc h1 m π hcu hi`. Use `set K := twKer (mres π) (derUnipM k m 0) (derCharM k ψ m 0) with hKdef`. Take `⟨x₀, hx₀⟩` from `SetLike.exists_not_mem_of_ne_top K hK rfl`. Take `⟨c, hcx⟩` from `hline x₀ (φ x₀) hx₀`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hφK : ∀ x ∈ K, φ x ∈ K` using `fun x hx => twKer_le_comap_of (mres π) (mres π) _ _ φ hφ hx`. Set `D : V →ₗ[ℂ] V` to `φ - c • LinearMap.id`. Establish `hDK : ∀ w, D w ∈ K`. Introduce `w`.
+
+Take `⟨a, ha⟩` from `hline x₀ w hx₀`. Establish `e : D w = a • D x₀ + D (w - a • x₀)`. Rewrite using `[← map_smul, ← map_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Use `K.add_mem (K.smul_mem a hcx) ?_` and prove the remaining obligations. Conclude with `K.sub_mem (hφK _ ha) (K.smul_mem c ha)`. Establish `hst : ∀ (p : Mir k m), ∀ v ∈ LinearMap.range D, (mres π) p v ∈ LinearMap.range D`. Introduce and unpack `p _ ⟨w, rfl⟩`.
+
+Use `⟨(mres π) p w, ?_⟩` and prove the remaining obligations. Use `show φ _ - c • _ = (mres π) p (φ w - c • w)`. Rewrite using `[hφ, map_sub, map_smul]`. Both sides reduce to the same expression. Break down `mir_irreducible m π hcu hi _ hst with h | h` into its components or cases.
+
+Establish `: D = 0` using `LinearMap.range_eq_bot.1 h`. Conclude with `sub_eq_zero.1 this`. It suffices to derive a contradiction. Apply `hK` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`.
+
+Introduce and unpack `x -`. Establish `: x ∈ LinearMap.range D` using `by rw [h]; trivial`. Take `⟨w, rfl⟩` from `this`. Conclude with `hDK w`.
+-/
 theorem mir_scalar (m : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin (m + 1)) k) V)
     (hcu : IsCuspidal π) (hi : π.IsIrreducible) (φ : V →ₗ[ℂ] V)
     (hφ : ∀ (p : Mir k m) v, φ ((mres π) p v) = (mres π) p (φ v)) : ∃ c : ℂ, φ = c • LinearMap.id := by
@@ -275,6 +357,37 @@ theorem mir_scalar (m : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Re
     obtain ⟨w, rfl⟩ := this
     exact hDK w
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨hno, x, hx, hxy⟩` from `hcon`. Set `R : Submodule ℂ (X × X)` to `LinearMap.ker (LinearMap.coprod β P)`. Establish `memR : ∀ a b, (a, b) ∈ R ↔ ∀ y, β a y + P b y = 0`.
+
+Introduce `a b`. Simplify using `only [R, LinearMap.mem_ker, LinearMap.coprod_apply]`. Conclude with `LinearMap.ext_iff`. Establish `hinv : ∀ g a b, (a, b) ∈ R → (ρ g a, ρ g b) ∈ R`. Introduce `g a b h`.
+
+Rewrite `h`, the goal using `[memR]`. Introduce `y`. Establish `e : ρ' g (ρ' g⁻¹ y) = y`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← e, hβ, hP]`.
+
+Conclude with `h _`. Establish `hinj : ∀ b, (0, b) ∈ R → b = 0`. Introduce `b h`. Assume the negation of the conclusion as `hb`. Take `⟨y, hy⟩` from `hnd b hb`.
+
+Use `(memR 0 b).1 h y` as an intermediate fact. Simplify using `at this`. Conclude with `hy this`. Establish `hxR : (x.1, x.2) ∈ R` using `(memR _ _).2 hxy`. Establish `hx1 : x.1 ≠ 0`.
+
+Introduce `h0`. Apply `hx` to reduce the goal to its premises. Use `hinj x.2 (h0 ▸ hxR)` as an intermediate fact. Conclude with `Prod.ext h0 this`. Establish `hS : R.map (LinearMap.fst ℂ X X) = ⊤`.
+
+Break down `hirr (R.map (LinearMap.fst ℂ X X)) (by` into its components or cases. Introduce and unpack `g _ ⟨⟨a, b⟩, h, rfl⟩`. Conclude with `⟨(ρ g a, ρ g b), hinv g a b h, rfl⟩) with h | h`. It suffices to derive a contradiction. Apply `hx1` to reduce the goal to its premises.
+
+Establish `: x.1 ∈ R.map (LinearMap.fst ℂ X X)` using `⟨(x.1, x.2), hxR, rfl⟩`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Conclude with `h`. Set `p : R →ₗ[ℂ] X` to `(LinearMap.fst ℂ X X).comp R.subtype`.
+
+Establish `hpi : Function.Injective p`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨⟨a, b⟩, h⟩ h0`. Establish `ha : a = 0` using `h0`. Substitute `ha` using the available equality.
+
+Use `hinj b h` as an intermediate fact. Substitute `this` using the available equality. Both sides reduce to the same expression. Establish `hps : Function.Surjective p`. Introduce `a`.
+
+Establish `: a ∈ R.map (LinearMap.fst ℂ X X)` using `by rw [hS]; trivial`. Take `⟨r, hr, rfl⟩` from `this`. Conclude with `⟨⟨r, hr⟩, rfl⟩`. Set `e` to `LinearEquiv.ofBijective p ⟨hpi, hps⟩`. Set `φ : X →ₗ[ℂ] X` to `(LinearMap.snd ℂ X X).comp (R.subtype.comp e.symm.toLinearMap)`.
+
+Establish `hgraph : ∀ a, (a, φ a) ∈ R`. Introduce `a`. Establish `h1 : ((e.symm a : R) : X × X).1 = a` using `congrArg id (e.apply_symm_apply a)`. Establish `h2` using `(e.symm a).2`. Establish `: ((e.symm a : R) : X × X) = (a, φ a)` using `Prod.ext h1 rfl`.
+
+Rewrite `h2` using `[this]`. Then use the resulting hypothesis. Establish `huniq : ∀ a b b', (a, b) ∈ R → (a, b') ∈ R → b = b'`. Introduce `a b b' h h'`. Use `hinj (b - b') (by` as an intermediate fact. Establish `h3` using `R.sub_mem h h'`.
+
+Simplify using `using h3)`. Conclude with `sub_eq_zero.1 this`. Take `⟨c, hc⟩` from `hend φ (fun g v => huniq _ _ _ (hgraph _) (hinv g v _ (hgraph v)))`. Take `⟨a, l, hal⟩` from `hno (-c)`. Apply `hal` to reduce the goal to its premises.
+
+Establish `h` using `(memR _ _).1 (hgraph a) l`. Rewrite `h` using `[hc]`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, map_smul, smul_eq_mul] at h`. Take the linear combination `h`.
+-/
 theorem form_dichotomy {G X Y : Type} [Group G] [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     (ρ : Representation ℂ G X) (ρ' : Representation ℂ G Y) (β P : X →ₗ[ℂ] Y →ₗ[ℂ] ℂ)
     (hβ : ∀ g a l, β (ρ g a) (ρ' g l) = β a l) (hP : ∀ g a l, P (ρ g a) (ρ' g l) = P a l)
@@ -357,6 +470,9 @@ theorem form_dichotomy {G X Y : Type} [Group G] [AddCommGroup X] [Module ℂ X] 
   simp only [LinearMap.smul_apply, LinearMap.id_apply, map_smul, smul_eq_mul] at h
   linear_combination h
 
+/- English proof (translation)
+The claim follows from `| 0, s, _, _, _, _, B, hB, hn => ⟨B, hn⟩ | j + 1, s, τ, τ', hs, hs', B, hB, hn => by obtain ⟨B₁, hB₁, hn₁⟩ := GlobalTheory.CompanionTheory.MirPair.pairing_phi k ψ hc h1 (0 + j) s _ _ τ.ρ τ'.ρ hs hs' B hB hn exact pair_iter ψ hc h1 j (s + 1) (MRep.phiM k ψ τ) (MRep.phiM k ψ⁻¹ τ') …`.
+-/
 theorem pair_iter (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) :
     ∀ (j s : ℕ) (τ τ' : MRep k (0 + j)),
     IsSmooth τ.ρ → IsSmooth τ'.ρ → ∀ B : τ.V →ₗ[ℂ] τ'.V →ₗ[ℂ] ℂ,
@@ -370,6 +486,9 @@ theorem pair_iter (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) :
     exact pair_iter ψ hc h1 j (s + 1) (MRep.phiM k ψ τ) (MRep.phiM k ψ⁻¹ τ')
       (GlobalTheory.T.smooth_phi_minus k ψ _ _ _ hs) (GlobalTheory.T.smooth_phi_minus k ψ⁻¹ _ _ _ hs') B₁ hB₁ hn₁
 
+/- English proof (translation)
+Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Establish `hu : ((u : Mir k 0)) = 1` using `GlobalTheory.CompanionTheory.BZMirDer.NonZero.mir_zero_eq_one _`. Simplify using `[hu]`.
+-/
 theorem twKer_mir_zero {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (Mir k 0) V) :
     twKer τ (MirUin k 0) 1 = ⊥ := by
   refine Submodule.span_eq_bot.2 ?_
@@ -377,12 +496,22 @@ theorem twKer_mir_zero {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Represen
   have hu : ((u : Mir k 0)) = 1 := GlobalTheory.CompanionTheory.BZMirDer.NonZero.mir_zero_eq_one _
   simp [hu]
 
+/- English proof (translation)
+Take `⟨q, hs, hk, -⟩` from `GlobalTheory.CompanionTheory.BZMirJac.iterPhi_quotient ψ 0 j τ`. Use `⟨(Submodule.quotEquivOfEq _ _ hk.symm).trans ((q.quotKerEquivOfSurjective hs).trans (Submodule.quotEquivOfEqBot _ (twKer_mir_zero _)))⟩` and prove the remaining obligations.
+-/
 theorem iterPhi_zero_equiv (ψ : AddChar k Circle) (j : ℕ) (τ : MRep k (0 + j)) :
     Nonempty ((τ.V ⧸ twKer τ.ρ (derUnipM k (0 + j) 0) (derCharM k ψ (0 + j) 0)) ≃ₗ[ℂ] (iterPhi k ψ j τ).V) := by
   obtain ⟨q, hs, hk, -⟩ := GlobalTheory.CompanionTheory.BZMirJac.iterPhi_quotient ψ 0 j τ
   refine ⟨(Submodule.quotEquivOfEq _ _ hk.symm).trans ((q.quotKerEquivOfSurjective hs).trans
     (Submodule.quotEquivOfEqBot _ (twKer_mir_zero _)))⟩
 
+/- English proof (translation)
+Take `⟨j, rfl⟩ : ∃ j, m = 0 + j` from `⟨m, (Nat.zero_add m).symm⟩`. Take `⟨B', hB'⟩` from `pair_iter ψ hc h1 j 0 τ τ' hs hs' B (fun p v v' => by`. Rewrite using `[GlobalTheory.CompanionTheory.BZCuspPair.detChar_zero, one_mul]`. Conclude with `hB p v v') hn`. Take `⟨e⟩` from `iterPhi_zero_equiv ψ j τ`.
+
+Take `⟨e'⟩` from `iterPhi_zero_equiv ψ⁻¹ j τ'`. Rewrite using `[e.rank_eq]`. Rewrite `hr` using `[e'.rank_eq]`. Establish `hd` using `(GlobalTheory.CompanionTheory.TwistedDual.rank_le_one_iff_rank_dual_le_one _).1 hr`. Use `le_trans (LinearMap.rank_le_of_injective B' ?_) hd` and prove the remaining obligations.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Assume the negation of the conclusion as `h0`. Take `⟨w', h⟩` from `hB' w h0`. Conclude with `h (by rw [hw]; rfl)`.
+-/
 theorem rank_le_of_pairing (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (m : ℕ) (τ τ' : MRep k m)
     (hs : IsSmooth τ.ρ) (hs' : IsSmooth τ'.ρ) (B : τ.V →ₗ[ℂ] τ'.V →ₗ[ℂ] ℂ)
     (hB : ∀ (p : Mir k m) v v', B (τ.ρ p v) (τ'.ρ p v') = B v v')
@@ -413,6 +542,9 @@ def sumRep (ρ : Representation ℂ G V) : Representation ℂ G (V × V) where
   map_one' := by ext <;> simp
   map_mul' a b := by ext <;> simp
 
+/- English proof (translation)
+Introduce `v` and use `by have : {g : G | sumRep ρ g v = v} = {g : G | ρ g v.1 = v.1} ∩ {g : G | ρ g v.2 = v.2} := by ext g exact Prod.ext_iff rw [this] exact (hρ v.1).inter (hρ v.2)`.
+-/
 theorem isSmooth_sumRep [TopologicalSpace G] (ρ : Representation ℂ G V) (hρ : IsSmooth ρ) : IsSmooth (sumRep ρ) := fun v => by
   have : {g : G | sumRep ρ g v = v} = {g : G | ρ g v.1 = v.1} ∩ {g : G | ρ g v.2 = v.2} := by
     ext g
@@ -420,6 +552,19 @@ theorem isSmooth_sumRep [TopologicalSpace G] (ρ : Representation ℂ G V) (hρ 
   rw [this]
   exact (hρ v.1).inter (hρ v.2)
 
+/- English proof (translation)
+Introduce `hr`. Use `set K := twKer ρ N θ`. Establish `hle : twKer (sumRep ρ) N θ ≤ K.prod K`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`.
+
+Conclude with `⟨Submodule.subset_span ⟨n, v.1, rfl⟩, Submodule.subset_span ⟨n, v.2, rfl⟩⟩`. Take `⟨x, hx⟩` from `SetLike.exists_not_mem_of_ne_top K h rfl`. Take `⟨v₀, hv₀⟩` from `rank_le_one_iff.1 hr`. Use `set L := twKer (sumRep ρ) N θ`. Take `⟨a, ha⟩` from `hv₀ (L.mkQ (x, 0))`.
+
+Take `⟨b, hb⟩` from `hv₀ (L.mkQ (0, x))`. Establish `hmem : ((b • x, -(a • x)) : V × V) ∈ L`. Rewrite using `[← Submodule.Quotient.mk_eq_zero L]`. Use `show L.mkQ _ = 0`. Establish `: ((b • x, -(a • x)) : V × V) = b • (x, 0) - a • (0, x)` using `by simp`.
+
+Rewrite using `[this, map_sub, map_smul, map_smul, ← ha, ← hb, smul_smul, smul_smul, mul_comm, sub_self]`. Establish `h1` using `hle hmem`. Establish `hb0 : b = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hx ((K.smul_mem_iff hne).1 h1.1)`.
+
+Establish `ha0 : a = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hx ((K.smul_mem_iff hne).1 (K.neg_mem_iff.1 h1.2))`. Substitute `ha0` using the available equality. Rewrite `ha` using `[zero_smul]`.
+
+Use `hle ((Submodule.Quotient.mk_eq_zero L).1 ha.symm)` as an intermediate fact. Conclude with `hx this.1`.
+-/
 theorem not_rank_sum_le_one (ρ : Representation ℂ G V) (N : Subgroup G) (θ : N →* ℂˣ) (h : twKer ρ N θ ≠ ⊤) :
     ¬ Module.rank ℂ ((V × V) ⧸ twKer (sumRep ρ) N θ) ≤ 1 := by
   intro hr
@@ -452,12 +597,30 @@ theorem not_rank_sum_le_one (ρ : Representation ℂ G V) (N : Subgroup G) (θ :
 
 end Sum
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.TypeTame.invTranspose_val, Matrix.mulVec_transpose]`. Conclude with `(p⁻¹).2`.
+-/
 theorem invTranspose_mulVec (m : ℕ) (p : Mir k m) :
     ((GlobalTheory.TypeTame.invTranspose (m + 1) (p : GL (Fin (m + 1)) k) : GL (Fin (m + 1)) k) :
       Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec (Pi.single (Fin.last m) 1) = Pi.single (Fin.last m) 1 := by
   rw [GlobalTheory.TypeTame.invTranspose_val, Matrix.mulVec_transpose]
   exact (p⁻¹).2
 
+/- English proof (translation)
+Take `⟨ψ, hψ, h1⟩` from `GlobalTheory.LocGL.exists_continuous_addChar_ne_one k`. Establish `hψi : Continuous (⇑(ψ⁻¹ : AddChar k Circle))`. Establish `e : (⇑ψ⁻¹ : k → Circle) = fun x => ψ (-x)` using `funext fun x => AddChar.inv_apply ψ x`. Rewrite using `[e]`. Conclude with `hψ.comp continuous_neg`.
+
+Establish `hG` using `GlobalTheory.SqIntUnit.compactOpen_basis k (m + 1)`. Establish `hsurj : Function.Surjective (GlobalTheory.TypeTame.invTranspose (R` using `k) (m + 1)) := fun g => ⟨_, GlobalTheory.TypeTame.invTranspose_invTranspose (m + 1) g⟩`. Establish `hcont` using `GlobalTheory.TypeTame.continuous_invTranspose (R := k) (m + 1)`. Establish `hadm : IsAdmissible σ.ρ` using `GlobalTheory.CompanionTheory.BZCuspPair.irrAdm k (m + 1) _ σ.ρ σ.smooth σ.irr`. Establish `hci : (contra σ.ρ).IsIrreducible` using `GlobalTheory.ContraRefl.contra_isIrreducible hG hadm σ.irr`.
+
+Set `A : Representation ℂ (GL (Fin (m + 1)) k) σ.V` to `σ.ρ.comp (GlobalTheory.TypeTame.invTranspose (m + 1))`. Set `Y : Representation ℂ (GL (Fin (m + 1)) k) (smoothPart σ.ρ.dual)` to `(contra σ.ρ).comp (GlobalTheory.TypeTame.invTranspose (m + 1))`. Establish `hAc : IsCuspidal A` using `GlobalTheory.InvTransposeCusp.isCuspidal_comp_invTranspose k (m + 1) _ σ.ρ hc`. Establish `hAi : A.IsIrreducible` using `GlobalTheory.FinGL.Transport.isIrreducible_comp σ.ρ _ hsurj σ.irr`. Establish `hYi : Y.IsIrreducible` using `GlobalTheory.FinGL.Transport.isIrreducible_comp (contra σ.ρ) _ hsurj hci`.
+
+Establish `hYs : IsSmooth Y` using `isSmooth_comp (isSmooth_contra σ.ρ) _ hcont`. Set `P : σ.V →ₗ[ℂ] smoothPart σ.ρ.dual →ₗ[ℂ] ℂ` to `(smoothPart σ.ρ.dual).subtype.flip`. Establish `hPev : ∀ g a l, P (σ.ρ g a) (contra σ.ρ g l) = P a l`. Introduce `g a l`. Use `show (l : Module.Dual ℂ σ.V) (σ.ρ g⁻¹ (σ.ρ g a)) = (l : Module.Dual ℂ σ.V) a`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hnd : ∀ x, x ≠ 0 → ∃ y, P x y ≠ 0` using `fun x hx => GlobalTheory.ContraRefl.exists_smooth_form_ne σ.smooth hG hx`. Establish `hβ' : ∀ (p : Mir k m) a l, β (mres A p a) (mres Y p l) = β a l` using `fun p a l => hβ _ (invTranspose_mulVec m p) a l`. Establish `hP' : ∀ (p : Mir k m) a l, P (mres A p a) (mres Y p l) = P a l` using `fun p a l => hPev _ a l`. Break down `form_dichotomy (mres A) (mres Y) β P hβ' hP' hnd (mir_irreducible m A hAc hAi) (fun φ hφ => mir_scalar m A hAc hAi φ hφ) with h | h` into its components or cases.
+
+Conclude with `h`. It suffices to derive a contradiction. Establish `hT` using `GlobalTheory.CompanionTheory.BZCuspPair.isSmooth_resM hAc.1`. Establish `hY'` using `GlobalTheory.CompanionTheory.BZCuspPair.isSmooth_resM hYs`. Establish `hr` using `rank_le_of_pairing ψ hψ h1 m ⟨σ.V × σ.V, sumRep (mres A)⟩ (resM k Y) (isSmooth_sumRep _ hT) hY' (LinearMap.coprod β P) (fun p v v' => by`.
+
+Conclude with `congrArg₂ (· + ·) (hβ' p v.1 v') (hP' p v.2 v'))`. Use the proof step `(fun v hv => h v hv)`. Use the proof step `(rank_top_le_one ψ⁻¹ hψi (inv_ne_one.2 h1) m Y hYs hYi)`. Conclude with `not_rank_sum_le_one (mres A) _ _ (whit_line ψ hψ h1 m A hAc hAi).1 hr`.
+-/
 theorem form_unique {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m : ℕ) (σ : IrrRep (GL (Fin (m + 1)) k)) (hc : IsCuspidal σ.ρ)
     (β : σ.V →ₗ[ℂ] smoothPart σ.ρ.dual →ₗ[ℂ] ℂ)

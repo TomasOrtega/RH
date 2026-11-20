@@ -7,6 +7,15 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `S K h hp V _ _ _ z`. Establish `: IsProper h` using `hp`. Prove the components needed by the constructor for the conclusion. Introduce `g g' hg hg' e`. Establish `c : CommSq (Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V))) ≫ g) (Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))) h z` using `⟨by rw [Category.assoc, hg]⟩`.
+
+Set `Q : ValuativeCommSq h` to `⟨V, FractionRing V, _, z, c⟩`. Establish `hs : Subsingleton Q.commSq.LiftStruct` using `IsSeparated.valuativeCriterion h Q`. Set `l₁ : Q.commSq.LiftStruct` to `⟨g, rfl, hg⟩`. Set `l₂ : Q.commSq.LiftStruct` to `⟨g', e.symm, hg'⟩`. Conclude with `congrArg CommSq.LiftStruct.l (Subsingleton.elim l₁ l₂)`.
+
+Introduce `g hg`. Establish `c : CommSq g (Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))) h z` using `⟨hg⟩`. Set `Q : ValuativeCommSq h` to `⟨V, FractionRing V, g, z, c⟩`. Establish `hu : (ValuativeCriterion.Existence ⊓ @QuasiCompact) h`. Rewrite using `[← UniversallyClosed.eq_valuativeCriterion]`.
+
+Use `infer_instance`. Take `⟨l, h₁, h₂⟩` from `(hu.1 Q).exists_lift`. Conclude with `⟨l, h₂, h₁⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.valPtsX_of :
     ValPtsX := by
   intro S K h hp V _ _ _ z

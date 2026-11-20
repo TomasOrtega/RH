@@ -18,6 +18,15 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Introduce `hPC hDR hDC K _ _ d δ io hK hd hδ Λ₀ Ω₀ hΛ hΩ E _ _ _ _ I _ φ hφ hio c y hc`. Take `⟨𝔠, X, U, hU⟩` from `GlobalTheory.T.cm_abelian_variety_uniformization_exists K d δ io hK hd hδ E I φ hφ hio c y hc`. Take `⟨X₀, p, hp⟩` from `GlobalTheory.T.cm_abelian_variety_period_normalization hPC hDR hDC K d δ io hK hd hδ E I φ hφ hio c y hc 𝔠 X U`. Take `⟨v₀, v, a, hv⟩` from `GlobalTheory.T.cm_period_ratio_algebraic hPC hDR hDC K d δ io hK hd hδ Λ₀ Ω₀ hΛ hΩ E I φ hφ hio c y hc 𝔠 X U X₀ p hp`. Use `⟨𝔠, X₀, X, p, U, v₀, v, a, hp, hU, hv, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `b hb`. Set `T : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `{ toFun := fun w j ↦ φ (U.e j) b * w j map_add' := fun w w' ↦ by funext j; simp [mul_add] map_smul' := fun r w ↦ by funext j; simp; ring }`. Take `⟨α, hα, hex⟩` from `GlobalTheory.T.lattice_preserving_map_gives_endomorphism (FR E) 𝔠 X _ _ U.u T (by`. Introduce `w hw`. Take `⟨x, hx, rfl⟩` from `(U.lat w).1 hw`.
+
+Use `(U.lat _).2 ⟨b * x, hb x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `[T, GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord])`. Conclude with `⟨α, hα, fun w' ↦ hex w'⟩`. Introduce `b α _ _`.
+
+Conclude with `GlobalTheory.T.endomorphism_descends_to_algebraic_model (FR E) 𝔠 X₀ X p hp α`.
+-/
 theorem exists_model_of_lattice : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
   ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ (Λ₀ : PeriodPair) (Ω₀ : ℂ), GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.IsLatOf io 1 Λ₀ → Ω₀ ^ 12 = latDisc Λ₀ →

@@ -101,6 +101,9 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Algebra ℤ_[p] O] [M
   [Module.Finite ℤ_[p] O] {S : Type} [CommRing S]
   [Algebra O S]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[unitE]`.
+-/
 theorem unitE_one : unitE O 1 = 1 := by
   ext i j
   fin_cases i; fin_cases j
@@ -127,10 +130,16 @@ namespace GlobalTheory.MoritaHT
 
 section Checks3
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨Nat.prime_two⟩, inferInstance, inferInstance, Module.finrank_self _, inferInstance⟩`.
+-/
 example : Fact (Nat.Prime 2) ∧ Module.Free ℤ_[2] ℤ_[2] ∧ Module.Finite ℤ_[2] ℤ_[2] ∧
     Module.finrank ℤ_[2] ℤ_[2] = 1 ∧ NeZero (2 : ℕ) :=
   ⟨⟨Nat.prime_two⟩, inferInstance, inferInstance, Module.finrank_self _, inferInstance⟩
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun h 1) 1` as an intermediate fact. Simplify using `[unitE, Matrix.single_apply] at this`. Use `congrFun (congrFun h 0) 0` as an intermediate fact. Simplify using `[unitE] at this`.
+-/
 example : unitE ℤ_[2] 2 ≠ 1 ∧ unitE ℤ_[2] 2 ≠ 0 := by
   refine ⟨fun h => ?_, fun h => ?_⟩
   · have := congrFun (congrFun h 1) 1

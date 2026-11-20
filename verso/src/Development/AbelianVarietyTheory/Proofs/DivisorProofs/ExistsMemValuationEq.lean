@@ -22,11 +22,25 @@ variable {D : D7}
 
 namespace CondAA
 
+/- English proof (translation)
+Establish `hu : Valued.v (unifAt w : Kw w) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Rewrite using `[genAt, Units.val_zpow_eq_zpow_val, map_zpow₀, hu, ← WithZero.exp_zsmul, smul_eq_mul, mul_neg, mul_one]`.
+-/
 theorem valued_genAt (w : Pl D.host.E) (𝔞 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) :
     Valued.v ((genAt w 𝔞 : (Kw w)ˣ) : Kw w) = WithZero.exp (-FractionalIdeal.count D.host.E w 𝔞) := by
   have hu : Valued.v (unifAt w : Kw w) = WithZero.exp (-1 : ℤ) := unif_spec w
   rw [genAt, Units.val_zpow_eq_zpow_val, map_zpow₀, hu, ← WithZero.exp_zsmul, smul_eq_mul, mul_neg, mul_one]
 
+/- English proof (translation)
+Establish `hw0 : (w.asIdeal : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 w.ne_bot`. Establish `hIw : I * w.asIdeal ≠ 0` using `mul_ne_zero hI hw0`. Establish `hne : ¬ I ≤ I * w.asIdeal` using `fun h => by`. Use `FractionalIdeal.count_mono D.host.E w hI h` as an intermediate fact. Rewrite `this` using `[FractionalIdeal.count_mul D.host.E w hI hw0, FractionalIdeal.count_self]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨c, hc, hc'⟩` from `SetLike.not_le_iff_exists.1 hne`. Use `⟨c, hc, le_antisymm ((GlobalTheory.Idele.mem_iff_valuation_le hI c).1 hc w) ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+
+Use `hc' ((GlobalTheory.Idele.mem_iff_valuation_le hIw c).2 fun Q => ?_)` and prove the remaining obligations. Rewrite using `[FractionalIdeal.count_mul D.host.E Q hI hw0]`. Distinguish the cases in `hQ : w = Q`. Substitute `hQ` using the available equality. Rewrite using `[FractionalIdeal.count_self]`.
+
+Break down `eq_or_ne (w.valuation D.host.E c) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_le'`. Rewrite `hlt` using `[← WithZero.exp_log h0, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[FractionalIdeal.count_maximal_coprime D.host.E Q hQ, add_zero]`. Conclude with `(GlobalTheory.Idele.mem_iff_valuation_le hI c).1 hc Q`.
+-/
 theorem exists_mem_valuation_eq (w : Pl D.host.E) {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (hI : I ≠ 0) :
     ∃ c ∈ I, w.valuation D.host.E c = WithZero.exp (-FractionalIdeal.count D.host.E w I) := by
   have hw0 : (w.asIdeal : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0 := FractionalIdeal.coeIdeal_ne_zero.2 w.ne_bot
@@ -56,6 +70,33 @@ end CondAA
 
 open CondAA in
 
+/- English proof (translation)
+Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum`. Establish `e` using `isEquiv_Kw w`. Establish `hA : D.host.AA ≠ 0` using `Formalism.L2.Pj.AA_ne_zero hP D`. Establish `hB : D.host.AAbar ≠ 0` using `fun h => by`. Establish `h1` using `hP D.R D.host`.
+
+Rewrite `h1` using `[h, mul_zero, zero_mul]`. Conclude with `zero_ne_one h1`. Establish `hI : D.host.AA * D.host.AAbar ≠ 0` using `mul_ne_zero hA hB`. Use `set n := FractionalIdeal.count D.host.E w (D.host.AA * D.host.AAbar) with hn`. Establish `hv : Valued.v (((genAt w D.host.AA * genAt w D.host.AAbar : (Kw w)ˣ)) : Kw w) = WithZero.exp (-n)`.
+
+Rewrite using `[Units.val_mul, map_mul, valued_genAt, valued_genAt, ← WithZero.exp_add, hn, FractionalIdeal.count_mul D.host.E w hA hB, neg_add]`. Establish `hint : ∀ y : Kw w, Valued.v y ≤ 1 → finPart D (atPl w y) ∈ intAE D` using `fun y hy => mem_intAE fun Q => by`. Rewrite using `[(atPl_spec w y).2]`. Distinguish the cases in `h : Q = w`. Substitute `h` using the available equality.
+
+Simplify using `using hy`. Simplify using `[h]`. Introduce `x`. Rewrite using `[e x, hv]`. Use `⟨fun h => ?_, fun hx y hy => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hx`. Take `⟨u, hu, hu1, hu2⟩` from `exists_pole w`. Use `hu (int_of_xi hP D fun a ha j hj => mem_Dinv.2 fun c => ?_)` and prove the remaining obligations. Establish `hx1 : WithZero.exp (-n + 1) ≤ Valued.v x`. Establish `h0 : Valued.v x ≠ 0` using `fun h0 => hx (h0 ▸ zero_le')`.
+
+Rewrite `hx` using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `haj : w.valuation D.host.E (a * j) ≤ WithZero.exp (-n)` using `(GlobalTheory.Idele.mem_iff_valuation_le hI (a * j)).1 (FractionalIdeal.mul_mem_mul ha hj) w`. Establish `hn' : D.host.xi0 * (a * j) * c ∈ Dinv D`.
+
+Rewrite using `[mul_comm]`. Conclude with `(Dinv D).coeToSubmodule.smul_mem c (xi_mem_Dinv hP D ha hj)`. Establish `h1` using `(psiAt_eq_one W w _).1 (h (algebraMap D.host.E (Kw w) (a * j * c) * algebraMap D.host.E (Kw w) u) (by`. Rewrite using `[e, map_mul, valued_alg, valued_alg, map_mul]`. Use `le_trans ?_ hx1` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[atPl_mul, inc_mul_inc]`. Establish `h2` using `char_int W.ψ_std hn' (z := pairA D.host.F 0 1 ⊗ₜ[D.host.F] u - atPl w (algebraMap D.host.E (Kw w) u)) (by rw [RingHom.map_sub, GlobalTheory.LatVac.infPart_pair, (atPl_spec w _).1, sub_zero]) (mem_intAE fun Q => by`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, cpt_pair, (atPl_spec w _).2]`. Distinguish the cases in `hQ : Q = w`.
+
+Substitute `hQ` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hQ, sub_zero, valued_alg]`. Conclude with `hu2 Q hQ)`. Rewrite `h1` using `[← mul_assoc D.host.xi0, ← mul_assoc D.host.xi0]`.
+
+Rewrite `h2` using `[← mul_assoc D.host.xi0]`. Establish `h3 : W.ψ (Algebra.trace (AF D.host.F) (AE D) (incA D (D.host.xi0 * a * j * c) * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] u))) = 1`. Rewrite using `[← sub_add_cancel (pairA D.host.F 0 1 ⊗ₜ[D.host.F] u : AE D) (atPl w (algebraMap D.host.E (Kw w) u)), mul_add, map_add, W.ψ.map_add_eq_mul, h1, h2, one_mul]`. Rewrite `h3` using `[trace_inc_pair, one_mul, GlobalTheory.LatVac.char_rat W.ψ_std]`. Rewrite using `[show D.host.xi0 * (a * (j * u)) * c = D.host.xi0 * a * j * c * u by ring]` and apply the resulting hypothesis.
+
+Take `⟨c, hc, hcv⟩` from `exists_mem_valuation_eq w hI`. Establish `hy1 : Valued.v y ≤ WithZero.exp (-n)` using `((e y x).1 hy).trans hx`. Establish `hξc : D.host.xi0 * c ∈ Dinv D`. Rewrite using `[show Dinv D = _ from (Formalism.L2.Pj.dual_eq hP D).symm, mul_assoc]`. Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ _) hc`.
+
+Establish `hvc : Valued.v (algebraMap D.host.E (Kw w) c) = WithZero.exp (-n)` using `by rw [valued_alg, hcv]`. Establish `h0 : algebraMap D.host.E (Kw w) c ≠ 0` using `fun h => by`. Rewrite `hvc` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hvc.symm`. Rewrite using `[psiAt_eq_one, ← mul_inv_cancel_left₀ h0 y, atPl_mul, inc_mul_inc]`.
+
+Use `char_int W.ψ_std hξc (atPl_spec w _).1 (hint _ ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, hvc]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hasConductor_psiAt_AA {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (w : Pl D.host.E) :
     HasConductor (psiAt W w) (genAt w D.host.AA * genAt w D.host.AAbar) := by
   classical

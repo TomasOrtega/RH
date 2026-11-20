@@ -12,6 +12,17 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmCurveBaseCha
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.FlatDegreeCompare
 
 open scoped ComplexOrder in
+/- English proof (translation)
+Introduce `E _ _ _ H K _ _ F t e he hL h hH m u w hu hw σ`. Take `⟨Λ, Hm, Wc, ⟨Q, -, ψ, v', U, χ, hfib, -, hAH, hvec⟩, hform⟩` from `hH σ`. Establish `hφ : IsGrpPullback Q.A t.G (spMap σ) (ψ ≫ e.hom.left)` using `(hfib.2.1.comp (isGrpPullback_of_iso e)).congr (Category.comp_id _) rfl`. Establish `hM` using `pull_isLB t.PP.isLB (ψ ≫ e.hom.left)`. Take `⟨ι, hι⟩ : LBIso Q.L (t.PP.L.pull (ψ ≫ e.hom.left))` from `LBIso.trans Q.isLB (pull_isLB F.P₀.isLB ψ) hM hfib.2.2.symm (GlobalTheory.CM.EllComp.lbIso_pull_comp hL.symm ψ).symm`.
+
+Establish `htan : ∀ i, IsTangent (v' i)` using `fun i => GlobalTheory.IsVecOver.isTangent hfib.2.1 (hvec i).1 (F.basis.1 i)`. Use `choose w' hw' _ using fun i => GlobalTheory.existsUnique_isVecOver hfib.2.1.1 (w i)`. Establish `hc : ∀ i, IsLieComb (fun k => σ (u i k)) v' (w' i)` using `fun i => (GlobalTheory.lieComb_baseChange _ _ σ F.P₀.A Q.A ψ hfib.2.1 _ F.v (w i) (u i) v' (w' i) (fun j => (hvec j).1) (hw i)).1 (hw' i)`. Establish `hd : ∀ i, U.IsDiff (∑ k, σ (u i k) • Wc k) (w' i)` using `fun i => GlobalTheory.UnifDifferential.isDiff_of_isLieComb _ _ _ _ U Wc v' _ _ htan (fun k => (hvec k).2) (hc i)`. Establish `hpos : (0 : ℂ) < (h.gram σ u).det`.
+
+Conclude with `(h.posDef σ m u hu).det_pos`. Take `⟨h0, hN⟩` from `Complex.pos_iff.1 hpos`. Use `⟨Q.A, inferInstance, ψ ≫ e.hom.left, _, GlobalTheory.TorsionTauCompare.transport Q.isLB hM hι U, Hm, χ, w', fun i => ∑ k, σ (u i k) • Wc k, hφ, GlobalTheory.TorsionTauCompare.isAH_transport _ _ hι U hAH, fun i => ⟨?_, hd i⟩, h0, ?_⟩` and prove the remaining obligations. Use `hw' i` as an intermediate fact. Unfold `GlobalTheory.IsVecOver at this ⊢`.
+
+Rewrite using `[← Category.assoc, this, Over.comp_left, Category.assoc]`. Establish `e1 : (((h.gram σ u).det.re : ℝ) : ℂ) = (h.gram σ u).det` using `Complex.ext rfl ((Complex.ofReal_im _).trans hN)`. Rewrite using `[e1, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using `only [ReciprocityTheory.GeometryOfNumbersTheory.HermFam.gram, Matrix.of_apply, Matrix.transpose_apply]`. Conclude with `GlobalTheory.LieGram.form_eq_hermForm h σ Hm Wc hform u j i`.
+-/
 theorem UpperTheory.hermitian_lie_combination_integral_model :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (K : Type) [Field K] [NumberField K] (F : GlobalTheory.LieHt.SemiFib K) (t : SAB H (Sp K)) (e : F.P₀.A ≅ t.G), IsMonHom e.hom → LBIso F.P₀.L (t.PP.L.pull e.hom.left) → ∀ (h : ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin F.P₀.g → K)), F.IsHerm h → ∀ (m : ℕ) (u : Fin m → Fin F.P₀.g → K) (w : Fin m → (epsR K ⟶ F.P₀.A)), LinearIndependent K u → (∀ i, IsLieComb (u i) F.v (w i)) → ∀ σ : K →+* ℂ, EigenvectorLieDegree.IsArchSq t.G t.PP.L (fun i => w i ≫ e.hom) σ (h.gram σ u).det.re := by
   intro E _ _ _ H K _ _ F t e he hL h hH m u w hu hw σ

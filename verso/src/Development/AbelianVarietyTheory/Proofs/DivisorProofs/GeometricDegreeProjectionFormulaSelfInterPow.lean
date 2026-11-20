@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.HSAmp.PullPow
 
+/- English proof (translation)
+Introduce `hC k _ X _ p D hX`. Use `⟨fun Y _ q hY π hπ hη hδ L => GlobalTheory.CovTest.gdegPull k X Y p q D hX hY π hπ hη hδ L, ?_⟩` and prove the remaining obligations. Introduce `L n a ha`. Conclude with `GlobalTheory.SelfInterPow.isSelfInter_pow hC k X p D hX L a ha n`.
+-/
 theorem gdeg_pull_and_isSelfInter_pow : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → (∀ (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k), IsArithVar q D → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∀ L : HermLB p, gdeg (L.pull π hπ) D = (π.residueDegree (genericPoint Y) : ℝ) * gdeg L D) ∧ ∀ (L : HermLB p) (n : ℕ) (a : ℝ), L.IsSelfInter a → (L.pow n).IsSelfInter ((n : ℝ) ^ (D + 1) * a) := by
   intro hC k _ X _ p D hX
   refine ⟨fun Y _ q hY π hπ hη hδ L => GlobalTheory.CovTest.gdegPull k X Y p q D hX hY π hπ hη hδ L, ?_⟩

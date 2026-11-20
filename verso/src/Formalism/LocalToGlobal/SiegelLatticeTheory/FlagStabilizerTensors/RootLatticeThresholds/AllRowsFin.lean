@@ -15,23 +15,38 @@ variable {D : D7} (X : HidaSetting D)
 
 def V : ℝ := (X.B.μf (X.B.I.Kg X.B.g)).toReal
 
+/- English proof (translation)
+The claim follows from `Nat.one_le_iff_ne_zero.2 (Formalism.L2.SG.Pf.RowDictPf.level_ne_zero X)`.
+-/
 theorem g_pos : 1 ≤ X.B.g := Nat.one_le_iff_ne_zero.2 (Formalism.L2.SG.Pf.RowDictPf.level_ne_zero X)
 
+/- English proof (translation)
+Establish `hK : IsCompact X.B.I.Kset` using `Formalism.L2.SG.Closed.AutKCompact_holds X.B.I`. Conclude with `lt_of_le_of_lt (measure_mono fun x hx => hx.1) hK.measure_lt_top`.
+-/
 theorem Kg_fin : X.B.μf (X.B.I.Kg X.B.g) < ⊤ := by
   have hK : IsCompact X.B.I.Kset := Formalism.L2.SG.Closed.AutKCompact_holds X.B.I
   exact lt_of_le_of_lt (measure_mono fun x hx => hx.1) hK.measure_lt_top
 
+/- English proof (translation)
+Establish `hpos : 0 < X.B.μf (X.B.I.Kg X.B.g)` using `(X.B.I.topf_open X.B.g (g_pos X)).measure_pos X.B.μf ⟨1, Formalism.L2.SG.AllRowsOf.one_mem_Kg X⟩`. Conclude with `ENNReal.toReal_pos hpos.ne' (Kg_fin X).ne`.
+-/
 theorem V_pos : 0 < V X := by
   have hpos : 0 < X.B.μf (X.B.I.Kg X.B.g) :=
     (X.B.I.topf_open X.B.g (g_pos X)).measure_pos X.B.μf ⟨1, Formalism.L2.SG.AllRowsOf.one_mem_Kg X⟩
   exact ENNReal.toReal_pos hpos.ne' (Kg_fin X).ne
 
+/- English proof (translation)
+The claim follows from `Complex.ofReal_ne_zero.2 (V_pos X).ne'`.
+-/
 theorem V_ne : (V X : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 (V_pos X).ne'
 
 def BiInv (f : X.B.I.Gf → ℂ) : Prop :=
   (∀ x, f x ≠ 0 → x ∈ X.B.I.Kset) ∧ (∀ x, ∀ n ∈ X.B.I.Kg X.B.g, f (x * n) = f x) ∧
     (∀ x, ∀ n ∈ X.B.I.Kg X.B.g, f (n * x) = f x)
 
+/- English proof (translation)
+Use `⟨X.B.e_adm.2.2.2.2.1, fun x n hn => ?_, fun x n hn => ?_⟩` and prove the remaining obligations. Use `X.B.e_adm.2.2.2.2.2.1 x 1 (Formalism.L2.SG.AllRowsOf.one_mem_Kg X) n hn` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Use `X.B.e_adm.2.2.2.2.2.1 x n hn 1 (Formalism.L2.SG.AllRowsOf.one_mem_Kg X)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+-/
 theorem biInv_e : BiInv X X.B.e := by
   refine ⟨X.B.e_adm.2.2.2.2.1, fun x n hn => ?_, fun x n hn => ?_⟩
   · have := X.B.e_adm.2.2.2.2.2.1 x 1 (Formalism.L2.SG.AllRowsOf.one_mem_Kg X) n hn
@@ -39,6 +54,13 @@ theorem biInv_e : BiInv X X.B.e := by
   · have := X.B.e_adm.2.2.2.2.2.1 x n hn 1 (Formalism.L2.SG.AllRowsOf.one_mem_Kg X)
     rwa [mul_one] at this
 
+/- English proof (translation)
+Use `⟨fun x hx => by_contra fun h => hx (egA_of_not_mem X a h), fun x n hn => egA_mul X a x hn, fun x n hn => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ X.B.I.Kset`. Establish `hnx : n * x ∈ X.B.I.Kset` using `K_mul X.B.I hn.1 hx`. Establish `hn1 : rhoX X ⟨n, hn.1⟩ = 1` using `(rhoX_eq_one_iff X _).2 hn`. Establish `e : rhoX X ⟨n * x, hnx⟩ = rhoX X ⟨x, hx⟩`.
+
+Rewrite using `[show (⟨n * x, hnx⟩ : KSub X.B.I) = ⟨n, hn.1⟩ * ⟨x, hx⟩ from rfl, map_mul, hn1, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hnx : n * x ∉ X.B.I.Kset` using `fun h => hx (by`. Use `K_mul X.B.I (K_inv X.B.I hn.1) h` as an intermediate fact. Rewrite using `[inv_mul_cancel_left] at this)` and apply the resulting hypothesis.
+
+Rewrite using `[egA_of_not_mem X a hnx, egA_of_not_mem X a hx]`.
+-/
 theorem biInv_egA (a : MonoidAlgebra ℂ (G0g D.nd)) (ha : ∀ γ P : G0g D.nd, a.coeff (P⁻¹ * γ * P) = a.coeff γ) :
     BiInv X (egA X a) := by
   refine ⟨fun x hx => by_contra fun h => hx (egA_of_not_mem X a h), fun x n hn => egA_mul X a x hn, fun x n hn => ?_⟩
@@ -56,10 +78,16 @@ theorem biInv_egA (a : MonoidAlgebra ℂ (G0g D.nd)) (ha : ∀ γ P : G0g D.nd, 
       rwa [inv_mul_cancel_left] at this)
     rw [egA_of_not_mem X a hnx, egA_of_not_mem X a hx]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x hx => by_contra fun h => hx (eT_of_not_mem X S h), fun x n hn => eT_mul X S x hn, fun x n hn => eT_mul_left X S x hn⟩`.
+-/
 theorem biInv_eT (S : Set (Tup2 D)) : BiInv X (eT X S) :=
   ⟨fun x hx => by_contra fun h => hx (eT_of_not_mem X S h), fun x n hn => eT_mul X S x hn,
     fun x n hn => eT_mul_left X S x hn⟩
 
+/- English proof (translation)
+Rewrite using `[convF_fin X.B.I X.B.μf (g_pos X) (Kg_fin X) hf₁.1 hf₁.2.1 hf₂.2.2 x]`. Both sides reduce to the same expression.
+-/
 theorem conv_sum [Fintype (KSub X.B.I ⧸ KgN X.B.I X.B.g)] {f₁ f₂ : X.B.I.Gf → ℂ} (hf₁ : BiInv X f₁) (hf₂ : BiInv X f₂) (x : X.B.I.Gf) :
     X.B.I.convF X.B.μf f₁ f₂ x = (V X : ℂ) * ∑ q : KSub X.B.I ⧸ KgN X.B.I X.B.g,
       f₁ ((q.out : KSub X.B.I) : X.B.I.Gf) * f₂ (((q.out : KSub X.B.I) : X.B.I.Gf)⁻¹ * x) := by
@@ -75,10 +103,18 @@ include hS
 
 def sec (γ : G0g D.nd) : KSub X.B.I := Classical.choose (hS γ)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (hS γ)`.
+-/
 theorem rho_sec (γ : G0g D.nd) : rhoX X (sec hS γ) = γ := Classical.choose_spec (hS γ)
 
 def hat (f : X.B.I.Gf → ℂ) (γ : G0g D.nd) : ℂ := (V X : ℂ) * f (sec hS γ)
 
+/- English proof (translation)
+Unfold `hat`. Establish `hk' : (((sec hS (rhoX X x))⁻¹ * x : KSub X.B.I) : X.B.I.Gf) ∈ X.B.I.Kg X.B.g` using `(rhoX_eq_one_iff X _).1 (by rw [map_mul, map_inv, rho_sec, inv_mul_cancel])`. Establish `e : (x : X.B.I.Gf) = (sec hS (rhoX X x) : X.B.I.Gf) * (((sec hS (rhoX X x))⁻¹ * x : KSub X.B.I) : X.B.I.Gf)`. Use `push_cast`. Use `group`.
+
+Rewrite using `[e, hf.2.1 _ _ hk', mul_div_cancel_left₀ _ (V_ne X)]`.
+-/
 theorem val_hat {f : X.B.I.Gf → ℂ} (hf : BiInv X f) (x : KSub X.B.I) :
     f x = hat hS f (rhoX X x) / (V X : ℂ) := by
   unfold hat
@@ -90,6 +126,9 @@ theorem val_hat {f : X.B.I.Gf → ℂ} (hf : BiInv X f) (x : KSub X.B.I) :
     group
   rw [e, hf.2.1 _ _ hk', mul_div_cancel_left₀ _ (V_ne X)]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, rhoX_eq_one_iff]`. Both sides reduce to the same expression.
+-/
 theorem ker_eq : (rhoX X).ker = KgN X.B.I X.B.g := by
   ext x
   rw [MonoidHom.mem_ker, rhoX_eq_one_iff]
@@ -98,14 +137,31 @@ theorem ker_eq : (rhoX X).ker = KgN X.B.I X.B.g := by
 def qEquiv : (KSub X.B.I ⧸ KgN X.B.I X.B.g) ≃* G0g D.nd :=
   (QuotientGroup.quotientMulEquivOfEq (ker_eq hS).symm).trans (QuotientGroup.quotientKerEquivOfSurjective _ hS)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qEquiv_mk (k : KSub X.B.I) : qEquiv hS (QuotientGroup.mk k) = rhoX X k := rfl
 
+/- English proof (translation)
+Establish `h` using `qEquiv_mk hS q.out`. Rewrite `h` using `[QuotientGroup.out_eq']`. Then use the resulting hypothesis.
+-/
 theorem qEquiv_out (q : KSub X.B.I ⧸ KgN X.B.I X.B.g) : qEquiv hS q = rhoX X q.out := by
   have h := qEquiv_mk hS q.out
   rwa [QuotientGroup.out_eq'] at h
 
 def instFintypeQ : Fintype (KSub X.B.I ⧸ KgN X.B.I X.B.g) := Fintype.ofEquiv _ (qEquiv hS).symm.toEquiv
 
+/- English proof (translation)
+Use `haveI := instFintypeQ hS`. Use `⟨fun x hx => ?_, fun x n hn => ?_, fun x n hn => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxK`. Apply `hx` to reduce the goal to its premises. Rewrite using `[conv_sum X hf₁ hf₂]`.
+
+Use `mul_eq_zero_of_right _ (Finset.sum_eq_zero fun q _ => ?_)` and prove the remaining obligations. Establish `: f₂ (((q.out : KSub X.B.I) : X.B.I.Gf)⁻¹ * x) = 0`. Assume the negation of the conclusion as `h`. Apply `hxK` to reduce the goal to its premises. Use `K_mul X.B.I (q.out : KSub X.B.I).2 (hf₂.1 _ h)` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Rewrite using `[this, mul_zero]`. Rewrite using `[conv_sum X hf₁ hf₂, conv_sum X hf₁ hf₂]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, hf₂.2.1 _ n hn]`. Rewrite using `[conv_sum X hf₁ hf₂, conv_sum X hf₁ hf₂]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `set c : X.B.I.Gf := ((q.out : KSub X.B.I) : X.B.I.Gf)`.
+
+Establish `hc : c⁻¹ ∈ X.B.I.Kset` using `K_inv X.B.I (q.out : KSub X.B.I).2`. Establish `hn' : c⁻¹ * n * c⁻¹⁻¹ ∈ X.B.I.Kg X.B.g` using `Kg_conj' X.B.I X.B.g hc hn`. Establish `e : c⁻¹ * (n * x) = (c⁻¹ * n * c⁻¹⁻¹) * (c⁻¹ * x)` using `by group`. Rewrite using `[e, hf₂.2.2 _ _ hn']`.
+-/
 theorem biInv_conv {f₁ f₂ : X.B.I.Gf → ℂ} (hf₁ : BiInv X f₁) (hf₂ : BiInv X f₂) :
     BiInv X (X.B.I.convF X.B.μf f₁ f₂) := by
   haveI := instFintypeQ hS
@@ -133,6 +189,15 @@ theorem biInv_conv {f₁ f₂ : X.B.I.Gf → ℂ} (hf₁ : BiInv X f₁) (hf₂ 
     have e : c⁻¹ * (n * x) = (c⁻¹ * n * c⁻¹⁻¹) * (c⁻¹ * x) := by group
     rw [e, hf₂.2.2 _ _ hn']
 
+/- English proof (translation)
+Use `haveI := instFintypeQ hS`. Establish `key : ∀ q : KSub X.B.I ⧸ KgN X.B.I X.B.g, hat hS f₁ (qEquiv hS q) * hat hS f₂ ((qEquiv hS q)⁻¹ * γ) = (V X : ℂ) * ((V X : ℂ) * (f₁ ((q.out : KSub X.B.I) : X.B.I.Gf) * f₂ (((q.out : KSub X.B.I) : X.B.I.Gf)⁻¹ * (sec hS γ : X.B.I.Gf))))`. Introduce `q`. Establish `hm : ((q.out : KSub X.B.I) : X.B.I.Gf)⁻¹ * (sec hS γ : X.B.I.Gf) ∈ X.B.I.Kset` using `K_mul X.B.I (K_inv X.B.I (q.out : KSub X.B.I).2) (sec hS γ).2`. Establish `e2 : rhoX X ⟨_, hm⟩ = (qEquiv hS q)⁻¹ * γ`.
+
+Establish `: (⟨_, hm⟩ : KSub X.B.I) = (q.out)⁻¹ * sec hS γ` using `rfl`. Rewrite using `[this, map_mul, map_inv, rho_sec, qEquiv_out]`. Establish `h1 : hat hS f₁ (rhoX X q.out) = (V X : ℂ) * f₁ ((q.out : KSub X.B.I) : X.B.I.Gf)`. Rewrite using `[val_hat hS hf₁ q.out]`. Clear denominators, using `[V_ne X]` for the nonvanishing conditions.
+
+Establish `h2 : hat hS f₂ (rhoX X ⟨_, hm⟩) = (V X : ℂ) * f₂ (((q.out : KSub X.B.I) : X.B.I.Gf)⁻¹ * (sec hS γ : X.B.I.Gf))`. Rewrite using `[val_hat hS hf₂ ⟨_, hm⟩]`. Clear denominators, using `[V_ne X]` for the nonvanishing conditions. Rewrite using `[qEquiv_out, ← qEquiv_out hS q, ← e2, qEquiv_out, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => (key q).symm`. Use `_ = ∑ δ : G0g D.nd, hat hS f₁ δ * hat hS f₂ (δ⁻¹ * γ) := Fintype.sum_equiv (qEquiv hS).toEquiv _ _ (fun _ => rfl)`.
+-/
 theorem conv_hat {f₁ f₂ : X.B.I.Gf → ℂ} (hf₁ : BiInv X f₁) (hf₂ : BiInv X f₂) (γ : G0g D.nd) :
     hat hS (X.B.I.convF X.B.μf f₁ f₂) γ = ∑ δ : G0g D.nd, hat hS f₁ δ * hat hS f₂ (δ⁻¹ * γ) := by
   haveI := instFintypeQ hS
@@ -161,6 +226,13 @@ theorem conv_hat {f₁ f₂ : X.B.I.Gf → ℂ} (hf₁ : BiInv X f₁) (hf₂ : 
     _ = ∑ δ : G0g D.nd, hat hS f₁ δ * hat hS f₂ (δ⁻¹ * γ) :=
       Fintype.sum_equiv (qEquiv hS).toEquiv _ _ (fun _ => rfl)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ X.B.I.Kset`. Establish `e1` using `val_hat hS hf ⟨x, hx⟩`. Establish `e2` using `val_hat hS hf' ⟨x, hx⟩`. Simplify using `only at e1 e2`.
+
+Rewrite using `[e1, e2, h]`. Establish `h1 : f x = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hx (hf.1 x h0)`. Establish `h2 : f' x = 0`.
+
+Assume the negation of the conclusion as `h0`. Conclude with `hx (hf'.1 x h0)`. Rewrite using `[h1, h2]`.
+-/
 theorem hat_inj {f f' : X.B.I.Gf → ℂ} (hf : BiInv X f) (hf' : BiInv X f') (h : ∀ γ, hat hS f γ = hat hS f' γ) :
     f = f' := by
   funext x
@@ -177,6 +249,9 @@ theorem hat_inj {f f' : X.B.I.Gf → ℂ} (hf : BiInv X f) (hf' : BiInv X f') (h
       exact hx (hf'.1 x h0)
     rw [h1, h2]
 
+/- English proof (translation)
+Unfold `hat`. Rewrite using `[egA_rhoX (X := X) a ha, rho_sec]`. Use `show (V X : ℂ) * (a.coeff γ / (V X : ℂ)) = a.coeff γ`. Clear denominators, using `[V_ne X]` for the nonvanishing conditions.
+-/
 theorem hat_egA (a : MonoidAlgebra ℂ (G0g D.nd)) (ha : ∀ γ P : G0g D.nd, a.coeff (P⁻¹ * γ * P) = a.coeff γ)
     (γ : G0g D.nd) : hat hS (egA X a) γ = a.coeff γ := by
   unfold hat
@@ -184,6 +259,9 @@ theorem hat_egA (a : MonoidAlgebra ℂ (G0g D.nd)) (ha : ∀ γ P : G0g D.nd, a.
   show (V X : ℂ) * (a.coeff γ / (V X : ℂ)) = a.coeff γ
   field_simp [V_ne X]
 
+/- English proof (translation)
+Unfold `eT`. Rewrite using `[conv_hat hS (biInv_e X) (biInv_egA X _ (ES_conj S))]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Rewrite using `[hat_egA hS _ (ES_conj S)]`.
+-/
 theorem hat_eT (S : Set (Tup2 D)) (γ : G0g D.nd) :
     hat hS (eT X S) γ = ∑ δ : G0g D.nd, hat hS X.B.e δ * (ES S).coeff (δ⁻¹ * γ) := by
   unfold eT
@@ -191,6 +269,9 @@ theorem hat_eT (S : Set (Tup2 D)) (γ : G0g D.nd) :
   refine Finset.sum_congr rfl fun δ _ => ?_
   rw [hat_egA hS _ (ES_conj S)]
 
+/- English proof (translation)
+Rewrite using `[← conv_hat hS (biInv_e X) (biInv_e X), X.B.e_adm.2.1]`.
+-/
 theorem hat_e_idem (γ : G0g D.nd) : ∑ δ : G0g D.nd, hat hS X.B.e δ * hat hS X.B.e (δ⁻¹ * γ) = hat hS X.B.e γ := by
   rw [← conv_hat hS (biInv_e X) (biInv_e X), X.B.e_adm.2.1]
 

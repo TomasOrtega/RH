@@ -36,6 +36,9 @@ def MExistsCore : Prop :=
     (∀ u, IsHaarOnSet A.I (Hset A.I (Set.range (eC A L) ∪ Set.range (fC A L) ∪ {zC A L u})) (muH u)) →
     ∃ Mb : MBlk A L, ∃ hb : Formalism.L2.SG.AdBridge.AdBridgeIso A.I, MeasTieCore A L μf muN muH Mb hb
 
+/- English proof (translation)
+Introduce `A L P Rf Xu Bu Pi Mu Wb`. Use `haveI := Bu.haar`. Use `haveI := Bu.sf`. Take `⟨Mb, hb, hT⟩` from `h A L Bu.μf Mu.muN Mu.muH Mu.muN_haar Mu.muH_haar`. Conclude with `⟨Mb, hb, hT⟩`.
+-/
 theorem mExists_of_core (h : MExistsCore D) : MExists D := by
   intro A L P Rf Xu Bu Pi Mu Wb
   haveI := Bu.haar

@@ -2,6 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr UpperTheory.V.Z.J
 
+/- English proof (translation)
+Introduce `l _ D _ _ I d k m A N _ _ _ hG hA Z _ p hZ`. Take `⟨u, -, hu⟩` from `hG`. Set `Φ : Z →+ (Fin m → Fin d → A)` to `{ toFun := fun z j a => p j (z.1 (u a)) map_zero' := by`. Use function extensionality and compare the values at `j a`. Simplify using the standard rewrite rules.
+
+Use the proof step `map_add' := by`. Introduce `x y`. Use function extensionality and compare the values at `j a`. Simplify using `}`. Set `S : Set (D → N)` to `{z | z ∈ Z ∧ ∀ j, ∀ s ∈ I, p j (z s) = 0}`.
+
+Establish `hSfin : S.Finite` using `Set.Finite.subset (Set.toFinite (Z : Set (D → N))) (fun z hz => hz.1)`. Establish `hker : ∀ z ∈ Φ.ker, (z : D → N) ∈ S`. Introduce `z hz`. Use `⟨z.2, fun j s hs => ?_⟩` and prove the remaining obligations. Establish `hz0 : ∀ a, p j (z.1 (u a)) = 0` using `fun a => congrFun (congrFun hz j) a`.
+
+Conclude with `hu k A hA (fun s => p j (z.1 s)) ((hZ _ z.2).1.comp (p j)) (fun s t => (hZ _ z.2).2 j s t) hz0 s hs`. Establish `h1 : Nat.card Φ.ker ≤ S.ncard`. Rewrite using `[← Nat.card_coe_set_eq]`. Use `haveI := hSfin.to_subtype`. Use `Nat.card_le_card_of_injective (fun z : Φ.ker => (⟨z.1.1, hker z.1 z.2⟩ : S)) ?_` and prove the remaining obligations.
+
+Introduce `a b hab`. Simplify using `only [Subtype.mk.injEq] at hab`. Conclude with `Subtype.ext (Subtype.ext hab)`. Establish `h2 : Nat.card Φ.range ≤ Nat.card A ^ (m * d)`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Nat.card_fun, Nat.card_eq_fintype_card, Fintype.card_fin]`. Rewrite using `[← pow_mul, mul_comm]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Z.J.wtCut :
     ∀ (l : ℕ) [Fact l.Prime] (D : Type) [Group D] [TopologicalSpace D] (I : Subgroup D) (d k m : ℕ) (A N : Type) [AddCommGroup A] [Finite A] [AddCommGroup N], GenI l I d → (∀ x : A, l ^ k • x = 0) → ∀ (Z : AddSubgroup (D → N)), Finite Z → ∀ p : Fin m → N →+ A, (∀ z ∈ Z, IsLocallyConstant z ∧ ∀ j s s', p j (z (s * s')) = p j (z s) + p j (z s')) → Nat.card Z ≤ {z | z ∈ Z ∧ ∀ j, ∀ s ∈ I, p j (z s) = 0}.ncard * Nat.card A ^ (m * d) := by
   intro l _ D _ _ I d k m A N _ _ _ hG hA Z _ p hZ

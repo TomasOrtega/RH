@@ -22,13 +22,24 @@ section Frames
 variable {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
   {S : Type} [CommRing S]
 
+/- English proof (translation)
+Simplify using `[scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_mul]`.
+-/
 theorem scal_mul (x : Sp S ⟶ Xo.X) (a b : S) (i : (PPx x).ι) :
     scal x (a * b) i = scal x a i * scal x b i := by
   simp [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_mul]
 
+/- English proof (translation)
+Simplify using `[scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_one]`.
+-/
 theorem scal_one (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) : scal x 1 i = 1 := by
   simp [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_one]
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `hs s'`. Take `⟨b, hb, -⟩` from `hs' s`. Take `⟨c1, -, hc1⟩` from `hs s`. Establish `h1 : b * a = 1`. Establish `e1 : ∀ i, s.f i = scal x (b * a) i * s.f i` using `fun i => by`.
+
+Rewrite using `[scal_mul, mul_assoc, ← ha i, ← hb i]`. Establish `e2 : ∀ i, s.f i = scal x 1 i * s.f i` using `fun i => by rw [scal_one, one_mul]`. Conclude with `(hc1 _ e1).trans (hc1 _ e2).symm`. Conclude with `⟨⟨a, b, by rw [mul_comm]; exact h1, h1⟩, ha⟩`.
+-/
 theorem exists_unit_of_generators {x : Sp S ⟶ Xo.X} (s s' : LB.Sec (PPx x))
     (hs : ∀ s'' : LB.Sec (PPx x), ∃! a : S, ∀ i, s''.f i = scal x a i * s.f i)
     (hs' : ∀ s'' : LB.Sec (PPx x), ∃! a : S, ∀ i, s''.f i = scal x a i * s'.f i) :
@@ -43,6 +54,17 @@ theorem exists_unit_of_generators {x : Sp S ⟶ Xo.X} (s s' : LB.Sec (PPx x))
     exact (hc1 _ e1).trans (hc1 _ e2).symm
   exact ⟨⟨a, b, by rw [mul_comm]; exact h1, h1⟩, ha⟩
 
+/- English proof (translation)
+Take `⟨x', hover', u', tan', eig', basis', s', gen'⟩` from `y'`. Simplify using `only at hx hu`. Substitute `hx` using the available equality. Substitute `hu` using the available equality. Take `⟨u0, hu0⟩` from `exists_unit_of_generators (x := y.x) y.s s' y.gen gen'`.
+
+Take `⟨N, _, _, v, ρ, hinj, htan, hcomb, -, -⟩` from `GlobalTheory.TanMod.exists_tangent_module E H Dw l Xo S y.x`. Establish `hb : ∀ τ i, ∃ m, v m = y.u τ i` using `fun τ i => (htan _).1 (y.tan τ i)`. Use `choose b hb using hb`. Establish `hu : ∀ τ, y.u τ = fun i => v (b τ i)` using `fun τ => funext fun i => (hb τ i).symm`. Use `⟨fun o => match o with` and prove the remaining obligations.
+
+Consider the case `none => u0`. Consider the case `some _ => 1, rfl, fun τ i => ⟨Pi.single i 1, by simp, fun j hj => Pi.single_eq_of_ne hj.ne' _, ?_⟩, 𝟙 _, Category.id_comp _, Category.id_comp _, ?_⟩`. Simplify using `only`. Rewrite using `[hu τ, hcomb]`. Simplify using `[Pi.single_apply]`.
+
+Introduce `i h`. Simplify using `only`. Rewrite using `[← hu0 i]`. Simplify using `only [Scheme.Hom.appLE]`. Establish `e : (homOfLE h).op = 𝟙 _` using `Subsingleton.elim _ _`.
+
+Rewrite using `[e]`. Use `erw [CategoryTheory.Functor.map_id, Category.comp_id]`. Both sides reduce to the same expression.
+-/
 theorem frBor_of_eq [Algebra c.F S] (y y' : FrPt Xo c S) (hx : y'.x = y.x) (hu : y'.u = y.u) :
     ∃ t : Ix Dw → Sˣ, FrBor t y y' := by
   obtain ⟨x', hover', u', tan', eig', basis', s', gen'⟩ := y'
@@ -73,6 +95,11 @@ theorem frBor_of_eq [Algebra c.F S] (y y' : FrPt Xo c S) (hx : y'.x = y.x) (hu :
 
 end Frames
 
+/- English proof (translation)
+Establish `hm : ∀ τ : X.Ψ, mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `fun _ => rfl`. Unfold `Formalism.L2.PjFree.perFr`. Simplify using `only [hm, PerMove.emb_mulVec]`. Use `split_ifs with h1 h2 h3 h4`. Establish `hu : IsUnit ((γ : Matrix (Fin r) (Fin r) E).map τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (γ.isUnit.map τ.mapMatrix)`.
+
+Rewrite using `[Matrix.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`. Both sides reduce to the same expression. Rewrite using `[PerMove.col_mul, PerMove.hermC_unitary _ _ _ hγ]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem perFr_lact {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (γ : GL (Fin r) E)
     (hγ : ∀ u v, herm X.Gm ((γ : Matrix (Fin r) (Fin r) E) *ᵥ u) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) =
       herm X.Gm u v) (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
@@ -111,6 +138,21 @@ namespace GlobalTheory
 
 open CongrOrbit in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U hU hA k γ hγ hM x hx`. Take `⟨-, -, -, hfib, -, g, e, F, ik, φ, hEF, hpt⟩` from `hU`. Establish `hx'` using `dom_lact (U.X k) hx hγ`. Take `⟨P, hP, hPer, hu, hd, -⟩` from `hpt k ⟨x, hx⟩`. Take `⟨P', hP', hPer', hu', hd', -⟩` from `hpt k ⟨_, hx'⟩`.
+
+Set `gam` to `(φ k).trans ((latAut (U.X k).Λ γ hγ.2).trans (φ k).symm)`. Establish `hgam : ∀ a, (φ k (gam a) : Fin r → E) = (γ : Matrix (Fin r) (Fin r) E) *ᵥ (φ k a : Fin r → E)`. Introduce `a`. Simplify using `only [gam, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Take `⟨-, hpt, hex⟩` from `FamRigid.ex_eq_of_level_group latMinkowski E H Dw l Xo _ g _ F (ik k) P P' gam 1 hPer hPer' (fun a b => by`. Use `hEF k (gam a) (gam b)` as an intermediate fact. Rewrite `this` using `[hgam, hgam, hγ.1, ← hEF]`. Conclude with `this)` after adjusting the coercions. Use the proof step `(fun a _ => by`.
+
+Take `⟨y, hy, he⟩` from `hM _ (φ k a).2`. Use `⟨(φ k).symm ⟨y, hy⟩, (φ k).injective (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[hgam, map_add, map_nsmul, LinearEquiv.apply_symm_apply, Submodule.coe_add, ← sub_eq_iff_eq_add', he, Nat.cast_smul_eq_nsmul]`. Use the proof step `rfl)`. Use the proof step `(fun a => ⟨gam a - a, by rw [hA, one_smul]; abel⟩)`.
+
+Use the proof step `(fun a => by`. Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.one_mulVec, hP, hP', hgam]`. Conclude with `perFr_lact _ _ _ hγ.1 _ _ _)`. Simplify using `only [Matrix.one_mulVec] at hex`.
+
+Take `⟨γ', hγ', b, hb, he⟩` from `(hfib k k ⟨x, hx⟩ ⟨_, hx'⟩).1 (frBor_of_eq _ _ (hu'.trans (hpt.symm.trans hu.symm)) (by`. Use function extensionality and compare the values at `τ i`. Establish `h1` using `hd' τ i`. Simplify using `only [hex] at h1`. Conclude with `VerticalDeriv.isDerivAt0_unique h1 (hd τ i)))`.
+
+Conclude with `⟨γ', hγ', b, hb, eq_of_heq (Sigma.mk.inj he).2⟩`.
+-/
 theorem congr_lact_mem_orbit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.IsUnf U → l.A = 1 → ∀ k (γ : GL (Fin r) E), IsUStab (U.X k).Gm (U.X k).Λ γ → (∀ x ∈ (U.X k).Λ, ∃ y ∈ (U.X k).Λ, Matrix.mulVec (γ : Matrix (Fin r) (Fin r) E) x - x = (l.M : E) • y) → ∀ x ∈ (U.X k).dom, ∃ γ' ∈ (U.X k).Γ, ∃ b ∈ Bor (U.X k).Ψ r, lact γ x = rmul (lact γ' x) b := by
   intro E _ _ _ H Dw l Xo c σ r U hU hA k γ hγ hM x hx
   obtain ⟨-, -, -, hfib, -, g, e, F, ik, φ, hEF, hpt⟩ := hU

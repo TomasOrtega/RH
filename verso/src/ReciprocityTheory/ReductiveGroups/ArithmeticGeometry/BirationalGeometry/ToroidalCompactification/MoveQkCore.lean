@@ -11,6 +11,9 @@ open scoped CategoryTheory.Obj
 def cU {F : Type} [Field F] (u : F) (hu : u ≠ 0) : Γ(Sp F, ⊤)ˣ :=
   Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom.toMonoidHom (Units.mk0 u hu)
 
+/- English proof (translation)
+Simplify using `[gm, cU, toStk, pullU]`. Both sides reduce to the same expression.
+-/
 theorem gm_cU {F : Type} [Field F] (u : F) (hu : u ≠ 0) (z : Sp F) : (gm (𝟙 (Sp F)) z ⊤ (cU u hu)).val = toStk z u := by
   simp [gm, cU, toStk, pullU]
   rfl

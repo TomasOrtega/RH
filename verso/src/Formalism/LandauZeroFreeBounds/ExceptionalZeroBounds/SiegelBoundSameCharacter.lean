@@ -6,6 +6,9 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Establish `h` using `Real.log_le_rpow_div (x := 3 * N) (by positivity) (half_pos hε)`. Rewrite `h` using `[Real.mul_rpow (by norm_num) hN]`. Establish `e : (3 : ℝ) ^ (ε / 2) * N ^ (ε / 2) / (ε / 2) = 2 * (3 : ℝ) ^ (ε / 2) / ε * N ^ (ε / 2)`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_three_mul_le_rpow {N ε : ℝ} (hN : 0 ≤ N) (hε : 0 < ε) :
     Real.log (3 * N) ≤ 2 * (3 : ℝ) ^ (ε / 2) / ε * N ^ (ε / 2) := by
   have h := Real.log_le_rpow_div (x := 3 * N) (by positivity) (half_pos hε)
@@ -14,6 +17,23 @@ theorem log_three_mul_le_rpow {N ε : ℝ} (hN : 0 ≤ N) (hε : 0 < ε) :
     field_simp
   linarith
 
+/- English proof (translation)
+Use `set Q := q₁ * q with hQ`. Use `set L := 2 * (3 : ℝ) ^ (ε / 2) / ε with hLdef`. Establish `hQ1 : 1 ≤ Q` using `by rw [hQ]; nlinarith`. Establish `hQ0 : 0 ≤ Q` using `by linarith`. Establish `hL0 : 0 < L` using `by rw [hLdef]; positivity`.
+
+Establish `hk : a / 2 ≤ C * (A₁ * x * ℓ) * Q ^ (K * a)`. Establish `h' : 1 / 2 ≤ C * (A₁ * x * ℓ) * Q ^ (K * a) / a` using `by linarith`. Rewrite `h'` using `[le_div_iff₀ ha]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog0 : 0 ≤ Real.log (3 * Q)` using `Real.log_nonneg (by linarith)`.
+
+Establish `hlogL : Real.log (3 * Q) ≤ L * Q ^ (ε / 2)` using `log_three_mul_le_rpow hQ0 hε`. Establish `hℓ' : ℓ ≤ max CL 1 * (L * Q ^ (ε / 2))` using `hℓ.trans ((mul_le_mul_of_nonneg_right (le_max_left CL 1) hlog0).trans (mul_le_mul_of_nonneg_left hlogL (by positivity)))`. Establish `hQK : Q ^ (K * a) ≤ Q ^ (ε / 2)` using `Real.rpow_le_rpow_of_exponent_le hQ1 hKa`. Establish `hW0 : 0 ≤ A₁ * x * ℓ * Q ^ (K * a)` using `by positivity`. Establish `step1 : C * (A₁ * x * ℓ) * Q ^ (K * a) ≤ max C 1 * (A₁ * x * ℓ * Q ^ (K * a))`.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left C 1) hW0`. Establish `step2 : A₁ * x * ℓ * Q ^ (K * a) ≤ max A₁ 1 * x * (max CL 1 * (L * Q ^ (ε / 2))) * Q ^ (ε / 2)` using `by gcongr`. Conclude with `le_max_left A₁ 1`. Establish `hQQ : Q ^ (ε / 2) * Q ^ (ε / 2) = q₁ ^ ε * q ^ ε`.
+
+Rewrite using `[← Real.rpow_add (by linarith), add_halves, hQ, Real.mul_rpow (by linarith) (by linarith)]`. Use `set M := max C 1 * max A₁ 1 * max CL 1 * L with hM`. Establish `hM0 : 0 < M`. Rewrite using `[hM]`. Establish `: (0 : ℝ) < max C 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`.
+
+Establish `: (0 : ℝ) < max A₁ 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Establish `: (0 : ℝ) < max CL 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Check the signs of the components of the expression. Establish `hmain : a / 2 ≤ M * x * (q₁ ^ ε * q ^ ε)`. Establish `h3` using `mul_le_mul_of_nonneg_left step2 (le_trans zero_le_one (le_max_right C 1))`.
+
+Rewrite using `[← hQQ, hM]`. Combine the equalities or inequalities in the displayed calculation. Establish `hq1e : 0 < q₁ ^ ε` using `Real.rpow_pos_of_pos (by linarith) ε`. Establish `hqe : 0 < q ^ ε` using `Real.rpow_pos_of_pos (by linarith) ε`. Rewrite using `[Real.rpow_neg (by linarith), ← div_eq_mul_inv, div_div, div_le_iff₀ (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem siegel_bound_key_rearrange {C A₁ CL x ℓ a K ε q₁ q : ℝ} (hε : 0 < ε) (ha : 0 < a)
     (hKa : K * a ≤ ε / 2) (hq₁ : 1 ≤ q₁) (hq : 1 ≤ q) (hA₁ : 0 ≤ A₁) (hx : 0 ≤ x) (hℓ0 : 0 ≤ ℓ)
     (hℓ : ℓ ≤ CL * Real.log (3 * (q₁ * q)))
@@ -61,6 +81,23 @@ theorem siegel_bound_key_rearrange {C A₁ CL x ℓ a K ε q₁ q : ℝ} (hε : 
   rw [Real.rpow_neg (by linarith), ← div_eq_mul_inv, div_div, div_le_iff₀ (by positivity)]
   nlinarith
 
+/- English proof (translation)
+Use `set ω := N₀.primeFactors.card with hω`. Establish `hpow : 2 ^ ω ≤ N₀`. Establish `h1` using `Finset.pow_card_le_prod N₀.primeFactors (fun p => p) 2 (fun p hp => (Nat.prime_of_mem_primeFactors hp).two_le)`. Conclude with `h1.trans (Nat.le_of_dvd (Nat.pos_of_ne_zero hN₀) (Nat.prod_primeFactors_dvd N₀))`. Establish `hN0 : (0 : ℝ) < N₀` using `by exact_mod_cast Nat.pos_of_ne_zero hN₀`.
+
+Establish `hpowR : (2 : ℝ) ^ ω ≤ (N₀ : ℝ)` using `by exact_mod_cast hpow`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hωlog : (ω : ℝ) * Real.log 2 ≤ Real.log N₀`. Rewrite using `[← Real.log_pow]; exact Real.log_le_log (by positivity) hpowR`. Establish `hlog2N : Real.log (2 * N₀) = Real.log 2 + Real.log N₀` using `Real.log_mul (by norm_num) hN0.ne'`.
+
+Establish `hbound` using `Real.log_le_rpow_div (x := 2 * (N₀ : ℝ)) (by positivity) (half_pos hε)`. Rewrite `hbound` using `[Real.mul_rpow (by norm_num) hN0.le]`. Use `set R := (2 : ℝ) ^ (ε / 2) * (N₀ : ℝ) ^ (ε / 2) / (ε / 2) with hR`. Establish `hωR : ((ω : ℝ) + 1) * Real.log 2 ≤ R` using `by nlinarith`. Establish `hω0 : (0 : ℝ) ≤ (ω : ℝ) + 1` using `by positivity`.
+
+Establish `hsq : (((ω : ℝ) + 1) * Real.log 2) ^ 2 ≤ R ^ 2` using `pow_le_pow_left₀ (by positivity) hωR 2`. Establish `hR2 : R ^ 2 = 4 / ε ^ 2 * (2 : ℝ) ^ ε * (q₁ ^ ε * q ^ ε)`. Establish `e1 : (2 : ℝ) ^ (ε / 2) * (2 : ℝ) ^ (ε / 2) = (2 : ℝ) ^ ε`. Rewrite using `[← Real.rpow_add (by norm_num), add_halves]`. Establish `e2 : (N₀ : ℝ) ^ (ε / 2) * (N₀ : ℝ) ^ (ε / 2) = q₁ ^ ε * q ^ ε`.
+
+Rewrite using `[← Real.rpow_add hN0, add_halves, hNq, Real.mul_rpow (by linarith) (by linarith)]`. Rewrite using `[hR, div_pow, mul_pow, sq ((2 : ℝ) ^ (ε / 2)), sq ((N₀ : ℝ) ^ (ε / 2)), e1, e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hT : ((ω : ℝ) + 1) ^ 2 ≤ 4 / (ε * Real.log 2) ^ 2 * (2 : ℝ) ^ ε * q₁ ^ ε * q ^ ε`.
+
+Establish `hl22 : 0 < Real.log 2 ^ 2` using `by positivity`. Rewrite `hsq` using `[mul_pow, hR2]`. Establish `e : 4 / (ε * Real.log 2) ^ 2 * (2 : ℝ) ^ ε * q₁ ^ ε * q ^ ε = (4 / ε ^ 2 * (2 : ℝ) ^ ε * (q₁ ^ ε * q ^ ε)) / Real.log 2 ^ 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, le_div_iff₀ hl22]`.
+
+Conclude with `hsq`. Establish `hq1e : 0 < q₁ ^ ε` using `Real.rpow_pos_of_pos (by linarith) ε`. Establish `hqe : 0 < q ^ ε` using `Real.rpow_pos_of_pos (by linarith) ε`. Rewrite using `[Real.rpow_neg (by linarith), ← div_eq_mul_inv, div_div, div_le_iff₀ (by positivity)]`. Use `mul_le_mul_of_nonneg_right hT hx` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem siegel_bound_same_character {N₀ : ℕ} (hN₀ : N₀ ≠ 0) {A₁ x ε q₁ q : ℝ} (hε : 0 < ε) (hq₁ : 1 ≤ q₁)
     (hq : 1 ≤ q) (hNq : (N₀ : ℝ) = q₁ * q) (hA₁ : 0 < A₁) (hx : 0 ≤ x)
     (hS : A₁ ≤ ((N₀.primeFactors.card : ℝ) + 1) ^ 2 * x) :

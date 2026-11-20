@@ -12,6 +12,9 @@ namespace GlobalTheory.HWL.IoLayer
 
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l}
 
+/- English proof (translation)
+Use `sepRA LL e he x ?_` and prove the remaining obligations. Establish `h` using `tmul_sub_one LL (WittVector.teichmuller l e)`. Rewrite using `[h, ht]`. Conclude with `hx`.
+-/
 theorem sepRA' (LL : FinExt l) (e : OCb l) (he : ¬ IsUnit (e - 1)) (t : RA LL)
     (ht : (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] WittVector.teichmuller l e = t) (x : RA LL)
     (hx : ∀ k, (t - 1) ^ k ∣ x) : x = 0 := by
@@ -20,12 +23,20 @@ theorem sepRA' (LL : FinExt l) (e : OCb l) (he : ¬ IsUnit (e - 1)) (t : RA LL)
   rw [h, ht]
   exact hx
 
+/- English proof (translation)
+Establish `h1 : WittVector.teichmuller l (e ^ l) = (WittVector.teichmuller l e : Ainf l) ^ l` using `map_pow _ _ _`. Rewrite using `[h1, Algebra.TensorProduct.tmul_pow, one_pow]`.
+-/
 theorem teich_pow (LL : FinExt l) (e : OCb l) :
     ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] WittVector.teichmuller l (e ^ l) : RA LL) =
       ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] WittVector.teichmuller l e) ^ l := by
   have h1 : WittVector.teichmuller l (e ^ l) = (WittVector.teichmuller l e : Ainf l) ^ l := map_pow _ _ _
   rw [h1, Algebra.TensorProduct.tmul_pow, one_pow]
 
+/- English proof (translation)
+Establish `h0 : R.φ₀ X = (1 + X) ^ l - 1` using `by rw [R.φ₀_X, R.q₀_def, P.PD_p]`. Take `⟨_, _, hl0, hlu, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Establish `hlin : (Γ.χΓ (Γ.resΓ g) : ↥(OL LL)) = algebraMap ℤ_[l] ↥(OL LL) c`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Γ.χΓ_res g` as an intermediate fact.
+
+Rewrite `this` using `[P.PD_χ, ← hc]`. Conclude with `this`. Establish `hact` using `(GlobalTheory.Cyc.act_unique l ↥(OL LL) hl0 hlu (R.γ₀ (Γ.resΓ g)) R.φ₀ c h0 (R.γ₀_comm _) (R.γ₀_X _).1 ((R.γ₀_X _).2.trans hlin)).2`. Rewrite using `[hact, (GlobalTheory.T.cyclotomicPowerSeriesAlgHom_action_laws l ↥(OL LL)).1, GlobalTheory.Cyc.cyc]`.
+-/
 theorem γ₀_X_eq {K : FinExt l} {s : ℕ} {LL : FinExt l} {Γ : GamS P K s LL} (R : WSer Γ)
     (g : ↥(GK K)) (c : ℤ_[l]) (hc : (c : ℚ_[l]) = (P.χQ g : ℚ_[l])) :
     R.γ₀ (Γ.resΓ g) X = PowerSeries.map (algebraMap ℤ_[l] ↥(OL LL)) (binomialSeries ℤ_[l] c) - 1 := by
@@ -42,6 +53,25 @@ theorem γ₀_X_eq {K : FinExt l} {s : ℕ} {LL : FinExt l} {Γ : GamS P K s LL}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `l _ P AI K s LL hG Γ R`. Use `haveI := (P.PD K).finK₀`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Take `⟨u, hu, huniq⟩` from `GlobalTheory.UnramIdem.exists_prod_hom l P K s LL hG Γ.emb Γ.emb_bij`. Establish `he` using `εroot_sub_not_unit AI s`.
+
+Use `haveI := (GlobalTheory.HWL.TensorWitt.main l LL).2.2.2.2 _ he`. Take `⟨io, hπ, hc⟩` from `let_exists ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (WittVector.teichmuller l (AI.εroot s) - 1) : RA LL) u`. Establish `hπ'` using `hπ.trans (tmul_sub_one LL _)`. Establish `h0 : R.φ₀ X = (1 + X) ^ l - 1` using `by rw [R.φ₀_X, R.q₀_def, P.PD_p]`. Establish `h1 : io.comp (letφ R.φ₀) = (φRA LL).comp io`.
+
+Establish `ht` using `teich_pow LL (AI.εroot s)`. Establish `he' : ¬ IsUnit (AI.εroot s ^ l - 1)` using `fun h => he (by`. Rewrite `h` using `[← geom_sum_mul]`. Conclude with `isUnit_of_mul_isUnit_right h)`. Use `comm_φ l R.φ₀ h0 io u hc (φRA LL) _ hπ' ((φRA_teich LL _).trans ht) ?_ (sepRA' LL _ he' _ ht)` and prove the remaining obligations.
+
+Use `huniq _ _ _ fun c m hm hl hcm o ho => ?_` and prove the remaining obligations. Take `⟨xb, hxb⟩` from `GlobalTheory.MemLoc.exists_isTiltOf (c : Om l) m hm hl hcm`. Establish `e1` using `hu c m hm hl hcm xb hxb o ho`. Establish `e2` using `hu (c ^ l) m hm hl (by rw [SubmonoidClass.coe_pow, ← pow_mul, mul_comm, pow_mul, hcm, one_pow]) (xb ^ l) (tilt_pow hxb l) (shift _ _ o) (fun i => by`. Use `DFunLike.congr_fun (Γ.emb_σ (i - 1)) c` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel, AlgHom.comp_apply, sigma_root K c m hm hl hcm]`. Rewrite using `[this]`. Conclude with `ho (i - 1))`. Conclude with `e2.trans ((congrArg (φRA LL) e1).trans (φRA_teich LL xb)).symm`. Establish `h2 : ∀ g : ↥(GK K), io.comp (letγ (R.γ₀ (Γ.resΓ g))) = (gRA AI LL (g : GQ l)).comp io`.
+
+Introduce `g`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.Cyc.exists_integral_cyclotomicChar l P`. Take `⟨⟨io0, hio0, -⟩, -⟩` from `GlobalTheory.Cyc.IoMap.main l _ he`. Establish `he' : ¬ IsUnit (AI.actT g (AI.εroot s) - 1)` using `fun h => he (by`. Use `h.map (AI.actT g).symm` as an intermediate fact.
+
+Rewrite using `[map_sub, map_one, RingEquiv.symm_apply_apply] at this)` and apply the resulting hypothesis. Establish `e0` using `(io_zl LL _ _ he io hπ io0 hio0 (binomialSeries ℤ_[l] (χ g : ℤ_[l]))).trans (congrArg (fun w : Ainf l => ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] w : RA LL)) (io_binomial AI s g _ (hχ g) io0 hio0))`. Use `comm_γ _ _ (γ₀_X_eq R g _ (hχ g)) io u hc (gRA AI LL g) _ _ hπ' e0 (gRA_teich AI LL g _) ?_ (sepRA' LL _ he' _ rfl)` and prove the remaining obligations. Use `huniq _ _ _ fun c m hm hl hcm o ho => ?_` and prove the remaining obligations. Take `⟨xb, hxb⟩` from `GlobalTheory.MemLoc.exists_isTiltOf (c : Om l) m hm hl hcm`.
+
+Establish `e1` using `hu c m hm hl hcm xb hxb o ho`. Establish `e2` using `actT_tilt AI g c (g.2 ⟨c, c.2.1⟩) m hm hl xb hxb`. Establish `e3` using `gRA_teich AI LL g xb`. Rewrite `e3` using `[e2]`. Conclude with `e1.trans ((congrArg (gRA AI LL g) e1).trans e3).symm`.
+
+Take `⟨I, hI⟩` from `assemble R (inclR LL) (φRW LL) (fun g : ↥(GK K) => AI.gRW LL (g : GQ l)) _ (φRA LL) (fun g : ↥(GK K) => gRA AI LL (g : GQ l)) (inclR_φRA LL) (fun g => inclR_gRA AI LL g) (by rw [P.PD_p]; exact (GlobalTheory.HWL.TensorWitt.main l LL).1) io hπ (isUnit_inclR LL _ (εroot_ne_one AI s) …`. Use `⟨I, fun c m hm hl hcm xb hxb o ho => ?_⟩` and prove the remaining obligations. Rewrite using `[hI, ← cst_apply, hc]`. Conclude with `hu c m hm hl hcm xb hxb o ho`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∀ (Γ : GamS P K s LL) (R : WSer Γ), ∃ I : IoS AI R, IoW I := by
   intro l _ P AI K s LL hG Γ R
   haveI := (P.PD K).finK₀

@@ -3,6 +3,9 @@ open PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory.G UpperTheory.Conv
 open NumberField IsDedekindDomain GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Global.AdeleBaseChange
 open scoped TensorProduct
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `h : Algebra.TensorProduct.map (((1 : E ≃ₐ[F] E) : E →ₐ[F] E)) (AlgHom.id F A) = AlgHom.id F _`. Apply the tactic sequence `ext <;> simp`. Simplify using `only [galOf, RingHom.comp_apply, h]`. Simplify using the standard rewrite rules.
+-/
 private theorem galOf_one' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {A B : Type*} [CommRing A] [Algebra F A] [CommRing B] [Algebra E B] (e : E ⊗[F] A ≃ₐ[E] B) :
     galOf e (1 : E ≃ₐ[F] E) = RingHom.id _ := by
@@ -12,6 +15,9 @@ private theorem galOf_one' {F E : Type} [Field F] [NumberField F] [Field E] [Num
   simp only [galOf, RingHom.comp_apply, h]
   simp
 
+/- English proof (translation)
+Establish `hd` using `InfiniteAdeleRing.denseRange_algebraMap F`. Establish `h1 : Continuous (infMap F F)` using `InfinitePlace.continuous_infiniteAdeleRingMap`. Use `hd.equalizer h1 continuous_id (funext fun k => by` as an intermediate fact. Simplify using `using InfinitePlace.infiniteAdeleRingMap_algebraMap (K := F) (L := F) k)`. Conclude with `RingHom.ext fun x => congrFun this x`.
+-/
 private theorem infMap_self (F : Type) [Field F] [NumberField F] : infMap F F = RingHom.id _ := by
   have hd := InfiniteAdeleRing.denseRange_algebraMap F
   have h1 : Continuous (infMap F F) := InfinitePlace.continuous_infiniteAdeleRingMap
@@ -19,6 +25,11 @@ private theorem infMap_self (F : Type) [Field F] [NumberField F] : infMap F F = 
     simpa using InfinitePlace.infiniteAdeleRingMap_algebraMap (K := F) (L := F) k)
   exact RingHom.ext fun x => congrFun this x
 
+/- English proof (translation)
+Establish `h : ∀ x, incFin F v x = tensorEquiv' F v ((1 : F) ⊗ₜ[F] x)`. Introduce `x`. Rewrite using `[tensorEquiv'_tmul, map_one, one_mul]`. Both sides reduce to the same expression. Establish `hb : Function.Bijective (fun x : v.adicCompletion F => (1 : F) ⊗ₜ[F] x)` using `(TensorProduct.lid F (v.adicCompletion F)).symm.bijective`.
+
+Establish `: (incFin F v : _ → _) = tensorEquiv' F v ∘ (fun x : v.adicCompletion F => (1 : F) ⊗ₜ[F] x)` using `funext h`. Rewrite using `[this]`. Conclude with `(tensorEquiv' F v).bijective.comp hb`.
+-/
 private theorem incFin_bij (F : Type) [Field F] [NumberField F] (v : Pl F) : Function.Bijective (incFin F v) := by
   have h : ∀ x, incFin F v x = tensorEquiv' F v ((1 : F) ⊗ₜ[F] x) := by
     intro x
@@ -30,6 +41,9 @@ private theorem incFin_bij (F : Type) [Field F] [NumberField F] (v : Pl F) : Fun
   rw [this]
   exact (tensorEquiv' F v).bijective.comp hb
 
+/- English proof (translation)
+Introduce `F _ _`. Use `⟨galOf_one' _, infMap_self F, fun v => ⟨galOf_one' _, incFin_bij F v⟩⟩` and prove the remaining obligations.
+-/
 theorem UpperTheory.baseChange_trivial_extension :
     Triv := by
   intro F _ _

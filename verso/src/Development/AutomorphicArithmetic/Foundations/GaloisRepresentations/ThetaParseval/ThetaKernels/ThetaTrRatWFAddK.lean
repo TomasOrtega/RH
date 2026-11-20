@@ -12,6 +12,15 @@ open Formalism.IndefR.DatumF
 noncomputable section
 namespace GlobalTheory.ThetaQuasiRatF
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B _ hψ nS nT JS JT _ _ ξ₀ _ _ JA JB ξ hA hB κ _ co hrat Φ _ γ w`. Take `⟨y, z, hyz⟩` from `hrat γ`. Establish `hγ : ratWF γ = incM F γ` using `rfl`. Establish `hform` using `co.form (incM F γ) w`. Rewrite `hform` using `[symp_eq_symplOF' σ JS JT ξ₀ JA JB ξ hA hB, hyz]`.
+
+Unfold `GlobalTheory.WeilSchrodinger.thetaTr GlobalTheory.WeilM.Darboux.rho`. Rewrite using `[map_add, hγ, hyz]`. Use `set u : (κ → AF F) × (κ → AF F) := (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i)) with hu`. Use `set v := co.e w`. Establish `law` using `GlobalTheory.ThetaQuasiRat.schr_schr B.ψ u v Φ`.
+
+Establish `hinv : B.ψ (-(⅟(2 : AF F) * (u.1 ⬝ᵥ v.2 - v.1 ⬝ᵥ u.2))) * B.ψ (⅟(2 : AF F) * (u.1 ⬝ᵥ v.2 - v.1 ⬝ᵥ u.2)) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`. Establish `hsum : GlobalTheory.WeilM.schr B.ψ (u + v) Φ = B.ψ (-(⅟(2 : AF F) * (u.1 ⬝ᵥ v.2 - v.1 ⬝ᵥ u.2))) • GlobalTheory.WeilM.schr B.ψ u (GlobalTheory.WeilM.schr B.ψ v Φ)`. Rewrite using `[law, smul_smul, hinv, one_smul]`. Establish `h2 : ⅟(2 : AF F) = algebraMap F (AF F) (1 / 2)`.
+
+Apply `invOf_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]`. Evaluate the numerical expressions. Rewrite using `[hsum, GlobalTheory.ThetaQuasiRat.thetaSum_smul', hu, GlobalTheory.ThetaQuasiRat.thetaSum_schr_rat F B.ψ hψ.1.2.2.1 y z, ← hu, symplOHF, hform, h2]`.
+-/
 theorem thetaTr_ratWF_add_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
     ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

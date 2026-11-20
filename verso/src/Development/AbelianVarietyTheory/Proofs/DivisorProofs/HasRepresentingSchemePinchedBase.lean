@@ -38,6 +38,29 @@ namespace GlobalTheory.Pinch
 
 open MvPolynomial in
 
+/- English proof (translation)
+Introduce `R _ _ R' _ _ _ hinj c hc g C' D E _ _ _ φ δ π ψ hφ hδ h1 h2`. Use `letI : Algebra R' C' := φ.toAlgebra`. Use `letI : Algebra (R ⧸ c) D := δ.toAlgebra`. Use `haveI : Algebra.Smooth R' C' := hφ`. Use `haveI : IsNoetherianRing R' := IsNoetherianRing.of_finite R R'`.
+
+Take `⟨ν₀, σ₀, _, _, P₀, hP₀⟩` from `(show Algebra.IsStandardSmoothOfRelativeDimension g (R ⧸ c) D from hδ).out`. Take `⟨hπ, hker⟩` from `GlobalTheory.T.pushout_quotient_surjective_ker_eq_map R C' E c _ π _ h1`. Take `⟨κ, _, ξ, hξ, hsurj⟩` from `GlobalTheory.T.exists_generators_adapted_to_quotient_generators R (R ⧸ c) R' C' D E ν₀ (algebraMap R R') (Ideal.Quotient.mk c) π ψ P₀.val Ideal.Quotient.mk_surjective hπ P₀.aeval_val_surjective h2`. Take `⟨P, hP⟩` from `GlobalTheory.T.exists_submersivePresentation_add_zero_variables (R ⧸ c) D ν₀ σ₀ κ P₀`. Rewrite `hξ` using `[← hP]`.
+
+Establish `hw : ψ.comp ((algebraMap (R ⧸ c) D).comp (Ideal.Quotient.mk c)) = (π.comp (algebraMap R' C')).comp (algebraMap R R')` using `congrArg CommRingCat.Hom.hom h2.w`. Use `choose F hF hF0 using fun s ↦ GlobalTheory.T.exists_relations_lift_vanishing_conductor GlobalTheory.T.exists_mvPolynomial_lift_conductor_coeffs R R' C' D E _ c hc π ψ P.val ξ hker hw hξ hsurj (P.relation s) (P.aeval_val_relation s)`. Establish `hrel : (fun s ↦ map (Ideal.Quotient.mk c) (F s)) = P.relation` using `funext hF`. Establish `hkP : RingHom.ker (aeval P.val : MvPolynomial _ (R ⧸ c) →ₐ[R ⧸ c] D) = Ideal.span (Set.range fun s ↦ map (Ideal.Quotient.mk c) (F s))`. Rewrite using `[hrel, P.span_range_relation_eq_ker, P.ker_eq_ker_aeval_val]`.
+
+Establish `key : ∀ G : MvPolynomial (κ ⊕ ν₀) R', π (aeval ξ G) = eval₂ (π.comp φ) (fun s ↦ ψ (P.val s)) G` using `fun G ↦ by`. Rewrite using `[aeval_def, eval₂_comp_left]`. Conclude with `congrArg (fun v ↦ eval₂ _ v G) (funext hξ)`. Establish `key2 : ∀ G : MvPolynomial (κ ⊕ ν₀) R, π (aeval ξ (map (algebraMap R R') G)) = ψ (aeval P.val (map (Ideal.Quotient.mk c) G))` using `fun G ↦ by`. Rewrite using `[key, aeval_def, eval₂_comp_left, eval₂_map, eval₂_map]`.
+
+Conclude with `congrArg (fun f ↦ eval₂ f _ G) hw.symm`. Take `⟨s', hs1, hs2⟩` from `GlobalTheory.T.exists_sub_one_mem_mul_ker_nakayama_flat R' (MvPolynomial (κ ⊕ ν₀) R') C' (aeval ξ) hsurj (Ideal.span (Set.range fun s ↦ map (algebraMap R R') (F s))) (c.map (algebraMap R R')) (Ideal.span_le.2 (by rintro _ ⟨s, rfl⟩; exact hF0 s)) (fun G hG ↦ GlobalTheory.T.mem_spa …`. Take `⟨H, hH0, hH⟩` from `GlobalTheory.T.exists_mvPolynomial_lift_conductor_coeffs R R' _ c hc _ hs1`. Use `letI : Fintype (κ ⊕ σ₀) := Fintype.ofFinite _`. Set `Δ : MvPolynomial (κ ⊕ ν₀) R` to `(Matrix.of fun s t ↦ pderiv (P.map s) (F t)).det`.
+
+Establish `hΔ : aeval P.val (map (Ideal.Quotient.mk c) (Δ * (H + 1))) = P.jacobian`. Rewrite using `[map_mul, map_add, hH0, map_one, zero_add, _root_.mul_one, P.jacobian_eq_jacobiMatrix_det, P.algebraMap_apply, RingHom.map_det]`. Use `congr 2`. Use `ext1 s t`. Rewrite using `[P.jacobiMatrix_apply, ← hF, pderiv_map]`.
+
+Both sides reduce to the same expression. Establish `hu : IsUnit (aeval P.val (map (Ideal.Quotient.mk c) (Δ * (H + 1))))` using `hΔ ▸ P.jacobian_isUnit`. Take `⟨α, hα, hα'⟩` from `GlobalTheory.T.isPushout_localized_presentation_baseChange R R' C' (Localization.Away (aeval ξ (map (algebraMap R R') (Δ * (H + 1))))) _ _ (algebraMap R R') F (Δ * (H + 1)) ξ hsurj hF0 (fun G hG ↦ by`. Rewrite using `[map_mul, map_add, hH, map_one, sub_add_cancel, _root_.mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ (hs2 G hG)) inferInstance`.
+
+Take `⟨β, hβ, hβ'⟩` from `GlobalTheory.T.isPushout_localized_presentation_baseChange R (R ⧸ c) D D _ _ (Ideal.Quotient.mk c) F (Δ * (H + 1)) P.val P.aeval_val_surjective (fun s ↦ by rw [hF]; exact P.aeval_val_relation s) (fun G hG ↦ Ideal.mul_mem_left _ _ (hkP ▸ hG)) (IsLocalization.away_of_isUnit_of_bije …`. Establish `ht : IsUnit (π (aeval ξ (map (algebraMap R R') (Δ * (H + 1)))))`. Rewrite using `[key2]`. Conclude with `hu.map ψ`. Use `⟨_, inferInstance, algebraMap R _, _, α, β, IsLocalization.Away.lift _ ht, ?_, hα, hβ, IsLocalization.Away.lift_comp _ ht, ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.T.isStandardSmooth_localizationAway_jacobian_dvd R _ _ P.map P.map_inj F (Δ * (H + 1)) (dvd_mul_right _ _)` as an intermediate fact. Establish `hd : Nat.card (κ ⊕ ν₀) - Nat.card (κ ⊕ σ₀) = g`. Rewrite using `[← hP₀, Algebra.Presentation.dimension, Nat.card_sum, Nat.card_sum]`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[hd]`.
+
+Conclude with `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap g).2 this`. Use `IsLocalization.ringHom_ext (Submonoid.powers (Ideal.Quotient.mk (Ideal.span (Set.range F)) (Δ * (H + 1)))) ?_` and prove the remaining obligations. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun G ↦ ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hα', hβ', IsLocalization.Away.lift_eq, key2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_standardSmooth : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (R' : Type) [CommRing R'] [Algebra R R'] [Module.Finite R R'], Function.Injective (algebraMap R R') → ∀ c : Ideal R, (∀ x ∈ c, ∀ r : R', ∃ y ∈ c, algebraMap R R' y = algebraMap R R' x * r) → ∀ (g : ℕ) (C' D E : Type) [CommRing C'] [CommRing D] [CommRing E] (φ : R' →+* C') (δ : R ⧸ c →+* D) (π : C' →+* E) (ψ : D →+* E), φ.Smooth → δ.IsStandardSmoothOfRelativeDimension g → IsPushout (CommRingCat.ofHom (φ.comp (algebraMap R R'))) (CommRingCat.ofHom (Ideal.Quotient.mk c)) (CommRingCat.ofHom π) (CommRingCat.ofHom (ψ.comp δ)) → IsPushout (CommRingCat.ofHom (δ.comp (Ideal.Quotient.mk c))) (CommRingCat.ofHom (algebraMap R R')) (CommRingCat.ofHom ψ) (CommRingCat.ofHom (π.comp φ)) → ∃ (F : Type) (_ : CommRing F) (ε : R →+* F) (t : C') (α : F →+* Localization.Away t) (β : F →+* D) (τ : Localization.Away t →+* E), ε.IsStandardSmoothOfRelativeDimension g ∧ IsPushout (CommRingCat.ofHom ε) (CommRingCat.ofHom (algebraMap R R')) (CommRingCat.ofHom α) (CommRingCat.ofHom ((algebraMap C' (Localization.Away t)).comp φ)) ∧ IsPushout (CommRingCat.ofHom ε) (CommRingCat.ofHom (Ideal.Quotient.mk c)) (CommRingCat.ofHom β) (CommRingCat.ofHom δ) ∧ τ.comp (algebraMap C' (Localization.Away t)) = π ∧ τ.comp α = ψ.comp β := by
   intro R _ _ R' _ _ _ hinj c hc g C' D E _ _ _ φ δ π ψ hφ hδ h1 h2
   classical
@@ -106,6 +129,19 @@ theorem exists_standardSmooth : ∀ (R : Type) [CommRing R] [IsNoetherianRing R]
     rw [hα', hβ', IsLocalization.Away.lift_eq, key2]
     rfl
 
+/- English proof (translation)
+Introduce `R _ _ R' _ _ _ hinj c hc g C' D E _ _ _ φ δ π ψ hφ hδ h1 h2 y`. Take `⟨F, _, ε, t, α, β, τ, hε, k1, k2, e1, e2⟩` from `exists_standardSmooth R R' hinj c hc g C' D E φ δ π ψ hφ hδ h1 h2`. Establish `p1` using `isPullback_SpecMap_of_isPushout _ _ _ _ h1`. Establish `q1` using `isPullback_SpecMap_of_isPushout _ _ _ _ k1`. Establish `q2` using `isPullback_SpecMap_of_isPushout _ _ _ _ k2`.
+
+Establish `hcl : IsClosedImmersion (spMap (Ideal.Quotient.mk c))` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hβ : IsClosedImmersion (spMap β)` using `MorphismProperty.of_isPullback q2.flip hcl`. Establish `cmp : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (f' : B →+* C), spMap (f'.comp f) = spMap f' ≫ spMap f` using `fun f f' ↦ by`. Rewrite using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `hj : IsOpenImmersion (spMap (algebraMap C' (Localization.Away t)))` using `inferInstance`.
+
+Establish `f1 : spMap τ ≫ spMap (algebraMap C' (Localization.Away t)) = spMap π` using `by rw [← cmp, e1]`. Establish `f2 : spMap τ ≫ spMap α = spMap ψ ≫ spMap β` using `by rw [← cmp, ← cmp, e2]`. Use `⟨Sp F, Sp (Localization.Away t), Sp D, spMap ε, spMap α, spMap (algebraMap C' _), spMap β, 𝟙 _, ?_, ?_, hj, ⟨spMap τ y, ?_⟩, ?_, fun T a a' h ↦ ?_⟩` and prove the remaining obligations. Conclude with `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension g)).2 (RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ hε)`. Rewrite using `[← cmp]`.
+
+Conclude with `q1`. Rewrite using `[← Scheme.Hom.comp_apply, f1]`. Rewrite using `[Category.id_comp]`. Conclude with `q2`. Establish `w : (a ≫ spMap (algebraMap C' (Localization.Away t))) ≫ spMap (φ.comp (algebraMap R R')) = (a' ≫ spMap δ) ≫ spMap (Ideal.Quotient.mk c)`.
+
+Establish `w1 : spMap α ≫ spMap ε = spMap ((algebraMap C' (Localization.Away t)).comp φ) ≫ spMap (algebraMap R R')` using `q1.w`. Establish `w2 : spMap β ≫ spMap ε = spMap δ ≫ spMap (Ideal.Quotient.mk c)` using `q2.w`. Rewrite using `[Category.assoc, Category.assoc, ← w2, ← Category.assoc a', ← h, Category.assoc, w1, cmp (algebraMap R R') φ, cmp φ (algebraMap C' (Localization.Away t)), Category.assoc]`. Establish `l1 : p1.lift _ _ w ≫ spMap π = _` using `p1.lift_fst _ _ w`. Use `⟨p1.lift _ _ w, l1, ?_⟩` and prove the remaining obligations.
+
+Establish `l2 : p1.lift _ _ w ≫ spMap τ = a`. Rewrite using `[← cancel_mono (spMap (algebraMap C' (Localization.Away t))), Category.assoc, f1, l1]`. Rewrite using `[Category.comp_id, ← cancel_mono (spMap β), Category.assoc, ← f2, ← Category.assoc, l2, h]`.
+-/
 theorem pinched_spec : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (R' : Type) [CommRing R'] [Algebra R R'] [Module.Finite R R'], Function.Injective (algebraMap R R') → ∀ c : Ideal R, (∀ x ∈ c, ∀ r : R', ∃ y ∈ c, algebraMap R R' y = algebraMap R R' x * r) → ∀ (g : ℕ) (C' D E : Type) [CommRing C'] [CommRing D] [CommRing E] (φ : R' →+* C') (δ : R ⧸ c →+* D) (π : C' →+* E) (ψ : D →+* E), φ.Smooth → δ.IsStandardSmoothOfRelativeDimension g → IsPushout (CommRingCat.ofHom (φ.comp (algebraMap R R'))) (CommRingCat.ofHom (Ideal.Quotient.mk c)) (CommRingCat.ofHom π) (CommRingCat.ofHom (ψ.comp δ)) → IsPushout (CommRingCat.ofHom (δ.comp (Ideal.Quotient.mk c))) (CommRingCat.ofHom (algebraMap R R')) (CommRingCat.ofHom ψ) (CommRingCat.ofHom (π.comp φ)) → ∀ y : Sp E, GlobalTheory.Pinch.Pinched g (spMap (algebraMap R R')) (spMap (Ideal.Quotient.mk c)) (spMap φ) (spMap δ) (spMap π) (spMap ψ) (spMap π y) := by
   intro R _ _ R' _ _ _ hinj c hc g C' D E _ _ _ φ δ π ψ hφ hδ h1 h2 y
   obtain ⟨F, _, ε, t, α, β, τ, hε, k1, k2, e1, e2⟩ := exists_standardSmooth R R' hinj c hc g C' D E φ δ π ψ hφ hδ h1 h2
@@ -143,6 +179,15 @@ theorem pinched_spec : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (R' : Ty
       rw [← cancel_mono (spMap (algebraMap C' (Localization.Away t))), Category.assoc, f1, l1]
     rw [Category.comp_id, ← cancel_mono (spMap β), Category.assoc, ← f2, ← Category.assoc, l2, h]
 
+/- English proof (translation)
+Introduce `R _ _ R' _ _ _ hinj c hc g B' C Y b' e i q hb he hF h1 h2 x`. Distinguish the cases in `hx : (b' ≫ spMap (algebraMap R R')) x ∈ Set.range (spMap (Ideal.Quotient.mk c))`. Use `swap`. Conclude with `GlobalTheory.T.pinched_chart_off_closed_part_from_base R R' hinj c hc g B' C Y b' e i q hb x hx`. Establish `hfin : IsFinite (spMap (algebraMap R R'))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 inferInstance)`.
+
+Establish `hcl : IsClosedImmersion (spMap (Ideal.Quotient.mk c))` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Choose the witnesses or unpack the hypotheses as in `⟨y, rfl⟩ : x ∈ Set.range i := by`. Take `⟨t, ht⟩` from `hx`. Take `⟨y, hy, -⟩` from `Scheme.exists_preimage_of_isPullback h1 x t ht.symm`. Conclude with `⟨y, hy⟩`.
+
+Take `⟨O, hO, hyO, hstd⟩` from `GlobalTheory.T.exists_affine_nbhd_basicOpen_standardSmooth g C _ e he (q y)`. Take `⟨V', r, hV', hy, hV⟩` from `GlobalTheory.T.exists_affine_open_saturated_basicOpen_preimage B' C Y i q (MorphismProperty.of_isPullback h1.flip hcl) (MorphismProperty.of_isPullback h2.flip hfin) hF y O hO hyO`. Take `⟨q₀, k1, k2, k3⟩` from `GlobalTheory.T.pinched_charts_restrict_matching_opens g _ _ _ B' C Y _ _ b' e i q h1 h2 V' (C.basicOpen r) hV`. Establish `hsm : Smooth b'` using `SmoothOfRelativeDimension.smooth g b'`. Use `k3 _ (GlobalTheory.T.pinched_charts_affine_of_spectra pinched_spec R R' hinj c hc g _ _ _ (V'.ι ≫ b') ((C.basicOpen r).ι ≫ e) (i ∣_ V') q₀ hV' (hO.basicOpen r) inferInstance (hstd r) k1 k2 ⟨y, hy⟩)` as an intermediate fact.
+
+Establish `e0 : V'.ι ((i ∣_ V') ⟨y, hy⟩) = i y` using `(Scheme.Hom.comp_apply (i ∣_ V') V'.ι ⟨y, hy⟩).symm.trans (by rw [morphismRestrict_ι]; rfl)`. Rewrite `this` using `[e0]`. Then use the resulting hypothesis.
+-/
 theorem pinched : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (R' : Type) [CommRing R'] [Algebra R R'] [Module.Finite R R'], Function.Injective (algebraMap R R') → ∀ c : Ideal R, (∀ x ∈ c, ∀ r : R', ∃ y ∈ c, algebraMap R R' y = algebraMap R R' x * r) → ∀ (g : ℕ) (B' C Y : Scheme.{0}) (b' : B' ⟶ Sp R') (e : C ⟶ Sp (R ⧸ c)) (i : Y ⟶ B') (q : Y ⟶ C), SmoothOfRelativeDimension g b' → SmoothOfRelativeDimension g e → FinAff B' → IsPullback i (q ≫ e) (b' ≫ spMap (algebraMap R R')) (spMap (Ideal.Quotient.mk c)) → IsPullback q (i ≫ b') (e ≫ spMap (Ideal.Quotient.mk c)) (spMap (algebraMap R R')) → ∀ x : B', GlobalTheory.Pinch.Pinched g (spMap (algebraMap R R')) (spMap (Ideal.Quotient.mk c)) b' e i q x := by
   intro R _ _ R' _ _ _ hinj c hc g B' C Y b' e i q hb he hF h1 h2 x
   by_cases hx : (b' ≫ spMap (algebraMap R R')) x ∈ Set.range (spMap (Ideal.Quotient.mk c))
@@ -167,6 +212,21 @@ theorem pinched : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (R' : Type) [
     (Scheme.Hom.comp_apply (i ∣_ V') V'.ι ⟨y, hy⟩).symm.trans (by rw [morphismRestrict_ι]; rfl)
   rwa [e0] at this
 
+/- English proof (translation)
+Introduce `X X' Z Z' p i i' p' hsq hp hi hc c' d h`. Take `⟨L', hL', rfl⟩` from `cls_surj c'`. Take `⟨N, hN, rfl⟩` from `cls_surj d`. Take `⟨w, hw⟩` from `(cls_eq_iff (pull_isLB hL' i') (pull_isLB hN p')).1 h`. Establish `hw' : ∀ z : Z', p (i' z) = i (p' z)` using `fun z ↦ by`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, hsq.w, Scheme.Hom.comp_apply]`. Establish `loc : ∀ x : X, ∃ (W : X.Opens) (a : ∀ k, Γ(X', p ⁻¹ᵁ W ⊓ L'.U k)ˣ) (b : ∀ l, Γ(Z, i ⁻¹ᵁ W ⊓ N.U l)ˣ), x ∈ W ∧ GlobalTheory.Pinch.LocGen L' (p ⁻¹ᵁ W) a ∧ GlobalTheory.Pinch.LocGen N (i ⁻¹ᵁ W) b ∧ GlobalTheory.Pinch.Matches i' p' w a b`. Introduce `x`. Take `⟨W₁, a, h₁, ha⟩` from `GlobalTheory.T.exists_local_generator_finite_cover_near_point GlobalTheory.T.exists_lineBundle_localGenerator_near_finiteSet X X' p hp L' hL' x`. Take `⟨W₂, b, h₂, hb⟩` from `GlobalTheory.T.exists_local_generator_finite_cover_near_point GlobalTheory.T.exists_lineBundle_localGenerator_near_finiteSet X Z i inferInstance N hN x`.
+
+Take `⟨u, hu⟩` from `GlobalTheory.T.exists_unit_ratio_local_generators_common_pullback X' Z Z' i' p' L' N hL' hN w hw _ _ a b ha hb (i' ⁻¹ᵁ (p ⁻¹ᵁ (W₁ ⊓ W₂))) (fun z hz ↦ hz.1) (fun z hz ↦ show i (p' z) ∈ W₂ from hw' z ▸ hz.2)`. Take `⟨W, u', hW, hx, hu'⟩` from `GlobalTheory.T.exists_unit_lift_closed_subscheme_near_fibre X X' Z Z' p i i' p' hsq hp hi (W₁ ⊓ W₂) x ⟨h₁, h₂⟩ u`. Establish `l₁ : ∀ k, p ⁻¹ᵁ W ⊓ L'.U k ≤ p ⁻¹ᵁ W₁ ⊓ L'.U k` using `fun k y hy ↦ ⟨(hW hy.1).1, hy.2⟩`. Establish `l₂ : ∀ l, i ⁻¹ᵁ W ⊓ N.U l ≤ i ⁻¹ᵁ W₂ ⊓ N.U l` using `fun k y hy ↦ ⟨(hW hy.1).2, hy.2⟩`. Use `⟨W, fun k ↦ res inf_le_left u' * res (l₁ k) (a k), fun l ↦ res (l₂ l) (b l), hx, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `y k k' hy hk hk'`. Establish `m : (𝟙 X' : X' ⟶ X') y ∈ p ⁻¹ᵁ W ⊓ L'.U k` using `⟨hy, hk⟩`. Establish `m' : (𝟙 X' : X' ⟶ X') y ∈ p ⁻¹ᵁ W ⊓ L'.U k'` using `⟨hy, hk'⟩`. Rewrite using `[map_mul, map_mul, gm_res _ _ _ m, gm_res _ _ _ m, gm_res _ _ _ m', gm_res _ _ _ m', ha y k k' (hW hy).1 hk hk', mul_left_comm]`. Introduce `y k k' hy hk hk'`.
+
+Establish `m : (𝟙 Z : Z ⟶ Z) y ∈ i ⁻¹ᵁ W ⊓ N.U k` using `⟨hy, hk⟩`. Establish `m' : (𝟙 Z : Z ⟶ Z) y ∈ i ⁻¹ᵁ W ⊓ N.U k'` using `⟨hy, hk'⟩`. Rewrite using `[gm_res _ _ _ m, gm_res _ _ _ m', hb y k k' (hW hy).2 hk hk']`. Introduce `z k l h1 h2 hk hl`. Establish `m : i' z ∈ p ⁻¹ᵁ W ⊓ L'.U k` using `⟨h1, hk⟩`.
+
+Establish `m' : p' z ∈ i ⁻¹ᵁ W ⊓ N.U l` using `⟨h2, hl⟩`. Rewrite using `[map_mul, gm_res _ _ _ m, gm_res _ _ _ m, gm_res _ _ _ m', hu' z h1]`. Conclude with `hu z k l (hW h1) hk hl`. Use `choose W a b hx ha hb hm using loc`. Take `⟨L, hL, hiso⟩` from `GlobalTheory.T.exists_lineBundle_pinched_of_matching_generators X X' Z Z' p i i' p' hsq.w (GlobalTheory.T.pinchingSquare_unitsPatch X X' Z Z' p i i' p' hsq inferInstance hi hc) L' N hL' hN w W a b hx ha hb hm`.
+
+Conclude with `⟨cls L hL, (cls_eq_iff (pull_isLB hL p) hL').2 hiso⟩`.
+-/
 theorem exists_pic_patch : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z), IsPullback i' p' p i → IsFinite p → IsClosedImmersion i → GlobalTheory.Pinch.Cond p i → ∀ (c' : Pic X') (d : Pic Z), GlobalTheory.CechPic.pull i' c' = GlobalTheory.CechPic.pull p' d → ∃ c : Pic X, GlobalTheory.CechPic.pull p c = c' := by
   intro X X' Z Z' p i i' p' hsq hp hi hc c' d h
   obtain ⟨L', hL', rfl⟩ := cls_surj c'
@@ -204,6 +264,11 @@ theorem exists_pic_patch : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z �
     L' N hL' hN w W a b hx ha hb hm
   exact ⟨cls L hL, (cls_eq_iff (pull_isLB hL p) hL').2 hiso⟩
 
+/- English proof (translation)
+Establish `: IsPullback (A ◁ f) (snd A T') (snd A T) f`. Use `⟨⟨by simp⟩, ⟨PullbackCone.IsLimit.mk _ (fun s ↦ lift (s.fst ≫ fst A T) s.snd) (fun s ↦ ?_) (fun s ↦ by simp) (fun s m h₁ h₂ ↦ ?_)⟩⟩` and prove the remaining obligations. Use `ext`. Simplify using the standard rewrite rules. Simplify using `[s.condition]`.
+
+Use `ext`. Simplify using `[← h₁]`. Simplify using `[← h₂]`. Conclude with `this.map (Over.forget S)`.
+-/
 theorem isPullback_whisker {S : Scheme.{0}} (A : Over S) {T T' : Over S} (f : T' ⟶ T) :
     IsPullback (A ◁ f).left (snd A T').left (snd A T).left f.left := by
   have : IsPullback (A ◁ f) (snd A T') (snd A T) f := by
@@ -217,6 +282,37 @@ theorem isPullback_whisker {S : Scheme.{0}} (A : Over S) {T T' : Over S} (f : T'
       · simp [← h₂]
   exact this.map (Over.forget S)
 
+/- English proof (translation)
+Introduce `R _ _ A _ g hA hg R' _ _ _ hinj c hc ⟨B', b', P', hP', hG', hF⟩ ⟨C, e, Q, hQ, hG⟩`. Establish `hfin : IsFinite (spMap (algebraMap R R'))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 inferInstance)`. Establish `hsur : Surjective (spMap (algebraMap R R'))`. Use `⟨fun x ↦ ?_⟩` and prove the remaining obligations. Establish `: FaithfulSMul R R'` using `(faithfulSMul_iff_algebraMap_injective R R').2 hinj`.
+
+Conclude with `Algebra.IsIntegral.comap_surjective R R' x`. Establish `hcl : IsClosedImmersion (spMap (Ideal.Quotient.mk c))` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `GlobalTheory.T.representingScheme_of_finite_surjective_lift R A g hA hg B' _ b' P' hfin hsur hP' hG' fun x ↦ ?_` and prove the remaining obligations. Take `⟨q, hq, hpb, hS⟩` from `GlobalTheory.T.representsAdditiveLineBundleFamilies_compare _ A B' _ C _ b' P' e Q hP' hQ`. Establish `wb : b'.left ≫ spMap (algebraMap R R') = B'.hom` using `Over.w b'`.
+
+Establish `we : e.left ≫ spMap (Ideal.Quotient.mk c) = C.hom` using `Over.w e`. Establish `hq' : q.left ≫ e.left = pullback.snd B'.hom (spMap (Ideal.Quotient.mk c))` using `congrArg (·.left) hq`. Take `⟨U, U', V, u, p, j, n, k, hu, h1, hj, hx, h2, h3⟩` from `pinched R R' hinj c hc g B'.left C.left (B' ⊗ Over.mk (spMap (Ideal.Quotient.mk c))).left b'.left e.left (fst B' _).left q.left hG'.smooth hG.smooth hF (by rw [wb, hq']; exact IsPullback.of_hasPullback _ _) (by rw [we]; exact hpb) x`. Set `Uo : Over (Sp R)` to `Over.mk u`. Set `U'o : Over (Sp R)` to `Over.mk (p ≫ u)`.
+
+Set `Vo : Over (Sp R)` to `Over.mk (n ≫ u)`. Set `po : U'o ⟶ Uo` to `Over.homMk p rfl`. Set `no : Vo ⟶ Uo` to `Over.homMk n rfl`. Set `jo : U'o ⟶ B'` to `Over.homMk j (by change j ≫ B'.hom = p ≫ u; rw [← wb, h1.w, Category.assoc])`. Set `ko : Vo ⟶ C` to `Over.homMk k (by change k ≫ C.hom = n ≫ u; rw [← we, h2.w, Category.assoc])`.
+
+Set `Wo : Over (Sp R)` to `Over.mk (pullback.fst p n ≫ p ≫ u)`. Set `ao : Wo ⟶ U'o` to `Over.homMk (pullback.fst p n) rfl`. Set `bo : Wo ⟶ Vo` to `Over.homMk (pullback.snd p n) (by`. Express the relevant statement in the definitionally equal form `pullback.snd p n ≫ n ≫ u = pullback.fst p n ≫ p ≫ u`. Rewrite using `[pullback.condition_assoc])`.
+
+Take `⟨y, hy1, hy2⟩` from `h3 _ (pullback.fst p n) (pullback.snd p n) pullback.condition`. Set `yo : Wo ⟶ B' ⊗ Over.mk (spMap (Ideal.Quotient.mk c))` to `Over.homMk y (by`. Rewrite using `[← Over.w (fst B' (Over.mk (spMap (Ideal.Quotient.mk c)))), ← Category.assoc, hy1]`. Conclude with `Over.w (ao ≫ jo))`. Establish `hy1' : yo ≫ fst _ _ = ao ≫ jo` using `Over.OverMorphism.ext hy1`.
+
+Establish `hy2' : yo ≫ q = bo ≫ ko` using `Over.OverMorphism.ext hy2`. Establish `hsm : Smooth u` using `SmoothOfRelativeDimension.smooth g u`. Establish `hsA : Smooth A.hom` using `SmoothOfRelativeDimension.smooth g _`. Establish `hp : IsFinite p` using `MorphismProperty.of_isPullback h1.flip hfin`. Establish `hps : Surjective p` using `MorphismProperty.of_isPullback h1.flip hsur`.
+
+Establish `hn : IsClosedImmersion n` using `MorphismProperty.of_isPullback h2.flip hcl`. Establish `hnoe : IsLocallyNoetherian Uo.left` using `LocallyOfFiniteType.isLocallyNoetherian u`. Establish `hfl : Flat ((snd A Uo).left ≫ u)`. Establish `: Flat (snd A Uo).left` using `inferInstanceAs (Flat (pullback.snd A.hom u))`. Use `infer_instance`.
+
+Establish `hcond` using `GlobalTheory.T.conductorSquare_flat_baseChange_schemes R R' hinj c hc _ _ _ _ _ _ _ _ hfl ((isPullback_whisker A po).paste_vert h1) ((isPullback_whisker A no).paste_vert h2)`. Establish `hsq : IsPullback (A ◁ ao).left (A ◁ bo).left (A ◁ po).left (A ◁ no).left`. Establish `big : IsPullback (A ◁ ao).left ((snd A Wo).left ≫ bo.left) ((snd A U'o).left ≫ po.left) no.left` using `(isPullback_whisker A ao).paste_vert ((IsPullback.of_hasPullback p n) : IsPullback ao.left bo.left po.left no.left)`. Establish `e1 : (snd A Wo).left ≫ bo.left = (A ◁ bo).left ≫ (snd A Vo).left` using `(isPullback_whisker A bo).w.symm`. Establish `e2 : (snd A U'o).left ≫ po.left = (A ◁ po).left ≫ (snd A Uo).left` using `(isPullback_whisker A po).w.symm`.
+
+Rewrite `big` using `[e1, e2]`. Use `IsPullback.of_bot big ?_ (isPullback_whisker A no)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← MonoidalCategory.whiskerLeft_comp, ← MonoidalCategory.whiskerLeft_comp]`. Conclude with `congrArg (fun t ↦ (A ◁ t).left) (Over.OverMorphism.ext pullback.condition)`. Establish `hN : Fam A (ev P' (fst A U'o) (snd A U'o ≫ jo))`.
+
+Establish `hl : (ev P' (fst A U'o) (snd A U'o ≫ jo)).IsLB` using `pull_isLB hP'.fam.isLB _`. Use `⟨hl, (isAdditive_iff hl).2 fun Y a a' t ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [evc_ev hP'.fam.isLB, lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff hP'.fam.isLB).1 hP'.fam.add _ _ _ _`. Take `⟨c₀, hc₀⟩` from `exists_pic_patch _ _ _ _ _ _ _ _ hsq (MorphismProperty.of_isPullback (isPullback_whisker A po).flip hp) (MorphismProperty.of_isPullback (isPullback_whisker A no).flip hn) hcond (evc hP'.fam.isLB (fst A U'o) (snd A U'o ≫ jo)) (evc hQ.fam.isLB (fst A Vo) (snd A Vo ≫ ko)) (by`.
+
+Use `congrArg (GlobalTheory.CechPic.pull (A ◁ yo).left) ((same_iff hP'.fam.isLB hQ.fam.isLB _ _).1 hS)` as an intermediate fact. Simplify using `only [pull_evc, whiskerLeft_fst, whiskerLeft_snd_assoc, hy1', hy2'] at this ⊢`. Conclude with `this)`. Take `⟨M, hM, hMS⟩` from `GlobalTheory.T.exists_additiveFamily_of_pullback_finiteSurjective _ A Uo U'o hA po hp hps _ hN c₀ hc₀`. Set `S' : Over (Sp R)` to `Over.mk (spMap (algebraMap R R'))`.
+
+Set `r : Uo ⊗ S' ⟶ U'o` to `Over.homMk h1.isoPullback.inv (by`. Express the relevant statement in the definitionally equal form `h1.isoPullback.inv ≫ p ≫ u = pullback.fst u (spMap (algebraMap R R')) ≫ u`. Rewrite using `[h1.isoPullback_inv_fst_assoc])`. Establish `r1 : r ≫ po = fst Uo S'` using `Over.OverMorphism.ext h1.isoPullback_inv_fst`. Use `⟨Uo, M, r ≫ jo, hM, hu, Over.OverMorphism.ext h1.isoPullback_inv_snd, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `IsOpenImmersion (h1.isoPullback.inv ≫ j) infer_instance`. Take `⟨x', rfl⟩` from `hx`. Use `⟨h1.isoPullback.hom x', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(h1.isoPullback.hom ≫ h1.isoPullback.inv ≫ j) x' = _`. Rewrite using `[Iso.hom_inv_id_assoc]`.
+
+Use `(same_iff hM.isLB hP'.fam.isLB _ _).2 ?_` and prove the remaining obligations. Use `congrArg (GlobalTheory.CechPic.pull (A ◁ r).left) ((same_iff hM.isLB hN.isLB _ _).1 hMS)` as an intermediate fact. Simplify using `only [pull_evc, whiskerLeft_fst, whiskerLeft_snd_assoc, r1, evc_ev hP'.fam.isLB, lift_fst, lift_snd_assoc, Category.comp_id, whiskerLeft_snd] at this`. Simplify `this` using `only [Category.assoc]`.
+-/
 theorem hasRep_pinched : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (R' : Type) [CommRing R'] [Algebra R R'] [Module.Finite R R'], Function.Injective (algebraMap R R') → ∀ c : Ideal R, (∀ x ∈ c, ∀ r : R', ∃ y ∈ c, algebraMap R R' y = algebraMap R R' x * r) → HasRepAF A g (Over.mk (spMap (algebraMap R R'))) → HasRep A g (Over.mk (spMap (Ideal.Quotient.mk c))) → HasRep A g (𝟙_ _) := by
   intro R _ _ A _ g hA hg R' _ _ _ hinj c hc ⟨B', b', P', hP', hG', hF⟩ ⟨C, e, Q, hQ, hG⟩
   have hfin : IsFinite (spMap (algebraMap R R')) :=

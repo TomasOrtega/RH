@@ -16,16 +16,32 @@ noncomputable def fac (g : GL a k) (h : GL b k) : ℝ :=
   nabs k (Matrix.GeneralLinearGroup.det g) ^ ((Fintype.card b : ℝ) / 2) *
     nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(Fintype.card a : ℝ) / 2)
 
+/- English proof (translation)
+The claim follows from `mul_pos (Real.rpow_pos_of_pos (nabs_pos' _) _) (Real.rpow_pos_of_pos (nabs_pos' _) _)`.
+-/
 theorem fac_pos (g : GL a k) (h : GL b k) : 0 < fac g h :=
   mul_pos (Real.rpow_pos_of_pos (nabs_pos' _) _) (Real.rpow_pos_of_pos (nabs_pos' _) _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[om, fac]`.
+-/
 theorem om_one_eq (g : GL a k) (h : GL b k) (Φ : Matrix b a k → ℂ) :
     om 1 g h Φ = fun x => (fac g h : ℂ) * Φ ((h⁻¹).val * x * g.val) := by
   funext x
   simp [om, fac]
 
+/- English proof (translation)
+Simplify using `[nabs]`.
+-/
 theorem nabs_inv (x : kˣ) : nabs k x⁻¹ = (nabs k x)⁻¹ := by simp [nabs]
 
+/- English proof (translation)
+Establish `hg` using `nabs_pos' (Matrix.GeneralLinearGroup.det g)`. Establish `hh` using `nabs_pos' (Matrix.GeneralLinearGroup.det h)`. Rewrite using `[map_inv, nabs_inv, Real.inv_rpow hh.le, ← Real.rpow_neg hh.le, neg_neg, fac]`. Use `set x := nabs k (Matrix.GeneralLinearGroup.det g)`. Use `set y := nabs k (Matrix.GeneralLinearGroup.det h)`.
+
+Establish `e1 : x ^ ((Fintype.card b : ℝ) / 2) * x ^ ((Fintype.card b : ℝ) / 2) * x ^ (-(Fintype.card b : ℝ)) = 1`. Rewrite using `[← Real.rpow_add hg, ← Real.rpow_add hg]`. Simplify using the standard rewrite rules. Establish `e2 : y ^ (-(Fintype.card a : ℝ) / 2) * y ^ (-(Fintype.card a : ℝ) / 2) * y ^ (Fintype.card a : ℝ) = 1`. Rewrite using `[← Real.rpow_add hh, ← Real.rpow_add hh]`.
+
+Simplify using the standard rewrite rules. Take the linear combination `(y ^ (-(Fintype.card a : ℝ) / 2) * y ^ (-(Fintype.card a : ℝ) / 2) * y ^ (Fintype.card a : ℝ)) * e1 + e2`.
+-/
 theorem fac_sq_mul (g : GL a k) (h : GL b k) :
     fac g h * fac g h * (nabs k (Matrix.GeneralLinearGroup.det h⁻¹) ^ (-(Fintype.card a : ℝ)) *
         nabs k (Matrix.GeneralLinearGroup.det g) ^ (-(Fintype.card b : ℝ))) = 1 := by
@@ -43,6 +59,13 @@ theorem fac_sq_mul (g : GL a k) (h : GL b k) :
 
 variable [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Establish `key` using `integral_comp_mul_mul_volM ν g h⁻¹ (fun x => Φ x * (starRingEnd ℂ) (Φ x))`. Establish `e` using `fac_sq_mul g h`. Rewrite using `[om_one_eq]`. Unfold `ip`. Establish `: ∀ x : Matrix b a k, (fac g h : ℂ) * Φ ((h⁻¹).val * x * g.val) * (starRingEnd ℂ) ((fac g h : ℂ) * Φ ((h⁻¹).val * x * g.val)) = ((fac g h * fac g h : ℝ) : ℂ) * (Φ ((h⁻¹).val * x * g.val) * (starRingEnd ℂ) (Φ ((h⁻¹).val * x * g.val)))`.
+
+Introduce `x`. Rewrite using `[map_mul, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[this]`.
+
+Rewrite using `[integral_const_mul, key, Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul, e]`. Simplify using the standard rewrite rules.
+-/
 theorem ip_om_one (g : GL a k) (h : GL b k) (Φ : Matrix b a k → ℂ) :
     ip ν (om 1 g h Φ) (om 1 g h Φ) = ip ν Φ Φ := by
   have key := integral_comp_mul_mul_volM ν g h⁻¹ (fun x => Φ x * (starRingEnd ℂ) (Φ x))
@@ -60,6 +83,13 @@ theorem ip_om_one (g : GL a k) (h : GL b k) (Φ : Matrix b a k → ℂ) :
 
 omit [DecidableEq a] [DecidableEq b] in
 
+/- English proof (translation)
+Take `⟨hl, hK⟩ : IsLocallyConstant Φ ∧ HasCompactSupport Φ` from `hΦ`. Take `⟨h2, ht⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Establish `: BorelSpace (Matrix b a k)` using `inferInstanceAs (BorelSpace (b → a → k))`. Establish `: (volM ν b a).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `hc : Continuous fun x => Complex.normSq (Φ x)` using `Complex.continuous_normSq.comp hl.continuous`.
+
+Establish `hs : HasCompactSupport fun x => Complex.normSq (Φ x)` using `hK.comp_left (g := Complex.normSq) (by simp)`. Establish `e : ∫ x, Complex.normSq (Φ x) ∂(volM ν b a) = 0`. Unfold `ip at h0`. Rewrite `h0` using `[Complex.mul_conj]`. Rewrite `h0` using `[integral_complex_ofReal]`.
+
+Conclude with `h0` after adjusting the coercions. Use `(integral_eq_zero_iff_of_nonneg (fun x => Complex.normSq_nonneg _) (hc.integrable_of_hasCompactSupport hs)).1 e` as an intermediate fact. Use `(hc.ae_eq_iff_eq _ continuous_zero).1 this` as an intermediate fact. Use function extensionality and compare the values at `x`. Conclude with `Complex.normSq_eq_zero.1 (congrFun this x)`.
+-/
 theorem eq_zero_of_ip_eq_zero {Φ : Matrix b a k → ℂ} (hΦ : Φ ∈ SB (Matrix b a k)) (h0 : ip ν Φ Φ = 0) : Φ = 0 := by
   obtain ⟨hl, hK⟩ : IsLocallyConstant Φ ∧ HasCompactSupport Φ := hΦ
   obtain ⟨h2, ht⟩ := Model.secondCountable_and_t2_local_field (k := k)
@@ -84,6 +114,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D v m n g h`. Use `letI := GlobalTheory.LocalData.complRel v`. Use `haveI := GlobalTheory.LocalData.isLocalField v`. Use `haveI : BorelSpace (Fv D.host.F v) := ⟨rfl⟩`. Use `⟨⟨fac g h, fac_pos g h, fun Φ => om_one_eq g h Φ⟩, fun Φ hΦ => ⟨?_, fun ν hν => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.SplitWeil.Model.om_mem_SB 1 g h hΦ`. Conclude with `ip_om_one ν g h Φ`. Conclude with `eq_zero_of_ip_eq_zero ν hΦ`.
+-/
 theorem linOm_unitary : ∀ (D : D7) (v : FinPl D) (m n : ℕ) (g : GL (Fin n) (Fv D.host.F v)) (h : GL (Fin m) (Fv D.host.F v)), (∃ r : ℝ, 0 < r ∧ ∀ Φ : Matrix (Fin m) (Fin n) (Fv D.host.F v) → ℂ, linOm v g h Φ = fun x => (r : ℂ) * Φ ((h⁻¹).val * x * g.val)) ∧ ∀ Φ ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin m) (Fin n) (Fv D.host.F v)), linOm v g h Φ ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin m) (Fin n) (Fv D.host.F v)) ∧ ∀ ν : Measure (Fv D.host.F v), ν.IsAddHaarMeasure → GlobalTheory.SplitWeil.ip ν (linOm v g h Φ) (linOm v g h Φ) = GlobalTheory.SplitWeil.ip ν Φ Φ ∧ (GlobalTheory.SplitWeil.ip ν Φ Φ = 0 → Φ = 0) := by
   intro D v m n g h
   letI := GlobalTheory.LocalData.complRel v

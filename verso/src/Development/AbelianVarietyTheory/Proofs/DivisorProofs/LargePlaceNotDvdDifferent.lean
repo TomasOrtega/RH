@@ -13,6 +13,13 @@ namespace GlobalTheory.DiffSOne
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h' : ({w : HeightOneSpectrum (𝓞 L) | ((p : ℕ) : 𝓞 L) ∈ w.asIdeal}).ncard = Module.finrank ℚ L`. Rewrite using `[← h, Formalism.L2.SG.Pf.TypedLoc.primesOver_eq L hp]`. Conclude with `(Set.ncard_image_of_injective _ fun v w hvw => HeightOneSpectrum.ext hvw).symm`. Take `⟨he, -⟩` from `Formalism.L2.SG.Pf.TypedLoc.tower_ef K L hp h' v hv`. Establish `hvq : v.asIdeal ∈ (Ideal.span {(p : ℤ)}).primesOver (𝓞 K)`.
+
+Rewrite using `[Formalism.L2.SG.Pf.TypedLoc.primesOver_eq K hp]`. Conclude with `⟨v, hv, rfl⟩`. Establish `: v.asIdeal.LiesOver (Ideal.span {(p : ℤ)})` using `hvq.2`. Establish `: v.asIdeal.IsPrime` using `v.isPrime`. Rewrite `he` using `[Ideal.ramificationIdx'_eq_ramificationIdx _ _ (Formalism.L2.SG.Pf.TypedLoc.span_p_ne_bot hp)]`.
+
+Rewrite using `[not_dvd_differentIdeal_iff, Algebra.isUnramifiedAt_iff_of_isDedekindDomain]`. Conclude with `he`.
+-/
 theorem not_dvd_diff_of_split (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     {p : ℕ} (hp : p.Prime)
     (h : (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 L)).ncard = Module.finrank ℚ L)
@@ -30,6 +37,11 @@ theorem not_dvd_diff_of_split (K L : Type) [Field K] [NumberField K] [Field L] [
   rw [not_dvd_differentIdeal_iff, Algebra.isUnramifiedAt_iff_of_isDedekindDomain]
   exact he
 
+/- English proof (translation)
+Introduce `D large₂ hR v hv`. Take `⟨⟨Pm, -, -⟩, -⟩` from `hR.size`. Break down `(S1_mem_OmF D).1 hv with h | h | h | h` into its components or cases. Conclude with `Formalism.L2.SG.Pf.FibD.not_dvd_diff v 0 h`. Conclude with `Formalism.L2.SG.Pf.FibD.not_dvd_diff v 1 h`.
+
+Conclude with `not_dvd_diff_of_split D.host.F D.host.E D.host.pde_prime Pm.pde_split.1 v h`. Conclude with `not_dvd_diff_of_split D.host.F D.host.E D.host.pde'_prime Pm.pde_split.2 v h`.
+-/
 theorem not_dvd_differentIdeal : ∀ {D : D7} (large₂ : SizeData₂ D), Rec large₂ → ∀ v : HeightOneSpectrum (𝓞 D.host.F), v ∈ S1 D →
     ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 D.host.F) := by
   intro D large₂ hR v hv

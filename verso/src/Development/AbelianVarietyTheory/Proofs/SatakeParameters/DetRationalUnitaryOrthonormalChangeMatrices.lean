@@ -14,8 +14,16 @@ section Gen
 
 variable {E : Type} [Field E] {N : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toLE_eq_mulVec (γ : GL (Fin N) E) (x : Fin N → E) : toLE γ x = γ.1 *ᵥ x := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(toLE co).surjective x`. Establish `h1 : (co⁻¹ : GL (Fin N) E).1 * co.1 = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2 : (toLE (1 : GL (Fin N) E)) = LinearEquiv.refl E _`. Use extensionality with `z : 1`.
+
+Simplify using `[toLE_eq_mulVec]`. Establish `h3 : Matrix.toLin' (co.1 * γ.1 * (co⁻¹).1) (toLE co y) = toLE co (toLE γ y)`. Rewrite using `[Matrix.toLin'_apply, toLE_eq_mulVec, toLE_eq_mulVec, toLE_eq_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc _ (co⁻¹).1, h1, Matrix.mul_one]`. Rewrite using `[LinearMap.comp_apply, h3]`. Simplify using `[toStdCo, stdG, h2]`.
+-/
 theorem toStdCo_stdG_eq (σ : E →+* E) (G : Matrix (Fin N) (Fin N) E) (co γ : GL (Fin N) E) :
     ((toStdCo σ G co).trans (stdG σ G γ)).toLinearMap =
       ((toStdCo σ G co).trans (stdG σ G 1)).toLinearMap ∘ₗ Matrix.toLin' (co.1 * γ.1 * (co⁻¹).1) := by
@@ -31,6 +39,9 @@ theorem toStdCo_stdG_eq (σ : E →+* E) (G : Matrix (Fin N) (Fin N) E) (co γ :
   rw [LinearMap.comp_apply, h3]
   simp [toStdCo, stdG, h2]
 
+/- English proof (translation)
+Rewrite using `[toStdCo_stdG_eq, LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', Matrix.det_mul, Matrix.det_mul, Matrix.det_mul]`. Establish `h : (co.1).det * ((co⁻¹ : GL (Fin N) E).1).det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem det_toStdCo_stdG (σ : E →+* E) (G : Matrix (Fin N) (Fin N) E) (co γ : GL (Fin N) E) :
     (LinearMap.toMatrix' ((toStdCo σ G co).trans (stdG σ G γ)).toLinearMap).det =
       γ.1.det * (LinearMap.toMatrix' ((toStdCo σ G co).trans (stdG σ G 1)).toLinearMap).det := by
@@ -42,10 +53,20 @@ theorem det_toStdCo_stdG (σ : E →+* E) (G : Matrix (Fin N) (Fin N) E) (co γ 
         (LinearMap.toMatrix' ((toStdCo σ G co).trans (stdG σ G 1)).toLinearMap).det := by ring
     _ = _ := by rw [h, mul_one]
 
+/- English proof (translation)
+Rewrite using `[cT, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_cT (σ : E →+* E) (M : Matrix (Fin N) (Fin N) E) : (cT σ M).det = σ M.det := by
   rw [cT, Matrix.det_transpose, RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Establish `hγ' : cT σ γ.1 * G * γ.1 = G` using `hγ`. Establish `hG : G.det ≠ 0`. Rewrite using `[← hco, Matrix.det_mul, det_cT]`. Establish `hc : (co.1).det ≠ 0` using `(Matrix.isUnit_iff_isUnit_det _).mp co.isUnit |>.ne_zero`. Conclude with `mul_ne_zero ((map_ne_zero σ).mpr hc) hc`.
+
+Establish `h` using `congrArg Matrix.det hγ'`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, det_cT]`. Establish `h' : (σ γ.1.det * γ.1.det - 1) * G.det = 0` using `by linear_combination h`. Break down `mul_eq_zero.mp h' with h0 | h0` into its components or cases. Conclude with `sub_eq_zero.mp h0`.
+
+Conclude with `absurd h0 hG`.
+-/
 theorem det_norm_of_UJ (σ : E →+* E) (G : Matrix (Fin N) (Fin N) E) (co γ : GL (Fin N) E)
     (hco : cT σ co.1 * co.1 = G) (hγ : γ ∈ UJ σ G) : σ γ.1.det * γ.1.det = 1 := by
   have hγ' : cT σ γ.1 * G * γ.1 = G := hγ
@@ -66,6 +87,13 @@ end GlobalTheory.TwV.DelB
 
 namespace GlobalTheory.TwV.DelB
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S k hk`. Establish `hs : ∀ y : D.host.E, (sigD D : D.host.E →+* D.host.E) y = D.host.conj y` using `fun y => Formalism.BasicNotions.bridge_star_holds D.R D.host y`. Establish `hco` using `J.pins.crd_orth k hk`. Use `⟨?_, fun γ hγ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.TwV.cT_mul_self_toStdCo_stdG (sigD D : D.host.E →+* D.host.E) (gramN D k hk) (J.A.crd k hk) 1 hco (Subgroup.one_mem _)`.
+
+Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[Matrix.det_mul, det_cT, Matrix.det_one, hs]`. Rewrite using `[mul_comm]`. Conclude with `h2`. Conclude with `det_toStdCo_stdG _ _ _ _`.
+
+Establish `h` using `det_norm_of_UJ (sigD D : D.host.E →+* D.host.E) (gramN D k hk) (J.A.crd k hk) γ hco hγ`. Rewrite `h` using `[hs, mul_comm]`. Conclude with `h`.
+-/
 theorem gMat_det : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     ∀ k (hk : k ≤ D.R.m), (gMat J k hk 1).det * D.host.conj (gMat J k hk 1).det = 1 ∧
       ∀ γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D k hk),

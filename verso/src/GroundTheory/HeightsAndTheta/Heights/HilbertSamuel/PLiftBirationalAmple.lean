@@ -19,6 +19,9 @@ section Sections
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
   (y : (Σ k, ι k) → Ω)
 
+/- English proof (translation)
+Use `show (∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * a k)) ∈ chartRingZ y c) ↔ _`. Simplify using `only [Nat.cast_one, one_mul]`.
+-/
 theorem mem_chartLat_one {a : K → ℤ} {s : Ω} :
     s ∈ chartLat y a 1 ↔
       ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-a k) ∈ chartRingZ y c := by
@@ -28,6 +31,13 @@ theorem mem_chartLat_one {a : K → ℤ} {s : Ω} :
 
 variable {y}
 
+/- English proof (translation)
+Rewrite `hs`, `hu`, the goal using `[mem_chartLat_one]`. Introduce `c hc`. Establish `e : s * u * ∏ k, y ⟨k, c k⟩ ^ (-(a + b) k) = (s * ∏ k, y ⟨k, c k⟩ ^ (-a k)) * (u * ∏ k, y ⟨k, c k⟩ ^ (-b k))`. Rewrite using `[mul_mul_mul_comm, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (hc k)]`. Use `congr 1`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `mul_mem (hs c hc) (hu c hc)`.
+-/
 theorem chartLat_mul {a b : K → ℤ} {s u : Ω} (hs : s ∈ chartLat y a 1) (hu : u ∈ chartLat y b 1) :
     s * u ∈ chartLat y (a + b) 1 := by
   rw [mem_chartLat_one] at hs hu ⊢
@@ -44,11 +54,17 @@ theorem chartLat_mul {a b : K → ℤ} {s u : Ω} (hs : s ∈ chartLat y a 1) (h
   rw [e]
   exact mul_mem (hs c hc) (hu c hc)
 
+/- English proof (translation)
+Rewrite using `[mem_chartLat_one]`. Introduce `c _`. Simplify using the standard rewrite rules.
+-/
 theorem chartLat_one_mem : (1 : Ω) ∈ chartLat y 0 1 := by
   rw [mem_chartLat_one]
   intro c _
   simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using (chartLat_one_mem (y := y))`. Consider the case `succ n ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `chartLat_mul ih hs`.
+-/
 theorem chartLat_pow {a : K → ℤ} {s : Ω} (hs : s ∈ chartLat y a 1) (n : ℕ) : s ^ n ∈ chartLat y (n • a) 1 := by
   induction n with
   | zero => simpa using (chartLat_one_mem (y := y))
@@ -56,6 +72,9 @@ theorem chartLat_pow {a : K → ℤ} {s : Ω} (hs : s ∈ chartLat y a 1) (n : �
     rw [pow_succ, succ_nsmul]
     exact chartLat_mul ih hs
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using (chartLat_one_mem (y := y))`. Consider the case `insert b t hb ih`. Rewrite using `[Finset.prod_insert hb, Finset.sum_insert hb]`. Conclude with `chartLat_mul (h b (Finset.mem_insert_self b t)) (ih fun b' hb' => h b' (Finset.mem_insert_of_mem hb'))`.
+-/
 theorem chartLat_prod {β : Type} (t : Finset β) (f : β → Ω) (a : β → K → ℤ)
     (h : ∀ b ∈ t, f b ∈ chartLat y (a b) 1) : ∏ b ∈ t, f b ∈ chartLat y (∑ b ∈ t, a b) 1 := by
   classical
@@ -65,6 +84,11 @@ theorem chartLat_prod {β : Type} (t : Finset β) (f : β → Ω) (a : β → K 
     rw [Finset.prod_insert hb, Finset.sum_insert hb]
     exact chartLat_mul (h b (Finset.mem_insert_self b t)) (ih fun b' hb' => h b' (Finset.mem_insert_of_mem hb'))
 
+/- English proof (translation)
+Rewrite using `[mem_chartLat_one]`. Introduce `c hc`. Establish `e : ∏ k, y ⟨k, c k⟩ ^ (-(Pi.single p.1 (1 : ℤ) : K → ℤ) k) = (y ⟨p.1, c p.1⟩)⁻¹`. Rewrite using `[Finset.prod_eq_single p.1 (fun k _ hk => by simp [hk]) (by simp)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, ← div_eq_mul_inv]`. Conclude with `Algebra.subset_adjoin ⟨p, rfl⟩`.
+-/
 theorem chartLat_var [DecidableEq K] (p : Σ k, ι k) : y p ∈ chartLat y (Pi.single p.1 1) 1 := by
   rw [mem_chartLat_one]
   intro c hc
@@ -76,6 +100,15 @@ theorem chartLat_var [DecidableEq K] (p : Σ k, ι k) : y p ∈ chartLat y (Pi.s
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[g.as_sum, map_sum]`. Use `AddSubgroup.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), algebraMap_int_eq, eq_intCast, ← zsmul_eq_mul]`. Use `AddSubgroup.zsmul_mem _ ?_ _` and prove the remaining obligations. Establish `hdeg : (fun k => (d k : ℤ)) = ∑ p : Σ k, ι k, (m p) • (Pi.single p.1 1 : K → ℤ)`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using `only [Pi.smul_apply, Pi.single_eq_same, nsmul_eq_mul, mul_one]`. Rewrite using `[← hg m hm k]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Introduce `k' _ hk'`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Simplify using `[Ne.symm hk']`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hdeg]`. Conclude with `chartLat_prod _ _ _ fun p _ => chartLat_pow (chartLat_var p) _`.
+-/
 theorem chartLat_form {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) :
     aeval y g ∈ chartLat y (fun k => (d k : ℤ)) 1 := by
   rw [g.as_sum, map_sum]
@@ -107,6 +140,9 @@ def IsRatio (w : Ω) : Prop :=
   ∃ (d : Unit → ℕ) (g h : MRing (fun _ : Unit => J)), IsMultiHomog g d ∧ IsMultiHomog h d ∧
     aeval z h ≠ 0 ∧ aeval z g = w * aeval z h
 
+/- English proof (translation)
+Establish `h` using `GenOnFibres.homog_X (R := ℤ) (ι := fun _ : Unit => J) () j`. Introduce `m hm k`. Rewrite using `[h m hm k]`. Consider the cases of `k`. Simplify using the standard rewrite rules.
+-/
 theorem homog_X_unit (j : J) : IsMultiHomog (X ⟨(), j⟩ : MRing (fun _ : Unit => J)) (fun _ => 1) := by
   have h := GenOnFibres.homog_X (R := ℤ) (ι := fun _ : Unit => J) () j
   intro m hm k
@@ -116,9 +152,15 @@ theorem homog_X_unit (j : J) : IsMultiHomog (X ⟨(), j⟩ : MRing (fun _ : Unit
 
 variable {z}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, C r, 1, GenOnFibres.homog_C r, GenOnFibres.homog_one, by simp, by simp⟩`.
+-/
 theorem IsRatio.intCast (r : ℤ) : IsRatio z (r : Ω) :=
   ⟨0, C r, 1, GenOnFibres.homog_C r, GenOnFibres.homog_one, by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, h0, e⟩` from `hw`. Take `⟨d', g', h', hg', hh', h0', e'⟩` from `hw'`. Use `⟨d + d', g * h' + h * g', h * h', GenOnFibres.homog_add (GenOnFibres.homog_mul hg hh') (GenOnFibres.homog_mul hh hg'), GenOnFibres.homog_mul hh hh', by simp [h0, h0'], ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, e, e']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsRatio.add {w w' : Ω} (hw : IsRatio z w) (hw' : IsRatio z w') : IsRatio z (w + w') := by
   obtain ⟨d, g, h, hg, hh, h0, e⟩ := hw
   obtain ⟨d', g', h', hg', hh', h0', e'⟩ := hw'
@@ -127,6 +169,9 @@ theorem IsRatio.add {w w' : Ω} (hw : IsRatio z w) (hw' : IsRatio z w') : IsRati
   simp only [map_add, map_mul, e, e']
   ring
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, h0, e⟩` from `hw`. Take `⟨d', g', h', hg', hh', h0', e'⟩` from `hw'`. Use `⟨d + d', g * g', h * h', GenOnFibres.homog_mul hg hg', GenOnFibres.homog_mul hh hh', by simp [h0, h0'], ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, e, e']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsRatio.mul {w w' : Ω} (hw : IsRatio z w) (hw' : IsRatio z w') : IsRatio z (w * w') := by
   obtain ⟨d, g, h, hg, hh, h0, e⟩ := hw
   obtain ⟨d', g', h', hg', hh', h0', e'⟩ := hw'
@@ -135,6 +180,11 @@ theorem IsRatio.mul {w w' : Ω} (hw : IsRatio z w) (hw' : IsRatio z w') : IsRati
   simp only [map_mul, e, e']
   ring
 
+/- English proof (translation)
+Distinguish the cases in `hw0 : w = 0`. Rewrite using `[hw0, inv_zero]`. Simplify using `using IsRatio.intCast (z := z) 0`. Take `⟨d, g, h, hg, hh, h0, e⟩` from `hw`. Use `⟨d, h, g, hh, hg, by rw [e]; exact mul_ne_zero hw0 h0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, ← mul_assoc, inv_mul_cancel₀ hw0, one_mul]`.
+-/
 theorem IsRatio.inv {w : Ω} (hw : IsRatio z w) : IsRatio z w⁻¹ := by
   by_cases hw0 : w = 0
   · rw [hw0, inv_zero]
@@ -149,6 +199,39 @@ end LiftBirationalAmple
 
 open LiftBirationalAmple in
 
+/- English proof (translation)
+Introduce `K _ _ ι _ _ Ω _ _ y D N c hvar hbir hc hample`. Take `⟨q', hq', hgen, -⟩` from `hample`. Take `⟨s, hs, hs0⟩` from `h K ι Ω y _ hgen`. Establish `hrel : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0`. Introduce `k`.
+
+Take `⟨i, hi⟩` from `hvar.2.1.2.2 k`. Use `⟨i, fun hy => hi ?_⟩` and prove the remaining obligations. Rewrite using `[mCoordIdeal, RingHom.mem_ker]`. Simplify using `[mConeMap, aeval_X, hy]`. Use `choose c0 hc0 using hrel`.
+
+Use `⟨q' * c, 1, Nat.mul_le_mul hq' hc, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hm : 1 ≤ t * q'` using `Nat.mul_le_mul ht hq'`. Set `E : (Σ k, ι k) → K → ℕ` to `fun p k => if k = p.1 then t * q' - 1 else t * q'`. Set `xx : (Σ k, ι k) → Ω` to `fun p => s ^ t * (y p * ∏ k, y ⟨k, c0 k⟩ ^ E p k)`. Establish `hxx : ∀ p, xx p ∈ chartLat y ((t * (q' * c)) • N) 1`.
+
+Introduce `p`. Establish `hy1 : ∀ k, y ⟨k, c0 k⟩ ^ E p k ∈ chartLat y (E p k • (Pi.single k (1 : ℤ) : K → ℤ)) 1` using `fun k => chartLat_pow (chartLat_var (y := y) ⟨k, c0 k⟩) _`. Establish `hyp : y p ∈ chartLat y (Pi.single p.1 (1 : ℤ) : K → ℤ) 1` using `chartLat_var (y := y) p`. Establish `hpr` using `chartLat_prod Finset.univ (fun k => y ⟨k, c0 k⟩ ^ E p k) (fun k => E p k • (Pi.single k (1 : ℤ) : K → ℤ)) fun k _ => hy1 k`. Establish `h1` using `chartLat_mul (chartLat_pow hs t) (chartLat_mul hyp hpr)`.
+
+Establish `hdeg : (t * (q' * c)) • N = t • (q' • (c • N - fun _ => (1 : ℤ))) + ((Pi.single p.1 (1 : ℤ) : K → ℤ) + ∑ k, E p k • (Pi.single k (1 : ℤ) : K → ℤ))`. Use function extensionality and compare the values at `k`. Establish `hs1 : (∑ b, E p b • (Pi.single b (1 : ℤ) : K → ℤ)) k = (E p k : ℤ)`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Simplify using the standard rewrite rules.
+
+Distinguish the cases in `hk : k = p.1`. Rewrite `hs1`, the goal using `[hk]`. Rewrite using `[Pi.add_apply, Pi.add_apply, hs1]`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, Pi.single_eq_same, E, if_true]`. Simplify using `only [nsmul_eq_mul]`.
+
+Move the coercions through the operations in `[Nat.cast_sub hm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Pi.add_apply, Pi.add_apply, hs1]`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, Pi.single_eq_of_ne hk, E, if_neg hk]`. Simplify using `only [nsmul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdeg]`. Conclude with `h1`. Establish `hxx0 : ∀ k, xx ⟨k, c0 k⟩ ≠ 0`.
+
+Introduce `k`. Use `mul_ne_zero (pow_ne_zero _ hs0) (mul_ne_zero (hc0 k) ?_)` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun k' _ => pow_ne_zero _ (hc0 k')`. Establish `hratio : ∀ p : Σ k, ι k, xx p = y p / y ⟨p.1, c0 p.1⟩ * xx ⟨p.1, c0 p.1⟩`. Introduce `p`.
+
+Use `show s ^ t * (y p * ∏ k, y ⟨k, c0 k⟩ ^ E p k) = y p / y ⟨p.1, c0 p.1⟩ * (s ^ t * (y ⟨p.1, c0 p.1⟩ * ∏ k, y ⟨k, c0 k⟩ ^ E p k))`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (hc0 p.1)]`. Expand and normalize the polynomial expressions, which then agree. Set `e` to `Fintype.equivFin (Σ k, ι k)`. Use `⟨Fintype.card (Σ k, ι k), fun j => xx (e.symm j), fun j => hxx _, ?_⟩` and prove the remaining obligations.
+
+Use `set z : (Σ _ : Unit, Fin (Fintype.card (Σ k, ι k))) → Ω := fun p => xx (e.symm p.2) with hz`. Establish `hzX : ∀ p : Σ k, ι k, aeval z (X ⟨(), e p⟩ : MRing (fun _ : Unit => Fin (Fintype.card (Σ k, ι k)))) = xx p`. Introduce `p`. Simplify using `[hz]`. Establish `hgen' : ∀ p : Σ k, ι k, IsRatio z (y p / y ⟨p.1, c0 p.1⟩)`.
+
+Introduce `p`. Use `⟨fun _ => 1, X ⟨(), e p⟩, X ⟨(), e ⟨p.1, c0 p.1⟩⟩, homog_X_unit _, homog_X_unit _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hzX]`. Conclude with `hxx0 p.1`. Rewrite using `[hzX, hzX]`.
+
+Conclude with `hratio p`. Establish `hring : ∀ w ∈ chartRingZ y c0, IsRatio z w`. Introduce `w hw`. Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+
+Take `⟨p, rfl⟩` from `hx`. Conclude with `hgen' p`. Consider the case `algebraMap r => simpa using IsRatio.intCast (z := z) r`. Consider the case `add x x' _ _ hx hx' => exact hx.add hx'`. Consider the case `mul x x' _ _ hx hx' => exact hx.mul hx'`.
+
+Introduce `w`. Take `⟨d, g, hh, hg, hhh, hh0, hgh⟩` from `hbir w`. Establish `hA` using `(mem_chartLat_one y).mp (chartLat_form (y := y) hg) c0 hc0`. Establish `hB` using `(mem_chartLat_one y).mp (chartLat_form (y := y) hhh) c0 hc0`. Establish `hP : ∏ k, y ⟨k, c0 k⟩ ^ (-(d k : ℤ)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc0 k)`.
+
+Establish `hw : w = (aeval y g * ∏ k, y ⟨k, c0 k⟩ ^ (-(d k : ℤ))) * (aeval y hh * ∏ k, y ⟨k, c0 k⟩ ^ (-(d k : ℤ)))⁻¹`. Rewrite using `[hgh, mul_assoc w, mul_inv_cancel_right₀ (mul_ne_zero hh0 hP)]`. Rewrite using `[hw]`. Conclude with `(hring _ hA).mul (hring _ hB).inv`.
+-/
 theorem LiftBirationalAmple.proof (h : GeneratedNonzeroSection.Statement) : LiftBirationalAmple.Statement := by
   classical
   intro K _ _ ι _ _ Ω _ _ y D N c hvar hbir hc hample

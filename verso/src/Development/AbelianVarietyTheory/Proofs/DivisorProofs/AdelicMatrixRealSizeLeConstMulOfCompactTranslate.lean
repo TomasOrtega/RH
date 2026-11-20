@@ -13,6 +13,13 @@ namespace GlobalTheory.Unf.RealMove
 
 open GlobalTheory.Unf GlobalTheory.Unf.MajMeas
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [realSize, compAt_mul, Matrix.mul_apply]`. Use `_ ≤ ∑ τ, ∑ i, ∑ _j : Fin n, ∑ l, ‖compAt θ τ Y i l‖ * realSize θ a := by gcongr with τ _ i _ j _`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (norm_compAt_le_realSize θ a τ l j) (norm_nonneg _)`. Use `_ = n * realSize θ Y * realSize θ a := by`. Establish `h : ∀ τ i, ∑ _j : Fin n, ∑ l, ‖compAt θ τ Y i l‖ * realSize θ a = n * (∑ l, ‖compAt θ τ Y i l‖) * realSize θ a`. Introduce `τ i`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← Finset.sum_mul, mul_assoc]`.
+
+Repeatedly rewrite using `[h, ← Finset.sum_mul, ← Finset.mul_sum]`. Both sides reduce to the same expression.
+-/
 theorem realSize_mul_le_mul {D : D7} (θ : InfFam D) {m r n : ℕ} (Y : Mx D m r) (a : Mx D r n) :
     realSize θ (Y * a) ≤ n * realSize θ Y * realSize θ a := by
   calc realSize θ (Y * a) = ∑ τ, ∑ i, ∑ j, ‖∑ l, compAt θ τ Y i l * compAt θ τ a l j‖ := by
@@ -30,6 +37,13 @@ theorem realSize_mul_le_mul {D : D7} (θ : InfFam D) {m r n : ℕ} (Y : Mx D m r
         simp_rw [h, ← Finset.sum_mul, ← Finset.mul_sum]
         rfl
 
+/- English proof (translation)
+Introduce `D θ hθ V n Q hQ`. Establish `hc : Continuous (fun y : GA D V => realSize θ (Formalism.L2.Theta.mt V y))` using `(continuous_realSize hθ).comp (GlobalTheory.Core.Rk.Level.continuous_mt' V)`. Take `⟨M, hM⟩` from `(hQ.image hc).bddAbove`. Use `⟨max 1 (n * M), le_max_left _ _, fun y hy x => ?_⟩` and prove the remaining obligations. Use `set a : Mx D V.rank n := HMul.hMul (Formalism.L2.Theta.mt V y⁻¹) x with ha`.
+
+Establish `e : x = (HMul.hMul (Formalism.L2.Theta.mt V y) a : Mx D V.rank n)`. Rewrite using `[ha]`. Rewrite using `[← Matrix.mul_assoc, ← GlobalTheory.Core.Rk.Level.mt_mul', mul_inv_cancel, GlobalTheory.Core.Rk.Level.mt_one', Matrix.one_mul]`. Establish `hyM : realSize θ (Formalism.L2.Theta.mt V y) ≤ M` using `hM ⟨y, hy, rfl⟩`. Establish `h0` using `realSize_nonneg θ a`.
+
+Establish `h1` using `realSize_nonneg θ (Formalism.L2.Theta.mt V y)`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem realSize_le_of_isCompact : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (n : ℕ) (Q : Set (GA D V)), IsCompact Q → ∃ C : ℝ, 1 ≤ C ∧ ∀ y ∈ Q, ∀ x : Mx D V.rank n, GlobalTheory.Unf.realSize θ x ≤ C * GlobalTheory.Unf.realSize θ (HMul.hMul (Formalism.L2.Theta.mt V y⁻¹) x : Mx D V.rank n) := by
   intro D θ hθ V n Q hQ
   have hc : Continuous (fun y : GA D V => realSize θ (Formalism.L2.Theta.mt V y)) :=

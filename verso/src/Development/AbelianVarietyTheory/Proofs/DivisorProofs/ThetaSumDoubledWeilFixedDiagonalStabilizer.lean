@@ -15,12 +15,23 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)`.
+-/
 theorem inclR_injective : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Matrix.map_injective inclR_injective h`.
+-/
 theorem incM_injective {m n : Type} : Function.Injective (incM F : Matrix m n E → Matrix m n (AE F E)) :=
   fun _ _ h => Matrix.map_injective inclR_injective h
 
+/- English proof (translation)
+Establish `h2 : ⅟(2 : AF F) = algebraMap F (AF F) (1 / 2)`. Apply `invOf_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]`. Evaluate the numerical expressions. Establish `e : ⅟(2 : AF F) * ((fun i => algebraMap F (AF F) (a1 i)) ⬝ᵥ (fun i => algebraMap F (AF F) (b2 i)) - (fun i => algebraMap F (AF F) (b1 i)) ⬝ᵥ (fun i => algebraMap F (AF F) (a2 i))) = algebraMap F (AF F) (1 / 2 * (a1 ⬝ᵥ b2 - b1 ⬝ᵥ a2))`.
+
+Simplify using `only [dotProduct, map_sub, map_mul, map_sum, h2]`. Rewrite using `[e]`. Conclude with `hψ.2.1 _`.
+-/
 theorem psi_half_rat (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {ι : Type} [Fintype ι] (a1 a2 b1 b2 : ι → F) :
     ψ (⅟(2 : AF F) * ((fun i => algebraMap F (AF F) (a1 i)) ⬝ᵥ (fun i => algebraMap F (AF F) (b2 i)) -
       (fun i => algebraMap F (AF F) (b1 i)) ⬝ᵥ (fun i => algebraMap F (AF F) (a2 i)))) = 1 := by
@@ -37,6 +48,9 @@ theorem psi_half_rat (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {ι : Type} [Fin
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, add_dotProduct, dotProduct_add]`. Use `congr 2`. Establish `h : ⅟(2 : R) * 2 = 1` using `invOf_mul_self 2`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * h`.
+-/
 theorem schr_schr' {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (⅟(2 : R) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2)) • schr ψ (w + w') φ := by
@@ -47,10 +61,16 @@ theorem schr_schr' {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R 
   have h : ⅟(2 : R) * 2 = 1 := invOf_mul_self 2
   linear_combination (-(w.1 ⬝ᵥ w'.2)) * h
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; rcases j with j | j <;> rfl`.
+-/
 theorem fromCols_add' {R : Type} [Add R] {m n₁ n₂ : Type} (x z : Matrix m n₁ R) (y w : Matrix m n₂ R) :
     Matrix.fromCols x y + Matrix.fromCols z w = Matrix.fromCols (x + z) (y + w) := by
   ext i j; rcases j with j | j <;> rfl
 
+/- English proof (translation)
+Rewrite using `[diagCols, Matrix.transpose_fromRows, Matrix.transpose_one, Matrix.mul_fromCols, Matrix.mul_one]`.
+-/
 theorem mul_diagCols_transpose {R : Type} [CommRing R] {a b : ℕ} (z : Matrix (Fin a) (Fin b) R) :
     z * (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) R)ᵀ = Matrix.fromCols z z := by
   rw [diagCols, Matrix.transpose_fromRows, Matrix.transpose_one, Matrix.mul_fromCols, Matrix.mul_one]
@@ -63,6 +83,11 @@ section Mat
 
 variable {K L : Type} [Field K] [CommRing L] {a b : ℕ}
 
+/- English proof (translation)
+Establish `h1 : (Matrix.fromBlocks P Q R S * (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) K)).map f = (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) L) * T`. Rewrite using `[Matrix.map_mul]`. Establish `hd : (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) K).map f = (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) L)`. Rewrite using `[diagCols, Matrix.fromRows_map, Matrix.map_one _ (map_zero f) (map_one f)]`. Both sides reduce to the same expression.
+
+Rewrite using `[hd]`. Conclude with `h`. Unfold `diagCols at h1`. Simplify using `only [Matrix.fromBlocks_mul_fromRows, Matrix.mul_one, Matrix.fromRows_mul, Matrix.one_mul, Matrix.fromRows_map] at h1`. Conclude with `Matrix.fromRows_inj h1`.
+-/
 theorem stab_blocks (f : K →+* L) (P Q R S : Matrix (Fin b) (Fin b) K) (T : Matrix (Fin b) (Fin b) L)
     (h : (Matrix.fromBlocks P Q R S).map f * (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) L) = (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) L) * T) :
     (P + Q).map f = T ∧ (R + S).map f = T := by
@@ -76,6 +101,11 @@ theorem stab_blocks (f : K →+* L) (P Q R S : Matrix (Fin b) (Fin b) K) (T : Ma
     Matrix.fromRows_map] at h1
   exact Matrix.fromRows_inj h1
 
+/- English proof (translation)
+Rewrite `h` using `[Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Take `⟨e1, -, e3, -⟩` from `Matrix.fromBlocks_inj.mp h`. Establish `e : (P - R) * (P₂ - R₂) = (P * P₂ + Q * R₂) - (R * P₂ + S * R₂) - ((P + Q) - (R + S)) * R₂`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[← Matrix.transpose_mul, e, e1, e3, hd, sub_self, Matrix.zero_mul, sub_zero, sub_zero, Matrix.transpose_one]`.
+-/
 theorem diff_inv (P Q R S P₂ Q₂ R₂ S₂ : Matrix (Fin b) (Fin b) K)
     (h : Matrix.fromBlocks P Q R S * Matrix.fromBlocks P₂ Q₂ R₂ S₂ = 1) (hd : P + Q = R + S) :
     (P₂ - R₂)ᵀ * (P - R)ᵀ = 1 := by
@@ -85,6 +115,9 @@ theorem diff_inv (P Q R S P₂ Q₂ R₂ S₂ : Matrix (Fin b) (Fin b) K)
     simp only [Matrix.sub_mul, Matrix.mul_sub, Matrix.add_mul]; abel
   rw [← Matrix.transpose_mul, e, e1, e3, hd, sub_self, Matrix.zero_mul, sub_zero, sub_zero, Matrix.transpose_one]
 
+/- English proof (translation)
+Rewrite using `[Matrix.fromBlocks_transpose, Matrix.fromCols_mul_fromBlocks, fromCols_add']`. Use `congr 1`. Rewrite using `[Matrix.transpose_sub, Matrix.mul_sub]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem row_decomp (x : Matrix (Fin a) (Fin b) K) (P Q R S : Matrix (Fin b) (Fin b) K) :
     Matrix.fromCols x (0 : Matrix (Fin a) (Fin b) K) * (Matrix.fromBlocks P Q R S)ᵀ =
       Matrix.fromCols (x * (P - R)ᵀ) (0 : Matrix (Fin a) (Fin b) K) + Matrix.fromCols (x * Rᵀ) (x * Rᵀ) := by
@@ -93,10 +126,16 @@ theorem row_decomp (x : Matrix (Fin a) (Fin b) K) (P Q R S : Matrix (Fin b) (Fin
   · rw [Matrix.transpose_sub, Matrix.mul_sub]; simp
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.fromCols_map, Matrix.transpose_map, Matrix.map_zero _ (map_zero f)]`.
+-/
 theorem map_row (f : K →+* L) (x : Matrix (Fin a) (Fin b) K) (M : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) K) :
     Matrix.fromCols (x.map f) (0 : Matrix (Fin a) (Fin b) L) * (M.map f)ᵀ = (Matrix.fromCols x (0 : Matrix (Fin a) (Fin b) K) * Mᵀ).map f := by
   rw [Matrix.map_mul, Matrix.fromCols_map, Matrix.transpose_map, Matrix.map_zero _ (map_zero f)]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_add _ (map_add f), Matrix.fromCols_map, Matrix.fromCols_map, Matrix.map_zero _ (map_zero f)]`.
+-/
 theorem map_decomp (f : K →+* L) (x y : Matrix (Fin a) (Fin b) K) :
     (Matrix.fromCols x (0 : Matrix (Fin a) (Fin b) K) + Matrix.fromCols y y).map f =
       Matrix.fromCols (x.map f) (0 : Matrix (Fin a) (Fin b) L) + Matrix.fromCols (y.map f) (y.map f) := by
@@ -108,6 +147,9 @@ end GlobalTheory.ThetaSiegelRat
 
 namespace GlobalTheory.ThetaSiegelRat
 
+/- English proof (translation)
+Rewrite using `[sumElim_dotProduct_sumElim, sumElim_dotProduct_sumElim, dotProduct_zero, zero_dotProduct, add_zero, add_zero]`. Conclude with `psi_half_rat ψ hψ v1 v2 z1 z2`.
+-/
 theorem cocycle_one {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} [Fintype κ]
     (v1 v2 z1 z2 : κ → F) :
     ψ (⅟(2 : AF F) * (Sum.elim (fun i => algebraMap F (AF F) (v1 i)) (fun i => algebraMap F (AF F) (v1 i)) ⬝ᵥ
@@ -118,6 +160,19 @@ theorem cocycle_one {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) �
     add_zero, add_zero]
   exact psi_half_rat ψ hψ v1 v2 z1 z2
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hE]; norm_num)`. Set `L : Matrix (Fin a) (Fin b) E →ₗ[F] (κ → AF F) × (κ → AF F)` to `(d.e.toLinearMap.restrictScalars F).comp ((Algebra.TensorProduct.includeRight : E →ₐ[F] AF F ⊗[F] E).toLinearMap.mapMatrix)`. Establish `hLx : ∀ x, L x = d.e (incM F x)` using `fun x => rfl`. Set `g : (κ → F) →ₗ[F] (κ → AF F)` to `(Algebra.linearMap F (AF F)).compLeft κ`. Set `Qm : ((κ → F) × (κ → F)) →ₗ[F] (κ → AF F) × (κ → AF F)` to `g.prodMap g`.
+
+Establish `hQx : ∀ u : (κ → F) × (κ → F), Qm u = (fun i => algebraMap F (AF F) (u.1 i), fun i => algebraMap F (AF F) (u.2 i))` using `fun u => rfl`. Establish `hg : Function.Injective g` using `fun u v h =>`. Use function extensionality and compare the values at `fun i => AdeleRing.algebraMap_injective (𝓞 F) F (congrFun h i)`. Establish `hQ : Function.Injective Qm` using `fun u v h => Prod.ext (hg (congrArg Prod.fst h)) (hg (congrArg Prod.snd h))`. Establish `hL : ∀ x, L x ∈ LinearMap.range Qm` using `fun x => by`.
+
+Take `⟨y, z, h⟩` from `hrat x`. Conclude with `⟨(y, z), by rw [hQx, hLx, h]⟩`. Set `r₀ : Matrix (Fin a) (Fin b) E →ₗ[F] (κ → F) × (κ → F)` to `(LinearEquiv.ofInjective Qm hQ).symm.toLinearMap ∘ₗ L.codRestrict (LinearMap.range Qm) hL`. Establish `hr₀ : ∀ x, Qm (r₀ x) = L x` using `fun x => by`. Rewrite using `[← LinearEquiv.ofInjective_apply (h := hQ) Qm (r₀ x)]`.
+
+Simplify using `[r₀]`. Establish `hinj : Function.Injective r₀` using `fun x y h => by`. Establish `h1 : d.e (incM F x) = d.e (incM F y)` using `by rw [← hLx, ← hLx, ← hr₀, ← hr₀, h]`. Conclude with `incM_injective (d.e.injective h1)`. Establish `hsurj : Function.Surjective r₀`.
+
+Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).mp hinj` and prove the remaining obligations. Rewrite using `[Module.finrank_matrix, Module.finrank_prod, Module.finrank_fintype_fun_eq_card, hE, hκ]`. Simplify using `only [Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨Equiv.ofBijective r₀ ⟨hinj, hsurj⟩, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hLx, ← hr₀]`. Both sides reduce to the same expression.
+-/
 theorem exists_ratCoord {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (hE : Module.finrank F E = 2) {a b : ℕ} {κ : Type} [Fintype κ] (hκ : Fintype.card κ = a * b)
     {B : Matrix (Fin a) (Fin b) (AE F E) → Matrix (Fin a) (Fin b) (AE F E) → AF F} (d : Darboux B κ)
@@ -162,6 +217,37 @@ end GlobalTheory.ThetaSiegelRat
 
 open GlobalTheory.ThetaSiegelRat in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ ψ hψ a b JA JB κ _ hκ d hrat dd hdd χ hχ omd hS hR p p₀ hp t ht φ hφ`. Take `⟨P, Q, R, S, rfl⟩ : ∃ P Q R S, p₀ = Matrix.fromBlocks P Q R S` from `⟨_, _, _, _, (Matrix.fromBlocks_toBlocks p₀).symm⟩`. Establish `hNT : Nontrivial (AE F E)` using `(inclR_injective (F := F) (E := E)).nontrivial`. Take `⟨htP, htR⟩` from `stab_blocks (inclR (F := F) (E := E) (AF F)) P Q R S t.1 (by rw [hp] at ht; exact ht)`. Establish `hPQ : P + Q = R + S` using `incM_injective (F := F) (htP.trans htR.symm)`.
+
+Establish `hdett : ((Matrix.GeneralLinearGroup.det t : (AE F E)ˣ) : AE F E) = inclR (F` using `F) (AF F) (P + Q).det := by`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, ← htP, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hz : (P + Q).det ≠ 0` using `fun h0 => by`. Use `(Matrix.GeneralLinearGroup.det t).ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[hdett, h0, map_zero]`. Conclude with `this rfl`. Establish `hχ1 : χ (Matrix.GeneralLinearGroup.det t) = 1`. Establish `e : Matrix.GeneralLinearGroup.det t = Units.map (inclR (F` using `F) (AF F)).toMonoidHom (Units.mk0 _ hz) := Units.ext (by rw [hdett]; rfl)`. Rewrite using `[e]`.
+
+Conclude with `hχ.2 _`. Establish `hmod` using `GlobalTheory.T.adelicModule_norm_rationalUnit_eq_one F E (Matrix.GeneralLinearGroup.det t) _ hdett`. Establish `hdiag : ∀ (y : Matrix (Fin a) (Fin b) (AE F E)), ∀ φ' ∈ schA F (κ ⊕ κ), GlobalTheory.DiagForm.lDiag F κ (dd.rho ψ (Matrix.fromCols y y) φ') = GlobalTheory.DiagForm.lDiag F κ φ'`. Introduce `y φ' hφ'`. Rewrite using `[Darboux.rho, hdd]`.
+
+Conclude with `GlobalTheory.DiagForm.lDiag_schr ψ _ _ hφ'`. Establish `hsieg : ∀ φ' ∈ schA F (κ ⊕ κ), GlobalTheory.DiagForm.lDiag F κ (omd p φ') = GlobalTheory.DiagForm.lDiag F κ φ'`. Introduce `φ' hφ'`. Use `hR (GlobalTheory.DiagForm.lDiag F κ) GlobalTheory.DiagForm.lDiag_adm (fun z φ'' hφ'' => by erw [mul_diagCols_transpose]; exact hdiag z φ'' hφ'') p t ht φ' hφ'` as an intermediate fact. Rewrite using `[this, hχ1, hmod]`.
+
+Simplify using the standard rewrite rules. Take `⟨r, hr⟩` from `exists_ratCoord hσ.2.2.1 hκ d hrat`. Establish `hdetp : ((Matrix.GeneralLinearGroup.det (p : GL (Fin b ⊕ Fin b) (AE F E)) : (AE F E)ˣ) : AE F E) = inclR (F` using `F) (AF F) (Matrix.fromBlocks P Q R S).det := by`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hp, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Establish `hzp : (Matrix.fromBlocks P Q R S).det ≠ 0` using `fun h0 => by`. Use `(Matrix.GeneralLinearGroup.det (p : GL (Fin b ⊕ Fin b) (AE F E))).ne_zero` as an intermediate fact. Rewrite `this` using `[hdetp, h0, map_zero]`. Conclude with `this rfl`. Establish `hpq : Matrix.fromBlocks P Q R S * (Matrix.fromBlocks P Q R S)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hzp)`.
+
+Take `⟨P₂, Q₂, R₂, S₂, hq⟩ : ∃ P₂ Q₂ R₂ S₂, (Matrix.fromBlocks P Q R S)⁻¹ = Matrix.fromBlocks P₂ Q₂ R₂ S₂` from `⟨_, _, _, _, (Matrix.fromBlocks_toBlocks _).symm⟩`. Rewrite `hpq` using `[hq]`. Establish `hKK : (P₂ - R₂)ᵀ * (P - R)ᵀ = 1` using `diff_inv P Q R S P₂ Q₂ R₂ S₂ hpq hPQ`. Establish `hKK' : (P - R)ᵀ * (P₂ - R₂)ᵀ = 1` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ rfl).mp hKK`. Set `T : Matrix (Fin a) (Fin b) E ≃ Matrix (Fin a) (Fin b) E` to `{ toFun := fun x => x * (P - R)ᵀ invFun := fun z => z * (P₂ - R₂)ᵀ left_inv := fun x => by simp only [Matrix.mul_assoc, hKK', Matrix.mul_one] right_inv := fun z => by simp only [Matrix.mul_assoc, hKK, Matrix.mul_one] }`.
+
+Set `e` to `r.symm.trans (T.trans r)`. Establish `hU : ∀ x : Matrix (Fin a) (Fin b) E, dd.e (Matrix.fromCols (incM F x) (0 : Matrix (Fin a) (Fin b) (AE F E))) = (Sum.elim (fun i => algebraMap F (AF F) ((r x).1 i)) 0, Sum.elim (fun i => algebraMap F (AF F) ((r x).2 i)) 0)`. Introduce `x`. Rewrite using `[hdd, hr x, map_zero]`. Simplify using the standard rewrite rules.
+
+Establish `key : ∀ uv : (κ → F) × (κ → F), GlobalTheory.DiagForm.lDiag F κ (schr ψ (Sum.elim (fun i => algebraMap F (AF F) (uv.1 i)) 0, Sum.elim (fun i => algebraMap F (AF F) (uv.2 i)) 0) φ) = GlobalTheory.DiagForm.lDiag F κ (schr ψ (Sum.elim (fun i => algebraMap F (AF F) ((e uv).1 i)) 0, S …`. Introduce `uv`. Take `⟨x, rfl⟩` from `r.surjective uv`. Establish `he : e (r x) = r (x * (P - R)ᵀ)` using `by simp [e, T]`. Rewrite using `[he, ← hU x, ← hU (x * (P - R)ᵀ)]`.
+
+Establish `hact : actB (cA σ) p (Matrix.fromCols (incM F x) (0 : Matrix (Fin a) (Fin b) (AE F E))) = Matrix.fromCols (incM F (x * (P - R)ᵀ)) (0 : Matrix (Fin a) (Fin b) (AE F E)) + Matrix.fromCols (incM F (x * Rᵀ)) (incM F (x * Rᵀ))`. Unfold `actB`. Rewrite using `[hp]`. Use `map_row (inclR (F := F) (E := E) (AF F)) x (Matrix.fromBlocks P Q R S)` as an intermediate fact. Rewrite `this` using `[row_decomp, map_decomp]`.
+
+Conclude with `this`. Establish `hsplit : ∀ φ' : (κ ⊕ κ → AF F) → ℂ, dd.rho ψ (Matrix.fromCols (incM F (x * (P - R)ᵀ)) (0 : Matrix (Fin a) (Fin b) (AE F E)) + Matrix.fromCols (incM F (x * Rᵀ)) (incM F (x * Rᵀ))) φ' = dd.rho ψ (Matrix.fromCols (incM F (x * Rᵀ)) (incM F (x * Rᵀ))) (dd.rho ψ (Matrix.fromCols (incM …`. Introduce `φ'`. Simplify using `only [Darboux.rho]`. Rewrite using `[schr_schr', map_add, add_comm (dd.e (Matrix.fromCols (incM F (x * (P - R)ᵀ)) _)), hdd (incM F (x * Rᵀ)), hr (x * Rᵀ), hU (x * (P - R)ᵀ)]`.
+
+Rewrite using `[cocycle_one ψ hψ, one_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hact, hsplit]`. Use `_ = GlobalTheory.DiagForm.lDiag F κ (dd.rho ψ (Matrix.fromCols (incM F (x * (P - R)ᵀ)) (0 : Matrix (Fin a) (Fin b) (AE F E))) (omd p φ)) := hdiag _ _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ _ (hS.pres p φ hφ))`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.T.hasSum_diagonalIntegral_rationalHeisenberg F ψ hψ κ`.
+
+Establish `h1` using `hc φ hφ`. Establish `h3` using `(e.hasSum_iff).mpr (hc (omd p φ) (hS.pres p φ hφ))`. Establish `h4 : HasSum (fun uv : (κ → F) × (κ → F) => GlobalTheory.DiagForm.lDiag F κ (schr ψ (Sum.elim (fun i => algebraMap F (AF F) (uv.1 i)) 0, Sum.elim (fun i => algebraMap F (AF F) (uv.2 i)) 0) φ)) (c * thetaSum F (omd p φ))`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `uv`.
+
+Conclude with `key uv`. Conclude with `mul_left_cancel₀ hc0 (h4.unique h1)`.
+-/
 theorem GlobalTheory.ThetaSiegelRat.thetaSum_omd_of_fix_diag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (a b : ℕ) (JA : Matrix (Fin a) (Fin a) E) (JB : Matrix (Fin b) (Fin b) E) (κ : Type) [Fintype κ], Fintype.card κ = a * b → ∀ (d : Darboux (symp (R := AF F) (cA σ) (-1) (incM F JA) (incM F JB)) κ), (∀ x : Matrix (Fin a) (Fin b) E, ∃ y z : κ → F, d.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) → ∀ (dd : Darboux (symp (R := AF F) (cA σ) (-1) (incM F JA) (dbl (incM F JB))) (κ ⊕ κ)), IsDblCoord (cA σ) (-1) (incM F JA) (incM F JB) d dd → ∀ (χ : Chr F E), IsHecke F E χ → ∀ (omd : UG (cA σ) (dbl (incM F JB)) →* Module.End ℂ ((κ ⊕ κ → AF F) → ℂ)), IsSplitting (adeleClass F) ψ dd (actB (cA σ)) omd → SiegelRule (cA σ) (adeleClass F) ψ (-1) (incM F JA) (dbl (incM F JB)) dd χ (diagCols (Fin b)) omd → ∀ (p : UG (cA σ) (dbl (incM F JB))) (p₀ : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E), ((p : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)) = incM F p₀ → ∀ (t : GL (Fin b) (AE F E)), ((p : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)) * diagCols (Fin b) = diagCols (Fin b) * (t : Matrix (Fin b) (Fin b) (AE F E)) → ∀ φ ∈ schA F (κ ⊕ κ), thetaSum F (omd p φ) = thetaSum F φ := by
   intro F E _ _ _ _ _ σ hσ ψ hψ a b JA JB κ _ hκ d hrat dd hdd χ hχ omd hS hR p p₀ hp t ht φ hφ
   obtain ⟨P, Q, R, S, rfl⟩ : ∃ P Q R S, p₀ = Matrix.fromBlocks P Q R S :=

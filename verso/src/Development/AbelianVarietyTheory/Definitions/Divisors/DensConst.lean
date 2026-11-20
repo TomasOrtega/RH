@@ -79,6 +79,9 @@ def side [IsIntegral X] [IsLocallyNoetherian X] (N : MLine p σ) (L : Fin D → 
     (Δ : CartierDiv X) : ℝ :=
   int (Fin.cons N L : Fin (D + 1) → MLine p σ) f + ∑ᶠ z, (Δ.mult z : ℝ) * cycInt L g z
 
+/- English proof (translation)
+Establish `e : (Matrix.of fun j l => c.hess N.φ (pick N.φ.isLB y) y j l) = c.hess N.φ (pick N.φ.isLB y) y` using `rfl`. Simplify using `only [dens, AlgChart.chernDens, e, Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul, Complex.mul_re, Complex.natCast_re, Complex.natCast_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dens_const (N : MLine p σ) (c : AlgChart p σ D) (y : CxPts p σ) :
     dens (fun _ => N) c y = c.chernDens N.φ y := by
   have e : (Matrix.of fun j l => c.hess N.φ (pick N.φ.isLB y) y j l) = c.hess N.φ (pick N.φ.isLB y) y := rfl
@@ -86,6 +89,9 @@ theorem dens_const (N : MLine p σ) (c : AlgChart p σ D) (y : CxPts p σ) :
     Fintype.card_fin, nsmul_eq_mul, Complex.mul_re, Complex.natCast_re, Complex.natCast_im]
   ring
 
+/- English proof (translation)
+Simplify using `only [part, Weight.chernPart, dens_const]`.
+-/
 theorem part_const (N : MLine p σ) (ε : ℤˣ) : part (fun _ : Fin D => N) ε = N.φ.chernPart D ε := by
   simp only [part, Weight.chernPart, dens_const]
 
@@ -102,10 +108,18 @@ def gq : gX t ⟶ Sp ℚ := pullback.snd _ _
 def gΦ (z : CxPts (gq t) (Rat.castHom ℂ)) : CxPts t (Int.castRingHom ℂ) :=
   ⟨z.1 ≫ gj t, specZIsTerminal.hom_ext _ _⟩
 
+/- English proof (translation)
+The claim follows from `continuous_of_comp (f := gj t) fun _ => rfl`.
+-/
 theorem continuous_gΦ : Continuous (gΦ t) := continuous_of_comp (f := gj t) fun _ => rfl
 
 variable {t}
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Establish `e (a : Γ(X, W)) (w : CxPts (gq t) (Rat.castHom ℂ)) : ev (gq t) _ (gj t ⁻¹ᵁ W) ((gj t).app W a) w = ev t _ W a (gΦ t w)` using `(valR_comp w.1 (gj t) W a).symm`. Use `⟨gj t ⁻¹ᵁ W, ι, inferInstance, fun a => (gj t).app W (g a), F, O, h₁, h₂, ?_, h₄, ?_⟩` and prove the remaining obligations. Simplify `h₃` using `only [e]`. Simplify using `only [e]`.
+
+Conclude with `(continuous_gΦ t).continuousAt.eventually h₅`.
+-/
 theorem cInfAt_gΦ {f : CxPts t (Int.castRingHom ℂ) → ℝ} {z : CxPts (gq t) (Rat.castHom ℂ)} (h : CInfAt f (gΦ t z)) :
     CInfAt (fun w => f (gΦ t w)) z := by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h

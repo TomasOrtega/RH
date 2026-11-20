@@ -18,6 +18,17 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.Vert GlobalTheory.MixedLocalCha
 
 namespace GlobalTheory.BplusDescent
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ B J _ h L T hT hL hc`. Use `haveI : CharZero B.X.functionField := by`. Use `charZero_of_injective_ringHom (R := O) (f := (B.X.presheaf.germ ⊤ (genericPoint B.X) trivial).hom.comp (algebraMap O Γ(B.X, ⊤))) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `g hg`.
+
+Assume the negation of the conclusion as `h0`. Establish `h1 : B.const g = 0` using `germ_injective_of_isIntegral B.X (U := ⊤) (genericPoint B.X) trivial (hg.trans (map_zero _).symm)`. Establish `h2` using `B.gen_le_basicOpen h0 B.genericPoint_mem_gen`. Rewrite `h2` using `[h1, Scheme.basicOpen_zero]`. Conclude with `h2`.
+
+Use `haveI : CharZero (Kbar B.X) := charZero_of_injective_algebraMap (algebraMap B.X.functionField (Kbar B.X)).injective`. Take `⟨ι, _, W, hW⟩` from `GlobalTheory.T.exists_finite_affine_cover_refining_basicOpens B.X`. Establish `hsp : ∀ j i, ∃ (n : ℕ) (g : Fin n → Fin h → (W i).Bp) (S : Fin n → Fin h → Kbar B.X), Splits (W i) (L j (W i)) g S` using `fun j i => GlobalTheory.T.exists_splitting_of_lattice B.X (W i) h (L j (W i)) (p : (W i).Bp) (by simp [Fact.out (p := p.Prime) |>.ne_zero]) (hL j _).1 (hL j _).2.1 (hL j _).2.2`. Use `choose n g S hS using hsp`. Set `s : Set (Kbar B.X)` to `Set.range (fun q : (j : J) × (i : ι) × Fin (n j i) × Fin h => (g q.1 q.2.1 q.2.2.1 q.2.2.2 : Kbar B.X)) ∪ Set.range (fun q : (j : J) × (i : ι) × Fin (n j i) × Fin h => S q.1 q.2.1 q.2.2.1 q.2.2.2) ∪ (fun t : (Σ U : AffOp B.X, U.Bp) => (t.2 : Kbar B.X)) '' T`.
+
+Establish `hs : s.Finite` using `((Set.finite_range _).union (Set.finite_range _)).union (hT.image _)`. Use `haveI : Finite s := hs.to_subtype`. Use `⟨IntermediateField.adjoin B.X.functionField s, IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x, fun t ht => IntermediateField.subset_adjoin _ _ (Or.inr ⟨t, ht, rfl⟩), fun j U => ?_⟩` and prove the remaining obligations. Take `⟨m, a, V, ha, hV⟩` from `hW U`. Use `choose i hi using fun k => (hV k).2`.
+
+Establish `hVU : ∀ k, (V k).1 ≤ U.1` using `fun k => (hV k).1 ▸ B.X.basicOpen_le (a k)`. Take `⟨n', g', S', hsp', hg', hS'⟩` from `GlobalTheory.T.lattice_splitting_glues_on_cover B.X (IntermediateField.adjoin B.X.functionField s) U h m a V hVU (L j U) (fun k => L j (V k)) (fun k => n j (i k)) (fun k l => piMap (AffOp.res (hi k)) (Fin h) (g j (i k) l)) (fun k => S j (i k)) ha (Module.Finite.iff_fg.1 (hL j U). …`. Conclude with `GlobalTheory.T.lattice_descends_to_subfield B.X _ U h n' (L j U) g' S' hsp' hg' hS'`.
+-/
 theorem exists_finiteDimensional_isDescended : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] (B : GlobalTheory.Vert.Model O) (J : Type) [Finite J] (h : ℕ) (L : J → ∀ U : AffOp B.X, Submodule U.Bp (Fin h → U.Bp)) (T : Set (Σ U : AffOp B.X, U.Bp)), T.Finite → (∀ j U, Module.Finite U.Bp (L j U) ∧ Module.Projective U.Bp (L j U) ∧ ∀ x : Fin h → U.Bp, (p : U.Bp) • x ∈ L j U) → (∀ j (U U' : AffOp B.X) (hle : U'.1 ≤ U.1), L j U' = Submodule.span U'.Bp (piMap (AffOp.res hle) (Fin h) '' (L j U : Set (Fin h → U.Bp)))) → ∃ K' : IntermediateField B.X.functionField (Kbar B.X), FiniteDimensional B.X.functionField K' ∧ (∀ t ∈ T, (t.2 : Kbar B.X) ∈ K') ∧ ∀ j U, IsDescended K' U (L j U) := by
   intro O _ _ _ p _ _ B J _ h L T hT hL hc
   haveI : CharZero B.X.functionField := by

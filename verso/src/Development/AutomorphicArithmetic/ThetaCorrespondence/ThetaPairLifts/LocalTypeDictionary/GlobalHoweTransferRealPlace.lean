@@ -10,6 +10,29 @@ open NumberField IsDedekindDomain
 open scoped TensorProduct
 namespace GlobalTheory.HoweGlobal.RealTransfer
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealActs
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hreal`. Establish `hPair` using `GlobalTheory.ThK.RealUniq.isPair_V hM.triple`. Establish `PA : PolActs Bs G.M om` using `_root_.GlobalTheory.T.dualPair_preserves_polarization hP F E σ Bs _ _ _ _ G.M _ _ om _ _ _ _ hPair`. Use `set P := G.M.Pol Bs.ψ Bs.emb with hPdef`. Establish `key : ∀ N : Submodule ℂ ↥P, relInf Bs G om ≤ N → (∀ g ∈ opInf Bs G om, ∀ x ∈ N, g x ∈ N) → GlobalTheory.Published.ThetaSubInf G.M Bs.ψ Bs.emb om (N.map P.subtype)`.
+
+Introduce `N hrel hop`. Use `⟨Submodule.map_subtype_le _ _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ hA`. Take `⟨D, hDP, hD⟩` from `PA.1 γ hγ`. Establish `e : f₁ = D f` using `(hD f hf f₁).1 hA`.
+
+Establish `h1 : f₁ ∈ P` using `e ▸ hDP f hf`. Use `⟨⟨f₁, h1⟩, hrel (Submodule.subset_span (Or.inl ⟨γ, hγ, f, hf, hA⟩)), rfl⟩` and prove the remaining obligations. Introduce `k hk f hf f₁ hA`. Take `⟨D, hDP, hD⟩` from `PA.2.1 k hk`. Establish `e : f₁ = D f` using `(hD f hf f₁).1 hA`.
+
+Establish `h1 : f₁ ∈ P` using `e ▸ hDP f hf`. Use `⟨⟨f₁, h1⟩ - ⟨f, hf⟩, hrel (Submodule.subset_span (Or.inr ⟨k, hk, ⟨f, hf⟩, ⟨f₁, h1⟩, hA, rfl⟩)), rfl⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ hA`. Take `⟨y, hy, rfl⟩` from `hf`. Take `⟨D, hDP, hD⟩` from `PA.2.2.1 γ hγ`.
+
+Set `g : Module.End ℂ ↥P` to `D.restrict hDP`. Establish `hg : g ∈ opInf Bs G om` using `Or.inr ⟨γ, hγ, fun f => (hD f f.2 _).2 rfl⟩`. Establish `e : f₁ = D y` using `(hD y y.2 f₁).1 hA`. Conclude with `⟨g y, hop g hg y hy, e.symm⟩`. Introduce `k hk f hf f₁ hA`.
+
+Take `⟨y, hy, rfl⟩` from `hf`. Take `⟨D, hDP, hD⟩` from `PA.2.2.2 k hk`. Set `g : Module.End ℂ ↥P` to `D.restrict hDP`. Establish `hg : g ∈ opInf Bs G om` using `Or.inl ⟨k, hk, fun f => (hD f f.2 _).2 rfl⟩`. Establish `e : f₁ = D y` using `(hD y y.2 f₁).1 hA`.
+
+Conclude with `⟨g y, hop g hg y hy, e.symm⟩`. Establish `hinj : Function.Injective (Submodule.map P.subtype)` using `Submodule.map_injective_of_injective P.injective_subtype`. Establish `hne : ∀ N : Submodule ℂ ↥P, N ≠ ⊤ → N.map P.subtype ≠ P`. Introduce `N hN h`. Apply `hN` to reduce the goal to its premises.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_subtype_top]`. Use `⟨_root_.GlobalTheory.T.polarization_rank_le_dim hP F E σ Bs _ _ _ _ G.M _ _ om _ _ _ _ hPair, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `hreal.1`. Use `⟨L, fun m N hN hN' => hL m (fun i => (N i).map P.subtype) ((Submodule.map_strictMono_of_injective P.injective_subtype).comp hN) fun i => key _ (hN' i).1 (hN' i).2⟩` and prove the remaining obligations.
+
+Introduce `N hrel hop hN x hx`. Conclude with `hreal.2 _ (key N hrel hop) (hne N hN) x ⟨x, hx, rfl⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨γ, hγ, f, hf, hA⟩ | ⟨k, hk, f, f₁, hA, rfl⟩)`. Conclude with `hM.real.quot.lie γ hγ f hf _ hA`.
+
+Use `show R.p (((f₁ - f : ↥P)) : SInf F _) = 0`. Rewrite using `[Submodule.coe_sub, map_sub, hM.real.quot.cpt k hk f f.2 f₁ hA, sub_self]`. Introduce `g hg x hx`. Establish `hx' : R.p (x : SInf F _) = 0` using `hx`. Use `show R.p ((g x : ↥P) : SInf F _) = 0`.
+
+Break down `hg with ⟨k, hk, hA⟩ | ⟨γ, hγ, hA⟩` into its components or cases. Use `hM.real.cpt k hk x x.2 0 (G.M'.Pol Bs.ψ Bs.emb).zero_mem _ 0 (hA x) (GlobalTheory.ThK.RealUniq.acts_zero _) (by rw [hx', map_zero])` as an intermediate fact. Rewrite using `[this, map_zero]`. Use `hM.real.lie γ hγ x x.2 0 (G.M'.Pol Bs.ψ Bs.emb).zero_mem _ 0 (hA x) (GlobalTheory.ThK.RealUniq.actsD_zero _) (by rw [hx', map_zero])` as an intermediate fact. Rewrite using `[this, map_zero]`.
+-/
 theorem howe_real_place_transfer : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W)
@@ -95,6 +118,9 @@ section
 open NumberField IsDedekindDomain
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HoweGlobal.RealTransfer.howe_real_place_transfer | exact _root_.GlobalTheory.HoweGlobal.RealTransfer.howe_real_place_transfer | (intros; apply _root_.GlobalTheory.HoweGlobal.RealTransfer.howe_real_place_transfer <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.global_howe_transfer_real_place : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W)

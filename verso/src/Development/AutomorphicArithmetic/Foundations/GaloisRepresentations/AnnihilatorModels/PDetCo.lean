@@ -5,6 +5,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `F L B _ _ _ _ _ a`. Use `⟨fun x y => ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[co, map_add]`. Introduce `c x`.
+
+Use function extensionality and compare the values at `i`. Use `show AlgebraTensorModule.map (LinearMap.proj i) LinearMap.id (c • x) = (c ⊗ₜ[F] (1 : B)) * AlgebraTensorModule.map (LinearMap.proj i) LinearMap.id x`. Rewrite using `[map_smul, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Introduce `b x`. Use function extensionality and compare the values at `i`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [co]`. Consider the case `tmul m n => simp [co, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => simp_all [co, mul_add]`. Introduce `T A hT s x`.
+
+Use function extensionality and compare the values at `i`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [co, Matrix.mulVec, dotProduct]`. Consider the case `tmul m n`. Simplify using `[co, onR, hT, Matrix.mulVec, dotProduct, TensorProduct.sum_tmul, Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Consider the case `add x y hx hy`. Simplify using `only [map_add, Pi.add_apply] at hx hy ⊢`. Simplify using `[co, Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib]`. Use `(AlgebraTensorModule.congr (LinearEquiv.funUnique (Fin 1) L L) (LinearEquiv.refl F B)).bijective using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [co]`. Consider the case `tmul m n => simp [co]`. Consider the case `add x y hx hy => simp_all [co]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.detCo_of :
     CoFacts := by
   intro F L B _ _ _ _ _ a

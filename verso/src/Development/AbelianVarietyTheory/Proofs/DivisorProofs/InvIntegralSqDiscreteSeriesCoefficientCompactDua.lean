@@ -23,22 +23,34 @@ variable {p q n : ℕ} {ε : Fin n → Bool}
 def permFrame (e : Fin p ⊕ Fin q ≃ Fin n) : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ :=
   (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).submatrix id e.symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[permFrame, Matrix.mul_apply, Matrix.one_apply]`.
+-/
 theorem mul_permFrame (e : Fin p ⊕ Fin q ≃ Fin n) (X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
     X * permFrame e = X.submatrix id e.symm := by
   ext i j
   simp [permFrame, Matrix.mul_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[permFrame, Matrix.mul_apply, Matrix.one_apply, Matrix.conjTranspose_apply]`.
+-/
 theorem permFrame_conjTranspose_mul (e : Fin p ⊕ Fin q ≃ Fin n) (Y : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ) :
     (permFrame e)ᴴ * Y = Y.submatrix e.symm id := by
   ext i j
   simp [permFrame, Matrix.mul_apply, Matrix.one_apply, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, mul_permFrame, permFrame_conjTranspose_mul, ← h.reindex_Jpq, Matrix.reindex_apply, Matrix.submatrix_submatrix]`. Both sides reduce to the same expression.
+-/
 theorem permFrame_herm {e : Fin p ⊕ Fin q ≃ Fin n} (h : Sorts ε e) :
     (permFrame e)ᴴ * Formalism.UG.Jpq p q * permFrame e = Formalism.REAL.Jm ε := by
   rw [Matrix.mul_assoc, mul_permFrame, permFrame_conjTranspose_mul, ← h.reindex_Jpq, Matrix.reindex_apply,
     Matrix.submatrix_submatrix]
   rfl
 
+/- English proof (translation)
+Establish `: frameInv ε (permFrame e) * X * permFrame e = Formalism.REAL.Jm ε * ((permFrame e)ᴴ * (Formalism.UG.Jpq p q * X * permFrame e))`. Simplify using `only [frameInv, Matrix.mul_assoc]`. Rewrite using `[this, mul_permFrame, permFrame_conjTranspose_mul, Matrix.submatrix_submatrix, show (e.symm ∘ id : Fin n → Fin p ⊕ Fin q) = e.symm from rfl, show (id ∘ e.symm : Fin n → Fin p ⊕ Fin q) = e.symm from rfl, ← Matrix.submatrix_mul_equiv (Formalism.UG.Jpq p q) X e.symm e.symm e.symm, ← …`.
+-/
 theorem frameInv_permFrame {e : Fin p ⊕ Fin q ≃ Fin n} (h : Sorts ε e)
     (X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
     frameInv ε (permFrame e) * X * permFrame e = Matrix.reindex e e X := by
@@ -54,6 +66,15 @@ theorem frameInv_permFrame {e : Fin p ⊕ Fin q ≃ Fin n} (h : Sorts ε e)
 
 end Perm
 
+/- English proof (translation)
+Set `e₀ : Fin p ⊕ Fin q ≃ Fin n` to `finSumFinEquiv.trans (finCongr hn)`. Set `ε₀ : Fin n → Bool` to `fun i => (e₀.symm i).isLeft`. Establish `h₀ : Sorts ε₀ e₀` using `⟨fun i => by simp [ε₀], fun j => by simp [ε₀]⟩`. Establish `hC : (B.submatrix e₀.symm id)ᴴ * Formalism.REAL.Jm ε₀ * B.submatrix e₀.symm id = Formalism.REAL.Jm ε`. Rewrite using `[← h₀.reindex_Jpq, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, hB]`.
+
+Both sides reduce to the same expression. Establish `hcount : Nat.card {a // ε a = true} = p` using `(GlobalTheory.SignCount.card_true_eq _ hC).symm.trans h₀.card_true`. Take `⟨P, Q, e, he⟩` from `exists_sorts ε`. Establish `hP : P = p` using `he.card_true.symm.trans hcount`. Establish `hQ : Q = q` using `by have := Sorts.add_eq e; omega`.
+
+Substitute `hP hQ` using the available equality. Establish `hBp` using `permFrame_herm he`. Establish `hfun : (frameEquiv (permFrame e) hBp hn : UpqT P Q → Formalism.REAL.UJ ε) = he.equiv` using `funext fun b => umat_injective (by rw [umat_frameEquiv, frameInv_permFrame he, he.umat_equiv])`. Establish `hmap0 : (cd.cd P Q).map (frameEquiv (permFrame e) hBp hn) = (trueScale cd n ε : ENNReal) • Formalism.REAL.muG ε`. Rewrite using `[hfun]`.
+
+Use extensionality with `A hA`. Rewrite using `[Measure.map_apply he.measurable_equiv hA, ← he.set_eq]`. Conclude with `(cdScaleIs_trueScale cd n ε P Q e he.1 he.2 A hA).symm`. Conclude with `map_frameEquiv hBp hB hn (cd.cd P Q) _ hmap0`.
+-/
 theorem map_frameEquiv_cd (cd : CDHaar) {p q n : ℕ} {ε : Fin n → Bool} (B : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ)
     (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm ε) (hn : p + q = n) :
     (cd.cd p q).map (frameEquiv B hB hn) = (trueScale cd n ε : ENNReal) • Formalism.REAL.muG ε := by
@@ -87,6 +108,19 @@ namespace GlobalTheory.LowRow.CompactDualCoef
 
 open GlobalTheory.RealCoefSq GlobalTheory.Mem.Vol.Scale GlobalTheory.Mem.Vol GlobalTheory.AdelicScalar
 
+/- English proof (translation)
+Introduce `hHC cd D W S M Fr hFr hsig ρ hanti hhalf w hw`. Use `haveI : BorelSpace (Upq W ρ) := ⟨rfl⟩`. Establish `hn` using `hsig ρ`. Establish `hmap` using `map_frameEquiv_cd cd _ (frame_herm M hFr ρ) hn`. Establish `hme : MeasurableEmbedding (frameEquiv _ (frame_herm M hFr ρ) hn)` using `(frameEquiv _ (frame_herm M hFr ρ) hn).toHomeomorph.measurableEmbedding`.
+
+Establish `hk : (fun b : Upq W ρ => ‖⟪w, M.rep ρ (realMat W Fr ρ b) w⟫_ℂ‖ ^ 2) = (fun g : Formalism.REAL.UJ (M.ε ρ) => ‖⟪w, M.σ ρ (umat g) w⟫_ℂ‖ ^ 2) ∘ frameEquiv _ (frame_herm M hFr ρ) hn`. Use function extensionality and compare the values at `fun b => by simp only [Function.comp_apply, rep_realMat M hFr ρ hn b]`. Establish `hw0 : w ≠ 0` using `by rintro rfl; simp at hw`. Establish `hpr` using `hHC cd (trueScale cd) (cdScaleIs_trueScale cd) W.rank (M.ε ρ) (M.lam ρ) ⟨hanti, hhalf⟩ (M.H ρ) (M.σ ρ) w (M.ds ρ) hw0`. Rewrite `hpr` using `[hw, one_pow, one_div]`.
+
+Establish `hpos : 0 < (∏ a : Fin W.rank, ∏ b ∈ Finset.univ.filter (fun b : Fin W.rank => a < b), |M.lam ρ a - M.lam ρ b|) / ∏ a : Fin W.rank, ∏ b ∈ Finset.univ.filter (fun b : Fin W.rank => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))`. Use `div_pos (Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_) (Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_)` and prove the remaining obligations. Conclude with `abs_pos.2 (sub_ne_zero.2 (hanti.injective.ne (ne_of_lt (Finset.mem_filter.1 hb).2)))`. Use `(Finset.mem_filter.1 hb).2` as an intermediate fact. Conclude with `sub_pos.2 (by exact_mod_cast this)`.
+
+Establish `hint : Integrable (fun g : Formalism.REAL.UJ (M.ε ρ) => ‖⟪w, M.σ ρ (umat g) w⟫_ℂ‖ ^ 2) ((trueScale cd W.rank (M.ε ρ) : ENNReal) • Formalism.REAL.muG (M.ε ρ))`. Assume the negation of the conclusion as `hni`. Rewrite `hpr` using `[integral_undef hni, _root_.inv_zero]`. Conclude with `hpos.ne hpr`. Rewrite `hint` using `[← hmap]`.
+
+Rewrite using `[hk]`. Use `⟨hme.integrable_map_iff.1 hint, ?_⟩` and prove the remaining obligations. Rewrite using `[show (∫ b, ((fun g : Formalism.REAL.UJ (M.ε ρ) => ‖⟪w, M.σ ρ (umat g) w⟫_ℂ‖ ^ 2) ∘ frameEquiv _ (frame_herm M hFr ρ) hn) b ∂(cd.cd _ _)) = ∫ g, ‖⟪w, M.σ ρ (umat g) w⟫_ℂ‖ ^ 2 ∂((trueScale cd W.rank (M.ε ρ) : ENNReal) • Formalism.REAL.muG (M.ε ρ)) by`. Rewrite using `[← hmap, hme.integral_map]`. Use the proof step `rfl]`.
+
+Conclude with `hpr`.
+-/
 theorem inv_integral_coef_sq : GlobalTheory.Published.FormalDegreeCompactDual → ∀ (cd : CDHaar) {D : D7} (W : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel W S) (Fr : Frames W), IsFrames W Fr → (∀ ρ, (W.sig (tauE D ρ)).1 + (W.sig (tauE D ρ)).2 = W.rank) → ∀ ρ, StrictAnti (M.lam ρ) → (∀ a, ∃ z : ℤ, M.lam ρ a - ((W.rank : ℝ) - 1) / 2 = (z : ℝ)) → ∀ w : M.H ρ, ‖w‖ = 1 → Integrable (fun b : Upq W ρ => ‖⟪w, M.rep ρ (realMat W Fr ρ b) w⟫_ℂ‖ ^ 2) (cd.cd _ _) ∧ (∫ b : Upq W ρ, ‖⟪w, M.rep ρ (realMat W Fr ρ b) w⟫_ℂ‖ ^ 2 ∂(cd.cd _ _))⁻¹ = (∏ a : Fin W.rank, ∏ b ∈ Finset.univ.filter (fun b : Fin W.rank => a < b), |M.lam ρ a - M.lam ρ b|) / ∏ a : Fin W.rank, ∏ b ∈ Finset.univ.filter (fun b : Fin W.rank => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) := by
   intro hHC cd D W S M Fr hFr hsig ρ hanti hhalf w hw
   classical

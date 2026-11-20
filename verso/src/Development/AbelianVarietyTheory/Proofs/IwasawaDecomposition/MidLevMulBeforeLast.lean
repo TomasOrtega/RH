@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.QChi
 
+/- English proof (translation)
+Establish `hL` using `hOk.idx_ok a`. Establish `e : B.R.m - 1 = B.R.m - 2 + 1` using `by have := hL.hm; omega`. Rewrite using `[e]`. Take `⟨b, -⟩` from `hL.last_uniq`. Conclude with `⟨b, hL.last_h b⟩`.
+-/
 theorem last_rep_one {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a : I.ι) :
     ∃ b : (I.idx a).β (B.R.m - 1), ∀ P, (I.idx a).h (B.R.m - 1) b P = 1 := by
   have hL := hOk.idx_ok a
@@ -23,15 +26,24 @@ theorem last_rep_one {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a 
   obtain ⟨b, -⟩ := hL.last_uniq
   exact ⟨b, hL.last_h b⟩
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `last_rep_one I hOk a`. Establish `h` using `(hOk.idx_ok a).int (B.R.m - 1) b P`. Rewrite `h` using `[hb P]`. Then use the resulting hypothesis.
+-/
 theorem prCat_last_le_GLint {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a : I.ι) (P : SBof I a) :
     prCat (Pr := B.primes X) (R := B.R) (I.cst a).sharp (B.R.m - 1) P.1 1 ≤ Formalism.L2.Col.GLint B.fields.E (B.R.N (B.R.m - 1)) P.1 := by
   obtain ⟨b, hb⟩ := last_rep_one I hOk a
   have h := (hOk.idx_ok a).int (B.R.m - 1) b P
   rwa [hb P] at h
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem inv_mul_rearrange {G : Type*} [Group G] (A B C D : G) : (A * B)⁻¹ * (C * D) = (B⁻¹ * D) * (D⁻¹ * (A⁻¹ * C) * D) := by
   group
 
+/- English proof (translation)
+Rewrite using `[map_mul, inv_mul_rearrange]`. Conclude with `GlobalTheory.CplPt.congAt_mul _ hy (GlobalTheory.CplPt.congAt_conj _ hx hint)`.
+-/
 theorem nearAt_prod_of_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) (ex ey : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (rg rg' : GL (Fin N) E)
     (hx : GlobalTheory.TwU.CongAt P n (ex⁻¹ * GlobalTheory.TwU.ratA F rg)) (hy : GlobalTheory.TwU.CongAt P n (ey⁻¹ * GlobalTheory.TwU.ratA F rg'))
@@ -40,6 +52,11 @@ theorem nearAt_prod_of_conj {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   rw [map_mul, inv_mul_rearrange]
   exact GlobalTheory.CplPt.congAt_mul _ hy (GlobalTheory.CplPt.congAt_conj _ hx hint)
 
+/- English proof (translation)
+Introduce `B X I hOk l Z a v P x y g g' z z' hx hy`. Establish `hg' : g' ∈ prCat (Pr` using `B.primes X) (R := B.R) (I.cst a).sharp (B.R.m - 1) P.1 1 := (GlobalTheory.TwU.exists_midLev_iff (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 1) P 1 g').1 ⟨z', hy.1⟩`. Establish `hint` using `prCat_last_le_GLint I hOk a P hg'`. Establish `hx2` using `hx.2`. Establish `hy2` using `hy.2`.
+
+Unfold `NearV GlobalTheory.TwU.NearAt at hx2 hy2 ⊢`. Establish `key` using `nearAt_prod_of_conj _ _ _ _ _ _ hx2 hy2 (GlobalTheory.CplPt.seamGL_int (sm I l Z) ⟨g', hint⟩)`. Rewrite using `[map_mul (GlobalTheory.Mem.Col2.ChartLevel.emb v)]`. Use `erw [map_mul (GlobalTheory.TwU.seamGL (sm I l Z)) g g']`. Conclude with `key`.
+-/
 theorem nearV_mul_pairs : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (P : SBof I a) (x y : GL (Fin ((I.rec7 l Z).R.N (B.R.m - 1))) ((I.rec7 l Z).host.E ⊗[(I.rec7 l Z).host.F] v.adicCompletion (I.rec7 l Z).host.F)) (g g' : Sp B.fields.E (B.R.N (B.R.m - 1)) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N (B.R.m - 1))) (z z' : B.fields.K), GlobalTheory.Mem.Col2.QChi.NearPair I l Z a v P x g z → GlobalTheory.Mem.Col2.QChi.NearPair I l Z a v P y g' z' → GlobalTheory.Mem.Col2.QChi.NearV I l Z a v P (x * y) (g * g') := by
   intro B X I hOk l Z a v P x y g g' z z' hx hy
   have hg' : g' ∈ prCat (Pr := B.primes X) (R := B.R) (I.cst a).sharp (B.R.m - 1) P.1 1 :=
@@ -53,6 +70,15 @@ theorem nearV_mul_pairs : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok �
   erw [map_mul (GlobalTheory.TwU.seamGL (sm I l Z)) g g']
   exact key
 
+/- English proof (translation)
+Establish `hL` using `hOk.idx_ok a`. Take `⟨b, hb⟩` from `last_rep_one I hOk a`. Establish `hint` using `prCat_last_le_GLint I hOk a P`. Distinguish the cases in `hP : P.1 ∈ (B.primes X).vGs`. Establish `hH : ∀ g (hg : g ∈ prCat (Pr` using `B.primes X) (R := B.R) (I.cst a).sharp (B.R.m - 1) P.1 1), GlobalTheory.TopStep.redGL _ P.1 ⟨g, hint hg⟩ ∈ ((I.idx a).levG (B.R.m - 1) b ⟨P.1, hP⟩).H := fun g hg => (hL.grpG _ b ⟨P.1, hP⟩ _).2 ⟨g, by rw [hb]; exact hg, fun x hx => GlobalTheory.TopStep.redV_redGL ⟨g, hint hg⟩ hx⟩`.
+
+Use `⟨((I.idx a).levG (B.R.m - 1) b ⟨P.1, hP⟩).lam.comp (MonoidHom.codRestrict ((GlobalTheory.TopStep.redGL _ P.1).comp (Subgroup.inclusion hint)) _ fun g => hH g.1 g.2), ?_⟩` and prove the remaining obligations. Introduce `r hr g hg hrx`. Establish `hc` using `hL.chrG (B.R.m - 1) b ⟨P.1, hP⟩ ⟨_, hH g hg⟩ g r (by rw [hb]; exact hr) hrx (fun x hx => GlobalTheory.TopStep.redV_redGL ⟨g, hint hg⟩ hx)`. Rewrite `hc` using `[hb]`. Conclude with `hc.symm`.
+
+Establish `hQ` using `(Finset.mem_union.mp P.2).resolve_left hP`. Establish `hH : ∀ g (hg : g ∈ prCat (Pr` using `B.primes X) (R := B.R) (I.cst a).sharp (B.R.m - 1) P.1 1), (⟨g, hint hg⟩ : ↥(Formalism.L2.Col.GLint B.fields.E (B.R.N (B.R.m - 1)) P.1)) ∈ ((I.idx a).levQ (B.R.m - 1) b ⟨P.1, hQ⟩).H := fun g hg => by`. Rewrite using `[hL.grpQ _ b ⟨P.1, hQ⟩, hb]`. Conclude with `Subgroup.mem_subgroupOf.2 hg`. Use `⟨((I.idx a).levQ (B.R.m - 1) b ⟨P.1, hQ⟩).lam.comp (MonoidHom.codRestrict (Subgroup.inclusion hint) _ fun g => hH g.1 g.2), ?_⟩` and prove the remaining obligations.
+
+Introduce `r hr g hg hrx`. Establish `hc` using `hL.chrQ (B.R.m - 1) b ⟨P.1, hQ⟩ ⟨⟨g, hint hg⟩, hH g hg⟩ r (by rw [hb]; exact hr) hrx`. Rewrite `hc` using `[hb]`. Conclude with `hc.symm`.
+-/
 theorem chiInv_last_eq_char {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a : I.ι) (P : SBof I a) :
     ∃ φ : ↥(prCat (Pr := B.primes X) (R := B.R) (I.cst a).sharp (B.R.m - 1) P.1 1) →* B.fields.Kˣ,
       ∀ r ∈ Loc.Cbe (Jat (Pr := B.primes X) (R := B.R) (I.cst a).sharp (B.R.m - 1) P.1) 1,
@@ -86,6 +112,11 @@ theorem chiInv_last_eq_char {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.
     rw [hb] at hc
     exact hc.symm
 
+/- English proof (translation)
+Introduce `B X I hOk a P g g' z z' ⟨r, hr, hrx, hz⟩ ⟨r', hr', hrx', hz'⟩`. Take `⟨φ, hφ⟩` from `chiInv_last_eq_char I hOk a P`. Establish `hg : g ∈ prCat (Pr` using `B.primes X) (R := B.R) (I.cst a).sharp (B.R.m - 1) P.1 1 := ⟨r, hr, hrx⟩`. Establish `hg' : g' ∈ prCat (Pr` using `B.primes X) (R := B.R) (I.cst a).sharp (B.R.m - 1) P.1 1 := ⟨r', hr', hrx'⟩`. Establish `hrr : ∀ x, (r * r') (Loc.inX B.fields.E (B.R.N (B.R.m - 1)) (cOf B.R (B.R.m - 1)) x) = Loc.inX B.fields.E (B.R.N (B.R.m - 1)) (cOf B.R (B.R.m - 1)) ((g * g') x)` using `fun x => by`.
+
+Rewrite using `[LinearEquiv.mul_apply, hrx', hrx]`. Both sides reduce to the same expression. Use `⟨r * r', mul_mem hr hr', hrr, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hz', hφ r hr g hg hrx, hφ r' hr' g' hg' hrx', hφ (r * r') (mul_mem hr hr') (g * g') (mul_mem hg hg') hrr, ← Units.val_mul, ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem midLev_mul_beforeLast : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (a : I.ι) (P : SBof I a) (g g' : Sp B.fields.E (B.R.N (B.R.m - 1)) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N (B.R.m - 1))) (z z' : B.fields.K), GlobalTheory.TwU.MidLev (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 1) P 1 g z → GlobalTheory.TwU.MidLev (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 1) P 1 g' z' → GlobalTheory.TwU.MidLev (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 1) P 1 (g * g') (z * z') := by
   intro B X I hOk a P g g' z z' ⟨r, hr, hrx, hz⟩ ⟨r', hr', hrx', hz'⟩
   obtain ⟨φ, hφ⟩ := chiInv_last_eq_char I hOk a P
@@ -100,6 +131,9 @@ theorem midLev_mul_beforeLast : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), 
     ← Units.val_mul, ← map_mul]
   rfl
 
+/- English proof (translation)
+Introduce `B X I hOk a P`. Take `⟨φ, hφ⟩` from `chiInv_last_eq_char I hOk a P`. Use `⟨1, one_mem _, fun x => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ 1 (one_mem _) 1 (one_mem _) (fun x => rfl)]`. Conclude with `(congrArg Units.val (map_one φ)).symm`.
+-/
 theorem midLev_one_last : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (a : I.ι) (P : SBof I a), GlobalTheory.TwU.MidLev (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 1) P 1 1 1 := by
   intro B X I hOk a P
   obtain ⟨φ, hφ⟩ := chiInv_last_eq_char I hOk a P
@@ -107,6 +141,9 @@ theorem midLev_one_last : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok �
   rw [hφ 1 (one_mem _) 1 (one_mem _) (fun x => rfl)]
   exact (congrArg Units.val (map_one φ)).symm
 
+/- English proof (translation)
+Unfold `NearV GlobalTheory.TwU.NearAt`. Use `erw [map_one (GlobalTheory.TwU.seamGL (sm I l Z)), map_one, map_one, inv_one, one_mul]`. Conclude with `GlobalTheory.TwU.congAt_one _ _`.
+-/
 theorem nearV_one_one {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι)
     (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (P : SBof I a) : NearV I l Z a v P 1 1 := by
   unfold NearV GlobalTheory.TwU.NearAt
@@ -114,6 +151,9 @@ theorem nearV_one_one {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z
   exact GlobalTheory.TwU.congAt_one _ _
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[dif_pos ⟨hP, g, z, hn⟩]`. Conclude with `GlobalTheory.Mem.Col2.QChi.nearPair_val_unique I hOk l Z a v P x _ g _ z (Exists.choose_spec (Exists.choose_spec (⟨hP, g, z, hn⟩ : IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) ∧ ∃ g z, NearPair I l Z a v P x g z).2)) hn`.
+-/
 theorem valV_factor {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι)
     (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (x : GL (Fin ((I.rec7 l Z).R.N (B.R.m - 1))) ((I.rec7 l Z).host.E ⊗[(I.rec7 l Z).host.F] v.adicCompletion (I.rec7 l Z).host.F))
     (P : SBof I a) (g : Sp B.fields.E (B.R.N (B.R.m - 1)) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N (B.R.m - 1))) (z : B.fields.K)
@@ -123,12 +163,24 @@ theorem valV_factor {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (l :
   exact GlobalTheory.Mem.Col2.QChi.nearPair_val_unique I hOk l Z a v P x _ g _ z (Exists.choose_spec (Exists.choose_spec (⟨hP, g, z, hn⟩ : IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) ∧ ∃ g z, NearPair I l Z a v P x g z).2)) hn
 
 open Classical in
+/- English proof (translation)
+The claim follows from `dif_neg fun h => hP h.1`.
+-/
 theorem valV_factor_off {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι)
     (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (x : GL (Fin ((I.rec7 l Z).R.N (B.R.m - 1))) ((I.rec7 l Z).host.E ⊗[(I.rec7 l Z).host.F] v.adicCompletion (I.rec7 l Z).host.F))
     (P : SBof I a) (hP : ¬ IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1)) :
     (if h : IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) ∧ ∃ g z, NearPair I l Z a v P x g z then h.2.choose_spec.choose else 1) = 1 :=
   dif_neg fun h => hP h.1
 
+/- English proof (translation)
+Introduce `B X I hOk l Z a v`. Prove the components needed by the constructor for the conclusion. Unfold `valV`. Rewrite using `[Finset.prod_eq_one, map_one]`. Introduce `P _`.
+
+Distinguish the cases in `hP : IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1)`. Conclude with `valV_factor I hOk l Z a v 1 P 1 1 hP ⟨midLev_one_last I hOk a P, nearV_one_one I l Z a v P⟩`. Conclude with `valV_factor_off I l Z a v 1 P hP`. Introduce `x y hx hy`. Unfold `valV`.
+
+Rewrite using `[← map_mul, ← Finset.prod_mul_distrib]`. Use `congrArg _ (Finset.prod_congr rfl fun P _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hP : IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1)`. Establish `hx' : ∃ g z, NearPair I l Z a v P x g z` using `hx P hP`. Establish `hy' : ∃ g z, NearPair I l Z a v P y g z` using `hy P hP`.
+
+Take `⟨g, z, hgz⟩` from `hx'`. Take `⟨g', z', hgz'⟩` from `hy'`. Establish `hxy : NearPair I l Z a v P (x * y) (g * g') (z * z')` using `⟨midLev_mul_beforeLast I hOk a P g g' z z' hgz.1 hgz'.1, nearV_mul_pairs I hOk l Z a v P x y g g' z z' hgz hgz'⟩`. Rewrite using `[valV_factor I hOk l Z a v (x * y) P _ _ hP hxy, valV_factor I hOk l Z a v x P _ _ hP hgz, valV_factor I hOk l Z a v y P _ _ hP hgz']`. Rewrite using `[valV_factor_off I l Z a v (x * y) P hP, valV_factor_off I l Z a v x P hP, valV_factor_off I l Z a v y P hP, mul_one]`.
+-/
 theorem valV_mul : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), GlobalTheory.Mem.Col2.QChi.valV I l Z a v 1 = 1 ∧ ∀ x y, x ∈ GlobalTheory.Mem.Col2.QChi.NearSet I l Z a v → y ∈ GlobalTheory.Mem.Col2.QChi.NearSet I l Z a v → GlobalTheory.Mem.Col2.QChi.valV I l Z a v (x * y) = GlobalTheory.Mem.Col2.QChi.valV I l Z a v x * GlobalTheory.Mem.Col2.QChi.valV I l Z a v y := by
   intro B X I hOk l Z a v
   constructor

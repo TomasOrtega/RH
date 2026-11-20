@@ -54,6 +54,17 @@ def LeviWFinC : Prop :=
   ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Full X) (u' : D.what₂.Word), ∀ Λ ∈ Y.what₂ u',
     Set.Finite {g : Wsp X u' ≃ₗ[D.host.E] Wsp X u' | g ∈ Formalism.HermitianLatticesTheory.isom (hW X u') ∧ Formalism.HermitianLatticesTheory.gmap g (LW X u' Λ) = LW X u' Λ}
 
+/- English proof (translation)
+Establish `hX : ∀ j : ℕ, Xflag (lf D (X.Fu u')) j = Submodule.span D.host.E (X.eX '' {b | b.1 < j})`. Introduce `j`. Unfold `Formalism.MainNotions.S.Lat.Xflag Formalism.MainNotions.S.FlagG.Xa`. Simplify using `only [Formalism.MainNotions.S.lf, X.Fu_e]`. Introduce `j x hx`.
+
+Rewrite `hx` using `[hX (j + 1)]`. Rewrite using `[hX j]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, rfl⟩` from `hy`.
+
+Establish `h` using `Formalism.L2.SG.Pf.RegroupPf.StabFlagPf.flag_e (X := X) hs hS b`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `⟨c, lt_of_lt_of_le hc (Nat.lt_succ_iff.mp hb), rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy`. Rewrite using `[map_smul, ← smul_sub]`.
+
+Conclude with `Submodule.smul_mem _ a hy`.
+-/
 theorem srat_flag {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {u' : D.what₂.Word} {s : X.B.I.GA}
     {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : RatLink X s σ) (hS : s ∈ Srat X u') :
     ∀ j, ∀ x ∈ Xflag (lf D (X.Fu u')) (j + 1), σ x - x ∈ Xflag (lf D (X.Fu u')) j := by
@@ -79,6 +90,11 @@ theorem srat_flag {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {u' :
     rw [map_smul, ← smul_sub]
     exact Submodule.smul_mem _ a hy
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, LinearEquiv.mul_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨b y, ⟨y, hy, rfl⟩, rfl⟩`.
+
+Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+-/
 private theorem gmap_mul_lemma {D : D7} (a b : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (L : Submodule (𝓞 D.host.E) (VS D).V) :
     Formalism.HermitianLatticesTheory.gmap (a * b) L = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b L) := by
@@ -91,17 +107,36 @@ private theorem gmap_mul_lemma {D : D7} (a b : (VS D).V ≃ₗ[D.host.E] (VS D).
   · rintro ⟨_, ⟨y, hy, rfl⟩, rfl⟩
     exact ⟨y, hy, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, LinearEquiv.coe_one, id_eq, exists_eq_right]`.
+-/
 private theorem gmap_one_explicit_D {D : D7} (L : Submodule (𝓞 D.host.E) (VS D).V) :
     Formalism.HermitianLatticesTheory.gmap (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) L = L := by
   ext x
   simp only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe,
     LinearEquiv.coe_one, id_eq, exists_eq_right]
 
+/- English proof (translation)
+Rewrite using `[← h, ← gmap_mul_lemma, inv_mul_cancel, gmap_one_explicit_D]`.
+-/
 private theorem gmap_inv_of_gmap_eq {D : D7} (a : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (L M : Submodule (𝓞 D.host.E) (VS D).V) (h : Formalism.HermitianLatticesTheory.gmap a L = M) :
     Formalism.HermitianLatticesTheory.gmap a⁻¹ M = L := by
   rw [← h, ← gmap_mul_lemma, inv_mul_cancel, gmap_one_explicit_D]
 
+/- English proof (translation)
+Introduce `D X Y u'`. Set `P : Submodule (𝓞 D.host.E) (VS D).V → Submodule (𝓞 D.host.E) (VS D).V → Prop` to `fun Λ₁ Λ₂ => Λ₂ ∈ Y.what₂ u' ∧ ∃ (σ₀ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (s₀ : X.B.I.GA), RatLink X s₀ σ₀ ∧ σ₀ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT ∧ s₀ ∈ Srat X u' ∧ Formalism.HermitianLatticesTheory.gmap σ₀ Λ₂ = Λ₁`. Use `⟨fun Λ₁ Λ₂ => if hP : P Λ₁ Λ₂ then (h D X Y u' Λ₂ hP.1).choose.image (fun τ => hP.2.choose * τ) else ∅, ?_⟩` and prove the remaining obligations. Introduce `Λ₁ _ Λ₂ hΛ₂ σ s hs hσ hS hmap`. Establish `hP : P Λ₁ Λ₂` using `⟨hΛ₂, σ, s, hs, hσ, hS, hmap⟩`.
+
+Simplify using `only [dif_pos hP]`. Take `⟨s₀, hs₀, hσ₀, hS₀, hmap₀⟩` from `hP.2.choose_spec`. Take `⟨hT1, hT2⟩` from `(h D X Y u' Λ₂ hP.1).choose_spec`. Generalize the expression as in `hP.2.choose = σ₀ at hs₀ hσ₀ hmap₀ ⊢`. Generalize the expression as in `(h D X Y u' Λ₂ hP.1).choose = T at hT1 hT2 ⊢`.
+
+Establish `hρL : RatLink X (s₀⁻¹ * s) (σ₀⁻¹ * σ)` using `Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_inv X hs₀) hs`. Establish `hρI : σ₀⁻¹ * σ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem ((Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hσ₀) hσ`. Establish `hρS : s₀⁻¹ * s ∈ Srat X u'` using `(Srat X u').mul_mem ((Srat X u').inv_mem hS₀) hS`. Establish `hρΛ : Formalism.HermitianLatticesTheory.gmap (σ₀⁻¹ * σ) Λ₂ = Λ₂`. Rewrite using `[gmap_mul_lemma, hmap]`.
+
+Conclude with `gmap_inv_of_gmap_eq σ₀ Λ₂ Λ₁ hmap₀`. Take `⟨τ, hτ, hτo⟩` from `hT2 (σ₀⁻¹ * σ) (s₀⁻¹ * s) hρL hρI hρS hρΛ`. Take `⟨hτI, hτΛ, t, ht, htS⟩` from `hT1 τ hτ`. Use `⟨σ₀ * τ, Finset.mem_image.mpr ⟨τ, hτ, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `heq : (σ₀ * τ)⁻¹ * σ = τ⁻¹ * (σ₀⁻¹ * σ)`.
+
+Rewrite using `[mul_inv_rev, mul_assoc]`. Rewrite using `[heq]`. Use `⟨⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem ((Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hτI) hρI, ?_⟩, ?_, hτo⟩` and prove the remaining obligations. Rewrite using `[gmap_mul_lemma, hρΛ]`. Conclude with `gmap_inv_of_gmap_eq τ Λ₂ Λ₂ hτΛ`.
+
+Conclude with `srat_flag X (Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_inv X ht) hρL) ((Srat X u').mul_mem ((Srat X u').inv_mem htS) hρS)`.
+-/
 theorem leviFinC_of (h : LeviStabFinC) : LeviFinC := by
   intro D X Y u'
   let P : Submodule (𝓞 D.host.E) (VS D).V → Submodule (𝓞 D.host.E) (VS D).V → Prop := fun Λ₁ Λ₂ =>

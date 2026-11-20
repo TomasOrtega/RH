@@ -11,6 +11,9 @@ namespace Formalism.L2.PairingIndexBounds.Eq
 
 open Formalism.MainNotions Formalism.L2.Th1.H
 
+/- English proof (translation)
+Introduce `x y`. Simplify using `only [Ker.formV, LinearMap.mk₂'ₛₗ_apply, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formV_herm' (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) : IsHerm (Ker.formV A n N N') := by
   intro x y
   simp only [Ker.formV, LinearMap.mk₂'ₛₗ_apply, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]
@@ -18,12 +21,20 @@ theorem formV_herm' (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) : IsHerm (Ker.
   refine Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun z => (h.1 z (Set.mem_univ z)).differentiableAt, fun x hx z => h.2 x hx z⟩`.
+-/
 theorem mem_ThSp_of' (D : D7) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (La' : AddSubgroup (TaylorLogMetric.VC D N N'))
     (G : TaylorLogMetric.VC D N N' → ℂ)
     (h : G ∈ Formalism.L2.Th1.H.Th (Ker.formV (TaylorLogMetric.area T.abelian₂) D.what₂.Tau N N') (TaylorLogMetric.al D T) La') :
     G ∈ TaylorLogMetric.ThSp D T La' :=
   ⟨fun z => (h.1 z (Set.mem_univ z)).differentiableAt, fun x hx z => h.2 x hx z⟩
 
+/- English proof (translation)
+Unfold `TaylorLogMetric.Iop`. Establish `: ∀ q : La₂ ⧸ La₁.addSubgroupOf La₂, TaylorLogMetric.al D T ((Quotient.out q : La₂) : TaylorLogMetric.VC D N N') * TaylorLogMetric.U D T ((Quotient.out q : La₂) : TaylorLogMetric.VC D N N') (fun v => c * G v) z = c • (TaylorLogMetric.al D T ((Quotient.out q : La₂) : TaylorLogMetr …`. Introduce `q`. Simplify using `only [TaylorLogMetric.U, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [this]`. Rewrite using `[← smul_finsum, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Iop_smul' (D : D7) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (La₁ La₂ : AddSubgroup (TaylorLogMetric.VC D N N'))
     (c : ℂ) (G : TaylorLogMetric.VC D N N' → ℂ) (z : TaylorLogMetric.VC D N N') :
     TaylorLogMetric.Iop D T La₁ La₂ (fun v => c * G v) z = c * TaylorLogMetric.Iop D T La₁ La₂ G z := by
@@ -50,12 +61,21 @@ section Paths
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Ker.Base D cc δ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hN, hN', h, h'⟩`.
+-/
 theorem admissible_of_integral_conj_le {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hN : Even N) (hN' : Even N') (h : SD D L) (h' : SD D L') :
     TaylorLogMetric.admitted D N N' L L' := ⟨hN, hN', h, h'⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.GlobalTheoryTheory.Inhab.stdL_isSD D N`.
+-/
 theorem sd0 (N : ℕ) : SD D (StandardLatticesGL3.stdL D N) := Formalism.MainNotions.GlobalTheoryTheory.Inhab.stdL_isSD D N
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Th1.H.interTh _ _ (formV_herm' (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _ (hL.1 N N' L₂ L₂' h2).2 (hL.2 N N' _ _ _ _ h1 h2).1 _ hG`.
+-/
 theorem mvTh (hL : B.LatAll) {N N' : ℕ} {L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L₁' L₂' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (h1 : TaylorLogMetric.admitted D N N' L₁ L₁') (h2 : TaylorLogMetric.admitted D N N' L₂ L₂')
     {G : TaylorLogMetric.VC D N N' → ℂ}
@@ -69,6 +89,9 @@ theorem mvTh (hL : B.LatAll) {N N' : ℕ} {L₁ L₂ : Submodule (𝓞 D.host.E)
 
 variable {B}
 
+/- English proof (translation)
+The claim follows from `hSq N N' (StandardLatticesGL3.stdL D N) L (StandardLatticesGL3.stdL D N') X hN hN' (sd0 N) hLs (sd0 N') hX (B.thZero N N') (mem_ThSp_of' _ _ _ _ h0)`.
+-/
 theorem S1 (hSq : SqP D B.tor) (hL : B.LatAll) {N N' : ℕ} (hN : Even N) (hN' : Even N') (h0 : B.ThZeroMem N N')
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {X : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (hLs : SD D L) (hX : SD D X) :
@@ -78,6 +101,9 @@ theorem S1 (hSq : SqP D B.tor) (hL : B.LatAll) {N N' : ℕ} (hN : Even N) (hN' :
   hSq N N' (StandardLatticesGL3.stdL D N) L (StandardLatticesGL3.stdL D N') X hN hN' (sd0 N) hLs (sd0 N') hX (B.thZero N N')
     (mem_ThSp_of' _ _ _ _ h0)
 
+/- English proof (translation)
+Establish `hΦ` using `mvTh B hL (admissible_of_integral_conj_le hN hN' (sd0 N) (sd0 N')) (admissible_of_integral_conj_le hN hN' (sd0 N) h1) h0`. Rewrite using `[S1 hSq hL hN hN' h0 hLs h2, S1 hSq hL hN hN' h0 hLs h1, hSq N N' (StandardLatticesGL3.stdL D N) L L' L'' hN hN' (sd0 N) hLs h1 h2 _ (mem_ThSp_of' _ _ _ _ hΦ), hR N N' L' L'' hN hN' h1 h2 _ (mem_ThSp_of' _ _ _ _ h0)]`.
+-/
 theorem e1path (hSq : SqP D B.tor) (hR : Tr0R D B.tor) (hL : B.LatAll) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (h0 : B.ThZeroMem N N') {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' L'' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hLs : SD D L) (h1 : SD D L') (h2 : SD D L'') :
@@ -87,6 +113,11 @@ theorem e1path (hSq : SqP D B.tor) (hR : Tr0R D B.tor) (hL : B.LatAll) {N N' : �
     hSq N N' (StandardLatticesGL3.stdL D N) L L' L'' hN hN' (sd0 N) hLs h1 h2 _ (mem_ThSp_of' _ _ _ _ hΦ),
     hR N N' L' L'' hN hN' h1 h2 _ (mem_ThSp_of' _ _ _ _ h0)]
 
+/- English proof (translation)
+Establish `hH` using `mvTh B hL (admissible_of_integral_conj_le hN hN' (sd0 N) (sd0 N')) (admissible_of_integral_conj_le hN hN' hLs (sd0 N')) h0`. Establish `hs` using `hSq N N' L L₁ (StandardLatticesGL3.stdL D N') L' hN hN' hLs hL1 (sd0 N') h1 (B.thHalf N N' L) (mem_ThSp_of' _ _ _ _ hH)`. Establish `ht : TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor L (StandardLatticesGL3.stdL D N')) (TaylorLogMetric.La D B.tor L₁ (StandardLatticesGL3.stdL D N')) (B.thHalf N N' L) = B.thHalf N N' L₁` using `hTL N N' L L₁ hN hN' hLs hL1 _ (mem_ThSp_of' _ _ _ _ h0)`. Use `show TaylorLogMetric.Iop D B.tor _ _ (B.thHalf N N' L₁) = _`. Rewrite using `[← ht]`.
+
+Conclude with `hs`.
+-/
 theorem e2path (hSq : SqP D B.tor) (hTL : Tr0L D B.tor) (hL : B.LatAll) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (h0 : B.ThZeroMem N N') {L L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hLs : SD D L) (hL1 : SD D L₁) (h1 : SD D L') :

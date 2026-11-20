@@ -10,6 +10,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 
 namespace RootFieldNumerics
 
+/- English proof (translation)
+Introduce `τ a b hab`. Establish `hab' : (a : ℕ) ≤ b` using `hab`. Establish `key : ∀ k : ℕ, (a : ℕ) + k < N → ent mu τ ((a : ℕ) + k) ≤ ent mu τ a`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `hk`. Establish `h1` using `h τ ((a : ℕ) + k) (by omega)`.
+
+Establish `h2` using `ih (by omega)`. Use `show ent mu τ ((a : ℕ) + k + 1) ≤ ent mu τ a`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `key ((b : ℕ) - a) (by omega)`. Rewrite `h3` using `[Nat.add_sub_cancel' hab']`.
+
+Simplify `h3` using `[ent, a.isLt, b.isLt]`.
+-/
 theorem dominant_of_gaps {Ψ : Type} {N : ℕ} (mu : Wt Ψ N)
     (h : ∀ τ (i : ℕ), i + 1 < N → 0 ≤ ent mu τ i - ent mu τ (i + 1)) : Dominant mu := by
   intro τ a b hab
@@ -28,12 +37,82 @@ theorem dominant_of_gaps {Ψ : Type} {N : ℕ} (mu : Wt Ψ N)
   rw [Nat.add_sub_cancel' hab'] at h3
   simpa [ent, a.isLt, b.isLt] using h3
 
+/- English proof (translation)
+Unfold `ent`. Use `split_ifs with h`. Conclude with `(norm_le_pi_norm (mu τ) _).trans (norm_le_pi_norm mu τ)`. Simplify using the standard rewrite rules.
+-/
 theorem abs_ent_le {Ψ : Type} [Fintype Ψ] {N : ℕ} (mu : Wt Ψ N) (τ : Ψ) (i : ℕ) : |ent mu τ i| ≤ ‖mu‖ := by
   unfold ent
   split_ifs with h
   · exact (norm_le_pi_norm (mu τ) _).trans (norm_le_pi_norm mu τ)
   · simp
 
+/- English proof (translation)
+Introduce `Ψ _ _ N T c₀ θ₀ hc₀ hθ₀`. Use `set R := ‖T.nu‖ with hR`. Establish `hR0 : 0 ≤ R` using `norm_nonneg _`. Use `set δ : ℝ := min (min θ₀ (1 / 8)) (min (c₀ / 2) (1 / (4 * (R + 1)))) with hδ`. Establish `hδpos : 0 < δ` using `lt_min (lt_min hθ₀ (by norm_num)) (lt_min (by linarith) (by positivity))`.
+
+Use `⟨max 10 ⌈5 * (Fintype.card Ψ : ℝ) / δ⌉₊, ?_⟩` and prove the remaining obligations. Introduce `B hB τ₀ lam₀ hW`. Introduce `θ lam`. Take `⟨hn0, hg0, hgo, hcg⟩` from `hW`. Establish `hcard : (1 : ℝ) ≤ Fintype.card Ψ`.
+
+Conclude with `Fintype.card_pos_iff.mpr ⟨τ₀⟩` after adjusting the coercions. Establish `hB10 : (10 : ℝ) ≤ B` using `by exact_mod_cast (le_max_left _ _).trans hB`. Establish `hBpos : (0 : ℝ) < B` using `by linarith`. Establish `hBc : 5 * (Fintype.card Ψ : ℝ) / δ ≤ B` using `(Nat.le_ceil _).trans (by exact_mod_cast (le_max_right _ _).trans hB)`. Establish `hθdef : θ = 5 * (Fintype.card Ψ : ℝ) / B` using `rfl`.
+
+Establish `hθpos : 0 < θ` using `by rw [hθdef]; exact div_pos (by linarith) hBpos`. Establish `hθδ : θ ≤ δ`. Rewrite using `[hθdef, div_le_iff₀ hBpos]`. Use `(div_le_iff₀ hδpos).mp hBc` as an intermediate fact. Combine the linear relations using `[mul_comm (B : ℝ) δ]`.
+
+Establish `hθθ₀ : θ ≤ θ₀` using `hθδ.trans ((min_le_left _ _).trans (min_le_left _ _))`. Establish `hθ8 : θ ≤ 1 / 8` using `hθδ.trans ((min_le_left _ _).trans (min_le_right _ _))`. Establish `hθc : θ ≤ c₀ / 2` using `hθδ.trans ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hθR' : θ ≤ 1 / (4 * (R + 1))` using `hθδ.trans ((min_le_right _ _).trans (min_le_right _ _))`. Establish `hθR : θ * R ≤ 1 / 4`.
+
+Rewrite `hθR'` using `[le_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hθB : θ * B = 5 * (Fintype.card Ψ : ℝ)`. Rewrite using `[hθdef]`. Clear the denominators using the available nonvanishing facts.
+
+Set `D : Wt Ψ N` to `fun τ i => if τ = τ₀ ∧ (i : ℕ) < T.j then 2 * θ else 0`. Establish `hD : ‖D‖ ≤ 2 * θ`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).mpr (fun τ => ?_)` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).mpr (fun i => ?_)` and prove the remaining obligations. Simplify using `only [D]`.
+
+Use `split_ifs`. Rewrite using `[Real.norm_eq_abs, abs_of_pos (by positivity)]`. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish `hlamD : lam = lam₀ + D` using `by funext τ i; rfl`.
+
+Establish `hnlam : ‖lam‖ ≤ 1 / 2 + 2 * θ`. Rewrite using `[hlamD]; exact (norm_add_le _ _).trans (by linarith)`. Establish `hnmu : ‖T.lamS lam (θ ^ 2)‖ ≤ 1 / 2 + 2 * θ + θ ^ 2 * R` using `by show ‖lam - θ ^ 2 • T.nu‖ ≤ _`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hθ2R : θ ^ 2 * R ≤ θ / 4`. Establish `: θ ^ 2 * R = θ * (θ * R)` using `by ring`. Rewrite using `[this]`. Use `mul_le_mul_of_nonneg_left hθR hθpos.le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnmu1 : ‖T.lamS lam (θ ^ 2)‖ ≤ 1` using `by linarith`. Establish `hent : ∀ τ i, ent lam τ i = ent lam₀ τ i + (if τ = τ₀ ∧ i < T.j then 2 * θ else 0)`. Introduce `τ i`. Distinguish the cases in `hi : i < N`.
+
+Simplify using `[ent, hi, lam]`. Establish `: ¬ (i < T.j)` using `by have := T.j_lt; omega`. Simplify using `[ent, hi, this]`. Establish `hentS : ∀ (mu : Wt Ψ N) (s : ℝ) τ i, ent (T.lamS mu s) τ i = ent mu τ i - s * ent T.nu τ i`. Introduce `mu s τ i`.
+
+Apply the tactic sequence `by_cases hi : i < N <;> simp [ent, hi, RootTower.lamS]`. Establish `hnuD : ∀ τ i, ent T.nu τ i - ent T.nu τ (i + 1) ≤ 2 * R`. Introduce `τ i`. Establish `h1` using `abs_ent_le T.nu τ i`. Establish `h2` using `abs_ent_le T.nu τ (i + 1)`.
+
+Establish `h3` using `le_abs_self (ent T.nu τ i)`. Establish `h4` using `neg_abs_le (ent T.nu τ (i + 1))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgapLam : ∀ τ i, i + 1 < N → 2 * θ ≤ ent lam τ i - ent lam τ (i + 1)`. Introduce `τ i hi`.
+
+Rewrite using `[hent, hent]`. Break down `lt_trichotomy (i + 1) T.j with hlt | heq | hgt` into its components or cases. Establish `hc` using `hcg τ i hi hlt.ne`. Establish `h1 : i < T.j` using `by omega`. Distinguish the cases in `hτ : τ = τ₀`.
+
+Substitute `hτ` using the available equality. Simplify using `[h1, hlt]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hτ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1 : i < T.j` using `by omega`. Establish `h2 : ¬ i + 1 < T.j` using `by omega`. Establish `hg : gap T.j lam₀ τ = ent lam₀ τ i - ent lam₀ τ (i + 1)`. Simplify using `only [gap]`. Rewrite using `[← heq]`.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hτ : τ = τ₀`. Substitute `hτ` using the available equality. Simplify using `[h1, h2]`. Combine the linear relations using `[hg0, hg]`.
+
+Use `hgo τ hτ` as an intermediate fact. Simplify using `[hτ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc` using `hcg τ i hi hgt.ne'`. Establish `h1 : ¬ i < T.j` using `by omega`.
+
+Establish `h2 : ¬ i + 1 < T.j` using `by omega`. Simplify using `[h1, h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hj1 : T.j - 1 + 1 = T.j` using `by have := T.j_pos; omega`. Establish `hj2 : T.j - 1 + 1 < N` using `by have := T.j_pos; have := T.j_lt; omega`.
+
+Establish `hgapj : ∀ τ, 2 * θ ≤ gap T.j lam τ`. Introduce `τ`. Establish `h` using `hgapLam τ (T.j - 1) hj2`. Rewrite `h` using `[hj1]`. Conclude with `h`.
+
+Establish `hgapmu : ∀ τ, θ ≤ gap T.j (T.lamS lam (θ ^ 2)) τ`. Introduce `τ`. Establish `h` using `hgapj τ`. Establish `hn` using `hnuD τ (T.j - 1)`. Rewrite `hn` using `[hj1]`.
+
+Simplify using `only [gap] at h ⊢`. Rewrite using `[hentS, hentS]`. Establish `: θ ^ 2 * (ent T.nu τ (T.j - 1) - ent T.nu τ T.j) ≤ θ ^ 2 * (2 * R)` using `mul_le_mul_of_nonneg_left hn (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, hθpos, hθθ₀, by linarith, by linarith, hnmu1, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(le_max_left 10 _).trans hB` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `τ`. Use `hgapj τ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1 : T.j - 1 < T.j` using `by have := T.j_pos; omega`. Simplify using `only [gap]`. Rewrite using `[hent, hent]`. Use `hg0` as an intermediate fact. Simplify using `only [gap] at this`.
+
+Simplify using `[h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ i hi hij`. Rewrite using `[hent, hent]`. Establish `hc` using `hcg τ i hi hij`.
+
+Break down `lt_or_gt_of_ne hij with hlt | hgt` into its components or cases. Establish `h1 : i < T.j` using `by omega`. Distinguish the cases in `hτ : τ = τ₀`. Substitute `hτ` using the available equality. Simplify using `[h1, hlt]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hτ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ¬ i < T.j` using `by omega`. Establish `h2 : ¬ i + 1 < T.j` using `by omega`.
+
+Simplify using `[h1, h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `dominant_of_gaps lam (fun τ i hi => by have := hgapLam τ i hi; linarith)`. Use `dominant_of_gaps _ (fun τ i hi => ?_)` and prove the remaining obligations. Rewrite using `[hentS, hentS]`.
+
+Establish `h` using `hgapLam τ i hi`. Establish `hn` using `hnuD τ i`. Establish `: θ ^ 2 * (ent T.nu τ i - ent T.nu τ (i + 1)) ≤ θ ^ 2 * (2 * R)` using `mul_le_mul_of_nonneg_left hn (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ`.
+
+Establish `hg` using `hgapmu τ`. Establish `hB2 : (0 : ℝ) ≤ (B : ℝ) - 2` using `by linarith`. Establish `h1 : ((B : ℝ) - 2) * θ ≤ ((B : ℝ) - 2) * gap T.j (T.lamS lam (θ ^ 2)) τ` using `mul_le_mul_of_nonneg_left hg hB2`. Establish `he : ((B : ℝ) - 2) * θ = θ * B - 2 * θ` using `by ring`. Establish `h3 : 4 * (Fintype.card Ψ : ℝ) * ‖T.lamS lam (θ ^ 2)‖ ≤ 4 * (Fintype.card Ψ : ℝ)` using `mul_le_of_le_one_right (by positivity) hnmu1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : T.lamS lam (θ ^ 2) - lam₀ = D - θ ^ 2 • T.nu`. Use function extensionality and compare the values at `τ i`. Simplify using `[RootTower.lamS, lam, D]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsub]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem perturbed_weight_wall_bounds : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) (c₀ θ₀ : ℝ), 0 < c₀ → 0 < θ₀ → ∃ B₁ : ℕ, ∀ B : ℕ, B₁ ≤ B → ∀ (τ₀ : Ψ) (lam₀ : Wt Ψ N), InWall T.j τ₀ c₀ lam₀ → let θ : ℝ := 5 * Fintype.card Ψ / B; let lam : Wt Ψ N := fun τ i => lam₀ τ i + (if τ = τ₀ ∧ (i : ℕ) < T.j then 2 * θ else 0); 3 ≤ B ∧ 0 < θ ∧ θ ≤ θ₀ ∧ θ ≤ 1 ∧ ‖lam‖ ≤ 1 ∧ ‖T.lamS lam (θ ^ 2)‖ ≤ 1 ∧ (∀ τ, θ ≤ gap T.j lam τ) ∧ gap T.j lam τ₀ = 2 * θ ∧ CompactGapsGE T.j c₀ lam ∧ Dominant lam ∧ Dominant (T.lamS lam (θ ^ 2)) ∧ NefThreshold T.j B (T.lamS lam (θ ^ 2)) ∧ ‖T.lamS lam (θ ^ 2) - lam₀‖ ≤ 2 * θ + ‖T.nu‖ * θ ^ 2 := by
   intro Ψ _ _ N T c₀ θ₀ hc₀ hθ₀
   set R := ‖T.nu‖ with hR

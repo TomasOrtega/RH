@@ -13,6 +13,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.PlaceUnderFixed
 
+/- English proof (translation)
+Introduce `D s hs`. Take `⟨k, u, s₀, hv, hw⟩` from `GlobalTheory.FormInner.exists_split_of_gPl D s.v hs`. Conclude with `⟨k, u, s₀, hw, hv⟩`.
+-/
 theorem exists_splitPlace_under_plGw : ∀ (D : D7) (s : SplitPlace D.host.E), s.v ∈ gPl D → ∃ (k : Fin 2) (v : D.nd.PlG k) (s₀ : SplitPlace D.host.E), s₀.w = D.naut.plGw k v ∧ s₀.v = s.v := by
   intro D s hs
   obtain ⟨k, u, s₀, hv, hw⟩ := GlobalTheory.FormInner.exists_split_of_gPl D s.v hs

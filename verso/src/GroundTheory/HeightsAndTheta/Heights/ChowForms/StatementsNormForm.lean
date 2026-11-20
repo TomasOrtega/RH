@@ -44,13 +44,22 @@ def PrimeMapFractionRing.Statement : Prop :=
 
 section Inhabitants
 
+/- English proof (translation)
+Introduce `h` and use `one_ne_zero (congrFun h 0)`.
+-/
 theorem LinearFormPrime.hypotheses_inhabited : (fun _ : Fin 1 => (1 : ℚ)) ≠ 0 :=
   fun h => one_ne_zero (congrFun h 0)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem NormFormEmbeddings.hypotheses_inhabited :
     Infinite ℚ ∧ FiniteDimensional ℚ ℚ ∧ Algebra.IsSeparable ℚ ℚ ∧ IsAlgClosed (AlgebraicClosure ℚ) :=
   ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Use `⟨?_, by simp, by simp⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Conclude with `Subalgebra.algebraMap_mem (Algebra.adjoin ℚ (Set.range (fun _ : Fin 1 => (1 : ℚ)))) x`.
+-/
 theorem NormFormDvd.hypotheses_inhabited :
     Algebra.adjoin ℚ (Set.range (fun _ : Fin 1 => (1 : ℚ))) = ⊤ ∧
       ∑ m : Fin 1, (fun _ : Fin 1 => (1 : ℚ)) m • (fun _ : Fin 1 => (1 : ℚ)) m = 1 ∧
@@ -61,6 +70,9 @@ theorem NormFormDvd.hypotheses_inhabited :
   intro x _
   exact Subalgebra.algebraMap_mem (Algebra.adjoin ℚ (Set.range (fun _ : Fin 1 => (1 : ℚ)))) x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X_prime, fun a h => by have h' := congrArg totalDegree h rw [totalDegree_X, totalDegree_C] at h' exact one_ne_zero h'⟩`.
+-/
 theorem PrimeMapFractionRing.hypotheses_inhabited :
     Prime (X 0 : MvPolynomial (Fin 1) ℤ) ∧ ∀ a : ℤ, (X 0 : MvPolynomial (Fin 1) ℤ) ≠ C a :=
   ⟨X_prime, fun a h => by

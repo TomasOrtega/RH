@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.ChernCalc.CurvClosed
 
+/- English proof (translation)
+Establish `h` using `differentiableAt_fderiv_of_contDiffAt_two hu`. Establish `h1 : ∀ a, DifferentiableAt ℝ (fun x => fderiv ℝ u x a) z` using `fun a => h.clm_apply (differentiableAt_const _)`. Establish `hs` using `hu.isSymmSndFDerivAt (by simp)`. Establish `key (a b : V n) : dbar (fun x => dbar u x b) z a = (1 / 2 : ℂ) • (dbar (fun x => fderiv ℝ u x b) z a + Complex.I • dbar (fun x => fderiv ℝ u x (Complex.I • b)) z a)`. Rewrite using `[show (fun x => dbar u x b) = fun x => (1 / 2 : ℂ) • (fderiv ℝ u x b + Complex.I • fderiv ℝ u x (Complex.I • b)) from rfl, dbar_const_smul _ ((h1 _).fun_add ((h1 _).fun_const_smul Complex.I)), dbar_add (h1 _) ((h1 _).fun_const_smul Complex.I), dbar_const_smul _ (h1 _)]`.
+
+Both sides reduce to the same expression. Rewrite using `[key, key]`. Simplify using `only [dbar_apply, fderiv_fderiv_apply hu, smul_eq_mul]`. Rewrite using `[hs.eq w v, hs.eq w (Complex.I • v), hs.eq (Complex.I • w) v, hs.eq (Complex.I • w) (Complex.I • v)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dbar_dbar_comm {n : ℕ} {u : V n → ℂ} {z : V n} (hu : ContDiffAt ℝ 2 u z) (v w : V n) :
     dbar (fun x => dbar u x w) z v = dbar (fun x => dbar u x v) z w := by
   have h := differentiableAt_fderiv_of_contDiffAt_two hu
@@ -31,6 +36,11 @@ theorem dbar_dbar_comm {n : ℕ} {u : V n → ℂ} {z : V n} (hu : ContDiffAt �
   rw [hs.eq w v, hs.eq w (Complex.I • v), hs.eq (Complex.I • w) v, hs.eq (Complex.I • w) (Complex.I • v)]
   ring
 
+/- English proof (translation)
+Simplify using `only [Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `h` using `congrArg (dz a * ·) (PullClosed.sum_symm_dzb (hs a))`. Simplify using `only [Finset.mul_sum, mul_smul_comm, mul_zero] at h`.
+
+Use `Eq.trans (Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => ?_) h` and prove the remaining obligations. Rewrite using `[mul_neg, ← mul_assoc, ← mul_assoc, ← neg_mul, dz, dzb, ← eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)]`.
+-/
 theorem sum_symm {n : ℕ} {s : Fin n → Fin n → Fin n → ℂ} (hs : ∀ a c b, s a c b = s a b c) :
     ∑ c, ∑ p : Fin n × Fin n, s p.1 c p.2 • (dzb c * (-(dz p.1 * dzb p.2)) : Alt n) = 0 := by
   simp only [Fintype.sum_prod_type]
@@ -42,6 +52,9 @@ theorem sum_symm {n : ℕ} {s : Fin n → Fin n → Fin n → ℂ} (hs : ∀ a c
   rw [mul_neg, ← mul_assoc, ← mul_assoc, ← neg_mul, dz, dzb,
     ← eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)]
 
+/- English proof (translation)
+Simplify using `only [curvEv, curvPoly, Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, ← Algebra.smul_def, AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym, Fintype.sum_prod_type, curv, Matrix.neg_apply, mdbar_apply, neg_smul, smul_neg, …`.
+-/
 theorem curvEv_apply {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (x : V n) (i j : r) :
     (curvEv G x i j : Alt n) = ∑ p : Fin n × Fin n,
       dbar (fun y => conn G y (coordVec p.1) i j) x (coordVec p.2) • (-(dz p.1 * dzb p.2)) := by
@@ -49,6 +62,9 @@ theorem curvEv_apply {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n �
     MvPolynomial.aeval_X, ← Algebra.smul_def, AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym,
     Fintype.sum_prod_type, curv, Matrix.neg_apply, mdbar_apply, neg_smul, smul_neg, NegMemClass.coe_neg]
 
+/- English proof (translation)
+Introduce `n r _ _ G v hG hu i j`. Establish `hθ (a : Fin n) : ContDiffAt ℝ 2 (fun x => conn G x (coordVec a) i j) v` using `hG.conn hu (j := 2) (WithTop.coe_le_coe.2 (le_top : (2 + 1 : ℕ∞) ≤ ⊤)) (coordVec a) i j`. Rewrite using `[funext fun x => curvEv_apply G x i j, PullClosed.dbarAt_sum_smul (ι := Fin n × Fin n) (f := fun p x => dbar (fun y => conn G y (coordVec p.1) i j) x (coordVec p.2)) _ fun p => differentiableAt_dbar_apply (hθ p.1) _]`. Conclude with `sum_symm (s := fun a c b => dbar (fun x => dbar (fun y => conn G y (coordVec a) i j) x (coordVec b)) v (coordVec c)) fun a c b => dbar_dbar_comm (hθ a) _ _`.
+-/
 theorem dbarAt_curvEv : ∀ (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (v : V n),
     MContDiffAt ∞ G v → IsUnit (G v).det → ∀ i j, dbarAt (fun x => (curvEv G x i j : Alt n)) v = 0 := by
   intro n r _ _ G v hG hu i j

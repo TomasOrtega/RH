@@ -17,6 +17,29 @@ namespace GlobalTheory.SqTop
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D T L sc μ₀ hL G t`. Establish `hcc : ∀ x : D.host.E, GlobalTheory.Member.cF D x = D.host.conj x` using `fun x => Formalism.BasicNotions.bridge_star_holds D.R D.host x`. Establish `hund : ∀ PP PP' : HeightOneSpectrum (𝓞 D.host.E), PP.asIdeal = D.host.conj • PP'.asIdeal → PP.under (𝓞 D.host.F) = PP'.under (𝓞 D.host.F)`. Introduce `PP PP' h`. Establish `hc : GlobalTheory.Mem.Chr.ConjPl (GlobalTheory.Member.cF D).toRingEquiv PP' PP`.
+
+Rewrite using `[GlobalTheory.Mem.Chr.conjPl_iff_mem]`. Introduce `x y hxy`. Establish `hy : y = D.host.conj • x` using `RingOfIntegers.ext (by rw [hxy]; exact hcc _)`. Rewrite using `[hy, h]`. Conclude with `Ideal.smul_mem_pointwise_smul_iff.symm`.
+
+Conclude with `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl (GlobalTheory.Member.cF D) D.sp.cm.deg2 (GlobalTheory.IdeleNinety.conj_ne_one D) PP' PP).2 (Or.inr hc)`. Establish `hmax' : ∀ PP : HeightOneSpectrum (𝓞 D.host.E), (D.host.conj • PP.asIdeal).IsMaximal`. Introduce `PP`. Use `PP.isPrime` as an intermediate fact. Use `Ideal.IsPrime.isMaximal inferInstance fun h0 => PP.ne_bot ?_` and prove the remaining obligations.
+
+Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h0` as an intermediate fact. Simplify using `using this`. Establish `hmem : ∀ w ∈ twPl G t, w ∈ L.Q t ∧ w ∉ G.pl.W0`. Introduce `w hw`. Rewrite `hw` using `[twPl, Finset.mem_filter, GlobalTheory.FunObj.locPl, Finset.mem_union]`.
+
+Conclude with `⟨hw.1.resolve_left hw.2, hw.2⟩`. Establish `hoff : ∀ w ∈ twPl G t, w.under (𝓞 D.host.F) ∉ G.pl.S0`. Introduce `w hw hS`. Take `⟨hQ, hW⟩` from `hmem w hw`. Break down `G.pl.mem_S0_of_sum_eq.1 hS with h0 | h1` into its components or cases.
+
+Conclude with `G.pl.levelPlace_ne_basePlace t w hQ h0`. Apply `hW` to reduce the goal to its premises. Rewrite using `[G.pl.w_Q t w hQ h1]`. Conclude with `Finset.mem_image_of_mem _ hS`. Establish `hAB : ∀ v ∈ G.pl.S0, ∀ w ∈ twPl G t, (G.pl.w v).asIdeal ≠ D.host.conj • w.asIdeal`.
+
+Introduce `v hv w hw h`. Conclude with `hoff w hw (by rw [← hund _ _ h, G.pl.under_w hv]; exact hv)`. Establish `hBA : ∀ w ∈ twPl G t, ∀ v ∈ G.pl.S0, w.asIdeal ≠ D.host.conj • (G.pl.w v).asIdeal`. Introduce `w hw v hv h`. Conclude with `hoff w hw (by rw [hund _ _ h, G.pl.under_w hv]; exact hv)`.
+
+Establish `hBB : ∀ w ∈ twPl G t, ∀ w' ∈ twPl G t, w.asIdeal ≠ D.host.conj • w'.asIdeal`. Introduce `w hw w' hw' h`. Use `(hL.Q_pl t w' (hmem w' hw').1).2 w (hmem w hw).1 fun c hc => ⟨D.host.conj • c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Ideal.smul_mem_pointwise_smul _ _ _ hc`.
+
+Conclude with `(Formalism.BasicNotions.bridge_star_holds D.R D.host _).symm`. Rewrite using `[modT, smul_mul', ← Ideal.isCoprime_iff_sup_eq]`. Apply the tactic sequence `refine IsCoprime.mul_left (IsCoprime.mul_right ?_ ?_) (IsCoprime.mul_right ?_ ?_) <;> rw [Ideal.isCoprime_iff_sup_eq]`. Conclude with `condE_sup_conj G.pl`. Rewrite using `[Finset.smul_prod']`.
+
+Use `Ideal.prod_sup_eq_top fun v hv => Ideal.sup_prod_eq_top fun w hw => ?_` and prove the remaining obligations. Conclude with `Ideal.pow_sup_eq_top (Ideal.IsMaximal.coprime_of_ne (G.pl.w v).isMaximal (hmax' w) (hAB v hv w hw))`. Rewrite using `[GlobalTheory.FunObj.SqNum.condE, Finset.smul_prod']`. Simplify using `only [smul_pow']`. Use `Ideal.prod_sup_eq_top fun w hw => Ideal.sup_prod_eq_top fun v hv => ?_` and prove the remaining obligations.
+
+Conclude with `Ideal.sup_pow_eq_top (Ideal.IsMaximal.coprime_of_ne w.isMaximal (hmax' _) (hBA w hw v hv))`. Rewrite using `[Finset.smul_prod']`. Conclude with `Ideal.prod_sup_eq_top fun w hw => Ideal.sup_prod_eq_top fun w' hw' => Ideal.IsMaximal.coprime_of_ne w.isMaximal (hmax' w') (hBB w hw w' hw')`.
+-/
 theorem modT_sup_conj : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → ∀ (G : GridData L sc) (t : T),
     modT G t ⊔ D.host.conj • modT G t = ⊤ := by
   intro D T L sc μ₀ hL G t

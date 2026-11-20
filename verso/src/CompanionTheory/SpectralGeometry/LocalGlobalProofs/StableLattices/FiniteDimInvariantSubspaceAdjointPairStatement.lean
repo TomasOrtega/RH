@@ -8,6 +8,9 @@ open Formalism.REAL (GlRel KHighest IsWeight)
 open CompanionTheory.D.DSIC (KUnit)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FarReg.highest_preimage_of_stable | exact GlobalTheory.CompanionTheory.FarReg.highest_preimage_of_stable | (intros; apply GlobalTheory.CompanionTheory.FarReg.highest_preimage_of_stable <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_dim_invariant_subspace_adjoint_pair : ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ι : Type) (T : Submodule ℂ (Cn n V))
     (a b : ι → Module.End ℂ (Cn n V)) (D : Module.End ℂ (Cn n V)) (y : Cn n V), FiniteDimensional ℂ T →
     (∀ i x z, ∑ A, ⟪a i x A, z A⟫_ℂ = ∑ A, ⟪x A, b i z A⟫_ℂ) →

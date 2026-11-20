@@ -14,27 +14,47 @@ variable {n : ℕ} {ε : Fin n → Bool}
 
 def ent (g : Formalism.REAL.UJ ε) : Fin n → Fin n → ℂ := Matrix.of.symm (Formalism.MainNotions.S.uMat g)
 
+/- English proof (translation)
+The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1`.
+-/
 theorem ent_closedEmb : Topology.IsClosedEmbedding (ent (ε := ε)) :=
   (Formalism.REAL.isClosedEmbeddingMatrix n ε).1
 
+/- English proof (translation)
+Rewrite using `[mem_closedBall, dist_eq_norm, pi_norm_le_iff_of_nonneg hR]`. Conclude with `forall_congr' fun i => pi_norm_le_iff_of_nonneg hR`.
+-/
 theorem mem_closedBall_iff_entries {x y : Fin n → Fin n → ℂ} {R : ℝ} (hR : 0 ≤ R) :
     x ∈ closedBall y R ↔ ∀ i j, ‖x i j - y i j‖ ≤ R := by
   rw [mem_closedBall, dist_eq_norm, pi_norm_le_iff_of_nonneg hR]
   exact forall_congr' fun i => pi_norm_le_iff_of_nonneg hR
 
+/- English proof (translation)
+Rewrite using `[mem_closedBall_iff_entries hR]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_closedBall_zero_iff_entries {x : Fin n → Fin n → ℂ} {R : ℝ} (hR : 0 ≤ R) :
     x ∈ closedBall 0 R ↔ ∀ i j, ‖x i j‖ ≤ R := by
   rw [mem_closedBall_iff_entries hR]
   simp
 
+/- English proof (translation)
+Rewrite using `[← show Formalism.MainNotions.S.uMat (g⁻¹ * g) = Formalism.MainNotions.S.uMat g⁻¹ * Formalism.MainNotions.S.uMat g from rfl, inv_mul_cancel]`. Both sides reduce to the same expression.
+-/
 theorem uMat_inv_mul' (g : Formalism.REAL.UJ ε) : Formalism.MainNotions.S.uMat g⁻¹ * Formalism.MainNotions.S.uMat g = 1 := by
   rw [← show Formalism.MainNotions.S.uMat (g⁻¹ * g) = Formalism.MainNotions.S.uMat g⁻¹ * Formalism.MainNotions.S.uMat g from rfl, inv_mul_cancel]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← show Formalism.MainNotions.S.uMat (g * g⁻¹) = Formalism.MainNotions.S.uMat g * Formalism.MainNotions.S.uMat g⁻¹ from rfl, mul_inv_cancel]`. Both sides reduce to the same expression.
+-/
 theorem uMat_mul_inv' (g : Formalism.REAL.UJ ε) : Formalism.MainNotions.S.uMat g * Formalism.MainNotions.S.uMat g⁻¹ = 1 := by
   rw [← show Formalism.MainNotions.S.uMat (g * g⁻¹) = Formalism.MainNotions.S.uMat g * Formalism.MainNotions.S.uMat g⁻¹ from rfl, mul_inv_cancel]
   rfl
 
+/- English proof (translation)
+Establish `hf : (Formalism.MainNotions.S.uMat g)ᴴ * Formalism.REAL.Jm ε * Formalism.MainNotions.S.uMat g = Formalism.REAL.Jm ε` using `g.2`. Establish `h1 : (Formalism.REAL.Jm ε * (Formalism.MainNotions.S.uMat g)ᴴ * Formalism.REAL.Jm ε) * Formalism.MainNotions.S.uMat g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (Formalism.MainNotions.S.uMat g)ᴴ, hf, Formalism.REAL.Jm_mul_self]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.one_mul]`.
+
+Use `_ = _ := by rw [Matrix.mul_assoc, uMat_mul_inv', Matrix.mul_one]`.
+-/
 theorem uMat_inv_eq (g : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.uMat g⁻¹ = Formalism.REAL.Jm ε * (Formalism.MainNotions.S.uMat g)ᴴ * Formalism.REAL.Jm ε := by
   have hf : (Formalism.MainNotions.S.uMat g)ᴴ * Formalism.REAL.Jm ε * Formalism.MainNotions.S.uMat g = Formalism.REAL.Jm ε := g.2
@@ -46,6 +66,9 @@ theorem uMat_inv_eq (g : Formalism.REAL.UJ ε) :
         rw [h1, Matrix.one_mul]
     _ = _ := by rw [Matrix.mul_assoc, uMat_mul_inv', Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[uMat_inv_eq]`. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem norm_inv_entry (g : Formalism.REAL.UJ ε) (i j : Fin n) :
     ‖Formalism.MainNotions.S.uMat g⁻¹ i j‖ = ‖Formalism.MainNotions.S.uMat g j i‖ := by
   rw [uMat_inv_eq]
@@ -53,6 +76,19 @@ theorem norm_inv_entry (g : Formalism.REAL.UJ ε) (i j : Fin n) :
   rw [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ s ∈ ent ⁻¹' (closedBall 0 R ∩ closedBall x δ), s ∈ S`. Take `⟨s, ⟨hs1, hs2⟩, hs⟩` from `hex`. Establish `hme : MeasurableEmbedding (fun t : Formalism.REAL.UJ ε => s * t)` using `(Homeomorph.mulLeft s).isClosedEmbedding.measurableEmbedding`. Use `conv_lhs => rw [← hμ.2.2.2 s hs]`. Rewrite using `[hme.map_apply]`.
+
+Use `measure_mono fun t ht => ?_` and prove the remaining obligations. Establish `ht2 : ent (s * t) ∈ closedBall x δ` using `ht.2`. Establish `h1 : ent (s * t) ∈ closedBall (ent s) (2 * δ)`. Use `dist_triangle_right (ent (s * t)) (ent s) x` as an intermediate fact. Rewrite using `[mem_closedBall]`.
+
+Combine the linear relations using `[mem_closedBall.1 ht2, mem_closedBall.1 hs2]`. Rewrite using `[Set.mem_preimage, mem_closedBall_iff_entries zero_le_one]`. Introduce `i j`. Establish `e : Formalism.MainNotions.S.uMat t = Formalism.MainNotions.S.uMat s⁻¹ * Formalism.MainNotions.S.uMat (s * t)`. Rewrite using `[show Formalism.MainNotions.S.uMat (s * t) = Formalism.MainNotions.S.uMat s * Formalism.MainNotions.S.uMat t from rfl, ← Matrix.mul_assoc, uMat_inv_mul', Matrix.one_mul]`.
+
+Establish `e2 : Formalism.MainNotions.S.uMat t - 1 = Formalism.MainNotions.S.uMat s⁻¹ * (Formalism.MainNotions.S.uMat (s * t) - Formalism.MainNotions.S.uMat s)`. Rewrite using `[Matrix.mul_sub, ← e, uMat_inv_mul']`. Establish `e3 : ent t i j - ent (1 : Formalism.REAL.UJ ε) i j = (Formalism.MainNotions.S.uMat t - 1) i j` using `rfl`. Rewrite using `[e3, e2, Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+
+Establish `hb : ∀ l ∈ (Finset.univ : Finset (Fin n)), ‖Formalism.MainNotions.S.uMat s⁻¹ i l * (Formalism.MainNotions.S.uMat (s * t) - Formalism.MainNotions.S.uMat s) l j‖ ≤ R * (2 * δ)` using `fun l _ => by`. Rewrite using `[norm_mul]`. Use `mul_le_mul ?_ ?_ (norm_nonneg _) hR` and prove the remaining obligations. Rewrite using `[norm_inv_entry]`. Conclude with `(mem_closedBall_zero_iff_entries hR).1 hs1 l i`.
+
+Conclude with `(mem_closedBall_iff_entries (by linarith)).1 h1 l j`. Use `(Finset.sum_le_card_nsmul _ _ _ hb).trans ?_` and prove the remaining obligations. Simplify using `using h`. Rewrite using `[measure_mono_null (fun s hs (hS : s ∈ (S : Set (Formalism.REAL.UJ ε))) => hex ⟨s, hs, hS⟩) hμ.2.2.1]`. Conclude with `zero_le`.
+-/
 theorem small_ball {S : Subgroup (Formalism.REAL.UJ ε)} {μ : Measure (Formalism.REAL.UJ ε)}
     (hμ : Formalism.L2.SG.RealObj.IsHaarLoc (S : Set (Formalism.REAL.UJ ε)) μ)
     {R δ : ℝ} (hR : 0 ≤ R) (hδ : 0 ≤ δ) (h : (n : ℝ) * (R * (2 * δ)) ≤ 1) (x : Fin n → Fin n → ℂ) :
@@ -98,6 +134,41 @@ end GlobalTheory.UJGrowth
 
 namespace GlobalTheory.UJGrowth
 
+/- English proof (translation)
+Introduce `n ε S _ μ hμ hfin`. Use `haveI := hμ.1`. Establish `hemb : Topology.IsClosedEmbedding (ent (ε` using `ε)) := ent_closedEmb`. Set `ν : Measure (Fin n → Fin n → ℂ)` to `μ.map ent`. Establish `hνA : ∀ A, MeasurableSet A → ν A = μ (ent ⁻¹' A)` using `fun A hA => Measure.map_apply hemb.continuous.measurable hA`.
+
+Establish `hcpt : ∀ y r, μ (ent ⁻¹' closedBall y r) < ⊤` using `fun y r => (hemb.isCompact_preimage (isCompact_closedBall y r)).measure_lt_top`. Use `haveI : SigmaFinite ν := hemb.measurableEmbedding.sigmaFinite_map`. Use `set M := μ (ent ⁻¹' closedBall (ent (1 : Formalism.REAL.UJ ε)) 1) with hM`. Establish `hMf : M ≠ ⊤` using `(hcpt _ _).ne`. Use `set N : ℝ := (n : ℝ) + 1 with hN`.
+
+Establish `hN1 : 1 ≤ N` using `by rw [hN]; linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)]`. Use `set d := Module.finrank ℝ (Fin n → Fin n → ℂ)`. Set `lam : Measure (Fin n → Fin n → ℂ)` to `Measure.addHaar`. Use `⟨M.toReal * (4 * N) ^ d, 2 * d, fun R hR => ?_⟩` and prove the remaining obligations. Use `set δ := (2 * N * R)⁻¹ with hδ`.
+
+Establish `hp : 1 ≤ 2 * N * R` using `by nlinarith`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hδ1 : δ ≤ 1` using `inv_le_one_of_one_le₀ hp`. Establish `hcond : (n : ℝ) * (R * (2 * δ)) ≤ 1`. Establish `e : (n : ℝ) * (R * (2 * δ)) = n / N`.
+
+Rewrite using `[hδ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, div_le_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsb : ∀ x, ν (closedBall 0 R ∩ closedBall x δ) ≤ M` using `fun x => by`.
+
+Rewrite using `[hνA _ (measurableSet_closedBall.inter measurableSet_closedBall)]`. Conclude with `small_ball hμ (by linarith) hδ0.le hcond x`. Establish `hset : {g : Formalism.REAL.UJ ε | ∀ i j, ‖Formalism.MainNotions.S.uMat g i j‖ ≤ R} = ent ⁻¹' closedBall 0 R`. Use extensionality with `g`. Rewrite using `[Set.mem_preimage, mem_closedBall_zero_iff_entries (by linarith)]`.
+
+Both sides reduce to the same expression. Rewrite using `[hset, ← hνA _ measurableSet_closedBall]`. Set `W : Set ((Fin n → Fin n → ℂ) × (Fin n → Fin n → ℂ))` to `{p | p.1 ∈ closedBall 0 R ∧ dist p.1 p.2 ≤ δ}`. Establish `hW : MeasurableSet W` using `((isClosed_closedBall.preimage continuous_fst).inter (isClosed_le continuous_dist continuous_const)).measurableSet`. Establish `e1 : (ν.prod lam) W = lam (closedBall 0 δ) * ν (closedBall 0 R)`.
+
+Rewrite using `[Measure.prod_apply hW, ← lintegral_indicator_const measurableSet_closedBall]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ closedBall (0 : Fin n → Fin n → ℂ) R`. Rewrite using `[Set.indicator_of_mem hs, ← Measure.addHaar_closedBall_center lam s]`. Use `congr 1`.
+
+Use extensionality with `x`. Conclude with `⟨fun h => mem_closedBall'.2 h.2, fun h => ⟨hs, mem_closedBall'.1 h⟩⟩`. Rewrite using `[Set.indicator_of_notMem hs]`. Establish `: Prod.mk s ⁻¹' W = ∅`. Use extensionality with `x`.
+
+Simplify using `only [W, Set.mem_preimage, Set.mem_setOf_eq, hs, false_and, Set.mem_empty_iff_false]`. Rewrite using `[this, measure_empty]`. Establish `e2 : (ν.prod lam) W ≤ M * lam (closedBall 0 (2 * R))`. Rewrite using `[Measure.prod_apply_symm hW, ← lintegral_indicator_const measurableSet_closedBall]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x ∈ closedBall (0 : Fin n → Fin n → ℂ) (2 * R)`. Rewrite using `[Set.indicator_of_mem hx]`. Conclude with `hsb x`. Establish `: (fun s => (s, x)) ⁻¹' W = ∅`. Use extensionality with `s`.
+
+Simplify using `only [W, Set.mem_preimage, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, mem_closedBall]`. Introduce and unpack `⟨h1, h2⟩`. Apply `hx` to reduce the goal to its premises. Use `dist_triangle_left x 0 s` as an intermediate fact. Rewrite using `[mem_closedBall]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[this]`. Rewrite `e2` using `[e1, Measure.addHaar_closedBall lam _ hδ0.le, Measure.addHaar_closedBall lam _ (by linarith)]`. Establish `hb0 : 0 < (lam (ball 0 1)).toReal` using `ENNReal.toReal_pos (measure_ball_pos lam _ one_pos).ne' measure_ball_lt_top.ne`. Establish `e3` using `ENNReal.toReal_mono (ENNReal.mul_ne_top hMf (ENNReal.mul_ne_top ENNReal.ofReal_ne_top measure_ball_lt_top.ne)) e2`.
+
+Simplify using `only [ENNReal.toReal_mul] at e3`. Rewrite `e3` using `[ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_ofReal (by positivity)]`. Establish `e4 : δ ^ d * (ν (closedBall 0 R)).toReal ≤ M.toReal * (2 * R) ^ d`. Use `le_of_mul_le_mul_right ?_ hb0` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e5 : M.toReal * (2 * R) ^ d = δ ^ d * (M.toReal * (4 * N) ^ d * R ^ (2 * d))`. Establish `: 2 * R = δ * (4 * N) * R ^ 2` using `by rw [hδ]; field_simp; ring`. Rewrite using `[this, mul_pow, mul_pow, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e4` using `[e5]`.
+
+Establish `e6` using `le_of_mul_le_mul_left e4 (by positivity)`. Establish `hνf : ν (closedBall 0 R) ≠ ⊤`. Rewrite using `[hνA _ measurableSet_closedBall]`. Conclude with `(hcpt _ _).ne`. Rewrite using `[← ENNReal.ofReal_toReal hνf]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal e6`.
+-/
 theorem growth : ∀ {n : ℕ} (ε : Fin n → Bool) (S : Subgroup (Formalism.REAL.UJ ε)),
     IsClosed (S : Set (Formalism.REAL.UJ ε)) → ∀ μ : Measure (Formalism.REAL.UJ ε),
     Formalism.L2.SG.RealObj.IsHaarLoc (S : Set (Formalism.REAL.UJ ε)) μ → IsFiniteMeasureOnCompacts μ →

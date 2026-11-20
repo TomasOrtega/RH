@@ -11,6 +11,11 @@ namespace GlobalTheory.HomDescent
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Establish `h1 : IsPullback (fst A Z).left (snd A Z).left A.hom Z.hom` using `IsPullback.of_hasPullback A.hom Z.hom`. Establish `h2 : IsPullback (fst A Y).left (snd A Y).left A.hom Y.hom` using `IsPullback.of_hasPullback A.hom Y.hom`. Use `IsPullback.of_right ?_ ?_ h1` and prove the remaining obligations. Rewrite using `[← Over.comp_left, whiskerLeft_fst, Over.w q]`. Conclude with `h2`.
+
+Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerLeft_snd]`.
+-/
 theorem isPullback_whiskerLeft' (A : Over S) {Y Z : Over S} (q : Y ⟶ Z) :
     IsPullback (A ◁ q).left (snd A Y).left (snd A Z).left q.left := by
   have h1 : IsPullback (fst A Z).left (snd A Z).left A.hom Z.hom := IsPullback.of_hasPullback A.hom Z.hom
@@ -19,6 +24,11 @@ theorem isPullback_whiskerLeft' (A : Over S) {Y Z : Over S} (q : Y ⟶ Z) :
   · rw [← Over.comp_left, whiskerLeft_fst, Over.w q]; exact h2
   · rw [← Over.comp_left, ← Over.comp_left, whiskerLeft_snd]
 
+/- English proof (translation)
+Establish `h1 : IsPullback (snd A' Y).left (fst A' Y).left Y.hom A'.hom` using `(IsPullback.of_hasPullback A'.hom Y.hom).flip`. Establish `h2 : IsPullback (snd A Y).left (fst A Y).left Y.hom A.hom` using `(IsPullback.of_hasPullback A.hom Y.hom).flip`. Use `IsPullback.of_right ?_ ?_ h1` and prove the remaining obligations. Rewrite using `[← Over.comp_left, whiskerRight_snd, Over.w q]`. Conclude with `h2`.
+
+Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerRight_fst]`.
+-/
 theorem isPullback_whiskerRight' {A A' : Over S} (q : A ⟶ A') (Y : Over S) :
     IsPullback (q ▷ Y).left (fst A Y).left (fst A' Y).left q.left := by
   have h1 : IsPullback (snd A' Y).left (fst A' Y).left Y.hom A'.hom :=
@@ -28,12 +38,26 @@ theorem isPullback_whiskerRight' {A A' : Over S} (q : A ⟶ A') (Y : Over S) :
   · rw [← Over.comp_left, whiskerRight_snd, Over.w q]; exact h2
   · rw [← Over.comp_left, ← Over.comp_left, whiskerRight_fst]
 
+/- English proof (translation)
+Use `GlobalTheory.GaloisCartDesc.epi_pullback_fst h t` as an intermediate fact. Rewrite using `[← hp.isoPullback_hom_fst]`. Use `infer_instance`.
+-/
 theorem epi_of_isPullback {X Y P Q : Scheme.{0}} {Ga : Type} [Group Ga] {ρ : Ga → (X ⟶ X)} {π : X ⟶ Y}
     (h : GlobalTheory.ZM.IsGaloisCover Ga ρ π) {u : P ⟶ Q} {v : P ⟶ X} {t : Q ⟶ Y} (hp : IsPullback u v t π) : Epi u := by
   have := GlobalTheory.GaloisCartDesc.epi_pullback_fst h t
   rw [← hp.isoPullback_hom_fst]
   infer_instance
 
+/- English proof (translation)
+Introduce `S A A' B _ _ _ _ _ H ψ hψ hG f hf hH`. Establish `inv : ∀ a : H, (GlobalTheory.UPel.HT.Hecke.transl a.1).left ≫ f.left = f.left`. Introduce `a`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+
+Rewrite using `[GlobalTheory.UPel.HT.Hecke.transl, mul_comp, Category.id_comp, Category.assoc, hH a.1 a.2, comp_one, _root_.mul_one]`. Take `⟨g, hg, -⟩` from `hG.existsUnique_desc f.left inv`. Establish `eψ : Epi ψ.left` using `GlobalTheory.GaloisCartDesc.epi_of_isGaloisCover hG`. Establish `w : g ≫ B.hom = A'.hom`. Rewrite using `[← cancel_epi ψ.left, reassoc_of% hg, Over.w, Over.w]`.
+
+Set `f' : A' ⟶ B` to `Over.homMk g w`. Establish `hf' : ψ ≫ f' = f` using `Over.OverMorphism.ext hg`. Use `⟨f', ⟨?_, ?_⟩, hf'⟩` and prove the remaining obligations. Rewrite using `[← IsMonHom.one_hom ψ, Category.assoc, hf', IsMonHom.one_hom]`. Establish `e1 : Epi (ψ ▷ A).left` using `epi_of_isPullback hG (isPullback_whiskerRight' ψ A)`.
+
+Establish `e2 : Epi (A' ◁ ψ).left` using `epi_of_isPullback hG (isPullback_whiskerLeft' A' ψ)`. Establish `e : Epi (ψ ⊗ₘ ψ).left`. Rewrite using `[MonoidalCategory.tensorHom_def, Over.comp_left]`. Use `infer_instance`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[← cancel_epi (ψ ⊗ₘ ψ).left, ← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Rewrite using `[← Category.assoc, ← IsMonHom.mul_hom ψ, Category.assoc, hf', IsMonHom.mul_hom, ← hf', ← MonoidalCategory.tensorHom_comp_tensorHom, Category.assoc]`.
+-/
 theorem exists_desc : ∀ (S : Scheme.{0}) (A A' B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] [GrpObj B] (H : Subgroup (𝟙_ (Over S) ⟶ A)) (ψ : A ⟶ A'), IsMonHom ψ → GlobalTheory.ZM.IsGaloisCover H (fun h => (GlobalTheory.UPel.HT.Hecke.transl h.1).left) ψ.left → ∀ f : A ⟶ B, IsMonHom f → (∀ h ∈ H, h ≫ f = 1) → ∃ f' : A' ⟶ B, IsMonHom f' ∧ ψ ≫ f' = f := by
   intro S A A' B _ _ _ _ _ H ψ hψ hG f hf hH
   have inv : ∀ a : H, (GlobalTheory.UPel.HT.Hecke.transl a.1).left ≫ f.left = f.left := by

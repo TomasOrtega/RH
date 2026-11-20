@@ -15,6 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `r U hr hU nab hn`. Use `⟨GlobalTheory.thValTot_of_chartIndep GlobalTheory.firstFiveLaws.1 GlobalTheory.chartIndependence_unconditional E H Dw l Xo c nab hn, ?_⟩` and prove the remaining obligations. Introduce `a n hd hl f hf`.
+
+Rewrite using `[GlobalTheory.AllWt.cuspW_wtZ, ← Formalism.L2.PjFree.cusp_ofPj]`. Conclude with `GlobalTheory.Dict.thInCusp_cusp GlobalTheory.chartIndependence_unconditional E H Dw l Xo c r (fun σ => Formalism.L2.PjFree.Unf.ofPj (U σ)) hr (fun σ hσ => (Formalism.L2.PjFree.isUnf_ofPj _).2 (hU σ ((Formalism.L2.PjFree.goodEmb_iff σ).1 hσ))) nab hn a n hd hl f hf`.
+-/
 theorem thetaRules_exist_and_cusp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), 1 ≤ r → (∀ σ, GoodEmb c σ → IsUnf (U σ)) → ∀ (nab : NabV Xo c), IsNab Xo c nab → ThValTot Xo c nab ∧ ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → LastPos Dw a → ∀ f ∈ thGen Xo c nab a n, f ∈ cuspW Xo c U (wtZ a n) := by
   intro E _ _ _ H Dw l Xo c
   letI := H.starRing

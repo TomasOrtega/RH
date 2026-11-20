@@ -15,6 +15,9 @@ def placesS (D : D7) (l : ℕ) : Set (PlE D.host) :=
 def GenAt (D : D7) (l : ℕ) (Q : Finset (PlE D.host)) (v : PlE D.host) (k : ℕ) : Prop :=
   IsSplitPl D.host v ∧ v ∉ placesOver D.host.E l ∧ v ∉ placesS D l ∧ v ∉ Q ∧ 1 ≤ k ∧ k ≤ D.R.nV
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(D.nd.locs_mem j w i).1 h`. Rewrite using `[D.nd.mu_w i, h1, h2]`.
+-/
 theorem mtL_eq (D : D7) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w) :
     D.what₂.MtL (D.nd.mu i) (D.nd.j i) = D.what₂.MtL (D.what₂.muTw w) j := by
   obtain ⟨h1, h2⟩ := (D.nd.locs_mem j w i).1 h
@@ -28,6 +31,9 @@ def castMtInv (D : D7) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i
     (y : D.what₂.MtL (D.what₂.muTw w) j) : D.what₂.MtL (D.nd.mu i) (D.nd.j i) :=
   cast (mtL_eq D h).symm y
 
+/- English proof (translation)
+Unfold `castMt castMtInv`. Conclude with `cast_cast _ _ y`.
+-/
 theorem castMt_castMtInv (D : D7) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w)
     (y : D.what₂.MtL (D.what₂.muTw w) j) : castMt D h (castMtInv D h y) = y := by
   unfold castMt castMtInv
@@ -144,10 +150,16 @@ def HeckeStd {D : D7} {M : MtFam D} (B : NLocBase D M) : Prop :=
 def LocPl (D : D7) (j : ℕ) (w : D.what₂.places.Pl) : Prop :=
   D.what₂.muAt w ≠ D.what₂.mu0 ∨ (D.nd.locs j w).Nonempty
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.elim id (hw j w), Or.inl⟩`.
+-/
 theorem locPl_iff (D : D7) (hw : ∀ j w, (D.nd.locs j w).Nonempty → D.what₂.muAt w ≠ D.what₂.mu0) (j : ℕ)
     (w : D.what₂.places.Pl) : LocPl D j w ↔ D.what₂.muAt w ≠ D.what₂.mu0 :=
   ⟨fun h => h.elim id (hw j w), Or.inl⟩
 
+/- English proof (translation)
+The claim follows from `Or.inr ⟨i, h⟩`.
+-/
 theorem locPl_of_mem (D : D7) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w) :
     LocPl D j w :=
   Or.inr ⟨i, h⟩
@@ -159,6 +171,9 @@ def HeckeStdTw {D : D7} {M : MtFam D} (B : NLocBase D M) : Prop :=
     (∀ v k, GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k → ∀ μ, (B.hK j w v k).maxGenEigenspace μ ≠ ⊥ →
       μ ∈ (algebraMap (B.Oc j w) (FractionRing (B.Oc j w))).range)
 
+/- English proof (translation)
+Introduce `j w h1 h2 _` and use `h j w h1 h2`.
+-/
 theorem heckeStdTw_of_std {D : D7} {M : MtFam D} {B : NLocBase D M} (h : HeckeStd B) : HeckeStdTw B :=
   fun j w h1 h2 _ => h j w h1 h2
 

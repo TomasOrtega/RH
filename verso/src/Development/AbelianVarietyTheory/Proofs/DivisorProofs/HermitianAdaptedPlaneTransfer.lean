@@ -17,10 +17,18 @@ open GlobalTheory.Doubling (absE)
 noncomputable section
 namespace GlobalTheory.MixXUWChar
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[boxFun, mul_assoc]`.
+-/
 theorem boxFun_smul_left {F : Type} [Field F] [NumberField F] {κ κ' : Type} (a : ℂ) (f : (κ → AF F) → ℂ) (g : (κ' → AF F) → ℂ) :
     boxFun (a • f) g = a • boxFun f g := by
   funext x; simp [boxFun, mul_assoc]
 
+/- English proof (translation)
+Take `⟨x₁, hx₁⟩` from `Function.ne_iff.mp hf`. Take `⟨x₂, hx₂⟩` from `Function.ne_iff.mp hg`. Introduce `h0`. Establish `h` using `congrFun h0 (Sum.elim x₁ x₂)`. Simplify using `only [boxFun, Pi.zero_apply] at h`.
+
+Conclude with `mul_ne_zero hx₁ hx₂ (by simpa [Function.comp_def] using h)`.
+-/
 theorem boxFun_ne_zero {F : Type} [Field F] [NumberField F] {κ κ' : Type} {f : (κ → AF F) → ℂ} {g : (κ' → AF F) → ℂ} (hf : f ≠ 0) (hg : g ≠ 0) :
     boxFun f g ≠ 0 := by
   obtain ⟨x₁, hx₁⟩ := Function.ne_iff.mp hf
@@ -30,6 +38,9 @@ theorem boxFun_ne_zero {F : Type} [Field F] [NumberField F] {κ κ' : Type} {f :
   simp only [boxFun, Pi.zero_apply] at h
   exact mul_ne_zero hx₁ hx₂ (by simpa [Function.comp_def] using h)
 
+/- English proof (translation)
+Introduce `h0`. Apply `hv` to reduce the goal to its premises. Use `congrArg (ρ g⁻¹) h0` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem apply_ne_zero {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : G →* Module.End ℂ V) (g : G)
     {v : V} (hv : v ≠ 0) : ρ g v ≠ 0 := by
   intro h0
@@ -37,6 +48,19 @@ theorem apply_ne_zero {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ
   have := congrArg (ρ g⁻¹) h0
   rwa [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, map_zero] at this
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hp₁ e he hne c hc`. Take `⟨⟨hspl, dd, omd, hdd, hws, hbox⟩, -, -⟩` from `hp.weil`. Take `⟨⟨-, dd₁, omd₁, hdd₁, hws₁, hbox₁⟩, -, -⟩` from `hp₁.weil`. Take `⟨ed, e₂, hmaps, hheis, hinv, hwc, hbx, he₂, φ₂, hφ₂, hφ₂ne⟩` from `GlobalTheory.T.adapted_plane_pair_restriction_first hPr F E σ B n d X W M χX χW om r s r' s' hp n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hp₁ e he hne dd dd₁ hdd hdd₁`. Take `⟨Φ₀, hΦ₀, hΦ₀ne⟩` from `hne`.
+
+Establish `hboxs : boxFun Φ₀ φ₂ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d)` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ Φ₀ hΦ₀ φ₂ hφ₂`. Establish `hedne : ed (boxFun Φ₀ φ₂) ≠ 0`. Rewrite using `[hbx Φ₀ hΦ₀ φ₂ hφ₂]`. Conclude with `boxFun_ne_zero hΦ₀ne hφ₂ne`. Take `⟨cd, hcd, hlaw⟩` from `GlobalTheory.T.adapted_plane_pair_restriction_second hPr F E σ B n d X W M χX χW om r s r' s' hp n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hp₁ e he ⟨Φ₀, hΦ₀, hΦ₀ne⟩ dd dd₁ hdd hdd₁ omd omd₁ hws.2.1 hws₁.2.1 ed hmaps hheis hinv hwc ⟨_, hboxs, hedne⟩`.
+
+Establish `hdet : W.J.det ≠ 0`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h` using `GlobalTheory.WeilSchrodingerHerm.det_ne_zero_of_hasSig (hp.skew.sig w)`. Introduce `h0`. Apply `h` to reduce the goal to its premises.
+
+Establish `hm : (W.J.map (B.emb w).1).det = (B.emb w).1 W.J.det` using `(RingHom.map_det _ _).symm`. Rewrite using `[Matrix.det_smul, hm, h0, map_zero, mul_zero]`. Establish `hcd1 : cd = 1` using `GlobalTheory.T.doubledUnitary_character_trivial_of_siegel F E σ hp.base.cm d W.J (-1) (fun i j => by simp [hp.skew.skew i j]) hdet cd hcd (fun p t hpt => Units.ext (by`. Simplify using `using GlobalTheory.T.adapted_plane_pair_restriction_third hPr F E σ B n d X W M χX χW om r s r' s' hp n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hp₁ e he ⟨Φ₀, hΦ₀, hΦ₀ne⟩ dd dd₁ hdd hdd₁ omd omd₁ hws hws₁ ed hmaps hheis hinv hwc ⟨_, hboxs, hedne⟩ p t hpt (cd p) (hlaw p)))`. Use `MonoidHom.ext fun h => Units.ext ?_` and prove the remaining obligations.
+
+Take `⟨gd, hgd⟩` from `GlobalTheory.unitary_diag_one_mem_dbl (AF F) (AE F E) (cA σ) (Fin d) (incM F W.J) h`. Establish `h2` using `hlaw gd (boxFun Φ₀ φ₂) hboxs`. Rewrite `h2` using `[hcd1, hbox h gd hgd Φ₀ hΦ₀ φ₂ hφ₂, MonoidHom.one_apply, Units.val_one, one_smul, MonoidHom.comp_apply, MonoidHom.inr_apply, hbx _ (show om (1, h) Φ₀ ∈ schA F (Fin n × Fin d) from hspl.pres h Φ₀ hΦ₀) φ₂ hφ₂, hc h Φ₀ hΦ₀, hbx Φ₀ hΦ₀ φ₂ hφ₂, hbox₁ h gd hgd (e Φ₀) (he.maps Φ₀ hΦ₀) ( …`. Establish `hv : boxFun (om₁ (1, h) (e Φ₀)) (e₂ φ₂) ≠ 0` using `boxFun_ne_zero (apply_ne_zero om₁ _ hΦ₀ne) hφ₂ne`. Use `smul_left_injective ℂ hv (h2.trans (one_smul ℂ _).symm)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem char_eq_one : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),

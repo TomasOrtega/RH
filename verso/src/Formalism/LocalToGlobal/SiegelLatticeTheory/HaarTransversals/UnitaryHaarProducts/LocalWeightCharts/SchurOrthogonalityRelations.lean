@@ -15,6 +15,13 @@ variable {n : ℕ} (ε : Fin n → Bool) (P : Matrix (Fin n) (Fin n) ℂ)
 
 def conjPrime₂ (g : UJ ε) : Fin n → Fin n → ℂ := Matrix.of.symm (P⁻¹ * toM g * P)
 
+/- English proof (translation)
+Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Establish `h1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Establish `h2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`. Set `e : Matrix (Fin n) (Fin n) ℂ ≃ₜ (Fin n → Fin n → ℂ)` to `{ toFun := fun m => Matrix.of.symm (P⁻¹ * m * P) invFun := fun x => P * Matrix.of x * P⁻¹ left_inv := fun m => by show P * (P⁻¹ * m * P) * P⁻¹ = m`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `right_inv := fun x => by show P⁻¹ * (P * Matrix.of x * P⁻¹) * P = Matrix.of x`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.of x := by rw [h1, Matrix.one_mul, Matrix.mul_one]`. Use `continuous_toFun := by show Continuous fun m : Matrix (Fin n) (Fin n) ℂ => P⁻¹ * m * P`.
+
+Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `continuous_invFun := by show Continuous fun x : Fin n → Fin n → ℂ => P * Matrix.of x * P⁻¹`. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const }`. Conclude with `e.isClosedEmbedding.comp (isClosedEmbeddingMatrix n ε).1`.
+-/
 lemma conjP_isClosedEmbedding (hP : IsUnit P) : IsClosedEmbedding (conjPrime₂ ε P) := by
   have hdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
   have h1 : P⁻¹ * P = 1 := Matrix.nonsing_inv_mul P hdet
@@ -39,9 +46,53 @@ lemma conjP_isClosedEmbedding (hP : IsUnit P) : IsClosedEmbedding (conjPrime₂ 
         exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const }
   exact e.isClosedEmbedding.comp (isClosedEmbeddingMatrix n ε).1
 
+/- English proof (translation)
+The claim follows from `(conjP_isClosedEmbedding ε P hP).measurableEmbedding`.
+-/
 lemma conjP_measurableEmbedding (hP : IsUnit P) : MeasurableEmbedding (conjPrime₂ ε P) :=
   (conjP_isClosedEmbedding ε P hP).measurableEmbedding
 
+/- English proof (translation)
+Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Establish `h1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Establish `h2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`. Establish `hE` using `conjP_measurableEmbedding ε P hP`. Use `set ψ := conjPrime₂ ε P with hψdef`.
+
+Establish `hrange : {x : Fin n → Fin n → ℂ | Matrix.of x ∈ PI.UpqRep.UH (Pᴴ * Jm ε * P)} ⊆ Set.range ψ`. Introduce `x hx`. Establish `hx' : (Matrix.of x)ᴴ * (Pᴴ * Jm ε * P) * Matrix.of x = Pᴴ * Jm ε * P` using `hx`. Establish `hin : inUJ ε (P * Matrix.of x * P⁻¹)` using `by show (P * Matrix.of x * P⁻¹)ᴴ * Jm ε * (P * Matrix.of x * P⁻¹) = Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * Jm ε * P) * P⁻¹ := by rw [hx']`. Use `_ = (P * P⁻¹)ᴴ * Jm ε * (P * P⁻¹) := by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Jm ε := by rw [h2]; simp`.
+
+Establish `hr` using `(isClosedEmbeddingMatrix n ε).2`. Establish `hmem : P * Matrix.of x * P⁻¹ ∈ Set.range (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))`. Rewrite using `[hr]`. Conclude with `hin`. Take `⟨g, hg⟩` from `hmem`.
+
+Use `⟨g, ?_⟩` and prove the remaining obligations. Use `show Matrix.of.symm (P⁻¹ * toM g * P) = x`. Establish `hg' : toM g = P * Matrix.of x * P⁻¹` using `hg`. Rewrite using `[hg']`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hinto : ∀ g : UJ ε, P⁻¹ * toM g * P ∈ PI.UpqRep.UH (Pᴴ * Jm ε * P)`. Introduce `g`. Establish `hg : (toM g)ᴴ * Jm ε * toM g = Jm ε` using `g.2`. Use `show (P⁻¹ * toM g * P)ᴴ * (Pᴴ * Jm ε * P) * (P⁻¹ * toM g * P) = Pᴴ * Jm ε * P`. Establish `hPP : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h2, Matrix.conjTranspose_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Pᴴ * ((toM g)ᴴ * Jm ε * toM g) * P := by`. Rewrite using `[hPP, h2]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`.
+
+Use `_ = Pᴴ * Jm ε * P := by rw [hg]`. Use `set ν := μ.comap ψ with hνdef`. Establish `hmapν : ν.map ψ = μ`. Rewrite using `[hνdef, hE.map_comap]`. Apply `Measure.restrict_eq_self_of_ae_mem` to reduce the goal to its premises.
+
+Rewrite using `[ae_iff]`. Use `measure_mono_null ?_ hconc` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `hc`. Establish `hc' : Matrix.of x ∈ PI.UpqRep.UH (Pᴴ * Jm ε * P)`.
+
+Assume the negation of the conclusion as `h'`. Conclude with `hc h'`. Conclude with `hx (hrange hc')`. Establish `hσν : SigmaFinite ν` using `SigmaFinite.of_map ν hE.measurable.aemeasurable (by rw [hmapν]; infer_instance)`. Establish `hinj : ∀ a b : Measure (UJ ε), a.map ψ = b.map ψ → a = b`.
+
+Introduce `a b hab`. Rewrite using `[← hE.comap_map a, ← hE.comap_map b, hab]`. Establish `hleft : ν.IsMulLeftInvariant`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises.
+
+Establish `hcomp : ψ ∘ (fun h : UJ ε => g * h) = (fun x => Matrix.of.symm ((P⁻¹ * toM g * P) * Matrix.of x)) ∘ ψ`. Use function extensionality and compare the values at `h`. Use `show Matrix.of.symm (P⁻¹ * toM (g * h) * P) = Matrix.of.symm ((P⁻¹ * toM g * P) * (P⁻¹ * toM h * P))`. Use `congr 1`. Use `show P⁻¹ * (toM g * toM h) * P = (P⁻¹ * toM g * P) * (P⁻¹ * toM h * P)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (P⁻¹ * toM g * P) * (P⁻¹ * toM h * P) := by simp only [Matrix.mul_assoc]`. Establish `hmul : Measurable (fun h : UJ ε => g * h)` using `measurable_const_mul g`.
+
+Establish `hlm : Measurable (fun x : Fin n → Fin n → ℂ => Matrix.of.symm ((P⁻¹ * toM g * P) * Matrix.of x))`. Apply `Continuous.measurable` to reduce the goal to its premises. Use `show Continuous fun x : Fin n → Fin n → ℂ => (P⁻¹ * toM g * P) * Matrix.of x`. Conclude with `continuous_const.matrix_mul continuous_id`. Rewrite using `[Measure.map_map hE.measurable hmul, hcomp, ← Measure.map_map hlm hE.measurable, hmapν]`.
+
+Conclude with `hinv _ (hinto g)`. Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (1 : UJ ε)`. Establish `hK0 : muG ε K ≠ 0` using `(Measure.measure_pos_of_mem_nhds (muG ε) hKn).ne'`. Establish `hKt : muG ε K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `heq` using `measure_eq_div_smul ν (muG ε) hK0 hKt`.
+
+Use `set c := ν K / muG ε K with hc`. Establish `hcne0 : c ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← hmapν, heq, h, zero_smul, Measure.map_zero]`.
+
+Establish `hcnetop : c ≠ ∞`. Introduce `h`. Establish `hnull : ∀ i, muG ε (spanningSets ν i) = 0`. Introduce `i`. Establish `hlt` using `measure_spanningSets_lt_top ν i`.
+
+Establish `hS : ν (spanningSets ν i) = (c • muG ε) (spanningSets ν i)` using `congrArg (fun m : Measure (UJ ε) => m (spanningSets ν i)) heq`. Rewrite `hlt` using `[hS, Measure.smul_apply, smul_eq_mul, h]`. Assume the negation of the conclusion as `hne`. Rewrite `hlt` using `[ENNReal.top_mul hne]`. Conclude with `lt_irrefl _ hlt`.
+
+Establish `: muG ε Set.univ = 0`. Rewrite using `[← iUnion_spanningSets ν]`. Conclude with `measure_iUnion_null hnull`. Establish `hne : muG ε ≠ 0` using `NeZero.ne _`. Conclude with `hne (Measure.measure_univ_eq_zero.mp this)`.
+
+Conclude with `⟨c, hcne0, hcnetop, by rw [← hmapν, ← heq]⟩`.
+-/
 theorem haar_transport (hP : IsUnit P) (μ : Measure (Fin n → Fin n → ℂ)) [SigmaFinite μ] (h0 : μ ≠ 0)
     (hconc : μ {x | Matrix.of x ∉ PI.UpqRep.UH (Pᴴ * Jm ε * P)} = 0)
     (hinv : ∀ s ∈ PI.UpqRep.UH (Pᴴ * Jm ε * P), μ.map (fun x => Matrix.of.symm (s * Matrix.of x)) = μ) :
@@ -155,6 +206,21 @@ theorem haar_transport (hP : IsUnit P) (μ : Measure (Fin n → Fin n → ℂ)) 
 
 end Transport
 
+/- English proof (translation)
+Introduce `k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hyp`. Take `⟨_, hσ, _, _, hG, _⟩` from `hyp`. Take `⟨P, ⟨⟨hPu, hPJ⟩, _⟩, hDS⟩` from `hσ`. Establish `: Nontrivial H` using `hDS.2.1`. Take `⟨d₀, hd₀, hF⟩` from `PIW.HCFdeg.formal_degree_abstract_form _ (Formalism.MainNotions.CayleySignature.eps48 k r) H (fun g => σ (P⁻¹ * g * P)) hDS.2.2.1 hDS.2.2.2.1 hDS.2.2.2.2.1`.
+
+Establish `: SigmaFinite μG` using `hG.1`. Establish `hPJ' : Pᴴ * PI.UpqRep.Jm (Formalism.MainNotions.CayleySignature.eps48 k r) * P = PI.UpqRep.Hpk k r` using `hPJ`. Establish `hconc : μG {x | Matrix.of x ∉ PI.UpqRep.UH (Pᴴ * PI.UpqRep.Jm (Formalism.MainNotions.CayleySignature.eps48 k r) * P)} = 0`. Rewrite using `[hPJ']`. Conclude with `hG.2.2.1`.
+
+Establish `hinv : ∀ s ∈ PI.UpqRep.UH (Pᴴ * PI.UpqRep.Jm (Formalism.MainNotions.CayleySignature.eps48 k r) * P), μG.map (fun x => Matrix.of.symm (s * Matrix.of x)) = μG`. Rewrite using `[hPJ']`. Introduce `s hs`. Conclude with `hG.2.2.2 s hs`. Take `⟨cc, hc0, hctop, hμ⟩` from `haar_transport (Formalism.MainNotions.CayleySignature.eps48 k r) P hPu μG hG.2.1 hconc hinv`.
+
+Establish `hE` using `conjP_measurableEmbedding (Formalism.MainNotions.CayleySignature.eps48 k r) P hPu`. Establish `hct : 0 < cc.toReal` using `ENNReal.toReal_pos hc0 hctop`. Use `⟨d₀ / cc.toReal, div_pos hd₀ hct, fun v₁ w₁ v₂ w₂ => ?_⟩` and prove the remaining obligations. Take `⟨hI, hV⟩` from `hF v₁ w₁ v₂ w₂`. Establish `hfun : (fun g : UJ (Formalism.MainNotions.CayleySignature.eps48 k r) => (fun x : Formalism.QuantumDeterminants.Mt k r => ⟪w₁, σ (Matrix.of x) v₁⟫_ℂ * star ⟪w₂, σ (Matrix.of x) v₂⟫_ℂ) (conjPrime₂ (Formalism.MainNotions.CayleySignature.eps48 k r) P g)) = fun g => coefOn (ε` using `Formalism.MainNotions.CayleySignature.eps48 k r) (fun g => σ (P⁻¹ * g * P)) v₁ w₁ g * star (coefOn (ε := Formalism.MainNotions.CayleySignature.eps48 k r) (fun g => σ (P⁻¹ * g * P)) v₂ w₂ g) := rfl`.
+
+Rewrite using `[hμ]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hE.integrable_map_iff] show Integrable ((fun x : Formalism.QuantumDeterminants.Mt k r => ⟪w₁, σ (Matrix.of x) v₁⟫_ℂ * star ⟪w₂, σ (Matrix.of x) v₂⟫_ℂ) ∘ conjPrime₂ (Formalism.MainNotions.CayleySignature.eps48 k r) P) _`. Rewrite using `[Function.comp_def, hfun]`. Conclude with `hI.smul_measure hctop`.
+
+Rewrite using `[hE.integral_map, hfun, integral_smul_measure, hV]`. Rewrite using `[Complex.real_smul]`. Establish `hd₀' : (d₀ : ℂ) ≠ 0` using `by exact_mod_cast hd₀.ne'`. Establish `hc' : (cc.toReal : ℂ) ≠ 0` using `by exact_mod_cast hct.ne'`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem schur_orthogonality_relations : WlocSk.SchurG := by
   intro k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hyp
   obtain ⟨_, hσ, _, _, hG, _⟩ := hyp

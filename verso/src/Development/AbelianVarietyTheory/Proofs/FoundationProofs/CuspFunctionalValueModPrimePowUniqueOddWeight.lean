@@ -10,6 +10,21 @@ open scoped MatrixGroups
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X A N l _ _ hl2 hlN hN hlA n w _ b _ φ φ' h h' r`. Take `⟨f, hfinv, hfcls, hfδ, hfdl⟩` from `h`. Take `⟨f', hf'inv, hf'cls, hf'δ, hf'dl⟩` from `h'`. Take `⟨u, hu⟩` from `Tower.cls_eq_pow X l n f f' (hfcls.symm.trans hf'cls)`. Establish `hL : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`.
+
+Establish `hfne : (f : X.K) ≠ 0` using `f.ne_zero`. Establish `hune : (u : X.K) ≠ 0` using `u.ne_zero`. Establish `hpow : (u : X.K) ^ (l ^ n) = (f' : X.K) * (f : X.K)⁻¹`. Rewrite using `[hu]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hinv : Inv X (CongruenceSubgroup.Gamma1 (N * l ^ n)) ((u : X.K) ^ (l ^ n))`. Introduce `γ hγ`. Rewrite using `[hpow, map_mul, map_inv₀, hfinv γ hγ, hf'inv γ hγ]`. Establish `hT : X.sl (ofSL ModularGroup.T) (u : X.K) = u`. Use `TInv.sl_T_eq X N l n (Fact.out) hl2 hlN hN u hune hinv ?_` and prove the remaining obligations.
+
+Introduce `δ hδ hδ'`. Take `⟨g, hg, hfg⟩` from `hfδ δ hδ hδ'`. Take `⟨g', hg', hfg'⟩` from `hf'δ δ hδ hδ'`. Establish `hgne : g ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hfg` using `[zero_pow hL.ne']`. Conclude with `mul_ne_zero hfne ((map_ne_zero _).2 hfne) hfg`. Use `⟨g' * g⁻¹, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`. Rewrite using `[map_mul, map_inv₀, hg γ hγ, hg' γ hγ]`.
+
+Establish `hsf : X.sl (ofSL δ) (f : X.K) ≠ 0` using `(map_ne_zero _).2 hfne`. Rewrite using `[mul_pow g', inv_pow, ← hfg, ← hfg', hu, map_mul, map_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `: Algebra.IsAlgebraic ℚ Ω` using `DlPow.isAlgebraic_of_tower X`.
+
+Establish `: IsAlgClosure ℚ Ω` using `⟨inferInstance, inferInstance⟩`. Rewrite `hf'dl` using `[hu]`. Conclude with `DlPow.isDl_mul_lpow_cong X A l hlA n f u hfne hune hT φ φ' hfdl hf'dl r`.
+-/
 theorem isThB_coeff_cong : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
     (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime], (∃ φ : ℂ → ℂ, X.an X.jK = (φ : Mero) ∧ DifferentiableOn ℂ φ Hs) →
     l ≠ 2 → ¬ l ∣ N → 1 ≤ N → ((l : Ω) ∈ A.nonunits) → ∀ (n w : ℕ), Odd w → ∀ b : X.Fn l, b ∈ X.B N l w →

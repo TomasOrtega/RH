@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.BoxVolume
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hd]`.
+-/
 theorem prod_zpow_nnreal {ι : Type} (d : ℝ≥0) (hd : d ≠ 0) (f : ι → ℤ) (s : Finset ι) :
     ∏ i ∈ s, d ^ f i = d ^ (∑ i ∈ s, f i) := by
   classical
@@ -15,6 +18,17 @@ theorem prod_zpow_nnreal {ι : Type} (d : ℝ≥0) (hd : d ≠ 0) (f : ι → �
   | empty => simp
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hd]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ν _ ϖ hϖ A D _ _ c`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Establish `hset : ({y : Matrix A D k | ∀ i j, valuation k (y i j) ≤ valuation k ((ϖ : k) ^ c i j)} : Set (A → D → k)) = Set.univ.pi fun i => Set.univ.pi fun j => cball (ϖ ^ c i j)`. Use extensionality with `y`.
+
+Simplify using `only [Set.mem_univ_pi, cball, Set.mem_setOf_eq, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Use `set d : ℝ≥0 := distribHaarChar k ϖ with hd`. Establish `hdq : (d : ℝ) = (resCard k : ℝ)⁻¹` using `nabs_unif hϖ`. Establish `hd0 : d ≠ 0` using `(distribHaarChar_pos (A := k) (g := ϖ)).ne'`.
+
+Establish `hcb : ∀ i j, ν (cball (ϖ ^ c i j)) = ((d ^ c i j : ℝ≥0) : ℝ≥0∞) * ν (𝒪[k] : Set k)`. Introduce `i j`. Rewrite using `[measure_cball, map_zpow]`. Rewrite using `[volM]`. Use `erw [hset, Measure.pi_pi]`.
+
+Repeatedly rewrite using `[Measure.pi_pi, hcb, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Rewrite using `[← pow_mul, mul_comm (ν _ ^ _)]`. Rewrite using `[Nat.mul_comm (Fintype.card D)]`. Use `congr 1`. Establish `hz : ∏ i, ∏ j, d ^ c i j = d ^ (∑ i, ∑ j, c i j)`.
+
+Repeatedly rewrite using `[prod_zpow_nnreal d hd0]`. Repeatedly rewrite using `[← ENNReal.coe_finset_prod]`. Rewrite using `[hz, ← ENNReal.ofReal_coe_nnreal]`. Use `congr 1`. Rewrite using `[NNReal.coe_zpow, hdq, _root_.inv_zpow']`.
+-/
 theorem volM_box : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] (ϖ : kˣ),
     valuation k (ϖ : k) = uniformizer k →

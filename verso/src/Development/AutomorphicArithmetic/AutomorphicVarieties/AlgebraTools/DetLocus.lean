@@ -7,6 +7,9 @@ namespace UpperTheory.V.AlgebraTools
 variable {P : Type} [CommRing P] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Establish `he : p.map (C : P →+* MvPolynomial ι P) = RingHom.ker (MvPolynomial.map (σ` using `ι) (Ideal.Quotient.mk p)) := by`. Rewrite using `[MvPolynomial.ker_map, Ideal.mk_ker]`. Rewrite using `[he]`. Conclude with `RingHom.ker_isPrime _`.
+-/
 theorem isPrime_map_C (p : Ideal P) [p.IsPrime] :
     (p.map (C : P →+* MvPolynomial ι P)).IsPrime := by
   have he : p.map (C : P →+* MvPolynomial ι P) =

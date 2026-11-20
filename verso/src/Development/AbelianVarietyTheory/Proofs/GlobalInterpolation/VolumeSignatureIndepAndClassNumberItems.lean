@@ -8,6 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Glob
 
+/- English proof (translation)
+Introduce `D`. Use `⟨?_, GlobalTheory.T.hermitianClassNumberItems_all_ranks D _⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.adelicQuotientVolume_eq_of_signature_rank_indep (fun D hT W W₀ P Q P₀ Q₀ hW hW₀ hs hs₀ hr => by`. Establish `h2 : Conclusion2 D` using `volumeMass_of_unfolding D (hU D hT)`. Rewrite using `[GlobalTheory.T.unitary_volume_eq_rank_mass_all_signatures D hT h2 W P Q hW hs, GlobalTheory.T.unitary_volume_eq_rank_mass_all_signatures D hT h2 W₀ P₀ Q₀ hW₀ hs₀]`.
+
+Establish `e1` using `Formalism.BasicNotions.sig_sum W hW D.host.φ₀`. Establish `e2` using `Formalism.BasicNotions.sig_sum W₀ hW₀ D.host.φ₀`. Rewrite `e1` using `[hs]`. Rewrite `e2` using `[hs₀]`. Simplify using `only at e1 e2`.
+
+Rewrite using `[e1, e2, hr])`. Conclude with `key D`.
+-/
 theorem volSigIndep_and_classItemsAt_of_massRatioUnderVolume (hU : ∀ D : D7, Formalism.MainNotions.RT.MassRatioUnderVolume D) :
     ∀ D : D7, VolSigIndep D ∧ ClassItemsAt D (D.sp.Y 0).rank := by
   intro D

@@ -10,6 +10,11 @@ namespace GlobalTheory.CompanionTheory.LbElem.MonomialInJ
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `congrArg (fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k) i i) (mul_inv_cancel x)`. Simplify using `only [Units.val_mul, Units.val_one, Matrix.mul_apply, Matrix.one_apply_eq] at h1`. Rewrite `h1` using `[Finset.sum_eq_zero]`. Conclude with `zero_ne_one h1`.
+
+Introduce `l _`. Distinguish the cases in `hl : i = l`. Substitute `hl` using the available equality. Rewrite using `[h0, zero_mul]`. Rewrite using `[h i l hl, zero_mul]`.
+-/
 theorem diag_ne_zero_of_offDiag {N : ℕ} (x : GL (Fin N) k)
     (h : ∀ i j : Fin N, i ≠ j → (x : Matrix (Fin N) (Fin N) k) i j = 0) (i : Fin N) :
     (x : Matrix (Fin N) (Fin N) k) i i ≠ 0 := by
@@ -26,6 +31,11 @@ theorem diag_ne_zero_of_offDiag {N : ℕ} (x : GL (Fin N) k)
 
 private def o {N : ℕ} (a : Fin N) : Fin (ones N a) := ⟨0, by simp [ones]⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `mem_unipRad.1 hc`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `mem_parab_iff.1 h1 i j (o i) (o j) hij` as an intermediate fact. Rewrite `this` using `[stdBlocks_ones, stdBlocks_ones]`. Then use the resulting hypothesis. Use `h2 i (o i) (o i)` as an intermediate fact.
+
+Rewrite `this` using `[stdBlocks_ones, Matrix.one_apply_eq]`. Then use the resulting hypothesis.
+-/
 theorem nup_entries {N : ℕ} {c : GL (Fin N) k} (hc : c ∈ unipRad k (stdBlocks (ones N) (sum_ones N))) :
     (∀ i j : Fin N, j < i → (c : Matrix (Fin N) (Fin N) k) i j = 0) ∧
       ∀ i : Fin N, (c : Matrix (Fin N) (Fin N) k) i i = 1 := by
@@ -36,6 +46,11 @@ theorem nup_entries {N : ℕ} {c : GL (Fin N) k} (hc : c ∈ unipRad k (stdBlock
   · have := h2 i (o i) (o i)
     rwa [stdBlocks_ones, Matrix.one_apply_eq] at this
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_unipRadLower k).1 ha`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `(mem_parabLower_iff k).1 h1 i j (o i) (o j) hij` as an intermediate fact. Rewrite `this` using `[stdBlocks_ones, stdBlocks_ones]`. Then use the resulting hypothesis. Use `h2 i (o i) (o i)` as an intermediate fact.
+
+Rewrite `this` using `[stdBlocks_ones, Matrix.one_apply_eq]`. Then use the resulting hypothesis.
+-/
 theorem nlo_entries {N : ℕ} {a : GL (Fin N) k}
     (ha : a ∈ unipRadLower k (stdBlocks (ones N) (sum_ones N))) :
     (∀ i j : Fin N, i < j → (a : Matrix (Fin N) (Fin N) k) i j = 0) ∧

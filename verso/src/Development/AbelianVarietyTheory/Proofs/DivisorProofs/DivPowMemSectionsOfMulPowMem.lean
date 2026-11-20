@@ -10,6 +10,19 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.VolBr
 
+/- English proof (translation)
+Introduce `k _ X _ p D _ P b s t hG N m u hu hut x i j hi hj`. Set `O : Subring X.functionField` to `(algebraMap (X.presheaf.stalk x) X.functionField).range`. Establish `hO : ∀ f, RegAt x f ↔ f ∈ O` using `fun f => Iff.rfl`. Establish `hri : (P.r i : X.functionField) ≠ 0` using `(P.r i).ne_zero`. Establish `hrj : (P.r' j : X.functionField) ≠ 0` using `(P.r' j).ne_zero`.
+
+Establish `hs : P.loc 0 1 s i j ∈ O` using `(hO _).1 (hG.s_mem.1 x i j hi hj)`. Establish `ht : P.loc (-1) b t i j ∈ O` using `(hO _).1 (hG.t_mem.1 x i j hi hj)`. Establish `hs0 : P.loc 0 1 s i j ≠ 0`. Simplify using `only [loc, zpow_zero, zpow_one, mul_one]`. Conclude with `mul_ne_zero hG.s_ne hrj`.
+
+Establish `hreg : ∀ g ∈ O, g * P.loc (-1) b t i j / P.loc 0 1 s i j ∈ O → g / P.loc 0 1 s i j ∈ O` using `fun g hg h => (hO _).1 (hG.reg x i j hi hj g ((hO _).2 hg) ((hO _).2 h))`. Establish `hg : P.loc N m u i j ∈ O` using `(hO _).1 (hu x i j hi hj)`. Establish `e1 : P.loc N m u i j * P.loc (-1) b t i j ^ N / P.loc 0 1 s i j ^ m = P.loc 0 ((b * N : ℕ) : ℤ) (u * t ^ N / s ^ m) i j`. Simplify using `only [loc, zpow_zero, zpow_one, mul_one, zpow_natCast, zpow_neg, mul_pow, inv_pow]`. Use `push_cast`.
+
+Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast]`. Simplify using `only [zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : P.loc N m u i j / P.loc 0 1 s i j ^ m = P.loc N 0 (u / s ^ m) i j`.
+
+Simplify using `only [loc, zpow_zero, zpow_one, mul_one, zpow_natCast, mul_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hgN : P.loc N m u i j * P.loc (-1) b t i j ^ N / P.loc 0 1 s i j ^ m ∈ O`. Rewrite using `[e1]`. Use `hut x i j hi hj` as an intermediate fact.
+
+Move the coercions through the operations in `at this ⊢`. Conclude with `(hO _).1 this`. Use `regularPair_pow X.functionField O _ _ hs ht hs0 hreg m N _ hg hgN` as an intermediate fact. Rewrite `this` using `[e2]`. Conclude with `(hO _).2 (by exact_mod_cast this)`.
+-/
 theorem Pair.div_pow_mem_H_of_mul_pow : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p), ∀ (b : ℕ) (s t : X.functionField), P.Good D b s t → ∀ (N m : ℕ)
     (u : X.functionField), u ∈ P.H N m → u * t ^ N / s ^ m ∈ P.H 0 (b * N) → u / s ^ m ∈ P.H N 0 := by

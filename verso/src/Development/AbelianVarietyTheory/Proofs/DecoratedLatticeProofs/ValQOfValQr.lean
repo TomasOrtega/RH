@@ -79,6 +79,9 @@ def ValQr (D : D7) (r : ℕ) : Prop :=
   ∀ c₁ c₂ f₁ f₂ φ f g h₁ h₂, Hyps Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ →
     Iter2 ρ₁ μ₁ ρ₂ μ₂ (fun x y => integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x.1 y.1) (value Q c₁ c₂ f₁ f₂ φ f g h₁ h₂)
 
+/- English proof (translation)
+Introduce `ψ hψ σ S r Q hinj P hP μ₁ ρ₁ μ₂ ρ₂ a1 a2 a3 a4 a5 a6 a7 a8 c₁ c₂ hc f₁ f₂ t1 t2 hv φ f hφ hf ht g hg h₁ hh₁ h₂ hh₂`. Establish `e : P = places Q` using `funext fun v => propext (hP v)`. Substitute `e` using the available equality. Conclude with `h r ψ hψ σ S Q hinj μ₁ ρ₁ μ₂ ρ₂ ⟨a1, a2, a3, a4, a5, a6, a7, a8⟩ c₁ c₂ f₁ f₂ φ f g h₁ h₂ ⟨hc, t1, t2, hv, hφ, hf, ht, hg, hh₁, hh₂⟩`.
+-/
 theorem valQ_of_valQr (D : D7) (h : ∀ r, ValQr D r) : ValQ D := by
   intro ψ hψ σ S r Q hinj P hP μ₁ ρ₁ μ₂ ρ₂ a1 a2 a3 a4 a5 a6 a7 a8 c₁ c₂ hc f₁ f₂ t1 t2 hv φ f hφ hf ht g hg h₁ hh₁ h₂ hh₂
   have e : P = places Q := funext fun v => propext (hP v)

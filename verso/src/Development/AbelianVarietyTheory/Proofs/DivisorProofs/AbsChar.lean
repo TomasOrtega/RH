@@ -14,6 +14,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.ThK.ExpVRe
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hcs Φ hΦ r Xf Yf hW K hKc hAut S s hs hS i hi`. Establish `hcm` using `hT.base.cm`. Establish `hH` using `GlobalTheory.ThK.SqIntHerm.isHermND_smul_map F E σ B _ G.W _ _ hT.geo.hW c hc hcs`. Take `⟨ϖ, -, hϖ⟩` from `GlobalTheory.CentralExponent.exists_nabs_lt_one (k := Fv F B.v₁)`. Establish `hϖ0` using `nabs_pos' (Fv F B.v₁) ϖ`.
+
+Take `⟨B₀, hB₀⟩` from `GlobalTheory.T.unitary_maximal_compact_local_conj F E σ hcm (a + a') (c • G.W.J.map σ) hH r Xf Yf hW hK.automorphicFormsUnitary.2 B.v₁ B.τ₁`. Take `⟨b, hb, χ, hbab, hχs, hχu, m, T, x, hTi, hφ⟩` from `GlobalTheory.T.pol_data_exists_block_splitting F E σ hσ B a a' G X om om' hK hT c hc hcs Φ hΦ B₀`. Take `⟨hin, hmain⟩` from `hB₀ K hKc _ hAut _ (pairInd _ b hb χ) (isSmooth_parInd _ _) m T x hTi hφ S s hs (fun k hk i hik => hS k hk i hik) i hi`. Take `⟨L, hL, hLp⟩` from `GlobalTheory.T.local_character_exponent_list hK.geometricLemmaFiltration (Fv F B.v₁) (a + a') i hin b hb χ hχs hχu ϖ`. Take `⟨c', hc'L, hc'⟩` from `hmain hin ϖ L hLp`.
+
+Take `⟨j, l, hl, hl'⟩` from `hL c' hc'L`. Establish `hre : (s i).re = (1 - (b j : ℝ)) / 2 + l`. Establish `e` using `hc'.symm.trans hl'`. Establish `e2` using `congrArg Real.log e`. Rewrite `e2` using `[Real.log_rpow hϖ0, Real.log_rpow hϖ0]`.
+
+Conclude with `mul_right_cancel₀ (Real.log_neg hϖ0 hϖ).ne e2`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have hj : j = 0 ∨ j = 1 := by fin_cases j <;> simp`. Establish `hbj : b j = a ∨ b j = a'`. Apply the tactic sequence `rcases hj with rfl | rfl <;> rcases hbab with ⟨h0, h1⟩ | ⟨h0, h1⟩ <;> simp [h0, h1]`.
+
+Break down `hbj with e | e` into its components or cases. Conclude with `Or.inl (by rw [hre, e])`. Conclude with `Or.inr (by rw [hre, e])`.
+-/
 theorem realPart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

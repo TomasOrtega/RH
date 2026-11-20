@@ -7,6 +7,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.TorsionRigid
 
+/- English proof (translation)
+Introduce `S A _ _ hA m _ hm T x hx hgeo`. Set `f` to `(ReciprocityTheory.ChartRestriction.G.Out.mulA A m).left`. Use `haveI : FormallyUnramified f := GlobalTheory.formallyUnramified_mulA S A m hm`. Use `haveI : Smooth A.hom := hA.smooth`. Establish `hfA : f ≫ A.hom = A.hom` using `Over.w _`.
+
+Use `haveI : LocallyOfFiniteType (f ≫ A.hom) := by rw [hfA]; infer_instance`. Use `haveI : LocallyOfFiniteType f := locallyOfFiniteType_of_comp f A.hom`. Establish `hpow : ∀ y : T ⟶ A, y ≫ ReciprocityTheory.ChartRestriction.G.Out.mulA A m = y ^ m` using `fun y => by`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Out.mulA, MonObj.comp_pow]`. Establish `hf : x.left ≫ f = (1 : T ⟶ A).left ≫ f`.
+
+Establish `e1` using `congrArg CommaMorphism.left (hpow x)`. Establish `e2` using `congrArg CommaMorphism.left (hpow 1)`. Simplify using `only [Over.comp_left] at e1 e2`. Rewrite using `[e1, e2, hx, one_pow]`. Set `p : T.left ⟶ pullback f f` to `pullback.lift x.left (1 : T ⟶ A).left hf`.
+
+Establish `hr : Set.range p ⊆ Set.range (pullback.diagonal f)`. Introduce and unpack `_ ⟨t, rfl⟩`. Set `κ : Type` to `AlgebraicClosure (T.left.residueField t)`. Set `q : Sp κ ⟶ T.left` to `Spec.map (CommRingCat.ofHom (algebraMap (T.left.residueField t) κ)) ≫ T.left.fromSpecResidueField t`. Establish `hq : (Over.homMk q rfl : Over.mk (q ≫ T.hom) ⟶ T) ≫ x = (Over.homMk q rfl : Over.mk (q ≫ T.hom) ⟶ T) ≫ 1`.
+
+Rewrite using `[hgeo κ q, MonObj.comp_one]`. Establish `hq' : q ≫ x.left = q ≫ (1 : T ⟶ A).left`. Establish `h0` using `congrArg (fun h => h.left) hq`. Simplify using `only [Over.comp_left, Over.homMk_left] at h0`. Conclude with `h0`.
+
+Establish `e : q ≫ p = (q ≫ x.left) ≫ pullback.diagonal f`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [p, Category.assoc, pullback.lift_fst, pullback.diagonal_fst, Category.comp_id]`. Simplify using `only [p, Category.assoc, pullback.lift_snd, pullback.diagonal_snd, Category.comp_id, hq']`. Use `⟨(q ≫ x.left) (IsLocalRing.closedPoint κ), ?_⟩` and prove the remaining obligations.
+
+Establish `hqt : q (IsLocalRing.closedPoint κ) = t` using `Scheme.fromSpecResidueField_apply t _`. Establish `e2 : p (q (IsLocalRing.closedPoint κ)) = pullback.diagonal f ((q ≫ x.left) (IsLocalRing.closedPoint κ))` using `congrArg (fun h => h (IsLocalRing.closedPoint κ)) e`. Rewrite `e2` using `[hqt]`. Conclude with `e2.symm`. Set `g` to `IsOpenImmersion.lift (pullback.diagonal f) p hr`.
+
+Establish `hg` using `IsOpenImmersion.lift_fac (pullback.diagonal f) p hr`. Establish `h1 : x.left = g`. Establish `h0` using `congrArg (· ≫ pullback.fst f f) hg`. Simplify using `only [Category.assoc, pullback.diagonal_fst, Category.comp_id, p, pullback.lift_fst] at h0`. Conclude with `h0.symm`.
+
+Establish `h2 : (1 : T ⟶ A).left = g`. Establish `h0` using `congrArg (· ≫ pullback.snd f f) hg`. Simplify using `only [Category.assoc, pullback.diagonal_snd, Category.comp_id, p, pullback.lift_snd] at h0`. Conclude with `h0.symm`. Conclude with `Over.OverMorphism.ext (h1.trans h2.symm)`.
+-/
 theorem eq_one_of_pow_eq_one_of_geometric : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (m : ℕ), 0 < m → IsUnit ((m : Γ(S, ⊤))) → ∀ (T : Over S) (x : T ⟶ A), x ^ m = 1 → (∀ (κ : Type) [Field κ] [IsAlgClosed κ] (q : Sp κ ⟶ T.left), (Over.homMk q rfl : Over.mk (q ≫ T.hom) ⟶ T) ≫ x = 1) → x = 1 := by
   intro S A _ _ hA m _ hm T x hx hgeo
   let f := (ReciprocityTheory.ChartRestriction.G.Out.mulA A m).left

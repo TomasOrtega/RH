@@ -13,6 +13,11 @@ noncomputable section
 
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨j, hj⟩` from `d.R.A.cover z`. Establish `hzt : d.R.A.chart j z ∈ (d.R.A.chart j).target` using `(d.R.A.chart j).map_source hj`. Establish `hc : ContinuousAt ((fun z => d.R.lift x z p) ∘ (d.R.A.chart j).symm) (d.R.A.chart j z)` using `(d.R.holo x p j _ ⟨hzt, by rwa [Set.mem_preimage, (d.R.A.chart j).left_inv hj]⟩).continuousAt`. Establish `h` using `((d.R.A.chart j).symm.continuousAt_iff_continuousAt_comp_right (f := fun z => d.R.lift x z p) (x := z) (by simpa using hj)).mpr (by simpa using hc)`.
+
+Conclude with `h.continuousWithinAt`.
+-/
 theorem resLift_continuousOn (d : HSMDatum D Ω κ) (x : d.R.X) (p : Ix κ) :
     ContinuousOn (fun z => d.R.lift x z p) (d.R.U x) := by
   intro z hz
@@ -24,11 +29,17 @@ theorem resLift_continuousOn (d : HSMDatum D Ω κ) (x : d.R.X) (p : Ix κ) :
     (f := fun z => d.R.lift x z p) (x := z) (by simpa using hj)).mpr (by simpa using hc)
   exact h.continuousWithinAt
 
+/- English proof (translation)
+The claim follows from `contDiffOn_pi.mpr fun p => ((d.R.holo x p j).contDiffOn_of_completeSpace).restrict_scalars ℝ`.
+-/
 theorem resLift_contDiffOn (d : HSMDatum D Ω κ) (x : d.R.X) (j : Fin d.R.A.n) :
     ContDiffOn ℝ ∞ (fun y => d.R.lift x ((d.R.A.chart j).symm y))
       ((d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U x) :=
   contDiffOn_pi.mpr fun p => ((d.R.holo x p j).contDiffOn_of_completeSpace).restrict_scalars ℝ
 
+/- English proof (translation)
+Introduce `j` and use `by have hne : ∀ y ∈ (d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U x, d.R.lift x ((d.R.A.chart j).symm y) ∈ {z : Ix κ → ℂ | z ≠ 0} := fun y hy => gaamix_ne_zero_of_mcPts (d.R.mem x _ hy.2) exact (hm.comp (resLift_contDiffOn d x j) hne).log fun y hy => (m.pos _ (hne y hy) …`.
+-/
 theorem resPot_smoothOn (d : HSMDatum D Ω κ) {m : ConeMetric ℂ (Ix κ)} (hm : IsSmoothMetric m)
     (x : d.R.X) : d.R.A.SmoothOn ((resPot d m).U x) ((resPot d m).φ x) := fun j => by
   have hne : ∀ y ∈ (d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U x,
@@ -36,6 +47,25 @@ theorem resPot_smoothOn (d : HSMDatum D Ω κ) {m : ConeMetric ℂ (Ix κ)} (hm 
     fun y hy => gaamix_ne_zero_of_mcPts (d.R.mem x _ hy.2)
   exact (hm.comp (resLift_contDiffOn d x j) hne).log fun y hy => (m.pos _ (hne y hy)).ne'
 
+/- English proof (translation)
+Use `⟨resPot_smoothOn d hm, fun x x' y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : y ∈ d.R.U x ∩ d.R.U x'` using `hy`. Take `⟨p, hp⟩` from `(d.R.mem x' y hy'.2).1 ()`. Take `⟨c, hc, hcy⟩` from `d.R.compat x x' y hy'`. Establish `hnum : d.R.lift x y ⟨(), p⟩ ≠ 0`.
+
+Rewrite using `[hcy]`. Conclude with `mul_ne_zero (hc ()) hp`. Use `set r : ℂ := d.R.lift x y ⟨(), p⟩ / d.R.lift x' y ⟨(), p⟩ with hr_def`. Establish `hr : r ≠ 0` using `div_ne_zero hnum hp`. Establish `hO : IsOpen (d.R.U x ∩ d.R.U x')` using `(d.R.isOpen_U x).inter (d.R.isOpen_U x')`.
+
+Set `q : d.R.X → ℂ` to `fun z => d.R.lift x z ⟨(), p⟩ / d.R.lift x' z ⟨(), p⟩ / r`. Set `W : Set d.R.X` to `{z | z ∈ d.R.U x ∩ d.R.U x' ∧ d.R.lift x' z ⟨(), p⟩ ≠ 0 ∧ q z ∈ Complex.slitPlane}`. Establish `hW : IsOpen W`. Use `isOpen_iff_mem_nhds.mpr fun z hz => ?_` and prove the remaining obligations. Establish `hn : ContinuousAt (fun z => d.R.lift x z ⟨(), p⟩) z` using `((resLift_continuousOn d x _).mono Set.inter_subset_left).continuousAt (hO.mem_nhds hz.1)`.
+
+Establish `hd : ContinuousAt (fun z => d.R.lift x' z ⟨(), p⟩) z` using `((resLift_continuousOn d x' _).mono Set.inter_subset_right).continuousAt (hO.mem_nhds hz.1)`. Use `filter_upwards [hO.mem_nhds hz.1, hd.eventually_ne hz.2.1, ((hn.div hd hz.2.1).div_const r).eventually_mem (Complex.isOpen_slitPlane.mem_nhds hz.2.2)] with w h1 h2 h3`. Conclude with `⟨h1, h2, h3⟩`. Establish `hyW : y ∈ W`. Use `⟨hy', hp, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : q y = 1` using `div_self hr`. Rewrite using `[h1]`. Conclude with `Complex.mem_slitPlane_iff.mpr (Or.inl (by simp))`. Set `G : d.R.X → ℂ` to `fun z => Complex.log (q z) + ((Real.log ‖r‖ : ℝ) : ℂ)`. Use `⟨W, hW, hyW, G, fun j y' hy'' => ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `hz : (d.R.A.chart j).symm y' ∈ W` using `hy''.2`. Establish `hn : AnalyticAt ℂ (fun y'' => d.R.lift x ((d.R.A.chart j).symm y'') ⟨(), p⟩) y'` using `d.R.holo x _ j y' ⟨hy''.1, hz.1.1⟩`. Establish `hd : AnalyticAt ℂ (fun y'' => d.R.lift x' ((d.R.A.chart j).symm y'') ⟨(), p⟩) y'` using `d.R.holo x' _ j y' ⟨hy''.1, hz.1.2⟩`. Establish `hq : AnalyticAt ℂ (fun y'' => q ((d.R.A.chart j).symm y'')) y'` using `(hn.div hd hz.2.1).div analyticAt_const hr`. Establish `hl : AnalyticAt ℂ (Complex.log ∘ fun y'' => q ((d.R.A.chart j).symm y'')) y'` using `AnalyticAt.comp (f := fun y'' => q ((d.R.A.chart j).symm y'')) (analyticAt_clog hz.2.2) hq`.
+
+Conclude with `hl.add analyticAt_const`. Establish `hzW : z ∈ W` using `hz.1.1`. Take `⟨c', hc', hcz⟩` from `d.R.compat x x' z hzW.1`. Establish `hpos : 0 < m.ρ (d.R.lift x' z)` using `m.pos _ (gaamix_ne_zero_of_mcPts (d.R.mem x' z hzW.1.2))`. Establish `hsm : d.R.lift x z = c' () • d.R.lift x' z`.
+
+Rewrite using `[hcz]`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression. Establish `hqz : q z = c' () / r` using `by show d.R.lift x z ⟨(), p⟩ / d.R.lift x' z ⟨(), p⟩ / r = _`. Rewrite using `[hsm, Pi.smul_apply, smul_eq_mul, mul_div_assoc, div_self hzW.2.1, mul_one]`.
+
+Use `show Real.log (m.ρ (d.R.lift x z)) - Real.log (m.ρ (d.R.lift x' z)) = (G z).re`. Rewrite using `[hsm, m.smul, Real.log_mul (norm_ne_zero_iff.mpr (hc' ())) hpos.ne', add_sub_cancel_right]`. Use `show Real.log ‖c' ()‖ = (Complex.log (q z) + ((Real.log ‖r‖ : ℝ) : ℂ)).re`. Rewrite using `[Complex.add_re, Complex.log_re, Complex.ofReal_re, hqz, norm_div, Real.log_div (norm_ne_zero_iff.mpr (hc' ())) (norm_ne_zero_iff.mpr hr)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isPotential_resPot (d : HSMDatum D Ω κ) {m : ConeMetric ℂ (Ix κ)} (hm : IsSmoothMetric m) :
     IsPotential d.R.A (resPot d m) := by
   refine ⟨resPot_smoothOn d hm, fun x x' y hy => ?_⟩
@@ -95,6 +125,11 @@ theorem isPotential_resPot (d : HSMDatum D Ω κ) {m : ConeMetric ℂ (Ix κ)} (
       Real.log_div (norm_ne_zero_iff.mpr (hc' ())) (norm_ne_zero_iff.mpr hr)]
     ring
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun y0 => ?_` and prove the remaining obligations. Establish `hU : d.R.U y0 ∈ 𝓝 y0` using `(d.R.isOpen_U y0).mem_nhds (d.R.mem_U y0)`. Establish `hL : ContinuousOn (d.R.lift y0) (d.R.U y0)` using `continuousOn_pi.2 fun p => resLift_continuousOn d y0 p`. Establish `hlog : ContinuousOn (fun y => logRatio m₀ m₁ (d.R.lift y0 y)) (d.R.U y0)` using `(gbamix_smooth_logRatio h₀ h₁).continuousOn.comp hL fun y hy => gaamix_ne_zero_of_mcPts (d.R.mem y0 y hy)`. Establish `heq : (fun y => logRatio m₀ m₁ (d.R.lift y0 y)) =ᶠ[𝓝 y0] fun y => logRatio m₀ m₁ (resPt d y)` using `by filter_upwards [hU] with y hy`.
+
+Take `⟨c, hc, hcy⟩` from `d.R.compat y y0 y ⟨d.R.mem_U y, hy⟩`. Use `show _ = logRatio m₀ m₁ (d.R.lift y y)`. Rewrite using `[hcy, gbamix_logRatio_deg c _ hc]`. Conclude with `(hlog.continuousAt hU).congr heq`.
+-/
 theorem continuous_logRatio_resPt (d : HSMDatum D Ω κ) {m₀ m₁ : ConeMetric ℂ (Ix κ)}
     (h₀ : IsSmoothMetric m₀) (h₁ : IsSmoothMetric m₁) :
     Continuous fun y => logRatio m₀ m₁ (resPt d y) := by

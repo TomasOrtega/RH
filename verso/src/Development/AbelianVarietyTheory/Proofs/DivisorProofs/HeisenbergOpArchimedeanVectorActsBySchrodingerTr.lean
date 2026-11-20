@@ -16,8 +16,26 @@ variable (F : Type) [Field F] [NumberField F] in
 def evHom : AF F →+* mixedEmbedding.mixedSpace F :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evHom_apply {F : Type} [Field F] [NumberField F] (a : AF F) : evHom F a = evI F a := rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ ψ JA JB d hψ u hu f h`. Establish `hw : At (evI F) (d.e u)` using `fun r hr => by rw [← map_smul, hu r hr, map_zero]`. Use `show schr ψ (d.e u) (pureA F f h) = _`. Generalize the expression as in `d.e u = w at hw ⊢`. Take `⟨p, q⟩` from `w`.
+
+Use function extensionality and compare the values at `x`. Establish `hfin : (fun i => ((x + p) i).2) = fun i => (x i).2`. Use function extensionality and compare the values at `i`. Establish `h0 : evI F ((0, 1) : AF F) = 0` using `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `h1 : (1 : Af F) * (p i).2 = 0` using `congrArg (fun z : (κ → AF F) × (κ → AF F) => (z.1 i).2) (hw _ h0)`.
+
+Express the relevant statement in the definitionally equal form `(x i).2 + (p i).2 = _`. Rewrite `h1` using `[one_mul]`. Rewrite using `[h1, add_zero]`. Establish `hAt : At (evI F) (x ⬝ᵥ q + ⅟(2 : AF F) * (p ⬝ᵥ q))`. Introduce `v hv`.
+
+Establish `hq : v • q = 0` using `congrArg Prod.snd (hw v hv)`. Rewrite using `[smul_add, ← dotProduct_smul, smul_eq_mul, mul_left_comm, ← smul_eq_mul v, ← dotProduct_smul, hq]`. Simplify using the standard rewrite rules. Establish `harch : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + p) i).1) = (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) + ArchUniq.locV p`. Use function extensionality and compare the values at `fun i => map_add (evHom F) (x i) (p i)`.
+
+Establish `htr : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (x ⬝ᵥ q + ⅟(2 : AF F) * (p ⬝ᵥ q))) = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1 * evI F (q i)) + Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, evI F (p i) * …` using `by set z : mixedEmbedding.mixedSpace F := ∑ i, evI F (p i) * evI F (q i) with hz`. Establish `hpq : evHom F (p ⬝ᵥ q) = z`. Rewrite using `[RingHom.map_dotProduct]`. Both sides reduce to the same expression. Establish `hxq : evHom F (x ⬝ᵥ q) = ∑ i, InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1 * evI F (q i)`.
+
+Rewrite using `[RingHom.map_dotProduct]`. Both sides reduce to the same expression. Establish `key : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evHom F ⅟(2 : AF F) * z) + Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evHom F ⅟(2 : AF F) * z) = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) z`. Rewrite using `[← map_add, ← add_mul, ← map_add, invOf_two_add_invOf_two, map_one, one_mul]`. Rewrite using `[← evHom_apply, map_add, map_mul, hpq, hxq, map_add]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [schr, pureA, GlobalTheory.ArchUniq.schrF, GlobalTheory.ArchUniq.trP, GlobalTheory.ArchUniq.locV] at harch ⊢`. Rewrite using `[hψ.2.2 _ hAt, hfin, htr, harch, ← mul_assoc]`.
+-/
 theorem rho_pureA_schrF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (ψ : AddChar (AF F) ℂ)
     (JA : Matrix α α (AE F E)) (JB : Matrix β β (AE F E))

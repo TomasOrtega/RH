@@ -19,6 +19,11 @@ open GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShF
 
 namespace GlobalTheory.LetterCount
 
+/- English proof (translation)
+Establish `hinv : Function.Involutive (conjEmb : (E →+* ℂ) → (E →+* ℂ))` using `fun τ => RingHom.ext fun x => by simp [conjEmb]`. Establish `h2 : ∑ τ : E →+* ℂ, Dw.mult τ = ∑ τ : E →+* ℂ, Dw.mult (conjEmb τ)` using `(Equiv.sum_comp hinv.toPerm Dw.mult).symm`. Rewrite using `[two_mul]`. Use `nth_rewrite 2 [h2]`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Simplify using `[GlobalTheory.ShFam.Pad.AdmExist.mult_add_mult_conj, Finset.sum_const, Finset.card_univ]`.
+-/
 theorem two_mul_sum_mult {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) : 2 * ∑ τ : E →+* ℂ, Dw.mult τ = Fintype.card (E →+* ℂ) * (Dw.p + Dw.q) := by
   have hinv : Function.Involutive (conjEmb : (E →+* ℂ) → (E →+* ℂ)) := fun τ =>
@@ -30,6 +35,11 @@ theorem two_mul_sum_mult {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   rw [← Finset.sum_add_distrib]
   simp [GlobalTheory.ShFam.Pad.AdmExist.mult_add_mult_conj, Finset.sum_const, Finset.card_univ]
 
+/- English proof (translation)
+Introduce `D O`. Use `⟨Fintype.equivOfCardEq ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_fin, Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Establish `h` using `two_mul_sum_mult O.S.Dw`.
+
+Rewrite `h` using `[O.S.rank_eq, NumberField.Embeddings.card, Formalism.MainNotions.Gaps.LevGap.finrank_hostE_eq D.host]`. Establish `h'` using `Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) (h.trans (mul_assoc _ _ _))`. Apply the tactic sequence `first | exact h'.symm | exact h' | linarith`.
+-/
 theorem nonempty_equiv_letter : ∀ (D : D7) (O : Setup D), Nonempty (Fin (D.R.f * O.N) ≃ Pad.Letter O.S.Dw) := by
   intro D O
   refine ⟨Fintype.equivOfCardEq ?_⟩

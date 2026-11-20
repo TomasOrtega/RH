@@ -26,6 +26,21 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 
 namespace GlobalTheory.HolomorphicArc
 
+/- English proof (translation)
+Introduce `L₁ L₂ hU E _ _ _ H D l Xo c O _ β Y bF _ _ a χ W g ty Fu _ hty hrz hχ hgen`. Use `letI := H.starRing`. Use `haveI : NeZero l.A := ⟨l.A_pos.ne'⟩`. Use `haveI : NeZero l.M := ⟨by have := l.three_le; omega⟩`. Use `haveI := Xo.smooth`.
+
+Use `haveI : Smooth Xo.s := SmoothOfRelativeDimension.smooth D.dim Xo.s`. Use `haveI : IsLocallyNoetherian Xo.X := LocallyOfFiniteType.isLocallyNoetherian Xo.s`. Take `⟨Λ⟩` from `GlobalTheory.ArcModel.nonempty_gtAn L₁ L₂ hU E H D l c O β _ a`. Take `⟨C⟩` from `GlobalTheory.T.nonempty_chain_arc_witness_universal_family L₁ L₂ E H D l Xo c O β Y bF a χ W Λ hχ hgen`. Use `choose laA hA using fun v => (GlobalTheory.GtRep.exists_rep_and_shift L₁ L₂ E H D l c O β _ a Λ l.A l.A_pos).1 (a.etaA v)`.
+
+Use `choose laM hM using fun v => (GlobalTheory.GtRep.exists_rep_and_shift L₁ L₂ E H D l c O β _ a Λ l.M (le_trans (by norm_num) l.three_le)).1 (a.eta v)`. Take `⟨levA, levM⟩` from `GlobalTheory.ArcPts.chain_levels L₁ L₂ E H D l Xo c O β Y bF a χ W Λ C laA laM hA hM`. Establish `hfin : AnFin Λ.A` using `(GlobalTheory.ArcThetaSpaces.sections_theta L₁ L₂ E H D l c O β _ a Λ).2.1`. Establish `hover : (C.yF ≫ pullback.fst _ _) ≫ Xo.s = spMap ((algebraMap ℂ ℂ⸨X⸩).comp (bF.comp (IntermediateField.inclusion c.le).toRingHom))`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, C.yF_over, ← spMap_comp]`.
+
+Establish `hrat : C.Φ.Rational` using `GlobalTheory.ConstRational.rational L₁ L₂ E H D l Xo Λ.A _ _ C.Φ laA laM hfin hover levA levM`. Take `⟨Γ⟩` from `GlobalTheory.T.exists_germs_localRing_convergent_divisible.1`. Take `⟨Ψ⟩` from `GlobalTheory.ArcPts.Special.specPts_nonempty L₁ L₂ E H D l _ _ Xo.X Xo.s Xo.univ Λ.A _ C.Φ Γ _ Xo.s _ hover hfin hrat`. Take `⟨lin, cst, hfac, hEF⟩` from `GlobalTheory.ArcPts.exists_isFactor _ Λ.A`. Take `⟨T₁, hT₁, hol, hfib⟩` from `GlobalTheory.SpecFibre.specPts_isFibAt L₁ L₂ E H D l _ _ Xo.X Xo.s Xo.univ Λ.A _ C.Φ Γ Ψ hfin hrat lin cst hfac`.
+
+Take `⟨TA, -, hlA⟩` from `GlobalTheory.SpecLevel.level_on_fibre L₁ L₂ E H D l _ _ Xo.X Xo.s Xo.univ Λ.A _ C.Φ Γ Ψ hfin hrat l.A`. Take `⟨TM, -, hlM⟩` from `GlobalTheory.SpecLevel.level_on_fibre L₁ L₂ E H D l _ _ Xo.X Xo.s Xo.univ Λ.A _ C.Φ Γ Ψ hfin hrat l.M`. Establish `hdim` using `GlobalTheory.ArcPts.finrank_V_eq L₁ L₂ E H D l c O β _ a Λ g ty hty hrz`. Establish `hol' : IsHolTo {w : ℂ | max T₁ (max TA TM) < w.im} Ψ.yw` using `isHolTo_halfPlane_mono (le_max_left _ _) hol`. Take `⟨K, -⟩` from `GlobalTheory.ArcPts.exists_cmp L₁ L₂ E H D l Xo _ g ty Fu Λ.A lin cst (max T₁ (max TA TM)) Ψ.yw Ψ.pi Ψ.fr laA laM`.
+
+Use `rfl hEF hdim hol' (by`. Introduce `w hw`. Simplify using `only [max_lt_iff] at hw`. Take `⟨h₁, h₂, h₃⟩` from `hw`. Use `⟨?_, hfib w h₁, fun hs => ⟨fun v => hlA w h₂ hs (hfib w h₁).per _ _ ?_ (levA v), fun v hv => hlM w h₃ hs (hfib w h₁).per _ _ ?_ (levM v hv)⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Ψ.yw_eq w (hT₁.trans_lt h₁)]`. Conclude with `over_of_generic _ _ _ _ _ (by rw [Ψ.yT_gen]; exact hover)`. Rewrite using `[← map_nsmul_eq_pow _ Xo.univ.etaA_add, Xo.univ.etaA_ker]`. Rewrite using `[← map_nsmul_eq_pow _ Xo.univ.eta_add, Xo.univ.eta_ker _ (nsmul_mem v)])`. Conclude with `GlobalTheory.ArcPts.nonempty_holArc L₁ L₂ E H D l Xo c O β Y bF a χ W Λ C Γ Ψ g ty Fu laA laM K hrat hA hM lin cst T₁ hfib`.
+-/
 theorem main : ReciprocityTheory.ChartRestriction.G.Out.Laws → ReciprocityTheory.ChartRestriction.G.Out.Laws2 → ReciprocityTheory.ChartRestriction.G.Geo.Tor.ThetaUnifAV →
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.ToroidalArchimedeanCondition := by
   intro L₁ L₂ hU E _ _ _ H D l Xo c O _ β Y bF _ _ a χ W g ty Fu _ hty hrz hχ hgen

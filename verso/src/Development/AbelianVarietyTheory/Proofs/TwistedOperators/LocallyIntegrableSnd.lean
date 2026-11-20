@@ -12,6 +12,9 @@ attribute [local instance] GlobalTheory.SqIntSU.circleBorelMS GlobalTheory.SqInt
   GlobalTheory.SqIntSU.circleHaar_finite GlobalTheory.SqIntSU.locallyCompact_special GlobalTheory.SqIntSU.secondCountable_special
   GlobalTheory.SqIntSU.sigmaCompact_special GlobalTheory.DSSU.borelSpace_SUJ
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SqIntSU.scalarMul_apply, GlobalTheory.SqIntSU.scalarMul_apply]`. Use `show GlobalTheory.SqIntSU.unitScalar ε (z * ZMod.toCircle j) * (GlobalTheory.SqIntSU.unitScalar ε (ZMod.toCircle j)⁻¹ * (g : UJ ε)) = _`. Rewrite using `[← mul_assoc, ← GlobalTheory.SqIntSU.unitScalar_mul, mul_inv_cancel_right]`.
+-/
 theorem scalarMul_cen {n : ℕ} [NeZero n] (ε : Fin n → Bool) (j : ZMod n) (z : Circle) (g : SUJ ε) :
     scalarMul ε (z * ZMod.toCircle j, GlobalTheory.ExtChar.cen ε j * g) = scalarMul ε (z, g) := by
   rw [GlobalTheory.SqIntSU.scalarMul_apply, GlobalTheory.SqIntSU.scalarMul_apply]
@@ -19,6 +22,9 @@ theorem scalarMul_cen {n : ℕ} [NeZero n] (ε : Fin n → Bool) (j : ZMod n) (z
       (GlobalTheory.SqIntSU.unitScalar ε (ZMod.toCircle j)⁻¹ * (g : UJ ε)) = _
   rw [← mul_assoc, ← GlobalTheory.SqIntSU.unitScalar_mul, mul_inv_cancel_right]
 
+/- English proof (translation)
+Introduce `x`. Take `⟨U, hU, hi⟩` from `h x.2`. Use `⟨Set.univ ×ˢ U, prod_mem_nhds Filter.univ_mem hU, ?_⟩` and prove the remaining obligations. Rewrite using `[IntegrableOn, ← Measure.prod_restrict, Measure.restrict_univ]`. Conclude with `hi.comp_snd circleHaar`.
+-/
 theorem locallyIntegrable_snd {n : ℕ} (ε : Fin n → Bool) (μ' : Measure (SUJ ε)) [SFinite μ'] (Θ' : SUJ ε → ℂ)
     (h : LocallyIntegrable Θ' μ') :
     LocallyIntegrable (fun p : Circle × SUJ ε => Θ' p.2) (circleHaar.prod μ') := by
@@ -28,6 +34,21 @@ theorem locallyIntegrable_snd {n : ℕ} (ε : Fin n → Bool) (μ' : Measure (SU
   rw [IntegrableOn, ← Measure.prod_restrict, Measure.restrict_univ]
   exact hi.comp_snd circleHaar
 
+/- English proof (translation)
+Introduce `n _ ε μ' _ m Θ' hΘ hE f hf hfc`. Use `haveI : SFinite μ' := inferInstance`. Establish `hsc : Continuous (scalarMul ε)` using `GlobalTheory.SqIntSU.continuous_scalarMul ε`. Establish `hI : Integrable (fun x => f x * GlobalTheory.ExtChar.extChar ε m Θ' x) (Measure.map (scalarMul ε) (circleHaar.prod μ'))`. Simplify `hE.integrable_smul_left_of_hasCompactSupport hf hfc` using `only [smul_eq_mul]`.
+
+Rewrite using `[integral_map hsc.aemeasurable hI.aestronglyMeasurable]`. Use `set G : Circle × SUJ ε → ℂ := fun p => f (scalarMul ε p) * (p.1 : ℂ) ^ m * Θ' p.2 with hGdef`. Establish `hzc : Continuous fun z : Circle => (z : ℂ) ^ m` using `Continuous.zpow₀ continuous_subtype_val m (fun z => Or.inl (Circle.coe_ne_zero z))`. Establish `hc : Continuous fun p : Circle × SUJ ε => f (scalarMul ε p) * (p.1 : ℂ) ^ m` using `(hf.comp hsc).mul (hzc.comp continuous_fst)`. Establish `hprop : IsProperMap (scalarMul ε)` using `isProperMap_iff_tendsto_cocompact.2 ⟨hsc, GlobalTheory.SqIntSU.scalarMul_proper ε⟩`.
+
+Establish `hcs : HasCompactSupport fun p : Circle × SUJ ε => f (scalarMul ε p) * (p.1 : ℂ) ^ m`. Use `HasCompactSupport.intro (hprop.isCompact_preimage hfc) fun p hp => ?_` and prove the remaining obligations. Establish `: f (scalarMul ε p) = 0` using `image_eq_zero_of_notMem_tsupport hp`. Simplify using `[this]`. Establish `hG : Integrable G (circleHaar.prod μ')`.
+
+Simplify `(locallyIntegrable_snd ε μ' Θ' hΘ).integrable_smul_left_of_hasCompactSupport hc hcs` using `only [smul_eq_mul, hGdef]`. Establish `hT : ∀ j : ZMod n, MeasurePreserving (Prod.map (fun z : Circle => z * ZMod.toCircle j) (fun g : SUJ ε => GlobalTheory.ExtChar.cen ε j * g)) (circleHaar.prod μ') (circleHaar.prod μ')` using `fun j => (measurePreserving_mul_right circleHaar _).prod (measurePreserving_mul_left μ' _)`. Establish `hEmb : ∀ j : ZMod n, MeasurableEmbedding (Prod.map (fun z : Circle => z * ZMod.toCircle j) (fun g : SUJ ε => GlobalTheory.ExtChar.cen ε j * g))` using `fun j => ((MeasurableEquiv.mulRight (ZMod.toCircle j)).prodCongr (MeasurableEquiv.mulLeft (GlobalTheory.ExtChar.cen ε j))).measurableEmbedding`. Establish `hpt : ∀ p : Circle × SUJ ε, f (scalarMul ε p) * GlobalTheory.ExtChar.extChar ε m Θ' (scalarMul ε p) = (n : ℂ)⁻¹ * ∑ j : ZMod n, G (Prod.map (fun z : Circle => z * ZMod.toCircle j) (fun g : SUJ ε => GlobalTheory.ExtChar.cen ε j * g) p)`. Introduce and unpack `⟨z, g⟩`.
+
+Rewrite using `[GlobalTheory.ExtChar.extChar_scalarMul, GlobalTheory.ExtChar.avgChar, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [hGdef, Prod.map, scalarMul_cen, Circle.coe_mul, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hpt]`.
+
+Rewrite using `[integral_const_mul, integral_finset_sum (f := fun j p => G (Prod.map (fun z : Circle => z * ZMod.toCircle j) (fun g : SUJ ε => GlobalTheory.ExtChar.cen ε j * g) p)) _ (fun j _ => ((hT j).integrable_comp_emb (hEmb j)).2 hG)]`. Simplify using `only [fun j => (hT j).integral_comp (hEmb j) G]`. Rewrite using `[Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, ← mul_assoc, inv_mul_cancel₀ (Nat.cast_ne_zero.2 (NeZero.ne n)), one_mul, integral_prod_symm G hG]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [hGdef]`.
+
+Conclude with `integral_mul_const _ _`.
+-/
 theorem integral_extChar : ∀ (n : ℕ) [NeZero n] (ε : Fin n → Bool) (μ' : Measure (SUJ ε)) [μ'.IsHaarMeasure] (m : ℤ) (Θ' : SUJ ε → ℂ), LocallyIntegrable Θ' μ' → LocallyIntegrable (GlobalTheory.ExtChar.extChar ε m Θ') (letI := GlobalTheory.SqIntSU.circleBorelMS; Measure.map (scalarMul ε) (circleHaar.prod μ')) → ∀ f : UJ ε → ℂ, Continuous f → HasCompactSupport f → ∫ x, f x * GlobalTheory.ExtChar.extChar ε m Θ' x ∂(letI := GlobalTheory.SqIntSU.circleBorelMS; Measure.map (scalarMul ε) (circleHaar.prod μ')) = ∫ g, (∫ z, f (scalarMul ε (z, g)) * (z : ℂ) ^ m ∂circleHaar) * Θ' g ∂μ' := by
   intro n _ ε μ' _ m Θ' hΘ hE f hf hfc
   haveI : SFinite μ' := inferInstance

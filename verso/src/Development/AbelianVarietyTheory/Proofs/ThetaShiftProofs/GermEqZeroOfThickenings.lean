@@ -25,6 +25,9 @@ section Values
 
 variable {A A' : Type} [CommRing A] [CommRing A'] {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[valR, dif_pos ht, gs_eq x z V (ht trivial)]`. Use `show ((Sp A).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom _)) = _`. Rewrite using `[Iso.hom_inv_id_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply (Sp A).presheaf (homOfLE ht) z trivial _`.
+-/
 theorem toStkA_valR_eq_gs (x : Sp A ⟶ X) (V : X.Opens) (z : Sp A) (ht : ⊤ ≤ x ⁻¹ᵁ V) (a : Γ(X, V)) :
     toStkA z (valR x V a) = gs x z V a := by
   rw [valR, dif_pos ht, gs_eq x z V (ht trivial)]
@@ -33,9 +36,15 @@ theorem toStkA_valR_eq_gs (x : Sp A ⟶ X) (V : X.Opens) (z : Sp A) (ht : ⊤ �
   rw [Iso.hom_inv_id_apply]
   exact TopCat.Presheaf.germ_res_apply (Sp A).presheaf (homOfLE ht) z trivial _
 
+/- English proof (translation)
+Introduce `y _` and use `ht (show r y ∈ (⊤ : (Sp A).Opens) from trivial)`.
+-/
 theorem top_le_comp {x : Sp A ⟶ X} {V : X.Opens} (ht : ⊤ ≤ x ⁻¹ᵁ V) (r : Sp A' ⟶ Sp A) : ⊤ ≤ (r ≫ x) ⁻¹ᵁ V :=
   fun y _ => ht (show r y ∈ (⊤ : (Sp A).Opens) from trivial)
 
+/- English proof (translation)
+Rewrite using `[valR, valR, dif_pos ht, dif_pos (top_le_comp ht _), ← Scheme.Hom.appLE_comp_appLE (spMap ρ) x V ⊤ ⊤ ht le_top]`. Establish `e` using `congrArg (fun q => q.hom ((x.appLE V ⊤ ht).hom a)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ρ))`. Use `Eq.trans ?_ e` and prove the remaining obligations. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Use `congr 2`.
+-/
 theorem valR_spMap (ρ : A →+* A') (x : Sp A ⟶ X) (V : X.Opens) (ht : ⊤ ≤ x ⁻¹ᵁ V) (a : Γ(X, V)) :
     valR (spMap ρ ≫ x) V a = ρ (valR x V a) := by
   rw [valR, valR, dif_pos ht, dif_pos (top_le_comp ht _),
@@ -46,14 +55,27 @@ theorem valR_spMap (ρ : A →+* A') (x : Sp A ⟶ X) (V : X.Opens) (ht : ⊤ �
   simp only [CommRingCat.hom_comp, RingHom.comp_apply]
   congr 2
 
+/- English proof (translation)
+Rewrite using `[← valR_spMap ρ x V ht, toStkA_valR_eq_gs _ V z (top_le_comp ht _)]`.
+-/
 theorem toStkA_map_valR (ρ : A →+* A') (x : Sp A ⟶ X) (V : X.Opens) (z : Sp A') (ht : ⊤ ≤ x ⁻¹ᵁ V) (a : Γ(X, V)) :
     toStkA z (ρ (valR x V a)) = gs (spMap ρ ≫ x) z V a := by
   rw [← valR_spMap ρ x V ht, toStkA_valR_eq_gs _ V z (top_le_comp ht _)]
 
+/- English proof (translation)
+Rewrite using `[valR, dif_pos ht]`. Conclude with `(a.isUnit.map _).map _`.
+-/
 theorem isUnit_valR (x : Sp A ⟶ X) (V : X.Opens) (ht : ⊤ ≤ x ⁻¹ᵁ V) (a : Γ(X, V)ˣ) : IsUnit (valR x V a.val) := by
   rw [valR, dif_pos ht]
   exact (a.isUnit.map _).map _
 
+/- English proof (translation)
+Establish `ht : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ V` using `(top_le_iff_cpt (A := X.presheaf.stalk x) _ V).2 (by`. Rewrite using `[show X.fromSpecStalk x (cpt (X.presheaf.stalk x)) = x from Scheme.fromSpecStalk_closedPoint]`. Conclude with `hx)`. Use `(dif_pos ht).trans ?_` and prove the remaining obligations. Establish `: (X.fromSpecStalk x).appLE V ⊤ ht ≫ (Scheme.ΓSpecIso (X.presheaf.stalk x)).hom = X.presheaf.germ V x hx`.
+
+Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hx]`. Simplify using `only [Category.assoc]`. Establish `e : (Spec (X.presheaf.stalk x)).presheaf.map (homOfLE (le_top : X.fromSpecStalk x ⁻¹ᵁ V ≤ ⊤)).op ≫ (Spec (X.presheaf.stalk x)).presheaf.map (homOfLE ht).op = 𝟙 _`. Rewrite using `[← Functor.map_comp]`. Conclude with `CategoryTheory.Functor.map_id _ _`.
+
+Rewrite using `[reassoc_of% e, Iso.inv_hom_id, Category.comp_id]`. Conclude with `congrArg (fun q => q.hom a) this`.
+-/
 theorem valR_fromSpecStalk (x : X) (V : X.Opens) (hx : x ∈ V) (a : Γ(X, V)) :
     valR (A := X.presheaf.stalk x) (X.fromSpecStalk x) V a = (X.presheaf.germ V x hx).hom a := by
   have ht : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ V := (top_le_iff_cpt (A := X.presheaf.stalk x) _ V).2 (by
@@ -74,6 +96,9 @@ section Krull
 
 variable {R : Type} [CommRing R] (I : Ideal R)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pullback.lift (spMap (Ideal.Quotient.mk _) ≫ x) (spMap (Ideal.quotientMap (I.map φ ^ (e + 1)) φ (by rw [← Ideal.map_pow]; exact Ideal.le_comap_map))) (by rw [Category.assoc, hx, ← Spec.map_comp, ← Spec.map_comp] rfl), pullback.lift_fst _ _ _⟩`.
+-/
 theorem exists_lift_thick (H : Over (Sp R)) {S : Type} [CommRing S] (φ : R →+* S) (x : Sp S ⟶ H.left)
     (hx : x ≫ H.hom = spMap φ) (e : ℕ) :
     ∃ xe : Sp (S ⧸ I.map φ ^ (e + 1)) ⟶ (thickObj R I e H).left,
@@ -84,6 +109,17 @@ theorem exists_lift_thick (H : Over (Sp R)) {S : Type} [CommRing S] (φ : R →+
       rw [Category.assoc, hx, ← Spec.map_comp, ← Spec.map_comp]
       rfl), pullback.lift_fst _ _ _⟩
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `Spec.map_surjective (H.left.fromSpecStalk y ≫ H.hom)`. Establish `hc : H.left.fromSpecStalk y (cpt (H.left.presheaf.stalk y)) = y` using `Scheme.fromSpecStalk_closedPoint`. Establish `ht : ⊤ ≤ H.left.fromSpecStalk y ⁻¹ᵁ V` using `(top_le_iff_cpt (A := H.left.presheaf.stalk y) _ V).2 (by`. Rewrite using `[hc]`. Conclude with `hy)`.
+
+Establish `hJ : I.map φ.hom ≠ ⊤`. Establish `h₁ : H.hom y = Spec.map φ (cpt (H.left.presheaf.stalk y))`. Rewrite using `[hφ, Scheme.Hom.comp_apply, hc]`. Rewrite `hI` using `[h₁]`. Conclude with `fun h₂ => (IsLocalRing.maximalIdeal.isMaximal _).ne_top (top_le_iff.1 (h₂ ▸ (Ideal.map_le_iff_le_comap.2 hI)))`.
+
+Rewrite using `[← valR_fromSpecStalk y V hy, ← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing _ hJ, Ideal.mem_iInf]`. Introduce `e`. Use `Ideal.pow_le_pow_right (Nat.le_succ e) ?_` and prove the remaining obligations. Take `⟨xe, hxe⟩` from `exists_lift_thick I H φ.hom (H.left.fromSpecStalk y) hφ.symm e`. Use `isLocalRing_quotient_pow hJ e` as an intermediate fact.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Apply `toStkA_injective` to reduce the goal to its premises. Establish `hm : (fstG I e H).left (xe (cpt _)) ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, hxe]`. Conclude with `top_le_comp ht _ trivial`.
+
+Use `(toStkA_map_valR (A := H.left.presheaf.stalk y) _ _ V _ ht a).trans (Eq.trans ?_ (map_zero _).symm)` and prove the remaining obligations. Use `(congrArg (fun q => gs q _ V a) hxe).symm.trans ((gs_pull _ _ _ _ hm _).symm.trans ?_)` and prove the remaining obligations. Conclude with `(congrArg (gs xe _ _) (h e)).trans (gs_zero _ _ _ hm)`.
+-/
 theorem germ_eq_zero_of_thickenings (H : Over (Sp R)) [IsLocallyNoetherian H.left] (V : H.left.Opens)
     (a : Γ(H.left, V)) (h : ∀ e, ((fstG I e H).left.app V).hom a = 0) (y : H.left) (hy : y ∈ V)
     (hI : I ≤ (H.hom y).asIdeal) : (H.left.presheaf.germ V y hy).hom a = 0 := by
@@ -110,6 +146,19 @@ theorem germ_eq_zero_of_thickenings (H : Over (Sp R)) [IsLocallyNoetherian H.lef
   refine (congrArg (fun q => gs q _ V a) hxe).symm.trans ((gs_pull _ _ _ _ hm _).symm.trans ?_)
   exact (congrArg (gs xe _ _) (h e)).trans (gs_zero _ _ _ hm)
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian H.left` using `LocallyOfFiniteType.isLocallyNoetherian H.hom`. Set `Z : Set H.left` to `{y | ∃ i, ∃ hy : y ∈ N.U i, (H.left.presheaf.germ _ y hy).hom (s.f i) = 0}`. Establish `hZ : IsOpen Z`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `y ⟨i, hy, e⟩`.
+
+Take `⟨W, hW, iU, iV, e'⟩` from `TopCat.Presheaf.germ_eq H.left.presheaf y hy hy (s.f i) 0 (e.trans (map_zero _).symm)`. Use `⟨W, fun y' hy' => ⟨i, iU.le hy', ?_⟩, W.isOpen, hW⟩` and prove the remaining obligations. Establish `e₁` using `TopCat.Presheaf.germ_res_apply H.left.presheaf iU y' hy' (s.f i)`. Establish `e₂` using `TopCat.Presheaf.germ_res_apply H.left.presheaf iV y' hy' 0`. Conclude with `e₁.symm.trans ((congrArg _ e').trans (e₂.trans (map_zero _)))`.
+
+Establish `hall : ∀ y, y ∈ Z`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨y, hy⟩` from `hne`. Establish `hc : IsClosed (H.hom '' Zᶜ)` using `H.hom.isClosedMap _ hZ.isClosed_compl`.
+
+Take `⟨m, hm, hpm⟩` from `Ideal.exists_le_maximal (H.hom y).asIdeal (H.hom y).2.ne_top`. Set `m' : Sp R` to `⟨m, hm.isPrime⟩`. Establish `h₂ : H.hom y ⤳ m'` using `(PrimeSpectrum.le_iff_specializes (H.hom y) m').1 hpm`. Take `⟨y', hy', e⟩` from `h₂.mem_closed hc ⟨y, hy, rfl⟩`. Take `⟨i, hi⟩` from `hN y'`.
+
+Use `hy' ⟨i, hi, germ_eq_zero_of_thickenings I H _ _ (fun e => h e i) y' hi ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hI.trans (sInf_le ⟨bot_le, hm⟩)`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨i, hi, e⟩` from `hall y`.
+
+Establish `hm : (𝟙 H.left : H.left ⟶ H.left) y ∈ N.U j ⊓ N.U i` using `⟨hy, hi⟩`. Establish `e' : gs (𝟙 H.left) y (N.U i) (s.f i) = 0` using `(gs_eq _ y _ hi _).trans e`. Use `(gs_res _ y _ hm _).symm.trans ((congrArg (gs _ y _) (s.compat j i)).trans ((gs_mul _ y _ hm _ _).trans ?_))` and prove the remaining obligations. Rewrite using `[gs_res _ y _ hm, e', mul_zero, gs_zero _ _ _ hy]`.
+-/
 theorem sec_eq_zero_of_thickenings [IsNoetherianRing R] (hI : I ≤ Ideal.jacobson ⊥) (H : Over (Sp R))
     [IsProper H.hom] {N : LB H.left} (s : LB.Sec N) (hN : ∀ y, ∃ i, y ∈ N.U i)
     (h : ∀ e j, ((fstG I e H).left.app _).hom (s.f j) = 0) (j : N.ι) : s.f j = 0 := by
@@ -204,15 +253,24 @@ def tau (J : Ideal S) (x : Sp S ⟶ G.left) (jL : U.LG.L.ι) (jM : D.toPre.P.L.�
 variable {U} {g : GtPt D.toPre (Over.mk s)} {x : Sp S ⟶ G.left}
 
 omit [IsDomain R] [GrpObj G] [IsCommMonObj G] in
+/- English proof (translation)
+The claim follows from `have := thick_mono R I e inferInstanceAs (Mono (pullback.fst G.hom (thick R I e)))`.
+-/
 theorem fstG_mono (e : ℕ) : Mono (fstG I e G).left :=
   have := thick_mono R I e
   inferInstanceAs (Mono (pullback.fst G.hom (thick R I e)))
 
+/- English proof (translation)
+The claim follows from `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (h.2.2 χ) p).trans (val_pull hJ _ _ _))`.
+-/
 theorem HasCoords.val_eq {e : ℕ} {Z Z' : Scheme.{0}} {r : Z ⟶ Sp S} {xe : Z ⟶ (thickObj R I e G).left}
     (h : HasCoords U g x e r xe) (χ : D.toPre.X) (p : Z' ⟶ Z) {z : Z'} {J} (hJ : Good D.toPre.P.L z J) :
     val (tG U e χ) (p ≫ xe) z J = val (coord g χ) (p ≫ r) z J :=
   (val_pull hJ _ _ _).symm.trans ((val_corr hJ (h.2.2 χ) p).trans (val_pull hJ _ _ _))
 
+/- English proof (translation)
+Use `⟨by rw [Category.assoc, h.1, Category.assoc], by rw [Category.assoc, h.2.1, Category.assoc], fun χ => corr_of_val D.toPre.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp]`. Conclude with `h.val_eq χ p hJ`.
+-/
 theorem HasCoords.comp {e : ℕ} {Z Z' : Scheme.{0}} {r : Z ⟶ Sp S} {xe : Z ⟶ (thickObj R I e G).left}
     (h : HasCoords U g x e r xe) (p : Z' ⟶ Z) : HasCoords U g x e (p ≫ r) (p ≫ xe) := by
   refine ⟨by rw [Category.assoc, h.1, Category.assoc], by rw [Category.assoc, h.2.1, Category.assoc],
@@ -221,6 +279,11 @@ theorem HasCoords.comp {e : ℕ} {Z Z' : Scheme.{0}} {r : Z ⟶ Sp S} {xe : Z �
   rw [Category.id_comp, Category.id_comp]
   exact h.val_eq χ p hJ
 
+/- English proof (translation)
+Introduce `e`. Take `⟨T, _, ρ, xe, hs, hk, h⟩` from `h e`. Set `π : T →+* S ⧸ J ^ (e + 1)` to `ρ.liftOfSurjective hs ⟨Ideal.Quotient.mk _, by rwa [Ideal.mk_ker]⟩`. Establish `hπ : spMap π ≫ spMap ρ = thick S J e`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Conclude with `congrArg (fun q => Spec.map (CommRingCat.ofHom q)) (ρ.liftOfSurjective_comp hs _)`. Conclude with `⟨_, hπ ▸ h.comp (spMap π)⟩`.
+-/
 theorem isFormalPt_of_surjective (J : Ideal S)
     (h : ∀ e, ∃ (T : Type) (_ : CommRing T) (ρ : S →+* T) (xe : Sp T ⟶ (thickObj R I e G).left),
       Function.Surjective ρ ∧ RingHom.ker ρ ≤ J ^ (e + 1) ∧ HasCoords U g x e (spMap ρ) xe) :
@@ -233,12 +296,20 @@ theorem isFormalPt_of_surjective (J : Ideal S)
     exact congrArg (fun q => Spec.map (CommRingCat.ofHom q)) (ρ.liftOfSurjective_comp hs _)
   exact ⟨_, hπ ▸ h.comp (spMap π)⟩
 
+/- English proof (translation)
+Introduce `e` and use `(exists_lift_thick I G φ x hx e).imp fun xe hxe => h e xe hxe`.
+-/
 theorem isFormalPt_of_forall {φ : R →+* S} (hx : x ≫ G.hom = spMap φ)
     (h : ∀ (e : ℕ) (xe : Sp (S ⧸ I.map φ ^ (e + 1)) ⟶ (thickObj R I e G).left),
       xe ≫ (fstG I e G).left = thick S (I.map φ) e ≫ x → HasCoords U g x e (thick S (I.map φ) e) xe) :
     IsFormalPt U (I.map φ) g x := fun e =>
   (exists_lift_thick I G φ x hx e).imp fun xe hxe => h e xe hxe
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `h e`. Establish `hπ : spMap (Ideal.Quotient.lift _ ρ hρ) ≫ thick S J e = spMap ρ`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Establish `H` using `hπ ▸ hy.comp (spMap (Ideal.Quotient.lift _ ρ hρ))`.
+
+Use `fstG_mono (I := I) (G := G) e` as an intermediate fact. Rewrite using `[(cancel_mono _).1 (hxe.trans H.1.symm)]` and apply the resulting hypothesis.
+-/
 theorem IsFormalPt.hasCoords {J : Ideal S} (h : IsFormalPt U J g x) {e : ℕ} {T : Type} [CommRing T] (ρ : S →+* T)
     (hρ : J ^ (e + 1) ≤ RingHom.ker ρ) {xe : Sp T ⟶ (thickObj R I e G).left}
     (hxe : xe ≫ (fstG I e G).left = spMap ρ ≫ x) : HasCoords U g x e (spMap ρ) xe := by
@@ -250,6 +321,11 @@ theorem IsFormalPt.hasCoords {J : Ideal S} (h : IsFormalPt U J g x) {e : ℕ} {T
   have := fstG_mono (I := I) (G := G) e
   rwa [(cancel_mono _).1 (hxe.trans H.1.symm)]
 
+/- English proof (translation)
+Take `⟨J, hJ, e⟩` from `exists_good D.toPre.P.L D.toPre.P.isLB (cpt S) (fun _ : PUnit.{1} => basePt g) (fun _ => jM) (fun _ _ _ => rfl) (fun _ => hM trivial)`. Use `⟨fun a => J (basePt g ≫ D.toPre.famφB α a), fun a => J (coordφ g α a), (top_le_iff_cpt _ _).2 (hJ.mem _ _), (top_le_iff_cpt (𝟙 (Sp S)) (LB.wchart D.toPre.P.L (coordφ g α) fun a => J (coordφ g α a))).2 (Set.mem_iInter.2 fun a => hJ _), ?_⟩` and prove the remaining obligations. Establish `c : ∀ a, Sum.elim (fun _ : PUnit.{1} => jM) (Sum.elim (fun a => J (basePt g ≫ D.toPre.famφB α a)) (fun a => J (coordφ g α a))) a = J (Sum.elim (fun _ : PUnit.{1} => basePt g) (Sum.elim (fun a => basePt g ≫ D.toPre.famφB α a) (coordφ g α)) a)`. Introduce and unpack `(a | a | a)`. Use `exacts [(e a).symm, rfl, rfl]`.
+
+Conclude with `fun a b hab => (c a).trans ((congrArg J hab).trans (c b).symm)`.
+-/
 theorem exists_cohCharts [IsLocalRing S] (g : GtPt D.toPre (Over.mk s)) (jM : D.toPre.P.L.ι)
     (hM : ⊤ ≤ basePt g ⁻¹ᵁ D.toPre.P.L.U jM) (α : D.toPre.X) : ∃ jf jt, CohCharts g α jM jf jt := by
   obtain ⟨J, hJ, e⟩ := exists_good D.toPre.P.L D.toPre.P.isLB (cpt S) (fun _ : PUnit.{1} => basePt g) (fun _ => jM)
@@ -264,6 +340,11 @@ theorem exists_cohCharts [IsLocalRing S] (g : GtPt D.toPre (Over.mk s)) (jM : D.
     exacts [(e a).symm, rfl, rfl]
   exact fun a b hab => (c a).trans ((congrArg J hab).trans (c b).symm)
 
+/- English proof (translation)
+Establish `u : ∀ c : 𝟙_ _ ⟶ D.toPre.P.A, g.b ≫ toUnit _ ≫ c = toUnit _ ≫ c` using `fun c => by`. Rewrite using `[← Category.assoc, comp_toUnit]`. Use `⟨Category.comp_id _, ?_, congrArg Over.Hom.left (u _), congrArg Over.Hom.left (u _)⟩` and prove the remaining obligations. Establish `: g.b ≫ ((𝟙 D.toPre.P.A) * (toUnit _ ≫ D.toPre.c α)) = (toUnit _ ≫ D.toPre.c α) * g.b`. Rewrite using `[MonObj.comp_mul, u, Category.comp_id, _root_.mul_comm]`.
+
+Conclude with `congrArg Over.Hom.left this`.
+-/
 theorem basePt_famφB (g : GtPt D.toPre (Over.mk s)) (α : D.toPre.X) :
     basePt g ≫ D.toPre.famφB α 0 = basePt g ∧ basePt g ≫ D.toPre.famφB α 1 = coordφ g α 0 ∧
       basePt g ≫ D.toPre.famφB α 2 = coordφ g α 1 ∧ basePt g ≫ D.toPre.famφB α 3 = coordφ g α 3 := by
@@ -274,6 +355,19 @@ theorem basePt_famφB (g : GtPt D.toPre (Over.mk s)) (α : D.toPre.X) :
     rw [MonObj.comp_mul, u, Category.comp_id, _root_.mul_comm]
   exact congrArg Over.Hom.left this
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃⟩` from `hc`. Take `⟨b₀, b₁, b₂, b₃⟩` from `basePt_famφB g α`. Establish `f₀ : jf 0 = jM` using `h₃ (.inr (.inl 0)) (.inl PUnit.unit) b₀`. Establish `f₁ : jf 1 = jt 0` using `h₃ (.inr (.inl 1)) (.inr (.inr 0)) b₁`. Establish `f₂ : jf 2 = jt 1` using `h₃ (.inr (.inl 2)) (.inr (.inr 1)) b₂`.
+
+Establish `f₃ : jf 3 = jt 3` using `h₃ (.inr (.inl 3)) (.inr (.inr 3)) b₃`. Establish `t₂ : jt 2 = jM` using `h₃ (.inr (.inr 2)) (.inl PUnit.unit) rfl`. Establish `e₁` using `sec_trans t (r ≫ basePt g) z (top_le_comp h₁ (𝟙 _) (show r z ∈ (⊤ : (Sp S).Opens) from trivial)) (hJ.mem (D.toPre.famφB α) (r ≫ basePt g))`. Establish `e₂` using `gen_trans (t := coord g α) (g.isGen α) r z (h₂ (show r z ∈ (⊤ : (Sp S).Opens) from trivial)) (hJ.mem (coordφ g α) r)`. Use `(congrArg₂ (· * ·) e₁ (congrArg Units.val e₂)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, _root_.mul_mul_mul_comm, ← Units.val_mul]`. Use `(congrArg (· * _) (congrArg Units.val (?_ : _ = (1 : (Z.presheaf.stalk z)ˣ)))).trans (_root_.one_mul _)` and prove the remaining obligations. Set `h : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι → (Z.presheaf.stalk z)ˣ` to `fun ψ j => gm ψ z (D.toPre.P.L.U j ⊓ D.toPre.P.L.U (J ψ)) (D.toPre.P.L.g j (J ψ))`. Establish `h₀ : h (r ≫ basePt g) jM = 1`. Substitute `hM` using the available equality.
+
+Conclude with `gm_self D.toPre.P.isLB _ z (hJ _)`. Use `show (∏ a, h ((r ≫ basePt g) ≫ D.toPre.famφB α a) (jf a) ^ DegPre.famε k a) * ∏ a, h (r ≫ coordφ g α a) (jt a) ^ DegPre.gtε a = 1`. Simplify using `only [Category.assoc, Fin.prod_univ_four]`. Rewrite using `[b₀, b₁, b₂, b₃, f₀, f₁, f₂, f₃, t₂, show coordφ g α 2 = basePt g from rfl, h₀]`. Use `show 1 ^ ((k : ℤ) - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) * (_ ^ (-1 : ℤ) * _ ^ (1 : ℤ) * 1 ^ (1 : ℤ) * _ ^ (-1 : ℤ)) = _`.
+
+Simplify using `only [one_zpow, zpow_neg, zpow_one]`. Generalize the expression as in `h _ (jt 0) = a`. Generalize the expression as in `h _ (jt 1) = b`. Generalize the expression as in `h _ (jt 3) = c`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem gs_mul_gm_eq {α : D.toPre.X} {jM : D.toPre.P.L.ι} {jf jt : Fin 4 → D.toPre.P.L.ι}
     (hc : CohCharts g α jM jf jt) {k : ℕ} (t : D.toPre.SecB k α) {Z : Scheme.{0}} (r : Z ⟶ Sp S) {z : Z} {J}
     (hJ : Good D.toPre.P.L z J) (hM : J (r ≫ basePt g) = jM) :
@@ -313,6 +407,9 @@ theorem gs_mul_gm_eq {α : D.toPre.X} {jM : D.toPre.P.L.ι} {jf jt : Fin 4 → D
   simp only [ofMul_mul, ofMul_inv, ofMul_one]
   abel
 
+/- English proof (translation)
+Introduce `z _` and use `⟨mem_pull.2 ((congrArg (fun q => q z ∈ D.toPre.P.L.U jM) h.2.1).mpr (top_le_comp hM r trivial)), mem_pull.2 ((congrArg (fun q => q z ∈ U.LG.L.U jL) h.1).mpr (top_le_comp hL r trivial))⟩`.
+-/
 theorem HasCoords.top_le_chart {e : ℕ} {T : Type} [CommRing T] {r : Sp T ⟶ Sp S}
     {xe : Sp T ⟶ (thickObj R I e G).left} (h : HasCoords U g x e r xe) {jL : U.LG.L.ι} {jM : D.toPre.P.L.ι}
     (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL) (hM : ⊤ ≤ basePt g ⁻¹ᵁ D.toPre.P.L.U jM) :
@@ -321,18 +418,35 @@ theorem HasCoords.top_le_chart {e : ℕ} {T : Type} [CommRing T] {r : Sp T ⟶ S
   ⟨mem_pull.2 ((congrArg (fun q => q z ∈ D.toPre.P.L.U jM) h.2.1).mpr (top_le_comp hM r trivial)),
     mem_pull.2 ((congrArg (fun q => q z ∈ U.LG.L.U jL) h.1).mpr (top_le_comp hL r trivial))⟩
 
+/- English proof (translation)
+The claim follows from `toStkA_valR xe _ z (h.top_le_chart hL hM) _`.
+-/
 theorem HasCoords.toStkA_wVal {e : ℕ} {T : Type} [CommRing T] {r : Sp T ⟶ Sp S}
     {xe : Sp T ⟶ (thickObj R I e G).left} (h : HasCoords U g x e r xe) {jL : U.LG.L.ι} {jM : D.toPre.P.L.ι}
     (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL) (hM : ⊤ ≤ basePt g ⁻¹ᵁ D.toPre.P.L.U jM) (z : Sp T) :
     toStkA z (wVal U e xe jL jM) = (wv U e xe z jM jL).val :=
   toStkA_valR xe _ z (h.top_le_chart hL hM) _
 
+/- English proof (translation)
+Introduce `_ hz` and use `Set.mem_iInter.2 fun _ => hL hz`.
+-/
 theorem top_le_secChart {jL : U.LG.L.ι} (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL) :
     ⊤ ≤ x ⁻¹ᵁ LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => jL) :=
   fun _ hz => Set.mem_iInter.2 fun _ => hL hz
 
 variable (U) in
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `expandsAt_val U e k σ f h`. Use `⟨F, fun S _ s g x T _ _ ρ xe hx => ⟨fun α hα jf hj => ?_, fun jL jM jf jt hL hM hc => ?_⟩⟩` and prove the remaining obligations. Use `choose J hJ using fun ψ : Sp T ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ (cpt T))`. Establish `h₀` using `(hF _ xe (cpt T) J hJ).1 α hα`. Rewrite `h₀` using `[show xe ≫ pGl U e = spMap ρ ≫ basePt g from hx.2.1]`.
+
+Apply `toStkA_injective` to reduce the goal to its premises. Use `(toStkA_map_valR ρ _ _ _ hj _).trans ((sec_trans (f α) _ _ (top_le_comp hj _ trivial) (Good.mem hJ (D.toPre.famφB α) (spMap ρ ≫ basePt g))).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg _ h₀).trans ((mul_zero _).trans (map_zero _).symm)`. Take `⟨J, hJ, eJ⟩` from `exists_good D.toPre.P.L D.toPre.P.isLB (cpt T) (fun _ : PUnit.{1} => spMap ρ ≫ basePt g) (fun _ => jM) (fun _ _ _ => rfl) (fun _ => top_le_comp hM _ trivial)`. Establish `eM : J (spMap ρ ≫ basePt g) = jM` using `eJ PUnit.unit`.
+
+Establish `H` using `(hF _ xe (cpt T) J hJ).2 jL ((congrArg (fun q => q (cpt T) ∈ U.LG.L.U jL) hx.1).mpr (top_le_comp hL _ trivial))`. Rewrite `H` using `[show xe ≫ pGl U e = spMap ρ ≫ basePt g from hx.2.1, show xe ≫ fGl I G e = spMap ρ ≫ x from hx.1, eM]`. Apply `toStkA_injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_pow, hx.toStkA_wVal hL hM, map_sum, map_sum]`. Use `(congrArg₂ (· * ·) (Units.val_pow_eq_pow_val _ _).symm (toStkA_map_valR ρ x _ _ (top_le_secChart hL) _)).trans (H.trans (Finset.sum_congr rfl fun α hα => ?_))` and prove the remaining obligations.
+
+Establish `hv` using `hx.val_eq α (𝟙 _) hJ`. Rewrite `hv` using `[Category.id_comp, Category.id_comp]`. Rewrite using `[hv, ← gs_mul_gm_eq (hc α hα) (f α) (spMap ρ) hJ eM, map_mul, map_mul]`. Use `(congrArg₂ (· * ·) (toStkA_map_valR ρ _ _ _ (hc α hα).1 _) ?_).symm` and prove the remaining obligations. Use `(toStkA_map_valR ρ (𝟙 (Sp S)) (LB.wchart D.toPre.P.L (coordφ g α) (jt α)) _ (hc α hα).2.1 _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.comp_id]`. Conclude with `gs_unit _ _ _ ((hc α hα).2.1 (show spMap ρ (cpt T) ∈ (⊤ : (Sp S).Opens) from trivial)) _`.
+-/
 theorem expandsAt_value {e k : ℕ} {σ : H0 U.LG.L k} {f : ∀ α : D.toPre.X, D.toPre.SecB k α}
     (h : U.ExpandsAt e k σ f) : ∃ F : Finset D.toPre.X, ∀ (S : Type) [CommRing S] (s : Sp S ⟶ Sp R)
       (g : GtPt D.toPre (Over.mk s)) (x : Sp S ⟶ G.left) (T : Type) [CommRing T] [IsLocalRing T] (ρ : S →+* T)
@@ -368,6 +482,17 @@ theorem expandsAt_value {e k : ℕ} {σ : H0 U.LG.L k} {f : ∀ α : D.toPre.X, 
     rw [Category.comp_id]
     exact gs_unit _ _ _ ((hc α hα).2.1 (show spMap ρ (cpt T) ∈ (⊤ : (Sp S).Opens) from trivial)) _
 
+/- English proof (translation)
+Use `choose c hc using fun e => Ideal.Quotient.mk_surjective (v e)`. Establish `h₁ : ∀ e, c (e + 1) - c e ∈ J ^ (e + 1)` using `fun e => by`. Rewrite using `[← Ideal.Quotient.eq, hc e, ← hv e, ← hc (e + 1), Ideal.Quotient.factor_mk]`. Establish `h₀ : ∀ m d, c m - c (m + d) ∈ J ^ m` using `fun m d => by`. Proceed by induction on `d with`.
+
+Consider the case `zero => simp`. Consider the case `succ d ih`. Establish `h₂ : c (m + d + 1) - c (m + d) ∈ J ^ m` using `Ideal.pow_le_pow_right (by omega) (h₁ (m + d))`. Establish `e : c m - c (m + (d + 1)) = (c m - c (m + d)) - (c (m + d + 1) - c (m + d))`. Rewrite using `[← _root_.add_assoc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(J ^ m).sub_mem ih h₂`. Take `⟨a, ha⟩` from `IsPrecomplete.prec' (I := J) c fun {m n} hmn => by`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hmn`.
+
+Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Conclude with `h₀ m d`. Use `⟨a, fun e => ?_⟩` and prove the remaining obligations. Establish `h₂` using `ha (e + 1)`. Rewrite `h₂` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+
+Rewrite using `[← hc e, Ideal.Quotient.eq]`. Establish `e' : a - c e = (c (e + 1) - c e) - (c (e + 1) - a)` using `by ring`. Rewrite using `[e']`. Conclude with `(J ^ (e + 1)).sub_mem (h₁ e) h₂`.
+-/
 theorem exists_limit (J : Ideal S) [IsPrecomplete J S] (v : ∀ e : ℕ, S ⧸ J ^ (e + 1))
     (hv : ∀ e, Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) (v (e + 1)) = v e) :
     ∃ a : S, ∀ e, Ideal.Quotient.mk (J ^ (e + 1)) a = v e := by
@@ -395,12 +520,20 @@ theorem exists_limit (J : Ideal S) [IsPrecomplete J S] (v : ∀ e : ℕ, S ⧸ J
   rw [e']
   exact (J ^ (e + 1)).sub_mem (h₁ e) h₂
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (IsHausdorff.haus' (I := J) _ fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ n) (Ideal.Quotient.eq.1 (h n))`.
+-/
 theorem eq_of_forall_mk_eq (J : Ideal S) [IsHausdorff J S] {a b : S}
     (h : ∀ e, Ideal.Quotient.mk (J ^ (e + 1)) a = Ideal.Quotient.mk _ b) : a = b := by
   refine sub_eq_zero.1 (IsHausdorff.haus' (I := J) _ fun n => ?_)
   rw [SModEq.zero, smul_eq_mul, Ideal.mul_top]
   exact Ideal.pow_le_pow_right (Nat.le_succ n) (Ideal.Quotient.eq.1 (h n))
 
+/- English proof (translation)
+Use `choose u hu using hu`. Take `⟨a, ha⟩` from `exists_limit J _ hv`. Take `⟨b, hb⟩` from `exists_limit J (fun e => ((u e)⁻¹).val) fun e => by`. Use `Units.eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[hu e, ← hv e, ← hu (e + 1), ← map_mul, Units.mul_inv, map_one]`.
+
+Establish `h₁ : ∀ e, Ideal.Quotient.mk (J ^ (e + 1)) b * v e = 1` using `fun e => by`. Rewrite using `[hb, ← hu, Units.inv_mul]`. Establish `hab : b * a = 1` using `eq_of_forall_mk_eq J fun e => by rw [map_mul, ha, h₁, map_one]`. Conclude with `⟨⟨b, a, hab, (_root_.mul_comm _ _).trans hab⟩, h₁⟩`.
+-/
 theorem exists_unit_limit (J : Ideal S) [IsAdicComplete J S] (v : ∀ e : ℕ, S ⧸ J ^ (e + 1))
     (hv : ∀ e, Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) (v (e + 1)) = v e)
     (hu : ∀ e, IsUnit (v e)) : ∃ a : Sˣ, ∀ e, Ideal.Quotient.mk (J ^ (e + 1)) a.val * v e = 1 := by
@@ -414,6 +547,9 @@ theorem exists_unit_limit (J : Ideal S) [IsAdicComplete J S] (v : ∀ e : ℕ, S
   have hab : b * a = 1 := eq_of_forall_mk_eq J fun e => by rw [map_mul, ha, h₁, map_one]
   exact ⟨⟨b, a, hab, (_root_.mul_comm _ _).trans hab⟩, h₁⟩
 
+/- English proof (translation)
+Establish `hM' : pGl U (e + 1) (thickMap R I e G (r z)) ∈ D.toPre.P.L.U jM` using `(congrArg (fun g => g (r z) ∈ D.toPre.P.L.U jM) (U.gt_q e)).mpr hM`. Establish `hL' : fGl I G (e + 1) (thickMap R I e G (r z)) ∈ U.LG.L.U jL` using `(congrArg (fun g => g (r z) ∈ U.LG.L.U jL) (thickMap_comp_fGl I e G)).mpr hL`. Establish `hm : r z ∈ thickMap R I e G ⁻¹ᵁ ((D.toPre.P.L.pull (pGl U (e + 1))).U (fun _ => jM) ⊓ (U.LG.L.pull (fGl I G (e + 1))).U (fun _ => jL)) ⊓ ((D.toPre.P.L.pull (pGl U e)).U (fun _ => jM) ⊓ (U.LG.L.pull (fGl I G e)).U (fun _ => jL))` using `⟨⟨mem_pull.2 hM', mem_pull.2 hL'⟩, mem_pull.2 hM, mem_pull.2 hL⟩`. Establish `W` using `congrArg (gm r z _) (U.w_compat e (fun _ => jM, fun _ => jL) _ inf_le_left inf_le_right)`. Conclude with `((gm_res r z inf_le_left hm _).trans (gm_pull r _ z _ hm.1 _)).symm.trans (W.trans (gm_res r z inf_le_right hm _))`.
+-/
 theorem wv_comp_thickMap (e : ℕ) {Z : Scheme.{0}} (r : Z ⟶ (thickObj R I e G).left) (z : Z) (jM : D.toPre.P.L.ι)
     (jL : U.LG.L.ι) (hM : pGl U e (r z) ∈ D.toPre.P.L.U jM) (hL : fGl I G e (r z) ∈ U.LG.L.U jL) :
     wv U (e + 1) (r ≫ thickMap R I e G) z jM jL = wv U e r z jM jL := by
@@ -433,6 +569,11 @@ section Tau
 
 variable {J : Ideal S} [IsLocalRing S] [IsAdicComplete J S] {jL jL' : U.LG.L.ι} {jM jM' : D.toPre.P.L.ι}
 
+/- English proof (translation)
+Use `isLocalRing_quotient_pow (ne_top_of_isHausdorff J) e` as an intermediate fact. Use `fstG_mono (I := I) (G := G) (e + 1)` as an intermediate fact. Establish `ht` using `hy.top_le_chart hL hM (show cpt (S ⧸ J ^ (e + 1)) ∈ (⊤ : (Sp (S ⧸ J ^ (e + 1))).Opens) from trivial)`. Establish `e₁ : thickTrans S J e ≫ y' = y ≫ thickMap R I e G`. Rewrite using `[← cancel_mono (fstG I (e + 1) G).left, Category.assoc, Category.assoc, hy'.1, show thickMap R I e G ≫ (fstG I (e + 1) G).left = (fstG I e G).left from thickMap_comp_fGl I e G, hy.1, ← Category.assoc, thickTrans_comp]`.
+
+Establish `e₂ : Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) (wVal U (e + 1) y' jL jM) = wVal U (e + 1) (thickTrans S J e ≫ y') jL jM` using `(valR_spMap _ y' _ (hy'.top_le_chart hL hM) _).symm`. Apply `toStkA_injective` to reduce the goal to its premises. Rewrite using `[e₂, (hy'.comp (thickTrans S J e)).toStkA_wVal hL hM, hy.toStkA_wVal hL hM, e₁, wv_comp_thickMap e y _ jM jL (mem_pull.1 ht.1) (mem_pull.1 ht.2)]`.
+-/
 theorem factor_wVal {e : ℕ} {y : Sp (S ⧸ J ^ (e + 1)) ⟶ (thickObj R I e G).left}
     {y' : Sp (S ⧸ J ^ (e + 1 + 1)) ⟶ (thickObj R I (e + 1) G).left} (hy : HasCoords U g x e (thick S J e) y)
     (hy' : HasCoords U g x (e + 1) (thick S J (e + 1)) y') (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL)
@@ -452,6 +593,11 @@ theorem factor_wVal {e : ℕ} {y : Sp (S ⧸ J ^ (e + 1)) ⟶ (thickObj R I e G)
   rw [e₂, (hy'.comp (thickTrans S J e)).toStkA_wVal hL hM, hy.toStkA_wVal hL hM, e₁,
     wv_comp_thickMap e y _ jM jL (mem_pull.1 ht.1) (mem_pull.1 ht.2)]
 
+/- English proof (translation)
+Use `choose y hy using h`. Establish `hu : ∀ e, IsUnit (wVal U e (y e) jL jM)` using `fun e => isUnit_valR _ _ ((hy e).top_le_chart hL hM) _`. Establish `hc` using `fun e => factor_wVal (hy e) (hy (e + 1)) hL hM`. Take `⟨a, ha⟩` from `exists_unit_limit J (fun e => wVal U e (y e) jL jM) hc hu`. Use `⟨a, fun e xe hxe => ?_⟩` and prove the remaining obligations.
+
+Use `fstG_mono (I := I) (G := G) e` as an intermediate fact. Rewrite using `[(cancel_mono _).1 (hxe.trans (hy e).1.symm)]`. Conclude with `ha e`.
+-/
 theorem exists_isTau (h : IsFormalPt U J g x) (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL)
     (hM : ⊤ ≤ basePt g ⁻¹ᵁ D.toPre.P.L.U jM) : ∃ τ : Sˣ, IsTau U J x jL jM τ := by
   choose y hy using h
@@ -463,6 +609,9 @@ theorem exists_isTau (h : IsFormalPt U J g x) (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U 
   rw [(cancel_mono _).1 (hxe.trans (hy e).1.symm)]
   exact ha e
 
+/- English proof (translation)
+Rewrite using `[tau, dif_pos (exists_isTau h hL hM)]`. Conclude with `(exists_isTau h hL hM).choose_spec`.
+-/
 theorem isTau_tau (h : IsFormalPt U J g x) (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL)
     (hM : ⊤ ≤ basePt g ⁻¹ᵁ D.toPre.P.L.U jM) : IsTau U J x jL jM (tau U J x jL jM) := by
   rw [tau, dif_pos (exists_isTau h hL hM)]
@@ -470,12 +619,22 @@ theorem isTau_tau (h : IsFormalPt U J g x) (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL)
 
 omit [IsLocalRing S] in
 
+/- English proof (translation)
+The claim follows from `eq_of_forall_mk_eq J fun e => by obtain ⟨y, hy⟩ := h e exact (IsUnit.of_mul_eq_one_right _ (ha e y hy.1)).mul_right_cancel ((ha e y hy.1).trans (hb e y hy.1).symm)`.
+-/
 theorem IsTau.unique (h : IsFormalPt U J g x) {a b : S} (ha : IsTau U J x jL jM a) (hb : IsTau U J x jL jM b) :
     a = b :=
   eq_of_forall_mk_eq J fun e => by
     obtain ⟨y, hy⟩ := h e
     exact (IsUnit.of_mul_eq_one_right _ (ha e y hy.1)).mul_right_cancel ((ha e y hy.1).trans (hb e y hy.1).symm)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `h e`. Establish `hπ : spMap (Ideal.Quotient.lift _ ρ hρ) ≫ thick S J e = spMap ρ`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Use `fstG_mono (I := I) (G := G) e` as an intermediate fact.
+
+Establish `e₁ : xe = spMap (Ideal.Quotient.lift _ ρ hρ) ≫ y`. Rewrite using `[← cancel_mono (fstG I e G).left, hxe, Category.assoc, hy.1, ← Category.assoc, hπ]`. Establish `H` using `congrArg (Ideal.Quotient.lift _ ρ hρ) (isTau_tau h hL hM e y hy.1)`. Rewrite `H` using `[map_mul, map_one]`. Rewrite using `[e₁]`.
+
+Conclude with `(congrArg _ (valR_spMap _ y _ (hy.top_le_chart hL hM) _)).trans H`.
+-/
 theorem map_tau_mul_wVal (h : IsFormalPt U J g x) (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL)
     (hM : ⊤ ≤ basePt g ⁻¹ᵁ D.toPre.P.L.U jM) {e : ℕ} {T : Type} [CommRing T] (ρ : S →+* T)
     (hρ : J ^ (e + 1) ≤ RingHom.ker ρ) {xe : Sp T ⟶ (thickObj R I e G).left}
@@ -492,6 +651,15 @@ theorem map_tau_mul_wVal (h : IsFormalPt U J g x) (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.
   rw [e₁]
   exact (congrArg _ (valR_spMap _ y _ (hy.top_le_chart hL hM) _)).trans H
 
+/- English proof (translation)
+Use `eq_of_forall_mk_eq J fun e => ?_` and prove the remaining obligations. Use `isLocalRing_quotient_pow (ne_top_of_isHausdorff J) e` as an intermediate fact. Take `⟨y, hy⟩` from `h e`. Use `set z := cpt (S ⧸ J ^ (e + 1))`. Establish `m` using `hy.top_le_chart hL hM (show z ∈ (⊤ : (Sp (S ⧸ J ^ (e + 1))).Opens) from trivial)`.
+
+Establish `m'` using `hy.top_le_chart hL' hM' (show z ∈ (⊤ : (Sp (S ⧸ J ^ (e + 1))).Opens) from trivial)`. Establish `w : wv U e y z jM jL = _ * _ * wv U e y z jM' jL'` using `gm_isGen (U.w_gen e) y z (fun _ => jM) (fun _ => jM') (fun _ => jL) (fun _ => jL') m.1 m'.1 m.2 m'.2`. Rewrite `w` using `[gm_pull_g _ _ y z _ _ m.1 m'.1, gm_pull_g _ _ y z _ _ m.2 m'.2, hy.1, hy.2.1]`. Establish `t` using `congrArg (toStkA z) (isTau_tau h hL hM e y hy.1)`. Establish `t'` using `congrArg (toStkA z) (isTau_tau h hL' hM' e y hy.1)`.
+
+Rewrite `t` using `[map_mul, map_one, hy.toStkA_wVal hL hM]`. Rewrite `t'` using `[map_mul, map_one, hy.toStkA_wVal hL' hM']`. Establish `gM : ⊤ ≤ basePt g ⁻¹ᵁ (D.toPre.P.L.U jM ⊓ D.toPre.P.L.U jM')` using `fun _ hz => ⟨hM hz, hM' hz⟩`. Establish `gL : ⊤ ≤ x ⁻¹ᵁ (U.LG.L.U jL ⊓ U.LG.L.U jL')` using `fun _ hz => ⟨hL hz, hL' hz⟩`. Apply `toStkA_injective` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, map_mul, map_mul, map_mul, toStkA_map_valR _ _ _ _ gM, toStkA_map_valR _ _ _ _ gL, gs_unit _ _ (D.toPre.P.L.U jM ⊓ D.toPre.P.L.U jM') (top_le_comp gM _ trivial), gs_unit _ _ (U.LG.L.U jL ⊓ U.LG.L.U jL') (top_le_comp gL _ trivial), Units.eq_inv_of_mul_eq_one_right t, Uni …`. Use `congr 1`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tau_trans (h : IsFormalPt U J g x) (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL) (hL' : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL')
     (hM : ⊤ ≤ basePt g ⁻¹ᵁ D.toPre.P.L.U jM) (hM' : ⊤ ≤ basePt g ⁻¹ᵁ D.toPre.P.L.U jM') :
     (tau U J x jL jM).val * valR (basePt g) _ (D.toPre.P.L.g jM jM').val =
@@ -521,6 +689,19 @@ theorem tau_trans (h : IsFormalPt U J g x) (hL : ⊤ ≤ x ⁻¹ᵁ U.LG.L.U jL)
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Use `eq_of_forall_mk_eq J fun e => ?_` and prove the remaining obligations. Use `isLocalRing_quotient_pow (ne_top_of_isHausdorff J) e` as an intermediate fact. Use `fstG_mono (I := I) (G := G) e` as an intermediate fact. Take `⟨y, hy⟩` from `h e`. Use `set z := cpt (S ⧸ J ^ (e + 1))`.
+
+Set `r : Sp (S ⧸ J ^ (e + 1)) ⟶ Sp (R ⧸ I ^ (e + 1))` to `y ≫ pullback.snd G.hom (thick R I e)`. Set `u : Sp (R ⧸ I ^ (e + 1)) ⟶ (thickObj R I e G).left` to `eSec (thickObj R I e G)`. Establish `hr : r ≫ thick R I e = thick S J e ≫ s`. Establish `e₁ : pullback.snd G.hom (thick R I e) ≫ thick R I e = (fstG I e G).left ≫ G.hom` using `pullback.condition.symm`. Establish `e₂ : eSec G ≫ G.hom = 𝟙 _` using `Over.w η[G]`.
+
+Rewrite using `[Category.assoc, e₁, ← Category.assoc, hy.1, Category.assoc, Category.assoc]`. Conclude with `congrArg (thick S J e ≫ ·) ((congrArg (s ≫ ·) e₂).trans (Category.comp_id _))`. Establish `hu : r ≫ u = y`. Rewrite using `[← cancel_mono (fstG I e G).left, hy.1, Category.assoc]`. Conclude with `(congrArg (r ≫ ·) (UnitValue.eSec_fGl (G := G) e)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ eSec G) hr).trans (Category.assoc _ _ _)))`.
+
+Establish `gM : ⊤ ≤ s ⁻¹ᵁ (D.toPre.P.L.pull (eSec D.toPre.P.A)).U (fun _ => jM)` using `fun p hp => mem_pull.2 ((congrArg (fun q => q p ∈ D.toPre.P.L.U jM) hb).mp (hM hp))`. Establish `gL : ⊤ ≤ s ⁻¹ᵁ (U.LG.L.pull (eSec G)).U (fun _ => jL)` using `fun p hp => mem_pull.2 (hL hp)`. Establish `m₁ : r z ∈ u ⁻¹ᵁ ((D.toPre.P.L.pull (pGl U e)).U (fun _ => jM) ⊓ (U.LG.L.pull (fGl I G e)).U (fun _ => jL))` using `(congrArg (fun q => q z ∈ (D.toPre.P.L.pull (pGl U e)).U (fun _ => jM) ⊓ (U.LG.L.pull (fGl I G e)).U (fun _ => jL)) hu).mpr (hy.top_le_chart hL hM trivial)`. Establish `m₂ : r z ∈ thick R I e ⁻¹ᵁ (U.LG.L.pull (eSec G)).U (fun _ => jL)` using `(congrArg (fun q => q z ∈ (U.LG.L.pull (eSec G)).U (fun _ => jL)) hr).mpr (top_le_comp gL _ trivial)`. Establish `m₃ : r z ∈ thick R I e ⁻¹ᵁ (D.toPre.P.L.pull (eSec D.toPre.P.A)).U (fun _ => jM)` using `(congrArg (fun q => q z ∈ (D.toPre.P.L.pull (eSec D.toPre.P.A)).U (fun _ => jM)) hr).mpr (top_le_comp gM _ trivial)`.
+
+Establish `hz : r z ∈ (u ⁻¹ᵁ ((D.toPre.P.L.pull (pGl U e)).U (fun _ => jM) ⊓ (U.LG.L.pull (fGl I G e)).U (fun _ => jL))) ⊓ thick R I e ⁻¹ᵁ (U.LG.L.pull (eSec G)).U (fun _ => jL) ⊓ thick R I e ⁻¹ᵁ (D.toPre.P.L.pull (eSec D.toPre.P.A)).U (fun _ => jM)` using `⟨⟨m₁, m₂⟩, m₃⟩`. Establish `W` using `congrArg (gm r z _) (U.w_rig e (fun _ => jM, fun _ => jL) _ (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) inf_le_right)`. Establish `W' : wv U e (r ≫ u) z jM jL * gm (r ≫ thick R I e) z _ (U.LG.rig.s (fun _ => jL)) = gm (r ≫ thick R I e) z _ (D.toPre.rig.s (fun _ => jM))` using `((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res r z _ hz _).trans (gm_pull r u z _ m₁ _)) ((gm_res r z _ hz _).trans (gm_pull r _ z _ m₂ _)))).symm.trans (W.trans ((gm_res r z _ hz _).trans (gm_pull r _ z _ m₃ _)))`. Rewrite `W'` using `[hu, hr]`. Establish `t` using `congrArg (toStkA z) (isTau_tau h hL hM e y hy.1)`.
+
+Rewrite `t` using `[map_mul, map_one, hy.toStkA_wVal hL hM]`. Apply `toStkA_injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, toStkA_map_valR _ _ _ _ gM, toStkA_map_valR _ _ _ _ gL, gs_unit _ _ ((D.toPre.P.L.pull (eSec D.toPre.P.A)).U (fun _ => jM)) (top_le_comp gM _ trivial), gs_unit _ _ ((U.LG.L.pull (eSec G)).U (fun _ => jL)) (top_le_comp gL _ trivial), Units.eq_inv_of_mul_eq_one_r …`. Conclude with `congrArg Units.val (inv_mul_eq_iff_eq_mul.2 W'.symm)`.
+-/
 theorem tau_rig (h : IsFormalPt U J g (s ≫ eSec G)) (hb : basePt g = s ≫ eSec D.toPre.P.A)
     (hL : ⊤ ≤ (s ≫ eSec G) ⁻¹ᵁ U.LG.L.U jL) (hM : ⊤ ≤ basePt g ⁻¹ᵁ D.toPre.P.L.U jM) :
     (tau U J (s ≫ eSec G) jL jM).val *
@@ -575,6 +756,13 @@ theorem tau_rig (h : IsFormalPt U J g (s ≫ eSec G)) (hb : basePt g = s ≫ eSe
 
 end Tau
 
+/- English proof (translation)
+Use `choose t ht vt using fun χ => exists_gen P.P.isLB (φ := PEmpty.elim) (ε := PEmpty.elim) (φ' := P.gtφT T (P.zeroT T) χ) (ε' := DegPre.gtε) (fun V _ h => by`. Rewrite using `[Fintype.prod_empty, Fin.prod_univ_four]`. Use `show 1 = h (P.cT T χ * 1).left ^ (-1 : ℤ) * h (P.cT T χ).left ^ (1 : ℤ) * h (P.zeroT T).left ^ (1 : ℤ) * h (P.zeroT T).left ^ (-1 : ℤ)`. Use the proof step `simp) (LB.oneGen P.P.L)`. Use the proof step `(fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`.
+
+Establish `v : ∀ χ y J, Good P.P.L y J → val (t χ) (𝟙 _) y J = 1` using `fun χ y J hJ => (vt χ _ _ y J hJ).trans (val_one _)`. Use `⟨⟨P.zeroT T, t, ht, corr_of_val P.P.isLB fun y J hJ => (v 0 y J hJ).trans (val_one _).symm, fun χ χ' => corr_of_val P.P.isLB fun y J hJ => ?_⟩, rfl, fun χ => corr_of_val P.P.isLB fun y J hJ => (v χ y J hJ).trans (val_one _).symm⟩` and prove the remaining obligations. Establish `c` using `val_cub P.cub (𝟙 T) hJ (P.cT T χ) (P.cT T χ') (P.zeroT T)`. Rewrite `c` using `[Category.id_comp, Category.id_comp, Category.id_comp]`. Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations.
+
+Conclude with `congrArg₂ (· * ·) ((v _ y J hJ).trans (v _ y J hJ).symm) (c.trans (((isCub_cubV P.cub hJ).face₃ _ _).trans (v _ y J hJ).symm))`.
+-/
 theorem exists_isZero (P : DegPre R) (T : Over (Sp R)) : ∃ g : GtPt P T, g.IsZero := by
   choose t ht vt using fun χ => exists_gen P.P.isLB (φ := PEmpty.elim) (ε := PEmpty.elim)
     (φ' := P.gtφT T (P.zeroT T) χ) (ε' := DegPre.gtε) (fun V _ h => by
@@ -595,6 +783,15 @@ theorem exists_isZero (P : DegPre R) (T : Over (Sp R)) : ∃ g : GtPt P T, g.IsZ
 
 variable (U) in
 
+/- English proof (translation)
+Introduce `e`. Set `r : Sp (S ⧸ I.map φ ^ (e + 1)) ⟶ Sp (R ⧸ I ^ (e + 1))` to `spMap (Ideal.quotientMap (I.map φ ^ (e + 1)) φ (by rw [← Ideal.map_pow]; exact Ideal.le_comap_map))`. Establish `hr : r ≫ thick R I e = thick S (I.map φ) e ≫ spMap φ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `hb : basePt g = spMap φ ≫ eSec D.toPre.P.A`. Use `(congrArg Over.Hom.left hg.1).trans ?_` and prove the remaining obligations. Conclude with `congrArg (· ≫ eSec D.toPre.P.A) ((Category.comp_id _).symm.trans (Over.w (toUnit (Over.mk (spMap φ)))))`. Use `⟨r ≫ eSec (thickObj R I e G), ?_, ?_, fun χ => corr_of_val D.toPre.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (UnitValue.eSec_fGl (G := G) e)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ eSec G) hr).trans (Category.assoc _ _ _))))`.
+
+Rewrite using `[hb]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (UnitValue.eSec_pGl U e)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ eSec D.toPre.P.A) hr).trans (Category.assoc _ _ _))))`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp]`. Use `(val_pull hJ _ _ _).symm.trans ((val_corr hJ ((U.gt e).t_unit χ) r).trans ((val_one _).trans ?_))` and prove the remaining obligations.
+
+Conclude with `((val_corr hJ (hg.2 χ) _).trans (val_one _)).symm`.
+-/
 theorem isFormalPt_zero (φ : R →+* S) {g : GtPt D.toPre (Over.mk (spMap φ))} (hg : g.IsZero) :
     IsFormalPt U (I.map φ) g (spMap φ ≫ eSec G) := by
   intro e
@@ -619,6 +816,13 @@ theorem isFormalPt_zero (φ : R →+* S) {g : GtPt D.toPre (Over.mk (spMap φ))}
 
 variable (U) in
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `expandsAt_value U h`. Use `⟨F, fun S _ _ J _ s g x hx T _ _ ρ hρ => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx e`. Establish `hπ : spMap (Ideal.Quotient.lift _ ρ hρ) ≫ thick S J e = spMap ρ`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Both sides reduce to the same expression. Establish `H` using `hπ ▸ hy.comp (spMap (Ideal.Quotient.lift _ ρ hρ))`. Take `⟨h₀, h₁⟩` from `hF S s g x T ρ _ H`. Use `⟨h₀, fun F' jL jM jf jt hFF hL hM hc => ?_⟩` and prove the remaining obligations. Establish `e₁ : ρ (∑ α ∈ F', famVal g (f α) (jf α) * coordVal g α (jt α)) = ρ (∑ α ∈ F, famVal g (f α) (jf α) * coordVal g α (jt α))`.
+
+Rewrite using `[map_sum, map_sum]`. Use `(Finset.sum_subset hFF fun α hα hα' => ?_).symm` and prove the remaining obligations. Rewrite using `[map_mul, h₀ α hα' _ (hc α hα).1, zero_mul]`. Rewrite using `[map_mul, e₁, ← h₁ jL jM jf jt hL hM fun α hα => hc α (hFF hα), map_pow, ← _root_.mul_assoc, ← mul_pow, map_tau_mul_wVal hx hL hM ρ hρ H.1, one_pow, _root_.one_mul]`.
+-/
 theorem map_secVal_eq {e k : ℕ} {σ : H0 U.LG.L k} {f : ∀ α : D.toPre.X, D.toPre.SecB k α}
     (h : U.ExpandsAt e k σ f) : ∃ F : Finset D.toPre.X, ∀ (S : Type) [CommRing S] [IsLocalRing S] (J : Ideal S)
       [IsAdicComplete J S] (s : Sp S ⟶ Sp R) (g : GtPt D.toPre (Over.mk s)) (x : Sp S ⟶ G.left),
@@ -648,6 +852,11 @@ theorem map_secVal_eq {e k : ℕ} {σ : H0 U.LG.L k} {f : ∀ α : D.toPre.X, D.
 
 variable (U) in
 
+/- English proof (translation)
+Use `D.toPre.P.isAb.proper` as an intermediate fact. Set `d : ∀ α : D.toPre.X, D.toPre.SecB k α` to `fun α => SecOps.secAdd (f α) (SecOps.secNeg (f' α))`. Establish `hd : ∀ e, U.ExpandsAt e k SecOps.secZero d` using `fun e => expandsAt_sub R I D A G U e k σ σ _ f f' d (fun j => (sub_self _).symm) (fun α j => (sub_eq_add_neg _ _).symm) (h e) (h' e)`. Use function extensionality and compare the values at `α`. Use `SecOps.sec_ext fun j => sub_eq_zero.1 ((sub_eq_add_neg _ _).trans ?_)` and prove the remaining obligations.
+
+Use `sec_eq_zero_of_thickenings I (IsAdicComplete.le_jacobson_bot I) D.toPre.P.A (d α) (fun y => ?_) (fun e j => (ExtDiv.pG_app_eq_zero_iff (U.gt e) _ _).1 (WeightPf.weightIndep R I D A G U e k _ d (fun _ => map_zero _) (hd e) α j)) j` and prove the remaining obligations. Use `choose i hi using fun a => exists_chart D.toPre.P.isLB (D.toPre.famφB α a y)`. Conclude with `⟨i, Set.mem_iInter.2 hi⟩`.
+-/
 theorem expansion_unique [IsNoetherianRing R] [IsAdicComplete I R] {k : ℕ} {σ : H0 U.LG.L k}
     {f f' : ∀ α : D.toPre.X, D.toPre.SecB k α} (h : ∀ e, U.ExpandsAt e k σ f) (h' : ∀ e, U.ExpandsAt e k σ f') :
     f = f' := by
@@ -666,6 +875,11 @@ theorem expansion_unique [IsNoetherianRing R] [IsAdicComplete I R] {k : ℕ} {σ
 
 end Formal
 
+/- English proof (translation)
+Use `hR.1` as an intermediate fact. Use `hR.2.2.2` as an intermediate fact. Use `⟨fun jL jM hL hM => ⟨fun τ => ⟨fun h => IsTau.unique hx h (isTau_tau hx hL hM), fun h => h ▸ isTau_tau hx hL hM⟩, fun jL' jM' hL' hM' => tau_trans hx hL hL' hM hM', exists_cohCharts g jM hM⟩, fun k σ f h => ⟨fun e => ?_, fun f' h' => expansion_unique U.toUnifPre h h'⟩⟩` and prove the remaining obligations. Use `isLocalRing_quotient_pow (ne_top_of_isHausdorff (I.map (algebraMap R S))) e` as an intermediate fact. Take `⟨F, hF⟩` from `map_secVal_eq U.toUnifPre (h e)`.
+
+Take `⟨h₀, h₁⟩` from `hF S _ _ g x hx _ (Ideal.Quotient.mk (I.map (algebraMap R S) ^ (e + 1))) Ideal.mk_ker.ge`. Conclude with `⟨F, fun α hα jf hj => Ideal.Quotient.eq_zero_iff_mem.1 (h₀ α hα jf hj), fun F' jL jM jf jt a b c d => Ideal.Quotient.eq.1 (h₁ F' jL jM jf jt a b c d)⟩`.
+-/
 theorem value_eq_sum_expansion {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hR : AdmBase R I)
     {D : DegData R I} {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : Unif I D A G)

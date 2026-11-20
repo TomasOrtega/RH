@@ -10,6 +10,23 @@ variable {k : Type} [Field k] {m : ℕ} {ψ : AddChar k Circle} {V₁ V₂ : Typ
   [AddCommGroup V₂] [Module ℂ V₂] {π₁ : Representation ℂ (GL (Fin (m + 1)) k) V₁}
   {π₂ : Representation ℂ (GL (Fin (m + 1)) k) V₂} {l₁ : Module.Dual ℂ V₁} {l₂ : Module.Dual ℂ V₂}
 
+/- English proof (translation)
+Use `set r : Fin (m + 1) → k := fun j => ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j`. Use `set M : Matrix (Fin (m + 1)) (Fin (m + 1)) k := Matrix.of fun i j => if i = 0 then r j else (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) i j`. Establish `hMtri : ∀ i j : Fin (m + 1), j < i → M i j = 0`. Introduce `i j hij`. Establish `hi : i ≠ 0` using `fun e => by subst e; exact (Fin.not_lt_zero j) hij`.
+
+Simplify using `[M, hi, Matrix.one_apply_ne hij.ne']`. Establish `hMdiag : ∀ i, M i i = 1`. Introduce `i`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality.
+
+Simplify `hg` using `[M, r]`. Simplify using `[M, hi]`. Establish `hdet : M.det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular (fun i j hij => hMtri i j hij)]`. Simplify using `[hMdiag]`.
+
+Use `set n : GL (Fin (m + 1)) k := Matrix.GeneralLinearGroup.mkOfDetNeZero M (by rw [hdet]; exact one_ne_zero)`. Establish `hnv : (n : Matrix (Fin (m + 1)) (Fin (m + 1)) k) = M` using `rfl`. Establish `hn : n ∈ unipB k (Fin (m + 1))` using `(mem_unipB k).2 ⟨fun i j hij => by rw [hnv]; exact hMtri i j hij, fun i => by rw [hnv]; exact hMdiag i⟩`. Establish `hwn : ∀ b, ((longElt (m + 1) k : Matrix (Fin (m + 1)) (Fin (m + 1)) k) * (n : Matrix (Fin (m + 1)) (Fin (m + 1)) k)) (Fin.last m) b = r b`. Introduce `b`.
+
+Rewrite using `[hnv, Matrix.mul_apply, Finset.sum_eq_single (0 : Fin (m + 1))]`. Rewrite using `[longElt_last, if_pos rfl, one_mul]`. Simplify using `[M, r]`. Introduce `a _ ha`. Rewrite using `[longElt_last, if_neg ha, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use `set p : GL (Fin (m + 1)) k := longElt (m + 1) k * n * g`. Establish `hP : IsP p`. Introduce `j`.
+
+Use `show ((longElt (m + 1) k * n * g : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j = _`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [r]`. Rewrite using `[← Matrix.mul_apply, ← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+
+Establish `hg' : g = n⁻¹ * (longElt (m + 1) k)⁻¹ * p`. Simplify using `only [p, mul_assoc, inv_mul_cancel_left]`. Rewrite using `[hg', longElt_inv]`. Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[hl₁ _ (inv_mem hn), hl₂ _ (inv_mem hn), hW _ _ (agree_translate hl₁ hl₂ hX hP)]`.
+-/
 theorem agree_of_entry_one (hl₁ : IsFunctional ψ π₁ l₁) (hl₂ : IsFunctional ψ π₂ l₂)
     (hW : ∀ (v₁ : V₁) (v₂ : V₂), (∀ g : GL (Fin m) k, l₁ (π₁ (corner g) v₁) = l₂ (π₂ (corner g) v₂)) →
       l₁ (π₁ (longElt (m + 1) k) v₁) = l₂ (π₂ (longElt (m + 1) k) v₂)) {v₁ : V₁} {v₂ : V₂}
@@ -61,6 +78,9 @@ theorem agree_of_entry_one (hl₁ : IsFunctional ψ π₁ l₁) (hl₂ : IsFunct
   simp only [map_mul, Module.End.mul_apply]
   rw [hl₁ _ (inv_mem hn), hl₂ _ (inv_mem hn), hW _ _ (agree_translate hl₁ hl₂ hX hP)]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(ext i j; simp [Matrix.GeneralLinearGroup.scalar, Matrix.diagonal_apply])`.
+-/
 theorem val_scalar (z : kˣ) :
     ((Matrix.GeneralLinearGroup.scalar (Fin (m + 1)) z : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) =
       Matrix.diagonal fun _ => (z : k) := by
@@ -68,6 +88,9 @@ theorem val_scalar (z : kˣ) :
   | rfl
   | (ext i j; simp [Matrix.GeneralLinearGroup.scalar, Matrix.diagonal_apply])
 
+/- English proof (translation)
+Establish `hent : (((Matrix.GeneralLinearGroup.scalar (Fin (m + 1)) u * g)⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) 0 = 1`. Rewrite using `[mul_inv_rev, ← map_inv, Units.val_mul, val_scalar, Matrix.mul_diagonal, hg, Units.mul_inv]`. Use `agree_of_entry_one hl₁ hl₂ hW hX _ hent` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h₁, h₂, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Then use the resulting hypothesis.
+-/
 theorem agree_scalar {ω₁ ω₂ : kˣ →* ℂˣ} (h₁ : HasCentralChar π₁ ω₁) (h₂ : HasCentralChar π₂ ω₂)
     (hl₁ : IsFunctional ψ π₁ l₁) (hl₂ : IsFunctional ψ π₂ l₂)
     (hW : ∀ (v₁ : V₁) (v₂ : V₂), (∀ g : GL (Fin m) k, l₁ (π₁ (corner g) v₁) = l₂ (π₂ (corner g) v₂)) →

@@ -7,6 +7,13 @@ noncomputable section
 
 namespace Formalism.FourierDecayAlt.P.CutSH.SFG
 
+/- English proof (translation)
+Establish `hO : IsOpen (s ×ˢ (Set.univ : Set X))` using `hs.prod isOpen_univ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp x hx`. Establish `hU : IsOpen (s ×ˢ Kᶜ)` using `hs.prod hK.isClosed.isOpen_compl`. Establish `hz : (fun q : Pm × X => h q.1 q.2) =ᶠ[nhds (p, x)] fun _ => 0` using `by filter_upwards [hU.mem_nhds ⟨hp, hx⟩] with q hq`.
+
+Conclude with `hv q.1 hq.1 q.2 hq.2`. Rewrite using `[hz.fderiv_eq]`. Simplify using the standard rewrite rules. Establish `h1 : ContDiffOn ℝ ∞ (fun q => fderiv ℝ (fun q : Pm × X => h q.1 q.2) q) (s ×ˢ Set.univ)` using `hh.fderiv_of_isOpen hO (by simp)`. Conclude with `h1.clm_comp contDiffOn_const`.
+
+Introduce `p hp x`. Establish `hd : DifferentiableAt ℝ (fun q : Pm × X => h q.1 q.2) (p, x)` using `(hh.contDiffAt (hO.mem_nhds ⟨hp, trivial⟩)).differentiableAt (by simp)`. Establish `hl : HasFDerivAt (fun e : Pm => (e, x)) (ContinuousLinearMap.inl ℝ Pm X) p` using `hasFDerivAt_prodMk_left (𝕜 := ℝ) p x`. Conclude with `HasFDerivAt.comp (x := p) hd.hasFDerivAt hl`.
+-/
 private theorem parameter_smooth_lemma {Pm X W : Type} [NormedAddCommGroup Pm] [NormedSpace ℝ Pm]
     [NormedAddCommGroup X] [NormedSpace ℝ X] [NormedAddCommGroup W] [NormedSpace ℝ W]
     (h : Pm → X → W) (s : Set Pm) (K : Set X) (hs : IsOpen s) (hK : IsCompact K)
@@ -37,6 +44,17 @@ private theorem parameter_smooth_lemma {Pm X W : Type} [NormedAddCommGroup Pm] [
       hasFDerivAt_prodMk_left (𝕜 := ℝ) p x
     exact HasFDerivAt.comp (x := p) hd.hasFDerivAt hl
 
+/- English proof (translation)
+Establish `hO : IsOpen (s ×ˢ (Set.univ : Set X))` using `hs.prod isOpen_univ`. Establish `hcont : ∀ p ∈ s, Continuous (h p)` using `fun p hp => hc.comp_continuous (continuous_const.prodMk continuous_id) (fun _ => ⟨hp, trivial⟩)`. Establish `hDcont : ∀ p ∈ s, Continuous (D p)` using `fun p hp => hDc.comp_continuous (continuous_const.prodMk continuous_id) (fun _ => ⟨hp, trivial⟩)`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (hDcont p0 hp0).continuousOn`. Establish `hev : ∀ᶠ p in nhds p0, ∀ x ∈ K, ‖D p x‖ < C + 1`.
+
+Apply `hK.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `x hx`. Establish `hca : ContinuousAt (fun q : Pm × X => D q.1 q.2) (p0, x)` using `hDc.continuousAt (hO.mem_nhds ⟨hp0, trivial⟩)`. Conclude with `hca.norm.eventually (gt_mem_nhds (lt_of_le_of_lt (hC x hx) (lt_add_one C)))`. Establish `hS : {p | p ∈ s ∧ ∀ x ∈ K, ‖D p x‖ < C + 1} ∈ nhds p0` using `Filter.inter_mem (hs.mem_nhds hp0) hev`.
+
+Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := K.indicator fun _ => C + 1) hS ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hs.mem_nhds hp0] with p hp`. Conclude with `(hcont p hp).aestronglyMeasurable`. Conclude with `(hcont p0 hp0).integrable_of_hasCompactSupport (HasCompactSupport.intro hK (hv p0 hp0))`. Conclude with `(hDcont p0 hp0).aestronglyMeasurable`.
+
+Use `Filter.Eventually.of_forall fun x p hp => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ K`. Rewrite using `[Set.indicator_of_mem hx]`. Conclude with `(hp.2 x hx).le`. Rewrite using `[Set.indicator_of_notMem hx, hDv p hp.1 x hx, norm_zero]`.
+
+Conclude with `(integrable_indicator_iff hK.isClosed.measurableSet).2 (integrableOn_const hK.measure_lt_top.ne)`. Conclude with `Filter.Eventually.of_forall fun x p hp => hD p hp.1 x`.
+-/
 private theorem parameter_smooth_lemma_2 {Pm X W : Type} [NormedAddCommGroup Pm] [NormedSpace ℝ Pm]
     [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensional ℝ X] [MeasurableSpace X]
     [BorelSpace X] [NormedAddCommGroup W] [NormedSpace ℝ W]
@@ -78,6 +96,15 @@ private theorem parameter_smooth_lemma_2 {Pm X W : Type} [NormedAddCommGroup Pm]
       (integrableOn_const hK.measure_lt_top.ne)
   · exact Filter.Eventually.of_forall fun x p hp => hD p hp.1 x
 
+/- English proof (translation)
+Introduce `Pm X W _ _ _ _ _ _ _ _ _ μ _ h s K hs hK hv hh`. Establish `key : ∀ n : ℕ, ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] (g : Pm → X → V), (∀ p ∈ s, ∀ x ∉ K, g p x = 0) → ContDiffOn ℝ ∞ (fun q : Pm × X => g q.1 q.2) (s ×ˢ Set.univ) → ContDiffOn ℝ n (fun p => ∫ x, g p x ∂μ) s`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `V _ _ g hgv hg`. Take `⟨hDv, hDs, hD⟩` from `parameter_smooth_lemma g s K hs hK hgv hg`. Establish `hdiff : DifferentiableOn ℝ (fun p => ∫ x, g p x ∂μ) s` using `fun p hp => (parameter_smooth_lemma_2 μ g _ s K hs hK hgv hDv hg.continuousOn hDs.continuousOn hD p hp).differentiableAt.differentiableWithinAt`. Conclude with `contDiffOn_zero.2 hdiff.continuousOn`. Consider the case `succ n ih`.
+
+Introduce `V _ _ g hgv hg`. Take `⟨hDv, hDs, hD⟩` from `parameter_smooth_lemma g s K hs hK hgv hg`. Establish `hder` using `fun p hp => parameter_smooth_lemma_2 μ g _ s K hs hK hgv hDv hg.continuousOn hDs.continuousOn hD p hp`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen hs]`. Use `⟨fun p hp => (hder p hp).differentiableAt.differentiableWithinAt, by simp, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(ih (Pm →L[ℝ] V) (fun p x => (fderiv ℝ (fun q : Pm × X => g q.1 q.2) (p, x)).comp (ContinuousLinearMap.inl ℝ Pm X)) hDv hDs).congr fun p hp => (hder p hp).fderiv`. Conclude with `contDiffOn_infty.2 fun n => key n W h hv hh`.
+-/
 theorem parameter_smooth : ParamSmooth := by
   intro Pm X W _ _ _ _ _ _ _ _ _ μ _ h s K hs hK hv hh
   have key : ∀ n : ℕ, ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] (g : Pm → X → V),

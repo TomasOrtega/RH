@@ -6,6 +6,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+The claim follows from `@RootFieldNumerics.real_tower_mean_slope_condition`.
+-/
 theorem tower_A1_of_real_tower : PB.Inputs → ∀ II : IntersectionSystem, IsFullIntersectionSystem II →
     ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) (R : RealTower T),
       R.Smooth → R.Flat → R.Pos → T.A1 :=

@@ -22,6 +22,11 @@ section Sym
 variable {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G]
   [IsCommMonObj G] (m : CubeMap G' G)
 
+/- English proof (translation)
+Establish `h : η[H] ≫ GrpObj.inv (X` using `H) = η[H] := by first`. Consider the case `simp`. Consider the case `exact GrpObj.one_inv`. Rewrite using `[Category.id_comp]`. Use `show (η[H] ≫ GrpObj.inv (X := H)).left = η[H].left`.
+
+Rewrite using `[h]`.
+-/
 lemma eSec_inv {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] :
     eSec H ≫ (GrpObj.inv (X := H)).left = 𝟙 _ ≫ eSec H := by
   have h : η[H] ≫ GrpObj.inv (X := H) = η[H] := by
@@ -32,12 +37,20 @@ lemma eSec_inv {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] :
   show (η[H] ≫ GrpObj.inv (X := H)).left = η[H].left
   rw [h]
 
+/- English proof (translation)
+Use `show x ∈ (⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X))`. Conclude with `Set.mem_iInter.2 fun k => by cases k; exact h`.
+-/
 private theorem memW_lemma_2 {X Y : Scheme.{0}} (L : LB X) (φ : PUnit.{1} → (Y ⟶ X))
     (j : PUnit.{1} → L.ι) (x : Y) (h : (φ PUnit.unit).base x ∈ L.U (j PUnit.unit)) :
     x ∈ LB.wchart L φ j := by
   show x ∈ (⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X))
   exact Set.mem_iInter.2 fun k => by cases k; exact h
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h0 : (GrpObj.inv (X` using `G')).left.base y ∈ (L.pull m.F).U (p.1 PUnit.unit) := LB.wchart_le (L.pull m.F) (fun _ : PUnit => (GrpObj.inv (X := G')).left) p.1 PUnit.unit hy.1`. Establish `h1 : m.F.base ((GrpObj.inv (X` using `G')).left.base y) ∈ L.U (p.1 PUnit.unit PUnit.unit) := LB.wchart_le L (fun _ : PUnit => m.F) (p.1 PUnit.unit) PUnit.unit h0`. Establish `h2 : m.F.base y ∈ L.U (p.2 PUnit.unit)` using `LB.wchart_le L (fun _ : PUnit => m.F) p.2 PUnit.unit hy.2`. Establish `h3 : (GrpObj.inv (X` using `G)).left.base (m.F.base y) ∈ L.U (p.1 PUnit.unit PUnit.unit) := by`.
+
+Rewrite using `[← base_eq (inv_comm m) y]`. Conclude with `h1`. Conclude with `(show m.F.base y ∈ LB.wchart L (fun _ : PUnit => (GrpObj.inv (X := G)).left) (fun _ => p.1 PUnit.unit PUnit.unit) ⊓ L.U (p.2 PUnit.unit) from ⟨memW_lemma_2 L (fun _ : PUnit => (GrpObj.inv (X := G)).left) (fun _ => p.1 PUnit.unit PUnit.unit) (m.F.base y) h3, h2⟩)`.
+-/
 lemma symLe (L : LB G.left)
     (p : (LB.div ((L.pull m.F).pull (GrpObj.inv (X := G')).left) (L.pull m.F)).ι) :
     (LB.div ((L.pull m.F).pull (GrpObj.inv (X := G')).left) (L.pull m.F)).U p ≤
@@ -63,18 +76,37 @@ def symIso (L : LB G.left) (w₀ : LB.Iso L (L.pull (GrpObj.inv (X := G)).left))
   s := fun p => res (symLe m L p) (pullU m.F _ (w₀.s ((fun _ => p.1 PUnit.unit PUnit.unit),
     p.2 PUnit.unit)))
 
+/- English proof (translation)
+Substitute `h0 hwp hwq hB hA` using the available equality. Simplify using `only [map_mul, map_inv]`.
+-/
 lemma mul_inv_mul_cancel_comm {M N : Type} [CommGroup M] [CommGroup N] (φ : M →* N)
     (w0p gi gl w0q : M) (B A wp wq : N) (h0 : w0p = gi * gl⁻¹ * w0q) (hwp : wp = φ w0p)
     (hwq : wq = φ w0q) (hB : B = φ gi) (hA : A = φ gl) : wp = B * A⁻¹ * wq := by
   subst h0 hwp hwq hB hA
   simp only [map_mul, map_inv]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(ext; simp [pullU])`.
+-/
 private theorem pullU_comp_lemma {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Opens)
     (x : Γ(X, U)ˣ) : pullU (f ≫ g) U x = pullU f (g ⁻¹ᵁ U) (pullU g U x) := by
   first
   | rfl
   | (ext; simp [pullU])
 
+/- English proof (translation)
+Introduce `p p'`. Apply `unit_ext` to reduce the goal to its premises. Introduce `y hy`. Establish `hz : m.F.base y ∈ (LB.div (L.pull (GrpObj.inv (X` using `G)).left) L).U ((fun _ => p.1 PUnit.unit PUnit.unit), p.2 PUnit.unit) ⊓ (LB.div (L.pull (GrpObj.inv (X := G)).left) L).U ((fun _ => p'.1 PUnit.unit PUnit.unit), p'.2 PUnit.unit) := ⟨symLe m L p hy.1, symLe m L p' hy.2⟩`. Establish `h0` using `congrArg (gU (m.F.base y) hz) (hw₀ ((fun _ => p.1 PUnit.unit PUnit.unit), p.2 PUnit.unit) ((fun _ => p'.1 PUnit.unit PUnit.unit), p'.2 PUnit.unit))`.
+
+Rewrite `h0` using `[map_mul, gU_res, gU_res]`. Use `first`. Consider the case `rw [germ_div _ _ _ _ (m.F.base y) hz] at h0`. Consider the case `simp only [germ_div] at h0`. Rewrite using `[map_mul, gU_res, gU_res]`.
+
+Use `first`. Consider the case `rw [germ_div _ _ p p' y hy]`. Consider the case `simp only [germ_div]`. Apply `mul_inv_mul_cancel_comm (Units.map (m.F.stalkMap y).hom) _ _ _ _ _ _ _ _ h0` to reduce the goal to its premises. Simplify using `only [symIso]`.
+
+Rewrite using `[gU_res, gU_pullU]`. Simplify using `only [symIso]`. Rewrite using `[gU_res, gU_pullU]`. Establish `hmem3 : (GrpObj.inv (X` using `G)).left.base (m.F.base y) ∈ L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit) := ⟨LB.wchart_le L (fun _ : PUnit => (GrpObj.inv (X := G)).left) (fun _ => p.1 PUnit.unit PUnit.unit) PUnit.unit hz.1.1, LB.wchart_le L (fun _ : PUnit => (GrpObj.inv (X := G)).left) (f …`. Establish `hmem1 : m.F.base ((GrpObj.inv (X` using `G')).left.base y) ∈ L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit) := by`.
+
+Rewrite using `[base_eq (inv_comm m) y]`. Conclude with `hmem3`. Use `(germ_pull_pull L m.F (GrpObj.inv (X := G')).left p.1 p'.1 y _ hmem1).trans ((gU_pullU_congr (inv_comm m) (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit)) (L.g (p.1 PUnit.unit PUnit.unit) (p'.1 PUnit.unit PUnit.unit)) y hmem1 hmem3).trans ((congrArg (gU (O := …` and prove the remaining obligations. Use `congr 1`. Conclude with `(germ_pull L (GrpObj.inv (X := G)).left (fun _ => p.1 PUnit.unit PUnit.unit) (fun _ => p'.1 PUnit.unit PUnit.unit) (m.F.base y) (⟨hz.1.1, hz.2.1⟩ : m.F.base y ∈ (L.pull (GrpObj.inv (X := G)).left).U (fun _ => p.1 PUnit.unit PUnit.unit) ⊓ (L.pull (GrpObj.inv (X := G)).left).U (fun …`.
+
+Conclude with `(germ_pull L m.F p.2 p'.2 y _ (show m.F.base y ∈ L.U (p.2 PUnit.unit) ⊓ L.U (p'.2 PUnit.unit) from ⟨hz.1.2, hz.2.2⟩)).trans (gU_pullU _ _ _ _ _)`.
+-/
 lemma symIso_isGen (L : LB G.left) (w₀ : LB.Iso L (L.pull (GrpObj.inv (X := G)).left))
     (hw₀ : w₀.IsGen) : (symIso m L w₀).IsGen := by
   intro p p'
@@ -128,17 +160,26 @@ lemma symIso_isGen (L : LB G.left) (w₀ : LB.Iso L (L.pull (GrpObj.inv (X := G)
       (show m.F.base y ∈ L.U (p.2 PUnit.unit) ⊓ L.U (p'.2 PUnit.unit) from ⟨hz.1.2, hz.2.2⟩)).trans
       (gU_pullU _ _ _ _ _)
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(rw [gU_pullU]; simp)`.
+-/
 lemma gU_pullU_id {X : Scheme.{0}} (U : X.Opens) (y : X) (hy : y ∈ (𝟙 X) ⁻¹ᵁ U) (u : Γ(X, U)ˣ) :
     gU y hy (pullU (𝟙 X) U u) = gU y hy u := by
   first
   | rfl
   | (rw [gU_pullU]; simp)
 
+/- English proof (translation)
+Substitute `hX hY hZ h0` using the available equality. Conclude with `map_mul φ y0 z0`.
+-/
 lemma sub_add_eq_zero_of_eq_add {M N : Type} [CommGroup M] [CommGroup N] (φ : M →* N) (x0 y0 z0 : M) (X Y Z : N)
     (h0 : x0 = y0 * z0) (hX : X = φ x0) (hY : Y = φ y0) (hZ : Z = φ z0) : X = Y * Z := by
   subst hX hY hZ h0
   exact map_mul φ y0 z0
 
+/- English proof (translation)
+Simplify using `only [LB.linCombIso]`. Use `first`. Consider the case `erw [Fintype.prod_unique, zpow_one, gU_res]`. Consider the case `simp only [Fintype.prod_unique, zpow_one, gU_res]`. Apply the tactic sequence `all_goals rfl`.
+-/
 lemma gU_linCombIso_unit {X Y : Scheme.{0}} {L M : LB X} (w : LB.Iso L M) (φ₀ : Y ⟶ X)
     (p : (LB.LinComb M (K := PUnit) (fun _ => φ₀) (fun _ => 1)).ι ×
       (LB.LinComb L (K := PUnit) (fun _ => φ₀) (fun _ => 1)).ι) (y : Y)
@@ -153,11 +194,17 @@ lemma gU_linCombIso_unit {X Y : Scheme.{0}} {L M : LB X} (w : LB.Iso L M) (φ₀
   | simp only [Fintype.prod_unique, zpow_one, gU_res]
   all_goals rfl
 
+/- English proof (translation)
+The claim follows from `gU_pullU_id U y hy' u`.
+-/
 private theorem gU_pullU_id_lemma_3 {X : Scheme.{0}} (U : X.Opens) (y : X) (hy : y ∈ U)
     (hy' : y ∈ (𝟙 X) ⁻¹ᵁ U) (u : Γ(X, U)ˣ) :
     gU y hy' (pullU (𝟙 X) U u) = gU y hy u :=
   gU_pullU_id U y hy' u
 
+/- English proof (translation)
+Rewrite using `[base_eq (eSec_inv G') y, base_eq (eSec_inv G) (m.e.base y)]`. Use `first`. Consider the case `exact base_eq m.e_comm y`. Consider the case `simpa using base_eq m.e_comm y`.
+-/
 lemma pt1 (y : (𝟙_ (Over S')).left) :
     m.F.base ((GrpObj.inv (X := G')).left.base ((eSec G').base y)) =
       (GrpObj.inv (X := G)).left.base ((eSec G).base (m.e.base y)) := by
@@ -166,10 +213,30 @@ lemma pt1 (y : (𝟙_ (Over S')).left) :
   | exact base_eq m.e_comm y
   | simpa using base_eq m.e_comm y
 
+/- English proof (translation)
+The claim follows from `base_eq m.e_comm y`.
+-/
 lemma pt2 (y : (𝟙_ (Over S')).left) :
     m.F.base ((eSec G').base y) = (eSec G).base (m.e.base y) := base_eq m.e_comm y
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `p`. Apply `unit_ext` to reduce the goal to its premises. Introduce `y hy`. Establish `b1 : (eSec G').base y ∈ ((L.L.pull m.F).pull (GrpObj.inv (X` using `G')).left).U (p.1 PUnit.unit) := LB.wchart_le ((L.L.pull m.F).pull (GrpObj.inv (X := G')).left) (fun _ : PUnit => eSec G') p.1 PUnit.unit hy.1`. Establish `b2 : (GrpObj.inv (X` using `G')).left.base ((eSec G').base y) ∈ (L.L.pull m.F).U (p.1 PUnit.unit PUnit.unit) := LB.wchart_le (L.L.pull m.F) (fun _ : PUnit => (GrpObj.inv (X := G')).left) (p.1 PUnit.unit) PUnit.unit b1`.
+
+Establish `b3 : m.F.base ((GrpObj.inv (X` using `G')).left.base ((eSec G').base y)) ∈ L.L.U (p.1 PUnit.unit PUnit.unit PUnit.unit) := LB.wchart_le L.L (fun _ : PUnit => m.F) (p.1 PUnit.unit PUnit.unit) PUnit.unit b2`. Establish `b4 : (GrpObj.inv (X` using `G)).left.base ((eSec G).base (m.e.base y)) ∈ L.L.U (p.1 PUnit.unit PUnit.unit PUnit.unit) := by`. Rewrite using `[← pt1 m y]`. Conclude with `b3`. Establish `c1 : (eSec G').base y ∈ (L.L.pull m.F).U (p.2 PUnit.unit)` using `LB.wchart_le (L.L.pull m.F) (fun _ : PUnit => eSec G') p.2 PUnit.unit hy.2`.
+
+Establish `c2 : m.F.base ((eSec G').base y) ∈ L.L.U (p.2 PUnit.unit PUnit.unit)` using `LB.wchart_le L.L (fun _ : PUnit => m.F) (p.2 PUnit.unit) PUnit.unit c1`. Establish `c3 : (eSec G).base (m.e.base y) ∈ L.L.U (p.2 PUnit.unit PUnit.unit)`. Rewrite using `[← pt2 m y]`. Conclude with `c2`. Establish `d0 : (eSec G).base (m.e.base y) ∈ (L.L.pull (GrpObj.inv (X` using `G)).left).U (fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit) ⊓ L.L.U (p.2 PUnit.unit PUnit.unit) := ⟨memW_lemma_2 L.L (fun _ : PUnit => (GrpObj.inv (X := G)).left) (fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit) ((eSec G).base (m.e.base y)) b4, c3⟩`.
+
+Establish `d0' : m.e.base y ∈ (eSec G) ⁻¹ᵁ (LB.div (L.L.pull (GrpObj.inv (X` using `G)).left) L.L).U ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit) := d0`. Establish `d1 : y ∈ (eSec G') ⁻¹ᵁ (m.F ⁻¹ᵁ (LB.div (L.L.pull (GrpObj.inv (X` using `G)).left) L.L).U ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)) := by show m.F.base ((eSec G').base y) ∈ (L.L.pull (GrpObj.inv (X := G)).left).U (fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit) ⊓ L.L.U (p.2 PUnit.unit PUnit.unit)`. Rewrite using `[pt2 m y]`. Conclude with `d0`. Establish `hz : m.e.base y ∈ ((L.L.pull (GrpObj.inv (X` using `G)).left).pull (eSec G)).U (fun _ _ => p.1 PUnit.unit PUnit.unit PUnit.unit) ⊓ (L.L.pull (eSec G)).U (fun _ => p.2 PUnit.unit PUnit.unit) := ⟨memW_lemma_2 (L.L.pull (GrpObj.inv (X := G)).left) (fun _ : PUnit => eSec G) (fun _ _ => p.1 PUnit.unit PUnit.unit PUnit.unit) (m.e.base y …`.
+
+Establish `h0` using `congrArg (gU (m.e.base y) hz) (hm ((fun _ _ => p.1 PUnit.unit PUnit.unit PUnit.unit), (fun _ => p.2 PUnit.unit PUnit.unit)))`. Use `first`. Consider the case `rw [id_eq] at h0`. Consider the case `skip`. Rewrite `h0` using `[map_mul, gU_res, gU_res]`.
+
+Use `first`. Consider the case `rw [id_eq]`. Consider the case `skip`. Rewrite using `[map_mul, gU_res, gU_res]`. Apply `sub_add_eq_zero_of_eq_add (Units.map (m.e.stalkMap y).hom) _ _ _ _ _ _ h0` to reduce the goal to its premises.
+
+Simplify using `only [rigPullOf, CubeMap.rigPull]`. Use `((gU_res _ y _ _).trans ((gU_pullU_id _ y _ _).trans ((gU_res _ y _ _).trans (gU_pullU m.e _ y _ _)))).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (Units.map (m.e.stalkMap y).hom.toMonoidHom) ((gU_res _ _ _ _).trans (gU_pullU_id_lemma_3 _ _ _ _ _))).symm`. Establish `hyl : (eSec G').base y ∈ ((L.L.pull m.F).pull (GrpObj.inv (X` using `G')).left).U (p.1 PUnit.unit) ⊓ (L.L.pull m.F).U (p.2 PUnit.unit) := ⟨b1, c1⟩`. Use `(gU_linCombIso_unit (symIso m L.L w₀) (eSec G') p y _ hyl).trans ((gU_pullU_res (eSec G') (symLe m L.L (p.1 PUnit.unit, p.2 PUnit.unit)) (pullU m.F _ (w₀.s ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit))) y hyl d1).trans ((congrArg (gU y d1) (pullU_c …` and prove the remaining obligations.
+
+Conclude with `congrArg (Units.map (m.e.stalkMap y).hom.toMonoidHom) (gU_linCombIso_unit w₀ (eSec G) ((fun _ _ => p.1 PUnit.unit PUnit.unit PUnit.unit), (fun _ => p.2 PUnit.unit PUnit.unit)) (m.e.base y) hz d0').symm`. Simplify using `only [CubeMap.rigPull, rigPullOf]`. Conclude with `(gU_res _ y _ _).trans (gU_pullU m.e _ y _ _)`.
+-/
 lemma sym_maps (L : RigLB G) (he : eSec G ≫ (GrpObj.inv (X := G)).left = 𝟙 _ ≫ eSec G)
     (w₀ : LB.Iso L.L (L.L.pull (GrpObj.inv (X := G)).left))
     (hm : LB.Gen.Maps (LB.linCombIso w₀ (K := PUnit) (fun _ => eSec G) (fun _ => 1)) L.rig
@@ -256,6 +323,9 @@ lemma sym_maps (L : RigLB G) (he : eSec G ≫ (GrpObj.inv (X := G)).left = 𝟙 
   · dsimp only [CubeMap.rigPull, rigPullOf]
     exact (gU_res _ y _ _).trans (gU_pullU m.e _ y _ _)
 
+/- English proof (translation)
+Introduce `h`. Unfold `RigLB.IsSymmetric at h ⊢`. Take `⟨he, w, hw, hmaps⟩` from `h`. Conclude with `⟨eSec_inv G', symIso m L.L w, symIso_isGen m L.L w hw, sym_maps m L he w hmaps⟩`.
+-/
 theorem sym_pull (L : RigLB G) (hL : (L.L.pull m.F).IsLB) (hr : (m.rigPull L.L L.rig).IsGen) :
     L.IsSymmetric → (m.rigLB L hL hr).IsSymmetric := by
   intro h

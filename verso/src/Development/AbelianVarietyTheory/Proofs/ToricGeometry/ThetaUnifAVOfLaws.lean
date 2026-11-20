@@ -44,6 +44,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hcube hmul hpair hnd hsec`. Establish `hval` using `@valAt'_rules`. Establish `hvalaff` using `@existsUnique_point_of_ringHom`. Establish `hvalext` using `@eq_of_valAt'_eq hval hvalaff`. Establish `hsmred` using `@isReduced_of_smooth_complex`.
+
+Establish `hchring` using `@exists_holomorphic_section_of_etale`. Establish `hchart` using `@HolChart.exists_holomorphic_chart hval hvalaff hchring`. Establish `hcpt` using `@PointsCompact.compactSpace_points_polAV hval hvalaff`. Establish `hholprod` using `@holFamily_lift hval`. Establish `htopgrp` using `@isTopologicalGroup_complexPoints hval`.
+
+Establish `hexp` using `@AbelianExp.exists_holUnif hmul hval hholprod htopgrp hcpt hchart`. Establish `htan` using `@TangentOrigin.tangent_bijection_of_values hval`. Establish `hendo` using `@EndoLinear.exists_linear_lift hval`. Establish `hcubet` using `@cube_trivialisation_on_uniformising_space hval hholprod`. Establish `hdbl` using `@exists_doubling_solution_pi`.
+
+Establish `hdblu` using `@eventually_eq_zero_of_isBigO_cube_of_doubling`. Establish `hlock` using `@LocalCube.exists_third_difference hdbl hdblu`. Establish `hface` using `@cube_section_faces_and_doubling`. Establish `hlocframe` using `@exists_localFrame_compatible_cube @hface hlock`. Establish `hglobframe` using `@CubeFrame.exists_global_frame`.
+
+Establish `hautfactor` using `@automorphyFactor_exp_linear_of_cube`. Establish `hahform` using `@appellHumbert_normal_form_of_linear_exponent`. Establish `hframe` using `@exists_appellHumbert_frame_isRig hcube hval hcubet @hlocframe @hglobframe @hautfactor hahform`. Establish `hthg` using `@ThetaGroupFrame.thetaGrp_in_frame hval hholprod`. Establish `hweil` using `@WeilExp.weilIs_exp_riemannForm hpair hval hvalext hsmred hthg`.
+
+Establish `hunimod` using `@bilinForm_bijective_of_nondegenerate_mod`. Establish `hperf` using `@riemannForm_bijective_of_weilNondeg hnd hunimod hweil`. Establish `hsecfn` using `@sections_pow_theta_functions hval hvalext hsmred`. Establish `hfshift` using `@fourierCoeff_unitCube_translate_of_entire_periodic`. Establish `hfvan` using `@entire_periodic_eq_zero_of_fourierCoeff_eq_zero hfshift`.
+
+Establish `hdimcl` using `@ClassicalTheta.card_le_pow_of_linearIndependent hfshift hfvan`. Establish `hnormform` using `@SiegelNormalForm.exists_normal_form`. Establish `hdim` using `@card_le_pow_of_linearIndependent_theta_principal hnormform hdimcl`. Establish `hindep` using `@PowSec.exists_indep_sections hsec`. Establish `hpos` using `@ThetaPositivity.re_form_pos_of_theta_ne_zero`.
+
+Establish `hisah` using `@isAH_of_polarisation hval hpos hindep hsecfn`. Establish `hseconto` using `@ThetaOnto.theta_from_section hval hdim hindep hsecfn`. Conclude with `thetaUnifAV_of_parts hexp htan hendo hframe hweil hperf hsecfn hseconto hisah`.
+-/
 theorem thetaUnifAV_of_laws :
     Out.CubeSt → Out.MulNSt → Out.WeilSt → Out.WeilNondegSt → Out.GlobalSectionsRankAlgClosed → ThetaUnifAV := by
   intro hcube hmul hpair hnd hsec

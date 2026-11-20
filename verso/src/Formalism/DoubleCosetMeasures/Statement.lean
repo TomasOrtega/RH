@@ -138,6 +138,11 @@ section Groups
 
 variable (K : Type) [CommRing K]
 
+/- English proof (translation)
+Use `⟨hx.1.mul hy.1, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[hx.2, hy.2, mul_one]`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases.
+
+Conclude with `mul_eq_zero_of_right _ (hy.1 (OrderDual.toDual_lt_toDual.2 h))`. Conclude with `mul_eq_zero_of_left (hx.1 (OrderDual.toDual_lt_toDual.2 h)) _`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+-/
 theorem isLowUni_mul {n : ℕ} {x y : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x)
     (hy : IsLowUni y) : IsLowUni (x * y) := by
   refine ⟨hx.1.mul hy.1, fun a => ?_⟩
@@ -149,6 +154,11 @@ theorem isLowUni_mul {n : ℕ} {x y : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x
     · exact mul_eq_zero_of_left (hx.1 (OrderDual.toDual_lt_toDual.2 h)) _
   · intro h; exact absurd (Finset.mem_univ a) h
 
+/- English proof (translation)
+Use `⟨hx.1.mul hy.1, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[hx.2, hy.2, mul_one]`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases.
+
+Conclude with `mul_eq_zero_of_left (hx.1 h) _`. Conclude with `mul_eq_zero_of_right _ (hy.1 h)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+-/
 theorem isUpUni_mul {n : ℕ} {x y : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x)
     (hy : IsUpUni y) : IsUpUni (x * y) := by
   refine ⟨hx.1.mul hy.1, fun a => ?_⟩
@@ -160,14 +170,27 @@ theorem isUpUni_mul {n : ℕ} {x y : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x)
     · exact mul_eq_zero_of_right _ (hy.1 h)
   · intro h; exact absurd (Finset.mem_univ a) h
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular x hx.1]`. Simplify using `[hx.2]`.
+-/
 theorem isLowUni_det {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) : x.det = 1 := by
   rw [Matrix.det_of_lowerTriangular x hx.1]
   simp [hx.2]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular hx.1]`. Simplify using `[hx.2]`.
+-/
 theorem isUpUni_det {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x) : x.det = 1 := by
   rw [Matrix.det_of_upperTriangular hx.1]
   simp [hx.2]
 
+/- English proof (translation)
+Establish `hu : IsUnit x.det` using `by rw [isLowUni_det K hx]; exact isUnit_one`. Use `letI := Matrix.invertibleOfIsUnitDet x hu`. Establish `hT : x⁻¹.IsLowerTriangular` using `Matrix.blockTriangular_inv_of_blockTriangular hx.1`. Use `⟨hT, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (Matrix.nonsing_inv_mul x hu) a) a`.
+
+Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single a, hx.2, mul_one, Matrix.one_apply_eq]`. Conclude with `h`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h' | h'` into its components or cases. Conclude with `mul_eq_zero_of_right _ (hx.1 (OrderDual.toDual_lt_toDual.2 h'))`.
+
+Conclude with `mul_eq_zero_of_left (hT (OrderDual.toDual_lt_toDual.2 h')) _`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ a) h'`.
+-/
 theorem isLowUni_inv {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) :
     IsLowUni x⁻¹ := by
   have hu : IsUnit x.det := by rw [isLowUni_det K hx]; exact isUnit_one
@@ -183,6 +206,13 @@ theorem isLowUni_inv {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) 
     · exact mul_eq_zero_of_left (hT (OrderDual.toDual_lt_toDual.2 h')) _
   · intro h'; exact absurd (Finset.mem_univ a) h'
 
+/- English proof (translation)
+Establish `hu : IsUnit x.det` using `by rw [isUpUni_det K hx]; exact isUnit_one`. Use `letI := Matrix.invertibleOfIsUnitDet x hu`. Establish `hT : x⁻¹.IsUpperTriangular` using `Matrix.blockTriangular_inv_of_blockTriangular hx.1`. Use `⟨hT, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (Matrix.nonsing_inv_mul x hu) a) a`.
+
+Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single a, hx.2, mul_one, Matrix.one_apply_eq]`. Conclude with `h`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h' | h'` into its components or cases. Conclude with `mul_eq_zero_of_left (hT h') _`.
+
+Conclude with `mul_eq_zero_of_right _ (hx.1 h')`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ a) h'`.
+-/
 theorem isUpUni_inv {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x) :
     IsUpUni x⁻¹ := by
   have hu : IsUnit x.det := by rw [isUpUni_det K hx]; exact isUnit_one
@@ -198,8 +228,14 @@ theorem isUpUni_inv {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x) :
     · exact mul_eq_zero_of_right _ (hx.1 h')
   · intro h'; exact absurd (Finset.mem_univ a) h'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Matrix.blockTriangular_one, fun a => Matrix.one_apply_eq a⟩`.
+-/
 theorem isLowUni_one {n : ℕ} : IsLowUni (1 : Matrix (Fin n) (Fin n) K) := ⟨Matrix.blockTriangular_one, fun a => Matrix.one_apply_eq a⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Matrix.blockTriangular_one, fun a => Matrix.one_apply_eq a⟩`.
+-/
 theorem isUpUni_one {n : ℕ} : IsUpUni (1 : Matrix (Fin n) (Fin n) K) := ⟨Matrix.blockTriangular_one, fun a => Matrix.one_apply_eq a⟩
 
 def lowUniG (n : ℕ) : Subgroup (GL (Fin n) K) where

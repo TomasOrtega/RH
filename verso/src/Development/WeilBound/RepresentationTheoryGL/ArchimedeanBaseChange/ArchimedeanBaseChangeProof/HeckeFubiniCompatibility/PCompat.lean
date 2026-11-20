@@ -15,11 +15,17 @@ namespace PositivityTheory.Rg.BcB.CG
 
 section Gen
 
+/- English proof (translation)
+The claim follows from `HasCompactSupport.intro (hF.isCompact.image continuous_snd) fun b hb => image_eq_zero_of_notMem_tsupport fun h => hb ⟨(a, b), h, rfl⟩`.
+-/
 theorem hasCompactSupport_slice {A B : Type} [TopologicalSpace A] [TopologicalSpace B] [T2Space B] {F : A × B → ℂ}
     (hF : HasCompactSupport F) (a : A) : HasCompactSupport (fun b => F (a, b)) :=
   HasCompactSupport.intro (hF.isCompact.image continuous_snd) fun b hb =>
     image_eq_zero_of_notMem_tsupport fun h => hb ⟨(a, b), h, rfl⟩
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integral_tensor {X Y Z : Type} [MeasurableSpace X] [MeasurableSpace Y] [MeasurableSpace Z] (mX : Measure X) (mY : Measure Y) (mZ : Measure Z) [SigmaFinite mX] [SigmaFinite mY]
     [SigmaFinite mZ] (p : X → ℂ) (q : Y → ℂ) (r : Z → ℂ) :
     ∫ z, p z.1 * q z.2.1 * r z.2.2 ∂(mX.prod (mY.prod mZ)) = (∫ x, p x ∂mX) * (∫ y, q y ∂mY) * ∫ w, r w ∂mZ := by
@@ -42,6 +48,9 @@ variable {Z : Type} [Group Z] [TopologicalSpace Z] [IsTopologicalGroup Z] [Local
 variable {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [MeasurableSpace K] [BorelSpace K]
 
 omit [SecondCountableTopology X] in
+/- English proof (translation)
+Take `⟨f, hf1, -, hfc, hf01⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := (1 : X))) isClosed_empty (Set.disjoint_empty _)`. Use `⟨fun x => ((f x : ℝ) : ℂ), Complex.continuous_ofReal.comp f.continuous, hfc.comp_left Complex.ofReal_zero, ?_⟩` and prove the remaining obligations. Use `show ∫ x, ((f x : ℝ) : ℂ) ∂μ ≠ 0`. Rewrite using `[show ∫ x, ((f x : ℝ) : ℂ) ∂μ = ((∫ x, f x ∂μ : ℝ) : ℂ) from integral_ofReal, Complex.ofReal_ne_zero]`. Conclude with `(f.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero hfc (fun x => (hf01 x).1) (x := 1) (by simp [hf1 (Set.mem_singleton (1 : X))])).ne'`.
+-/
 theorem exists_bump (μ : Measure X) [IsHaarMeasure μ] :
     ∃ f : X → ℂ, Continuous f ∧ HasCompactSupport f ∧ ∫ x, f x ∂μ ≠ 0 := by
   obtain ⟨f, hf1, -, hfc, hf01⟩ := exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := (1 : X)))
@@ -52,6 +61,11 @@ theorem exists_bump (μ : Measure X) [IsHaarMeasure μ] :
   exact (f.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero hfc (fun x => (hf01 x).1) (x := 1)
     (by simp [hf1 (Set.mem_singleton (1 : X))])).ne'
 
+/- English proof (translation)
+Use `haveI : IsHaarMeasure (μ.map e.symm) := ContinuousMulEquiv.isHaarMeasure_map μ e.symm`. Take `⟨c, hc0, h⟩ : ∃ c : NNReal, 0 < c ∧ μ.map e.symm = c • mX.prod (mY.prod mZ)` from `⟨_, haarScalarFactor_pos_of_isHaarMeasure _ _, isMulLeftInvariant_eq_smul _ _⟩`. Use `⟨c, hc0, fun f => ?_⟩` and prove the remaining obligations. Establish `he : ∫ z, f (e z) ∂(μ.map e.symm) = ∫ g, f g ∂μ`. Use `integral_map_equiv (μ := μ) (e.toHomeomorph.toMeasurableEquiv.symm) (fun z => f (e z))` as an intermediate fact.
+
+Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `congrArg f (e.apply_symm_apply x)`. Rewrite using `[← he, h, integral_smul_nnreal_measure]`.
+-/
 theorem exists_split (e : X × (Y × Z) ≃ₜ* K) (μ : Measure K) [IsHaarMeasure μ] (mX : Measure X) [IsHaarMeasure mX]
     (mY : Measure Y) [IsHaarMeasure mY] (mZ : Measure Z) [IsHaarMeasure mZ] :
     ∃ c : NNReal, 0 < c ∧ ∀ f : K → ℂ, ∫ g, f g ∂μ = c • ∫ z, f (e z) ∂(mX.prod (mY.prod mZ)) := by
@@ -67,6 +81,9 @@ theorem exists_split (e : X × (Y × Z) ≃ₜ* K) (μ : Measure K) [IsHaarMeasu
     exact congrArg f (e.apply_symm_apply x)
   rw [← he, h, integral_smul_nnreal_measure]
 
+/- English proof (translation)
+Rewrite using `[integral_prod _ (hf.integrable_of_hasCompactSupport hfc)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Conclude with `integral_prod _ ((hf.comp (continuous_const.prodMk continuous_id)).integrable_of_hasCompactSupport (hasCompactSupport_slice hfc x))`.
+-/
 theorem integral_iter (mX : Measure X) [IsHaarMeasure mX] (mY : Measure Y) [IsHaarMeasure mY] (mZ : Measure Z)
     [IsHaarMeasure mZ] (f : X × (Y × Z) → ℂ) (hf : Continuous f) (hfc : HasCompactSupport f) :
     ∫ z, f z ∂(mX.prod (mY.prod mZ)) = ∫ x, ∫ y, ∫ w, f (x, (y, w)) ∂mZ ∂mY ∂mX := by
@@ -79,8 +96,14 @@ end Abstract
 
 section Inst
 
+/- English proof (translation)
+The claim follows from `Units.isClosedEmbedding_embedProduct.locallyCompactSpace`.
+-/
 theorem lc_G (n : ℕ) : LocallyCompactSpace (G n) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace
 
+/- English proof (translation)
+The claim follows from `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ)) haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology Units.isEmbedding_embedPr …`.
+-/
 theorem sc_G (n : ℕ) : SecondCountableTopology (G n) :=
   haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) :=
     inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))
@@ -90,6 +113,9 @@ theorem sc_G (n : ℕ) : SecondCountableTopology (G n) :=
 
 variable (E : Type) [Field E] [NumberField E]
 
+/- English proof (translation)
+The claim follows from `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele E haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (Af E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → Af E)) haveI : …`.
+-/
 theorem lc_GLf (n : ℕ) : LocallyCompactSpace (GL (Fin n) (Af E)) :=
   haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele E
   haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E
@@ -99,6 +125,9 @@ theorem lc_GLf (n : ℕ) : LocallyCompactSpace (GL (Fin n) (Af E)) :=
     MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace
   Units.isClosedEmbedding_embedProduct.locallyCompactSpace
 
+/- English proof (translation)
+The claim follows from `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele E haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (Af E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → Af E)) haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (Af E))ᵐᵒᵖ := MulOpposi …`.
+-/
 theorem sc_GLf (n : ℕ) : SecondCountableTopology (GL (Fin n) (Af E)) :=
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele E
   haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (Af E)) :=
@@ -107,6 +136,9 @@ theorem sc_GLf (n : ℕ) : SecondCountableTopology (GL (Fin n) (Af E)) :=
     MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology
   Units.isEmbedding_embedProduct.secondCountableTopology
 
+/- English proof (translation)
+The claim follows from `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E Units.isEmbedding_embedProduct.t2Space`.
+-/
 theorem t2_GL_finite_adeles (n : ℕ) : T2Space (GL (Fin n) (Af E)) :=
   haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E
   Units.isEmbedding_embedProduct.t2Space
@@ -117,10 +149,16 @@ attribute [local instance] lc_G sc_G lc_GLf sc_GLf t2_GL_finite_adeles
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem borelSpaceH : BorelSpace (H E a b) := ⟨rfl⟩
 
 attribute [local instance] borelSpaceH
 
+/- English proof (translation)
+The claim follows from `haveI := D.haar.2.2.2 { toIsFiniteMeasureOnCompacts := isFiniteMeasureOnCompacts_of_isLocallyFiniteMeasure toIsMulLeftInvariant := D.haar.1 toIsOpenPosMeasure := D.haar.2.2.1 }`.
+-/
 theorem haar_of_dom (D : Dom E a b) : IsHaarMeasure D.μ :=
   haveI := D.haar.2.2.2
   { toIsFiniteMeasureOnCompacts := isFiniteMeasureOnCompacts_of_isLocallyFiniteMeasure
@@ -130,11 +168,17 @@ theorem haar_of_dom (D : Dom E a b) : IsHaarMeasure D.μ :=
 def tensH (fa : InfinitePlace E → G a → ℂ) (fb : InfinitePlace E → G b → ℂ) (ψ : Hf E a b → ℂ) (g : H E a b) : ℂ :=
   (∏ v, fa v (gInf v g.1)) * (∏ v, fb v (gInf v g.2)) * ψ (hFin g)
 
+/- English proof (translation)
+Simplify using `only [tensH, gInf_splitH₁, gInf_splitH₂, hFin_splitH]`.
+-/
 theorem tensH_splitH (fa : InfinitePlace E → G a → ℂ) (fb : InfinitePlace E → G b → ℂ) (ψ : Hf E a b → ℂ)
     (z : (InfinitePlace E → G a) × ((InfinitePlace E → G b) × Hf E a b)) :
     tensH fa fb ψ (splitH a b z) = (∏ v, fa v (z.1 v)) * (∏ v, fb v (z.2.1 v)) * ψ z.2.2 := by
   simp only [tensH, gInf_splitH₁, gInf_splitH₂, hFin_splitH]
 
+/- English proof (translation)
+Repeatedly rewrite using `[tensH_splitH]`. Rewrite using `[integral_tensor _ _ _ (fun y : InfinitePlace E → G a => ∏ v, fa v (y v)) (fun y : InfinitePlace E → G b => ∏ v, fb v (y v)) ψ]`. Use `beta_reduce`. Rewrite using `[integral_fintype_prod_eq_prod, integral_fintype_prod_eq_prod]`.
+-/
 theorem integral_tensH_splitH [MeasurableSpace (G a)] [MeasurableSpace (G b)] [MeasurableSpace (Hf E a b)]
     (μa : Measure (G a)) [SigmaFinite μa] (μb : Measure (G b)) [SigmaFinite μb] (ν : Measure (Hf E a b)) [SigmaFinite ν]
     (fa : InfinitePlace E → G a → ℂ) (fb : InfinitePlace E → G b → ℂ) (ψ : Hf E a b → ℂ) :
@@ -147,6 +191,15 @@ theorem integral_tensH_splitH [MeasurableSpace (G a)] [MeasurableSpace (G b)] [M
   beta_reduce
   rw [integral_fintype_prod_eq_prod, integral_fintype_prod_eq_prod]
 
+/- English proof (translation)
+Introduce `E _ _ _ a b D _ _ _ _ _ _ μa _ μb _ ν _ hC F hF hFc`. Use `haveI := haar_of_dom D`. Establish `: IsHaarMeasure (Measure.pi fun _ : InfinitePlace E => μa)` using `pi.isHaarMeasure _`. Establish `: IsHaarMeasure (Measure.pi fun _ : InfinitePlace E => μb)` using `pi.isHaarMeasure _`. Take `⟨c, hc0, hc⟩` from `exists_split (splitH a b) D.μ (Measure.pi fun _ : InfinitePlace E => μa) (Measure.pi fun _ : InfinitePlace E => μb) ν`.
+
+Take `⟨fa, hfa, hfac, hfa0⟩` from `exists_bump μa`. Take `⟨fb, hfb, hfbc, hfb0⟩` from `exists_bump μb`. Take `⟨ψ, hψ, hψc, hψ0⟩` from `exists_bump ν`. Establish `h1` using `hC (fun _ => fa) (fun _ => fb) ψ (fun _ => ⟨hfa, hfac⟩) (fun _ => ⟨hfb, hfbc⟩) hψ hψc`. Express the relevant statement in the definitionally equal form `∫ g, tensH (fun _ => fa) (fun _ => fb) ψ g ∂D.μ = _ at h1`.
+
+Rewrite `h1` using `[hc, integral_tensH_splitH]`. Establish `hc1 : c = 1`. Establish `hne : (∏ _v : InfinitePlace E, ∫ y, fa y ∂μa) * (∏ _v : InfinitePlace E, ∫ y, fb y ∂μb) * ∫ h, ψ h ∂ν ≠ 0`. Simplify using `[hfa0, hfb0, hψ0]`. Rewrite `h1` using `[NNReal.smul_def, Complex.real_smul]`.
+
+Establish `h2 : ((c : ℝ) : ℂ) = 1` using `mul_right_cancel₀ hne (by rw [one_mul]; exact h1)`. Conclude with `h2` after adjusting the coercions. Rewrite using `[hc F, hc1, one_smul]`. Conclude with `integral_iter _ _ _ (fun z => F (splitH a b z)) (hF.comp (splitH a b).continuous) (hFc.comp_homeomorph (splitH a b).toHomeomorph)`.
+-/
 theorem compatFub : CompatFub := by
   intro E _ _ _ a b D _ _ _ _ _ _ μa _ μb _ ν _ hC F hF hFc
   haveI := haar_of_dom D
@@ -170,6 +223,25 @@ theorem compatFub : CompatFub := by
   exact integral_iter _ _ _ (fun z => F (splitH a b z)) (hF.comp (splitH a b).continuous)
     (hFc.comp_homeomorph (splitH a b).toHomeomorph)
 
+/- English proof (translation)
+Introduce `E _ _ _ a b D _ _ _ _ _ _ μa _ μb _`. Use `haveI := haar_of_dom D`. Use `haveI : D.μ.IsMulRightInvariant := D.haar.2.1`. Establish `: IsHaarMeasure (Measure.pi fun _ : InfinitePlace E => μa)` using `pi.isHaarMeasure _`. Establish `: IsHaarMeasure (Measure.pi fun _ : InfinitePlace E => μb)` using `pi.isHaarMeasure _`.
+
+Use `set ν₀ : Measure (Hf E a b) := Measure.haar`. Take `⟨c, hc0, hc⟩` from `exists_split (splitH a b) D.μ (Measure.pi fun _ : InfinitePlace E => μa) (Measure.pi fun _ : InfinitePlace E => μb) ν₀`. Take `⟨fa, hfa, hfac, hfa0⟩` from `exists_bump μa`. Take `⟨fb, hfb, hfbc, hfb0⟩` from `exists_bump μb`. Establish `hR : ∀ h : Hf E a b, ν₀.map (· * h) = ν₀`.
+
+Introduce `h`. Take `⟨k, hk⟩ : ∃ k : NNReal, ν₀.map (· * h) = k • ν₀` from `⟨_, isMulLeftInvariant_eq_smul _ _⟩`. Take `⟨ψ, hψ, hψc, hψ0⟩` from `exists_bump ν₀`. Establish `h1` using `integral_mul_right_eq_self (μ := D.μ) (tensH (fun _ => fa) (fun _ => fb) ψ) (splitH a b (1, (1, h)))`. Rewrite `h1` using `[hc, hc]`.
+
+Establish `e1 : ∀ z : (InfinitePlace E → G a) × ((InfinitePlace E → G b) × Hf E a b), tensH (fun _ => fa) (fun _ => fb) ψ (splitH a b z * splitH a b (1, (1, h))) = (∏ v, fa (z.1 v)) * (∏ v, fb (z.2.1 v)) * ψ (z.2.2 * h)`. Introduce `z`. Rewrite using `[← map_mul, tensH_splitH]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[e1]`.
+
+Rewrite `h1` using `[integral_tensor _ _ _ (fun y : InfinitePlace E → G a => ∏ v, fa (y v)) (fun y : InfinitePlace E → G b => ∏ v, fb (y v)) (fun w : Hf E a b => ψ (w * h)), integral_tensH_splitH]`. Use `beta_reduce at h1`. Rewrite `h1` using `[integral_fintype_prod_eq_prod, integral_fintype_prod_eq_prod]`. Establish `e2 : ∫ w, ψ (w * h) ∂ν₀ = k • ∫ w, ψ w ∂ν₀`. Rewrite using `[← integral_smul_nnreal_measure, ← hk, integral_map (measurable_mul_const h).aemeasurable hψ.aestronglyMeasurable]`.
+
+Rewrite `h1` using `[e2]`. Establish `hne : (∏ _v : InfinitePlace E, ∫ y, fa y ∂μa) * (∏ _v : InfinitePlace E, ∫ y, fb y ∂μb) * ∫ w, ψ w ∂ν₀ ≠ 0`. Simplify using `[hfa0, hfb0, hψ0]`. Simplify using `only [NNReal.smul_def, Complex.real_smul] at h1`. Establish `hc' : ((c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc0.ne'`.
+
+Establish `h2 : ((k : ℝ) : ℂ) * (((c : ℝ) : ℂ) * ((∏ _v : InfinitePlace E, ∫ y, fa y ∂μa) * (∏ _v : InfinitePlace E, ∫ y, fb y ∂μb) * ∫ w, ψ w ∂ν₀)) = 1 * (((c : ℝ) : ℂ) * ((∏ _v : InfinitePlace E, ∫ y, fa y ∂μa) * (∏ _v : InfinitePlace E, ∫ y, fb y ∂μb) * ∫ w, ψ w ∂ν₀))`. Take the linear combination `h1`. Establish `h3 : ((k : ℝ) : ℂ) = 1` using `mul_right_cancel₀ (mul_ne_zero hc' hne) h2`. Establish `hk1 : k = 1` using `by exact_mod_cast h3`. Rewrite using `[hk, hk1, one_smul]`.
+
+Use `haveI : ν₀.IsMulRightInvariant := ⟨hR⟩`. Use `⟨c • ν₀, IsHaarMeasure.nnreal_smul _ hc0.ne', ⟨fun h => by rw [Measure.map_smul, hR]⟩, ?_⟩` and prove the remaining obligations. Introduce `fa' fb' ψ' hfa' hfb' hψ' hψc'`. Express the relevant statement in the definitionally equal form `∫ g, tensH fa' fb' ψ' g ∂D.μ = _`. Rewrite using `[hc, integral_tensH_splitH, integral_smul_nnreal_measure]`.
+
+Simplify using `only [NNReal.smul_def, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem compatEx : CompatEx := by
   intro E _ _ _ a b D _ _ _ _ _ _ μa _ μb _
   haveI := haar_of_dom D

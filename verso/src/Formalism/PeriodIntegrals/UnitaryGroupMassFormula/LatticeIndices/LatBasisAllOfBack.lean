@@ -13,6 +13,19 @@ section Loc
 
 variable {D : D7} (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p)
 
+/- English proof (translation)
+Introduce `y hy`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz'`. Take `⟨l', hl', rfl⟩` from `hz'`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy'`. Take `⟨l, hl, rfl⟩` from `hy'`. Conclude with `dual_gen X p θ hθ l l' hl hl'`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`.
+
+Rewrite using `[Matrix.mulVec_add]`. Use `first`. Consider the case `(rw [dotProduct_add]; exact add_mem ha hb)`. Consider the case `(rw [Matrix.dotProduct_add]; exact add_mem ha hb)`. Consider the case `smul c a _ ha => show _ ⬝ᵥ (J1 X p θ *ᵥ ((c : FpX X p) • a)) ∈ OpX X p`.
+
+Rewrite using `[Matrix.mulVec_smul]`. Use `first`. Consider the case `(rw [dotProduct_smul, smul_eq_mul]; exact mul_mem c.2 ha)`. Consider the case `(rw [Matrix.dotProduct_smul, smul_eq_mul]; exact mul_mem c.2 ha)`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => first`. Consider the case `(rw [add_dotProduct]; exact add_mem ha hb)`. Consider the case `(rw [Matrix.add_dotProduct]; exact add_mem ha hb)`. Consider the case `smul c a _ ha => show ((c : FpX X p) • a) ⬝ᵥ _ ∈ OpX X p first`. Consider the case `(rw [smul_dotProduct, smul_eq_mul]; exact mul_mem c.2 ha)`.
+
+Consider the case `(rw [Matrix.smul_dotProduct, smul_eq_mul]; exact mul_mem c.2 ha)`.
+-/
 theorem dual_fwd (hθ : IsSplitEquiv X p θ) (z : Fin X.B.I.n → FpX X p) (hz : z ∈ Mlat2 X p θ) :
     ∀ y ∈ Mlat1 X p θ, z ⬝ᵥ (J1 X p θ *ᵥ y) ∈ OpX X p := by
   intro y hy
@@ -49,12 +62,18 @@ theorem dual_fwd (hθ : IsSplitEquiv X p θ) (z : Fin X.B.I.n → FpX X p) (hz :
 def DualBack : Prop :=
   ∀ z, (∀ y ∈ Mlat1 X p θ, z ⬝ᵥ (J1 X p θ *ᵥ y) ∈ OpX X p) → z ∈ Mlat2 X p θ
 
+/- English proof (translation)
+Use `first`. Consider the case `exact fun z => ⟨fun hz => dual_fwd X p θ hθ z hz, hB z⟩`. Consider the case `exact ⟨fun z hz => dual_fwd X p θ hθ z hz, hB⟩`. Consider the case `(unfold LatDualP; done)`.
+-/
 theorem latDual_of (hθ : IsSplitEquiv X p θ) (hB : DualBack X p θ) : LatDualP X p θ := by
   first
   | exact fun z => ⟨fun hz => dual_fwd X p θ hθ z hz, hB z⟩
   | exact ⟨fun z hz => dual_fwd X p θ hθ z hz, hB⟩
   | (unfold LatDualP; done)
 
+/- English proof (translation)
+The claim follows from `latBasisAll_of X p (fun θ hθ => latSplit_of X p θ (unitElt_holds X p θ hθ)) (fun θ _ => latFree_holds X p θ) (fun θ hθ => latDual_of X p θ hθ (hB θ hθ))`.
+-/
 theorem latBasisAll_of_back
     (hB : ∀ θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p, IsSplitEquiv X p θ → DualBack X p θ) :
     LatBasisAll X p :=

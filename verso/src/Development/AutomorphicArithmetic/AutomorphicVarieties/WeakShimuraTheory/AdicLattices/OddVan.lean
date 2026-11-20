@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LMe
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Lat
 
+/- English proof (translation)
+Rewrite `h` using `[← sub_eq_zero, ← map_sub]`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Assume the negation of the conclusion as `hn`. Conclude with `((IsLocalRing.notMem_maximalIdeal.1 hn).map red).ne_zero h`.
+-/
 private theorem ov_red {O k : Type} [CommRing O] [IsLocalRing O] [Field k] (red : O →+* k)
     (hred : ∀ a ∈ maximalIdeal O, red a = 0) {a b : O} (h : red a = red b) : residue O a = residue O b := by
   rw [← sub_eq_zero, ← map_sub] at h
@@ -13,6 +16,15 @@ private theorem ov_red {O k : Type} [CommRing O] [IsLocalRing O] [Field k] (red 
 section
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c)
 
+/- English proof (translation)
+Establish `e : ∀ w g, (frQ D pr g0).rt w g = D.al g ^ w.1 * (if pr then (D.Psi g)⁻¹ else D.Psi g) ^ w.2` using `fun w g => by`. Apply the tactic sequence `cases pr <;> simp [Fr.rt, frQ, chi, lab, Raw.ps, Raw.th, mul_assoc, mul_right_comm (D.al g) (D.Psi g)]`. Establish `a1 : (frQ D pr g0).rt wAl = D.al` using `MonoidHom.ext fun g => by simp [e, wAl]`. Establish `a2 : (frQ D pr g0).rt (-wAl) = D.al⁻¹` using `MonoidHom.ext fun g => by simp [e, wAl]`. Apply the tactic sequence `have a3 : (frQ D pr g0).rt wBe = if pr then D.th⁻¹ else D.be := MonoidHom.ext fun g => by cases pr <;> simp [e, wBe, Raw.be, Raw.th, mul_comm]`.
+
+Apply the tactic sequence `have a4 : (frQ D pr g0).rt (-wBe) = if pr then D.th else D.be⁻¹ := MonoidHom.ext fun g => by cases pr <;> simp [e, wBe, Raw.be, Raw.th, mul_comm]`. Apply the tactic sequence `have a5 : (frQ D pr g0).rt wTh = if pr then D.be⁻¹ else D.th := MonoidHom.ext fun g => by cases pr <;> simp [e, wTh, Raw.be, Raw.th, mul_comm]`. Apply the tactic sequence `have a6 : (frQ D pr g0).rt (-wTh) = if pr then D.be else D.th⁻¹ := MonoidHom.ext fun g => by cases pr <;> simp [e, wTh, Raw.be, Raw.th, mul_comm]`. Simplify using `only [oddRoots, Finset.mem_insert, Finset.mem_singleton] at hw`. Break down `hw with rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases.
+
+Simplify using `[a1]`. Simplify using `[a2]`. Apply the tactic sequence `rw [a3]; cases pr <;> simp`. Apply the tactic sequence `rw [a4]; cases pr <;> simp`. Apply the tactic sequence `rw [a5]; cases pr <;> simp`.
+
+Apply the tactic sequence `rw [a6]; cases pr <;> simp`.
+-/
 private theorem ov_rt (pr : Bool) (g0 : G ℚ Ω) {w : ℤ × ℤ} (hw : w ∈ oddRoots) :
     (frQ D pr g0).rt w ∈ [D.al, D.be, D.th, D.al⁻¹, D.be⁻¹, D.th⁻¹] := by
   have e : ∀ w g, (frQ D pr g0).rt w g = D.al g ^ w.1 * (if pr then (D.Psi g)⁻¹ else D.Psi g) ^ w.2 := fun w g => by
@@ -36,6 +48,11 @@ private theorem ov_rt (pr : Bool) (g0 : G ℚ Ω) {w : ℤ × ℤ} (hw : w ∈ o
   · rw [a5]; cases pr <;> simp
   · rw [a6]; cases pr <;> simp
 
+/- English proof (translation)
+Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hγ`. Break down `hγ with rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases. Conclude with `⟨2, 3, by decide, fun g => by simp [Raw.ps]⟩`. Conclude with `⟨1, 2, by decide, fun g => by simp [Raw.ps, Raw.be]⟩`. Conclude with `⟨0, 3, by decide, fun g => by simp [Raw.ps]⟩`.
+
+Conclude with `⟨3, 2, by decide, fun g => by simp [Raw.ps]⟩`. Conclude with `⟨2, 1, by decide, fun g => by simp [Raw.ps, Raw.be]⟩`. Conclude with `⟨3, 0, by decide, fun g => by simp [Raw.ps]⟩`.
+-/
 private theorem ov_ij {γ : G ℚ Ω →* c.Oˣ} (hγ : γ ∈ [D.al, D.be, D.th, D.al⁻¹, D.be⁻¹, D.th⁻¹]) :
     ∃ i j, lamW i ≠ lamW j ∧ ∀ g, γ g * D.ps j g = D.ps i g := by
   simp only [List.mem_cons, List.not_mem_nil, or_false] at hγ
@@ -47,11 +64,27 @@ private theorem ov_ij {γ : G ℚ Ω →* c.Oˣ} (hγ : γ ∈ [D.al, D.be, D.th
   · exact ⟨2, 1, by decide, fun g => by simp [Raw.ps, Raw.be]⟩
   · exact ⟨3, 0, by decide, fun g => by simp [Raw.ps]⟩
 
+/- English proof (translation)
+Use `revert pr i`. Evaluate the decidable proposition.
+-/
 private theorem ov_lab (pr : Bool) (i : Fin 4) : lab pr (lab pr i) = i := by
   revert pr i; decide
 
 end
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD hP k _ red hred pr g0 hd w hw z hz m hm`. Establish `hγ` using `ov_rt D pr g0 hw`. Take `⟨hlc, hco, hN, h0⟩` from `hz`. Establish `hw0 : w ≠ 0` using `by rintro rfl; revert hw; decide`. Unfold `Fr.LocTriv at hm`.
+
+Generalize the expression as in `(frQ D pr g0).rt w = γ at hγ hco hm`. Take `⟨i, j, hij, hq⟩` from `ov_ij D hγ`. Establish `key : ∀ g, Raw.bar (D.ps i) g ≠ Raw.bar (D.ps j) g → ∀ x : k, red (γ g : c.O) * x - x = 0 → x = 0`. Introduce `g hg x hx`. Assume the negation of the conclusion as `hx0`.
+
+Establish `h1 : red (γ g : c.O) = 1` using `mul_right_cancel₀ hx0 (by rw [one_mul]; exact sub_eq_zero.1 hx)`. Use `hg (ov_red red hred ?_)` and prove the remaining obligations. Rewrite using `[← hq g, Units.val_mul, map_mul, h1, one_mul]`. Take `⟨n, hn⟩` from `xvanExt D hD k red hred γ hγ z hlc hco (fun A hA g hg h1 => hN g (.inl ⟨A, hA, hg, h1⟩)) fun v hv => by`. Break down `Finset.mem_insert.1 hv with rfl | hv'` into its components or cases.
+
+Conclude with `⟨-m (), fun g hg => (hm () g hg).trans (by ring)⟩`. Take `⟨x, hx⟩` from `locVanK D hD hP k red hred γ hγ v hv' (fun g => z g) (hlc.comp_continuous continuous_subtype_val) fun g h => hco g h`. Conclude with `⟨x, fun g hg => hx ⟨g, hg⟩⟩`. Establish `hg0 : Raw.bar (D.ps i) g0 ≠ Raw.bar (D.ps j) g0`. Use `hd (lab pr i) (lab pr j) fun e => hij (by rw [← ov_lab pr i, e, ov_lab])` as an intermediate fact.
+
+Rewrite `this` using `[chi, chi, ov_lab, ov_lab]`. Then use the resulting hypothesis. Establish `hn0 : n = 0` using `key g0 hg0 n ((hn g0).symm.trans (h0 hw0))`. Establish `hz0 : z = 0` using `funext fun g => by rw [hn, hn0, mul_zero, sub_zero]; rfl`. Take `⟨hσ, -, hne⟩` from `(facts D hD).2.1 l (Finset.mem_insert_self _ _)`. Use `⟨hz0, funext fun v => key _ (hne i j hij) _ ?_⟩` and prove the remaining obligations.
+
+Use `hm v _ hσ` as an intermediate fact. Rewrite `this` using `[hz0]`. Rewrite using `[← neg_sub, ← this]`. Conclude with `neg_zero`.
+-/
 theorem UpperTheory.V.Ws.Lat.oddVan :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → UpperTheory.V.Loc.LocalPublishedTheorems → ∀ (k : Type) [Field k] (red : c.O →+* k), (∀ a ∈ maximalIdeal c.O, red a = 0) →
       ∀ (pr : Bool) (g0 : G ℚ Ω), (∀ i j, i ≠ j → Raw.bar (chi D pr i) g0 ≠ Raw.bar (chi D pr j) g0) → OddVan (frQ D pr g0) red := by

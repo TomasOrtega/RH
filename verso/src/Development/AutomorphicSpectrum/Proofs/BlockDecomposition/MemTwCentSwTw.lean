@@ -33,8 +33,20 @@ variable {H : Type} [Group H]
 def swTw (σ : H →* H) : H × H →* H × H :=
   (MonoidHom.prodMap σ σ).comp (MulEquiv.prodComm : H × H ≃* H × H).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem swTw_apply (σ : H →* H) (y : H × H) : swTw σ y = (σ y.2, σ y.1) := rfl
 
+/- English proof (translation)
+Take `⟨g₁, g₂⟩` from `g`. Use `show (g₁, g₂) * (d, d') = (d, d') * (σ g₂, σ g₁) ↔ g₁ * (d * σ d') = d * σ d' * g₁ ∧ g₂ = d' * σ g₁ * d'⁻¹`. Simplify using `only [Prod.mk_mul_mk, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h₁, h₂⟩`.
+
+Establish `e : g₂ = d' * σ g₁ * d'⁻¹` using `by rw [← h₂]; group`. Use `⟨?_, e⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, h₁, e]`. Simplify using `only [map_mul, map_inv, hσ]`. Use `group`.
+
+Introduce and unpack `⟨h₁, rfl⟩`. Use `⟨?_, by group⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, hσ]`. Establish `: g₁ * d = d * σ d' * g₁ * (σ d')⁻¹`. Rewrite using `[← h₁]`.
+
+Use `group`. Rewrite using `[this]`. Use `group`.
+-/
 theorem mem_twCent_swTw (σ : H →* H) (hσ : ∀ g, σ (σ g) = g) (d d' : H) (g : H × H) :
     g ∈ twCent (swTw σ) (d, d') ↔
       g.1 ∈ twCent (MonoidHom.id H) (d * σ d') ∧ g.2 = d' * σ g.1 * d'⁻¹ := by

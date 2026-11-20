@@ -31,10 +31,16 @@ section Action
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 variable {O : Type} [Ring O] [StarRing O] [Module O D.X]
 
+/- English proof (translation)
+Rewrite using `[cP, oa.c_lin, ← Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem cPoint_act (oa : D.OAct O) (T : Over (Spec (CommRingCat.of R))) (a : O) (χ : D.X) :
     cP D T (a • χ) = cP D T χ ≫ oa.onB.act a := by
   rw [cP, oa.c_lin, ← Category.assoc]; rfl
 
+/- English proof (translation)
+Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Establish `hr` using `oa.onB.rosati (star a)`. Rewrite `hr` using `[star_star]`. Conclude with `exists_ros hG D.P.isAb D.P.isLB _ _ hr`.
+-/
 theorem exists_ptRos (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) :
     ∃ u, IsRos D.P.L (oa.onB.act (star a)) (oa.onB.act a) u := by
   have := oa.onB.hom a
@@ -45,9 +51,15 @@ theorem exists_ptRos (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) :
 
 def ptRos (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) := (exists_ptRos hG oa a).choose
 
+/- English proof (translation)
+The claim follows from `(exists_ptRos hG oa a).choose_spec`.
+-/
 theorem ptRos_isRos (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) :
     IsRos D.P.L (oa.onB.act (star a)) (oa.onB.act a) (ptRos hG oa a) := (exists_ptRos hG oa a).choose_spec
 
+/- English proof (translation)
+Establish `vv : ∀ (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A (oa.onB.act (star a)) (oa.onB.act a)) rosatiε)) χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ u (lift (cP D _ χ) g.b).left)) (𝟙 (TF (R` using `R) F).left) y J = charVal g (star a • χ) y J * val₂ u y J (cP D _ χ) g.b := fun u χ y J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]; rfl)))`. Use `and_congr Iff.rfl ⟨fun h χ y J hJ => ?_, fun h u hu u₀ χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(val_corr hJ (h _ (ptRos_isRos hG oa a).1 (ptRos_isRos hG oa a).2 χ) _).symm.trans (vv _ χ y J hJ)`. Conclude with `(vv u χ y J hJ).trans ((congrArg₂ (· * ·) rfl (IsRos.unique hG D.P.isAb D.P.isLB ⟨hu, u₀⟩ (ptRos_isRos hG oa a) hJ _ _)).trans (h χ y J hJ).symm)`.
+-/
 theorem ptAct_iff_val (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) (g g' : GtPtF D F) :
     GtPtAct oa a g g' ↔ g'.b = g.b ≫ oa.onB.act a ∧ ∀ χ y J, Good D.P.L y J →
       charVal g' χ y J = charVal g (star a • χ) y J * val₂ (ptRos hG oa a) y J (cP D _ χ) g.b := by
@@ -61,12 +73,18 @@ theorem ptAct_iff_val (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) (g g' : GtPtF D
   · exact (vv u χ y J hJ).trans ((congrArg₂ (· * ·) rfl
       (IsRos.unique hG D.P.isAb D.P.isLB ⟨hu, u₀⟩ (ptRos_isRos hG oa a) hJ _ _)).trans (h χ y J hJ).symm)
 
+/- English proof (translation)
+Take `⟨b, v⟩` from `(ptAct_iff_val hG _ _ _ _).1 e`. Take `⟨b', v'⟩` from `(ptAct_iff_val hG _ _ _ _).1 e'`. Conclude with `gt_ext_val (b.trans b'.symm) fun χ y J hJ => (v χ y J hJ).trans (v' χ y J hJ).symm`.
+-/
 theorem ptAct_unique (hG : GlobalFnsSt) {oa : D.OAct O} {a : O} {g h h' : GtPtF D F} (e : GtPtAct oa a g h)
     (e' : GtPtAct oa a g h') : h = h' := by
   obtain ⟨b, v⟩ := (ptAct_iff_val hG _ _ _ _).1 e
   obtain ⟨b', v'⟩ := (ptAct_iff_val hG _ _ _ _).1 e'
   exact gt_ext_val (b.trans b'.symm) fun χ y J hJ => (v χ y J hJ).trans (v' χ y J hJ).symm
 
+/- English proof (translation)
+The claim follows from `have := oa.onB.hom a have := oa.onB.hom (star a) ros_add D.cub hG D.P.isAb _ _ _ (ptRos_isRos hG oa a).1 (ptRos_isRos hG oa a).2 hJ x x' w`.
+-/
 theorem ptRos_add (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) {T : Over (Spec (CommRingCat.of R))} {z : T.left} {J}
     (hJ : Good D.P.L z J) (x x' w : T ⟶ D.P.A) :
     val₂ (ptRos hG oa a) z J (x * x') w * th D z J x x' (w ≫ oa.onB.act a) =
@@ -79,6 +97,17 @@ theorem ptRos_add (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) {T : Over (Spec (Co
   have := oa.onB.hom (star a)
   ros_add D.cub hG D.P.isAb _ _ _ (ptRos_isRos hG oa a).1 (ptRos_isRos hG oa a).2 hJ x x' w
 
+/- English proof (translation)
+Use `oa.onB.hom (star a)` as an intermediate fact. Establish `vv : ∀ χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ (ptRos hG oa a) (lift (cP D _ χ) g.b).left)) (𝟙 (TF (R` using `R) F).left) y J = charVal g (star a • χ) y J * val₂ (ptRos hG oa a) y J (cP D _ χ) g.b := fun χ y J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]; rfl)))`. Take `⟨g', hb, hv⟩` from `exists_gt (g.b ≫ oa.onB.act a) (fun χ => LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ (ptRos hG oa a) (lift (cP D _ χ) g.b).left)) (fun χ => mulGen_isGen _ _ _ _ _ _ _ (g.isGen _) (pullGen_isGen _ _ _ _ (ptRos_isRos hG oa a).1 _)) (fun χ U _ h => by`. Use `(prod_sum₂ (K := Fin 4) (K' := Fin 6) (U := U) _ (prod_gt g.b (star a • χ) h) (prod_ros _ _ (cP D _ χ) g.b h)).trans ?_` and prove the remaining obligations. Rewrite using `[prod_gt, cPoint_act oa]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel) (fun y J hJ => by`. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Establish `e` using `(ptRos_add hG oa a hJ 1 1 g.b).1`.
+
+Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face, C.face, _root_.mul_one, _root_.one_mul]`. Use `(vv 0 y J hJ).trans ?_` and prove the remaining obligations. Rewrite using `[smul_zero, cPoint_zero, mul_eq_left.1 e.symm, _root_.mul_one, charVal_zero g hJ]) (fun χ χ' y J hJ => by`. Establish `e₁` using `congrArg Additive.ofMul (ptRos_add hG oa a hJ (cP D _ χ) (cP D _ χ') g.b).1`. Establish `e` using `charVal_add g hJ (star a • χ) (star a • χ')`.
+
+Rewrite `e` using `[cPoint_act oa, cPoint_act oa]`. Establish `e₂` using `congrArg Additive.ofMul e`. Use `(congrArg₂ (· * ·) (vv _ y J hJ) rfl).trans (Eq.trans ?_ (congrArg₂ (· * ·) (vv _ y J hJ) (vv _ y J hJ)).symm)` and prove the remaining obligations. Rewrite using `[smul_add, cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul] at e₁ e₂ ⊢`. Take the linear combination `(norm := abel) e₁ + e₂)`. Conclude with `⟨g', (ptAct_iff_val hG _ _ _ _).2 ⟨hb, fun χ y J hJ => (hv χ y J hJ).trans (vv χ y J hJ)⟩⟩`.
+-/
 theorem exists_ptAct (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) (g : GtPtF D F) : ∃ g', GtPtAct oa a g g' := by
   have := oa.onB.hom (star a)
   have vv : ∀ χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ))
@@ -115,17 +144,36 @@ def ptSmul (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) (g : GtPtF D F) : GtPtF D 
 
 variable (hG : GlobalFnsSt) (oa : D.OAct O)
 
+/- English proof (translation)
+The claim follows from `(exists_ptAct hG oa a g).choose_spec`.
+-/
 theorem ptAct_ptSmul (a : O) (g : GtPtF D F) : GtPtAct oa a g (ptSmul hG oa a g) := (exists_ptAct hG oa a g).choose_spec
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ptAct_unique hG h (ptAct_ptSmul hG oa a g), fun h => h ▸ ptAct_ptSmul hG oa a g⟩`.
+-/
 theorem ptAct_iff_eq_ptSmul (a : O) (g g' : GtPtF D F) : GtPtAct oa a g g' ↔ g' = ptSmul hG oa a g :=
   ⟨fun h => ptAct_unique hG h (ptAct_ptSmul hG oa a g), fun h => h ▸ ptAct_ptSmul hG oa a g⟩
 
+/- English proof (translation)
+The claim follows from `(ptAct_ptSmul hG oa a g).1`.
+-/
 theorem ptSmul_b (a : O) (g : GtPtF D F) : (ptSmul hG oa a g).b = g.b ≫ oa.onB.act a := (ptAct_ptSmul hG oa a g).1
 
+/- English proof (translation)
+The claim follows from `((ptAct_iff_val hG _ _ _ _).1 (ptAct_ptSmul hG oa a g)).2 χ y J hJ`.
+-/
 theorem ptSmul_val (a : O) (g : GtPtF D F) (χ : D.X) {y J} (hJ : Good D.P.L y J) :
     charVal (ptSmul hG oa a g) χ y J = charVal g (star a • χ) y J * val₂ (ptRos hG oa a) y J (cP D _ χ) g.b :=
   ((ptAct_iff_val hG _ _ _ _).1 (ptAct_ptSmul hG oa a g)).2 χ y J hJ
 
+/- English proof (translation)
+Use `oa.onB.hom a` as an intermediate fact. Use `(isAdd_iff_eq _ _ _).1 ((isAdd_iff_val _ _ _).2 ⟨?_, fun χ y J hJ => ?_⟩)` and prove the remaining obligations. Rewrite using `[ptSmul_b, ptSmul_b, ptSmul_b, add_b, MonObj.mul_comp]`. Establish `e₁` using `congrArg Additive.ofMul (ptRos_add hG oa a hJ g.b g'.b (cP D _ χ)).2`. Establish `e` using `add_val g g' (star a • χ) hJ`.
+
+Rewrite `e` using `[cPoint_act oa]`. Establish `e₂` using `congrArg Additive.ofMul e`. Rewrite using `[ptSmul_val hG oa a _ χ hJ, ptSmul_val hG oa a _ χ hJ, ptSmul_val hG oa a _ χ hJ, ptSmul_b, ptSmul_b, add_b]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at e₁ e₂ ⊢`.
+
+Take the linear combination `(norm := abel) e₁ + e₂`.
+-/
 theorem ptSmul_add (a : O) (g g' : GtPtF D F) : ptSmul hG oa a (g + g') = ptSmul hG oa a g + ptSmul hG oa a g' := by
   have := oa.onB.hom a
   refine (isAdd_iff_eq _ _ _).1 ((isAdd_iff_val _ _ _).2 ⟨?_, fun χ y J hJ => ?_⟩)
@@ -139,6 +187,9 @@ theorem ptSmul_add (a : O) (g g' : GtPtF D F) : ptSmul hG oa a (g + g') = ptSmul
     simp only [ofMul_mul] at e₁ e₂ ⊢
     linear_combination (norm := abel) e₁ + e₂
 
+/- English proof (translation)
+Use `oa.onB.hom a'` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Use `gt_ext_val (by rw [ptSmul_b, ptSmul_b, ptSmul_b, oa.onB.map_mul, Category.assoc]) fun χ y J hJ => ?_` and prove the remaining obligations. Rewrite using `[ptSmul_val hG oa _ _ χ hJ, ptSmul_val hG oa _ _ χ hJ, ptSmul_val hG oa _ _ _ hJ, IsRos.val_comp hG D.P.isAb D.P.isLB (by rw [star_mul, oa.onB.map_mul]) (oa.onB.map_mul a a') (ptRos_isRos hG oa (a * a')) (ptRos_isRos hG oa a) (ptRos_isRos hG oa a') hJ, ptSmul_b, cPoint_act oa, st …`.
+-/
 theorem mul_ptSmul (a a' : O) (g : GtPtF D F) : ptSmul hG oa (a * a') g = ptSmul hG oa a (ptSmul hG oa a' g) := by
   have := oa.onB.hom a'
   have := oa.onB.hom (star a)
@@ -151,6 +202,11 @@ theorem mul_ptSmul (a a' : O) (g : GtPtF D F) : ptSmul hG oa (a * a') g = ptSmul
 def ptSmulHom (F : Type) [Field F] [Algebra (FractionRing R) F] (a : O) : GtPtF D F →+ GtPtF D F :=
   AddMonoidHom.mk' (ptSmul hG oa a) (ptSmul_add hG oa a)
 
+/- English proof (translation)
+Establish `hbal` using `oa.tau_bal (star a)`. Rewrite `hbal` using `[star_star]`. Use `gt_ext_val (by rw [ptSmul_b, iota_b, iota_b, cPoint_act oa]) fun χ y J hJ => ?_` and prove the remaining obligations. Set `κ : TF (R` to `R) F ⟶ TK R := Over.homMk (𝟙 _ ≫ jFK (R := R) F) (by rw [Category.id_comp]; rfl)`. Establish `e` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (hbal _ (ptRos_isRos hG oa a).1 (ptRos_isRos hG oa a).2 χ x) κ.left)`.
+
+Establish `e' : val (LB.pullGen D.P.L _ _ (ptRos hG oa a) (D.pt2 χ x)) κ.left y J = val₂ (ptRos hG oa a) y J (cP D _ χ) (cP D _ x)`. Rewrite using `[val_pull hJ, val₂, ← comp_cP D κ, ← comp_cP D κ x, ← comp_lift]`. Both sides reduce to the same expression. Rewrite using `[ptSmul_val hG oa _ _ χ hJ, iota_val hB _ _ hJ, iota_val hB _ _ hJ, iota_b, ← e']`. Conclude with `((congrArg₂ (· * ·) (tau_symm (𝟙 (TF (R := R) F)) hJ _ _) rfl).trans (e.trans (tau_symm (𝟙 (TF (R := R) F)) hJ _ _))).symm`.
+-/
 theorem iota_act (hB : D.TauBimult) (a : O) (x : D.X) : iota hB F (a • x) = ptSmul hG oa a (iota hB F x) := by
   have hbal := oa.tau_bal (star a)
   rw [star_star] at hbal
@@ -165,6 +221,11 @@ theorem iota_act (hB : D.TauBimult) (a : O) (x : D.X) : iota hB F (a • x) = pt
   exact ((congrArg₂ (· * ·) (tau_symm (𝟙 (TF (R := R) F)) hJ _ _) rfl).trans
     (e.trans (tau_symm (𝟙 (TF (R := R) F)) hJ _ _))).symm
 
+/- English proof (translation)
+Use `oa.onB.hom a` as an intermediate fact. Take `⟨b, v⟩` from `(isTorusPtF_iff_val _ _).1 h`. Use `(isTorusPtF_iff_val _ _).2 ⟨by rw [ptSmul_b, b, MonObj.one_comp], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Establish `e` using `(ptRos_add hG oa a hJ 1 1 (cP D _ χ)).2`.
+
+Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face₃, C.face₃, _root_.mul_one, _root_.one_mul]`. Rewrite using `[ptSmul_val hG oa a g χ hJ, b, mul_eq_left.1 e.symm, _root_.mul_one]`. Conclude with `v _ y J hJ`.
+-/
 theorem torus_ptSmul {g : GtPtF D F} {t : D.X → F} (h : IsTorusPtF g t) (a : O) :
     IsTorusPtF (ptSmul hG oa a g) fun χ => t (star a • χ) := by
   have := oa.onB.hom a
@@ -184,6 +245,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F
 variable {F' : Type} [Field F'] [Algebra (FractionRing R) F']
 variable (f : F →+* F') (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F')
 
+/- English proof (translation)
+The claim follows from `gt_ext_val (by rw [gtExt_b, ptSmul_b, ptSmul_b, gtExt_b, Category.assoc]) fun χ y J hJ => by rw [gtExt_val f hf _ χ hJ, ptSmul_val hG oa _ _ χ hJ, gtExt_val f hf _ _ hJ, gtExt_b, ← comp_cP D (extMap f hf)] exact (val_corr hJ ((ptAct_ptSmul hG oa a g).2 _ (ptRos_isRos hG oa a).1 ( …`.
+-/
 theorem gtExt_ptSmul {O : Type} [Ring O] [StarRing O] [Module O D.X] (hG : GlobalFnsSt) (oa : D.OAct O) (a : O)
     (g : GtPtF D F) : gtExt D f hf (ptSmul hG oa a g) = ptSmul hG oa a (gtExt D f hf g) :=
   gt_ext_val (by rw [gtExt_b, ptSmul_b, ptSmul_b, gtExt_b, Category.assoc]) fun χ y J hJ => by
@@ -191,6 +255,11 @@ theorem gtExt_ptSmul {O : Type} [Ring O] [StarRing O] [Module O D.X] (hG : Globa
     exact (val_corr hJ ((ptAct_ptSmul hG oa a g).2 _ (ptRos_isRos hG oa a).1 (ptRos_isRos hG oa a).2 χ) _).symm.trans
       ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_pull_pair _ _ hJ _ _)))
 
+/- English proof (translation)
+Establish `e : spMap σ ≫ spMap f = spMap f`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hσ]`. Take `⟨b, v⟩` from `(eq_gtExt_iff f hf g _).1 rfl`. Use `⟨by rw [b, ← Category.assoc, e], fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Use `((val_corr hJ (v χ) _).trans (val_pull hJ _ _ _)).trans (Eq.trans ?_ ((val_pull hJ _ _ _).trans ((val_corr hJ (v χ) _).trans (val_pull hJ _ _ _))).symm)` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, e]`.
+-/
 theorem gtExt_fixed (σ : F' →+* F') (hσ : σ.comp f = f) (g : GtPtF D F) :
     spMap σ ≫ (gtExt D f hf g).b.left = (gtExt D f hf g).b.left ∧ ∀ χ, LB.Gen.Corr D.P.L _ _ _ _ ((gtExt D f hf g).s χ)
       (LB.pullGen D.P.L _ _ ((gtExt D f hf g).s χ) (spMap σ)) := by
@@ -204,6 +273,19 @@ theorem gtExt_fixed (σ : F' →+* F') (hσ : σ.comp f = f) (g : GtPtF D F) :
 
 end Extension
 
+/- English proof (translation)
+Set `O : Over (Sp V)` to `𝟙_ (Over (Sp V))`. Set `e : O.left ⟶ (G2 B').left` to `(lift (1 : O ⟶ B') 1).left`. Set `q' : O.left ⟶ B'.left` to `(1 : O ⟶ B').left`. Establish `hq' : ∀ I : ULift.{0} (Finset (Fin 2)), e ≫ (psum B' (x2 B') I.down).left = q'` using `fun I => congrArg (fun z => z.left) (NormIso.lift_one_psum B' (T := O) I.down)`. Take `⟨u, hu⟩` from `GlobalTheory.GenOrigin.exists_unit_along M M' hM hM' (K := ULift.{0} (Finset (Fin 2))) (fun I => (psum B (x2 B) I.down).left) (fun I => (psum B' (x2 B') I.down).left) (fun I => (-1) ^ (2 - I.down.card)) (by decide) β₂ e q q' hq hq' w hw`.
+
+Establish `hval : ∀ (T : Over (Sp V)) (z : T.left) (J : (T.left ⟶ B.left) → M.ι) (J' : (T.left ⟶ B'.left) → M'.ι), Good M z J → Good M' z J' → lamVal w (lift (1 : T ⟶ B') (1 : T ⟶ B')).left z J J' = gm (toUnit T).left z ⊤ u`. Introduce `T z J J' hJ hJ'`. Establish `hp : (lift (1 : T ⟶ B') (1 : T ⟶ B')).left = (toUnit T).left ≫ e` using `by show _ = (toUnit T ≫ lift (1 : O ⟶ B') 1).left`. Rewrite using `[comp_lift, MonObj.comp_one]`. Establish `key : ∀ (p : T.left ⟶ (G2 B').left) (j : (abelian₂ B M).ι) (k : (abelian₂ B' M').ι), (fun I : ULift.{0} (Finset (Fin 2)) => J (p ≫ β₂ ≫ (psum B (x2 B) I.down).left)) = j → (fun I : ULift.{0} (Finset (Fin 2)) => J' (p ≫ (psum B' (x2 B') I.down).left)) = k → lamVal w p z J J' = gw …` using `abelian₂ B M) (L' := abelian₂ B' M') w p z j k := by`.
+
+Introduce and unpack `p _ _ rfl rfl`. Both sides reduce to the same expression. Rewrite using `[hp]`. Use `(key _ (fun _ => J ((toUnit T).left ≫ q)) (fun _ => J' ((toUnit T).left ≫ q')) (funext fun I => ?_) (funext fun I => ?_)).trans (hu T.left (toUnit T).left z _ _ (hJ ((toUnit T).left ≫ q)) (hJ' ((toUnit T).left ≫ q')))` and prove the remaining obligations. Rewrite using `[← hq I, Category.assoc, Category.assoc]`.
+
+Rewrite using `[← hq' I, Category.assoc]`. Establish `hK : (toUnit (TK V)).left = jK V` using `by simpa using Over.w (toUnit (TK V))`. Establish `h1 : (Units.map (jK V).appTop.hom.toMonoidHom u : Γ((TK V).left, ⊤)ˣ) = 1` using `unit_ext fun x _ => by choose a ha using fun χ : (TK V).left ⟶ B.left => exists_chart hM (χ x) choose b hb using fun χ : (TK V).left ⟶ B'.left => exists_chart hM' (χ x)`. Establish `h` using `(hval (TK V) x a b ha hb).symm.trans (hgen x a b ha hb)`. Rewrite `h` using `[hK]`.
+
+Rewrite using `[map_one]`. Conclude with `(gm_pull (𝟙 _) (jK V) x ⊤ trivial u).trans ((congrArg (fun g => gm g x ⊤ u) (Category.id_comp _)).trans h)`. Establish `hu1 : u = 1` using `Units.ext (GlobalTheory.GenOrigin.jK_appTop_inj V (by`. Use `congrArg Units.val h1` as an intermediate fact. Simplify using `using this))`.
+
+Introduce `T z J J' hJ hJ'`. Rewrite using `[hval T z J J' hJ hJ', hu1]`. Conclude with `map_one _`.
+-/
 theorem origin_of_generic {S : Scheme.{0}} {V : Type} [CommRing V] [IsDomain V] (B : Over S) (B' : Over (Sp V)) [GrpObj B]
     [IsCommMonObj B] [GrpObj B'] [IsCommMonObj B'] (M : LB B.left) (M' : LB B'.left) (hM : M.IsLB) (hM' : M'.IsLB)
     (β₂ : (G2 B').left ⟶ (G2 B).left) (w : LB.Iso (abelian₂ B' M') ((abelian₂ B M).pull β₂))
@@ -254,9 +336,17 @@ theorem origin_of_generic {S : Scheme.{0}} {V : Type} [CommRing V] [IsDomain V] 
   intro T z J J' hJ hJ'
   rw [hval T z J J' hJ hJ', hu1]; exact map_one _
 
+/- English proof (translation)
+The claim follows from `mul_eq_left.1 ((Q.c_add 0 0).symm.trans (by rw [add_zero]))`.
+-/
 theorem data_c_zero {R : Type} [CommRing R] [IsDomain R] (Q : Data R) : Q.c 0 = 1 :=
   mul_eq_left.1 ((Q.c_add 0 0).symm.trans (by rw [add_zero]))
 
+/- English proof (translation)
+Use `haveI := F.inc_hom`. Use `haveI := F.o.onB.hom F.f`. Use `origin_of_generic D.P.A Q.B D.P.L Q.M.L D.P.isLB Q.M.isLB _ F.w (1 : 𝟙_ (Over (Sp R)) ⟶ D.P.A).left (fun I => ?_) F.w_gen fun z J J' hJ hJ' => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.MumRigidZero.lift_comp_left, MonObj.one_comp, MonObj.one_comp]`. Conclude with `congrArg (fun z => z.left) (NormIso.lift_one_psum D.P.A (T := 𝟙_ (Over (Sp R))) I.down)`.
+
+Establish `h` using `F.tau 0 0 z J J' hJ hJ'`. Rewrite `h` using `[Q.val_tau_zero 0 z J' hJ', map_zero, smul_zero, GlobalTheory.TInj.val_tau_zero_zero D hB z J hJ, data_c_zero, MonObj.comp_one, _root_.mul_one]`. Conclude with `h.symm`.
+-/
 theorem factor_origin {R : Type} [CommRing R] [IsDomain R] {Q : Data R} {D : DegPre R} (hB : D.TauBimult) (F : PFactor Q D) :
     ∀ (T : Over (Sp R)) (z : T.left) (J : (T.left ⟶ D.P.A.left) → D.P.L.ι) (J' : (T.left ⟶ Q.B.left) → Q.M.L.ι),
       Good D.P.L z J → Good Q.M.L z J' → lamVal F.w (lift (1 : T ⟶ Q.B) (1 : T ⟶ Q.B)).left z J J' = 1 := by
@@ -271,6 +361,13 @@ theorem factor_origin {R : Type} [CommRing R] [IsDomain R] {Q : Data R} {D : Deg
       MonObj.comp_one, _root_.mul_one] at h
     exact h.symm
 
+/- English proof (translation)
+Establish `st : ∀ i, A (i + 1) * L (i + 1) * (W (i + 1) * P (i + 1))⁻¹ = A i * L i * (W i * P i)⁻¹ * (A 1 * L 1 * (W 1 * P 1)⁻¹)` using `fun i => by`. Establish `a₁` using `congrArg Additive.ofMul (hA i)`. Establish `a₂` using `congrArg Additive.ofMul (hL i)`. Establish `a₃` using `congrArg Additive.ofMul (hW i)`. Establish `a₄` using `congrArg Additive.ofMul (hP i)`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at a₁ a₂ a₃ a₄ ⊢`. Take the linear combination `(norm := abel) a₁ + a₂ - a₃ - a₄`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`.
+
+Conclude with `mul_eq_right.1 (st 0).symm`. Consider the case `succ n ih => rw [st, ih, pow_succ]`.
+-/
 theorem seq_pow {U : Type} [CommGroup U] (A L W P c c' c₀ : ℕ → U)
     (hA : ∀ i, A (i + 1) * c' i = A i * A 1) (hL : ∀ i, L (i + 1) * c i = c' i * L i * L 1)
     (hW : ∀ i, W (i + 1) * c i = c₀ i * W i * W 1) (hP : ∀ i, P (i + 1) * c₀ i = P i * P 1) (n : ℕ) :
@@ -288,6 +385,47 @@ theorem seq_pow {U : Type} [CommGroup U] (A L W P c c' c₀ : ℕ → U)
   | zero => rw [pow_zero]; exact mul_eq_right.1 (st 0).symm
   | succ n ih => rw [st, ih, pow_succ]
 
+/- English proof (translation)
+Use `haveI := F.inc_hom`. Use `haveI := F.o.onB.hom F.f`. Take `⟨β, β₂, w, hpb, hsq, hw, hc, htau⟩` from `hD`. Establish `hcomm : (spMap iw ≫ (T.c₀ (e a)).left) ≫ T.B.hom = 𝟙 (Sp R) ≫ spMap iw`. Rewrite using `[Category.assoc, Over.w (T.c₀ (e a))]`.
+
+Simplify using the standard rewrite rules. Set `d : 𝟙_ (Over (Sp R)) ⟶ Q.B` to `Over.homMk (hpb.1.lift _ _ hcomm) (by simpa using hpb.1.lift_snd _ _ hcomm)`. Establish `hd : d.left ≫ β = spMap iw ≫ (T.c₀ (e a)).left` using `hpb.1.lift_fst _ _ hcomm`. Establish `key : ∀ k : ℕ, T.c₀ ((k : ℤ) • e a) = T.c₀ (e a) ^ k` using `fun k => by`. Proceed by induction on `k with`.
+
+Consider the case `zero => rw [Nat.cast_zero, zero_smul, pow_zero, T.c₀_zero]`. Consider the case `succ k ih => rw [Nat.cast_succ, add_smul, one_smul, T.c₀_add, ih, pow_succ]`. Establish `hdk : ∀ k : ℕ, (d ^ k).left ≫ β = spMap iw ≫ (T.c₀ ((k : ℤ) • e a)).left` using `fun k => by`. Rewrite using `[key]`. Conclude with `GlobalTheory.FrameMove.pow_comm hpb hd k`.
+
+Establish `hdn : d ^ n = Q.c a` using `Over.OverMorphism.ext (hpb.1.hom_ext ((hdk n).trans (hc a).symm) ((Over.w _).trans (Over.w _).symm))`. Use `⟨d, hdn, fun h hb y z J' hJ' => ?_⟩` and prove the remaining obligations. Establish `hw0 : ∀ (T' : Over (Sp R)) z J J', Good T.M.L z J → Good Q.M.L z J' → lamVal w (lift (1 : T' ⟶ Q.B) (1 : T' ⟶ Q.B)).left z J J' = 1`. Use `GlobalTheory.GenOrigin.lamVal_origin_of_generic T.B Q.B T.M.L Q.M.L T.M.isLB Q.M.isLB _ β β₂ w hpb hsq hw fun z J J' hJ hJ' => ?_` and prove the remaining obligations. Take `⟨k, hk, hv⟩` from `htau 0 0`.
+
+Establish `h` using `hv z J J' hJ hJ'`. Establish `k1 : k = 1`. Use `ext`. Rewrite using `[hk]`. Simplify using the standard rewrite rules.
+
+Establish `e0 : ((n : ℤ) • e 0) = 0` using `by rw [map_zero, smul_zero]`. Rewrite `h` using `[k1, Q.val_tau_zero 0 z J' hJ', e0, GlobalTheory.TInj.val_τ₀_zero_at T _ z J hJ, data_c_zero, MonObj.comp_one]`. Establish `u1 : unitOn (1 : (FractionRing R)ˣ) = 1` using `map_one _`. Simplify using `only [u1, map_one, _root_.one_mul, _root_.mul_one] at h`. Conclude with `h.symm`.
+
+Set `Z : Over (Sp R)` to `TF (R := R) (FractionRing R)`. Set `Z₀ : Over (Sp W)` to `Over.mk (Z.hom ≫ spMap iw)`. Take `⟨J, hJ⟩` from `GlobalTheory.UU.exists_good_pt Q.M.isLB z`. Take `⟨J₀, hJ₀⟩` from `GlobalTheory.UU.exists_good_pt T.M.isLB z`. Set `x : Z ⟶ Q.B` to `toUnit Z ≫ d`.
+
+Set `v : Z ⟶ Q.B` to `toUnit Z ≫ Q.c y`. Set `χ` to `F.f • F.xi y`. Establish `hχ : cP D Z χ = v ≫ F.inc ≫ F.o.onB.act F.f`. Rewrite using `[cPoint_act F.o, cP, F.c_xi]`. Simplify using `only [v, Category.assoc]`.
+
+Establish `up : ∀ (p : 𝟙_ (Over (Sp R)) ⟶ Q.B) (p₀ : 𝟙_ (Over (Sp W)) ⟶ T.B), p.left ≫ β = spMap iw ≫ p₀.left → (toUnit Z₀ ≫ p₀).left = (toUnit Z ≫ p).left ≫ β` using `fun p p₀ hp => by show (Z.hom ≫ spMap iw) ≫ p₀.left = (Z.hom ≫ p.left) ≫ β`. Rewrite using `[Category.assoc, Category.assoc, hp]`. Establish `S` using `seq_pow (U := (Z.left.presheaf.stalk z)ˣ) (fun i => charVal (i • h) χ z J') (fun i => lamVal F.w (lift (x ^ i) v).left z J' J) (fun i => lamVal w (lift (x ^ i) v).left z J₀ J) (fun i => val (T.τ₀ ((i : ℤ) • e a) ((n : ℤ) • e y)) (toUnit Z₀).left z J₀) (fun i => cubV Q.cub z J (x …`. Establish `C : IsCub (th D (T` using `Z) z J') := isCub_cubV D.cub hJ'`. Establish `t` using `add_val (i • h) h χ hJ'`.
+
+Rewrite `t` using `[nsmul_b, C.s01, C.s12, ← succ_nsmul]`. Simplify using `only [one_nsmul]`. Conclude with `t)`. Use the proof step `(fun i => by`. Establish `t` using `GlobalTheory.MumfordE8Bimultiplicative.lamVal_law₁ Q.B D.P.A Q.M _ Q.cub D.cub Q.isAb F.inc (F.inc ≫ F.o.onB.act F.f) F.w F.w_gen (factor_origin hB F) Z (x ^ i) x v z J' J hJ' hJ`.
+
+Rewrite `t` using `[← pow_succ, ← hχ, MonObj.pow_comp, ← show h.b = x ≫ F.inc from hb]`. Simplify using `only [pow_one]`. Conclude with `t)`. Use the proof step `(fun i => by`. Establish `t` using `(GlobalTheory.LamRigid.lam_iso_laws _ _ T.B Q.B T.M Q.M T.cub Q.cub (spMap iw) β β₂ w hpb Q.isAb hsq hw hw0 Z (x ^ i) x v z J₀ J hJ₀ hJ).2 (toUnit Z₀ ≫ T.c₀ ((i : ℤ) • e a)) (toUnit Z₀ ≫ T.c₀ (e a)) (toUnit Z₀ ≫ T.c₀ ((n : ℤ) • e y)) (by rw [up _ _ (hdk i), MonObj.comp_pow]) (up …`.
+
+Rewrite `t` using `[← pow_succ]`. Simplify using `only [pow_one]`. Conclude with `t)`. Use the proof step `(fun i => by`. Establish `t` using `GlobalTheory.TChart.PeriodAdd.val_τ₀_add T Z₀ (z := z) (J := J₀) hJ₀ ((i : ℤ) • e a) (e a) ((n : ℤ) • e y)`.
+
+Establish `g : ∀ p p' : Fin T.r → ℤ, p = p' → val (T.τ₀ p ((n : ℤ) • e y)) (toUnit Z₀).left z J₀ = val (T.τ₀ p' ((n : ℤ) • e y)) (toUnit Z₀).left z J₀` using `by rintro _ _ rfl; rfl`. Rewrite `t` using `[g ((i : ℤ) • e a + e a) (((i + 1 : ℕ) : ℤ) • e a) (by rw [Nat.cast_succ, add_smul, one_smul]), g (e a) (((1 : ℕ) : ℤ) • e a) (by rw [Nat.cast_one, one_smul])]`. Conclude with `t) n`. Establish `hj : jFK (R` using `R) (FractionRing R) = 𝟙 _ := by`. Simplify using `only [jFK, Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`.
+
+Set `ρ : Z ⟶ TK R` to `Over.homMk (jFK (R := R) (FractionRing R)) rfl`. Establish `hl : (lift (x ^ n) v).left = (lift (toUnit (TK R) ≫ Q.c a) (toUnit (TK R) ≫ Q.c y)).left`. Establish `: lift (x ^ n) v = ρ ≫ lift (toUnit (TK R) ≫ Q.c a) (toUnit (TK R) ≫ Q.c y)`. Rewrite using `[comp_lift, ← Category.assoc, ← Category.assoc, toUnit_unique (ρ ≫ toUnit _) (toUnit Z), ← hdn, MonObj.comp_pow]`. Rewrite using `[this, Over.comp_left, show ρ.left = 𝟙 _ from hj]`.
+
+Conclude with `Category.id_comp _`. Establish `hr : (toUnit Z₀).left = (TK R).hom ≫ spMap iw` using `by show (jFK (R := R) (FractionRing R) ≫ jK R) ≫ spMap iw = jK R ≫ spMap iw`. Rewrite using `[hj]`. Conclude with `congrArg (· ≫ spMap iw) (Category.id_comp _)`. Establish `ht : charVal (iota hB (FractionRing R) (F.xi a)) χ z J' = val (D.tau (F.xi a) χ) (𝟙 _) z J'`.
+
+Rewrite using `[iota_val hB _ _ hJ', tauVal, hj]`. Conclude with `congrArg (fun r => val (D.tau (F.xi a) χ) r z J') (Category.id_comp _)`. Take `⟨k, hk, hv⟩` from `htau a y`. Establish `hk' : (k : FractionRing R) = (∏ i, algebraMap R (FractionRing R) (s i) ^ (ε i (e a) (e y))) ^ n`. Rewrite using `[hk, ← Finset.prod_pow]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => by rw [mul_comm, zpow_mul, zpow_natCast]`. Establish `h0 : (∏ i, algebraMap R (FractionRing R) (s i) ^ (ε i (e a) (e y))) ≠ 0` using `fun h0 => k.ne_zero (by rw [hk', h0, zero_pow (by omega)])`. Take `rfl : k = Units.mk0 _ h0 ^ n` from `Units.ext (by rw [hk', Units.val_pow_eq_pow_val, Units.val_mk0])`. Establish `t₁` using `hv z J₀ J hJ₀ hJ`. Establish `t₂` using `F.tau a y z J' J hJ' hJ`.
+
+Establish `t₃ : gm (𝟙 (TK R).left) z ⊤ (unitOn (Units.mk0 _ h0 ^ n)) = stalkUnits (F` using `FractionRing R) z (Units.mk0 _ h0) ^ n := (gm_unitOn (F := FractionRing R) z _).trans (map_pow _ _ _)`. Establish `alg : ∀ {U : Type} [CommGroup U] {q k A L W P E t : U}, q = k ^ n * (W * P) → q = L * t → A * L * (W * P)⁻¹ = E ^ n → t = (k * E⁻¹) ^ n * A`. Introduce `U _ q k A L W P E t h₁ h₂ h₃`. Rewrite using `[mul_pow, inv_pow, ← h₃]`. Establish `a₁` using `congrArg Additive.ofMul (h₂.symm.trans h₁)`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Generalize the expression as in `k ^ n = m at a₁ ⊢`. Simplify using `only [ofMul_mul, ofMul_inv] at a₁ ⊢`. Take the linear combination `(norm := abel) a₁`. Use `beta_reduce at S`.
+
+Rewrite `S` using `[hl, hr]`. Rewrite `t₁` using `[t₃]`. Conclude with `⟨_, ht.trans (alg (U := (Z.left.presheaf.stalk z)ˣ) t₁ t₂ S)⟩`.
+-/
 theorem exists_root {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) {R : Type} [CommRing R]
     [IsDomain R] (iw : W →+* R) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) {n : ℕ}
     (hn : 1 ≤ n) (Q : Data R) (e : Q.X ≃+ (Fin T.r → ℤ)) (hD : DataFrom T iw s ε n Q e) {D : DegPre R} (hB : D.TauBimult)
@@ -410,6 +548,11 @@ theorem exists_root {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : 
   rw [t₃] at t₁
   exact ⟨_, ht.trans (alg (U := (Z.left.presheaf.stalk z)ˣ) t₁ t₂ S)⟩
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ X`. Use `choose u hu using h`. Set `l : X →ₗ[ℤ] Additive U` to `b.constr ℤ fun i => Additive.ofMul (u (Multiplicative.ofAdd (b i)))`. Establish `: n • l = t.toAdditiveRight.toIntLinearMap` using `b.ext fun i => by`. Rewrite using `[LinearMap.smul_apply, b.constr_basis, ← ofMul_pow, ← hu]`.
+
+Both sides reduce to the same expression. Conclude with `⟨l.toAddMonoidHom.toMultiplicativeLeft, MonoidHom.ext fun x => congrArg Additive.toMul (LinearMap.congr_fun this x.toAdd)⟩`.
+-/
 theorem exists_hom_root {X U : Type} [AddCommGroup X] [Module.Free ℤ X] [CommGroup U] (n : ℕ) (t : Multiplicative X →* U)
     (h : ∀ x, ∃ u, t x = u ^ n) : ∃ r : Multiplicative X →* U, r ^ n = t := by
   let b := Module.Free.chooseBasis ℤ X
@@ -420,6 +563,21 @@ theorem exists_hom_root {X U : Type} [AddCommGroup X] [Module.Free ℤ X] [CommG
   exact ⟨l.toAddMonoidHom.toMultiplicativeLeft, MonoidHom.ext fun x =>
     congrArg Additive.toMul (LinearMap.congr_fun this x.toAdd)⟩
 
+/- English proof (translation)
+Use `haveI := F.inc_hom`. Establish `hG` using `GlobalTheory.globalFns_holds`. Take `⟨d, hdn, hd⟩` from `exists_root T iw s ε hn Q e hD hB F a`. Set `E` to `ptSmulHom hG F.o (FractionRing R) F.e`. Establish `EE : ∀ g, E (E g) = E g` using `fun g => (mul_ptSmul hG F.o F.e F.e g).symm.trans (by rw [F.idem]; rfl)`.
+
+Establish `Ei : E (iota hB _ (F.xi a)) = iota hB _ (F.xi a)` using `(iota_act hG F.o hB F.e (F.xi a)).symm.trans (by rw [← F.xi_xp, F.xp_xi])`. Take `⟨h₁, hb₁⟩` from `exists_lift (D := D) (F := FractionRing R) ((toUnit _ ≫ d) ≫ F.inc)`. Establish `hb : (E h₁).b = (toUnit _ ≫ d) ≫ F.inc`. Use `(ptSmul_b hG F.o F.e h₁).trans ?_` and prove the remaining obligations. Rewrite using `[hb₁, ← F.pr_inc, Category.assoc, ← Category.assoc F.inc, F.inc_pr, Category.id_comp]`.
+
+Set `g` to `iota hB (FractionRing R) (F.xi a) - n • E h₁`. Establish `Eg : E g = g` using `by rw [map_sub, map_nsmul, EE, Ei]`. Establish `gb : g.b = 1`. Rewrite using `[show g = iota hB (FractionRing R) (F.xi a) + -(n • E h₁) from sub_eq_add_neg _ _, add_b, neg_b, nsmul_b, hb, iota_b, ← MonObj.pow_comp, ← MonObj.comp_pow, hdn, cP, F.c_xi, Category.assoc, mul_inv_cancel]`. Take `⟨t, ht⟩` from `exists_isTorusPtF_of_b gb`.
+
+Establish `ht'` using `torus_ptSmul hG F.o ht F.e`. Rewrite `ht'` using `[show ptSmul hG F.o F.e g = g from Eg]`. Establish `te : ∀ χ, t (Multiplicative.ofAdd χ) = t (Multiplicative.ofAdd (star F.e • χ))` using `fun χ => Units.ext (congrFun (ht.fun_unique ht') χ)`. Take `⟨r, rfl⟩` from `exists_hom_root n t fun χ => by`. Take `⟨y, hy⟩` from `F.onto χ.toAdd`.
+
+Take `⟨z, J, hJ⟩` from `exists_good_chart D (FractionRing R)`. Establish `C : IsCub (th D (T` using `TF (R := R) (FractionRing R)) z J) := isCub_cubV D.cub hJ`. Take `⟨u, hu⟩` from `hd (E h₁) hb y z J hJ`. Establish `k` using `add_val g (n • E h₁) (F.f • F.xi y) hJ`. Rewrite `k` using `[gb, C.face₂, _root_.mul_one, show g + n • E h₁ = iota hB (FractionRing R) (F.xi a) from sub_add_cancel _ _, hu]`.
+
+Establish `k'` using `torusPt_val t (F.f • F.xi y) hJ`. Rewrite `k'` using `[← (isTorusPtF_iff_eq g t).1 ht, ← mul_right_cancel k]`. Use `⟨(stalkUnits (F := FractionRing R) z).symm u, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, k', MulEquiv.symm_apply_apply, te (F.f • F.xi y), ← hy, ← te]`. Both sides reduce to the same expression.
+
+Use `⟨E (E h₁ + torusPt D (FractionRing R) (Additive.ofMul r)), ?_, EE _⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul, nsmul_add, ← map_nsmul (torusPt D (FractionRing R)), ← ofMul_pow, ← (isTorusPtF_iff_eq g _).1 ht, add_sub_cancel, Ei]`.
+-/
 theorem exists_rational {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) {R : Type} [CommRing R]
     [IsDomain R] (iw : W →+* R) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) {n : ℕ}
     (hn : 1 ≤ n) (Q : Data R) (e : Q.X ≃+ (Fin T.r → ℤ)) (hD : DataFrom T iw s ε n Q e) {D : DegPre R} (hB : D.TauBimult)
@@ -461,6 +619,11 @@ theorem exists_rational {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (
   refine ⟨E (E h₁ + torusPt D (FractionRing R) (Additive.ofMul r)), ?_, EE _⟩
   rw [← map_nsmul, nsmul_add, ← map_nsmul (torusPt D (FractionRing R)), ← ofMul_pow, ← (isTorusPtF_iff_eq g _).1 ht, add_sub_cancel, Ei]
 
+/- English proof (translation)
+Introduce `o W _ _ _ T R _ _ _ iw I _ s ε n _ hn _ _ _ Q e hD _ D' F σ a`. Take `⟨h, hn', he⟩` from `exists_rational T iw s ε hn Q e hD D'.tau_bimult F a`. Establish `hf : (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))).comp (algebraMap (FractionRing R) (FractionRing R)) = algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))` using `RingHom.ext fun _ => rfl`. Use `⟨gtExt D'.toPre _ hf h, gtExt_fixed _ hf _ (RingHom.ext fun x => σ.commutes x) h, ⟨iota D'.tau_bimult _ (F.xi a), (isNsmul_iff_eq _ _ _).2 ?_, isIota_iota _ _⟩, (ptAct_iff_eq_ptSmul GlobalTheory.globalFns_holds F.o F.e _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul, hn', gtExt_iota]`.
+
+Rewrite using `[← gtExt_ptSmul, he]`.
+-/
 theorem exists_fixed_root : ∀ {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (iw : W →+* R) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (n : ℕ), IsCN R → 1 ≤ n → IsUnit (n : R) → ∀ ζ : R, IsPrimitiveRoot ζ n → ∀ (Q : Data R) (e : Q.X ≃+ (Fin T.r → ℤ)), DataFrom T iw s ε n Q e → TorsRat Q.B n → ∀ (D' : DegData R (maximalIdeal R)) (F : PFactor Q D'.toPre) (σ : AlgebraicClosure (FractionRing R) ≃ₐ[FractionRing R] AlgebraicClosure (FractionRing R)), ∀ a : Q.X, ∃ h : GtPtF D'.toPre (AlgebraicClosure (FractionRing R)), (spMap σ.toAlgHom.toRingHom ≫ h.b.left = h.b.left ∧ ∀ χ : D'.toPre.X, LB.Gen.Corr D'.toPre.P.L _ _ _ _ (h.s χ) (LB.pullGen D'.toPre.P.L _ _ (h.s χ) (spMap σ.toAlgHom.toRingHom))) ∧ (∃ z : GtPtF D'.toPre (AlgebraicClosure (FractionRing R)), GtPtF.IsNsmul n h z ∧ GtPtF.IsIota (F.xi a) z) ∧ GtPtAct F.o F.e h h := by
   intro o W _ _ _ T R _ _ _ iw I _ s ε n _ hn _ _ _ Q e hD _ D' F σ a
   obtain ⟨h, hn', he⟩ := exists_rational T iw s ε hn Q e hD D'.tau_bimult F a

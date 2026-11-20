@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.HopfFitt
 
+/- English proof (translation)
+Establish `e : T.adjugate.mulVec (T.mulVec v) = (T.det • (1 : Matrix (Fin n) (Fin n) D)).mulVec v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul]`. Establish `ek` using `congrFun e k`. Establish `h1 : (T.det • (1 : Matrix (Fin n) (Fin n) D)).mulVec v k = T.det * v k`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`.
+
+Rewrite using `[← h1, ← ek]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `J.sum_mem fun j _ => J.mul_mem_left _ (h j)`.
+-/
 theorem det_mul_mem {D : Type} [CommRing D] {n : ℕ} (T : Matrix (Fin n) (Fin n) D) (v : Fin n → D)
     (J : Ideal D) (h : ∀ k, T.mulVec v k ∈ J) (k : Fin n) : T.det * v k ∈ J := by
   have e : T.adjugate.mulVec (T.mulVec v) = (T.det • (1 : Matrix (Fin n) (Fin n) D)).mulVec v := by
@@ -23,6 +28,11 @@ theorem det_mul_mem {D : Type} [CommRing D] {n : ℕ} (T : Matrix (Fin n) (Fin n
   simp only [Matrix.mulVec, dotProduct]
   exact J.sum_mem fun j _ => J.mul_mem_left _ (h j)
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Establish `: f.mapMatrix (Matrix.diagonal (fun _ => β) - A) = Matrix.diagonal (fun _ => f β)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[hA]`. Simplify using `[Matrix.diagonal_apply_ne _ hij, hA]`. Rewrite using `[this, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem map_det_diag_sub {D S : Type} [CommRing D] [CommRing S] (f : D →+* S) {n : ℕ} (β : D)
     (A : Matrix (Fin n) (Fin n) D) (hA : ∀ i j, f (A i j) = 0) :
     f (Matrix.diagonal (fun _ => β) - A).det = f β ^ n := by
@@ -34,6 +44,51 @@ theorem map_det_diag_sub {D S : Type} [CommRing D] [CommRing S] (f : D →+* S) 
     · simp [Matrix.diagonal_apply_ne _ hij, hA]
   rw [this, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+Introduce `R _ D _ _ _ g x r c hr hc`. Use `set ε : D →ₐ[R] R := counitAlgHom R D with hε`. Use `set I : Ideal D := RingHom.ker ε with hI`. Establish `memI : ∀ a : D, a ∈ I ↔ ε a = 0` using `fun a => RingHom.mem_ker`. Use `haveI : Module.Finite R I := Module.Finite.of_surjective (AugCot.projKer ε) (fun a => ⟨a, AugCot.projKer_coe ε a⟩)`.
+
+Take `⟨m, y, hy⟩` from `Module.Finite.exists_fin (R := R) (M := I)`. Establish `hyR : ∀ a : I, ∃ s : Fin m → R, ∑ l, s l • y l = a` using `fun a => (Submodule.mem_span_range_iff_exists_fun R).1 (hy ▸ Submodule.mem_top)`. Use `set yD : Fin m → D := fun l => (y l : D) with hyD`. Establish `hIspan : I = Ideal.span (Set.range yD)`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `a ha`. Take `⟨s, hs⟩` from `hyR ⟨a, ha⟩`. Establish `hs' : a = ∑ l, algebraMap R D (s l) * yD l`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs']`.
+
+Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨l, rfl⟩)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `(y l).2`. Establish `hsq : ∀ z ∈ I ^ 2, ∃ a : Fin m → D, (∀ l, a l ∈ I) ∧ ∑ l, a l * yD l = z`.
+
+Introduce `z hz`. Establish `hz' : z ∈ I • Submodule.span D (Set.range yD)`. Rewrite `hz` using `[pow_two, ← Ideal.smul_eq_mul]`. Use `hz using 2` and compare the differences between its conclusion and the goal. Conclude with `hIspan.symm`.
+
+Take `⟨a, ha, hsum⟩` from `(Submodule.mem_ideal_smul_span_iff_exists_sum I yD z).1 hz'`. Use `⟨fun l => a l, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsum, Finsupp.sum_fintype a (fun i c => c • yD i) (fun i => zero_smul _ _)]`. Simplify using `[smul_eq_mul]`. Use `choose xt hxt using fun i => I.toCotangent_surjective (x i)`.
+
+Use `set xD : Fin g → D := fun i => (xt i : D) with hxD`. Use `set J : Ideal D := Ideal.span (Set.range xD) with hJ`. Use `choose s hs using fun l => (Submodule.mem_span_range_iff_exists_fun R).1 (hr (I.toCotangent (y l)))`. Establish `h1 : ∀ l, algebraMap R D r * yD l - ∑ i, algebraMap R D (s l i) * xD i ∈ I ^ 2`. Introduce `l`.
+
+Establish `h0 : I.toCotangent (r • y l - ∑ i, s l i • xt i) = 0`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [LinearMap.map_smul_of_tower, hxt]`. Rewrite using `[hs l, sub_self]`. Use `(I.toCotangent_eq_zero _).1 h0` as an intermediate fact.
+
+Simplify `this` using `[Algebra.smul_def, yD, xD]`. Use `choose A hA hAsum using fun l => hsq _ (h1 l)`. Use `set T : Matrix (Fin m) (Fin m) D := Matrix.diagonal (fun _ => algebraMap R D r) - Matrix.of A with hT`. Establish `hTv : ∀ l, T.mulVec yD l ∈ J`. Introduce `l`.
+
+Establish `e : T.mulVec yD l = ∑ i, algebraMap R D (s l i) * xD i`. Use `hAsum l` as an intermediate fact. Simplify using `only [hT, Matrix.sub_mulVec, Pi.sub_apply, Matrix.mulVec_diagonal]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `J.sum_mem fun i _ => J.mul_mem_left _ (Ideal.subset_span ⟨i, rfl⟩)`. Use `set b := T.det with hb`. Establish `hbI : ∀ a ∈ I, b * a ∈ J`.
+
+Introduce `a ha`. Rewrite `ha` using `[hIspan]`. Take `⟨t, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 ha`. Rewrite using `[Finset.mul_sum]`. Conclude with `J.sum_mem fun l _ => by`.
+
+Rewrite using `[mul_left_comm]`. Conclude with `J.mul_mem_left _ (det_mul_mem T yD J hTv l)`. Establish `hεb : ε b = r ^ m`. Use `map_det_diag_sub (ε : D →+* R) (algebraMap R D r) (Matrix.of A) (fun i j => (memI _).1 (hA i j))` as an intermediate fact. Simplify `this` using `[hb, hT]`.
+
+Establish `h2 : ∀ i, b * (algebraMap R D c * xD i) ∈ I • Submodule.span D (Set.range xD)`. Introduce `i`. Establish `h0 : I.toCotangent (c • xt i) = 0`. Rewrite using `[LinearMap.map_smul_of_tower, hxt]`. Conclude with `hc _`.
+
+Establish `hz` using `(I.toCotangent_eq_zero _).1 h0`. Take `⟨a, ha, hsum⟩` from `hsq _ hz`. Establish `e : b * (algebraMap R D c * xD i) = ∑ l, a l • (b * yD l)`. Rewrite using `[show algebraMap R D c * xD i = ((c • xt i : I) : D) by simp [Algebra.smul_def, xD], ← hsum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [smul_eq_mul]; ring`.
+
+Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem_smul (ha l) (hbI _ (y l).2)`. Use `choose A' hA' hA'sum using fun i => (Submodule.mem_ideal_smul_span_iff_exists_sum I xD _).1 (h2 i)`. Use `set T' : Matrix (Fin g) (Fin g) D := Matrix.diagonal (fun _ => b * algebraMap R D c) - Matrix.of (fun i j => A' i j) with hT'`. Establish `hT'v : ∀ i, T'.mulVec xD i ∈ (⊥ : Ideal D)`.
+
+Introduce `i`. Use `hA'sum i` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_fintype (A' i) (fun i c => c • xD i) (fun i => zero_smul _ _)]`. Simplify using `only [smul_eq_mul] at this`. Rewrite using `[Ideal.mem_bot]`.
+
+Simplify using `only [hT', Matrix.sub_mulVec, Pi.sub_apply, Matrix.mulVec_diagonal]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `set Δ := T'.det with hΔ`.
+
+Establish `hΔx : ∀ i, Δ * xD i = 0` using `fun i => Ideal.mem_bot.1 (det_mul_mem T' xD ⊥ hT'v i)`. Establish `hεΔ : ε Δ = (r ^ m * c) ^ g`. Establish `key : ε Δ = ε (b * algebraMap R D c) ^ g` using `map_det_diag_sub (ε : D →+* R) (b * algebraMap R D c) (Matrix.of (fun i j => A' i j)) (fun i j => (memI _).1 (hA' i j))`. Rewrite using `[key, map_mul, AlgHom.commutes, hεb, Algebra.algebraMap_self, RingHom.id_apply]`. Use `⟨m + m * g, b * Δ, fun d => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hd : d - algebraMap R D (ε d) ∈ I`. Rewrite using `[memI, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Establish `hk : (d - algebraMap R D (ε d)) * (b * Δ) = 0`. Take `⟨t, ht⟩` from `Ideal.mem_span_range_iff_exists_fun.1 (hbI _ hd)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← ht, Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [mul_left_comm, hΔx, mul_zero]`. Rewrite `hk` using `[sub_mul, sub_eq_zero]`. Conclude with `hk`. Use `show ε (b * Δ) = _`.
+
+Rewrite using `[map_mul, hεb, hεΔ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_integral : ∀ (R : Type) [CommRing R] (D : Type) [CommRing D] [HopfAlgebra R D] [Module.Finite R D] (g : ℕ) (x : Fin g → Cot R D) (r c : R), (∀ w : Cot R D, r • w ∈ Submodule.span R (Set.range x)) → (∀ w : Cot R D, c • w = 0) → ∃ (k : ℕ) (Λ : D), (∀ d : D, d * Λ = algebraMap R D (Coalgebra.counit (R := R) d) * Λ) ∧ Coalgebra.counit (R := R) Λ = r ^ k * c ^ g := by
   intro R _ D _ _ _ g x r c hr hc
   set ε : D →ₐ[R] R := counitAlgHom R D with hε

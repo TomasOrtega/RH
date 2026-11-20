@@ -11,6 +11,11 @@ namespace GlobalTheory.GaussMarginal
 
 open Real
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h` using `(measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => μ) 0).symm`. Rewrite using `[← h.lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _), Fin.prod_univ_succ, ← ih (fun i => f i.succ) (fun i => hf _), ← lintegral_prod_mul (hf 0).aemeasurable (Finset.measurable_prod _ fun i _ => (hf i.succ).comp (measurable_pi_apply i)).aemeasurable]`.
+
+Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_succ, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv]`.
+-/
 theorem lintegral_pi_fin {E : Type*} [MeasurableSpace E] (n : ℕ) (μ : Measure E) [SigmaFinite μ]
     (f : Fin n → E → ENNReal) (hf : ∀ i, Measurable (f i)) :
     ∫⁻ x : Fin n → E, ∏ i, f i (x i) ∂(Measure.pi fun _ => μ) = ∏ i, ∫⁻ t, f i t ∂μ := by
@@ -24,6 +29,11 @@ theorem lintegral_pi_fin {E : Type*} [MeasurableSpace E] (n : ℕ) (μ : Measure
     refine lintegral_congr fun q => ?_
     simp [Fin.prod_univ_succ, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv]
 
+/- English proof (translation)
+Set `e` to `(Fintype.equivFin ι).symm`. Establish `h` using `measurePreserving_piCongrLeft (fun _ : ι => μ) e`. Rewrite using `[← h.lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _), ← e.prod_comp, ← lintegral_pi_fin _ μ (fun i => f (e i)) (fun i => hf _)]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[← e.prod_comp]`.
+
+Simplify using `[MeasurableEquiv.coe_piCongrLeft]`.
+-/
 theorem lintegral_pi_prod {ι E : Type*} [Fintype ι] [MeasurableSpace E] (μ : Measure E) [SigmaFinite μ]
     (f : ι → E → ENNReal) (hf : ∀ i, Measurable (f i)) :
     ∫⁻ x : ι → E, ∏ i, f i (x i) ∂(Measure.pi fun _ => μ) = ∏ i, ∫⁻ t, f i t ∂μ := by
@@ -35,6 +45,13 @@ theorem lintegral_pi_prod {ι E : Type*} [Fintype ι] [MeasurableSpace E] (μ : 
   rw [← e.prod_comp]
   simp [MeasurableEquiv.coe_piCongrLeft]
 
+/- English proof (translation)
+Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[withDensity_apply _ (MeasurableSet.univ_pi hs), ← lintegral_indicator (MeasurableSet.univ_pi hs)]`. Repeatedly rewrite using `[withDensity_apply _ (hs _), ← lintegral_indicator (hs _)]`. Rewrite using `[← lintegral_pi_prod μ (fun i => (s i).indicator f) (fun i => hf.indicator (hs i))]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x ∈ Set.univ.pi s`. Rewrite using `[Set.indicator_of_mem hx]`. Conclude with `Finset.prod_congr rfl fun i _ => (Set.indicator_of_mem (hx i trivial) _).symm`. Rewrite using `[Set.indicator_of_notMem hx]`. Take `⟨i, hi⟩ : ∃ i, x i ∉ s i` from `by simpa [Set.mem_pi] using hx`.
+
+Conclude with `(Finset.prod_eq_zero (Finset.mem_univ i) (Set.indicator_of_notMem hi _)).symm`.
+-/
 theorem pi_withDensity_const {ι E : Type*} [Fintype ι] [MeasurableSpace E] (μ : Measure E)
     [SigmaFinite μ] (f : E → ENNReal) (hf : Measurable f) [SigmaFinite (μ.withDensity f)] :
     (Measure.pi fun _ : ι => μ.withDensity f) =
@@ -51,10 +68,20 @@ theorem pi_withDensity_const {ι E : Type*} [Fintype ι] [MeasurableSpace E] (μ
     obtain ⟨i, hi⟩ : ∃ i, x i ∉ s i := by simpa [Set.mem_pi] using hx
     exact (Finset.prod_eq_zero (Finset.mem_univ i) (Set.indicator_of_notMem hi _)).symm
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.isProbabilityMeasure_complexGaussian (by simp [Complex.finrank_real_complex])`.
+-/
 theorem isProbabilityMeasure_complexGaussian_one :
     IsProbabilityMeasure (GlobalTheory.complexGaussian ℂ 1) :=
   GlobalTheory.isProbabilityMeasure_complexGaussian (by simp [Complex.finrank_real_complex])
 
+/- English proof (translation)
+Establish `hP` using `GlobalTheory.isProbabilityMeasure_complexGaussian (E := EuclideanSpace ℂ (Fin k)) (g := k) (by rw [GlobalTheory.finrank_real_euclideanSpace_complex, Fintype.card_fin])`. Use `set ν := (volume : Measure (EuclideanSpace ℂ (Fin k))).withDensity fun x => ENNReal.ofReal (Real.exp (-‖x‖ ^ 2)) with hν`. Establish `hm : Measurable fun x : EuclideanSpace ℂ (Fin k) => ENNReal.ofReal (Real.exp (-‖x‖ ^ 2))` using `by fun_prop`. Establish `hc : GlobalTheory.complexGaussian (EuclideanSpace ℂ (Fin k)) k = ENNReal.ofReal ((π ^ k)⁻¹) • ν`. Use extensionality with `s hs`.
+
+Rewrite using `[Measure.smul_apply, GlobalTheory.complexGaussian, withDensity_apply _ hs, hν, withDensity_apply _ hs, smul_eq_mul, ← lintegral_const_mul _ hm]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (by positivity)]`. Establish `h1` using `hP.measure_univ`. Rewrite `h1` using `[hc, Measure.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[gaussProb, ProbabilityTheory.cond, Measure.restrict_univ, hc, ← hν, ← ENNReal.eq_inv_of_mul_eq_one_left h1]`.
+-/
 theorem gaussProb_eq_complexGaussian (k : ℕ) :
     gaussProb k = GlobalTheory.complexGaussian (EuclideanSpace ℂ (Fin k)) k := by
   have hP := GlobalTheory.isProbabilityMeasure_complexGaussian (E := EuclideanSpace ℂ (Fin k)) (g := k)
@@ -74,6 +101,13 @@ theorem gaussProb_eq_complexGaussian (k : ℕ) :
   rw [gaussProb, ProbabilityTheory.cond, Measure.restrict_univ, hc, ← hν,
     ← ENNReal.eq_inv_of_mul_eq_one_left h1]
 
+/- English proof (translation)
+Use `haveI := isProbabilityMeasure_complexGaussian_one`. Establish `hmp` using `GlobalTheory.volume_preserving_ofLp_complex (Fin k)`. Use `set f1 : ℂ → ENNReal := fun z => ENNReal.ofReal ((π ^ 1)⁻¹ * Real.exp (-‖z‖ ^ 2)) with hf1`. Establish `hf1m : Measurable f1` using `by fun_prop`. Use `haveI : SigmaFinite ((volume : Measure ℂ).withDensity f1) := inferInstanceAs (SigmaFinite (GlobalTheory.complexGaussian ℂ 1))`.
+
+Establish `hG : Measurable fun y : Fin k → ℂ => ∏ i, f1 (y i)` using `by fun_prop`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hmp.measurable hs, gaussProb_eq_complexGaussian, GlobalTheory.complexGaussian, withDensity_apply _ (hmp.measurable hs), show GlobalTheory.complexGaussian ℂ 1 = (volume : Measure ℂ).withDensity f1 from rfl, pi_withDensity_const _ f1 hf1m, ← volume_pi, withDensit …`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [hf1]`.
+
+Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun i _ => by positivity), Finset.prod_mul_distrib, ← Real.exp_sum, Finset.prod_const, Finset.card_univ, Fintype.card_fin, EuclideanSpace.norm_sq_eq, ← Finset.sum_neg_distrib, pow_one, inv_pow]`.
+-/
 theorem map_ofLp_gaussProb (k : ℕ) :
     (gaussProb k).map (WithLp.ofLp (p := 2) (V := Fin k → ℂ)) =
       Measure.pi fun _ : Fin k => GlobalTheory.complexGaussian ℂ 1 := by
@@ -95,6 +129,15 @@ theorem map_ofLp_gaussProb (k : ℕ) :
     ← Real.exp_sum, Finset.prod_const, Finset.card_univ, Fintype.card_fin, EuclideanSpace.norm_sq_eq,
     ← Finset.sum_neg_distrib, pow_one, inv_pow]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `hr : Measurable fun (y : Fin (N + m) → α) (j : Fin N) => y (Fin.castLE h j)` using `measurable_pi_lambda _ fun j => measurable_pi_apply _`. Use `⟨hr, (Measure.pi_eq fun s hs => ?_).symm⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hr (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun (y : Fin (N + m) → α) (j : Fin N) => y (Fin.castLE h j)) ⁻¹' univ.pi s = univ.pi (Fin.append s fun _ : Fin m => (univ : Set α))`.
+
+Use extensionality with `y`. Simplify using `only [mem_preimage, mem_univ_pi]`. Prove the components needed by the constructor for the conclusion. Introduce `hy i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations.
+
+Rewrite using `[Fin.append_left]`. Conclude with `hy j`. Rewrite using `[Fin.append_right]`. Conclude with `mem_univ _`. Introduce `hy j`.
+
+Use `hy (Fin.castAdd m j)` as an intermediate fact. Rewrite `this` using `[Fin.append_left]`. Then use the resulting hypothesis. Rewrite using `[hpre, Measure.pi_pi, Fin.prod_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`.
+-/
 theorem measurePreserving_restrict_castLE {α : Type*} [MeasurableSpace α] (μ : Measure α)
     [IsProbabilityMeasure μ] {N n : ℕ} (h : N ≤ n) :
     MeasurePreserving (fun (y : Fin n → α) (j : Fin N) => y (Fin.castLE h j))
@@ -119,6 +162,13 @@ theorem measurePreserving_restrict_castLE {α : Type*} [MeasurableSpace α] (μ 
   rw [hpre, Measure.pi_pi, Fin.prod_univ_add]
   simp [Fin.append_left, Fin.append_right]
 
+/- English proof (translation)
+Introduce `N n h`. Use `haveI := isProbabilityMeasure_complexGaussian_one`. Establish `hofn : Measurable (WithLp.ofLp (p` using `2) (V := Fin n → ℂ)) := (GlobalTheory.volume_preserving_ofLp_complex (Fin n)).measurable`. Establish `hofN : Measurable (WithLp.ofLp (p` using `2) (V := Fin N → ℂ)) := (GlobalTheory.volume_preserving_ofLp_complex (Fin N)).measurable`. Establish `htoN : Measurable (WithLp.toLp 2 : (Fin N → ℂ) → EuclideanSpace ℂ (Fin N))` using `by fun_prop`.
+
+Establish `e1 : MeasurePreserving (WithLp.ofLp (p` using `2) (V := Fin n → ℂ)) (gaussProb n) (Measure.pi fun _ : Fin n => GlobalTheory.complexGaussian ℂ 1) := ⟨hofn, map_ofLp_gaussProb n⟩`. Establish `e3 : MeasurePreserving (WithLp.toLp 2 : (Fin N → ℂ) → EuclideanSpace ℂ (Fin N)) (Measure.pi fun _ : Fin N => GlobalTheory.complexGaussian ℂ 1) (gaussProb N)`. Use `⟨htoN, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_ofLp_gaussProb N, Measure.map_map htoN hofN]`. Use `Measure.map_id` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Conclude with `e3.comp ((measurePreserving_restrict_castLE _ h).comp e1)`.
+-/
 theorem measurePreserving_firstCoords_gaussProb :
     ∀ (N n : ℕ) (h : N ≤ n), MeasurePreserving (firstCoords h) (gaussProb n) (gaussProb N) := by
   intro N n h

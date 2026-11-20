@@ -25,22 +25,37 @@ private noncomputable def sigmaBoolFamilyInl (X₁ X₂ : Scheme.{u}) : X₁ ⟶
 private noncomputable def sigmaBoolFamilyInr (X₁ X₂ : Scheme.{u}) : X₂ ⟶ ∐ boolFamily X₁ X₂ :=
   Limits.Sigma.ι (boolFamily X₁ X₂) ⟨false⟩
 
+/- English proof (translation)
+The claim follows from `Limits.Sigma.ι_desc (boolFamilyDesc f₁ f₂) ⟨true⟩`.
+-/
 private theorem pairInl_comp_desc {X₁ X₂ Y : Scheme.{u}} (f₁ : X₁ ⟶ Y) (f₂ : X₂ ⟶ Y) :
     sigmaBoolFamilyInl X₁ X₂ ≫ Limits.Sigma.desc (boolFamilyDesc f₁ f₂) = f₁ :=
   Limits.Sigma.ι_desc (boolFamilyDesc f₁ f₂) ⟨true⟩
 
+/- English proof (translation)
+The claim follows from `Limits.Sigma.ι_desc (boolFamilyDesc f₁ f₂) ⟨false⟩`.
+-/
 private theorem pairInr_comp_desc {X₁ X₂ Y : Scheme.{u}} (f₁ : X₁ ⟶ Y) (f₂ : X₂ ⟶ Y) :
     sigmaBoolFamilyInr X₁ X₂ ≫ Limits.Sigma.desc (boolFamilyDesc f₁ f₂) = f₂ :=
   Limits.Sigma.ι_desc (boolFamilyDesc f₁ f₂) ⟨false⟩
 
+/- English proof (translation)
+The claim follows from `Limits.Sigma.ι_map (boolFamilyMap a₁ a₂) ⟨true⟩`.
+-/
 private theorem pairInl_comp_map {X₁ X₂ P₁ P₂ : Scheme.{u}} (a₁ : P₁ ⟶ X₁) (a₂ : P₂ ⟶ X₂) :
     sigmaBoolFamilyInl P₁ P₂ ≫ Limits.Sigma.map (boolFamilyMap a₁ a₂) = a₁ ≫ sigmaBoolFamilyInl X₁ X₂ :=
   Limits.Sigma.ι_map (boolFamilyMap a₁ a₂) ⟨true⟩
 
+/- English proof (translation)
+The claim follows from `Limits.Sigma.ι_map (boolFamilyMap a₁ a₂) ⟨false⟩`.
+-/
 private theorem pairInr_comp_map {X₁ X₂ P₁ P₂ : Scheme.{u}} (a₁ : P₁ ⟶ X₁) (a₂ : P₂ ⟶ X₂) :
     sigmaBoolFamilyInr P₁ P₂ ≫ Limits.Sigma.map (boolFamilyMap a₁ a₂) = a₂ ≫ sigmaBoolFamilyInr X₁ X₂ :=
   Limits.Sigma.ι_map (boolFamilyMap a₁ a₂) ⟨false⟩
 
+/- English proof (translation)
+Apply `Limits.Sigma.hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨(_ | _)⟩`. Conclude with `hf`. Conclude with `ht`.
+-/
 private theorem sigmaPair_hom_ext {X₁ X₂ Z : Scheme.{u}} (f g : (∐ boolFamily X₁ X₂) ⟶ Z)
     (ht : sigmaBoolFamilyInl X₁ X₂ ≫ f = sigmaBoolFamilyInl X₁ X₂ ≫ g)
     (hf : sigmaBoolFamilyInr X₁ X₂ ≫ f = sigmaBoolFamilyInr X₁ X₂ ≫ g) : f = g := by
@@ -61,6 +76,9 @@ private noncomputable def coprodIsoSigmaBoolFamily (X₁ X₂ : Scheme.{u}) : (X
     · rw [← Category.assoc, pairInl_comp_desc, coprod.inl_desc, Category.comp_id]
     · rw [← Category.assoc, pairInr_comp_desc, coprod.inr_desc, Category.comp_id]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pairCoprodIso_hom (X₁ X₂ : Scheme.{u}) :
     (coprodIsoSigmaBoolFamily X₁ X₂).hom = coprod.desc (sigmaBoolFamilyInl X₁ X₂) (sigmaBoolFamilyInr X₁ X₂) := rfl
 
@@ -73,6 +91,9 @@ private noncomputable def isoCoprodInitial (P : Scheme.{u}) : P ≅ P ⨿ (⊥_ 
     · rw [← Category.assoc, coprod.inl_desc, Category.id_comp, Category.comp_id]
     · exact initial.hom_ext _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coprodInitialIsoRight_hom (P : Scheme.{u}) :
     (isoCoprodInitial P).hom = (coprod.inl : P ⟶ P ⨿ (⊥_ Scheme.{u})) := rfl
 
@@ -85,6 +106,9 @@ private noncomputable def isoInitialCoprod (P : Scheme.{u}) : P ≅ (⊥_ Scheme
     · exact initial.hom_ext _ _
     · rw [← Category.assoc, coprod.inr_desc, Category.id_comp, Category.comp_id]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coprodInitialIsoLeft_hom (P : Scheme.{u}) :
     (isoInitialCoprod P).hom = (coprod.inr : P ⟶ (⊥_ Scheme.{u}) ⨿ P) := rfl
 
@@ -92,6 +116,13 @@ private noncomputable def isInitialOfIsEmptyScheme {X : Scheme.{u}} (h : IsEmpty
   haveI := h
   exact isInitialOfIsEmpty
 
+/- English proof (translation)
+Establish `sq2 : CommSq eX.inv f f' (𝟙 Z)`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← h2, Iso.inv_hom_id_assoc, Category.comp_id]`. Establish `hX : IsPullback eX.inv f f' (𝟙 Z)` using `IsPullback.of_horiz_isIso sq2`. Establish `step1` using `h.paste_horiz hX`.
+
+Establish `sq1 : CommSq eP.hom (eP.hom ≫ snd) snd (𝟙 Y)`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Establish `hP : IsPullback eP.hom (eP.hom ≫ snd) snd (𝟙 Y)` using `IsPullback.of_horiz_isIso sq1`. Establish `step2` using `hP.paste_horiz step1`.
+
+Establish `hfst : fst' = eP.hom ≫ fst ≫ eX.inv`. Rewrite using `[← Category.assoc, ← h1, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[hfst, ← h3]`. Simplify using `using step2`.
+-/
 private theorem isPullback_of_isPullback_of_iso {P X Y Z P' X' : Scheme.{u}}
     {fst : P ⟶ X} {snd : P ⟶ Y} {f : X ⟶ Z} {g : Y ⟶ Z}
     {fst' : P' ⟶ X'} {snd' : P' ⟶ Y} {f' : X' ⟶ Z}
@@ -113,6 +144,17 @@ private theorem isPullback_of_isPullback_of_iso {P X Y Z P' X' : Scheme.{u}}
   rw [hfst, ← h3]
   simpa using step2
 
+/- English proof (translation)
+Establish `hsq : ∀ i : ULift.{u} Bool, IsPullback (boolFamilyMap a₁ a₂ i) (boolFamilyDesc b₁ b₂ i) (boolFamilyDesc f₁ f₂ i) u`. Introduce and unpack `⟨(_ | _)⟩`. Conclude with `h₂`. Conclude with `h₁`. Establish `key` using `isPullback_sigmaMap_sigmaDesc u (boolFamily X₁ X₂) (boolFamily P₁ P₂) (boolFamilyMap a₁ a₂) (boolFamilyDesc b₁ b₂) (boolFamilyDesc f₁ f₂) hsq`.
+
+Establish `E1 : coprod.map a₁ a₂ ≫ (coprodIsoSigmaBoolFamily X₁ X₂).hom = (coprodIsoSigmaBoolFamily P₁ P₂).hom ≫ Limits.Sigma.map (boolFamilyMap a₁ a₂)`. Simplify using `only [pairCoprodIso_hom]`. Apply `coprod.hom_ext` to reduce the goal to its premises. Rewrite using `[coprod.inl_map_assoc, coprod.inl_desc, coprod.inl_desc_assoc, pairInl_comp_map]`. Rewrite using `[coprod.inr_map_assoc, coprod.inr_desc, coprod.inr_desc_assoc, pairInr_comp_map]`.
+
+Establish `E2 : (coprodIsoSigmaBoolFamily X₁ X₂).hom ≫ Limits.Sigma.desc (boolFamilyDesc f₁ f₂) = coprod.desc f₁ f₂`. Simplify using `only [pairCoprodIso_hom]`. Apply `coprod.hom_ext` to reduce the goal to its premises. Rewrite using `[coprod.inl_desc_assoc, pairInl_comp_desc, coprod.inl_desc]`. Rewrite using `[coprod.inr_desc_assoc, pairInr_comp_desc, coprod.inr_desc]`.
+
+Establish `E3 : (coprodIsoSigmaBoolFamily P₁ P₂).hom ≫ Limits.Sigma.desc (boolFamilyDesc b₁ b₂) = coprod.desc b₁ b₂`. Simplify using `only [pairCoprodIso_hom]`. Apply `coprod.hom_ext` to reduce the goal to its premises. Rewrite using `[coprod.inl_desc_assoc, pairInl_comp_desc, coprod.inl_desc]`. Rewrite using `[coprod.inr_desc_assoc, pairInr_comp_desc, coprod.inr_desc]`.
+
+Conclude with `isPullback_of_isPullback_of_iso key (coprodIsoSigmaBoolFamily P₁ P₂) (coprodIsoSigmaBoolFamily X₁ X₂) E1 E2 E3`.
+-/
 theorem isPullback_coprodMap_coprodDesc {X₁ X₂ P₁ P₂ Y Y' : Scheme.{u}}
     (a₁ : P₁ ⟶ X₁) (a₂ : P₂ ⟶ X₂) (b₁ : P₁ ⟶ Y') (b₂ : P₂ ⟶ Y')
     (f₁ : X₁ ⟶ Y) (f₂ : X₂ ⟶ Y) (u : Y' ⟶ Y)
@@ -145,6 +187,11 @@ theorem isPullback_coprodMap_coprodDesc {X₁ X₂ P₁ P₂ Y Y' : Scheme.{u}}
     · rw [coprod.inr_desc_assoc, pairInr_comp_desc, coprod.inr_desc]
   exact isPullback_of_isPullback_of_iso key (coprodIsoSigmaBoolFamily P₁ P₂) (coprodIsoSigmaBoolFamily X₁ X₂) E1 E2 E3
 
+/- English proof (translation)
+Establish `hw : CommSq (initial.to X) (initial.to Y') f u` using `⟨initial.hom_ext _ _⟩`. Use `IsPullback.of_isLimit' hw (PullbackCone.isLimitAux' _ (fun s => ?_))` and prove the remaining obligations. Establish `hinit : IsInitial s.pt` using `isInitialOfIsEmptyScheme (h s.pt s.fst s.snd s.condition)`. Use `⟨hinit.to _, hinit.hom_ext _ _, hinit.hom_ext _ _, ?_⟩` and prove the remaining obligations. Introduce `m _ _`.
+
+Conclude with `hinit.hom_ext _ _`.
+-/
 theorem isPullback_initial_of_isEmpty {X Y Y' : Scheme.{u}} (f : X ⟶ Y) (u : Y' ⟶ Y)
     (h : ∀ (P : Scheme.{u}) (a : P ⟶ X) (b : P ⟶ Y'), a ≫ f = b ≫ u → IsEmpty P) :
     IsPullback (initial.to X) (initial.to Y') f u := by
@@ -155,6 +202,11 @@ theorem isPullback_initial_of_isEmpty {X Y Y' : Scheme.{u}} (f : X ⟶ Y) (u : Y
   intro m _ _
   exact hinit.hom_ext _ _
 
+/- English proof (translation)
+Establish `hFpb : IsPullback (initial.to F) (initial.to Y') r u` using `isPullback_initial_of_isEmpty r u hF`. Establish `key` using `isPullback_coprodMap_coprodDesc a (initial.to F) b (initial.to Y') q r u hsq hFpb`. Establish `E1 : (a ≫ coprod.inl) ≫ (Iso.refl (X ⨿ F)).hom = (isoCoprodInitial P).hom ≫ coprod.map a (initial.to F)`. Rewrite using `[Iso.refl_hom, Category.comp_id, coprodInitialIsoRight_hom, coprod.inl_map]`. Establish `E2 : (Iso.refl (X ⨿ F)).hom ≫ coprod.desc q r = coprod.desc q r`.
+
+Rewrite using `[Iso.refl_hom, Category.id_comp]`. Establish `E3 : (isoCoprodInitial P).hom ≫ coprod.desc b (initial.to Y') = b`. Rewrite using `[coprodInitialIsoRight_hom, coprod.inl_desc]`. Conclude with `isPullback_of_isPullback_of_iso key (isoCoprodInitial P) (Iso.refl (X ⨿ F)) E1 E2 E3`.
+-/
 theorem isPullback_comp_inl_coprodDesc {P X Y Y' F : Scheme.{u}}
     (a : P ⟶ X) (b : P ⟶ Y') (q : X ⟶ Y) (u : Y' ⟶ Y) (r : F ⟶ Y)
     (hsq : IsPullback a b q u)

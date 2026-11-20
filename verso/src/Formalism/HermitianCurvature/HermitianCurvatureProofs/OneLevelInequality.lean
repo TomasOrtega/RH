@@ -8,10 +8,16 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.AntidiagMulDiagonal
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `one_level_inequality_of_parts split_last_block off_diagonal_schur_complement diagonal_top_block diagonal_cosets cosets_last_block_size_one cosets_last_block_size_ge_two`.
+-/
 theorem one_level_inequality : Formalism.FourierDecayAlt.TA.OneLevel :=
   one_level_inequality_of_parts split_last_block off_diagonal_schur_complement diagonal_top_block
     diagonal_cosets cosets_last_block_size_one cosets_last_block_size_ge_two
 
+/- English proof (translation)
+The claim follows from `reduction_bound_of_one_level one_level_inequality epsilon_limit domination_limit joint_theorem_A'`.
+-/
 theorem theorem_a_reduction : Formalism.FourierDecayAlt.TA.TheoremAReduction :=
   reduction_bound_of_one_level one_level_inequality epsilon_limit domination_limit
     joint_theorem_A'

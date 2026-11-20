@@ -19,22 +19,43 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger GlobalTheory
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `cj_cj id id (fun _ => rfl) f`.
+-/
 theorem cj_id_cj_id {X : Type} (f : X → ℂ) : cj id (cj id f) = f := cj_cj id id (fun _ => rfl) f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cj_id_apply {X : Type} (f : X → ℂ) (x : X) : cj id f x = starRingEnd ℂ (f x) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(h.1.inv : Continuous fun x => (χ x)⁻¹), fun x => by rw [MonoidHom.inv_apply, h.2 x, inv_one]⟩`.
+-/
 theorem hecke_inv {χ : (AE D)ˣ →* Circle} (h : IsHeckeChar D χ) : IsHeckeChar D χ⁻¹ :=
   ⟨(h.1.inv : Continuous fun x => (χ x)⁻¹), fun x => by rw [MonoidHom.inv_apply, h.2 x, inv_one]⟩
 
+/- English proof (translation)
+Simplify using `[enorm]`.
+-/
 theorem enorm_conj (z : ℂ) : ‖starRingEnd ℂ z‖ₑ = ‖z‖ₑ := by
   simp [enorm]
 
+/- English proof (translation)
+Rewrite using `[← mt_negGA, MulEquiv.apply_symm_apply]`.
+-/
 theorem mt_negGA_symm (V : HSp D) (g : GA D (negSp V)) : mt V ((negGA V).symm g) = mt (negSp V) g := by
   rw [← mt_negGA, MulEquiv.apply_symm_apply]
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk continuous_subtype_val _`.
+-/
 theorem continuous_negGA_symm (V : HSp D) : Continuous (negGA V).symm :=
   Continuous.subtype_mk continuous_subtype_val _
 
+/- English proof (translation)
+Use extensionality with `g`. Use `show Formalism.UG.cT σ (g : Matrix n n A) * (-J) * (g : Matrix n n A) = -J ↔ Formalism.UG.cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+-/
 theorem UJ_neg {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (σ : A →+* A) (J : Matrix n n A) :
     Formalism.UG.UJ σ (-J) = Formalism.UG.UJ σ J := by
   ext g
@@ -42,11 +63,17 @@ theorem UJ_neg {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (�
     Formalism.UG.cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J
   rw [Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
+/- English proof (translation)
+Unfold `GQ HFinIn HFin at *`. Use `erw [Subgroup.mem_subgroupOf] at h ⊢`. Apply the tactic sequence `convert h using 2 <;> first | rfl | exact (UJ_neg _ _).symm`.
+-/
 theorem negGA_symm_mem_GQ (V : HSp D) (γ : GA D (negSp V)) (h : γ ∈ GQ (negSp V)) : (negGA V).symm γ ∈ GQ V := by
   unfold GQ HFinIn HFin at *
   erw [Subgroup.mem_subgroupOf] at h ⊢
   convert h using 2 <;> first | rfl | exact (UJ_neg _ _).symm
 
+/- English proof (translation)
+Rewrite using `[← Circle.coe_inv_eq_conj]`. Use `congr 1`. Simplify using `only [splitFacO, MonoidHom.inv_apply, inv_inv, _root_.mul_inv_rev]`. Conclude with `mul_comm _ _`.
+-/
 theorem splitFacO_inv (χS χT : (AE D)ˣ →* Circle) (x y : (AE D)ˣ) :
     ((splitFacO χS⁻¹ χT⁻¹ x y : Circle) : ℂ) = starRingEnd ℂ (splitFacO χS χT x y) := by
   rw [← Circle.coe_inv_eq_conj]
@@ -54,20 +81,51 @@ theorem splitFacO_inv (χS χT : (AE D)ˣ →* Circle) (x y : (AE D)ˣ) :
   simp only [splitFacO, MonoidHom.inv_apply, inv_inv, _root_.mul_inv_rev]
   exact mul_comm _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjTarget_apply {S T : HSp D} (om : Om S T) (p : GA D S × GA D (negSp T)) (f : WO S T → ℂ) :
     conjTarget om p f = cj id (om (p.1, (negGA T).symm p.2) (cj id f)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjSource_apply {S T : HSp D} (om : Om S T) (p : GA D (negSp S) × GA D T) (f : WO S T → ℂ) :
     conjSource om p f = cj id (om ((negGA S).symm p.1, p.2) (cj id f)) := rfl
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[mt_negGA_symm]`.
+-/
 theorem actO_negT (S T : HSp D) (g : GA D S) (h : GA D (negSp T)) (w : WO S T) :
     actO S (negSp T) g h w = actO S T g ((negGA T).symm h) w := by
   unfold actO; rw [mt_negGA_symm]
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[← map_inv (negGA S).symm g, mt_negGA_symm]`.
+-/
 theorem actO_negS (S T : HSp D) (g : GA D (negSp S)) (h : GA D T) (w : WO S T) :
     actO (negSp S) T g h w = actO S T ((negGA S).symm g) h w := by
   unfold actO; rw [← map_inv (negGA S).symm g, mt_negGA_symm]
 
+/- English proof (translation)
+Establish `I` using `GlobalTheory.CjNeg.theta_heis_neg D ψ hw.std S T`. Establish `thT : ∀ f : WO S (negSp T) → ℂ, IsThetaFunO ψ S (negSp T) f ↔ IsThetaFunO ψ S T (cj id f)` using `fun f => by`. Use `(I.1 (cj id f)).1` as an intermediate fact. Rewrite `this` using `[cj_id_cj_id]`. Then use the resulting hypothesis. Establish `hzT : ∀ (w : WO S T) (f : WO S (negSp T) → ℂ), heisO ψ S (negSp T) w f = cj id (heisO ψ S T w (cj id f))` using `fun w f => by`.
+
+Use `(I.2 w (cj id f)).1` as an intermediate fact. Rewrite `this` using `[cj_id_cj_id]`. Then use the resulting hypothesis. Use `{ std := hw.std hecS := hecke_inv hw.hecS hecT := hecke_inv hw.hecT resS := resEta_inv hw.resS resT := resEta_inv hw.resT om_pres := ?_ om_heis := ?_ om_aut := ?_ om_cont := ?_ om_unit := ?_ om_split := ?_ }` and prove the remaining obligations. Introduce `p f hf`. Rewrite using `[conjTarget_apply, thT, cj_id_cj_id]`.
+
+Conclude with `hw.om_pres _ _ ((thT f).1 hf)`. Introduce `g h w₀ f hf`. Rewrite using `[conjTarget_apply, conjTarget_apply, hzT w₀ f, cj_id_cj_id, hw.om_heis _ _ _ _ ((thT f).1 hf), hzT _ (cj id _), cj_id_cj_id, actO_negT]`. Introduce `γ hγ γ' hγ' f hf`. Rewrite using `[conjTarget_apply]`.
+
+Use `show starRingEnd ℂ (om (γ, (negGA T).symm γ') (cj id f) 0) = f 0`. Rewrite using `[hw.om_aut γ hγ _ (negGA_symm_mem_GQ T γ' hγ') _ ((thT f).1 hf)]`. Use `show starRingEnd ℂ (starRingEnd ℂ (f 0)) = f 0`. Simplify using the standard rewrite rules. Introduce `f hf w`.
+
+Establish `hc` using `hw.om_cont _ ((thT f).1 hf) w`. Simplify using `only [conjTarget_apply]`. Conclude with `Complex.continuous_conj.comp (hc.comp (continuous_fst.prodMk ((continuous_negGA_symm T).comp continuous_snd)))`. Introduce `μ 𝓕 hμ hF p f hf`. Establish `hu` using `hw.om_unit μ 𝓕 hμ hF (p.1, (negGA T).symm p.2) (cj id f) ((thT f).1 hf)`.
+
+Simplify using `only [conjTarget_apply, cj_id_apply, enorm_conj] at hu ⊢`. Conclude with `hu`. Introduce `e he g h hg hh x y hx hy`. Take `⟨r, hr, H⟩` from `hw.om_split e he g ((negGA T).symm h) hg (by unfold SuppAt; rw [mt_negGA_symm]; exact hh) x y hx (by unfold IsDetAt; rw [mt_negGA_symm]; exact hy)`. Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations.
+
+Set `ℓ' : (WO S T → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun f => starRingEnd ℂ (ℓ (cj id f)) map_add' := fun a b => by`. Establish `: cj id (a + b) = cj id a + cj id b` using `by funext z; simp [cj_id_apply]`. Rewrite using `[this, map_add, map_add]`. Use the proof step `map_smul' := fun c a => by`. Establish `: cj id (c • a) = starRingEnd ℂ c • cj id a` using `by funext z; simp [cj_id_apply]`.
+
+Rewrite using `[this, map_smul, smul_eq_mul, map_mul, Complex.conj_conj]`. Use `rfl }`. Establish `h1 : starRingEnd ℂ (ℓ (cj id (om (g, (negGA T).symm h) (cj id f)))) = (r : ℂ) * (splitFacO χS χT x y : ℂ) * starRingEnd ℂ (ℓ (cj id (cj id f)))` using `H ℓ' (fun u hu f' hf' => by show starRingEnd ℂ (ℓ (cj id (heisO ψ S T u f'))) = starRingEnd ℂ (ℓ (cj id f'))`. Rewrite using `[← (I.2 u f').1, hℓ u hu (cj id f') ((I.1 f').1.2 hf')]) (cj id f) ((thT f).1 hf)`. Rewrite `h1` using `[cj_id_cj_id, ← conjTarget_apply om (g, h) f]`.
+
+Rewrite using `[splitFacO_inv]`. Establish `h2` using `congrArg (starRingEnd ℂ) h1`. Simplify using `only [map_mul, Complex.conj_conj, Complex.conj_ofReal] at h2`. Conclude with `h2`.
+-/
 theorem weil_conjTarget (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : Om S T) (hw : IsWeilDatumO ψ S T χS χT om) :
     IsWeilDatumO ψ S (negSp T) χS⁻¹ χT⁻¹ (conjTarget om) := by
@@ -135,6 +193,25 @@ theorem weil_conjTarget (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) 
     simp only [map_mul, Complex.conj_conj, Complex.conj_ofReal] at h2
     exact h2
 
+/- English proof (translation)
+Establish `I` using `GlobalTheory.CjNeg.theta_heis_neg D ψ hw.std S T`. Establish `thS : ∀ f : WO (negSp S) T → ℂ, IsThetaFunO ψ (negSp S) T f ↔ IsThetaFunO ψ S T (cj id f)` using `fun f => by`. Use `(I.1 (cj id f)).2` as an intermediate fact. Rewrite `this` using `[cj_id_cj_id]`. Then use the resulting hypothesis. Establish `hzS : ∀ (w : WO S T) (f : WO (negSp S) T → ℂ), heisO ψ (negSp S) T w f = cj id (heisO ψ S T w (cj id f))` using `fun w f => by`.
+
+Use `(I.2 w (cj id f)).2` as an intermediate fact. Rewrite `this` using `[cj_id_cj_id]`. Then use the resulting hypothesis. Use `{ std := hw.std hecS := hecke_inv hw.hecS hecT := hecke_inv hw.hecT resS := resEta_inv hw.resS resT := resEta_inv hw.resT om_pres := ?_ om_heis := ?_ om_aut := ?_ om_cont := ?_ om_unit := ?_ om_split := ?_ }` and prove the remaining obligations. Introduce `p f hf`. Rewrite using `[conjSource_apply, thS, cj_id_cj_id]`.
+
+Conclude with `hw.om_pres _ _ ((thS f).1 hf)`. Introduce `g h w₀ f hf`. Rewrite using `[conjSource_apply, conjSource_apply, hzS w₀ f, cj_id_cj_id, hw.om_heis _ _ _ _ ((thS f).1 hf), hzS _ (cj id _), cj_id_cj_id, actO_negS]`. Introduce `γ hγ γ' hγ' f hf`. Rewrite using `[conjSource_apply]`.
+
+Use `show starRingEnd ℂ (om ((negGA S).symm γ, γ') (cj id f) 0) = f 0`. Rewrite using `[hw.om_aut _ (negGA_symm_mem_GQ S γ hγ) γ' hγ' _ ((thS f).1 hf)]`. Use `show starRingEnd ℂ (starRingEnd ℂ (f 0)) = f 0`. Simplify using the standard rewrite rules. Introduce `f hf w`.
+
+Establish `hc` using `hw.om_cont _ ((thS f).1 hf) w`. Simplify using `only [conjSource_apply]`. Conclude with `Complex.continuous_conj.comp (hc.comp (((continuous_negGA_symm S).comp continuous_fst).prodMk continuous_snd))`. Introduce `μ 𝓕 hμ hF p f hf`. Establish `hu` using `hw.om_unit μ 𝓕 hμ hF ((negGA S).symm p.1, p.2) (cj id f) ((thS f).1 hf)`.
+
+Simplify using `only [conjSource_apply, cj_id_apply, enorm_conj] at hu ⊢`. Conclude with `hu`. Introduce `e he g h hg hh x y hx hy`. Take `⟨r, hr, H⟩` from `hw.om_split e he ((negGA S).symm g) h (by unfold SuppAt; rw [mt_negGA_symm]; exact hg) hh x y (by unfold IsDetAt; rw [mt_negGA_symm]; exact hx) hy`. Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations.
+
+Set `ℓ' : (WO S T → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun f => starRingEnd ℂ (ℓ (cj id f)) map_add' := fun a b => by`. Establish `: cj id (a + b) = cj id a + cj id b` using `by funext z; simp [cj_id_apply]`. Rewrite using `[this, map_add, map_add]`. Use the proof step `map_smul' := fun c a => by`. Establish `: cj id (c • a) = starRingEnd ℂ c • cj id a` using `by funext z; simp [cj_id_apply]`.
+
+Rewrite using `[this, map_smul, smul_eq_mul, map_mul, Complex.conj_conj]`. Use `rfl }`. Establish `h1 : starRingEnd ℂ (ℓ (cj id (om ((negGA S).symm g, h) (cj id f)))) = (r : ℂ) * (splitFacO χS χT x y : ℂ) * starRingEnd ℂ (ℓ (cj id (cj id f)))` using `H ℓ' (fun u hu f' hf' => by show starRingEnd ℂ (ℓ (cj id (heisO ψ S T u f'))) = starRingEnd ℂ (ℓ (cj id f'))`. Rewrite using `[← (I.2 u f').2, hℓ u hu (cj id f') ((I.1 f').2.2 hf')]) (cj id f) ((thS f).1 hf)`. Rewrite `h1` using `[cj_id_cj_id, ← conjSource_apply om (g, h) f]`.
+
+Rewrite using `[splitFacO_inv]`. Establish `h2` using `congrArg (starRingEnd ℂ) h1`. Simplify using `only [map_mul, Complex.conj_conj, Complex.conj_ofReal] at h2`. Conclude with `h2`.
+-/
 theorem weil_conjSource (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : Om S T) (hw : IsWeilDatumO ψ S T χS χT om) :
     IsWeilDatumO ψ (negSp S) T χS⁻¹ χT⁻¹ (conjSource om) := by
@@ -202,6 +279,9 @@ theorem weil_conjSource (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) 
     simp only [map_mul, Complex.conj_conj, Complex.conj_ofReal] at h2
     exact h2
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hw` and use `⟨weil_conjTarget D ψ S T χS χT om hw, weil_conjSource D ψ S T χS χT om hw⟩`.
+-/
 theorem conj_isWeilDatumO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : Om S T), IsWeilDatumO ψ S T χS χT om →
       IsWeilDatumO ψ S (GlobalTheory.ChiGrid.negSp T) χS⁻¹ χT⁻¹ (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjTarget om) ∧

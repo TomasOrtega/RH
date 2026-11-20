@@ -23,6 +23,9 @@ def IsLift (ν b : kˣ →* ℂˣ) (σ : Representation ℂ (GL (Fin n) k) V) (�
 def src (c : kˣ →* ℂˣ) (σ : Representation ℂ (GL (Fin n) k) V) : Representation ℂ (GL (Fin n) k) V :=
   twist (σ.comp GlobalTheory.SplitFlip.invT) (detChar (Fin n) c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem src_apply (c : kˣ →* ℂˣ) (σ : Representation ℂ (GL (Fin n) k) V) (g : GL (Fin n) k) (v : V) :
     src c σ g v = ((c (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) • σ (GlobalTheory.SplitFlip.invT g) v := rfl
 

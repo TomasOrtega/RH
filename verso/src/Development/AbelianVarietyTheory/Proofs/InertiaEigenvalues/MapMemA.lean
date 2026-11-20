@@ -9,6 +9,9 @@ namespace GlobalTheory.LiftCoker
 
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
 
+/- English proof (translation)
+Rewrite using `[← coe_equivA]`. Conclude with `(equivA O K f).2`.
+-/
 theorem map_mem_A (f : O⟦X⟧) : PowerSeries.map (algebraMap O K) f ∈ A O K := by
   rw [← coe_equivA]
   exact (equivA O K f).2
@@ -30,6 +33,9 @@ def colon {ι κ : Type} [Fintype ι] (G : Matrix κ ι K⟦X⟧) : Ideal O⟦X�
       exact mul_mem (map_mem_A c) (hm j)
     · rw [smul_eq_mul, map_mul, mul_smul, h, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_colon {ι κ : Type} [Fintype ι] {G : Matrix κ ι K⟦X⟧} {α : O⟦X⟧} :
     α ∈ colon O K G ↔ ∀ w : κ → K⟦X⟧, (∀ i, w i ∈ A O K) →
       ∃ m : ι → K⟦X⟧, (∀ j, m j ∈ A O K) ∧ PowerSeries.map (algebraMap O K) α • w = G *ᵥ m := Iff.rfl

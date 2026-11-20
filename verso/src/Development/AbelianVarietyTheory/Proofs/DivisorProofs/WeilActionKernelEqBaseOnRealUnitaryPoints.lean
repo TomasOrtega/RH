@@ -18,6 +18,13 @@ namespace GlobalTheory.RealTwistKer
 
 open scoped ComplexConjugate
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Set `a : (D.what₂.Tau → ℂ) → AE D` to `fun w => 1 + σ (w - 1)`. Establish `a1 : ∀ w, finPart D (a w) = 1` using `fun w => by`. Simplify using `only [a]`. Rewrite using `[RingHom.map_add, hσ.fin, RingHom.map_one, add_zero]`.
+
+Establish `a3 : ∀ w τ, θ τ (infPart D (a w)) = w τ` using `fun w τ => by`. Simplify using `only [a]`. Rewrite using `[RingHom.map_add, RingHom.map_add, hσ.comp, RingHom.map_one, RingHom.map_one, Pi.sub_apply, Pi.one_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `m : a z * a z⁻¹ = 1`.
+
+Use `sub_eq_zero.1 (hσ.ext _ ?_ fun τ => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, RingHom.map_mul, a1, a1, RingHom.map_one, mul_one, sub_self]`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, RingHom.map_sub, RingHom.map_mul, RingHom.map_one, RingHom.map_one, a3, a3, Pi.inv_apply, mul_inv_cancel₀ (hz τ), sub_self]`. Conclude with `⟨⟨a z, a z⁻¹, m, by rw [mul_comm, m]⟩, a1 z, a3 z⟩`.
+-/
 theorem exists_idele_all {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} (hθ : IsInfFam θ)
     {z : D.what₂.Tau → ℂ} (hz : ∀ τ, z τ ≠ 0) :
     ∃ y : (AE D)ˣ, finPart D (y : AE D) = 1 ∧ ∀ τ, θ τ (infPart D (y : AE D)) = z τ := by
@@ -39,6 +46,21 @@ theorem exists_idele_all {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.h
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨x0, hx0⟩` from `(GlobalTheory.Member.isDetRoot_laws D V).1 u`. Establish `hcm` using `GlobalTheory.Mem.VolExists.isCMExt D.sp.cm`. Establish `einf : ∀ w : AE D, infPart D (sigR (AF D.host.F) D.sp.cm.sig w) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D w)` using `fun w => GlobalTheory.DetCharArch.map_conj _ _ _`.
+
+Establish `efin : ∀ w : AE D, finPart D (sigR (AF D.host.F) D.sp.cm.sig w) = sigR (Af D.host.F) D.sp.cm.sig (finPart D w)` using `fun w => GlobalTheory.DetCharArch.map_conj _ _ _`. Use `set dt : AE D := (matHom V u).1.det with hdt`. Establish `hfd : finPart D dt = 1`. Establish `h1 : (finHom V u).1.det = finPart D dt` using `((finPart D).map_det _).symm`. Establish `h2 : finHom V u = 1` using `hu`.
+
+Rewrite using `[← h1, h2]`. Simplify using the standard rewrite rules. Establish `hd1 : ∀ τ, ‖θ τ (infPart D dt)‖ = 1` using `fun τ => by`. Establish `hz : θ τ (infPart D (x0 : AE D)) ≠ 0` using `(x0.isUnit.map ((θ τ).comp (infPart D))).ne_zero`. Establish `k : θ τ (infPart D (x0 : AE D)) = θ τ (infPart D (dt * sigR (AF D.host.F) D.sp.cm.sig (x0 : AE D)))` using `congrArg (fun w => θ τ (infPart D w)) hx0`.
+
+Rewrite `k` using `[RingHom.map_mul, RingHom.map_mul, einf, GlobalTheory.Mem.VolExists.infEmb_sigR hcm (hθ τ)]`. Establish `k2` using `congrArg norm k`. Rewrite `k2` using `[norm_mul, Complex.norm_conj]`. Establish `hn0 : ‖θ τ (infPart D (x0 : AE D))‖ ≠ 0` using `norm_ne_zero_iff.2 hz`. Conclude with `(mul_left_eq_self₀.1 k2.symm).resolve_right hn0`.
+
+Use `choose s hs using fun τ => IsAlgClosed.exists_pow_nat_eq (θ τ (infPart D dt)) (by omega : 0 < 2 * n)`. Establish `hs1 : ∀ τ, ‖s τ‖ = 1` using `fun τ => by`. Use `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by omega : 2 * n ≠ 0)).1 ?_` and prove the remaining obligations. Rewrite using `[← norm_pow, hs, hd1]`. Establish `hs0 : ∀ τ, s τ ≠ 0` using `fun τ => norm_ne_zero_iff.1 (by rw [hs1]; exact one_ne_zero)`.
+
+Take `⟨y, hy1, hy2⟩` from `exists_idele_all hθ hs0`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `show ((y ^ n : (AE D)ˣ) : AE D) = dt * sigR (AF D.host.F) D.sp.cm.sig ((y ^ n : (AE D)ˣ) : AE D)`. Use `sub_eq_zero.1 (hσ.ext _ ?_ fun τ => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, RingHom.map_mul, efin, Units.val_pow_eq_pow_val, RingHom.map_pow, hy1, one_pow, hfd, RingHom.map_one, mul_one, sub_self]`.
+
+Rewrite using `[RingHom.map_sub, RingHom.map_mul, RingHom.map_sub, RingHom.map_mul, einf, GlobalTheory.Mem.VolExists.infEmb_sigR hcm (hθ τ), Units.val_pow_eq_pow_val, RingHom.map_pow, RingHom.map_pow, hy2, ← hs τ, map_pow]`. Establish `hc : conj (s τ) * s τ = 1`. Rewrite using `[mul_comm, Complex.mul_conj', hs1]`. Simplify using the standard rewrite rules. Rewrite using `[sub_eq_zero, two_mul, pow_add, mul_assoc, ← mul_pow (s τ) (conj (s τ)), mul_comm (s τ) (conj (s τ)), hc, one_pow, mul_one]`.
+-/
 theorem exists_isDetRoot_pow {D : D7} (V : HSp D) {u : GA D V} (hu : u ∈ GinfC V) (n : ℕ) (hn : 0 < n) :
     ∃ y : (AE D)ˣ, IsDetRoot V u (y ^ n) := by
   obtain ⟨θ, hθ⟩ := GlobalTheory.AdelicU.exists_isInfFam D
@@ -87,6 +109,15 @@ end GlobalTheory.RealTwistKer
 
 namespace GlobalTheory.RealTwistKer
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR i ξ χ ξR Q ω φ hK u hu f hf`. Take `⟨n, hn, hξn⟩` from `hK.fin`. Take `⟨y, hy⟩` from `exists_isDetRoot_pow (Vc D i) hu n hn`. Establish `h` using `GlobalTheory.TwistFactorProof.weil_ratio (GlobalTheory.T.weilDatum_unique_on_thetaFunctions D) (GlobalTheory.WeilChange.exists_weilDatum_twist D) (hR.thP.ωP i A.μ0) hK.weil hy (GlobalTheory.TwistFactorProof.isDetRoot_one _) hf`. Establish `hc : ChrEq (χ ^ n) 1`.
+
+Use `GlobalTheory.ConjTwist.BaseInhab.chrEq_pow hK.chr n hn` as an intermediate fact. Rewrite `this` using `[show ξ ^ n = 1 from hξn]`. Then use the resulting hypothesis. Establish `e1 : χ (y ^ n) = 1`. Rewrite using `[map_pow, ← MonoidHom.pow_apply]`. Conclude with `GlobalTheory.ChrEqUnique.eq_one_of_chrEq hc y`.
+
+Establish `e2 : R.xi A.μ0 (y ^ n) = 1` using `GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (χ := R.xi A.μ0) (hR.lev.xi_base ▸ hR.lev.xi A.μ0) _`. Establish `e3 : ∀ j, R.toLevCh.mu A.μ0 j (y ^ n) = R.mu0 j (y ^ n) * R.xi A.μ0 (y ^ n)` using `fun j => rfl`. Rewrite using `[h]`. Use `one_smul ℂ (R.ωP i A.μ0 (u, 1) f)` and compare the differences between its conclusion and the goal. Use `show (((_ * _ : Circle) : ℂ)) = 1`.
+
+Simplify using `only [Formalism.IndefR.Lift.chrTh, Formalism.IndefR.Lift.tup, MonoidHom.mul_apply, e3, e1, e2, map_one, mul_one, inv_one, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+-/
 theorem weil_kernel_real : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (ξ : Formalism.L2.Host.HChar D.host.E) (χ : (AE D)ˣ →* Circle) (ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (Q : Finset (Pl D.host.E)) (ω : WeilRep D i) (φ : WO (Vc D i) (Wc D i) → ℂ), KerDat R i ξ χ ξR Q ω φ → ∀ u ∈ GinfC (Vc D i), ∀ f, IsThetaFunO R.ψ (Vc D i) (Wc D i) f → ω (u, 1) f = R.ωP i A.μ0 (u, 1) f := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR i ξ χ ξR Q ω φ hK u hu f hf
   obtain ⟨n, hn, hξn⟩ := hK.fin

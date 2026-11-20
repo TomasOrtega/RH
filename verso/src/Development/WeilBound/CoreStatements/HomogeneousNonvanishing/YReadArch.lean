@@ -30,6 +30,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace PositivityTheory.UnitarySelfGeneration
 
+/- English proof (translation)
+Introduce `_ E _ _ _ H Dw l Xo c r U h e hL x hx O _ β Y SS RM Sys Fx Or Fr Z Rd`. Use `haveI : CharZero RM.Ω := charZero_of_injective_ringHom Or.𝔐.cst.injective`. Take `⟨B, hB⟩` from `GlobalTheory.T.root_origin_frame_height E H Dw l Xo c O β Y SS RM Sys Fx Or Fr`. Take `⟨u, hu, hA⟩` from `GlobalTheory.T.form_off_specialization_ring RM.K RM.ι RM.Ω RM.y RM.birational B`. Use `⟨u, hu, fun σ z hz hcst hzu => ?_⟩` and prove the remaining obligations.
+
+Establish `hz'` using `RA.ptsOver_of_mcPts hz`. Distinguish the cases in `hσ : GoodEmb c σ`. Establish `eg : goodOf c σ = σ` using `if_pos hσ`. Rewrite using `[eg]`. Take `⟨A, ev, hBA, hQ, hev⟩` from `hA ℂ z hz' hzu`.
+
+Take `⟨-, k, hk, y, hy, hh⟩` from `RA.core hL hx Rd (hB A hBA hQ) hσ hz' ev hev hcst`. Use `⟨k, hk, y, hy, fun a n' hn => ?_⟩` and prove the remaining obligations. Take `⟨θ, h1, h2⟩` from `hh a n' hn`. Conclude with `⟨θ, h1, fun f hf => ⟨fun _ => h2 f hf, fun hn => absurd hσ hn⟩⟩`. Establish `eg : goodOf c σ = (starRingEnd ℂ).comp σ` using `if_neg hσ`.
+
+Establish `hg` using `goodEmb_goodOf c σ`. Establish `hcst' : ∀ t : c.F, Small.HasVal RM.y 0 (Or.𝔐.cst t) (fun p => starRingEnd ℂ (z p)) (goodOf c σ t)` using `fun t => by`. Rewrite using `[eg]`. Conclude with `RA.hv_conj (hcst t)`. Establish `hz''` using `RA.ptsOver_conj hz'`.
+
+Take `⟨A, ev, hBA, hQ, hev⟩` from `hA ℂ _ hz'' (by rw [RA.aeval_conj]; exact (map_ne_zero _).2 hzu)`. Take `⟨hc, k, hk, y, hy, hh⟩` from `RA.core hL hx Rd (hB A hBA hQ) hg hz'' ev hev hcst'`. Simplify using `only [Complex.conj_conj] at hc`. Use `⟨k, hk, y, hy, fun a n' hn => ?_⟩` and prove the remaining obligations. Take `⟨θ, h1, h2⟩` from `hh a n' hn`.
+
+Use `⟨starRingEnd ℂ θ, ?_, fun f hf => ⟨fun hn => absurd hn hσ, fun _ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Complex.norm_conj, h1]`. Simplify using `only [← hc]`. Establish `h3` using `RA.hv_conj (h2 f hf)`. Simplify using `only [Complex.conj_conj, map_mul] at h3`.
+
+Conclude with `h3`.
+-/
 theorem y_read_arch : (Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ x : ℝ, (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (Z : Comp Xo c) (Rd : Reading Fr h Z), ∃ u : MRing RM.ι, Small.IsFormOff (mCoordIdeal RM.y) u ∧ ∀ (σ : c.F →+* ℂ), ∀ z ∈ mcPts (mCoordIdeal RM.y), (∀ t : c.F, Small.HasVal RM.y 0 (Or.𝔐.cst t) z (σ t)) → MvPolynomial.aeval z u ≠ 0 → ∃ k, Over (U (goodOf c σ)) (e Z) k ∧ ∃ y ∈ ((U (goodOf c σ)).X k).dom, ∀ (a : WZ E) (n' : Option (RootIx Dw) → ℤ), (∀ j, (n' j : ℝ) = RM.coef (towerWt Dw a) 0 j) → ∃ θ : ℂ, ‖θ‖ = (∏ r', (Or.sing r').h z ^ n' (some r')) * lieFacZ Dw x a * ((U (goodOf c σ)).X k).pnorm (laZ (U (goodOf c σ)) a k) (fun _ => 1) y ∧ ∀ f ∈ secZ Xo c a, (GoodEmb c σ → Small.HasVal RM.y (Top.combLine (RM.line 1) n').a (Fr.rd f * (∏ r', Or.e r' ^ (-n' (some r')))) z (θ * rdU (U (goodOf c σ)) f k y)) ∧ (¬ GoodEmb c σ → Small.HasVal RM.y (Top.combLine (RM.line 1) n').a (Fr.rd f * (∏ r', Or.e r' ^ (-n' (some r')))) z (θ * starRingEnd ℂ (rdU (U (goodOf c σ)) f k y)))) := by
   intro _ E _ _ _ H Dw l Xo c r U h e hL x hx O _ β Y SS RM Sys Fx Or Fr Z Rd
   haveI : CharZero RM.Ω := charZero_of_injective_ringHom Or.𝔐.cst.injective

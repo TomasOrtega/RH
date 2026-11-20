@@ -13,11 +13,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.of_injective (ContinuousMultilinearMap.toMultilinearMapLinear (R' := ℂ) (A := ℂ)) (fun _ _ h => ContinuousMultilinearMap.toMultilinearMap_injective h)`.
+-/
 private theorem finiteDimensional_continuousMultilinearMap {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     (N : ℕ) : FiniteDimensional ℂ (ContinuousMultilinearMap ℂ (fun _ : Fin N => E) ℂ) :=
   FiniteDimensional.of_injective (ContinuousMultilinearMap.toMultilinearMapLinear (R' := ℂ) (A := ℂ))
     (fun _ _ h => ContinuousMultilinearMap.toMultilinearMap_injective h)
 
+/- English proof (translation)
+Use `haveI : ProperSpace W := FiniteDimensional.proper ℂ W`. Use `haveI : SecondCountableTopology W := secondCountable_of_proper`. Conclude with `hf.aestronglyMeasurable`.
+-/
 private theorem aestronglyMeasurable_of_continuous {Kg : Type} [TopologicalSpace Kg] [MeasurableSpace Kg] [BorelSpace Kg]
     (μ : Measure Kg) {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W]
     (f : Kg → W) (hf : Continuous f) : AEStronglyMeasurable f μ := by
@@ -25,12 +31,38 @@ private theorem aestronglyMeasurable_of_continuous {Kg : Type} [TopologicalSpace
   haveI : SecondCountableTopology W := secondCountable_of_proper
   exact hf.aestronglyMeasurable
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hf.continuousOn`. Conclude with `Integrable.of_bound (aestronglyMeasurable_of_continuous μ f hf) C (Filter.Eventually.of_forall fun k => hC k trivial)`.
+-/
 private theorem integrable_of_continuous_isFiniteMeasure {Kg : Type} [TopologicalSpace Kg] [CompactSpace Kg] [MeasurableSpace Kg]
     [BorelSpace Kg] (μ : Measure Kg) [IsFiniteMeasure μ] {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     [FiniteDimensional ℂ W] (f : Kg → W) (hf : Continuous f) : Integrable f μ := by
   obtain ⟨C, hC⟩ := isCompact_univ.exists_bound_of_continuousOn hf.continuousOn
   exact Integrable.of_bound (aestronglyMeasurable_of_continuous μ f hf) C (Filter.Eventually.of_forall fun k => hC k trivial)
 
+/- English proof (translation)
+Use `haveI : ProperSpace E := FiniteDimensional.proper ℂ E`. Establish `hck : ∀ (N : ℕ) (x : E), x ∈ Ω → Continuous (fun k => iteratedFDeriv ℂ N (G k) x)` using `fun N x hx => (hc N).comp_continuous (continuous_id.prodMk continuous_const) (fun k => ⟨trivial, hx⟩)`. Establish `hdiff : ∀ (N : ℕ) (k : Kg) (x : E), x ∈ Ω → HasFDerivAt (iteratedFDeriv ℂ N (G k)) (fderiv ℂ (iteratedFDeriv ℂ N (G k)) x) x`. Introduce `N k x hx`. Establish `h1` using `(hd k).differentiableOn_iteratedFDerivWithin (m := N) (by exact_mod_cast WithTop.coe_lt_top _) hΩ.uniqueDiffOn`.
+
+Establish `h2 : DifferentiableAt ℂ (iteratedFDerivWithin ℂ N (G k) Ω) x` using `(h1 x hx).differentiableAt (hΩ.mem_nhds hx)`. Establish `h3 : iteratedFDeriv ℂ N (G k) =ᶠ[nhds x] iteratedFDerivWithin ℂ N (G k) Ω` using `Filter.eventually_of_mem (hΩ.mem_nhds hx) (fun y hy => (iteratedFDerivWithin_of_isOpen N hΩ hy).symm)`. Conclude with `(h2.congr_of_eventuallyEq h3).hasFDerivAt`. Establish `hnorm : ∀ (N : ℕ) (k : Kg) (x : E), ‖fderiv ℂ (iteratedFDeriv ℂ N (G k)) x‖ = ‖iteratedFDeriv ℂ (N + 1) (G k) x‖`. Introduce `N k x`.
+
+Rewrite using `[iteratedFDeriv_succ_eq_comp_left, Function.comp_apply, LinearIsometryEquiv.norm_map]`. Establish `hsucc : ∀ (N : ℕ) (k : Kg) (x : E), fderiv ℂ (iteratedFDeriv ℂ N (G k)) x = continuousMultilinearCurryLeftEquiv ℂ (fun _ : Fin (N + 1) => E) ℂ (iteratedFDeriv ℂ (N + 1) (G k) x)`. Introduce `N k x`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left, Function.comp_apply, LinearIsometryEquiv.apply_symm_apply]`. Establish `hstep : ∀ (N : ℕ) (x : E), x ∈ Ω → HasFDerivAt (fun y => ∫ k, iteratedFDeriv ℂ N (G k) y ∂μ) (∫ k, fderiv ℂ (iteratedFDeriv ℂ N (G k)) x ∂μ) x`.
+
+Introduce `N x hx`. Use `haveI := finiteDimensional_continuousMultilinearMap (E := E) N`. Use `haveI := finiteDimensional_continuousMultilinearMap (E := E) (N + 1)`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hΩ x hx`. Establish `hcb : Metric.closedBall x (ε / 2) ⊆ Ω` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`.
+
+Take `⟨C, hC⟩` from `(isCompact_univ.prod (isCompact_closedBall x (ε / 2))).exists_bound_of_continuousOn ((hc (N + 1)).mono (Set.prod_mono le_rfl hcb))`. Establish `hmeas' : AEStronglyMeasurable (fun k => fderiv ℂ (iteratedFDeriv ℂ N (G k)) x) μ`. Establish `: (fun k => fderiv ℂ (iteratedFDeriv ℂ N (G k)) x) = fun k => continuousMultilinearCurryLeftEquiv ℂ (fun _ : Fin (N + 1) => E) ℂ (iteratedFDeriv ℂ (N + 1) (G k) x)`. Use function extensionality and compare the values at `fun k => hsucc N k x`. Rewrite using `[this]`.
+
+Conclude with `(LinearIsometryEquiv.continuous _).comp_aestronglyMeasurable (aestronglyMeasurable_of_continuous μ _ (hck (N + 1) x hx))`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := μ) (x₀ := x) (F := fun y k => iteratedFDeriv ℂ N (G k) y) (F' := fun y k => fderiv ℂ (iteratedFDeriv ℂ N (G k)) y) (bound := fun _ => C) (Metric.ball_mem_nhds x (half_pos hε)) (Filter.eventually_of_mem (Metric.ball_mem_nhds x ( …`. Rewrite using `[hnorm]`. Conclude with `hC (k, y) ⟨trivial, Metric.ball_subset_closedBall hy⟩)`. Use the proof step `(integrable_const C)`.
+
+Use the proof step `(Filter.Eventually.of_forall fun k y hy => hdiff N k y (hcb (Metric.ball_subset_closedBall hy)))`. Establish `key : ∀ N : ℕ, ∀ x ∈ Ω, iteratedFDeriv ℂ N (fun x => ∫ k, G k x ∂μ) x = ∫ k, iteratedFDeriv ℂ N (G k) x ∂μ`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`.
+
+Introduce `x hx`. Simplify using `only [iteratedFDeriv_zero_eq_comp, Function.comp_apply]`. Conclude with `((continuousMultilinearCurryFin0 ℂ E ℂ).symm.toContinuousLinearEquiv.integral_comp_comm _).symm`. Consider the case `succ N ih`. Introduce `x hx`.
+
+Establish `hev : iteratedFDeriv ℂ N (fun x => ∫ k, G k x ∂μ) =ᶠ[nhds x] fun y => ∫ k, iteratedFDeriv ℂ N (G k) y ∂μ` using `Filter.eventually_of_mem (hΩ.mem_nhds hx) ih`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left, Function.comp_apply, hev.fderiv_eq, (hstep N x hx).fderiv]`. Establish `hcomm` using `(continuousMultilinearCurryLeftEquiv ℂ (fun _ : Fin (N + 1) => E) ℂ).symm.toContinuousLinearEquiv.integral_comp_comm (μ := μ) (fun k => fderiv ℂ (iteratedFDeriv ℂ N (G k)) x)`. Use `hcomm.symm.trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Establish `hdΦ : ∀ (N : ℕ) (x : E), x ∈ Ω → DifferentiableAt ℂ (iteratedFDeriv ℂ N (fun x => ∫ k, G k x ∂μ)) x` using `fun N x hx => (hstep N x hx).differentiableAt.congr_of_eventuallyEq (Filter.eventually_of_mem (hΩ.mem_nhds hx) (key N))`. Use `⟨key, ?_⟩` and prove the remaining obligations. Apply `contDiffOn_of_continuousOn_differentiableOn` to reduce the goal to its premises. Introduce `m _`. Conclude with `ContinuousOn.congr (f := iteratedFDeriv ℂ m (fun x => ∫ k, G k x ∂μ)) (fun x hx => (hdΦ m x hx).continuousAt.continuousWithinAt) (iteratedFDerivWithin_of_isOpen m hΩ)`.
+
+Introduce `m _`. Conclude with `DifferentiableOn.congr (f := iteratedFDeriv ℂ m (fun x => ∫ k, G k x ∂μ)) (fun x hx => (hdΦ m x hx).differentiableWithinAt) (iteratedFDerivWithin_of_isOpen m hΩ)`.
+-/
 private theorem matrix_mul_comm_of_mul_eq_smul_one_of_ne_zero {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {Kg : Type} [TopologicalSpace Kg] [CompactSpace Kg] [MeasurableSpace Kg]
     [BorelSpace Kg] (μ : Measure Kg) [IsFiniteMeasure μ] (Ω : Set E) (G : Kg → E → ℂ)
@@ -118,6 +150,11 @@ private theorem matrix_mul_comm_of_mul_eq_smul_one_of_ne_zero {E : Type} [Normed
     exact DifferentiableOn.congr (f := iteratedFDeriv ℂ m (fun x => ∫ k, G k x ∂μ))
       (fun x hx => (hdΦ m x hx).differentiableWithinAt) (iteratedFDerivWithin_of_isOpen m hΩ)
 
+/- English proof (translation)
+Establish `hopen : IsOpen (L ⁻¹' U)` using `hU.preimage L.continuous`. Establish `hFL : ContDiffOn ℂ ∞ (F ∘ L) (L ⁻¹' U)` using `hF.comp L.contDiff.contDiffOn (fun _ h => h)`. Establish `hfun : (fun y => F (L y) * a) = ((ContinuousLinearMap.mul ℂ ℂ).flip a) ∘ (F ∘ L)`. Use function extensionality and compare the values at `z`. Simplify using `[mul_comm]`.
+
+Rewrite using `[← iteratedFDerivWithin_of_isOpen N hopen hy, hfun, ((ContinuousLinearMap.mul ℂ ℂ).flip a).iteratedFDerivWithin_comp_left (hFL y hy) hopen.uniqueDiffOn hy (by exact_mod_cast (WithTop.coe_lt_top _).le), L.iteratedFDerivWithin_comp_right hF hU.uniqueDiffOn hopen.uniqueDiffOn hy (by …`. Use extensionality with `v`. Simplify using `[mul_comm]`.
+-/
 private theorem iteratedFDeriv_comp_clm_mul_const {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (F : E → ℂ) (U : Set E) (hU : IsOpen U) (hF : ContDiffOn ℂ ∞ F U) (L : E →L[ℂ] E) (a : ℂ) (N : ℕ)
     (y : E) (hy : L y ∈ U) :
@@ -137,6 +174,17 @@ private theorem iteratedFDeriv_comp_clm_mul_const {E : Type} [NormedAddCommGroup
   ext v
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `hW : IsOpen {y | ∀ k, L k y ∈ U}`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y0 hy0`. Establish `hcont : Continuous fun z : E × Kg => L z.2 z.1` using `(hL.comp continuous_snd).clm_apply continuous_fst`. Establish `h` using `isCompact_univ.eventually_forall_of_forall_eventually (x₀ := y0) (P := fun y k => L k y ∈ U) (fun k _ => hcont.continuousAt.preimage_mem_nhds (hU.mem_nhds (hy0 k)))`.
+
+Use `filter_upwards [h] with y hy`. Conclude with `fun k => hy k trivial`. Establish `hG : ∀ N : ℕ, ContinuousOn (fun p : Kg × E => iteratedFDeriv ℂ N (fun y => F (L p.1 y) * c p.1) p.2) (Set.univ ×ˢ {y | ∀ k, L k y ∈ U})`. Introduce `N`. Establish `hDF : ContinuousOn (iteratedFDeriv ℂ N F) U` using `(hF.continuousOn_iteratedFDerivWithin (m := N) (by exact_mod_cast (WithTop.coe_lt_top _).le) hU.uniqueDiffOn).congr (fun x hx => (iteratedFDerivWithin_of_isOpen N hU hx).symm)`.
+
+Establish `h1 : ContinuousOn (fun p : Kg × E => iteratedFDeriv ℂ N F (L p.1 p.2)) (Set.univ ×ˢ {y | ∀ k, L k y ∈ U})` using `hDF.comp ((hL.comp continuous_fst).clm_apply continuous_snd).continuousOn (fun p hp => hp.2 p.1)`. Establish `h2 : Continuous (fun p : Kg × E => ContinuousMultilinearMap.compContinuousLinearMapContinuousMultilinear ℂ (fun _ : Fin N => E) (fun _ => E) ℂ (fun _ => L p.1))` using `(ContinuousMultilinearMap.compContinuousLinearMapContinuousMultilinear ℂ (fun _ : Fin N => E) (fun _ => E) ℂ).cont.comp (continuous_pi fun _ => hL.comp continuous_fst)`. Use `ContinuousOn.congr (((hc.comp continuous_fst).continuousOn).smul (h2.continuousOn.clm_apply h1)) ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only`.
+
+Rewrite using `[iteratedFDeriv_comp_clm_mul_const F U hU hF (L p.1) (c p.1) N p.2 (hp.2 p.1)]`. Simplify using the standard rewrite rules. Establish `hdG : ∀ k, ContDiffOn ℂ ∞ (fun y => F (L k y) * c k) {y | ∀ k, L k y ∈ U}` using `fun k => (hF.comp (L k).contDiff.contDiffOn (fun y (hy : ∀ k, L k y ∈ U) => hy k)).mul contDiffOn_const`. Take `⟨key, hcd⟩` from `matrix_mul_comm_of_mul_eq_smul_one_of_ne_zero μ {y | ∀ k, L k y ∈ U} (fun k y => F (L k y) * c k) hW hG hdG`. Use `⟨hW, hcd, fun N y hy => key N y hy, fun N y hy => ?_⟩` and prove the remaining obligations.
+
+Use `haveI := finiteDimensional_continuousMultilinearMap (E := E) N`. Conclude with `integrable_of_continuous_isFiniteMeasure μ _ ((hG N).comp_continuous (continuous_id.prodMk continuous_const) (fun k => ⟨trivial, hy⟩))`.
+-/
 private theorem exists_ne_zero_smul_mem_of_mem_span' {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {Kg : Type} [TopologicalSpace Kg] [CompactSpace Kg] [MeasurableSpace Kg] [BorelSpace Kg]
     (μ : Measure Kg) [IsFiniteMeasure μ] (F : E → ℂ) (U : Set E) (hU : IsOpen U) (hF : ContDiffOn ℂ ∞ F U)
@@ -180,12 +228,28 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' {E : Type} [NormedAddCommGr
   haveI := finiteDimensional_continuousMultilinearMap (E := E) N
   exact integrable_of_continuous_isFiniteMeasure μ _ ((hG N).comp_continuous (continuous_id.prodMk continuous_const) (fun k => ⟨trivial, hy⟩))
 
+/- English proof (translation)
+Use `⟨fun a => LinearMap.toContinuousLinearMap (m a), ?_, fun a y => rfl⟩` and prove the remaining obligations. Conclude with `LinearMap.continuous_of_finiteDimensional ((LinearMap.toContinuousLinearMap : (E →ₗ[ℂ] E) ≃ₗ[ℂ] (E →L[ℂ] E)).toLinearMap ∘ₗ m)`.
+-/
 private theorem exists_continuous_clm_of_bilinear {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     (m : E →ₗ[ℂ] E →ₗ[ℂ] E) : ∃ Lc : E → E →L[ℂ] E, Continuous Lc ∧ ∀ a y, Lc a y = m a y := by
   refine ⟨fun a => LinearMap.toContinuousLinearMap (m a), ?_, fun a y => rfl⟩
   exact LinearMap.continuous_of_finiteDimensional
     ((LinearMap.toContinuousLinearMap : (E →ₗ[ℂ] E) ≃ₗ[ℂ] (E →L[ℂ] E)).toLinearMap ∘ₗ m)
 
+/- English proof (translation)
+Introduce `n F U hU hF Kg _ _ _ _ μ _ _ ι hι c hc ιA ιB _ _ _ _ LA LB hLA hLB g hg`. Establish `hF' : ContDiffOn ℂ ∞ F U` using `hF.of_le le_top`. Take `⟨Lc, hLc, hLapp⟩` from `exists_continuous_clm_of_bilinear (E := M2 n) (LinearMap.mul ℂ (M2 n))`. Simplify using `only [LinearMap.mul_apply'] at hLapp`. Take `⟨hWo, hΦ, key, hint⟩` from `exists_ne_zero_smul_mem_of_mem_span' (E := M2 n) μ F U hU hF' (fun k => Lc (ι k)) (hLc.comp hι) c hc`.
+
+Simplify using `only [hLapp] at hWo hΦ key hint`. Establish `hgW : ∀ k, ι k * g ∈ U` using `hg`. Establish `hL` using `detD_detD_comp (fun y => ∫ k, F (ι k * y) * c k ∂μ) _ hWo hΦ g hgW (LA g) (LB g)`. Use `beta_reduce at hL`. Simplify using `only [hLA, hLB, ← mul_add]`.
+
+Rewrite using `[hL, key _ g hgW]`. Simplify using `only [ContinuousMultilinearMap.integral_apply (hint _ g hgW)]`. Establish `hR : ∀ k, (detD fun T : Matrix ιA ιA ℂ => detD fun S : Matrix ιB ιB ℂ => F (ι k * (g + (LA g) T + (LB g) S))) * c k = ∑ σ : Equiv.Perm ιA, ∑ τ : Equiv.Perm ιB, ↑↑(Equiv.Perm.sign σ) * ↑↑(Equiv.Perm.sign τ) * (iteratedFDeriv ℂ (Fintype.card ιA + Fintype.card ιB) (fun y => F (ι k * …`. Introduce `k`. Establish `hFk : ContDiffOn ℂ ∞ (fun y => F (ι k * y)) {y : M2 n | ∀ k, ι k * y ∈ U}` using `(hF'.comp (Lc (ι k)).contDiff.contDiffOn (fun y (hy : ∀ k, ι k * y ∈ U) => by rw [hLapp]; exact hy k)).congr (fun y _ => by rw [Function.comp_apply, hLapp])`.
+
+Establish `h1` using `detD_detD_mul_const (fun y => F (ι k * y)) _ hWo hFk g hgW (LA g) (LB g) (c k)`. Establish `h2` using `detD_detD_comp (fun y => F (ι k * y) * c k) _ hWo (hFk.mul contDiffOn_const) g hgW (LA g) (LB g)`. Use `beta_reduce at h1 h2`. Rewrite using `[← h1, h2]`. Simplify using `only [hR]`.
+
+Rewrite using `[integral_finset_sum _ (fun σ _ => ?_)]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ (fun τ _ => ?_)]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`.
+
+Conclude with `((ContinuousMultilinearMap.apply ℂ _ ℂ _).integrable_comp (hint _ g hgW)).const_mul _`. Conclude with `integrable_finset_sum _ fun τ _ => ((ContinuousMultilinearMap.apply ℂ _ ℂ _).integrable_comp (hint _ g hgW)).const_mul _`.
+-/
 theorem sphU : SphU := by
   intro n F U hU hF Kg _ _ _ _ μ _ _ ι hι c hc ιA ιB _ _ _ _ LA LB hLA hLB g hg
   have hF' : ContDiffOn ℂ ∞ F U := hF.of_le le_top

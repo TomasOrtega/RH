@@ -10,6 +10,11 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.JHM
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hBZ hSeg hRing k _ _ _ _`. Take `⟨Z, hZ⟩` from `GlobalTheory.T.zelevinskySegmentClass_exists_for_every_placing hSeg k`. Take `⟨Ψ, h1, hmul, hX⟩` from `hRing k Z hZ`. Use `⟨Z, Ψ, hZ, ⟨h1, fun r t V W _ _ _ _ π₁ π₂ h₁ h₂ s₁ s₂ => ?_⟩, hX⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.parabolicProduct_hasFiniteLength_GL hBZ k r t V W π₁ π₂ h₁ h₂ s₁ s₂`.
+
+Conclude with `⟨h, hmul r t V W π₁ π₂ h₁ h₂ s₁ s₂ h⟩`.
+-/
 theorem zelevinskyPolynomialRing_of_parts :
     GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.SegmentRepresentation →
       GlobalTheory.Published.GrothendieckRingPolynomial → GlobalTheory.Published.ZelevinskyPolynomialRing := by

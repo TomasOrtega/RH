@@ -29,6 +29,41 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 
 attribute [local instance] borelG borelF borelA borelH
 
+/- English proof (translation)
+Introduce `E _ _ _ a b l₁ l₂ D A S Z L hS hZ u₁ u₂ hu₁ hu₂`. Use `A.ha` as an intermediate fact. Use `A.hb` as an intermediate fact. Establish `: BorelSpace (G a)` using `⟨rfl⟩`. Establish `: BorelSpace (G b)` using `⟨rfl⟩`.
+
+Take `⟨ca, hca⟩` from `PositivityTheory.RgBcC.wave_existence_speed_multiplicity.2.2.1 a`. Take `⟨cb, hcb⟩` from `PositivityTheory.RgBcC.wave_existence_speed_multiplicity.2.2.1 b`. Use `set c₀ : ℝ := max 0 (max ca cb) with hc₀`. Establish `hc₀0 : 0 ≤ c₀` using `le_max_left _ _`. Use `⟨2 * Fintype.card (InfinitePlace E) * c₀ + 1, by positivity, ?_⟩` and prove the remaining obligations.
+
+Introduce `φ T e₁ e₂ C R hφ hreg hR hC`. Establish `hVC` using `(lefL E a b l₁ l₂ D A).1`. Take `⟨hfix, -, hposition⟩` from `positionTest E a b S Z L hZ`. Establish `h₁` using `(hposition φ hφ).2 T e₁`. Establish `h₂` using `(hposition L.ln hfix).2 T e₂`.
+
+Establish `hReg : ∃ w ∈ S, IsSplitAt w ∧ ∀ y z, intersection_update_fsHerm_neg_one Z T φ e₁ w y ≠ 0 → intersection_update_fsHerm_neg_one Z T L.ln e₂ w z ≠ 0 → ((y * z).1.val.charpoly * (y * z).2.val.charpoly).Separable`. Take `⟨w, hwZ, hw⟩` from `hreg`. Take `⟨hwS, hsp⟩` from `hZ w hwZ`. Use `⟨w, hwS, hsp, fun y z hy hz => ?_⟩` and prove the remaining obligations. Rewrite `hy`, `hz` using `[intersection_update_fsHerm_neg_one, if_pos hwZ]`.
+
+Establish `hzm : z ∈ (L.L₁ w).prod (L.L₂ w)`. Assume the negation of the conclusion as `hn`. Conclude with `hz (Set.indicator_of_notMem hn _)`. Establish `hne : φ w (y * z) ≠ 0`. Rewrite using `[((hφ w hwZ).2 z hzm y).2]`.
+
+Conclude with `hy`. Use `hw _ hne` as an intermediate fact. Simplify `this` using `only [nrmL, if_pos hsp]`. Take `⟨hr₁, hr₂⟩` from `regS E a b S u₁ u₂ hu₁ hu₂ _ _ h₁ h₂ hReg`. Take `⟨-, hFC⟩` from `BlockFiniteConvolution.finConv' E A.blk S hS`.
+
+Take `⟨hcs, ⟨U, hUo, hU⟩, -⟩` from `hFC _ _ h₁ h₂`. Establish `term : ∀ t : PT A.blk, t.Ok → t.ψ = rt u₁ u₂ (A.fx S L T φ e₁ e₂) → t.T ≤ R → t.r ≤ R → D4.IsTest2J (trM t.Φ A.tw) ((2 * Fintype.card (InfinitePlace E) * c₀ + 1) * (1 + R))`. Introduce `t ht hψ hT hr`. Use `set γ : Hf E a b := (ratF E a u₁, ratF E b u₂) with hγ`. Use `set Ψ : Hf E a b → ℂ := fun h => A.blk.vol⁻¹ * finFn S (intersection_update_fsHerm_neg_one Z T φ e₁) (intersection_update_fsHerm_neg_one Z T L.ln e₂) (h * γ⁻¹) with hΨ`.
+
+Establish `hΨeq : ∀ h, ∑ x, ∑ y, t.ψ x y h * (1 : Matrix Unit Unit ℂ) y x = Ψ h`. Introduce `h`. Rewrite using `[hψ]`. Simplify using `[PositivityTheory.Rg.BcB.F.rt, Ar.fx, Ar.ff, hΨ, hγ]`. Establish `hT1 : 0 ≤ 1 + t.T` using `by linarith [ht.T]`.
+
+Establish `hR0 : 0 ≤ c₀ * (1 + t.T)` using `mul_nonneg hc₀0 hT1`. Establish `hfa : ∀ v, Continuous (phiOf (A.blk.Ma v) (Tl l₁ v) (t.ka v)) ∧ VeryCusp (phiOf (A.blk.Ma v) (Tl l₁ v) (t.ka v)) ∧ ∀ y, phiOf (A.blk.Ma v) (Tl l₁ v) (t.ka v) y ≠ 0 → lg y.val ≤ c₀ * (1 + t.T)` using `fun v => ⟨Reg.phiOf_cont _ (ht.ka v), hVC.1 v _ _ _ (ht.ka v), fun y hy => (Reg.phiOf_lg _ ca t.T ((hca A.blk.μa (A.blk.Ma v)).2 _ _ t.T ht.T (ht.ka v)) y hy).trans (mul_le_mul_of_nonneg_right ((le_max_left ca cb).trans (le_max_right _ _)) hT1)⟩`. Establish `hfb : ∀ v, Continuous (phiOf (A.blk.Mb v) (Tl l₂ v) (t.kb v)) ∧ VeryCusp (phiOf (A.blk.Mb v) (Tl l₂ v) (t.kb v)) ∧ ∀ y, phiOf (A.blk.Mb v) (Tl l₂ v) (t.kb v) y ≠ 0 → lg y.val ≤ c₀ * (1 + t.T)` using `fun v => ⟨Reg.phiOf_cont _ (ht.kb v), hVC.2 v _ _ _ (ht.kb v), fun y hy => (Reg.phiOf_lg _ cb t.T ((hcb A.blk.μb (A.blk.Mb v)).2 _ _ t.T ht.T (ht.kb v)) y hy).trans (mul_le_mul_of_nonneg_right ((le_max_right ca cb).trans (le_max_right _ _)) hT1)⟩`. Establish `hsz : ∀ h, Ψ h ≠ 0 → logSize (finGL E a h.1) ≤ t.r ∧ logSize (finGL E b h.2) ≤ t.r`. Introduce `h hh`.
+
+Rewrite `hh` using `[← hΨeq]`. Take `⟨x, -, hx⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hh`. Take `⟨y, -, hy⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hx`. Conclude with `ht.size x y h (left_ne_zero_of_mul hy)`. Establish `hfin : ∀ g, Ψ g ≠ 0 → finFn S (intersection_update_fsHerm_neg_one Z T φ e₁) (intersection_update_fsHerm_neg_one Z T L.ln e₂) (g * γ⁻¹) ≠ 0` using `fun g hg => right_ne_zero_of_mul hg`.
+
+Use `set U' : Subgroup (Hf E a b) := U ⊓ U.comap (MulAut.conj γ).toMonoidHom with hU'`. Establish `hU'o : IsOpen (U' : Set (Hf E a b))`. Rewrite using `[hU', Subgroup.coe_inf, Subgroup.coe_comap]`. Conclude with `hUo.inter (hUo.preimage (by show Continuous fun x : Hf E a b => γ * x * γ⁻¹ fun_prop))`. Establish `hΨU : ∀ u ∈ U', ∀ h, Ψ (u * h) = Ψ h ∧ Ψ (h * u) = Ψ h`.
+
+Introduce `u hu h`. Establish `hc : γ * u * γ⁻¹ ∈ U` using `hu.2`. Establish `e : h * u * γ⁻¹ = h * γ⁻¹ * (γ * u * γ⁻¹)` using `by group`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show A.blk.vol⁻¹ * finFn S _ _ (u * h * γ⁻¹) = A.blk.vol⁻¹ * finFn S _ _ (h * γ⁻¹)`.
+
+Rewrite using `[mul_assoc u h, (hU u hu.1 _).1]`. Use `show A.blk.vol⁻¹ * finFn S _ _ (h * u * γ⁻¹) = A.blk.vol⁻¹ * finFn S _ _ (h * γ⁻¹)`. Rewrite using `[e, (hU _ hc _).2]`. Establish `hcsΨ : HasCompactSupport Ψ` using `(hcs.comp_homeomorph (Homeomorph.mulRight γ⁻¹)).mul_left (f := fun _ => A.blk.vol⁻¹)`. Establish `key` using `PositivityTheory.Rg.BcB.CG.test2J E a b (fun v => phiOf (A.blk.Ma v) (Tl l₁ v) (t.ka v)) (fun v => phiOf (A.blk.Mb v) (Tl l₂ v) (t.kb v)) Ψ (c₀ * (1 + t.T)) t.r U' hR0 hfa hfb hcsΨ hU'o hΨU hsz (fun d x h₂ hne => hr₁ d x h₂ (hfin _ hne)) (fun d x h₁ hne => hr₂ d x h₁ (hfin _ hne) …`.
+
+Establish `hfun : trM t.Φ A.tw = fun g => (∏ v, phiOf (A.blk.Ma v) (Tl l₁ v) (t.ka v) (gInf v g.1)) * (∏ v, phiOf (A.blk.Mb v) (Tl l₂ v) (t.kb v) (gInf v g.2)) * Ψ (hFin g)`. Use function extensionality and compare the values at `g`. Rewrite using `[PT.Φ, Ar.tw, PositivityTheory.Rg.BcB.CG.tensTr, hΨeq]`. Rewrite using `[hfun]`. Use `PositivityTheory.Rg.BcB.CG.isTest2J_mono key ?_` and prove the remaining obligations.
+
+Establish `hcard : 0 ≤ 2 * (Fintype.card (InfinitePlace E) : ℝ) * c₀` using `by positivity`. Establish `h1 : 2 * (Fintype.card (InfinitePlace E) : ℝ) * (c₀ * (1 + t.T)) ≤ 2 * (Fintype.card (InfinitePlace E) : ℝ) * c₀ * (1 + R)`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (by linarith) hcard`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations. Take `⟨ho, hψ, hT, hr⟩` from `hC j hj`. Conclude with `term _ ho hψ hT hr`. Rewrite using `[Cmb.Φ, Growth.trM_sum]`. Conclude with `isTest2J_sum _ fun j hj => isTest2J_smul _ (by`.
+
+Take `⟨ho, hψ, hT, hr⟩` from `hC j hj`. Conclude with `term _ ho hψ hT hr)`.
+-/
 theorem cmbTest : CmbTest := by
   intro E _ _ _ a b l₁ l₂ D A S Z L hS hZ u₁ u₂ hu₁ hu₂
   have := A.ha

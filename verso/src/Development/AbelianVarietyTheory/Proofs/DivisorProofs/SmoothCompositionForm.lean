@@ -7,6 +7,13 @@ open scoped Classical
 
 namespace GlobalTheory.SmoothComp
 
+/- English proof (translation)
+Introduce `M _ n A f s G hf hfs hs hfs' hG`. Establish `hcont : Continuous (fun y => G (f y))` using `hG.continuousOn.comp_continuous hf hfs'`. Establish `hsm : A.SmoothOn Set.univ (fun y => (G (f y) : ℂ))`. Introduce `i`. Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (f ∘ (A.e i).symm) ((A.e i).target ∩ (A.e i).symm ⁻¹' Set.univ)`.
+
+Use `(Complex.reCLM.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞))).comp_contDiffOn (hfs i)` as an intermediate fact. Use `this.congr fun v _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (G ∘ (f ∘ (A.e i).symm)) ((A.e i).target ∩ (A.e i).symm ⁻¹' Set.univ)` using `hG.comp h1 fun v _ => hfs' _`. Establish `h3` using `(Complex.ofRealCLM.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞))).comp_contDiffOn h2`.
+
+Use `h3.congr fun v _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `⟨hcont, hsm, A.isForm_fn hsm⟩`.
+-/
 theorem smooth_comp : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) (f : M → ℝ) (s : Set ℝ) (G : ℝ → ℝ), Continuous f → A.SmoothOn Set.univ (fun y => (f y : ℂ)) →
     IsOpen s → (∀ y, f y ∈ s) → ContDiffOn ℝ (⊤ : ℕ∞) G s →
       Continuous (fun y => G (f y)) ∧ A.SmoothOn Set.univ (fun y => (G (f y) : ℂ)) ∧ A.IsForm (A.fn (fun y => G (f y))) := by

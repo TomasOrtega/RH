@@ -17,5 +17,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.LiftRows (Given)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainTw.ExactNS.stepExactNS | exact GlobalTheory.ChainTw.ExactNS.stepExactNS | (intros; apply GlobalTheory.ChainTw.ExactNS.stepExactNS <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaLiftChainStep_exact_innerProduct : ∀ D : D7, GlobalTheory.Core.Rk.SW.HeckeFormNS D → SoftQ D → QPeel D → LevInt D → StepExactNS D := by
   first | exact @GlobalTheory.ChainTw.ExactNS.stepExactNS | exact GlobalTheory.ChainTw.ExactNS.stepExactNS | (intros; apply GlobalTheory.ChainTw.ExactNS.stepExactNS <;> assumption)

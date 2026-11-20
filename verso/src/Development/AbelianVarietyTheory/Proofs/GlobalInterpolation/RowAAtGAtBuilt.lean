@@ -8,6 +8,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.Fc
 
+/- English proof (translation)
+Use `⟨fun _ _ _ _ _ => True, largeBaseProperty_true, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.holds_at_bundlePoints_of_trueColumns _ Lk fun K X f T c h => ?_` and prove the remaining obligations. Use `positionOf_mono (P := GoodE 𝒮) ?_ K X f T c h.1` and prove the remaining obligations. Introduce and unpack `K B f T w Z c ⟨⟨b, -⟩, -⟩`. Use `⟨(GlobalTheory.Svd.builtC_hasPart 𝒮).1 K B f T w Z c ⟨b⟩, fun a => ?_⟩` and prove the remaining obligations.
+
+Establish `hx : RX K B f T w Z c.Wt c.O.p0 b.what₂` using `hR ▸ b.rx`. Conclude with `GlobalTheory.T.rowFormsMatchPeriodMap_of_furtherProperties K B f T w Z c.Wt c.O.p0 b.what₂ hx a`.
+-/
 theorem row_aAtG_at_built (𝒮 : Slots) (hR : 𝒮.Rx = RX) (Lk : LkT Bundle) :
     Lg1 KPx (IsBuiltE 𝒮) (IsGoodE 𝒮) fun S => AllBundlePointProperties.ArithmeticConditionAtBundlePoints S Lk := by
   refine ⟨fun _ _ _ _ _ => True, largeBaseProperty_true, ?_⟩

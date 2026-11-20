@@ -15,6 +15,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] [MeasurableSpace G]
   [BorelSpace G] in
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (mem_fixedVectors_iff_le.1 hv) hKo`.
+-/
 theorem smooth_of_mem_fixedVectors {V : Type*} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} {K : Subgroup G} (hKo : IsOpen (K : Set G)) {v : V}
     (hv : v ∈ fixedVectors ρ K) : v ∈ smoothVectors ρ :=
@@ -27,6 +30,9 @@ variable (μ : Measure G) [μ.IsHaarMeasure] {K : Subgroup G} (hKc : IsCompact (
 
 include hKc hKo in
 
+/- English proof (translation)
+The claim follows from `ENNReal.toReal_pos (hKo.measure_ne_zero μ ⟨1, K.one_mem⟩) hKc.measure_lt_top.ne`.
+-/
 theorem measureReal_compactOpen_pos : 0 < μ.real (K : Set G) :=
   ENNReal.toReal_pos (hKo.measure_ne_zero μ ⟨1, K.one_mem⟩) hKc.measure_lt_top.ne
 
@@ -36,35 +42,58 @@ def idem : HeckeAlgebra μ :=
 
 variable {μ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem idem_apply (x : G) :
     idem μ hKc hKo x = (K : Set G).indicator (fun _ => ((μ.real (K : Set G) : ℂ))⁻¹) x := rfl
 
+/- English proof (translation)
+Rewrite using `[idem_apply]`. Conclude with `Set.indicator_of_mem (show x ∈ (K : Set G) from hx) _`.
+-/
 theorem idem_apply_of_mem {x : G} (hx : x ∈ K) : idem μ hKc hKo x = ((μ.real (K : Set G) : ℂ))⁻¹ := by
   rw [idem_apply]
   exact Set.indicator_of_mem (show x ∈ (K : Set G) from hx) _
 
+/- English proof (translation)
+Rewrite using `[idem_apply]`. Conclude with `Set.indicator_of_notMem (show x ∉ (K : Set G) from hx) _`.
+-/
 theorem idem_apply_of_notMem {x : G} (hx : x ∉ K) : idem μ hKc hKo x = 0 := by
   rw [idem_apply]
   exact Set.indicator_of_notMem (show x ∉ (K : Set G) from hx) _
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ K`. Rewrite using `[idem_apply_of_mem hKc hKo (mul_mem hk hx), idem_apply_of_mem hKc hKo hx]`. Rewrite using `[idem_apply_of_notMem hKc hKo hx, idem_apply_of_notMem hKc hKo]`. Conclude with `fun h => hx (by simpa using mul_mem (inv_mem hk) h)`.
+-/
 theorem idem_mul_left {k : G} (hk : k ∈ K) (x : G) : idem μ hKc hKo (k * x) = idem μ hKc hKo x := by
   by_cases hx : x ∈ K
   · rw [idem_apply_of_mem hKc hKo (mul_mem hk hx), idem_apply_of_mem hKc hKo hx]
   · rw [idem_apply_of_notMem hKc hKo hx, idem_apply_of_notMem hKc hKo]
     exact fun h => hx (by simpa using mul_mem (inv_mem hk) h)
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ K`. Rewrite using `[idem_apply_of_mem hKc hKo (mul_mem hx hk), idem_apply_of_mem hKc hKo hx]`. Rewrite using `[idem_apply_of_notMem hKc hKo hx, idem_apply_of_notMem hKc hKo]`. Conclude with `fun h => hx (by simpa using mul_mem h (inv_mem hk))`.
+-/
 theorem idem_mul_right {k : G} (hk : k ∈ K) (x : G) : idem μ hKc hKo (x * k) = idem μ hKc hKo x := by
   by_cases hx : x ∈ K
   · rw [idem_apply_of_mem hKc hKo (mul_mem hx hk), idem_apply_of_mem hKc hKo hx]
   · rw [idem_apply_of_notMem hKc hKo hx, idem_apply_of_notMem hKc hKo]
     exact fun h => hx (by simpa using mul_mem h (inv_mem hk))
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ K`. Rewrite using `[idem_apply_of_mem hKc hKo (inv_mem hx), idem_apply_of_mem hKc hKo hx]`. Establish `hx' : x⁻¹ ∉ K` using `fun h => hx (by simpa using inv_mem h)`. Rewrite using `[idem_apply_of_notMem hKc hKo hx, idem_apply_of_notMem hKc hKo hx']`.
+-/
 theorem idem_inv (x : G) : idem μ hKc hKo x⁻¹ = idem μ hKc hKo x := by
   by_cases hx : x ∈ K
   · rw [idem_apply_of_mem hKc hKo (inv_mem hx), idem_apply_of_mem hKc hKo hx]
   · have hx' : x⁻¹ ∉ K := fun h => hx (by simpa using inv_mem h)
     rw [idem_apply_of_notMem hKc hKo hx, idem_apply_of_notMem hKc hKo hx']
 
+/- English proof (translation)
+Establish `hpt : (fun g => idem μ hKc hKo g * F g) = (K : Set G).indicator (fun _ => ((μ.real (K : Set G) : ℂ))⁻¹ * F 1)`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ K`. Rewrite using `[idem_apply_of_mem hKc hKo hg, hF g hg, Set.indicator_of_mem (show g ∈ (K : Set G) from hg)]`. Rewrite using `[idem_apply_of_notMem hKc hKo hg, zero_mul, Set.indicator_of_notMem (show g ∉ (K : Set G) from hg)]`.
+
+Establish `hne : ((μ.real (K : Set G) : ℂ)) ≠ 0` using `Complex.ofReal_ne_zero.2 (measureReal_compactOpen_pos μ hKc hKo).ne'`. Rewrite using `[hpt, integral_indicator_const _ hKo.measurableSet, Complex.real_smul, ← mul_assoc, mul_inv_cancel₀ hne, one_mul]`.
+-/
 theorem integral_idem_mul {F : G → ℂ} (hF : ∀ k ∈ K, F k = F 1) :
     ∫ g, idem μ hKc hKo g * F g ∂μ = F 1 := by
   have hpt : (fun g => idem μ hKc hKo g * F g) =
@@ -82,6 +111,9 @@ theorem integral_idem_mul {F : G → ℂ} (hF : ∀ k ∈ K, F k = F 1) :
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
 
+/- English proof (translation)
+Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Rewrite using `[dual_heckeAct μ (idem μ hKc hKo).mem (smooth_of_mem_fixedVectors hKo hv), integral_idem_mul hKc hKo (F := fun g => φ (ρ g v)) (fun k hk => by simp [hv k hk])]`. Simplify using the standard rewrite rules.
+-/
 theorem heckeAct_idem_of_mem {v : V} (hv : v ∈ fixedVectors ρ K) :
     heckeAct μ ρ (idem μ hKc hKo) v = v := by
   refine eq_of_forall_dual fun φ => ?_
@@ -89,10 +121,18 @@ theorem heckeAct_idem_of_mem {v : V} (hv : v ∈ fixedVectors ρ K) :
     integral_idem_mul hKc hKo (F := fun g => φ (ρ g v)) (fun k hk => by simp [hv k hk])]
   simp
 
+/- English proof (translation)
+The claim follows from `heckeAct_mem_fixedVectors (idem μ hKc hKo).mem (fun _ hk x => idem_mul_left hKc hKo hk x) hv`.
+-/
 theorem heckeAct_idem_mem {v : V} (hv : v ∈ smoothVectors ρ) :
     heckeAct μ ρ (idem μ hKc hKo) v ∈ fixedVectors ρ K :=
   heckeAct_mem_fixedVectors (idem μ hKc hKo).mem (fun _ hk x => idem_mul_left hKc hKo hk x) hv
 
+/- English proof (translation)
+Establish `hw` using `heckeAct_idem_mem hKc hKo (ρ := ρ) (μ := μ) (hρ v)`. Establish `h1 : (fixedProj ρ hρ hKc hKo (heckeAct μ ρ (idem μ hKc hKo) v) : V) = heckeAct μ ρ (idem μ hKc hKo) v` using `fixedProj_apply_of_mem hρ hKc hKo hw`. Rewrite using `[← h1]`. Use `congr 1`. Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations.
+
+Set `ψ : Module.Dual ℂ V` to `φ ∘ₗ fixedProj ρ hρ hKc hKo`. Use `dual_heckeAct μ (idem μ hKc hKo).mem (hρ v) ψ` as an intermediate fact. Rewrite using `[integral_idem_mul hKc hKo (F := fun g => ψ (ρ g v)) (fun k hk => by`. Simplify using `[ψ, fixedProj_apply_act hρ hKc hKo hk])] at this`. Simplify `this` using `[ψ]`.
+-/
 theorem heckeAct_idem_eq_fixedProj (hρ : IsSmooth ρ) (v : V) :
     heckeAct μ ρ (idem μ hKc hKo) v = fixedProj ρ hρ hKc hKo v := by
   have hw := heckeAct_idem_mem hKc hKo (ρ := ρ) (μ := μ) (hρ v)
@@ -125,9 +165,17 @@ def biInvariant (K : Subgroup G) : NonUnitalSubalgebra ℂ (HeckeAlgebra μ) whe
   smul_mem' c a ha k hk x := by
     simp only [coe_smul, Pi.smul_apply, smul_eq_mul, (ha k hk x).1, (ha k hk x).2, and_self]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_biInvariant {f : HeckeAlgebra μ} :
     f ∈ biInvariant μ K ↔ ∀ k ∈ K, ∀ x, f (k * x) = f x ∧ f (x * k) = f x := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[← mem_fixedVectors_leftReg, ← heckeAct_leftReg]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h]`. Conclude with `heckeAct_idem_mem hKc hKo (isSmooth_leftReg f)`.
+
+Conclude with `heckeAct_idem_of_mem hKc hKo`.
+-/
 theorem idem_mul_eq_self_iff {f : HeckeAlgebra μ} :
     idem μ hKc hKo * f = f ↔ ∀ k ∈ K, ∀ x, f (k * x) = f x := by
   rw [← mem_fixedVectors_leftReg, ← heckeAct_leftReg]
@@ -137,6 +185,11 @@ theorem idem_mul_eq_self_iff {f : HeckeAlgebra μ} :
     exact heckeAct_idem_mem hKc hKo (isSmooth_leftReg f)
   · exact heckeAct_idem_of_mem hKc hKo
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h k hk x`. Rewrite using `[← h, coe_mul, groupConv_mul_right (fun g => idem_mul_right hKc hKo hk g)]`. Introduce `h`. Use extensionality with `x`.
+
+Rewrite using `[mul_apply, ← integral_mul_left_eq_self _ x]`. Simplify using `only [mul_inv_rev, inv_mul_cancel_right, idem_inv]`. Repeatedly rewrite using `[mul_comm (f _)]`. Rewrite using `[integral_idem_mul (μ := μ) hKc hKo (F := fun y => f (x * y)) (fun k hk => by simp [h k hk x]), mul_one]`.
+-/
 theorem mul_idem_eq_self_iff {f : HeckeAlgebra μ} :
     f * idem μ hKc hKo = f ↔ ∀ k ∈ K, ∀ x, f (x * k) = f x := by
   constructor
@@ -150,18 +203,32 @@ theorem mul_idem_eq_self_iff {f : HeckeAlgebra μ} :
     rw [integral_idem_mul (μ := μ) hKc hKo (F := fun y => f (x * y)) (fun k hk => by simp [h k hk x]),
       mul_one]
 
+/- English proof (translation)
+Rewrite using `[idem_mul_eq_self_iff, mul_idem_eq_self_iff, mem_biInvariant]`. Conclude with `⟨fun h => ⟨fun k hk x => (h k hk x).1, fun k hk x => (h k hk x).2⟩, fun h k hk x => ⟨h.1 k hk x, h.2 k hk x⟩⟩`.
+-/
 theorem mem_biInvariant_iff_idem {f : HeckeAlgebra μ} :
     f ∈ biInvariant μ K ↔ idem μ hKc hKo * f = f ∧ f * idem μ hKc hKo = f := by
   rw [idem_mul_eq_self_iff, mul_idem_eq_self_iff, mem_biInvariant]
   exact ⟨fun h => ⟨fun k hk x => (h k hk x).1, fun k hk x => (h k hk x).2⟩,
     fun h k hk x => ⟨h.1 k hk x, h.2 k hk x⟩⟩
 
+/- English proof (translation)
+The claim follows from `(idem_mul_eq_self_iff hKc hKo).2 fun _ hk x => idem_mul_left hKc hKo hk x`.
+-/
 theorem isIdempotentElem_idem : IsIdempotentElem (idem μ hKc hKo) :=
   (idem_mul_eq_self_iff hKc hKo).2 fun _ hk x => idem_mul_left hKc hKo hk x
 
+/- English proof (translation)
+The claim follows from `(mem_biInvariant_iff_idem hKc hKo).2 ⟨isIdempotentElem_idem hKc hKo, isIdempotentElem_idem hKc hKo⟩`.
+-/
 theorem idem_mem_biInvariant : idem μ hKc hKo ∈ biInvariant μ K :=
   (mem_biInvariant_iff_idem hKc hKo).2 ⟨isIdempotentElem_idem hKc hKo, isIdempotentElem_idem hKc hKo⟩
 
+/- English proof (translation)
+Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Take `⟨h1, h2⟩` from `(mem_biInvariant_iff_idem hKc hKo).1 hf`. Conclude with `⟨f, by show idem μ hKc hKo * f * idem μ hKc hKo = f; rw [h1, h2]⟩`.
+
+Introduce and unpack `⟨g, rfl⟩`. Establish `hi` using `isIdempotentElem_idem hKc hKo (μ := μ)`. Use `(mem_biInvariant_iff_idem hKc hKo).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, hi.eq]`. Rewrite using `[mul_assoc, hi.eq]`.
+-/
 theorem biInvariant_eq_range :
     (biInvariant μ K : Set (HeckeAlgebra μ)) = range fun f => idem μ hKc hKo * f * idem μ hKc hKo := by
   ext f
@@ -194,30 +261,60 @@ def val (h : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ :=
 
 instance : CoeOut (HeckeAlgebraLevel μ K hKc hKo) (HeckeAlgebra μ) := ⟨val hKc hKo⟩
 
+/- English proof (translation)
+The claim follows from `(show biInvariant μ K from h).2`.
+-/
 theorem val_mem (h : HeckeAlgebraLevel μ K hKc hKo) : (h : HeckeAlgebra μ) ∈ biInvariant μ K :=
   (show biInvariant μ K from h).2
 
 def mk (f : HeckeAlgebra μ) (hf : f ∈ biInvariant μ K) : HeckeAlgebraLevel μ K hKc hKo :=
   (⟨f, hf⟩ : biInvariant μ K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_mk (f : HeckeAlgebra μ) (hf : f ∈ biInvariant μ K) :
     ((mk hKc hKo f hf : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ) = f := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext h`.
+-/
 theorem val_injective : Function.Injective (val hKc hKo : HeckeAlgebraLevel μ K hKc hKo → _) :=
   fun _ _ h => Subtype.ext h
 
+/- English proof (translation)
+The claim follows from `val_injective hKc hKo h`.
+-/
 @[ext] theorem ext {a b : HeckeAlgebraLevel μ K hKc hKo} (h : (a : HeckeAlgebra μ) = b) : a = b :=
   val_injective hKc hKo h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_mul (a b : HeckeAlgebraLevel μ K hKc hKo) :
     ((a * b : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ) = a * b := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_add (a b : HeckeAlgebraLevel μ K hKc hKo) :
     ((a + b : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ) = a + b := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_zero : ((0 : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ) = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_smul (c : ℂ) (a : HeckeAlgebraLevel μ K hKc hKo) :
     ((c • a : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ) = c • (a : HeckeAlgebra μ) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_neg (a : HeckeAlgebraLevel μ K hKc hKo) :
     ((-a : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ) = -(a : HeckeAlgebra μ) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_sub (a b : HeckeAlgebraLevel μ K hKc hKo) :
     ((a - b : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ) = a - b := rfl
 
@@ -227,9 +324,15 @@ instance : Ring (HeckeAlgebraLevel μ K hKc hKo) :=
     one_mul := fun a => ext hKc hKo ((mem_biInvariant_iff_idem hKc hKo).1 (val_mem hKc hKo a)).1
     mul_one := fun a => ext hKc hKo ((mem_biInvariant_iff_idem hKc hKo).1 (val_mem hKc hKo a)).2 }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_one : ((1 : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ) = idem μ hKc hKo :=
   rfl
 
+/- English proof (translation)
+The claim follows from `(val_mem hKc hKo h k hk x).1`.
+-/
 theorem apply_mul_left (h : HeckeAlgebraLevel μ K hKc hKo) {k : G} (hk : k ∈ K) (x : G) :
     (h : HeckeAlgebra μ) (k * x) = (h : HeckeAlgebra μ) x :=
   (val_mem hKc hKo h k hk x).1
@@ -238,6 +341,9 @@ def corner (f : HeckeAlgebra μ) : HeckeAlgebraLevel μ K hKc hKo :=
   mk hKc hKo (idem μ hKc hKo * f * idem μ hKc hKo)
     (by rw [← SetLike.mem_coe, biInvariant_eq_range hKc hKo]; exact ⟨f, rfl⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_corner (f : HeckeAlgebra μ) :
     ((corner hKc hKo f : HeckeAlgebraLevel μ K hKc hKo) : HeckeAlgebra μ) =
       idem μ hKc hKo * f * idem μ hKc hKo := rfl
@@ -266,6 +372,9 @@ instance instModuleFixedVectors : Module (HeckeAlgebraLevel μ K hKc hKo) (fixed
     rw [val_zero, coe_zero]
     exact heckeAct_zero_left (smooth_of_mem_fixedVectors hKo v.2))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_smul_fixedVectors (h : HeckeAlgebraLevel μ K hKc hKo) (v : fixedVectors ρ K) :
     ((h • v : fixedVectors ρ K) : V) = heckeAct μ ρ (h : HeckeAlgebra μ) v := rfl
 
@@ -281,6 +390,9 @@ def heckeRep (hρ : IsSmooth ρ) : HeckeAlgebra μ →ₙₐ[ℂ] Module.End ℂ
   map_smul' c f := LinearMap.ext fun v => heckeAct_smul_left c f.mem (hρ v)
   map_mul' f g := LinearMap.ext fun v => heckeAct_groupConv f.mem g.mem (hρ v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heckeRep_apply (hρ : IsSmooth ρ) (f : HeckeAlgebra μ) (v : V) :
     heckeRep hρ f v = heckeAct μ ρ f v := rfl
 

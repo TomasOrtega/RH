@@ -21,10 +21,16 @@ section Bundle
 
 variable {X X' Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X}
 
+/- English proof (translation)
+Use `congrArg (fun f : X ⟶ X => f x) h` as an intermediate fact. Conclude with `this`.
+-/
 theorem base_cancel {G : X ⟶ X'} (h : G ≫ F = 𝟙 X) (x : X) : F (G x) = x := by
   have := congrArg (fun f : X ⟶ X => f x) h
   exact this
 
+/- English proof (translation)
+Introduce `x hx` and use `⟨mem_pull.2 (by rw [base_cancel h]; exact hx.2), mem_pull.1 hx.1⟩`.
+-/
 theorem le_rev {G : X ⟶ X'} (h : G ≫ F = 𝟙 X) (p : (LB.div (L'.pull G) L).ι) :
     (LB.div (L'.pull G) L).U p ≤ G ⁻¹ᵁ ((L.pull F).U (fun _ => p.2) ⊓ L'.U (p.1 PUnit.unit)) :=
   fun x hx => ⟨mem_pull.2 (by rw [base_cancel h]; exact hx.2), mem_pull.1 hx.1⟩
@@ -32,12 +38,20 @@ theorem le_rev {G : X ⟶ X'} (h : G ≫ F = 𝟙 X) (p : (LB.div (L'.pull G) L)
 def revIso (w : LB.Iso L' (L.pull F)) (G : X ⟶ X') (h : G ≫ F = 𝟙 X) : LB.Iso L (L'.pull G) :=
   ⟨fun p => (res (le_rev h p) (pullU G _ (w.s (fun _ => p.2, p.1 PUnit.unit))))⁻¹⟩
 
+/- English proof (translation)
+Establish `hm : f z ∈ (LB.div (L'.pull G) L).U (fun _ => j', j)` using `⟨mem_pull.2 h₁, h₂⟩`. Conclude with `(map_inv _ _).trans (congrArg (·⁻¹) ((gm_res f z _ hm _).trans (gm_pull f G z _ (le_rev h _ hm) _)))`.
+-/
 theorem gw_revIso (w : LB.Iso L' (L.pull F)) {G : X ⟶ X'} (h : G ≫ F = 𝟙 X) {Z : Scheme.{0}} (f : Z ⟶ X) (z : Z)
     (j' : L'.ι) (j : L.ι) (h₁ : G (f z) ∈ L'.U j') (h₂ : f z ∈ L.U j) :
     gw (revIso w G h) f z j' j = (gw w (f ≫ G) z j j')⁻¹ := by
   have hm : f z ∈ (LB.div (L'.pull G) L).U (fun _ => j', j) := ⟨mem_pull.2 h₁, h₂⟩
   exact (map_inv _ _).trans (congrArg (·⁻¹) ((gm_res f z _ hm _).trans (gm_pull f G z _ (le_rev h _ hm) _)))
 
+/- English proof (translation)
+Use `(isGen_iff _).2 fun Z f z j j' k k' hj hj' hk hk' => ?_` and prove the remaining obligations. Establish `hp` using `(isGen_iff w).1 hw Z (f ≫ G) z k k' j j' (show F (G (f z)) ∈ _ by rw [base_cancel h]; exact hk) (show F (G (f z)) ∈ _ by rw [base_cancel h]; exact hk') hj hj'`. Establish `e : (f ≫ G) ≫ F = f` using `by rw [Category.assoc, h, Category.comp_id]`. Rewrite `hp` using `[e]`. Rewrite using `[gw_revIso w h f z j k hj hk, gw_revIso w h f z j' k' hj' hk', hp]`.
+
+Simplify using `only [mul_inv, inv_inv]`. The two sides agree by associativity and commutativity.
+-/
 theorem revIso_isGen (w : LB.Iso L' (L.pull F)) (hw : w.IsGen) {G : X ⟶ X'} (h : G ≫ F = 𝟙 X) :
     (revIso w G h).IsGen := by
   refine (isGen_iff _).2 fun Z f z j j' k k' hj hj' hk hk' => ?_
@@ -49,6 +63,13 @@ theorem revIso_isGen (w : LB.Iso L' (L.pull F)) (hw : w.IsGen) {G : X ⟶ X'} (h
   simp only [mul_inv, inv_inv]
   ac_rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H y j j' h₁ h₂`. Establish `hm : y ∈ p' ⁻¹ᵁ (LB.div (L.pull F) L').U (fun _ => j, j')` using `⟨mem_pull.2 h₁, h₂⟩`. Establish `e` using `congrArg (gm (𝟙 Y) y _) (H j j')`. Use `(gm_res _ y _ hm _).symm.trans (e.trans ?_)` and prove the remaining obligations.
+
+Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ n) ?_)) (gm_res _ y _ hm _))` and prove the remaining obligations. Conclude with `(gm_pull _ _ y _ hm _).trans (by rw [Category.id_comp]; rfl)`. Introduce `H j j'`. Apply `unit_ext` to reduce the goal to its premises. Introduce `y hm`.
+
+Use `(gm_res _ y _ hm _).trans ((H y j j' (mem_pull.1 hm.1) hm.2).trans ?_)` and prove the remaining obligations. Use `Eq.symm ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ n) ?_)) (gm_res _ y _ hm _)))` and prove the remaining obligations. Conclude with `(gm_pull _ _ y _ hm _).trans (by rw [Category.id_comp]; rfl)`.
+-/
 theorem carriesAt_iff (w : LB.Iso L' (L.pull F)) (p' : Y ⟶ X') (p : Y ⟶ X) (hp : p' ≫ F = p) (n : ℤ)
     (a : LB.Gen (LB.LinComb L' (K := PUnit) (fun _ => p') (fun _ => n)))
     (b : LB.Gen (LB.LinComb L (K := PUnit) (fun _ => p) (fun _ => n))) :
@@ -68,6 +89,11 @@ theorem carriesAt_iff (w : LB.Iso L' (L.pull F)) (p' : Y ⟶ X') (p : Y ⟶ X) (
     refine Eq.symm ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ n) ?_)) (gm_res _ y _ hm _)))
     exact (gm_pull _ _ y _ hm _).trans (by rw [Category.id_comp]; rfl)
 
+/- English proof (translation)
+Rewrite `H`, the goal using `[carriesAt_iff]`. Introduce `y j' j h₁ h₂`. Establish `e₁ : p' y = G (p y)` using `congrArg (fun f : Y ⟶ X' => f y) hq.symm`. Establish `e₂ : F (p' y) = p y` using `congrArg (fun f : Y ⟶ X => f y) hp`. Use `H y j j' (by rw [e₂]; exact h₂) (by rw [e₁]; exact h₁)` as an intermediate fact.
+
+Rewrite using `[gw_revIso w h p y j' j h₁ h₂, hq, this, inv_zpow, inv_mul_cancel_left]`.
+-/
 theorem carriesAt_rev (w : LB.Iso L' (L.pull F)) {G : X ⟶ X'} (h : G ≫ F = 𝟙 X) {p' : Y ⟶ X'} {p : Y ⟶ X}
     (hp : p' ≫ F = p) (hq : p ≫ G = p') (n : ℤ)
     {a : LB.Gen (LB.LinComb L' (K := PUnit) (fun _ => p') (fun _ => n))}
@@ -86,6 +112,9 @@ section Grp
 
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R}
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem specOf_id' : GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R) = 𝟙 _ := Spec.map_id _
 
 instance isIso_F (p : PullIdent (RingHom.id R) D D') : IsIso p.F := by
@@ -94,8 +123,14 @@ instance isIso_F (p : PullIdent (RingHom.id R) D D') : IsIso p.F := by
 
 abbrev Finv (p : PullIdent (RingHom.id R) D D') : D.P.A.left ⟶ D'.P.A.left := inv p.F
 
+/- English proof (translation)
+The claim follows from `IsIso.inv_hom_id _`.
+-/
 theorem Finv_F (p : PullIdent (RingHom.id R) D D') : Finv p ≫ p.F = 𝟙 _ := IsIso.inv_hom_id _
 
+/- English proof (translation)
+Establish `: IsIso (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R))` using `by rw [specOf_id']; infer_instance`. Use `IsPullback.of_horiz_isIso ⟨?_⟩` and prove the remaining obligations. Establish `w` using `p.cart.w`. Rewrite `w` using `[specOf_id', Category.comp_id]`. Rewrite using `[IsIso.inv_comp_eq, specOf_id', Category.comp_id, w]`.
+-/
 theorem cart' (p : PullIdent (RingHom.id R) D D') :
     IsPullback (Finv p) D.P.A.hom D'.P.A.hom (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R)) := by
   have : IsIso (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R)) := by rw [specOf_id']; infer_instance
@@ -104,12 +139,20 @@ theorem cart' (p : PullIdent (RingHom.id R) D D') :
   rw [specOf_id', Category.comp_id] at w
   rw [IsIso.inv_comp_eq, specOf_id', Category.comp_id, w]
 
+/- English proof (translation)
+Establish `e` using `p.F_one`. Rewrite `e` using `[specOf_id', Category.id_comp]`. Rewrite using `[specOf_id', Category.id_comp, IsIso.comp_inv_eq, e]`.
+-/
 theorem F_one' (p : PullIdent (RingHom.id R) D D') :
     eSec D.P.A ≫ Finv p = GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R) ≫ eSec D'.P.A := by
   have e := p.F_one
   rw [specOf_id', Category.id_comp] at e
   rw [specOf_id', Category.id_comp, IsIso.comp_inv_eq, e]
 
+/- English proof (translation)
+Rewrite using `[IsIso.comp_inv_eq, Category.assoc, p.F_mul, ← Category.assoc]`. Establish `key : pullback.map D.P.A.hom D.P.A.hom D'.P.A.hom D'.P.A.hom (Finv p) (Finv p) (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R)) (cart' p).w.symm (cart' p).w.symm ≫ pullback.map D'.P.A.hom D'.P.A.hom D.P.A.hom D.P.A.hom p.F p.F (GlobalThe …`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `erw [Category.assoc, pullback.lift_fst, ← Category.assoc, pullback.lift_fst, Category.assoc, Finv_F, Category.comp_id]`. Use `erw [Category.assoc, pullback.lift_snd, ← Category.assoc, pullback.lift_snd, Category.assoc, Finv_F, Category.comp_id]`.
+
+Rewrite using `[key]`. Conclude with `(Category.id_comp _).symm`.
+-/
 theorem F_mul' (p : PullIdent (RingHom.id R) D D') : (μ[D.P.A]).left ≫ Finv p =
     pullback.map D.P.A.hom D.P.A.hom D'.P.A.hom D'.P.A.hom (Finv p) (Finv p) (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R))
       (cart' p).w.symm (cart' p).w.symm ≫ (μ[D'.P.A]).left := by
@@ -124,6 +167,9 @@ theorem F_mul' (p : PullIdent (RingHom.id R) D D') : (μ[D.P.A]).left ≫ Finv p
   rw [key]
   exact (Category.id_comp _).symm
 
+/- English proof (translation)
+Establish `e` using `p.c_eq (p.xe.symm χ)`. Rewrite `e` using `[AddEquiv.apply_symm_apply, specOf_id', Category.id_comp]`. Rewrite using `[specOf_id', Category.id_comp, IsIso.comp_inv_eq, e]`.
+-/
 theorem c_eq' (p : PullIdent (RingHom.id R) D D') (χ : D.X) :
     (D.c χ).left ≫ Finv p = GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R) ≫ (D'.c (p.xe.symm χ)).left := by
   have e := p.c_eq (p.xe.symm χ)
@@ -133,8 +179,20 @@ theorem c_eq' (p : PullIdent (RingHom.id R) D D') (χ : D.X) :
 abbrev wInv (p : PullIdent (RingHom.id R) D D') : LB.Iso D.P.L (D'.P.L.pull (Finv p)) :=
   revIso p.w (Finv p) (Finv_F p)
 
+/- English proof (translation)
+The claim follows from `revIso_isGen p.w p.w_gen _`.
+-/
 theorem wInv_isGen (p : PullIdent (RingHom.id R) D D') : (wInv p).IsGen := revIso_isGen p.w p.w_gen _
 
+/- English proof (translation)
+Establish `es : GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R) ≫ eSec D.P.A = eSec D.P.A`. Rewrite using `[specOf_id', Category.id_comp]`. Establish `es' : GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R) ≫ eSec D'.P.A = eSec D.P.A ≫ Finv p` using `(F_one' p).symm`. Establish `hq : (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R) ≫ eSec D.P.A) ≫ Finv p = eSec D'.P.A`. Rewrite using `[es, F_one' p, specOf_id', Category.id_comp]`.
+
+Establish `H` using `carriesAt_rev p.w (Finv_F p) p.F_one hq 1 p.w_rig`. Establish `h1 : 𝟙 (Spec (CommRingCat.of R)) ≫ GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R) = 𝟙 (Spec (CommRingCat.of R))`. Rewrite using `[specOf_id', Category.id_comp]`. Rewrite `H`, the goal using `[carriesAt_iff]`. Introduce `y j j' h₁ h₂`.
+
+Establish `m₁ : Finv p ((GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R) ≫ eSec D.P.A) y) ∈ D'.P.L.U j` using `by rw [es]; exact h₁`. Establish `m₂ : (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R) ≫ eSec D.P.A) y ∈ D.P.L.U j'` using `by rw [es]; exact h₂`. Establish `e` using `H y j j' m₁ m₂`. Establish `a₁` using `gm_pullGen D'.P.L _ _ D'.rig (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R)) (𝟙 (Spec (CommRingCat.of R))) y (fun _ => j) (Set.mem_iInter.2 fun _ => (congrArg (fun f => f y ∈ D'.P.L.U j) es').mpr h₁)`. Establish `a₂` using `gm_pullGen D.P.L _ _ D.rig (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R)) (𝟙 (Spec (CommRingCat.of R))) y (fun _ => j') (Set.mem_iInter.2 fun _ => m₂)`.
+
+Rewrite `a₁`, `a₂` using `[h1]`. Conclude with `a₁.trans (e.trans (congrArg₂ (· * ·) (by rw [es]) a₂))`.
+-/
 theorem w_rig' (p : PullIdent (RingHom.id R) D D') :
     CarriesAt D'.P.L D.P.L (Finv p) (wInv p) (eSec D.P.A) (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R) ≫ eSec D'.P.A)
       (F_one' p) 1 D.rig (LB.pullGen D'.P.L _ _ D'.rig (GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R))) := by

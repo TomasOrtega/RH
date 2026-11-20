@@ -9,6 +9,17 @@ open scoped ComplexConjugate ComplexOrder Real
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ hΨ n N φ hφ Z hZ`. Take `⟨hbij, hup, hsurj, hdict, hSB⟩` from `_root_.GlobalTheory.SW.thH_eq_thS_dictionary E Ψ hΨ n N`. Establish `hexp : ∀ (z z' : _root_.GlobalTheory.SW.CM Ψ n N) (m : Matrix (Fin n) (_root_.GlobalTheory.SW.QI E N) ℚ), cexp (2 * π * I * _root_.GlobalTheory.SW.expo Ψ (_root_.GlobalTheory.SW.ofQ m) Z z z') = cexp (π * I * ∑ k, (_root_.GlobalTheory.SW.qv (m k) ⬝ᵥ (_root_.GlobalTheory.SW.tauOf …`. Introduce `z z' m`. Establish `h` using `hdict (fun x => if x = _root_.GlobalTheory.SW.ofQ m then 1 else 0) Z z z'`.
+
+Unfold `_root_.GlobalTheory.SW.thH _root_.GlobalTheory.SW.thS at h`. Rewrite `h` using `[tsum_eq_single (_root_.GlobalTheory.SW.ofQ m), tsum_eq_single m]`. Simplify using `using h`. Apply the tactic sequence `all_goals (intro b hb; simp [hbij.1.eq_iff, hb])`. Use `⟨fun z z' => ?_, fun ψ hψ hθ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← (Equiv.ofBijective _ hbij).summable_iff]`. Establish `hs` using `_root_.GlobalTheory.SW.SiegelSum.summable_norm_thetaTerm _ _ (fun m => φ (_root_.GlobalTheory.SW.ofQ m)) ((hSB φ).1 hφ) _ (hup Z hZ) (_root_.GlobalTheory.SW.zetaOf Ψ z z')`. Use `hs.congr fun m => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Equiv.ofBijective_apply, hexp]`. Establish `h` using `_root_.GlobalTheory.SW.eq_of_thS_eq _ _ (fun m => φ (_root_.GlobalTheory.SW.ofQ m)) (fun m => ψ (_root_.GlobalTheory.SW.ofQ m)) ((hSB φ).1 hφ) ((hSB ψ).1 hψ) _ (hup Z hZ) (fun ζ => by`.
+
+Take `⟨z, z', rfl⟩` from `hsurj ζ`. Rewrite using `[← hdict, ← hdict]`. Conclude with `hθ z z')`. Use function extensionality and compare the values at `x`. Take `⟨m, rfl⟩` from `hbij.2 x`.
+
+Conclude with `congrFun h m`.
+-/
 theorem _root_.GlobalTheory.SW.thH_summable_and_inj : ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (Ψ : Finset (E →+* ℂ)), _root_.GlobalTheory.SW.IsType Ψ → ∀ (n N : ℕ)
     (φ : Matrix (Fin n) (Fin N) E → ℂ), _root_.GlobalTheory.SW.IsSB φ →

@@ -22,6 +22,11 @@ variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.Pos
 variable {R L}
 variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} {w₁ : d.G}
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
+/- English proof (translation)
+Take `⟨P, h1, h2⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.Meas.pEquiv0_k L h.δ0 ⟨cM (0, 1), by`. Take `⟨A', hA'⟩` from `h.cf (0, 1)`. Use `⟨A', ?_⟩` and prove the remaining obligations. Rewrite using `[hA']`. Establish `hu : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (0 : Fin L.n → AE F E) = 1` using `by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k]`.
+
+Rewrite using `[hu]⟩`. Conclude with `⟨P, h1, h2⟩`.
+-/
 theorem pEquiv_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) :
     ∃ P : (nA σ d.Y d.b) ≃ₜ+ (((Fin L.n → AE F E) × AF F) × nA σ L.Y L.b),
       (∀ β, P β = ((_root_.PositivityTheory.SiegelWeilFormula.Act.C5.pb_k L β, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.pa_k L δ β), _root_.PositivityTheory.SiegelWeilFormula.Act.C4.prj_k L β)) ∧
@@ -33,6 +38,13 @@ theorem pEquiv_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L n
     have hu : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (0 : Fin L.n → AE F E) = 1 := by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k]
     rw [hu]⟩
   exact ⟨P, h1, h2⟩
+/- English proof (translation)
+Use `haveI : Fact (IsFrame2 σ L.Y L.b) := ⟨L.ok.frame⟩`. Use `haveI : (lam.map P).IsAddHaarMeasure := P.isAddHaarMeasure_map lam`. Use `haveI : SFinite ν := inferInstance`. Use `haveI : SFinite lam' := inferInstance`. Use `haveI : SFinite (lamA F) := inferInstance`.
+
+Use `haveI : (ν.prod (lamA F)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `haveI : SFinite (ν.prod (lamA F)) := inferInstance`. Use `haveI : ((ν.prod (lamA F)).prod lam').IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `⟨(Measure.addHaarScalarFactor (lam.map P) ((ν.prod (lamA F)).prod lam') : ℝ≥0∞), ENNReal.coe_ne_zero.2 (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne', ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[← ENNReal.smul_def]`.
+
+Conclude with `Measure.isAddLeftInvariant_eq_smul _ _`.
+-/
 theorem lam_map_k {lam : Measure (nA σ d.Y d.b)} [lam.IsAddHaarMeasure] {ν : Measure (Fin L.n → AE F E)} [ν.IsAddHaarMeasure]
     {lam' : Measure (nA σ L.Y L.b)} [lam'.IsAddHaarMeasure] (P : (nA σ d.Y d.b) ≃ₜ+ (((Fin L.n → AE F E) × AF F) × nA σ L.Y L.b)) :
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ lam.map P = c • ((ν.prod (lamA F)).prod lam') := by
@@ -48,6 +60,11 @@ theorem lam_map_k {lam : Measure (nA σ d.Y d.b)} [lam.IsAddHaarMeasure] {ν : M
     ENNReal.coe_ne_zero.2 (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne', ENNReal.coe_ne_top, ?_⟩
   rw [← ENNReal.smul_def]
   exact Measure.isAddLeftInvariant_eq_smul _ _
+/- English proof (translation)
+Use `haveI : SFinite ν := inferInstance`. Use `haveI : SFinite (lamA F) := inferInstance`. Use `haveI : (ν.prod (lamA F)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `⟨(Measure.addHaarScalarFactor κ (ν.prod (lamA F)) : ℝ≥0∞), ENNReal.coe_ne_zero.2 (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne', ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[← ENNReal.smul_def]`.
+
+Conclude with `Measure.isAddLeftInvariant_eq_smul _ _`.
+-/
 theorem kap_eq_k {ν : Measure (Fin L.n → AE F E)} [ν.IsAddHaarMeasure] {κ : Measure ((Fin L.n → AE F E) × AF F)}
     [κ.IsAddHaarMeasure] : ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ κ = c • (ν.prod (lamA F)) := by
   haveI : SFinite ν := inferInstance

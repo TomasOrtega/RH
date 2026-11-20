@@ -9,11 +9,17 @@ section Gram
 
 variable {K : Type} [Field K] [NumberField K] {r k m : ℕ}
 
+/- English proof (translation)
+Use extensionality with `l j`. Simplify using `[hBm, NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem embeddingColumns_conjugate (σ : K →+* ℂ) (b : Fin k → Fin r → K) :
     hBm (conjugate σ) b = (hBm σ b).map (starRingEnd ℂ) := by
   ext l j
   simp [hBm, NumberField.ComplexEmbedding.conjugate_coe_eq]
 
+/- English proof (translation)
+Establish `h : ∀ M : Matrix (Fin n) (Fin n) ℂ, M.map (starRingEnd ℂ) = Mᴴᵀ`. Introduce `M`. Use extensionality with `i j`. Simplify using `[conjTranspose_apply]`. Rewrite using `[h, h, ← transpose_nonsing_inv, conjTranspose_nonsing_inv]`.
+-/
 private lemma map_star_inv {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     A⁻¹.map (starRingEnd ℂ) = (A.map (starRingEnd ℂ))⁻¹ := by
   have h : ∀ M : Matrix (Fin n) (Fin n) ℂ, M.map (starRingEnd ℂ) = Mᴴᵀ := by
@@ -22,6 +28,11 @@ private lemma map_star_inv {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     simp [conjTranspose_apply]
   rw [h, h, ← transpose_nonsing_inv, conjTranspose_nonsing_inv]
 
+/- English proof (translation)
+Unfold `hPm`. Rewrite using `[embeddingColumns_conjugate σ b]`. Establish `h1 : ((hBm σ b).map (starRingEnd ℂ))ᴴ = (hBm σ b)ᴴ.map (starRingEnd ℂ)`. Use extensionality with `i j`. Simplify using `[conjTranspose_apply]`.
+
+Rewrite using `[h1, ← Matrix.map_mul, ← map_star_inv, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_mul, Matrix.map_mul]`.
+-/
 theorem orthogonalProjector_conjugate (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b) :
     hPm (conjugate σ) b = (hPm σ b).map (starRingEnd ℂ) := by
   unfold hPm
@@ -32,6 +43,9 @@ theorem orthogonalProjector_conjugate (σ : K →+* ℂ) {b : Fin k → Fin r �
   rw [h1, ← Matrix.map_mul, ← map_star_inv, Matrix.map_sub _ (map_sub _),
     Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Rewrite using `[orthogonalProjector_conjugate σ hb]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, NumberField.ComplexEmbedding.conjugate_coe_eq, map_sum, mul_comm]`.
+-/
 theorem orthogonalProjector_mulVec_conjugate (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b)
     (x : Fin r → K) :
     (hPm (conjugate σ) b *ᵥ fun l => (conjugate σ) (x l)) = star (hPm σ b *ᵥ fun l => σ (x l)) := by
@@ -40,6 +54,11 @@ theorem orthogonalProjector_mulVec_conjugate (σ : K →+* ℂ) {b : Fin k → F
   simp [Matrix.mulVec, dotProduct, NumberField.ComplexEmbedding.conjugate_coe_eq, map_sum,
     mul_comm]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Establish `hinv : Function.Involutive (NumberField.ComplexEmbedding.conjugate (K` using `K)) := by`. Introduce `σ`. Use extensionality with `z`. Simplify using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+
+Use `Fintype.sum_bijective _ hinv.bijective _ _ (fun σ => ?_)` and prove the remaining obligations. Rewrite using `[orthogonalProjector_mulVec_conjugate σ hb x, orthogonalProjector_mulVec_conjugate σ hb y, NumberField.ComplexEmbedding.conjugate_coe_eq, NumberField.ComplexEmbedding.conjugate_coe_eq]`. Simplify using `[dotProduct, map_sum, mul_comm, mul_left_comm]`.
+-/
 theorem conj_sum_projected_inner (b : Fin k → Fin r → K) (hb : LinearIndependent K b) (a a' : K)
     (x y : Fin r → K) :
     conj (∑ σ : K →+* ℂ, conj (σ a) * σ a' *
@@ -56,12 +75,18 @@ theorem conj_sum_projected_inner (b : Fin k → Fin r → K) (hb : LinearIndepen
     NumberField.ComplexEmbedding.conjugate_coe_eq, NumberField.ComplexEmbedding.conjugate_coe_eq]
   simp [dotProduct, map_sum, mul_comm, mul_left_comm]
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.MultiplicativeHeights.quotGramC`. Simplify using `only [gramMatrix_eq_embeddingColumns, crossGram_eq_embeddingColumns, conjTranspose_sub, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, Matrix.mul_assoc]`.
+-/
 theorem quotientGram_conjTranspose (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b)
     (c : Fin m → Fin r → K) : (ReciprocityTheory.MultiplicativeHeights.quotGramC 1 σ b c)ᴴ = ReciprocityTheory.MultiplicativeHeights.quotGramC 1 σ b c := by
   unfold ReciprocityTheory.MultiplicativeHeights.quotGramC
   simp only [gramMatrix_eq_embeddingColumns, crossGram_eq_embeddingColumns, conjTranspose_sub, conjTranspose_mul,
     conjTranspose_conjTranspose, conjTranspose_nonsing_inv, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h` using `quotientGram_conjTranspose σ hb c`. Establish `h2 : star (ReciprocityTheory.MultiplicativeHeights.quotGramC 1 σ b c).det = (ReciprocityTheory.MultiplicativeHeights.quotGramC 1 σ b c).det`. Rewrite using `[← det_conjTranspose, h]`. Conclude with `Complex.conj_eq_iff_re.mp h2`.
+-/
 theorem quotientGram_det_re_eq (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b)
     (c : Fin m → Fin r → K) :
     (((ReciprocityTheory.MultiplicativeHeights.quotGramC 1 σ b c).det.re : ℝ) : ℂ) = (ReciprocityTheory.MultiplicativeHeights.quotGramC 1 σ b c).det := by
@@ -80,6 +105,9 @@ noncomputable def hwv (b : Fin k → Fin r → K) (c : Fin m → Fin r → K) :
     Fin m × Module.Free.ChooseBasisIndex ℤ (𝓞 K) → EuclideanSpace ℝ (hIdx K r) :=
   fun p => hpv b (integralBasis K p.2 • c p.1)
 
+/- English proof (translation)
+The claim follows from `|(discr K : ℝ)| ^ m * ∏ σ : K →+* ℂ, (ReciprocityTheory.MultiplicativeHeights.quotGramC 1 σ b c).det.re := by classical have hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 K)) = Fintype.card (K →+* ℂ) := by rw [NumberField.Embeddings.card, ← NumberField.RingOfIntegers.ra …`.
+-/
 theorem det_gram_projectedLatticeVectors (b : Fin k → Fin r → K) (hb : LinearIndependent K b)
     (c : Fin m → Fin r → K) :
     (gram ℝ (hwv b c)).det =

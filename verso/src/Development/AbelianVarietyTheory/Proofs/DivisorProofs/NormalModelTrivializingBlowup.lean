@@ -19,6 +19,9 @@ open GlobalTheory.Vert GlobalTheory.Vert.Model
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Establish `n₁` using `(GenIso.genPullIso hf).inv.naturality i'`. Establish `n₂` using `(GenIso.genPullIso hf).hom.naturality i`. Simplify using `only [Functor.comp_map] at n₁ n₂`. Simplify using `only [GenIso.pull, Iso.trans_hom, Iso.app_hom, Functor.mapIso_hom, Iso.symm_hom, Iso.app_inv, Category.assoc]`. Rewrite using `[← n₁, ← Functor.map_comp_assoc, h, Functor.map_comp_assoc, reassoc_of% n₂]`.
+-/
 theorem pull_comm {Z Z₁ : Model O} {f : Z₁.X ⟶ Z.X} (hf : f ≫ Z.str = Z₁.str) {E E' K K' : Z.X.Modules}
     (φ : Z.GenIso E E') (ψ : Z.GenIso K K') (i : K ⟶ E) (i' : K' ⟶ E')
     (h : ψ.hom ≫ Z.genRes.map i' = Z.genRes.map i ≫ φ.hom) :
@@ -64,11 +67,21 @@ def pairPull {Z Z₁ : Model O} {f : Z₁.X ⟶ Z.X} (hf : f ≫ Z.str = Z₁.st
   gen i := (P.gen i).pull hf
   gen_ι i := pull_comm hf φ (P.gen i) (P.fl.ι i) (P.fl'.ι i) (P.gen_ι i)
 
+/- English proof (translation)
+Unfold `Hom.relDim at *`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem relDim_comp {Z Z₁ Z₂ : Model O} (f : Hom Z₁ Z) (g : Hom Z₂ Z₁) (hf : f.relDim = 0)
     (hg : g.relDim = 0) : (g.comp f).relDim = 0 := by
   unfold Hom.relDim at *
   omega
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `B hB E E' φ hE hE'`. Conclude with `⟨B, Hom.id B, hB, Nat.sub_self _, ⟨pairZero _ (hE.pullback _) (hE'.pullback _)⟩⟩`.
+
+Consider the case `succ r ih`. Introduce `B hB E E' φ hE hE'`. Take `⟨B₁, f₁, K, K', i, i', ψ, hB₁, hf₁, hi, hi', hK, hK', hc⟩` from `GlobalTheory.T.generic_isomorphism_subbundle_lift O p B hB r E E' φ hE hE'`. Take `⟨B₂, f₂, hB₂, hf₂, ⟨P⟩⟩` from `ih B₁ hB₁ K K' ψ hK hK'`. Take `⟨P'⟩` from `GlobalTheory.T.flag_pair_extends_by_one O B₂ _ _ _ _ ((φ.pull f₁.comp_str).pull f₂.comp_str) ((Scheme.Modules.pullback f₂.f).map i) ((Scheme.Modules.pullback f₂.f).map i') (ψ.pull f₂.comp_str) r (SubPull.isSubbundle_pullback _ _ f₂.f _ _ i r hK hi) (SubPull.isSubbundle_pullback _ …`.
+
+Conclude with `⟨B₂, f₂.comp f₁, hB₂, relDim_comp f₁ f₂ hf₁ hf₂, GlobalTheory.T.flag_pair_pullback_composition O B B₁ B₂ f₁ f₂ E E' φ _ P'⟩`.
+-/
 theorem single (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] :
     ∀ (r : ℕ) (B : Model O), IsNormalScheme B.X → ∀ (E E' : B.X.Modules) (φ : B.GenIso E E'),
     IsVB E r → IsVB E' r → ∃ (B' : Model O) (f : Hom B' B), IsNormalScheme B'.X ∧ f.relDim = 0 ∧
@@ -89,6 +102,13 @@ theorem single (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] 
       ((hE'.pullback _).pullback _) (pull_comm f₂.comp_str _ ψ i i' hc) P
     exact ⟨B₂, f₂.comp f₁, hB₂, relDim_comp f₁ f₂ hf₁ hf₂, GlobalTheory.T.flag_pair_pullback_composition O B B₁ B₂ f₁ f₂ E E' φ _ P'⟩
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro B hB r E E' φ _`. Conclude with `⟨B, Hom.id B, hB, Nat.sub_self _, fun i => i.elim0⟩`. Consider the case `succ n ih`.
+
+Introduce `B hB r E E' φ hv`. Take `⟨B₁, f₁, hB₁, hf₁, H₁⟩` from `ih B hB (fun i => r i.castSucc) (fun i => E i.castSucc) (fun i => E' i.castSucc) (fun i => φ i.castSucc) (fun i => hv i.castSucc)`. Take `⟨B₂, f₂, hB₂, hf₂, ⟨P⟩⟩` from `single p (r (Fin.last n)) B₁ hB₁ _ _ ((φ (Fin.last n)).pull f₁.comp_str) ((hv _).1.pullback _) ((hv _).2.pullback _)`. Use `⟨B₂, f₂.comp f₁, hB₂, relDim_comp f₁ f₂ hf₁ hf₂, fun i => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`.
+
+Consider the case `last => exact GlobalTheory.T.flag_pair_pullback_composition O B B₁ B₂ f₁ f₂ _ _ _ _ P`. Consider the case `cast j`. Take `⟨Q⟩` from `H₁ j`. Conclude with `GlobalTheory.T.flag_pair_pullback_composition O B B₁ B₂ f₁ f₂ _ _ _ _ (pairPull f₂.comp_str Q)`.
+-/
 theorem family (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] :
     ∀ (n : ℕ) (B : Model O), IsNormalScheme B.X → ∀ (r : Fin n → ℕ) (E E' : Fin n → B.X.Modules)
     (φ : ∀ i, B.GenIso (E i) (E' i)), (∀ i, IsVB (E i) (r i) ∧ IsVB (E' i) (r i)) →
@@ -112,6 +132,9 @@ theorem family (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] 
 
 end GlobalTheory.FlagPairExists
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B hB n r E E' φ hv`. Conclude with `GlobalTheory.FlagPairExists.family p n B hB r E E' φ hv`.
+-/
 theorem GlobalTheory.FlagPairExists.exists_normal_modification_flagPair : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (n : ℕ) (r : Fin n → ℕ) (E E' : Fin n → B.X.Modules) (φ : ∀ i, B.GenIso (E i) (E' i)), (∀ i, GlobalTheory.VB.IsVB (E i) (r i) ∧ GlobalTheory.VB.IsVB (E' i) (r i)) → ∃ (B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B), GlobalTheory.IsNormalScheme B'.X ∧ f.relDim = 0 ∧ ∀ i, Nonempty (GlobalTheory.Vert.Model.FlagPair ((φ i).pull f.comp_str) (r i)) := by
   intro O _ _ _ p _ _ _ B hB n r E E' φ hv
   exact GlobalTheory.FlagPairExists.family p n B hB r E E' φ hv

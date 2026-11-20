@@ -17,6 +17,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SplitQuadraticRamification (IsBig s
 
 namespace GlobalTheory.RefSum
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, EReal.coe_add, ih]`.
+-/
 theorem extendedReal_coe_finset_sum_of_real {α : Type} (s : Finset α) (g : α → ℝ) :
     ((∑ a ∈ s, g a : ℝ) : EReal) = ∑ a ∈ s, (g a : EReal) := by
   classical
@@ -24,6 +27,31 @@ theorem extendedReal_coe_finset_sum_of_real {α : Type} (s : Finset α) (g : α 
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, EReal.coe_add, ih]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c F k m M Mb Sm cx hS hE p hp vd hvd hT`. Introduce `la`. Use `⟨0, fun T io e ho y => ?_⟩` and prove the remaining obligations. Establish `hfall : ∀ f : Lt1 Dw, letI` using `H.starRing (((0 : ℝ) : EReal) ≤ nuFac p y f (cx f) ∧ (y.IsAlg → nuFac p y f (cx f) ≤ ((boundAll p (rk f) (cx f) : ℝ) : EReal))) := fun f => ((GlobalTheory.T.factorDepth_between_zero_and_bound E H Dw l Xo c p la f (cx f)).1 T io e ho y)`. Establish `hnu : letI` using `H.starRing`.
+
+Use `nuP p y cx = ∑ f, nuFac p y f (cx f) := rfl`. Use `⟨?_, fun hy => ?_⟩` and prove the remaining obligations. Simplify using `only [Nat.cast_zero, EReal.coe_zero] at hfall ⊢`. Rewrite using `[hnu]`. Conclude with `Finset.sum_nonneg fun f _ => (hfall f).1`.
+
+Take `⟨len, hlen0, -, hlenS, hlen⟩` from `GlobalTheory.T.meanUpperBound_bigFactors_placeAboveTwo E H Dw l Xo c p F vd hT T io y (not_isUnit_of_overLa la ho) hy set b : Lt1 Dw → ℝ := fun f => if IsBig k f then (cx f : ℝ) * len f.1 else (rk f : ℝ) * cx f with hb`. Establish `hfb : ∀ f, letI` using `H.starRing; nuFac p y f (cx f) ≤ ((b f : ℝ) : EReal) := by`. Introduce `f`. Distinguish the cases in `hbig : IsBig k f`. Simplify using `only [hb, if_pos hbig]`.
+
+Simplify `hlen f (cx f) hbig.1` using `[mul_comm]`. Simplify using `only [hb, if_neg hbig]`. Use `(hfall f).2 hy` as an intermediate fact. Establish `hB : boundAll p (rk f) (cx f) ≤ (rk f : ℝ) * cx f`. Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.out.two_le`.
+
+Unfold `boundAll`. Conclude with `div_le_self (by positivity) (by linarith)`. Conclude with `this.trans (EReal.coe_le_coe_iff.2 hB)`. Establish `hsum : letI` using `H.starRing; nuP p y cx ≤ ((∑ f, b f : ℝ) : EReal) := by`. Rewrite using `[hnu, extendedReal_coe_finset_sum_of_real]`.
+
+Conclude with `Finset.sum_le_sum fun f _ => hfb f`. Use `hsum.trans (EReal.coe_le_coe_iff.2 ?_)` and prove the remaining obligations. Establish `hsplit : ∑ f, b f = (∑ f ∈ Finset.univ.filter (IsBig k), (cx f : ℝ) * len f.1) + ∑ f ∈ Finset.univ.filter (fun f => ¬ IsBig k f), (rk f : ℝ) * cx f`. Simplify using `only [hb]`. Rewrite using `[Finset.sum_ite]`.
+
+Establish `hsmall : (∑ f ∈ Finset.univ.filter (fun f => ¬ IsBig k f), (rk f : ℝ) * cx f) ≤ Sm`. Use `le_trans (le_of_eq ?_) hE.2.2.1` and prove the remaining obligations. Unfold `sumSmallSpread`. Use `push_cast`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations.
+
+Use extensionality with `f`. Simplify using `[not_isBig_iff]`. Establish `hbig : (∑ f ∈ Finset.univ.filter (IsBig k), (cx f : ℝ) * len f.1) ≤ F * m * (1 + vd / 2) * Mb`. Establish `hfib` using `Finset.sum_fiberwise (Finset.univ.filter (IsBig k)) (fun f : Lt1 Dw => f.1) (fun f => (cx f : ℝ) * len f.1)`. Rewrite using `[← hfib]`.
+
+Establish `h1 : ∀ τ : E →+* ℂ, (∑ f ∈ (Finset.univ.filter (IsBig k)).filter (fun f : Lt1 Dw => f.1 = τ), (cx f : ℝ) * len f.1) ≤ len τ * Mb`. Introduce `τ`. Establish `hτ` using `hE.2.1 τ`. Establish `: (∑ f ∈ (Finset.univ.filter (IsBig k)).filter (fun f : Lt1 Dw => f.1 = τ), (cx f : ℝ) * len f.1) = len τ * ∑ f ∈ Finset.univ.filter (fun f : Lt1 Dw => IsBig k f ∧ f.1 = τ), (cx f : ℝ)`. Rewrite using `[Finset.filter_filter, Finset.mul_sum]`.
+
+Use `Finset.sum_congr (by ext f; simp) fun f hf => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hf).2.2, mul_comm]`. Rewrite using `[this]`. Use `mul_le_mul_of_nonneg_left ?_ (hlen0 τ)` and prove the remaining obligations. Rewrite `hτ` using `[Nat.cast_sum]`.
+
+Use `le_trans (le_of_eq ?_) hτ` and prove the remaining obligations. Conclude with `Finset.sum_congr (by ext f; simp) fun _ _ => rfl`. Establish `hq : (Dw.q : ℝ) ≤ m` using `by exact_mod_cast hS.2.1`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hE.1` to reduce the goal to its premises.
+
+Apply `mul_le_mul_of_nonneg_right _ (by linarith)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hq (Nat.cast_nonneg _)`. Simplify using `only [Nat.cast_zero, zero_add]`. Rewrite using `[hsplit]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem oscLe_two : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (F k m M : ℕ) (Mb Sm : ℝ) (cx : Lt1 Dw → ℕ), Shape Dw F k m → ExpBd Dw k cx Mb Sm M → ∀ (p : ℕ) [Fact p.Prime] (vd : ℝ), 0 ≤ vd → UpperTheory.Depth.SplitPlaces p H F vd → OscLe Xo c p cx (F * m * (1 + vd / 2) * Mb + Sm) := by
   intro E _ _ _ H Dw l Xo c F k m M Mb Sm cx hS hE p hp vd hvd hT
   classical

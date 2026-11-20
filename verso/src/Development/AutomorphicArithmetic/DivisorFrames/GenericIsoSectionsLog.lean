@@ -6,18 +6,27 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar
 open GlobalTheory.VertCmp
 open scoped Classical
 
+/- English proof (translation)
+Establish `h : RegAt (below y) (algebraMap _ Z.functionField a)` using `⟨a, rfl⟩`. Rewrite using `[TrueGeo.valAt, dif_pos h, IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h.choose_spec]`.
+-/
 private theorem valAt_alg {K : Type} [Field K] {Z : Scheme.{0}} [AlgebraicGeometry.IsIntegral Z] (y : Sp K ⟶ Z)
     (a : Z.presheaf.stalk (below y)) :
     TrueGeo.valAt y (algebraMap _ Z.functionField a) = (Scheme.stalkClosedPointTo y).hom a := by
   have h : RegAt (below y) (algebraMap _ Z.functionField a) := ⟨a, rfl⟩
   rw [TrueGeo.valAt, dif_pos h, IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h.choose_spec]
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `hf`. Rewrite using `[valAt_alg]`. Conclude with `(ha.map _).ne_zero`.
+-/
 private theorem valAt_ne {K : Type} [Field K] {Z : Scheme.{0}} [AlgebraicGeometry.IsIntegral Z] {y : Sp K ⟶ Z}
     {f : Z.functionField} (hf : UnitAt (below y) f) : TrueGeo.valAt y f ≠ 0 := by
   obtain ⟨a, ha, rfl⟩ := hf
   rw [valAt_alg]
   exact (ha.map _).ne_zero
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hf`. Take `⟨b, rfl⟩` from `hg`. Rewrite using `[← map_mul, valAt_alg, valAt_alg, valAt_alg, map_mul]`.
+-/
 private theorem valAt_mul' {K : Type} [Field K] {Z : Scheme.{0}} [AlgebraicGeometry.IsIntegral Z] {y : Sp K ⟶ Z}
     {f g : Z.functionField} (hf : RegAt (below y) f) (hg : RegAt (below y) g) :
     TrueGeo.valAt y (f * g) = TrueGeo.valAt y f * TrueGeo.valAt y g := by
@@ -25,6 +34,11 @@ private theorem valAt_mul' {K : Type} [Field K] {Z : Scheme.{0}} [AlgebraicGeome
   obtain ⟨b, rfl⟩ := hg
   rw [← map_mul, valAt_alg, valAt_alg, valAt_alg, map_mul]
 
+/- English proof (translation)
+Introduce `i j hg`. Establish `hi : genericPoint B.X ∈ B.gen ⊓ P.M.U i` using `⟨B.genericPoint_mem_gen, hg.1⟩`. Establish `hj : genericPoint B.X ∈ B.gen ⊓ P.M.U j` using `⟨B.genericPoint_mem_gen, hg.2⟩`. Establish `hW : genericPoint B.X ∈ B.gen ⊓ (P.M.U i ⊓ P.M.U j)` using `⟨B.genericPoint_mem_gen, hg⟩`. Use `congrArg (fnOf _ hW) (GlobalTheory.LB.coord_rel P.t i j (inf_le_inf_left _ inf_le_left) (inf_le_inf_left _ inf_le_right) inf_le_right)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, fnOf_resG, fnOf_resG, fnOf_resG]`. Rewrite using `[h i hi, h j hj]`. Conclude with `this`.
+-/
 private theorem isRatSec_of_isSecOf {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {B : Vert.Model O} (P : VertDiv B) (t : P.M.ι → B.X.functionFieldˣ) (h : IsSecOf P t) : IsRatSec P.M t := by
   intro i j hg
@@ -37,6 +51,17 @@ private theorem isRatSec_of_isSecOf {O : Type} [CommRing O] [IsDomain O] [IsDisc
   rw [h i hi, h j hj]
   exact this
 
+/- English proof (translation)
+Introduce `F _ _ Y O _ _ _ b Z C μ v L L' hL hL' u s s' l l' hs hs' hu`. Take `⟨-, W, hW, hs⟩` from `hs`. Take `⟨-, W', hW', hs'⟩` from `hs'`. Establish `hsec : IsSecOf ((u.pair hL hL').pull (Z.compι_str C)) (fun q => s (fun _ => (q ⟨⟩).1) / s' (fun _ => (q ⟨⟩).2))`. Introduce `q h`.
+
+Establish `e : (Z.comp C).gen ⊓ ((u.pair hL hL').pull (Z.compι_str C)).M.U q ≤ Z.compι C ⁻¹ᵁ (Z.gen ⊓ (L.U (q ⟨⟩).1 ⊓ L'.U (q ⟨⟩).2))` using `inf_le_inf (NModel.preimage_gen (Z.compι_str C)).ge (GlobalTheory.LB.pull_U_le _ q)`. Establish `h1` using `NModel.VPair.eqn_pull (u.pair hL hL') (Z.compι_str C) q le_rfl le_rfl e`. Establish `h2` using `congrArg (fnOf _ h) h1`. Use `Eq.trans ?_ (h2.symm.trans (fnOf_resG _ h _))` and prove the remaining obligations. Use `(Units.val_div_eq_div_val _ _).trans ((hu _ _ (e h)).symm.trans ?_)` and prove the remaining obligations.
+
+Use `(fnOf_resG e h _).symm.trans (congrArg _ ?_)` and prove the remaining obligations. Conclude with `congrArg (fun a => resG _ e ((Z.compι C).app _ a)) (GlobalTheory.LB.resG_self _ _).symm`. Use `⟨(u.pair hL hL').pull (Z.compι_str C), _, rfl, hsec, isRatSec_of_isSecOf _ _ hsec, W ⊓ W', ⟨hW, hW'⟩, ?_⟩` and prove the remaining obligations. Introduce `e y z zt q hy hz hzt hq`. Establish `hq' (x) : Z.compι C (zt x) ∈ L.U (q ⟨⟩).1 ⊓ L'.U (q ⟨⟩).2` using `GlobalTheory.LB.pull_U_le _ q (hq (x := x) trivial)`.
+
+Take `⟨a1, a2⟩` from `hs e y z zt (fun _ => (q ⟨⟩).1) hy.1 hz hzt fun x _ => mem_pull.2 (hq' x).1`. Take `⟨b1, b2⟩` from `hs' e y z zt (fun _ => (q ⟨⟩).2) hy.2 hz hzt fun x _ => mem_pull.2 (hq' x).2`. Simplify using `only [Units.val_div_eq_div_val]`. Establish `c : UnitAt _ _` using `a1.mul b1.inv`. Rewrite `c` using `[← div_eq_mul_inv]`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `d` using `valAt_mul' c.regAt b1.regAt`. Rewrite `d` using `[div_mul_cancel₀ _ b1.ne_zero]`. Rewrite using `[← a2, ← b2, d, map_mul, Real.log_mul (by simpa using valAt_ne c) (by simpa using valAt_ne b1)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.generic_iso_sections_log :
     ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (b : 𝓞 F →+* O) (Z : NModel O) (C : Z.Comp) (μ : Match Y b (Z.comp C)) (v : HeightOneSpectrum (𝓞 F)) (L L' : LB Z.X) (hL : L.IsLB) (hL' : L'.IsLB) (u : Z.GenIso L L') (s : (L.pull (Z.compι C)).ι → (Z.comp C).X.functionFieldˣ) (s' : (L'.pull (Z.compι C)).ι → (Z.comp C).X.functionFieldˣ) (l l' : Ext v → AlgPt Y → ℝ), Reads μ v (L.pull (Z.compι C)) s l → Reads μ v (L'.pull (Z.compι C)) s' l' → (∀ (i : L.ι) (j : L'.ι) (h : genericPoint (Z.comp C).X ∈ Z.compι C ⁻¹ᵁ (Z.gen ⊓ (L.U i ⊓ L'.U j))), fnOf _ h ((Z.compι C).app _ (u.u i j).val) = (s (fun _ => i) : (Z.comp C).X.functionField) / (s' (fun _ => j) : (Z.comp C).X.functionField)) → ∃ (P : VertDiv (Z.comp C)) (t : P.M.ι → (Z.comp C).X.functionFieldˣ), P.cls = Z.vRes C (u.div hL hL') ∧ IsSecOf P t ∧ Reads μ v P.M t (fun e y => l e y - l' e y) := by
   intro F _ _ Y O _ _ _ b Z C μ v L L' hL hL' u s s' l l' hs hs' hu

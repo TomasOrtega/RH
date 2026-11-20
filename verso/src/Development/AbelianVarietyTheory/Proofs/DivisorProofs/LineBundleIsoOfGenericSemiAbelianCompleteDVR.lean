@@ -13,6 +13,9 @@ open GlobalTheory
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
+/- English proof (translation)
+Introduce `V _ _ _ hV G₁ _ _ hG GK _ φ hφ L L' hL hL' h`. Use `haveI : IsDiscreteValuationRing V := hV.1`. Establish `hi : pullback.fst G₁.hom (jK V) = hφ.1.isoPullback.inv ≫ φ` using `hφ.1.isoPullback_inv_fst.symm`. Establish `h' : LBIso (L.pull (pullback.fst G₁.hom (jK V))) (L'.pull (pullback.fst G₁.hom (jK V)))` using `GlobalTheory.GenericSpread.lbIso_pull_of_comp hφ.1.isoPullback.inv hi h`. Conclude with `GlobalTheory.lbIso_of_generic_normal_local V inferInstance inferInstance G₁.left G₁.hom (eSec G₁) hG.smooth hG.quasiCompact (GlobalTheory.geometricallyIntegral_of_isSemiAbelian G₁ (h := hG)) (Over.w (MonObj.one (X := G₁))) L L' hL hL' h'`.
+-/
 theorem GlobalTheory.lbIso_of_generic_semiAbelian_cdvr : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ (G₁ : Over (Sp V)) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ (GK : Over (Sp (FractionRing V))) [GrpObj GK] (φ : GK.left ⟶ G₁.left), IsGrpPullback GK G₁ (jK V) φ → ∀ L L' : LB G₁.left, L.IsLB → L'.IsLB → LBIso (L.pull φ) (L'.pull φ) → LBIso L L' := by
   intro V _ _ _ hV G₁ _ _ hG GK _ φ hφ L L' hL hL' h
   haveI : IsDiscreteValuationRing V := hV.1

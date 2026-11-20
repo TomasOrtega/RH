@@ -22,6 +22,9 @@ section Pair
 
 variable {E K : Type} [Field E] [Field K] [StarRing K] {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[bVV_coe]`. Take `⟨P, hP⟩` from `bVVfun_int K lam i`. Rewrite using `[hP, MvPolynomial.coeff_map]`. Simplify using the standard rewrite rules.
+-/
 theorem vn_bVV_star (lam : ι → DomWeight n) (s : K →+* ℂ) (i : VVIdx lam) (m : ι × Fin n × Fin n →₀ ℕ) :
     s (star ((bVV K lam i).1.coeff m)) = star (s ((bVV K lam i).1.coeff m)) := by
   rw [bVV_coe]
@@ -29,6 +32,13 @@ theorem vn_bVV_star (lam : ι → DomWeight n) (s : K →+* ℂ) (i : VVIdx lam)
   rw [hP, MvPolynomial.coeff_map]
   simp
 
+/- English proof (translation)
+Establish `hexp : ∀ G : VV K lam, Formalism.GradedWeylDivisibility.blockAct ℂ o.1 (MvPolynomial.map s G.1) = ∑ i, s ((bVV K lam).repr G i) • Formalism.GradedWeylDivisibility.blockAct ℂ o.1 (MvPolynomial.map s (bVV K lam i).1)`. Introduce `G`. Use `conv_lhs => rw [← (bVV K lam).sum_repr G]`. Rewrite using `[Submodule.coe_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.coe_smul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_mul, MvPolynomial.smul_eq_C_mul]`. Use `congr 1`. Conclude with `(Formalism.GradedWeylDivisibility.blockAct ℂ o.1).commutes _`. Rewrite using `[← nfL_apply, hexp F, hexp F']`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, nfL_apply, Finset.mul_sum, RingHom.id_apply]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[pairVr_nfAll emb J lam s o ho (bVV K lam i) (bVV K lam j) (vn_bVV_star lam s i)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vn_pairS (emb : ι → E →+* K) (J : Matrix (Fin n) (Fin n) E) (lam : ι → DomWeight n) (s : K →+* ℂ)
     (o : Frames (gramC J (embAt s emb))) (ho : ∀ τ, (o.1 τ)ᴴ * gramC J (embAt s emb) τ * o.1 τ = 1) (F F' : VV K lam) :
     ∑ i, ∑ j, starRingEnd ℂ (s ((bVV K lam).repr F i)) * s (pairVr emb lam J (bVV K lam i) (bVV K lam j)) *
@@ -59,12 +69,25 @@ section Round
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   (lam : X.Tau → DomWeight n) (L : DecoSet X.E n ST SG → Submodule (𝓞 X.E) (Sp X.E n)) (Λ : LevFam X.E X.K n SG)
 
+/- English proof (translation)
+Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.ofReal_re]`.
+-/
 theorem vn_inv_natCast_re (m : ℕ) : (((m : ℕ) : ℂ)⁻¹).re = ((m : ℕ) : ℝ)⁻¹ := by
   rw [← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[vn_inv_natCast_re, ← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.re_ofReal_mul]`.
+-/
 theorem vn_inv_natCast_mul_re (m : ℕ) (z : ℂ) : (((m : ℕ) : ℂ)⁻¹ * z).re = (((m : ℕ) : ℂ)⁻¹).re * z.re := by
   rw [vn_inv_natCast_re, ← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Establish `key` using `vn_pairS X.emb 1 lam s o ho F F`. Rewrite using `[← Complex.re_ofReal_mul, ← key]`. Break down `InfinitePlace.embedding_mk_eq s with h | h` into its components or cases. Unfold `GSD.pairAt`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression. Rewrite using `[← Complex.conj_re]`. Use `congr 1`. Unfold `GSD.pairAt`. Rewrite using `[h]`.
+
+Simplify using `only [map_sum, map_mul, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`. Both sides reduce to the same expression.
+-/
 theorem vn_pairAt_re (s : X.K →+* ℂ) (o : Frames (gramC (1 : Matrix (Fin n) (Fin n) X.E) (embAt s X.emb)))
     (ho : ∀ τ, (o.1 τ)ᴴ * gramC (1 : Matrix (Fin n) (Fin n) X.E) (embAt s X.emb) τ * o.1 τ = 1) (F : VV X.K lam) :
     ((formGSD (roundPk X lam L) Λ).pairAt (InfinitePlace.mk s) F F).re =
@@ -85,6 +108,13 @@ theorem vn_pairAt_re (s : X.K →+* ℂ) (o : Frames (gramC (1 : Matrix (Fin n) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Set `_` to `h.fintypeCl`. Rewrite using `[R.maj_eq h]`. Unfold `GSD.ipAt`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Establish `hw : ((((formGSD (roundPk X lam L) Λ).toCSD h).wt c : ℕ) : ℂ) = ((Nat.card (MulAction.stabilizer (formGSD (roundPk X lam L) Λ).G ((formGSD (roundPk X lam L) Λ).outSec.rep c)) : ℕ) : ℂ)`. Use `congr 1`. Conclude with `(@Nat.card_eq_fintype_card _ (h.fintypeStab ((formGSD (roundPk X lam L) Λ).outSec.rep c))).symm`. Rewrite using `[hw, vn_inv_natCast_mul_re, mul_assoc]`. Use `congr 1`.
+
+Conclude with `vn_pairAt_re lam L Λ s o (frame_std _ o ho) _`.
+-/
 theorem vn_norm_round (h : (formGSD (roundPk X lam L) Λ).Ok) (R : (formGSD (roundPk X lam L) Λ).Rat) (s : X.K →+* ℂ)
     (o : Frames (gramC (1 : Matrix (Fin n) (Fin n) X.E) (embAt s X.emb))) (ho : o.IsON)
     (φ : (formGSD (roundPk X lam L) Λ).EqFun) :
@@ -130,6 +160,15 @@ def Val.Norm (Q : ValCrd W Λ σ₀ u i) : Prop :=
           (nfAll (W.lamN u i) (subP o.1 (MvPolynomial.map s (Pc c))) (subP o.1 (MvPolynomial.map s (Pc c)))).re)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `s x Pc hPc o ho`. Establish `hval : ∀ c, (x.1 ((stepGSD W Λ u i).outSec.rep c) : VV X.K (W.lamTrue u i)).1 = Pc c`. Introduce `c`. Apply `evFr_injective (gramC (1 : Matrix (Fin (R.N i)) (Fin (R.N i)) X.E) (embAt σ₀ X.emb)) (shiftOf (W.lamTrue u i)) σ₀ (stdFrC _)` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[evFr_eq_fnOf, evFr_eq_fnOf]`. Conclude with `hPc c z`. Establish `h` using `vn_norm_round (W.lamTrue u i) (fun d : DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs => d.1.Lsh) (Λ i) (stepOk W Λ hX u i) (stepRat W Λ hX u i) s o ho x`. Use `h.trans ?_` and prove the remaining obligations.
+
+Set `_` to `(stepOk W Λ hX u i).fintypeCl`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hv : (x.1 ((formGSD (roundPk X (W.lamTrue u i) fun d : DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs => d.1.Lsh) (Λ i)).outSec.rep c) : VV X.K (W.lamTrue u i)).1 = Pc c` using `hval c`. Establish `h2 : ∀ p q, nfAll (W.lamTrue u i) p q = nfAll (W.lamN u i) p q`. Introduce `p q`.
+
+Rewrite using `[lamTrue_eq_shW]`. Conclude with `nfAll_shW _ _ _ _`. Rewrite using `[hv, h2]`. Both sides reduce to the same expression.
+-/
 theorem Val.norm (Q : ValCrd W Λ σ₀ u i) : Val.Norm W Λ hX σ₀ hσ u i Q := by
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
   intro s x Pc hPc o ho
@@ -163,6 +202,9 @@ variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `s x Pc hPc o ho`. Rewrite `hPc` using `[hV]`. Conclude with `Val.norm (Pr := d.Pr) d.W d.lev d.hX d.σ₀ d.star_cx u i (valCrd a hS hH u i hi) s x Pc hPc o ho`.
+-/
 theorem normTie (V : CF.ValTied (D := d.colRec a) u eV i hi (classAgreement a hS hH hP u i hi))
     (hV : V.eY = valEY (Pr := d.Pr) d.W d.lev d.σ₀ u i (valCrd a hS hH u i hi)) : CF.NormTie V := by
   intro s x Pc hPc o ho

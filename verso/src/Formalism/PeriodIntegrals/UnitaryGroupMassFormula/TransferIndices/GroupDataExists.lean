@@ -11,6 +11,11 @@ section Bound
 
 variable {K : Type} [Field K] [NumberField K] {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ P.H`. Rewrite using `[chiT_of_mem P x hx]`. Establish `h` using `chi_inv_pow P ⟨x, hx⟩`. Establish `h2 : (σ (((P.chi ⟨x, hx⟩)⁻¹ : Kˣ) : K)) ^ (Nat.card P.H) = 1` using `by rw [← map_pow, h, map_one]`. Conclude with `(Complex.norm_eq_one_of_pow_eq_one h2 (card_H_pos P).ne').le`.
+
+Rewrite using `[chiT_of_not_mem P x hx, map_zero, norm_zero]`. Conclude with `zero_le_one`.
+-/
 theorem norm_chiT_le (P : Pair K G) (x : G) (σ : K →+* ℂ) : ‖σ (chiT P x)‖ ≤ 1 := by
   by_cases hx : x ∈ P.H
   · rw [chiT_of_mem P x hx]
@@ -19,6 +24,11 @@ theorem norm_chiT_le (P : Pair K G) (x : G) (σ : K →+* ℂ) : ‖σ (chiT P x
     exact (Complex.norm_eq_one_of_pow_eq_one h2 (card_H_pos P).ne').le
   · rw [chiT_of_not_mem P x hx, map_zero, norm_zero]; exact zero_le_one
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `hof : MonoidAlgebra.of K G x * MonoidAlgebra.of K G g' * (MonoidAlgebra.of K G y * MonoidAlgebra.of K G g) = MonoidAlgebra.of K G (x * g' * (y * g))` using `by simp only [map_mul]`.
+
+Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul]`. Rewrite using `[hof, mul_comm (c' y) (c x)]`.
+-/
 theorem prod_expand (c c' : G → K) (g' g : G) :
     (∑ x : G, c x • MonoidAlgebra.of K G x) * MonoidAlgebra.of K G g' *
         ((∑ y : G, c' y • MonoidAlgebra.of K G y) * MonoidAlgebra.of K G g) =
@@ -32,6 +42,15 @@ theorem prod_expand (c c' : G → K) (g' g : G) :
   simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
   rw [hof, mul_comm (c' y) (c x)]
 
+/- English proof (translation)
+Establish `hd : (Module.finrank K (T.W s) : ℝ) ≤ (Fintype.card G : ℝ)`. Conclude with `finrank_le_card (T.tau s) (T.irr s)` after adjusting the coercions. Rewrite using `[epsS, epsS, prod_expand, map_sum, map_sum, map_sum]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `hterm : ∀ x y : G, ‖σ (LinearMap.trace K (T.W s) ((T.tau s).asAlgebraHom ((chiT P0 x * chiT P y) • MonoidAlgebra.of K G (x * g' * (y * g)))))‖ ≤ (Fintype.card G : ℝ)`.
+
+Introduce `x y`. Rewrite using `[map_smul, map_smul, Representation.asAlgebraHom_of, smul_eq_mul, map_mul, map_mul, norm_mul, norm_mul]`. Establish `h1` using `norm_chiT_le P0 x σ`. Establish `h2` using `norm_chiT_le P y σ`. Establish `h3` using `norm_trace_tau_le (T.tau s) (x * g' * (y * g)) σ`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, map_sum, map_sum]`. Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun y _ => hterm x y)`.
+
+Use `_ = ((Fintype.card G : ℕ) : ℝ) ^ 3 := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entry_bound (T : GoodSet K G) (s : T.S) (P0 P : Pair K G) (g' g : G) (σ : K →+* ℂ) :
     ‖σ (LinearMap.trace K (T.W s) ((T.tau s).asAlgebraHom
       (epsS P0 * MonoidAlgebra.of K G g' * (epsS P * MonoidAlgebra.of K G g))))‖ ≤
@@ -63,6 +82,19 @@ theorem entry_bound (T : GoodSet K G) (s : T.S) (P0 P : Pair K G) (g' g : G) (σ
 
 end Bound
 
+/- English proof (translation)
+Introduce `K _ _ G _ _ T P0 P hM1`. Use `⟨eS_mul_eS T, fun s z => eS_central T s z, eps_idem P, fun s => intEl_of_intR _ (intR_card_eS T s), fun s => ?_⟩` and prove the remaining obligations. Take `⟨g, g', Γ, hΓ, hdet, b', hb'1, hb'2⟩` from `perS T P0 P hM1 s`. Use `⟨fun k => epsS P * MonoidAlgebra.of K G (g k), fun j => epsS P0 * MonoidAlgebra.of K G (g' j), Γ, hdet, ?_, fun i => intEl_of_intR _ (intR_mul (intR_epsS P) (intR_of _)), fun j => intEl_of_intR _ (intR_mul (intR_epsS P0) (intR_of _)), ?_, fun i => (absorb_eps T s P P0 _).symm, fu …` and prove the remaining obligations. Introduce `σ`.
+
+Use `set ΓK := Γ.map (algebraMap (𝓞 K) K) with hΓK`. Establish `hdetK : algebraMap (𝓞 K) K Γ.det = ΓK.det` using `RingHom.map_det _ _`. Apply the tactic sequence `have hentry : ∀ j k, (InfinitePlace.mk σ).1 (ΓK j k) ≤ ((Fintype.card G : ℕ) : ℝ) ^ 3 := by`. Introduce `j k`. Use `show ‖σ (ΓK j k)‖ ≤ _`.
+
+Rewrite using `[hΓK, Matrix.map_apply, hΓ j k]`. Conclude with `entry_bound T s P0 P (g' j) (g k) σ`. Establish `hdl` using `Matrix.det_le hentry`. Rewrite `hdl` using `[Fintype.card_fin]`. Rewrite using `[hdetK]`.
+
+Use `(show ‖σ ΓK.det‖ ≤ _ from hdl).trans ?_` and prove the remaining obligations. Establish `hnG : nS T P s ≤ Fintype.card G` using `(Submodule.finrank_le _).trans (finrank_le_card (T.tau s) (T.irr s))`. Establish `hN : ((nS T P s).factorial * (Fintype.card G ^ 3) ^ (nS T P s) : ℕ) ≤ Fintype.card G ^ (4 * nS T P s)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[nsmul_eq_mul]`.
+
+Conclude with `hN` after adjusting the coercions. Introduce `i j`. Establish `hmul : epsS P0 * MonoidAlgebra.of K G (g' j) * (epsS P * MonoidAlgebra.of K G (g i)) * eps P0 = epsS P0 * (MonoidAlgebra.of K G (g' j) * (epsS P * MonoidAlgebra.of K G (g i))) * eps P0`. Simplify using `only [mul_assoc]`. Establish `hτ : (T.tau s).asAlgebraHom (epsS P0 * MonoidAlgebra.of K G (g' j) * (epsS P * MonoidAlgebra.of K G (g i)) * eps P0) = (T.tau s).asAlgebraHom (algebraMap (𝓞 K) K (Γ j i) • eps P0)`.
+
+Rewrite using `[hmul, sandwich (T.tau s) P0 (hM1 s), map_smul, ← mul_assoc, ← hΓ j i]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = (algebraMap (𝓞 K) K (Γ j i) • eps P0) * eS T s := mul_eS_eq T s _ _ hτ`. Use `_ = algebraMap (𝓞 K) K (Γ j i) • (eps P0 * eS T s) := smul_mul_assoc _ _ _`.
+-/
 theorem group_data_exists : GrpData := by
   intro K _ _ G _ _ T P0 P hM1
   refine ⟨eS_mul_eS T, fun s z => eS_central T s z, eps_idem P, fun s => intEl_of_intR _ (intR_card_eS T s),

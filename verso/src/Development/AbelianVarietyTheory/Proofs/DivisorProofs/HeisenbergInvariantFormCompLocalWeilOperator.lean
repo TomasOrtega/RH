@@ -11,6 +11,21 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.InertVacEquiv
 
+/- English proof (translation)
+Introduce `r hr`. Use function extensionality and compare the values at `x`. Use `set y : κ → AF F := fun i => GlobalTheory.LatVac.liftV v (evFin F v (x i)) with hyD`. Establish `hev : ∀ i, evFin F v (y i) = evFin F v (x i)` using `fun i => GlobalTheory.LatVac.evFin_liftV v _`. Establish `hy : At (evFin F v) y`.
+
+Introduce `u hu`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `hRy : R y = R 0` using `by simpa using hR 0 y hy`. Establish `hRyw : R (y + w.1) = R y` using `hR y w.1 h₁`.
+
+Establish `hrx : r (x + w.1) = r x` using `hr.1 x w.1 h₁`. Establish `hdot : x ⬝ᵥ w.2 = y ⬝ᵥ w.2`. Unfold `dotProduct`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hz : evFin F v (x i - y i) = 0` using `by rw [map_sub, hev, sub_self]`.
+
+Establish `h0` using `congrFun (h₂ (x i - y i) hz) i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h0`. Rewrite using `[← sub_eq_zero, ← sub_mul, h0]`. Establish `hφ : (fun i => evFin F v ((x + w.1) i)) = (fun i => evFin F v ((y + w.1) i))`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.add_apply, map_add, hev]`. Establish `hφ₁ : (fun i => evFin F v (x i)) = (fun i => evFin F v (y i))`. Use function extensionality and compare the values at `i`. Conclude with `(hev i).symm`. Establish `key` using `congrFun h y`.
+
+Simplify using `only [schr, tens] at key ⊢`. Rewrite `key` using `[hRyw, hRy]`. Rewrite using `[hdot, hrx, hφ₁]`. Establish `hcanc : ψ (y ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) * φ (fun i => evFin F v ((x + w.1) i)) = φ₁ (fun i => evFin F v (y i))`. Apply `mul_right_cancel₀ hR0` to reduce the goal to its premises.
+
+Rewrite using `[hφ, ← key, mul_assoc]`. Rewrite using `[← mul_assoc, hcanc]`.
+-/
 theorem acts_schr_of_ref {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F) (ψ : AddChar (AF F) ℂ)
     (w : (κ → AF F) × (κ → AF F)) (h₁ : At (evFin F v) w.1) (h₂ : At (evFin F v) w.2)
     (R : (κ → AF F) → ℂ) (hR0 : R 0 ≠ 0) (hR : ∀ x z, At (evFin F v) z → R (x + z) = R x)
@@ -50,6 +65,19 @@ theorem acts_schr_of_ref {F : Type} [Field F] [NumberField F] {κ : Type} [Finty
     rw [hφ, ← key, mul_assoc]
   rw [← mul_assoc, hcanc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v m C l hl g _ S hS u hu φ hφ φ₁ hφ₁ hA`. Take `⟨R, hR0, hRest⟩` from `GlobalTheory.RestWitness.exists_rest (Fin a' × Fin (a + a')) v`. Establish `hsp` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hT.weil'`. Use `set u' := GlobalTheory.WeilM.actAB (cA σ) ((g, 1) : UA σ G.V'.J × UA σ G.W.J) u with hu'D`. Establish `hu'eq : u' = mat g * u`.
+
+Simplify using `[hu'D, GlobalTheory.WeilM.actAB, mat]`. Take `⟨huAt, z, hz⟩` from `hu`. Establish `hAt' : At (evFin F v) u'`. Introduce `c hc`. Rewrite using `[hu'eq, ← Matrix.mul_smul, huAt c hc, Matrix.mul_zero]`.
+
+Establish `hlag : u' ∈ GlobalTheory.InertVacLag.lagAt v C` using `⟨hAt', mat g * z, by rw [hu'eq, hz, Matrix.mul_assoc]⟩`. Establish `hco1 : At (evFin F v) (G.M'.co.e u').1`. Introduce `c hc`. Rewrite using `[← Prod.smul_fst, ← map_smul, hAt' c hc, map_zero, Prod.fst_zero]`. Establish `hco2 : At (evFin F v) (G.M'.co.e u').2`.
+
+Introduce `c hc`. Rewrite using `[← Prod.smul_snd, ← map_smul, hAt' c hc, map_zero, Prod.snd_zero]`. Establish `hRinv` using `(hRest 0 (Submodule.zero_mem _)).1`. Establish `hact : Acts (evFin F v) (G.M'.co.rho B.ψ u') (S φ) (S φ₁)`. Apply `acts_schr_of_ref v B.ψ (G.M'.co.e u') hco1 hco2 R hR0 hRinv` to reduce the goal to its premises.
+
+Establish `e1` using `(hS φ hφ).2 R (hRest φ hφ)`. Establish `e2` using `(hS φ₁ hφ₁).2 R (hRest φ₁ hφ₁)`. Establish `e3` using `hA R (hRest φ hφ)`. Establish `e4` using `hsp.impl ((g, 1) : UA σ G.V'.J × UA σ G.W.J) u (tens (evFin F v) φ R) (hRest φ hφ).2`. Use `show G.M'.co.rho B.ψ u' (tens (evFin F v) (S φ) R) = tens (evFin F v) (S φ₁) R`.
+
+Rewrite using `[← e1, ← e2, ← e3, hu'D]`. Conclude with `e4.symm`. Conclude with `hl u' hlag (S φ) (hS φ hφ).1 (S φ₁) (hS φ₁ hφ₁).1 hact`.
+-/
 theorem heisInv_comp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (m : ℕ) (C : Matrix (Fin (a + a')) (Fin m) (AE F E)),

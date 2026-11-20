@@ -15,6 +15,9 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SteinDescent.exists_isometric_pull_stein | exact GlobalTheory.SteinDescent.exists_isometric_pull_stein | (intros; apply GlobalTheory.SteinDescent.exists_isometric_pull_stein <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cartier_divisor_height_bound_normal_scheme : GlobalTheory.CovTop.Hypotheses2 → ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp (𝓞 F)) (e : ℕ),
     IsArithVar p e → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → ∀ (L : HermLB p) (r : L.B.ι → X.functionFieldˣ)
     (hr : GlobalTheory.Cartier.IsRatSec L.B r), (∀ z, (L.div hr).mult z ≠ 0 → (p z).asIdeal ≠ ⊥) →

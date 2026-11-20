@@ -52,17 +52,29 @@ section Bridge
 
 variable {K : Type*} [Field K] [CharZero K]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Conclude with `Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => f i * g j) n`.
+-/
 theorem mul_eq_cmul (f g : ℕ → K) : mul f g = GlobalTheory.KummerEisensteinGalois.cmul f g := by
   funext n
   exact Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => f i * g j) n
 
 end Bridge
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : eis 4 (0 : ℤ) (fun _ => 1) (fun _ => 1) 2 = 9 := by decide
 
+/- English proof (translation)
+Simplify using `[To, Vo]`.
+-/
 example : To 12 (1 : ℤ) 2 (fun n => if n = 1 then 1 else if n = 4 then -1472 else 0) 2 = (-24) ^ 2 := by
   simp [To, Vo]
 
+/- English proof (translation)
+Simplify using `[Zs, Finset.Nat.antidiagonal_succ]`.
+-/
 example (u v : ℤ → ℤ) (F : ℕ → ℕ → ℤ) : Zs 3 3 u v F 2 = u 1 * v 1 * F 1 1 := by
   simp [Zs, Finset.Nat.antidiagonal_succ]
 

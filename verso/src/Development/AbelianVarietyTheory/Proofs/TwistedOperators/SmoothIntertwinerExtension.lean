@@ -19,15 +19,26 @@ open scoped ContDiff
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.GardingVec.exp_mem (IsUnit.of_mul_eq_one _ (Jm_mul_self ε)) hX t`.
+-/
 theorem exp_mem_UJset {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ UJset ε :=
   GlobalTheory.GardingVec.exp_mem (IsUnit.of_mul_eq_one _ (Jm_mul_self ε)) hX t
 
+/- English proof (translation)
+Rewrite using `[add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)`.
+-/
 theorem exp_smul_add (X : Matrix (Fin n) (Fin n) ℂ) (s t : ℝ) :
     NormedSpace.exp ((s + t) • X) = NormedSpace.exp (s • X) * NormedSpace.exp (t • X) := by
   rw [add_smul]
   exact Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun s : ℝ => σ (NormedSpace.exp ((s - t) • X)) z) (dRep σ X z) t`. Use `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h0)` as an intermediate fact. Conclude with `this`. Establish `h2` using `((σ (NormedSpace.exp (t • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t h1`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars']`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.2 _ (exp_mem_UJset hX t) _ (exp_mem_UJset hX (s - t)), ← exp_smul_add]`. Simplify using the standard rewrite rules.
+-/
 theorem hasDerivAt_orbit {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     {σ : Matrix (Fin n) (Fin n) ℂ → (E →L[ℂ] E)} (hσ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) σ)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) {z : E}
@@ -43,6 +54,9 @@ theorem hasDerivAt_orbit {E : Type} [NormedAddCommGroup E] [InnerProductSpace �
     ← exp_smul_add]
   simp
 
+/- English proof (translation)
+Establish `h1` using `(hz 1 (fun _ => X) (fun _ => hX)).comp (contDiff_pi.2 fun _ => contDiff_id : ContDiff ℝ ∞ fun (t : ℝ) (_ : Fin 1) => t)`. Establish `h2 : ContDiff ℝ ∞ fun s : ℝ => σ (NormedSpace.exp (s • X)) z`. Simplify `h1` using `[Function.comp_def]`. Conclude with `((h2.differentiable (by simp)) 0).hasDerivAt`.
+-/
 theorem hasDerivAt_zero_of_smoothVec {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     {σ : Matrix (Fin n) (Fin n) ℂ → (E →L[ℂ] E)} {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) {z : E}
     (hz : Formalism.L2.Theta.SmoothVec (lieSet ε) σ z) :
@@ -56,6 +70,9 @@ theorem hasDerivAt_zero_of_smoothVec {E : Type} [NormedAddCommGroup E] [InnerPro
 section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Establish `h1 : AnalyticAt ℝ (fun t : ℝ => NormedSpace.exp (t • X)) t₀` using `AnalyticAt.comp (NormedSpace.exp_analytic (𝕂 := ℝ) _) (analyticAt_id.smul analyticAt_const)`. Conclude with `((LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ a b)).differentiableAt).comp t₀ h1.differentiableAt`.
+-/
 theorem differentiableAt_exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) (t₀ : ℝ) :
     DifferentiableAt ℝ (fun s : ℝ => NormedSpace.exp (s • X) a b) t₀ := by
   have h1 : AnalyticAt ℝ (fun t : ℝ => NormedSpace.exp (t • X)) t₀ :=
@@ -65,6 +82,17 @@ theorem differentiableAt_exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n
 
 end
 
+/- English proof (translation)
+Take `⟨U, F, hU, h0, hF, he⟩` from `hz 1 (by simp [Formalism.QuantumDeterminants.inUH])`. Set `U' : Set (Fin n → Fin n → ℂ)` to `U`. Set `F' : (Fin n → Fin n → ℂ) → E` to `F`. Establish `hU' : IsOpen U'` using `hU`. Establish `hF' : ContDiffOn ℝ ∞ F' U'` using `hF`.
+
+Set `c : ℝ → (Fin n → Fin n → ℂ)` to `fun s => Matrix.of.symm (NormedSpace.exp (s • X) : Matrix (Fin n) (Fin n) ℂ)`. Apply the tactic sequence `have hcd : DifferentiableAt ℝ c 0 := differentiableAt_pi.2 fun a => differentiableAt_pi.2 fun b => (differentiableAt_exp_entry X a b 0 :)`. Establish `hc0 : c 0 = (1 : Matrix (Fin n) (Fin n) ℂ)`. Simplify using `only [c, zero_smul, NormedSpace.exp_zero]`. Both sides reduce to the same expression.
+
+Establish `hFd : DifferentiableAt ℝ F' (c 0)`. Rewrite using `[hc0]`. Conclude with `(hF'.contDiffAt (hU'.mem_nhds h0)).differentiableAt (by simp)`. Establish `hcomp` using `hFd.comp (0 : ℝ) hcd`. Establish `hev : (fun s : ℝ => σ (NormedSpace.exp (s • X)) z) =ᶠ[nhds 0] F' ∘ c`.
+
+Establish `: ∀ᶠ s in nhds (0 : ℝ), c s ∈ U'`. Apply `hcd.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[hc0]`. Conclude with `hU'.mem_nhds h0`. Use `filter_upwards [this] with s hs`.
+
+Conclude with `he _ hs (exp_mem_UJset hX s)`. Conclude with `(hcomp.congr_of_eventuallyEq hev).hasDerivAt`.
+-/
 theorem hasDerivAt_zero_of_smoothOnH {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     {σ : Matrix (Fin n) (Fin n) ℂ → (E →L[ℂ] E)} {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) {z : E}
     (hz : Formalism.QuantumDeterminants.SmoothOnH (Jm ε) fun g => σ g z) :
@@ -93,6 +121,13 @@ theorem hasDerivAt_zero_of_smoothOnH {E : Type} [NormedAddCommGroup E] [InnerPro
     exact he _ hs (exp_mem_UJset hX s)
   exact (hcomp.congr_of_eventuallyEq hev).hasDerivAt
 
+/- English proof (translation)
+Take `⟨p, r, hp⟩` from `hf 0`. Establish `hp0 : p = 0`. Use extensionality with `k y`. Establish `h1` using `hp.factorial_smul 1 k`. Rewrite `h1` using `[← iteratedDeriv_eq_iteratedFDeriv, h]`.
+
+Establish `h2 : p k (fun _ => 1) = 0`. Establish `hk : (k.factorial : ℂ) ≠ 0` using `by exact_mod_cast k.factorial_ne_zero`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `(smul_eq_zero.1 h1).resolve_left hk`. Establish `h3 : p.coeff k = 0` using `h2`.
+
+Rewrite using `[FormalMultilinearSeries.apply_eq_prod_smul_coeff, h3, smul_zero]`. Both sides reduce to the same expression. Rewrite `hp` using `[hp0]`. Establish `hev : f =ᶠ[nhds 0] 0` using `hp.hasFPowerSeriesAt.eventually_eq_zero`. Conclude with `AnalyticOnNhd.eqOn_zero_of_preconnected_of_eventuallyEq_zero (U := Set.univ) (fun x _ => hf x) isPreconnected_univ (Set.mem_univ 0) hev (Set.mem_univ t)`.
+-/
 theorem eq_zero_of_iteratedDeriv {f : ℝ → ℂ} (hf : ∀ t, AnalyticAt ℝ f t)
     (h : ∀ k : ℕ, iteratedDeriv k f 0 = 0) (t : ℝ) : f t = 0 := by
   obtain ⟨p, r, hp⟩ := hf 0
@@ -119,10 +154,32 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSp
   {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V]
   {π : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules.
+-/
 theorem one_mem_UJset : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε := by
   change (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε
   simp
 
+/- English proof (translation)
+Use `set G : H → ℝ → ℂ := fun z s => ⟪a, ρ (NormedSpace.exp (s • X)) z⟫_ℂ - ⟪w, π (NormedSpace.exp (s • X)) (T z)⟫_ℂ with hGdef`. Establish `hD : ∀ z, IsKFin ε ρ z → IsKFin ε ρ (dRep ρ X z)` using `fun z hz => hGK.lieStable X hX z (mem_kFinVec.2 hz)`. Establish `hderiv : ∀ z, IsKFin ε ρ z → ∀ s, HasDerivAt (G z) (G (dRep ρ X z) s) s`. Introduce `z hz s`. Establish `h1` using `hasDerivAt_orbit hρ.1 hX (hasDerivAt_zero_of_smoothVec hX (hGK.smooth z (mem_kFinVec.2 hz))) s`.
+
+Establish `h2` using `hasDerivAt_orbit hπ.1 hX (hasDerivAt_zero_of_smoothOnH hX (hsm _ (hT z hz))) s`. Establish `h1'` using `((innerSL ℂ a).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h1`. Establish `h2'` using `((innerSL ℂ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h2`. Establish `h3` using `h1'.sub h2'`. Simplify using `only [Function.comp_def, ContinuousLinearMap.coe_restrictScalars', innerSL_apply_apply] at h3`.
+
+Rewrite using `[hGdef]`. Simplify using `only`. Rewrite using `[hL X hX z hz]`. Conclude with `h3`. Establish `hiter : ∀ k z, IsKFin ε ρ z → iteratedDeriv k (G z) = G ((dRep ρ X)^[k] z)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro z _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+
+Introduce `z hz`. Rewrite using `[iteratedDeriv_succ', Function.iterate_succ_apply]`. Establish `: deriv (G z) = G (dRep ρ X z)` using `funext fun s => (hderiv z hz s).deriv`. Rewrite using `[this, ih _ (hD z hz)]`. Establish `hkfin : ∀ k, IsKFin ε ρ ((dRep ρ X)^[k] y)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact hy`. Consider the case `succ k ih => rw [Function.iterate_succ_apply']`. Conclude with `hD _ ih`.
+
+Establish `hzero : ∀ z, IsKFin ε ρ z → G z 0 = 0`. Introduce `z hz`. Simplify using `only [hGdef, zero_smul, NormedSpace.exp_zero, hρ.1.1, hπ.1.1, ContinuousLinearMap.one_apply]`. Rewrite using `[hpair z hz, sub_self]`. Establish `han : ∀ s, AnalyticAt ℝ (G y) s`.
+
+Introduce `s`. Establish `h1` using `(hHC.1 n ε H ρ hρ y a hy ha).analytic_exp one_mem_UJset hX s`. Establish `h2` using `(hHC.1 n ε V π hπ (T y) w (hT y hy) hw).analytic_exp one_mem_UJset hX s`. Simplify using `only [Matrix.one_mul] at h1 h2`. Conclude with `h1.sub h2`.
+
+Use `eq_zero_of_iteratedDeriv han (fun k => by rw [hiter k y hy]; exact hzero _ (hkfin k)) t` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem coeff_exp_eq (hHC : GlobalTheory.Published.HarishChandraAnalyticity) (hρ : IsAdmRep ε ρ) (hπ : IsAdmRep ε π)
     (hGK : IsGKSub ε ρ (kFinVec ε ρ))
     (hsm : ∀ v, IsKFin ε π v → Formalism.QuantumDeterminants.SmoothOnH (Jm ε) (fun g => π g v)) (T : H →ₗ[ℂ] V)
@@ -176,6 +233,13 @@ theorem coeff_exp_eq (hHC : GlobalTheory.Published.HarishChandraAnalyticity) (h�
 
 end Main
 
+/- English proof (translation)
+Establish `hY' : Yᴴ * Jm ε + Jm ε * Y = 0` using `hY`. Establish `hkJ : k * Jm ε = Jm ε * k` using `hk.2`. Establish `hkJ' : kᴴ * Jm ε = Jm ε * kᴴ`. Use `congrArg Matrix.conjTranspose hkJ` as an intermediate fact. Simplify using `only [Matrix.conjTranspose_mul, Jm_conjTranspose] at this`.
+
+Conclude with `this.symm`. Express the relevant statement in the definitionally equal form `(k * Y * kᴴ)ᴴ * Jm ε + Jm ε * (k * Y * kᴴ) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `_ = k * (Yᴴ * Jm ε + Jm ε * Y) * kᴴ := by`.
+
+Rewrite using `[hkJ', ← hkJ]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hY', Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem conj_mem_lieSet {k Y : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (hY : Y ∈ lieSet ε) :
     k * Y * kᴴ ∈ lieSet ε := by
   have hY' : Yᴴ * Jm ε + Jm ε * Y = 0 := hY
@@ -192,6 +256,9 @@ theorem conj_mem_lieSet {k Y : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) 
         rw [hkJ', ← hkJ]; simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
     _ = 0 := by rw [hY', Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Establish `h1 : kᴴ * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk.1`. Establish `hinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_left_inv h1`. Establish `hu : IsUnit k` using `IsUnit.of_mul_eq_one_right _ h1`. Rewrite using `[one_smul, ← hinv, Matrix.exp_conj k Y hu, Matrix.mul_assoc _ k⁻¹ k, Matrix.nonsing_inv_mul k ((Matrix.isUnit_iff_isUnit_det k).1 hu), Matrix.mul_one]`.
+-/
 theorem mul_exp_eq {k Y : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
     k * NormedSpace.exp Y = NormedSpace.exp ((1 : ℝ) • (k * Y * kᴴ)) * k := by
   have h1 : kᴴ * k = 1 := Matrix.mem_unitaryGroup_iff'.1 hk.1
@@ -200,6 +267,11 @@ theorem mul_exp_eq {k Y : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
   rw [one_smul, ← hinv, Matrix.exp_conj k Y hu, Matrix.mul_assoc _ k⁻¹ k,
     Matrix.nonsing_inv_mul k ((Matrix.isUnit_iff_isUnit_det k).1 hu), Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `hHC n ε H _ _ _ ρ V _ _ _ π hρ hπ hGK hsm T hT hK hL a w ha hw hpair y hy g hg`. Take `⟨k, hk, Y, hY, rfl⟩` from `ReciprocityTheory.ChartRestriction.DS.polar_UJ (show g ∈ ReciprocityTheory.ChartRestriction.DS.UJset ε from hg)`. Establish `hk' : k ∈ Kset ε` using `hk`. Establish `hYl : Y ∈ lieSet ε` using `hY.1`. Establish `hZ` using `conj_mem_lieSet hk' hYl`.
+
+Establish `hkU` using `GlobalTheory.GKModule.mem_UJset_of_mem_Kset hk'`. Establish `hky : IsKFin ε ρ (ρ k y)` using `GlobalTheory.GKModule.isKStableOn_kFinVec ε ρ k hk' y hy`. Rewrite using `[mul_exp_eq hk', hρ.1.2 _ (exp_mem_UJset hZ 1) _ hkU, hπ.1.2 _ (exp_mem_UJset hZ 1) _ hkU, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, ← hK k hk' y hy]`. Conclude with `coeff_exp_eq hHC hρ hπ hGK hsm T hT hL ha hw hpair hZ hky 1`.
+-/
 theorem matrixCoeff_eq : GlobalTheory.Published.HarishChandraAnalyticity → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (π : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)), IsAdmRep ε ρ → IsAdmRep ε π → IsGKSub ε ρ (kFinVec ε ρ) → (∀ v, IsKFin ε π v → Formalism.QuantumDeterminants.SmoothOnH (Jm ε) (fun g => π g v)) → ∀ T : H →ₗ[ℂ] V, (∀ y, IsKFin ε ρ y → IsKFin ε π (T y)) → (∀ k ∈ Kset ε, ∀ y, IsKFin ε ρ y → T (ρ k y) = π k (T y)) → (∀ X ∈ lieSet ε, ∀ y, IsKFin ε ρ y → T (dRep ρ X y) = dRep π X (T y)) → ∀ (a : H) (w : V), IsKFin ε ρ a → IsKFin ε π w → (∀ y, IsKFin ε ρ y → ⟪a, y⟫_ℂ = ⟪w, T y⟫_ℂ) → ∀ y, IsKFin ε ρ y → ∀ g ∈ UJset ε, ⟪a, ρ g y⟫_ℂ = ⟪w, π g (T y)⟫_ℂ := by
   intro hHC n ε H _ _ _ ρ V _ _ _ π hρ hπ hGK hsm T hT hK hL a w ha hw hpair y hy g hg
   obtain ⟨k, hk, Y, hY, rfl⟩ := ReciprocityTheory.ChartRestriction.DS.polar_UJ (show g ∈ ReciprocityTheory.ChartRestriction.DS.UJset ε from hg)

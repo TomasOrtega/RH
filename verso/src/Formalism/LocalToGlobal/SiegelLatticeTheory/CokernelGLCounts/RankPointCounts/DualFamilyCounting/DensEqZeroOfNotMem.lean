@@ -16,12 +16,24 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
+/- English proof (translation)
+Rewrite using `[M.L.O_def]`. Establish `h` using `isIntegral_algebraMap (R := 𝒪[F]) (A := E) (x := ⟨c, hc⟩)`. Rewrite `h` using `[IsScalarTower.algebraMap_apply 𝒪[F] F E]`. Conclude with `h`.
+-/
 theorem algebraMap_mem_LO (c : F) (hc : c ∈ 𝒪[F]) : algebraMap F E c ∈ M.L.O := by
   rw [M.L.O_def]
   have h := isIntegral_algebraMap (R := 𝒪[F]) (A := E) (x := ⟨c, hc⟩)
   rw [IsScalarTower.algebraMap_apply 𝒪[F] F E] at h
   exact h
 
+/- English proof (translation)
+Unfold `Loc.HermSp.dens`. Establish `hE : IsEmpty {v : ι → V // H.Prim abelian₂ v ∧ ∀ a b, H.h (v b) (v a) - G₀ a b ∈ Submodule.span M.L.O {algebraMap F E (ϖ : F)}}`. Use `⟨fun v => hab ?_⟩` and prove the remaining obligations. Take `⟨hP, hG⟩` from `v.2`. Establish `h1 : H.h (v.1 b) (v.1 a) ∈ M.L.O` using `(hSD.2.2 (v.1 b)).1 (hP.1 b) (v.1 a) (hP.1 a)`.
+
+Establish `h2` using `hG a b`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 h2`. Establish `hϖ : algebraMap F E (ϖ : F) ∈ M.L.O` using `algebraMap_mem_LO _ ϖ.2`. Establish `h3 : H.h (v.1 b) (v.1 a) - G₀ a b ∈ M.L.O`. Rewrite using `[← hc]`.
+
+Conclude with `M.L.O.mul_mem c.2 hϖ`. Establish `h4 : G₀ a b = H.h (v.1 b) (v.1 a) - (H.h (v.1 b) (v.1 a) - G₀ a b)` using `by ring`. Rewrite using `[h4]`. Conclude with `M.L.O.sub_mem h1 h3`. Establish `h0 : Set.range (fun v : {v : ι → V // H.Prim abelian₂ v ∧ ∀ a b, H.h (v b) (v a) - G₀ a b ∈ Submodule.span M.L.O {algebraMap F E (ϖ : F)}} => fun a => Submodule.Quotient.mk (p` using `H.smulLat (algebraMap F E (ϖ : F)) abelian₂) (v.1 a)) = ∅ := Set.range_eq_empty _`.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+-/
 theorem dens_eq_zero_of_not_mem (H : Loc.HermSp M V) (ϖ : 𝒪[F]) {abelian₂ : Submodule M.L.O V} (hSD : H.IsSelfDual abelian₂)
     {ι : Type} [Fintype ι] (G₀ : Matrix ι ι E) (a b : ι) (hab : G₀ a b ∉ M.L.O) : H.dens ϖ abelian₂ G₀ = 0 := by
   unfold Loc.HermSp.dens
@@ -61,6 +73,11 @@ def GaPlusIntMM : Prop :=
           GaPlus M δ p (Tn u) (Tn u') Z a b ∈ (M p).L.O) →
         Formalism.HermitianLatticesTheory.IsIntegralLat (VS D).hT (MMof D F0 F')
 
+/- English proof (translation)
+Introduce `D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hI` to reduce the goal to its premises. Use `hG D δ M hA L u u' hT F0 what₂ hR Z F' hz hZ hP fun p a b => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hab`. Conclude with `hall p (dens_eq_zero_of_not_mem (L.H p) (ϖ p) (h1 D δ M hA L p) _ a b hab)`.
+-/
 theorem notIntDens_of (h1 : LocSelfDual) (hG : GaPlusIntMM) : NotIntDens := by
   intro D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI
   by_contra hall

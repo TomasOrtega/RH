@@ -40,6 +40,11 @@ def KodairaGeneric.Statement : Prop :=
 
 section Inhabitants
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨g, hgW, hgP⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hPW hne)`. Establish `: P.IsPrime` using `hP.2.1.1`. Establish `hr : Ideal.Quotient.mk P g ∈ nonZeroDivisors (MRing ι ⧸ P)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Establish `h` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hPW) (Ideal.Quotient.factor_surjective hPW) hr (by`.
+
+Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hgW)`. Rewrite `h` using `[hP.2.2.2, hW.2.2.2]`. Establish `h' : d + Fintype.card K + 1 ≤ d + Fintype.card K` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem IsArithVar.eq_of_le {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P W : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d) (hW : IsArithVar W d) (hPW : P ≤ W) : P = W := by
   by_contra hne

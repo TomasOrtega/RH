@@ -29,6 +29,9 @@ instance (J : Type) : SemilatticeInf (NEFin J) where
 instance (J : Type) [Finite J] : Finite (NEFin J) :=
   inferInstanceAs (Finite {t : Finset J // t.Nonempty})
 
+/- English proof (translation)
+Use `hs` as an intermediate fact. Conclude with `(isAffineHom_diagonal_iff (f := s)).mp inferInstance ⊤ (isAffineOpen_top _) U (by simp) V (by simp) hU hV`.
+-/
 theorem isAffineOpen_inf_of_isSeparated {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R)
     (hs : IsSeparated s) {U V : X.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) : IsAffineOpen (U ⊓ V) := by
   have := hs
@@ -48,6 +51,11 @@ def sysOfCover {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (hs : I
     refine TopologicalSpace.Opens.mem_iSup.2 ⟨⟨{i}, Finset.singleton_nonempty i⟩, ?_⟩
     simpa using hi
 
+/- English proof (translation)
+Use `hq` as an intermediate fact. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace s`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun U : X.affineOpens ↦ (U.1 : Set X)) (fun U ↦ U.1.isOpen) fun x _ ↦ by`. Establish `hx : x ∈ ⨆ i : X.affineOpens, (i : X.Opens)` using `(iSup_affineOpens_eq_top X).symm ▸ trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`.
+
+Conclude with `Set.mem_iUnion.2 ⟨i, hi⟩`. Use `⟨NEFin t, inferInstance, inferInstance, ⟨sysOfCover s hs (fun i : t ↦ i.1) ?_⟩⟩` and prove the remaining obligations. Use `eq_top_iff.2 fun x _ ↦ ?_` and prove the remaining obligations. Take `⟨i, hit, hi⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨i, hit⟩, hi⟩`.
+-/
 theorem exists_finite_sys {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (hs : IsSeparated s)
     (hq : QuasiCompact s) : ∃ (P : Type) (_ : SemilatticeInf P) (_ : Finite P), Nonempty (Sys X P) := by
   have := hq

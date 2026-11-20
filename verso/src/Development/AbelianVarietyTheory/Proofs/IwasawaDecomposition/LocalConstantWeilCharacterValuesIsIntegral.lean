@@ -7,18 +7,27 @@ namespace GlobalTheory.Mem.Col2.AdT
 
 open Classical in
 
+/- English proof (translation)
+Use `IsIntegral.of_pow (Nat.card_pos (α := A)) ?_` and prove the remaining obligations. Rewrite using `[← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero', AddChar.map_zero_eq_one]`. Conclude with `isIntegral_one`.
+-/
 theorem addChar_isIntegral {A : Type} [AddCommGroup A] [Finite A] {K : Type} [Field K] (ψ : AddChar A K) (y : A) :
     IsIntegral ℤ (ψ y) := by
   refine IsIntegral.of_pow (Nat.card_pos (α := A)) ?_
   rw [← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero', AddChar.map_zero_eq_one]
   exact isIntegral_one
 
+/- English proof (translation)
+Use `Nat.pos_of_ne_zero ?_` and prove the remaining obligations. Unfold `qOf`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot`.
+-/
 theorem qOf_pos {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) : 0 < qOf w := by
   refine Nat.pos_of_ne_zero ?_
   unfold qOf
   rw [Ne, Ideal.absNorm_eq_zero_iff]
   exact w.ne_bot
 
+/- English proof (translation)
+Unfold `ciPsi`. Use `split`. Use `ciFinite (X := X) (qOf_pos P.1).ne'` as an intermediate fact. Conclude with `addChar_isIntegral _ _`. Conclude with `isIntegral_one`.
+-/
 theorem ciPsi_isIntegral {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) {SB : Finset (HeightOneSpectrum (𝓞 X.E))}
     (P : SB) (x : X.E) : IsIntegral ℤ (ciPsi Ch P x) := by
   classical
@@ -28,6 +37,11 @@ theorem ciPsi_isIntegral {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X 
     exact addChar_isIntegral _ _
   · exact isIntegral_one
 
+/- English proof (translation)
+Establish `hs : σ₀ (twZeta σ₀ N) = Complex.exp (2 * Real.pi * Complex.I / (N : ℂ))` using `Classical.epsilon_spec hex`. Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[map_pow, hs, map_one, ← Complex.exp_nat_mul]`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Rewrite using `[show (N : ℂ) * (2 * Real.pi * Complex.I / (N : ℂ)) = 2 * Real.pi * Complex.I by field_simp]`.
+
+Conclude with `Complex.exp_two_pi_mul_I`.
+-/
 theorem twZeta_pow_eq_one {X : Fields} (σ₀ : X.K →+* ℂ) {N : ℕ} (hN : 0 < N)
     (hex : ∃ z : X.K, σ₀ z = Complex.exp (2 * Real.pi * Complex.I / (N : ℂ))) : twZeta σ₀ N ^ N = 1 := by
   have hs : σ₀ (twZeta σ₀ N) = Complex.exp (2 * Real.pi * Complex.I / (N : ℂ)) := Classical.epsilon_spec hex
@@ -37,6 +51,11 @@ theorem twZeta_pow_eq_one {X : Fields} (σ₀ : X.K →+* ℂ) {N : ℕ} (hN : 0
   rw [show (N : ℂ) * (2 * Real.pi * Complex.I / (N : ℂ)) = 2 * Real.pi * Complex.I by field_simp]
   exact Complex.exp_two_pi_mul_I
 
+/- English proof (translation)
+Unfold `twPsiQ`. Use `split`. Use `IsIntegral.of_pow (pow_pos (qOf_pos P) D) ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← _root_.zpow_mul, mul_comm, _root_.zpow_mul, zpow_natCast, hz, _root_.one_zpow]`. Conclude with `isIntegral_one`.
+
+Conclude with `isIntegral_one`.
+-/
 theorem twPsiQ_isIntegral {X : Fields} (σ₀ : X.K →+* ℂ) (xi0 : X.E) (P : HeightOneSpectrum (𝓞 X.E)) (D : ℕ)
     (hz : twZeta σ₀ (qOf P ^ D) ^ (qOf P ^ D) = 1) (a : X.E) : IsIntegral ℤ (twPsiQ σ₀ xi0 P D a) := by
   classical
@@ -47,6 +66,11 @@ theorem twPsiQ_isIntegral {X : Fields} (σ₀ : X.K →+* ℂ) (xi0 : X.E) (P : 
     exact isIntegral_one
   · exact isIntegral_one
 
+/- English proof (translation)
+Introduce `B X I h ht a P x`. Rewrite using `[ht.cst_eq a]`. Distinguish the cases in `hP : P.1 ∈ (B.primes X).vGs`. Rewrite using `[twCst_psi_g hP]`. Conclude with `ciPsi_isIntegral _ _ _`.
+
+Rewrite using `[twCst_psi_Q hP]`. Conclude with `twPsiQ_isIntegral _ _ _ _ (twZeta_pow_eq_one _ (pow_pos (qOf_pos P.1) _) (TC.root_of_ok h ht.deep a P hP)) x`.
+-/
 theorem psi_isIntegral : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → I.IsTw → ∀ (a : I.ι) (P : SBof I a) (x : B.fields.E),
     IsIntegral ℤ ((I.cst a).psi P x) := by
   intro B X I h ht a P x

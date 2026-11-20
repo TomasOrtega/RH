@@ -16,6 +16,19 @@ open Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainN
 
 namespace GlobalTheory.HeisFix
 
+/- English proof (translation)
+Introduce `D hD δ t0 Q P 𝔪 h𝔪 o k hk hc hIT hfix`. Establish `h1` using `hD.g1`. Establish `he` using `P.vac.1`. Establish `k0 : KLat D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) P.a P.d)` using `VacMove.klat _ (VacMove.moves_one D P.a) (VacMove.moves_one D P.d)`. Establish `kB : KLat D (tor0 D ⊤ δ) (La D (tor0 D ⊤ δ) (stdL D P.a) (skewLat D 𝔪 P.d))` using `Or.inr ⟨_, _, VacMove.sd_of_moves (VacMove.moves_one D P.a), GlobalTheory.SkewLatSelfDual.skewLat_SD h𝔪 P.d, rfl⟩`.
+
+Establish `hHB` using `(hD.uni ⊤ δ P.crv P.a P.d _ _ k0 kB P.e0 he).2.1`. Take `⟨m, hm, hl⟩` from `P.W.lift k 1 (unitBlock D o P.a P.d) _ hIT`. Establish `hx₀int : ∀ i j, ∃ b : 𝓞 D.host.E, unitBlock D o P.a P.d i j = (b : D.host.E)`. Introduce `i j`. Distinguish the cases in `h : i.1 = o + j.1`.
+
+Conclude with `⟨1, by simp [unitBlock, h]⟩`. Conclude with `⟨0, by simp [unitBlock, h]⟩`. Take `⟨w, hw, hclose⟩` from `GlobalTheory.CongApprox.exists_closeTo_congOne D 𝔪 h𝔪 k hk hc _ hx₀int m hm`. Establish `hmain` using `hl _ hclose`. Rewrite `hmain` using `[hfix]`.
+
+Rewrite using `[hmain]`. Take `⟨hw0, hwB⟩` from `GlobalTheory.FunObj.SqNum.pt_mem_of_entries_mem D δ 𝔪 w hw`. Establish `hx0` using `pt_unitBlock_mem (D := D) δ o P.a P.d`. Take `⟨φ, hφ⟩` from `VacMove.wd_wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (unitBlock D o P.a P.d)) (pt D (tor0 D ⊤ δ) δ w)`. Establish `hφ1 : φ = 1`.
+
+Establish `h2` using `hφ P.e0`. Rewrite `h2` using `[VacMove.wd_fix h1 P.crv k0 he hw0, VacMove.wd_fix h1 P.crv k0 he hx0, VacMove.wd_fix h1 P.crv k0 he (add_mem hx0 hw0)]`. Assume the negation of the conclusion as `hne`. Apply `P.W.nz` to reduce the goal to its premises. Establish `: (φ - 1) • P.e0 = 0` using `by rw [sub_smul, one_smul, ← h2, sub_self]`.
+
+Conclude with `(smul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`. Establish `h3` using `hφ (Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) P.a P.d) (La D (tor0 D ⊤ δ) (stdL D P.a) (skewLat D 𝔪 P.d)) P.e0)`. Rewrite `h3` using `[VacMove.wd_fix h1 P.crv kB hHB hwB, hφ1, one_smul, ← VacMove.pt_add]`. Conclude with `h3.symm`.
+-/
 theorem heis_fix : ∀ {D : D7}, Inp D → ∀ {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) {𝔪 : Ideal (𝓞 D.host.E)}, 𝔪 ≠ ⊥ →
     ∀ (o : ℕ) {k : GA D P.a}, k ∈ intG D P.a → CongOne D 𝔪 k →
     Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) P.a P.d) (La D (tor0 D ⊤ δ) (stdL D P.a) (skewLat D 𝔪 P.d)) P.e0 ∈

@@ -5,6 +5,19 @@ import GroundTheory.GlobalFields.CyclotomicCharacters.PadicUnitsLog
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Two
 open scoped Classical
 
+/- English proof (translation)
+Establish `key : ∀ x : ℤ_[l], a * x ∈ A`. Introduce `x`. Use `PadicInt.denseRange_intCast.induction_on x ?_ ?_` and prove the remaining obligations. Conclude with `hA.preimage (continuous_const.mul continuous_id)`. Introduce `m`.
+
+Establish `hm : a * (m : ℤ_[l]) = m • a` using `by rw [zsmul_eq_mul, mul_comm]`. Rewrite using `[hm]`. Conclude with `A.zsmul_mem ha m`. Establish `hspec` using `PadicInt.unitCoeff_spec h0`. Use `set w := PadicInt.unitCoeff h0`.
+
+Use `set n := a.valuation`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Set `f` to `(PadicInt.toZModPow (p := l) n).toAddMonoidHom`. Establish `hle : f.ker ≤ A`. Introduce `x hx`.
+
+Establish `hx' : x ∈ RingHom.ker (PadicInt.toZModPow (p` using `l) n) := hx`. Rewrite `hx'` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Take `⟨y, rfl⟩` from `hx'`. Establish `hw : (w : ℤ_[l]) * ↑w⁻¹ = 1` using `Units.mul_inv w`. Establish `heq : (l : ℤ_[l]) ^ n * y = a * (↑w⁻¹ * y)` using `by conv_rhs => rw [hspec]`.
+
+Take the linear combination `(-((l : ℤ_[l]) ^ n * y)) * hw`. Rewrite using `[heq]`. Conclude with `key _`. Establish `hfin : f.ker.index ≠ 0`. Rewrite using `[AddSubgroup.index_ker]`.
+
+Conclude with `Nat.card_ne_zero.2 ⟨inferInstance, inferInstance⟩`. Introduce `hA0`. Apply `hfin` to reduce the goal to its premises. Conclude with `Nat.eq_zero_of_zero_dvd (hA0 ▸ AddSubgroup.index_dvd_of_le hle)`.
+-/
 private theorem addClosed_index (l : ℕ) [Fact l.Prime] (A : AddSubgroup ℤ_[l])
     (hA : IsClosed (A : Set ℤ_[l])) (a : ℤ_[l]) (ha : a ∈ A) (h0 : a ≠ 0) : A.index ≠ 0 := by
   have key : ∀ x : ℤ_[l], a * x ∈ A := by
@@ -39,6 +52,23 @@ private theorem addClosed_index (l : ℕ) [Fact l.Prime] (A : AddSubgroup ℤ_[l
   exact Nat.eq_zero_of_zero_dvd (hA0 ▸ AddSubgroup.index_dvd_of_le hle)
 
 open GroundTheory.Global.Cyclotomic in
+/- English proof (translation)
+Introduce `l _ H hH hu`. Take `⟨u, huH, hu⟩` from `hu`. Use `set L := padicUnitsLog l with hL`. Establish `hB : IsClosed ((H.map L : Subgroup (Multiplicative ℤ_[l])) : Set (Multiplicative ℤ_[l]))`. Rewrite using `[Subgroup.coe_map]`.
+
+Conclude with `((hH.isCompact).image (continuous_padicUnitsLog l)).isClosed`. Set `A : AddSubgroup ℤ_[l]` to `Subgroup.toAddSubgroup' (H.map L)`. Establish `hAc : IsClosed (A : Set ℤ_[l])` using `hB`. Establish `haA : Multiplicative.toAdd (L u) ∈ A`. Rewrite using `[Subgroup.mem_toAddSubgroup']`.
+
+Conclude with `⟨u, huH, rfl⟩`. Establish `ha0 : Multiplicative.toAdd (L u) ≠ 0`. Introduce `h`. Apply `hu` to reduce the goal to its premises. Establish `h1 : L u = 1`.
+
+Rewrite using `[← ofAdd_toAdd (L u), h]`. Both sides reduce to the same expression. Rewrite `h1` using `[hL, padicUnitsLog_eq_one_iff]`. Conclude with `isOfFinOrder_iff_pow_eq_one.2 ⟨_, torsionExponent_pos l, h1⟩`. Establish `hAi : A.index ≠ 0` using `addClosed_index l A hAc _ haA ha0`.
+
+Establish `hMi : (H.map L).index ≠ 0` using `hAi`. Establish `hK : (H ⊔ L.ker).index ≠ 0`. Rewrite using `[← Subgroup.comap_map_eq, Subgroup.index_comap_of_surjective _ (padicUnitsLog_surjective l)]`. Conclude with `hMi`. Establish `hker : L.ker ≤ rootsOfUnity (torsionExponent l) ℤ_[l]`.
+
+Introduce `x hx`. Rewrite using `[mem_rootsOfUnity]`. Rewrite `hx` using `[MonoidHom.mem_ker, hL, padicUnitsLog_eq_one_iff]`. Conclude with `hx`. Establish `hcard : Nat.card L.ker ≠ 0` using `by haveI : NeZero (torsionExponent l) := ⟨(torsionExponent_pos l).ne'⟩ haveI : Finite L.ker := Finite.of_injective (Subgroup.inclusion hker) (Subgroup.inclusion_injective hker)`.
+
+Conclude with `Nat.card_ne_zero.2 ⟨inferInstance, inferInstance⟩`. Establish `hrel : H.relIndex (H ⊔ L.ker) ≠ 0`. Rewrite using `[sup_comm, Subgroup.relIndex_sup_right]`. Introduce `h0`. Apply `hcard` to reduce the goal to its premises.
+
+Conclude with `Nat.eq_zero_of_zero_dvd (h0 ▸ Subgroup.relIndex_dvd_card H L.ker)`. Rewrite using `[← Subgroup.relIndex_mul_index (le_sup_left : H ≤ H ⊔ L.ker)]`. Conclude with `mul_ne_zero hrel hK`.
+-/
 theorem UpperTheory.V.Ws.index_ne_zero_of_isClosed_of_not_isOfFinOrder :
     ∀ (l : ℕ) [Fact l.Prime] (H : Subgroup ℤ_[l]ˣ), IsClosed (H : Set ℤ_[l]ˣ) → (∃ u ∈ H, ¬ IsOfFinOrder u) → H.index ≠ 0 := by
   intro l _ H hH hu

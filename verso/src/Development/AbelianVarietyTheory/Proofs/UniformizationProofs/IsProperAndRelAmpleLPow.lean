@@ -17,6 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ S P t _ N hN`. Establish `hP` using `P.isAb.proper`. Establish `H : IsPullback (snd (Over.mk t) P.A).left (fst (Over.mk t) P.A).left P.A.hom t` using `(IsPullback.of_hasPullback t P.A.hom).flip`. Establish `hp : IsProper (fst (Over.mk t) P.A).left` using `MorphismProperty.of_isPullback (P := @IsProper) H hP`. Use `⟨hp, ?_⟩` and prove the remaining obligations.
+
+Establish `hp' : IsProper (Over.mk (X` using `Spec (CommRingCat.of F)) (fst (Over.mk t) P.A).left).hom := hp`. Establish `hL` using `LB.isLB_pull P.isLB (snd (Over.mk t) P.A).left`. Establish `hM : (LPow P.A P.L (N : ℤ) (Over.mk t)).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `h₁` using `(relAmple_iff_isAmpleLB_of_isAffine (Over.mk (X := Spec (CommRingCat.of F)) (fst (Over.mk t) P.A).left) hL).1 (AmpleBaseChange.relAmple_of_isPullback P.isLB P.ample H)`. Use `(relAmple_iff_isAmpleLB_of_isAffine (Over.mk (X := Spec (CommRingCat.of F)) (fst (Over.mk t) P.A).left) hM).2 (((isAmpleLB_pow_iff hL hN).2 h₁).of_lbIso hM ?_)` and prove the remaining obligations.
+
+Conclude with `LBIso.chartPull (CoprimeTorsion.chartPullLPow P.A P.L (Over.mk t) N) (chartPullPowPull P.L _ N) (lbIso_refl (isLB_lbPow P.isLB N))`.
+-/
 theorem isProper_and_relAmple_lPow :
     ∀ (F : Type) [CommRing F] (S : Scheme.{0}) (P : PolAV S) (t : Spec (CommRingCat.of F) ⟶ S) [IsLocalRing F] (N : ℕ), 1 ≤ N → IsProper (fst (Over.mk t) P.A).left ∧ RelAmple (S := Spec (CommRingCat.of F)) (Over.mk (fst (Over.mk t) P.A).left) (LPow P.A P.L (N : ℤ) (Over.mk t)) := by
   intro F _ S P t _ N hN

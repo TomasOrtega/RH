@@ -9,6 +9,23 @@ namespace UpperTheory.GalS
 section
 open Formalism.MainNotions.SumRepresentations Polynomial GlobalTheory.BaseChangeConj
 
+/- English proof (translation)
+Introduce `D hAN i r hr x P Pa hP hB ρ hρc hρs hwd`. Take `⟨-, -, hCheb, hBN⟩` from `hAN`. Establish `hl : (D.nd.l i).Prime` using `Fact.out`. Establish `hfin : (((placesOver D.host.E (D.nd.l i)) ∪ (D.nd.S i : Set _)) ∪ (D.nd.Q i : Set _)).Finite` using `((placesOver_finite D.host.E (D.nd.l i) hl.ne_zero).union (D.nd.S i).finite_toSet).union (D.nd.Q i).finite_toSet`. Establish `hdense` using `hCheb _ hfin`.
+
+Establish `hfrob : ∀ g ∈ {σ : G D.host.E D.nd.Om | ∃ w ∉ (((placesOver D.host.E (D.nd.l i)) ∪ (D.nd.S i : Set _)) ∪ (D.nd.Q i : Set _)), IsSplitPl D.host w ∧ ∃ B : ValuationSubring D.nd.Om, IsPlaceOver (F` using `D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) σ}, ((ρ g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Qbar (D.nd.l i))).charpoly = ((mapRep (iotaOQ D.nd D.naut i) (r x) g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Qbar (D.nd.l i))).charpoly := by`. Introduce and unpack `σ ⟨w, hw, hsp, B, hB', hσ⟩`. Simplify using `only [Set.mem_union, not_or] at hw`. Take `⟨⟨hwl, hwS⟩, hwQ⟩` from `hw`. Use `replace hwS : w ∉ D.nd.S i := by simpa using hwS`.
+
+Use `replace hwQ : w ∉ D.nd.Q i := by simpa using hwQ`. Establish `hso : SplitOut D.nd i w` using `⟨hsp, hwl, hwS, hwQ⟩`. Establish `hS` using `hwS`. Rewrite `hS` using `[D.nd.S_def]`. Establish `hS'` using `fun h => hS ⟨h, hwl⟩`.
+
+Establish `hu : D.naut.unr (D.naut.locV i P w)` using `D.naut.locV_unr i P w hsp hwQ (Fin.forall_fin_two.2 ⟨fun h => hS' (Or.inl h), fun h => hS' (Or.inr (Or.inl h))⟩) fun h => hS' (Or.inr (Or.inr h))`. Establish `hloc` using `hB.2.2.2.1 w hsp`. Establish `hwd'` using `hwd w hwl`. Rewrite `hwd'` using `[hloc]`. Use `replace hwd' := hwd'.eq_of_unr ((D.naut.unr_tw _ _).2 hu)`.
+
+Establish `hun : D.naut.unr (D.naut.wdOf i ρ w)` using `by rw [hwd']; exact (D.naut.unr_tw _ _).2 hu`. Establish `e1` using `D.naut.wdOf_frob i ρ w hwl hρc hun B σ hB' hσ`. Rewrite `e1` using `[hwd', ← D.naut.pt_loc i P x hP w hso]`. Establish `e2` using `(hr x).2.2 w hso B σ hB' hσ`. Apply `Polynomial.map_injective (D.naut.iotaQC i).toRingHom (D.naut.iotaQC i).injective` to reduce the goal to its premises.
+
+Establish `e3 : ((mapRep (iotaOQ D.nd D.naut i) (r x) σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Qbar (D.nd.l i))) = ((r x σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).map (iotaOQ D.nd D.naut i)` using `rfl`. Rewrite using `[e1, e3, Matrix.charpoly_map, e2, Polynomial.map_map]`. Both sides reduce to the same expression. Establish `hc2 : SumRepresentations.At.ContQ D.nd i (mapRep (iotaOQ D.nd D.naut i) (r x))` using `contQ_of_continuous D.nd D.naut i (r x) (hr x).1`. Establish `hall` using `charpoly_eq_of_dense' ρ (mapRep (iotaOQ D.nd D.naut i) (r x)) hρc hc2 _ hdense hfrob`.
+
+Establish `: CharZero (Kf D.nd i)` using `RingHom.charZero (D.naut.iotaQ i)`. Establish `hss : IsSSRep (mapRep (iotaOQ D.nd D.naut i) (r x))`. Establish `h` using `GlobalTheory.TraceSemisimple.isSSRep_mapRep _ _ _ (D.naut.iotaQ i) _ _ (hr x).2.1`. Establish `e : mapRep (iotaOQ D.nd D.naut i) (r x) = mapRep (D.naut.iotaQ i) (mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x))`. Use extensionality with `g a b`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`. Conclude with `hBN _ _ ρ _ hρs hss hall`.
+-/
 theorem rep_conj : ∀ D : D7, SumRepresentations.adm5 D → ∀ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r → ∀ (x : D.nd.X i) (P : D.naut.AV i) (Pa : List (Formalism.BasicNotions.Part D.naut.CG)), D.naut.ptV i P = some x → IsBCV D.nd D.naut i P Pa → ∀ ρ : GE D.nd →* GL (Fin D.R.nV) (Qbar (D.nd.l i)), SumRepresentations.At.ContQ D.nd i ρ → IsSSRep ρ → (∀ w, w ∉ placesOver D.host.E (D.nd.l i) → RelW D.nd D.naut (D.naut.wdOf i ρ w) (D.naut.lpTw (isoLoc D.nd D.naut Pa w) ((1 - (D.R.nV : ℝ)) / 2))) → ∃ Pm : GL (Fin D.R.nV) (Qbar (D.nd.l i)), ∀ g, mapRep (iotaOQ D.nd D.naut i) (r x) g = Pm⁻¹ * ρ g * Pm := by
   intro D hAN i r hr x P Pa hP hB ρ hρc hρs hwd
   obtain ⟨-, -, hCheb, hBN⟩ := hAN
@@ -68,6 +85,15 @@ section
 open Polynomial
 local notation "Part" => Formalism.BasicNotions.Part
 
+/- English proof (translation)
+Introduce `D i x P Pa hP hBC ρ hc hss hwd`. Use `⟨hc, hss, fun w hw B σ hB hσ => ?_⟩` and prove the remaining obligations. Establish `hS` using `(D.nd.S_def i w).not.1 hw.2.2.1`. Establish `hunr : D.naut.unr (D.naut.locV i P w)`. Use `D.naut.locV_unr i P w hw.1 hw.2.2.2 (fun k hk => hS ⟨?_, hw.2.1⟩) (fun hk => hS ⟨Or.inr (Or.inr hk), hw.2.1⟩)` and prove the remaining obligations.
+
+Use `fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk)`. Establish `hloc` using `hBC.2.2.2.1 w hw.1`. Establish `hw'` using `(hwd w hw.2.1).eq_of_unr ((D.naut.unr_tw _ _).2 (by rw [hloc]; exact hunr))`.
+
+Establish `hu : D.naut.unr (D.naut.wdOf i ρ w)`. Rewrite using `[hw', hloc]`. Conclude with `(D.naut.unr_tw _ _).2 hunr`. Establish `e` using `D.naut.wdOf_frob i ρ w hw.2.1 hc hu B σ hB hσ`. Rewrite `e` using `[hw', hloc, ← D.naut.pt_loc i P x hP w hw]`.
+
+Apply `Polynomial.map_injective (D.naut.iotaQC i).toRingHom (D.naut.iotaQC i).injective` to reduce the goal to its premises. Rewrite using `[e, Polynomial.map_map]`. Both sides reduce to the same expression.
+-/
 theorem heckeQ : ∀ (D : D7) (i : D.nd.Loc) (x : D.nd.X i) (P : D.naut.AV i)
     (Pa : List (Part D.naut.CG)), D.naut.ptV i P = some x → IsBCV D.nd D.naut i P Pa →
     ∀ ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (Qbar (D.nd.l i)), SumRepresentations.At.ContQ D.nd i ρ → IsSSRep ρ →
@@ -94,6 +120,25 @@ theorem heckeQ : ∀ (D : D7) (i : D.nd.Loc) (x : D.nd.X i) (P : D.naut.AV i)
   rw [e, Polynomial.map_map]
   rfl
 
+/- English proof (translation)
+Introduce `R H what₂ N A i hG hC hAN P P' hag Pa Pa' hB hB'`. Take `⟨r, hrc, -, hr0⟩` from `hG P Pa hB`. Take `⟨r', hrc', -, hr0'⟩` from `hG P' Pa' hB'`. Establish `hr` using `fun w h1 (h2 : A.unr (isoLoc N A Pa w)) => (hr0 w h1).eq_of_unr ((A.unr_tw _ _).2 h2)`. Establish `hr'` using `fun w h1 (h2 : A.unr (isoLoc N A Pa' w)) => (hr0' w h1).eq_of_unr ((A.unr_tw _ _).2 h2)`.
+
+Establish `hfin : (placesOver H.E (N.l i)).Finite`. Establish `h0 : Ideal.span {((N.l i : ℕ) : 𝓞 H.E)} ≠ 0`. Simplify using `using (Fact.out : (N.l i).Prime).ne_zero`. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv`. Establish `hinj : Function.Injective (Polynomial.map (A.iotaQC i).toRingHom)` using `Polynomial.map_injective _ (A.iotaQC i).injective`.
+
+Establish `hgood : ∀ᶠ w in Filter.cofinite, (w ∉ placesOver H.E (N.l i) ∧ A.unr (isoLoc N A Pa w) ∧ A.unr (isoLoc N A Pa' w)) ∧ (IsSplitPl H w → A.locV i P w = A.locV i P' w)` using `by filter_upwards [hfin.eventually_cofinite_notMem, GlobalTheory.SplitDetermines.isoLoc_unr_ae N A Pa, GlobalTheory.SplitDetermines.isoLoc_unr_ae N A Pa', hag] with w h1 h2 h3 h4`. Conclude with `⟨⟨h1, h2, h3⟩, h4⟩`. Establish `hS` using `Filter.eventually_cofinite.1 hgood`. Establish `hd` using `hC hS.toFinset`. Establish `hu : ∀ w, w ∉ placesOver H.E (N.l i) → A.unr (isoLoc N A Pa w) → A.unr (A.wdOf i r w)` using `fun w h1 h2 => by`.
+
+Rewrite using `[hr w h1 h2]`. Conclude with `(A.unr_tw _ _).2 h2`. Establish `hu' : ∀ w, w ∉ placesOver H.E (N.l i) → A.unr (isoLoc N A Pa' w) → A.unr (A.wdOf i r' w)` using `fun w h1 h2 => by`. Rewrite using `[hr' w h1 h2]`. Conclude with `(A.unr_tw _ _).2 h2`.
+
+Establish `key` using `GlobalTheory.TypeLeaf.charpoly_eq_of_dense (G H.E N.Om) (Qbar (N.l i)) R.nV (fun g => ((r g : GL (Fin R.nV) (Qbar (N.l i))) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))) (fun g => ((r' g : GL (Fin R.nV) (Qbar (N.l i))) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))) _ hd hrc hr …`. Introduce and unpack `g ⟨w, hw, hsp, B, hBw, hg⟩`. Establish `hw' : ¬ ¬ ((w ∉ placesOver H.E (N.l i) ∧ A.unr (isoLoc N A Pa w) ∧ A.unr (isoLoc N A Pa' w)) ∧ (IsSplitPl H w → A.locV i P w = A.locV i P' w))`. Simplify using `using hw`. Take `⟨⟨h1, h2, h3⟩, h4⟩` from `not_not.1 hw'`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `e : A.wdOf i r w = A.wdOf i r' w`. Rewrite using `[hr w h1 h2, hr' w h1 h3, hB.2.2.2.1 w hsp, hB'.2.2.2.1 w hsp, h4 hsp]`. Rewrite using `[A.wdOf_frob i r w h1 hrc (hu w h1 h2) B g hBw hg, A.wdOf_frob i r' w h1 hrc' (hu' w h1 h3) B g hBw hg, e])`. Use `hAN Pa Pa' hB.1 hB'.1 ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hgood] with w hw`. Take `⟨⟨h1, h2, h3⟩, -⟩` from `hw`. Take `⟨σ, hσ⟩` from `exists_isFrob (N.plOm.2 w)`. Establish `e1` using `A.wdOf_frob i r w h1 hrc (hu w h1 h2) _ σ (N.plOm.2 w) hσ`. Establish `e2` using `A.wdOf_frob i r' w h1 hrc' (hu' w h1 h3) _ σ (N.plOm.2 w) hσ`.
+
+Establish `hm : A.frobEig (A.wdOf i r w) = A.frobEig (A.wdOf i r' w)`. Establish `e3` using `congrArg Polynomial.roots (e1.symm.trans ((congrArg _ (key σ)).trans e2))`. Rewrite `e3` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis. Establish `e4 : A.wdOf i r w = A.wdOf i r' w`. Rewrite using `[A.unr_eq_lpUnr _ (hu w h1 h2), hm, ← A.unr_eq_lpUnr _ (hu' w h1 h3)]`.
+
+Rewrite `e4` using `[hr w h1 h2, hr' w h1 h3]`. Establish `e5` using `congrArg (fun a => A.lpTw a (-((1 - (R.nV : ℝ)) / 2))) e4`. Simplify `e5` using `only [A.lpTw_add, add_neg_cancel, A.lpTw_zero]`.
+-/
 theorem splitBC_of_galIso : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N)
     (i : N.Loc), GalIsoN N A i → GlobalTheory.RowTie.ChebSplit N → GlobalTheory.RowCopy.IsobaricDiscreteSelfDualStrongMultiplicityOne N A →
     GlobalTheory.RowTie.SplitBC N A i := by

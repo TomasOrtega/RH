@@ -9,11 +9,17 @@ namespace PI.IntegralDiscriminantMembership
 
 open Formalism.MainNotions.S.Loc Formalism.MainNotions.S.LocNG
 
+/- English proof (translation)
+Use `haveI : Nontrivial E := Module.nontrivial_of_finrank_pos (by rw [M.L.rank]; norm_num)`. Conclude with `(algebraMap F E).injective`.
+-/
 theorem algebraMap_inj {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) : Function.Injective (algebraMap F E) := by
   haveI : Nontrivial E := Module.nontrivial_of_finrank_pos (by rw [M.L.rank]; norm_num)
   exact (algebraMap F E).injective
 
+/- English proof (translation)
+Establish `h` using `(Valuation.integer.integers (ValuativeRel.valuation F)).mem_of_integral hs`. Use `first`. Consider the case `exact h`. Consider the case `simpa using h`. Consider the case `(obtain ⟨y, hy⟩ := h; rw [← hy]; exact y.2)`.
+-/
 theorem mem_integer_of_isIntegral {F : Type} [Field F] [ValuativeRel F] {s : F}
     (hs : IsIntegral 𝒪[F] s) : s ∈ 𝒪[F] := by
   have h := (Valuation.integer.integers (ValuativeRel.valuation F)).mem_of_integral hs
@@ -22,15 +28,32 @@ theorem mem_integer_of_isIntegral {F : Type} [Field F] [ValuativeRel F] {s : F}
     | simpa using h
     | (obtain ⟨y, hy⟩ := h; rw [← hy]; exact y.2)
 
+/- English proof (translation)
+Apply `mem_integer_of_isIntegral` to reduce the goal to its premises. Conclude with `(isIntegral_algHom_iff ((Algebra.ofId F E).restrictScalars 𝒪[F]) (algebraMap_inj M)).mp hs`.
+-/
 theorem mem_integer_of_isIntegral_map {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) {s : F}
     (hs : IsIntegral 𝒪[F] (algebraMap F E s)) : s ∈ 𝒪[F] := by
   apply mem_integer_of_isIntegral
   exact (isIntegral_algHom_iff ((Algebra.ofId F E).restrictScalars 𝒪[F]) (algebraMap_inj M)).mp hs
 
+/- English proof (translation)
+The claim follows from `M.L.cj.commutes a`.
+-/
 theorem cj_alg {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) (a : F) : M.L.cj (algebraMap F E a) = algebraMap F E a := M.L.cj.commutes a
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hcx : M.L.cj x ∈ M.L.O`. Rewrite `hx`, the goal using `[M.L.O_def]`. Conclude with `hx.map ((M.L.cj : E →ₐ[F] E).restrictScalars 𝒪[F])`.
+
+Establish `ht : x + M.L.cj x ∈ M.L.O` using `M.L.O.add_mem hx hcx`. Establish `hn : x * M.L.cj x ∈ M.L.O` using `M.L.O.mul_mem hx hcx`. Take `⟨t, htd⟩` from `(M.L.cj_fix (x + M.L.cj x)).mp (by rw [map_add, M.L.cj_cj, add_comm])`. Take `⟨n, hnd⟩` from `(M.L.cj_fix (x * M.L.cj x)).mp (by rw [map_mul, M.L.cj_cj, mul_comm])`. Use `⟨⟨⟨t, mem_integer_of_isIntegral_map M ((M.L.O_def _).mp (htd ▸ ht))⟩, htd⟩, ⟨⟨n, mem_integer_of_isIntegral_map M ((M.L.O_def _).mp (hnd ▸ hn))⟩, hnd⟩⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Rewrite using `[M.L.O_def]`. Establish `hdeg : (Polynomial.C b - Polynomial.C a * Polynomial.X : Polynomial 𝒪[F]).degree < 2` using `lt_of_le_of_lt (by compute_degree) (by norm_num)`. Use `⟨Polynomial.X ^ 2 + (Polynomial.C b - Polynomial.C a * Polynomial.X), Polynomial.monic_X_pow_add hdeg, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap 𝒪[F] E a = x + M.L.cj x`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply 𝒪[F] F E]`. Conclude with `ha`. Establish `h2 : algebraMap 𝒪[F] E b = x * M.L.cj x`. Rewrite using `[IsScalarTower.algebraMap_apply 𝒪[F] F E]`. Conclude with `hb`.
+
+Rewrite using `[Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_sub, Polynomial.eval₂_C, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_O_iff {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) (x : E) :
     x ∈ M.L.O ↔ (∃ a : 𝒪[F], algebraMap F E a = x + M.L.cj x) ∧
@@ -62,6 +85,11 @@ theorem mem_O_iff {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
       Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X, h1, h2]
     ring
 
+/- English proof (translation)
+Rewrite using `[M.L.O_def]`. Prove the components needed by the constructor for the conclusion. Conclude with `mem_integer_of_isIntegral_map M`. Introduce `ha`. Establish `h : algebraMap F E a = algebraMap 𝒪[F] E ⟨a, ha⟩` using `IsScalarTower.algebraMap_apply 𝒪[F] F E ⟨a, ha⟩`.
+
+Rewrite using `[h]`. Conclude with `isIntegral_algebraMap`.
+-/
 theorem alg_mem_O {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) {a : F} : algebraMap F E a ∈ M.L.O ↔ a ∈ 𝒪[F] := by
   rw [M.L.O_def]
@@ -72,6 +100,11 @@ theorem alg_mem_O {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     rw [h]
     exact isIntegral_algebraMap
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hs : Function.Surjective (Algebra.linearMap F E)` using `fun y => hc y`. Establish `h` using `LinearMap.finrank_range_le (Algebra.linearMap F E)`. Rewrite `h` using `[LinearMap.range_eq_top.mpr hs, finrank_top, Module.finrank_self, M.L.rank]`.
+
+Evaluate the numerical expressions using `at h`.
+-/
 theorem exists_not_mem_range {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) : ∃ y : E, y ∉ Set.range (algebraMap F E) := by
   by_contra hc
@@ -81,6 +114,11 @@ theorem exists_not_mem_range {F : Type} [Field F] [ValuativeRel F] [TopologicalS
   rw [LinearMap.range_eq_top.mpr hs, finrank_top, Module.finrank_self, M.L.rank] at h
   norm_num at h
 
+/- English proof (translation)
+Distinguish the cases in `hs : s ∈ 𝒪[F]`. Conclude with `⟨1, one_mem _, one_ne_zero, by simpa using hs⟩`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `hs (zero_mem _)`.
+
+Use `⟨s⁻¹, ?_, inv_ne_zero hs0, by rw [inv_mul_cancel₀ hs0]; exact one_mem _⟩` and prove the remaining obligations. Rewrite `hs`, the goal using `[Valuation.mem_integer_iff]`. Rewrite using `[map_inv₀]`. Use `push_neg at hs`. Conclude with `inv_le_one_of_one_le₀ hs.le`.
+-/
 theorem exists_mul_mem_integer {F : Type} [Field F] [ValuativeRel F] (s : F) :
     ∃ c : F, c ∈ 𝒪[F] ∧ c ≠ 0 ∧ c * s ∈ 𝒪[F] := by
   by_cases hs : s ∈ 𝒪[F]
@@ -94,6 +132,17 @@ theorem exists_mul_mem_integer {F : Type} [Field F] [ValuativeRel F] (s : F) :
     push_neg at hs
     exact inv_le_one_of_one_le₀ hs.le
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_not_mem_range M`. Take `⟨t, ht⟩` from `(M.L.cj_fix (y + M.L.cj y)).mp (by rw [map_add, M.L.cj_cj, add_comm])`. Take `⟨n, hn⟩` from `(M.L.cj_fix (y * M.L.cj y)).mp (by rw [map_mul, M.L.cj_cj, mul_comm])`. Take `⟨c1, hc1, hc10, hc1t⟩` from `exists_mul_mem_integer t`. Take `⟨c2, hc2, hc20, hc2n⟩` from `exists_mul_mem_integer n`.
+
+Use `⟨algebraMap F E (c1 * c2) * y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_O_iff]`. Use `⟨⟨⟨c1 * c2 * t, ?_⟩, ?_⟩, ⟨⟨(c1 * c2) ^ 2 * n, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Establish `e : c1 * c2 * t = c2 * (c1 * t)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `mul_mem hc2 hc1t`. Simplify using `only [map_mul, ht, cj_alg M]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : (c1 * c2) ^ 2 * n = c1 ^ 2 * c2 * (c2 * n)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `mul_mem (mul_mem (pow_mem hc1 2) hc2) hc2n`. Simplify using `only [map_mul, map_pow, hn, cj_alg M]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨a, ha⟩`. Apply `hy` to reduce the goal to its premises.
+
+Use `⟨a / (c1 * c2), ?_⟩` and prove the remaining obligations. Establish `hc : c1 * c2 ≠ 0` using `mul_ne_zero hc10 hc20`. Rewrite using `[div_eq_inv_mul, map_mul, ha, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc, map_one, one_mul]`.
+-/
 theorem exists_omega0 {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) :
     ∃ w : E, w ∈ M.L.O ∧ w ∉ Set.range (algebraMap F E) := by
@@ -121,6 +170,13 @@ theorem exists_omega0 {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     have hc : c1 * c2 ≠ 0 := mul_ne_zero hc10 hc20
     rw [div_eq_inv_mul, map_mul, ha, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc, map_one, one_mul]
 
+/- English proof (translation)
+Introduce `h0`. Apply `hwn` to reduce the goal to its premises. Establish `hsq : (w - M.L.cj w) ^ 2 = 0`. Establish `h1 : algebraMap F E (t ^ 2 - 4 * n0) = (w - M.L.cj w) ^ 2`. Rewrite using `[map_sub, map_mul, map_pow, ht, hn, map_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h1, h0, map_zero]`. Use `haveI := M.L.reduced`. Establish `hz : w - M.L.cj w = 0` using `IsReduced.eq_zero _ ⟨2, hsq⟩`. Establish `hfix : M.L.cj w = w` using `(sub_eq_zero.mp hz).symm`.
+
+Take `⟨a, ha⟩` from `(M.L.cj_fix w).mp hfix`. Conclude with `⟨a, ha⟩`.
+-/
 theorem disc_ne_zero {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) {w : E} (hwn : w ∉ Set.range (algebraMap F E)) {t n0 : F}
     (ht : algebraMap F E t = w + M.L.cj w) (hn : algebraMap F E n0 = w * M.L.cj w) : t ^ 2 - 4 * n0 ≠ 0 := by
@@ -137,6 +193,11 @@ theorem disc_ne_zero {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   obtain ⟨a, ha⟩ := (M.L.cj_fix w).mp hfix
   exact ⟨a, ha⟩
 
+/- English proof (translation)
+Establish `h1 : algebraMap F E (b - b') * w = algebraMap F E (a' - a)`. Rewrite using `[map_sub, map_sub, sub_mul]`. Take the linear combination `h`. Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality.
+
+Conclude with `⟨algebraMap_inj M (add_right_cancel h), rfl⟩`. It suffices to derive a contradiction. Apply `hwn` to reduce the goal to its premises. Use `⟨(b - b')⁻¹ * (a' - a), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← h1, ← mul_assoc, ← map_mul, inv_mul_cancel₀ (sub_ne_zero.mpr hb), map_one, one_mul]`.
+-/
 theorem coords_unique {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) {w : E} (hwn : w ∉ Set.range (algebraMap F E)) {a b a' b' : F}
     (h : algebraMap F E a + algebraMap F E b * w = algebraMap F E a' + algebraMap F E b' * w) :
@@ -152,6 +213,15 @@ theorem coords_unique {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     refine ⟨(b - b')⁻¹ * (a' - a), ?_⟩
     rw [map_mul, ← h1, ← mul_assoc, ← map_mul, inv_mul_cancel₀ (sub_ne_zero.mpr hb), map_one, one_mul]
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [M.L.rank]; norm_num)`. Establish `hli : LinearIndependent F ![(1 : E), w]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h2 : algebraMap F E s + algebraMap F E t * w = algebraMap F E 0 + algebraMap F E 0 * w`.
+
+Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Simplify using `using hst`. Conclude with `coords_unique M hwn h2`. Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank (by rw [M.L.rank]; simp)`. Establish `hx : x ∈ Submodule.span F (Set.range ![(1 : E), w])`.
+
+Rewrite using `[hspan]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun F).mp hx`. Use `⟨c 0, c 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Fin.sum_univ_two]`.
+
+Simplify using `[Algebra.smul_def]`.
+-/
 theorem coords_exist {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) {w : E} (hwn : w ∉ Set.range (algebraMap F E)) (x : E) :
     ∃ a b : F, x = algebraMap F E a + algebraMap F E b * w := by
@@ -172,6 +242,11 @@ theorem coords_exist {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   rw [← hc, Fin.sum_univ_two]
   simp [Algebra.smul_def]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Valuation.mem_integer_iff]`. Rewrite `h` using `[map_pow]`. Assume the negation of the conclusion as `hy`. Use `push_neg at hy`. Establish `h2 : 1 < (ValuativeRel.valuation F) y ^ 2` using `one_lt_pow₀ hy two_ne_zero`.
+
+Conclude with `absurd h (not_le.mpr h2)`.
+-/
 theorem mem_of_sq_mem {F : Type} [Field F] [ValuativeRel F] {y : F} (h : y ^ 2 ∈ 𝒪[F]) : y ∈ 𝒪[F] := by
   rw [Valuation.mem_integer_iff] at h ⊢
   rw [map_pow] at h
@@ -180,10 +255,22 @@ theorem mem_of_sq_mem {F : Type} [Field F] [ValuativeRel F] {y : F} (h : y ^ 2 �
   have h2 : 1 < (ValuativeRel.valuation F) y ^ 2 := one_lt_pow₀ hy two_ne_zero
   exact absurd h (not_le.mpr h2)
 
+/- English proof (translation)
+Establish `h` using `natCast_mem (𝒪[F]) 4`. Simplify using `using h`.
+-/
 theorem four_mem {F : Type} [Field F] [ValuativeRel F] : (4 : F) ∈ 𝒪[F] := by
   have h := natCast_mem (𝒪[F]) 4
   simpa using h
 
+/- English proof (translation)
+Take `⟨⟨T, hT⟩, ⟨N, hN⟩⟩` from `(mem_O_iff M _).mp hx`. Use `set x := algebraMap F E a + algebraMap F E b * w with hxdef`. Establish `hcx : M.L.cj x = algebraMap F E a + algebraMap F E b * M.L.cj w`. Rewrite using `[hxdef, map_add, map_mul, cj_alg M, cj_alg M]`. Establish `hE : algebraMap F E ((T : F) ^ 2 - 4 * (N : F)) = algebraMap F E (b ^ 2 * (t ^ 2 - 4 * n0))`.
+
+Establish `h1 : algebraMap F E ((T : F) ^ 2 - 4 * (N : F)) = (x - M.L.cj x) ^ 2`. Rewrite using `[map_sub, map_mul, map_pow, hT, hN, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : algebraMap F E (b ^ 2 * (t ^ 2 - 4 * n0)) = (x - M.L.cj x) ^ 2`. Rewrite using `[map_mul, map_sub, map_mul, map_pow, map_pow, ht, hn, map_ofNat, hcx, hxdef]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2]`. Establish `hb2 : b ^ 2 * (t ^ 2 - 4 * n0) ∈ 𝒪[F]`. Rewrite using `[← algebraMap_inj M hE]`. Conclude with `sub_mem (pow_mem T.2 2) (mul_mem four_mem N.2)`.
+
+Establish `hD : t ^ 2 - 4 * n0 ∈ 𝒪[F]` using `sub_mem (pow_mem htO 2) (mul_mem four_mem hnO)`. Apply `mem_of_sq_mem` to reduce the goal to its premises. Establish `e : (b * (t ^ 2 - 4 * n0)) ^ 2 = (b ^ 2 * (t ^ 2 - 4 * n0)) * (t ^ 2 - 4 * n0)` using `by ring`. Rewrite using `[e]`. Conclude with `mul_mem hb2 hD`.
+-/
 theorem bD_mem {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) {w : E} {t n0 : F} (ht : algebraMap F E t = w + M.L.cj w)
     (hn : algebraMap F E n0 = w * M.L.cj w) (htO : t ∈ 𝒪[F]) (hnO : n0 ∈ 𝒪[F]) {a b : F}
@@ -209,6 +296,37 @@ theorem bD_mem {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   rw [e]
   exact mul_mem hb2 hD
 
+/- English proof (translation)
+Use `hOK.loc` as an intermediate fact. Take `⟨w, hw, hwn⟩` from `exists_omega0 M`. Take `⟨⟨t, ht⟩, ⟨n0, hn⟩⟩` from `(mem_O_iff M w).mp hw`. Establish `hD0 : (t : F) ^ 2 - 4 * n0 ≠ 0` using `disc_ne_zero M hwn ht hn`. Establish `hDO : (t : F) ^ 2 - 4 * n0 ∈ 𝒪[F]` using `sub_mem (pow_mem t.2 2) (mul_mem four_mem n0.2)`.
+
+Set `D : F` to `(t : F) ^ 2 - 4 * n0`. Set `J : Ideal 𝒪[F]` to `{ carrier := {c | ∃ a : F, algebraMap F E a + algebraMap F E ((c : F) / D) * w ∈ M.L.O} add_mem' := by`. Introduce and unpack `c1 c2 ⟨a1, h1⟩ ⟨a2, h2⟩`. Use `⟨a1 + a2, ?_⟩` and prove the remaining obligations. Use `add_mem h1 h2 using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Subring.coe_add, add_div, map_add]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r c ⟨a, h⟩`.
+
+Use `⟨r * a, ?_⟩` and prove the remaining obligations. Use `mul_mem ((alg_mem_O M).mpr r.2) h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [smul_eq_mul, Subring.coe_mul, mul_div_assoc, map_mul]`. Use `ring }`. Take `⟨g, hg⟩` from `(IsPrincipalIdealRing.principal J).principal`.
+
+Establish `hDJ : (⟨D, hDO⟩ : 𝒪[F]) ∈ J` using `⟨0, by show algebraMap F E 0 + algebraMap F E (D / D) * w ∈ M.L.O`. Rewrite using `[div_self hD0, map_zero, map_one, zero_add, one_mul]`. Conclude with `hw⟩`. Establish `hgJ : g ∈ J` using `hg ▸ Submodule.mem_span_singleton_self g`. Establish `hg0 : (g : F) ≠ 0`.
+
+Introduce `h0`. Establish `h1` using `hDJ`. Rewrite `h1` using `[hg, Ideal.mem_span_singleton']`. Take `⟨r, hr⟩` from `h1`. Establish `h2` using `congrArg Subtype.val hr`.
+
+Rewrite `h2` using `[Subring.coe_mul, h0, mul_zero]`. Conclude with `hD0 h2.symm`. Take `⟨ag, hag⟩` from `hgJ`. Use `⟨_, hag, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩`.
+
+Establish `h1` using `coords_unique M hwn (a := c) (b := 0) (a' := ag) (b' := (g : F) / D) (by rw [map_zero, zero_mul, add_zero, hc])`. Break down `div_eq_zero_iff.mp h1.2.symm with h | h` into its components or cases. Conclude with `hg0 h`. Conclude with `hD0 h`. Introduce `x hx`.
+
+Take `⟨a, b, rfl⟩` from `coords_exist M hwn x`. Establish `hbD : b * D ∈ 𝒪[F]` using `bD_mem M ht hn t.2 n0.2 hx`. Establish `hcJ : (⟨b * D, hbD⟩ : 𝒪[F]) ∈ J` using `⟨a, by show algebraMap F E a + algebraMap F E (b * D / D) * w ∈ M.L.O`. Rewrite using `[mul_div_cancel_right₀ b hD0]⟩` and apply the resulting hypothesis. Rewrite `hcJ` using `[hg, Ideal.mem_span_singleton']`.
+
+Take `⟨r, hr⟩` from `hcJ`. Establish `hr' : (r : F) * g = b * D` using `congrArg Subtype.val hr`. Establish `hb : b = r * ((g : F) / D)`. Rewrite using `[← mul_div_assoc, hr', mul_div_cancel_right₀ b hD0]`. Establish `hp1 : a - r * ag ∈ 𝒪[F]`.
+
+Establish `hmem` using `sub_mem hx (mul_mem ((alg_mem_O M).mpr r.2) hag)`. Establish `e : algebraMap F E a + algebraMap F E b * w - algebraMap F E (r : F) * (algebraMap F E ag + algebraMap F E ((g : F) / D) * w) = algebraMap F E (a - r * ag)`. Rewrite using `[hb]`. Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hmem` using `[e]`. Conclude with `(alg_mem_O M).mp hmem`. Use `⟨(⟨a - r * ag, hp1⟩, r), ?_, ?_⟩` and prove the remaining obligations. Use `show algebraMap F E a + algebraMap F E b * w = algebraMap F E (a - r * ag) + algebraMap F E (r : F) * (algebraMap F E ag + algebraMap F E ((g : F) / D) * w)`. Rewrite using `[hb]`.
+
+Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨p1, p2⟩ hp`. Establish `e : algebraMap F E (p1 : F) + algebraMap F E (p2 : F) * (algebraMap F E ag + algebraMap F E ((g : F) / D) * w) = algebraMap F E ((p1 : F) + p2 * ag) + algebraMap F E ((p2 : F) * ((g : F) / D)) * w`. Simplify using `only [map_add, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hp'` using `hp`. Simplify using `only at hp'`. Rewrite `hp'` using `[e]`. Take `⟨h1, h2⟩` from `coords_unique M hwn hp'`.
+
+Rewrite `h2` using `[hb]`. Establish `hp2 : (p2 : F) = r` using `(mul_right_cancel₀ (div_ne_zero hg0 hD0) h2).symm`. Establish `hp1' : (p1 : F) = a - r * ag` using `by rw [h1, hp2]; ring`. Conclude with `Prod.ext (Subtype.ext hp1') (Subtype.ext hp2)`.
+-/
 theorem oBasis {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) (hOK : M.OK) :
     ∃ ω ∈ M.L.O, ω ∉ Set.range (algebraMap F E) ∧
@@ -291,6 +409,33 @@ theorem oBasis {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
       have hp1' : (p1 : F) = a - r * ag := by rw [h1, hp2]; ring
       exact Prod.ext (Subtype.ext hp1') (Subtype.ext hp2)
 
+/- English proof (translation)
+Use `hOK.loc` as an intermediate fact. Take `⟨ω, hω, -, hb⟩` from `oBasis M hOK`. Use `set πO : M.L.O := ⟨algebraMap F E (π : F), (alg_mem_O M).mpr π.2⟩ with hπO`. Set `ψ : 𝒪[F] × 𝒪[F] →+ M.L.O` to `{ toFun := fun p => ⟨algebraMap F E (p.1 : F) + algebraMap F E (p.2 : F) * ω, add_mem ((alg_mem_O M).mpr p.1.2) (mul_mem ((alg_mem_O M).mpr p.2.2) hω)⟩ map_zero' := by apply Subtype.ext; simp map_add' := by`. Introduce `p p'`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Prod.fst_add, Prod.snd_add, AddMemClass.coe_add, map_add]`. Use `ring }`. Establish `hψ : ∀ p, (ψ p : E) = algebraMap F E (p.1 : F) + algebraMap F E (p.2 : F) * ω` using `fun p => rfl`. Establish `hinj : Function.Injective ψ`.
+
+Introduce `p p' h`. Establish `h'` using `congrArg Subtype.val h`. Take `⟨q, -, hq⟩` from `hb _ (ψ p).2`. Conclude with `(hq p (hψ p)).trans (hq p' (h'.trans (hψ p'))).symm`. Establish `hsurj : Function.Surjective ψ`.
+
+Introduce and unpack `⟨x, hx⟩`. Take `⟨p, hp, -⟩` from `hb x hx`. Conclude with `⟨p, Subtype.ext (hp.symm)⟩`. Establish `hmul : ∀ q : 𝒪[F] × 𝒪[F], ψ q * πO = ψ (q.1 * π, q.2 * π)`. Introduce `q`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[MulMemClass.coe_mul, hψ, hψ, hπO]`. Simplify using `only [MulMemClass.coe_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `e` to `AddEquiv.ofBijective ψ ⟨hinj, hsurj⟩`.
+
+Set `res : 𝒪[F] →+ 𝓀[F]` to `(IsLocalRing.residue 𝒪[F]).toAddMonoidHom`. Set `Φ : M.L.O →+ 𝓀[F] × 𝓀[F]` to `(res.prodMap res).comp e.symm.toAddMonoidHom`. Establish `hΦ : ∀ p, Φ (ψ p) = (res p.1, res p.2)`. Introduce `p`. Establish `: e.symm (ψ p) = p` using `e.symm_apply_apply p`.
+
+Simplify using `only [Φ, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, this]`. Both sides reduce to the same expression. Establish `hmax` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer π).mp hπ`. Establish `hres : ∀ c : 𝒪[F], res c = 0 ↔ ∃ d, d * π = c`. Introduce `c`.
+
+Use `show IsLocalRing.residue _ c = 0 ↔ _`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, hmax, Ideal.mem_span_singleton']`. Establish `hker : Φ.ker = (Ideal.span {πO}).toAddSubgroup`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton']`.
+
+Take `⟨p, rfl⟩` from `hsurj x`. Rewrite using `[hΦ, Prod.mk_eq_zero, hres, hres]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨d1, hd1⟩, ⟨d2, hd2⟩⟩`. Use `⟨ψ (d1, d2), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hmul]`. Simplify using `only [hd1, hd2]`. Introduce and unpack `⟨y, hy⟩`. Take `⟨q, rfl⟩` from `hsurj y`. Rewrite `hy` using `[hmul]`.
+
+Use `hinj hy` as an intermediate fact. Conclude with `⟨⟨q.1, congrArg Prod.fst this⟩, ⟨q.2, congrArg Prod.snd this⟩⟩`. Establish `hΦs : Function.Surjective Φ`. Introduce and unpack `⟨a, b⟩`. Take `⟨c1, rfl⟩` from `IsLocalRing.residue_surjective a`.
+
+Take `⟨c2, rfl⟩` from `IsLocalRing.residue_surjective b`. Conclude with `⟨ψ (c1, c2), hΦ _⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[AddMonoidHom.range_eq_top.mpr hΦs]`. Conclude with `Nat.card_congr AddSubgroup.topEquiv.toEquiv`.
+
+Use `_ = qF F ^ 2 := by rw [Nat.card_prod, sq]; rfl`.
+-/
 theorem card_quot_pi {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) (hOK : M.OK) (π : 𝒪[F]) (hπ : Irreducible π) :
     Nat.card (M.L.O ⧸ Ideal.span {(⟨algebraMap F E (π : F), (alg_mem_O M).mpr π.2⟩ : M.L.O)}) = qF F ^ 2 := by

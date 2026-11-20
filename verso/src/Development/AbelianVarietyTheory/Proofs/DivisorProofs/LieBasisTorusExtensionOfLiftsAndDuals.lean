@@ -28,6 +28,11 @@ variable {R : Type} [CommRing R]
 
 def redO (R : Type) [CommRing R] : baseOver (Sp R) ⟶ epsR R := Over.homMk (redE R) GlobalTheory.MBLow.GtVec.red_comp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `h.trans ?_` and prove the remaining obligations. Simplify using `[Hom.one_def]`.
+
+Introduce `h`. Use `congrArg (·.left) h` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[Hom.one_def]`.
+-/
 theorem isTangent_iff {G : Over (Sp R)} [GrpObj G] (y : epsR R ⟶ G) : IsTangent y ↔ redO R ≫ y = 1 := by
   constructor
   · intro h
@@ -39,6 +44,11 @@ theorem isTangent_iff {G : Over (Sp R)} [GrpObj G] (y : epsR R ⟶ G) : IsTangen
     refine this.trans ?_
     simp [Hom.one_def]
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap _ = spMap _`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations.
+
+Simplify using `[epsScaleR]`.
+-/
 theorem redO_scale (c : R) : redO R ≫ epsScale R c = redO R := by
   apply Over.OverMorphism.ext
   show spMap _ ≫ spMap _ = spMap _
@@ -49,18 +59,32 @@ theorem redO_scale (c : R) : redO R ≫ epsScale R c = redO R := by
 
 variable {G : Over (Sp R)} [GrpObj G]
 
+/- English proof (translation)
+Rewrite `*` using `[isTangent_iff]`. Rewrite using `[MonObj.comp_mul, h, h', _root_.mul_one]`.
+-/
 theorem isTangent_mul {y y' : epsR R ⟶ G} (h : IsTangent y) (h' : IsTangent y') : IsTangent (y * y') := by
   rw [isTangent_iff] at *
   rw [MonObj.comp_mul, h, h', _root_.mul_one]
 
+/- English proof (translation)
+Rewrite `*` using `[isTangent_iff]`. Rewrite using `[GrpObj.comp_inv, h, inv_one]`.
+-/
 theorem isTangent_inv {y : epsR R ⟶ G} (h : IsTangent y) : IsTangent y⁻¹ := by
   rw [isTangent_iff] at *
   rw [GrpObj.comp_inv, h, inv_one]
 
+/- English proof (translation)
+Rewrite `*` using `[isTangent_iff]`. Rewrite using `[← Category.assoc, redO_scale, h]`.
+-/
 theorem isTangent_scale (c : R) {y : epsR R ⟶ G} (h : IsTangent y) : IsTangent (epsScale R c ≫ y) := by
   rw [isTangent_iff] at *
   rw [← Category.assoc, redO_scale, h]
 
+/- English proof (translation)
+Unfold `tanComb`. Use `List.prod_induction (fun y => IsTangent y) (fun _ _ => isTangent_mul) ?_ ?_` and prove the remaining obligations. Conclude with `(isTangent_iff _).2 (MonObj.comp_one _)`. Introduce `y hy`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hy`.
+
+Conclude with `isTangent_scale _ (h i)`.
+-/
 theorem isTangent_tanComb {m : ℕ} (c : Fin m → R) {v : Fin m → (epsR R ⟶ G)} (h : ∀ i, IsTangent (v i)) :
     IsTangent (tanComb c v) := by
   unfold tanComb
@@ -70,6 +94,9 @@ theorem isTangent_tanComb {m : ℕ} (c : Fin m → R) {v : Fin m → (epsR R ⟶
     obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hy
     exact isTangent_scale _ (h i)
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `h`. Unfold `tanComb`. Use `congr 2`. Conclude with `funext fun i => Over.OverMorphism.ext (hu i)`.
+-/
 theorem eq_tanComb' {m : ℕ} {c : Fin m → R} {v : Fin m → (epsR R ⟶ G)} {w : epsR R ⟶ G} (h : IsLieComb c v w) :
     w = tanComb c v := by
   obtain ⟨u, hu, rfl⟩ := h
@@ -83,12 +110,18 @@ section Stalk
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs_eq _ z ⊤ trivial]`. Simplify using `[toStkA]`. Both sides reduce to the same expression.
+-/
 theorem gs_id_eq (z : Sp R) (a : R) :
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs (𝟙 (Sp R)) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) = toStkA z a := by
   rw [ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs_eq _ z ⊤ trivial]
   simp [toStkA]
   rfl
 
+/- English proof (translation)
+Rewrite `h` using `[gs_id_eq, gs_id_eq]`. Conclude with `TrivSqZeroExt.inr_injective (add_left_cancel (toStkA_injective h))`.
+-/
 theorem dn_inj [IsLocalRing (DualNumber R)] {a a' : R}
     (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs (𝟙 (Sp (DualNumber R))) (cpt (DualNumber R)) ⊤
         ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + TrivSqZeroExt.inr a)) =
@@ -99,6 +132,39 @@ theorem dn_inj [IsLocalRing (DualNumber R)] {a a' : R}
 
 end Stalk
 
+/- English proof (translation)
+Introduce `R _ _ _ D H _ _ Φ hΦ r vB bX x hvB htan hb htor n σ`. Establish `hz : ∀ T, (Φ T 1).IsZero` using `fun T => GtVec.isZero_of_isAdd (by simpa using hΦ.2 T 1 1)`. Establish `bpull : ∀ (T T' : Over (Sp R)) (k : T' ⟶ T) (y : T ⟶ H), (Φ T' (k ≫ y)).b = k ≫ (Φ T y).b` using `fun T T' k y => ((isPull_iff _ _ _).1 (hΦ.1 T' T k y)).1`. Establish `gtan : ∀ y : epsR R ⟶ H, GtTan (Φ _ y) ↔ IsTangent y`. Introduce `y`.
+
+Rewrite using `[isTangent_iff]`. Conclude with `⟨fun ⟨o, ho, h⟩ => (Φ _).injective ((isPull_unique (hΦ.1 _ _ (redO R) y) h).trans (GtVec.isZero_unique ho (hz _))), fun h => ⟨Φ _ 1, hz _, h ▸ hΦ.1 _ _ (redO R) y⟩⟩`. Set `β : (epsR R ⟶ H) →* (epsR R ⟶ D.P.A)` to `{ toFun := fun y => (Φ _ y).b map_one' := (hz _).1 map_mul' := fun y y' => ((TorusModel.isAdd_iff _ _ _).1 (hΦ.2 _ y y')).1 }`. Establish `βapp : ∀ y, β y = (Φ _ y).b` using `fun _ => rfl`. Establish `βcomb : ∀ {m : ℕ} (c : Fin m → R) (v : Fin m → (epsR R ⟶ H)), β (tanComb c v) = tanComb c (fun i => β (v i))`.
+
+Introduce `m c v`. Simplify using `only [tanComb, map_list_prod, List.map_ofFn]`. Use `congr 1`. Conclude with `List.ofFn_inj.2 (funext fun i => bpull _ _ _ _)`. Establish `βtan : ∀ y, IsTangent y → IsTangent (β y)` using `fun y h => (isTangent_iff _).2 (by`.
+
+Rewrite using `[βapp, ← bpull, (isTangent_iff y).1 h]`. Conclude with `(hz _).1)`. Establish `xtan : ∀ j, IsTangent (x j)` using `fun j => (gtan _).1 (htan j)`. Establish `tor` using `GlobalTheory.T.torusTangentCombination_characterValues R D H Φ hΦ r (fun l χ => ((bX.repr χ l : ℤ) : R)) (fun l => x (Sum.inr l)) htor`. Establish `split : ∀ c : Fin n → R, tanComb c (fun k => x (σ k)) = tanComb (fun i => c (σ.symm (Sum.inl i))) (fun i => x (Sum.inl i)) * tanComb (fun l => c (σ.symm (Sum.inr l))) (fun l => x (Sum.inr l))`.
+
+Introduce `c`. Simplify using `only [tanComb, List.prod_ofFn]`. Establish `e` using `Equiv.prod_comp σ (fun j => epsScale R (c (σ.symm j)) ≫ x j)`. Simplify using `only [Equiv.symm_apply_apply] at e`. Rewrite using `[e, Fintype.prod_sum_type]`.
+
+Establish `βA : ∀ a : Fin D.P.g → R, β (tanComb a (fun i => x (Sum.inl i))) = tanComb a vB`. Introduce `a`. Rewrite using `[βcomb]`. Simplify using `only [βapp, hb]`. Establish `βB : ∀ d : Fin r → R, β (tanComb d (fun l => x (Sum.inr l))) = 1` using `fun d => (tor d).1`.
+
+Establish `: IsLocalRing (DualNumber R)` using `GlobalTheory.MBLow.TanLift.isLocalRing_dualNumber R`. Take `⟨J₀, hJ₀⟩` from `TorusCoord.exists_good' D.P.isLB (cpt (DualNumber R))`. Establish `uniq : ∀ c c' : Fin n → R, tanComb c (fun k => x (σ k)) = tanComb c' (fun k => x (σ k)) → c = c'`. Introduce `c c' h`. Rewrite `h` using `[split, split]`.
+
+Establish `hA` using `congrArg β h`. Rewrite `hA` using `[map_mul, map_mul, βA, βA, βB, βB, _root_.mul_one, _root_.mul_one]`. Establish `ha : (fun i => c (σ.symm (Sum.inl i))) = (fun i => c' (σ.symm (Sum.inl i)))`. Use `(hvB.2 _ (isTangent_tanComb _ hvB.1)).unique (isLieComb_tanComb _ _) ?_` and prove the remaining obligations. Rewrite using `[hA]`.
+
+Conclude with `isLieComb_tanComb _ _`. Rewrite `h` using `[ha, mul_right_inj]`. Establish `he : ∀ l, c (σ.symm (Sum.inr l)) = c' (σ.symm (Sum.inr l))`. Introduce `l`. Establish `v1` using `(tor (fun l => c (σ.symm (Sum.inr l)))).2 (bX l) _ (𝟙 _) _ J₀ hJ₀`.
+
+Establish `v2` using `(tor (fun l => c' (σ.symm (Sum.inr l)))).2 (bX l) _ (𝟙 _) _ J₀ hJ₀`. Rewrite `v1` using `[h]`. Use `dn_inj (v1.symm.trans v2)` as an intermediate fact. Simplify using `only [Module.Basis.repr_self, Finsupp.single_apply] at this`. Simplify using `using this`.
+
+Use function extensionality and compare the values at `k`. Take `⟨j, rfl⟩` from `σ.symm.surjective k`. Break down `j with i | l` into its components or cases. Conclude with `congrFun ha i`. Conclude with `he l`.
+
+Use `⟨fun k => xtan (σ k), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨c₁, hc₁, -⟩` from `hvB.2 (β w) (βtan w hw)`. Establish `hw₁ : β (tanComb c₁ (fun i => x (Sum.inl i))) = β w`. Rewrite using `[βA]`. Conclude with `(eq_tanComb' hc₁).symm`.
+
+Establish `tw' : IsTangent (w * (tanComb c₁ (fun i => x (Sum.inl i)))⁻¹)` using `isTangent_mul hw (isTangent_inv (isTangent_tanComb _ fun i => xtan _))`. Establish `bw' : (Φ _ (w * (tanComb c₁ (fun i => x (Sum.inl i)))⁻¹)).b = DegPre.zeroT D (epsR R)`. Rewrite using `[← βapp, map_mul, map_inv, hw₁, mul_inv_cancel]`. Both sides reduce to the same expression. Take `⟨lam, hlam⟩` from `GlobalTheory.T.torusExtensionTangent_characterValues_additive R D _ ((gtan _).2 tw') bw'`.
+
+Establish `hl : ∀ χ, lam χ = ∑ l, lam (bX l) * ((bX.repr χ l : ℤ) : R)`. Introduce `χ`. Use `conv_lhs => rw [← bX.sum_repr χ]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, zsmul_eq_mul, mul_comm]`. Take `⟨bd, vd⟩` from `tor (fun l => lam (bX l))`. Establish `e : w * (tanComb c₁ (fun i => x (Sum.inl i)))⁻¹ = tanComb (fun l => lam (bX l)) (fun l => x (Sum.inr l))` using `(Φ _).injective (pt_ext (bw'.trans bd.symm) fun χ y J hJ => Units.ext ((hlam χ _ _ y J hJ).trans ((congrArg _ (by rw [hl χ])).trans (vd χ _ _ y J hJ).symm)))`. Establish `hw : w = tanComb (fun k => Sum.elim c₁ (fun l => lam (bX l)) (σ k)) (fun k => x (σ k))`. Rewrite using `[split]`.
+
+Simplify using `only [Equiv.apply_symm_apply, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[← e, mul_comm w, mul_inv_cancel_left]`. Use `⟨_, hw ▸ isLieComb_tanComb _ _, fun c hc => ?_⟩` and prove the remaining obligations. Conclude with `uniq _ _ ((eq_tanComb' hc).symm.trans hw)`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (H : Over (Sp R)) [GrpObj H] [IsCommMonObj H] (Φ : ∀ T, (T ⟶ H) ≃ GtPt D T), GlobalTheory.TorusModel.Represents Φ → ∀ (r : ℕ) (vB : Fin D.P.g → (epsR R ⟶ D.P.A)) (bX : Module.Basis (Fin r) ℤ D.X) (x : Fin D.P.g ⊕ Fin r → (epsR R ⟶ H)), IsLieBasis vB → (∀ j, GtTan (Φ _ (x j))) → (∀ i, (Φ _ (x (Sum.inl i))).b = vB i) → (∀ l, (Φ _ (x (Sum.inr l))).b = DegPre.zeroT D (epsR R) ∧ ∀ (χ : D.X) (Z : Scheme.{0}) (q : Z ⟶ (epsR R).left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), ReciprocityTheory.ChartRestriction.G.Geo.Tor.Good D.P.L z J → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.val ((Φ _ (x (Sum.inr l))).s χ) q z J).val = ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + TrivSqZeroExt.inr ((bX.repr χ l : ℤ) : R)))) → ∀ (n : ℕ) (σ : Fin n ≃ Fin D.P.g ⊕ Fin r), IsLieBasis (fun k => x (σ k)) := by
   intro R _ _ _ D H _ _ Φ hΦ r vB bX x hvB htan hb htor n σ
   have hz : ∀ T, (Φ T 1).IsZero := fun T => GtVec.isZero_of_isAdd (by simpa using hΦ.2 T 1 1)

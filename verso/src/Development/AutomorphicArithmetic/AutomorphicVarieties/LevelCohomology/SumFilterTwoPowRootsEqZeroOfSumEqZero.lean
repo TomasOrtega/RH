@@ -1,6 +1,33 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.ExistsPowDvdSubOfTwoPowDvdSubOne
 
+/- English proof (translation)
+Introduce `k _ l _ _ hl2 d e n a he ha hq ι _ _ z g hz hg hsum`. Establish `hlp : l.Prime` using `Fact.out`. Use `set N := n + e with hN`. Establish `hzN : ∀ i, z i = 0 ∨ z i ^ (2 ^ N) = 1`. Introduce `i`.
+
+Break down `hz i with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`. Rewrite using `[hN, pow_add, pow_mul, h, one_pow]`. Establish `hgj : ∀ (j : ℕ) (i : ι), g i ^ ((l ^ d) ^ j) = g i`.
+
+Introduce `j i`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ, pow_mul, ih, hg]`. Establish `hA : ∀ m : ℕ, ∑ i, z i ^ (1 + 2 ^ e * m) * g i = 0`.
+
+Introduce `m`. Take `⟨j, hj⟩` from `UpperTheory.exists_pow_dvd_sub_of_two_pow_dvd_sub_one ((l ^ d : ℕ) : ℤ) a (1 + 2 ^ e * (m : ℤ)) e N he ha hq (by simp)`. Establish `e1 : (l ^ d) ^ j = l ^ (d * j)` using `(pow_mul l d j).symm`. Establish `hpow : (∑ i, z i * g i) ^ ((l ^ d) ^ j) = ∑ i, z i ^ ((l ^ d) ^ j) * g i`. Rewrite using `[e1, sum_pow_char_pow]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← e1, hgj]`. Establish `hzero : ∑ i, z i ^ ((l ^ d) ^ j) * g i = 0`. Rewrite using `[← hpow, hsum, zero_pow (pow_ne_zero _ (pow_ne_zero _ hlp.ne_zero))]`. Rewrite using `[← hzero]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Break down `hzN i with h | h` into its components or cases. Rewrite using `[h, zero_pow (by positivity), zero_pow (pow_ne_zero _ (pow_ne_zero _ hlp.ne_zero))]`. Establish `hord : orderOf (z i) ∣ 2 ^ N` using `orderOf_dvd_of_pow_eq_one h`.
+
+Establish `hmod : (1 + 2 ^ e * m) ≡ (l ^ d) ^ j [MOD orderOf (z i)]`. Apply `Nat.ModEq.of_dvd hord` to reduce the goal to its premises. Rewrite using `[Nat.modEq_iff_dvd]`. Use `push_cast`. Conclude with `hj`.
+
+Rewrite using `[← pow_mod_orderOf, show (1 + 2 ^ e * m) % orderOf (z i) = (l ^ d) ^ j % orderOf (z i) from hmod, pow_mod_orderOf]`. Establish `hB : ∀ i, ∑ m ∈ Finset.range (2 ^ n), z i ^ (1 + 2 ^ e * m) = if z i ^ (2 ^ e) = 1 then (2 ^ n : k) * z i else 0`. Introduce `i`. Establish `hterm : ∀ m : ℕ, z i ^ (1 + 2 ^ e * m) = z i * (z i ^ 2 ^ e) ^ m`. Introduce `m`.
+
+Rewrite using `[pow_add, pow_one, pow_mul]`. Repeatedly rewrite using `[hterm, ← Finset.mul_sum]`. Use `split_ifs with h`. Simplify using `[h, mul_comm]`. Break down `hzN i with h0 | h1` into its components or cases.
+
+Simplify using `[h0]`. Establish `hw : (z i ^ 2 ^ e) ^ (2 ^ n) = 1`. Rewrite using `[← pow_mul, ← pow_add, add_comm]`. Conclude with `h1`. Rewrite using `[geom_sum_eq h, hw, sub_self, zero_div, mul_zero]`.
+
+Establish `htot : ∑ m ∈ Finset.range (2 ^ n), ∑ i, z i ^ (1 + 2 ^ e * m) * g i = 0` using `Finset.sum_eq_zero fun m _ => hA m`. Rewrite `htot` using `[Finset.sum_comm]`. Rewrite `htot` using `[← Finset.sum_mul, hB, ite_mul, zero_mul]`. Rewrite `htot` using `[← Finset.sum_filter]`. Rewrite `htot` using `[mul_assoc]`.
+
+Rewrite `htot` using `[← Finset.mul_sum]`. Establish `h2 : (2 : k) ≠ 0`. Introduce `h`. Establish `h' : ((2 : ℕ) : k) = 0` using `by exact_mod_cast h`. Use `(CharP.cast_eq_zero_iff k l 2).mp h'` as an intermediate fact.
+
+Conclude with `hl2 ((Nat.prime_dvd_prime_iff_eq hlp Nat.prime_two).mp this)`. Conclude with `(mul_eq_zero.mp htot).resolve_left (pow_ne_zero _ h2)`.
+-/
 theorem UpperTheory.sum_filter_two_pow_roots_eq_zero_of_sum_eq_zero :
     ∀ (k : Type) [Field k] (l : ℕ) [Fact l.Prime] [CharP k l], l ≠ 2 → ∀ (d e n : ℕ) (a : ℤ), 2 ≤ e → Odd a → ((l ^ d : ℕ) : ℤ) = 1 + 2 ^ e * a → ∀ (ι : Type) [Fintype ι] [DecidableEq k] (z g : ι → k), (∀ i, z i = 0 ∨ z i ^ (2 ^ n) = 1) → (∀ i, g i ^ (l ^ d) = g i) → ∑ i, z i * g i = 0 → ∑ i ∈ Finset.univ.filter (fun i => z i ^ (2 ^ e) = 1), z i * g i = 0 := by
   intro k _ l _ _ hl2 d e n a he ha hq ι _ _ z g hz hg hsum

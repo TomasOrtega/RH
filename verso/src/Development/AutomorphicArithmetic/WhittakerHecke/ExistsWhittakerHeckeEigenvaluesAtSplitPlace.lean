@@ -15,6 +15,9 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[UpperTheory.ConvolutionTheory.RankTwoDescent.em, Matrix.GeneralLinearGroup.map_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aE, h]`.
+-/
 private theorem em_aE {E : Type} [Field E] [NumberField E] (y : (A ℚ)ˣ) (z : (A E)ˣ)
     (h : (z : A E) = AdeleBaseChange.adeleMap ℚ E (y : A ℚ)) : em E (aE y) = aE z := by
   apply Units.ext
@@ -22,12 +25,20 @@ private theorem em_aE {E : Type} [Field E] [NumberField E] (y : (A ℚ)ˣ) (z : 
   rw [UpperTheory.ConvolutionTheory.RankTwoDescent.em, Matrix.GeneralLinearGroup.map_apply]
   fin_cases i <;> fin_cases j <;> simp [aE, h]
 
+/- English proof (translation)
+Establish `h` using `((H.sgLaws E w').2.2.2.2.2.2.2.1 x).2 w hne`. Use `show (H.sg w' x).2 w = 0`. Conclude with `h`.
+-/
 private theorem cp_sg_ne {E : Type} [Field E] [NumberField E] {w w' : H.P E} (hne : w ≠ w') (x : H.Kv w') :
     H.cp w (H.sg w' x) = 0 := by
   have h := ((H.sgLaws E w').2.2.2.2.2.2.2.1 x).2 w hne
   show (H.sg w' x).2 w = 0
   exact h
 
+/- English proof (translation)
+Establish `h1 : Matrix.GeneralLinearGroup.map (H.cp w) (aE (H.idl w' x)) = 1`. Rewrite using `[← (H.lcLaws E w').2.2.2.1 x]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, (H.sgLaws E w').2.2.2.2.1, map_add, cp_sg_ne hne]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Unfold `H.KAt at hg ⊢`. Rewrite using `[map_mul, h1, one_mul]`. Conclude with `hg`.
+-/
 private theorem KAt_aE {E : Type} [Field E] [NumberField E] {w w' : H.P E} (hne : w ≠ w') (x : (H.Kv w')ˣ)
     (g : GL (Fin 2) (A E)) (hg : H.KAt w g) : H.KAt w (aE (H.idl w' x) * g) := by
   have h1 : Matrix.GeneralLinearGroup.map (H.cp w) (aE (H.idl w' x)) = 1 := by
@@ -40,6 +51,45 @@ private theorem KAt_aE {E : Type} [Field E] [NumberField E] {w w' : H.P E} (hne 
   rw [map_mul, h1, one_mul]
   exact hg
 
+/- English proof (translation)
+Introduce `E _ _ _ D P ω χ _ hχω L N φ hA hG a hIs v hv w w' hne hw hw' hS hS' hall`. Take `⟨-, B, hsat, hEig⟩` from `hG.fix w (by rw [hw]; exact hv)`. Take `⟨α, β, rfl⟩` from `Multiset.card_eq_two.1 (GlobalTheory.LFun.HasSatGL.card ((CG.hasSat_mk P w B).1 hsat))`. Take `⟨-, B', hsat', hEig'⟩` from `hG.fix w' (by rw [hw']; exact hv)`. Take `⟨α', β', rfl⟩` from `Multiset.card_eq_two.1 (GlobalTheory.LFun.HasSatGL.card ((CG.hasSat_mk P w' B').1 hsat'))`.
+
+Take `⟨-, -, hleft, -⟩` from `UpperTheory.whittakerFunction_continuous_bounded_equivariant E D ω φ hA`. Establish `hEw` using `UpperTheory.eigAt_cmDatumOperator_of_eigAt E D φ w _ hA.cont hEig`. Establish `hEw'` using `UpperTheory.eigAt_cmDatumOperator_of_eigAt E D φ w' _ hA.cont hEig'`. Take `⟨χw, hχ, hχe⟩` from `UpperTheory.exists_localCharacter_of_split_pair_rat E D v w w' hne hw hw' hS hS' hall (hG.pl v hv)`. Take `⟨χw', hχ', hχe'⟩` from `UpperTheory.exists_localCharacter_of_split_pair_rat E D v w' w hne.symm hw' hw hS' hS (fun w'' h => (hall w'' h).symm) (hG.pl v hv)`.
+
+Establish `hnl : ∀ b h, Wo D φ (H.lc w (H.nL b) * h) = χw b * Wo D φ h` using `fun b h => by`. Take `⟨u, t, e1, e2⟩` from `hχe b`. Rewrite using `[(H.lcLaws E w).1, e1, ← e2]`. Conclude with `hleft ![u, t] h`. Establish `hnl' : ∀ b h, Wo D φ (H.lc w' (H.nL b) * h) = χw' b * Wo D φ h` using `fun b h => by`.
+
+Take `⟨u, t, e1, e2⟩` from `hχe' b`. Rewrite using `[(H.lcLaws E w').1, e1, ← e2]`. Conclude with `hleft ![u, t] h`. Take `⟨ϖ₁, ϖ₂, hϖ₁, hϖ₂, hz⟩` from `UpperTheory.ideleEmbedding_uniformizer_of_split_place_pair E D v w w' hne hw hw' hS hS' hall (atFin v (unif v)) (unif_spec v)`. Establish `hz' : ideleEmbedding ℚ E (pv v) = H.idl w ϖ₁ * H.idl w' ϖ₂` using `hz`.
+
+Establish `hem : ∀ k : ℕ, em E (aE (pv v ^ k)) = aE (H.idl w ϖ₁ ^ k) * aE (H.idl w' ϖ₂ ^ k)` using `fun k => by`. Rewrite using `[← UpperTheory.ConvolutionTheory.R2.aE_mul, ← mul_pow, ← hz']`. Use `em_aE _ _ ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow]`. Both sides reduce to the same expression.
+
+Establish `hnv : 1 < normV v`. Use `GlobalTheory.LFun.one_lt_absNorm v` as an intermediate fact. Simplify `this` using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hqv : (normV v : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hqw : H.q w = (normV v : ℂ)`.
+
+Establish `: H.q w = (normV w : ℂ)` using `by simp [H.q, normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[this, hS.1]`. Establish `hqw' : H.q w' = (normV v : ℂ)`. Establish `: H.q w' = (normV w' : ℂ)` using `by simp [H.q, normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[this, hS'.1]`.
+
+Use `set s : ℂ := (normV v : ℂ) ^ (1 / 2 : ℂ) with hs`. Establish `hss : s * s = (normV v : ℂ)`. Rewrite using `[hs, ← Complex.cpow_add _ _ hqv]`. Evaluate the numerical expressions. Establish `hs0 : s ≠ 0` using `fun h => hqv (by rw [← hss, h, zero_mul])`.
+
+Use `⟨fun k => ((s ^ k)⁻¹ * (s ^ k)⁻¹) * (∑ i ∈ Finset.range (k + 1), (α : ℂ) ^ i * (β : ℂ) ^ (k - i)) * (∑ i ∈ Finset.range (k + 1), (α' : ℂ) ^ i * (β' : ℂ) ^ (k - i)), by simp, fun k g hg => ?_, ?_⟩` and prove the remaining obligations. Establish `e : H.idl w' ϖ₂ ^ k = H.idl w' (ϖ₂ ^ k)` using `(map_pow _ _ _).symm`. Establish `hK : H.KAt w (aE (H.idl w' ϖ₂ ^ k) * g)`. Rewrite using `[e]`. Conclude with `KAt_aE hne _ g (hg w hw)`.
+
+Establish `h1` using `UpperTheory.eigenform_shintani_formula_at_place E w ϖ₁ hϖ₁ χw hχ α β _ hEw hnl _ hK k`. Establish `h2` using `UpperTheory.eigenform_shintani_formula_at_place E w' ϖ₂ hϖ₂ χw' hχ' α' β' _ hEw' hnl' g (hg w' hw') k`. Rewrite `h1` using `[hqw]`. Rewrite `h2` using `[hqw']`. Rewrite using `[hem, mul_assoc]`.
+
+Establish `ht : s ^ k ≠ 0` using `pow_ne_zero k hs0`. Use `beta_reduce`. Clear the denominators using the available nonvanishing facts. Take the linear combination `s ^ k * h1 + (∑ i ∈ Finset.range (k + 1), (α : ℂ) ^ i * (β : ℂ) ^ (k - i)) * h2`. Introduce and unpack `⟨h, hh⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨h₁, hh₁⟩ : ∃ h₁, φ h₁ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hh` to reduce the goal to its premises. Simplify using `[Wo, hcon]`.
+
+Use `set c : ℂ := ((χ.val v : ℂˣ) : ℂ) with hc`. Establish `hprod : (α : ℂ) * β * α' * β' * c ^ 2 = 1`. Establish `e1` using `UpperTheory.eigenform_central_uniformizer_eq_satake_product E w ϖ₁ hϖ₁ α β φ hEig (Matrix.GeneralLinearGroup.scalar (Fin 2) (H.idl w' ϖ₂) * h₁)`. Establish `e2` using `UpperTheory.eigenform_central_uniformizer_eq_satake_product E w' ϖ₂ hϖ₂ α' β' φ hEig' h₁`. Establish `e3` using `hA.cen (ideleEmbedding ℚ E (pv v)) h₁`.
+
+Rewrite `e3` using `[ideleNorm_ideleEmbedding, Module.finrank_eq_card_basis D.b, Fintype.card_fin, hz', map_mul, mul_assoc, e1, e2]`. Establish `e4 : ((ω.1 (pv v) : ℂˣ) : ℂ) ^ 2 = (α : ℂ) * β * α' * β'`. Establish `: ((α : ℂ) * β * α' * β' - ((ω.1 (pv v) : ℂˣ) : ℂ) ^ 2) * φ h₁ = 0`. Rewrite `e3` using `[map_pow, Units.val_pow_eq_pow_val]`. Take the linear combination `e3`.
+
+Break down `mul_eq_zero.1 this with h0 | h0` into its components or cases. Take the linear combination `-h0`. Conclude with `absurd h0 hh₁`. Establish `e5` using `congrArg (fun u : ℂˣ => (u : ℂ)) (hχω (pv v))`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mul, Units.val_one] at e5`.
+
+Establish `e6 : c = ((χ.1 (pv v) : ℂˣ) : ℂ)` using `rfl`. Rewrite using `[e6, ← e4]`. Take the linear combination `e5`. Establish `hsp` using `hIs.split v hv w w' hne hw hw' α β α' β' hsat hsat'`. Establish `h2` using `UpperTheory.rankinSelberg_local_generating_series_identity α β α' β' c`.
+
+Rewrite `h2` using `[hprod, map_one, one_mul]`. Simplify using `only [Units.val_mul, ← hc] at hsp`. Establish `h3 : (PowerSeries.mk fun k => ((normV v ^ k : ℕ) : ℂ) * c ^ k * (((s ^ k)⁻¹ * (s ^ k)⁻¹) * (∑ i ∈ Finset.range (k + 1), (α : ℂ) ^ i * (β : ℂ) ^ (k - i)) * (∑ i ∈ Finset.range (k + 1), (α' : ℂ) ^ i * (β' : ℂ) ^ (k - i)))) = PowerSeries.mk fun k : ℕ => c ^ k * (∑ i ∈ Finset.range ( …`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Establish `ht : s ^ k ≠ 0` using `pow_ne_zero k hs0`. Establish `hp : ((normV v ^ k : ℕ) : ℂ) = s ^ k * s ^ k`. Rewrite using `[Nat.cast_pow, ← hss, mul_pow]`. Rewrite using `[hp]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[h3]`. Take the linear combination `(PowerSeries.mk fun k => a (normV v ^ k)) * (-1 : PowerSeries ℂ) * h2 + (PowerSeries.mk fun k : ℕ => c ^ k * (∑ i ∈ Finset.range (k + 1), (α : ℂ) ^ i * (β : ℂ) ^ (k - i)) * (∑ i ∈ Finset.range (k + 1), (α' : ℂ) ^ i * (β' : ℂ) ^ (k - i))) * hsp`.
+-/
 theorem UpperTheory.exists_whittaker_heckeEigenvalues_at_split_place :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (P : CuspSub E 2) (ω χ : HChar ℚ),
           CenN P ω → (∀ a, (χ.1 a * ω.1 a) ^ 2 = 1) → ∀ (L N : ℕ) φ, admitted D ω φ → Gd D P L N φ → ∀ a, IsAs P χ N a → ∀ v : H.P ℚ, ¬ Bad N v → ∀ w w' : H.P E, w ≠ w' → w.under (𝓞 ℚ) = v → w'.under (𝓞 ℚ) = v → H.SplitAt v w → H.SplitAt v w' →

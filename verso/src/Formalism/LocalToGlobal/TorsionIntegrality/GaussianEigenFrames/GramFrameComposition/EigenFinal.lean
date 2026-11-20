@@ -14,6 +14,11 @@ open Formalism.L2.Th1.G (betaPair)
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 open Formalism.DworkPowerSeriesWeights (JetsIntegral jetPair jetPairPoly minorProd)
 
+/- English proof (translation)
+Introduce `p _ ι L n _ hm E _ H _ _ emb Ja Jl Jr _ _ _ v hA hl hr N0 N1 Gc P P' A th u hth hform hAeq hG hu hu1 hP hP' t ab ab'`. Take `⟨e, he, heq⟩` from `h ℂ_[p] E H emb Ja Jl Jr hA hl hr N0 N1 Gc P P' th u hth hG hu hu1 hP hP' t ab ab'`. Use `⟨e, he, ?_⟩` and prove the remaining obligations. Rewrite using `[← heq]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hAeq, hAeq, hform]`.
+-/
 theorem TensorNorm_of (h : TensorBlock) : TensorNorm := by
   intro p _ ι L n _ hm E _ H _ _ emb Ja Jl Jr _ _ _ v hA hl hr N0 N1 Gc P P' A th u hth hform hAeq hG hu hu1 hP hP' t ab ab'
   obtain ⟨e, he, heq⟩ := h ℂ_[p] E H emb Ja Jl Jr hA hl hr N0 N1 Gc P P' th u hth hG hu hu1 hP hP' t ab ab'
@@ -24,6 +29,11 @@ theorem TensorNorm_of (h : TensorBlock) : TensorNorm := by
 
 namespace EigenLocalizationShapes
 
+/- English proof (translation)
+Establish `hp : p = dK` using `(Nat.prime_dvd_prime_iff_eq Fact.out hcm.2.2.2).1 hpd`. Establish `h4 : dK % 4 = 3`. Use `hcm.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨g₁, ε, hIsom, hidx, -, -, -⟩` from `hN`.
+
+Take `⟨f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16⟩` from `hF`. Conclude with `⟨hp, (hI dK h4 p ι).1, hE a₀ b₀ c₀ dK ha hdK lam hlam hcm n h Λ g₁ hIsom p ι hidx J v f13 hp E cE s δ f1 f2 f3 f4 f5 f6 H emb f7 f8 f9 f10 act f11 f12 N0 N1 A u f14 f15 f16⟩`.
+-/
 theorem pair (hE : EigenFrameE) (hI : IotaOK) {a₀ : ℕ} {b₀ c₀ : ℤ} {dK : ℕ} (ha : 0 < a₀) (hdK : 0 < dK) (lam : ℂ)
     (hlam : lam ≠ 0) (hcm : CmOK a₀ b₀ c₀ dK) {n : Type} [Fintype n] [DecidableEq n] (h : Matrix n n ℂ)
     (Λ : AddSubgroup (n → ℂ)) (θ : (n → ℂ) → ℂ) (p : ℕ) [Fact p.Prime] (hpd : p ∣ dK) (ι : ℂ ≃+* ℂ_[p])
@@ -50,6 +60,9 @@ theorem pair (hE : EigenFrameE) (hI : IotaOK) {a₀ : ℕ} {b₀ c₀ : ℤ} {dK
 
 end EigenLocalizationShapes
 
+/- English proof (translation)
+Introduce `a₀ b₀ c₀ dK ha hdK lam hlam hcm n _ _ hm Λ hsd hst θ hθ p _ hpd ι hW hN κx _ r t N hr hN0 hpN ht J _ v H _ _ N0 N1 A u E _ _ _ cE s δ emb act hF`. Take `⟨-, hth, q, hq⟩` from `EigenLocalizationShapes.pair hE hI ha hdK lam hlam hcm hm Λ θ p hpd ι hN v A u E cE s δ emb act hF`. Conclude with `h a₀ b₀ c₀ dK ha hdK lam hlam hcm n hm Λ hsd hst θ hθ p hpd ι hW hN κx r t N hr hN0 hpN ht J v H N0 N1 A u _ q (le_of_eq hth) hq`.
+-/
 theorem ShapeEigenLoc_of (hE : EigenFrameE) (hI : IotaOK) (h : ShapeLoc) : ShapeEigenLoc := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hcm n _ _ hm Λ hsd hst θ hθ p _ hpd ι hW hN κx _ r t N hr hN0 hpN ht J _ v H _ _ N0 N1
     A u E _ _ _ cE s δ emb act hF
@@ -57,6 +70,9 @@ theorem ShapeEigenLoc_of (hE : EigenFrameE) (hI : IotaOK) (h : ShapeLoc) : Shape
   exact h a₀ b₀ c₀ dK ha hdK lam hlam hcm n hm Λ hsd hst θ hθ p hpd ι hW hN κx r t N hr hN0 hpN ht J v H N0 N1 A u _ q
     (le_of_eq hth) hq
 
+/- English proof (translation)
+Introduce `a₀ b₀ c₀ dK ha hdK lam hlam hcm n _ _ hm Λ hsd hst θ hθ p _ hpd ι hW hN κx _ r t N hr hN0 hpN ht J _ v H _ _ N0 N1 A u E _ _ _ cE s δ emb act hF`. Take `⟨-, hth, q, hq⟩` from `EigenLocalizationShapes.pair hE hI ha hdK lam hlam hcm hm Λ θ p hpd ι hN v A u E cE s δ emb act hF`. Conclude with `h a₀ b₀ c₀ dK ha hdK lam hlam hcm n hm Λ hsd hst θ hθ p hpd ι hW hN κx r t N hr hN0 hpN ht J v H N0 N1 A u _ q (le_of_eq hth) hq`.
+-/
 theorem ThmBEigenLoc_of (hE : EigenFrameE) (hI : IotaOK) (h : ThmBLoc) : ThmBEigenLoc := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hcm n _ _ hm Λ hsd hst θ hθ p _ hpd ι hW hN κx _ r t N hr hN0 hpN ht J _ v H _ _ N0 N1
     A u E _ _ _ cE s δ emb act hF
@@ -64,6 +80,9 @@ theorem ThmBEigenLoc_of (hE : EigenFrameE) (hI : IotaOK) (h : ThmBLoc) : ThmBEig
   exact h a₀ b₀ c₀ dK ha hdK lam hlam hcm n hm Λ hsd hst θ hθ p hpd ι hW hN κx r t N hr hN0 hpN ht J v H N0 N1 A u _ q
     (le_of_eq hth) hq
 
+/- English proof (translation)
+Introduce `a₀ b₀ c₀ dK ha hdK lam hlam hcm n _ _ hm Λ hsd hst θ hθ p _ hpd ι hW hN κx _ r t N hr hN0 hpN ht J _ v H _ _ N0 N1 A u E _ _ _ cE s δ emb act hF`. Take `⟨hp, hth, q, hq⟩` from `EigenLocalizationShapes.pair hE hI ha hdK lam hlam hcm hm Λ θ p hpd ι hN v A u E cE s δ emb act hF`. Establish `hc : (dK : ℂ_[p]) = (p : ℂ_[p])` using `congrArg (Nat.cast : ℕ → ℂ_[p]) hp.symm`. Rewrite `hth` using `[hc]`. Conclude with `h a₀ b₀ c₀ dK ha hdK lam hlam hcm n hm Λ hsd hst θ hθ p hpd ι hW hN κx r t N hr hN0 hpN ht J v H N0 N1 A u _ q (le_of_eq hth) hq`.
+-/
 theorem ThmBGaussEigenLoc_of (hE : EigenFrameE) (hI : IotaOK) (h : ThmBGaussLoc) : ThmBGaussEigenLoc := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hcm n _ _ hm Λ hsd hst θ hθ p _ hpd ι hW hN κx _ r t N hr hN0 hpN ht J _ v H _ _ N0 N1
     A u E _ _ _ cE s δ emb act hF
@@ -73,6 +92,9 @@ theorem ThmBGaussEigenLoc_of (hE : EigenFrameE) (hI : IotaOK) (h : ThmBGaussLoc)
   exact h a₀ b₀ c₀ dK ha hdK lam hlam hcm n hm Λ hsd hst θ hθ p hpd ι hW hN κx r t N hr hN0 hpN ht J v H N0 N1 A u _ q
     (le_of_eq hth) hq
 
+/- English proof (translation)
+Introduce `a₀ b₀ c₀ dK ha hdK lam hlam hcmok n _ _ hm Λ g₀ hLat`. Take `⟨κ, k1, k2, k3, hκ⟩` from `hN a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ g₀ hLat`. Use `⟨κ, k1, k2, k3, ?_⟩` and prove the remaining obligations. Introduce `θ hθ hten p _ hd ι hW`. Conclude with `h a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ hLat.2.1 hLat.2.2.1 θ hθ p hd ι hW (hκ θ hθ hten p ι)`.
+-/
 theorem ShapeEigenFree_of (hN : LocNormFree) (h : ShapeEigenLoc) : ShapeEigenFree := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hcmok n _ _ hm Λ g₀ hLat
   obtain ⟨κ, k1, k2, k3, hκ⟩ := hN a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ g₀ hLat
@@ -80,6 +102,9 @@ theorem ShapeEigenFree_of (hN : LocNormFree) (h : ShapeEigenLoc) : ShapeEigenFre
   intro θ hθ hten p _ hd ι hW
   exact h a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ hLat.2.1 hLat.2.2.1 θ hθ p hd ι hW (hκ θ hθ hten p ι)
 
+/- English proof (translation)
+Introduce `a₀ b₀ c₀ dK ha hdK lam hlam hcmok n _ _ hm Λ g₀ hLat`. Take `⟨κ, k1, k2, k3, hκ⟩` from `hN a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ g₀ hLat`. Use `⟨κ, k1, k2, k3, ?_⟩` and prove the remaining obligations. Introduce `θ hθ hten p _ hd ι hW`. Conclude with `h a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ hLat.2.1 hLat.2.2.1 θ hθ p hd ι hW (hκ θ hθ hten p ι)`.
+-/
 theorem ThmBEigenFree_of (hN : LocNormFree) (h : ThmBEigenLoc) : ThmBEigenFree := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hcmok n _ _ hm Λ g₀ hLat
   obtain ⟨κ, k1, k2, k3, hκ⟩ := hN a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ g₀ hLat
@@ -87,6 +112,9 @@ theorem ThmBEigenFree_of (hN : LocNormFree) (h : ThmBEigenLoc) : ThmBEigenFree :
   intro θ hθ hten p _ hd ι hW
   exact h a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ hLat.2.1 hLat.2.2.1 θ hθ p hd ι hW (hκ θ hθ hten p ι)
 
+/- English proof (translation)
+Introduce `a₀ b₀ c₀ dK ha hdK lam hlam hcmok n _ _ hm Λ g₀ hLat`. Take `⟨κ, k1, k2, k3, hκ⟩` from `hN a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ g₀ hLat`. Use `⟨κ, k1, k2, k3, ?_⟩` and prove the remaining obligations. Introduce `θ hθ hten p _ hd ι hW`. Conclude with `h a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ hLat.2.1 hLat.2.2.1 θ hθ p hd ι hW (hκ θ hθ hten p ι)`.
+-/
 theorem ThmBGaussEigenFree_of (hN : LocNormFree) (h : ThmBGaussEigenLoc) : ThmBGaussEigenFree := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hcmok n _ _ hm Λ g₀ hLat
   obtain ⟨κ, k1, k2, k3, hκ⟩ := hN a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ g₀ hLat

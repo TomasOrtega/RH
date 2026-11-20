@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PackLoc
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Establish `hb' : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `hb`. Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [ha', hb']`.
+-/
 lemma inUJ_mul' {n : ℕ} {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ}
     (ha : a ∈ Formalism.MainNotions.S.UJset ε) (hb : b ∈ Formalism.MainNotions.S.UJset ε) : a * b ∈ Formalism.MainNotions.S.UJset ε := by
   have ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε := ha
@@ -23,6 +28,29 @@ lemma inUJ_mul' {n : ℕ} {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) �
         simp only [Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε := by rw [ha', hb']
 
+/- English proof (translation)
+Introduce `D V S M τ B g v₀ hB hBg hg`. Use `set F := M.fr τ with hFdef`. Use `set J := Formalism.REAL.Jm (M.ε τ) with hJdef`. Use `set G := gramAt D V τ with hGdef`. Establish `hFd : IsUnit F.det` using `(Matrix.isUnit_iff_isUnit_det F).mp (M.fr_unit τ)`.
+
+Establish `hBd : IsUnit B.det` using `(Matrix.isUnit_iff_isUnit_det B).mp hB`. Establish `hFg : Fᴴ * J * F = G` using `M.fr_gram τ`. Establish `hg' : gᴴ * J * g = J` using `hg`. Establish `hBH : (B⁻¹)ᴴ * Bᴴ = 1`. Rewrite using `[← conjTranspose_mul, Matrix.mul_nonsing_inv B hBd, conjTranspose_one]`.
+
+Establish `hFH : (F⁻¹)ᴴ * Fᴴ = 1`. Rewrite using `[← conjTranspose_mul, Matrix.mul_nonsing_inv F hFd, conjTranspose_one]`. Establish `hBinv : (B⁻¹)ᴴ * G * B⁻¹ = J`. Rewrite using `[← hBg]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hFinv : (F⁻¹)ᴴ * G * F⁻¹ = J`. Rewrite using `[← hFg]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (B⁻¹ * g * F)ᴴ * G * (B⁻¹ * g * F) = G`.
+
+Rewrite using `[conjTranspose_mul, conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G := by rw [hBinv, hg', hFg]`. Introduce `x hx`.
+
+Establish `hx' : xᴴ * G * x = G` using `hx`. Take `⟨⟨_, hmul⟩, hiso, _⟩` from `(M.ds τ).2.2.1`. Establish `hk : F * B⁻¹ ∈ Formalism.MainNotions.S.UJset (M.ε τ)` using `by show (F * B⁻¹)ᴴ * J * (F * B⁻¹) = J`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hy : B * x * B⁻¹ ∈ Formalism.MainNotions.S.UJset (M.ε τ)` using `by show (B * x * B⁻¹)ᴴ * J * (B * x * B⁻¹) = J`. Rewrite using `[conjTranspose_mul, conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [hBg, hx', hBinv]`.
+
+Establish `hz : F * x * F⁻¹ ∈ Formalism.MainNotions.S.UJset (M.ε τ)` using `by show (F * x * F⁻¹)ᴴ * J * (F * x * F⁻¹) = J`. Rewrite using `[conjTranspose_mul, conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [hFg, hx', hFinv]`.
+
+Establish `e1 : F * (B⁻¹ * g * F) * F⁻¹ = F * B⁻¹ * g`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv F hFd, Matrix.mul_one]`. Establish `e2 : F * x * F⁻¹ * (F * B⁻¹ * g) = F * B⁻¹ * (B * x * B⁻¹ * g)`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left F _ hFd, Matrix.nonsing_inv_mul_cancel_left B _ hBd]`. Establish `hkg` using `inUJ_mul' hk hg`.
+
+Establish `hyg` using `inUJ_mul' hy hg`. Unfold `mco DSModel.rep`. Rewrite using `[← hFdef, e1, ← ContinuousLinearMap.comp_apply, ← hmul _ hz _ hkg, e2, hmul _ hk _ hyg, hmul _ hk _ hg, hmul _ hy _ hg]`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Set `L : M.H τ →ₗᵢ[ℂ] M.H τ` to `⟨(M.σ τ (F * B⁻¹)).toLinearMap, hiso _ hk⟩`.
+
+Conclude with `L.inner_map_map _ _`.
+-/
 theorem mco_frame : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau)
   (B g₀' : Matrix (Fin V.rank) (Fin V.rank) ℂ) (v₀ : M.H τ),
   IsUnit B → Bᴴ * Formalism.REAL.Jm (M.ε τ) * B = gramAt D V τ → g₀' ∈ Formalism.MainNotions.S.UJset (M.ε τ) →

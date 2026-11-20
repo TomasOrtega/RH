@@ -7,5 +7,8 @@ open Limits MonoidalCategory CartesianMonoidalCategory GlobalTheory.VB
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PPAS.hasTheta_prod | exact GlobalTheory.PPAS.hasTheta_prod | (intros; apply GlobalTheory.PPAS.hasTheta_prod <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hasTheta_of_isProd' : ∀ (S : Scheme.{0}) (P P₁ P₂ : PPAS S), P.IsProd P₁ P₂ → P₁.HasTheta → P₂.HasTheta → P.HasTheta := by
   first | exact @GlobalTheory.PPAS.hasTheta_prod | exact GlobalTheory.PPAS.hasTheta_prod | (intros; apply GlobalTheory.PPAS.hasTheta_prod <;> assumption)

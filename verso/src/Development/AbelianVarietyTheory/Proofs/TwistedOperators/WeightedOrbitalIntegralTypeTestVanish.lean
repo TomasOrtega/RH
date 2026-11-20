@@ -22,6 +22,15 @@ open scoped Matrix
 noncomputable section
 namespace GlobalTheory.TwistLocal
 
+/- English proof (translation)
+Establish `hX : ∀ X : Matrix (Fin n) (Fin n) R, B * (A * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hAB, Matrix.one_mul]`. Establish `e1 : A * S * B - 1 = A * (S - 1) * B`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hBA]`. Establish `e2 : 1 - A * M * B = A * (1 - M) * B`.
+
+Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hBA]`. Rewrite using `[e1, e2]`. Establish `e3 : A * M * B * (A * (S - 1) * B) * (A * (1 - M) * B) = A * (M * (S - 1) * (1 - M)) * B`. Simplify using `only [Matrix.mul_assoc, hX]`. Rewrite using `[e3]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (fun X => B * X * A) h` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, hX, hAB, Matrix.mul_one]`. Introduce `h`.
+
+Rewrite using `[h]`.
+-/
 theorem conj_cond {R : Type} [CommRing R] {n : ℕ} (A B M S : Matrix (Fin n) (Fin n) R) (hAB : B * A = 1)
     (hBA : A * B = 1) :
     (A * M * B) * (A * S * B - 1) * (1 - A * M * B) = A * S * B - 1 ↔ M * (S - 1) * (1 - M) = S - 1 := by
@@ -41,6 +50,27 @@ theorem conj_cond {R : Type} [CommRing R] {n : ℕ} (A B M S : Matrix (Fin n) (F
     simpa only [Matrix.mul_assoc, hX, hAB, Matrix.mul_one] using this
   · intro h; rw [h]
 
+/- English proof (translation)
+Use `set f := ε.mulVecLin with hfdef`. Establish `hf : IsIdempotentElem f` using `by show f * f = f`. Rewrite using `[Module.End.mul_eq_comp, hfdef, ← Matrix.mulVecLin_mul, hε]`. Establish `hc` using `LinearMap.IsIdempotentElem.isCompl hf`. Use `set U := LinearMap.range f`.
+
+Use `set K := LinearMap.ker f`. Use `set a := ε.rank with ha`. Establish `haU : Module.finrank k U = a` using `rfl`. Establish `hsum : a + Module.finrank k K = r`. Rewrite using `[← haU, Submodule.finrank_add_eq_of_isCompl hc, Module.finrank_fin_fun]`.
+
+Establish `hKr : Module.finrank k K = r - a` using `by omega`. Set `bU : Module.Basis (Fin a) k U` to `Module.finBasisOfFinrankEq k U haU`. Set `bK : Module.Basis (Fin (r - a)) k K` to `Module.finBasisOfFinrankEq k K hKr`. Set `B : Module.Basis (Fin a ⊕ Fin (r - a)) k (Fin r → k)` to `(bU.prod bK).map (U.prodEquivOfIsCompl K hc)`. Set `e : Fin a ⊕ Fin (r - a) ≃ Fin r` to `finSumFinEquiv.trans (finCongr (by omega))`.
+
+Set `b` to `B.reindex e`. Establish `hbU : ∀ j : Fin r, j.val < a → b j ∈ U` using `fun j hj => by`. Establish `hj' : e.symm j = Sum.inl ⟨j.val, hj⟩`. Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`.
+
+Simplify using `[e]`. Rewrite using `[show b j = B (e.symm j) from Module.Basis.reindex_apply _ _ _, hj']`. Simplify using `[B]`. Establish `hbK : ∀ j : Fin r, ¬ j.val < a → b j ∈ K` using `fun j hj => by`. Establish `hj' : e.symm j = Sum.inr ⟨j.val - a, by omega⟩`.
+
+Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`. Simplify using `[e]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[show b j = B (e.symm j) from Module.Basis.reindex_apply _ _ _, hj']`.
+
+Simplify using `[B]`. Establish `hfix : ∀ u ∈ U, ε *ᵥ u = u`. Introduce and unpack `_ ⟨w, rfl⟩`. Use `show ε *ᵥ (ε *ᵥ w) = ε *ᵥ w`. Rewrite using `[Matrix.mulVec_mulVec, hε]`.
+
+Set `φ : (Fin r → k) ≃ₗ[k] (Fin r → k)` to `b.equivFun.symm`. Set `g : GL (Fin r) k` to `⟨LinearMap.toMatrix' φ.toLinearMap, LinearMap.toMatrix' φ.symm.toLinearMap, by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩`. Establish `hcol : ∀ j, (g : Matrix (Fin r) (Fin r) k) *ᵥ Pi.single j 1 = b j` using `fun j => by`. Express the relevant statement in the definitionally equal form `LinearMap.toMatrix' φ.toLinearMap *ᵥ Pi.single j 1 = b j`. Rewrite using `[LinearMap.toMatrix'_mulVec]`.
+
+Simplify using `[φ]`. Use `⟨g, Matrix.ext_of_mulVec_single fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hcol, Matrix.diagonal_mulVec_single]`. Distinguish the cases in `hj : j.val < a`. Simplify using `only [hj, if_true, mul_one]`.
+
+Rewrite using `[hcol, hfix _ (hbU j hj)]`. Simplify using `only [hj, if_false, zero_mul, Pi.single_zero, Matrix.mulVec_zero]`. Conclude with `hbK j hj`.
+-/
 theorem exists_conj_diag_of_idem (k : Type) [Field k] (r : ℕ) (ε : Matrix (Fin r) (Fin r) k) (hε : ε * ε = ε) :
     ∃ g : GL (Fin r) k, ε * (g : Matrix (Fin r) (Fin r) k) =
       (g : Matrix (Fin r) (Fin r) k) * Matrix.diagonal (fun i : Fin r => if i.val < ε.rank then (1 : k) else 0) := by
@@ -92,6 +122,17 @@ theorem exists_conj_diag_of_idem (k : Type) [Field k] (r : ℕ) (ε : Matrix (Fi
   · simp only [hj, if_false, zero_mul, Pi.single_zero, Matrix.mulVec_zero]
     exact hbK j hj
 
+/- English proof (translation)
+Establish `h1P : (1 : Matrix (Fin r) (Fin r) k) - Matrix.diagonal (fun i : Fin r => if i.val < a then (1 : k) else 0) = Matrix.diagonal (fun j : Fin r => 1 - if j.val < a then (1 : k) else 0)`. Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, Matrix.diagonal, h]`. Establish `hent : ∀ i j, (Matrix.diagonal (fun i : Fin r => if i.val < a then (1 : k) else 0) * (S - 1) * (1 - Matrix.diagonal (fun i : Fin r => if i.val < a then (1 : k) else 0))) i j = (if i.val < a then (1 : k) else 0) * (S - 1) i j * (1 - if j.val < a then (1 : k) else 0)`. Introduce `i j`. Rewrite using `[h1P, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h i j hne`. Establish `hz : (S - 1) i j ≠ 0` using `by rw [Matrix.sub_apply]; exact sub_ne_zero.2 hne`. Rewrite `hz` using `[← h, hent]`. Distinguish the cases in `hi : i.val < a`.
+
+Use `⟨hi, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hj`. Use `push_neg at hj`. Simplify using `[hj] at hz`. Simplify using `[hi] at hz`.
+
+Introduce `h`. Use extensionality with `i j`. Rewrite using `[hent]`. Distinguish the cases in `hij : i.val < a ∧ a ≤ j.val`. Simplify using `[hij.1, not_lt.2 hij.2]`.
+
+Establish `: (S - 1) i j = 0`. Assume the negation of the conclusion as `hz`. Conclude with `hij (h i j fun e => hz (by rw [Matrix.sub_apply, e, sub_self]))`. Simplify using `[this]`.
+-/
 theorem diag_cond_iff (k : Type) [Field k] (r a : ℕ) (S : Matrix (Fin r) (Fin r) k) :
     Matrix.diagonal (fun i : Fin r => if i.val < a then (1 : k) else 0) * (S - 1) * (1 - Matrix.diagonal (fun i : Fin r => if i.val < a then (1 : k) else 0)) = S - 1 ↔
       ∀ i j : Fin r, S i j ≠ (1 : Matrix (Fin r) (Fin r) k) i j → i.val < a ∧ a ≤ j.val := by
@@ -121,6 +162,13 @@ theorem diag_cond_iff (k : Type) [Field k] (r a : ℕ) (S : Matrix (Fin r) (Fin 
         exact hij (h i j fun e => hz (by rw [Matrix.sub_apply, e, sub_self]))
       simp [this]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_conj_diag_of_idem k r ε hε`. Rewrite `hg` using `[ha]`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations. Establish `hAB : ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) * (g : Matrix (Fin r) (Fin r) k) = 1` using `Units.inv_mul g`. Establish `hBA : (g : Matrix (Fin r) (Fin r) k) * ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) = 1` using `Units.mul_inv g`.
+
+Establish `hεeq : ε = (g : Matrix (Fin r) (Fin r) k) * Matrix.diagonal (fun i : Fin r => if i.val < a then (1 : k) else 0) * ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k)`. Rewrite using `[← hg, Matrix.mul_assoc, hBA, Matrix.mul_one]`. Establish `hx : (x : Matrix (Fin r) (Fin r) k) = (g : Matrix (Fin r) (Fin r) k) * ((g⁻¹ * x * g : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) * ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k)`. Simplify using `only [Units.val_mul, Matrix.mul_assoc, hBA, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, hBA, Matrix.one_mul]`.
+
+Rewrite using `[hεeq, hx, conj_cond _ _ _ _ hAB hBA, diag_cond_iff]`. Both sides reduce to the same expression.
+-/
 theorem idem_conj_radical (k : Type) [Field k] (r : ℕ) (ε : Matrix (Fin r) (Fin r) k) (hε : ε * ε = ε) (a : ℕ)
     (ha : ε.rank = a) :
     ∃ g₀ : GL (Fin r) k, ∀ x : GL (Fin r) k,
@@ -140,6 +188,13 @@ theorem idem_conj_radical (k : Type) [Field k] (r : ℕ) (ε : Matrix (Fin r) (F
   rw [hεeq, hx, conj_cond _ _ _ _ hAB hBA, diag_cond_iff]
   rfl
 
+/- English proof (translation)
+Introduce `ν' _ x y`. Use `haveI : LocallyCompactSpace N := hN.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `set φ := GlobalTheory.Orb.subEquiv e hHN with hφ`. Use `haveI : (ν.map φ).IsHaarMeasure := φ.isHaarMeasure_map ν`. Establish `hme : MeasurableEmbedding φ` using `φ.toHomeomorph.measurableEmbedding`.
+
+Rewrite using `[Measure.isMulLeftInvariant_eq_smul ν' (ν.map φ), integral_smul_nnreal_measure, hme.integral_map]`. Establish `: ∀ u : H, f (e.symm (x * ((φ u : N) : G') * y)) = f (e.symm x * u * e.symm y)` using `fun u => by`. Use `congr 1`. Use `show e.symm (x * e u * y) = _`. Rewrite using `[map_mul, map_mul, e.symm_apply_apply]`.
+
+Simplify using `only [this, h0, smul_zero]`.
+-/
 theorem haar_vanish_transfer {G G' : Type} [Group G] [Group G'] [TopologicalSpace G] [TopologicalSpace G']
     [IsTopologicalGroup G] [IsTopologicalGroup G'] [LocallyCompactSpace G'] [SecondCountableTopology G'] [T2Space G']
     [MeasurableSpace G] [BorelSpace G] [MeasurableSpace G'] [BorelSpace G'] (e : G ≃ₜ* G') (H : Subgroup G)
@@ -158,6 +213,15 @@ theorem haar_vanish_transfer {G G' : Type} [Group G] [Group G'] [TopologicalSpac
     rw [map_mul, map_mul, e.symm_apply_apply]
   simp only [this, h0, smul_zero]
 
+/- English proof (translation)
+Use `set A := ((β⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) with hA`. Use `set B := (β : Matrix (Fin n) (Fin n) K) with hB`. Establish `hAB : B * A = 1` using `Units.mul_inv β`. Establish `hBA : A * B = 1` using `Units.inv_mul β`. Establish `hX : ∀ X : Matrix (Fin n) (Fin n) K, B * (A * X) = X` using `fun X => by`.
+
+Rewrite using `[← Matrix.mul_assoc, hAB, Matrix.one_mul]`. Establish `hm : ∀ M N : Matrix (Fin n) (Fin n) E, (M * N).map τ = M.map τ * N.map τ` using `fun M N => Matrix.map_mul (f := τ.toRingHom)`. Use `⟨?_, ?_, ?_, ?_, fun S => conj_cond A B _ _ hAB hBA⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc, hX]`. Simplify using `only [← Matrix.mul_assoc, ← hm, hεε]`.
+
+Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det B _ ((Matrix.isUnit_iff_isUnit_det _).1 β.isUnit), Matrix.rank_mul_eq_right_of_isUnit_det A _ ((Matrix.isUnit_iff_isUnit_det _).1 β⁻¹.isUnit)]`. Conclude with `GlobalTheory.Core.Rk.rank_map_field τ.toRingHom ε`. Establish `h1` using `Matrix.charpoly_units_conj' β (g.map τ)`. Unfold `IsRegSS`. Rewrite using `[hA, hB, Matrix.coe_units_inv, h1]`.
+
+Conclude with `hg.map τ.toRingHom`. Simplify using `only [Matrix.mul_assoc, hX]`. Simplify using `only [← Matrix.mul_assoc, ← hm, hgε]`.
+-/
 theorem conj_map_facts {F E K : Type} [Field F] [Field E] [Field K] [Algebra F E] [Algebra F K] (τ : E →ₐ[F] K)
     {n : ℕ} (β : GL (Fin n) K) (ε g : Matrix (Fin n) (Fin n) E) (hεε : ε * ε = ε) (hgε : g * ε = ε * g)
     (hg : IsRegSS g) :
@@ -187,6 +251,39 @@ theorem conj_map_facts {F E K : Type} [Field F] [Field E] [Field K] [Algebra F E
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hT D V T U μf ff hf v hμ γ ε hγ hεε hγε ha0 har hnf b hb hbL hbN dt _`. Use `letI := GlobalTheory.LocalData.complRel v.1`. Use `haveI := GlobalTheory.LocalData.isLocalField v.1`. Establish `he_apply : ∀ g, (((T.frame v).equiv g : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1)) = (((T.frame v).basis⁻¹ : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1)) * ((splitHom D.sp.cm.sig V.gram (T.f …` using `fun g => by`. Establish `: (T.frame v).equiv g = (T.frame v).basis⁻¹ * splitHom D.sp.cm.sig V.gram (T.frame v).emb g * (T.frame v).basis` using `splitEquivIn_apply (T.frame v).cm (T.frame v).herm (T.frame v).emb (T.frame v).basis g`.
+
+Rewrite using `[this, Units.val_mul, Units.val_mul]`. Use `haveI : SecondCountableTopology (GL (Fin V.rank) (Fv D.host.F v.1)) := (T.frame v).equiv.symm.toHomeomorph.isEmbedding.secondCountableTopology`. Take `⟨e, he⟩ : ∃ e, (T.frame v).equiv = e` from `⟨_, rfl⟩`. Take `⟨β, hβ⟩ : ∃ β, (T.frame v).basis = β` from `⟨_, rfl⟩`. Take `⟨τ, hτ⟩ : ∃ τ, (T.frame v).emb = τ` from `⟨_, rfl⟩`.
+
+Rewrite `he_apply` using `[he, hβ, hτ]`. Rewrite `hbN` using `[hτ]`. Take `⟨hεε', hrank, hreg0, hcε0, hcond⟩` from `conj_map_facts τ β ε γ.1.1 hεε hγε hγ`. Establish `hsplit : ((splitHom D.sp.cm.sig V.gram τ (proj D.sp.cm.sig V.gram v (rat V γ)) : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1)) = γ.1.1.map τ`. Rewrite using `[proj_ratEmb]`.
+
+Conclude with `splitEquiv_ratLoc (T.frame v).cm (T.frame v).herm τ γ`. Establish `hγval : ((e (proj D.sp.cm.sig V.gram v (rat V γ)) : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1)) = ((β⁻¹ : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1)) * γ.1.1.map τ * (β : Matrix (Fin V.rank) …` using `(he_apply _).trans (congrArg (fun X => ((β⁻¹ : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1)) * X * (β : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1))) hsplit)`. Establish `hreg : IsRegSS ((e (proj D.sp.cm.sig V.gram v (rat V γ)) : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1))` using `by rw [hγval]; exact hreg0`. Establish `hcε : ((e (proj D.sp.cm.sig V.gram v (rat V γ)) : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1)) * (((β⁻¹ : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1)) * ε.map τ * (β : Matrix (Fin V.rank) (Fin …`. Rewrite using `[hγval]`.
+
+Conclude with `hcε0`. Take `⟨g₀, hg₀⟩` from `idem_conj_radical (Fv D.host.F v.1) V.rank _ hεε' ε.rank hrank`. Take `⟨h, hh, hffv⟩` from `hf.2.1 v`. Establish `hφ : conv (μf v) (T.idem μf v) h ∈ CcLoc D.sp.cm.sig V.gram v` using `conv_mem_SB ((T.frame v).idem_mem _ _) hh`. Take `⟨H, hHc, hHmem, ν, hν, hν0⟩` from `GlobalTheory.T.type_function_constant_term_vanish_split_place hT D V v.1 (T.frame v) ε.rank ha0 har (T.W v) (T.τ v) (T.irred v) hnf (μf v) _ hφ (ff v) (Or.inr hffv) g₀`.
+
+Rewrite `hHmem` using `[he]`. Take `⟨N, hNmem⟩ : ∃ N : Subgroup (GL (Fin V.rank) (Fv D.host.F v.1)), ∀ x, x ∈ N ↔ e.symm x ∈ H` from `⟨H.comap (e.symm : GL (Fin V.rank) (Fv D.host.F v.1) →* GLoc D.sp.cm.sig V.gram v), fun x => Iff.rfl⟩`. Establish `hN_iff : ∀ x : GL (Fin V.rank) (Fv D.host.F v.1), x ∈ N ↔ (((β⁻¹ : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1)) * ε.map τ * (β : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1))) * ((x : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F …` using `fun x => by`. Rewrite using `[hNmem, hHmem, e.apply_symm_apply]`. Conclude with `(hg₀ x).symm`.
+
+Establish `hNc : IsClosed (N : Set (GL (Fin V.rank) (Fv D.host.F v.1)))`. Establish `: (N : Set (GL (Fin V.rank) (Fv D.host.F v.1))) = e.symm ⁻¹' (H : Set (GLoc D.sp.cm.sig V.gram v))` using `Set.ext hNmem`. Rewrite using `[this]`. Conclude with `hHc.preimage e.symm.continuous`. Establish `hHN : ∀ x, e x ∈ N ↔ x ∈ H` using `fun x => by rw [hNmem, e.symm_apply_apply]`.
+
+Use `haveI := hν`. Establish `hvan` using `haar_vanish_transfer e H N hNc hHN (ff v) ν hν0`. Establish `hffmem : ff v ∈ CcLoc D.sp.cm.sig V.gram v` using `hf.isFinFamily.1 v`. Establish `hfc : Continuous fun x => ff v (e.symm x)` using `hffmem.1.continuous.comp e.symm.continuous`. Establish `hfcs : HasCompactSupport fun x => ff v (e.symm x)` using `hffmem.2.comp_homeomorph e.symm.toHomeomorph`.
+
+Establish `hcent : ∀ x, e x ∈ cent (e (proj D.sp.cm.sig V.gram v (rat V γ))) ↔ x ∈ cent (proj D.sp.cm.sig V.gram v (rat V γ))` using `fun x => by`. Rewrite using `[mem_cent, mem_cent, ← map_mul, ← map_mul, e.injective.eq_iff]`. Establish `hb'c : Continuous fun x => b (e.symm x)` using `hb.comp e.symm.continuous`. Establish `hb'L : LeftInv (cent (e (proj D.sp.cm.sig V.gram v (rat V γ)))) fun x => b (e.symm x)` using `fun t ht g => by show b (e.symm (t * g)) = b (e.symm g)`. Rewrite using `[map_mul]`.
+
+Conclude with `hbL _ ((hcent _).1 (by rwa [e.apply_symm_apply])) _`. Establish `hb'N : LeftInv N fun x => b (e.symm x)` using `fun n hn g => by show b (e.symm (n * g)) = b (e.symm g)`. Rewrite using `[map_mul]`. Use `hbN _ ?_ _` and prove the remaining obligations. Establish `h1` using `(hN_iff n).1 hn`.
+
+Establish `h2` using `he_apply (e.symm n)`. Rewrite `h2` using `[e.apply_symm_apply]`. Rewrite `h1` using `[h2]`. Conclude with `(hcond _).1 h1`. Use `haveI : ((μf v).map e).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map (μf v) e`.
+
+Use `haveI : (dt.map (subEquiv e hcent)).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map dt (subEquiv e hcent)`. Establish `key` using `GlobalTheory.T.weightedOrbitalIntegral_GL_zero_of_radical_integrals (Fv D.host.F v.1) V.rank ((μf v).map e) _ N hεε' hN_iff (fun x => ff v (e.symm x)) hfc hfcs hvan (e (proj D.sp.cm.sig V.gram v (rat V γ))) hreg hcε (fun x => b (e.symm x)) hb'c hb'L hb'N (dt.map (subEquiv e hcent …`. Establish `hcomm : ∀ t t' : cent (proj D.sp.cm.sig V.gram v (rat V γ)), (t : GLoc D.sp.cm.sig V.gram v) * t' = t' * t`. Introduce `t t'`. Establish `hc : ∀ t : cent (proj D.sp.cm.sig V.gram v (rat V γ)), ((e t : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v.1)) * ((e (proj D.sp.cm.sig V.gram v (rat V γ)) : GL (Fin V.rank) (Fv D.host.F v.1)) : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F …` using `fun t => by`.
+
+Rewrite using `[← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, mem_cent.1 t.2]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul]`.
+
+Conclude with `IsRegSS.commute hreg (hc t) (hc t')`. Use `haveI : dt.IsMulRightInvariant := ⟨fun g => by`. Establish `: (fun x : cent (proj D.sp.cm.sig V.gram v (rat V γ)) => x * g) = fun x => g * x` using `funext fun x => Subtype.ext (hcomm x g)`. Rewrite using `[this]`. Conclude with `map_mul_left_eq_self dt g⟩`.
+
+Establish `hleft : LeftInv (cent (e (proj D.sp.cm.sig V.gram v (rat V γ)))) (fun x => b (e.symm x) * ff v (e.symm (x⁻¹ * e (proj D.sp.cm.sig V.gram v (rat V γ)) * x)))` using `fun t ht g => by show b (e.symm (t * g)) * ff v (e.symm ((t * g)⁻¹ * e (proj D.sp.cm.sig V.gram v (rat V γ)) * (t * g))) = b (e.symm g) * ff v (e.symm (g⁻¹ * e (proj D.sp.cm.sig V.gram v (rat V γ)) * g))`. Establish `h1 : b (e.symm (t * g)) = b (e.symm g)` using `hb'L t ht g`. Establish `h2 : (t * g)⁻¹ * e (proj D.sp.cm.sig V.gram v (rat V γ)) * (t * g) = g⁻¹ * (t⁻¹ * (e (proj D.sp.cm.sig V.gram v (rat V γ)) * t)) * g` using `by group`. Rewrite using `[h1, h2, ← mem_cent.1 ht, inv_mul_cancel_left]`. Use `((hasQuotInt_map e hcent (isClosed_cent _) dt (μf v) hleft 0).1).1 key` as an intermediate fact.
+
+Use `this using 2 with x` and compare the differences between its conclusion and the goal. Use `show _ = b (e.symm (e x)) * ff v (e.symm ((e x)⁻¹ * e (proj D.sp.cm.sig V.gram v (rat V γ)) * e x))`. Rewrite using `[← map_inv, ← map_mul, ← map_mul, e.symm_apply_apply, e.symm_apply_apply]`.
+-/
 theorem weighted_orbital_vanish : GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.TypeConstTermVanish → ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), IsTestFin T U μf ff → ∀ v : T.S, (μf v).IsHaarMeasure → ∀ (γ : GF V) (ε : Matrix (Fin V.rank) (Fin V.rank) D.host.E), IsRegSS γ.1.1 → ε * ε = ε → γ.1.1 * ε = ε * γ.1.1 → 0 < ε.rank → ε.rank < V.rank → GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.NoFixed (T.τ v) (GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.radical (ResF v.1) V.rank ε.rank) → ∀ b : GLoc D.sp.cm.sig V.gram v → ℂ, Continuous b → LeftInv (cent (proj D.sp.cm.sig V.gram v (rat V γ))) b → (∀ g, ε.map (T.frame v).emb * ((splitHom D.sp.cm.sig V.gram (T.frame v).emb g).1 - 1) * (1 - ε.map (T.frame v).emb) = (splitHom D.sp.cm.sig V.gram (T.frame v).emb g).1 - 1 → ∀ x, b (g * x) = b x) → ∀ (dt : Measure (cent (proj D.sp.cm.sig V.gram v (rat V γ)))) [dt.IsHaarMeasure], HasQuotInt (cent (proj D.sp.cm.sig V.gram v (rat V γ))) dt (μf v) (fun x => b x * ff v (x⁻¹ * proj D.sp.cm.sig V.gram v (rat V γ) * x)) 0 := by
   intro hT D V T U μf ff hf v hμ γ ε hγ hεε hγε ha0 har hnf b hb hbL hbN dt _
   letI := GlobalTheory.LocalData.complRel v.1

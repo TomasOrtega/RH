@@ -12,6 +12,15 @@ open scoped ENNReal
 
 namespace GlobalTheory.LogResInt
 
+/- English proof (translation)
+Introduce `d X _ _ _ A m α Λ σ c hset L s hL hs hs1 n Y _ _ _ B hproj μ hμ r W e hsnc hrank`. Take `⟨w, K, O, hw, hpsh, hbd, hO, hmono, -, hcov, hloc⟩` from `GlobalTheory.T.boundary_psh_exhaustion_weights d X A m α Λ σ c hset`. Use `letI : MeasurableSpace Y := borel Y`. Use `haveI : BorelSpace Y := ⟨rfl⟩`. Take `⟨C, hC, hJ⟩` from `GlobalTheory.T.log_residue_chern_bound_projective d X A m α Λ σ c hset L s hL hs hs1 n Y B hproj μ hμ r W e hsnc hrank w K hw hpsh hbd`.
+
+Establish `hpotX : ∀ R, IsPotential A (α + LocPot.ofFun (w R))` using `fun R => isPotentialAdd A _ _ hset.1 (isPotential_ofFun A _ (hw R))`. Use `GlobalTheory.T.monge_ampere_exhaustion_limit d X A n Y B μ hμ (poincarePot α Λ σ c) (fun R => α + LocPot.ofFun (w R)) O (fun _ => 0) _ _ ((B.n : ℝ≥0∞) * C) hpotX hO hmono ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `R x y hy show α.φ x y + w R y = α.φ x y + pFun Λ σ c y / 2 + 0`. Rewrite using `[hloc R y hy, add_zero]`. Introduce `y hy`.
+
+Conclude with `hcov (μ y) hy`. Introduce `_ _`. Conclude with `GlobalTheory.T.measurable_abs_log_norm_section d X A L s hL hs Y μ hμ.1`. Conclude with `ENNReal.mul_lt_top (ENNReal.natCast_lt_top _) hC`. Introduce `R`.
+
+Use `(GlobalTheory.T.chart_sum_integral_le_monge_ampere n Y B _ (isPotentialPullback A B μ hμ _ (hpotX R)) (GlobalTheory.T.psh_pullback_holomorphic d X A n Y B μ hμ _ (hpotX R) (hpsh R)) _ _ (GlobalTheory.T.measurable_abs_log_norm_section d X A L s hL hs Y μ hμ.1)).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `hJ R`.
+-/
 theorem onResolution : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),
     IsBoundarySetting A α Λ σ c →

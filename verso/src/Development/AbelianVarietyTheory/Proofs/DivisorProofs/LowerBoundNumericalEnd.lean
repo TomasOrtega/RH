@@ -4,6 +4,17 @@ open scoped ComplexOrder Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `ι _ P h LD D1 A K rest large₂ Λ W c ub s N C₁ C₂ C₃ hN hh hLD hD hLg hLΛ hW h1 h2 h3 hP hc hA hK hr`. Establish `hΛ : 0 ≤ Λ` using `hLg.trans hLΛ`. Establish `hA' : -A ≤ C₁ * Λ` using `hA.trans (mul_le_mul_of_nonneg_left hLΛ h1)`. Establish `key : ∀ τ, -((C₁ + C₂) * Λ) * s τ ≤ A * c τ + K * ub τ`. Introduce `τ`.
+
+Take `⟨c0, cs, us⟩` from `hc τ`. Establish `e1 : -A * c τ ≤ C₁ * Λ * s τ` using `(mul_le_mul_of_nonneg_right hA' c0).trans (mul_le_mul_of_nonneg_left cs (mul_nonneg h1 hΛ))`. Establish `e2 : |K * ub τ| ≤ C₂ * Λ * s τ`. Rewrite using `[abs_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e3` using `neg_abs_le (K * ub τ)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsum : -((C₁ + C₂) * Λ) * ∑ τ, s τ ≤ ∑ τ, (A * c τ + K * ub τ)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun τ _ => key τ`.
+
+Establish `hS : 0 ≤ ∑ τ, s τ` using `Finset.sum_nonneg fun τ _ => (hc τ).1.trans (hc τ).2.1`. Use `set S := ∑ τ, s τ`. Use `set T := ∑ τ, (A * c τ + K * ub τ)`. Establish `hM : 0 ≤ D1 * LD` using `mul_nonneg hD hLD`. Establish `f1` using `mul_le_mul_of_nonneg_left hsum hM`.
+
+Establish `f2` using `neg_abs_le rest`. Establish `f3 : 0 ≤ D1 * LD * (C₃ * (Λ * S))` using `by positivity`. Establish `f4 : 0 ≤ D1 * LD * ((C₁ + C₂) * W)` using `by positivity`. Rewrite using `[hP]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem lowerBound_numerical_end :
     ∀ (ι : Type) [Fintype ι] (P h LD D1 A K rest large₂ Λ W : ℝ) (c ub s : ι → ℝ) (N C₁ C₂ C₃ : ℝ), 0 < N → 0 ≤ h → 0 ≤ LD → 0 ≤ D1 → 0 ≤ large₂ → large₂ ≤ Λ → 0 ≤ W → 0 ≤ C₁ → 0 ≤ C₂ → 0 ≤ C₃ → P = h + D1 * LD * ∑ τ, (A * c τ + K * ub τ) + rest → (∀ τ, 0 ≤ c τ ∧ c τ ≤ s τ ∧ N * |ub τ| ≤ s τ) → -A ≤ C₁ * large₂ → |K| ≤ C₂ * N * Λ → |rest| ≤ C₃ * D1 * LD * W → -(C₁ + C₂ + C₃) * D1 * LD * (Λ * ∑ τ, s τ + W) ≤ P := by
   intro ι _ P h LD D1 A K rest large₂ Λ W c ub s N C₁ C₂ C₃ hN hh hLD hD hLg hLΛ hW h1 h2 h3 hP hc hA hK hr

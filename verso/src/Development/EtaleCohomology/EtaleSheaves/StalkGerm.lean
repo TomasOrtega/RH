@@ -32,6 +32,9 @@ def ZarInd : Prop := MV → Hyp → ∀ (q : ℕ) {Y X S : Scheme.{0}} (f : Y �
   [QuasiSeparatedSpace S] [QuasiCompact p] [QuasiSeparated p] [QuasiCompact f] [QuasiSeparated f],
   IsUnit (q : Γ(S, ⊤)) → ∀ i : ℤ, (∀ (s : S) (n : ℤ), Germ q i n f p s) → Eqv _ (sch.map f) (tw q i)
 
+/- English proof (translation)
+Introduce `hH q Y X S f p _ _ _ _ _ _ hq i hs`. Conclude with `h2 hM hH q f p hq i fun s n => h1 hC hH q f p hq i s (hs s) n`.
+-/
 theorem ZLG_of (hC : Cont) (hM : MV) (h1 : StalkGerm) (h2 : ZarInd) : ZLG := by
   intro hH q Y X S f p _ _ _ _ _ _ hq i hs
   exact h2 hM hH q f p hq i fun s n => h1 hC hH q f p hq i s (hs s) n

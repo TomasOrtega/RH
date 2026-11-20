@@ -24,6 +24,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     {W : Type} [AddCommGroup W] [Module LL W] [Module Qp W] [IsScalarTower Qp LL W]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [Formalism.MainNotions.RamifiedCoefficientChains.mapVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem mapVB_eq_rTensor (f : V →ₗ[LL] W) (x : V ⊗[Qp] B) :
     Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL f x = (f.restrictScalars Qp).rTensor B x := by
   induction x using TensorProduct.induction_on with
@@ -31,10 +34,16 @@ theorem mapVB_eq_rTensor (f : V →ₗ[LL] W) (x : V ⊗[Qp] B) :
   | tmul v b => simp [Formalism.MainNotions.RamifiedCoefficientChains.mapVB]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `[Dcris, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_Dcris' (ρ : Representation LL G V) (x : V ⊗[Qp] B) :
     x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
   simp [Dcris, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, Formalism.MainNotions.RamifiedCoefficientChains.mapVB, hf]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem mapVB_act (ρ : Representation LL G V) (σ : Representation LL G W) (f : V →ₗ[LL] W)
     (hf : ∀ g v, f (ρ g v) = σ g (f v)) (g : G) (x : V ⊗[Qp] B) :
     Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL f (actVB PD ρ g x) =
@@ -44,6 +53,9 @@ theorem mapVB_act (ρ : Representation LL G V) (σ : Representation LL G W) (f :
   | tmul v b => simp [actVB, Formalism.MainNotions.RamifiedCoefficientChains.mapVB, hf]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_Dcris']`. Introduce `g`. Rewrite using `[← mapVB_act PD ρ σ f hf, hx]`.
+-/
 theorem mapVB_mem_Dcris (ρ : Representation LL G V) (σ : Representation LL G W) (f : V →ₗ[LL] W)
     (hf : ∀ g v, f (ρ g v) = σ g (f v)) {x : V ⊗[Qp] B} (hx : x ∈ Dcris PD ρ) :
     Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL f x ∈ Dcris PD σ := by
@@ -51,6 +63,9 @@ theorem mapVB_mem_Dcris (ρ : Representation LL G V) (σ : Representation LL G W
   intro g
   rw [← mapVB_act PD ρ σ f hf, hx]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ιV, Formalism.MainNotions.RamifiedCoefficientChains.mapVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem ιV_mapVB (f : V →ₗ[LL] W) (x : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := W) (Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL f x) =
       AlgebraTensorModule.map f (LinearMap.id : BdR →ₗ[Qp] BdR) (ιV PD (LL := LL) (V := V) x) := by
@@ -59,6 +74,11 @@ theorem ιV_mapVB (f : V →ₗ[LL] W) (x : V ⊗[Qp] B) :
   | tmul v b => simp [ιV, Formalism.MainNotions.RamifiedCoefficientChains.mapVB]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `hy`. Use `⟨AlgebraTensorModule.map f (LinearMap.id : ↥((PD.Fil a).restrictScalars Qp) →ₗ[Qp] ↥((PD.Fil a).restrictScalars Qp)) z, ?_⟩` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_mem_FilV (f : V →ₗ[LL] W) (a : ℤ) {y : V ⊗[Qp] BdR}
     (hy : y ∈ FilV PD (LL := LL) (V := V) a) :
     AlgebraTensorModule.map f (LinearMap.id : BdR →ₗ[Qp] BdR) y ∈ FilV PD (LL := LL) (V := W) a := by
@@ -69,6 +89,9 @@ theorem map_mem_FilV (f : V →ₗ[LL] W) (a : ℤ) {y : V ⊗[Qp] BdR}
   | tmul v b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Use `⟨mapVB_mem_Dcris PD ρ σ f hf hx.1, ?_⟩` and prove the remaining obligations. Use `show ιV PD (LL := LL) (V := W) (Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL f x) ∈ FilV PD (LL := LL) (V := W) a`. Rewrite using `[ιV_mapVB]`. Conclude with `map_mem_FilV PD f a hx.2`.
+-/
 theorem mapVB_mem_FilCris (ρ : Representation LL G V) (σ : Representation LL G W) (f : V →ₗ[LL] W)
     (hf : ∀ g v, f (ρ g v) = σ g (f v)) (a : ℤ) {x : V ⊗[Qp] B} (hx : x ∈ FilCris PD ρ a) :
     Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL f x ∈ FilCris PD σ a := by
@@ -85,6 +108,25 @@ namespace GlobalTheory.Per.DcrisExact
 
 open GlobalTheory.Per.DcrisExact
 
+/- English proof (translation)
+Introduce `hb V₀ _ _ _ _ _ ρ₀ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ ι π hι hπ hinj hsurj hex hc₀ hc₁ hc₂`. Establish `hE : Function.Exact (ι.restrictScalars ℚ_[l]) (π.restrictScalars ℚ_[l])`. Rewrite using `[LinearMap.exact_iff]`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.mem_range, LinearMap.restrictScalars_apply]`.
+
+Use `congrArg (fun S : Submodule ↥LL.1 V₁ => x ∈ S) hex` as an intermediate fact. Simplify using `using this`. Establish `hexT` using `rTensor_exact P.R.B (f := ι.restrictScalars ℚ_[l]) (g := π.restrictScalars ℚ_[l]) hE hsurj`. Establish `hinjT : Function.Injective ((ι.restrictScalars ℚ_[l]).rTensor P.R.B)` using `Module.Flat.rTensor_preserves_injective_linearMap _ hinj`. Establish `hS` using `GlobalTheory.T.dcris_strict_hodgeFiltration_unramified l P AI hT K LL hb`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x _ hx`. Apply `hinjT` to reduce the goal to its premises. Rewrite using `[← mapVB_eq_rTensor, hx, map_zero]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨mapVB_mem_Dcris _ ρ₀ ρ₁ ι hι hx, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, mapVB_eq_rTensor, mapVB_eq_rTensor, ← LinearMap.rTensor_comp_apply]`. Establish `: (π.restrictScalars ℚ_[l]).comp (ι.restrictScalars ℚ_[l]) = 0`. Use extensionality with `v`.
+
+Conclude with `hE.apply_apply_eq_zero v`. Rewrite using `[this, LinearMap.rTensor_zero, LinearMap.zero_apply]`. Introduce and unpack `y ⟨hy, hk⟩`. Rewrite `hk` using `[SetLike.mem_coe, LinearMap.mem_ker, mapVB_eq_rTensor]`. Take `⟨x, hx⟩` from `(hexT y).mp hk`.
+
+Rewrite `hx` using `[← mapVB_eq_rTensor]`. Use `⟨x, ?_, hx⟩` and prove the remaining obligations. Establish `hy'` using `(mem_Dcris' _ ρ₁ y).1 hy`. Rewrite using `[SetLike.mem_coe, mem_Dcris']`. Introduce `g`.
+
+Apply `hinjT` to reduce the goal to its premises. Rewrite using `[← mapVB_eq_rTensor, ← mapVB_eq_rTensor, mapVB_act _ ρ₀ ρ₁ ι hι, hx, hy' g]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `mapVB_mem_Dcris _ ρ₁ ρ₂ π hπ hx`.
+
+Introduce `y hy`. Take `⟨x, hx, hxy⟩` from `((GlobalTheory.Per.CrysSubQuot.crys_sub_quot l P AI hT K LL V₁ ρ₁ V₂ ρ₂ π hπ).2 hsurj hc₁).2 y hy`. Conclude with `⟨x, hx, hxy⟩`. Introduce `a`. Use `⟨(hS V₁ ρ₁ V₂ ρ₂ π hπ).1 hsurj hc₁ a, ?_⟩` and prove the remaining obligations.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Conclude with `⟨hx.1, mapVB_mem_FilCris _ ρ₀ ρ₁ ι hι a hx⟩`. Introduce and unpack `x ⟨hx, hf⟩`. Conclude with `(hS V₀ ρ₀ V₁ ρ₁ ι hι).2 hinj a x hx hf`.
+-/
 theorem exactStrict (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : LocTied l P AI)
     (K LL : FinExt l) : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict (P.PD K) ↥LL.1 := by
   intro hb V₀ _ _ _ _ _ ρ₀ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ ι π hι hπ hinj hsurj hex hc₀ hc₁ hc₂
@@ -140,6 +182,11 @@ end GlobalTheory.Per.DcrisExact
 
 namespace GlobalTheory.Per.DcrisExact
 
+/- English proof (translation)
+Introduce `D l _ K LL`. Use `⟨exactStrict l (D.loc l) (D.locA l) (D.locT l) K LL, ?_, ?_⟩` and prove the remaining obligations. Introduce `V₀ _ _ _ _ _ ρ₀ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ ι π hι hπ hinj hsurj _ hc₁`. Conclude with `⟨(GlobalTheory.Per.CrysSubQuot.crys_sub_quot l (D.loc l) (D.locA l) (D.locT l) K LL V₀ ρ₀ V₁ ρ₁ ι hι).1 hinj hc₁, ((GlobalTheory.Per.CrysSubQuot.crys_sub_quot l (D.loc l) (D.locA l) (D.locT l) K LL V₁ ρ₁ V₂ ρ₂ π hπ).2 hsurj hc₁).1⟩`. Introduce `hb V _ _ _ _ _ ρ hc`.
+
+Conclude with `GlobalTheory.Per.DdREqDcris.map_Dcris_eq_DdR l (D.loc l) (D.locA l) (D.locT l) K LL hb V ρ hc`.
+-/
 theorem fontaine_dcris : ∀ D : D7, Formalism.MainNotions.RamifiedCoefficientChains.adm11 D := by
   intro D l _ K LL
   refine ⟨exactStrict l (D.loc l) (D.locA l) (D.locT l) K LL, ?_, ?_⟩

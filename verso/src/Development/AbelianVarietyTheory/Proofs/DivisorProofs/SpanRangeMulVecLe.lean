@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)`.
+-/
 theorem span_range_mulVec_le {A : Type} [CommRing A] {N : ℕ} (M : Matrix (Fin N) (Fin N) A) (v : Fin N → A) :
     Ideal.span (Set.range (M.mulVec v)) ≤ Ideal.span (Set.range v) := by
   rw [Ideal.span_le]
@@ -13,6 +16,9 @@ theorem span_range_mulVec_le {A : Type} [CommRing A] {N : ℕ} (M : Matrix (Fin 
   simp only [Matrix.mulVec, dotProduct]
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Use `le_antisymm (span_range_mulVec_le _ _) ?_` and prove the remaining obligations. Establish `h` using `span_range_mulVec_le ((g⁻¹ : GL (Fin N) A) : Matrix (Fin N) (Fin N) A) ((g : Matrix (Fin N) (Fin N) A).mulVec v)`. Rewrite `h` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem span_range_mulVec_GL {A : Type} [CommRing A] {N : ℕ} (g : GL (Fin N) A) (v : Fin N → A) :
     Ideal.span (Set.range ((g : Matrix (Fin N) (Fin N) A).mulVec v)) = Ideal.span (Set.range v) := by
   refine le_antisymm (span_range_mulVec_le _ _) ?_
@@ -22,24 +28,46 @@ theorem span_range_mulVec_GL {A : Type} [CommRing A] {N : ℕ} (g : GL (Fin N) A
 def Um.smulGL {N : ℕ} {A : Type} [CommRing A] (g : GL (Fin N) A) (v : Um N A) : Um N A :=
   ⟨(g : Matrix (Fin N) (Fin N) A).mulVec v.1, (span_range_mulVec_GL g v.1).trans v.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Um.smulGL_val {N : ℕ} {A : Type} [CommRing A] (g : GL (Fin N) A) (v : Um N A) :
     (Um.smulGL g v).1 = (g : Matrix (Fin N) (Fin N) A).mulVec v.1 := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by rw [Um.smulGL_val, Units.val_one, Matrix.one_mulVec])`.
+-/
 theorem Um.smulGL_one {N : ℕ} {A : Type} [CommRing A] (v : Um N A) : Um.smulGL 1 v = v :=
   Subtype.ext (by rw [Um.smulGL_val, Units.val_one, Matrix.one_mulVec])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by rw [Um.smulGL_val, Um.smulGL_val, Um.smulGL_val, Units.val_mul, Matrix.mulVec_mulVec])`.
+-/
 theorem Um.smulGL_mul {N : ℕ} {A : Type} [CommRing A] (g h : GL (Fin N) A) (v : Um N A) :
     Um.smulGL (g * h) v = Um.smulGL g (Um.smulGL h v) :=
   Subtype.ext (by rw [Um.smulGL_val, Um.smulGL_val, Um.smulGL_val, Units.val_mul, Matrix.mulVec_mulVec])
 
+/- English proof (translation)
+Rewrite using `[← Um.smulGL_mul, inv_mul_cancel, Um.smulGL_one]`.
+-/
 theorem Um.smulGL_inv_smulGL {N : ℕ} {A : Type} [CommRing A] (g : GL (Fin N) A) (v : Um N A) :
     Um.smulGL g⁻¹ (Um.smulGL g v) = v := by
   rw [← Um.smulGL_mul, inv_mul_cancel, Um.smulGL_one]
 
+/- English proof (translation)
+Rewrite using `[← Um.smulGL_mul, mul_inv_cancel, Um.smulGL_one]`.
+-/
 theorem Um.smulGL_smulGL_inv {N : ℕ} {A : Type} [CommRing A] (g : GL (Fin N) A) (v : Um N A) :
     Um.smulGL g (Um.smulGL g⁻¹ v) = v := by
   rw [← Um.smulGL_mul, mul_inv_cancel, Um.smulGL_one]
 
+/- English proof (translation)
+Establish `h1 : (1 : A) ∈ Ideal.span (Set.range w.1)` using `by rw [w.2]; exact Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun A).1 h1`. Establish `key : ∀ x : A, x = ∑ i, c i * (x * w.1 i)` using `fun x => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key a, key b]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (c i * ·) (congrFun h i)`.
+-/
 theorem Um.smul_cancel {N : ℕ} {A : Type} [CommRing A] (w : Um N A) {a b : A} (h : a • w.1 = b • w.1) : a = b := by
   have h1 : (1 : A) ∈ Ideal.span (Set.range w.1) := by rw [w.2]; exact Submodule.mem_top
   obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun A).1 h1
@@ -51,17 +79,29 @@ theorem Um.smul_cancel {N : ℕ} {A : Type} [CommRing A] (w : Um N A) {a b : A} 
   refine Finset.sum_congr rfl fun i _ => ?_
   exact congrArg (c i * ·) (congrFun h i)
 
+/- English proof (translation)
+Establish `h2` using `f.2`. Rewrite `h2` using `[h]`. Conclude with `Subtype.ext (Prod.ext h (Units.ext (Um.smul_cancel w (h2.symm.trans f'.2))))`.
+-/
 theorem Um.hom_ext_fst {N : ℕ} {A : Type} [CommRing A] {v w : Um N A} {f f' : v ⟶ w} (h : f.1.1 = f'.1.1) : f = f' := by
   have h2 := f.2
   rw [h] at h2
   exact Subtype.ext (Prod.ext h (Units.ext (Um.smul_cancel w (h2.symm.trans f'.2))))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Um.comp_fst {N : ℕ} {A : Type} [CommRing A] {u v w : Um N A} (f : u ⟶ v) (g : v ⟶ w) :
     (f ≫ g).1.1 = g.1.1 * f.1.1 := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem Um.eqToHom_fst {N : ℕ} {A : Type} [CommRing A] {v w : Um N A} (h : v = w) : (eqToHom h).1.1 = 1 := by
   subst h; rfl
 
+/- English proof (translation)
+The claim follows from `CategoryTheory.Functor.ext hobj fun i j f => Um.hom_ext_fst (by rw [Um.comp_fst, Um.comp_fst, Um.eqToHom_fst, Um.eqToHom_fst, hmap]; simp)`.
+-/
 theorem Um.functor_ext {N : ℕ} {A : Type} [CommRing A] {C : Type} [Category C] {F F' : C ⥤ Um N A}
     (hobj : ∀ i, F.obj i = F'.obj i) (hmap : ∀ {i j} (f : i ⟶ j), (F.map f).1.1 = (F'.map f).1.1) : F = F' :=
   CategoryTheory.Functor.ext hobj fun i j f => Um.hom_ext_fst (by rw [Um.comp_fst, Um.comp_fst, Um.eqToHom_fst, Um.eqToHom_fst, hmap]; simp)
@@ -79,6 +119,9 @@ instance (N : ℕ) (A : Type) [CommRing A] : SmallCategory (FibU N A) where
 instance (N : ℕ) (A : Type) [CommRing A] (v w : FibU N A) : Subsingleton (v ⟶ w) :=
   ⟨fun f g => Subtype.ext (Units.ext (Um.smul_cancel (w : Um N A) (f.2.symm.trans g.2)))⟩
 
+/- English proof (translation)
+The claim follows from `CategoryTheory.Functor.ext hobj fun _ _ _ => Subsingleton.elim _ _`.
+-/
 theorem FibU.functor_ext {N : ℕ} {A : Type} [CommRing A] {C : Type} [Category C] {F F' : C ⥤ FibU N A}
     (hobj : ∀ i, F.obj i = F'.obj i) : F = F' :=
   CategoryTheory.Functor.ext hobj fun _ _ _ => Subsingleton.elim _ _
@@ -130,12 +173,18 @@ def edgeMat {N n : ℕ} {A : Type} [CommRing A] (G : ComposableArrows (SingleObj
     GL (Fin N) A :=
   G.map (homOfLE (Fin.zero_le i))
 
+/- English proof (translation)
+Unfold `edgeMat`. Rewrite using `[← SingleObj.comp_as_mul, ← G.map_comp]`. Conclude with `congrArg G.map (Subsingleton.elim _ _)`.
+-/
 theorem edgeMat_map_mul {N n : ℕ} {A : Type} [CommRing A] (G : ComposableArrows (SingleObj (GL (Fin N) A)) n)
     {i j : Fin (n + 1)} (f : i ⟶ j) : (show GL (Fin N) A from G.map f) * edgeMat G i = edgeMat G j := by
   unfold edgeMat
   rw [← SingleObj.comp_as_mul, ← G.map_comp]
   exact congrArg G.map (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Unfold `edgeMat`. Rewrite using `[show homOfLE (Fin.zero_le (0 : Fin (n + 1))) = 𝟙 _ from Subsingleton.elim _ _, G.map_id]`. Both sides reduce to the same expression.
+-/
 theorem edgeMat_zero {N n : ℕ} {A : Type} [CommRing A] (G : ComposableArrows (SingleObj (GL (Fin N) A)) n) :
     edgeMat G 0 = 1 := by
   unfold edgeMat
@@ -146,11 +195,17 @@ def vS {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {p : SimplexCategoryᵒ�
     ComposableArrows (SingleObj (GL (Fin N) (Scheme.Γ.obj U))) p.unop.len :=
   (V.app p).app U x
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (NatTrans.congr_app (V.naturality θ) U) x`.
+-/
 theorem vS_map {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {p p' : SimplexCategoryᵒᵖ} (θ : p ⟶ p') (U : Scheme.{0}ᵒᵖ)
     (x : (E.obj p).obj U) :
     vS V U ((E.map θ).app U x) = (SimplexCategory.toCat.map θ.unop).toFunctor ⋙ vS V U x :=
   ConcreteCategory.congr_hom (NatTrans.congr_app (V.naturality θ) U) x
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom ((V.app p).naturality f) x`.
+-/
 theorem vS_natU {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {p : SimplexCategoryᵒᵖ} {U U' : Scheme.{0}ᵒᵖ} (f : U ⟶ U')
     (x : (E.obj p).obj U) :
     vS V U' ((E.obj p).map f x) = vS V U x ⋙ SingleObj.mapHom _ _ (Matrix.GeneralLinearGroup.map (Scheme.Γ.map f).hom) :=
@@ -160,10 +215,16 @@ def hMat {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {p p' : SimplexCategory
     (x : (E.obj p).obj U) : GL (Fin N) (Scheme.Γ.obj U) :=
   edgeMat (vS V U x) (θ.unop.toOrderHom 0)
 
+/- English proof (translation)
+The claim follows from `edgeMat_zero _`.
+-/
 theorem hMat_id {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) (p : SimplexCategoryᵒᵖ) (U : Scheme.{0}ᵒᵖ)
     (x : (E.obj p).obj U) : hMat V (𝟙 p) U x = 1 :=
   edgeMat_zero _
 
+/- English proof (translation)
+Unfold `hMat`. Rewrite using `[vS_map]`. Conclude with `(edgeMat_map_mul (vS V U x) (homOfLE (θ.unop.toOrderHom.monotone (Fin.zero_le (φ.unop.toOrderHom 0))))).symm`.
+-/
 theorem hMat_comp {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {p p' p'' : SimplexCategoryᵒᵖ} (θ : p ⟶ p') (φ : p' ⟶ p'')
     (U : Scheme.{0}ᵒᵖ) (x : (E.obj p).obj U) :
     hMat V (θ ≫ φ) U x = hMat V φ U ((E.map θ).app U x) * hMat V θ U x := by
@@ -171,6 +232,9 @@ theorem hMat_comp {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {p p' p'' : Si
   rw [vS_map]
   exact (edgeMat_map_mul (vS V U x) (homOfLE (θ.unop.toOrderHom.monotone (Fin.zero_le (φ.unop.toOrderHom 0))))).symm
 
+/- English proof (translation)
+Unfold `hMat`. Rewrite using `[vS_natU]`. Both sides reduce to the same expression.
+-/
 theorem hMat_natU {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {p p' : SimplexCategoryᵒᵖ} (θ : p ⟶ p') {U U' : Scheme.{0}ᵒᵖ}
     (f : U ⟶ U') (x : (E.obj p).obj U) :
     hMat V θ U' ((E.obj p).map f x) = Matrix.GeneralLinearGroup.map (Scheme.Γ.map f).hom (hMat V θ U x) := by
@@ -178,6 +242,9 @@ theorem hMat_natU {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {p p' : Simple
   rw [vS_natU]
   rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `f (((g : Matrix (Fin N) (Fin N) A).mulVec v.1) i) = _`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem Um.map_smulGL {N : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (g : GL (Fin N) A) (v : Um N A) :
     (Um.map N f).obj (Um.smulGL g v) = Um.smulGL (Matrix.GeneralLinearGroup.map f g) ((Um.map N f).obj v) := by
   apply Subtype.ext
@@ -205,9 +272,15 @@ abbrev actC {N n : ℕ} {A : Type} [CommRing A] (g : GL (Fin N) A) (w : Composab
     ComposableArrows (FibU N A) n :=
   w ⋙ FibU.act g
 
+/- English proof (translation)
+The claim follows from `FibU.functor_ext fun i => Um.smulGL_one (w.obj i)`.
+-/
 theorem actC_one {N n : ℕ} {A : Type} [CommRing A] (w : ComposableArrows (FibU N A) n) : actC 1 w = w :=
   FibU.functor_ext fun i => Um.smulGL_one (w.obj i)
 
+/- English proof (translation)
+The claim follows from `FibU.functor_ext fun i => Um.smulGL_mul g h (w.obj i)`.
+-/
 theorem actC_mul {N n : ℕ} {A : Type} [CommRing A] (g h : GL (Fin N) A) (w : ComposableArrows (FibU N A) n) :
     actC (g * h) w = actC g (actC h w) :=
   FibU.functor_ext fun i => Um.smulGL_mul g h (w.obj i)
@@ -263,6 +336,9 @@ def twistC {N n : ℕ} {A : Type} [CommRing A] (G : ComposableArrows (SingleObj 
   map_id i := Subtype.ext (Prod.ext (G.map_id i) (congrArg Subtype.val (w.map_id i)))
   map_comp f g := Subtype.ext (Prod.ext (G.map_comp f g) (congrArg Subtype.val (w.map_comp f g)))
 
+/- English proof (translation)
+The claim follows from `CategoryTheory.Functor.ext (fun _ => rfl) (fun i j f => by simp only [eqToHom_refl, Category.id_comp, Category.comp_id] rfl)`.
+-/
 theorem twistC_toGL {N n : ℕ} {A : Type} [CommRing A] (G : ComposableArrows (SingleObj (GL (Fin N) A)) n)
     (w : ComposableArrows (FibU N A) n) : twistC G w ⋙ Um.toGL N A = G :=
   CategoryTheory.Functor.ext (fun _ => rfl) (fun i j f => by
@@ -296,6 +372,9 @@ def twSigma (E : Spc) {N : ℕ} (V : E ⟶ ofCat (glCat N)) : bidiag.obj (twX E 
     congr 1
     exact edgeMat_map_mul (vS V U y.1) (homOfLE (θ.unop.toOrderHom.monotone (Fin.zero_le i)))
 
+/- English proof (translation)
+Use extensionality with `n U y`. Conclude with `(twistC_toGL _ _).symm`.
+-/
 theorem twPi_twSigma (E : Spc) {N : ℕ} (V : E ⟶ ofCat (glCat N)) : twPi E V ≫ V = twSigma E V ≫ PGL.pr N := by
   ext n U y
   exact (twistC_toGL _ _).symm
@@ -313,10 +392,16 @@ def twLine (E : Spc) {N : ℕ} (V : E ⟶ ofCat (glCat N)) :
   app p := ptimes.snd (E.obj p) (Fib N) ≫ Fib.line N
   naturality _ _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twSigma_line (E : Spc) {N : ℕ} (V : E ⟶ ofCat (glCat N)) :
     twSigma E V ≫ PGL.line N = bidiag.map (twLine E V) ≫ (bidiagConst _).hom :=
   rfl
 
+/- English proof (translation)
+The claim follows from `FibU.functor_ext fun i => by have h' := congrArg (fun F : ComposableArrows (Um N A) n => Um.smulGL (edgeMat G i)⁻¹ (F.obj i)) h change Um.smulGL _ (Um.smulGL _ (w.obj i)) = Um.smulGL _ (Um.smulGL _ (w'.obj i)) at h' exact (Um.smulGL_inv_smulGL (edgeMat G i) (w.obj i : Um N A)).sy …`.
+-/
 theorem twistC_injective {N n : ℕ} {A : Type} [CommRing A] (G : ComposableArrows (SingleObj (GL (Fin N) A)) n)
     {w w' : ComposableArrows (FibU N A) n} (h : twistC G w = twistC G w') : w = w' :=
   FibU.functor_ext fun i => by
@@ -340,6 +425,9 @@ def untwistC {N n : ℕ} {A : Type} [CommRing A] (G : ComposableArrows (SingleOb
   map_id _ := Subsingleton.elim _ _
   map_comp _ _ := Subsingleton.elim _ _
 
+/- English proof (translation)
+The claim follows from `Um.functor_ext (fun i => Um.smulGL_smulGL_inv _ _) (fun f => by have := CategoryTheory.Functor.congr_hom hF f simp only [eqToHom_refl, Category.id_comp, Category.comp_id] at this exact this.symm)`.
+-/
 theorem twistC_untwistC {N n : ℕ} {A : Type} [CommRing A] (G : ComposableArrows (SingleObj (GL (Fin N) A)) n)
     (F : ComposableArrows (Um N A) n) (hF : F ⋙ Um.toGL N A = G) : twistC G (untwistC G F hF) = F :=
   Um.functor_ext (fun i => Um.smulGL_smulGL_inv _ _) (fun f => by
@@ -372,14 +460,23 @@ def twIsLimit (E : Spc) {N : ℕ} (V : E ⟶ ofCat (glCat N)) :
 def twIso (E : Spc) {N : ℕ} (V : E ⟶ ofCat (glCat N)) : bidiag.obj (twX E V) ≅ pullback V (PGL.pr N) :=
   (twIsLimit E V).conePointUniqueUpToIso (t := PullbackCone.mk _ _ pullback.condition) (pullbackIsPullback V (PGL.pr N))
 
+/- English proof (translation)
+The claim follows from `(twIsLimit E V).conePointUniqueUpToIso_hom_comp (pullbackIsPullback V (PGL.pr N)) WalkingCospan.left`.
+-/
 theorem twIso_hom_fst (E : Spc) {N : ℕ} (V : E ⟶ ofCat (glCat N)) :
     (twIso E V).hom ≫ pullback.fst V (PGL.pr N) = twPi E V :=
   (twIsLimit E V).conePointUniqueUpToIso_hom_comp (pullbackIsPullback V (PGL.pr N)) WalkingCospan.left
 
+/- English proof (translation)
+The claim follows from `(twIsLimit E V).conePointUniqueUpToIso_hom_comp (pullbackIsPullback V (PGL.pr N)) WalkingCospan.right`.
+-/
 theorem twIso_hom_snd (E : Spc) {N : ℕ} (V : E ⟶ ofCat (glCat N)) :
     (twIso E V).hom ≫ pullback.snd V (PGL.pr N) = twSigma E V :=
   (twIsLimit E V).conePointUniqueUpToIso_hom_comp (pullbackIsPullback V (PGL.pr N)) WalkingCospan.right
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, twIso_hom_snd]`. Conclude with `twSigma_line E V`.
+-/
 theorem twIso_line (E : Spc) {N : ℕ} (V : E ⟶ ofCat (glCat N)) :
     (twIso E V).hom ≫ pullback.snd V (PGL.pr N) ≫ PGL.line N = bidiag.map (twLine E V) ≫ (bidiagConst _).hom := by
   rw [← Category.assoc, twIso_hom_snd]
@@ -410,6 +507,9 @@ def ptimesIsLimit (P : PSh) (S : Spc) : IsLimit (BinaryFan.mk (ptimes.fst P S) (
 def ptimesIso (P : PSh) (S : Spc) : ptimes P S ≅ disc.obj P ⨯ S :=
   (ptimesIsLimit P S).conePointUniqueUpToIso (t := BinaryFan.mk prod.fst prod.snd) (prodIsProd (disc.obj P) S)
 
+/- English proof (translation)
+Establish `h` using `vS_map V₀ (SimplexCategory.const n.unop (SimplexCategory.mk 0) 0).op U (p := op (SimplexCategory.mk 0)) x`. Express the relevant statement in the definitionally equal form `vS V₀ (p := n) U x = _ at h`. Rewrite using `[h]`. Establish `e : @Eq ((0 : Fin (0 + 1)) ⟶ 0) ((SimplexCategory.toCat.map (SimplexCategory.const n.unop (SimplexCategory.mk 0) 0).op.unop).toFunctor.map f) (𝟙 (0 : Fin (0 + 1)))` using `Subsingleton.elim _ _`. Conclude with `(congrArg (vS V₀ (p := op (SimplexCategory.mk 0)) U x).map e).trans ((vS V₀ (p := op (SimplexCategory.mk 0)) U x).map_id _)`.
+-/
 theorem disc_vS_map {P : PSh} {N : ℕ} (V₀ : disc.obj P ⟶ ofCat (glCat N)) (n : SimplexCategoryᵒᵖ) (U : Scheme.{0}ᵒᵖ)
     (x : P.obj U) {i j : Fin (n.unop.len + 1)} (f : i ⟶ j) :
     (show GL (Fin N) (Scheme.Γ.obj U) from (vS V₀ (p := n) U x).map f) = 1 := by
@@ -422,6 +522,9 @@ theorem disc_vS_map {P : PSh} {N : ℕ} (V₀ : disc.obj P ⟶ ofCat (glCat N)) 
   exact (congrArg (vS V₀ (p := op (SimplexCategory.mk 0)) U x).map e).trans
     ((vS V₀ (p := op (SimplexCategory.mk 0)) U x).map_id _)
 
+/- English proof (translation)
+The claim follows from `disc_vS_map V₀ p U x _`.
+-/
 theorem disc_hMat {P : PSh} {N : ℕ} (V₀ : disc.obj P ⟶ ofCat (glCat N)) {p p' : SimplexCategoryᵒᵖ} (θ : p ⟶ p')
     (U : Scheme.{0}ᵒᵖ) (x : P.obj U) : hMat V₀ θ U x = 1 :=
   disc_vS_map V₀ p U x _
@@ -460,11 +563,17 @@ def discDiagIso (P : PSh) {N : ℕ} (V₀ : disc.obj P ⟶ ofCat (glCat N)) :
 def colIso (P : PSh) {N : ℕ} (V₀ : disc.obj P ⟶ ofCat (glCat N)) : ptimes P (Fib N) ≅ pullback V₀ (PGL.pr N) :=
   (discDiagIso P V₀).symm ≪≫ twIso (disc.obj P) V₀
 
+/- English proof (translation)
+Rewrite using `[colIso, Iso.trans_hom, Category.assoc, twIso_hom_fst]`. Both sides reduce to the same expression.
+-/
 theorem colIso_hom_fst (P : PSh) {N : ℕ} (V₀ : disc.obj P ⟶ ofCat (glCat N)) :
     (colIso P V₀).hom ≫ pullback.fst V₀ (PGL.pr N) = ptimes.fst P (Fib N) := by
   rw [colIso, Iso.trans_hom, Category.assoc, twIso_hom_fst]
   rfl
 
+/- English proof (translation)
+Rewrite using `[colIso, Iso.trans_hom, Category.assoc, twIso_line]`. Both sides reduce to the same expression.
+-/
 theorem colIso_line (P : PSh) {N : ℕ} (V₀ : disc.obj P ⟶ ofCat (glCat N)) :
     (colIso P V₀).hom ≫ pullback.snd V₀ (PGL.pr N) ≫ PGL.line N = ptimes.snd P (Fib N) ≫ Fib.line N := by
   rw [colIso, Iso.trans_hom, Category.assoc, twIso_line]

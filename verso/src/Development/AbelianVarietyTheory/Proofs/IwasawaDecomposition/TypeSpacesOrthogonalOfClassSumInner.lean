@@ -20,6 +20,11 @@ section Gen
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
   {ρ : Representation ℂ (GQ L n) W}
 
+/- English proof (translation)
+Rewrite using `[iSupIndep_def]`. Introduce `i`. Rewrite using `[disjoint_iff_inf_le]`. Introduce and unpack `x ⟨hx1, hx2⟩`. Establish `hle : (⨆ (j) (_ : j ≠ i), t j) ≤ LinearMap.ker (B x)` using `iSup₂_le fun j hj y hy => horth i j (Ne.symm hj) x hx1 y hy`.
+
+Conclude with `(Submodule.mem_bot ℂ).2 (hpos i x hx1 (hle hx2))`.
+-/
 theorem indep_of_orth {M : Type} [AddCommGroup M] [Module ℂ M] (B : M → M →ₗ[ℂ] ℂ) {ι : Type*}
     (t : ι → Submodule ℂ M) (hpos : ∀ i, ∀ x ∈ t i, B x x = 0 → x = 0)
     (horth : ∀ i j, i ≠ j → ∀ x ∈ t i, ∀ y ∈ t j, B x y = 0) : iSupIndep t := by
@@ -31,12 +36,21 @@ theorem indep_of_orth {M : Type} [AddCommGroup M] [Module ℂ M] (B : M → M �
     iSup₂_le fun j hj y hy => horth i j (Ne.symm hj) x hx1 y hy
   exact (Submodule.mem_bot ℂ).2 (hpos i x hx1 (hle hx2))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearEquiv.refl ℂ S, fun _ _ _ e => by simpa using e⟩`.
+-/
 theorem isoRep_refl (S : Submodule ℂ (GAf L n → W)) : NG.IsoRep S S :=
   ⟨LinearEquiv.refl ℂ S, fun _ _ _ e => by simpa using e⟩
 
+/- English proof (translation)
+The claim follows from `sSup_le fun _ hU => hU.1.1.le`.
+-/
 theorem isoTyp_le (S : Submodule ℂ (GAf L n → W)) : NG.isoTyp ρ S ≤ NG.AFall L n ρ :=
   sSup_le fun _ hU => hU.1.1.le
 
+/- English proof (translation)
+Introduce `f hf`. Establish `: NG.isoTyp ρ S ≤ (NG.isoTyp ρ S).comap (NG.rt L n h)` using `sSup_le fun U hU g hg => (le_sSup hU : U ≤ NG.isoTyp ρ S) (hU.1.1.stable h g hg)`. Conclude with `this hf`.
+-/
 theorem isoTyp_stable (S : Submodule ℂ (GAf L n → W)) (h : GAf L n) :
     ∀ f ∈ NG.isoTyp ρ S, NG.rt L n h f ∈ NG.isoTyp ρ S := by
   intro f hf
@@ -44,12 +58,21 @@ theorem isoTyp_stable (S : Submodule ℂ (GAf L n → W)) (h : GAf L n) :
     sSup_le fun U hU g hg => (le_sSup hU : U ≤ NG.isoTyp ρ S) (hU.1.1.stable h g hg)
   exact this hf
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isoTyp_le S, fun h f hf => isoTyp_stable S h f hf⟩`.
+-/
 theorem isoTyp_subrep (S : Submodule ℂ (GAf L n → W)) : NG.IsSubrep ρ (NG.isoTyp ρ S) :=
   ⟨isoTyp_le S, fun h f hf => isoTyp_stable S h f hf⟩
 
+/- English proof (translation)
+The claim follows from `le_sSup ⟨hS, isoRep_refl S⟩`.
+-/
 theorem le_isoTyp {S : Submodule ℂ (GAf L n → W)} (hS : NG.IsIrrRep ρ S) : S ≤ NG.isoTyp ρ S :=
   le_sSup ⟨hS, isoRep_refl S⟩
 
+/- English proof (translation)
+Unfold `NG.isoTyp`. Use `congr 1`. Use extensionality with `T`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨h1, (h.symm hS).trans h2⟩, fun ⟨h1, h2⟩ => ⟨h1, h.trans h2⟩⟩`.
+-/
 theorem isoTyp_eq {S S' : Submodule ℂ (GAf L n → W)} (hS : ∀ h, ∀ f ∈ S, NG.rt L n h f ∈ S)
     (h : NG.IsoRep S S') : NG.isoTyp ρ S = NG.isoTyp ρ S' := by
   unfold NG.isoTyp
@@ -59,6 +82,9 @@ theorem isoTyp_eq {S S' : Submodule ℂ (GAf L n → W)} (hS : ∀ h, ∀ f ∈ 
 
 variable {B : (GAf L n → W) →ₗ⋆[ℂ] (GAf L n → W) →ₗ[ℂ] ℂ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `(hB x hx x hx).2.1 hne` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`.
+-/
 theorem pos_zero (hB : GlobalTheory.TypeOrthogonality.Good ρ B) {x : GAf L n → W} (hx : x ∈ NG.AFall L n ρ) (h0 : B x x = 0) :
     x = 0 := by
   by_contra hne
@@ -66,6 +92,13 @@ theorem pos_zero (hB : GlobalTheory.TypeOrthogonality.Good ρ B) {x : GAf L n �
   rw [h0] at this
   simp at this
 
+/- English proof (translation)
+Introduce `x hx y hy`. Establish `step : ∀ U, NG.IsIrrRep ρ U → NG.IsoRep S U → ∀ a ∈ U, ∀ b ∈ NG.isoTyp ρ S', B a b = 0`. Introduce `U hU h1 a ha b hb`. Establish `hle : NG.isoTyp ρ S' ≤ LinearMap.ker (B a)`. Use `sSup_le fun U' hU' => ?_` and prove the remaining obligations.
+
+Introduce `c hc`. Conclude with `GlobalTheory.TypeOrthogonality.orth_of_not_iso hB hfin hU hU'.1 (fun h3 => hne ((h1.trans h3).trans (hU'.2.symm hS'.1.stable))) a ha c hc`. Conclude with `hle hb`. Establish `hle : NG.isoTyp ρ S ≤ LinearMap.ker (B.flip y)`. Use `sSup_le fun U hU => ?_` and prove the remaining obligations.
+
+Introduce `a ha`. Conclude with `step U hU.1 hU.2 a ha _ hy`. Conclude with `hle hx`.
+-/
 theorem isoTyp_orth (hB : GlobalTheory.TypeOrthogonality.Good ρ B) (hfin : ∀ N : ℕ, 0 < N → FiniteDimensional ℂ ↥(Submodule.span ℂ
       {f | f ∈ NG.AFall L n ρ ∧ ∀ κ, NG.Cong L n N κ → ∀ g, f (g * κ) = f g}))
     {S S' : Submodule ℂ (GAf L n → W)} (hS : NG.IsIrrRep ρ S) (hS' : NG.IsIrrRep ρ S')
@@ -85,6 +118,11 @@ theorem isoTyp_orth (hB : GlobalTheory.TypeOrthogonality.Good ρ B) (hfin : ∀ 
     exact step U hU.1 hU.2 a ha _ hy
   exact hle hx
 
+/- English proof (translation)
+Use `⟨hU.le hp, fun κ => ?_⟩` and prove the remaining obligations. Use `set c : ℂ := ((χ κ : ℂˣ) : ℂ)`. Establish `hxc : NG.rt L n (κ : GAf L n) x = c • x` using `hx.2 κ`. Establish `hxA : x - p ∈ NG.AFall L n ρ` using `(NG.AFall L n ρ).sub_mem hx.1 (hU.le hp)`. Use `GlobalTheory.TypeOrthogonality.proj_unique hB hU.le (hU.stable _ p hp) (U.smul_mem c hp) (u := NG.rt L n (κ : GAf L n) x) (fun w hw => ?_) (fun w hw => ?_)` and prove the remaining obligations.
+
+Establish `hw' : NG.rt L n (κ : GAf L n)⁻¹ w ∈ U` using `hU.stable _ w hw`. Rewrite using `[← map_sub, ← GlobalTheory.TypeOrthogonality.rt_rt_inv (κ : GAf L n) w, (hB _ hxA _ (hU.le hw')).2.2]`. Conclude with `hxp _ hw'`. Rewrite using `[hxc, ← smul_sub, map_smulₛₗ, LinearMap.smul_apply, hxp w hw, smul_zero]`.
+-/
 theorem proj_typeSp (hB : GlobalTheory.TypeOrthogonality.Good ρ B) {J : Subgroup (GAf L n)} {χ : J →* ℂˣ}
     {U : Submodule ℂ (GAf L n → W)} (hU : NG.IsSubrep ρ U) {x p : GAf L n → W} (hx : x ∈ NG.TypeSp ρ J χ)
     (hp : p ∈ U) (hxp : ∀ w ∈ U, B (x - p) w = 0) : p ∈ NG.TypeSp ρ J χ := by
@@ -101,6 +139,13 @@ theorem proj_typeSp (hB : GlobalTheory.TypeOrthogonality.Good ρ B) {J : Subgrou
 
 end Gen
 
+/- English proof (translation)
+Take `⟨h1, N, hN, h2⟩` from `hf`. Take `⟨N', hN', hc⟩` from `GlobalTheory.CongConjugate.congConj L n h N hN`. Use `⟨fun γ g => ?_, N', hN', fun κ hκ g => ?_⟩` and prove the remaining obligations. Use `show f ((γ : GAf L n) * g * h) = ρ γ (f (g * h))`. Rewrite using `[mul_assoc]`.
+
+Conclude with `h1 γ _`. Use `show f (g * κ * h) = f (g * h)`. Use `h2 _ (hc κ hκ) (g * h)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
+
+Use `group`.
+-/
 theorem rt_mem_AFall {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GQ L n) W} (h : GAf L n) {f : GAf L n → W} (hf : f ∈ NG.AFall L n ρ) :
     NG.rt L n h f ∈ NG.AFall L n ρ := by
@@ -119,6 +164,37 @@ def rtHom (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (W : Type
   map_one' := by ext f g; simp [NG.rt]
   map_mul' a b := by ext f g; simp [NG.rt, mul_assoc]
 
+/- English proof (translation)
+Introduce `L _ _ _ n a B hB hfin x hx`. Establish `hG : GlobalTheory.TypeOrthogonality.Good a.ρ B` using `hB`. Use `set C := NG.AFall L n a.ρ with hCdef`. Set `ρ` to `rtHom L n a.W`. Establish `hρ : ∀ h f, ρ h f = NG.rt L n h f` using `fun _ _ => rfl`.
+
+Establish `h1 : ∀ x ∈ C, ∀ y ∈ C, ∀ z ∈ C, ∀ c : ℂ, B x (y + c • z) = B x y + c * B x z`. Introduce `x _ y _ z _ c`. Simplify using the standard rewrite rules. Establish `h2 : ∀ x ∈ C, ∀ y ∈ C, B x y = starRingEnd ℂ (B y x)` using `fun x hx y hy => (hG x hx y hy).1`. Establish `h3 : ∀ x ∈ C, x ≠ 0 → 0 < (B x x).re` using `fun x hx h => (hG x hx x hx).2.1 h`.
+
+Establish `h4 : ∀ h, ∀ x ∈ C, ρ h x ∈ C` using `fun h x hx => rt_mem_AFall h hx`. Take `⟨N, hN, hxN⟩` from `hx.2`. Set `core` to `GlobalTheory.IsotOrth.coreOf C (fun x y => B x y) h1 h2 h3`. Use `letI : NormedAddCommGroup C := core.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ C := InnerProductSpace.ofCore core.toCore`.
+
+Set `ρC` to `GlobalTheory.IsotOrth.rhoC ρ C h4`. Establish `hρC : ∀ g (c : C), ((ρC g c : C) : GAf L n → a.W) = NG.rt L n g c` using `fun g c => rfl`. Establish `hunit : ∀ g (x y : C), inner ℂ (ρC g x) (ρC g y) = inner ℂ x y` using `fun g x y => (hG x x.2 y y.2).2.2 g`. Set `F : Submodule ℂ C` to `{ carrier := {v | ∀ k ∈ GlobalTheory.IsotOrth.congSub L n N, ρC k v = v} zero_mem' := fun k _ => map_zero _ add_mem' := fun ha hb k hk => by rw [map_add, ha k hk, hb k hk] smul_mem' := fun c v hv k hk => by rw [map_smul, hv k hk] }`. Use `haveI := hfin N hN`.
+
+Set `ι : F →ₗ[ℂ] ↥(Submodule.span ℂ {f | f ∈ NG.AFall L n a.ρ ∧ ∀ κ, NG.Cong L n N κ → ∀ g, f (g * κ) = f g})` to `(C.subtype.comp F.subtype).codRestrict _ (fun w => Submodule.subset_span ⟨w.1.2, fun κ hκ g => by`. Use `congrArg Subtype.val (w.2 κ hκ)` as an intermediate fact. Conclude with `congrFun this g⟩)`. Establish `hι : Function.Injective ι` using `fun a b h => by`. Establish `h'` using `congrArg Subtype.val h`.
+
+Conclude with `Subtype.ext (Subtype.ext h')`. Use `haveI : FiniteDimensional ℂ F := FiniteDimensional.of_injective ι hι`. Establish `hF : ∀ v, v ∈ F ↔ ∀ k ∈ GlobalTheory.IsotOrth.congSub L n N, ρC k v = v` using `fun v => Iff.rfl`. Establish `horb : ∀ y : C, ((fun k => ρC k y) '' (GlobalTheory.IsotOrth.congSub L n N : Set (GAf L n))).Finite`. Introduce `y`.
+
+Take `⟨N', hN', hy⟩` from `y.2.2`. Use `(GlobalTheory.IsotOrth.orbit_finite ρC hN' y (fun κ hκ => Subtype.ext (funext fun g => hy κ hκ g))).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `⟨k, hk.1, rfl⟩`. Establish `hmem` using `GlobalTheory.SpanIsot.mem_sSup_irr ρC hunit _ F hF horb ⟨x, hx⟩ (fun κ hκ => Subtype.ext (funext fun g => hxN κ hκ g))`.
+
+Establish `hle : sSup {W | GlobalTheory.SpanIsot.IrrSub ρC W} ≤ (sSup {S | NG.IsIrrRep a.ρ S}).comap C.subtype`. Use `sSup_le fun W hW => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_le_iff_le_comap]`. Take `⟨hW0, hWs, hWi⟩` from `hW`. Use `le_sSup ⟨⟨Submodule.map_subtype_le _ _, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `h _ ⟨w, hw, rfl⟩`. Conclude with `⟨ρC h w, hWs h w hw, rfl⟩`. Introduce `h`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW0`. Establish `: ((w : C) : GAf L n → a.W) ∈ W.map C.subtype` using `⟨w, hw, rfl⟩`.
+
+Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hw0 (Subtype.ext this)`. Introduce `W' hW' hW'W`. Establish `hs : GlobalTheory.SpanIsot.Stab ρC (W'.comap C.subtype)` using `fun g c hc => by show ((ρC g c : C) : GAf L n → a.W) ∈ W'`. Rewrite using `[hρC]`.
+
+Conclude with `hW'.stable g _ hc`. Establish `hle' : W'.comap C.subtype ≤ W`. Introduce `c hc`. Take `⟨w, hw, e⟩` from `hW'W hc`. Establish `: w = c` using `Subtype.ext e`.
+
+Rewrite using `[← this]`. Conclude with `hw`. Break down `hWi _ hle' hs with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `a ha`. Take `⟨w, _, rfl⟩` from `hW'W ha`. Establish `: w ∈ W'.comap C.subtype` using `ha`. Rewrite `this` using `[h, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot, this]`.
+
+Both sides reduce to the same expression. Use `right`. Use `le_antisymm hW'W ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `: w ∈ W'.comap C.subtype` using `by rw [h]; exact hw`.
+
+Conclude with `this`. Conclude with `hle hmem`.
+-/
 theorem mem_sSup_irrRep : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (B : (GAf L n → a.W) →ₗ⋆[ℂ] (GAf L n → a.W) →ₗ[ℂ] ℂ), GlobalTheory.CoefDuty.IsPetersson a B → (∀ N : ℕ, 0 < N → FiniteDimensional ℂ ↥(Submodule.span ℂ {f | f ∈ NG.AFall L n a.ρ ∧ ∀ κ, NG.Cong L n N κ → ∀ g, f (g * κ) = f g})) → ∀ x ∈ NG.AFall L n a.ρ, x ∈ sSup {S | NG.IsIrrRep a.ρ S} := by
   intro L _ _ _ n a B hB hfin x hx
   classical
@@ -201,6 +277,49 @@ theorem mem_sSup_irrRep : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L]
         exact this
   exact hle hmem
 
+/- English proof (translation)
+Introduce `L _ _ _ n a J χ hlev`. Take `⟨N, hN, hNJ⟩` from `hlev`. Use `haveI hW : FiniteDimensional ℂ a.W := a.alg.1`. Establish `hT` using `GlobalTheory.T.finite_doubleCosets_definiteUnitary_maximalLevel L n`. Establish `hfin : ∀ N : ℕ, 0 < N → FiniteDimensional ℂ ↥(Submodule.span ℂ {f | f ∈ NG.AFall L n a.ρ ∧ ∀ κ, NG.Cong L n N κ → ∀ g, f (g * κ) = f g})`.
+
+Introduce `M hM`. Use `haveI := GlobalTheory.AlgFormsFin.fixedForms_finite L n a.ρ hT hM`. Use `Submodule.finiteDimensional_of_le (S₂ := GlobalTheory.AlgFormsFin.fixedForms L n a.ρ M) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `f ⟨hf, hκ⟩`. Conclude with `⟨hf.1, hκ⟩`.
+
+Take `⟨β, hβ⟩` from `GlobalTheory.T.algWt_exists_invForm' L n a`. Take `⟨B, hB, -⟩` from `GlobalTheory.T.class_sum_eq_const_mul_petersson L n a β hβ`. Establish `hG : GlobalTheory.TypeOrthogonality.Good a.ρ B` using `hB`. Use `set V := NG.TypeSp a.ρ J χ with hVdef`. Establish `hVA : V ≤ NG.AFall L n a.ρ` using `fun f hf => hf.1`.
+
+Establish `hVle : V ≤ Submodule.span ℂ {f | f ∈ NG.AFall L n a.ρ ∧ ∀ κ, NG.Cong L n N κ → ∀ g, f (g * κ) = f g}`. Introduce `f hf`. Use `Submodule.subset_span ⟨hf.1, fun κ hκ g => ?_⟩` and prove the remaining obligations. Take `⟨hJ, h1⟩` from `hNJ κ hκ`. Use `congrFun (hf.2 ⟨κ, hJ⟩) g` as an intermediate fact.
+
+Rewrite `this` using `[h1]`. Simplify `this` using `[NG.rt]`. Use `haveI : FiniteDimensional ℂ ↥(Submodule.span ℂ {f | f ∈ NG.AFall L n a.ρ ∧ ∀ κ, NG.Cong L n N κ → ∀ g, f (g * κ) = f g}) := hfin N hN`. Use `haveI hVfd : FiniteDimensional ℂ V := Submodule.finiteDimensional_of_le hVle`. Use `⟨hVfd, ?_⟩` and prove the remaining obligations.
+
+Set `P : Set (Submodule ℂ (GAf L n → a.W))` to `{q | q ≠ ⊥ ∧ ∃ S, NG.IsIrrRep a.ρ S ∧ q = NG.isoTyp a.ρ S ⊓ V}`. Establish `hPorth : ∀ q ∈ P, ∀ q' ∈ P, q ≠ q' → ∀ x ∈ q, ∀ y ∈ q', B x y = 0`. Introduce and unpack `q ⟨-, S, hS, rfl⟩ q' ⟨-, S', hS', rfl⟩ hne x hx y hy`. Distinguish the cases in `hi : NG.IsoRep S S'`. Conclude with `absurd (by rw [isoTyp_eq hS.1.stable hi]) hne`.
+
+Conclude with `isoTyp_orth hG hfin hS hS' hi x hx.1 y hy.1`. Establish `hPfin : Finite P`. Set `t : P → Submodule ℂ V` to `fun q => (q : Submodule ℂ (GAf L n → a.W)).comap V.subtype`. Establish `hind : iSupIndep t`. Use `indep_of_orth (fun x : V => (B x).comp V.subtype) t (fun i x _ h0 => ?_) (fun i j hij x hx y hy => ?_)` and prove the remaining obligations.
+
+Conclude with `Subtype.ext (pos_zero hG (hVA x.2) h0)`. Conclude with `hPorth i i.2 j j.2 (fun e => hij (Subtype.ext e)) x hx y hy`. Establish `hf` using `Submodule.finite_ne_bot_of_iSupIndep hind`. Establish `hall : ∀ q : P, t q ≠ ⊥`. Introduce and unpack `⟨q, hq0, S, hS, rfl⟩ h`.
+
+Apply `hq0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `: (⟨x, hx.2⟩ : V) ∈ t ⟨_, hq0, S, hS, rfl⟩` using `hx`. Rewrite `this` using `[h, Submodule.mem_bot]`.
+
+Conclude with `(Submodule.mem_bot ℂ).2 (congrArg Subtype.val this)`. Establish `: (Set.univ : Set P).Finite` using `hf.subset fun q _ => hall q`. Conclude with `Set.finite_univ_iff.1 this`. Establish `hPspec : ∀ q : P, ∃ S, NG.IsIrrRep a.ρ S ∧ (q : Submodule ℂ (GAf L n → a.W)) = NG.isoTyp a.ρ S ⊓ V` using `fun q => q.2.2`. Use `choose S hSirr hSq using hPspec`.
+
+Establish `hinj : ∀ i i' : P, NG.IsoRep (S i) (S i') → i = i'`. Introduce `i i' h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hSq i, hSq i', isoTyp_eq (hSirr i).1.stable h]`. Establish `hcover : ∀ S', NG.IsIrrRep a.ρ S' → NG.isoTyp a.ρ S' ⊓ V ≠ ⊥ → ∃ i, NG.IsoRep (S i) S'`.
+
+Introduce `S' hS' hne`. Set `i : P` to `⟨_, hne, S', hS', rfl⟩`. Use `⟨i, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hni`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+
+Establish `hxi : x ∈ (i : Submodule ℂ (GAf L n → a.W))` using `hx`. Rewrite `hxi` using `[hSq i]`. Conclude with `hx0 (pos_zero hG (hVA hx.2) (isoTyp_orth hG hfin (hSirr i) hS' hni x hxi.1 x hx.1))`. Establish `hne : ∀ i : P, NG.isoTyp a.ρ (S i) ⊓ V ≠ ⊥` using `fun i => by rw [← hSq i]; exact i.2.1`. Establish `horth : ∀ i j : P, i ≠ j → ∀ x ∈ NG.isoTyp a.ρ (S i), ∀ y ∈ NG.isoTyp a.ρ (S j), B x y = 0` using `fun i j hij => isoTyp_orth hG hfin (hSirr i) (hSirr j) (fun h => hij (hinj i j h))`.
+
+Establish `hindep : iSupIndep fun i : P => NG.isoTyp a.ρ (S i)` using `indep_of_orth (fun x => B x) _ (fun i x hx h0 => pos_zero hG (isoTyp_le _ hx) h0) horth`. Use `⟨P, hPfin, S, hSirr, hinj, hcover, hne, hindep, ?_⟩` and prove the remaining obligations. Use `haveI : Fintype P := Fintype.ofFinite P`. Use `le_antisymm (iSup_le fun i => inf_le_right) fun x hx => ?_` and prove the remaining obligations. Establish `hxA : x ∈ NG.AFall L n a.ρ` using `hx.1`.
+
+Establish `hproj : ∀ i : P, ∃ p ∈ NG.isoTyp a.ρ (S i), ∀ w ∈ NG.isoTyp a.ρ (S i), B (x - p) w = 0` using `fun i => GlobalTheory.TypeOrthogonality.proj_all hG hfin (isoTyp_subrep (S i)) x hxA`. Use `choose p hpmem hpo using hproj`. Establish `hpV : ∀ i, p i ∈ V` using `fun i => proj_typeSp hG (isoTyp_subrep (S i)) hx (hpmem i) (hpo i)`. Establish `hsum : ∑ i, p i ∈ ⨆ i : P, NG.isoTyp a.ρ (S i) ⊓ V` using `Submodule.sum_mem _ fun i _ => (le_iSup (fun i : P => NG.isoTyp a.ρ (S i) ⊓ V) i) ⟨hpmem i, hpV i⟩`. Use `set y := x - ∑ i, p i with hy`.
+
+Establish `hyV : y ∈ V` using `V.sub_mem hx (V.sum_mem fun i _ => hpV i)`. Establish `hyA : y ∈ NG.AFall L n a.ρ` using `hVA hyV`. Establish `hy1 : ∀ i : P, ∀ w ∈ NG.isoTyp a.ρ (S i), B y w = 0`. Introduce `i w hw`. Establish `e : B y w = B (x - p i) w - ∑ j ∈ Finset.univ.erase i, B (p j) w`.
+
+Simplify using `only [hy, map_sub, map_sum, LinearMap.sub_apply, LinearMap.sum_apply]`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hpo i w hw, Finset.sum_eq_zero fun j hj => horth j i (Finset.ne_of_mem_erase hj) _ (hpmem j) w hw, sub_zero]`. Establish `hy2 : ∀ U, NG.IsIrrRep a.ρ U → ∀ w ∈ U, B y w = 0`.
+
+Introduce `U hU w hw`. Take `⟨q, hq, hqo⟩` from `GlobalTheory.TypeOrthogonality.proj_all hG hfin (isoTyp_subrep U) y hyA`. Establish `hqV : q ∈ V` using `proj_typeSp hG (isoTyp_subrep U) hyV hq hqo`. Distinguish the cases in `hq0 : q = 0`. Use `hqo w (le_isoTyp hU hw)` as an intermediate fact.
+
+Rewrite `this` using `[hq0, sub_zero]`. Then use the resulting hypothesis. Establish `hne' : NG.isoTyp a.ρ U ⊓ V ≠ ⊥` using `fun h => hq0 (by`. Establish `: q ∈ NG.isoTyp a.ρ U ⊓ V` using `⟨hq, hqV⟩`. Rewrite using `[h, Submodule.mem_bot] at this)` and apply the resulting hypothesis. Take `⟨i, hi⟩` from `hcover U hU hne'`.
+
+Use `hy1 i w ?_` and prove the remaining obligations. Rewrite using `[isoTyp_eq (hSirr i).1.stable hi]`. Conclude with `le_isoTyp hU hw`. Establish `hyS` using `mem_sSup_irrRep L n a B hB hfin y hyA`. Establish `hle : sSup {S | NG.IsIrrRep a.ρ S} ≤ LinearMap.ker (B y)` using `sSup_le fun U hU w hw => hy2 U hU w hw`.
+
+Establish `hy0 : y = 0` using `pos_zero hG hyA (hle hyS)`. Establish `: x = ∑ i, p i` using `by rw [← sub_eq_zero]; exact hy0`. Rewrite using `[this]`. Conclude with `hsum`.
+-/
 theorem typeSp_decomp : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (J : Subgroup (GAf L n)) (χ : J →* ℂˣ), (∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1) → FiniteDimensional ℂ (NG.TypeSp a.ρ J χ) ∧ ∃ (ι : Type) (_ : Finite ι) (S : ι → Submodule ℂ (GAf L n → a.W)), (∀ i, NG.IsIrrRep a.ρ (S i)) ∧ (∀ i i', NG.IsoRep (S i) (S i') → i = i') ∧ (∀ S', NG.IsIrrRep a.ρ S' → NG.isoTyp a.ρ S' ⊓ NG.TypeSp a.ρ J χ ≠ ⊥ → ∃ i, NG.IsoRep (S i) S') ∧ (∀ i, NG.isoTyp a.ρ (S i) ⊓ NG.TypeSp a.ρ J χ ≠ ⊥) ∧ iSupIndep (fun i => NG.isoTyp a.ρ (S i)) ∧ ⨆ i, NG.isoTyp a.ρ (S i) ⊓ NG.TypeSp a.ρ J χ = NG.TypeSp a.ρ J χ := by
   intro L _ _ _ n a J χ hlev
   classical

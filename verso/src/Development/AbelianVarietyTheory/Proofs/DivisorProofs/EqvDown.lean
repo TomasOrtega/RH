@@ -22,9 +22,29 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum.Desc
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.allSixLaws.1, GlobalTheory.allSixLaws.2.1, GlobalTheory.allSixLaws.2.2.1, GlobalTheory.allSixLaws.2.2.2.1, GlobalTheory.allSixLaws.2.2.2.2.1⟩`.
+-/
 theorem lawsLL : GlobalTheory.UT.LL :=
   ⟨GlobalTheory.allSixLaws.1, GlobalTheory.allSixLaws.2.1, GlobalTheory.allSixLaws.2.2.1, GlobalTheory.allSixLaws.2.2.2.1, GlobalTheory.allSixLaws.2.2.2.2.1⟩
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D A N hN lab F _ _ _ em lab' E' hL hE`. Take `⟨hAdm, hC⟩` from `hB`. Establish `hN1 : 1 ≤ N` using `hN.pos`. Establish `honto` using `GlobalTheory.T.torsionLabels_surjective_of_larger_algClosed_field R D.toPre A N hN1 lab F em lab' hL hE.onto`. Establish `hframe : ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra (FractionRing R) K] (p : QkPt D.toPre K N), ∃ w, GlobalTheory.UT.TXFrame N p w` using `fun K _ _ _ p => (GlobalTheory.UT.SymFrame.main lawsLL R (maximalIdeal R) hAdm D K N hN p).1`.
+
+Set `J` to `{q : (p : QkPt D.toPre (Kb R) N) × GlobalTheory.UT.Frm D.toPre (Kb R) N p.g.b × ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) (Kb R)) // GlobalTheory.UT.TXFrame N q.1 q.2.1 ∧ SymLift A.A A.L N N (lab q.1) q.2.2}`. Use `choose a ha using fun i : J => GlobalTheory.T.exists_linearMap_torsionPoint_symmetricFrame_operator R (maximalIdeal R) hAdm D (Kb R) N hN i.1.1 i.1.2.1 i.2.1`. Use `choose b hb using fun i : J => GlobalTheory.T.exists_linearMap_thetaGroup_action_sections R A (Kb R) N i.1.2.2`. Establish `hq` using `(GlobalTheory.T.levelPoints_algClosure_fractionRing_bijective R D.toPre F em N hN1).1`. Use `choose p' hp' using fun i : J => (hq i.1.1).exists`.
+
+Use `choose w' hw' using fun i : J => hframe F (p' i)`. Establish `hlab : ∀ i : J, lab' (p' i) = baseEm em ≫ lab i.1.1` using `fun i => Over.OverMorphism.ext (by rw [hL _ _ (hp' i)]; rfl)`. Use `choose θ' hθ' using fun i : J => GlobalTheory.WeightProbe.exists_symLift_top A hN (lab' (p' i)) ((hE.onto _).2 ⟨_, rfl⟩)`. Use `choose a' ha' using fun i : J => GlobalTheory.T.exists_linearMap_torsionPoint_symmetricFrame_operator R (maximalIdeal R) hAdm D F N hN (p' i) (w' i) (hw' i)`. Use `choose b' hb' using fun i : J => GlobalTheory.T.exists_linearMap_thetaGroup_action_sections R A F N (θ' i)`.
+
+Use `letI : Algebra (Kb R) F := em.toRingHom.toAlgebra`. Use `haveI : IsScalarTower (FractionRing R) (Kb R) F := IsScalarTower.of_algebraMap_eq fun r => (em.commutes r).symm`. Use `haveI : FiniteDimensional F (Fam D.toPre F N) := (GlobalTheory.UU.finrank_fam_of_laws GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1 R D.toPre D.tau_bimult F N hN1).1`. Establish `hfamExt : GlobalTheory.FieldBaseChange.IsExtension (famExt D.toPre em N)` using `GlobalTheory.FieldBaseChange.isExtension_famPull D.toPre (Kb R) F _ hN1`. Establish `hsecExt` using `GlobalTheory.T.lineBundlePowSections_algClosure_fieldBaseChange R A F em N`.
+
+Establish `ca : ∀ i v, a' i (famExt D.toPre em N v) = famExt D.toPre em N (a i v)` using `fun i v => ((ha' i _ _).1 (GlobalTheory.T.torsionPointOperator_symmetricFrame_fieldExtension R (maximalIdeal R) hAdm D F em N hN i.1.1 i.1.2.1 (p' i) (w' i) i.2.1 (hw' i) (hp' i) v _ ((ha i v _).2 rfl))).symm`. Establish `cb : ∀ i t, b' i (secExt A em N t) = secExt A em N (b i t)` using `fun i t => ((hb' i _ _).1 (GlobalTheory.T.thetaGroup_symmetricLift_action_fieldExtension R A F em N hN (lab i.1.1) i.1.2.2 (θ' i) i.2.2 (by rw [← hlab i]; exact hθ' i) t _ ((hb i t _).2 rfl))).symm`. Set `E'' : Fam D.toPre F N →ₗ[F] SecF A F N` to `{ toFun := E' map_add' := fun s t => GlobalTheory.FieldBaseChange.SecOver.ext _ _ fun j => hE.add s t (s + t) (fun _ _ => rfl) j map_smul' := fun c s => GlobalTheory.FieldBaseChange.SecOver.ext _ _ fun j => hE.smul c s (c • s) ((ReciprocityTheory.ChartRestriction.G.DVR.isSmul_iff …`. Establish `cE : ∀ i v, E'' (a' i v) = b' i (E'' v)` using `fun i v => (hb' i _ _).1 (hE.act (p' i) (w' i) (θ' i) v (a' i v) (hw' i) (hθ' i) ((ha' i v _).2 rfl))`. Take `⟨E, hEb, hEc⟩` from `GlobalTheory.T.exists_intertwining_bijective_of_fieldBaseChange (Kb R) F _ _ _ _ (famExt D.toPre em N) (secExt A em N) hfamExt hsecExt J a b a' b' ca cb E'' hE.bij cE`.
+
+Use `⟨fun s => E s, ⟨hEb, ?_, ?_, honto, hframe (Kb R), fun p => GlobalTheory.WeightProbe.exists_symLift_top A hN (lab p) ((honto _).2 ⟨p, rfl⟩), ?_⟩⟩` and prove the remaining obligations. Introduce `s s' s'' h j`. Establish `: s'' = s + s'` using `ReciprocityTheory.ChartRestriction.G.DVR.fam_ext h`. Substitute `this` using the available equality. Conclude with `congrArg (fun q : SecF A (Kb R) N => LB.Sec.f q j) (map_add E s s')`.
+
+Introduce `c s s' h j`. Rewrite using `[(ReciprocityTheory.ChartRestriction.G.DVR.isSmul_iff _ _ _).1 h]`. Conclude with `congrArg (fun q : SecF A (Kb R) N => LB.Sec.f q j) (map_smul E c s)`. Introduce `p w θ s s' hw hθ hP`. Set `i : J` to `⟨⟨p, w, θ⟩, hw, hθ⟩`.
+
+Establish `e1 : s' = a i s` using `(ha i s s').1 hP`. Establish `e2 : E s' = b i (E s)` using `by rw [e1]; exact hEc i s`. Conclude with `(hb i (E s) (E s')).2 e2`.
+-/
 theorem eqv_down : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R))
     (A : PolAV (Sp (FractionRing R))) (N : ℕ), Odd N → ∀ (lab : QkPt D.toPre (Kb R) N → (TFK (R := R) (Kb R) ⟶ A.A))
     (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (em : Kb R →ₐ[FractionRing R] F) lab' E',

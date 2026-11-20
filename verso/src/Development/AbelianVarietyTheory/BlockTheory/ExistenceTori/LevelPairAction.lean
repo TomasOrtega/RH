@@ -73,6 +73,13 @@ def LevActLawsSt (Xo : Moduli Dw l) (c : Coeff l) : Prop :=
     ActLaws (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fun t y y' => FrBor t y y')
       (fun (g : Γ) y y' => LevAct (ρM g) (ρA g) y y')
 
+/- English proof (translation)
+Take `⟨r, ν, w, ⟨h0, h1, h2⟩, h3⟩` from `h`. Use `⟨r, ν, w, ⟨h0, fun a => ?_, fun a => ?_⟩, h3⟩` and prove the remaining obligations. Establish `e : Xo.univ.eta (gM' a) = Xo.univ.eta (gM a)`. Rewrite using `[show gM' a = (gM' a - gM a) + gM a by abel, Xo.univ.eta_add, Xo.univ.eta_ker _ (hM a), _root_.one_mul]`. Rewrite using `[e]`.
+
+Conclude with `h1 a`. Take `⟨b, hb⟩` from `hA a`. Establish `e : Xo.univ.etaA (gA' a) = Xo.univ.etaA (gA a)`. Rewrite using `[show gA' a = (gA' a - gA a) + gA a by abel, Xo.univ.etaA_add, hb, Xo.univ.etaA_ker, _root_.one_mul]`. Rewrite using `[e]`.
+
+Conclude with `h2 a`.
+-/
 theorem LevAct.congr {gM gM' gA gA' : Dw.La →ₗ[𝓞 E] Dw.La} (hM : CongM l gM' gM) (hA : CongN l.A gA' gA)
     {S : Type} [CommRing S] [Algebra c.F S] {y y' : FrPt Xo c S} (h : LevAct gM gA y y') : LevAct gM' gA' y y' := by
   obtain ⟨r, ν, w, ⟨h0, h1, h2⟩, h3⟩ := h

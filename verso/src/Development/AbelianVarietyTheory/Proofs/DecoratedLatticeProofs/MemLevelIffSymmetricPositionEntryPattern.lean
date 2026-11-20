@@ -11,16 +11,31 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum
 section Field
 variable {F : Type} [Field F] {κ l : ℕ}
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type]`.
+-/
 theorem mul_fromBlocks_inl (M : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) F) (C : Matrix (Fin κ) (Fin κ) F)
     (a : Fin κ ⊕ Fin l) (j : Fin κ) :
     (M * (fromBlocks C 0 0 1 : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) F) : Matrix _ _ F) a (Sum.inl j) = ∑ t, M a (Sum.inl t) * C t j := by
   simp [Matrix.mul_apply, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem mul_fromBlocks_inr (M : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) F) (C : Matrix (Fin κ) (Fin κ) F)
     (a : Fin κ ⊕ Fin l) (j : Fin l) :
     (M * (fromBlocks C 0 0 1 : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) F) : Matrix _ _ F) a (Sum.inr j) = M a (Sum.inr j) := by
   simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `hv : (u * embX l γ).val = u.val * fromBlocks γ.val 0 0 1`. Rewrite using `[Units.val_mul, Radical.embX_val]`. Rewrite using `[hv]`. Apply the tactic sequence `rcases a with i | i <;> rcases b with j | j <;> simp only [FreeTop, not_lt] at hab`.
+
+Rewrite using `[mul_fromBlocks_inl]`. Establish `hu' : ∀ t, u.val (Sum.inl i) (Sum.inl t) = if i = t then 1 else 0` using `fun t => by`. Rewrite using `[hu (Sum.inl i) (Sum.inl t) le_rfl, Matrix.one_apply]`. Simplify using the standard rewrite rules. Simplify using `only [hu', ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Rewrite using `[hγ i j (by exact_mod_cast hab)]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[mul_fromBlocks_inr, hu (Sum.inl i) (Sum.inr j) (Nat.succ_le_succ hab)]`. Rewrite using `[mul_fromBlocks_inl]`. Establish `hu' : ∀ t, u.val (Sum.inr i) (Sum.inl t) = 0` using `fun t => by`.
+
+Rewrite using `[hu (Sum.inr i) (Sum.inl t) (Nat.succ_le_succ hab)]`. Simplify using the standard rewrite rules. Simplify using `[hu']`. Rewrite using `[mul_fromBlocks_inr, hu (Sum.inr i) (Sum.inr j) (Nat.succ_le_succ hab)]`.
+-/
 theorem pat_of_mul (ρ : ℕ) (u : GL (Fin κ ⊕ Fin l) F) (hu : InN (ρ + 1) u) (γ : GL (Fin κ) F)
     (hγ : IsUpperUnip Fin.val γ.val) :
     ∀ a b, ¬ FreeTop ρ a b → (u * embX l γ).val a b = (1 : Matrix _ _ F) a b := by
@@ -42,6 +57,19 @@ theorem pat_of_mul (ρ : ℕ) (u : GL (Fin κ ⊕ Fin l) F) (hu : InN (ρ + 1) u
     simp [hu']
   · rw [mul_fromBlocks_inr, hu (Sum.inr i) (Sum.inr j) (Nat.succ_le_succ hab)]
 
+/- English proof (translation)
+Establish `hU : IsUpperUnip Fin.val gb.val.toBlocks₁₁` using `fun r t hrt => by`. Use `h (Sum.inl r) (Sum.inl t) (by simp only [FreeTop, not_lt]; exact hrt)` as an intermediate fact. Simplify `this` using `[Matrix.toBlocks₁₁, Matrix.one_apply]`. Establish `hdet : gb.val.toBlocks₁₁.det = 1` using `Radical.Uni.det (b := Fin.val) hU`. Set `γ : GL (Fin κ) F` to `⟨gb.val.toBlocks₁₁, gb.val.toBlocks₁₁⁻¹, Matrix.mul_nonsing_inv _ (by rw [hdet]; exact isUnit_one), Matrix.nonsing_inv_mul _ (by rw [hdet]; exact isUnit_one)⟩`.
+
+Use `⟨gb * (embX l γ)⁻¹, ?_, γ, hU, (inv_mul_cancel_right gb _).symm⟩` and prove the remaining obligations. Establish `hv : (gb * (embX l γ)⁻¹).val = gb.val * fromBlocks (γ⁻¹).val 0 0 1`. Rewrite using `[Units.val_mul, ← map_inv, Radical.embX_val]`. Introduce `r t hrt`. Rewrite using `[hv]`.
+
+Apply the tactic sequence `rcases r with i | i <;> rcases t with j | j`. Rewrite using `[mul_fromBlocks_inl]`. Establish `hm : ∑ q, gb.val (Sum.inl i) (Sum.inl q) * (γ⁻¹).val q j = (1 : Matrix (Fin κ) (Fin κ) F) i j`. Use `congrFun (congrFun γ.mul_inv i) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`.
+
+Conclude with `this`. Rewrite using `[hm]`. Simplify using `[Matrix.one_apply]`. Establish `hrt' : j.val + 1 ≤ ρ + 1` using `hrt`. Rewrite using `[mul_fromBlocks_inr]`.
+
+Conclude with `h _ _ (by simp only [FreeTop, not_lt]; omega)`. Establish `hrt' : ρ + 1 ≤ i.val + 1` using `hrt`. Rewrite using `[mul_fromBlocks_inl]`. Establish `hz : ∀ q, gb.val (Sum.inr i) (Sum.inl q) = 0` using `fun q => by`. Use `h (Sum.inr i) (Sum.inl q) (by simp only [FreeTop, not_lt]; omega)` as an intermediate fact.
+
+Simplify `this` using `[Matrix.one_apply]`. Simplify using `[hz]`. Establish `hrt' : j.val + 1 ≤ i.val + 1` using `hrt`. Rewrite using `[mul_fromBlocks_inr]`. Conclude with `h _ _ (by simp only [FreeTop, not_lt]; exact Fin.le_def.mpr (by omega))`.
+-/
 theorem exists_of_pat (ρ : ℕ) (gb : GL (Fin κ ⊕ Fin l) F)
     (h : ∀ a b, ¬ FreeTop ρ a b → gb.val a b = (1 : Matrix _ _ F) a b) :
     ∃ u : GL (Fin κ ⊕ Fin l) F, InN (ρ + 1) u ∧ ∃ γ : GL (Fin κ) F,
@@ -86,11 +114,17 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one.symm`.
+-/
 private theorem valuation_lt_one_iff_residue_eq_zero (y : 𝒪[k]) :
     valuation k (y : k) < 1 ↔ IsLocalRing.residue 𝒪[k] y = 0 := by
   rw [IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
   exact Valuation.Integer.not_isUnit_iff_valuation_lt_one.symm
 
+/- English proof (translation)
+Establish `e1 : (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) g₀).val a b - (1 : Matrix ι ι k) a b = ((g₀.val a b - (1 : Matrix ι ι 𝒪[k]) a b : 𝒪[k]) : k)`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab] <;> rfl`. Establish `e2 : (Matrix.GeneralLinearGroup.map (IsLocalRing.residue 𝒪[k]) g₀).val a b - (1 : Matrix ι ι 𝓀[k]) a b = IsLocalRing.residue 𝒪[k] (g₀.val a b - (1 : Matrix ι ι 𝒪[k]) a b)`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`. Rewrite using `[e1, valuation_lt_one_iff_residue_eq_zero, ← e2, sub_eq_zero]`.
+-/
 theorem entry_lt_iff (g₀ : GL ι 𝒪[k]) (a b : ι) :
     valuation k ((Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) g₀).val a b - (1 : Matrix ι ι k) a b) < 1 ↔
       (Matrix.GeneralLinearGroup.map (IsLocalRing.residue 𝒪[k]) g₀).val a b = (1 : Matrix ι ι 𝓀[k]) a b := by
@@ -106,6 +140,13 @@ end Local
 
 end GlobalTheory.SymPattern
 
+/- English proof (translation)
+Introduce `k _ _ _ _ s κ S g`. Rewrite using `[S.sym.1 g]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, γ, hγ, g₀, hg₀, hgb⟩`. Use `⟨⟨g₀, hg₀⟩, fun a b hab => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hg₀, SymPattern.entry_lt_iff, hgb]`. Conclude with `SymPattern.pat_of_mul S.ρ u ((Radical.mem_N_iff u).mp hu) γ hγ a b hab`. Introduce and unpack `⟨⟨g₀, hg₀⟩, hpat⟩`. Take `⟨u, hu, γ, hγ, he⟩` from `SymPattern.exists_of_pat S.ρ (Matrix.GeneralLinearGroup.map (IsLocalRing.residue 𝒪[k]) g₀) (fun a b hab => by`. Rewrite using `[← SymPattern.entry_lt_iff, hg₀]`.
+
+Conclude with `hpat a b hab)`. Conclude with `⟨u, (Radical.mem_N_iff u).mpr hu, γ, hγ, g₀, hg₀, he⟩`.
+-/
 theorem GlobalTheory.SymChain.SymData.mem_J_iff_pattern :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (s κ : ℕ)
       (S : SymData k s κ) (g : GL (Fin κ ⊕ Fin (s + 1)) k),

@@ -13,11 +13,23 @@ open GlobalTheory.CongW (IntMat wtSize HasTypeVec IsIntegralOpW)
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
+/- English proof (translation)
+Establish `e : ∀ f : UA E a →₀ ℂ, opOf (RU E a) f φ = Finsupp.linearCombination ℂ (fun g => RU E a g φ) f` using `fun f => (Finsupp.linearCombination_apply ℂ f).symm`. Rewrite using `[e, e, map_smul]`.
+-/
 theorem opOf_smul' (c : ℂ) (f : UA E a →₀ ℂ) (φ : UA E a → ℂ) : opOf (RU E a) (c • f) φ = c • opOf (RU E a) f φ := by
   have e : ∀ f : UA E a →₀ ℂ, opOf (RU E a) f φ = Finsupp.linearCombination ℂ (fun g => RU E a g φ) f := fun f =>
     (Finsupp.linearCombination_apply ℂ f).symm
   rw [e, e, map_smul]
 
+/- English proof (translation)
+Set `η' : Submodule ℂ (UA E a → ℂ) → J ⊕ S → ℂ` to `fun U => Sum.elim (η U) fun w => e w U`. Establish `hact' : ActsBy K (Sum.elim t f) η'`. Introduce `U hU φ hφ hfix j`. Consider the cases of `j with`. Consider the case `inl j => exact hact U hU φ hφ hfix j`.
+
+Consider the case `inr w => exact (hf w U hU).1 φ hφ hfix`. Set `Q : MvPolynomial (J ⊕ S) ℤ` to `∏ w : S, MvPolynomial.X (Sum.inr w)`. Establish `hQ : ∀ U', OfType lam K U' → (MvPolynomial.aeval (fun j => ι.symm (η' U' j)) Q ≠ 0 ↔ ∀ w, Gn w U')`. Introduce `U' hU'`. Simplify using `only [Q, map_prod, MvPolynomial.aeval_X, Finset.prod_ne_zero_iff, Finset.mem_univ, true_imp_iff]`.
+
+Use `forall_congr' fun w => ?_` and prove the remaining obligations. Rewrite using `[← (hf w U' hU'.aut).2 hU'.fix]`. Conclude with `map_ne_zero_iff _ ι.symm.injective`. Establish `h1` using `hT E l ι a w₀ K hK lam _ hG _ _ η' hF hact' U hU`. Establish `h2` using `hC (Qbar l) _ _ _ {θ | ∃ U', OfType lam K U' ∧ P U' ∧ θ = fun j => ι.symm (η' U' j)} Q h1 (by`.
+
+Introduce and unpack `_ ⟨U', hU', hg, rfl⟩`. Conclude with `⟨(hQ U' hU').2 hg, hT E l ι a w₀ K hK lam _ hP _ _ η' hF hact' U' hU'⟩)`. Use `(hR (Qbar l) J _ Sum.inl _ _ h2).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨⟨U', hU', hp, rfl⟩, hq⟩, rfl⟩`. Conclude with `⟨U', hU', hp, (hQ U' hU').1 hq, rfl⟩`.
+-/
 theorem core (hT : ToPolyX) (hC : Combine) (hR : Restrict) {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
     (w₀ : HeightOneSpectrum (𝓞 E)) (K : Subgroup (UA E a)) (hK : K ≤ finU E a) (lam : (E →+* ℂ) → DomWeight a)
     (S : Type) [Fintype S] (Gn : S → Submodule ℂ (UA E a → ℂ) → Prop) (P : Submodule ℂ (UA E a → ℂ) → Prop)
@@ -51,6 +63,15 @@ theorem core (hT : ToPolyX) (hC : Combine) (hR : Restrict) {l : ℕ} [Fact l.Pri
   rintro _ ⟨_, ⟨⟨U', hU', hp, rfl⟩, hq⟩, rfl⟩
   exact ⟨U', hU', hp, (hQ U' hU').1 hq, rfl⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ l _ ι a ha w₀ hl hs K hK lam S Φ hd P hP J t η ht hact U hU`. Take `⟨W, -, hW, -⟩` from `GlobalTheory.T.exists_algebraicForm_weight_level_smooth_at_place E a lam K U hK.fin hU w₀`. Establish `hlam : (Wt.ofFam lam).at = lam`. Take `rfl : lam = W.at` from `(funext hW).symm`. Establish `: Wt.ofFam W.at = W` using `funext fun v => W.at_embedding v`.
+
+Rewrite using `[this]`. Use `choose f e hfin hf using fun w : S => hO E a K w.1 (hd.split w.1 w.2) (hd.hyp w.1 w.2) (Φ w.1)`. Use `choose c hc0 hc using fun w : S => hS E l ι a lam (f w) (hfin w)`. Establish `hG : Dense ι (Wt.ofFam lam) K fun U => ∀ w : S, GenAt w.1 (Φ w.1) U`. Use `hD E l ι a ha w₀ hl hs K hK (Wt.ofFam lam) S Φ hd` as an intermediate fact.
+
+Simplify `this` using `only [Subtype.forall]`. Use `core hT hC hR ι w₀ K hK.fin lam S (fun w U => GenAt w.1 (Φ w.1) U) P hG hP J t η hact (fun w => c w • f w) (fun w U => c w * e w U) (fun w U hU => ⟨fun φ hφ hx => by rw [opOf_smul', (hf w U hU).1 φ hφ hx, smul_smul], fun h => by` as an intermediate fact. Rewrite using `[← (hf w U hU).2 h]`. Simplify using `[hc0 w]⟩)`. Use the proof step `(hF E l ι a _ _ _ fun j => by`.
+
+Rewrite using `[hlam]`. Consider the cases of `j with`. Consider the case `inl j => exact ht j`. Consider the case `inr w => exact hc w) U hU`. Simplify `this` using `only [Subtype.forall]`.
+-/
 theorem genW_of (hT : ToPolyX) (hC : Combine) (hR : Restrict) (hD : DenseGen) (hO : TestOp) (hS : ScaleW) (hF : FrameW) :
     GenW := by
   intro E _ _ _ l _ ι a ha w₀ hl hs K hK lam S Φ hd P hP J t η ht hact U hU
@@ -74,6 +95,15 @@ theorem genW_of (hT : ToPolyX) (hC : Combine) (hR : Restrict) (hD : DenseGen) (h
       | inr w => exact hc w) U hU
   simpa only [Subtype.forall] using this
 
+/- English proof (translation)
+Introduce `E _ _ _ l _ ι a ha w₀ hl hs K hK lam S Φ hd P hP J t η ht hact`. Use `choose f e hfin hf using fun w : S => hO E a K w.1 (hd.split w.1 w.2) (hd.hyp w.1 w.2) (Φ w.1)`. Take `⟨c, hc, hfr⟩` from `hF E l ι a (Wt.ofFam lam) (J ⊕ S) (Sum.elim t f) fun j => by`. Consider the cases of `j with`. Consider the case `inl j => exact ht j`.
+
+Consider the case `inr w => exact hfin w`. Use `⟨fun j => c (Sum.inl j), fun j h => hc (Sum.inl j) h, fun U hU => ?_⟩` and prove the remaining obligations. Establish `hl0 : (l : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hG : Dense ι (Wt.ofFam lam) K fun U => ∀ w : S, GenAt w.1 (Φ w.1) U`. Use `hD E l ι a ha w₀ hl hs K hK (Wt.ofFam lam) S Φ hd` as an intermediate fact.
+
+Simplify `this` using `only [Subtype.forall]`. Use `core hT hC hR ι w₀ K hK.fin lam S (fun w U => GenAt w.1 (Φ w.1) U) P hG hP J (fun j => (l : ℂ) ^ c (Sum.inl j) • t j) (fun U j => (l : ℂ) ^ c (Sum.inl j) * η U j) (fun U hU φ hφ hx j => by rw [opOf_smul', hact U hU φ hφ hx j, smul_smul]) (fun w => (l : ℂ) ^ c (Sum.inr w) • f w) ( …` as an intermediate fact. Rewrite using `[← (hf w U hU).2 h]`. Simplify using `[hl0]⟩)`. Use the proof step `(by`.
+
+Use `hfr.framedX using 2 with j` and compare the differences between its conclusion and the goal. Apply the tactic sequence `cases j <;> rfl) U hU`. Simplify `this` using `only [Subtype.forall, map_mul, map_pow, map_natCast]`.
+-/
 theorem genP_of (hT : ToPolyX) (hC : Combine) (hR : Restrict) (hD : DenseGen) (hO : TestOp) (hF : FrameOps) : GenP := by
   intro E _ _ _ l _ ι a ha w₀ hl hs K hK lam S Φ hd P hP J t η ht hact
   choose f e hfin hf using fun w : S => hO E a K w.1 (hd.split w.1 w.2) (hd.hyp w.1 w.2) (Φ w.1)
@@ -98,10 +128,24 @@ theorem genP_of (hT : ToPolyX) (hC : Combine) (hR : Restrict) (hD : DenseGen) (h
       cases j <;> rfl) U hU
   simpa only [Subtype.forall, map_mul, map_pow, map_natCast] using this
 
+/- English proof (translation)
+The claim follows from `iSup₂_le fun π hπ => le_iSup₂_of_le (f := fun (π : AutSub E a) (_ : Q π.V) => π.finPart W ⊓ fixedBy W C) π (h _ hπ) le_rfl`.
+-/
 theorem part_mono (W : Wt E a) (C : Subgroup (UA E a)) {P Q : Submodule ℂ (UA E a → ℂ) → Prop} (h : ∀ U, P U → Q U) :
     part W C P ≤ part W C Q :=
   iSup₂_le fun π hπ => le_iSup₂_of_le (f := fun (π : AutSub E a) (_ : Q π.V) => π.finPart W ⊓ fixedBy W C) π (h _ hπ) le_rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ l _ ι a ha w₀ hl hs K hK lam Jx t η ht hact Fam hFam hcof S hS D _ hD0 U hU`. Establish `hd : GenData w₀ K S fun _ => MvPolynomial.map (Int.castRingHom ℂ) D` using `⟨fun w hw => (hS w hw).1, fun w hw => (hS w hw).2.1, fun w hw => hH E a K hK.compact w (hS w hw).1 (hS w hw).2.2, fun _ _ h => hD0 (MvPolynomial.map_injective _ Int.cast_injective (h.trans (map_zero _).symm))⟩`. Establish `hl1 : ‖((l : ℕ) : Qbar l)‖ < 1`. Establish `h` using `PadicAlgCl.norm_extends l (l : ℚ_[l])`. Rewrite `h` using `[map_natCast]`.
+
+Rewrite using `[h, Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Use `(hW E l ι a ha w₀ hl hs K hK lam S _ hd (fun U' => ∃ (J : Subgroup (GL (Fin a) (w₀.adicCompletion E))) (m : ℕ) (θ : J →* Multiplicative (ZMod (l ^ m))), Fam J m θ ∧ ∃ χ : Multiplicative (ZMod (l ^ m)) →* ℂˣ, χ ≠ 1 ∧ HasTypeVec w₀ K J θ χ U') ?_ Jx t η (fun j => intW_of (ht j)) ha …` and prove the remaining obligations. Introduce `f hf ε hε`. Take `⟨N, hN, hfN⟩` from `hSm E a w₀ hs _ f`.
+
+Take `⟨m₀, hm₀⟩` from `exists_pow_lt_of_lt_one hε hl1`. Take `⟨J, m, θ, hm, hJN, hF⟩` from `hcof (interior N) isOpen_interior (mem_interior_iff_mem_nhds.2 hN) m₀`. Take `⟨hJo, hJc, hJt, -⟩` from `hFam J m θ hF`. Establish `hfJ : f ∈ fixedBy (Wt.ofFam lam) (lev K w₀ J)`. Introduce `c hc v g`.
+
+Take `⟨k, hk, x, hx, hxJ, rfl⟩` from `((hL E a w₀ hs K hK J hJo hJc).2.1 c).1 hc`. Rewrite using `[← mul_assoc, hfN x hx (interior_subset (hJN hxJ)), hf k hk]`. Take `⟨G, hG, e, he, hGe⟩` from `hTy E l ι a w₀ hs K hK _ J hJo hJc hJt m θ f hfJ`. Conclude with `⟨G, part_mono _ _ (fun U h => ⟨J, m, θ, hF, h⟩) hG, e, fun g => (he g).trans ((pow_le_pow_of_le_one (norm_nonneg _) hl1.le hm).trans hm₀.le), hGe⟩`. Introduce and unpack `_ ⟨U', h1, h2, h3, rfl⟩`.
+
+Use `⟨U', h1, h2, fun w hw σ hσ B hB α hα => ?_, rfl⟩` and prove the remaining obligations. Use `h3 w hw α ⟨σ, hσ, hα ▸ hB⟩` as an intermediate fact. Rewrite `this` using `[MvPolynomial.eval_map]`. Rewrite using `[MvPolynomial.aeval_def]`. Conclude with `this`.
+-/
 theorem genTyL_of (hW : GenW) (hH : HypOf) (hSm : SmoothAt) (hL : LevFacts) (hTy : TyStep) : GlobalTheory.CongW.GenTyL := by
   intro E _ _ _ l _ ι a ha w₀ hl hs K hK lam Jx t η ht hact Fam hFam hcof S hS D _ hD0 U hU
   have hd : GenData w₀ K S fun _ => MvPolynomial.map (Int.castRingHom ℂ) D :=

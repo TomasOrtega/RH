@@ -17,6 +17,9 @@ def firstEmb (d : Fin 2 → ℕ) : GL (Fin (d 0)) k →* Levi k (fun a => Fin (d
 def secondEmb (d : Fin 2 → ℕ) : GL (Fin (d 1)) k →* Levi k (fun a => Fin (d a)) :=
   MonoidHom.mulSingle (fun a => GL (Fin (d a)) k) 1
 
+/- English proof (translation)
+The claim follows from `Pi.mulSingle_commute (f := fun a => GL (Fin (d a)) k) (by decide : (0 : Fin 2) ≠ 1) g h`.
+-/
 theorem firstEmb_comm (d : Fin 2 → ℕ) (g : GL (Fin (d 0)) k) (h : GL (Fin (d 1)) k) :
     firstEmb d g * secondEmb d h = secondEmb d h * firstEmb d g :=
   Pi.mulSingle_commute (f := fun a => GL (Fin (d a)) k) (by decide : (0 : Fin 2) ≠ 1) g h
@@ -27,6 +30,9 @@ abbrev whitKer (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (J : Representation �
     Submodule ℂ X :=
   twKer (J.comp (secondEmb d)) (unipB k (Fin (d 1))) (whitChar ψ (d 1))
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Use `Submodule.subset_span ⟨u, J (firstEmb d g) v, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_smul, MonoidHom.comp_apply]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, firstEmb_comm]`.
+-/
 theorem whitKer_le_comap (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (J : Representation ℂ (Levi k fun a => Fin (d a)) X)
     (g : GL (Fin (d 0)) k) : whitKer ψ d J ≤ (whitKer ψ d J).comap (J (firstEmb d g)) := by
   refine Submodule.span_le.2 ?_
@@ -45,10 +51,16 @@ def whit2 (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (J : Representation ℂ (L
     ext v
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem whit2_mk (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (J : Representation ℂ (Levi k fun a => Fin (d a)) X)
     (g : GL (Fin (d 0)) k) (v : X) :
     whit2 ψ d J g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (J (firstEmb d g) v) := rfl
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Use `Submodule.subset_span ⟨u, f v, ?_⟩` and prove the remaining obligations. Simplify using `[f.isIntertwining]`.
+-/
 theorem whitKer_le_comap_map (ψ : AddChar k Circle) (d : Fin 2 → ℕ) {J : Representation ℂ (Levi k fun a => Fin (d a)) X}
     {J' : Representation ℂ (Levi k fun a => Fin (d a)) Y} (f : J.IntertwiningMap J') :
     whitKer ψ d J ≤ (whitKer ψ d J').comap f.toLinearMap := by

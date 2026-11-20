@@ -23,9 +23,17 @@ def chartExp (c : ∀ k, ι k) (n : K → ℕ) : (Σ k, ι k) →₀ ℕ :=
 def chartMon (c : ∀ k, ι k) (n : K → ℕ) : MRingOver S ι :=
   monomial (chartExp c n) 1
 
+/- English proof (translation)
+The claim follows from `GenTwistGenerated.isMultiHomog_monomial _ _ _ fun k => by simp [chartExp]`.
+-/
 theorem chartMon_homog (c : ∀ k, ι k) (n : K → ℕ) : IsMultiHomog (chartMon (S := S) c n) n :=
   GenTwistGenerated.isMultiHomog_monomial _ _ _ fun k => by simp [chartExp]
 
+/- English proof (translation)
+Unfold `chartMon`. Rewrite using `[MvPolynomial.monomial_eq, MvPolynomial.C_1, one_mul]`. Use `Submonoid.prod_mem _ fun q hq => Submonoid.pow_mem _ (Submonoid.subset_closure ?_) _` and prove the remaining obligations. Establish `hq' : q.2 = c q.1`. Assume the negation of the conclusion as `h`.
+
+Simplify using `[chartExp, h] at hq`. Take `⟨k, i⟩` from `q`. Simplify using `only at hq'`. Substitute `hq'` using the available equality. Conclude with `⟨k, c k, hc k, rfl⟩`.
+-/
 theorem chartMon_mem {I : ∀ k, Finset (ι k)} {c : ∀ k, ι k} (hc : ∀ k, c k ∈ I k) (n : K → ℕ) :
     chartMon (S := S) c n ∈ KH.cellMon S I := by
   unfold chartMon
@@ -41,10 +49,16 @@ theorem chartMon_mem {I : ∀ k, Finset (ι k)} {c : ∀ k, ι k} (hc : ∀ k, c
 
 variable {V : Ideal (MRingOver S ι)}
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Both sides reduce to the same expression.
+-/
 theorem smul_quot (f : MRingOver S ι) (m : MRingOver S ι ⧸ V) : f • m = Ideal.Quotient.mk V f * m := by
   obtain ⟨g, rfl⟩ := Ideal.Quotient.mk_surjective m
   rfl
 
+/- English proof (translation)
+Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h m' t'`. Rewrite using `[LocalizedModule.smul'_mk, LocalizedModule.mk_mul_mk, LocalizedModule.smul'_mk, LocalizedModule.mk_mul_mk, smul_mul_assoc, mul_smul_comm]`.
+-/
 theorem smul_mul_eq_mul_smul {T : Submonoid (MRingOver S ι)} (p : MRingOver S ι)
     (x y : LocalizedModule T (MRingOver S ι ⧸ V)) : (p • x) * y = x * (p • y) := by
   induction x using LocalizedModule.induction_on with
@@ -54,6 +68,25 @@ theorem smul_mul_eq_mul_smul {T : Submonoid (MRingOver S ι)} (p : MRingOver S �
       rw [LocalizedModule.smul'_mk, LocalizedModule.mk_mul_mk, LocalizedModule.smul'_mk,
         LocalizedModule.mk_mul_mk, smul_mul_assoc, mul_smul_comm]
 
+/- English proof (translation)
+Introduce `I`. Set `c : ∀ k, ι k` to `fun k => (I.2.1 k).choose`. Establish `hc : ∀ k, c k ∈ I.1 k` using `fun k => (I.2.1 k).choose_spec`. Set `dp : K → ℕ` to `fun k => (d k).toNat`. Set `dm : K → ℕ` to `fun k => (-d k).toNat`.
+
+Establish `hd : ∀ k, (dp k : ℤ) - dm k = d k` using `fun k => Int.toNat_sub_toNat_neg (d k)`. Set `P : MRingOver S ι` to `chartMon c dp`. Set `Q : MRingOver S ι` to `chartMon c dm`. Establish `hP : P ∈ KH.cellMon S I.1` using `chartMon_mem hc dp`. Establish `hQ : Q ∈ KH.cellMon S I.1` using `chartMon_mem hc dm`.
+
+Establish `hpart : ∀ (f : MRingOver S ι) (a : K → ℕ), IsMultiHomog f a → Ideal.Quotient.mk V f ∈ KH.quotPart S V (fun k => (a k : ℤ))` using `fun f a hf => Submodule.subset_span ⟨f, ⟨fun k => Int.natCast_nonneg _, by simpa using hf⟩, rfl⟩`. Set `x : LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)` to `LocalizedModule.mk (Ideal.Quotient.mk V P) ⟨Q, hQ⟩`. Establish `hx : x ∈ KH.locPart ι (KH.quotPart S V) (KH.cellMon S I.1) d`. Use `GenTwistGenerated.mk_mem_locPart _ _ dm (chartMon_homog c dm) ?_` and prove the remaining obligations. Establish `e : (d + fun k => (dm k : ℤ)) = fun k => (dp k : ℤ)`.
+
+Use function extensionality and compare the values at `k`. Use `hd k` as an intermediate fact. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`.
+
+Conclude with `hpart P dp (chartMon_homog c dp)`. Take `⟨t, a, r, p, z, ht, hta, hpa, hz, htx⟩` from `h I x hx`. Set `w : LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)` to `LocalizedModule.mk (Ideal.Quotient.mk V Q) ⟨t * P, mul_mem ht hP⟩`. Use `⟨r, z, fun j => p j • w, hz, fun j => ?_, ?_⟩` and prove the remaining obligations. Establish `e0 : p j • Ideal.Quotient.mk V Q = Ideal.Quotient.mk V (p j * Q)`.
+
+Rewrite using `[smul_quot, map_mul]`. Establish `e1 : p j • w = LocalizedModule.mk (Ideal.Quotient.mk V (p j * Q)) ⟨t * P, mul_mem ht hP⟩` using `(LocalizedModule.smul'_mk ..).trans (congrArg (fun m => LocalizedModule.mk m _) e0)`. Use `(congrArg (· ∈ KH.locPart ι (KH.quotPart S V) (KH.cellMon S I.1) (-d)) e1).mpr ?_` and prove the remaining obligations. Use `GenTwistGenerated.mk_mem_locPart _ _ (a + dp) (GenTwistGenerated.isMultiHomog_mul hta (chartMon_homog c dp)) ?_` and prove the remaining obligations. Establish `e2 : (-d + fun k => ((a + dp) k : ℤ)) = fun k => ((a + dm) k : ℤ)`.
+
+Use function extensionality and compare the values at `k`. Use `hd k` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.neg_apply, Nat.cast_add]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e2]`.
+
+Conclude with `hpart _ _ (GenTwistGenerated.isMultiHomog_mul (hpa j) (chartMon_homog c dm))`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : Ideal.Quotient.mk V Q * (t • Ideal.Quotient.mk V P) = ((⟨t * P, mul_mem ht hP⟩ * ⟨Q, hQ⟩ : KH.cellMon S I.1) • (1 : MRingOver S ι ⧸ V))`. Rewrite using `[Submonoid.smul_def, smul_quot, smul_quot, mul_one]`. Simplify using `only [Submonoid.coe_mul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem generatedV_of_generatedMod {d : K → ℤ} (h : GeneratedMod S ι (KH.quotPart S V) d) :
     KH.GeneratedV S V d := by
   classical
@@ -122,6 +155,9 @@ theorem generatedV_of_generatedMod {d : K → ℤ} (h : GeneratedMod S ι (KH.qu
 
 end GenerationOfH1GenAmple
 
+/- English proof (translation)
+Introduce `S _ K _ _ ι _ _ V N hV hH e`. Establish `hann : V ≤ Module.annihilator (MRingOver S ι) (MRingOver S ι ⧸ V)` using `fun v hv => Module.mem_annihilator.mpr fun m => by`. Rewrite using `[GenerationOfH1GenAmple.smul_quot, Ideal.Quotient.eq_zero_iff_mem.mpr hv, zero_mul]`. Take `⟨c₁, hc₁⟩` from `hH (MRingOver S ι ⧸ V) (KH.quotPart S V) inferInstance (hQ S K ι V hV) hann e`. Conclude with `⟨c₁, fun c hc => GenerationOfH1GenAmple.generatedV_of_generatedMod (hc₁ c hc).2⟩`.
+-/
 theorem GenerationOfH1GenAmple.proof (hQ : QuotPartGraded.Statement) : GenerationOfH1GenAmple.Statement := by
   intro S _ K _ _ ι _ _ V N hV hH e
   have hann : V ≤ Module.annihilator (MRingOver S ι) (MRingOver S ι ⧸ V) := fun v hv =>

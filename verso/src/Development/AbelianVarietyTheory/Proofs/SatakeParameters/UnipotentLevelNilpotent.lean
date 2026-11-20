@@ -10,6 +10,19 @@ namespace GlobalTheory.UnipVol
 
 section Group
 
+/- English proof (translation)
+Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hN : ∀ (g : G) (m : ℕ), m.Coprime p → g ^ m ∈ H.normalCore → g ∈ H.normalCore`. Introduce `g m hm hg`. Establish `hg' : ∀ b : G, b * g ^ m * b⁻¹ ∈ H` using `hg`. Use `show ∀ b : G, b * g * b⁻¹ ∈ H`.
+
+Introduce `b`. Use `hroot _ m hm ?_` and prove the remaining obligations. Rewrite using `[conj_pow]`. Conclude with `hg' b`. Establish `hfin : Finite (G ⧸ H.normalCore)` using `Subgroup.finite_quotient_of_finiteIndex`.
+
+Establish `hP : IsPGroup p (G ⧸ H.normalCore)`. Introduce `x`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Establish `ho : orderOf (g : G ⧸ H.normalCore) ≠ 0` using `(orderOf_pos _).ne'`. Take `⟨s, m, hm, he⟩` from `Nat.exists_eq_pow_mul_and_not_dvd ho p hp.ne_one`.
+
+Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `h1 : (g ^ p ^ s) ^ m ∈ H.normalCore`. Rewrite using `[← QuotientGroup.eq_one_iff, ← pow_mul, QuotientGroup.mk_pow, ← he]`. Conclude with `pow_orderOf_eq_one _`. Establish `h2` using `hN _ m ((Nat.Prime.coprime_iff_not_dvd hp).2 hm).symm h1`.
+
+Rewrite using `[← QuotientGroup.mk_pow]`. Conclude with `(QuotientGroup.eq_one_iff _).2 h2`. Take `⟨k, hk⟩` from `IsPGroup.iff_card.1 hP`. Establish `h3 : H.index ∣ p ^ k`. Rewrite using `[← hk]`.
+
+Conclude with `Subgroup.index_dvd_of_le (Subgroup.normalCore_le H)`. Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow hp).1 h3`. Conclude with `⟨j, hj⟩`.
+-/
 theorem index_eq_prime_pow {G : Type*} [Group G] (H : Subgroup G) [H.FiniteIndex] {p : ℕ} (hp : p.Prime)
     (hroot : ∀ (g : G) (m : ℕ), m.Coprime p → g ^ m ∈ H → g ∈ H) : ∃ k, H.index = p ^ k := by
   haveI : Fact p.Prime := ⟨hp⟩
@@ -47,6 +60,11 @@ section Poly
 
 open Polynomial
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ m ih`. Take `⟨w, hw⟩` from `ih`. Use `⟨(m : ℤ[X]) + w + X * w, ?_⟩` and prove the remaining obligations.
+
+Establish `: (1 + X : ℤ[X]) ^ (m + 1) - 1 = (1 + X) * ((1 + X) ^ m - 1) + X` using `by ring`. Rewrite using `[this, hw]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_one_add_X_pow (m : ℕ) : ∃ w : ℤ[X], (1 + X) ^ m - 1 = X * ((m : ℤ[X]) + X * w) := by
   induction m with
   | zero => exact ⟨0, by simp⟩
@@ -58,6 +76,11 @@ theorem exists_one_add_X_pow (m : ℕ) : ∃ w : ℤ[X], (1 + X) ^ m - 1 = X * (
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_one_add_X_pow m`. Take `⟨z, hz⟩` from `sub_dvd_pow_sub_pow ((m : ℤ[X]) + X * w) (m : ℤ[X]) k`. Use `⟨w * z, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, mul_pow]`. Establish `: ((m : ℤ[X]) + X * w) ^ k = (m : ℤ[X]) ^ k + ((m : ℤ[X]) + X * w - (m : ℤ[X])) * z` using `by rw [← hz]; ring`.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pow_expansion (m k : ℕ) :
     ∃ v : ℤ[X], ((1 + X : ℤ[X]) ^ m - 1) ^ k = (m : ℤ[X]) ^ k * X ^ k + X ^ (k + 1) * v := by
   obtain ⟨w, hw⟩ := exists_one_add_X_pow m
@@ -68,6 +91,27 @@ theorem exists_pow_expansion (m k : ℕ) :
   rw [this]
   ring
 
+/- English proof (translation)
+Establish `hdivk : ∀ (k : ℕ) x, (m ^ k) • x ∈ M → x ∈ M`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x hx`. Simplify using `using hx`.
+
+Consider the case `succ k ih`. Introduce `x hx`. Use `hdiv x (ih _ ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, ← pow_succ]` and apply the resulting hypothesis. Establish `huk : ∀ (k : ℕ), ∀ x ∈ M, (((1 + ν) ^ m - 1) ^ k) • x ∈ M`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ k ih`.
+
+Introduce `x hx`. Rewrite using `[pow_succ, mul_smul]`. Conclude with `ih _ (hu x hx)`. Establish `key : ∀ j k, d ≤ k + j → ∀ (f : ℤ[X]), ∀ x ∈ M, (aeval ν (X ^ k * f)) • x ∈ M`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `k hk f x _`. Establish `: ν ^ k = 0` using `pow_eq_zero_of_le (by omega) hν`. Simplify using `[this]`.
+
+Consider the case `succ j ih`. Introduce `k hk f x hx`. Establish `h1 : (aeval ν (X ^ k : ℤ[X])) • x ∈ M`. Take `⟨v, hv⟩` from `exists_pow_expansion m k`. Use `hdivk k _ ?_` and prove the remaining obligations.
+
+Establish `h2 : aeval ν (((1 + X : ℤ[X]) ^ m - 1) ^ k) = ((1 + ν) ^ m - 1) ^ k` using `by simp`. Establish `h3` using `huk k x hx`. Rewrite `h3` using `[← h2, hv, map_add, add_smul]`. Establish `h4` using `ih (k + 1) (by omega) v x hx`. Establish `h5` using `M.sub_mem h3 h4`.
+
+Rewrite `h5` using `[add_sub_cancel_right]`. Use `h5 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, mul_smul, map_pow, map_pow, map_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Establish `e : X ^ k * f = C (f.coeff 0) * X ^ k + X ^ (k + 1) * f.divX` using `by conv_lhs => rw [← divX_mul_X_add f]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, map_add, add_smul]`. Use `M.add_mem ?_ (ih (k + 1) (by omega) _ x hx)` and prove the remaining obligations. Rewrite using `[map_mul, mul_smul, aeval_C]`. Establish `: ∀ (a : ℤ) (y : V), y ∈ M → (algebraMap ℤ A a) • y ∈ M`. Introduce `a y hy`.
+
+Rewrite using `[eq_intCast, Int.cast_smul_eq_zsmul]`. Conclude with `M.zsmul_mem hy a`. Conclude with `this _ _ h1`. Introduce `x hx`. Simplify using `using key d 1 (by omega) 1 x hx`.
+-/
 theorem smul_mem_of_pow {A V : Type*} [Ring A] [AddCommGroup V] [Module A V] (M : AddSubgroup V) (ν : A) {d : ℕ}
     (hν : ν ^ d = 0) (m : ℕ) (hdiv : ∀ x, m • x ∈ M → x ∈ M)
     (hu : ∀ x ∈ M, ((1 + ν) ^ m - 1) • x ∈ M) : ∀ x ∈ M, ν • x ∈ M := by
@@ -130,6 +174,23 @@ variable {k : Type} [CommRing k] {n c : ℕ}
 abbrev T (V : Type) [AddCommGroup V] [Module k V] : (V ≃ₗ[k] V) →* Module.End k V :=
   LinearEquiv.automorphismGroup.toLinearMapMonoidHom
 
+/- English proof (translation)
+Establish `hR` using `hg.1.1`. Establish `hX` using `hg.2`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `v hv`.
+
+Establish `e : v = Loc.inX k n c fun l => v (Fin.castAdd c l)`. Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l.1 < n`. Simplify using `only [Loc.inX, LinearMap.pi_apply, dif_pos h]`. Both sides reduce to the same expression.
+
+Simplify using `only [Loc.inX, LinearMap.pi_apply, dif_neg h]`. Conclude with `hv l (by simpa using h)`. Establish `h1 : g v = v`. Rewrite using `[e]`. Conclude with `hX _`.
+
+Simplify using `[h1]`. Consider the case `succ i ih`. Introduce `v hv`. Establish `hmem : ((T (k` using `k) _ g - 1)) v ∈ Loc.Ufl k n c i := by set e := Loc.eN k (n + c) (n + i) with he set t := Loc.atN v (n + i) with ht`. Establish `hv' : v - t • e ∈ Loc.Ufl k n c i`.
+
+Introduce `l hl`. Establish `hl' : n + i ≤ l.1` using `by simpa using hl`. Distinguish the cases in `h : l.1 = n + i`. Establish `h1 : t = v l` using `by rw [ht, ← h]; simp [Loc.atN]`. Establish `h2 : e l = 1` using `by rw [he]; simp [Loc.eN, h]`.
+
+Rewrite using `[Pi.sub_apply, Pi.smul_apply, h1, h2]`. Simplify using the standard rewrite rules. Establish `: l.1 ∉ {l | l < n + (i + 1)}`. Simplify using `only [Set.mem_setOf_eq]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[he, Loc.eN, h, hv l this]`. Establish `e1 : ((T (k` using `k) _ g - 1)) v = (g (v - t • e) - (v - t • e)) + t • (g e - e) := by`. Simplify using `only [map_sub, map_smul]`. Use `show g v - v = _`. Use `module`.
+
+Rewrite using `[e1]`. Conclude with `add_mem (sub_mem (hR.1 i _ hv') hv') (Submodule.smul_mem _ _ (hR.2.2 i))`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Conclude with `ih _ hmem`.
+-/
 theorem nil_Ufl {g : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hg : g ∈ Loc.N1 k n c) (i : ℕ) :
     ∀ v ∈ Loc.Ufl k n c i, ((T (k := k) _ g - 1) ^ (i + 1)) v = 0 := by
   have hR := hg.1.1
@@ -175,6 +236,9 @@ theorem nil_Ufl {g : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hg : g 
     rw [pow_succ, Module.End.mul_apply]
     exact ih _ hmem
 
+/- English proof (translation)
+Conclude with `LinearMap.ext fun v => nil_Ufl hg c v fun l hl => absurd l.2 hl`.
+-/
 theorem unipotent_level_nilpotent {g : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hg : g ∈ Loc.N1 k n c) :
     (T (k := k) _ g - 1) ^ (c + 1) = 0 := by
   exact LinearMap.ext fun v => nil_Ufl hg c v fun l hl => absurd l.2 hl
@@ -185,6 +249,13 @@ section Stab
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h1` using `smul_mem_of_pow (A := Module.End E (Sp E (n + c))) Λ.toAddSubgroup (T (k := E) _ g - 1) (unipotent_level_nilpotent hg) m hdiv (fun y hy => ?_) x hx`. Establish `h2 : (T (k` using `E) _ g - 1) x ∈ Λ := h1`. Establish `h3` using `Λ.add_mem h2 hx`. Simplify using `using h3`.
+
+Establish `h2 : (g ^ m) y ∈ Λ` using `(hm y).2 hy`. Establish `h3 : (1 + (T (k` using `E) _ g - 1)) ^ m = T (k := E) _ (g ^ m) := by`. Rewrite using `[add_sub_cancel, map_pow]`. Use `show ((1 + (T (k := E) _ g - 1)) ^ m - 1) y ∈ Λ`. Rewrite using `[h3]`.
+
+Conclude with `Λ.sub_mem h2 hy`.
+-/
 theorem stab_fwd {n c : ℕ} {Λ : Submodule (𝓞 E) (Sp E (n + c))} {m : ℕ}
     (hdiv : ∀ x, m • x ∈ Λ → x ∈ Λ) {g : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hg : g ∈ Loc.N1 E n c) (hm : g ^ m ∈ stabL E _ Λ) : ∀ x ∈ Λ, g x ∈ Λ := by
@@ -201,6 +272,9 @@ theorem stab_fwd {n c : ℕ} {Λ : Submodule (𝓞 E) (Sp E (n + c))} {m : ℕ}
     rw [h3]
     exact Λ.sub_mem h2 hy
 
+/- English proof (translation)
+Introduce `x`. Use `⟨fun h => ?_, stab_fwd hdiv hg hm x⟩` and prove the remaining obligations. Establish `h1` using `stab_fwd hdiv (inv_mem hg) (by rw [inv_pow]; exact inv_mem hm) _ h`. Establish `h2 : g⁻¹ (g x) = x` using `g.symm_apply_apply x`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem stab_root {n c : ℕ} {Λ : Submodule (𝓞 E) (Sp E (n + c))} {m : ℕ}
     (hdiv : ∀ x, m • x ∈ Λ → x ∈ Λ) {g : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hg : g ∈ Loc.N1 E n c) (hm : g ^ m ∈ stabL E _ Λ) : g ∈ stabL E _ Λ := by
@@ -210,6 +284,9 @@ theorem stab_root {n c : ℕ} {Λ : Submodule (𝓞 E) (Sp E (n + c))} {m : ℕ}
   have h2 : g⁻¹ (g x) = x := g.symm_apply_apply x
   rwa [h2] at h1
 
+/- English proof (translation)
+Use `haveI : ((Loc.N1 E n c ⊓ stabL E _ Λ).subgroupOf C).FiniteIndex := ⟨h0⟩`. Use `index_eq_prime_pow _ hp fun g m hm hg => ?_` and prove the remaining obligations. Rewrite `hg`, the goal using `[Subgroup.mem_subgroupOf]`. Use `⟨hC g.2, stab_root (hdiv m hm) (hC g.2) ?_⟩` and prove the remaining obligations. Simplify using `using hg.2`.
+-/
 theorem relIndex_prime_pow {n c : ℕ} {Λ : Submodule (𝓞 E) (Sp E (n + c))} {p : ℕ} (hp : p.Prime)
     (hdiv : ∀ m : ℕ, m.Coprime p → ∀ x, m • x ∈ Λ → x ∈ Λ) {C : Subgroup (Sp E (n + c) ≃ₗ[E] Sp E (n + c))}
     (hC : C ≤ Loc.N1 E n c) (h0 : (Loc.N1 E n c ⊓ stabL E _ Λ).relIndex C ≠ 0) :
@@ -220,6 +297,11 @@ theorem relIndex_prime_pow {n c : ℕ} {Λ : Submodule (𝓞 E) (Sp E (n + c))} 
   refine ⟨hC g.2, stab_root (hdiv m hm) (hC g.2) ?_⟩
   simpa using hg.2
 
+/- English proof (translation)
+Unfold `LocE.sclLat stdAt at h ⊢`. Rewrite `h`, the goal using `[Submodule.mem_comap, mem_localization_standardLattice]`. Introduce `l`. Take `⟨r, s, hs, hr⟩` from `h l`. Use `⟨r, s * m, fun h' => (P.isPrime.mem_or_mem h').elim hs hm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hr]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem div_sclLat (P : HeightOneSpectrum (𝓞 E)) (q N : ℕ) (e : ℕ → ℤ) {m : ℕ} (hm : (m : 𝓞 E) ∉ P.asIdeal) (x : Sp E N)
     (h : m • x ∈ LocE.sclLat P q N e) : x ∈ LocE.sclLat P q N e := by
   unfold LocE.sclLat stdAt at h ⊢
@@ -231,6 +313,11 @@ theorem div_sclLat (P : HeightOneSpectrum (𝓞 E)) (q N : ℕ) (e : ℕ → ℤ
   simp
   ring
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (((m.gcd p : ℕ) : ℤ) : 𝓞 E) ∈ P.asIdeal`. Rewrite using `[Nat.gcd_eq_gcd_ab]`. Use `push_cast`. Conclude with `add_mem (Ideal.mul_mem_right _ _ h) (Ideal.mul_mem_right _ _ hpP)`.
+
+Rewrite `h1` using `[hm.gcd_eq_one]`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using h1))`.
+-/
 theorem natCast_notMem {P : HeightOneSpectrum (𝓞 E)} {p m : ℕ} (hpP : (p : 𝓞 E) ∈ P.asIdeal) (hm : m.Coprime p) :
     (m : 𝓞 E) ∉ P.asIdeal := by
   intro h
@@ -241,6 +328,13 @@ theorem natCast_notMem {P : HeightOneSpectrum (𝓞 E)} {p m : ℕ} (hpP : (p : 
   rw [hm.gcd_eq_one] at h1
   exact P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using h1))
 
+/- English proof (translation)
+Establish `hq1 : qOf P ≠ 1`. Introduce `h`. Conclude with `P.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Establish `hp : (qOf P).minFac.Prime` using `Nat.minFac_prime hq1`. Establish `hdvd` using `Nat.minFac_dvd (qOf P)`.
+
+Establish `hpP` using `GlobalTheory.KerTie.natCast_mem_of_prime_dvd_absNorm P hp hdvd`. Unfold `Loc.volN`. Distinguish the cases in `h0 : (Loc.N1 E n c ⊓ stabL E _ (LocE.sclLat P q (n + c) e)).relIndex (C ⊓ Loc.N1 E n c) = 0`. Rewrite using `[h0]`. Simplify using `using IntOff.zero`.
+
+Take `⟨k, hk⟩` from `relIndex_prime_pow hp (fun m hm x hx => div_sclLat P q _ e (natCast_notMem hpP hm) x hx) (inf_le_right : C ⊓ Loc.N1 E n c ≤ _) h0`. Rewrite using `[hk, inv_div, map_div₀, map_natCast, map_natCast, div_eq_mul_inv]`. Use `IntOff.mul (Formalism.L2.KerInert.RepRec.intOff_natCast S _) (IntOff.inv_nat ⟨pow_pos hp.pos _, fun r hr hd => ?_⟩)` and prove the remaining obligations. Rewrite using `[(Nat.prime_dvd_prime_iff_eq hr hp).1 (hr.dvd_of_dvd_pow hd)]`. Conclude with `hq.2 _ hp hdvd`.
+-/
 theorem intOff_volN_inv {K : Type} [Field K] (σ : K →+* ℂ) {S : Finset ℕ} {P : HeightOneSpectrum (𝓞 E)} (hq : SNum S (qOf P))
     {n c : ℕ} (e : ℕ → ℤ) (q : ℕ) (C : Subgroup (Sp E (n + c) ≃ₗ[E] Sp E (n + c))) :
     IntOff S (σ (Loc.volN K C (Loc.N1 E n c ⊓ stabL E _ (LocE.sclLat P q (n + c) e)))⁻¹) := by
@@ -263,6 +357,9 @@ theorem intOff_volN_inv {K : Type} [Field K] (σ : K →+* ℂ) {S : Finset ℕ}
 
 end Stab
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Y cX ex t u μ i P h`. Conclude with `intOff_volN_inv _ (GlobalTheory.KerTie.sNum_qOf_rowSG D L hT Gi Gl K Y cX ex t u μ P) _ _ _`.
+-/
 theorem intOff_volN_Cbe : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), ∀ u μ (i : ℕ) (P : rowSG t.Pr t.sel (t.tup μ)) (h : AutY t.X D.R (i + 1)), IntOff (t.O u μ).S (t.seam.σ₀ (Loc.volN t.X.K (Loc.Cbe (Jat (Pr := t.Pr) (t.cst μ).sharp (i + 1) P.1) h) (Loc.N1 t.X.E (D.R.N (i + 1)) (cOf D.R (i + 1)) ⊓ stabL t.X.E _ (lamYat (Pr := t.Pr) (i + 1) P.1)))⁻¹) := by
   intro D L hT Gi Gl K Y cX ex t u μ i P h
   exact intOff_volN_inv _ (GlobalTheory.KerTie.sNum_qOf_rowSG D L hT Gi Gl K Y cX ex t u μ P) _ _ _

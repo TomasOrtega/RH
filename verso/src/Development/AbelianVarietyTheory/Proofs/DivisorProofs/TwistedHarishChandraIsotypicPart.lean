@@ -10,6 +10,23 @@ noncomputable section
 
 namespace GlobalTheory.Shin.HcIso
 
+/- English proof (translation)
+Introduce `F _ _ t a b n hn α A β B hA hB hαA hβB`. Take `⟨H, π, hmem, hsurj, hπ, -, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F a b n hn`. Establish `hcard : (Nat.card {p : GL (Fin n) F // InPar a p} : ℂ) = (Nat.card H : ℂ)`. Use `congr 1`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun x => (hmem x).symm)`.
+
+Establish `hE : ∀ (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ) (z : GL (Fin n) F), (if InPar a z then α (tlG a z) * β (brG a b z) else 0) = ext0 H (fun p => α (π p).1 * β (π p).2) z`. Introduce `α β z`. Unfold `ext0`. Distinguish the cases in `h : InPar a z`. Establish `hz : z ∈ H` using `(hmem z).2 h`.
+
+Rewrite using `[if_pos h, dif_pos hz]`. Use `show _ = α (π ⟨z, hz⟩).1 * β (π ⟨z, hz⟩).2`. Rewrite using `[hπ]`. Establish `hz : z ∉ H` using `fun hz => h ((hmem z).1 hz)`. Rewrite using `[if_neg h, dif_neg hz]`.
+
+Establish `h1 : hcTw t a b α β n = fun x => (Nat.card H : ℂ)⁻¹ * ∑ᶠ y : GL (Fin n) F, ext0 H (fun p => α (π p).1 * β (π p).2) (y⁻¹ * x * (fun y => gal t n y) y)`. Use function extensionality and compare the values at `x`. Unfold `hcTw`. Rewrite using `[hcard]`. Use `congr 1`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Conclude with `hE α β _`. Establish `hid : ∀ y : GL (Fin n) F, gal (RingHom.id F) n y = y`. Introduce `y`.
+
+Use extensionality with `i j`. Simplify using `[gal]`. Establish `h2 : hc a b A B n = ind H (fun p => A (π p).1 * B (π p).2)`. Use function extensionality and compare the values at `x`. Unfold `hc hcTw ind`.
+
+Rewrite using `[hcard]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[hid, hE]`.
+
+Establish `hk` using `GlobalTheory.T.isotypicPart_exteriorProduct_inflated_surjection H (GL (Fin a) F) (GL (Fin b) F) π hsurj α A β B hA hB hαA hβB`. Rewrite using `[h1, h2]`. Conclude with `GlobalTheory.T.isInCharacterIsotypicPart_twistedInduction (GL (Fin n) F) H (fun y => gal t n y) _ _ hk`.
+-/
 theorem kills_hcTw : ∀ (F : Type) [Field F] [Finite F], ∀ (t : F →+* F) (a b n : ℕ), n = a + b →
     ∀ (α A : GL (Fin a) F → ℂ) (β B : GL (Fin b) F → ℂ), IsChar ℂ ℂ A → IsChar ℂ ℂ B → Kills α A →
       Kills β B → Kills (hcTw t a b α β n) (hc a b A B n) := by

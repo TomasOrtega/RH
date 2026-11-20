@@ -6,6 +6,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Stick UpperTheory.V.FW
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Introduce `l hl f hf`. Establish `hl1 : 1 < l` using `hl.out.one_lt`. Establish `hlpos : 0 < l` using `hl.out.pos`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hf` using `[Nat.coprime_zero_left]`. Use linear arithmetic over natural numbers and integers. Establish `hfpos : 0 < f` using `Nat.pos_of_ne_zero hf0`. Apply the tactic sequence `have he1 : 1 ≤ ee l := by unfold ee; split_ifs <;> omega`. Apply the tactic sequence `have he2 : ee l ≤ 2 := by unfold ee; split_ifs <;> omega`.
+
+Use `haveI : NeZero (f * l ^ ee l) := ⟨by positivity⟩`. Use `haveI : NeZero ((f * l ^ ee l : ℕ) : ℚ) := ⟨by exact_mod_cast (show f * l ^ ee l ≠ 0 by positivity)⟩`. Use `haveI : IsCyclotomicExtension {f * l ^ ee l} ℚ (CyclotomicField (f * l ^ ee l) ℚ) := by`. Use `CyclotomicField.isCyclotomicExtension (f * l ^ ee l) ℚ` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+
+Conclude with `Subsingleton.elim _ _`. Use `haveI : NumberField (CyclotomicField (f * l ^ ee l) ℚ) := IsCyclotomicExtension.numberField {f * l ^ ee l} ℚ _`. Take `⟨z, hz⟩ : ∃ z : CyclotomicField (f * l ^ ee l) ℚ, IsPrimitiveRoot z (f * l ^ ee l)` from `⟨_, IsCyclotomicExtension.zeta_spec _ ℚ _⟩`. Establish `hsplit : f * l ^ ee l = l * (f * l ^ (ee l - 1))`. Rewrite using `[mul_comm l, mul_assoc, ← pow_succ, Nat.sub_add_cancel he1]`.
+
+Establish `hzl : IsPrimitiveRoot (z ^ (f * l ^ (ee l - 1))) l`. Establish `h` using `hz.pow_of_dvd (by positivity) (Dvd.intro_left l hsplit.symm)`. Rewrite `h` using `[Nat.div_eq_of_eq_mul_left (by positivity) hsplit]`. Then use the resulting hypothesis. Take `⟨B, hB⟩` from `amb (CyclotomicField (f * l ^ ee l) ℚ) l _ hzl`. Use `⟨B, ?_⟩` and prove the remaining obligations.
+
+Introduce `n _ L _ _ _ γ hn hγ`. Establish `hen : ee l ≤ n` using `le_trans he2 hn`. Establish `h : f * l ^ ee l ∣ f * l ^ n` using `mul_dvd_mul_left f (pow_dvd_pow l hen)`. Take `⟨alg, hcycL, hall, hex⟩` from `relCyc l f (ee l) n h (CyclotomicField (f * l ^ ee l) ℚ) L hf`. Take `⟨hker, -⟩` from `gamGen l f n h γ hf hen hγ`.
+
+Use `letI := alg`. Use `haveI := hcycL`. Establish `hγinv : γ⁻¹ ∈ (ZMod.unitsMap h).ker`. Rewrite using `[hker]`. Conclude with `Subgroup.inv_mem _ (Subgroup.mem_zpowers γ)`.
+
+Take `⟨τ, hτ⟩` from `hex γ⁻¹ hγinv`. Establish `hbig : 2 < f * l ^ n`. Establish `h4 : 4 ≤ l ^ n`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `htc : IsTotallyComplex L` using `IsCyclotomicExtension.Rat.isTotallyComplex (n := f * l ^ n) L hbig`. Set `ρF : Gal(L/CyclotomicField (f * l ^ ee l) ℚ) →* (L ≃+* L)` to `{ toFun := fun σ => σ.toRingEquiv, map_one' := rfl, map_mul' := fun _ _ => rfl }`. Set `ρQ : Gal(L/ℚ) →* (L ≃+* L)` to `{ toFun := fun σ => σ.toRingEquiv, map_one' := rfl, map_mul' := fun _ _ => rfl }`. Establish `hgen : ∀ σ : Gal(L/CyclotomicField (f * l ^ ee l) ℚ), σ ∈ Subgroup.zpowers τ`. Introduce `σ`.
+
+Take `⟨t, ht, hσ⟩` from `hall σ`. Rewrite `ht` using `[hker]`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.mp ht`. Use `Subgroup.mem_zpowers_iff.mpr ⟨-k, ?_⟩` and prove the remaining obligations. Establish `e1 : ρF σ = ρQ (sg (f * l ^ n) L (γ ^ k))` using `hσ`.
+
+Establish `e2 : ρF τ = ρQ (sg (f * l ^ n) L γ⁻¹)` using `hτ`. Establish `e3 : ρF σ = ρF (τ ^ (-k))`. Rewrite using `[e1, map_zpow ρF, e2, ← map_zpow, ← map_zpow, inv_zpow', neg_neg]`. Conclude with `AlgEquiv.ext fun x => (congrArg (fun r : L ≃+* L => r x) e3).symm`. Establish `hcl : clA (f * l ^ n) L γ = clMap τ.toRingEquiv`.
+
+Rewrite using `[hτ, map_inv]`. Both sides reduce to the same expression. Rewrite using `[hcl]`. Conclude with `hB n L τ htc hgen`.
+-/
 theorem UpperTheory.V.FW.ambCyc :
     ∀ (l : ℕ) [Fact l.Prime] (f : ℕ), f.Coprime l → ∃ B : ℕ, ∀ (n : ℕ) [NeZero (f * l ^ n)] (L : Type) [Field L] [NumberField L] [IsCyclotomicExtension {f * l ^ n} ℚ L] (γ : (ZMod (f * l ^ n))ˣ), 2 ≤ n → (γ : ZMod (f * l ^ n)) = 1 + f * l ^ ee l → (powR (Cl L) l ⊔ difR (clA (f * l ^ n) L γ)).index ≤ B := by
   intro l hl f hf

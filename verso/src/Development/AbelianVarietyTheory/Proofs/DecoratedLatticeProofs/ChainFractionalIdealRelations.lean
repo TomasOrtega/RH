@@ -17,6 +17,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SeeSaw.ChainIdeals
 
+/- English proof (translation)
+Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum D.R D.host`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> intro h`. Rewrite `hP` using `[h, zero_mul, zero_mul, zero_mul]`. Conclude with `zero_ne_one hP`. Rewrite `hP` using `[h, mul_zero, zero_mul, zero_mul]`.
+
+Conclude with `zero_ne_one hP`. Rewrite `hP` using `[h, mul_zero, zero_mul]`. Conclude with `zero_ne_one hP`. Rewrite `h` using `[dI]`. Rewrite `hP` using `[h, zero_mul]`.
+
+Conclude with `zero_ne_one hP`.
+-/
 theorem host_ne_zero (D : D7) :
     FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ D.host.xi0 ≠ 0 ∧ D.host.AA ≠ 0 ∧ D.host.AAbar ≠ 0 ∧ dI D ≠ 0 := by
   have hP := Formalism.IndefR.Fin.factPrincipalDatum D.R D.host
@@ -26,6 +33,11 @@ theorem host_ne_zero (D : D7) :
   · rw [h, mul_zero, zero_mul] at hP; exact zero_ne_one hP
   · rw [dI] at h; rw [h, zero_mul] at hP; exact zero_ne_one hP
 
+/- English proof (translation)
+Take `⟨-, hA, hB, -⟩` from `host_ne_zero D`. Establish `e1 : D.host.AA⁻¹ * (dI D * cI D j) = FractionalIdeal.spanSingleton _ D.host.xi0 * D.host.AAbar * cI D j`. Rewrite using `[dI]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, e1⟩` and prove the remaining obligations.
+
+Rewrite using `[e1]`. Establish `hs` using `cI_step D h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem step (D : D7) {j : ℕ} (h : j + 1 + 1 ≤ D.R.m) :
     D.host.AA⁻¹ * (dI D * cI D j) = D.host.AA * cI D (j + 1 + 1) ∧
     D.host.AA⁻¹ * (dI D * cI D j) = FractionalIdeal.spanSingleton _ D.host.xi0 * D.host.AAbar * cI D j := by

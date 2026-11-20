@@ -11,6 +11,9 @@ abbrev projPts {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)
   Quot fun z z' : Geo.mcPts P ↦
     ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ (z' : (Σ k, ι k) → ℂ) = fun p ↦ c p.1 * (z : (Σ k, ι k) → ℂ) p
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem degC_eq_card_projPts {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     (P : Ideal (Geo.MRing ι)) : Geo.degC P = Nat.card (projPts P) := rfl
 
@@ -23,6 +26,9 @@ def PtsIntegralPoints.Statement : Prop :=
     Geo.ptsIntegral P (Fin.elim0 : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ) g =
       ∑ᶠ q : projPts P, g (Quot.out q : Geo.mcPts P)
 
+/- English proof (translation)
+Use `⟨(Nat.card_pos_iff.mp (OrbitDegree.full Unit _ samplePoint samplePoint_blockNonzero)).2, fun c z hc _ ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [norm_mul]`. Conclude with `mul_div_mul_left _ _ (norm_ne_zero_iff.mpr (hc ()))`.
+-/
 example : Finite (projPts (ι := blockIdx (fun _ : Unit ↦ 1)) (orbitIdeal samplePoint)) ∧
     ∀ (c : Unit → ℂ) (z : Coord (fun _ : Unit ↦ 1) → ℂ), (∀ k, c k ≠ 0) →
       z ∈ Geo.mcPts (ι := blockIdx (fun _ : Unit ↦ 1)) (orbitIdeal samplePoint) →

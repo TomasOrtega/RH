@@ -8,10 +8,22 @@ namespace Formalism.FourierDecayAlt.P.Jx3
 
 open InfinitePlace in
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.FiberEquations.goal1 .. | (apply Bl.FiberEquations.goal1 <;> assumption) | (intros; apply Bl.FiberEquations.goal1 <;> assumption)`.
+-/
 theorem trace_places (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (x : E) :
     ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ w : InfinitePlace E, 2 * (w.embedding x).re := by
   first | exact Bl.FiberEquations.goal1 .. | (apply Bl.FiberEquations.goal1 <;> assumption) | (intros; apply Bl.FiberEquations.goal1 <;> assumption)
 
+/- English proof (translation)
+Introduce `E _ _ _ g c l t hg hc`. Establish `hg' : (g : ℝ) ≠ 0` using `by positivity`. Rewrite using `[trace_places, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [dm, semb, cemb, AddMonoidHom.comp_apply, AddMonoidHom.coe_mk, ZeroHom.coe_mk, LinearMap.toAddMonoidHom_coe, LinearMap.smul_apply, LinearMap.id_apply, Complex.inner, PiLp.smul_apply, map_mul, map_div₀, map_natCast, Complex.conj_ofReal, Complex.conj_conj, Complex.real_smul]`.
+
+Establish `: (↑c * w.embedding t) * (((2 / ((g : ℝ) * c) : ℝ) : ℂ) * w.embedding l) = ((2 / (g : ℝ) : ℝ) : ℂ) * (w.embedding l * w.embedding t)`. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc`. Establish `hgC : (g : ℂ) ≠ 0` using `by exact_mod_cast hg.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h2 : w.embedding l * w.embedding t / (g : ℂ) = ((1 / (g : ℝ) : ℝ) : ℂ) * (w.embedding l * w.embedding t)`. Establish `hgC : (g : ℂ) ≠ 0` using `by exact_mod_cast hg.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, h2, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem t_TracePairing : TracePairing := by
   intro E _ _ _ g c l t hg hc
   have hg' : (g : ℝ) ≠ 0 := by positivity
@@ -33,9 +45,15 @@ theorem t_TracePairing : TracePairing := by
   rw [this, h2, Complex.re_ofReal_mul, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Simplify using `[semb]`.
+-/
 theorem semb_apply (E : Type) [Field E] [NumberField E] (c : ℝ) (t : E) : semb E c t = c • cemb E t := by
   simp [semb]
 
+/- English proof (translation)
+Introduce `hL hE E _ _ _ hU g ν s hg`. Take `⟨_, _, _, _, _, _, _, _, _, h10, h11, h12⟩` from `hL E hU g ν s hg`. Take `⟨a, b, c⟩` from `hE E (S6.perLat E g ν s) (S6.rd E ^ (-ν)) h10 h11`. Conclude with `⟨a, b, c.trans h12⟩`.
+-/
 theorem t_BlockFrame : BlockFrame := by
   intro hL hE E _ _ _ hU g ν s hg
   obtain ⟨_, _, _, _, _, _, _, _, _, h10, h11, h12⟩ := hL E hU g ν s hg
@@ -43,6 +61,27 @@ theorem t_BlockFrame : BlockFrame := by
   exact ⟨a, b, c.trans h12⟩
 
 open InfinitePlace in
+/- English proof (translation)
+Set `v : InfinitePlace E × Bool → (E →* ℂ)` to `fun p => if p.2 then (p.1.embedding : E →* ℂ) else ((ComplexEmbedding.conjugate p.1.embedding : E →+* ℂ) : E →* ℂ)`. Establish `hne : ∀ w : InfinitePlace E, w.embedding ≠ ComplexEmbedding.conjugate w.embedding`. Introduce `w`. Establish `hw : ¬ IsReal w` using `not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w)`. Rewrite using `[Ne, eq_comm, ← ComplexEmbedding.isReal_iff, ← isReal_iff]` and apply the resulting hypothesis.
+
+Establish `hmk : ∀ p, ∃ φ : E →+* ℂ, (φ : E →* ℂ) = v p ∧ InfinitePlace.mk φ = p.1 ∧ (φ = if p.2 then p.1.embedding else ComplexEmbedding.conjugate p.1.embedding)`. Introduce and unpack `⟨w, b⟩`. Consider the cases of `b`. Conclude with `⟨ComplexEmbedding.conjugate w.embedding, by simp [v], by simp, by simp⟩`. Conclude with `⟨w.embedding, by simp [v], by simp, by simp⟩`.
+
+Establish `hinj : Function.Injective v`. Introduce `p q hpq`. Take `⟨φ, h1, h2, h3⟩` from `hmk p`. Take `⟨φ', h1', h2', h3'⟩` from `hmk q`. Establish `hφ : φ = φ'`.
+
+Apply `RingHom.coe_monoidHom_injective` to reduce the goal to its premises. Use `show (φ : E →* ℂ) = (φ' : E →* ℂ)`. Rewrite using `[h1, h1', hpq]`. Establish `hw : p.1 = q.1` using `by rw [← h2, ← h2', hφ]`. Take `⟨w, b⟩` from `p`.
+
+Take `⟨w', b'⟩` from `q`. Simplify using `only at hw`. Substitute `hw` using the available equality. Rewrite `hφ` using `[h3, h3']`. Apply the tactic sequence `cases b <;> cases b' <;> simp_all`.
+
+Conclude with `absurd hφ.symm (hne w)`. Establish `hli` using `(linearIndependent_monoidHom E ℂ).comp v hinj`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use `hli (fun p => if p.2 then conj (z p.1) else z p.1) (by` as an intermediate fact. Use extensionality with `t`.
+
+Establish `ht` using `h t`. Rewrite `ht` using `[PiLp.inner_apply]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, Finset.sum_apply, Pi.smul_apply, Function.comp, v, smul_eq_mul, Pi.zero_apply]`. Simplify using `only [if_true, Bool.false_eq_true, if_false]`. Establish `h2 : ∀ w : InfinitePlace E, conj (z w) * w.embedding t + z w * conj (w.embedding t) = ((2 * inner ℝ (z w) (cemb E t w) : ℝ) : ℂ)`.
+
+Introduce `w`. Establish `: cemb E t w = w.embedding t` using `rfl`. Rewrite using `[this, Complex.inner]`. Establish `h3 : z w * conj (w.embedding t) = conj (conj (z w) * w.embedding t)` using `by simp`. Rewrite using `[h3, Complex.add_conj]`.
+
+Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ∀ w : InfinitePlace E, conj (z w) * (w.embedding : E →* ℂ) t + z w * ((ComplexEmbedding.conjugate w.embedding : E →+* ℂ) : E →* ℂ) t = ((2 * inner ℝ (z w) (cemb E t w) : ℝ) : ℂ)` using `fun w => by`. Rewrite using `[← h2 w]`. Both sides reduce to the same expression.
+
+Rewrite using `[Finset.sum_congr rfl (fun w _ => h4 w), ← Complex.ofReal_sum, ← Finset.mul_sum, ht]`. Use the proof step `simp)`. Use extensionality with `w`. Simplify using `using this (w, false)`.
+-/
 theorem orth_zero (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (z : CV E)
     (h : ∀ t : E, inner ℝ z (cemb E t) = 0) : z = 0 := by
   classical
@@ -101,6 +140,39 @@ theorem orth_zero (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (z :
   ext w
   simpa using this (w, false)
 
+/- English proof (translation)
+Establish `hT` using `t_TracePairing`. Introduce `E _ _ _ L g c hg hc hL μ`. Establish `hgE : (g : E) ≠ 0` using `by exact_mod_cast hg.ne'`. Rewrite using `[LinearMap.BilinForm.mem_dualSubmodule]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hμ`. Set `R : E →ₗ[ℚ] ℝ` to `((innerₗ (CV E) μ).toAddMonoidHom.comp (semb E c)).toRatLinearMap`. Establish `hR : ∀ x, R x = inner ℝ μ (semb E c x)` using `fun x => rfl`. Set `b` to `Module.finBasis ℚ E`. Establish `hq : ∀ j, ∃ q : ℚ, R (b j) = (q : ℝ)`.
+
+Introduce `j`. Take `⟨n, hn, hnL⟩` from `hL (b j)`. Establish `h1` using `hμ (semb E c ((n : E) * b j)) (Submodule.mem_map_of_mem (f := (semb E c).toIntLinearMap) hnL)`. Take `⟨m, hm⟩` from `Submodule.mem_one.mp h1`. Establish `h2 : R ((n : E) * b j) = (n : ℝ) * R (b j)`.
+
+Establish `: (n : E) * b j = (n : ℚ) • b j` using `by rw [Algebra.smul_def]; simp`. Rewrite using `[this, map_smul]`. Simplify using `[Rat.smul_def]`. Use `⟨(m : ℚ) / n, ?_⟩` and prove the remaining obligations. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+
+Establish `h3 : (n : ℝ) * R (b j) = (m : ℝ)`. Rewrite using `[← h2, hR]; exact hm.symm.trans (by simp)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `choose q hq using hq`. Set `lam : E →ₗ[ℚ] ℚ` to `b.constr ℚ q`. Establish `hlam : ∀ x, R x = ((lam x : ℚ) : ℝ)`. Introduce `x`. Establish `: R = (Algebra.linearMap ℚ ℝ).comp lam`.
+
+Apply `b.ext` to reduce the goal to its premises. Introduce `j`. Simplify using `[lam, hq]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Establish `hnd` using `traceForm_nondegenerate ℚ E`. Set `l' : E` to `(LinearMap.BilinForm.toDual (Algebra.traceForm ℚ E) hnd).symm lam`. Establish `hl' : ∀ x, Algebra.trace ℚ E (l' * x) = lam x`. Introduce `x`. Use `LinearMap.BilinForm.apply_toDual_symm_apply (B := Algebra.traceForm ℚ E) (hB := hnd) lam x` as an intermediate fact.
+
+Rewrite `this` using `[Algebra.traceForm_apply]`. Conclude with `this`. Establish `hl : ∀ x, Algebra.trace ℚ E ((g : E) * l' * x / g) = lam x`. Introduce `x`. Rewrite using `[← hl' x]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Use `⟨(g : E) * l', ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `h1` using `hμ (semb E c y) (Submodule.mem_map_of_mem (f := (semb E c).toIntLinearMap) hy)`.
+
+Take `⟨m, hm⟩` from `Submodule.mem_one.mp h1`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[hl y]`. Establish `: ((lam y : ℚ) : ℝ) = (m : ℝ)`. Rewrite using `[← hlam, hR]; exact hm.symm.trans (by simp)`.
+
+Establish `h5 : (lam y : ℚ) = (m : ℚ)` using `by exact_mod_cast this`. Rewrite using `[h5]`. Simplify using the standard rewrite rules. Establish `: dm E g c ((g : E) * l') - μ = 0`. Apply `orth_zero` to reduce the goal to its premises.
+
+Introduce `t`. Establish `h1` using `hT E g c ((g : E) * l') t hg hc`. Rewrite `h1` using `[hl t, ← hlam, hR]`. Establish `h2 : inner ℝ (dm E g c ((g : E) * l') - μ) (semb E c t) = 0`. Rewrite using `[inner_sub_left, h1, sub_self]`.
+
+Rewrite `h2` using `[semb_apply E c t, inner_smul_right]`. Conclude with `(mul_eq_zero.mp h2).resolve_left hc`. Conclude with `sub_eq_zero.mp this`. Introduce and unpack `⟨l, hl, rfl⟩ y hy`. Take `⟨t, ht, rfl⟩` from `Submodule.mem_map.mp hy`.
+
+Take `⟨m, hm⟩` from `hl t ht`. Rewrite using `[Submodule.mem_one]`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use `hT E g c l t hg hc` as an intermediate fact. Use `show _ = inner ℝ (dm E g c l) (semb E c t)`.
+
+Rewrite using `[this, ← hm]`. Simplify using the standard rewrite rules.
+-/
 theorem t_TraceDual : TraceDual := by
   have hT := t_TracePairing
   intro E _ _ _ L g c hg hc hL μ
@@ -175,12 +247,20 @@ theorem t_TraceDual : TraceDual := by
     show _ = inner ℝ (dm E g c l) (semb E c t)
     rw [this, ← hm]; simp
 
+/- English proof (translation)
+Unfold `S6.rd`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Establish `: (0 : ℤ) < |discr E|` using `abs_pos.2 (discr_ne_zero E)`. Conclude with `this` after adjusting the coercions.
+-/
 lemma rd_pos (E : Type) [Field E] [NumberField E] [IsCMField E] : 0 < S6.rd E := by
   unfold S6.rd
   apply Real.rpow_pos_of_pos
   have : (0 : ℤ) < |discr E| := abs_pos.2 (discr_ne_zero E)
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `hN E g k ν hg`. Rewrite `h1` using `[h]`. Establish `hpos : 0 < ((g : ℝ) ^ k * S6.rd E ^ ν) ^ S6.deg E`. Use `rd_pos E` as an intermediate fact.
+
+Establish `hg' : (0 : ℝ) < g` using `by exact_mod_cast hg`. Check the signs of the components of the expression. Simplify using `at h1`. Rewrite `hpos` using `[← h1]`. Conclude with `lt_irrefl _ hpos`.
+-/
 lemma idl_ne_zero (hN : S6.NormIdl) (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (k ν : ℤ)
     (hg : 0 < g) : S6.idl E g k ν ≠ 0 := by
   intro h
@@ -194,6 +274,9 @@ lemma idl_ne_zero (hN : S6.NormIdl) (E : Type) [Field E] [NumberField E] [IsCMFi
   rw [← h1] at hpos
   exact lt_irrefl _ hpos
 
+/- English proof (translation)
+Establish `hg' : (g : E) ≠ 0` using `by exact_mod_cast hg.ne'`. Unfold `S6.dualIdl S6.idl`. Rewrite using `[mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton]`. Use `congr 2`. Rewrite using `[zpow_zero, zpow_neg_one, inv_mul_cancel₀ hg']`.
+-/
 lemma idl_zero_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (ν : ℤ) (hg : 0 < g) :
     S6.idl E g 0 (-(ν + 1)) = S6.dualIdl E g ν * FractionalIdeal.spanSingleton _ (g : E) := by
   have hg' : (g : E) ≠ 0 := by exact_mod_cast hg.ne'
@@ -202,6 +285,11 @@ lemma idl_zero_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (
   congr 2
   rw [zpow_zero, zpow_neg_one, inv_mul_cancel₀ hg']
 
+/- English proof (translation)
+Take `⟨h1, -, h3⟩` from `hD E`. Establish `hd : (0 : ℝ) ≤ ((|discr E| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg _`. Unfold `S6.rd`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hd, h1, Real.sqrt_eq_rpow]`. Use `congr 1`.
+
+Establish `: (S6.deg E : ℝ) ≠ 0` using `by exact_mod_cast h3.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma sqrt_disc (hD : S6.DegreeFacts) (E : Type) [Field E] [NumberField E] [IsCMField E] :
     √((|discr E| : ℤ) : ℝ) = S6.rd E ^ S6.deg E := by
   obtain ⟨h1, -, h3⟩ := hD E
@@ -213,6 +301,9 @@ lemma sqrt_disc (hD : S6.DegreeFacts) (E : Type) [Field E] [NumberField E] [IsCM
   push_cast
   field_simp
 
+/- English proof (translation)
+Establish `h` using `hN E g 0 (-(ν + 1)) hg`. Rewrite `h` using `[zpow_zero, one_mul]`. Rewrite using `[← h, Real.sq_sqrt]`. Conclude with `(FractionalIdeal.absNorm_nonneg _)` after adjusting the coercions.
+-/
 lemma norm_B (hN : S6.NormIdl) (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (ν : ℤ)
     (hg : 0 < g) : (FractionalIdeal.absNorm (S6.idl E g 0 (-(ν + 1))) : ℝ) =
       ((S6.rd E ^ (-(ν + 1))) ^ S6.deg E) ^ 2 := by
@@ -222,6 +313,19 @@ lemma norm_B (hN : S6.NormIdl) (E : Type) [Field E] [NumberField E] [IsCMField E
   exact_mod_cast (FractionalIdeal.absNorm_nonneg _)
 
 open scoped Classical in
+/- English proof (translation)
+Introduce `hDeg hConj hUnr hBet hIdx hSub hSup hNorm hCov E _ _ _ hU g ν s hg`. Establish `hrd` using `rd_pos E`. Establish `hg' : (0 : ℝ) < g` using `by exact_mod_cast hg`. Establish `hdual : S6.dualLat E g (S6.perLat E g ν s) = S6.twLat E (S6.dualIdl E g ν) (S6.idl E g 0 (-(ν + 1))) (s + 1)` using `le_antisymm (hSub E g ν s hg) (hSup E hU g ν s hg)`. Establish `hB` using `idl_zero_eq E g ν hg`.
+
+Establish `hA0 : S6.dualIdl E g ν ≠ 0` using `idl_ne_zero hNorm E g _ _ hg`. Establish `hB0 : S6.idl E g 0 (-(ν + 1)) ≠ 0` using `idl_ne_zero hNorm E g _ _ hg`. Establish `hi` using `(hIdx E (S6.dualIdl E g ν) g (s + 1) hA0 (hConj E g _ _) hg ((hUnr E hU).2 g)).2`. Rewrite `hi` using `[← hB, ← hdual]`. Establish `hle : S6.zsub E (S6.idl E g 0 (-(ν + 1))) ≤ S6.dualLat E g (S6.perLat E g ν s)`.
+
+Rewrite using `[hdual]`. Use `(hBet E _ _ (s + 1) ?_ (hConj E g _ _)).1` and prove the remaining obligations. Rewrite using `[hB]`. Establish `h1 : FractionalIdeal.spanSingleton (𝓞 E)⁰ (g : E) ≤ 1`. Rewrite using `[FractionalIdeal.spanSingleton_le_iff_mem, FractionalIdeal.mem_one_iff]`.
+
+Conclude with `⟨(g : 𝓞 E), by simp⟩`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : S6.rd E ^ (ν + 1) ≠ 0` using `(zpow_pos hrd _).ne'`. Establish `hidx0 : S6.idx E (S6.zsub E (S6.idl E g 0 (-(ν + 1)))) (S6.dualLat E g (S6.perLat E g ν s)) ≠ 0`. Rewrite using `[hi]`.
+
+Check the signs of the components of the expression. Take `⟨-, -, h3⟩` from `hCov E _ _ (S6.rd E ^ (ν + 1)) hB0 hc hle hidx0`. Rewrite using `[h3, hi, norm_B hNorm E g ν hg, sqrt_disc hDeg E, abs_of_pos (zpow_pos hrd _)]`. Establish `e1 : (S6.rd E ^ (ν + 1)) ^ (2 * S6.deg E) * ((S6.rd E ^ (-(ν + 1))) ^ S6.deg E) ^ 2 = 1`. Rewrite using `[← pow_mul, mul_comm (S6.deg E) 2, ← mul_pow, ← zpow_add₀ hrd.ne']`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1, one_mul]`. Use `push_cast`. Rewrite using `[div_pow, div_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem t_DualCovolume : DualCovolume := by
   intro hDeg hConj hUnr hBet hIdx hSub hSup hNorm hCov E _ _ _ hU g ν s hg
   have hrd := rd_pos E
@@ -258,6 +362,25 @@ theorem t_DualCovolume : DualCovolume := by
   field_simp
 
 open scoped Classical in
+/- English proof (translation)
+Introduce `hDeg hConj hUnr hBet hIdx hSub hSup hNorm hCov E _ _ _ hU g ν s hg`. Establish `hrd` using `rd_pos E`. Establish `hg' : (0 : ℝ) < g` using `by exact_mod_cast hg`. Establish `hdual : S6.dualLat E g (S6.perLat E g ν s) = S6.twLat E (S6.dualIdl E g ν) (S6.idl E g 0 (-(ν + 1))) (s + 1)` using `le_antisymm (hSub E g ν s hg) (hSup E hU g ν s hg)`. Establish `hB` using `idl_zero_eq E g ν hg`.
+
+Establish `hA0 : S6.dualIdl E g ν ≠ 0` using `idl_ne_zero hNorm E g _ _ hg`. Establish `hB0 : S6.idl E g 0 (-(ν + 1)) ≠ 0` using `idl_ne_zero hNorm E g _ _ hg`. Establish `hi` using `(hIdx E (S6.dualIdl E g ν) g (s + 1) hA0 (hConj E g _ _) hg ((hUnr E hU).2 g)).2`. Rewrite `hi` using `[← hB, ← hdual]`. Establish `hle : S6.zsub E (S6.idl E g 0 (-(ν + 1))) ≤ S6.dualLat E g (S6.perLat E g ν s)`.
+
+Rewrite using `[hdual]`. Use `(hBet E _ _ (s + 1) ?_ (hConj E g _ _)).1` and prove the remaining obligations. Rewrite using `[hB]`. Establish `h1 : FractionalIdeal.spanSingleton (𝓞 E)⁰ (g : E) ≤ 1`. Rewrite using `[FractionalIdeal.spanSingleton_le_iff_mem, FractionalIdeal.mem_one_iff]`.
+
+Conclude with `⟨(g : 𝓞 E), by simp⟩`. Combine the equalities or inequalities in the displayed calculation. Establish `hidx0 : S6.idx E (S6.zsub E (S6.idl E g 0 (-(ν + 1)))) (S6.dualLat E g (S6.perLat E g ν s)) ≠ 0`. Rewrite using `[hi]`. Check the signs of the components of the expression.
+
+Take `⟨-, -, h3⟩` from `hCov E _ _ 1 hB0 one_ne_zero hle hidx0`. Establish `hx : 0 < S6.rd E ^ (-(ν + 1))` using `zpow_pos hrd _`. Establish `hNA : (FractionalIdeal.absNorm (S6.dualIdl E g ν) : ℝ) = (((g : ℝ) ^ (-1 : ℤ) * S6.rd E ^ (-(ν + 1))) ^ S6.deg E) ^ 2`. Establish `h` using `hNorm E g (-1) (-(ν + 1)) hg`. Unfold `S6.dualIdl`.
+
+Rewrite using `[← h, Real.sq_sqrt]`. Conclude with `(FractionalIdeal.absNorm_nonneg _)` after adjusting the coercions. Establish `hval : ZLattice.covolume (E` using `mixedEmbedding.mixedSpace E) (S6.frameLat E (S6.dualLat E g (S6.perLat E g ν s)) 1) = ((g : ℝ) * (S6.rd E / 2)) ^ S6.deg E * (FractionalIdeal.absNorm (S6.dualIdl E g ν) : ℝ) := by`. Rewrite using `[h3, hi, norm_B hNorm E g ν hg, sqrt_disc hDeg E, hNA, abs_one, one_pow, one_mul]`. Use `set x := S6.rd E ^ (-(ν + 1)) with hxdef`.
+
+Use `push_cast`. Rewrite using `[zpow_neg_one, mul_pow, mul_pow, div_pow, inv_pow, inv_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts. Use `⟨hval, fun h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`.
+
+Establish `hn : 0 < (FractionalIdeal.absNorm (S6.dualIdl E g ν) : ℝ)`. Rewrite using `[hNA]`. Check the signs of the components of the expression. Establish `hg1 : (1 : ℝ) ≤ g` using `by exact_mod_cast hg`. Establish `ha : 1 ≤ ((g : ℝ) * (S6.rd E / 2)) ^ S6.deg E`.
+
+Apply `one_le_pow₀` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Apply `inv_anti₀ hn` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem t_DualMeasureBound : DualMeasureBound := by
   intro hDeg hConj hUnr hBet hIdx hSub hSup hNorm hCov E _ _ _ hU g ν s hg
   have hrd := rd_pos E
@@ -309,6 +432,11 @@ theorem t_DualMeasureBound : DualMeasureBound := by
   apply inv_anti₀ hn
   nlinarith
 
+/- English proof (translation)
+Introduce `hL hE hB E _ _ _ hDL hCD hU g ν s hg`. Take `⟨a, b, c⟩` from `hB hL hE E hU g ν s hg`. Use `a` as an intermediate fact. Establish `: IsZLattice ℝ (eLat E (S6.perLat E g ν s) (S6.rd E ^ (-ν)))` using `⟨b⟩`. Take `⟨d1, d2⟩` from `hDL (eLat E (S6.perLat E g ν s) (S6.rd E ^ (-ν)))`.
+
+Use `d1` as an intermediate fact. Use `d2` as an intermediate fact. Rewrite using `[hCD (eLat E (S6.perLat E g ν s) (S6.rd E ^ (-ν))), c]`.
+-/
 theorem t_DualCovolumeCV : DualCovolumeCV := by
   intro hL hE hB E _ _ _ hDL hCD hU g ν s hg
   obtain ⟨a, b, c⟩ := hB hL hE E hU g ν s hg
@@ -324,6 +452,31 @@ section Poisson
 open Formalism.H MeasureTheory
 open scoped FourierTransform
 
+/- English proof (translation)
+Introduce `h0 V _ _ _ _ _ ι _ π hπ Λ _ _ E _ emb dmap La Lad φ Cφ nh hinj hLa hd0 hcov hc hdec hpos hnh t₀ B hB S hS`. Use `set F : V → ℂ := 𝓕 (fun v => (φ v : ℂ)) with hF`. Establish `hcv : 0 < ZLattice.covolume Λ` using `ZLattice.covolume_pos Λ volume`. Use `choose σ hσL hσ using fun μ : dual Λ => hcov μ.1 μ.2`. Establish `hσinj : Function.Injective σ` using `fun a b h => Subtype.ext (by rw [← hσ a, ← hσ b, h])`.
+
+Establish `hσ0 : ∀ μ : dual Λ, μ ≠ 0 → σ μ ≠ 0`. Introduce `μ hμ h`. Apply `hμ` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hσ μ, h, hd0]`.
+
+Both sides reduce to the same expression. Establish `hnorm : ∀ μ : dual Λ, ‖nh (σ μ)‖ = (ZLattice.covolume Λ)⁻¹ * ‖F μ‖`. Introduce `μ`. Rewrite using `[hnh, hσ, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hcv.le]`. Establish `hfin : ∀ T : Finset {μ : dual Λ // μ ≠ 0}, ∑ μ ∈ T, ‖F (μ : dual Λ)‖ ≤ ZLattice.covolume Λ * B`.
+
+Introduce `T`. Use `hB (T.image (fun μ => σ μ.1)) (by` as an intermediate fact. Introduce `l hl`. Take `⟨μ, _, rfl⟩` from `Finset.mem_image.1 hl`. Conclude with `⟨hσL _, hσ0 _ μ.2⟩)`.
+
+Rewrite `this` using `[Finset.sum_image (fun a _ b _ h => Subtype.ext (hσinj h))]`. Rewrite `this` using `[hnorm, ← Finset.mul_sum]`. Rewrite `this` using `[inv_mul_le_iff₀ hcv]`. Then use the resulting hypothesis. Establish `hsum' : Summable (fun μ : {μ : dual Λ // μ ≠ 0} => ‖F (μ : dual Λ)‖)` using `summable_of_sum_le (fun _ => norm_nonneg _) hfin`. Establish `hts : ∑' μ : {μ : dual Λ // μ ≠ 0}, ‖F (μ : dual Λ)‖ ≤ ZLattice.covolume Λ * B` using `hsum'.tsum_le_of_sum_le hfin`.
+
+Establish `hsum : Summable (fun μ : dual Λ => ‖F μ‖)`. Use `(Finset.summable_compl_iff ({0} : Finset (dual Λ))).1 ?_` and prove the remaining obligations. Establish `e : {x : dual Λ // x ∉ ({0} : Finset (dual Λ))} ≃ {μ : dual Λ // μ ≠ 0}` using `Equiv.subtypeEquivRight (fun x => by simp)`. Use `(summable_of_sum_le (fun _ => norm_nonneg _) (c := ZLattice.covolume Λ * B) ?_)` and prove the remaining obligations. Introduce `T`.
+
+Use `hfin (T.map ⟨fun x => ⟨x.1, by simpa using x.2⟩, fun a b h => by` as an intermediate fact. Use `congrArg (fun z => z.1) h` as an intermediate fact. Conclude with `Subtype.ext this⟩)`. Rewrite `this` using `[Finset.sum_map]`. Conclude with `this`.
+
+Take `⟨_, hP⟩` from `h0 V ι π hπ Λ φ Cφ (emb t₀) hc hdec hsum (fun l => hpos _)`. Establish `hmem : ∀ t ∈ S, emb (t - t₀) ∈ Λ` using `fun t ht => hLa _ (hS t ht)`. Set `S' : Finset Λ` to `S.attach.image (fun t => ⟨emb (t.1 - t₀), hmem t.1 t.2⟩)`. Establish `h1 : ∑ t ∈ S, φ (emb t) = ∑ l ∈ S', φ ((l : V) + emb t₀)`. Rewrite using `[Finset.sum_image]`.
+
+Rewrite using `[← Finset.sum_attach]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Simplify using `[map_sub]`. Introduce `a _ b _ h`. Establish `h2 : emb (a.1 - t₀) = emb (b.1 - t₀)` using `congrArg Subtype.val h`.
+
+Establish `h3` using `hinj h2`. Conclude with `Subtype.ext (by simpa using h3)`. Rewrite using `[h1]`. Use `(hP S').trans ?_` and prove the remaining obligations. Unfold `F7.poissonBound`.
+
+Establish `hre : (F 0).re ≤ ‖F 0‖` using `Complex.re_le_norm _`. Establish `hn0 : ‖nh 0‖ = (ZLattice.covolume Λ)⁻¹ * ‖F 0‖`. Rewrite using `[hnh, hd0, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hcv.le]`. Rewrite using `[hn0, mul_add]`. Use `add_le_add (mul_le_mul_of_nonneg_left hre (inv_nonneg.2 hcv.le)) ?_` and prove the remaining obligations.
+
+Rewrite using `[inv_mul_le_iff₀ hcv]`. Conclude with `hts`.
+-/
 theorem t_PoissonJoint : PoissonJoint := by
   intro h0 V _ _ _ _ _ ι _ π hπ Λ _ _ E _ emb dmap La Lad φ Cφ nh hinj hLa hd0 hcov hc hdec hpos hnh t₀ B hB S hS
   classical
@@ -384,18 +537,39 @@ end Formalism.FourierDecayAlt.P.Jx3
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `Jx3.t_TracePairing`.
+-/
 theorem trace_pairing : Formalism.FourierDecayAlt.J.TracePairing := Jx3.t_TracePairing
 
+/- English proof (translation)
+The claim follows from `Jx3.t_TraceDual`.
+-/
 theorem trace_dual_alt : Formalism.FourierDecayAlt.J.TraceDual := Jx3.t_TraceDual
 
+/- English proof (translation)
+The claim follows from `Jx3.t_BlockFrame`.
+-/
 theorem block_frame : Formalism.FourierDecayAlt.J.BlockFrame := Jx3.t_BlockFrame
 
+/- English proof (translation)
+The claim follows from `Jx3.t_DualCovolume`.
+-/
 theorem dual_covolume : Formalism.FourierDecayAlt.J.DualCovolume := Jx3.t_DualCovolume
 
+/- English proof (translation)
+The claim follows from `Jx3.t_DualMeasureBound`.
+-/
 theorem dual_measure_bound : Formalism.FourierDecayAlt.J.DualMeasureBound := Jx3.t_DualMeasureBound
 
+/- English proof (translation)
+The claim follows from `Jx3.t_DualCovolumeCV`.
+-/
 theorem dual_covolume_change_of_variables : Formalism.FourierDecayAlt.J.DualCovolumeCV := Jx3.t_DualCovolumeCV
 
+/- English proof (translation)
+The claim follows from `Jx3.t_PoissonJoint`.
+-/
 theorem poisson_joint : Formalism.FourierDecayAlt.J.PoissonJoint := Jx3.t_PoissonJoint
 
 end Formalism.FourierDecayAlt.P

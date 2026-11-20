@@ -15,6 +15,9 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L] [Algebra.IsSeparable K L]
 
+/- English proof (translation)
+Rewrite using `[differentIdeal_eq_maximalIdeal_pow, ← Submodule.cardQuot_apply, cardQuot_pow_of_prime (IsDiscreteValuationRing.not_a_field 𝒪[L]), Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+-/
 theorem card_quotient_differentIdeal :
     Nat.card (𝒪[L] ⧸ differentIdeal 𝒪[K] 𝒪[L]) = residueCard L ^ differentExponent K L := by
   rw [differentIdeal_eq_maximalIdeal_pow, ← Submodule.cardQuot_apply,
@@ -28,6 +31,9 @@ namespace Padic
 
 variable (p : ℕ) [hp : Fact p.Prime]
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, ← map_one (valuation ℚ_[p]), ← Valuation.vle_iff_le, Valuation.Compatible.vle_iff_le (v := _root_.Padic.mulValuation), GroundTheory.LocalField.Padic.mulValuation_le_iff_norm_le, norm_one]`.
+-/
 theorem mem_integer_iff_norm_le_one (x : ℚ_[p]) : x ∈ 𝒪[ℚ_[p]] ↔ ‖x‖ ≤ 1 := by
   rw [Valuation.mem_integer_iff, ← map_one (valuation ℚ_[p]), ← Valuation.vle_iff_le,
     Valuation.Compatible.vle_iff_le (v := _root_.Padic.mulValuation),
@@ -41,19 +47,33 @@ def padicIntRingEquivInteger : ℤ_[p] ≃+* 𝒪[ℚ_[p]] where
   map_mul' _ _ := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Establish `h` using `(MulEquiv.irreducible_iff (f := (padicIntRingEquivInteger p).toMulEquiv) (x := (p : ℤ_[p]))).2 PadicInt.irreducible_p`. Simplify using `using h`.
+-/
 theorem irreducible_p_integer : Irreducible (p : 𝒪[ℚ_[p]]) := by
   have h := (MulEquiv.irreducible_iff (f := (padicIntRingEquivInteger p).toMulEquiv)
     (x := (p : ℤ_[p]))).2 PadicInt.irreducible_p
   simpa using h
 
+/- English proof (translation)
+Use `ord_uniformizer (irreducible_p_integer p)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem ord_p : ord (p : ℚ_[p]) = 1 := by
   have := ord_uniformizer (irreducible_p_integer p)
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[Real.fourierChar_apply', Circle.exp_eq_one]`. Conclude with `⟨n, by ring⟩`.
+-/
 theorem fourierChar_intCast (n : ℤ) : Real.fourierChar (n : ℝ) = 1 := by
   rw [Real.fourierChar_apply', Circle.exp_eq_one]
   exact ⟨n, by ring⟩
 
+/- English proof (translation)
+Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.out.pos`. Rewrite `h` using `[norm_div, norm_pow, _root_.Padic.norm_p, div_le_one (pow_pos (inv_pos.mpr hp0) j)]`. Establish `h' : ‖(N : ℚ_[p])‖ ≤ (p : ℝ) ^ (-(j : ℤ))`. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]` and apply the resulting hypothesis. Take `⟨n, hn⟩` from `(_root_.Padic.norm_int_le_pow_iff_dvd N j).mp h'`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: (p : ℚ) ^ j ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hp.out.ne_zero)`. Rewrite using `[hn, div_eq_iff this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_int_of_norm_le_one {N : ℤ} {j : ℕ}
     (h : ‖(N : ℚ_[p]) / (p : ℚ_[p]) ^ j‖ ≤ 1) : ∃ n : ℤ, (N : ℚ) / (p : ℚ) ^ j = n := by
   have hp0 : (0 : ℝ) < p := by exact_mod_cast hp.out.pos
@@ -67,6 +87,17 @@ theorem exists_int_of_norm_le_one {N : ℤ} {j : ℕ}
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hpp : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℕ, ‖(p : ℚ_[p]) ^ k * x‖ ≤ 1 := by`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Conclude with `⟨0, by simp⟩`. Use `⟨x.valuation.natAbs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_pow, _root_.Padic.norm_p, _root_.Padic.norm_eq_zpow_neg_valuation hx, inv_pow, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ (by exact_mod_cast hp.out.ne_zero)]`. Apply `zpow_le_one_of_nonpos₀ (by exact_mod_cast hp.out.one_lt.le)` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.mp (PadicInt.appr_spec k ⟨_, hk⟩)`. Use `⟨PadicInt.appr ⟨_, hk⟩ k, k, ?_⟩` and prove the remaining obligations.
+
+Establish `hz' : (z : ℚ_[p]) * (p : ℚ_[p]) ^ k = (p : ℚ_[p]) ^ k * x - (PadicInt.appr ⟨_, hk⟩ k : ℚ_[p])`. Use `congrArg (fun t : ℤ_[p] => (t : ℚ_[p])) hz` as an intermediate fact. Simplify using `only [PadicInt.coe_mul, PadicInt.coe_pow, PadicInt.coe_natCast] at this`. Conclude with `this`. Establish `hpk : (p : ℚ_[p]) ^ k ≠ 0` using `pow_ne_zero _ hpp`.
+
+Establish `e : x - (PadicInt.appr ⟨_, hk⟩ k : ℚ_[p]) / (p : ℚ_[p]) ^ k = (z : ℚ_[p])`. Establish `h2 : (x - (PadicInt.appr ⟨_, hk⟩ k : ℚ_[p]) / (p : ℚ_[p]) ^ k) * (p : ℚ_[p]) ^ k = (z : ℚ_[p]) * (p : ℚ_[p]) ^ k`. Rewrite using `[sub_mul, div_mul_cancel₀ _ hpk, hz']`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_right_cancel₀ hpk h2`.
+
+Use `push_cast`. Rewrite using `[e]`. Conclude with `z.2`.
+-/
 theorem exists_norm_sub_le_one (x : ℚ_[p]) :
     ∃ (m : ℤ) (k : ℕ), ‖x - (m : ℚ_[p]) / (p : ℚ_[p]) ^ k‖ ≤ 1 := by
   have hpp : (p : ℚ_[p]) ≠ 0 := by exact_mod_cast hp.out.ne_zero
@@ -96,6 +127,13 @@ theorem exists_norm_sub_le_one (x : ℚ_[p]) :
   rw [e]
   exact z.2
 
+/- English proof (translation)
+Establish `hpq : (p : ℚ) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `hpp : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `e : (m : ℚ_[p]) / (p : ℚ_[p]) ^ k - (m' : ℚ_[p]) / (p : ℚ_[p]) ^ k' = ((m * (p : ℤ) ^ k' - m' * (p : ℤ) ^ k : ℤ) : ℚ_[p]) / (p : ℚ_[p]) ^ (k + k')`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Take `⟨n, hn⟩` from `exists_int_of_norm_le_one p h`. Establish `e' : (m : ℚ) / (p : ℚ) ^ k = (m' : ℚ) / (p : ℚ) ^ k' + n`. Rewrite using `[← hn]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e', Rat.cast_add, Rat.cast_intCast, AddChar.map_add_eq_mul, fourierChar_intCast, mul_one]`.
+-/
 theorem fourierChar_eq_of_norm_sub_le_one {m m' : ℤ} {k k' : ℕ}
     (h : ‖(m : ℚ_[p]) / (p : ℚ_[p]) ^ k - (m' : ℚ_[p]) / (p : ℚ_[p]) ^ k'‖ ≤ 1) :
     Real.fourierChar (((m : ℚ) / (p : ℚ) ^ k : ℚ) : ℝ) =
@@ -120,12 +158,20 @@ def fracRep (x : ℚ_[p]) : ℚ :=
   ((Classical.choose (exists_norm_sub_le_one p x) : ℤ) : ℚ) /
     (p : ℚ) ^ Classical.choose (Classical.choose_spec (exists_norm_sub_le_one p x))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, rfl, Classical.choose_spec (Classical.choose_spec (exists_norm_sub_le_one p x))⟩`.
+-/
 theorem fracRep_spec (x : ℚ_[p]) : ∃ (m : ℤ) (k : ℕ), fracRep p x = (m : ℚ) / (p : ℚ) ^ k ∧
     ‖x - (m : ℚ_[p]) / (p : ℚ_[p]) ^ k‖ ≤ 1 :=
   ⟨_, _, rfl, Classical.choose_spec (Classical.choose_spec (exists_norm_sub_le_one p x))⟩
 
 def stdCharFun (x : ℚ_[p]) : Circle := Real.fourierChar (fracRep p x : ℝ)
 
+/- English proof (translation)
+Take `⟨m₀, k₀, e₀, h₀⟩` from `fracRep_spec p x`. Rewrite using `[stdCharFun, e₀]`. Apply `fourierChar_eq_of_norm_sub_le_one` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ max ‖x - (m : ℚ_[p]) / (p : ℚ_[p]) ^ k‖ ‖-(x - (m₀ : ℚ_[p]) / (p : ℚ_[p]) ^ k₀)‖ := _root_.Padic.nonarchimedean _ _`. Use `_ ≤ 1 := max_le h (by rwa [norm_neg])`.
+-/
 theorem stdCharFun_eq (x : ℚ_[p]) (m : ℤ) (k : ℕ)
     (h : ‖x - (m : ℚ_[p]) / (p : ℚ_[p]) ^ k‖ ≤ 1) :
     stdCharFun p x = Real.fourierChar (((m : ℚ) / (p : ℚ) ^ k : ℚ) : ℝ) := by
@@ -167,18 +213,34 @@ def stdChar : AddChar ℚ_[p] Circle where
     field_simp
     ring
 
+/- English proof (translation)
+The claim follows from `stdCharFun_eq p x m k h`.
+-/
 theorem stdChar_apply (x : ℚ_[p]) (m : ℤ) (k : ℕ) (h : ‖x - (m : ℚ_[p]) / (p : ℚ_[p]) ^ k‖ ≤ 1) :
     stdChar p x = Real.fourierChar (((m : ℚ) / (p : ℚ) ^ k : ℚ) : ℝ) :=
   stdCharFun_eq p x m k h
 
+/- English proof (translation)
+The claim follows from `stdChar_apply p _ m k (by simp)`.
+-/
 theorem stdChar_intCast_div_pow (m : ℤ) (k : ℕ) :
     stdChar p ((m : ℚ_[p]) / (p : ℚ_[p]) ^ k) = Real.fourierChar (((m : ℚ) / (p : ℚ) ^ k : ℚ) : ℝ) :=
   stdChar_apply p _ m k (by simp)
 
+/- English proof (translation)
+Rewrite using `[stdChar_apply p x 0 0 (by simpa using hx)]`. Simplify using the standard rewrite rules.
+-/
 theorem stdChar_eq_one_of_norm_le_one {x : ℚ_[p]} (hx : ‖x‖ ≤ 1) : stdChar p x = 1 := by
   rw [stdChar_apply p x 0 0 (by simpa using hx)]
   simp
 
+/- English proof (translation)
+Establish `h` using `stdChar_intCast_div_pow p 1 1`. Rewrite `h` using `[Int.cast_one, pow_one, one_div]`. Rewrite using `[h, Real.fourierChar_apply', Ne, Circle.exp_eq_one]`. Introduce and unpack `⟨n, hn⟩`. Establish `hp0 : (p : ℝ) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`.
+
+Establish `h1 : (1 : ℝ) = n * p`. Move the coercions through the operations in `at hn`. Clear denominators, using `at hn` for the nonvanishing conditions. Use polynomial arithmetic with `[Real.pi_pos]`. Establish `h2 : (n : ℤ) * p = 1` using `by exact_mod_cast h1.symm`.
+
+Establish `h3 : (p : ℤ) = 1` using `Int.eq_one_of_dvd_one (by positivity) ⟨n, by rw [← h2]; ring⟩`. Establish `: p = 1` using `by exact_mod_cast h3`. Conclude with `hp.out.one_lt.ne' this`.
+-/
 theorem stdChar_inv_p_ne_one : stdChar p (p : ℚ_[p])⁻¹ ≠ 1 := by
   have h := stdChar_intCast_div_pow p 1 1
   rw [Int.cast_one, pow_one, one_div] at h
@@ -194,9 +256,15 @@ theorem stdChar_inv_p_ne_one : stdChar p (p : ℚ_[p])⁻¹ ≠ 1 := by
   have : p = 1 := by exact_mod_cast h3
   exact hp.out.one_lt.ne' this
 
+/- English proof (translation)
+Introduce `x hx` and use `stdChar_eq_one_of_norm_le_one p ((mem_integer_iff_norm_le_one p x).mp (mem_valBall_zero_iff.mp hx))`.
+-/
 theorem isTrivialOn_stdChar_zero : IsTrivialOn (stdChar p) 0 := fun x hx =>
   stdChar_eq_one_of_norm_le_one p ((mem_integer_iff_norm_le_one p x).mp (mem_valBall_zero_iff.mp hx))
 
+/- English proof (translation)
+Introduce `h`. Establish `hpp : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Apply `stdChar_inv_p_ne_one p` to reduce the goal to its premises. Apply `h` to reduce the goal to its premises. Rewrite using `[mem_valBall_iff_le_ord (inv_ne_zero hpp), ord_inv hpp, ord_p]`.
+-/
 theorem not_isTrivialOn_stdChar_neg_one : ¬ IsTrivialOn (stdChar p) (-1) := by
   intro h
   have hpp : (p : ℚ_[p]) ≠ 0 := by exact_mod_cast hp.out.ne_zero
@@ -204,9 +272,15 @@ theorem not_isTrivialOn_stdChar_neg_one : ¬ IsTrivialOn (stdChar p) (-1) := by
   apply h
   rw [mem_valBall_iff_le_ord (inv_ne_zero hpp), ord_inv hpp, ord_p]
 
+/- English proof (translation)
+The claim follows from `continuous_of_isTrivialOn (isTrivialOn_stdChar_zero p)`.
+-/
 theorem continuous_stdChar : Continuous (stdChar p) :=
   continuous_of_isTrivialOn (isTrivialOn_stdChar_zero p)
 
+/- English proof (translation)
+Introduce `h`. Apply `not_isTrivialOn_stdChar_neg_one p` to reduce the goal to its premises. Rewrite using `[h]`. Introduce `x _`. Conclude with `AddChar.one_apply x`.
+-/
 theorem stdChar_ne_one : stdChar p ≠ 1 := by
   intro h
   apply not_isTrivialOn_stdChar_neg_one p
@@ -214,6 +288,9 @@ theorem stdChar_ne_one : stdChar p ≠ 1 := by
   intro x _
   exact AddChar.one_apply x
 
+/- English proof (translation)
+Establish `hc` using `continuous_stdChar p`. Establish `hne` using `stdChar_ne_one p`. Use `le_antisymm ((isTrivialOn_iff hc hne 0).mp (isTrivialOn_stdChar_zero p)) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `not_isTrivialOn_stdChar_neg_one p ((isTrivialOn_iff hc hne (-1)).mpr (by omega))`.
+-/
 theorem addCharConductor_stdChar : addCharConductor (stdChar p) = 0 := by
   have hc := continuous_stdChar p
   have hne := stdChar_ne_one p
@@ -230,14 +307,26 @@ def stdCharOf : AddChar K Circle := traceChar K (stdChar p)
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [ValuativeExtension ℚ_[p] K] [FiniteDimensional ℚ_[p] K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stdCharOf_apply (x : K) : stdCharOf p K x = stdChar p (Algebra.trace ℚ_[p] K x) := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_traceChar (continuous_stdChar p) (stdChar_ne_one p)`.
+-/
 theorem continuous_stdCharOf : Continuous (stdCharOf p K) :=
   continuous_traceChar (continuous_stdChar p) (stdChar_ne_one p)
 
+/- English proof (translation)
+The claim follows from `traceChar_ne_one (continuous_stdChar p) (stdChar_ne_one p)`.
+-/
 theorem stdCharOf_ne_one : stdCharOf p K ≠ 1 :=
   traceChar_ne_one (continuous_stdChar p) (stdChar_ne_one p)
 
+/- English proof (translation)
+The claim follows from `addCharConductor_traceChar_of_eq_zero (continuous_stdChar p) (stdChar_ne_one p) (addCharConductor_stdChar p)`.
+-/
 theorem addCharConductor_stdCharOf :
     addCharConductor (stdCharOf p K) = -(differentExponent ℚ_[p] K : ℤ) :=
   addCharConductor_traceChar_of_eq_zero (continuous_stdChar p) (stdChar_ne_one p)
@@ -245,6 +334,9 @@ theorem addCharConductor_stdCharOf :
 
 variable [MeasurableSpace K] [BorelSpace K]
 
+/- English proof (translation)
+Rewrite using `[selfDualMeasure_integers, addCharConductor_stdCharOf]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem selfDualMeasure_stdCharOf_integers_eq_rpow :
     selfDualMeasure (stdCharOf p K) (𝒪[K] : Set K) =
       ((residueCard K : ℝ≥0) ^ (-(differentExponent ℚ_[p] K : ℝ) / 2) : ℝ≥0) := by
@@ -252,6 +344,9 @@ theorem selfDualMeasure_stdCharOf_integers_eq_rpow :
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[selfDualMeasure_stdCharOf_integers_eq_rpow, card_quotient_differentIdeal, Nat.cast_pow, ← NNReal.rpow_natCast, ← NNReal.rpow_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem selfDualMeasure_stdCharOf_integers :
     selfDualMeasure (stdCharOf p K) (𝒪[K] : Set K) =
       ((Nat.card (𝒪[K] ⧸ differentIdeal 𝒪[ℚ_[p]] 𝒪[K]) : ℝ≥0) ^ (-(1 / 2 : ℝ)) : ℝ≥0) := by

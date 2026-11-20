@@ -8,6 +8,13 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntegralGr
 noncomputable section
 namespace GlobalTheory.Hk3.HoweDuality
 
+/- English proof (translation)
+Introduce `L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP s hs0 hs hspan x hw`. Take `⟨hne, hfx⟩` from `GlobalTheory.T.heisenbergTranslate_fixed_integralUnitary L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hs x hw`. Establish `Hph : ∀ h : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L), (h : GL (Fin n') L) ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) → (∀ i j, (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x - x) i j ∈ Formalism.UG.intL L) → ψ ((GlobalTheory.Hk3.locH σ δ JS JT x (((h …`. Introduce `h hh hint`. Establish `e` using `congrArg (fun T : Module.End ℂ M => T s) (hP.rho_mul x (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x - x))`.
+
+Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, hs _ hint, add_sub_cancel, hfx h hh hint] at e`. Establish `e2 : (ψ ((GlobalTheory.Hk3.locH σ δ JS JT x (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x - x) + σ (GlobalTheory.Hk3.locH σ δ JS JT x (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x - x))) / 2) - 1) • ρ x s = 0`. Rewrite using `[sub_smul, one_smul, ← e, sub_self]`. Break down `smul_eq_zero.1 e2 with h1 | h1` into its components or cases. Conclude with `sub_eq_zero.1 h1`.
+
+Conclude with `absurd h1 hne`. Conclude with `GlobalTheory.T.exists_integral_gram_of_phase_conditions L ϖ σ q δ n n' JS ψ hP.unr hP.odd hP.intS hP.hermS hP.delta hP.psi_int hP.psi_ne x (GlobalTheory.T.cayleyTransform_trivial_phase_skewHermitian L ϖ σ q δ n n' JS JT ψ hP.unr hP.odd hP.intS hP.intT hP.hermS hP.hermT hP.delta h …`.
+-/
 theorem exists_int_gram_of_fixed : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M]
     (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M)

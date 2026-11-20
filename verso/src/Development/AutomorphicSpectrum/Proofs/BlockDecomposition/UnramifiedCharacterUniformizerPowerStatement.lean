@@ -8,5 +8,8 @@ open GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.Iwasawa GroundT
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.LFUDom
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LFUDom.mp_uniformizerUnit_zpow_half | exact GlobalTheory.CompanionTheory.LFUDom.mp_uniformizerUnit_zpow_half | (intros; apply GlobalTheory.CompanionTheory.LFUDom.mp_uniformizerUnit_zpow_half <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unramified_character_uniformizer_power : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (m t : ℤ), Ad3.mp (uniformizerUnit F ^ m) ((t : ℂ) / 2) = sqrtQ F ^ (-(t * m)) := by
   first | exact @GlobalTheory.CompanionTheory.LFUDom.mp_uniformizerUnit_zpow_half | exact GlobalTheory.CompanionTheory.LFUDom.mp_uniformizerUnit_zpow_half | (intros; apply GlobalTheory.CompanionTheory.LFUDom.mp_uniformizerUnit_zpow_half <;> assumption)

@@ -11,6 +11,15 @@ section Abstract
 
 variable {ι α Q E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
 
+/- English proof (translation)
+Use `set v := ∑' a, w a with hv`. Establish `hs : HasSum w v` using `hw.of_norm.hasSum`. Establish `hb : Summable (fun y : α × α => ‖w y.1‖ * ‖w y.2‖)` using `hw.mul_of_nonneg hw (fun _ => norm_nonneg _) (fun _ => norm_nonneg _)`. Establish `hsum : Summable (fun y : α × α => (inner ℂ (w y.1) (w y.2)).re)`. Use `Summable.of_norm_bounded hb fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.norm_eq_abs]`. Conclude with `(Complex.abs_re_le_norm _).trans (norm_inner_le_norm _ _)`. Use `⟨hsum, ?_⟩` and prove the remaining obligations. Establish `h1 : HasSum (fun a => (inner ℂ v (w a)).re) (inner ℂ v v).re`. Establish `h` using `Complex.reCLM.hasSum ((innerSL ℂ v).hasSum hs)`.
+
+Simplify `h` using `[innerSL_apply_apply]`. Establish `h2 : ∀ a, HasSum (fun b => (inner ℂ (w a) (w b)).re) (inner ℂ (w a) v).re`. Introduce `a`. Establish `h` using `Complex.reCLM.hasSum ((innerSL ℂ (w a)).hasSum hs)`. Simplify `h` using `[innerSL_apply_apply]`.
+
+Establish `h3 : ∀ a, (inner ℂ (w a) v).re = (inner ℂ v (w a)).re` using `fun a => by`. Simplify using `using inner_re_symm (𝕜 := ℂ) (w a) v`. Rewrite using `[hsum.tsum_prod' (fun a => (h2 a).summable), tsum_congr (fun a => (h2 a).tsum_eq), tsum_congr h3, h1.tsum_eq]`. Simplify using `using norm_sq_eq_re_inner (𝕜 := ℂ) v`.
+-/
 theorem normSq_tsum_eq (w : α → E) (hw : Summable fun a => ‖w a‖) :
     Summable (fun y : α × α => (inner ℂ (w y.1) (w y.2)).re) ∧
       ‖∑' a, w a‖ ^ 2 = ∑' y : α × α, (inner ℂ (w y.1) (w y.2)).re := by
@@ -35,6 +44,19 @@ theorem normSq_tsum_eq (w : α → E) (hw : Summable fun a => ‖w a‖) :
   rw [hsum.tsum_prod' (fun a => (h2 a).summable), tsum_congr (fun a => (h2 a).tsum_eq), tsum_congr h3, h1.tsum_eq]
   simpa using norm_sq_eq_re_inner (𝕜 := ℂ) v
 
+/- English proof (translation)
+Use `set S : Set (ι × ι) := {p : ι × ι | P p.1 ∧ P p.2 ∧ q p.1 = q p.2} with hSdef`. Use `set G : ι × ι → ℝ := fun p => (inner ℂ (vec p.1) (vec p.2)).re with hGdef`. Establish `hG : Summable G` using `(normSq_tsum_eq vec hv).1`. Establish `hF : Summable (S.indicator G)` using `hG.indicator S`. Establish `hfib` using `hF.hasSum.tsum_fiberwise (fun p : ι × ι => q p.1)`.
+
+Establish `hA1 : ∀ c, Summable fun s : A c => ‖vec s‖` using `fun c => hv.subtype (A c)`. Establish `key : ∀ c, ∑' p : (fun p : ι × ι => q p.1) ⁻¹' {c}, S.indicator G p = ‖∑' s : A c, vec s‖ ^ 2`. Introduce `c`. Rewrite using `[(normSq_tsum_eq (fun s : A c => vec s) (hA1 c)).2]`. Establish `e1 : ∑' y : A c × A c, (inner ℂ (vec y.1) (vec y.2)).re = ∑' x : ↥(A c ×ˢ A c), G x`.
+
+Rewrite using `[← (Equiv.Set.prod (A c) (A c)).tsum_eq]`. Both sides reduce to the same expression. Rewrite using `[e1, tsum_subtype (A c ×ˢ A c) G, tsum_subtype ((fun p : ι × ι => q p.1) ⁻¹' {c}) (S.indicator G)]`. Use `tsum_congr fun p => ?_` and prove the remaining obligations. Establish `hm : p ∈ (fun p : ι × ι => q p.1) ⁻¹' {c} ∧ p ∈ S ↔ p ∈ A c ×ˢ A c`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, hSdef, Set.mem_setOf_eq, Set.mem_prod, hA]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, hp1, hp2, h12⟩`. Conclude with `⟨⟨hp1, h1⟩, hp2, h12 ▸ h1⟩`. Introduce and unpack `⟨⟨hp1, h1⟩, hp2, h2⟩`.
+
+Conclude with `⟨h1, hp1, hp2, h1.trans h2.symm⟩`. Rewrite using `[Set.indicator_indicator, Set.indicator_apply, Set.indicator_apply]`. Distinguish the cases in `h : p ∈ A c ×ˢ A c`. Rewrite using `[if_pos (Set.mem_inter_iff _ _ _ |>.2 (hm.2 h)), if_pos h]`. Rewrite using `[if_neg (fun h' => h (hm.1 ((Set.mem_inter_iff _ _ _).1 h'))), if_neg h]`.
+
+Use `⟨hA1, hfib.summable.congr key, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfib.tsum_eq, tsum_congr key]`.
+-/
 theorem regroup (vec : ι → E) (hv : Summable fun t => ‖vec t‖) (P : ι → Prop) (q : ι → Q)
     (A : Q → Set ι) (hA : ∀ c s, s ∈ A c ↔ P s ∧ q s = c) :
     (∀ c, Summable fun s : A c => ‖vec s‖) ∧
@@ -76,6 +98,11 @@ end Formalism.L2.SG.Pf.RowRegroup
 
 namespace Formalism.L2.SG.Pf.RowRegroup
 
+/- English proof (translation)
+Rewrite using `[PiLp.inner_apply, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ k) h`.
+-/
 theorem inner_toLp_single_same {K F : Type*} [Fintype K] [DecidableEq K] [NormedAddCommGroup F]
     [InnerProductSpace ℂ F] (k : K) (x y : F) :
     inner ℂ (WithLp.toLp 2 (Pi.single k x : K → F)) (WithLp.toLp 2 (Pi.single k y : K → F)) = inner ℂ x y := by
@@ -97,6 +124,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option linter.deprecated false in
 
+/- English proof (translation)
+Establish `hvec : ∀ s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'), (Y.tO u u').vec s = WithLp.toLp 2 (Pi.single ((⟨s.lam, s.mem⟩, ⟨s.lam', s.mem'⟩) : {Λ // Λ ∈ Y.what₂ u} × {Λ' // Λ' ∈ Y.what₂ u'}) (liftVec X Y u u' s))`. Introduce `s`. Express the relevant statement in the definitionally equal form `WithLp.toLp 2 _ = WithLp.toLp 2 _`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `h : k = (⟨s.lam, s.mem⟩, ⟨s.lam', s.mem'⟩)`. Substitute `h` using the available equality. Simplify using `[liftVec]`. Simplify using `[h]`. Establish `hnorm : ∀ s, ‖(Y.tO u u').vec s‖ = ‖liftVec X Y u u' s‖`.
+
+Introduce `s`. Rewrite using `[hvec s, PiLp.norm_toLp_single]`. Establish `hv : Summable fun s => ‖liftVec X Y u u' s‖` using `hAbs.2.1.congr hnorm`. Take `⟨h1, h2, h3⟩` from `Formalism.L2.SG.Pf.RowRegroup.regroup (liftVec X Y u u') hv (fun s => (Y.tO u u').G s ≠ 0 ∧ (Y.tO u u').gener s) (fun s => ((Y.tO u u').rowOf s, κ s.toTerm)) (fun c => {s | (Y.tO u u').G s ≠ 0 ∧ (Y.tO u u').gener s ∧ (Y.tO u u').rowOf s = c.1 ∧ κ s.toTerm = c.2}) (fun c s => by s …`. Establish `hset : (Y.tO u u').sc (Y.tO u u').genSet = {p : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') × Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') | ((Y.tO u u').G p.1 ≠ 0 ∧ (Y.tO u u').gener p.1) ∧ ((Y.tO u u').G p.2 …`.
+
+Use extensionality with `⟨s₁, s₂⟩`. Simplify using `only [Formalism.FourierDecayAlt.PB.Terms.sc, Formalism.FourierDecayAlt.PB.Terms.allPairs, Formalism.FourierDecayAlt.PB.Terms.genSet, Set.mem_setOf_eq, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨hG1, hg1⟩, ⟨hG2, hg2⟩, hr⟩, h0, hsc⟩`. Conclude with `⟨⟨hG1, hg1⟩, ⟨hG2, hg2⟩, hr, (hS s₁ s₂ hG1 hG2 hg1 hg2 hr).1 ⟨h0, hsc⟩⟩`.
+
+Introduce and unpack `⟨⟨hG1, hg1⟩, ⟨hG2, hg2⟩, hr, hk⟩`. Take `⟨h0, hsc⟩` from `(hS s₁ s₂ hG1 hG2 hg1 hg2 hr).2 hk`. Conclude with `⟨⟨⟨hG1, hg1⟩, ⟨hG2, hg2⟩, hr⟩, h0, hsc⟩`. Establish `hsig : SigOf (Y.tO u u') = ∑' p, ({p : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') × Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') | ((Y.tO u u').G p.1 ≠ 0 ∧ (Y.tO u u').gener p.1) ∧ ((Y.tO u u').G p.2 ≠ 0 ∧ (Y …`. Unfold `SigOf`.
+
+Rewrite using `[hset]`. Use `tsum_congr fun p => ?_` and prove the remaining obligations. Use `congrFun (Set.indicator_congr fun p hp => ?_) p` and prove the remaining obligations. Take `⟨-, -, hr⟩` from `hp`. Establish `hrow : (Y.tO u u').rowOf p.1 = (Y.tO u u').rowOf p.2` using `congrArg Prod.fst hr`.
+
+Establish `hposition : ((⟨p.1.lam, p.1.mem⟩, ⟨p.1.lam', p.1.mem'⟩) : {Λ // Λ ∈ Y.what₂ u} × {Λ' // Λ' ∈ Y.what₂ u'}) = (⟨p.2.lam, p.2.mem⟩, ⟨p.2.lam', p.2.mem'⟩)` using `congrArg (fun r : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR => (r.1, r.2.1)) hrow`. Use `show (inner ℂ ((Y.tO u u').vec p.1) ((Y.tO u u').vec p.2)).re = (inner ℂ (liftVec X Y u u' p.1) (liftVec X Y u u' p.2)).re`. Rewrite using `[hvec p.1, hvec p.2, hposition, Formalism.L2.SG.Pf.RowRegroup.inner_toLp_single_same]`. Conclude with `⟨h1, h2, hsig.trans h3⟩`.
+-/
 theorem rowRegroupC_of {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
     (κ : Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
     (hAbs : Formalism.L2.SG.TermOp.AbsConvT (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u'))

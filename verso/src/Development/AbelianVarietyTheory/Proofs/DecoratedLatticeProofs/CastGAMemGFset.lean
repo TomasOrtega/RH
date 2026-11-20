@@ -19,10 +19,26 @@ namespace GlobalTheory.Core.Mi
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castGA_mem_GFset {I I' : Formalism.MainNotions.S.AutInst} (e : I = I') (x : I.GA) :
     Formalism.L2.SG.RowsJoinPinned.castGA e x ∈ I'.GFset ↔ x ∈ I.GFset := by
   subst e; rfl
 
+/- English proof (translation)
+Establish `hS : besGrp B.d B.o = (Formalism.L2.SG.Pf.SAsub X u).comap (iotaX X h).toMonoidHom`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `n hn`. Take `⟨h1, h2⟩` from `(B.tieN n).1 hn`.
+
+Conclude with `⟨fun v => (h1 v).1, Formalism.L2.SG.Pf.nfin_sfin X u h2⟩`. Introduce `g hg`. Take `⟨h1, h2⟩` from `(B.tieH g).1 hg`. Conclude with `⟨hinf_le_sinf X u _ h1, Formalism.L2.SG.Pf.hfin_sfin X u ⟨_, h2⟩⟩`. Introduce `g hg`.
+
+Establish `hg' : (iotaX X h g).1 ∈ X.SinfU u ∧ (iotaX X h g).2 ∈ SfinU X u` using `hg`. Take `⟨hg1, hg2⟩` from `hg'`. Take `⟨hi, hhi, ni, hni, ei⟩` from `Formalism.L2.SG.Pf.Sinf.levi X u hg1`. Take `⟨hf, nf, hnf, ef⟩` from `Formalism.L2.SG.Closed.FinLeviC_holds D X u _ hg2`. Establish `hgeq : g = (iotaX X h).symm (hi, (hf : X.B.I.Gf)) * (iotaX X h).symm (ni, nf)`.
+
+Rewrite using `[← map_mul, (iotaX X h).eq_symm_apply]`. Conclude with `Prod.ext ei ef`. Rewrite using `[hgeq]`. Use `Subgroup.mul_mem _ (Subgroup.mem_sup_right ?_) (Subgroup.mem_sup_left ?_)` and prove the remaining obligations. Use `(B.tieH _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `⟨hhi, hf.2⟩`. Use `(B.tieN _).2 ?_` and prove the remaining obligations. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `⟨hni, hnf⟩`.
+
+Rewrite using `[hS]`. Both sides reduce to the same expression.
+-/
 theorem besGrp_iff_sA (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (g : GA D (D.sp.Y 0)) :
     g ∈ besGrp B.d B.o ↔ (iotaX X h g).1 ∈ X.SinfU u ∧ (iotaX X h g).2 ∈ SfinU X u := by
@@ -53,6 +69,11 @@ theorem besGrp_iff_sA (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (
         exact ⟨hni, hnf⟩
   rw [hS]; rfl
 
+/- English proof (translation)
+Introduce `D X h u ψ A B`. Use `⟨besGrp_iff_sA D X h u ψ A B, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_inf, besGrp_iff_sA D X h u ψ A B, Formalism.L2.SG.Pf.srat_eq, Subgroup.mem_inf, Formalism.MainNotions.LeviCoordinates.rr_mem_GF, Formalism.IndefR.RationalEmbedding.iota_rat]`. Establish `e : iotaX X h g = Formalism.L2.SG.RowsJoinPinned.castGA h.symm (Formalism.IndefR.RationalEmbedding.iota D g)` using `rfl`. Rewrite using `[e, castGA_mem_GFset]`.
+
+Both sides reduce to the same expression.
+-/
 theorem besGrp_eq_sGroup : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A),
     (∀ g, g ∈ besGrp B.d B.o ↔ (iotaX X h g).1 ∈ X.SinfU u ∧ (iotaX X h g).2 ∈ SfinU X u) ∧

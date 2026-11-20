@@ -13,6 +13,15 @@ open GlobalTheory.MBLow.Cl Matrix
 
 namespace GlobalTheory.MBLow.Cl
 
+/- English proof (translation)
+Introduce `κ hH hT g x hg u τ a b c Mx h`. Substitute `hg` using the available equality. Take `⟨h₁, h₂, ha, hb, hc, hΛ, hr, hs, hd⟩` from `h`. Establish `hW` using `GlobalTheory.KeyFormulaCompare.det_ne_zero x u ((2 * Real.pi * Complex.I : ℂ)⁻¹ • Mx) hd`. Establish `hM : Mx.det ≠ 0`.
+
+Rewrite `hW` using `[Matrix.det_smul]`. Conclude with `right_ne_zero_of_mul hW`. Use `⟨hM, ?_⟩` and prove the remaining obligations. Establish `hN : KeyPow.NormalAt x τ Mx a b c` using `⟨u, h₁, h₂, hΛ, hr, hs, hd⟩`. Take `⟨P, hg, rig, hr', th, hth, v, hv⟩` from `x`.
+
+Take `⟨th₀, hth₀, v₀, hv₀, h₀, e₁, e₂⟩` from `KeyConst.exists_rescale _ _ _ _ _ _ _ _ _ _ _ _ _ hc hM hN`. Take `⟨u₀, t₁, t₂, t₃, t₄, t₅, t₆⟩` from `(KeyPow.normalAt_one_iff _ _ _ _).1 h₀`. Establish `h₃` using `hH ℂ P hg rig hr' th₀ hth₀ v₀ hv₀ th hth v hv c Mx e₁ e₂`. Establish `h₄` using `hT _ u₀ _ _ _ t₁ t₂ ha hb t₃ t₄ t₅ t₆`. Rewrite `h₃` using `[h₄, Units.val_one, _root_.mul_one]`.
+
+Rewrite using `[mul_comm]`. Conclude with `h₃.trans (_root_.mul_one _)`.
+-/
 theorem key_value_of_nf : ∀ κ : Rule, Homog (fun _ => 1) κ → ThetaOne κ → ∀ (g : ℕ) (x : KeyIn ℂ) (hg : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (c : ℂ) (Mx : Matrix (Fin g) (Fin g) ℂ), NF x hg u τ a b c (fun j => (2 * Real.pi * Complex.I : ℂ)⁻¹ • Mx j) → Mx.det ≠ 0 ∧ (κ ℂ x : ℂ) * c ^ 8 = Mx.det ^ 4 := by
   intro κ hH hT g x hg u τ a b c Mx h
   subst hg

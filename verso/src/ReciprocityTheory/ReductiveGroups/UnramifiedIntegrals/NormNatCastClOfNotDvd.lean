@@ -10,31 +10,56 @@ open Formalism.L2.Th1.CM Polynomial
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[← PadicComplex.norm_extends' l (n : ℚ_[l])]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem norm_natCast_Cl (n : ℕ) : ‖(n : ℂ_[l])‖ = ‖(n : ℚ_[l])‖ := by
   rw [← PadicComplex.norm_extends' l (n : ℚ_[l])]
   congr 1
   simp
 
+/- English proof (translation)
+Simplify `IsUltrametricDist.norm_add_le_max a (-b)` using `[sub_eq_add_neg, norm_neg]`.
+-/
 theorem norm_sub_le_max_Cl (a b : ℂ_[l]) : ‖a - b‖ ≤ max ‖a‖ ‖b‖ :=
   by simpa [sub_eq_add_neg, norm_neg] using IsUltrametricDist.norm_add_le_max a (-b)
 
+/- English proof (translation)
+Rewrite using `[norm_natCast_Cl, Padic.norm_p]`.
+-/
 theorem norm_l_Cl : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   rw [norm_natCast_Cl, Padic.norm_p]
 
+/- English proof (translation)
+Rewrite using `[norm_natCast_Cl, Padic.norm_natCast_eq_one_iff]`. Conclude with `((Fact.out : l.Prime).coprime_iff_not_dvd).2 hn`.
+-/
 theorem norm_natCast_Cl_of_not_dvd {n : ℕ} (hn : ¬ l ∣ n) : ‖(n : ℂ_[l])‖ = 1 := by
   rw [norm_natCast_Cl, Padic.norm_natCast_eq_one_iff]
   exact ((Fact.out : l.Prime).coprime_iff_not_dvd).2 hn
 
+/- English proof (translation)
+Take `⟨n, hn, -, h⟩` from `hζ`. Establish `: ‖ζ‖ ^ n = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`.
+-/
 theorem muP_norm {ζ : ℂ_[l]} (hζ : ζ ∈ muP l) : ‖ζ‖ = 1 := by
   obtain ⟨n, hn, -, h⟩ := hζ
   have : ‖ζ‖ ^ n = 1 := by rw [← norm_pow, h, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this
 
+/- English proof (translation)
+Break down `hξ with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Conclude with `(muP_norm l h).le`.
+-/
 theorem tch_norm_le {ξ : ℂ_[l]} (hξ : ξ ∈ Tch l) : ‖ξ‖ ≤ 1 := by
   rcases hξ with rfl | h
   · simp
   · exact (muP_norm l h).le
 
+/- English proof (translation)
+Break down `h with rfl | ⟨n, hn, hln, hζ⟩` into its components or cases. Rewrite using `[zero_mul]`. Conclude with `Set.mem_insert _ _`. Break down `h' with rfl | ⟨m, hm, hlm, hζ'⟩` into its components or cases. Rewrite using `[mul_zero]`.
+
+Conclude with `Set.mem_insert _ _`. Use `Set.mem_insert_of_mem _ ⟨n * m, Nat.mul_pos hn hm, ?_, ?_⟩` and prove the remaining obligations. Introduce `hd`. Break down `((Fact.out : l.Prime).dvd_mul).1 hd with h1 | h1` into its components or cases. Conclude with `hln h1`.
+
+Conclude with `hlm h1`. Rewrite using `[mul_pow, pow_mul, hζ, one_pow, one_mul, mul_comm n m, pow_mul, hζ', one_pow]`.
+-/
 theorem tch_mul {ξ ξ' : ℂ_[l]} (h : ξ ∈ Tch l) (h' : ξ' ∈ Tch l) : ξ * ξ' ∈ Tch l := by
   rcases h with rfl | ⟨n, hn, hln, hζ⟩
   · rw [zero_mul]; exact Set.mem_insert _ _
@@ -47,11 +72,33 @@ theorem tch_mul {ξ ξ' : ℂ_[l]} (h : ξ ∈ Tch l) (h' : ξ' ∈ Tch l) : ξ 
     · exact hlm h1
   · rw [mul_pow, pow_mul, hζ, one_pow, one_mul, mul_comm n m, pow_mul, hζ', one_pow]
 
+/- English proof (translation)
+Break down `h with rfl | ⟨n, hn, hln, hζ⟩` into its components or cases. Rewrite using `[inv_zero]`. Conclude with `Set.mem_insert _ _`. Conclude with `Set.mem_insert_of_mem _ ⟨n, hn, hln, by rw [inv_pow, hζ, inv_one]⟩`.
+-/
 theorem tch_inv {ξ : ℂ_[l]} (h : ξ ∈ Tch l) : ξ⁻¹ ∈ Tch l := by
   rcases h with rfl | ⟨n, hn, hln, hζ⟩
   · rw [inv_zero]; exact Set.mem_insert _ _
   · exact Set.mem_insert_of_mem _ ⟨n, hn, hln, by rw [inv_pow, hζ, inv_one]⟩
 
+/- English proof (translation)
+Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hq : 2 ≤ l ^ f` using `le_trans hl (Nat.le_self_pow hf.ne' l)`. Take `⟨m, hm⟩ : ∃ m, l ^ f = m + 1` from `⟨l ^ f - 1, by omega⟩`. Establish `hm0 : 0 < m` using `by omega`. Establish `hlm : ¬ l ∣ m`.
+
+Introduce `hd`. Establish `h1 : l ∣ m + 1` using `hm ▸ dvd_pow_self l hf.ne'`. Establish `h2 : l ∣ 1` using `(Nat.dvd_add_right hd).1 h1`. Conclude with `(Fact.out : l.Prime).one_lt.ne' (Nat.dvd_one.1 h2)`. Distinguish the cases in `hsmall : ‖x‖ ≤ r`.
+
+Conclude with `⟨0, Set.mem_insert _ _, by simpa using hsmall⟩`. Use `push Not at hsmall`. Establish `hr0 : 0 ≤ r` using `le_trans (norm_nonneg _) h`. Establish `hx1 : ‖x‖ = 1`. Establish `h1 : ‖x‖ ≤ max ‖x ^ (l ^ f)‖ ‖x ^ (l ^ f) - x‖`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖x‖ ≤ ‖x‖ ^ (l ^ f)`. Rewrite using `[← norm_pow]`. Break down `le_max_iff.1 h1 with h3 | h3` into its components or cases. Conclude with `h3`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hne`. Establish `hlt : ‖x‖ < 1` using `lt_of_le_of_ne hx hne`. Establish `hpos : 0 < ‖x‖` using `lt_of_le_of_lt hr0 hsmall`. Use `pow_lt_self_of_lt_one₀ hpos hlt (by omega : 1 < l ^ f)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxm : ‖x ^ m - 1‖ ≤ r`. Establish `e : x ^ (l ^ f) - x = x * (x ^ m - 1)` using `by rw [hm]; ring`. Rewrite `h` using `[e, norm_mul, hx1, one_mul]`. Then use the resulting hypothesis. Take `⟨ζ, hζroot, hζ⟩` from `ReciprocityTheory.ChartRestriction.PadicPolynomialApproximation.exists_root_near l (X ^ m - C 1) (monic_X_pow_sub_C 1 hm0.ne') x (by simp only [eval_sub, eval_pow, eval_X, eval_C]; exact lt_of_le_of_lt hxm hr)`.
+
+Establish `hζm : ζ ^ m = 1`. Establish `: ζ ^ m - 1 = 0` using `by simpa using hζroot`. Conclude with `sub_eq_zero.1 this`. Establish `hmu : ζ ∈ muP l` using `⟨m, hm0, hlm, hζm⟩`. Use `⟨ζ, Set.mem_insert_of_mem _ hmu, ?_⟩` and prove the remaining obligations.
+
+Establish `hζ1 : ‖ζ‖ = 1` using `muP_norm l hmu`. Establish `hζ0 : ζ ≠ 0` using `by rintro rfl; simp at hζ1`. Establish `e1 : x - ζ = ζ * (x * ζ⁻¹ - 1)`. Rewrite using `[mul_sub, mul_one, mul_comm x ζ⁻¹, ← mul_assoc, mul_inv_cancel₀ hζ0, one_mul]`. Establish `e2 : x ^ m - 1 = (∑ i ∈ Finset.range m, (x * ζ⁻¹) ^ i) * (x * ζ⁻¹ - 1)`.
+
+Rewrite using `[geom_sum_mul, mul_pow, inv_pow, hζm, inv_one, mul_one]`. Establish `hy : ‖x * ζ⁻¹ - 1‖ = ‖x - ζ‖` using `by rw [e1, norm_mul, hζ1, one_mul]`. Rewrite `hxm` using `[e2, norm_mul, ReciprocityTheory.ChartRestriction.PadicPolynomialApproximation.norm_geom_sum_eq_one l (hy ▸ hζ) (norm_natCast_Cl_of_not_dvd l hlm), one_mul, hy]`. Conclude with `hxm`.
+-/
 theorem tch_near (x : ℂ_[l]) (hx : ‖x‖ ≤ 1) (f : ℕ) (hf : 0 < f) (r : ℝ) (hr : r < 1)
     (h : ‖x ^ (l ^ f) - x‖ ≤ r) : ∃ ξ ∈ Tch l, ‖x - ξ‖ ≤ r := by
   have hl : 2 ≤ l := (Fact.out : l.Prime).two_le

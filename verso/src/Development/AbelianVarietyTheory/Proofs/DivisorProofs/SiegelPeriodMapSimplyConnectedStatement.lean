@@ -5,5 +5,8 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SiegelReframe
 open Matrix MeasureTheory GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SiegelOpen.isPeriodMap_tauU_and_simplyConnected | exact GlobalTheory.SiegelOpen.isPeriodMap_tauU_and_simplyConnected | (intros; apply GlobalTheory.SiegelOpen.isPeriodMap_tauU_and_simplyConnected <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.siegel_period_map_simply_connected : ∀ g : ℕ, IsPeriodMap (siegel g) tauU ∧ SimplyConnectedSpace (siegel g) := by
   first | exact @GlobalTheory.SiegelOpen.isPeriodMap_tauU_and_simplyConnected | exact GlobalTheory.SiegelOpen.isPeriodMap_tauU_and_simplyConnected | (intros; apply GlobalTheory.SiegelOpen.isPeriodMap_tauU_and_simplyConnected <;> assumption)

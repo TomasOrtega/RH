@@ -14,8 +14,14 @@ variable {K : Type} [Field K]
 noncomputable def minor (bs : List (Kˣ × ℕ+)) (l : ℕ) : K :=
   (Matrix.of fun a b : Fin l => ptEntryL bs a b).det
 
+/- English proof (translation)
+Simplify using `[minor]`.
+-/
 theorem minor_zero (bs : List (Kˣ × ℕ+)) : minor bs 0 = 1 := by simp [minor]
 
+/- English proof (translation)
+Use `Matrix.det_eq_zero_of_row_eq_zero ⟨0, h0⟩ fun b => ?_` and prove the remaining obligations. Establish `hb` using `b.2`. Simplify using `only [Matrix.of_apply, ptEntryL]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+-/
 theorem minor_lt (t : Kˣ) (s : ℕ+) (bs : List (Kˣ × ℕ+)) (l : ℕ) (h0 : 0 < l) (hl : l < s) :
     minor ((t, s) :: bs) l = 0 := by
   refine Matrix.det_eq_zero_of_row_eq_zero ⟨0, h0⟩ fun b => ?_
@@ -23,6 +29,13 @@ theorem minor_lt (t : Kˣ) (s : ℕ+) (bs : List (Kˣ × ℕ+)) (l : ℕ) (h0 : 
   simp only [Matrix.of_apply, ptEntryL]
   split_ifs <;> first | rfl | omega
 
+/- English proof (translation)
+Establish `key : (Matrix.of fun a b : Fin (s + l) => ptEntryL ((t, s) :: bs) a b).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks ((Matrix.diagonal (fun _ : Fin s => (t : K))).submatrix id (Fin.revPerm : Equiv.Perm (Fin s))) 0 0 (Matrix.of fun a b : Fin l => ptEntryL bs a b)`. Use extensionality with `(a | a) (b | b)`. Establish `ha` using `a.2`. Establish `hb` using `b.2`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, ptEntryL, finSumFinEquiv_apply_left, Fin.val_castAdd, Matrix.fromBlocks_apply₁₁, id, Matrix.diagonal_apply, Fin.revPerm_apply, Fin.ext_iff, Fin.val_rev]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Simplify using `[ptEntryL]`. Simplify using `[ptEntryL]`. Simplify using `[ptEntryL]`. Rewrite using `[minor, ← Matrix.det_submatrix_equiv_self finSumFinEquiv, key, Matrix.det_fromBlocks_zero₂₁, Matrix.det_permute', Matrix.det_diagonal]`.
+
+Simplify using `[minor]`.
+-/
 theorem minor_add (t : Kˣ) (s : ℕ+) (bs : List (Kˣ × ℕ+)) (l : ℕ) :
     minor ((t, s) :: bs) (s + l) =
       (((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin s)) : ℤˣ) : ℤ) *
@@ -46,19 +59,45 @@ theorem minor_add (t : Kˣ) (s : ℕ+) (bs : List (Kˣ × ℕ+)) (l : ℕ) :
     Matrix.det_permute', Matrix.det_diagonal]
   simp [minor]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or u with e | e <;> simp [e]`.
+-/
 theorem sign_ne (u : ℤˣ) : ((u : ℤ) : K) ≠ 0 := by
   rcases Int.units_eq_one_or u with e | e <;> simp [e]
 
+/- English proof (translation)
+Use `minor_add t s bs 0` as an intermediate fact. Rewrite `this` using `[minor_zero, mul_one, Nat.add_zero]`. Then use the resulting hypothesis.
+-/
 theorem minor_self (t : Kˣ) (s : ℕ+) (bs : List (Kˣ × ℕ+)) :
     minor ((t, s) :: bs) s =
       ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin s)) : ℤˣ) : ℤ) * (t : K) ^ (s : ℕ) := by
   have := minor_add t s bs 0
   rwa [minor_zero, mul_one, Nat.add_zero] at this
 
+/- English proof (translation)
+Rewrite using `[minor_self]`. Conclude with `mul_ne_zero (sign_ne _) (pow_ne_zero _ t.ne_zero)`.
+-/
 theorem minor_self_ne (t : Kˣ) (s : ℕ+) (bs : List (Kˣ × ℕ+)) : minor ((t, s) :: bs) s ≠ 0 := by
   rw [minor_self]
   exact mul_ne_zero (sign_ne _) (pow_ne_zero _ t.ne_zero)
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `η`. Distinguish the cases in `hex : ∃ (t : Kˣ) (s : ℕ+) (bs : List (Kˣ × ℕ+)), (s : ℕ) + (bs.map (fun b => (b.2 : ℕ))).sum = n ∧ ∀ l ≤ n, minor ((t, s) :: bs) l = η l`. Take `⟨t₀, s, bs₀, hs, h₀⟩` from `hex`.
+
+Establish `hsp` using `s.pos`. Take `⟨T, hT, hT'⟩` from `ih (n - s) (by omega) (fun l => η (s + l) / η s)`. Set `c : K` to `((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin s)) : ℤˣ) : ℤ)`. Establish `hc : c ≠ 0` using `sign_ne _`. Set `R` to `(Polynomial.nthRoots s (η s / c)).toFinset`.
+
+Establish `hR : R.card ≤ s` using `(Multiset.toFinset_card_le _).trans (Polynomial.card_nthRoots _ _)`. Use `⟨Finset.image₂ (fun x bs => ((if h : x = 0 then 1 else Units.mk0 x h), s) :: bs) R T, ?_, ?_⟩` and prove the remaining obligations. Use `(Finset.card_image₂_le _ _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `(_ | ⟨⟨t, s'⟩, bs⟩) hsum h`.
+
+Simplify using `only [List.map_nil, List.sum_nil] at hsum`. Use linear arithmetic over natural numbers and integers. Simplify using `only [List.map_cons, List.sum_cons] at hsum`. Establish `hsp'` using `s'.pos`. Establish `e : s' = s`.
+
+Apply `PNat.eq` to reduce the goal to its premises. Break down `lt_trichotomy (s' : ℕ) s with h1 | h1 | h1` into its components or cases. Conclude with `absurd ((h s' (by omega)).trans ((h₀ s' (by omega)).symm.trans (minor_lt _ _ _ _ hsp' h1))) (minor_self_ne _ _ _)`. Conclude with `h1`. Conclude with `absurd ((h₀ s (by omega)).trans ((h s (by omega)).symm.trans (minor_lt _ _ _ _ hsp h1))) (minor_self_ne _ _ _)`.
+
+Substitute `e` using the available equality. Establish `h1` using `h s' (by omega)`. Use `Finset.mem_image₂.2 ⟨t, ?_, bs, hT' bs (by omega) fun l hl => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [R, Multiset.mem_toFinset, Polynomial.mem_nthRoots hsp]`. Rewrite using `[← h1, minor_self, eq_div_iff hc, mul_comm]`.
+
+Rewrite using `[← h _ (by omega), ← h1, minor_add, ← minor_self t s' bs, mul_div_cancel_left₀ _ (minor_self_ne _ _ _)]`. Simplify using `[t.ne_zero]`. Use `⟨{[]}, by simpa using Nat.one_le_two_pow, ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | ⟨⟨t, s⟩, bs⟩) hsum h`. Simplify using the standard rewrite rules.
+
+Conclude with `absurd ⟨t, s, bs, by simpa using hsum, h⟩ hex`.
+-/
 theorem count_lists (n : ℕ) : ∀ η : ℕ → K, ∃ T : Finset (List (Kˣ × ℕ+)), T.card ≤ 2 ^ n ∧
     ∀ bs : List (Kˣ × ℕ+), (bs.map (fun b => (b.2 : ℕ))).sum = n →
       (∀ l ≤ n, minor bs l = η l) → bs ∈ T := by
@@ -112,6 +151,17 @@ namespace GlobalTheory
 
 open Formalism.MainNotions.S.Loc SignedBlockCount in
 
+/- English proof (translation)
+Introduce `K _ j δ`. Use `choose T hT hT' using count_lists (K := K) j`. Set `η : (Fin j → ℤˣ) → ℕ → K` to `fun sgn l => if hl : l ≤ j then δ l / ∏ b : Fin l, ((sgn (Fin.castLE hl b) : ℤ) : K) else 0`. Set `U : Finset (Matrix (Fin j) (Fin j) K)` to `Finset.univ.biUnion fun sgn : Fin j → ℤˣ => (T (η sgn)).image fun bs => Matrix.of fun a b => ptEntryL bs a b * ((sgn b : ℤ) : K)`. Establish `hU : U.card ≤ 8 ^ j`.
+
+Use `(Finset.card_biUnion_le_card_mul _ _ (2 ^ j) fun sgn _ => Finset.card_image_le.trans (hT _)).trans ?_` and prove the remaining obligations. Simplify using `only [Finset.card_univ, Fintype.card_pi, Fintype.card_units_int, Finset.prod_const, Fintype.card_fin]`. Rewrite using `[← mul_pow]`. Conclude with `Nat.pow_le_pow_left (by norm_num) _`. Use `(Set.encard_le_encard (t := (U : Set _)) ?_).trans ?_` and prove the remaining obligations.
+
+Introduce and unpack `P ⟨⟨w, sgn, hP⟩, hδ⟩`. Use `Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨sgn, Finset.mem_univ _, Finset.mem_image.2 ⟨w.blocks, hT' _ _ w.size fun l hl => ?_, ?_⟩⟩)` and prove the remaining obligations. Simplify using `only [η, dif_pos hl]`. Rewrite using `[eq_div_iff (Finset.prod_ne_zero_iff.2 fun b _ => sign_ne _), ← hδ l hl, mul_comm, minor, ← Matrix.det_mul_row]`. Use `congr 1`.
+
+Use extensionality with `a b`. Simplify using `[hP, Pt.mat, mul_comm]`. Use extensionality with `a b`. Simplify using `[hP, Pt.mat]`. Rewrite using `[Set.encard_coe_eq_coe_finsetCard]`.
+
+Conclude with `hU` after adjusting the coercions.
+-/
 theorem signed_block_count : ∀ (K : Type) [Field K] (j : ℕ) (δ : ℕ → K), (({P : Matrix (Fin j) (Fin j) K | (∃ (w : Formalism.MainNotions.S.Loc.Pt K j) (sgn : Fin j → ℤˣ), ∀ a b, P a b = w.mat a b * ((sgn b : ℤ) : K)) ∧ ∀ (l : ℕ) (hl : l ≤ j), (P.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = δ l}).encard : ℕ∞) ≤ 8 ^ j := by
   intro K _ j δ
   choose T hT hT' using count_lists (K := K) j

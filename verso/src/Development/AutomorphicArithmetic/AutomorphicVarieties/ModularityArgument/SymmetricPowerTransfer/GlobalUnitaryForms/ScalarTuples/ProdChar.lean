@@ -7,6 +7,31 @@ namespace UpperTheory.V.Z.Sym.Glob
 
 open NumberField IsDedekindDomain Matrix Loc
 
+/- English proof (translation)
+Establish `hc : ∀ z x, σ z * x = x * σ z` using `fun z x => (Subgroup.mem_center_iff.mp (hσ z) x).symm`. Establish `hmul : ∀ z z' a b, (σ z)⁻¹ * a ∈ J → (σ z')⁻¹ * b ∈ J → (σ (z * z'))⁻¹ * (a * b) ∈ J`. Introduce `z z' a b h h'`. Establish `hc' : (σ z')⁻¹ * ((σ z)⁻¹ * a) = ((σ z)⁻¹ * a) * (σ z')⁻¹`. Rewrite using `[← map_inv]`.
+
+Conclude with `hc _ _`. Establish `e : (σ (z * z'))⁻¹ * (a * b) = ((σ z)⁻¹ * a) * ((σ z')⁻¹ * b)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, _root_.mul_inv_rev]`. Use `group`.
+
+Use `_ = ((σ z)⁻¹ * a) * (σ z')⁻¹ * b := by rw [hc']`. Use `_ = ((σ z)⁻¹ * a) * ((σ z')⁻¹ * b) := by group`. Rewrite using `[e]`. Conclude with `J.mul_mem h h'`. Set `S : Subgroup G` to `{ carrier := {u | ∃ z, (σ z)⁻¹ * u ∈ J} one_mem' := ⟨1, by simp⟩ mul_mem' := by`.
+
+Introduce and unpack `a b ⟨z, hz⟩ ⟨z', hz'⟩`. Conclude with `⟨z * z', hmul _ _ _ _ hz hz'⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨z, hz⟩`. Use `⟨z⁻¹, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `J.inv_mem hz`. Rewrite `h` using `[_root_.mul_inv_rev, inv_inv, ← hc]`. Simplify `h }` using `[map_inv]`. Establish `hsup : σ.range ⊔ J ≤ S`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `⟨z, by simp⟩`. Introduce `j hj`. Conclude with `⟨1, by simpa using hj⟩`. Establish `hS : ∀ u ∈ σ.range ⊔ J, ∃ z, (σ z)⁻¹ * u ∈ J` using `fun u hu => hsup hu`.
+
+Establish `hwd : ∀ z z' x, (σ z)⁻¹ * x ∈ J → (σ z')⁻¹ * x ∈ J → χ z = χ z'`. Introduce `z z' x h h'`. Establish `hm` using `J.mul_mem h (J.inv_mem h')`. Establish `e : (σ z)⁻¹ * x * ((σ z')⁻¹ * x)⁻¹ = σ (z⁻¹ * z')`. Rewrite using `[map_mul, map_inv]`.
+
+Use `group`. Rewrite `hm` using `[e]`. Establish `h2` using `hχ _ (hJ hm)`. Rewrite `h2` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h2`.
+
+Set `f : ↥(σ.range ⊔ J) → C` to `fun u => χ (Classical.choose (hS u.1 u.2))`. Establish `hf : ∀ (u : ↥(σ.range ⊔ J)) z, (σ z)⁻¹ * u.1 ∈ J → f u = χ z` using `fun u z h => hwd _ _ _ (Classical.choose_spec (hS u.1 u.2)) h`. Use `⟨{ toFun := f, map_one' := ?_, map_mul' := ?_ }, hf, ?_⟩` and prove the remaining obligations. Conclude with `(hf 1 1 (by simp)).trans (map_one χ)`. Introduce `u v`.
+
+Take `⟨z, hz⟩` from `hS u.1 u.2`. Take `⟨z', hz'⟩` from `hS v.1 v.2`. Use `show f (u * v) = f u * f v`. Rewrite using `[hf u z hz, hf v z' hz', hf (u * v) (z * z') (hmul _ _ _ _ hz hz'), map_mul]`. Introduce `u hu`.
+
+Take `⟨z, hz⟩` from `hS u.1 u.2`. Use `show f u = 1`. Rewrite using `[hf u z hz]`. Apply `hχ` to reduce the goal to its premises. Establish `e : u.1 * ((σ z)⁻¹ * u.1)⁻¹ = σ z` using `by group`.
+
+Rewrite using `[← e]`. Conclude with `Kg.mul_mem hu (Kg.inv_mem (hJ hz))`.
+-/
 private theorem ext_char {A G C : Type} [Group A] [Group G] [CommGroup C] (σ : A →* G)
     (hσ : ∀ z, σ z ∈ Subgroup.center G) (χ : A →* C) (J Kg : Subgroup G) (hJ : J ≤ Kg)
     (hχ : ∀ z, σ z ∈ Kg → χ z = 1) :
@@ -70,6 +95,17 @@ private theorem ext_char {A G C : Type} [Group A] [Group G] [CommGroup C] (σ : 
     rw [← e]
     exact Kg.mul_mem hu (Kg.inv_mem (hJ hz))
 
+/- English proof (translation)
+Establish `hmem : ∀ (u : (rpg Gv K).box U) v, u.1.1 v ∈ U v` using `fun u v => Subgroup.mem_iInf.mp u.2 v`. Set `g : (rpg Gv K).box U → I → ℂˣ` to `fun u v => w v ⟨u.1.1 v, hmem u v⟩`. Establish `hfin : ∀ u, (Function.mulSupport (g u)).Finite`. Introduce `u`. Establish `h` using `Filter.eventually_cofinite.mp ((rpg Gv K).ae u.1)`.
+
+Use `h.subset ?_` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hK`. Conclude with `hv (hw v ⟨u.1.1 v, hmem u v⟩ (not_not.mp hK))`. Use `⟨{ toFun := fun u => ∏ᶠ v, g u v, map_one' := ?_, map_mul' := ?_ }, ?_⟩` and prove the remaining obligations.
+
+Use `show ∏ᶠ v, g 1 v = 1`. Rewrite using `[show g 1 = fun _ => 1 from funext fun v => map_one (w v)]`. Conclude with `finprod_one`. Introduce `a b show ∏ᶠ v, g (a * b) v = (∏ᶠ v, g a v) * ∏ᶠ v, g b v`. Establish `e : g (a * b) = fun v => g a v * g b v`.
+
+Use function extensionality and compare the values at `v`. Conclude with `map_mul (w v) ⟨a.1.1 v, hmem a v⟩ ⟨b.1.1 v, hmem b v⟩`. Rewrite using `[e]`. Conclude with `finprod_mul_distrib (hfin a) (hfin b)`. Introduce `u c hc show ((∏ᶠ v, g u v : ℂˣ) : ℂ) = ∏ᶠ v, (c v : ℂ)`.
+
+Establish `e : g u = c` using `funext fun v => hc v (hmem u v)`. Rewrite using `[← e]`. Conclude with `MonoidHom.map_finprod (Units.coeHom ℂ) (hfin u)`.
+-/
 private theorem prod_char {I : Type} (Gv : I → Type) [∀ v, Group (Gv v)] (K U : ∀ v, Subgroup (Gv v))
     (w : ∀ v, U v →* ℂˣ) (hw : ∀ v u, u.1 ∈ K v → w v u = 1) :
     ∃ ω : (rpg Gv K).box U →* ℂˣ, ∀ (u : (rpg Gv K).box U) (c : I → ℂˣ),
@@ -105,6 +141,23 @@ section Local
 
 variable {K : Type} [Field K] (Δ : K)
 
+/- English proof (translation)
+Set `f : Kˣ →* GL (Fin 2) (Lsq K Δ)` to `(GeneralLinearGroup.scalar (Fin 2)).comp (Units.map (algebraMap K (Lsq K Δ) : K →* Lsq K Δ))`. Establish `hfm : ∀ z, ((f z : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = Matrix.scalar (Fin 2) (algebraMap K (Lsq K Δ) z)` using `fun z => by simp [f]`. Establish `hcomm : ∀ z (g : GL (Fin 2) (Lsq K Δ)), f z * g = g * f z`. Introduce `z g`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, Units.val_mul, hfm]`. Conclude with `(Matrix.scalar_commute _ (fun r' => Commute.all _ r') _).eq`. Establish `hmem : ∀ z, f z ∈ DX Δ`. Introduce `z`. Use `show GeneralLinearGroup.map (starRingEnd _) (f z) = MulAut.conj (wJ Δ)⁻¹ (f z)`.
+
+Rewrite using `[MulAut.conj_apply, ← hcomm, mul_assoc, mul_inv_cancel, mul_one]`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((f z : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)).map (starRingEnd _) = _`. Rewrite using `[hfm]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.map_apply, Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Apply the tactic sequence `ext <;> simp [starRingEnd_apply]`. Simplify using the standard rewrite rules. Use `⟨f.codRestrict (DX Δ) hmem, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `z s`. Establish `e : (((f.codRestrict (DX Δ) hmem z : DX Δ) : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = Matrix.scalar (Fin 2) (algebraMap K (Lsq K Δ) z)` using `hfm z`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `(show mt s = _ from h).trans e.symm`. Introduce and unpack `rfl`. Conclude with `e`. Use extensionality with `s`.
+
+Rewrite using `[ZD, Subgroup.mem_subgroupOf, MonoidHom.mem_range, MonoidHom.mem_range]`. Use `exists_congr fun z => ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩` and prove the remaining obligations. Introduce `z`. Rewrite using `[Subgroup.mem_center_iff]`. Introduce `g`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (g : GL (Fin 2) (Lsq K Δ)) * f z = f z * g`. Conclude with `(hcomm z g).symm`.
+-/
 private theorem scal_ex : ∃ σ : Kˣ →* DX Δ, (∀ z s, IsScal z s ↔ s = σ z) ∧ ZD Δ = σ.range ∧
     ∀ z, σ z ∈ Subgroup.center (DX Δ) := by
   classical
@@ -152,6 +205,13 @@ private theorem scal_ex : ∃ σ : Kˣ →* DX Δ, (∀ z s, IsScal z s ↔ s = 
 
 variable {Δ} {O : Type} [CommRing O] [Algebra O K]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `MonoidHom.mem_range.mp (Subgroup.mem_subgroupOf.mp hs)`. Establish `h1 : ((s : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) 0 0 = algebraMap K (Lsq K Δ) z`. Rewrite using `[show ((s : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = _ from h]`. Simplify using the standard rewrite rules. Establish `h2 : ((s : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) 0 0 = ((g : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))) 0 0 : Lsq K Δ)`.
+
+Rewrite using `[← hg]`. Both sides reduce to the same expression. Establish `h3 : IsIntegral O (algebraMap K (Lsq K Δ) z)`. Rewrite using `[← h1, h2]`. Conclude with `((g : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))) 0 0).2`.
+
+Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom O K (Lsq K Δ)) (algebraMap K (Lsq K Δ)).injective).mp h3`.
+-/
 private theorem scal_int {z : Kˣ} {s : DX Δ} (h : IsScal z s) (hs : s ∈ KD Δ O) : IsIntegral O (z : K) := by
   obtain ⟨g, hg⟩ := MonoidHom.mem_range.mp (Subgroup.mem_subgroupOf.mp hs)
   have h1 : ((s : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) 0 0 =
@@ -168,6 +228,17 @@ private theorem scal_int {z : Kˣ} {s : DX Δ} (h : IsScal z s) (hs : s ∈ KD �
   exact (isIntegral_algHom_iff (IsScalarTower.toAlgHom O K (Lsq K Δ))
     (algebraMap K (Lsq K Δ)).injective).mp h3
 
+/- English proof (translation)
+Take `⟨σ, hs, hZ, hc⟩` from `scal_ex (K := K) Δ`. Establish `hχ' : ∀ z, σ z ∈ KD Δ O → χ z = 1`. Introduce `z hz`. Establish `hi : IsIntegral O (z : K)` using `scal_int ((hs z (σ z)).mpr rfl) hz`. Establish `hz' : σ z⁻¹ ∈ KD Δ O` using `by rw [map_inv]; exact (KD Δ O).inv_mem hz`.
+
+Establish `hi' : IsIntegral O ((z⁻¹ : Kˣ) : K)` using `scal_int ((hs z⁻¹ (σ z⁻¹)).mpr rfl) hz'`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hi`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hi'`. Establish `hab : a * b = 1`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, ha, hb, map_one, Units.mul_inv]`. Set `u : Oˣ` to `⟨a, b, hab, by rw [mul_comm]; exact hab⟩`. Establish `hu : Units.map (algebraMap O K : O →* K) u = z` using `Units.ext ha`. Rewrite using `[← hu]`. Conclude with `hχ u`.
+
+Rewrite using `[hZ]`. Take `⟨ω, h1, h2⟩` from `ext_char σ hc χ J (KD Δ O) hJ hχ'`. Use `⟨ω, ?_, h2⟩` and prove the remaining obligations. Introduce `u z s hzs hu`. Rewrite `hu` using `[(hs z s).mp hzs]`.
+
+Conclude with `h1 u z hu`.
+-/
 private theorem loc_char [IsDomain O] [IsIntegrallyClosed O] [IsFractionRing O K] (χ : Kˣ →* ℂˣ) (hχ : Unr O χ)
     (J : Subgroup (DX Δ)) (hJ : J ≤ KD Δ O) :
     ∃ ω : ↥(ZD Δ ⊔ J) →* ℂˣ, (∀ u z s, IsScal z s → s⁻¹ * u.1 ∈ J → ω u = χ z) ∧ ∀ u, u.1 ∈ KD Δ O → ω u = 1 := by
@@ -195,6 +266,35 @@ private theorem loc_char [IsDomain O] [IsIntegrallyClosed O] [IsFractionRing O K
 
 end Local
 
+/- English proof (translation)
+Introduce `F _ _ Δ D hD V _ _ W ch hW htr`. Take `⟨ιD, hιD⟩` from `(iotaEx F Δ).2.1`. Establish `hloc : ∀ v : Pl F, ∃ ω : ↥(ZD (cv v Δ) ⊔ D.J2v v) →* ℂˣ, (∀ u z s, IsScal z s → s⁻¹ * u.1 ∈ D.J2v v → ω u = D.χ v z) ∧ ∀ u, u.1 ∈ KD (cv v Δ) (Ov v) → ω u = 1`. Introduce `v`. Establish `hJ : D.J2v v ≤ KD (cv v Δ) (Ov v)`.
+
+Unfold `Dat.J2v`. Use `split_ifs with hv`. Conclude with `(hD.sig v hv).levelTwoLeIntegral`. Conclude with `le_rfl`. Conclude with `loc_char (D.χ v) (hD.chi v).1 (D.J2v v) hJ`.
+
+Use `choose w hw1 hw2 using hloc`. Take `⟨ω, hω⟩` from `prod_char (fun v => ↥(DX (cv v Δ))) (fun v => KD (cv v Δ) (Ov v)) (fun v => ZD (cv v Δ) ⊔ D.J2v v) w hw2`. Establish `hsc : ∀ (z0 : Fˣ) (s : DX Δ), IsScal z0 s → ∀ v, IsScal (Units.map (cv v : F →* Kv v) z0) ((ιD s : DA Δ).1 v)`. Introduce `z0 s hs v`. Use `show mt _ = _`.
+
+Rewrite using `[hιD s v, show mt s = _ from hs]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Apply the tactic sequence `ext <;> simp [lmap]`.
+
+Simplify using the standard rewrite rules. Establish `hlocZ : ∀ v (z : (Kv v)ˣ) (s : DX (cv v Δ)), IsScal z s → s ∈ ZD (cv v Δ) ∧ s ∈ Subgroup.center (DX (cv v Δ))`. Introduce `v z s h`. Take `⟨σ, hs, hZ, hc⟩` from `scal_ex (K := Kv v) (cv v Δ)`. Rewrite using `[(hs z s).mp h, hZ]`.
+
+Conclude with `⟨⟨z, rfl⟩, hc z⟩`. Take `⟨σ, hsF, hZ, hcF⟩` from `scal_ex (K := F) Δ`. Establish `hZs : ∀ z ∈ ZD Δ, ∃ z0 : Fˣ, IsScal z0 z`. Introduce `z hz`. Rewrite `hz` using `[hZ]`.
+
+Take `⟨z0, rfl⟩` from `hz`. Conclude with `⟨z0, (hsF z0 _).mpr rfl⟩`. Establish `hmemU : ∀ z ∈ ZD Δ, ιD z ∈ D.UZ`. Introduce `z hz`. Take `⟨z0, h0⟩` from `hZs z hz`.
+
+Use `Subgroup.mem_iInf.mpr fun v => ?_` and prove the remaining obligations. Use `show (ιD z : DA Δ).1 v ∈ ZD (cv v Δ) ⊔ D.J2v v`. Conclude with `Subgroup.mem_sup_left (hlocZ v _ _ (hsc z0 z h0 v)).1`. Establish `hωs : ∀ (z0 : Fˣ) (s : DX Δ) (h : IsScal z0 s) (hm : ιD s ∈ D.UZ), ((ω ⟨ιD s, hm⟩ : ℂˣ) : ℂ) = ((Algebra.norm ℚ (z0 : F) : ℚ) : ℂ)⁻¹`. Introduce `z0 s h hm`.
+
+Rewrite using `[← chiProd F Δ D hD z0]`. Use `hω ⟨ιD s, hm⟩ (fun v => D.χ v (Units.map (cv v : F →* Kv v) z0)) ?_` and prove the remaining obligations. Introduce `v hv`. Use `hw1 v _ _ _ (hsc z0 s h v) ?_` and prove the remaining obligations. Rewrite using `[inv_mul_cancel]`.
+
+Conclude with `(D.J2v v).one_mem`. Set `B : Base (DX Δ) (DA Δ) V` to `{ ι := ιD U := D.UZ ω := ω W := W Γ₀ := ZD Δ cenΓ := by`. Rewrite using `[hZ]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hcF z`.
+
+Use `cenG := by`. Introduce `z hz`. Take `⟨z0, h0⟩` from `hZs z hz`. Rewrite using `[Subgroup.mem_center_iff]`. Introduce `g`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Conclude with `Subgroup.mem_center_iff.mp (hlocZ v _ _ (hsc z0 z h0 v)).2 (g.1 v)`. Use `memU := hmemU`. Use `scal := by`.
+
+Introduce `z hz x`. Take `⟨z0, h0⟩` from `hZs z hz`. Rewrite using `[hW z0 z h0 x]`. Use `congr 1`. Conclude with `(hωs z0 z h0 _).symm }`.
+
+Use `⟨B, ⟨hιD, rfl, ?_, rfl, htr⟩, rfl⟩` and prove the remaining obligations. Introduce `u z s hzs`. Conclude with `hω u (fun v => D.χ v (z v)) fun v hv => hw1 v _ (z v) (s v) (hzs v).1 (hzs v).2`.
+-/
 theorem baseK : BaseK := by
   intro F _ _ Δ D hD V _ _ W ch hW htr
   classical

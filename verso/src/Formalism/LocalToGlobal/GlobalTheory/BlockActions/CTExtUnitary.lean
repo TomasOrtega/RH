@@ -14,6 +14,13 @@ open IsDedekindDomain
 
 section Gen
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Establish `hB` using `isUnit_det_cols rfl A z hA hz`. Use `set B : Matrix (Fin (n + 1)) (Fin (n + 1)) E := Matrix.of (fun a (b : Fin (n + 1)) => if hb : (b : ℕ) < n then A a ⟨b, hb⟩ else z a) with hBdef`. Establish `h` using `nonsing_inv_mul B hB`. Use `⟨Matrix.of fun a j => B⁻¹ (Fin.castSucc a) j, ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a b`. Establish `e` using `congrFun (congrFun h (Fin.castSucc a)) (Fin.castSucc b)`. Simplify using `only [mul_apply, hBdef, of_apply, Fin.val_castSucc, Fin.is_lt, dif_pos, Fin.eta, one_apply, Fin.castSucc_inj] at e`. Simplify `e` using `[mul_apply, one_apply]`. Use function extensionality and compare the values at `a`.
+
+Establish `e` using `congrFun (congrFun h (Fin.castSucc a)) (Fin.last n)`. Simplify using `only [mul_apply, hBdef, of_apply, Fin.val_last, lt_irrefl, dif_neg, not_false_eq_true, one_apply] at e`. Simplify `e` using `[mulVec, dotProduct, (Fin.castSucc_lt_last a).ne]`.
+-/
 theorem exists_proj {E : Type} [Field E] {N n : ℕ} (hN : n + 1 = N) (A : Matrix (Fin N) (Fin n) E) (z : Fin N → E)
     (hA : Function.Injective A.mulVec) (hz : ∀ x, A *ᵥ x ≠ z) :
     ∃ P : Matrix (Fin n) (Fin N) E, P * A = 1 ∧ P *ᵥ z = 0 := by
@@ -33,6 +40,9 @@ theorem exists_proj {E : Type} [Field E] {N n : ℕ} (hN : n + 1 = N) (A : Matri
     simp only [mul_apply, hBdef, of_apply, Fin.val_last, lt_irrefl, dif_neg, not_false_eq_true, one_apply] at e
     simpa [mulVec, dotProduct, (Fin.castSucc_lt_last a).ne] using e
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cT_ext_unitary {A : Type} [CommRing A] (τ : A →+* A) {N n : ℕ} (I : Matrix (Fin N) (Fin n) A)
     (J : Matrix (Fin N) (Fin N) A) (G : Matrix (Fin N) (Fin N) A) (k : Matrix (Fin n) (Fin n) A)
     (hG : cT τ G * J * G = J) (hE : G * I = I * k) :
@@ -44,6 +54,15 @@ theorem cT_ext_unitary {A : Type} [CommRing A] (τ : A →+* A) {N n : ℕ} (I :
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x0, hx0, rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨M *ᵥ x0, hM x0 hx0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`. Consider the case `zero => rw [mulVec_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `e : (M.map (inclE (F` using `F) R)) *ᵥ (a • x) = a • ((M.map (inclE (F := F) R)) *ᵥ x) := by`. Rewrite using `[Subring.smul_def, Subring.smul_def, mulVec_smul]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem latS_mulVec (R : Type) [CommRing R] [Algebra F R] (S : Subring (E ⊗[F] R)) {n N : ℕ}
     (M : Matrix (Fin N) (Fin n) E) (Λ' : Submodule (𝓞 E) (Fin n → E)) (Λ : Submodule (𝓞 E) (Fin N → E))
     (hM : ∀ x ∈ Λ', M *ᵥ x ∈ Λ) :
@@ -67,6 +86,11 @@ end Gen
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
+/- English proof (translation)
+Take `⟨P, h1, h2⟩` from `exists_proj (Formalism.MainNotions.product_first_zeroth_parts.Nm_succ D.R) (iXm D) (fun i => Tf.til.z0 i / ((D.mem u).A.T : D.host.E)) (iXm_mulVec_injective D) (quotient_not_in_range_symmetric Tf)`. Use `⟨P, h1, ?_⟩` and prove the remaining obligations. Establish `hT : ((D.mem u).A.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`. Establish `e : Tf.til.z0 = ((D.mem u).A.T : D.host.E) • (fun i => Tf.til.z0 i / ((D.mem u).A.T : D.host.E))`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, mulVec_smul, h2, smul_zero]`.
+-/
 theorem exists_projP (Tf : FormsTiedSym D u Ch chOf) :
     ∃ P : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m)) D.host.E, P * iXm D = 1 ∧ P *ᵥ Tf.til.z0 = 0 := by
   obtain ⟨P, h1, h2⟩ := exists_proj (Formalism.MainNotions.product_first_zeroth_parts.Nm_succ D.R) (iXm D) (fun i => Tf.til.z0 i / ((D.mem u).A.T : D.host.E))
@@ -77,6 +101,13 @@ theorem exists_projP (Tf : FormsTiedSym D u Ch chOf) :
     funext i; simp only [Pi.smul_apply, smul_eq_mul]; field_simp
   rw [e, mulVec_smul, h2, smul_zero]
 
+/- English proof (translation)
+Establish `hL : (Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.Lb = Tf.clsP.lev.Lb.map ((iXc D).restrictScalars (𝓞 D.host.E)) ⊔ Submodule.span (𝓞 D.host.E) {Tf.til.z0}` using `Tf.tilLat`. Establish `hiX : ∀ x, iXm D *ᵥ x = iXc D x` using `fun x => by simp only [iXm, LinearMap.toMatrix'_mulVec]`. Use `⟨fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hL, hiX]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_map_of_mem hx)`.
+
+Rewrite `hy` using `[hL]`. Take `⟨y1, hy1, y2, hy2, rfl⟩` from `Submodule.mem_sup.mp hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hy1`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hy2`. Establish `e1 : P *ᵥ ((iXc D).restrictScalars (𝓞 D.host.E) x) = x` using `by show P *ᵥ (iXc D x) = x`.
+
+Rewrite using `[← hiX, mulVec_mulVec, hP1, one_mulVec]`. Establish `e2 : P *ᵥ (a • Tf.til.z0) = 0`. Rewrite using `[← algebraMap_smul D.host.E a Tf.til.z0, mulVec_smul, hPz, smul_zero]`. Rewrite using `[mulVec_add, e1, e2, add_zero]`. Conclude with `hx`.
+-/
 theorem lat_in_out (Tf : FormsTiedSym D u Ch chOf) (P : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m)) D.host.E)
     (hP1 : P * iXm D = 1) (hPz : P *ᵥ Tf.til.z0 = 0) :
     (∀ x ∈ Tf.clsP.lev.Lb, iXm D *ᵥ x ∈ (Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.Lb) ∧
@@ -99,6 +130,13 @@ theorem lat_in_out (Tf : FormsTiedSym D u Ch chOf) (P : Matrix (Fin (D.R.N D.R.m
     rw [mulVec_add, e1, e2, add_zero]
     exact hx
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Establish `hc : (prV (E` using `D.host.E) v).comp (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) = inclE (F := D.host.F) (v.adicCompletion D.host.F) := RingHom.ext fun e => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `congrArg (fun M => M.map (prV (E := D.host.E) v)) h1` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_map] at this`.
+
+Rewrite `this` using `[← RingHom.coe_comp, hc]`. Conclude with `this`. Use function extensionality and compare the values at `i`. Use `congrArg (fun w => prV (E := D.host.E) v (w i)) h2` as an intermediate fact. Simplify using `only at this`.
+
+Conclude with `(RingHom.map_mulVec _ _ _ _).symm.trans this`.
+-/
 theorem isExt_prV {z0 : Fin (D.R.N D.R.m) → D.host.E} (v : HeightOneSpectrum (𝓞 D.host.F))
     {k : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)}
     {G : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)}
@@ -119,6 +157,19 @@ theorem isExt_prV {z0 : Fin (D.R.N D.R.m) → D.host.E} (v : HeightOneSpectrum (
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `set S := tensInt (F := D.host.F) (v.adicCompletion D.host.F) (intOE D.host.E) (v.adicCompletionIntegers D.host.F).toSubring`. Use `set Km := (Tf.cls D.R.m le_rfl (Or.inr rfl)).lev`. Establish `hGv : bc (prV (E` using `D.host.E) v) G ∈ levelVL (sigD D) (gramN D D.R.m le_rfl) v Km.Lb := Km.Uloc_lev v (((Km.U_eq G).1 hG).2 v)`. Establish `hst` using `(Subgroup.mem_inf.mp hGv).2`. Establish `hGm : ((bc (prV (E` using `D.host.E) v) G : GL _ _) : Matrix _ _ _) = G.1.map (prV (E := D.host.E) v) := rfl`.
+
+Take `⟨hEv, -⟩` from `isExt_prV v hE`. Take `⟨P, hP1, hPz⟩` from `exists_projP Tf`. Take `⟨hin, hout⟩` from `lat_in_out Tf P hP1 hPz`. Establish `hI` using `latS_mulVec (F := D.host.F) (v.adicCompletion D.host.F) S (iXm D) _ _ hin`. Establish `hO` using `latS_mulVec (F := D.host.F) (v.adicCompletion D.host.F) S P _ _ hout`.
+
+Establish `hPI : (P.map (inclE (F` using `D.host.F) (v.adicCompletion D.host.F))) * ((iXm D).map (inclE (F := D.host.F) (v.adicCompletion D.host.F))) = 1 := by`. Rewrite using `[← Matrix.map_mul, hP1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hback : ∀ y, y = (P.map (inclE (F` using `D.host.F) (v.adicCompletion D.host.F))) *ᵥ (((iXm D).map (inclE (F := D.host.F) (v.adicCompletion D.host.F))) *ᵥ y) := fun y => by`. Rewrite using `[mulVec_mulVec, hPI, one_mulVec]`. Establish `hcomm : ∀ y, G.1.map (prV (E` using `D.host.E) v) *ᵥ (((iXm D).map (inclE (F := D.host.F) (v.adicCompletion D.host.F))) *ᵥ y) = ((iXm D).map (inclE (F := D.host.F) (v.adicCompletion D.host.F))) *ᵥ ((k.map (prV (E := D.host.E) v)) *ᵥ y) := fun y => by`.
+
+Rewrite using `[mulVec_mulVec, hEv, ← mulVec_mulVec]`. Establish `hs : ∀ y, y ∈ latS (F` using `D.host.F) (v.adicCompletion D.host.F) S Km.Lb ↔ G.1.map (prV (E := D.host.E) v) *ᵥ y ∈ latS (F := D.host.F) (v.adicCompletion D.host.F) S Km.Lb := fun y => by`. Rewrite using `[← hGm]`. Conclude with `hst y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Establish `h1` using `(hs _).1 (hI x hx)`. Rewrite `h1` using `[hcomm]`. Rewrite using `[hback ((k.map (prV (E := D.host.E) v)) *ᵥ x)]`. Conclude with `hO _ h1`.
+
+Introduce `hx`. Establish `h1` using `hI _ hx`. Rewrite `h1` using `[← hcomm]`. Rewrite using `[hback x]`. Conclude with `hO _ ((hs _).2 h1)`.
+-/
 theorem lev_lat (Tf : FormsTiedSym D u Ch chOf)
     (k : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))
     (G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))
@@ -163,6 +214,11 @@ theorem lev_lat (Tf : FormsTiedSym D u Ch chOf)
     rw [hback x]
     exact hO _ ((hs _).2 h1)
 
+/- English proof (translation)
+Use `set Km := (Tf.cls D.R.m le_rfl (Or.inr rfl)).lev`. Establish `hU : G ∈ UPts (sigD D) (gramN D D.R.m le_rfl) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `((Km.U_eq G).1 hG).1`. Establish `hc : (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)).comp (sigD D : D.host.E →+* D.host.E) = (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)).comp (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := by`. Use extensionality with `e`. Simplify using `[sigR, inclE, Algebra.TensorProduct.includeLeftRingHom_apply]`.
+
+Establish `hJ : (gramP D).map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) = cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((iXm D).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))) * (gramN D D.R.m le_rfl).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F …`. Rewrite using `[Formalism.UG.P.cT_map _ _ _ hc, ← Matrix.map_mul, ← Matrix.map_mul, gramP_eq]`. Both sides reduce to the same expression. Rewrite using `[hJ]`. Conclude with `cT_ext_unitary _ _ _ _ _ hU hE.1`.
+-/
 theorem lev_unit (Tf : FormsTiedSym D u Ch chOf)
     (k : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))
     (G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))
@@ -186,6 +242,11 @@ theorem lev_unit (Tf : FormsTiedSym D u Ch chOf)
   rw [hJ]
   exact cT_ext_unitary _ _ _ _ _ hU hE.1
 
+/- English proof (translation)
+Take `⟨P, hP1, -⟩` from `exists_projP Tf`. Take `⟨Gi, hGi⟩ : ∃ Gi : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F), Gi * G.1 = 1` from `⟨(G⁻¹ : GL _ _).1, by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]⟩`. Establish `hQ : HMul.hMul (HMul.hMul Gi ((iXm D).map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))) k = (iXm D).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := by`. Rewrite using `[Matrix.mul_assoc, ← hE.1, ← Matrix.mul_assoc, hGi, Matrix.one_mul]`. Establish `hl : HMul.hMul (HMul.hMul (P.map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))) (HMul.hMul Gi ((iXm D).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))))) k = 1 := by`.
+
+Rewrite using `[Matrix.mul_assoc, hQ, ← Matrix.map_mul, hP1, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Matrix.isUnit_det_of_left_inverse hl`.
+-/
 theorem lev_isUnit (Tf : FormsTiedSym D u Ch chOf)
     (k : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))
     (G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))

@@ -32,6 +32,17 @@ noncomputable section
 
 namespace GlobalTheory.FunObj
 
+/- English proof (translation)
+Introduce `M hM`. Take `⟨S₀, Q, hSQ, hX⟩` from `GlobalTheory.T.squareCharacters_isGood_gridPlaces hL t i j hst`. Use `choose τf hτf using (GlobalTheory.T.exists_conj_tauE_comp_algebraMap_eq_embedding (D := D))`. Take `⟨mα, mβ, hα, hβ, hκ⟩` from `GlobalTheory.T.thetaGridCharacters_archExponents_gap_gt_rank hL t i j hst τf hτf`. Take `⟨v₁, hv₁P, hv₁s, hv₁l, ⟨τ₁⟩⟩` from `GlobalTheory.T.exists_splitCompletely_auxiliary_place_outside_finset (G := G) hL t (S₀ ∪ Q)`.
+
+Establish `hτP : ∀ v : (S₀ ∪ Q : Finset (HeightOneSpectrum (𝓞 D.host.F))), Nonempty (D.host.E →ₐ[D.host.F] Fv D.host.F v)` using `fun v => (hSQ v v.2).2`. Set `B : Base D.host.F D.host.E` to `⟨W.ψ, fun w => ⟨_, hτf w⟩, mα, mβ, S₀ ∪ Q, fun v => (hτP v).some, v₁, τ₁⟩`. Establish `hB : B.IsGood D.sp.cm.sig` using `GlobalTheory.T.isAdmissibleCMBaseData_of_squareTupleStanding hL W t hst B rfl fun v hv => (hSQ v hv).1`. Establish `hemb : ∀ w x, (B.emb w).1 x = conj (tauE D (τf w) x)` using `fun _ _ => rfl`. Take `⟨e⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.nonempty_num (G := G) (i := i) (j := j) hL (by omega) (by omega)`.
+
+Take `⟨ΛV, basV, hV⟩` from `GlobalTheory.T.exists_hermitian_lattice_local_bases hL W i j B τf hemb`. Take `⟨ΛV', basV', hV'⟩` from `GlobalTheory.T.exists_negConj_member_hermitianLatticeSpaceData hL W i j B τf hemb`. Take `⟨ΛW, basW, hW⟩` from `GlobalTheory.T.gridSquare_skewSumSpace_isSkewHermitianSelfDual hL W i j e B τf hemb`. Take `⟨co, vac, dom, hMo⟩` from `GlobalTheory.T.exists_goodSchrodingerModel_conjugateDoubled hL t i j M hM B hB _ _ rfl _ _ _ _ hV hW`. Take `⟨co', vac', dom', hMo'⟩` from `GlobalTheory.T.squareModel_negSpace_goodSchroedinger hL t i j M hM B hB _ _ rfl _ _ _ _ hV' hW`.
+
+Take `⟨om, hom⟩` from `GlobalTheory.T.exists_weilRep_dualPair_characters_beta_quotient hL t i j hst B hB _ _ _ _ _ _ hV hW _ hMo`. Take `⟨om', hom'⟩` from `GlobalTheory.T.exists_weilRep_squarePair_characters_alpha_quotient hL t i j hst B hB _ _ _ _ _ _ hV' hW _ hMo'`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.thetaGridSquare_rank_inequalities (G := G) hL i j`. Use `⟨e, B, ⟨(D.R.m - j - 1) / 2, (D.R.m - j) / 2, _, _, _, Model.mk co vac ((M.ν (.grid ((i : ℕ) + 1) ((j : ℕ) + 1))).map (conjU (spW G i j) (J := (1 : D.host.E) • (spW G i j).gram) 1 rfl)) dom, Model.mk co' vac' ((M.ν (.grid (i : ℕ) (j : ℕ))).map (conjU (spW₁ G i j) (J := (-1 : D.ho …` and prove the remaining obligations. Conclude with `⟨rfl, rfl, rfl, rfl, fun w => ⟨τf w, fun _ => rfl, rfl, rfl, rfl⟩, rfl, rfl, rfl, rfl⟩`.
+
+Conclude with `⟨hB, ⟨h1, h2, hκ, h3, h4, hV, hV', hW, hMo, hMo'⟩, hX B subset_rfl hv₁P hv₁s hα hβ, hom, hom'⟩`.
+-/
 theorem squareTriple_of_standing {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}
     (hL : L.Is μ₀) (W : G.Weil) (t : T) (i j : Fin D.R.m) (hst : SquareStanding G t) : SquareTriple W t i j := by
   intro M hM

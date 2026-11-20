@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.DatumOfPeriodsGap
 
+/- English proof (translation)
+Introduce `hH D τ w w' θ W lam R _ l l' dd _ _ hRG hl hl' hdd hn hn'`. Establish `hK : PI.KFinSmooth` using `hH.1.1.2.2.1`. Establish `hR : R.IsDS (epsSH D.R) lam` using `GlobalTheory.isDS_of_isDG hRG`. Take `⟨P, hP, hD⟩` from `hR.2`. Establish `hD' : Formalism.MainNotions.S.IsDS (epsSH D.R) lam (fun g => R.σ (P⁻¹ * g * P))` using `hD`.
+
+Take `⟨d, hd⟩` from `GlobalTheory.Mem.Vol.exists_isFdeg_smul_of_isDS _ _ _ _ _ hD' _ (D.s.cdScale_pos _ (epsSH D.R))`. Take `⟨-, -, -, -, -, ⟨S, hS⟩, -⟩` from `hD'`. Take `⟨v, hvS, hv0, -⟩` from `hS.2.2.2.1`. Establish `hvs : v ∈ R.sm` using `((GlobalTheory.CompactStable.kStable_smooth_and_stable hK _ _ _ lam R hR P hP S hS.1 hS.2.1).1 v hvS).2`. Use `⟨{ H := R.H, σ := R.σ, B := fun x => ((Real.sqrt (Module.finrank ℂ W.Wp : ℕ) : ℝ) : ℂ) • l x, B' := fun x => ((Real.sqrt (Module.finrank ℂ W.Wq : ℕ) : ℝ) : ℂ) • l' x, v0 := v, cN := ‖v‖ ^ 2 / dd, deg := d }, hR.1, hR.2, GlobalTheory.DatumOfPeriods.isBesselMapSm_smul hl _, GlobalT …` and prove the remaining obligations.
+
+Conclude with `(le_sSup (s := {S | IsKTypeOf (epsSH D.R) (fun g => R.σ (P⁻¹ * g * P)) (Formalism.QuantumDeterminants.lowK (epsSH D.R) lam) S}) hS) hvS`.
+-/
 theorem exists_goodS : GlobalTheory.GapIn.Hyp → ∀ (D : D7) τ w w' θ (W : LocW D.R.k D.R.rS) (lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (R : Rep D.R.k D.R.rS) (h : ℝ) (l : R.H → W.Wp) (l' : R.H → W.Wq) (dd : ℝ), cdScaleTie D → GoodW D τ w w' θ W → R.IsDG (epsSH D.R) lam → PI.BesselMapUniq.IsBesselMapSm (k := D.R.k) (r := D.R.rS) W.z (psiS D W.z) R.σ W.π l → PI.BesselMapUniq.IsBesselMapSm (k := D.R.k) (r := D.R.rS) W.z' (psiS D W.z') R.σ W.π' l' → 0 < dd → (∀ v ∈ R.sm, l2SG W.νS (fun g => l (R.σ g v)) = ENNReal.ofReal (‖v‖ ^ 2 / dd)) → (∀ v ∈ R.sm, l2SG W.νS' (fun g => l' (R.σ g v)) = ENNReal.ofReal (‖v‖ ^ 2 / dd)) → ∃ A : LocS W, GoodS D lam A := by
   intro hH D τ w w' θ W lam R _ l l' dd _ _ hRG hl hl' hdd hn hn'
   have hK : PI.KFinSmooth := hH.1.1.2.2.1

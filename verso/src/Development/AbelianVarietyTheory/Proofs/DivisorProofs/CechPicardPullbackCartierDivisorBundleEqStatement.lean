@@ -12,6 +12,9 @@ open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Cartier.PullPres.pull_cls_toLB | exact GlobalTheory.Cartier.PullPres.pull_cls_toLB | (intros; apply GlobalTheory.Cartier.PullPres.pull_cls_toLB <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cechPicardPullback_cartierDivisorBundle_eq : ∀ (X W : Scheme.{0}) [IsIntegral X] [IsIntegral W] (q : X ⟶ W) [IsDominant q]
     (D : CartierDiv X) (E : CartierDiv W),
     (∀ y b, E.IsEqn y b → ∀ x, q x = y → D.IsEqn x (Units.map (functionFieldMap q).toMonoidHom b)) →

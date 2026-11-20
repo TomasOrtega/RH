@@ -44,6 +44,11 @@ open GlobalTheory.MiTop
 
 namespace GlobalTheory.Fam
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W h`. Consider the cases of `h with`. Consider the case `mk W hA`. Take `⟨hpk, htr, -, -, -, -⟩` from `hA`. Take `⟨hok, ⟨pins⟩, -, ⟨std⟩, -, -⟩` from `htr`.
+
+Use `⟨_, _, _, _, _, rfl, ⟨⟨hok, pins, W.R.T.cols, std, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `{ toSTies := W.S.toSTies hF := hpk.bot.fin tr := W.S.tr into := W.S.into bij := W.S.bij lev := W.S.lev colPin := W.S.colPin hpk.bot.fin inst := W.S.inst locTied := W.S.locTied pin := hpk.bot.idE }`.
+-/
 theorem trueD_of_truePack : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), TruePack W → GlobalTheory.Core.Rk.TrueD D := by
   intro D L hT Gi Gl Kc Yd cX ex W h
   cases h with

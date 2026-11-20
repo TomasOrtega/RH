@@ -15,10 +15,16 @@ open PAlg
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[xi0, map_sub, map_natCast, CharP.cast_eq_zero, zero_sub]`. Conclude with `congrArg Neg.neg (WittVector.teichmuller_coeff_zero l _)`.
+-/
 theorem flagDomainConj_hostXi_eq_neg : WittVector.constantCoeff (xi0 l) = -pFlat l := by
   rw [xi0, map_sub, map_natCast, CharP.cast_eq_zero, zero_sub]
   exact congrArg Neg.neg (WittVector.teichmuller_coeff_zero l _)
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective (I := Ideal.span {A.xi}) u`. Conclude with `⟨w, rfl⟩`.
+-/
 theorem un_rep {A : PAlg l} {n : ℕ} (x : A.Un n) : ∃ w : A.W, x = Ideal.Quotient.mk _ (A.th w) := by
   obtain ⟨u, rfl⟩ := Ideal.Quotient.mk_surjective x
   obtain ⟨w, rfl⟩ := Ideal.Quotient.mk_surjective (I := Ideal.span {A.xi}) u
@@ -41,8 +47,16 @@ def rho : A.Un 1 →+* A.A ⧸ Ideal.span {A.pi} :=
     rw [map_mul, map_pow, map_natCast, ← map_natCast (Ideal.Quotient.mk (Ideal.span {A.pi})), A.natCast_l, map_zero,
       zero_pow one_ne_zero, mul_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rho_mk (w : A.W) : rho A (Ideal.Quotient.mk _ (A.th w)) = Ideal.Quotient.mk _ (w.coeff 0) := rfl
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `un_rep x`. Rewrite `hx` using `[rho_mk, Ideal.Quotient.eq_zero_iff_mem]`. Use `((hU A).2 w).2 hx` as an intermediate fact. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (by rwa [pow_one])`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨Ideal.Quotient.mk _ (A.th (WittVector.teichmuller l a)), by rw [rho_mk, WittVector.teichmuller_coeff_zero]⟩`.
+-/
 theorem rho_bij (hU : RU l) : Function.Bijective (rho A) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩
   · obtain ⟨w, rfl⟩ := un_rep x
@@ -52,6 +66,11 @@ theorem rho_bij (hU : RU l) : Function.Bijective (rho A) := by
   · obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective y
     exact ⟨Ideal.Quotient.mk _ (A.th (WittVector.teichmuller l a)), by rw [rho_mk, WittVector.teichmuller_coeff_zero]⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.ideal_span_singleton_smul]`. Use extensionality with `x`. Rewrite using `[Submodule.restrictScalars_mem, Ideal.mem_span_singleton', Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`.
+
+Conclude with `⟨c, trivial, by rw [Algebra.smul_def, mul_comm]; rfl⟩`. Introduce and unpack `⟨b, _, rfl⟩`. Conclude with `⟨b, by rw [Algebra.smul_def, mul_comm]; rfl⟩`.
+-/
 theorem span_pi_eq : (Ideal.span {A.pi}).restrictScalars (Ob l) = (Ideal.span {pFlat l} • ⊤ : Submodule (Ob l) A.A) := by
   rw [Submodule.ideal_span_singleton_smul]
   ext x
@@ -69,19 +88,33 @@ def tau1 : A.Un 1 →+ (Ob l ⧸ Ideal.span {pFlat l}) ⊗[Ob l] A.A :=
   ((TensorProduct.quotTensorEquivQuotSMul A.A (Ideal.span {pFlat l})).symm.toAddMonoidHom.comp
     (kappa A).toAddMonoidHom).comp (rho A).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kappa_mk (x : A.A) :
     kappa A (Ideal.Quotient.mk _ x) = Submodule.Quotient.mk (p := (Ideal.span {pFlat l} • ⊤ : Submodule (Ob l) A.A)) x := by
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(TensorProduct.quotTensorEquivQuotSMul A.A (Ideal.span {pFlat l})).symm (kappa A (rho A (Ideal.Quotient.mk _ (A.th w)))) = _`. Rewrite using `[rho_mk, kappa_mk]`. Conclude with `TensorProduct.quotTensorEquivQuotSMul_symm_mk _ _`.
+-/
 theorem tau1_mk (w : A.W) : tau1 A (Ideal.Quotient.mk _ (A.th w)) = (1 : Ob l ⧸ Ideal.span {pFlat l}) ⊗ₜ[Ob l] w.coeff 0 := by
   change (TensorProduct.quotTensorEquivQuotSMul A.A (Ideal.span {pFlat l})).symm (kappa A (rho A (Ideal.Quotient.mk _ (A.th w)))) = _
   rw [rho_mk, kappa_mk]
   exact TensorProduct.quotTensorEquivQuotSMul_symm_mk _ _
 
+/- English proof (translation)
+The claim follows from `(TensorProduct.quotTensorEquivQuotSMul A.A (Ideal.span {pFlat l})).symm.bijective.comp ((kappa A).bijective.comp (rho_bij A hU))`.
+-/
 theorem tau1_bijective (hU : RU l) : Function.Bijective (tau1 A) :=
   (TensorProduct.quotTensorEquivQuotSMul A.A (Ideal.span {pFlat l})).symm.bijective.comp
     ((kappa A).bijective.comp (rho_bij A hU))
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `un_rep x`. Establish `e : a • (Ideal.Quotient.mk (Ideal.span {(l : A.U) ^ 1}) (A.th w)) = Ideal.Quotient.mk (Ideal.span {(l : A.U) ^ 1}) (A.th (A.sW a * w))`. Rewrite using `[Algebra.smul_def, IsScalarTower.algebraMap_apply (Ainf l) A.U, Ideal.Quotient.algebraMap_eq, ← map_mul, map_mul A.th]`. Both sides reduce to the same expression. Rewrite using `[e, tau1_mk, tau1_mk, ← TensorProduct.tmul_smul, WittVector.mul_coeff_zero, Algebra.smul_def]`.
+
+Express the relevant statement in the definitionally equal form `_ ⊗ₜ[Ob l] ((WittVector.map A.s a).coeff 0 * _) = _`. Rewrite using `[WittVector.map_coeff]`. Both sides reduce to the same expression.
+-/
 theorem tau1_smul (a : Ainf l) (x : A.Un 1) :
     tau1 A (a • x) = WittVector.constantCoeff a • tau1 A x := by
   obtain ⟨w, rfl⟩ := un_rep x

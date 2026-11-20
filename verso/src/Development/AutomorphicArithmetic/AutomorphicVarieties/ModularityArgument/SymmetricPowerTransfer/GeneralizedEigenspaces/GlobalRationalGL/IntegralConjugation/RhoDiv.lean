@@ -6,6 +6,19 @@ open UpperTheory.V.W (Plc Lp)
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `L _ _ _ P v w h a`. Substitute `h` using the available equality. Establish `hval : ∀ (F : Type) [Field F] [NumberField F] (u : Pl F) (x : F), Valued.v (algebraMap F (u.adicCompletion F) x) = u.valuation F x` using `fun F _ _ u x => IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' u x`. Establish `he : (un w).asIdeal.ramificationIdx' w.asIdeal ≠ 0` using `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal (un w).ne_bot`. Establish `key : ∀ x : Lp L, P.φ (un w) w rfl (cv (un w) x) ∈ w.adicCompletionIntegers L ↔ cv (un w) x ∈ (un w).adicCompletionIntegers (Lp L)`.
+
+Introduce `x`. Establish `h1` using `hval (Lp L) (un w) x`. Establish `h2` using `hval L w (algebraMap (Lp L) L x)`. Rewrite using `[P.φ_alg, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, cv, h1, h2, ← IsDedekindDomain.HeightOneSpectrum.valuation_liesOver L (un w) w x]`. Use `first`.
+
+Consider the case `exact pow_le_one_iff he`. Consider the case `exact pow_le_one_iff_of_nonneg zero_le' he`. Consider the case `exact pow_le_one_iff_of_nonneg (zero_le' (a := _)) he`. Establish `hd : DenseRange (cv (un w))` using `IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap (Lp L) (un w)`. Establish `hc` using `P.φ_cont (un w) w rfl`.
+
+Establish `o1 : IsClopen ((P.φ (un w) w rfl) ⁻¹' (w.adicCompletionIntegers L : Set (Kw w)))` using `(Valued.isClopen_integer (Kw w)).preimage hc`. Establish `o2 : IsClopen ((un w).adicCompletionIntegers (Lp L) : Set (Kv (un w)))` using `Valued.isClopen_integer (Kv (un w))`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `hb`.
+
+Take `⟨x, hx⟩` from `hd.exists_mem_open (o1.isOpen.inter o2.compl.isOpen) ⟨a, ha, hb⟩`. Conclude with `hx.2 ((key x).1 hx.1)`. Introduce `ha`. Assume the negation of the conclusion as `hb`. Take `⟨x, hx⟩` from `hd.exists_mem_open (o2.isOpen.inter o1.compl.isOpen) ⟨a, ha, hb⟩`.
+
+Conclude with `hx.2 ((key x).2 hx.1)`.
+-/
 theorem UpperTheory.V.Z.Sym.Dict.Br.rhoDiv :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (P : Pre L), ∀ v w h (a : Kv v), P.φ v w h a ∈ w.adicCompletionIntegers L ↔ a ∈ v.adicCompletionIntegers (Lp L) := by
   intro L _ _ _ P v w h a

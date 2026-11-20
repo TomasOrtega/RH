@@ -16,10 +16,16 @@ variable {K V : Type} [Group K] [AddCommGroup V] [Module ℂ V]
 
 private def orb (κ : Representation ℂ K V) (x : V) : (K →₀ ℂ) →ₗ[ℂ] V := Finsupp.linearCombination ℂ fun k => κ k x
 
+/- English proof (translation)
+Simplify using `only [orb, Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smul, hT]`.
+-/
 private theorem orb_comm (κ : Representation ℂ K V) (T : Module.End ℂ V) (hT : ∀ k x, T (κ k x) = κ k (T x)) (x : V)
     (c : K →₀ ℂ) : orb κ (T x) c = T (orb κ x c) := by
   simp only [orb, Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smul, hT]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add c c' h h' => rw [Finsupp.mapDomain_add, map_add, map_add, map_add, h, h']`. Consider the case `single a b => simp [orb]`.
+-/
 private theorem orb_act (κ : Representation ℂ K V) (x : V) (k : K) (c : K →₀ ℂ) :
     orb κ x (c.mapDomain (k * ·)) = κ k (orb κ x c) := by
   induction c using Finsupp.induction_linear with
@@ -38,6 +44,17 @@ private def annPart (κ : Representation ℂ K V) (φ : V) : Submodule ℂ V whe
     have := orb_comm κ (a • (1 : Module.End ℂ V)) (fun k x => by simp) x c
     simpa [hx c hc] using this
 
+/- English proof (translation)
+Establish `hO : ∀ k, ∀ y ∈ LinearMap.range (orb κ φ), κ k y ∈ LinearMap.range (orb κ φ)`. Introduce and unpack `k _ ⟨c, rfl⟩`. Conclude with `⟨_, orb_act κ φ k c⟩`. Use `haveI : FiniteDimensional ℂ (LinearMap.range (orb κ φ)) := by`. Rewrite using `[orb, Finsupp.range_linearCombination]`.
+
+Conclude with `hφ`. Set `b` to `Module.finBasis ℂ (LinearMap.range (orb κ φ))`. Take `⟨s, hs⟩` from `(orb κ φ).rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict _)`. Use `⟨_, (LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp (sub κ _ hO), fun x hx => ?_⟩` and prove the remaining obligations. Establish `key : ∀ c, orb κ x (s ((orb κ φ).rangeRestrict c)) = orb κ x c` using `fun c => by`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `hx _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun hs ((orb κ φ).rangeRestrict c))`. Use `⟨orb κ x ∘ₗ s ∘ₗ b.equivFun.symm.toLinearMap, fun k v => ?_, ⟨b.equivFun ((orb κ φ).rangeRestrict (Finsupp.single 1 1)), ?_⟩, fun v => ⟨_, rfl⟩⟩` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `b.equivFun.surjective v`. Take `⟨c, rfl⟩` from `(orb κ φ).surjective_rangeRestrict y`. Establish `h1 : (LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp (sub κ _ hO) k *ᵥ b.equivFun ((orb κ φ).rangeRestrict c) = b.equivFun ((orb κ φ).rangeRestrict (c.mapDomain (k * ·)))`. Establish `h2 : (orb κ φ).rangeRestrict (c.mapDomain (k * ·)) = sub κ _ hO k ((orb κ φ).rangeRestrict c)` using `Subtype.ext (orb_act κ φ k c)`. Rewrite using `[h2]`.
+
+Conclude with `LinearMap.toMatrix_mulVec_repr b b _ _`. Rewrite using `[h1]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, key, orb_act]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, key]`. Simplify using `[orb]`.
+-/
 private theorem exists_type (κ : Representation ℂ K V) (φ : V)
     (hφ : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => κ k φ))) :
     ∃ (d : ℕ) (ξ : K →* Matrix (Fin d) (Fin d) ℂ), ∀ x ∈ annPart κ φ, ∃ f : (Fin d → ℂ) →ₗ[ℂ] V,
@@ -74,11 +91,17 @@ end Gen
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {n : ℕ}
 
+/- English proof (translation)
+Introduce `v` and use `by convert (π.cusp v.1 v.2).1.level using 1 ext k exact Subtype.ext_iff`.
+-/
 private theorem smooth_fin (π : TR.CuspSub F n) : IsSmooth π.finPart := fun v => by
   convert (π.cusp v.1 v.2).1.level using 1
   ext k
   exact Subtype.ext_iff
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(TR.rt F n (TR.infGL F n (Unitary.toUnits k)) * TR.rt F n (finGL F n g)) y.1 = (TR.rt F n (finGL F n g) * TR.rt F n (TR.infGL F n (Unitary.toUnits k))) y.1`. Rewrite using `[← map_mul, ← map_mul, TR.infGL_comm]`.
+-/
 private theorem cpt_fin (π : TR.CuspSub F n) (k : TR.Kinf F n) (g : GL (Fin n) (Af F)) (y : π.V) :
     π.op (.cpt k) (π.finPart g y) = π.finPart g (π.op (.cpt k) y) := by
   refine Subtype.ext ?_
@@ -86,6 +109,13 @@ private theorem cpt_fin (π : TR.CuspSub F n) (k : TR.Kinf F n) (g : GL (Fin n) 
     (TR.rt F n (finGL F n g) * TR.rt F n (TR.infGL F n (Unitary.toUnits k))) y.1
   rw [← map_mul, ← map_mul, TR.infGL_comm]
 
+/- English proof (translation)
+Establish `hi` using `Submodule.map_injective_of_injective π.V.injective_subtype`. Establish `hop : ∀ o, ∀ x ∈ W, π.op o x ∈ W` using `fun o x hx => by`. Consider the cases of `o with`. Consider the case `fin k => exact h1 k x hx`. Consider the case `cpt k => exact h2 _ (fun g y => cpt_fin π k _ y) x hx`.
+
+Consider the case `lie X => exact h2 _ (fun g y => Subtype.ext (LinearMap.congr_fun (TR.lie_rt_fin X g) y.1)) x hx`. Break down `π.irred (W.map π.V.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `o _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, hop o x hx, rfl⟩) with h | h`. Conclude with `Or.inl (hi (h.trans (Submodule.map_bot _).symm))`.
+
+Conclude with `Or.inr (hi (h.trans (Submodule.map_subtype_top _).symm))`.
+-/
 private theorem bot_or_top (π : TR.CuspSub F n) (W : Submodule ℂ π.V)
     (h1 : ∀ g, ∀ x ∈ W, π.finPart g x ∈ W)
     (h2 : ∀ T : Module.End ℂ π.V, (∀ g x, T (π.finPart g x) = π.finPart g (T x)) → ∀ x ∈ W, T x ∈ W) :
@@ -105,6 +135,19 @@ private theorem bot_or_top (π : TR.CuspSub F n) (W : Submodule ℂ π.V)
 private def cptPart (π : TR.CuspSub F n) : Representation ℂ (TR.Kinf F n) π.V :=
   sub (TR.cptRep F n) π.V fun k => π.stable (.cpt k)
 
+/- English proof (translation)
+Take `⟨φ₀, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `set φ : π.V := ⟨φ₀, hφ⟩`. Establish `h0' : φ ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Use `set L := stab π.finPart φ`. Establish `hL : IsOpen (L : Set (GL (Fin n) (Af F)))` using `smooth_fin π _`.
+
+Take `⟨K₀, ho₀, hc₀⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact F n`. Establish `ho : IsOpen ((K₀ ⊓ L : Subgroup _) : Set (GL (Fin n) (Af F)))` using `ho₀.inter hL`. Establish `hc : IsCompact ((K₀ ⊓ L : Subgroup _) : Set (GL (Fin n) (Af F)))` using `hc₀.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) fun k hk => hk.1`. Establish `hfd : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptPart π k φ))`. Use `(π.cusp φ₀ hφ).1.kfin` as an intermediate fact.
+
+Use `FiniteDimensional.of_injective ((π.V.subtype ∘ₗ Submodule.subtype _).codRestrict (Submodule.span ℂ (Set.range fun k => TR.cptRep F n k φ₀)) fun v => ?_) fun v v' e => Subtype.ext (Subtype.ext (by have e' := congrArg Subtype.val e; exact e'))` and prove the remaining obligations. Use `Submodule.mem_comap.1 ((Submodule.span_le (p := Submodule.comap π.V.subtype _)).2 ?_ v.2)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Take `⟨d, ξ, hξ⟩` from `exists_type (cptPart π) φ hfd`.
+
+Establish `hcomm : ∀ g k x, π.finPart g (cptPart π k x) = cptPart π k (π.finPart g x)` using `fun g k x => (cpt_fin π k g x).symm`. Take `⟨σ, hσ, -⟩` from `exists_irred (smooth_fin π) ho (fun W hW e => by`. Break down `bot_or_top π (nullPart π.finPart (K₀ ⊓ L)) (fun g x hx => nullPart_act _ _ g hx) (fun T hT x hx => nullPart_comm _ _ T hT hx) with h2 | h2` into its components or cases. Conclude with `le_bot_iff.1 (h2 ▸ le_nullPart (smooth_fin π) hc W hW e)`. Conclude with `absurd (eq_zero_of_mem_nullPart (smooth_fin π) hc (mem_fix.2 fun k hk => hk.2) (h2 ▸ Submodule.mem_top)) h0')`.
+
+Use the proof step `(annPart (cptPart π) φ) (fun g x hx c hc => by rw [orb_comm _ _ (hcomm _), hx c hc, map_zero])`. Use the proof step `((Submodule.ne_bot_iff _).2 ⟨φ, fun _ hc => hc, h0'⟩) (fun K' hK' => by`. Take `⟨W, hW, hWf⟩` from `h F n π K' hK' d ξ`. Use `Submodule.finiteDimensional_of_le (S₂ := W) fun x hx => ?_` and prove the remaining obligations. Take `⟨f, hf, hx1, hf2⟩` from `hξ x hx.1`.
+
+Use `hWf f hf (fun k hk v => ?_) hx1` and prove the remaining obligations. Take `⟨c, hc⟩` from `hf2 v`. Rewrite using `[hc, ← orb_comm _ _ (hcomm k), mem_fix.1 hx.2 k hk])`. Conclude with `⟨σ, hσ⟩`.
+-/
 private theorem exists_comp (h : UpperTheory.V.Published.AdmissibleReal) (π : TR.CuspSub F n) :
     ∃ τ, π.IsFinComp τ := by
   obtain ⟨φ₀, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 π.ne_bot
@@ -144,6 +187,9 @@ private theorem exists_comp (h : UpperTheory.V.Published.AdmissibleReal) (π : T
 
 end UpperTheory.V.Br.FiniteLocalComponent
 
+/- English proof (translation)
+Introduce `h _ _ _ _ _ π` and use `UpperTheory.V.Br.FiniteLocalComponent.exists_comp h π`.
+-/
 theorem UpperTheory.V.Br.finCompR :
     UpperTheory.V.Published.AdmissibleReal → UpperTheory.V.Br.FinCompR := fun h _ _ _ _ _ π =>
   UpperTheory.V.Br.FiniteLocalComponent.exists_comp h π

@@ -10,12 +10,24 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ChainOnto.PetCoef
 
+/- English proof (translation)
+Unfold `PiLocalization₂.pet Lift.pet`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `MeasureTheory.integral_const_mul a _`.
+-/
 theorem pet_smul_left {D : D7} (s : PiLocalization₂ D) (a : ℂ) (f g : GA D s.V → ℂ) :
     s.pet (a • f) g = a * s.pet f g := by
   unfold PiLocalization₂.pet Lift.pet
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
   exact MeasureTheory.integral_const_mul a _
 
+/- English proof (translation)
+Introduce `D c hc j hj s hs ipD ip hM u v b κ hκ`. Establish `hmem` using `(mem_multT c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))).1 u.2`. Establish `hmap` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hmem`. Take `⟨w, hw, hU⟩` from `GlobalTheory.T.multiplicitySpace_equivariant_real_points D c.θ s.V s.par s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) hc.inf v b`. Establish `hUw` using `hU _ hmem`.
+
+Establish `ev : ∀ x : s.M.Vec, PiLocalization₂.val u (PiTensorProduct.tprod ℂ x) = PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) x`. Introduce `x`. Simplify using `[PiLocalization₂.val, PiTensorProduct.lift_symm]`. Establish `key : rTr s.V ((b : GA D s.V) * κ) (PiLocalization₂.val u (PiTensorProduct.tprod ℂ v)) = Lev.levChi s.V s.β s.L κ • PiLocalization₂.val u (PiTensorProduct.tprod ℂ w)`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[ev, ev, hUw]`. Simplify using `only [rTr, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc]`. Conclude with `hmap.lev v κ hκ (g * (b : GA D s.V))`. Establish `hsch : s.pet (PiLocalization₂.val u (PiTensorProduct.tprod ℂ w)) (PiLocalization₂.val u (PiTensorProduct.tprod ℂ v)) = ip u u * ipD (PiTensorProduct.tprod ℂ w) (PiTensorProduct.tprod ℂ v)` using `hM.schur u u _ _`.
+
+Rewrite using `[key, pet_smul_left, hsch, hM.pure w v]`. Simplify using `only [hw, mul_assoc]`.
+-/
 theorem petco : ∀ D : D7, ForStage D fun c _ s => ∀ ipD ip, IsMet c s ipD ip → ∀ (u : s.CC c) (v : s.M.Vec) (b : GinfC s.V), ∀ κ ∈ Lev.levG s.V s.β s.L, s.pet (rTr s.V ((b : GA D s.V) * κ) (PiLocalization₂.val u (PiTensorProduct.tprod ℂ v))) (PiLocalization₂.val u (PiTensorProduct.tprod ℂ v)) = Lev.levChi s.V s.β s.L κ * ip u u * ∏ τ, ⟪(v τ : s.M.H τ), s.M.rep τ (infMat D.sp.cm.sig s.V.gram (c.θ τ) (b : GA D s.V)) (v τ : s.M.H τ)⟫_ℂ := by
   intro D c hc j hj s hs ipD ip hM u v b κ hκ
   have hmem := (mem_multT c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))).1 u.2

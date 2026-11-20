@@ -11,6 +11,13 @@ open scoped TensorProduct ENNReal NNReal Matrix
 open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.WeilSiegel.Free GlobalTheory.CompanionTheory.WeilSiegel.HypStep
 open GlobalTheory.CompanionTheory.SW.ThetaStage
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker (Matrix.mulVecLin ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E)) = ⊥`. Use `LinearMap.ker_eq_bot.2 fun x y h => ?_` and prove the remaining obligations. Establish `h1 : gact σ g (fun _ : Fin 1 => x) = gact σ g (fun _ : Fin 1 => y)`. Use function extensionality and compare the values at `fun _ => h`. Establish `h2` using `congrArg (gact σ g⁻¹) h1`.
+
+Rewrite `h2` using `[gact_inv_gact, gact_inv_gact]`. Conclude with `congrFun h2 0`. Establish `h3 : gact σ g X = (Matrix.mulVecLin ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E)) ∘ X`. Use function extensionality and compare the values at `a`. Both sides reduce to the same expression.
+
+Rewrite using `[h3]`. Conclude with `hX.map' (Matrix.mulVecLin ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E)) hker`.
+-/
 theorem linearIndependent_gact {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     {M n : ℕ} {J : Matrix (Fin M) (Fin M) E} (g : UJ (σ : E →+* E) J) {X : Fin n → Fin M → E}
     (hX : LinearIndependent E X) : LinearIndependent E (gact σ g X) := by
@@ -29,12 +36,32 @@ theorem linearIndependent_gact {F E : Type} [Field F] [Field E] [Algebra F E] (�
   rw [h3]
   exact hX.map' (Matrix.mulVecLin ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E)) hker
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨linearIndependent_gact σ g hX.1, (gramE_gact σ g X).trans hX.2⟩`.
+-/
 theorem gact_mem_framesE {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     {M n : ℕ} {J : Matrix (Fin M) (Fin M) E} (g : UJ (σ : E →+* E) J)
     {T : Matrix (Fin n) (Fin n) E} {X : Fin n → Fin M → E} (hX : X ∈ framesE σ J T) :
     gact σ g X ∈ framesE σ J T :=
   ⟨linearIndependent_gact σ g hX.1, (gramE_gact σ g X).trans hX.2⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ σ M J n rr hrr f`. Establish `hrow : ∀ (q : framesE σ (hypOne J) (0 : Matrix (Fin 1) (Fin 1) E)) (X : framesOne σ J n), gact σ (rr q)⁻¹ X.1 0 = q.1 0`. Introduce `q X`. Establish `h` using `congrArg (gact σ (rr q)⁻¹) (hrr q)`. Rewrite `h` using `[gact_inv_gact]`.
+
+Establish `h0` using `congrFun h 0`. Establish `hX : X.1 0 = e0 E M 0` using `X.2.2`. Express the relevant statement in the definitionally equal form `((((rr q)⁻¹ : UJ (σ : E →+* E) (hypOne J)) : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E) *ᵥ X.1 0 = q.1 0`. Rewrite using `[hX, h0]`. Both sides reduce to the same expression.
+
+Set `m : framesE σ (hypOne J) (0 : Matrix (Fin 1) (Fin 1) E) × framesOne σ J n → framesE σ (hypOne J) (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E)` to `fun p => ⟨gact σ (rr p.1)⁻¹ p.2.1, gact_mem_framesE σ _ p.2.2.1⟩`. Establish `hinj : Function.Injective m`. Introduce and unpack `⟨q, X⟩ ⟨q', X'⟩ h`. Establish `h1 : gact σ (rr q)⁻¹ X.1 = gact σ (rr q')⁻¹ X'.1` using `congrArg Subtype.val h`. Establish `hq : q = q'`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `ha : a = 0` using `Subsingleton.elim _ _`. Substitute `ha` using the available equality. Rewrite using `[← hrow q X, ← hrow q' X', h1]`.
+
+Substitute `hq` using the available equality. Establish `h2` using `congrArg (gact σ (rr q)) h1`. Rewrite `h2` using `[gact_gact_inv, gact_gact_inv]`. Conclude with `Prod.ext rfl (Subtype.ext h2)`. Establish `hsurj : Function.Surjective m`.
+
+Introduce and unpack `⟨Y, hY⟩`. Establish `hq : (fun _ : Fin 1 => Y 0) ∈ framesE σ (hypOne J) (0 : Matrix (Fin 1) (Fin 1) E)`. Use `⟨hY.1.comp (fun _ : Fin 1 => (0 : Fin (n + 1))) (Function.injective_of_subsingleton _), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a b`. Conclude with `congrFun (congrFun hY.2 0) 0`.
+
+Set `q : framesE σ (hypOne J) (0 : Matrix (Fin 1) (Fin 1) E)` to `⟨_, hq⟩`. Establish `hX : gact σ (rr q) Y ∈ framesOne σ J n` using `⟨gact_mem_framesE σ _ hY, congrFun (hrr q) 0⟩`. Conclude with `⟨(q, ⟨_, hX⟩), Subtype.ext (gact_inv_gact σ (rr q) Y)⟩`. Set `e` to `Equiv.ofBijective m ⟨hinj, hsurj⟩`. Rewrite using `[← e.tsum_eq (fun Y => f Y.1), ENNReal.tsum_prod']`.
+
+Both sides reduce to the same expression.
+-/
 theorem tsum_framesOne : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (rr : framesE σ (hypOne J) (0 : Matrix (Fin 1) (Fin 1) E) → UJ (σ : E →+* E) (hypOne J)), (∀ q, gact σ (rr q) q.1 = e0 E M) → ∀ f : (Fin (n + 1) → Fin (M + 2) → E) → ℝ≥0∞, ∑' X : framesE σ (hypOne J) (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E), f X.1 = ∑' q : framesE σ (hypOne J) (0 : Matrix (Fin 1) (Fin 1) E), ∑' X : framesOne σ J n, f (gact σ (rr q)⁻¹ X.1) := by
   intro F E _ _ _ σ M J n rr hrr f
   have hrow : ∀ (q : framesE σ (hypOne J) (0 : Matrix (Fin 1) (Fin 1) E))

@@ -246,14 +246,26 @@ def RatiosInField : Prop :=
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D Fam Ks) (F : Face D Fam) (G : GridPre R),
     R.Char F → G.Is → PrimeToPolarisation G → FieldCond G → Concl G
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : rightBlock 1 (!![3, 5] : Matrix (Fin 1) (Fin 2) ℤ) = !![5] := by decide
 
+/- English proof (translation)
+Simplify using `only [rkV]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (i j : ℕ) : rkV D (i + 1) (j + 1) + rkV D i j = rkV D i (j + 1) + rkV D (i + 1) j := by
   simp only [rkV]; ring
 
+/- English proof (translation)
+Unfold `alpha beta`. Conclude with `mul_div_mul_right_eq_div _ _ _`.
+-/
 example (i j : Fin D.R.m) (t : T) : alpha R i j t / beta G i j t = R.toLevCh.mu t (j.1 + 1) / G.chi (D.R.m - i) := by
   unfold alpha beta; exact mul_div_mul_right_eq_div _ _ _
 
+/- English proof (translation)
+The claim follows from `mul_right_cancel₀ hv (h.symm.trans h')`.
+-/
 example {u v c c' : ℂ} (hv : v ≠ 0) (h : u = c * v) (h' : u = c' * v) : c = c' := mul_right_cancel₀ hv (h.symm.trans h')
 
 end GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle

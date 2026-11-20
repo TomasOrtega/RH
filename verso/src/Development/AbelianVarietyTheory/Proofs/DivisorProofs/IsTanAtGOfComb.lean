@@ -25,6 +25,9 @@ namespace GlobalTheory.RootFrameB.EigTie
 
 open GlobalTheory.FlatModel GlobalTheory.FlatModel.RetractionModules GlobalTheory.HTLat GlobalTheory.HTLat.OmegaRank GlobalTheory.CompHt
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => by simp [combLie, omega_lieZero] | m + 1, cf, xs => by rw [combLie, omega_lieAdd, omega_lieScale, omega_combLie f m, Fin.sum_univ_succ]`.
+-/
 theorem omega_combLie {O : Type} [CommRing O] {G : Over (Sp O)} [GrpObj G] (f : omega G) :
     ∀ (m : ℕ) (cf : Fin m → O) (xs : Fin m → LieG G), f.1 (combLie G m cf xs) = ∑ i, cf i * f.1 (xs i)
   | 0, _, _ => by simp [combLie, omega_lieZero]
@@ -34,6 +37,11 @@ theorem omega_combLie {O : Type} [CommRing O] {G : Over (Sp O)} [GrpObj G] (f : 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   {t : SAB H X}
 
+/- English proof (translation)
+Rewrite using `[← (GlobalTheory.FrameTangent.isCombAtG_iff t x (fun j => GlobalTheory.FrameTangent.ovT (hv j)) cf w).1 h]`. Use `GlobalTheory.FrameTangent.isTanAtG_of _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FrameTangent.combT, GlobalTheory.TangentLinear.smT_prod]`. Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FrameTangent.smT_smT, zero_mul]`.
+
+Conclude with `GlobalTheory.FrameTangent.smT_zero_ovT (hv j)`.
+-/
 theorem isTanAtG_of_comb {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hv : ∀ i, IsTanAtG t x (v i)) {cf : Fin m → S}
     {w : Sp (DualNumber S) ⟶ t.G.left} (h : IsCombAtG t x v cf w) : IsTanAtG t x w := by
@@ -46,6 +54,13 @@ theorem isTanAtG_of_comb {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ}
 
 variable {p : ℕ} [Fact p.Prime] [StarRing (𝓞 E)] {Q : PtP E p} {yb : Sp 𝓞_ℂ_[p] ⟶ X} {π : Q.G.left ⟶ t.G.left}
 
+/- English proof (translation)
+Use `choose xG hxc hxG using hv`. Take `⟨y, hy, hwu⟩` from `hw`. Take `⟨yG, hyc, hyG⟩` from `hx`. Establish `h1 : ((List.ofFn y).prod).left = ((List.ofFn fun i => ptMap (dualScale (cf i)) ≫ (xG i).1).prod).left ≫ π` using `prod_left_comp hπ (T := specO 𝓞_ℂ_[p] (DualNumber 𝓞_ℂ_[p])) (fun i => ptMap (dualScale (cf i)) ≫ (xG i).1) y fun i => by`. Rewrite using `[hy i, Over.comp_left, Category.assoc, hxG i]`.
+
+Both sides reduce to the same expression. Establish `h2 : yG.1 = (List.ofFn fun i => ptMap (dualScale (cf i)) ≫ (xG i).1).prod` using `hom_ext_pb hπ (hyG.trans (hwu.symm.trans h1))`. Establish `h3 : Corr Q (combLie Q.Gt m cf v).1 yG.1`. Rewrite using `[combLie_val, h2]`. Conclude with `corr_prod _ _ fun i => (hxc i).comp (dualScale (cf i))`.
+
+Conclude with `Subtype.ext (corr_left_unique hyc h3)`.
+-/
 theorem eq_combLie (hπ : IsGrpPullback Q.G t.G yb π) {m : ℕ} {u : Fin m → (Sp (DualNumber 𝓞_ℂ_[p]) ⟶ t.G.left)}
     {v : Fin m → LieG Q.Gt} (hv : ∀ i, ITie Q π (v i) (u i)) {cf : Fin m → 𝓞_ℂ_[p]}
     {w : Sp (DualNumber 𝓞_ℂ_[p]) ⟶ t.G.left} (hw : IsCombAtG t yb u cf w) {x : LieG Q.Gt} (hx : ITie Q π x w) :
@@ -66,6 +81,9 @@ theorem eq_combLie (hπ : IsGrpPullback Q.G t.G yb π) {m : ℕ} {u : Fin m → 
     exact corr_prod _ _ fun i => (hxc i).comp (dualScale (cf i))
   exact Subtype.ext (corr_left_unique hyc h3)
 
+/- English proof (translation)
+Take `⟨xG, hc, hu⟩` from `h`. Use `⟨AvDefs.lieAct Q.G Q.oG a xG, corr_act hc a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(xG.1 ≫ Q.oG.act a).left ≫ π = _`. Rewrite using `[Over.comp_left, Category.assoc, hact, ← Category.assoc, hu]`.
+-/
 theorem iTie_act (hact : ∀ a, (Q.oG.act a).left ≫ π = π ≫ (t.act.act a).left) {x : LieG Q.Gt}
     {u : Sp (DualNumber 𝓞_ℂ_[p]) ⟶ t.G.left} (h : ITie Q π x u) (a : 𝓞 E) :
     ITie Q π (AvDefs.lieAct Q.Gt Q.oGt a x) (u ≫ (t.act.act a).left) := by
@@ -74,6 +92,23 @@ theorem iTie_act (hact : ∀ a, (Q.oG.act a).left ≫ π = π ≫ (t.act.act a).
   change (xG.1 ≫ Q.oG.act a).left ≫ π = _
   rw [Over.comp_left, Category.assoc, hact, ← Category.assoc, hu]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t p _ _ Q yb π hπ hact ε hε x hx g e v u hvu hue he cf w σ hw hσ o s`. Establish `e₁ : spMap (intO ℂ_[p]).subtype ≫ x = spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ yb`. Rewrite using `[← hx, GlobalTheory.FlatModel.sp_sp, hε]`. Take `rfl : bcV t ε.toRingHom u = e` from `funext hue`. Establish `e₂ : (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ bcV t ε.toRingHom u i) = fun i => spMap (dualMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ≫ u i`.
+
+Use `GlobalTheory.FlatModel.bcV_bcV (t := t) ε.toRingHom (intO ℂ_[p]).subtype u` as an intermediate fact. Rewrite `this` using `[hε]`. Conclude with `this`. Rewrite `hw` using `[e₁, e₂]`. Establish `hid : ε.symm.toRingHom.comp ε.toRingHom = RingHom.id _` using `by ext1 s`.
+
+Simplify using the standard rewrite rules. Establish `h1 : spMap (RingHom.id 𝓞_ℂ_[p]) = 𝟙 _` using `Spec.map_id _`. Establish `h2 : dualMap (RingHom.id 𝓞_ℂ_[p]) = RingHom.id _`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+
+Establish `h3 : spMap (dualMap (RingHom.id 𝓞_ℂ_[p])) = 𝟙 _` using `by rw [h2]; exact Spec.map_id _`. Establish `hu : IsTanBasis t yb u`. Establish `h` using `isTanBasis_bc he ε.symm.toRingHom`. Establish `h4 : bcV t (RingHom.id 𝓞_ℂ_[p]) u = u` using `funext fun i => by rw [bcV, h3, Category.id_comp]`. Rewrite `h` using `[bcV_bcV, ← hx, GlobalTheory.FlatModel.sp_sp, hid, h1, Category.id_comp, h4]`. Then use the resulting hypothesis.
+
+Establish `hU : ∀ w, IsTanAtG t yb w → ∃ a, IsCombAtG t yb u a w` using `fun w hw => by`. Establish `h` using `hu.2 _ (RingHom.id _) w`. Simplify using `only [h1, h3, Category.id_comp] at h`. Conclude with `(h hw).exists`. Use `choose M hM using fun i => hU _ (GlobalTheory.ActMatrix.isTanAtG_act t yb o (hu.1 i))`.
+
+Establish `hT` using `(isTanBasis_bc hu (algebraMap 𝓞_ℂ_[p] ℂ_[p])).1`. Use `haveI := t.act.hom o`. Establish `c1` using `GlobalTheory.TangentLinear.isCombAtG_mulVec _ hT _ (Matrix.of fun j i => algebraMap 𝓞_ℂ_[p] ℂ_[p] (M i j)) cf _ (fun i => GlobalTheory.LocM.Cht.FlagBase.isCombAtG_bc t (algebraMap 𝓞_ℂ_[p] ℂ_[p]) (hM i)) (GlobalTheory.PushChart.isCombAtG_comp (t.act.act o) _ (fun i => (Category.as …`. Establish `c2` using `GlobalTheory.DetHT.Bridge.isCombAtG_scale hw (σ o)`. Rewrite `c2` using `[← hσ o]`.
+
+Establish `key` using `(hu.2 _ (algebraMap 𝓞_ℂ_[p] ℂ_[p]) _ (isTanAtG_of_comb hT c1)).unique c1 c2`. Establish `hv : ∀ i, (Q.al₀ (Q.actT (star o) s)).1 (v i) = ∑ j, M i j * (Q.al₀ s).1 (v j)` using `fun i => by`. Rewrite using `[Q.al₀_act, omegaAct_apply, star_star, eq_combLie hπ hvu (hM i) (iTie_act hact (hvu i) o), omega_combLie]`. Simplify using `only [hv, map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `k` using `congrFun key j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply] at k`. Rewrite using `[← _root_.mul_assoc, ← k, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem sum_al₀_actT : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (Q : GlobalTheory.FlatModel.PtP E p) (yb : Sp 𝓞_ℂ_[p] ⟶ X) (π : Q.G.left ⟶ t.G.left), IsGrpPullback Q.G t.G yb π → (∀ a, (Q.oG.act a).left ≫ π = π ≫ (t.act.act a).left) → ∀ (ε : 𝓞_ℂ_[p] ≃+* ↥(intO ℂ_[p])), (intO ℂ_[p]).subtype.comp ε.toRingHom = algebraMap 𝓞_ℂ_[p] ℂ_[p] → ∀ (x : Sp ↥(intO ℂ_[p]) ⟶ X), spMap ε.toRingHom ≫ yb = x → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left)) (v : Fin g → LieG Q.Gt) (u : Fin g → (Sp (DualNumber 𝓞_ℂ_[p]) ⟶ t.G.left)), (∀ i, GlobalTheory.FlatModel.ITie Q π (v i) (u i)) → (∀ i, spMap (dualMap ε.toRingHom) ≫ u i = e i) → IsTanBasis t x e → ∀ (cf : Fin g → ℂ_[p]) (w : Sp (DualNumber ℂ_[p]) ⟶ t.G.left) (σ : 𝓞 E →+* ℂ_[p]), IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e i) cf w → GlobalTheory.FlatModel.IsEigG t σ w → ∀ (o : 𝓞 E) (s : Q.T), ∑ i, cf i * algebraMap 𝓞_ℂ_[p] ℂ_[p] ((Q.al₀ (Q.actT (star o) s)).1 (v i)) = σ o * ∑ i, cf i * algebraMap 𝓞_ℂ_[p] ℂ_[p] ((Q.al₀ s).1 (v i)) := by
   intro E _ _ _ H X t p _ _ Q yb π hπ hact ε hε x hx g e v u hvu hue he cf w σ hw hσ o s
   have e₁ : spMap (intO ℂ_[p]).subtype ≫ x = spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ yb := by

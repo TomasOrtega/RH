@@ -23,25 +23,54 @@ namespace FontaineBcris
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `(h l C).1`.
+-/
 theorem tensorInj (h : FontaineBcris) (C : Core l) : C.TensorInj := (h l C).1
 
+/- English proof (translation)
+The claim follows from `(h l C).2.1`.
+-/
 theorem phiInj (h : FontaineBcris) (C : Core l) : C.PhiInj := (h l C).2.1
 
+/- English proof (translation)
+The claim follows from `(h l C).2.2.1`.
+-/
 theorem iotaInj (h : FontaineBcris) (C : Core l) : C.IotaInj := (h l C).2.2.1
 
+/- English proof (translation)
+The claim follows from `(h l C).2.2.2.1`.
+-/
 theorem fund (h : FontaineBcris) (C : Core l) : C.Fund := (h l C).2.2.2.1
 
+/- English proof (translation)
+The claim follows from `(h l C).2.2.2.2.1`.
+-/
 theorem ontoFilZero (h : FontaineBcris) (C : Core l) : PhiSubOneOntoFilZero C := (h l C).2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `(h l C).2.2.2.2.2.1`.
+-/
 theorem fundOnto (h : FontaineBcris) (C : Core l) : C.FundOnto := (h l C).2.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `(h l C).2.2.2.2.2.2`.
+-/
 theorem regular (h : FontaineBcris) (C : Core l) : C.Regular := (h l C).2.2.2.2.2.2
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, -, hx⟩` from `h (-y)`. Conclude with `⟨x, by rw [← neg_sub, hx, neg_neg]⟩`.
+-/
 theorem oneSubPhiOnto_of_filZero {C : Core l} (h : PhiSubOneOntoFilZero C) : C.OneSubPhiOnto := by
   intro y
   obtain ⟨x, -, hx⟩ := h (-y)
   exact ⟨x, by rw [← neg_sub, hx, neg_neg]⟩
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, hx⟩` from `h1 y`. Take `⟨b, hb, hF⟩` from `h2 (C.ι x)`. Use `⟨b - x, by rwa [map_sub], ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hb, ← hx]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem filZero_of_onto {C : Core l} (h1 : C.OneSubPhiOnto) (h2 : C.FundOnto) : PhiSubOneOntoFilZero C := by
   intro y
   obtain ⟨x, hx⟩ := h1 y
@@ -50,11 +79,17 @@ theorem filZero_of_onto {C : Core l} (h1 : C.OneSubPhiOnto) (h2 : C.FundOnto) : 
   rw [map_sub, hb, ← hx]
   ring
 
+/- English proof (translation)
+Introduce `l _ C` and use `⟨(h l C).1, phiB_injective l, (ULaws.u_laws l C).2.2.2.1, (h l C).2.1, filZero_of_onto (one_sub_phi_onto l C) (h l C).2.2.1, (h l C).2.2.1, (h l C).2.2.2⟩`.
+-/
 theorem of_rest (h : ∀ (l : ℕ) [Fact l.Prime] (C : Core l),
     C.TensorInj ∧ C.Fund ∧ C.FundOnto ∧ C.Regular) : FontaineBcris := fun l _ C =>
   ⟨(h l C).1, phiB_injective l, (ULaws.u_laws l C).2.2.2.1, (h l C).2.1,
     filZero_of_onto (one_sub_phi_onto l C) (h l C).2.2.1, (h l C).2.2.1, (h l C).2.2.2⟩
 
+/- English proof (translation)
+The claim follows from `nonempty_core l`.
+-/
 example (l : ℕ) [Fact l.Prime] : Nonempty (Core l) := nonempty_core l
 
 end FontaineBcris

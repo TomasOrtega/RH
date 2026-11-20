@@ -23,12 +23,21 @@ section Witness
 
 variable (K : Type u) [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `smulSub_le _ _`.
+-/
 theorem LocalGlobalIndex.witness :
     (scaledLattice (FullLattice.standard K 2) (two_ne_zero (α := 𝓞 K))).carrier ≤
       (FullLattice.standard K 2).carrier :=
   smulSub_le _ _
 
+/- English proof (translation)
+The claim follows from `LocalGlobalIndex.witness ℚ`.
+-/
 example := LocalGlobalIndex.witness ℚ
+/- English proof (translation)
+The claim follows from `LocalGlobalIndex.witness GaussianField`.
+-/
 example := LocalGlobalIndex.witness GaussianField
 
 end Witness

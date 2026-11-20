@@ -22,6 +22,9 @@ namespace GlobalTheory.CovTop
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.group_idempotent_coefficients p hp ht`. Establish `hI` using `GlobalTheory.T.twistedProjector_idempotent_of_groupAlgebra_idem (p.R.toRealDat.FW i) (fun g => (idemOf p.P.A3.A.X).coeff g) h1`. Use `⟨hI, fun σ x y => ?_, fun x hx => ?_, GlobalTheory.T.log_group_order_bound p hp ht PP A hN⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.twistedProjector_orthogonal_of_unitary_action (p.R.toRealDat.FW i) (fun g => (idemOf p.P.A3.A.X).coeff g) _ hI (GlobalTheory.T.row_inner_product_invariant p hp ht i σ) (fun g => h4 _ g) x y`. Conclude with `GlobalTheory.T.card_smul_twistedProjector_mem_integralForms (p.R.toRealDat.FW i) (fun g => (idemOf p.P.A3.A.X).coeff g) h2 h3 (GlobalTheory.T.row_representation_preserves_lattice p hp ht i) _ _ x hx`.
+-/
 theorem cutAt_of_rows {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz)
     (hp : p.Rows) (ht : RecTied D L) (i : Fin D.R.m) (PP A : ℝ) (hN : HostNum D L PP A 3) : CutAt p i := by
@@ -32,6 +35,9 @@ theorem cutAt_of_rows {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formal
       (fun g => h4 _ g) x y
   · exact GlobalTheory.T.card_smul_twistedProjector_mem_integralForms (p.R.toRealDat.FW i) (fun g => (idemOf p.P.A3.A.X).coeff g) h2 h3 (GlobalTheory.T.row_representation_preserves_lattice p hp ht i) _ _ x hx
 
+/- English proof (translation)
+Use `(Sizes.hostN 3).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨C, -, x0, hx⟩` from `h`. Conclude with `⟨0, le_rfl, x0, fun x hx' hle ι p hp i => cutAt_of_rows p hp.1 hp.2 i _ _ (hx x hx' hle ι p hp i)⟩`.
+-/
 theorem cut_of_hypotheses (_h : Hypotheses2) : Cut := by
   refine (Sizes.hostN 3).imp fun Fm CH _ h => ?_
   obtain ⟨C, -, x0, hx⟩ := h

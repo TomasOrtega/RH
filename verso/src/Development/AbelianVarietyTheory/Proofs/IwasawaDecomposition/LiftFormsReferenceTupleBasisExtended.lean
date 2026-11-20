@@ -31,6 +31,11 @@ section LiftBasis
 variable {K L : Type} [Field K] [NumberField K] [StarRing K] [Field L] [NumberField L] [StarRing L] {ι : K →+* L}
   {S : GSD K} {S' : GSD L}
 
+/- English proof (translation)
+Take `⟨F⟩` from `CoefFrame.nonempty ι`. Introduce `φ _`. Establish `h1 : Submodule.span L (Set.range b.lift) ≤ Submodule.span L (Set.range fun k => b.lift (v k))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨ψ, rfl⟩`.
+
+Rewrite using `[← v.sum_repr ψ, b.lift_sum]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Conclude with `h1 (b.mem_span_lift F φ)`.
+-/
 theorem gsdbc_lift_span (b : GSDBC ι S S') {κ : Type} [Fintype κ] (v : Module.Basis κ K S.EqFun) :
     ⊤ ≤ Submodule.span L (Set.range fun k => b.lift (v k)) := by
   obtain ⟨F⟩ := CoefFrame.nonempty ι
@@ -42,6 +47,19 @@ theorem gsdbc_lift_span (b : GSDBC ι S S') {κ : Type} [Fintype κ] (v : Module
     exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
   exact h1 (b.mem_span_lift F φ)
 
+/- English proof (translation)
+Use `letI : Algebra K L := ι.toAlgebra`. Use `haveI : IsScalarTower ℚ K L := IsScalarTower.of_algebraMap_eq fun q => by`. Rewrite using `[RingHom.algebraMap_toAlgebra, eq_ratCast (algebraMap ℚ L) q, eq_ratCast (algebraMap ℚ K) q, map_ratCast]`. Use `haveI : Module.Finite K L := Module.Finite.of_restrictScalars_finite ℚ K L`. Set `e` to `Module.finBasis K L`.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc k`. Establish `hs : ∀ m, (∑ k, e.repr (c k) m • v k) = 0`. Introduce `m`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `d`. Apply `S.bV.ext_elem` to reduce the goal to its premises. Introduce `i`. Establish `h0` using `congrArg (fun x : S'.EqFun => b.bas.repr ((x : S'.D → S'.V) (b.eD.symm d)) i) hc`. Rewrite `h0` using `[Submodule.coe_sum, Finset.sum_apply, map_sum, Finsupp.finset_sum_apply]`.
+
+Simplify using `only [Submodule.coe_smul, Pi.smul_apply, map_smul, Finsupp.smul_apply, GSDBC.lift_apply, GSDBC.repr_j, Equiv.apply_symm_apply, smul_eq_mul, Submodule.coe_zero, Pi.zero_apply, map_zero, Finsupp.zero_apply] at h0`. Establish `h1 : (∑ k, S.bV.repr ((v k : S.D → S.V) d) i • c k) = 0`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra, mul_comm]`.
+
+Establish `h2` using `congrArg (fun x => e.repr x m) h1`. Simplify using `only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.zero_apply] at h2`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, map_sum, Finsupp.finset_sum_apply]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, map_smul, Finsupp.smul_apply, smul_eq_mul, Submodule.coe_zero, Pi.zero_apply, map_zero, Finsupp.zero_apply]`. Rewrite using `[← h2]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `hz : ∀ m, e.repr (c k) m = 0` using `fun m => Fintype.linearIndependent_iff.1 v.linearIndependent _ (hs m) k`. Rewrite using `[← e.sum_repr (c k)]`. Simplify using `[hz]`.
+-/
 theorem gsdbc_lift_li (b : GSDBC ι S S') {κ : Type} [Fintype κ] (v : Module.Basis κ K S.EqFun) :
     LinearIndependent L (fun k => b.lift (v k)) := by
   letI : Algebra K L := ι.toAlgebra
@@ -83,6 +101,11 @@ noncomputable def resLift (b : GSDBC ι S S') (hS : S.Ok) (hS' : S'.Ok) : (S.toC
   map_zero' := by simp only [map_zero, b.lift_zero]
   map_add' x y := by simp only [map_add, b.lift_add]
 
+/- English proof (translation)
+Establish `hv : ∀ k, Lm (v k) = r'.symm (b.lift ((v.map r) k))` using `fun k => by`. Rewrite using `[Module.Basis.map_apply, ← hL, LinearEquiv.symm_apply_apply]`. Simplify using `only [hv]`. Use `⟨(gsdbc_lift_li b _).map' r'.symm.toLinearMap (LinearEquiv.ker _), ?_⟩` and prove the remaining obligations. Establish `hr : (Set.range fun k => r'.symm (b.lift ((v.map r) k))) = r'.symm.toLinearMap '' Set.range fun k => b.lift ((v.map r) k)`.
+
+Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, Submodule.span_image, eq_top_iff.2 (gsdbc_lift_span b _), Submodule.map_top, LinearEquiv.range]`.
+-/
 theorem gsdbc_basis_of_read (b : GSDBC ι S S') {M M' : Type} [AddCommGroup M] [AddCommGroup M'] (Lm : M → M')
     {_ : Module K M} {_ : Module L M'} (r : M ≃ₗ[K] S.EqFun) (r' : M' ≃ₗ[L] S'.EqFun) (hL : ∀ x, r' (Lm x) = b.lift (r x))
     {κ : Type} [Fintype κ] (v : Module.Basis κ K M) :
@@ -102,6 +125,13 @@ end GlobalTheory.Mem.R3.DefLatBC
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7`. Establish `H1` using `GlobalTheory.T.formsData_extendedData_baseChange_sameValues h1 h2 h3 h4 h5 h6 h7`. Establish `H2` using `GlobalTheory.T.formsLift_extendedData_determined_by_values h1 h2 h3 h4 h5 h6 h7`. Use `StepW.trans (StepW.and H1 H2) (StepW.of_all ?_)` and prove the remaining obligations. Introduce `K B' f' T' w' _ _ H B f T w hE hf hP hpx Z hX Wt z g1 g2 g3 g4 Z' hX' g5 g6 g7 z' g8 g9 j j' hj φ hφ L hL hC`.
+
+Use `beta_reduce at H`. Use `clear H1 H2`. Establish `Ha` using `H.1 B f T w hE hf hP hpx Z hX Wt z g1 g2 g3 g4 Z' hX' g5 g6 g7 z' g8 g9 j j' hj φ hφ`. Consider the cases of `Ha with`. Consider the case `intro b hb`.
+
+Conclude with `GlobalTheory.Mem.R3.DefLatBC.gsdbc_basis_of_read b (fun x => L x) (Formalism.L2.Col.GSD.res (Formalism.L2.Col.mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((j : ℕ) + 1)) (Formalism.L2.Col.mtKOk (Pr := B.primes w.px) B.wts …`.
+-/
 theorem GlobalTheory.Mem.R3.DefLatBC.lift_basis_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

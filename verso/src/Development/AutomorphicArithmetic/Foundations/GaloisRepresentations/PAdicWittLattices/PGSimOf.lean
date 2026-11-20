@@ -14,28 +14,50 @@ namespace UpperTheory.Gal.G3.GSimGlue
 
 variable {G : GDatum}
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Conclude with `⟨-c, by rw [hc, smul_neg]; abel⟩`.
+-/
 private theorem mn_symm {n : ℕ} {a b : G.La} (h : MN n a b) : MN n b a := by
   obtain ⟨c, hc⟩ := h
   exact ⟨-c, by rw [hc, smul_neg]; abel⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Take `⟨d, hd⟩` from `h'`. Conclude with `⟨d + c, by rw [hc, hd, smul_add]; abel⟩`.
+-/
 private theorem mn_trans {n : ℕ} {a b c : G.La} (h : MN n a b) (h' : MN n b c) : MN n a c := by
   obtain ⟨c, hc⟩ := h
   obtain ⟨d, hd⟩ := h'
   exact ⟨d + c, by rw [hc, hd, smul_add]; abel⟩
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `h`. Conclude with `⟨c • z, by rw [hz, smul_add, smul_comm]⟩`.
+-/
 private theorem mn_osmul {n : ℕ} {a b : G.La} (c : G.O) (h : MN n a b) : MN n (c • a) (c • b) := by
   obtain ⟨z, hz⟩ := h
   exact ⟨c • z, by rw [hz, smul_add, smul_comm]⟩
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hd`. Take `⟨c, hc⟩` from `h`. Conclude with `⟨k • c, by rw [hc, mul_smul]⟩`.
+-/
 private theorem mn_of_dvd {n m : ℕ} {a b : G.La} (hd : n ∣ m) (h : MN m a b) : MN n a b := by
   obtain ⟨k, rfl⟩ := hd
   obtain ⟨c, hc⟩ := h
   exact ⟨k • c, by rw [hc, mul_smul]⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Conclude with `⟨f c, by rw [hc, map_add, map_nsmul]⟩`.
+-/
 private theorem mn_map (f : G.La →+ G.La) {n : ℕ} {a b : G.La} (h : MN n a b) : MN n (f a) (f b) := by
   obtain ⟨c, hc⟩ := h
   exact ⟨f c, by rw [hc, map_add, map_nsmul]⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Take `⟨d, hd⟩` from `h'`. Establish `hx : a • c = b • d` using `add_left_cancel (hc.symm.trans hd)`. Establish `hx' : (a : ℤ) • c = (b : ℤ) • d` using `by simpa only [natCast_zsmul] using hx`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.mpr hab`.
+
+Use `⟨u • d + v • c, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, ← natCast_zsmul, ← natCast_zsmul]`. Use `congr 1`. Establish `e1 : (a : ℤ) • c = (u * a + v * b) • ((a : ℤ) • c)` using `by rw [huv, one_smul]`. Rewrite using `[e1, add_smul, mul_smul, mul_smul]`.
+
+Use `nth_rewrite 1 [hx']`. Use `push_cast`. Simplify using `only [smul_add, smul_smul]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> ring`.
+-/
 private theorem mn_glue {a b : ℕ} {x y : G.La} (hab : a.Coprime b) (h : MN a x y) (h' : MN b x y) :
     MN (a * b) x y := by
   obtain ⟨c, hc⟩ := h
@@ -53,6 +75,9 @@ private theorem mn_glue {a b : ℕ} {x y : G.La} (hab : a.Coprime b) (h : MN a x
   simp only [smul_add, smul_smul]
   congr 1 <;> congr 1 <;> ring
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `h`. Take `⟨y, rfl⟩` from `h'`. Use `⟨G.EF x d + G.EF b y + n * G.EF x y, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem mn_form {n : ℕ} {a b c d : G.La} (h : MN n a b) (h' : MN n c d) :
     (n : ℤ) ∣ G.EF a c - G.EF b d := by
   obtain ⟨x, rfl⟩ := h
@@ -70,10 +95,16 @@ private structure Sys (G : GDatum) (p : ℕ) (h : ℕ → G.La →+ G.La) (w : �
   inj : ∀ a : ℕ, 0 < a → a.Coprime p → ∀ x, MN a (h a x) 0 → MN a x 0
   surj : ∀ a : ℕ, 0 < a → a.Coprime p → ∀ y, ∃ x, MN a (h a x) y
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.mpr h`. Conclude with `⟨v * q, ⟨-u, by linarith⟩, dvd_mul_left _ _⟩`.
+-/
 private theorem exists_idem {a q : ℕ} (h : a.Coprime q) : ∃ e : ℤ, (a : ℤ) ∣ e - 1 ∧ (q : ℤ) ∣ e := by
   obtain ⟨u, v, huv⟩ := Nat.isCoprime_iff_coprime.mpr h
   exact ⟨v * q, ⟨-u, by linarith⟩, dvd_mul_left _ _⟩
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `he`. Take `rfl : e = 1 + a * k` from `by linarith`. Use `⟨k • (y - x), ?_⟩` and prove the remaining obligations. Rewrite using `[← natCast_zsmul]`. Use `module`.
+-/
 private theorem mn_comb_a {a : ℕ} {e : ℤ} (he : (a : ℤ) ∣ e - 1) (y x : G.La) :
     MN a (e • y + (1 - e) • x) y := by
   obtain ⟨k, hk⟩ := he
@@ -82,6 +113,9 @@ private theorem mn_comb_a {a : ℕ} {e : ℤ} (he : (a : ℤ) ∣ e - 1) (y x : 
   rw [← natCast_zsmul]
   module
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `he`. Use `⟨k • (y - x), ?_⟩` and prove the remaining obligations. Rewrite using `[← natCast_zsmul]`. Use `module`.
+-/
 private theorem mn_comb_q {q : ℕ} {e : ℤ} (he : (q : ℤ) ∣ e) (y x : G.La) :
     MN q (e • y + (1 - e) • x) x := by
   obtain ⟨k, rfl⟩ := he
@@ -89,6 +123,11 @@ private theorem mn_comb_q {q : ℕ} {e : ℤ} (he : (q : ℤ) ∣ e) (y x : G.La
   rw [← natCast_zsmul]
   module
 
+/- English proof (translation)
+Use `⟨fun n => n / p ^ n.factorization p, fun n => p ^ n.factorization p, fun n hn => ?_, fun n m hn hm => ?_, fun n hn hnp => ?_⟩` and prove the remaining obligations. Establish `c : (n / p ^ n.factorization p).Coprime p` using `(Nat.coprime_ordCompl hp hn.ne').symm`. Conclude with `⟨by rw [mul_comm]; exact Nat.ordProj_mul_ordCompl_eq_self n p, Nat.ordCompl_pos p hn.ne', c, Nat.Coprime.pow_right _ c⟩`. Conclude with `⟨Nat.ordCompl_dvd_ordCompl_of_dvd (dvd_mul_right n m) p, Nat.ordProj_dvd_ordProj_of_dvd (Nat.mul_pos hn hm).ne' (dvd_mul_right n m) p⟩`. Establish `h0 : n.factorization p = 0` using `Nat.factorization_eq_zero_of_not_dvd fun h => hp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hnp.symm h)`.
+
+Simplify using `[h0]`.
+-/
 private theorem exists_parts {p : ℕ} (hp : p.Prime) : ∃ A Q : ℕ → ℕ,
     (∀ n, 0 < n → A n * Q n = n ∧ 0 < A n ∧ (A n).Coprime p ∧ (A n).Coprime (Q n)) ∧
     (∀ n m, 0 < n → 0 < m → A n ∣ A (n * m) ∧ Q n ∣ Q (n * m)) ∧
@@ -104,6 +143,55 @@ private theorem exists_parts {p : ℕ} (hp : p.Prime) : ∃ A Q : ℕ → ℕ,
       hp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hnp.symm h)
     simp [h0]
 
+/- English proof (translation)
+Take `⟨A, Q, hAQ, hdv, hAid⟩` from `exists_parts hp`. Establish `hE : ∀ n, 0 < n → ∃ e : ℤ, (A n : ℤ) ∣ e - 1 ∧ (Q n : ℤ) ∣ e` using `fun n hn => exists_idem (hAQ n hn).2.2.2`. Use `choose! E hE1 hE2 using hE`. Establish `gl : ∀ n, 0 < n → ∀ u v : G.La, MN (A n) u v → MN (Q n) u v → MN n u v`. Introduce `n hn u v h1 h2`.
+
+Use `mn_glue (hAQ n hn).2.2.2 h1 h2` as an intermediate fact. Rewrite `this` using `[(hAQ n hn).1]`. Then use the resulting hypothesis. Establish `gli : ∀ n, 0 < n → ∀ z : ℤ, (A n : ℤ) ∣ z → (Q n : ℤ) ∣ z → (n : ℤ) ∣ z`. Introduce `n hn z h1 h2`. Use `IsCoprime.mul_dvd (Nat.isCoprime_iff_coprime.mpr (hAQ n hn).2.2.2) h1 h2` as an intermediate fact.
+
+Rewrite `this` using `[← Nat.cast_mul, (hAQ n hn).1]`. Then use the resulting hypothesis. Establish `fa : ∀ n, 0 < n → ∀ x, MN (A n) (E n • h (A n) x + (1 - E n) • x) (h (A n) x)` using `fun n hn x => mn_comb_a (hE1 n hn) _ _`. Establish `fq : ∀ n, 0 < n → ∀ x, MN (Q n) (E n • h (A n) x + (1 - E n) • x) x` using `fun n hn x => mn_comb_q (hE2 n hn) _ _`. Establish `νa : ∀ n, 0 < n → (A n : ℤ) ∣ (E n * w (A n) + (1 - E n)) - w (A n)`. Introduce `n hn`.
+
+Establish `e : (E n * w (A n) + (1 - E n)) - w (A n) = (E n - 1) * (w (A n) - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_mul_of_dvd_left (hE1 n hn) _`. Establish `νq : ∀ n, 0 < n → (Q n : ℤ) ∣ (E n * w (A n) + (1 - E n)) - 1`. Introduce `n hn`.
+
+Establish `e : (E n * w (A n) + (1 - E n)) - 1 = E n * (w (A n) - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_mul_of_dvd_left (hE2 n hn) _`. Use `⟨⟨fun n x => E n • h (A n) x + (1 - E n) • x, fun n => E n * w (A n) + (1 - E n), ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `n hn`.
+
+Take `⟨hmul, hApos, hAp, hAQc⟩` from `hAQ n hn`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Use `⟨0, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, smul_add, smul_zero, add_zero]`.
+
+Normalize the expressions using the abelian group laws. Introduce `c x`. Use `gl n hn _ _ ?_ ?_` and prove the remaining obligations. Conclude with `mn_trans (fa n hn _) (mn_trans (H.lin _ hApos hAp c x) (mn_symm (mn_osmul c (fa n hn x))))`. Conclude with `mn_trans (fq n hn _) (mn_symm (mn_osmul c (fq n hn x)))`.
+
+Introduce `x hx`. Use `gl n hn _ _ ?_ ?_` and prove the remaining obligations. Establish `h1 : MN (A n) (E n • h (A n) x + (1 - E n) • x) 0` using `mn_of_dvd ⟨Q n, hmul.symm⟩ hx`. Conclude with `H.inj _ hApos hAp x (mn_trans (mn_symm (fa n hn x)) h1)`. Establish `h1 : MN (Q n) (E n • h (A n) x + (1 - E n) • x) 0` using `mn_of_dvd ⟨A n, by rw [mul_comm]; exact hmul.symm⟩ hx`.
+
+Conclude with `mn_trans (mn_symm (fq n hn x)) h1`. Introduce `y`. Take `⟨x0, hx0⟩` from `H.surj _ hApos hAp y`. Use `⟨E n • x0 + (1 - E n) • y, gl n hn _ _ ?_ ?_⟩` and prove the remaining obligations. Conclude with `mn_trans (fa n hn _) (mn_trans (mn_map (h (A n)) (mn_comb_a (hE1 n hn) x0 y)) hx0)`.
+
+Conclude with `mn_trans (fq n hn _) (mn_comb_q (hE2 n hn) x0 y)`. Establish `hc : ((n : ℕ) : ℤ) = (A n : ℤ) * (Q n : ℤ)` using `by rw [← Nat.cast_mul, hmul]`. Rewrite using `[hc]`. Use `IsCoprime.mul_right ?_ ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `νa n hn`.
+
+Establish `e : E n * w (A n) + (1 - E n) = w (A n) + (A n : ℤ) * k` using `by linarith`. Rewrite using `[e]`. Conclude with `(H.cop _ hApos hAp).add_mul_left_left k`. Take `⟨k, hk⟩` from `νq n hn`. Establish `e : E n * w (A n) + (1 - E n) = 1 + (Q n : ℤ) * k` using `by linarith`.
+
+Rewrite using `[e]`. Conclude with `isCoprime_one_left.add_mul_left_left k`. Introduce `x y beta_reduce`. Use `gli n hn _ ?_ ?_` and prove the remaining obligations. Establish `d1` using `mn_form (fa n hn x) (fa n hn y)`.
+
+Establish `d2` using `H.isom _ hApos hAp x y`. Establish `d3` using `νa n hn`. Establish `e : 2 * G.EF (E n • h (A n) x + (1 - E n) • x) (E n • h (A n) y + (1 - E n) • y) - (E n * w (A n) + (1 - E n)) * (2 * G.EF x y) = 2 * (G.EF (E n • h (A n) x + (1 - E n) • x) (E n • h (A n) y + (1 - E n) • y) - G.EF (h (A n) x) (h (A n) y)) + 2 * (G.EF (h (A n) x) (h (A n) y) - w …` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_add (dvd_mul_of_dvd_right d1 _) (dvd_mul_of_dvd_right d2 _)) (dvd_mul_of_dvd_left d3 _)`.
+
+Establish `d1` using `mn_form (fq n hn x) (fq n hn y)`. Establish `d3` using `νq n hn`. Establish `e : 2 * G.EF (E n • h (A n) x + (1 - E n) • x) (E n • h (A n) y + (1 - E n) • y) - (E n * w (A n) + (1 - E n)) * (2 * G.EF x y) = 2 * (G.EF (E n • h (A n) x + (1 - E n) • x) (E n • h (A n) y + (1 - E n) • y) - G.EF x y) - ((E n * w (A n) + (1 - E n)) - 1) * (2 * G.EF x y)` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_mul_of_dvd_right d1 _) (dvd_mul_of_dvd_left d3 _)`.
+
+Introduce `n m hn hm x`. Establish `hN : 0 < n * m` using `Nat.mul_pos hn hm`. Take `⟨hdA, hdQ⟩` from `hdv n m hn hm`. Use `gl n hn _ _ ?_ ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hdA`.
+
+Establish `hApos` using `(hAQ n hn).2.1`. Establish `hANpos` using `(hAQ _ hN).2.1`. Establish `hbpos : 0 < b`. Break down `Nat.eq_zero_or_pos b with h0 | h0` into its components or cases. Rewrite `hb` using `[h0, mul_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `hcop : (A n * b).Coprime p`. Rewrite using `[← hb]`. Conclude with `(hAQ _ hN).2.2.1`.
+
+Establish `ht` using `H.tower (A n) b hApos hbpos hcop x`. Rewrite `ht` using `[← hb]`. Conclude with `mn_trans (mn_of_dvd ⟨b, hb⟩ (fa _ hN x)) (mn_trans ht (mn_symm (fa n hn x)))`. Conclude with `mn_trans (mn_of_dvd hdQ (fq _ hN x)) (mn_symm (fq n hn x))`. Introduce `n m hn hm beta_reduce`.
+
+Establish `hN : 0 < n * m` using `Nat.mul_pos hn hm`. Take `⟨hdA, hdQ⟩` from `hdv n m hn hm`. Use `gli n hn _ ?_ ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hdA`. Establish `hApos` using `(hAQ n hn).2.1`.
+
+Establish `hbpos : 0 < b`. Break down `Nat.eq_zero_or_pos b with h0 | h0` into its components or cases. Use `(hAQ _ hN).2.1` as an intermediate fact. Rewrite `this` using `[hb, h0, mul_zero]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h0`. Establish `hcop : (A n * b).Coprime p`. Rewrite using `[← hb]`. Conclude with `(hAQ _ hN).2.2.1`. Establish `ht` using `H.wtower (A n) b hApos hbpos hcop`.
+
+Rewrite `ht` using `[← hb]`. Establish `d1 : (A n : ℤ) ∣ (E (n * m) * w (A (n * m)) + (1 - E (n * m))) - w (A (n * m))` using `dvd_trans (Int.natCast_dvd_natCast.mpr ⟨b, hb⟩) (νa _ hN)`. Establish `e : (E (n * m) * w (A (n * m)) + (1 - E (n * m))) - (E n * w (A n) + (1 - E n)) = ((E (n * m) * w (A (n * m)) + (1 - E (n * m))) - w (A (n * m))) + (w (A (n * m)) - w (A n)) - ((E n * w (A n) + (1 - E n)) - w (A n))` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_add d1 ht) (νa n hn)`.
+
+Establish `d1 : (Q n : ℤ) ∣ (E (n * m) * w (A (n * m)) + (1 - E (n * m))) - 1` using `dvd_trans (Int.natCast_dvd_natCast.mpr hdQ) (νq _ hN)`. Establish `e : (E (n * m) * w (A (n * m)) + (1 - E (n * m))) - (E n * w (A n) + (1 - E n)) = ((E (n * m) * w (A (n * m)) + (1 - E (n * m))) - 1) - ((E n * w (A n) + (1 - E n)) - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_sub d1 (νq n hn)`. Introduce `n hn hc x show MN n (E n • h (A n) x + (1 - E n) • x) (h n x)`.
+
+Use `fa n hn x` as an intermediate fact. Rewrite `this`, the goal using `[hAid n hn hc]`. Conclude with `this`.
+-/
 private theorem glue {p : ℕ} (hp : p.Prime) {h : ℕ → G.La →+ G.La} {w : ℕ → ℤ} (H : Sys G p h w) :
     ∃ g : GSim G, ∀ n, 0 < n → n.Coprime p → ∀ x, MN n (g.f n x) (h n x) := by
   obtain ⟨A, Q, hAQ, hdv, hAid⟩ := exists_parts hp
@@ -248,6 +336,33 @@ private theorem glue {p : ℕ} (hp : p.Prime) {h : ℕ → G.La →+ G.La} {w : 
 
 end UpperTheory.Gal.G3.GSimGlue
 
+/- English proof (translation)
+Establish `hmem : ∀ v ∈ LaHat D, L.actG u v ∈ LaHat D` using `fun v hv => actG_mem_laHat L hu hv`. Establish `huinv : u⁻¹ ∈ L.KN 1` using `inv_mem hu`. Establish `hmem' : ∀ v ∈ LaHat D, L.actG u⁻¹ v ∈ LaHat D` using `fun v hv => actG_mem_laHat L huinv hv`. Establish `hinv : ∀ v, L.actG u⁻¹ (L.actG u v) = v`. Introduce `v`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hinv' : ∀ v, L.actG u (L.actG u⁻¹ v) = v`. Introduce `v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Take `⟨h, hh⟩` from `T.lattice_endomorphism_integral_approximation p D (L.actG u) hmem`.
+
+Take `⟨t, t', ht, ht', htt, hmu⟩` from `(hMB p).2.2 D G L u hu`. Simplify using `only [Nat.cast_one, _root_.one_mul] at hmu`. Take `⟨w, hwt, hwc⟩` from `T.integral_adele_unit_congruence_sequence p (mul u) t' (hmu ▸ ht) ht' (by rw [hmu]; exact htt)`. Establish `div : ∀ a : ℕ, 0 < a → a.Coprime p → ∀ (x : D.La), ∀ v ∈ LaHat D, inAf D x = a • v → ∃ z, x = a • z` using `fun a ha hc x v hv e => LatDiv.eq_nsmul_of_inAf_eq_nsmul p D x a ha hc v hv e`. Use `⟨h, w, ?_, ?_, ?_, ?_, ?_, ?_, ?_, hh⟩` and prove the remaining obligations.
+
+Introduce `a ha hc c x`. Take `⟨v, hv, e1⟩` from `hh a ha hc (c • x)`. Take `⟨v', hv', e2⟩` from `hh a ha hc x`. Establish `e3 : L.actG u (inAf D (c • x)) = inAf D (c • h a x) + a • actAf D c v'`. Rewrite using `[← actAf_inAf, actG_actAf, e2, map_add, map_nsmul, actAf_inAf]`.
+
+Rewrite `e3` using `[e1]`. Take `⟨z, hz⟩` from `div a ha hc (h a (c • x) - c • h a x) (actAf D c v' - v) (sub_mem (actAf_mem_laHat D c hv') hv) (by`. Rewrite using `[inAf_sub, nsmul_sub, sub_eq_sub_iff_add_eq_add, e3, add_comm])`. Conclude with `⟨z, sub_eq_iff_eq_add'.mp hz⟩`. Introduce `a b ha hb hc x`.
+
+Establish `hca : a.Coprime p` using `(Nat.coprime_mul_iff_left.mp hc).1`. Take `⟨v, hv, e1⟩` from `hh (a * b) (Nat.mul_pos ha hb) hc x`. Take `⟨v', hv', e2⟩` from `hh a ha hca x`. Take `⟨z, hz⟩` from `div a ha hca (h (a * b) x - h a x) (v' - b • v) (sub_mem hv' (AddSubgroup.nsmul_mem _ hv b)) (by`. Rewrite using `[inAf_sub, nsmul_sub, smul_smul, sub_eq_sub_iff_add_eq_add, ← e1, e2, add_comm])`.
+
+Conclude with `⟨z, sub_eq_iff_eq_add'.mp hz⟩`. Conclude with `fun a b ha hb hc => hwt a b ha hb hc`. Conclude with `fun a ha hc => (hwc a ha hc).1`. Introduce `a ha hc x y`. Take `⟨v, hv, e1⟩` from `hh a ha hc x`.
+
+Take `⟨v', hv', e2⟩` from `hh a ha hc y`. Take `⟨β, hβ, hmuw⟩` from `(hwc a ha hc).2`. Establish `hf` using `T.harrisTaylor_action_form_eq_similitude_mul p D G L u (inAf D x) (inAf D y)`. Express the relevant statement in the definitionally equal form `fAf D (L.actG u (inAf D x)) (L.actG u (inAf D y)) = mul u * fAf D (inAf D x) (inAf D y) at hf`. Rewrite `hf` using `[e1, e2, form_inAf, hmuw]`.
+
+Simplify using `only [map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, form_inAf, nsmul_eq_mul] at hf`. Use `IntDvdAdele.dvd_of_eq_mul_int p a ha hc _ (β * ((D.EF x y : ℤ) : AfP p) - (fAf D (inAf D (h a x)) v' + fAf D v (inAf D (h a y)) + (a : AfP p) * fAf D v v')) ?_ ?_` and prove the remaining obligations. Conclude with `isInt_sub (isInt_mul hβ (isInt_intCast _)) (isInt_add (isInt_add (formInt_laHat p D _ _ (inAf_mem D _) hv') (formInt_laHat p D _ _ hv (inAf_mem D _))) (isInt_mul (isInt_natCast a) (formInt_laHat p D _ _ hv hv')))`. Use `push_cast`. Take the linear combination `hf`.
+
+Introduce and unpack `a ha hc x ⟨c, hxc⟩`. Take `⟨v, hv, e1⟩` from `hh a ha hc x`. Rewrite `e1` using `[hxc, zero_add, inAf_nsmul, ← nsmul_add]`. Establish `e2` using `congrArg (L.actG u⁻¹) e1`. Rewrite `e2` using `[hinv, map_nsmul]`.
+
+Take `⟨z, hz⟩` from `div a ha hc x _ (hmem' _ (add_mem (inAf_mem D c) hv)) e2`. Conclude with `⟨z, by rw [zero_add]; exact hz⟩`. Introduce `a ha hc y`. Take `⟨x, w', hw', e1⟩` from `exists_inAf_add_nsmul_of_mem_laHat p D a ha hc _ (hmem' _ (inAf_mem D y))`. Take `⟨v, hv, e2⟩` from `hh a ha hc x`.
+
+Establish `e3 : L.actG u (inAf D x) = inAf D y - a • L.actG u w'`. Rewrite using `[eq_sub_iff_add_eq, ← map_nsmul, ← map_add, ← e1, hinv']`. Rewrite `e3` using `[e2]`. Take `⟨z, hz⟩` from `div a ha hc (h a x - y) (-(L.actG u w') - v) (sub_mem (neg_mem (hmem _ hw')) hv) (by`. Rewrite using `[inAf_sub, nsmul_sub, smul_neg, sub_eq_sub_iff_add_eq_add, e3, sub_eq_neg_add])`.
+
+Conclude with `⟨x, z, sub_eq_iff_eq_add'.mp hz⟩`.
+-/
 private theorem UpperTheory.Gal.G3.GSimGlue.sys_of {p : ℕ} [Fact p.Prime] (hMB : MultBasic) (D : Datum p) (G : HTGroup p)
     (L : Link D G) (u : G.GAf) (hu : u ∈ L.KN 1) :
     ∃ (h : ℕ → D.La →+ D.La) (w : ℕ → ℤ),
@@ -329,6 +444,15 @@ private theorem UpperTheory.Gal.G3.GSimGlue.sys_of {p : ℕ} [Fact p.Prime] (hMB
         rw [inAf_sub, nsmul_sub, smul_neg, sub_eq_sub_iff_add_eq_add, e3, sub_eq_neg_add])
     exact ⟨x, z, sub_eq_iff_eq_add'.mp hz⟩
 
+/- English proof (translation)
+Introduce `hMB p _ D G L u hu`. Take `⟨h, w, hlin, htow, hwt, hcop, hisom, hinj, hsurj, hK⟩` from `GSimGlue.sys_of hMB D G L u hu`. Establish `hp : p.Prime` using `Fact.out`. Establish `S : GSimGlue.Sys D.toG p h w` using `{ lin := hlin, tower := htow, wtower := hwt, cop := hcop, isom := hisom, inj := hinj, surj := fun a ha hc y => by`. Take `⟨x, z, hz⟩` from `hsurj a ha hc y`.
+
+Conclude with `⟨x, z, hz⟩ }`. Take `⟨g, hg⟩` from `GSimGlue.glue hp S`. Use `⟨g, fun n hn hc x => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, e⟩` from `hK n hn hc x`. Take `⟨c, hc'⟩` from `hg n hn hc x`.
+
+Use `⟨v - inAf D c, sub_mem hv (inAf_mem D c), ?_⟩` and prove the remaining obligations. Establish `e2 : inAf D (g.f n x) = inAf D (h n x) + n • inAf D c`. Rewrite using `[hc']`. Conclude with `(inAf_add D _ _).trans (congrArg _ (inAf_nsmul D n c))`. Rewrite using `[e, e2, nsmul_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem UpperTheory.Gal.G3.pGSimOf :
     MultBasic → GSimOf := by
   intro hMB p _ D G L u hu

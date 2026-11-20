@@ -1,6 +1,13 @@
 import Mathlib
 open KaehlerDifferential
 namespace GlobalTheory
+/- English proof (translation)
+Introduce `k A _ _ _ _`. Take `⟨n, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective A (KaehlerDifferential k A)`. Use `⟨n, fun l => (LinearMap.proj l ∘ₗ g).compDer (KaehlerDifferential.D k A), fun l => f (Pi.single l 1), ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `h` using `LinearMap.congr_fun hfg (KaehlerDifferential.D k A a)`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h`. Use `conv_lhs => rw [← h]`. Use `conv_lhs => rw [pi_eq_sum_univ (g (KaehlerDifferential.D k A a))]`. Simplify using `only [map_sum, map_smul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Use `congr 2`. Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`.
+-/
 theorem bertini_derivation_split : ∀ (k A : Type) [Field k] [CommRing A] [Algebra k A] [Algebra.Smooth k A], ∃ (n : ℕ) (δ : Fin n → Derivation k A A) (ω : Fin n → KaehlerDifferential k A), ∀ a : A, KaehlerDifferential.D k A a = ∑ l, δ l a • ω l := by
   intro k A _ _ _ _
   obtain ⟨n, f, g, -, -, hfg⟩ := Module.Finite.exists_comp_eq_id_of_projective A (KaehlerDifferential k A)

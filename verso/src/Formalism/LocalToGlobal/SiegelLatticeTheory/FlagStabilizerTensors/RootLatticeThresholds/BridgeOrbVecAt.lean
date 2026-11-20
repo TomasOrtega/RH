@@ -19,6 +19,9 @@ section Gen
 
 variable {n : ℕ} {ε : Fin n → Bool} {r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Use `show hJ ε (f a) ((Hi * G * H') *ᵥ f' b) = hJ ε (f a) (G *ᵥ f' b)`. Rewrite using `[← Matrix.mulVec_mulVec, hf' b, ← Matrix.mulVec_mulVec, ← Bridge.fixed_left hH (hf a) (Hi *ᵥ (G *ᵥ f' b)), Matrix.mulVec_mulVec, hHi, Matrix.one_mulVec]`.
+-/
 theorem zhat_conj_frames {f f' : Fin (r + 1) → Fin n → ℂ} {G H Hi H' : Matrix (Fin n) (Fin n) ℂ}
     (hH : Hᴴ * Formalism.REAL.Jm ε * H = Formalism.REAL.Jm ε) (hHi : H * Hi = 1)
     (hf : ∀ a, H *ᵥ f a = f a) (hf' : ∀ b, H' *ᵥ f' b = f' b) :
@@ -47,6 +50,61 @@ variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what
 
 local notation "PP" => CarrierOf (carrierInOf X u u' e he hv C CA de de' l grid grid1 T hT fc χ sg ν' m₀ top A₀) Mo
 
+/- English proof (translation)
+Use `set j := (tauE X e).symm v with hj`. Take `⟨hQ, hz, hz', -⟩` from `hFX v`. Establish `hz2 : (T j).base.z = Formalism.L2.SG.LocWSOf.Qics C (X.pl v) *ᵥ rv X.B.I v (X.zR u)` using `hz`. Establish `hz2' : (T j).base.z' = Formalism.L2.SG.LocWSOf.Qics C (X.pl v) *ᵥ rv X.B.I v (X.zR u')` using `hz'`. Use `set Qm := Formalism.L2.SG.LocWSOf.Qcs C (X.pl v) with hQm`.
+
+Use `set Qim := Formalism.L2.SG.LocWSOf.Qics C (X.pl v) with hQim`. Use `set gg : ℕ := D.host.g 0 * D.host.g 1 with hggdef`. Establish `hgg0 : (0 : ℝ) < gg`. Rewrite using `[hggdef]`. Use `push_cast`.
+
+Conclude with `mul_pos (by exact_mod_cast (Formalism.L2.SG.Pf.CarrierSz.g_pos D).1) (by exact_mod_cast (Formalism.L2.SG.Pf.CarrierSz.g_pos D).2)`. Use `set κ : ℂ := -Complex.I * (((gg : ℝ) / (2 * Real.pi) : ℝ) : ℂ) with hκ`. Establish `hc : ∀ a : Fin D.R.rS, cTor (gg : ℝ) D.R.rS a = κ ^ (D.R.rS - a.val)`. Introduce `a`. Unfold `cTor`.
+
+Use `congr 1`. Rewrite using `[hκ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hκstar : star κ = -κ`.
+
+Rewrite using `[hκ, star_mul', star_neg, Complex.star_def, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hκ0 : κ ≠ 0`. Rewrite using `[hκ]`. Use `mul_ne_zero (neg_ne_zero.mpr Complex.I_ne_zero) ?_` and prove the remaining obligations.
+
+Conclude with `(div_pos hgg0 (by positivity)).ne'` after adjusting the coercions. Establish `hTr : Bridge.TrHyp (PtRepPf.frU X u v) Qm Qim (fun a => cTor (gg : ℝ) D.R.rS a)` using `⟨hQ.1, hQ.2.1, hQ.2.2.1, fun a => (hQ.2.2.2 a a rfl).1, fun a => (hQ.2.2.2 a a rfl).2⟩`. Establish `hTr' : Bridge.TrHyp (PtRepPf.frU X u' v) Qm Qim (fun a => cTor (gg : ℝ) D.R.rS a)` using `⟨hQ.1, hQ.2.1, hQ.2.2.1, fun a => (hQ.2.2.2 a a rfl).1, fun a => (hQ.2.2.2 a a rfl).2⟩`. Establish `hfix : ∀ (w : D.what₂.Word) (s : X.B.I.Ginf), s ∈ HsetU X w → (∀ a, Formalism.MainNotions.S.uMat (s v) *ᵥ (PtRepPf.frU X w v).e a = (PtRepPf.frU X w v).e a) ∧ Formalism.MainNotions.S.uMat (s v) *ᵥ (PtRepPf.frU X w v).z = (PtRepPf.frU X w v).z`. Introduce `w s hs`.
+
+Conclude with `⟨fun a => hs v _ (Or.inl (Or.inl ⟨a, rfl⟩)), hs v _ (Or.inr rfl)⟩`. Take `⟨hHe, hHz⟩` from `hfix u h hD.1`. Take `⟨hH'e, hH'z⟩` from `hfix u' h' hD.2.1`. Use `set γ := gamW X u u' w`. Establish `hrep : IsPtRep X u u' w γ` using `by show IsPtRep X u u' w (gamW X u u' w)`.
+
+Unfold `gamW`. Rewrite using `[dif_pos hw.1]`. Conclude with `hw.1.choose_spec`. Use `set σ : D.host.E →+* ℂ := (X.B.I.φ v).comp X.ιE.symm.toRingHom with hσ`. Establish `hpt` using `hp`.
+
+Unfold `ptOfL Formalism.L2.SG.DataInst.ptOfList at hpt`. Use `split_ifs at hpt with hPtL`. Establish `hw1 : w.1 = (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.swap`. Rewrite using `[← Option.some_inj.mp hpt]`. Both sides reduce to the same expression.
+
+Establish `hfst : (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.fst = p.map Prod.fst` using `Formalism.L2.SG.DataInst.sign_list_fst D.R.rS 1 p`. Establish `hblk : ∀ b ∈ p, 1 ≤ b.1`. Introduce `b hb`. Establish `: b.1 ∈ (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.fst`. Rewrite using `[hfst]`.
+
+Conclude with `List.mem_map_of_mem hb`. Take `⟨b', hb', hbb⟩` from `List.mem_map.mp this`. Rewrite using `[← hbb]`. Conclude with `(hPtL.2 b' hb').1`. Establish `hsum : 0 + (p.map Prod.fst).sum ≤ D.R.rS + 1` using `by rw [← hfst, hPtL.1]; omega`.
+
+Establish `hlt` using `Bridge.lptOf_toStd σ D.R.rS (gg : ℝ) p 0 hblk hsum`. Establish `hloceq : Formalism.FourierDecayAlt.C.loc ((PP).S.emb j) p = Formalism.FourierDecayAlt.C.loc σ p`. Unfold `Formalism.FourierDecayAlt.C.loc`. Use `List.map_congr_left fun b _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `hemb j (X.ιE.symm b.2)` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[this]`. Use `show X.B.I.φ ((tauE X e) j) (X.ιE.symm b.2) = X.B.I.φ v (X.ιE.symm b.2)`. Rewrite using `[hj, Equiv.apply_symm_apply]`.
+
+Establish `hstd : Formalism.FourierDecayAlt.D.toStd (PP).S.G.r (PP).S.g 1 (Formalism.FourierDecayAlt.C.loc ((PP).S.emb j) p) = Bridge.lptOf σ κ D.R.rS 0 w.1`. Rewrite using `[hloceq, hw1]`. Conclude with `hlt.symm`. Establish `hA` using `Formalism.L2.SG.Pf.CarrierTop.zhatO_eq_mul (ZX X u u' 1 γ v)`. Rewrite `hA` using `[hrep v]`.
+
+Establish `hM : Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1) = Matrix.diagonal (fun a : Fin (D.R.rS + 1) => Bridge.Af κ D.R.rS a * 1) * ZX X u u' 1 γ v * Matrix.diagonal (fun b : Fin (D.R.rS + 1) => Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS b * Bridge.Bf κ …`. Rewrite using `[Bridge.ptMatN_lptOf σ κ D.R.rS hκstar w]`. Use `show Matrix.diagonal _ * ptC X v w * Matrix.diagonal _ = _`. Rewrite using `[hA]`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `Bridge.zhat_cs hTr hTr' (sc := sc) hsc.ne' (Formalism.MainNotions.S.uMat ((h v)⁻¹ * γ v * h' v))`. Establish `h2 : RealObj.Zhat (X.B.I.ε v) (frm X u sc v) (frm X u' sc v) (Formalism.MainNotions.S.uMat ((h v)⁻¹ * γ v * h' v)) = ZX X u u' sc γ v` using `zhat_conj_frames (uMat_unitary (h v)) (uMat_mul_inv (h v)) (Bridge.fix_famSc (PtRepPf.frU X u v).e (PtRepPf.frU X u v).z hHe hHz sc) (Bridge.fix_famSc (PtRepPf.frU X u' v).e (PtRepPf.frU X u' v).z hH'e hH'z sc)`. Establish `hZ : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (T j).base.z (T j).base.z' (trG Qm Qim ((h v)⁻¹ * γ v * h' v)) = Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)`.
+
+Rewrite using `[hz2, hz2']`. Establish `h1' : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (Qim *ᵥ rv X.B.I v (X.zR u)) (Qim *ᵥ rv X.B.I v (X.zR u')) (trG Qm Qim ((h v)⁻¹ * γ v * h' v)) = Matrix.diagonal (fun a => star (Bridge.lam (fun a => cTor (gg : ℝ) D.R.rS a) sc a)) * RealObj.Zhat (X.B.I.ε v) (frm X u sc v) (fr …` using `h1`. Rewrite using `[h1', h2, Formalism.L2.SG.Pf.CarrierTop.zx_sc, hM]`. Use extensionality with `a b`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+
+Establish `ha` using `(Bridge.cS_lam hc hsc.ne' a).2`. Establish `hb` using `(Bridge.cS_lam hc hsc.ne' b).1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ha, hb]`. Simplify using `only [Bridge.Af, Bridge.Bf, Formalism.L2.SG.Pf.CarrierTop.sgnV]`.
+
+Establish `: ((-1 : ℂ) ^ (D.R.rS - b.val)) * ((-1 : ℂ) ^ (D.R.rS - b.val)) = 1`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions. Take the linear combination `(star (κ ^ (D.R.rS - a.val)) * ZX X u u' 1 γ v a b * κ ^ (D.R.rS - b.val)) * this.symm`. Establish `hG1 : 0 < ‖RealObj.Dl (ZX X u u' 1 γ v) (D.R.rS + 1)‖ ^ 2 - Tw (D` using `D) u * Tw (D := D) u' * ‖RealObj.Dl (ZX X u u' 1 γ v) D.R.rS‖ ^ 2 := by`.
+
+Establish `hGX` using `hw.2 v`. Express the relevant statement in the definitionally equal form `0 < Gv (Tw (D := D) u) (Tw (D := D) u') (ZX X u u' D.host.rdE γ v) at hGX`. Unfold `Gv at hGX`. Establish `hcl : Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE (Fin.last D.R.rS) = 1`. Simplify using `[Formalism.L2.SG.Pf.CarrierTop.cS]`.
+
+Establish `hGd` using `Bridge.G_diag D.R.rS (ZX X u u' 1 γ v) (Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE) (Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE) (Tw (D := D) u * Tw (D := D) u') (by rw [hcl]; simp)`. Rewrite `hGX` using `[Formalism.L2.SG.Pf.CarrierTop.zx_sc, hGd]`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Establish `: (‖∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE (Fin.castLE (Nat.le_succ D.R.rS) i)‖ * ‖∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE (Fin.castLE (Nat.le_succ D.R.rS) i)‖) ^ 2 * (‖RealObj.Dl (ZX X u u' 1 γ v) (D.R.rS + 1)‖ ^ 2 - Tw …` using `D) u * Tw (D := D) u' * ‖RealObj.Dl (ZX X u u' 1 γ v) D.R.rS‖ ^ 2) ≤ 0 := mul_nonpos_of_nonneg_of_nonpos (sq_nonneg _) hle`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG : 0 < Formalism.FourierDecayAlt.D.ptG (Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (T j).base.z * Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (T j).base.z') D.R.rS (Bridge.lptOf σ κ D.R.rS 0 w.1)`. Rewrite using `[(hT j).1, (hT j).2]`. Establish `hdet1 : (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)).det = RealObj.Dl (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)) (D.R.rS + 1)` using `(Bridge.dl_top' _).symm`. Establish `hdet2 : (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) D.R.rS).det = RealObj.Dl (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)) D.R.rS`.
+
+Unfold `RealObj.Dl`. Rewrite using `[dif_pos (Nat.le_succ _)]`. Both sides reduce to the same expression. Unfold `Formalism.FourierDecayAlt.D.ptG`. Establish `hGd` using `Bridge.G_diag D.R.rS (ZX X u u' 1 γ v) (fun a : Fin (D.R.rS + 1) => Bridge.Af κ D.R.rS a * 1) (fun b : Fin (D.R.rS + 1) => Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS b * Bridge.Bf κ D.R.rS b) (((D.mem u).A.T : ℝ) * ((D.mem u').A.T : ℝ)) (by simp [Bridge.Af, Bridge.Bf, Formalism.L2 …`.
+
+Rewrite using `[hdet1, hdet2, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq, hM, hGd]`. Establish `hne1 : (∏ i : Fin D.R.rS, Bridge.Af κ D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i) * 1) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => by`. Simplify using `[Bridge.Af, hκ0]`. Establish `hne2 : (∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i) * Bridge.Bf κ D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => by`. Simplify using `[Bridge.Bf, Formalism.L2.SG.Pf.CarrierTop.sgnV, hκ0]`.
+
+Establish `hpos : 0 < (‖∏ i : Fin D.R.rS, Bridge.Af κ D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i) * 1‖ * ‖∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i) * Bridge.Bf κ D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i)‖) ^ 2` using `pow_pos (mul_pos (norm_pos_iff.mpr hne1) (norm_pos_iff.mpr hne2)) 2`. Unfold `Tw at hG1`. Conclude with `mul_pos hpos hG1`. Establish `hGV` using `Bridge.delta_GV hTr (uMat_unitary ((h v)⁻¹ * γ v * h' v))`. Establish `hDF` using `dFrameBridge_carrierOf X u u' e he hv C CA de de' l grid grid1 T hT fc χ sg ν' m₀ top A₀ Mo sc hsc.ne' i0 i0' hFX hB γ h h' hD v`.
+
+Establish `hZ' : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (T j).base.z (T j).base.z' (trG Qm Qim ((h v)⁻¹ * γ v * h' v)) = Formalism.FourierDecayAlt.D.ptMatN (Formalism.FourierDecayAlt.D.toStd (PP).S.G.r (PP).S.g 1 (Formalism.FourierDecayAlt.C.loc ((PP).S.emb j) p)) (D.R.rS + 1)`. Rewrite using `[hstd]`. Conclude with `hZ`. Establish `hGpos : 0 < Formalism.FourierDecayAlt.D.ptG (Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (T j).base.z * Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (T j).base.z') D.R.rS (Formalism.FourierDecayAlt.D.toStd (PP).S.G.r (PP).S.g 1 (Formalism.FourierDecayAlt.C.loc ((PP).S.emb j) p …`. Rewrite using `[hstd]`.
+
+Conclude with `hG`. Conclude with `Formalism.FourierDecayAlt.P.isotropic_vectors_linear_indep D.R.k D.R.rS _ _ (T j).base (ν' j) (m₀ j) F _ hloc (trG Qm Qim ((h v)⁻¹ * γ v * h' v)) (hbase v) hGpos hGV hZ' hDF`.
+-/
 theorem orbVec_vecV (sc : ℝ) (hsc : 0 < sc) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (hFX : (PP).FromX) (hB : (PP).Base i0 i0')
     (hemb : ∀ j x, (PP).S.emb j (X.ιE x) = X.B.I.φ ((PP).τ j) x)
@@ -230,6 +288,61 @@ theorem orbVec_vecV (sc : ℝ) (hsc : 0 < sc) (i0 i0' : ∀ _ : InfinitePlace X.
   exact Formalism.FourierDecayAlt.P.isotropic_vectors_linear_indep D.R.k D.R.rS _ _ (T j).base (ν' j) (m₀ j) F _ hloc
     (trG Qm Qim ((h v)⁻¹ * γ v * h' v)) (hbase v) hGpos hGV hZ' hDF
 
+/- English proof (translation)
+Use `set j := (tauE X e).symm v with hj`. Take `⟨hQ, hz, hz', -⟩` from `hFX v`. Establish `hz2 : (T j).base.z = Formalism.L2.SG.LocWSOf.Qics C (X.pl v) *ᵥ rv X.B.I v (X.zR u)` using `hz`. Establish `hz2' : (T j).base.z' = Formalism.L2.SG.LocWSOf.Qics C (X.pl v) *ᵥ rv X.B.I v (X.zR u')` using `hz'`. Use `set Qm := Formalism.L2.SG.LocWSOf.Qcs C (X.pl v) with hQm`.
+
+Use `set Qim := Formalism.L2.SG.LocWSOf.Qics C (X.pl v) with hQim`. Use `set gg : ℕ := D.host.g 0 * D.host.g 1 with hggdef`. Establish `hgg0 : (0 : ℝ) < gg`. Rewrite using `[hggdef]`. Use `push_cast`.
+
+Conclude with `mul_pos (by exact_mod_cast (Formalism.L2.SG.Pf.CarrierSz.g_pos D).1) (by exact_mod_cast (Formalism.L2.SG.Pf.CarrierSz.g_pos D).2)`. Use `set κ : ℂ := -Complex.I * (((gg : ℝ) / (2 * Real.pi) : ℝ) : ℂ) with hκ`. Establish `hc : ∀ a : Fin D.R.rS, cTor (gg : ℝ) D.R.rS a = κ ^ (D.R.rS - a.val)`. Introduce `a`. Unfold `cTor`.
+
+Use `congr 1`. Rewrite using `[hκ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hκstar : star κ = -κ`.
+
+Rewrite using `[hκ, star_mul', star_neg, Complex.star_def, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hκ0 : κ ≠ 0`. Rewrite using `[hκ]`. Use `mul_ne_zero (neg_ne_zero.mpr Complex.I_ne_zero) ?_` and prove the remaining obligations.
+
+Conclude with `(div_pos hgg0 (by positivity)).ne'` after adjusting the coercions. Establish `hTr : Bridge.TrHyp (PtRepPf.frU X u v) Qm Qim (fun a => cTor (gg : ℝ) D.R.rS a)` using `⟨hQ.1, hQ.2.1, hQ.2.2.1, fun a => (hQ.2.2.2 a a rfl).1, fun a => (hQ.2.2.2 a a rfl).2⟩`. Establish `hTr' : Bridge.TrHyp (PtRepPf.frU X u' v) Qm Qim (fun a => cTor (gg : ℝ) D.R.rS a)` using `⟨hQ.1, hQ.2.1, hQ.2.2.1, fun a => (hQ.2.2.2 a a rfl).1, fun a => (hQ.2.2.2 a a rfl).2⟩`. Establish `hfix : ∀ (w : D.what₂.Word) (s : X.B.I.Ginf), s ∈ HsetU X w → (∀ a, Formalism.MainNotions.S.uMat (s v) *ᵥ (PtRepPf.frU X w v).e a = (PtRepPf.frU X w v).e a) ∧ Formalism.MainNotions.S.uMat (s v) *ᵥ (PtRepPf.frU X w v).z = (PtRepPf.frU X w v).z`. Introduce `w s hs`.
+
+Conclude with `⟨fun a => hs v _ (Or.inl (Or.inl ⟨a, rfl⟩)), hs v _ (Or.inr rfl)⟩`. Take `⟨hHe, hHz⟩` from `hfix u h hD.1`. Take `⟨hH'e, hH'z⟩` from `hfix u' h' hD.2.1`. Use `set γ := gamW X u u' w`. Establish `hrep : IsPtRep X u u' w γ` using `by show IsPtRep X u u' w (gamW X u u' w)`.
+
+Unfold `gamW`. Rewrite using `[dif_pos hw.1]`. Conclude with `hw.1.choose_spec`. Use `set σ : D.host.E →+* ℂ := (X.B.I.φ v).comp X.ιE.symm.toRingHom with hσ`. Establish `hpt` using `hp`.
+
+Unfold `ptOfL Formalism.L2.SG.DataInst.ptOfList at hpt`. Use `split_ifs at hpt with hPtL`. Establish `hw1 : w.1 = (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.swap`. Rewrite using `[← Option.some_inj.mp hpt]`. Both sides reduce to the same expression.
+
+Establish `hfst : (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.fst = p.map Prod.fst` using `Formalism.L2.SG.DataInst.sign_list_fst D.R.rS 1 p`. Establish `hblk : ∀ b ∈ p, 1 ≤ b.1`. Introduce `b hb`. Establish `: b.1 ∈ (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.fst`. Rewrite using `[hfst]`.
+
+Conclude with `List.mem_map_of_mem hb`. Take `⟨b', hb', hbb⟩` from `List.mem_map.mp this`. Rewrite using `[← hbb]`. Conclude with `(hPtL.2 b' hb').1`. Establish `hsum : 0 + (p.map Prod.fst).sum ≤ D.R.rS + 1` using `by rw [← hfst, hPtL.1]; omega`.
+
+Establish `hlt` using `Bridge.lptOf_toStd σ D.R.rS (gg : ℝ) p 0 hblk hsum`. Establish `hloceq : Formalism.FourierDecayAlt.C.loc ((PP).S.emb j) p = Formalism.FourierDecayAlt.C.loc σ p`. Unfold `Formalism.FourierDecayAlt.C.loc`. Use `List.map_congr_left fun b _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `hemb j (X.ιE.symm b.2)` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[this]`. Use `show X.B.I.φ ((tauE X e) j) (X.ιE.symm b.2) = X.B.I.φ v (X.ιE.symm b.2)`. Rewrite using `[hj, Equiv.apply_symm_apply]`.
+
+Establish `hstd : Formalism.FourierDecayAlt.D.toStd (PP).S.G.r (PP).S.g 1 (Formalism.FourierDecayAlt.C.loc ((PP).S.emb j) p) = Bridge.lptOf σ κ D.R.rS 0 w.1`. Rewrite using `[hloceq, hw1]`. Conclude with `hlt.symm`. Establish `hA` using `Formalism.L2.SG.Pf.CarrierTop.zhatO_eq_mul (ZX X u u' 1 γ v)`. Rewrite `hA` using `[hrep v]`.
+
+Establish `hM : Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1) = Matrix.diagonal (fun a : Fin (D.R.rS + 1) => Bridge.Af κ D.R.rS a * 1) * ZX X u u' 1 γ v * Matrix.diagonal (fun b : Fin (D.R.rS + 1) => Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS b * Bridge.Bf κ …`. Rewrite using `[Bridge.ptMatN_lptOf σ κ D.R.rS hκstar w]`. Use `show Matrix.diagonal _ * ptC X v w * Matrix.diagonal _ = _`. Rewrite using `[hA]`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `Bridge.zhat_cs hTr hTr' (sc := sc) hsc.ne' (Formalism.MainNotions.S.uMat ((h v)⁻¹ * γ v * h' v))`. Establish `h2 : RealObj.Zhat (X.B.I.ε v) (frm X u sc v) (frm X u' sc v) (Formalism.MainNotions.S.uMat ((h v)⁻¹ * γ v * h' v)) = ZX X u u' sc γ v` using `zhat_conj_frames (uMat_unitary (h v)) (uMat_mul_inv (h v)) (Bridge.fix_famSc (PtRepPf.frU X u v).e (PtRepPf.frU X u v).z hHe hHz sc) (Bridge.fix_famSc (PtRepPf.frU X u' v).e (PtRepPf.frU X u' v).z hH'e hH'z sc)`. Establish `hZ : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (T j).base.z (T j).base.z' (trG Qm Qim ((h v)⁻¹ * γ v * h' v)) = Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)`.
+
+Rewrite using `[hz2, hz2']`. Establish `h1' : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (Qim *ᵥ rv X.B.I v (X.zR u)) (Qim *ᵥ rv X.B.I v (X.zR u')) (trG Qm Qim ((h v)⁻¹ * γ v * h' v)) = Matrix.diagonal (fun a => star (Bridge.lam (fun a => cTor (gg : ℝ) D.R.rS a) sc a)) * RealObj.Zhat (X.B.I.ε v) (frm X u sc v) (fr …` using `h1`. Rewrite using `[h1', h2, Formalism.L2.SG.Pf.CarrierTop.zx_sc, hM]`. Use extensionality with `a b`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+
+Establish `ha` using `(Bridge.cS_lam hc hsc.ne' a).2`. Establish `hb` using `(Bridge.cS_lam hc hsc.ne' b).1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ha, hb]`. Simplify using `only [Bridge.Af, Bridge.Bf, Formalism.L2.SG.Pf.CarrierTop.sgnV]`.
+
+Establish `: ((-1 : ℂ) ^ (D.R.rS - b.val)) * ((-1 : ℂ) ^ (D.R.rS - b.val)) = 1`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions. Take the linear combination `(star (κ ^ (D.R.rS - a.val)) * ZX X u u' 1 γ v a b * κ ^ (D.R.rS - b.val)) * this.symm`. Establish `hG1 : 0 < ‖RealObj.Dl (ZX X u u' 1 γ v) (D.R.rS + 1)‖ ^ 2 - Tw (D` using `D) u * Tw (D := D) u' * ‖RealObj.Dl (ZX X u u' 1 γ v) D.R.rS‖ ^ 2 := by`.
+
+Establish `hGX` using `hw.2 v`. Express the relevant statement in the definitionally equal form `0 < Gv (Tw (D := D) u) (Tw (D := D) u') (ZX X u u' D.host.rdE γ v) at hGX`. Unfold `Gv at hGX`. Establish `hcl : Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE (Fin.last D.R.rS) = 1`. Simplify using `[Formalism.L2.SG.Pf.CarrierTop.cS]`.
+
+Establish `hGd` using `Bridge.G_diag D.R.rS (ZX X u u' 1 γ v) (Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE) (Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE) (Tw (D := D) u * Tw (D := D) u') (by rw [hcl]; simp)`. Rewrite `hGX` using `[Formalism.L2.SG.Pf.CarrierTop.zx_sc, hGd]`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Establish `: (‖∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE (Fin.castLE (Nat.le_succ D.R.rS) i)‖ * ‖∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE (Fin.castLE (Nat.le_succ D.R.rS) i)‖) ^ 2 * (‖RealObj.Dl (ZX X u u' 1 γ v) (D.R.rS + 1)‖ ^ 2 - Tw …` using `D) u * Tw (D := D) u' * ‖RealObj.Dl (ZX X u u' 1 γ v) D.R.rS‖ ^ 2) ≤ 0 := mul_nonpos_of_nonneg_of_nonpos (sq_nonneg _) hle`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG : 0 < Formalism.FourierDecayAlt.D.ptG (Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (T j).base.z * Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (T j).base.z') D.R.rS (Bridge.lptOf σ κ D.R.rS 0 w.1)`. Rewrite using `[(hT j).1, (hT j).2]`. Establish `hdet1 : (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)).det = RealObj.Dl (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)) (D.R.rS + 1)` using `(Bridge.dl_top' _).symm`. Establish `hdet2 : (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) D.R.rS).det = RealObj.Dl (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)) D.R.rS`.
+
+Unfold `RealObj.Dl`. Rewrite using `[dif_pos (Nat.le_succ _)]`. Both sides reduce to the same expression. Unfold `Formalism.FourierDecayAlt.D.ptG`. Establish `hGd` using `Bridge.G_diag D.R.rS (ZX X u u' 1 γ v) (fun a : Fin (D.R.rS + 1) => Bridge.Af κ D.R.rS a * 1) (fun b : Fin (D.R.rS + 1) => Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS b * Bridge.Bf κ D.R.rS b) (((D.mem u).A.T : ℝ) * ((D.mem u').A.T : ℝ)) (by simp [Bridge.Af, Bridge.Bf, Formalism.L2 …`.
+
+Rewrite using `[hdet1, hdet2, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq, hM, hGd]`. Establish `hne1 : (∏ i : Fin D.R.rS, Bridge.Af κ D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i) * 1) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => by`. Simplify using `[Bridge.Af, hκ0]`. Establish `hne2 : (∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i) * Bridge.Bf κ D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => by`. Simplify using `[Bridge.Bf, Formalism.L2.SG.Pf.CarrierTop.sgnV, hκ0]`.
+
+Establish `hpos : 0 < (‖∏ i : Fin D.R.rS, Bridge.Af κ D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i) * 1‖ * ‖∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i) * Bridge.Bf κ D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i)‖) ^ 2` using `pow_pos (mul_pos (norm_pos_iff.mpr hne1) (norm_pos_iff.mpr hne2)) 2`. Unfold `Tw at hG1`. Conclude with `mul_pos hpos hG1`. Establish `hGV` using `Bridge.delta_GV hTr (uMat_unitary ((h v)⁻¹ * γ v * h' v))`. Establish `hZ' : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (T j).base.z (T j).base.z' (trG Qm Qim ((h v)⁻¹ * γ v * h' v)) = Formalism.FourierDecayAlt.D.ptMatN (Formalism.FourierDecayAlt.D.toStd (PP).S.G.r (PP).S.g 1 (Formalism.FourierDecayAlt.C.loc ((PP).S.emb j) p)) (D.R.rS + 1)`.
+
+Rewrite using `[hstd]`. Conclude with `hZ`. Establish `hGpos : 0 < Formalism.FourierDecayAlt.D.ptG (Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (T j).base.z * Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (T j).base.z') D.R.rS (Formalism.FourierDecayAlt.D.toStd (PP).S.G.r (PP).S.g 1 (Formalism.FourierDecayAlt.C.loc ((PP).S.emb j) p …`. Rewrite using `[hstd]`. Conclude with `hG`.
+
+Use `⟨hZ', hGpos, ?_, hGV⟩` and prove the remaining obligations. Rewrite using `[show (Formalism.FourierDecayAlt.D.toStd (PP).S.G.r (PP).S.g 1 (Formalism.FourierDecayAlt.C.loc ((PP).S.emb ((PP).τ.symm v)) p)) = Bridge.lptOf σ κ D.R.rS 0 w.1 from hstd]`. Conclude with `Bridge.isLocPt_lptOf σ κ D.R.rS hκ0 w`.
+-/
 theorem orbVec_data (sc : ℝ) (hsc : 0 < sc) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (hFX : (PP).FromX) (hB : (PP).Base i0 i0')
     (hemb : ∀ j x, (PP).S.emb j (X.ιE x) = X.B.I.φ ((PP).τ j) x)

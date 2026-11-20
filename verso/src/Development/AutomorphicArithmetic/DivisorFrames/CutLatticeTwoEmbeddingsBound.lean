@@ -8,6 +8,13 @@ open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
+/- English proof (translation)
+Establish `hadd : ∀ x y : K, ‖x‖ < 1 → ‖y‖ < 1 → ‖x + y‖ < 1` using `fun x y hx hy => (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hx hy)`. Establish `e : P ⬝ᵥ P' = ∑ k, ((P k - Q k) * P' k + Q k * (P' k - Q' k)) + ∑ k, Q k * Q' k`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[e]`.
+
+Use `hadd _ _ ?_ hQ` and prove the remaining obligations. Use `Finset.sum_induction _ (fun x : K => ‖x‖ < 1) hadd (by simp) fun k _ => hadd _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hP' k)).trans_lt (h k)`. Establish `hq : ‖Q k‖ ≤ 1`.
+
+Establish `: Q k = -(P k - Q k) + P k` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (by rw [norm_neg]; exact (h k).le) (hP k))`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hq).trans_lt (h' k)`.
+-/
 private theorem dot_lt {K : Type} [NormedField K] [IsUltrametricDist K] {N : ℕ} (P P' Q Q' : Fin N → K)
     (hP : ∀ k, ‖P k‖ ≤ 1) (hP' : ∀ k, ‖P' k‖ ≤ 1) (h : ∀ k, ‖P k - Q k‖ < 1) (h' : ∀ k, ‖P' k - Q' k‖ < 1)
     (hQ : ‖∑ k, Q k * Q' k‖ < 1) : ‖P ⬝ᵥ P'‖ < 1 := by
@@ -28,11 +35,29 @@ private theorem dot_lt {K : Type} [NormedField K] [IsUltrametricDist K] {N : ℕ
     rw [norm_mul]
     exact (mul_le_of_le_one_left (norm_nonneg _) hq).trans_lt (h' k)
 
+/- English proof (translation)
+Simplify using `[pr]`.
+-/
 private theorem pr_smul' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) {K : Type} [CommRing K] (c : K) (y : K ⊗[ℤ] Dw.La) (a : Dw.La) :
     pr Dw (c • y) a = c * pr Dw y a := by
   simp [pr]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw p _ n g h b Λ hD σ σ' M N r s a T S δ δ' A A' hT hS hdual hδ0 hδ1 hδ' hn hA hA' hE hE' u u' hu hu'`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hδp : 0 < ‖δ‖` using `norm_pos_iff.2 hδ0`. Establish `hδ'0 : δ' ≠ 0`.
+
+Rewrite using `[← norm_pos_iff, hδ']`. Conclude with `one_pos`. Establish `hn' : (p : ℝ) ^ 2 ≤ (p : ℝ) ^ n * ‖δ'‖`. Rewrite using `[hδ']`. Conclude with `hn.trans (by gcongr)`.
+
+Take `⟨-, h1, h2⟩` from `(UpperTheory.cut_lattice_norm_bound E H Dw p n g h b Λ hD σ M N r a T δ A hT hδ0 hδ1 hn hA hE).2.2 u hu`. Take `⟨-, h1', h2'⟩` from `(UpperTheory.cut_lattice_norm_bound E H Dw p n g h b Λ hD σ' M N s a S δ' A' hS hδ'0 hδ'.le hn' hA' hE').2.2 u' hu'`. Establish `hEv : IsEigL Dw σ' (b (∑ i, u' i • A' i))`. Introduce `o`. Simplify using `only [map_sum, map_smul, hE' _ o, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Use `dot_lt _ _ _ _ hu hu' h2 h2' ?_` and prove the remaining obligations. Rewrite using `[hdual _ _ hEv, norm_neg]`. Establish `hI` using `hD.2.2.2 (δ • ∑ i, u i • A i) (δ' • ∑ i, u' i • A' i) (fun o => by rw [map_smul, pr_smul']; exact h1 o) (fun o => by rw [map_smul, pr_smul']; exact h1' o)`. Generalize the expression as in `∑ i, u i • A i = v at hI ⊢`.
+
+Generalize the expression as in `∑ i, u' i • A' i = v' at hI ⊢`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, norm_mul, hδ', _root_.one_mul] at hI`. Rewrite `hI` using `[inv_pow, ← one_div, le_div_iff₀ (by positivity)]`. Use `(?_ : ∀ x : ℝ, 0 ≤ x → ‖δ‖ * x * (p : ℝ) ^ n ≤ 1 → x < 1) _ (norm_nonneg _) hI` and prove the remaining obligations. Introduce `x hx hI`.
+
+Establish `h3 : (p : ℝ) ^ 2 * x ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (1 : ℝ) < (p : ℝ) ^ 2` using `by nlinarith`. Assume the negation of the conclusion as `hc`. Establish `hc'` using `not_lt.1 hc`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem UpperTheory.cut_lattice_two_embeddings_bound :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime] (n g : ℕ) (h : Dw.La → Fin g → ℂ_[p]) (b : (Fin g → ℂ_[p]) →ₗ[ℂ_[p]] ℂ_[p] ⊗[ℤ] Dw.La) (Λ : Set (Fin g → ℂ_[p])), PtData Dw p n h b Λ → ∀ (σ σ' : 𝓞 E →+* ℂ_[p]) (M N r s : ℕ) (a : Fin M → Dw.La) (T S : Fin N → Fin M → ℂ_[p]) (δ δ' : ℂ_[p]) (A : Fin r → Fin g → ℂ_[p]) (A' : Fin s → Fin g → ℂ_[p]), CutL Dw σ a T δ → CutL Dw σ' a S δ' → DualL Dw σ' a T S → δ ≠ 0 → ‖δ‖ ≤ 1 → ‖δ'‖ = 1 → (p : ℝ) ^ 2 ≤ (p : ℝ) ^ n * ‖δ‖ → LinearIndependent ℂ_[p] A → LinearIndependent ℂ_[p] A' → (∀ i, IsEigL Dw σ (b (A i))) → (∀ i, IsEigL Dw σ' (b (A' i))) → ∀ (u : Fin r → ℂ_[p]) (u' : Fin s → ℂ_[p]), (∀ k, ‖(covMat T (fun m => h (a m)) A *ᵥ u) k‖ ≤ 1) → (∀ k, ‖(covMat S (fun m => h (a m)) A' *ᵥ u') k‖ ≤ 1) → ‖(covMat T (fun m => h (a m)) A *ᵥ u) ⬝ᵥ (covMat S (fun m => h (a m)) A' *ᵥ u')‖ < 1 := by
   intro E _ _ _ H Dw p _ n g h b Λ hD σ σ' M N r s a T S δ δ' A A' hT hS hdual hδ0 hδ1 hδ' hn hA hA' hE hE' u u' hu hu'

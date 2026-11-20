@@ -16,9 +16,23 @@ section
 variable (ψ : AddChar k Circle) {m N : ℕ} (h : m + 2 ≤ N) {V : Type} [AddCommGroup V] [Module ℂ V]
   (π : Representation ℂ (GL (Fin N) k) V)
 
+/- English proof (translation)
+Rewrite using `[mul_comm, Complex.mul_conj, Circle.normSq_coe, Complex.ofReal_one]`.
+-/
 theorem conj_circle_mul_self (z : Circle) : starRingEnd ℂ (z : ℂ) * (z : ℂ) = 1 := by
   rw [mul_comm, Complex.mul_conj, Circle.normSq_coe, Complex.ofReal_one]
 
+/- English proof (translation)
+Establish `hσ : ∀ t ∈ T, ∃ s, s ∈ T ∧ (t + y) - s ∈ M` using `fun t ht => (hu _ (A.add_mem (hT t ht) hy)).exists`. Establish `hτ : ∀ s ∈ T, ∃ t, t ∈ T ∧ (s - y) - t ∈ M` using `fun s hs => (hu _ (A.sub_mem (hT s hs) hy)).exists`. Use `choose! σ hσT hσM using hσ`. Use `choose! τ hτT hτM using hτ`. Use `Finset.sum_nbij' σ τ hσT hτT ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `t ht`. Establish `hs` using `hσT t ht`. Use `(hu _ (A.sub_mem (hT _ hs) hy)).unique ⟨hτT _ hs, hτM _ hs⟩ ⟨ht, ?_⟩` and prove the remaining obligations. Establish `e : σ t - y - t = -((t + y) - σ t)` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `M.neg_mem (hσM t ht)`. Introduce `s hs`. Establish `ht` using `hτT s hs`. Use `(hu _ (A.add_mem (hT _ ht) hy)).unique ⟨hσT _ ht, hσM _ ht⟩ ⟨hs, ?_⟩` and prove the remaining obligations. Establish `e : τ s + y - s = -((s - y) - τ s)` using `by abel`.
+
+Rewrite using `[e]`. Conclude with `M.neg_mem (hτM s hs)`. Introduce `t ht`. Use `hF (σ t) _ (hσM t ht)` as an intermediate fact. Rewrite using `[← this]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws.
+-/
 theorem sum_translate_transversal {X W : Type} [AddCommGroup X] [AddCommMonoid W] (A M : AddSubgroup X)
     (T : Finset X) (hT : ∀ t ∈ T, t ∈ A) (hu : ∀ a ∈ A, ∃! t, t ∈ T ∧ a - t ∈ M) (F : X → W)
     (hF : ∀ a, ∀ d ∈ M, F (a + d) = F a) (y : X) (hy : y ∈ A) :
@@ -61,6 +75,21 @@ def avgSub (ξ : Fin (m + 1) → k) (A : AddSubgroup (Fin (m + 1) → k)) (v : V
       rw [← Module.End.mul_apply, ← map_mul, ← e, map_one, Module.End.one_apply]
     · rw [dotProduct_neg, AddChar.map_neg_eq_inv, ha'', inv_one]
 
+/- English proof (translation)
+Use `set M := avgSub ψ h π ξ A v with hMdef`. Establish `hMA : M ≤ A` using `fun a ha => ha.1`. Take `⟨γ, hγ, hball⟩` from `GlobalTheory.CharDualMat.exists_ball_trivial ψ hψ`. Establish `hdot : Continuous fun a : Fin (m + 1) → k => ξ ⬝ᵥ a` using `by unfold dotProduct; fun_prop`. Establish `h1 : (A : Set (Fin (m + 1) → k)) ∈ nhds 0` using `hA.2.mem_nhds A.zero_mem`.
+
+Establish `h2 : colEl k m N h ⁻¹' {g | π g v = v} ∈ nhds 0` using `((hπ v).preimage (continuous_colEl h)).mem_nhds (by simp [colEl_zero])`. Establish `h3 : (fun a : Fin (m + 1) → k => ξ ⬝ᵥ a) ⁻¹' {y | ValuativeRel.valuation k y < γ} ∈ nhds 0`. Apply `hdot.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using (IsValuativeTopology.hasBasis_nhds_zero' k).mem_of_mem hγ`. Establish `hMo : IsOpen (M : Set (Fin (m + 1) → k))`.
+
+Use `M.isOpen_of_mem_nhds (g := 0) ?_` and prove the remaining obligations. Use `filter_upwards [h1, h2, h3] with a ha1 ha2 ha3`. Conclude with `⟨ha1, ha2, hball _ ha3⟩`. Establish `: CompactSpace A` using `isCompact_iff_compactSpace.mp hA.1`. Use `set M' := M.addSubgroupOf A`.
+
+Establish `hM'o : IsOpen (M' : Set A)` using `hMo.preimage continuous_subtype_val`. Establish `: Finite (A ⧸ M')` using `AddSubgroup.quotient_finite_of_isOpen M' hM'o`. Use `Fintype.ofFinite (A ⧸ M')` as an intermediate fact. Use `⟨⟨M, Finset.univ.image (fun q : A ⧸ M' => ((Quotient.out q : A) : Fin (m + 1) → k))⟩, hMA, hMo, fun a ha => ha.2.1, fun a ha => ha.2.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`.
+
+Simplify using `only [Finset.mem_image] at ht`. Take `⟨q, _, rfl⟩` from `ht`. Conclude with `(Quotient.out q).2`. Introduce `a ha`. Use `⟨((Quotient.out (QuotientAddGroup.mk ⟨a, ha⟩ : A ⧸ M') : A) : Fin (m + 1) → k), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `QuotientAddGroup.out_eq' (QuotientAddGroup.mk ⟨a, ha⟩ : A ⧸ M')`. Rewrite `e` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Simplify `e` using `[sub_eq_neg_add]`. Introduce and unpack `t ⟨ht, hat⟩`. Simplify using `only [Finset.mem_image] at ht`.
+
+Take `⟨q, _, rfl⟩` from `ht`. Use `congr 2`. Rewrite using `[← QuotientAddGroup.out_eq' q, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Simplify `hat` using `[sub_eq_neg_add]`.
+-/
 theorem avgData_exists (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) (A : AddSubgroup (Fin (m + 1) → k))
     (hA : IsLat A) (v : V) : ∃ p, AvgData ψ h π ξ A v p := by
   classical
@@ -102,6 +131,9 @@ theorem avgData_exists (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 
       rw [← QuotientAddGroup.out_eq' q, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]
       simpa [sub_eq_neg_add] using hat
 
+/- English proof (translation)
+Establish `hd : ∃ p, AvgData ψ h π ξ A v p` using `avgData_exists ψ h π hψ hπ ξ A hA v`. Use `⟨hd.choose, hd.choose_spec, ?_⟩` and prove the remaining obligations. Rewrite using `[avg, dif_pos hd]`.
+-/
 theorem avg_spec (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) (A : AddSubgroup (Fin (m + 1) → k))
     (hA : IsLat A) (v : V) : ∃ p, AvgData ψ h π ξ A v p ∧ avg ψ h π ξ A v =
       ((p.2.card : ℂ)⁻¹) • ∑ t ∈ p.2, (starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) v := by
@@ -109,6 +141,15 @@ theorem avg_spec (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) →
   refine ⟨hd.choose, hd.choose_spec, ?_⟩
   rw [avg, dif_pos hd]
 
+/- English proof (translation)
+Take `⟨p, ⟨hMA, hMo, hMfix, hMchar, hT, hu⟩, hav⟩` from `avg_spec ψ h π hψ hπ ξ A hA v`. Establish `hF : ∀ a, ∀ d ∈ p.1, (fun t => starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ) • π (colEl k m N h t) v) (a + d) = (fun t => starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ) • π (colEl k m N h t) v) a`. Introduce `a d hd`. Simplify using `only`. Rewrite using `[colEl_add, map_mul, Module.End.mul_apply, hMfix d hd, dotProduct_add, AddChar.map_add_eq_mul, hMchar d hd, mul_one]`.
+
+Establish `key : ∀ t, starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ) • π (colEl k m N h y) (π (colEl k m N h t) v) = ((ψ (ξ ⬝ᵥ y) : Circle) : ℂ) • (fun t => starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ) • π (colEl k m N h t) v) (t + y)`. Introduce `t`. Simplify using `only`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← colEl_add, add_comm y t, smul_smul, dotProduct_add, AddChar.map_add_eq_mul, Circle.coe_mul, map_mul]`. Use `congr 1`.
+
+Take the linear combination `(-starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) * conj_circle_mul_self (ψ (ξ ⬝ᵥ y))`. Rewrite using `[hav, map_smul, map_sum]`. Simplify using `only [map_smul]`. Rewrite using `[Finset.sum_congr rfl (fun t _ => key t), ← Finset.smul_sum, smul_comm]`. Use `congr 2`.
+
+Conclude with `sum_translate_transversal A p.1 p.2 hT hu (fun t => starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ) • π (colEl k m N h t) v) hF y hy`.
+-/
 theorem avg_eigen (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) (A : AddSubgroup (Fin (m + 1) → k))
     (hA : IsLat A) (v : V) (y : Fin (m + 1) → k) (hy : y ∈ A) :
     π (colEl k m N h y) (avg ψ h π ξ A v) = ((ψ (ξ ⬝ᵥ y) : Circle) : ℂ) • avg ψ h π ξ A v := by
@@ -134,6 +175,15 @@ theorem avg_eigen (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) �
   exact sum_translate_transversal A p.1 p.2 hT hu
     (fun t => starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ) • π (colEl k m N h t) v) hF y hy
 
+/- English proof (translation)
+Take `⟨p, ⟨hMA, hMo, hMfix, hMchar, hT, hu⟩, hav⟩` from `avg_spec ψ h π hψ hπ (xi0 k m) A hA v`. Take `⟨t₀, ⟨ht₀, _⟩, _⟩` from `hu 0 A.zero_mem`. Establish `hc : (p.2.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero_of_mem ht₀)`. Establish `hv : v = (p.2.card : ℂ)⁻¹ • ∑ t ∈ p.2, v`. Rewrite using `[Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+
+Rewrite using `[hav, show v - _ = (p.2.card : ℂ)⁻¹ • ∑ t ∈ p.2, (v - starRingEnd ℂ ((ψ (xi0 k m ⬝ᵥ t) : Circle) : ℂ) • π (colEl k m N h t) v) from by rw [Finset.sum_sub_distrib, smul_sub, ← hv]]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun t _ => ?_)` and prove the remaining obligations. Establish `hmem : π (colEl k m N h t) v - ((ψ (xi0 k m ⬝ᵥ t) : Circle) : ℂ) • v ∈ twKer π (derUnip k N (m + 1)) (lvlChar k ψ N (m + 1))`. Use `Submodule.subset_span (R := ℂ) (s := {w | ∃ (n : derUnip k N (m + 1)) (u : V), w = π (n : GL (Fin N) k) u - ((lvlChar k ψ N (m + 1) n : ℂˣ) : ℂ) • u}) ⟨⟨colEl k m N h t, colEl_mem_derUnip h t⟩, v, rfl⟩` as an intermediate fact. Rewrite `this` using `[lvlChar_colEl]`.
+
+Conclude with `this`. Establish `e : v - starRingEnd ℂ ((ψ (xi0 k m ⬝ᵥ t) : Circle) : ℂ) • π (colEl k m N h t) v = (-starRingEnd ℂ ((ψ (xi0 k m ⬝ᵥ t) : Circle) : ℂ)) • (π (colEl k m N h t) v - ((ψ (xi0 k m ⬝ᵥ t) : Circle) : ℂ) • v)`. Rewrite using `[smul_sub, smul_smul, neg_mul, conj_circle_mul_self, neg_smul, neg_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Conclude with `Submodule.smul_mem _ _ hmem`.
+-/
 theorem sub_avg_mem (hψ : Continuous ψ) (hπ : IsSmooth π) (A : AddSubgroup (Fin (m + 1) → k)) (hA : IsLat A) (v : V) :
     v - avg ψ h π (xi0 k m) A v ∈ twKer π (derUnip k N (m + 1)) (lvlChar k ψ N (m + 1)) := by
   obtain ⟨p, ⟨hMA, hMo, hMfix, hMchar, hT, hu⟩, hav⟩ := avg_spec ψ h π hψ hπ (xi0 k m) A hA v

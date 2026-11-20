@@ -24,6 +24,19 @@ noncomputable section
 
 namespace GlobalTheory.LineDerivTransfer
 
+/- English proof (translation)
+Establish `hnorm : ∀ x, ‖ψ x‖ = 1` using `hψ.2.1`. Establish `hM0 : M 0 = 0` using `map_zero M`. Use `set ω : Set (Fin N → AF F) := (fun s : ℝ => w.1 + (M s).1) '' Set.Icc (-1) 1 with hω`. Establish `hωc : IsCompact ω` using `isCompact_Icc.image (continuous_const.add (continuous_fst.comp hM.1))`. Take `⟨C, c, hcs, hc0, hcb⟩` from `GlobalTheory.ThetaDeriv.decay_majorant hF (GlobalTheory.T.adelicRapidDecay_of_mem_adelicSchwartzSpace F N Φ' hΦ'm) ω hωc`.
+
+Take `⟨C₀, c₀, hcs₀, hc0₀, hcb₀⟩` from `GlobalTheory.ThetaDeriv.decay_majorant hF (GlobalTheory.T.adelicRapidDecay_of_mem_adelicSchwartzSpace F N Φ hΦ) {w.1} isCompact_singleton`. Use `set ph : (Fin N → F) → ℂ := fun ξ => ψ (GlobalTheory.SWQ.rat ξ ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) with hph`. Establish `e : (fun t : ℝ => heisV ψ (M t) (thV ψ Φ) w) = fun t => ∑' ξ : Fin N → F, ph ξ * GlobalTheory.WeilM.schr ψ (M t) Φ (GlobalTheory.SWQ.rat ξ + w.1)`. Use function extensionality and compare the values at `t`. Rewrite using `[← thV_schr]`.
+
+Both sides reduce to the same expression. Establish `hv : thV ψ Φ' w = ∑' ξ : Fin N → F, ph ξ * GlobalTheory.WeilM.schr ψ (M 0) Φ' (GlobalTheory.SWQ.rat ξ + w.1)`. Rewrite using `[hM0]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Simplify using `[ph, GlobalTheory.WeilM.schr]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, hv]`. Establish `hmem : (0 : ℝ) ∈ Set.Ioo (-1 : ℝ) 1` using `⟨by norm_num, by norm_num⟩`. Use `hasDerivAt_tsum_of_isPreconnected (hcs.mul_left C) isOpen_Ioo isPreconnected_Ioo (fun ξ t _ => (GlobalTheory.ThetaDeriv.hasDerivAt_schr hF ψ hM hΦ'd (GlobalTheory.SWQ.rat ξ + w.1) t).const_mul (ph ξ)) (fun ξ t ht => ?_) hmem ?_ hmem` and prove the remaining obligations. Establish `hy : w.1 + (M t).1 ∈ ω` using `⟨t, ⟨ht.1.le, ht.2.le⟩, rfl⟩`.
+
+Use `hcb ξ _ hy` as an intermediate fact. Simplify using `only [ph, GlobalTheory.WeilM.schr, norm_mul, hnorm, one_mul]`. Simplify `this` using `[add_assoc]`. Use `Summable.of_norm_bounded (hcs₀.mul_left C₀) fun ξ => ?_` and prove the remaining obligations. Use `hcb₀ ξ w.1 rfl` as an intermediate fact.
+
+Simplify `this` using `[hM0, GlobalTheory.WeilM.schr, ph, norm_mul, hnorm]`.
+-/
 theorem hasDerivAt_heisV_of {F : Type} [Field F] [NumberField F] {N : ℕ} [Invertible (2 : AF F)]
     (ψ : AddChar (AF F) ℂ) (hF : IsTotallyReal F) (hψ : IsCharAF F ψ) {Φ Φ' : (Fin N → AF F) → ℂ}
     (hΦ : Φ ∈ GlobalTheory.WeilM.schA F (Fin N)) (hΦ'm : Φ' ∈ GlobalTheory.WeilM.schA F (Fin N)) {M : ℝ →+ VA F N} (hM : IsRealLine M)
@@ -60,6 +73,9 @@ theorem hasDerivAt_heisV_of {F : Type} [Field F] [NumberField F] {N : ℕ} [Inve
     have := hcb₀ ξ w.1 rfl
     simpa [hM0, GlobalTheory.WeilM.schr, ph, norm_mul, hnorm] using this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [thV, GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← tsum_mul_left]`. Conclude with `tsum_congr fun η => mul_left_comm _ _ _`.
+-/
 theorem thV_smul {F : Type} [Field F] [NumberField F] {N : ℕ} [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ)
     (c : ℂ) (Φ : (Fin N → AF F) → ℂ) : thV ψ (c • Φ) = c • thV ψ Φ := by
   funext w
@@ -71,6 +87,23 @@ end GlobalTheory.LineDerivTransfer
 
 open GlobalTheory.LineDerivTransfer in
 
+/- English proof (translation)
+Introduce `D ψ hψ S T JB ξ hB κ _ co hrat Φ hΦ L L' hL hL0 hL' hL0' c hrel x`. Establish `hR : IsTotallyReal D.host.F` using `inferInstance`. Set `σ` to `Fintype.equivFin κ`. Set `e` to `numCoord co σ`. Establish `he : ∀ w w', symplO S T w w' = symV (e w) (e w')` using `fun w w' => by`.
+
+Rewrite using `[symplO_eq_symp rfl hB, co.form]`. Simplify using `only [e, symV, numCoord_apply, comp_equiv_dotProduct_comp_equiv]`. Take `⟨-, -, hfin, -⟩` from `GlobalTheory.T.adelicLinearCoordinates_continuous_keep_parts D T.rank S.rank _ e`. Establish `hc : Continuous e` using `(GlobalTheory.T.adelicLinearCoordinates_continuous_keep_parts D T.rank S.rank _ e).1`. Establish `hΦσ` using `comp_mem_schA σ hΦ`.
+
+Establish `key : ∀ L : ℝ →+ WO S T, Continuous L → (∀ t, (L t).map (finPart D) = 0) → ∃ Φ' ∈ GlobalTheory.WeilM.schA D.host.F (Fin (Fintype.card κ)), (∀ x, HasDerivAt (fun t : ℝ => GlobalTheory.WeilM.schr ψ (co.e (L t)) Φ x) (Φ' (x ∘ σ.symm)) 0) ∧ (fun w => deriv (fun t : ℝ => heisO ψ S T ( …`. Introduce `L hL hL0`. Establish `hM : IsRealLine (e.toLinearMap.toAddMonoidHom.comp L)` using `⟨hc.comp hL, fun t => (hfin _).1 (hL0 t)⟩`. Take `⟨Φ', hm, hd⟩` from `GlobalTheory.ThetaDeriv.exists_deriv_schr hR ψ hψ.1 hM hΦσ`. Use `⟨Φ', hm, fun x => ?_, funext fun w => ?_⟩` and prove the remaining obligations.
+
+Establish `h : (fun t : ℝ => GlobalTheory.WeilM.schr ψ (co.e (L t)) Φ x) = fun t => GlobalTheory.WeilM.schr ψ (e.toLinearMap.toAddMonoidHom.comp L t) (fun y => Φ (y ∘ σ)) (x ∘ σ.symm)`. Use function extensionality and compare the values at `t`. Simplify using `only [GlobalTheory.WeilM.schr, AddMonoidHom.coe_comp, Function.comp_apply, LinearMap.toAddMonoidHom_coe, LinearEquiv.coe_coe, e, numCoord_apply, comp_equiv_dotProduct_comp_equiv]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `hd _`. Rewrite using `[thetaTr_eq co σ]`. Establish `h : (fun t : ℝ => heisO ψ S T (L t) (thV ψ (fun y => Φ (y ∘ σ)) ∘ e) w) = fun t => heisV ψ (e.toLinearMap.toAddMonoidHom.comp L t) (thV ψ (fun y => Φ (y ∘ σ))) (e w)`.
+
+Use function extensionality and compare the values at `fun t => congrFun (heisO_comp he (L t) _) w`. Rewrite using `[show numCoord co σ = e from rfl, h]`. Conclude with `(hasDerivAt_heisV_of ψ hR hψ.1 hΦσ hm hM hd (e w)).deriv`. Take `⟨Φ₁, hm₁, hd₁, hh₁⟩` from `key L hL hL0`. Take `⟨Φ₂, hm₂, hd₂, hh₂⟩` from `key L' hL' hL0'`.
+
+Rewrite `hrel` using `[hh₁, hh₂]`. Establish `h2 : thV ψ Φ₂ = thV ψ (c • Φ₁)`. Rewrite using `[thV_smul]`. Use function extensionality and compare the values at `v`. Take `⟨w, rfl⟩` from `e.surjective v`.
+
+Conclude with `congrFun hrel w`. Establish `h3` using `thV_injOn hR hψ.1 hm₂ (Submodule.smul_mem _ c hm₁) h2`. Rewrite using `[(hd₂ x).deriv, (hd₁ x).deriv, h3]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.LineDerivTransfer.schr_deriv_of_heisO_deriv : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (ξ : AF D.host.F ⊗[D.host.F] D.host.E),
       ξ • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F JB = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • S.gram⁻¹) →

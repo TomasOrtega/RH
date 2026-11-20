@@ -23,6 +23,9 @@ def funRep (Y : Type*) [MulAction Γ Y] (σ : Representation k Γ N) : Represent
     simp [mul_smul]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem funRep_apply (Y : Type*) [MulAction Γ Y] (σ : Representation k Γ N) (γ : Γ) (F : Y → N)
     (y : Y) : funRep Y σ γ F y = σ γ (F (γ⁻¹ • y)) :=
   rfl
@@ -44,6 +47,9 @@ def piFamilyRep {ι : Type*} (V : ι → Type*) [∀ i, AddCommMonoid (V i)] [�
     simp
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piFamilyRep_apply {ι : Type*} (V : ι → Type*) [∀ i, AddCommMonoid (V i)]
     [∀ i, Module k (V i)] (ρ : ∀ i, Representation k Γ (V i)) (γ : Γ) (x : ∀ i, V i) (i : ι) :
     piFamilyRep V ρ γ x i = ρ i γ (x i) :=
@@ -51,6 +57,9 @@ theorem piFamilyRep_apply {ι : Type*} (V : ι → Type*) [∀ i, AddCommMonoid 
 
 end Pi
 
+/- English proof (translation)
+Use `Module.Finite.of_finite (R := ZMod l) (M := W)` as an intermediate fact. Use `Module.Finite.of_finite (R := ZMod l) (M := N)` as an intermediate fact. Conclude with `Module.finite_of_finite (ZMod l)`.
+-/
 theorem finite_tensorProduct_zmod (l : ℕ) [NeZero l] (W N : Type*) [AddCommGroup W]
     [Module (ZMod l) W] [Finite W] [AddCommGroup N] [Module (ZMod l) N] [Finite N] :
     Finite (W ⊗[ZMod l] N) := by
@@ -80,6 +89,9 @@ noncomputable def tensorRep [Fact l.Prime] (d : AdditiveFunction.{u} l Γ) {N : 
       (Module.Flat.rTensor_preserves_injective_linearMap f hinj) (rTensor_exact N hfg hs)
       (LinearMap.rTensor_surjective N hs)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorRep_apply [Fact l.Prime] (d : AdditiveFunction.{u} l Γ) {N : Type u}
     [AddCommGroup N] [Module (ZMod l) N] [Finite N] (σ : Representation (ZMod l) Γ N)
     (W : Type u) [AddCommGroup W] [Module (ZMod l) W] [Finite W]

@@ -15,6 +15,11 @@ open scoped LaurentSeries
 
 namespace GlobalTheory.CuspFrom
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun i : Fin (m τ) => e.symm ⟨τ, i⟩` using `e.symm.injective.comp sigma_mk_injective`. Use `((Pi.basisFun ℂ (Fin g)).linearIndependent.comp _ hinj).map' L.symm.toLinearMap L.symm.ker` as an intermediate fact. Establish `hf : (fun i : Fin (m τ) => L.symm (Pi.single (e.symm ⟨τ, i⟩) 1)) = L.symm.toLinearMap ∘ ((Pi.basisFun ℂ (Fin g)) ∘ fun i : Fin (m τ) => e.symm ⟨τ, i⟩)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hf]`. Conclude with `this`.
+-/
 theorem linearIndependent_symm_single {g : ℕ} {T : Type} {m : T → ℕ} (e : Fin g ≃ Σ τ : T, Fin (m τ))
     (L : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (τ : T) :
     LinearIndependent ℂ (fun i : Fin (m τ) => L.symm (Pi.single (e.symm ⟨τ, i⟩) 1)) := by
@@ -28,6 +33,9 @@ theorem linearIndependent_symm_single {g : ℕ} {T : Type} {m : T → ℕ} (e : 
   rw [hf]
   exact this
 
+/- English proof (translation)
+Establish `hu : Fu.u i P = Fu.u i' P'` using `(GlobalTheory.UnifPoint.point_eq_iff_isometry_closed hK.theta hK.laws E H D l Xo σ g ty hpq hσ hty (Fu.Di i) (Fu.Di i') (Fu.t i) (Fu.t i') P P' (Fu.u i P) (Fu.u i' P') (Fu.ex i P) (Fu.ex i' P') ⟨Fu.over_σ i P hP, hP, ⟨Fu.ex_add i P hP, Fu.ex_onto i P hP, GlobalTheory.ArcCM.isHolT …`. Take `rfl : i = i'` from `Fu.disj i i' P P' hP hP' hu`. Use `letI : StarRing (𝓞 E) := H.starRing`. Conclude with `GlobalTheory.ArcPts.exp_eq_of_matching_markings E H D l Xo σ g ty Fu i P P' gm L rfl hP hP' hiso hM hA' hL`.
+-/
 theorem point_exp_eq_of_isometry_levels (hK : Known) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (Fu : FamilyUnif Xo σ ty) (i i' : Fin Fu.n) (P : (Fu.Di i).La →+ (Fin g → ℂ))
@@ -51,6 +59,65 @@ theorem point_exp_eq_of_isometry_levels (hK : Known) {E : Type} [Field E] [Numbe
   letI : StarRing (𝓞 E) := H.starRing
   exact GlobalTheory.ArcPts.exp_eq_of_matching_markings E H D l Xo σ g ty Fu i P P' gm L rfl hP hP' hiso hM hA' hL
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ _ σ r U Uw k ξ' x aC Λ hσ hU hξ hx gam ξ hO hξ0 hY hLM hLA O _ β Y χ W Ha`. Establish `hK : Known` using `GlobalTheory.ArcCM.known_holds`. Set `` to `H.starRing`. Set `Λ' : GtAn₀ (aC.restrict β)` to `⟨Λ.toGtDict, Λ.be_eq⟩`. Take `⟨g₁, h₁, e1, e2, e3, e4⟩` from `GlobalTheory.ArcCompare.holArc_agrees hK E H Dw l Xo c σ O β Y (aC.restrict β) χ W Uw.g _ Uw.F Ha Λ'`.
+
+Take `⟨o1, ⟨t', o2, o3⟩, T₀, o4⟩` from `hO`. Establish `hw : max Ha.T T₀ < (((max Ha.T T₀ + 1 : ℝ) : ℂ) * Complex.I).im` using `by simp`. Generalize the expression as in `(((max Ha.T T₀ + 1 : ℝ) : ℂ) * Complex.I) = w₁ at hw`. Take `⟨hw1, hw2⟩` from `max_lt_iff.1 hw`. Take `⟨s₁, hs₁, h, hh⟩` from `o4 w₁ hw2`.
+
+Set `gm : (Uw.F.Di Ha.i).La ≃ₗ[𝓞 E] (Uw.F.Di (Uw.ik k)).La` to `g₁.trans gam.symm`. Set `L : (Fin Uw.g → ℂ) ≃ₗ[ℂ] (Fin Uw.g → ℂ)` to `h₁.trans h.symm`. Establish `hgm : ∀ u, gam (gm u) = g₁ u` using `fun u => gam.apply_symm_apply _`. Establish `hg1 : ∀ v, g₁ (gm.symm v) = gam v` using `fun v => by rw [← hgm, gm.apply_symm_apply]`. Establish `hEF : ∀ u v, (Uw.F.Di (Uw.ik k)).EF (gm u) (gm v) = (Uw.F.Di Ha.i).EF u v` using `fun u v => by`.
+
+Rewrite using `[← o1, hgm, hgm]`. Conclude with `e4 u v`. Establish `hEF' : ∀ u v, (Uw.F.Di (Uw.ik k)).EF u v = (Uw.F.Di Ha.i).EF (gm.symm u) (gm.symm v)` using `fun u v => by`. Rewrite using `[← hEF, gm.apply_symm_apply, gm.apply_symm_apply]`. Establish `hP : ∀ u, Uw.Pm k ⟨_, hs₁⟩ (gm u) = L (Ha.Pw w₁ u)` using `fun u => by`.
+
+Apply `h.injective` to reduce the goal to its premises. Rewrite using `[hh, hgm]`. Conclude with `(e3 w₁ u).symm.trans (h.apply_symm_apply _).symm`. Establish `hr : 0 < r`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases.
+
+Conclude with `absurd (Subsingleton.elim _ _) hξ.2.2`. Conclude with `hr`. Establish `hpq : 1 ≤ Dw.p + Dw.q`. Rewrite using `[← hU.1]`. Conclude with `hr`.
+
+Establish `hty` using `(GlobalTheory.Relab.relab_good E H l c σ hσ).2.2.2 Dw Uw.g Uw.e`. Establish `h0 : ∀ v, h₁ (Ha.P₀ (Uw.F.t Ha.i v)) = Λ.A.P0 (g₁ (Uw.F.t Ha.i v))` using `fun v => by`. Use `e3 0 (Uw.F.t Ha.i v)` as an intermediate fact. Rewrite `this` using `[Ha.Pw_eq, zero_smul, add_zero]`. Conclude with `this.trans (by rw [AnArc.Pw_apply, zero_smul, add_zero])`.
+
+Establish `hlev : ∀ v ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La), ∃ e, gm (Uw.F.t Ha.i v) = Uw.F.t (Uw.ik k) v + l.M • e`. Introduce `v hv`. Take `⟨q, q1, q2, q3⟩` from `Ha.levelM v hv`. Establish `hq : q = Λ.toGtDict.qk l.M (g₁ (Uw.F.t Ha.i v))`. Use `TorusExt.qk_ext (q1.trans (e2 _).symm) (q2.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[← e1, map_smul, h0]`. Both sides reduce to the same expression. Establish `l1 : Λ.Lifts (aC.eta v) (g₁ (Uw.F.t Ha.i v))` using `fun q' hq' => hq ▸ q3 q' hq'`. Take `⟨la, hla⟩` from `Λ.exists_lifts (aC.eta v)`. Take `⟨m₁, hm₁⟩` from `(hla _).1 l1`.
+
+Take `⟨m₂, hm₂⟩` from `(hla _).1 (hLM v)`. Use `⟨gam.symm (m₁ - m₂), gam.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hgm, map_add, map_nsmul, gam.apply_symm_apply, hm₂, nsmul_sub]`. Conclude with `hm₁.trans (by abel)`. Establish `hlevA : ∀ v, ∃ e, gm (Uw.F.t Ha.i v) = Uw.F.t (Uw.ik k) v + l.A • e`.
+
+Introduce `v`. Take `⟨q, q1, q2, q3⟩` from `Ha.levelA v`. Establish `hq : q = Λ.toGtDict.qk l.A (g₁ (Uw.F.t Ha.i v))`. Use `TorusExt.qk_ext (q1.trans (e2 _).symm) (q2.trans ?_)` and prove the remaining obligations. Rewrite using `[← e1, map_smul, h0]`.
+
+Both sides reduce to the same expression. Establish `l1 : Λ.Lifts (aC.etaA v) (g₁ (Uw.F.t Ha.i v))` using `fun q' hq' => hq ▸ q3 q' hq'`. Take `⟨la, hla⟩` from `Λ.exists_lifts (aC.etaA v)`. Take `⟨m₁, hm₁⟩` from `(hla _).1 l1`. Take `⟨m₂, hm₂⟩` from `(hla _).1 (hLA v)`.
+
+Use `⟨gam.symm (m₁ - m₂), gam.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hgm, map_add, map_nsmul, gam.apply_symm_apply, hm₂, nsmul_sub]`. Conclude with `hm₁.trans (by abel)`. Take `⟨-, p2⟩` from `point_exp_eq_of_isometry_levels hK Uw.F Ha.i (Uw.ik k) (Ha.Pw w₁) (Uw.Pm k ⟨_, hs₁⟩) gm L hpq hσ hty hlevA (Ha.period w₁ hw1) (Uw.period k _) hEF hlev hP`. Take `⟨nn, n1, n2, n3, n4, n5, n6⟩` from `GlobalTheory.ArcQ.holArc_nilpotent E H Dw l Xo c σ O β Y (aC.restrict β) χ W _ _ Uw.F Ha`.
+
+Establish `hlin : ∀ w w' v, Ha.Pw w v = Ha.Pw w' v + (w - w') • Ha.Pw w' (nn v)`. Introduce `w w' v`. Rewrite using `[Ha.Pw_eq, Ha.Pw_eq, Ha.Pw_eq, n1 (nn v), n4 _ (n3 v), map_zero, smul_zero, add_zero, ← n1, sub_smul]`. Normalize the expressions using the abelian group laws. Establish `hyg : ∀ u, Ha.y u = Λ.eX (g₁ u).y` using `fun u => (e2 u).symm`.
+
+Set `nn' : (Uw.F.Di (Uw.ik k)).La →ₗ[𝓞 E] (Uw.F.Di (Uw.ik k)).La` to `gm.toLinearMap ∘ₗ nn ∘ₗ gm.symm.toLinearMap`. Establish `hnn'e : ∀ v, gm.symm (nn' v) = nn (gm.symm v)` using `fun v => gm.symm_apply_apply _`. Set `y'' : (Uw.F.Di (Uw.ik k)).La →ₗ[𝓞 E] Λ.A.X` to `Λ.A.yLin ∘ₗ gam.toLinearMap`. Establish `hy'' : Function.Surjective y''` using `Λ.A.yLin_surjective.comp gam.surjective`. Establish `hnn'' : ∀ v v', -(Uw.F.Di (Uw.ik k)).EF (nn' v) v' = Λ.A.be (y'' v) (y'' v')`.
+
+Introduce `v v'`. Rewrite using `[hEF', hnn'e, n2, hyg, hyg, hg1, hg1]`. Conclude with `Λ.be_eq _ _`. Establish `hrep'' : ∀ η : Module.Dual ℤ Λ.A.X, ∃ t, ∀ v, -(Uw.F.Di (Uw.ik k)).EF t v = η (y'' v)`. Introduce `η`.
+
+Take `⟨t, ht, -⟩` from `n6 (η.toAddMonoidHom.comp Λ.eX.symm.toLinearMap.toAddMonoidHom).toIntLinearMap`. Use `⟨gm t, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hEF', gm.symm_apply_apply, ht, hyg, hg1]`. Use `show η (Λ.eX.symm (Λ.eX _)) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+
+Both sides reduce to the same expression. Establish `hyt : y'' t' = 0`. Establish `hy0` using `n5 (gm.symm t') fun v' hv' => by`. Establish `h3` using `o3 (gm v')`. Establish `h4 : (g₁ v').y = 0` using `(map_eq_zero_iff _ Λ.eX.injective).1 (by rw [← hyg]; exact hv')`.
+
+Rewrite `h3` using `[hgm, h4, map_zero]`. Rewrite using `[← hEF, gm.apply_symm_apply]`. Conclude with `neg_eq_zero.1 h3`. Rewrite `hy0` using `[hyg, hg1]`. Conclude with `(map_eq_zero_iff _ Λ.eX.injective).1 hy0`.
+
+Set `x₀ : (U.X k).dom` to `⟨_, hs₁⟩`. Take `⟨-, -, -, -, Hm, hHm⟩` from `Uw.period k x₀`. Establish `hκ` using `(GlobalTheory.T.riemann_form_frame_periods_eq_majorant E H Dw l Xo c σ r U Uw k x₀ Hm hσ hU hHm).2.1 hr`. Take `⟨sE, -, hbe, hsp, -, hform⟩` from `GlobalTheory.ArcFlow.rank_one (U.X k) (Uw.φ k) _ (Uw.iso k) y'' hY hκ hy'' Λ.A.be Λ.A.be_symm Λ.A.be_pos nn' hnn'' hrep'' ξ hξ0 t' o3 hyt`. Establish `hform' : ∀ v, (Uw.φ k (nn' v) : Fin r → E) = (-(sE * (U.X k).κ0 * herm (U.X k).Gm (Uw.φ k v : Fin r → E) ξ')) • ξ'` using `fun v => by`.
+
+Rewrite using `[hform v, o2]`. Establish `hξ'0 : herm (U.X k).Gm ξ' ξ' = 0` using `hξ.2.1`. Establish `hLs : ∀ z, (Uw.F.ex Ha.i (Ha.Pw w₁) (L.symm z)).left = (Uw.F.ex (Uw.ik k) (Uw.Pm k x₀) z).left` using `fun z => by`. Rewrite using `[← p2 (L.symm z), L.apply_symm_apply]`. Use `⟨Ha.T, fun τ => s₁ τ - w₁ * (((τ.1 sE).re : ℝ) : ℂ), fun τ => (τ.1 sE).re, fun τ i => L.symm (Pi.single (Uw.e.symm ⟨τ, i⟩) 1), fun τ => hsp τ.1, fun τ => ⟨?_, fun i jj hij => ?_⟩, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Conclude with `linearIndependent_symm_single Uw.e L τ`. Use `GlobalTheory.DerivativeDetermination.type_map Uw.e Uw.F (Uw.period k x₀) (Ha.period w₁ hw1) L.symm.toLinearMap hLs τ _ (fun j hj => ?_) jj hij` and prove the remaining obligations. Distinguish the cases in `hjj : j = Uw.e.symm ⟨τ, i⟩`. Substitute `hjj` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `absurd (Pi.single_eq_of_ne hjj _) hj`. Set `Pw' : (Uw.F.Di (Uw.ik k)).La →+ (Fin Uw.g → ℂ)` to `L.toLinearMap.toAddMonoidHom.comp ((Ha.Pw w).comp gm.symm.toLinearMap.toAddMonoidHom)`. Establish `hg' : ∀ a b, (Uw.F.Di Ha.i).EF (gm.symm a) (gm.symm b) = (Uw.F.Di (Uw.ik k)).EF a b` using `fun a b => (hEF' a b).symm`. Establish `hPer : IsPeriod (Uw.F.Di (Uw.ik k)) (fun j => relab c σ (Uw.e j).1) Pw'`. Apply the tactic sequence `have := GlobalTheory.UnifCompare.isPeriod_move (GlobalTheory.ClassUniq.isPeriod_comp_isometry gm.symm hg' (Ha.period w₁ hw1)) (Uw.period k x₀) (GlobalTheory.ClassUniq.isPeriod_comp_isometry gm.symm hg' (Ha.period w hw)) (LinearEquiv.refl _ _) L (fun _ _ => rfl) (fun a => by show …`.
+
+Rewrite using `[← hP, gm.apply_symm_apply])`. Conclude with `this`. Establish `hPx : ∀ v, Pw' v = Uw.Pm k x₀ v + (w - w₁) • Uw.Pm k x₀ (nn' v)`. Introduce `v`. Establish `a1` using `hP (gm.symm v)`.
+
+Rewrite `a1` using `[gm.apply_symm_apply]`. Establish `a2` using `hP (nn (gm.symm v))`. Use `show L (Ha.Pw w (gm.symm v)) = _`. Rewrite using `[hlin w w₁, map_add, map_smul, ← a1, ← a2]`. Both sides reduce to the same expression.
+
+Take `⟨hxw, hPw'⟩` from `GlobalTheory.ArcFlow.flow_period Uw hσ hU k hκ nn' ξ' hξ'0 sE hbe.1 hform' x₀ (w - w₁) Pw' hPer hPx`. Establish `heq : (U.X k).flow ξ' (fun τ => (w - w₁) * ((τ.1 sE).re : ℂ)) x₀.1 = (U.X k).flow ξ' (fun τ => (s₁ τ - w₁ * (((τ.1 sE).re : ℝ) : ℂ)) + w * (((τ.1 sE).re : ℝ) : ℂ)) x`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs.flow_flow (U.X k) hξ'0]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+
+Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨q1, q2⟩` from `point_exp_eq_of_isometry_levels hK Uw.F Ha.i (Uw.ik k) (Ha.Pw w) (Uw.Pm k ⟨_, hxw⟩) gm L hpq hσ hty hlevA (Ha.period w hw) (Uw.period k _) hEF hlev (fun u => by`. Rewrite using `[hPw']`. Use `show L (Ha.Pw w (gm.symm (gm u))) = _`.
+
+Rewrite using `[gm.symm_apply_apply])`. Use `⟨heq ▸ hxw, ?_⟩` and prove the remaining obligations. Establish `hpt : (⟨_, heq ▸ hxw⟩ : (U.X k).dom) = ⟨_, hxw⟩` using `Subtype.ext heq.symm`. Rewrite using `[hpt]`. Establish `hlie` using `Uw.lie k ⟨_, hxw⟩`.
+
+Use `⟨hlie.1.trans q1.symm, fun τ i => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ _ _ Uw.F Ha.i (Ha.Pw w) (Ha.period w hw) (Uw.ik k) (Uw.Pm k ⟨_, hxw⟩) L.toLinearMap (Uw.period k _) q2 _ _).2 ?_` and prove the remaining obligations. Rewrite using `[show L.toLinearMap (L.symm (Pi.single (Uw.e.symm ⟨τ, i⟩) 1)) = Pi.single (Uw.e.symm ⟨τ, i⟩) 1 from L.apply_symm_apply _]`. Conclude with `hlie.2 τ i`.
+-/
 theorem flowTie_of_onOrbit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (ξ' : Fin r → E) (x : Frame (U.X k).Ψ r) (aC : ArcIn Dw l (RingHom.id c.F) ℂ σ) (Λ : GtAn₀ aC), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → (U.X k).IsIso ξ' → x ∈ (U.X k).dom → letI := H.starRing; ∀ (gam : (Uw.F.Di (Uw.ik k)).La ≃ₗ[𝓞 E] Λ.A.La) (ξ : Module.Dual ℤ Λ.A.X), OnOrbit Uw k ξ' x Λ.A gam ξ → ξ ≠ 0 → Module.finrank (𝓞 E) Λ.A.X = 1 → (∀ v, Λ.Lifts (aC.eta v) (gam (Uw.F.t (Uw.ik k) v))) → (∀ v, Λ.Lifts (aC.etaA v) (gam (Uw.F.t (Uw.ik k) v))) → ∀ (O : Type) [CommRing O] (β : O →+* c.F), FlowTie Uw (aC.restrict β) k ξ' x := by
   intro E _ _ _ H Dw l Xo c _ _ σ r U Uw k ξ' x aC Λ hσ hU hξ hx gam ξ hO hξ0 hY hLM hLA O _ β Y χ W Ha
   have hK : Known := GlobalTheory.ArcCM.known_holds

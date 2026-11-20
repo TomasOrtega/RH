@@ -6,6 +6,21 @@ noncomputable def UpperTheory.Reformulated.B.Yzd2.Phi :
       (Matrix.of : (Fin n → Fin n → R) → Matrix (Fin n) (Fin n) R) fun (i j : Fin n) ↦
         if (↑i : ℕ) + (↑j : ℕ) + (1 : ℕ) = n then (-1 : R) ^ (↑i : ℕ) else (0 : R)
 
+/- English proof (translation)
+Introduce `a R _`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, UpperTheory.Reformulated.B.Yzd2.Phi, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Establish `hi` using `i.isLt`. Set `k : Fin a` to `⟨a - 1 - (i : ℕ), by omega⟩`. Establish `hk : (k : ℕ) = a - 1 - (i : ℕ)` using `rfl`. Rewrite using `[Finset.sum_eq_single k]`. Establish `h1 : (i : ℕ) + (k : ℕ) + 1 = a` using `by omega`.
+
+Rewrite using `[if_pos h1, if_pos rfl, ← mul_pow]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Establish `h1 : ¬ ((i : ℕ) + (b : ℕ) + 1 = a)`. Introduce `h2`.
+
+Apply `hb` to reduce the goal to its premises. Use `ext`. Use linear arithmetic over natural numbers and integers. Simplify using `[h1]`. Introduce `hk'`.
+
+Conclude with `absurd (Finset.mem_univ k) hk'`. Rewrite using `[if_neg h]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`. Distinguish the cases in `h1 : (i : ℕ) + (k : ℕ) + 1 = a`.
+
+Establish `h2 : ¬ ((j : ℕ) + (k : ℕ) + 1 = a)`. Introduce `h2`. Apply `h` to reduce the goal to its premises. Use `ext`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[h2]`. Simplify using `[h1]`.
+-/
 theorem UpperTheory.Reformulated.B.Yzd2.phi_mul_transpose :
     ∀ (a : ℕ) {R : Type} [inst : CommRing R],
       UpperTheory.Reformulated.B.Yzd2.Phi a R * (UpperTheory.Reformulated.B.Yzd2.Phi a R).transpose = (1 : Matrix (Fin a) (Fin a) R) := by

@@ -18,6 +18,13 @@ def CSize.Lip {X : CData} (S : CSize X) : Prop :=
 def CSize.LowN {X : CData} (S : CSize X) : Prop :=
   ∀ W : Submodule X.I.E (Fin X.I.n → X.I.E), X.I.IsIsot W → ∀ x, ∃ c : ℝ, 0 < c ∧ ∀ m ∈ X.I.NA W, c ≤ S.tau1 (m * x)
 
+/- English proof (translation)
+Introduce `x hx r hr T hT`. Take `rfl : x = y` from `hx`. Establish `hτ` using `hst.2.2.2.2.2.1 x`. Establish `hs : (1 : ℝ) ≤ Real.sqrt (X.I.n : ℝ)`. Rewrite using `[Real.one_le_sqrt]`.
+
+Conclude with `hn` after adjusting the coercions. Establish `h1` using `hP x r hr T hT`. Establish `h2` using `Formalism.HermitianLatticeCounting.Final.S7.farCount (InfinitePlace X.I.F) X.I.n r (S.tau1 x) (Real.sqrt (X.I.n : ℝ)) hτ.1 (by linarith [hτ.2]) hs hr`. Establish `hsq1 : S.tau1 x ^ 2 ≤ 1` using `pow_le_one₀ hτ.1.le (by linarith [hτ.2])`. Establish `hbase1 : 1 ≤ 3 * Real.sqrt (X.I.n : ℝ) / S.tau1 x ^ 2`.
+
+Use `hτ.1` as an intermediate fact. Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : (3 * Real.sqrt (X.I.n : ℝ) / S.tau1 x ^ 2) ^ (2 * X.I.n ^ 2 * Fintype.card (InfinitePlace X.I.F)) ≤ cu.Act X (S.tau1 x)` using `pow_le_pow_right₀ hbase1 (Nat.mul_le_mul_left _ (card_infinite_places_le_degree X.I))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cu_count_of_pack (X : CData) (hn : 1 ≤ X.I.n) (S : CSize X) (hst : S.Strata) (hP : S.PackCount) (y : X.I.GA) :
     X.FarCount (cu.Act X (S.tau1 y)) (2 * (X.I.n : ℝ) ^ 2) {y} := by
   intro x hx r hr T hT
@@ -42,6 +49,9 @@ theorem cu_count_of_pack (X : CData) (hn : 1 ≤ X.I.n) (S : CSize X) (hst : S.S
     _ ≤ cu.Act X (S.tau1 x) * Real.exp (2 * (X.I.n : ℝ) ^ 2 * ∑ v, r v) :=
         mul_le_mul_of_nonneg_right hA (Real.exp_pos _).le
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨S.tau1, fun y => (hst.2.2.2.2.2.1 y).1, hI, cu_count_of_pack X hn S hst hP, hL, hN⟩`.
+-/
 theorem cu_sizeStep_of (X : CData) (hn : 1 ≤ X.I.n) (S : CSize X) (hst : S.Strata)
     (hP : S.PackCount) (hI : S.Inv) (hL : S.Lip) (hN : S.LowN) : cu.SizeStep X :=
   ⟨S.tau1, fun y => (hst.2.2.2.2.2.1 y).1, hI, cu_count_of_pack X hn S hst hP, hL, hN⟩

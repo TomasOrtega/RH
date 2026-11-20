@@ -19,6 +19,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.isIrreducible_of_geomIrr_of_le_basicOpen | exact GlobalTheory.FlatModel.isIrreducible_of_geomIrr_of_le_basicOpen | (intros; apply GlobalTheory.FlatModel.isIrreducible_of_geomIrr_of_le_basicOpen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.geometrically_irreducible_open_irreducible : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) (p : ℕ) [Fact p.Prime],
     (p : F) ∈ V.nonunits → ∀ (X : Scheme.{0}) (s : X ⟶ Sp V) (Xw : X.Opens),
     Xw ≤ X.basicOpen (p : Γ(X, ⊤)) → GeomIrr s Xw → IsIrreducible (Xw : Set X) := by

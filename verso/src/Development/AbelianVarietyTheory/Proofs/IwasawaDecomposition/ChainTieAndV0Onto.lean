@@ -7,6 +7,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.SJ
 
+/- English proof (translation)
+Introduce `D Bs A X fc s R cr M`. Use `⟨fun h u x y => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[M.cφ_eq, M.cF_eq]`. Conclude with `(h u x y).symm`. Unfold `Seam.GoodPartHasComplexCoordinates`.
+
+Rewrite using `[← h]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨_, M.cF_eq y⟩`.
+-/
 theorem chainTie_and_v0Onto :
     ∀ (D : D7) (Bs : DefBase D.what₂.LL) (A : DefAmb Bs) (X : CxData A) (fc : DefSub A → DefFace Bs) (s : Bool)
       (R : Read D X fc s) (cr : Crd A fc) (M : Seam R cr), (R.DcPt → M.ChainTie) ∧ (R.ReadingFormsSpanGoodSubspace → M.GoodPartHasComplexCoordinates) := by

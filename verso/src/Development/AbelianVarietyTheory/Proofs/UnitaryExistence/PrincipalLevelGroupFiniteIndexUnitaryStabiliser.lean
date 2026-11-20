@@ -16,6 +16,13 @@ open scoped Matrix nonZeroDivisors
 
 namespace GlobalTheory.FrameUnif
 
+/- English proof (translation)
+Introduce `E _ _ _ H l Di r ξ₀ Gm φ0 _ _`. Use `haveI := Di.fin`. Establish `hΛ : (LinearMap.range φ0).FG`. Rewrite using `[← Submodule.map_top]`. Conclude with `Submodule.FG.map φ0 Module.Finite.fg_top`.
+
+Establish `hM : 0 < l.M * l.A` using `Nat.mul_pos (lt_of_lt_of_le (by norm_num) l.three_le) l.A_pos`. Take `⟨S, hS⟩` from `GlobalTheory.CongruenceIndex.exists_finset_cosets (Gm := Gm) hΛ hM`. Use `⟨S, fun γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hst, hc⟩` from `hS γ hγ`. Use `⟨s, hs, hst, fun a _ => ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, ⟨b, rfl⟩, e⟩` from `hc _ (LinearMap.mem_range_self φ0 a)`. Conclude with `⟨l.A • b, by rw [e, map_nsmul, mul_smul]⟩`. Take `⟨w, ⟨b, rfl⟩, e⟩` from `hc _ (LinearMap.mem_range_self φ0 a)`. Conclude with `⟨l.M • b, by rw [e, map_nsmul, mul_comm, mul_smul]⟩`.
+-/
 theorem princ_finiteIndex : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (Di : Datum H) (r : ℕ) (ξ₀ : E) (Gm : Matrix (Fin r) (Fin r) E) (φ0 : Di.La →ₗ[𝓞 E] (Fin r → E)), cc ξ₀ = -ξ₀ → (Function.Injective φ0 ∧ Submodule.span E (Set.range φ0) = ⊤ ∧ (∀ a b, cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((Di.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (-ξ₀ * herm Gm (φ0 x) (φ0 y))) → ∃ S : Finset (GL (Fin r) E), ∀ γ, IsUStab Gm (LinearMap.range φ0) γ → ∃ s ∈ S, s⁻¹ * γ ∈ princ l Gm Di φ0 := by
   intro E _ _ _ H l Di r ξ₀ Gm φ0 _ _
   haveI := Di.fin

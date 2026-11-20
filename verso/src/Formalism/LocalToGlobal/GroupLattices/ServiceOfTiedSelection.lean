@@ -25,6 +25,9 @@ structure ServT (𝒞 : FamClass) (sel : TSel 𝒞) : Prop where
         OrbitPlaces.Shape (Fm.D x i) (Fm.L x i) (Fm.Gx x i)
           (OrbitPlaces.ofKer (nuRowOK (Fm.D x i)) ((sel Fm hc).2 x hx h0 i).T.ker.ent ep be sg))
 
+/- English proof (translation)
+Unfold `Closed at hP ⊢`. Take `⟨ε1, hε1, hP⟩` from `hP`. Use `⟨ε1, hε1, fun eps he he1 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hP eps he he1`. Conclude with `⟨K, fun Fm CH hc hL => h Fm CH hc (hK Fm CH hc hL)⟩`.
+-/
 theorem closed_imp_class {𝒞 : FamClass} {P Q : ∀ {eps : ℝ}, FamP eps → ℝ → Prop} (hP : Closed 𝒞 P)
     (h : ∀ {eps : ℝ} (Fm : FamP eps) (CH : ℝ), 𝒞 Fm → P Fm CH → Q Fm CH) : Closed 𝒞 Q := by
   unfold Closed at hP ⊢
@@ -33,10 +36,16 @@ theorem closed_imp_class {𝒞 : FamClass} {P Q : ∀ {eps : ℝ}, FamP eps → 
   obtain ⟨K, hK⟩ := hP eps he he1
   exact ⟨K, fun Fm CH hc hL => h Fm CH hc (hK Fm CH hc hL)⟩
 
+/- English proof (translation)
+The claim follows from `h.twU pdv := closed_imp_class h.pdv fun Fm _ hc hp => ⟨(sel Fm hc).1, fun x hx0 hx i => ⟨_, hp hc x hx hx0 i⟩⟩`.
+-/
 theorem service_of_tied_selection {𝒞 : FamClass} (sel : TSel 𝒞) (h : ServT 𝒞 sel) : SumOverPrimesHypotheses 𝒞 where
   twU := h.twU
   pdv := closed_imp_class h.pdv fun Fm _ hc hp => ⟨(sel Fm hc).1, fun x hx0 hx i => ⟨_, hp hc x hx hx0 i⟩⟩
 
+/- English proof (translation)
+The claim follows from `sum_over_primes_service 𝒞 hD (service_of_tied_selection sel h)`.
+-/
 theorem servF_of_servT {𝒞 : FamClass} (sel : TSel 𝒞) (hD : Closed 𝒞 fun Fm _ => DGamSize Fm) (h : ServT 𝒞 sel) :
     Closed 𝒞 fun Fm _ => WeilJacquetShalikaLaw.ServF Fm :=
   sum_over_primes_service 𝒞 hD (service_of_tied_selection sel h)

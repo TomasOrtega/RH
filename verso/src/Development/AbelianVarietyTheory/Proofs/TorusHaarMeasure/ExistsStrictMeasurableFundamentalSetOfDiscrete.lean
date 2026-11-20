@@ -8,6 +8,37 @@ namespace GlobalTheory
 open MeasureTheory Topology Matrix in
 open scoped ComplexOrder ENNReal Pointwise in
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ Γ ⟨U, hU, hΓU⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨t, htU, ht, h1t⟩` from `mem_nhds_iff.1 hU`. Establish `hopen : IsOpen ({1} : Set Γ)`. Rewrite using `[isOpen_induced_iff]`.
+
+Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `Subtype.ext (hΓU x x.2 (htU hx))`. Introduce and unpack `rfl`. Conclude with `h1t`. Use `haveI : DiscreteTopology Γ := discreteTopology_of_isOpen_singleton_one hopen`. Conclude with `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+
+Take `⟨V, hVo, hV1, hVU⟩` from `exists_open_nhds_one_split hU`. Set `C : G → Set G` to `fun x => {y | y * x⁻¹ ∈ V ∧ x * y⁻¹ ∈ V}`. Establish `hCo : ∀ x, IsOpen (C x)` using `fun x => (hVo.preimage (continuous_id.mul continuous_const)).inter (hVo.preimage (continuous_const.mul continuous_inv))`. Establish `hCx : ∀ x, x ∈ C x` using `fun x => by simp [C, hV1]`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable C hCo`.
+
+Establish `hTne : T.Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`. Establish `h1 : (1 : G) ∈ ⋃ x, C x` using `Set.mem_iUnion.2 ⟨1, hCx 1⟩`. Rewrite `h1` using `[← hT, h]`.
+
+Simplify using `at h1`. Take `⟨c, hc⟩` from `hTc.exists_eq_range hTne`. Set `W : ℕ → Set G` to `fun n => C (c n)`. Establish `hWo : ∀ n, IsOpen (W n)` using `fun n => hCo _`. Establish `hcover : ∀ x, ∃ n, x ∈ W n`.
+
+Introduce `x`. Establish `hx : x ∈ ⋃ y ∈ T, C y` using `by rw [hT]; exact Set.mem_iUnion.2 ⟨x, hCx x⟩`. Rewrite `hx` using `[hc]`. Simplify using `only [Set.biUnion_range, Set.mem_iUnion] at hx`. Conclude with `hx`.
+
+Establish `hsep : ∀ n (x : G) (γ : Γ), x ∈ W n → (γ : G) * x ∈ W n → γ = 1`. Introduce `n x γ hx hγx`. Establish `h` using `hVU _ hγx.1 _ hx.2`. Establish `he : (γ : G) * x * (c n)⁻¹ * (c n * x⁻¹) = γ` using `by group`. Rewrite `h` using `[he]`.
+
+Conclude with `Subtype.ext (hΓU γ γ.2 h)`. Set `S : ℕ → Set G` to `fun m => ⋃ γ : Γ, (fun x => (γ : G) * x) ⁻¹' W m`. Establish `hSo : ∀ m, IsOpen (S m)` using `fun m => isOpen_iUnion fun γ => (hWo m).preimage (continuous_const.mul continuous_id)`. Establish `hmemS : ∀ m x, x ∈ S m ↔ ∃ γ : Γ, (γ : G) * x ∈ W m` using `fun m x => by`. Simplify using `only [S, Set.mem_iUnion, Set.mem_preimage]`.
+
+Use `⟨⋃ n : ℕ, W n \ ⋃ m : Fin n, S m, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MeasurableSet.iUnion fun n => (hWo n).measurableSet.diff (MeasurableSet.iUnion fun m => (hSo m).measurableSet)`. Introduce `g`. Establish `hmemF : ∀ y, y ∈ (⋃ n : ℕ, W n \ ⋃ m : Fin n, S m) ↔ ∃ n, y ∈ W n ∧ ∀ m < n, y ∉ S m`. Introduce `y`.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_diff, not_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hy, hm⟩`. Conclude with `⟨n, hy, fun m hm' => hm ⟨m, hm'⟩⟩`. Introduce and unpack `⟨n, hy, hm⟩`.
+
+Conclude with `⟨n, hy, fun m => hm m m.2⟩`. Establish `hex : ∃ n, g ∈ S n`. Take `⟨n, hn⟩` from `hcover g`. Conclude with `⟨n, (hmemS n g).2 ⟨1, by simpa using hn⟩⟩`. Take `⟨γ, hγ⟩` from `(hmemS _ g).1 (Nat.find_spec hex)`.
+
+Use `⟨γ, (hmemF _).2 ⟨Nat.find hex, hγ, fun m hm hS => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ⟩` from `(hmemS m _).1 hS`. Conclude with `Nat.find_min hex hm ((hmemS m g).2 ⟨δ * γ, by simpa [mul_assoc] using hδ⟩)`. Introduce `γ' hγ'`. Take `⟨k, hk, hkS⟩` from `(hmemF _).1 hγ'`.
+
+Establish `hkN : k = Nat.find hex`. Use `le_antisymm ?_ (Nat.find_min' hex ((hmemS k g).2 ⟨γ', hk⟩))` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `hkS _ hlt ((hmemS _ _).2 ⟨γ * γ'⁻¹, by simpa [mul_assoc] using hγ⟩)`.
+
+Rewrite `hk` using `[hkN]`. Establish `h1` using `hsep _ _ (γ' * γ⁻¹) hγ (by simpa [mul_assoc] using hk)`. Conclude with `mul_inv_eq_one.1 h1`.
+-/
 theorem _root_.GlobalTheory.exists_strict_measurable_fundamental_set_of_discrete :
     (∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G), (∃ U ∈ 𝓝 (1 : G), ∀ γ ∈ Γ, γ ∈ U → γ = 1) → Countable Γ ∧ ∃ F : Set G, MeasurableSet F ∧ ∀ g : G, ∃! γ : Γ, (γ : G) * g ∈ F) := by
   intro G _ _ _ _ _ _ _ _ Γ ⟨U, hU, hΓU⟩

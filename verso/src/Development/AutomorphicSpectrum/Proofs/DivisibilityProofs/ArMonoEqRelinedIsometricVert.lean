@@ -19,6 +19,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.Swap
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `hL : ∀ j, IsSmoothHerm ((pre ++ post).get j)` using `fun j => by`. Break down `List.mem_append.1 (List.get_mem _ j) with h | h` into its components or cases. Conclude with `hpre _ h`. Conclude with `hpost _ h`. Establish `hsnoc : ∀ B : HermLine ι, IsSmoothHerm B → arList I P (pre ++ B :: post) = I P ((pre ++ post).length + 1) (Fin.snoc (pre ++ post).get B)`.
+
+Introduce `B hB`. Use `arList_eq_of_perm hP hI _ _ ?_ ?_` and prove the remaining obligations. Introduce `j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `using hB`.
+
+Simplify using `using hL i`. Rewrite using `[List.ofFn_succ']`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last, List.ofFn_get, List.concat_eq_append]`. Conclude with `List.perm_middle.trans (List.perm_append_singleton _ _).symm`. Rewrite using `[hsnoc A hA, hsnoc A' hA']`.
+
+Establish `h` using `GlobalTheory.T.isometric_vertical_intersection_eq K ι P _ hP I hI ∅ T hT A A' hA hA' hiso (pre ++ post).get hL`. Simplify `h` using `[sub_eq_zero]`.
+-/
 theorem arList_swap_one {P : Ideal (MvPolynomial (Σ k, ι k) ℤ)}
     {I : Ideal (MvPolynomial (Σ k, ι k) ℤ) → (n : ℕ) → (Fin n → HermLine ι) → ℝ}
     (hI : IsIntersectionFamily I) (T : LocPair ι ℤ Unit)
@@ -46,6 +55,17 @@ theorem arList_swap_one {P : Ideal (MvPolynomial (Σ k, ι k) ℤ)}
   have h := GlobalTheory.T.isometric_vertical_intersection_eq K ι P _ hP I hI ∅ T hT A A' hA hA' hiso (pre ++ post).get hL
   simpa [sub_eq_zero] using h
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro pre _ _`. Both sides reduce to the same expression. Consider the case `cons j l ih`. Introduce `pre hpre hP`.
+
+Establish `e1 : pre ++ (j :: l).map F = (pre ++ [F j]) ++ l.map F` using `by simp`. Establish `e2 : (pre ++ [F j]) ++ l.map G = pre ++ F j :: l.map G` using `by simp`. Establish `hpre' : ∀ b ∈ pre ++ [F j], IsSmoothHerm b` using `fun b hb => by`. Break down `List.mem_append.1 hb with h | h` into its components or cases. Conclude with `hpre b h`.
+
+Rewrite using `[List.mem_singleton.1 h]`. Conclude with `hF j`. Establish `hlen : (pre ++ [F j]).length + l.length = pre.length + (j :: l).length` using `by simp; omega`. Rewrite using `[e1, ih _ hpre' (hlen ▸ hP), e2, List.map_cons]`. Break down `hFG j with h | ⟨h, h'⟩` into its components or cases.
+
+Rewrite using `[h]`. Rewrite using `[h, h']`. Use `arList_swap_one hI T hT hA hA' hiso pre _ hpre ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hb`.
+
+Conclude with `hG i`. Establish `: (pre ++ l.map G).length + 1 = pre.length + (j :: l).length` using `by simp; omega`. Conclude with `this ▸ hP`.
+-/
 theorem arList_swap_map {J : Type} {P : Ideal (MvPolynomial (Σ k, ι k) ℤ)}
     {I : Ideal (MvPolynomial (Σ k, ι k) ℤ) → (n : ℕ) → (Fin n → HermLine ι) → ℝ}
     (hI : IsIntersectionFamily I) (T : LocPair ι ℤ Unit)
@@ -80,6 +100,9 @@ theorem arList_swap_map {J : Type} {P : Ideal (MvPolynomial (Σ k, ι k) ℤ)}
           simp; omega
         exact this ▸ hP
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Apply `List.ext_get (by simp)` to reduce the goal to its premises. Introduce `n h₁ h₂`. Simplify using `[monoLines]`.
+-/
 theorem ofFn_monoLines {J : Type} (ℓ : J → HermLine ι) (m : J →₀ ℕ) (d : ℕ)
     (hd : (Finsupp.toMultiset m).toList.length = d) :
     List.ofFn (monoLines ℓ m d) = (Finsupp.toMultiset m).toList.map ℓ := by
@@ -94,6 +117,21 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.Link
 
 open GlobalTheory.CompanionTheory.Ar.Top.Link
 
+/- English proof (translation)
+Introduce `Ψ _ N M _ II hII A' hs hc T hT hiso t m`. Use `set M' := Link.reline M M.xdeg M.x M.x_deg M.x_smooth M.x_conj A' hs hc with hM'`. Establish `hI : IsIntersectionFamily (II M.K M.ι)` using `hII.1 M.K M.ι`. Establish `hP : IsArithVar M.P (dimFl Ψ N + 1)` using `M.arith`. Establish `hF : ∀ j, IsSmoothHerm (M.line t j)` using `fun j => by`.
+
+Consider the cases of `j with`. Consider the case `none => exact M.A_smooth`. Consider the case `some r => exact M.x_smooth t r`. Establish `hG : ∀ j, IsSmoothHerm (M'.line t j)` using `fun j => by`. Consider the cases of `j with`.
+
+Consider the case `none => exact hs`. Consider the case `some r => exact M.x_smooth t r`. Establish `hFG : ∀ j, M.line t j = M'.line t j ∨ (M.line t j = M.A ∧ M'.line t j = A')` using `fun j => by`. Consider the cases of `j with`. Consider the case `none => exact Or.inr ⟨rfl, rfl⟩`.
+
+Consider the case `some r => exact Or.inl rfl`. Use `show (if m.degree = dimFl Ψ N + 1 then II M.K M.ι M.P (dimFl Ψ N + 1) (monoLines (M.line t) m (dimFl Ψ N + 1)) / ((M.δ : ℝ) * (M.kA : ℝ) ^ m none) else 0) = (if m.degree = dimFl Ψ N + 1 then II M.K M.ι M.P (dimFl Ψ N + 1) (monoLines (M'.line t) m (dimFl Ψ N + 1)) / ((M.δ : ℝ) * ( …`. Use `split_ifs with hd`. Use `swap`. Both sides reduce to the same expression.
+
+Establish `hlen : (Finsupp.toMultiset m).toList.length = dimFl Ψ N + 1`. Rewrite using `[Multiset.length_toList, Finsupp.card_toMultiset, ← hd]`. Both sides reduce to the same expression. Establish `hmono : ∀ ℓ : Option (Ψ × Fin N) → HermLine M.ι, (∀ j, IsSmoothHerm (ℓ j)) → II M.K M.ι M.P (dimFl Ψ N + 1) (monoLines ℓ m (dimFl Ψ N + 1)) = arList (II M.K M.ι) M.P ((Finsupp.toMultiset m).toList.map ℓ)`. Introduce `ℓ hℓ`.
+
+Use `symm`. Use `arList_eq_of_perm hP hI _ _ ?_ ?_` and prove the remaining obligations. Introduce `j`. Unfold `monoLines`. Use `split_ifs with h`.
+
+Conclude with `hℓ _`. Conclude with `absurd (by have := j.2; omega) h`. Rewrite using `[Swap.ofFn_monoLines ℓ m _ hlen]`. Establish `key : arList (II M.K M.ι) M.P ((Finsupp.toMultiset m).toList.map (M.line t)) = arList (II M.K M.ι) M.P ((Finsupp.toMultiset m).toList.map (M'.line t))` using `Swap.arList_swap_map hI T hT M.A_smooth hs hiso _ _ hF hG hFG _ [] (by simp) (by simpa [hlen] using hP)`. Conclude with `congrArg (· / ((M.δ : ℝ) * (M.kA : ℝ) ^ m none)) ((hmono _ hF).trans (key.trans (hmono (M'.line t) hG).symm))`.
+-/
 theorem arMono_swapA : ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M : RootModel Ψ N) [DecidableEq M.K] (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (A' : HermLine M.ι) (hs : IsSmoothHerm A') (hc : IsConjInvariantH A') (T : LocPair M.ι ℤ Unit), T.IsVertOff M.P ∅ → T.IsIsometric M.P (fun _ => M.A) (fun _ => A') → ∀ (t : ℝ) (m : Option (Ψ × Fin N) →₀ ℕ), M.arMono II t m = (Link.reline M M.xdeg M.x M.x_deg M.x_smooth M.x_conj A' hs hc).arMono II t m := by
   intro Ψ _ N M _ II hII A' hs hc T hT hiso t m
   set M' := Link.reline M M.xdeg M.x M.x_deg M.x_smooth M.x_conj A' hs hc with hM'

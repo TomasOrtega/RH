@@ -16,20 +16,35 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G
 
+/- English proof (translation)
+The claim follows from `hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+-/
 theorem witt_identification_of_admitted {D : Formalism.BasicNotions.D7} (hA : admitted D) : WittIdent :=
   hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `restForm_of_oplus (Formalism.MainNotions.G.GLWeightTheory.lemma_five_two_first_holds D) restOPlus`.
+-/
 theorem restForm (D : Formalism.BasicNotions.D7) : RestForm :=
   restForm_of_oplus (Formalism.MainNotions.G.GLWeightTheory.lemma_five_two_first_holds D) restOPlus
 
+/- English proof (translation)
+The claim follows from `stmtEExt_of fun hA => paired_lifts_of_identity (witt_identification_of_admitted hA) (h hA) (restForm D)`.
+-/
 theorem stmtEExt_of_rawTail1 {D : Formalism.BasicNotions.D7} (h : admitted D → RestRawTail1) : ExtendedClosedForm D :=
   stmtEExt_of fun hA => paired_lifts_of_identity (witt_identification_of_admitted hA) (h hA) (restForm D)
 
 def RawTailReduction : Prop := RestAsmRT
 
+/- English proof (translation)
+The claim follows from `stmtEExt_of_rawTail1 fun hA => restRawTail1_of (third_key_of_order key3Ord) (local_fourth_of_order (loc4Ord_of (loc4Div_of loc4Res))) (h hA)`.
+-/
 theorem stmtEExt_of_15c {D : Formalism.BasicNotions.D7} (h : admitted D → RawTailReduction) : ExtendedClosedForm D :=
   stmtEExt_of_rawTail1 fun hA => restRawTail1_of (third_key_of_order key3Ord) (local_fourth_of_order (loc4Ord_of (loc4Div_of loc4Res))) (h hA)
 
+/- English proof (translation)
+The claim follows from `(stmtEExt_of_15c h).closed_of_extended_closed`.
+-/
 theorem stmtE_of_15c {D : Formalism.BasicNotions.D7} (h : admitted D → RawTailReduction) : ClosedFormOfAdmitted D := (stmtEExt_of_15c h).closed_of_extended_closed
 
 end Formalism.MainNotions.ColumnSystems.Pf

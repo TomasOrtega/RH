@@ -8,6 +8,13 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Introduce `hs hb hν`. Take `⟨X'', π, hπ, M, i, hi, hpi⟩` from `blowProjSt (𝓞 K) X s J hs`. Take `⟨h, hh, -⟩` from `hπ.2 X' b hb.1`. Take `⟨k, hk, -⟩` from `hb.2 X'' π hπ.1`. Establish `e1 : h ≫ k = 𝟙 _`.
+
+Take `⟨u, -, hu⟩` from `hb.2 X' b hb.1`. Rewrite using `[hu (h ≫ k) (by simp [hk, hh]), hu (𝟙 _) (by simp)]`. Establish `e2 : k ≫ h = 𝟙 _`. Take `⟨u, -, hu⟩` from `hπ.2 X'' π hπ.1`. Rewrite using `[hu (k ≫ h) (by simp [hk, hh]), hu (𝟙 _) (by simp)]`.
+
+Establish `: IsIso h` using `⟨⟨k, e1, e2⟩⟩`. Establish `hbs : b ≫ s = h ≫ i ≫ PSpace.str (𝓞 K) M` using `by rw [hpi, ← Category.assoc, hh]`. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str (𝓞 K) M` as an intermediate fact. Rewrite using `[hbs]`. Conclude with `⟨LocallyOfFiniteType.isLocallyNoetherian (ν ≫ h ≫ i ≫ PSpace.str (𝓞 K) M), inferInstance⟩`.
+-/
 theorem blowup_finite_noeth_sep (K : Type) [Field K] [NumberField K] (X X' N : Scheme.{0}) (s : X ⟶ Sp (𝓞 K))
     (J : X.IdealSheafData) (b : X' ⟶ X) (ν : N ⟶ X') :
     IsProjOver s → FinalTheorems.Blowup b J → IsFinite ν → IsLocallyNoetherian N ∧ IsSeparated (ν ≫ b ≫ s) := by

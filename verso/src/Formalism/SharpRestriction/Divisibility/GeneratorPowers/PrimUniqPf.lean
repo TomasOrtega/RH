@@ -11,12 +11,23 @@ namespace Formalism.MainNotions.ModuliIntegralCharts.H1
 open AlgebraicGeometry CategoryTheory NumberField TopologicalSpace Opposite MonoidalCategory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hs.comm, hs.smooth, hp, hs.geomConnected⟩`.
+-/
 theorem isAbelianScheme_of_proper {S : Scheme.{0}} (G : Over S) [GrpObj G] (hs : IsSemiAbelian G)
     (hp : IsProper G.hom) : IsAbelianScheme G := ⟨hs.comm, hs.smooth, hp, hs.geomConnected⟩
 
+/- English proof (translation)
+The claim follows from `isAbelianScheme_of_proper _ Xo.univ.t.semi Xo.univ.proper`.
+-/
 theorem isAbelianScheme_univ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} (Xo : Moduli Dw l) : IsAbelianScheme Xo.univ.t.G := isAbelianScheme_of_proper _ Xo.univ.t.semi Xo.univ.proper
 
+/- English proof (translation)
+Introduce `y _`. Establish `hk : ∀ k, ∃ i, (φ k).base y ∈ L.U i` using `fun k => by`. Establish `hy : (φ k).base y ∈ (⨆ i, L.U i)` using `by rw [hL.cover]; trivial`. Simplify `hy` using `[TopologicalSpace.Opens.mem_iSup]`. Use `choose j hj using hk`.
+
+Use `TopologicalSpace.Opens.mem_iSup.2 ⟨j, ?_⟩` and prove the remaining obligations. Use `show y ∈ ⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X)`. Conclude with `Set.mem_iInter.2 fun k => hj k`.
+-/
 theorem wchart_cover {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) : (⊤ : Y.Opens) ≤ ⨆ j, LB.wchart L φ j := by
   intro y _
@@ -28,6 +39,17 @@ theorem wchart_cover {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Type} [Fin
   show y ∈ ⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X)
   exact Set.mem_iInter.2 fun k => hj k
 
+/- English proof (translation)
+Set `r : ∀ j, Γ(Y, M.U j)ˣ` to `fun j => t.s j / t'.s j`. Establish `hcompat : ∀ i j, res (inf_le_left : M.U i ⊓ M.U j ≤ M.U i) (r i) = res (inf_le_right : M.U i ⊓ M.U j ≤ M.U j) (r j)`. Introduce `i j`. Simplify using `only [r, map_div, ht i j, ht' i j, mul_div_mul_left_eq_div]`. Establish `hcompat' : ∀ i j, res (inf_le_left : M.U i ⊓ M.U j ≤ M.U i) (r i)⁻¹ = res (inf_le_right : M.U i ⊓ M.U j ≤ M.U j) (r j)⁻¹`.
+
+Introduce `i j`. Rewrite using `[map_inv, map_inv, hcompat i j]`. Take `⟨a, ha, -⟩` from `Y.sheaf.existsUnique_gluing' M.U ⊤ (fun j => homOfLE le_top) hcov (fun j => ((r j : Γ(Y, M.U j)ˣ) : Γ(Y, M.U j))) (fun i j => congrArg Units.val (hcompat i j))`. Take `⟨b, hb, -⟩` from `Y.sheaf.existsUnique_gluing' M.U ⊤ (fun j => homOfLE le_top) hcov (fun j => (((r j)⁻¹ : Γ(Y, M.U j)ˣ) : Γ(Y, M.U j))) (fun i j => congrArg Units.val (hcompat' i j))`. Establish `hab : a * b = 1`.
+
+Use `Y.sheaf.eq_of_locally_eq' M.U ⊤ (fun j => homOfLE le_top) hcov _ _ fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE (le_top : M.U j ≤ ⊤)).op).hom (a * b) = (Y.presheaf.map (homOfLE (le_top : M.U j ≤ ⊤)).op).hom 1`. Use `erw [map_mul, map_one]`. Establish `e1` using `ha j`. Establish `e2` using `hb j`.
+
+Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE (le_top : M.U j ≤ ⊤)).op).hom a = ((r j : Γ(Y, M.U j)ˣ) : Γ(Y, M.U j)) at e1`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE (le_top : M.U j ≤ ⊤)).op).hom b = (((r j)⁻¹ : Γ(Y, M.U j)ˣ) : Γ(Y, M.U j)) at e2`. Rewrite using `[e1, e2, Units.mul_inv]`. Use `⟨⟨a, b, hab, by erw [mul_comm]; exact hab⟩, fun j => ?_⟩` and prove the remaining obligations. Establish `hres : res (le_top : M.U j ≤ ⊤) ⟨a, b, hab, by erw [mul_comm]; exact hab⟩ = r j` using `Units.ext (ha j)`.
+
+Rewrite using `[hres]`. Simplify using `only [r, div_mul_cancel]`.
+-/
 theorem gen_ratio {Y : Scheme.{0}} (M : LB Y) (hcov : (⊤ : Y.Opens) ≤ ⨆ j, M.U j)
     (t t' : LB.Gen M) (ht : t.IsGen) (ht' : t'.IsGen) :
     ∃ u : Γ(Y, ⊤)ˣ, ∀ j, t.s j = res (le_top : M.U j ≤ ⊤) u * t'.s j := by
@@ -62,6 +84,9 @@ theorem gen_ratio {Y : Scheme.{0}} (M : LB Y) (hcov : (⊤ : Y.Opens) ≤ ⨆ j,
   rw [hres]
   simp only [r, div_mul_cancel]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((X.presheaf.map (homOfLE h1).op ≫ X.presheaf.map (homOfLE h2).op).hom (x : Γ(X, U))) = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V)
     (x : Γ(X, U)ˣ) : res h2 (res h1 x) = res (h2.trans h1) x := by
   apply Units.ext
@@ -69,6 +94,9 @@ private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) 
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.pullU_res, res_res_lemma]`. Both sides reduce to the same expression.
+-/
 theorem pull_res_val {X Y : Scheme.{0}} (h : Y ⟶ X) {V : X.Opens} {W : Y.Opens} (hWV : W ≤ h ⁻¹ᵁ V)
     (u : Γ(X, ⊤)ˣ) :
     ((res hWV (pullU h V (res (le_top : V ≤ ⊤) u)) : Γ(Y, W)ˣ) : Γ(Y, W)) =
@@ -76,19 +104,43 @@ theorem pull_res_val {X Y : Scheme.{0}} (h : Y ⟶ X) {V : X.Opens} {W : Y.Opens
   rw [ReciprocityTheory.ChartRestriction.G.DVR.pullU_res, res_res_lemma]
   rfl
 
+/- English proof (translation)
+Conclude with `res_res_lemma h1 h2 x`.
+-/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(X, U)ˣ) :
     res h2 (res h1 x) = res (h2.trans h1) x := by
   exact res_res_lemma h1 h2 x
 
+/- English proof (translation)
+Rewrite using `[res_res, pull_res_val]`.
+-/
 theorem pull_restrict_unit_value {X Y : Scheme.{0}} (h : Y ⟶ X) {V : X.Opens} {W W' : Y.Opens} (hWV : W ≤ h ⁻¹ᵁ V)
     (hW' : W' ≤ W) (u : Γ(X, ⊤)ˣ) :
     ((res hW' (res hWV (pullU h V (res (le_top : V ≤ ⊤) u))) : Γ(Y, W')ˣ) : Γ(Y, W')) =
       (Y.presheaf.map (homOfLE (le_top : W' ≤ h ⁻¹ᵁ ⊤)).op).hom ((h.app ⊤).hom (u : Γ(X, ⊤))) := by
   rw [res_res, pull_res_val]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(CartesianMonoidalCategory.toUnit (Over.mk (𝟙 S))).left, by simpa using Over.w (CartesianMonoidalCategory.toUnit (Over.mk (𝟙 S)))⟩`.
+-/
 theorem unit_sec {S : Scheme.{0}} : ∃ ι : S ⟶ (𝟙_ (Over S)).left, ι ≫ (𝟙_ (Over S)).hom = 𝟙 S := ⟨(CartesianMonoidalCategory.toUnit (Over.mk (𝟙 S))).left, by
   simpa using Over.w (CartesianMonoidalCategory.toUnit (Over.mk (𝟙 S)))⟩
 
+/- English proof (translation)
+Establish `hpt : ∀ (m : S0 ⟶ X) (z : S0), ∃ i, m.base z ∈ L.U i` using `fun m z => by`. Establish `hz : m.base z ∈ (⨆ i, L.U i)` using `by rw [hL.cover]; trivial`. Simplify `hz` using `[TopologicalSpace.Opens.mem_iSup]`. Set `c : S0 → (S0 ⟶ X) → L.ι` to `fun z m => if m = ψ then (hpt ψ z).choose else (hpt m z).choose`. Establish `hc_mem : ∀ z m, m.base z ∈ L.U (c z m)`.
+
+Introduce `z m`. Simplify using `only [c]`. Use `split_ifs with hm`. Substitute `hm` using the available equality. Conclude with `(hpt _ z).choose_spec`.
+
+Conclude with `(hpt m z).choose_spec`. Set `j : S0 → K → L.ι` to `fun z k => c z (h ≫ φ k)`. Set `j' : S0 → PUnit → L.ι` to `fun z _ => c z ψ`. Set `W : S0 → S0.Opens` to `fun z => LB.wchart L (fun k => h ≫ φ k) (j z) ⊓ LB.wchart L (fun _ : PUnit => ψ) (j' z)`. Establish `hzW : ∀ z, z ∈ W z` using `fun z => ⟨Set.mem_iInter.2 fun k => hc_mem z _, Set.mem_iInter.2 fun _ => hc_mem z ψ⟩`.
+
+Establish `hone : ∀ z, (S0.presheaf.map (homOfLE (le_top : W z ≤ h ⁻¹ᵁ ⊤)).op).hom ((h.app ⊤).hom (u : Γ(Y, ⊤))) = 1`. Introduce `z`. Establish `hcoh : LB.Coh L (fun k => h ≫ φ k) (j z)` using `fun k1 k2 e => congrArg (c z) e`. Establish `hcoh' : LB.Coh L (fun _ : PUnit => ψ) (j' z)` using `fun _ _ _ => rfl`. Establish `hcomp : ∀ k k', (fun k => h ≫ φ k) k = (fun _ : PUnit => ψ) k' → j z k = j' z k'` using `fun k k' e => congrArg (c z) e`.
+
+Establish `e` using `(hc (j z) (j' z) hcoh hcoh' hcomp).trans (hc' (j z) (j' z) hcoh hcoh' hcomp).symm`. Simplify using `only [LB.pullGen] at e`. Rewrite `e` using `[hu (j z)]`. Simplify using `only [map_mul] at e`. Use `erw [map_mul] at e`.
+
+Establish `e2` using `mul_eq_right.mp e`. Establish `e3` using `congrArg Units.val e2`. Establish `hWV : LB.wchart L (fun k => h ≫ φ k) (j z) ≤ h ⁻¹ᵁ LB.wchart L φ (j z)` using `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Conclude with `(pull_restrict_unit_value h (W' := W z) hWV inf_le_left u).symm.trans (e3.trans Units.val_one)`. Use `S0.sheaf.eq_of_locally_eq' W (h ⁻¹ᵁ ⊤) (fun z => homOfLE le_top) ?_ _ _ ?_` and prove the remaining obligations.
+
+Introduce `z _`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨z, hzW z⟩`. Introduce `z`. Express the relevant statement in the definitionally equal form `(S0.presheaf.map (homOfLE (le_top : W z ≤ h ⁻¹ᵁ ⊤)).op).hom ((h.app ⊤).hom (u : Γ(Y, ⊤))) = (S0.presheaf.map (homOfLE (le_top : W z ≤ h ⁻¹ᵁ ⊤)).op).hom 1`. Rewrite using `[hone z, map_one]`.
+-/
 theorem pull_unit_eq_one {X Y S0 : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : S0 ⟶ Y) (ψ : S0 ⟶ X)
     (rig : LB.Gen (LB.LinComb L (K := PUnit) (fun _ => ψ) fun _ => 1))
@@ -140,6 +192,17 @@ theorem pull_unit_eq_one {X Y S0 : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Typ
       ((h.app ⊤).hom (u : Γ(Y, ⊤))) = (S0.presheaf.map (homOfLE (le_top : W z ≤ h ⁻¹ᵁ ⊤)).op).hom 1
     rw [hone z, map_one]
 
+/- English proof (translation)
+Introduce `hglob E _ _ _ H Dw l Xo hab wP wP' hP hP'`. Take `⟨u, hu⟩` from `gen_ratio _ (wchart_cover Xo.univ.t.PP.L Xo.univ.t.PP.isLB _) wP wP' hP.1 hP'.1`. Establish `h1` using `pull_unit_eq_one Xo.univ.t.PP.L Xo.univ.t.PP.isLB _ _ (eSec Xo.univ.t.G) (eSec Xo.univ.t.G) Xo.univ.t.PP.rig wP wP' u hu hP.2 hP'.2`. Establish `hu1 : u = 1`. Take `⟨ι, hι⟩` from `unit_sec (S := Xo.X)`.
+
+Take `⟨c, hc⟩` from `(hglob _ _ hab).2 (u : Γ(Xo.univ.t.G.left, ⊤))`. Establish `e1 : eSec Xo.univ.t.G ≫ Xo.univ.t.G.hom = (𝟙_ (Over Xo.X)).hom` using `Over.w _`. Establish `hc1 : c = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e1, Scheme.Hom.comp_appTop, Scheme.Hom.comp_appTop]`.
+
+Both sides reduce to the same expression. Use `_ = 1 := by`. Rewrite using `[hc]`. Express the relevant statement in the definitionally equal form `ι.appTop.hom (((eSec Xo.univ.t.G).app ⊤).hom (u : Γ(Xo.univ.t.G.left, ⊤))) = 1`. Rewrite using `[h1]`.
+
+Conclude with `map_one _`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hc, hc1, map_one, Units.val_one]`. Substitute `hu1` using the available equality. Consider the cases of `wP`.
+
+Consider the cases of `wP'`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `j`. Simplify using `using hu j`.
+-/
 theorem primUniqOfGlobal_holds : PrimUniqOfGlobalSt := by
   intro hglob E _ _ _ H Dw l Xo hab wP wP' hP hP'
   obtain ⟨u, hu⟩ := gen_ratio _ (wchart_cover Xo.univ.t.PP.L Xo.univ.t.PP.isLB _) wP wP' hP.1 hP'.1
@@ -167,6 +230,9 @@ theorem primUniqOfGlobal_holds : PrimUniqOfGlobalSt := by
   funext j
   simpa using hu j
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo wP wP' hP hP'` and use `primUniqOfGlobal_holds hglob E H Dw l Xo (isAbelianScheme_univ Xo) wP wP' hP hP'`.
+-/
 theorem primUniq_of_global (hglob : GlobalFnsSt) : PrimUniqSt := fun E _ _ _ H Dw l Xo wP wP' hP hP' =>
   primUniqOfGlobal_holds hglob E H Dw l Xo (isAbelianScheme_univ Xo) wP wP' hP hP'
 

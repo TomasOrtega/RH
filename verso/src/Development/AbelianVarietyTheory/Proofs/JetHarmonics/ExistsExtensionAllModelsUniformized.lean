@@ -18,6 +18,19 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 
 namespace GlobalTheory.IntegralPull
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T io y hy`. Establish `hy' : T.FinRes` using `hy`. Take `⟨y, hft, hint⟩` from `y`. Establish `hint0` using `hint`. Take `⟨G, t', m1, m2, -⟩` from `hint`.
+
+Establish `: Finite (ResidueField T.V)` using `hy'`. Take `⟨W', _, _, _, _, _, hfin, hinj, hres, hS⟩` from `GlobalTheory.UnifAfterExt.exists_split_baseChange T.V G.G G.semi`. Establish `: CharZero W'` using `charZero_of_injective_algebraMap hinj`. Set `T' : Formalism.L2.Pj.CDVR` to `{ V := W', cr := inferInstance, dom := inferInstance, dvr := inferInstance, cpl := inferInstance, ch0 := inferInstance }`. Establish `hg : Function.Injective ((algebraMap T'.V T'.Fr).comp (algebraMap T.V W'))` using `(IsFractionRing.injective T'.V T'.Fr).comp hinj`.
+
+Set `ψ : T.Fr →+* T'.Fr` to `IsFractionRing.lift hg`. Establish `hψ : ∀ a, ψ (algebraMap T.V T.Fr a) = algebraMap T'.V T'.Fr (algebraMap T.V W' a)` using `fun a => IsFractionRing.lift_algebraMap hg a`. Use `letI := io.toAlgebra`. Use `letI := (ψ.comp io).toAlgebra`. Set `φ : T.Fr →ₐ[c.F] T'.Fr` to `{ ψ with commutes' := fun _ => rfl }`.
+
+Take `⟨z, hz⟩` from `GlobalTheory.FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1 E H Dw l Xo c T.Fr T'.Fr φ y`. Establish `hzT : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := by`. Unfold `FromTest at hft ⊢`. Take `⟨p, φ0, y0, h0⟩` from `hft`. Conclude with `⟨p, φ.comp φ0, y0, ((GlobalTheory.framedPoint_baseChange_laws E H Dw l Xo c).2.1 _ _ _ φ0 φ y0 y z h0).1 hz⟩`.
+
+Establish `hzI : Integral T' (ψ.comp io) z` using `integral_baseChange T T' io (ψ.comp io) (algebraMap T.V W') hinj φ (fun a => hψ a) y z hz hint0`. Establish `: Module.Finite T.V W'` using `hfin`. Establish `: FaithfulSMul T.V W'` using `(faithfulSMul_iff_algebraMap_injective T.V W').mpr hinj`. Establish `: IsLocalHom (algebraMap T.V W')` using `inferInstance`. Take `⟨r, hr0, hr⟩` from `exists_index (K' := T.Fr) (K'' := T'.Fr) (algebraMap T.V W') ψ hψ`.
+
+Establish `hx : z.x = spMap ψ ≫ y.x` using `hz.1`. Use `⟨T', ψ.comp io, ⟨z, hzT, hzI⟩, r, hres, hr0, ?_, φ, fun a _ => hr a, hz⟩` and prove the remaining obligations. Introduce `I'`. Conclude with `exists_unif_of_split T T' (algebraMap T.V W') ψ hψ m1 m2 hx I'.m1 I'.m2 hS`.
+-/
 theorem exists_ext_all_models_uniformised : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), y.IsAlg → ∃ (T' : CDVR) (io' : c.F →+* T'.Fr) (y' : IntFr Xo c T' io') (e' : ℕ), y'.IsAlg ∧ 0 < e' ∧ (∀ I : IntData Xo c T' io' y'.1, ∃ P : PELUnif (maximalIdeal T'.V) I.G, P.TorsionIso) ∧ letI := io.toAlgebra; letI := io'.toAlgebra; ∃ φ : T.Fr →ₐ[c.F] T'.Fr, (∀ a : T.Fr, a ≠ 0 → vV T'.V (φ a) = (e' : ℤ) * vV T.V a) ∧ FrMap φ y.1 y'.1 := by
   intro E _ _ _ H Dw l Xo c T io y hy
   have hy' : T.FinRes := hy

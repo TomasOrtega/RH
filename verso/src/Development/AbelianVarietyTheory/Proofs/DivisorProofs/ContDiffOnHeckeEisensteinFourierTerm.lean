@@ -13,9 +13,21 @@ def term (σ : ℂ) (ν : ℝ) (a b m : ℕ) (y t : ℝ) : ℂ :=
   ((t : ℂ) + (y : ℂ) * I)⁻¹ ^ a * (((t ^ 2 + y ^ 2 : ℝ) : ℂ)) ^ (-σ - (b : ℂ)) * (y : ℂ) ^ m *
     Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ)))
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Conclude with `hy this`.
+-/
 theorem u_ne {y : ℝ} (hy : y ≠ 0) (t : ℝ) : (t : ℂ) + (y : ℂ) * I ≠ 0 := by
   intro h; have := congrArg Complex.im h; simp at this; exact hy this
 
+/- English proof (translation)
+Establish `hu` using `u_ne hy t`. Establish `hQ : 0 < t ^ 2 + y ^ 2` using `by positivity`. Establish `h1 : HasDerivAt (fun y : ℝ => (t : ℂ) + (y : ℂ) * I) I y`. Simplify using `using ((hasDerivAt_id y).ofReal_comp.mul_const I).const_add (t : ℂ)`. Establish `h2 : HasDerivAt (fun y : ℝ => ((t : ℂ) + (y : ℂ) * I)⁻¹ ^ a) ((a : ℂ) * ((t : ℂ) + (y : ℂ) * I)⁻¹ ^ (a - 1) * (-(((t : ℂ) + (y : ℂ) * I) ^ 2)⁻¹ * I)) y` using `(((hasDerivAt_inv hu).comp y h1).pow a)`.
+
+Establish `h3 : HasDerivAt (fun y : ℝ => (((t ^ 2 + y ^ 2 : ℝ) : ℂ))) ((2 * y : ℝ) : ℂ) y`. Establish `: HasDerivAt (fun y : ℝ => t ^ 2 + y ^ 2) (2 * y) y`. Simplify using `using ((hasDerivAt_pow 2 y).const_add (t ^ 2))`. Conclude with `this.ofReal_comp`. Establish `h4` using `(Complex.hasStrictDerivAt_cpow_const (c := -σ - (b : ℂ)) (Complex.ofReal_mem_slitPlane.2 hQ)).hasDerivAt.comp y h3`.
+
+Establish `h5 : HasDerivAt (fun y : ℝ => (y : ℂ) ^ m) ((m : ℂ) * (y : ℂ) ^ (m - 1)) y` using `(hasDerivAt_pow m (y : ℂ)).comp_ofReal`. Establish `h` using `((h2.mul h4).mul h5).mul_const (Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ))))`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [term, Function.comp_def, Pi.mul_apply, ← inv_pow]`. Generalize the expression as in `((t : ℂ) + (y : ℂ) * I)⁻¹ = v`.
+
+Rewrite using `[show -σ - ((b + 1 : ℕ) : ℂ) = -σ - (b : ℂ) - 1 by push_cast; ring]`. Apply the tactic sequence `rcases a with _ | a <;> rcases m with _ | m <;>`. Apply the tactic sequence `simp only [Nat.add_sub_cancel, Nat.zero_sub, pow_zero, Nat.cast_zero, zero_mul, mul_zero, add_zero, zero_add, neg_zero, Complex.ofReal_mul, Complex.ofReal_ofNat] <;> push_cast <;> ring`.
+-/
 theorem hasDerivAt_term (σ : ℂ) (ν : ℝ) (a b m : ℕ) {y : ℝ} (hy : y ≠ 0) (t : ℝ) :
     HasDerivAt (fun y => term σ ν a b m y t)
       (-(a : ℂ) * I * term σ ν (a + 1) b m y t + 2 * (-σ - (b : ℂ)) * term σ ν a (b + 1) (m + 1) y t
@@ -44,6 +56,9 @@ theorem hasDerivAt_term (σ : ℂ) (ν : ℝ) (a b m : ℕ) {y : ℝ} (hy : y �
     simp only [Nat.add_sub_cancel, Nat.zero_sub, pow_zero, Nat.cast_zero, zero_mul, mul_zero, add_zero, zero_add,
       neg_zero, Complex.ofReal_mul, Complex.ofReal_ofNat] <;> push_cast <;> ring
 
+/- English proof (translation)
+Unfold `term`. Establish `h1 : Continuous fun t : ℝ => ((t : ℂ) + (y : ℂ) * I)⁻¹ ^ a` using `((by fun_prop : Continuous fun t : ℝ => (t : ℂ) + (y : ℂ) * I).inv₀ (u_ne hy)).pow a`. Establish `h2 : Continuous fun t : ℝ => (((t ^ 2 + y ^ 2 : ℝ) : ℂ)) ^ (-σ - (b : ℂ))` using `(by fun_prop : Continuous fun t : ℝ => (((t ^ 2 + y ^ 2 : ℝ) : ℂ))).cpow continuous_const fun t => Complex.ofReal_mem_slitPlane.2 (by positivity)`. Conclude with `((h1.mul h2).mul continuous_const).mul (by fun_prop)`.
+-/
 theorem continuous_term (σ : ℂ) (ν : ℝ) (a b m : ℕ) {y : ℝ} (hy : y ≠ 0) : Continuous (term σ ν a b m y) := by
   unfold term
   have h1 : Continuous fun t : ℝ => ((t : ℂ) + (y : ℂ) * I)⁻¹ ^ a :=
@@ -53,6 +68,25 @@ theorem continuous_term (σ : ℂ) (ν : ℝ) (a b m : ℕ) {y : ℝ} (hy : y �
       fun t => Complex.ofReal_mem_slitPlane.2 (by positivity)
   exact ((h1.mul h2).mul continuous_const).mul (by fun_prop)
 
+/- English proof (translation)
+Establish `hσ' : -1 / 2 < σ.re` using `hσ`. Use `set c := |y₀| / 2 with hc`. Establish `hc0 : 0 < c` using `by positivity`. Use `set e : ℝ := (a : ℝ) / 2 + b + σ.re with he`. Establish `hab' : (2 : ℝ) ≤ a + 2 * b` using `by exact_mod_cast hab`.
+
+Establish `he1 : 1 / 2 < e` using `by rw [he]; linarith`. Use `set κ := min 1 (c ^ 2) with hκ`. Establish `hκ0 : 0 < κ` using `lt_min one_pos (by positivity)`. Use `⟨fun t => (3 * c) ^ m * κ ^ (-e) * (1 + ‖t‖ ^ 2) ^ (-(2 * e) / 2), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(integrable_rpow_neg_one_add_norm_sq (by simp; linarith)).const_mul _`.
+
+Introduce `t y hy`. Rewrite `hy` using `[Metric.mem_ball, Real.dist_eq]`. Establish `hyl : c ≤ |y|`. Use `abs_sub_abs_le_abs_sub y₀ y` as an intermediate fact. Rewrite `this` using `[abs_sub_comm]`.
+
+Rewrite using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hyu : |y| ≤ 3 * c`. Use `abs_sub_abs_le_abs_sub y y₀` as an intermediate fact. Rewrite using `[hc]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy0 : y ≠ 0` using `fun h => by rw [h, abs_zero] at hyl; linarith`. Establish `hQ : 0 < t ^ 2 + y ^ 2` using `by positivity`. Establish `hnu : ‖(t : ℂ) + (y : ℂ) * I‖ = Real.sqrt (t ^ 2 + y ^ 2)`. Rewrite using `[← Complex.normSq_add_mul_I, Complex.norm_def]`.
+
+Establish `hnorm : ‖term σ ν a b m y t‖ = (t ^ 2 + y ^ 2) ^ (-e) * |y| ^ m`. Unfold `term`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_pow, norm_inv, hnu, Complex.norm_cpow_eq_rpow_re_of_pos hQ, norm_pow, Complex.norm_real, Real.norm_eq_abs, Complex.norm_exp]`. Establish `hre : (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ))).re = 0` using `by simp`. Rewrite using `[hre, Real.exp_zero, mul_one, he, Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_neg_one, ← Real.rpow_mul hQ.le, ← Real.rpow_mul hQ.le, ← Real.rpow_add hQ]`.
+
+Use `congr 2`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hnorm]`. Establish `hQk : κ * (1 + ‖t‖ ^ 2) ≤ t ^ 2 + y ^ 2`.
+
+Rewrite using `[Real.norm_eq_abs, sq_abs]`. Establish `h1 : κ ≤ 1` using `min_le_left _ _`. Establish `h2 : κ ≤ c ^ 2` using `min_le_right _ _`. Establish `h3 : c ^ 2 ≤ y ^ 2` using `by rw [← sq_abs y]; exact pow_le_pow_left₀ hc0.le hyl 2`. Use polynomial arithmetic with `[sq_nonneg t]`.
+
+Establish `hA : (t ^ 2 + y ^ 2) ^ (-e) ≤ κ ^ (-e) * (1 + ‖t‖ ^ 2) ^ (-(2 * e) / 2)`. Rewrite using `[show -(2 * e) / 2 = -e by ring, ← Real.mul_rpow hκ0.le (by positivity)]`. Conclude with `Real.rpow_le_rpow_of_nonpos (by positivity) hQk (by linarith)`. Establish `hB : |y| ^ m ≤ (3 * c) ^ m` using `pow_le_pow_left₀ (abs_nonneg y) hyu m`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_term_le (σ : ℂ) (hσ : σ ∈ halfPlane) (ν : ℝ) (a b m : ℕ) (hab : 2 ≤ a + 2 * b) {y₀ : ℝ}
     (hy₀ : y₀ ≠ 0) : ∃ bd : ℝ → ℝ, MeasureTheory.Integrable bd ∧
       ∀ t, ∀ y ∈ Metric.ball y₀ (|y₀| / 2), ‖term σ ν a b m y t‖ ≤ bd t := by
@@ -103,12 +137,18 @@ theorem norm_term_le (σ : ℂ) (hσ : σ ∈ halfPlane) (ν : ℝ) (a b m : ℕ
         mul_le_mul hA hB (by positivity) (by positivity)
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Rewrite `hy` using `[Metric.mem_ball, Real.dist_eq, zero_sub, abs_neg]`. Establish `: 0 < |y₀|` using `abs_pos.2 hy₀`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ne_zero_of_mem_ball {y₀ y : ℝ} (hy₀ : y₀ ≠ 0) (hy : y ∈ Metric.ball y₀ (|y₀| / 2)) : y ≠ 0 := by
   rintro rfl
   rw [Metric.mem_ball, Real.dist_eq, zero_sub, abs_neg] at hy
   have : 0 < |y₀| := abs_pos.2 hy₀
   linarith
 
+/- English proof (translation)
+Take `⟨bd, hbd, h⟩` from `norm_term_le σ hσ ν a b m hab hy`. Conclude with `hbd.mono' (continuous_term σ ν a b m hy).aestronglyMeasurable (MeasureTheory.ae_of_all _ fun t => h t y (Metric.mem_ball_self (by positivity)))`.
+-/
 theorem integrable_term (σ : ℂ) (hσ : σ ∈ halfPlane) (ν : ℝ) {a b : ℕ} (m : ℕ) (hab : 2 ≤ a + 2 * b) {y : ℝ}
     (hy : y ≠ 0) : MeasureTheory.Integrable (term σ ν a b m y) := by
   obtain ⟨bd, hbd, h⟩ := norm_term_le σ hσ ν a b m hab hy
@@ -117,6 +157,17 @@ theorem integrable_term (σ : ℂ) (hσ : σ ∈ halfPlane) (ν : ℝ) {a b : �
 
 def intT (σ : ℂ) (ν : ℝ) (a b m : ℕ) (y : ℝ) : ℂ := ∫ t : ℝ, term σ ν a b m y t
 
+/- English proof (translation)
+Take `⟨b1, hb1, h1⟩` from `norm_term_le σ hσ ν (a + 1) b m (by omega) hy₀`. Take `⟨b2, hb2, h2⟩` from `norm_term_le σ hσ ν a (b + 1) (m + 1) (by omega) hy₀`. Take `⟨b3, hb3, h3⟩` from `norm_term_le σ hσ ν a b (m - 1) hab hy₀`. Establish `i1` using `integrable_term σ hσ ν m (a := a + 1) (b := b) (by omega) hy₀`. Establish `i2` using `integrable_term σ hσ ν (m + 1) (a := a) (b := b + 1) (by omega) hy₀`.
+
+Establish `i3` using `integrable_term σ hσ ν (m - 1) (a := a) (b := b) hab hy₀`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := MeasureTheory.volume) (F := fun y t => term σ ν a b m y t) (F' := fun y t => -(a : ℂ) * I * term σ ν (a + 1) b m y t + 2 * (-σ - (b : ℂ)) * term σ ν a (b + 1) (m + 1) y t + (m : ℂ) * term σ ν a b (m - 1) y t) (bound := fun t …`. Apply the tactic sequence `refine (norm_add_le _ _).trans (add_le_add ((norm_add_le _ _).trans (add_le_add ?_ ?_)) ?_) <;>`. Apply the tactic sequence `rw [norm_mul] <;> gcongr`. Conclude with `h1 t y hy`.
+
+Conclude with `h2 t y hy`. Conclude with `h3 t y hy)`. Use the proof step `(((hb1.const_mul _).add (hb2.const_mul _)).add (hb3.const_mul _))`. Use the proof step `(MeasureTheory.ae_of_all _ fun t y hy => hasDerivAt_term σ ν a b m (ne_zero_of_mem_ball hy₀ hy) t)`. Establish `k2` using `key.2`.
+
+Establish `hI : (∫ t, (-(a : ℂ) * I * term σ ν (a + 1) b m y₀ t + 2 * (-σ - (b : ℂ)) * term σ ν a (b + 1) (m + 1) y₀ t + (m : ℂ) * term σ ν a b (m - 1) y₀ t)) = -(a : ℂ) * I * intT σ ν (a + 1) b m y₀ + 2 * (-σ - (b : ℂ)) * intT σ ν a (b + 1) (m + 1) y₀ + (m : ℂ) * intT σ ν a b (m - 1) y₀`. Unfold `intT`. Rewrite using `[MeasureTheory.integral_add _ (i3.const_mul _), MeasureTheory.integral_add (i1.const_mul _) (i2.const_mul _), MeasureTheory.integral_const_mul, MeasureTheory.integral_const_mul, MeasureTheory.integral_const_mul]`. Conclude with `(i1.const_mul _).add (i2.const_mul _)`. Rewrite `k2` using `[hI]`.
+
+Conclude with `k2`.
+-/
 theorem hasDerivAt_intT (σ : ℂ) (hσ : σ ∈ halfPlane) (ν : ℝ) {a b : ℕ} (m : ℕ) (hab : 2 ≤ a + 2 * b) {y₀ : ℝ}
     (hy₀ : y₀ ≠ 0) :
     HasDerivAt (intT σ ν a b m)
@@ -157,6 +208,13 @@ theorem hasDerivAt_intT (σ : ℂ) (hσ : σ ∈ halfPlane) (ν : ℝ) {a b : �
   rw [hI] at k2
   exact k2
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `a b m hab`. Conclude with `contDiffOn_zero.2 fun y hy => (hasDerivAt_intT σ hσ ν m hab hy).continuousAt.continuousWithinAt`.
+
+Consider the case `succ n ih`. Introduce `a b m hab`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_deriv_of_isOpen isOpen_ne]`. Use `⟨fun y hy => (hasDerivAt_intT σ hσ ν m hab hy).differentiableAt.differentiableWithinAt, by simp, ?_⟩` and prove the remaining obligations. Establish `c1` using `(contDiffOn_const (c := -(a : ℂ) * I)).mul (ih (a + 1) b m (by omega))`.
+
+Establish `c2` using `(contDiffOn_const (c := 2 * (-σ - (b : ℂ)))).mul (ih a (b + 1) (m + 1) (by omega))`. Establish `c3` using `(contDiffOn_const (c := (m : ℂ))).mul (ih a b (m - 1) hab)`. Use `((c1.add c2).add c3).congr fun y hy => ?_` and prove the remaining obligations. Conclude with `(hasDerivAt_intT σ hσ ν m hab hy).deriv`.
+-/
 theorem contDiffOn_intT (σ : ℂ) (hσ : σ ∈ halfPlane) (ν : ℝ) :
     ∀ n : ℕ, ∀ a b m : ℕ, 2 ≤ a + 2 * b → ContDiffOn ℝ n (intT σ ν a b m) {y | y ≠ 0} := by
   intro n
@@ -174,6 +232,13 @@ theorem contDiffOn_intT (σ : ℂ) (hσ : σ ∈ halfPlane) (ν : ℝ) :
     refine ((c1.add c2).add c3).congr fun y hy => ?_
     exact (hasDerivAt_intT σ hσ ν m hab hy).deriv
 
+/- English proof (translation)
+Unfold `hTrans intT`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `hQ : 0 < t ^ 2 + y ^ 2` using `by positivity`. Establish `hnu : ‖(t : ℂ) + (y : ℂ) * I‖ = Real.sqrt (t ^ 2 + y ^ 2)`.
+
+Rewrite using `[← Complex.normSq_add_mul_I, Complex.norm_def]`. Unfold `term phi`. Rewrite using `[hnu]`. Simplify using `only [Nat.cast_zero, sub_zero, pow_zero, mul_one]`. Use `congr 2`.
+
+Establish `hs : 0 < Real.sqrt (t ^ 2 + y ^ 2)` using `Real.sqrt_pos.2 hQ`. Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast hs.ne'), Complex.cpow_def_of_ne_zero (by exact_mod_cast hQ.ne'), ← Complex.ofReal_log hs.le, ← Complex.ofReal_log hQ.le, Real.log_sqrt hQ.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hTrans_eq (σ : ℂ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) : hTrans σ ν y = intT σ ν 2 0 0 y := by
   unfold hTrans intT
   congr 1
@@ -192,6 +257,9 @@ theorem hTrans_eq (σ : ℂ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) : hTrans σ ν 
   push_cast
   ring
 
+/- English proof (translation)
+Use `(contDiffOn_infty.2 fun n => contDiffOn_intT σ hσ ν n 2 0 0 (by norm_num)).congr fun y hy => ?_` and prove the remaining obligations. Conclude with `hTrans_eq σ ν hy`.
+-/
 theorem contDiffOn_hTrans (σ : ℂ) (hσ : σ ∈ halfPlane) (ν : ℝ) :
     ContDiffOn ℝ ∞ (hTrans σ ν) {y | y ≠ 0} := by
   refine (contDiffOn_infty.2 fun n => contDiffOn_intT σ hσ ν n 2 0 0 (by norm_num)).congr fun y hy => ?_
@@ -201,6 +269,11 @@ end GlobalTheory.HeckeTwo.TermSmooth
 
 namespace GlobalTheory.HeckeTwo
 
+/- English proof (translation)
+Introduce `F _ _ b ν hb σ hσ`. Unfold `fTerm`. Use `contDiffOn_prod fun τ _ => ?_` and prove the remaining obligations. Establish `he : ContDiff ℝ ∞ (fun z : Emb F → ℂ => Complex.exp (2 * (Real.pi : ℂ) * I * ((τ ν * τ b * (z τ).re : ℝ) : ℂ)))` using `(contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (contDiff_const.mul (Complex.reCLM.contDiff.comp (contDiff_apply ℝ ℂ τ))))).cexp`. Establish `hg : ContDiff ℝ ∞ (fun z : Emb F → ℂ => τ b * (z τ).im)` using `contDiff_const.mul (Complex.imCLM.contDiff.comp (contDiff_apply ℝ ℂ τ))`.
+
+Establish `hh : ContDiffOn ℝ ∞ (fun z : Emb F → ℂ => hTrans σ (τ ν) (τ b * (z τ).im)) (upperHalf F)` using `(TermSmooth.contDiffOn_hTrans σ hσ (τ ν)).comp hg.contDiffOn fun z hz => mul_ne_zero ((map_ne_zero τ).2 hb) (hz τ).ne'`. Conclude with `he.contDiffOn.mul hh`.
+-/
 theorem fTerm_contDiffOn : ∀ (F : Type) [Field F] [NumberField F] (b ν : F), b ≠ 0 → ∀ σ ∈ halfPlane,
     ContDiffOn ℝ ∞ (fun z : Emb F → ℂ => fTerm σ z b ν) (upperHalf F) := by
   intro F _ _ b ν hb σ hσ

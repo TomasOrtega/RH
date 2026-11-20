@@ -6,12 +6,20 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.CombBase
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [comp_one]`. Consider the case `cons a l ih => simp only [List.prod_cons, List.map_cons, comp_mul, ih]`.
+-/
 theorem comp_list_prod {S : Scheme.{0}} {G A B : Over S} [GrpObj G] (g : A ⟶ B) (l : List (B ⟶ G)) :
     g ≫ l.prod = (l.map (g ≫ ·)).prod := by
   induction l with
   | nil => simp [comp_one]
   | cons a l ih => simp only [List.prod_cons, List.map_cons, comp_mul, ih]
 
+/- English proof (translation)
+Introduce and unpack `S G _ _ F _ x F' _ f x' hx n v cf w v' w' hv hw ⟨u, hu, e⟩`. Use `⟨fun i => LieTangent.epsBase f hx ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap (dualMap f) ≫ (u i).left = _`. Rewrite using `[hu i, ← Category.assoc, LieTangent.spec_dual_eps, Category.assoc, hv i]`. Rewrite using `[(LieTangent.left_eq_iff f hx w' w).1 hw, e, comp_list_prod, List.map_ofFn]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isComb_base : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (F : Type) [Field F] (x : Sp F ⟶ S) (F' : Type) [Field F'] (f : F →+* F') (x' : Sp F' ⟶ S), spMap f ≫ x = x' → ∀ (n : ℕ) (v : Fin n → (epsAt x ⟶ G)) (cf : Fin n → F) (w : epsAt x ⟶ G) (v' : Fin n → (epsAt x' ⟶ G)) (w' : epsAt x' ⟶ G), (∀ i, (v' i).left = spMap (dualMap f) ≫ (v i).left) → w'.left = spMap (dualMap f) ≫ w.left → IsComb cf v w → IsComb (fun i => f (cf i)) v' w' := by
   rintro S G _ _ F _ x F' _ f x' hx n v cf w v' w' hv hw ⟨u, hu, e⟩
   refine ⟨fun i => LieTangent.epsBase f hx ≫ u i, fun i => ?_, ?_⟩

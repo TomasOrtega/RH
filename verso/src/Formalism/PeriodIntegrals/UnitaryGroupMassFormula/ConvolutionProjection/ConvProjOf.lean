@@ -24,6 +24,11 @@ def SandStep : Prop :=
     ∀ (K : Type) [NormedAddCommGroup K] [InnerProductSpace ℂ K] (π : G → (K →L[ℂ] K)) (T : K →L[ℂ] K),
       IsURep π → IsOpInt μ π ph T → ∀ a, T.comp ((π a).comp T) = m a • T
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ μ _ _ _ ph m hph hci K _ _ π T hπ hT`. Establish `hsa` using `h1 G μ ph m hph hci K π T hπ hT`. Establish `hsw` using `h2 G μ ph m hph hci K π T hπ hT`. Take `⟨hπ1, -⟩` from `hπ`. Take `⟨hm1, -⟩` from `hci`.
+
+Use `⟨hsa, ?_, hsw⟩` and prove the remaining obligations. Establish `h` using `hsw 1`. Rewrite `h` using `[hπ1, hm1, one_smul, ContinuousLinearMap.one_def, ContinuousLinearMap.id_comp]`. Conclude with `h`.
+-/
 theorem convProj_of (h1 : SelfAdjStep) (h2 : SandStep) : ConvProj := by
   intro G _ _ _ _ _ _ μ _ _ _ ph m hph hci K _ _ π T hπ hT
   have hsa := h1 G μ ph m hph hci K π T hπ hT

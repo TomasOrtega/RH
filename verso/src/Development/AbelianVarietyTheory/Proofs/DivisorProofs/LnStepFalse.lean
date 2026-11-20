@@ -84,6 +84,9 @@ def stepNorm {X : Scheme.{0}} (t : SAB H X) {C : Type} [NontriviallyNormedField 
   | .inr k => if h : k < (letters Dw).length then
       grNorm t x (latDR t x) (fun i => u ((letters Dw).get i).1 ((letters Dw).get i).2) ⟨k, h⟩ else 1
 
+/- English proof (translation)
+Apply the tactic sequence `rcases st with ⟨τ, k⟩ | k <;> simp only [lnStep, stepNorm, lat] <;> split_ifs <;> simp_all`.
+-/
 theorem lnStep_false {X : Scheme.{0}} (t : SAB H X) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     (x : Sp C ⟶ X) (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber C) ⟶ t.G.left)) (p : ℕ)
     (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) : lnStep t x u p false st = Real.log (stepNorm t x u st) := by

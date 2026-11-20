@@ -9,5 +9,8 @@ open GlobalTheory.SeeSaw (idV dI FI)
 open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.LatMatch.exists_cenAt_scalar | exact GlobalTheory.Core.Mi.LatMatch.exists_cenAt_scalar | (intros; apply GlobalTheory.Core.Mi.LatMatch.exists_cenAt_scalar <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_centralUnitary_scalar_of_normOneIdele : ∀ (D : D7) (S : HSp D) (v : GlobalTheory.FinPl.Pl D) (c : AE D), NormOneAt v c → ∃ z : GA D S, CenAt S v z ∧ Formalism.L2.Theta.mt S z = c • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) := by
   first | exact @GlobalTheory.Core.Mi.LatMatch.exists_cenAt_scalar | exact GlobalTheory.Core.Mi.LatMatch.exists_cenAt_scalar | (intros; apply GlobalTheory.Core.Mi.LatMatch.exists_cenAt_scalar <;> assumption)

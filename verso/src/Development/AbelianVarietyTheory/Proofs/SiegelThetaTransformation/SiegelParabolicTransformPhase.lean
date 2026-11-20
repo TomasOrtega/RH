@@ -11,6 +11,15 @@ namespace GlobalTheory.Phase.ParabValues
 
 open GlobalTheory.SW.Parab
 
+/- English proof (translation)
+Use `⟨2 * q.den, by have := q.den_pos; omega, ?_⟩` and prove the remaining obligations. Establish `hn : ‖cexp (-(Real.pi * I * (q : ℂ)))‖ = 1`. Establish `: -(Real.pi * I * (q : ℂ)) = ((-(Real.pi * q) : ℝ) : ℂ) * I` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`. Establish `he : cexp (-(Real.pi * I * (q : ℂ))) ^ (2 * q.den) = 1`.
+
+Rewrite using `[← Complex.exp_nat_mul, Complex.exp_eq_one_iff]`. Use `⟨-q.num, ?_⟩` and prove the remaining obligations. Establish `h : (q : ℂ) * (q.den : ℂ) = (q.num : ℂ)` using `by exact_mod_cast Rat.mul_den_eq_num q`. Use `push_cast`. Rewrite using `[← h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_pow, he, mul_one, norm_mul, hn, mul_one, Complex.norm_ratCast]`. Establish `: (|(r : ℝ)|) ^ (2 * q.den) = (r : ℝ) ^ (2 * q.den)` using `Even.pow_abs ⟨q.den, by ring⟩ _`. Rewrite using `[← Complex.ofReal_pow, this]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem ph_rat_mul_exp (r q : ℚ) : Ph ((r : ℂ) * cexp (-(Real.pi * I * (q : ℂ)))) := by
   refine ⟨2 * q.den, by have := q.den_pos; omega, ?_⟩
   have hn : ‖cexp (-(Real.pi * I * (q : ℂ)))‖ = 1 := by
@@ -29,6 +38,27 @@ theorem ph_rat_mul_exp (r q : ℚ) : Ph ((r : ℂ) * cexp (-(Real.pi * I * (q : 
   push_cast
   rfl
 
+/- English proof (translation)
+Use `set A := σ.toBlocks₁₁ with hA`. Use `set B := σ.toBlocks₁₂ with hB`. Use `set D := σ.toBlocks₂₂ with hD`. Establish `hDA : D * Aᵀ = 1`. Establish `h` using `SymplecticGroup.mem_iff.mp hσ`.
+
+Rewrite `h` using `[← Matrix.fromBlocks_toBlocks σ, hC, Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Use `congrArg Matrix.toBlocks₂₁ h` as an intermediate fact. Simplify using `using this`. Establish `hdet : D.det * A.det = 1`. Use `congrArg Matrix.det hDA` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`. Then use the resulting hypothesis. Establish `hA0 : A.det ≠ 0` using `right_ne_zero_of_mul_eq_one hdet`. Establish `hAu : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA0`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `isSB_parChar_mul (B * Aᵀ) _ ((GlobalTheory.SW.LinChange.haar_mul ℚ κ ι φ hφ).1 A hA0).1`.
+
+Conclude with `(GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ h1 h1).2.1 _`. Introduce `τ _ ζ`. Establish `hden : spDen σ τ = qm D`. Unfold `spDen`. Rewrite using `[hC]`.
+
+Establish `: qm (0 : Matrix ι ι ℚ) = 0` using `by ext i j; simp [qm]`. Rewrite using `[this, Matrix.zero_mul, zero_add]`. Establish `hinv : (qm D)⁻¹ = (qm A)ᵀ`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `e : (qm A)ᵀ = qm Aᵀ` using `rfl`.
+
+Rewrite using `[e, ← qm_mul', hDA]`. Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [qm, Matrix.one_apply, h]`. Establish `hdetD : (qm D).det = (D.det : ℂ)` using `((Rat.castHom ℂ).map_det D).symm`. Establish `hC' : qm σ.toBlocks₂₁ = 0` using `by rw [hC]; ext i j; simp [qm]`. Unfold `spAct`.
+
+Rewrite using `[hden, hinv, hC', hdetD]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mulVec, dotProduct_zero, Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one]`. Set `e : Matrix κ ι ℚ ≃ Matrix κ ι ℚ` to `{ toFun := fun x => x * A invFun := fun x => x * A⁻¹ left_inv := fun x => Matrix.mul_nonsing_inv_cancel_right A x hAu right_inv := fun x => Matrix.nonsing_inv_mul_cancel_right A x hAu }`. Unfold `thS`. Rewrite using `[← tsum_mul_left, ← e.tsum_eq (fun x => _ * (φ x * _))]`.
+
+Use `tsum_congr fun x => ?_` and prove the remaining obligations. Use `show ((D.det : ℂ) ^ (Fintype.card κ / 2)) * (parChar (B * Aᵀ) x * φ (x * A)) * _ = _ * (φ (x * A) * cexp (Real.pi * I * ∑ k, (qv ((x * A) k) ⬝ᵥ τ *ᵥ qv ((x * A) k) + 2 * (qv ((x * A) k) ⬝ᵥ ζ k))))`. Rewrite using `[mul_assoc, mul_comm (parChar _ _), mul_assoc]`. Use `congr 2`. Unfold `parChar`.
+
+Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Rewrite using `[← mul_neg, ← mul_add, Rat.cast_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[qv_bilin, qv_row_mul, qm_mul']`. Establish `e1 : qm Aᵀ = (qm A)ᵀ` using `rfl`. Use `beta_reduce`. Rewrite using `[e1, Matrix.add_mul, Matrix.add_mulVec, dotProduct_add, Matrix.vecMul_transpose, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_transpose, Matrix.dotProduct_mulVec (qv (x k)) (qm A), Matrix.dotProduct_mulVec (qv (x k)) (qm A)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trans_explicit (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι]
     (σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) (hσ : σ ∈ Matrix.symplecticGroup ι ℚ) (hC : σ.toBlocks₂₁ = 0)
     (φ : Matrix κ ι ℚ → ℂ) (hφ : IsSB φ) :
@@ -100,6 +130,11 @@ theorem trans_explicit (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι]
       Matrix.dotProduct_mulVec (qv (x k)) (qm A)]
     ring
 
+/- English proof (translation)
+Take `⟨hd, hs, -⟩` from `GlobalTheory.SiegelAction.symplectic_action ι σ hσ _ (I_mem_siegel (ι := ι))`. Use `GlobalTheory.SW.eq_of_thS_eq κ ι ψ ψ' hψ hψ' _ hs fun ζ => ?_` and prove the remaining obligations. Establish `e : ζ = fun k => (ζ k ᵥ* spDen σ (I • (1 : Matrix ι ι ℂ))) ᵥ* (spDen σ (I • (1 : Matrix ι ι ℂ)))⁻¹`. Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hd), Matrix.vecMul_one]`.
+
+Rewrite using `[e, h _ I_mem_siegel, h' _ I_mem_siegel]`.
+-/
 theorem trans_unique (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι]
     (σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) (hσ : σ ∈ Matrix.symplecticGroup ι ℚ)
     (φ ψ ψ' : Matrix κ ι ℚ → ℂ) (hψ : IsSB ψ) (hψ' : IsSB ψ') (h : TransS σ φ ψ)
@@ -113,6 +148,11 @@ theorem trans_unique (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι]
       Matrix.vecMul_one]
   rw [e, h _ I_mem_siegel, h' _ I_mem_siegel]
 
+/- English proof (translation)
+Introduce `κ ι _ _ _ _ σ hσ hC φ ψ hφ hψ h y`. Take `⟨h1, h2⟩` from `trans_explicit κ ι σ hσ hC φ hφ`. Establish `e` using `trans_unique κ ι σ hσ φ _ _ hψ h1 h h2`. Use `⟨((σ.toBlocks₂₂.det ^ (Fintype.card κ / 2) : ℚ) : ℂ) * parChar (σ.toBlocks₁₂ * σ.toBlocks₁₁ᵀ) y, y * σ.toBlocks₁₁, ph_rat_mul_exp _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem values_parabolic : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι], Even (Fintype.card κ) → ∀ σ ∈ Matrix.symplecticGroup ι ℚ, σ.toBlocks₂₁ = 0 → ∀ φ ψ : Matrix κ ι ℚ → ℂ, IsSB φ → IsSB ψ → TransS σ φ ψ → ∀ y, ∃ (u : ℂ) (y' : Matrix κ ι ℚ), Ph u ∧ ψ y = u * φ y' := by
   intro κ ι _ _ _ _ σ hσ hC φ ψ hφ hψ h y
   obtain ⟨h1, h2⟩ := trans_explicit κ ι σ hσ hC φ hφ

@@ -21,6 +21,13 @@ def lieCongr {G H : PDivGroup p O} (f : G ≅ H) : G.Lie ≃ₗ[O] H.Lie :=
     (by rw [← lieMap_comp, f.inv_hom_id, lieMap_id])
     (by rw [← lieMap_comp, f.hom_inv_id, lieMap_id])
 
+/- English proof (translation)
+Use `⟨(tateCongr O f).symm ≪≫ₗ e, (omegaDualCongr f).symm ≪≫ₗ fil, lie ≪≫ₗ lieCongr f, fun s => ?_, fun x χ => ?_⟩` and prove the remaining obligations. Use `h1 (tateMap H G O f.inv s)` as an intermediate fact. Express the relevant statement in the definitionally equal form `D.al (toO e (tateMap H G O f.inv s)) = (fil (omegaDualMap H G f.inv (hodgeTate H s)) : Fin h → O)`. Rewrite using `[this, ← hodgeTate_tateMap]`. Use `set χ' := tateMap _ _ O (dualHom G H f.hom) χ`.
+
+Establish `hp : ∀ y, pairingO hε ((tateCongr O f).symm ≪≫ₗ e) y χ = pairingO hε e y χ'`. Introduce `y`. Simplify using `only [pairingO, LinearEquiv.symm_trans_apply, LinearEquiv.symm_symm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Simplify using `only [epsPairing, tateCongr_apply, pairing_tateMap, χ']`. Establish `hl : (lie ≪≫ₗ lieCongr f).symm x = lie.symm (lieMap H G f.inv x)` using `rfl`. Rewrite using `[hp, hl, h2, lieMap_apply, dlog_tateMap, ← LinearMap.comp_apply (omegaMap H G f.inv), ← omegaMap_comp, f.inv_hom_id, omegaMap_id, LinearMap.id_apply]`.
+-/
 theorem datum_transport [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) {h : ℕ}
     {G H : PDivGroup p O} (f : G ≅ H) (D : Datum ε h ℤ_[p]) (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p]))
     (fil : G.dual.omega ≃ₗ[O] D.Fil) (lie : ((Fin h → O) ⧸ D.Fil) ≃ₗ[O] G.Lie)
@@ -47,6 +54,11 @@ theorem datum_transport [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem
     rw [hp, hl, h2, lieMap_apply, dlog_tateMap, ← LinearMap.comp_apply (omegaMap H G f.inv),
       ← omegaMap_comp, f.inv_hom_id, omegaMap_id, LinearMap.id_apply]
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε G H ⟨f⟩ hG`. Use `haveI : IsIntegrallyClosedIn O C := isIntegrallyClosedIn_iff.2 ⟨hv.hom_inj, fun hx => hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 hx)⟩`. Establish `hh : G.height = H.height`. Rewrite using `[← PDivGroup.finrank_tate G C, ← PDivGroup.finrank_tate H C]`. Conclude with `(tateCongr O f).finrank_eq`.
+
+Take `⟨D, e, fil, lie, h1, h2⟩` from `hG`. Unfold `HasDatum`. Rewrite using `[← hh]`. Take `⟨e', fil', lie', h1', h2'⟩` from `datum_transport hε f D e fil lie h1 h2`. Conclude with `⟨D, e', fil', lie', h1', h2'⟩`.
+-/
 theorem hasDatum_of_iso : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O →

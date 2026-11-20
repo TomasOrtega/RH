@@ -11,6 +11,9 @@ variable {eps : ℝ}
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+The claim follows from `Closed.of_all fun Fm _ => GenusMassVolumes.siegel_mass_ratio_family Fm h2v := tie.imp fun Fm _ _ t => family_property_mono (family_conditions_of_layer_two Fm t).1 fun D hT => GenusMassVolumes.volume_eq_mass_rank_two D (StandardLattice.volumeMass_of_unfolding D (hU D hT)) (GenusMa …`.
+-/
 theorem Wire.famGLmin_of_realPlaceSecondLayer (𝒞 : FamClass) (tie : Closed 𝒞 fun Fm _ => RealPlaceSecondLayerConditions Fm)
     (hU : ∀ D, MassRatioUnderVolume D) (hG : ∀ D, GenusMassVolumes.GenusMassAt D 2) :
     Wire.FamGLmin 𝒞 4 where

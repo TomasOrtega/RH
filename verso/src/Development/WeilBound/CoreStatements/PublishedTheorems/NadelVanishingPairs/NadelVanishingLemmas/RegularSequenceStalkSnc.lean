@@ -15,12 +15,20 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RegParams
 
+/- English proof (translation)
+Introduce `k _ X f _ x`. Use `haveI : JacobsonSpace X := LocallyOfFiniteType.jacobsonSpace f`. Take `⟨y, hy, hyc⟩` from `nonempty_inter_closedPoints (Set.singleton_nonempty x).closure isClosed_closure.isLocallyClosed`. Conclude with `⟨y, hyc, fun U hU => (specializes_iff_mem_closure.2 hy).mem_open U.isOpen hU⟩`.
+-/
 theorem exists_closed_specialization : ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Sp k) [LocallyOfFiniteType f] (x : X), ∃ y : X, IsClosed ({y} : Set X) ∧ ∀ U : X.Opens, y ∈ U → x ∈ U := by
   intro k _ X f _ x
   haveI : JacobsonSpace X := LocallyOfFiniteType.jacobsonSpace f
   obtain ⟨y, hy, hyc⟩ := nonempty_inter_closedPoints (Set.singleton_nonempty x).closure isClosed_closure.isLocallyClosed
   exact ⟨y, hyc, fun U hU => (specializes_iff_mem_closure.2 hy).mem_open U.isOpen hU⟩
 
+/- English proof (translation)
+Introduce `k B A K _ _ _ _ _ _ _ _ _ _ _ ι b h`. Set `g : Ω[B⁄k] →ₗ[B] K ⊗[A] Ω[A⁄k]` to `((TensorProduct.mk A K Ω[A⁄k] 1).restrictScalars B).comp (KaehlerDifferential.map k k B A)`. Set `φ : K ⊗[B] Ω[B⁄k] →ₗ[K] K ⊗[A] Ω[A⁄k]` to `g.liftBaseChange K`. Use `LinearIndependent.of_comp φ ?_` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using `[φ, g, KaehlerDifferential.map_D]`.
+-/
 theorem linearIndependent_fibre_of_stalk : ∀ (k B A K : Type) [CommRing k] [CommRing B] [CommRing A] [Field K] [Algebra k B] [Algebra k A] [Algebra B A] [IsScalarTower k B A] [Algebra A K] [Algebra B K] [IsScalarTower B A K] (ι : Type) (b : ι → B), LinearIndependent K (fun i => (1 : K) ⊗ₜ[A] KaehlerDifferential.D k A (algebraMap B A (b i))) → LinearIndependent K (fun i => (1 : K) ⊗ₜ[B] KaehlerDifferential.D k B (b i)) := by
   intro k B A K _ _ _ _ _ _ _ _ _ _ _ ι b h
   let g : Ω[B⁄k] →ₗ[B] K ⊗[A] Ω[A⁄k] :=
@@ -31,6 +39,21 @@ theorem linearIndependent_fibre_of_stalk : ∀ (k B A K : Type) [CommRing k] [Co
   funext i
   simp [φ, g, KaehlerDifferential.map_D]
 
+/- English proof (translation)
+Introduce `k A _ _ _ _ n s t g e htm hinj hass hli`. Establish `hsome : ∀ i : {i : Fin s // IsLocalRing.residue A (g i) = 0}, (e i.1).isSome`. Introduce and unpack `⟨i, hi⟩`. Consider the cases of `he : e i with`. Consider the case `none`.
+
+It suffices to derive a contradiction. Establish `h1` using `hass i`. Rewrite `h1` using `[he]`. Establish `hu : IsUnit (g i)` using `h1.symm.isUnit isUnit_one`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 hu hi`.
+
+Consider the case `some a => rfl`. Set `a : {i : Fin s // IsLocalRing.residue A (g i) = 0} → Fin n` to `fun i => (e i.1).get (hsome i)`. Establish `hea : ∀ i, e i.1 = some (a i)` using `fun i => (Option.some_get _).symm`. Establish `ha : Function.Injective a` using `fun i j h => Subtype.ext (hinj i.1 j.1 (a i) (hea i) (h ▸ hea j))`. Establish `hass' : ∀ i : {i : Fin s // IsLocalRing.residue A (g i) = 0}, Associated (g i.1) (t (a i))`.
+
+Introduce `i`. Use `hass i.1` as an intermediate fact. Rewrite `this` using `[hea i]`. Conclude with `this`. Use `choose u hu using hass'`.
+
+Set `w : {i : Fin s // IsLocalRing.residue A (g i) = 0} → (IsLocalRing.ResidueField A)ˣ` to `fun i => Units.map (IsLocalRing.residue A).toMonoidHom (u i)⁻¹`. Establish `key : ∀ i, (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] KaehlerDifferential.D k A (g i.1) = (w i : IsLocalRing.ResidueField A) • ((1 : IsLocalRing.ResidueField A) ⊗ₜ[A] KaehlerDifferential.D k A (t (a i)))`. Introduce `i`. Establish `hg : g i.1 = t (a i) * (((u i)⁻¹ : Aˣ) : A)` using `by rw [← hu i, Units.mul_inv_cancel_right]`. Establish `ht0 : IsLocalRing.residue A (t (a i)) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 (htm _)`.
+
+Rewrite using `[hg, Derivation.leibniz, TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, ← algebraMap_smul (IsLocalRing.ResidueField A) (t (a i)), ← algebraMap_smul (IsLocalRing.ResidueField A) (((u i)⁻¹ : Aˣ) : A)]`. Simplify using `only [IsLocalRing.ResidueField.algebraMap_eq, ht0, zero_smul, zero_add, w]`. Both sides reduce to the same expression. Use `(hli.comp a ha).units_smul w` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Conclude with `key i`.
+-/
 theorem linearIndependent_fibre_of_associated : ∀ (k A : Type) [Field k] [CommRing A] [IsLocalRing A] [Algebra k A] (n s : ℕ) (t : Fin n → A) (g : Fin s → A) (e : Fin s → Option (Fin n)), (∀ a, t a ∈ IsLocalRing.maximalIdeal A) → (∀ i j a, e i = some a → e j = some a → i = j) → (∀ i, Associated (g i) ((e i).elim 1 t)) → LinearIndependent (IsLocalRing.ResidueField A) (fun a => (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] KaehlerDifferential.D k A (t a)) → LinearIndependent (IsLocalRing.ResidueField A) (fun i : {i : Fin s // IsLocalRing.residue A (g i) = 0} => (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] KaehlerDifferential.D k A (g i)) := by
   intro k A _ _ _ _ n s t g e htm hinj hass hli
   classical
@@ -69,6 +92,23 @@ theorem linearIndependent_fibre_of_associated : ∀ (k A : Type) [Field k] [Comm
   funext i
   exact key i
 
+/- English proof (translation)
+Introduce `k _ _ X f d _ s L σ hL H`. Use `haveI : Smooth f := SmoothOfRelativeDimension.smooth d f`. Use `haveI : LocallyOfFiniteType f := inferInstance`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian f`. Use `⟨hL, fun x => ?_⟩` and prove the remaining obligations.
+
+It suffices to establish `hcl : ∀ y : X, IsClosed ({y} : Set X) → ∃ C : SncChart f d L σ, y ∈ C.U by`. Take `⟨y, hy, hxy⟩` from `exists_closed_specialization k X f x`. Take `⟨C, hC⟩` from `hcl y hy`. Conclude with `⟨C, hxy _ hC⟩`. Introduce `x hx`.
+
+Take `⟨n, t, c, hc, e, hrsp, hinj, hass⟩` from `H x hx`. Choose the witnesses or unpack the hypotheses as in `⟨U, hUa, hxU, hUc⟩ : ∃ U : X.Opens, IsAffineOpen U ∧ x ∈ U ∧ ∀ i, U ≤ (L i).U (c i) := by`. Establish `hxW : x ∈ ⋂ i, ((L i).U (c i) : Set X)` using `Set.mem_iInter.2 fun i => hc i`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxW (isOpen_iInter_of_finite fun i => ((L i).U (c i)).isOpen)`. Conclude with `⟨V, hV, hxV, fun i y hy => Set.mem_iInter.1 (hVW hy) i⟩`.
+
+Use `letI iBK : Algebra Γ(X, U) (IsLocalRing.ResidueField (X.presheaf.stalk x)) := ((IsLocalRing.residue (X.presheaf.stalk x)).comp (X.presheaf.germ U x hxU).hom).toAlgebra`. Use `GlobalTheory.T.finrank_kaehler_affine_chart k X f d s L σ U c hUc x (IsLocalRing.ResidueField (X.presheaf.stalk x)) hUa hxU ?_ ?_` and prove the remaining obligations. Introduce `a`. Rewrite using `[X.mem_basicOpen a x hxU]`. Express the relevant statement in the definitionally equal form `¬ IsLocalRing.residue _ ((X.presheaf.germ U x hxU).hom a) = 0 ↔ _`.
+
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Use `letI iB : Algebra k Γ(X, U) := (cstOn f U).toAlgebra`. Use `⟨GlobalTheory.T.finrank_kaehler_residue_field k X f d U x hxU hUa, ?_⟩` and prove the remaining obligations. Use `letI iBA : Algebra Γ(X, U) (X.presheaf.stalk x) := (X.presheaf.germ U x hxU).hom.toAlgebra`. Use `letI iA : Algebra k (X.presheaf.stalk x) := ((X.presheaf.germ U x hxU).hom.comp (cstOn f U)).toAlgebra`.
+
+Use `haveI : IsScalarTower k Γ(X, U) (X.presheaf.stalk x) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower Γ(X, U) (X.presheaf.stalk x) (IsLocalRing.ResidueField (X.presheaf.stalk x)) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI := GlobalTheory.T.residue_field_formally_smooth k X f U x hxU hx`. Establish `hli` using `GlobalTheory.T.regular_local_differentials_linearIndependent k (X.presheaf.stalk x) n t hrsp.1 hrsp.2`. Establish `htm : ∀ a, t a ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk x)` using `fun a => hrsp.1 ▸ Ideal.subset_span ⟨a, rfl⟩`.
+
+Set `g : Fin s → X.presheaf.stalk x` to `fun i => X.presheaf.germ U x hxU (resG X (hUc i) ((σ i).f (c i)))`. Establish `hg : ∀ i, g i = (X.presheaf.germ _ x (hc i)).hom ((σ i).f (c i))`. Introduce `i`. Simplify using `only [g, resG]`. Conclude with `X.presheaf.germ_res_apply (homOfLE (hUc i)) x hxU _`.
+
+Establish `hass' : ∀ i, Associated (g i) ((e i).elim 1 t)` using `fun i => (hg i) ▸ hass i`. Establish `h2` using `linearIndependent_fibre_of_associated k (X.presheaf.stalk x) n s t g e htm hinj hass' hli`. Conclude with `linearIndependent_fibre_of_stalk k Γ(X, U) (X.presheaf.stalk x) (IsLocalRing.ResidueField (X.presheaf.stalk x)) {i : Fin s // IsLocalRing.residue _ (g i) = 0} (fun i => resG X (hUc i.1) ((σ i.1).f (c i.1))) h2`.
+-/
 theorem relSnc_of_regular_params : ∀ (k : Type) [Field k] [PerfectField k] (X : Scheme.{0}) (f : X ⟶ Sp k) (d : ℕ) [SmoothOfRelativeDimension d f] (s : ℕ) (L : Fin s → LB X) (σ : ∀ i, (L i).Sec), (∀ i, (L i).IsLB) → (∀ x : X, IsClosed ({x} : Set X) → ∃ (n : ℕ) (t : Fin n → X.presheaf.stalk x) (c : ∀ i, (L i).ι) (hc : ∀ i, x ∈ (L i).U (c i)) (e : Fin s → Option (Fin n)), ReciprocityTheory.AnForm.R.FinalTheorems.Rsp (X.presheaf.stalk x) n t ∧ (∀ i j a, e i = some a → e j = some a → i = j) ∧ ∀ i, Associated ((X.presheaf.germ _ x (hc i)).hom ((σ i).f (c i))) ((e i).elim 1 t)) → RelSnc f d L σ := by
   intro k _ _ X f d _ s L σ hL H
   haveI : Smooth f := SmoothOfRelativeDimension.smooth d f

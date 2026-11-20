@@ -13,6 +13,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.PinchLift.FlatBC
 
+/- English proof (translation)
+The claim follows from `(isIso_pushoutSection_iff H hUST hUSX hUY).mp (isIso_pushoutSection_of_isAffineOpen H hUST hUSX hUY hUS hUT hUX)`.
+-/
 theorem isPushout_appLE_of_isPullback {X Y S T : Scheme.{0}} {f : T ⟶ S} {g : Y ⟶ X} {iX : X ⟶ S}
     {iY : Y ⟶ T} (H : IsPullback g iY iX f) {US : S.Opens} {UT : T.Opens} {UX : X.Opens} {UY : Y.Opens}
     (hUS : IsAffineOpen US) (hUT : IsAffineOpen UT) (hUX : IsAffineOpen UX)
@@ -22,6 +25,9 @@ theorem isPushout_appLE_of_isPullback {X Y S T : Scheme.{0}} {f : T ⟶ S} {g : 
   (isIso_pushoutSection_iff H hUST hUSX hUY).mp
     (isIso_pushoutSection_of_isAffineOpen H hUST hUSX hUY hUS hUT hUX)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem appLE_congr_of_eq {A B : Scheme.{0}} {f g : A ⟶ B} (h : f = g) (U : B.Opens) (V : A.Opens)
     (e₁ : V ≤ f ⁻¹ᵁ U) (e₂ : V ≤ g ⁻¹ᵁ U) : f.appLE U V e₁ = g.appLE U V e₂ := by
   subst h; rfl
@@ -30,6 +36,33 @@ end GlobalTheory.PinchLift.FlatBC
 
 namespace GlobalTheory.PinchLift.FlatBC
 
+/- English proof (translation)
+Introduce `S E X X' Z Z' p i i' p' hE hc hpb hp hi hglue V W hV hW hWV a b hab`. Establish `hcl : i'.left ≫ p.left = p'.left ≫ i.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, hc]`. Establish `hcE : (E ◁ i').left ≫ (E ◁ p).left = (E ◁ p').left ≫ (E ◁ i).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← MonoidalCategory.whiskerLeft_comp, ← MonoidalCategory.whiskerLeft_comp, hc]`.
+
+Establish `nat : ∀ {Y Y' : Over S} (j : Y' ⟶ Y), (E ◁ j).left ≫ (snd E Y).left = (snd E Y').left ≫ j.left`. Introduce `Y Y' j`. Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerLeft_snd]`. Use `haveI : IsAffineHom i.left := inferInstance`. Use `haveI : IsClosedImmersion i'.left := MorphismProperty.of_isPullback hpb.flip ‹_›`.
+
+Use `haveI : IsAffineHom p'.left := MorphismProperty.of_isPullback hpb ‹_›`. Use `haveI : Flat (snd E X).left := by`. Express the relevant statement in the definitionally equal form `Flat (pullback.snd E.hom X.hom)`. Use `infer_instance`. Establish `eV : p'.left ⁻¹ᵁ (i.left ⁻¹ᵁ V) = i'.left ⁻¹ᵁ (p.left ⁻¹ᵁ V)`.
+
+Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, hcl]`. Establish `eW : (E ◁ p').left ⁻¹ᵁ ((E ◁ i).left ⁻¹ᵁ W) = (E ◁ i').left ⁻¹ᵁ ((E ◁ p).left ⁻¹ᵁ W)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, hcE]`. Establish `hDV : i'.left ⁻¹ᵁ (p.left ⁻¹ᵁ V) ⊓ p'.left ⁻¹ᵁ (i.left ⁻¹ᵁ V) = (i'.left ≫ p.left) ⁻¹ᵁ V`. Rewrite using `[eV, inf_idem]`.
+
+Both sides reduce to the same expression. Establish `hDW : (E ◁ i').left ⁻¹ᵁ ((E ◁ p).left ⁻¹ᵁ W) ⊓ (E ◁ p').left ⁻¹ᵁ ((E ◁ i).left ⁻¹ᵁ W) = ((E ◁ i').left ≫ (E ◁ p).left) ⁻¹ᵁ W`. Rewrite using `[eW, inf_idem]`. Both sides reduce to the same expression. Establish `hDVa : IsAffineOpen (i'.left ⁻¹ᵁ (p.left ⁻¹ᵁ V) ⊓ p'.left ⁻¹ᵁ (i.left ⁻¹ᵁ V))`.
+
+Rewrite using `[hDV]`. Conclude with `hV.preimage _`. Establish `H1` using `isPullback_whiskerLeft_snd_left E p`. Establish `H2` using `isPullback_whiskerLeft_snd_left E i`. Establish `H3 : IsPullback ((E ◁ i').left ≫ (E ◁ p).left) (snd E Z').left (snd E X).left (i'.left ≫ p.left)`.
+
+Use `isPullback_whiskerLeft_snd_left E (i' ≫ p)` as an intermediate fact. Rewrite `this` using `[MonoidalCategory.whiskerLeft_comp, Over.comp_left, Over.comp_left]`. Then use the resulting hypothesis. Establish `hU1 : (E ◁ p).left ⁻¹ᵁ W = (E ◁ p).left ⁻¹ᵁ W ⊓ (snd E X').left ⁻¹ᵁ (p.left ⁻¹ᵁ V)`. Use `(inf_eq_left.mpr ?_).symm` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_preimage, ← nat p, Scheme.Hom.comp_preimage]`.
+
+Conclude with `Scheme.Hom.preimage_mono _ hWV`. Establish `hU2 : (E ◁ i).left ⁻¹ᵁ W = (E ◁ i).left ⁻¹ᵁ W ⊓ (snd E Z).left ⁻¹ᵁ (i.left ⁻¹ᵁ V)`. Use `(inf_eq_left.mpr ?_).symm` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_preimage, ← nat i, Scheme.Hom.comp_preimage]`. Conclude with `Scheme.Hom.preimage_mono _ hWV`.
+
+Establish `nat3 : ((E ◁ i').left ≫ (E ◁ p).left) ≫ (snd E X).left = (snd E Z').left ≫ (i'.left ≫ p.left)`. Rewrite using `[Category.assoc, nat p, ← Category.assoc, nat i', Category.assoc]`. Establish `hU3 : (E ◁ i').left ⁻¹ᵁ ((E ◁ p).left ⁻¹ᵁ W) ⊓ (E ◁ p').left ⁻¹ᵁ ((E ◁ i).left ⁻¹ᵁ W) = ((E ◁ i').left ≫ (E ◁ p).left) ⁻¹ᵁ W ⊓ (snd E Z').left ⁻¹ᵁ (i'.left ⁻¹ᵁ (p.left ⁻¹ᵁ V) ⊓ p'.left ⁻¹ᵁ (i.left ⁻¹ᵁ V))`. Rewrite using `[hDW, hDV]`. Use `(inf_eq_left.mpr ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_preimage (snd E Z').left (i'.left ≫ p.left) V, ← nat3, Scheme.Hom.comp_preimage _ (snd E X).left V]`. Conclude with `Scheme.Hom.preimage_mono _ hWV`. Establish `P1` using `isPushout_appLE_of_isPullback H1 hV (hV.preimage p.left) hW le_rfl hWV hU1 le_rfl (hU1.le.trans inf_le_right)`. Establish `P2` using `isPushout_appLE_of_isPullback H2 hV (hV.preimage i.left) hW le_rfl hWV hU2 le_rfl (hU2.le.trans inf_le_right)`. Establish `P3` using `isPushout_appLE_of_isPullback H3 hV hDVa hW hDV.le hWV hU3 (hU3.le.trans inf_le_left) (hU3.le.trans inf_le_right)`.
+
+Establish `key` using `GlobalTheory.T.existsUnique_preimage_pair_of_pushout_of_compat (p.left.appLE V (p.left ⁻¹ᵁ V) le_rfl) (i.left.appLE V (i.left ⁻¹ᵁ V) le_rfl) (i'.left.appLE (p.left ⁻¹ᵁ V) _ inf_le_left) (p'.left.appLE (i.left ⁻¹ᵁ V) _ inf_le_right) ((snd E X).left.appLE V W hWV) ((snd E X').left. …`. Conclude with `appLE_congr_of_eq (nat i') _ _ _ _)`. Use the proof step `(by rw [Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_congr_of_eq (nat p') _ _ _ _)`. Use the proof step `(by rw [Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`.
+
+Conclude with `appLE_congr_of_eq hcE _ _ _ _)`. Use the proof step `(by rw [Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_congr_of_eq hcl _ _ _ _)`. Use the proof step `(fun b c h => by`. Use `hglue V b c h` as an intermediate fact.
+
+Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE] at this) a b hab` and apply the resulting hypothesis. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE]` and apply the resulting hypothesis.
+-/
 theorem glues_affine_of_flat_baseChange : ∀ (S : Scheme.{0}) (E X X' Z Z' : Over S) (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z), Flat E.hom → i' ≫ p = p' ≫ i → IsPullback i'.left p'.left p.left i.left → IsAffineHom p.left → IsClosedImmersion i.left → GlobalTheory.PinchLift.Glues p.left i.left i'.left p'.left → ∀ (V : X.left.Opens) (W : (E ⊗ X).left.Opens), IsAffineOpen V → IsAffineOpen W → W ≤ (snd E X).left ⁻¹ᵁ V → ∀ (a : Γ((E ⊗ X').left, (E ◁ p).left ⁻¹ᵁ W)) (b : Γ((E ⊗ Z).left, (E ◁ i).left ⁻¹ᵁ W)), ((E ◁ i').left.appLE ((E ◁ p).left ⁻¹ᵁ W) ((E ◁ i').left ⁻¹ᵁ ((E ◁ p).left ⁻¹ᵁ W) ⊓ (E ◁ p').left ⁻¹ᵁ ((E ◁ i).left ⁻¹ᵁ W)) inf_le_left).hom a = ((E ◁ p').left.appLE ((E ◁ i).left ⁻¹ᵁ W) ((E ◁ i').left ⁻¹ᵁ ((E ◁ p).left ⁻¹ᵁ W) ⊓ (E ◁ p').left ⁻¹ᵁ ((E ◁ i).left ⁻¹ᵁ W)) inf_le_right).hom b → ∃! s : Γ((E ⊗ X).left, W), ((E ◁ p).left.app W).hom s = a ∧ ((E ◁ i).left.app W).hom s = b := by
   intro S E X X' Z Z' p i i' p' hE hc hpb hp hi hglue V W hV hW hWV a b hab
   have hcl : i'.left ≫ p.left = p'.left ≫ i.left := by

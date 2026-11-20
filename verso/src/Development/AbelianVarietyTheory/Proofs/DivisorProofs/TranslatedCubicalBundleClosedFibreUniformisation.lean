@@ -17,6 +17,13 @@ open GlobalTheory.UU
 section Iso
 variable {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {τ : X ⟶ X} {τ' : X' ⟶ X'}
 
+/- English proof (translation)
+Establish `e : ∀ x : X', F (τ' x) = τ (F x)` using `fun x => congrArg (fun g => g x) h`. Establish `le : ∀ (j : L.ι) (k : L'.ι), ((L.pull τ).pull F).U (fun _ _ => j) ⊓ (L'.pull τ').U (fun _ => k) ≤ τ' ⁻¹ᵁ ((L.pull F).U (fun _ => j) ⊓ L'.U k)` using `fun j k x hx => ⟨mem_pull.2 (by rw [e]; exact mem_pull.1 (mem_pull.1 hx.1)), mem_pull.1 hx.2⟩`. Set `w : LB.Iso (L'.pull τ') ((L.pull τ).pull F)` to `⟨fun p => res (le (p.1 PUnit.unit PUnit.unit) (p.2 PUnit.unit)) (pullU τ' _ (w₁.s (fun _ => p.1 PUnit.unit PUnit.unit, p.2 PUnit.unit)))⟩`. Establish `key : ∀ (Y : Scheme.{0}) (r : Y ⟶ X') (y : Y) (j : L.ι) (k : L'.ι), τ (F (r y)) ∈ L.U j → τ' (r y) ∈ L'.U k → gw w r y (fun _ => j) (fun _ => k) = gw w₁ (r ≫ τ') y j k` using `fun Y r y j k hj hk => by`. Establish `hm : r y ∈ ((L.pull τ).pull F).U (fun _ _ => j) ⊓ (L'.pull τ').U (fun _ => k)` using `⟨mem_pull.2 (mem_pull.2 hj), mem_pull.2 hk⟩`.
+
+Conclude with `(gm_res r y (le j k) hm _).trans (gm_pull r τ' y _ (@le j k (r y) hm) _)`. Use `⟨w, (isGen_iff w).2 fun Y r y j j' k k' hj hj' hk hk' => ?_, key⟩` and prove the remaining obligations. Establish `a` using `(isGen_iff w₁).1 hw₁ Y (r ≫ τ') y (j PUnit.unit) (j' PUnit.unit) (k PUnit.unit) (k' PUnit.unit) (by show F (τ' (r y)) ∈ _; rw [e]; exact mem_pull.1 hj) (by show F (τ' (r y)) ∈ _; rw [e]; exact mem_pull.1 hj') ((mem_pull (F := τ')).1 hk) ((mem_pull (F := τ')).1 hk')`. Rewrite `a` using `[Category.assoc, h, ← Category.assoc]`. Use `(key Y r y _ _ (mem_pull.1 hj) (mem_pull.1 hk)).trans (a.trans ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg₂ (· * ·) (congrArg₂ (· * ·) (gm_pull_g L τ (r ≫ F) y j j' hj hj').symm (congrArg (·⁻¹) (gm_pull_g L' τ' r y k k' hk hk').symm)) (key Y r y _ _ (mem_pull.1 hj') (mem_pull.1 hk')).symm`.
+-/
 theorem exists_translate (h : τ' ≫ F = F ≫ τ) (w₁ : LB.Iso L' (L.pull F)) (hw₁ : w₁.IsGen) :
     ∃ w : LB.Iso (L'.pull τ') ((L.pull τ).pull F), w.IsGen ∧
       ∀ (Y : Scheme.{0}) (r : Y ⟶ X') (y : Y) (j : L.ι) (k : L'.ι), τ (F (r y)) ∈ L.U j → τ' (r y) ∈ L'.U k →
@@ -49,12 +56,42 @@ variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonOb
 
 omit [IsCommMonObj G] in
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]`.
+-/
 theorem left_translate (a : 𝟙_ (Over S) ⟶ G) {T : Over S} (x : T ⟶ G) :
     x.left ≫ ((toUnit G ≫ a) * 𝟙 G).left = ((toUnit T ≫ a) * x).left := by
   rw [← Over.comp_left, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨⟨L, rg, hL, hrg⟩, c, sy, g₁, g₂, g₃⟩` from `P`. Simplify using `only at hP hs hc`. Substitute `hP` using the available equality. Establish `hβ : ∀ T : Over S', toBase hw (toUnit T ≫ a') = toUnit (Over.mk (T.hom ≫ f)) ≫ a` using `fun T => Over.OverMorphism.ext (by show ((toUnit T).left ≫ a'.left) ≫ F = (toUnit (Over.mk (T.hom ≫ f))).left ≫ a.left`. Rewrite using `[Rosenlicht.toUnit_left, Rosenlicht.toUnit_left, Category.assoc, ha, ← Category.assoc]`.
+
+Use the proof step `rfl)`. Establish `hpt : ∀ {T : Over S'} (x : T ⟶ G'), (x.left ≫ F) ≫ ((toUnit G ≫ a) * 𝟙 G).left = ((toUnit T ≫ a') * x).left ≫ F` using `fun {T} x => by`. Use `(left_translate a (toBase hw x)).trans ?_` and prove the remaining obligations. Rewrite using `[← hβ, ← h₁.mul]`. Both sides reduce to the same expression.
+
+Establish `hτ : ((toUnit G' ≫ a') * 𝟙 G').left ≫ F = F ≫ ((toUnit G ≫ a) * 𝟙 G).left` using `(hpt (𝟙 G')).symm.trans (congrArg (· ≫ _) (Category.id_comp F))`. Take `⟨w, hg, hv⟩` from `exists_translate hτ w₁ h₁.gen`. Take `⟨rig, hr, c₀, s₀, k₁, k₂, k₃, H⟩` from `exists_isCPMap (hw := hw) ⟨⟨_, rg, hL, hrg⟩, c, sy, g₁, g₂, g₃⟩ h₁.mul _ (pull_isLB P₁.L.isLB _) w hg`. Establish `main : ∀ (T : Over S') (z : T.left) (J : (T.left ⟶ G'.left) → P₁.L.L.ι), Good P₁.L.L z J → (∀ x : T ⟶ G', val s₀ x.left z (fun r _ => J (r ≫ ((toUnit G' ≫ a') * 𝟙 G').left)) = val P₁.sym ((toUnit T ≫ a') * x).left z J * (val P₁.sym (toUnit T ≫ a').left z J)⁻¹) ∧ ∀ x y u : T ⟶ G', …`. Introduce `T z J hJ`.
+
+Take `⟨I, hI⟩` from `exists_good_pt Q.L.isLB z`. Take `⟨W, hW⟩ : ∃ W : (T ⟶ G') → (T.left.presheaf.stalk z)ˣ, ∀ x, W x = gw w₁ x.left z (I (x.left ≫ F)) (J x.left)` from `⟨_, fun _ => rfl⟩`. Take `⟨-, a₂, a₃⟩` from `h₁.vals T z J I hJ hI W hW`. Take `⟨b, hb⟩ : ∃ b, b = toUnit T ≫ a'` from `⟨_, rfl⟩`. Establish `hbb : b⁻¹ = b`.
+
+Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← sq, hb, ← MonObj.comp_pow, h2, MonObj.comp_one]`. Take `⟨-, b₂, b₃⟩` from `H.vals T z (fun r _ => J (r ≫ ((toUnit G' ≫ a') * 𝟙 G').left)) (fun r _ => I (r ≫ ((toUnit G ≫ a) * 𝟙 G).left)) (fun r => mem_pull.2 (hJ (r ≫ _))) (fun r => mem_pull.2 (hI (r ≫ _))) (fun x => W (b * x)) (fun x => by`. Use `Eq.trans ?_ (hv _ x.left z _ _ (hI ((x.left ≫ F) ≫ _)) (hJ (x.left ≫ _))).symm` and prove the remaining obligations. Rewrite using `[hW, hpt, left_translate, hb])`.
+
+Rewrite using `[← hb]`. Use `⟨fun x => ?_, fun x y u => ?_⟩` and prove the remaining obligations. Establish `e₀` using `hs (Over.mk (T.hom ≫ f)) (toBase hw x) z I _ hI (fun _ => HEq.rfl)`. Rewrite `e₀` using `[← hβ, ← h₁.mul, ← hb]`. Establish `e₁ : val Q.sym ((b * x).left ≫ F) z I * (val Q.sym (b.left ≫ F) z I)⁻¹ * W (b * x) = W (b * x⁻¹) * val s₀ x.left z (fun r _ => J (r ≫ ((toUnit G' ≫ a') * 𝟙 G').left))` using `(congrArg (· * W (b * x)) e₀).symm.trans (b₂ x)`.
+
+Establish `e₂` using `a₂ (b * x)`. Establish `e₃` using `a₂ b`. Rewrite `e₂` using `[mul_inv, hbb]`. Rewrite `e₃` using `[hbb]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Establish `f₁` using `congrArg Additive.ofMul e₁`. Establish `f₂` using `congrArg Additive.ofMul e₂`. Establish `f₃` using `congrArg Additive.ofMul e₃`. Simplify using `only [ofMul_mul, ofMul_inv] at f₁ f₂ f₃ ⊢`. Take the linear combination `(norm := abel) f₂ - f₁ - f₃`.
+
+Establish `e₀` using `hc (Over.mk (T.hom ≫ f)) (toBase hw x) (toBase hw y) (toBase hw u) z I _ hI (fun _ => HEq.rfl)`. Rewrite `e₀` using `[← hβ, ← h₁.mul, ← hb]`. Take `⟨C, hC⟩ : ∃ C : (T ⟶ G') → (T.left.presheaf.stalk z)ˣ, ∀ v, C v = cubV Q.c (T` from `Over.mk (T.hom ≫ f)) z I (toBase hw x) (toBase hw y) (toBase hw v) := ⟨_, fun _ => rfl⟩`. Establish `e₁ : C (b * u) * (C b)⁻¹ * W (b * (x * y)) * W (b * (x * u)) * W (b * (y * u)) * W (b * 1) = W (b * (x * y * u)) * W (b * x) * W (b * y) * W (b * u) * cubV c₀ z (fun r _ => J (r ≫ ((toUnit G' ≫ a') * 𝟙 G').left)) x y u`. Rewrite using `[hC, hC]`.
+
+Conclude with `(congrArg (· * W (b * (x * y)) * W (b * (x * u)) * W (b * (y * u)) * W (b * 1)) e₀).symm.trans (b₃ x y u)`. Establish `e₂ : ∀ v, C v * W (x * y) * W (x * v) * W (y * v) * W 1 = W (x * y * v) * W x * W y * W v * cubV P₁.c z J x y v` using `fun v => by rw [hC]; exact a₃ x y v`. Establish `e₃` using `e₂ (b * u)`. Establish `e₄` using `e₂ b`. Rewrite `e₃` using `[mul_left_comm x b, mul_left_comm y b, mul_left_comm (x * y) b]`.
+
+Rewrite `e₄` using `[mul_comm x b, mul_comm y b, mul_comm (x * y) b]`. Rewrite `e₁` using `[_root_.mul_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `f₁` using `congrArg Additive.ofMul e₁`. Establish `f₂` using `congrArg Additive.ofMul e₃`.
+
+Establish `f₃` using `congrArg Additive.ofMul e₄`. Simplify using `only [ofMul_mul, ofMul_inv] at f₁ f₂ f₃ ⊢`. Take the linear combination `(norm := abel) f₂ - f₁ - f₃`. Use `⟨⟨⟨_, rig, _, hr⟩, c₀, s₀, k₁, k₂, k₃⟩, ⟨w, H⟩, rfl, fun T x z J J' hJ h => ?_, fun T x y u z J J' hJ h => ?_⟩` and prove the remaining obligations. Take `rfl : J' = fun r _ => J (r ≫ ((toUnit G' ≫ a') * 𝟙 G').left)` from `funext fun r => eq_of_heq (h r)`.
+
+Conclude with `(main T z J hJ).1 x`. Take `rfl : J' = fun r _ => J (r ≫ ((toUnit G' ≫ a') * 𝟙 G').left)` from `funext fun r => eq_of_heq (h r)`. Conclude with `(main T z J hJ).2 x y u`.
+-/
 theorem exists_translate_pull {f : S' ⟶ S} {F : G'.left ⟶ G.left} {hw : F ≫ G.hom = G'.hom ≫ f}
     (Q P : CP G) (P₁ : CP G') (a : 𝟙_ (Over S) ⟶ G) (a' : 𝟙_ (Over S') ⟶ G') (ha : a'.left ≫ F = f ≫ a.left)
     (h2 : a' ^ 2 = 1) (hP : P.L.L = Q.L.L.pull ((toUnit G ≫ a) * 𝟙 G).left)
@@ -158,6 +195,13 @@ theorem exists_translate_pull {f : S' ⟶ S} {F : G'.left ⟶ G.left} {hw : F �
   · obtain rfl : J' = fun r _ => J (r ≫ ((toUnit G' ≫ a') * 𝟙 G').left) := funext fun r => eq_of_heq (h r)
     exact (main T z J hJ).2 x y u
 
+/- English proof (translation)
+Establish `h0 : (f ≫ a.left) ≫ G.hom = 𝟙 S' ≫ f`. Rewrite using `[Category.assoc, Over.w a]`. Simplify using the standard rewrite rules. Set `a' : 𝟙_ (Over S') ⟶ (Over.pullback f).obj G` to `Over.homMk (pullback.lift (f ≫ a.left) (𝟙 S') h0) (pullback.lift_snd _ _ _)`. Establish `ha : a'.left ≫ pullback.fst G.hom f = f ≫ a.left` using `pullback.lift_fst _ _ _`.
+
+Use `⟨a', ha, ?_⟩` and prove the remaining obligations. Set `β` to `toBaseHom (toBase_mul_pullback G f) (𝟙_ (Over S'))`. Establish `e : β a' = toUnit _ ≫ a` using `Over.OverMorphism.ext (by`. Use `ha.trans ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Rosenlicht.toUnit_left]`.
+
+Conclude with `congrArg (· ≫ a.left) (Category.id_comp f).symm)`. Establish `e' : β (a' ^ 2) = β 1` using `by rw [map_pow, map_one, e, ← MonObj.comp_pow, h2, MonObj.comp_one]`. Conclude with `Over.OverMorphism.ext (pullback.hom_ext (congrArg (fun q => q.left) e') ((Over.w (a' ^ 2)).trans (Over.w (1 : 𝟙_ (Over S') ⟶ (Over.pullback f).obj G)).symm))`.
+-/
 theorem exists_section_pullback (f : S' ⟶ S) (a : 𝟙_ (Over S) ⟶ G) (h2 : a ^ 2 = 1) :
     ∃ a' : 𝟙_ (Over S') ⟶ (Over.pullback f).obj G, a'.left ≫ pullback.fst G.hom f = f ≫ a.left ∧ a' ^ 2 = 1 := by
   have h0 : (f ≫ a.left) ≫ G.hom = 𝟙 S' ≫ f := by
@@ -175,6 +219,9 @@ theorem exists_section_pullback (f : S' ⟶ S) (a : 𝟙_ (Over S) ⟶ G) (h2 : 
   exact Over.OverMorphism.ext (pullback.hom_ext (congrArg (fun q => q.left) e')
     ((Over.w (a' ^ 2)).trans (Over.w (1 : 𝟙_ (Over S') ⟶ (Over.pullback f).obj G)).symm))
 
+/- English proof (translation)
+Introduce `R _ _ _ D A G _ _ U a h2 P hP hs hc P₁ h₁`. Take `⟨w₁, h₁⟩` from `h₁`. Take `⟨a₀, ha, h₀⟩` from `exists_section_pullback (thick R (maximalIdeal R) 0) a h2`. Take `⟨P₀, k⟩` from `exists_translate_pull _ P P₁ a a₀ ha h₀ hP hs hc h₁`. Conclude with `⟨a₀, P₀, ha, h₀, k⟩`.
+-/
 theorem exists_level_translate : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal R) D A G) (a : 𝟙_ (Over (Sp R)) ⟶ G), a ^ 2 = 1 →
     ∀ P : GlobalTheory.UU.CP G, P.L.L = U.LG.L.pull ((toUnit G ≫ a) * 𝟙 G).left →
       (∀ (T : Over (Sp R)) (x : T ⟶ G) (z : T.left) (J : (T.left ⟶ G.left) → U.LG.L.ι)

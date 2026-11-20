@@ -17,6 +17,11 @@ namespace GlobalTheory.CompAct
 
 open ReciprocityTheory.ChartRestriction.G.FD
 
+/- English proof (translation)
+Use `choose rep hrep using hs`. Use `choose l hl using hex`. Establish `main : ∀ g k, Lift g k → ∀ h, comp (h * k) = comp (rep (comp h) * l g)` using `fun g k hk h => key g k (l g) h _ hk (hl g) (hrep _).symm`. Use `⟨fun x g => comp (rep x * l g), fun x => ?_, fun x g g' => ?_, fun x => ⟨rep x, hrep x⟩, main⟩` and prove the remaining obligations. Use `main 1 1 h1 (rep x)` as an intermediate fact.
+
+Rewrite `this` using `[mul_one, hrep]`. Conclude with `this.symm`. Use `show comp (rep x * l (g * g')) = comp (rep (comp (rep x * l g)) * l g')`. Rewrite using `[← main g' (l g') (hl g'), mul_assoc]`. Conclude with `key (g * g') _ _ _ _ (hl _) (hmul _ _ _ _ (hl g) (hl g')) rfl`.
+-/
 theorem exists_action {H G C : Type} [Group H] [Group G] (comp : H → C) (hs : ∀ x, ∃ h, comp h = x)
     (Lift : G → H → Prop) (hex : ∀ g, ∃ k, Lift g k) (h1 : Lift 1 1)
     (hmul : ∀ g g' k k', Lift g k → Lift g' k' → Lift (g * g') (k * k'))
@@ -35,6 +40,11 @@ theorem exists_action {H G C : Type} [Group H] [Group G] (comp : H → C) (hs : 
     rw [← main g' (l g') (hl g'), mul_assoc]
     exact key (g * g') _ _ _ _ (hl _) (hmul _ _ _ _ (hl g) (hl g')) rfl
 
+/- English proof (translation)
+Establish `hx : IsUnit x.det`. Rewrite `hy` using `[Matrix.det_mul]`. Conclude with `(right_ne_zero_of_mul hy).isUnit`. Establish `e : M * (B * x) = (B * x) * (x⁻¹ * (Q * x))`. Rewrite using `[← Matrix.mul_assoc M, h1, Matrix.mul_assoc B x, Matrix.mul_nonsing_inv_cancel_left _ _ hx, Matrix.mul_assoc]`.
+
+Rewrite using `[Matrix.mul_assoc _ M, e, Matrix.nonsing_inv_mul_cancel_left _ _ hy.isUnit, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hx, ← Matrix.mul_assoc, h2]`.
+-/
 theorem frame_calc {n : Type} [Fintype n] [DecidableEq n] (x B P Q P' M : Matrix n n ℂ) (hy : (B * x).det ≠ 0)
     (h1 : M * B = B * Q) (h2 : P * Q = P') : P * x * ((B * x)⁻¹ * M * (B * x)) = P' * x := by
   have hx : IsUnit x.det := by
@@ -47,6 +57,9 @@ theorem frame_calc {n : Type} [Fintype n] [DecidableEq n] (x B P Q P' M : Matrix
 
 variable {D : D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type}
 
+/- English proof (translation)
+Establish `e : archM V θ (g * g') = archM V θ g * archM V θ g'`. Unfold `archM`. Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`. Rewrite using `[e]`. Conclude with `Matrix.submatrix_mul_equiv _ _ _ (finCongr hr).symm _`.
+-/
 theorem archM_mul (V : HSp D) (hr : V.rank = r) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (g g' : GA D V) :
     Matrix.reindex (finCongr hr) (finCongr hr) (archM V θ g) * Matrix.reindex (finCongr hr) (finCongr hr) (archM V θ g') =
       Matrix.reindex (finCongr hr) (finCongr hr) (archM V θ (g * g')) := by
@@ -56,6 +69,21 @@ theorem archM_mul (V : HSp D) (hr : V.rank = r) (θ : Ainf D.host.F ⊗[D.host.F
   rw [e]
   exact Matrix.submatrix_mul_equiv _ _ _ (finCongr hr).symm _
 
+/- English proof (translation)
+Take `⟨-, -, ⟨x0, h0, h3⟩, -, -, h6⟩` from `hd`. Establish `hf' : ∀ g c x, dict g = ⟨c, x⟩ → ∃ p : GA D V, ∀ τ : (X c).Ψ, mat x τ = Matrix.reindex (finCongr hr) (finCongr hr) (archM V (th c τ) p) * x₀ τ.1`. Introduce `g c x hg`. Use `hf g` as an intermediate fact. Rewrite `this` using `[hg]`.
+
+Conclude with `this`. Establish `h6' : ∀ g g' c x, dict g = ⟨c, x⟩ → (∃ γ' ∈ (X c).Γ, dict g' = ⟨c, lact γ' x⟩) → ∃ γ ∈ GQ V, ∃ k ∈ Kf, g' = γ * g * k`. Introduce `g g' c x hg hh`. Use `h6 g g' ?_` and prove the remaining obligations. Rewrite using `[hg]`.
+
+Conclude with `hh`. Choose the witnesses or unpack the hypotheses as in `⟨x', hx'⟩ : ∃ x' : Frame (X (dict h).1).Ψ r, dict h' = ⟨(dict h).1, x'⟩ := by`. Generalize the expression as in `(dict h).1 = c at e`. Substitute `e` using the available equality. Conclude with `⟨_, rfl⟩`.
+
+Take `⟨hdom, g0, hg0⟩` from `h0 (dict h).1`. Take `⟨b, hb⟩` from `hf' _ _ _ hg0`. Take `⟨p, hp⟩` from `hf h`. Take `⟨p', hp'⟩` from `hf' _ _ _ hx'`. Take `⟨a, a1, a2⟩` from `GlobalTheory.UnitarySplit.ga_glue V _ 1 (GlobalTheory.UnitarySplit.infHom_mem V (b * (p⁻¹ * p') * b⁻¹)) (one_mem _)`.
+
+Take `⟨γ', hγ', he⟩` from `h3 h a a2`. Use `⟨a, a2, h6' h' _ _ x' hx' ⟨γ', hγ', he.trans ?_⟩⟩` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `τ`. Establish `ha : archM V (th (dict h).1 τ) a = archM V (th (dict h).1 τ) (b * (p⁻¹ * p') * b⁻¹)`.
+
+Unfold `archM`. Rewrite using `[a1]`. Use `show (mat (dict h).2 τ * ((mat (x0 (dict h).1) τ)⁻¹ * Matrix.reindex (finCongr hr) (finCongr hr) (archM V (th (dict h).1 τ) a) * mat (x0 (dict h).1) τ) : Matrix (Fin r) (Fin r) ℂ) = mat x' τ`. Establish `hy` using `(hdom τ).1`. Rewrite `hy` using `[hb τ]`.
+
+Rewrite using `[hp τ, hp' τ, hb τ, ha]`. Use `frame_calc _ _ _ (Matrix.reindex (finCongr hr) (finCongr hr) (archM V (th (dict h).1 τ) (p⁻¹ * p'))) _ _ hy ?_ ?_` and prove the remaining obligations. Rewrite using `[archM_mul, archM_mul, inv_mul_cancel_right]`. Rewrite using `[archM_mul, mul_inv_cancel_left]`.
+-/
 theorem coset_of_comp_eq {V : HSp D} {X : Comp → Data E r} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {Kf : Subgroup (GA D V)} {th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {hr : V.rank = r}
     (hd : DictIsUnif V dict Kf th hr) (x₀ : (E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ)
@@ -101,11 +129,27 @@ theorem coset_of_comp_eq {V : HSp D} {X : Comp → Data E r} {dict : GA D V → 
   · rw [archM_mul, archM_mul, inv_mul_cancel_right]
   · rw [archM_mul, mul_inv_cancel_left]
 
+/- English proof (translation)
+Use `GlobalTheory.UnitarySplit.ga_ext V ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, show infHom V k = 1 from hk, mul_one, one_mul]`. Rewrite using `[map_mul, map_mul, show finHom V a = 1 from ha, mul_one, one_mul]`.
+-/
 theorem comm_real_fin (V : HSp D) {a k : GA D V} (ha : a ∈ GinfC V) (hk : k ∈ GfC V) : a * k = k * a := by
   refine GlobalTheory.UnitarySplit.ga_ext V ?_ ?_
   · rw [map_mul, map_mul, show infHom V k = 1 from hk, mul_one, one_mul]
   · rw [map_mul, map_mul, show finHom V a = 1 from ha, mul_one, one_mul]
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Establish `hK' : ∀ k : GA D V, Lev.IsLevelLift V β L 1 k ↔ k ∈ Kf` using `hK`. Use `exists_action (fun h => (dict h).1) (fun x => ?_) (fun g k => Lev.IsLevelLift V β L (eG g) k) hex ?_ ?_ ?_` and prove the remaining obligations. Take `⟨x0, h0, -⟩` from `hd.2.2.1`. Take `⟨g, hg⟩` from `(h0 x).2`.
+
+Conclude with `⟨g, congrArg Sigma.fst hg⟩`. Use `show Lev.IsLevelLift V β L (eG 1) 1`. Rewrite using `[map_one]`. Conclude with `(hK' 1).2 (one_mem _)`. Introduce `g g' k k' hk hk' show Lev.IsLevelLift V β L (eG (g * g')) (k * k')`.
+
+Rewrite using `[map_mul]`. Conclude with `GlobalTheory.ProjComm.isLift_mul hk hk'`. Introduce `g k k' h h' hk hk' e`. Take `⟨a, ha, γ, hγ, k0, hk0, he⟩` from `coset_of_comp_eq hd x₀ hf e`. Establish `h1` using `GlobalTheory.ProjComm.isLift_mul (GlobalTheory.ProjComm.isLift_mul (GlobalTheory.ProjComm.isLift_inv hk') ((hK' k0).2 hk0)) hk`.
+
+Rewrite `h1` using `[mul_one, inv_mul_cancel]`. Establish `h2 : h * k * a = γ * (h' * k' * (k'⁻¹ * k0 * k))`. Rewrite using `[mul_assoc h, ← comm_real_fin V ha hk.1, ← mul_assoc h, he]`. Use `group`. Take `⟨x0, -, h3⟩` from `hd.2.2.1`.
+
+Take `⟨_, -, e1⟩` from `h3 (h * k) a ha`. Take `⟨_, -, e2⟩` from `hd.1 γ hγ (h' * k' * (k'⁻¹ * k0 * k))`. Take `⟨_, -, e3⟩` from `hd.2.1 _ ((hK' _).1 h1) (h' * k')`. Establish `f1` using `congrArg Sigma.fst e1`. Establish `f2` using `congrArg Sigma.fst e2`.
+
+Establish `f3` using `congrArg Sigma.fst e3`. Rewrite `f1` using `[h2]`. Conclude with `f1.symm.trans (f2.trans f3)`.
+-/
 theorem exists_action_dict {V W : HSp D} (hV : V = W) {X : Comp → Data E r} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {Kf : Subgroup (GA D V)} {th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {hr : V.rank = r}
     (hd : DictIsUnif V dict Kf th hr) (x₀ : (E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ)
@@ -149,6 +193,11 @@ theorem exists_action_dict {V W : HSp D} (hV : V = W) {X : Comp → Data E r} {d
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hR ht hpb i σ hσ hV hex`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Take `⟨th, hr, hth, hd⟩` from `ht.laws.dictU _ hj σ hσ`. Take `⟨hr', g, e, F, ik, φ, th', -, -, hth', -, hL⟩` from `ht.laws.adPin _ hj σ hσ`. Establish `e' : th' = th` using `funext fun k => funext fun τ => GlobalTheory.LettersCheck.isInfEmb_unique _ _ _ (hth' k τ) (hth k τ)`.
+
+Substitute `e'` using the available equality. Conclude with `exists_action_dict hV hd (T.x₀ _ σ) (fun h => (hL h).elim fun γ hγ => ⟨γ * h, hγ.2.2.2⟩) (R.βW i) (R.datWp i R.triv) R.eG.toMonoidHom (GlobalTheory.T.level_character_embedding_compat T R κ v₀ hR ht hpb i σ hσ hV) hex`.
+-/
 theorem exists_action_components : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → TieIn T R κ v₀ → T.pb = R.C.P.pb → ∀ (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ), GoodEmb T.Q.c σ → ∀ hV : T.V ((i : ℕ) + 1) σ = Wc D i, (∀ g, ∃ k, Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k) → ∃ mv : (T.U ((i : ℕ) + 1) σ).Comp → G → (T.U ((i : ℕ) + 1) σ).Comp, (∀ x, mv x 1 = x) ∧ (∀ x g g', mv x (g * g') = mv (mv x g) g') ∧ (∀ x, ∃ h, (castDict hV (T.dict ((i : ℕ) + 1) σ) h).1 = x) ∧ ∀ g k, Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k → ∀ h, (castDict hV (T.dict ((i : ℕ) + 1) σ) (h * k)).1 = mv (castDict hV (T.dict ((i : ℕ) + 1) σ) h).1 g := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hR ht hpb i σ hσ hV hex
   have hj : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩

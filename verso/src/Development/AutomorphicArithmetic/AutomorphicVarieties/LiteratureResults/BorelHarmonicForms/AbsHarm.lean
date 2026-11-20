@@ -6,11 +6,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h1` using `congrArg Complex.im h`. Rewrite `h1` using `[Complex.conj_im]`. Conclude with `Complex.ext h0 (by rw [Complex.zero_im]; linarith)`.
+-/
 private theorem absHarm_real {z : ℂ} (h : z = starRingEnd ℂ z) (h0 : z.re = 0) : z = 0 := by
   have h1 := congrArg Complex.im h
   rw [Complex.conj_im] at h1
   exact Complex.ext h0 (by rw [Complex.zero_im]; linarith)
 
+/- English proof (translation)
+Introduce `E _ _ _ a n e he M _ _ _ _ A B hA hB hAB hc H hH hadj q ω hω`. Establish `hadj'` using `fun q ω η => ipAdj E a n e M (A + B) (B - A) H ⊤ (fun X x _ y _ => hadj X x y) q ω η (fun _ => Submodule.mem_top) (fun _ => Submodule.mem_top)`. Establish `hdef` using `ipDef E a n e he M H ⊤ hH`. Establish `hpos` using `fun q ω => ((hdef q).2 ω (fun _ => Submodule.mem_top)).1`. Establish `hzero` using `fun q ω (h : (ip e H ω ω).re = 0) => ((hdef q).2 ω (fun _ => Submodule.mem_top)).2 (absHarm_real ((hdef q).1 ω ω) h)`.
+
+Establish `hc0 : cas B e - cas A e = 0` using `sub_eq_zero.2 hc`. Consider the cases of `q with`. Consider the case `zero`. Use `⟨hzero _ _ ?_, trivial⟩` and prove the remaining obligations. Establish `h1` using `kugaZero E a n e M A B hAB ω hω`.
+
+Establish `h2 : ip e H (del (B - A) e (dCo (A + B) ω)) ω = 0`. Simplify using `only [ip, h1, hc0, LinearMap.zero_apply, map_zero, Finset.sum_const_zero]`. Rewrite using `[hadj', h2, mul_zero, Complex.zero_re]`. Consider the case `succ q`. Establish `h1` using `kugaSucc E a n e he M A B hA hB hAB q ω hω`.
+
+Establish `h2 : ip e H (dCo (A + B) (del (B - A) e ω)) ω + ip e H (del (B - A) e (dCo (A + B) ω)) ω = 0`. Simplify using `only [ip]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun I _ => ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.add_apply, ← map_add, h1, hc0, LinearMap.zero_apply, map_zero, LinearMap.zero_apply]`.
+
+Establish `h3` using `congrArg Complex.re (hadj' (q + 1) (dCo (A + B) ω) ω)`. Establish `h4` using `congrArg Complex.re (hadj' q ω (del (B - A) e ω))`. Establish `h5` using `congrArg Complex.re ((hdef (q + 1)).1 ω (dCo (A + B) (del (B - A) e ω)))`. Establish `h6` using `congrArg Complex.re h2`. Establish `p1` using `hpos _ (dCo (A + B) ω)`.
+
+Establish `p2` using `hpos _ (del (B - A) e ω)`. Rewrite `h5` using `[Complex.conj_re]`. Rewrite `h6` using `[Complex.add_re, Complex.zero_re]`. Establish `hmul : ∀ (k : ℕ) (z : ℂ), (((k : ℂ) + 1) * z).re = ((k : ℝ) + 1) * z.re` using `fun k z => by simp`. Rewrite `h3`, `h4` using `[hmul]`.
+
+Establish `q0 : (0 : ℝ) < (q : ℝ) + 1` using `by positivity`. Establish `q1 : (0 : ℝ) < ((q + 1 : ℕ) : ℝ) + 1` using `by positivity`. Establish `h7 : (ip e H (dCo (A + B) ω) (dCo (A + B) ω)).re + (((q + 1 : ℕ) : ℝ) + 1) * ((q : ℝ) + 1) * (ip e H (del (B - A) e ω) (del (B - A) e ω)).re = 0`. Rewrite using `[h3, mul_assoc, ← h4, ← h5, ← mul_add, add_comm (Complex.re _), h6, mul_zero]`. Establish `p3` using `mul_nonneg (mul_pos q1 q0).le p2`.
+
+Use `⟨hzero _ _ (by linarith), hzero _ _ ?_⟩` and prove the remaining obligations. Conclude with `(mul_eq_zero.1 (show _ * _ = (0 : ℝ) from le_antisymm (by linarith) p3)).resolve_left (mul_pos q1 q0).ne'`.
+-/
 theorem UpperTheory.V.Lit.Bor.absHarm :
     UpperTheory.V.Lit.Bor.AbsHarm := by
   intro E _ _ _ a n e he M _ _ _ _ A B hA hB hAB hc H hH hadj q ω hω

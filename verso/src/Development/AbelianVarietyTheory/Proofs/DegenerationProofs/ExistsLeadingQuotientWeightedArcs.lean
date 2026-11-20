@@ -16,12 +16,30 @@ namespace GlobalTheory.SS
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
+/- English proof (translation)
+Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype, Fin.sum_univ_two, mul_comm]`.
+-/
 private lemma weight_fin_two (m n : ℕ) (e : Fin 2 →₀ ℕ) :
     Finsupp.weight (![m, n] : Fin 2 → ℕ) e = m * e 0 + n * e 1 := by
   simp [Finsupp.weight_apply, Finsupp.sum_fintype, Fin.sum_univ_two, mul_comm]
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
+/- English proof (translation)
+Establish `hcoeff : ∀ e ∈ S, (∑ e' ∈ S, Polynomial.C (MvPowerSeries.coeff e' f) * Polynomial.X ^ (e' 1)).coeff (e 1) = MvPowerSeries.coeff e f`. Introduce `e he`. Rewrite using `[Polynomial.finset_sum_coeff, Finset.sum_eq_single e]`. Simplify using `[Polynomial.coeff_C_mul_X_pow]`. Introduce `e' he' hne`.
+
+Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_neg]`. Introduce `h1`. Apply `hne` to reduce the goal to its premises. Establish `w1` using `(hS e').1 he'`. Establish `w2` using `(hS e).1 he`.
+
+Rewrite `w1`, `w2` using `[weight_fin_two]`. Rewrite `w2` using `[h1]`. Establish `h0 : e' 0 = e 0` using `Nat.eq_of_mul_eq_mul_left hm (Nat.add_right_cancel (w1.trans w2.symm))`. Use extensionality with `i`. Use `fin_cases i`.
+
+Conclude with `h0`. Conclude with `h1.symm`. Introduce `h`. Conclude with `absurd he h`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h0`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `heq : MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) f = D` using `le_antisymm hlt hD`. Take `⟨e, hne, hwe⟩` from `MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder (![m, n] : Fin 2 → ℕ) (f := f) (by rw [heq]; rfl)`.
+
+Rewrite `hwe` using `[heq, Nat.cast_inj]`. Use `hcoeff e ((hS e).2 hwe)` as an intermediate fact. Rewrite `this` using `[h0, Polynomial.coeff_zero]`. Conclude with `hne this.symm`. Introduce `hlt`.
+
+Use `Finset.sum_eq_zero fun e he => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_eq_zero_of_lt_weightedOrder _ (by rw [(hS e).1 he]; exact hlt), map_zero, zero_mul]`.
+-/
 private lemma leading_polynomial_eq_zero_iff_lt_weightedOrder {k : Type} [Field k] {m n : ℕ} (hm : 1 ≤ m)
     (f : MvPowerSeries (Fin 2) k) {D : ℕ}
     (hD : (D : ℕ∞) ≤ MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) f)
@@ -67,6 +85,9 @@ private lemma leading_polynomial_eq_zero_iff_lt_weightedOrder {k : Type} [Field 
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
+/- English proof (translation)
+Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_two]`. Both sides reduce to the same expression.
+-/
 private lemma prod_pow_fin_two {k : Type} [Field k] (z w : PowerSeries k) (e : Fin 2 →₀ ℕ) :
     (e.prod fun s j => (![z, w] : Fin 2 → PowerSeries k) s ^ j) = z ^ e 0 * w ^ e 1 := by
   rw [Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_two]
@@ -75,6 +96,11 @@ private lemma prod_pow_fin_two {k : Type} [Field k] (z w : PowerSeries k) (e : F
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
 open PowerSeries in
+/- English proof (translation)
+Take `⟨z', rfl⟩ : X ^ m ∣ z` from `X_pow_dvd_iff.2 fun j hj => coeff_of_lt_order j (lt_of_lt_of_le (by exact_mod_cast hj) hz)`. Take `⟨w', rfl⟩ : X ^ n ∣ w` from `X_pow_dvd_iff.2 fun j hj => coeff_of_lt_order j (lt_of_lt_of_le (by exact_mod_cast hj) hw)`. Establish `hprod : (X ^ m * z') ^ a * (X ^ n * w') ^ b = X ^ (m * a + n * b) * (z' ^ a * w' ^ b)`. Rewrite using `[mul_pow, mul_pow, ← pow_mul, ← pow_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hprod]`. Use `⟨fun j hj => by rw [coeff_X_pow_mul', if_neg (by omega)], ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, coeff_zero_eq_constantCoeff, map_mul, map_pow, map_pow]`.
+-/
 private lemma coeff_pow_mul_pow_of_le_order {k : Type} [Field k] {m n : ℕ} {z w : PowerSeries k}
     (hz : (m : ℕ∞) ≤ z.order) (hw : (n : ℕ∞) ≤ w.order) (a b : ℕ) :
     (∀ j < m * a + n * b, coeff j (z ^ a * w ^ b) = 0) ∧
@@ -93,6 +119,11 @@ private lemma coeff_pow_mul_pow_of_le_order {k : Type} [Field k] {m n : ℕ} {z 
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff, MvPowerSeries.coeff_subst hs]`. Use `finsum_eq_zero_of_forall_eq_zero fun e => ?_` and prove the remaining obligations. Distinguish the cases in `hlt : Finsupp.weight (![m, n] : Fin 2 → ℕ) e < D`. Rewrite using `[MvPowerSeries.coeff_eq_zero_of_lt_weightedOrder _ (lt_of_lt_of_le (by exact_mod_cast hlt) hD), zero_smul]`. Rewrite `hlt` using `[weight_fin_two]`.
+
+Rewrite using `[prod_pow_fin_two, ← PowerSeries.coeff, (coeff_pow_mul_pow_of_le_order hz hw (e 0) (e 1)).1 j (by omega), smul_zero]`.
+-/
 private lemma coeff_subst_eq_zero_of_lt {k : Type} [Field k] {m n : ℕ} {z w : PowerSeries k}
     (hz : (m : ℕ∞) ≤ z.order) (hw : (n : ℕ∞) ≤ w.order)
     (hs : MvPowerSeries.HasSubst (![z, w] : Fin 2 → PowerSeries k)) {f : MvPowerSeries (Fin 2) k}
@@ -109,6 +140,15 @@ private lemma coeff_subst_eq_zero_of_lt {k : Type} [Field k] {m n : ℕ} {z w : 
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff, MvPowerSeries.coeff_subst hs, finsum_eq_sum_of_support_subset (s := S)]`. Rewrite using `[Polynomial.eval_finset_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Establish `hwe` using `(hS e).1 he`. Rewrite `hwe` using `[weight_fin_two]`.
+
+Rewrite using `[prod_pow_fin_two, ← PowerSeries.coeff, ← hwe, (coeff_pow_mul_pow_of_le_order hz hw (e 0) (e 1)).2, hzs, hwt]`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, smul_eq_mul]`. Rewrite using `[pow_add, pow_mul, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `e he`.
+
+Rewrite `he` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe, hS]`. Assume the negation of the conclusion as `hne`. Apply `he` to reduce the goal to its premises. Break down `lt_or_gt_of_ne hne with hlt | hgt` into its components or cases.
+
+Rewrite using `[MvPowerSeries.coeff_eq_zero_of_lt_weightedOrder _ (lt_of_lt_of_le (by exact_mod_cast hlt) hD), zero_smul]`. Rewrite `hgt` using `[weight_fin_two]`. Rewrite using `[prod_pow_fin_two, ← PowerSeries.coeff, (coeff_pow_mul_pow_of_le_order hz hw (e 0) (e 1)).1 D (by omega), smul_zero]`.
+-/
 private lemma coeff_subst_eq_pow_mul_eval_leading {k : Type} [Field k] {m n : ℕ} {z w : PowerSeries k}
     (hz : (m : ℕ∞) ≤ z.order) (hw : (n : ℕ∞) ≤ w.order)
     (hs : MvPowerSeries.HasSubst (![z, w] : Fin 2 → PowerSeries k)) {s t : k}
@@ -144,6 +184,25 @@ private lemma coeff_subst_eq_pow_mul_eval_leading {k : Type} [Field k] {m n : �
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+Introduce `k _ _ m n hm hn r h d hd hdh`. Establish `hfin : ((MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) d).toNat : ℕ∞) = MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) d` using `ENat.coe_toNat ((MvPowerSeries.weightedOrder_eq_top_iff _).not.2 hd)`. Use `set D := (MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) d).toNat with hD_def`. Establish `hWpos : ∀ x, (![m, n] : Fin 2 → ℕ) x ≠ 0`. Apply the tactic sequence `intro x; fin_cases x <;> simp <;> omega`.
+
+Use `set S := (Finsupp.finite_of_nat_weight_le _ hWpos D).toFinset.filter fun e => Finsupp.weight (![m, n] : Fin 2 → ℕ) e = D with hS_def`. Establish `hS : ∀ e, e ∈ S ↔ Finsupp.weight (![m, n] : Fin 2 → ℕ) e = D`. Introduce `e`. Simplify using `only [hS_def, Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Conclude with `⟨fun h => h.2, fun h => ⟨h.le, h⟩⟩`.
+
+Establish `hDd : (D : ℕ∞) ≤ MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) d` using `hfin.le`. Establish `hDh : ∀ i, (D : ℕ∞) ≤ MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) (h i)` using `fun i => hfin.le.trans (hdh i)`. Use `⟨∑ e ∈ S, Polynomial.C (MvPowerSeries.coeff e d) * Polynomial.X ^ (e 1), fun i => ∑ e ∈ S, Polynomial.C (MvPowerSeries.coeff e (h i)) * Polynomial.X ^ (e 1), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `(leading_polynomial_eq_zero_iff_lt_weightedOrder hm d hDd S hS).1 h0` as an intermediate fact.
+
+Rewrite `this` using `[hfin]`. Conclude with `lt_irrefl _ this`. Introduce `i`. Rewrite using `[leading_polynomial_eq_zero_iff_lt_weightedOrder hm (h i) (hDh i) S hS, hfin]`. Introduce `s t z w hs0 hz hw hzs hwt hPd`.
+
+Establish `hz0 : PowerSeries.coeff 0 z = 0` using `PowerSeries.coeff_of_lt_order 0 (lt_of_lt_of_le (by exact_mod_cast hm) hz)`. Establish `hw0 : PowerSeries.coeff 0 w = 0` using `PowerSeries.coeff_of_lt_order 0 (lt_of_lt_of_le (by exact_mod_cast hn) hw)`. Rewrite `hz0`, `hw0` using `[PowerSeries.coeff_zero_eq_constantCoeff]`. Establish `hsub : MvPowerSeries.HasSubst (![z, w] : Fin 2 → PowerSeries k)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i`. Conclude with `hz0`.
+
+Conclude with `hw0`. Establish `factor : ∀ f : MvPowerSeries (Fin 2) k, (D : ℕ∞) ≤ MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) f → ∃ g : PowerSeries k, MvPowerSeries.subst (![z, w] : Fin 2 → PowerSeries k) f = PowerSeries.X ^ D * g ∧ PowerSeries.constantCoeff g = s ^ D * (∑ e ∈ S, Polynomial.C (MvPowerSer …`. Introduce `f hf`. Take `⟨g, hg⟩` from `PowerSeries.X_pow_dvd_iff.2 fun j hj => coeff_subst_eq_zero_of_lt hz hw hsub hf hj`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations.
+
+Use `coeff_subst_eq_pow_mul_eval_leading hz hw hsub hzs hwt hf S hS` as an intermediate fact. Rewrite `this` using `[hg, PowerSeries.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff]`. Conclude with `this`. Take `⟨gd, hgd, hgd0⟩` from `factor d hDd`. Establish `hgd0' : PowerSeries.constantCoeff gd ≠ 0`.
+
+Rewrite using `[hgd0]`. Conclude with `mul_ne_zero (pow_ne_zero _ hs0) hPd`. Use `⟨?_, fun i => (factor (h i) (hDh i)).choose * gd⁻¹, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hgd]`. Conclude with `mul_ne_zero (pow_ne_zero _ PowerSeries.X_ne_zero) fun h0 => hgd0' (by rw [h0, map_zero])`.
+
+Take `⟨hgi, hgi0⟩` from `(factor (h i) (hDh i)).choose_spec`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hgd, hgi, show (factor (h i) (hDh i)).choose * gd⁻¹ * (PowerSeries.X ^ D * gd) = PowerSeries.X ^ D * (factor (h i) (hDh i)).choose * (gd * gd⁻¹) by ring, PowerSeries.mul_inv_cancel _ hgd0', _root_.mul_one]`. Rewrite using `[map_mul, PowerSeries.constantCoeff_inv, hgi0, hgd0]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem _root_.GlobalTheory.SS.exists_polynomial_leading_quotient_subst :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (m n : ℕ), 1 ≤ m → 1 ≤ n → ∀ (r : ℕ) (h : Fin r → MvPowerSeries (Fin 2) k) (d : MvPowerSeries (Fin 2) k), d ≠ 0 → (∀ i, MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) d ≤ MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) (h i)) → ∃ (Pd : Polynomial k) (P : Fin r → Polynomial k), Pd ≠ 0 ∧ (∀ i, P i = 0 ↔ MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) d < MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) (h i)) ∧ ∀ (s t : k) (z w : PowerSeries k), s ≠ 0 → (m : ℕ∞) ≤ z.order → (n : ℕ∞) ≤ w.order → PowerSeries.coeff m z = s ^ m → PowerSeries.coeff n w = s ^ n * t → Pd.eval t ≠ 0 → MvPowerSeries.subst (![z, w] : Fin 2 → PowerSeries k) d ≠ 0 ∧ ∃ y : Fin r → PowerSeries k, ∀ i, y i * MvPowerSeries.subst (![z, w] : Fin 2 → PowerSeries k) d = MvPowerSeries.subst (![z, w] : Fin 2 → PowerSeries k) (h i) ∧ PowerSeries.constantCoeff (y i) * Pd.eval t = (P i).eval t := by
   intro k _ _ m n hm hn r h d hd hdh

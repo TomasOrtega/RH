@@ -22,13 +22,24 @@ section Tens
 
 variable (W : G.Weil) {X Y : Node} {p : Path T X Y}
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_zero_index`.
+-/
 theorem tensT_zero (τ : TotT G p) : tensT W (0 : PolT G p →₀ ℂ) τ = 0 := Finsupp.sum_zero_index
 
+/- English proof (translation)
+Unfold `tensT`. Use `Finsupp.sum_add_index' (fun P => by simp) (fun P c₁ c₂ => ?_)` and prove the remaining obligations. Simplify using `only [add_mul, Finsupp.single_add, Finsupp.sum_add]`.
+-/
 theorem tensT_add (a b : PolT G p →₀ ℂ) (τ : TotT G p) : tensT W (a + b) τ = tensT W a τ + tensT W b τ := by
   unfold tensT
   refine Finsupp.sum_add_index' (fun P => by simp) (fun P c₁ c₂ => ?_)
   simp only [add_mul, Finsupp.single_add, Finsupp.sum_add]
 
+/- English proof (translation)
+Unfold `tensT`. Rewrite using `[Finsupp.sum_smul_index' (fun P => by simp), Finsupp.smul_sum]`. Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finsupp.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, smul_eq_mul, mul_assoc]`.
+-/
 theorem tensT_smul (c : ℂ) (a : PolT G p →₀ ℂ) (τ : TotT G p) : tensT W (c • a) τ = c • tensT W a τ := by
   unfold tensT
   rw [Finsupp.sum_smul_index' (fun P => by simp), Finsupp.smul_sum]
@@ -39,6 +50,9 @@ theorem tensT_smul (c : ℂ) (a : PolT G p →₀ ℂ) (τ : TotT G p) : tensT W
   dsimp only
   rw [Finsupp.smul_single, smul_eq_mul, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Unfold `GridData.Weil.fock pureTensorO pureTensorL`. Rewrite using `[show (1 : MvPolynomial (FVar D (G.pT q).rank (G.pS q).rank) ℂ) = MvPolynomial.basisMonomials _ ℂ 0 by`. Rewrite using `[MvPolynomial.coe_basisMonomials]`. Use the proof step `rfl, Module.Basis.constr_basis]`. Simplify using `[opPow]`.
+-/
 theorem fock_one (q : Pair T) (f : WO (G.pS q) (G.pT q) → ℂ) : W.fock q f 1 = f := by
   unfold GridData.Weil.fock pureTensorO pureTensorL
   rw [show (1 : MvPolynomial (FVar D (G.pT q).rank (G.pS q).rank) ℂ) = MvPolynomial.basisMonomials _ ℂ 0 by
@@ -53,6 +67,11 @@ variable {t : T} {i j : ℕ} (W : G.Weil) (e : Num G i j) (Γ : GlobalTheory.Ind
 
 noncomputable def onePol : PolT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j) := (((), 1), 1)
 
+/- English proof (translation)
+Unfold `tensT`. Rewrite using `[Finsupp.sum_single_index (by simp)]`. Establish `hz : ∀ d : PureT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j), Path.Fam.zip (fun a (f : Sch G a) Q => W.fock a.pair f Q) d onePol = d`. Introduce and unpack `⟨⟨⟨⟩, d₁⟩, d₂⟩`. Use `show (((), W.fock _ d₁ 1), W.fock _ d₂ 1) = (((), d₁), d₂)`.
+
+Rewrite using `[fock_one, fock_one]`. Simplify using `only [hz, one_mul]`. Conclude with `Finsupp.sum_single τ`.
+-/
 theorem tensT_one (τ : TotT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j)) : tensT W (Finsupp.single onePol 1) τ = τ := by
   unfold tensT
   rw [Finsupp.sum_single_index (by simp)]
@@ -63,6 +82,11 @@ theorem tensT_one (τ : TotT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryC
   simp only [hz, one_mul]
   exact Finsupp.sum_single τ
 
+/- English proof (translation)
+Use `⟨Submodule.zero_mem _, fun u => ?_⟩` and prove the remaining obligations. Establish `: Γ.M.co.rho W.ψ u 0 = 0`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`. Rewrite using `[this, Finsupp.sum_zero_index]`.
+
+Simplify using `[GlobalTheory.WeilM.thetaSum]`.
+-/
 theorem isDatumA_zero : IsDatumA W e Γ (0 : TotT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j)) 0 := by
   refine ⟨Submodule.zero_mem _, fun u => ?_⟩
   have : Γ.M.co.rho W.ψ u 0 = 0 := by
@@ -70,6 +94,11 @@ theorem isDatumA_zero : IsDatumA W e Γ (0 : TotT G (GlobalTheory.IndefiniteRowS
   rw [this, Finsupp.sum_zero_index]
   simp [GlobalTheory.WeilM.thetaSum]
 
+/- English proof (translation)
+Use `⟨add_mem h.1 h'.1, fun u => ?_⟩` and prove the remaining obligations. Establish `e1 : Γ.M.co.rho W.ψ u (Φ + Φ') = Γ.M.co.rho W.ψ u Φ + Γ.M.co.rho W.ψ u Φ'`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, GlobalTheory.WeilM.thetaSum_add _ (GlobalTheory.HeisSchA.rho_mem_schA _ _ hψ _ _ h.1) (GlobalTheory.HeisSchA.rho_mem_schA _ _ hψ _ _ h'.1), h.2, h'.2, Finsupp.sum_add_index' (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`.
+-/
 theorem datumA_add (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd W.ψ) {τ τ' : TotT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j)} {Φ Φ'} (h : IsDatumA W e Γ τ Φ)
     (h' : IsDatumA W e Γ τ' Φ') : IsDatumA W e Γ (τ + τ') (Φ + Φ') := by
   refine ⟨add_mem h.1 h'.1, fun u => ?_⟩
@@ -78,6 +107,11 @@ theorem datumA_add (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
   rw [e1, GlobalTheory.WeilM.thetaSum_add _ (GlobalTheory.HeisSchA.rho_mem_schA _ _ hψ _ _ h.1) (GlobalTheory.HeisSchA.rho_mem_schA _ _ hψ _ _ h'.1),
     h.2, h'.2, Finsupp.sum_add_index' (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]
 
+/- English proof (translation)
+Use `⟨Submodule.smul_mem _ c h.1, fun u => ?_⟩` and prove the remaining obligations. Establish `e1 : Γ.M.co.rho W.ψ u (c • Φ) = c • Γ.M.co.rho W.ψ u Φ`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, GlobalTheory.WeilM.thetaSum_smul, h.2, Finsupp.sum_smul_index' (fun _ => zero_mul _), Finsupp.mul_sum]`. Simplify using `only [smul_eq_mul, mul_assoc]`.
+-/
 theorem datumA_smul (c : ℂ) {τ : TotT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j)} {Φ} (h : IsDatumA W e Γ τ Φ) :
     IsDatumA W e Γ (c • τ) (c • Φ) := by
   refine ⟨Submodule.smul_mem _ c h.1, fun u => ?_⟩
@@ -92,19 +126,35 @@ section Pure
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`.
+-/
 theorem pure_zero : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (0 : SInf F κ) φ = 0 := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]`.
+-/
 theorem pure_add (f f' : SInf F κ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f + f') φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f' φ := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`.
+-/
 theorem pure_smul (c : ℂ) (f : SInf F κ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c • f) φ = c • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
 
 end Pure
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W B ρ t i j M e Bs Γ X om om' h hT n Φ τ τ' hF φ hφ f₀ hf₀ hG hD`. Establish `hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd W.ψ` using `h.ψ ▸ hT.base.std`. Express the relevant statement in the definitionally equal form `TotT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j) at τ`. Set `N : Submodule ℂ (SInf D.host.F (Fin (spW G i j).rank × Fin ((spW G i j).rank + (spW₁ G i j).rank)))` to `{ carrier := {f | ∃ a, IsDatumA W e Γ (tensT W a τ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ)} zero_mem' := ⟨0, by rw [tensT_zero, pure_zero]; exact isDatumA_zero W e Γ⟩ add_mem' := by`. Introduce and unpack `f f' ⟨a, ha⟩ ⟨a', ha'⟩`.
+
+Conclude with `⟨a + a', by rw [tensT_add, pure_add]; exact datumA_add W e Γ hψ ha ha'⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c f ⟨a, ha⟩`. Conclude with `⟨c • a, by rw [tensT_smul, pure_smul]; exact datumA_smul W e Γ c ha⟩ }`. Establish `h0 : f₀ ∈ N` using `⟨Finsupp.single onePol 1, by rw [tensT_one]; exact hD⟩`.
+
+Establish `hle : Γ.M.Pol Bs.ψ Bs.emb ≤ N` using `sInf_le ⟨fun g hg => by`. Take `⟨c, rfl⟩` from `GlobalTheory.T.fockVacua_triple_proportional_to_nonzero Bs Γ X om om' hT f₀ hf₀ hG g hg`. Conclude with `N.smul_mem c h0,`. Use `fun u hu f ⟨a, ha⟩ f₁ h1 => GlobalTheory.T.archimedeanSchwartzDatum_stable_heisenbergDerivative hL W B ρ t i j M e Bs Γ X om om' h hT n Φ τ τ' hF φ hφ f a ha u hu f₁ h1⟩`. Conclude with `fun f hf => hle hf`.
+-/
 theorem datum_real : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G)
     (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)
     (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W) (h : IsTripleOf W M t i j e Bs Γ X), IsTriple Bs Γ X om om' → ∀ n Φ τ τ', HasFlip B t ρ i j n Φ τ τ' →

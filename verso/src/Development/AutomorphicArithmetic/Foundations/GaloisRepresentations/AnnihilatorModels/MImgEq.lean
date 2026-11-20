@@ -9,6 +9,13 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `hTri p _ D R _ b N hN hNp M S s o₁ o₂ t₁ t₂ h₁ h₂ n₁ n₂ m`. Take `⟨c, hc⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m n₂`. Establish `ht : t₁ = 𝟙 S ≫ t₂` using `(M.rep S s o₁).unique ⟨h₁, ⟨n₁⟩⟩ ⟨by rw [Category.id_comp]; exact h₂, ⟨c⟩⟩`. Establish `ht' : t₁ = t₂` using `by rw [ht, Category.id_comp]`. Use `⟨ht', ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ f : S ⟶ M.X, f = t₁ → ∀ mm : ObjMap o₁ M.univ f, mm.φ = n₁.φ`. Introduce `f hf mm`. Substitute `hf` using the available equality. Conclude with `(hTri p D R b N hN hNp S M.X M.X s M.s M.s o₁ M.univ M.univ f (𝟙 _)).1 mm n₁`. Rewrite using `[← hc]`.
+
+Conclude with `key _ ht.symm c`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.imgEq_of :
     ObjTri → ImgEq := by
   intro hTri p _ D R _ b N hN hNp M S s o₁ o₂ t₁ t₂ h₁ h₂ n₁ n₂ m

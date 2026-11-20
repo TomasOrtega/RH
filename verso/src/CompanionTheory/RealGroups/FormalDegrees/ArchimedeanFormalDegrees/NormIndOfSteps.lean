@@ -23,8 +23,14 @@ namespace CompanionTheory.RgFd
 
 open ReciprocityTheory.ChartRestriction.DS CompanionTheory.RgDs
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.RgFd.hsInt GlobalTheory.CompanionTheory.HsPsProof.hsPs hsPol phiMul phiCont`.
+-/
 theorem hsInt : HsInt := GlobalTheory.CompanionTheory.RgFd.hsInt GlobalTheory.CompanionTheory.HsPsProof.hsPs hsPol phiMul phiCont
 
+/- English proof (translation)
+Introduce `n ε lam hl`. Distinguish the cases in `h : S7.q0 ε = 0`. Conclude with `normDef n ε h lam hl`. Establish `h1 : 1 ≤ min (pOf ε) (qOf ε)` using `Nat.one_le_iff_ne_zero.2 h`. Conclude with `hI n ε (h1.trans (min_le_left _ _)) (h1.trans (min_le_right _ _)) lam hl`.
+-/
 theorem psiNorm_of (hI : NormInd) : PsiNorm := by
   intro n ε lam hl
   by_cases h : S7.q0 ε = 0
@@ -32,6 +38,9 @@ theorem psiNorm_of (hI : NormInd) : PsiNorm := by
   · have h1 : 1 ≤ min (pOf ε) (qOf ε) := Nat.one_le_iff_ne_zero.2 h
     exact hI n ε (h1.trans (min_le_left _ _)) (h1.trans (min_le_right _ _)) lam hl
 
+/- English proof (translation)
+The claim follows from `h momW hP (kNull_of momW hP) hsPol phiMul phiLe phiCont hsInt (gapNorm_of degPsi)`.
+-/
 theorem normInd_of_steps (hP : CoefPow)
     (h : MomW → CoefPow → KNull → HsPol → PhiMul → PhiLe → PhiCont → HsInt → GapNorm → NormInd) : NormInd :=
   h momW hP (kNull_of momW hP) hsPol phiMul phiLe phiCont hsInt (gapNorm_of degPsi)

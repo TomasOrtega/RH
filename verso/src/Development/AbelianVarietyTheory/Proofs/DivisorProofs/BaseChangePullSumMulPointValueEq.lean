@@ -18,6 +18,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Spec.preimage (R := CommRingCat.of D) (S := CommRingCat.of E) z.left).hom a = f a`. Rewrite using `[h, Spec.preimage_map]`. Both sides reduce to the same expression.
+-/
 theorem ptAlg_apply_of_left {R D E : Type} [CommRing R] [CommRing D] [Algebra R D] [CommRing E] [Algebra R E]
     (z : Pt (SpAlg R D) E) (f : D →+* E) (h : z.left = spMap f) (a : D) : ptAlg z a = f a := by
   change (Spec.preimage (R := CommRingCat.of D) (S := CommRingCat.of E) z.left).hom a = f a
@@ -26,6 +29,23 @@ theorem ptAlg_apply_of_left {R D E : Type} [CommRing R] [CommRing D] [Algebra R 
 
 end GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `R D _ _ _ B B' q w π hfst hsnd mB J _ d β`. Establish `w' : π ≫ B.hom = B'.hom ≫ spMap (algebraMap R D)`. Rewrite using `[← hsnd, Category.assoc, Over.w (snd (SpAlg R D) B), w]`. Take `⟨hadd, hsmul, -⟩` from `GlobalTheory.T.crystallineCocycleOnTrivialThickenings_additive_linear D B'`. Use function extensionality and compare the values at `E i1 i2 E' i3 i4 ψ y`.
+
+Establish `hzero : fv (0 : Z1 (O (dp0 D) (B'.hom ≫ 𝟙 _))) E E' ψ y = 0`. Establish `h` using `congrArg (fun u : Fn1 B' ↦ u E E' ψ y) (hadd 0 0)`. Simplify using `only [add_zero, Fn1.add] at h`. Take the linear combination `-h`. Establish `hsum : ∀ s : Finset J, fv (∑ i ∈ s, d i • mB.coef.pullbackOneCocycle (β i)) E E' ψ y = ∑ i ∈ s, algebraMap D E' (d i) * fv (mB.coef.pullbackOneCocycle (β i)) E E' ψ y`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hzero`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj]`.
+
+Establish `h` using `congrArg (fun u : Fn1 B' ↦ u E E' ψ y) (hadd (d j • mB.coef.pullbackOneCocycle (β j)) (∑ i ∈ s, d i • mB.coef.pullbackOneCocycle (β i)))`. Simplify using `only [Fn1.add] at h`. Rewrite using `[h, ih, hsmul]`. Rewrite using `[hsum]`. Simplify using `only [bcPull, sumMul]`.
+
+Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.crystallineCocycleOnTrivialThickenings_pullback_changeOfBase R D (algebraMap R D) B B' π w' mB (β i)]`. Use `congr 1`. Use `letI : Algebra R E := algVia (algebraMap R D) E`. Establish `hl : (ptVia w y ≫ fst (SpAlg R D) B).left = spMap (algebraMap D E)`.
+
+Rewrite using `[Over.comp_left]`. Express the relevant statement in the definitionally equal form `(y.left ≫ q) ≫ (fst (SpAlg R D) B).left = _`. Rewrite using `[Category.assoc, hfst]`. Conclude with `Over.w y`. Rewrite using `[ptAlg_apply_of_left _ _ hl]`.
+
+Conclude with `ψ.commutes (d i)`. Simplify using `only [bcPull]`. Use `congr 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left]`.
+
+Express the relevant statement in the definitionally equal form `(y.left ≫ q) ≫ (snd (SpAlg R D) B).left = y.left ≫ π`. Rewrite using `[Category.assoc, hsnd]`.
+-/
 theorem GlobalTheory.PtExt.bcPull_sumMul_fv : ∀ (R D : Type) [CommRing R] [CommRing D] [Algebra R D] (B : Over (Sp R)) (B' : Over (Sp D)) (q : B'.left ⟶ (SpAlg R D ⊗ B).left) (w : q ≫ (SpAlg R D ⊗ B).hom = B'.hom ≫ spMap (algebraMap R D)) (π : B'.left ⟶ B.left), q ≫ (fst (SpAlg R D) B).left = B'.hom → q ≫ (snd (SpAlg R D) B).left = π → ∀ (mB : IsMor (dp0 R) (B.hom ≫ 𝟙 _) (dp0 D) (B'.hom ≫ 𝟙 _) (algebraMap R D) π) (J : Type) [Fintype J] (d : J → D) (β : J → Z1 (O (dp0 R) (B.hom ≫ 𝟙 _))), bcPull w (sumMul d fun i ↦ fv (β i)) = fv (∑ i, d i • mB.coef.pullbackOneCocycle (β i)) := by
   classical
   intro R D _ _ _ B B' q w π hfst hsnd mB J _ d β

@@ -36,6 +36,9 @@ def glue {S : D.what₂.Tau → D.what₂.Tau → SPar} (N : ∀ τ, DSModel V (
   fr_unit τ := (N τ).fr_unit τ
   fr_gram τ := (N τ).fr_gram τ
 
+/- English proof (translation)
+Unfold `dualPar`. Use extensionality with `x`. Simplify using `only [Finset.mem_image]`. Conclude with `⟨fun ⟨_, ⟨y, hy, e⟩, e'⟩ => by subst e e'; simpa using hy, fun hx => ⟨(-x.1, x.2), ⟨x, hx, rfl⟩, by simp⟩⟩`.
+-/
 theorem dualPar_dualPar (S : SPar) : dualPar (dualPar S) = S := by
   unfold dualPar
   ext x
@@ -43,6 +46,13 @@ theorem dualPar_dualPar (S : SPar) : dualPar (dualPar S) = S := by
   exact ⟨fun ⟨_, ⟨y, hy, e⟩, e'⟩ => by subst e e'; simpa using hy,
     fun hx => ⟨(-x.1, x.2), ⟨x, hx, rfl⟩, by simp⟩⟩
 
+/- English proof (translation)
+Introduce `w hw`. Set `c : (conjModel M).H τ ≃ₗᵢ⋆[ℂ] M.H τ` to `cj (M.H τ)`. Establish `h1` using `h (lowKSub_transfer (ε := M.ε τ) (ε' := (conjModel M).ε τ) (σ' := (conjModel M).σ τ) (fun _ => rfl) c (fun _ _ => rfl) hw)`. Establish `h2 : ∀ y ∈ (conjModel M).sm τ, c y ∈ M.sm τ` using `fun y hy => by`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact Submodule.subset_span (smoothVec_map c (conj_rep M τ) hy)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul a x _ hx => rw [LinearIsometryEquiv.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `h3` using `h2 _ h1`. Simplify using `using h3`.
+-/
 theorem low_of_conj {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
     (h : lowKSub ((conjModel M).ε τ) ((conjModel M).lam τ) ((conjModel M).σ τ) ≤ (conjModel M).sm τ) :
     lowKSub (M.ε τ) (M.lam τ) (M.σ τ) ≤ M.sm τ := by
@@ -59,6 +69,11 @@ theorem low_of_conj {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what�
   have h3 := h2 _ h1
   simpa using h3
 
+/- English proof (translation)
+Establish `key` using `GlobalTheory.HolDict.isEnum_holPar_kapW h hn hpq (hS ▸ M.enum τ)`. Use `⟨⟨(M.enum τ).1, fun a => ?_⟩, p, by omega, fun a => (key a).2⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `Formalism.L2.NTheta.lamAt_int h a`. Take `⟨s, hs⟩` from `Formalism.L2.NTheta.odd_r D.R`. Use `⟨z - s, ?_⟩` and prove the remaining obligations.
+
+Establish `hr : ((V.rank : ℕ) : ℝ) = 2 * s + 1` using `by rw [hn, hs]; push_cast; rfl`. Rewrite using `[(key a).1, hz, hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shape_at {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) (h : HCParam D.R) {p q : ℕ}
     (hn : V.rank = D.R.r) (hpq : p + q = V.rank)
     (hS : S τ = Formalism.L2.NTheta.holPar p q (Formalism.L2.NTheta.kapW h p q)) :
@@ -73,6 +88,13 @@ theorem shape_at {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R i σ`. Establish `key : ∀ τ, ∃ (S : D.what₂.Tau → SPar) (N : DSModel (Wc D i) S), (Formalism.QuantumDeterminants.IsHCParam (N.lam τ) ∧ ∃ p ≤ (Wc D i).rank, ∀ a, N.ε τ a = decide ((a : ℕ) < p)) ∧ (lowKSub (N.ε τ) (N.lam τ) (N.σ τ) ≤ N.sm τ → lowKSub ((R.MW i σ).ε τ) ((R.MW i σ).lam τ) ((R.MW i σ).σ …` using `fun τ => by`. Establish `hpq` using `GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.pW_add_qW (D := D) i τ`. Distinguish the cases in `hb : labE σ (lab σ τ) = tauE D τ`. Conclude with `⟨_, R.MW i σ, shape_at _ τ (D.hc (lab σ τ)) (rank_Wc i) hpq (if_pos hb), id⟩`.
+
+Use `⟨_, conjModel (R.MW i σ), shape_at _ τ (D.hc (lab σ τ)) (rank_Wc i) hpq ?_, low_of_conj _ τ⟩` and prove the remaining obligations. Unfold `Links.parAt`. Rewrite using `[if_neg hb, dualPar_dualPar]`. Both sides reduce to the same expression. Use `choose S N hN hL using key`.
+
+Conclude with `fun τ => hL τ ((GlobalTheory.HolLowOnce.lowSm_and_lowIrr D _ _ (glue N) hN).1 τ)`.
+-/
 theorem lowSm_MW : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ i σ, LowSm (R.MW i σ) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R i σ
   have key : ∀ τ, ∃ (S : D.what₂.Tau → SPar) (N : DSModel (Wc D i) S),

@@ -11,6 +11,17 @@ section Abstract
 
 open Formalism.IndefR.Datum in
 
+/- English proof (translation)
+Establish `h1 : ∀ i g, g ∈ M → A i g ∈ M` using `fun i g hg => by rw [hA i ⟨g, hg⟩]; exact Subtype.prop _`. Establish `hm` using `GlobalTheory.FockIndep.pure_mem (P := (· ∈ M)) (fun _ _ => add_mem) (fun c _ => M.smul_mem c) h1 f.2`. Establish `hX` using `GlobalTheory.FockIndep.pure_X_mul (P := (· ∈ M)) (fun _ _ => add_mem) (fun c _ => M.smul_mem c) h1 (fun i j g hg => by`. Rewrite using `[hA j ⟨g, hg⟩, hA i ⟨g, hg⟩, hA, hA]`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun (haa i j) ⟨g, hg⟩))`.
+
+Use the proof step `(fun i g g' hg hg' => by`. Rewrite using `[hA i ⟨g, hg⟩, hA i ⟨g', hg'⟩, ← Submodule.coe_add, ← map_add, ← hA]`. Use the proof step `rfl)`. Use the proof step `(fun i c g hg => by rw [hA i ⟨g, hg⟩, ← Submodule.coe_smul, ← map_smul, ← hA]; rfl) f.2`. Set `E : MvPolynomial ι ℂ →ₗ[ℂ] M` to `(pureTensorL A (f : X → ℂ)).codRestrict M hm`.
+
+Establish `hE : ∀ v Q, E (MvPolynomial.X v * Q) = a v (E Q)` using `fun v Q => Subtype.ext ((hX Q v).trans (hA v (E Q)))`. Establish `h0 : E 1 = f` using `Subtype.ext (GlobalTheory.FockIndep.pure_one _)`. Use `⟨E, fun _ => rfl, hE, fun i hi Q => Eq.symm ?_⟩` and prove the remaining obligations. Use `clear_value E`. Proceed by induction on `Q using MvPolynomial.induction_on with`.
+
+Consider the case `C r => rw [MvPolynomial.pderiv_C, map_zero, MvPolynomial.C_eq_smul_one, map_smul, map_smul, h0, hf i hi, smul_zero]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p j hp`. Rewrite using `[mul_comm, hE, ← Module.End.mul_apply, hba, LinearMap.add_apply, Module.End.mul_apply, hp, MvPolynomial.pderiv_mul, map_add, hE, add_comm]`. Use `congr 1`.
+
+Use `split_ifs with h`. Rewrite using `[h, MvPolynomial.pderiv_X_self, one_mul, one_smul, Module.End.one_apply]`. Rewrite using `[MvPolynomial.pderiv_X_of_ne (Ne.symm h), zero_mul, map_zero, zero_smul, LinearMap.zero_apply]`.
+-/
 theorem exists_lift_on {ι X : Type} [DecidableEq ι] (M : Submodule ℂ (X → ℂ)) (A : ι → (X → ℂ) → (X → ℂ))
     (a b : ι → Module.End ℂ M) (hA : ∀ i (g : M), A i g = a i g) (haa : ∀ i j, a i * a j = a j * a i)
     (hba : ∀ i j, b i * a j = a j * b i + (if i = j then (1 : ℂ) else 0) • 1) (f : M) (S : Set ι)
@@ -53,6 +64,43 @@ variable {D : D7} {V W : HSp D} (A : Fr V) (B : Fr W)
 
 variable {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {σ : (D.what₂.Tau → ℂ) →+ Formalism.L2.Theta.AE D}
 
+/- English proof (translation)
+Set `J : thetaSub ψ V W →ₗ[ℂ] BB ψ V W` to `{ toFun := fun f => toB hψ f.1 f.2 map_add' := fun f g => QB_ext fun x => rfl map_smul' := fun a f => QB_ext fun x => rfl }`. Establish `hc : ∀ f, ((J f).1 : WO V W → ℂ) = f.1` using `fun f => coe_toB hψ f.1 f.2`. Establish `hJ : Function.Injective J` using `fun f g e => Subtype.ext (by rw [← hc, ← hc, e])`. Establish `ht : ∀ f, IsThetaFunO ψ V W (J f).1` using `fun f => (hc f).symm ▸ f.2`. Take `⟨d, x, y, hd, hn, hx, hy, c1, c2, c3, hN⟩` from `exists_der (HM V W) HM_herm (rhoV hψ σ V W) (isHeis_rhoB h hψ) J hJ (fun f => sm_of_theta h hψ _ (ht f)) fun v f => ⟨⟨_, GlobalTheory.DefLift.Gen.theta_dH h hψ (J f) (ht f) v⟩, QB_ext fun w => congrFun (hc _) w⟩`.
+
+Establish `hD : ∀ τ z (g : thetaSub ψ V W), Datum.dRho (heisO ψ V W) θ τ z g = d (vecL (Pi.single τ z : D.what₂.Tau → Matrix (Fin W.rank) (Fin V.rank) ℂ)) g` using `fun τ z g => by`. Rewrite using `[← hc (d _ g), hd, GlobalTheory.DefLift.Gen.coe_dH h hψ _ (ht g), hc]`. Set `u : FVar D W.rank V.rank → Ix V W → ℂ` to `fun k => uM A B *ᵥ Pi.single (k.2, k.1) 1`. Set `p : FVar D W.rank V.rank → Prop` to `fun k => B.ε k.1 k.2.1 = A.ε k.1 k.2.2`. Establish `s2 : ∀ τ, (fockScale D τ : ℂ) * fockScale D τ = 4 * π * cc D τ` using `fun τ => by`.
+
+Rewrite using `[GlobalTheory.VacuumFockLaws.fockScale_sq, cc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `sn` using `GlobalTheory.VacuumFockLaws.fockScale_ne (D := D)`. Establish `cs : ∀ τ, starRingEnd ℂ (cc D τ) = cc D τ` using `fun τ => conj_ofReal _`.
+
+Set `a : FVar D W.rank V.rank → Module.End ℂ (thetaSub ψ V W)` to `fun k => (fockScale D k.1 : ℂ)⁻¹ • if p k then x (u k) else y (u k)`. Set `b : FVar D W.rank V.rank → Module.End ℂ (thetaSub ψ V W)` to `fun k => -(fockScale D k.1 : ℂ)⁻¹ • if p k then y (u k) else x (u k)`. Take `⟨haa, hba⟩` from `ccr_of_sign (fun k => x (u k)) (fun k => y (u k)) p (fun k => (fockScale D k.1 : ℂ)) (fun k => sn _) (fun _ _ => c1 _ _) (fun _ _ => c2 _ _) (fun k l => by`. Rewrite using `[c3]`. Use `congr 2`.
+
+Establish `e : star (u l) ⬝ᵥ HM V W *ᵥ u k = ((uM A B)ᴴ * HM V W * uM A B) (l.2, l.1) (k.2, k.1)`. Simplify using `only [u]`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`. Simplify using `[← Pi.single_star]`. Rewrite using `[e, uM_gram, diagonal_apply]`.
+
+Distinguish the cases in `hkl : k = l`. Substitute `hkl` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, s2, map_mul, map_mul, cs, conj_sgn, conj_sgn, mul_assoc (cc D _), sgn_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hkl, if_neg fun e : (l.2, l.1) = (k.2, k.1) => hkl (Prod.swap_injective e).symm, map_zero, mul_zero])`.
+
+Use the proof step `(a := a) (b := b) (fun _ => rfl) fun _ => rfl`. Establish `hdJ : ∀ (k : FVar D W.rank V.rank) (g : thetaSub ψ V W), Datum.dRho (heisO ψ V W) θ k.1 (unitMap (A.onb k.1) (B.onb k.1) k.2.1 k.2.2) g = d (u k) g ∧ Datum.dRho (heisO ψ V W) θ k.1 (cplxO (A.cart k.1) (B.cart k.1) (unitMap (A.onb k.1) (B.onb k.1) k.2.1 k.2.2)) g = (if p k then (1 …` using `fun k g => by`. Establish `e` using `uM_single A B k.1 k.2.1 k.2.2`. Rewrite using `[hD, hD, cplxO_unit, vecL_smul, vecL_smul, ← e]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [p]`. Use `split_ifs`. Rewrite using `[one_smul, one_smul]`. Rewrite using `[neg_one_smul, neg_one_smul, hn]`. Both sides reduce to the same expression.
+
+Use `⟨fun i j => (sgn (A.ε τ j) * (fockScale D τ : ℂ)⁻¹) • x (u (τ, i, j)), fun i j => (-sgn (B.ε τ i) * (fockScale D τ : ℂ)⁻¹) • y (u (τ, i, j)), fun k l => x (uM A B *ᵥ Pi.single k 1) * (-(1 / (4 * π)) : ℂ) • y ((uM A B * diagonal fun k => (cc D k.2)⁻¹ * sgn (B.ε k.2 k.1.1) * sgn (A …` and prove the remaining obligations. Take `⟨E, h1, h2, h3'⟩` from `exists_lift_on (thetaSub ψ V W) (aPlusAll (heisO ψ V W) θ (fun τ => cplxO (A.cart τ) (B.cart τ)) A.onb B.onb) a b (fun k g => by`. Rewrite using `[aPlusAll, aPlus, crea, (hdJ k g).1, (hdJ k g).2]`. Simplify using `only [a]`. Use `split_ifs`.
+
+Rewrite using `[hx, one_smul]`. Both sides reduce to the same expression. Rewrite using `[hy, neg_one_smul, smul_neg, sub_neg_eq_add] rfl) haa hba ⟨f, hf⟩ {k | k.1 = τ} (fun k hk => by`. Establish `e` using `(show IsFockVacAt (heisO ψ V W) θ k.1 (cplxO (A.cart k.1) (B.cart k.1)) f from (show k.1 = τ from hk) ▸ hv) (unitMap (A.onb k.1) (B.onb k.1) k.2.1 k.2.2)`. Rewrite `e` using `[annih, (hdJ k ⟨f, hf⟩).1, (hdJ k ⟨f, hf⟩).2]`.
+
+Simplify using `only [b, LinearMap.smul_apply]`. Rewrite using `[smul_eq_zero]`. Use `Or.inr (Subtype.ext ?_)` and prove the remaining obligations. Use `split_ifs at e ⊢`. Rewrite `e` using `[one_smul]`.
+
+Rewrite using `[hy]`. Conclude with `e`. Rewrite `e` using `[neg_one_smul, smul_neg, ← sub_eq_add_neg]`. Rewrite using `[hx]`. Conclude with `e)`.
+
+Establish `h3 : ∀ i j P, E (MvPolynomial.pderiv ((τ, i, j) : FVar D W.rank V.rank) P) = b (τ, i, j) (E P)` using `fun i j P => h3' (τ, i, j) rfl P`. Use `⟨E, h1, fun i j P => ?_, fun i j P => ?_⟩` and prove the remaining obligations. Unfold `raiO`. Distinguish the cases in `hp : B.ε τ i = A.ε τ j`. Simplify using `only [if_pos hp, LinearMap.smul_apply, map_smul, LinearMap.mulLeft_apply, h2, a, p, smul_smul]`.
+
+Simplify using `only [if_neg hp, LinearMap.smul_apply, map_smul, LinearMap.neg_apply, map_neg, Derivation.coeFn_coe, h3, b, p, smul_smul, neg_smul, neg_neg]`. Unfold `lowO`. Distinguish the cases in `hp : B.ε τ i = A.ε τ j`. Simplify using `only [if_pos hp, LinearMap.smul_apply, map_smul, Derivation.coeFn_coe, h3, b, p, smul_smul]`. Rewrite using `[hp, neg_mul, mul_neg]`.
+
+Establish `e : sgn (A.ε τ j) = -sgn (B.ε τ i)` using `by revert hp`. Apply the tactic sequence `cases B.ε τ i <;> cases A.ε τ j <;> simp [sgn]`. Simplify using `only [if_neg hp, LinearMap.smul_apply, map_smul, LinearMap.mulLeft_apply, h2, a, p, smul_smul, e]`. Use `beta_reduce`. Rewrite using `[← mulVec_mulVec, diagonal_mulVec_single, ← smul_eq_mul _ (1 : ℂ), Pi.single_smul', mulVec_smul, map_smulₛₗ, map_mul, map_mul, map_inv₀, cs, conj_sgn, conj_sgn]`.
+
+Simplify using `only [u, smul_mul_assoc, mul_smul_comm, smul_smul]`. Use `congr 1`. Establish `h1` using `sn τ`. Establish `h2 : cc D τ = fockScale D τ * fockScale D τ / (4 * π)`. Rewrite using `[s2]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h3 : (π : ℂ) ≠ 0` using `ofReal_ne_zero.2 Real.pi_ne_zero`. Rewrite using `[h2]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(sgn (B.ε τ l) * sgn (A.ε τ k)) * sgn_mul_self (A.ε τ j)`.
+
+Use `beta_reduce`. Rewrite using `[← quad_basis x y _ hX, ← HM_inv]`. Conclude with `(congrArg (fun F : BB ψ V W => (F.1 : WO V W → ℂ)) (hN X g)).trans (hc _)`.
+-/
 theorem exists_raise_lower_at (h : GlobalTheory.FockCompare.Chart θ σ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂.Tau) :
     ∃ (R L : Fin W.rank → Fin V.rank → Module.End ℂ (thetaSub ψ V W))
       (w : Ix V W → Ix V W → Module.End ℂ (thetaSub ψ V W)),
@@ -174,6 +222,33 @@ theorem exists_raise_lower_at (h : GlobalTheory.FockCompare.Chart θ σ) (hψ : 
     rw [← quad_basis x y _ hX, ← HM_inv]
     exact (congrArg (fun F : BB ψ V W => (F.1 : WO V W → ℂ)) (hN X g)).trans (hc _)
 
+/- English proof (translation)
+Introduce `D V W A B θ ψ χS χT ω τ hθ hω`. Establish `hψ` using `hω.std`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨R, L, w, hE, hw, hN⟩` from `exists_raise_lower_at A B h hψ τ`. Establish `key : ∀ γ : ℝ → GA D V × GA D W, Continuous γ → (∀ s t, γ (s + t) = γ s * γ t) → (∀ t, (γ t).1 ∈ GinfC V ∧ (γ t).2 ∈ GinfC W) → ∀ X X' : Matrix (Ix V W) (Ix V W) ℂ, (∀ k l, HasDerivAt (fun t => mM θ V W (γ t) k l) (X k l) 0) → X * uM A B = uM A B * X' → ∃ lam : ℂ, ∀ (g : thetaSub …`.
+
+Introduce `γ h1 h2 h3 X X' h4 h5`. Take `⟨lam, hl⟩` from `GlobalTheory.Mem.LiftGen.hasDerivAt_om D θ σ h ψ hψ V W ω (GlobalTheory.Ker.isWeak_of_datum hω) hω.om_cont γ h1 h2 h3 X h4`. Use `⟨lam, fun g z => ?_⟩` and prove the remaining obligations. Establish `e` using `coe_toB hψ g.1 g.2`. Establish `h6` using `hl (toB hψ g.1 g.2) (e.symm ▸ g.2) 1 z`.
+
+Simplify using `only [one_mul, map_one, Module.End.one_apply] at h6`. Rewrite `h6` using `[← GlobalTheory.DefLift.Gen.coe_add_smul, hN X X' h5, e]`. Conclude with `h6`. Establish `hS : ∀ X, ∃ κ : ℂ, X ∈ lieAt V τ → ∀ f, IsThetaFunO ψ V W f → IsFockVacAt (heisO ψ V W) θ τ (cplxO (A.cart τ) (B.cart τ)) f → ∀ (P : PolF D W.rank V.rank) (z : WO V W), HasDerivAt (fun t : ℝ => ω (oneP θ V τ X t, 1) (ptF ψ θ A B f P) z) (ptF ψ θ A B f (fockS τ (A.ε τ) (B.ε τ) ((A …`. Introduce `X`.
+
+Distinguish the cases in `hX : X ∈ lieAt V τ`. Use `swap`. Conclude with `⟨0, fun h => absurd h hX⟩`. Take `⟨lam, hl⟩` from `key (fun t => (oneP θ V τ X t, 1)) ((continuous_oneP hθ hX).prodMk continuous_const) (fun s t => by rw [oneP_add hθ hX, Prod.mk_mul_mk, one_mul]) (fun t => ⟨(isAtTau_oneP hθ hX t).1, one_mem _⟩) (blk (fun _ => 1) (Pi.single τ (-X))) (blk (fun _ => 1) (Pi.single τ (-(A.fr τ * X * …`. Simplify using `only [mM_apply, WeylAction.oneP_inv hθ hX, GlobalTheory.WeilVacMove.mt_one, GlobalTheory.WeilVacMove.compAt_one, WeylAction.blk_apply]`.
+
+Use `split_ifs`. Conclude with `(WeylAction.hasDerivAt_comp hθ (WeylAction.neg_mem_lieAt hX) _ _ _).const_mul _`. Conclude with `hasDerivAt_const _ _) (by`. Rewrite using `[uM, blk_mul, blk_mul]`. Apply the tactic sequence `congr 1 <;> funext t`.
+
+Rewrite using `[Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[blk_single_congr A.fr (fr_det A), Matrix.mul_neg, Matrix.neg_mul])`. Use `⟨lam - ∑ i, ∑ k, (A.fr τ * X * (A.fr τ)⁻¹).map (starRingEnd ℂ) i k * ∑ _j : Fin W.rank, if i = k then (1 / 2 : ℂ) else 0, fun _ f hf hv P z => ?_⟩` and prove the remaining obligations. Take `⟨E, h1, h2, h3⟩` from `hE f hf hv`. Establish `e : ∑ k, ∑ l, blk (fun _ => 1) (Pi.single τ (-(A.fr τ * X * (A.fr τ)⁻¹))) k l • w k l = ∑ j, ∑ k, (A.fr τ * X * (A.fr τ)⁻¹).map (starRingEnd ℂ) j k • ∑ i, R i j * L i k`.
+
+Rewrite using `[WeylAction.sum_right, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [Matrix.map_apply, lie_entry (fr_det A τ) (A.fr_gram τ) hX]`. Simplify using `only [hw, ← Finset.smul_sum]`. Use `module`.
+
+Rewrite using `[h1, h1, map_add, map_smul, fockS, lift_quad E (fun j i => raiO τ (A.ε τ) (B.ε τ) i j) (fun j i => lowO τ (A.ε τ) (B.ε τ) i j) (fun j i => R i j) (fun j i => L i j) (fun j i => h2 i j) (fun j i => h3 i j), add_assoc, ← add_smul, add_sub_cancel, ← e]`. Conclude with `hl (E P) z`. Establish `hT : ∀ Y, ∃ κ : ℂ, Y ∈ lieAt W τ → ∀ f, IsThetaFunO ψ V W f → IsFockVacAt (heisO ψ V W) θ τ (cplxO (A.cart τ) (B.cart τ)) f → ∀ (P : PolF D W.rank V.rank) (z : WO V W), HasDerivAt (fun t : ℝ => ω (1, oneP θ W τ Y t) (ptF ψ θ A B f P) z) (ptF ψ θ A B f (fockT τ (A.ε τ) (B.ε τ) (B. …`. Introduce `Y`. Distinguish the cases in `hY : Y ∈ lieAt W τ`.
+
+Use `swap`. Conclude with `⟨0, fun h => absurd h hY⟩`. Take `⟨lam, hl⟩` from `key (fun t => (1, oneP θ W τ Y t)) (continuous_const.prodMk (continuous_oneP hθ hY)) (fun s t => by rw [oneP_add hθ hY, Prod.mk_mul_mk, one_mul]) (fun t => ⟨one_mem _, (isAtTau_oneP hθ hY t).1⟩) (blk (Pi.single τ Y) fun _ => 1) (blk (Pi.single τ (B.fr τ * Y * (B.fr τ)⁻¹)) fun _ = …`. Simplify using `only [mM_apply, inv_one, GlobalTheory.WeilVacMove.mt_one, GlobalTheory.WeilVacMove.compAt_one, WeylAction.blk_apply]`. Use `split_ifs`.
+
+Conclude with `(WeylAction.hasDerivAt_comp hθ hY _ _ _).mul_const _`. Conclude with `hasDerivAt_const _ _) (by`. Rewrite using `[uM, blk_mul, blk_mul]`. Apply the tactic sequence `congr 1 <;> funext t`. Rewrite using `[← nonsing_inv_mul_cancel_left _ (_ * (B.fr t)⁻¹) (fr_det B t), ← Matrix.mul_assoc (B.fr t), blk_single_congr B.fr (fr_det B), mul_nonsing_inv_cancel_right _ _ (fr_det B t)]`.
+
+Rewrite using `[Matrix.one_mul, Matrix.mul_one])`. Use `⟨lam - ∑ i, ∑ k, (B.fr τ * Y * (B.fr τ)⁻¹) i k * ∑ _j : Fin V.rank, if i = k then (1 / 2 : ℂ) else 0, fun _ f hf hv P z => ?_⟩` and prove the remaining obligations. Take `⟨E, h1, h2, h3⟩` from `hE f hf hv`. Establish `e : ∑ k, ∑ l, blk (Pi.single τ (B.fr τ * Y * (B.fr τ)⁻¹)) (fun _ => 1) k l • w k l = ∑ i, ∑ k, (B.fr τ * Y * (B.fr τ)⁻¹) i k • ∑ j, R i j * L k j`. Rewrite using `[WeylAction.sum_left]`.
+
+Simplify using `only [hw, sgn_mul_self, one_smul]`. Rewrite using `[h1, h1, map_add, map_smul, fockT, lift_quad E _ _ R L h2 h3, add_assoc, ← add_smul, add_sub_cancel, ← e]`. Conclude with `hl (E P) z`. Use `choose κS hS using hS`. Use `choose κT hT using hT`.
+
+Conclude with `⟨κS, κT, fun f hf hv => ⟨fun X hX => hS X hX f hf hv, fun Y hY => hT Y hY f hf hv⟩⟩`.
+-/
 theorem lieFockUpTo_at : ∀ (D : D7) (V W : HSp D) (A : GlobalTheory.ChainFr.Fr V) (B : GlobalTheory.ChainFr.Fr W) (θ : InfFam D)
     (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))
     (τ : D.what₂.Tau), IsInfFam θ → IsWeilDatumO ψ V W χS χT ω →

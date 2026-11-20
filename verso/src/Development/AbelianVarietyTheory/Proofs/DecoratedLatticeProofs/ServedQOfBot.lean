@@ -13,6 +13,9 @@ open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLoca
 
 namespace GlobalTheory.MiTop
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W _ _`. Conclude with `served_holds W`.
+-/
 theorem servedQ_of_bot : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), BotHyp W → RealRec W.Q → ServedQ W := by
   intro D L hT Gi Gl Kc Yd cX ex W _ _
   exact served_holds W

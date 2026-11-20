@@ -24,6 +24,11 @@ namespace GlobalTheory.LatOpenCpt
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegerMultipleMembership.exists_int_smul_mem`. Consider the case `exact _root_.GlobalTheory.IntegerMultipleMembership.exists_int_smul_mem`. Consider the case `(apply _root_.GlobalTheory.IntegerMultipleMembership.exists_int_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegerMultipleMembership.exists_int_smul_mem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.IntegerMultipleMembership.exists_int_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegerMultipleMembership.exists_int_smul_mem ..)`.
+-/
 theorem exists_zsmul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
     (hL : L.IsLattice E) (z : Fin n → E) : ∃ m : ℤ, m ≠ 0 ∧ m • z ∈ L := by
   first
@@ -34,6 +39,17 @@ theorem exists_zsmul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Sub
   | (intros; apply @_root_.GlobalTheory.IntegerMultipleMembership.exists_int_smul_mem <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.IntegerMultipleMembership.exists_int_smul_mem ..)
 
+/- English proof (translation)
+Introduce `x hx y hy`. It suffices to establish `h : ∀ z : LX, ∀ w : LY, vecMulVec (z : Fin n → E) (w : Fin d → E) ∈ H from h ⟨x, hx⟩ ⟨y, hy⟩`. Introduce `z w`. Establish `hz : z ∈ Submodule.span ℤ (sX : Set LX)` using `by rw [hsX]; trivial`. Establish `hw : w ∈ Submodule.span ℤ (sY : Set LY)` using `by rw [hsY]; trivial`.
+
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem a ha`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem b hb => exact hH a ha b hb`. Consider the case `zero`.
+
+Establish `: vecMulVec (a : Fin n → E) ((0 : LY) : Fin d → E) = 0` using `by ext; simp [vecMulVec_apply]`. Rewrite using `[this]`. Conclude with `H.zero_mem`. Consider the case `add b c _ _ hb hc => rw [Submodule.coe_add, vecMulVec_add]`. Conclude with `H.add_mem hb hc`.
+
+Consider the case `smul k b _ hb => rw [Submodule.coe_smul_of_tower, vecMulVec_smul]`. Conclude with `H.zsmul_mem hb k`. Consider the case `zero`. Establish `: vecMulVec ((0 : LX) : Fin n → E) (w : Fin d → E) = 0` using `by ext; simp [vecMulVec_apply]`. Rewrite using `[this]`.
+
+Conclude with `H.zero_mem`. Consider the case `add a b _ _ ha hb => rw [Submodule.coe_add, add_vecMulVec]`. Conclude with `H.add_mem ha hb`. Consider the case `smul k a _ ha => rw [Submodule.coe_smul_of_tower, smul_vecMulVec]`. Conclude with `H.zsmul_mem ha k`.
+-/
 theorem vecMulVec_mem {E : Type} [Field E] [NumberField E] {n d : ℕ} {LX : Submodule (𝓞 E) (Fin n → E)}
     {LY : Submodule (𝓞 E) (Fin d → E)} (sX : Finset LX) (hsX : Submodule.span ℤ (sX : Set LX) = ⊤) (sY : Finset LY)
     (hsY : Submodule.span ℤ (sY : Set LY) = ⊤) (H : AddSubgroup (Matrix (Fin n) (Fin d) E))
@@ -59,12 +75,18 @@ theorem vecMulVec_mem {E : Type} [Field E] [NumberField E] {n d : ℕ} {LX : Sub
   | add a b _ _ ha hb => rw [Submodule.coe_add, add_vecMulVec]; exact H.add_mem ha hb
   | smul k a _ ha => rw [Submodule.coe_smul_of_tower, smul_vecMulVec]; exact H.zsmul_mem ha k
 
+/- English proof (translation)
+Use `haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.mpr hL.fg`. Use `haveI : Module.Finite ℤ L := Module.Finite.trans (𝓞 E) L`. Conclude with `Module.Finite.fg_top`.
+-/
 theorem exists_gen {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
     (hL : L.IsLattice E) : ∃ s : Finset L, Submodule.span ℤ (s : Set L) = ⊤ := by
   haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.mpr hL.fg
   haveI : Module.Finite ℤ L := Module.Finite.trans (𝓞 E) L
   exact Module.Finite.fg_top
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, map_smul]`. Apply the tactic sequence `ext k <;> simp [smul_eq_mul, map_mul]`.
+-/
 theorem locCo_smul {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (a : AF F) (w : W) :
     GlobalTheory.LatVac.locCo co v (a • w) = GlobalTheory.AdelicU.evFin F v a • GlobalTheory.LatVac.locCo co v w := by
@@ -76,6 +98,9 @@ end GlobalTheory.LatOpenCpt
 namespace GlobalTheory.LatOpenCpt
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [incM, Matrix.map_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> first | rfl | exact map_zero _`.
+-/
 theorem incM_single {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     (i : Fin n) (j : Fin d) (e : E) :
     incM F (Matrix.single i j e) = Matrix.single i j ((1 : AF F) ⊗ₜ[F] e) := by
@@ -83,12 +108,28 @@ theorem incM_single {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   simp only [incM, Matrix.map_apply, Matrix.single_apply]
   split_ifs <;> first | rfl | exact map_zero _
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.single_apply, vecMulVec_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem single_eq_vecMulVec {E : Type} [Field E] {n d : ℕ} (i : Fin n) (j : Fin d) (e : E) :
     Matrix.single i j e = vecMulVec (Pi.single i e) (Pi.single j 1) := by
   ext a b
   simp only [Matrix.single_apply, vecMulVec_apply, Pi.single_apply]
   split_ifs <;> simp_all
 
+/- English proof (translation)
+Use `set S := Submodule.span (AF F) (Set.range fun i => incM F (t i))`. Establish `hzs : ∀ (k : ℤ) (P : Matrix (Fin n) (Fin d) E), incM F (k • P) = k • incM F P` using `fun k P => by`. Use extensionality with `a b`. Simplify using `[incM, map_zsmul]`. Establish `hall : ∀ (x : Fin n → E) (y : Fin d → E), incM F (vecMulVec x y) ∈ S`.
+
+Introduce `x y`. Take `⟨m, hm, hmx⟩` from `exists_zsmul_mem LX hX x`. Take `⟨m', hm', hmy⟩` from `exists_zsmul_mem LY hY y`. Establish `h1` using `ht _ hmx _ hmy`. Rewrite `h1` using `[smul_vecMulVec, vecMulVec_smul, smul_smul, hzs]`.
+
+Establish `hk : ((m * m' : ℤ) : F) ≠ 0` using `Int.cast_ne_zero.mpr (mul_ne_zero hm hm')`. Use `S.smul_mem (algebraMap F (AF F) ((m * m' : ℤ) : F)⁻¹) h1` as an intermediate fact. Rewrite `this` using `[← Int.cast_smul_eq_zsmul (AF F), smul_smul, ← map_intCast (algebraMap F (AF F)), ← map_mul, inv_mul_cancel₀ hk, map_one, one_smul]`. Then use the resulting hypothesis. Establish `hsingle : ∀ (i : Fin n) (j : Fin d) (z : AE F E), Matrix.single i j z ∈ S`. Introduce `i j z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [Matrix.single_zero]`. Conclude with `S.zero_mem`. Consider the case `tmul a e`. Establish `h` using `S.smul_mem a (hall (Pi.single i e) (Pi.single j 1))`.
+
+Rewrite `h` using `[← single_eq_vecMulVec, incM_single, Matrix.smul_single, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Conclude with `h`. Consider the case `add z z' hz hz' => rw [Matrix.single_add]`. Conclude with `S.add_mem hz hz'`. Rewrite using `[Matrix.matrix_eq_sum_single Z]`.
+
+Conclude with `S.sum_mem fun i _ => S.sum_mem fun j _ => hsingle i j (Z i j)`.
+-/
 theorem span_top {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     {LX : Submodule (𝓞 E) (Fin n → E)} {LY : Submodule (𝓞 E) (Fin d → E)} (hX : LX.IsLattice E) (hY : LY.IsLattice E)
     {ι : Type} (t : ι → Matrix (Fin n) (Fin d) E)
@@ -119,6 +160,43 @@ theorem span_top {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   rw [Matrix.matrix_eq_sum_single Z]
   exact S.sum_mem fun i _ => S.sum_mem fun j _ => hsingle i j (Z i j)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X Y r s r' s' hX hY M _ v`. Take `⟨sX, hsX⟩` from `exists_gen X.L hX.lat`. Take `⟨sY, hsY⟩` from `exists_gen Y.L hY.lat`. Set `ι` to `↥sX × ↥sY`. Set `t : ι → Matrix (Fin n) (Fin d) E` to `fun i => vecMulVec ((i.1 : X.L) : Fin n → E) ((i.2 : Y.L) : Fin d → E)`.
+
+Set `ρ : ι → (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)` to `fun i => GlobalTheory.LatVac.locCo M.co v (incM F (t i))`. Set `φ : (ι → Fv F v) →ₗ[Fv F v] (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)` to `{ toFun := fun f => ∑ i, f i • ρ i map_add' := fun f g => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun c f => by simp [Finset.smul_sum, smul_smul] }`. Establish `hφ : ∀ f, φ f = ∑ i, f i • ρ i` using `fun f => rfl`. Set `Opi : AddSubgroup (ι → Fv F v)` to `AddSubgroup.pi Set.univ fun _ => (v.adicCompletionIntegers F).toSubring.toAddSubgroup`. Establish `hO : ∀ f, f ∈ Opi ↔ ∀ i, f i ∈ v.adicCompletionIntegers F` using `fun f => by`.
+
+Simplify using `only [Opi, AddSubgroup.mem_pi, Set.mem_univ, true_implies]`. Both sides reduce to the same expression. Use `set Λ := (latAtV X Y v).map (GlobalTheory.LatVac.locCo M.co v) with hΛdef`. Establish `hgen : ∀ x ∈ X.L, ∀ y ∈ Y.L, ∀ a : Fv F v, a ∈ v.adicCompletionIntegers F → a • GlobalTheory.LatVac.locCo M.co v (incM F (vecMulVec x y)) ∈ Λ`. Introduce `x hx y hy a ha`.
+
+Use `⟨GlobalTheory.LatVac.liftV v a • incM F (vecMulVec x y), AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v a, GlobalTheory.LatVac.at_liftV v a, by rw [GlobalTheory.LatVac.evFin_liftV]; exact ha, x, hx, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[locCo_smul, GlobalTheory.LatVac.evFin_liftV]`. Establish `hle1 : Opi.map φ.toAddMonoidHom ≤ Λ`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `replace hf := (hO _).1 hf`.
+
+Use `show ∑ i, f i • ρ i ∈ Λ`. Conclude with `Λ.sum_mem fun i _ => hgen _ (i.1 : X.L).2 _ (i.2 : Y.L).2 _ (hf i)`. Establish `hsmul : ∀ a ∈ v.adicCompletionIntegers F, ∀ w ∈ Opi.map φ.toAddMonoidHom, a • w ∈ Opi.map φ.toAddMonoidHom`. Introduce and unpack `a ha _ ⟨f, hf, rfl⟩`. Use `replace hf := (hO _).1 hf`.
+
+Conclude with `⟨a • f, (hO _).2 fun i => mul_mem ha (hf i), (φ.map_smul a f)⟩`. Establish `hρ : ∀ x ∈ X.L, ∀ y ∈ Y.L, GlobalTheory.LatVac.locCo M.co v (incM F (vecMulVec x y)) ∈ Opi.map φ.toAddMonoidHom`. Set `rA : Matrix (Fin n) (Fin d) E →+ (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)` to `(GlobalTheory.LatVac.locCo M.co v).comp (AddMonoidHom.mapMatrix (inclR (F := F) (AF F)).toAddMonoidHom)`. Use `vecMulVec_mem sX hsX sY hsY ((Opi.map φ.toAddMonoidHom).comap rA) ?_` and prove the remaining obligations. Introduce `x hx y hy`.
+
+Use `⟨Pi.single (⟨x, hx⟩, ⟨y, hy⟩) 1, (hO _).2 fun i => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = (⟨x, hx⟩, ⟨y, hy⟩)`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+
+Use `show ∑ i, (Pi.single ((⟨x, hx⟩, ⟨y, hy⟩) : ι) (1 : Fv F v) : ι → Fv F v) i • ρ i = _`. Rewrite using `[Finset.sum_eq_single ((⟨x, hx⟩, ⟨y, hy⟩) : ι) (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using `only [Pi.single_eq_same, one_smul]`. Both sides reduce to the same expression. Establish `hle2 : Λ ≤ Opi.map φ.toAddMonoidHom`.
+
+Rewrite using `[hΛdef, AddSubgroup.map_le_iff_le_comap, latAtV, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨a, -, ha, x, hx, y, hy, rfl⟩`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap, locCo_smul]`. Conclude with `hsmul _ ha _ (hρ x hx y hy)`. Establish `hΛ : Λ = Opi.map φ.toAddMonoidHom` using `le_antisymm hle2 hle1`.
+
+Establish `hsurj : ∀ u, ∃ f, φ f = u`. Introduce `u`. Set `U : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `(fun k => GlobalTheory.LatVac.liftV v (u.1 k), fun k => GlobalTheory.LatVac.liftV v (u.2 k))`. Establish `ht : ∀ x ∈ X.L, ∀ y ∈ Y.L, incM F (vecMulVec x y) ∈ Submodule.span (AF F) (Set.range fun i => incM F (t i))` using `vecMulVec_mem sX hsX sY hsY ((Submodule.span (AF F) (Set.range fun i => incM F (t i))).toAddSubgroup.comap (AddMonoidHom.mapMatrix (inclR (F := F) (AF F)).toAddMonoidHom)) (fun x hx y hy => Submodule.subset_span ⟨(⟨x, hx⟩, ⟨y, hy⟩), rfl⟩)`. Establish `hZ` using `span_top hX.lat hY.lat t ht (M.co.e.symm U)`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hZ`. Use `⟨fun i => GlobalTheory.AdelicU.evFin F v (c i), ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Establish `hu : GlobalTheory.LatVac.locCo M.co v (M.co.e.symm U) = u`. Apply the tactic sequence `ext k <;> simp [GlobalTheory.LatVac.locCo, U, GlobalTheory.LatVac.evFin_liftV]`.
+
+Rewrite using `[← hu, ← hc, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (locCo_smul _ _ _ _).symm`. Establish `hOc : IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Establish `hOo : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Establish `hφc : Continuous φ`.
+
+Rewrite using `[show (φ : (ι → Fv F v) → _) = fun f => ∑ i, f i • ρ i from rfl]`. Conclude with `continuous_finset_sum _ fun i _ => (continuous_apply i).smul continuous_const`. Establish `hset : ((Opi.map φ.toAddMonoidHom : AddSubgroup _) : Set _) = φ '' Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `w`. Simplify using `only [AddSubgroup.coe_map, Set.mem_image, SetLike.mem_coe, hO, Set.mem_pi, Set.mem_univ, true_implies]`.
+
+Both sides reduce to the same expression. Use `choose f1 hf1 using fun k : Fin n × Fin d => hsurj (Pi.single k 1, 0)`. Use `choose f2 hf2 using fun k : Fin n × Fin d => hsurj (0, Pi.single k 1)`. Set `sec : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v) → ι → Fv F v` to `fun u => ∑ k, u.1 k • f1 k + ∑ k, u.2 k • f2 k`. Establish `hsec : ∀ u, φ (sec u) = u`.
+
+Introduce `u`. Simplify using `only [sec, map_add, map_sum, map_smul, hf1, hf2]`. Apply the tactic sequence `ext k <;> simp [Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`. Establish `hsc : Continuous sec` using `(continuous_finset_sum _ fun k _ => ((continuous_apply k).comp continuous_fst).smul continuous_const).add (continuous_finset_sum _ fun k _ => ((continuous_apply k).comp continuous_snd).smul continuous_const)`. Prove the components needed by the constructor for the conclusion.
+
+Apply `AddSubgroup.isOpen_of_mem_nhds (g := 0)` to reduce the goal to its premises. Establish `hU : IsOpen (sec ⁻¹' Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v)))` using `(isOpen_set_pi Set.finite_univ fun _ _ => hOo).preimage hsc`. Establish `h0 : (0 : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)) ∈ sec ⁻¹' Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v))`. Introduce `i _`. Simplify using `[sec]`.
+
+Use `Filter.mem_of_superset (hU.mem_nhds h0) ?_` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[SetLike.mem_coe, hΛ]`. Conclude with `⟨sec u, (hO _).2 fun i => hu i (Set.mem_univ _), hsec u⟩`. Rewrite using `[hΛ, hset]`.
+
+Conclude with `(isCompact_univ_pi fun _ => hOc).image hφc`.
+-/
 theorem main : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) {n d : ℕ} (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n)
     (Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (r s r' s' : ℕ),

@@ -27,6 +27,11 @@ noncomputable section
 
 namespace GlobalTheory.ColNorms
 
+/- English proof (translation)
+Establish `h0 : (1 : ℝ) ≤ N.g 0` using `by exact_mod_cast (N.g_prime 0).one_lt.le`. Establish `h1 : (1 : ℝ) ≤ N.g 1` using `by exact_mod_cast (N.g_prime 1).one_lt.le`. Establish `h2 : (1 : ℝ) ≤ T` using `by exact_mod_cast hT`. Establish `h3 : 0 ≤ Real.log ((N.g 0 : ℝ) * N.g 1 * T)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h0 h1) h2)`. Unfold `errUnit`.
+
+Check the signs of the components of the expression.
+-/
 theorem errUnit_nonneg (N : NumDatum) {T : ℕ} (hT : 1 ≤ T) : 0 ≤ errUnit N T := by
   have h0 : (1 : ℝ) ≤ N.g 0 := by exact_mod_cast (N.g_prime 0).one_lt.le
   have h1 : (1 : ℝ) ≤ N.g 1 := by exact_mod_cast (N.g_prime 1).one_lt.le
@@ -36,6 +41,9 @@ theorem errUnit_nonneg (N : NumDatum) {T : ℕ} (hT : 1 ≤ T) : 0 ≤ errUnit N
   unfold errUnit
   positivity
 
+/- English proof (translation)
+Establish `a1 : 0 ≤ Real.log ((h : ℝ) * h')` using `by exact_mod_cast Real.log_natCast_nonneg (h * h')`. Establish `a2 : 0 ≤ Real.log ((n : ℝ) * n')` using `by exact_mod_cast Real.log_natCast_nonneg (n * n')`. Unfold `kernelBound_sq errUnit`. Simplify using `only [Nat.cast_one, mul_one, Real.log_one]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem kernelBound_ge (N : NumDatum) (δ : Code N) (T : ℕ) (C₁ C₂ : ℝ) (j : ℕ) (lo : RPl N.R → ℝ) (lt : ℝ) (h h' n n' : ℕ) :
     kernelBound_sq N δ T C₁ j lo lt 1 1 1 1 + 2 * (C₂ * errUnit N T) ≤ kernelBound_sq N δ T (C₁ + C₂) j lo lt h h' n n' := by
   have a1 : 0 ≤ Real.log ((h : ℝ) * h') := by exact_mod_cast Real.log_natCast_nonneg (h * h')
@@ -44,6 +52,9 @@ theorem kernelBound_ge (N : NumDatum) (δ : Code N) (T : ℕ) (C₁ C₂ : ℝ) 
   simp only [Nat.cast_one, mul_one, Real.log_one]
   nlinarith
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, fun σ x => (h.2.2 σ x).trans hβ⟩`.
+-/
 theorem SmallDatum.mono {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {a b : ℕ}
     {S : Finset (HeightOneSpectrum (𝓞 E))} {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)} {c : ℕ}
     {Ξ : HomE E a b → K} {β β' : ℝ} (h : SmallDatum S N N' c Ξ β) (hβ : β ≤ β') : SmallDatum S N N' c Ξ β' :=

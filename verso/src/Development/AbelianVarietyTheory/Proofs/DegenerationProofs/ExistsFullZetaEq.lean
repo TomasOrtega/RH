@@ -11,6 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ReZeta
 
+/- English proof (translation)
+Establish `h : ∀ n : ℕ, ∃ i : ℕ, 0 < n → ξ n ^ i = ζ n` using `fun n => by`. Distinguish the cases in `hn : 0 < n`. Use `haveI : NeZero n := ⟨hn.ne'⟩`. Take `⟨i, -, hi⟩` from `(hξ n hn).eq_pow_of_mem_rootsOfUnity ((mem_rootsOfUnity n (ζ n)).2 (hζ n hn).pow_eq_one)`. Conclude with `⟨i, fun _ => hi⟩`.
+
+Conclude with `⟨0, fun h => absurd h hn⟩`. Use `choose i hi using h`. Use `⟨fun n => i n, fun n hn => by rw [zpow_natCast, hi n hn], fun n hn => ?_, fun n m hn hm => ?_⟩` and prove the remaining obligations. Conclude with `Nat.isCoprime_iff_coprime.2 (((hξ n hn).pow_iff_coprime hn _).1 (hi n hn ▸ hζ n hn))`. Rewrite using `[← (hξ n hn).zpow_eq_one_iff_dvd, zpow_sub, zpow_natCast, zpow_natCast, hi n hn, mul_inv_eq_one, ← hξ' n m hn hm, ← pow_mul, mul_comm m, pow_mul, hi _ (Nat.mul_pos hn hm), hζ' n m hn hm]`.
+-/
 theorem exists_exponent {K : Type} [Field K] (ξ ζ : ℕ → Kˣ) (hξ : ∀ n, 0 < n → IsPrimitiveRoot (ξ n) n)
     (hξ' : ∀ n m, 0 < n → 0 < m → ξ (n * m) ^ m = ξ n) (hζ : ∀ n, 0 < n → IsPrimitiveRoot (ζ n) n)
     (hζ' : ∀ n m, 0 < n → 0 < m → ζ (n * m) ^ m = ζ n) :
@@ -31,10 +36,22 @@ theorem exists_exponent {K : Type} [Field K] (ξ ζ : ℕ → Kˣ) (hξ : ∀ n,
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `h`. Conclude with `⟨b • a, by rw [mul_smul, Nat.cast_smul_eq_nsmul]⟩`.
+-/
 theorem modN_smul (D : Datum H) {n : ℕ} {c : 𝓞 E} (h : (n : 𝓞 E) ∣ c) (a : D.La) : D.ModN n (c • a) := by
   obtain ⟨b, rfl⟩ := h
   exact ⟨b • a, by rw [mul_smul, Nat.cast_smul_eq_nsmul]⟩
 
+/- English proof (translation)
+Take `⟨t, ht₁, ht₂, -⟩` from `GlobalTheory.NormTower.exists_norm_tower E H (GlobalTheory.HostModel.level H 1 one_pos) ν h₁ h₂`. Use `⟨⟨fun n => t n • LinearMap.id, ν, fun n m hn hm a => ?_, fun n hn => ?_, fun n hn a b => ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← sub_smul]`. Conclude with `modN_smul D (ht₂ n m hn hm) a`.
+
+Take `⟨u, v, huv⟩` from `h₁ n hn`. Take `⟨c, hc⟩` from `ht₁ n hn`. Establish `huv' : (u : 𝓞 E) * (ν n : 𝓞 E) + (v : 𝓞 E) * (n : 𝓞 E) = 1`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 E) huv` after adjusting the coercions. Establish `hd : (n : 𝓞 E) ∣ (u : 𝓞 E) * H.bar (t n) * t n - 1` using `⟨u * c - v, by linear_combination (u : 𝓞 E) * hc + huv'⟩`.
+
+Use `⟨((u : 𝓞 E) * H.bar (t n)) • LinearMap.id, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Use `modN_smul D hd a` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul]`. Conclude with `⟨by rwa [← mul_smul], by rwa [← mul_smul, mul_comm]⟩`.
+
+Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Take `⟨c, hc⟩` from `ht₁ n hn`. Establish `e : H.bar (t n) * t n = (ν n : 𝓞 E) + (n : 𝓞 E) * c` using `by linear_combination hc`. Use `⟨D.EF a (c • b), ?_⟩` and prove the remaining obligations. Rewrite using `[D.adj, ← mul_smul, e, add_smul, mul_smul, Int.cast_smul_eq_zsmul, Nat.cast_smul_eq_nsmul, map_add, map_zsmul, map_nsmul, smul_eq_mul, nsmul_eq_mul, add_sub_cancel_left]`.
+-/
 theorem exists_sim (D : Datum H) (ν : ℕ → ℤ) (h₁ : ∀ n : ℕ, 0 < n → IsCoprime (ν n) (n : ℤ))
     (h₂ : ∀ n m : ℕ, 0 < n → 0 < m → (n : ℤ) ∣ ν (n * m) - ν n) : ∃ g : Sim D, g.ν = ν := by
   obtain ⟨t, ht₁, ht₂, -⟩ := GlobalTheory.NormTower.exists_norm_tower E H (GlobalTheory.HostModel.level H 1 one_pos) ν h₁ h₂

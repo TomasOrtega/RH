@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.MinorGen
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map (Fin.castLEEmb h))), Finset.sum_map]`. Both sides reduce to the same expression. Introduce `b _ hb`. Apply `hF` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt`.
+
+Use `push_neg at hlt`. Conclude with `hb (Finset.mem_map.2 ⟨⟨b, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)`.
+-/
 theorem sum_castLE {M : Type*} [AddCommMonoid M] {n i : ℕ} (h : i ≤ n) (F : Fin n → M)
     (hF : ∀ b : Fin n, i ≤ (b : ℕ) → F b = 0) : ∑ b, F b = ∑ j : Fin i, F (Fin.castLE h j) := by
   rw [← Finset.sum_subset (Finset.subset_univ (Finset.univ.map (Fin.castLEEmb h))), Finset.sum_map]
@@ -21,6 +26,11 @@ theorem sum_castLE {M : Type*} [AddCommMonoid M] {n i : ℕ} (h : i ≤ n) (F : 
     push_neg at hlt
     exact hb (Finset.mem_map.2 ⟨⟨b, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_subset (Finset.subset_univ (Finset.univ.map (Fin.castLEEmb h))), Finset.prod_map]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Fin.castLEEmb, j.2]`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+
+Introduce `hlt`. Conclude with `hb (Finset.mem_map.2 ⟨⟨b, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)`.
+-/
 theorem prod_castLE {M : Type*} [CommMonoid M] {n i : ℕ} (h : i ≤ n) (F : Fin n → M) :
     ∏ b : Fin n, (if (b : ℕ) < i then F b else 1) = ∏ j : Fin i, F (Fin.castLE h j) := by
   rw [← Finset.prod_subset (Finset.subset_univ (Finset.univ.map (Fin.castLEEmb h))), Finset.prod_map]
@@ -31,6 +41,11 @@ theorem prod_castLE {M : Type*} [CommMonoid M] {n i : ℕ} (h : i ≤ n) (F : Fi
     intro hlt
     exact hb (Finset.mem_map.2 ⟨⟨b, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero y`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Use `CartierDiv.IsEqn.add ?_ ih` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `hΔ a`. Conclude with `CartierDiv.isEqn_zero y`.
+-/
 theorem isEqn_sum_ite {X : Scheme.{0}} [IsIntegral X] (y : X) {n : ℕ} (i : ℕ) (Δ : Fin n → CartierDiv X)
     (t : Fin n → X.functionFieldˣ) (hΔ : ∀ a, (Δ a).IsEqn y (t a)) (s : Finset (Fin n)) :
     (∑ a ∈ s, if (a : ℕ) < i then Δ a else 0).IsEqn y (∏ a ∈ s, if (a : ℕ) < i then t a else 1) := by
@@ -44,6 +59,25 @@ theorem isEqn_sum_ite {X : Scheme.{0}} [IsIntegral X] (y : X) {n : ℕ} (i : ℕ
     · exact hΔ a
     · exact CartierDiv.isEqn_zero y
 
+/- English proof (translation)
+Introduce `X _ y n i Δ t T By hΔ hdiag htri hB`. Establish `hi : (i : ℕ) ≤ n` using `i.2.le`. Establish `hn : n - 1 + 1 = n` using `Nat.sub_add_cancel (Fin.pos i)`. Set `ρ` to `IsLocalRing.residue (X.presheaf.stalk y)`. Establish `hBk : IsUnit (By.map ρ)` using `by simpa using hB.map ρ.mapMatrix`.
+
+Establish `hli : LinearIndependent (IsLocalRing.ResidueField (X.presheaf.stalk y)) (FlagAmple.PlkLoc.what₂ (By.map ρ) i)`. Establish `h1` using `(Matrix.linearIndependent_rows_of_isUnit hBk).comp _ (Fin.castLE_injective hi)`. Establish `hs : Function.Surjective (Fin.cast hn)` using `fun c => ⟨Fin.cast hn.symm c, Fin.ext rfl⟩`. Establish `h2` using `h1.map' (LinearMap.funLeft (IsLocalRing.ResidueField (X.presheaf.stalk y)) (IsLocalRing.ResidueField (X.presheaf.stalk y)) (Fin.cast hn)) (LinearMap.ker_eq_bot.2 (LinearMap.funLeft_injective_of_surjective _ _ _ hs))`. Conclude with `h2`.
+
+Take `⟨q, hq⟩` from `Function.ne_iff.1 (FlagEmb.PlkSpan.plk_ne_zero_of_indep _ (n - 1) i _ hli)`. Establish `hu : IsUnit (FlagEmb.plk (FlagAmple.PlkLoc.what₂ By i) id q)`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`. Use `congrFun (FlagEmb.map_plk ρ (FlagAmple.PlkLoc.what₂ By i) id) q` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`.
+
+Rewrite using `[this]`. Conclude with `hq`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[((isEqn_sum_ite y i Δ t hΔ Finset.univ).neg).generatesAt_iff]`. Use `⟨_, hu, ?_⟩` and prove the remaining obligations.
+
+Set `L : Matrix (Fin i) (Fin i) X.functionField` to `fun l j => T (Fin.castLE hi l) (Fin.castLE hi j)`. Establish `hrows : FlagAmple.PlkLoc.what₂ (T * By.map (algebraMap (X.presheaf.stalk y) X.functionField)) i = fun l => ∑ j, L l j • FlagAmple.PlkLoc.what₂ (By.map (algebraMap (X.presheaf.stalk y) X.functionField)) i j`. Use function extensionality and compare the values at `l c`. Simplify using `only [FlagAmple.PlkLoc.what₂, Matrix.mul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, L]`. Apply `sum_castLE hi` to reduce the goal to its premises.
+
+Introduce `b hb`. Rewrite using `[htri _ _ (by rw [Fin.lt_def]; simp; omega), zero_mul]`. Establish `hcomb` using `FlagEmb.PlkSpan.plk_comb X.functionField (n - 1) i (FlagAmple.PlkLoc.what₂ (By.map (algebraMap (X.presheaf.stalk y) X.functionField)) i) L`. Establish `hdet : L.det = ∏ j : Fin i, (t (Fin.castLE hi j) : X.functionField)`. Rewrite using `[Matrix.det_of_lowerTriangular]`.
+
+Simplify using `[L, hdiag]`. Introduce `a b hab`. Establish `hab' : a < b` using `OrderDual.toDual_lt_toDual.mp hab`. Conclude with `htri _ _ (Fin.lt_def.2 (Fin.lt_def.1 hab'))`. Establish `hg : ((∏ a : Fin n, if (a : ℕ) < (i : ℕ) then t a else 1 : X.functionFieldˣ) : X.functionField) = ∏ j : Fin i, (t (Fin.castLE hi j) : X.functionField)`.
+
+Rewrite using `[Units.coe_prod, ← prod_castLE hi (fun b => (t b : X.functionField))]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `hm` using `congrFun (FlagEmb.map_plk (algebraMap (X.presheaf.stalk y) X.functionField) (FlagAmple.PlkLoc.what₂ By i) id) q`. Simplify using `only [Function.comp_apply] at hm`.
+
+Rewrite using `[hm, hrows, hcomb, Units.val_inv_eq_inv_val, hdet, ← hg, Pi.smul_apply, smul_eq_mul, mul_comm, ← mul_assoc, inv_mul_cancel₀ (Units.ne_zero _), one_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_minor_generatesAt : ∀ (X : Scheme.{0}) [IsIntegral X] (y : X) (n : ℕ) (i : Fin n) (Δ : Fin n → GlobalTheory.Cartier.CartierDiv X) (t : Fin n → X.functionFieldˣ) (T : Matrix (Fin n) (Fin n) X.functionField) (By : Matrix (Fin n) (Fin n) (X.presheaf.stalk y)), (∀ a, (Δ a).IsEqn y (t a)) → (∀ a, T a a = t a) → (∀ a b, a < b → T a b = 0) → IsUnit By → ∃ q, (-∑ a : Fin n, if (a : ℕ) < (i : ℕ) then Δ a else 0).GeneratesAt y (GlobalTheory.FlagEmb.plk (GlobalTheory.FlagAmple.PlkLoc.what₂ (T * By.map (algebraMap (X.presheaf.stalk y) X.functionField)) i) id q) := by
   intro X _ y n i Δ t T By hΔ hdiag htri hB
   classical

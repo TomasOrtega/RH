@@ -43,9 +43,15 @@ def cpost (K : CochainComplex C ℤ) (b : Cocycle L M n) (m k : ℤ) (h : m + n 
       rw [δ_units_smul, δ_comp _ _ rfl m (n + 1) k (by omega) hm' rfl]
       simp [zcomp, smul_smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpre_mk (a : Cocycle K L m) (b : Cocycle L M n) (h : m + n = k) :
     cpre a M n k h (CohomologyClass.mk b) = CohomologyClass.mk (zcomp a b h) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpost_mk (a : Cocycle K L m) (b : Cocycle L M n) (h : m + n = k) :
     cpost K b m k h (CohomologyClass.mk a) = CohomologyClass.mk (zcomp a b h) := rfl
 
@@ -148,6 +154,9 @@ def pull {E E' : Spc} (f : E ⟶ E') (F : Shv R) (n : ℤ) : H R E' F n →+ H R
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable (R : Type) [CommRing R] in
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Simplify using `only [_root_.GlobalTheory.EtC.pull, _root_.GlobalTheory.EtC.HK.pull, _root_.GlobalTheory.EtC.HK.pre, _root_.GlobalTheory.EtC.cpre_mk, Functor.map_id]`. Use `congr 1`. Use extensionality with `: 1`. Simplify using `[_root_.GlobalTheory.EtC.zcomp]`.
+-/
 theorem _root_.GlobalTheory.EtC.pull_id (E : _root_.GlobalTheory.EtC.Spc)
     (F : _root_.GlobalTheory.EtC.Shv R) (n : ℤ) (x : _root_.GlobalTheory.EtC.H R E F n) :
     _root_.GlobalTheory.EtC.pull R (𝟙 E) F n x = x := by
@@ -161,6 +170,9 @@ theorem _root_.GlobalTheory.EtC.pull_id (E : _root_.GlobalTheory.EtC.Spc)
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable (R : Type) [CommRing R] in
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Simplify using `only [_root_.GlobalTheory.EtC.pull, _root_.GlobalTheory.EtC.HK.pull, _root_.GlobalTheory.EtC.HK.pre, _root_.GlobalTheory.EtC.cpre_mk, Functor.map_comp]`. Use `congr 1`. Use extensionality with `: 1`. Simplify using `[_root_.GlobalTheory.EtC.zcomp, Cochain.ofHom_comp]`.
+-/
 theorem _root_.GlobalTheory.EtC.pull_comp {E E' E'' : _root_.GlobalTheory.EtC.Spc} (f : E ⟶ E')
     (g : E' ⟶ E'') (F : _root_.GlobalTheory.EtC.Shv R) (n : ℤ) (x : _root_.GlobalTheory.EtC.H R E'' F n) :
     _root_.GlobalTheory.EtC.pull R (f ≫ g) F n x =
@@ -270,6 +282,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 variable (R : Type) [CommRing R] in
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
   (p : X ⟶ Spec (CommRingCat.of k)) in
+/- English proof (translation)
+Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `[_root_.GlobalTheory.Et.galMap_fst]`. Rewrite using `[_root_.GlobalTheory.Et.galMap_snd, Category.id_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Use `Spec.map_id _` and compare the differences between its conclusion and the goal.
+
+Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.EtC.galMap_one :
     _root_.GlobalTheory.Et.galMap Ω p 1 = 𝟙 _ := by
   refine pullback.hom_ext ?_ ?_
@@ -283,6 +300,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 variable (R : Type) [CommRing R] in
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
   (p : X ⟶ Spec (CommRingCat.of k)) in
+/- English proof (translation)
+Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, _root_.GlobalTheory.Et.galMap_fst]`. Simplify using `only [Category.assoc, _root_.GlobalTheory.Et.galMap_snd, _root_.GlobalTheory.Et.galMap_snd_assoc]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.EtC.galMap_mul (σ τ : Ω ≃ₐ[k] Ω) :
     _root_.GlobalTheory.Et.galMap Ω p (σ * τ) =
       _root_.GlobalTheory.Et.galMap Ω p σ ≫ _root_.GlobalTheory.Et.galMap Ω p τ := by

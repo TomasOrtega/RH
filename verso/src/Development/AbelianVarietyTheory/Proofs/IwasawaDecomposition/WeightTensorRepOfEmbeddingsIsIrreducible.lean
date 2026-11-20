@@ -11,6 +11,29 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ZariskiDense
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `L _ _ _ n ι _ K _ _ emb lam hCM`. Establish `hstab : ∀ W : Submodule K (Formalism.L2.DIV.VV K lam), (∀ γ : GQ L n, ∀ w ∈ W, GlobalTheory.AlgWtF.tenRepF emb lam γ w ∈ W) → ∀ g : ι → GL (Fin n) K, ∀ w ∈ W, Formalism.L2.DIV.rhoK lam g w ∈ W`. Introduce `W hW g w hw`. Establish `hrat : ∀ γ₀ : GL (Fin n) L, γ₀ ∈ GQ0 L n → ∀ w ∈ W, Formalism.L2.DIV.rhoK lam (GlobalTheory.AlgWtF.embGLF emb γ₀) w ∈ W`. Introduce `γ₀ hγ₀ w hw`.
+
+Take `⟨γ, rfl⟩` from `GlobalTheory.T.unitaryRationalPointMatrixHom_surjective_onto L n γ₀ hγ₀`. Conclude with `hW γ w hw`. Assume the negation of the conclusion as `hnot`. Establish `hx : ((Formalism.L2.DIV.rhoK lam g w : Formalism.L2.DIV.VV K lam) : Formalism.L2.DIV.Pol K ι n) ∉ W.map (Formalism.L2.DIV.VV K lam).subtype`. Introduce and unpack `⟨y, hy, hyx⟩`.
+
+Conclude with `hnot (by rw [show Formalism.L2.DIV.rhoK lam g w = y from Subtype.ext hyx.symm]; exact hy)`. Take `⟨ψ, hψx, hψW⟩` from `Submodule.exists_le_ker_of_notMem hx`. Take `⟨P, hP⟩` from `GlobalTheory.T.weightAction_matrixCoeff_polynomial_in_entries K ι n lam (w : Formalism.L2.DIV.Pol K ι n) ψ`. Set `f : (ι ⊕ ι) × Fin n × Fin n → (L →+* K) × Fin n × Fin n` to `fun v => (Sum.elim emb (fun τ => (emb τ).comp (IsCMField.complexConj L : L →+* L)) v.1, v.2)`. Establish `hzero` using `GlobalTheory.T.zariskiDense_rationalPoints_definiteUnitary_charZero L n K (MvPolynomial.rename f P) ?_`.
+
+Take `⟨B, hBc, hBe⟩` from `GlobalTheory.T.exists_unitary_extension_of_cmType_family L n ι K emb hCM g`. Establish `h0` using `hzero B hBc`. Rewrite `h0` using `[MvPolynomial.eval_rename]`. Apply `hψx` to reduce the goal to its premises. Establish `h1 : ((Formalism.L2.DIV.rhoK lam g w : Formalism.L2.DIV.VV K lam) : Formalism.L2.DIV.Pol K ι n) = Formalism.L2.DIV.actP lam g w` using `rfl`.
+
+Rewrite using `[h1, hP g, ← h0]`. Use `congrArg (fun y => MvPolynomial.eval y P) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Break down `v with ⟨τ | τ, a, b⟩` into its components or cases. Simplify using `[f, hBe]`.
+
+Simplify using `only [f, Function.comp_apply, Sum.elim_inr]`. Rewrite using `[hBc (emb τ), hBe τ]`. Both sides reduce to the same expression. Introduce `γ₀ hγ₀`. Rewrite using `[MvPolynomial.eval_rename]`.
+
+Establish `h2` using `hrat γ₀ hγ₀ w hw`. Establish `h3 : ψ (Formalism.L2.DIV.actP lam (GlobalTheory.AlgWtF.embGLF emb γ₀) w) = 0` using `hψW ⟨_, h2, rfl⟩`. Rewrite `h3` using `[hP]`. Rewrite using `[← h3]`. Use `congrArg (fun y => MvPolynomial.eval y P) ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `v`. Break down `v with ⟨τ | τ, a, b⟩` into its components or cases. Simplify using `[f, GlobalTheory.AlgWtF.embGLF]`. Establish `hinv : (((γ₀⁻¹ : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L) = ReciprocityTheory.Aut.conjT (IsCMField.complexConj L : L →+* L) (γ₀ : Matrix (Fin n) (Fin n) L)` using `Units.inv_eq_of_mul_eq_one_right hγ₀`. Simplify using `only [f, Function.comp_apply, Sum.elim_inr, GlobalTheory.AlgWtF.embGLF, MonoidHom.pi_apply, ← map_inv, Matrix.GeneralLinearGroup.map_apply, hinv, ReciprocityTheory.Aut.conjT, Matrix.transpose_apply, Matrix.map_apply, RingHom.comp_apply]`.
+
+Establish `hsimple : ∀ W : Submodule K (Formalism.L2.DIV.VV K lam), (∀ g : ι → GL (Fin n) K, ∀ w ∈ W, Formalism.L2.DIV.rhoK lam g w ∈ W) → W = ⊥ ∨ W = ⊤` using `GlobalTheory.T.coefficientSpace_stable_eq_bot_or_top K ι n lam (fun τ => GlobalTheory.T.nablaSq_endomorphism_eq_sum_GL_operators K n (lam τ) (GlobalTheory.T.dualWeylModule_simple_charZero K n (lam τ)))`. Use `haveI hnt : Nontrivial (Formalism.L2.DIV.VV K lam) := GlobalTheory.T.nontrivial_weylCoefficientSpace K ι n lam`. Use `haveI : Nontrivial (Subrepresentation (GlobalTheory.AlgWtF.tenRepF emb lam)) := by`. Use `⟨⟨⊥, ⊤, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h'` using `congrArg Subrepresentation.toSubmodule h`.
+
+Take `⟨x, hx⟩` from `exists_ne (0 : Formalism.L2.DIV.VV K lam)`. Establish `hxt : x ∈ (⊤ : Subrepresentation (GlobalTheory.AlgWtF.tenRepF emb lam)).toSubmodule` using `trivial`. Rewrite `hxt` using `[← h']`. Conclude with `hx hxt`. Use `{ eq_bot_or_eq_top := fun W => ?_ }` and prove the remaining obligations.
+
+Break down `hsimple W.toSubmodule (hstab W.toSubmodule (fun γ w hw => W.apply_mem_toSubmodule γ hw)) with h | h` into its components or cases. Use `left`. Conclude with `Subrepresentation.ext h`. Use `right`. Conclude with `Subrepresentation.ext h`.
+-/
 theorem GlobalTheory.AlgWtF.tenRepF_isIrreducible : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (ι : Type) [Fintype ι] (K : Type) [Field K] [CharZero K]
     (emb : ι → L →+* K) (lam : ι → DomWeight n), GlobalTheory.AlgWtF.CMDist emb → (GlobalTheory.AlgWtF.tenRepF emb lam).IsIrreducible := by
   intro L _ _ _ n ι _ K _ _ emb lam hCM

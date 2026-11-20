@@ -13,6 +13,11 @@ open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 noncomputable section
 namespace GlobalTheory.SkewDblIwasawa
 
+/- English proof (translation)
+Establish `hu : IsUnit (inclR (F` using `F) R c) := (IsUnit.mk0 c hc).map _`. Establish `e : JR (F` using `F) R (c • Q) = inclR (F := F) R c • JR R Q := by`. Use extensionality with `i j`. Simplify using `[JR, Matrix.map_apply, Matrix.smul_apply, map_mul]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR R σ) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR (F := F) R (c • Q) * (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR (F := F) R (c • Q) ↔ Formalism.UG.cT (sigR R σ) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR (F := F) R Q * (g : Matrix (Fin M) (Fin M) (R ⊗[F …`.
+
+Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, hu.smul_left_cancel]`.
+-/
 theorem mem_hR_smul_iff {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (c : E) (hc : c ≠ 0) (Q : Matrix (Fin M) (Fin M) E) (g : GL (Fin M) (R ⊗[F] E)) :
     g ∈ HR R σ (c • Q) ↔ g ∈ HR R σ Q := by
@@ -25,6 +30,11 @@ theorem mem_hR_smul_iff {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type
       (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR (F := F) R Q
   rw [e, Matrix.mul_smul, Matrix.smul_mul, hu.smul_left_cancel]
 
+/- English proof (translation)
+Introduce `g`. Take `⟨p, k, hk, e⟩` from `h ⟨g.1, (mem_hR_smul_iff R σ c hc Q g.1).2 g.2⟩`. Use `⟨⟨⟨p.1.1, (mem_hR_smul_iff R σ c hc Q _).1 p.1.2⟩, p.2⟩, ⟨k.1, (mem_hR_smul_iff R σ c hc Q _).1 k.2⟩, hk, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val e` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem hasIwasawa_of_smul {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {n : ℕ} (c : E) (hc : c ≠ 0) (Q : Matrix (Fin (n + n)) (Fin (n + n)) E)
     (S : Subgroup (GL (Fin (n + n)) (R ⊗[F] E)))
@@ -37,6 +47,9 @@ theorem hasIwasawa_of_smul {F E : Type} [Field F] [Field E] [Algebra F E] {R : T
   have := congrArg Subtype.val e
   exact this
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [dblGram, blkMat, Matrix.smul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, smul_zero, smul_neg]`.
+-/
 theorem dblGram_smul {E : Type} [Field E] {n : ℕ} (c : E) (J : Matrix (Fin n) (Fin n) E) :
     dblGram finSumFinEquiv (c • J) = c • dblGram finSumFinEquiv J := by
   ext i j

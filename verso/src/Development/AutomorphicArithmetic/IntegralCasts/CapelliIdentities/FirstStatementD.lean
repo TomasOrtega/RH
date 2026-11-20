@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `R ι H C _ _ _ _ Hv Cv _ _ res pres E Ev hcomm U T hU hT`. Establish `key : ∀ x : H, x ∈ U ↔ E x ∈ T`. Introduce `x`. Rewrite using `[hU, hT]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hcomm v x]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, map_zero]`. Introduce `h`.
+
+Use `congrArg (Ev v).symm h` as an intermediate fact. Simplify using `using this`. Conclude with `⟨{ toFun := fun x => ⟨E x.1, (key x.1).1 x.2⟩ invFun := fun y => ⟨E.symm y.1, (key _).2 (by simpa using y.2)⟩ left_inv := fun x => by ext; simp right_inv := fun y => by ext; simp map_add' := fun x y => by ext; simp }⟩`.
+-/
 theorem UpperTheory.Reformulated.B.LocallyTrivialClassesAddEquiv.main :
     ∀ {R ι H C : Type} [inst : CommRing R] [inst_1 : AddCommGroup H] [inst_2 : _root_.Module R H] [inst_3 : AddCommGroup C]
       {Hv Cv : ι → Type} [inst_4 : (v : ι) → AddCommGroup (Hv v)] [inst_5 : (v : ι) → AddCommGroup (Cv v)]

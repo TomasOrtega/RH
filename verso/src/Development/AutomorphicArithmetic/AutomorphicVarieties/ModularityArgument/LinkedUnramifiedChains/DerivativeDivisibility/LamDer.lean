@@ -9,6 +9,9 @@ open Polynomial IsLocalRing UpperTheory.V.Alg
 
 namespace UpperTheory.V.J
 
+/- English proof (translation)
+Establish `h1` using `SModEq.sub_mem.1 h`. Rewrite `h1` using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨e, he⟩` from `h1`. Conclude with `⟨e, by rw [← he, mul_comm]⟩`.
+-/
 private theorem smod_pow {O : Type} [CommRing O] (π a b : O) (n : ℕ)
     (h : a ≡ b [SMOD ((Ideal.span {π}) ^ n • ⊤ : Submodule O O)]) : ∃ e, a - b = π ^ n * e := by
   have h1 := SModEq.sub_mem.1 h
@@ -16,6 +19,29 @@ private theorem smod_pow {O : Type} [CommRing O] (π a b : O) (n : ℕ)
   obtain ⟨e, he⟩ := h1
   exact ⟨e, by rw [← he, mul_comm]⟩
 
+/- English proof (translation)
+Take `⟨s, t, ht⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hS`. Establish `h' : ∀ x : M, ∃ (c : Fin s → O) (y : M), x = ∑ j, c j • t j + π • y` using `fun x => by`. Take `⟨a, ha, y, rfl⟩` from `h x`. Rewrite `ha` using `[← ht]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 ha`.
+
+Conclude with `⟨c, y, rfl⟩`. Use `choose C Y hCY using h'`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Set `r : ℕ → M` to `fun k => Y^[k] x`. Establish `hr : ∀ k, r (k + 1) = Y (r k)` using `fun k => Function.iterate_succ_apply' Y k x`.
+
+Set `P : ℕ → Fin s → O` to `fun N j => ∑ k ∈ Finset.range N, π ^ k * C (r k) j`. Establish `hP : ∀ N j, P (N + 1) j = P N j + π ^ N * C (r N) j` using `fun N j => Finset.sum_range_succ _ _`. Establish `hx : ∀ N, x = ∑ j, P N j • t j + π ^ N • r N` using `fun N => by`. Proceed by induction on `N with`. Consider the case `zero`.
+
+Simplify using `only [P, Finset.range_zero, Finset.sum_empty, zero_smul, Finset.sum_const_zero, pow_zero, one_smul, zero_add]`. Both sides reduce to the same expression. Consider the case `succ N ih`. Establish `e` using `hCY (r N)`. Rewrite `e` using `[← hr]`.
+
+Establish `e2 : ∑ j, P (N + 1) j • t j = ∑ j, P N j • t j + π ^ N • ∑ j, C (r N) j • t j`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hP, add_smul, mul_smul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hstep : ∀ j m n, m ≤ n → ∃ b, P n j - P m j = π ^ m * b` using `fun j m n hmn => by`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => exact ⟨0, by simp⟩`. Consider the case `succ n hmn ih`. Take `⟨b, hb⟩` from `ih`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Use `⟨b + π ^ k * C (r (m + k)) j, ?_⟩` and prove the remaining obligations. Rewrite using `[hP, add_sub_right_comm, hb, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : ∀ j, ∃ L, ∀ n, P n j ≡ L [SMOD ((Ideal.span {π}) ^ n • ⊤ : Submodule O O)]` using `fun j => IsPrecomplete.prec' (fun n => P n j) fun {m n} hmn => by`.
+
+Take `⟨b, hb⟩` from `hstep j m n hmn`. Use `SModEq.sub_mem.2 ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Conclude with `⟨-b, by rw [show P m j - P n j = -(P n j - P m j) by ring, hb]; ring⟩`. Use `choose L hL using hL`.
+
+Establish `h0 : x - ∑ j, L j • t j = 0` using `hsep _ fun n => by choose e he using fun j => smod_pow π _ _ n (hL j n)`. Use `⟨∑ j, e j • t j + r n, ?_⟩` and prove the remaining obligations. Establish `e3 : ∀ j, P n j • t j = L j • t j + π ^ n • e j • t j` using `fun j => by`. Rewrite using `[smul_smul, ← he j, ← add_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[smul_add, Finset.smul_sum]`. Use `conv_lhs => rw [hx n]`. Simplify using `only [e3, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[← ht, sub_eq_zero.1 h0]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 private theorem eq_top_of_mod {O M : Type} [CommRing O] (π : O) [IsPrecomplete (Ideal.span {π}) O] [AddCommGroup M]
     [Module O M] (hsep : ∀ x : M, (∀ n : ℕ, ∃ y : M, x = π ^ n • y) → x = 0) (S : Submodule O M) (hS : S.FG)
     (h : ∀ x : M, ∃ s ∈ S, ∃ y : M, x = s + π • y) : S = ⊤ := by
@@ -75,12 +101,28 @@ private theorem eq_top_of_mod {O M : Type} [CommRing O] (π : O) [IsPrecomplete 
   rw [← ht, sub_eq_zero.1 h0]
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Establish `h` using `congrArg (aeval a) (Polynomial.divX_mul_X_add Q)`. Simplify using `only [map_add, map_mul, aeval_X, aeval_C] at h`. Take the linear combination `(-1 : R) * h`.
+-/
 private theorem aeval_split {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (a : R) (Q : O[X]) :
     aeval a Q = algebraMap O R (Q.coeff 0) + a * aeval a Q.divX := by
   have h := congrArg (aeval a) (Polynomial.divX_mul_X_add Q)
   simp only [map_add, map_mul, aeval_X, aeval_C] at h
   linear_combination (-1 : R) * h
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `Q e _ hu hQ`. Establish `hsplit` using `aeval_split (O := O) a Q`. Establish `hw : IsUnit (aeval a Q)`.
+
+Assume the negation of the conclusion as `hn`. Establish `h1 : aeval a Q ∈ maximalIdeal R` using `(mem_maximalIdeal _).2 hn`. Rewrite `h1` using `[hsplit]`. Establish `h2` using `(Ideal.add_mem_iff_left _ (Ideal.mul_mem_right _ _ ha)).1 h1`. Conclude with `(mem_maximalIdeal _).1 h2 hu`.
+
+Take `⟨w, hw⟩` from `hw`. Use `Ideal.mul_mem_right ((w⁻¹ : Rˣ) : R) _ hQ` as an intermediate fact. Rewrite `this` using `[← hw, mul_assoc, Units.mul_inv, mul_one]`. Simplify using `using this`. Consider the case `succ j ih`.
+
+Introduce `Q e hd hu hQ`. Establish `hsplit` using `aeval_split (O := O) a Q`. Take `⟨b, hb⟩` from `hd 0 (Nat.succ_pos j)`. Establish `h1 : a ^ (e + 1) * aeval a Q.divX ∈ Ideal.span {algebraMap O R π}`. Establish `h2 : a ^ (e + 1) * aeval a Q.divX = a ^ e * aeval a Q - algebraMap O R π * (a ^ e * algebraMap O R b)`.
+
+Rewrite using `[hsplit, hb, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `Ideal.sub_mem _ hQ (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`. Use `ih Q.divX (e + 1) (fun i hi => by` as an intermediate fact.
+
+Rewrite using `[Polynomial.coeff_divX]`. Conclude with `hd (i + 1) (Nat.succ_lt_succ hi)) (by rwa [Polynomial.coeff_divX]) h1`. Rewrite `this` using `[show e + 1 + j = e + (j + 1) by ring]`. Then use the resulting hypothesis.
+-/
 private theorem pow_mem_of_poly {O R : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Algebra O R] (π : O) (a : R)
     (ha : a ∈ maximalIdeal R) (j : ℕ) : ∀ (Q : O[X]) (e : ℕ), (∀ i < j, π ∣ Q.coeff i) → IsUnit (algebraMap O R (Q.coeff j)) →
       a ^ e * aeval a Q ∈ Ideal.span {algebraMap O R π} → a ^ (e + j) ∈ Ideal.span {algebraMap O R π} := by
@@ -113,11 +155,27 @@ private theorem pow_mem_of_poly {O R : Type} [CommRing O] [CommRing R] [IsLocalR
       exact hd (i + 1) (Nat.succ_lt_succ hi)) (by rwa [Polynomial.coeff_divX]) h1
     rwa [show e + 1 + j = e + (j + 1) by ring] at this
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Ra2.finite_of_alg hinj hal`.
+-/
 private theorem finite_of_alg {O R : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O]
     [CommRing R] [IsDomain R] [Algebra O R] [IsCO O R] (hinj : Function.Injective (algebraMap O R))
     (hal : ∀ a : R, ∃ P : O[X], P ≠ 0 ∧ aeval a P = 0) : Module.Finite O R :=
   _root_.UpperTheory.Reformulated.B.Ra2.finite_of_alg hinj hal
 
+/- English proof (translation)
+Use `letI : Module Aᵐᵒᵖ N := Module.compHom N ((RingHom.id A).fromOpposite fun x y => Commute.all x y)`. Use `haveI : IsCentralScalar A N := ⟨fun _ _ => rfl⟩`. Use `haveI : SMulCommClass A Aᵐᵒᵖ N := ⟨fun a b n => smul_comm a (MulOpposite.unop b) n⟩`. Use `haveI : IsScalarTower O Aᵐᵒᵖ N := ⟨fun c b n => by`. Express the relevant statement in the definitionally equal form `(c • MulOpposite.unop b) • n = c • (MulOpposite.unop b • n)`.
+
+Conclude with `smul_assoc c _ n⟩`. Use `letI : Algebra O (TrivSqZeroExt A N) := TrivSqZeroExt.algebra' O A N`. Establish `h1 : d 1 = 0`. Use `hd 1 1` as an intermediate fact. Simplify using `only [mul_one, map_one, one_smul] at this`.
+
+Conclude with `left_eq_add.1 this`. Set `f₁ : Λ →ₐ[O] TrivSqZeroExt A N` to `{ toFun := fun a => TrivSqZeroExt.inl (p a) + TrivSqZeroExt.inr (d a) map_one' := TrivSqZeroExt.ext (by simp) (by simp [h1]) map_zero' := TrivSqZeroExt.ext (by simp) (by simp) map_add' := fun a b => TrivSqZeroExt.ext (by simp) (by simp) map_mul' := fun a b => by`. Use `TrivSqZeroExt.ext (by simp) ?_` and prove the remaining obligations. Rewrite using `[TrivSqZeroExt.snd_mul]`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`.
+
+Rewrite using `[hd, op_smul_eq_smul]`. Use the proof step `commutes' := fun c => by`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero]`. Conclude with `p.commutes c`.
+
+Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]`. Use `rfl }`. Use `⟨TrivSqZeroExt A N, inferInstance, inferInstance, co_sqz O A N fun _ => rfl, (TrivSqZeroExt.inlAlgHom O A N).comp p, f₁, fun a => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Simplify `(congrArg TrivSqZeroExt.snd h).symm` using `[f₁]`.
+
+Conclude with `TrivSqZeroExt.ext (by simp [f₁]) (by simp [f₁, h])`.
+-/
 private theorem exists_sqz {O Λ A N : Type} [CommRing O] [IsLocalRing O] [CommRing Λ] [Algebra O Λ] [CommRing A] [Algebra O A]
     [IsCO O A] [AddCommGroup N] [Module A N] [Module O N] [IsScalarTower O A N] [Module.Finite A N] (p : Λ →ₐ[O] A)
     (d : Λ →ₗ[O] N) (hd : ∀ f g, d (f * g) = p f • d g + p g • d f) :
@@ -156,6 +214,29 @@ private theorem exists_sqz {O Λ A N : Type} [CommRing O] [IsLocalRing O] [CommR
   · simpa [f₁] using (congrArg TrivSqZeroExt.snd h).symm
   · exact TrivSqZeroExt.ext (by simp [f₁]) (by simp [f₁, h])
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective p.rangeRestrict` using `p.rangeRestrict_surjective`. Use `haveI : IsCO O p.range := co_quot O Λ p.range p.rangeRestrict hsurj`. Establish `hfin : Module.Finite O p.range` using `finite_of_alg (fun a b h => hinj (congrArg Subtype.val h)) fun a => by`. Take `⟨P, hP, h0⟩` from `hal a`. Conclude with `⟨P, hP, Subtype.ext (by rw [← Subalgebra.aeval_coe]; simpa using h0)⟩`.
+
+Take `⟨G, hG⟩` from `hfin.fg_top`. Use `choose ℓ hℓ using hsurj`. Take `⟨Q, hQ⟩ : (RingHom.ker p).FG` from `IsNoetherian.noetherian _`. Set `N : Submodule p.range K` to `Submodule.span p.range (d '' ((G.image ℓ : Finset Λ) ∪ Q : Finset Λ))`. Establish `hsub : ∀ f ∈ (G.image ℓ : Finset Λ) ∪ Q, d f ∈ N` using `fun f hf => Submodule.subset_span ⟨f, by exact_mod_cast hf, rfl⟩`.
+
+Establish `hq : ∀ z ∈ Submodule.span Λ (Q : Set Λ), p z = 0 ∧ d z ∈ N` using `fun z hz => by`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem g hg`. Use `⟨?_, hsub g (Finset.mem_union_right _ hg)⟩` and prove the remaining obligations. Establish `: g ∈ RingHom.ker p` using `hQ ▸ Submodule.subset_span hg`.
+
+Conclude with `this`. Consider the case `zero => exact ⟨map_zero p, by rw [map_zero]; exact zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨by rw [map_add, hx.1, hy.1, add_zero], by rw [map_add]; exact add_mem hx.2 hy.2⟩`. Consider the case `smul b y _ hy`.
+
+Use `⟨by rw [smul_eq_mul, map_mul, hy.1, mul_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, hd, hy.1, zero_mul, add_zero]`. Conclude with `N.smul_mem (p.rangeRestrict b) hy.2`. Establish `hl : ∀ y ∈ Submodule.span O (G : Set p.range), ∃ g, p.rangeRestrict g = y ∧ d g ∈ N` using `fun y hy => by`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Conclude with `⟨ℓ y, hℓ y, hsub _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hy))⟩`. Consider the case `zero => exact ⟨0, map_zero _, by rw [map_zero]; exact zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨g, rfl, hg⟩` from `hx`.
+
+Take `⟨g', rfl, hg'⟩` from `hy`. Conclude with `⟨g + g', map_add _ _ _, by rw [map_add]; exact add_mem hg hg'⟩`. Consider the case `smul c y _ hy`. Take `⟨g, rfl, hg⟩` from `hy`. Use `⟨c • g, map_smul _ _ _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, ← algebraMap_smul p.range c (d g)]`. Conclude with `N.smul_mem _ hg`. Establish `key : ∀ f, d f ∈ N` using `fun f => by`. Take `⟨g, hg, hgN⟩` from `hl (p.rangeRestrict f) (by rw [hG]; trivial)`. Establish `h1 : f - g ∈ Submodule.span Λ (Q : Set Λ)`.
+
+Establish `h2 : p (f - g) = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 (congrArg Subtype.val hg).symm`. Establish `: f - g ∈ RingHom.ker p` using `RingHom.mem_ker.2 h2`. Rewrite `this` using `[← hQ]`.
+
+Conclude with `this`. Use `add_mem hgN (hq _ h1).2` as an intermediate fact. Rewrite `this` using `[← map_add, add_sub_cancel]`. Then use the resulting hypothesis. Set `d' : Λ →ₗ[O] N` to `{ toFun := fun f => ⟨d f, key f⟩ map_add' := fun a b => Subtype.ext (map_add d a b) map_smul' := fun c a => Subtype.ext (map_smul d c a) }`. Use `haveI : Module.Finite p.range N := Module.Finite.iff_fg.2 (Submodule.fg_span (Set.Finite.image _ (Finset.finite_toSet _)))`.
+
+Take `⟨T, i1, i2, i3, f₀, f₁, hf⟩` from `exists_sqz p.rangeRestrict d' fun f g => Subtype.ext (hd f g)`. Conclude with `⟨T, i1, i2, i3, f₀, f₁, fun a => (hf a).trans ⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩⟩`.
+-/
 private theorem exists_pair_of_der {O Λ K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CommRing Λ] [Algebra O Λ] [IsCO O Λ] [Field K] [Algebra O K]
     (hinj : Function.Injective (algebraMap O K)) (hal : ∀ a : K, ∃ P : O[X], P ≠ 0 ∧ aeval a P = 0) (p : Λ →ₐ[O] K)
@@ -221,6 +302,15 @@ private theorem exists_pair_of_der {O Λ K : Type} [CommRing O] [IsDomain O] [Is
   obtain ⟨T, i1, i2, i3, f₀, f₁, hf⟩ := exists_sqz p.rangeRestrict d' fun f g => Subtype.ext (hd f g)
   exact ⟨T, i1, i2, i3, f₀, f₁, fun a => (hf a).trans ⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Take `⟨b, hb⟩` from `IsCO.res_surj (O := O) (f x)`. Establish `hbu : IsUnit (algebraMap O T b)`. Assume the negation of the conclusion as `h`. Establish `h2` using `add_mem hb ((mem_maximalIdeal _).2 h)`.
+
+Rewrite `h2` using `[sub_add_cancel]`. Conclude with `hn h2`. Establish `hb' : IsUnit (algebraMap O Λ b)` using `(isUnit_of_map_unit (algebraMap O T) b hbu).map _`. Establish `hu : IsUnit (x - algebraMap O Λ b)`. Assume the negation of the conclusion as `h`.
+
+Establish `h2` using `(mem_maximalIdeal _).2 h`. Establish `h3` using `sub_mem hx h2`. Rewrite `h3` using `[sub_sub_cancel]`. Conclude with `(mem_maximalIdeal _).1 h3 hb'`. Establish `h3` using `hu.map f`.
+
+Rewrite `h3` using `[map_sub, f.commutes]`. Conclude with `(mem_maximalIdeal _).1 hb h3`.
+-/
 private theorem map_mem_max {O Λ T : Type} [CommRing O] [IsLocalRing O] [CommRing Λ] [Algebra O Λ] [IsCO O Λ] [CommRing T]
     [Algebra O T] [IsCO O T] (f : Λ →ₐ[O] T) {x : Λ} (hx : x ∈ maximalIdeal Λ) : f x ∈ maximalIdeal T := by
   by_contra hn
@@ -241,6 +331,9 @@ private theorem map_mem_max {O Λ T : Type} [CommRing O] [IsLocalRing O] [CommRi
   rw [map_sub, f.commutes] at h3
   exact (mem_maximalIdeal _).1 hb h3
 
+/- English proof (translation)
+Introduce `N` and use `by have hm : Ideal.map (f : Λ →+* T) (maximalIdeal Λ ^ N) ≤ maximalIdeal T ^ N := by rw [Ideal.map_pow] exact Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 fun x hx => Ideal.mem_comap.2 (map_mem_max f hx)) N let φ : Λ ⧸ maximalIdeal Λ ^ N →+* T ⧸ maximalIdeal T ^ N := Ideal.Q …`.
+-/
 private theorem adic_push {O Λ T Γ : Type} [CommRing O] [IsLocalRing O] [CommRing Λ] [Algebra O Λ] [IsCO O Λ] [CommRing T]
     [Algebra O T] [IsCO O T] [TopologicalSpace Γ] (f : Λ →ₐ[O] T) {u : Γ → Λ} (h : AdicCont (maximalIdeal Λ) u) :
     AdicCont (maximalIdeal T) fun g => f (u g) := fun N => by
@@ -252,6 +345,9 @@ private theorem adic_push {O Λ T Γ : Type} [CommRing O] [IsLocalRing O] [CommR
       Ideal.Quotient.eq_zero_iff_mem.2 (hm (Ideal.mem_map_of_mem _ ha))
   exact (h N).comp φ
 
+/- English proof (translation)
+Introduce `v i` and use `by obtain ⟨ψ, h, hk⟩ := Λ.inert v i refine ⟨W.pushCh (f : Λ.Λ →+* T) ψ, ⟨adic_push f h.cont, fun g => ?_, fun g => ?_⟩, ?_⟩ · exact (res_map f _).trans (h.red g) · exact (congrArg f (h.mu g)).trans (f.commutes _) · change W.pushCh _ (Λ.κ v i) = _ rw [hk] rfl`.
+-/
 private theorem inert_push {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     {n : ℕ} (r : W.Resid F O n) (Λ : W.LamObj r) {T : Type} [CommRing T] [Algebra O T] [IsCO O T] (f : Λ.Λ →ₐ[O] T) :
     W.IsInert r fun v i => W.pushCh (f : Λ.Λ →+* T) (Λ.κ v i) := fun v i => by
@@ -266,6 +362,17 @@ private theorem inert_push {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {O : Type} 
 end UpperTheory.V.J
 
 open UpperTheory.V.J UpperTheory.V.W UpperTheory.V.HV Formalism.ConjugateSelfDual ReciprocityTheory.Gal in
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s V c n r B Λ x m _ δ hδ hk a`. Use `haveI : IsAdicComplete (maximalIdeal c.O) c.O := (UpperTheory.V.abelian₂.dvr_finite l c.O).1`. Establish `hinj : Function.Injective (algebraMap c.O (Qbar l))` using `Subtype.val_injective`. Establish `hal : ∀ a : Qbar l, ∃ P : c.O[X], P ≠ 0 ∧ aeval a P = 0` using `fun a => by`. Establish `h1 : IsAlgebraic ℚ_[l] a` using `Algebra.IsAlgebraic.isAlgebraic a`.
+
+Establish `h2 : IsAlgebraic ℤ_[l] a` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] (Qbar l)).2 h1`. Establish `h3 : IsAlgebraic c.O a` using `h2.extendScalars (UpperTheory.V.abelian₂.dvr_finite l c.O).2.2.2.1`. Conclude with `h3`. Set `t` to `Λ.toPair B.u`. Set `d : Λ.Λ →ₗ[c.O] Qbar l` to `δ.comp t.toLinearMap`.
+
+Take `⟨T, _, _, _, f₀, f₁, hf⟩` from `exists_pair_of_der hinj hal (x.comp t) d fun f g => by`. Use `hδ (t f) (t g)` as an intermediate fact. Simplify `this` using `[d, map_mul]`. Establish `hκ : ∀ v i (g : V.frame.Iv v), d ((Λ.κ v i g : Λ.Λˣ) : Λ.Λ) = 0` using `fun v i g => by`. Establish `h1` using `congrArg Units.val (DFunLike.congr_fun (W.LamObj.toPair_spec r Λ B.u v i) g)`.
+
+Establish `h2 : t ((Λ.κ v i g : Λ.Λˣ) : Λ.Λ) = (B.u.ψ v i g : B.Bˣ)` using `h1`. Express the relevant statement in the definitionally equal form `δ (t _) = 0`. Rewrite using `[h2]`. Conclude with `hk v i g g.2`. Take `⟨u, -, hu⟩` from `Λ.univ T _ (inert_push r Λ f₀)`.
+
+Establish `e0` using `hu f₀ fun _ _ => rfl`. Establish `e1` using `hu f₁ fun v i => MonoidHom.ext fun g => Units.ext ((hf _).2 (hκ v i g)).symm`. Conclude with `(hf a).1 (by rw [e0, ← e1])`.
+-/
 theorem UpperTheory.V.J.lamDer :
     UpperTheory.V.J.LamDer := by
   intro l _ L Ω _ _ _ _ _ _ s V c n r B Λ x m _ δ hδ hk a

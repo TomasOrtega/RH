@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 
 open UpperTheory.V.Lit.Geo.Cs
 
+/- English proof (translation)
+Introduce `V F _ _ _ _ _ _ q k`. Set `bs` to `Module.finBasis ℝ V`. Set `L : (V [⋀^Fin q]→L[ℝ] F) →ₗ[ℝ] ((Fin q → Fin (Module.finrank ℝ V)) → F)` to `{ toFun := fun g σ => g (fun i => bs (σ i)) map_add' := fun g h => by ext σ; simp map_smul' := fun c g => by ext σ; simp }`. Establish `hker : LinearMap.ker L = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+
+Introduce `g hg`. Establish `e : g.toAlternatingMap = (0 : V [⋀^Fin q]→L[ℝ] F).toAlternatingMap` using `Module.Basis.ext_alternating bs (fun v _ => by simpa [L] using congrFun hg v)`. Use extensionality with `m`. Simplify using `using DFunLike.congr_fun e m`. Take `⟨M, hM⟩` from `L.exists_leftInverse_of_injective hker`.
+
+Set `A : (Fin q → Fin (Module.finrank ℝ V)) → F →L[ℝ] (V [⋀^Fin q]→L[ℝ] F)` to `fun σ => LinearMap.toContinuousLinearMap (M.comp (LinearMap.single ℝ (fun _ => F) σ))`. Use `⟨Finset.univ.image (fun σ : Fin q → Fin (Module.finrank ℝ V) => fun i => bs (σ i)), ∑ σ, ‖A σ‖, Finset.sum_nonneg (fun _ _ => norm_nonneg _), ?_⟩` and prove the remaining obligations. Introduce `f x b hb hcd hsz`. Establish `mem : ∀ σ : Fin q → Fin (Module.finrank ℝ V), (fun i => bs (σ i)) ∈ Finset.univ.image (fun σ : Fin q → Fin (Module.finrank ℝ V) => fun i => bs (σ i))` using `fun σ => Finset.mem_image_of_mem _ (Finset.mem_univ σ)`. Establish `hrep : f = fun y => ∑ σ, A σ (f y (fun i => bs (σ i)))`.
+
+Use function extensionality and compare the values at `y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Both sides reduce to the same expression. Introduce `i hi`.
+
+Establish `hcdi : ∀ σ : Fin q → Fin (Module.finrank ℝ V), ContDiffAt ℝ i (fun y => f y (fun i => bs (σ i))) x` using `fun σ => (hcd _ (mem σ)).of_le (by exact_mod_cast le_top)`. Establish `hsum` using `iteratedFDeriv_fun_sum_apply (𝕜 := ℝ) (n := i) (x := x) (u := Finset.univ) (f := fun σ y => A σ (f y (fun i => bs (σ i)))) (fun σ _ => (A σ).contDiff.contDiffAt.comp x (hcdi σ))`. Rewrite using `[hrep, hsum, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun σ _ => ?_)` and prove the remaining obligations. Use `((A σ).norm_iteratedFDeriv_comp_left (hcdi σ) le_rfl).trans ?_` and prove the remaining obligations.
+
+Conclude with `mul_le_mul_of_nonneg_left (hsz _ (mem σ) i hi) (norm_nonneg _)`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.altEv :
     AltEv := by
   classical

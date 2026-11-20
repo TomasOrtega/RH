@@ -45,6 +45,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.BadPt
 
+/- English proof (translation)
+Set `ER : H ≃ₗ[R] D` to `E.restrictScalars R`. Set `o` to `(Submodule.orderIsoMapComap ER).symm`. Establish `ho : ∀ N c, c ∈ o N ↔ E c ∈ N` using `fun _ _ => Iff.rfl`. Establish `o₁ : o (W.restrictScalars R) = F.restrictScalars R` using `Submodule.ext fun c => (hF c).symm`. Establish `o₂ : o Ω' = Ω` using `Submodule.ext fun c => (hΩ c).symm`.
+
+Establish `o₃ : o (LinearMap.BilinForm.dualSubmodule (LinearMap.compl₁₂ β E.symm.toLinearMap E.symm.toLinearMap) Ω') = β.dualSubmodule Ω` using `Submodule.ext fun c => (ho _ c).trans ⟨fun H y hy => by simpa using H (E y) ((hΩ y).1 hy), fun H y hy => by simpa using H (E.symm y) ((hΩ _).2 (by simpa using hy))⟩`. Establish `o₄ : o ((Submodule.span K (Set.range Fr')).restrictScalars R) = (Submodule.span K (Set.range Fr)).restrictScalars R` using `Submodule.ext fun c => by`. Establish `k : (Submodule.span K (Set.range Fr)).map E.toLinearMap = Submodule.span K (Set.range Fr')`. Rewrite using `[Submodule.map_span, ← Set.range_comp, ← E.surjective.range_comp Fr']`. Conclude with `congrArg (fun z => Submodule.span K (Set.range z)) (funext v₁)`.
+
+Rewrite using `[ho, Submodule.restrictScalars_mem, Submodule.restrictScalars_mem, ← k, Submodule.mem_map_equiv, E.symm_apply_apply]`. Establish `o₅ : o (Submodule.span R (Fr' '' (Λ : Set D))) = Submodule.span R (Fr '' (o Λ : Set H))`. Rewrite using `[OrderIso.symm_apply_eq]`. Express the relevant statement in the definitionally equal form `_ = Submodule.map ER.toLinearMap _`. Rewrite using `[Submodule.map_span]`.
+
+Use `congrArg _ (Set.ext fun x => ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨c, rfl⟩` from `E.surjective y`. Conclude with `⟨_, ⟨c, hy, rfl⟩, v₁ c⟩`. Introduce and unpack `⟨_, ⟨c, hc, rfl⟩, rfl⟩`.
+
+Conclude with `⟨E c, hc, (v₁ c).symm⟩`. Establish `fg : (o Λ).FG`. Establish `k` using `a₁.map ER.symm.toLinearMap`. Rewrite `k` using `[Submodule.map_equiv_eq_comap_symm]`. Then use the resulting hypothesis. Establish `H₁ : o Λ ⊓ F.restrictScalars R = Ω` using `by rw [← o₁, ← o.map_inf, a₂, o₂]`.
+
+Establish `H₂ : o Λ ⊔ F.restrictScalars R = β.dualSubmodule Ω` using `by rw [← o₁, ← o.map_sup, a₅, o₃]`. Establish `H₃ : o Λ ⊓ (Submodule.span K (Set.range Fr)).restrictScalars R = Submodule.span R (Fr '' (o Λ : Set H))`. Rewrite using `[← o₄, ← o.map_inf, a₄, o₅]`. Establish `H₄ : Fr '' (β.dualSubmodule Ω : Set H) = Fr '' (o Λ : Set H)`. Rewrite using `[← H₂]`.
+
+Use `Set.Subset.antisymm ?_ (Set.image_mono (SetLike.coe_mono le_sup_left))` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hc`. Conclude with `⟨x, hx, (f₁ x y hy).symm⟩`. Establish `H₅ : o Λ ≤ β.dualSubmodule (o Λ ⊓ (Submodule.span K (Set.range Fr)).restrictScalars R)`.
+
+Rewrite using `[H₃]`. Introduce `c hc y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[← algebraMap_smul K r x, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+
+Consider the case `mem x hx`. Take `⟨z, hz, rfl⟩` from `hx`. Take `⟨n, r, y, y₁, y₂⟩` from `a₃ (E c) hc`. Rewrite using `[v₂ c z n (fun l => algebraMap R K (r l)) (fun l => E.symm (y l)) (by simpa using y₂)]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations.
+
+Take `⟨b, hb⟩` from `Submodule.mem_one.1 (H₂.le (Submodule.mem_sup_left hz) (E.symm (y l)) ((hΩ _).2 (by simpa using y₁ l)))`. Conclude with `Submodule.mem_one.2 ⟨r l * (-b) ^ p, by rw [map_mul, map_pow, map_neg, hb, ← β₂]⟩`. Use `⟨o Λ, ho _, fg, ⟨H₁, H₂⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[H₄, ← H₃]`. Conclude with `T.adapted_lattice_lagrangian_symplectic R K H β F _ _ β₁ β₂ β₃ β₄ fg ⟨rfl, H₁ ▸ H₂⟩ H₅`.
+-/
 theorem adapted_comap {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] {H : Type 1} [AddCommGroup H] [Module K H] [Module R H] [IsScalarTower R K H]
     [Module.Finite K H] {D D₁ : Type} [AddCommGroup D] [Module K D] [Module R D] [IsScalarTower R K D]
@@ -124,6 +147,23 @@ theorem adapted_comap {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuatio
 
 set_option maxHeartbeats 600000 in
 
+/- English proof (translation)
+Establish `hR : (p : R) = 0` using `IsFractionRing.injective R K (by rw [map_natCast, hK, map_zero])`. Establish `hn : IsNilpotent (p : K)` using `hK ▸ IsNilpotent.zero`. Take `⟨e, ε, eN, eF, eT, eW⟩` from `hB.2 p`. Take `⟨g, hg⟩` from `AbelianDim.exists_relDim K A hA`. Take `⟨𝒜, ⟨t⟩⟩` from `SemiAbelianTower.exists_tower p K A (isSemiAbelian_of_isAbelianScheme A hA) (AbTorsionAnyBase.isFinite_and_flat_torsion _ A hA)`.
+
+Take `⟨Γ', ⟨s⟩⟩` from `T.semiabelian_extension_abelian_generic_henselian hX.ray p R K G A φ hG hA hφ`. Take `⟨κ, hκ, κ₁, κ₂⟩` from `T.pdivisible_tower_base_change_map_exists p R K G A φ hG hφ Γ' s 𝒜 t hR`. Take `⟨w, hw⟩` from `T.weil_pairing_exists_of_cube_theorem hX.cube p K A hA P hP 𝒜 t`. Take `⟨h, hh⟩` from `T.pdivisible_base_change_iso_semiabelian hX.cube p R K G A φ hG hφ Γ' s 𝒜 t κ hκ hA P hP w hw`. Establish `w₁` using `T.weil_pairing_antisymmetric_of_symmetric hX.cube p K A hA P hP hs 𝒜 t w hw`.
+
+Take `⟨w₂, w₃⟩` from `T.de_rham_polarization_form_primitive h5 hX.conj hX.cube p K hK A g hA hg P hP hs ψ β hψ hβ e ε eF eT eW hn 𝒜 t w hw`. Take `⟨_, β₁, β₂, β₃, β₄⟩` from `SymmPoincare.skew_lagrangian h5 hX.conj p K hK A g hA hg P hP hs ψ β hψ hβ`. Take `⟨v₁, v₂⟩` from `FrobAdjoint.frob_adjoint_verschiebung h5 hX.cube p K hK A g hA hg P hP hs ψ β hψ hβ e eN hn 𝒜 t`. Use `letI : Module R 𝒜.RigExt := Module.compHom _ (algebraMap R K)`. Use `haveI : IsScalarTower R K 𝒜.RigExt := .of_algebraMap_smul fun _ _ => rfl`.
+
+Establish `hΩ` using `T.pdivisible_base_change_char_p p R K G A φ hG hφ Γ' s 𝒜 t κ hR hκ hA e eF eT hn`. Establish `hN` using `fun (u : A ⟶ A) [IsMonHom u] => eN.primPull hn hA hA t t u`. Establish `hF` using `eF hn hA t`. Generalize the expression as in `e hn hA t = E at w₃ v₁ v₂ hΩ hN hF`. Establish `hF' : ∀ c, c ∈ PrimitiveSubmodule A ↔ E c ∈ LinearMap.range 𝒜.rigOfOmega` using `fun c => by`.
+
+Rewrite using `[← hF, Submodule.mem_map_equiv, E.symm_apply_apply]`. Set `B : LinearMap.BilinForm K 𝒜.RigExt` to `LinearMap.compl₁₂ β E.symm.toLinearMap E.symm.toLinearMap`. Establish `hBL : IsLagr B (LinearMap.range 𝒜.rigOfOmega)` using `fun x => by`. Take `⟨c, rfl⟩` from `E.surjective x`. Rewrite using `[← hF', β₃]`.
+
+Conclude with `⟨fun H y hy => by simpa [B] using H (E.symm y) ((hF' _).2 (by simpa using hy)), fun H y hy => by simpa [B] using H (E y) ((hF' _).1 hy)⟩`. Take `⟨a₁, a₂⟩` from `T.pdivisible_polarization_lift_generic_fibre hB.1 p R K hR hK Γ' 𝒜 κ w κ₂ w₂ h hh`. Establish `a₃` using `T.pdivisible_hom_dual_extends_integral p R K hR hK Γ' 𝒜 κ w κ₂ w₂ h hh`. Establish `a₄` using `T.pdivisible_weil_pairing_integral_extension hB.1 p R K hR hK Γ' 𝒜 κ w κ₂ w₂ h hh κ₁ w₁`. Establish `a₅` using `T.rigidified_extension_lagrangian_sign p R K hR hK Γ' 𝒜 κ w B (-ε) κ₂ hBL w₃`.
+
+Establish `f₁ : ∀ x, ∀ y ∈ PrimitiveSubmodule A, frobDR p K hK A (x + y) = frobDR p K hK A x` using `fun x y hy => by`. Establish `k : frobDR p K hK A y = 0` using `(hX.conj p K hK A g hA hg _ (frobMor p K hK A (cast_left p K hK A))).1 y hy`. Rewrite using `[map_add, k, add_zero]`. Take `⟨L, ho, fg, l₁, l₂⟩` from `adapted_comap E β₁.1 β₂ β₃ β₄ hF' hΩ f₁ v₁ v₂ a₁ a₂ a₃ a₄ a₅`. Use `⟨L, fg, l₁, l₂, fun f f' u u' _ _ _ _ e₁ e₂ e₃ c hc => ?_⟩` and prove the remaining obligations.
+
+Take `⟨g₁, k₁⟩` from `T.pdivisible_inclusion_compatible_towers p R K G A φ hG hφ Γ' s 𝒜 t κ hκ f u e₁`. Take `⟨g₂, k₂⟩` from `T.pdivisible_inclusion_compatible_towers p R K G A φ hG hφ Γ' s 𝒜 t κ hκ f' u' e₂`. Rewrite using `[ho, hN]`. Conclude with `T.pdivisible_endomorphism_commute_extension p R K hR hK Γ' 𝒜 κ w _ _ g₁ g₂ k₁ k₂ (T.weil_pairing_adjoint_endomorphism hX.cube p K A hA P hP 𝒜 t w hw u u' e₃) _ ((ho c).1 hc)`.
+-/
 theorem exists_lattice (hX : CovTop.HypothesesXH) (hB : Published.BarsottiTateDieudonne) (h5 : Published.AbelianDeRham)
     (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (K : Type) [Field K]
     [Algebra R K] [IsFractionRing R K] [IsAlgClosed (IsLocalRing.ResidueField R)]
@@ -183,6 +223,23 @@ theorem exists_lattice (hX : CovTop.HypothesesXH) (hB : Published.BarsottiTateDi
     exact T.pdivisible_endomorphism_commute_extension p R K hR hK Γ' 𝒜 κ w _ _ g₁ g₂ k₁ k₂
       (T.weil_pairing_adjoint_endomorphism hX.cube p K A hA P hP 𝒜 t w hw u u' e₃) _ ((ho c).1 hc)
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ K _ _ _ f ξ w`. Use `hG.comm` as an intermediate fact. Use `hA.comm` as an intermediate fact. Establish `hK : (q : K) = 0`. Establish `k₀` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (cast_eq_zero q k (ξ ≫ f₀))`.
+
+Rewrite `k₀` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Set `G'` to `(Over.pullback f).obj G`. Set `A'` to `(Over.pullback ξ).obj A`. Establish `g₁ : IsGrpPullback G' G f _` using `isGrpPullback_pullback G f`. Establish `a₁ : IsGrpPullback A' A ξ _` using `isGrpPullback_pullback A ξ`.
+
+Establish `act : ∀ {S S' : Scheme.{0}} (b : S' ⟶ S) {H : Over S} (u : H ⟶ H), ((Over.pullback b).map u).left ≫ pullback.fst H.hom b = pullback.fst H.hom b ≫ u.left` using `fun _ _ _ => pullback.lift_fst _ _ _`. Establish `a₂ : IsActPull (OAct.pullback ξ A j) j ξ _` using `⟨a₁, fun x => act ξ _⟩`. Establish `hA' : IsAbelianScheme A'` using `{ comm := inferInstance smooth := by have := hA.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by have := hA.proper; show IsProper (pullback.snd _ _); infer_instance geomConnected := by have := hA.geomConnected; show GeometricallyConnected (pullback.snd _ _); in …`. Establish `n` using `(a₁.comp h).congr w.symm rfl`. Take `⟨χ, χ₁, χ₂⟩` from `g₁.1.exists_lift _ _ (n.1.w.trans (Category.assoc _ _ _).symm)`.
+
+Establish `hχ` using `g₁.cancel (n.congr rfl χ₁.symm) χ₂`. Take `⟨m, m₁, m₂⟩` from `exists_prod_pullback a₁ a₁`. Take `⟨s₁, s₂, s₃⟩` from `AbDatum.isSelfDual_baseChange O c T _ ξ A A' j _ _ a₁ a₂ P m m₁ m₂ hP`. Use `letI : Module R (primDR A') := Module.compHom _ (algebraMap R K)`. Use `haveI : IsScalarTower R K (primDR A') := .of_algebraMap_smul fun _ _ => rfl`.
+
+Take `⟨ψ, β, E, hψ, hβ, E₁, E₂, E₃, E₄⟩` from `GlobalTheory.T.polarization_vector_bundle_abelian_pullback h5 O c q k C G i T f₀ A j φ h hA P hP.1.isLB g hg d₀ hd R K hK f ξ w G' _ g₁ A' _ _ a₂ χ hχ χ₁ m m₁ m₂`. Take `⟨Λ, fg, l₁, l₂, l₃⟩` from `exists_lattice hX hB h5 q R K hK G' A' χ (IsSemiAbelian.pullback f G hG) hA' hχ _ s₁ s₂ ψ β hψ hβ`. Take `⟨N, b, hb⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 fg`. Establish `key : InLat R (fun l => E.symm (b l)) = fun s => E s ∈ Λ` using `funext fun s => propext <| by`. Rewrite using `[← hb, Submodule.mem_span_range_iff_exists_fun]`.
+
+Use `exists_congr fun r => ?_` and prove the remaining obligations. Rewrite using `[← E.apply_eq_iff_eq, map_sum, eq_comm]`. Simplify using `only [E₁, E.apply_symm_apply, algebraMap_smul]`. Use `⟨N, fun l => E.symm (b l), ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+
+Use `⟨fun x s hs => ?_, E₃.latSeq l₁, E₄.latSeq l₂⟩` and prove the remaining obligations. Establish `sq : ∀ x, ((OAct.pullback ξ A j).act x).left ≫ χ = χ ≫ ((OAct.pullback f G i).act x).left` using `fun x => g₁.1.hom_ext (by`. Rewrite using `[Category.assoc, Category.assoc, χ₁, ← Category.assoc, a₂.2, Category.assoc, hj.2]`. Conclude with `(congrArg (χ ≫ ·) (act f _)).trans (by rw [← Category.assoc, χ₁, Category.assoc]) |>.symm)`. Use the proof step `(by rw [Category.assoc, Category.assoc, Over.w, χ₂, Over.w_assoc])`.
+
+Use `(OAct.pullback ξ A j).hom` as an intermediate fact. Use `(OAct.pullback f G i).hom` as an intermediate fact. Express the relevant statement in the definitionally equal form `E _ ∈ Λ`. Rewrite using `[E₂]`. Conclude with `l₃ _ _ _ _ (sq x) (sq (c x)) (s₃ x) _ hs`.
+-/
 theorem hasLatticesComplete (hX : CovTop.HypothesesXH) (hB : Published.BarsottiTateDieudonne) (h5 : Published.AbelianDeRham)
     {O : Type} [CommRing O] (c : O →+* O) (q : ℕ) [Fact q.Prime] (k : Type) [Field k] [CharP k q] {C : Scheme.{0}}
     [Algebra k Γ(C, ⊤)] {G : Over C} [GrpObj G] [hG : IsSemiAbelian G] (i : OAct O G) {T : Scheme.{0}} {f₀ : T ⟶ C}
@@ -244,6 +301,9 @@ end GlobalTheory.BadPt
 
 namespace GlobalTheory.BadPt
 
+/- English proof (translation)
+Introduce `hX hB h2 O _ c q _ k _ _ _ C _ _ hC G₀ _ _ i₀ _ G _ _ i φ₀ _ U A _ j φ h hU hA hj P hP g hg d₀ hd`. Conclude with `T.lattice_extension_over_codim_one_points k C hC O _ _ _ _ _ _ _ _ _ g g g g hg hg.dual (hg.dual.frobPull _ _) (hg.frobPull _ _) U hU d₀ (T.lattice_extension_complete_to_dvr C _ U.ι O _ _ _ _ _ _ _ _ _ g g g g hg hg.dual (hg.dual.frobPull _ _) (hg.frobPull _ _) d₀ (hasLatticesCom …`.
+-/
 theorem exists_datum_near : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.Published.BarsottiTateDieudonne → GlobalTheory.CovTop.Hypotheses2 → ∀ (O : Type) [CommRing O] (c : O →+* O) (q : ℕ) [Fact q.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k q] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] [IsIntegral C], IsSmoothProjCurve k C → ∀ (G₀ : Over C) [GrpObj G₀] [IsSemiAbelian G₀] (i₀ : OAct O G₀), AbGen c i₀ → ∀ (G : Over C) [GrpObj G] [IsSemiAbelian G] (i : OAct O G) (φ₀ : G.left ⟶ G₀.left), IsActPull i i₀ (frob C q (natCast_eq_zero C q k)) φ₀ → ∀ (U : C.Opens) (A : Over U.toScheme) [GrpObj A] (j : OAct O A) (φ : A.left ⟶ G.left) (h : IsGrpPullback A G U.ι φ), genericPoint C ∈ U → IsAbelianScheme A → IsActPull j i U.ι φ → ∀ P : LB (A ⊗ A).left, IsSelfDual c j P → ∀ (g : ℕ) (hg : IsVB (omega G) g) (d₀ : DieuDatumOn q k c i g U.ι), IsDRDatumOn q k c i j h P hg d₀ → ∀ x : C, x ∉ U → ∃ V : C.Opens, x ∈ V ∧ (∀ y ∈ V, y ≠ x → y ∈ U) ∧ ∃ d : DieuDatumOn q k c i g V.ι, ∃ ψ, Agree (b := C.homOfLE (inf_le_left : V ⊓ U ≤ V)) (c := C.homOfLE (inf_le_right : V ⊓ U ≤ U)) d d₀ (by simp) ψ := by
   intro hX hB h2 O _ c q _ k _ _ _ C _ _ hC G₀ _ _ i₀ _ G _ _ i φ₀ _ U A _ j φ h hU hA hj P hP g hg d₀ hd
   exact T.lattice_extension_over_codim_one_points k C hC O _ _ _ _ _ _ _ _ _ g g g g hg hg.dual (hg.dual.frobPull _ _) (hg.frobPull _ _) U hU d₀

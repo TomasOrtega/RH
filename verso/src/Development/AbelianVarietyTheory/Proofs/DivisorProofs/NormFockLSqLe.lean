@@ -22,6 +22,9 @@ noncomputable section
 
 namespace GlobalTheory.JetBlock
 
+/- English proof (translation)
+Set `c : PreInnerProductSpace.Core ℂ (MvPolynomial σ ℂ)` to `{ inner := fun x y => fockL x y conj_inner_symm := fun x y => (fockL_symm x y).symm re_inner_nonneg := fun x => (Complex.le_def.mp (fockL_nonneg x)).1 add_left := fun x y z => by simp only [map_add, LinearMap.add_apply] smul_left := fun x y r => by simp only [LinearMap.map_smulₛₗ …`. Establish `h : ‖fockL f g‖ * ‖fockL g f‖ ≤ (fockL f f).re * (fockL g g).re` using `InnerProductSpace.Core.inner_mul_inner_self_le (c := c) f g`. Rewrite `h` using `[fockL_symm g f, norm_star, ← sq]`. Then use the resulting hypothesis.
+-/
 theorem norm_fockL_sq_le {σ : Type} (f g : MvPolynomial σ ℂ) :
     ‖fockL f g‖ ^ 2 ≤ (fockL f f).re * (fockL g g).re := by
   let c : PreInnerProductSpace.Core ℂ (MvPolynomial σ ℂ) :=
@@ -36,6 +39,17 @@ theorem norm_fockL_sq_le {σ : Type} (f g : MvPolynomial σ ℂ) :
 
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
+/- English proof (translation)
+Take `⟨k, c, g, rfl⟩` from `Submodule.mem_span_set'.mp hp`. Use `choose f hf hf' using fun i => (g i).2`. Establish `hg : ∀ i, (g i : Pol ℂ ι a) = ten (f i)` using `hf'`. Establish `hten : ∀ {n : ℕ} (f g : ι → MvPolynomial (Fin n × Fin n) ℂ), fockL (ten f) (ten g) = ∏ τ, fockL (f τ) (g τ)` using `fun f g => fk_fock_prod Finset.univ f g`. Simplify using `only [hg]`.
+
+Establish `key` using `(psd_prod (fun τ => (C τ : ℂ) • gram fun i => f i τ) (fun τ => gram fun i => F τ (f i τ)) (fun τ => gram_psd _) (fun τ => gram_sub_psd _ (F τ) (C τ) (h τ) _ (fun i => hf i τ)) Finset.univ).2`. Establish `e1 : (Matrix.of fun i j => ∏ τ, ((C τ : ℂ) • gram fun i => f i τ) i j) = ((∏ τ, C τ : ℝ) : ℂ) • gram fun i => ten (f i)`. Use extensionality with `i j`. Simplify using `[gram, hten, Finset.prod_mul_distrib]`. Establish `e2 : (Matrix.of fun i j => ∏ τ, (gram fun i => F τ (f i τ)) i j) = gram fun i => ten fun τ => F τ (f i τ)`.
+
+Use extensionality with `i j`. Simplify using `[gram, hten]`. Rewrite `key` using `[e1, e2]`. Establish `h1` using `key.dotProduct_mulVec_nonneg c`. Rewrite `h1` using `[Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec, dotProduct_smul, gram_dot, gram_dot]`.
+
+Establish `e3 : T (∑ i, c i • ten (f i)) = ∑ i, c i • ten fun τ => F τ (f i τ)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, hT]`. Rewrite using `[e3]`. Establish `h2` using `(Complex.le_def.mp h1).1`.
+
+Simplify using `only [smul_eq_mul, Complex.zero_re, Complex.sub_re, Complex.re_ofReal_mul] at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fock_tensor_le (lam : ι → DomWeight a)
     (F : ι → MvPolynomial (Fin a × Fin a) ℂ →ₗ[ℂ] MvPolynomial (Fin b × Fin b) ℂ) (C : ι → ℝ)
     (h : ∀ τ, ∀ f ∈ nablaSq ℂ a (lam τ), (fockL (F τ f) (F τ f)).re ≤ C τ * (fockL f f).re)
@@ -68,6 +82,9 @@ theorem fock_tensor_le (lam : ι → DomWeight a)
   simp only [smul_eq_mul, Complex.zero_re, Complex.sub_re, Complex.re_ofReal_mul] at h2
   linarith
 
+/- English proof (translation)
+Establish `h : extNorm ℂ lam = ((∏ τ, eN (lam τ) : ℝ) : ℂ)`. Rewrite using `[extNorm, Complex.ofReal_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [← eN_eq, fockF_eq, fockL_apply]`. Rewrite using `[normSq, pairK_apply, pairP_apply, h, ← Complex.div_ofReal_re]`. Simplify using `[gramTw, blockAct_one, div_eq_inv_mul]`.
+-/
 theorem normSq_eq {n : ℕ} (lam : ι → DomWeight n) (v : VV ℂ lam) :
     normSq lam v = (fockL (v : Pol ℂ ι n) (v : Pol ℂ ι n)).re / ∏ τ, eN (lam τ) := by
   have h : extNorm ℂ lam = ((∏ τ, eN (lam τ) : ℝ) : ℂ) := by
@@ -83,6 +100,9 @@ def subOne (h : a ≤ b) (A : Matrix (Fin a) (Fin b) ℂ) (e : ℕ) :
   (rowAct ℂ (padRows A)).toLinearMap ∘ₗ (rename (incl h)).toLinearMap ∘ₗ
     LinearMap.mulRight ℂ (GlobalTheory.WeylMinorDual.gdet ℂ a ^ e)
 
+/- English proof (translation)
+Rewrite using `[sharp, ← GlobalTheory.WeylMinorDual.ten_gdet, ten, ten, ten, ← Finset.prod_mul_distrib, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, GlobalTheory.SubstMem.substAdj_blockEmb]`. Both sides reduce to the same expression.
+-/
 theorem substAdj_ten (h : a ≤ b) (ap : ι → Matrix (Fin a) (Fin b) ℂ) (n : ι → ℕ)
     (f : ι → MvPolynomial (Fin a × Fin a) ℂ) :
     substAdj h ap (sharp n (ten f)) = ten fun τ => subOne h (ap τ) (n τ) (f τ) := by
@@ -91,6 +111,11 @@ theorem substAdj_ten (h : a ≤ b) (ap : ι → Matrix (Fin a) (Fin b) ℂ) (n :
   rw [← map_mul, GlobalTheory.SubstMem.substAdj_blockEmb]
   rfl
 
+/- English proof (translation)
+Establish `ha` using `i.pos`. Establish `h1` using `GlobalTheory.JetDeg.natW_cast lam i`. Establish `h2` using `h.1 i`. Establish `h3` using `h.1 ⟨a - 1, by omega⟩`. Establish `h4` using `h.2.1 ⟨a - 1, by omega⟩`.
+
+Establish `h5` using `h.2.1 i`. Unfold `lastEntry`. Unfold `DomWeight.detShift at h1 ⊢`. Rewrite `h1`, the goal using `[dif_pos ha]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem toNat_eq {lam ν : DomWeight a} {lam' : DomWeight b} {s' s : ℤ} (h : IsStepWeight lam ν lam' s' s) (i : Fin a) :
     (ν.w i).toNat = lam.natW i + lastEntry ν := by
   have ha := i.pos
@@ -104,6 +129,11 @@ theorem toNat_eq {lam ν : DomWeight a} {lam' : DomWeight b} {s' s : ℤ} (h : I
   rw [dif_pos ha] at h1 ⊢
   omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h1` using `natW_eq_padZero hab h hg i`. Unfold `padZero at h1`. Unfold `rowNu`. Use `split_ifs at h1 ⊢ with hi`.
+
+Use `toNat_eq h ⟨i, hi⟩` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem natW_eq_rowNu (hab : a ≤ b) {lam ν : DomWeight a} {lam' : DomWeight b} {s' s : ℤ}
     (h : IsStepWeight lam ν lam' s' s) (hg : a < b ∨ lastEntry ν = 0) :
     lam'.natW = rowNu (r := b) fun i => lam.natW i + lastEntry ν := by
@@ -117,6 +147,9 @@ theorem natW_eq_rowNu (hab : a ≤ b) {lam ν : DomWeight a} {lam' : DomWeight b
     omega
   · omega
 
+/- English proof (translation)
+Rewrite using `[nablaSq, natW_eq_rowNu hab h hg]`. Apply the tactic sequence `refine dualWeylRowStable ℂ b b _ _ _ (GlobalTheory.SubstMem.rename_mem_dualWeyl hab (lam.natW + fun _ => lastEntry ν) _ (fun i => ?_) (fun j hj => ?_) _ ((dualWeylMul ℂ a a _ _ _ _).1 hf (GlobalTheory.SubstMem.det_pow_mem a _)))`. Simplify using `[rowNu]`. Simplify using `[rowNu, not_lt.mpr hj]`.
+-/
 theorem subOne_mem (hab : a ≤ b) {lam ν : DomWeight a} {lam' : DomWeight b} {s' s : ℤ}
     (h : IsStepWeight lam ν lam' s' s) (hg : a < b ∨ lastEntry ν = 0) (A : Matrix (Fin a) (Fin b) ℂ)
     {f : MvPolynomial (Fin a × Fin a) ℂ} (hf : f ∈ nablaSq ℂ a lam) :
@@ -127,6 +160,13 @@ theorem subOne_mem (hab : a ≤ b) {lam ν : DomWeight a} {lam' : DomWeight b} {
   · simp [rowNu]
   · simp [rowNu, not_lt.mpr hj]
 
+/- English proof (translation)
+Take `⟨h0, -, h1⟩` from `(fock_subst_le hab A).choose_spec`. Apply the tactic sequence `have h2 := h1 (fun i => lam.natW i + lastEntry ν) (f * GlobalTheory.WeylMinorDual.gdet ℂ a ^ lastEntry ν) ((dualWeylMul ℂ a a _ _ _ _).1 hf (GlobalTheory.SubstMem.det_pow_mem a _))`. Apply the tactic sequence `have h3 := fock_mul_det lam.natW (natW_antitone lam) (lastEntry ν) hf`. Apply the tactic sequence `have h4 : fockF (hw ℂ (le_refl a) fun i => lam.natW i + lastEntry ν) (hw ℂ (le_refl a) fun i => lam.natW i + lastEntry ν) = eN lam' := by`. Rewrite using `[← eN_eq, Formalism.BasicNotions.extremal, natW_eq_rowNu hab h hg, ← rename_hw hab, fockF_rename (incl_injective hab)]`.
+
+Establish `h5 : fockF (hw ℂ (le_refl a) lam.natW) (hw ℂ (le_refl a) lam.natW) = eN lam` using `eN_eq lam`. Rewrite `h3` using `[h4, h5]`. Establish `h6` using `congrArg Complex.re h3`. Rewrite `h6` using `[Complex.div_ofReal_re, Complex.div_ofReal_re, div_eq_iff (eN_pos lam').ne']`. Rewrite `h2` using `[h6, fockF_eq, fockF_eq]`.
+
+Use `h2.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [toNat_eq h, ← Finset.prod_pow, ← pow_mul, mul_comm 2, sing]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem subOne_le (hab : a ≤ b) {lam ν : DomWeight a} {lam' : DomWeight b} {s' s : ℤ}
     (h : IsStepWeight lam ν lam' s' s) (hg : a < b ∨ lastEntry ν = 0) (A : Matrix (Fin a) (Fin b) ℂ)
     {f : MvPolynomial (Fin a × Fin a) ℂ} (hf : f ∈ nablaSq ℂ a lam) :
@@ -148,6 +188,21 @@ theorem subOne_le (hab : a ≤ b) {lam ν : DomWeight a} {lam' : DomWeight b} {s
   simp only [toNat_eq h, ← Finset.prod_pow, ← pow_mul, mul_comm 2, sing]
   ring
 
+/- English proof (translation)
+Set `L : (DVar ι a b → ℂ) →ₗ[ℂ] VCx ι a b` to `{ toFun := fun u τ β α => (r τ : ℂ)⁻¹ * u (τ, β, α) map_add' := fun u v => by funext τ β α; simp [mul_add] map_smul' := fun c u => by funext τ β α; simp [mul_left_comm] }`. Establish `hF : Differentiable ℂ fun u => G (L u)` using `hG.comp (LinearMap.toContinuousLinearMap L).differentiable`. Establish `hw : GlobalTheory.IndefiniteRowSideFullHecke.TensorCoordinateForms.IsSpelling fun e : DVar ι a b → ℕ => (Finsupp.toMultiset (Finsupp.equivFunOnFinite.symm e)).toList` using `fun e x => by`. Rewrite using `[← Multiset.coe_count, Multiset.coe_toList, Finsupp.count_toMultiset]`. Both sides reduce to the same expression.
+
+Establish `hne : (Formalism.DimensionVariation.mfact m : ℂ) ≠ 0`. Conclude with `(Finset.prod_pos fun x _ => Nat.factorial_pos _).ne'` after adjusting the coercions. Establish `hL : (L ∘ GlobalTheory.IndefiniteRowSideFullHecke.TaylorCoefficientForms.coordVec) = fun k => (r k.1 : ℂ)⁻¹ • coordX k`. Use function extensionality and compare the values at `k τ β α`. Take `⟨τ', β', α'⟩` from `k`.
+
+Simplify using `only [L, GlobalTheory.IndefiniteRowSideFullHecke.TaylorCoefficientForms.coordVec, coordX, Function.comp, LinearMap.coe_mk, AddHom.coe_mk, Pi.smul_apply, Pi.single_apply, Prod.mk.injEq, smul_eq_mul]`. Use `split_ifs with h`. Rewrite using `[h.1]`. Simplify using the standard rewrite rules. Establish `hd : derivAt0 G m = lineDerivList ℂ (m.toMultiset.toList.map coordX) G 0`.
+
+Rewrite using `[derivAt0, ← lineDerivList_ofFn (SCV.analyticOnNhd_of_differentiable hG Set.univ 0 (Set.mem_univ _))]`. Use `congr 1`. Use `List.ext_getElem (by simp) fun i h1 h2 => by simp` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.IndefiniteRowSideFullHecke.TaylorCoefficientForms.taylorCoeff (fun u => G (L u)) m * _ * _ = _`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.TaylorCoefficientForms.taylorCoeff, div_mul_cancel₀ _ hne, ← GlobalTheory.JetFrameCompare.wordDeriv_eq_monoDeriv hw _ hF, GlobalTheory.JetFrameCompare.wordDeriv_eq_lineDerivList _ hF, lineDerivList_comp_linearMap, List.map_map, hL, lineDer …`.
+
+Use `beta_reduce`. Rewrite using `[map_zero, Finsupp.equivFunOnFinite_symm_coe, ← hd, jetC, Finsupp.prod_fintype _ _ (by simp)]`. Establish `hp : (m.toMultiset.toList.map fun k => (r k.1 : ℂ)⁻¹).prod = ∏ x : DVar ι a b, (r x.1 : ℂ)⁻¹ ^ m x`. Rewrite using `[← Multiset.prod_coe, ← Multiset.map_coe, Multiset.coe_toList, Finset.prod_multiset_map_count, Finsupp.toFinset_toMultiset]`. Simplify using `only [Finsupp.count_toMultiset]`.
+
+Conclude with `Finset.prod_subset (Finset.subset_univ _) fun x _ hx => by simp [Finsupp.notMem_support_iff.mp hx]`. Rewrite using `[hp, smul_eq_mul, mul_right_comm, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `: (r x.1 : ℂ) ≠ 0` using `by exact_mod_cast (hr x.1).ne'`.
+
+Rewrite using `[← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem taylor_jetC {G : VCx ι a b → ℂ} (hG : Differentiable ℂ G) (r : ι → ℝ) (hr : ∀ τ, 0 < r τ) (cD : ι → ℂ)
     (m : DVar ι a b →₀ ℕ) :
     GlobalTheory.IndefiniteRowSideFullHecke.TaylorCoefficientForms.taylorCoeff (fun u : DVar ι a b → ℂ => G fun τ β α => (r τ : ℂ)⁻¹ * u (τ, β, α)) m *
@@ -195,6 +250,25 @@ theorem taylor_jetC {G : VCx ι a b → ℂ} (hG : Differentiable ℂ G) (r : ι
   congr 1
   field_simp
 
+/- English proof (translation)
+Apply the tactic sequence `set n : ι → ℕ := fun τ => lastEntry (ν τ) with hn`. Use `set Q := subD ℂ ι a b (sharp n P) with hQ`. Use `set Rc : (ι × Fin b × Fin a → ℕ) →₀ ℂ := ∑ μ ∈ Q.support, Finsupp.single (⇑(expR μ)) (φ (monomial (expL μ) (Q.coeff μ))) with hRc`. Establish `hsum : ∀ g : (ι × Fin b × Fin a → ℕ) → ℂ, Rc.sum (fun e A => g e • A) = φ (jetMap (fun m => g m) n P)`. Introduce `g`.
+
+Establish `: Rc.sum (fun e A => g e • A) = Finsupp.linearCombination ℂ g Rc`. Rewrite using `[Finsupp.linearCombination_apply]`. Simplify using `only [smul_eq_mul, mul_comm]`. Rewrite using `[this, hRc, GlobalTheory.JetPoint.jetMap_eq_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.linearCombination_single, map_smul, smul_eq_mul, smul_eq_mul, mul_comm]`. Establish `hcast : ∀ τ i, (((ν τ).w i : ℤ) : ℝ) = (((ν τ).w i).toNat : ℝ)` using `fun τ i => by`. Conclude with `(Int.toNat_of_nonneg ((hw τ).2.1 i)).symm` after adjusting the coercions. Establish `hF : Differentiable ℂ fun u : DVar ι a b → ℂ => G fun τ β α => (r τ : ℂ)⁻¹ * u (τ, β, α)` using `hG.comp (by fun_prop)`. Establish `key` using `Formalism.DimensionVariation.blockBound ι (Fin b × Fin a) ℂ a (fun τ i => ((ν τ).w i : ℝ)) (fun τ => wtSize (ν τ)) (fun _ u => sing hab fun α β => conj (u (β, α))) _ _ Rc (fun τ => cD τ * r τ) Om S (fun τ i => by exact_mod_cast (hw τ).2.1 i) (fun τ => by simp only [hcast, wtSize, …`.
+
+Rewrite using `[Formalism.DimensionVariation.nsq, Fintype.sum_prod_type]`. Simplify `(fock_subst_le hab fun α β => conj (u (β, α))).choose_spec.2.1)` using `[sing]`. Use the proof step `hF.continuous (GlobalTheory.JetFrameCompare.hasSum_taylorCoeff hF)`. Use the proof step `(fun u => by`. Use `(hS _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Establish `: ∀ τ, (r τ : ℂ) ≠ 0` using `fun τ => by exact_mod_cast (hr τ).ne'`. Simplify using `only [unitNormSq, Formalism.DimensionVariation.nsq, Fintype.sum_prod_type, mul_inv_cancel_left₀ (this _)])`. Use the proof step `(fun e he τ => by`. Take `⟨μ, hμ, he⟩` from `Finsupp.mem_support_finsetSum e he`. Establish `he' : e = ⇑(expR μ)` using `Finset.mem_singleton.mp (Finsupp.support_single_subset he)`.
+
+Establish `h` using `GlobalTheory.JetDeg.subD_hom (b := b) τ (GlobalTheory.JetDeg.sharp_hom n τ (GlobalTheory.JetDeg.VV_hom lam τ hP)) (mem_support_iff.mp hμ)`. Rewrite `h` using `[GlobalTheory.JetDeg.weight_derW]`. Rewrite using `[he', Fintype.sum_prod_type]`. Simplify using `only [Finsupp.comapDomain_apply]`. Rewrite using `[h, wtSize]`.
+
+Simplify using `[toNat_eq (hw τ), Finset.sum_add_distrib, hn, mul_comm])`. Use the proof step `(fun u => by`. Rewrite using `[hsum]`. Establish `e : (fun m : DVar ι a b →₀ ℕ => Formalism.DimensionVariation.mono (Formalism.DimensionVariation.cj u) m) = ptTable fun τ => Matrix.of fun α β => conj (u (τ, β, α))`. Use function extensionality and compare the values at `m`.
+
+Rewrite using `[ptTable, Finsupp.prod_fintype _ _ (by simp)]`. Both sides reduce to the same expression. Rewrite using `[e, GlobalTheory.JetPoint.jetMap_ptTable hab]`. Simplify using `only [hcast, Real.rpow_natCast]`. Conclude with `hφ _)`.
+
+Use `hOm (fun τ => by rw [hc, one_div])`. Rewrite `key` using `[hsum]`. Simplify using `only [taylor_jetC hG r hr cD] at key`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [tmax, Fintype.card_prod, Fintype.card_fin, mul_assoc, mul_comm b a]`.
+-/
 theorem scalar_block (hab : a ≤ b) (lam ν : ι → DomWeight a) (lam' : ι → DomWeight b) (s' s : ι → ℤ)
     (hw : ∀ τ, IsStepWeight (lam τ) (ν τ) (lam' τ) (s' τ) (s τ))
     (G : VCx ι a b → ℂ) (S : ℝ) (r Om : ι → ℝ) (cD : ι → ℂ) (hG : Differentiable ℂ G) (hr : ∀ τ, 0 < r τ)
@@ -259,6 +333,27 @@ theorem scalar_block (hab : a ≤ b) (lam ν : ι → DomWeight a) (lam' : ι �
   refine key.trans (le_of_eq ?_)
   simp only [tmax, Fintype.card_prod, Fintype.card_fin, mul_assoc, mul_comm b a]
 
+/- English proof (translation)
+Introduce `ι _ a b hab lam ν lam' s' s hw hg G S r Om cD hG hr hS hOm hc v`. Apply the tactic sequence `set n : ι → ℕ := fun τ => lastEntry (ν τ) with hn`. Set `T : (ι → Matrix (Fin a) (Fin b) ℂ) → Pol ℂ ι a →ₗ[ℂ] Pol ℂ ι b` to `fun ap => (substAdj hab ap).toLinearMap ∘ₗ LinearMap.mulRight ℂ (∏ τ, frDet ℂ a τ ^ n τ)`. Establish `hmem : jetMap (jetC cD G) n (v : Pol ℂ ι a) ∈ VV ℂ lam'`. Use `GlobalTheory.JetPoint.jetMap_mem hab n _ _ (fun ap => ?_) _` and prove the remaining obligations.
+
+Establish `: VV ℂ lam ≤ (VV ℂ lam').comap (T ap)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, fun τ => subOne_mem hab (hw τ) (hg τ) (ap τ) (hf τ), substAdj_ten hab ap n f⟩`. Conclude with `this v.2`.
+
+Rewrite using `[normSq_eq, normSq_eq, GlobalTheory.JetPoint.coe_jetOp _ _ _ _ _ hmem]`. Use `set w := jetMap (jetC cD G) n (v : Pol ℂ ι a) with hwdef`. Establish `hE : 0 < ∏ τ, eN (lam τ)` using `Finset.prod_pos fun τ _ => eN_pos _`. Establish `hE' : 0 < ∏ τ, eN (lam' τ)` using `Finset.prod_pos fun τ _ => eN_pos _`. Establish `hv0 : 0 ≤ (fockL (v : Pol ℂ ι a) (v : Pol ℂ ι a)).re` using `(Complex.le_def.mp (fockL_nonneg _)).1`.
+
+Establish `ht0 : 0 ≤ tmax b ν Om S`. Unfold `tmax`. Use `mul_nonneg (sq_nonneg _) (Finset.prod_nonneg fun τ _ => ?_)` and prove the remaining obligations. Use `hOm τ` as an intermediate fact. Check the signs of the components of the expression.
+
+Distinguish the cases in `hw0 : w = 0`. Rewrite using `[hw0, map_zero, Complex.zero_re, zero_div]`. Check the signs of the components of the expression. Establish `hv1 : (v : Pol ℂ ι a) ≠ 0` using `fun h => hw0 (by rw [hwdef, h, map_zero])`. Establish `hpos : ∀ {k : ℕ} {p : Pol ℂ ι k}, p ≠ 0 → 0 < (fockL p p).re` using `fun {k p} hp => by`.
+
+Rewrite using `[← fockF_eq]`. Conclude with `(fockPos _ p hp).1`. Use `set Nw := (fockL w w).re with hNw`. Use `set Nv := (fockL (v : Pol ℂ ι a) (v : Pol ℂ ι a)).re with hNv`. Establish `hNw0 : 0 < Nw` using `hpos hw0`.
+
+Establish `hNv0 : 0 < Nv` using `hpos hv1`. Use `set D := Nw * ((∏ τ, eN (lam' τ)) / (∏ τ, eN (lam τ)) * Nv) with hD`. Establish `hD0 : 0 < D` using `by positivity`. Establish `hnorm : ∀ q, ‖((((√D)⁻¹ : ℝ) : ℂ) • fockL w) q‖ ^ 2 = ‖fockL w q‖ ^ 2 / D` using `fun q => by`. Rewrite using `[LinearMap.smul_apply, norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, inv_pow, Real.sq_sqrt hD0.le, div_eq_inv_mul]`.
+
+Establish `key` using `scalar_block hab lam ν lam' s' s hw G S r Om cD hG hr hS hOm hc v.2 ((((√D)⁻¹ : ℝ) : ℂ) • fockL w) (fun ap => by`. Establish `h1` using `fock_tensor_le lam (fun τ => subOne hab (ap τ) (n τ)) _ (fun τ f hf => subOne_le hab (hw τ) (hg τ) (ap τ) hf) (T ap) (substAdj_ten hab ap n) v.2`. Use `le_of_sq_le_sq ?_ (Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun i _ => pow_nonneg ((fock_subst_le hab _).choose_spec.1 i) _)` and prove the remaining obligations. Rewrite using `[hnorm, div_le_iff₀ hD0]`. Use `(norm_fockL_sq_le _ _).trans ((mul_le_mul_of_nonneg_left h1 hNw0.le).trans (le_of_eq ?_))` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_div_distrib, Finset.prod_pow, hD]`. Use the proof step `ring)`. Establish `hww : fockL w w = (Nw : ℂ)` using `Complex.ext (by simp [hNw]) (by simpa using (Complex.le_def.mp (fockL_nonneg w)).2.symm)`. Rewrite `key` using `[hnorm, ← hwdef, hww, Complex.norm_real, Real.norm_eq_abs, sq_abs, div_le_iff₀ hD0, hD, sq, mul_left_comm]`. Establish `h2` using `le_of_mul_le_mul_left key hNw0`.
+
+Rewrite using `[div_le_iff₀ hE']`. Use `h2.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blockBound : BlockBound := by
   intro ι _ a b hab lam ν lam' s' s hw hg G S r Om cD hG hr hS hOm hc v
   set n : ι → ℕ := fun τ => lastEntry (ν τ) with hn

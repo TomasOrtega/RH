@@ -12,6 +12,9 @@ namespace GlobalTheory.GoodTop
 
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
+/- English proof (translation)
+Establish `h : ContDiffAt ℝ 1 (fun y => (ρ y : ℂ)) v` using `Complex.ofRealCLM.contDiff.contDiffAt.comp v hρ`. Establish `hf : ContinuousAt (fderiv ℝ (fun y => (ρ y : ℂ))) v` using `(h.fderiv_right (m := 0) (by norm_num)).continuousAt`. Simplify using `only [_root_.GlobalTheory.dbar_apply]`. Use `fun_prop`.
+-/
 private lemma continuousAt_dbar_ofReal_of_contDiffAt_one {n : ℕ} {ρ : _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ} {v : _root_.ReciprocityTheory.L2DbarEstimates.V n}
     (hρ : ContDiffAt ℝ 1 ρ v) (w : _root_.ReciprocityTheory.L2DbarEstimates.V n) :
     ContinuousAt (fun x => _root_.GlobalTheory.dbar (fun y => (ρ y : ℂ)) x w) v := by
@@ -25,6 +28,15 @@ set_option autoImplicit false in
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 
+/- English proof (translation)
+Introduce `n r _ _ ρ G₀ G₁ v hρ h₀ hd₀ h₁ hd₁`. Establish `hcurv : ∀ {G : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ}, _root_.GlobalTheory.HermFrame.MContDiffAt 2 G v → IsUnit (G v).det → ∀ a b p q, ContinuousAt (fun x => _root_.GlobalTheory.HermFrame.curv G x (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalThe …` using `fun hG hdG a b p q => (hG.curv (j := 0) hdG (by norm_num) (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) p q).continuousAt`. Establish `hconn : ∀ {G : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ}, _root_.GlobalTheory.HermFrame.MContDiffAt 2 G v → IsUnit (G v).det → ∀ a p q, ContinuousAt (fun x => _root_.GlobalTheory.HermFrame.conn G x (_root_.GlobalTheory.GoodMetric.coordVec a) p q) v` using `fun hG hdG a p q => (hG.conn (j := 0) hdG (by norm_num) (_root_.GlobalTheory.GoodMetric.coordVec a) p q).continuousAt`. Establish `hposition : ∀ j : Fin n, ContinuousAt (fun x => _root_.GlobalTheory.GoodTop.mixTop (_root_.GlobalTheory.GoodTop.intersection_update_fsHerm_neg_one (_root_.GlobalTheory.GoodTop.curvAt G₁ x) (_root_.GlobalTheory.GoodTop.cutForm ρ G₀ G₁ x) (_root_.GlobalTheory.GoodTop.curvAt G₀ x) j …`. Introduce `j`.
+
+Apply `_root_.GlobalTheory.GoodTop.continuousAt_mixTop` to reduce the goal to its premises. Introduce `i a b p q`. Unfold `_root_.GlobalTheory.GoodTop.intersection_update_fsHerm_neg_one _root_.GlobalTheory.GoodTop.curvAt _root_.GlobalTheory.GoodTop.cutForm`. Use `split_ifs`. Conclude with `hcurv h₁ hd₁ a b p q`.
+
+Conclude with `(continuousAt_dbar_ofReal_of_contDiffAt_one hρ _).mul ((hconn h₁ hd₁ a p q).sub (hconn h₀ hd₀ a p q))`. Conclude with `hcurv h₀ hd₀ a b p q`. Establish `heq : _root_.GlobalTheory.GoodTop.corrC ρ G₀ G₁ = fun x => ∑ j, _root_.GlobalTheory.GoodTop.mixTop (_root_.GlobalTheory.GoodTop.intersection_update_fsHerm_neg_one (_root_.GlobalTheory.GoodTop.curvAt G₁ x) (_root_.GlobalTheory.GoodTop.cutForm ρ G₀ G₁ x) (_root_.GlobalTheory.GoodTo …`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+
+Rewrite using `[heq]`. Conclude with `tendsto_finset_sum _ fun j _ => hposition j`.
+-/
 theorem _root_.GlobalTheory.GoodTop.continuousAt_corrC :
     ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] {ρ : _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ}
       {G₀ G₁ : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ} {v : _root_.ReciprocityTheory.L2DbarEstimates.V n},

@@ -6,6 +6,11 @@ namespace Formalism.FourierDecayAlt.P
 
 namespace RealPowerIdentities
 
+/- English proof (translation)
+Establish `h2 : (2 : ℕ) ∣ m * (m + 1)` using `(Nat.even_mul_succ_self m).two_dvd`. Establish `hc : ((m * (m + 1) / 2 : ℕ) : ℝ) = (m : ℝ) * ((m : ℝ) + 1) / 2`. Rewrite using `[Nat.cast_div h2 (by norm_num)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← Real.rpow_natCast, hc, ← Real.rpow_neg hT.le, ← Real.rpow_add hT]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inv_pow_triangle_mul_rpow_half {T : ℝ} (hT : 0 < T) (m : ℕ) :
     (T ^ (m * (m + 1) / 2))⁻¹ * T ^ ((m : ℝ) / 2) = T ^ (-((m : ℝ) ^ 2) / 2) := by
   have h2 : (2 : ℕ) ∣ m * (m + 1) := (Nat.even_mul_succ_self m).two_dvd
@@ -17,6 +22,11 @@ theorem inv_pow_triangle_mul_rpow_half {T : ℝ} (hT : 0 < T) (m : ℕ) :
   congr 1
   ring
 
+/- English proof (translation)
+Establish `h2 : (2 : ℕ) ∣ m * (m - 1)` using `(Nat.even_mul_pred_self m).two_dvd`. Establish `hc : ((m * (m - 1) / 2 : ℕ) : ℝ) = (m : ℝ) * ((m : ℝ) - 1) / 2`. Rewrite using `[Nat.cast_div h2 (by norm_num)]`. Move the coercions through the operations in `[Nat.cast_sub hm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← Real.rpow_natCast, hc, ← Real.rpow_add hZ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rpow_half_mul_pow_triangle {Z : ℝ} (hZ : 0 < Z) {m : ℕ} (hm : 1 ≤ m) :
     Z ^ ((m : ℝ) / 2) * Z ^ (m * (m - 1) / 2) = Z ^ ((m : ℝ) ^ 2 / 2) := by
   have h2 : (2 : ℕ) ∣ m * (m - 1) := (Nat.even_mul_pred_self m).two_dvd
@@ -31,6 +41,19 @@ theorem rpow_half_mul_pow_triangle {Z : ℝ} (hZ : 0 < Z) {m : ℕ} (hm : 1 ≤ 
 end RealPowerIdentities
 
 open RealPowerIdentities in
+/- English proof (translation)
+Introduce `hOsc hSt hInv hMod K _ _ _ R ψ hd hn m hm γ hγ L₀ Λ₀ Q hL₀ hΛ₀ hQc hQu`. Take `⟨L₁, Λ₁, hL₁, hΛ₁, V₁, hV₁, hO⟩` from `hOsc K R ψ hd hn m hm L₀ Λ₀ Q hL₀ hΛ₀ hQc hQu`. Establish `hQ'c : IsCompact ((fun d : K => (-1) ^ m * d) '' Q)` using `hQc.image (continuous_const.mul continuous_id)`. Establish `hQ'u : ∀ d ∈ (fun d : K => (-1) ^ m * d) '' Q, IsUnit d`. Introduce and unpack `_ ⟨d, hdQ, rfl⟩`.
+
+Conclude with `(isUnit_one.neg.pow m).mul (hQu d hdQ)`. Take `⟨V₂, hV₂, hS⟩` from `hSt K R ψ hd hn m hm γ hγ L₁ Λ₁ _ hL₁ hΛ₁ hQ'c hQ'u`. Use `⟨V₁ ∩ V₂, Filter.inter_mem hV₁ hV₂, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦ t c ht hc`. Establish `hD : ((c * t ^ m : Kˣ) : K) ∈ Q` using `by simpa using hc`.
+
+Take `⟨A, hA, hAz, hAo⟩` from `hO Φ hΦ (c * t ^ m) hD`. Take `⟨Λ, hΛ, hinv⟩` from `hInv K R ψ hd hn m L₁ Λ₁ hL₁ hΛ₁ A ((t⁻¹ : Kˣ) : K) (((-1) ^ m * (c * t ^ m) : Kˣ) : K) hA`. Establish `hD' : (((-1) ^ m * (c * t ^ m) : Kˣ) : K) ∈ (fun d : K => (-1) ^ m * d) '' Q` using `⟨_, hD, by simp⟩`. Establish `hDeq : ((-1) ^ m * (c * t ^ m) : Kˣ) = (-t) ^ m * c`. Rewrite using `[neg_pow t m]`.
+
+The two sides agree by associativity and commutativity. Establish `hT : 0 < modK R (t : K)` using `(hMod K R ψ hd t t).1`. Rewrite using `[hAo t c ht.1 rfl Λ hΛ hinv, hS t _ A ht.2 hD' hA Λ hΛ hinv]`. Unfold `germSum`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, inv_pow_triangle_mul_rpow_half hT m]`.
+
+Use `congr 1`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ^ (m + 1) = (-1) ^ m * (c * t ^ m)`. Establish `hZ : 0 < modK R (z : K)` using `(hMod K R ψ hd z z).1`. Rewrite using `[if_pos hz, if_pos (hz.trans hDeq), hAz z hz]`.
+
+Unfold `germCoef`. Rewrite using `[← rpow_half_mul_pow_triangle hZ hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hz, if_neg (fun h => hz (h.trans hDeq.symm))]`.
+-/
 theorem germExpansionOfTestFunction : Formalism.FourierDecayAlt.A6.GermPhiAssemble := by
   intro hOsc hSt hInv hMod K _ _ _ R ψ hd hn m hm γ hγ L₀ Λ₀ Q hL₀ hΛ₀ hQc hQu
   obtain ⟨L₁, Λ₁, hL₁, hΛ₁, V₁, hV₁, hO⟩ := hOsc K R ψ hd hn m hm L₀ Λ₀ Q hL₀ hΛ₀ hQc hQu

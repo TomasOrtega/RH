@@ -25,6 +25,11 @@ def firstFactor (A : Type) [CommRing A] [Bialgebra k A] : A ⊗[k] A →ₐ[k] A
   Algebra.TensorProduct.lift (AlgHom.id k A) ((Algebra.ofId k A).comp (Bialgebra.counitAlgHom k A))
     (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Establish `h : (firstFactor A).toLinearMap = (TensorProduct.rid k A).toLinearMap ∘ₗ (Coalgebra.counit (R` using `k) (A := A)).lTensor A := by`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `[firstFactor, Algebra.smul_def, mul_comm]`. Use `LinearMap.congr_fun h (Coalgebra.comul (R := k) a)` as an intermediate fact.
+
+Simplify using `only [AlgHom.toLinearMap_apply] at this`. Rewrite using `[this, LinearMap.comp_apply, Coalgebra.lTensor_counit_comul]`. Simplify using the standard rewrite rules.
+-/
 theorem firstFactor_comul (A : Type) [CommRing A] [Bialgebra k A] (a : A) :
     firstFactor A (Coalgebra.comul (R := k) a) = a := by
   have h : (firstFactor A).toLinearMap =
@@ -43,6 +48,15 @@ namespace GlobalTheory.Katz.Chart
 
 variable {p : ℕ} {k : Type} [CommRing k] {d : ℕ} {G : PDivGroup p k}
 
+/- English proof (translation)
+Establish `hy : ∀ j : Fin d ⊕ Fin d, IsNilpotent ((Sum.elim (c.x n) (fun _ => (0 : G.A n))) j)`. Introduce `j`. Consider the cases of `j with`. Consider the case `inl i => exact c.nil n i`. Consider the case `inr i => exact IsNilpotent.zero`.
+
+Establish `h2` using `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin d ⊕ Fin d) (G.A n ⊗[k] G.A n)).2 (G.A n) (firstFactor (G.A n)) (c.x₂ n) (c.nil₂ n) _ hy (by`. Introduce `j`. Consider the cases of `j with`. Consider the case `inl i => simp [Chart.x₂, firstFactor]`. Consider the case `inr i => simp [Chart.x₂, firstFactor, c.aug]) f`.
+
+Establish `h1` using `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin d ⊕ Fin d) (G.A n)).1 (Fin d) (c.ev n) (fun t => by rw [Chart.ev, GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate]; exact c.nil n t) (Sum.elim (fun i => (X i : MvPowerSeries (Fin d) k)) (fun _ => 0)) (b …`. Consider the case `inl i => exact constantCoeff_X i`. Consider the case `inr i => exact map_zero _)`. Use `_ hy (by`. Introduce `j`.
+
+Consider the cases of `j with`. Consider the case `inl i => simp [Chart.ev, GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate]`. Consider the case `inr i => simp) f`. Conclude with `h2.trans h1.symm`.
+-/
 theorem firstFactor_ev₂ (c : Chart G d) (n : ℕ) (f : MvPowerSeries (Fin d ⊕ Fin d) k) :
     firstFactor (G.A n) (c.ev₂ n f) =
       c.ev n (at2 f (fun i => (X i : MvPowerSeries (Fin d) k)) (fun _ => 0)) := by
@@ -71,6 +85,15 @@ end GlobalTheory.Katz.Chart
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p k _ d G c μ hμ`. Establish `hcomp : ∀ (n : ℕ) (i : Fin d), pullbackTwo (G.res n) (Coalgebra.comul (R` using `k) (c.x (n + 1) i)) = Coalgebra.comul (R := k) (c.x n i) := fun n i => by`. Rewrite using `[pullTwo_comul, c.res]`. Use `⟨((GlobalTheory.T.connectedPDivGroup_formalLaw_coordinates p k d G c).2 μ hμ).1, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Take `⟨f, -, huniq⟩` from `(GlobalTheory.T.functions_eq_series_in_chart p k d G c).2.2 (fun n => c.x n i) (fun n => c.res n i)`. Establish `hX : ∀ n, c.ev n (X i) = c.x n i` using `fun n => GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate _ _ _ _ _ i`. Establish `hA : ∀ n, c.ev n (op μ (fun i => (X i : MvPowerSeries (Fin d) k)) (fun _ => 0) i) = c.x n i` using `fun n => by`. Rewrite using `[op, ← firstFactor_ev₂, hμ, firstFactor_comul]`. Conclude with `(huniq _ hA).trans (huniq _ hX).symm`.
+
+Introduce `i`. Take `⟨s, -, huniq⟩` from `(GlobalTheory.T.chart_square_coordinates_present_levels p k d G c).2 (fun n => Coalgebra.comul (R := k) (c.x n i)) (fun n => hcomp n i)`. Establish `h1 : ∀ n, c.ev₂ n (Katz.swap (μ i)) = Coalgebra.comul (R` using `k) (c.x n i) := fun n => by`. Rewrite using `[((GlobalTheory.T.connectedChart_evalSquare_variables_swap_constant p k d G c) n).2.2.1, hμ, Coalgebra.comm_comul]`. Conclude with `(huniq _ h1).trans (huniq _ (fun n => hμ n i)).symm`.
+
+Use function extensionality and compare the values at `i`. Establish `hinj` using `(GlobalTheory.T.eq_zero_of_eval_cube_levels p k d G c).2 (op μ (op μ x1 x2) x3 i - op μ x1 (op μ x2 x3) i) (fun n h => by`. Rewrite using `[map_sub, ((GlobalTheory.T.connectedPDivGroupChart_coboundaryTwo_coord p k d G c μ hμ n h).2 i), sub_self])`. Conclude with `sub_eq_zero.1 hinj`.
+-/
 theorem Katz.Chart.isLaw_of_isLawOf : ∀ (p : ℕ) (k : Type) [CommRing k] (d : ℕ) (G : PDivGroup p k)
     (c : Chart G d), ∀ (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k), c.IsLawOf μ → IsLaw μ := by
   intro p k _ d G c μ hμ

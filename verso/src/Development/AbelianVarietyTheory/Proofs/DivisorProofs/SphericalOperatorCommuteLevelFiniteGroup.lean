@@ -17,6 +17,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.GoodReductionModelReading
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : P.under (𝓞 D.host.F) ∈ Sb` using `(hSb _).2 (by show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ P.asIdeal`. Rewrite using `[map_natCast])` and apply the resulting hypothesis. Take `⟨x, hx, hy⟩` from `hP _ h1`. Conclude with `hy (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) rfl hx`.
+-/
 theorem not_mem_of_offS {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))} (hSb : IsBadSet D Sb)
     {P : HeightOneSpectrum (𝓞 D.host.E)} (hP : OffS D Sb P) :
     ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
@@ -27,6 +30,11 @@ theorem not_mem_of_offS {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))} (hSb :
   obtain ⟨x, hx, hy⟩ := hP _ h1
   exact hy (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) rfl hx
 
+/- English proof (translation)
+Rewrite `hPP` using `[h.2, Formalism.L2.DIV.mem_primesOf]`. Take `⟨c₀, h₀⟩` from `GlobalTheory.LevSplit.exists_conj (pb 0)`. Take `⟨c₁, h₁⟩` from `GlobalTheory.LevSplit.exists_conj (pb 1)`. Establish `e : ∀ i (c : 𝓞 D.host.E), (c : D.host.E) = star (pb i : D.host.E) → (D.host.g i : 𝓞 D.host.E) = pb i * c`. Introduce `i c hc`.
+
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_natCast, map_mul, ← h.1.norm i, ← hc]`. Rewrite using `[Nat.cast_mul, e 0 c₀ h₀, e 1 c₁ h₁, mul_mul_mul_comm]`. Conclude with `PP.asIdeal.mul_mem_right _ hPP.2`.
+-/
 theorem mem_of_typePlace {pb : Fin 2 → 𝓞 D.host.E} {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (h : IsTypePlaces D.host.g pb Pg) {PP : Formalism.L2.DIV.Pl D.host.E} (hPP : PP ∈ Pg) :
     ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
@@ -40,6 +48,11 @@ theorem mem_of_typePlace {pb : Fin 2 → 𝓞 D.host.E} {Pg : Finset (Formalism.
   rw [Nat.cast_mul, e 0 c₀ h₀, e 1 c₁ h₁, mul_mul_mul_comm]
   exact PP.asIdeal.mul_mem_right _ hPP.2
 
+/- English proof (translation)
+Establish `h1` using `not_mem_of_offS hSb hP`. Establish `h2` using `mem_of_typePlace h hPP`. Use `⟨fun e => h1 (e ▸ h2), fun hc => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `hc _ h2`. Establish `: c = ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E)`.
+
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_natCast]`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[show (((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) : D.host.E) = ((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E) from map_natCast (algebraMap (𝓞 D.host.E) D.host.E) _, star_natCast]`. Conclude with `h1 (this ▸ hc)`.
+-/
 theorem sep_of_offS {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))} (hSb : IsBadSet D Sb)
     {P : HeightOneSpectrum (𝓞 D.host.E)} (hP : OffS D Sb P)
     {pb : Fin 2 → 𝓞 D.host.E} {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)}
@@ -59,6 +72,9 @@ theorem sep_of_offS {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))} (hSb : IsB
 
 variable {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank}
 
+/- English proof (translation)
+Unfold `levChi`. Rewrite using `[← Units.val_mul, MonoidHom.map_mul]`. Conclude with `congrArg Units.val ((Formalism.L2.DIV.levChar D.sp.cm V.gram β L).map_mul ⟨_, hk.2⟩ ⟨_, hk'.2⟩)`.
+-/
 theorem levChi_mul {k k' : GA D V} (hk : k ∈ levG V β L) (hk' : k' ∈ levG V β L) :
     levChi V β L (k * k') = levChi V β L k * levChi V β L k' := by
   unfold levChi
@@ -68,6 +84,9 @@ theorem levChi_mul {k k' : GA D V} (hk : k ∈ levG V β L) (hk' : k' ∈ levG V
 variable {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {N : ℕ}
   {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))} {P : HeightOneSpectrum (𝓞 D.host.E)} {d : List ℤ} {R : Finset (GA D V)}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SphericalOps.level_heckeLin (fun _ hk _ hk' => levChi_mul hk hk') (fun e f _ hI => ((GlobalTheory.LevSplit.lev_split V β Λ N L hB).2 P e f hI hN hPP).2.2) hR hF`.
+-/
 theorem hasType_heckeLin (hB : IsBaseFrame V β Λ N) (hN : ((N : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal)
     (hPP : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → PP ≠ P ∧ ¬ IsConjPl PP P)
     (hR : Hecke₂ V (levG V β L : Set (GA D V)) (levChi V β L) Sb P d R) {F : GA D V → ℂ}
@@ -75,6 +94,17 @@ theorem hasType_heckeLin (hB : IsBaseFrame V β Λ N) (hN : ((N : ℕ) : 𝓞 D.
   GlobalTheory.SphericalOps.level_heckeLin (fun _ hk _ hk' => levChi_mul hk hk')
     (fun e f _ hI => ((GlobalTheory.LevSplit.lev_split V β Λ N L hB).2 P e f hI hN hPP).2.2) hR hF
 
+/- English proof (translation)
+Establish `hG` using `hasType_heckeLin hB hN hPP hR hF`. Take `⟨e, f, ϖ, α, -, hI, -, -, -, hJ, hχ, -, -, hRs, -⟩` from `hR`. Unfold `actG0`. Use `split_ifs with hk`. Use `swap`.
+
+Conclude with `(map_zero _).symm`. Establish `hκ` using `hk.choose_spec`. Generalize the expression as in `hk.choose = κ at hκ ⊢`. Take `⟨a1, -, a3⟩` from `(GlobalTheory.LevSplit.lev_split V β Λ N (flagL L) hB).2 P e f hI hN hPP`. Take `⟨k₁, m₁, k₂, -, s₁, s₂, rfl⟩` from `a3 κ ⟨hκ.1, hκ.2.1, Subgroup.mem_top _⟩`.
+
+Establish `m : k₁ ∈ levG V β L` using `(hJ k₁ s₁).2 ((a1 k₁ s₁).1 m₁)`. Take `⟨hff, hcf, -⟩` from `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e f hI`. Establish `hc : ∀ a, SuppF V f a → Commute a k₂` using `fun a ha => ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 f hff hcf).2.2 (1 - f) a k₂ (by rw [mul_sub, mul_one, hff, sub_self]) ha s₂`. Establish `key : ∀ G : GA D V → ℂ, HasType V β L G → ∀ h, G (h * (k₁ * k₂)) = G (h * k₂)` using `fun G hG h => by`. Rewrite using `[(hc k₁ s₁).eq, ← mul_assoc, hG k₁ m, hχ k₁ m s₁, one_mul]`.
+
+Use function extensionality and compare the values at `h`. Rewrite using `[key _ hG]`. Use `show _ * ∑ γ ∈ R, F (h * k₂ * γ) = ∑ γ ∈ R, _ * F (h * γ * (k₁ * k₂))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations.
+
+Rewrite using `[key F hF, mul_assoc h γ, (hc γ (hRs γ hγ)).eq, mul_assoc h]`.
+-/
 theorem sphericalOperator_commute_levelFiniteGroup (hB : IsBaseFrame V β Λ N) (hN : ((N : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal)
     (hPP : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → PP ≠ P ∧ ¬ IsConjPl PP P)
     (hR : Hecke₂ V (levG V β L : Set (GA D V)) (levChi V β L) Sb P d R) {F : GA D V → ℂ}
@@ -103,6 +133,17 @@ theorem sphericalOperator_commute_levelFiniteGroup (hB : IsBaseFrame V β Λ N) 
   refine Finset.sum_congr rfl fun γ hγ => ?_
   rw [key F hF, mul_assoc h γ, (hc γ (hRs γ hγ)).eq, mul_assoc h]
 
+/- English proof (translation)
+Introduce `D θ _ pb Pg hPg pl _ red ψ _ om _ Sb hSb j _ _ hj M β hβ P d R hR T hT`. Take `⟨Λ, a, hB⟩` from `hβ`. Establish `hO : OffS D Sb P`. Take `⟨_, _, _, _, h, -⟩` from `hR`. Conclude with `h`.
+
+Establish `hN : ((((D.host.g 0 * D.host.g 1) ^ a : ℕ)) : 𝓞 D.host.E) ∉ P.asIdeal` using `fun h => not_mem_of_offS hSb hO (P.isPrime.mem_of_pow_mem a (by rwa [Nat.cast_pow] at h))`. Establish `hPP : ∀ PP, PP ∈ (levelDatumAtBasePrime (D.sp.W j) Pg ψ).Pg ∨ PP ∈ (levelDatumAtBasePrime (D.sp.W j) Pg ψ).Q → PP ≠ P ∧ ¬ IsConjPl PP P`. Introduce and unpack `PP (h | h)`. Conclude with `sep_of_offS hSb hO hPg h`. Conclude with `absurd h (Finset.notMem_empty _)`.
+
+Establish `hT1` using `(GlobalTheory.MultMem.mem_mult_iff ..).1 hT.1`. Use `⟨(GlobalTheory.MultMem.mem_mult_iff ..).2 (GlobalTheory.SphericalOps.isMultMap_heckeOn hT1 (fun k hk => ?_) fun v => hasType_heckeLin hB hN hPP hR (hT1.lev v)), ?_⟩` and prove the remaining obligations. Take `⟨_, _, _, _, -, -, -, -, -, -, -, -, -, -, hc⟩` from `hR`. Conclude with `(hc.1 k hk).1`. Establish `hT2 : postOn M (eGoodOp (D.sp.W j) hj β ψ pl red om) T = T` using `sub_eq_zero.1 hT.2`.
+
+Use `sub_eq_zero.2 (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `h3 : eGoodOp (D.sp.W j) hj β ψ pl red om (T v) = T v` using `congrArg (fun U : MMap M => U v) hT2`. Use `show eGoodOp (D.sp.W j) hj β ψ pl red om (heckeLin _ R (T v)) = heckeLin _ R (T v)`. Use `conv_rhs => rw [← h3]`. Unfold `eGoodOp`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `sphericalOperator_commute_levelFiniteGroup hB hN hPP hR (hT1.lev v) x`.
+-/
 theorem heckeKeeps : ∀ D : Formalism.BasicNotions.D7, GlobalTheory.HeckeOrthSum.HeckeKeeps D := by
   intro D θ _ pb Pg hPg pl _ red ψ _ om _ Sb hSb j _ _ hj M β hβ P d R hR T hT
   obtain ⟨Λ, a, hB⟩ := hβ

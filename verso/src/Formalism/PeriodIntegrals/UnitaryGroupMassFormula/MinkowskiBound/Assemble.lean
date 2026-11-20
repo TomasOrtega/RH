@@ -6,9 +6,17 @@ namespace PI.Mk
 
 open Finset
 
+/- English proof (translation)
+Rewrite using `[mul_comm, Nat.div_div_eq_div_mul]`.
+-/
 theorem term_eq (N p i : ℕ) : N / (p ^ i * (p - 1)) = (N / (p - 1)) / p ^ i := by
   rw [mul_comm, Nat.div_div_eq_div_mul]
 
+/- English proof (translation)
+Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`. Use `set m := N / (ℓ - 1) with hm`. Establish `hmN : m ≤ N` using `Nat.div_le_self _ _`. Establish `hlog : Nat.log ℓ m < N + 1` using `lt_of_le_of_lt (Nat.log_le_self _ _) (Nat.lt_succ_of_le hmN)`. Rewrite using `[padicValNat.mul (pow_ne_zero _ hℓ.ne_zero) (Nat.factorial_ne_zero _), padicValNat.prime_pow, padicValNat_factorial hlog]`.
+
+Unfold `PI.minkowskiExp`. Repeatedly rewrite using `[term_eq, ← hm]`. Rewrite using `[Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot (Nat.succ_pos N)]`. Simplify using the standard rewrite rules.
+-/
 theorem padicValNat_pow_mul_factorial (N ℓ : ℕ) (hℓ : ℓ.Prime) :
     padicValNat ℓ (ℓ ^ (N / (ℓ - 1)) * (N / (ℓ - 1)).factorial) = PI.minkowskiExp N ℓ := by
   have : Fact ℓ.Prime := ⟨hℓ⟩
@@ -22,6 +30,9 @@ theorem padicValNat_pow_mul_factorial (N ℓ : ℕ) (hℓ : ℓ.Prime) :
   rw [Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot (Nat.succ_pos N)]
   simp
 
+/- English proof (translation)
+Unfold `PI.minkowskiExp`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Establish `h0 : N / (p - 1) = 0` using `Nat.div_eq_of_lt (by omega)`. Rewrite using `[term_eq, h0, Nat.zero_div]`.
+-/
 theorem minkowskiExp_eq_zero (N p : ℕ) (hp : N + 2 ≤ p) : PI.minkowskiExp N p = 0 := by
   unfold PI.minkowskiExp
   apply Finset.sum_eq_zero
@@ -29,6 +40,9 @@ theorem minkowskiExp_eq_zero (N p : ℕ) (hp : N + 2 ≤ p) : PI.minkowskiExp N 
   have h0 : N / (p - 1) = 0 := Nat.div_eq_of_lt (by omega)
   rw [term_eq, h0, Nat.zero_div]
 
+/- English proof (translation)
+Distinguish the cases in `h : ℓ < N + 2`. Unfold `PI.minkowskiM`. Conclude with `Finset.dvd_prod_of_mem (fun p => p ^ PI.minkowskiExp N p) (Finset.mem_filter.2 ⟨Finset.mem_range.2 h, hℓ⟩)`. Rewrite using `[minkowskiExp_eq_zero N ℓ (by omega), pow_zero]`. Conclude with `one_dvd _`.
+-/
 theorem pow_minkowskiExp_dvd (N ℓ : ℕ) (hℓ : ℓ.Prime) :
     ℓ ^ PI.minkowskiExp N ℓ ∣ PI.minkowskiM N := by
   by_cases h : ℓ < N + 2
@@ -38,6 +52,15 @@ theorem pow_minkowskiExp_dvd (N ℓ : ℕ) (hℓ : ℓ.Prime) :
   · rw [minkowskiExp_eq_zero N ℓ (by omega), pow_zero]
     exact one_dvd _
 
+/- English proof (translation)
+Introduce `N G hG`. Rewrite using `[Nat.dvd_iff_prime_pow_dvd_dvd]`. Introduce `ℓ k hℓ hk`. Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`. Take `⟨K, hK⟩` from `Sylow.exists_subgroup_card_pow_prime ℓ hk`.
+
+Establish `hinj : Function.Injective G.subtype` using `G.subtype_injective`. Establish `hcard : Nat.card (K.map G.subtype) = ℓ ^ k`. Rewrite using `[Subgroup.card_map_of_injective hinj, hK]`. Establish `hfin : Finite (K.map G.subtype)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ hℓ.ne_zero)`. Establish `hp : IsPGroup ℓ (K.map G.subtype)` using `IsPGroup.of_card hcard`.
+
+Establish `hdvd` using `h N ℓ hℓ (K.map G.subtype) hfin hp`. Rewrite `hdvd` using `[hcard]`. Establish `hne : ℓ ^ (N / (ℓ - 1)) * (N / (ℓ - 1)).factorial ≠ 0` using `mul_ne_zero (pow_ne_zero _ hℓ.ne_zero) (Nat.factorial_ne_zero _)`. Establish `hle : k ≤ PI.minkowskiExp N ℓ`. Rewrite using `[← padicValNat_pow_mul_factorial N ℓ hℓ]`.
+
+Conclude with `(padicValNat_dvd_iff_le hne).1 hdvd`. Conclude with `(pow_dvd_pow ℓ hle).trans (pow_minkowskiExp_dvd N ℓ hℓ)`.
+-/
 theorem minkowskiBound_of (h : PGroupStep) : PI.MinkowskiBound := by
   intro N G hG
   rw [Nat.dvd_iff_prime_pow_dvd_dvd]

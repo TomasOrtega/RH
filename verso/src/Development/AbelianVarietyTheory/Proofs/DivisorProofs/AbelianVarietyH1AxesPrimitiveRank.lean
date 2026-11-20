@@ -17,6 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.AbCoh.Axes
 
+/- English proof (translation)
+Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace s`. Take `⟨t, ht, hU⟩` from `isCompact_and_isOpen_iff_finite_and_eq_biUnion_affineOpens.mp ⟨(isCompact_univ : IsCompact (Set.univ : Set X)), isOpen_univ⟩`. Use `haveI := ht.fintype`. Use `⟨Fintype.card t, fun i ↦ ((Fintype.equivFin t).symm i).1.1, fun i ↦ ((Fintype.equivFin t).symm i).1.2, ?_⟩` and prove the remaining obligations. Use `eq_top_iff.2 fun x _ ↦ ?_` and prove the remaining obligations.
+
+Establish `hx : x ∈ (Set.univ : Set X)` using `trivial`. Rewrite `hx` using `[hU]`. Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨i, hi, hxi⟩` from `hx`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨Fintype.equivFin t ⟨i, hi⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using hxi`.
+-/
 theorem exists_cover {K : Type} [Field K] {X : Scheme.{0}} (s : X ⟶ Sp K) [QuasiCompact s] :
     ∃ (n : ℕ) (D : Fin n → X.Opens), (∀ i, IsAffineOpen (D i)) ∧ ⨆ i, D i = ⊤ := by
   haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace s
@@ -32,6 +39,11 @@ theorem exists_cover {K : Type} [Field K] {X : Scheme.{0}} (s : X ⟶ Sp K) [Qua
   refine TopologicalSpace.Opens.mem_iSup.2 ⟨Fintype.equivFin t ⟨i, hi⟩, ?_⟩
   simpa using hxi
 
+/- English proof (translation)
+Use `haveI := hA.proper`. Take `⟨n, D, hD, hcov⟩` from `exists_cover A.hom`. Take `⟨⟨e⟩, -⟩` from `GlobalTheory.T.cech_cohomology_structure_sheaf_iso K A.left A.hom (Fin n) D inferInstance hD hcov`. Take `⟨hf, h1, -⟩` from `GlobalTheory.T.cech_cohomology_trivial_bundle_abelian K A g hA hg (Fin n) D hD hcov`. Use `haveI := hf 1`.
+
+Conclude with `⟨Module.Finite.equiv e.symm, e.finrank_eq.trans h1⟩`.
+-/
 theorem ho1_fin {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
     FiniteDimensional K (HO1 A.hom) ∧ Module.finrank K (HO1 A.hom) = g := by
@@ -42,6 +54,9 @@ theorem ho1_fin {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A
   haveI := hf 1
   exact ⟨Module.Finite.equiv e.symm, e.finrank_eq.trans h1⟩
 
+/- English proof (translation)
+Establish `: SmoothOfRelativeDimension g (Limits.pullback.fst A.hom A.hom)` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback A.hom A.hom).flip hg`. Rewrite using `[Over.tensorObj_hom]`. Conclude with `smoothOfRelativeDimension_comp g g _ _`.
+-/
 theorem smooth_sq {K : Type} [Field K] {A : Over (Sp K)} {g : ℕ} (hg : SmoothOfRelativeDimension g A.hom) :
     SmoothOfRelativeDimension (g + g) (A ⊗ A).hom := by
   have : SmoothOfRelativeDimension g (Limits.pullback.fst A.hom A.hom) :=
@@ -50,15 +65,24 @@ theorem smooth_sq {K : Type} [Field K] {A : Over (Sp K)} {g : ℕ} (hg : SmoothO
   rw [Over.tensorObj_hom]
   exact smoothOfRelativeDimension_comp g g _ _
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id.1 K K Z.left Y.left Z.hom Y.hom (RingHom.id K) h.left (ovw h) K X.left X.hom (RingHom.id K) f.left (ovw f) (RingHom.id K) (f ≫ h).left (ovw (f ≫ h)) (by simp) (fun _ ↦ rfl)).1 a).symm`.
+-/
 theorem pO1_comp {K : Type} [Field K] {X Y Z : Over (Sp K)} (f : X ⟶ Y) (h : Y ⟶ Z) (a : HO1 Z.hom) :
     pO1 (f ≫ h) a = pO1 f (pO1 h a) :=
   ((GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id.1 K K Z.left Y.left Z.hom Y.hom (RingHom.id K) h.left (ovw h) K X.left X.hom
     (RingHom.id K) f.left (ovw f) (RingHom.id K) (f ≫ h).left (ovw (f ≫ h)) (by simp)
     (fun _ ↦ rfl)).1 a).symm
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id.2.2 K X).1 a`.
+-/
 theorem pO1_id {K : Type} [Field K] (X : Over (Sp K)) (a : HO1 X.hom) : pO1 (𝟙 X) a = a :=
   (GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id.2.2 K X).1 a
 
+/- English proof (translation)
+Establish `: IsAffine (𝟙_ (Over (Sp K))).left` using `by show IsAffine (Spec _); infer_instance`. Use `haveI := (GlobalTheory.AbCoh.Vanish.main.1 K _ (𝟙_ (Over (Sp K))).hom this).1`. Rewrite using `[pO1_comp, Subsingleton.elim (pO1 h a) 0, map_zero]`.
+-/
 theorem pO1_unit {K : Type} [Field K] {X Y : Over (Sp K)} (f : X ⟶ 𝟙_ (Over (Sp K))) (h : 𝟙_ (Over (Sp K)) ⟶ Y)
     (a : HO1 Y.hom) : pO1 (f ≫ h) a = 0 := by
   have : IsAffine (𝟙_ (Over (Sp K))).left := by
@@ -72,6 +96,9 @@ def axesRes {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] : HO1 (A ⊗ A).ho
 def projSum {K : Type} [Field K] (A : Over (Sp K)) : HO1 A.hom × HO1 A.hom →ₗ[K] HO1 (A ⊗ A).hom :=
   (pO1 (fst A A)).coprod (pO1 (snd A A))
 
+/- English proof (translation)
+Take `⟨a, b⟩` from `x`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;>`. Simplify using `only [axesRes, projSum, LinearMap.prod_apply, Function.prod, LinearMap.coprod_apply, map_add, ← pO1_comp, lift_fst, lift_snd, pO1_id, pO1_unit, Prod.fst_add, Prod.snd_add, add_zero, zero_add]`.
+-/
 theorem axesRes_projSum {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (x : HO1 A.hom × HO1 A.hom) :
     axesRes A (projSum A x) = x := by
   obtain ⟨a, b⟩ := x
@@ -79,6 +106,11 @@ theorem axesRes_projSum {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (x : H
   simp only [axesRes, projSum, LinearMap.prod_apply, Function.prod, LinearMap.coprod_apply, map_add,
     ← pO1_comp, lift_fst, lift_snd, pO1_id, pO1_unit, Prod.fst_add, Prod.snd_add, add_zero, zero_add]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `ho1_fin A g hA hg`. Take `⟨h3, h4⟩` from `ho1_fin (A ⊗ A) (g + g) (AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA) (smooth_sq hg)`. Establish `hinj : Function.Injective (projSum A)` using `Function.LeftInverse.injective (axesRes_projSum A)`. Establish `hsurj : Function.Surjective (projSum A)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [Module.finrank_prod, h2, h4])).1 hinj`. Introduce `y y' h`.
+
+Take `⟨x, rfl⟩` from `hsurj y`. Take `⟨x', rfl⟩` from `hsurj y'`. Rewrite `h` using `[axesRes_projSum, axesRes_projSum]`. Rewrite using `[h]`.
+-/
 theorem axesRes_injective {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) : Function.Injective (axesRes A) := by
   obtain ⟨h1, h2⟩ := ho1_fin A g hA hg
@@ -93,6 +125,11 @@ theorem axesRes_injective {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K))
   rw [axesRes_projSum, axesRes_projSum] at h
   rw [h]
 
+/- English proof (translation)
+Introduce `K _ _ A _ g hA hg`. Establish `hN` using `axesRes_injective A g hA hg`. Use `⟨fun y h₁ h₂ ↦ ?_, fun x ↦ ?_, (ho1_fin A g hA hg).2⟩` and prove the remaining obligations. Use `hN ?_` and prove the remaining obligations. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp only [axesRes, LinearMap.prod_apply, Function.prod, h₁, h₂, map_zero, Prod.fst_zero, Prod.snd_zero]`.
+
+Use `axesRes_projSum A (x, x)` as an intermediate fact. Use `hN ?_` and prove the remaining obligations. Rewrite using `[show pO1 (fst A A) x + pO1 (snd A A) x = projSum A (x, x) from rfl, this]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp only [axesRes, LinearMap.prod_apply, Function.prod, ← pO1_comp, pO1_id, MonObj.lift_comp_one_left, MonObj.lift_comp_one_right]`.
+-/
 theorem main : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → GlobalTheory.AbCoh.AxesVanishingStructureSheafDegOne A ∧ GlobalTheory.AbCoh.StructureSheafH1Primitive A ∧ Module.finrank K (HO1 A.hom) = g := by
   intro K _ _ A _ g hA hg

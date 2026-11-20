@@ -9,6 +9,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR MainStatements.Hodge GlobalTheory.CompanionTheory.Axis
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Axis.cocycle_of_flat | exact GlobalTheory.CompanionTheory.Axis.cocycle_of_flat | (intros; apply GlobalTheory.CompanionTheory.Axis.cocycle_of_flat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flat_cocycle_tensor_representation : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] [Finite C] [Quiver.IsThin C] (F : C ⥤ CommAlgCat.{0} R)
     (N : Type) [AddCommGroup N] [Module R N] [Module.Flat R N] (f : ∀ (T T' : C) (_ : T ⟶ T'), F.obj T' ⊗[R] N),
     (∀ (T T' T'' : C) (φ : T ⟶ T') (ψ : T' ⟶ T''),

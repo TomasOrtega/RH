@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.ArchSchB.Iso
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SympRestrict.hTens_eq_trace']`. Establish `hm : (P' * u' * Q'ᵀ).map c = P'.map c * u'.map c * (Q'.map c)ᵀ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Matrix.transpose_apply, map_sum, map_mul]`. Rewrite using `[hm]`.
+
+Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm Q]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem hTens_change {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
     {α β α₁ β₁ α₂ β₂ : Type} [Fintype α] [Fintype β] [Fintype α₁] [Fintype β₁] [Fintype α₂] [Fintype β₂]
     (JA : Matrix α α A) (JB : Matrix β β A) (P : Matrix α α₁ A) (Q : Matrix β β₁ A) (P' : Matrix α α₂ A)
@@ -29,6 +34,9 @@ theorem hTens_change {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A
   rw [Matrix.trace_mul_comm Q]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `symp`. Rewrite using `[hTens_change, h]`. Simplify using the standard rewrite rules.
+-/
 theorem symp_change_zero_left {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) (ξ : A)
     {α β α₁ β₁ α₂ β₂ : Type} [Fintype α] [Fintype β] [Fintype α₁] [Fintype β₁] [Fintype α₂] [Fintype β₂]
     (JA : Matrix α α A) (JB : Matrix β β A) (P : Matrix α α₁ A) (Q : Matrix β β₁ A) (P' : Matrix α α₂ A)
@@ -38,6 +46,9 @@ theorem symp_change_zero_left {R A : Type} [CommRing R] [CommRing A] [Algebra R 
   rw [hTens_change, h]
   simp
 
+/- English proof (translation)
+Unfold `symp`. Rewrite using `[hTens_change, h]`. Simplify using the standard rewrite rules.
+-/
 theorem symp_change_zero_right {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) (ξ : A)
     {α β α₁ β₁ α₂ β₂ : Type} [Fintype α] [Fintype β] [Fintype α₁] [Fintype β₁] [Fintype α₂] [Fintype β₂]
     (JA : Matrix α α A) (JB : Matrix β β A) (P : Matrix α α₁ A) (Q : Matrix β β₁ A) (P' : Matrix α α₂ A)
@@ -47,6 +58,9 @@ theorem symp_change_zero_right {R A : Type} [CommRing R] [CommRing A] [Algebra R
   rw [hTens_change, h]
   simp
 
+/- English proof (translation)
+Unfold `symp`. Rewrite using `[hTens_change, hA, hB, GlobalTheory.SympRestrict.hTens_eq_trace']`.
+-/
 theorem symp_change_eq {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) (ξ : A)
     {α β α₁ β₁ : Type} [Fintype α] [Fintype β] [Fintype α₁] [Fintype β₁]
     (JA : Matrix α α A) (JB : Matrix β β A) (JA₁ : Matrix α₁ α₁ A) (JB₁ : Matrix β₁ β₁ A) (P : Matrix α α₁ A)
@@ -57,6 +71,9 @@ theorem symp_change_eq {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c :
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hι : (incM F P').map (cA σ) = incM F (P'.map σ)`. Use extensionality with `i j`. Simplify using `[incM, cA, inclR]`. Rewrite using `[hι]`. Simplify using `only [incM, Matrix.map_mul, Matrix.transpose_map]`.
+-/
 theorem incM_gram (σ : E →ₐ[F] E) {m p q : Type} [Fintype m] (P : Matrix m p E) (J : Matrix m m E)
     (P' : Matrix m q E) :
     (incM F P)ᵀ * incM F J * (incM F P').map (cA σ) = incM F (Pᵀ * J * P'.map σ) := by
@@ -66,6 +83,9 @@ theorem incM_gram (σ : E →ₐ[F] E) {m p q : Type} [Fintype m] (P : Matrix m 
   rw [hι]
   simp only [incM, Matrix.map_mul, Matrix.transpose_map]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, form, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gram_apply (σ : E →ₐ[F] E) {n : ℕ} {p q : Type} (P : Matrix (Fin n) p E) (J : Matrix (Fin n) (Fin n) E)
     (P' : Matrix (Fin n) q E) (m : p) (k : q) :
     (Pᵀ * J * P'.map σ) m k = form σ J (fun i => P i m) (fun i => P' i k) := by
@@ -73,6 +93,9 @@ theorem gram_apply (σ : E →ₐ[F] E) {n : ℕ} {p q : Type} (P : Matrix (Fin 
     Finset.sum_mul, Finset.mul_sum, mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hinv, hh, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (f := fun a b => σ (v a) * (J b a * x b))]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_herm {σ : E →ₐ[F] E} (hinv : ∀ t, σ (σ t) = t) {d : ℕ} {J : Matrix (Fin d) (Fin d) E}
     (hh : ∀ i j, σ (J j i) = J i j) (x v : Fin d → E) : form σ J x v = σ (form σ J v x) := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hinv, hh, Finset.mul_sum]
@@ -86,9 +109,15 @@ namespace GlobalTheory.ArchSchB.Iso
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem col_of_plane {n n₁ : ℕ} (H : Plane E n n₁) (m : Fin n₁) : (fun j => H.ι j m) = H.ι *ᵥ Pi.single m 1 := by
   ext j; simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Use extensionality with `m k`. Rewrite using `[gram_apply]`. Simplify `hH.xx` using `[Matrix.replicateCol_apply]`.
+-/
 theorem gram_xx {B : Base F E} {n n₁ i₀ i₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane E n n₁}
     (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) :
     (Matrix.replicateCol Unit H.x)ᵀ * Y.J * (Matrix.replicateCol Unit H.x).map σ = 0 := by
@@ -96,6 +125,9 @@ theorem gram_xx {B : Base F E} {n n₁ i₀ i₁ : ℕ} {Y : Spc F E n} {Y₁ : 
   rw [gram_apply]
   simpa [Matrix.replicateCol_apply] using hH.xx
 
+/- English proof (translation)
+Use extensionality with `m k`. Rewrite using `[gram_apply, col_of_plane]`. Simplify `(hH.orth (Pi.single m 1)).1` using `[Matrix.replicateCol_apply]`.
+-/
 theorem gram_ιx {B : Base F E} {n n₁ i₀ i₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane E n n₁}
     (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) :
     H.ιᵀ * Y.J * (Matrix.replicateCol Unit H.x).map σ = 0 := by
@@ -103,6 +135,9 @@ theorem gram_ιx {B : Base F E} {n n₁ i₀ i₁ : ℕ} {Y : Spc F E n} {Y₁ :
   rw [gram_apply, col_of_plane]
   simpa [Matrix.replicateCol_apply] using (hH.orth (Pi.single m 1)).1
 
+/- English proof (translation)
+Use extensionality with `m k`. Rewrite using `[gram_apply, col_of_plane]`. Simplify `hflip _ _ (hH.orth (Pi.single k 1)).1` using `[Matrix.replicateCol_apply]`.
+-/
 theorem gram_xι {B : Base F E} {n n₁ i₀ i₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane E n n₁}
     (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (hflip : ∀ u v, form σ Y.J u v = 0 → form σ Y.J v u = 0) :
     (Matrix.replicateCol Unit H.x)ᵀ * Y.J * H.ι.map σ = 0 := by
@@ -116,6 +151,25 @@ namespace GlobalTheory.ArchSchB
 
 open GlobalTheory.ArchSchB.Iso in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ M M₁ H H' hB hX hW hH hH' l hl l' hl'`. Take `⟨a, c, z, -, -, -, hz1, rfl⟩` from `hl`. Take `⟨a', c', z', -, -, -, hz1', rfl⟩` from `hl'`. Establish `hinv : ∀ t, σ (σ t) = t` using `fun t => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+
+Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`. Establish `hflipX : ∀ u v, form σ X.J u v = 0 → form σ X.J v u = 0` using `fun u v h => by`. Rewrite using `[form_herm hinv hX.herm, h, map_zero]`. Establish `hflipW : ∀ u v, form σ W.J u v = 0 → form σ W.J v u = 0` using `fun u v h => by`.
+
+Rewrite using `[GlobalTheory.ArchSch.OrthPlane.form_swap hinv hW.skew, h, map_zero, neg_zero]`. Establish `h0 : ∀ {p q : Type}, incM F (0 : Matrix p q E) = 0` using `fun {p q} => by ext; simp [incM]`. Establish `hXX : (incM F (Matrix.replicateCol Unit H.x))ᵀ * incM F X.J * (incM F (Matrix.replicateCol Unit H.x)).map (cA σ) = 0`. Rewrite using `[incM_gram, gram_xx hH, h0]`. Establish `hXI : (incM F (Matrix.replicateCol Unit H.x))ᵀ * incM F X.J * (incM F H.ι).map (cA σ) = 0`.
+
+Rewrite using `[incM_gram, gram_xι hH hflipX, h0]`. Establish `hIX : (incM F H.ι)ᵀ * incM F X.J * (incM F (Matrix.replicateCol Unit H.x)).map (cA σ) = 0`. Rewrite using `[incM_gram, gram_ιx hH, h0]`. Establish `hWW : (incM F (Matrix.replicateCol Unit H'.x))ᵀ * incM F W.J * (incM F (Matrix.replicateCol Unit H'.x)).map (cA σ) = 0`. Rewrite using `[incM_gram, gram_xx hH', h0]`.
+
+Establish `hWI : (incM F (Matrix.replicateCol Unit H'.x))ᵀ * incM F W.J * (incM F H'.ι).map (cA σ) = 0`. Rewrite using `[incM_gram, gram_xι hH' hflipW, h0]`. Establish `hIW : (incM F H'.ι)ᵀ * incM F W.J * (incM F (Matrix.replicateCol Unit H'.x)).map (cA σ) = 0`. Rewrite using `[incM_gram, gram_ιx hH', h0]`. Establish `hGX : (incM F H.ι)ᵀ * incM F X.J * (incM F H.ι).map (cA σ) = incM F X₁.J`.
+
+Rewrite using `[incM_gram, hH.gram]`. Establish `hGW : (incM F H'.ι)ᵀ * incM F W.J * (incM F H'.ι).map (cA σ) = incM F W₁.J`. Rewrite using `[incM_gram, hH'.gram]`. Establish `hA : ∀ a : Fin d → AE F E, Matrix.vecMulVec (incV F H.x) a = incM F (Matrix.replicateCol Unit H.x) * Matrix.replicateRow Unit a * (1 : Matrix (Fin d) (Fin d) (AE F E))ᵀ`. Introduce `a`.
+
+Rewrite using `[Matrix.transpose_one, Matrix.mul_one, Matrix.vecMulVec_eq Unit]`. Use `congr 1`. Establish `hC : ∀ c : Fin n₁ → AE F E, Matrix.vecMulVec (incM F H.ι *ᵥ c) (incV F H'.x) = incM F H.ι * Matrix.replicateCol Unit c * (incM F (Matrix.replicateCol Unit H'.x))ᵀ`. Introduce `c`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, incM, incV, Matrix.replicateCol_apply, Finset.sum_mul]`. Establish `key : symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (Matrix.vecMulVec (incV F H.x) a + Matrix.vecMulVec (incM F H.ι *ᵥ c) (incV F H'.x) + incM F H.ι * z * (incM F H'.ι)ᵀ) (Matrix.vecMulVec (incV F H.x) a' + Matrix.vecMulVec (incM F H.ι *ᵥ c') (incV F H'.x) + incM F H.ι * z' * (incM F H'. …`. Simplify using `only [lagL_dar_add_left M.co, lagL_dar_add_right M.co]`. Rewrite using `[hA a, hA a', hC c, hC c']`. Rewrite using `[symp_change_zero_left _ _ _ _ _ _ _ _ _ _ hXX, symp_change_zero_left _ _ _ _ _ _ _ _ _ _ hXI, symp_change_zero_left _ _ _ _ _ _ _ _ _ _ hXI, symp_change_zero_left _ _ _ _ _ _ _ _ _ _ hIX, symp_change_zero_right _ _ _ _ _ _ _ _ _ _ hWW, symp_change_zero_right _ _ _ _ _ _ _ _ _ _ …`.
+
+Simplify using `only [zero_add, add_zero]`. Rewrite using `[← sub_eq_zero, ← GlobalTheory.ArchSch.trace_evI_darboux M.co, key, GlobalTheory.ArchSch.trace_evI_darboux M₁.co, hz1, hz1']`. Simplify using the standard rewrite rules.
+-/
 theorem lagSetB_isotropic : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} (M : Model σ X W) (M₁ : Model σ X₁ W₁) (H : Plane E n n₁) (H' : Plane E d d₁),
     B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' → H.IsAdapted σ B X X₁ i₀ i₁ → H'.IsAdapted σ B W W₁ j₀ j₁ →
     ∀ l ∈ lagSetB M M₁ H H', ∀ l' ∈ lagSetB M M₁ H H', trP F _ l.1 l'.2 = trP F _ l'.1 l.2 := by

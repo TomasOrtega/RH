@@ -9,6 +9,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ p g`. Take `⟨h1, h2⟩` from `reduced_finiteType_iff_testRing K`. Take `⟨hft, hred⟩` from `h2 p`. Establish `hft1 : Algebra.FiniteType p.R (Localization.Away g)` using `IsLocalization.finiteType_of_monoid_fg (Submonoid.powers g) _`. Establish `hft' : Algebra.FiniteType K (Localization.Away g)` using `Algebra.FiniteType.trans hft hft1`.
+
+Establish `hred' : IsReduced (Localization.Away g)` using `isReduced_localizationPreserves (Submonoid.powers g) _ hred`. Take `⟨p', ⟨e⟩⟩` from `h1 (Localization.Away g) hft' hred'`. Use `⟨p', e.symm.toAlgHom.comp (IsScalarTower.toAlgHom K p.R (Localization.Away g)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(IsLocalization.Away.algebraMap_isUnit (S := Localization.Away g) g).map e.symm`. Introduce `T _ _ ψ hψ`.
+
+Establish `hu : ∀ y : Submonoid.powers g, IsUnit (ψ y)`. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `using hψ.pow n`. Use `⟨(IsLocalization.liftAlgHom (M := Submonoid.powers g) (S := Localization.Away g) (f := ψ) hu).comp e.toAlgHom, ?_⟩` and prove the remaining obligations. Apply `AlgHom.ext` to reduce the goal to its premises.
+
+Introduce `x`. Simplify using `[IsLocalization.liftAlgHom]`.
+-/
 theorem testRing_localizationAway :
     ∀ (K : Type) [Field K] (p : TRing K) (g : p.R), ∃ (p' : TRing K) (lam : p.R →ₐ[K] p'.R), IsUnit (lam g) ∧ ∀ (T : Type) [CommRing T] [Algebra K T] (ψ : p.R →ₐ[K] T), IsUnit (ψ g) → ∃ k : p'.R →ₐ[K] T, k.comp lam = ψ := by
   intro K _ p g

@@ -21,6 +21,9 @@ def liftPt {R K : Type} [CommRing R] [Field K] [Algebra R K] {G : Over (Sp R)} {
     change spMap (algebraMap K B) ≫ spMap (algebraMap R K) = _
     rw [← Cris.spMap_comp, ← IsScalarTower.algebraMap_eq])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem liftPt_left {R K : Type} [CommRing R] [Field K] [Algebra R K] {G : Over (Sp R)} {G₀ : Over (Sp K)}
     {F : G₀.left ⟶ G.left} (hF : F ≫ G.hom = G₀.hom ≫ spMap (algebraMap R K)) {B : Type} [CommRing B] [Algebra R B]
     [Algebra K B] [IsScalarTower R K B] (x : SpAlg K B ⟶ G₀) : (liftPt hF x).left = x.left ≫ F := rfl
@@ -31,6 +34,11 @@ variable {R K : Type} [CommRing R] [Field K] [Algebra R K] {G : Over (Sp R)} [Gr
   {F : G₀.left ⟶ G.left} (hF : IsGrpPullback G₀ G (spMap (algebraMap R K)) F) {B : Type} [CommRing B] [Algebra R B]
   [Algebra K B] [IsScalarTower R K B]
 
+/- English proof (translation)
+Set `j : Over.mk ((SpAlg K B).hom ≫ spMap (algebraMap R K)) ⟶ SpAlg R B` to `Over.homMk (𝟙 _) (by`. Express the relevant statement in the definitionally equal form `𝟙 _ ≫ spMap (algebraMap R B) = spMap (algebraMap K B) ≫ spMap (algebraMap R K)`. Rewrite using `[Category.id_comp, ← Cris.spMap_comp, ← IsScalarTower.algebraMap_eq])`. Establish `h` using `hF.2 (SpAlg K B) x y (j ≫ liftPt hF.1.w x) (j ≫ liftPt hF.1.w y) rfl rfl`. Rewrite `h` using `[← MonObj.comp_mul]`.
+
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[liftPt_left]`. Conclude with `h.symm.trans (by simp [j])`.
+-/
 theorem liftPt_mul (x y : SpAlg K B ⟶ G₀) :
     liftPt hF.1.w (x * y) = liftPt hF.1.w x * liftPt hF.1.w y := by
   let j : Over.mk ((SpAlg K B).hom ≫ spMap (algebraMap R K)) ⟶ SpAlg R B :=
@@ -43,11 +51,17 @@ theorem liftPt_mul (x y : SpAlg K B ⟶ G₀) :
   rw [liftPt_left]
   exact h.symm.trans (by simp [j])
 
+/- English proof (translation)
+Establish `h` using `liftPt_mul hF (1 : SpAlg K B ⟶ G₀) 1`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `(mul_eq_left.1 h.symm)`.
+-/
 theorem liftPt_one : liftPt hF.1.w (1 : SpAlg K B ⟶ G₀) = 1 := by
   have h := liftPt_mul hF (1 : SpAlg K B ⟶ G₀) 1
   rw [_root_.mul_one] at h
   exact (mul_eq_left.1 h.symm)
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simpa using liftPt_one hF`. Consider the case `succ N ih => rw [pow_succ, liftPt_mul hF, ih, pow_succ]`.
+-/
 theorem liftPt_pow (x : SpAlg K B ⟶ G₀) (N : ℕ) : liftPt hF.1.w (x ^ N) = liftPt hF.1.w x ^ N := by
   induction N with
   | zero => simpa using liftPt_one hF
@@ -56,6 +70,9 @@ theorem liftPt_pow (x : SpAlg K B ⟶ G₀) (N : ℕ) : liftPt hF.1.w (x ^ N) = 
 def liftTors {N : ℕ} (z : Tors G₀ N B) : Tors G N B :=
   ⟨liftPt hF.1.w z.1, by rw [← liftPt_pow hF, z.2, liftPt_one hF]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem liftTors_left {N : ℕ} (z : Tors G₀ N B) : (liftTors hF z).1.left = z.1.left ≫ F := rfl
 
 end Lift
@@ -64,6 +81,17 @@ end GlobalTheory.GroupBplus.Aff
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Introduce `p _ R K _ _ _ _ _ _ _ _ G _ _ _ G₀ _ _ F hF GG θ _ GG₀ θ₀ e hc hbij f f₀ _ g g₀ hfF hθ hθ₀`. Use `PDivGroup.baseChange_hom_ext fun n a => ?_` and prove the remaining obligations. Set `A` to `GG₀.A n`. Use `letI : Algebra R A := ((algebraMap K A).comp (algebraMap R K)).toAlgebra`. Use `haveI : IsScalarTower R K A := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Take `⟨z', hz'⟩` from `(hbij n A).2 (AlgHom.id K A)`. Establish `key : ∀ x y : A, θ₀.pt n A z' x = θ₀.pt n A z' y → x = y` using `fun x y h => by`. Rewrite `h` using `[hz']`. Conclude with `h`. Apply `key` to reduce the goal to its premises.
+
+Set `w' : Tors G₀ (p ^ n) A` to `⟨z'.1 ≫ f₀, by rw [← MonObj.pow_comp, z'.2, MonObj.one_comp]⟩`. Set `z` to `liftTors hF z'`. Set `w` to `liftTors hF w'`. Establish `hw : w.1 = z.1 ≫ f` using `Over.OverMorphism.ext (by`. Simplify using `only [w, z, liftTors_left, Over.comp_left, w']`.
+
+Rewrite using `[Category.assoc, hfF, ← Category.assoc])`. Establish `h1 : θ₀.pt n A z' (g₀.app n (e.hom.app n (1 ⊗ₜ a))) = θ₀.pt n A w' (e.hom.app n (1 ⊗ₜ a))` using `(DFunLike.congr_fun (hθ₀ n A z' w' rfl) _).symm`. Establish `h2 : θ.pt n A w a = θ₀.pt n A w' (e.hom.app n (1 ⊗ₜ a))` using `hc n A w w' rfl a`. Establish `h3 : θ.pt n A w a = θ.pt n A z (g.app n a)` using `DFunLike.congr_fun (hθ n A z w hw) a`. Establish `h4 : θ.pt n A z (g.app n a) = θ₀.pt n A z' (e.hom.app n (1 ⊗ₜ g.app n a))` using `hc n A z z' rfl _`.
+
+Simplify using `only [PDivGroup.comp_app, BialgHom.comp_apply, PDivGroup.baseChangeMap_app]`. Rewrite using `[h1, ← h2, h3, h4]`. Both sides reduce to the same expression.
+-/
 theorem induced_endo_compat : ∀ (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (G₀ : Over (Sp K)) [GrpObj G₀] [IsCommMonObj G₀] (F : G₀.left ⟶ G.left), IsGrpPullback G₀ G (spMap (algebraMap R K)) F → ∀ (GG : PDivGroup p R) (θ : TorsionMap G GG), IsModel K θ → ∀ (GG₀ : PDivGroup p K) (θ₀ : TorsionMap G₀ GG₀) (e : GG₀ ≅ GG.baseChange K), GenCompat F θ θ₀ e → (∀ (n : ℕ) (B : Type) [CommRing B] [Algebra K B], Function.Bijective (θ₀.pt n B)) → ∀ (f : G ⟶ G) (f₀ : G₀ ⟶ G₀) [IsMonHom f₀] (g : GG ⟶ GG) (g₀ : GG₀ ⟶ GG₀), f₀.left ≫ F = F ≫ f.left → θ.Intertwines f g → θ₀.Intertwines f₀ g₀ → g₀ ≫ e.hom = e.hom ≫ PDivGroup.baseChangeMap K g := by
   intro p _ R K _ _ _ _ _ _ _ _ G _ _ _ G₀ _ _ F hF GG θ _ GG₀ θ₀ e hc hbij f f₀ _ g g₀ hfF hθ hθ₀
   refine PDivGroup.baseChange_hom_ext fun n a => ?_

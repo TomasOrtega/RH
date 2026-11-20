@@ -8,6 +8,11 @@ namespace UpperTheory.Gal.KunnethLefschetz.G.PX
 variable {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z}
   {D : E.LineData Y} {d : ℕ}
 
+/- English proof (translation)
+Establish `hmem : (MvPolynomial.C ((B.c α).t n) - MvPolynomial.C ((B.c α).t k) * MvPolynomial.X n : MvPolynomial (Fin d) Γ(Z, B.V α)) ∈ RingHom.ker (MvPolynomial.eval₂Hom ((π.appLE (B.V α) ((B.c α).C k) ((B.c α).C_le k)).hom) ((B.c α).u k))`. Rewrite using `[(B.c α).rel k]`. Conclude with `Ideal.subset_span (Set.mem_insert_of_mem _ ⟨n, rfl⟩)`. Establish `h0` using `RingHom.mem_ker.mp hmem`. Rewrite `h0` using `[map_sub, map_mul, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X, MvPolynomial.eval₂_C, MvPolynomial.eval₂_C]`.
+
+Conclude with `sub_eq_zero.mp h0`.
+-/
 private theorem blowup_chart_relation (B : Blow q i π D d) (α : B.ι) (k n : Fin d) :
     (π.appLE (B.V α) ((B.c α).C k) ((B.c α).C_le k)).hom ((B.c α).t n) =
       (π.appLE (B.V α) ((B.c α).C k) ((B.c α).C_le k)).hom ((B.c α).t k) * (B.c α).u k n := by
@@ -21,6 +26,9 @@ private theorem blowup_chart_relation (B : Blow q i π D d) (α : B.ι) (k n : F
     MvPolynomial.eval₂_C] at h0
   exact sub_eq_zero.mp h0
 
+/- English proof (translation)
+Establish `e1` using `Scheme.Hom.appLE_comp_appLE y π A C ⊤ hC h`. Establish `e2` using `Scheme.Hom.map_appLE (y ≫ π) hy (homOfLE n).op`. Establish `: π.appLE A C hC ≫ y.appLE C ⊤ h = Z.presheaf.map (homOfLE n).op ≫ (y ≫ π).appLE N ⊤ hy`. Rewrite using `[e1, e2]`. Conclude with `congrArg (fun φ => φ.hom s) this`.
+-/
 private theorem res_chain {V : Scheme.{0}} (y : V ⟶ Y) {A N : Z.Opens} {C : Y.Opens} (hC : C ≤ π ⁻¹ᵁ A)
     (h : ⊤ ≤ y ⁻¹ᵁ C) (n : N ≤ A) (hy : ⊤ ≤ (y ≫ π) ⁻¹ᵁ N) (s : Γ(Z, A)) :
     (y.appLE C ⊤ h).hom ((π.appLE A C hC).hom s) =
@@ -31,6 +39,13 @@ private theorem res_chain {V : Scheme.{0}} (y : V ⟶ Y) {A N : Z.Opens} {C : Y.
     rw [e1, e2]
   exact congrArg (fun φ => φ.hom s) this
 
+/- English proof (translation)
+Establish `e0 : (⊤ : (C : Scheme.{0}).Opens) ≤ C.ι ⁻¹ᵁ C` using `fun x _ => x.2`. Establish `e1` using `Scheme.Hom.appLE_comp_appLE g C.ι C ⊤ ⊤ e0 (fun x _ => trivial)`. Establish `e2 : C.ι.appLE C ⊤ e0 = C.topIso.inv`. Simplify using `only [Scheme.Hom.appLE, Scheme.Opens.ι_app, Scheme.Opens.topIso_inv, Scheme.Opens.toScheme_presheaf_map]`. Use `(Y.presheaf.map_comp _ _).symm.trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg _ (Subsingleton.elim _ _)`. Establish `e3 : g.appLE ⊤ ⊤ (fun x _ => trivial) = g.appTop`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.appTop]`. Conclude with `(congrArg (g.app ⊤ ≫ ·) (V.presheaf.map_id _)).trans (Category.comp_id _)`. Rewrite `e1` using `[e2, e3]`.
+
+Conclude with `congrArg (fun φ => φ.hom s) e1`.
+-/
 private theorem top_inv {V : Scheme.{0}} {C : Y.Opens} (g : V ⟶ (C : Scheme.{0})) (h : ⊤ ≤ (g ≫ C.ι) ⁻¹ᵁ C) (s : Γ(Y, C)) :
     g.appTop.hom (C.topIso.inv.hom s) = ((g ≫ C.ι).appLE C ⊤ h).hom s := by
   have e0 : (⊤ : (C : Scheme.{0}).Opens) ≤ C.ι ⁻¹ᵁ C := fun x _ => x.2
@@ -45,6 +60,11 @@ private theorem top_inv {V : Scheme.{0}} {C : Y.Opens} (g : V ⟶ (C : Scheme.{0
   rw [e2, e3] at e1
   exact congrArg (fun φ => φ.hom s) e1
 
+/- English proof (translation)
+Unfold `secOf`. Rewrite using `[B.f_nat, B.f_σ]`. Establish `hg : IsOpenImmersion.lift ((B.c α).C k).ι y (chart_range B α k y h) ≫ ((B.c α).C k).ι = y` using `IsOpenImmersion.lift_fac _ _ _`. Use `top_inv (IsOpenImmersion.lift ((B.c α).C k).ι y (chart_range B α k y h)) (by rw [hg]; exact h) ((π.appLE (B.V α) ((B.c α).C k) ((B.c α).C_le k)).hom ((B.c α).t k))` as an intermediate fact. Rewrite using `[this]`.
+
+Simplify using `only [hg]`.
+-/
 private theorem f_sec (B : Blow q i π D d) (α : B.ι) (k : Fin d) {V : Scheme.{0}} (y : V ⟶ Y)
     (h : ⊤ ≤ y ⁻¹ᵁ (B.c α).C k) :
     B.f (secOf B α k y h) =
@@ -60,6 +80,19 @@ private theorem f_sec (B : Blow q i π D d) (α : B.ι) (k : Fin d) {V : Scheme.
 
 end UpperTheory.Gal.KunnethLefschetz.G.PX
 
+/- English proof (translation)
+Introduce `K _ W Z Y q i π D d B V y α β k l h₁ h₂ N n₁ n₂ hy G hG hnz`. Use `set a := ((y ≫ π).appLE N ⊤ hy).hom with ha`. Use `set Tk := (y.appLE ((B.c α).C k) ⊤ h₁).hom ((π.appLE (B.V α) ((B.c α).C k) ((B.c α).C_le k)).hom ((B.c α).t k)) with hTk`. Use `set Tl := (y.appLE ((B.c β).C l) ⊤ h₂).hom ((π.appLE (B.V β) ((B.c β).C l) ((B.c β).C_le l)).hom ((B.c β).t l)) with hTl`. Use `set u := D.u (secOf B α k y h₁) (secOf B β l y h₂) ((secOf_f B α k y h₁).trans (secOf_f B β l y h₂).symm) with hu`.
+
+Establish `hα : ∀ n, a (tN B α n₁ n) = Tk * uV B α k y h₁ n`. Introduce `n`. Use `res_chain y ((B.c α).C_le k) h₁ n₁ hy ((B.c α).t n)` as an intermediate fact. Rewrite `this` using `[blowup_chart_relation, map_mul]`. Conclude with `this.symm`.
+
+Establish `hβ : ∀ n, a (tN B β n₂ n) = Tl * uV B β l y h₂ n`. Introduce `n`. Use `res_chain y ((B.c β).C_le l) h₂ n₂ hy ((B.c β).t n)` as an intermediate fact. Rewrite `this` using `[blowup_chart_relation, map_mul]`. Conclude with `this.symm`.
+
+Establish `hf : Tk = (u : Γ(V, ⊤)) * Tl`. Use `B.f_u (secOf B α k y h₁) (secOf B β l y h₂) ((secOf_f B α k y h₁).trans (secOf_f B β l y h₂).symm)` as an intermediate fact. Rewrite `this` using `[f_sec, f_sec]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `m`. Establish `hm : Tl * uV B β l y h₂ m = Tk * (G.map a).mulVec (uV B α k y h₁) m`.
+
+Rewrite using `[← hβ, hG m, map_sum, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hα, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hm` using `[hf]`.
+
+Establish `h3 : Tl * (uV B β l y h₂ m - (u : Γ(V, ⊤)) * (G.map a).mulVec (uV B α k y h₁) m) = 0`. Rewrite using `[mul_sub, hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4` using `sub_eq_zero.mp (mem_nonZeroDivisors_iff_right.mp hnz _ (by rwa [mul_comm] at h3))`. Rewrite using `[Pi.smul_apply, smul_eq_mul, h4, Units.inv_mul_cancel_left]`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.gvNzd :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) {V : Scheme.{0}} (y : V ⟶ Y) (α β : B.ι) (k l : Fin d) (h₁ : ⊤ ≤ y ⁻¹ᵁ (B.c α).C k) (h₂ : ⊤ ≤ y ⁻¹ᵁ (B.c β).C l) {N : Z.Opens} (n₁ : N ≤ B.V α) (n₂ : N ≤ B.V β) (hy : ⊤ ≤ (y ≫ π) ⁻¹ᵁ N) (G : Matrix (Fin d) (Fin d) Γ(Z, N)), IsTr B α β n₁ n₂ G → (y.appLE ((B.c β).C l) ⊤ h₂).hom ((π.appLE (B.V β) ((B.c β).C l) ((B.c β).C_le l)).hom ((B.c β).t l)) ∈ nonZeroDivisors Γ(V, ⊤) → (G.map ((y ≫ π).appLE N ⊤ hy).hom).mulVec (uV B α k y h₁) = (((D.u (secOf B α k y h₁) (secOf B β l y h₂) ((secOf_f B α k y h₁).trans (secOf_f B β l y h₂).symm))⁻¹ : (Γ(V, ⊤))ˣ) : Γ(V, ⊤)) • uV B β l y h₂ := by
   intro K _ W Z Y q i π D d B V y α β k l h₁ h₂ N n₁ n₂ hy G hG hnz

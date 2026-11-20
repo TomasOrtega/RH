@@ -12,6 +12,23 @@ noncomputable section
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u Ch0 chOf0 F hF h1 β0 v hv x`. Establish `hi : B.R.m - 1 ≤ (I.rec7 l Z).R.m` using `Nat.sub_le _ _`. Establish `hgram : gramN (I.rec7 l Z) (B.R.m - 1) hi = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 (B.R.m - 1) hi).1`. Use `haveI : NeZero ((I.rec7 l Z).R.N (B.R.m - 1)) := ⟨by`. Use `(I.rec7 l Z).R.m_add_three_le_k` as an intermediate fact.
+
+Simplify using `only [Ranks.N]`. Use the proof step `omega⟩`. Set `s : 𝓞 (I.rec7 l Z).host.E →+* 𝓞 (I.rec7 l Z).host.E` to `RingOfIntegers.mapRingHom (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E)`. Establish `hsc : ∀ x, (s x : (I.rec7 l Z).host.E) = (I.rec7 l Z).host.conj (x : (I.rec7 l Z).host.E)` using `fun x => Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.forms_involution_eq_host_conj _`. Establish `hpq : ((F.atT.piU : 𝓞 (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E) * (s F.atT.piU : (I.rec7 l Z).host.E) = (((I.rec7 l Z).mem u).A.T : (I.rec7 l Z).host.E)`.
+
+Rewrite using `[hsc]`. Conclude with `F.atT.piU_norm`. Establish `hTp` using `((I.rec7 l Z).mem u).A.T_prime`. Establish `hp0 : ((F.atT.piU : 𝓞 (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E) ≠ 0` using `fun h => (Nat.cast_ne_zero.2 hTp.ne_zero) (by rw [← hpq, h, zero_mul])`. Take `⟨k, H⟩` from `hF.mid (B.R.m - 1) h1 (succ_pred_m _)`.
+
+Establish `hLbE : (F.ch (B.R.m - 1) h1 (succ_pred_m B.R) β0).lev.Lb = F.levJ.Lb` using `F.levJ_Lb h1 β0`. Establish `hLb : ∀ x, x ∈ F.levJ.Lb ↔ x ∈ baseL B ((I.rec7 l Z).R.N (B.R.m - 1)) (X.piT u)`. Introduce `x`. Rewrite using `[← hLbE]`. Conclude with `H.lb _ x`.
+
+Establish `hL : F.levJ.Lb = rll_dLat ((I.rec7 l Z).R.N (B.R.m - 1)) (((F.atT.piU : 𝓞 (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E)⁻¹)`. Use `GlobalTheory.Mem.Col2.Lv.baseL_eq B _ F.atT.piU hp0 F.levJ.Lb ?_` and prove the remaining obligations. Rewrite using `[hF.piU]`. Conclude with `hLb`. Establish `hnb : v ∉ badG (I.rec7 l Z)`.
+
+Introduce and unpack `(h | h)`. Conclude with `hv 0 h`. Conclude with `hv 1 h`. Distinguish the cases in `hT : (((I.rec7 l Z).mem u).A.T : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal`. Establish `e1` using `GlobalTheory.Mem.Col2.Lv.uloc_T_iff (sigD (I.rec7 l Z)) (I.rec7 l Z).sp.cm.deg2 (fun x => star_star x) (fun x hx => ((I.rec7 l Z).sp.cm.fixed x).1 hx) (I.rec7 l Z).sp.cm.cmUnram.2.2 hgram (F.ch (B.R.m - 1) h1 (succ_pred_m B.R) β0).lev F.atT.piU (s F.atT.piU) rfl hpq hTp (hLbE.tra …`.
+
+Establish `e2` using `GlobalTheory.Mem.Col2.Lv.uloc_T_iff (sigD (I.rec7 l Z)) (I.rec7 l Z).sp.cm.deg2 (fun x => star_star x) (fun x hx => ((I.rec7 l Z).sp.cm.fixed x).1 hx) (I.rec7 l Z).sp.cm.cmUnram.2.2 hgram F.levJ F.atT.piU (s F.atT.piU) rfl hpq hTp hL v hT (GlobalTheory.T.levelPrime_dvd_of_adicVal …`. Rewrite `e1` using `[hLbE]`. Conclude with `e1.trans e2.symm`. Establish `e1` using `(F.ch (B.R.m - 1) h1 (succ_pred_m B.R) β0).lev.Uloc_hyp v hnb hT`. Establish `e2` using `F.levJ.Uloc_hyp v hnb hT`.
+
+Rewrite `e1` using `[hLbE]`. Rewrite using `[e1, e2]`. Conclude with `Iff.rfl`.
+-/
 theorem GlobalTheory.Mem.Col2.TC.chartLev_off_type : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch0 : ℕ → Type} {chOf0 : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch0 i} (F : FormsTiedSym (I.rec7 l Z) u Ch0 chOf0), I.StdF l Z u F → ∀ (h1 : 1 ≤ B.R.m - 1) (β0 : Ch0 (B.R.m - 1)) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), (∀ j, ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal) → ∀ x, x ∈ (F.ch (B.R.m - 1) h1 (succ_pred_m B.R) β0).lev.Uloc v ↔ x ∈ F.levJ.Uloc v := by
   intro B X I hI hP l Z u Ch0 chOf0 F hF h1 β0 v hv x
   have hi : B.R.m - 1 ≤ (I.rec7 l Z).R.m := Nat.sub_le _ _
@@ -53,6 +70,25 @@ theorem GlobalTheory.Mem.Col2.TC.chartLev_off_type : ∀ {B : Base} {X : PreX B.
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u Ch0 chOf0 F hF hfr h1 β0`. Use `haveI : NeZero ((I.rec7 l Z).R.N (B.R.m - 1)) := ⟨by`. Use `(I.rec7 l Z).R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.N]`. Use the proof step `omega⟩`.
+
+Take `⟨w, hw⟩` from `GlobalTheory.T.level_mem_chartLevel_iff_reduction_fixes_typePrime I hI hP l Z u F hF hfr h1 β0`. Use `⟨w, fun v x => ?_⟩` and prove the remaining obligations. Establish `hgram : gramN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _) = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 (B.R.m - 1) (Nat.sub_le _ _)).1`. Distinguish the cases in `hv : ∃ j, ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal`. Establish `hput : ∀ (S : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) ((I.rec7 l Z).mem u).A.T (I.rec7 l Z).R.f (badG (I.rec7 l Z))), x ∈ S.Uloc v ↔ rll_put ((I.rec7 l Z).R.N (B.R.m - 1)) v x ∈ S.U`.
+
+Introduce `S`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hxU` using `S.Uloc_le v hx`. Rewrite `hxU` using `[hgram]`.
+
+Use `(S.U_eq _).2 ⟨?_, fun v' => ?_⟩` and prove the remaining obligations. Use `rll_put_mem_UAd (I.rec7 l Z).sp.cm ((I.rec7 l Z).R.N (B.R.m - 1)) v hxU` as an intermediate fact. Rewrite using `[hgram]`. Conclude with `this`. Distinguish the cases in `e : v' = v`.
+
+Substitute `e` using the available equality. Rewrite using `[rll_put_self]`. Conclude with `hx`. Rewrite using `[rll_put_ne _ v v' e]`. Conclude with `one_mem _`.
+
+Introduce `hx`. Use `((S.U_eq _).1 hx).2 v` as an intermediate fact. Rewrite `this` using `[rll_put_self]`. Then use the resulting hypothesis. Rewrite using `[hput]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Establish `hJ : rll_put ((I.rec7 l Z).R.N (B.R.m - 1)) v x ∈ F.levJ.U` using `F.levJ_le h1 β0 hx`. Establish `hxJ : x ∈ F.levJ.Uloc v`. Use `((F.levJ.U_eq _).1 hJ).2 v` as an intermediate fact. Use `first`.
+
+Consider the case `(convert this using 2; exact (rll_put_self _ v x).symm)`. Consider the case `exact (congrArg (· ∈ F.levJ.Uloc v) (rll_put_self ((I.rec7 l Z).R.N (B.R.m - 1)) v x)).mp this`. Consider the case `exact (rll_put_self ((I.rec7 l Z).R.N (B.R.m - 1)) v x) ▸ this`. Conclude with `⟨hxJ, (hw v hv x hxJ).1 hx⟩`. Introduce and unpack `⟨hxJ, hs⟩`.
+
+Conclude with `(hw v hv x hxJ).2 hs`. Use `push_neg at hv`. Rewrite using `[GlobalTheory.Mem.Col2.TC.chartLev_off_type I hI hP l Z u F hF h1 β0 v (fun j => hv j) x]`. Conclude with `⟨fun h => ⟨h, fun j hj => absurd hj (hv j)⟩, fun h => h.1⟩`.
+-/
 theorem GlobalTheory.Mem.Col2.TC.chartLev_stab_vec : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch0 : ℕ → Type} {chOf0 : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch0 i} (F : FormsTiedSym (I.rec7 l Z) u Ch0 chOf0), I.StdF l Z u F → (∀ j v h, F.glevJ.fr j v h = 1) → ∀ (h1 : 1 ≤ B.R.m - 1) (β0 : Ch0 (B.R.m - 1)), ∃ w : ∀ (j : Fin 2) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal → Fin (B.R.N (B.R.m - 1)) → kv (I.rec7 l Z).host.F v, ∀ (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) x, x ∈ (F.ch (B.R.m - 1) h1 (succ_pred_m B.R) β0).lev.Uloc v ↔ (x ∈ F.levJ.Uloc v ∧ ∀ j (hv : ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal), redM (I.rec7 l Z).host.F v (F.gl.mat j v hv (F.glevJ.fr j v hv) x) *ᵥ w j v hv = w j v hv) := by
   intro B X I hI hP l Z u Ch0 chOf0 F hF hfr h1 β0
   haveI : NeZero ((I.rec7 l Z).R.N (B.R.m - 1)) := ⟨by

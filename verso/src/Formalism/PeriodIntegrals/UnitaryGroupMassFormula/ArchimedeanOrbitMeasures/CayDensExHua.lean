@@ -48,18 +48,38 @@ variable {P Q : ℕ}
 
 local notation "Mat" => Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul' (a b : UpqT P Q) : UpqT.mat (a * b) = UpqT.mat a * UpqT.mat b := rfl
 
+/- English proof (translation)
+Rewrite using `[mat_mul', add_mul, one_mul, mul_assoc, cayF_spec x hx]`. Both sides reduce to the same expression.
+-/
 theorem nH_eq (h : UpqT P Q) (x : lieU P Q) (hx : x ∈ D0 P Q) :
     nH h (x : Mat) = (UpqT.mat (h * cayF P Q x) + 1) * ((1 + 1) - (x : Mat)) := by
   rw [mat_mul', add_mul, one_mul, mul_assoc, cayF_spec x hx]
   rfl
 
+/- English proof (translation)
+Rewrite using `[nH_eq h x hx, Matrix.det_mul]`. Conclude with `hu.mul hx`.
+-/
 theorem nH_unit (h : UpqT P Q) (x : lieU P Q) (hx : x ∈ D0 P Q)
     (hu : IsUnit (UpqT.mat (h * cayF P Q x) + 1).det) : IsUnit (nH h (x : Mat)).det := by
   rw [nH_eq h x hx, Matrix.det_mul]
   exact hu.mul hx
 
+/- English proof (translation)
+Establish `hrel` using `cayInv_rel (h * cayF P Q x) hu`. Establish `hN` using `nH_eq h x hx`. Establish `hA : IsUnit (UpqT.mat (h * cayF P Q x) + 1).det` using `hu`. Establish `hB : IsUnit ((1 + 1) - (x : Mat)).det` using `hx`. Express the relevant statement in the definitionally equal form `UpqT.mat (h * cayF P Q x) * ((1 + 1) - ((tauL h x : lieU P Q) : Mat)) = (1 + 1) + ((tauL h x : lieU P Q) : Mat) at hrel`.
+
+Establish `h4 : (4 : ℂ) • (1 : Mat) = (1 + 1) + (1 + 1)`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hAτ : (UpqT.mat (h * cayF P Q x) + 1) * ((tauL h x : lieU P Q) : Mat) = (UpqT.mat (h * cayF P Q x) + 1) * (1 + 1) - (4 : ℂ) • (1 : Mat)`.
+
+Establish `e : UpqT.mat (h * cayF P Q x) * ((tauL h x : lieU P Q) : Mat) = UpqT.mat (h * cayF P Q x) * (1 + 1) - ((1 + 1) + ((tauL h x : lieU P Q) : Mat))`. Rewrite using `[← hrel, mul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[add_mul, one_mul, e, add_mul, one_mul, h4]`. Normalize the expressions using the abelian group laws.
+
+Establish `hτ : ((tauL h x : lieU P Q) : Mat) = (1 + 1) - (4 : ℂ) • (UpqT.mat (h * cayF P Q x) + 1)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, Matrix.nonsing_inv_mul _ hA, one_mul]`. Use `_ = (UpqT.mat (h * cayF P Q x) + 1)⁻¹ * ((UpqT.mat (h * cayF P Q x) + 1) * (1 + 1) - (4 : ℂ) • (1 : Mat)) := by rw [hAτ]`. Use `_ = (1 + 1) - (4 : ℂ) • (UpqT.mat (h * cayF P Q x) + 1)⁻¹ := by`.
+
+Rewrite using `[mul_sub, ← mul_assoc, Matrix.nonsing_inv_mul _ hA, one_mul, Matrix.mul_smul, mul_one]`. Establish `hinv : (UpqT.mat (h * cayF P Q x) + 1)⁻¹ = ((1 + 1) - (x : Mat)) * (nH h (x : Mat))⁻¹`. Rewrite using `[hN, Matrix.mul_inv_rev, ← mul_assoc, Matrix.mul_nonsing_inv _ hB, one_mul]`. Rewrite using `[hτ, hinv]`.
+-/
 theorem tauL_val (h : UpqT P Q) (x : lieU P Q) (hx : x ∈ D0 P Q)
     (hu : IsUnit (UpqT.mat (h * cayF P Q x) + 1).det) :
     ((tauL h x : lieU P Q) : Mat) =
@@ -95,9 +115,23 @@ theorem tauL_val (h : UpqT P Q) (x : lieU P Q) (hx : x ∈ D0 P Q)
     rw [hN, Matrix.mul_inv_rev, ← mul_assoc, Matrix.mul_nonsing_inv _ hB, one_mul]
   rw [hτ, hinv]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem card_PQ : Fintype.card (Fin P ⊕ Fin Q) = P + Q := by
   simp
 
+/- English proof (translation)
+Establish `hg : HcS.UG.cT (starRingEnd ℂ) (UpqT.mat h) * HcS.UG.Jpq P Q * UpqT.mat h = HcS.UG.Jpq P Q` using `h.2`. Establish `hd` using `congrArg Matrix.det hg`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hcT : (HcS.UG.cT (starRingEnd ℂ) (UpqT.mat h)).det = starRingEnd ℂ (UpqT.mat h).det`. Unfold `HcS.UG.cT`.
+
+Rewrite using `[Matrix.det_transpose]`. Conclude with `(RingHom.map_det _ _).symm`. Establish `hJ : (HcS.UG.Jpq P Q).det ≠ 0`. Unfold `HcS.UG.Jpq`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_neg, Matrix.det_one, mul_one]`.
+
+Conclude with `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`. Rewrite `hd` using `[hcT]`. Establish `h1 : starRingEnd ℂ (UpqT.mat h).det * (UpqT.mat h).det = 1`. Establish `h0 : (starRingEnd ℂ (UpqT.mat h).det * (UpqT.mat h).det - 1) * (HcS.UG.Jpq P Q).det = 0`. Take the linear combination `hd`.
+
+Break down `mul_eq_zero.1 h0 with h0 | h0` into its components or cases. Conclude with `sub_eq_zero.1 h0`. Conclude with `absurd h0 hJ`. Establish `h3 : ‖(UpqT.mat h).det‖ ^ 2 = 1`. Establish `h2` using `Complex.normSq_eq_conj_mul_self (z := (UpqT.mat h).det)`.
+
+Rewrite `h2` using `[h1]`. Establish `h' : Complex.normSq (UpqT.mat h).det = 1` using `by exact_mod_cast h2`. Rewrite `h'` using `[Complex.normSq_eq_norm_sq]`. Then use the resulting hypothesis. Establish `h5` using `norm_nonneg (UpqT.mat h).det`. Conclude with `le_antisymm (by nlinarith) (by nlinarith)`.
+-/
 theorem norm_det_mat (h : UpqT P Q) : ‖(UpqT.mat h).det‖ = 1 := by
   have hg : HcS.UG.cT (starRingEnd ℂ) (UpqT.mat h) * HcS.UG.Jpq P Q * UpqT.mat h = HcS.UG.Jpq P Q := h.2
   have hd := congrArg Matrix.det hg
@@ -125,6 +159,19 @@ theorem norm_det_mat (h : UpqT P Q) : ‖(UpqT.mat h).det‖ = 1 := by
   have h5 := norm_nonneg (UpqT.mat h).det
   exact le_antisymm (by nlinarith) (by nlinarith)
 
+/- English proof (translation)
+Establish `hB : IsUnit ((1 + 1) - (x : Mat)).det` using `hx`. Establish `hN : IsUnit (nH h (x : Mat)).det` using `nH_unit h x hx hu`. Establish `hcard : Fintype.card (Fin P ⊕ Fin Q) = P + Q` using `card_PQ`. Establish `hmat` using `norm_det_mat h`. Establish `hdA : (chA h (x : Mat)).det = (4 : ℂ) ^ (P + Q) * ((1 + 1) - (x : Mat)).det * ((nH h (x : Mat)).det)⁻¹ * (UpqT.mat h).det * (((1 + 1) - (x : Mat)).det)⁻¹`.
+
+Simplify using `only [chA, Matrix.det_smul, Matrix.det_mul, Matrix.det_nonsing_inv, hcard, Ring.inverse_eq_inv']`. Expand and normalize the polynomial expressions, which then agree. Establish `hdB : (chB h (x : Mat)).det = (4 : ℂ) ^ (P + Q) * ((nH h (x : Mat)).det)⁻¹`. Simplify using `only [chB, Matrix.det_smul, Matrix.det_nonsing_inv, hcard, Ring.inverse_eq_inv']`. Establish `hdτ : ((1 + 1) - ((tauL h x : lieU P Q) : Mat)).det = (4 : ℂ) ^ (P + Q) * ((1 + 1) - (x : Mat)).det * ((nH h (x : Mat)).det)⁻¹`.
+
+Rewrite using `[tauL_val h x hx hu, sub_sub_cancel, Matrix.det_smul, Matrix.det_mul, Matrix.det_nonsing_inv, hcard, Ring.inverse_eq_inv']`. Expand and normalize the polynomial expressions, which then agree. Establish `ha : ‖((1 + 1) - (x : Mat)).det‖ ≠ 0` using `norm_ne_zero_iff.2 hB.ne_zero`. Establish `hn : ‖(nH h (x : Mat)).det‖ ≠ 0` using `norm_ne_zero_iff.2 hN.ne_zero`. Establish `h4 : ‖(4 : ℂ)‖ = 4` using `by norm_num`.
+
+Establish `alg : ∀ (c a n : ℝ), c ≠ 0 → a ≠ 0 → n ≠ 0 → ∀ N : ℕ, (c * a * n⁻¹ * 1 * a⁻¹) ^ N * (c * n⁻¹) ^ N * ((c * a * n⁻¹)⁻¹) ^ (2 * N) = a⁻¹ ^ (2 * N)`. Introduce `c a n hc ha hn N`. Establish `e1 : c * a * n⁻¹ * 1 * a⁻¹ = c * n⁻¹` using `by field_simp`. Establish `e2 : (c * a * n⁻¹)⁻¹ = (c * n⁻¹)⁻¹ * a⁻¹`. Rewrite using `[show c * a * n⁻¹ = (c * n⁻¹) * a by ring, mul_inv]`.
+
+Establish `hx : c * n⁻¹ ≠ 0` using `mul_ne_zero hc (inv_ne_zero hn)`. Rewrite using `[e1, e2, ← pow_add, ← two_mul, mul_pow (c * n⁻¹)⁻¹ a⁻¹, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ hx, one_pow, one_mul]`. Establish `key : (‖(chA h (x : Mat)).det‖ ^ (P + Q) * ‖(chB h (x : Mat)).det‖ ^ (P + Q)) * ‖((1 + 1) - ((tauL h x : lieU P Q) : Mat)).det‖⁻¹ ^ (2 * (P + Q)) = ‖((1 + 1) - (x : Mat)).det‖⁻¹ ^ (2 * (P + Q))`. Rewrite using `[hdA, hdB, hdτ]`. Simplify using `only [norm_mul, norm_pow, norm_inv, h4, hmat]`.
+
+Conclude with `alg _ _ _ (by positivity) ha hn _`. Unfold `rhoH`. Rewrite using `[hj, ← ENNReal.ofReal_mul (by positivity), key]`.
+-/
 theorem dens_id (h : UpqT P Q) (x : lieU P Q) (hx : x ∈ D0 P Q)
     (hu : IsUnit (UpqT.mat (h * cayF P Q x) + 1).det) (j : ℝ)
     (hj : |j| = ‖(chA h (x : Mat)).det‖ ^ (P + Q) * ‖(chB h (x : Mat)).det‖ ^ (P + Q)) :
@@ -167,6 +214,25 @@ theorem dens_id (h : UpqT P Q) (x : lieU P Q) (hx : x ∈ D0 P Q)
 
 end Alg
 
+/- English proof (translation)
+Introduce `P Q lam hlam h S hSm hSD hhS`. Use `hlam` as an intermediate fact. Establish `hF` using `measurable_cayF (P := P) (Q := Q)`. Establish `hD0m : MeasurableSet (D0 P Q)` using `isOpen_cell_domain.measurableSet`. Establish `hbeta : ∀ T, MeasurableSet T → betaH P Q lam T = ∫⁻ x in cayF P Q ⁻¹' T ∩ D0 P Q, rhoH P Q x ∂lam`.
+
+Introduce `T hT`. Rewrite using `[betaH, Measure.map_apply hF hT, withDensity_apply _ (hF hT), Measure.restrict_restrict (hF hT)]`. Establish `hhSm : MeasurableSet ((fun g => h * g) '' S)`. Rewrite using `[Set.image_mul_left]`. Conclude with `(continuous_const.mul continuous_id).measurable hSm`.
+
+Use `set s := cayF P Q ⁻¹' S ∩ D0 P Q with hs`. Establish `hsm : MeasurableSet s` using `(hF hSm).inter hD0m`. Establish `hmem : ∀ x ∈ s, IsUnit (UpqT.mat (h * cayF P Q x) + 1).det`. Introduce `x hx`. Establish `: h * cayF P Q x ∈ cayS (D0 P Q)` using `hhS ⟨cayF P Q x, hx.1, rfl⟩`.
+
+Rewrite `this` using `[cayley_domain_eq]`. Conclude with `this`. Establish `hcay : ∀ x ∈ s, cayF P Q (tauL h x) = h * cayF P Q x` using `fun x hx => cayF_eq_of _ _ (cayInv_rel _ (hmem x hx))`. Establish `himg : cayF P Q ⁻¹' ((fun g => h * g) '' S) ∩ D0 P Q = tauL h '' s`. Use extensionality with `X'`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨t, ht, hte⟩, hX'⟩`. Take `⟨x, hxD, hxt⟩` from `hSD ht`. Establish `hcx : cayF P Q x = t` using `cayF_eq_of _ _ hxt`. Use `⟨x, ⟨by rw [Set.mem_preimage, hcx]; exact ht, hxD⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show cayInv P Q (h * cayF P Q x) = X'`. Rewrite using `[hcx]`. Rewrite using `[show h * t = cayF P Q X' from hte]`. Conclude with `cayInv_cayF X' hX'`. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Conclude with `⟨⟨cayF P Q x, hx.1, (hcay x hx).symm⟩, mem_cayley_domain_of _ _ (cayInv_rel _ (hmem x hx))⟩`. Establish `hinj : Set.InjOn (tauL h) s`. Introduce `x hx y hy hxy`. Establish `e` using `hcay x hx`. Rewrite `e` using `[hxy, hcay y hy]`.
+
+Establish `hc : cayF P Q x = cayF P Q y` using `(mul_left_cancel e).symm`. Rewrite using `[← cayInv_cayF x hx.2, ← cayInv_cayF y hy.2, hc]`. Establish `hderiv : ∀ x ∈ s, ∃ f' : lieU P Q →L[ℝ] lieU P Q, (∀ Y : lieU P Q, ((f' Y : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) = chA h (x : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) * (Y : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) * chB h (x : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ F …` using `fun x hx => h2 P Q h x hx.2 (nH_unit h x hx.2 (hmem x hx))`. Use `choose! f' hf'1 hf'2 using hderiv`. Establish `: @BorelSpace (lieU P Q) (PseudoMetricSpace.toUniformSpace (α` using `lieU P Q)).toTopologicalSpace _ := ⟨rfl⟩`.
+
+Establish `: @Measure.IsAddHaarMeasure (lieU P Q) _ (PseudoMetricSpace.toUniformSpace (α` using `lieU P Q)).toTopologicalSpace _ lam := hlam`. Rewrite using `[hbeta _ hhSm, hbeta _ hSm, himg, lintegral_image_eq_lintegral_abs_det_fderiv_mul lam hsm (fun x hx => (hf'2 x hx).hasFDerivWithinAt) hinj]`. Use `setLIntegral_congr_fun hsm (fun x hx => ?_)` and prove the remaining obligations. Conclude with `dens_id h x hx.2 (hmem x hx) _ (h1 P Q _ _ (f' x : lieU P Q →ₗ[ℝ] lieU P Q) (hf'1 x hx))`.
+-/
 theorem huaInv_of (h1 : DetAYB) (h2 : TauDeriv) : HuaInv := by
   intro P Q lam hlam h S hSm hSD hhS
   have := hlam

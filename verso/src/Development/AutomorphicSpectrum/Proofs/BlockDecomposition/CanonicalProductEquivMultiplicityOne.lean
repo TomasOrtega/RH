@@ -19,10 +19,24 @@ namespace GlobalTheory.CompanionTheory.GroupCount
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j hij => hc.1 (f i) (f j) (hf hij), fun i j l hij hjl he => hc.2 (f i) (f j) (f l) (hf hij) (hf hjl) he⟩`.
+-/
 theorem isCanon_comp {h m : ℕ} {Γ : Fin h → Segment k} (hc : IsCanon Γ) (f : Fin m → Fin h) (hf : StrictMono f) :
     IsCanon fun i => Γ (f i) :=
   ⟨fun i j hij => hc.1 (f i) (f j) (hf hij), fun i j l hij hjl he => hc.2 (f i) (f j) (f l) (hf hij) (hf hjl) he⟩
 
+/- English proof (translation)
+Set `last : Fin h` to `⟨h - 1, by omega⟩`. Establish `hex : ∃ n, ∃ hn : n < h, Γ ⟨n, hn⟩ = Γ last` using `⟨h - 1, by omega, rfl⟩`. Establish `hle` using `Nat.find_min' hex ⟨(by omega : h - 1 < h), rfl⟩`. Use `⟨Nat.find hex, h - Nat.find hex, by omega, by omega, ?_⟩` and prove the remaining obligations. Take `⟨hp, hpΓ⟩` from `Nat.find_spec hex`.
+
+Establish `key : ∀ i : Fin h, Γ i = Γ last ↔ Nat.find hex ≤ i.val`. Introduce `i`. Prove the components needed by the constructor for the conclusion. Introduce `hi`. Conclude with `Nat.find_min' hex ⟨i.2, hi⟩`.
+
+Introduce `hi`. Break down `lt_or_eq_of_le hi with hlt | heq` into its components or cases. Break down `lt_or_eq_of_le (show i.val ≤ h - 1 by omega) with hlt2 | heq2` into its components or cases. Use `hc.2 ⟨Nat.find hex, hp⟩ i last hlt hlt2 hpΓ` as an intermediate fact. Rewrite using `[this, hpΓ]`.
+
+Establish `: i = last` using `Fin.ext heq2`. Rewrite using `[this]`. Establish `: i = ⟨Nat.find hex, hp⟩` using `Fin.ext heq.symm`. Rewrite using `[this, hpΓ]`. Introduce `i j hj`.
+
+Rewrite using `[(key j).2 hj, key i]`.
+-/
 theorem run_lemma {h : ℕ} (Γ : Fin h → Segment k) (hc : IsCanon Γ) (hh : 0 < h) :
     ∃ p q : ℕ, 0 < q ∧ p + q = h ∧ ∀ i j : Fin h, p ≤ j.val → (Γ i = Γ j ↔ p ≤ i.val) := by
   let last : Fin h := ⟨h - 1, by omega⟩
@@ -47,6 +61,27 @@ theorem run_lemma {h : ℕ} (Γ : Fin h → Segment k) (hc : IsCanon Γ) (hh : 0
   intro i j hj
   rw [(key j).2 hj, key i]
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_add]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `symm`. Use `Finset.card_bij (fun j _ => Fin.castAdd q j) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.append_left] at hj ⊢`. Use `⟨?_, hj.2⟩` and prove the remaining obligations. Establish `h0` using `hj.1`. Simplify using `only [Fin.le_def, Fin.coe_castAdd, Fin.coe_natAdd] at h0 ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `a _ b _ h`. Conclude with `Fin.ext (by simpa using congrArg Fin.val h)`. Introduce `b`. Use `Fin.addCases (fun b hb => ?_) (fun b hb => ?_) b` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.append_left] at hb`. Use `⟨b, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `⟨?_, hb.2⟩` and prove the remaining obligations. Establish `h0` using `hb.1`.
+
+Simplify using `only [Fin.le_def, Fin.coe_castAdd, Fin.coe_natAdd] at h0 ⊢`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. It suffices to derive a contradiction. Use `hb.1` as an intermediate fact.
+
+Simplify using `[Fin.le_def] at this`. Use linear arithmetic over natural numbers and integers. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Use `symm`. Use `Finset.card_bij (fun j _ => Fin.natAdd p j) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.append_right] at hj ⊢`. Use `⟨?_, hj.2⟩` and prove the remaining obligations. Establish `h0` using `hj.1`. Simplify using `only [Fin.le_def, Fin.coe_castAdd, Fin.coe_natAdd] at h0 ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `a _ b _ h`. Conclude with `Fin.ext (by simpa using congrArg Fin.val h)`. Introduce `b`. Use `Fin.addCases (fun b hb => ?_) (fun b hb => ?_) b` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.append_left, Fin.append_right] at hb`. Conclude with `absurd hb.2 (hne b r)`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.append_right] at hb`. Use `⟨b, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Use `⟨?_, hb.2⟩` and prove the remaining obligations. Establish `h0` using `hb.1`. Simplify using `only [Fin.le_def, Fin.coe_castAdd, Fin.coe_natAdd] at h0 ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem count_append {α : Type*} {p q : ℕ} (Γ' : Fin p → α) (Γ'' : Fin q → α) (hne : ∀ j r, Γ' j ≠ Γ'' r) :
     ∏ i, (Finset.univ.filter fun j => j ≤ i ∧ Fin.append Γ' Γ'' j = Fin.append Γ' Γ'' i).card =
       (∏ i, (Finset.univ.filter fun j => j ≤ i ∧ Γ' j = Γ' i).card) *
@@ -101,21 +136,35 @@ theorem count_append {α : Type*} {p q : ℕ} (Γ' : Fin p → α) (Γ'' : Fin q
         simp only [Fin.le_def, Fin.coe_castAdd, Fin.coe_natAdd] at h0 ⊢
         omega
 
+/- English proof (translation)
+Rewrite using `[← List.sum_ofFn]`. Use `congr 1`. Conclude with `List.ext_get (by simp) (by simp)`.
+-/
 theorem sum_get_fst (W : List (IrrGL k)) : ∑ a : Fin W.length, (W.get a).1 = (W.map Sigma.fst).sum := by
   rw [← List.sum_ofFn]
   congr 1
   exact List.ext_get (by simp) (by simp)
 
+/- English proof (translation)
+Unfold `decWord`. Rewrite using `[List.map_reverse, List.sum_reverse, List.map_ofFn, List.sum_ofFn]`. Conclude with `Δ.sum_term_fst`.
+-/
 theorem sum_decWord (Δ : Segment k) : ((decWord Δ).map Sigma.fst).sum = Δ.deg := by
   unfold decWord
   rw [List.map_reverse, List.sum_reverse, List.map_ofFn, List.sum_ofFn]
   exact Δ.sum_term_fst
 
+/- English proof (translation)
+Rewrite using `[sum_get_fst, List.map_flatten, List.sum_flatten, List.map_ofFn, List.map_ofFn, List.sum_ofFn]`. Conclude with `Finset.sum_congr rfl fun i _ => (sum_decWord (Γ i)).trans (hL i).deg_eq`.
+-/
 theorem sum_flat {h : ℕ} (Γ : Fin h → Segment k) (y : Fin h → IrrGL k) (hL : ∀ i, IsLSeg (Γ i) (y i).rep) :
     ∑ a, (((List.ofFn fun i => decWord (Γ i)).flatten).get a).1 = ∑ i, (y i).1 := by
   rw [sum_get_fst, List.map_flatten, List.sum_flatten, List.map_ofFn, List.map_ofFn, List.sum_ofFn]
   exact Finset.sum_congr rfl fun i _ => (sum_decWord (Γ i)).trans (hL i).deg_eq
 
+/- English proof (translation)
+Introduce `w hw`. Simplify using `only [List.mem_flatten, List.mem_ofFn] at hw`. Take `⟨l, ⟨i, rfl⟩, hw⟩` from `hw`. Simplify using `only [decWord, List.mem_reverse, List.mem_ofFn] at hw`. Take `⟨a, rfl⟩` from `hw`.
+
+Conclude with `(Γ i).isCusp_term a`.
+-/
 theorem cusp_flat {h : ℕ} (Γ : Fin h → Segment k) : ∀ w ∈ (List.ofFn fun i => decWord (Γ i)).flatten, w.IsCusp := by
   intro w hw
   simp only [List.mem_flatten, List.mem_ofFn] at hw
@@ -124,6 +173,9 @@ theorem cusp_flat {h : ℕ} (Γ : Fin h → Segment k) : ∀ w ∈ (List.ofFn fu
   obtain ⟨a, rfl⟩ := hw
   exact (Γ i).isCusp_term a
 
+/- English proof (translation)
+Unfold `jmL`. Use `split_ifs with hW`. Conclude with `GlobalTheory.CompanionTheory.JacquetCongr.jm_congr_of_equiv _ _ π σ e`. Both sides reduce to the same expression.
+-/
 theorem jmL_congr (W : List (IrrGL k)) {N : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
     {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) V'} (e : Nonempty (π.Equiv σ)) :
     jmL W π = jmL W σ := by
@@ -132,6 +184,11 @@ theorem jmL_congr (W : List (IrrGL k)) {N : ℕ} {V V' : Type} [AddCommGroup V] 
   · exact GlobalTheory.CompanionTheory.JacquetCongr.jm_congr_of_equiv _ _ π σ e
   · rfl
 
+/- English proof (translation)
+Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top`. Rewrite `h` using `[ENat.top_mul (by exact_mod_cast hn.ne')]`. Conclude with `absurd h (by simp)`. Consider the case `coe a`.
+
+Normalize the coercions in `at h ⊢`. Conclude with `Nat.le_of_mul_le_mul_right (by simpa using h) hn`.
+-/
 theorem le_one_of_mul_le {a : ℕ∞} {n : ℕ} (hn : 0 < n) (h : a * n ≤ n) : a ≤ 1 := by
   induction a using ENat.recTopCoe with
   | top =>
@@ -141,6 +198,9 @@ theorem le_one_of_mul_le {a : ℕ∞} {n : ℕ} (hn : 0 < n) (h : a * n ≤ n) :
     norm_cast at h ⊢
     exact Nat.le_of_mul_le_mul_right (by simpa using h) hn
 
+/- English proof (translation)
+Take `⟨φ⟩` from `e₁`. Take `⟨ψ⟩` from `e₂`. Conclude with `⟨prod₂Equiv φ ψ⟩`.
+-/
 theorem ae2 {p q p' q' r t : ℕ} (y' : Fin p → IrrGL k) (y'' : Fin q → IrrGL k) (z' : Fin p' → IrrGL k)
     (w : Fin q' → IrrGL k) (hy' : ∑ a, (y' a).1 = r) (hy'' : ∑ a, (y'' a).1 = t) (hz' : ∑ a, (z' a).1 = r)
     (hw : ∑ a, (w a).1 = t) (e₁ : Nonempty ((prodIrr y' hy').Equiv (prodIrr z' hz')))
@@ -150,6 +210,9 @@ theorem ae2 {p q p' q' r t : ℕ} (y' : Fin p → IrrGL k) (y'' : Fin q → IrrG
   obtain ⟨ψ⟩ := e₂
   exact ⟨prod₂Equiv φ ψ⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(GlobalTheory.T.product_irreducible_append_equiv k p q r t y' y'' hy' hy'' hd).some.symm.trans ((ae2 y' y'' z' w hy' hy'' hz' hw e₁ e₂).some.trans (GlobalTheory.T.product_irreducible_append_equiv k p' q' r t z' w hz' hw hz).some)⟩`.
+-/
 theorem append_equiv {p q p' q' r t : ℕ} (y' : Fin p → IrrGL k) (y'' : Fin q → IrrGL k) (z' : Fin p' → IrrGL k)
     (w : Fin q' → IrrGL k) (hy' : ∑ a, (y' a).1 = r) (hy'' : ∑ a, (y'' a).1 = t) (hz' : ∑ a, (z' a).1 = r)
     (hw : ∑ a, (w a).1 = t) (e₁ : Nonempty ((prodIrr y' hy').Equiv (prodIrr z' hz')))
@@ -169,6 +232,9 @@ def Inv {h : ℕ} (Γ : Fin h → Segment k) (y : Fin h → IrrGL k) : Prop :=
       (∀ b, ∑ a, ((Wb b).get a).1 = (z b).1) ∧
       ∏ b, jmL (Wb b) (z b).rep = ((∏ i, (Finset.univ.filter fun j => j ≤ i ∧ Γ j = Γ i).card : ℕ) : ℕ∞)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp`.
+-/
 theorem decWord_append {p q : ℕ} (Γ' : Fin p → Segment k) (Γ'' : Fin q → Segment k) :
     (fun i => decWord (Fin.append Γ' Γ'' i)) = Fin.append (fun i => decWord (Γ' i)) (fun i => decWord (Γ'' i)) := by
   funext i
@@ -176,6 +242,21 @@ theorem decWord_append {p q : ℕ} (Γ' : Fin p → Segment k) (Γ'' : Fin q →
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `N hd`. Establish `hN : N = (∑ a, (y' a).1) + ∑ a, (y'' a).1`. Rewrite using `[← hd, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`. Substitute `hN` using the available equality.
+
+Take `⟨g, z', hz', e', Wb', hfl', hdeg', hpr'⟩` from `hI _ rfl`. Establish `hirr : (prodIrr y'' rfl).IsIrreducible` using `hU q _ Γ'' y'' rfl (fun i j => by rw [heq i j]; exact Segment.not_linked_self _) hL`. Establish `χ : (prodIrr y'' rfl).Equiv (blockCl y'' hirr).rep` using `IrrGL.equivOf (prodIrr y'' rfl) _ hirr`. Establish `h1 : ∑ _ : Fin 1, (blockCl y'' hirr).1 = ∑ a, (y'' a).1` using `rfl`. Take `⟨ψ⟩` from `nonempty_equiv_prodIrr_one (blockCl y'' hirr) (by simp)`.
+
+Establish `hz : ∑ b, (Fin.append z' (fun _ : Fin 1 => (blockCl y'' hirr)) b).1 = (∑ a, (y' a).1) + ∑ a, (y'' a).1`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, hz', h1]`. Use `⟨g + 1, Fin.append z' (fun _ : Fin 1 => (blockCl y'' hirr)), hz, append_equiv y' y'' z' (fun _ : Fin 1 => (blockCl y'' hirr)) rfl rfl hz' h1 e' ⟨χ.trans ψ⟩ hd hz, Fin.append Wb' (fun _ : Fin 1 => (List.ofFn fun i => decWord (Γ'' i)).flatten), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[decWord_append, List.ofFn_fin_append, List.ofFn_fin_append, List.flatten_append, List.flatten_append, hfl']`.
+
+Simplify using the standard rewrite rules. Introduce `b`. Use `Fin.addCases (fun b => ?_) (fun r => ?_) b` and prove the remaining obligations. Rewrite using `[sum_get_fst]`. Simplify using `only [Fin.append_left]`.
+
+Rewrite using `[← sum_get_fst]`. Conclude with `hdeg' b`. Rewrite using `[sum_get_fst]`. Simplify using `only [Fin.append_right]`. Rewrite using `[← sum_get_fst]`.
+
+Conclude with `(sum_flat Γ'' y'' hL).trans rfl`. Establish `hb : jmL (List.ofFn fun i => decWord (Γ'' i)).flatten (blockCl y'' hirr).rep = ((∏ r, (Finset.univ.filter fun j => j ≤ r ∧ Γ'' j = Γ'' r).card : ℕ) : ℕ∞)`. Use `(jmL_congr _ ⟨χ⟩).symm.trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.segment_product_jacquet_shuffle_count hA hJ Γ'' y'' rfl hL _ (cusp_flat Γ''), GlobalTheory.T.canonical_shuffle_count_product Γ'' hc]`. Establish `e1 : ∀ x, jmL (Fin.append Wb' (fun _ : Fin 1 => (List.ofFn fun i => decWord (Γ'' i)).flatten) (Fin.castAdd 1 x)) (Fin.append z' (fun _ : Fin 1 => blockCl y'' hirr) (Fin.castAdd 1 x)).rep = jmL (Wb' x) (z' x).rep` using `fun x => by`.
+
+Rewrite using `[Fin.append_left, Fin.append_left]`. Rewrite using `[Fin.prod_univ_add, Fin.prod_univ_one, Finset.prod_congr rfl fun x _ => e1 x, Fin.append_right, Fin.append_right, hpr', hb, count_append Γ' Γ'' hne]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem inv_append (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hU : LUnlinkedIrr k) (hJ : LSegJacquet k) {p q : ℕ}
     (Γ' : Fin p → Segment k) (Γ'' : Fin q → Segment k) (y' : Fin p → IrrGL k) (y'' : Fin q → IrrGL k)
     (hI : Inv Γ' y') (hne : ∀ j r, Γ' j ≠ Γ'' r) (heq : ∀ r s, Γ'' r = Γ'' s) (hc : IsCanon Γ'')
@@ -220,6 +301,15 @@ theorem inv_append (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hU : L
     push_cast
     rfl
 
+/- English proof (translation)
+Introduce `h`. Proceed by induction on `h using Nat.strong_induction_on with`. Consider the case `_ h ih`. Introduce `Γ y hc hL`. Break down `Nat.eq_zero_or_pos h with rfl | hh` into its components or cases.
+
+Introduce `N hd`. Use `⟨0, y, hd, ⟨.refl _⟩, fun i => decWord (Γ i), rfl, fun b => b.elim0, by simp⟩` and prove the remaining obligations. Take `⟨p, q, hq, rfl, hrun⟩` from `run_lemma Γ hc hh`. Establish `hmc : StrictMono (Fin.castAdd q : Fin p → Fin (p + q))` using `fun a b hab => hab`. Establish `hmn : StrictMono (Fin.natAdd p : Fin q → Fin (p + q))` using `fun a b hab => Nat.add_lt_add_left hab p`.
+
+Establish `key` using `inv_append hA hU hJ (fun i => Γ (Fin.castAdd q i)) (fun r => Γ (Fin.natAdd p r)) (fun i => y (Fin.castAdd q i)) (fun r => y (Fin.natAdd p r)) (ih p (by omega) _ _ (isCanon_comp hc _ hmc) fun i => hL _) (fun j r he => by`. Use `(hrun (Fin.castAdd q j) (Fin.natAdd p r) (by simp)).1 he` as an intermediate fact. Simplify using `at this`. Use the proof step `omega)`. Use the proof step `(fun r s => (hrun (Fin.natAdd p r) (Fin.natAdd p s) (by simp)).2 (by simp))`.
+
+Use the proof step `(isCanon_comp hc _ hmn) fun r => hL _`. Rewrite `key` using `[Fin.append_castAdd_natAdd, Fin.append_castAdd_natAdd]`. Then use the resulting hypothesis.
+-/
 theorem inv_of_canon (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hU : LUnlinkedIrr k) (hJ : LSegJacquet k) :
     ∀ (h : ℕ) (Γ : Fin h → Segment k) (y : Fin h → IrrGL k), IsCanon Γ → (∀ i, IsLSeg (Γ i) (y i).rep) →
       Inv Γ y := by
@@ -246,6 +336,11 @@ theorem inv_of_canon (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hU :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA hJ hU h N Γ y hd hc hL`. Take `⟨g, z, hz, e, Wb, hfl, hdeg, hpr⟩` from `inv_of_canon hA hU hJ h Γ y hc hL _ hd`. Use `⟨g, z, hz, e, ?_⟩` and prove the remaining obligations. Establish `hst` using `GlobalTheory.T.jacquet_multiplicity_transitive_le hA z hz Wb (prodIrr z hz) (isSmooth_prodIrr z hz) (GlobalTheory.CompanionTheory.ProdFL.hasFiniteLength_prodIrr hA z hz) hdeg`. Establish `hW : jmL (List.ofFn Wb).flatten (prodIrr z hz) = ((∏ i, (Finset.univ.filter fun j => j ≤ i ∧ Γ j = Γ i).card : ℕ) : ℕ∞)`.
+
+Rewrite using `[hfl, ← jmL_congr _ e, GlobalTheory.T.segment_product_jacquet_shuffle_count hA hJ Γ y hd hL _ (cusp_flat Γ), GlobalTheory.T.canonical_shuffle_count_product Γ hc]`. Rewrite `hst` using `[hpr, hW]`. Use `le_one_of_mul_le (Finset.prod_pos fun i _ => Finset.card_pos.2 ⟨i, by simp⟩) hst` and prove the remaining obligations.
+-/
 theorem groupCount : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → LSegJacquet k → LUnlinkedIrr k → ∀ {h N : ℕ} (Γ : Fin h → Segment k)
     (y : Fin h → IrrGL k) (hd : ∑ a, (y a).1 = N), IsCanon Γ → (∀ i, IsLSeg (Γ i) (y i).rep) →

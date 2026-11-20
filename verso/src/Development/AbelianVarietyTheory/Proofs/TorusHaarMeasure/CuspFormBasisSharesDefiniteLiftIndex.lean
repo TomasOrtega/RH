@@ -29,6 +29,19 @@ section Lower
 
 open GlobalTheory.LowerBound
 
+/- English proof (translation)
+Introduce `D T h j hj n R e hR N wL wF w Tn c1 A t Fl δ xs en _ CR c hc hM`. Establish `hex : ∀ k : (T.U j T.σ₀).Comp, ∃ f : Fin ((Fl.Fl k).δ * (Tn + WeightFamilies.dimY D j).choose (WeightFamilies.dimY D j)) → Frame ((T.U j T.σ₀).X k).Ψ D.R.r → ℂ, (∀ q, f q ∈ ((T.U j T.σ₀).X k).SSgt (laR T j (addL wF wL Tn) k) c1) ∧ ∀ u : Fin ((Fl.Fl k).δ * (Tn + WeightFamilies.dim …`. Introduce `k`. Take `⟨⟨bb, m, h1, h2, h3⟩, -, h4, h5, h6⟩` from `A.mar k`. Establish `hint` using `interpCStatement_holds _ _ (A.Xa k) (Fl.Fl k) (GlobalTheory.ClosedDiscontinuity.propDisc_closed _ _) ⟨bb, m, h1, h2, h3 _ (by simp)⟩ h4 h5 (by simpa using h6 0) (GlobalTheory.ClosedModes.modeHalf_closed _ _)`.
+
+Establish `hmany` using `GlobalTheory.ManyForms.exists_indep_forms _ _ (A.Xa k) (Fl.Fl k) (A.Xa k).Fp Tn (A.Xa k).c1 (A.Xa k).frame_theta_const_pos.le hint`. Rewrite `hmany` using `[A.hF k, A.hL k, A.hc k]`. Rewrite using `[← A.dim k, addL, laR_wadd, laR_wsmul]`. Conclude with `hmany`. Use `choose f hfm hfi using hex`.
+
+Use `haveI := (GlobalTheory.Shares.PolyDict.sp_finrank R (addL wF wL Tn) (WeightFamilies.MggK n.base CR Tn c j (addL wF wL Tn))).1`. Use `le_finrank_of_pieces (fun k => ((T.U j T.σ₀).X k).dom) e (fun k => (Fl.Fl k).δ) _ δ en f hfi _ fun k q => ?_` and prove the remaining obligations. Take `⟨m, a, F, hF, hsum⟩` from `hM (Pi.single k (f k q)) fun k' => by`. Distinguish the cases in `hk : k' = k`. Substitute `hk` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]`. Conclude with `⟨(hfm _ q).1, fun ξ hξ => absurd hξ (not_isIso_of_p0_zero _ (hc _) ξ)⟩`. Rewrite using `[Pi.single_eq_of_ne hk]`. Conclude with `(siegelSpaceAlgebra_holds _ _ _ (laR T j (addL wF wL Tn) k') _).2.2.1.1`. Establish `hE : (fun z => (Pi.single k (f k q) : ∀ k : (T.U j T.σ₀).Comp, Frame ((T.U j T.σ₀).X k).Ψ D.R.r → ℂ) (e z).1 (e z).2.1) = ∑ i, a i • R.ev ((recPlusN h j hj n).inc _ (F i))`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[hsum _ _ (e z).2.2, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, hR.2]`. Rewrite using `[hE]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨F i, hF i, rfl⟩)`.
+-/
 theorem lower_bound_definite : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (n : SecNorm (recB h.toLawsCore)) (R : Rdg (recPlusN h j hj n)) (e : R.Y ≃ DomPt T j), IsRdgU h j hj n R e → ∀ (N : ℕ) (wL wF : WeightFamilies.Wt D j) (w : Fin N → (recB h.toLawsCore).Cusp j wL) (Tn : ℕ) (c1 : ℝ) (A : ArchAt h j w wF Tn c1) (t : Idx D j N → ℂ) (Fl : FlatAt h j A t) (δ : ℕ) (xs : Fin δ → R.Y) (en : Fin δ ≃ Σ k : (T.U j T.σ₀).Comp, Fin (Fl.Fl k).δ), (∀ q, e (xs q) = ⟨(en q).1, ⟨(Fl.Fl (en q).1).xs (en q).2, (Fl.Fl (en q).1).xs_mem _⟩⟩) → ∀ (CR c : ℝ), (∀ k : (T.U j T.σ₀).Comp, ((T.U j T.σ₀).X k).p0 = 0) → MggOnto h j CR Tn c (addL wF wL Tn) → δ * (Tn + WeightFamilies.dimY D j).choose (WeightFamilies.dimY D j) ≤ Module.finrank ℂ (R.sp (addL wF wL Tn) (WeightFamilies.MggK n.base CR Tn c j (addL wF wL Tn))) := by
   classical
   intro D T h j hj n R e hR N wL wF w Tn c1 A t Fl δ xs en _ CR c hc hM
@@ -71,6 +84,29 @@ section Contain
 
 open GlobalTheory.Containment
 
+/- English proof (translation)
+Introduce `D T h j hj n R e hR N wL wF w Tn c1 A t Fl δ xs en hxs hOnto CR c hMg m θ hθ hspan`. Establish `hsp` using `span_readings_components D T h j hj n R e hR`. Establish `hwt : ∀ (k : (T.U j T.σ₀).Comp) (a : ℕ), laR T j (addL wF wL a) k = (A.Xa k).Fp + a • (A.Xa k).L` using `fun k a => by`. Rewrite using `[A.hF, A.hL]`. Conclude with `(WtDic.weights_dictionary D T h j hj k).2.2.1 wF wL a`.
+
+Use `choose θf hθf hθe using fun i => (hsp wF).1 (θ i) (hθ i)`. Establish `hs : ∀ (i : Fin (WeightFamilies.dimY D j + 1)) (y : R.Y), R.s w t i y = ∑ k, t (i, k) * rdR h j (w k) (e y).1 (e y).2.1` using `fun i y => by`. Unfold `Rdg.s`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [Pi.smul_apply, smul_eq_mul, hR.2]`.
+
+Establish `hs0 : ∀ y, R.s w t 0 y = (Fl.Fl (e y).1).w0 (e y).2.1` using `fun y => by rw [hs, Fl.h0]`. Establish `hs1 : ∀ (q : Fin (WeightFamilies.dimY D j)) y, R.s w t q.succ y = (Fl.Fl (e y).1).s (Fin.cast (A.dim _).symm q) (e y).2.1` using `fun q y => by`. Rewrite using `[hs, Fl.hs]`. Both sides reduce to the same expression. Establish `hfin : ∀ k : (T.U j T.σ₀).Comp, ∃ (K : ℕ) (g : Fin K → Frame ((T.U j T.σ₀).X k).Ψ D.R.r → ℂ), ∀ f ∈ ((T.U j T.σ₀).X k).SS ((A.Xa k).Fp + Tn • (A.Xa k).L), ∃ c : Fin K → ℂ, ∀ x ∈ ((T.U j T.σ₀).X k).dom, f x = ∑ i, c i * g i x`.
+
+Introduce `k`. Take `⟨K, g, hg⟩` from `sp_le_span_fin R (addL wF wL Tn)`. Use `⟨K, fun i x => if hx : x ∈ ((T.U j T.σ₀).X k).dom then g i (e.symm ⟨k, x, hx⟩) else 0, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hmem` using `(hsp (addL wF wL Tn)).2.1 _ _ (hOnto Tn) (Pi.single k f) fun k' => by`. Distinguish the cases in `hk : k' = k`.
+
+Substitute `hk` using the available equality. Rewrite using `[Pi.single_eq_same, hwt]`. Conclude with `hf`. Rewrite using `[Pi.single_eq_of_ne hk, hwt]`. Conclude with `(A.mar k').2.2.2.2 _ _ (BoundedSectionAlgebra.bdd_zero _ _)`.
+
+Take `⟨cf, hcf⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hg hmem)`. Use `⟨cf, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun hcf (e.symm ⟨k, x, hx⟩)`. Rewrite `h1` using `[Equiv.apply_symm_apply, Finset.sum_apply]`. Simplify using `only [dif_pos hx]`.
+
+Simplify using `using h1.symm`. Establish `hsurj : ∀ v : (Σ k : (T.U j T.σ₀).Comp, Fin (Fl.Fl k).δ) → ℂ, ∃ a : Fin m → ℂ, ∀ p, ∑ i, a i * θf i p.1 ((Fl.Fl p.1).xs p.2) = v p`. Introduce `v`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hspan ▸ Submodule.mem_top : (fun q => v (en q)) ∈ Submodule.span ℂ (Set.range (vals xs θ)))`. Use `⟨a, fun p => ?_⟩` and prove the remaining obligations.
+
+Take `⟨q, rfl⟩` from `en.surjective p`. Rewrite using `[← congrFun ha q, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show _ = a i * θ i (xs q)`. Rewrite using `[hθe, hxs]`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Take `⟨cc, g, hg, hx⟩` from `division_all (T.U j T.σ₀).X A.Xa Fl.Fl A.mar A.dim A.hT hfin θf (fun i k => by rw [A.hF]; exact (hθf i k).1.1) hsurj (rdR h j F) (fun k => by rw [← hwt, A.hc]; exact hMg F hF k)`. Establish `hdec : R.ev ((recPlusN h j hj n).inc (addL wF wL Tn) F) = ∑ α ∈ ReciprocityTheory.ChartRestriction.G.AR.multiLt (WeightFamilies.dimY D j) (Tn - WeightFamilies.dimY D j), ∑ i, cc α i • (R.mon w t α * R.s w t 0 ^ (Tn - ∑ q, α q) * θ i) + ∑ α ∈ Finset.Nat.antidiagonalTuple (WeightFa …`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[hR.2, sub_eq_iff_eq_add'.1 (hx (e y).1 (e y).2.1 (e y).2.2)]`. Simplify using `only [Rdg.mon, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, Pi.mul_apply, Finset.prod_apply, Pi.pow_apply, smul_eq_mul, hs0, hs1, hθe, mul_assoc]`. Use `show R.ev ((recPlusN h j hj n).inc (addL wF wL Tn) F) ∈ _`. Rewrite using `[hdec]`. Use `Submodule.add_mem_sup (Submodule.sum_mem _ fun α hα => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨(⟨α, GlobalTheory.LeadJets.mem_multiLt.1 hα⟩, i), rfl⟩)) (Submodule.sum_mem _ fun α hα => Submodule.subset_span ⟨α, _, Finset.Nat.mem_antidiagonalT …` and prove the remaining obligations.
+
+Conclude with `(hsp (addL wF wL (WeightFamilies.dimY D j))).2.1 _ _ (hOnto _) (fun k => g k α) fun k => by`. Rewrite using `[hwt]`. Conclude with `hg k α hα`.
+-/
 theorem containment_any : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (n : SecNorm (recB h.toLawsCore)) (R : Rdg (recPlusN h j hj n)) (e : R.Y ≃ DomPt T j), IsRdgU h j hj n R e → ∀ (N : ℕ) (wL wF : WeightFamilies.Wt D j) (w : Fin N → (recB h.toLawsCore).Cusp j wL) (Tn : ℕ) (c1 : ℝ) (A : ArchAt h j w wF Tn c1) (t : Idx D j N → ℂ) (Fl : FlatAt h j A t) (δ : ℕ) (xs : Fin δ → R.Y) (en : Fin δ ≃ Σ k : (T.U j T.σ₀).Comp, Fin (Fl.Fl k).δ), (∀ q, e (xs q) = ⟨(en q).1, ⟨(Fl.Fl (en q).1).xs (en q).2, (Fl.Fl (en q).1).xs_mem _⟩⟩) → (∀ k : ℕ, RdOnto h j (addL wF wL k)) → ∀ (CR c : ℝ), (∀ F ∈ WeightFamilies.MggK (recB h.toLawsCore) CR Tn c j (addL wF wL Tn), ∀ k : (T.U j T.σ₀).Comp, rdR h j F k ∈ ((T.U j T.σ₀).X k).SSgt (laR T j (addL wF wL Tn) k) c1) → ∀ (m : ℕ) (θ : Fin m → R.Y → ℂ), (∀ i, θ i ∈ R.sp wF Set.univ) → Submodule.span ℂ (Set.range (vals xs θ)) = ⊤ → R.sp (addL wF wL Tn) (WeightFamilies.MggK n.base CR Tn c j (addL wF wL Tn)) ≤ Submodule.span ℂ (Set.range (R.lead w t Tn (a0 D j Tn) θ)) ⊔ R.deep w t ((recPlusN h j hj n).wF0 wL wF) (a0 D j Tn) := by
   classical
   intro D T h j hj n R e hR N wL wF w Tn c1 A t Fl δ xs en hxs hOnto CR c hMg m θ hθ hspan
@@ -142,6 +178,13 @@ theorem containment_any : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj :
 
 end Contain
 
+/- English proof (translation)
+Take `⟨R, e, hR⟩` from `GlobalTheory.Shares.exists_isRdgU D T h j hj n`. Take `⟨t, ht, ⟨Fl⟩⟩` from `GlobalTheory.GenericFlat.exists_generic_flatAt D T h j hj N wL wF w Tn _ A`. Set `ι : Type` to `Σ k : (T.U j T.σ₀).Comp, Fin (Fl.Fl k).δ`. Establish `: Fintype ι` using `inferInstance`. Set `en : Fin (Fintype.card ι) ≃ ι` to `(Fintype.equivFin ι).symm`.
+
+Set `xs : Fin (Fintype.card ι) → R.Y` to `fun q => e.symm ⟨(en q).1, ⟨(Fl.Fl (en q).1).xs (en q).2, (Fl.Fl (en q).1).xs_mem _⟩⟩`. Establish `hxs : ∀ q, e (xs q) = ⟨(en q).1, ⟨(Fl.Fl (en q).1).xs (en q).2, (Fl.Fl (en q).1).xs_mem _⟩⟩` using `fun q => e.apply_symm_apply _`. Establish `h1` using `GlobalTheory.Shares.points_and_interp D T h j hj n R e hR N wL wF w Tn _ A t Fl _ xs en hxs hOn`. Use `⟨R, t, _, xs, ?_, h1.1, h1.2, GlobalTheory.Shares.VanDiv.vanishing_division D T h j hj n R e hR N wL wF w Tn _ A t Fl _ xs en hxs hOn, GlobalTheory.Shares.LeadDeep.main D T h j hj n R e hR N wL wF w Tn _ A t Fl _ xs en hxs, GlobalTheory.UpperRecord.upper D T h j hj n R e hR N wL …` and prove the remaining obligations. Introduce `Q hQ`.
+
+Establish `hσ : R.σ = T.σ₀` using `RingHom.ext hR.1`. Rewrite using `[hσ]`. Conclude with `ht Q hQ`. Conclude with `fun F _ k => ⟨(GlobalTheory.ArcRead.readings_cusp_and_independent D T h j hj).1 _ F k, fun ξ hξ => absurd hξ (not_isIso_of_p0_zero _ (hp k) ξ)⟩`.
+-/
 theorem exists_anFacts_definite (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (n : SecNorm (recB h.toLawsCore)) (N : ℕ) (wL wF : WeightFamilies.Wt D j) (w : Fin N → (recB h.toLawsCore).Cusp j wL) (Tn : ℕ) (CR c c1 : ℝ)
     (hp : ∀ k : (T.U j T.σ₀).Comp, ((T.U j T.σ₀).X k).p0 = 0) (A : ArchAt h j w wF Tn c1)
     (hOn : ∀ k : ℕ, RdOnto h j (addL wF wL k)) (hM : MggOnto h j CR Tn c (addL wF wL Tn)) :
@@ -179,6 +222,9 @@ def rdgBack (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) (n : SecNorm B)
     (R : Rdg (PJ.tol2NormAlt n.N n.h0 n.h1 n.h2 n.h3 n.h4 (xplus X E hM))) : Rdg X :=
   ⟨R.Y, R.σ, R.ev, R.ev_smul, R.indep⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hg, hF.zero, hF.interp, hF.vandiv, hF.indep, hF.upper, hF.lower, hF.contain⟩`.
+-/
 theorem anFacts_back (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) (n : SecNorm B)
     (R : Rdg (PJ.tol2NormAlt n.N n.h0 n.h1 n.h2 n.h3 n.h4 (xplus X E hM))) {N : ℕ} {ka wL wF : WeightFamilies.Wt D j}
     (w : Fin N → B.Cusp j wL) (t : Idx D j N → ℂ) (Tn : ℕ) (CR c : ℝ) {δ : ℕ} (xs : Fin δ → R.Y)
@@ -186,6 +232,13 @@ theorem anFacts_back (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) (n : Sec
     (rdgBack X E hM n R).Generic t ∧ AnFacts (rdgBack X E hM n R) w t ka wF Tn (WeightFamilies.MggK B CR Tn c j ka) xs :=
   ⟨hg, hF.zero, hF.interp, hF.vandiv, hF.indep, hF.upper, hF.lower, hF.contain⟩
 
+/- English proof (translation)
+Take `⟨θ, hθ, hli⟩` from `GlobalTheory.Shares.exists_valueBasis_in_spanning D _ _ j X ka wL wF G₀.N G₀.w R t Tn _ δ xs hF Sh hSh`. Use `⟨δ, θ, hθ, ?_⟩` and prove the remaining obligations. Introduce `rz alz th0 zc rq th iet et`. Establish `hlt : WeightFamilies.dimY D j < Tn` using `by nlinarith`. Establish `hB : ∀ la, InBasis (FamilyHypotheses.refill G₀ δ θ rz alz th0 zc rq th iet et) la` using `fun la => (GlobalTheory.Shares.inBasis_iff_vals D _ _ j X ka wL wF (FamilyHypotheses.refill G₀ δ θ rz alz th0 zc rq th iet et) R t Tn _ δ xs hg hF hka la).2 ⟨hli, rfl⟩`.
+
+Take `⟨β, Sg, hsub, hspan, -⟩` from `hS`. Use `⟨hB, ?_, ?_, ?_, fun la => ?_⟩` and prove the remaining obligations. Take `⟨la⟩` from `nonempty_heightOneSpectrum_ringOfIntegers B.KO`. Conclude with `shareRd_of_inBasis D _ _ j X ka wL wF (FamilyHypotheses.refill G₀ δ θ rz alz th0 zc rq th iet et) R t Tn _ δ xs hg hF hka hlt (by omega) hL ⟨la, hB la⟩`. Conclude with `shareRhoR_of_anFacts D _ _ j X ka wL wF (FamilyHypotheses.refill G₀ δ θ rz alz th0 zc rq th iet et) R t Tn _ δ xs hg hF hka hD hT hL S`.
+
+Conclude with `shareRhoP_of_anFacts D _ _ j X ka wL wF G₀.N G₀.w R t Tn 7 c δ xs hF hD hT hL`. Use `Contain.inContainMR_of_anFacts D _ _ j X ka wL wF (FamilyHypotheses.refill G₀ δ θ rz alz th0 zc rq th iet et) R t Tn 7 c δ xs hg hF hka hlt.le S ?_ la (hB la)` and prove the remaining obligations. Conclude with `top_le_iff.1 (hspan ▸ Submodule.span_mono hsub)`.
+-/
 theorem sharesAt_of_anFacts (X : PJ D B P j) {ka wL wF : WeightFamilies.Wt D j} (G₀ : GlobalFamilyData X ka wL wF) (S : Scal B) (Tn : ℕ) (c : ℝ)
     (R : Rdg X) (t : Idx D j G₀.N → ℂ) {δ : ℕ} (xs : Fin δ → R.Y) (hg : R.Generic t)
     (hF : AnFacts R G₀.w t ka wF Tn (WeightFamilies.MggK B (7 : ℝ) Tn c j ka) xs) (hka : addL wF wL Tn = ka)
@@ -212,6 +265,15 @@ theorem sharesAt_of_anFacts (X : PJ D B P j) {ka wL wF : WeightFamilies.Wt D j} 
       (FamilyHypotheses.refill G₀ δ θ rz alz th0 zc rq th iet et) R t Tn 7 c δ xs hg hF hka hlt.le S ?_ la (hB la)
     exact top_le_iff.1 (hspan ▸ Submodule.span_mono hsub)
 
+/- English proof (translation)
+Take `⟨-, hS, -, -, -⟩` from `hH`. Take `⟨hn, -, -, -, -, -, -, -, -, -, -, -, -, hnV, hL, hF, -, -, -, -, -, -, -, h11, -, -⟩` from `hS`. Use `⟨?_, h11⟩` and prove the remaining obligations. Take `⟨f1, f2, f3⟩` from `hF`. Establish `l1` using `hL.1`.
+
+Take `⟨aP, aM, p1, p2, n, p3⟩` from `ka`. Unfold `addL wadd wsmul`. Simplify using `only [WeightFamilies.Wt.mk.injEq]`. Simplify using `only at hn f2 f3`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `τ i`. Use `f2 τ i` as an intermediate fact. Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Use function extensionality and compare the values at `τ i`.
+
+Use `f3 τ i` as an intermediate fact. Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[f1, l1, hn, hnV]`.
+-/
 theorem weight_and_degree {X : PJ D B P j} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT : ℝ} {ka wL wF : WeightFamilies.Wt D j}
     {Tn nP nW : ℕ} {h0 : ℝ} (hH : FamilyHypotheses.HypPage large₂ X H C2 A2 CR CT ka wL wF Tn nP nW h0) :
     addL wF wL Tn = ka ∧ 11 * WeightFamilies.dimY D j ^ 2 ≤ Tn := by
@@ -233,6 +295,13 @@ theorem weight_and_degree {X : PJ D B P j} {large₂ : SizeData₂ D} {H : KHyp}
     zify; linarith
   · rw [f1, l1, hn, hnV]
 
+/- English proof (translation)
+Establish `h1` using `hj.1`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hf : 8 ≤ D.R.f` using `D.eight_le_f`. Establish `hs : (D.R.sigW j).1 = D.R.k + j - 1` using `rfl`. Establish `h5 : 5 ≤ (D.R.sigW j).1` using `by omega`.
+
+Establish `h6 : 2 ≤ (D.R.sigW j).1 * ((D.R.sigW j).1 - 1) / 2`. Rewrite using `[Nat.le_div_iff_mul_le (by norm_num)]`. Establish `: 5 * 4 ≤ (D.R.sigW j).1 * ((D.R.sigW j).1 - 1)` using `Nat.mul_le_mul h5 (by omega)`. Use linear arithmetic over natural numbers and integers. Unfold `WeightFamilies.dimY`.
+
+Conclude with `le_trans (by omega) (Nat.le_mul_of_pos_left _ (by omega))`.
+-/
 theorem two_le_dimY (hj : InR D j) : 2 ≤ WeightFamilies.dimY D j := by
   have h1 := hj.1
   have hk : 5 ≤ D.R.k := by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega
@@ -251,6 +320,15 @@ end Abstract
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hPg hC hL G₀ hNZ Sh hSh`. Take `⟨A⟩` from `GlobalTheory.T.thetaArchimedeanData_definiteModels_nonempty D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hPg hC G₀.N G₀.w hNZ`. Take `⟨hOn, hM⟩` from `GlobalTheory.T.cuspReadings_span_model_forms_shifted_weights D T h _ hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p hPar hPg`. Take `⟨hka, hT⟩` from `weight_and_degree hPg.hyp`. Establish `hp : ∀ k : (T.U D.R.m T.σ₀).Comp, ((T.U D.R.m T.σ₀).X k).p0 = 0` using `fun k => by`.
+
+Establish `h0 : WeightFamilies.rho D D.R.m = 0` using `by show D.R.m - D.R.m = 0`. Use linear arithmetic over natural numbers and integers. Establish `hU : IsUnf (T.U D.R.m T.σ₀)` using `h.unf _ hj T.σ₀ T.good_σ₀`. Conclude with `((hU.2.1 k).1).trans ((h.pins.2.2.2 _ hj).2.1.trans h0)`. Establish `hsh : ∃ β : ℝ, ShortG (recPJ h D.R.m hj) ((recPJ h D.R.m hj).wF0 wL wF) ((recPJ h D.R.m hj).Thc S.s0 ((recPJ h D.R.m hj).wF0 wL wF)) β`.
+
+Take `⟨_, _, _, _, _, po, hpo, _, PLam, hPL, _, _, hz, _⟩` from `((FamilyHypotheses.hypC_iff ..).1 hC).2.1`. Conclude with `⟨_, hz⟩`. Substitute `hka` using the available equality. Take `⟨R, t, δ, xs, hg, hF⟩` from `exists_anFacts_definite D T h _ hj (SecNorm.sup _) G₀.N wL wF G₀.w Tn 7 _ 1 hp A hOn hM`. Take `⟨hg', hF'⟩` from `anFacts_back (recPJ h D.R.m hj) _ _ (SecNorm.sup _) R G₀.w t Tn 7 _ xs hg hF`.
+
+Conclude with `sharesAt_of_anFacts _ G₀ S Tn _ _ t xs hg' hF' rfl (two_le_dimY hj) hT hL hsh Sh hSh`.
+-/
 theorem sharesDef : GlobalTheory.RunJoin.SharesDefSt := by
   intro D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hPg hC hL G₀ hNZ Sh hSh
   obtain ⟨A⟩ := GlobalTheory.T.thetaArchimedeanData_definiteModels_nonempty D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hPg hC G₀.N G₀.w hNZ

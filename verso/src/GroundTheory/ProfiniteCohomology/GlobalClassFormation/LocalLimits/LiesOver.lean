@@ -30,12 +30,18 @@ def completionEmbeddingBelow (u : PlacesOver F.1 v)
       rw [AdeleBaseChange.completionMap_completionMap v u.1 (placeOfEmbedding ι E).1 a]
       exact (completionEmbedding ι E).commutes a }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem completionEmbeddingBelow_apply (u : PlacesOver F.1 v)
     [(placeOfEmbedding ι E).1.asIdeal.LiesOver u.1.asIdeal] (a : u.1.adicCompletion F.1) :
     completionEmbeddingBelow ι F E u a =
       completionEmbedding ι E (completionMap u.1 (placeOfEmbedding ι E).1 a) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[completionEmbeddingBelow_apply, completionMap_algebraMap, IsScalarTower.algebraMap_apply F.1 E.1 ((placeOfEmbedding ι E).1.adicCompletion E.1), completionEmbedding_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem completionEmbeddingBelow_algebraMap (u : PlacesOver F.1 v)
     [(placeOfEmbedding ι E).1.asIdeal.LiesOver u.1.asIdeal] (x : F.1) :
     completionEmbeddingBelow ι F E u (algebraMap F.1 _ x) = ι x := by
@@ -44,12 +50,18 @@ theorem completionEmbeddingBelow_algebraMap (u : PlacesOver F.1 v)
     completionEmbedding_algebraMap]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← AdeleBaseChange.below_eq_iff, AdeleBaseChange.below_below, AdeleBaseChange.below_eq_iff]`. Conclude with `(placeOfEmbedding ι E).2`.
+-/
 theorem below_placeOfEmbedding_liesOver :
     (AdeleBaseChange.below F.1 (placeOfEmbedding ι E).1).asIdeal.LiesOver v.asIdeal := by
   rw [← AdeleBaseChange.below_eq_iff, AdeleBaseChange.below_below,
     AdeleBaseChange.below_eq_iff]
   exact (placeOfEmbedding ι E).2
 
+/- English proof (translation)
+The claim follows from `eq_placeOfEmbedding ι F (completionEmbeddingBelow ι F E _) (completionEmbeddingBelow_algebraMap ι _)`.
+-/
 theorem below_placeOfEmbedding :
     (⟨AdeleBaseChange.below F.1 (placeOfEmbedding ι E).1, below_placeOfEmbedding_liesOver ι⟩ :
       PlacesOver F.1 v) = placeOfEmbedding ι F :=
@@ -61,6 +73,9 @@ instance liesOver_placeOfEmbedding :
   rw [← below_placeOfEmbedding ι (F := F) (E := E)]
   exact AdeleBaseChange.liesOver_below _
 
+/- English proof (translation)
+Establish `: completionEmbeddingBelow ι F E (placeOfEmbedding ι F) = completionEmbedding ι F` using `algHom_ext_adicCompletion F fun x ↦ by`. Rewrite using `[completionEmbeddingBelow_algebraMap, completionEmbedding_algebraMap]`. Conclude with `DFunLike.congr_fun this a`.
+-/
 theorem completionEmbedding_completionMap (a : (placeOfEmbedding ι F).1.adicCompletion F.1) :
     completionEmbedding ι E (completionMap (placeOfEmbedding ι F).1 (placeOfEmbedding ι E).1 a) =
       completionEmbedding ι F a := by

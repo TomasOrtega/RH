@@ -32,11 +32,17 @@ def Order : Prop :=
   ∀ (D : D7), SizeOK D → ∀ (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 → ∀ (sc : Consts) (G : GridData L sc) (W : G.Weil)
     (M : Vol G) (a : Arrow T), a.pair.InRange D.R.m → HaarAt M a.src → OrderAt W M a
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl⟩`.
+-/
 example (t : T) (m i j : ℕ) : ((Arrow.right i j : Arrow T).pair.InRange m ↔ i + 1 ≤ m ∧ j ≤ m) ∧
     ((Arrow.down t i j).pair.InRange m ↔ i ≤ m ∧ j + 1 ≤ m) ∧ ((Arrow.coreUp i : Arrow T).pair.InRange m ↔ i + 1 ≤ m) ∧
     ((Arrow.coreDown i : Arrow T).pair.InRange m ↔ i + 1 ≤ m) ∧ ((Arrow.col t j).pair.InRange m ↔ j + 1 ≤ m) :=
   ⟨Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Iff.rfl, Iff.rfl⟩`.
+-/
 example (θ : InfFam D) (i j : ℕ) (φ : Fn G (.grid i j)) (φ' : Fn G (.core i)) :
     (G.IsListed θ (.grid i j) φ ↔ ∀ τ, IsTypeAt θ _ τ (parV D sc.cGap i j τ) fun g => star (φ g)) ∧
     (G.IsListed θ (.core i) φ' ↔ ∀ τ, IsTypeAt θ _ τ ((num D sc.cGap τ).parPi i) φ') := ⟨Iff.rfl, Iff.rfl⟩

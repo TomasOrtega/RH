@@ -28,6 +28,11 @@ structure Gr (k V : Type) [Field k] [AddCommGroup V] [Module k V] where
   dπ : ∀ c a, d (π c a) = π (c + 1) (d a)
   σπ : ∀ c a, σ (π c a) = ((-1 : ℤ) ^ (c + 1)) • π c a
 
+/- English proof (translation)
+Take `⟨g', hg'⟩` from `f.rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict f)`. Take `⟨g, hg⟩` from `LinearMap.exists_extend g'`. Use `⟨g, fun a => ?_⟩` and prove the remaining obligations. Establish `h1 : g (f a) = g' (f.rangeRestrict a)`. Use `LinearMap.congr_fun hg (f.rangeRestrict a)` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[h1]`. Establish `h2` using `congrArg Subtype.val (LinearMap.congr_fun hg' (f.rangeRestrict a))`. Simplify using `using h2`.
+-/
 theorem exists_reg (f : V →ₗ[k] V) : ∃ g : V →ₗ[k] V, ∀ a, f (g (f a)) = f a := by
   obtain ⟨g', hg'⟩ := f.rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict f)
   obtain ⟨g, hg⟩ := LinearMap.exists_extend g'
@@ -43,28 +48,63 @@ namespace Gr
 
 variable (G : Gr k V)
 
+/- English proof (translation)
+Rewrite using `[← G.sum a, map_sum]`. Use `Finset.sum_eq_zero fun c' hc' => G.orth _ _ _ ?_` and prove the remaining obligations. Use `Finset.mem_range.1 hc'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem big {c : ℕ} (hc : G.N ≤ c) (a : V) : G.π c a = 0 := by
   rw [← G.sum a, map_sum]
   refine Finset.sum_eq_zero fun c' hc' => G.orth _ _ _ ?_
   have := Finset.mem_range.1 hc'
   omega
 
+/- English proof (translation)
+Rewrite using `[← G.sum a, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => h c a`.
+-/
 theorem ext' {U : Type} [AddCommGroup U] [Module k U] {X Y : V →ₗ[k] U}
     (h : ∀ c a, X (G.π c a) = Y (G.π c a)) (a : V) : X a = Y a := by
   rw [← G.sum a, map_sum, map_sum]
   exact Finset.sum_congr rfl fun c _ => h c a
 
+/- English proof (translation)
+Use `G.ext' (X := G.σ ∘ₗ G.σ) (Y := LinearMap.id) (fun c a => ?_) a` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, G.σπ, map_zsmul, smul_smul]`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem σσ (a : V) : G.σ (G.σ a) = a := by
   refine G.ext' (X := G.σ ∘ₗ G.σ) (Y := LinearMap.id) (fun c a => ?_) a
   simp only [LinearMap.comp_apply, LinearMap.id_apply, G.σπ, map_zsmul, smul_smul]
   rw [← mul_pow]
   simp
 
+/- English proof (translation)
+Use `G.ext' (X := G.σ ∘ₗ G.d) (Y := -(G.d ∘ₗ G.σ)) (fun c a => ?_) a` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.neg_apply, G.σπ, map_zsmul, G.dπ, pow_succ]`. Simplify using the standard rewrite rules.
+-/
 theorem σd (a : V) : G.σ (G.d a) = - G.d (G.σ a) := by
   refine G.ext' (X := G.σ ∘ₗ G.d) (Y := -(G.d ∘ₗ G.σ)) (fun c a => ?_) a
   simp only [LinearMap.comp_apply, LinearMap.neg_apply, G.σπ, map_zsmul, G.dπ, pow_succ]
   simp
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_reg G.d`. Set `h : V →ₗ[k] V` to `∑ c ∈ Finset.range G.N, G.π c ∘ₗ g ∘ₗ G.π (c + 1)`. Establish `happ : ∀ a, h a = ∑ c ∈ Finset.range G.N, G.π c (g (G.π (c + 1) a))` using `fun a => by`. Simplify using `[h, LinearMap.sum_apply]`. Establish `hπ : ∀ c a, h (G.π (c + 1) a) = G.π c (h a)`.
+
+Introduce `c a`. Rewrite using `[happ, happ, map_sum]`. Distinguish the cases in `hc : c < G.N`. Rewrite using `[Finset.sum_eq_single c, Finset.sum_eq_single c]`. Rewrite using `[G.idem, G.idem]`.
+
+Introduce `b _ hb`. Rewrite using `[G.orth _ _ _ hb.symm]`. Introduce `h'`. Conclude with `absurd (Finset.mem_range.2 hc) h'`. Introduce `b _ hb`.
+
+Rewrite using `[G.orth (b + 1) (c + 1) _ (by omega)]`. Simplify using the standard rewrite rules. Introduce `h'`. Conclude with `absurd (Finset.mem_range.2 hc) h'`. Establish `: G.N ≤ c` using `by omega`.
+
+Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero]`. Introduce `b _`. Rewrite using `[G.big this]`. Introduce `b hb`. Use `Finset.mem_range.1 hb` as an intermediate fact.
+
+Rewrite using `[G.orth (b + 1) (c + 1) _ (by omega)]`. Simplify using the standard rewrite rules. Establish `hdhd : ∀ a, G.d (h (G.d a)) = G.d a`. Introduce `a`. Rewrite using `[happ, map_sum]`.
+
+Use `conv_rhs => rw [← G.sum a, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← G.dπ, G.dπ c (g _), hg]`. Rewrite using `[G.dπ c a, G.idem]`. Set `e : V →ₗ[k] V` to `LinearMap.id - G.d ∘ₗ h - h ∘ₗ G.d`.
+
+Establish `eapp : ∀ a, e a = a - G.d (h a) - h (G.d a)` using `fun a => rfl`. Use `⟨e, h, ?_, ?_, ?_, hπ, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[eapp]`. Simplify using `[G.dd, hdhd]`.
+
+Introduce `a`. Rewrite using `[eapp]`. Simplify using `[G.dd, hdhd]`. Introduce `a`. Rewrite using `[eapp]`.
+
+Normalize the expressions using the abelian group laws. Introduce `c a`. Break down `c with _ | c` into its components or cases. Rewrite using `[G.zero, G.zero]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[eapp, eapp, map_sub, map_sub, hπ c a, G.dπ c, G.dπ (c + 1) a, hπ (c + 1)]`.
+-/
 theorem exists_contraction : ∃ e h : V →ₗ[k] V,
     (∀ a, G.d (e a) = 0) ∧ (∀ a, e (G.d a) = 0) ∧ (∀ a, G.d (h a) + h (G.d a) + e a = a) ∧
     (∀ c a, h (G.π (c + 1) a) = G.π c (h a)) ∧ (∀ c a, e (G.π c a) = G.π c (e a)) := by
@@ -130,6 +170,37 @@ def Zn (G : Gr k V) (G' : Gr k W) (n : ℤ) : Submodule k (V ⊗[k] W) :=
   Submodule.span k {x | ∃ (a : V) (b : W) (p q : ℕ), G.π p a = a ∧ G'.π q b = b ∧ ((p + q : ℕ) : ℤ) = n ∧
     G.d a = 0 ∧ G'.d b = 0 ∧ x = a ⊗ₜ[k] b}
 
+/- English proof (translation)
+Take `⟨e, h, de, ed, deh, hπ, eπ⟩` from `G.exists_contraction`. Take `⟨e', h', de', ed', deh', hπ', eπ'⟩` from `G'.exists_contraction`. Establish `hσ : ∀ a, h (G.σ a) = - G.σ (h a)`. Introduce `a`. Use `G.ext' (X := h ∘ₗ G.σ) (Y := -(G.σ ∘ₗ h)) (fun c a => ?_) a` and prove the remaining obligations.
+
+Break down `c with _ | c` into its components or cases. Simplify using `[G.zero]`. Simplify using `only [LinearMap.comp_apply, LinearMap.neg_apply, G.σπ, map_zsmul, hπ, pow_succ]`. Simplify using the standard rewrite rules. Establish `eσ : ∀ a, e (G.σ a) = G.σ (e a)`.
+
+Introduce `a`. Use `G.ext' (X := e ∘ₗ G.σ) (Y := G.σ ∘ₗ e) (fun c a => ?_) a` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, G.σπ, map_zsmul, eπ]`. Set `H : V ⊗[k] W →ₗ[k] V ⊗[k] W` to `TensorProduct.map h LinearMap.id + TensorProduct.map (G.σ ∘ₗ e) h'`. Establish `key : (Dt G G') ∘ₗ H + H ∘ₗ (Dt G G') + TensorProduct.map e e' = LinearMap.id`.
+
+Use `TensorProduct.ext' fun a b => ?_` and prove the remaining obligations. Establish `e1 : a ⊗ₜ[k] b = (G.d (h a) + h (G.d a) + e a) ⊗ₜ[k] b` using `by rw [deh]`. Establish `e2 : e a ⊗ₜ[k] b = e a ⊗ₜ[k] (G'.d (h' b) + h' (G'.d b) + e' b)` using `by rw [deh']`. Establish `e3 : G.d (G.σ (e a)) = 0`. Use `G.σd (e a)` as an intermediate fact.
+
+Rewrite `this` using `[de, map_zero]`. Conclude with `neg_eq_zero.1 this.symm`. Simplify using `only [H, Dt, LinearMap.add_apply, LinearMap.comp_apply, TensorProduct.map_tmul, LinearMap.id_apply, map_add, e3, ed, eσ, hσ, G.σσ, map_zero, TensorProduct.zero_tmul, TensorProduct.tmul_zero, TensorProduct.neg_tmul]`. Rewrite using `[e1, TensorProduct.add_tmul, TensorProduct.add_tmul, e2, TensorProduct.tmul_add, TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws.
+
+Establish `hH : ∀ x ∈ Tn G G' n, H x ∈ Tn G G' (n - 1)`. Introduce `x hx`. Use `Submodule.span_induction (p := fun x _ => H x ∈ Tn G G' (n - 1)) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, p, q, hp, hq, hn, rfl⟩`. Simplify using `only [H, LinearMap.add_apply, TensorProduct.map_tmul, LinearMap.comp_apply, LinearMap.id_apply]`.
+
+Use `add_mem ?_ ?_` and prove the remaining obligations. Break down `p with _ | p` into its components or cases. Establish `: a = 0` using `by rw [← hp, G.zero]`. Simplify using `[this]`. Establish `h1 : h a = G.π p (h a)` using `by rw [← hπ, hp]`.
+
+Use `Submodule.subset_span ⟨h a, b, p, q, ?_, hq, ?_, rfl⟩` and prove the remaining obligations. Conclude with `h1.symm`. Move the coercions through the operations in `at hn ⊢`. Use linear arithmetic over natural numbers and integers. Break down `q with _ | q` into its components or cases.
+
+Establish `: b = 0` using `by rw [← hq, G'.zero]`. Simplify using `[this]`. Establish `h1 : h' b = G'.π q (h' b)` using `by rw [← hπ', hq]`. Establish `h2 : e a = G.π p (e a)` using `by rw [← eπ, hp]`. Use `Submodule.subset_span ⟨G.σ (e a), h' b, p, q, ?_, h1.symm, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[h2, G.σπ, map_zsmul, G.idem]`. Move the coercions through the operations in `at hn ⊢`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Introduce `c x _ hx`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+
+Use `⟨H t, hH t ht, ?_⟩` and prove the remaining obligations. Establish `h3 : t - Dt G G' (H t) = TensorProduct.map e e' t`. Use `LinearMap.congr_fun key t` as an intermediate fact. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.id_apply, hD, map_zero, add_zero] at this`. Rewrite using `[sub_eq_iff_eq_add]`.
+
+Rewrite using `[add_comm]`. Conclude with `this.symm`. Rewrite using `[h3]`. Use `Submodule.span_induction (p := fun x _ => TensorProduct.map e e' x ∈ Zn G G' n) ?_ ?_ ?_ ?_ ht` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, p, q, hp, hq, hn, rfl⟩`.
+
+Use `Submodule.subset_span ⟨e a, e' b, p, q, ?_, ?_, hn, de a, de' b, by simp⟩` and prove the remaining obligations. Rewrite using `[← eπ, hp]`. Rewrite using `[← eπ', hq]`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Introduce `c x _ hx`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem tensor_kunneth (G : Gr k V) (G' : Gr k W) (n : ℤ) (t : V ⊗[k] W) (ht : t ∈ Tn G G' n) (hD : Dt G G' t = 0) :
     ∃ s ∈ Tn G G' (n - 1), t - Dt G G' s ∈ Zn G G' n := by
   obtain ⟨e, h, de, ed, deh, hπ, eπ⟩ := G.exists_contraction
@@ -219,6 +290,13 @@ variable {k : Type} [Field k] {ι κ : Type} [LinearOrder ι] [LinearOrder κ]
 def coch (F : Finset ι → Submodule k E) : Submodule k (Finset ι → E) :=
   Submodule.pi Set.univ fun s => if s.Nonempty then F s else ⊥
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ∀ s, a s ∈ (if s.Nonempty then F s else ⊥)` using `fun s => (Submodule.mem_pi.1 h) s (Set.mem_univ _)`. Establish `h0 : a ∅ = 0` using `by simpa using h' ∅`. Use `⟨h0, fun s => ?_⟩` and prove the remaining obligations.
+
+Break down `s.eq_empty_or_nonempty with rfl | hs` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_mem _`. Simplify `h' s` using `[hs]`. Introduce and unpack `⟨h0, h⟩`.
+
+Use `Submodule.mem_pi.2 fun s _ => ?_` and prove the remaining obligations. Break down `s.eq_empty_or_nonempty with rfl | hs` into its components or cases. Simplify using `using h0`. Simplify `h s` using `[hs]`.
+-/
 theorem mem_coch {F : Finset ι → Submodule k E} {a : Finset ι → E} : a ∈ coch F ↔ a ∅ = 0 ∧ ∀ s, a s ∈ F s := by
   constructor
   · intro h
@@ -245,16 +323,30 @@ variable (k ι E) in
 def sgL : (Finset ι → E) →ₗ[k] (Finset ι → E) :=
   LinearMap.pi fun s => ((-1 : ℤ) ^ (s.card + 1)) • LinearMap.proj s
 
+/- English proof (translation)
+Simplify using `only [prL, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem prL_apply (c : ℕ) (a : Finset ι → E) (s : Finset ι) : prL k ι E c a s = if s.card = c then a s else 0 := by
   simp only [prL, LinearMap.pi_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[sgL]`.
+-/
 theorem sgL_apply (a : Finset ι → E) (s : Finset ι) : sgL k ι E a s = ((-1 : ℤ) ^ (s.card + 1)) • a s := by
   simp [sgL]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem deltaL_apply (a : Finset ι → E) (s : Finset ι) :
     deltaL k ι E a s = ∑ i ∈ s, GlobalTheory.cubeSign s i • a (s.erase i) := rfl
 
+/- English proof (translation)
+Take `⟨h0, h⟩` from `mem_coch.1 ha`. Use `mem_coch.2 ⟨by simp [deltaL_apply], fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[deltaL_apply]`. Use `Submodule.sum_mem _ fun i _ => zsmul_mem ?_ _` and prove the remaining obligations. Break down `(s.erase i).eq_empty_or_nonempty with h1 | h1` into its components or cases.
+
+Rewrite using `[h1, h0]`. Conclude with `zero_mem _`. Conclude with `hF _ _ h1 (Finset.erase_subset _ _) (h _)`.
+-/
 theorem delta_mem {F : Finset ι → Submodule k E} (hF : ∀ s t, s.Nonempty → s ⊆ t → F s ≤ F t)
     (a : Finset ι → E) (ha : a ∈ coch F) : deltaL k ι E a ∈ coch F := by
   obtain ⟨h0, h⟩ := mem_coch.1 ha
@@ -266,6 +358,11 @@ theorem delta_mem {F : Finset ι → Submodule k E} (hF : ∀ s t, s.Nonempty �
     exact zero_mem _
   · exact hF _ _ h1 (Finset.erase_subset _ _) (h _)
 
+/- English proof (translation)
+Take `⟨h0, h⟩` from `mem_coch.1 ha`. Use `mem_coch.2 ⟨by simp [prL_apply, h0], fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[prL_apply]`. Use `split_ifs`. Conclude with `h s`.
+
+Conclude with `zero_mem _`.
+-/
 theorem prL_mem {F : Finset ι → Submodule k E} (c : ℕ) (a : Finset ι → E) (ha : a ∈ coch F) :
     prL k ι E c a ∈ coch F := by
   obtain ⟨h0, h⟩ := mem_coch.1 ha
@@ -275,6 +372,9 @@ theorem prL_mem {F : Finset ι → Submodule k E} (c : ℕ) (a : Finset ι → E
   · exact h s
   · exact zero_mem _
 
+/- English proof (translation)
+Take `⟨h0, h⟩` from `mem_coch.1 ha`. Use `mem_coch.2 ⟨by simp [sgL_apply, h0], fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[sgL_apply]`. Conclude with `zsmul_mem (h s) _`.
+-/
 theorem sgL_mem {F : Finset ι → Submodule k E} (a : Finset ι → E) (ha : a ∈ coch F) :
     sgL k ι E a ∈ coch F := by
   obtain ⟨h0, h⟩ := mem_coch.1 ha
@@ -337,10 +437,18 @@ def phi (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E) (B
     (fun a a' b => by funext x; simp [boxC]) (fun c a b => by funext x; simp [boxC])
     (fun a b b' => by funext x; simp [boxC]) (fun c a b => by funext x; simp [boxC]))
 
+/- English proof (translation)
+Simplify using `[phi]`.
+-/
 theorem phi_tmul (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E) (B : Finset κ → Submodule k E')
     (a : coch A) (b : coch B) : phi μ A B (a ⊗ₜ[k] b) = boxC μ a.1 b.1 := by
   simp [phi]
 
+/- English proof (translation)
+Establish `h : phi μ A B ∘ₗ Dt (grC A hA) (grC B hB) = biD k ι κ E'' ∘ₗ phi μ A B`. Use `TensorProduct.ext' fun a b => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [LinearMap.comp_apply, Dt, LinearMap.add_apply, TensorProduct.map_tmul, LinearMap.id_apply, map_add, phi_tmul, Pi.add_apply]`. Simplify using `only [biD, boxC, grC, LinearMap.pi_apply, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.proj_apply, LinearMap.restrict_coe_apply, deltaL_apply, sgL_apply, map_sum, map_zsmul]`.
+
+Use `congr 1`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_comm _ _ _`. Conclude with `LinearMap.congr_fun h t`.
+-/
 theorem phi_Dt [Fintype ι] [Fintype κ] (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E)
     (B : Finset κ → Submodule k E') (hA : ∀ s t, s.Nonempty → s ⊆ t → A s ≤ A t)
     (hB : ∀ s t, s.Nonempty → s ⊆ t → B s ≤ B t) (t : coch A ⊗[k] coch B) :
@@ -360,8 +468,16 @@ theorem phi_Dt [Fintype ι] [Fintype κ] (μ : E →ₗ[k] E' →ₗ[k] E'') (A 
 def rL (F : Finset ι → Submodule k E) (I : Finset ι) : coch F →ₗ[k] F I :=
   LinearMap.codRestrict (F I) (LinearMap.proj I ∘ₗ (coch F).subtype) fun a => (mem_coch.1 a.2).2 I
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rL_val (F : Finset ι → Submodule k E) (I : Finset ι) (a : coch F) : (rL F I a : E) = a.1 I := rfl
 
+/- English proof (translation)
+Use `mem_coch.2 ⟨?_, fun s => ?_⟩` and prove the remaining obligations. Establish `: (∅ : Finset ι) ≠ I` using `fun h' => by simp [← h'] at h`. Simplify using `[Pi.single_apply, this]`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.coe_single, Pi.single_apply] split_ifs with h'`. Substitute `h'` using the available equality.
+
+Conclude with `x.2`. Conclude with `zero_mem _`.
+-/
 theorem single_mem_coch (F : Finset ι → Submodule k E) {I : Finset ι} (h : I.Nonempty) (x : F I) :
     (LinearMap.single k (fun _ : Finset ι => E) I ∘ₗ (F I).subtype) x ∈ coch F := by
   refine mem_coch.2 ⟨?_, fun s => ?_⟩
@@ -379,6 +495,11 @@ def iL (F : Finset ι → Submodule k E) (I : Finset ι) : F I →ₗ[k] coch F 
   if h : I.Nonempty then LinearMap.codRestrict (coch F) _ (single_mem_coch F h) else 0
 
 open Classical in
+/- English proof (translation)
+Distinguish the cases in `h : I.Nonempty`. Distinguish the cases in `h' : s = I`. Substitute `h'` using the available equality. Simplify using `[iL, h]`. Simplify using `[iL, h, h', Pi.single_apply]`.
+
+Simplify using `[iL, h]`.
+-/
 theorem iL_val (F : Finset ι → Submodule k E) (I : Finset ι) (x : F I) (s : Finset ι) :
     (iL F I x).1 s = if I.Nonempty ∧ s = I then x.1 else 0 := by
   by_cases h : I.Nonempty
@@ -388,6 +509,13 @@ theorem iL_val (F : Finset ι → Submodule k E) (I : Finset ι) (x : F I) (s : 
     · simp [iL, h, h', Pi.single_apply]
   · simp [iL, h]
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun s => ?_)` and prove the remaining obligations. Rewrite using `[AddSubmonoidClass.coe_finset_sum, Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_single s]`. Rewrite using `[iL_val]`. Break down `s.eq_empty_or_nonempty with rfl | hs` into its components or cases.
+
+Simplify using `[(mem_coch.1 a.2).1]`. Simplify using `[hs, rL_val]`. Introduce `b _ hb`. Rewrite using `[iL_val, if_neg]`. Conclude with `fun h => hb h.2.symm`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sum_iL [Fintype ι] (F : Finset ι → Submodule k E) (a : coch F) : ∑ I, iL F I (rL F I a) = a := by
   refine Subtype.ext (funext fun s => ?_)
   rw [AddSubmonoidClass.coe_finset_sum, Finset.sum_apply]
@@ -401,6 +529,15 @@ theorem sum_iL [Fintype ι] (F : Finset ι → Submodule k E) (a : coch F) : ∑
     exact fun h => hb h.2.symm
   · simp
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Establish `ev : ∀ I J, (TensorProduct.lift (μ.compl₁₂ (A I).subtype (B J).subtype)) ∘ₗ TensorProduct.map (rL A I) (rL B J) = LinearMap.proj (I, J) ∘ₗ phi μ A B`. Introduce `I J`. Use `TensorProduct.ext' fun a b => ?_` and prove the remaining obligations.
+
+Simplify using `[phi_tmul, boxC, rL_val]`. Establish `step : ∀ I J, TensorProduct.map (rL A I) (rL B J) t = 0`. Introduce `I J`. Apply `h I J` to reduce the goal to its premises. Use `LinearMap.congr_fun (ev I J) t` as an intermediate fact.
+
+Simplify using `only [LinearMap.comp_apply, ht] at this`. Simplify using `using this`. Establish `tot : (∑ I, ∑ J, TensorProduct.map (iL A I) (iL B J) ∘ₗ TensorProduct.map (rL A I) (rL B J)) = (LinearMap.id : coch A ⊗[k] coch B →ₗ[k] coch A ⊗[k] coch B)`. Use `TensorProduct.ext' fun a b => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, TensorProduct.map_tmul, LinearMap.id_apply]`.
+
+Simplify using `only [← TensorProduct.tmul_sum, ← TensorProduct.sum_tmul, sum_iL]`. Use `LinearMap.congr_fun tot t` as an intermediate fact. Rewrite `this` using `[LinearMap.id_apply]`. Rewrite using `[← this]`. Simplify using `[LinearMap.sum_apply, step]`.
+-/
 theorem phi_inj [Fintype ι] [Fintype κ] (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E)
     (B : Finset κ → Submodule k E') (h : Disjoint₂ μ A B) : Function.Injective (phi μ A B) := by
   rw [injective_iff_map_eq_zero]
@@ -426,12 +563,20 @@ theorem phi_inj [Fintype ι] [Fintype κ] (μ : E →ₗ[k] E' →ₗ[k] E'') (A
   rw [← this]
   simp [LinearMap.sum_apply, step]
 
+/- English proof (translation)
+Rewrite using `[← h]`. Use `show prL k ι E p a.1 s = 0`. Rewrite using `[prL_apply, if_neg hs]`.
+-/
 theorem val_of_pi [Fintype ι] {F : Finset ι → Submodule k E} (hF : ∀ s t, s.Nonempty → s ⊆ t → F s ≤ F t) {p : ℕ}
     {a : coch F} (h : (grC F hF).π p a = a) {s : Finset ι} (hs : s.card ≠ p) : a.1 s = 0 := by
   rw [← h]
   show prL k ι E p a.1 s = 0
   rw [prL_apply, if_neg hs]
 
+/- English proof (translation)
+Use `Submodule.mem_pi.2 fun s _ => ?_` and prove the remaining obligations. Use `split_ifs with hs`. Conclude with `(mem_coch.1 a.2).2 s`. Rewrite using `[Submodule.mem_bot]`. Break down `s.eq_empty_or_nonempty with rfl | h1` into its components or cases.
+
+Conclude with `(mem_coch.1 a.2).1`. Use `val_of_pi hF h fun h2 => hs ⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_cechC [Fintype ι] {F : Finset ι → Submodule k E} (hF : ∀ s t, s.Nonempty → s ⊆ t → F s ≤ F t) {p : ℕ}
     {a : coch F} (h : (grC F hF).π p a = a) : a.1 ∈ cechC F ((p : ℤ) - 1) := by
   refine Submodule.mem_pi.2 fun s _ => ?_
@@ -444,6 +589,11 @@ theorem mem_cechC [Fintype ι] {F : Finset ι → Submodule k E} (hF : ∀ s t, 
       rw [h2]
       ring
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun s => ?_)` and prove the remaining obligations. Use `show prL k ι E I.card (iL F I x).1 s = _`. Rewrite using `[prL_apply, iL_val]`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Conclude with `absurd (by rw [h2.2]) h1`. Both sides reduce to the same expression.
+-/
 theorem pi_iL [Fintype ι] (F : Finset ι → Submodule k E) (hF : ∀ s t, s.Nonempty → s ⊆ t → F s ≤ F t) (I : Finset ι)
     (x : F I) : (grC F hF).π I.card (iL F I x) = iL F I x := by
   refine Subtype.ext (funext fun s => ?_)
@@ -455,6 +605,19 @@ theorem pi_iL [Fintype ι] (F : Finset ι → Submodule k E) (hF : ∀ s t, s.No
   · exact absurd (by rw [h2.2]) h1
   · rfl
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun x _ => phi μ A B x ∈ bicechC μ A B n) ?_ ?_ ?_ ?_ ht` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, p, q, hp, hq, hn, rfl⟩`. Rewrite using `[phi_tmul]`. Use `Submodule.mem_pi.2 fun x _ => ?_` and prove the remaining obligations. Use `split_ifs with hx`.
+
+Conclude with `Submodule.apply_mem_map₂ _ ((mem_coch.1 a.2).2 x.1) ((mem_coch.1 b.2).2 x.2)`. Rewrite using `[Submodule.mem_bot] show μ (a.1 x.1) (b.1 x.2) = 0`. Break down `x.1.eq_empty_or_nonempty with h1 | h1` into its components or cases. Rewrite using `[h1, (mem_coch.1 a.2).1]`. Simplify using the standard rewrite rules.
+
+Break down `x.2.eq_empty_or_nonempty with h2 | h2` into its components or cases. Rewrite using `[h2, (mem_coch.1 b.2).1]`. Simplify using the standard rewrite rules. Distinguish the cases in `h3 : x.1.card = p`. Distinguish the cases in `h4 : x.2.card = q`.
+
+Use `absurd ⟨h1, h2, ?_⟩ hx` and prove the remaining obligations. Rewrite using `[h3, h4]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[val_of_pi hB hq h4]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[val_of_pi hA hp h3]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem hx hy`. Introduce `c x _ hx`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem phi_mem [Fintype ι] [Fintype κ] (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E)
     (B : Finset κ → Submodule k E') (hA : ∀ s t, s.Nonempty → s ⊆ t → A s ≤ A t)
     (hB : ∀ s t, s.Nonempty → s ⊆ t → B s ≤ B t) (n : ℤ) (t : coch A ⊗[k] coch B)
@@ -490,6 +653,17 @@ theorem phi_mem [Fintype ι] [Fintype κ] (μ : E →ₗ[k] E' →ₗ[k] E'') (A
     rw [map_smul]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+It suffices to establish `h : z ∈ (Tn (grC A hA) (grC B hB) (n + 2)).map (phi μ A B) from h`. Rewrite using `[← Finset.univ_sum_single z]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Establish `hx` using `(Submodule.mem_pi.1 hz) x (Set.mem_univ _)`. Use `split_ifs at hx with hc`.
+
+Establish `hle : Submodule.map₂ μ (A x.1) (B x.2) ≤ ((Tn (grC A hA) (grC B hB) (n + 2)).map (phi μ A B)).comap (LinearMap.single k (fun _ => E'') x)`. Rewrite using `[Submodule.map₂_le]`. Introduce `m hm m' hm'`. Use `⟨iL A x.1 ⟨m, hm⟩ ⊗ₜ[k] iL B x.2 ⟨m', hm'⟩, Submodule.subset_span ⟨_, _, x.1.card, x.2.card, pi_iL A hA _ _, pi_iL B hB _ _, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hc.2.2]`.
+
+Rewrite using `[phi_tmul]`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y = x`. Substitute `hy` using the available equality. Simplify using `[boxC, iL_val, hc.1, hc.2.1]`.
+
+Establish `: ¬ (y.1 = x.1 ∧ y.2 = x.2)` using `fun h => hy (Prod.ext h.1 h.2)`. Distinguish the cases in `h1 : y.1 = x.1`. Establish `h2 : y.2 ≠ x.2` using `fun h => this ⟨h1, h⟩`. Simplify using `[boxC, iL_val, h2, hy, Pi.single_apply]`. Simplify using `[boxC, iL_val, h1, hy, Pi.single_apply]`.
+
+Conclude with `hle hx`. Rewrite `hx` using `[Submodule.mem_bot]`. Rewrite using `[hx]`. Simplify using the standard rewrite rules.
+-/
 theorem phi_surj [Fintype ι] [Fintype κ] (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E)
     (B : Finset κ → Submodule k E') (hA : ∀ s t, s.Nonempty → s ⊆ t → A s ≤ A t)
     (hB : ∀ s t, s.Nonempty → s ⊆ t → B s ≤ B t) (n : ℤ) (z : Finset ι × Finset κ → E'')
@@ -521,6 +695,13 @@ theorem phi_surj [Fintype ι] [Fintype κ] (μ : E →ₗ[k] E' →ₗ[k] E'') (
     rw [hx]
     simp
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun x _ => ∃ (m : ℕ) (f : Fin m → M), (∀ l, f l ∈ S) ∧ x = ∑ l, f l) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨1, fun _ => x, fun _ => hx, by simp⟩`. Conclude with `⟨0, Fin.elim0, fun l => l.elim0, by simp⟩`. Introduce and unpack `x y _ _ ⟨m, f, hf, rfl⟩ ⟨m', g, hg, rfl⟩`.
+
+Use `⟨m + m', Fin.append f g, fun l => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) l` and prove the remaining obligations. Simplify using `using hf i`. Simplify using `using hg i`. Simplify using `[Fin.sum_univ_add]`.
+
+Introduce and unpack `c x _ ⟨m, f, hf, rfl⟩`. Conclude with `⟨m, fun l => c • f l, fun l => hS c _ (hf l), by rw [Finset.smul_sum]⟩`.
+-/
 theorem fin_family {M : Type} [AddCommGroup M] [Module k M] (S : Set M) (hS : ∀ (c : k), ∀ x ∈ S, c • x ∈ S) {x : M}
     (hx : x ∈ Submodule.span k S) : ∃ (m : ℕ) (f : Fin m → M), (∀ l, f l ∈ S) ∧ x = ∑ l, f l := by
   refine Submodule.span_induction (p := fun x _ => ∃ (m : ℕ) (f : Fin m → M), (∀ l, f l ∈ S) ∧ x = ∑ l, f l)
@@ -541,6 +722,15 @@ def boxes (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E) 
     Set (Finset ι × Finset κ → E'') :=
   {x | ∃ (p : ℤ) (a : Finset ι → E) (b : Finset κ → E'), a ∈ (cech A).Z p ∧ b ∈ (cech B).Z (n - p) ∧ x = boxC μ a b}
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun x _ => phi μ A B x ∈ Submodule.span k (boxes μ A B n)) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, p, q, hp, hq, hn, ha, hb, rfl⟩`. Use `Submodule.subset_span ⟨(p : ℤ) - 1, a.1, b.1, ?_, ?_, phi_tmul μ A B a b⟩` and prove the remaining obligations. Conclude with `Submodule.mem_inf.2 ⟨mem_cechC hA hp, congrArg Subtype.val ha⟩`. Establish `h1 : n - ((p : ℤ) - 1) = (q : ℤ) - 1`.
+
+Move the coercions through the operations in `at hn`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1]`. Conclude with `Submodule.mem_inf.2 ⟨mem_cechC hB hq, congrArg Subtype.val hb⟩`. Simplify using the standard rewrite rules.
+
+Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Introduce `c x _ hx`. Rewrite using `[map_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem phi_boxes [Fintype ι] [Fintype κ] (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E)
     (B : Finset κ → Submodule k E') (hA : ∀ s t, s.Nonempty → s ⊆ t → A s ≤ A t)
     (hB : ∀ s t, s.Nonempty → s ⊆ t → B s ≤ B t) (n : ℤ) (u : coch A ⊗[k] coch B)
@@ -562,6 +752,9 @@ theorem phi_boxes [Fintype ι] [Fintype κ] (μ : E →ₗ[k] E' →ₗ[k] E'') 
     rw [map_smul]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Take `⟨p, a, b, ha, hb, rfl⟩` from `hx`. Use `⟨p, c • a, b, Submodule.smul_mem _ _ ha, hb, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `[boxC]`.
+-/
 theorem boxes_smul (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E) (B : Finset κ → Submodule k E') (n : ℤ)
     (c : k) (x : Finset ι × Finset κ → E'') (hx : x ∈ boxes μ A B n) : c • x ∈ boxes μ A B n := by
   obtain ⟨p, a, b, ha, hb, rfl⟩ := hx
@@ -574,6 +767,15 @@ end Concrete
 end UpperTheory.Cb.Kun
 
 open UpperTheory.Cb.Kun in
+/- English proof (translation)
+Introduce `k _ ι κ _ _ _ _ E E' E'' _ _ _ _ _ _ μ A B hA hB hD n z hz`. Take `⟨hzC, hzD⟩` from `Submodule.mem_inf.1 hz`. Take `⟨t, ht, rfl⟩` from `phi_surj μ A B hA hB n z hzC`. Establish `hDt : Dt (grC A hA) (grC B hB) t = 0`. Apply `phi_inj μ A B hD` to reduce the goal to its premises.
+
+Rewrite using `[phi_Dt, map_zero]`. Conclude with `hzD`. Take `⟨s, hs, hu⟩` from `tensor_kunneth (grC A hA) (grC B hB) (n + 2) t ht hDt`. Take `⟨m, f, hf, hsum⟩` from `fin_family _ (boxes_smul μ A B n) (phi_boxes μ A B hA hB n _ hu)`. Use `choose p a b ha hb hfe using hf`.
+
+Use `⟨m, p, a, b, fun l => ⟨ha l, hb l⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : n + 2 - 1 = n - 1 + 2` using `by ring`. Rewrite `hs` using `[h1]`. Use `⟨phi μ A B s, phi_mem μ A B hA hB (n - 1) s hs, ?_⟩` and prove the remaining obligations. Establish `h2 : ∑ l, boxC μ (a l) (b l) = phi μ A B t - biD k ι κ E'' (phi μ A B s)`.
+
+Rewrite using `[← phi_Dt μ A B hA hB, ← map_sub, hsum]`. Conclude with `Finset.sum_congr rfl fun l _ => (hfe l).symm`. Rewrite using `[h2]`. Use `show biD k ι κ E'' (phi μ A B s) = _`. Normalize the expressions using the abelian group laws.
+-/
 theorem UpperTheory.Cb.bicech_cohomology_kunneth_decomposition : ∀ (k : Type) [Field k] (ι κ : Type) [LinearOrder ι] [LinearOrder κ] [Fintype ι] [Fintype κ] (E E' E'' : Type) [AddCommGroup E] [Module k E] [AddCommGroup E'] [Module k E'] [AddCommGroup E''] [Module k E''] (μ : E →ₗ[k] E' →ₗ[k] E'') (A : Finset ι → Submodule k E) (B : Finset κ → Submodule k E'), (∀ s t, s.Nonempty → s ⊆ t → A s ≤ A t) → (∀ s t, s.Nonempty → s ⊆ t → B s ≤ B t) → Disjoint₂ μ A B → ∀ (n : ℤ), ∀ z ∈ (bicech μ A B).Z n, ∃ (m : ℕ) (p : Fin m → ℤ) (a : Fin m → Finset ι → E) (b : Fin m → Finset κ → E'), (∀ l, a l ∈ (cech A).Z (p l) ∧ b l ∈ (cech B).Z (n - p l)) ∧ z - ∑ l, boxC μ (a l) (b l) ∈ (bicech μ A B).B n := by
   intro k _ ι κ _ _ _ _ E E' E'' _ _ _ _ _ _ μ A B hA hB hD n z hz
   obtain ⟨hzC, hzD⟩ := Submodule.mem_inf.1 hz

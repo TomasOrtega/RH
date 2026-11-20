@@ -50,22 +50,34 @@ def fibDens (G : Mat m ℂ) (y : Cell m → ℂ) : ℝ :=
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [upU, GlobalTheory.FlagFibre.uni, Matrix.of_apply, Matrix.transpose_apply, eq_comm]`.
+-/
 theorem upU_eq {s : ℕ} (y : Low s → ℂ) : upU y = (GlobalTheory.FlagFibre.uni y)ᵀ := by
   ext a b
   simp only [upU, GlobalTheory.FlagFibre.uni, Matrix.of_apply, Matrix.transpose_apply, eq_comm]
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bsL_apply {J : Type} (ε : Fin n ≃ Fin d ⊕ J) (w : V n) (a : Fin d) : bsL ε w a = w (ε.symm (.inl a)) := rfl
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[bsL_apply, pt]`.
+-/
 theorem bsL_pt {J : Type} (ε : Fin n ≃ Fin d ⊕ J) (v : V d) (y : J → ℂ) : bsL ε (pt ε v y) = v := by
   ext a
   simp [bsL_apply, pt]
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[fb, pt]`.
+-/
 theorem fb_pt {J : Type} (ε : Fin n ≃ Fin d ⊕ J) (v : V d) (y : J → ℂ) : fb ε (pt ε v y) = y := by
   funext j
   simp [fb, pt]

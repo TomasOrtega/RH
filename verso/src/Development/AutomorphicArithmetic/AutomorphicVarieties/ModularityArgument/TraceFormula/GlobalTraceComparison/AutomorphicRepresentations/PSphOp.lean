@@ -4,6 +4,11 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi UpperTheory.Zero.ConvolutionTheory.EB PositivityTheory.Rg.BcB.Desc
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `hst : K ≤ GlobalTheory.BCT.rStab (fun z => f z * g (z⁻¹ * y))`. Introduce `k hk z`. Use `show f (z * k) * g ((z * k)⁻¹ * y) = f z * g (z⁻¹ * y)`. Rewrite using `[(hf.2 k hk z).2, mul_inv_rev, mul_assoc, (hg.2 k⁻¹ (K.inv_mem hk) _).1]`.
+
+Unfold `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.cv`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level _ K K _ le_rfl hst (by simp [Subgroup.relIndex_self]), Subgroup.relIndex_self, Nat.cast_one, inv_one, one_mul]`. Both sides reduce to the same expression.
+-/
 private theorem cv_eq_conv {G : Type} [Group G] [TopologicalSpace G] (K : Subgroup G) {f g : G → ℂ}
     (hf : GlobalTheory.BCT.IsHecke K f) (hg : GlobalTheory.BCT.IsHecke K g) :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.cv K f g = Formalism.UG.conv K f g := by
@@ -17,11 +22,17 @@ private theorem cv_eq_conv {G : Type} [Group G] [TopologicalSpace G] (K : Subgro
     Subgroup.relIndex_self, Nat.cast_one, inv_one, one_mul]
   rfl
 
+/- English proof (translation)
+Introduce `a b x`. Rewrite using `[(hf.2 b b.2 _).2, (hf.2 a a.2 x).1]`.
+-/
 private theorem biInv_of_hecke {G : Type} [Group G] [TopologicalSpace G] {K : Subgroup G} {f : G → ℂ}
     (hf : GlobalTheory.BCT.IsHecke K f) : Formalism.UG.IsBiInv K f := by
   intro a b x
   rw [(hf.2 b b.2 _).2, (hf.2 a a.2 x).1]
 
+/- English proof (translation)
+Rewrite using `[cv_eq_conv _ hf hg, cv_eq_conv _ hg hf]`. Conclude with `Formalism.UG.P.heckecomm_gelfand (GlobalTheory.LFun.KGL w n) Formalism.UG.P.heckecomm_tr Formalism.UG.P.heckecomm_tr_mul Formalism.UG.P.heckecomm_tr_tr (fun x hx => Formalism.UG.P.heckecomm_tr_mem _ x hx) (Formalism.UG.P.heckecomm_tr_dc Formalism.UG.P.cartan_decomposition_holds E …`.
+-/
 private theorem cv_comm {E : Type} [Field E] [NumberField E] (n : ℕ) (w : GlobalTheory.BCT.Pl E)
     {f g : GlobalTheory.BCT.GLw n w → ℂ} (hf : GlobalTheory.BCT.IsHecke (GlobalTheory.LFun.KGL w n) f)
     (hg : GlobalTheory.BCT.IsHecke (GlobalTheory.LFun.KGL w n) g) :
@@ -31,6 +42,11 @@ private theorem cv_comm {E : Type} [Field E] [NumberField E] (n : ℕ) (w : Glob
     Formalism.UG.P.heckecomm_tr_tr (fun x hx => Formalism.UG.P.heckecomm_tr_mem _ x hx)
     (Formalism.UG.P.heckecomm_tr_dc Formalism.UG.P.cartan_decomposition_holds E w n) f g (biInv_of_hecke hf) (biInv_of_hecke hg)
 
+/- English proof (translation)
+Introduce `hCv E _ _ _ n w V _ _ ρ f g hf hg x hx`. Take `⟨hKo, hKc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n`. Establish `h₁` using `(hCv _ _ hKo hKc V ρ f g hf hg x hx).1`. Establish `h₂` using `(hCv _ _ hKo hKc V ρ g f hg hf x hx).1`. Rewrite `h₁` using `[cv_comm n w hf hg]`.
+
+Conclude with `h₁.symm.trans h₂`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.sphOp_pf :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.CvOp → SphOp := by
   intro hCv E _ _ _ n w V _ _ ρ f g hf hg x hx

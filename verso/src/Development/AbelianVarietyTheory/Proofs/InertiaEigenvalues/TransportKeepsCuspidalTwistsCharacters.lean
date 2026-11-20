@@ -24,16 +24,25 @@ namespace GlobalTheory.LocLanglands.TransportGL
 variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun _ _ => i.apply_symm_apply _)`.
+-/
 theorem map_map_symm (i : k ≃+* k') {n : ℕ} (g : GL (Fin n) k') :
     GeneralLinearGroup.map i.toRingHom (GeneralLinearGroup.map i.symm.toRingHom g) = g :=
   Units.ext (Matrix.ext fun _ _ => i.apply_symm_apply _)
 
+/- English proof (translation)
+Use `ext`. Simplify using `[GeneralLinearGroup.val_det_apply, RingHom.map_det]`.
+-/
 theorem det_map (i : k ≃+* k') {n : ℕ} (g : GL (Fin n) k) :
     GeneralLinearGroup.det (GeneralLinearGroup.map i.toRingHom g) =
       Units.map i.toRingHom.toMonoidHom (GeneralLinearGroup.det g) := by
   ext
   simp [GeneralLinearGroup.val_det_apply, RingHom.map_det]
 
+/- English proof (translation)
+The claim follows from `and_congr Iff.rfl ⟨isCuspidal_of_equiv (equivRep π).symm, isCuspidal_of_equiv (equivRep π)⟩`.
+-/
 theorem isCusp_cls {n : ℕ} (π : IrrRep (GL (Fin n) k)) : (cls π).IsCusp ↔ 0 < n ∧ IsCuspidal π.ρ :=
   and_congr Iff.rfl ⟨isCuspidal_of_equiv (equivRep π).symm, isCuspidal_of_equiv (equivRep π)⟩
 
@@ -44,12 +53,18 @@ def transEquiv (i : k ≃+* k') {n : ℕ} (π : IrrRep (GL (Fin n) k)) (π' : Ir
     show e (π.ρ (GeneralLinearGroup.map i.symm.toRingHom g) v) = π'.ρ g (e v)
     rw [he, map_map_symm]
 
+/- English proof (translation)
+Introduce `g w` and use `by apply e.injective rw [e.apply_symm_apply, he, e.apply_symm_apply, map_map_symm]`.
+-/
 theorem symm_rel (i : k ≃+* k') {n : ℕ} (π : IrrRep (GL (Fin n) k)) (π' : IrrRep (GL (Fin n) k'))
     (e : π.V ≃ₗ[ℂ] π'.V) (he : ∀ g v, e (π.ρ g v) = π'.ρ (GeneralLinearGroup.map i.toRingHom g) (e v)) :
     ∀ g w, e.symm (π'.ρ g w) = π.ρ (GeneralLinearGroup.map i.symm.toRingHom g) (e.symm w) := fun g w => by
   apply e.injective
   rw [e.apply_symm_apply, he, e.apply_symm_apply, map_map_symm]
 
+/- English proof (translation)
+Use `⟨n, irrTwist π _ hχ.detChar, irrTwist π' _ hχ'.detChar, e, congrArg (Sigma.mk n) (clTwist_cl π _ hχ.detChar), congrArg (Sigma.mk n) (clTwist_cl π' _ hχ'.detChar), fun g (v : π.V) => ?_⟩` and prove the remaining obligations. Use `show e (twist π.ρ (detChar _ χ) g v) = twist π'.ρ (detChar _ χ') (GeneralLinearGroup.map i.toRingHom g) (e v)`. Rewrite using `[twist_apply, twist_apply, map_smul, he, detChar_apply, detChar_apply, det_map, hc]`.
+-/
 theorem repRel_tw (i : k ≃+* k') {n : ℕ} (π : IrrRep (GL (Fin n) k)) (π' : IrrRep (GL (Fin n) k'))
     (e : π.V ≃ₗ[ℂ] π'.V) (he : ∀ g v, e (π.ρ g v) = π'.ρ (GeneralLinearGroup.map i.toRingHom g) (e v))
     (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (χ' : k'ˣ →* ℂˣ) (hχ' : IsSmoothChar χ')
@@ -64,6 +79,11 @@ end GlobalTheory.LocLanglands.TransportGL
 
 open GlobalTheory.LocLanglands.TransportGL in
 
+/- English proof (translation)
+Introduce `k k' _ _ _ _ _ _ _ _ _ _ i hi`. Establish `hs` using `GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation k k' i hi`. Use `⟨fun x x' ⟨n, π, π', e, hx, hx', he⟩ => ?_, fun χ hχ χ' hχ' hc => ?_⟩` and prove the remaining obligations. Substitute `hx hx'` using the available equality. Use `⟨?_, fun s => repRel_tw i π π' e he _ _ _ _ (hs.2.2.2.2 s)⟩` and prove the remaining obligations.
+
+Rewrite using `[isCusp_cls, isCusp_cls]`. Use `and_congr Iff.rfl ⟨fun h => isCuspidal_of_equiv (transEquiv i π π' e he) (isCuspidal_comp_generalLinearGroupMap i hs.1 _ h), fun h => isCuspidal_of_equiv (transEquiv i.symm π' π e.symm (symm_rel i π π' e he)) (isCuspidal_comp_generalLinearGroupMap i.symm hi _ h)⟩` and prove the remaining obligations. Use `⟨1, IrrRep.det (Fin 1) χ hχ, IrrRep.det (Fin 1) χ' hχ', LinearEquiv.refl ℂ ℂ, rfl, rfl, fun g (v : ℂ) => ?_⟩ show twist (Representation.trivial ℂ (GL (Fin 1) k) ℂ) (detChar (Fin 1) χ) g v = twist (Representation.trivial ℂ (GL (Fin 1) k') ℂ) (detChar (Fin 1) χ') (GeneralLinearGrou …` and prove the remaining obligations. Rewrite using `[twist_apply, twist_apply, detChar_apply, detChar_apply, TransportGL.det_map, hc]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.LocLanglands.repRel_isCusp_nu_ofChar : ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] [CharZero k'] (i : k ≃+* k'), Continuous i → (∀ (x : IrrGL k) (x' : IrrGL k'), RepRel i x x' → (x.IsCusp ↔ x'.IsCusp) ∧ ∀ s : ℂ, RepRel i (x.nu s) (x'.nu s)) ∧ ∀ (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (χ' : k'ˣ →* ℂˣ) (hχ' : IsSmoothChar χ'), (∀ x, χ' (Units.map i.toRingHom.toMonoidHom x) = χ x) → RepRel i (IrrGL.ofChar χ hχ) (IrrGL.ofChar χ' hχ') := by
   intro k k' _ _ _ _ _ _ _ _ _ _ i hi
   have hs := GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation k k' i hi

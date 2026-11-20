@@ -18,14 +18,23 @@ section Mat
 
 variable {n : ℕ} {K : Type*} [Field K] [StarRing K]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => (h i j).1 hij)]`. Conclude with `Finset.prod_eq_one fun i _ => (h i i).2 rfl`.
+-/
 theorem det_upUni {N : Matrix (Fin n) (Fin n) K} (h : IsUpUni N) : N.det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j hij => (h i j).1 hij)]
   exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular L (fun i j hij => (h i j).1 (OrderDual.toDual_lt_toDual.1 hij))]`. Conclude with `Finset.prod_eq_one fun i _ => (h i i).2 rfl`.
+-/
 theorem det_loUni {L : Matrix (Fin n) (Fin n) K} (h : IsLoUni L) : L.det = 1 := by
   rw [Matrix.det_of_lowerTriangular L (fun i j hij => (h i j).1 (OrderDual.toDual_lt_toDual.1 hij))]
   exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
 
+/- English proof (translation)
+Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.conjTranspose_apply, (h j i).1 hij]`. Substitute `hij` using the available equality. Simplify using `[Matrix.conjTranspose_apply, (h i i).2 rfl]`.
+-/
 theorem loUni_conjTranspose {N : Matrix (Fin n) (Fin n) K} (h : IsUpUni N) : IsLoUni N.conjTranspose := by
   intro i j
   refine ⟨fun hij => ?_, fun hij => ?_⟩
@@ -36,6 +45,9 @@ theorem loUni_conjTranspose {N : Matrix (Fin n) (Fin n) K} (h : IsUpUni N) : IsL
 def unitOf (A : Matrix (Fin n) (Fin n) K) (h : A.det = 1) : Matrix.GeneralLinearGroup (Fin n) K :=
   Matrix.nonsingInvUnit A (by rw [h]; exact isUnit_one)
 
+/- English proof (translation)
+Simplify using `[mul_inv_rev, mul_assoc]`.
+-/
 theorem conj_key (l1 l2 v : Matrix.GeneralLinearGroup (Fin n) K) (X : Matrix (Fin n) (Fin n) K) :
     ((l2⁻¹ * v⁻¹ * l1 : Matrix.GeneralLinearGroup (Fin n) K) : Matrix (Fin n) (Fin n) K) *
         ((l1⁻¹ : Matrix.GeneralLinearGroup (Fin n) K) * X * (l1 : Matrix (Fin n) (Fin n) K)) *
@@ -45,6 +57,9 @@ theorem conj_key (l1 l2 v : Matrix.GeneralLinearGroup (Fin n) K) (X : Matrix (Fi
         (l2 : Matrix (Fin n) (Fin n) K) := by
   simp [mul_inv_rev, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[mul_inv_rev, mul_assoc]`.
+-/
 theorem conj_key' (l1 l2 v : Matrix.GeneralLinearGroup (Fin n) K) (X : Matrix (Fin n) (Fin n) K) :
     (((l2⁻¹ * v⁻¹ * l1)⁻¹ : Matrix.GeneralLinearGroup (Fin n) K) : Matrix (Fin n) (Fin n) K) *
         ((l2⁻¹ : Matrix.GeneralLinearGroup (Fin n) K) * X * (l2 : Matrix (Fin n) (Fin n) K)) *

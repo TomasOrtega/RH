@@ -10,6 +10,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.TwU.AtTrue
 
+/- English proof (translation)
+Introduce `B X I _ _ l Z l0 u`. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `x`. Establish `h` using `(l0 u I.mu0).choose_spec.2 x`. Rewrite `h` using `[stepZeroTwist_reference_tuple_eq_id l u]`.
+
+Conclude with `(I.fm l u I.mu0).emb_inj 0 h`.
+-/
 theorem stepZeroFormIdentification_refTuple_eq_id : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (l0 : I.Law0 l) (u : B.Word), (I.tw l l0 Z).e0 u (I.rec7 l Z).what₂.mu0 = (I.tw l l0 Z).eMu0 u 0 (Nat.zero_le _) := by
   intro B X I _ _ l Z l0 u
   apply LinearEquiv.ext

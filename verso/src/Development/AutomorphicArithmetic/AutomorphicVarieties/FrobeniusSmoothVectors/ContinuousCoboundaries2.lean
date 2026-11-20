@@ -103,6 +103,9 @@ def chRep {k G : Type} [CommRing k] [Group G] (χ : G →* kˣ) : Representation
   map_one' := by ext; simp
   map_mul' g h := by ext; simp [mul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem chRep_apply {k G : Type} [CommRing k] [Group G] (χ : G →* kˣ) (g : G) (x : k) :
     chRep χ g x = χ g * x := rfl
 

@@ -5,6 +5,35 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ σ hσ ε hε hσε n C D hCD hrk`. Take `⟨U, P, e, hU, hP, he, hE⟩` from `GlobalTheory.T.exists_rank_normal_form_matrix_field k n C`. Establish `hmul : ∀ A B : Matrix (Fin n) (Fin n) k, ((A * B).map σ)ᵀ = (B.map σ)ᵀ * (A.map σ)ᵀ`. Introduce `A B`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+
+Establish `hinv : ∀ A : Matrix (Fin n) (Fin n) k, (((A.map σ)ᵀ).map σ)ᵀ = A`. Introduce `A`. Use extensionality with `i j`. Simplify using `[hσ]`. Establish `hone : (((1 : Matrix (Fin n) (Fin n) k).map σ)ᵀ) = 1`.
+
+Rewrite using `[Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]`. Establish `hPu : IsUnit P.det` using `isUnit_iff_ne_zero.mpr hP`. Establish `hUu : IsUnit U.det` using `isUnit_iff_ne_zero.mpr hU`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hPu`. Establish `h2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hPu`.
+
+Establish `h3 : U * U⁻¹ = 1` using `Matrix.mul_nonsing_inv U hUu`. Use `set E : Matrix (Fin n) (Fin n) k := Matrix.diagonal e with hEdef`. Establish `hEE : E * E = E`. Rewrite using `[hEdef, Matrix.diagonal_mul_diagonal]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases he i with h | h <;> simp [h]`. Establish `hEs : (E.map σ)ᵀ = E`. Rewrite using `[hEdef, Matrix.diagonal_map (map_zero σ), Matrix.diagonal_transpose]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases he i with h | h <;> simp [h]`. Use `set Q : Matrix (Fin n) (Fin n) k := (P⁻¹.map σ)ᵀ with hQ`. Use `set Ps : Matrix (Fin n) (Fin n) k := (P.map σ)ᵀ with hPs`. Establish `hPQ : Ps * Q = 1` using `by rw [hPs, hQ, ← hmul, h2, hone]`.
+
+Establish `hQP : Q * Ps = 1` using `by rw [hPs, hQ, ← hmul, h1, hone]`. Establish `hQs : (Q.map σ)ᵀ = P⁻¹` using `hinv _`. Establish `hE' : E = Ps * ((C.map σ)ᵀ * (U.map σ)ᵀ)`. Rewrite using `[← hEs, ← hE, hmul, hmul]`. Establish `hA : E * ((U * D * Q).map σ)ᵀ = U * (C * (D.map σ)ᵀ) * (U.map σ)ᵀ`.
+
+Rewrite using `[hmul, hmul, hQs, ← hE]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P, h1, Matrix.one_mul]`. Establish `hB : U * D * Q * E = U * (D * (C.map σ)ᵀ) * (U.map σ)ᵀ`. Rewrite using `[hE']`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Q, hQP, Matrix.one_mul]`. Establish `hsum : E * ((U * D * Q).map σ)ᵀ + U * D * Q * E = 0`. Rewrite using `[hA, hB, ← Matrix.add_mul, ← Matrix.mul_add, hCD, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hrk' : ∀ a : Fin n → k, a ᵥ* E = 0 → a ᵥ* (U * D * Q) = 0 → a = 0`.
+
+Introduce `a ha hb`. Establish `e1 : U * C = E * P⁻¹`. Rewrite using `[← hE, Matrix.mul_assoc, h1, Matrix.mul_one]`. Establish `e2 : U * D = (U * D * Q) * Ps`. Rewrite using `[Matrix.mul_assoc, hQP, Matrix.mul_one]`.
+
+Establish `h0 : a ᵥ* U = 0`. Apply `hrk` to reduce the goal to its premises. Rewrite using `[Matrix.vecMul_vecMul, e1, ← Matrix.vecMul_vecMul, ha, Matrix.zero_vecMul]`. Rewrite using `[Matrix.vecMul_vecMul, e2, ← Matrix.vecMul_vecMul, hb, Matrix.zero_vecMul]`. Establish `: a ᵥ* (U * U⁻¹) = 0`.
+
+Rewrite using `[← Matrix.vecMul_vecMul, h0, Matrix.zero_vecMul]`. Rewrite `this` using `[h3, Matrix.vecMul_one]`. Then use the resulting hypothesis. Take `⟨V', hV', hdet⟩` from `GlobalTheory.T.exists_skewHermitian_det_mul_add_ne_zero_of_idempotent k σ hσ ε hε hσε n E (U * D * Q) hEE hEs hsum hrk'`. Use `⟨P * V' * Ps, ?_, ?_⟩` and prove the remaining obligations. Establish `hPss : (Ps.map σ)ᵀ = P` using `hinv _`.
+
+Rewrite using `[hmul, hmul, hV', hPss, ← hPs]`. Simplify using `[Matrix.mul_assoc]`. Introduce `h`. Apply `hdet` to reduce the goal to its premises. Establish `: E * V' + U * D * Q = U * (C * (P * V' * Ps) + D) * Q`.
+
+Rewrite using `[← hE, Matrix.mul_add, Matrix.add_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hPQ, Matrix.mul_one]`. Rewrite using `[this, Matrix.det_mul, Matrix.det_mul, h, mul_zero, zero_mul]`.
+-/
 theorem exists_skewHermitian_mul_add_det_ne_zero_of_pair :
     ∀ (k : Type) [Field k] (σ : k →+* k), (∀ x, σ (σ x) = x) → ∀ ε : k, ε ≠ 0 → σ ε = -ε →
     ∀ (n : ℕ) (C D : Matrix (Fin n) (Fin n) k), C * (D.map σ)ᵀ + D * (C.map σ)ᵀ = 0 →

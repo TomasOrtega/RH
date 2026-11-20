@@ -18,6 +18,13 @@ section Gen
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Introduce `F hF ε hε`. Take `⟨c, -, hc1, hcF⟩` from `h F (Set.subset_univ _) ε hε`. Use `⟨c.mapDomain φ, ?_, fun x => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support (Finset.mem_coe.1 hx))`.
+
+Conclude with `hφ a`. Rewrite using `[Finsupp.mapDomain, Finsupp.sum_apply, Finsupp.sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs`.
+
+Use `exacts [hc1 a, by simp]`. Rewrite using `[Finsupp.sum_mapDomain_index (by simp) (by intros; ring), hJ m (hF hm)]`. Simplify `hcF m hm` using `only [ht _ m (hF hm)]`.
+-/
 theorem clo_push {H H' I : Type} {G : H → I → ℂ_[p]} {J J' : I → ℂ_[p]} (h : InIntClosure Set.univ G Set.univ J)
     (φ : H → H') {Sup : Set H'} {tab : H' → I → ℂ_[p]} {M : Set I} (hφ : ∀ a, φ a ∈ Sup)
     (ht : ∀ a, ∀ i ∈ M, G a i = tab (φ a) i) (hJ : ∀ i ∈ M, J' i = J i) : InIntClosure Sup tab M J' := by
@@ -36,6 +43,9 @@ theorem clo_push {H H' I : Type} {G : H → I → ℂ_[p]} {J J' : I → ℂ_[p]
   · rw [Finsupp.sum_mapDomain_index (by simp) (by intros; ring), hJ m (hF hm)]
     simpa only [ht _ m (hF hm)] using hcF m hm
 
+/- English proof (translation)
+Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).2 fun a => ?_)` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds a one_pos] with x hx`. Use `congr 1`. Rewrite using `[← sub_eq_zero, ← map_sub, ← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Simplify `hx` using `[dist_eq_norm]`.
+-/
 theorem continuous_toZMod_comp {Y : Type} [TopologicalSpace Y] (f : ZMod p → Y) :
     Continuous fun a : ℤ_[p] => f (PadicInt.toZMod a) := by
   refine IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).2 fun a => ?_)
@@ -44,6 +54,11 @@ theorem continuous_toZMod_comp {Y : Type} [TopologicalSpace Y] (f : ZMod p → Y
   rw [← sub_eq_zero, ← map_sub, ← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]
   simpa [dist_eq_norm] using hx
 
+/- English proof (translation)
+Use `letI : TopologicalSpace ℕ := ⊥`. Use `haveI : DiscreteTopology ℕ := ⟨rfl⟩`. Use `⟨⟨fun a => f fun i => (PadicInt.toZMod (a i)).val, ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Conclude with `(continuous_of_discreteTopology (f := f)).comp (continuous_pi fun i => (continuous_toZMod_comp (fun z : ZMod p => z.val)).comp (continuous_apply i))`. Simplify using `only [ContinuousMap.coe_mk, map_natCast, ZMod.val_natCast]`.
+
+Rewrite using `[← hf _ fun i => a i / p]`. Simplify using `only [Nat.mod_add_div]`.
+-/
 theorem exists_cont {r : ℕ} (f : (Fin r → ℕ) → ℂ_[p]) (hf : ∀ a c : Fin r → ℕ, f (fun i => a i + p * c i) = f a) :
     ∃ g : C(Fin r → ℤ_[p], ℂ_[p]), ∀ a : Fin r → ℕ, g (fun i => (a i : ℤ_[p])) = f a := by
   letI : TopologicalSpace ℕ := ⊥
@@ -57,23 +72,38 @@ theorem exists_cont {r : ℕ} (f : (Fin r → ℕ) → ℂ_[p]) (hf : ∀ a c : 
 
 variable (lam : TaylorLogMetric.Qbar →+* ℂ_[p])
 
+/- English proof (translation)
+The claim follows from `dif_pos x.2`.
+-/
 theorem lamC_coe (x : TaylorLogMetric.Qbar) : TaylorLogMetric.lamC lam (x : ℂ) = lam x := dif_pos x.2
 
+/- English proof (translation)
+Use `lamC_coe lam (⟨x, hx⟩ * ⟨y, hy⟩)` as an intermediate fact. Rewrite `this` using `[map_mul, ← lamC_coe, ← lamC_coe]`. Conclude with `this`.
+-/
 theorem lamC_mul {x y : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (hy : y ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam (x * y) = TaylorLogMetric.lamC lam x * TaylorLogMetric.lamC lam y := by
   have := lamC_coe lam (⟨x, hx⟩ * ⟨y, hy⟩)
   rw [map_mul, ← lamC_coe, ← lamC_coe] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom σ.toRatAlgHom)`.
+-/
 theorem emb_mem {E : Type} [Field E] [NumberField E] (σ : E →+* ℂ) (x : E) : σ x ∈ TaylorLogMetric.Qbar :=
   mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom σ.toRatAlgHom)
 
 def lamHom {E : Type} [Field E] [NumberField E] (σ : E →+* ℂ) : E →+* ℂ_[p] :=
   lam.comp (σ.codRestrict TaylorLogMetric.Qbar (emb_mem σ))
 
+/- English proof (translation)
+The claim follows from `dif_pos (emb_mem σ x)`.
+-/
 theorem lamHom_apply {E : Type} [Field E] [NumberField E] (σ : E →+* ℂ) (x : E) :
     TaylorLogMetric.lamC lam (σ x) = lamHom lam σ x := dif_pos (emb_mem σ x)
 
+/- English proof (translation)
+Establish `hx : IsIntegral ℤ (ψ (a : E))` using `by convert map_isIntegral_int ψ a.isIntegral_coe using 1; exact Subsingleton.elim _ _`. Establish `h : ψ (a : E) ∈ (NormedField.valuation (K` using `ℂ_[p])).integer := (Valuation.integer.integers (NormedField.valuation (K := ℂ_[p]))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem norm_int_le {E : Type} [Field E] [NumberField E] (ψ : E →+* ℂ_[p]) (a : 𝓞 E) : ‖ψ (a : E)‖ ≤ 1 := by
   have hx : IsIntegral ℤ (ψ (a : E)) := by convert map_isIntegral_int ψ a.isIntegral_coe using 1; exact Subsingleton.elim _ _
   have h : ψ (a : E) ∈ (NormedField.valuation (K := ℂ_[p])).integer :=
@@ -81,6 +111,17 @@ theorem norm_int_le {E : Type} [Field E] [NumberField E] (ψ : E →+* ℂ_[p]) 
   rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `hc`. Establish `h1 : ψ u * ψ x + ψ v * ψ y = 1`. Use `congrArg (fun z : 𝓞 E => ψ (z : E)) huv` as an intermediate fact. Simplify using `using this`. Establish `h2 : ψ x * ψ y = p`.
+
+Use `congrArg (fun z : 𝓞 E => ψ (z : E)) h` as an intermediate fact. Simplify using `using this`. Establish `hy : 1 ≤ ‖ψ y‖`. Assume the negation of the conclusion as `hn`. Establish `h3` using `IsUltrametricDist.norm_add_le_max (ψ u * ψ x) (ψ v * ψ y)`.
+
+Rewrite `h3` using `[h1, norm_one, norm_mul, norm_mul]`. Use `absurd h3 (not_le.2 (max_lt ?_ ?_))` and prove the remaining obligations. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (norm_int_le ψ u) (norm_nonneg _) hx`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (norm_int_le ψ v) (norm_nonneg _) (not_le.1 hn)`. Establish `hp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`.
+
+Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]`. Establish `h4 : ‖ψ x‖ ≤ (p : ℝ)⁻¹`. Rewrite using `[← hp, ← h2, norm_mul]`. Conclude with `le_mul_of_one_le_right (norm_nonneg _) hy`. Rewrite using `[map_pow, norm_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_sq_le {E : Type} [Field E] [NumberField E] (ψ : E →+* ℂ_[p]) (x y : 𝓞 E) (h : x * y = (p : 𝓞 E))
     (hc : IsCoprime x y) (hx : ‖ψ (x : E)‖ < 1) : ‖ψ ((x : E) ^ 2)‖ ≤ (p : ℝ) ^ (-(2 * (1 : ℕ) : ℤ)) := by
   obtain ⟨u, v, huv⟩ := hc
@@ -106,11 +147,24 @@ theorem norm_sq_le {E : Type} [Field E] [NumberField E] (ψ : E →+* ℂ_[p]) (
   calc _ ≤ ((p : ℝ)⁻¹) ^ 2 := pow_le_pow_left₀ (norm_nonneg _) h4 2
     _ = _ := by simp [zpow_ofNat]
 
+/- English proof (translation)
+The claim follows from `(continuous_algebraMap ℚ_[p] ℂ_[p]).comp continuous_subtype_val`.
+-/
 theorem continuous_zc : Continuous (TaylorLogMetric.zc (p := p)) :=
   (continuous_algebraMap ℚ_[p] ℂ_[p]).comp continuous_subtype_val
 
+/- English proof (translation)
+Simplify using `[TaylorLogMetric.zc]`.
+-/
 theorem zc_nat (n : ℕ) : TaylorLogMetric.zc (p := p) (n : ℤ_[p]) = n := by simp [TaylorLogMetric.zc]
 
+/- English proof (translation)
+Establish `hodd : Odd p` using `(Fact.out : p.Prime).odd_of_ne_two hp`. Rewrite using `[TaylorLogMetric.wPh, if_neg hp]`. Take `⟨k, m, h1, h2⟩` from `Classical.epsilon_spec (p := fun s : ℂ => ∃ (k : ℕ) (m : ℤ), (p : ℝ) ^ k * TaylorLogMetric.qH D T x = (m : ℝ) ∧ s = (-1 : ℂ) ^ m) ⟨_, 0, n, by simp [hn], rfl⟩`. Rewrite using `[h2]`. Establish `h3 : m = ((p ^ k : ℕ) : ℤ) * n`.
+
+Rewrite `h1` using `[hn]`. Conclude with `h1.symm` after adjusting the coercions. Rewrite using `[h3, zpow_mul, zpow_natCast, hodd.pow.neg_one_pow, ← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wPh_eq {D : D7} (T : TaylorLogMetric.Tor D) {N N' : ℕ} (hp : p ≠ 2) (x : TaylorLogMetric.VC D N N') (n : ℤ) (hn : TaylorLogMetric.qH D T x = n) :
     TaylorLogMetric.wPh D T p x = Complex.exp ((Real.pi : ℂ) * Complex.I * ((n : ℝ) : ℂ)) := by
   have hodd : Odd p := (Fact.out : p.Prime).odd_of_ne_two hp
@@ -131,14 +185,25 @@ section Rat
 
 variable {X : Fields} (A : Amb X) {a b : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)}
 
+/- English proof (translation)
+Establish `h` using `(Heis.calculus X A a b).2.2.1 x x`. Rewrite using `[coc, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem q_eq_coc (x : HomE X.E a b) : Real.sqrt A.d / 2 * (HV A.sc (emb A x) (emb A x)).re = coc A x x := by
   have h := (Heis.calculus X A a b).2.2.1 x x
   rw [coc, h]; ring
 
+/- English proof (translation)
+Rewrite using `[← q_eq_coc]`. Both sides reduce to the same expression.
+-/
 theorem alV_eq (x : HomE X.E a b) :
     alV A.d A.sc (emb A x) = Complex.exp ((Real.pi : ℂ) * Complex.I * (coc A x x : ℂ)) := by
   rw [← q_eq_coc]; rfl
 
+/- English proof (translation)
+Establish `h : ∀ z : HomE X.E a b, emb A ((n : X.E) • z) = (n : ℂ) • emb A z` using `fun z => by`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Conclude with `map_nsmul _ _ _`. Establish `h2 : HV A.sc ((n : ℂ) • emb A x) ((n : ℂ) • emb A y) = (((n : ℝ) ^ 2 : ℝ) : ℂ) * HV A.sc (emb A x) (emb A y)`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, map_natCast]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [coc, imH, altE, h, h2, Complex.re_ofReal_mul, Complex.im_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coc_nat (n : ℕ) (x y : HomE X.E a b) : coc A ((n : X.E) • x) ((n : X.E) • y) = (n : ℝ) ^ 2 * coc A x y := by
   have h : ∀ z : HomE X.E a b, emb A ((n : X.E) • z) = (n : ℂ) • emb A z := fun z => by
     rw [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]; exact map_nsmul _ _ _
@@ -151,10 +216,18 @@ theorem coc_nat (n : ℕ) (x y : HomE X.E a b) : coc A ((n : X.E) • x) ((n : X
 variable (hX : X.Ok) (hδ : A.δ ≠ 0) (hL : LaFacts (X.embC A.σ₀) A.δ A.d A.sc A.AA N N')
 include hX hδ hL
 
+/- English proof (translation)
+The claim follows from `(CocInt.cocycle_integral X A a b N N' hX hδ hL).2.2 x y fun Q => ⟨1, one_ne_zero, by simpa using le_locP Q _ hx, by simpa using le_locP (conjPrime₂ Q) _ hy⟩`.
+-/
 theorem coc_int {x y : HomE X.E a b} (hx : x ∈ per A N N') (hy : y ∈ per A N N') : ∃ n : ℤ, coc A x y = n :=
   (CocInt.cocycle_integral X A a b N N' hX hδ hL).2.2 x y fun Q =>
     ⟨1, one_ne_zero, by simpa using le_locP Q _ hx, by simpa using le_locP (conjPrime₂ Q) _ hy⟩
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `coc_int A hX hδ hL ht ht`. Rewrite `hm` using `[coc_nat]`. Establish `hn' : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `h : coc A t t = -2 * ((-(m : ℚ) / (2 * (n : ℚ) ^ 2) : ℚ) : ℝ)` using `by push_cast; rw [← hm]; field_simp`. Use `(GlobalTheory.T.algebraicNumbers_padicPlaces_facts X.K p A.σ₀ ι).2.2 lam (-(m : ℚ) / (2 * (n : ℚ) ^ 2))` as an intermediate fact.
+
+Rewrite using `[alV_eq, h]`. Rewrite using `[show (Real.pi : ℂ) * Complex.I * ((-2 * ((-(m : ℚ) / (2 * (n : ℚ) ^ 2) : ℚ) : ℝ) : ℝ) : ℂ) = -(2 * (Real.pi : ℂ)) * Complex.I * (((-(m : ℚ) / (2 * (n : ℚ) ^ 2) : ℚ) : ℝ) : ℂ) by push_cast; ring]` and apply the resulting hypothesis.
+-/
 theorem al_unit {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (ι : X.K →+* ℂ_[p]) {t : HomE X.E a b} {n : ℕ} (hn : n ≠ 0)
     (ht : (n : X.E) • t ∈ per A N N') :
     alV A.d A.sc (emb A t) ∈ TaylorLogMetric.Qbar ∧ ‖TaylorLogMetric.lamC lam (alV A.d A.sc (emb A t))‖ = 1 := by
@@ -168,6 +241,13 @@ theorem al_unit {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[
   rwa [show (Real.pi : ℂ) * Complex.I * ((-2 * ((-(m : ℚ) / (2 * (n : ℚ) ^ 2) : ℚ) : ℝ) : ℝ) : ℂ) =
     -(2 * (Real.pi : ℂ)) * Complex.I * (((-(m : ℚ) / (2 * (n : ℚ) ^ 2) : ℚ) : ℝ) : ℂ) by push_cast; ring]
 
+/- English proof (translation)
+Take `⟨c1, c2, -⟩` from `CocInt.cocycle_integral X A a b N N' hX hδ hL`. Take `⟨-, -, -, h4, h5, -⟩` from `Heis.calculus X A a b`. Take `⟨n, hn⟩` from `(c2 w).1 hw _ hy`. Rewrite using `[h5, h5, (h4 _ _ _).2.2.1, (c1 _ _ _).2, star_natCast, hn]`. Use `push_cast`.
+
+Rewrite using `[mul_add, Complex.exp_add]`. Establish `: Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (n : ℂ)) = 1`. Rewrite using `[← Complex.exp_int_mul_two_pi_mul_I (-n)]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, mul_one]`.
+-/
 theorem brk_per {r : X.E} {k : ℕ} {y x w : HomE X.E a b} (hy : (k : X.E) • r • y ∈ per A N N') (hw : w ∈ per A N N') :
     brkE A (r • y) (x + (k : X.E) • w) = brkE A (r • y) x := by
   obtain ⟨c1, c2, -⟩ := CocInt.cocycle_integral X A a b N N' hX hδ hL
@@ -194,8 +274,14 @@ def mat : HomE X.E a b →+ Matrix (Fin b) (Fin a) D.host.E where
 
 def pu (z : VCx X.Tau a b) : TaylorLogMetric.VC D a b := fun τ => z (s.iT.symm τ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `[pu]`.
+-/
 theorem pu_iT (z : VCx X.Tau a b) : (fun τ => pu s z (s.iT τ)) = z := by funext τ; simp [pu]
 
+/- English proof (translation)
+Simplify using `only [map_sum, Nat.cast_smul_eq_nsmul, map_nsmul]`.
+-/
 theorem mat_sum {r : ℕ} (c : Fin r → ℕ) (β : Fin r → HomE X.E a b) :
     mat s (∑ i, (c i : X.E) • β i) = ∑ i, (c i : D.host.E) • mat s (β i) := by
   simp only [map_sum, Nat.cast_smul_eq_nsmul, map_nsmul]
@@ -203,6 +289,9 @@ theorem mat_sum {r : ℕ} (c : Fin r → ℕ) (β : Fin r → HomE X.E a b) :
 variable {s} (hs : s.Ok)
 include hs
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Use `hs.1 (s.iT.symm τ) (x (Pi.single j 1) i)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `congrArg (δ * ·) this`.
+-/
 theorem pu_emb (x : HomE X.E a b) :
     pu s (emb (ambOf s B χ cD) x) = δ • TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) (mat s x) := by
   funext τ i j
@@ -210,16 +299,27 @@ theorem pu_emb (x : HomE X.E a b) :
   rw [Equiv.apply_symm_apply] at this
   exact congrArg (δ * ·) this
 
+/- English proof (translation)
+Rewrite using `[(GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).2.2.1, pu_iT, pu_iT]`.
+-/
 theorem Hf_pu (z w : VCx X.Tau a b) :
     TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) (pu s z) (pu s w) = HV (ambOf s B χ cD).sc z w := by
   rw [(GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).2.2.1, pu_iT, pu_iT]
 
+/- English proof (translation)
+Rewrite using `[(GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).1, pu_iT]`. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem pu_mem {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)} {x : HomE X.E a b}
     (hx : x ∈ per (ambOf s B χ cD) N N') :
     pu s (emb (ambOf s B χ cD) x) ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (s.lat N) (s.lat N') := by
   rw [(GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).1, pu_iT]
   exact ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Rewrite `hm` using `[(GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).1]`. Take `⟨x, hx, h⟩` from `hm`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Establish `h1 : δ * s.σ₀ (X.emb τ (x (Pi.single j 1) i)) = δ * TaylorLogMetric.embT D (s.iT τ) (m i j)` using `congrFun (congrFun (congrFun h τ) i) j`.
+
+Rewrite `h1` using `[hs.1]`. Conclude with `(TaylorLogMetric.embT D (s.iT τ)).injective (mul_left_cancel₀ hδ h1)`.
+-/
 theorem exists_pt {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)} (hδ : δ ≠ 0) (τ : X.Tau)
     {m : Matrix (Fin b) (Fin a) D.host.E}
     (hm : δ • TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) m ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (s.lat N) (s.lat N')) :
@@ -232,6 +332,9 @@ theorem exists_pt {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.
   rw [hs.1] at h1
   exact (TaylorLogMetric.embT D (s.iT τ)).injective (mul_left_cancel₀ hδ h1)
 
+/- English proof (translation)
+Rewrite using `[pu_emb B χ cD hs, pu_emb B χ cD hs]`. Use function extensionality and compare the values at `τ i j`. Express the relevant statement in the definitionally equal form `δ * TaylorLogMetric.embT D τ (s.iE (r * x (Pi.single j 1) i)) = _ * (δ * TaylorLogMetric.embT D τ (s.iE (x (Pi.single j 1) i)))`. Rewrite using `[map_mul, map_mul, ← h, GlobalTheory.InducedType.restrict_K D τ κ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pu_emb_smul {r : X.E} {κ : D.host.K} (h : (κ : D.host.E) = s.iE r) (x : HomE X.E a b) :
     pu s (emb (ambOf s B χ cD) (r • x)) = D.host.φ₀ (κ : D.host.E) • pu s (emb (ambOf s B χ cD) x) := by
   rw [pu_emb B χ cD hs, pu_emb B χ cD hs]
@@ -240,6 +343,11 @@ theorem pu_emb_smul {r : X.E} {κ : D.host.K} (h : (κ : D.host.E) = s.iE r) (x 
   rw [map_mul, map_mul, ← h, GlobalTheory.InducedType.restrict_K D τ κ]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `h1 : TaylorLogMetric.wPh D (TaylorLogMetric.tor0 D cc δ) p (pu s (emb (ambOf s B χ cD) Y)) = alV (ambOf s B χ cD).d (ambOf s B χ cD).sc (emb (ambOf s B χ cD) Y)`. Rewrite using `[wPh_eq _ hp _ n, alV_eq, hn]`. Rewrite using `[TaylorLogMetric.qH, Hf_pu B χ cD hs, ← hn, ← q_eq_coc]`. Both sides reduce to the same expression.
+
+Establish `h2 : ∀ z w : VCx X.Tau a b, pu s z + pu s w = pu s (z + w)` using `fun _ _ => rfl`. Establish `h3 : ∀ z : VCx X.Tau a b, (ambOf s B χ cD).e a b N N' z = B.eNat χ a b (s.lat N) (s.lat N') (pu s z)` using `fun _ => rfl`. Simplify using `only [TaylorLogMetric.Wop, TaylorLogMetric.U, Wx, opU, h1, h2, h3, Hf_pu B χ cD hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Wx_Wx {p : ℕ} [Fact p.Prime] (hp : p ≠ 2) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
     (Y t : HomE X.E a b) (n : ℤ) (hn : coc (ambOf s B χ cD) Y Y = n) :
     Wx (ambOf s B χ cD) Y (Wx (ambOf s B χ cD) t ((ambOf s B χ cD).e a b N N')) = fun z =>
@@ -256,6 +364,13 @@ theorem Wx_Wx {p : ℕ} [Fact p.Prime] (hp : p ≠ 2) (N : Submodule (𝓞 X.E) 
   simp only [TaylorLogMetric.Wop, TaylorLogMetric.U, Wx, opU, h1, h2, h3, Hf_pu B χ cD hs]
   ring
 
+/- English proof (translation)
+Establish `hG : G = fun w => c⁻¹ * F fun τ => w (s.iT τ)`. Use function extensionality and compare the values at `w`. Establish `: pu s (fun τ => w (s.iT τ)) = w` using `by funext τ; simp [pu]`. Rewrite using `[h]`. Simplify using `only [this]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hG' : ∀ k : ℕ, ContDiff ℂ k G` using `fun k => by`. Rewrite using `[hG]`. Conclude with `contDiff_const.mul ((hF k).comp (contDiff_pi.2 fun τ => contDiff_apply ℂ _ (s.iT τ)))`. Establish `hG2 : ∀ k : ℕ, ContDiff ℂ k fun z : VCx X.Tau a b => G (pu s z)` using `fun k => (hG' k).comp (contDiff_pi.2 fun τ => contDiff_apply ℂ _ (s.iT.symm τ))`.
+
+Establish `h1` using `(Heis.calculus X (ambOf s B χ cD) a b).2.2.2.2.2.2.2 Unit {()} (fun _ => c) (fun _ z => G (pu s z)) (fun _ _ => hG2) m`. Simplify using `only [Finset.sum_singleton] at h1`. Rewrite using `[h, h1, jetC, ← (GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).2.2.2 G hG' m]`. Both sides reduce to the same expression.
+-/
 theorem jetC_pu (c : ℂ) (hc : c ≠ 0) (G : TaylorLogMetric.VC D a b → ℂ) (F : VCx X.Tau a b → ℂ) (hF : ∀ k : ℕ, ContDiff ℂ k F)
     (h : F = fun z => c * G (pu s z)) (m : DVar X.Tau a b →₀ ℕ) :
     jetC (ambOf s B χ cD).cD F m = c * ((m.prod fun k n => cD (s.iT k.1) ^ n) *
@@ -281,6 +396,11 @@ section Main
 
 variable {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p])
 
+/- English proof (translation)
+Set `f : Matrix (Fin N') (Fin N) D.host.E →+ D.host.K` to `AddMonoidHom.mk' (TaylorLogMetric.hYY D y) fun u v => by`. Simplify using `only [TaylorLogMetric.hYY, Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]`. Establish `h : TaylorLogMetric.hYY D y (∑ i, (c i : D.host.E) • b i) = ∑ i, (c i : D.host.K) * TaylorLogMetric.hYY D y (b i)`. Express the relevant statement in the definitionally equal form `f _ = ∑ i, (c i : D.host.K) * f (b i)`. Simplify using `only [map_sum, Nat.cast_smul_eq_nsmul, map_nsmul, nsmul_eq_mul]`.
+
+Rewrite using `[TaylorLogMetric.pairN, h]`. Simplify using `only [lamHom_apply, zc_nat]`. Use `push_cast`. Simplify using `only [map_sum, map_mul, map_natCast]`.
+-/
 theorem pairN_nat {D : D7} {N N' r : ℕ} (Ω : ℂ_[p]) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
     (y : Matrix (Fin N') (Fin N) D.host.E) (c : Fin r → ℕ) :
     TaylorLogMetric.pairN D lam Ω b y (fun i => (c i : ℤ_[p])) =
@@ -295,10 +415,18 @@ theorem pairN_nat {D : D7} {N N' r : ℕ} (Ω : ℂ_[p]) (b : Fin r → Matrix (
   push_cast
   simp only [map_sum, map_mul, map_natCast]
 
+/- English proof (translation)
+The claim follows from `continuous_const.mul (continuous_finset_sum _ fun i _ => (continuous_zc.comp (continuous_apply i)).mul continuous_const)`.
+-/
 theorem continuous_pairN {D : D7} {N N' r : ℕ} (Ω : ℂ_[p]) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
     (y : Matrix (Fin N') (Fin N) D.host.E) : Continuous (TaylorLogMetric.pairN D lam Ω b y) :=
   continuous_const.mul (continuous_finset_sum _ fun i _ => (continuous_zc.comp (continuous_apply i)).mul continuous_const)
 
+/- English proof (translation)
+Establish `h : (m.prod fun k n => f k ^ n) = ((m.prod fun k n => (⟨f k, hf k⟩ : TaylorLogMetric.Qbar) ^ n : TaylorLogMetric.Qbar) : ℂ)`. Simplify using `[Finsupp.prod]`. Use `⟨h ▸ Subtype.property _, ?_⟩` and prove the remaining obligations. Rewrite using `[h, lamC_coe, map_finsuppProd]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [map_pow, ← lamC_coe]`.
+-/
 theorem lamC_prod {κ : Type} (m : κ →₀ ℕ) (f : κ → ℂ) (hf : ∀ k, f k ∈ TaylorLogMetric.Qbar) :
     (m.prod fun k n => f k ^ n) ∈ TaylorLogMetric.Qbar ∧
       TaylorLogMetric.lamC lam (m.prod fun k n => f k ^ n) = m.prod fun k n => TaylorLogMetric.lamC lam (f k) ^ n := by
@@ -309,6 +437,9 @@ theorem lamC_prod {κ : Type} (m : κ →₀ ℕ) (f : κ → ℂ) (hf : ∀ k, 
   refine Finset.prod_congr rfl fun k _ => ?_
   simp only [map_pow, ← lamC_coe]
 
+/- English proof (translation)
+Establish `h : (m.prod fun _ n => (n.factorial : ℂ)) = ((m.prod fun _ n => (n.factorial : TaylorLogMetric.Qbar) : TaylorLogMetric.Qbar) : ℂ)`. Simplify using `[Finsupp.prod]`. Use `⟨h ▸ Subtype.property _, ?_⟩` and prove the remaining obligations. Rewrite using `[h, lamC_coe, map_finsuppProd]`. Simplify using `only [map_natCast]`.
+-/
 theorem lamC_fact {κ : Type} (m : κ →₀ ℕ) :
     (m.prod fun _ n => (n.factorial : ℂ)) ∈ TaylorLogMetric.Qbar ∧
       TaylorLogMetric.lamC lam (m.prod fun _ n => (n.factorial : ℂ)) = m.prod fun _ n => (n.factorial : ℂ_[p]) := by
@@ -320,10 +451,18 @@ theorem lamC_fact {κ : Type} (m : κ →₀ ℕ) :
 
 variable {D : D7} {X : Fields} {s : Seam D X} {a b : ℕ}
 
+/- English proof (translation)
+Introduce `v w h` and use `by obtain ⟨h1, h2⟩ := Prod.mk.inj h exact Prod.ext (s.iT.injective h1) h2`.
+-/
 theorem ren_inj : Function.Injective fun v : DVar X.Tau a b => (s.iT v.1, v.2) := fun v w h => by
   obtain ⟨h1, h2⟩ := Prod.mk.inj h
   exact Prod.ext (s.iT.injective h1) h2
 
+/- English proof (translation)
+Establish `h : Ω⁻¹ ^ (m.mapDomain fun v => (s.iT v.1, v.2)).degree = (m.mapDomain fun v => (s.iT v.1, v.2)).prod fun _ n => Ω⁻¹ ^ n`. Rewrite using `[Finsupp.prod, Finset.prod_pow_eq_pow_sum]`. Both sides reduce to the same expression. Rewrite using `[h, Finsupp.prod_mapDomain_index_inj ren_inj, Finsupp.prod_mapDomain_index_inj ren_inj, ptTab, ← Finsupp.prod_mul, ← Finsupp.prod_mul]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [adj_single, ← hι, hs.1, hs.2, ← mul_pow, div_eq_mul_inv, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem ptTab_eq (hs : s.Ok) {ι : X.K →+* ℂ_[p]} (hι : ∀ k, TaylorLogMetric.lamC lam (s.σ₀ k) = ι k) (c : X.Tau → ℂ_[p]) (Ω : ℂ_[p])
     (x : HomE X.E a b) (m : DVar X.Tau a b →₀ ℕ) :
     ptTab ι (fun τ => c τ / Ω) x m = (m.prod fun k n => c k.1 ^ n) *
@@ -339,6 +478,45 @@ theorem ptTab_eq (hs : s.Ok) {ι : X.K →+* ℂ_[p]} (hι : ∀ k, TaylorLogMet
   simp only [adj_single, ← hι, hs.1, hs.2, ← mul_pow, div_eq_mul_inv, mul_assoc]
   rfl
 
+/- English proof (translation)
+Introduce `D X s cc δ B χ cD p _ lam ι Ω ϖ a b hX hs _ hp2 hcc hι hcD hϖ hN hco hsm ha hb hLa hE hM N N' hN1 hN2 t ⟨n, hn, ht⟩`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨hδ, ⟨τ₀⟩, -, -, -, hLa⟩` from `hLa`. Establish `hL` using `(hLa N N' hN1 hN2).2`. Establish `hadm` using `(GlobalTheory.T.fieldIso_lattices_form_taylor_correspond D X s cc δ B χ cD a b hs).2.1 N N' ha hb hN1 hN2`.
+
+Establish `hn0 : n ≠ 0` using `by rintro rfl; exact hp.ne_one (by simpa using hn)`. Take `⟨N₀, hN₀, hM⟩` from `hM a b _ _ hadm (pu s (emb (ambOf s B χ cD) t)) ⟨n, Nat.pos_of_ne_zero hn0, hn, by`. Use `pu_mem B χ cD hs ht` as an intermediate fact. Rewrite using `[Nat.cast_smul_eq_nsmul, emb, map_nsmul] at this⟩` and apply the resulting hypothesis. Take `⟨r, bb, hbb⟩` from `GlobalTheory.T.admissible_lattice_basis_exists D cc δ p a b _ _ hp hcc hadm`.
+
+Take `⟨μ, hμ, hM⟩` from `hM r bb hbb`. Use `choose β hβ hβm using fun i => exists_pt B χ cD hs hδ τ₀ (hbb.2 i)`. Take `⟨hα, hα1⟩` from `al_unit (ambOf s B χ cD) hX hδ hL lam ι hn0 ht`. Use `set α := alV (ambOf s B χ cD).d (ambOf s B χ cD).sc (emb (ambOf s B χ cD) t) with hαd`. Establish `hα0 : α ≠ 0` using `Complex.exp_ne_zero _`.
+
+Establish `hcj : ((X.conjO ϖ : 𝓞 X.E) : X.E) = star (ϖ : X.E)` using `rfl`. Establish `hNE : (ϖ : X.E) * star (ϖ : X.E) = p`. Use `congrArg (fun z : 𝓞 X.E => (z : X.E)) hN` as an intermediate fact. Simplify `this` using `[← hcj]`. Establish `hpE : (p : X.E) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`.
+
+Establish `hϖ0 : (ϖ : X.E) ≠ 0` using `left_ne_zero_of_mul (hNE ▸ hpE)`. Establish `hϖ1 : star (ϖ : X.E) ≠ 0` using `right_ne_zero_of_mul (hNE ▸ hpE)`. Use `set v : X.E := (N₀ : X.E) * (star (ϖ : X.E) / (ϖ : X.E)) with hv`. Establish `hpv : (p : X.E) * v = ((N₀ * X.conjO ϖ ^ 2 : 𝓞 X.E) : X.E)`. Use `push_cast`.
+
+Express the relevant statement in the definitionally equal form `_ = _ * star (ϖ : X.E) ^ 2`. Rewrite using `[hv, ← hNE]`. Clear the denominators using the available nonvanishing facts. Establish `hvv : star v * v = ((N₀ ^ 2 : 𝓞 X.E) : X.E)`. Use `push_cast`.
+
+Rewrite using `[hv, star_mul, star_div₀, star_star, star_natCast]`. Clear the denominators using the available nonvanishing facts. Take `⟨κ, hκ⟩` from `(SplitK.splitk D X s (X.conjO ϖ) p hs fun τ τ' => by rw [hcj, hX.emb_star, hX.emb_star, hϖ τ τ']).1`. Take `⟨κ', hκ'⟩` from `(SplitK.splitk D X s ϖ p hs hϖ).1`. Establish `hgood : ∀ y ∈ per (ambOf s B χ cD) N N', pu s (emb (ambOf s B χ cD) (v • y)) ∈ goodLifts D (TaylorLogMetric.tor0 D cc δ) lam N₀ 1 (s.lat N) (s.lat N')` using `fun y hy => by`.
+
+Use `AddSubgroup.subset_closure ⟨κ ^ 2, ?_, _, pu_mem B χ cD hs hy, ?_⟩` and prove the remaining obligations. Establish `h1 : D.host.conj (((κ ^ 2 : 𝓞 D.host.K) : D.host.K) : D.host.E) = ((((κ' : D.host.K)) ^ 2 : D.host.K) : D.host.E)`. Use `push_cast`. Rewrite using `[map_pow, hκ, hκ', ← hs.2, hcj, star_star]`. Rewrite using `[h1, ← GlobalTheory.InducedType.restrict_K D (s.iT τ₀)]`.
+
+Use `push_cast`. Rewrite using `[hκ', ← map_pow, ← hs.1, hι]`. Conclude with `norm_sq_le (ι.comp (X.emb τ₀)) ϖ _ hN hco (hsm τ₀)`. Rewrite using `[pu_emb_smul B χ cD hs (κ := (κ : D.host.K) ^ 2 * N₀ / p)]`. Use `push_cast`.
+
+Simplify using the standard rewrite rules. Use `push_cast`. Rewrite using `[hκ, hcj, ← map_natCast s.iE N₀, ← map_natCast s.iE p, ← map_pow, ← map_mul, ← map_div₀, hv, ← hNE]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Establish `key : ∀ k : HomE X.E a b × (DVar X.Tau a b →₀ ℕ), ∃ g : C(Fin r → ℤ_[p], ℂ_[p]), k.1 ∈ per (ambOf s B χ cD) N N' → jetC (ambOf s B χ cD).cD (Wx (ambOf s B χ cD) (v • k.1) (Wx (ambOf s B χ cD) t ((ambOf s B χ cD).e a b N N'))) k.2 ∈ TaylorLogMetric.Qbar ∧ TaylorLogMetric.lamC lam …`. Introduce and unpack `⟨y, m⟩`. Distinguish the cases in `hy : y ∈ per (ambOf s B χ cD) N N'`. Use `swap`. Conclude with `⟨0, fun h => absurd h hy⟩`.
+
+Take `⟨hC, hJ⟩` from `hM 1 _ (hgood y hy)`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q : ℤ, coc (ambOf s B χ cD) (v • y) (v • y) = q := by`. Rewrite using `[((CocInt.cocycle_integral X _ a b N N' hX hδ hL).1 _ _ _).1, smul_smul, hvv]`. Conclude with `coc_int _ hX hδ hL hy (Submodule.smul_mem _ _ hy)`. Establish `h7` using `(Heis.calculus X (ambOf s B χ cD) a b).2.2.2.2.2.2.1`.
+
+Establish `hjet` using `jetC_pu B χ cD hs α hα0 _ _ (h7 _ _ (h7 _ _ (hE N N' hN1 hN2))) (Wx_Wx B χ cD hs hp2 N N' (v • y) t q hq) m`. Take `⟨g₀, hg₀⟩` from `exists_cont (p := p) (fun c : Fin r → ℕ => TaylorLogMetric.lamC lam (brkE (ambOf s B χ cD) (v • y) (∑ i, (c i : X.E) • β i))) fun c c' => by`. Establish `h1 : ∑ i, ((c i + p * c' i : ℕ) : X.E) • β i = ∑ i, (c i : X.E) • β i + (p : X.E) • ∑ i, (c' i : X.E) • β i`. Simplify using `only [Nat.cast_add, Nat.cast_mul, add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum]`. Rewrite using `[h1, brk_per _ hX hδ hL]`.
+
+Rewrite using `[smul_smul, hpv]`. Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (hβ i) _`.
+
+Take `⟨l, γ, yy, hγ1, hγ2⟩` from `GlobalTheory.MonoJet.monomial_eq_sum_jet D p a b lam (m.mapDomain fun v => (s.iT v.1, v.2))`. Set `G : Fin l → C(Fin r → ℤ_[p], ℂ_[p])` to `fun i => g₀ * ⟨fun c => ∏ j, TaylorLogMetric.pairN D lam Ω bb (yy i j) c, continuous_finset_prod _ fun j _ => continuous_pairN lam Ω bb _⟩`. Establish `hG` using `fun i => hJ _ (yy i) (G i) fun c => by`. Express the relevant statement in the definitionally equal form `g₀ _ * _ = _`. Rewrite using `[hg₀]`.
+
+Use `congr 2`. Rewrite using `[← funext hβm, ← mat_sum, ← pu_emb B χ cD hs, TaylorLogMetric.kap, Hf_pu B χ cD hs, brkE, brk, altE, neg_mul]`. Take `⟨c1, c2⟩` from `lamC_prod lam m (fun k => cD (s.iT k.1)) fun k => hcD _`. Take `⟨f1, f2⟩` from `lamC_fact lam m`. Use `⟨(m.prod fun k n => TaylorLogMetric.lamC lam (cD (s.iT k.1)) ^ n) • ∑ i, γ i • G i, fun _ => ⟨?_, ?_, fun c => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hjet]`. Conclude with `mul_mem hα (mul_mem c1 (mul_mem f1 (hC _)))`. Rewrite using `[hjet, lamC_mul lam hα (mul_mem c1 (mul_mem f1 (hC _))), lamC_mul lam c1 (mul_mem f1 (hC _)), lamC_mul lam f1 (hC _), c2, f2]`. Simplify using `only [map_smul, map_sum, smul_eq_mul, ← hG, ← hγ1, Finsupp.prod_mapDomain_index_inj ren_inj]`. Both sides reduce to the same expression.
+
+Rewrite using `[ptTab_eq lam hs hι, hγ2, mat_sum]`. Simplify using `only [G, hβm, ContinuousMap.smul_apply, ContinuousMap.sum_apply, ContinuousMap.mul_apply, ContinuousMap.coe_mk, hg₀, pairN_nat, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `choose g hg using key`. Use `⟨N₀, hN₀, fun y hy m => (hg (y, m) hy).1, ?_⟩` and prove the remaining obligations.
+
+Use `clo_congr (clo_mul (J := fun k => μ (g k)) ?_ (TaylorLogMetric.lamC lam α) hα1.le) subset_rfl subset_rfl fun k hk => (hg k hk).2.1` and prove the remaining obligations. Use `clo_push (Riemann.riemann_sums p r μ _ g hμ) (fun c => ∑ i, (c i : X.E) • β i) (fun c => ?_) (fun c k hk => (hg k hk).2.2 c) fun _ _ => rfl` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (hβ i) _`.
+-/
 theorem ptMom : ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (p : ℕ) [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (ι : X.K →+* ℂ_[p]) (Ω : ℂ_[p]) (ϖ : 𝓞 X.E) (a b : ℕ), X.Ok → s.Ok → TaylorLogMetric.IsCurveIdeal D cc → p ≠ 2 → Nat.Coprime (Ideal.absNorm cc) p → (∀ k, TaylorLogMetric.lamC lam (s.σ₀ k) = ι k) → (∀ τ, cD τ ∈ TaylorLogMetric.Qbar) → (ϖ : X.E) ∈ X.Kq → ϖ * X.conjO ϖ = (p : 𝓞 X.E) → IsCoprime ϖ (X.conjO ϖ) → (∀ τ, ‖ι (X.emb τ (ϖ : X.E))‖ < 1) → Even a → Even b → (ambOf s B χ cD).LaHyp a b ∅ → (ambOf s B χ cD).ESmooth a b → MomentsAt D cc δ (B.eNat χ) lam Ω → PtMom (ambOf s B χ cD) a b lam ι (fun τ => TaylorLogMetric.lamC lam (cD (s.iT τ)) / Ω) (star (ϖ : X.E) / (ϖ : X.E)) := by
   intro D X s cc δ B χ cD p _ lam ι Ω ϖ a b hX hs _ hp2 hcc hι hcD hϖ hN hco hsm ha hb hLa hE hM N N' hN1 hN2 t ⟨n, hn, ht⟩
   have hp : p.Prime := Fact.out

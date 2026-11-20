@@ -11,6 +11,15 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Introduce `F _ σ X e he f y hy hf`. Take `⟨W, ι, hι, g, Φ, O, hyW, hO, hgO, hΦ, hfeq⟩` from `hf`. Establish `hU : IsOpen (e.target ∩ e.symm ⁻¹' ptsIn X.str σ W)` using `e.isOpen_inter_preimage_symm (GlobalTheory.CxPts.isOpen_ptsIn W)`. Establish `hyU : e y ∈ e.target ∩ e.symm ⁻¹' ptsIn X.str σ W` using `⟨e.map_source hy, by rw [Set.mem_preimage, e.left_inv hy]; exact hyW⟩`. Establish `hGc : ContDiffAt ℂ ∞ (fun v a => GlobalTheory.CxPts.ev X.str σ W (g a) (e.symm v)) (e y)`.
+
+Rewrite using `[contDiffAt_pi]`. Introduce `a`. Conclude with `(ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn _ _ _ hU (he W (g a))).contDiffAt (hU.mem_nhds hyU)`. Establish `hΦc : ContDiffAt ℝ ∞ Φ (fun a => GlobalTheory.CxPts.ev X.str σ W (g a) (e.symm (e y)))`. Rewrite using `[e.left_inv hy]`.
+
+Conclude with `hΦ.contDiffAt (hO.mem_nhds hgO)`. Establish `hcomp : ContDiffAt ℝ ∞ (fun v => Φ fun a => GlobalTheory.CxPts.ev X.str σ W (g a) (e.symm v)) (e y)` using `hΦc.comp (e y) (hGc.restrict_scalars ℝ)`. Use `hcomp.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `ht : Filter.Tendsto e.symm (𝓝 (e y)) (𝓝 y)`. Establish `h` using `e.continuousAt_symm (e.map_source hy)`.
+
+Rewrite `h` using `[ContinuousAt, e.left_inv hy]`. Conclude with `h`. Conclude with `ht.eventually hfeq`.
+-/
 theorem contDiffAt_holoChart : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {e : OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)}, IsHoloChart e → ∀ {f : CxPts X.str σ → ℝ} {y : CxPts X.str σ}, y ∈ e.source → CInfAt f y → ContDiffAt ℝ ∞ (fun v => f (e.symm v)) (e y) := by
   intro F _ σ X e he f y hy hf
   obtain ⟨W, ι, hι, g, Φ, O, hyW, hO, hgO, hΦ, hfeq⟩ := hf

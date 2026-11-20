@@ -10,6 +10,11 @@ section SlopeTestRemainingChoices
 
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V]
 
+/- English proof (translation)
+Establish `hc : Continuous fun y : ℝ => Complex.exp (z * y) • v` using `by fun_prop`. Take `⟨C, hC⟩` from `(isCompact_Icc (a := -R) (b := R)).exists_bound_of_continuousOn hc.continuousOn`. Establish `hm : MemLp ((Set.Icc (-R) R).indicator fun y : ℝ => Complex.exp (z * y) • v) 2 volume`. Rewrite using `[memLp_indicator_iff_restrict measurableSet_Icc]`. Conclude with `MemLp.of_bound hc.aestronglyMeasurable C (ae_restrict_of_forall_mem measurableSet_Icc hC)`.
+
+Use `⟨hm.toLp _, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hm.coeFn_toLp] with y hy hm'`. Rewrite using `[hy, Set.indicator_of_mem hm']`.
+-/
 private theorem exTest (z : ℂ) (v : V) (R : ℝ) :
     ∃ x : L V, ∀ᵐ y : ℝ, y ∈ Set.Icc (-R) R → x y = Complex.exp (z * y) • v := by
   have hc : Continuous fun y : ℝ => Complex.exp (z * y) • v := by fun_prop
@@ -21,6 +26,11 @@ private theorem exTest (z : ℂ) (v : V) (R : ℝ) :
   filter_upwards [hm.coeFn_toLp] with y hy hm'
   rw [hy, Set.indicator_of_mem hm']
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => filter_upwards [Lp.coeFn_zero V 2 (volume : Measure ℝ)] with y hy`. Simplify using `using hy`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+
+Use `filter_upwards [ih, Lp.coeFn_add ((c a).compLpL 2 volume (sh V a x)) (∑ t ∈ S, (c t).compLpL 2 volume (sh V t x) : L V), (c a).coeFn_compLpL (sh V a x), sh_ae V a x] with y h1 h2 h3 h4`. Rewrite using `[h2, Pi.add_apply, h1, h3, h4, Finset.sum_insert ha]`.
+-/
 private theorem sumAe (S : Finset ℝ) (c : ℝ → V →L[ℂ] V) (x : L V) :
     ∀ᵐ y : ℝ, (∑ t ∈ S, (c t).compLpL 2 volume (sh V t x) : L V) y = ∑ t ∈ S, c t (x (y + t)) := by
   classical
@@ -34,6 +44,19 @@ private theorem sumAe (S : Finset ℝ) (c : ℝ → V →L[ℂ] V) (x : L V) :
       (c a).coeFn_compLpL (sh V a x), sh_ae V a x] with y h1 h2 h3 h4
     rw [h2, Pi.add_apply, h1, h3, h4, Finset.sum_insert ha]
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `(u.support.finite_toSet.isCompact.union hk.2.isCompact).isBounded.subset_closedBall (0 : ℝ)`. Use `⟨r + 1, fun R hR x hx => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ t ∈ (u.support : Set ℝ) ∪ tsupport κ, ∀ y ∈ Set.Icc (0 : ℝ) 1, y + t ∈ Set.Icc (-R) R`. Introduce `t ht y hy`. Use `hr ht` as an intermediate fact.
+
+Rewrite `this` using `[mem_closedBall_zero_iff, Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith [this.1, this.2, hy.1, hy.2]`. Establish `hs : ∀ᵐ y : ℝ, ∀ t ∈ u.support, y + t ∈ Set.Icc (-R) R → x (y + t) = Complex.exp (z * (y + t : ℝ)) • v`. Rewrite using `[Filter.eventually_all_finset]`. Introduce `t _`.
+
+Conclude with `(measurePreserving_add_right volume t).quasiMeasurePreserving.ae hx`. Establish `hint : Integrable fun t : ℝ => Complex.exp (z * t) • κ t`. Establish `h1 : Continuous fun t : ℝ => Complex.exp (z * t)` using `by fun_prop`. Conclude with `(h1.smul hk.1).integrable_of_hasCompactSupport (hk.2.smul_left (f := fun t : ℝ => Complex.exp (z * t)))`. Use `filter_upwards [hs, sumAe u.support u x, (convSpec κ hk x).1, Lp.coeFn_add (u.sum fun t c => c.compLpL 2 volume (sh V t x) : L V) (conv κ x)] with y h1 h2 h3 h4 hy`.
+
+Rewrite using `[h4, Pi.add_apply, h3, ContinuousLinearMap.add_apply, smul_add]`. Use `congr 1`. Rewrite using `[Finsupp.sum, h2, Finsupp.sum, ContinuousLinearMap.sum_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[h1 t ht (hmem t (Or.inl ht) y hy), map_smul, ContinuousLinearMap.smul_apply, smul_smul, ← Complex.exp_add]`.
+
+Use `push_cast`. Rewrite using `[mul_add]`. Rewrite using `[symb, ContinuousLinearMap.integral_apply hint, ← integral_smul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [(measurePreserving_add_left volume y).quasiMeasurePreserving.ae hx] with t ht`.
+
+Distinguish the cases in `h : t ∈ tsupport κ`. Rewrite using `[ht (hmem t (Or.inr h) y hy), map_smul, ContinuousLinearMap.smul_apply, smul_smul, ← Complex.exp_add]`. Use `push_cast`. Rewrite using `[mul_add]`. Simplify using `[image_eq_zero_of_notMem_tsupport h]`.
+-/
 private theorem actTest (u : ℝ →₀ (V →L[ℂ] V)) (κ : ℝ → V →L[ℂ] V) (hk : Ker κ) (z : ℂ) (v : V) :
     ∃ R₀ : ℝ, ∀ R, R₀ ≤ R → ∀ x : L V, (∀ᵐ y : ℝ, y ∈ Set.Icc (-R) R → x y = Complex.exp (z * y) • v) →
       ∀ᵐ y : ℝ, y ∈ Set.Icc (0 : ℝ) 1 →
@@ -73,6 +96,15 @@ private theorem actTest (u : ℝ →₀ (V →L[ℂ] V)) (κ : ℝ → V →L[�
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce and unpack `H V _ _ _ _ _ _ _ J Y s s' ⟨u, κ, hk, hY, hs⟩ ⟨u', κ', hk', hY', hs'⟩`. Use function extensionality and compare the values at `z`. Use `ext1 v`. Take `⟨R, hR⟩` from `actTest u κ hk z v`. Take `⟨R', hR'⟩` from `actTest u' κ' hk' z v`.
+
+Take `⟨x, hx⟩` from `exTest z v (max R R')`. Establish `e` using `J.injective ((hY x).symm.trans (hY' x))`. Establish `h1` using `hR _ (le_max_left R R') x hx`. Establish `h2` using `hR' _ (le_max_right R R') x hx`. Rewrite `h1` using `[← hs]`.
+
+Rewrite `h2` using `[← hs', ← e]`. Assume the negation of the conclusion as `hne`. Establish `h3 : ∀ᵐ y : ℝ, y ∉ Set.Icc (0 : ℝ) 1` using `by filter_upwards [h1, h2] with y a b hy`. Conclude with `hne (smul_right_injective V (Complex.exp_ne_zero (z * y)) ((a hy).symm.trans (b hy)))`. Establish `h4 : volume (Set.Icc (0 : ℝ) 1) = 0` using `measure_eq_zero_iff_ae_notMem.2 h3`.
+
+Simplify using `at h4`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.actUniq :
     ∀ {H V : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] (J : L V →ₗᵢ[ℂ] H) (Y : H →L[ℂ] H) (s s' : ℂ → V →L[ℂ] V), Act J Y s → Act J Y s' → s = s' := by
   rintro H V _ _ _ _ _ _ _ J Y s s' ⟨u, κ, hk, hY, hs⟩ ⟨u', κ', hk', hY', hs'⟩

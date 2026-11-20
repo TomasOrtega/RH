@@ -13,12 +13,37 @@ private def hM (p : ℕ) : Option (Fin p) → Matrix (Fin 2) (Fin 2) ℤ
   | none => !![(p : ℤ), 0; 0, 1]
   | some u => !![1, ((u : ℕ) : ℤ); 0, (p : ℤ)]
 
+/- English proof (translation)
+Apply the tactic sequence `cases x <;> simp [hM, Matrix.det_fin_two_of]`.
+-/
 private theorem hM_det (p : ℕ) (x : Option (Fin p)) : (hM p x).det = p := by
   cases x <;> simp [hM, Matrix.det_fin_two_of]
 
+/- English proof (translation)
+Apply the tactic sequence `cases x <;> simp [hM]`.
+-/
 private theorem hM_10 (p : ℕ) (x : Option (Fin p)) : hM p x 1 0 = 0 := by
   cases x <;> simp [hM]
 
+/- English proof (translation)
+Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Establish `hp0 : (p : ℤ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. It suffices to establish `h : ∃ (γ : Matrix (Fin 2) (Fin 2) ℤ) (y : Option (Fin p)), δ = γ * hM p y by`. Take `⟨γ, y, h⟩` from `h`.
+
+Use `⟨⟨γ, ?_⟩, y, h⟩` and prove the remaining obligations. Rewrite `hδ` using `[h, Matrix.det_mul, hM_det]`. Conclude with `mul_right_cancel₀ hp0 (by rw [hδ, one_mul])`. Rewrite `hδ` using `[Matrix.det_fin_two]`. Establish `hz : (δ 0 0 : ZMod p) * δ 1 1 - (δ 0 1 : ZMod p) * δ 1 0 = 0`.
+
+Use `congrArg (Int.cast : ℤ → ZMod p) hδ` as an intermediate fact. Simplify using `using this`. Establish `key : ∀ u : ZMod p, (δ 0 1 : ZMod p) = δ 0 0 * u → (δ 1 1 : ZMod p) = δ 1 0 * u → ∃ (γ : Matrix (Fin 2) (Fin 2) ℤ) (y : Option (Fin p)), δ = γ * hM p y`. Introduce `u h1 h2`. Establish `d1 : (p : ℤ) ∣ δ 0 1 - δ 0 0 * (u.val : ℤ)`.
+
+Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Simplify using `[h1]`. Establish `d2 : (p : ℤ) ∣ δ 1 1 - δ 1 0 * (u.val : ℤ)`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Simplify using `[h2]`.
+
+Take `⟨b, hb⟩` from `d1`. Take `⟨d, hd⟩` from `d2`. Use `⟨!![δ 0 0, b; δ 1 0, d], some ⟨u.val, ZMod.val_lt u⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp only [hM, Matrix.mul_fin_two] <;> simp at hb hd ⊢`.
+
+Take the linear combination `hb`. Take the linear combination `hd`. Distinguish the cases in `ha : (δ 0 0 : ZMod p) = 0`. Distinguish the cases in `hc : (δ 1 0 : ZMod p) = 0`. Rewrite `ha`, `hc` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+
+Take `⟨a, ha⟩` from `ha`. Take `⟨c, hc⟩` from `hc`. Use `⟨!![a, δ 0 1; c, δ 1 1], none, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp only [hM, Matrix.mul_fin_two] <;> simp`.
+
+Take the linear combination `ha`. Take the linear combination `hc`. Use `key (δ 1 1 / δ 1 0) ?_ (by field_simp)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hz`.
+
+Use `key (δ 0 1 / δ 0 0) (by field_simp) ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `hz`.
+-/
 private theorem hM_exists {p : ℕ} (hp : p.Prime) (δ : Matrix (Fin 2) (Fin 2) ℤ) (hδ : δ.det = p) :
     ∃ (γ : SL(2, ℤ)) (y : Option (Fin p)), δ = γ.1 * hM p y := by
   haveI : Fact p.Prime := ⟨hp⟩
@@ -64,6 +89,13 @@ private theorem hM_exists {p : ℕ} (hp : p.Prime) (δ : Matrix (Fin 2) (Fin 2) 
     field_simp
     linear_combination hz
 
+/- English proof (translation)
+Establish `hnd : ¬ (p : ℤ) ∣ 1` using `fun h => hp.not_dvd_one (by exact_mod_cast h)`. Establish `h00` using `congrFun (congrFun h 0) 0`. Establish `h01` using `congrFun (congrFun h 0) 1`. Establish `h10` using `congrFun (congrFun h 1) 0`. Establish `h11` using `congrFun (congrFun h 1) 1`.
+
+Apply the tactic sequence `rcases x with _ | u <;> rcases y with _ | v <;>`. Simplify using `[hM, Matrix.mul_apply, Fin.sum_univ_two] at h00 h01 h10 h11 ⊢`. Rewrite `h11` using `[← h10]`. Conclude with `hnd ⟨γ 1 1, by linear_combination h11⟩`. Conclude with `hnd ⟨γ 0 0, by linear_combination h00⟩`.
+
+Rewrite `h01` using `[← h00]`. Establish `: (u : ℤ) ≡ (v : ℤ) [ZMOD p]` using `(Int.modEq_iff_dvd.2 ⟨γ 0 1, by linear_combination h01⟩).symm`. Establish `h2 : (u : ℕ) ≡ (v : ℕ) [MOD p]` using `Int.natCast_modEq_iff.1 this`. Conclude with `Fin.ext (Nat.ModEq.eq_of_lt_of_lt h2 u.2 v.2)`.
+-/
 private theorem hM_inj {p : ℕ} (hp : p.Prime) (γ : Matrix (Fin 2) (Fin 2) ℤ) {x y : Option (Fin p)}
     (h : hM p x = γ * hM p y) : x = y := by
   have hnd : ¬ (p : ℤ) ∣ 1 := fun h => hp.not_dvd_one (by exact_mod_cast h)
@@ -81,6 +113,13 @@ private theorem hM_inj {p : ℕ} (hp : p.Prime) (γ : Matrix (Fin 2) (Fin 2) ℤ
     have h2 : (u : ℕ) ≡ (v : ℕ) [MOD p] := Int.natCast_modEq_iff.1 this
     exact Fin.ext (Nat.ModEq.eq_of_lt_of_lt h2 u.2 v.2)
 
+/- English proof (translation)
+Use `choose δ σ h using fun x => hM_exists hp (hM p x * γ.1) (by rw [Matrix.det_mul, hM_det, γ.2, mul_one])`. Use `⟨σ, δ, Finite.injective_iff_bijective.1 fun x y e => ?_, h⟩` and prove the remaining obligations. Use `hM_inj hp ((δ x * (δ y)⁻¹ : SL(2, ℤ))).1 ?_` and prove the remaining obligations. Establish `e1 : γ.1 * (γ⁻¹ : SL(2, ℤ)).1 = 1` using `congrArg Subtype.val (mul_inv_cancel γ)`. Establish `e2 : ((δ y)⁻¹ : SL(2, ℤ)).1 * (δ y).1 = 1` using `congrArg Subtype.val (inv_mul_cancel (δ y))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h x, e, e2, mul_one]`. Use `_ = (δ x).1 * ((δ y)⁻¹ : SL(2, ℤ)).1 * ((hM p y * γ.1) * (γ⁻¹ : SL(2, ℤ)).1) := by`. Rewrite using `[h y]`. Simplify using `only [mul_assoc]`.
+
+Use `_ = _ := by rw [mul_assoc (hM p y), e1, mul_one]; rfl`.
+-/
 private theorem hM_perm {p : ℕ} (hp : p.Prime) (γ : SL(2, ℤ)) :
     ∃ (σ : Option (Fin p) → Option (Fin p)) (δ : Option (Fin p) → SL(2, ℤ)), Function.Bijective σ ∧
       ∀ x, hM p x * γ.1 = (δ x).1 * hM p (σ x) := by
@@ -100,16 +139,30 @@ private def hG {p : ℕ} (hp : p.Prime) (x : Option (Fin p)) : GL (Fin 2) ℝ :=
   Matrix.GeneralLinearGroup.mkOfDetNeZero ((Int.castRingHom ℝ).mapMatrix (hM p x)) (by
     rw [← RingHom.map_det, hM_det]; simpa using hp.ne_zero)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem hG_val {p : ℕ} (hp : p.Prime) (x : Option (Fin p)) :
     (hG hp x).1 = (Int.castRingHom ℝ).mapMatrix (hM p x) := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hG_val, ← RingHom.map_det, hM_det]`. Simplify using the standard rewrite rules.
+-/
 private theorem hG_det {p : ℕ} (hp : p.Prime) (x : Option (Fin p)) : (hG hp x).det.val = p := by
   rw [Matrix.GeneralLinearGroup.val_det_apply, hG_val, ← RingHom.map_det, hM_det]; simp
 
+/- English proof (translation)
+Establish `: 0 < (hG hp x).det.val` using `by rw [hG_det]; exact_mod_cast hp.pos`. Rewrite using `[σ, if_pos this]`. Both sides reduce to the same expression.
+-/
 private theorem hG_σ {p : ℕ} (hp : p.Prime) (x : Option (Fin p)) (c : ℂ) : σ (hG hp x) c = c := by
   have : 0 < (hG hp x).det.val := by rw [hG_det]; exact_mod_cast hp.pos
   rw [σ, if_pos this]; rfl
 
+/- English proof (translation)
+Rewrite using `[SL_slash, SL_slash, ← SlashAction.slash_mul, ← SlashAction.slash_mul]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg (Int.castRingHom ℝ).mapMatrix h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`.
+
+Conclude with `this`.
+-/
 private theorem hG_slash {p : ℕ} (hp : p.Prime) (k : ℤ) (f : ℍ → ℂ) {x y : Option (Fin p)} {γ δ : SL(2, ℤ)}
     (h : hM p x * γ.1 = δ.1 * hM p y) : (f ∣[k] hG hp x) ∣[k] γ = (f ∣[k] δ) ∣[k] hG hp y := by
   rw [SL_slash, SL_slash, ← SlashAction.slash_mul, ← SlashAction.slash_mul]
@@ -122,6 +175,9 @@ private theorem hG_slash {p : ℕ} (hp : p.Prime) (k : ℤ) (f : ℍ → ℂ) {x
 private def hT {p : ℕ} (hp : p.Prime) (k : ℕ) {N : ℕ} (χ : DirichletCharacter ℂ N) (f : ℍ → ℂ) : ℍ → ℂ :=
   ∑ x : Option (Fin p), χ ((hM p x 0 0 : ℤ) : ZMod N) • f ∣[(k : ℤ)] hG hp x
 
+/- English proof (translation)
+Rewrite using `[hT, SlashAction.sum_slash]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[SL_smul_slash, hG_slash hp k f (h x)]`.
+-/
 private theorem hT_slash {p : ℕ} (hp : p.Prime) (k : ℕ) {N : ℕ} (χ : DirichletCharacter ℂ N) (f : ℍ → ℂ)
     (γ : SL(2, ℤ)) {s : Option (Fin p) → Option (Fin p)} {δ : Option (Fin p) → SL(2, ℤ)}
     (h : ∀ x, hM p x * γ.1 = (δ x).1 * hM p (s x)) :
@@ -131,6 +187,19 @@ private theorem hT_slash {p : ℕ} (hp : p.Prime) (k : ℕ) {N : ℕ} (χ : Diri
   refine Finset.sum_congr rfl fun x _ => ?_
   rw [SL_smul_slash, hG_slash hp k f (h x)]
 
+/- English proof (translation)
+Introduce `γ hγ`. Take `⟨s, δ, hs, h⟩` from `hM_perm hp γ`. Rewrite using `[hT_slash hp k χ f γ h, hT, Finset.smul_sum, ← hs.sum_comp fun y => χ ((γ 1 1 : ℤ) : ZMod N) • χ ((hM p y 0 0 : ℤ) : ZMod N) • f ∣[(k : ℤ)] hG hp y]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite `hγ` using `[Gamma0_mem]`.
+
+Establish `h00` using `congrArg (Int.cast : ℤ → ZMod N) (congrFun (congrFun (h x) 0) 0)`. Establish `h10` using `congrArg (Int.cast : ℤ → ZMod N) (congrFun (congrFun (h x) 1) 0)`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, hM_10, hγ] at h00 h10`. Establish `dγ` using `congrArg (Int.cast : ℤ → ZMod N) (γ.det_coe)`. Establish `dδ` using `congrArg (Int.cast : ℤ → ZMod N) ((δ x).det_coe)`.
+
+Rewrite `dγ`, `dδ` using `[Matrix.det_fin_two]`. Move the coercions through the operations in `at dγ dδ`. Rewrite `dγ` using `[hγ, mul_zero, sub_zero]`. Distinguish the cases in `hu : IsUnit ((hM p (s x) 0 0 : ℤ) : ZMod N)`. Establish `hc : (((δ x) 1 0 : ℤ) : ZMod N) = 0`.
+
+Conclude with `hu.mul_left_eq_zero.1 h10.symm`. Rewrite using `[hf (δ x) (Gamma0_mem.2 hc), smul_slash, hG_σ, smul_smul, smul_smul, ← map_mul, ← map_mul]`. Use `congr 2`. Rewrite `dδ` using `[hc, mul_zero, sub_zero]`. Take the linear combination `(((γ 1 1 : ℤ) : ZMod N) * (((δ x) 1 1 : ℤ) : ZMod N)) * h00 - (((hM p x 0 0 : ℤ) : ZMod N) * (((δ x) 1 1 : ℤ) : ZMod N)) * dγ + (((hM p (s x) 0 0 : ℤ) : ZMod N) * ((γ 1 1 : ℤ) : ZMod N)) * dδ`.
+
+Establish `hx : ¬ IsUnit ((hM p x 0 0 : ℤ) : ZMod N)` using `fun hx => hu <| by`. Use `hx.mul (IsUnit.of_mul_eq_one _ dγ)` as an intermediate fact. Rewrite `this` using `[h00]`. Conclude with `isUnit_of_mul_isUnit_right this`. Rewrite using `[χ.map_nonunit hu, χ.map_nonunit hx]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem hT_char {p : ℕ} (hp : p.Prime) (k : ℕ) {N : ℕ} (χ : DirichletCharacter ℂ N) {f : ℍ → ℂ}
     (hf : HasChar k χ f) : HasChar k χ (hT hp k χ f) := by
   intro γ hγ
@@ -163,6 +232,15 @@ private theorem hT_char {p : ℕ} (hp : p.Prime) (k : ℕ) {N : ℕ} (χ : Diric
     rw [χ.map_nonunit hu, χ.map_nonunit hx]
     simp
 
+/- English proof (translation)
+Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hp1 : (p : ℂ) - 1 ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast hp.ne_one)`. Establish `hpos : ∀ x, 0 < (hG hp x).det.val` using `fun x => by rw [hG_det]; exact_mod_cast hp.pos`. Establish `e0 : (f ∣[(k : ℤ)] hG hp none) z = (p : ℂ) ^ (k - 1) * f (ofComplex (p * (z : ℂ)))`. Rewrite using `[slash_apply, hG_σ, hG_det, ← ofComplex_apply (hG hp none • z), coe_smul_of_det_pos (hpos _)]`.
+
+Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Simplify using `[num, denom, hG_val, hM, mul_comm]`. Establish `e1 : ∀ u : Fin p, (f ∣[(k : ℤ)] hG hp (some u)) z = (p : ℂ)⁻¹ * f (ofComplex (((z : ℂ) + (u : ℕ)) / p))` using `fun u => by`. Rewrite using `[slash_apply, hG_σ, hG_det, ← ofComplex_apply (hG hp (some u) • z), coe_smul_of_det_pos (hpos _)]`. Simplify using `[num, denom, hG_val, hM, zpow_sub₀ hp0]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hT, Finset.sum_apply, Fintype.sum_option]`. Simplify using `only [Pi.smul_apply, e0, e1, heckeOne, smul_eq_mul]`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun b : ℕ => f (ofComplex (((z : ℂ) + b) / p))), Finset.mul_sum]`. Simplify using `[hM]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hT_apply {p : ℕ} (hp : p.Prime) {k : ℕ} (hk : 1 ≤ k) {N : ℕ} (χ : DirichletCharacter ℂ N) (f : ℍ → ℂ)
     (z : ℍ) : hT hp k χ f z = heckeOne 1 p f z +
       (χ (p : ZMod N) * (p : ℂ) ^ (k - 1) - 1) / (p - 1) * (heckeOne 2 p f z - heckeOne 1 p f z) := by
@@ -186,6 +264,9 @@ private theorem hT_apply {p : ℕ} (hp : p.Prime) {k : ℕ} (hk : 1 ≤ k) {N : 
 
 end UpperTheory.V.Sd
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.hecke_existence.heckeEx`.
+-/
 theorem UpperTheory.V.Sd.heckeEx :
     UpperTheory.V.Sd.HeckeEx :=
   _root_.UpperTheory.Reformulated.B.hecke_existence.heckeEx

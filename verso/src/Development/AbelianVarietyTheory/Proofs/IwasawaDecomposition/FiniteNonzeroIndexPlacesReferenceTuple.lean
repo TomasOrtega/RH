@@ -15,6 +15,9 @@ variable {B : Base}
 
 @[reducible] def preX {P : Pre} (X Y : PreX P) : PreX P := { X with a := Y.a, T_gt := Y.T_gt, a_gt := Y.a_gt, spread_le := Y.spread_le }
 
+/- English proof (translation)
+Consider the cases of `X`. Consider the cases of `Y`. Consider the cases of `h`. Consider the cases of `h'`. Both sides reduce to the same expression.
+-/
 theorem preX_eq {P : Pre} {X Y : PreX P} (h : X.piG = Y.piG) (h' : X.piT = Y.piT) : preX X Y = Y := by
   cases X; cases Y; cases h; cases h'; rfl
 
@@ -23,6 +26,9 @@ theorem preX_eq {P : Pre} {X Y : PreX P} (h : X.piG = Y.piG) (h' : X.piT = Y.piT
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨l.pr, l.ch, l.lev, l.per, l.ovr, l.atL, l.fmL, l.xi0, l.idx0, l.bij0, l.lat⟩`.
+-/
 theorem laws {X : PreX B.toPre} (I : ColIn B X) (Y : PreX B.toPre) (l : TC.Laws I) : TC.Laws (colIn I Y) :=
   ⟨l.pr, l.ch, l.lev, l.per, l.ovr, l.atL, l.fmL, l.xi0, l.idx0, l.bij0, l.lat⟩
 
@@ -55,17 +61,26 @@ set_option maxHeartbeats 4000000 in
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨p⟩` from `h`. Conclude with `⟨⟨p.isTw, p.jets, p.hX, p.above, p.half, p.d3b, p.selectedPlacesAgree, p.vals, p.roots⟩⟩`.
+-/
 theorem pinned {K : Ctx} (w : ColW B f T) (Y : PreX B.toPre) (h : Pinned K B f T w) : Pinned K B f T (colW w Y) := by
   obtain ⟨p⟩ := h
   exact ⟨⟨p.isTw, p.jets, p.hX, p.above, p.half, p.d3b, p.selectedPlacesAgree, p.vals, p.roots⟩⟩
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.pl, h.idem, h.cen⟩`.
+-/
 theorem grpAt (w : ColW B f T) (Y : PreX B.toPre) (Z : w.Lt) (h : GrpAt (w.st Z) w.I) : GrpAt (w.st Z) (colIn w.I Y) :=
   ⟨h.pl, h.idem, h.cen⟩
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (h.1 :))`. Conclude with `(by with_unfolding_all exact (h.2.1 :))`. Conclude with `(by with_unfolding_all exact (h.2.2.1 :))`. Conclude with `(by with_unfolding_all exact (h.2.2.2 :))`.
+-/
 theorem fine (w : ColW B f T) (Y : PreX B.toPre) (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : R3.Dat (w.st Z) w.I hX T Wt) (h : Fine z) : Fine (w := colW w Y) (Z := Z) (dat w Y Z hX Wt z) := by
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -76,16 +91,27 @@ theorem fine (w : ColW B f T) (Y : PreX B.toPre) (Z : w.Lt) (hX : B.fields.Ok) (
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact (h :))`.
+-/
 theorem holdsL (w : ColW B f T) (Y : PreX B.toPre) (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : R3.Dat (w.st Z) w.I hX T Wt) (h : HoldsL z.R z.F) : HoldsL (dat w Y Z hX Wt z).R (dat w Y Z hX Wt z).F := (by with_unfolding_all exact (h :))
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nonzeroIndexPlaces_adelicDataResized_eq (w : ColW B f T) (Y : PreX B.toPre) (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : R3.Dat (w.st Z) w.I hX T Wt) : (dat w Y Z hX Wt z).W1 (fun _ _ => 0) = z.W1 (fun _ _ => 0) := rfl
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨B₀, f₀, T₀, w₀, Z₀, hX₀, Wt₀, z₀, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12⟩` from `h`. Substitute `a1` using the available equality. Establish `e : w₀.px = X` using `eq_of_heq a5`. Substitute `e` using the available equality. Use `⟨B₀, f₀, T₀, colW w₀ Y, Z₀, hX₀, Wt₀, dat w₀ Y Z₀ hX₀ Wt₀ z₀, rfl, a2, a3, a4, heq_of_eq (preX_eq hG hT), pinned w₀ Y a6, a7, grpAt w₀ Y Z₀ a8, fine w₀ Y Z₀ hX₀ Wt₀ z₀ a9, holdsL w₀ Y Z₀ hX₀ Wt₀ z₀ a10, ?_, a12⟩` and prove the remaining obligations.
+
+Introduce `v hv`. Conclude with `a11 v ((nonzeroIndexPlaces_adelicDataResized_eq w₀ Y Z₀ hX₀ Wt₀ z₀).le hv)`.
+-/
 theorem seedW {K : Ctx} {P : Pre} {f : Top.Fr P} {F F₀ : IntermediateField ℚ ℂ} {X Y : PreX P} {S : Set ℕ}
     {L : IntermediateField ℚ ℂ} (h : SeedW K P f F F₀ X S L) (hG : X.piG = Y.piG) (hT : X.piT = Y.piT) : SeedW K P f F F₀ Y S L := by
   obtain ⟨B₀, f₀, T₀, w₀, Z₀, hX₀, Wt₀, z₀, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12⟩ := h
@@ -97,6 +123,13 @@ theorem seedW {K : Ctx} {P : Pre} {f : Top.Fr P} {F F₀ : IntermediateField ℚ
   intro v hv
   exact a11 v ((nonzeroIndexPlaces_adelicDataResized_eq w₀ Y Z₀ hX₀ Wt₀ z₀).le hv)
 
+/- English proof (translation)
+Establish `hF` using `NumberField.Embeddings.finite_of_norm_le H.E ℂ (n + 1 : ℝ)`. Use `(hF.preimage (f := fun x : 𝓞 H.E => (x : H.E)) RingOfIntegers.coe_injective.injOn).subset ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨x.isIntegral_coe, fun φ => ?_⟩` and prove the remaining obligations. Establish `h1 : φ (H.conj (x : H.E)) = starRingEnd ℂ (φ (x : H.E))` using `Formalism.HC.HostAx.conjE_apply _ _ _`.
+
+Establish `h2` using `congrArg φ hx`. Rewrite `h2` using `[map_mul, h1, map_natCast, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `h3 : ‖φ (x : H.E)‖ ^ 2 = (n : ℝ)` using `by exact_mod_cast h2`. Establish `h4` using `norm_nonneg (φ (x : H.E))`. Use `show ‖φ (x : H.E)‖ ≤ (n + 1 : ℝ)`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem finite_norm_eq {R : Ranks} (H : Formalism.BasicNotions.Host R) (n : ℕ) :
     {x : 𝓞 H.E | (x : H.E) * H.conj (x : H.E) = (n : H.E)}.Finite := by
   have hF := NumberField.Embeddings.finite_of_norm_le H.E ℂ (n + 1 : ℝ)
@@ -111,6 +144,9 @@ theorem finite_norm_eq {R : Ranks} (H : Formalism.BasicNotions.Host R) (n : ℕ)
   show ‖φ (x : H.E)‖ ≤ (n + 1 : ℝ)
   nlinarith
 
+/- English proof (translation)
+Establish `h1` using `Set.Finite.pi' fun i : Fin 2 => finite_norm_eq P.host (P.host.g i)`. Establish `h2` using `Set.Finite.pi' fun u : P.Word => finite_norm_eq P.host (P.T u)`. Use `(h1.prod h2).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨X, rfl⟩`. Conclude with `⟨fun i => X.piG_norm i, fun u => X.piT_norm u⟩`.
+-/
 theorem finite_gens (P : Pre) : (Set.range fun X : PreX P => (X.piG, X.piT)).Finite := by
   have h1 := Set.Finite.pi' fun i : Fin 2 => finite_norm_eq P.host (P.host.g i)
   have h2 := Set.Finite.pi' fun u : P.Word => finite_norm_eq P.host (P.T u)
@@ -118,6 +154,13 @@ theorem finite_gens (P : Pre) : (Set.range fun X : PreX P => (X.piG, X.piT)).Fin
   rintro _ ⟨X, rfl⟩
   exact ⟨fun i => X.piG_norm i, fun u => X.piT_norm u⟩
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℚ B.LL`. Use `⟨Finset.univ.image fun i => B.embLL (b i), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (b i)).algHom B.embLL.toRatAlgHom`.
+
+Introduce `z hz`. Take `⟨x, rfl⟩` from `B.mem_LLC.1 hz`. Establish `e : B.embLL x = ∑ i, (b.repr x i) • B.embLL (b i)` using `by conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `map_rat_smul B.embLL _ _`. Rewrite using `[e]`. Use `sum_mem fun i _ => IntermediateField.smul_mem _ (IntermediateField.subset_adjoin _ _ ?_)` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩)`.
+-/
 theorem exists_gens_LLC (B : Base) : ∃ S₂ : Finset ℂ, (∀ z ∈ S₂, IsAlgebraic ℚ z) ∧
     B.LLC ≤ IntermediateField.adjoin ℚ (S₂ : Set ℂ) := by
   classical
@@ -139,6 +182,13 @@ theorem exists_gens_LLC (B : Base) : ∃ S₂ : Finset ℂ, (∀ z ∈ S₂, IsA
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hok` using `hH.ok.ok2`. Establish `hIw : ∀ j, {w' | (R3.s0Of z.R z.F).Iw j (R3.famR (w.st Z) w.I hX (R3.usedOf w.I T Wt) z.Xg z.tr).A.μ0 w' ≠ 0}.Finite` using `fun j => GlobalTheory.Mem.NonzeroPlacesOverPrimes.idx_finite_of_fg _ _ _ (hH.mLat j).fg (Formalism.L2.DIV.BlockDat.Tl_lat hok.conj (hok.lifts j _) hok.irr).fg`. Establish `hjw : ∀ j, {w' | Formalism.DivisionValues.jw (((R3.famR (w.st Z) w.I hX (R3.usedOf w.I T Wt) z.Xg z.tr).side3 z.F.P0 z.F.ψ0 (R3.zsOf z.R z.F)).HT j (R3.famR (w.st Z) w.I hX (R3.usedOf w.I T Wt) z.Xg z.tr).A.μ0) w' (((R3.famR (w.st Z) w.I hX (R3.usedOf w.I T Wt) z.Xg z.tr).side3 z …` using `fun j => GlobalTheory.Mem.NonzeroPlacesOverPrimes.jw_finite_of_lat _ (Formalism.L2.DIV.BlockDat.HZ_det hok.conj (hok.lifts j _) hok.irr) _ (Formalism.L2.DIV.BlockDat.Tl_lat hok.conj (hok.lifts j _) hok.irr)`. Establish `hF` using `Set.finite_iUnion fun j => (hIw j).union (hjw j)`. Use `((hF.preimage (w.st Z).toD7.plEq.injective.injOn).union ((hF.preimage GlobalTheory.Mem.NonzeroPlacesOverPrimes.conjPl_injective.injOn).preimage (w.st Z).toD7.plEq.injective.injOn)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `v ⟨j, w', hw', h | h | h⟩`. Break down `hw' with rfl | rfl` into its components or cases. Conclude with `Or.inl (Set.mem_iUnion.2 ⟨j, Or.inl h⟩)`. Conclude with `Or.inr (Set.mem_iUnion.2 ⟨j, Or.inl h⟩)`. Break down `hw' with rfl | rfl` into its components or cases.
+
+Conclude with `Or.inl (Set.mem_iUnion.2 ⟨j, Or.inr h⟩)`. Conclude with `Or.inr (Set.mem_iUnion.2 ⟨j, Or.inr h⟩)`. Conclude with `absurd rfl h`.
+-/
 theorem finite_nonzeroIndexPlaces_referenceTuple (w : ColW B f T) (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : R3.Dat (w.st Z) w.I hX T Wt) (hH : HoldsL z.R z.F) : (z.W1 fun _ _ => 0).Finite := by
   have hok := hH.ok.ok2
@@ -163,6 +213,11 @@ theorem finite_nonzeroIndexPlaces_referenceTuple (w : ColW B f T) (Z : w.Lt) (hX
     · exact Or.inr (Set.mem_iUnion.2 ⟨j, Or.inr h⟩)
   · exact absurd rfl h
 
+/- English proof (translation)
+Take `⟨B₀, f₀, T₀, w₀, Z₀, hX₀, Wt₀, z₀, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, -, -⟩` from `h`. Take `⟨S₂, hS₂, hL⟩` from `exists_gens_LLC B₀`. Establish `hfin` using `(finite_nonzeroIndexPlaces_referenceTuple w₀ Z₀ hX₀ Wt₀ z₀ a10).image B₀.places.resChar`. Use `⟨hfin.toFinset, S₂, hS₂, B₀, f₀, T₀, w₀, Z₀, hX₀, Wt₀, z₀, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, fun v hv => ?_, hL⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`.
+
+Conclude with `⟨v, hv, rfl⟩`.
+-/
 theorem seedW_bound {K : Ctx} {P : Pre} {f : Top.Fr P} {F F₀ : IntermediateField ℚ ℂ} {X : PreX P}
     (h : SeedW K P f F F₀ X Set.univ ⊤) : ∃ (S : Finset ℕ) (S₂ : Finset ℂ), (∀ z ∈ S₂, IsAlgebraic ℚ z) ∧
       SeedW K P f F F₀ X (S : Set ℕ) (IntermediateField.adjoin ℚ (S₂ : Set ℂ)) := by
@@ -173,6 +228,17 @@ theorem seedW_bound {K : Ctx} {P : Pre} {f : Top.Fr P} {F F₀ : IntermediateFie
   rw [Set.Finite.coe_toFinset]
   exact ⟨v, hv, rfl⟩
 
+/- English proof (translation)
+Use `evG_all fun K P f F F₀ => ?_` and prove the remaining obligations. Establish `key : ∀ c : (Fin 2 → 𝓞 P.host.E) × (P.Word → 𝓞 P.host.E), ∃ (S : Finset ℕ) (S₂ : Finset ℂ), (∀ z ∈ S₂, IsAlgebraic ℚ z) ∧ ∀ Y : PreX P, (Y.piG, Y.piT) = c → SeedW K P f F F₀ Y Set.univ ⊤ → SeedW K P f F F₀ Y (S : Set ℕ) (IntermediateField.adjoin ℚ (S₂ : Set ℂ))`. Introduce `c`. Distinguish the cases in `hc : ∃ X : PreX P, (X.piG, X.piT) = c ∧ SeedW K P f F F₀ X Set.univ ⊤`. Take `⟨X, hX, hs⟩` from `hc`.
+
+Take `⟨S, S₂, hS₂, hb⟩` from `seedW_bound hs`. Use `⟨S, S₂, hS₂, fun Y hY _ => ?_⟩` and prove the remaining obligations. Establish `e` using `hX.trans hY.symm`. Conclude with `seedW hb (congrArg Prod.fst e) (congrArg Prod.snd e)`. Conclude with `⟨∅, ∅, by simp, fun Y hY hs => absurd ⟨Y, hY, hs⟩ hc⟩`.
+
+Use `choose S S₂ hS₂ hS using key`. Establish `hfin` using `finite_gens P`. Use `⟨hfin.toFinset.biUnion S, hfin.toFinset.biUnion S₂, ?_, fun Y hs => ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨c, -, hz⟩` from `Finset.mem_biUnion.1 hz`.
+
+Conclude with `hS₂ c z hz`. Establish `hm : (Y.piG, Y.piT) ∈ hfin.toFinset` using `hfin.mem_toFinset.2 ⟨Y, rfl⟩`. Use `(hS _ Y rfl hs).mono ?_ (IntermediateField.adjoin.mono _ _ _ ?_)` and prove the remaining obligations. Introduce `p hp`. Conclude with `Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨_, hm, hp⟩)`.
+
+Introduce `p hp`. Conclude with `Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨_, hm, hp⟩)`.
+-/
 theorem seeds_uniform : SeedBd := by
   classical
   refine evG_all fun K P f F F₀ => ?_

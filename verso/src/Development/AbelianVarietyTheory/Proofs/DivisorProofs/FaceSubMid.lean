@@ -12,12 +12,20 @@ variable {R : Type} [CommRing R]
 section Faces
 variable {E : Spc} {U : Scheme.{0}}
 
+/- English proof (translation)
+Unfold `Sx.along`. Rewrite using `[op_comp, E.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem along_along {N p r : ℕ} (x : Sx E N U) (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N)
     (b : SimplexCategory.mk r ⟶ SimplexCategory.mk p) : (x.along a).along b = x.along (b ≫ a) := by
   unfold Sx.along
   rw [op_comp, E.map_comp]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((i.succAbove v : Fin (n + 2)) : ℕ) = _`. Unfold `Fin.succAbove`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd h1 h2`.
+
+Conclude with `absurd h2 h1`. Both sides reduce to the same expression.
+-/
 theorem δ_val {n : ℕ} (i : Fin (n + 2)) (v : Fin (n + 1)) :
     (((SimplexCategory.δ i).toOrderHom v : Fin (n + 2)) : ℕ) = if (v : ℕ) < i then (v : ℕ) else v + 1 := by
   change ((i.succAbove v : Fin (n + 2)) : ℕ) = _
@@ -28,36 +36,57 @@ theorem δ_val {n : ℕ} (i : Fin (n + 2)) (v : Fin (n + 1)) :
   · exact absurd h2 h1
   · rfl
 
+/- English proof (translation)
+The claim follows from `SimplexCategory.Hom.ext _ _ (OrderHom.ext _ _ (funext fun v => Fin.ext (h v)))`.
+-/
 theorem hom_ext_val {a b : ℕ} (f g : SimplexCategory.mk a ⟶ SimplexCategory.mk b)
     (h : ∀ v : Fin (a + 1), ((f.toOrderHom v : Fin (b + 1)) : ℕ) = (g.toOrderHom v : Fin (b + 1))) : f = g :=
   SimplexCategory.Hom.ext _ _ (OrderHom.ext _ _ (funext fun v => Fin.ext (h v)))
 
+/- English proof (translation)
+The claim follows from `δ_val i ((SimplexCategory.subinterval j l h).toOrderHom v)`.
+-/
 theorem sub_δ_val {N j l : ℕ} (h : j + l ≤ N) (i : Fin (N + 2)) (v : Fin (l + 1)) :
     (((SimplexCategory.subinterval j l h ≫ SimplexCategory.δ i).toOrderHom v : Fin (N + 2)) : ℕ) =
       if (v : ℕ) + j < i then (v : ℕ) + j else v + j + 1 :=
   δ_val i ((SimplexCategory.subinterval j l h).toOrderHom v)
 
+/- English proof (translation)
+The claim follows from `congrArg (· + j) (δ_val i v)`.
+-/
 theorem δ_sub_val {N j l : ℕ} (h : j + (l + 1) ≤ N) (i : Fin (l + 2)) (v : Fin (l + 1)) :
     (((SimplexCategory.δ i ≫ SimplexCategory.subinterval j (l + 1) h).toOrderHom v : Fin (N + 1)) : ℕ) =
       (if (v : ℕ) < i then (v : ℕ) else v + 1) + j :=
   congrArg (· + j) (δ_val i v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sub_val {N j l : ℕ} (h : j + l ≤ N) (v : Fin (l + 1)) :
     (((SimplexCategory.subinterval j l h).toOrderHom v : Fin (N + 1)) : ℕ) = v + j := rfl
 
 section
 variable {N : ℕ} (x : Sx E (N + 1) U) (i : Fin (N + 2)) (j l : ℕ) (h : j + l ≤ N)
 
+/- English proof (translation)
+Use `(along_along x _ _).trans (congrArg x.along (hom_ext_val _ _ fun v => ?_))` and prove the remaining obligations. Rewrite using `[sub_δ_val, sub_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem face_sub_le (hi : (i : ℕ) ≤ j) : (x.face i).sub j l h = x.sub (j + 1) l (by omega) := by
   refine (along_along x _ _).trans (congrArg x.along (hom_ext_val _ _ fun v => ?_))
   rw [sub_δ_val, sub_val]
   split_ifs <;> omega
 
+/- English proof (translation)
+Use `(along_along x _ _).trans (congrArg x.along (hom_ext_val _ _ fun v => ?_))` and prove the remaining obligations. Rewrite using `[sub_δ_val, sub_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem face_sub_gt (hi : j + l < (i : ℕ)) : (x.face i).sub j l h = x.sub j l (by omega) := by
   refine (along_along x _ _).trans (congrArg x.along (hom_ext_val _ _ fun v => ?_))
   rw [sub_δ_val, sub_val]
   split_ifs <;> omega
 
+/- English proof (translation)
+Use `(along_along x _ _).trans ((congrArg x.along (hom_ext_val _ _ fun v => ?_)).trans (along_along x _ _).symm)` and prove the remaining obligations. Rewrite using `[sub_δ_val, δ_sub_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem face_sub_mid (i' : Fin (l + 2)) (hi : (i : ℕ) = j + i') :
     (x.face i).sub j l h = (x.sub j (l + 1) (by omega)).face i' := by
   refine (along_along x _ _).trans ((congrArg x.along (hom_ext_val _ _ fun v => ?_)).trans (along_along x _ _).symm)
@@ -66,6 +95,13 @@ theorem face_sub_mid (i' : Fin (l + 2)) (hi : (i : ℕ) = j + i') :
 
 end
 
+/- English proof (translation)
+Establish `e1 : (x.sub 0 (p + 1) (by omega)).face (Fin.last (p + 1)) = x.sub 0 p (by omega)` using `(face_sub_mid x ⟨p + 1, by omega⟩ 0 p (by omega) (Fin.last _) (by simp)).symm.trans (face_sub_gt x _ 0 p _ (by simp))`. Establish `e2 : (x.sub p (r + 1) (by omega)).face 0 = x.sub (p + 1) r (by omega)` using `(face_sub_mid x ⟨p, by omega⟩ p r (by omega) 0 (by simp)).symm.trans (face_sub_le x _ p r _ (by simp))`. Rewrite using `[← Fin.sum_congr' _ (show (p + 1) + (r + 1) = N + 2 by omega), Fin.sum_univ_add, Fin.sum_univ_castSucc (n := p + 1), Fin.sum_univ_succ (n := r + 1), e1, e2, smul_add, Finset.smul_sum]`. Establish `c : (-1 : ℤ) ^ ((Fin.last (p + 1) : Fin (p + 2)) : ℕ) • φ (x.sub 0 p (by omega)) (x.sub (p + 1) r (by omega)) + (-1 : ℤ) ^ p • (-1 : ℤ) ^ ((0 : Fin (r + 2)) : ℕ) • φ (x.sub 0 p (by omega)) (x.sub (p + 1) r (by omega)) = 0`. Simplify using `[pow_succ]`.
+
+Establish `key : ∀ a b c d e f : A, c + d = 0 → a = e → b = f → a + b = e + c + (d + f)`. Introduce and unpack `a b c d _ _ h rfl rfl`. Rewrite using `[add_assoc, ← add_assoc c, h, zero_add]`. Use `key _ _ _ _ _ _ c (Finset.sum_congr rfl fun i _ => ?_) (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[face_sub_mid x _ 0 p _ i.castSucc (by simp), face_sub_le x _ p r _ (by simpa using Nat.lt_succ_iff.1 i.2)]`.
+
+Both sides reduce to the same expression. Rewrite using `[face_sub_mid x _ p r _ j.succ (by simp; omega), face_sub_gt x _ 0 p _ (by simp; omega), smul_smul, ← pow_add]`. Use `congr 2`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem telescope {N : ℕ} (x : Sx E (N + 1) U) {A : Type*} [AddCommGroup A] {p r : ℕ} (hN : p + r = N) (φ : Sx E p U → Sx E r U → A) :
     ∑ i : Fin (N + 2), (-1 : ℤ) ^ (i : ℕ) • φ ((x.face i).sub 0 p (by omega)) ((x.face i).sub p r (by omega)) =
       ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • φ ((x.sub 0 (p + 1) (by omega)).face i) (x.sub (p + 1) r (by omega)) +
@@ -95,11 +131,29 @@ end Faces
 
 def sg (j : ℤ) : ℤ := (j.negOnePow : ℤˣ)
 
+/- English proof (translation)
+Simplify using `[sg, Int.negOnePow_add]`.
+-/
 theorem sg_add (a b : ℤ) : sg (a + b) = sg a * sg b := by simp [sg, Int.negOnePow_add]
+/- English proof (translation)
+Simplify using `[sg]`.
+-/
 theorem sg_neg (a : ℤ) : sg (-a) = sg a := by simp [sg]
+/- English proof (translation)
+Simplify using `[sg]`.
+-/
 theorem sg_one : sg 1 = -1 := by simp [sg]
+/- English proof (translation)
+Rewrite using `[sg, ← Units.val_mul, Int.units_mul_self, Units.val_one]`.
+-/
 theorem sg_sq (a : ℤ) : sg a * sg a = 1 := by rw [sg, ← Units.val_mul, Int.units_mul_self, Units.val_one]
+/- English proof (translation)
+Simplify using `[sg, Int.coe_negOnePow_natCast]`.
+-/
 theorem sg_nat (p : ℕ) : (-1 : ℤ) ^ p = sg p := by simp [sg, Int.coe_negOnePow_natCast]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sg_smul {A : Type*} [AddCommGroup A] (j : ℤ) (a : A) : j.negOnePow • a = sg j • a := rfl
 
 section Leibniz
@@ -108,6 +162,9 @@ variable {E : Spc} {U : Scheme.{0}}
 def cl {N : ℕ} (x : Sx E N U) (j l : ℕ) : Sx E l U :=
   if h : j + l ≤ N then x.sub j l h else x.along (SimplexCategory.const _ _ 0)
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem cl_eq {N : ℕ} (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) : cl x j l = x.sub j l h := dif_pos h
 
 def bdL {A : Type*} [AddCommGroup A] (φ : ∀ p r : ℕ, Sx E p U → Sx E r U → A) : ∀ p r : ℕ, Sx E p U → Sx E r U → A
@@ -124,12 +181,18 @@ def pv (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m)
     (z : Sx E r U) : Sec (K.X w) U :=
   if h : (-(p : ℤ) + n) + (-(r : ℤ) + m) = w then μ.mul U _ _ w h (ev a p _ rfl U y) (ev b r _ rfl U z) else 0
 
+/- English proof (translation)
+Substitute `hs ht` using the available equality. Conclude with `dif_pos h`.
+-/
 theorem pv_eq (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m) (w : ℤ) (p r : ℕ) (y : Sx E p U)
     (z : Sx E r U) (s t : ℤ) (hs : -(p : ℤ) + n = s) (ht : -(r : ℤ) + m = t) (h : s + t = w) :
     pv μ a b w p r y z = μ.mul U s t w h (ev a p s hs U y) (ev b r t ht U z) := by
   subst hs ht
   exact dif_pos h
 
+/- English proof (translation)
+Rewrite using `[hc N w h U x, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_range]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[pv_eq μ a b w _ _ _ _ _ _ rfl rfl (by omega), cl_eq x 0 p (by omega), cl_eq x p (N - p) (by omega)]`. Both sides reduce to the same expression.
+-/
 theorem ev_aw {k : ℤ} {hk : n + m = k} {a : Cochain ((chains R).obj E) I n} {b : Cochain ((chains R).obj E) J m}
     {c : Cochain ((chains R).obj E) K k} (hc : μ.IsAW hk a b c) (N : ℕ) (w : ℤ) (h : -(N : ℤ) + k = w) (x : Sx E N U) :
     ev c N w h U x = ∑ q ∈ Finset.HasAntidiagonal.antidiagonal N, sg (m * q.1) • pv μ a b w q.1 q.2 (cl x 0 q.1) (cl x q.1 q.2) := by
@@ -138,6 +201,11 @@ theorem ev_aw {k : ℤ} {hk : n + m = k} {a : Cochain ((chains R).obj E) I n} {b
   rw [pv_eq μ a b w _ _ _ _ _ _ rfl rfl (by omega), cl_eq x 0 p (by omega), cl_eq x p (N - p) (by omega)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[pv_eq μ _ b w p r y z s' t (by omega) ht h]`. Consider the cases of `p with`. Consider the case `zero => rw [ev_δ_zero hn a U s s' hs, bdL, smul_zero, sub_zero]`. Consider the case `succ p`. Rewrite using `[ev_δ_succ hn a U p s s' hs, bdL, map_add, LinearMap.add_apply, sg_smul, map_zsmul, LinearMap.smul_apply, map_sum, LinearMap.sum_apply, eq_sub_iff_add_eq]`.
+
+Use `congrArg₂ (· + ·) rfl (congrArg _ (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[map_zsmul, LinearMap.smul_apply, pv_eq μ a b w p r _ z s' t (by omega) ht h]`.
+-/
 theorem pv_δ_left {n₁ : ℤ} (hn : n + 1 = n₁) (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m)
     (w : ℤ) (p r : ℕ) (y : Sx E p U) (z : Sx E r U) (s s' t : ℤ) (hs : -(p : ℤ) + n = s) (hs' : s + 1 = s')
     (ht : -(r : ℤ) + m = t) (h : s' + t = w) :
@@ -152,6 +220,11 @@ theorem pv_δ_left {n₁ : ℤ} (hn : n + 1 = n₁) (a : Cochain ((chains R).obj
     refine congrArg₂ (· + ·) rfl (congrArg _ (Finset.sum_congr rfl fun i _ => ?_))
     rw [map_zsmul, LinearMap.smul_apply, pv_eq μ a b w p r _ z s' t (by omega) ht h]
 
+/- English proof (translation)
+Rewrite using `[pv_eq μ a _ w p r y z s t' hs (by omega) h]`. Consider the cases of `r with`. Consider the case `zero => rw [ev_δ_zero hm b U t t' ht, bdR, smul_zero, sub_zero]`. Consider the case `succ r`. Rewrite using `[ev_δ_succ hm b U r t t' ht, bdR, map_add, sg_smul, map_zsmul, map_sum, eq_sub_iff_add_eq]`.
+
+Use `congrArg₂ (· + ·) rfl (congrArg _ (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[map_zsmul, pv_eq μ a b w p r y _ s t' hs (by omega) h]`.
+-/
 theorem pv_δ_right {m₁ : ℤ} (hm : m + 1 = m₁) (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m)
     (w : ℤ) (p r : ℕ) (y : Sx E p U) (z : Sx E r U) (s t t' : ℤ) (hs : -(p : ℤ) + n = s)
     (ht : -(r : ℤ) + m = t) (ht' : t + 1 = t') (h : s + t' = w) :
@@ -165,6 +238,9 @@ theorem pv_δ_right {m₁ : ℤ} (hm : m + 1 = m₁) (a : Cochain ((chains R).ob
     refine congrArg₂ (· + ·) rfl (congrArg _ (Finset.sum_congr rfl fun i _ => ?_))
     rw [map_zsmul, pv_eq μ a b w p r y _ s t' hs (by omega) h]
 
+/- English proof (translation)
+Substitute `hw` using the available equality. Rewrite using `[pv_eq μ a b w p r y z _ _ rfl rfl h, μ.leibniz, pv_δ_left μ hn a b _ p r y z _ _ _ rfl rfl rfl, pv_δ_right μ hm a b _ p r y z _ _ _ rfl rfl rfl, sg_smul]`.
+-/
 theorem d_pv {n₁ m₁ : ℤ} (hn : n + 1 = n₁) (hm : m + 1 = m₁) (a : Cochain ((chains R).obj E) I n)
     (b : Cochain ((chains R).obj E) J m) (w w' : ℤ) (hw : w + 1 = w') (p r : ℕ) (y : Sx E p U) (z : Sx E r U)
     (h : (-(p : ℤ) + n) + (-(r : ℤ) + m) = w) :
@@ -180,10 +256,20 @@ def rem (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m
   ∑ q ∈ Finset.HasAntidiagonal.antidiagonal N, sg (m * q.1 + m) • bdL (pv μ a b w) q.1 q.2 (cl x 0 q.1) (cl x q.1 q.2) +
     ∑ q ∈ Finset.HasAntidiagonal.antidiagonal N, sg (m * q.1 + q.1) • bdR (pv μ a b w) q.1 q.2 (cl x 0 q.1) (cl x q.1 q.2)
 
+/- English proof (translation)
+Simplify using `[rem, bdL, bdR]`.
+-/
 theorem rem_zero (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m) (w : ℤ) (x : Sx E 0 U) :
     rem μ a b w x = 0 := by
   simp [rem, bdL, bdR]
 
+/- English proof (translation)
+Simplify using `only [ev_aw μ hc, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm, rem, Finset.Nat.sum_antidiagonal_succ, Finset.Nat.sum_antidiagonal_succ']`. Simplify using `only [bdL, bdR, smul_zero, zero_add]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨p, r⟩ hq`. Establish `hN : p + r = N` using `by simpa using hq`. Establish `e1 : sg (m * ((p + 1 : ℕ) : ℤ) + m) = sg (m * p)`. Rewrite using `[show m * ((p + 1 : ℕ) : ℤ) + m = m * p + (m + m) by push_cast; ring, sg_add, sg_add, sg_sq, mul_one]`. Establish `h1 : ∀ i : Fin (N + 2), cl (x.face i) 0 p = (x.face i).sub 0 p (by omega)` using `fun i => cl_eq _ _ _ _`.
+
+Establish `h2 : ∀ i : Fin (N + 2), cl (x.face i) p r = (x.face i).sub p r (by omega)` using `fun i => cl_eq _ _ _ _`. Simplify using `only`. Simplify using `only [h1, h2, smul_comm _ (sg (m * p))]`. Rewrite using `[← Finset.smul_sum, telescope x hN, e1, sg_add, mul_smul, ← smul_add, sg_nat p, cl_eq x 0 (p + 1) (by omega), cl_eq x (p + 1) r (by omega), cl_eq x 0 p (by omega), cl_eq x p (r + 1) (by omega)]`.
+-/
 theorem rem_succ {k : ℤ} {hk : n + m = k} {a : Cochain ((chains R).obj E) I n} {b : Cochain ((chains R).obj E) J m}
     {c : Cochain ((chains R).obj E) K k} (hc : μ.IsAW hk a b c) (N : ℕ) (w : ℤ) (h : -(N : ℤ) + k = w)
     (x : Sx E (N + 1) U) :
@@ -204,6 +290,17 @@ theorem rem_succ {k : ℤ} {hk : n + m = k} {a : Cochain ((chains R).obj E) I n}
   rw [← Finset.smul_sum, telescope x hN, e1, sg_add, mul_smul, ← smul_add, sg_nat p,
     cl_eq x 0 (p + 1) (by omega), cl_eq x (p + 1) r (by omega), cl_eq x 0 p (by omega), cl_eq x p (r + 1) (by omega)]
 
+/- English proof (translation)
+Rewrite using `[ev_aw μ hc, ev_aw μ h₁, ev_aw μ h₂, rem, Sec.map, map_sum, smul_add, Finset.smul_sum, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨p, r⟩ hq`. Establish `hN : p + r = N` using `by simpa using hq`. Simplify using `only`.
+
+Establish `hd` using `d_pv μ hn hm a b w w' (by omega) p r (cl x 0 p) (cl x p r) (by omega)`. Rewrite `hd` using `[Sec.map]`. Rewrite using `[map_zsmul, hd]`. Use `clear hd`. Substitute `hn hm hk hk₁` using the available equality.
+
+Establish `e : sg ((m + 1) * p) = sg (m * p) * sg p` using `by rw [add_mul, one_mul, sg_add]`. Rewrite using `[e]`. Simplify using `only [sg_add, sg_neg, sg_one]`. Establish `q1` using `sg_sq m`. Establish `q2` using `sg_sq n`.
+
+Establish `q3` using `sg_sq p`. Generalize the expression as in `sg m = α at *`. Generalize the expression as in `sg n = β at *`. Generalize the expression as in `sg p = γ at *`. Generalize the expression as in `sg (m * p) = ε at *`.
+
+Use `match_scalars`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(-(β * ε)) * q1`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem d_ev_aw {k n₁ m₁ k₁ : ℤ} {hk : n + m = k} (hn : n + 1 = n₁) (hm : m + 1 = m₁) (hk₁ : k + 1 = k₁)
     {a : Cochain ((chains R).obj E) I n} {b : Cochain ((chains R).obj E) J m} {c : Cochain ((chains R).obj E) K k}
     {c₁ c₂ : Cochain ((chains R).obj E) K k₁} {e₁ : n₁ + m = k₁} {e₂ : n + m₁ = k₁} (hc : μ.IsAW hk a b c)
@@ -237,6 +334,9 @@ theorem d_ev_aw {k n₁ m₁ k₁ : ℤ} {hk : n + m = k} (hn : n + 1 = n₁) (h
   · ring
   · ring
 
+/- English proof (translation)
+Use `ev_ext _ _ fun N w' h' U x => ?_` and prove the remaining obligations. Rewrite using `[ev_add, sg_smul, ev_zsmul, ← d_ev_aw μ hn hm hk₁ hc h₁ h₂ N _ w' rfl h' x]`. Consider the cases of `N with`. Consider the case `zero => rw [ev_δ_zero hk₁ c U _ w' rfl, rem_zero, smul_zero, add_zero]`. Consider the case `succ N => rw [ev_δ_succ hk₁ c U N _ w' rfl, rem_succ μ hc N w' (by omega), sg_smul]`.
+-/
 theorem aw_leibniz {k n₁ m₁ k₁ : ℤ} {hk : n + m = k} (hn : n + 1 = n₁) (hm : m + 1 = m₁) (hk₁ : k + 1 = k₁)
     {a : Cochain ((chains R).obj E) I n} {b : Cochain ((chains R).obj E) J m} {c : Cochain ((chains R).obj E) K k}
     {c₁ c₂ : Cochain ((chains R).obj E) K k₁} {e₁ : n₁ + m = k₁} {e₂ : n + m₁ = k₁} (hc : μ.IsAW hk a b c)

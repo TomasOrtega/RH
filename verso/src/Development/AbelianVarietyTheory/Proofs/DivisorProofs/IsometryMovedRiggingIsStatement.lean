@@ -21,5 +21,8 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TriMove.rigMove_is | exact GlobalTheory.TriMove.rigMove_is | (intros; apply GlobalTheory.TriMove.rigMove_is <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isometryMovedRigging_is : ∀ {D : D7} {S S' : HSp D} (I : GlobalTheory.Mem.Isom.IsoMat S S') (r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig S), r.Is → (GlobalTheory.TriMove.rigMove I r).Is := by
   first | exact @GlobalTheory.TriMove.rigMove_is | exact GlobalTheory.TriMove.rigMove_is | (intros; apply GlobalTheory.TriMove.rigMove_is <;> assumption)

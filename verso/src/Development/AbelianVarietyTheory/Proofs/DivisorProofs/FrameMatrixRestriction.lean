@@ -18,6 +18,15 @@ open GlobalTheory.Twist (resM resM_resM resM_self resM_smul app_resM)
 
 namespace GlobalTheory.LieFilt
 
+/- English proof (translation)
+Establish `key : ∀ z, (∀ z', bl z < bl z' → y z' = 0) → y z = x z`. Introduce `z hz`. Rewrite using `[← h, Matrix.mulVec, dotProduct, Finset.sum_eq_single z]`. Rewrite using `[hQ z z (lt_irrefl _), Matrix.one_apply_eq, one_mul]`. Introduce `z' _ hne`.
+
+Distinguish the cases in `hlt : bl z < bl z'`. Rewrite using `[hz z' hlt, mul_zero]`. Rewrite using `[hQ z z' hlt, Matrix.one_apply_ne (Ne.symm hne), zero_mul]`. Simplify using the standard rewrite rules. Establish `h1 : ∀ z, k < bl z → y z = 0`.
+
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨z₀, hz₀, hy₀⟩` from `hne`. Take `⟨z, hz, hmax⟩` from `(Finset.univ.filter fun z => y z ≠ 0).exists_max_image bl ⟨z₀, by simpa using hy₀⟩`. Establish `hz' : y z ≠ 0` using `by simpa using hz`.
+
+Use `hz' ((key z fun z' hlt => ?_).trans (hx z (hz₀.trans_le (hmax z₀ (by simpa using hy₀)))))` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Conclude with `absurd (hmax z' (by simpa using hy)) (not_le.2 hlt)`. Conclude with `⟨h1, fun z hz => key z fun z' hlt => h1 z' (hz ▸ hlt)⟩`.
+-/
 theorem BlockUni.support_of_mulVec {κ R : Type} [Fintype κ] [CommRing R] {bl : κ → ℕ} {Q : Matrix κ κ R}
     (hQ : BlockUni bl Q) {y x : κ → R} (h : Q.mulVec y = x) {k : ℕ} (hx : ∀ z, k < bl z → x z = 0) :
     (∀ z, k < bl z → y z = 0) ∧ ∀ z, bl z = k → y z = x z := by
@@ -46,6 +55,11 @@ section
 variable {X : Scheme.{0}} {L : X.Modules} {U V : X.Opens} {κ μ : Type} [Fintype κ] [Fintype μ]
   [DecidableEq κ] [DecidableEq μ]
 
+/- English proof (translation)
+Introduce `V' h`. Establish `e : ⇑(Fintype.linearCombination Γ(X, V') fun z => resM L h (∑ b, C b z • resM L hV (ℓ b))) = (Fintype.linearCombination Γ(X, V') fun b => resM L (h.trans hV) (ℓ b)) ∘ (C.map (resG X h)).mulVec`. Use function extensionality and compare the values at `y`. Simplify using `only [Fintype.linearCombination_apply, map_sum, resM_smul, resM_resM, Function.comp, Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [mul_comm]`. Rewrite using `[e]`. Use `(hℓ V' _).comp (Function.bijective_iff_has_inverse.2 ⟨(C'.map (resG X h)).mulVec, fun y => ?_, fun y => ?_⟩)` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+-/
 theorem isFrame_change {ℓ : μ → Γ(L, U)} (hℓ : VB.IsFrame ℓ) (hV : V ≤ U) {C : Matrix μ κ Γ(X, V)}
     {C' : Matrix κ μ Γ(X, V)} (h1 : C * C' = 1) (h2 : C' * C = 1) :
     VB.IsFrame fun z => ∑ b, C b z • resM L hV (ℓ b) := by
@@ -63,6 +77,11 @@ theorem isFrame_change {ℓ : μ → Γ(L, U)} (hℓ : VB.IsFrame ℓ) (hV : V �
   · rw [Matrix.mulVec_mulVec, ← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]
   · rw [Matrix.mulVec_mulVec, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `e : s = ∑ z, C'.mulVec ((hℓ.basis hV).repr s) z • (isFrame_change hℓ hV h1 h2).basis le_rfl z`. Establish `h3 : C.mulVec (C'.mulVec ((hℓ.basis hV).repr s)) = (hℓ.basis hV).repr s`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Use `conv_lhs => rw [← (hℓ.basis hV).sum_repr s, ← h3]`. Generalize the expression as in `C'.mulVec ((hℓ.basis hV).repr s) = y`.
+
+Simplify using `only [VB.IsFrame.basis_apply, resM_self, Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Use `conv_lhs => rw [e]`. Rewrite using `[Module.Basis.repr_sum_self]`.
+-/
 theorem repr_change {ℓ : μ → Γ(L, U)} (hℓ : VB.IsFrame ℓ) (hV : V ≤ U) {C : Matrix μ κ Γ(X, V)}
     {C' : Matrix κ μ Γ(X, V)} (h1 : C * C' = 1) (h2 : C' * C = 1) (s : Γ(L, V)) (z : κ) :
     ((isFrame_change hℓ hV h1 h2).basis le_rfl).repr s z = C'.mulVec ((hℓ.basis hV).repr s) z := by
@@ -80,17 +99,40 @@ theorem repr_change {ℓ : μ → Γ(L, U)} (hℓ : VB.IsFrame ℓ) (hV : V ≤ 
 
 omit [DecidableEq μ] in
 
+/- English proof (translation)
+Use extensionality with `b`. Simplify using `only [VB.IsFrame.basis_apply, resM_self]`.
+-/
 theorem basis_res {ℓ : μ → Γ(L, U)} (hℓ : VB.IsFrame ℓ) (hV : V ≤ U) :
     (hℓ.res hV).basis le_rfl = hℓ.basis hV := by
   ext b
   simp only [VB.IsFrame.basis_apply, resM_self]
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (j.naturality (homOfLE hV).op) s`.
+-/
 theorem app_resG_eq {W : Scheme.{0}} (j : W ⟶ X) (hV : V ≤ U) (s : Γ(X, U)) :
     j.app V (resG X hV s) = resG W (j.preimage_mono hV) (j.app U s) :=
   ConcreteCategory.congr_hom (j.naturality (homOfLE hV).op) s
 
 end
 
+/- English proof (translation)
+Introduce `X W jB ι _ L E E' r g o T u U V V' hV hV' ℓ hℓ f hf f' hf' A hA hinj C C' Q h1 h2 hQ hC`. Use `⟨fun a i => resM _ hV' (f a i), fun a => (hf a).res hV', fun a i => resM _ hV' (f' a i), fun a => (hf' a).res hV', _, isFrame_change hℓ (hV'.trans hV) h1 h2, fun a i => ?_⟩` and prove the remaining obligations. Use `set φ : Γ(X, V') →+* Γ(W, jB ⁻¹ᵁ V') := (jB.app V').hom with hφ`. Use `set ρ := resG W (jB.preimage_mono hV') with hρ`. Establish `hC' : C.map φ = A.map ρ * Q` using `hC`.
+
+Establish `hinj' : Function.Injective φ` using `hinj`. Establish `hQ1 : Q * (C'.map φ * A.map ρ) = 1`. Rewrite using `[mul_eq_one_comm, Matrix.mul_assoc, ← hC', ← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _)]`. Set `w : Fin (r a) → Γ(X, V')` to `fun j => (((hf' a).res hV').basis le_rfl).repr ((u a).app V' (resM _ hV' (f a i))) j`. Establish `hw (j) : φ (w j) = ρ (jB.app V (((hf' a).basis le_rfl).repr ((u a).app V (f a i)) j))`.
+
+Simplify using `only [w]`. Rewrite using `[basis_res (hf' a), app_resM, (hf' a).repr_resM le_rfl hV']`. Conclude with `app_resG_eq jB hV' _`. Set `x : (Σ a, Fin (r a)) → Γ(W, jB ⁻¹ᵁ V')` to `fun z => ∑ j, if z = ⟨a, j⟩ then φ (w j) else 0`. Set `p : Fin g → Γ(X, V')` to `(hℓ.basis (hV'.trans hV)).repr ((T a).app V' (resM _ hV' (f a i)))`.
+
+Establish `hp : φ ∘ p = (A.map ρ).mulVec x`. Use function extensionality and compare the values at `b`. Establish `: φ (p b) = ρ (jB.app V ((hℓ.basis hV).repr ((T a).app V (f a i)) b))`. Simplify using `only [p]`. Rewrite using `[app_resM, hℓ.repr_resM hV hV']`.
+
+Conclude with `app_resG_eq jB hV' _`. Rewrite using `[Function.comp_apply, this, hA, map_sum]`. Simplify using `only [Matrix.mulVec, dotProduct, x, Finset.mul_sum, mul_ite, mul_zero, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true, map_mul, hw]`.
+
+Establish `hy : Q.mulVec (fun z => φ (C'.mulVec p z)) = x`. Establish `: (fun z => φ (C'.mulVec p z)) = (C'.map φ).mulVec (φ ∘ p)` using `funext fun z => RingHom.map_mulVec φ C' p z`. Rewrite using `[this, hp, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hQ1, Matrix.one_mulVec]`. Take `⟨h3, h4⟩` from `hQ.support_of_mulVec hy (k := o a) fun z hz => Finset.sum_eq_zero fun j _ => if_neg (by rintro rfl; exact lt_irrefl _ hz)`. Use `⟨fun z hz => hinj' ?_, fun j => hinj' ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[repr_change hℓ _ h1 h2, map_zero]`. Conclude with `h3 z hz`. Rewrite using `[repr_change hℓ _ h1 h2]`. Use `(h4 ⟨a, j⟩ rfl).trans ?_` and prove the remaining obligations. Simplify using `only [x, Sigma.mk.injEq, heq_eq_eq, true_and, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Both sides reduce to the same expression.
+-/
 theorem locAdapted_of_matrix : ∀ {X W : Scheme.{0}} (jB : W ⟶ X) {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules} {r : ι → ℕ} {g : ℕ}
     (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a) {U V V' : X.Opens} (hV : V ≤ U) (hV' : V' ≤ V)
     (ℓ : Fin g → Γ(L, U)) (hℓ : VB.IsFrame ℓ) (f : ∀ a, Fin (r a) → Γ(E a, V)), (∀ a, VB.IsFrame (f a)) →

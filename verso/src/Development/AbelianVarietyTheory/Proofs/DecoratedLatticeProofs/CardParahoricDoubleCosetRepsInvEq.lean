@@ -15,6 +15,13 @@ variable {G : Type} [Group G]
 
 def dcos (J : Subgroup G) (g : G) : Set G := {x | ∃ a ∈ J, ∃ b ∈ J, x = a * g * b}
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [dcos, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Take `⟨j', ⟨hj'R, hj'⟩, -⟩` from `h2 a ha`.
+
+Use `⟨j', hj'R, ?_⟩` and prove the remaining obligations. Establish `e : (j' * g)⁻¹ * (a * g * b) = ((j' * g)⁻¹ * (a * g)) * b` using `by group`. Rewrite using `[e]`. Conclude with `J.mul_mem hj' hb`. Introduce and unpack `⟨j, hjR, hj⟩`.
+
+Conclude with `⟨j, h1 j hjR, (j * g)⁻¹ * x, hj, by group⟩`.
+-/
 theorem dcos_eq_iUnion (J : Subgroup G) (g : G) (R : Finset G) (h1 : ∀ j ∈ R, j ∈ J)
     (h2 : ∀ j ∈ J, ∃! j', j' ∈ R ∧ (j' * g)⁻¹ * (j * g) ∈ J) :
     dcos J g = ⋃ j ∈ R, (fun x => (j * g)⁻¹ * x) ⁻¹' (J : Set G) := by
@@ -29,6 +36,11 @@ theorem dcos_eq_iUnion (J : Subgroup G) (g : G) (R : Finset G) (h1 : ∀ j ∈ R
   · rintro ⟨j, hjR, hj⟩
     exact ⟨j, h1 j hjR, (j * g)⁻¹ * x, hj, by group⟩
 
+/- English proof (translation)
+Introduce `j₁ hj₁ j₂ hj₂ hne`. Use `Set.disjoint_left.2 fun x hx₁ hx₂ => hne ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, SetLike.mem_coe] at hx₁ hx₂`. Establish `hm : (j₁ * g)⁻¹ * (j₂ * g) ∈ J`. Establish `e : (j₁ * g)⁻¹ * (j₂ * g) = ((j₁ * g)⁻¹ * x) * ((j₂ * g)⁻¹ * x)⁻¹` using `by group`.
+
+Rewrite using `[e]`. Conclude with `J.mul_mem hx₁ (J.inv_mem hx₂)`. Establish `hself : (j₂ * g)⁻¹ * (j₂ * g) ∈ J` using `by simp`. Conclude with `(h2 j₂ (h1 j₂ (Finset.mem_coe.1 hj₂))).unique ⟨Finset.mem_coe.1 hj₁, hm⟩ ⟨Finset.mem_coe.1 hj₂, hself⟩`.
+-/
 theorem pairwiseDisjoint_cosets (J : Subgroup G) (g : G) (R : Finset G) (h1 : ∀ j ∈ R, j ∈ J)
     (h2 : ∀ j ∈ J, ∃! j', j' ∈ R ∧ (j' * g)⁻¹ * (j * g) ∈ J) :
     (R : Set G).PairwiseDisjoint (fun j => (fun x => (j * g)⁻¹ * x) ⁻¹' (J : Set G)) := by
@@ -41,6 +53,11 @@ theorem pairwiseDisjoint_cosets (J : Subgroup G) (g : G) (R : Finset G) (h1 : �
   have hself : (j₂ * g)⁻¹ * (j₂ * g) ∈ J := by simp
   exact (h2 j₂ (h1 j₂ (Finset.mem_coe.1 hj₂))).unique ⟨Finset.mem_coe.1 hj₁, hm⟩ ⟨Finset.mem_coe.1 hj₂, hself⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [dcos, Set.mem_preimage, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨b⁻¹, J.inv_mem hb, a⁻¹, J.inv_mem ha, by group⟩`.
+
+Introduce and unpack `⟨a, ha, b, hb, h⟩`. Use `⟨b⁻¹, J.inv_mem hb, a⁻¹, J.inv_mem ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv x, h]`. Use `group`.
+-/
 theorem dcos_inv (J : Subgroup G) (g : G) : dcos J g⁻¹ = Inv.inv ⁻¹' dcos J g := by
   ext x
   simp only [dcos, Set.mem_preimage, Set.mem_setOf_eq]
@@ -51,6 +68,9 @@ theorem dcos_inv (J : Subgroup G) (g : G) : dcos J g⁻¹ = Inv.inv ⁻¹' dcos 
     refine ⟨b⁻¹, J.inv_mem hb, a⁻¹, J.inv_mem ha, ?_⟩
     rw [← inv_inv x, h]; group
 
+/- English proof (translation)
+Rewrite using `[dcos_eq_iUnion J g R h1 h2, measure_biUnion_finset (pairwiseDisjoint_cosets J g R h1 h2) (fun j _ => measurable_const_mul _ hJ)]`. Simplify using `only [measure_preimage_mul, Finset.sum_const, nsmul_eq_mul]`.
+-/
 theorem measure_dcos [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
     (J : Subgroup G) (hJ : MeasurableSet (J : Set G)) (g : G) (R : Finset G) (h1 : ∀ j ∈ R, j ∈ J)
     (h2 : ∀ j ∈ J, ∃! j', j' ∈ R ∧ (j' * g)⁻¹ * (j * g) ∈ J) :
@@ -59,6 +79,11 @@ theorem measure_dcos [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.
     (fun j _ => measurable_const_mul _ hJ)]
   simp only [measure_preimage_mul, Finset.sum_const, nsmul_eq_mul]
 
+/- English proof (translation)
+Use `haveI : μ.IsInvInvariant := GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ`. Establish `h0 : μ J ≠ 0` using `(hJo.measure_pos μ ⟨1, J.one_mem⟩).ne'`. Establish `e1` using `measure_dcos μ J hJo.measurableSet g R h1 h2`. Establish `e2` using `measure_dcos μ J hJo.measurableSet g⁻¹ R' h1' h2'`. Rewrite `e2` using `[dcos_inv, Measure.measure_preimage_inv, e1]`.
+
+Establish `h` using `(ENNReal.mul_left_inj h0 hJt).1 e2`. Conclude with `h` after adjusting the coercions.
+-/
 theorem card_eq_of_unimodular [MeasurableSpace G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     (J : Subgroup G) (hJo : IsOpen (J : Set G)) (hJt : μ J ≠ ⊤) (g : G) (R R' : Finset G)
@@ -75,6 +100,17 @@ theorem card_eq_of_unimodular [MeasurableSpace G] [TopologicalSpace G] [IsTopolo
 
 end general
 
+/- English proof (translation)
+Introduce `hR hR'`. Use `letI : MeasurableSpace (GL (A ⊕ D) k) := borel _`. Use `haveI : BorelSpace (GL (A ⊕ D) k) := ⟨rfl⟩`. Use `haveI : IsTopologicalGroup (GL (A ⊕ D) k) := inferInstance`. Use `haveI : LocallyCompactSpace (GL (A ⊕ D) k) := inferInstance`.
+
+Use `haveI : SecondCountableTopology (GL (A ⊕ D) k) := inferInstance`. Take `⟨hJo, hJc⟩` from `GlobalTheory.ParahoricOpenCompact.isOpen_isCompact_parahoric k A D`. Establish `hRI : ∀ (μ : Measure (GL (A ⊕ D) k)) [μ.IsHaarMeasure], μ.IsMulRightInvariant`. Introduce `μ _`. Use `⟨fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `h : Measure.modularCharacter g = 1`. Use `GlobalTheory.SplitFlip.hom_eq_one_of_center Measure.modularCharacter (fun z hz => ?_) g` and prove the remaining obligations. Establish `h1` using `Measure.map_right_mul_eq_modularCharacterFun_smul μ z`. Rewrite `h1` using `[show (fun x => x * z) = fun x => z * x from funext fun x => (hz x).symm, Measure.IsMulLeftInvariant.map_mul_left_eq_self]`. Establish `h2` using `congrArg (fun m : Measure (GL (A ⊕ D) k) => m (KO k (A ⊕ D))) h1`.
+
+Establish `hne : μ (KO k (A ⊕ D)) ≠ 0` using `(GlobalTheory.SplitFlip.isOpen_KO.measure_pos μ ⟨1, one_mem _⟩).ne'`. Establish `hnt : μ (KO k (A ⊕ D)) ≠ ⊤` using `GlobalTheory.SplitFlip.isCompact_KO.measure_lt_top.ne`. Simplify using `only [Measure.coe_nnreal_smul_apply] at h2`. Establish `h3 : (Measure.modularCharacterFun z : ENNReal) = 1` using `(ENNReal.mul_left_inj hne hnt).1 (by rw [one_mul]; exact h2.symm)`. Conclude with `h3` after adjusting the coercions.
+
+Rewrite using `[Measure.map_right_mul_eq_modularCharacterFun_smul μ g, show Measure.modularCharacterFun g = 1 from h, one_smul]`. Use `haveI := hRI (Measure.haar : Measure (GL (A ⊕ D) k))`. Use `⟨card_eq_of_unimodular (Measure.haar : Measure (GL (A ⊕ D) k)) (parahoric k A D) hJo hJc.measure_lt_top.ne g R R' (fun j hj => (hR.1 j hj).1) hR.2 (fun j hj => (hR'.1 j hj).1) hR'.2, ?_⟩` and prove the remaining obligations. Take `⟨j', ⟨hj', -⟩, -⟩` from `hR.2 1 (one_mem _)`. Conclude with `⟨j', hj'⟩`.
+-/
 theorem card_isReps_inv (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (g : GL (A ⊕ D) k)
     (R R' : Finset (GL (A ⊕ D) k)) (d d' : GL (A ⊕ D) k → kˣ) :

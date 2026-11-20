@@ -7,6 +7,11 @@ noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.EtaleTrace CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz UpperTheory.Gal.KunnethLefschetz.Di
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `q _ i V U g ζ`. Establish `hroot` using `(GlobalTheory.T.tateTwistUnitClass_rootClass_spec q).2.2.2`. Establish `hnat` using `(GlobalTheory.T.degreeZeroSectionClass_properties (ZMod q) (tw q i) U).2.2.2.1 g (twGen i ζ)`. Establish `hres` using `(GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.2.1 V U g ζ`. Rewrite using `[hroot i U ζ, hroot i V (ζ.map g.appTop.hom), ← hres]`.
+
+Conclude with `hnat`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.Di.rootNat_holds :
     UpperTheory.Gal.KunnethLefschetz.Di.RootNat := by
   intro q _ i V U g ζ

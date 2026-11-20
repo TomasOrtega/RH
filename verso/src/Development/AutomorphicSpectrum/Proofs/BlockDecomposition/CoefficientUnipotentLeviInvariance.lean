@@ -18,6 +18,9 @@ namespace GlobalTheory.CompanionTheory.WzHeis
 section Blocks
 variable {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = n)
 
+/- English proof (translation)
+Unfold `bl`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+-/
 theorem block_mul₂ (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ) (Fin p) R)
     (c c' : Matrix (Fin p) (Fin ρ) R) (d d' : Matrix (Fin p) (Fin p) R) :
     bl hn a b c d * bl hn a' b' c' d' =
@@ -25,10 +28,16 @@ theorem block_mul₂ (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ)
   unfold bl
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Unfold `bl`. Rewrite using `[Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+-/
 theorem blockRowSubstitution_one : bl hn (1 : Matrix (Fin ρ) (Fin ρ) R) 0 0 1 = 1 := by
   unfold bl
   rw [Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
+/- English proof (translation)
+Unfold `bl`. Rewrite using `[← Matrix.fromBlocks_add]`. Both sides reduce to the same expression.
+-/
 theorem bl_add (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ) (Fin p) R)
     (c c' : Matrix (Fin p) (Fin ρ) R) (d d' : Matrix (Fin p) (Fin p) R) :
     bl hn a b c d + bl hn a' b' c' d' = bl hn (a + a') (b + b') (c + c') (d + d') := by
@@ -36,6 +45,9 @@ theorem bl_add (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ) (Fin 
   rw [← Matrix.fromBlocks_add]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [bl, Matrix.sub_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i | i <;>`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j | j <;> rfl`.
+-/
 theorem block_sub (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ) (Fin p) R)
     (c c' : Matrix (Fin p) (Fin ρ) R) (d d' : Matrix (Fin p) (Fin p) R) :
     bl hn a b c d - bl hn a' b' c' d' = bl hn (a - a') (b - b') (c - c') (d - d') := by
@@ -44,12 +56,18 @@ theorem block_sub (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ) (F
   rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i | i <;>
     rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j | j <;> rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [bl, Matrix.zero_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i | i <;>`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j | j <;> rfl`.
+-/
 theorem blockMatrix_zero : bl hn (0 : Matrix (Fin ρ) (Fin ρ) R) 0 0 0 = 0 := by
   ext i j
   simp only [bl, Matrix.zero_apply, Matrix.submatrix_apply]
   rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i | i <;>
     rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j | j <;> rfl
 
+/- English proof (translation)
+Unfold `bl`. Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₁₂]`. Simplify using the standard rewrite rules.
+-/
 theorem det_bl_lower (c : Matrix (Fin p) (Fin ρ) R) : (bl hn 1 0 c 1).det = 1 := by
   unfold bl
   rw [Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₁₂]
@@ -59,6 +77,9 @@ end Blocks
 
 variable {D : D7} {n ρ p : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [adj, bl, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i | i <;>`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j | j <;> rfl`.
+-/
 theorem adj_bl (hn : ρ + p = n) (a : Mx D ρ ρ) (b : Mx D ρ p) (c : Mx D p ρ) (d : Mx D p p) :
     adj (bl hn a b c d) = bl hn (adj a) (adj c) (adj b) (adj d) := by
   ext i j
@@ -68,12 +89,18 @@ theorem adj_bl (hn : ρ + p = n) (a : Mx D ρ ρ) (b : Mx D ρ p) (c : Mx D p ρ
 
 open GlobalTheory.StdUnn.Model GlobalTheory.StdUnn.LeftInvSect
 
+/- English proof (translation)
+Establish `e : chz ψ b₀ (a + b) = ψ (GlobalTheory.CompanionTheory.FourierN.pr b₀.1 (a.1 + b.1))` using `rfl`. Rewrite using `[e, GlobalTheory.CompanionTheory.FourierN.pr_add_right, AddChar.map_add_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem chz_add (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (a b : hermA D ρ) :
     chz ψ b₀ (a + b) = chz ψ b₀ a * chz ψ b₀ b := by
   have e : chz ψ b₀ (a + b) = ψ (GlobalTheory.CompanionTheory.FourierN.pr b₀.1 (a.1 + b.1)) := rfl
   rw [e, GlobalTheory.CompanionTheory.FourierN.pr_add_right, AddChar.map_add_eq_mul]
   rfl
 
+/- English proof (translation)
+Establish `hb : ‖chz ψ b₀ b‖ = 1` using `hψ.2.1 _`. Rewrite using `[chz_add, map_mul, mul_assoc, Complex.conj_mul', hb]`. Simplify using the standard rewrite rules.
+-/
 theorem conj_chz (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) (a b : hermA D ρ) :
     conj (chz ψ b₀ a) = conj (chz ψ b₀ (a + b)) * chz ψ b₀ b := by
   have hb : ‖chz ψ b₀ b‖ = 1 := hψ.2.1 _
@@ -82,6 +109,9 @@ theorem conj_chz (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (
 
 variable {hn : ρ + p = n} (M : Maps D hn)
 
+/- English proof (translation)
+Establish `h1` using `M.emb_mat g₁ 1 b 0 1 hg`. Rewrite `h1` using `[blockRowSubstitution_one, blockMatrix_zero]`. Rewrite using `[LeftInvSect.mat_mul, M.nzx_mat, h1, submatrix_fromBlocks_mul]`. Simplify using `[bl_add]`.
+-/
 theorem mat_u (g₁ : G D p) (b : Mx D p p) (hg : mat g₁ = blk4 1 b 0 1) (x₀ : Mx D ρ p) :
     mat (M.nzx 0 x₀ * M.emb g₁) = blk4 1 (bl hn 0 x₀ (adj x₀) b) 0 1 := by
   have h1 := M.emb_mat g₁ 1 b 0 1 hg
@@ -89,6 +119,11 @@ theorem mat_u (g₁ : G D p) (b : Mx D p p) (hg : mat g₁ = blk4 1 b 0 1) (x₀
   rw [LeftInvSect.mat_mul, M.nzx_mat, h1, submatrix_fromBlocks_mul]
   simp [bl_add]
 
+/- English proof (translation)
+Establish `h1` using `M.emb_mat g₁ 1 b 0 1 hg`. Rewrite `h1` using `[blockRowSubstitution_one, blockMatrix_zero]`. Apply `GlobalTheory.CompanionTheory.FourierN.mat_injective` to reduce the goal to its premises. Rewrite using `[LeftInvSect.mat_mul, LeftInvSect.mat_mul, LeftInvSect.mat_mul, mat_u M g₁ b hg, M.nzx_mat, M.nzx_mat, M.nzx_mat, h1]`. Simplify using `only [submatrix_fromBlocks_mul, bl_add, adj_zero, mul_one, one_mul, mul_zero, zero_mul, add_zero, zero_add]`.
+
+Rewrite using `[show (ζ + z₀).1 = z₀.1 + ζ.1 from add_comm _ _]`.
+-/
 theorem nzx_comm (g₁ : G D p) (b : Mx D p p) (hg : mat g₁ = blk4 1 b 0 1) (x₀ : Mx D ρ p) (ζ z₀ : hermA D ρ) :
     M.nzx ζ 0 * (M.nzx z₀ x₀ * M.emb g₁) = (M.nzx 0 x₀ * M.emb g₁) * M.nzx (ζ + z₀) 0 := by
   have h1 := M.emb_mat g₁ 1 b 0 1 hg
@@ -98,6 +133,13 @@ theorem nzx_comm (g₁ : G D p) (b : Mx D p p) (hg : mat g₁ = blk4 1 b 0 1) (x
   simp only [submatrix_fromBlocks_mul, bl_add, adj_zero, mul_one, one_mul, mul_zero, zero_mul, add_zero, zero_add]
   rw [show (ζ + z₀).1 = z₀.1 + ζ.1 from add_comm _ _]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.SwUnf.SmallCell.conj_block M.w (M.nzx 0 x₀ * M.emb g₁) M.w_mat (mat_u M g₁ b hg x₀)`. Establish `hC : adj (bl hn (-1 : Mx D ρ ρ) 0 0 0) = bl hn (-1) 0 0 0`. Simplify using `[adj_bl, adj_zero, adj_neg, adj_one]`. Rewrite `h` using `[hC]`. Establish `e1 : (1 : Mx D n n) - bl hn 0 0 0 1 * bl hn 0 x₀ (adj x₀) b * bl hn (-1) 0 0 0 = bl hn 1 0 (adj x₀) 1`.
+
+Rewrite using `[← blockRowSubstitution_one hn]`. Simplify using `[block_mul₂, block_sub]`. Establish `e2 : -(bl hn (-1 : Mx D ρ ρ) 0 0 0 * bl hn 0 x₀ (adj x₀) b * bl hn (-1) 0 0 0) = (0 : Mx D n n)`. Simplify using `[block_mul₂, blockMatrix_zero]`. Rewrite `h` using `[e1, e2]`.
+
+Conclude with `⟨_, _, h⟩`.
+-/
 theorem q_mat (g₁ : G D p) (b : Mx D p p) (hg : mat g₁ = blk4 1 b 0 1) (x₀ : Mx D ρ p) :
     ∃ (β δ : Mx D n n), mat (M.w * (M.nzx 0 x₀ * M.emb g₁) * M.w⁻¹) = blk4 (bl hn 1 0 (adj x₀) 1) β 0 δ := by
   have h := GlobalTheory.CompanionTheory.SwUnf.SmallCell.conj_block M.w (M.nzx 0 x₀ * M.emb g₁) M.w_mat (mat_u M g₁ b hg x₀)
@@ -112,6 +154,11 @@ theorem q_mat (g₁ : G D p) (b : Mx D p p) (hg : mat g₁ = blk4 1 b 0 1) (x₀
   rw [e1, e2] at h
   exact ⟨_, _, h⟩
 
+/- English proof (translation)
+Take `⟨β, δ, hq⟩` from `q_mat M g₁ b hg x₀`. Set `a : GL (Fin n) (AE D)` to `⟨bl hn 1 0 (adj x₀) 1, bl hn 1 0 (-adj x₀) 1, by simp [block_mul₂, blockRowSubstitution_one], by simp [block_mul₂, blockRowSubstitution_one]⟩`. Establish `hdet : Matrix.GeneralLinearGroup.det a = 1` using `Units.ext (det_bl_lower hn _)`. Establish `hA : blkA (mat (M.w * (M.nzx 0 x₀ * M.emb g₁) * M.w⁻¹)) = a.1`. Rewrite using `[hq]`.
+
+Simplify using `[blkA, blk4, a]`. Rewrite using `[hf _ (GlobalTheory.CompanionTheory.SwUnf.SmallCell.mem_siegelParabolic_of_lowerLeft_entries_eq_zero hq) a hA v, hdet, map_one, map_one]`. Simplify using `[npow]`.
+-/
 theorem law_q (χ : (AE D)ˣ →* Circle) (z : ℂ) (f : G D n → ℂ) (hf : IsLaw χ z f) (g₁ : G D p) (b : Mx D p p)
     (hg : mat g₁ = blk4 1 b 0 1) (x₀ : Mx D ρ p) (v : G D n) :
     f (M.w * (M.nzx 0 x₀ * M.emb g₁) * M.w⁻¹ * v) = f v := by
@@ -125,6 +172,15 @@ theorem law_q (χ : (AE D)ˣ →* Circle) (z : ℂ) (f : G D n → ℂ) (hf : Is
   rw [hf _ (GlobalTheory.CompanionTheory.SwUnf.SmallCell.mem_siegelParabolic_of_lowerLeft_entries_eq_zero hq) a hA v, hdet, map_one, map_one]
   simp [npow]
 
+/- English proof (translation)
+Introduce `D n ρ p hn M m ψ hψ b₀ χ z f hf g₁ b hg z₀ x₀ x`. Take `⟨i1, i2, i3, i4, -, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D ρ ρ`. Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D ρ) := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology (hermA D ρ) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Take `⟨hlam, -, -⟩` from `m.hz`. Establish `step : ∀ ζ : hermA D ρ, f (M.w * M.nzx ζ 0 * (M.nzx z₀ x₀ * M.emb g₁ * x)) = f (M.w * M.nzx (ζ + z₀) 0 * x)`. Introduce `ζ`. Establish `e : M.w * M.nzx ζ 0 * (M.nzx z₀ x₀ * M.emb g₁ * x) = M.w * (M.nzx 0 x₀ * M.emb g₁) * M.w⁻¹ * (M.w * M.nzx (ζ + z₀) 0 * x)`. Establish `h` using `nzx_comm M g₁ b hg x₀ ζ z₀`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, law_q M χ z f hf g₁ b hg x₀]`. Unfold `Wz`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (.of_forall fun ζ => ?_)` and prove the remaining obligations.
+
+Use `show f (M.w * M.nzx ζ 0 * (M.nzx z₀ x₀ * M.emb g₁ * x)) * conj (chz ψ b₀ ζ) = chz ψ b₀ z₀ * (f (M.w * M.nzx (ζ + z₀) 0 * x) * conj (chz ψ b₀ (ζ + z₀)))`. Rewrite using `[step, conj_chz ψ hψ b₀ ζ z₀]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ y, chz ψ b₀ z₀ * (f (M.w * M.nzx y 0 * x) * conj (chz ψ b₀ y)) ∂m.lz := integral_add_right_eq_self (μ := m.lz) (fun y => chz ψ b₀ z₀ * (f (M.w * M.nzx y 0 * x) * conj (chz ψ b₀ y))) z₀`. Use `_ = _ := integral_const_mul _ _`.
+-/
 theorem wz_heis : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ →
   ∀ (b₀ : HermE D ρ) (χ : (AE D)ˣ →* Circle) (z : ℂ) (f : G D n → ℂ), IsLaw χ z f → ∀ (g₁ : G D p) (b : Mx D p p),
   mat g₁ = blk4 1 b 0 1 → ∀ (z₀ : hermA D ρ) (x₀ : Mx D ρ p) (x : G D n),

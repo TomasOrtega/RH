@@ -19,15 +19,28 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab HoweUnram evC dualC)
 namespace GlobalTheory.OrthW
 
+/- English proof (translation)
+Unfold `evC`. Apply the tactic sequence `rw [Finsupp.sum_single_index] <;> simp [hd]`.
+-/
 theorem evC_single {D : D7} {V : HSp D} {P : Pl D.host.E} {a : List ℤ → ℂ} {d : List ℤ} (hd : IsLab V P d) :
     evC V P a (Finsupp.single d 1) = a d := by
   unfold evC
   rw [Finsupp.sum_single_index] <;> simp [hd]
 
+/- English proof (translation)
+Simplify using `[dualC, Finsupp.mapRange_single, Finsupp.mapDomain_single]`.
+-/
 theorem dualC_single (d : List ℤ) :
     dualC (Finsupp.mapRange star (star_zero ℂ) (Finsupp.single d (1 : ℂ))) = Finsupp.single (dualLab d) 1 := by
   simp [dualC, Finsupp.mapRange_single, Finsupp.mapDomain_single]
 
+/- English proof (translation)
+Establish `hxy : ⟪T x, y⟫_ℂ = ⟪x, S y⟫_ℂ` using `by rw [← hadj, LinearMap.adjoint_inner_right]`. Establish `hyy : ⟪T y, y⟫_ℂ = ⟪y, S y⟫_ℂ` using `by rw [← hadj, LinearMap.adjoint_inner_right]`. Rewrite `hxy` using `[hx, hy']`. Rewrite `hyy` using `[hy, hy']`. Rewrite `hxy`, `hyy` using `[inner_smul_left, inner_smul_right]`.
+
+Distinguish the cases in `hy0 : y = 0`. Simplify using `[hy0]`. Establish `hyy0 : ⟪y, y⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr hy0`. Establish `hconj : (starRingEnd ℂ) b = b'` using `mul_right_cancel₀ hyy0 hyy`. Rewrite `hxy` using `[← hconj]`.
+
+Establish `hne' : (starRingEnd ℂ) a ≠ (starRingEnd ℂ) b` using `fun h => hne ((starRingEnd ℂ).injective h)`. Use `sub_eq_zero.mpr hxy` as an intermediate fact. Rewrite `this` using `[← sub_mul]`. Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hne')`.
+-/
 theorem inner_eq_zero_of_eig {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     (T S : H →ₗ[ℂ] H) (hadj : LinearMap.adjoint T = S) {a b b' : ℂ} {x y : H} (hx : T x = a • x) (hy : T y = b • y)
     (hy' : S y = b' • y) (hne : a ≠ b) : ⟪x, y⟫_ℂ = 0 := by
@@ -46,6 +59,25 @@ theorem inner_eq_zero_of_eig {H : Type} [NormedAddCommGroup H] [InnerProductSpac
   rw [← sub_mul] at this
   exact (mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hne')
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hW hEx hSch hOkH hPos hB i p q hpq`. Take `⟨hCore, hSF, hE, hWc⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hW hEx`. Establish `hX : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Take `⟨hE', hOpsE, hNE, -, hEig, hMem⟩` from `GlobalTheory.T.exists_sphericalOperators_rows_normal_eigenspaces R.toRealDat F.lv2 hCore hSch R.SF hSF`. Take `⟨hw, -, hNW, -, -, -, hWEig, -⟩` from `GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R.toRealDat F.lv2 hCore hSch hX R.SF hSF i`.
+
+Establish `hLab` using `fun P d hP => GlobalTheory.T.isLabel_thetaLiftSpace_iff_dual (s := s) R.toRealDat F.lv2 hCore i P d hP`. Establish `horthE` using `GlobalTheory.T.orthogonal_rowParts_of_distinct_types R F hOk hW hOkH hPos hB p q hpq`. Establish `key : ∀ c c', R.Carries p c → R.Carries q c' → ∀ x ∈ R.Wc' i c, ∀ y ∈ R.Wc' i c', ⟪x, y⟫_ℂ = 0`. Introduce `c c' hc hc' x hx y hy`. Rewrite `hx`, `hy` using `[hWc]`.
+
+Break down `Classical.em (∃ P d, Good R.toRealDat A3.A.μ0 P ∧ IsLab (Wc D i) P d ∧ c P d ≠ c' P d) with hdiff | hdiff` into its components or cases. Take `⟨P, d, hP, hd, hne⟩` from `hdiff`. Establish `hd' : IsLab (Wc D i) P (dualLab d)` using `(hLab P (dualLab d) hP).2.mpr ((hLab P d hP).1.mp hd)`. Establish `hadj` using `hNW.2 P hP (Finsupp.single d 1)`. Rewrite `hadj` using `[dualC_single]`.
+
+Establish `ex` using `hWEig c P hP (Finsupp.single d 1) x hx`. Establish `ey` using `hWEig c' P hP (Finsupp.single d 1) y hy`. Establish `ey'` using `hWEig c' P hP (Finsupp.single (dualLab d) 1) y hy`. Rewrite `ex`, `ey` using `[evC_single hd]`. Rewrite `ey'` using `[evC_single hd']`.
+
+Conclude with `inner_eq_zero_of_eig _ _ hadj ex ey ey' hne`. Establish `hagree : ∀ P d, Good R.toRealDat A3.A.μ0 P → IsLab (Wc D i) P d → c P d = c' P d` using `fun P d hP hd => Classical.byContradiction fun h => hdiff ⟨P, d, hP, hd, h⟩`. It suffices to derive a contradiction. Establish `hle : EEc R.toRealDat R.SF c ≤ EEc R.toRealDat R.SF c'`. Introduce `e he`.
+
+Apply `hMem c' e` to reduce the goal to its premises. Introduce `P d hP hd`. Rewrite using `[hEig c P hP _ e he, evC_single hd]`. Use `congr 1`. Apply `hagree P (dualLab d) hP` to reduce the goal to its premises.
+
+Conclude with `(hLab P (dualLab d) hP).2.mpr ((hLab P d hP).1.mp ((hLab P d hP).2.mpr hd))`. Take `⟨e, he, he0⟩` from `(Submodule.ne_bot_iff _).mp hc.1`. Establish `hep : e ∈ R.EEp3 p` using `(le_iSup₂ (f := fun c (_ : R.Carries p c) => R.EEc c) c hc) he`. Establish `he' : e ∈ R.EEc c'`. Rewrite `he`, the goal using `[hE]`.
+
+Conclude with `hle he`. Establish `heq : e ∈ R.EEp3 q` using `(le_iSup₂ (f := fun c (_ : R.Carries q c) => R.EEc c) c' hc') he'`. Conclude with `he0 (inner_self_eq_zero.mp (horthE e hep e heq))`. Establish `hort : R.Wp3 i p ⟂ R.Wp3 i q`. Unfold `RealDat3.Wp3`.
+
+Use `Submodule.isOrtho_iSup_left.mpr fun c => Submodule.isOrtho_iSup_left.mpr fun hc => ?_` and prove the remaining obligations. Use `Submodule.isOrtho_iSup_right.mpr fun c' => Submodule.isOrtho_iSup_right.mpr fun hc' => ?_` and prove the remaining obligations. Conclude with `Submodule.isOrtho_iff_inner_eq.mpr (key c c' hc hc')`. Introduce `w hw' w' hw''`. Conclude with `Submodule.isOrtho_iff_inner_eq.mp hort w hw' w' hw''`.
+-/
 theorem inner_wp3_eq_zero_of_ne : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → (∀ t, (A3.A.fam.R t).OkH ∧ (A3.rowI t).InertRationalAdjoint) → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → R.PThmB → ∀ i p q, p ≠ q → ∀ w ∈ R.Wp3 i p, ∀ w' ∈ R.Wp3 i q, ⟪w, w'⟫_ℂ = 0 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hW hEx hSch hOkH hPos hB i p q hpq
   obtain ⟨hCore, hSF, hE, hWc⟩ := GlobalTheory.CoreOfWeak.core_of_weak R F hW hEx

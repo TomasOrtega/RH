@@ -6,10 +6,16 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GoodIdempoten
 
 namespace GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+The claim follows from `H.localGlobalAboveL.regAlg hC`.
+-/
 theorem localGlobalAboveL_of_potSemistable_of_purity (H : GlobalTheory.Published.LocalGlobalAboveLPst) (hC : GlobalTheory.Published.RegularAlgebraicPurity) :
     LocalGlobalAboveL :=
   H.localGlobalAboveL.regAlg hC
 
+/- English proof (translation)
+Introduce `H` and use `H.car.regAlg H.clo`.
+-/
 theorem localGlobalAboveL_of_caraiani_of_clozel : GlobalTheory.NRows.Hypotheses₂ → GlobalTheory.GalOfCusp.LocalGlobalAboveL :=
   fun H => H.car.regAlg H.clo
 

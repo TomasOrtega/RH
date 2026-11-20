@@ -14,6 +14,9 @@ variable {σ K : Type*} [CommRing K]
 def Lsum (w : (σ →₀ ℕ) → K) (Q : MvPolynomial σ K) : K :=
   ∑ α ∈ Q.support, coeff α Q * w α
 
+/- English proof (translation)
+Unfold `Lsum`. Apply `Finset.sum_subset h` to reduce the goal to its premises. Introduce `α _ hα`. Rewrite using `[notMem_support_iff.mp hα, zero_mul]`.
+-/
 lemma Lsum_eq_of_subset (w : (σ →₀ ℕ) → K) (Q : MvPolynomial σ K) (S : Finset (σ →₀ ℕ))
     (h : Q.support ⊆ S) : Lsum w Q = ∑ α ∈ S, coeff α Q * w α := by
   unfold Lsum
@@ -21,6 +24,9 @@ lemma Lsum_eq_of_subset (w : (σ →₀ ℕ) → K) (Q : MvPolynomial σ K) (S :
   intro α _ hα
   rw [notMem_support_iff.mp hα, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[Lsum_eq_of_subset w (p + q) (p.support ∪ q.support) support_add, Lsum_eq_of_subset w p (p.support ∪ q.support) Finset.subset_union_left, Lsum_eq_of_subset w q (p.support ∪ q.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add, add_mul]`.
+-/
 lemma Lsum_add (w : (σ →₀ ℕ) → K) (p q : MvPolynomial σ K) :
     Lsum w (p + q) = Lsum w p + Lsum w q := by
   classical
@@ -31,9 +37,15 @@ lemma Lsum_add (w : (σ →₀ ℕ) → K) (p q : MvPolynomial σ K) :
   refine Finset.sum_congr rfl fun α _ => ?_
   rw [coeff_add, add_mul]
 
+/- English proof (translation)
+Simplify using `[Lsum]`.
+-/
 lemma Lsum_zero (w : (σ →₀ ℕ) → K) : Lsum w (0 : MvPolynomial σ K) = 0 := by
   simp [Lsum]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Lsum_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Lsum_add, ih]`.
+-/
 lemma Lsum_finset_sum {ι : Type*} (w : (σ →₀ ℕ) → K) (s : Finset ι)
     (f : ι → MvPolynomial σ K) : Lsum w (∑ i ∈ s, f i) = ∑ i ∈ s, Lsum w (f i) := by
   classical
@@ -41,6 +53,9 @@ lemma Lsum_finset_sum {ι : Type*} (w : (σ →₀ ℕ) → K) (s : Finset ι)
   | empty => simp [Lsum_zero]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Lsum_add, ih]
 
+/- English proof (translation)
+Rewrite using `[Lsum_eq_of_subset w _ {α} support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+-/
 lemma Lsum_monomial (w : (σ →₀ ℕ) → K) (α : σ →₀ ℕ) (r : K) :
     Lsum w (monomial α r) = r * w α := by
   classical
@@ -56,6 +71,11 @@ variable {σ1 σ2 K : Type*} [CommRing K]
 def peval (x : σ1 → K) : MvPolynomial (σ1 ⊕ σ2) ℤ →+* MvPolynomial σ2 K :=
   eval₂Hom (C.comp (Int.castRingHom K)) (Sum.elim (fun v => C (x v)) X)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finsupp.comapDomain_sumElim_comapDomain μ]`. Rewrite using `[peval, coe_eval₂Hom, eval₂_monomial, Finsupp.prod_sumElim]`. Simplify using `only [Finsupp.sumFinsuppEquivProdFinsupp_apply, Function.comp_def, Sum.elim_inl, Sum.elim_inr]`. Establish `h1 : ((Finsupp.comapDomain Sum.inl μ Sum.inl_injective.injOn).prod fun v e => (C (x v) : MvPolynomial σ2 K) ^ e) = C ((Finsupp.comapDomain Sum.inl μ Sum.inl_injective.injOn).prod fun v e => x v ^ e)`. Simplify using `[Finsupp.prod, map_prod, map_pow]`.
+
+Rewrite using `[h1, monomial_eq, C_mul, RingHom.comp_apply, eq_intCast, ← mul_assoc]`.
+-/
 lemma peval_monomial (x : σ1 → K) (μ : σ1 ⊕ σ2 →₀ ℕ) (c : ℤ) :
     peval x (monomial μ c) = monomial (Finsupp.sumFinsuppEquivProdFinsupp μ).2
       ((c : K) * (Finsupp.sumFinsuppEquivProdFinsupp μ).1.prod fun v e => x v ^ e) := by
@@ -77,6 +97,9 @@ def wt (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (α : Lt × Fin N0 
     ℂ_[l] :=
   (α.prod fun _ n => (n.factorial : ℂ_[l])) * MvPowerSeries.coeff α Th
 
+/- English proof (translation)
+Use `conv_rhs => rw [as_sum P]`. Rewrite using `[map_sum, Lsum_finset_sum, PI.WwEval.KM.applyAt0, map_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[peval_monomial, Lsum_monomial, eval_monomial, wt]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_applyAt0 (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l])
     (x : Lt × ℕ × Fin N0 → ℂ_[l]) (P : MvPolynomial (PI.WwEval.KM.XZ Lt N0 N1) ℤ) :
     eval x (PI.WwEval.KM.applyAt0 N0 N1 l Th P) = Lsum (wt Th) (peval x P) := by
@@ -86,6 +109,11 @@ theorem eval_applyAt0 (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l])
   rw [peval_monomial, Lsum_monomial, eval_monomial, wt]
   ring
 
+/- English proof (translation)
+Unfold `PI.WwEval.KM.Gxz PI.WwEval.KM.nablaX PI.WwEval.KM.minorXZ`. Rewrite using `[map_prod, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod, map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.map_det, AlgHom.map_det]`. Use `congr 1`. Use extensionality with `i k`. Simplify using `[peval, RingHom.mapMatrix_apply, AlgHom.mapMatrix_apply]`.
+-/
 theorem peval_Gxz (x : Lt × ℕ × Fin N0 → ℂ_[l]) (nu : Lt → YoungDiagram)
     (I : PI.WwEval.KM.ColChoice N1 nu) :
     peval x (PI.WwEval.KM.Gxz N0 N1 nu I) =
@@ -102,6 +130,9 @@ theorem peval_Gxz (x : Lt × ℕ × Fin N0 → ℂ_[l]) (nu : Lt → YoungDiagra
   ext i k
   simp [peval, RingHom.mapMatrix_apply, AlgHom.mapMatrix_apply]
 
+/- English proof (translation)
+Introduce `Lt _ _ l _ N0 N1 nu Th x I`. Rewrite using `[eval_applyAt0, peval_Gxz]`. Simplify using `only [Lsum, wt, mul_assoc]`.
+-/
 theorem wwEval : PI.WwEval.WwEval := by
   intro Lt _ _ l _ N0 N1 nu Th x I
   rw [eval_applyAt0, peval_Gxz]

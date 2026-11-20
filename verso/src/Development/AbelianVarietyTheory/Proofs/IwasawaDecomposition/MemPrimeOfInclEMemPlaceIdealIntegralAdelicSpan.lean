@@ -8,6 +8,27 @@ noncomputable section
 
 namespace GlobalTheory.Mem.SymChar
 
+/- English proof (translation)
+Introduce `D X w α hα`. Use `set e : 𝓞 X.B.I.E ≃+* 𝓞 D.host.E := RingOfIntegers.mapRingEquiv X.ιE with he`. Use `set Wx : Ideal (𝓞 X.B.I.E) := w.asIdeal.comap (e : 𝓞 X.B.I.E →+* 𝓞 D.host.E) with hWx`. Establish `hWx0 : Wx ≠ ⊥`. Introduce `h0`.
+
+Apply `w.ne_bot` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `b hb`. Establish `: e.symm b ∈ Wx` using `by show e (e.symm b) ∈ w.asIdeal`. Simplify using `using hb`.
+
+Rewrite `this` using `[h0, Ideal.mem_bot]`. Rewrite using `[Ideal.mem_bot]`. Simplify using `using congrArg e this`. Establish `key : ∀ c ∈ GlobalTheory.Mem.SymChar.wInt X w, ∃ h : c ∈ Formalism.L2.Herm.intAf X.B.I.F X.B.I.E, (⟨c, h⟩ : Formalism.L2.Herm.intAf X.B.I.F X.B.I.E) ∈ Formalism.L2.DIV.idS X.B.I.F Wx`. Introduce `c hc`.
+
+Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem c hc`. Take `⟨a, ⟨b, hb, hab⟩, rfl⟩` from `hc`. Use `⟨(Formalism.L2.DIV.oToS X.B.I.F X.B.I.E a).2, ?_⟩` and prove the remaining obligations. Establish `ha : a ∈ Wx` using `by show e a ∈ w.asIdeal`.
+
+Establish `: e a = b` using `Subtype.ext hab`. Rewrite using `[this]`. Conclude with `hb`. Conclude with `Ideal.mem_map_of_mem _ ha`. Consider the case `zero => exact ⟨zero_mem _, zero_mem _⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨hx1, hx2⟩` from `hx`. Take `⟨hy1, hy2⟩` from `hy`. Conclude with `⟨add_mem hx1 hy1, add_mem hx2 hy2⟩`. Consider the case `smul r x _ hx`.
+
+Take `⟨hx1, hx2⟩` from `hx`. Use `⟨mul_mem r.2 hx1, ?_⟩` and prove the remaining obligations. Establish `: (⟨r • x, mul_mem r.2 hx1⟩ : Formalism.L2.Herm.intAf X.B.I.F X.B.I.E) = ⟨r.1, r.2⟩ * ⟨x, hx1⟩` using `rfl`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hx2`.
+
+Take `⟨h1, h2⟩` from `key _ hα`. Use `set c : 𝓞 X.B.I.E := e.symm α with hc`. Establish `hoc : (⟨_, h1⟩ : Formalism.L2.Herm.intAf X.B.I.F X.B.I.E) = Formalism.L2.DIV.oToS X.B.I.F X.B.I.E c` using `rfl`. Rewrite `h2` using `[hoc]`. Establish `hz : Formalism.L2.DIV.cmpS X.B.I.F Wx (Ideal.Quotient.mk Wx c) = Formalism.L2.DIV.cmpS X.B.I.F Wx 0`.
+
+Rewrite using `[map_zero]`. Use `show Ideal.Quotient.mk _ (Formalism.L2.DIV.oToS X.B.I.F X.B.I.E c) = 0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h2`. Establish `hcW : c ∈ Wx` using `Ideal.Quotient.eq_zero_iff_mem.1 (Formalism.L2.DIV.cmpS_inj Wx hWx0 hz)`. Establish `: e c = α` using `by rw [hc]; exact e.apply_symm_apply α`.
+
+Rewrite using `[← this]`. Conclude with `hcW`.
+-/
 theorem mem_of_inclE_mem_wInt : ∀ (D : D7) (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (α : 𝓞 D.host.E),
     Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (X.ιE.symm (α : D.host.E)) ∈ GlobalTheory.Mem.SymChar.wInt X w →
       α ∈ w.asIdeal := by

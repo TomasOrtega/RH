@@ -16,6 +16,9 @@ variable {X Y : Scheme.{0}} (L : LB X) (N : ℕ) {u : Y ⟶ X} {ψ : X ⟶ Y} (h
 abbrev tens (u : Y ⟶ X) : LB Y := LB.LinComb L (K := Fin N) (fun _ => u) (fun _ => 1)
 
 include hψ in
+/- English proof (translation)
+Introduce `y hy` and use `Set.mem_iInter.2 fun _ => (congrArg (fun q : X ⟶ X => q y ∈ L.U (J PUnit.unit)) hψ).mpr (Set.mem_iInter.1 hy PUnit.unit)`.
+-/
 theorem chart_le (J : PUnit → L.ι) :
     (lbPow L N).U J ≤ ψ ⁻¹ᵁ (tens L N u).U (fun _ => J PUnit.unit) := fun y hy =>
   Set.mem_iInter.2 fun _ => (congrArg (fun q : X ⟶ X => q y ∈ L.U (J PUnit.unit)) hψ).mpr
@@ -34,10 +37,20 @@ def move (s : (tens L N u).Sec) : (lbPow L N).Sec where
     simp only [trF, hψ, zpow_one, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Fintype.prod_unique,
       zpow_natCast, Category.comp_id]
 
+/- English proof (translation)
+The claim follows from `(gs_appLE ψ _ _ _ (𝟙 X) y hy _).trans (by rw [Category.id_comp])`.
+-/
 theorem gs_move (s : (tens L N u).Sec) (J : PUnit → L.ι) (y : X) (hy : y ∈ (lbPow L N).U J) :
     gs (𝟙 X) y _ ((move L N hψ s).f J) = gs ψ y _ (s.f (fun _ => J PUnit.unit)) :=
   (gs_appLE ψ _ _ _ (𝟙 X) y hy _).trans (by rw [Category.id_comp])
 
+/- English proof (translation)
+Use extensionality with `y`. Use `(mem_nonzeroLocus _ y).trans (Iff.trans ⟨fun ⟨k, hk, u⟩ => ?_, fun ⟨j, hj, u⟩ => ?_⟩ (mem_nonzeroLocus _ (ψ y)).symm)` and prove the remaining obligations. Establish `h₁` using `chart_le L N hψ k hk`. Rewrite `u` using `[gs_move L N hψ s k y hk, gs_stalkMap ψ y _ h₁]`. Conclude with `⟨_, h₁, (isUnit_map_iff (ψ.stalkMap y).hom _).1 u⟩`.
+
+Take `⟨i, hi⟩` from `exists_chart hL y`. Establish `hk : y ∈ (lbPow L N).U (fun _ => i)` using `Set.mem_iInter.2 fun _ => hi`. Establish `h₁` using `chart_le L N hψ _ hk`. Use `⟨_, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[gs_move L N hψ s _ y hk]`.
+
+Establish `e` using `sec_trans s ψ y hj h₁`. Conclude with `isUnit_of_mul_isUnit_right ((congrArg IsUnit ((gs_stalkMap ψ y _ hj _).symm.trans e)).mp (u.map _))`.
+-/
 theorem locus_move (hL : L.IsLB) (s : (tens L N u).Sec) :
     Out.nonzeroLocus (move L N hψ s) = ψ ⁻¹ᵁ Out.nonzeroLocus s := by
   ext y
@@ -55,6 +68,9 @@ theorem locus_move (hL : L.IsLB) (s : (tens L N u).Sec) :
     exact isUnit_of_mul_isUnit_right
       ((congrArg IsUnit ((gs_stalkMap ψ y _ hj _).symm.trans e)).mp (u.map _))
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `(ConcreteCategory.bijective_of_isIso (ψ.app U)).2`.
+-/
 theorem appLE_surjective [IsIso ψ] (U : Y.Opens) (V : X.Opens) (h : V = ψ ⁻¹ᵁ U) :
     Function.Surjective (ψ.appLE U V h.le).hom := by
   subst h
@@ -67,6 +83,21 @@ namespace GlobalTheory
 
 open VeryAmpleCharts
 
+/- English proof (translation)
+Introduce `hA K _ _ P N hN`. Take `⟨m, s, hcov, hs⟩` from `(hA (Sp K) P N hN).2 ⊤ (isAffineOpen_top _)`. Establish `: IsIso (P.A.hom ⁻¹ᵁ ⊤).ι` using `inferInstanceAs (IsIso (P.A.left.topIso).hom)`. Set `ψ` to `inv (P.A.hom ⁻¹ᵁ ⊤).ι`. Establish `hψ : ψ ≫ (P.A.hom ⁻¹ᵁ ⊤).ι = 𝟙 _` using `IsIso.inv_hom_id _`.
+
+Establish `loc` using `fun i => locus_move P.L N hψ P.isLB (s i)`. Use `⟨m, fun i => move P.L N hψ (s i), ?_, fun i => ?_⟩` and prove the remaining obligations. Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show ψ y ∈ ⨆ i, Out.nonzeroLocus (s i) by rw [hcov]; trivial)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, by rw [loc]; exact hi⟩`.
+
+Take `⟨haff, r, hr, hsurj⟩` from `hs i`. Use `⟨by rw [loc]; exact haff.preimage ψ, fun j => (ψ.appLE _ _ (loc i).le).hom (r j), fun j k => fn_ext fun y hy => ?_, fun f => ?_⟩` and prove the remaining obligations. Establish `hm : ψ y ∈ Out.nonzeroLocus (s i) ⊓ (Out.powOver P.A P.L ⊤ N).U (fun _ => k PUnit.unit)` using `⟨(loc i).le hy.1, chart_le P.L N hψ k hy.2⟩`. Establish `e` using `congrArg (gs ψ y _) (hr j (fun _ => k PUnit.unit))`. Rewrite `e` using `[gs_res _ y _ hm, gs_mul _ y _ hm, gs_res _ y _ hm, gs_res _ y _ hm]`.
+
+Use `(gs_res _ y _ hy _).trans ((gs_move P.L N hψ _ k y hy.2).trans (e.trans (Eq.symm ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_res _ y _ hy _).trans ((gs_appLE ψ _ _ _ (𝟙 _) y hy.1 _).trans (congrArg (fun q => gs q y _ _) (Category.id_comp ψ)))) ((gs_res _ y _ hy _).trans …` and prove the remaining obligations. Take `⟨d, rfl⟩` from `appLE_surjective (ψ := ψ) _ _ (loc i) f`. Take `⟨p, rfl⟩` from `hsurj d`. Set `c : Γ((⊤ : (Sp K).Opens).toScheme, ⊤) ⟶ CommRingCat.of K` to `(Sp K).topIso.inv.appLE ⊤ ⊤ le_top ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).hom`. Establish `w : ψ ≫ P.A.hom ∣_ ⊤ = P.A.hom ≫ (Sp K).topIso.inv`.
+
+Rewrite using `[← cancel_mono (⊤ : (Sp K).Opens).ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, hψ, Category.id_comp, Category.assoc]`. Conclude with `(Category.comp_id _).symm.trans (congrArg _ (Sp K).topIso.inv_hom_id.symm)`. Establish `w' : (P.A.hom ∣_ ⊤).appLE ⊤ (Out.nonzeroLocus (s i)) le_top ≫ ψ.appLE _ _ (loc i).le = c ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ P.A.hom.appLE ⊤ _ le_top`. Establish `aux : ∀ {a b : P.A.left ⟶ (⊤ : (Sp K).Opens).toScheme} (_ : a = b) (V : P.A.left.Opens) h h', a.appLE ⊤ V h = b.appLE ⊤ V h'`. Introduce `a b e V h h'`.
+
+Substitute `e` using the available equality. Both sides reduce to the same expression. Simplify using `only [c, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans ((aux w _ _ _).trans (Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm)`. Use `⟨MvPolynomial.map c.hom p, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.eval₂_map]`. Conclude with `(MvPolynomial.map_eval₂Hom _ _ _ p).trans (congrArg (fun q => MvPolynomial.eval₂ q (fun j => (ψ.appLE _ _ (loc i).le).hom (r j)) p) (congrArg CommRingCat.Hom.hom w'))`.
+-/
 theorem veryAmple_lbPow : Out.AmpleSt → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N : ℕ), 4 ≤ N → ∃ (m : ℕ) (s : Fin (m + 1) → (lbPow P.L N).Sec), (⨆ i, Out.nonzeroLocus (s i) = ⊤) ∧ ∀ i, IsAffineOpen (Out.nonzeroLocus (s i)) ∧ ∃ r : Fin (m + 1) → Γ(P.A.left, Out.nonzeroLocus (s i)), (∀ j k, resG _ (inf_le_right : Out.nonzeroLocus (s i) ⊓ (lbPow P.L N).U k ≤ _) ((s j).f k) = resG _ inf_le_left (r j) * resG _ inf_le_right ((s i).f k)) ∧ ∀ f : Γ(P.A.left, Out.nonzeroLocus (s i)), ∃ F : MvPolynomial (Fin (m + 1)) K, f = MvPolynomial.eval₂ (RingHom.comp (P.A.hom.appLE ⊤ _ le_top).hom (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom) r F) := by
   intro hA K _ _ P N hN
   obtain ⟨m, s, hcov, hs⟩ := (hA (Sp K) P N hN).2 ⊤ (isAffineOpen_top _)

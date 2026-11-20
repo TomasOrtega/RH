@@ -37,6 +37,15 @@ section Analytic
 set_option autoImplicit false in
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj UpperHalfPlane nonZeroDivisors in
+/- English proof (translation)
+Rewrite `h`, the goal using `[_root_.GlobalTheory.FibreDeriv.isDerivAt0_iff]`. Take `⟨h0, h1⟩` from `h`. Use `⟨by simpa using h0, fun U hU f => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 U hU f]`. Establish `hU0 : ⊤ ≤ e 0 ⁻¹ᵁ U`.
+
+Rewrite using `[← h0]`. Introduce `x _`. Conclude with `hU (by trivial)`. Establish `hd` using `_root_.GlobalTheory.LocalLift.hol_differentiableAt he (Set.mem_univ 0) hU0 f`. Unfold `_root_.GlobalTheory.FibreDeriv.jet`.
+
+Simplify using `only [map_zero]`. Use `congr 2`. Establish `hd' : DifferentiableAt ℂ (fun z => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e z) U f) (LinearMap.toContinuousLinearMap L 0)`. Simplify using `using hd`. Establish `hc` using `hd'.hasFDerivAt.comp (0 : Fin g' → ℂ) (LinearMap.toContinuousLinearMap L).hasFDerivAt`.
+
+Rewrite using `[show (fun z => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e (L z)) U f) = (fun z => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e z) U f) ∘ (LinearMap.toContinuousLinearMap L) from rfl, hc.fderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.CMPeriodCompare.isDerivAt0_comp_linear {g g' : ℕ} {X : Scheme.{0}} {e : (Fin g → ℂ) → (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ X)}
     (he : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsHolTo Set.univ e) (L : (Fin g' → ℂ) →ₗ[ℂ] (Fin g → ℂ)) {w : Fin g' → ℂ}
     {v : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber ℂ) ⟶ X} (h : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsDerivAt0 e (L w) v) :
@@ -69,6 +78,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj UpperHalfPlane nonZeroDivisors in
 variable {R : Type} [CommRing R] {s : R →+* ℂ} {P : _root_.ReciprocityTheory.ChartRestriction.G.Out.PolAV (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R)} {P' : _root_.ReciprocityTheory.ChartRestriction.G.Out.PolAV (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)}
   {φ : P'.A.left ⟶ P.A.left} in
+/- English proof (translation)
+Establish `h0 : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ t.left = (u.ex 0).left`. Rewrite using `[_root_.GlobalTheory.TangentOrigin.ex_zero_left]`. Conclude with `ht`. Rewrite using `[_root_.GlobalTheory.FibreDeriv.isDerivAt0_iff]`. Use `⟨h0, fun U h f => ?_⟩` and prove the remaining obligations.
+
+Use `ext`. Rewrite using `[_root_.GlobalTheory.FibreDeriv.fst_evEps _ _ h0, _root_.GlobalTheory.FibreDeriv.fst_jet]`. Use `hw U h f` as an intermediate fact. Unfold `_root_.GlobalTheory.FibreDeriv.jet`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`.
+
+Rewrite using `[← this]`. Both sides reduce to the same expression.
+-/
 private theorem isDerivAt0_ex_of_isDiff_tangent (u : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.HolUnif P'.A P'.L P'.g)
     {t : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsR ℂ ⟶ P'.A} (ht : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsTangent t) {w : Fin P'.g → ℂ} (hw : u.IsDiff w t) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsDerivAt0 (fun z => (u.ex z).left) w t.left := by
@@ -91,6 +107,11 @@ open scoped CategoryTheory.Obj UpperHalfPlane nonZeroDivisors in
 variable {R : Type} [CommRing R] {s : R →+* ℂ} {P : _root_.ReciprocityTheory.ChartRestriction.G.Out.PolAV (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R)} {P' : _root_.ReciprocityTheory.ChartRestriction.G.Out.PolAV (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)}
   {φ : P'.A.left ⟶ P.A.left} in
 
+/- English proof (translation)
+Establish `hu` using `isDerivAt0_ex_of_isDiff_tangent u ht hw`. Establish `he : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsHolTo Set.univ (fun z => (u.ex z).left)`. Simplify using `using _root_.GlobalTheory.HomLinear.isHolTo_ex_comp u (𝟙 _)`. Set `L : (Fin 1 → ℂ) →ₗ[ℂ] (Fin P'.g → ℂ)` to `(LinearMap.proj 0).smulRight w`. Establish `hL : L (fun _ => 1) = w` using `by simp [L]`.
+
+Rewrite `hu` using `[← hL]`. Conclude with `_root_.GlobalTheory.FibreDeriv.isDerivAt0_comp (_root_.GlobalTheory.CMPeriodCompare.isDerivAt0_comp_linear he L hu) φ`.
+-/
 theorem _root_.GlobalTheory.CMPeriodCompare.isDerivAt0_line (u : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.HolUnif P'.A P'.L P'.g) {t : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsR ℂ ⟶ P'.A}
     (ht : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsTangent t) {w : Fin P'.g → ℂ} (hw : u.IsDiff w t) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsDerivAt0 (g := 1) (fun z => (u.ex (z 0 • w)).left ≫ φ) (fun _ => 1) (t.left ≫ φ) := by

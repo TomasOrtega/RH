@@ -9,10 +9,32 @@ namespace GlobalTheory.IsoTriv.CoeffCont
 
 open MvPowerSeries
 
+/- English proof (translation)
+Rewrite using `[WithTop.coe_add]`. Conclude with `add_le_add ha hb`.
+-/
 theorem coe_le_add {a b : WithTop ℝ} {x y : ℝ} (ha : (x : WithTop ℝ) ≤ a) (hb : (y : WithTop ℝ) ≤ b) :
     ((x + y : ℝ) : WithTop ℝ) ≤ a + b := by
   rw [WithTop.coe_add]; exact add_le_add ha hb
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on`. Name the introduced variables `c`. Distinguish the cases in `ht : v c = ⊤`. Use `⟨0, fun N s s' _ _ _ => ?_⟩` and prove the remaining obligations. Simplify using `only [MvPolynomial.eval_C, sub_self, AddValuation.map_zero, ht, le_top, and_self]`.
+
+Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp ht`. Use `⟨-r, fun N s s' _ _ _ => ?_⟩` and prove the remaining obligations. Simplify using `only [MvPolynomial.eval_C, sub_self, AddValuation.map_zero, ← hr, le_top, neg_neg, le_refl, and_self]`. Name the introduced variables `p q hp hq`. Take `⟨K₁, h₁⟩` from `hp`.
+
+Take `⟨K₂, h₂⟩` from `hq`. Use `⟨max K₁ K₂, fun N s s' hs hs' hss => ?_⟩` and prove the remaining obligations. Take `⟨a₁, b₁⟩` from `h₁ N s s' hs hs' hss`. Take `⟨a₂, b₂⟩` from `h₂ N s s' hs hs' hss`. Rewrite using `[map_add (MvPolynomial.eval s), map_add (MvPolynomial.eval s')]`.
+
+Prove the components needed by the constructor for the conclusion. Establish `e : MvPolynomial.eval s p + MvPolynomial.eval s q - (MvPolynomial.eval s' p + MvPolynomial.eval s' q) = (MvPolynomial.eval s p - MvPolynomial.eval s' p) + (MvPolynomial.eval s q - MvPolynomial.eval s' q)` using `by ring`. Rewrite using `[e]`. Use `le_trans (le_min ?_ ?_) (v.map_add _ _)` and prove the remaining obligations. Conclude with `le_trans (WithTop.coe_le_coe.mpr (by linarith [le_max_left K₁ K₂])) a₁`.
+
+Conclude with `le_trans (WithTop.coe_le_coe.mpr (by linarith [le_max_right K₁ K₂])) a₂`. Use `le_trans (le_min ?_ ?_) (v.map_add _ _)` and prove the remaining obligations. Conclude with `le_trans (WithTop.coe_le_coe.mpr (by linarith [le_max_left K₁ K₂])) b₁`. Conclude with `le_trans (WithTop.coe_le_coe.mpr (by linarith [le_max_right K₁ K₂])) b₂`. Name the introduced variables `p k hp`.
+
+Take `⟨K, h⟩` from `hp`. Use `⟨K, fun N s s' hs hs' hss => ?_⟩` and prove the remaining obligations. Take `⟨a, b⟩` from `h N s s' hs hs' hss`. Rewrite using `[map_mul (MvPolynomial.eval s), map_mul (MvPolynomial.eval s'), MvPolynomial.eval_X, MvPolynomial.eval_X]`. Prove the components needed by the constructor for the conclusion.
+
+Establish `e : MvPolynomial.eval s p * s k - MvPolynomial.eval s' p * s' k = (MvPolynomial.eval s p - MvPolynomial.eval s' p) * s k + MvPolynomial.eval s' p * (s k - s' k)` using `by ring`. Rewrite using `[e]`. Use `le_trans (le_min ?_ ?_) (v.map_add _ _)` and prove the remaining obligations. Rewrite using `[v.map_mul]`. Use `coe_le_add (y := 0) a (hs k)` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis. Rewrite using `[v.map_mul]`. Use `coe_le_add (h N s' s' hs' hs' (fun k => by rw [sub_self, v.map_zero]; exact le_top)).2 (hss k)` as an intermediate fact. Establish `e2 : (-K + N : ℝ) = N - K` using `by ring`. Rewrite `this` using `[e2]`.
+
+Conclude with `this`. Rewrite using `[v.map_mul]`. Use `coe_le_add (y := 0) b (hs k)` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem poly_bound {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {κ : Type} (Q : MvPolynomial κ C) :
     ∃ K : ℝ, ∀ (N : ℝ) (s s' : κ → C), (∀ k, (0 : WithTop ℝ) ≤ v (s k)) → (∀ k, (0 : WithTop ℝ) ≤ v (s' k)) →
       (∀ k, ((N : ℝ) : WithTop ℝ) ≤ v (s k - s' k)) →
@@ -65,6 +87,13 @@ theorem poly_bound {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {κ :
       have := coe_le_add (y := 0) b (hs k)
       rwa [add_zero] at this
 
+/- English proof (translation)
+Set `G : ι → MvPowerSeries σ (MvPolynomial (τ × ι) C)` to `fun i => (g i).map MvPolynomial.C`. Set `a : τ → MvPowerSeries σ (MvPolynomial (τ × ι) C)` to `fun q => ∑ i, (MvPolynomial.X (q, i) : MvPolynomial (τ × ι) C) • G i`. Establish `hG : ∀ i, constantCoeff (G i) = 0` using `fun i => by simp [G, hg]`. Establish `ha : HasSubst a` using `hasSubst_of_constantCoeff_zero (fun q => by simp [a, hG])`. Use `⟨coeff α (subst a (W.map (MvPolynomial.C : C →+* MvPolynomial (τ × ι) C)) : MvPowerSeries σ (MvPolynomial (τ × ι) C)), fun s => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (coeff α) (map_subst ha (h := MvPolynomial.eval (fun x : τ × ι => s x.1 x.2)) (W.map (MvPolynomial.C : C →+* MvPolynomial (τ × ι) C)))`. Rewrite `h1` using `[coeff_map]`. Establish `hW : (W.map (MvPolynomial.C : C →+* MvPolynomial (τ × ι) C)).map (MvPolynomial.eval (fun x : τ × ι => s x.1 x.2)) = W`. Use extensionality with `n`. Simplify using `[coeff_map]`.
+
+Establish `hA : (fun q => (a q).map (MvPolynomial.eval (fun x : τ × ι => s x.1 x.2))) = fun q => ∑ i, s q i • g i`. Use function extensionality and compare the values at `q`. Use extensionality with `n`. Simplify using `[a, G, coeff_map, map_sum]`. Rewrite using `[h1, hW, hA]`.
+-/
 theorem coeff_subst_eq_eval {C : Type} [Field C] {τ σ ι : Type} [Fintype τ] [Fintype ι]
     (W : MvPowerSeries τ C) (g : ι → MvPowerSeries σ C) (hg : ∀ i, constantCoeff (g i) = 0) (α : σ →₀ ℕ) :
     ∃ Q : MvPolynomial (τ × ι) C, ∀ s : τ → ι → C,
@@ -95,6 +124,11 @@ namespace GlobalTheory.IsoTriv
 
 open MvPowerSeries
 
+/- English proof (translation)
+Introduce `C _ v τ σ ι _ _ _ W g hg α`. Take `⟨Q, hQ⟩` from `CoeffCont.coeff_subst_eq_eval W g hg α`. Take `⟨K, hK⟩` from `CoeffCont.poly_bound v Q`. Use `⟨⌈K⌉₊, fun s s' hs hs' hss => ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, hQ]`.
+
+Establish `h` using `(hK (⌈K⌉₊ : ℝ) (fun x => s x.1 x.2) (fun x => s' x.1 x.2) (fun x => hs _ _) (fun x => hs' _ _) (fun x => hss _ _)).1`. Use `show (0 : WithTop ℝ) ≤ _`. Use `le_trans ?_ h` and prove the remaining obligations. Rewrite using `[← WithTop.coe_zero, WithTop.coe_le_coe]`. Combine the linear relations using `[Nat.le_ceil K]`.
+-/
 theorem contSt_holds : ContSt := by
   intro C _ v τ σ ι _ _ _ W g hg α
   obtain ⟨Q, hQ⟩ := CoeffCont.coeff_subst_eq_eval W g hg α

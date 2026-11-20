@@ -8,12 +8,22 @@ noncomputable section
 
 namespace GlobalTheory.TieIdem
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun a : MonoidAlgebra K G => a.coeff (k * g)) (he (MonoidAlgebra.single k 1))`. Simplify using `only [MonoidAlgebra.mul_single_apply, MonoidAlgebra.single_mul_apply] at h`. Simplify `h.symm` using `[mul_assoc]`.
+-/
 theorem coeff_conj_of_central' {K : Type} [Field K] {G : Type} [Group G] (e : MonoidAlgebra K G)
     (he : ∀ x, x * e = e * x) (k g : G) : e.coeff (k * g * k⁻¹) = e.coeff g := by
   have h := congrArg (fun a : MonoidAlgebra K G => a.coeff (k * g)) (he (MonoidAlgebra.single k 1))
   simp only [MonoidAlgebra.mul_single_apply, MonoidAlgebra.single_mul_apply] at h
   simpa [mul_assoc] using h.symm
 
+/- English proof (translation)
+Use `⟨fun k => ?_, fun g h => ?_, fun g => ?_, fun σ g => ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_mul_fin, idemOf_mul_self X hX]`. Conclude with `coeff_conj_of_central' _ (fun b => idemOf_central X hX b) h g`. Take `⟨b, hb⟩` from `idemOf_integral X hX g`. Rewrite using `[← hb]`.
+
+Conclude with `b.isIntegral_coe`. Rewrite using `[coeff_idemOf, coeff_idemOf, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Establish `h1` using `(hX χ hχ).map_inv σ 1`. Establish `h2` using `(hX χ hχ).map_inv σ g`.
+
+Rewrite `h1` using `[inv_one]`. Simplify using `only [map_mul, map_div₀, map_natCast, inv_inv, h2, Complex.conj_conj]`. Rewrite using `[← h1]`.
+-/
 theorem idemOf_props {K : Type} [Field K] [NumberField K] {G : Type} [Group G] [Fintype G] (X : Finset (G → K))
     (hX : ∀ χ ∈ X, IsAbsIrrChar χ) :
     (∀ k : G, ∑ g, (idemOf X).coeff g * (idemOf X).coeff (g⁻¹ * k) = (idemOf X).coeff k) ∧
@@ -38,6 +48,9 @@ end GlobalTheory.TieIdem
 
 namespace GlobalTheory.TieIdem
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p hr _`. Conclude with `idemOf_props p.P.A3.A.X hr.ok.ok2.irr`.
+-/
 theorem tied_good_idem : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz), p.Rows → GlobalTheory.CovTop.RecTied D L →
     (∀ k : p.P.Gp, ∑ g, (idemOf p.P.A3.A.X).coeff g * (idemOf p.P.A3.A.X).coeff (g⁻¹ * k) = (idemOf p.P.A3.A.X).coeff k) ∧

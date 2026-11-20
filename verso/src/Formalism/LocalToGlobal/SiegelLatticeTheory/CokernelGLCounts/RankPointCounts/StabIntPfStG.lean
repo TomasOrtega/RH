@@ -14,15 +14,29 @@ variable {K : Type*} [Field K] {N : ℕ} (p : Point K N)
 
 abbrev cv (a : Fin N) : K := pval p.1 a.val
 
+/- English proof (translation)
+The claim follows from `pval_ne p.1 (fun b hb => (p.2.1 b hb).1) a.val (by rw [p.2.2]; exact a.isLt)`.
+-/
 theorem cv_ne (a : Fin N) : cv p a ≠ 0 :=
   pval_ne p.1 (fun b hb => (p.2.1 b hb).1) a.val (by rw [p.2.2]; exact a.isLt)
 
+/- English proof (translation)
+The claim follows from `pval_pinv p a`.
+-/
 theorem cv_pinv (a : Fin N) : cv p (pinv p a) = cv p a := pval_pinv p a
 
+/- English proof (translation)
+Use `congrArg (pinv p) h` as an intermediate fact. Rewrite `this` using `[pinv_pinv, pinv_pinv]`. Then use the resulting hypothesis.
+-/
 theorem pinv_inj {a b : Fin N} (h : pinv p a = pinv p b) : a = b := by
   have := congrArg (pinv p) h
   rwa [pinv_pinv, pinv_pinv] at this
 
+/- English proof (translation)
+Rewrite using `[ptMat_eq_mono]`. Use function extensionality and compare the values at `a b`. Rewrite using `[mul_mono_apply _ (pinv_pinv p)]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+
+Simplify using `only [mono, if_true, Matrix.one_apply_eq]`. Rewrite using `[cv_pinv]`. Conclude with `mul_inv_cancel₀ (cv_ne p a)`. Establish `hne : pinv p b ≠ pinv p a` using `fun e => h (pinv_inj p e).symm`. Simplify using `only [mono, hne, if_false, zero_mul, Matrix.one_apply_ne h]`.
+-/
 theorem ptMat_mul_mono : ptMat p * mono (pinv p) (fun a => (cv p a)⁻¹) = 1 := by
   rw [ptMat_eq_mono]
   funext a b
@@ -34,9 +48,15 @@ theorem ptMat_mul_mono : ptMat p * mono (pinv p) (fun a => (cv p a)⁻¹) = 1 :=
   · have hne : pinv p b ≠ pinv p a := fun e => h (pinv_inj p e).symm
     simp only [mono, hne, if_false, zero_mul, Matrix.one_apply_ne h]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_right_inv (ptMat_mul_mono p)`.
+-/
 theorem ptMat_inv : (ptMat p)⁻¹ = mono (pinv p) (fun a => (cv p a)⁻¹) :=
   Matrix.inv_eq_right_inv (ptMat_mul_mono p)
 
+/- English proof (translation)
+Rewrite using `[ptMat_inv]`. Use `conv_lhs => rw [ptMat_eq_mono]`. Rewrite using `[mul_mono_apply _ (pinv_pinv p), mono_mul_apply]`. Simplify using `only [cv, pval_pinv]`.
+-/
 theorem conj_apply (M : Matrix (Fin N) (Fin N) K) (a b : Fin N) :
     ((ptMat p)⁻¹ * M * ptMat p) a b = (cv p a)⁻¹ * M (pinv p a) (pinv p b) * cv p b := by
   rw [ptMat_inv]
@@ -44,6 +64,9 @@ theorem conj_apply (M : Matrix (Fin N) (Fin N) K) (a b : Fin N) :
   rw [mul_mono_apply _ (pinv_pinv p), mono_mul_apply]
   simp only [cv, pval_pinv]
 
+/- English proof (translation)
+Rewrite using `[ptMat_inv]`. Use `conv_lhs => rw [ptMat_eq_mono]`. Rewrite using `[mul_mono_apply _ (pinv_pinv p), mono_mul_apply]`. Simplify using `only [cv, pval_pinv]`.
+-/
 theorem conj'_apply (M : Matrix (Fin N) (Fin N) K) (i j : Fin N) :
     (ptMat p * M * (ptMat p)⁻¹) i j = cv p i * M (pinv p i) (pinv p j) * (cv p j)⁻¹ := by
   rw [ptMat_inv]
@@ -51,14 +74,27 @@ theorem conj'_apply (M : Matrix (Fin N) (Fin N) K) (i j : Fin N) :
   rw [mul_mono_apply _ (pinv_pinv p), mono_mul_apply]
   simp only [cv, pval_pinv]
 
+/- English proof (translation)
+The claim follows from `Matrix.isUnit_det_of_right_inverse (ptMat_mul_mono p)`.
+-/
 theorem ptMat_isUnit : IsUnit (ptMat p).det := Matrix.isUnit_det_of_right_inverse (ptMat_mul_mono p)
 
 def IsBlockDiagonalMatrix (X : Matrix (Fin N) (Fin N) K) : Prop := ∀ a b : Fin N, blkOf p.1 a.val ≠ blkOf p.1 b.val → X a b = 0
 
+/- English proof (translation)
+The claim follows from `lt_of_le_of_ne (blkOf_mono p.1 a.val b.val (le_of_lt hab)) hne`.
+-/
 theorem blk_lt_of_lt {a b : Fin N} (hab : a < b) (hne : blkOf p.1 a.val ≠ blkOf p.1 b.val) :
     blkOf p.1 a.val < blkOf p.1 b.val :=
   lt_of_le_of_ne (blkOf_mono p.1 a.val b.val (le_of_lt hab)) hne
 
+/- English proof (translation)
+Establish `hu` using `ptMat_isUnit p`. Establish `h1 : (ptMat p)⁻¹ * β * ptMat p * b = 1`. Rewrite using `[show (ptMat p)⁻¹ * β * ptMat p * b = (ptMat p)⁻¹ * (β * ptMat p * b) by simp only [Matrix.mul_assoc], hW, Matrix.nonsing_inv_mul _ hu]`. Establish `hX : (ptMat p)⁻¹ * β * ptMat p = b⁻¹` using `(Matrix.inv_eq_left_inv h1).symm`. Use `⟨hX, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hX]`. Conclude with `upU_inv hb`. Introduce `a c hne`. Rewrite using `[conj_apply]`. Break down `lt_or_gt_of_ne (show a ≠ c from fun e => hne (by rw [e])) with h | h` into its components or cases.
+
+Establish `hb'` using `(lt_of_blk_lt p a c (blk_lt_of_lt p h hne)).2`. Rewrite using `[(hβ _ _).1 hb', mul_zero, zero_mul]`. Establish `hup : UpU ((ptMat p)⁻¹ * β * ptMat p)` using `by rw [hX]; exact upU_inv hb`. Use `(hup a c).1 h` as an intermediate fact. Rewrite `this` using `[conj_apply]`. Then use the resulting hypothesis.
+-/
 theorem X_of_st {β b : Matrix (Fin N) (Fin N) K} (hβ : IsLoUni β) (hb : IsUpUni b) (hW : β * ptMat p * b = ptMat p) :
     (ptMat p)⁻¹ * β * ptMat p = b⁻¹ ∧ UpU ((ptMat p)⁻¹ * β * ptMat p) ∧ IsBlockDiagonalMatrix p ((ptMat p)⁻¹ * β * ptMat p) := by
   have hu := ptMat_isUnit p
@@ -77,6 +113,15 @@ theorem X_of_st {β b : Matrix (Fin N) (Fin N) K} (hβ : IsLoUni β) (hb : IsUpU
       have := (hup a c).1 h
       rwa [conj_apply] at this
 
+/- English proof (translation)
+Establish `hu` using `ptMat_isUnit p`. Establish `hXd : IsUnit X.det` using `by rw [upU_det hX]; exact isUnit_one`. Use `⟨fun i j => ⟨fun hij => ?_, fun hij => ?_⟩, upU_inv hX, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[conj'_apply]`. Distinguish the cases in `hs : blkOf p.1 i.val = blkOf p.1 j.val`.
+
+Use `(pinv_lt_iff p i j hs).1 hij` as an intermediate fact. Rewrite using `[(hX _ _).1 this, mul_zero, zero_mul]`. Establish `h2` using `(lt_of_blk_lt p i j (blk_lt_of_lt p hij hs)).2`. Establish `hs' : blkOf p.1 (pinv p i).val ≠ blkOf p.1 (pinv p j).val`. Rewrite using `[blkOf_pinv, blkOf_pinv]`.
+
+Conclude with `hs`. Rewrite using `[hB _ _ hs', mul_zero, zero_mul]`. Substitute `hij` using the available equality. Rewrite using `[conj'_apply, (hX _ _).2 rfl, mul_one, mul_inv_cancel₀ (cv_ne p i)]`. Rewrite using `[Matrix.mul_assoc (ptMat p * X), Matrix.nonsing_inv_mul _ hu, Matrix.mul_one, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hXd, Matrix.mul_one]`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_mul, upU_det hX, mul_one, ← Matrix.det_mul, Matrix.mul_nonsing_inv _ hu, Matrix.det_one]`.
+-/
 theorem st_of_X {X : Matrix (Fin N) (Fin N) K} (hX : UpU X) (hB : IsBlockDiagonalMatrix p X) :
     IsLoUni (ptMat p * X * (ptMat p)⁻¹) ∧ IsUpUni X⁻¹ ∧
       ptMat p * X * (ptMat p)⁻¹ * ptMat p * X⁻¹ = ptMat p ∧ (ptMat p * X * (ptMat p)⁻¹).det = 1 := by

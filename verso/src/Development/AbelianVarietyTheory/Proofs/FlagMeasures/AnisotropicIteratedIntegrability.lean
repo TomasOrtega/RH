@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Per.FJConv
 
+/- English proof (translation)
+Establish `h1 : ∀ g, Continuous (P g)` using `fun g => hP.comp (Continuous.prodMk_right g)`. Establish `h2 : ∀ n, Continuous fun g => P g n` using `fun n => hP.comp (Continuous.prodMk_left n)`. Establish `: IsFiniteMeasure (ν.restrict 𝓝)` using `isFiniteMeasure_restrict.2 hν`. Use `⟨fun g => Measure.integrableOn_of_bounded (M := M) hν (h1 g).measurable.aestronglyMeasurable (.of_forall (hM g)), ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun g => ∫ n in 𝓝, P g n ∂ν` using `continuous_of_dominated (bound := fun _ => M) (fun g => (h1 g).measurable.aestronglyMeasurable) (fun g => .of_forall (hM g)) (integrable_const M) (.of_forall h2)`.
+
+Conclude with `Measure.integrableOn_of_bounded (M := M * ν.real 𝓝) hμ hc.measurable.aestronglyMeasurable (.of_forall fun g => norm_setIntegral_le_of_norm_le_const hν.lt_top fun n _ => hM g n)`.
+-/
 theorem iterated_integrableOn {G N : Type} [TopologicalSpace G] [FirstCountableTopology G] [MeasurableSpace G]
     [OpensMeasurableSpace G] [TopologicalSpace N] [MeasurableSpace N] [OpensMeasurableSpace N]
     {μ : Measure G} {𝓕 : Set G} {ν : Measure N} {𝓝 : Set N} (hμ : μ 𝓕 ≠ ⊤) (hν : ν 𝓝 ≠ ⊤) {P : G → N → ℂ}
@@ -28,6 +33,11 @@ theorem iterated_integrableOn {G N : Type} [TopologicalSpace G] [FirstCountableT
   exact Measure.integrableOn_of_bounded (M := M * ν.real 𝓝) hμ hc.measurable.aestronglyMeasurable
     (.of_forall fun g => norm_setIntegral_le_of_norm_le_const hν.lt_top fun n _ => hM g n)
 
+/- English proof (translation)
+Establish `i0 : IsTopologicalRing (AE D)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)`. Establish `i1 : IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Take `⟨-, ha, htc, -⟩` from `GlobalTheory.T.theta_unipotent_conjugation D L A B ι d`. Establish `hL` using `d.line.rank_one`.
+
+Establish `hθ` using `GlobalTheory.T.weil_representation_continuous D X T Wl L A X.etaT⁻¹ (X.etaT ^ A.rank) (by omega) (resEta_line T hL) (resEta_pow T _) Φ`. Establish `hcen : Continuous (cenCo L d.c)` using `continuous_const.mul (ht.comp (continuous_const.mul continuous_id))`. Establish `htp : Continuous (tPt L A d.c)` using `continuous_pi fun _ => continuous_pi fun k => (continuous_const.mul (continuous_apply k)).neg`. Simplify using `only [FJDat.theta_eq]`. Conclude with `(hψ.comp (hcen.comp (htc.comp continuous_snd))).mul (hθ.comp ((continuous_const.prodMk continuous_fst).prodMk (htp.comp (ha.comp continuous_snd))))`.
+-/
 theorem continuous_theta {D : D7} {X : ThetaX D} {T : ThetaTied D X} (Wl : WeilTied D X T) {L A B : HSp D}
     {ι : A.V →ₗ[D.host.E] B.V} (d : FJDat L A B ι) (hr : 1 < A.rank) (hψ : Continuous Wl.ψ) (Φ : X.Sch L A) :
     Continuous fun q : GA D A × GA D B => d.theta Wl.ψ (omZ Wl L A Φ) q.2 q.1 := by
@@ -44,6 +54,21 @@ theorem continuous_theta {D : D7} {X : ThetaX D} {T : ThetaTied D X} (Wl : WeilT
   exact (hψ.comp (hcen.comp (htc.comp continuous_snd))).mul
     (hθ.comp ((continuous_const.prodMk continuous_fst).prodMk (htp.comp (ha.comp continuous_snd))))
 
+/- English proof (translation)
+Introduce `D X T Wl L A B ι d hr hA μ 𝓕 hμ h𝓕 ν 𝓝 hν s hs Φ φ F hφ hF`. Establish `hψ : IsCharAF D.host.F Wl.ψ` using `Wl.ψ_std.1`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.Mem.AnisoQuotient.exists_compact D A hA`. Take `⟨K', hK', hcov'⟩` from `(GlobalTheory.Mem.UnipCocompact.radicals_cocompact D B _ _ d.isIsoSub).1`. Take `⟨s₀, hcont, hrel, hQ⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι d.isom`.
+
+Take `rfl : s = s₀` from `funext fun h => (hrel h _).1 (hs h)`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Establish `hfin : μ 𝓕 < ⊤` using `GlobalTheory.BesselConvDefinite.measure_fundamentalDomain_lt_top (GQ A) hK hcov μ h𝓕`. Take `⟨hchr, -, -, hconj⟩` from `GlobalTheory.T.theta_unipotent_conjugation D L A B ι d`.
+
+Establish `haut` using `GlobalTheory.T.theta_kernel_invariance D X T Wl L A B ι d hr Φ`. Establish `hv : Continuous fun q : GA D A × d.N => (q.2 : GA D B)` using `continuous_subtype_val.comp continuous_snd`. Establish `hP : Continuous fun q : GA D A × d.N => d.perFun Wl.ψ (omZ Wl L A Φ) s₀ φ F q.1 q.2` using `(((hφ.cont.comp continuous_fst).star.mul (hF.cont.comp (hv.mul (hcont.comp continuous_fst)))).mul ((continuous_theta Wl d hr hψ.1 Φ).comp (continuous_fst.prodMk hv))).mul ((hchr _ hψ).2.comp hv).star`. Take `⟨M, hM⟩` from `(hK.prod hK').exists_bound_of_continuousOn hP.continuousOn`. Use `iterated_integrableOn hfin.ne (by rw [hν.2.2]; exact ENNReal.one_ne_top) hP (M := M) fun g n => ?_` and prove the remaining obligations.
+
+Take `⟨γ, hγ, k, hk, rfl⟩` from `hcov g`. Establish `hn : s₀ γ⁻¹ * n * (s₀ γ⁻¹)⁻¹ ∈ d.N` using `(hconj _ _ ((hrel _ _).2 rfl) n n.2).1`. Take `⟨γ', hγ', k', hk', e⟩` from `hcov' ⟨_, hn⟩`. Establish `e' : s₀ γ⁻¹ * n * (s₀ γ⁻¹)⁻¹ = (γ' : GA D B) * k'` using `congrArg Subtype.val e`. Establish `e1 : (n : GA D B) = s₀ γ * (γ' * k') * (s₀ γ)⁻¹`.
+
+Rewrite using `[← e']`. Simplify using `only [map_inv, inv_inv, mul_assoc, mul_inv_cancel_left, mul_inv_cancel, mul_one]`. Establish `e2 : (n : GA D B) * s₀ (γ * k) = s₀ γ * (γ' * (k' * s₀ k))`. Rewrite using `[e1]`. Simplify using `only [map_mul, mul_assoc, inv_mul_cancel_left]`.
+
+Establish `e3 : d.theta Wl.ψ (omZ Wl L A Φ) n (γ * k) = d.theta Wl.ψ (omZ Wl L A Φ) k' k`. Rewrite using `[e1, (haut k _ (mul_mem γ'.2 k'.2)).2 γ hγ _ ((hrel _ _).2 rfl), (haut k _ k'.2).1 _ γ'.2 hγ']`. Establish `hc : ∀ x, ‖d.chr Wl.ψ x‖ = 1` using `fun x => hψ.2.1 _`. Use `le_trans (le_of_eq ?_) (hM (k, k') ⟨hk, hk'⟩)` and prove the remaining obligations. Simplify using `only [FJDat.perFun, norm_mul, norm_star, hc]`.
+
+Rewrite using `[e2, e3, hφ.left γ hγ, hF.left _ (hQ γ hγ), hF.left (γ' : GA D B) hγ']`.
+-/
 theorem conv_of_isAniso : ∀ (D : D7) (X : ThetaX D) (T : ThetaTied D X) (Wl : WeilTied D X T) (L A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (d : FJDat L A B ι), 1 < A.rank → IsAniso A → ∀ μ 𝓕, μ.IsHaarMeasure → IsFundamentalDomain (GQ A) 𝓕 μ → ∀ ν 𝓝, IsUnitN B d.eM ν 𝓝 → ∀ s : GA D A → GA D B, (∀ h, EmbRel B A ι (s h) h) → ∀ (Φ : X.Sch L A) φ F, IsAutFun A φ → IsAutFun B F → d.Conv Wl.ψ (omZ Wl L A Φ) μ 𝓕 ν 𝓝 s φ F := by
   intro D X T Wl L A B ι d hr hA μ 𝓕 hμ h𝓕 ν 𝓝 hν s hs Φ φ F hφ hF
   have hψ : IsCharAF D.host.F Wl.ψ := Wl.ψ_std.1

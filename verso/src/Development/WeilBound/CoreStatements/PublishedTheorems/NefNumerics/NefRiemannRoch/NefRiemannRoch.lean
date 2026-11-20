@@ -17,6 +17,21 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ X _ D hP hdim L hL`. Take `⟨C, hC⟩` from `NefRiemannRoch.abs_factorial_mul_sections_sub_top_le k X hP D hdim.le L hL`. Break down `D with _ | n` into its components or cases. Establish `hz : ∀ m : ℕ, (lbH0 k (lbPow L m) : ℤ) = topSelfIntersection k L 0`. Introduce `m`.
+
+Establish `h` using `hC m`. Simplify using `only [Nat.factorial_zero, Nat.cast_one, one_mul, pow_zero, mul_one, Nat.cast_zero, zero_mul, mul_zero, abs_nonpos_iff, sub_eq_zero] at h`. Conclude with `h`. Use `(Asymptotics.isBigO_zero _ _).congr_left ?_` and prove the remaining obligations. Introduce `m`.
+
+Establish `h' : ((lbH0 k (lbPow L m) : ℕ) : ℝ) = ((topSelfIntersection k L 0 : ℤ) : ℝ)`. Conclude with `hz m` after adjusting the coercions. Rewrite using `[h']`. Simplify using the standard rewrite rules. Establish `he : ((n + 1 : ℕ) : ℤ) - 1 = (n : ℤ)` using `by push_cast; ring`.
+
+Simplify using `only [he, zpow_natCast]`. Use `Asymptotics.IsBigO.of_bound ((C : ℝ) * (n + 1) * 2 ^ n / (n + 1).factorial) ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop 1] with m hm`. Establish `h` using `hC m`. Rewrite `h` using `[Nat.add_sub_cancel]`.
+
+Establish `hR : |((n + 1).factorial : ℝ) * (lbH0 k (lbPow L m) : ℝ) - (topSelfIntersection k L (n + 1) : ℝ) * (m : ℝ) ^ (n + 1)| ≤ (C : ℝ) * (((n : ℝ) + 1) * ((m : ℝ) + 1) ^ n)`. Conclude with `h` after adjusting the coercions. Establish `hf : (0 : ℝ) < (n + 1).factorial` using `by exact_mod_cast Nat.factorial_pos _`. Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hpow : ((m : ℝ) + 1) ^ n ≤ 2 ^ n * (m : ℝ) ^ n`.
+
+Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) (by linarith) n`. Rewrite using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (m : ℝ) ^ n)]`. Establish `key : (lbH0 k (lbPow L m) : ℝ) - (topSelfIntersection k L (n + 1) : ℝ) * (m : ℝ) ^ (n + 1) / ((n + 1).factorial : ℝ) = (((n + 1).factorial : ℝ) * (lbH0 k (lbPow L m) : ℝ) - (topSelfIntersection k L (n + 1) : ℝ) * (m : ℝ) ^ (n + 1)) / ((n + 1).factorial : ℝ)`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[key, abs_div, abs_of_pos hf, div_le_iff₀ hf]`. Establish `hrhs : (C : ℝ) * (n + 1) * 2 ^ n / ((n + 1).factorial : ℝ) * (m : ℝ) ^ n * ((n + 1).factorial : ℝ) = (C : ℝ) * (((n : ℝ) + 1) * (2 ^ n * (m : ℝ) ^ n))`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hrhs]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nefRiemannRoch : GlobalTheory.Published.NefRiemannRoch := by
   intro k _ _ X _ D hP hdim L hL
   obtain ⟨C, hC⟩ := NefRiemannRoch.abs_factorial_mul_sections_sub_top_le k X hP D hdim.le L hL

@@ -81,9 +81,15 @@ def genUp (R : Type) [CommRing R] (N j : ℕ) (τ : Ψ) : Matrix (Fin N) (Fin N)
 
 variable {j : ℕ} {S : Type} [CommRing S]
 
+/- English proof (translation)
+Introduce `a b h` and use `Matrix.one_apply_ne fun e => h (by rw [e])`.
+-/
 theorem isBlockDiag_one : IsBlockDiag j (1 : Matrix (Fin N) (Fin N) R) := fun a b h =>
   Matrix.one_apply_ne fun e => h (by rw [e])
 
+/- English proof (translation)
+Introduce `a b h` and use `by rw [Matrix.mul_apply] refine Finset.sum_eq_zero fun c _ => ?_ by_cases e : ((a : ℕ) < N - j ↔ (c : ℕ) < N - j) · rw [hB c b fun e' => h (e.trans e'), mul_zero] · rw [hA a c e, zero_mul]`.
+-/
 theorem IsBlockDiag.mul {A B : Matrix (Fin N) (Fin N) R} (hA : IsBlockDiag j A) (hB : IsBlockDiag j B) :
     IsBlockDiag j (A * B) := fun a b h => by
   rw [Matrix.mul_apply]
@@ -92,9 +98,19 @@ theorem IsBlockDiag.mul {A B : Matrix (Fin N) (Fin N) R} (hA : IsBlockDiag j A) 
   · rw [hB c b fun e' => h (e.trans e'), mul_zero]
   · rw [hA a c e, zero_mul]
 
+/- English proof (translation)
+Introduce `a b h` and use `by rw [Matrix.map_apply, hA a b h, map_zero]`.
+-/
 theorem IsBlockDiag.map {A : Matrix (Fin N) (Fin N) R} (hA : IsBlockDiag j A) (f : R →+* S) :
     IsBlockDiag j (A.map f) := fun a b h => by rw [Matrix.map_apply, hA a b h, map_zero]
 
+/- English proof (translation)
+Use `letI := Matrix.invertibleOfIsUnitDet A hd`. Set `f : Fin N → ℕ` to `fun a => if (a : ℕ) < N - j then 0 else 1`. Establish `h1 : A.BlockTriangular f` using `fun a b h => hA a b fun e => by`. Simplify using `only [f, e] at h`. Conclude with `lt_irrefl _ h`.
+
+Establish `h2 : A.BlockTriangular (OrderDual.toDual ∘ f)` using `fun a b h => hA a b fun e => by`. Simplify using `only [f, Function.comp, e] at h`. Conclude with `lt_irrefl _ h`. Introduce `a b h`. Distinguish the cases in `ha : (a : ℕ) < N - j`.
+
+Establish `hb : ¬ (b : ℕ) < N - j` using `fun hb => h (iff_of_true ha hb)`. Conclude with `blockTriangular_inv_of_blockTriangular h2 (show f a < f b by simp [f, ha, hb])`. Establish `hb : (b : ℕ) < N - j` using `by by_contra hb; exact h (iff_of_false ha hb)`. Conclude with `blockTriangular_inv_of_blockTriangular h1 (by simp [f, ha, hb])`.
+-/
 theorem IsBlockDiag.inv {A : Matrix (Fin N) (Fin N) R} (hA : IsBlockDiag j A) (hd : IsUnit A.det) :
     IsBlockDiag j A⁻¹ := by
   letI := Matrix.invertibleOfIsUnitDet A hd
@@ -110,21 +126,42 @@ theorem IsBlockDiag.inv {A : Matrix (Fin N) (Fin N) R} (hA : IsBlockDiag j A) (h
   · have hb : (b : ℕ) < N - j := by by_contra hb; exact h (iff_of_false ha hb)
     exact blockTriangular_inv_of_blockTriangular h1 (by simp [f, ha, hb])
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => Matrix.one_apply_eq a, fun _ _ h => Matrix.one_apply_ne h.ne⟩`.
+-/
 theorem isLowerUni_one : IsLowerUni (1 : Matrix (Fin N) (Fin N) R) :=
   ⟨fun a => Matrix.one_apply_eq a, fun _ _ h => Matrix.one_apply_ne h.ne⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by rw [Matrix.map_apply, h.1, map_one], fun a b e => by rw [Matrix.map_apply, h.2 a b e, map_zero]⟩`.
+-/
 theorem IsLowerUni.map {L : Matrix (Fin N) (Fin N) R} (h : IsLowerUni L) (f : R →+* S) : IsLowerUni (L.map f) :=
   ⟨fun a => by rw [Matrix.map_apply, h.1, map_one], fun a b e => by rw [Matrix.map_apply, h.2 a b e, map_zero]⟩
 
+/- English proof (translation)
+Rewrite using `[det_of_lowerTriangular (L.submatrix (Subtype.val : {a // P a} → Fin N) Subtype.val) fun a b e => h.2 _ _ e]`. Conclude with `Finset.prod_eq_one fun a _ => h.1 _`.
+-/
 theorem IsLowerUni.det_submatrix {L : Matrix (Fin N) (Fin N) R} (h : IsLowerUni L) (P : Fin N → Prop)
     [DecidablePred P] : (L.submatrix (Subtype.val : {a // P a} → Fin N) Subtype.val).det = 1 := by
   rw [det_of_lowerTriangular (L.submatrix (Subtype.val : {a // P a} → Fin N) Subtype.val) fun a b e => h.2 _ _ e]
   exact Finset.prod_eq_one fun a _ => h.1 _
 
+/- English proof (translation)
+Rewrite using `[det_of_lowerTriangular _ fun a b e => h.2 _ _ e]`. Conclude with `Finset.prod_eq_one fun a _ => h.1 _`.
+-/
 theorem IsLowerUni.det {L : Matrix (Fin N) (Fin N) R} (h : IsLowerUni L) : L.det = 1 := by
   rw [det_of_lowerTriangular _ fun a b e => h.2 _ _ e]
   exact Finset.prod_eq_one fun a _ => h.1 _
 
+/- English proof (translation)
+Establish `hd : IsUnit L.det` using `by rw [h.det]; exact isUnit_one`. Use `letI := Matrix.invertibleOfIsUnitDet L hd`. Establish `h1 : L.BlockTriangular OrderDual.toDual` using `fun a b e => h.2 _ _ e`. Establish `h2 : (L * U).BlockTriangular OrderDual.toDual` using `fun a b e => h'.2 _ _ e`. Establish `h3 : U.BlockTriangular OrderDual.toDual`.
+
+Use `(blockTriangular_inv_of_blockTriangular h1).mul h2` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_mul_cancel_left _ _ hd]`. Then use the resulting hypothesis. Establish `h4 : ∀ a b, a ≠ b → U a b = 0` using `fun a b e => by`. Break down `lt_or_gt_of_ne e with e | e` into its components or cases. Conclude with `h3 e`.
+
+Conclude with `hU e`. Use extensionality with `a b`. Distinguish the cases in `e : a = b`. Substitute `e` using the available equality. Use `h'.1 a` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_apply, Finset.sum_eq_single a (fun c _ hc => by rw [h4 c a hc, mul_zero]) (by simp), h.1, one_mul]`. Rewrite using `[this, Matrix.one_apply_eq]`. Rewrite using `[h4 a b e, Matrix.one_apply_ne e]`.
+-/
 theorem IsLowerUni.eq_one {L U : Matrix (Fin N) (Fin N) R} (h : IsLowerUni L) (hU : U.BlockTriangular id)
     (h' : IsLowerUni (L * U)) : U = 1 := by
   have hd : IsUnit L.det := by rw [h.det]; exact isUnit_one
@@ -147,6 +184,15 @@ theorem IsLowerUni.eq_one {L U : Matrix (Fin N) (Fin N) R} (h : IsLowerUni L) (h
     rw [this, Matrix.one_apply_eq]
   · rw [h4 a b e, Matrix.one_apply_ne e]
 
+/- English proof (translation)
+Set `P : Fin N → Fin N → Prop` to `fun b a => a ≤ b ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)`. Set `v : ∀ b, {a // P b a} → R` to `fun b c => (G.submatrix (Subtype.val : {a // P b a} → Fin N) Subtype.val)⁻¹ c (⟨b, le_rfl, Iff.rfl⟩ : {a // P b a})`. Set `B : Matrix (Fin N) (Fin N) R` to `fun c b => if h : P b c then v b ⟨c, h⟩ else 0`. Establish `key : ∀ a b, (G * B) a b = ∑ c : {c // P b c}, G a c * v b c` using `fun a b => by`. Rewrite using `[Matrix.mul_apply, ← Finset.sum_filter_add_sum_filter_not Finset.univ (P b), Finset.sum_eq_zero (s := Finset.univ.filter fun c => ¬ P b c) (fun c hc => by`.
+
+Rewrite using `[show B c b = 0 from dif_neg (Finset.mem_filter.1 hc).2, mul_zero]), add_zero,`. Use the proof step `Finset.sum_subtype (p := P b) _ (by simp)]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [show B c b = v b c from dif_pos c.2]`. Establish `key2 : ∀ a b (h : P b a), (G * B) a b = if a = b then 1 else 0` using `fun a b h => by`. Use `congrFun (congrFun (Matrix.mul_nonsing_inv _ (hu b)) ⟨a, h⟩) ⟨b, le_rfl, Iff.rfl⟩` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[key]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[Subtype.ext_iff]`. Use `⟨B, fun a b h => dif_neg fun e => h e.2, fun a b h => dif_neg fun e => absurd e.1 (not_le.2 h), fun a => by rw [key2 a a ⟨le_rfl, Iff.rfl⟩, if_pos rfl], fun a b h => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `e : ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)`. Rewrite using `[key2 a b ⟨h.le, e⟩, if_neg h.ne]`. Rewrite using `[key]`. Conclude with `Finset.sum_eq_zero fun c _ => by rw [hG a c fun e' => e (e'.trans c.2.2), zero_mul]`.
+-/
 theorem IsBlockDiag.exists_upper {G : Matrix (Fin N) (Fin N) R} (hG : IsBlockDiag j G)
     (hu : ∀ b : Fin N, IsUnit (G.submatrix
       (Subtype.val : {a : Fin N // a ≤ b ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)} → Fin N) Subtype.val).det) :
@@ -174,26 +220,53 @@ theorem IsBlockDiag.exists_upper {G : Matrix (Fin N) (Fin N) R} (hG : IsBlockDia
   · rw [key]
     exact Finset.sum_eq_zero fun c _ => by rw [hG a c fun e' => e (e'.trans c.2.2), zero_mul]
 
+/- English proof (translation)
+Introduce `_ _ h` and use `dif_neg h`.
+-/
 theorem generic_block_matrix_isBlockDiag (τ : Ψ) : IsBlockDiag j (genericBlockMatrix R N j τ) := fun _ _ h => dif_neg h
 
+/- English proof (translation)
+Introduce `a b h` and use `(dif_neg fun e => h e.2).trans (if_neg fun e => h (by rw [e]))`.
+-/
 theorem genLow_blockDiag (τ : Ψ) : IsBlockDiag j (genLow R N j τ) := fun a b h =>
   (dif_neg fun e => h e.2).trans (if_neg fun e => h (by rw [e]))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => (dif_neg fun e => lt_irrefl _ e.1).trans (if_pos rfl), fun _ _ h => (dif_neg fun e => lt_asymm h e.1).trans (if_neg h.ne)⟩`.
+-/
 theorem genLow_lowerUni (τ : Ψ) : IsLowerUni (genLow R N j τ) :=
   ⟨fun _ => (dif_neg fun e => lt_irrefl _ e.1).trans (if_pos rfl),
     fun _ _ h => (dif_neg fun e => lt_asymm h e.1).trans (if_neg h.ne)⟩
 
+/- English proof (translation)
+The claim follows from `dif_pos q.2`.
+-/
 theorem genLow_apply (q : LowIdx Ψ N j) : genLow R N j q.1.1 q.1.2.1 q.1.2.2 = X q := dif_pos q.2
 
+/- English proof (translation)
+The claim follows from `dif_pos q.2`.
+-/
 theorem generic_block_matrix_apply (q : inertBlockIndex Ψ N j) : genericBlockMatrix R N j q.1.1 q.1.2.1 q.1.2.2 = X q := dif_pos q.2
 
+/- English proof (translation)
+The claim follows from `dif_pos q.2`.
+-/
 theorem genUp_apply (q : UpIdx Ψ N j) : genUp R N j q.1.1 q.1.2.1 q.1.2.2 = X q := dif_pos q.2
 
+/- English proof (translation)
+Introduce `_ _ h` and use `dif_neg fun e => h e.2`.
+-/
 theorem genUp_blockDiag (τ : Ψ) : IsBlockDiag j (genUp R N j τ) := fun _ _ h => dif_neg fun e => h e.2
 
+/- English proof (translation)
+Introduce `_ _ h` and use `dif_neg fun e => absurd e.1 (not_le.2 h)`.
+-/
 theorem genUp_upper (τ : Ψ) : (genUp R N j τ).BlockTriangular id := fun _ _ h =>
   dif_neg fun e => absurd e.1 (not_le.2 h)
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, genericBlockMatrix]`. Use `split_ifs with h`. Conclude with `hf _`. Rewrite using `[map_zero, hH τ a b h]`.
+-/
 theorem generic_block_matrix_map (f : MvPolynomial (inertBlockIndex Ψ N j) R →+* S) {H : Ψ → Matrix (Fin N) (Fin N) S}
     (hH : ∀ τ, IsBlockDiag j (H τ)) (hf : ∀ q, f (X q) = H q.1.1 q.1.2.1 q.1.2.2) (τ : Ψ) :
     (genericBlockMatrix R N j τ).map f = H τ := by
@@ -203,6 +276,11 @@ theorem generic_block_matrix_map (f : MvPolynomial (inertBlockIndex Ψ N j) R �
   · exact hf _
   · rw [map_zero, hH τ a b h]
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, genLow]`. Use `split_ifs with h e`. Conclude with `hf _`. Rewrite using `[map_one, e, (hH τ).2.1]`.
+
+Rewrite using `[map_zero]`. Break down `lt_or_gt_of_ne e with e | e` into its components or cases. Conclude with `((hH τ).2.2 a b e).symm`. Conclude with `((hH τ).1 a b fun e' => h ⟨e, e'⟩).symm`.
+-/
 theorem genLow_map (f : MvPolynomial (LowIdx Ψ N j) R →+* S) {H : Ψ → Matrix (Fin N) (Fin N) S}
     (hH : ∀ τ, IsBlockDiag j (H τ) ∧ IsLowerUni (H τ)) (hf : ∀ q, f (X q) = H q.1.1 q.1.2.1 q.1.2.2) (τ : Ψ) :
     (genLow R N j τ).map f = H τ := by
@@ -216,6 +294,11 @@ theorem genLow_map (f : MvPolynomial (LowIdx Ψ N j) R →+* S) {H : Ψ → Matr
     · exact ((hH τ).2.2 a b e).symm
     · exact ((hH τ).1 a b fun e' => h ⟨e, e'⟩).symm
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, genUp]`. Use `split_ifs with h`. Conclude with `hf _`. Rewrite using `[map_zero]`.
+
+Distinguish the cases in `e : a ≤ b`. Conclude with `((hH τ).1 a b fun e' => h ⟨e, e'⟩).symm`. Conclude with `((hH τ).2 (not_le.1 e)).symm`.
+-/
 theorem genUp_map (f : MvPolynomial (UpIdx Ψ N j) R →+* S) {H : Ψ → Matrix (Fin N) (Fin N) S}
     (hH : ∀ τ, IsBlockDiag j (H τ) ∧ (H τ).BlockTriangular id) (hf : ∀ q, f (X q) = H q.1.1 q.1.2.1 q.1.2.2)
     (τ : Ψ) : (genUp R N j τ).map f = H τ := by
@@ -228,17 +311,38 @@ theorem genUp_map (f : MvPolynomial (UpIdx Ψ N j) R →+* S) {H : Ψ → Matrix
     · exact ((hH τ).1 a b fun e' => h ⟨e, e'⟩).symm
     · exact ((hH τ).2 (not_le.1 e)).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 1, fun τ => ⟨isBlockDiag_one, blockTriangular_one, by rw [mul_one]; exact hg τ⟩, by simpa only [mul_one] using h⟩`.
+-/
 theorem IsGenericFlag.of_lowerUni {Ω : Type} [CommRing Ω] [Algebra Ω R] {g : Ψ → Matrix (Fin N) (Fin N) R}
     (hg : ∀ τ, IsLowerUni (g τ)) (h : AlgebraicIndependent Ω fun q : LowIdx Ψ N j => g q.1.1 q.1.2.1 q.1.2.2) :
     IsGenericFlag Ω j g :=
   ⟨fun _ => 1, fun τ => ⟨isBlockDiag_one, blockTriangular_one, by rw [mul_one]; exact hg τ⟩,
     by simpa only [mul_one] using h⟩
 
+/- English proof (translation)
+Take `⟨B, hB, -⟩` from `h`. Conclude with `IsUnit.of_mul_eq_one (B τ).det (by rw [← det_mul, (hB τ).2.2.det])`.
+-/
 theorem IsGenericFlag.isUnit_det {Ω : Type} [CommRing Ω] [Algebra Ω R] {g : Ψ → Matrix (Fin N) (Fin N) R}
     (h : IsGenericFlag Ω j g) (τ : Ψ) : IsUnit (g τ).det := by
   obtain ⟨B, hB, -⟩ := h
   exact IsUnit.of_mul_eq_one (B τ).det (by rw [← det_mul, (hB τ).2.2.det])
 
+/- English proof (translation)
+Set `A` to `MvPolynomial (inertBlockIndex Ψ N j) Ω`. Set `ψ₀ : A →ₐ[Ω] MvPolynomial (LowIdx Ψ N j) Ω` to `aeval fun q => genLow Ω N j q.1.1 q.1.2.1 q.1.2.2`. Establish `h₀ : ∀ τ, (genericBlockMatrix Ω N j τ).map ψ₀.toRingHom = genLow Ω N j τ` using `generic_block_matrix_map _ genLow_blockDiag fun q => aeval_X _ q`. Set `M : Submonoid A` to `(IsUnit.submonoid _).comap ψ₀`. Establish `hM : ∀ m : M, (m : A) ≠ 0` using `fun m e => by`.
+
+Establish `: IsUnit (ψ₀ m)` using `m.2`. Rewrite `this` using `[e, map_zero]`. Conclude with `not_isUnit_zero this`. Set `T` to `Localization M`. Set `i : A →ₐ[Ω] T` to `IsScalarTower.toAlgHom Ω A T`.
+
+Set `ψ : T →ₐ[Ω] MvPolynomial (LowIdx Ψ N j) Ω` to `IsLocalization.liftAlgHom (M := M) (f := ψ₀) fun m => m.2`. Establish `hψ : ∀ a, ψ (i a) = ψ₀ a` using `fun a => IsLocalization.lift_eq _ a`. Establish `hi : Function.Injective i` using `IsLocalization.injective T (M := M) fun m hm => mem_nonZeroDivisors_of_ne_zero (hM ⟨m, hm⟩)`. Establish `hB : ∀ τ : Ψ, ∃ B, IsBlockDiag j B ∧ B.BlockTriangular id ∧ IsLowerUni ((genericBlockMatrix Ω N j τ).map i.toRingHom * B)` using `fun τ => by`. Use `((generic_block_matrix_isBlockDiag τ).map _).exists_upper fun b => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.submatrix_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Use `IsLocalization.map_units T (M := M) ⟨_, ?_⟩` and prove the remaining obligations. Use `show IsUnit (ψ₀.toRingHom (Matrix.det _))`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.submatrix_map, h₀, (genLow_lowerUni τ).det_submatrix]`. Conclude with `isUnit_one`.
+
+Use `choose B hB using hB`. Use `⟨T, inferInstance, inferInstance, i, ψ, B, hi, fun Φ _ _ ev hev => ?_, fun τ => ⟨(hB τ).1, (hB τ).2.1, (hB τ).2.2, ?_⟩⟩` and prove the remaining obligations. Establish `hu : ∀ m : M, IsUnit (ev m)` using `fun m => ((map_ne_zero_iff ev hev).2 (hM m)).isUnit`. Use `⟨IsLocalization.liftAlgHom (M := M) (f := ev) hu, ?_, fun a => IsLocalization.lift_eq _ a⟩` and prove the remaining obligations. Conclude with `(IsLocalization.lift_injective_iff (g := ev.toRingHom) hu).2 fun x y => ⟨fun h => congrArg ev (hi h), fun h => congrArg i (hev h)⟩`.
+
+Establish `e : ((genericBlockMatrix Ω N j τ).map i.toRingHom).map ψ.toRingHom = genLow Ω N j τ`. Rewrite using `[← h₀]`. Use `ext1 a b`. Conclude with `hψ _`. Establish `h1` using `(hB τ).2.2.map ψ.toRingHom`.
+
+Rewrite `h1`, the goal using `[Matrix.map_mul, e]`. Rewrite using `[(genLow_lowerUni τ).eq_one ((hB τ).2.1.map _) h1, mul_one]`.
+-/
 theorem exists_univ_decomp (Ω : Type) [Field Ω] (Ψ : Type) (N j : ℕ) :
     ∃ (T : Type) (_ : CommRing T) (_ : Algebra Ω T) (i : MvPolynomial (inertBlockIndex Ψ N j) Ω →ₐ[Ω] T)
       (ψ : T →ₐ[Ω] MvPolynomial (LowIdx Ψ N j) Ω) (B : Ψ → Matrix (Fin N) (Fin N) T), Function.Injective i ∧
@@ -282,6 +386,13 @@ theorem exists_univ_decomp (Ω : Type) [Field Ω] (Ψ : Type) (N j : ℕ) :
     rw [Matrix.map_mul, e] at h1 ⊢
     rw [(genLow_lowerUni τ).eq_one ((hB τ).2.1.map _) h1, mul_one]
 
+/- English proof (translation)
+Take `⟨T, _, _, i, ψ, B, -, he, hB⟩` from `exists_univ_decomp Ω Ψ N j`. Take `⟨e, he, hei⟩` from `he Φ _ h`. Establish `h1 : ∀ τ, g τ * (B τ).map e.toRingHom = ((genericBlockMatrix Ω N j τ).map i.toRingHom * B τ).map e.toRingHom` using `fun τ => by`. Rewrite using `[Matrix.map_mul, ← generic_block_matrix_map (e.toRingHom.comp i.toRingHom) hg (fun q => (hei _).trans (aeval_X _ q)) τ]`. Both sides reduce to the same expression.
+
+Use `⟨fun τ => (B τ).map e.toRingHom, fun τ => ⟨(hB τ).1.map _, (hB τ).2.1.map _, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `(hB τ).2.2.1.map _`. Simplify using `only [h1]`. Use `AlgebraicIndependent.map' (f := e) (x := fun q : LowIdx Ψ N j => ((genericBlockMatrix Ω N j q.1.1).map i.toRingHom * B q.1.1) q.1.2.1 q.1.2.2) ?_ he` and prove the remaining obligations.
+
+Use `AlgebraicIndependent.of_comp ψ ?_` and prove the remaining obligations. Use `MvPolynomial.algebraicIndependent_X (LowIdx Ψ N j) Ω using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Conclude with `(congrFun (congrFun (hB q.1.1).2.2.2 _) _).trans (genLow_apply q)`.
+-/
 theorem IsGenericFlag.of_indep {Ω Φ : Type} [Field Ω] [Field Φ] [Algebra Ω Φ] {g : Ψ → Matrix (Fin N) (Fin N) Φ}
     (hg : ∀ τ, IsBlockDiag j (g τ))
     (h : AlgebraicIndependent Ω fun q : inertBlockIndex Ψ N j => g q.1.1 q.1.2.1 q.1.2.2) : IsGenericFlag Ω j g := by
@@ -300,6 +411,21 @@ theorem IsGenericFlag.of_indep {Ω Φ : Type} [Field Ω] [Field Φ] [Algebra Ω 
     funext q
     exact (congrFun (congrFun (hB q.1.1).2.2.2 _) _).trans (genLow_apply q)
 
+/- English proof (translation)
+Take `⟨T, _, _, i, ψ', B', hi, -, hB'⟩` from `exists_univ_decomp Ω Ψ N j`. Take `⟨B, hB, h⟩` from `h`. Set `A` to `MvPolynomial (LowIdx Ψ N j) Ω`. Set `θ : MvPolynomial (UpIdx Ψ N j) Φ →ₐ[Φ] MvPolynomial (UpIdx Ψ N j) Φ` to `aeval fun q => ((B q.1.1).map (C : Φ →+* MvPolynomial (UpIdx Ψ N j) Φ) * genUp Φ N j q.1.1) q.1.2.1 q.1.2.2`. Establish `hθ : ∀ τ, (genUp Φ N j τ).map θ.toRingHom = (B τ).map C * genUp Φ N j τ` using `genUp_map _ (fun τ => ⟨((hB τ).1.map _).mul (genUp_blockDiag τ), ((hB τ).2.1.map _).mul (genUp_upper τ)⟩) fun q => aeval_X _ q`.
+
+Set `ev : A →ₐ[Ω] Φ` to `aeval fun q => (g q.1.1 * B q.1.1) q.1.2.1 q.1.2.2`. Establish `hev : ∀ τ, (genLow Ω N j τ).map ev.toRingHom = g τ * B τ` using `genLow_map _ (fun τ => ⟨(hg τ).mul (hB τ).1, (hB τ).2.2⟩) fun q => aeval_X _ q`. Set `μ : MvPolynomial (UpIdx Ψ N j) A →ₐ[Ω] MvPolynomial (UpIdx Ψ N j) Φ` to `MvPolynomial.mapAlgHom ev`. Establish `hμ : Function.Injective μ` using `MvPolynomial.map_injective ev.toRingHom h`. Establish `hd : ∀ τ, IsUnit (B' τ).det` using `fun τ => IsUnit.of_mul_eq_one_right _ (by rw [← det_mul, (hB' τ).2.2.1.det])`.
+
+Set `lo : A →ₐ[Ω] T` to `aeval fun q => ((genericBlockMatrix Ω N j q.1.1).map i.toRingHom * B' q.1.1) q.1.2.1 q.1.2.2`. Establish `hlo : ∀ τ, (genLow Ω N j τ).map lo.toRingHom = (genericBlockMatrix Ω N j τ).map i.toRingHom * B' τ` using `genLow_map _ (fun τ => ⟨((generic_block_matrix_isBlockDiag τ).map _).mul (hB' τ).1, (hB' τ).2.2.1⟩) fun q => aeval_X _ q`. Set `ν : MvPolynomial (UpIdx Ψ N j) A →ₐ[Ω] T` to `aevalTower lo fun q => (B' q.1.1)⁻¹ q.1.2.1 q.1.2.2`. Establish `hν : ∀ τ, (genUp A N j τ).map ν.toRingHom = (B' τ)⁻¹` using `genUp_map _ (fun τ => ⟨(hB' τ).1.inv (hd τ), by`. Use `letI := Matrix.invertibleOfIsUnitDet _ (hd τ)`.
+
+Conclude with `blockTriangular_inv_of_blockTriangular (hB' τ).2.1⟩) fun q => aevalTower_X _ _ q`. Set `Z : Ψ → Matrix (Fin N) (Fin N) (MvPolynomial (UpIdx Ψ N j) A)` to `fun τ => (genLow Ω N j τ).map (C : A →+* _) * genUp A N j τ`. Establish `h1 : AlgebraicIndependent Ω fun q : inertBlockIndex Ψ N j => Z q.1.1 q.1.2.1 q.1.2.2`. Use `AlgebraicIndependent.of_comp ν ?_` and prove the remaining obligations. Use `(MvPolynomial.algebraicIndependent_X (inertBlockIndex Ψ N j) Ω).map' (f := i) hi using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `q`. Establish `: (Z q.1.1).map ν.toRingHom = (genericBlockMatrix Ω N j q.1.1).map i.toRingHom`. Rewrite using `[Matrix.map_mul, hν, show ((genLow Ω N j q.1.1).map (C : A →+* _)).map ν.toRingHom = (genLow Ω N j q.1.1).map lo.toRingHom from Matrix.ext fun a b => aevalTower_C _ _ _, hlo, Matrix.mul_nonsing_inv_cancel_right _ _ (hd _)]`. Conclude with `(congrFun (congrFun this _) _).trans (congrArg i (generic_block_matrix_apply q))`. Use `AlgebraicIndependent.of_comp (θ.restrictScalars Ω) ?_` and prove the remaining obligations.
+
+Use `h1.map' (f := μ) hμ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Establish `: ((g q.1.1).map C * genUp Φ N j q.1.1).map θ.toRingHom = (Z q.1.1).map μ.toRingHom`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hθ, ← Matrix.mul_assoc, genUp_map μ.toRingHom (H := genUp Φ N j) (fun τ => ⟨genUp_blockDiag τ, genUp_upper τ⟩) (fun q => (map_X _ q).trans (genUp_apply q).symm), show ((g q.1.1).map C).map θ.toRingHom = (g q.1.1).map C from Matrix.ext fun a b => a …`. Use `congr 1`.
+
+Conclude with `Matrix.ext fun a b => (MvPolynomial.map_C ev.toRingHom (genLow Ω N j q.1.1 a b)).symm`. Conclude with `congrFun (congrFun this _) _`.
+-/
 theorem IsGenericFlag.indep_mul_genUp {Ω Φ : Type} [Field Ω] [CommRing Φ] [Algebra Ω Φ]
     {g : Ψ → Matrix (Fin N) (Fin N) Φ} (hg : ∀ τ, IsBlockDiag j (g τ)) (h : IsGenericFlag Ω j g) :
     AlgebraicIndependent Ω fun q : inertBlockIndex Ψ N j =>
@@ -468,6 +594,9 @@ def wCo (p : Ψ × Fin N) (k₀ : K) (a a' : Fin N) (t : RatFunc Φ) :
   | ⟨none, m⟩ => ∑ I, algebraMap Φ (RatFunc Φ) (algebraMap M.Ω Φ (M.coef ⟨k₀, m⟩ I)) *
       minorIJ ((M.g p.1).map (algebraMap Φ (RatFunc Φ)) * (1 + Matrix.single a' a t)) I (stepCols N j p.2)
 
+/- English proof (translation)
+Introduce `k` and use `by obtain ⟨i, hi⟩ := M.x_ne k refine ⟨i, fun h => hi ?_⟩ have h' : mConeMap M.x (X ⟨k, i⟩) = 0 := h rw [mConeMap, aeval_X] at h' exact C_eq_zero.1 ((mul_eq_zero.1 h').resolve_right (X_ne_zero _))`.
+-/
 theorem isRelevant_alt : IsRelevant (mCoordIdeal M.x) := fun k => by
   obtain ⟨i, hi⟩ := M.x_ne k
   refine ⟨i, fun h => hi ?_⟩
@@ -475,16 +604,28 @@ theorem isRelevant_alt : IsRelevant (mCoordIdeal M.x) := fun k => by
   rw [mConeMap, aeval_X] at h'
   exact C_eq_zero.1 ((mul_eq_zero.1 h').resolve_right (X_ne_zero _))
 
+/- English proof (translation)
+The claim follows from `RingHom.ker_isPrime _`.
+-/
 theorem isPrime_alt : (mCoordIdeal M.x).IsPrime := RingHom.ker_isPrime _
 
+/- English proof (translation)
+The claim follows from `M.frames _ M.isPrime_alt M.isRelevant_alt le_rfl`.
+-/
 theorem exists_frame : ∃ F : FrameData ι Ψ N M.Ω M.blk, M.IsFrame F ∧ M.GoodAt F (mCoordIdeal M.x) :=
   M.frames _ M.isPrime_alt M.isRelevant_alt le_rfl
 
+/- English proof (translation)
+Introduce `h` and use `hF.1 k (hQ (by show mConeMap M.x (X ⟨k, F.c k⟩) = 0 rw [mConeMap, aeval_X, h, map_zero, zero_mul]))`.
+-/
 theorem x_chart_ne {F : FrameData ι Ψ N M.Ω M.blk} {Q : Ideal (MRing (baseIdx ι M.blk))} (hQ : mCoordIdeal M.x ≤ Q)
     (hF : M.GoodAt F Q) (k : NonPluckerBlocks M.blk) : M.x ⟨k, F.c k⟩ ≠ 0 := fun h => hF.1 k (hQ (by
   show mConeMap M.x (X ⟨k, F.c k⟩) = 0
   rw [mConeMap, aeval_X, h, map_zero, zero_mul]))
 
+/- English proof (translation)
+Take `⟨F, hF, hG⟩` from `M.exists_frame`. Introduce `h0`. Establish `h` using `hF.2.2.2 p hp`. Rewrite `h` using `[h0, mul_zero]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (M.x_chart_ne le_rfl hG k)) (hG.2.2 p hp).1 h.symm`.
+-/
 theorem lam_ne_zero (p : Ψ × Fin N) (hp : M.blk p = none) : M.lam p ≠ 0 := by
   obtain ⟨F, hF, hG⟩ := M.exists_frame
   intro h0
@@ -493,6 +634,9 @@ theorem lam_ne_zero (p : Ψ × Fin N) (hp : M.blk p = none) : M.lam p ≠ 0 := b
   exact mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (M.x_chart_ne le_rfl hG k))
     (hG.2.2 p hp).1 h.symm
 
+/- English proof (translation)
+The claim follows from `M.g_indep.isUnit_det τ`.
+-/
 theorem isUnit_det_g (τ : Ψ) : IsUnit (M.g τ).det := M.g_indep.isUnit_det τ
 
 end FlagModel
@@ -505,12 +649,18 @@ abbrev ιH : Bool → Type := fun _ => Fin 3
 
 def blkH : Unit × Fin 2 → Option Bool := fun p => if p.2 = 0 then some true else none
 
+/- English proof (translation)
+Take `⟨⟨⟩, i⟩` from `p`. Use `fin_cases i`. Conclude with `⟨rfl, (Option.some_injective _ h).symm⟩`. Conclude with `absurd h (by simp [blkH])`.
+-/
 theorem blkH_some {p : Unit × Fin 2} {k : Bool} (h : blkH p = some k) : p = ((), 0) ∧ k = true := by
   obtain ⟨⟨⟩, i⟩ := p
   fin_cases i
   · exact ⟨rfl, (Option.some_injective _ h).symm⟩
   · exact absurd h (by simp [blkH])
 
+/- English proof (translation)
+Take `⟨⟨⟩, i⟩` from `p`. Use `fin_cases i`. Conclude with `absurd h (by simp [blkH])`. Both sides reduce to the same expression.
+-/
 theorem blkH_none {p : Unit × Fin 2} (h : blkH p = none) : p = ((), 1) := by
   obtain ⟨⟨⟩, i⟩ := p
   fin_cases i
@@ -540,6 +690,11 @@ def yH (x : Fin 3 → Ω) : (Σ k, ιH k) → ΦH Ω := fun q =>
   if q.1 then ∑ I, algebraMap Ω (ΦH Ω) (coefH Ω x q I) * minorIJ (gH Ω ()) I (stepCols 2 2 0)
   else algebraMap Ω (ΦH Ω) (x q.2)
 
+/- English proof (translation)
+Unfold `minorIJ`. Rewrite using `[dif_pos (by simp)]`. Use `haveI : Unique (Fin ({b} : Finset (Fin 2)).card) := inferInstanceAs (Unique (Fin 1))`. Rewrite using `[det_unique]`. Use `show h _ _ = _`.
+
+Use `congr 1`. Conclude with `Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)`. Conclude with `Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)`.
+-/
 theorem minor_single {R : Type} [CommRing R] (h : Matrix (Fin 2) (Fin 2) R) (a b : Fin 2) :
     minorIJ h {a} {b} = h a b := by
   unfold minorIJ
@@ -551,8 +706,16 @@ theorem minor_single {R : Type} [CommRing R] (h : Matrix (Fin 2) (Fin 2) R) (a b
   · exact Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)
   · exact Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem cols0 : stepCols 2 2 0 = {0} := by decide
 
+/- English proof (translation)
+Establish `: (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}}` using `by decide`. Rewrite using `[this, Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_pair (by decide), minor_single, minor_single]`. Establish `e1 : minorIJ h ∅ {0} = 0` using `dif_neg (by decide)`. Establish `e2 : minorIJ h {0, 1} {0} = 0` using `dif_neg (by decide)`. Rewrite using `[e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_minor {R : Type} [CommRing R] (u : Finset (Fin 2) → R) (h : Matrix (Fin 2) (Fin 2) R) :
     ∑ I, u I * minorIJ h I {0} = u {0} * h 0 0 + u {1} * h 1 0 := by
   have : (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} := by decide
@@ -562,9 +725,19 @@ theorem sum_minor {R : Type} [CommRing R] (u : Finset (Fin 2) → R) (h : Matrix
   have e2 : minorIJ h {0, 1} {0} = 0 := dif_neg (by decide)
   rw [e1, e2]; ring
 
+/- English proof (translation)
+Simplify using `[detFac]`.
+-/
 theorem detFac0 {R : Type} [CommRing R] (T : Matrix (Fin 2) (Fin 2) R) : detFac 2 0 T = 1 := by
   simp [detFac]
 
+/- English proof (translation)
+Establish `e1 : wIdx 2 2 = Finset.univ` using `by decide`. Establish `e2 : omIdx 2 2 = ∅` using `by decide`. Establish `h1 : minorIJ T Finset.univ Finset.univ = T.det`. Unfold `minorIJ`. Rewrite using `[dif_pos rfl]`.
+
+Conclude with `det_submatrix_equiv_self (Equiv.ofBijective (Finset.univ.orderEmbOfFin rfl) ⟨(Finset.univ.orderEmbOfFin rfl).injective, fun a => by`. Use `Finset.range_orderEmbOfFin (Finset.univ : Finset (Fin 2)) rfl` as an intermediate fact. Conclude with `(Set.range_eq_univ.1 (by simpa using this)) a⟩) T`. Establish `h2 : minorIJ T ∅ ∅ = 1`. Unfold `minorIJ`.
+
+Rewrite using `[dif_pos rfl]`. Use `haveI : IsEmpty (Fin (∅ : Finset (Fin 2)).card) := inferInstanceAs (IsEmpty (Fin 0))`. Conclude with `det_isEmpty`. Simplify using `[detFac, e1, e2, h1, h2]`.
+-/
 theorem detFac1 {R : Type} [CommRing R] (T : Matrix (Fin 2) (Fin 2) R) : detFac 2 1 T = T.det := by
   have e1 : wIdx 2 2 = Finset.univ := by decide
   have e2 : omIdx 2 2 = ∅ := by decide
@@ -582,11 +755,17 @@ theorem detFac1 {R : Type} [CommRing R] (T : Matrix (Fin 2) (Fin 2) R) : detFac 
     exact det_isEmpty
   simp [detFac, e1, e2, h1, h2]
 
+/- English proof (translation)
+Introduce `a b h` and use `absurd (by simp) h`.
+-/
 theorem blockDiag2 {R : Type} [CommRing R] (T : Matrix (Fin 2) (Fin 2) R) : IsBlockDiag 2 T :=
   fun a b h => absurd (by simp) h
 
 variable {Ω}
 
+/- English proof (translation)
+Introduce `m hm k'`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Take `rfl : k' = k` from `Subsingleton.elim _ _`. Simplify using `[Finsupp.single_apply]`.
+-/
 theorem isMultiHomog_X' {k : NonPluckerBlocks blkH} (i : Fin 3) :
     IsMultiHomog (X ⟨k, i⟩ : MRing (baseIdx ιH blkH)) fun _ => 1 := by
   classical
@@ -596,6 +775,11 @@ theorem isMultiHomog_X' {k : NonPluckerBlocks blkH} (i : Fin 3) :
   obtain rfl : k' = k := Subsingleton.elim _ _
   simp [Finsupp.single_apply]
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[support_C]`. Use `split_ifs at hm`. Simplify using `at hm`. Rewrite `hm` using `[Finset.mem_singleton]`.
+
+Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem isMultiHomog_C' (n : ℤ) : IsMultiHomog (C n : MRing (baseIdx ιH blkH)) fun _ => 0 := by
   classical
   intro m hm k
@@ -606,6 +790,9 @@ theorem isMultiHomog_C' (n : ℤ) : IsMultiHomog (C n : MRing (baseIdx ιH blkH)
     subst hm
     simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 0, C n, C 1, isMultiHomog_C' n, isMultiHomog_C' 1, fun h => hQ.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using h)), by simp⟩`.
+-/
 theorem regAt_int (x : (Σ k, baseIdx ιH blkH k) → Ω) {Q : Ideal (MRing (baseIdx ιH blkH))} (hQ : Q.IsPrime)
     (n : ℤ) : RegAt x Q (n : Ω) :=
   ⟨fun _ => 0, C n, C 1, isMultiHomog_C' n, isMultiHomog_C' 1,
@@ -691,14 +878,23 @@ def MH (x : Fin 3 → Ω) (hx2 : x 2 = 0) (hx : x 0 ≠ 0 ∨ x 1 ≠ 0) : FlagM
     · simpa [FH] using regAt_int (fun q => x q.2) hQ 1
     · simpa [FH] using regAt_int (fun q => x q.2) hQ 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨MH (![1, 1, 0] : Fin 3 → ℚ) rfl (Or.inl one_ne_zero)⟩`.
+-/
 example : Nonempty (FlagModel (yH ℚ ![1, 1, 0]) Unit 2 2) := ⟨MH (![1, 1, 0] : Fin 3 → ℚ) rfl (Or.inl one_ne_zero)⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Consider the cases of `k`. Conclude with `dif_pos fun p h => by simpa using (blkH_some h).2`. Conclude with `(dif_neg fun h => h ((), 0) rfl).trans (if_pos rfl)`.
+-/
 example : (MH (![1, 1, 0] : Fin 3 → ℚ) rfl (Or.inl one_ne_zero)).dy ((), 0) = fun k => if k then 1 else -1 := by
   funext k
   cases k
   · exact dif_pos fun p h => by simpa using (blkH_some h).2
   · exact (dif_neg fun h => h ((), 0) rfl).trans (if_pos rfl)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example : (MH (![1, 1, 0] : Fin 3 → ℚ) rfl (Or.inl one_ne_zero)).blk ((), 1) = none ∧
     (MH (![1, 1, 0] : Fin 3 → ℚ) rfl (Or.inl one_ne_zero)).lam ((), 1) = 1 := ⟨rfl, rfl⟩
 

@@ -14,6 +14,13 @@ open scoped Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ _ _ m r hrsp J D hD j hj`. Establish `hprime : ∀ i, Prime (r i)` using `ReciprocityTheory.AnForm.R.prime_of_regular_params r hrsp.1 hrsp.2`. Establish `hnass : ∀ i k, i ≠ k → ¬ Associated (r i) (r k)` using `(ReciprocityTheory.AnForm.R.regular_params_spec r hrsp.1 hrsp.2).2`. Establish `hsplit : ∏ i ∈ J, r i = r j * ∏ i ∈ J.erase j, r i` using `(Finset.mul_prod_erase J r hj).symm`. Establish `hdvdD : r j ∣ D (∏ i ∈ J, r i)`.
+
+Establish `h1 : (∏ i ∈ J, r i) ∣ D (∏ i ∈ J, r i)` using `Ideal.mem_span_singleton.mp hD`. Conclude with `(hsplit ▸ dvd_mul_right (r j) _ : r j ∣ ∏ i ∈ J, r i).trans h1`. Rewrite `hdvdD` using `[hsplit, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Establish `h2 : r j ∣ (∏ i ∈ J.erase j, r i) * D (r j)` using `(dvd_add_right (dvd_mul_right (r j) _)).mp hdvdD`. Break down `(hprime j).dvd_or_dvd h2 with h3 | h3` into its components or cases.
+
+It suffices to derive a contradiction. Take `⟨k, hk, hdk⟩` from `(hprime j).exists_mem_finset_dvd h3`. Establish `hkj : k ≠ j` using `Finset.ne_of_mem_erase hk`. Conclude with `hnass j k (Ne.symm hkj) ((hprime j).associated_of_dvd (hprime k) hdk)`. Conclude with `h3`.
+-/
 theorem dvd_derivation_of_mem_span_prod_params :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsRegularLocalRing R] (m : ℕ)
       (r : Fin m → R), ReciprocityTheory.AnForm.R.FinalTheorems.Rsp R m r → ∀ (J : Finset (Fin m))

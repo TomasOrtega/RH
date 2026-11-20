@@ -19,6 +19,9 @@ def leviChar {R : Type} [CommRing R] (m : α → Type) [∀ a, Fintype (m a)] [�
   ∏ a, (detChar (m a) (θ a)).comp (Pi.evalMonoidHom (fun a => GL (m a) R) a)
 
 omit [LinearOrder α] in
+/- English proof (translation)
+Simplify using `[leviChar, MonoidHom.finsetProd_apply]`.
+-/
 theorem leviChar_apply {R : Type} [CommRing R] (θ : α → Rˣ →* ℂˣ) (x : Levi R m) :
     leviChar m θ x = ∏ a, θ a (GeneralLinearGroup.det (x a)) := by
   simp [leviChar, MonoidHom.finsetProd_apply]
@@ -26,6 +29,9 @@ theorem leviChar_apply {R : Type} [CommRing R] (θ : α → Rˣ →* ℂˣ) (x :
 def typeChar (e : (Σ a, m a) ≃ n) (θ : α → 𝓀[k]ˣ →* ℂˣ) : parahoric k e →* ℂˣ :=
   (leviChar m θ).comp (parahoricProj k e)
 
+/- English proof (translation)
+The claim follows from `leviChar_apply θ _`.
+-/
 theorem typeChar_apply (e : (Σ a, m a) ≃ n) (θ : α → 𝓀[k]ˣ →* ℂˣ) (g : parahoric k e) :
     typeChar e θ g = ∏ a, θ a (GeneralLinearGroup.det (parahoricProj k e g a)) :=
   leviChar_apply θ _
@@ -36,6 +42,9 @@ def typeSp (π : Representation ℂ (GL n k) V) (e : (Σ a, m a) ≃ n) (θ : α
   zero_mem' := fun g => by simp
   smul_mem' := fun c v hv g => by rw [map_smul, hv g, smul_comm]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_typeSp {π : Representation ℂ (GL n k) V} {e : (Σ a, m a) ≃ n} {θ : α → 𝓀[k]ˣ →* ℂˣ} {v : V} :
     v ∈ typeSp π e θ ↔ ∀ g : parahoric k e, π g v = (typeChar e θ g : ℂ) • v := Iff.rfl
 

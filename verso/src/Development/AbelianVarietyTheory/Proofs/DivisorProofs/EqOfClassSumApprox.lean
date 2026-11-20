@@ -20,6 +20,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UPoinc.GalLab
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Establish `key : ∀ μ, CongMod m μ ν ↔ CongMod m μ ν'` using `fun μ => ⟨fun ⟨x, hx⟩ => ⟨w + x, by rw [hx, hw, smul_add, add_assoc]⟩, fun ⟨x, hx⟩ => ⟨x - w, by rw [hx, hw, smul_sub]; abel⟩⟩`. Rewrite using `[← sub_eq_zero, ← norm_le_zero_iff]`. Use `le_of_forall_pos_le_add fun δ hδ => ?_` and prove the remaining obligations. Take `⟨S₀, h₀⟩` from `hu (δ / 2) (half_pos hδ)`.
+
+Take `⟨S₁, h₁⟩` from `hv (δ / 2) (half_pos hδ)`. Establish `a` using `h₀ ((S₀ ∪ S₁).filter fun μ => CongMod m μ ν) (fun μ hμ => (Finset.mem_filter.1 hμ).2) fun μ hμ hc => Finset.mem_filter.2 ⟨Finset.mem_union_left _ hμ, hc⟩`. Establish `b` using `h₁ ((S₀ ∪ S₁).filter fun μ => CongMod m μ ν) (fun μ hμ => (key μ).1 (Finset.mem_filter.1 hμ).2) fun μ hμ hc => Finset.mem_filter.2 ⟨Finset.mem_union_right _ hμ, (key μ).2 hc⟩`. Establish `c` using `norm_sub_le_norm_sub_add_norm_sub u (∑ μ ∈ (S₀ ∪ S₁).filter fun μ => CongMod m μ ν, τ μ) v`. Rewrite `b` using `[norm_sub_rev]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_of_classSum_approx {X K : Type} [AddCommGroup X] [NormedAddCommGroup K] (m : ℕ) (τ : X → K) (ν ν' : X)
     (h : CongMod m ν ν') (u v : K)
     (hu : ∀ δ : ℝ, 0 < δ → ∃ S₀ : Finset X, ∀ S : Finset X, (∀ μ ∈ S, CongMod m μ ν) →
@@ -42,6 +49,23 @@ theorem eq_of_classSum_approx {X K : Type} [AddCommGroup X] [NormedAddCommGroup 
   rw [norm_sub_rev] at b
   linarith
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw hpq l Xo cf C X₁ D p _ z₁ z₂ hz f t hf hsum w₁ w₂ htie hproj σ' s hs hval hsz aσ haσ ct₀ yy₀ hl₀ a a' ν ν' ha ha' hνν' κ`. Establish `hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme D.X.M.Z` using `fun x => ⟨D.X.normal.isDomain_stalk x, D.X.normal.isIntegrallyClosed_stalk x⟩`. Establish `hσ : σ' (f a κ) ∈ D.X.M.O z₂`. Use `letI : Algebra (X₁.M.Z.presheaf.stalk z₁) D.X.Ω₁ := ((algebraMap X₁.Ω₁ D.X.Ω₁).comp (X₁.M.stalkHom z₁)).toAlgebra`. Establish `halg : ∀ x, algebraMap (X₁.M.Z.presheaf.stalk z₁) D.X.Ω₁ x = algebraMap X₁.Ω₁ D.X.Ω₁ (X₁.M.stalkHom z₁ x)` using `fun _ => rfl`.
+
+Set `φ : D.X.Ω₁ →ₐ[X₁.M.Z.presheaf.stalk z₁] D.X.Ω₁` to `{ (σ' : D.X.Ω₁ →+* D.X.Ω₁) with commutes' := fun x => σ'.commutes (X₁.M.stalkHom z₁ x) }`. Conclude with `FinPts.mem_O_of_isIntegral hN D.gen halg ((FinPts.isIntegral_of_mem_O D.fin D.gen halg (hf a κ)).map φ) hz`. Establish `hf' : f a' κ ∈ D.X.M.O z₂` using `hf a' κ z₂ hz`. Take `⟨U₁, hU₁, hct⟩` from `GlobalTheory.UPoinc.UCTraitEx.exists_uCTrait_of_open E H Dw hpq l Xo cf C X₁ p`. Establish `hc₀` using `ct₀.cen`.
+
+Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_val_cen_eq_zero _ _ D.X.M hN (D.q ⁻¹ᵁ U₁) (FinPts.preimage_nonempty D.gen hU₁) p ct₀.y _ (by rw [hc₀]; exact sub_mem hσ hf') fun y hy => ?_` and prove the remaining obligations. Take `⟨hy, hyU⟩` from `hy`. Rewrite `hy` using `[hc₀]`. Take `⟨ct₁, hct₁⟩` from `hct (y ≫ D.q) (by`.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `hyU ⟨w, rfl⟩)`. Establish `hz₁ : (y ≫ D.q) (cPt p) = z₁` using `by rw [← hz, ← hy]; rfl`. Set `ct : UCTrait X₁ p z₁` to `{ ct₁ with cen := ct₁.cen.trans hz₁ }`. Establish `h : y ≫ D.q = ct.y` using `hct₁.symm`.
+
+Establish `h' : (y ≫ s) ≫ D.q = ct.y` using `by rw [Category.assoc, hs, h]`. Establish `hys : (y ≫ s) (cPt p) = z₂` using `by show s (y (cPt p)) = z₂`. Rewrite using `[hy, hsz]`. Take `⟨yy₁, hl₁⟩` from `GlobalTheory.T.exists_labels_unitaryClassicalTrait E H Dw hpq l Xo cf C X₁ w₁ p z₁ ct`. Take `⟨yy, hl, hco⟩` from `GlobalTheory.T.unitary_trait_labels_extend_to_deeper_level E H Dw hpq l Xo cf C X₁ D w₁ w₂ htie p z₁ ct yy₁ hl₁ y h`.
+
+Take `⟨yy', hl', hco'⟩` from `GlobalTheory.T.unitary_trait_labels_extend_to_deeper_level E H Dw hpq l Xo cf C X₁ D w₁ w₂ htie p z₁ ct yy₁ hl₁ (y ≫ s) h'`. Establish `hyy` using `haσ ct yy₁ hl₁.uIsLab y h h' yy yy' hl.uIsLab hco hl'.uIsLab hco'`. Set `ct₂ : UCTrait D.X p z₂` to `{ D.lift ct y h with cen := hy }`. Take `⟨d, hd⟩` from `exists_linearEquiv_labelled_of_uIsLabW E H Dw hpq l Xo cf C D.X w₂ hproj p z₂ ct₀ ct₂ yy₀ yy hl₀ hl`. Establish `hdν : CongMod D.m (d ν) (d ν')`.
+
+Take `⟨w, hw⟩` from `hνν'`. Conclude with `⟨d w, by rw [hw, map_add, map_nsmul]⟩`. Establish `e` using `eq_of_classSum_approx D.m (fun μ => t ct yy₁ μ κ) _ _ hdν _ _ (hsum ct yy₁ hl₁.uIsLab (y ≫ s) h' hys yy' hl'.uIsLab hco' a (d ν) κ ((hyy a).trans (hd _ _ ha))) (hsum ct yy₁ hl₁.uIsLab y h hy yy hl.uIsLab hco a' (d ν') κ (hd _ _ ha'))`. Rewrite `e` using `[← Category.assoc, hval]`. Establish `hsp : ∀ w, (gPt p ≫ y) w ⤳ z₂` using `RatModel.gPt_specializes hy`.
+
+Establish `e'` using `map_sub (RatModel.valHomOf _ z₂ hsp) ⟨_, hσ⟩ ⟨_, hf'⟩`. Conclude with `e'.trans (sub_eq_zero.2 e)`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf) (X₁ : USetup C) (D : UDeep X₁) (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (z₂ : D.X.M.Z), D.q z₂ = z₁ → ∀ (f : D.X.S.Gam → X₁.S.HH X₁.M z₁ → D.X.Ω₁) (t : ∀ (ct : UCTrait X₁ p z₁) (_ : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) ct.T.P.D.toPre.X), ct.T.P.D.toPre.X → X₁.S.HH X₁.M z₁ → PadicAlgCl p), (∀ a κ (z' : D.X.M.Z), D.q z' = z₁ → f a κ ∈ D.X.M.O z') → (∀ (ct : UCTrait X₁ p z₁) (yy₁ : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) ct.T.P.D.toPre.X), UIsLab X₁ ct yy₁ → ∀ (y : Sp (OO p) ⟶ D.X.M.Z) (h : y ≫ D.q = ct.y), y (cPt p) = z₂ → ∀ yy : D.X.S.Gam →+ ModN (D.X.S.r * D.X.S.N) ct.T.P.D.toPre.X, UIsLab D.X (D.lift ct y h) yy → D.Compat yy₁ yy → ∀ a ν κ, yy a = QuotientAddGroup.mk ν → ∀ δ : ℝ, 0 < δ → ∃ S₀ : Finset ct.T.P.D.toPre.X, ∀ S : Finset ct.T.P.D.toPre.X, (∀ μ ∈ S, CongMod D.m μ ν) → (∀ μ ∈ S₀, CongMod D.m μ ν → μ ∈ S) → ‖D.X.M.val (gPt p ≫ y) (f a κ) - ∑ μ ∈ S, t ct yy₁ μ κ‖ ≤ δ) → ∀ (w₁ : UWit X₁) (w₂ : UWit D.X), D.Comparison₂ w₁ w₂ → IsProjOver D.X.M.s → ∀ (σ' : D.X.Ω₁ ≃ₐ[X₁.Ω₁] D.X.Ω₁) (s : D.X.M.Z ⟶ D.X.M.Z), s ≫ D.q = D.q → (∀ (K : Type) [Field K] (y : Sp K ⟶ D.X.M.Z) (b : D.X.Ω₁), D.X.M.val (y ≫ s) b = D.X.M.val y (σ' b)) → s z₂ = z₂ → ∀ aσ : D.X.S.Gam ≃+ D.X.S.Gam, (∀ (ct : UCTrait X₁ p z₁) (yy₁ : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) ct.T.P.D.toPre.X), UIsLab X₁ ct yy₁ → ∀ (y : Sp (OO p) ⟶ D.X.M.Z) (h : y ≫ D.q = ct.y) (h' : (y ≫ s) ≫ D.q = ct.y) (yy yy' : D.X.S.Gam →+ ModN (D.X.S.r * D.X.S.N) ct.T.P.D.toPre.X), UIsLab D.X (D.lift ct y h) yy → D.Compat yy₁ yy → UIsLab D.X (D.lift ct (y ≫ s) h') yy' → D.Compat yy₁ yy' → ∀ x, yy' x = yy (aσ x)) → ∀ (ct₀ : UCTrait D.X p z₂) (yy₀ : D.X.S.Gam →+ ModN (D.X.S.r * D.X.S.N) ct₀.T.P.D.toPre.X), UIsLabW D.X w₂ ct₀ yy₀ → ∀ (a a' : D.X.S.Gam) (ν ν' : ct₀.T.P.D.toPre.X), yy₀ (aσ a) = QuotientAddGroup.mk ν → yy₀ a' = QuotientAddGroup.mk ν' → CongMod D.m ν ν' → ∀ κ, σ' (f a κ) = f a' κ := by
   intro E _ _ _ H Dw hpq l Xo cf C X₁ D p _ z₁ z₂ hz f t hf hsum w₁ w₂ htie hproj σ' s hs hval hsz aσ haσ ct₀ yy₀ hl₀
     a a' ν ν' ha ha' hνν' κ

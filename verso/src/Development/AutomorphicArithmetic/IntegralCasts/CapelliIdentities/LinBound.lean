@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `ι _ _ L`. Use `⟨∑ i, ∑ j, ‖L (Matrix.single i j 1)‖, by positivity, fun B C hB => ?_⟩` and prove the remaining obligations. Establish `h : L B = ∑ i, ∑ j, B i j * L (Matrix.single i j 1)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single B]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← smul_eq_mul, ← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[h, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hB i j) (norm_nonneg _)`.
+-/
 theorem UpperTheory.Reformulated.B.Qj19.lin_bound.{u_1} :
     ∀ {ι : Type u_1} [Fintype ι] [DecidableEq ι] (L : Matrix ι ι ℂ →ₗ[ℂ] ℂ),
     ∃ (K : ℝ),

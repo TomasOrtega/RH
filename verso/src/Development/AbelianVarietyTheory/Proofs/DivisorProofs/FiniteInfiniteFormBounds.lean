@@ -17,6 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FormVal
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.BigConstantConjunction.bigC_and`. Consider the case `exact _root_.GlobalTheory.BigConstantConjunction.bigC_and`. Consider the case `(apply _root_.GlobalTheory.BigConstantConjunction.bigC_and <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.BigConstantConjunction.bigC_and <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.BigConstantConjunction.bigC_and <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.BigConstantConjunction.bigC_and ..)`.
+-/
 theorem bigC_and {Q Q' : ChQ} (h : BigC Q) (h' : BigC Q') : BigC fun F ch C b => Q F ch C b ∧ Q' F ch C b := by
   first
   | exact @_root_.GlobalTheory.BigConstantConjunction.bigC_and
@@ -26,6 +31,11 @@ theorem bigC_and {Q Q' : ChQ} (h : BigC Q) (h' : BigC Q') : BigC fun F ch C b =>
   | (intros; apply @_root_.GlobalTheory.BigConstantConjunction.bigC_and <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.BigConstantConjunction.bigC_and ..)
 
+/- English proof (translation)
+Take `⟨a, h⟩` from `h`. Use `⟨a, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨c, h⟩` from `h CF hCF`. Use `⟨c, fun ε C hC => ?_⟩` and prove the remaining obligations. Take `⟨x, h⟩` from `h ε C hC`.
+
+Conclude with `⟨x, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j k => hQ F ch C large₂.sc.b (h D large₂ e hx Γ Pl0 T A Ks R F s ch i j k)⟩`.
+-/
 theorem bigC_mono {Q Q' : ChQ} (h : BigC Q) (hQ : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (F : Face D A) (ch : Choice R) (C b : ℝ), Q F ch C b → Q' F ch C b) : BigC Q' := by
@@ -37,6 +47,11 @@ theorem bigC_mono {Q Q' : ChQ} (h : BigC Q) (hQ : ∀ {D : D7} {Γ : Type} [Grou
   exact ⟨x, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j k => hQ F ch C large₂.sc.b (h D large₂ e hx Γ Pl0 T A Ks R F s ch i j k)⟩
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Use `⟨bigC_mono (bigC_and h1 h3) ?_, bigC_mono (bigC_and h2 h3) ?_⟩` and prove the remaining obligations. Introduce and unpack `D Γ _ _ Pl0 T A Ks _ _ _ R F ch C b ⟨hv, hb, -⟩`. Use `⟨fun _ => 0, ⟨fun _ => le_rfl, by simp, fun s => by simpa using hb⟩, fun t w x hx y => ?_⟩` and prove the remaining obligations. Conclude with `hv t w x hx y`. Introduce and unpack `D Γ _ _ Pl0 T A Ks _ _ _ R F ch C b ⟨hv, -, hK⟩ σ x y`.
+
+Take `⟨hq, hy⟩` from `hv σ x`. Take `⟨u, e, hu⟩` from `hy y`. Conclude with `⟨u, e, hu.trans (mul_le_mul_of_nonneg_right hK hq)⟩`.
+-/
 theorem form_fin_inf_of (h1 : BigC fun {D} {_} _ _ {_} {_} {A} {_} _ _ _ {R} F ch _ _ => ∀ (t : _) (w : PlL D), ∀ x ∈ (A.fam.R t).Mt (A.fam.lvl F.P0 F.ψ0), ∀ y,
   InLat _ w 0 (latAt ch.S.toGridChoice (.grid 0 D.R.m) y) (rowVal ch.S.toGridChoice (ch.S.formC t (R.jX t (formOf F t x)) y))) (h2 : BigC fun {D} {_} _ _ {_} {_} {A} {_} _ _ _ {R} F ch _ _ => ∀ (σ : D.what₂.LL →+* ℂ) (x : Fin ((A.fam.R A.μ0).nV (A.fam.lvl F.P0 F.ψ0)) → D.what₂.LL),
   0 ≤ (star (fun i => σ (x i)) ⬝ᵥ (((A.fam.R A.μ0).HV (A.fam.lvl F.P0 F.ψ0)).map σ).mulVec fun i => σ (x i)).re ∧ ∀ y,
@@ -53,6 +68,9 @@ theorem form_fin_inf_of (h1 : BigC fun {D} {_} _ _ {_} {_} {A} {_} _ _ _ {R} F c
     obtain ⟨u, e, hu⟩ := hy y
     exact ⟨u, e, hu.trans (mul_le_mul_of_nonneg_right hK hq)⟩
 
+/- English proof (translation)
+Introduce `_` and use `form_fin_inf_of GlobalTheory.T.integralGoodForm_values_mem_scaledDualWeylLattice GlobalTheory.T.baseTupleGoodForm_values_bounded_by_classSum GlobalTheory.T.kernelLossBound_nonneg_and_level_card_le_exp`.
+-/
 theorem form_fin_inf : GlobalTheory.FunPr.Hypotheses₂ → FinFormK ∧ InfFormK := fun _ =>
   form_fin_inf_of GlobalTheory.T.integralGoodForm_values_mem_scaledDualWeylLattice GlobalTheory.T.baseTupleGoodForm_values_bounded_by_classSum GlobalTheory.T.kernelLossBound_nonneg_and_level_card_le_exp
 

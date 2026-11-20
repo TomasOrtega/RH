@@ -17,6 +17,13 @@ noncomputable section
 open scoped Pointwise
 namespace GlobalTheory.ThetaParsevalInner
 
+/- English proof (translation)
+Establish `ht : IsAddFundamentalDomain G (c +ᵥ s) μ` using `hs.vadd_of_comm c`. Establish `e1 : ∫ y in s, h y ∂μ = ∫ y in c +ᵥ s, h y ∂μ` using `hs.setIntegral_eq ht (fun g y => hper g g.2 y)`. Establish `e2 : ∫ y in c +ᵥ s, h y ∂μ = ∫ y in s, h (c + y) ∂μ`. Use `(measurePreserving_add_left μ c).setIntegral_preimage_emb (measurableEmbedding_addLeft c) h (c +ᵥ s)` as an intermediate fact. Rewrite using `[← this]`.
+
+Use `congr 2`. Use extensionality with `y`. Simplify using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Establish `e3 : ∫ y in s, h (c + y) ∂μ = a * ∫ y in s, h y ∂μ`. Repeatedly rewrite using `[hc]`.
+
+Conclude with `integral_const_mul a _`. Establish `: (1 - a) * ∫ y in s, h y ∂μ = 0` using `by rw [sub_mul, one_mul, ← e3, ← e2, ← e1, sub_self]`. Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr (Ne.symm ha))`.
+-/
 theorem setIntegral_eq_zero_of_twist {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddLeftInvariant] (G : AddSubgroup V) [Countable G]
     {s : Set V} (hs : IsAddFundamentalDomain G s μ) {h : V → ℂ} (hper : ∀ g ∈ G, ∀ y, h (g + y) = h y)
@@ -35,9 +42,69 @@ theorem setIntegral_eq_zero_of_twist {V : Type} [AddCommGroup V] [TopologicalSpa
   have : (1 - a) * ∫ y in s, h y ∂μ = 0 := by rw [sub_mul, one_mul, ← e3, ← e2, ← e1, sub_self]
   exact (mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr (Ne.symm ha))
 
+/- English proof (translation)
+The claim follows from `Countable.of_equiv _ (Module.finBasis ℚ F).equivFun.toEquiv.symm`.
+-/
 theorem countable_numberField (F : Type) [Field F] [NumberField F] : Countable F :=
   Countable.of_equiv _ (Module.finBasis ℚ F).equivFun.toEquiv.symm
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ κ _ μ hμ 𝓕₁ hF hfin Φ hΦ x`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `haveI : Countable F := countable_numberField F`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕₁) := isFiniteMeasure_restrict.mpr hfin`.
+
+Use `haveI := hμ`. Take `⟨hcont, hnorm, htriv, s0, hs0⟩` from `hψ`. Take `⟨emb, hemb⟩ : ∃ emb : (κ → F) → (κ → AF F), emb = fun ξ i => algebraMap F (AF F) (ξ i)` from `⟨_, rfl⟩`. Take `⟨a, ha⟩ : ∃ a : (κ → F) → ℂ, a = fun ξ => Φ (emb ξ + x)` from `⟨_, rfl⟩`. Take `⟨e, he⟩ : ∃ e : (κ → F) → (κ → AF F) → ℂ, e = fun ξ y => ψ (emb ξ ⬝ᵥ y)` from `⟨_, rfl⟩`.
+
+Take `⟨g, hg⟩ : ∃ g : (κ → AF F) → ℂ, g = fun y => ∑' ξ, a ξ * e ξ y` from `⟨_, rfl⟩`. Establish `hsum : Summable fun ξ => ‖a ξ‖`. Establish `h0` using `GlobalTheory.WeilM.summable_norm_of_mem_schA F (GlobalTheory.SchwartzTranslate.schA_translate F x hΦ)`. Substitute `ha hemb` using the available equality. Conclude with `h0`.
+
+Establish `he_norm : ∀ ξ y, ‖e ξ y‖ = 1` using `fun ξ y => by rw [he]; exact hnorm _`. Establish `he_cont : ∀ ξ, Continuous (e ξ)` using `fun ξ => by`. Rewrite using `[he]`. Conclude with `hcont.comp (continuous_const.dotProduct continuous_id)`. Establish `hconj : ∀ t, (starRingEnd ℂ) (ψ t) = ψ (-t)` using `fun t => by`.
+
+Establish `h1 : ψ t * (starRingEnd ℂ) (ψ t) = 1` using `by rw [Complex.mul_conj', hnorm]; simp`. Establish `h2 : ψ t * ψ (-t) = 1` using `by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Establish `h0 : ψ t ≠ 0` using `fun h => by simpa [h] using hnorm t`. Conclude with `mul_left_cancel₀ h0 (h1.trans h2.symm)`. Establish `hemb_sub : ∀ ξ η, emb (ξ - η) = emb ξ - emb η`.
+
+Introduce `ξ η`. Rewrite using `[hemb]`. Use function extensionality and compare the values at `i`. Simplify using `[map_sub]`. Establish `he_sub : ∀ ξ η y, e (ξ - η) y = e ξ y * (starRingEnd ℂ) (e η y)`.
+
+Introduce `ξ η y`. Simplify using `only [he]`. Rewrite using `[hconj, hemb_sub, sub_dotProduct, sub_eq_add_neg, AddChar.map_add_eq_mul]`. Establish `hsum_e : ∀ y, Summable fun ξ => ‖a ξ * e ξ y‖` using `fun y => by simpa [norm_mul, he_norm] using hsum`. Establish `hg_bd : ∀ y, ‖g y‖ ≤ ∑' ξ, ‖a ξ‖` using `fun y => by`.
+
+Rewrite using `[hg]`. Use `(norm_tsum_le_tsum_norm (hsum_e y)).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `ξ`. Rewrite using `[norm_mul, he_norm, mul_one]`.
+
+Establish `hg_cont : Continuous g`. Rewrite using `[hg]`. Conclude with `continuous_tsum (fun ξ => continuous_const.mul (he_cont ξ)) hsum (fun ξ y => by rw [norm_mul, he_norm, mul_one])`. Establish `h1 : ∀ y, ‖GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr ψ (x, y) Φ)‖ₑ = ‖g y‖ₑ`. Introduce `y`.
+
+Establish `: GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr ψ (x, y) Φ) = ψ (⅟2 * (x ⬝ᵥ y)) * g y`. Rewrite using `[hg, ← tsum_mul_left]`. Unfold `GlobalTheory.WeilM.thetaSum GlobalTheory.WeilM.schr`. Use `congr 1`. Use function extensionality and compare the values at `ξ`.
+
+Substitute `ha he hemb` using the available equality. Simplify using `only [AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, enorm_mul, ← ofReal_norm_eq_enorm (ψ _), hnorm, ENNReal.ofReal_one, one_mul]`. Establish `hgsq_int : Integrable (fun y => ‖g y‖ ^ 2) (μ.restrict 𝓕₁)` using `Integrable.of_bound (hg_cont.norm.pow 2).aestronglyMeasurable ((∑' ξ, ‖a ξ‖) ^ 2) (ae_of_all _ fun y => by`.
+
+Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hg_bd y) 2)`. Establish `lhs : ∫⁻ y in 𝓕₁, ‖GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr ψ (x, y) Φ)‖ₑ ^ 2 ∂μ = ENNReal.ofReal (∫ y in 𝓕₁, ‖g y‖ ^ 2 ∂μ)`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal hgsq_int (ae_of_all _ fun y => sq_nonneg _)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[h1, ← ofReal_norm_eq_enorm, ENNReal.ofReal_pow (norm_nonneg _)]`. Establish `hcomp : ∀ y, ((‖g y‖ ^ 2 : ℝ) : ℂ) = ∑' p : (κ → F) × (κ → F), a p.1 * (starRingEnd ℂ) (a p.2) * e (p.1 - p.2) y`. Introduce `y`. Rewrite using `[Complex.ofReal_pow, ← Complex.mul_conj']`. Simplify using `only [hg]`.
+
+Rewrite using `[Complex.conj_tsum, tsum_mul_tsum_of_summable_norm (hsum_e y) (by simpa [norm_mul, he_norm] using hsum)]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[he_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hFint : ∀ p : (κ → F) × (κ → F), Integrable (fun y => a p.1 * (starRingEnd ℂ) (a p.2) * e (p.1 - p.2) y) (μ.restrict 𝓕₁)` using `fun p => (Integrable.of_bound (he_cont _).aestronglyMeasurable 1 (ae_of_all _ fun y => (he_norm _ _).le)).const_mul _`. Establish `hnormint : ∀ p : (κ → F) × (κ → F), ∫ y in 𝓕₁, ‖a p.1 * (starRingEnd ℂ) (a p.2) * e (p.1 - p.2) y‖ ∂μ = ‖a p.1‖ * ‖a p.2‖ * μ.real 𝓕₁`. Introduce `p`. Simplify using `only [norm_mul, he_norm, RCLike.norm_conj, mul_one]`. Rewrite using `[setIntegral_const, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsumint : Summable fun p : (κ → F) × (κ → F) => ∫ y in 𝓕₁, ‖a p.1 * (starRingEnd ℂ) (a p.2) * e (p.1 - p.2) y‖ ∂μ`. Repeatedly rewrite using `[hnormint]`. Conclude with `(hsum.mul_of_nonneg hsum (fun _ => norm_nonneg _) (fun _ => norm_nonneg _)).mul_right _`. Establish `horth : ∀ ζ : κ → F, ∫ y in 𝓕₁, e ζ y ∂μ = if ζ = 0 then (μ.real 𝓕₁ : ℂ) else 0`.
+
+Introduce `ζ`. Use `split_ifs with hζ`. Substitute `hζ` using the available equality. Establish `: ∀ y, e 0 y = 1` using `fun y => by simp [he, hemb]`. Repeatedly rewrite using `[this]`.
+
+Rewrite using `[setIntegral_const]`. Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ζ i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hζ (funext h)`. Use `haveI : Countable (GlobalTheory.ThetaParseval.ratVec F κ) := by`. Use `Function.Surjective.countable (f := fun ρ : κ → F => (⟨emb ρ, ?_⟩ : GlobalTheory.ThetaParseval.ratVec F κ)) ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.ThetaParseval.mem_ratVec_iff _).2 ⟨ρ, by rw [hemb]⟩`. Introduce and unpack `⟨r, hr⟩`.
+
+Take `⟨ρ, rfl⟩` from `(GlobalTheory.ThetaParseval.mem_ratVec_iff r).1 hr`. Conclude with `⟨ρ, by subst hemb; rfl⟩`. Use `setIntegral_eq_zero_of_twist μ (GlobalTheory.ThetaParseval.ratVec F κ) hF (h := e ζ) ?_ (c := Pi.single i (algebraMap F (AF F) (ζ i)⁻¹ * s0)) (a := ψ s0) ?_ hs0` and prove the remaining obligations. Introduce `r hr y`. Take `⟨ρ, rfl⟩` from `(GlobalTheory.ThetaParseval.mem_ratVec_iff r).1 hr`.
+
+Simplify using `only [he, dotProduct_add, AddChar.map_add_eq_mul]`. Rewrite using `[show emb ζ ⬝ᵥ (fun i => algebraMap F (AF F) (ρ i)) = algebraMap F (AF F) (ζ ⬝ᵥ ρ) by`. Substitute `hemb` using the available equality. Simplify using `[dotProduct, map_sum, map_mul], htriv, one_mul]`. Introduce `y`.
+
+Simplify using `only [he, dotProduct_add, AddChar.map_add_eq_mul]`. Use `congr 2`. Rewrite using `[dotProduct_single, hemb]`. Simplify using `only`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, one_mul]`.
+
+Establish `hFval : ∀ p : (κ → F) × (κ → F), ∫ y in 𝓕₁, a p.1 * (starRingEnd ℂ) (a p.2) * e (p.1 - p.2) y ∂μ = if p.1 = p.2 then ((‖a p.1‖ ^ 2 * μ.real 𝓕₁ : ℝ) : ℂ) else 0`. Introduce `p`. Rewrite using `[integral_const_mul, horth]`. Distinguish the cases in `h : p.1 = p.2`. Rewrite using `[if_pos (sub_eq_zero.mpr h), if_pos h, h, Complex.mul_conj']`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (sub_ne_zero.mpr h), if_neg h, mul_zero]`. Establish `hI : ∫ y in 𝓕₁, ‖g y‖ ^ 2 ∂μ = (∑' ξ, ‖a ξ‖ ^ 2) * μ.real 𝓕₁`. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+
+Rewrite using `[← integral_complex_ofReal]`. Repeatedly rewrite using `[hcomp]`. Rewrite using `[← integral_tsum_of_summable_integral_norm hFint hsumint]`. Repeatedly rewrite using `[hFval]`. Establish `hinj : Function.Injective (fun ξ : κ → F => (ξ, ξ))` using `fun _ _ h => (Prod.ext_iff.1 h).1`.
+
+Rewrite using `[← hinj.tsum_eq]`. Simplify using `only [if_true]`. Rewrite using `[← tsum_mul_right, Complex.ofReal_tsum]`. Introduce `p hp`. Distinguish the cases in `h : p.1 = p.2`.
+
+Conclude with `⟨p.1, Prod.ext rfl h⟩`. Conclude with `absurd (if_neg h) hp`. Establish `hsq : Summable fun ξ => ‖a ξ‖ ^ 2` using `Summable.of_nonneg_of_le (fun _ => sq_nonneg _) (fun ξ => by`. Rewrite using `[sq]`. Conclude with `mul_le_mul_of_nonneg_right (hsum.le_tsum ξ (fun _ _ => norm_nonneg _)) (norm_nonneg _))`.
+
+Use the proof step `(hsum.mul_left (∑' ξ, ‖a ξ‖))`. Rewrite using `[lhs, hI, ENNReal.ofReal_mul (tsum_nonneg fun _ => sq_nonneg _), ofReal_measureReal hfin, mul_comm, ENNReal.ofReal_tsum_of_nonneg (fun _ => sq_nonneg _) hsq]`. Use `congr 1`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm, ha, hemb]`.
+-/
 theorem lintegral_thetaSum_schr_sq : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (κ : Type) [Fintype κ]
     (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
     ∀ (𝓕₁ : Set (κ → AF F)), @IsAddFundamentalDomain (GlobalTheory.ThetaParseval.ratVec F κ) _ _ _ (borel _) 𝓕₁ μ →

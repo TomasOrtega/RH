@@ -11,11 +11,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory.LogPair
 
+/- English proof (translation)
+Simplify using `only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem resG_resG_sameDiv {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (a : Γ(X, U)) :
     resG X h₂ (resG X h₁ a) = resG X (h₂.trans h₁) a := by
   simp only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `X L M N σ τ υ _ h₁ h₂ x`. Take `⟨U₁, i, j, hi, hj, u₁, hx₁, e₁⟩` from `h₁ x`. Take `⟨U₂, j', k, hj', hk, u₂, hx₂, e₂⟩` from `h₂ x`. Establish `hV : U₁ ⊓ U₂ ≤ M.U j ⊓ M.U j'` using `le_inf (inf_le_left.trans hj) (inf_le_right.trans hj')`. Establish `c` using `congrArg (resG X hV) (τ.compat j j')`.
+
+Establish `e₁'` using `congrArg (resG X (inf_le_left : U₁ ⊓ U₂ ≤ U₁)) e₁`. Establish `e₂'` using `congrArg (resG X (inf_le_right : U₁ ⊓ U₂ ≤ U₂)) e₂`. Express the relevant statement in the definitionally equal form `resG X hV (resG X inf_le_left (τ.f j)) = resG X hV ((M.g j j' : Γ(X, M.U j ⊓ M.U j')) * resG X inf_le_right (τ.f j')) at c`. Simplify using `only [map_mul, resG_resG_sameDiv] at c e₁' e₂'`. Use `⟨U₁ ⊓ U₂, i, k, inf_le_left.trans hi, inf_le_right.trans hk, res inf_le_left u₁ * res hV (M.g j j') * res inf_le_right u₂, ⟨hx₁, hx₂⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Units.val_mul, res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[e₁', c, e₂']`. Simplify using `only [resG, mul_assoc]`.
+-/
 theorem SameDiv.trans_of_isLB : ∀ (X : Scheme.{0}) (L M N : LB X) (σ : L.Sec) (τ : M.Sec) (υ : N.Sec),
     M.IsLB → SameDiv σ τ → SameDiv τ υ → SameDiv σ υ := by
   intro X L M N σ τ υ _ h₁ h₂ x

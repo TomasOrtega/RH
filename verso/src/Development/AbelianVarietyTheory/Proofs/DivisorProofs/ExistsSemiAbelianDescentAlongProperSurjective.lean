@@ -15,6 +15,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.DescGrp
 
+/- English proof (translation)
+Establish `hs : Surjective β` using `MorphismProperty.of_isPullback (P := @Surjective) h.flip ‹_›`. Establish `hc : QuasiCompact (β ≫ G.hom)` using `by rw [h.w]; infer_instance`. Rewrite `hc`, the goal using `[quasiCompact_iff]`. Introduce `U hU hK`. Use `(hc U hU hK).image β.continuous` as an intermediate fact.
+
+Rewrite `this` using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp, Set.image_preimage_eq _ hs.surj]`. Then use the resulting hypothesis.
+-/
 theorem quasiCompact_of_isPullback {R : Type} [CommRing R] {S : Scheme.{0}} (π : S ⟶ Sp R) [Surjective π]
     (G' : Over S) (G : Over (Sp R)) (β : G'.left ⟶ G.left) (h : IsPullback β G'.hom G.hom π) [QuasiCompact π]
     [QuasiCompact G'.hom] : QuasiCompact G.hom := by
@@ -25,6 +30,11 @@ theorem quasiCompact_of_isPullback {R : Type} [CommRing R] {S : Scheme.{0}} (π 
   have := (hc U hU hK).image β.continuous
   rwa [Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp, Set.image_preimage_eq _ hs.surj] at this
 
+/- English proof (translation)
+Introduce `R _ _ _ _ S π hp hs hi G' _ _ hG G β hsm hpb φ hφ hc`. Take `⟨m, hm⟩` from `GlobalTheory.T.group_multiplication_descends_proper_surjection R S π hp hs hi G' G β hsm hpb φ hφ hc`. Take `⟨e, he⟩` from `GlobalTheory.T.group_unit_descends_proper_surjection R S π hp hs hi G' G β hpb φ hφ hc`. Take `⟨i, hiv⟩` from `GlobalTheory.T.group_inverse_descends_proper_surjection R S π hp hs hi G' G β hsm hpb φ hφ hc`. Take `⟨g, c, hP⟩` from `GlobalTheory.T.descended_comm_group_of_pullback_proper_surjection R S π hp hs hi G' G β hsm hpb m e i hm he hiv`.
+
+Use `haveI := hG.quasiCompact`. Use `⟨g, c, ⟨c, hsm, GlobalTheory.T.isSeparated_of_isPullback_universallyClosed_surjective' R S π inferInstance hs G' G β hpb hG.separated, quasiCompact_of_isPullback π G' G β hpb, GlobalTheory.T.geometricallyConnected_of_isPullback_surjective_lft R S π inferInstance hs G' G β hpb hG. …` and prove the remaining obligations.
+-/
 theorem exists_semiAbelian_descent : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] (S : Scheme.{0}) (π : S ⟶ Sp R), IsProper π → Surjective π → IsIntegral S → ∀ (G' : Over S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (G : Over (Sp R)) (β : G'.left ⟶ G.left), Smooth G.hom → IsPullback β G'.hom G.hom π → ∀ φ : (Over.pullback (pullback.fst π π)).obj G' ≅ (Over.pullback (pullback.snd π π)).obj G', IsMonHom φ.hom → pullback.fst G'.hom (pullback.fst π π) ≫ β = φ.hom.left ≫ pullback.fst G'.hom (pullback.snd π π) ≫ β → ∃ (_ : GrpObj G) (_ : IsCommMonObj G), IsSemiAbelian G ∧ IsGrpPullback G' G π β := by
   intro R _ _ _ _ S π hp hs hi G' _ _ hG G β hsm hpb φ hφ hc
   obtain ⟨m, hm⟩ := GlobalTheory.T.group_multiplication_descends_proper_surjection R S π hp hs hi G' G β hsm hpb φ hφ hc

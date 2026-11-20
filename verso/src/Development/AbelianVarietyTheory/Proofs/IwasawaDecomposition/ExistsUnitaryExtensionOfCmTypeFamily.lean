@@ -11,14 +11,23 @@ def tinv {n : ℕ} {K : Type} [Field K] (A : GL (Fin n) K) : GL (Fin n) K :=
    by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one],
    by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_tinv {n : ℕ} {K : Type} [Field K] (A : GL (Fin n) K) :
     ((tinv A : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) =
       Matrix.transpose ((A⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_tinv_inv {n : ℕ} {K : Type} [Field K] (A : GL (Fin n) K) :
     (((tinv A)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) =
       Matrix.transpose ((A : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[IsCMField.complexConj_apply_apply]`.
+-/
 theorem comp_conj_conj {L : Type} [Field L] [NumberField L] [IsCMField L] {K : Type} [Field K] (σ : L →+* K) :
     (σ.comp (IsCMField.complexConj L : L →+* L)).comp (IsCMField.complexConj L : L →+* L) = σ := by
   ext x
@@ -33,6 +42,25 @@ noncomputable def cmExtend {L : Type} [Field L] [NumberField L] [IsCMField L] {n
 end GlobalTheory.CMExt
 
 open GlobalTheory.CMExt in
+/- English proof (translation)
+Introduce `L _ _ _ n ι _ K _ emb hd g`. Establish `hinj2 : ∀ τ τ', (emb τ).comp (IsCMField.complexConj L : L →+* L) = (emb τ').comp (IsCMField.complexConj L : L →+* L) → τ = τ'`. Introduce `τ τ' h`. Apply `hd.1` to reduce the goal to its premises. Use `congrArg (fun s : L →+* K => s.comp (IsCMField.complexConj L : L →+* L)) h` as an intermediate fact.
+
+Simplify `this` using `[comp_conj_conj]`. Establish `v1 : ∀ τ, cmExtend emb g (emb τ) = g τ`. Introduce `τ`. Establish `h : ∃ τ', emb τ = emb τ'` using `⟨τ, rfl⟩`. Simplify using `only [cmExtend, dif_pos h]`.
+
+Rewrite using `[hd.1 h.choose_spec.symm]`. Establish `v2 : ∀ τ, cmExtend emb g ((emb τ).comp (IsCMField.complexConj L : L →+* L)) = tinv (g τ)`. Introduce `τ`. Establish `h : ¬ ∃ τ', (emb τ).comp (IsCMField.complexConj L : L →+* L) = emb τ'`. Introduce and unpack `⟨τ', h⟩`.
+
+Conclude with `hd.2 τ' τ h.symm`. Establish `h' : ∃ τ', (emb τ).comp (IsCMField.complexConj L : L →+* L) = (emb τ').comp (IsCMField.complexConj L : L →+* L)` using `⟨τ, rfl⟩`. Simplify using `only [cmExtend, dif_neg h, dif_pos h']`. Rewrite using `[hinj2 _ _ h'.choose_spec.symm]`. Establish `v3 : ∀ σ, (¬ ∃ τ, σ = emb τ) → (¬ ∃ τ, σ = (emb τ).comp (IsCMField.complexConj L : L →+* L)) → cmExtend emb g σ = 1`.
+
+Introduce `σ h h'`. Simplify using `only [cmExtend, dif_neg h, dif_neg h']`. Use `⟨cmExtend emb g, ?_, v1⟩` and prove the remaining obligations. Introduce `σ`. Distinguish the cases in `h : ∃ τ, σ = emb τ`.
+
+Take `⟨τ, rfl⟩` from `h`. Rewrite using `[v2, v1, coe_tinv]`. Distinguish the cases in `h' : ∃ τ, σ = (emb τ).comp (IsCMField.complexConj L : L →+* L)`. Take `⟨τ, rfl⟩` from `h'`. Rewrite using `[comp_conj_conj, v1, v2, coe_tinv_inv, Matrix.transpose_transpose]`.
+
+Establish `e1 : ¬ ∃ τ, σ.comp (IsCMField.complexConj L : L →+* L) = emb τ`. Introduce and unpack `⟨τ, hτ⟩`. Apply `h'` to reduce the goal to its premises. Use `⟨τ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hτ, comp_conj_conj]`.
+
+Establish `e2 : ¬ ∃ τ, σ.comp (IsCMField.complexConj L : L →+* L) = (emb τ).comp (IsCMField.complexConj L : L →+* L)`. Introduce and unpack `⟨τ, hτ⟩`. Apply `h` to reduce the goal to its premises. Use `⟨τ, ?_⟩` and prove the remaining obligations. Use `congrArg (fun s : L →+* K => s.comp (IsCMField.complexConj L : L →+* L)) hτ` as an intermediate fact.
+
+Simplify `this` using `[comp_conj_conj]`. Rewrite using `[v3 _ e1 e2, v3 _ h h']`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.cmType_family_extend : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (ι : Type) [Fintype ι] (K : Type) [Field K]
     (emb : ι → L →+* K), GlobalTheory.AlgWtF.CMDist emb → ∀ g : ι → GL (Fin n) K, ∃ B : (L →+* K) → GL (Fin n) K,
     (∀ σ : L →+* K, ((B (σ.comp (IsCMField.complexConj L : L →+* L)) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) =

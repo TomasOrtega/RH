@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 
 open MeasureTheory
 
+/- English proof (translation)
+Establish `h1 : (Subgroup.zpowers (j t) : Set G) = j '' (Subgroup.zpowers t : Set H)`. Rewrite using `[← MonoidHom.map_zpowers, Subgroup.coe_map]`. Rewrite using `[h1, hj.closure_image_eq, hj.isInducing.isCompact_iff]`.
+-/
 private theorem cptConj_zpowers {G H : Type} [Group G] [TopologicalSpace G] [Group H] [TopologicalSpace H]
     (j : H →* G) (hj : Topology.IsClosedEmbedding j) (t : H) :
     IsCompact (closure (Subgroup.zpowers (j t) : Set G)) ↔ IsCompact (closure (Subgroup.zpowers t : Set H)) := by
@@ -10,6 +13,9 @@ private theorem cptConj_zpowers {G H : Type} [Group G] [TopologicalSpace G] [Gro
     rw [← MonoidHom.map_zpowers, Subgroup.coe_map]
   rw [h1, hj.closure_image_eq, hj.isInducing.isCompact_iff]
 
+/- English proof (translation)
+Establish `e : ⇑(MulAut.conj c).toMonoidHom = ⇑((Homeomorph.mulRight c⁻¹).trans (Homeomorph.mulLeft c))`. Use extensionality with `x`. Simplify using `[MulAut.conj_apply, mul_assoc]`. Rewrite using `[e]`. Conclude with `Homeomorph.isClosedEmbedding _`.
+-/
 private theorem cptConj_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (c : G) :
     Topology.IsClosedEmbedding (MulAut.conj c).toMonoidHom := by
   have e : ⇑(MulAut.conj c).toMonoidHom = ⇑((Homeomorph.mulRight c⁻¹).trans (Homeomorph.mulLeft c)) := by
@@ -18,6 +24,17 @@ private theorem cptConj_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
   rw [e]
   exact Homeomorph.isClosedEmbedding _
 
+/- English proof (translation)
+Establish `hc` using `cptConj_conj h⁻¹`. Establish `key : ∀ x : G, (MulAut.conj h⁻¹).toMonoidHom x = h⁻¹ * x * h`. Introduce `x`. Simplify using `[MulAut.conj_apply]`. Unfold `GlobalTheory.BCT.cptPart`.
+
+Rewrite using `[MonoidHom.map_closure, MonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, ⟨hxS, hxc⟩, rfl⟩`. Take `⟨t, htT, hxt⟩` from `(hST x).mp hxS`. Use `⟨t, ⟨htT, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← cptConj_zpowers j hj, ← hxt, ← key, cptConj_zpowers _ hc]`. Conclude with `hxc`.
+
+Rewrite using `[key, hxt]`. Introduce and unpack `⟨t, ⟨htT, htc⟩, rfl⟩`. Use `⟨h * j t * h⁻¹, ⟨(hST _).mpr ⟨t, htT, by group⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← cptConj_zpowers _ hc, key, show h⁻¹ * (h * j t * h⁻¹) * h = j t by group, cptConj_zpowers j hj]`. Conclude with `htc`.
+
+Rewrite using `[key] group`.
+-/
 private theorem cptConj_map {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [Group H] [TopologicalSpace H] (j : H →* G) (hj : Topology.IsClosedEmbedding j)
     (S : Subgroup G) (T : Subgroup H) (h : G) (hST : ∀ x, x ∈ S ↔ ∃ t ∈ T, h⁻¹ * x * h = j t) :
@@ -46,6 +63,17 @@ private theorem cptConj_map {G H : Type} [Group G] [TopologicalSpace G] [IsTopol
     · rw [key]
       group
 
+/- English proof (translation)
+Introduce `G H _ _ _ _ _ _ _ _ _ _ _ _ j hj S T h hST hcpt μ ν hμν`. Establish `hmap` using `cptConj_map j hj S T h hST`. Establish `hCm : MeasurableSet (((GlobalTheory.BCT.cptPart T).map j : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `(hcpt.image hj.continuous).isClosed.measurableSet`.
+
+Establish `hf : Measurable (fun x : S => h⁻¹ * (x : G) * h)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable.comp measurable_subtype_coe`. Establish `hg : Measurable (fun t : T => j (t : H))` using `hj.continuous.measurable.comp measurable_subtype_coe`. Establish `h1 : {x : S | (x : G) ∈ GlobalTheory.BCT.cptPart S} = (fun x : S => h⁻¹ * (x : G) * h) ⁻¹' (((GlobalTheory.BCT.cptPart T).map j : Subgroup G) : Set G)`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe]`.
+
+Rewrite using `[← hmap, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x, hx, by simp [MulAut.conj_apply]⟩`. Introduce and unpack `⟨y, hy, hyx⟩`.
+
+Establish `hyx' : y = (x : G)`. Simplify `hyx` using `[MulAut.conj_apply]`. Rewrite using `[← hyx']` and apply the resulting hypothesis. Establish `h2 : {t : T | (t : H) ∈ GlobalTheory.BCT.cptPart T} = (fun t : T => j (t : H)) ⁻¹' (((GlobalTheory.BCT.cptPart T).map j : Subgroup G) : Set G)`. Use extensionality with `t`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe]`. Conclude with `(Subgroup.mem_map_iff_mem hj.injective).symm`. Simplify using `only [Measure.real]`. Rewrite using `[h1, h2, ← Measure.map_apply hf hCm, ← Measure.map_apply hg hCm, hμν]`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.L.cptConj :
     UpperTheory.Gal.InertialTypesAlt.L.CptConj := by
   intro G H _ _ _ _ _ _ _ _ _ _ _ _ j hj S T h hST hcpt μ ν hμν

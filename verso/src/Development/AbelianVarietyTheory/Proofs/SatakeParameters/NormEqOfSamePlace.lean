@@ -27,6 +27,9 @@ namespace GlobalTheory.GalFirstClause
 
 variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Rewrite using `[H.wdOf_eq hl (ParLaws.isRec_locRec hL h) hσ]`. Conclude with `congrArg (fun x : WD h => x.lpTw _) (ParLaws.locPar_mk hL hσ h).symm`.
+-/
 theorem wdOfEqLocPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {π : CuspSub E a}
     {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ}
     {HT : (E →+* Qbar l) → Multiset ℤ} (H : IsGalRepOf π χ ι r wt HT) {w : HeightOneSpectrum (𝓞 E)}
@@ -36,6 +39,25 @@ theorem wdOfEqLocPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : Global
   rw [H.wdOf_eq hl (ParLaws.isRec_locRec hL h) hσ]
   exact congrArg (fun x : WD h => x.lpTw _) (ParLaws.locPar_mk hL hσ h).symm
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.LvT.Inh.ResFin.infinite_places H.E`. Take `⟨w, hl', hu⟩` from `((eventually_natCast_notMem H.E l).and (A.locG_unr_ae π)).exists`. Take `⟨w', hw', -⟩` from `GlobalTheory.Mem.Chr.existsUnique_conjPl H.conj.toRingEquiv w`. Establish `hcp : IsConjPl H w w'` using `(GlobalTheory.Mem.Chr.conjPl_main.2.1 R H w w').2 hw'`. Establish `key : ∀ P : PlE H, ((l : ℕ) : 𝓞 H.E) ∈ P.asIdeal ↔ P.valuation H.E ((l : ℕ) : H.E) < 1` using `fun P => by`.
+
+Establish `e` using `P.valuation_lt_one_iff_mem (K := H.E) ((l : ℕ) : 𝓞 H.E)`. Simplify using `using e.symm`. Establish `hl2 : ((l : ℕ) : 𝓞 H.E) ∉ w'.asIdeal` using `fun hm => hl' <| by`. Establish `e` using `hw' ((l : ℕ) : H.E)`. Rewrite `e` using `[map_natCast]`.
+
+Rewrite using `[key, ← e, ← key]`. Conclude with `hm`. Take `⟨hu', hfe⟩` from `A.csd_unr π w w' hc hcp hu`. Take `⟨α, hα⟩ : ∃ α, α ∈ A.frobEig (A.locG π w)` from `Multiset.card_pos_iff_exists_mem.1 (by`. Rewrite using `[A.frobEig_card _ hu, A.locG_dim]`.
+
+Use the proof step `omega)`. Establish `hq : 1 < normV w` using `GlobalTheory.WeilDeligne.one_lt_normV w`. Establish `hq' : normV w' = normV w` using `GlobalTheory.AntiLAdic.normV_conjPl hw'`. Establish `hn : ∀ P : PlE H, normV P = normV w → ∀ β : ℂ, ‖β * ((normV P : ℕ) : ℂ) ^ ((v : ℝ) : ℂ)‖ = ‖β‖ * (normV w : ℝ) ^ v` using `fun P e β => by`. Rewrite using `[norm_mul, e, Complex.norm_natCast_cpow_of_pos (by omega)]`.
+
+Simplify using the standard rewrite rules. Establish `t1` using `(A.tempered_unr _ ((A.unr_tw _ v).2 hu)).1 (h w hl') (α * ((normV w : ℕ) : ℂ) ^ ((v : ℝ) : ℂ)) (by`. Rewrite using `[A.frobEig_tw _ _ hu]`. Conclude with `Multiset.mem_map_of_mem _ hα)`. Establish `t2` using `(A.tempered_unr _ ((A.unr_tw _ v).2 hu')).1 (h w' hl2) (α⁻¹ * ((normV w' : ℕ) : ℂ) ^ ((v : ℝ) : ℂ)) (by`.
+
+Rewrite using `[A.frobEig_tw _ _ hu', hfe]`. Conclude with `Multiset.mem_map_of_mem _ (Multiset.mem_map_of_mem _ hα))`. Rewrite `t1` using `[hn w rfl]`. Rewrite `t2` using `[hn w' hq', norm_inv]`. Establish `hq1 : (1 : ℝ) < normV w` using `by exact_mod_cast hq`.
+
+Establish `hp : 0 < (normV w : ℝ) ^ v` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `ha0 : ‖α‖ ≠ 0` using `fun h0 => by rw [h0, zero_mul] at t1; exact zero_ne_one t1`. Establish `h2 : ((normV w : ℝ) ^ v) ^ 2 = 1`. Use `congrArg₂ (· * ·) t1 t2` as an intermediate fact. Simplify using `only [mul_one] at this`.
+
+Rewrite using `[← this]`. Clear the denominators using the available nonvanishing facts. Establish `h3 : (normV w : ℝ) ^ v = 1` using `by nlinarith`. Establish `h4` using `congrArg Real.log h3`. Rewrite `h4` using `[Real.log_rpow (by linarith), Real.log_one]`.
+
+Conclude with `(mul_eq_zero.1 h4).resolve_right (Real.log_pos hq1).ne'`.
+-/
 theorem exponentEqZero {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} (A : NAut N) {a : ℕ} (ha : 1 ≤ a)
     (π : A.CG a) (hc : A.csd π) (l : ℕ) [hl : Fact l.Prime] (v : ℝ)
     (h : ∀ w : PlE H, ((l : ℕ) : 𝓞 H.E) ∉ w.asIdeal → A.tempered (A.lpTw (A.locG π w) v)) : v = 0 := by
@@ -80,6 +102,13 @@ theorem exponentEqZero {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NDa
   rw [Real.log_rpow (by linarith), Real.log_one] at h4
   exact (mul_eq_zero.1 h4).resolve_right (Real.log_pos hq1).ne'
 
+/- English proof (translation)
+Introduce `l _ E Ω _ _ _ _ _ a r hr`. Take `⟨L, -, hL⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem l (G E Ω) a r hr (GlobalTheory.Pst.adjExt 0)`. Set `f : ↥L.1 →+* Om l` to `algebraMap ↥L.1 (Om l)`. Set `M : G E Ω → Matrix (Fin a) (Fin a) ↥L.1` to `fun g => Matrix.of fun i j => ⟨(r g : Matrix (Fin a) (Fin a) (Om l)) i j, hL g i j⟩`. Establish `hinj : Function.Injective (f.mapMatrix : Matrix (Fin a) (Fin a) ↥L.1 →+* Matrix (Fin a) (Fin a) (Om l))` using `fun A B h => Matrix.ext fun i j => f.injective (by simpa using congrFun (congrFun h i) j)`.
+
+Establish `hM : ∀ g, f.mapMatrix (M g) = (r g : Matrix (Fin a) (Fin a) (Om l))` using `fun g => Matrix.ext fun i j => rfl`. Set `ρ : G E Ω →* GL (Fin a) ↥L.1` to `{ toFun := fun g => ⟨M g, M g⁻¹, hinj (by rw [map_mul, hM, hM, map_one, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]), hinj (by rw [map_mul, hM, hM, map_one, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one])⟩ map_one' := Units.ext (hinj ( …`. Rewrite using `[map_mul, hM, hM, hM, map_mul, Units.val_mul])) }`. Use `⟨L, ρ, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+
+Conclude with `continuous_induced_rng.2 ((continuous_apply j).comp ((continuous_apply i).comp hr))`. Conclude with `MonoidHom.ext fun g => Units.ext (hM g)`.
+-/
 theorem finextRep : ∀ (l : ℕ) [Fact l.Prime] (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (a : ℕ) (r : G E Ω →* GL (Fin a) (Om l)), Continuous (fun g => (r g : Matrix (Fin a) (Fin a) (Om l))) →
     ∃ (K : FinExt l) (ρ : G E Ω →* GL (Fin a) ↥K.1), Continuous (fun g => (ρ g : Matrix (Fin a) (Fin a) ↥K.1)) ∧
@@ -117,10 +146,26 @@ variable {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E]
 def tensLift (φ : E →+* Om l) : ℚ_[l] ⊗[ℚ] E →ₐ[ℚ_[l]] Om l :=
   Algebra.TensorProduct.lift (Algebra.ofId ℚ_[l] (Om l)) φ.toRatAlgHom (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Simplify using `[tensLift]`.
+-/
 theorem tensLift_tmul (φ : E →+* Om l) (a : ℚ_[l]) (y : E) :
     tensLift φ (a ⊗ₜ y) = algebraMap ℚ_[l] (Om l) a * φ y := by
   simp [tensLift]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => intro ε hε; exact ⟨0, by simpa using hε, by simpa using hε⟩`. Consider the case `tmul a y`. Introduce `ε hε`. Establish `hM : 0 < ‖φ y‖ + ‖ψ y‖ + 1` using `by positivity`.
+
+Take `⟨q, hq⟩` from `Padic.rat_dense l a (div_pos hε hM)`. Use `⟨(q : E) * y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[tensLift_tmul, map_mul, map_ratCast, ← map_ratCast (algebraMap ℚ_[l] (Om l)) q, ← sub_mul, ← map_sub, norm_mul, PadicAlgCl.norm_extends]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tensLift_tmul, map_mul, map_ratCast, ← map_ratCast (algebraMap ℚ_[l] (Om l)) q, ← sub_mul, ← map_sub, norm_mul, PadicAlgCl.norm_extends]`.
+
+Combine the equalities or inequalities in the displayed calculation. Consider the case `add t₁ t₂ h₁ h₂`. Introduce `ε hε`. Take `⟨x₁, a₁, b₁⟩` from `h₁ (ε / 2) (half_pos hε)`. Take `⟨x₂, a₂, b₂⟩` from `h₂ (ε / 2) (half_pos hε)`.
+
+Use `⟨x₁ + x₂, ?_, ?_⟩` and prove the remaining obligations. Establish `e : tensLift φ (t₁ + t₂) - φ (x₁ + x₂) = (tensLift φ t₁ - φ x₁) + (tensLift φ t₂ - φ x₂)`. Rewrite using `[map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Combine the linear relations using `[norm_add_le (tensLift φ t₁ - φ x₁) (tensLift φ t₂ - φ x₂)]`. Establish `e : tensLift ψ (t₁ + t₂) - ψ (x₁ + x₂) = (tensLift ψ t₁ - ψ x₁) + (tensLift ψ t₂ - ψ x₂)`. Rewrite using `[map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Combine the linear relations using `[norm_add_le (tensLift ψ t₁ - ψ x₁) (tensLift ψ t₂ - ψ x₂)]`.
+-/
 theorem exists_approx (φ ψ : E →+* Om l) (t : ℚ_[l] ⊗[ℚ] E) :
     ∀ ε : ℝ, 0 < ε → ∃ x : E, ‖tensLift φ t - φ x‖ < ε ∧ ‖tensLift ψ t - ψ x‖ < ε := by
   induction t using TensorProduct.induction_on with
@@ -154,6 +199,11 @@ theorem exists_approx (φ ψ : E →+* Om l) (t : ℚ_[l] ⊗[ℚ] E) :
         rw [map_add, map_add]; ring
       rw [e]; linarith [norm_add_le (tensLift ψ t₁ - ψ x₁) (tensLift ψ t₂ - ψ x₂)]
 
+/- English proof (translation)
+Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Take `⟨x, h₁, h₂⟩` from `exists_approx φ ψ t (ε / 2) (half_pos hε)`. Establish `e1 : ‖tensLift ψ t‖ ≤ ‖tensLift ψ t - ψ x‖ + ‖ψ x‖`. Simplify using `using norm_add_le (tensLift ψ t - ψ x) (ψ x)`. Establish `e2 : ‖φ x‖ ≤ ‖φ x - tensLift φ t‖ + ‖tensLift φ t‖`.
+
+Simplify using `using norm_add_le (φ x - tensLift φ t) (tensLift φ t)`. Rewrite `e2` using `[norm_sub_rev]`. Rewrite `e1` using `[← h x]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_tensLift_le (φ ψ : E →+* Om l) (h : ∀ x, ‖φ x‖ = ‖ψ x‖) (t : ℚ_[l] ⊗[ℚ] E) :
     ‖tensLift ψ t‖ ≤ ‖tensLift φ t‖ := by
   refine le_of_forall_pos_le_add fun ε hε => ?_
@@ -174,6 +224,13 @@ open scoped TensorProduct
 
 variable {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `e1` using `PI.CompDegEF.isEquiv_adicAbv_normAbv τ w hw (fun x => ⟨PI.CompDegEF.norm_le_one_of_integer τ x, hτ x⟩)`. Establish `e2` using `PI.CompDegEF.isEquiv_adicAbv_normAbv φ w hw (fun x => ⟨PI.CompDegEF.norm_le_one_of_integer φ x, hφ x⟩)`. Take `⟨c, hc, hce⟩` from `AbsoluteValue.isEquiv_iff_exists_rpow_eq.1 (e1.symm.trans e2)`. Establish `hl` using `congrFun hce ((l : ℕ) : E)`. Simplify using `only [PI.CompDegEF.normAbv_apply, map_natCast] at hl`.
+
+Establish `hpos` using `PI.CompDegEF.norm_natCast_pos l`. Establish `hlt` using `PI.CompDegEF.norm_natCast_lt_one l`. Establish `hL : Real.log ‖((l : ℕ) : Om l)‖ ≠ 0` using `(Real.log_neg hpos hlt).ne`. Establish `hc1 : c = 1`. Use `congrArg Real.log hl` as an intermediate fact.
+
+Rewrite `this` using `[Real.log_rpow hpos]`. Conclude with `(mul_eq_right₀ hL).1 this`. Establish `hx` using `congrFun hce x`. Simplify using `only [PI.CompDegEF.normAbv_apply, hc1, Real.rpow_one] at hx`. Conclude with `hx`.
+-/
 theorem norm_eq_of_samePlace (τ φ : E →+* Om l) (w : HeightOneSpectrum (𝓞 E)) (hw : w ∈ placesOver E l)
     (hτ : ∀ x : 𝓞 E, ‖τ (x : E)‖ < 1 ↔ x ∈ w.asIdeal) (hφ : ∀ x : 𝓞 E, ‖φ (x : E)‖ < 1 ↔ x ∈ w.asIdeal)
     (x : E) : ‖τ x‖ = ‖φ x‖ := by
@@ -201,6 +258,23 @@ namespace GlobalTheory.GalFirstClause.Emb
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `l _ E Ω _ _ _ _ _ τ`. Use `⟨PI.CompDegEF.plOf τ, PI.CompDegEF.natCast_mem_plIdeal τ, ?_⟩` and prove the remaining obligations. Introduce `A hA O _ _ _ Bw hj`. Set `jE : E →+* Om l` to `Bw.j.comp (algebraMap E Ω)`. Establish `hw` using `hj.mem_placesOver hA`.
+
+Establish `hjE : ∀ x : 𝓞 E, ‖jE (x : E)‖ < 1 ↔ x ∈ (PI.CompDegEF.plOf τ).asIdeal` using `fun x => (hj.valuation_lt_one_iff _).symm.trans (hA x)`. Establish `iso` using `norm_eq_of_samePlace τ jE _ hw (fun x => Iff.rfl) hjE`. Establish `hker : ∀ t ∈ RingHom.ker (tensLift jE), tensLift τ t = 0` using `fun t ht => norm_eq_zero.1 (le_antisymm ((norm_tensLift_le jE τ (fun x => (iso x).symm) t).trans (by rw [RingHom.mem_ker.1 ht, norm_zero])) (norm_nonneg _))`. Establish `hrange : (tensLift jE).range ≤ Bw.Kw.1.toSubalgebra`. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`. Express the relevant statement in the definitionally equal form `tensLift jE (a ⊗ₜ y) ∈ _`. Rewrite using `[tensLift_tmul]`.
+
+Conclude with `mul_mem (Bw.Kw.1.algebraMap_mem a) (Bw.j_E y)`. Consider the case `add t₁ t₂ h₁ h₂ => rw [map_add]`. Conclude with `add_mem h₁ h₂`. Establish `hfin : FiniteDimensional ℚ_[l] (Subalgebra.toSubmodule (tensLift jE).range)` using `by haveI : FiniteDimensional ℚ_[l] (Subalgebra.toSubmodule Bw.Kw.1.toSubalgebra) := Bw.Kw.2`. Conclude with `Submodule.finiteDimensional_of_le (Subalgebra.toSubmodule.monotone hrange)`.
+
+Establish `hclosed : IsClosed ((tensLift jE).range : Set (Om l))` using `Submodule.closed_of_finiteDimensional (Subalgebra.toSubmodule (tensLift jE).range)`. Establish `hle : Bw.Kw.1.toSubalgebra ≤ (tensLift jE).range`. Introduce `y hy`. Use `closure_minimal ?_ hclosed (Bw.j_dense hy)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `⟨1 ⊗ₜ x, by change tensLift jE (1 ⊗ₜ x) = jE x; rw [tensLift_tmul, map_one, one_mul]⟩`. Set `σ : ↥Bw.Kw.1 →ₐ[ℚ_[l]] Om l` to `((Ideal.Quotient.liftₐ (RingHom.ker (tensLift jE)) (tensLift τ) hker).comp (Ideal.quotientKerEquivRange (tensLift jE)).symm.toAlgHom).comp (Subalgebra.inclusion hle)`. Use `⟨σ.codRestrict Bw.LL.1.toSubalgebra (fun y => Bw.LL_split σ y), fun x => ?_⟩` and prove the remaining obligations. Establish `key : (Ideal.quotientKerEquivRange (tensLift jE)).symm (Subalgebra.inclusion hle ⟨jE x, Bw.j_E x⟩) = Ideal.Quotient.mk _ (1 ⊗ₜ x)`. Rewrite using `[AlgEquiv.symm_apply_eq]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `jE x = tensLift jE (1 ⊗ₜ x)`. Rewrite using `[tensLift_tmul, map_one, one_mul]`. Express the relevant statement in the definitionally equal form `τ x = σ ⟨jE x, Bw.j_E x⟩`. Express the relevant statement in the definitionally equal form `τ x = Ideal.Quotient.liftₐ _ (tensLift τ) hker ((Ideal.quotientKerEquivRange (tensLift jE)).symm (Subalgebra.inclusion hle ⟨jE x, Bw.j_E x⟩))`.
+
+Rewrite using `[key, Ideal.Quotient.liftₐ_apply]`. Express the relevant statement in the definitionally equal form `τ x = tensLift τ (1 ⊗ₜ x)`. Rewrite using `[tensLift_tmul, map_one, one_mul]`.
+-/
 theorem exists_isInduced : ∀ (l : ℕ) [Fact l.Prime] (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (τ : E →+* Om l), ∃ w ∈ placesOver E l, ∀ (A : ValuationSubring Ω), IsPlaceOver A w →
       ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O),
@@ -258,6 +332,9 @@ namespace GlobalTheory.GalFirstClause
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Pst
 
+/- English proof (translation)
+The claim follows from `Emb.exists_isInduced`.
+-/
 theorem existsIsInduced : ∀ (l : ℕ) [Fact l.Prime] (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (τ : E →+* Om l), ∃ w ∈ placesOver E l, ∀ (A : ValuationSubring Ω), IsPlaceOver A w →
       ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O),

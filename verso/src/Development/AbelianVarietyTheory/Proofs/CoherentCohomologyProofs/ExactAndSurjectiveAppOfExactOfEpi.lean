@@ -19,24 +19,48 @@ def appLinear (φ : M ⟶ N) (U : X.Opens) : Γ(M, U) →ₗ[Γ(X, U)] Γ(N, U) 
   map_smul' := Scheme.Modules.Hom.app_smul φ
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem appLinear_apply (φ : M ⟶ N) (U : X.Opens) (s : Γ(M, U)) :
     appLinear φ U s = φ.app U s := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_appLinear (φ : M ⟶ N) (U : X.Opens) : ⇑(appLinear φ U) = φ.app U := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem appLinear_comp (φ : M ⟶ N) (ψ : N ⟶ P) (U : X.Opens) :
     appLinear (φ ≫ ψ) U = appLinear ψ U ∘ₗ appLinear φ U := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem appLinear_id (M : X.Modules) (U : X.Opens) : appLinear (𝟙 M) U = LinearMap.id := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem appLinear_zero (M N : X.Modules) (U : X.Opens) : appLinear (0 : M ⟶ N) U = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem appLinear_add (φ ψ : M ⟶ N) (U : X.Opens) :
     appLinear (φ + ψ) U = appLinear φ U + appLinear ψ U := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem app_app (φ : M ⟶ N) (ψ : N ⟶ P) (U : X.Opens) (s : Γ(M, U)) :
     ψ.app U (φ.app U s) = (φ ≫ ψ).app U s := rfl
 
+/- English proof (translation)
+The claim follows from `congr($(φ.mapPresheaf.naturality (homOfLE h).op) s)`.
+-/
 theorem app_res (φ : M ⟶ N) (h : V ≤ U) (s : Γ(M, U)) :
     φ.app V (M.presheaf.map (homOfLE h).op s) = N.presheaf.map (homOfLE h).op (φ.app U s) :=
   congr($(φ.mapPresheaf.naturality (homOfLE h).op) s)
@@ -46,10 +70,16 @@ def sections (U : X.Opens) : X.Modules ⥤ ModuleCat.{u} Γ(X, U) where
   map φ := ModuleCat.ofHom (appLinear φ U)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem sections_obj (U : X.Opens) (M : X.Modules) :
     (sections U).obj M = ModuleCat.of Γ(X, U) Γ(M, U) := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sections_map (U : X.Opens) (φ : M ⟶ N) :
     (sections U).map φ = ModuleCat.ofHom (appLinear φ U) := rfl
 
@@ -65,10 +95,16 @@ instance sections_preservesLimits (U : X.Opens) : PreservesLimits (sections U) :
 instance (U : X.Opens) : PreservesFiniteLimits (sections U) :=
   PreservesLimitsOfSize.preservesFiniteLimits _
 
+/- English proof (translation)
+The claim follows from `(ModuleCat.mono_iff_injective ((sections U).map φ)).mp inferInstance`.
+-/
 theorem injective_app_of_mono (φ : M ⟶ N) [Mono φ] (U : X.Opens) :
     Function.Injective (φ.app U) :=
   (ModuleCat.mono_iff_injective ((sections U).map φ)).mp inferInstance
 
+/- English proof (translation)
+The claim follows from `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact (S.map (sections U))).mp (hS.map_of_mono_of_preservesKernel (sections U) inferInstance inferInstance)`.
+-/
 theorem exact_app_of_exact_of_mono {S : ShortComplex X.Modules} (hS : S.Exact) [Mono S.f]
     (U : X.Opens) : Function.Exact (S.f.app U) (S.g.app U) :=
   (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact (S.map (sections U))).mp
@@ -104,6 +140,9 @@ section Colimits
 variable {J : Type w} [Category.{w'} J]
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+The claim follows from `(SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso e ‹_›`.
+-/
 theorem isQuasicoherent_of_iso (e : M ≅ N) [M.IsQuasicoherent] : N.IsQuasicoherent :=
   (SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso e ‹_›
 
@@ -115,6 +154,9 @@ def tildeDiagramIso {R : CommRingCat.{u}} (D : J ⥤ (Spec R).Modules)
   NatIso.ofComponents (fun j ↦ asIso (tilde.adjunction.counit.app (D.obj j)))
     fun f ↦ tilde.adjunction.counit.naturality (D.map f)
 
+/- English proof (translation)
+The claim follows from `isQuasicoherent_of_iso (M := (tilde.functor R).obj (colimit (D ⋙ moduleSpecΓFunctor (R := R)))) (IsColimit.coconePointsIsoOfNatIso (isColimitOfPreserves (tilde.functor R) (colimit.isColimit _)) hc (tildeDiagramIso D))`.
+-/
 theorem isQuasicoherent_of_isColimit_Spec {R : CommRingCat.{u}}
     [HasColimitsOfShape J (ModuleCat.{u} R)] {D : J ⥤ (Spec R).Modules}
     [∀ j, (D.obj j).IsQuasicoherent] {c : Cocone D} (hc : IsColimit c) :
@@ -123,6 +165,9 @@ theorem isQuasicoherent_of_isColimit_Spec {R : CommRingCat.{u}}
     (IsColimit.coconePointsIsoOfNatIso
       (isColimitOfPreserves (tilde.functor R) (colimit.isColimit _)) hc (tildeDiagramIso D))
 
+/- English proof (translation)
+Establish `: PreservesColimit (D ⋙ moduleSpecΓFunctor (R` using `R)) (tilde.functor R ⋙ moduleSpecΓFunctor (R := R)) := preservesColimit_of_natIso _ tilde.toTildeΓNatIso`. Establish `: PreservesColimit ((D ⋙ moduleSpecΓFunctor (R` using `R)) ⋙ tilde.functor R) (moduleSpecΓFunctor (R := R)) := preservesColimit_of_preserves_colimit_cocone (isColimitOfPreserves (tilde.functor R) (colimit.isColimit _)) (isColimitOfPreserves (tilde.functor R ⋙ moduleSpecΓFunctor (R := R)) (colimit.isColimit _))`. Conclude with `preservesColimit_of_iso_diagram _ (tildeDiagramIso D)`.
+-/
 theorem preservesColimit_moduleSpecΓFunctor {R : CommRingCat.{u}}
     [HasColimitsOfShape J (ModuleCat.{u} R)] (D : J ⥤ (Spec R).Modules)
     [∀ j, (D.obj j).IsQuasicoherent] :
@@ -139,6 +184,9 @@ theorem preservesColimit_moduleSpecΓFunctor {R : CommRingCat.{u}}
 
 variable [Small.{u} J]
 
+/- English proof (translation)
+Use `(isQuasicoherent_iff_forall_affine _).mpr fun U hU ↦ ?_` and prove the remaining obligations. Rewrite using `[← isQuasicoherent_restrict_fromSpec_iff _ hU]`. Establish `(j : J) : ((D ⋙ Scheme.Modules.restrictFunctor hU.fromSpec).obj j).IsQuasicoherent` using `inferInstanceAs ((D.obj j).restrict hU.fromSpec).IsQuasicoherent`. Conclude with `isQuasicoherent_of_isColimit_Spec (isColimitOfPreserves (Scheme.Modules.restrictFunctor hU.fromSpec) hc)`.
+-/
 theorem isQuasicoherent_of_isColimit {D : J ⥤ X.Modules}
     [∀ j, (D.obj j).IsQuasicoherent] {c : Cocone D} (hc : IsColimit c) :
     c.pt.IsQuasicoherent := by
@@ -149,6 +197,9 @@ theorem isQuasicoherent_of_isColimit {D : J ⥤ X.Modules}
   exact isQuasicoherent_of_isColimit_Spec
     (isColimitOfPreserves (Scheme.Modules.restrictFunctor hU.fromSpec) hc)
 
+/- English proof (translation)
+Establish `(j : J) : ((D ⋙ Scheme.Modules.restrictFunctor hU.fromSpec).obj j).IsQuasicoherent` using `inferInstanceAs ((D.obj j).restrict hU.fromSpec).IsQuasicoherent`. Use `preservesColimit_moduleSpecΓFunctor (D ⋙ Scheme.Modules.restrictFunctor hU.fromSpec)` as an intermediate fact. Establish `: PreservesColimit D (Scheme.Modules.restrictFunctor hU.fromSpec ⋙ moduleSpecΓFunctor (R` using `Γ(X, U))) := ⟨fun hc ↦ ⟨isColimitOfPreserves (moduleSpecΓFunctor (R := Γ(X, U))) (isColimitOfPreserves (Scheme.Modules.restrictFunctor hU.fromSpec) hc)⟩⟩`. Conclude with `preservesColimit_of_natIso _ (sectionsIsoSpec hU).symm`.
+-/
 theorem preservesColimit_sections (hU : IsAffineOpen U) (D : J ⥤ X.Modules)
     [∀ j, (D.obj j).IsQuasicoherent] : PreservesColimit D (sections U) := by
   have (j : J) : ((D ⋙ Scheme.Modules.restrictFunctor hU.fromSpec).obj j).IsQuasicoherent :=
@@ -180,6 +231,9 @@ instance isQuasicoherent_pair_obj [M.IsQuasicoherent] [N.IsQuasicoherent]
     (j : Discrete WalkingPair) : ((pair M N).obj j).IsQuasicoherent := by
   obtain ⟨_ | _⟩ := j <;> assumption
 
+/- English proof (translation)
+The claim follows from `haveI (j : Discrete PEmpty.{1}) : ((Functor.empty.{0} X.Modules).obj j).IsQuasicoherent := j.as.elim isQuasicoherent_of_isColimit (D := Functor.empty.{0} X.Modules) h.isInitial`.
+-/
 theorem isQuasicoherent_of_isZero (h : IsZero M) : M.IsQuasicoherent :=
   haveI (j : Discrete PEmpty.{1}) : ((Functor.empty.{0} X.Modules).obj j).IsQuasicoherent :=
     j.as.elim
@@ -218,6 +272,13 @@ instance isQuasicoherent_pi {ι : Type w} [Finite ι] (F : ι → X.Modules) [Ha
   haveI : HasBiproduct F := HasBiproduct.of_hasProduct F
   isQuasicoherent_of_iso (biproduct.isoProduct F)
 
+/- English proof (translation)
+Use `(isQuasicoherent_iff_forall_affine _).mpr fun U hU f ↦ ?_` and prove the remaining obligations. Rewrite using `[isLocalizedModule_resBasicOpen_iff]`. Use `⟨fun s ↦ ?_, fun t ht ↦ ?_⟩` and prove the remaining obligations. Take `⟨n, m, hm⟩` from `exists_pow_smul_eq_res M hU f (X.basicOpen_le f) rfl (ι.app _ s)`. Take `⟨k, hk⟩` from `exists_pow_smul_eq_zero N hU f (X.basicOpen_le f) rfl (φ.app U m) (by`.
+
+Rewrite using `[← app_res, ← hm, Scheme.Modules.Hom.app_smul, (hex _ (hU.basicOpen f)).apply_apply_eq_zero, smul_zero])`. Rewrite `hk` using `[← Scheme.Modules.Hom.app_smul]`. Take `⟨t, ht⟩` from `(hex U hU _).mp hk`. Use `⟨k + n, t, hι _ (hU.basicOpen f) ?_⟩` and prove the remaining obligations. Rewrite using `[app_res, ht, M.map_smul, ← hm, Scheme.Modules.Hom.app_smul, map_pow, pow_add, mul_smul]`.
+
+Take `⟨n, hn⟩` from `exists_pow_smul_eq_zero M hU f (X.basicOpen_le f) rfl (ι.app U t) (by`. Rewrite using `[← app_res, ht, map_zero])`. Conclude with `⟨n, hι U hU (by rw [Scheme.Modules.Hom.app_smul, hn, map_zero])⟩`.
+-/
 theorem isQuasicoherent_of_exact_app {K : X.Modules} (ι : K ⟶ M) (φ : M ⟶ N)
     [M.IsQuasicoherent] [N.IsQuasicoherent]
     (hι : ∀ U, IsAffineOpen U → Function.Injective (ι.app U))
@@ -238,19 +299,31 @@ theorem isQuasicoherent_of_exact_app {K : X.Modules} (ι : K ⟶ M) (φ : M ⟶ 
       rw [← app_res, ht, map_zero])
     exact ⟨n, hι U hU (by rw [Scheme.Modules.Hom.app_smul, hn, map_zero])⟩
 
+/- English proof (translation)
+The claim follows from `isQuasicoherent_of_exact_app S.f S.g (fun U _ ↦ injective_app_of_mono S.f U) fun U _ ↦ exact_app_of_exact_of_mono hS U`.
+-/
 theorem isQuasicoherent_X₁_of_exact {S : ShortComplex X.Modules} (hS : S.Exact) [Mono S.f]
     [S.X₂.IsQuasicoherent] [S.X₃.IsQuasicoherent] : S.X₁.IsQuasicoherent :=
   isQuasicoherent_of_exact_app S.f S.g (fun U _ ↦ injective_app_of_mono S.f U)
     fun U _ ↦ exact_app_of_exact_of_mono hS U
 
+/- English proof (translation)
+The claim follows from `isQuasicoherent_of_isColimit hS.gIsCokernel`.
+-/
 theorem isQuasicoherent_X₃_of_exact {S : ShortComplex X.Modules} (hS : S.Exact) [Epi S.g]
     [S.X₁.IsQuasicoherent] [S.X₂.IsQuasicoherent] : S.X₃.IsQuasicoherent :=
   isQuasicoherent_of_isColimit hS.gIsCokernel
 
+/- English proof (translation)
+The claim follows from `injective_app_of_mono _ U`.
+-/
 theorem injective_kernel_ι_app (φ : M ⟶ N) (U : X.Opens) :
     Function.Injective ((kernel.ι φ).app U) :=
   injective_app_of_mono _ U
 
+/- English proof (translation)
+The claim follows from `exact_app_of_exact_of_mono (S := ShortComplex.mk _ _ (kernel.condition φ)) (ShortComplex.exact_kernel φ) U`.
+-/
 theorem exact_kernel_ι_app (φ : M ⟶ N) (U : X.Opens) :
     Function.Exact ((kernel.ι φ).app U) (φ.app U) :=
   exact_app_of_exact_of_mono (S := ShortComplex.mk _ _ (kernel.condition φ))
@@ -273,6 +346,9 @@ instance isQuasicoherent_image (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicohe
     (image φ).IsQuasicoherent :=
   isQuasicoherent_of_iso (Abelian.imageIsoImage φ)
 
+/- English proof (translation)
+The claim follows from `haveI := strongEpi_of_epi e isQuasicoherent_of_iso (image.isoStrongEpiMono e m rfl).symm`.
+-/
 theorem isQuasicoherent_of_epi_of_mono {I : X.Modules} (e : M ⟶ I) (m : I ⟶ N) [Epi e] [Mono m]
     [M.IsQuasicoherent] [N.IsQuasicoherent] : I.IsQuasicoherent :=
   haveI := strongEpi_of_epi e
@@ -290,6 +366,9 @@ end Closure
 
 section Affine
 
+/- English proof (translation)
+Use `preservesColimit_sections hU (parallelPair S.f 0)` as an intermediate fact. Establish `h` using `((S.map (sections U)).exact_and_epi_g_iff_g_is_cokernel).mpr ⟨CokernelCofork.mapIsColimit _ hS.gIsCokernel (sections U)⟩`. Conclude with `⟨(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact (S.map (sections U))).mp h.1, (ModuleCat.epi_iff_surjective _).mp h.2⟩`.
+-/
 theorem exact_and_surjective_app_of_exact_of_epi {S : ShortComplex X.Modules} (hS : S.Exact)
     [Epi S.g] [S.X₁.IsQuasicoherent] [S.X₂.IsQuasicoherent] (hU : IsAffineOpen U) :
     Function.Exact (S.f.app U) (S.g.app U) ∧ Function.Surjective (S.g.app U) := by
@@ -299,24 +378,41 @@ theorem exact_and_surjective_app_of_exact_of_epi {S : ShortComplex X.Modules} (h
   exact ⟨(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact (S.map (sections U))).mp h.1,
     (ModuleCat.epi_iff_surjective _).mp h.2⟩
 
+/- English proof (translation)
+The claim follows from `(exact_and_surjective_app_of_exact_of_epi (S := ShortComplex.mk _ _ (cokernel.condition φ)) (ShortComplex.exact_cokernel φ) hU).1`.
+-/
 theorem exact_cokernel_π_app (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent]
     (hU : IsAffineOpen U) : Function.Exact (φ.app U) ((cokernel.π φ).app U) :=
   (exact_and_surjective_app_of_exact_of_epi (S := ShortComplex.mk _ _ (cokernel.condition φ))
     (ShortComplex.exact_cokernel φ) hU).1
 
+/- English proof (translation)
+The claim follows from `(exact_and_surjective_app_of_exact_of_epi (S := ShortComplex.mk _ _ (cokernel.condition φ)) (ShortComplex.exact_cokernel φ) hU).2`.
+-/
 theorem surjective_cokernel_π_app (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent]
     (hU : IsAffineOpen U) : Function.Surjective ((cokernel.π φ).app U) :=
   (exact_and_surjective_app_of_exact_of_epi (S := ShortComplex.mk _ _ (cokernel.condition φ))
     (ShortComplex.exact_cokernel φ) hU).2
 
+/- English proof (translation)
+The claim follows from `ModuleCat.isZero_iff_subsingleton.mp ((sections U).map_isZero h)`.
+-/
 theorem subsingleton_sections_of_isZero (h : IsZero M) (U : X.Opens) : Subsingleton Γ(M, U) :=
   ModuleCat.isZero_iff_subsingleton.mp ((sections U).map_isZero h)
 
+/- English proof (translation)
+The claim follows from `fun t ↦ haveI := subsingleton_sections_of_isZero (isZero_cokernel_of_epi φ) U (exact_cokernel_π_app φ hU t).mp (Subsingleton.elim _ _)`.
+-/
 theorem surjective_app_of_epi (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent] [Epi φ]
     (hU : IsAffineOpen U) : Function.Surjective (φ.app U) := fun t ↦
   haveI := subsingleton_sections_of_isZero (isZero_cokernel_of_epi φ) U
   (exact_cokernel_π_app φ hU t).mp (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Use `⟨fun h t ↦ ?_, fun h t ↦ ⟨fun ht ↦ ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `(h _).mp ((exact_kernel_ι_app S.g U).apply_apply_eq_zero t)`. Conclude with `⟨s, injective_kernel_ι_app S.g U (by rw [app_app, kernel.lift_ι, hs])⟩`. Take `⟨t, rfl⟩` from `(exact_kernel_ι_app S.g U t).mp ht`. Take `⟨s, rfl⟩` from `h t`.
+
+Conclude with `⟨s, by rw [app_app, kernel.lift_ι]⟩`. Introduce and unpack `⟨s, rfl⟩`. Rewrite using `[app_app, S.zero]`. Both sides reduce to the same expression.
+-/
 theorem exact_app_iff_surjective_lift (S : ShortComplex X.Modules) (U : X.Opens) :
     Function.Exact (S.f.app U) (S.g.app U) ↔
       Function.Surjective ((kernel.lift S.g S.f S.zero).app U) := by
@@ -330,20 +426,34 @@ theorem exact_app_iff_surjective_lift (S : ShortComplex X.Modules) (U : X.Opens)
     rw [app_app, S.zero]
     rfl
 
+/- English proof (translation)
+The claim follows from `haveI := (S.exact_iff_epi_kernel_lift).mp hS (exact_app_iff_surjective_lift S U).mpr (surjective_app_of_epi _ hU)`.
+-/
 theorem exact_app_of_exact {S : ShortComplex X.Modules} (hS : S.Exact) [S.X₁.IsQuasicoherent]
     [S.X₂.IsQuasicoherent] [S.X₃.IsQuasicoherent] (hU : IsAffineOpen U) :
     Function.Exact (S.f.app U) (S.g.app U) :=
   haveI := (S.exact_iff_epi_kernel_lift).mp hS
   (exact_app_iff_surjective_lift S U).mpr (surjective_app_of_epi _ hU)
 
+/- English proof (translation)
+The claim follows from `injective_app_of_mono _ U`.
+-/
 theorem injective_image_ι_app (φ : M ⟶ N) (U : X.Opens) :
     Function.Injective ((image.ι φ).app U) :=
   injective_app_of_mono _ U
 
+/- English proof (translation)
+The claim follows from `surjective_app_of_epi _ hU`.
+-/
 theorem surjective_factorThruImage_app (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent]
     (hU : IsAffineOpen U) : Function.Surjective ((factorThruImage φ).app U) :=
   surjective_app_of_epi _ hU
 
+/- English proof (translation)
+Use extensionality with `t`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, rfl⟩`. Take `⟨s, rfl⟩` from `surjective_factorThruImage_app φ hU s`. Conclude with `⟨s, by rw [appLinear_apply, appLinear_apply, app_app, image.fac]⟩`.
+
+Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨(factorThruImage φ).app U s, by rw [appLinear_apply, appLinear_apply, app_app, image.fac]⟩`.
+-/
 theorem range_image_ι_app (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent]
     (hU : IsAffineOpen U) :
     LinearMap.range (appLinear (image.ι φ) U) = LinearMap.range (appLinear φ U) := by
@@ -362,6 +472,13 @@ section Cover
 variable {ι : Type*} (𝒰 : ι → X.Opens) (hcov : IsOpenCover 𝒰) (haff : ∀ i, IsAffineOpen (𝒰 i))
 include hcov haff
 
+/- English proof (translation)
+Use `⟨fun h i ↦ subsingleton_sections_of_isZero h _, fun h ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[IsZero.iff_id_eq_zero]`. Use extensionality with `V s`. Express the relevant statement in the definitionally equal form `s = 0`. Use `TopCat.Presheaf.IsSheaf.section_ext M.isSheaf fun x hx ↦ ?_` and prove the remaining obligations.
+
+Take `⟨i, hi⟩` from `hcov.exists_mem x`. Take `⟨f, hfV, hxf⟩` from `(haff i).exists_basicOpen_le (V := V) ⟨x, hx⟩ hi`. Use `⟨X.basicOpen f, hfV, hxf, ?_⟩` and prove the remaining obligations. Take `⟨n, t, ht⟩` from `exists_pow_smul_eq_res M (haff i) f (X.basicOpen_le f) rfl (M.presheaf.map (homOfLE hfV).op s)`. Rewrite `ht` using `[Subsingleton.elim t 0, map_zero, ((isUnit_res_of_le_basicOpen f (X.basicOpen_le f) le_rfl).pow n).smul_eq_zero]`.
+
+Rewrite using `[map_zero]`. Conclude with `ht`.
+-/
 theorem isZero_iff_affineCover [M.IsQuasicoherent] :
     IsZero M ↔ ∀ i, Subsingleton Γ(M, 𝒰 i) := by
   refine ⟨fun h i ↦ subsingleton_sections_of_isZero h _, fun h ↦ ?_⟩
@@ -381,6 +498,9 @@ theorem isZero_iff_affineCover [M.IsQuasicoherent] :
 
 variable [M.IsQuasicoherent] [N.IsQuasicoherent]
 
+/- English proof (translation)
+Use `⟨fun _ i ↦ injective_app_of_mono φ _, fun h ↦ ?_⟩` and prove the remaining obligations. Use `Preadditive.mono_of_isZero_kernel φ ((isZero_iff_affineCover 𝒰 hcov haff).mpr fun i ↦ subsingleton_of_forall_eq 0 fun s ↦ ?_)` and prove the remaining obligations. Use `injective_kernel_ι_app φ _ (h i ?_)` and prove the remaining obligations. Rewrite using `[(exact_kernel_ι_app φ _).apply_apply_eq_zero, map_zero, map_zero]`.
+-/
 theorem mono_iff_affineCover (φ : M ⟶ N) : Mono φ ↔ ∀ i, Function.Injective (φ.app (𝒰 i)) := by
   refine ⟨fun _ i ↦ injective_app_of_mono φ _, fun h ↦ ?_⟩
   refine Preadditive.mono_of_isZero_kernel φ
@@ -388,6 +508,9 @@ theorem mono_iff_affineCover (φ : M ⟶ N) : Mono φ ↔ ∀ i, Function.Inject
   refine injective_kernel_ι_app φ _ (h i ?_)
   rw [(exact_kernel_ι_app φ _).apply_apply_eq_zero, map_zero, map_zero]
 
+/- English proof (translation)
+Use `⟨fun _ i ↦ surjective_app_of_epi φ (haff i), fun h ↦ ?_⟩` and prove the remaining obligations. Use `Preadditive.epi_of_isZero_cokernel φ ((isZero_iff_affineCover 𝒰 hcov haff).mpr fun i ↦ subsingleton_of_forall_eq 0 fun s ↦ ?_)` and prove the remaining obligations. Take `⟨t, rfl⟩` from `surjective_cokernel_π_app φ (haff i) s`. Take `⟨t, rfl⟩` from `h i t`. Conclude with `(exact_cokernel_π_app φ (haff i)).apply_apply_eq_zero t`.
+-/
 theorem epi_iff_affineCover (φ : M ⟶ N) : Epi φ ↔ ∀ i, Function.Surjective (φ.app (𝒰 i)) := by
   refine ⟨fun _ i ↦ surjective_app_of_epi φ (haff i), fun h ↦ ?_⟩
   refine Preadditive.epi_of_isZero_cokernel φ
@@ -396,6 +519,9 @@ theorem epi_iff_affineCover (φ : M ⟶ N) : Epi φ ↔ ∀ i, Function.Surjecti
   obtain ⟨t, rfl⟩ := h i t
   exact (exact_cokernel_π_app φ (haff i)).apply_apply_eq_zero t
 
+/- English proof (translation)
+Rewrite using `[isIso_iff_mono_and_epi, mono_iff_affineCover 𝒰 hcov haff, epi_iff_affineCover 𝒰 hcov haff, ← forall_and]`. Both sides reduce to the same expression.
+-/
 theorem isIso_iff_affineCover (φ : M ⟶ N) : IsIso φ ↔ ∀ i, Function.Bijective (φ.app (𝒰 i)) := by
   rw [isIso_iff_mono_and_epi, mono_iff_affineCover 𝒰 hcov haff, epi_iff_affineCover 𝒰 hcov haff,
     ← forall_and]
@@ -404,11 +530,17 @@ theorem isIso_iff_affineCover (φ : M ⟶ N) : IsIso φ ↔ ∀ i, Function.Bije
 variable (S : ShortComplex X.Modules) [S.X₁.IsQuasicoherent] [S.X₂.IsQuasicoherent]
   [S.X₃.IsQuasicoherent]
 
+/- English proof (translation)
+Simplify using `only [S.exact_iff_epi_kernel_lift, epi_iff_affineCover 𝒰 hcov haff, exact_app_iff_surjective_lift]`.
+-/
 theorem exact_iff_affineCover :
     S.Exact ↔ ∀ i, Function.Exact (S.f.app (𝒰 i)) (S.g.app (𝒰 i)) := by
   simp only [S.exact_iff_epi_kernel_lift, epi_iff_affineCover 𝒰 hcov haff,
     exact_app_iff_surjective_lift]
 
+/- English proof (translation)
+Simplify using `only [forall_and, ← exact_iff_affineCover 𝒰 hcov haff, ← mono_iff_affineCover 𝒰 hcov haff, ← epi_iff_affineCover 𝒰 hcov haff]`. Conclude with `⟨fun h ↦ ⟨h.mono_f, h.exact, h.epi_g⟩, fun h ↦ .mk' h.2.1 h.1 h.2.2⟩`.
+-/
 theorem shortExact_iff_affineCover :
     S.ShortExact ↔ ∀ i, Function.Injective (S.f.app (𝒰 i)) ∧
       Function.Exact (S.f.app (𝒰 i)) (S.g.app (𝒰 i)) ∧ Function.Surjective (S.g.app (𝒰 i)) := by
@@ -464,6 +596,9 @@ instance : PreservesFiniteLimits (qcoh X).ι :=
 instance (J : Type) [SmallCategory J] [FinCategory J] : (qcoh X).IsClosedUnderLimitsOfShape J :=
   (qcoh X).isClosedUnderLimitsOfShape_of_preservesLimitsOfShape_ι J
 
+/- English proof (translation)
+The claim follows from `(qcoh X).prop_of_isLimit hc h`.
+-/
 theorem isQuasicoherent_of_isLimit {J : Type} [SmallCategory J] [FinCategory J]
     {D : J ⥤ X.Modules} [h : ∀ j, (D.obj j).IsQuasicoherent] {c : Cone D} (hc : IsLimit c) :
     c.pt.IsQuasicoherent :=
@@ -489,10 +624,16 @@ end Subcategory
 
 section Equivs
 
+/- English proof (translation)
+The claim follows from `Submodule.ext fun s ↦ (exact_kernel_ι_app φ U s).symm`.
+-/
 theorem range_kernel_ι_app (φ : M ⟶ N) (U : X.Opens) :
     LinearMap.range (appLinear (kernel.ι φ) U) = LinearMap.ker (appLinear φ U) :=
   Submodule.ext fun s ↦ (exact_kernel_ι_app φ U s).symm
 
+/- English proof (translation)
+The claim follows from `Submodule.ext fun s ↦ exact_cokernel_π_app φ hU s`.
+-/
 theorem ker_cokernel_π_app (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent]
     (hU : IsAffineOpen U) :
     LinearMap.ker (appLinear (cokernel.π φ) U) = LinearMap.range (appLinear φ U) :=
@@ -504,6 +645,9 @@ def kernelSectionsEquiv (φ : M ⟶ N) (U : X.Opens) :
     (LinearEquiv.ofEq _ _ (range_kernel_ι_app φ U))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kernelSectionsEquiv_apply_coe (φ : M ⟶ N) (U : X.Opens) (s : Γ(kernel φ, U)) :
     (kernelSectionsEquiv φ U s : Γ(M, U)) = (kernel.ι φ).app U s := rfl
 
@@ -515,6 +659,9 @@ def cokernelSectionsEquiv (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent]
       (surjective_cokernel_π_app φ hU))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cokernelSectionsEquiv_mk (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent]
     (hU : IsAffineOpen U) (s : Γ(N, U)) :
     cokernelSectionsEquiv φ hU (Submodule.Quotient.mk s) = (cokernel.π φ).app U s := rfl
@@ -525,6 +672,9 @@ def imageSectionsEquiv (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent]
     (LinearEquiv.ofEq _ _ (range_image_ι_app φ hU))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem imageSectionsEquiv_apply_coe (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent]
     (hU : IsAffineOpen U) (s : Γ(image φ, U)) :
     (imageSectionsEquiv φ hU s : Γ(N, U)) = (image.ι φ).app U s := rfl
@@ -539,6 +689,9 @@ def sigmaSectionsEquiv {ι : Type u} [DecidableEq ι] (F : ι → X.Modules)
     (PreservesCoproduct.iso (sections U) F).symm).toLinearEquiv
 
 @[simp]
+/- English proof (translation)
+Use `preservesColimit_sections hU (Discrete.functor F)` as an intermediate fact. Establish `h : ModuleCat.ofHom (DirectSum.lof Γ(X, U) ι (fun i ↦ (sections U).obj (F i)) i) ≫ (ModuleCat.coprodIsoDirectSum fun i ↦ (sections U).obj (F i)).inv ≫ (PreservesCoproduct.iso (sections U) F).inv = (sections U).map (Sigma.ι F i)`. Rewrite using `[← Category.assoc, ModuleCat.lof_coprodIsoDirectSum_inv, PreservesCoproduct.inv_hom, ι_comp_sigmaComparison]`. Conclude with `congr($h s)`.
+-/
 theorem sigmaSectionsEquiv_lof {ι : Type u} [DecidableEq ι] (F : ι → X.Modules)
     [∀ i, (F i).IsQuasicoherent] (hU : IsAffineOpen U) (i : ι) (s : Γ(F i, U)) :
     sigmaSectionsEquiv F hU (DirectSum.lof Γ(X, U) ι (fun i ↦ Γ(F i, U)) i s) =
@@ -557,6 +710,9 @@ def piSectionsEquiv {ι : Type u} (F : ι → X.Modules) (U : X.Opens) :
     ModuleCat.piIsoPi fun i ↦ (sections U).obj (F i)).toLinearEquiv
 
 @[simp]
+/- English proof (translation)
+Establish `h : (PreservesProduct.iso (sections U) F).hom ≫ (ModuleCat.piIsoPi fun i ↦ (sections U).obj (F i)).hom ≫ ModuleCat.ofHom (LinearMap.proj i) = (sections U).map (Pi.π F i)`. Rewrite using `[ModuleCat.piIsoPi_hom_ker_subtype, PreservesProduct.iso_hom, piComparison_comp_π]`. Conclude with `congr($h s)`.
+-/
 theorem piSectionsEquiv_apply {ι : Type u} (F : ι → X.Modules) (U : X.Opens) (s : Γ(∏ᶜ F, U))
     (i : ι) : piSectionsEquiv F U s i = (Pi.π F i).app U s := by
   have h : (PreservesProduct.iso (sections U) F).hom ≫
@@ -565,6 +721,9 @@ theorem piSectionsEquiv_apply {ι : Type u} (F : ι → X.Modules) (U : X.Opens)
     rw [ModuleCat.piIsoPi_hom_ker_subtype, PreservesProduct.iso_hom, piComparison_comp_π]
   exact congr($h s)
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Both sides reduce to the same expression.
+-/
 theorem app_sum {ι : Type w} (t : Finset ι) (φ : ι → (M ⟶ N)) (U : X.Opens) (s : Γ(M, U)) :
     (∑ i ∈ t, φ i).app U s = ∑ i ∈ t, (φ i).app U s := by
   classical
@@ -589,10 +748,16 @@ def biproductSectionsEquiv {ι : Type} [Fintype ι] (F : ι → X.Modules) [HasB
     rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem biproductSectionsEquiv_apply {ι : Type} [Fintype ι] (F : ι → X.Modules) [HasBiproduct F]
     (U : X.Opens) (s : Γ(⨁ F, U)) (i : ι) :
     biproductSectionsEquiv F U s i = (biproduct.π F i).app U s := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem biproductSectionsEquiv_symm_apply {ι : Type} [Fintype ι] (F : ι → X.Modules)
     [HasBiproduct F] (U : X.Opens) (s : ∀ i, Γ(F i, U)) :
     (biproductSectionsEquiv F U).symm s = ∑ i, (biproduct.ι F i).app U (s i) := rfl
@@ -615,6 +780,9 @@ def biprodSectionsEquiv (M N : X.Modules) (U : X.Opens) :
       exact zero_add _
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem biprodSectionsEquiv_apply (M N : X.Modules) (U : X.Opens) (s : Γ(M ⊞ N, U)) :
     biprodSectionsEquiv M N U s =
       ((biprod.fst : M ⊞ N ⟶ M).app U s, (biprod.snd : M ⊞ N ⟶ N).app U s) := rfl
@@ -625,16 +793,25 @@ section AllAffine
 
 variable [M.IsQuasicoherent] [N.IsQuasicoherent]
 
+/- English proof (translation)
+The claim follows from `(isZero_iff_affineCover (fun i : X.affineOpens ↦ i.1) (iSup_affineOpens_eq_top X) fun i ↦ i.2).trans Subtype.forall`.
+-/
 theorem isZero_iff_forall_affine :
     IsZero M ↔ ∀ U, IsAffineOpen U → Subsingleton Γ(M, U) :=
   (isZero_iff_affineCover (fun i : X.affineOpens ↦ i.1) (iSup_affineOpens_eq_top X)
     fun i ↦ i.2).trans Subtype.forall
 
+/- English proof (translation)
+The claim follows from `(epi_iff_affineCover (fun i : X.affineOpens ↦ i.1) (iSup_affineOpens_eq_top X) (fun i ↦ i.2) φ).trans Subtype.forall`.
+-/
 theorem epi_iff_forall_affine (φ : M ⟶ N) :
     Epi φ ↔ ∀ U, IsAffineOpen U → Function.Surjective (φ.app U) :=
   (epi_iff_affineCover (fun i : X.affineOpens ↦ i.1) (iSup_affineOpens_eq_top X)
     (fun i ↦ i.2) φ).trans Subtype.forall
 
+/- English proof (translation)
+The claim follows from `(isIso_iff_affineCover (fun i : X.affineOpens ↦ i.1) (iSup_affineOpens_eq_top X) (fun i ↦ i.2) φ).trans Subtype.forall`.
+-/
 theorem isIso_iff_forall_affine (φ : M ⟶ N) :
     IsIso φ ↔ ∀ U, IsAffineOpen U → Function.Bijective (φ.app U) :=
   (isIso_iff_affineCover (fun i : X.affineOpens ↦ i.1) (iSup_affineOpens_eq_top X)
@@ -643,6 +820,9 @@ theorem isIso_iff_forall_affine (φ : M ⟶ N) :
 variable (S : ShortComplex X.Modules) [S.X₁.IsQuasicoherent] [S.X₂.IsQuasicoherent]
   [S.X₃.IsQuasicoherent]
 
+/- English proof (translation)
+The claim follows from `(exact_iff_affineCover (fun i : X.affineOpens ↦ i.1) (iSup_affineOpens_eq_top X) (fun i ↦ i.2) S).trans Subtype.forall`.
+-/
 theorem exact_iff_forall_affine :
     S.Exact ↔ ∀ U, IsAffineOpen U → Function.Exact (S.f.app U) (S.g.app U) :=
   (exact_iff_affineCover (fun i : X.affineOpens ↦ i.1) (iSup_affineOpens_eq_top X)
@@ -650,6 +830,9 @@ theorem exact_iff_forall_affine :
 
 end AllAffine
 
+/- English proof (translation)
+Use `⟨fun h i s ↦ by rw [h]; rfl, fun h ↦ ?_⟩` and prove the remaining obligations. Establish `: Epi (kernel.ι φ)` using `(epi_iff_affineCover 𝒰 hcov haff _).mpr fun i s ↦ (exact_kernel_ι_app φ _ s).mp (h i s)`. Rewrite using `[← cancel_epi (kernel.ι φ), kernel.condition, comp_zero]`.
+-/
 theorem hom_eq_zero_iff_affineCover {ι : Type*} (𝒰 : ι → X.Opens) (hcov : IsOpenCover 𝒰)
     (haff : ∀ i, IsAffineOpen (𝒰 i)) [M.IsQuasicoherent] [N.IsQuasicoherent] (φ : M ⟶ N) :
     φ = 0 ↔ ∀ i s, φ.app (𝒰 i) s = 0 := by

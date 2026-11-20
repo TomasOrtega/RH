@@ -14,17 +14,26 @@ open scoped LaurentSeries
 
 namespace GlobalTheory.ArcGamma
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `h`.
+-/
 theorem isLieBasis_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {m n : ℕ} (e : m = n)
     {v : Fin n → (epsR R ⟶ G)} (h : IsLieBasis v) : IsLieBasis fun i : Fin m => v (i.cast e) := by
   subst e
   exact h
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `h`.
+-/
 theorem isLieComb_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {m n : ℕ} (e : m = n)
     {c : Fin n → R} {v : Fin n → (epsR R ⟶ G)} {w : epsR R ⟶ G} (h : IsLieComb c v w) :
     IsLieComb (fun i : Fin m => c (i.cast e)) (fun i : Fin m => v (i.cast e)) w := by
   subst e
   exact h
 
+/- English proof (translation)
+Rewrite using `[spMap_comp_spMap]`. Use `congrArg spMap (RingHom.ext fun x => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+-/
 theorem dual_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap (Chart.dualMapR g) ≫ spMap (Chart.dualMapR f) = spMap (Chart.dualMapR (g.comp f)) := by
   rw [spMap_comp_spMap]
@@ -37,11 +46,17 @@ variable {A A' : Type} [CommRing A] [IsDomain A] [CommRing A'] [IsDomain A'] {f 
   {D₁ : Out.DegPre A'} (p : Out.IsPullDeg f D₀ D₁)
 include p
 
+/- English proof (translation)
+The claim follows from `H1.dim_unique _ D₁.P.smoothDim ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (pull_grp p).1 D₀.P.smoothDim) (eSec D₁.P.A (Classical.arbitrary (PrimeSpectrum A')))`.
+-/
 theorem g_eq : D₁.P.g = D₀.P.g :=
   H1.dim_unique _ D₁.P.smoothDim
     ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (pull_grp p).1 D₀.P.smoothDim)
     (eSec D₁.P.A (Classical.arbitrary (PrimeSpectrum A')))
 
+/- English proof (translation)
+Use `⟨prj p, p.he, p.w, g_eq p, Chart.dualMapR f, pull_grp p, p.w_gen, p.w_rig, KeyPow.appLE_eq_of_stalk _ th th₁ ((ArcQBC.through_iff _ _).1 h), fun a => ?_, ?_, hvv⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+-/
 theorem keyPB_of_pull {th : D₀.P.L.Sec} {th₁ : D₁.P.L.Sec} (h : ThBC p th th₁) {g₀ n₀ g₁ n₁ v hv v₁ hv₁}
     (hvv : ∀ i, (v₁ i).left ≫ prj p = spMap (Chart.dualMapR f) ≫ (v (i.cast (g_eq p))).left) :
     KeyPB ⟨D₁.P, g₁, D₁.rig, D₁.rig_gen, th₁, n₁, v₁, hv₁⟩ ⟨D₀.P, g₀, D₀.rig, D₀.rig_gen, th, n₀, v, hv⟩ f := by
@@ -57,6 +72,11 @@ section Val
 variable {K : Type} [Field K] [NumberField K] {w : HeightOneSpectrum (𝓞 K)} {V Fr : Type} [CommRing V] [IsDomain V]
   [IsDiscreteValuationRing V] [Field Fr] [Algebra V Fr] [IsFractionRing V Fr] {io : K →+* Fr}
 
+/- English proof (translation)
+Establish `e : io y ∈ Set.range (algebraMap V Fr) ↔ valV V (io y) ≤ 1` using `⟨fun ⟨r, hr⟩ => hr ▸ HeightOneSpectrum.valuation_le_one _ r, fun hy => IsDiscreteValuationRing.exists_lift_of_le_one hy⟩`. Rewrite using `[e]`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `h1` using `h.2 y`.
+
+Simplify using `only [vV, vLa, Nat.cast_one, _root_.one_mul, neg_inj] at h1`. Establish `a : valV V (io y) ≠ 0` using `valV_ne_zero ((map_ne_zero io).2 hy)`. Establish `b : w.valuation K y ≠ 0` using `((w.valuation K).ne_zero_iff).2 hy`. Rewrite using `[← WithZero.log_le_log a one_ne_zero, ← WithZero.log_le_log b one_ne_zero, h1]`.
+-/
 theorem mem_range_iff (h : OverLa w V io 1) (y : K) :
     io y ∈ Set.range (algebraMap V Fr) ↔ w.valuation K y ≤ 1 := by
   have e : io y ∈ Set.range (algebraMap V Fr) ↔ valV V (io y) ≤ 1 :=
@@ -71,6 +91,11 @@ theorem mem_range_iff (h : OverLa w V io 1) (y : K) :
   have b : w.valuation K y ≠ 0 := ((w.valuation K).ne_zero_iff).2 hy
   rw [← WithZero.log_le_log a one_ne_zero, ← WithZero.log_le_log b one_ne_zero, h1]
 
+/- English proof (translation)
+Establish `hu : valV V (algebraMap V Fr u) = 1`. Use `eq_one_of_one_le_mul_left (HeightOneSpectrum.valuation_le_one _ (u : V)) (HeightOneSpectrum.valuation_le_one (K := Fr) (IsDiscreteValuationRing.maximalIdeal V) ((u⁻¹ : Vˣ) : V)) ?_` and prove the remaining obligations. Rewrite using `[valV, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `h1` using `h.2 ca`. Establish `h2` using `congrArg (valV V) e`.
+
+Rewrite `h2` using `[map_mul, hu, _root_.mul_one, map_inv₀, inv_eq_iff_eq_inv]`. Simplify using `only [vV, vLa, Nat.cast_one, _root_.one_mul, neg_inj] at h1`. Rewrite using `[vV, h2, WithZero.log_inv, h1, valuation_eq_exp_count w hc.1, hc.2]`. Simplify using the standard rewrite rules.
+-/
 theorem vV_eq_neg_count (h : OverLa w V io 1) {gm : Fr} {ca : K} {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K}
     (hc : IsLocGen w ca I) (u : Vˣ) (e : gm⁻¹ = io ca * algebraMap V Fr u) : vV V gm = -FractionalIdeal.count K w I := by
   have hu : valV V (algebraMap V Fr u) = 1 := by
@@ -86,6 +111,9 @@ theorem vV_eq_neg_count (h : OverLa w V io 1) {gm : Fr} {ca : K} {I : Fractional
 
 end Val
 
+/- English proof (translation)
+Use `choose j hj using h`. Conclude with `⟨⟨⟨⟨j, hi (by simp [hj])⟩, fun a b => hi (by simp [hj])⟩, hi (by simp [hj]), fun a b => hi (by simp [hj])⟩, RingHom.ext hj⟩`.
+-/
 theorem exists_ringHom {K R V Fr : Type} [Field K] [CommRing R] [Algebra R K] [CommRing V] [Field Fr] [Algebra V Fr]
     (hi : Function.Injective (algebraMap V Fr)) (io : K →+* Fr)
     (h : ∀ r : R, io (algebraMap R K r) ∈ Set.range (algebraMap V Fr)) :
@@ -94,6 +122,21 @@ theorem exists_ringHom {K R V Fr : Type} [Field K] [CommRing R] [Algebra R K] [C
   exact ⟨⟨⟨⟨j, hi (by simp [hj])⟩, fun a b => hi (by simp [hj])⟩, hi (by simp [hj]), fun a b => hi (by simp [hj])⟩,
     RingHom.ext hj⟩
 
+/- English proof (translation)
+Take `⟨R, _, _, _, _, _, ρR, xR, φR, hg, hρR, hvalR, hfib, -, hw⟩` from `hM`. Take `⟨j, hj⟩` from `exists_ringHom hi io fun r : R => (hval _).2 ((hvalR _).1 ⟨r, rfl⟩)`. Establish `hjρ : j.comp ρR = ρ` using `RingHom.ext fun x => hi (by`. Rewrite using `[hρ, RingHom.comp_apply, ← RingHom.comp_apply (algebraMap V Fr), hj, RingHom.comp_apply, ← RingHom.comp_apply (algebraMap R K), hρR])`. Establish `hG : IsGrpPullback xR.P.A B.A (spMap ρR) φR` using `hfib.1`.
+
+Establish `n : IsGrpPullback DV.P.A B.A (spMap j ≫ spMap ρR) ψ` using `hψ.congr (by rw [spMap_comp_spMap]; exact congrArg spMap hjρ.symm) rfl`. Establish `sq : ψ ≫ B.A.hom = (DV.P.A.hom ≫ spMap j) ≫ spMap ρR` using `n.1.w.trans (Category.assoc _ _ _).symm`. Establish `e₁` using `hG.1.lift_fst _ _ sq`. Establish `e₂` using `hG.1.lift_snd _ _ sq`. Generalize the expression as in `hG.1.lift _ _ sq = ψ' at e₁ e₂`.
+
+Establish `hψ' : IsGrpPullback DV.P.A xR.P.A (spMap j) ψ'` using `hG.cancel (e₁ ▸ n) e₂`. Establish `eK : DF.P.g = D.P.g` using `g_eq pK`. Establish `eV : DF.P.g = DV.P.g` using `g_eq pw`. Establish `eR : DV.P.g = xR.P.g` using `eV.symm.trans (eK.trans hg.symm)`. Use `D.P.isAb.comm` as an intermediate fact.
+
+Use `DV.P.isAb.comm` as an intermediate fact. Use `DF.P.isAb.comm` as an intermediate fact. Use `xR.P.isAb.comm` as an intermediate fact. Take `⟨vV, hvV, eVv⟩` from `exists_isLieBasis_baseChange R V j _ _ ψ' hψ' xR.P.isAb.smooth _ _ (isLieBasis_cast eR xR.basis)`. Take `⟨v₁, hv₁, ev₁⟩` from `exists_isLieBasis_baseChange V Fr _ _ _ (prj pw) (pull_grp pw) DV.P.isAb.smooth _ _ (isLieBasis_cast eV hvV)`.
+
+Take `⟨v₂, hv₂, ev₂⟩` from `exists_isLieBasis_baseChange K Fr _ _ _ (prj pK) (pull_grp pK) D.P.isAb.smooth _ _ (isLieBasis_cast eK hv)`. Establish `gF : 1 ≤ DF.P.g` using `eK ▸ g₀`. Use `⟨⟨DF.P, gF, DF.rig, DF.rig_gen, th₂, ArcQBC.thNZ_of_thBC pK h₂ n₀, v₂, hv₂⟩, keyPB_of_pull pK h₂ ev₂, th₁, ArcQBC.thNZ_of_thBC pw h₁ nw, v₁, hv₁, (M.submatrix (Fin.cast eK) (Fin.cast eK)).map io, ⟨DV.P, eV ▸ gF, DV.rig, DV.rig_gen, thw, nw, vV, hvV⟩, fun i => ?_, fun i => ?_, ?_, …` and prove the remaining obligations. Use `show th₁.f i = constFn DF.P.A.hom _ gm⁻¹ * th₂.f i`. Rewrite using `[hm i, ← _root_.mul_assoc, ← KeyPow.constFn_mul, inv_mul_cancel₀ hgm, KeyPow.constFn_one, _root_.one_mul]`.
+
+Take `⟨wK, hwK, hwK'⟩` from `hw (i.cast eK)`. Use `(lieComb_baseChange K Fr io _ _ (prj pK) (pull_grp pK) _ _ wK _ v₂ (v₁ i) ev₂ (isLieComb_cast eK hwK)).1 (hφ.1.hom_ext ?_ ?_)` and prove the remaining obligations. Establish `hd : Formalism.L2.Pj.dualMap (algebraMap R K) = Chart.dualMapR (algebraMap R K)` using `rfl`. Rewrite using `[Category.assoc, ← hc, ← Category.assoc, ev₁, ← e₁, Category.assoc, ← Category.assoc (vV _).left, eVv, Category.assoc, Category.assoc, hwK', hd, ← Category.assoc, ← Category.assoc (spMap (Chart.dualMapR io)), dual_comp, dual_comp, hj]`. Both sides reduce to the same expression.
+
+Rewrite using `[Category.assoc, (pull_grp pK).1.w, ← Category.assoc, Over.w, Category.assoc, Over.w]`. Conclude with `(LieCombBaseChange.dualMap_over io).symm`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `congrArg io (Matrix.det_submatrix_equiv_self (finCongr eK) M)`.
+-/
 theorem exists_keyIntegral {K : Type} [Field K] [NumberField K] {w : HeightOneSpectrum (𝓞 K)} {V Fr : Type} [CommRing V]
     [IsDomain V] [Field Fr] [Algebra V Fr] (hi : Function.Injective (algebraMap V Fr)) {io : K →+* Fr}
     (hval : ∀ y : K, io y ∈ Set.range (algebraMap V Fr) ↔ w.valuation K y ≤ 1)
@@ -150,6 +193,11 @@ theorem exists_keyIntegral {K : Type} [Field K] [NumberField K] {w : HeightOneSp
   · rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
     exact congrArg io (Matrix.det_submatrix_equiv_self (finCongr eK) M)
 
+/- English proof (translation)
+Introduce `_ E _ _ _ H Dw l Xo c K₁ _ _ _ d n' La c₁ s w Tv io Wl M ρ ψ hO hρ hψ hc _ hgm`. Take `⟨-, -, -, hB, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hloc, -, hmod⟩` from `s.good`. Take `⟨N, hN, hL⟩` from `hmod w`. Take `⟨th₁, th₂, h₁, h₂, hm⟩` from `M.th_tie`. Establish `hval` using `mem_range_iff hO`.
+
+Take `⟨x', hPB, hInt⟩` from `exists_keyIntegral (IsFractionRing.injective Tv.V Tv.Fr) hval M.pw M.pK hgm M.thw_nz h₁ h₂ hm hB.1 hρ hψ.2.1 hc hN`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, ca, _, _, _, -, -, -, -, -, hca, -⟩` from `hloc w`. Take `⟨u, hu⟩` from `KeyVal.integral_section_unit K₁ _ _ _ w (hloc w) Tv.V Tv.Fr io x' _ _ ca N.det 1 hval hPB hInt hL (by simp) hca`. Conclude with `vV_eq_neg_count hO hca u hu`.
+-/
 theorem vV_gamma : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (n' : ℕ) (La c₁ : ℝ) (s : CMIn d.a d.e d.th d.jj n' La c₁) (w : HeightOneSpectrum (𝓞 K₁)) (Tv : CDVR) (io : K₁ →+* Tv.Fr) (Wl : ValuationSubring ℂ) (M : IntModel d Tv io Wl) (ρ : 𝓞 K₁ →+* Tv.V) (ψ : M.aw.D₀.P.A.left ⟶ s.B.A.left), OverLa w Tv.V io 1 → (∀ x, algebraMap Tv.V Tv.Fr (ρ x) = io (x : K₁)) → IsPolFibre ρ s.B M.aw.D₀.P ψ → prj M.pw ≫ ψ = prj M.pK ≫ s.φB → TauCan M.aw.D₀ n' → M.γ ≠ 0 → vV Tv.V M.γ = -FractionalIdeal.count K₁ w s.Tl.I := by
   intro _ E _ _ _ H Dw l Xo c K₁ _ _ _ d n' La c₁ s w Tv io Wl M ρ ψ hO hρ hψ hc _ hgm
   obtain ⟨-, -, -, hB, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hloc, -, hmod⟩ := s.good

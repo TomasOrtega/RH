@@ -9,6 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.ArchFromLit
 
+/- English proof (translation)
+Introduce `hLoc hAut hL`. Conclude with `{ pht := GlobalTheory.PhtCompare.phtCmp lp := GlobalTheory.T.column_twisted_args_first hAut.art hLoc.chev hLoc.brauer hLoc.conv hLoc.exh hLoc.cos hLoc.bz hL cg := GlobalTheory.T.column_twisted_args_second hL hAut.fin hAut.js.1 hAut.cusp }`.
+-/
 theorem archCmp_of_lit : LitLoc → LitAut → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, ArchCmp hL := by
   intro hLoc hAut hL
   exact

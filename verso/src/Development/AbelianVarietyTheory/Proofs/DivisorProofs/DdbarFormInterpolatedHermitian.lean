@@ -8,6 +8,13 @@ noncomputable section
 
 namespace GlobalTheory.InterpCurv
 
+/- English proof (translation)
+Establish `hfg : ContDiffAt ℝ 2 (fun x => f x * g x) z` using `hf.mul hg`. Establish `hf1 : ∀ᶠ x in 𝓝 z, DifferentiableAt ℝ f x` using `(hf.eventually (by simp)).mono fun x hx => hx.differentiableAt two_ne_zero`. Establish `hg1 : ∀ᶠ x in 𝓝 z, DifferentiableAt ℝ g x` using `(hg.eventually (by simp)).mono fun x hx => hx.differentiableAt two_ne_zero`. Establish `he : (fun x => dbar (fun y => f y * g y) x η) =ᶠ[𝓝 z] fun x => f x * dbar g x η + dbar f x η * g x` using `by filter_upwards [hf1, hg1] with x h1 h2`. Conclude with `dbar_mul h1 h2 η`.
+
+Establish `df : DifferentiableAt ℝ f z` using `hf.differentiableAt two_ne_zero`. Establish `dg : DifferentiableAt ℝ g z` using `hg.differentiableAt two_ne_zero`. Establish `dgb` using `differentiableAt_dbar_apply hg η`. Establish `dfb` using `differentiableAt_dbar_apply hf η`. Rewrite using `[ddbar_eq_del_dbar hfg, del_congr he, del_add (df.fun_mul dgb) (dfb.fun_mul dg), ContinuousLinearMap.add_apply, del_mul df dgb, del_mul dfb dg, ← ddbar_eq_del_dbar hg, ← ddbar_eq_del_dbar hf]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ddbar_mul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E] {f g : E → ℂ} {z : E} (hf : ContDiffAt ℝ 2 f z)
     (hg : ContDiffAt ℝ 2 g z) (ξ η : E) :
@@ -35,12 +42,18 @@ section Frame
 
 variable {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Simplify using `only [form_eq_sum]`. Conclude with `ContDiffAt.sum fun a _ => ContDiffAt.sum fun b _ => (contDiffAt_const.mul (h a b)).mul contDiffAt_const`.
+-/
 theorem contDiffAt_form {k : WithTop ℕ∞} {H : (ι → ℂ) → Matrix n n ℂ} {z : ι → ℂ}
     (h : MContDiffAt k H z) (v w : n → ℂ) : ContDiffAt ℝ k (fun x => form (H x) v w) z := by
   simp only [form_eq_sum]
   exact ContDiffAt.sum fun a _ => ContDiffAt.sum fun b _ =>
     (contDiffAt_const.mul (h a b)).mul contDiffAt_const
 
+/- English proof (translation)
+Establish `h0 : (fun a => dbar (fun _ : ι → ℂ => v a) z ξ) = 0` using `by funext a; simp`. Establish `h1 : (fun a => del (fun _ : ι → ℂ => v a) z ξ) = 0` using `by funext a; simp`. Rewrite using `[del_form (s := fun _ => v) (t := fun _ => v) h hu (fun _ => contDiffAt_const) (fun _ => contDiffAt_const) ξ, covDel, h1, zero_add, h0]`. Simplify using `[form]`.
+-/
 theorem del_form_const {H : (ι → ℂ) → Matrix n n ℂ} {z : ι → ℂ} (h : MContDiffAt 1 H z)
     (hu : IsUnit (H z).det) (ξ : ι → ℂ) (v : n → ℂ) :
     del (fun x => form (H x) v v) z ξ = form (H z) (conn H z ξ *ᵥ v) v := by
@@ -50,6 +63,9 @@ theorem del_form_const {H : (ι → ℂ) → Matrix n n ℂ} {z : ι → ℂ} (h
     (fun _ => contDiffAt_const) ξ, covDel, h1, zero_add, h0]
   simp [form]
 
+/- English proof (translation)
+Establish `he : (fun x => form (H x) v v) =ᶠ[𝓝 z] fun x => starRingEnd ℂ (form (H x) v v)` using `hh.mono fun x hx => (conj_form hx v v).symm`. Rewrite using `[dbar_congr he, dbar_conj, del_form_const h hu, conj_form hh.self_of_nhds]`.
+-/
 theorem dbar_form_const {H : (ι → ℂ) → Matrix n n ℂ} {z : ι → ℂ} (h : MContDiffAt 1 H z)
     (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian) (hu : IsUnit (H z).det) (ξ : ι → ℂ) (v : n → ℂ) :
     dbar (fun x => form (H x) v v) z ξ = form (H z) v (conn H z ξ *ᵥ v) := by
@@ -57,6 +73,17 @@ theorem dbar_form_const {H : (ι → ℂ) → Matrix n n ℂ} {z : ι → ℂ} (
     hh.mono fun x hx => (conj_form hx v v).symm
   rw [dbar_congr he, dbar_conj, del_form_const h hu, conj_form hh.self_of_nhds]
 
+/- English proof (translation)
+Establish `hV : (fun x => form (interp H₀ H s x) v v) = fun x => ((1 - s x : ℝ) : ℂ) * form (H₀ x) v v + (s x : ℂ) * form (H x) v v`. Use function extensionality and compare the values at `x`. Simplify using `only [interp, form_add, form_smul]`. Establish `ht : ContDiffAt ℝ 2 (fun x => ((1 - s x : ℝ) : ℂ)) z` using `contDiffAt_ofReal_comp (contDiffAt_const.sub hs)`. Establish `hσ : ContDiffAt ℝ 2 (fun x => (s x : ℂ)) z` using `contDiffAt_ofReal_comp hs`.
+
+Establish `ha` using `contDiffAt_form hH₀ v v`. Establish `hb` using `contDiffAt_form hH v v`. Establish `h1 : ddbar (fun x => ((1 - s x : ℝ) : ℂ)) z ξ ξ = -leviForm s z ξ ξ`. Express the relevant statement in the definitionally equal form `leviForm (fun x => 1 - s x) z ξ ξ = _`. Rewrite using `[leviForm_sub contDiffAt_const hs, leviForm_const]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : del (fun x => ((1 - s x : ℝ) : ℂ)) z ξ = -del (fun x => (s x : ℂ)) z ξ`. Establish `: (fun x => ((1 - s x : ℝ) : ℂ)) = fun x => 1 - (s x : ℂ)` using `by funext x; push_cast; rfl`. Rewrite using `[this, del_sub (differentiableAt_const _) (hσ.differentiableAt two_ne_zero)]`. Simplify using the standard rewrite rules.
+
+Establish `h3 : dbar (fun x => ((1 - s x : ℝ) : ℂ)) z ξ = -starRingEnd ℂ (del (fun x => (s x : ℂ)) z ξ)`. Rewrite using `[dbar_ofReal, h2, map_neg]`. Establish `h4 : dbar (fun x => (s x : ℂ)) z ξ = starRingEnd ℂ (del (fun x => (s x : ℂ)) z ξ)` using `dbar_ofReal _ _ _`. Establish `h5 : ddbar (fun x => (s x : ℂ)) z ξ ξ = leviForm s z ξ ξ` using `rfl`. Establish `h1'` using `hH₀.of_le one_le_two`.
+
+Establish `h1''` using `hH.of_le one_le_two`. Rewrite using `[hV, ddbar_add (ht.mul ha) (hσ.mul hb), ContinuousLinearMap.add_apply, ContinuousLinearMap.add_apply, ddbar_mul ht ha, ddbar_mul hσ hb, h1, h2, h3, h4, h5, del_form_const h1' hu₀, del_form_const h1'' hu, dbar_form_const h1' hh₀ hu₀, dbar_form_const h1'' hh hu]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ddbar_form_interp {H₀ H : (ι → ℂ) → Matrix n n ℂ} {s : (ι → ℂ) → ℝ} {z : ι → ℂ}
     (hH₀ : MContDiffAt 2 H₀ z) (hH : MContDiffAt 2 H z) (hs : ContDiffAt ℝ 2 s z)
     (hh₀ : ∀ᶠ x in 𝓝 z, (H₀ x).IsHermitian) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian)

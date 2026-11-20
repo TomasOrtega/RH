@@ -41,6 +41,9 @@ def SeriesUnit : Prop := AtTw fun Fm x hx i p w j => ∀ (ρ ρ' : Setup (Fm.D x
       rdAt p w j hρ' ν' f' = ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P →
       ∃ u : FractionRing ((Fm.D x i).ntw.O ((Fm.ex x hx i).nch.twI w)), (∃ n : ℕ, n ≠ 0 ∧ u ^ n = 1) ∧ f' = u • f
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span hy`. Consider the case `zero => exact zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `smul a y _ h => exact Submodule.smul_mem _ (⟨a, hO a.2⟩ : O') h`.
+-/
 theorem span_mono_subring {M : Type} [AddCommGroup M] [Module ℂ M] {O O' : Subring ℂ} (hO : O ≤ O') (S : Set M) {x : M}
     (hx : x ∈ Submodule.span O S) : x ∈ Submodule.span O' S := by
   induction hx using Submodule.span_induction with
@@ -49,16 +52,25 @@ theorem span_mono_subring {M : Type} [AddCommGroup M] [Module ℂ M] {O O' : Sub
   | add _ _ _ _ h1 h2 => exact add_mem h1 h2
   | smul a y _ h => exact Submodule.smul_mem _ (⟨a, hO a.2⟩ : O') h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hP.1, span_mono_subring hO _ hP.2⟩`.
+-/
 theorem lat_mono {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (ρ : Setup X) (i : X.Tw) (j : Fin D.R.m)
     (b : Bool) {O O' : Subring ℂ} (hO : O ≤ O') (h : GA D (Vc D j)) {P : PolF D (Wc D j).rank (Vc D j).rank}
     (hP : P ∈ ρ.lat i j b O h) : P ∈ ρ.lat i j b O' h :=
   ⟨hP.1, span_mono_subring hO _ hP.2⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(hρ.isCoefRing i b).int a`.
+-/
 theorem smallInt_le {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} {ρ : Setup X} (hρ : ρ.Good) (i : X.Tw)
     (b : Bool) : smallInt D ≤ (ρ.eO i b).range := by
   rintro _ ⟨a, rfl⟩
   exact (hρ.isCoefRing i b).int a
 
+/- English proof (translation)
+Establish `h1 : IsIntegral O (u⁻¹ ^ n)` using `by rw [inv_pow, hu, inv_one]; exact isIntegral_one`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 (IsIntegral.of_pow (Nat.pos_of_ne_zero hn) h1)`.
+-/
 theorem exists_inv_of_root {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (u : FractionRing O) (n : ℕ) (hn : n ≠ 0)
     (hu : u ^ n = 1) : ∃ o : O, algebraMap O (FractionRing O) o = u⁻¹ := by
   have h1 : IsIntegral O (u⁻¹ ^ n) := by rw [inv_pow, hu, inv_one]; exact isIntegral_one

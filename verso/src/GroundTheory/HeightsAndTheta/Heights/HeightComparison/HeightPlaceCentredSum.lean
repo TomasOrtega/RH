@@ -14,6 +14,9 @@ def PlaceCentredSum.Statement : Prop :=
       Module.finrank L K *
         ∑ᶠ w ∈ {w : FinitePlace L | AbsCentredAt O m fun u ↦ w u}, -Real.log (w t)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+-/
 example : NumberField ℚ ∧ NumberField (CyclotomicField 4 ℚ) := ⟨inferInstance, inferInstance⟩
 
 end GroundTheory.Heights₂.Heights

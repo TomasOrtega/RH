@@ -6,6 +6,9 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp.PSplit
 
+/- English proof (translation)
+Take `rfl : q = fun i => ¬ p i` from `funext fun i => propext (hq i)`. Use `(volume_preserving_piEquivPiSubtypeProd (fun _ : ι => α) p).symm` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | (congr <;> exact Subsingleton.elim _ _)`.
+-/
 theorem mp_merge {ι α : Type} [Fintype ι] [MeasureSpace α] [SigmaFinite (volume : Measure α)]
     (p q : ι → Prop) [DecidablePred p] [Fintype {i // p i}] [Fintype {i // q i}]
     (hq : ∀ i, q i ↔ ¬ p i) :
@@ -16,6 +19,11 @@ theorem mp_merge {ι α : Type} [Fintype ι] [MeasureSpace α] [SigmaFinite (vol
   convert this using 1
   all_goals first | rfl | (congr <;> exact Subsingleton.elim _ _)
 
+/- English proof (translation)
+Establish `h1` using `measurePreserving_prodAssoc (volume : Measure A) (volume : Measure B) (volume : Measure (C × D))`. Establish `h2` using `(MeasurePreserving.id (volume : Measure A)).prod (measurePreserving_prodAssoc (volume : Measure B) (volume : Measure C) (volume : Measure D)).symm`. Establish `h3` using `(MeasurePreserving.id (volume : Measure A)).prod ((Measure.measurePreserving_swap (μ := (volume : Measure B)) (ν := (volume : Measure C))).prod (MeasurePreserving.id (volume : Measure D)))`. Establish `h4` using `(MeasurePreserving.id (volume : Measure A)).prod (measurePreserving_prodAssoc (volume : Measure C) (volume : Measure B) (volume : Measure D))`. Establish `h5` using `(measurePreserving_prodAssoc (volume : Measure A) (volume : Measure C) (volume : Measure (B × D))).symm`.
+
+Conclude with `h5.comp (h4.comp (h3.comp (h2.comp h1)))`.
+-/
 theorem mp_comm {A B C D : Type} [MeasureSpace A] [MeasureSpace B] [MeasureSpace C]
     [MeasureSpace D] [SFinite (volume : Measure A)] [SFinite (volume : Measure B)]
     [SFinite (volume : Measure C)] [SFinite (volume : Measure D)] :
@@ -36,6 +44,11 @@ theorem mp_comm {A B C D : Type} [MeasureSpace A] [MeasureSpace B] [MeasureSpace
     (volume : Measure (B × D))).symm
   exact h5.comp (h4.comp (h3.comp (h2.comp h1)))
 
+/- English proof (translation)
+Establish `hG : Measurable (fun x : (A × C) × T => F ((x.1.1, x.1.2 + c (x.1.1, x.2)), x.2))`. Apply `hF.comp` to reduce the goal to its premises. Use `fun_prop`. Rewrite using `[lintegral_lintegral_swap (f := fun (y : A × C) (t : T) => F ((y.1, y.2 + c (y.1, t)), t)) hG.aemeasurable, Measure.volume_eq_prod, lintegral_prod_symm _ hF.aemeasurable]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations.
+
+Rewrite using `[Measure.volume_eq_prod, lintegral_prod _ (Measurable.aemeasurable (by fun_prop)), lintegral_prod (fun y : A × C => F ((y.1, y.2 + c (y.1, t)), t)) (Measurable.aemeasurable (hG.comp (f := fun y : A × C => (y, t)) (by fun_prop)))]`. Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Conclude with `(lintegral_add_right_eq_self (fun s => F ((a, s), t)) (c (a, t))).symm`.
+-/
 theorem lintegral_shift {A C T : Type} [MeasureSpace A] [MeasureSpace C] [MeasureSpace T]
     [SFinite (volume : Measure A)] [SFinite (volume : Measure C)] [SFinite (volume : Measure T)]
     [AddGroup C] [MeasurableAdd₂ C] [Measure.IsAddRightInvariant (volume : Measure C)]
@@ -53,18 +66,30 @@ theorem lintegral_shift {A C T : Type} [MeasureSpace A] [MeasureSpace C] [Measur
   refine lintegral_congr fun a => ?_
   exact (lintegral_add_right_eq_self (fun s => F ((a, s), t)) (c (a, t))).symm
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem sf_pair (ι κ : Type) [Fintype ι] [Fintype κ] :
     SFinite (volume : Measure ((ι → ℂ) × (κ → ℝ))) := inferInstance
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem sf_rows (ι κ : Type) [Fintype ι] [Fintype κ] :
     SFinite (volume : Measure (ι → κ → ℂ)) := inferInstance
 
+/- English proof (translation)
+Use `sf_pair κ κ'` as an intermediate fact. Use `sf_rows ι ι'` as an intermediate fact. Conclude with `Measure.prod.instSFinite`.
+-/
 theorem sf_triple (ι ι' κ κ' : Type) [Fintype ι] [Fintype κ] [Fintype ι'] [Fintype κ'] :
     SFinite (volume : Measure ((ι → ι' → ℂ) × (κ → ℂ) × (κ' → ℝ))) := by
   have := sf_pair κ κ'
   have := sf_rows ι ι'
   exact Measure.prod.instSFinite
 
+/- English proof (translation)
+The claim follows from `Measure.prod.instIsAddRightInvariant`.
+-/
 theorem inv_pair (ι κ : Type) [Fintype ι] [Fintype κ] :
     Measure.IsAddRightInvariant (volume : Measure ((ι → ℂ) × (κ → ℝ))) :=
   Measure.prod.instIsAddRightInvariant
@@ -74,6 +99,11 @@ def merge (k r j : ℕ) (x : PSec k r j × PTop k r j) : PPar k r :=
    fun p => if h : (p.1.1 : ℕ) < j then x.1.2.1 ⟨p, h⟩ else x.2.2.1 ⟨p, not_lt.1 h⟩,
    fun a => if h : (a : ℕ) < j then x.1.2.2 ⟨a, h⟩ else x.2.2.2 ⟨a, not_lt.1 h⟩)
 
+/- English proof (translation)
+Establish `h1` using `mp_merge (α := Fin (k + 1) → ℂ) (fun a : Fin r => (a : ℕ) < j) (fun a : Fin r => j ≤ (a : ℕ)) (fun _ => not_lt.symm)`. Establish `h2` using `mp_merge (α := ℂ) (fun p : UT r => (p.1.1 : ℕ) < j) (fun p : UT r => j ≤ (p.1.1 : ℕ)) (fun _ => not_lt.symm)`. Establish `h3` using `mp_merge (α := ℝ) (fun a : Fin r => (a : ℕ) < j) (fun a : Fin r => j ≤ (a : ℕ)) (fun _ => not_lt.symm)`. Use `sf_pair {p : UT r // (p.1.1 : ℕ) < j} {a : Fin r // (a : ℕ) < j}` as an intermediate fact. Use `sf_pair {p : UT r // j ≤ (p.1.1 : ℕ)} {a : Fin r // j ≤ (a : ℕ)}` as an intermediate fact.
+
+Use `sf_pair (UT r) (Fin r)` as an intermediate fact. Establish `h4` using `(h2.prod h3).comp mp_comm`. Establish `h5` using `@MeasurePreserving.prod _ _ _ _ _ _ _ _ _ _ _ _ Measure.prod.instSFinite Measure.prod.instSFinite _ _ h1 h4`. Conclude with `h5.comp mp_comm`.
+-/
 theorem mp_mergeP (k r j : ℕ) : MeasurePreserving (merge k r j) volume volume := by
   have h1 := mp_merge (α := Fin (k + 1) → ℂ) (fun a : Fin r => (a : ℕ) < j)
     (fun a : Fin r => j ≤ (a : ℕ)) (fun _ => not_lt.symm)
@@ -89,6 +119,9 @@ theorem mp_mergeP (k r j : ℕ) : MeasurePreserving (merge k r j) volume volume 
     Measure.prod.instSFinite _ _ h1 h4
   exact h5.comp mp_comm
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun i' => ?_` and prove the remaining obligations. Simplify using `only [pOf, pEl, skewM, Rad.herm_Hb]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+-/
 theorem cont_pOf (k r : ℕ) : Continuous (fun q : PPar k r => (fun a b => pOf k r q a b : Mt k r)) := by
   refine continuous_pi fun i => continuous_pi fun i' => ?_
   simp only [pOf, pEl, skewM, Rad.herm_Hb]
@@ -100,17 +133,39 @@ noncomputable def shift (k r j : ℕ)
   (fun p => if h : j ≤ (p.1.1.2 : ℕ) then
       herm (Hb k) (x.2.1 ⟨p.1.1.2, h⟩) (x.1 ⟨p.1.1.1, p.2⟩) / 2 else 0, 0)
 
+/- English proof (translation)
+Use `Measurable.prodMk (measurable_pi_lambda _ fun p => ?_) measurable_const` and prove the remaining obligations. Simplify using `only [Rad.herm_Hb]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+-/
 theorem meas_shift (k r j : ℕ) : Measurable (shift k r j) := by
   refine Measurable.prodMk (measurable_pi_lambda _ fun p => ?_) measurable_const
   simp only [Rad.herm_Hb]
   split_ifs <;> fun_prop
 
+/- English proof (translation)
+Simplify using `[Rad.herm_Hb]`.
+-/
 theorem herm_zero_left {k : ℕ} (w : Fin (k + 1) → ℂ) : herm (Hb k) 0 w = 0 := by
   simp [Rad.herm_Hb]
 
+/- English proof (translation)
+Simplify using `[Rad.herm_Hb]`.
+-/
 theorem herm_zero_right {k : ℕ} (w : Fin (k + 1) → ℂ) : herm (Hb k) w 0 = 0 := by
   simp [Rad.herm_Hb]
 
+/- English proof (translation)
+Simplify using `only [pTop, pSec, pOf, Rad.pEl_mul, merge]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `h : (a : ℕ) < j`. Simplify using `[h, not_le.2 h]`.
+
+Simplify using `[h, not_lt.1 h]`. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.of_apply, skewM, shift]`. Apply the tactic sequence `by_cases ha : (a : ℕ) < j <;> by_cases hb : (b : ℕ) < j`. Establish `ha'` using `not_le.2 ha`.
+
+Establish `hb'` using `not_le.2 hb`. Simplify using `[ha, hb, ha', hb', herm_zero_left, herm_zero_right]`. Establish `ha'` using `not_le.2 ha`. Establish `hb'` using `not_lt.1 hb`. Establish `hab : a < b` using `by rw [Fin.lt_def]; omega`.
+
+Simplify using `[ha, hb, ha', hb', hab, herm_zero_left]`. Establish `ha'` using `not_lt.1 ha`. Establish `hb'` using `not_le.2 hb`. Establish `hab : b < a` using `by rw [Fin.lt_def]; omega`. Simplify using `[ha, hb, ha', hb', hab, hab.not_gt, herm_zero_left]`.
+
+Rewrite using `[← Rad.herm_star]`. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `ha'` using `not_lt.1 ha`. Establish `hb'` using `not_lt.1 hb`.
+
+Simplify using `[ha, hb, ha', hb', herm_zero_left, herm_zero_right]`.
+-/
 theorem mul_eq (k r j : ℕ) (q' : PSec k r j) (q : PTop k r j) :
     pTop k r j q * pSec k r j q' =
       pOf k r (merge k r j ((q'.1, q'.2 + shift k r j (q'.1, q)), q)) := by
@@ -141,6 +196,11 @@ theorem mul_eq (k r j : ℕ) (q' : PSec k r j) (q : PTop k r j) :
       have hb' := not_lt.1 hb
       simp [ha, hb, ha', hb', herm_zero_left, herm_zero_right]
 
+/- English proof (translation)
+Establish `hg : Measurable (fun q : PPar k r => f (pOf k r q))` using `hf.comp (f := fun q : PPar k r => (fun a b => pOf k r q a b : Mt k r)) (cont_pOf k r).measurable`. Use `sf_pair {p : UT r // (p.1.1 : ℕ) < j} {a : Fin r // (a : ℕ) < j}` as an intermediate fact. Use `sf_triple {a : Fin r // j ≤ (a : ℕ)} (Fin (k + 1)) {p : UT r // j ≤ (p.1.1 : ℕ)} {a : Fin r // j ≤ (a : ℕ)}` as an intermediate fact. Use `inv_pair {p : UT r // (p.1.1 : ℕ) < j} {a : Fin r // (a : ℕ) < j}` as an intermediate fact. Rewrite using `[← (mp_mergeP k r j).lintegral_comp hg, lintegral_shift (fun x => f (pOf k r (merge k r j x))) (hg.comp (mp_mergeP k r j).measurable) _ (meas_shift k r j)]`.
+
+Simplify using `only [mul_eq]`.
+-/
 theorem lintegral_split (k r j : ℕ) (f : Mat k r → ℝ≥0∞)
     (hf : Measurable (fun x : Mt k r => f (Matrix.of x))) :
     ∫⁻ q : PPar k r, f (pOf k r q) =

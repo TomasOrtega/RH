@@ -18,6 +18,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.Adeli
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.FiniteAdelicPoints.exists_functional_pure`. Consider the case `exact _root_.GlobalTheory.FiniteAdelicPoints.exists_functional_pure`. Consider the case `(apply _root_.GlobalTheory.FiniteAdelicPoints.exists_functional_pure <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FiniteAdelicPoints.exists_functional_pure <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.FiniteAdelicPoints.exists_functional_pure <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FiniteAdelicPoints.exists_functional_pure ..)`.
+-/
 theorem exists_sep (vac : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ)
     (hstd : ∀ᶠ v in Filter.cofinite, vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
     (lam : SInf F κ →ₗ[ℂ] ℂ) (l : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] ℂ)
@@ -32,6 +37,21 @@ theorem exists_sep (vac : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTe
   | (intros; apply @_root_.GlobalTheory.FiniteAdelicPoints.exists_functional_pure <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.FiniteAdelicPoints.exists_functional_pure ..)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d Y Z M ψ hM P _ _ pr N _ _ pv s hs`. Set `b` to `Module.Free.chooseBasis ℂ P`. Establish `hsep : ∀ (i : Module.Free.ChooseBasisIndex ℂ P) (l : GlobalTheory.SmallThetaModules.AdmFun s), ∃ Λ : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ, ∀ (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)) (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.We …`. Introduce `i l`. Use `exists_sep M.vac hM.std ((b.coord i).comp pr) (fun v => (l.1 v).comp (pv v)) ?_` and prove the remaining obligations.
+
+Use `((Filter.eventually_cofinite.1 hs).union l.2).subset fun v hv => ?_` and prove the remaining obligations. Distinguish the cases in `e : pv v (M.vac v) = s v`. Use `right`. Simplify using `only [Set.mem_setOf_eq, LinearMap.comp_apply, e] at hv ⊢`. Conclude with `hv`.
+
+Use `left`. Conclude with `e`. Use `choose Λ hΛ using hsep`. Set `ι' : P ⊗[ℂ] GlobalTheory.SmallThetaModules.RTens s →ₗ[ℂ] (Module.Free.ChooseBasisIndex ℂ P → GlobalTheory.SmallThetaModules.AdmFun s → ℂ)` to `(LinearMap.compLeft (GlobalTheory.SmallThetaModules.RTens s).subtype _) ∘ₗ Finsupp.lcoeFun ∘ₗ (TensorProduct.equivFinsuppOfBasisLeft b).toLinearMap`. Establish `hinj : Function.Injective ι'`.
+
+Introduce `t t' h`. Apply `(TensorProduct.equivFinsuppOfBasisLeft b).injective` to reduce the goal to its premises. Use extensionality with `i : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrFun h i`.
+
+Take `⟨r, hr⟩` from `ι'.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨r ∘ₗ LinearMap.pi (fun i => LinearMap.pi (fun l => Λ i l)), fun f φ _ hφ => ?_⟩` and prove the remaining obligations. Establish `hR : Formalism.MainNotions.KudlaSiegelWeil.Restr s (fun v => pv v (φ v))`. Use `((Filter.eventually_cofinite.1 hφ).union (Filter.eventually_cofinite.1 hs)).subset fun v hv => ?_` and prove the remaining obligations. Distinguish the cases in `e : φ v = M.vac v`.
+
+Use `right`. Simplify using `only [Set.mem_setOf_eq, e] at hv ⊢`. Conclude with `hv`. Use `left`. Conclude with `e`.
+
+Establish `h1 : LinearMap.pi (fun i => LinearMap.pi (fun l => Λ i l)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = ι' (pr f ⊗ₜ GlobalTheory.SmallThetaModules.pureT s (fun v => pv v (φ v)))`. Use function extensionality and compare the values at `i l`. Rewrite using `[LinearMap.pi_apply, LinearMap.pi_apply, hΛ i l f φ hφ]`. Simplify using `only [ι', LinearMap.comp_apply, LinearEquiv.coe_coe, Finsupp.lcoeFun_apply, LinearMap.compLeft_apply, Function.comp_apply, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply, Submodule.subtype_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, GlobalTheory.SmallThetaModul …`. Rewrite using `[LinearMap.comp_apply, h1, ← LinearMap.comp_apply, hr, LinearMap.id_apply]`.
+-/
 theorem exists_pureLift : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n d : ℕ}
     (Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Z) (ψ : AddChar (AF F) ℂ),
     M.IsGood ψ → ∀ (P : Type) [AddCommGroup P] [Module ℂ P] (pr : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d) →ₗ[ℂ] P)

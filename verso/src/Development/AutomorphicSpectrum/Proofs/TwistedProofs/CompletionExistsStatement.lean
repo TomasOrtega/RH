@@ -3,5 +3,8 @@ import Development.AutomorphicSpectrum.Proofs.TwistedProofs.CompletionExists
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLenOfLatLen
 open GlobalTheory.InertZeta
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.InertDoubling.completion | exact GlobalTheory.CompanionTheory.InertDoubling.completion | (intros; apply GlobalTheory.CompanionTheory.InertDoubling.completion <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.completion_exists : Completion := by
   first | exact @GlobalTheory.CompanionTheory.InertDoubling.completion | exact GlobalTheory.CompanionTheory.InertDoubling.completion | (intros; apply GlobalTheory.CompanionTheory.InertDoubling.completion <;> assumption)

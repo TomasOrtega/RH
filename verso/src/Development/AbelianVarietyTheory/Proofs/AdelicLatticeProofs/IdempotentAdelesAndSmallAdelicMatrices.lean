@@ -10,6 +10,13 @@ namespace GlobalTheory.UnRep.SmallMat
 
 open GlobalTheory.AdLat.Translate
 
+/- English proof (translation)
+Proceed by induction on `m using induction_on_primes with`. Consider the case `zero => exact absurd rfl hm`. Consider the case `one => exact ⟨1, 0, by simp, by simp⟩`. Consider the case `prime_mul p a hp ih`. Take `⟨t, k, ht, h⟩` from `ih (right_ne_zero_of_mul hm)`.
+
+Distinguish the cases in `hpN : p ∣ N`. Use `⟨t, k + 1, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', mul_assoc]`. Conclude with `mul_dvd_mul hpN h`. Use `⟨p * t, k, Nat.Coprime.mul_left ((Nat.Prime.coprime_iff_not_dvd hp).2 hpN) ht, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm]`. Conclude with `mul_dvd_mul_left p h`.
+-/
 theorem exists_dvd_pow_mul_coprime (N m : ℕ) (hm : m ≠ 0) :
     ∃ t k : ℕ, t.Coprime N ∧ m ∣ N ^ k * t := by
   induction m using induction_on_primes with
@@ -27,6 +34,9 @@ theorem exists_dvd_pow_mul_coprime (N m : ℕ) (hm : m ≠ 0) :
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Use `⟨⟨fun v => if v ∈ S then 1 else 0, Filter.Eventually.of_forall fun v => ?_⟩, fun v hv => if_pos hv, fun v hv => if_neg hv⟩` and prove the remaining obligations. Use `beta_reduce`. Use `split_ifs`. Conclude with `one_mem (v.adicCompletionIntegers F)`. Conclude with `zero_mem (v.adicCompletionIntegers F)`.
+-/
 theorem exists_indicator (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ∃ e : FiniteAdeleRing (𝓞 F) F, (∀ v ∈ S, e v = 1) ∧ ∀ v ∉ S, e v = 0 := by
   classical
@@ -37,6 +47,15 @@ theorem exists_indicator (S : Finset (HeightOneSpectrum (𝓞 F))) :
   · exact one_mem (v.adicCompletionIntegers F)
   · exact zero_mem (v.adicCompletionIntegers F)
 
+/- English proof (translation)
+Take `⟨x, a, ha, rfl⟩` from `exists_eq_algebraMap_add_nsmul F 1 one_pos b`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ({x} : Finset F)`. Establish `hc : IsIntegral ℤ (y • x)` using `hy x (by simp)`. Establish `hc' : IsIntegral ℤ (y.natAbs • x)`. Break down `Int.natAbs_eq y with h | h` into its components or cases.
+
+Establish `: y.natAbs • x = y • x` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hc`. Establish `: y.natAbs • x = -(y • x)` using `by conv_rhs => rw [h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hc.neg`. Use `⟨y.natAbs, Int.natAbs_ne_zero.2 hy0, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← map_nsmul]`.
+
+Use `add_mem ?_ (nsmul_mem (nsmul_mem (ha v) 1) _)` and prove the remaining obligations. Conclude with `v.coe_mem_adicCompletionIntegers (K := F) (⟨y.natAbs • x, hc'⟩ : 𝓞 F)`.
+-/
 theorem exists_nsmul_integral (b : FiniteAdeleRing (𝓞 F) F) :
     ∃ m : ℕ, m ≠ 0 ∧ ∀ v, (m • b) v ∈ v.adicCompletionIntegers F := by
   obtain ⟨x, a, ha, rfl⟩ := exists_eq_algebraMap_add_nsmul F 1 one_pos b
@@ -57,6 +76,15 @@ theorem exists_nsmul_integral (b : FiniteAdeleRing (𝓞 F) F) :
   refine add_mem ?_ (nsmul_mem (nsmul_mem (ha v) 1) _)
   exact v.coe_mem_adicCompletionIntegers (K := F) (⟨y.natAbs • x, hc'⟩ : 𝓞 F)
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `exists_nsmul_integral b`. Take `⟨t, k, ht, c, hc⟩` from `exists_dvd_pow_mul_coprime N m hm`. Use `⟨t, ht, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t • b v ∈ _`. Distinguish the cases in `hv : (N : 𝓞 F) ∈ v.asIdeal`.
+
+Rewrite using `[hb v hv, smul_zero]`. Conclude with `zero_mem _`. Establish `h1 : c • (m • b v) ∈ v.adicCompletionIntegers F` using `nsmul_mem (h v) c`. Rewrite `h1` using `[smul_smul, mul_comm, ← hc, mul_smul, nsmul_eq_mul, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, Nat.cast_pow, map_pow]`. Establish `hN : Valued.v ((N : ℕ) : v.adicCompletion F) = 1`.
+
+Establish `h1` using `(v.valuation_eq_one_iff_notMem (K := F)).mpr hv`. Establish `h2` using `v.valuedAdicCompletion_eq_valuation' (K := F) ((N : ℕ) : F)`. Establish `h3 : (algebraMap F (v.adicCompletion F)) ((N : ℕ) : F) = ((N : ℕ) : v.adicCompletion F)` using `map_natCast _ _`. Rewrite using `[← h3]`. Establish `h4 : (((N : ℕ) : 𝓞 F) : F) = ((N : ℕ) : F)` using `map_natCast (algebraMap (𝓞 F) F) _`.
+
+Conclude with `h2.trans (h4 ▸ h1)`. Rewrite `h1` using `[hN, one_pow, one_mul]`. Conclude with `h1`.
+-/
 theorem exists_coprime_nsmul_integral (N : ℕ) (b : FiniteAdeleRing (𝓞 F) F)
     (hb : ∀ v : HeightOneSpectrum (𝓞 F), (N : 𝓞 F) ∈ v.asIdeal → b v = 0) :
     ∃ t : ℕ, t.Coprime N ∧ ∀ v, (t • b) v ∈ v.adicCompletionIntegers F := by
@@ -81,20 +109,44 @@ theorem exists_coprime_nsmul_integral (N : ℕ) (b : FiniteAdeleRing (𝓞 F) F)
     rw [hN, one_pow, one_mul] at h1
     exact h1
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[fm, TensorProduct.tmul_add]`.
+-/
 theorem fm_add (A B : Matrix (Fin n) (Fin n) E) : fm F (A + B) = fm F A + fm F B := by
   ext i j
   simp [fm, TensorProduct.tmul_add]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[fm]`.
+-/
 theorem fm_zero : fm F (0 : Matrix (Fin n) (Fin n) E) = 0 := by
   ext i j
   simp [fm]
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih => rw [succ_nsmul, succ_nsmul, TensorProduct.add_tmul, ih]`.
+-/
 theorem nsmul_tmul_one (d : ℕ) (a : FiniteAdeleRing (𝓞 F) F) :
     ((d • a) ⊗ₜ[F] (1 : E) : RA F E) = d • (a ⊗ₜ[F] (1 : E) : RA F E) := by
   induction d with
   | zero => simp
   | succ d ih => rw [succ_nsmul, succ_nsmul, TensorProduct.add_tmul, ih]
 
+/- English proof (translation)
+Set `P : Matrix (Fin n) (Fin n) (RA F E) → Prop` to `fun M => ∃ M₀ : Matrix (Fin n) (Fin n) E, ∀ z ∈ hat F S, ∃ w ∈ hat F S, (M - fm F M₀) *ᵥ z = D • w`. Establish `hadd : ∀ A B, P A → P B → P (A + B)`. Introduce and unpack `A B ⟨A₀, hA⟩ ⟨B₀, hB⟩`. Use `⟨A₀ + B₀, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hu'⟩` from `hA z hz`.
+
+Take `⟨w, hw, hw'⟩` from `hB z hz`. Use `⟨u + w, add_mem hu hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← hu', ← hw', ← Matrix.add_mulVec, fm_add, add_sub_add_comm]`. Establish `hzero : P 0` using `⟨0, fun z _ => ⟨0, zero_mem _, by simp [fm_zero]⟩⟩`. Establish `hgen : ∀ (a : FiniteAdeleRing (𝓞 F) F) (B : Matrix (Fin n) (Fin n) E), P ((a ⊗ₜ[F] (1 : E) : RA F E) • fm F B)`.
+
+Introduce `a B`. Take `⟨d, hd, hB⟩` from `hS (fm F B)`. Take `⟨r, a', ha', rfl⟩` from `exists_eq_algebraMap_add_nsmul F (D * d) (Nat.mul_pos hD hd) a`. Use `⟨r • B, fun z hz => ⟨_, hat_smul_int ha' (hB z hz), ?_⟩⟩` and prove the remaining obligations. Establish `h1 : fm F (r • B) = (algebraMap F (FiniteAdeleRing (𝓞 F) F) r ⊗ₜ[F] (1 : E) : RA F E) • fm F B`.
+
+Use extensionality with `i j`. Simplify using `only [fm, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Rewrite using `[h1, TensorProduct.add_tmul, add_smul, add_sub_cancel_left, Matrix.smul_mulVec, nsmul_tmul_one, smul_assoc, mul_smul, smul_comm d]`. Establish `hsingle : ∀ i j (t : RA F E), P (Matrix.single i j t)`.
+
+Introduce `i j t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [Matrix.single_zero]`. Conclude with `hzero`. Consider the case `tmul a y`.
+
+Use `hgen a (Matrix.single i j y)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k l`. Simplify using `only [fm, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Consider the case `add s t hs ht => rw [Matrix.single_add]`. Conclude with `hadd _ _ hs ht`. Express the relevant statement in the definitionally equal form `P M`. Rewrite using `[Matrix.matrix_eq_sum_single M]`. Conclude with `Finset.sum_induction _ P hadd hzero fun i _ => Finset.sum_induction _ P hadd hzero fun j _ => hsingle i j _`.
+-/
 theorem exists_approx (S : Set (Fin n → E))
     (hS : ∀ M : Matrix (Fin n) (Fin n) (RA F E), ∃ d : ℕ, 0 < d ∧ ∀ z ∈ hat F S, d • (M *ᵥ z) ∈ hat F S)
     (M : Matrix (Fin n) (Fin n) (RA F E)) (D : ℕ) (hD : 0 < D) :
@@ -140,6 +192,11 @@ theorem exists_approx (S : Set (Fin n → E))
   exact Finset.sum_induction _ P hadd hzero fun i _ =>
     Finset.sum_induction _ P hadd hzero fun j _ => hsingle i j _
 
+/- English proof (translation)
+Take `⟨d, hd, hM⟩` from `hM`. Establish `hK : ((D * d : ℕ) : F) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.mul_pos hD hd).ne'`. Use `set b : FiniteAdeleRing (𝓞 F) F := algebraMap F (FiniteAdeleRing (𝓞 F) F) ((D * d : ℕ) : F)⁻¹ * e with hb`. Establish `hbe : e = (D * d) • b`. Rewrite using `[hb, nsmul_eq_mul, ← mul_assoc, ← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F)), ← map_mul, mul_inv_cancel₀ hK, map_one, one_mul]`.
+
+Take `⟨t, ht, h⟩` from `exists_coprime_nsmul_integral N b fun v hv => by`. Express the relevant statement in the definitionally equal form `_ * e v = 0`. Rewrite using `[he v hv, mul_zero]`. Use `⟨t, ht, fun z hz => ⟨_, hat_smul_int h (hM z hz), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hbe, Matrix.smul_mulVec, nsmul_tmul_one, nsmul_tmul_one, smul_assoc, smul_assoc, mul_smul, smul_comm t D, smul_comm d]`.
+-/
 theorem exists_coprime_small (S : Set (Fin n → E)) (N D : ℕ) (e : FiniteAdeleRing (𝓞 F) F)
     (M : Matrix (Fin n) (Fin n) (RA F E)) (hD : 0 < D)
     (hM : ∃ d : ℕ, 0 < d ∧ ∀ z ∈ hat F S, d • (M *ᵥ z) ∈ hat F S)
@@ -164,6 +221,9 @@ end GlobalTheory.UnRep.SmallMat
 
 open GlobalTheory.UnRep.SmallMat GlobalTheory.AdLat.Translate in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n L hL hsp`. Establish `h4` using `(GlobalTheory.AdLat.hat_rational_points_and_approx F E n L hL hsp).2.2.2`. Establish `h2` using `fun M : Matrix (Fin n) (Fin n) (RA F E) => exists_bound M hL h4`. Conclude with `⟨exists_indicator, h2, exists_approx _ h2, fun N D e M hD he => exists_coprime_small _ N D e M hD (h2 M) he, fun a ha z hz => hat_smul_int ha hz⟩`.
+-/
 theorem GlobalTheory.UnRep.idempotent_adeles_small_matrices : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ), ∀ L : Submodule (𝓞 E) (Fin n → E), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → (∀ S : Finset (HeightOneSpectrum (𝓞 F)), ∃ e : FiniteAdeleRing (𝓞 F) F, (∀ v ∈ S, e v = 1) ∧ ∀ v ∉ S, e v = 0) ∧ (∀ M : Matrix (Fin n) (Fin n) (RA F E), ∃ d : ℕ, 0 < d ∧ ∀ z ∈ hat F (L : Set (Fin n → E)), d • (M *ᵥ z) ∈ hat F (L : Set (Fin n → E))) ∧ (∀ (M : Matrix (Fin n) (Fin n) (RA F E)) (D : ℕ), 0 < D → ∃ M₀ : Matrix (Fin n) (Fin n) E, ∀ z ∈ hat F (L : Set (Fin n → E)), ∃ w ∈ hat F (L : Set (Fin n → E)), (M - fm F M₀) *ᵥ z = D • w) ∧ (∀ (N D : ℕ) (e : FiniteAdeleRing (𝓞 F) F) (M : Matrix (Fin n) (Fin n) (RA F E)), 0 < D → (∀ v : HeightOneSpectrum (𝓞 F), (N : 𝓞 F) ∈ v.asIdeal → e v = 0) → ∃ t : ℕ, t.Coprime N ∧ ∀ z ∈ hat F (L : Set (Fin n → E)), ∃ w ∈ hat F (L : Set (Fin n → E)), t • (((e ⊗ₜ[F] (1 : E)) • M) *ᵥ z) = D • w) ∧ ∀ (a : FiniteAdeleRing (𝓞 F) F), (∀ v, a v ∈ v.adicCompletionIntegers F) → ∀ z ∈ hat F (L : Set (Fin n → E)), (a ⊗ₜ[F] (1 : E)) • z ∈ hat F (L : Set (Fin n → E)) := by
   intro F E _ _ _ _ _ n L hL hsp
   have h4 := (GlobalTheory.AdLat.hat_rational_points_and_approx F E n L hL hsp).2.2.2

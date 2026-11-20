@@ -13,6 +13,9 @@ open MonoidAlgebra
 
 variable {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `g`. Simplify using `[MonoidAlgebra.coeff_sum, Finsupp.single_apply]`.
+-/
 theorem eq_sum_single {R : Type} [Semiring R] (a : MonoidAlgebra R G) : a = ∑ g, single g (a.coeff g) := by
   classical
   apply MonoidAlgebra.ext
@@ -21,6 +24,13 @@ theorem eq_sum_single {R : Type} [Semiring R] (a : MonoidAlgebra R G) : a = ∑ 
 
 noncomputable def conjSum (R : Type) [Semiring R] (g : G) : MonoidAlgebra R G := ∑ h, single (h * g * h⁻¹) 1
 
+/- English proof (translation)
+Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `b`. Proceed by induction on `b using MonoidAlgebra.induction_on with`. Consider the case `of k`. Simplify using `only [conjSum, MonoidAlgebra.of_apply, Finset.mul_sum, Finset.sum_mul, single_mul_single, one_mul, mul_one]`.
+
+Use `Fintype.sum_equiv (Equiv.mulLeft k) _ _ fun h => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft]`. Use `congr 1`. Use `group`. Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`.
+
+Consider the case `smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]`.
+-/
 theorem conjSum_mem_center (R : Type) [CommSemiring R] (g : G) : conjSum R g ∈ Subalgebra.center R (MonoidAlgebra R G) := by
   rw [Subalgebra.mem_center_iff]
   intro b
@@ -34,10 +44,18 @@ theorem conjSum_mem_center (R : Type) [CommSemiring R] (g : G) : conjSum R g ∈
   | add x y hx hy => rw [add_mul, mul_add, hx, hy]
   | smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]
 
+/- English proof (translation)
+Simplify using `[conjSum, map_sum, MonoidAlgebra.mapRangeRingHom_single]`.
+-/
 theorem mapRange_conjSum {R S : Type} [Semiring R] [Semiring S] (f : R →+* S) (g : G) :
     mapRingHom G f (conjSum R g) = conjSum S g := by
   simp [conjSum, map_sum, MonoidAlgebra.mapRangeRingHom_single]
 
+/- English proof (translation)
+Rewrite `hz` using `[Subalgebra.mem_center_iff]`. Establish `h1 : ∀ h : G, single h (1 : R) * z * single h⁻¹ 1 = z` using `fun h => by`. Rewrite using `[hz, mul_assoc, single_mul_single, mul_inv_cancel, one_mul, ← one_def, mul_one]`. Establish `h2 : ∀ h : G, single h (1 : R) * z * single h⁻¹ 1 = ∑ g, single (h * g * h⁻¹) (z.coeff g)` using `fun h => by conv_lhs => rw [eq_sum_single z]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, single_mul_single, one_mul, mul_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [conjSum, Finset.smul_sum, smul_single, smul_eq_mul, mul_one]`.
+-/
 theorem card_smul_eq {R : Type} [CommSemiring R] (z : MonoidAlgebra R G) (hz : z ∈ Subalgebra.center R (MonoidAlgebra R G)) :
     (Fintype.card G : R) • z = ∑ g, z.coeff g • conjSum R g := by
   rw [Subalgebra.mem_center_iff] at hz
@@ -61,6 +79,9 @@ open MonoidAlgebra
 
 variable {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Use `conv_lhs => rw [eq_sum_single a]`. Simplify using `[map_sum, MonoidAlgebra.mapRangeRingHom_single, MonoidAlgebra.coeff_sum, Finsupp.single_apply, apply_ite f]`.
+-/
 theorem coeff_mapRingHom {R S : Type} [Semiring R] [Semiring S] (f : R →+* S) (a : MonoidAlgebra R G) (g : G) :
     (mapRingHom G f a).coeff g = f (a.coeff g) := by
   classical
@@ -73,11 +94,19 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {n : ℕ} {σ : K →
   {j : (Fin n → K) →ₛₗ[σ] EuclideanSpace ℂ (Fin n)} {H : Matrix (Fin n) (Fin n) K}
   {ρ : Matrix (Fin n) (Fin n) K →+* Module.End ℂ (EuclideanSpace ℂ (Fin n))}
 
+/- English proof (translation)
+Use `LinearMap.ext_on_range (hρ E).span fun i => ?_` and prove the remaining obligations. Rewrite using `[(hρ _).op_eq, LinearMap.smul_apply, (hρ E).op_eq, Matrix.smul_mulVec, map_smulₛₗ]`.
+-/
 theorem rho_smul (hρ : ∀ E, FormsTie σ j H E (ρ E)) (c : K) (E : Matrix (Fin n) (Fin n) K) :
     ρ (c • E) = σ c • ρ E := by
   refine LinearMap.ext_on_range (hρ E).span fun i => ?_
   rw [(hρ _).op_eq, LinearMap.smul_apply, (hρ E).op_eq, Matrix.smul_mulVec, map_smulₛₗ]
 
+/- English proof (translation)
+Set `b` to `Module.Basis.mk (hρ E).li (hρ E).span.ge`. Establish `hB : (innerₛₗ ℂ).comp (ρ E) = (innerₛₗ ℂ).compl₂ (ρ E)`. Use `LinearMap.ext_basis b b fun i k => ?_` and prove the remaining obligations. Simplify using `only [b, Module.Basis.mk_apply, LinearMap.comp_apply, LinearMap.compl₂_apply, (hρ E).op_eq]`. Express the relevant statement in the definitionally equal form `inner ℂ (j _) (j _) = inner ℂ (j _) (j _)`.
+
+Rewrite using `[(hρ E).inner, (hρ E).inner, hsa]`. Introduce `x y`. Use `DFunLike.congr_fun (DFunLike.congr_fun hB x) y` as an intermediate fact. Conclude with `this`.
+-/
 theorem rho_symm (hρ : ∀ E, FormsTie σ j H E (ρ E)) (E : Matrix (Fin n) (Fin n) K)
     (hsa : ∀ x y, Formalism.DivisionValues.hform H (E.mulVec x) y = Formalism.DivisionValues.hform H x (E.mulVec y)) : (ρ E).IsSymmetric := by
   let b := Module.Basis.mk (hρ E).li (hρ E).span.ge
@@ -97,6 +126,11 @@ noncomputable def lin (ρ : Matrix (Fin n) (Fin n) K →+* Module.End ℂ (Eucli
   map_add' a b := by simp [MonoidAlgebra.coeff_add, add_smul, Finset.sum_add_distrib]
   map_smul' c a := by simp [MonoidAlgebra.coeff_smul, Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Set `opL : MonoidAlgebra K G →ₗ[K] Matrix (Fin n) (Fin n) K` to `⟨⟨op, hadd⟩, hsmul⟩`. Express the relevant statement in the definitionally equal form `_ = ρ (opL a)`. Use `conv_rhs => rw [eq_sum_single a]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : single g (a.coeff g) = a.coeff g • single g (1 : K)` using `by rw [smul_single, smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, rho_smul hρ, coeff_mapRingHom]`. Both sides reduce to the same expression.
+-/
 theorem lin_map (hρ : ∀ E, FormsTie σ j H E (ρ E)) (op : MonoidAlgebra K G → Matrix (Fin n) (Fin n) K)
     (hadd : ∀ a b, op (a + b) = op a + op b) (hsmul : ∀ (c : K) a, op (c • a) = c • op a) (a : MonoidAlgebra K G) :
     lin ρ op (mapRingHom G σ a) = ρ (op a) := by
@@ -109,6 +143,15 @@ theorem lin_map (hρ : ∀ E, FormsTie σ j H E (ρ E)) (op : MonoidAlgebra K G 
   rw [h1, map_smul, rho_smul hρ, coeff_mapRingHom]
   rfl
 
+/- English proof (translation)
+Establish `hone : ∀ α : G → ℂ, lin ρ op (∑ g, α g • conjSum ℂ g) = ∑ g, α g • ρ (op (conjSum K g))` using `fun α => by`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← mapRange_conjSum σ, lin_map hρ op hadd hsmul]`. Establish `key : ∀ α β : G → ℂ, lin ρ op ((∑ g, α g • conjSum ℂ g) * ∑ h, β h • conjSum ℂ h) = lin ρ op (∑ g, α g • conjSum ℂ g) * lin ρ op (∑ h, β h • conjSum ℂ h)` using `fun α β => by`.
+
+Rewrite using `[hone, hone, Finset.sum_mul_sum, Finset.sum_mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, smul_mul_smul_comm, map_smul, ← mapRange_conjSum σ, ← mapRange_conjSum σ, ← map_mul, lin_map hρ op hadd hsmul, hmul _ (conjSum_mem_center K g) _ (conjSum_mem_center K h), map_mul]`.
+
+Establish `h` using `key z.coeff w.coeff`. Rewrite `h` using `[← card_smul_eq z hz, ← card_smul_eq w hw, smul_mul_smul_comm, map_smul, map_smul, map_smul, smul_mul_smul_comm]`. Establish `hc : ((Fintype.card G : ℂ) * (Fintype.card G : ℂ)) ≠ 0`. Establish `: (Fintype.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Conclude with `mul_ne_zero this this`.
+
+Conclude with `smul_right_injective _ hc h`.
+-/
 theorem lin_mul (hρ : ∀ E, FormsTie σ j H E (ρ E)) (op : MonoidAlgebra K G → Matrix (Fin n) (Fin n) K)
     (hadd : ∀ a b, op (a + b) = op a + op b) (hsmul : ∀ (c : K) a, op (c • a) = c • op a)
     (hmul : ∀ a ∈ Subalgebra.center K (MonoidAlgebra K G), ∀ b ∈ Subalgebra.center K (MonoidAlgebra K G),
@@ -160,6 +203,17 @@ namespace GlobalTheory.Mem.R3.Rw.SpOfMat
 
 open MonoidAlgebra
 
+/- English proof (translation)
+Introduce `K O _ _ _ _ o σ G _ _ m e hσ ho hm`. Take `⟨j, M, ρ, hρ, hM, hcar⟩` from `GlobalTheory.Mem.CoordForms.exists_formsTie_oLatTie K O o σ m.n m.H m.N hσ hm.pos hm.lat`. Establish `hcar'` using `hcar ho`. Establish `hEE : m.E * m.E = m.E`. Rewrite using `[hm.E_eq, ← hm.mul e hm.cen e hm.cen, hm.idem.eq]`.
+
+Set `s : Sp1 O (σ.comp o) G` to `{ A := Hs.mk (EuclideanSpace ℂ (Fin m.n)) lat := M e := ρ m.E idem := by rw [← Module.End.mul_eq_comp, ← map_mul, hEE] sa := rho_symm hρ m.E hm.sa act := actC hρ m.op hm.add hm.smul hm.mul hm.one }`. Use `⟨s, ⟨{ j := j, forms := hρ m.E, latT := hM, stable := ?_, cen := ?_ }⟩⟩` and prove the remaining obligations. Introduce `a y hy`. Express the relevant statement in the definitionally equal form `y ∈ (M.carrier : Set (EuclideanSpace ℂ (Fin m.n))) at hy`. Express the relevant statement in the definitionally equal form `σ (a : K) • y ∈ (M.carrier : Set (EuclideanSpace ℂ (Fin m.n)))`.
+
+Rewrite `hy`, the goal using `[hcar']`. Take `⟨x, hx, rfl⟩` from `hy`. Use `⟨(a : K) • x, ?_, by rw [map_smulₛₗ]⟩` and prove the remaining obligations. Use `m.N.smul_mem a hx` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul K]`. Then use the resulting hypothesis.
+
+Introduce `z a hza x`. Establish `hz : (z : MonoidAlgebra ℂ G) = mapRingHom G σ a`. Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `g`. Rewrite using `[coeff_mapRingHom]`.
+
+Conclude with `(hza g).symm`. Express the relevant statement in the definitionally equal form `lin ρ m.op z (j x) = _`. Rewrite using `[hz, lin_map hρ m.op hm.add hm.smul, (hρ _).op_eq]`.
+-/
 theorem exists_complexification_of_definiteGroupForms : ∀ (K O : Type) [Field K] [NumberField K] [StarRing K] [CommRing O] (o : O →+* K) (σ : K →+* ℂ) (G : Type) [Group G] [Fintype G] (m : Mat1 K G) (e : MonoidAlgebra K G), (∀ x, σ (star x) = starRingEnd ℂ (σ x)) → (∀ y, IsIntegral ℤ (o y)) → m.Laws σ e → ∃ s : Sp1 O (σ.comp o) G, Nonempty (Tie1 σ m s) := by
   intro K O _ _ _ _ o σ G _ _ m e hσ ho hm
   obtain ⟨j, M, ρ, hρ, hM, hcar⟩ :=

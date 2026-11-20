@@ -9,6 +9,11 @@ namespace GlobalTheory.CompanionTheory.HilbMoll
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `: CompleteSpace W` using `hWc.completeSpace_coe`. Unfold `opConv`. Distinguish the cases in `hint : Integrable (fun g : Formalism.REAL.UJ ε => α (Formalism.MainNotions.S.umat g) • σ (Formalism.MainNotions.S.umat g) x) (Formalism.REAL.muG ε)`. Establish `hfix : ∀ g : Formalism.REAL.UJ ε, W.starProjection (α (Formalism.MainNotions.S.umat g) • σ (Formalism.MainNotions.S.umat g) x) = α (Formalism.MainNotions.S.umat g) • σ (Formalism.MainNotions.S.umat g) x` using `fun g => Submodule.starProjection_eq_self_iff.2 (W.smul_mem _ (hWs _ (arb_umat_mem g) x hx))`. Establish `h` using `W.starProjection.integral_comp_comm hint`.
+
+Simplify using `only [hfix] at h`. Rewrite using `[h]`. Conclude with `W.starProjection_apply_mem _`. Rewrite using `[integral_undef hint]`. Conclude with `W.zero_mem`.
+-/
 theorem opConv_mem_of_isClosed {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (α : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (W : Submodule ℂ H) (hWc : IsClosed (W : Set H)) (hWs : ∀ g ∈ UJset ε, ∀ x ∈ W, σ g x ∈ W)
@@ -27,6 +32,13 @@ theorem opConv_mem_of_isClosed {H : Type*} [NormedAddCommGroup H] [InnerProductS
   · rw [integral_undef hint]
     exact W.zero_mem
 
+/- English proof (translation)
+Introduce `n ε W S hWc hWs hSf hSW _`. Use `hSf` as an intermediate fact. Take `⟨α, hadd, hsmul, hαK, hαsm, hαS⟩` from `exists_moll_data (rreg_isURepOn ε) S`. Set `A : L2 ε →ₗ[ℂ] L2 ε` to `{ toFun := opConv ε (rreg ε) α, map_add' := hadd, map_smul' := hsmul }`. Establish `hAv : ∀ v, A v = opConv ε (rreg ε) α v` using `fun v => rfl`.
+
+Use `⟨A, fun k hk x => (hαK k hk x).symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw h0`. Establish `h1` using `hαS w hw`. Rewrite `h1` using `[← hAv, h0, zero_sub, norm_neg]`. Establish `h2 : ‖w‖ ≤ 0` using `by linarith`.
+
+Conclude with `norm_le_zero_iff.1 h2`. Introduce and unpack `_ ⟨w, _, rfl⟩`. Conclude with `(mem_smD_iff ε (rreg ε) _).2 (hαsm w)`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `opConv_mem_of_isClosed ε (rreg ε) α W hWc hWs (hSW hw)`.
+-/
 theorem stepMoll : PositivityTheory.RgDs.Hilb.StepMoll := by
   intro n ε W S hWc hWs hSf hSW _
   have := hSf

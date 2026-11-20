@@ -8,6 +8,11 @@ namespace PI.GreenLabelMapW
 
 variable {K : Type} [Field K] [Fintype K]
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Apply `hX` to reduce the goal to its premises. Establish `h0 : P.coeff 0 = 0`. Rewrite `hw` using `[Polynomial.aeval_def, Polynomial.eval₂_at_zero]`. Conclude with `(algebraMap K (AlgebraicClosure K)).injective (by rw [hw, map_zero])`.
+
+Establish `hXP : X ∣ P` using `Polynomial.X_dvd_iff.2 h0`. Establish `hPX : P ∣ X` using `Polynomial.irreducible_X.dvd_symm hi hXP`. Conclude with `Polynomial.eq_of_monic_of_associated hm Polynomial.monic_X (associated_of_dvd_dvd hPX hXP)`.
+-/
 theorem root_ne_zero {P : K[X]} (hm : P.Monic) (hi : Irreducible P) (hX : P ≠ X)
     {w : AlgebraicClosure K} (hw : aeval w P = 0) : w ≠ 0 := by
   rintro rfl
@@ -19,6 +24,13 @@ theorem root_ne_zero {P : K[X]} (hm : P.Monic) (hi : Irreducible P) (hX : P ≠ 
   have hPX : P ∣ X := Polynomial.irreducible_X.dvd_symm hi hXP
   exact Polynomial.eq_of_monic_of_associated hm Polynomial.monic_X (associated_of_dvd_dvd hPX hXP)
 
+/- English proof (translation)
+Establish `hint : IsIntegral K w` using `⟨P, hm, hw⟩`. Establish `hmin : P = minpoly K w` using `minpoly.eq_of_irreducible_of_monic hi hw hm`. Establish `hw0` using `root_ne_zero hm hi hX hw`. Use `haveI : FiniteDimensional K K⟮w⟯ := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : Finite K⟮w⟯ := Module.finite_of_finite K`.
+
+Use `letI : Fintype K⟮w⟯ := Fintype.ofFinite _`. Establish `hcard : Fintype.card K⟮w⟯ = Fintype.card K ^ P.natDegree`. Rewrite using `[Module.card_eq_pow_finrank (K := K), IntermediateField.adjoin.finrank hint, ← hmin]`. Establish `h1` using `FiniteField.pow_card_sub_one_eq_one (⟨w, IntermediateField.mem_adjoin_simple_self K w⟩ : K⟮w⟯) (fun h => hw0 (by simpa using congrArg Subtype.val h))`. Rewrite `h1` using `[hcard]`.
+
+Simplify using `using congrArg Subtype.val h1`.
+-/
 theorem root_pow_card {P : K[X]} (hm : P.Monic) (hi : Irreducible P) (hX : P ≠ X)
     {w : AlgebraicClosure K} (hw : aeval w P = 0) :
     w ^ (Fintype.card K ^ P.natDegree - 1) = 1 := by
@@ -35,6 +47,13 @@ theorem root_pow_card {P : K[X]} (hm : P.Monic) (hi : Irreducible P) (hX : P ≠
   rw [hcard] at h1
   simpa using congrArg Subtype.val h1
 
+/- English proof (translation)
+Establish `halg : ∀ z : AlgebraicClosure K, IsAlgebraic K z` using `fun z => Algebra.IsAlgebraic.isAlgebraic z`. Establish `hmin : P = minpoly K w` using `minpoly.eq_of_irreducible_of_monic hi hw hm`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨σ, hσ⟩` from `minpoly.exists_algEquiv_of_root (halg (f w)) hy`.
+
+Use `⟨σ.symm w, ?_, ?_⟩` and prove the remaining obligations. Simplify `Polynomial.aeval_algHom_apply (σ.symm : AlgebraicClosure K →ₐ[K] AlgebraicClosure K) w P` using `[hw]`. Rewrite using `[hf, ← hσ, AlgEquiv.symm_apply_apply]`. Introduce and unpack `⟨r, hr, rfl⟩`. Take `⟨σ, hσ⟩` from `minpoly.exists_algEquiv_of_root (halg w) (by rw [← hmin]; exact hr)`.
+
+Rewrite using `[← hσ, hf, show minpoly K (σ (f r)) = minpoly K (f r) from minpoly.algHom_eq (σ : AlgebraicClosure K →ₐ[K] AlgebraicClosure K) σ.injective (f r)]`. Conclude with `minpoly.aeval K (f r)`.
+-/
 theorem conj_roots {P : K[X]} (hm : P.Monic) (hi : Irreducible P) {w : AlgebraicClosure K}
     (hw : aeval w P = 0) (f : AlgebraicClosure K → AlgebraicClosure K)
     (hf : ∀ (σ : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K) (x : AlgebraicClosure K),
@@ -54,6 +73,13 @@ theorem conj_roots {P : K[X]} (hm : P.Monic) (hi : Irreducible P) {w : Algebraic
       minpoly.algHom_eq (σ : AlgebraicClosure K →ₐ[K] AlgebraicClosure K) σ.injective (f r)]
     exact minpoly.aeval K (f r)
 
+/- English proof (translation)
+Establish `hsep : P.Separable` using `PerfectField.separable_of_irreducible hi`. Establish `hint : IsIntegral K (f w)` using `Algebra.IsIntegral.isIntegral _`. Establish `hsep2 : (minpoly K (f w)).Separable` using `PerfectField.separable_of_irreducible (minpoly.irreducible hint)`. Establish `hP0 : P ≠ 0` using `hm.ne_zero`. Establish `hnd1 : ((minpoly K (f w)).aroots (AlgebraicClosure K)).Nodup` using `(Polynomial.nodup_aroots_iff_of_splits (minpoly.ne_zero hint) (IsAlgClosed.splits _)).2 hsep2`.
+
+Establish `hnd2 : (P.aroots (AlgebraicClosure K)).Nodup` using `(Polynomial.nodup_aroots_iff_of_splits hP0 (IsAlgClosed.splits _)).2 hsep`. Establish `hnd3 : ((P.aroots (AlgebraicClosure K)).map f).Nodup` using `Multiset.Nodup.map_on (fun r₁ h₁ r₂ h₂ h => hinj r₁ r₂ (Polynomial.mem_aroots.1 h₁).2 (Polynomial.mem_aroots.1 h₂).2 h) hnd2`. Use `(Multiset.Nodup.ext hnd1 hnd3).2 fun y => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.mem_aroots, Multiset.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨-, hy⟩`. Take `⟨r, hr, hry⟩` from `(conj_roots hm hi hw f hf y).1 hy`. Conclude with `⟨r, Polynomial.mem_aroots.2 ⟨hP0, hr⟩, hry⟩`. Introduce and unpack `⟨r, hr, hry⟩`. Conclude with `⟨minpoly.ne_zero hint, (conj_roots hm hi hw f hf y).2 ⟨r, (Polynomial.mem_aroots.1 hr).2, hry⟩⟩`.
+-/
 theorem aroots_eq_map {P : K[X]} (hm : P.Monic) (hi : Irreducible P) {w : AlgebraicClosure K}
     (hw : aeval w P = 0) (f : AlgebraicClosure K → AlgebraicClosure K)
     (hf : ∀ (σ : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K) (x : AlgebraicClosure K),
@@ -80,6 +106,9 @@ theorem aroots_eq_map {P : K[X]} (hm : P.Monic) (hi : Irreducible P) {w : Algebr
   · rintro ⟨r, hr, hry⟩
     exact ⟨minpoly.ne_zero hint, (conj_roots hm hi hw f hf y).2 ⟨r, (Polynomial.mem_aroots.1 hr).2, hry⟩⟩
 
+/- English proof (translation)
+Establish `e1 : ∀ Q : K[X], (Q.aroots (AlgebraicClosure K)).card = Q.natDegree` using `fun Q => by`. Unfold `Polynomial.aroots`. Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, Polynomial.natDegree_map]`. Rewrite using `[← e1, ← e1, aroots_eq_map hm hi hw f hf hinj, Multiset.card_map]`.
+-/
 theorem natDegree_minpoly_eq {P : K[X]} (hm : P.Monic) (hi : Irreducible P)
     {w : AlgebraicClosure K} (hw : aeval w P = 0) (f : AlgebraicClosure K → AlgebraicClosure K)
     (hf : ∀ (σ : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K) (x : AlgebraicClosure K),

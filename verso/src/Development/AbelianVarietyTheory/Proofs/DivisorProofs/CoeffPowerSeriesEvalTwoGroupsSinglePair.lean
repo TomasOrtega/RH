@@ -10,6 +10,19 @@ namespace OnePair
 
 open CategoryTheory TensorProduct MvPowerSeries in
 
+/- English proof (translation)
+Apply the tactic sequence `have hsub : HasSubst (fun s => if p s then (X s : MvPowerSeries σ R) else 0) := hasSubst_of_constantCoeff_zero fun s => by split_ifs <;> simp`. Establish `key : ∀ d : σ →₀ ℕ, coeff γ (d.prod fun s e => (if p s then (X s : MvPowerSeries σ R) else 0) ^ e) = if d = γ ∧ ∀ s, ¬ p s → γ s = 0 then 1 else 0`. Introduce `d`. Distinguish the cases in `hd : ∀ s, ¬ p s → d s = 0`. Establish `hprod : (d.prod fun s e => (if p s then (X s : MvPowerSeries σ R) else 0) ^ e) = monomial d 1`.
+
+Rewrite using `[monomial_one_eq]`. Use `Finsupp.prod_congr fun s hs => ?_` and prove the remaining obligations. Establish `hps : p s`. Assume the negation of the conclusion as `h`. Conclude with `(Finsupp.mem_support_iff.mp hs) (hd s h)`.
+
+Rewrite using `[if_pos hps]`. Rewrite using `[hprod, coeff_monomial]`. Distinguish the cases in `hγ : γ = d`. Substitute `hγ` using the available equality. Rewrite using `[if_pos rfl, if_pos ⟨rfl, hd⟩]`.
+
+Rewrite using `[if_neg hγ, if_neg fun h => hγ h.1.symm]`. Use `push_neg at hd`. Take `⟨s, hps, hds⟩` from `hd`. Establish `hprod : (d.prod fun s e => (if p s then (X s : MvPowerSeries σ R) else 0) ^ e) = 0`. Rewrite using `[Finsupp.prod]`.
+
+Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hds) (by rw [if_neg hps, zero_pow hds])`. Rewrite using `[hprod, map_zero, if_neg]`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `hds (h s hps)`. Rewrite using `[coeff_subst hsub, finsum_eq_single _ γ]`.
+
+Rewrite using `[key]`. Apply the tactic sequence `by_cases h : ∀ s, ¬ p s → γ s = 0 <;> simp [h]`. Introduce `d hd`. Rewrite using `[key, if_neg fun h => hd h.1, smul_zero]`.
+-/
 theorem _root_.GlobalTheory.OnePair.coeff_subst_kill {σ R : Type} [CommRing R] [Finite σ] (p : σ → Prop)
     [DecidablePred p] (c : MvPowerSeries σ R) (γ : σ →₀ ℕ) [Decidable (∀ s, ¬ p s → γ s = 0)] :
     coeff γ (subst (fun s => if p s then (X s : MvPowerSeries σ R) else 0) c) =
@@ -53,6 +66,15 @@ end OnePair
 
 open CategoryTheory TensorProduct MvPowerSeries in
 
+/- English proof (translation)
+Establish `hfun : Sum.elim (Pi.single m (X (Sum.inl m) : MvPowerSeries (Fin d ⊕ Fin d) R)) (Pi.single m (X (Sum.inr m))) = fun s => if (s = Sum.inl m ∨ s = Sum.inr m) then (X s : MvPowerSeries (Fin d ⊕ Fin d) R) else 0`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with i | i <;> by_cases h : i = m <;> simp [h, Pi.single_apply]`. Establish `hiff : (∀ s, ¬ (s = Sum.inl m ∨ s = Sum.inr m) → γ s = 0) ↔ γ = Finsupp.single (Sum.inl m) (γ (Sum.inl m)) + Finsupp.single (Sum.inr m) (γ (Sum.inr m))`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use extensionality with `s`. Distinguish the cases in `hs : s = Sum.inl m ∨ s = Sum.inr m`. Apply the tactic sequence `rcases hs with rfl | rfl <;> simp [Finsupp.single_apply]`. Use `push_neg at hs`.
+
+Rewrite using `[h s (not_or.mpr hs)]`. Simplify using `[Finsupp.single_apply, Ne.symm hs.1, Ne.symm hs.2]`. Introduce `h s hs push_neg at hs`. Rewrite using `[h]`. Simplify using `[Finsupp.single_apply, Ne.symm hs.1, Ne.symm hs.2]`.
+
+Unfold `_root_.GlobalTheory.Katz.at2`. Rewrite using `[hfun, _root_.GlobalTheory.OnePair.coeff_subst_kill]`. Distinguish the cases in `hγ : γ = Finsupp.single (Sum.inl m) (γ (Sum.inl m)) + Finsupp.single (Sum.inr m) (γ (Sum.inr m))`. Rewrite using `[if_pos hγ, if_pos (hiff.mpr hγ)]`. Rewrite using `[if_neg hγ, if_neg fun h => hγ (hiff.mp h)]`.
+-/
 theorem _root_.GlobalTheory.coeff_at2_single_X_inl_inr (R : Type) [CommRing R] (d : ℕ)
     (c : MvPowerSeries (Fin d ⊕ Fin d) R) (m : Fin d) (γ : Fin d ⊕ Fin d →₀ ℕ) :
     coeff γ (_root_.GlobalTheory.Katz.at2 c

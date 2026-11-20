@@ -33,6 +33,17 @@ namespace GlobalTheory.HodgeDominates
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨φs, hs, -⟩` from `hS (max 1 (Module.finrank ℚ E * min Dw.p Dw.q)) (le_max_left _ _)`. Take `⟨φ, h₁, h₂, -⟩` from `GlobalTheory.PolFan.exists_fine_invariant_fan H hs (le_max_right _ _) ∅ (by simp)`. Take `⟨Y', BD, d, k, -, hk, hsm, -, hBD, -, hamp⟩` from `hF E H Dw hr φ h₁ h₂ l Xo c`. Establish `hY'` using `GlobalTheory.FanTheta.isLB_detOm_of_smooth Y' hr hsm`. Take `⟨N, _, _, u, p, p', hu, hu', hp, hpt, e⟩` from `exists_common_modification hE Y Y' hY hY'`.
+
+Establish `e₁ : p (u w) = Y.j w` using `by rw [← hu]; rfl`. Establish `e₂ : p' (u w) = Y'.j w` using `by rw [← hu']; rfl`. Rewrite using `[← e₁]`. Use `exists_sec_of_common p p' hp (u w) (fun W hW => ⟨Y'.j ''ᵁ (Y.j ⁻¹ᵁ W), ⟨w, (show Y.j w ∈ W from e₁ ▸ hW), e₂.symm⟩, ?_⟩) hY hY' (hamp hY') BD.isLB_lb e hk ?_ BD.canonical ?_ hA` and prove the remaining obligations. Introduce and unpack `n ⟨w', hw', h⟩ show p n ∈ W`.
+
+Rewrite using `[hpt n w' h.symm]`. Conclude with `hw'`. Establish `h` using `cls_tens (isLB_lbPow hY' k) (isLB_dual BD.isLB_lb) (hamp hY').isLB`. Rewrite `h` using `[cls_lbPow hY', cls_dual BD.isLB_lb]`. Conclude with `(congrArg (· + _) h).trans (by abel)`.
+
+Rewrite using `[← SetLike.mem_coe, BD.coe_nonzeroLocus_canonical, e₂]`. Use `fun h => hBD _ h ?_` and prove the remaining obligations. Establish `h' : Y'.jQ w ∈ pullback.fst Y'.s (spMap (RingHom.id c.F)) ⁻¹' abLocus Y'.t.G`. Rewrite using `[Y'.ab_gen]`. Conclude with `⟨w, rfl⟩`.
+
+Conclude with `h'`.
+-/
 theorem exists_sec_detOm (hE : GlobalTheory.Published.SemiAbelianHomExtension) (hS : GlobalTheory.Published.SiegelToroidalIntegral)
     (hF : GlobalTheory.Published.ToroidalChartsForFan) (hr : 1 ≤ Dw.p + Dw.q) (Y : Model Xo c (RingHom.id c.F))
     (hY : (FlagMod.detOm Y).IsLB) (w : Xo.XF c) {A : LB Y.X} (hA : A.IsLB) :
@@ -60,6 +71,19 @@ theorem exists_sec_detOm (hE : GlobalTheory.Published.SemiAbelianHomExtension) (
       rw [Y'.ab_gen]; exact ⟨w, rfl⟩
     exact h'
 
+/- English proof (translation)
+Use `TF.smooth` as an intermediate fact. Break down `Nat.eq_zero_or_pos (Dw.p + Dw.q) with h0 | hr` into its components or cases. Establish `hd : Dw.dim = 0` using `by rw [Datum.dim, show Dw.q = 0 by omega, mul_zero]`. Rewrite `this` using `[hd]`. Establish `: Etale TF.Y.s` using `(Etale.iff_smoothOfRelativeDimension_zero _).2 this`.
+
+Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver TF.Y.proj` as an intermediate fact. Use `GlobalTheory.TangentCrit.locallyQuasiFinite_of_formallyUnramified TF.Y.s` as an intermediate fact. Use `IsFinite.of_isProper_of_locallyQuasiFinite TF.Y.s` as an intermediate fact. Establish `: IsAffine TF.Y.X` using `isAffine_of_isAffineHom TF.Y.s`. Use `⟨_, LB.isLB_triv _, ?_, fun w A hA => ⟨1, one_pos, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `he : AllWt.exOf Dw (FlagMod.mu0 Dw) 0 = 0`. Rewrite using `[FlagMod.unitaryWeightExponentVector_signatureWeightMuZero]`. Use function extensionality and compare the values at `ix`. Break down `ix with _ | ⟨σ, i⟩` into its components or cases. Both sides reduce to the same expression.
+
+Use `i.2` as an intermediate fact. Apply the tactic sequence `have : Dw.mult σ = 0 := by unfold Datum.mult; split_ifs <;> omega`. Use linear arithmetic over natural numbers and integers. Use `Eq.trans (b := 0) ((cls_eq_zero_iff _).2 ⟨⟨fun _ => 1⟩, fun k k' => ?_⟩) (map_zero _).symm` and prove the remaining obligations. Establish `hg : (TF.X.Llam (FlagMod.mu0 Dw)).g k k' = 1` using `Finset.prod_eq_one fun ix _ => by rw [he]; exact zpow_zero _`.
+
+Rewrite using `[hg, map_one, map_one, mul_one]`. Take `⟨s, hs, -⟩` from `exists_sec_finite_subset_of_isQuasiAffine (LB.isLB_div (isLB_lbPow (LB.isLB_triv _) 1) hA) (Set.finite_singleton (TF.Y.j w)) (U := ⊤) (Set.subset_univ _)`. Conclude with `⟨s, hs rfl⟩`. Establish `hY` using `GlobalTheory.FanTheta.isLB_detOm_of_smooth TF.Y hr ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) this)`. Use `⟨_, hY, ?_, fun w A hA => exists_sec_detOm hE hS hF hr TF.Y hY w hA⟩` and prove the remaining obligations.
+
+Rewrite using `[← cls_pull hY _ (pull_isLB hY _), ← (cls_eq_iff TF.X.F.isLB_detOm _).2 (TF.X.F.detOm_iso_pull hY)]`. Conclude with `((cls_eq_iff _ _).2 (FlagHodge.lbIso_detOm_Llam TF.X)).symm`.
+-/
 theorem exists_lb_dominates (hE : GlobalTheory.Published.SemiAbelianHomExtension) (hS : GlobalTheory.Published.SiegelToroidalIntegral)
     (hF : GlobalTheory.Published.ToroidalChartsForFan) (TF : TorFlag Xo c) :
     ∃ (ω : LB TF.Y.X) (hω : ω.IsLB), cls _ (TF.X.isLB_Llam (FlagMod.mu0 Dw)) = CechPic.pull TF.X.π (cls ω hω) ∧
@@ -96,6 +120,15 @@ theorem exists_lb_dominates (hE : GlobalTheory.Published.SemiAbelianHomExtension
     rw [← cls_pull hY _ (pull_isLB hY _), ← (cls_eq_iff TF.X.F.isLB_detOm _).2 (TF.X.F.detOm_iso_pull hY)]
     exact ((cls_eq_iff _ _).2 (FlagHodge.lbIso_detOm_Llam TF.X)).symm
 
+/- English proof (translation)
+Introduce `hP _ hS hF E _ _ _ H Dw l Xo c TF Z _`. Take `⟨ω, hω, e, h⟩` from `exists_lb_dominates hP.p22 hS hF TF`. Use `⟨FlagMod.mu0 Dw, fun y hy A hA => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩ : ∃ w, TF.Y.j w = (inc₀ TF.X Z ≫ TF.X.π) y` from `hy`. Take `⟨m, hm, s, hs⟩` from `h w A hA`.
+
+Establish `hD` using `LB.isLB_div (isLB_lbPow hω m) hA`. Establish `hL` using `isLB_L₀ TF.X Z (FlagMod.mu0 Dw)`. Establish `hT` using `LB.isLB_div (isLB_lbPow hL m) (pull_isLB hA (inc₀ TF.X Z ≫ TF.X.π))`. Establish `e' : cls _ hL = CechPic.pull (inc₀ TF.X Z ≫ TF.X.π) (cls ω hω)`. Rewrite using `[CechPic.pull_comp, ← e]`.
+
+Conclude with `cls_pull (TF.X.isLB_Llam _) _ _`. Take `⟨t, ht⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso hT (pull_isLB hD (inc₀ TF.X Z ≫ TF.X.π)) ((cls_eq_iff hT (pull_isLB hD _)).1 (by`. Rewrite using `[cls_div (isLB_lbPow hL m) (pull_isLB hA _), cls_lbPow hL, cls_pull hA, cls_pull hD, cls_div (isLB_lbPow hω m) hA, cls_lbPow hω, map_sub, map_nsmul, e'])) (lbSecPull _ s _)`. Use `⟨m, t, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[ht, nonzeroLocus_lbSecPull]`.
+
+Conclude with `(hw ▸ hs : (inc₀ TF.X Z ≫ TF.X.π) y ∈ nonzeroLocus s)`.
+-/
 theorem exists_weight_dominates : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.NefNumerics → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∃ χ : AllWt.Weight Dw, ∀ y ∈ U₀ TF.X Z, ∀ A : LB TF.Y.X, A.IsLB → ∃ (m : ℕ) (s : (LB.div (lbPow (L₀ TF.X Z χ) m) (A.pull (inc₀ TF.X Z ≫ TF.X.π))).Sec), 0 < m ∧ y ∈ nonzeroLocus s := by
   intro hP _ hS hF E _ _ _ H Dw l Xo c TF Z _
   obtain ⟨ω, hω, e, h⟩ := exists_lb_dominates hP.p22 hS hF TF

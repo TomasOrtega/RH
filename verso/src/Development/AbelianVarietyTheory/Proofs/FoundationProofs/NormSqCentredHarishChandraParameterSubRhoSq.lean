@@ -8,6 +8,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hr : rhoSq (p + q) = ∑ i : Fin p, (((p : ℚ) - q - 1) / 2 - (i : ℕ)) ^ 2 + ∑ j : Fin q, (((p : ℚ) + q - 1) / 2 - (j : ℕ)) ^ 2`. Unfold `rhoSq`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i : ℕ => (((p : ℚ) - q - 1) / 2 - (i : ℕ)) ^ 2) p, Fin.sum_univ_eq_sum_range (fun i : ℕ => (((p : ℚ) + q - 1) / 2 - (i : ℕ)) ^ 2) q, Nat.add_comm p q, Finset.sum_range_add, add_comm]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun i _ => ?_ <;> push_cast <;> ring`. Rewrite using `[hr]`.
+
+Unfold `normSq`. Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sum_type]`. Establish `h1 : ∑ i : Fin p, hcParam n ap am (Sum.inl i) ^ 2 = ∑ i : Fin p, wtK n ap am (Sum.inl i) ^ 2 + ∑ i : Fin p, wtK n ap am (Sum.inl i) * ((p : ℚ) - q - 1 - 2 * (i : ℕ)) + ∑ i : Fin p, (((p : ℚ) - q - 1) / 2 - (i : ℕ)) ^ 2`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [hcParam, wtK]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∑ j : Fin q, hcParam n ap am (Sum.inr j) ^ 2 = ∑ j : Fin q, wtK n ap am (Sum.inr j) ^ 2 + ∑ j : Fin q, wtK n ap am (Sum.inr j) * ((p : ℚ) + q - 1 - 2 * (j : ℕ)) + ∑ j : Fin q, (((p : ℚ) + q - 1) / 2 - (j : ℕ)) ^ 2`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [hcParam, wtK]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normSq_hcParam_sub_rhoSq (p q n : ℕ) (ap : Fin p → ℕ) (am : Fin q → ℕ) :
     normSq (hcParam n ap am) - rhoSq (p + q) = (∑ a, wtK n ap am a ^ 2 + ∑ i : Fin p, wtK n ap am (Sum.inl i) * ((p : ℚ) - q - 1 - 2 * (i : ℕ)) + ∑ j : Fin q, wtK n ap am (Sum.inr j) * ((p : ℚ) + q - 1 - 2 * (j : ℕ))) := by
   have hr : rhoSq (p + q) = ∑ i : Fin p, (((p : ℚ) - q - 1) / 2 - (i : ℕ)) ^ 2

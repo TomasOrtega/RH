@@ -11,5 +11,8 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PtExt.exists_isSecAdd | exact GlobalTheory.PtExt.exists_isSecAdd | (intros; apply GlobalTheory.PtExt.exists_isSecAdd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_sectionAddition_two_point_function : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (n : ℕ), HasRoots A n → ∀ b : Fn0 A, IsTorsChar n b → ∀ S : SecFam A, (∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), IsSec n b x (S D x)) → ∃ g : Fn2 A, IsSecAdd n S g := by
   first | exact @GlobalTheory.PtExt.exists_isSecAdd | exact GlobalTheory.PtExt.exists_isSecAdd | (intros; apply GlobalTheory.PtExt.exists_isSecAdd <;> assumption)

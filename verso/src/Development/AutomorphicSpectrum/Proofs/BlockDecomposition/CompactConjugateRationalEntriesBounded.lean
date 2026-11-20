@@ -20,38 +20,71 @@ open GlobalTheory.CompanionTheory.BoxBound
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `(norm_le_pi_norm (A i j) w).trans ((norm_le_pi_norm (toL A i) j).trans (norm_le_pi_norm (toL A) i))`.
+-/
 theorem norm_entry_le_toL (A : Matrix (Fin a) (Fin a) (Cinf E)) (i j : Fin a) (w : InfinitePlace E) :
     ‖A i j w‖ ≤ ‖toL A‖ :=
   (norm_le_pi_norm (A i j) w).trans
     ((norm_le_pi_norm (toL A i) j).trans (norm_le_pi_norm (toL A) i))
 
+/- English proof (translation)
+Use `norm_nonneg (toL (y⁻¹).val)` as an intermediate fact. Unfold `height`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_toL_le_height (y : GL (Fin a) (Cinf E)) : ‖toL y.val‖ ≤ height y := by
   have := norm_nonneg (toL (y⁻¹).val)
   unfold height
   linarith
 
+/- English proof (translation)
+Use `norm_nonneg (toL y.val)` as an intermediate fact. Unfold `height`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_toL_inv_le_height (y : GL (Fin a) (Cinf E)) : ‖toL (y⁻¹).val‖ ≤ height y := by
   have := norm_nonneg (toL y.val)
   unfold height
   linarith
 
+/- English proof (translation)
+The claim follows from `(norm_toL_mul_le u.val v.val).trans (mul_le_mul_of_nonneg_left (mul_le_mul hu hv (norm_nonneg _) ((norm_nonneg _).trans hu)) (Nat.cast_nonneg a))`.
+-/
 theorem norm_toL_mul_le_of_le {u v : GL (Fin a) (Cinf E)} {p r : ℝ} (hu : ‖toL u.val‖ ≤ p)
     (hv : ‖toL v.val‖ ≤ r) : ‖toL (u * v).val‖ ≤ a * (p * r) :=
   (norm_toL_mul_le u.val v.val).trans (mul_le_mul_of_nonneg_left
     (mul_le_mul hu hv (norm_nonneg _) ((norm_nonneg _).trans hu)) (Nat.cast_nonneg a))
 
+/- English proof (translation)
+The claim follows from `map_mul _ g h`.
+-/
 theorem gFin_mul (g h : GA E a) : gFin (g * h) = gFin g * gFin h := map_mul _ g h
 
+/- English proof (translation)
+The claim follows from `map_inv _ g`.
+-/
 theorem gFin_inv (g : GA E a) : gFin g⁻¹ = (gFin g)⁻¹ := map_inv _ g
 
+/- English proof (translation)
+The claim follows from `map_zpow _ g n`.
+-/
 theorem gFin_zpow (g : GA E a) (n : ℤ) : gFin (g ^ n) = gFin g ^ n := map_zpow _ g n
 
+/- English proof (translation)
+The claim follows from `map_mul _ g h`.
+-/
 theorem gInf_mul (g h : GA E a) : gInf (g * h) = gInf g * gInf h := map_mul _ g h
 
+/- English proof (translation)
+The claim follows from `map_inv _ g`.
+-/
 theorem gInf_inv (g : GA E a) : gInf g⁻¹ = (gInf g)⁻¹ := map_inv _ g
 
+/- English proof (translation)
+The claim follows from `pFin_infGL _`.
+-/
 theorem gFin_splitCentre (t : ℝ) : gFin (splitCentre E a t) = 1 := pFin_infGL _
 
+/- English proof (translation)
+Use `⟨∑ m ∈ Finset.Icc (-(n₀ : ℤ)) n₀, ‖toL (gInf (splitCentre E a 1 ^ m)).val‖, Finset.sum_nonneg fun _ _ => norm_nonneg _, fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun m : ℤ => ‖toL (gInf (splitCentre E a 1 ^ m)).val‖) (fun _ _ => norm_nonneg _) (Finset.mem_Icc.2 (abs_le.1 hm))`.
+-/
 theorem exists_bound_splitCentre (n₀ : ℕ) : ∃ B : ℝ, 0 ≤ B ∧ ∀ m : ℤ, |m| ≤ n₀ →
     ‖toL (gInf (splitCentre E a 1 ^ m)).val‖ ≤ B := by
   refine ⟨∑ m ∈ Finset.Icc (-(n₀ : ℤ)) n₀, ‖toL (gInf (splitCentre E a 1 ^ m)).val‖,
@@ -59,10 +92,34 @@ theorem exists_bound_splitCentre (n₀ : ℕ) : ∃ B : ℝ, 0 ≤ B ∧ ∀ m :
   exact Finset.single_le_sum (f := fun m : ℤ => ‖toL (gInf (splitCentre E a 1 ^ m)).val‖)
     (fun _ _ => norm_nonneg _) (Finset.mem_Icc.2 (abs_le.1 hm))
 
+/- English proof (translation)
+Rewrite using `[pInf_algebraMap, InfinitePlace.norm_embedding_eq]`.
+-/
 theorem place_eq_norm_pInf (x : E) (w : InfinitePlace E) :
     w x = ‖pInf E (algebraMap E (Ad E) x) w‖ := by
   rw [pInf_algebraMap, InfinitePlace.norm_embedding_eq]
 
+/- English proof (translation)
+Introduce `E _ _ _ a g₀ Q hQ n₀`. Establish `hK : IsCompact ((fun q : GA E a => gFin g₀ * gFin q * (gFin g₀)⁻¹) '' Q)` using `hQ.image ((continuous_const.mul continuous_gFin).mul continuous_const)`. Establish `hent : ∀ i j : Fin a, Continuous fun g : GL (Fin a) (Af E) => g.val i j` using `fun i j => (Units.continuous_val : Continuous fun g : GL (Fin a) (Af E) => (g.val : Matrix (Fin a) (Fin a) (Af E))).matrix_elem i j`. Take `⟨B, hB0, hB⟩` from `exists_height_bound (E := E) (a := a) hQ`. Take `⟨Z, hZ0, hZ⟩` from `exists_bound_splitCentre (E := E) (a := a) n₀`.
+
+Use `set g1 : ℝ := ‖toL (gInf g₀).val‖ with hg1`. Use `set g2 : ℝ := ‖toL ((gInf g₀)⁻¹).val‖ with hg2`. Establish `hg10 : 0 ≤ g1` using `norm_nonneg _`. Establish `hg20 : 0 ≤ g2` using `norm_nonneg _`. Use `⟨⋃ i, ⋃ j, (fun g : GL (Fin a) (Af E) => g.val i j) '' ((fun q : GA E a => gFin g₀ * gFin q * (gFin g₀)⁻¹) '' Q), (a : ℝ) ^ 5 * (g1 * g2 * B * Z), isCompact_iUnion fun i => isCompact_iUnion fun j => hK.image (hent i j), mul_nonneg (pow_nonneg (Nat.cast_nonneg a) 5) (mul_nonneg (m …` and prove the remaining obligations.
+
+Introduce `y γ n hn hq i j`. Use `set X : GA E a := g₀ * infGL E a y with hX`. Use `set q : GA E a := X⁻¹ * (ratGL E a γ * splitCentre E a 1 ^ n) * X with hqdef`. Establish `h1 : ratGL E a γ * splitCentre E a 1 ^ n = X * q * X⁻¹`. Rewrite using `[hqdef]`.
+
+Use `group`. Establish `hfin : gFin (ratGL E a γ) = gFin g₀ * gFin q * (gFin g₀)⁻¹`. Establish `e1 : gFin X = gFin g₀`. Rewrite using `[hX, gFin_mul, show gFin (infGL E a y) = 1 from pFin_infGL y, mul_one]`. Establish `e2 : gFin (splitCentre E a 1 ^ n) = 1`.
+
+Rewrite using `[gFin_zpow, gFin_splitCentre, _root_.one_zpow]`. Establish `h` using `congrArg gFin h1`. Rewrite `h` using `[gFin_mul, e2, mul_one, gFin_mul, gFin_mul, gFin_inv, e1]`. Conclude with `h`. Establish `hinf : gInf (ratGL E a γ) = gInf g₀ * y * gInf q * y⁻¹ * (gInf g₀)⁻¹ * gInf (splitCentre E a 1 ^ (-n))`.
+
+Establish `h2 : ratGL E a γ = X * q * X⁻¹ * splitCentre E a 1 ^ (-n)`. Rewrite using `[← h1, _root_.zpow_neg, mul_inv_cancel_right]`. Establish `e1 : gInf X = gInf g₀ * y`. Rewrite using `[hX, gInf_mul, show gInf (infGL E a y) = y from pInf_infGL y]`. Establish `h` using `congrArg gInf h2`.
+
+Rewrite `h` using `[gInf_mul, gInf_mul, gInf_mul, gInf_inv, e1]`. Rewrite using `[h]`. Use `group`. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Use `Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨j, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `⟨gFin (ratGL E a γ), ⟨q, hq, hfin.symm⟩, rfl⟩`. Establish `hy` using `norm_toL_le_height y`. Establish `hy'` using `norm_toL_inv_le_height y`. Establish `hR : ‖toL (gInf q).val‖ ≤ B` using `(norm_toL_le_height _).trans (hB q hq)`. Establish `hZn : ‖toL (gInf (splitCentre E a 1 ^ (-n))).val‖ ≤ Z` using `hZ (-n) (by rwa [abs_neg])`.
+
+Establish `hM` using `norm_toL_mul_le_of_le (norm_toL_mul_le_of_le (norm_toL_mul_le_of_le (norm_toL_mul_le_of_le (norm_toL_mul_le_of_le (le_refl g1) hy) hR) hy') (le_refl g2)) hZn`. Rewrite `hM` using `[← hinf]`. Rewrite using `[place_eq_norm_pInf]`. Establish `he : ‖pInf E (algebraMap E (Ad E) (γ.val i j)) w‖ ≤ ‖toL (gInf (ratGL E a γ)).val‖` using `norm_entry_le_toL (gInf (ratGL E a γ)).val i j w`. Use `he.trans (hM.trans_eq ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entries_bound : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (g₀ : GA E a)
     (Q : Set (GA E a)), IsCompact Q → ∀ n₀ : ℕ, ∃ (Qf : Set (Af E)) (C : ℝ), IsCompact Qf ∧ 0 ≤ C ∧
       ∀ (y : GL (Fin a) (Cinf E)) (γ : GL (Fin a) E) (n : ℤ), |n| ≤ n₀ →

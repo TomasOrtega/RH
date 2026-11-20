@@ -11,6 +11,23 @@ namespace GlobalTheory
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `R _ q T π _ _ _ C' _ _ U' e' he'`. Establish `H` using `IsPullback.of_hasPullback π (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))`. Use `set φ := pullback.fst π (spMap (algebraMap R (Localization.AtPrime q.asIdeal))) with hφ`. Use `set π' := pullback.snd π (spMap (algebraMap R (Localization.AtPrime q.asIdeal))) with hπ'`. Establish `hU' : IsAffineOpen U'` using `IsAffine.of_isIso e'.inv`.
+
+Take `⟨U₀, hc, h₀⟩` from `GlobalTheory.T.compact_open_descends_localization_pullback R q T π U' hU'.isCompact`. Rewrite `h₀` using `[← hφ]`. Establish `: QuasiSeparatedSpace T` using `quasiSeparatedSpace_of_quasiSeparated π`. Establish `: CompactSpace U₀.toScheme` using `isCompact_iff_compactSpace.mp hc`. Establish `: QuasiCompact U₀.ι` using `inferInstance`.
+
+Establish `: IsAffine (φ ⁻¹ᵁ U₀)` using `by rw [h₀]; exact hU'`. Take `⟨g, hg, h₁⟩` from `GlobalTheory.AmpleSpreadAt.exists_isAffineOpen_preimage_basicOpen ((isPullback_morphismRestrict φ U₀).paste_vert H)`. Establish `h₂ : IsAffineOpen (U₀.ι ''ᵁ U₀.ι ⁻¹ᵁ π ⁻¹ᵁ PrimeSpectrum.basicOpen g)` using `h₁.image_of_isOpenImmersion U₀.ι`. Rewrite `h₂` using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Establish `h₃ : φ ⁻¹ᵁ (U₀ ⊓ π ⁻¹ᵁ PrimeSpectrum.basicOpen g) = U'`.
+
+Rewrite using `[Scheme.Hom.preimage_inf, h₀, inf_eq_left]`. Introduce `z _`. Establish `hz : (φ ≫ π) z ∈ (PrimeSpectrum.basicOpen g : (Sp R).Opens)`. Rewrite using `[H.w]`. Establish `hu : IsUnit (algebraMap R (Localization.AtPrime q.asIdeal) g)` using `IsLocalization.map_units (Localization.AtPrime q.asIdeal) (⟨g, hg⟩ : q.asIdeal.primeCompl)`.
+
+Introduce `hm`. Conclude with `(π' z).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hm hu)`. Conclude with `hz`. Generalize the expression as in `U₀ ⊓ π ⁻¹ᵁ PrimeSpectrum.basicOpen g = U₁ at h₂ h₃`. Substitute `h₃` using the available equality.
+
+Take `⟨ψ, hψ⟩` from `Spec.map_surjective (R := CommRingCat.of R) (S := Γ(T, U₁)) (h₂.isoSpec.inv ≫ U₁.ι ≫ π)`. Use `letI : Algebra R Γ(T, U₁) := ψ.hom.toAlgebra`. Establish `hψ' : h₂.isoSpec.inv ≫ U₁.ι ≫ π = spMap (algebraMap R Γ(T, U₁))` using `hψ.symm`. Establish `hfp : LocallyOfFinitePresentation (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Establish `hfp' : ψ.hom.FinitePresentation` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation)).mp hfp`.
+
+Use `⟨Γ(T, U₁), inferInstance, inferInstance, hfp', U₁, h₂.isoSpec.symm, hψ', rfl, ?_⟩` and prove the remaining obligations. Establish `H₁` using `(isPullback_morphismRestrict φ U₁).paste_vert H`. Use `tensorProduct_algEquiv_of_isPullback_spec R _ Γ(T, U₁) C' (e'.hom ≫ φ ∣_ U₁ ≫ h₂.isoSpec.hom) ?_` and prove the remaining obligations. Use `H₁.of_iso e'.symm h₂.isoSpec (Iso.refl _) (Iso.refl _) (by simp) ?_ ?_ (by simp)` and prove the remaining obligations. Rewrite using `[← he']`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← hψ']`. Simplify using the standard rewrite rules.
+-/
 theorem exists_affine_finitePresentation_of_affine_atPrime : ∀ (R : Type) [CommRing R] (q : PrimeSpectrum R) (T : Scheme.{0}) (π : T ⟶ Sp R) [LocallyOfFinitePresentation π] [QuasiCompact π] [QuasiSeparated π] (C' : Type) [CommRing C'] [Algebra (Localization.AtPrime q.asIdeal) C'] (U' : (pullback π (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))).Opens) (e' : Sp C' ≅ U'.toScheme), e'.hom ≫ U'.ι ≫ pullback.snd π (spMap (algebraMap R (Localization.AtPrime q.asIdeal))) = spMap (algebraMap (Localization.AtPrime q.asIdeal) C') → ∃ (B : Type) (_ : CommRing B) (_ : Algebra R B) (_ : Algebra.FinitePresentation R B) (U₁ : T.Opens) (e₁ : Sp B ≅ U₁.toScheme), e₁.hom ≫ U₁.ι ≫ π = spMap (algebraMap R B) ∧ pullback.fst π (spMap (algebraMap R (Localization.AtPrime q.asIdeal))) ⁻¹ᵁ U₁ = U' ∧ Nonempty (((Localization.AtPrime q.asIdeal) ⊗[R] B) ≃ₐ[(Localization.AtPrime q.asIdeal)] C') := by
   intro R _ q T π _ _ _ C' _ _ U' e' he'
   have H := IsPullback.of_hasPullback π (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))

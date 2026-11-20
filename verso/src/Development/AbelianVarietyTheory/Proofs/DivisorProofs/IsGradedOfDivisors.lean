@@ -45,6 +45,11 @@ def ofDivisors (Δ : ι → X.Dv) : Fr (ratOf X) (fun _ : ι => 1) 0 where
       exact ((hg i z' (hz'' i)).generatesAt_iff).2
         ((unitAt_iff h2).2 ⟨mem_O_ratOf.1 (e i 0 0 ▸ h1 0 0), mem_O_ratOf.1 h3⟩)
 
+/- English proof (translation)
+Use `⟨1, fun i => ⟨1, (Δ i).isEqn_genericPoint 1, by simpa using unitAt_one _⟩, fun y x => ?_⟩` and prove the remaining obligations. Use `choose g hg using fun i => (Δ i).exists_isEqn y`. Use `⟨fun i => Matrix.diagonal fun _ => (g i : X.Fn)⁻¹, fun i => CartierDiv.isEqn_iff_generatesAt_inv.1 (hg i), g x.1, ?_, hg x.1⟩` and prove the remaining obligations. Take `⟨i, a⟩` from `x`. Rewrite using `[Subsingleton.elim a 0]`.
+
+Simplify using `[Matrix.inv_def]`.
+-/
 theorem isGraded_ofDivisors (Δ : ι → X.Dv) : IsGraded (lineFlag (ofDivisors Δ)) fun x => Δ x.1 := by
   refine ⟨1, fun i => ⟨1, (Δ i).isEqn_genericPoint 1, by simpa using unitAt_one _⟩, fun y x => ?_⟩
   choose g hg using fun i => (Δ i).exists_isEqn y

@@ -38,12 +38,21 @@ def kfin : Submodule ℂ U where
     rintro c a ⟨S, hS, kS, ha⟩
     exact ⟨S, hS, kS, S.smul_mem c ha⟩
 
+/- English proof (translation)
+Introduce and unpack `k v ⟨S, hS, kS, hv⟩`. Conclude with `⟨S, hS, kS, kS k v hv⟩`.
+-/
 theorem kfin_stable : KSt π (kfin π) := by
   rintro k v ⟨S, hS, kS, hv⟩
   exact ⟨S, hS, kS, kS k v hv⟩
 
+/- English proof (translation)
+The claim follows from `map_mul Unitary.toUnits k k'`.
+-/
 theorem uG_mul (k k' : UK n) : uG (k * k') = uG k * uG k' := map_mul Unitary.toUnits k k'
 
+/- English proof (translation)
+The claim follows from `map_one Unitary.toUnits`.
+-/
 theorem uG_one : uG (1 : UK n) = 1 := map_one Unitary.toUnits
 
 def sig : UK n →* (kfin π →ₗ[ℂ] kfin π) where
@@ -51,10 +60,16 @@ def sig : UK n →* (kfin π →ₗ[ℂ] kfin π) where
   map_one' := by ext v; simp [uG_one]
   map_mul' k k' := by ext v; simp [uG_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sig_coe (k : UK n) (v : kfin π) : (sig π k v : U) = π (uG k) v := rfl
 
 def Smo : Prop := ∀ v ∈ kfin π, ∀ w, ContDiffOn ℝ ∞ (coef π w v) (GLs n)
 
+/- English proof (translation)
+Introduce and unpack `v ⟨S, hS, kS, hv⟩ w`. Conclude with `(h S hS kS v hv w).1`.
+-/
 theorem smo_of_hasInf {χ : Inf n} (h : HasInf π χ) : Smo π := by
   rintro v ⟨S, hS, kS, hv⟩ w
   exact (h S hS kS v hv w).1
@@ -94,8 +109,14 @@ def Brk (D : Mat n →ₗ[ℝ] Module.End ℂ V) : Prop := ∀ X Y, D X * D Y - 
 
 def Skw (D : Mat n →ₗ[ℝ] Module.End ℂ V) : Prop := ∀ X (x y : V), ⟪D X x, y⟫_ℂ = -⟪x, D X y⟫_ℂ
 
+/- English proof (translation)
+Introduce `_ _` and use `by simp`.
+-/
 theorem brk_zero : Brk (0 : Mat n →ₗ[ℝ] Module.End ℂ V) := fun _ _ => by simp
 
+/- English proof (translation)
+Introduce `_ _ _` and use `by simp`.
+-/
 theorem skw_zero : Skw (0 : Mat n →ₗ[ℝ] Module.End ℂ V) := fun _ _ _ => by simp
 
 end Alg
@@ -107,8 +128,16 @@ def CoreAll : Prop :=
       FiniteDimensional ℂ (invA σ E) → invA σ E ≠ ⊥ →
         ∃ s : ℂ, (s = 1 ∨ s = -1) ∧ trOn (invA σ E) (flipA E A T) = s * 2 ^ n
 
+/- English proof (translation)
+Introduce `n lam hl` and use `h n lam hl.antitone`.
+-/
 theorem core_of_all (h : CoreAll) : Core := fun n lam hl => h n lam hl.antitone
 
+/- English proof (translation)
+Introduce `n lam hlam _ E T hT _ _ μ _ U _ _ _ π A hu hirr hth hA2 hinf ⟨t, ht, ht0⟩`. Take `⟨V, E1, E2, σ, A', hcore, hfin, hne, htr⟩` from `hB n lam U π A hu hirr hth hA2 hinf E T hT.1`. Take `⟨s, hs, hst⟩` from `hC n lam hlam E T hT V E1 E2 σ A' hcore hfin (hne ((Submodule.ne_bot_iff _).2 ⟨t, ht, ht0⟩))`. Use `⟨s, hs, fun k val T' hk => ?_⟩` and prove the remaining obligations. Establish `h` using `hP n lam E T hT μ U π A hu hirr hth hA2 hinf k val T' hk`.
+
+Rewrite `h` using `[htr, hst, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem realTr_of_all (hP : TrPass) (hB : Bridge) (hC : CoreAll) (reg : Bool) : RealTr reg := by
   intro n lam hlam _ E T hT _ _ μ _ U _ _ _ π A hu hirr hth hA2 hinf ⟨t, ht, ht0⟩
   obtain ⟨V, E1, E2, σ, A', hcore, hfin, hne, htr⟩ := hB n lam U π A hu hirr hth hA2 hinf E T hT.1

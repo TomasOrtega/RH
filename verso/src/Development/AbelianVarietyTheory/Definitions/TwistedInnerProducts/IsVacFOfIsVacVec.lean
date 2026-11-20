@@ -107,10 +107,16 @@ def LowVanishFock (D : D7) : Prop :=
       IsVacF ψ θ A (Fr.ofModel M') f₀ → ∀ P,
         Lift.liftInt ν 𝓕 (thetaKO ω') (ptF ψ θ A (Fr.ofModel M') f₀ P) (F v) = 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptF_ofModel {V W : HSp D} {S S' : D.what₂.Tau → SPar} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (M : DSModel V S) (M' : DSModel W S') (f : WO V W → ℂ) :
     ptF ψ θ (Fr.ofModel M) (Fr.ofModel M') f = ptOf ψ θ M M' f := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.theta, h.vac⟩`.
+-/
 theorem isVacF_of_isVacVec {V W : HSp D} {S S' : D.what₂.Tau → SPar} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {M : DSModel V S} {M' : DSModel W S'} {f : WO V W → ℂ} (h : IsVacVec ψ θ M M' f) :
     IsVacF ψ θ (Fr.ofModel M) (Fr.ofModel M') f := ⟨h.theta, h.vac⟩

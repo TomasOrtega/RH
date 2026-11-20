@@ -34,6 +34,9 @@ structure SelSideRT (R : RecT ex) (P : Rows.RowSideFamily ex)
 
   de' : ∀ v, ((D.host.pde' : ℕ) : 𝓞 D.host.E) ∈ (Pq v).asIdeal → (Pq v).under (𝓞 D.host.K) = hd.d3b.pK'
 
+/- English proof (translation)
+Unfold `SelJ.Carried SelJ.oEq Host.CT.plMap`. Use `show Ideal.comap ((RingOfIntegers.mapRingEquiv s.iE).symm : 𝓞 D.host.E →+* 𝓞 X.E) P.asIdeal = _`. Conclude with `Ideal.comap_symm _`.
+-/
 theorem SelJ.carried_plMap {D : D7} {X : Col.Fields} (s : Ker.Seam D X) (P : HeightOneSpectrum (𝓞 X.E)) :
     SelJ.Carried s P (Host.CT.plMap s.iE P) := by
   unfold SelJ.Carried SelJ.oEq Host.CT.plMap

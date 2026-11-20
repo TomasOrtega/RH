@@ -17,12 +17,18 @@ open GlobalTheory.StdRead
 
 namespace GlobalTheory.StdReadFrame
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_induction _ P hadd h0 fun l _ => hmul _ _ (h l) (hK l j)`.
+-/
 theorem row_mul {R : Type} [CommRing R] {P Q : R → Prop} (h0 : P 0) (hadd : ∀ x y, P x → P y → P (x + y))
     (hmul : ∀ x y, P x → Q y → P (x * y)) {b a : ℕ} {Y : Matrix (Fin b) (Fin a) R} {K : Matrix (Fin a) (Fin a) R}
     (hK : ∀ i j, Q (K i j)) {i : Fin b} (h : ∀ j, P (Y i j)) (j : Fin a) : P ((Y * K) i j) := by
   rw [Matrix.mul_apply]
   exact Finset.sum_induction _ P hadd h0 fun l _ => hmul _ _ (h l) (hK l j)
 
+/- English proof (translation)
+Use `⟨fun h j => ?_, fun h j => row_mul h0 hadd hmul hK h j⟩` and prove the remaining obligations. Establish `h1` using `row_mul h0 hadd hmul hK' h j`. Rewrite `h1` using `[Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 theorem row_mul_iff {R : Type} [CommRing R] {P Q : R → Prop} (h0 : P 0) (hadd : ∀ x y, P x → P y → P (x + y))
     (hmul : ∀ x y, P x → Q y → P (x * y)) {b a : ℕ} (Y : Matrix (Fin b) (Fin a) R) {β : GL (Fin a) R}
     (hK : ∀ i j, Q (β.val i j)) (hK' : ∀ i j, Q ((β⁻¹).val i j)) (i : Fin b) :
@@ -31,6 +37,9 @@ theorem row_mul_iff {R : Type} [CommRing R] {P Q : R → Prop} (h0 : P 0) (hadd 
   have h1 := row_mul h0 hadd hmul hK' h j
   rwa [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one] at h1
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `h : i.val < b`. Simplify using `[topL, h, Matrix.mul_apply]`. Simplify using `[topL, h]`.
+-/
 theorem topL_mul {R : Type} [CommRing R] {b a : ℕ} (Y : Matrix (Fin b) (Fin a) R) (K : Matrix (Fin a) (Fin a) R) :
     topL a (Y * K) = topL a Y * K := by
   ext i j
@@ -39,30 +48,50 @@ theorem topL_mul {R : Type} [CommRing R] {b a : ℕ} (Y : Matrix (Fin b) (Fin a)
   · simp [topL, h, Matrix.mul_apply]
   · simp [topL, h]
 
+/- English proof (translation)
+Rewrite using `[inv_one, Units.val_one, Matrix.one_mul]`.
+-/
 theorem one_inv_mul {R : Type} [CommRing R] {b a : ℕ} (Y : Matrix (Fin b) (Fin a) R) :
     ((1 : GL (Fin b) R)⁻¹).val * Y = Y := by
   rw [inv_one, Units.val_one, Matrix.one_mul]
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨zero_mem _, Ideal.zero_mem _⟩`.
+-/
 theorem inId_zero (I : Ideal (𝓞 D.host.E)) : InId (D := D) I 0 := ⟨zero_mem _, Ideal.zero_mem _⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hx`. Take `⟨h3, h4⟩` from `hy`. Conclude with `⟨add_mem h1 h3, Ideal.add_mem _ h2 h4⟩`.
+-/
 theorem inId_add {I : Ideal (𝓞 D.host.E)} (x y : EAf D) (hx : InId I x) (hy : InId I y) : InId I (x + y) := by
   obtain ⟨h1, h2⟩ := hx
   obtain ⟨h3, h4⟩ := hy
   exact ⟨add_mem h1 h3, Ideal.add_mem _ h2 h4⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hx`. Conclude with `⟨mul_mem h1 hy, Ideal.mul_mem_right (⟨y, hy⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) _ h2⟩`.
+-/
 theorem inId_mul {I : Ideal (𝓞 D.host.E)} (x y : EAf D) (hx : InId I x)
     (hy : y ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) : InId I (x * y) := by
   obtain ⟨h1, h2⟩ := hx
   exact ⟨mul_mem h1 hy, Ideal.mul_mem_right (⟨y, hy⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) _ h2⟩
 
+/- English proof (translation)
+Unfold `frMapO`. Rewrite using `[one_inv_mul]`. Both sides reduce to the same expression.
+-/
 theorem frMapO_one (S T : HSp D) (β : GL (Fin S.rank) (EAf D)) (t : WO S T) :
     frMapO S T β 1 t = HMul.hMul (Matrix.of fun i j => toEAf D (t i j) : Matrix (Fin T.rank) (Fin S.rank) (EAf D)) β.val := by
   unfold frMapO
   rw [one_inv_mul]
   rfl
 
+/- English proof (translation)
+Introduce `D S T ν e 𝔪 β hβ hβ' t`. Unfold `stdFst`. Rewrite using `[frMapO_one, topL_mul]`. Use `if_congr (and_congr_right fun _ => and_congr ?_ ?_) rfl rfl` and prove the remaining obligations. Conclude with `forall_congr' fun i => row_mul_iff (P := fun z => z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (Q := fun z => z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (zero_mem _) (fun _ _ => add_mem) (fun _ _ => mul_mem) (Matrix.of fun i j => toEAf D (t i j)) hβ hβ' i`.
+
+Use `forall_congr' fun i => ?_` and prove the remaining obligations. Establish `h` using `row_mul_iff (P := InId (D := D) 𝔪) (Q := fun z => z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (inId_zero 𝔪) inId_add inId_mul (Matrix.of fun i j => toEAf D (t i j)) hβ hβ' i`. Conclude with `⟨fun H j hi => h.1 (fun l => H l hi) j, fun H j hi => h.2 (fun l => H l hi) j⟩`.
+-/
 theorem stdFst_frame : ∀ {D : D7} (S T : HSp D) (ν : (AE D)ˣ →* Circle) (e : AE D) (𝔪 : Ideal (𝓞 D.host.E)) (β : GL (Fin S.rank) (EAf D)),
   IsIntM β.val → IsIntM (β⁻¹).val → ∀ t : WO S T, stdFst ν e 𝔪 S T β 1 t =
     if IsHalf e t ∧ (∀ i j, toEAf D (t i j) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) ∧

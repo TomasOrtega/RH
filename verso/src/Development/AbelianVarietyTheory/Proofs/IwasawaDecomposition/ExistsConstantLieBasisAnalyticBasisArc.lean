@@ -12,6 +12,21 @@ open scoped LaurentSeries
 
 namespace GlobalTheory.ArcLieFrame
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ _ _ V Y a χ W g ty Fu Ha`. Establish `hG` using `GlobalTheory.SemiRigid.globalFns`. Take `⟨g', e, v, -, hev, hb, hu, -⟩` from `GlobalTheory.ConstLie.exists_const_basis hG E H Dw l Xo c V V.subtype Y ℂ (σ.comp V.subtype) a χ W`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.ExpTan.anVec_bijective hG E H Dw l Xo c σ V V.subtype Y a χ W g ty Fu Ha`. Use `choose z hz using fun i => (h1 (e i) (hev i).1).exists`.
+
+Establish `hli : LinearIndependent ℂ z`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `cf hcf`. Take `⟨ν, hν⟩` from `GlobalTheory.ConstLie.exists_gtComb cf e`. Take `⟨ν₀, hν₀⟩` from `GlobalTheory.ConstLie.exists_gtComb (0 : Fin g' → ℂ) e`.
+
+Establish `a1` using `(h4 g' cf e z ν hz).1 hν`. Establish `a0` using `(h4 g' 0 e z ν₀ hz).1 hν₀`. Rewrite `a1` using `[hcf]`. Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero] at a0`. Take `rfl : ν = ν₀` from `(h2 0).unique a1 a0`.
+
+Establish `ht` using `h3 _ _ a1`. Use `(hu ν ht).unique hν hν₀` as an intermediate fact. Conclude with `fun i => congrFun this i`. Establish `hsp : ⊤ ≤ Submodule.span ℂ (Set.range z)`. Introduce `z₀ _`.
+
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨ν, hν, -⟩` from `h2 z₀`. Take `⟨cf, hcf, -⟩` from `hu ν (h3 _ _ hν)`. Conclude with `⟨cf, (h1 ν (h3 _ _ hν)).unique ((h4 g' cf e z ν hz).1 hcf) hν⟩`. Establish `hg : g' = g`.
+
+Use `Module.finrank_eq_card_basis (Module.Basis.mk hli hsp)` as an intermediate fact. Simplify using `using this.symm`. Substitute `hg` using the available equality. Use `⟨e, v, z, fun k => ⟨(hev k).2, hz k⟩, hb, ?_⟩` and prove the remaining obligations. Establish `hu' : IsUnit (Matrix.of z)` using `(Matrix.linearIndependent_rows_iff_isUnit).1 (by simpa using hli)`.
+
+Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 hu' |>.ne_zero`.
+-/
 theorem exists_const_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (V : ValuationSubring c.F) (Y : Model Xo c V.subtype) (a : ArcIn Dw l V.subtype ℂ (σ.comp V.subtype)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : GlobalTheory.ArcQ.Wit Y a χ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (Ha : HolArc Y σ a χ W Fu), ∃ (e : Fin g → Out.GtPt a.D₀ (epsR ℂ)) (v : Fin g → (epsR (PowerSeries ℂ) ⟶ W.t.G)) (z : Fin g → Fin g → ℂ), (∀ k, GlobalTheory.ArcQ.LieImg W (e k) (v k) ∧ GlobalTheory.ArcQ.AnVec Ha (e k) (z k)) ∧ IsLieBasis v ∧ (Matrix.of z).det ≠ 0 := by
   intro E _ _ _ H Dw l Xo c σ _ _ V Y a χ W g ty Fu Ha
   have hG := GlobalTheory.SemiRigid.globalFns

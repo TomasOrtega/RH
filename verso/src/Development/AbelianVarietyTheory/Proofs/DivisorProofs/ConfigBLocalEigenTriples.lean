@@ -13,6 +13,21 @@ noncomputable section
 
 namespace GlobalTheory.ThK.InfB
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he ei' ev' hL X om om' om₁ om₁' hT hT₁ μ hμ l hl f p hp g hg t ht`. Take `⟨htI, n, m, g₀, hn, hnI, hlev, hmI, hg₀, rfl⟩` from `GlobalTheory.T.parabolic_line_scalar_character F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ p hp t ht`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Use `haveI := hμ`. Establish `hnm : n * m ∈ UAt σ G.V' (evI F)` using `(UAtSub σ G.V' (evI F)).mul_mem hnI hmI`.
+
+Use `set F₀ := locOpInf (om' (g, 1)) f with hF₀`. Set `h' : idelesAt E (evI F) → ℂ` to `fun y => (X.ν y.1 : ℂ) * ((absE F E y.1 : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1) * l (ei' (locOpInf (G.M'.co.rho B.ψ (partInf F (shiftB σ H H' (t * y.1)))) F₀))`. Set `c : ℂ` to `(X.ν t : ℂ) * ((absE F E t : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1)`. Establish `hint : ∀ y : idelesAt E (evI F), l (coneInfInt B G.M' om' ei' (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) f (n * m * g) y.1) = fac X.ν (((a + (b + 2) : ℕ) : ℝ) / 2) t * h' y`. Introduce `y`.
+
+Simplify using `only [coneInfInt, map_smul, smul_eq_mul, h']`. Rewrite using `[GlobalTheory.T.local_weil_operator_mul hP F E σ B a (b + 2) G X om om' hT _ hnm g hg, GlobalTheory.T.local_weil_operator_mul hP F E σ B a (b + 2) G X om om' hT n hnI m hmI, GlobalTheory.T.theta_triple_local_part_case_b_second hP F E σ B a b G G₁ H H' hC e' he ei' ev' hL X om om' …`. Expand and normalize the polynomial expressions, which then agree. Establish `hsh : ∀ y : idelesAt E (evI F), l (coneInfInt B G.M' om' ei' (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) f g ((⟨t, htI⟩ : idelesAt E (evI F)) * y).1) = c * h' y`. Introduce `y`.
+
+Simplify using `only [coneInfInt, map_smul, smul_eq_mul, h', c, Subgroup.coe_mul, map_mul, Circle.coe_mul, NNReal.coe_mul, Complex.ofReal_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfac : fac X.ν (((a + (b + 2) : ℕ) : ℝ) / 2) t = c * (((absE F E t : ℝ) ^ (b + 1) : ℝ) : ℂ)`. Take `⟨r, hr⟩` from `hT.geo.even`. Establish `hlt` using `hT.geo.lt`.
+
+Establish `hN : a + (b + 2) = 2 * (b + 1 + ((a - (b + 2)) / 2 + 1))` using `by omega`. Establish `hd : (((a + (b + 2) : ℕ) : ℝ) / 2) = ((b + 1 + ((a - (b + 2)) / 2 + 1) : ℕ) : ℝ)`. Rewrite using `[hN]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [fac, c, hd, Real.rpow_natCast, pow_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `integral_mul_left_eq_self (μ := μ) (fun y : idelesAt E (evI F) => l (coneInfInt B G.M' om' ei' (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) f g y.1)) ⟨t, htI⟩`. Simplify using `only [hsh] at key`.
+
+Simplify using `only [GlobalTheory.ThK.InfB.coneFun]`. Rewrite using `[integral_congr_ae (Eventually.of_forall hint), integral_const_mul, hfac, ← key, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coneFun_mul_left : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ ei' ev', IsLocPart G.M' G₁.M' e' ei' ev' →

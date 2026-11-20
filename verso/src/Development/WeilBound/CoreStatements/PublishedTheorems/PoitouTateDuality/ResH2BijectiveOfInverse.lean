@@ -11,6 +11,21 @@ namespace PositivityTheory.Lit1.PTN
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`.
+
+Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Rewrite `hx` using `[resH2, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨c, hc, hcf⟩` from `(separated_dvr_second_cohomology_mem _ _).1 hx`. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨c ∘ χ, hc.comp hχ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+
+Establish `e` using `congrFun hcf (χ p.1, χ p.2)`. Simplify using `only [Submodule.coe_subtype] at e ⊢`. Express the relevant statement in the definitionally equal form `_ = z.1 (ψ (χ p.1), ψ (χ p.2)) at e`. Rewrite `e` using `[h1, h1]`. Rewrite using `[← e]`.
+
+Simplify using `[d1, h1]`. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Use `⟨Submodule.Quotient.mk ⟨fun p => z.1 (χ p.1, χ p.2), z.2.1.comp (hχ.prodMap hχ), fun g h k => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `z.2.2 (χ g) (χ h) (χ k)`. Simplify using `only [map_mul]`. Express the relevant statement in the definitionally equal form `rho (ψ (χ g)) _ - _ + _ - _ = 0 at e`. Rewrite `e` using `[h1]`. Conclude with `e`.
+
+Rewrite using `[resH2, Submodule.mapQ_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Express the relevant statement in the definitionally equal form `z.1 (χ (ψ p.1), χ (ψ p.2)) = z.1 p`.
+
+Rewrite using `[h2, h2]`.
+-/
 theorem resH2_bijective_of_inverse {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [Group H] [TopologicalSpace H] [IsTopologicalGroup H] {R M : Type} [CommRing R]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [DiscreteTopology M]
@@ -50,6 +65,21 @@ theorem resH2_bijective_of_inverse {G H : Type} [Group G] [TopologicalSpace G] [
         change z.1 (χ (ψ p.1), χ (ψ p.2)) = z.1 p
         rw [h2, h2]
 
+/- English proof (translation)
+Establish `hθs : Continuous (θ.symm : H ≃* G).toMonoidHom` using `θ.symm.continuous`. Set `rho' : Representation R H M` to `rho.comp (θ.symm : H ≃* G).toMonoidHom`. Establish `hM' : ∀ h m, eM (rho' h m) = A.ρ h (eM m)` using `fun h m => by show eM (rho (θ.symm h) m) = _`. Rewrite using `[hM]`. Conclude with `congrArg (fun t => A.ρ t (eM m)) (θ.apply_symm_apply h)`.
+
+Take `⟨e2, he2a, he2b⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 H R M rho' A eM hM'`. Establish `bij` using `resH2_bijective_of_inverse rho (θ.symm : H ≃* G).toMonoidHom hθs (θ : G ≃* H).toMonoidHom θ.continuous (fun g => θ.symm_apply_apply g) (fun h => θ.apply_symm_apply h)`. Set `r2 : H2 rho ≃ₗ[R] H2 rho'` to `LinearEquiv.ofBijective _ bij`. Establish `hloc : ∀ v, ∀ σ m, eM (((rho.comp (lam v)).comp (ev v).toMonoidHom) σ m) = (Rep.res (φ v).toMonoidHom A).ρ σ (eM m)` using `fun v σ m => by show eM (rho (lam v (ev v σ)) m) = A.ρ (φ v σ) (eM m)`. Rewrite using `[hM, hev]`.
+
+Use `choose ev2 hev2a hev2b using fun v => PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 (Hv v) R M ((rho.comp (lam v)).comp (ev v).toMonoidHom) (Rep.res (φ v).toMonoidHom A) eM (hloc v)`. Establish `bijv` using `fun v => resH2_bijective_of_inverse (rho.comp (lam v)) (ev v).toMonoidHom (hev1 v) (ev v).symm.toMonoidHom (hev2 v) (fun g => (ev v).apply_symm_apply g) (fun h => (ev v).symm_apply_apply h)`. Set `rv : ∀ v, H2 (rho.comp (lam v)) ≃ₗ[R] H2 ((rho.comp (lam v)).comp (ev v).toMonoidHom)` to `fun v => LinearEquiv.ofBijective _ (bijv v)`. Use `⟨r2.toAddEquiv.trans e2, fun v => (rv v).toAddEquiv.trans (ev2 v), fun v x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+
+Consider the case `H z`. Take `⟨y, hy⟩` from `he2a (restrictCocycles2 rho (θ.symm : H ≃* G).toMonoidHom hθs z)`. Establish `hE : e2 (r2 (Submodule.Quotient.mk z)) = cohomologyπ A 2 y` using `he2b _ y hy`. Use `show ev2 v (rv v (resH2 rho (lam v) (hlam v) (Submodule.Quotient.mk z))) = ptRes φ A v 2 (e2 (r2 (Submodule.Quotient.mk z)))`. Rewrite using `[hE]`.
+
+Establish `hP : ptRes φ A v 2 (cohomologyπ A 2 y) = cohomologyπ _ 2 (cocyclesMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 2 y)`. Unfold `ptRes`. Conclude with `congrArg (fun f => f.hom y) (cohomologyπ_cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) 2)`. Rewrite using `[hP]`. Apply `hev2b v` to reduce the goal to its premises.
+
+Introduce `s`. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong]`. Simplify using `only`. Rewrite using `[hy]`. Express the relevant statement in the definitionally equal form `eM (z.1 (θ.symm (φ v (s 0)), θ.symm (φ v (s 1)))) = eM (z.1 (lam v (ev v (s 0)), lam v (ev v (s 1))))`.
+
+Rewrite using `[← hev, ← hev]`. Conclude with `congrArg (fun t => eM (z.1 t)) (Prod.ext (θ.symm_apply_apply _) (θ.symm_apply_apply _))`.
+-/
 theorem resCmp2B {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     [TopologicalSpace H] [IsTopologicalGroup H] (θ : G ≃ₜ* H) {ι : Type} {Lv Hv : ι → Type}
     [∀ v, Group (Lv v)] [∀ v, TopologicalSpace (Lv v)] [∀ v, IsTopologicalGroup (Lv v)]

@@ -37,15 +37,26 @@ section Val
 variable {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K'] [Algebra V K']
   [IsFractionRing V K']
 
+/- English proof (translation)
+Establish `: valV V (algebraMap V K' u) = 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit`. Simplify using `[vV, this]`.
+-/
 theorem vV_unit (u : Vˣ) : vV V (algebraMap V K' u) = 0 := by
   have : valV V (algebraMap V K' u) = 1 := by
     rw [valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]
     exact fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit
   simp [vV, this]
 
+/- English proof (translation)
+Simplify using `[vV]`.
+-/
 theorem vV_pow {x : K'} (hx : x ≠ 0) (n : ℕ) : vV V (x ^ n) = n * vV V x := by
   simp [vV]
 
+/- English proof (translation)
+Establish `h0 : algebraMap V K' a ≠ 0` using `by simpa using ha`. Establish `: valV V (algebraMap V K' a) < 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hu`. Use `(WithZero.log_lt_log (valV_ne_zero (V := V) h0) one_ne_zero).2 this` as an intermediate fact.
+
+Simplify using `only [vV]`. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_pos {a : V} (ha : a ≠ 0) (hu : ¬ IsUnit a) : 0 < vV V (algebraMap V K' a) := by
   have h0 : algebraMap V K' a ≠ 0 := by simpa using ha
   have : valV V (algebraMap V K' a) < 1 := by
@@ -54,12 +65,28 @@ theorem vV_pos {a : V} (ha : a ≠ 0) (hu : ¬ IsUnit a) : 0 < vV V (algebraMap 
   have := (WithZero.log_lt_log (valV_ne_zero (V := V) h0) one_ne_zero).2 this
   simp only [vV]; simp at this; omega
 
+/- English proof (translation)
+Establish `: valV V (algebraMap V K' a) = WithZero.exp (-1 : ℤ)`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_singleton _ ha.ne_zero ha.maximalIdeal_eq`. Simplify using `[vV, this]`.
+-/
 theorem vV_irr {a : V} (ha : Irreducible a) : vV V (algebraMap V K' a) = 1 := by
   have : valV V (algebraMap V K' a) = WithZero.exp (-1 : ℤ) := by
     rw [valV, HeightOneSpectrum.valuation_of_algebraMap]
     exact HeightOneSpectrum.intValuation_singleton _ ha.ne_zero ha.maximalIdeal_eq
   simp [vV, this]
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `inj : ∀ v, v ≠ 0 → algebraMap V' K'' (j v) ≠ 0` using `fun v hv => by`. Rewrite using `[← hi]`. Simplify using `using hv`. Establish `pos : 0 < vV V' (algebraMap V' K'' (j p))` using `vV_pos (fun h => inj p hp.ne_zero (by simp [h])) (fun h => hp.not_isUnit (isUnit_of_map_unit j p h))`.
+
+Take `⟨r, hr⟩` from `Int.eq_ofNat_of_zero_le pos.le`. Establish `key : ∀ v : V, v ≠ 0 → vV V' (i (algebraMap V K' v)) = (r : ℤ) * vV V (algebraMap V K' v)`. Introduce `v hv`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hv hp`. Establish `h1 : algebraMap V K' p ≠ 0` using `by simpa using hp.ne_zero`.
+
+Establish `h2 : algebraMap V K' u ≠ 0` using `by simp`. Rewrite using `[hi, map_mul, map_mul, map_mul, map_pow, map_pow, map_pow, vV_mul (inj _ u.ne_zero) (pow_ne_zero _ (inj p hp.ne_zero)), vV_mul h2 (pow_ne_zero _ h1), vV_pow (inj p hp.ne_zero), vV_pow h1, vV_unit, vV_irr hp, hr]`. Use `vV_unit (K' := K'') (Units.map j.toMonoidHom u)` as an intermediate fact. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at this`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨r, by omega, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Simplify using `[hx, vV]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V) x`.
+
+Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hx`. Establish `hb1 : algebraMap V K' b ≠ 0` using `by simpa using hb0`. Establish `e : algebraMap V K' a / algebraMap V K' b * algebraMap V K' b = algebraMap V K' a` using `div_mul_cancel₀ _ hb1`. Establish `e1` using `vV_mul (V := V) hx hb1`.
+
+Establish `e2` using `vV_mul (V := V') ((map_ne_zero i).2 hx) ((map_ne_zero i).2 hb1)`. Rewrite `e2` using `[← map_mul, e, key a ha0, key b hb0]`. Rewrite `e1` using `[e]`. Rewrite `e2` using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_index {V' K'' : Type} [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] [Field K'']
     [Algebra V' K''] [IsFractionRing V' K''] (j : V →+* V') [IsLocalHom j] (i : K' →+* K'')
     (hi : ∀ v, i (algebraMap V K' v) = algebraMap V' K'' (j v)) :
@@ -105,6 +132,13 @@ section Models
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo T K _ _ _ _ _ _ x G G₂ t t₂ m₁ m₂ n₁ n₂`. Establish `tr : ∀ {S S' : Scheme.{0}} {s : SAB H S} {s' : SAB H S'} {f g : S' ⟶ S}, f = g → ∀ m : SABMap s' s f, ∃ m' : SABMap s' s g, m'.φ = m.φ`. Introduce `S S' s s' f g h m`. Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+
+Take `⟨m₁', hm₁⟩` from `tr (Category.id_comp x).symm m₁`. Take `⟨k, hk⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ x (𝟙 _) n₁ m₁'`. Take `⟨c, hc⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ (𝟙 _) n₂ k`. Take `⟨c', hc'⟩` from `tr (Category.id_comp _) c`. Take `⟨ψ, hψ, hφ, hact⟩` from `sab_group_iso_of_generic (existsUnique_hom_extension_semiAbelian_dvr (AbelianSubgroupFinite.finite_of_no_torsion abMulN_holds)) E H T K G G₂ t m₂ c'`.
+
+Take `⟨n, hn⟩` from `Exist.CubicalExtension.sabMap_of_iso_of_extendGen (cubical_extends_and_extendGen forall_geometricallyIntegral_of_smooth_of_geometricallyConnected GenExtend.existsUnique_gen_extend).2 E H T K G G₂ t m₂ c' ψ hψ hφ hact`. Conclude with `⟨k, n, by rw [← hk, hm₁], by rw [hn, hφ, hc', hc]⟩`.
+-/
 theorem sab_extensions_iso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (x : Sp K ⟶ Xo.X) (G G₂ : SAB H (Sp T)) (t t₂ : SAB H (Sp K)) (m₁ : SABMap t Xo.univ.t x) (m₂ : SABMap t G (spMap (algebraMap T K))) (n₁ : SABMap t₂ Xo.univ.t x) (n₂ : SABMap t₂ G₂ (spMap (algebraMap T K))), ∃ (k : SABMap t t₂ (𝟙 _)) (n : SABMap G G₂ (𝟙 _)), k.φ ≫ n₁.φ = m₁.φ ∧ m₂.φ ≫ n.φ = k.φ ≫ n₂.φ := by
   intro E _ _ _ H Dw l Xo T K _ _ _ _ _ _ x G G₂ t t₂ m₁ m₂ n₁ n₂
   have tr : ∀ {S S' : Scheme.{0}} {s : SAB H S} {s' : SAB H S'} {f g : S' ⟶ S}, f = g → ∀ m : SABMap s' s f,
@@ -136,6 +170,15 @@ open GlobalTheory.Reg.ChartInhab GlobalTheory.Reg.LiftUnique
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Establish `hι : ψ.comp (algebraMap T.V T.Fr) = (algebraMap T'.V T'.Fr).comp f` using `RingHom.ext hψ`. Establish `hio : spMap (algebraMap T'.V T'.Fr) ≫ spMap f = spMap ψ ≫ spMap (algebraMap T.V T.Fr)`. Rewrite using `[← spMap_comp, ← spMap_comp, hι]`. Choose the witnesses or unpack the hypotheses as in `⟨tP, ⟨mP⟩⟩ : ∃ tP : SAB H (Sp T'.V), Nonempty (SABMap tP G (spMap f)) := by`.
+
+Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap f) G`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨n, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m1 m1'`. Take `⟨w0, r0⟩` from `exists_rigIso n`. Take `⟨w2, r2⟩` from `exists_rigIso m2`.
+
+Take `⟨k, -, -⟩` from `exists_comp_rig m2 n _ hio r2 r0`. Take `⟨mK, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ mP k`. Take `⟨-, j, -⟩` from `sab_extensions_iso E H Dw l Xo T'.V T'.Fr _ G' tP t' t' m1' m2' m1' mK`. Establish `hp` using `GlobalTheory.UnifAfterExt.polAt_of_sabMap j mK m1' Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK T'.V) (𝟙 _) ((Category.comp_id _).trans (Category.id_comp _).symm)`. Take `⟨S, hS⟩` from `hS`.
+
+Take `⟨e, he, -⟩` from `grpPullback_iso ((isGrpPullback_pullback _ (spMap (residue T'.V))).comp (isGrpPullback_pullback G.G (spMap f))) ((isGrpPullback_pullback _ (spMap (residue T'.V))).comp ((j.cart.comp mP.cart).congr (Category.id_comp _) rfl))`. Take `⟨-, P, -, hP⟩` from `GlobalTheory.UnifAfterExt.isOpen_and_uniformised T'.V inferInstance G' hp ⟨S, isGt_of_iso e hS⟩`. Conclude with `⟨P, hP⟩`.
+-/
 theorem exists_unif_of_split (T T' : CDVR) (f : T.V →+* T'.V) (ψ : T.Fr →+* T'.Fr)
     (hψ : ∀ a, ψ (algebraMap T.V T.Fr a) = algebraMap T'.V T'.Fr (f a))
     {G : SAB H (Sp T.V)} {t : SAB H (Sp T.Fr)} {x : Sp T.Fr ⟶ Xo.X} (m1 : SABMap t Xo.univ.t x)
@@ -176,6 +219,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 open scoped CategoryTheory.Obj
 
+/- English proof (translation)
+Distinguish the cases in `ha : algebraMap T.V T.Fr a = 0`. Rewrite using `[ha]`. Simplify using `[vV]`. Establish `hv : valV T.V (algebraMap T.V T.Fr a) ≤ 1` using `(IsDiscreteValuationRing.maximalIdeal T.V).valuation_le_one a`. Use `(WithZero.log_le_log (valV_ne_zero (V := T.V) ha) one_ne_zero).2 hv` as an intermediate fact.
+
+Simplify using `only [WithZero.log_one] at this`. Simplify using `only [vV]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_nonneg (T : CDVR) (a : T.V) : 0 ≤ vV T.V (algebraMap T.V T.Fr a) := by
   by_cases ha : algebraMap T.V T.Fr a = 0
   · rw [ha]; simp [vV]
@@ -185,10 +233,22 @@ theorem vV_nonneg (T : CDVR) (a : T.V) : 0 ≤ vV T.V (algebraMap T.V T.Fr a) :=
     simp only [WithZero.log_one] at this
     simp only [vV]; omega
 
+/- English proof (translation)
+Rewrite using `[← vV_mul hx (inv_ne_zero hx), mul_inv_cancel₀ hx]`. Simplify using `[vV]`.
+-/
 theorem vV_add_inv (T : CDVR) {x : T.Fr} (hx : x ≠ 0) : vV T.V x + vV T.V x⁻¹ = 0 := by
   rw [← vV_mul hx (inv_ne_zero hx), mul_inv_cancel₀ hx]
   simp [vV]
 
+/- English proof (translation)
+Establish `inj` using `IsFractionRing.injective T'.V T'.Fr`. Establish `hm : ∀ a : T.V, ∃ b, algebraMap T'.V T'.Fr b = iT (algebraMap T.V T.Fr a)` using `fun a => Formalism.L2.PjFree.mem_range_of_vV_nonneg (by`. Rewrite using `[hv]; exact mul_nonneg (by exact_mod_cast he.le) (vV_nonneg T a))`. Use `choose f hf using hm`. Set `φ : T.V →+* T'.V` to `{ toFun := f map_one' := inj (by simp [hf]) map_mul' := fun a b => inj (by simp [hf]) map_zero' := inj (by simp [hf]) map_add' := fun a b => inj (by simp [hf]) }`.
+
+Use `⟨φ, RingHom.ext hf, ⟨fun a ha => ?_⟩⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `ha.exists_right_inv`. Establish `h1 : iT (algebraMap T.V T.Fr a) * algebraMap T'.V T'.Fr w = 1`. Rewrite using `[← hf, ← map_mul]`. Conclude with `(congrArg _ hw).trans (map_one _)`.
+
+Establish `h0 : algebraMap T.V T.Fr a ≠ 0` using `fun h => by simp [h] at h1`. Establish `h2 : iT (algebraMap T.V T.Fr a)⁻¹ = algebraMap T'.V T'.Fr w`. Rewrite using `[map_inv₀]`. Conclude with `(eq_inv_of_mul_eq_one_right h1).symm`. Establish `h3` using `vV_nonneg T' w`.
+
+Rewrite `h3` using `[← h2, hv]`. Establish `h4 : 0 ≤ vV T.V (algebraMap T.V T.Fr a)⁻¹` using `le_of_mul_le_mul_left (by simpa using h3) (by exact_mod_cast he : (0 : ℤ) < e)`. Take `⟨b, hb⟩` from `Formalism.L2.PjFree.mem_range_of_vV_nonneg h4`. Use `IsUnit.of_mul_eq_one b (IsFractionRing.injective T.V T.Fr ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hb, mul_inv_cancel₀ h0, map_one]`.
+-/
 theorem exists_local_restrict (T T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ) (he : 0 < e)
     (hv : ∀ a : T.Fr, vV T'.V (iT a) = (e : ℤ) * vV T.V a) :
     ∃ φ : T.V →+* T'.V, (algebraMap T'.V T'.Fr).comp φ = iT.comp (algebraMap T.V T.Fr) ∧ IsLocalHom φ := by
@@ -218,6 +278,11 @@ theorem exists_local_restrict (T T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ) (h
   refine IsUnit.of_mul_eq_one b (IsFractionRing.injective T.V T.Fr ?_)
   rw [map_mul, hb, mul_inv_cancel₀ h0, map_one]
 
+/- English proof (translation)
+Take `⟨E₀, -, -, -, -, ⟨d⟩⟩` from `GlobalTheory.gtCoord_isGt V _ D.toPre 0 G ⟨U.gt 0⟩`. Set `g : V ⧸ (maximalIdeal V) ^ (0 + 1) →+* ResidueField V'` to `(ResidueField.map φ).comp (Ideal.Quotient.factor (Ideal.pow_le_self (by norm_num)))`. Establish `hr : spMap g ≫ thick V (maximalIdeal V) 0 = spMap (residue V') ≫ spMap φ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+
+Take `⟨j, hj, -⟩` from `grpPullback_iso (((isGrpPullback_pullback (thickObj V (maximalIdeal V) 0 G) (spMap g)).comp (isGrpPullback_pullback G (thick V (maximalIdeal V) 0))).congr hr rfl) ((isGrpPullback_pullback G' (spMap (residue V'))).comp h)`. Conclude with `⟨_, isGt_of_iso j (GtBaseChange.isGt_extBC (spMap g) E₀ _ d)⟩`.
+-/
 theorem split_of_pullback {V V' : Type} [CommRing V] [IsDomain V] [IsLocalRing V] [CommRing V'] [IsLocalRing V']
     (φ : V →+* V') [IsLocalHom φ] {D : DegData V (maximalIdeal V)} {A : PolAV (Sp (FractionRing V))}
     {G : Over (Sp V)} [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal V) D A G)
@@ -234,6 +299,19 @@ theorem split_of_pullback {V V' : Type} [CommRing V] [IsDomain V] [IsLocalRing V
     ((isGrpPullback_pullback G' (spMap (residue V'))).comp h)
   exact ⟨_, isGt_of_iso j (GtBaseChange.isGt_extBC (spMap g) E₀ _ d)⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hstar T io y C hC T' iT e y' hy`. Take `⟨-, P, -⟩` from `hC`. Take `⟨he, hv, ψ, hψ, hx, -⟩` from `hy`. Establish `hx' : xOf y' = spMap iT ≫ xOf y` using `hx.trans (congrArg (fun r => spMap r ≫ xOf y) hψ)`. Take `⟨C', hC'⟩` from `GlobalTheory.IntChartTrunc.intChart_frTrunc_exists E H Dw l Xo c hstar T' (iT.comp io) y'`.
+
+Use `⟨C', hC', ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, hloc⟩` from `exists_local_restrict T T' iT e he hv`. Establish `hsq : spMap iT ≫ spMap (algebraMap T.V T.Fr) = spMap (algebraMap T'.V T'.Fr) ≫ spMap φ`. Rewrite using `[← spMap_comp, ← spMap_comp, hφ]`. Establish `tr : ∀ {S S' : Scheme.{0}} {s : SAB H S} {s' : SAB H S'} {f g : S' ⟶ S}, f = g → SABMap s' s f → Nonempty (SABMap s' s g)`.
+
+Introduce `S S' s s' f g h m`. Substitute `h` using the available equality. Conclude with `⟨m⟩`. Choose the witnesses or unpack the hypotheses as in `⟨G₂, ⟨m⟩⟩ : ∃ G₂ : SAB H (Sp T'.V), Nonempty (SABMap G₂ C.I.G (spMap φ)) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap φ) C.I.G`.
+
+Conclude with `⟨_, ⟨m⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t₂, ⟨p⟩⟩ : ∃ t₂ : SAB H (Sp T'.Fr), Nonempty (SABMap t₂ C.I.t' (spMap iT)) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap iT) C.I.t'`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨a₁, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ C.I.m1 p`.
+
+Take `⟨n₁⟩` from `tr hx'.symm a₁`. Take `⟨a₂, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ C.I.m2 p`. Take `⟨b₂⟩` from `tr hsq a₂`. Take `⟨n₂, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m b₂`. Take `⟨-, n, -⟩` from `sab_extensions_iso E H Dw l Xo T'.V T'.Fr (xOf y') C'.I.G G₂ C'.I.t' t₂ C'.I.m1 C'.I.m2 n₁ n₂`.
+
+Take `⟨a₃, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m n`. Take `⟨k⟩` from `tr (Category.id_comp _) a₃`. Establish `hp` using `GlobalTheory.UnifAfterExt.polAt_of_sabMap k C.I.m2 C.I.m1 Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK T'.V) (spMap iT) hsq.symm`. Take `⟨-, P', -, hP'⟩` from `GlobalTheory.UnifAfterExt.isOpen_and_uniformised T'.V inferInstance C'.I.G hp (split_of_pullback φ P.U.toUnifPre k.cart)`. Conclude with `⟨P', hP'⟩`.
+-/
 theorem exists_good_chart_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), Good3 C → ∀ (T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ) (y' : IntFr Xo c T' (iT.comp io)), IsExt y iT e y' → ∃ C' : IntegralChartA3 Xo c T' (iT.comp io) y', Good3 C' := by
   intro E _ _ _ H Dw l Xo c _ hstar T io y C hC T' iT e y' hy
   obtain ⟨-, P, -⟩ := hC
@@ -269,6 +347,15 @@ theorem exists_good_chart_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     (split_of_pullback φ P.U.toUnifPre k.cart)
   exact ⟨P', hP'⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T io y hy`. Establish `: Finite (ResidueField T.V)` using `hy`. Take `⟨G, t, m1, m2, -⟩` from `y.2.2`. Take `⟨W, _, _, _, hc, _, hf, hi, hr, hS⟩` from `GlobalTheory.UnifAfterExt.exists_split_baseChange T.V G.G G.semi`. Establish `hz : CharZero W` using `charZero_of_injective_ringHom hi`.
+
+Set `T' : Formalism.L2.Pj.CDVR` to `{ V := W }`. Establish `: FaithfulSMul T.V W` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hi`. Establish `hl : IsLocalHom (algebraMap T.V W)` using `inferInstance`. Establish `hj : Function.Injective ((algebraMap W (FractionRing W)).comp (algebraMap T.V W))` using `(IsFractionRing.injective W _).comp hi`. Take `⟨φ, hφ⟩ : ∃ φ : T.Fr →+* T'.Fr, ∀ v, φ (algebraMap T.V T.Fr v) = algebraMap T'.V T'.Fr (algebraMap T.V W v)` from `⟨IsFractionRing.lift hj, IsFractionRing.lift_algebraMap hj⟩`.
+
+Take `⟨r, hr0, hv⟩` from `exists_index (V' := T'.V) (algebraMap T.V W) φ hφ`. Use `letI := io.toAlgebra`. Use `letI := (φ.comp io).toAlgebra`. Set `ψ : T.Fr →ₐ[c.F] T'.Fr` to `{ φ with commutes' := fun _ => rfl }`. Take `⟨z, hz⟩` from `GlobalTheory.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1 E H Dw l Xo c _ _ ψ y.1`.
+
+Take `⟨p, χ, y₀, hy₀⟩` from `y.2.1`. Set `y' : IntFr Xo c T' (φ.comp io)` to `⟨z, ⟨p, ψ.comp χ, y₀, Formalism.L2.Pj.frMap_trans (Xo := Xo) (c := c) _ _ _ χ ψ y₀ y.1 z hy₀ hz⟩, Ext.integral_of_frMap T T' io φ (algebraMap T.V W) (fun a => (hφ a).symm) ψ y.1 z rfl hz y.2.2⟩`. Conclude with `⟨T', φ.comp io, y', r, hr, hr0, fun I => exists_unif_of_split T T' _ φ hφ m1 m2 hz.1 I.m1 I.m2 hS, ψ, fun a _ => hv a, hz⟩`.
+-/
 theorem exists_ext_all_models_uniformised : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), y.IsAlg → ∃ (T' : CDVR) (io' : c.F →+* T'.Fr) (y' : IntFr Xo c T' io') (e' : ℕ), y'.IsAlg ∧ 0 < e' ∧ (∀ I : IntData Xo c T' io' y'.1, ∃ P : PELUnif (maximalIdeal T'.V) I.G, P.TorsionIso) ∧ letI := io.toAlgebra; letI := io'.toAlgebra; ∃ φ : T.Fr →ₐ[c.F] T'.Fr, (∀ a : T.Fr, a ≠ 0 → vV T'.V (φ a) = (e' : ℤ) * vV T.V a) ∧ FrMap φ y.1 y'.1 := by
   intro E _ _ _ H Dw l Xo c T io y hy
   have : Finite (ResidueField T.V) := hy
@@ -294,6 +381,15 @@ theorem exists_ext_all_models_uniformised : ∀ (E : Type) [Field E] [NumberFiel
   exact ⟨T', φ.comp io, y', r, hr, hr0, fun I => exists_unif_of_split T T' _ φ hφ m1 m2 hz.1 I.m1 I.m2 hS,
     ψ, fun a _ => hv a, hz⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hstar T io y hT`. Take `⟨T', io', y', e, hA, he, hU, φ, hv, hφ⟩` from `exists_ext_all_models_uniformised E H Dw l Xo c T io y hT`. Take `⟨iT, hiT⟩ : ∃ iT : T.Fr →+* T'.Fr, (letI` from `io.toAlgebra; letI := io'.toAlgebra; φ.toRingHom) = iT := ⟨_, rfl⟩`. Establish `hio : io' = iT.comp io`. Substitute `hiT` using the available equality.
+
+Use `letI := io.toAlgebra`. Use `letI := io'.toAlgebra`. Conclude with `RingHom.ext fun a => (φ.commutes a).symm`. Establish `hv' : ∀ a : T.Fr, vV T'.V (iT a) = (e : ℤ) * vV T.V a`. Introduce `a`.
+
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `[vV]`. Rewrite using `[← hiT]`. Conclude with `hv a ha`.
+
+Substitute `hio` using the available equality. Take `⟨C', hC'⟩` from `GlobalTheory.IntChartTrunc.intChart_frTrunc_exists E H Dw l Xo c hstar T' (iT.comp io) y'`. Conclude with `⟨T', iT, e, y', C', ⟨he, hv', φ, hiT, hφ⟩, hA, hC', hU C'.I⟩`.
+-/
 theorem exists_ext_intChart_unif : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), T.FinRes → ∃ (T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ) (y' : IntFr Xo c T' (iT.comp io)) (C' : IntegralChartA3 Xo c T' (iT.comp io) y'), IsExt y iT e y' ∧ T'.FinRes ∧ Good3 C' := by
   intro E _ _ _ H Dw l Xo c _ hstar T io y hT
   obtain ⟨T', io', y', e, hA, he, hU, φ, hv, hφ⟩ := exists_ext_all_models_uniformised E H Dw l Xo c T io y hT
@@ -315,6 +411,15 @@ theorem exists_ext_intChart_unif : ∀ (E : Type) [Field E] [NumberField E] [IsC
   obtain ⟨C', hC'⟩ := GlobalTheory.IntChartTrunc.intChart_frTrunc_exists E H Dw l Xo c hstar T' (iT.comp io) y'
   exact ⟨T', iT, e, y', C', ⟨he, hv', φ, hiT, hφ⟩, hA, hC', hU C'.I⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hstar T io y hfin M hM`. Take `⟨T₁, i₁, e₁, y₁, C₁, hext₁, hfin₁, hgood₁⟩` from `exists_ext_intChart_unif E H Dw l Xo c hstar T io y hfin`. Take `⟨L, _, _, hL, hrat⟩` from `(GlobalTheory.T.torsion_rational_over_finite_extension_level_structure E H Dw l Xo T₁.Fr (xOf y₁) M hM).1`. Take `⟨T₂, i₂, e₂, ψ, φ, he₂, hv₂, hψ, -, hfin₂⟩` from `GlobalTheory.PlaceExtField.exists_cdvr_finite_extension T₁ L`. Take `⟨⟨y₂, hext₂⟩, hy⟩` from `exists_isExt_and_trans E H Dw l Xo c T₁ T₂ (i₁.comp io) y₁ i₂ e₂ he₂ hv₂`.
+
+Establish `hx₂` using `(hy y₂ hext₂).1`. Take `⟨C₂, hgood₂⟩` from `exists_good_chart_ext E H Dw l Xo c hstar T₁ (i₁.comp io) y₁ C₁ hgood₁ T₂ i₂ e₂ y₂ hext₂`. Establish `htr` using `((exists_isExt_and_trans E H Dw l Xo c T T₁ io y i₁ e₁ hext₁.1 hext₁.2.1).2 y₁ hext₁).2 T₂ i₂ e₂ y₂ hext₂`. Establish `hrat₂` using `((GlobalTheory.T.torsion_rational_over_finite_extension_level_structure E H Dw l Xo L _ M hM).2 hrat).1 T₂.Fr ψ.toRingHom`. Establish `hi : i₂ = ψ.toRingHom.comp (algebraMap T₁.Fr L)` using `RingHom.ext fun a => (hψ a).symm`.
+
+Establish `hsp : spMap ψ.toRingHom ≫ spMap (algebraMap T₁.Fr L) ≫ xOf y₁ = xOf y₂`. Rewrite using `[hx₂, hi, ← Category.assoc]`. Use `congr 1`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite `hrat₂` using `[hsp]`. Conclude with `⟨T₂, i₂.comp i₁, e₂ * e₁, y₂, C₂, htr, hfin₂ hfin₁, hgood₂, hrat₂⟩`.
+-/
 theorem exists_good_chart_allRat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), T.FinRes → ∀ M : ℕ, 0 < M → ∃ (T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ) (y' : IntFr Xo c T' (iT.comp io)) (C' : IntegralChartA3 Xo c T' (iT.comp io) y'), IsExt y iT e y' ∧ T'.FinRes ∧ Good3 C' ∧ AllRat Xo (xOf y') M := by
   intro E _ _ _ H Dw l Xo c _ hstar T io y hfin M hM
   obtain ⟨T₁, i₁, e₁, y₁, C₁, hext₁, hfin₁, hgood₁⟩ := exists_ext_intChart_unif E H Dw l Xo c hstar T io y hfin

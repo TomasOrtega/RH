@@ -6,6 +6,25 @@ open GlobalTheory.KZ
 
 namespace GlobalTheory.KZ.ExpBound
 
+/- English proof (translation)
+Establish `hnorm : ∀ (n : ℕ) (z : ℂ), ‖a n * Complex.exp (2 * Real.pi * Complex.I * (n : ℂ) * z)‖ = ‖a n‖ * Real.exp (-(2 * Real.pi * n * z.im))`. Introduce `n z`. Rewrite using `[norm_mul, Complex.norm_exp]`. Use `congr 2`. Simplify using `[Complex.mul_re, Complex.mul_im]`.
+
+Use `set t0 : ℝ := C + 1 with ht0`. Establish `hz0 : ((t0 : ℂ) * Complex.I).im = t0` using `by simp`. Establish `hsm : Summable (fun n : ℕ => ‖a n‖ * Real.exp (-(2 * Real.pi * n * t0)))`. Establish `h1` using `(hs ((t0 : ℂ) * Complex.I) (by rw [hz0]; linarith)).summable`. Establish `h2` using `summable_norm_iff.mpr h1`.
+
+Simplify `h2` using `only [hnorm, hz0]`. Use `set B0 : ℝ := ∑' n : ℕ, ‖a n‖ * Real.exp (-(2 * Real.pi * n * t0)) with hB0`. Establish `hle : ∀ n : ℕ, ‖a n‖ * Real.exp (-(2 * Real.pi * n * t0)) ≤ B0` using `fun n => hsm.le_tsum n (fun j _ => by positivity)`. Establish `hB0nn : 0 ≤ B0` using `tsum_nonneg (fun j => by positivity)`. Use `⟨2 * B0, t0 + 1, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Use `set ρ : ℝ := Real.exp (-(2 * Real.pi * (w.im - t0))) with hρ`. Establish `hρ0 : 0 < ρ` using `Real.exp_pos _`. Establish `hpi` using `Real.pi_gt_three`. Establish `hρ2 : ρ ≤ 1 / 2`. Establish `h1 : 1 ≤ 2 * Real.pi * (w.im - t0)` using `by nlinarith`.
+
+Establish `h2` using `Real.add_one_le_exp (2 * Real.pi * (w.im - t0))`. Rewrite using `[hρ, Real.exp_neg, one_div]`. Conclude with `inv_anti₀ (by norm_num) (by linarith)`. Establish `hsh` using `(hasSum_nat_add_iff' 1).mpr (hs w (by linarith))`. Simplify using `only [Finset.sum_range_one, Nat.cast_zero, mul_zero, zero_mul, Complex.exp_zero, mul_one] at hsh`.
+
+Establish `hg : HasSum (fun n : ℕ => B0 * ρ * ρ ^ n) (B0 * ρ * (1 - ρ)⁻¹)` using `(hasSum_geometric_of_lt_one hρ0.le (by linarith)).mul_left _`. Establish `hb` using `tsum_of_norm_bounded hg (f := fun n : ℕ => a (n + 1) * Complex.exp (2 * Real.pi * Complex.I * ((n + 1 : ℕ) : ℂ) * w)) (fun n => by`. Rewrite using `[hnorm]`. Establish `e : Real.exp (-(2 * Real.pi * ((n + 1 : ℕ) : ℝ) * w.im)) = Real.exp (-(2 * Real.pi * ((n + 1 : ℕ) : ℝ) * t0)) * ρ ^ (n + 1)`. Rewrite using `[hρ, ← Real.exp_nat_mul, ← Real.exp_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← mul_assoc, mul_assoc B0, ← pow_succ']`. Conclude with `mul_le_mul_of_nonneg_right (hle (n + 1)) (by positivity))`. Rewrite `hb` using `[hsh.tsum_eq]`.
+
+Establish `h3 : B0 * ρ * (1 - ρ)⁻¹ ≤ 2 * B0 * ρ`. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ (by linarith)]`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hB0nn hρ0.le) (show 0 ≤ 1 - 2 * ρ by linarith)]`. Establish `h4 : ρ ≤ Real.exp (-(2 * Real.pi * (w.im - (t0 + 1))))`. Rewrite using `[hρ]`.
+
+Conclude with `Real.exp_le_exp.mpr (by nlinarith)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem series_bound (a : ℕ → ℂ) (ψ : ℂ → ℂ) (C : ℝ)
     (hs : ∀ z : ℂ, C < z.im →
       HasSum (fun n : ℕ => a n * Complex.exp (2 * Real.pi * Complex.I * (n : ℂ) * z)) (ψ z)) :
@@ -60,6 +79,19 @@ theorem series_bound (a : ℕ → ℂ) (ψ : ℂ → ℂ) (C : ℝ)
     _ ≤ 2 * B0 * ρ := h3
     _ ≤ _ := mul_le_mul_of_nonneg_left h4 (by positivity)
 
+/- English proof (translation)
+Introduce `Ω _ _ ε X h φ hφc hφ hsupp`. Take `⟨φ', C, hφ', hsum⟩` from `X.an_exp h`. Establish `hsumN : ∀ z : ℂ, C < z.im → HasSum (fun n : ℕ => ε ((X.exp h).coeff (n : ℚ)) * Complex.exp (2 * Real.pi * Complex.I * (n : ℂ) * z)) (φ' z)`. Introduce `z hz`. Establish `h1` using `hsum z hz`.
+
+Rewrite `h1` using `[← (Nat.cast_injective (R := ℚ)).hasSum_iff]`. Simplify `h1` using `[Function.comp_def]`. Introduce `r hr`. Establish `: (X.exp h).coeff r = 0`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨n, rfl⟩` from `hsupp r hne`. Conclude with `hr ⟨n, rfl⟩`. Simplify using `[this]`. Take `⟨B, t, hB⟩` from `series_bound (fun n : ℕ => ε ((X.exp h).coeff (n : ℚ))) φ' C hsumN`. Simplify using `only [Nat.cast_zero] at hB`.
+
+Use `⟨B, t, fun z hz htz => ?_⟩` and prove the remaining obligations. Establish `hev : φ =ᶠ[Filter.codiscreteWithin Hs] φ'` using `Filter.Germ.coe_eq.mp (hφ.symm.trans hφ')`. Establish `h1` using `mem_codiscreteWithin_iff_forall_mem_nhdsNE.mp hev z hz`. Establish `hHs : Hs ∈ nhds z` using `SiegelModel.isOpen_Hs.mem_nhds hz`. Establish `h2 : Hs ∈ nhdsWithin z {z}ᶜ` using `mem_nhdsWithin_of_mem_nhds hHs`.
+
+Establish `h3 : {w : ℂ | t < w.im} ∈ nhdsWithin z {z}ᶜ` using `mem_nhdsWithin_of_mem_nhds ((isOpen_lt continuous_const Complex.continuous_im).mem_nhds htz)`. Establish `hl : Filter.Tendsto (fun w => ‖φ w - ε ((X.exp h).coeff 0)‖) (nhdsWithin z {z}ᶜ) (nhds ‖φ z - ε ((X.exp h).coeff 0)‖)` using `(((hφc.continuousAt hHs).sub continuousAt_const).norm.tendsto).mono_left nhdsWithin_le_nhds`. Establish `hc : Continuous fun w : ℂ => B * Real.exp (-(2 * Real.pi * (w.im - t)))` using `by fun_prop`. Use `le_of_tendsto_of_tendsto hl ((hc.tendsto z).mono_left nhdsWithin_le_nhds) ?_` and prove the remaining obligations. Use `filter_upwards [h1, h2, h3] with w hw1 hw2 hw3`.
+
+Break down `hw1 with e | e` into its components or cases. Establish `e' : φ w = φ' w` using `e`. Rewrite using `[e']`. Conclude with `hB w hw3`. Conclude with `absurd hw2 e`.
+-/
 theorem bound_at_infinity : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (h : X.K) (φ : ℂ → ℂ), ContinuousOn φ Hs → X.an h = (φ : Mero) → (∀ r : ℚ, (X.exp h).coeff r ≠ 0 → ∃ n : ℕ, r = n) → ∃ B t : ℝ, ∀ z ∈ Hs, t < z.im → ‖φ z - ε ((X.exp h).coeff 0)‖ ≤ B * Real.exp (-(2 * Real.pi * (z.im - t))) := by
   intro Ω _ _ ε X h φ hφc hφ hsupp
   obtain ⟨φ', C, hφ', hsum⟩ := X.an_exp h

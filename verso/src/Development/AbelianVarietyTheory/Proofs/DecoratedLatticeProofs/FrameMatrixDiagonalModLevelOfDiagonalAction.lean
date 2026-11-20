@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.FrameDiag
 
+/- English proof (translation)
+Use `show Submodule.span _ _ = Submodule.span _ _`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+
+Conclude with `⟨⟨z, hz⟩, rfl⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z.1, z.2, rfl⟩`.
+-/
 theorem hatL_eq (I : AutInst) : Formalism.L2.Herm.hatL (F := I.F) I.L = I.Lf := by
   show Submodule.span _ _ = Submodule.span _ _
   congr 1
@@ -27,6 +32,9 @@ theorem hatL_eq (I : AutInst) : Formalism.L2.Herm.hatL (F := I.F) I.L = I.Lf := 
   · rintro ⟨z, rfl⟩
     exact ⟨z.1, z.2, rfl⟩
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `GlobalTheory.RowIndex.mem_mL.1 hv`. Establish `hz' : z ∈ Formalism.L2.Herm.hatL (F` using `I.F) I.L := by rw [hatL_eq]; exact hz`. Use `⟨_, (hβ z).1 hz' i, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+-/
 theorem coord_zmod (I : AutInst) (g : ℕ) {β : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)} (hβ : IsFrame β I.L) {v : VA I}
     (hv : v ∈ mL I g) (i : Fin I.n) :
     ZMod' I g ((((β⁻¹ : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) *ᵥ v) i) := by
@@ -36,6 +44,25 @@ theorem coord_zmod (I : AutInst) (g : ℕ) {β : GL (Fin I.n) (I.E ⊗[I.F] Af I
   rw [Matrix.mulVec_smul]
   rfl
 
+/- English proof (translation)
+Introduce `I g b β Y d hβ hY hYi hd`. Establish `hK : Y ∈ I.Kset`. Introduce `y`. Use `⟨fun hy => hY y hy, fun hy => ?_⟩` and prove the remaining obligations. Establish `h` using `hYi _ hy`.
+
+Establish `e : I.fmat Y⁻¹ * I.fmat Y = 1` using `by show (((Y⁻¹ : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) * _ = 1`. Rewrite using `[Subgroup.coe_inv, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite `h` using `[Matrix.mulVec_mulVec, e, Matrix.one_mulVec]`. Then use the resulting hypothesis. Take `⟨x, hx⟩` from `(kset_iff I hβ.1 Y).1 hK`. Use `⟨x, hx, fun i j => ?_⟩` and prove the remaining obligations.
+
+Establish `hconj : β⁻¹ * frGL β x * β = intGL I.F I.E I.n x`. Simplify using `only [frGL, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`. Rewrite `hconj` using `[hx]`. Use `set col : VA I := fun l => (β : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) l j with hcol`.
+
+Establish `hw : I.fmat Y *ᵥ col - (d j).1 • col ∈ mL I g`. Establish `h1` using `hβ.2 j`. Take `⟨z, hz, hz'⟩` from `GlobalTheory.RowIndex.mem_mL.1 h1`. Establish `h2 : I.fmat Y *ᵥ (col - b j.val) ∈ mL I g`. Rewrite using `[show col - b j.val = _ from hz']`.
+
+Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.mL_mv I hY g le_rfl z hz`. Establish `h3 : (d j).1 • (col - b j.val) ∈ mL I g` using `(mL I g).smul_mem (d j) h1`. Establish `e : I.fmat Y *ᵥ col - (d j).1 • col = (I.fmat Y *ᵥ b j.val - (d j).1 • b j.val) + I.fmat Y *ᵥ (col - b j.val) - (d j).1 • (col - b j.val)`. Rewrite using `[Matrix.mulVec_sub, smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `sub_mem (add_mem (hd j) h2) h3`. Establish `key` using `coord_zmod I g hβ.1 hw i`. Use `key using 1` and compare the differences between its conclusion and the goal. Establish `eA : (((β⁻¹ : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) *ᵥ (I.fmat Y *ᵥ col)) i = ((x : Matrix (Fin I.n) (Fin I.n) (Formalism.L2.Herm.intAf I.F I.E)) i j).1`.
+
+Rewrite using `[Matrix.mulVec_mulVec]`. Use `show ((((β⁻¹ : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) * I.fmat Y) * (β : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F))) i j = _`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hconj]`. Both sides reduce to the same expression. Establish `eB : (((β⁻¹ : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) *ᵥ col) i = if i = j then 1 else 0` using `by show (((β⁻¹ : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) * (β : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F))) i j = _`.
+
+Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply]`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_smul, Pi.sub_apply, Pi.smul_apply, eA, eB, Matrix.sub_apply, Matrix.diagonal_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem diag_mod_in_frame : ∀ (I : AutInst) (g : ℕ) (b : ℕ → VA I) (β : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) (Y : I.Gf) (d : Fin I.n → Formalism.L2.Herm.intAf I.F I.E), IsLiftFrame I g b β → (∀ y ∈ I.Lf, I.fmat Y *ᵥ y ∈ I.Lf) → (∀ y ∈ I.Lf, I.fmat Y⁻¹ *ᵥ y ∈ I.Lf) → (∀ j : Fin I.n, I.fmat Y *ᵥ b j.val - (d j).1 • b j.val ∈ mL I g) → ∃ x : GL (Fin I.n) (Formalism.L2.Herm.intAf I.F I.E), frGL β x = (Y : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∧ ∀ i j, ZMod' I g (((x : Matrix (Fin I.n) (Fin I.n) (Formalism.L2.Herm.intAf I.F I.E)) - Matrix.diagonal d) i j).1 := by
   intro I g b β Y d hβ hY hYi hd
   have hK : Y ∈ I.Kset := by

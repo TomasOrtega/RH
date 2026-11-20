@@ -23,6 +23,9 @@ def SemiBd (R : Rep k r) (f : R.H → ℝ) : Prop :=
   ∃ (C : ℝ) (Ws : List (List (Mx k r))), 0 ≤ C ∧ (∀ w ∈ Ws, ∀ X ∈ w, InLieHpk k r X) ∧
     ∀ v ∈ R.sm, f v ≤ C * (Ws.map fun w => ‖dsigW (k := k) (r := r) R.σ w v‖).sum
 
+/- English proof (translation)
+Apply `List.sum_nonneg` to reduce the goal to its premises. Introduce `x hx`. Take `⟨w, _, rfl⟩` from `List.mem_map.mp hx`. Conclude with `norm_nonneg _`.
+-/
 theorem sum_norm_nonneg (R : Rep k r) (Ws : List (List (Mx k r))) (v : R.H) :
     0 ≤ (Ws.map fun w => ‖dsigW (k := k) (r := r) R.σ w v‖).sum := by
   apply List.sum_nonneg
@@ -30,18 +33,31 @@ theorem sum_norm_nonneg (R : Rep k r) (Ws : List (List (Mx k r))) (v : R.H) :
   obtain ⟨w, _, rfl⟩ := List.mem_map.mp hx
   exact norm_nonneg _
 
+/- English proof (translation)
+Take `⟨C, Ws, h1, h2⟩` from `h`. Conclude with `⟨max C 0, Ws, le_max_right _ _, h1, fun v hv => (h2 v hv).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (sum_norm_nonneg R Ws v))⟩`.
+-/
 theorem semiBd_of_cw {Wp : Type} [NormedAddCommGroup Wp] (R : Rep k r) {B : R.H → Wp}
     (h : PI.BesselMapUniq.IsCWCont (k := k) (r := r) R.σ B) : SemiBd R (fun v => ‖B v‖) := by
   obtain ⟨C, Ws, h1, h2⟩ := h
   exact ⟨max C 0, Ws, le_max_right _ _, h1, fun v hv => (h2 v hv).trans
     (mul_le_mul_of_nonneg_right (le_max_left _ _) (sum_norm_nonneg R Ws v))⟩
 
+/- English proof (translation)
+Take `⟨C, Ws, _, h1, h2⟩` from `h`. Conclude with `⟨C, Ws, h1, fun v hv => (hle v hv).trans (h2 v hv)⟩`.
+-/
 theorem cw_of_semiBd {Wp : Type} [NormedAddCommGroup Wp] (R : Rep k r) {B : R.H → Wp} {f : R.H → ℝ}
     (h : SemiBd R f) (hle : ∀ v ∈ R.sm, ‖B v‖ ≤ f v) :
     PI.BesselMapUniq.IsCWCont (k := k) (r := r) R.σ B := by
   obtain ⟨C, Ws, _, h1, h2⟩ := h
   exact ⟨C, Ws, h1, fun v hv => (hle v hv).trans (h2 v hv)⟩
 
+/- English proof (translation)
+Take `⟨C, Ws, h0, h1, h2⟩` from `hf`. Take `⟨C', Ws', h0', h1', h2'⟩` from `hg`. Use `⟨C + C', Ws ++ Ws', add_nonneg h0 h0', ?_, fun v hv => ?_⟩` and prove the remaining obligations. Introduce `w hw`. Break down `List.mem_append.mp hw with h | h` into its components or cases.
+
+Conclude with `h1 w h`. Conclude with `h1' w h`. Establish `a` using `h2 v hv`. Establish `b` using `h2' v hv`. Establish `c` using `sum_norm_nonneg R Ws v`.
+
+Establish `d` using `sum_norm_nonneg R Ws' v`. Rewrite using `[List.map_append, List.sum_append]`. Use polynomial arithmetic with `[mul_nonneg h0 d, mul_nonneg h0' c]`.
+-/
 theorem SemiBd.add {R : Rep k r} {f g : R.H → ℝ} (hf : SemiBd R f) (hg : SemiBd R g) :
     SemiBd R (fun v => f v + g v) := by
   obtain ⟨C, Ws, h0, h1, h2⟩ := hf
@@ -58,6 +74,9 @@ theorem SemiBd.add {R : Rep k r} {f g : R.H → ℝ} (hf : SemiBd R f) (hg : Sem
     rw [List.map_append, List.sum_append]
     nlinarith [mul_nonneg h0 d, mul_nonneg h0' c]
 
+/- English proof (translation)
+Take `⟨C, Ws, h0, h1, h2⟩` from `hf`. Use `⟨a * C, Ws, mul_nonneg ha h0, h1, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h2 v hv) ha`.
+-/
 theorem SemiBd.mul {R : Rep k r} {f : R.H → ℝ} (hf : SemiBd R f) {a : ℝ} (ha : 0 ≤ a) :
     SemiBd R (fun v => a * f v) := by
   obtain ⟨C, Ws, h0, h1, h2⟩ := hf
@@ -65,6 +84,11 @@ theorem SemiBd.mul {R : Rep k r} {f : R.H → ℝ} (hf : SemiBd R f) {a : ℝ} (
   rw [mul_assoc]
   exact mul_le_mul_of_nonneg_left (h2 v hv) ha
 
+/- English proof (translation)
+Proceed by induction on `Ws with`. Consider the case `nil => exact ⟨0, [], le_rfl, by simp, fun v _ => by simp⟩`. Consider the case `cons w Ws ih`. Establish `h1` using `semiBd_of_cw R (hT.cont w (hWs w List.mem_cons_self))`. Establish `h2` using `ih (fun w' hw' => hWs w' (List.mem_cons_of_mem _ hw'))`.
+
+Simplify `h1.add h2` using `only [List.map_cons, List.sum_cons]`.
+-/
 theorem semiBd_sum {R R' : Rep k r} {T : R.H → R'.H} (hT : SmMap R R' T) (Ws : List (List (Mx k r)))
     (hWs : ∀ w ∈ Ws, ∀ X ∈ w, InLieHpk k r X) :
     SemiBd R (fun v => (Ws.map fun w => ‖dsigW (k := k) (r := r) R'.σ w (T v)‖).sum) := by
@@ -75,12 +99,18 @@ theorem semiBd_sum {R R' : Rep k r} {T : R.H → R'.H} (hT : SmMap R R' T) (Ws :
     have h2 := ih (fun w' hw' => hWs w' (List.mem_cons_of_mem _ hw'))
     simpa only [List.map_cons, List.sum_cons] using h1.add h2
 
+/- English proof (translation)
+Take `⟨C, Ws, h0, h1, h2⟩` from `semiBd_of_cw R' hB`. Conclude with `cw_of_semiBd R ((semiBd_sum hT Ws h1).mul h0) (fun v hv => h2 _ (hT.mem v hv))`.
+-/
 theorem cw_comp {Wp : Type} [NormedAddCommGroup Wp] {R R' : Rep k r} {T : R.H → R'.H} {Bm : R'.H → Wp}
     (hT : SmMap R R' T) (hB : PI.BesselMapUniq.IsCWCont (k := k) (r := r) R'.σ Bm) :
     PI.BesselMapUniq.IsCWCont (k := k) (r := r) R.σ (fun v => Bm (T v)) := by
   obtain ⟨C, Ws, h0, h1, h2⟩ := semiBd_of_cw R' hB
   exact cw_of_semiBd R ((semiBd_sum hT Ws h1).mul h0) (fun v hv => h2 _ (hT.mem v hv))
 
+/- English proof (translation)
+The claim follows from `hT'.mem _ (hT.mem v hv) add v hv w hw := by rw [hT.add v hv w hw, hT'.add _ (hT.mem v hv) _ (hT.mem w hw)] smul a v hv := by rw [hT.smul a v hv, hT'.smul a _ (hT.mem v hv)] cont W hW := cw_comp (Bm := fun v => dsigW (k := k) (r := r) R''.σ W (T' v)) hT (hT'.cont W hW)`.
+-/
 theorem smMap_comp {R R' R'' : Rep k r} {T : R.H → R'.H} {T' : R'.H → R''.H}
     (hT : SmMap R R' T) (hT' : SmMap R' R'' T') : SmMap R R'' (fun v => T' (T v)) where
   mem v hv := hT'.mem _ (hT.mem v hv)
@@ -94,6 +124,9 @@ section DS
 
 variable {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} {R : Rep k r}
 
+/- English proof (translation)
+Proceed by induction on `W with`. Consider the case `nil => exact hv`. Consider the case `cons X W ih`. Conclude with `((GlobalTheory.T.derivedAction_discreteSeries_properties hK k r ε mu R hR X (hW X List.mem_cons_self)).1 _ (ih (fun Y hY => hW Y (List.mem_cons_of_mem _ hY)))).1`.
+-/
 theorem dsigW_mem (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) (W : List (Mx k r))
     (hW : ∀ X ∈ W, InLieHpk k r X) {v : R.H} (hv : v ∈ R.sm) :
     dsigW (k := k) (r := r) R.σ W v ∈ R.sm := by
@@ -103,6 +136,11 @@ theorem dsigW_mem (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) (W : List (Mx k r))
     exact ((GlobalTheory.T.derivedAction_discreteSeries_properties hK k r ε mu R hR X (hW X List.mem_cons_self)).1 _
       (ih (fun Y hY => hW Y (List.mem_cons_of_mem _ hY)))).1
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.T.derivedAction_discreteSeries_properties hK k r ε mu R hR X hX).1`. Establish `h1` using `((h v hv).2.const_smul a).add (h w hw).2`. Use `HasDerivAt.deriv ?_` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem dsig_lin (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) {X : Mx k r} (hX : InLieHpk k r X) (a : ℂ)
     {v w : R.H} (hv : v ∈ R.sm) (hw : w ∈ R.sm) :
     dsig (k := k) (r := r) R.σ X (a • v + w) =
@@ -114,6 +152,11 @@ theorem dsig_lin (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) {X : Mx k r} (hX : InL
   funext t
   simp
 
+/- English proof (translation)
+Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons X W ih`. Establish `hW' : ∀ Y ∈ W, InLieHpk k r Y` using `fun Y hY => hW Y (List.mem_cons_of_mem _ hY)`. Use `show dsig R.σ X (dsigW R.σ W (a • v + w)) = _`.
+
+Rewrite using `[ih hW']`. Conclude with `dsig_lin hK hR (hW X List.mem_cons_self) a (dsigW_mem hK hR W hW' hv) (dsigW_mem hK hR W hW' hw)`.
+-/
 theorem dsigW_lin (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) (W : List (Mx k r))
     (hW : ∀ X ∈ W, InLieHpk k r X) (a : ℂ) {v w : R.H} (hv : v ∈ R.sm) (hw : w ∈ R.sm) :
     dsigW (k := k) (r := r) R.σ W (a • v + w) =
@@ -126,6 +169,15 @@ theorem dsigW_lin (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) (W : List (Mx k r))
     rw [ih hW']
     exact dsig_lin hK hR (hW X List.mem_cons_self) a (dsigW_mem hK hR W hW' hv) (dsigW_mem hK hR W hW' hw)
 
+/- English proof (translation)
+Take `⟨hu, hi, -⟩` from `PI.UnitaryGroupMassFormula.CapelliEig.unitary_Hecke_group k r g hg`. Establish `hdet : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det _).mp hu`. Establish `h1 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hX' : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`.
+
+Establish `e1 : Hpk k r * g⁻¹ = gᴴ * Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (g⁻¹)ᴴ * Hpk k r = Hpk k r * g`. Combine the equalities or inequalities in the displayed calculation. Use `show (g⁻¹ * X * g)ᴴ * Hpk k r + Hpk k r * (g⁻¹ * X * g) = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = gᴴ * (Xᴴ * Hpk k r + Hpk k r * X) * g := by`. Rewrite using `[e1, e2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+
+Use `_ = 0 := by rw [hX', Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem inLie_conj {g X : Mx k r} (hg : g ∈ GG k r) (hX : InLieHpk k r X) : InLieHpk k r (g⁻¹ * X * g) := by
   obtain ⟨hu, hi, -⟩ := PI.UnitaryGroupMassFormula.CapelliEig.unitary_Hecke_group k r g hg
   have hdet : IsUnit g.det := (Matrix.isUnit_iff_isUnit_det _).mp hu
@@ -147,6 +199,13 @@ theorem inLie_conj {g X : Mx k r} (hg : g ∈ GG k r) (hX : InLieHpk k r X) : In
         rw [e1, e2]; simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
     _ = 0 := by rw [hX', Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Take `⟨P₀, ⟨⟨hunit, hcay⟩, _⟩, hds⟩` from `hR.2`. Establish `hdet : IsUnit P₀.det` using `(Matrix.isUnit_iff_isUnit_det _).mp hunit`. Establish `hPQ : P₀ * P₀⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `hQP : P₀⁻¹ * P₀ = 1` using `Matrix.nonsing_inv_mul _ hdet`. Establish `hH : Formalism.QuantumDeterminants.Hpk k r = P₀ᴴ * Formalism.REAL.Jm ε * P₀` using `hcay.symm`.
+
+Establish `hx' : Formalism.REAL.inUJ ε (P₀ * g * P₀⁻¹)` using `Formalism.QuantumDeterminants.ioh_inUJ ε _ P₀ P₀⁻¹ g hPQ hH hg`. Establish `hm` using `hds.2.2.1.2.1 (P₀ * g * P₀⁻¹) hx' v`. Establish `e2 : P₀⁻¹ * (P₀ * g * P₀⁻¹) * P₀ = g`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [e2] at hm`.
+
+Conclude with `hm`.
+-/
 theorem norm_sigma (hR : R.IsDG ε mu) {g : Mx k r} (hg : g ∈ GG k r) (v : R.H) : ‖R.σ g v‖ = ‖v‖ := by
   obtain ⟨P₀, ⟨⟨hunit, hcay⟩, _⟩, hds⟩ := hR.2
   have hdet : IsUnit P₀.det := (Matrix.isUnit_iff_isUnit_det _).mp hunit
@@ -161,6 +220,15 @@ theorem norm_sigma (hR : R.IsDG ε mu) {g : Mx k r} (hg : g ∈ GG k r) (v : R.H
   simp only [e2] at hm
   exact hm
 
+/- English proof (translation)
+Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons X W ih`. Establish `hW' : ∀ Y ∈ W, InLieHpk k r Y` using `fun Y hY => hW Y (List.mem_cons_of_mem _ hY)`. Establish `hW'' : ∀ Y ∈ W.map (fun X => g⁻¹ * X * g), InLieHpk k r Y`.
+
+Introduce `Y hY`. Take `⟨Z, hZ, rfl⟩` from `List.mem_map.mp hY`. Conclude with `inLie_conj hg (hW' Z hZ)`. Establish `hdet : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det _).mp (PI.UnitaryGroupMassFormula.CapelliEig.unitary_Hecke_group k r g hg).1`. Establish `h1 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`.
+
+Establish `e : g * (g⁻¹ * X * g) * g⁻¹ = X`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `(GlobalTheory.T.derivedAction_discreteSeries_properties hK k r ε mu R hR _ (inLie_conj hg (hW X List.mem_cons_self))).2.1 _ (dsigW_mem hK hR _ hW'' hv) g hg`. Rewrite `h` using `[e]`. Use `show dsig R.σ X (dsigW R.σ W (R.σ g v)) = R.σ g (dsig R.σ (g⁻¹ * X * g) _)`.
+
+Rewrite using `[ih hW', h]`.
+-/
 theorem dsigW_sigma (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) {g : Mx k r} (hg : g ∈ GG k r) (W : List (Mx k r))
     (hW : ∀ X ∈ W, InLieHpk k r X) {v : R.H} (hv : v ∈ R.sm) :
     dsigW (k := k) (r := r) R.σ W (R.σ g v) =
@@ -185,6 +253,9 @@ theorem dsigW_sigma (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) {g : Mx k r} (hg : 
     show dsig R.σ X (dsigW R.σ W (R.σ g v)) = R.σ g (dsig R.σ (g⁻¹ * X * g) _)
     rw [ih hW', h]
 
+/- English proof (translation)
+The claim follows from `PI.UnitaryGroupMassFormula.CapelliEig.smooth_right_action k r ε mu R.H R.σ hR.2 v hv g hg add v _ w _ := map_add _ _ _ smul a v _ := map_smul _ _ _ cont W hW := by refine ⟨1, [W.map fun X => g⁻¹ * X * g], ?_, fun v hv => ?_⟩ · intro w hw Y hY rw [List.mem_singleton.mp hw] at hY o …`.
+-/
 theorem smMap_sigma (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) {g : Mx k r} (hg : g ∈ GG k r) :
     SmMap R R (fun v => R.σ g v) where
   mem v hv := PI.UnitaryGroupMassFormula.CapelliEig.smooth_right_action k r ε mu R.H R.σ hR.2 v hv g hg
@@ -199,6 +270,9 @@ theorem smMap_sigma (hK : PI.KFinSmooth) (hR : R.IsDG ε mu) {g : Mx k r} (hg : 
     · simp only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero, one_mul]
       rw [dsigW_sigma hK hR hg W hW hv, norm_sigma hR hg]
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DDSmoothness.smooth_add (Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul a (hT.mem v hv)) (hT'.mem v hv) add v hv w hw := by rw [hT.add v hv w hw, hT'.add v hv w hw, smul_add] abel smul b v hv := by rw [hT.smul b v hv, hT'.smul b v hv, smul_add, s …`.
+-/
 theorem smMap_lin (hK : PI.KFinSmooth) {R₀ : Rep k r} (hR : R.IsDG ε mu) {T T' : R₀.H → R.H} (a : ℂ)
     (hT : SmMap R₀ R T) (hT' : SmMap R₀ R T') : SmMap R₀ R (fun v => a • T v + T' v) where
   mem v hv := Formalism.FourierDecayAlt.P.DDSmoothness.smooth_add (Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul a (hT.mem v hv)) (hT'.mem v hv)
@@ -215,6 +289,9 @@ theorem smMap_lin (hK : PI.KFinSmooth) {R₀ : Rep k r} (hR : R.IsDG ε mu) {T T
 
 end DS
 
+/- English proof (translation)
+Introduce `hK k r ε mu mu' mu'' R R' R'' hR hR' _`. Conclude with `⟨fun g hg => smMap_sigma hK hR hg, fun T T' hT hT' => smMap_comp hT hT', fun T T' a hT hT' => smMap_lin hK hR' a hT hT', fun Wp _ T Bm hT hB => cw_comp hT hB⟩`.
+-/
 theorem smMap_act : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (mu' mu'' : Fin (2 * r + k + 1) → ℝ) (R R' R'' : Rep k r), R.IsDG ε mu → R'.IsDG ε mu' → R''.IsDG ε mu'' → (∀ g ∈ GG k r, SmMap R R (fun v => R.σ g v)) ∧ (∀ (T : R.H → R'.H) (T' : R'.H → R''.H), SmMap R R' T → SmMap R' R'' T' → SmMap R R'' (fun v => T' (T v))) ∧ (∀ (T T' : R.H → R'.H) (a : ℂ), SmMap R R' T → SmMap R R' T' → SmMap R R' (fun v => a • T v + T' v)) ∧ ∀ (Wp : Type) [NormedAddCommGroup Wp] (T : R.H → R'.H) (Bm : R'.H → Wp), SmMap R R' T → PI.BesselMapUniq.IsCWCont (k := k) (r := r) R'.σ Bm → PI.BesselMapUniq.IsCWCont (k := k) (r := r) R.σ (fun v => Bm (T v)) := by
   intro hK k r ε mu mu' mu'' R R' R'' hR hR' _
   exact ⟨fun g hg => smMap_sigma hK hR hg, fun T T' hT hT' => smMap_comp hT hT',

@@ -4,6 +4,13 @@ open AlgebraicGeometry CategoryTheory Limits
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Introduce `O V C _ _ _ _ _ _ _ b Z s hs y hy`. Establish `hv : ValuativeCriterion s`. Establish `h : (@IsProper : MorphismProperty Scheme.{0}) s` using `hs`. Rewrite `h` using `[IsProper.eq_valuativeCriterion]`. Conclude with `h.1.1.1`.
+
+Establish `hc : CommSq y (Spec.map (CommRingCat.ofHom (algebraMap V C))) s (Spec.map (CommRingCat.ofHom b))` using `⟨by`. Rewrite using `[hy, ← Spec.map_comp]`. Use the proof step `rfl⟩`. Set `S : ValuativeCommSq s` to `{ R := V, K := C, i₁ := y, i₂ := Spec.map (CommRingCat.ofHom b), commSq := hc }`. Take `⟨u⟩` from `hv S`.
+
+Use `⟨u.default.l, ⟨u.default.fac_left, u.default.fac_right⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y' ⟨h1, h2⟩`. Use `u.uniq ⟨y', h1, h2⟩` as an intermediate fact. Conclude with `congrArg CommSq.LiftStruct.l this`.
+-/
 theorem existsUnique_valuationRing_lift : ∀ (O V C : Type) [CommRing O] [CommRing V] [IsDomain V] [ValuationRing V] [Field C] [Algebra V C] [IsFractionRing V C] (b : O →+* V) (Z : Scheme.{0}) (s : Z ⟶ Spec (CommRingCat.of O)) [IsProper s] (y : Spec (CommRingCat.of C) ⟶ Z), y ≫ s = Spec.map (CommRingCat.ofHom ((algebraMap V C).comp b)) → ∃! y' : Spec (CommRingCat.of V) ⟶ Z, Spec.map (CommRingCat.ofHom (algebraMap V C)) ≫ y' = y ∧ y' ≫ s = Spec.map (CommRingCat.ofHom b) := by
   intro O V C _ _ _ _ _ _ _ b Z s hs y hy
   have hv : ValuativeCriterion s := by

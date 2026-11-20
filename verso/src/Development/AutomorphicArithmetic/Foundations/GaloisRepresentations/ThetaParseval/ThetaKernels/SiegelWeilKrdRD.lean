@@ -10,6 +10,9 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 namespace PositivityTheory.SiegelWeilFormula.Krd
+/- English proof (translation)
+The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Krd.rdEx_of_k _root_.PositivityTheory.SiegelWeilFormula.Krd.epsEx_k _root_.PositivityTheory.SiegelWeilFormula.Krd.frEx_k _root_.PositivityTheory.SiegelWeilFormula.Krd.iotaEx_k`.
+-/
 theorem rdEx_k : _root_.PositivityTheory.SiegelWeilFormula.RDEx_k := _root_.PositivityTheory.SiegelWeilFormula.Krd.rdEx_of_k _root_.PositivityTheory.SiegelWeilFormula.Krd.epsEx_k _root_.PositivityTheory.SiegelWeilFormula.Krd.frEx_k _root_.PositivityTheory.SiegelWeilFormula.Krd.iotaEx_k
 end PositivityTheory.SiegelWeilFormula.Krd
 end

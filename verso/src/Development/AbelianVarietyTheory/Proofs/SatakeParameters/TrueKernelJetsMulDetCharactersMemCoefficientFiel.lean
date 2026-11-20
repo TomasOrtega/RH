@@ -21,6 +21,21 @@ namespace GlobalTheory.Mem.Col2.TC
 
 open GlobalTheory.LvT.Built.KMap
 
+/- English proof (translation)
+Introduce `B X I h hP l Z hJ u a i hi c c' e he`. Take `⟨hX, hPr, -⟩` from `base_fields_primes_ok B X`. Take `⟨hLa, hE⟩` from `GlobalTheory.T.trueColumn_periodLattice_vacuumSmooth I h hP l Z a u i hi`. Use `set p := (I.stp u a i).rep c`. Use `set p' := (I.stp u a (i + 1)).rep c'`.
+
+Establish `hN : IsSdLat p.1.1.deco.1.N` using `⟨p.1.1.deco.2.lat, p.1.1.deco.2.uni⟩`. Establish `hN' : IsSdLat p'.1.1.deco.1.N` using `⟨p'.1.1.deco.2.lat, p'.1.1.deco.2.uni⟩`. Establish `hA : 0 < cAof (Pr` using `B.primes X) I.sel (I.tup a) (I.cst a) := pow_pos (Finset.prod_pos fun P _ => qOf_pos P.1) _`. Establish `hB : 0 < cBof (Pr` using `B.primes X) I.sel (I.tup a) (I.cst a) u := GlobalTheory.MoveCompare.cBof_pos hPr _ _ _ u`. Establish `hbox` using `GlobalTheory.LvT.Built.Box.inBox_xiAt B.fields (B.primes X) B.R I.Ch I.sel I.S (I.tup a) (I.cst a) (I.idx a) _ _ u i hX hPr h.sel_ok (h.T_mem u) h.g_mem (h.idx_ok a) hi ⟨_, _, _, _, h.ch_tied⟩ c.1 c'.1 p p'`.
+
+Use `set N := p.1.1.deco.1.N`. Use `set N' := p'.1.1.deco.1.N`. Use `set cA := cAof (Pr := B.primes X) I.sel (I.tup a) (I.cst a)`. Use `set cB := cBof (Pr := B.primes X) I.sel (I.tup a) (I.cst a) u`. Use `set Ξ := xiAt (Pr := B.primes X) I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c.1 c'.1 p p'`.
+
+Establish `hth` using `GlobalTheory.latSum_thInd_eq_thC B.fields I.A _ _ (I.Sb a u) N N' cA cB (fun x => I.A.σ₀ (Ξ x)) (indTieD_of_la I.A _ _ _ _ (Nat.mul_pos hA hB) hLa) hN hN' hA hB (volC_pos_of_laHyp I.A _ _ _ hLa hN hN') (GlobalTheory.finite_divLat_quot_mulLat_homAt _ _ _ _ _ _ _ _ hN.1 hN'.1 hA hB …`. Establish `hfin` using `GlobalTheory.finite_divLat_quot_mulLat_homAt _ _ _ (I.Sb a u) N N' cA cB hN.1 hN'.1 hA hB`. Set `_` to `@Fintype.ofFinite _ hfin`. Rewrite using `[show I.th u a i c.1 c'.1 p p' = fun z => _ from funext fun z => (hth z).symm]`. Unfold `latSum`.
+
+Simplify using `only [finsum_eq_sum_of_fintype]`. Use `set r := Function.surjInv (Submodule.Quotient.mk_surjective ((Formalism.L2.Col.mulLat cB (homAt (I.Sb a u) N N')).comap (divLat cA (homAt (I.Sb a u) N N')).subtype))`. Establish `hs : ∀ q (k : ℕ), ContDiff ℂ k (I.A.thInd (I.Sb a u) N N' cB (r q))` using `fun q => indSmooth_of I.A _ _ (I.Sb a u) (cA * cB) hE N N' cB (r q) ⟨hN, hN', hB, Dvd.intro_left _ rfl, divLat_mul_of cA cB _ (r q).2⟩`. Rewrite using `[show I.J.cD = I.A.cD from rfl, jetC_sum _ _ _ hs]`. Establish `hr` using `rhoIs I h a u hi c.1 p c'.1 p'`.
+
+Rewrite using `[show I.rho u a i c.1 p * I.rho' u a i c'.1 p' = _ from hr]`. Establish `hσ : (ColIn.A I).σ₀ = B.embLL` using `rfl`. Rewrite using `[hσ]`. Apply `RingHom.mem_fieldRange.1` to reduce the goal to its premises. Rewrite using `[mul_assoc, Finset.mul_sum]`.
+
+Use `Subfield.mul_mem _ (RingHom.mem_fieldRange_self _ _) (Subfield.sum_mem _ fun q _ => ?_)` and prove the remaining obligations. Take `⟨y, hy⟩` from `hJ.exists_eq (a := a) (u := u) (N := N) (N' := N') (c := cB) (x := (r q).1) (e := e) hi ⟨hN, hN', hB, Dvd.intro_left _ rfl, divLat_mul_of cA cB _ (r q).2⟩ he`. Rewrite using `[mul_left_comm]`. Use `Subfield.mul_mem _ (RingHom.mem_fieldRange_self _ _) ?_` and prove the remaining obligations. Conclude with `⟨y, hy⟩`.
+-/
 theorem rho_jet_mem : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ColIn.JetsIn I → ∀ (u : B.Word) (a : I.ι) (i : ℕ), i < B.R.m → ∀ (c : (I.stp u a i).Cl) (c' : (I.stp u a (i + 1)).Cl) (e : DVar B.fields.Tau (B.R.N i) (B.R.N (i + 1)) →₀ ℕ), (∀ τ, (monoDeg e τ : ℤ) = nuDeg B u i τ) → ∃ k : B.LL, B.embLL k = (I.rho u a i c.1 ((I.stp u a i).rep c) * I.rho' u a i c'.1 ((I.stp u a (i + 1)).rep c')) * jetC I.J.cD (I.th u a i c.1 c'.1 ((I.stp u a i).rep c) ((I.stp u a (i + 1)).rep c')) e := by
   classical
   intro B X I h hP l Z hJ u a i hi c c' e he

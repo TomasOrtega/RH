@@ -5,6 +5,17 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `E _ _ _ a μ _ _`. Use `⟨fun φ ψ s t hφ hψ => ?_, fun φ hl hφ h0 => ?_, fun φ g hφ => ?_, fun ψ φ F hψ e => ?_⟩` and prove the remaining obligations. Establish `hm : InL μ (s • φ + t • ψ)`. Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s • φ.1 (γ * g) + t • ψ.1 (γ * g) = s • φ.1 g + t • ψ.1 g`.
+
+Rewrite using `[hφ.1 γ hγ g, hψ.1 γ hγ g]`. Conclude with `(hφ.2.const_smul s).add (hψ.2.const_smul t)`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[cl_eq hm, cl_eq hφ, cl_eq hψ]`. Conclude with `(MemLp.toLp_add (hφ.2.const_smul s) (hψ.2.const_smul t)).trans (congrArg₂ (· + ·) (MemLp.toLp_const_smul s hφ.2) (MemLp.toLp_const_smul t hψ.2))`.
+
+Assume the negation of the conclusion as `hne`. Rewrite `h0` using `[cl_eq hφ]`. Conclude with `GlobalTheory.CuspRep.CuspidalL2GL.toL2_ne_zero hφ (ContAut.continuous_of_isOpen_stab E a φ hl) (fun h => hne (Subtype.ext h)) h0`. Establish `hm : InL μ (rt E a g φ)` using `hφ.mul_right g`. Rewrite using `[cl_eq hm, cl_eq hφ]`.
+
+Conclude with `(GlobalTheory.AutomorphicL2Unitary.right_translate_toL2 hφ g).symm`. Take `⟨h, hh⟩` from `UpperTheory.V.Cj.H.convolution_L2_class (GA E a) (latticeGL E a) μ ψ.1 (ContAut.continuous_of_isOpen_stab E a ψ hψ.2) hψ.1 F`. Establish `hm : InL μ φ`. Unfold `InL`. Rewrite using `[e]`.
+
+Conclude with `h`. Rewrite using `[cl_eq hm, ← hh]`. Use `congr 1`.
+-/
 theorem UpperTheory.V.Cj.H.clFacts :
     UpperTheory.V.Cj.H.ClFacts := by
   intro E _ _ _ a μ _ _

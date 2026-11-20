@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Unfold `IsGSp at *`. Use extensionality with `i j`. Use `congrArg f (congrFun (congrFun h i) j)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, adj_apply, Matrix.one_apply, map_sum, apply_ite f]`.
+-/
 private theorem isGSp_map' {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {ν : R} {X : M4 R}
     (h : IsGSp ν X) : IsGSp (f ν) (X.map f) := by
   unfold IsGSp at *
@@ -12,6 +15,37 @@ private theorem isGSp_map' {R R' : Type} [CommRing R] [CommRing R'] (f : R →+*
   simpa [Matrix.mul_apply, adj_apply, Matrix.one_apply, map_sum, apply_ite f] using this
 
 open Classical in
+/- English proof (translation)
+Introduce `O Γ _ _ _ Φ Λ _ _ a hMu X`. Take `⟨A, cA, aA, n, hft, hgen, hfl, huniv⟩` from `sxChart X.D`. Use `letI aBA : Algebra X.B A := ((algebraMap X.A A).comp (algebraMap X.B X.A)).toAlgebra`. Use `letI aLA : Algebra Λ A := ((algebraMap X.A A).comp (algebraMap Λ X.A)).toAlgebra`. Establish `hB : ∀ b, algebraMap X.B A b = algebraMap X.A A (algebraMap X.B X.A b)` using `fun _ => rfl`.
+
+Establish `hL : ∀ b, algebraMap Λ A b = algebraMap X.A A (algebraMap Λ X.A b)` using `fun _ => rfl`. Use `haveI t1 : IsScalarTower X.B X.A A := IsScalarTower.of_algebraMap_eq hB`. Use `haveI t2 : IsScalarTower Λ X.B A := IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[hB, hL, ← IsScalarTower.algebraMap_apply Λ X.B X.A]`. Set `P : PD Φ.ι Γ A` to `⟨mapRep (algebraMap X.A A) X.D.r, n⟩`.
+
+Establish `hr : ∀ g, P.r g = (X.D.r g).map (algebraMap X.A A)` using `fun _ => rfl`. Establish `hψ : ∀ v i (s : Φ.Gv v), P.ψ v i s = algebraMap X.A A (X.D.ψ v i s)` using `fun v i s => hfl.char v i s`. Use `⟨{ A := A, B := X.B, ft := X.ft.trans hft, P := P, pair := ?_, cont := ?_, gen := ?_, cp := X.cp, cp_map := ?_, cp_cont := X.cp_cont, cp_red := X.cp_red, ψ := fun v i s => if h : s ∈ Φ.Gv v then X.ψ v i ⟨s, h⟩ else 0, ψ_map := ?_, ψ_cont := ?_, ψ_red := ?_, genB := ?_, univ := ?_ …` and prove the remaining obligations. Use `⟨fun g => isGSp_map' (algebraMap X.A A) (X.rep.mult g), fun g hg => ?_, ?_, hfl.low, hfl.flag, fun v s hs i => ?_⟩` and prove the remaining obligations. Rewrite using `[hr, X.rep.kill g hg, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Rewrite using `[hr]`. Conclude with `X.rep.nrm.map (map_zero _)`. Conclude with `(hfl.char v i ⟨s, hMu v s hs⟩).trans (hfl.mu v i ⟨s, hMu v s hs⟩ hs)`. Introduce `i j`. Use `adicCont_map (algebraMap X.A A) ?_ (X.cont i j)` and prove the remaining obligations.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `b hb`. Conclude with `Ideal.mem_map_of_mem (algebraMap X.B A) hb`. Rewrite using `[eq_top_iff] set S := Algebra.adjoin X.B ((Set.range fun x : Γ × Fin 4 × Fin 4 => P.r x.1 x.2.1 x.2.2) ∪ Set.range fun x : Φ.ι × Fin 4 × Fin 4 => P.n x.1 x.2.1 x.2.2) with hS`. Establish `h0 : ∀ x : X.A, algebraMap X.A A x ∈ S`.
+
+Introduce `x`. Establish `hx : x ∈ Algebra.adjoin X.B (Set.range fun x : Γ × Fin 4 × Fin 4 => X.D.r x.1 x.2.1 x.2.2)`. Rewrite using `[X.gen]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx`. Take `⟨y, rfl⟩` from `hx`. Conclude with `Algebra.subset_adjoin (Or.inl ⟨y, rfl⟩)`. Consider the case `algebraMap b => exact S.algebraMap_mem b`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `S.add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `S.mul_mem hx hy`. Introduce and unpack `x -`. Establish `hx : x ∈ Algebra.adjoin X.A (Set.range fun x : Φ.ι × Fin 4 × Fin 4 => n x.1 x.2.1 x.2.2)`.
+
+Rewrite using `[hgen]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact Algebra.subset_adjoin (Or.inr hx)`. Consider the case `algebraMap b => exact h0 b`.
+
+Consider the case `add x y _ _ hx hy => exact S.add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact S.mul_mem hx hy`. Introduce `g`. Rewrite using `[hr, Matrix.charpoly_map, ← X.cp_map, Polynomial.map_map]`. Both sides reduce to the same expression.
+
+Introduce `v i s hs`. Rewrite using `[dif_pos hs, hB, X.ψ_map]`. Conclude with `(hψ v i ⟨s, hs⟩).symm`. Introduce `v i`. Simplify using `using X.ψ_cont v i`.
+
+Introduce `v i s hs`. Rewrite using `[dif_pos hs]`. Conclude with `X.ψ_red v i ⟨s, hs⟩`. Introduce `R _ _ _ f f' h1 h2`. Use `X.genB R f f' h1 fun v i s => ?_` and prove the remaining obligations.
+
+Simplify using `using h2 v i s s.2`. Introduce `R _ _ _ c Q hc hQ`. Take `⟨τ, D', hN, hDr, hF⟩` from `sxPairNear c Q hc hQ`. Take `⟨f, hf⟩` from `X.univ R τ D' hN`. Take `⟨F, hF1, hF2⟩` from `huniv R (f : X.A →+* R) Q.n (hf ▸ hF)`.
+
+Establish `hF3 : ∀ x, F (algebraMap X.A A x) = f x` using `fun x => RingHom.congr_fun hF1 x`. Use `⟨{ F with commutes' := fun x => ?_ }, ?_⟩` and prove the remaining obligations. Conclude with `(hF3 _).trans (f.commutes x)`. Use `PD.ext ?_ (funext hF2)` and prove the remaining obligations. Rewrite using `[← hDr, ← hf]`.
+
+Use extensionality with `g i j`. Conclude with `hF3 _`.
+-/
 theorem UpperTheory.V.Ws.sxPreOfCore :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ] [IsLocalRing Λ] {a : O →+* Λ}, (∀ v, ∀ s ∈ Φ.Mu v, s ∈ Φ.Gv v) → Core Φ a → Nonempty (Pre Φ a) := by
   intro O Γ _ _ _ Φ Λ _ _ a hMu X

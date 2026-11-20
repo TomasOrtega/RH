@@ -10,9 +10,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC IsLocalRi
 
 namespace GlobalTheory.StalkNoeth
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isNoetherianRing_of_directed_pure_union'`.
+-/
 theorem noeth_of_directed_subrings : ∀ (S : Type) [CommRing S] [IsLocalRing S] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι] (R : ι → Subring S), Monotone R → (∀ x : S, ∃ i, x ∈ R i) → (∀ i, IsNoetherianRing (R i)) → (∀ i, ((maximalIdeal S).comap (R i).subtype).map (R i).subtype = maximalIdeal S) → (∀ i (J : Ideal (R i)), (J.map (R i).subtype).comap (R i).subtype = J) → IsNoetherianRing S :=
   GlobalTheory.T.isNoetherianRing_of_directed_pure_union'
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isIndEtale_over_etale_of_isIndEtale`.
+-/
 theorem isIndEtale_of_etale_of_isIndEtale : ∀ (A W O : Type) [CommRing A] [CommRing W] [CommRing O] [Algebra A W] [Algebra A O] [Algebra W O] [IsScalarTower A W O] [Algebra.Etale A W], GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap A O) → GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap W O) :=
   GlobalTheory.T.isIndEtale_over_etale_of_isIndEtale
 
@@ -21,10 +27,24 @@ noncomputable def stageHom {A W O : Type} [CommRing A] [CommRing W] [CommRing O]
   IsLocalization.lift (M := ((maximalIdeal O).comap (v : W →+* O)).primeCompl) (g := (v : W →+* O))
     (fun y => by by_contra hy; exact y.2 hy)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ _`.
+-/
 theorem stageHom_algebraMap {A W O : Type} [CommRing A] [CommRing W] [CommRing O] [IsLocalRing O] [Algebra A W] [Algebra A O]
     (v : W →ₐ[A] O) (w : W) : stageHom v (algebraMap W _ w) = v w :=
   IsLocalization.lift_eq _ _
 
+/- English proof (translation)
+Use `set q := (maximalIdeal O).comap (v : W →+* O) with hq`. Use `letI : Algebra W O := (v : W →+* O).toAlgebra`. Use `haveI : IsScalarTower A W O := IsScalarTower.of_algebraMap_eq (fun a => (v.commutes a).symm)`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap W O)` using `isIndEtale_of_etale_of_isIndEtale A W O hO`. Use `letI : Algebra (Localization.AtPrime q) O := (stageHom v).toAlgebra`.
+
+Use `haveI : IsScalarTower W (Localization.AtPrime q) O := IsScalarTower.of_algebraMap_eq (fun w => (stageHom_algebraMap v w).symm)`. Establish `h2 : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap (Localization.AtPrime q) O)` using `GlobalTheory.StrictHensUnion.indEtale_over_localization W (Localization.AtPrime q) O q.primeCompl h1`. Use `haveI : IsLocalHom (algebraMap (Localization.AtPrime q) O) := by`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨⟨w, y⟩, rfl⟩` from `IsLocalization.mk'_surjective q.primeCompl a`.
+
+Rewrite using `[IsLocalization.AtPrime.isUnit_mk'_iff (Localization.AtPrime q) q]`. Establish `hu : IsUnit (v (y : W))`. Assume the negation of the conclusion as `hy`. Conclude with `y.2 hy`. Establish `h3 : algebraMap (Localization.AtPrime q) O (IsLocalization.mk' (Localization.AtPrime q) w y) * v y = v w`.
+
+Rewrite using `[← stageHom_algebraMap v (y : W), ← stageHom_algebraMap v w]`. Express the relevant statement in the definitionally equal form `stageHom v _ * stageHom v _ = stageHom v _`. Rewrite using `[← map_mul, IsLocalization.mk'_spec]`. Establish `h4 : IsUnit (v w)` using `h3 ▸ ha.mul hu`. Introduce `hw`.
+
+Conclude with `hw h4`. Take `⟨hfl, hmax, -⟩` from `GlobalTheory.IndEtaleLocal.flat_map_maximalIdeal_isSeparable (Localization.AtPrime q) O h2`. Use `haveI : Module.FaithfullyFlat (Localization.AtPrime q) O := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `⟨fun J => Ideal.comap_map_eq_self_of_faithfullyFlat J, hmax⟩`.
+-/
 theorem stage_props {A W O : Type} [CommRing A] [CommRing W] [CommRing O] [IsLocalRing O] [Algebra A W] [Algebra A O]
     [Algebra.Etale A W] (hO : IndEt A O) (v : W →ₐ[A] O) :
     (∀ J : Ideal (Localization.AtPrime ((maximalIdeal O).comap (v : W →+* O))), (J.map (stageHom v)).comap (stageHom v) = J) ∧
@@ -56,6 +76,13 @@ theorem stage_props {A W O : Type} [CommRing A] [CommRing W] [CommRing O] [IsLoc
   haveI : Module.FaithfullyFlat (Localization.AtPrime q) O := Module.FaithfullyFlat.of_flat_of_isLocalHom
   exact ⟨fun J => Ideal.comap_map_eq_self_of_faithfullyFlat J, hmax⟩
 
+/- English proof (translation)
+Establish `hle : ((maximalIdeal O).comap (v : W →+* O)).primeCompl ≤ ((maximalIdeal O).comap (v' : W' →+* O)).primeCompl.comap (k : W →+* W')`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `v' (k y) ∉ maximalIdeal O`. Rewrite using `[← AlgHom.comp_apply, hk]`. Conclude with `hy`.
+
+Set `ψ` to `IsLocalization.map (S := Localization.AtPrime ((maximalIdeal O).comap (v : W →+* O))) (Localization.AtPrime ((maximalIdeal O).comap (v' : W' →+* O))) (k : W →+* W') hle`. Establish `hψ : (stageHom v').comp ψ = stageHom v`. Use `IsLocalization.ringHom_ext (S := Localization.AtPrime ((maximalIdeal O).comap (v : W →+* O))) ((maximalIdeal O).comap (v : W →+* O)).primeCompl ?_` and prove the remaining obligations. Use extensionality with `w`. Simplify using `only [RingHom.comp_apply, ψ, IsLocalization.map_eq, stageHom_algebraMap]`.
+
+Rewrite using `[← hk]`. Both sides reduce to the same expression. Rewrite using `[← hψ]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨ψ x, rfl⟩`.
+-/
 theorem stage_le {A W W' O : Type} [CommRing A] [CommRing W] [CommRing W'] [CommRing O] [IsLocalRing O] [Algebra A W]
     [Algebra A W'] [Algebra A O] (v : W →ₐ[A] O) (v' : W' →ₐ[A] O) (k : W →ₐ[A] W') (hk : v'.comp k = v) :
     (stageHom v).range ≤ (stageHom v').range := by
@@ -76,6 +103,27 @@ theorem stage_le {A W W' O : Type} [CommRing A] [CommRing W] [CommRing W'] [Comm
   rintro _ ⟨x, rfl⟩
   exact ⟨ψ x, rfl⟩
 
+/- English proof (translation)
+Introduce `A O _ _ _ _ _ hO`. Set `ι` to `{T : Subring O // ∃ (W : Type) (_ : CommRing W) (_ : Algebra A W) (_ : Algebra.Etale A W) (v : W →ₐ[A] O), T = (stageHom v).range}`. Establish `fac : ∀ (Z : Type) [CommRing Z] [Algebra A Z] [Algebra.FinitePresentation A Z] (g : Z →ₐ[A] O), ∃ (W : Type) (_ : CommRing W) (_ : Algebra A W) (_ : Algebra.Etale A W) (u : Z →ₐ[A] W) (v : W →ₐ[A] O), v.comp u = g` using `fun Z _ _ _ g => GlobalTheory.IndEtaleLocal.exists_etale_factor hO g`. Establish `mem : ∀ x : O, ∃ T : ι, x ∈ T.1`. Introduce `x`.
+
+Take `⟨W, _, _, _, u, v, huv⟩` from `fac (Polynomial A) (Polynomial.aeval x)`. Use `⟨⟨_, W, inferInstance, inferInstance, inferInstance, v, rfl⟩, algebraMap W _ (u Polynomial.X), ?_⟩` and prove the remaining obligations. Rewrite using `[stageHom_algebraMap]`. Use `DFunLike.congr_fun huv Polynomial.X` as an intermediate fact. Simplify using `using this`.
+
+Use `haveI : Nonempty ι := ⟨(mem 0).choose⟩`. Use `haveI : IsDirected ι (· ≤ ·) := by`. Use `⟨fun T1 T2 => ?_⟩` and prove the remaining obligations. Take `⟨T1, W1, _, _, _, v1, rfl⟩` from `T1`. Take `⟨T2, W2, _, _, _, v2, rfl⟩` from `T2`.
+
+Use `haveI : Algebra.FinitePresentation A (TensorProduct A W1 W2) := Algebra.FinitePresentation.trans A W1 _`. Take `⟨W3, _, _, _, u, v3, huv⟩` from `fac (TensorProduct A W1 W2) (Algebra.TensorProduct.productMap v1 v2)`. Use `⟨⟨_, W3, inferInstance, inferInstance, inferInstance, v3, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `stage_le v1 v3 (u.comp Algebra.TensorProduct.includeLeft) (by`. Rewrite using `[← AlgHom.comp_assoc, huv]`.
+
+Conclude with `Algebra.TensorProduct.productMap_left v1 v2)`. Conclude with `stage_le v2 v3 (u.comp Algebra.TensorProduct.includeRight) (by`. Rewrite using `[← AlgHom.comp_assoc, huv]`. Conclude with `Algebra.TensorProduct.productMap_right v1 v2)`. Use `noeth_of_directed_subrings O ι (fun T => T.1) (fun _ _ h => h) mem ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨T, W, _, _, _, v, rfl⟩ haveI : IsNoetherianRing W := Algebra.FiniteType.isNoetherianRing A W haveI : IsNoetherianRing (Localization.AtPrime ((maximalIdeal O).comap (v : W →+* O))) := IsLocalization.isNoetherianRing ((maximalIdeal O).comap (v : W →+* O)).primeCompl _ inferInstanc …`. Conclude with `isNoetherianRing_range (stageHom v)`. Introduce and unpack `⟨T, W, _, _, _, v, rfl⟩`. Take `⟨-, hmax⟩` from `stage_props hO v`. Use `le_antisymm Ideal.map_comap_le ?_` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← hmax]`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `l hl`. Establish `h1 : stageHom v l ∈ maximalIdeal O` using `hmax.le (Ideal.mem_map_of_mem _ hl)`. Establish `h2 : (⟨stageHom v l, l, rfl⟩ : (stageHom v).range) ∈ (maximalIdeal O).comap (stageHom v).range.subtype` using `h1`.
+
+Conclude with `Ideal.mem_map_of_mem _ h2`. Introduce and unpack `⟨T, W, _, _, _, v, rfl⟩ J`. Take `⟨hc, -⟩` from `stage_props hO v`. Use `le_antisymm ?_ Ideal.le_comap_map` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨y, rfl⟩` from `(stageHom v).rangeRestrict_surjective x`. Establish `hJ : J = (J.comap (stageHom v).rangeRestrict).map (stageHom v).rangeRestrict` using `(Ideal.map_comap_of_surjective _ (stageHom v).rangeRestrict_surjective J).symm`. Establish `h2 : stageHom v y ∈ (J.comap (stageHom v).rangeRestrict).map (stageHom v)`. Rewrite `hx` using `[hJ, Ideal.map_map]`. Conclude with `hx`.
+
+Establish `h3` using `(hc (J.comap (stageHom v).rangeRestrict)).le h2`. Conclude with `h3`.
+-/
 theorem isNoetherianRing_of_indEt : ∀ (A O : Type) [CommRing A] [IsNoetherianRing A] [CommRing O] [IsLocalRing O]
     [Algebra A O], IndEt A O → IsNoetherianRing O := by
   intro A O _ _ _ _ _ hO
@@ -131,6 +179,9 @@ theorem isNoetherianRing_of_indEt : ∀ (A O : Type) [CommRing A] [IsNoetherianR
     have h3 := (hc (J.comap (stageHom v).rangeRestrict)).le h2
     exact h3
 
+/- English proof (translation)
+Introduce `B _ _ O _ _ s hs`. Take `⟨_, -, hind, -⟩` from `isStalk_affine B O s hs`. Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing ℤ B`. Conclude with `isNoetherianRing_of_indEt B O hind`.
+-/
 theorem isNoetherianRing_of_isStalk : ∀ (B : Type) [CommRing B] [Algebra.FiniteType ℤ B] (O : Type) [CommRing O]
     [IsLocalRing O] (s : Spec (CommRingCat.of O) ⟶ Spec (CommRingCat.of B)), IsStalk O s → IsNoetherianRing O := by
   intro B _ _ O _ _ s hs

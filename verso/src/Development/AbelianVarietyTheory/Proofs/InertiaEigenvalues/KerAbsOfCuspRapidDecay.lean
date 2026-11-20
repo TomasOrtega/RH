@@ -18,6 +18,23 @@ noncomputable section
 
 namespace GlobalTheory.RawLift
 
+/- English proof (translation)
+Introduce `hP D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS θ hθ`. Establish `hfinV` using `GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V νV 𝓗 hS.haarV hS.fdV`. Use `⟨hfinV.ne, fun f hf φ hφ hc => ?_⟩` and prove the remaining obligations. Establish `: BorelSpace (GA D W)` using `⟨rfl⟩`. Take `⟨A, d, H⟩` from `GlobalTheory.KernelSeminorm.thetaGrowth D V.rank W.rank`.
+
+Take `⟨U, hU, hl⟩` from `GlobalTheory.Size.isTheta_iff_level.1 hf`. Take `⟨μ', 𝓕', hμ'⟩` from `GlobalTheory.Size.exists_isCovolOne V W`. Take `⟨C, hC0, hC⟩` from `(H V W rfl rfl).real ψ hθ hU`. Establish `hb` using `(hC χV χW om hS.weil μ' 𝓕' hμ' f hl).2`. Use `set s := (GlobalTheory.Size.sobO ψ θ μ' 𝓕' d f).toReal with hs`.
+
+Establish `hs0 : 0 ≤ s` using `ENNReal.toReal_nonneg`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.DefiniteQuotient.exists_compact V (fun τ => hS.posDef (tauE D τ))`. Take `⟨M₀, hM₀⟩` from `GlobalTheory.Grow.exists_height_le_of_isCompact V hK`. Use `set M := max M₀ 1 with hMdef`. Establish `hM : ∀ c ∈ K, GlobalTheory.Grow.height V c ≤ M` using `fun c hc => (hM₀ c hc).trans (le_max_left _ _)`.
+
+Establish `hM0 : 0 ≤ M` using `zero_le_one.trans (le_max_right _ _)`. Establish `hunif : ∀ h g, ‖thetaKO om h g f‖ ≤ C * s * M ^ A * GlobalTheory.Grow.height W g ^ A`. Introduce `h g`. Take `⟨γ, hγ, c, hc', rfl⟩` from `hcov h`. Rewrite using `[GlobalTheory.ChainOnto.ThetaFirstVar.thetaKO_left_fst hS.weil hf g γ hγ c]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hR` using `GlobalTheory.Grow.rapidDec_of_cuspForm hP hθ hφ hc`. Take `⟨B0, hB0⟩` from `hR.decay A`. Establish `hq : ∀ h g, ‖star (thetaKO om h g f)‖ ≤ C * s * M ^ A * 2 ^ A * GlobalTheory.Grow.quotHeight W g ^ A`. Introduce `h g`.
+
+Rewrite using `[norm_star]`. Conclude with `GlobalTheory.Grow.norm_le_quotHeight_pow (f := fun g => thetaKO om h g f) (GlobalTheory.Chain.LiftConv.thetaKO_left hS.weil hf h) (hunif h) g`. Establish `hfinW` using `GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol W νW 𝓖 hS.haarW hS.fdW`. Use `⟨C * s * M ^ A * 2 ^ A * B0 * νW.real 𝓖, fun h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `hR.integrableOn_mul_of_le hS.haarW hS.fdW (GlobalTheory.Chain.LiftConv.thetaKO_continuous hS.weil hf h).star.aestronglyMeasurable (hq h)`.
+
+Use `(le_abs_self _).trans ?_` and prove the remaining obligations. Rewrite using `[← Real.norm_eq_abs]`. Use `norm_setIntegral_le_of_norm_le_const hfinW fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (norm_nonneg _) (norm_nonneg _))]`. Establish `h1` using `hq h g`.
+
+Rewrite `h1` using `[norm_star]`. Establish `hK0 : 0 ≤ C * s * M ^ A * 2 ^ A` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem kerAbs_of_cuspRapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, KerAbs D := by
   intro hP D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS θ hθ
   have hfinV := GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V νV 𝓗 hS.haarV hS.fdV

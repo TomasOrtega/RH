@@ -26,6 +26,11 @@ structure IsSncPatch [Algebra ℚ Ω] (Pt Bd : Set (Subring Ω)) (e : ℕ) (A : 
   span : Submodule.span A (Set.range fun i => KaehlerDifferential.D ℚ A (z i)) = ⊤
   pts : ∀ q : Ideal A, q.IsPrime → ∃ R ∈ Pt, IsLocAt A q R ∧ (R ∈ Bd ↔ ∃ i : Fin e, (i : ℕ) < n ∧ z i ∈ q)
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (algebraMap ℚ (⊤ : Subalgebra ℚ ℚ))` using `fun a => ⟨a.1, Subtype.ext (by simp)⟩`. Establish `: Subsingleton (KaehlerDifferential ℚ (⊤ : Subalgebra ℚ ℚ))` using `KaehlerDifferential.subsingleton_of_surjective _ _ hs`. Use `⟨(inferInstance : Algebra.FiniteType ℚ ℚ).out, ?_, le_rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Algebra.Smooth.of_equiv Subalgebra.topEquiv.symm`. Conclude with `linearIndependent_empty_type`.
+
+Conclude with `Subsingleton.elim _ _`. Introduce `q hq`. Use `⟨⊤, rfl, fun a => ⟨fun _ => ⟨1, ?_, by simp⟩, fun _ => trivial⟩, ?_⟩` and prove the remaining obligations. Conclude with `fun h => hq.ne_top ((Ideal.eq_top_iff_one q).2 h)`. Simplify using the standard rewrite rules.
+-/
 theorem isSncPatch_rat : IsSncPatch (Ω := ℚ) {⊤} ∅ 0 ⊤ Fin.elim0 0 := by
   have hs : Function.Surjective (algebraMap ℚ (⊤ : Subalgebra ℚ ℚ)) := fun a => ⟨a.1, Subtype.ext (by simp)⟩
   have : Subsingleton (KaehlerDifferential ℚ (⊤ : Subalgebra ℚ ℚ)) :=

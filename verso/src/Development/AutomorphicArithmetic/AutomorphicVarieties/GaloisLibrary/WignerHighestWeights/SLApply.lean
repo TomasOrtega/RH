@@ -25,10 +25,20 @@ private noncomputable def sL (L : Lie E a →ₗ[ℝ] A) (i j : Fin a) : Cinf E 
     exact (congrArg L h).trans (L.map_smul _ _)
 
 omit [Algebra ℂ A] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem sL_apply (L : Lie E a →ₗ[ℝ] A) (i j : Fin a) (x : Cinf E) :
     sL L i j x = L (toL (Matrix.single i j x)) := rfl
 
 omit [Algebra ℂ A] in
+/- English proof (translation)
+Establish `h` using `hL (Matrix.single i j x) (Matrix.single k l y)`. Establish `e : ∀ X Y : Matrix (Fin a) (Fin a) (Cinf E), toL (X - Y) = toL X - toL Y` using `fun _ _ => rfl`. Rewrite `h` using `[e, map_sub]`. Simplify using `only [sL_apply]`. Rewrite using `[h]`.
+
+Establish `z : L (toL 0) = 0` using `map_zero _`. Use `congr 1`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same]`.
+
+Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ h, z]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_comm y]`. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ h, z]`.
+-/
 private theorem sL_comm (L : Lie E a →ₗ[ℝ] A) (hL : IsLieHom L) (i j k l : Fin a) (x y : Cinf E) :
     sL L i j x * sL L k l y - sL L k l y * sL L i j x =
       (if j = k then sL L i l (x * y) else 0) - (if l = i then sL L k j (x * y) else 0) := by
@@ -46,6 +56,11 @@ private theorem sL_comm (L : Lie E a →ₗ[ℝ] A) (hL : IsLieHom L) (i j k l :
     · subst h; rw [Matrix.single_mul_single_same, mul_comm y]
     · rw [Matrix.single_mul_single_of_ne _ _ _ _ h, z]
 
+/- English proof (translation)
+Establish `h1` using `sL_comm L hL i j k l (atEmb τ 1) (atEmb τ' 1)`. Establish `h2` using `sL_comm L hL i j k l (atEmb τ 1) (atEmb τ' .I)`. Establish `h3` using `sL_comm L hL i j k l (atEmb τ .I) (atEmb τ' 1)`. Establish `h4` using `sL_comm L hL i j k l (atEmb τ .I) (atEmb τ' .I)`. Simplify using `only [eL, ← sL_apply, smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, smul_sub, smul_smul]`.
+
+Establish `hI : Complex.I * Complex.I = -1` using `Complex.I_mul_I`. Apply the tactic sequence `split_ifs at h1 h2 h3 h4 ⊢ <;>`. Apply the tactic sequence `linear_combination (norm := skip) (exp := 1) (1 / 4 : ℂ) • h1 - (Complex.I / 4 : ℂ) • h2 - (Complex.I / 4 : ℂ) • h3 - (1 / 4 : ℂ) • h4 <;>`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp`.
+-/
 private theorem eL_comm_aux (L : Lie E a →ₗ[ℝ] A) (hL : IsLieHom L) (τ τ' : E →+* ℂ) (i j k l : Fin a) :
     eL L τ i j * eL L τ' k l - eL L τ' k l * eL L τ i j =
       (if j = k then (1 / 4 : ℂ) • (sL L i l (atEmb τ 1 * atEmb τ' 1) - sL L i l (atEmb τ .I * atEmb τ' .I) -
@@ -67,6 +82,15 @@ end
 end UpperTheory.V.AlgRepEndIrreducible
 
 open GlobalTheory.WignerGL in
+/- English proof (translation)
+Introduce `E _ _ _ a A _ _ _ _ L hL`. Use `⟨fun τ i j k l => ?_, fun τ τ' h i j k l => ?_⟩` and prove the remaining obligations. Establish `e : atEmb τ (Complex.I * Complex.I) = -atEmb τ 1`. Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[eL_comm_aux L hL]`. Simplify using `only [atEmb_mul, one_mul, mul_one, e, map_neg, eL, ← sL_apply]`. Apply the tactic sequence `congr 1 <;> split_ifs <;> first | rfl | (match_scalars <;> ring)`. Rewrite using `[← sub_eq_zero, eL_comm_aux L hL]`. Distinguish the cases in `hw : InfinitePlace.mk τ = InfinitePlace.mk τ'`.
+
+Take `rfl : ComplexEmbedding.conjugate τ = τ'` from `(InfinitePlace.mk_eq_iff.1 hw).resolve_left h`. Establish `e : atEmb τ (-Complex.I) = -atEmb τ Complex.I`. Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules. Establish `e' : atEmb τ (-1) = -atEmb τ 1`.
+
+Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules. Simplify using `[atEmb_conj, atEmb_mul, e, e']`. Simplify using `[atEmb_mul_of_ne hw]`.
+-/
 theorem UpperTheory.V.AlgRepEndIrreducible.eLRel :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (A : Type) [Ring A] [Algebra ℂ A] [Module ℝ A] [IsScalarTower ℝ ℂ A] (L : Lie E a →ₗ[ℝ] A),
       IsLieHom L → IsMultiGl (eL L) := by

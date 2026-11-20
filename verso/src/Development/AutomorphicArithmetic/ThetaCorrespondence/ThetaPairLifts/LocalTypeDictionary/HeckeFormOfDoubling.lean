@@ -13,6 +13,11 @@ open GlobalTheory.Mem.Th (CptF)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.IP
+/- English proof (translation)
+Introduce `p1 p2 p3 p4 p5 p6 D`. Establish `hU` using `GlobalTheory.T.unramifiedDoublingIntegral_inert_place`. Establish `hG : GlobalForm D` using `_root_.GlobalTheory.T.globalForm_of_siegel_weil p1 p2 p3 p4 p5 D`. Establish `hPB` using `paramBoundOn_all_of_split_inert D (GlobalTheory.T.sphericalParameterBound_split_place D) (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU D)`. Establish `hLZ` using `localZetaOn_all_of_split_inert D (GlobalTheory.T.unramifiedDoublingIntegral_splitPlace_adelic p6 D) (GlobalTheory.T.unramified_doubling_integral_inert_adelic hU D (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU D))`.
+
+Establish `hE : EulerRight D` using `GlobalTheory.T.doubling_eulerProduct_farRight p2 D (GlobalTheory.T.doublingSphericalFactorization_of_weilDualPair p1 D) hLZ hPB`. Conclude with `GlobalTheory.T.heckeInnerProductFormula_of_doublingEuler D hG hE`.
+-/
 theorem heckeForm_of_doubling' : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.CuspRapidDecay →
     GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent → _root_.GlobalTheory.Published.DoublingMethodLocalZetaIntegrals →
     GlobalTheory.Published.UnramifiedDoublingGL → ∀ D : D7, HeckeForm D := by
@@ -36,6 +41,9 @@ open GlobalTheory.Mem.Th (CptF)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.Core.Rk.IP.heckeForm_of_doubling' | exact _root_.GlobalTheory.Core.Rk.IP.heckeForm_of_doubling' | (intros; apply _root_.GlobalTheory.Core.Rk.IP.heckeForm_of_doubling' <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heckeForm_of_doubling : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent → _root_.GlobalTheory.Published.DoublingMethodLocalZetaIntegrals → GlobalTheory.Published.UnramifiedDoublingGL → ∀ D : D7, HeckeForm D := by
   first | exact @_root_.GlobalTheory.Core.Rk.IP.heckeForm_of_doubling' | exact _root_.GlobalTheory.Core.Rk.IP.heckeForm_of_doubling' | (intros; apply _root_.GlobalTheory.Core.Rk.IP.heckeForm_of_doubling' <;> assumption)
 end

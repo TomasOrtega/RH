@@ -11,6 +11,9 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 
 namespace GlobalTheory.AdmJointAssembly
 
+/- English proof (translation)
+Introduce `D L h0 h1 h2 h5 hW hB hP`. Establish `hG` using `GlobalTheory.T.admG2_pair_of_admissible D h0 h1 h2 h5`. Conclude with `⟨hG.1, GlobalTheory.CrysWD.crysIffWD D, hG.2, GlobalTheory.T.admissible_dictionary_of_params GlobalTheory.Published.cheb_holds D h2 hW hB, GlobalTheory.T.hodgeTateJumpsReading_rowAdm D, hP⟩`.
+-/
 theorem main : ∀ (D : D7) (L : SizeData₂ D), SumRepresentations.tie0 D → SumRepresentations.adm1 D → SumRepresentations.adm2 D → SumRepresentations.adm5 D → WeightParam D →
     BlockCharParam D → AdmissibleParameterJ.AdmPar L → AdmissibleParameterJ.AdmJ L := by
   intro D L h0 h1 h2 h5 hW hB hP

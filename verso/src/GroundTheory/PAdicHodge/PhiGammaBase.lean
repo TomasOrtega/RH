@@ -26,12 +26,18 @@ instance : IsAlgClosed (Cb p) := isAlgClosed_tilt
 
 def toWC : AInf ℂ_[p] p →+* WC p := WittVector.map (algebraMap (Ob p) (Cb p))
 
+/- English proof (translation)
+The claim follows from `WittVector.map_coeff _ x n`.
+-/
 theorem toWC_coeff (x : AInf ℂ_[p] p) (n : ℕ) :
     (toWC p x).coeff n = algebraMap (Ob p) (Cb p) (x.coeff n) :=
   WittVector.map_coeff _ x n
 
 variable {p} {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem preTiltMap_congr {f g : ℂ_[p] →+* ℂ_[p]} (hf : ∀ x, ‖f x‖ = ‖x‖) (hg : ∀ x, ‖g x‖ = ‖x‖)
     (h : f = g) : preTiltMap p f hf = preTiltMap p g hg := by
   subst h; rfl
@@ -42,13 +48,24 @@ def galTilt (σ : Gal(PadicAlgCl p/K)) : Cb p →+* Cb p :=
 def galPreTilt (σ : Gal(PadicAlgCl p/K)) : Ob p →+* Ob p :=
   preTiltMap p (galCp σ : ℂ_[p] →+* ℂ_[p]) (AInf.norm_galCp_toRingHom σ)
 
+/- English proof (translation)
+The claim follows from `tiltMap_algebraMap _ _ x`.
+-/
 theorem galTilt_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : Ob p) :
     galTilt σ (algebraMap (Ob p) (Cb p) x) = algebraMap (Ob p) (Cb p) (galPreTilt σ x) :=
   tiltMap_algebraMap _ _ x
 
+/- English proof (translation)
+The claim follows from `norm_tiltMap _ _ x`.
+-/
 theorem norm_galTilt (σ : Gal(PadicAlgCl p/K)) (x : Cb p) : ‖galTilt σ x‖ = ‖x‖ :=
   norm_tiltMap _ _ x
 
+/- English proof (translation)
+Establish `h : (galCp (1 : Gal(PadicAlgCl p/K)) : ℂ_[p] →+* ℂ_[p]) = RingHom.id ℂ_[p]`. Rewrite using `[galCp_one]`. Both sides reduce to the same expression. Establish `key` using `AInf.preTiltMap_id (K := ℂ_[p]) (p := p) x`. Rewrite using `[galPreTilt, preTiltMap_congr _ (fun _ => rfl) h]`.
+
+Conclude with `key`.
+-/
 theorem galPreTilt_one (x : Ob p) : galPreTilt (1 : Gal(PadicAlgCl p/K)) x = x := by
   have h : (galCp (1 : Gal(PadicAlgCl p/K)) : ℂ_[p] →+* ℂ_[p]) = RingHom.id ℂ_[p] := by
     rw [galCp_one]; rfl
@@ -56,6 +73,9 @@ theorem galPreTilt_one (x : Ob p) : galPreTilt (1 : Gal(PadicAlgCl p/K)) x = x :
   rw [galPreTilt, preTiltMap_congr _ (fun _ => rfl) h]
   exact key
 
+/- English proof (translation)
+Establish `h : (galCp (σ * τ) : ℂ_[p] →+* ℂ_[p]) = (galCp σ : ℂ_[p] →+* ℂ_[p]).comp (galCp τ : ℂ_[p] →+* ℂ_[p])`. Rewrite using `[galCp_mul]`. Both sides reduce to the same expression. Rewrite using `[galPreTilt, galPreTilt, galPreTilt, ← RingHom.comp_apply, ← preTiltMap_comp, preTiltMap_congr _ (norm_comp_eq (AInf.norm_galCp_toRingHom τ) (AInf.norm_galCp_toRingHom σ)) h]`.
+-/
 theorem galPreTilt_mul (σ τ : Gal(PadicAlgCl p/K)) (x : Ob p) :
     galPreTilt (σ * τ) x = galPreTilt σ (galPreTilt τ x) := by
   have h : (galCp (σ * τ) : ℂ_[p] →+* ℂ_[p]) =
@@ -64,6 +84,9 @@ theorem galPreTilt_mul (σ τ : Gal(PadicAlgCl p/K)) (x : Ob p) :
   rw [galPreTilt, galPreTilt, galPreTilt, ← RingHom.comp_apply, ← preTiltMap_comp,
     preTiltMap_congr _ (norm_comp_eq (AInf.norm_galCp_toRingHom τ) (AInf.norm_galCp_toRingHom σ)) h]
 
+/- English proof (translation)
+Establish `: galTilt (1 : Gal(PadicAlgCl p/K)) = RingHom.id (Cb p)`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (Ob p)) (RingHom.ext fun a => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, galTilt_algebraMap, galPreTilt_one, RingHom.id_apply]`. Rewrite using `[this, RingHom.id_apply]`.
+-/
 theorem galTilt_one (x : Cb p) : galTilt (1 : Gal(PadicAlgCl p/K)) x = x := by
   have : galTilt (1 : Gal(PadicAlgCl p/K)) = RingHom.id (Cb p) := by
     refine IsLocalization.ringHom_ext (nonZeroDivisors (Ob p)) (RingHom.ext fun a => ?_)
@@ -71,6 +94,9 @@ theorem galTilt_one (x : Cb p) : galTilt (1 : Gal(PadicAlgCl p/K)) x = x := by
       RingHom.id_apply]
   rw [this, RingHom.id_apply]
 
+/- English proof (translation)
+Establish `: galTilt (σ * τ) = (galTilt σ).comp (galTilt τ)`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (Ob p)) (RingHom.ext fun a => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, galTilt_algebraMap, galPreTilt_mul]`. Rewrite using `[this, RingHom.comp_apply]`.
+-/
 theorem galTilt_mul (σ τ : Gal(PadicAlgCl p/K)) (x : Cb p) :
     galTilt (σ * τ) x = galTilt σ (galTilt τ x) := by
   have : galTilt (σ * τ) = (galTilt σ).comp (galTilt τ) := by
@@ -96,20 +122,32 @@ instance instMulSemiringActionOb : MulSemiringAction Gal(PadicAlgCl p/K) (Ob p) 
   smul_one σ := map_one (galPreTilt σ)
   smul_mul σ := map_mul (galPreTilt σ)
 
+/- English proof (translation)
+The claim follows from `galTilt_algebraMap σ x`.
+-/
 theorem gal_smul_algebraMap_ob (σ : Gal(PadicAlgCl p/K)) (x : Ob p) :
     σ • algebraMap (Ob p) (Cb p) x = algebraMap (Ob p) (Cb p) (σ • x) :=
   galTilt_algebraMap σ x
 
 def galW (σ : Gal(PadicAlgCl p/K)) : WC p →+* WC p := WittVector.map (galTilt σ)
 
+/- English proof (translation)
+The claim follows from `WittVector.map_coeff _ x n`.
+-/
 theorem galW_coeff (σ : Gal(PadicAlgCl p/K)) (x : WC p) (n : ℕ) :
     (galW σ x).coeff n = σ • x.coeff n :=
   WittVector.map_coeff _ x n
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[galW_coeff, one_smul]`.
+-/
 theorem galW_one (x : WC p) : galW (1 : Gal(PadicAlgCl p/K)) x = x := by
   ext n
   rw [galW_coeff, one_smul]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[galW_coeff, galW_coeff, galW_coeff, mul_smul]`.
+-/
 theorem galW_mul (σ τ : Gal(PadicAlgCl p/K)) (x : WC p) :
     galW (σ * τ) x = galW σ (galW τ x) := by
   ext n
@@ -124,23 +162,38 @@ instance instMulSemiringActionWC : MulSemiringAction Gal(PadicAlgCl p/K) (WC p) 
   smul_one σ := map_one (galW σ)
   smul_mul σ := map_mul (galW σ)
 
+/- English proof (translation)
+The claim follows from `galW_coeff σ x n`.
+-/
 theorem gal_smul_wc_coeff (σ : Gal(PadicAlgCl p/K)) (x : WC p) (n : ℕ) :
     (σ • x).coeff n = σ • x.coeff n :=
   galW_coeff σ x n
 
+/- English proof (translation)
+The claim follows from `map_natCast (galW σ) n`.
+-/
 theorem gal_smul_natCast (σ : Gal(PadicAlgCl p/K)) (n : ℕ) : σ • (n : WC p) = n :=
   map_natCast (galW σ) n
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[gal_smul_wc_coeff, WittVector.frobenius_eq_map_frobenius, WittVector.map_coeff, WittVector.map_coeff, gal_smul_wc_coeff, frobenius_def, frobenius_def, smul_pow']`.
+-/
 theorem gal_smul_frobenius (σ : Gal(PadicAlgCl p/K)) (x : WC p) :
     σ • WittVector.frobenius x = WittVector.frobenius (σ • x) := by
   ext n
   rw [gal_smul_wc_coeff, WittVector.frobenius_eq_map_frobenius, WittVector.map_coeff,
     WittVector.map_coeff, gal_smul_wc_coeff, frobenius_def, frobenius_def, smul_pow']
 
+/- English proof (translation)
+The claim follows from `gal_smul_frobenius σ x`.
+-/
 theorem gal_smul_frobeniusEquiv (σ : Gal(PadicAlgCl p/K)) (x : WC p) :
     σ • WittVector.frobeniusEquiv p (Cb p) x = WittVector.frobeniusEquiv p (Cb p) (σ • x) :=
   gal_smul_frobenius σ x
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[toWC_coeff, gal_smul_wc_coeff, toWC_coeff, AInf.gal_smul_coeff, gal_smul_algebraMap_ob]`. Both sides reduce to the same expression.
+-/
 theorem toWC_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
     toWC p (σ • x) = σ • toWC p x := by
   ext n

@@ -28,6 +28,9 @@ def traceHerm (h : HermitianForm F E W) (v : Basis ι E W) : LinearMap.BilinForm
         rw [← LinearEquiv.map_smul, algebraMap_smul]
       rw [e1, LinearMap.map_smul, smul_eq_mul, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem traceHerm_apply (h : HermitianForm F E W) (v : Basis ι E W) (y z : ι → E) :
     traceHerm h v y z = Algebra.trace ℚ E (h.toSesq (v.equivFun.symm y) (v.equivFun.symm z)) := rfl
 

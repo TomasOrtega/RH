@@ -15,22 +15,34 @@ open scoped ComplexOrder
 noncomputable section
 namespace GlobalTheory.ThetaJetMean
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.iterated_derivative_gaussian_bound f a S n i hf ha hn hb`.
+-/
 theorem L_cauchy (f : ℂ → ℂ) (a S : ℝ) (n i : ℕ) (hf : Differentiable ℂ f) (ha : 0 ≤ a) (hn : 1 ≤ n)
     (hb : ∀ t : ℂ, ‖f t‖ ^ 2 ≤ S ^ 2 * Real.exp (n * a * ‖t‖ ^ 2)) :
     ‖iteratedDeriv i f 0‖ ^ 2 ≤ (√(Real.exp 1 * n * i) ^ i * √a ^ i) ^ 2 * S ^ 2 :=
   GlobalTheory.T.iterated_derivative_gaussian_bound f a S n i hf ha hn hb
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mean_value_holomorphic_ellipsoid g Hm φ r hH hφ hr`.
+-/
 theorem L_subMean (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (φ : (Fin g → ℂ) → ℂ) (r : ℝ) (hH : Hm.PosDef)
     (hφ : Differentiable ℂ φ) (hr : 0 < r) :
     ENNReal.ofReal (‖φ 0‖ ^ 2) * volume {w : Fin g → ℂ | (w ⬝ᵥ Hm.mulVec (star w)).re < r ^ 2} ≤
       ∫⁻ w in {w : Fin g → ℂ | (w ⬝ᵥ Hm.mulVec (star w)).re < r ^ 2}, ENNReal.ofReal (‖φ w‖ ^ 2) :=
   GlobalTheory.T.mean_value_holomorphic_ellipsoid g Hm φ r hH hφ hr
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.volume_hermitian_ellipsoid' g Hm r hH hr`.
+-/
 theorem L_ellVol (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (r : ℝ) (hH : Hm.PosDef) (hr : 0 < r) :
     volume {w : Fin g → ℂ | (w ⬝ᵥ Hm.mulVec (star w)).re < r ^ 2} =
       ENNReal.ofReal (Real.pi ^ g * r ^ (2 * g) / (g.factorial * Hm.det.re)) :=
   GlobalTheory.T.volume_hermitian_ellipsoid' g Hm r hH hr
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.volume_fundamental_domain_hermitian g Λ Hm Ef Fd hs hH hE hEb hFd`.
+-/
 theorem L_covol (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] (Hm : Matrix (Fin g) (Fin g) ℂ)
     (Ef : LinearMap.BilinForm ℤ Λ) (Fd : Set (Fin g → ℂ)) (hs : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤)
     (hH : Hm.PosDef) (hE : ∀ a b : Λ, (Ef a b : ℝ) = ((a : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (b : Fin g → ℂ))).im)
@@ -38,6 +50,9 @@ theorem L_covol (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology
     volume Fd = ENNReal.ofReal (1 / Hm.det.re) :=
   GlobalTheory.T.volume_fundamental_domain_hermitian g Λ Hm Ef Fd hs hH hE hEb hFd
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.periodic_integral_le_fundamental_domain g Λ F Fd U hF hp hFd hU hinj`.
+-/
 theorem L_fold (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] (F : (Fin g → ℂ) → ℝ)
     (Fd U : Set (Fin g → ℂ)) (hF : Continuous F) (hp : ∀ (l : Λ) z, F (z + l) = F z)
     (hFd : IsAddFundamentalDomain Λ Fd volume) (hU : MeasurableSet U)
@@ -45,22 +60,36 @@ theorem L_fold (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology 
     ∫⁻ w in U, ENNReal.ofReal (F w) ≤ ∫⁻ z in Fd, ENNReal.ofReal (F z) :=
   GlobalTheory.T.periodic_integral_le_fundamental_domain g Λ F Fd U hF hp hFd hU hinj
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.periodic_continuous_integrable_domain g Λ F Fd hs hF hp hFd`.
+-/
 theorem L_integ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] (F : (Fin g → ℂ) → ℝ)
     (Fd : Set (Fin g → ℂ)) (hs : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (hF : Continuous F)
     (hp : ∀ (l : Λ) z, F (z + l) = F z) (hFd : IsAddFundamentalDomain Λ Fd volume) :
     IntegrableOn F Fd volume :=
   GlobalTheory.T.periodic_continuous_integrable_domain g Λ F Fd hs hF hp hFd
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hermitian_norm_triangle_inequality g Hm a b hH`.
+-/
 theorem L_tri (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (hH : Hm.PosDef) :
     √(((a + b) ⬝ᵥ Hm.mulVec (star (a + b))).re) ≤ √((a ⬝ᵥ Hm.mulVec (star a)).re) + √((b ⬝ᵥ Hm.mulVec (star b)).re) :=
   GlobalTheory.T.hermitian_norm_triangle_inequality g Hm a b hH
 
+/- English proof (translation)
+Use `hH.dotProduct_mulVec_pos (x := star z) (by simpa using hz)` as an intermediate fact. Simplify using `only [star_star] at this`. Conclude with `(Complex.pos_iff.1 this).1`.
+-/
 theorem re_herm_pos {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.PosDef) {z : Fin g → ℂ} (hz : z ≠ 0) :
     0 < (hermForm Hm z z).re := by
   have := hH.dotProduct_mulVec_pos (x := star z) (by simpa using hz)
   simp only [star_star] at this
   exact (Complex.pos_iff.1 this).1
 
+/- English proof (translation)
+Establish `h1` using `hH.1`. Simplify using `only [hermForm, dotProduct, Matrix.mulVec, Finset.mul_sum, star_sum, star_mul', star_star, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← h1.apply j i]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_conj {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.PosDef) (z w : Fin g → ℂ) :
     star (hermForm Hm w z) = hermForm Hm z w := by
   have h1 := hH.1
@@ -69,12 +98,20 @@ theorem herm_conj {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.PosDef) (
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [← h1.apply j i]; simp; ring
 
+/- English proof (translation)
+Simplify using `only [hermForm, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Rewrite using `[← mul_assoc, Complex.star_def, mul_comm ((starRingEnd ℂ) t), Complex.mul_conj, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq]`.
+-/
 theorem re_herm_smul {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (t : ℂ) (y : Fin g → ℂ) :
     (hermForm Hm (t • y) (t • y)).re = ‖t‖ ^ 2 * (hermForm Hm y y).re := by
   simp only [hermForm, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]
   rw [← mul_assoc, Complex.star_def, mul_comm ((starRingEnd ℂ) t), Complex.mul_conj, Complex.re_ofReal_mul,
     Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Establish `h` using `herm_conj hH z w`. Establish `e : hermForm Hm (z + w) (z + w) = hermForm Hm z z + hermForm Hm z w + hermForm Hm w z + hermForm Hm w w`. Simplify using `only [hermForm, star_add, Matrix.mulVec_add, add_dotProduct, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← h, Complex.star_def]`.
+
+Simplify using `only [Complex.add_re, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_add_re {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.PosDef) (z w : Fin g → ℂ) :
     (hermForm Hm (z + w) (z + w)).re =
       (hermForm Hm z z).re + 2 * (hermForm Hm w z).re + (hermForm Hm w w).re := by
@@ -85,13 +122,70 @@ theorem herm_add_re {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.PosDef)
   rw [e, ← h, Complex.star_def]
   simp only [Complex.add_re, Complex.conj_re]; ring
 
+/- English proof (translation)
+Simplify using `[hermForm, Matrix.mulVec_neg, dotProduct_neg]`.
+-/
 theorem herm_neg {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) :
     hermForm Hm (-z) (-z) = hermForm Hm z z := by
   simp [hermForm, Matrix.mulVec_neg, dotProduct_neg]
 
+/- English proof (translation)
+Simplify using `[hermForm]`.
+-/
 theorem herm_zero_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) :
     hermForm Hm 0 z = 0 := by simp [hermForm]
 
+/- English proof (translation)
+Use `set F : (Fin g → ℂ) → ℝ := fun z => ‖θ z‖ ^ 2 * Real.exp (-(Real.pi * n * (hermForm Hm z z).re)) with hFdef`. Establish `hdet : 0 < Hm.det.re` using `(Complex.pos_iff.1 hH.det_pos).1`. Establish `hHc : Continuous (fun z => hermForm Hm z z)` using `by unfold hermForm dotProduct Matrix.mulVec; fun_prop`. Establish `hFc : Continuous F`. Use `hθ.continuous` as an intermediate fact.
+
+Use `fun_prop`. Establish `hp : ∀ (l : Λ) z, F (z + l) = F z` using `hper`. Establish `hint : IntegrableOn F Fd volume` using `L_integ g Λ F Fd hs hFc hp hFd`. Establish `hvol : volume Fd = ENNReal.ofReal (1 / Hm.det.re)` using `L_covol g Λ Hm Ef Fd hs hH hE hEb hFd`. Establish `hvolR : (volume Fd).toReal = 1 / Hm.det.re` using `by rw [hvol, ENNReal.toReal_ofReal (by positivity)]`.
+
+Establish `hF0 : ∀ z, 0 ≤ F z` using `fun z => by positivity`. Establish `hI0 : 0 ≤ ∫ z in Fd, F z` using `integral_nonneg hF0`. Take `⟨⟨z1, -, hz1, hρeq⟩, hρle⟩` from `hρ`. Establish `hρpos : 0 < ρ` using `hρeq ▸ Real.sqrt_pos.2 (re_herm_pos hH hz1)`. Use `set a : ℝ := (√Real.pi / 2 * ρ)⁻¹ with ha`.
+
+Use `set b : ℝ := √(n : ℝ) with hb`. Use `set m : ℝ := max a b with hm`. Use `set M : ℝ := max (a ^ g) (b ^ g) with hM`. Establish `hpi : 0 < √Real.pi` using `Real.sqrt_pos.2 Real.pi_pos`. Establish `hapos : 0 < a` using `by positivity`.
+
+Establish `hbpos : 0 < b` using `Real.sqrt_pos.2 (by exact_mod_cast hn)`. Establish `hmpos : 0 < m` using `lt_max_of_lt_left hapos`. Use `set r : ℝ := 1 / (√Real.pi * m) with hr`. Establish `hrpos : 0 < r` using `by positivity`. Establish `hpr2 : Real.pi * r ^ 2 = 1 / m ^ 2`.
+
+Rewrite using `[hr, div_pow, mul_pow, Real.sq_sqrt Real.pi_pos.le]`. Clear the denominators using the available nonvanishing facts. Establish `hnr : Real.pi * n * r ^ 2 ≤ 1`. Establish `hb2 : (n : ℝ) = b ^ 2` using `by rw [hb, Real.sq_sqrt (by positivity)]`. Establish `hbm : b ≤ m` using `le_max_right _ _`.
+
+Establish `e : Real.pi * n * r ^ 2 = n / m ^ 2` using `by rw [mul_right_comm, hpr2]; field_simp`. Rewrite using `[e, div_le_one (by positivity), hb2]`. Conclude with `pow_le_pow_left₀ hbpos.le hbm 2`. Establish `h2r : 2 * r ≤ ρ`. Establish `ham : a ≤ m` using `le_max_left _ _`.
+
+Establish `: r ≤ 1 / (√Real.pi * a)`. Rewrite using `[hr]; exact one_div_le_one_div_of_le (by positivity) (mul_le_mul_of_nonneg_left ham hpi.le)`. Establish `e : 1 / (√Real.pi * a) = ρ / 2` using `by rw [ha]; field_simp`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmM : m ^ g ≤ M`.
+
+Break down `le_total a b with h | h` into its components or cases. Rewrite using `[hm, max_eq_right h]`. Conclude with `le_max_right _ _`. Rewrite using `[hm, max_eq_left h]`. Conclude with `le_max_left _ _`.
+
+Establish `key : 1 ≤ (Real.pi * r ^ 2) ^ g * M ^ 2`. Rewrite using `[hpr2, div_pow, one_pow, ← pow_mul]`. Rewrite using `[one_div_mul_eq_div, one_le_div (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Use `set φ : (Fin g → ℂ) → ℂ := fun w => θ (z0 + w) * Complex.exp (-(Real.pi * n * hermForm Hm w z0) - Real.pi * n / 2 * hermForm Hm z0 z0) with hφ`.
+
+Establish `hlin : Differentiable ℂ (fun w : Fin g → ℂ => hermForm Hm w z0)`. Unfold `hermForm dotProduct`. Use `fun_prop`. Establish `hφd : Differentiable ℂ φ`. Establish `h1 : Differentiable ℂ (fun w : Fin g → ℂ => θ (z0 + w))` using `hθ.comp (differentiable_const _ |>.add differentiable_id)`.
+
+Establish `h2` using `hlin`. Use `fun_prop`. Establish `hφnorm : ∀ w, ‖φ w‖ ^ 2 = F (z0 + w) * Real.exp (Real.pi * n * (hermForm Hm w w).re)`. Introduce `w`. Simplify using `only [hφ, hFdef, norm_mul, Complex.norm_exp, mul_pow]`.
+
+Rewrite using `[herm_add_re hH z0 w, mul_assoc (‖θ (z0 + w)‖ ^ 2), ← Real.exp_add, ← Real.exp_nat_mul]`. Use `congr 2`. Simplify using `[Complex.mul_re, Complex.div_ofNat_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `hφ0 : ‖φ 0‖ ^ 2 = F z0`.
+
+Rewrite using `[hφnorm 0]`. Simplify using `[herm_zero_left]`. Use `set B : Set (Fin g → ℂ) := {w | (w ⬝ᵥ Hm.mulVec (star w)).re < r ^ 2} with hB`. Use `set U : Set (Fin g → ℂ) := {u | ((u - z0) ⬝ᵥ Hm.mulVec (star (u - z0))).re < r ^ 2} with hU`. Establish `hBm : MeasurableSet B` using `(isOpen_lt (Complex.continuous_re.comp hHc) continuous_const).measurableSet`.
+
+Establish `hUm : MeasurableSet U` using `(isOpen_lt (Complex.continuous_re.comp (hHc.comp (continuous_id.sub continuous_const))) continuous_const).measurableSet`. Establish `hinj : ∀ u ∈ U, ∀ v ∈ U, u - v ∈ Λ → u = v`. Introduce `u hu v hv hl`. Assume the negation of the conclusion as `hne`. Establish `hl0 : u - v ≠ 0` using `sub_ne_zero.2 hne`.
+
+Establish `h1 : ρ ≤ √(hermForm Hm (u - v) (u - v)).re` using `hρle ⟨u - v, hl, hl0, rfl⟩`. Establish `h2 : √(hermForm Hm (u - v) (u - v)).re ≤ √(hermForm Hm (u - z0) (u - z0)).re + √(hermForm Hm (z0 - v) (z0 - v)).re`. Use `L_tri g Hm (u - z0) (z0 - v) hH` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `e : hermForm Hm (z0 - v) (z0 - v) = hermForm Hm (v - z0) (v - z0)` using `by rw [← neg_sub, herm_neg]`.
+
+Establish `h3 : √(hermForm Hm (u - z0) (u - z0)).re < r` using `(Real.sqrt_lt' hrpos).2 hu`. Establish `h4 : √(hermForm Hm (v - z0) (v - z0)).re < r` using `(Real.sqrt_lt' hrpos).2 hv`. Rewrite `h2` using `[e]`. Establish `k : ρ < 2 * r`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `absurd h2r (not_le.2 k)`. Establish `c1` using `L_subMean g Hm φ r hH hφd hrpos`. Establish `c2 : ∫⁻ w in B, ENNReal.ofReal (‖φ w‖ ^ 2) ≤ ∫⁻ w in B, ENNReal.ofReal (Real.exp 1 * F (z0 + w))`. Use `setLIntegral_mono' hBm fun w hw => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[hφnorm, mul_comm]`.
+
+Use `mul_le_mul_of_nonneg_right ?_ (hF0 _)` and prove the remaining obligations. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `: (hermForm Hm w w).re < r ^ 2` using `hw`. Establish `h5` using `mul_le_mul_of_nonneg_left this.le (by positivity : (0 : ℝ) ≤ Real.pi * n)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `c3 : ∫⁻ w in B, ENNReal.ofReal (Real.exp 1 * F (z0 + w)) = ENNReal.ofReal (Real.exp 1) * ∫⁻ w in B, ENNReal.ofReal (F (z0 + w))`. Repeatedly rewrite using `[ENNReal.ofReal_mul (Real.exp_pos 1).le]`. Conclude with `lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Establish `c4 : ∫⁻ w in B, ENNReal.ofReal (F (z0 + w)) = ∫⁻ u in U, ENNReal.ofReal (F u)`. Establish `hpre : (fun w => z0 + w) ⁻¹' U = B`.
+
+Use extensionality with `w`. Simplify using `[hU, hB]`. Rewrite using `[← hpre]`. Conclude with `(measurePreserving_add_left volume z0).setLIntegral_comp_preimage_emb (measurableEmbedding_addLeft z0) (fun u => ENNReal.ofReal (F u)) U`. Establish `c5` using `L_fold g Λ F Fd U hFc hp hFd hUm hinj`.
+
+Establish `c6 : ∫⁻ z in Fd, ENNReal.ofReal (F z) = ENNReal.ofReal (∫ z in Fd, F z)` using `(ofReal_integral_eq_lintegral_ofReal hint (ae_of_all _ hF0)).symm`. Establish `hVB` using `L_ellVol g Hm r hH hrpos`. Establish `hall : ENNReal.ofReal (F z0) * ENNReal.ofReal (Real.pi ^ g * r ^ (2 * g) / (g.factorial * Hm.det.re)) ≤ ENNReal.ofReal (Real.exp 1 * ∫ z in Fd, F z)`. Rewrite using `[← hVB, ← hφ0, ENNReal.ofReal_mul (Real.exp_pos 1).le, ← c6]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hall` using `[← ENNReal.ofReal_mul (hF0 z0), ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Establish `hpow : Real.pi ^ g * r ^ (2 * g) = (Real.pi * r ^ 2) ^ g` using `by rw [mul_pow, pow_mul]`. Rewrite using `[hvolR]`. Express the relevant statement in the definitionally equal form `F z0 ≤ _`. Establish `hg : (0 : ℝ) < g.factorial` using `by exact_mod_cast g.factorial_pos`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hpow]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (Real.exp 1 * ∫ z in Fd, F z) * (g.factorial * Hm.det.re * M ^ 2) := mul_le_mul_of_nonneg_right hall (by positivity)`. Use `_ = _ := by`.
+
+Rewrite using `[mul_pow, Real.sq_sqrt (by positivity)]; field_simp`.
+-/
 theorem ptwise (g n : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] (Hm : Matrix (Fin g) (Fin g) ℂ)
     (Ef : LinearMap.BilinForm ℤ Λ) (ρ : ℝ) (θ : (Fin g → ℂ) → ℂ) (Fd : Set (Fin g → ℂ)) (hn : 1 ≤ n)
     (hs : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (hH : Hm.PosDef)
@@ -237,6 +331,17 @@ theorem ptwise (g n : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopolog
     _ = _ := by
       rw [mul_pow, Real.sq_sqrt (by positivity)]; field_simp
 
+/- English proof (translation)
+Introduce `g n i Λ _ Hm Ef ρ θ Fd y hn hs hH hE hEb hρ hθ hper hFd`. Establish `hpt` using `ptwise g n Λ Hm Ef ρ θ Fd hn hs hH hE hEb hρ hθ hper hFd`. Use `set A := (∫ z in Fd, ‖θ z‖ ^ 2 * Real.exp (-(Real.pi * n * (hermForm Hm z z).re))) / (volume Fd).toReal with hA`. Use `set C0 := (√(Real.exp 1 * g.factorial) * max ((√Real.pi / 2 * ρ)⁻¹ ^ g) (√n ^ g)) ^ 2 with hC0`. Establish `hA0 : 0 ≤ A` using `div_nonneg (integral_nonneg fun z => by positivity) ENNReal.toReal_nonneg`.
+
+Establish `hCA : 0 ≤ C0 * A` using `mul_nonneg (sq_nonneg _) hA0`. Establish `hy0 : 0 ≤ (hermForm Hm y y).re`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using `[hermForm]`. Conclude with `(re_herm_pos hH hy).le`.
+
+Establish `hc` using `L_cauchy (fun t : ℂ => θ (t • y)) (Real.pi * (hermForm Hm y y).re) (√(C0 * A)) n i (hθ.comp (differentiable_id.smul_const y)) (by positivity) hn (by`. Introduce `t`. Establish `h` using `hpt (t • y)`. Rewrite `h` using `[re_herm_smul]`. Rewrite using `[Real.sq_sqrt hCA]`.
+
+Establish `hX : ‖θ (t • y)‖ ^ 2 = (‖θ (t • y)‖ ^ 2 * Real.exp (-(Real.pi * n * (‖t‖ ^ 2 * (hermForm Hm y y).re)))) * Real.exp (Real.pi * n * (‖t‖ ^ 2 * (hermForm Hm y y).re))`. Rewrite using `[mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, mul_one]`. Rewrite using `[hX, show (n : ℝ) * (Real.pi * (hermForm Hm y y).re) * ‖t‖ ^ 2 = Real.pi * n * (‖t‖ ^ 2 * (hermForm Hm y y).re) by ring]`. Conclude with `mul_le_mul_of_nonneg_right h (Real.exp_pos _).le)`. Rewrite `hc` using `[Real.sq_sqrt hCA]`.
+
+Use `hc.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hC0, jetBd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem theta_jet_le_l2_norm : ∀ (g n i : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] (Hm : Matrix (Fin g) (Fin g) ℂ) (Ef : LinearMap.BilinForm ℤ Λ) (ρ : ℝ) (θ : (Fin g → ℂ) → ℂ) (Fd : Set (Fin g → ℂ)) (y : Fin g → ℂ), 1 ≤ n → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → Hm.PosDef → (∀ a b : Λ, (Ef a b : ℝ) = (hermForm Hm a b).im) → Function.Bijective Ef → IsLeast {t | ∃ z ∈ Λ, z ≠ 0 ∧ t = √(hermForm Hm z z).re} ρ → Differentiable ℂ θ → (∀ (l : Λ) z, ‖θ (z + l)‖ ^ 2 * Real.exp (-(Real.pi * n * (hermForm Hm (z + l) (z + l)).re)) = ‖θ z‖ ^ 2 * Real.exp (-(Real.pi * n * (hermForm Hm z z).re))) → IsAddFundamentalDomain Λ Fd volume → ‖iteratedDeriv i (fun t : ℂ => θ (t • y)) 0‖ ^ 2 ≤ (jetBd g n i ρ * √(Real.pi * (hermForm Hm y y).re) ^ i) ^ 2 * ((∫ z in Fd, ‖θ z‖ ^ 2 * Real.exp (-(Real.pi * n * (hermForm Hm z z).re))) / (volume Fd).toReal) := by
   intro g n i Λ _ Hm Ef ρ θ Fd y hn hs hH hE hEb hρ hθ hper hFd
   have hpt := ptwise g n Λ Hm Ef ρ θ Fd hn hs hH hE hEb hρ hθ hper hFd

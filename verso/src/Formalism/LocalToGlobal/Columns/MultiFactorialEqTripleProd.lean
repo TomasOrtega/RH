@@ -16,6 +16,27 @@ section Main
 
 variable (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
 
+/- English proof (translation)
+Establish `hΔ : Submodule.IsLattice K (delK lam M)` using `(nabDelLattice K ι n lam M hM).2`. Establish `hA0 : delK lam M ≠ ⊥` using `isLattice_ne_bot hΔ`. Take `⟨x0, hx0, hx00⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hA0`. Establish `hinj` using `cfMap_injective lam g`. Establish `hφx0 : cfMap lam g x0 ≠ 0` using `fun h => hx00 (hinj (by rw [h, map_zero]))`.
+
+Establish `hne : cfMap lam g ≠ 0` using `fun h => hφx0 (by rw [h]; rfl)`. Establish `hNE : Nonempty (MonI lam)`. Assume the negation of the conclusion as `hE`. Rewrite `hE` using `[not_nonempty_iff]`. Conclude with `hφx0 (funext fun m => hE.elim m)`.
+
+Establish `hX : ∀ v, IsUnit ((tenH K lam M).X v).det` using `(formH_spec (bVV K lam) (pairK lam fun _ => 1) (tensor_pairing_pos_def K lam) (delK lam M)).1`. Establish `hX' : ∀ v : InfinitePlace K, IsUnit ((monD lam)⁻¹).det` using `fun _ => Matrix.isUnit_nonsing_inv_det _ (monD_det lam)`. Use `set L0 : Submodule (𝓞 K) (MonI lam → K) := ⨆ m : MonI lam, Submodule.span (𝓞 K) ({Pi.single m 1} : Set (MonI lam → K)) with hL0`. Establish `hL0fg : L0.FG`. Establish `: L0 = ⨆ m ∈ (Finset.univ : Finset (MonI lam)), Submodule.span (𝓞 K) ({Pi.single m 1} : Set (MonI lam → K))` using `by simp [hL0]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.fg_biSup _ _ fun m _ => Submodule.fg_span (Set.finite_singleton _)`. Establish `hsingle : ∀ m : MonI lam, (Pi.single m 1 : MonI lam → K) ∈ L0` using `fun m => (le_iSup (fun m : MonI lam => Submodule.span (𝓞 K) ({Pi.single m 1} : Set (MonI lam → K))) m) (Submodule.mem_span_singleton_self _)`. Establish `hsne : ∀ m : MonI lam, (Pi.single m 1 : MonI lam → K) ≠ 0` using `fun m h => by`. Use `congrFun h m` as an intermediate fact.
+
+Simplify using `at this`. Establish `hL00 : L0 ≠ ⊥` using `fun h => by`. Take `⟨m⟩` from `hNE`. Use `hsingle m` as an intermediate fact. Rewrite `this` using `[h, Submodule.mem_bot]`.
+
+Conclude with `hsne m this`. Establish `hF3 : muMaxDef (Pi.basisFun K (MonI lam)) (fun _ => (monD lam)⁻¹) L0 ≤ -Real.log c0` using `max_slope_orthogonal_neg_log (monH K lam L0) (monH_frameOK K lam L0) (fun m : MonI lam => (Pi.single m 1 : MonI lam → K)) hsne (fun m m' h v => monH_orth K lam v m m' h) c0 hc0 (fun m v => by`. Use `monH_norm_single K lam v m` as an intermediate fact. Conclude with `(hc m).trans (le_of_eq this.symm))`. Take `⟨hBfg, -, hBmax, -⟩` from `Formalism.LFunctionChainParameters.LLcv.ideal_scaling_holds K (MonI lam → K) (MonI lam) (Pi.basisFun K (MonI lam)) (fun _ => (monD lam)⁻¹) hX' I hI0 L0 hL0fg hL00`.
+
+Establish `hle : (delK lam M).map ((cfMap lam g).restrictScalars (𝓞 K)) ≤ idealSmul (I : Submodule (𝓞 K) K) L0`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `e : (cfMap lam g).restrictScalars (𝓞 K) x = ∑ m, cfMap lam g x m • (Pi.single m 1 : MonI lam → K)`. Use function extensionality and compare the values at `m'`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Rewrite using `[e]`. Use `sum_mem fun m _ => Submodule.subset_span ⟨_, ?_, _, hsingle m, rfl⟩` and prove the remaining obligations. Rewrite using `[hI]`. Conclude with `coefficient_map_mem_twisted lam M g hg x hx m`. Establish `hmap0 : (delK lam M).map ((cfMap lam g).restrictScalars (𝓞 K)) ≠ ⊥` using `fun h => by`.
+
+Establish `: (cfMap lam g).restrictScalars (𝓞 K) x0 ∈ (delK lam M).map ((cfMap lam g).restrictScalars (𝓞 K))` using `⟨x0, hx0, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hφx0 this`. Establish `hSI` using `((slope_inequality_mean K (VV K lam) (VVIdx lam) (MonI lam → K) (MonI lam) (tenH K lam M).b (tenH K lam M).X (Pi.basisFun K (MonI lam)) (fun _ => (monD lam)⁻¹) hX hX' (cfMap lam g) (delK lam M) hΔ.fg hmap0).2 (idealSmul (I : Submodule (𝓞 K) K) L0) hBfg hle).2 hinj.injOn`. Establish `hH` using `coefficient_map_height_bound K lam hS g M hne hpos`.
+
+Use `show muMaxDef (tenH K lam M).b (tenH K lam M).X (delK lam M) ≤ _`. Rewrite `hSI` using `[hBmax]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem max_slope_twisted_lattice (hS : FockSubNorm) (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ))
     (g : ι → GL (Fin n) K)
     (hg : ∀ τ, ∀ x ∈ M τ, ∀ a, ((g τ : Matrix (Fin n) (Fin n) K) *ᵥ x) a ∈ (1 : Submodule (𝓞 K) K))
@@ -84,6 +105,13 @@ end Main
 
 section Mono
 
+/- English proof (translation)
+Unfold `fockN Formalism.GradedWeylDivisibility.fockQ`. Rewrite using `[support_map_of_injective _ (algebraMap ℚ ℂ).injective]`. Use `push_cast`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, mfact]`.
+
+Establish `: ‖(algebraMap ℚ ℂ) (coeff m P)‖ ^ 2 = ((coeff m P : ℚ) : ℝ) * ((coeff m P : ℚ) : ℝ)`. Rewrite using `[eq_ratCast, Complex.norm_ratCast, sq_abs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem fock_norm_rational_eq {σ : Type} (P : MvPolynomial σ ℚ) : fockN (map (algebraMap ℚ ℂ) P) = ((Formalism.GradedWeylDivisibility.fockQ P P : ℚ) : ℝ) := by
   unfold fockN Formalism.GradedWeylDivisibility.fockQ
   rw [support_map_of_injective _ (algebraMap ℚ ℂ).injective]
@@ -97,6 +125,11 @@ theorem fock_norm_rational_eq {σ : Type} (P : MvPolynomial σ ℚ) : fockN (map
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Formalism.L2.DIV.map_extremal (algebraMap ℚ ℂ) (κ + 1) lam, fock_norm_rational_eq]`. Establish `h` using `hC κ lam.natW (natural_weight_antitone lam)`. Establish `h' : ((Formalism.GradedWeylDivisibility.fockQ (extremal ℚ (κ + 1) lam) (extremal ℚ (κ + 1) lam) : ℚ) : ℝ) ≤ (((((∏ i, (lam.natW i).factorial : ℕ) : ℚ) * ((lam.natW 0 + κ + 1 : ℕ) : ℚ) ^ ((κ + 1) * κ / 2) : ℚ)) : ℝ)`. Conclude with `h` after adjusting the coercions. Use `h'.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem fock_norm_extremal_bound (hC : HwNormBound) {κ : ℕ} (lam : DomWeight (κ + 1)) :
     fockN (extremal ℂ (κ + 1) lam) ≤
       (∏ i, ((lam.natW i).factorial : ℝ)) * ((lam.natW 0 : ℝ) + κ + 1) ^ ((κ + 1) * κ / 2) := by
@@ -111,6 +144,11 @@ theorem fock_norm_extremal_bound (hC : HwNormBound) {κ : ℕ} (lam : DomWeight 
 
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Unfold `mfact`. Rewrite using `[Finset.prod_subset (Finset.subset_univ m.support) (by`. Introduce `k _ hk`. Rewrite using `[Finsupp.notMem_support_iff.1 hk, Nat.factorial_zero]), Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.prod_prod_type, Finset.prod_comm]`.
+-/
 theorem multi_factorial_eq_triple_prod (m : (ι × Fin n × Fin n) →₀ ℕ) : mfact m = ∏ τ : ι, ∏ s : Fin n, ∏ a : Fin n, (m (τ, a, s)).factorial := by
   unfold mfact
   rw [Finset.prod_subset (Finset.subset_univ m.support) (by
@@ -119,6 +157,11 @@ theorem multi_factorial_eq_triple_prod (m : (ι × Fin n × Fin n) →₀ ℕ) :
   refine Finset.prod_congr rfl fun τ _ => ?_
   rw [Fintype.prod_prod_type, Finset.prod_comm]
 
+/- English proof (translation)
+Rewrite using `[multi_factorial_eq_triple_prod, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod' fun τ _ => ?_` and prove the remaining obligations. Unfold `dW`. Rewrite using `[← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod' fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← m.2 τ s]`. Conclude with `factorial_sum_le_pow_mul_prod fun a => m.1 (τ, a, s)`.
+-/
 theorem factorial_prod_le_monomial (lam : ι → DomWeight n) (m : MonI lam) :
     ∏ τ, ∏ s, ((lam τ).natW s).factorial ≤ n ^ (∑ τ, dW (lam τ)) * mfact m.1 := by
   rw [multi_factorial_eq_triple_prod, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]
@@ -132,12 +175,22 @@ theorem factorial_prod_le_monomial (lam : ι → DomWeight n) (m : MonI lam) :
 def monC {κ : ℕ} (lam : ι → DomWeight (κ + 1)) : ℝ :=
   (((κ : ℝ) + 1) ^ (∑ τ, dW (lam τ)) * ∏ τ, (((lam τ).natW 0 : ℝ) + κ + 1) ^ ((κ + 1) * κ / 2))⁻¹
 
+/- English proof (translation)
+Unfold `monC`. Establish `: ∀ τ, (0 : ℝ) < (((lam τ).natW 0 : ℝ) + κ + 1) ^ ((κ + 1) * κ / 2)` using `fun τ => by positivity`. Establish `h2` using `Finset.prod_pos fun τ (_ : τ ∈ Finset.univ) => this τ`. Check the signs of the components of the expression.
+-/
 theorem monC_pos {κ : ℕ} (lam : ι → DomWeight (κ + 1)) : 0 < monC lam := by
   unfold monC
   have : ∀ τ, (0 : ℝ) < (((lam τ).natW 0 : ℝ) + κ + 1) ^ ((κ + 1) * κ / 2) := fun τ => by positivity
   have h2 := Finset.prod_pos fun τ (_ : τ ∈ Finset.univ) => this τ
   positivity
 
+/- English proof (translation)
+Unfold `monC monW`. Establish `hE : extremalFockNormProduct lam ≤ (∏ τ, ∏ s, (((lam τ).natW s).factorial : ℝ)) * ∏ τ, (((lam τ).natW 0 : ℝ) + κ + 1) ^ ((κ + 1) * κ / 2)`. Unfold `extremalFockNormProduct`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod (fun τ _ => fockN_nonneg _) fun τ _ => fock_norm_extremal_bound hC (lam τ)`.
+
+Establish `hM : (∏ τ, ∏ s, (((lam τ).natW s).factorial : ℝ)) ≤ ((κ : ℝ) + 1) ^ (∑ τ, dW (lam τ)) * (mfact m.1 : ℝ)`. Conclude with `factorial_prod_le_monomial lam m` after adjusting the coercions. Establish `hP : 0 < ∏ τ, (((lam τ).natW 0 : ℝ) + κ + 1) ^ ((κ + 1) * κ / 2)` using `Finset.prod_pos fun τ _ => by positivity`. Establish `hk : (0 : ℝ) < ((κ : ℝ) + 1) ^ (∑ τ, dW (lam τ))` using `by positivity`. Rewrite using `[inv_eq_one_div, div_le_div_iff₀ (mul_pos hk hP) (extR_pos lam), one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem monomial_weight_lower_bound (hC : HwNormBound) {κ : ℕ} (lam : ι → DomWeight (κ + 1)) (m : MonI lam) : monC lam ≤ monW lam m := by
   unfold monC monW
   have hE : extremalFockNormProduct lam ≤ (∏ τ, ∏ s, (((lam τ).natW s).factorial : ℝ)) * ∏ τ, (((lam τ).natW 0 : ℝ) + κ + 1) ^ ((κ + 1) * κ / 2) := by
@@ -155,6 +208,11 @@ theorem monomial_weight_lower_bound (hC : HwNormBound) {κ : ℕ} (lam : ι → 
         mul_le_mul_of_nonneg_right hM hP.le
     _ = _ := by ring
 
+/- English proof (translation)
+Unfold `monC`. Establish `hP : 0 < ∏ τ, (((lam τ).natW 0 : ℝ) + κ + 1) ^ ((κ + 1) * κ / 2)` using `Finset.prod_pos fun τ _ => by positivity`. Establish `hk : (0 : ℝ) < ((κ : ℝ) + 1) ^ (∑ τ, dW (lam τ))` using `by positivity`. Rewrite using `[Real.log_inv, neg_neg, Real.log_mul hk.ne' hP.ne', Real.log_pow, Real.log_prod (fun τ _ => by positivity), Finset.sum_add_distrib, Nat.cast_sum, Finset.sum_mul]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow, triangular_number_cast]`.
+-/
 theorem neg_log_monomial_constant {κ : ℕ} (lam : ι → DomWeight (κ + 1)) :
     -Real.log (monC lam) = ∑ τ, ((dW (lam τ) : ℝ) * Real.log ((κ : ℝ) + 1)
       + ((κ : ℝ) + 1) * (κ : ℝ) / 2 * Real.log (((lam τ).natW 0 : ℝ) + κ + 1)) := by
@@ -176,6 +234,9 @@ open Formalism.HermitianLattices.TraceIntegrality
 
 variable (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Unfold `dW wt`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `natural_weight_cast_eq lam i` after adjusting the coercions.
+-/
 theorem degree_weight_cast_eq {n κ : ℕ} (h : κ + 1 = n) (lam : DomWeight n) : (dW lam : ℝ) = (wt (plus (castW h lam)) : ℝ) := by
   subst h
   unfold dW wt
@@ -183,12 +244,20 @@ theorem degree_weight_cast_eq {n κ : ℕ} (h : κ + 1 = n) (lam : DomWeight n) 
   refine Finset.sum_congr rfl fun i _ => ?_
   exact_mod_cast natural_weight_cast_eq lam i
 
+/- English proof (translation)
+Substitute `h` using the available equality. Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (Nat.succ_pos κ)]`. Both sides reduce to the same expression.
+-/
 theorem det_shift_eq_last_weight {n κ : ℕ} (h : κ + 1 = n) (lam : DomWeight n) : lam.detShift = castW h lam (Fin.last κ) := by
   subst h
   unfold DomWeight.detShift
   rw [dif_pos (Nat.succ_pos κ)]
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `h1` using `max_slope_twisted_lattice K lam hS M hM g hg hpos I hI0 hI (monC lam) (monC_pos lam) (monomial_weight_lower_bound hC lam)`. Rewrite `h1` using `[neg_log_monomial_constant]`. Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Establish `e : ∀ τ, (((lam τ).natW 0 : ℕ) : ℝ) = (plus (castW rfl (lam τ)) 0 : ℝ)` using `fun τ => by`.
+
+Conclude with `natural_weight_cast_eq (lam τ) 0` after adjusting the coercions. Simplify using `only [e, degree_weight_cast_eq rfl]`. Rewrite using `[sub_add_eq_add_sub, ← Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun τ _ => by ring`.
+-/
 theorem max_slope_twisted_general (hS : FockSubNorm) (hC : HwNormBound) {n κ : ℕ} (h : κ + 1 = n) (lam : ι → DomWeight n)
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) (g : ι → GL (Fin n) K)
     (hg : ∀ τ, ∀ x ∈ M τ, ∀ a, ((g τ : Matrix (Fin n) (Fin n) K) *ᵥ x) a ∈ (1 : Submodule (𝓞 K) K))

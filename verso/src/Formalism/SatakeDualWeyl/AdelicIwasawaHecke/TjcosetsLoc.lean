@@ -13,6 +13,15 @@ section Loc
 
 variable {L : Type} [Field L]
 
+/- English proof (translation)
+Establish `key : ∀ x : G ⧸ K, (∃ a ∈ K, ∃ b ∈ K, x.out = a * d * b) ↔ x ∈ MulAction.orbit K (QuotientGroup.mk d : G ⧸ K)`. Introduce `x`. Rewrite using `[MulAction.mem_orbit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, h⟩`.
+
+Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Establish `hx : x = QuotientGroup.mk x.out` using `(QuotientGroup.out_eq' x).symm`. Rewrite using `[hx, h]`. Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (a * d) : G ⧸ K) = QuotientGroup.mk (a * d * b)`. Rewrite using `[QuotientGroup.eq]`.
+
+Simplify `hb` using `[mul_assoc]`. Introduce and unpack `⟨⟨a, ha⟩, h⟩`. Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (a * d) : G ⧸ K) = x at h`. Establish `h2 : (QuotientGroup.mk (a * d) : G ⧸ K) = QuotientGroup.mk x.out`. Rewrite using `[h, QuotientGroup.out_eq']`.
+
+Rewrite `h2` using `[QuotientGroup.eq]`. Conclude with `⟨a, ha, (a * d)⁻¹ * x.out, h2, by rw [← mul_assoc, mul_inv_cancel, one_mul]⟩`. Conclude with `Nat.card_congr ((Equiv.subtypeEquivRight key).trans (MulAction.orbitEquivQuotientStabilizer K (QuotientGroup.mk d : G ⧸ K)))`.
+-/
 theorem tjcosets_card_orbit {G : Type} [Group G] (K : Subgroup G) (d : G) :
     Nat.card {x : G ⧸ K // ∃ a ∈ K, ∃ b ∈ K, x.out = a * d * b} =
       (MulAction.stabilizer K (QuotientGroup.mk d : G ⧸ K)).index := by
@@ -37,6 +46,9 @@ theorem tjcosets_card_orbit {G : Type} [Group G] (K : Subgroup G) (d : G) :
   exact Nat.card_congr ((Equiv.subtypeEquivRight key).trans
     (MulAction.orbitEquivQuotientStabilizer K (QuotientGroup.mk d : G ⧸ K)))
 
+/- English proof (translation)
+Introduce `g h hgh`. Use `Units.ext (Matrix.ext fun a b => Subtype.ext ?_)` and prove the remaining obligations. Use `congrArg (fun u : GL (Fin n) L => (u : Matrix (Fin n) (Fin n) L) a b) hgh` as an intermediate fact. Conclude with `this`.
+-/
 theorem tjcosets_bc_injective (n : ℕ) (O : Subring L) :
     Function.Injective (bc (n := Fin n) O.subtype) := by
   intro g h hgh
@@ -44,6 +56,9 @@ theorem tjcosets_bc_injective (n : ℕ) (O : Subring L) :
   have := congrArg (fun u : GL (Fin n) L => (u : Matrix (Fin n) (Fin n) L) a b) hgh
   exact this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tjcosets_bc_apply {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (n : ℕ)
     (g : GL (Fin n) A) (a b : Fin n) :
     ((bc (n := Fin n) φ g : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) a b = φ ((g : Matrix (Fin n) (Fin n) A) a b) := by
@@ -52,6 +67,9 @@ theorem tjcosets_bc_apply {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B
 def tjcosets_iso (n : ℕ) (O : Subring L) : GL (Fin n) O ≃* GLint (Fin n) O :=
   MonoidHom.ofInjective (tjcosets_bc_injective n O)
 
+/- English proof (translation)
+Conclude with `MonoidHom.ofInjective_apply (tjcosets_bc_injective n O)`.
+-/
 theorem tjcosets_iso_coe (n : ℕ) (O : Subring L) (g : GL (Fin n) O) :
     ((tjcosets_iso n O g : GLint (Fin n) O) : GL (Fin n) L) = bc O.subtype g := by
   exact MonoidHom.ofInjective_apply (tjcosets_bc_injective n O)
@@ -61,11 +79,25 @@ variable (O : Subring L) [IsLocalRing O]
 def tjcosets_red (n : ℕ) : GLint (Fin n) O →* GL (Fin n) (IsLocalRing.ResidueField O) :=
   (bc (IsLocalRing.residue O)).comp (tjcosets_iso n O).symm.toMonoidHom
 
+/- English proof (translation)
+Use `show bc _ ((tjcosets_iso n O).symm (tjcosets_iso n O g)) = _`. Rewrite using `[MulEquiv.symm_apply_apply]`.
+-/
 theorem tjcosets_red_iso (n : ℕ) (g : GL (Fin n) O) :
     tjcosets_red O n (tjcosets_iso n O g) = bc (IsLocalRing.residue O) g := by
   show bc _ ((tjcosets_iso n O).symm (tjcosets_iso n O g)) = _
   rw [MulEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `g`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M : Matrix (Fin n) (Fin n) O, M.map (IsLocalRing.residue O) = g.1 := by`. Use `⟨fun a b => (IsLocalRing.residue_surjective (g.1 a b)).choose, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Conclude with `(IsLocalRing.residue_surjective (g.1 a b)).choose_spec`.
+
+Establish `hdet : IsUnit M.det`. Establish `h1 : IsLocalRing.residue O M.det = g.1.det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hM]`. Establish `hu : IsUnit g.1.det`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Conclude with `Units.isUnit _`. Assume the negation of the conclusion as `hne`. Establish `h0 : IsLocalRing.residue O M.det = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 ((IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 hne))`. Rewrite `h0` using `[h1]`. Conclude with `hu.ne_zero h0`.
+
+Use `⟨tjcosets_iso n O (Matrix.GeneralLinearGroup.mk'' M hdet), ?_⟩` and prove the remaining obligations. Rewrite using `[tjcosets_red_iso]`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Rewrite using `[tjcosets_bc_apply]`. Use `show IsLocalRing.residue O (M a b) = _`.
+
+Rewrite using `[← hM]`. Both sides reduce to the same expression.
+-/
 theorem tjcosets_red_surjective (n : ℕ) : Function.Surjective (tjcosets_red O n) := by
   intro g
   obtain ⟨M, hM⟩ : ∃ M : Matrix (Fin n) (Fin n) O,
@@ -102,9 +134,15 @@ def tjcosets_dG (n j : ℕ) (ϖ : L) (hϖ : ϖ ≠ 0) : GL (Fin n) L :=
     rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
     congr 1; funext i; split_ifs <;> simp [hϖ]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tjcosets_dG_val (n j : ℕ) (ϖ : L) (hϖ : ϖ ≠ 0) :
     ((tjcosets_dG n j ϖ hϖ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = diagJ n ϖ j := rfl
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.val_mul]`. Establish `hinv : (((tjcosets_dG n j ϖ hϖ)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = diagJ n ϖ⁻¹ j` using `rfl`. Rewrite using `[hinv, tjcosets_dG_val]`. Unfold `diagJ`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+-/
 theorem tjcosets_conj_apply (n j : ℕ) (ϖ : L) (hϖ : ϖ ≠ 0) (g : GL (Fin n) L) (a b : Fin n) :
     (((tjcosets_dG n j ϖ hϖ)⁻¹ * g * tjcosets_dG n j ϖ hϖ : GL (Fin n) L) :
         Matrix (Fin n) (Fin n) L) a b =
@@ -116,6 +154,17 @@ theorem tjcosets_conj_apply (n j : ℕ) (ϖ : L) (hϖ : ϖ ≠ 0) (g : GL (Fin n
   unfold diagJ
   simp only [Matrix.diagonal_mul, Matrix.mul_diagonal]
 
+/- English proof (translation)
+Unfold `GLint`. Rewrite using `[MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+
+Conclude with `((g : Matrix (Fin n) (Fin n) O) a b).2`. Rewrite using `[← map_inv]`. Conclude with `(((g⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) a b).2`. Introduce and unpack `⟨h1, h2⟩`. Set `M : Matrix (Fin n) (Fin n) O` to `fun a b => ⟨(U : Matrix (Fin n) (Fin n) L) a b, h1 a b⟩`.
+
+Set `N : Matrix (Fin n) (Fin n) O` to `fun a b => ⟨((U⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a b, h2 a b⟩`. Establish `hM : M.map O.subtype = (U : Matrix (Fin n) (Fin n) L)` using `by ext a b; rfl`. Establish `hN : N.map O.subtype = ((U⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)` using `by ext a b; rfl`. Establish `inj : Function.Injective (fun P : Matrix (Fin n) (Fin n) O => P.map O.subtype)` using `fun P Q h => by ext a b; exact congrFun (congrFun h a) b`. Establish `hMN : M * N = 1` using `inj (by show (M * N).map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`.
+
+Rewrite using `[Matrix.map_mul, hM, hN, U.mul_inv]`. Conclude with `(map_one (RingHom.mapMatrix O.subtype)).symm)`. Establish `hNM : N * M = 1` using `inj (by show (N * M).map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`. Rewrite using `[Matrix.map_mul, hM, hN, U.inv_mul]`. Conclude with `(map_one (RingHom.mapMatrix O.subtype)).symm)`.
+
+Conclude with `⟨⟨M, N, hMN, hNM⟩, Units.ext hM⟩`.
+-/
 theorem tjcosets_mem_K_iff (n : ℕ) (U : GL (Fin n) L) :
     U ∈ GLint (Fin n) O ↔ (∀ a b, (U : Matrix (Fin n) (Fin n) L) a b ∈ O) ∧
       (∀ a b, ((U⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a b ∈ O) := by
@@ -145,6 +194,15 @@ theorem tjcosets_mem_K_iff (n : ℕ) (U : GL (Fin n) L) :
       exact (map_one (RingHom.mapMatrix O.subtype)).symm)
     exact ⟨⟨M, N, hMN, hNM⟩, Units.ext hM⟩
 
+/- English proof (translation)
+Rewrite using `[tjcosets_mem_par]`. Prove the components needed by the constructor for the conclusion. Introduce `hall a b ha hb`. Establish `h1` using `hall a b`. Rewrite `h1` using `[if_pos ha, if_neg (not_lt.2 hb), mul_one]`.
+
+Rewrite using `[tjcosets_bc_apply]`. Conclude with `(hmax _).1 h1`. Introduce `hpar a b`. Apply the tactic sequence `by_cases ha : (a : ℕ) < j <;> by_cases hb : (b : ℕ) < j`. Rewrite using `[if_pos ha, if_pos hb, mul_comm ϖ⁻¹, mul_assoc, inv_mul_cancel₀ hϖ, mul_one]`.
+
+Conclude with `((h : Matrix (Fin n) (Fin n) O) a b).2`. Rewrite using `[if_pos ha, if_neg hb, mul_one]`. Apply `(hmax _).2` to reduce the goal to its premises. Use `hpar a b ha (not_lt.1 hb)` as an intermediate fact. Rewrite `this` using `[tjcosets_bc_apply]`.
+
+Conclude with `this`. Rewrite using `[if_neg ha, if_pos hb, one_mul]`. Conclude with `O.mul_mem ((h : Matrix (Fin n) (Fin n) O) a b).2 hϖO`. Rewrite using `[if_neg ha, if_neg hb, one_mul, mul_one]`. Conclude with `((h : Matrix (Fin n) (Fin n) O) a b).2`.
+-/
 theorem tjcosets_entries (n j : ℕ) (ϖ : L) (hϖ : ϖ ≠ 0)
     (hmax : ∀ x : O, ϖ⁻¹ * (x : L) ∈ O ↔ IsLocalRing.residue O x = 0)
     [Finite (IsLocalRing.ResidueField O)] (h : GL (Fin n) O) (hϖO : ϖ ∈ O) :
@@ -172,6 +230,19 @@ theorem tjcosets_entries (n j : ℕ) (ϖ : L) (hϖ : ϖ ≠ 0)
     · rw [if_neg ha, if_neg hb, one_mul, mul_one]
       exact ((h : Matrix (Fin n) (Fin n) O) a b).2
 
+/- English proof (translation)
+Use extensionality with `g`. Take `⟨h, rfl⟩` from `(tjcosets_iso n O).surjective g`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_comap, tjcosets_red_iso]`. Establish `e1 : (tjcosets_iso n O h) • (QuotientGroup.mk (tjcosets_dG n j ϖ hϖ) : GL (Fin n) L ⧸ GLint (Fin n) O) = QuotientGroup.mk (bc O.subtype h * tjcosets_dG n j ϖ hϖ)` using `by show (QuotientGroup.mk (((tjcosets_iso n O h : GLint (Fin n) O) : GL (Fin n) L) * tjcosets_dG n j ϖ hϖ) : GL (Fin n) L ⧸ GLint (Fin n) O) = _`. Rewrite using `[tjcosets_iso_coe]`.
+
+Rewrite using `[e1, QuotientGroup.eq]`. Establish `e2 : (bc O.subtype h * tjcosets_dG n j ϖ hϖ)⁻¹ * tjcosets_dG n j ϖ hϖ = (tjcosets_dG n j ϖ hϖ)⁻¹ * bc O.subtype h⁻¹ * tjcosets_dG n j ϖ hϖ`. Rewrite using `[map_inv]`. Use `group`. Establish `e3 : ((tjcosets_dG n j ϖ hϖ)⁻¹ * bc O.subtype h⁻¹ * tjcosets_dG n j ϖ hϖ)⁻¹ = (tjcosets_dG n j ϖ hϖ)⁻¹ * bc O.subtype h * tjcosets_dG n j ϖ hϖ`.
+
+Rewrite using `[map_inv]`. Use `group`. Rewrite using `[e2, tjcosets_mem_K_iff, e3]`. Establish `E1` using `tjcosets_entries n j ϖ hϖ hmax h⁻¹ hϖO`. Establish `E2` using `tjcosets_entries n j ϖ hϖ hmax h hϖO`.
+
+Rewrite `E1` using `[map_inv, inv_mem_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h2⟩`. Use `E2.1 (fun a b => ?_)` and prove the remaining obligations. Establish `h3` using `h2 a b`.
+
+Rewrite `h3` using `[tjcosets_conj_apply, tjcosets_bc_apply]`. Conclude with `h3`. Introduce `hp`. Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Establish `h3` using `E1.2 hp a b`.
+
+Rewrite using `[tjcosets_conj_apply, tjcosets_bc_apply]`. Conclude with `h3`. Establish `h3` using `E2.2 hp a b`. Rewrite using `[tjcosets_conj_apply, tjcosets_bc_apply]`. Conclude with `h3`.
+-/
 theorem tjcosets_stab (n j : ℕ) (ϖ : L) (hϖO : ϖ ∈ O) (hϖ : ϖ ≠ 0)
     (hmax : ∀ x : O, ϖ⁻¹ * (x : L) ∈ O ↔ IsLocalRing.residue O x = 0)
     [Finite (IsLocalRing.ResidueField O)] :
@@ -212,6 +283,9 @@ theorem tjcosets_stab (n j : ℕ) (ϖ : L) (hϖO : ϖ ∈ O) (hϖ : ϖ ≠ 0)
       rw [tjcosets_conj_apply, tjcosets_bc_apply]
       exact h3
 
+/- English proof (translation)
+Rewrite using `[tjcosets_card_orbit, tjcosets_stab n j ϖ hϖO hϖ hmax]`. Conclude with `Subgroup.index_comap_of_surjective _ (tjcosets_red_surjective O n)`.
+-/
 theorem tjcosets_index (n j : ℕ) (ϖ : L) (hϖO : ϖ ∈ O) (hϖ : ϖ ≠ 0)
     (hmax : ∀ x : O, ϖ⁻¹ * (x : L) ∈ O ↔ IsLocalRing.residue O x = 0)
     [Finite (IsLocalRing.ResidueField O)] :

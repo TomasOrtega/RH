@@ -11,5 +11,8 @@ open scoped Classical
 open GlobalTheory.CovTestDR GlobalTheory.VdmRec GlobalTheory.MetFam GlobalTheory.ShFam GlobalTheory.Toroidal GlobalTheory.CxPts
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MetFam.sum_mult_eq_relDim | exact GlobalTheory.MetFam.sum_mult_eq_relDim | (intros; apply GlobalTheory.MetFam.sum_mult_eq_relDim <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eigen_frame_multiplicity_sum : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (T : Scheme.{0}) (b : T ⟶ s.T.Z.X) (Q : Out.PolAV T) (θ : Q.A.left ⟶ s.T.Z.t.G.left), IsGrpPullback Q.A s.T.Z.t.G b θ → ∀ (σ' : κ.c.F →+* ℂ) (y₀ : Sp ℂ ⟶ T), EigFrame s.T.Z σ' (y₀ ≫ b) → ∑ τ : D.host.E →+* ℂ, S.Dw.mult τ = Q.g := by
   first | exact @GlobalTheory.MetFam.sum_mult_eq_relDim | exact GlobalTheory.MetFam.sum_mult_eq_relDim | (intros; apply GlobalTheory.MetFam.sum_mult_eq_relDim <;> assumption)

@@ -2,6 +2,23 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `⟨Real.exp a * ((D + 1).factorial : ℝ) / a ^ (D + 1), fun m => ?_⟩` and prove the remaining obligations. Use `set s : ℝ := (m : ℝ) + 1 with hs`. Establish `hs1 : 1 ≤ s` using `by rw [hs]; have := m.cast_nonneg (α := ℝ); linarith`. Establish `hs0 : 0 < s` using `by linarith`. Use `set x : ℝ := s ^ (-(1 / 2 : ℝ)) with hxdef`.
+
+Establish `hx0 : 0 < x` using `Real.rpow_pos_of_pos hs0 _`. Establish `hx1 : x ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hs1 (by norm_num)`. Establish `hx2 : x ^ 2 * s = 1`. Rewrite using `[hxdef, ← Real.rpow_natCast, ← Real.rpow_mul hs0.le]`. Evaluate the numerical expressions.
+
+Rewrite using `[Real.rpow_neg_one]`. Clear the denominators using the available nonvanishing facts. Establish `hmx : (m : ℝ) * x = x⁻¹ - x`. Establish `: (m : ℝ) = s - 1` using `by rw [hs]; ring`. Rewrite using `[this]`.
+
+Clear the denominators using the available nonvanishing facts. Use polynomial arithmetic with `[hx2]`. Use `set n := D + 1 with hn`. Establish `hK : 0 < Real.exp a * (n.factorial : ℝ) / a ^ n` using `by positivity`. Establish `hpow` using `Real.pow_div_factorial_le_exp (a / x) (by positivity) n`.
+
+Establish `hexp : Real.exp (-(a * m * x)) * Real.exp (a / x) ≤ Real.exp a`. Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `: a * m * x = a * (x⁻¹ - x)` using `by rw [mul_assoc, hmx]`. Rewrite using `[this, div_eq_mul_inv]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hfac : (0 : ℝ) < n.factorial` using `by positivity`. Establish `h1 : Real.exp (-(a * m * x)) * ((a / x) ^ n / n.factorial) ≤ Real.exp a` using `le_trans (mul_le_mul_of_nonneg_left hpow (Real.exp_pos _).le) hexp`. Establish `h2 : Real.exp (-(a * m * x)) / x ^ D ≤ Real.exp a * (n.factorial : ℝ) / a ^ n * x`. Rewrite using `[div_le_iff₀ (by positivity)]`.
+
+Rewrite `h1` using `[div_pow, div_div, mul_div_assoc', div_le_iff₀ (by positivity)]`. Establish `e : Real.exp a * (n.factorial : ℝ) / a ^ n * x * x ^ D = Real.exp a * (x ^ n * n.factorial) / a ^ n`. Rewrite using `[hn, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, le_div_iff₀ (by positivity)]`.
+
+Use polynomial arithmetic with `[h1]`. Establish `hxs : x ≤ Real.sqrt x`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exp_neg_mul_sqrt_div_pow_le (a : ℝ) (D : ℕ) (ha : 0 < a) :
     ∃ C : ℝ, ∀ m : ℕ, Real.exp (-(a * m * ((m : ℝ) + 1) ^ (-(1 / 2 : ℝ)))) /
       (((m : ℝ) + 1) ^ (-(1 / 2 : ℝ))) ^ D ≤ C * Real.sqrt (((m : ℝ) + 1) ^ (-(1 / 2 : ℝ))) := by

@@ -11,14 +11,29 @@ open MeasureTheory NumberField Set
 open scoped InnerProductSpace ENNReal
 open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData Formalism.MainNotions.BridgeLemma
 
+/- English proof (translation)
+Establish `h : Countable (rr_GF X.I)` using `inferInstance`. Conclude with `(Set.countable_coe_iff (s := X.I.GFset)).1 h`.
+-/
 theorem cu_countGF (X : CData) : cu.CountGF X := by
   have h : Countable (rr_GF X.I) := inferInstance
   exact (Set.countable_coe_iff (s := X.I.GFset)).1 h
 
+/- English proof (translation)
+Establish `: SecondCountableTopology X.I.Gf` using `rr_secondCountable X.I X.μf`. Conclude with `measurable_fst.mul measurable_snd`.
+-/
 theorem cu_measMul (X : CData) (hH : X.μf.IsHaarMeasure) : cu.MeasMul X := by
   have : SecondCountableTopology X.I.Gf := rr_secondCountable X.I X.μf
   exact measurable_fst.mul measurable_snd
 
+/- English proof (translation)
+Introduce `T _ _ Fv _`. Take `⟨hH, hF, -⟩` from `hd`. Establish `: (X.I.muA X.μf).IsMulLeftInvariant` using `rr_muA_left X.I X.μf`. Establish `hfd` using `rr_FD_of X.I X.μf X.fund hF`. Use `⟨fun z => if z ∈ rr_N (rr_GF X.I) X.fund then 0 else X.I.ext Fv z, fun γ hγ y => ?_, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y ∈ rr_N (rr_GF X.I) X.fund`. Establish `h2 : γ * y ∈ rr_N (rr_GF X.I) X.fund`. Assume the negation of the conclusion as `hcon`. Use `rr_N_smul (Γ := rr_GF X.I) (D := X.fund) ((rr_GF X.I).inv_mem hγ) hcon` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`.
+
+Conclude with `this hy`. Simplify using `only [hy, h2, if_true]`. Establish `h2 : γ * y ∉ rr_N (rr_GF X.I) X.fund` using `rr_N_smul (Γ := rr_GF X.I) hγ hy`. Simplify using `only [hy, h2, if_false]`. Use `show (Fv : X.I.GA → ℂ) (rr_rep X.I.GFset X.fund (γ * y)) = (Fv : X.I.GA → ℂ) (rr_rep X.I.GFset X.fund y)`.
+
+Rewrite using `[show rr_rep X.I.GFset X.fund (γ * y) = rr_rep X.I.GFset X.fund y from rr_rep_smul hfd hγ hy]`. Establish `hN : cu_mu X (rr_N (rr_GF X.I) X.fund) = 0` using `rr_N_null hfd filter_upwards [compl_mem_ae_iff.2 hN] with z hz`. Establish `hz' : z ∉ rr_N (rr_GF X.I) X.fund` using `hz`. Simplify using `only [hz', if_false]`.
+-/
 theorem cu_extInv (X : CData) (hd : RegData X) : cu.ExtInv X := by
   classical
   intro T _ _ Fv _
@@ -42,6 +57,13 @@ theorem cu_extInv (X : CData) (hd : RegData X) : cu.ExtInv X := by
     have hz' : z ∉ rr_N (rr_GF X.I) X.fund := hz
     simp only [hz', if_false]
 
+/- English proof (translation)
+Introduce `T _ _ Fv _`. Take `⟨hH, hF, -⟩` from `hd`. Establish `: (X.I.muA X.μf).IsMulLeftInvariant` using `rr_muA_left X.I X.μf`. Establish `hfd` using `rr_FD_of X.I X.μf X.fund hF`. Take `⟨r, hrm, hr⟩` from `rr_exists_meas_rep hfd`.
+
+Establish `hN : cu_mu X (rr_N (rr_GF X.I) X.fund) = 0` using `rr_N_null hfd`. Use `(((Lp.stronglyMeasurable Fv).comp_measurable hrm).aestronglyMeasurable).congr ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.2 hN] with z hz`. Take `⟨γ, h1, h2, h3⟩` from `hr z`. Use `show (Fv : X.I.GA → ℂ) (r z) = (Fv : X.I.GA → ℂ) (rr_rep X.I.GFset X.fund z)`.
+
+Rewrite using `[h2, show rr_rep X.I.GFset X.fund z = γ * z from rr_rep_eq hfd hz h1 h3]`.
+-/
 theorem cu_extMeas (X : CData) (hd : RegData X) : cu.ExtMeas X := by
   intro T _ _ Fv _
   obtain ⟨hH, hF, -⟩ := hd
@@ -55,6 +77,23 @@ theorem cu_extMeas (X : CData) (hd : RegData X) : cu.ExtMeas X := by
   show (Fv : X.I.GA → ℂ) (r z) = (Fv : X.I.GA → ℂ) (rr_rep X.I.GFset X.fund z)
   rw [h2, show rr_rep X.I.GFset X.fund z = γ * z from rr_rep_eq hfd hz h1 h3]
 
+/- English proof (translation)
+Introduce `T hT hP Fv hFv`. Take `⟨hH, hF, hR⟩` from `hd`. Establish `: SecondCountableTopology X.I.Gf` using `rr_secondCountable X.I X.μf`. Establish `hL : (X.I.muA X.μf).IsMulLeftInvariant` using `rr_muA_left X.I X.μf`. Establish `: (X.I.muA X.μf).IsMulRightInvariant` using `hu`.
+
+Establish `: SigmaFinite (X.I.muA X.μf)` using `rr_muA_sigmaFinite X.I X.μf`. Establish `hfd` using `rr_FD_of X.I X.μf X.fund hF`. Take `⟨r, hrm, hr⟩` from `rr_exists_meas_rep hfd`. Establish `hTF : T Fv = Fv`. Take `⟨u, rfl⟩` from `hFv`.
+
+Establish `h2 : T * T = T` using `hP.isIdempotentElem`. Conclude with `congrArg (fun S : X.L2 →L[ℂ] X.L2 => S u) h2`. Establish `h1` using `rrkb_step1 hfd hφm hrm hr (rr_IsReg_of X.I X.μf X.fund X.R hR) T hT.1 hT.2 Fv`. Rewrite `h1` using `[hTF]`. Establish `hZ : X.μ {x | ¬ (Fv : X.I.GA → ℂ) x = ∫ g, X.φ g * (Fv : X.I.GA → ℂ) (r (x * g)) ∂(X.I.muA X.μf)} = 0` using `ae_iff.1 h1`.
+
+Establish `hN : cu_mu X (rr_N (rr_GF X.I) X.fund) = 0` using `rr_N_null hfd`. Use `filter_upwards [cu_rep_avoid X hL (cu_countGF X) hF _ hZ] with z hz`. Establish `hz' : (Fv : X.I.GA → ℂ) (X.I.rep X.fund z) = ∫ g, X.φ g * (Fv : X.I.GA → ℂ) (r (X.I.rep X.fund z * g)) ∂(X.I.muA X.μf)`. Assume the negation of the conclusion as `hcon`. Conclude with `hz hcon`.
+
+Use `show (Fv : X.I.GA → ℂ) (X.I.rep X.fund z) = _`. Rewrite using `[hz']`. Take `⟨γ, g1, g2, -⟩` from `rr_rep_spec hfd z`. Establish `hNz : cu_mu X ((fun g => z * g) ⁻¹' rr_N (rr_GF X.I) X.fund) = 0`. Rewrite using `[measure_preimage_mul]`.
+
+Conclude with `hN`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.2 hNz] with g hg`. Establish `hg' : z * g ∉ rr_N (rr_GF X.I) X.fund` using `hg`. Establish `e1 : X.I.rep X.fund z = γ * z` using `g2`.
+
+Take `⟨γ', k1, k2, k3⟩` from `hr (X.I.rep X.fund z * g)`. Establish `e2 : r (X.I.rep X.fund z * g) = rr_rep X.I.GFset X.fund (z * g)`. Rewrite using `[k2, e1]`. Establish `k3' : (γ' * γ) * (z * g) ∈ X.fund`. Rewrite `k3` using `[e1]`.
+
+Simplify `k3` using `[mul_assoc]`. Rewrite using `[show rr_rep X.I.GFset X.fund (z * g) = (γ' * γ) * (z * g) from rr_rep_eq hfd hg' ((rr_GF X.I).mul_mem k1 g1) k3']`. Simplify using `only [mul_assoc]`. Rewrite using `[e2, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem cu_reproAE (X : CData) (hd : RegData X) (hu : UnimodA X) (hφm : Measurable X.φ) : cu.ReproAE X := by
   intro T hT hP Fv hFv
   obtain ⟨hH, hF, hR⟩ := hd
@@ -102,6 +141,9 @@ theorem cu_reproAE (X : CData) (hd : RegData X) (hu : UnimodA X) (hφm : Measura
 def cu.Core (X : CData) : Prop :=
   cu.UnipFine X ∧ cu.HaarGrowth X ∧ cu.SizeStep X ∧ X.KernelDiag ∧ UnimodA X
 
+/- English proof (translation)
+Take `⟨sU, sH, sS, sK, sA⟩` from `h`. Establish `hd` using `RegData_of_HypB X hX`. Conclude with `⟨sU, sH, sS, sK, cu_reproAE X hd sA (rrk_phi_meas X hX), cu_extInv X hd, cu_extMeas X hd, cu_measMul X hd.1, cu_countGF X⟩`.
+-/
 theorem cu_fine_of_core (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (h : cu.Core X) : cu.Fine X := by
   obtain ⟨sU, sH, sS, sK, sA⟩ := h
   have hd := RegData_of_HypB X hX
@@ -111,6 +153,9 @@ theorem cu_fine_of_core (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) 
 def cu_StepsCore (n₀ : ℕ) (A C : ℝ) : Prop :=
   ∀ X : CData, X.HypB n₀ A → X.GapAboveThreeHalvesPower → X.GapAboveSquareRootThreshold C → cu.Core X
 
+/- English proof (translation)
+The claim follows from `cuspidal_range_of_fine_facts X D hdec hn₀ hC hX h1 h2 hE hF (cu_fine_of_core X hX hS)`.
+-/
 theorem cuspidal_range_of_reduced_facts (X : CData) (D : Formalism.BasicNotions.D7) (hdec : DiscreteSeriesDecayBound D) {n₀ : ℕ} {A C : ℝ} (hn₀ : 1 ≤ n₀)
     (hC : 46 ≤ C) (hX : X.HypB n₀ A) (h1 : X.GapAboveThreeHalvesPower) (h2 : X.GapAboveSquareRootThreshold C) (hE : X.LowProj) (hF : cu.FinStep X)
     (hS : cu.Core X) : X.CuspStep :=

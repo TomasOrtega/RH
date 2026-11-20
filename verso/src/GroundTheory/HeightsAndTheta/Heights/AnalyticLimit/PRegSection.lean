@@ -7,6 +7,17 @@ namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot IsPotential IsSection logNormSec)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChartData)
 
+/- English proof (translation)
+Introduce `X _ _ _ D A R`. Take `⟨φ, hφ⟩` from `hMet D A R`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M : ℝ, ∀ y : X, ‖bdSec R y y‖ * Real.exp (-(bdPot R φ 0).φ y y) ≤ M := by`. Take `⟨M, hM⟩` from `(isCompact_univ.image (hNorm D A R φ hφ 0)).bddAbove`. Conclude with `⟨M, fun y => hM ⟨y, Set.mem_univ _, rfl⟩⟩`.
+
+Establish `hM1 : (0 : ℝ) < max M 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Use `set c := Real.log (max M 1) with hc`. Establish `hφc : ∀ y : X, (bdPot R φ c).φ y y = (bdPot R φ 0).φ y y + c` using `fun y => by`. Simplify using `[bdPot]`. Take `⟨hPot, hSec, hOpen⟩` from `hProps D A R φ hφ c`.
+
+Establish `hle : ∀ y : X, ‖bdSec R y y‖ * Real.exp (-(bdPot R φ c).φ y y) ≤ 1`. Introduce `y`. Rewrite using `[hφc, neg_add, Real.exp_add, ← mul_assoc, Real.exp_neg c, hc, Real.exp_log hM1, mul_inv_le_iff₀ hM1, one_mul]`. Conclude with `(hM y).trans (le_max_left _ _)`. Use `⟨bdPot R φ c, bdSec R, hPot, hSec, hle, hOpen, hDense D A R, hRC D A R, ?_, hCmp D A R φ hφ c⟩` and prove the remaining obligations.
+
+Establish `hne : ∀ y ∈ R.Yo, ‖bdSec R y y‖ * Real.exp (-(bdPot R φ c).φ y y) ≠ 0`. Introduce `y hy`. Rewrite `hy` using `[← hOpen]`. Conclude with `mul_ne_zero (norm_ne_zero_iff.2 hy) (Real.exp_pos _).ne'`. Establish `hlog : ContinuousOn (fun y => logNormSec (bdPot R φ c) (bdSec R) y) R.Yo` using `(hNorm D A R φ hφ c).continuousOn.log hne`.
+
+Conclude with `continuousOn_const.sub (continuousOn_const.mul hlog)`.
+-/
 theorem RegSection.proof (hDense : RegYoDense.Statement) (hRC : RegRCont.Statement)
     (hMet : BdMetric.Statement) (hProps : BdSectionProps.Statement)
     (hNorm : BdNormCont.Statement) (hCmp : BdComparison.Statement) : RegSection.Statement := by

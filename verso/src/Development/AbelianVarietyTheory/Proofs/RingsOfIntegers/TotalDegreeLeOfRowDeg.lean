@@ -15,6 +15,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.PlaceInt
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hff : f' = f` using `funext fun τ => RingHom.ext fun x => hf τ x`. Substitute `hff` using the available equality. Conclude with `hβ`.
+-/
 theorem span_mul_prod_of_eq {E T : Type} [Field E] [Fintype T] {F F' : IntermediateField ℚ ℂ} (h : F' = F)
     (A B : Set E) (f : T → E →+* F) (f' : T → E →+* F')
     (hf : ∀ τ x, f' τ x = IntermediateField.equivOfEq h.symm (f τ x)) (m : T → ℕ) (β : F)
@@ -27,6 +30,11 @@ theorem span_mul_prod_of_eq {E T : Type} [Field E] [Fintype T] {F F' : Intermedi
   subst hff
   exact hβ
 
+/- English proof (translation)
+Unfold `MvPolynomial.totalDegree`. Use `Finset.sup_le fun m hm => le_of_eq ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => hP m hm σ i`.
+-/
 theorem totalDegree_le_of_rowDeg {T : Type} [Fintype T] (r : T → ℕ) (n : ℕ) {k : Type} [Field k] (a : T → ℕ → ℕ)
     (P : MvPolynomial (Letter T r n) k) (hP : RowDeg r n k a P) :
     P.totalDegree ≤ ∑ τ, ∑ i : Fin (r τ), a τ i := by
@@ -41,9 +49,17 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n)
 
+/- English proof (translation)
+Conclude with `Subtype.ext rfl`.
+-/
 theorem eF_embF (τ : E →+* ℂ) (x : E) : d.eF (embF c τ x) = embF d.c₂ τ x := by
   exact Subtype.ext rfl
 
+/- English proof (translation)
+Establish `key : symO c Λ ≤ (symO (Dw` using `Dw) d.c₂ Λ).comap (MvPolynomial.map (d.eF : c.F →+* d.c₂.F)) := by`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f (⟨o, rfl⟩ | ⟨σ, i, b, hb, rfl⟩)`. Use `Subring.mem_comap.2 (Subring.subset_closure (Or.inl ⟨⟨d.eF o, ?_⟩, ?_⟩))` and prove the remaining obligations. Conclude with `o.2.map (d.eF : c.F →+* d.c₂.F).toIntAlgHom`.
+
+Rewrite using `[MvPolynomial.map_C]`. Both sides reduce to the same expression. Use `Subring.mem_comap.2 (Subring.subset_closure (Or.inr ⟨σ, i, b, hb, ?_⟩))` and prove the remaining obligations. Simplify using `only [letB, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, RingHom.coe_coe, eF_embF]`. Conclude with `key hP`.
+-/
 theorem map_eF_mem_symO (Λ : GenLat E n) (P : MvPolynomial (LtN Dw n) c.F) (hP : P ∈ symO c Λ) :
     MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P ∈ symO (Dw := Dw) d.c₂ Λ := by
   have key : symO c Λ ≤ (symO (Dw := Dw) d.c₂ Λ).comap (MvPolynomial.map (d.eF : c.F →+* d.c₂.F)) := by
@@ -59,6 +75,13 @@ theorem map_eF_mem_symO (Λ : GenLat E n) (P : MvPolynomial (LtN Dw n) c.F) (hP 
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c n d Λ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `β hβ`. Unfold `BetaIs idealAt at hβ ⊢`. Conclude with `span_mul_prod_of_eq d.hF (detSet Λ.La) (detSet Λ.Ln) (fun τ => embF c τ) (fun τ => embF d.c₂ τ) (fun τ x => (eF_embF d τ x).symm) Dw.mult β hβ`.
+
+Introduce `w P hP`. Take `⟨hH, hS⟩` from `hP`. Use `⟨⟨GlobalTheory.map_mem_HHa Dw.mult n (d.eF : c.F →+* d.c₂.F) d.eF.surjective ComplexEmbedding.conjugate (InPsi H) (fun τ i => w (τ, i)) P hH, map_eF_mem_symO d Λ P hS⟩, ?_⟩` and prove the remaining obligations. Conclude with `totalDegree_le_of_rowDeg Dw.mult n (fun τ i => w (τ, i)) P hH.2.2`. Introduce `w α`.
+
+Simplify using `only [nrm, embK, map_prod, map_pow, RingHom.comp_apply, eF_embF]`.
+-/
 theorem eF_transfer : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (Λ : GenLat E n), (∀ β : c.F, BetaIs (Dw := Dw) c Λ β → BetaIs (Dw := Dw) d.c₂ Λ (d.eF β)) ∧ (∀ (w : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ harmL c Λ w → MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P ∈ harmL d.c₂ Λ w ∧ P.totalDegree ≤ Formalism.L2.Pj.DF Dw w) ∧ ∀ (w : (E →+* ℂ) × ℕ → ℕ) (α : 𝓞 E), d.eF (nrm Dw c w α) = nrm Dw d.c₂ w α := by
   intro E _ _ _ H Dw l Xo c n d Λ
   refine ⟨?_, ?_, ?_⟩

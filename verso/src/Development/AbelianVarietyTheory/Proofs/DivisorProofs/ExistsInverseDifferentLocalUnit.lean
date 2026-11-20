@@ -5,6 +5,15 @@ open scoped TensorProduct nonZeroDivisors
 
 namespace GlobalTheory.ImagDifferent
 
+/- English proof (translation)
+Establish `hlt : ¬ I ≤ I * v.asIdeal`. Introduce `h`. Establish `h1 : I * v.asIdeal = I * ⊤`. Rewrite using `[Ideal.mul_top]`. Conclude with `le_antisymm Ideal.mul_le_left h`.
+
+Conclude with `v.isPrime.ne_top (mul_left_cancel₀ hI h1)`. Take `⟨f, hf, hf'⟩` from `SetLike.not_le_iff_exists.1 hlt`. Establish `hdvd : I ∣ Ideal.span {f}` using `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hf)`. Take `⟨J, hJ⟩` from `hdvd`. Establish `hJv : ¬ J ≤ v.asIdeal`.
+
+Introduce `h`. Apply `hf'` to reduce the goal to its premises. Establish `: f ∈ I * J` using `hJ ▸ Ideal.mem_span_singleton_self f`. Conclude with `Ideal.mul_mono_right h this`. Take `⟨s, hs, hs'⟩` from `SetLike.not_le_iff_exists.1 hJv`.
+
+Use `⟨f, hf, fun h => hf' (h ▸ zero_mem _), s, hs', fun d hd => ?_⟩` and prove the remaining obligations. Establish `: d * s ∈ Ideal.span {f}` using `hJ ▸ Ideal.mul_mem_mul hd hs`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 this`. Conclude with `⟨c, by rw [mul_comm, hc]⟩`.
+-/
 theorem exists_local_generator {R : Type} [CommRing R] [IsDedekindDomain R] (I : Ideal R)
     (hI : I ≠ ⊥) (v : HeightOneSpectrum R) :
     ∃ f ∈ I, f ≠ 0 ∧ ∃ s ∉ v.asIdeal, ∀ d ∈ I, ∃ c : R, s * d = f * c := by
@@ -27,6 +36,19 @@ theorem exists_local_generator {R : Type} [CommRing R] [IsDedekindDomain R] (I :
   obtain ⟨c, hc⟩ := Ideal.mem_span_singleton.1 this
   exact ⟨c, by rw [mul_comm, hc]⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨t, ht, ht1⟩` from `(Algebra.FormallyUnramified.iff_exists_tensorProduct (R := A) (S := B)).1 inferInstance`. Set `φ : B ⊗[A] B →ₐ[A] B` to `Algebra.TensorProduct.lift (AlgHom.id A B) g (fun _ _ => Commute.all _ _)`. Take `⟨x, hx⟩` from `hg`.
+
+Establish `h0 : φ t = 0`. Use `congrArg φ (ht x)` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero, map_sub]`. Simplify using `only [φ, Algebra.TensorProduct.lift_tmul, AlgHom.id_apply, map_one, one_mul, mul_one] at this`. Break down `mul_eq_zero.1 this with h | h` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.1 h) hx`. Conclude with `h`. Establish `hall : ∀ u : B ⊗[A] B, Algebra.TensorProduct.lmul' A u - φ u ∈ w`. Introduce `u`. Proceed by induction on `u using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `only [φ, Algebra.TensorProduct.lift_tmul, AlgHom.id_apply, Algebra.TensorProduct.lmul'_apply_tmul]`. Rewrite using `[← mul_sub]`. Conclude with `w.mul_mem_left _ (hcon b)`.
+
+Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add, add_sub_add_comm]`. Conclude with `w.add_mem ha hb`. Use `hall t` as an intermediate fact. Rewrite `this` using `[ht1, h0, sub_zero]`.
+
+Conclude with `hw ((Ideal.eq_top_iff_one w).2 this)`.
+-/
 theorem exists_sub_notMem {A B : Type} [CommRing A] [CommRing B] [IsDomain B] [Algebra A B]
     [Algebra.Unramified A B] (g : B →ₐ[A] B) (hg : ∃ x, g x ≠ x) (w : Ideal B) (hw : w ≠ ⊤) :
     ∃ x, x - g x ∉ w := by
@@ -59,6 +81,17 @@ theorem exists_sub_notMem {A B : Type} [CommRing A] [CommRing B] [IsDomain B] [A
   rw [ht1, h0, sub_zero] at this
   exact hw ((Ideal.eq_top_iff_one w).2 this)
 
+/- English proof (translation)
+Establish `hd : (FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)) = ((differentIdeal ℤ (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E))⁻¹`. Rewrite using `[coeIdeal_differentIdeal ℤ ℚ, inv_inv]`. Establish `h1 : (∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E (o * t))) ↔ t ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero' (FractionalIdeal (𝓞 E)⁰ E))]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a ha`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 (h o)`. Introduce `h o`.
+
+Use `h o ((FractionalIdeal.mem_one_iff _).2 ⟨o, rfl⟩)` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `IsIntegrallyClosed.isIntegral_iff.2 this`. Rewrite using `[h1, hd, FractionalIdeal.mem_inv_iff (FractionalIdeal.coeIdeal_ne_zero.2 differentIdeal_ne_bot)]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h d hd`. Take `⟨c, hc⟩` from `(FractionalIdeal.mem_one_iff _).1 (h _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨d, hd, rfl⟩))`. Establish `hc' : (d : E) * t = (c : E)` using `by rw [mul_comm]; exact hc.symm`. Rewrite using `[hc']`. Conclude with `c.2`.
+
+Introduce `h z hz`. Take `⟨d, hd, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hz`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨⟨_, h d hd⟩, mul_comm _ _⟩`.
+-/
 theorem forall_trace_iff {E : Type} [Field E] [NumberField E] (t : E) :
     (∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E (o * t))) ↔
       ∀ d ∈ differentIdeal ℤ (𝓞 E), IsIntegral ℤ ((d : E) * t) := by
@@ -91,6 +124,25 @@ theorem forall_trace_iff {E : Type} [Field E] [NumberField E] (t : E) :
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hσσ : ∀ x, σ (σ x) = x`. Introduce `x`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+
+Set `g : 𝓞 E →ₐ[𝓞 F] 𝓞 E` to `{ RingOfIntegers.mapRingHom (σ : E →+* E) with commutes' := fun r => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `σ.commutes (r : F) }`. Establish `hgc : ∀ x : 𝓞 E, ((g x : 𝓞 E) : E) = σ x` using `fun x => rfl`. Establish `hg : ∃ x, g x ≠ x`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `GlobalTheory.SnMass.SkewVol.cm_sigma_ne_id h` to reduce the goal to its premises. Use extensionality with `z`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) z`.
+
+Establish `ha` using `hgc a`. Establish `hb` using `hgc b`. Rewrite `ha`, `hb` using `[hcon]`. Rewrite using `[map_div₀, AlgHom.id_apply]`. Conclude with `congrArg₂ (· / ·) ha.symm hb.symm`.
+
+Use `haveI := v.isMaximal`. Take `⟨w, hw, hwv⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 E) v.asIdeal (by rw [(RingHom.injective_iff_ker_eq_bot _).1 (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))]; exact bot_le)`. Take `⟨x, hx⟩` from `exists_sub_notMem g hg w hw.ne_top`. Establish `hy : σ ((x - g x : 𝓞 E) : E) = -((x - g x : 𝓞 E) : E)`. Establish `: ((x - g x : 𝓞 E) : E) = (x : E) - σ x` using `by rw [← hgc]; rfl`.
+
+Rewrite using `[this, map_sub, hσσ]`. Expand and normalize the polynomial expressions, which then agree. Use `set y := x - g x`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `GlobalTheory.SnMass.SkewVol.mem_range_of_cm_fixed h (x := (y : E) * y) (by rw [map_mul, hy]; ring)`.
+
+Establish `hint : IsIntegral ℤ n`. Rewrite using `[← isIntegral_algHom_iff ((algebraMap F E).toIntAlgHom) (algebraMap F E).injective]`. Use `show IsIntegral ℤ (algebraMap F E n)`. Rewrite using `[hn]`. Conclude with `y.2.mul y.2`.
+
+Establish `he : algebraMap (𝓞 F) (𝓞 E) ⟨n, hint⟩ = y * y`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `hn`. Use `⟨⟨n, hint⟩, fun hs => ?_, he⟩` and prove the remaining obligations. Rewrite `hs` using `[← hwv]`.
+
+Establish `hs' : y * y ∈ w` using `he ▸ Ideal.mem_comap.1 hs`. Conclude with `(hw.isPrime.mem_or_mem hs').elim hx hx`.
+-/
 theorem exists_imag_unit (σ : E →ₐ[F] E) (h : IsCMExt F E σ) [Algebra.Unramified (𝓞 F) (𝓞 E)]
     (v : HeightOneSpectrum (𝓞 F)) :
     ∃ y : 𝓞 E, σ (y : E) = -(y : E) ∧ ∃ s ∉ v.asIdeal, algebraMap (𝓞 F) (𝓞 E) s = y * y := by
@@ -140,6 +192,25 @@ theorem exists_imag_unit (σ : E →ₐ[F] E) (h : IsCMExt F E σ) [Algebra.Unra
   have hs' : y * y ∈ w := he ▸ Ideal.mem_comap.1 hs
   exact (hw.isPrime.mem_or_mem hs').elim hx hx
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h hu v`. Take `⟨y, hy, s₁, hs₁, hyy⟩` from `exists_imag_unit σ h v`. Take `⟨f, hf, hf0, s₂, hs₂, hloc⟩` from `exists_local_generator (differentIdeal ℤ (𝓞 F)) differentIdeal_ne_bot v`. Establish `hdiff` using `GlobalTheory.SnMass.SkewVol.differentIdeal_eq_map_of_unramified (F := F) (E := E) inferInstance`. Establish `key : ∀ a : 𝓞 F, ((algebraMap (𝓞 F) (𝓞 E) a : 𝓞 E) : E) = algebraMap F E (a : F)` using `fun a => rfl`.
+
+Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Apply `hs₁` to reduce the goal to its premises. Establish `: s₁ = 0` using `FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E) (by rw [hyy]; simp)`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Use `⟨algebraMap F E (f : F) * y, ?_, ?_, s₁ * s₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Simplify using `using hf0`. Simplify using `using hy0`.
+
+Rewrite using `[map_mul, AlgHom.commutes, hy]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `fun hm => (v.isPrime.mem_or_mem hm).elim hs₁ hs₂`. Introduce `t ht`. Use `(forall_trace_iff t).1 ht (algebraMap (𝓞 F) (𝓞 E) f * y) (by rw [hdiff]; exact Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hf))` as an intermediate fact.
+
+Conclude with `this`. Introduce `t ht`. Rewrite using `[forall_trace_iff, hdiff]`. Introduce `d hd`. Establish `hd' : ∃ c : 𝓞 E, algebraMap (𝓞 F) (𝓞 E) s₂ * d = algebraMap (𝓞 F) (𝓞 E) f * c`.
+
+Establish `hle : (differentIdeal ℤ (𝓞 F)).map (algebraMap (𝓞 F) (𝓞 E)) ≤ (Ideal.span {algebraMap (𝓞 F) (𝓞 E) f}).colon {algebraMap (𝓞 F) (𝓞 E) s₂}`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Take `⟨c, hc⟩` from `hloc a ha`. Rewrite using `[Ideal.mem_comap, Submodule.mem_colon_singleton, smul_eq_mul, ← map_mul, mul_comm, hc, map_mul]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Use `hle hd` as an intermediate fact. Rewrite `this` using `[Submodule.mem_colon_singleton, smul_eq_mul, mul_comm]`. Conclude with `Ideal.mem_span_singleton.1 this`. Take `⟨c, hc⟩` from `hd'`.
+
+Establish `hc' : algebraMap F E (s₂ : F) * (d : E) = algebraMap F E (f : F) * c` using `congrArg (fun z : 𝓞 E => (z : E)) hc`. Establish `hyy' : algebraMap F E (s₁ : F) = (y : E) * y` using `congrArg (fun z : 𝓞 E => (z : E)) hyy`. Establish `e : (d : E) * (algebraMap F E ((s₁ * s₂ : 𝓞 F) : F) * t) = ((y : E) * c) * (algebraMap F E (f : F) * y * t)`. Establish `: ((s₁ * s₂ : 𝓞 F) : F) = (s₁ : F) * s₂` using `rfl`. Rewrite using `[this, map_mul, hyy']`.
+
+Take the linear combination `((y : E) * y * t) * hc'`. Rewrite using `[e]`. Conclude with `(y.2.mul c.2).mul ht`.
+-/
 theorem exists_imag_generator : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ v : HeightOneSpectrum (𝓞 F), ∃ δ : E, δ ≠ 0 ∧ σ δ = -δ ∧
     ∃ s : 𝓞 F, s ∉ v.asIdeal ∧

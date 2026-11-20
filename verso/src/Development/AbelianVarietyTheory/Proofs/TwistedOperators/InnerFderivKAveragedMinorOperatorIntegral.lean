@@ -13,12 +13,18 @@ variable {n : ℕ}
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `h` using `hf.continuousOn.aestronglyMeasurable_of_isCompact (μ := μ) isCompact_univ MeasurableSet.univ`. Rewrite `h` using `[Measure.restrict_univ]`. Then use the resulting hypothesis.
+-/
 private lemma aestronglyMeasurable_of_continuous_compact {K E : Type*} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K]
     [OpensMeasurableSpace K] [NormedAddCommGroup E] (μ : Measure K) {f : K → E} (hf : Continuous f) :
     AEStronglyMeasurable f μ := by
   have h := hf.continuousOn.aestronglyMeasurable_of_isCompact (μ := μ) isCompact_univ MeasurableSet.univ
   rwa [Measure.restrict_univ] at h
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hf.continuousOn`. Conclude with `Integrable.of_bound (aestronglyMeasurable_of_continuous_compact μ hf) C (Filter.Eventually.of_forall fun k => hC k (Set.mem_univ k))`.
+-/
 private lemma integrable_of_continuous_compact' {K E : Type*} [TopologicalSpace K] [CompactSpace K]
     [MeasurableSpace K] [OpensMeasurableSpace K] [NormedAddCommGroup E] (μ : Measure K) [IsFiniteMeasure μ]
     {f : K → E} (hf : Continuous f) : Integrable f μ := by
@@ -26,6 +32,11 @@ private lemma integrable_of_continuous_compact' {K E : Type*} [TopologicalSpace 
   exact Integrable.of_bound (aestronglyMeasurable_of_continuous_compact μ hf) C
     (Filter.Eventually.of_forall fun k => hC k (Set.mem_univ k))
 
+/- English proof (translation)
+Establish `h0 : (0 : ℂ) ∈ s` using `mem_of_mem_nhds hs`. Take `⟨r, hr, hrs⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 hs`. Establish `hcpt : IsCompact (Metric.closedBall (0 : ℂ) r ×ˢ (Set.univ : Set K))` using `(isCompact_closedBall 0 r).prod isCompact_univ`. Take `⟨C, hC⟩` from `hcpt.exists_bound_of_continuousOn (hF'.mono (Set.prod_mono hrs subset_rfl))`. Establish `hF'0 : Continuous (F' 0)` using `hF'.comp_continuous (continuous_const.prodMk continuous_id) fun k => ⟨h0, Set.mem_univ k⟩`.
+
+Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (bound := fun _ => C) (Metric.closedBall_mem_nhds 0 hr) ?_ (integrable_of_continuous_compact' μ (hF 0 h0)) (aestronglyMeasurable_of_continuous_compact μ hF'0) ?_ (integrable_const C) ?_).2` and prove the remaining obligations. Conclude with `Filter.eventually_of_mem hs fun t ht => aestronglyMeasurable_of_continuous_compact μ (hF t ht)`. Conclude with `Filter.Eventually.of_forall fun k t ht => hC (t, k) ⟨ht, Set.mem_univ k⟩`. Conclude with `Filter.Eventually.of_forall fun k t ht => hd k t (hrs ht)`.
+-/
 theorem hasDerivAt_integral_cpt {K : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K]
     [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ] {F F' : ℂ → K → ℂ} {s : Set ℂ} (hs : s ∈ 𝓝 (0 : ℂ))
     (hF : ∀ t ∈ s, Continuous (F t)) (hF' : ContinuousOn (fun x : ℂ × K => F' x.1 x.2) (s ×ˢ Set.univ))
@@ -45,6 +56,11 @@ theorem hasDerivAt_integral_cpt {K : Type} [TopologicalSpace K] [CompactSpace K]
   · exact Filter.Eventually.of_forall fun k t ht => hC (t, k) ⟨ht, Set.mem_univ k⟩
   · exact Filter.Eventually.of_forall fun k t ht => hd k t (hrs ht)
 
+/- English proof (translation)
+Establish `he : ∀ a b : Fin n, AnalyticAt ℂ (fun z : Matrix (Fin n) (Fin n) ℂ => z a b) z₀` using `fun a b => (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ a b)).analyticAt z₀`. Simplify using `only [leadMinor, Matrix.det_apply, Matrix.submatrix_apply, Units.smul_def, zsmul_eq_mul]`. Use `Finset.analyticAt_fun_sum _ fun σ _ => ?_` and prove the remaining obligations. Use `AnalyticAt.mul ?_ ?_` and prove the remaining obligations. Conclude with `analyticAt_const`.
+
+Conclude with `Finset.analyticAt_fun_prod _ fun i _ => he _ _`.
+-/
 private lemma analyticAt_leadMinor' (z₀ : Matrix (Fin n) (Fin n) ℂ) (l : ℕ) (hl : l ≤ n) :
     AnalyticAt ℂ (fun z : Matrix (Fin n) (Fin n) ℂ => leadMinor z l hl) z₀ := by
   have he : ∀ a b : Fin n, AnalyticAt ℂ (fun z : Matrix (Fin n) (Fin n) ℂ => z a b) z₀ := fun a b =>
@@ -55,12 +71,20 @@ private lemma analyticAt_leadMinor' (z₀ : Matrix (Fin n) (Fin n) ℂ) (l : ℕ
   · exact analyticAt_const
   · exact Finset.analyticAt_fun_prod _ fun i _ => he _ _
 
+/- English proof (translation)
+Introduce `z hz`. Establish `hz' : ∀ i : Fin n, leadMinor z (i.val + 1) i.isLt ≠ 0` using `hz`. Use `show AnalyticAt ℂ (fun y => ∏ i : Fin n, leadMinor y (i.val + 1) i.isLt ^ (-(sInt lam i))) z`. Conclude with `Finset.analyticAt_fun_prod _ fun i _ => (analyticAt_leadMinor' z _ _).fun_zpow (hz' i)`.
+-/
 theorem analyticOnNhd_Phi (lam : Fin n → ℝ) : AnalyticOnNhd ℂ (Phi lam) (Omega n) := by
   intro z hz
   have hz' : ∀ i : Fin n, leadMinor z (i.val + 1) i.isLt ≠ 0 := hz
   show AnalyticAt ℂ (fun y => ∏ i : Fin n, leadMinor y (i.val + 1) i.isLt ^ (-(sInt lam i))) z
   exact Finset.analyticAt_fun_prod _ fun i _ => (analyticAt_leadMinor' z _ _).fun_zpow (hz' i)
 
+/- English proof (translation)
+Establish `hK : Continuous (fun k : KG ε => toMK k)` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hinv : ∀ k : KG ε, (toMK k)⁻¹ = toMK k⁻¹` using `fun k => by`. Simplify using `[toMK, toM, Matrix.coe_units_inv]`. Establish `e : (fun p => (toMK (f p))⁻¹ * g p * toMK (f p)) = fun p => toMK (f p)⁻¹ * g p * toMK (f p)`. Use function extensionality and compare the values at `p`.
+
+Rewrite using `[hinv]`. Rewrite using `[e]`. Conclude with `((hK.comp hf.inv).matrix_mul hg).matrix_mul (hK.comp hf)`.
+-/
 theorem continuous_conj {ε : Fin n → Bool} {X : Type} [TopologicalSpace X] {f : X → KG ε}
     {g : X → Matrix (Fin n) (Fin n) ℂ} (hf : Continuous f) (hg : Continuous g) :
     Continuous (fun p => (toMK (f p))⁻¹ * g p * toMK (f p)) := by
@@ -73,14 +97,23 @@ theorem continuous_conj {ε : Fin n → Bool} {X : Type} [TopologicalSpace X] {f
   rw [e]
   exact ((hK.comp hf.inv).matrix_mul hg).matrix_mul (hK.comp hf)
 
+/- English proof (translation)
+The claim follows from `hz _ ((mem_KG ε _).1 k.2)`.
+-/
 private lemma toMK_inv_mul_mul_toMK_mem_Omega {ε : Fin n → Bool} {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ U1 ε)
     (k : KG ε) : (toMK k)⁻¹ * z * toMK k ∈ Omega n :=
   hz _ ((mem_KG ε _).1 k.2)
 
+/- English proof (translation)
+The claim follows from `continuous_conj (f := fun k => k) (g := fun _ => M) continuous_id continuous_const`.
+-/
 private lemma continuous_toMK_inv_mul_mul_toMK {ε : Fin n → Bool} (M : Matrix (Fin n) (Fin n) ℂ) :
     Continuous (fun k : KG ε => (toMK k)⁻¹ * M * toMK k) :=
   continuous_conj (f := fun k => k) (g := fun _ => M) continuous_id continuous_const
 
+/- English proof (translation)
+Establish `hK : Continuous (fun k : KG ε => toMK k)` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hd` using `h.2.2.1 u v`. Conclude with `hd.continuousOn.comp_continuous hK fun k => ⟨((k : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ).isUnit, ((mem_KG ε _).1 k.2).2⟩`.
+-/
 private lemma continuous_inner_tau_toMK {ε : Fin n → Bool} {abelian₂ : Fin n → ℝ} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {w : W} (h : IsTau ε abelian₂ τ w)
     (u v : W) : Continuous (fun k : KG ε => ⟪u, τ (toMK k) v⟫_ℂ) := by
@@ -90,6 +123,11 @@ private lemma continuous_inner_tau_toMK {ε : Fin n → Bool} {abelian₂ : Fin 
   exact hd.continuousOn.comp_continuous hK fun k =>
     ⟨((k : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ).isUnit, ((mem_KG ε _).1 k.2).2⟩
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℂ W := h.1`. Set `b` to `stdOrthonormalBasis ℂ W`. Establish `e : (fun k : KG ε => τ (toMK k) v) = fun k => ∑ i, ⟪b i, τ (toMK k) v⟫_ℂ • b i`. Use function extensionality and compare the values at `k`. Conclude with `(b.sum_repr' _).symm`.
+
+Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun i _ => (continuous_inner_tau_toMK h (b i) v).smul continuous_const`.
+-/
 private lemma continuous_tau_toMK_apply {ε : Fin n → Bool} {abelian₂ : Fin n → ℝ} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {w : W} (h : IsTau ε abelian₂ τ w)
     (v : W) : Continuous (fun k : KG ε => τ (toMK k) v) := by
@@ -100,12 +138,22 @@ private lemma continuous_tau_toMK_apply {ε : Fin n → Bool} {abelian₂ : Fin 
   rw [e]
   exact continuous_finset_sum _ fun i _ => (continuous_inner_tau_toMK h (b i) v).smul continuous_const
 
+/- English proof (translation)
+The claim follows from `continuous_iff_continuousAt.2 fun k => ContinuousAt.comp (g := Phi lam) (f := fun k : KG ε => (toMK k)⁻¹ * z * toMK k) (analyticOnNhd_Phi lam _ (toMK_inv_mul_mul_toMK_mem_Omega hz k)).continuousAt (continuous_toMK_inv_mul_mul_toMK z).continuousAt`.
+-/
 private lemma continuous_Phi_conj_toMK {ε : Fin n → Bool} (lam : Fin n → ℝ) {z : Matrix (Fin n) (Fin n) ℂ}
     (hz : z ∈ U1 ε) : Continuous (fun k : KG ε => Phi lam ((toMK k)⁻¹ * z * toMK k)) :=
   continuous_iff_continuousAt.2 fun k =>
     ContinuousAt.comp (g := Phi lam) (f := fun k : KG ε => (toMK k)⁻¹ * z * toMK k)
       (analyticOnNhd_Phi lam _ (toMK_inv_mul_mul_toMK_mem_Omega hz k)).continuousAt (continuous_toMK_inv_mul_mul_toMK z).continuousAt
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℂ W := h.1`. Establish `hv : Continuous (fun k : KG ε => τ (toMK k) w)` using `continuous_tau_toMK_apply h w`. Establish `hR : Continuous (fun k : KG ε => (innerSL ℂ (τ (toMK k) w)).smulRight (τ (toMK k) w))`. Establish `h1` using `((ContinuousLinearMap.smulRightL ℂ W W).continuous.comp ((innerSL ℂ).continuous.comp hv)).clm_apply hv`. Simplify using `using h1`.
+
+Establish `hG : Continuous (fun k : KG ε => Phi lam ((toMK k)⁻¹ * z * toMK k) • (innerSL ℂ (τ (toMK k) w)).smulRight (τ (toMK k) w))` using `(continuous_Phi_conj_toMK lam hz).smul hR`. Establish `hGi` using `integrable_of_continuous_compact' (muK ε) hG`. Establish `hGu` using `hGi.apply_continuousLinearMap u`. Simplify using `only [ps]`. Rewrite using `[ContinuousLinearMap.smul_apply, inner_smul_right, ContinuousLinearMap.integral_apply hGi u, ← integral_inner hGu y]`.
+
+Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_ps_eq {ε : Fin n → Bool} (lam : Fin n → ℝ) {abelian₂ : Fin n → ℝ} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {w : W} (h : IsTau ε abelian₂ τ w)
     {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ U1 ε) (y u : W) :
@@ -131,6 +179,29 @@ theorem inner_ps_eq {ε : Fin n → Bool} (lam : Fin n → ℝ) {abelian₂ : Fi
     inner_smul_right]
   ring
 
+/- English proof (translation)
+Introduce `n ε lam W _ _ τ w hHC hTau z hz A y x`. Use `haveI : FiniteDimensional ℂ W := hTau.1`. Take `⟨hopen, -, hdiff, -⟩` from `psBasic n ε lam W τ w hHC hTau`. Establish `hU : IsOpen (U1 ε)` using `hopen`. Establish `hSn : {t : ℂ | z + t • A ∈ U1 ε} ∈ 𝓝 (0 : ℂ)`.
+
+Establish `hcont : Continuous (fun t : ℂ => z + t • A)` using `continuous_const.add (continuous_id.smul continuous_const)`. Conclude with `hcont.continuousAt.preimage_mem_nhds (hU.mem_nhds (by simpa using hz))`. Establish `hpsD : DifferentiableAt ℂ (ps ε lam τ w) z` using `hdiff.differentiableAt (hopen.mem_nhds hz)`. Establish `hline : HasDerivAt (fun t : ℂ => z + t • A) A 0`. Establish `h` using `((hasDerivAt_id' (0 : ℂ)).smul_const A).const_add z`.
+
+Rewrite `h` using `[one_smul]`. Conclude with `h`. Establish `hg1 : HasDerivAt (fun t : ℂ => ⟪y, ps ε lam τ w (z + t • A) x⟫_ℂ) ⟪y, fderiv ℂ (ps ε lam τ w) z A x⟫_ℂ 0`. Set `L : (W →L[ℂ] W) →L[ℂ] ℂ` to `(innerSL ℂ y).comp (ContinuousLinearMap.apply ℂ W x)`. Establish `h1` using `hpsD.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℂ) hline (by simp)`.
+
+Establish `h2` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℂ) h1`. Establish `h3` using `h2`. Simplify using `only [L, Function.comp_def, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, innerSL_apply_apply] at h3`. Conclude with `h3`. Establish `hv : Continuous (fun k : KG ε => τ (toMK k) w)` using `continuous_tau_toMK_apply hTau w`.
+
+Establish `hc : Continuous (fun k : KG ε => ⟪y, τ (toMK k) w⟫_ℂ * ⟪τ (toMK k) w, x⟫_ℂ)` using `(continuous_const.inner hv).mul (hv.inner continuous_const)`. Establish `hconj : Continuous (fun p : ℂ × KG ε => (toMK p.2)⁻¹ * (z + p.1 • A) * toMK p.2)` using `continuous_conj continuous_snd (continuous_const.add (continuous_fst.smul continuous_const))`. Establish `hmem : ∀ t ∈ {t : ℂ | z + t • A ∈ U1 ε}, ∀ k : KG ε, (toMK k)⁻¹ * (z + t • A) * toMK k ∈ Omega n` using `fun t ht k => toMK_inv_mul_mul_toMK_mem_Omega ht k`. Establish `hAn` using `analyticOnNhd_Phi (n := n) lam`. Establish `hdA` using `hAn.fderiv`.
+
+Establish `hFc : ∀ t ∈ {t : ℂ | z + t • A ∈ U1 ε}, Continuous (fun k : KG ε => Phi lam ((toMK k)⁻¹ * (z + t • A) * toMK k) * (⟪y, τ (toMK k) w⟫_ℂ * ⟪τ (toMK k) w, x⟫_ℂ))` using `fun t ht => (continuous_Phi_conj_toMK lam ht).mul hc`. Establish `hF'c : ContinuousOn (fun p : ℂ × KG ε => fderiv ℂ (Phi lam) ((toMK p.2)⁻¹ * (z + p.1 • A) * toMK p.2) ((toMK p.2)⁻¹ * A * toMK p.2) * (⟪y, τ (toMK p.2) w⟫_ℂ * ⟪τ (toMK p.2) w, x⟫_ℂ)) ({t : ℂ | z + t • A ∈ U1 ε} ×ˢ Set.univ)`. Introduce `p hp`. Establish `h1 : ContinuousAt (fun q : ℂ × KG ε => fderiv ℂ (Phi lam) ((toMK q.2)⁻¹ * (z + q.1 • A) * toMK q.2)) p` using `ContinuousAt.comp (g := fderiv ℂ (Phi lam)) (f := fun q : ℂ × KG ε => (toMK q.2)⁻¹ * (z + q.1 • A) * toMK q.2) (hdA _ (hmem p.1 hp.1 p.2)).continuousAt hconj.continuousAt`. Establish `h2 : Continuous (fun q : ℂ × KG ε => (toMK q.2)⁻¹ * A * toMK q.2)` using `continuous_conj continuous_snd continuous_const`.
+
+Conclude with `((h1.clm_apply h2.continuousAt).mul (hc.comp continuous_snd).continuousAt).continuousWithinAt`. Establish `hder : ∀ k : KG ε, ∀ t ∈ {t : ℂ | z + t • A ∈ U1 ε}, HasDerivAt (fun s : ℂ => Phi lam ((toMK k)⁻¹ * (z + s • A) * toMK k) * (⟪y, τ (toMK k) w⟫_ℂ * ⟪τ (toMK k) w, x⟫_ℂ)) (fderiv ℂ (Phi lam) ((toMK k)⁻¹ * (z + t • A) * toMK k) ((toMK k)⁻¹ * A * toMK k) * (⟪y, τ (toMK k) w⟫_ℂ * ⟪τ ( …`. Introduce `k t ht`. Establish `hl : HasDerivAt (fun s : ℂ => (toMK k)⁻¹ * (z + s • A) * toMK k) ((toMK k)⁻¹ * A * toMK k) t`. Establish `e : (fun s : ℂ => (toMK k)⁻¹ * (z + s • A) * toMK k) = fun s => (toMK k)⁻¹ * z * toMK k + s • ((toMK k)⁻¹ * A * toMK k)`.
+
+Use function extensionality and compare the values at `s`. Simplify using `[mul_add, add_mul, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e]`. Establish `h` using `((hasDerivAt_id' t).smul_const ((toMK k)⁻¹ * A * toMK k)).const_add ((toMK k)⁻¹ * z * toMK k)`. Rewrite `h` using `[one_smul]`.
+
+Conclude with `h`. Conclude with `((hAn _ (hmem t ht k)).differentiableAt.hasFDerivAt.comp_hasDerivAt t hl).mul_const _`. Establish `hD` using `hasDerivAt_integral_cpt (muK ε) hSn hFc hF'c hder`. Establish `hg2 : HasDerivAt (fun t : ℂ => ⟪y, ps ε lam τ w (z + t • A) x⟫_ℂ) ((Module.finrank ℂ W : ℂ) * ∫ k, fderiv ℂ (Phi lam) ((toMK k)⁻¹ * (z + (0 : ℂ) • A) * toMK k) ((toMK k)⁻¹ * A * toMK k) * (⟪y, τ (toMK k) w⟫_ℂ * ⟪τ (toMK k) w, x⟫_ℂ) ∂(muK ε)) 0`. Use `(hD.const_mul _).congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hSn] with t ht`. Conclude with `inner_ps_eq lam hTau ht y x`. Establish `heq` using `hg1.unique hg2`. Simplify using `only [zero_smul, add_zero] at heq`. Use `⟨?_, heq⟩` and prove the remaining obligations.
+
+Establish `hcont0 : Continuous (fun k : KG ε => fderiv ℂ (Phi lam) ((toMK k)⁻¹ * z * toMK k) ((toMK k)⁻¹ * A * toMK k) * (⟪y, τ (toMK k) w⟫_ℂ * ⟪τ (toMK k) w, x⟫_ℂ))`. Use `continuous_iff_continuousAt.2 fun k => ContinuousAt.mul ?_ hc.continuousAt` and prove the remaining obligations. Conclude with `(ContinuousAt.comp (g := fderiv ℂ (Phi lam)) (f := fun k : KG ε => (toMK k)⁻¹ * z * toMK k) (hdA _ (toMK_inv_mul_mul_toMK_mem_Omega hz k)).continuousAt (continuous_toMK_inv_mul_mul_toMK z).continuousAt).clm_apply (continuous_toMK_inv_mul_mul_toMK A).continuousAt`. Conclude with `integrable_of_continuous_compact' (muK ε) hcont0`.
+-/
 theorem inner_fderiv_ps : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] (τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)) (w : W), IsHCParam lam → IsTau ε (lowK ε lam) τ w → ∀ z ∈ U1 ε, ∀ (A : Matrix (Fin n) (Fin n) ℂ) (y x : W), Integrable (fun k : KG ε => fderiv ℂ (Phi lam) ((toMK k)⁻¹ * z * toMK k) ((toMK k)⁻¹ * A * toMK k) * (⟪y, τ (toMK k) w⟫_ℂ * ⟪τ (toMK k) w, x⟫_ℂ)) (muK ε) ∧ ⟪y, fderiv ℂ (ps ε lam τ w) z A x⟫_ℂ = (Module.finrank ℂ W : ℂ) * ∫ k : KG ε, fderiv ℂ (Phi lam) ((toMK k)⁻¹ * z * toMK k) ((toMK k)⁻¹ * A * toMK k) * (⟪y, τ (toMK k) w⟫_ℂ * ⟪τ (toMK k) w, x⟫_ℂ) ∂(muK ε) := by
   intro n ε lam W _ _ τ w hHC hTau z hz A y x
   haveI : FiniteDimensional ℂ W := hTau.1

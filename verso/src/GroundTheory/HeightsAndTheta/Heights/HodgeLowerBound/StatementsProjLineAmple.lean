@@ -14,6 +14,9 @@ def ProjLineAmple.Statement : Prop :=
 
 namespace Line
 
+/- English proof (translation)
+Simplify using `only [Set.ofPred_exists]`. Conclude with `isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+-/
 theorem isOpen_nonzeroL : IsOpen {y : (Σ _ : Unit, Fin 2) → ℂ | ∃ i, y ⟨(), i⟩ ≠ 0} := by
   simp only [Set.ofPred_exists]
   exact isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const

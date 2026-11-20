@@ -85,10 +85,18 @@ def SpanStatement (E : Type) [Field E] [NumberField E] [IsCMField E] : Prop :=
     ∀ t : Fin Fl.δ → Frame X.Ψ r → ℂ, (∀ i, t i ∈ X.SS Xa.Fp) → BasisOnS Fl t →
     ∀ f ∈ X.SSgt (wtTop Xa) Xa.c1, InSpan Fl t f
 
+/- English proof (translation)
+Introduce `j` and use `(hf j).add (hg j)`.
+-/
 theorem VanOrd.add {X : Data E r} {Xa : ArchInM X} {Fl : FlatM X Xa} {a : ℕ}
     {f g : Frame X.Ψ r → ℂ} (hf : VanOrd Fl a f) (hg : VanOrd Fl a g) :
     VanOrd Fl a fun x => f x + g x := fun j => (hf j).add (hg j)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(hf j).bound`. Establish `h` using `hC.self_of_nhds`. Establish `hz : zAt Fl j 0 = 0`. Use extensionality with `k`. Simplify using `[zAt, hs k]`.
+
+Simplify using `only [hz, norm_zero, zero_pow ha, mul_zero] at h`. Conclude with `norm_le_zero_iff.mp h`.
+-/
 theorem VanOrd.eq_zero {X : Data E r} {Xa : ArchInM X} {Fl : FlatM X Xa} {a : ℕ} (ha : a ≠ 0)
     {f : Frame X.Ψ r → ℂ} (hf : VanOrd Fl a f) (j : Fin Fl.δ)
     (hs : ∀ k, Fl.s k (cpt X (Fl.xs j) 0) = 0) : f (cpt X (Fl.xs j) 0) = 0 := by

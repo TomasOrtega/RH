@@ -8,6 +8,17 @@ open GlobalTheory.SplitFlip GlobalTheory.FlipMatch GlobalTheory.FlipMatch.FieldT
 noncomputable section
 namespace GlobalTheory.PureMatch.Transport
 
+/- English proof (translation)
+Establish `key : ∀ a : k', valuation k' a ≤ 1 → ∀ y ∈ Λ₂, a • y ∈ Λ₂` using `fun a ha y hy => Λ₂.smul_mem (⟨a, (Valuation.mem_integer_iff _ _).2 ha⟩ : 𝒪[k']) hy`. Establish `hc₂ : valuation k' (c₂ : k') ≠ 0` using `by simp`. Use `set u : k' := (c₂⁻¹ : k'ˣ) * j c with hu`. Establish `hu1 : valuation k' u = 1`. Rewrite using `[hu, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hc, inv_mul_cancel₀ hc₂]`.
+
+Establish `hu0 : u ≠ 0`. Introduce `h`. Rewrite `hu1` using `[h, map_zero]`. Conclude with `zero_ne_one hu1`. Establish `hu1' : valuation k' u⁻¹ = 1` using `by rw [map_inv₀, hu1, inv_one]`.
+
+Introduce `x`. Rewrite using `[mem_smul_lat, mem_smul_lat, ← hΛ]`. Establish `heq : (c₂⁻¹ : k'ˣ) • (fun d => j (x (cD d))) = u • (fun d => j (((c⁻¹ : kˣ) • x) (cD d)))`. Use function extensionality and compare the values at `d`. Simplify using `only [Units.smul_def, Pi.smul_apply, smul_eq_mul, map_mul, hu, Units.val_inv_eq_inv_val, map_inv₀]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `key u⁻¹ hu1'.le _ h` as an intermediate fact.
+
+Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hu0, one_smul]`. Then use the resulting hypothesis. Conclude with `key u hu1.le _`.
+-/
 theorem latCorr_smul {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] {j : k ≃+* k'} {D D₂ : Type}
     (_hj : IsLocIso j) (cD : D₂ ≃ D) {Λ : Submodule 𝒪[k] (D → k)} {Λ₂ : Submodule 𝒪[k'] (D₂ → k')}

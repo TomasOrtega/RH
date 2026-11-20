@@ -10,6 +10,9 @@ variable {k : Type} [CommRing k] {G : Type} [Group G] [TopologicalSpace G] [IsTo
   {M : Rep.{0} k G} [IsDiscreteRep M] {C : CosimplicialObject AddCommGrpCat.{1}}
   {e : ∀ m : ℕ, C.obj ⦋m⦌ →+ ((Fin (m + 1) → G) → M)}
 
+/- English proof (translation)
+Rewrite using `[← Int.cast_smul_eq_zsmul k]`. Simplify using the standard rewrite rules.
+-/
 theorem neg_one_pow_smul_eq (m : ℕ) (x : M) : ((-1 : k) ^ m) • x = ((-1 : ℤ) ^ m) • x := by
   rw [← Int.cast_smul_eq_zsmul k]
   simp
@@ -22,10 +25,16 @@ variable (he : ∀ m, Function.Injective (e m))
     e (m + 1) (C.δ i c) σ = e m c (σ ∘ i.succAbove))
 
 include hr in
+/- English proof (translation)
+The claim follows from `((hr m (e m c)).1 ⟨c, rfl⟩).1`.
+-/
 theorem isLocallyConstant_e (m : ℕ) (c : C.obj ⦋m⦌) : IsLocallyConstant (e m c) :=
   ((hr m (e m c)).1 ⟨c, rfl⟩).1
 
 include hr in
+/- English proof (translation)
+The claim follows from `((hr m (e m c)).1 ⟨c, rfl⟩).2 τ σ`.
+-/
 theorem e_mul (m : ℕ) (c : C.obj ⦋m⦌) (τ : G) (σ : Fin (m + 1) → G) :
     e m c (fun i => τ * σ i) = M.ρ τ (e m c σ) :=
   ((hr m (e m c)).1 ⟨c, rfl⟩).2 τ σ
@@ -36,11 +45,27 @@ def toInh (m : ℕ) : C.obj ⦋m⦌ →+ locallyConstantCochains M m where
   map_zero' := by ext g; simp
   map_add' a b := by ext g; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toInh_apply (m : ℕ) (c : C.obj ⦋m⦌) (g : Fin m → G) :
     ((toInh hr m c : locallyConstantCochains M m) : (Fin m → G) → M) g = e m c (Fin.partialProd g) :=
   rfl
 
 include he in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Apply `he m` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Use function extensionality and compare the values at `σ`. Establish `h0 : ∀ g, e m c (Fin.partialProd g) = 0` using `fun g => by`. Use `congrArg (fun f : locallyConstantCochains M m => (f : (Fin m → G) → M) g) hc` as an intermediate fact. Simplify `this` using `[toInh_apply]`. Establish `hσ : σ = fun i => σ 0 * Fin.partialProd (fun j => (σ (Fin.castSucc j))⁻¹ * σ j.succ) i`.
+
+Use `Fin.partialProd_left_inv σ` as an intermediate fact. Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [← this]`. Both sides reduce to the same expression. Rewrite using `[hσ, e_mul hr, h0, map_zero]`.
+
+Both sides reduce to the same expression. Introduce `φ`. Set `F : (Fin (m + 1) → G) → M` to `fun x => M.ρ (x 0) (φ.1 fun i => (x (Fin.castSucc i))⁻¹ * x i.succ)`. Establish `hF : IsLocallyConstant F` using `isLocallyConstant_ρ_apply M (continuous_apply 0) (φ.2.comp_continuous (continuous_pi fun _ => ((continuous_apply _).inv).mul (continuous_apply _)))`. Establish `hFm : ∀ (τ : G) (σ : Fin (m + 1) → G), F (fun i => τ * σ i) = M.ρ τ (F σ)`.
+
+Introduce `τ σ`. Simplify using `only [F, mul_inv_rev, mul_assoc, inv_mul_cancel_left, map_mul]`. Both sides reduce to the same expression. Take `⟨c, hc⟩` from `(hr m F).2 ⟨hF, hFm⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[toInh_apply, hc]`. Simplify using `only [F, Fin.partialProd_zero, Fin.partialProd_right_inv, map_one]`. Both sides reduce to the same expression.
+-/
 theorem toInh_bijective (m : ℕ) : Function.Bijective (toInh hr m) := by
   constructor
   · rw [injective_iff_map_eq_zero]
@@ -76,6 +101,9 @@ theorem toInh_bijective (m : ℕ) : Function.Bijective (toInh hr m) := by
     simp only [F, Fin.partialProd_zero, Fin.partialProd_right_inv, map_one]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, AddCommGrpCat.hom_add_apply, ih]`.
+-/
 theorem sum_hom_apply {X Y : AddCommGrpCat.{1}} {ι : Type} (s : Finset ι) (f : ι → (X ⟶ Y)) (x : X) :
     (∑ i ∈ s, f i) x = ∑ i ∈ s, f i x := by
   classical
@@ -83,6 +111,9 @@ theorem sum_hom_apply {X Y : AddCommGrpCat.{1}} {ι : Type} (s : Finset ι) (f :
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, AddCommGrpCat.hom_add_apply, ih]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(n • f).hom x = _`. Rewrite using `[AddCommGrpCat.hom_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem zsmul_hom_apply {X Y : AddCommGrpCat.{1}} (n : ℤ) (f : X ⟶ Y) (x : X) :
     (n • f) x = n • f x := by
   change (n • f).hom x = _
@@ -90,6 +121,13 @@ theorem zsmul_hom_apply {X Y : AddCommGrpCat.{1}} (n : ℤ) (f : X ⟶ Y) (x : X
   rfl
 
 include hd hr in
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[toInh_apply, dLocallyConstant_hom_apply, inhomogeneousCochains.d_hom_apply]`. Simplify using `only [AlgebraicTopology.AlternatingCofaceMapComplex.objD, sum_hom_apply, zsmul_hom_apply, map_sum, map_zsmul, Finset.sum_apply, Pi.smul_apply, hd]`. Rewrite using `[Fin.sum_univ_succ]`.
+
+Use `congr 1`. Establish `: (Fin.partialProd g ∘ (0 : Fin (n + 2)).succAbove) = fun j => g 0 * Fin.partialProd (Fin.tail g) j`. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, Fin.succAbove_zero]`. Conclude with `Fin.partialProd_succ' g j`.
+
+Rewrite using `[this, e_mul hr, Fin.val_zero, pow_zero, one_smul, toInh_apply]`. Both sides reduce to the same expression. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[toInh_apply, Fin.partialProd_contractNth, Fin.val_succ, neg_one_pow_smul_eq]`.
+-/
 theorem toInh_d (n : ℕ) (c : C.obj ⦋n⦌) :
     toInh hr (n + 1) ((AlgebraicTopology.AlternatingCofaceMapComplex.objD C n) c) =
       (dLocallyConstant M n).hom (toInh hr n c) := by
@@ -113,6 +151,9 @@ theorem toInh_d (n : ℕ) (c : C.obj ⦋n⦌) :
 abbrev upF (k : Type) [CommRing k] : ModuleCat.{0} k ⥤ AddCommGrpCat.{1} :=
   forget₂ (ModuleCat.{0} k) AddCommGrpCat.{0} ⋙ AddCommGrpCat.uliftFunctor.{1, 0}
 
+/- English proof (translation)
+Simplify using `[AlgebraicTopology.alternatingCofaceMapComplex, AlgebraicTopology.AlternatingCofaceMapComplex.obj]`.
+-/
 theorem alt_d (n : ℕ) :
     ((AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{1}).obj C).d n (n + 1) =
       AlgebraicTopology.AlternatingCofaceMapComplex.objD C n := by
@@ -139,6 +180,9 @@ end
 end GlobalTheory.HomogCochains
 
 open GlobalTheory.HomogCochains in
+/- English proof (translation)
+Introduce `k _ G _ _ _ M _ C e he hr hd n`. Set `i1` to `(HomologicalComplex.homologyFunctor AddCommGrpCat.{1} _ n).mapIso (complexIso he hr hd)`. Set `i2 : (((upF k).mapHomologicalComplex _).obj (GroundTheory.ProfCoh.cochainsComplex M)).homology n ≅ (upF k).obj ((GroundTheory.ProfCoh.cochainsComplex M).homology n)` to `((GroundTheory.ProfCoh.cochainsComplex M).sc n).mapHomologyIso (upF k)`. Conclude with `⟨(i1 ≪≫ i2).addCommGroupIsoToAddEquiv.trans AddEquiv.ulift⟩`.
+-/
 theorem GlobalTheory.homogeneousCochains_homology_addEquiv : ∀ (k : Type) [CommRing k] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (M : Rep.{0} k G) [GroundTheory.ProfCoh.IsDiscreteRep M] (C : CosimplicialObject AddCommGrpCat.{1}) (e : ∀ m : ℕ, C.obj ⦋m⦌ →+ ((Fin (m + 1) → G) → M)), (∀ m, Function.Injective (e m)) → (∀ m (φ : (Fin (m + 1) → G) → M), (∃ c, e m c = φ) ↔ IsLocallyConstant φ ∧ ∀ (τ : G) (σ : Fin (m + 1) → G), φ (fun i => τ * σ i) = M.ρ τ (φ σ)) → (∀ m (i : Fin (m + 2)) (c : C.obj ⦋m⦌) (σ : Fin (m + 2) → G), e (m + 1) (C.δ i c) σ = e m c (σ ∘ i.succAbove)) → ∀ n : ℕ, Nonempty (((AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{1}).obj C).homology n ≃+ GroundTheory.ProfCoh.cohomology M n) := by
   intro k _ G _ _ _ M _ C e he hr hd n
   let i1 := (HomologicalComplex.homologyFunctor AddCommGrpCat.{1} _ n).mapIso (complexIso he hr hd)

@@ -15,6 +15,11 @@ section Meas
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r` using `ha`. Establish `hb' : bᴴ * Formalism.QuantumDeterminants.Hpk k r * b = Formalism.QuantumDeterminants.Hpk k r` using `hb`. Use `show (a * b)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (a * b) = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [ha', hb']`.
+-/
 theorem uh_mul {a b : Mx k r} (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (hb : b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) :
     a * b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
   have ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r := ha
@@ -24,6 +29,11 @@ theorem uh_mul {a b : Mx k r} (ha : a ∈ Formalism.QuantumDeterminants.UH (Form
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.QuantumDeterminants.Hpk k r := by rw [ha', hb']
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r` using `ha`. Establish `hax' : (a * x)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (a * x) = Formalism.QuantumDeterminants.Hpk k r` using `hax`. Use `show xᴴ * Formalism.QuantumDeterminants.Hpk k r * x = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Formalism.QuantumDeterminants.Hpk k r := hax'`.
+-/
 theorem uh_cancel {a x : Mx k r} (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))
     (hax : a * x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) : x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
   have ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r := ha
@@ -34,6 +44,9 @@ theorem uh_cancel {a x : Mx k r} (ha : a ∈ Formalism.QuantumDeterminants.UH (F
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.QuantumDeterminants.Hpk k r := hax'
 
+/- English proof (translation)
+Establish `hc : IsClosed {x : Formalism.QuantumDeterminants.Mt k r | (Matrix.of x)ᴴ * Formalism.QuantumDeterminants.Hpk k r * Matrix.of x = Formalism.QuantumDeterminants.Hpk k r}` using `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Conclude with `hc.measurableSet.compl`.
+-/
 theorem uh_measurableSet :
     MeasurableSet {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} := by
   have hc : IsClosed {x : Formalism.QuantumDeterminants.Mt k r | (Matrix.of x)ᴴ * Formalism.QuantumDeterminants.Hpk k r * Matrix.of x = Formalism.QuantumDeterminants.Hpk k r} :=
@@ -41,6 +54,21 @@ theorem uh_measurableSet :
       continuous_const
   exact hc.measurableSet.compl
 
+/- English proof (translation)
+Use `set B : Set (Formalism.QuantumDeterminants.Mt k r) := {x | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} with hBdef`. Establish `hBm : MeasurableSet B` using `uh_measurableSet`. Establish `key` using `hq (B.indicator 1) (measurable_one.indicator hBm)`. Rewrite `key` using `[lintegral_indicator_one hBm, hG]`. Establish `hc : μS Bᶜ ≠ 0`.
+
+Introduce `h0`. Apply `hS0` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`. Use `le_antisymm ?_ zero_le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hle : ∀ x, μS Bᶜ * B.indicator 1 x ≤ ∫⁻ s, B.indicator 1 (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS`. Introduce `x`. Distinguish the cases in `hx : x ∈ B`. Rewrite using `[Set.indicator_of_mem hx, Pi.one_apply, mul_one, ← lintegral_indicator_one hBm.compl]`. Use `lintegral_mono fun s => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hs : Matrix.of s ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)`. Establish `hsx : (fun i j => (Matrix.of s * Matrix.of x) i j) ∈ B` using `fun hmem => hx (uh_cancel (x := Matrix.of x) hs hmem)`. Establish `hsB : s ∈ Bᶜ` using `fun h => h hs`. Rewrite using `[Set.indicator_of_mem hsB, Set.indicator_of_mem hsx]`. Conclude with `le_rfl`.
+
+Establish `hsB : s ∉ Bᶜ` using `fun h => h hs`. Rewrite using `[Set.indicator_of_notMem hsB]`. Conclude with `zero_le`. Rewrite using `[Set.indicator_apply, if_neg hx, mul_zero]`. Conclude with `zero_le`.
+
+Establish `h0 : μS Bᶜ * νq B = 0`. Rewrite using `[← lintegral_indicator_one hBm, ← lintegral_const_mul _ (measurable_one.indicator hBm)]`. Use `le_antisymm ?_ zero_le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hνB : νq B = 0` using `(mul_eq_zero.mp h0).resolve_left hc`.
+
+Rewrite using `[ae_iff]`. Conclude with `hνB`.
+-/
 theorem ae_UH_of_quot {μG μS νq : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (hG : μG {x | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} = 0)
     (hS0 : μS ≠ 0) (hS : μS {x | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} = 0)
@@ -86,6 +114,19 @@ theorem ae_UH_of_quot {μG μS νq : Measure (Formalism.QuantumDeterminants.Mt k
   rw [ae_iff]
   exact hνB
 
+/- English proof (translation)
+Take `⟨hWs, hW0, hWb, -⟩` from `hW`. Take `⟨hNs, hN0, hNb, -⟩` from `hN`. Use `haveI := hWs`. Use `haveI := hNs`. Establish `hcont : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => fun i j => (Matrix.of p.1 * Matrix.of p.2) i j)`.
+
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Establish `hmeas` using `hcont.measurable`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Unfold `muSof at h0`. Rewrite `h0` using `[Measure.map_eq_zero_iff hmeas.aemeasurable]`. Establish `h1 : (μW.prod μN) Set.univ = 0` using `by rw [h0, Measure.coe_zero, Pi.zero_apply]`. Rewrite `h1` using `[← Set.univ_prod_univ, Measure.prod_prod, mul_eq_zero]`.
+
+Break down `h1 with h | h` into its components or cases. Conclude with `hW0 (Measure.measure_univ_eq_zero.mp h)`. Conclude with `hN0 (Measure.measure_univ_eq_zero.mp h)`. Unfold `muSof`. Rewrite using `[Measure.map_apply hmeas uh_measurableSet]`.
+
+Use `measure_mono_null (t := {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.UWset k r z} ×ˢ Set.univ ∪ Set.univ ×ˢ {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.Nset k r}) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ hab`. Assume the negation of the conclusion as `hno`. Simplify using `only [Set.mem_union, Set.mem_prod, Set.mem_univ, and_true, true_and, Set.mem_setOf_eq, not_or, not_not] at hno`. Conclude with `hab (uh_mul hno.1.1 hno.2.1)`.
+
+Use `measure_union_null ?_ ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, hWb, zero_mul]`. Rewrite using `[Measure.prod_prod, hNb, mul_zero]`.
+-/
 theorem muSof_facts {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (hW : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW)
     (hN : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μN) :
@@ -128,6 +169,17 @@ section Deg
 
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Take `⟨-, hI⟩` from `hS u u u u`. Establish `hpt : ∀ x : Formalism.QuantumDeterminants.Mt k r, ⟪u, σ (Matrix.of x) u⟫_ℂ * star ⟪u, σ (Matrix.of x) u⟫_ℂ = ((‖⟪u, σ (Matrix.of x) u⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Introduce `x`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using `only [hpt] at hI`.
+
+Rewrite `hI` using `[integral_complex_ofReal]`. Establish `hn : 0 < ‖u‖` using `norm_pos_iff.mpr hu`. Establish `hu4 : (0 : ℝ) < ‖u‖ ^ 4` using `pow_pos hn 4`. Establish `huu : ⟪u, u⟫_ℂ = ((‖u‖ ^ 2 : ℝ) : ℂ)`. Apply `Complex.ext` to reduce the goal to its premises.
+
+Rewrite using `[Complex.ofReal_re]`. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) u`. Rewrite using `[Complex.ofReal_im]`. Conclude with `inner_self_im (𝕜 := ℂ) u`. Establish `hreal : ∫ x, ‖⟪u, σ (Matrix.of x) u⟫_ℂ‖ ^ 2 ∂μG = ‖u‖ ^ 4 / d`.
+
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[hI, huu]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `PI.BesselPeriodGGP.fdegH`.
+
+Rewrite using `[hreal]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fdeg_eq {σ : Mx k r → (H →L[ℂ] H)} {μG : Measure (Formalism.QuantumDeterminants.Mt k r)} {d : ℝ} (hd : 0 < d)
     (hS : ∀ v w v' w' : H,
       Integrable (fun x : Formalism.QuantumDeterminants.Mt k r => ⟪w, σ (Matrix.of x) v⟫_ℂ * star ⟪w', σ (Matrix.of x) v'⟫_ℂ) μG ∧
@@ -164,6 +216,11 @@ section Bessel
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
 
+/- English proof (translation)
+Take `⟨hadd, hsm, heq, C, Ws, hWs, hbd⟩` from `hB`. Use `⟨fun v hv w hw => ?_, fun c v hv => ?_, fun h hh m hm v hv => ?_, ‖κ‖ * C, Ws, hWs, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [hadd v hv w hw, smul_add]`. Simplify using `only [hsm c v hv]`. Conclude with `smul_comm κ c (B v)`.
+
+Simplify using `only [heq h hh m hm v hv, map_smul]`. Conclude with `smul_comm κ (ψ m) _`. Rewrite using `[norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hbd v hv) (norm_nonneg κ)`.
+-/
 theorem bessel_smul {z : Fin (2 * r + k + 1) → ℂ} {ψ : Mx k r → ℂ} {σ : Mx k r → (H →L[ℂ] H)}
     {π : Mx k r → (Wp →L[ℂ] Wp)} {B : H → Wp}
     (hB : PI.BesselMapUniq.IsBesselMapSm (k := k) (r := r) z ψ σ π B) (κ : ℂ) :
@@ -178,12 +235,22 @@ theorem bessel_smul {z : Fin (2 * r + k + 1) → ℂ} {ψ : Mx k r → ℂ} {σ 
   · rw [norm_smul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (hbd v hv) (norm_nonneg κ)
 
+/- English proof (translation)
+Use `⟨fun _ _ _ _ => by simp, fun _ _ _ => by simp, fun _ _ _ _ _ _ => by simp, 0, [], by simp, fun _ _ => by simp⟩` and prove the remaining obligations.
+-/
 theorem bessel_zero {z : Fin (2 * r + k + 1) → ℂ} {ψ : Mx k r → ℂ} {σ : Mx k r → (H →L[ℂ] H)}
     {π : Mx k r → (Wp →L[ℂ] Wp)} :
     PI.BesselMapUniq.IsBesselMapSm (k := k) (r := r) z ψ σ π (fun _ => (0 : Wp)) := by
   refine ⟨fun _ _ _ _ => by simp, fun _ _ _ => by simp, fun _ _ _ _ _ _ => by simp, 0, [], by simp,
     fun _ _ => by simp⟩
 
+/- English proof (translation)
+Establish `hfun : Formalism.QuantumDeterminants.psi k r z c = PI.BesselMapUniq.psiGen k r z (fun _ => c)`. Use function extensionality and compare the values at `fun g => hPsi k r z c g`. Rewrite `h0`, `h` using `[hfun]`. Take `⟨a, b, hab, hlin⟩` from `hU k r ε lam H σ z (fun _ => c) u Wp π hl hσ hz hT (fun _ => hc) hπ B0 B h0 h`. Establish `hb : b ≠ 0`.
+
+Introduce and unpack `rfl`. Establish `ha : a ≠ 0` using `hab.resolve_right (fun h => h rfl)`. Establish `h2` using `hlin x0 hx0`. Rewrite `h2` using `[zero_smul, add_zero, smul_eq_zero]`. Conclude with `h2.elim ha hne`.
+
+Use `⟨-(a / b), fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : b • B x = -(a • B0 x)` using `eq_neg_of_add_eq_zero_right (hlin x hx)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem jsz_line (hU : PI.BesselMapUniq.BesselMapUniq) (hPsi : PsiConst)
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {u : Fin k → ℝ} {π : Mx k r → (Wp →L[ℂ] Wp)}

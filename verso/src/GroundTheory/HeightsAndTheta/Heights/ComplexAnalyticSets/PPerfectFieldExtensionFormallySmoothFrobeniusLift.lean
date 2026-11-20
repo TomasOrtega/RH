@@ -7,6 +7,11 @@ section FrobeniusLift
 
 variable {C : Type*} [CommRing C] {N : Ideal C} {p : ℕ}
 
+/- English proof (translation)
+Establish `hn2 : n ^ 2 = 0`. Use `Ideal.pow_mem_pow hn 2` as an intermediate fact. Rewrite `this` using `[hN, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `hnp : n ^ p = 0`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hp.two_le`.
+
+Rewrite using `[hk, pow_add, hn2, zero_mul]`. Rewrite using `[add_pow_prime_eq hp, hpC, hnp]`. Simplify using the standard rewrite rules.
+-/
 theorem pow_prime_add_of_sq_eq_bot (hp : p.Prime) (hpC : (p : C) = 0) (hN : N ^ 2 = ⊥) (c : C) {n : C}
     (hn : n ∈ N) : (c + n) ^ p = c ^ p := by
   have hn2 : n ^ 2 = 0 := by
@@ -18,6 +23,9 @@ theorem pow_prime_add_of_sq_eq_bot (hp : p.Prime) (hpC : (p : C) = 0) (hN : N ^ 
   rw [add_pow_prime_eq hp, hpC, hnp]
   simp
 
+/- English proof (translation)
+Establish `hmem : c - c' ∈ N` using `Ideal.Quotient.eq.mp h`. Use `pow_prime_add_of_sq_eq_bot hp hpC hN c' hmem` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem pow_prime_eq_of_mk_eq (hp : p.Prime) (hpC : (p : C) = 0) (hN : N ^ 2 = ⊥) {c c' : C}
     (h : Ideal.Quotient.mk N c = Ideal.Quotient.mk N c') : c ^ p = c' ^ p := by
   have hmem : c - c' ∈ N := Ideal.Quotient.eq.mp h
@@ -43,6 +51,9 @@ noncomputable def sqZeroFrobeniusLift (N : Ideal C) (hp : p.Prime) (hpC : (p : C
     rw [← hadd]
     exact pow_prime_eq_of_mk_eq hp hpC hN (by simp only [map_add, (Ideal.Quotient.mk_surjective _).choose_spec])
 
+/- English proof (translation)
+The claim follows from `pow_prime_eq_of_mk_eq hp hpC hN (Ideal.Quotient.mk_surjective _).choose_spec`.
+-/
 theorem sqZeroFrobeniusLift_mk (hp : p.Prime) (hpC : (p : C) = 0) (hN : N ^ 2 = ⊥) (c : C) :
     sqZeroFrobeniusLift N hp hpC hN (Ideal.Quotient.mk N c) = c ^ p :=
   pow_prime_eq_of_mk_eq hp hpC hN (Ideal.Quotient.mk_surjective _).choose_spec

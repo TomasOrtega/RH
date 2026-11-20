@@ -15,28 +15,43 @@ noncomputable section
 
 namespace GlobalTheory.ScalarAcyc
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TorsionForm.FlatAcyc.exists_fundamentalDomain_of_isLat M hM`.
+-/
 theorem fundDomain {g : ℕ} (M : Submodule ℤ (Fl g)) (hM : IsLat M) :
     ∃ D : Set (Fl g), MeasurableSet D ∧ Bornology.IsBounded D ∧
       IsAddFundamentalDomain M.toAddSubgroup D volume :=
   GlobalTheory.TorsionForm.FlatAcyc.exists_fundamentalDomain_of_isLat M hM
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TorsionForm.FlatAcyc.setIntegral_fderiv_apply_eq_zero_of_periodic M D hDm hDb hD F hF hper y`.
+-/
 theorem integral_fderiv_eq_zero {g : ℕ} (M : Submodule ℤ (Fl g)) (D : Set (Fl g))
     (hDm : MeasurableSet D) (hDb : Bornology.IsBounded D)
     (hD : IsAddFundamentalDomain M.toAddSubgroup D volume) (F : Fl g → ℂ) (hF : ContDiff ℝ 1 F)
     (hper : ∀ l ∈ M, ∀ x, F (x + l) = F x) (y : Fl g) : ∫ x in D, fderiv ℝ F x y = 0 :=
   GlobalTheory.TorsionForm.FlatAcyc.setIntegral_fderiv_apply_eq_zero_of_periodic M D hDm hDb hD F hF hper y
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TorsionForm.FlatAcyc.eq_zero_of_setIntegral_fundamentalDomain_eq_zero M D hM hDm hD q hq hq0 hper hint h0 x`.
+-/
 theorem eq_zero_of_integral {g : ℕ} (M : Submodule ℤ (Fl g)) (hM : IsLat M) (D : Set (Fl g))
     (hDm : MeasurableSet D) (hD : IsAddFundamentalDomain M.toAddSubgroup D volume)
     (q : Fl g → ℝ) (hq : Continuous q) (hq0 : ∀ x, 0 ≤ q x) (hper : ∀ l ∈ M, ∀ x, q (x + l) = q x)
     (hint : IntegrableOn q D) (h0 : ∫ x in D, q x = 0) (x : Fl g) : q x = 0 :=
   GlobalTheory.TorsionForm.FlatAcyc.eq_zero_of_setIntegral_fundamentalDomain_eq_zero M D hM hDm hD q hq hq0 hper hint h0 x
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.siegel_two_im_quad_nonneg T hT x`.
+-/
 theorem quad_nonneg {g : ℕ} (T : Matrix (Fin g) (Fin g) ℂ) (hT : GlobalTheory.IsSiegel T) (x : Fin g → ℂ) :
     (∑ a, ∑ c, ((2 : ℂ) • T.map fun t => (t.im : ℂ)) a c * (starRingEnd ℂ (x a) * x c)).im = 0 ∧
     0 ≤ (∑ a, ∑ c, ((2 : ℂ) • T.map fun t => (t.im : ℂ)) a c * (starRingEnd ℂ (x a) * x c)).re :=
   GlobalTheory.siegel_two_im_quad_nonneg T hT x
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TorsionForm.FlatAcyc.DivId.divergence_identity G H hH hHpos u hu z`.
+-/
 theorem div_identity {g : ℕ} (G : Matrix (Fin g) (Fin g) ℂ) (H : (Fin g → ℂ) → ℝ)
     (hH : ContDiff ℝ ∞ H) (hHpos : ∀ z, 0 < H z) (u : (Fin g → ℂ) → ℂ) (hu : ContDiff ℝ ∞ u)
     (z : Fin g → ℂ) :
@@ -47,6 +62,17 @@ theorem div_identity {g : ℕ} (G : Matrix (Fin g) (Fin g) ℂ) (H : (Fin g → 
       (H z : ℂ) * ∑ a, ∑ c, G a c * (starRingEnd ℂ (d01 u z (ev a)) * d01 u z (ev c)) :=
   GlobalTheory.TorsionForm.FlatAcyc.DivId.divergence_identity G H hH hHpos u hu z
 
+/- English proof (translation)
+Take `⟨D, hDm, hDb, hD⟩` from `fundDomain M hM`. Establish `hcomp : IsCompact (closure D)` using `hDb.isCompact_closure`. Establish `hint : ∀ i, IntegrableOn (fun x => fderiv ℝ (F i) x (y i)) D` using `fun i => (((((hF i).continuous_fderiv one_ne_zero).clm_apply continuous_const).continuousOn).integrableOn_compact hcomp).mono_set subset_closure`. Establish `hqper : ∀ l ∈ M, ∀ x, q (x + l) = q x`. Introduce `l hl x`.
+
+Establish `hfd : ∀ i, fderiv ℝ (F i) (x + l) = fderiv ℝ (F i) x`. Introduce `i`. Establish `: (fun x' => F i (x' + l)) = F i` using `funext fun x' => hper i l hl x'`. Rewrite using `[← fderiv_comp_add_right, this]`. Establish `h1` using `hqF (x + l)`.
+
+Establish `h2` using `hqF x`. Simplify using `only [hfd] at h1`. Conclude with `h1.trans h2.symm` after adjusting the coercions. Establish `hqi : IntegrableOn q D` using `(hq.continuousOn.integrableOn_compact hcomp).mono_set subset_closure`. Establish `h0 : ∫ x in D, q x = 0`.
+
+Establish `: ((∫ x in D, q x : ℝ) : ℂ) = 0`. Rewrite using `[← integral_complex_ofReal]`. Repeatedly rewrite using `[hqF]`. Rewrite using `[integral_finset_sum _ fun i _ => hint i]`. Conclude with `Finset.sum_eq_zero fun i _ => integral_fderiv_eq_zero M D hDm hDb hD (F i) (hF i) (hper i) (y i)`.
+
+Conclude with `this` after adjusting the coercions. Conclude with `eq_zero_of_integral M hM D hDm hD q hq hq0 hqper hqi h0 x`.
+-/
 theorem torus_vanish {g : ℕ} {ι : Type} [Fintype ι] (M : Submodule ℤ (Fl g)) (hM : IsLat M)
     (F : ι → Fl g → ℂ) (hF : ∀ i, ContDiff ℝ 1 (F i))
     (hper : ∀ i, ∀ l ∈ M, ∀ x, F i (x + l) = F i x) (y : ι → Fl g) (q : Fl g → ℝ)
@@ -95,6 +121,45 @@ end GlobalTheory.ScalarAcyc
 
 namespace GlobalTheory.ScalarAcyc
 
+/- English proof (translation)
+Introduce `g T hT M hM H hH hHpos u hu J hu_per hdu_per hH_per k hk heq`. Use `set G : Matrix (Fin g) (Fin g) ℂ := (2 : ℂ) • T.map fun t => (t.im : ℂ) with hG`. Use `set Fa : Fin g → (Fin g → ℂ) → ℂ := fun a z => (H z : ℂ) * starRingEnd ℂ (u z) * ∑ c, G a c * d01 u z (ev c) with hFa_def`. Use `set Q : (Fin g → ℂ) → ℂ := fun z => ∑ a, ∑ c, G a c * (starRingEnd ℂ (d01 u z (ev a)) * d01 u z (ev c)) with hQ_def`. Use `set q : (Fin g → ℂ) → ℝ := fun z => H z * k * ‖u z‖ ^ 2 + H z * (Q z).re with hq_def`.
+
+Establish `hfu : ContDiff ℝ ∞ (fderiv ℝ u)` using `(contDiff_infty_iff_fderiv.1 hu).2`. Establish `hap : ∀ v, ContDiff ℝ ∞ (fun z => fderiv ℝ u z v)` using `fun v => hfu.clm_apply contDiff_const`. Establish `hd01 : ∀ c, ContDiff ℝ ∞ (fun z => d01 u z (ev c))`. Introduce `c`. Use `show ContDiff ℝ ∞ (fun z => (1 / 2 : ℂ) • (fderiv ℝ u z (ev c) + Complex.I • fderiv ℝ u z (Complex.I • ev c)))`.
+
+Conclude with `((hap _).add ((hap _).const_smul Complex.I)).const_smul _`. Establish `hHc : ContDiff ℝ ∞ (fun z => (H z : ℂ))` using `Complex.ofRealCLM.contDiff.comp hH`. Establish `hconj : ContDiff ℝ ∞ (fun z => starRingEnd ℂ (u z))` using `Complex.conjCLE.contDiff.comp hu`. Establish `hFa : ∀ a, ContDiff ℝ ∞ (Fa a)` using `fun a => (hHc.mul hconj).mul (ContDiff.sum fun c _ => contDiff_const.mul (hd01 c))`. Establish `hFa_per : ∀ a, ∀ l ∈ M, ∀ z, Fa a (z + per T l) = Fa a z`.
+
+Introduce `a l hl z`. Use `show (H (z + per T l) : ℂ) * starRingEnd ℂ (u (z + per T l)) * ∑ c, G a c * d01 u (z + per T l) (ev c) = (H z : ℂ) * starRingEnd ℂ (u z) * ∑ c, G a c * d01 u z (ev c)`. Rewrite using `[hu_per l hl z]`. Simplify using `only [hdu_per l hl z]`. Establish `hS : ∑ c, G a c * (J l z * d01 u z (ev c)) = J l z * ∑ c, G a c * d01 u z (ev c)`.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun c _ => by ring`. Rewrite using `[hS, map_mul, ← hH_per l hl z]`. Establish `hJ` using `Complex.conj_mul' (J l z)`. Use `push_cast`. Take the linear combination `((H (z + per T l) : ℂ) * starRingEnd ℂ (u z) * ∑ c, G a c * d01 u z (ev c)) * hJ`.
+
+Establish `hdiv : ∀ z, (q z : ℂ) = ∑ a, d10 (Fa a) z (ev a)`. Introduce `z`. Establish `h2` using `div_identity G H hH hHpos u hu z`. Establish `h3` using `quad_nonneg T hT (fun a => d01 u z (ev a))`. Rewrite `h3` using `[← hG]`.
+
+Establish `hQz : Q z = ((Q z).re : ℂ)` using `Complex.ext (by simp) (by simpa [hQ_def] using h3.1)`. Establish `hu2` using `Complex.conj_mul' (u z)`. Rewrite using `[show (∑ a, d10 (Fa a) z (ev a)) = _ from h2, heq z]`. Rewrite using `[show (∑ a, ∑ c, G a c * (starRingEnd ℂ (d01 u z (ev a)) * d01 u z (ev c))) = Q z from rfl, hQz]`. Simplify using `only [hq_def]`.
+
+Use `push_cast`. Take the linear combination `-((H z : ℂ) * k) * hu2`. Establish `hq0 : ∀ z, 0 ≤ q z`. Introduce `z`. Establish `h3` using `quad_nonneg T hT (fun a => d01 u z (ev a))`.
+
+Rewrite `h3` using `[← hG]`. Use `hHpos z` as an intermediate fact. Simplify using `only [hq_def]`. Establish `hQ : 0 ≤ (Q z).re` using `h3.2`. Check the signs of the components of the expression.
+
+Establish `hqc : Continuous q`. Establish `hQc : Continuous Q` using `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun c _ => continuous_const.mul ((Complex.continuous_conj.comp (hd01 a).continuous).mul (hd01 c).continuous)`. Conclude with `((hH.continuous.mul continuous_const).mul (hu.continuous.norm.pow 2)).add (hH.continuous.mul (Complex.continuous_re.comp hQc))`. Use `set φ : Fl g →L[ℝ] (Fin g → ℂ) := LinearMap.toContinuousLinearMap (perLin T) with hφ`. Establish `hφx : ∀ x, φ x = per T x` using `fun x => rfl`.
+
+Establish `hinv` using `flatOf_per_inv T hT.2`. Establish `hcomp : ∀ a (c : ℂ) x y, fderiv ℝ (fun x => c * Fa a (φ x)) x y = c * fderiv ℝ (Fa a) (φ x) (φ y)`. Introduce `a c x y`. Establish `hd : DifferentiableAt ℝ (Fa a) (φ x)` using `((hFa a).differentiable (by simp)) _`. Establish `h1` using `(hd.hasFDerivAt.comp x φ.hasFDerivAt).const_mul c`.
+
+Rewrite using `[show (fun x => c * Fa a (φ x)) = fun y => c * (Fa a ∘ φ) y from rfl, h1.fderiv]`. Simplify using the standard rewrite rules. Set `F : Fin g ⊕ Fin g → Fl g → ℂ` to `Sum.elim (fun a x => (1 / 2 : ℂ) * Fa a (φ x)) (fun a x => -(Complex.I / 2) * Fa a (φ x))`. Set `y : Fin g ⊕ Fin g → Fl g` to `Sum.elim (fun a => flatOf T (ev a)) (fun a => flatOf T (Complex.I • ev a))`. Establish `hF : ∀ i, ContDiff ℝ 1 (F i)`.
+
+Introduce and unpack `(a | a)`. Conclude with `contDiff_const.mul (((hFa a).comp φ.contDiff).of_le (by simp))`. Conclude with `contDiff_const.mul (((hFa a).comp φ.contDiff).of_le (by simp))`. Establish `hFper : ∀ i, ∀ l ∈ M, ∀ x, F i (x + l) = F i x`. Introduce and unpack `(a | a) l hl x`.
+
+Use `show (1 / 2 : ℂ) * Fa a (φ (x + l)) = (1 / 2 : ℂ) * Fa a (φ x)`. Rewrite using `[map_add, hφx l, hFa_per a l hl]`. Use `show -(Complex.I / 2) * Fa a (φ (x + l)) = -(Complex.I / 2) * Fa a (φ x)`. Rewrite using `[map_add, hφx l, hFa_per a l hl]`. Establish `hqF : ∀ x, ((q (φ x)) : ℂ) = ∑ i, fderiv ℝ (F i) x (y i)`.
+
+Introduce `x`. Rewrite using `[hdiv, Fintype.sum_sum_type, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [F, y, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[hcomp, hcomp]`.
+
+Simplify using `only [hφx, hinv.2, d10, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z`. Establish `h0` using `torus_vanish M hM F hF hFper y (fun x => q (φ x)) (hqc.comp φ.continuous) (fun x => hq0 _) hqF (flatOf T z)`. Simplify using `only [hφx, hinv.2] at h0`.
+
+Establish `h3` using `quad_nonneg T hT (fun a => d01 u z (ev a))`. Rewrite `h3` using `[← hG]`. Establish `hQ : 0 ≤ (Q z).re` using `h3.2`. Establish `hH0` using `hHpos z`. Establish `hA : H z * k * ‖u z‖ ^ 2 = 0`.
+
+Establish `: 0 ≤ H z * k * ‖u z‖ ^ 2` using `by positivity`. Establish `: 0 ≤ H z * (Q z).re` using `by positivity`. Simplify using `only [hq_def] at h0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: ‖u z‖ ^ 2 = 0`.
+
+Break down `mul_eq_zero.1 hA with h | h` into its components or cases. Conclude with `absurd h (by positivity)`. Conclude with `h`. Conclude with `norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 this)`.
+-/
 theorem vanish : ∀ {g : ℕ} (T : Matrix (Fin g) (Fin g) ℂ) (hT : GlobalTheory.IsSiegel T)
     (M : Submodule ℤ (Fl g)) (hM : IsLat M) (H : (Fin g → ℂ) → ℝ) (hH : ContDiff ℝ ∞ H)
     (hHpos : ∀ z, 0 < H z) (u : (Fin g → ℂ) → ℂ) (hu : ContDiff ℝ ∞ u)

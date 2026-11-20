@@ -22,6 +22,9 @@ section Gen
 
 variable {S' : Scheme.{0}}
 
+/- English proof (translation)
+Conclude with `map_pow (IsMonHom.monoidHom f T) x n`.
+-/
 theorem pow_comp_hom {T G G' : Over S'} [MonObj G] [MonObj G'] (f : G ⟶ G') [IsMonHom f] (x : T ⟶ G) (n : ℕ) :
     (x ^ n) ≫ f = (x ≫ f) ^ n := by
   exact map_pow (IsMonHom.monoidHom f T) x n
@@ -32,12 +35,18 @@ section Helpers
 
 variable {S : Scheme.{0}} {Ω : Type} [Field Ω] (s : Sp Ω ⟶ S)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using toBase_one s G (T := T)`. Consider the case `succ k ih => rw [pow_succ, pow_succ, toBase_mul, ih]`.
+-/
 theorem toBase_pow (G : Over S) [GrpObj G] {T : Over (Sp Ω)} (x : T ⟶ (Over.pullback s).obj G) (n : ℕ) :
     toBase G s (x ^ n) = toBase G s x ^ n := by
   induction n with
   | zero => simpa using toBase_one s G (T := T)
   | succ k ih => rw [pow_succ, pow_succ, toBase_mul, ih]
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Over.comp_left, pull_comp]`. Rewrite using `[show (pull η[G].left) c = 0 from GlobalTheory.PrimitiveOverField.pic_field _]`. Conclude with `map_zero _`.
+-/
 theorem pull_one_pt {G T : Over (Sp Ω)} [MonObj G] (c : Pic G.left) : pull (1 : T ⟶ G).left c = 0 := by
   rw [Hom.one_def, Over.comp_left, pull_comp]
   rw [show (pull η[G].left) c = 0 from GlobalTheory.PrimitiveOverField.pic_field _]
@@ -48,6 +57,11 @@ section Biadd
 variable {A B : Over S} [GrpObj A] [GrpObj B] {P : LB (A ⊗ B).left} (hD : IsDual A B P)
   (hD' : IsDual B A (swap P)) {Y : Over S}
 
+/- English proof (translation)
+Establish `hP` using `hD.isLB`. Establish `hm` using `hD.additive Y a a' b`. Establish `h1 : (ev P a b).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hP _`. Establish `h2 : (ev P a' b).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hP _`. Establish `h3 : (ev P (a * a') b).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hP _`.
+
+Express the relevant statement in the definitionally equal form `cls (ev P (a * a') b) h3 = cls (ev P a b) h1 + cls (ev P a' b) h2`. Rewrite using `[← cls_tens h1 h2 (isLB_tens h1 h2)]`. Conclude with `(cls_eq_iff _ _).2 hm`.
+-/
 private theorem evc_mul_left' (a a' : Y ⟶ A) (b : Y ⟶ B) :
     evc hD.isLB (a * a') b = evc hD.isLB a b + evc hD.isLB a' b := by
   have hP := hD.isLB
@@ -60,12 +74,18 @@ private theorem evc_mul_left' (a a' : Y ⟶ A) (b : Y ⟶ B) :
   exact (cls_eq_iff _ _).2 hm
 
 include hD in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using IsAdditive.evc_one hD.isLB hD.additive b`. Consider the case `succ k ih => rw [pow_succ, evc_mul_left' hD, ih, succ_nsmul]`.
+-/
 theorem evc_pow_left (a : Y ⟶ A) (b : Y ⟶ B) (n : ℕ) : evc hD.isLB (a ^ n) b = n • evc hD.isLB a b := by
   induction n with
   | zero => simpa using IsAdditive.evc_one hD.isLB hD.additive b
   | succ k ih => rw [pow_succ, evc_mul_left' hD, ih, succ_nsmul]
 
 include hD hD' in
+/- English proof (translation)
+Rewrite using `[← evc_swap hD.isLB hD'.isLB, evc_pow_left hD' b a n, evc_swap hD.isLB hD'.isLB]`.
+-/
 theorem evc_pow_right (a : Y ⟶ A) (b : Y ⟶ B) (n : ℕ) : evc hD.isLB a (b ^ n) = n • evc hD.isLB a b := by
   rw [← evc_swap hD.isLB hD'.isLB, evc_pow_left hD' b a n, evc_swap hD.isLB hD'.isLB]
 
@@ -78,6 +98,15 @@ variable {A B : Over S} [GrpObj A] [GrpObj B] {P : LB (A ⊗ B).left} (hD : IsDu
   (e : LBIso ((ev P (fst A A) (snd A A ≫ l)).pull (sqToBase A s)) (abelian₂ ((Over.pullback s).obj A) L))
   {T : Over (Sp Ω)}
 
+/- English proof (translation)
+Establish `hP : (abelian₂ ((Over.pullback s).obj A) L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hM : (ev P (fst A A) (snd A A ≫ l)).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hD.isLB _`. Establish `hM' : ((ev P (fst A A) (snd A A ≫ l)).pull (sqToBase A s)).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hM _`. Establish `h1 : cls _ hP = cls _ hM'` using `((cls_eq_iff hM' hP).2 e').symm`. Establish `hx` using `toBase_comp s A (lift x y) (fst _ _)`.
+
+Establish `hy` using `toBase_comp s A (lift x y) (snd _ _)`. Rewrite `hx` using `[lift_fst]`. Rewrite `hy` using `[lift_snd]`. Establish `key : (lift x y).left ≫ sqToBase A s = (lift (toBase A s x) (toBase A s y)).left`. Rewrite using `[hx, hy, ← comp_lift, Over.comp_left]`.
+
+Both sides reduce to the same expression. Rewrite using `[← GlobalTheory.CubeDual.evc_lam hL hP]`. Express the relevant statement in the definitionally equal form `pull (lift x y).left (cls _ hP) = pull (lift (toBase A s x) (toBase A s y ≫ l)).left (cls P hD.isLB)`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `pull (lift x y).left (pull (sqToBase A s) (pull (lift (fst A A) (snd A A ≫ l)).left (cls P hD.isLB))) = _`.
+
+Rewrite using `[← pull_comp, ← pull_comp, key, ← Over.comp_left, comp_lift, lift_fst, lift_snd_assoc]`.
+-/
 private theorem lam_eq_evc_toBase_of_isDual (e' : LBIso ((ev P (fst A A) (snd A A ≫ l)).pull (sqToBase A s)) (abelian₂ ((Over.pullback s).obj A) L))
     (x y : T ⟶ (Over.pullback s).obj A) :
     lam (cls L hL) x y = evc hD.isLB (toBase A s x) (toBase A s y ≫ l) := by
@@ -101,12 +130,18 @@ private theorem lam_eq_evc_toBase_of_isDual (e' : LBIso ((ev P (fst A A) (snd A 
     (cls P hD.isLB))) = _
   rw [← pull_comp, ← pull_comp, key, ← Over.comp_left, comp_lift, lift_fst, lift_snd_assoc]
 
+/- English proof (translation)
+Rewrite using `[lam_eq_evc_toBase_of_isDual (hD := hD0) (e' := e'), lam_eq_evc_toBase_of_isDual (hD := hD0) (e' := e'), lam_eq_evc_toBase_of_isDual (hD := hD0) (e' := e'), toBase_mul, evc_mul_left' hD0]`.
+-/
 private theorem lam_mul_left' (hD0 : IsDual A B P) (e' : LBIso ((ev P (fst A A) (snd A A ≫ l)).pull (sqToBase A s)) (abelian₂ ((Over.pullback s).obj A) L))
     (x x' y : T ⟶ (Over.pullback s).obj A) :
     lam (cls L hL) (x * x') y = lam (cls L hL) x y + lam (cls L hL) x' y := by
   rw [lam_eq_evc_toBase_of_isDual (hD := hD0) (e' := e'), lam_eq_evc_toBase_of_isDual (hD := hD0) (e' := e'),
     lam_eq_evc_toBase_of_isDual (hD := hD0) (e' := e'), toBase_mul, evc_mul_left' hD0]
 
+/- English proof (translation)
+Rewrite using `[lam_eq_evc_toBase_of_isDual (hD := hD0) (e' := e'), lam_eq_evc_toBase_of_isDual (hD := hD0) (e' := e'), lam_eq_evc_toBase_of_isDual (hD := hD0) (e' := e'), toBase_mul]`. Establish `hm : (toBase A s y * toBase A s y') ≫ l = (toBase A s y ≫ l) * (toBase A s y' ≫ l)` using `map_mul (IsMonHom.monoidHom l _) _ _`. Rewrite using `[hm, ← evc_swap hD0.isLB hD1.isLB, evc_mul_left' hD1, evc_swap hD0.isLB hD1.isLB, evc_swap hD0.isLB hD1.isLB]`.
+-/
 private theorem lam_mul_right_zarhin_trick (hD0 : IsDual A B P) (hD1 : IsDual B A (swap P)) (e' : LBIso ((ev P (fst A A) (snd A A ≫ l)).pull (sqToBase A s)) (abelian₂ ((Over.pullback s).obj A) L))
     (x y y' : T ⟶ (Over.pullback s).obj A) :
     lam (cls L hL) x (y * y') = lam (cls L hL) x y + lam (cls L hL) x y' := by
@@ -117,6 +152,9 @@ private theorem lam_mul_right_zarhin_trick (hD0 : IsDual A B P) (hD1 : IsDual B 
   rw [hm, ← evc_swap hD0.isLB hD1.isLB, evc_mul_left' hD1, evc_swap hD0.isLB hD1.isLB,
     evc_swap hD0.isLB hD1.isLB]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using lam_one_left (cls L hL) y`. Consider the case `succ k ih => rw [pow_succ, lam_mul_left' (hD0 := hD0) (e' := e'), ih, succ_nsmul]`.
+-/
 private theorem lam_pow_left' (hD0 : IsDual A B P) (e' : LBIso ((ev P (fst A A) (snd A A ≫ l)).pull (sqToBase A s)) (abelian₂ ((Over.pullback s).obj A) L))
     (x y : T ⟶ (Over.pullback s).obj A) (n : ℕ) :
     lam (cls L hL) (x ^ n) y = n • lam (cls L hL) x y := by
@@ -124,6 +162,9 @@ private theorem lam_pow_left' (hD0 : IsDual A B P) (e' : LBIso ((ev P (fst A A) 
   | zero => simpa using lam_one_left (cls L hL) y
   | succ k ih => rw [pow_succ, lam_mul_left' (hD0 := hD0) (e' := e'), ih, succ_nsmul]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using lam_one_right (cls L hL) x`. Consider the case `succ k ih`. Rewrite using `[pow_succ, lam_mul_right_zarhin_trick (hD0 := hD0) (hD1 := hD1) (e' := e'), ih, succ_nsmul]`.
+-/
 private theorem lam_pow_right' (hD0 : IsDual A B P) (hD1 : IsDual B A (swap P)) (e' : LBIso ((ev P (fst A A) (snd A A ≫ l)).pull (sqToBase A s)) (abelian₂ ((Over.pullback s).obj A) L))
     (x y : T ⟶ (Over.pullback s).obj A) (n : ℕ) :
     lam (cls L hL) x (y ^ n) = n • lam (cls L hL) x y := by
@@ -134,11 +175,19 @@ private theorem lam_pow_right' (hD0 : IsDual A B P) (hD1 : IsDual B A (swap P)) 
 
 include e hD hD' in
 
+/- English proof (translation)
+Rewrite using `[← lam_mul_right_zarhin_trick (hL := hL) (hD0 := hD) (hD1 := hD') (e' := e), mul_inv_cancel, lam_one_right]`.
+-/
 theorem lam_self_add_inv (q : T ⟶ (Over.pullback s).obj A) :
     lam (cls L hL) q q + lam (cls L hL) q q⁻¹ = 0 := by
   rw [← lam_mul_right_zarhin_trick (hL := hL) (hD0 := hD) (hD1 := hD') (e' := e), mul_inv_cancel, lam_one_right]
 
 include e hD hD' in
+/- English proof (translation)
+Establish `h7` using `lam_self_add_inv (hL := hL) (hD := hD) (hD' := hD') (e := e) (q := q)`. Establish `hd : lam (cls L hL) q q⁻¹ = pull (q * q⁻¹).left (cls L hL) - pull q.left (cls L hL) - pull q⁻¹.left (cls L hL) + pull (1 : T ⟶ (Over.pullback s).obj A).left (cls L hL)` using `rfl`. Rewrite `hd` using `[mul_inv_cancel, pull_one_pt]`. Rewrite `h7` using `[hd]`. Rewrite using `[eq_comm, ← sub_eq_zero, ← h7]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem pull_add_inv (q : T ⟶ (Over.pullback s).obj A) :
     pull q.left (cls L hL) + pull q⁻¹.left (cls L hL) = lam (cls L hL) q q := by
   have h7 := lam_self_add_inv (hL := hL) (hD := hD) (hD' := hD') (e := e) (q := q)
@@ -150,6 +199,9 @@ theorem pull_add_inv (q : T ⟶ (Over.pullback s).obj A) :
   abel
 
 include e hD hD' in
+/- English proof (translation)
+Rewrite using `[pull_add_inv (hL := hL) (hD := hD) (hD' := hD') (e := e) (q := q ^ n), lam_pow_left' (hL := hL) (hD0 := hD) (e' := e), lam_pow_right' (hL := hL) (hD0 := hD) (hD1 := hD') (e' := e), smul_smul, sq]`.
+-/
 theorem pull_pow_add_inv (q : T ⟶ (Over.pullback s).obj A) (n : ℕ) :
     pull (q ^ n).left (cls L hL) + pull (q ^ n)⁻¹.left (cls L hL) = n ^ 2 • lam (cls L hL) q q := by
   rw [pull_add_inv (hL := hL) (hD := hD) (hD' := hD') (e := e) (q := q ^ n),
@@ -164,6 +216,9 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] 
 
 variable {Ω : Type} [Field Ω] [IsAlgClosed Ω]
 
+/- English proof (translation)
+Establish `hfi : M ≫ f⁻¹ = (f ^ n)⁻¹`. Rewrite using `[Hom.inv_def, Hom.inv_def, ← Category.assoc, hf]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, hf, hfi, pull_pow_add_inv (hL := hL) (hD := hD) (hD' := hD') (e := e) (q := f) (n := n), pull_add_inv (hL := hL) (hD := hD) (hD' := hD') (e := e) (q := f)]`.
+-/
 private theorem pull_add_pull_inv_eq_sq_smul_of_comp_eq_pow {P : LB (A ⊗ B).left} (hD : IsDual A B P) (hD' : IsDual B A (swap P))
     (l : A ⟶ B) [IsMonHom l] (s : Sp Ω ⟶ S) (L : LB ((Over.pullback s).obj A).left) (hL : L.IsLB)
     (e : LBIso ((ev P (fst A A) (snd A A ≫ l)).pull (sqToBase A s)) (abelian₂ ((Over.pullback s).obj A) L)) {T : Over (Sp Ω)} (M : T ⟶ T) (f : T ⟶ (Over.pullback s).obj A) (n : ℕ)
@@ -176,6 +231,9 @@ private theorem pull_add_pull_inv_eq_sq_smul_of_comp_eq_pow {P : LB (A ⊗ B).le
     pull_pow_add_inv (hL := hL) (hD := hD) (hD' := hD') (e := e) (q := f) (n := n),
     pull_add_inv (hL := hL) (hD := hD) (hD' := hD') (e := e) (q := f)]
 
+/- English proof (translation)
+Rewrite using `[comp_lift, comp_lift, pow_comp_hom, pow_comp_hom]`. Express the relevant statement in the definitionally equal form `evc hD.isLB _ _ = n ^ 2 • evc hD.isLB _ _`. Rewrite using `[evc_pow_left hD, evc_pow_right hD hD', smul_smul, sq]`.
+-/
 private theorem pull_pow_lift_cls_eq_sq_smul {P : LB (A ⊗ B).left} (hD : IsDual A B P) (hD' : IsDual B A (swap P))
     {Y : Over S} (y : Y ⟶ G4 (A ⊗ B)) (i j : Fin 4) (n : ℕ) :
     pull (((y ^ n) ≫ lift (prj (A ⊗ B) i ≫ fst A B) (prj (A ⊗ B) j ≫ snd A B)).left) (cls P hD.isLB) =
@@ -184,6 +242,25 @@ private theorem pull_pow_lift_cls_eq_sq_smul {P : LB (A ⊗ B).left} (hD : IsDua
   change evc hD.isLB _ _ = n ^ 2 • evc hD.isLB _ _
   rw [evc_pow_left hD, evc_pow_right hD hD', smul_smul, sq]
 
+/- English proof (translation)
+Establish `hP` using `hD.isLB`. Establish `hLA : (L.LinComb (phiL mu s) fun _ => (1 : ℤ)).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hPA : (P.LinComb (phiP s) fun ij => α ij.1 ij.2).IsLB` using `LB.isLB_linComb hP _ _`. Establish `hz` using `isLB_zb mu α s hP hL`. Establish `hpull : cls _ h' = pull ((𝟙 ((Over.pullback s).obj (G4 (A ⊗ B)))) ^ n).left (cls _ hz)` using `rfl`.
+
+Establish `hsplit : cls _ hz = cls _ hLA + cls _ hPA` using `cls_tens hLA hPA hz`. Rewrite using `[hpull, hsplit, map_add, cls_linComb hL, cls_linComb hP, map_sum, map_sum]`. Simplify using `only [map_zsmul, ← pull_comp, one_smul]`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type, Fintype.sum_prod_type, Fintype.sum_prod_type]`. Take `⟨N, hN⟩ : ∃ N : (Over.pullback s).obj (G4 (A ⊗ B)) ⟶ (Over.pullback s).obj (G4 (A ⊗ B)), N = (𝟙 _) ^ n` from `⟨_, rfl⟩`.
+
+Rewrite using `[← hN]`. Establish `hA : ∀ y : Fin 4, N ≫ pA (A` using `A) (B := B) s y = (pA (A := A) (B := B) s y) ^ n := by`. Introduce `y`. Rewrite using `[hN]`. Use `show (𝟙 _ ^ n) ≫ (Over.pullback s).map (prj (A ⊗ B) y ≫ fst A B) = ((Over.pullback s).map (prj (A ⊗ B) y ≫ fst A B)) ^ n`.
+
+Rewrite using `[pow_comp_hom, Category.id_comp]`. Establish `hM : ∀ y : Fin 4, N ≫ pM mu s y = (pM mu s y) ^ n`. Introduce `y`. Rewrite using `[hN]`. Use `show (𝟙 _ ^ n) ≫ (Over.pullback s).map (prj (A ⊗ B) y ≫ snd A B ≫ mu) = ((Over.pullback s).map (prj (A ⊗ B) y ≫ snd A B ≫ mu)) ^ n`.
+
+Rewrite using `[pow_comp_hom, Category.id_comp]`. Establish `hLsum : (∑ x : Fin 4, ∑ y : Fin 4, pull (N.left ≫ phiL mu s (x, y)) (cls L hL)) = n ^ 2 • ∑ x : Fin 4, ∑ y : Fin 4, pull (phiL mu s (x, y)) (cls L hL)` using `by conv_lhs => rw [Finset.sum_comm] conv_rhs => rw [Finset.sum_comm]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_four, Fin.sum_univ_four]`.
+
+Establish `h1` using `pull_add_pull_inv_eq_sq_smul_of_comp_eq_pow hD hD' l s L hL e N (pA (A := A) (B := B) s y) n (hA y)`. Establish `h2` using `pull_add_pull_inv_eq_sq_smul_of_comp_eq_pow hD hD' l s L hL e N (pM mu s y) n (hM y)`. Express the relevant statement in the definitionally equal form `pull (N.left ≫ (pA (A := A) (B := B) s y).left) (cls L hL) + pull (N.left ≫ (pA (A := A) (B := B) s y)⁻¹.left) (cls L hL) + pull (N.left ≫ (pM mu s y).left) (cls L hL) + pull (N.left ≫ (pM mu s y)⁻¹.left) (cls L hL) = n ^ 2 • (pull (pA (A := A) (B := B) s y).left (cls L hL) + pul …`. Rewrite using `[add_assoc, h1, h2, ← smul_add, ← add_assoc]`. Establish `hPterm : ∀ x y : Fin 4, pull (N.left ≫ phiP s (x, y)) (cls P hP) = n ^ 2 • pull (phiP s (x, y)) (cls P hP)`.
+
+Introduce `x y`. Establish `h0` using `toBase_comp s (G4 (A ⊗ B)) N (𝟙 ((Over.pullback s).obj (G4 (A ⊗ B))))`. Rewrite `h0` using `[Category.comp_id, hN, toBase_pow]`. Establish `h3 : N.left ≫ phiP s (x, y) = (((toBase (G4 (A ⊗ B)) s (𝟙 ((Over.pullback s).obj (G4 (A ⊗ B))))) ^ n) ≫ lift (prj (A ⊗ B) x ≫ fst A B) (prj (A ⊗ B) y ≫ snd A B)).left`. Rewrite using `[hN, h0, Category.assoc, Over.comp_left]`.
+
+Both sides reduce to the same expression. Rewrite using `[h3, pull_pow_lift_cls_eq_sq_smul hD hD']`. Both sides reduce to the same expression. Establish `hPsum : (∑ x : Fin 4, ∑ y : Fin 4, α (x, y).1 (x, y).2 • pull (N.left ≫ phiP s (x, y)) (cls P hP)) = n ^ 2 • ∑ x : Fin 4, ∑ y : Fin 4, α (x, y).1 (x, y).2 • pull (phiP s (x, y)) (cls P hP)`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[hPterm x y, smul_comm]`. Rewrite using `[hLsum, hPsum, ← smul_add, smul_smul]`.
+-/
 theorem two_cls_pow (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hD : IsDual A B P)
     (hD' : IsDual B A (swap P)) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu] (α : Matrix (Fin 4) (Fin 4) ℤ)
     (s : Sp Ω ⟶ S) (L : LB ((Over.pullback s).obj A).left) (hL : L.IsLB)

@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RowVal
 
+/- English proof (translation)
+The claim follows from `| [], _, h, h', h1, _ => by have : h = h' := funext fun i => h1 i List.not_mem_nil rw [this] | i :: l, hq, h, h', h1, h2 => by obtain ⟨r, hr, k, hk, e⟩ := h2 i List.mem_cons_self have hq' : BiInv R K l q := fun j hj => hq j (List.mem_cons_of_mem _ hj) set h₁ := Function.update h …`.
+-/
 theorem biInv_eq_of_cells {ι : Type} [DecidableEq ι] {H : ι → Type} [∀ i, Group (H i)]
     {R K : ∀ i, Subgroup (H i)} {q : (∀ i, H i) → ℂ} :
     ∀ (l : List ι), BiInv R K l q → ∀ h h' : (∀ i, H i), (∀ i, i ∉ l → h i = h' i) →
@@ -46,12 +49,18 @@ theorem biInv_eq_of_cells {ι : Type} [DecidableEq ι] {H : ι → Type} [∀ i,
         · rw [hh₁, Function.update_of_ne hji]
           exact h2 j (List.mem_cons_of_mem _ hj)
 
+/- English proof (translation)
+Simplify using `[idx, List.mem_range']`. Introduce `x _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem zero_not_mem_idx (D : D7) : 0 ∉ idx D := by simp [idx, List.mem_range']; intro x _; omega
 
 section
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R)
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hj`. Take `⟨c, hc⟩` from `D.R.m_even`. Unfold `evT`. Rewrite using `[Finset.prod_eq_zero (i := k) (by simp [Finset.mem_range]; omega) (by rw [two_mul, hC]; rfl), zero_mul]`.
+-/
 theorem evT_eq_zero_of (C : BiFam ch.G) (j : ℕ) (hj : Even j) (hjm : j < D.R.m) (hC : C j = 0) (f : SchRow ch.G)
     (u : ColPt ch.G) (y : RowPt ch.G) : evT C f u y = 0 := by
   obtain ⟨k, rfl⟩ := hj
@@ -67,6 +76,27 @@ section
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R)
 
+/- English proof (translation)
+Introduce `t a τ hτ M hM P y b hb h h1 hne`. Take `⟨hφ, hFt, hHaar, -, hGood, -, -⟩` from `hB`. Establish `hsum : ∀ h' : Pts ch.G, tot ch.W hM P τ (colFn ch a) (formTop ch t y) h' = ∑ d ∈ τ.support, τ d * per ch.W M t (conAt ch.W hM (fockD ch.W t d.2 P.2) h') d.1 P.1 (colFn ch a) (formTop ch t y)` using `fun _ => rfl`. Establish `hne'` using `hne`. Rewrite `hne'` using `[hsum]`.
+
+Take `⟨d, hd, hdne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne'`. Establish `hper` using `right_ne_zero_of_mul hdne`. Establish `hnz : ∀ j, Even j → j < D.R.m → conAt ch.W hM (fockD ch.W t d.2 P.2) h j ≠ 0`. Introduce `j hj hjm h0`. Apply `hper` to reduce the goal to its premises.
+
+Use `hT t M (hHaar t M hM) _ _ (hφ a) (hFt t y) Unit {()} (fun _ => 1) (fun _ => conAt ch.W hM (fockD ch.W t d.2 P.2) h) (fun _ => d.1) (fun _ _ => hGood t _ τ hτ M hM d hd P.2 h) (fun u y' => by simp [evT_eq_zero_of ch _ j hj hjm h0]) P.1` as an intermediate fact. Simplify using `using this`. Establish `h0 : h 0 = 1` using `h1 0 (zero_not_mem_idx D)`. Take `⟨β, hβ⟩` from `hC t b hb h (hO t _ τ hτ M hM d hd P.2 h h0 hnz)`. Use `⟨β, ?_, hβ⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hns`. Apply `hne` to reduce the goal to its premises. Use `choose! r hr a' ha' k hk e using hβ`. Set `p : Pts ch.G` to `fun j => if j ∈ idx D then a' j else 1`. Establish `hp : IsRealPt p`.
+
+Use `⟨fun j => ?_, fun j hj => by simp [p, hj]⟩` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ idx D`. Simplify using `only [p, if_pos hj]`. Conclude with `ha' j hj`. Simplify using `only [p, if_neg hj]`.
+
+Conclude with `one_mem _`. Establish `hmove : tot ch.W hM P τ (colFn ch a) (formTop ch t y) h = tot ch.W hM P τ (colFn ch a) (formTop ch t y) (p * b β)`. Use `biInv_eq_of_cells (idx D) (hI t a τ hτ M hM P y) h (p * b β) (fun j hj => ?_) (fun j hj => ?_)` and prove the remaining obligations. Simplify using `[p, hj, h1 j hj, (hb β).1 j hj]`. Use `⟨r j, hr j hj, k j, hk j hj, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.mul_apply, p, if_pos hj, e j hj, mul_assoc]`. Rewrite using `[hmove]`. Establish `hexp : ch.S.IsExpansion t (ch.Phi a) β 0`. Take `⟨e₀, he₀, -⟩` from `hτ`. Use `⟨e₀, he₀, by simp, fun x y' _ _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.sum_zero_index]`. Simplify using `only [GridChoice.supp, Set.mem_setOf_eq, not_forall] at hns`. Take `⟨w, hw⟩` from `hns`. Establish `hz : (ch.S.term t (ch.Phi a) β w).datum = 0`. Simplify `hw` using `[unfSupport, GridChoice.term]`.
+
+Use `symm`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ w) (by rw [hz]; rfl)`. Take `⟨z, -, hFl⟩` from `hF`. Take `⟨Cr, -, hCr⟩` from `hFl P.2 p hp`. Take `⟨ζ, -, hz⟩` from `hCr t (ch.Phi a) τ hτ M hM β (b β) (hb β) 0 (fun _ => 0) hexp (by intro d hd; simp at hd)`.
+
+Rewrite using `[hsum]`. Conclude with `hT t M (hHaar t M hM) _ _ (hφ a) (hFt t y) _ τ.support (fun d => τ d) (fun d => conAt ch.W hM (fockD ch.W t d.2 P.2) (p * b β)) (fun d => d.1) (fun d hd => hGood t _ τ hτ M hM d hd P.2 _) (fun u y' => by simpa [Finsupp.sum] using hz u y') P.1`.
+-/
 theorem suppOn_of_cover (s : ℤˣ) (hC : CoverAt ch s) (hF : FlatAt ch s) (hO : OffAt ch) (hI : InvAt ch) (hT : TensAt ch)
     (hB : BasicAt ch) : SuppOn ch s := by
   intro t a τ hτ M hM P y b hb h h1 hne
@@ -127,6 +157,9 @@ theorem suppOn_of_cover (s : ℤˣ) (hC : CoverAt ch s) (hF : FlatAt ch s) (hO :
 
 end
 
+/- English proof (translation)
+The claim follows from `big_mono (fun ch hC s hF hO hI hT hB => suppOn_of_cover ch s (hC s) hF hO hI hT hB) GlobalTheory.T.tiltedPoints_covered_by_representativeCells`.
+-/
 theorem big_suppOn_of_flat :
     Big fun ch => ∀ s, FlatAt ch s → OffAt ch → InvAt ch → TensAt ch → BasicAt ch → SuppOn ch s :=
   big_mono (fun ch hC s hF hO hI hT hB => suppOn_of_cover ch s (hC s) hF hO hI hT hB) GlobalTheory.T.tiltedPoints_covered_by_representativeCells

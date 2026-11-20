@@ -9,6 +9,13 @@ namespace GlobalTheory
 
 open Metric
 
+/- English proof (translation)
+Take `⟨husc, hmean⟩` from `hφ`. Use `⟨fun x hx => UpperSemicontinuousWithinAt.congr_of_eventuallyEq (f := φ) (g := ψ) (husc x hx) hx (eventually_nhdsWithin_of_forall h), fun z w hdisc => ?_⟩` and prove the remaining obligations. Take `⟨hint, hle⟩` from `hmean z w hdisc`. Establish `heq : Set.EqOn (fun ζ : ℂ => φ (z + ζ • w)) (fun ζ : ℂ => ψ (z + ζ • w)) (sphere (0 : ℂ) |(1 : ℝ)|)`. Introduce `ζ hζ`.
+
+Establish `hn : ‖ζ‖ = 1` using `by simpa using hζ`. Conclude with `h _ (hdisc ζ hn.le)`. Establish `hz : z ∈ U` using `by simpa using hdisc 0 (by simp)`. Use `⟨(circleIntegrable_congr heq).1 hint, ?_⟩` and prove the remaining obligations. Rewrite using `[← h z hz, ← Real.circleAverage_congr_sphere heq]`.
+
+Conclude with `hle`.
+-/
 theorem isPsh_congr_on (D : ℕ) (U : Set (Fin D → ℂ)) (φ ψ : (Fin D → ℂ) → ℝ)
     (hφ : ReciprocityTheory.AnForm.A.IsPsh U φ) (h : ∀ z ∈ U, φ z = ψ z) :
     ReciprocityTheory.AnForm.A.IsPsh U ψ := by

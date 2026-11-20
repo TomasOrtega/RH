@@ -18,6 +18,15 @@ noncomputable section
 
 namespace GlobalTheory.QLastCore
 
+/- English proof (translation)
+Introduce `D S T P P' hPP x y hx hy`. Establish `hz : ∀ a b : AE D, a ∈ GlobalTheory.FinPl.idAt D P → b ∈ GlobalTheory.FinPl.idAt D P' → b * a = 0`. Introduce `a b ha hb`. Establish `m1 : b * a ∈ GlobalTheory.FinPl.idAt D P` using `Ideal.mul_mem_left _ _ ha`. Establish `m2 : b * a ∈ GlobalTheory.FinPl.idAt D P'` using `Ideal.mul_mem_right _ _ hb`.
+
+Rewrite `m1`, `m2` using `[GlobalTheory.FinPl.mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Use `GlobalTheory.FinPl.CMAdele_eq_zero_of_infinite_and_finite_components_zero D _ m1.1 fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : P w`. Conclude with `m2.2 w (hPP w hw)`. Conclude with `m1.2 w hw`.
+
+Establish `hh : hO S T x y = 0`. Unfold `hO`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Establish `h0 : cA D (y c b) * x d a = 0` using `hz _ _ (hx d a) (GlobalTheory.LastOpPf.cA_mem_idAt (hy c b))`. Combine the equalities or inequalities in the displayed calculation.
+
+Unfold `symplO`. Rewrite using `[hh, mul_zero, map_zero]`.
+-/
 theorem symplO_eq_zero_of_disj : ∀ (D : D7) (S T : HSp D) (P P' : GlobalTheory.FinPl.Pl D → Prop), (∀ x, P x → ¬ P' x) → ∀ x y : WO S T, GlobalTheory.FinPl.MxAt P x → GlobalTheory.FinPl.MxAt P' y → symplO S T x y = 0 := by
   intro D S T P P' hPP x y hx hy
   have hz : ∀ a b : AE D, a ∈ GlobalTheory.FinPl.idAt D P → b ∈ GlobalTheory.FinPl.idAt D P' → b * a = 0 := by
@@ -40,6 +49,11 @@ theorem symplO_eq_zero_of_disj : ∀ (D : D7) (S T : HSp D) (P P' : GlobalTheory
   unfold symplO
   rw [hh, mul_zero, map_zero]
 
+/- English proof (translation)
+Introduce `D k k' _ _ _ _ _ _ _ _ q q' hne m n u hu i j`. Take `⟨ε, hε, hs⟩` from `q.above`. Take `⟨ε', hε', hs'⟩` from `q'.above`. Establish `h1 : u i j ∈ GlobalTheory.FinPl.idAt D (· = q'.v)` using `((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q'.v ε' hε').1 _).2 (hs' ▸ hu i j)`. Establish `h2 : u i j ∈ GlobalTheory.FinPl.idAt D (· ≠ q.v)` using `PinEx.idAt_mono (fun x (hx : x = q'.v) => hx ▸ fun e => hne e.symm) h1`.
+
+Establish `h3` using `(GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q.v ε hε).2 _ h2`. Rewrite using `[sub_mul, one_mul, hs, h3, sub_zero]`.
+-/
 theorem half_one_sub_of_ne : ∀ (D : D7) (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] (q : GlobalTheory.FinPl.SplitPt D k) (q' : GlobalTheory.FinPl.SplitPt D k'), q.v ≠ q'.v → ∀ (m n : ℕ) (u : Mx D m n), IsHalf (q'.e + cA D q'.e) u → IsHalf (1 - (q.e + cA D q.e)) u := by
   intro D k k' _ _ _ _ _ _ _ _ q q' hne m n u hu i j
   obtain ⟨ε, hε, hs⟩ := q.above
@@ -50,6 +64,11 @@ theorem half_one_sub_of_ne : ∀ (D : D7) (k k' : Type) [Field k] [ValuativeRel 
   have h3 := (GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q.v ε hε).2 _ h2
   rw [sub_mul, one_mul, hs, h3, sub_zero]
 
+/- English proof (translation)
+Introduce `D ψ S T f`. Unfold `comb`. Rewrite using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`. Use function extensionality and compare the values at `w`. Establish `hh : hO S T w 0 = 0` using `by simp [hO]`.
+
+Simplify using `[heisO, symplOH, symplO, hh]`.
+-/
 theorem comb_single_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ), comb ψ S T (Finsupp.single 0 1) f = f := by
   intro D ψ S T f
   unfold comb
@@ -58,14 +77,37 @@ theorem comb_single_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : 
   have hh : hO S T w 0 = 0 := by simp [hO]
   simp [heisO, symplOH, symplO, hh]
 
+/- English proof (translation)
+Rewrite using `[AddMonoidAlgebra.mul_def]`. Express the relevant statement in the definitionally equal form `AddMonoidAlgebra.ofCoeff (e.sum fun g a => (aconv l).sum fun h b => Finsupp.single (g + h) (a * b)) = _`. Simplify using `only [AddMonoidAlgebra.ofCoeff_finsuppSum, AddMonoidAlgebra.ofCoeff_single, AddMonoidAlgebra.coeff_ofCoeff]`.
+-/
 theorem aconv_cons {G : Type} [AddMonoid G] (e : G →₀ ℂ) (l : List (G →₀ ℂ)) :
     AddMonoidAlgebra.ofCoeff (aconv (e :: l)) = AddMonoidAlgebra.ofCoeff e * AddMonoidAlgebra.ofCoeff (aconv l) := by
   rw [AddMonoidAlgebra.mul_def]
   change AddMonoidAlgebra.ofCoeff (e.sum fun g a => (aconv l).sum fun h b => Finsupp.single (g + h) (a * b)) = _
   simp only [AddMonoidAlgebra.ofCoeff_finsuppSum, AddMonoidAlgebra.ofCoeff_single, AddMonoidAlgebra.coeff_ofCoeff]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem aconv_nil {G : Type} [AddMonoid G] : AddMonoidAlgebra.ofCoeff (aconv ([] : List (G →₀ ℂ))) = 1 := rfl
 
+/- English proof (translation)
+Use `⟨fun G _ c d l => ?_, fun G _ c => ?_, fun G _ l => ?_, fun G _ l H hl => ?_, fun G _ l H hl => ?_⟩` and prove the remaining obligations. Apply `AddMonoidAlgebra.ofCoeff_injective` to reduce the goal to its premises. Rewrite using `[aconv_cons, aconv_cons, aconv_cons, aconv_cons, aconv_cons, aconv_nil, mul_one, mul_assoc]`. Apply `AddMonoidAlgebra.ofCoeff_injective` to reduce the goal to its premises. Rewrite using `[aconv_cons, aconv_nil, mul_one]`.
+
+Apply `AddMonoidAlgebra.ofCoeff_injective` to reduce the goal to its premises. Rewrite using `[aconv_cons]`. Conclude with `one_mul _`. Proceed by induction on `l with`. Consider the case `nil`.
+
+Introduce `g hg`. Establish `e : aconv ([] : List (G →₀ ℂ)) = Finsupp.single 0 1` using `rfl`. Rewrite `hg` using `[e]`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hg)]`. Conclude with `H.zero_mem`.
+
+Consider the case `cons e l ih`. Introduce `g hg`. Express the relevant statement in the definitionally equal form `g ∈ (e.sum fun g a => (aconv l).sum fun h b => Finsupp.single (g + h) (a * b)).support at hg`. Take `⟨x, hx, hg1⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hg)`. Take `⟨y, hy, hg2⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hg1)`.
+
+Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hg2)]`. Conclude with `H.add_mem (hl e (List.mem_cons_self ..) x hx) (ih (fun z hz => hl z (List.mem_cons_of_mem _ hz)) y hy)`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `g hg`.
+
+Establish `e : conv ([] : List (G →₀ ℂ)) = Finsupp.single 1 1` using `rfl`. Rewrite `hg` using `[e]`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hg)]`. Conclude with `H.one_mem`. Consider the case `cons e l ih`.
+
+Introduce `g hg`. Express the relevant statement in the definitionally equal form `g ∈ (e.sum fun g a => (conv l).sum fun h b => Finsupp.single (g * h) (a * b)).support at hg`. Take `⟨x, hx, hg1⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hg)`. Take `⟨y, hy, hg2⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hg1)`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hg2)]`.
+
+Conclude with `H.mul_mem (hl e (List.mem_cons_self ..) x hx) (ih (fun z hz => hl z (List.mem_cons_of_mem _ hz)) y hy)`.
+-/
 theorem conv_alg : (∀ (G : Type) [AddCommMonoid G] (c d : G →₀ ℂ) (l : List (G →₀ ℂ)), aconv (aconv [c, d] :: l) = aconv (c :: d :: l)) ∧ (∀ (G : Type) [AddMonoid G] (c : G →₀ ℂ), aconv [c] = c) ∧ (∀ (G : Type) [AddMonoid G] (l : List (G →₀ ℂ)), aconv (Finsupp.single 0 1 :: l) = aconv l) ∧ (∀ (G : Type) [AddMonoid G] (l : List (G →₀ ℂ)) (H : AddSubmonoid G), (∀ x ∈ l, ∀ g ∈ x.support, g ∈ H) → ∀ g ∈ (aconv l).support, g ∈ H) ∧ (∀ (G : Type) [Monoid G] (l : List (G →₀ ℂ)) (H : Submonoid G), (∀ x ∈ l, ∀ g ∈ x.support, g ∈ H) → ∀ g ∈ (conv l).support, g ∈ H) := by
   classical
   refine ⟨fun G _ c d l => ?_, fun G _ c => ?_, fun G _ l => ?_, fun G _ l H hl => ?_, fun G _ l H hl => ?_⟩
@@ -105,6 +147,13 @@ theorem conv_alg : (∀ (G : Type) [AddCommMonoid G] (c d : G →₀ ℂ) (l : L
       rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hg2)]
       exact H.mul_mem (hl e (List.mem_cons_self ..) x hx) (ih (fun z hz => hl z (List.mem_cons_of_mem _ hz)) y hy)
 
+/- English proof (translation)
+Introduce `D S T om a l X`. Express the relevant statement in the definitionally equal form `(a.sum fun g x => (conv l).sum fun h y => Finsupp.single (g * h) (x * y)).sum (fun g x => x • om (g, 1) X) = a.sum fun g x => x • om (g, 1) ((conv l).sum fun g' y => y • om (g', 1) X)`. Rewrite using `[Finsupp.sum_sum_index (h := fun g x => x • om (g, 1) X) (fun _ => zero_smul ℂ _) (fun _ _ _ => add_smul _ _ _)]`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_sum_index (h := fun g x => x • om (g, 1) X) (fun _ => zero_smul ℂ _) (fun _ _ _ => add_smul _ _ _)]`.
+
+Simplify using `only [Finsupp.sum_single_index, zero_smul]`. Simplify using `only [Finsupp.sum, map_sum, map_smul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`.
+
+Rewrite using `[show ((g * h, (1 : GA D T)) : GA D S × GA D T) = (g, 1) * (h, 1) by simp, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem sum_conv_cons : ∀ (D : D7) (S T : HSp D) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (a : GA D S →₀ ℂ) (l : List (GA D S →₀ ℂ)) (X : WO S T → ℂ), ∑ g ∈ (conv (a :: l)).support, conv (a :: l) g • om (g, 1) X = ∑ g ∈ a.support, a g • om (g, 1) (∑ g' ∈ (conv l).support, conv l g' • om (g', 1) X) := by
   intro D S T om a l X
   change (a.sum fun g x => (conv l).sum fun h y => Finsupp.single (g * h) (x * y)).sum (fun g x => x • om (g, 1) X) =
@@ -120,6 +169,13 @@ theorem sum_conv_cons : ∀ (D : D7) (S T : HSp D) (om : GA D S × GA D T →* M
   rw [show ((g * h, (1 : GA D T)) : GA D S × GA D T) = (g, 1) * (h, 1) by simp, map_mul]
   rfl
 
+/- English proof (translation)
+Introduce `D ψ S T a l f hs`. Express the relevant statement in the definitionally equal form `(a.sum fun g x => (aconv l).sum fun h y => Finsupp.single (g + h) (x * y)).sum (fun u b => b • heisO ψ S T u f) = a.sum fun g x => x • heisO ψ S T g ((aconv l).sum fun h y => y • heisO ψ S T h f)`. Rewrite using `[Finsupp.sum_sum_index (h := fun u b => b • heisO ψ S T u f) (fun _ => zero_smul ℂ _) (fun _ _ _ => add_smul _ _ _)]`. Use `Finsupp.sum_congr fun g hg => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_sum_index (h := fun u b => b • heisO ψ S T u f) (fun _ => zero_smul ℂ _) (fun _ _ _ => add_smul _ _ _)]`.
+
+Simplify using `only [Finsupp.sum_single_index, zero_smul]`. Simplify using `only [Finsupp.sum]`. Rewrite using `[GlobalTheory.HeisComb.heisO_finset_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun h hh => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.WeilVacMove.heisO_heisO, smul_smul, smul_smul]`.
+
+Establish `h0 : symplOH S T g h = 0` using `by unfold symplOH; rw [hs g hg h hh, mul_zero]`. Rewrite using `[h0, AddChar.map_zero_eq_one]`. Simplify using the standard rewrite rules.
+-/
 theorem comb_aconv_cons : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (a : WO S T →₀ ℂ) (l : List (WO S T →₀ ℂ)) (f : WO S T → ℂ), (∀ x ∈ a.support, ∀ y ∈ (aconv l).support, symplO S T x y = 0) → comb ψ S T (aconv (a :: l)) f = comb ψ S T a (comb ψ S T (aconv l) f) := by
   intro D ψ S T a l f hs
   change (a.sum fun g x => (aconv l).sum fun h y => Finsupp.single (g + h) (x * y)).sum (fun u b => b • heisO ψ S T u f) =
@@ -136,6 +192,11 @@ theorem comb_aconv_cons : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : H
   rw [h0, AddChar.map_zero_eq_one]
   simp
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hw b e f hf hact`. Unfold `comb`. Simplify using `only [map_sum, map_smul, Finset.smul_sum, GlobalTheory.HeisComb.heisO_finset_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun u hu => Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations.
+
+Rewrite using `[hw.om_heis g 1 u f hf, hact g hg u hu, smul_comm]`.
+-/
 theorem sum_om_comb_comm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (b : GA D S →₀ ℂ) (e : WO S T →₀ ℂ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → (∀ g ∈ b.support, ∀ u ∈ e.support, actO S T g 1 u = u) → ∑ g ∈ b.support, b g • om (g, 1) (comb ψ S T e f) = comb ψ S T e (∑ g ∈ b.support, b g • om (g, 1) f) := by
   intro D ψ S T χS χT om hw b e f hf hact
   unfold comb
@@ -144,6 +205,17 @@ theorem sum_om_comb_comm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : 
   refine Finset.sum_congr rfl fun u hu => Finset.sum_congr rfl fun g hg => ?_
   rw [hw.om_heis g 1 u f hf, hact g hg u hu, smul_comm]
 
+/- English proof (translation)
+Introduce `D S T P P' hPP g hg u hu`. Establish `hz : ∀ a b : AE D, a ∈ GlobalTheory.FinPl.idAt D P → b ∈ GlobalTheory.FinPl.idAt D P' → b * a = 0`. Introduce `a b ha hb`. Establish `m1 : b * a ∈ GlobalTheory.FinPl.idAt D P` using `Ideal.mul_mem_left _ _ ha`. Establish `m2 : b * a ∈ GlobalTheory.FinPl.idAt D P'` using `Ideal.mul_mem_right _ _ hb`.
+
+Rewrite `m1`, `m2` using `[GlobalTheory.FinPl.mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Use `GlobalTheory.FinPl.CMAdele_eq_zero_of_infinite_and_finite_components_zero D _ m1.1 fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : P w`. Conclude with `m2.2 w (hPP w hw)`. Conclude with `m1.2 w hw`.
+
+Establish `hg' : g⁻¹ ∈ GlobalTheory.FinPl.grpAt S P` using `inv_mem hg`. Establish `hm : ∀ i k, Formalism.L2.Theta.mt S g⁻¹ i k - (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) i k ∈ GlobalTheory.FinPl.idAt D P`. Introduce `i k`. Establish `h1` using `MonoidHom.mem_ker.1 hg'`. Establish `h2` using `congrArg (fun x : GL (Fin S.rank) (AE D ⧸ GlobalTheory.FinPl.idAt D P) => x.val i k) h1`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (Formalism.L2.Theta.mt S g⁻¹ i k) = (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D ⧸ GlobalTheory.FinPl.idAt D P)) i k at h2`. Rewrite using `[← Ideal.Quotient.eq, h2, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `actO`. Establish `h1 : Formalism.L2.Theta.mt T (1 : GA D T) = 1` using `by simp [Formalism.L2.Theta.mt]`.
+
+Rewrite using `[h1, Matrix.one_mul]`. Use extensionality with `i k`. Rewrite using `[show Formalism.L2.Theta.mt S g⁻¹ = 1 + (Formalism.L2.Theta.mt S g⁻¹ - 1) by abel, Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, Matrix.mul_apply]`. Rewrite using `[Finset.sum_eq_zero (fun l _ => ?_), add_zero]`. Conclude with `hz _ _ (by simpa using hm l k) (hu i l)`.
+-/
 theorem actO_eq_of_disj : ∀ (D : D7) (S T : HSp D) (P P' : GlobalTheory.FinPl.Pl D → Prop), (∀ x, P x → ¬ P' x) → ∀ g ∈ GlobalTheory.FinPl.grpAt S P, ∀ u : WO S T, GlobalTheory.FinPl.MxAt P' u → actO S T g 1 u = u := by
   intro D S T P P' hPP g hg u hu
   have hz : ∀ a b : AE D, a ∈ GlobalTheory.FinPl.idAt D P → b ∈ GlobalTheory.FinPl.idAt D P' → b * a = 0 := by
@@ -172,10 +244,16 @@ theorem actO_eq_of_disj : ∀ (D : D7) (S T : HSp D) (P P' : GlobalTheory.FinPl.
   rw [Finset.sum_eq_zero (fun l _ => ?_), add_zero]
   exact hz _ _ (by simpa using hm l k) (hu i l)
 
+/- English proof (translation)
+Use `Q.hs` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem s_eq {D : D7} {c : Comm D} {v : VCom c} {χ : ℕ → (AE D)ˣ →* Circle} (Q : QAt v χ) {j : ℕ}
     (h : j + 2 * 0 + 2 = D.R.m) : Q.s = j := by
   have := Q.hs; omega
 
+/- English proof (translation)
+Substitute `hj hom` using the available equality. Establish `e : Q.eT Q.s h = Q.eLT` using `rfl`. Rewrite using `[e, GlobalTheory.T.seeSaw_twistPlace_last_two_steps D c v χ Q hc hv h hr hτ s₁ hs₁ oma omb ha hb c₁ c₂ h₁ h₂ Ψ₁ Ψ₂ hΨ₁ hΨ₂ φ hφ α u, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Q.wt_pen y, smul_smul]`.
+-/
 theorem oneplace_at {D : D7} {c : Comm D} {v : VCom c} {χ : ℕ → (AE D)ˣ →* Circle} (Q : QAt v χ) (hc : c.Is) (hv : v.Is)
     (j : ℕ) (hj : Q.s = j) (h : j + 2 * 0 + 2 = D.R.m) (hr : c.Lz.rank = 1)
     (hτ : (v.τ j h)ᴴ * ((c.bes j 0 h).L.gram * v.τ j h) = (-(D.host.xi0 * star D.host.xi0)) • c.Lz.gram)
@@ -199,11 +277,17 @@ theorem oneplace_at {D : D7} {c : Comm D} {v : VCom c} {χ : ℕ → (AE D)ˣ �
   refine Finset.sum_congr rfl fun y _ => ?_
   rw [Q.wt_pen y, smul_smul]
 
+/- English proof (translation)
+Introduce `i j` and use `PinEx.idAt_mono (fun x (hx : x = q.v) => hx ▸ hP) (PinEx.mem_idAt_of_supp q (hu i j))`.
+-/
 theorem half_mx {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) {m n : ℕ} {u : Mx D m n} (hu : IsHalf (q.e + cA D q.e) u) (P : GlobalTheory.FinPl.Pl D → Prop)
     (hP : P q.v) : GlobalTheory.FinPl.MxAt P u :=
   fun i j => PinEx.idAt_mono (fun x (hx : x = q.v) => hx ▸ hP) (PinEx.mem_idAt_of_supp q (hu i j))
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `hu i j` as an intermediate fact. Simplify using `only [GlobalTheory.FinPl.idAt, Submodule.mem_inf, RingHom.mem_ker] at this`. Simplify using `using this.1`.
+-/
 theorem mx_inf {D : D7} {P : GlobalTheory.FinPl.Pl D → Prop} {m n : ℕ} {u : Mx D m n} (hu : GlobalTheory.FinPl.MxAt P u) :
     u.map (infPart D) = 0 := by
   ext i j
@@ -225,19 +309,36 @@ section Facts
 variable {D : D7} {c : Comm D} {v : VCom c} {χ : ℕ → (AE D)ˣ →* Circle} (Q : QAt v χ) {j : ℕ} (h : j + 2 * 0 + 2 = D.R.m)
 include h
 
+/- English proof (translation)
+Establish `hs` using `s_eq Q h`. Substitute `hs` using the available equality. Conclude with `(Q.eL_at Q.s 0 rfl).1`.
+-/
 theorem eL_half : ∀ u ∈ (Q.eL j).support, IsHalf (Q.q.e + cA D Q.q.e) u := by
   have hs := s_eq Q h; subst hs; exact (Q.eL_at Q.s 0 rfl).1
 
+/- English proof (translation)
+Establish `hs` using `s_eq Q h`. Substitute `hs` using the available equality. Conclude with `Q.eLT_at.1`.
+-/
 theorem eT_half : ∀ u ∈ (Q.eT j h).support, IsHalf (Q.q.e + cA D Q.q.e) u := by
   have hs := s_eq Q h; subst hs; exact Q.eLT_at.1
 
+/- English proof (translation)
+Establish `hs` using `s_eq Q h`. Substitute `hs` using the available equality. Conclude with `(Q.dL_pen α y).1`.
+-/
 theorem dL_half (α : Q.Ch j) (y : Q.Ch (j + 1)) : ∀ u ∈ (Q.dL j α y).support, IsHalf (Q.q.e + cA D Q.q.e) u := by
   have hs := s_eq Q h; subst hs; exact (Q.dL_pen α y).1
 
+/- English proof (translation)
+Establish `hs` using `s_eq Q h`. Substitute `hs` using the available equality. Conclude with `(Q.dL_top y u').1`.
+-/
 theorem dL_half' (y : Q.Ch (j + 1)) (u' : Q.Ch (j + 1 + 1)) :
     ∀ u ∈ (Q.dL (j + 1) y u').support, IsHalf (Q.q.e + cA D Q.q.e) u := by
   have hs := s_eq Q h; subst hs; exact (Q.dL_top y u').1
 
+/- English proof (translation)
+Establish `hs` using `s_eq Q h`. Substitute `hs` using the available equality. Introduce `g hg P hP`. Take `⟨e, -, he⟩` from `Q.εL_at Q.s 0 h 0 rfl α`. Rewrite `hg` using `[he]`.
+
+Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hg)`. Conclude with `GlobalTheory.T.mem_supportedSubgroup_of_suppAt_splitPlace_mem D Q.k Q.q _ _ (Q.gl_loc Q.s (0 + 1) _ x).1 P hP`.
+-/
 theorem εL_grp (α : Q.Ch j) : ∀ g ∈ (Q.εL j α).support, ∀ P : GlobalTheory.FinPl.Pl D → Prop, P Q.q.v → g ∈ GlobalTheory.FinPl.grpAt (c.V j) P := by
   have hs := s_eq Q h; subst hs
   intro g hg P hP
@@ -249,6 +350,9 @@ theorem εL_grp (α : Q.Ch j) : ∀ g ∈ (Q.εL j α).support, ∀ P : GlobalTh
 
 end Facts
 
+/- English proof (translation)
+Use `Ideal.mem_inf.2 ⟨?_, Ideal.mem_iInf.2 fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf D.host.F) ⊗ₜ[D.host.F] x = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Express the relevant statement in the definitionally equal form `(evalV D.host.F w.1 α) ⊗ₜ[D.host.F] x = 0`. Rewrite using `[hα _ w.2, TensorProduct.zero_tmul]`.
+-/
 theorem gen_mem_idAt' {D : D7} (P : GlobalTheory.FinPl.Pl D → Prop) (α : Af D.host.F) (hα : ∀ w, ¬ P w → evalV D.host.F w α = 0)
     (x : D.host.E) : (pairA D.host.F 0 α) ⊗ₜ[D.host.F] x ∈ GlobalTheory.FinPl.idAt D P := by
   refine Ideal.mem_inf.2 ⟨?_, Ideal.mem_iInf.2 fun w => ?_⟩
@@ -257,6 +361,11 @@ theorem gen_mem_idAt' {D : D7} (P : GlobalTheory.FinPl.Pl D → Prop) (α : Af D
   · change (evalV D.host.F w.1 α) ⊗ₜ[D.host.F] x = 0
     rw [hα _ w.2, TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, -, hα, a, -, s, -, t, -, rfl⟩` from `hw`. Introduce `i j`. Conclude with `gen_mem_idAt' P α hα _`.
+
+Consider the case `zero => exact fun _ _ => zero_mem _`. Consider the case `add x y _ _ hx hy => exact fun i j => add_mem (hx i j) (hy i j)`. Consider the case `neg x _ hx => exact fun i j => neg_mem (hx i j)`.
+-/
 theorem latO_mx {D : D7} {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P : GlobalTheory.FinPl.Pl D → Prop} {u : WO S T} (hu : u ∈ latO S T LS LT P) : GlobalTheory.FinPl.MxAt P u := by
   induction hu using AddSubgroup.closure_induction with
@@ -268,10 +377,16 @@ theorem latO_mx {D : D7} {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT 
   | add x y _ _ hx hy => exact fun i j => add_mem (hx i j) (hy i j)
   | neg x _ hx => exact fun i j => neg_mem (hx i j)
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨α, hαi, hα, rest⟩ => ⟨α, hαi, fun v hv => hα v (fun h' => hv (h v h')), rest⟩`.
+-/
 theorem latO_mono {D : D7} {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P P' : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ x, P' x → P x) : latO S T LS LT P' ≤ latO S T LS LT P :=
   AddSubgroup.closure_mono fun _ ⟨α, hαi, hα, rest⟩ => ⟨α, hαi, fun v hv => hα v (fun h' => hv (h v h')), rest⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.WeilVacMove.heisO_heisO, GlobalTheory.WeilVacMove.heisO_heisO, add_comm]`. Establish `e1 : symplOH S T x y = 0` using `by unfold symplOH; rw [h1, mul_zero]`. Establish `e2 : symplOH S T y x = 0` using `by unfold symplOH; rw [h2, mul_zero]`. Rewrite using `[e1, e2]`.
+-/
 theorem heisO_comm_of {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {x y : WO S T}
     (h1 : symplO S T x y = 0) (h2 : symplO S T y x = 0) (f : WO S T → ℂ) :
     heisO ψ S T x (heisO ψ S T y f) = heisO ψ S T y (heisO ψ S T x f) := by
@@ -280,6 +395,15 @@ theorem heisO_comm_of {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {x
   have e2 : symplOH S T y x = 0 := by unfold symplOH; rw [h2, mul_zero]
   rw [e1, e2]
 
+/- English proof (translation)
+Introduce `D ψ S T LS LT P p hP hstd e f he hf`. Establish `hdisj1 : ∀ x : GlobalTheory.FinPl.Pl D, x = p → ¬ x ≠ p` using `fun x hx h => h hx`. Establish `hdisj2 : ∀ x : GlobalTheory.FinPl.Pl D, x ≠ p → ¬ x = p` using `fun x hx h => hx h`. Establish `hcomm : ∀ u, GlobalTheory.FinPl.MxAt (· = p) u → heisO ψ S T u (comb ψ S T e f) = comb ψ S T e (heisO ψ S T u f)`. Introduce `u hu`.
+
+Unfold `comb`. Rewrite using `[GlobalTheory.HeisComb.heisO_finset_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[heisO_comm_of ψ (symplO_eq_zero_of_disj D S T _ _ hdisj1 u x hu (he x hx)) (symplO_eq_zero_of_disj D S T _ _ hdisj2 x u (he x hx) hu)]`. Establish `hmono : latO S T (LS : Set _) (LT : Set _) (· = p) ≤ latO S T (LS : Set _) (LT : Set _) P` using `latO_mono fun x (hx : x = p) => hx ▸ hP`.
+
+Use `⟨(GlobalTheory.HeisComb.main D ψ S T).2.2.1 e f hf.1 (fun u hu => mx_inf (he u hu)) hstd, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `h2u : 2 • u ∈ latO S T (LS : Set _) (LT : Set _) (· = p)` using `nsmul_mem hu 2`. Rewrite using `[hcomm _ (latO_mx h2u), hf.2.1 _ (hmono hu)]`. Introduce `e' he' u hu hhalf`.
+
+Rewrite using `[hcomm _ (latO_mx hu), hf.2.2 e' he' u (hmono hu) hhalf]`.
+-/
 theorem comb_vac_at : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T) (P : GlobalTheory.FinPl.Pl D → Prop) (p : GlobalTheory.FinPl.Pl D), P p → IsStdChar D ψ (-1) → ∀ (e : WO S T →₀ ℂ) (f : WO S T → ℂ), (∀ u ∈ e.support, GlobalTheory.FinPl.MxAt (· ≠ p) u) → GlobalTheory.FinPl.Vac ψ S T LS LT P f → GlobalTheory.FinPl.Vac ψ S T LS LT (· = p) (comb ψ S T e f) := by
   intro D ψ S T LS LT P p hP hstd e f he hf
   have hdisj1 : ∀ x : GlobalTheory.FinPl.Pl D, x = p → ¬ x ≠ p := fun x hx h => h hx
@@ -299,6 +423,13 @@ theorem comb_vac_at : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D
   · intro e' he' u hu hhalf
     rw [hcomm _ (latO_mx hu), hf.2.2 e' he' u (hmono hu) hhalf]
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hw LS LT p b f hb hf`. Establish `hdisj : ∀ x : GlobalTheory.FinPl.Pl D, x ≠ p → ¬ x = p` using `fun x hx h => hx h`. Establish `hcomm : ∀ u, GlobalTheory.FinPl.MxAt (· = p) u → heisO ψ S T u (∑ g ∈ b.support, b g • om (g, 1) f) = ∑ g ∈ b.support, b g • om (g, 1) (heisO ψ S T u f)`. Introduce `u hu`. Rewrite using `[GlobalTheory.HeisComb.heisO_finset_sum]`.
+
+Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Rewrite using `[hw.om_heis g 1 u f hf.1, actO_eq_of_disj D S T _ _ hdisj g (hb g hg) u hu]`. Use `⟨GlobalTheory.Core.Rk.Collect.theta_sum b.support (fun g => b g) (fun g => om (g, 1) f) (fun g => hw.om_pres _ f hf.1), ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `h2u : 2 • u ∈ latO S T _ _ (· = p)` using `nsmul_mem hu 2`.
+
+Rewrite using `[hcomm _ (latO_mx h2u), hf.2.1 _ hu]`. Introduce `e' he' u hu hhalf`. Rewrite using `[hcomm _ (latO_mx hu), hf.2.2 e' he' u hu hhalf]`.
+-/
 theorem sum_om_vac_at : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T) (p : GlobalTheory.FinPl.Pl D) (b : GA D S →₀ ℂ) (f : WO S T → ℂ), (∀ g ∈ b.support, g ∈ GlobalTheory.FinPl.grpAt S (· ≠ p)) → GlobalTheory.FinPl.Vac ψ S T LS LT (· = p) f → GlobalTheory.FinPl.Vac ψ S T LS LT (· = p) (∑ g ∈ b.support, b g • om (g, 1) f) := by
   intro D ψ S T χS χT om hw LS LT p b f hb hf
   have hdisj : ∀ x : GlobalTheory.FinPl.Pl D, x ≠ p → ¬ x = p := fun x hx h => hx h
@@ -315,11 +446,17 @@ theorem sum_om_vac_at : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp
   · intro e' he' u hu hhalf
     rw [hcomm _ (latO_mx hu), hf.2.2 e' he' u hu hhalf]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u w`. Simplify using `only [biComb, comb_single_zero]`.
+-/
 theorem biComb_one {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (C : WO A S → WO S A' → ℂ) :
     biComb ψ A S A' (Finsupp.single 0 1) (Finsupp.single 0 1) C = C := by
   funext u w
   simp only [biComb, comb_single_zero]
 
+/- English proof (translation)
+Establish `e : conv ([] : List (GA D S →₀ ℂ)) = Finsupp.single 1 1` using `rfl`. Rewrite using `[e, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`. Use `show om 1 X = X`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem sum_conv_nil {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (X : WO S T → ℂ) :
     ∑ g ∈ (conv ([] : List (GA D S →₀ ℂ))).support, conv ([] : List (GA D S →₀ ℂ)) g • om (g, 1) X = X := by
   have e : conv ([] : List (GA D S →₀ ℂ)) = Finsupp.single 1 1 := rfl
@@ -328,6 +465,31 @@ theorem sum_conv_nil {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Module.E
   rw [map_one]; rfl
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Establish `hstd : IsStdChar D c.ψ (-1)` using `hc.std`. Establish `hom : (t.sBF j 0 h).om = t.om j` using `(ht.sBF j 0 h).1`. Establish `hweil : IsWeilDatumO c.ψ (c.V j) (c.V (j + 1)) (t.sBF j 0 h).χV (t.sBF j 0 h).χW (t.om j)` using `hom ▸ (t.sBF j 0 h).weil`. Establish `hne : ∀ a b : Fin F.r, a ≠ b → (F.Q a).q.v ≠ (F.Q b).q.v` using `fun a b hab e => hab (hF.inj e)`. Establish `hinQ : ∀ i, (F.Q i).q.v ∈ w.Q` using `fun i => (hF.places _).2 ⟨i, rfl⟩`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `σ _ c₁ c₂ _ _`. Simplify using `only [List.ofFn_zero, Finset.univ_eq_empty, Finset.prod_empty, one_smul, Fintype.sum_unique]`.
+
+Establish `e0 : aconv ([] : List (WO (c.V j) (c.V (j + 1)) →₀ ℂ)) = Finsupp.single 0 1` using `rfl`. Establish `e0' : aconv ([] : List (WO (c.V (j + 1)) c.T →₀ ℂ)) = Finsupp.single 0 1` using `rfl`. Rewrite using `[e0, e0', comb_single_zero, comb_single_zero, sum_conv_nil, conv_alg.2.1, conv_alg.2.1]`. Consider the case `succ n ih`. Introduce `σ hσ c₁ c₂ h₁ h₂`.
+
+Establish `hτ : Function.Injective (fun k : Fin n => σ k.succ)` using `hσ.comp (Fin.succ_injective _)`. Establish `hne0 : ∀ k : Fin n, (F.Q (σ k.succ)).q.v ≠ (F.Q (σ 0)).q.v` using `fun k => hne _ _ (fun e => Fin.succ_ne_zero k (hσ e))`. Establish `hEsupp : ∀ g ∈ (conv (List.ofFn fun k : Fin n => (F.Q (σ k.succ)).εL j (F.eqv j α (σ k.succ)))).support, g ∈ GlobalTheory.FinPl.grpAt (c.V j) (· ≠ (F.Q (σ 0)).q.v)`. Use `conv_alg.2.2.2.2 _ _ (GlobalTheory.FinPl.grpAt (c.V j) (· ≠ (F.Q (σ 0)).q.v)).toSubmonoid ?_` and prove the remaining obligations. Introduce `x hx g hg`.
+
+Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `εL_grp (F.Q (σ k.succ)) h _ g hg _ (hne0 k)`. Establish `hLsupp : ∀ u ∈ (aconv (List.ofFn fun k : Fin n => (F.Q (σ k.succ)).eL j)).support, GlobalTheory.FinPl.MxAt (· ≠ (F.Q (σ 0)).q.v) u`. Use `conv_alg.2.2.2.1 (WO (c.V j) (c.V (j + 1))) _ (mxSub _ _ _) ?_` and prove the remaining obligations. Introduce `x hx u hu`.
+
+Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `half_mx _ (eL_half (F.Q (σ k.succ)) h u hu) _ (hne0 k)`. Establish `hTsupp : ∀ u ∈ (aconv (List.ofFn fun k : Fin n => (F.Q (σ k.succ)).eT j h)).support, GlobalTheory.FinPl.MxAt (· ≠ (F.Q (σ 0)).q.v) u`. Use `conv_alg.2.2.2.1 (WO (c.V (j + 1)) c.T) _ (mxSub _ _ _) ?_` and prove the remaining obligations. Introduce `x hx u hu`.
+
+Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `half_mx _ (eT_half (F.Q (σ k.succ)) h u hu) _ (hne0 k)`. Establish `hd0 : ∀ p : GlobalTheory.FinPl.Pl D, p = (F.Q (σ 0)).q.v → ¬ p ≠ (F.Q (σ 0)).q.v` using `fun p hp hp' => hp' hp`. Establish `hd1 : ∀ p : GlobalTheory.FinPl.Pl D, p ≠ (F.Q (σ 0)).q.v → ¬ p = (F.Q (σ 0)).q.v` using `fun p hp hp' => hp hp'`. Simplify using `only [List.ofFn_succ]`.
+
+Rewrite using `[sum_conv_cons, comb_aconv_cons D c.ψ _ _ _ _ Ψ₁ (fun x hx y hy => symplO_eq_zero_of_disj D _ _ _ _ hd0 x y (half_mx _ (eL_half (F.Q (σ 0)) h x hx) _ rfl) (hLsupp y hy)), comb_aconv_cons D c.ψ _ _ _ _ Ψ₂ (fun x hx y hy => symplO_eq_zero_of_disj D _ _ _ _ hd0 x y (half_mx _ (eT_ha …`. Rewrite using `[Fin.prod_univ_succ, mul_comm, mul_smul]`. Take `⟨hr, hτv⟩` from `hW.tau j h`. Rewrite using `[oneplace_at (F.Q (σ 0)) hc hv j (s_eq _ h) h hr hτv (t.sBF j 0 h) (hF.lastc j h) (t.om j) hom (t.kom j) (t.kom (j + 1)) (hF.kom j (by omega)) (hF.kom (j + 1) (by omega)) c₁ c₂ (h₁ 0) (h₂ 0) _ _ (sum_om_vac_at D c.ψ _ _ _ _ (t.om j) hweil _ _ _ _ _ hEsupp (comb_vac_at D c.ψ _ _ _ …`. Rewrite using `[← (Fin.consEquiv (fun k : Fin (n + 1) => (F.Q (σ k)).Ch (j + 1))).sum_comp, Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun y₀ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, ih (fun k => σ k.succ) hτ _ _ ?_ ?_, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun y' _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.consEquiv_apply, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, smul_smul]`. Rewrite using `[conv_alg.1, conv_alg.1]`.
+
+Introduce `k`. Use `conv_alg.2.2.2.1 (WO (c.X j) (c.X (j + 1))) _ (halfSub _ _ _) ?_` and prove the remaining obligations. Introduce `x hx u hu`. Simplify using `only [List.mem_cons, List.mem_singleton, List.not_mem_nil, or_false] at hx`. Break down `hx with rfl | rfl` into its components or cases.
+
+Conclude with `h₁ k.succ u hu`. Conclude with `half_one_sub_of_ne D _ _ (F.Q (σ k.succ)).q (F.Q (σ 0)).q (hne0 k) _ _ u (dL_half (F.Q (σ 0)) h _ _ u hu)`. Introduce `k`. Use `conv_alg.2.2.2.1 (WO (c.X (j + 1)) (c.X (j + 1 + 1))) _ (halfSub _ _ _) ?_` and prove the remaining obligations. Introduce `x hx u hu`.
+
+Simplify using `only [List.mem_cons, List.mem_singleton, List.not_mem_nil, or_false] at hx`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `h₂ k.succ u hu`. Conclude with `half_one_sub_of_ne D _ _ (F.Q (σ k.succ)).q (F.Q (σ 0)).q (hne0 k) _ _ u (dL_half' (F.Q (σ 0)) h _ _ u hu)`.
+-/
 theorem iter_places {D : D7} {c : Comm D} {v : VCom c} {t : Tup c} {w : VTup t} (F : QFam v t) (hc : c.Is) (ht : t.Is)
     (hv : v.Is) (hW : WeilOK (t := t) v) (hF : F.Pins w) (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m)
     (Ψ₁ : WO (c.V j) (c.V (j + 1)) → ℂ) (Ψ₂ : WO (c.V (j + 1)) c.T → ℂ)
@@ -427,6 +589,15 @@ theorem iter_places {D : D7} {c : Comm D} {v : VCom c} {t : Tup c} {w : VTup t} 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D c v t w F hc ht hv hW hF j h Ψ₁ Ψ₂ hΨ₁ hΨ₂ φ hφ α β`. Establish `h1 : ∀ k : Fin F.r, ∀ u ∈ (Finsupp.single (0 : WO (c.X j) (c.X (j + 1))) (1 : ℂ)).support, IsHalf (1 - ((F.Q (id k)).q.e + cA D (F.Q (id k)).q.e)) u`. Introduce `k u hu`. Rewrite `hu` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Substitute `hu` using the available equality.
+
+Introduce `a b`. Simplify using the standard rewrite rules. Establish `h2 : ∀ k : Fin F.r, ∀ u ∈ (Finsupp.single (0 : WO (c.X (j + 1)) (c.X (j + 1 + 1))) (1 : ℂ)).support, IsHalf (1 - ((F.Q (id k)).q.e + cA D (F.Q (id k)).q.e)) u`. Introduce `k u hu`. Rewrite `hu` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`.
+
+Substitute `hu` using the available equality. Introduce `a b`. Simplify using the standard rewrite rules. Establish `H` using `iter_places F hc ht hv hW hF j h Ψ₁ Ψ₂ hΨ₁ hΨ₂ φ hφ α β F.r id Function.injective_id _ _ h1 h2`. Rewrite `H` using `[biComb_one]`.
+
+Simplify using `only [conv_alg.2.2.1, id] at H`. Rewrite using `[hF.eQ j (by omega), hF.eQT j h, H]`. Conclude with `(Fintype.sum_equiv (F.eqv (j + 1)) _ _ fun γ => rfl).symm`.
+-/
 theorem core : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t), c.Is → t.Is → v.Is → WeilOK (t := t) v → F.Pins w → ∀ j (h : j + 2 * 0 + 2 = D.R.m) Ψ₁ Ψ₂, GlobalTheory.FinPl.Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ w.Q) Ψ₁ → GlobalTheory.FinPl.Vac c.ψ _ _ (v.N (j + 1)) v.NT (· ∈ w.Q) Ψ₂ → ∀ φ, IsContAut (c.X j) φ → ∀ α β, (∏ i, ((F.Q i).idx (j + 1) : ℂ)) • c.bl j (t.kom j) (t.kom (j + 1)) φ (c.lst j h (v.τ j h) (t.sBF j 0 h) (∑ g ∈ (conv (List.ofFn fun i => (F.Q i).εL j (F.eqv j α i))).support, conv (List.ofFn fun i => (F.Q i).εL j (F.eqv j α i)) g • t.om j (g, 1) (comb c.ψ _ _ (w.eQ j) Ψ₁)) (comb c.ψ _ _ (w.eQT j h) Ψ₂)) = ∑ γ, (∏ i, (F.Q i).wt (j + 1) (F.eqv (j + 1) γ i)) • c.bl j (t.kom j) (t.kom (j + 1)) φ (biComb c.ψ _ _ _ (aconv (List.ofFn fun i => (F.Q i).dL j (F.eqv j α i) (F.eqv (j + 1) γ i))) (aconv (List.ofFn fun i => (F.Q i).dL (j + 1) (F.eqv (j + 1) γ i) (F.eqv (j + 1 + 1) β i))) (c.lst j h (v.τ j h) (t.sBF j 0 h) Ψ₁ Ψ₂)) := by
   intro D c v t w F hc ht hv hW hF j h Ψ₁ Ψ₂ hΨ₁ hΨ₂ φ hφ α β
   have h1 : ∀ k : Fin F.r, ∀ u ∈ (Finsupp.single (0 : WO (c.X j) (c.X (j + 1))) (1 : ℂ)).support,

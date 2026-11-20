@@ -16,6 +16,9 @@ open Classical in
 
 def toGoodR (c : Coeff l) (σ : c.F →+* ℂ) : ℂ →+* ℂ := if GoodEmb c σ then RingHom.id ℂ else starRingEnd ℂ
 
+/- English proof (translation)
+Unfold `toGoodR goodOf`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem toGoodR_apply (c : Coeff l) (σ : c.F →+* ℂ) (x : c.F) : toGoodR c σ (σ x) = goodOf c σ x := by
   unfold toGoodR goodOf
   split_ifs <;> rfl
@@ -23,6 +26,11 @@ theorem toGoodR_apply (c : Coeff l) (σ : c.F →+* ℂ) (x : c.F) : toGoodR c �
 def toGood (c : Coeff l) (σ : c.F →+* ℂ) : CAt σ →ₐ[c.F] CAt (goodOf c σ) :=
   { (toGoodR c σ : ℂ →+* ℂ) with commutes' := fun x => toGoodR_apply c σ x }
 
+/- English proof (translation)
+Distinguish the cases in `h : GoodEmb c σ`. Use `left`. Introduce `z show toGoodR c σ (toC z) = toC z`. Unfold `toGoodR`. Rewrite using `[if_pos h]`.
+
+Both sides reduce to the same expression. Use `right`. Introduce `z show toGoodR c σ (toC z) = _`. Unfold `toGoodR`. Rewrite using `[if_neg h]`.
+-/
 theorem isIdOrConj_toGood (c : Coeff l) (σ : c.F →+* ℂ) : IsIdOrConj (toGood c σ) := by
   by_cases h : GoodEmb c σ
   · left; intro z
@@ -32,6 +40,11 @@ theorem isIdOrConj_toGood (c : Coeff l) (σ : c.F →+* ℂ) : IsIdOrConj (toGoo
     show toGoodR c σ (toC z) = _
     unfold toGoodR; rw [if_neg h]
 
+/- English proof (translation)
+Establish `: IsReduced (CAt σ)` using `inferInstanceAs (IsReduced ℂ)`. Take `⟨p, ψ, y0, hy0⟩` from `hA (CAt σ) y`. Establish `hg` using `goodEmb_goodOf c σ`. Take `⟨z, hz⟩` from `hB _ hg p y0 ((toGood c σ).comp ψ)`. Establish `hm : FrMap (toGood c σ) y z` using `frMap_cancel _ _ _ ψ (toGood c σ) y0 y z hy0 hz`.
+
+Take `⟨k, x, t, ht⟩` from `(hU _ hg).2.2.1 z`. Conclude with `⟨⟨k, x, t⟩, z, toGood c σ, isIdOrConj_toGood c σ, hm, ht⟩`.
+-/
 theorem rdEx_of (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (hA : AllTest Xo c)
     (hB : ∀ σ, GoodEmb c σ → BCEx Xo c σ) (σ : c.F →+* ℂ) (y : FrPt Xo c (CAt σ)) : ∃ q, RdAt U σ y q := by
   have : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ)

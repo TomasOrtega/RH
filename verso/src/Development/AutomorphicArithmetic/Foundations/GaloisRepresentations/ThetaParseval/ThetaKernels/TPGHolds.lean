@@ -36,6 +36,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 namespace UpperTheory.TP
 open GlobalTheory.ThK.Dbl
+/- English proof (translation)
+The claim follows from `have p1 := _root_.GlobalTheory.ThK.Dbl.siegelWeilAniso_of_k _root_.PositivityTheory.SiegelWeilFormula.Fin.siegelWeilStd_k _root_.GlobalTheory.ThK.Dbl.frameConj_k _root_.GlobalTheory.ThK.Dbl.finLevel_k _root_.GlobalTheory.ThK.Dbl.stab2Cpt_k have l1 := _root_.GlobalTheory.ThK.Dbl.b …`.
+-/
 theorem tools_holds_k : _root_.UpperTheory.TP.Tools_k :=
   have p1 := _root_.GlobalTheory.ThK.Dbl.siegelWeilAniso_of_k _root_.PositivityTheory.SiegelWeilFormula.Fin.siegelWeilStd_k _root_.GlobalTheory.ThK.Dbl.frameConj_k _root_.GlobalTheory.ThK.Dbl.finLevel_k _root_.GlobalTheory.ThK.Dbl.stab2Cpt_k
   have l1 := _root_.GlobalTheory.ThK.Dbl.boxSecX_of_k _root_.GlobalTheory.ThK.Dbl.finLevel_k _root_.GlobalTheory.ThK.Dbl.stab2Cpt_k
@@ -55,6 +58,9 @@ theorem tools_holds_k : _root_.UpperTheory.TP.Tools_k :=
     acts := _root_.PositivityTheory.ThKF0.actsEx_k
     lie1 := PositivityTheory.RL.lieFirst l2
     lie2 := l2 }
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.TP.tLift_of_tools_k _root_.UpperTheory.TP.tools_holds_k (_root_.GlobalTheory.ThK.Dbl.hgtEx_of_k _root_.GlobalTheory.ThK.Dbl.stab2Cpt_k)`.
+-/
 theorem tLift_holds_k : _root_.UpperTheory.TP.TLift_k := _root_.UpperTheory.TP.tLift_of_tools_k _root_.UpperTheory.TP.tools_holds_k (_root_.GlobalTheory.ThK.Dbl.hgtEx_of_k _root_.GlobalTheory.ThK.Dbl.stab2Cpt_k)
 end UpperTheory.TP
 end

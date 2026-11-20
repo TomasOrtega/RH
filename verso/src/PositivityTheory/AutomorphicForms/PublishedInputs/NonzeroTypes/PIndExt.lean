@@ -15,6 +15,13 @@ namespace P_indExt
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Establish `hne : ((ϖ : k) ^ r) ≠ 0` using `pow_ne_zero _ fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `e : {x : k | InPow r x} = ((ϖ : k) ^ r) • (𝒪[k] : Set k)`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, InPow, Set.mem_smul_set, smul_eq_mul]`.
+
+Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨z, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Conclude with `⟨(z : k), z.2, by simp only [map_mul, map_pow]; rw [mul_comm]; rfl⟩`.
+
+Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨ϖ ^ r * ⟨z, hz⟩, Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _), by simp only [map_mul, map_pow]; rfl⟩`. Establish `hO : IsOpen (𝒪[k] : Set k)` using `Valuation.isOpen_integer`. Rewrite using `[e]`. Conclude with `hO.smul₀ hne`.
+-/
 theorem isOpen_inPow (r : ℕ) : IsOpen {x : k | InPow r x} := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[k]
   have hne : ((ϖ : k) ^ r) ≠ 0 := pow_ne_zero _ fun h => hϖ.ne_zero (Subtype.ext h)
@@ -32,6 +39,11 @@ theorem isOpen_inPow (r : ℕ) : IsOpen {x : k | InPow r x} := by
   rw [e]
   exact hO.smul₀ hne
 
+/- English proof (translation)
+Establish `e : KC k n r = (KO k (Fin n) : Set (GL (Fin n) k)) ∩ ⋂ i, ⋂ j, (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j - if i = j then 1 else 0) ⁻¹' {x | InPow r x}`. Use extensionality with `g`. Simplify using `only [KC, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Rewrite using `[e]`. Use `GlobalTheory.SplitFlip.isOpen_KO.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_)` and prove the remaining obligations.
+
+Conclude with `(isOpen_inPow r).preimage ((Units.continuous_val.matrix_elem i j).sub continuous_const)`.
+-/
 theorem isOpen_KC (n r : ℕ) : IsOpen (KC k n r) := by
   have e : KC k n r = (KO k (Fin n) : Set (GL (Fin n) k)) ∩ ⋂ i, ⋂ j,
       (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j - if i = j then 1 else 0) ⁻¹'
@@ -42,6 +54,9 @@ theorem isOpen_KC (n r : ℕ) : IsOpen (KC k n r) := by
   refine GlobalTheory.SplitFlip.isOpen_KO.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_)
   exact (isOpen_inPow r).preimage ((Units.continuous_val.matrix_elem i j).sub continuous_const)
 
+/- English proof (translation)
+Use `⟨one_mem _, fun i j => ⟨0, zero_mem _, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Matrix.one_apply_ne h]`.
+-/
 theorem one_mem_KC (n r : ℕ) : (1 : GL (Fin n) k) ∈ KC k n r := by
   refine ⟨one_mem _, fun i j => ⟨0, zero_mem _, ?_⟩⟩
   by_cases h : i = j
@@ -61,6 +76,15 @@ def extFun (φ : ↥(KO k (Fin n)) → ℂ) (v : ⨂[ℂ] a, X a) (x : GL (Fin n
 
 variable {G σ}
 
+/- English proof (translation)
+Take `⟨hφ1, -⟩` from `hφ`. Take `⟨q, rfl⟩ : ∃ q : parab k G.e, p = p' * q` from `⟨p'⁻¹ * p, (mul_inv_cancel_left p' p).symm⟩`. Establish `hw'eq : w' = (q : GL (Fin n) k) * w`. Rewrite `he` using `[Subgroup.coe_mul, mul_assoc]`. Conclude with `(mul_left_cancel he).symm`.
+
+Establish `hqK : (q : GL (Fin n) k) ∈ KO k (Fin n)`. Establish `: (q : GL (Fin n) k) = w' * w⁻¹` using `by rw [hw'eq, mul_inv_cancel_right]`. Rewrite using `[this]`. Conclude with `mul_mem hw' (inv_mem hw)`. Substitute `hw'eq` using the available equality.
+
+Establish `h1 : φ ⟨(q : GL (Fin n) k) * w, hw'⟩ = G.lam (q : GL (Fin n) k) * φ ⟨w, hw⟩` using `hφ1 ⟨q, hqK⟩ ⟨hqK, q.2⟩ ⟨w, hw⟩`. Establish `hP'` using `hP k G.s n G.d G.hd q hqK`. Establish `hδ : deltaHalf k (fun a => Fin (G.d a)) (leviProj k G.e q) = 1` using `hP'.2`. Establish `hρ : piTensor σ (leviProj k G.e q) v = G.lam (q : GL (Fin n) k) • v`. Rewrite using `[hv _ hP'.1, hL k n G q hqK]`.
+
+Rewrite using `[(leviProj k G.e).map_mul p' q, (deltaHalf k (fun a => Fin (G.d a))).map_mul, hδ, mul_one, (piTensor σ).map_mul, Module.End.mul_apply, map_smul (piTensor σ (leviProj k G.e q)), hρ, h1, smul_smul, mul_comm]`.
+-/
 theorem expr_eq (hL : LeviSubgroupRestriction) (hP : ParabolicInductionKernel) {φ : ↥(KO k (Fin n)) → ℂ} (hφ : φ ∈ G.V0sp)
     {v : ⨂[ℂ] a, X a}
     (hv : ∀ m : Levi k (fun a => Fin (G.d a)), (∀ a, m a ∈ KO k (Fin (G.d a))) →
@@ -88,6 +112,9 @@ theorem expr_eq (hL : LeviSubgroupRestriction) (hP : ParabolicInductionKernel) {
   rw [(leviProj k G.e).map_mul p' q, (deltaHalf k (fun a => Fin (G.d a))).map_mul, hδ, mul_one,
     (piTensor σ).map_mul, Module.End.mul_apply, map_smul (piTensor σ (leviProj k G.e q)), hρ, h1, smul_smul, mul_comm]
 
+/- English proof (translation)
+Take `⟨hw', he⟩` from `(MultiIrr.exists_parab_mul G.e ((p : GL (Fin n) k) * w)).choose_spec.choose_spec`. Conclude with `expr_eq hL hP hφ hv p _ w _ hw hw' he`.
+-/
 theorem extFun_mul (hL : LeviSubgroupRestriction) (hP : ParabolicInductionKernel) {φ : ↥(KO k (Fin n)) → ℂ} (hφ : φ ∈ G.V0sp)
     {v : ⨂[ℂ] a, X a}
     (hv : ∀ m : Levi k (fun a => Fin (G.d a)), (∀ a, m a ∈ KO k (Fin (G.d a))) →
@@ -98,6 +125,9 @@ theorem extFun_mul (hL : LeviSubgroupRestriction) (hP : ParabolicInductionKernel
   obtain ⟨hw', he⟩ := (MultiIrr.exists_parab_mul G.e ((p : GL (Fin n) k) * w)).choose_spec.choose_spec
   exact expr_eq hL hP hφ hv p _ w _ hw hw' he
 
+/- English proof (translation)
+Introduce `h g`. Take `⟨p, w, hw, rfl⟩` from `MultiIrr.exists_parab_mul G.e g`. Rewrite using `[← mul_assoc, ← Subgroup.coe_mul, extFun_mul hL hP hφ hv (h * p) w hw, extFun_mul hL hP hφ hv p w hw]`. Generalize the expression as in `φ ⟨w, hw⟩ • v = x`. Rewrite using `[MonoidHom.comp_apply, twist_apply, map_smul, smul_smul, (leviProj k G.e).map_mul, (deltaHalf k (fun a => Fin (G.d a))).map_mul, Units.val_mul, (piTensor σ).map_mul, Module.End.mul_apply]`.
+-/
 theorem extFun_mem (hL : LeviSubgroupRestriction) (hP : ParabolicInductionKernel) {φ : ↥(KO k (Fin n)) → ℂ} (hφ : φ ∈ G.V0sp)
     {v : ⨂[ℂ] a, X a}
     (hv : ∀ m : Levi k (fun a => Fin (G.d a)), (∀ a, m a ∈ KO k (Fin (G.d a))) →
@@ -111,6 +141,13 @@ theorem extFun_mem (hL : LeviSubgroupRestriction) (hP : ParabolicInductionKernel
   rw [MonoidHom.comp_apply, twist_apply, map_smul, smul_smul, (leviProj k G.e).map_mul,
     (deltaHalf k (fun a => Fin (G.d a))).map_mul, Units.val_mul, (piTensor σ).map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `hφ'` using `hφ`. Take `⟨-, hφ2⟩` from `hφ'`. Use `⟨⟨⟨extFun G σ φ v, extFun_mem hL hP hφ hv⟩, ?_⟩, fun κ => ?_⟩` and prove the remaining obligations. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((isOpen_KC n G.lev).mem_nhds (one_mem_KC n G.lev)) fun u hu => ?_)` and prove the remaining obligations. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations.
+
+Use `show extFun G σ φ v (x * u) = extFun G σ φ v x`. Take `⟨p, w, hw, rfl⟩` from `MultiIrr.exists_parab_mul G.e x`. Establish `h2 : φ ⟨w * u, mul_mem hw hu.1⟩ = φ ⟨w, hw⟩` using `hφ2 ⟨w, hw⟩ ⟨u, hu.1⟩ hu`. Rewrite using `[mul_assoc, extFun_mul hL hP hφ hv p (w * u) (mul_mem hw hu.1), h2, extFun_mul hL hP hφ hv p w hw]`. Establish `h` using `extFun_mul hL hP hφ hv 1 κ κ.2`.
+
+Rewrite `h` using `[Subgroup.coe_one, one_mul]`. Use `show extFun G σ φ v κ = _`. Rewrite using `[h, map_one, map_one, map_one, Units.val_one, one_smul, Module.End.one_apply]`.
+-/
 theorem exists_ext (hL : LeviSubgroupRestriction) (hP : ParabolicInductionKernel) {φ : ↥(KO k (Fin n)) → ℂ} (hφ : φ ∈ G.V0sp)
     {v : ⨂[ℂ] a, X a}
     (hv : ∀ m : Levi k (fun a => Fin (G.d a)), (∀ a, m a ∈ KO k (Fin (G.d a))) →
@@ -135,6 +172,9 @@ end Ext
 
 end P_indExt
 
+/- English proof (translation)
+Introduce `hL hP k _ _ _ _ n G X _ _ σ v hv φ hφ`. Conclude with `P_indExt.exists_ext hL hP hφ hv`.
+-/
 theorem step_indExt : InductionExtension := by
   intro hL hP k _ _ _ _ n G X _ _ σ v hv φ hφ
   exact P_indExt.exists_ext hL hP hφ hv

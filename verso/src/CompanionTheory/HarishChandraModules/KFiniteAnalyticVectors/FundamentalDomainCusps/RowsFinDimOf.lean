@@ -12,6 +12,11 @@ namespace CompanionTheory.D.gk.RF
 
 open Formalism.MainNotions.S Formalism.L2.SG.ProjRows Formalism.L2.SG.RowsDef Formalism.L2.SG.Pf Formalism.MainNotions.LeviCoordinates
 
+/- English proof (translation)
+Use `(Lp.simpleFunc.dense (E := ℂ) (μ := μ) (p := 2) (by simp)).mono fun F hF => ?_` and prove the remaining obligations. Set `f : Lp.simpleFunc ℂ 2 μ` to `⟨F, hF⟩`. Take `⟨M, hM⟩` from `(Lp.simpleFunc.toSimpleFunc f).exists_forall_norm_le`. Use `⟨M, ?_⟩` and prove the remaining obligations. Use `filter_upwards [Lp.simpleFunc.toSimpleFunc_eq_toFun f] with x hx`.
+
+Rewrite using `[show (F : X → ℂ) x = Lp.simpleFunc.toSimpleFunc f x from hx.symm]`. Conclude with `hM x`.
+-/
 theorem dense_bdd {X : Type} [MeasurableSpace X] (μ : Measure X) :
     Dense {F : Lp ℂ 2 μ | ∃ M : ℝ, ∀ᵐ x ∂μ, ‖(F : X → ℂ) x‖ ≤ M} := by
   refine (Lp.simpleFunc.dense (E := ℂ) (μ := μ) (p := 2) (by simp)).mono fun F hF => ?_
@@ -22,6 +27,29 @@ theorem dense_bdd {X : Type} [MeasurableSpace X] (μ : Measure X) :
   rw [show (F : X → ℂ) x = Lp.simpleFunc.toSimpleFunc f x from hx.symm]
   exact hM x
 
+/- English proof (translation)
+Introduce `I μf _ _ fund hfund R hR e Re hlc hsupp hRe H _ _ _ σ dv w hU _ hF hw hL T hT`. Establish `: LocallyCompactSpace I.Gf` using `gf_locallyCompact I`. Establish `: T2Space I.Gf` using `finite_adeles_group_t2 I`. Establish `: SecondCountableTopology I.Gf` using `rr_secondCountable I μf`. Establish `hright : (I.muA μf).IsMulRightInvariant` using `Formalism.L2.S.S7.IwasawaBase.muA_right I μf`.
+
+Establish `: (I.muA μf).IsHaarMeasure`. Establish `h1 : (I.muA μf).IsOpenPosMeasure` using `by unfold AutInst.muA; infer_instance`. Establish `h2 : (I.muA μf).IsMulLeftInvariant` using `rr_muA_left I μf`. Establish `h3 : IsLocallyFiniteMeasure (I.muA μf)` using `by unfold AutInst.muA; infer_instance`. Conclude with `{}`.
+
+Establish `hlf : IsLocallyFiniteMeasure μf` using `inferInstance`. Set `X : Formalism.MainNotions.BridgeLemma.CData` to `{ I := I, b := 0, lam := 0, g := 0, g₀ := 0, e := e, H := fun _ => ℂ, σ := fun _ _ => 0, w := 0, Hs := ℂ, σs := fun _ => 0, tens := fun _ => 0, μf := μf, fund := fund, R := R, Re := Re, h := 0 }`. Establish `hd : RegData X` using `⟨‹_›, hfund, hR⟩`. Establish `hu : UnimodA X` using `hright`. Take `⟨hmul, -, hiso, -⟩` from `adelic_regular_rep_unitary_continuous X hd hu hlf`.
+
+Establish `hmeas` using `regular_rep_coeff_measurable X hd hu`. Use `set ph := phInf I σ w dv with hph`. Establish `hphI : Integrable ph (muInf I)` using `phInf_int I hL`. Establish `hconv` using `phInf_conv I hU hF hw`. Establish `hφ₀ : Integrable (fun p : I.GA => ph p.1 * e p.2) (I.muA μf)` using `hphI.mul_prod hRe.1`.
+
+Establish `hpr` using `prod_op_eq (muInf I) μf R hmul hiso (fun x y => (hmeas x y).aestronglyMeasurable) ph e hφ₀ T Re hT hRe.2`. Establish `hRT : I.IsRConv μf fund R (fun p => ph p.1 * e p.2) (Re.comp T)` using `⟨hφ₀, fun x y => (hpr x y).2.symm⟩`. Take `⟨Kp, hKo, hKc, hKe⟩` from `hLev I e hlc hsupp`. Establish `hK0 : μf Kp ≠ 0` using `(hKo.measure_pos μf ⟨1, Kp.one_mem⟩).ne'`. Establish `hK1 : μf Kp ≠ ∞` using `hKc.measure_lt_top.ne`.
+
+Establish `hind : Integrable ((Kp : Set I.Gf).indicator fun _ => (((μf Kp).toReal⁻¹ : ℝ) : ℂ)) μf` using `(integrable_indicator_iff hKo.measurableSet).2 (integrableOn_const hK1)`. Establish `hφ : Integrable (phK I μf ph Kp) (I.muA μf)` using `hphI.mul_prod hind`. Establish `hφφ₀ : ∀ z : I.GA, ∫ y, phK I μf ph Kp y * (ph (y⁻¹ * z).1 * e (y⁻¹ * z).2) ∂(I.muA μf) = ph z.1 * e z.2`. Introduce `z`. Establish `e1 : (fun y : I.GA => phK I μf ph Kp y * (ph (y⁻¹ * z).1 * e (y⁻¹ * z).2)) = fun y => (ph y.1 * ph (y.1⁻¹ * z.1)) * (Kp : Set I.Gf).indicator (fun _ => (((μf Kp).toReal⁻¹ : ℝ) : ℂ) * e z.2) y.2`.
+
+Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y.2 ∈ Kp`. Establish `hy' : y.2 ∈ (Kp : Set I.Gf)` using `hy`. Simplify using `only [phK, Set.indicator_of_mem hy', Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv, hKe _ (Kp.inv_mem hy)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hy' : y.2 ∉ (Kp : Set I.Gf)` using `hy`. Simplify using `only [phK, Set.indicator_of_notMem hy', mul_zero, zero_mul]`. Rewrite using `[e1]`. Use `(integral_prod_mul (μ := muInf I) (ν := μf) (fun g => ph g * ph (g⁻¹ * z.1)) _).trans ?_` and prove the remaining obligations. Rewrite using `[hconv, integral_indicator_const _ hKo.measurableSet, Measure.real, Complex.real_smul, ← mul_assoc ((μf Kp).toReal : ℂ), ← Complex.ofReal_mul, mul_inv_cancel₀ (ENNReal.toReal_pos hK0 hK1).ne', Complex.ofReal_one, one_mul]`.
+
+Establish `hFD` using `rr_isFD (rr_FD_of I μf fund hfund)`. Establish `hO : IsClopen {g : I.GA | g.2 ∈ Kp}` using `IsClopen.preimage (s := (Kp : Set I.Gf)) ⟨Kp.isClosed_of_isOpen hKo, hKo⟩ continuous_snd`. Establish `hdet` using `hCore I.GA (I.muA μf) (rr_GF I) fund hFD (fun C hC => hD I C hC) (phK I μf ph Kp) _ hφ hO (fun y hy => by`. Establish `hy' : y.2 ∉ (Kp : Set I.Gf)` using `hy`. Simplify using `only [phK, Set.indicator_of_notMem hy', mul_zero])`.
+
+Use the proof step `(hCA I μf (rr_GF I) rfl Kp hKo hKc ph hphI hconv)`. Use `hFin I.GA (I.muA μf) (rr_GF I) fund _ hφ hdet _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F₀, rfl⟩`. Use `map_mem_closure (f := Re.comp T) (Re.comp T).continuous (dense_bdd _ F₀) fun F hFb => ?_` and prove the remaining obligations. Take `⟨s, hs, hsb, hsi, hae⟩` from `hCR I μf fund hfund R hR _ _ hRT F hFb`.
+
+Conclude with `⟨_, hRC I.GA (I.muA μf) (rr_GF I) _ _ s hφ hφ₀ hφφ₀ hs hsb hsi, hae⟩`.
+-/
 theorem rowsFinDim_of (hCore : Core) (hFin : FiniteDimensionalFromLinearForms) (hCA : CuspAdel) (hD : GFDisc) (hLev : LevelOf)
     (hCR : ConvRep) (hRC : RepOfConv) : RowsFinDim := by
   intro I μf _ _ fund hfund R hR e Re hlc hsupp hRe H _ _ _ σ dv w hU _ hF hw hL T hT

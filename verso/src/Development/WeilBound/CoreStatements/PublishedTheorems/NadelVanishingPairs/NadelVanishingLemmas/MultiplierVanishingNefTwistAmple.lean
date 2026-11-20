@@ -12,6 +12,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 
 namespace GlobalTheory.LogResVanish
 
+/- English proof (translation)
+Take `⟨N, i, hi, rfl⟩` from `h`. Establish `: IsSeparated (PSpace.str k N)` using `by unfold PSpace.str; infer_instance`. Conclude with `⟨by rw [← terminal.comp_from (i ≫ PSpace.str k N)]; infer_instance⟩`.
+-/
 theorem isSeparated_of_isProjOver {k : Type} [Field k] {Z : Scheme.{0}} {f : Z ⟶ Sp k}
     (h : IsProjOver f) : Z.IsSeparated := by
   obtain ⟨N, i, hi, rfl⟩ := h
@@ -22,6 +25,21 @@ end GlobalTheory.LogResVanish
 
 open GlobalTheory.LogResVanish in
 
+/- English proof (translation)
+Introduce `k _ _ X _ p n hp η m G Y _ _ s _ K B F hη hm hres hF N M T hN hM r hT hr hcl hMnef a Fd A hA hAF`. Use `letI := algebraΓOfHom p`. Take `⟨H, hH⟩` from `exists_isAmpleLB_of_isProjOver hp`. Establish `hHl : H.IsLB` using `hH.isLB`. Establish `: CompactSpace X` using `hH.compactSpace`.
+
+Establish `: CompactSpace Y` using `hA.compactSpace`. Establish `: X.IsSeparated` using `isSeparated_of_isProjOver hp`. Establish `: Y.IsSeparated` using `isSeparated_of_isProjOver hres.proj`. Establish `hA0 : (toLB (-F)).IsLB` using `isLB_toLB _`. Establish `key : ∀ (N' T' : LB X) (hN' : N'.IsLB) (hT' : IsNef k T'), cls T' hT'.isLB = (m * r) • cls N' hN' - r • toPic G - m • cls M hM → ∀ i, 0 < i → Subsingleton (coh (twist (twist (GlobalTheory.structureModule Y) (toLB (-F))) (N'.pull s)) i)`.
+
+Introduce `N' T' hN' hT' e i hi`. Take `⟨Q, hQ, eQ⟩` from `cls_surj (CechPic.pull s (cls N' hN') - toPic F)`. Establish `h` using `GlobalTheory.T.multiplier_vanishing_nef_twist k X p n hp η m G Y s K B F hη hm hres hF N' M T' hN' hM r hT' hr e hMnef a Fd A hA hAF Q hQ eQ i hi`. Take `⟨iso⟩` from `nonempty_twist_twist_iso_of_cls_eq (GlobalTheory.structureModule Y) hA0 (pull_isLB hN' s) hQ (by rw [eQ, cls_pull hN' s, ← toPic_apply, map_neg]; abel)`. Conclude with `(cohOn.mapIso Γ(Y, ⊤) ⊤ i iso).toEquiv.subsingleton_congr.2 h`.
+
+Establish `hev : ∀ j, 0 < j → ∀ᶠ c : ℕ in atTop, Subsingleton (coh (twist (twist (twist (GlobalTheory.structureModule Y) (toLB (-F))) (N.pull s)) (lbPow (H.pull s) c)) j)`. Introduce `j hj`. Use `Eventually.of_forall fun c => ?_` and prove the remaining obligations. Establish `hNc : (tens N (lbPow H c)).IsLB` using `isLB_tens hN (isLB_lbPow hHl c)`. Establish `hTc : IsNef k (tens T (lbPow H (m * r * c)))` using `hT.tens ((IsAmpleLB.isNef (k := k) hH).pow hH _) hH`.
+
+Establish `ec : cls _ hTc.isLB = (m * r) • cls _ hNc - r • toPic G - m • cls M hM`. Rewrite using `[cls_tens hT.isLB (isLB_lbPow hHl _), cls_tens hN (isLB_lbPow hHl c), cls_lbPow hHl, cls_lbPow hHl, hcl, smul_add, smul_smul]`. Normalize the expressions using the abelian group laws. Take `⟨iso⟩` from `nonempty_twist_twist_iso_of_cls_eq (twist (GlobalTheory.structureModule Y) (toLB (-F))) (pull_isLB hN s) (isLB_lbPow (pull_isLB hHl s) c) (pull_isLB hNc s) (by rw [cls_pull hNc s, cls_tens hN (isLB_lbPow hHl c), cls_lbPow hHl, cls_pull hN s, cls_lbPow (pull_isLB hHl s), cls_pull …`. Conclude with `(cohOn.mapIso Γ(Y, ⊤) ⊤ j iso).toEquiv.subsingleton_congr.2 (key _ _ hNc hTc ec j hj)`.
+
+Establish `: (GlobalTheory.structureModule Y).IsQuasicoherent` using `inferInstance`. Use `Twist.isQuasicoherent_twist (F := GlobalTheory.structureModule Y) hA0` as an intermediate fact. Use `Twist.isQuasicoherent_twist (F := twist (GlobalTheory.structureModule Y) (toLB (-F))) (pull_isLB hN s)` as an intermediate fact. Establish `hdown` using `GlobalTheory.T.pushforward_cohomology_affine X Y s _ H hH hev`. Use `⟨fun i hi => ?_, hdown.2⟩` and prove the remaining obligations.
+
+Take `⟨e⟩` from `hdown.1 i`. Establish `h0` using `key N T hN hT hcl i hi`. Conclude with `(cohOn.mapIso Γ(X, ⊤) ⊤ i (Twist.projIso N s _).symm).toEquiv.subsingleton_congr.2 (e.toEquiv.subsingleton_congr.2 h0)`.
+-/
 theorem GlobalTheory.vanishing_logRes_pushforward_and_local : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → ∀ (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y) (F : CartierDiv Y), η ≠ 0 → 0 < m → IsLogRes p n η m G s K B → (∀ z, F.mult z = (pullCart s G - m • K).mult z / (m : ℤ)) → ∀ (N M T : LB X) (hN : N.IsLB) (hM : M.IsLB) (r : ℕ) (hT : letI := algebraΓOfHom p; IsNef k T), 0 < r → cls T (letI := algebraΓOfHom p; hT.isLB) = (m * r) • cls N hN - r • toPic G - m • cls M hM → (letI := algebraΓOfHom p; IsNef k M) → ∀ (a : ℕ) (Fd : CartierDiv Y) (A : LB Y) (hA : IsAmpleLB A), (0 < a ∧ Fd.Eff ∧ Fd.supp ≤ B ∧ a • CechPic.pull s (cls M hM) = cls A hA.isLB + toPic Fd) → (∀ i, 0 < i → Subsingleton (coh (twist ((Scheme.Modules.pushforward s).obj (twist (GlobalTheory.structureModule Y) (toLB (-F)))) N) i)) ∧ ∀ U : X.Opens, IsAffineOpen U → ∀ j, 0 < j → Subsingleton (cohOn (twist (twist (GlobalTheory.structureModule Y) (toLB (-F))) (N.pull s)) (s ⁻¹ᵁ U) j) := by
   intro k _ _ X _ p n hp η m G Y _ _ s _ K B F hη hm hres hF N M T hN hM r hT hr hcl hMnef a Fd A hA hAF
   letI := algebraΓOfHom p

@@ -66,6 +66,9 @@ def LinConcl (K : Type) [Field K] (O : ValuationSubring K) (n r : ℕ) (P : Matr
   (∃ w ∈ Λ1, ((T⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ u - u0 = g • w) ∧
   (∃ β ∈ Λ2, (φ ᵥ* P) ᵥ* (T : Matrix (Fin n) (Fin n) K) - φ0 ᵥ* P = g • (β ᵥ* P))
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15⟩` from `h`. Conclude with `hL K O n r P g Λ1 Λ2 a a' α α' u φ u0 φ0 t h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15`.
+-/
 theorem linConcl_of (hL : LocLin) (K : Type) [Field K] (O : ValuationSubring K) (n r : ℕ)
     (P : Matrix (Fin n) (Fin n) K) (g : K) (Λ1 Λ2 : Submodule O (Fin n → K)) (a a' α α' : Fin r → Fin n → K)
     (u φ u0 φ0 : Fin n → K) (t : K) (h : LinHyp K O n r P g Λ1 Λ2 a a' α α' u φ u0 φ0 t) :
@@ -113,6 +116,9 @@ def BridgeB : Prop :=
     ∀ p1 : RV I v →+* KV I v, IsAdaptedFirstProjection I v (PI.FinKW.psiV I v Rf.ew) p1 →
     ∀ T : GL (Fin I.n) (KV I v), LinOut I g r k e f z Rf v p1 T → LocConcl I g r e f z Rf.z0 v
 
+/- English proof (translation)
+Introduce `I g r k e f z Rf hH v hv hsum`. Take `⟨p1, hp1⟩` from `hS I g r k e f Rf v hsum`. Take `⟨t, ht1, ht2⟩` from `hH.2.2.2.2.2.2.2.1`. Take `⟨T, hT⟩` from `linConcl_of hL _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (hA I g r k e f z Rf hH v hv hsum p1 hp1 t ht1 ht2)`. Conclude with `hB I g r k e f z Rf hH v hv hsum p1 hp1 T hT`.
+-/
 theorem locCore_of (hS : LocSplitP) (hA : BridgeA) (hB : BridgeB) (hL : LocLin) : LocCore := by
   intro I g r k e f z Rf hH v hv hsum
   obtain ⟨p1, hp1⟩ := hS I g r k e f Rf v hsum
@@ -121,6 +127,9 @@ theorem locCore_of (hS : LocSplitP) (hA : BridgeA) (hB : BridgeB) (hL : LocLin) 
     (hA I g r k e f z Rf hH v hv hsum p1 hp1 t ht1 ht2)
   exact hB I g r k e f z Rf hH v hv hsum p1 hp1 T hT
 
+/- English proof (translation)
+Use `first`. Consider the case `exact target_of hI (locCore_of hS hA hB hL) hG`. Consider the case `exact target_of hI hG (locCore_of hS hA hB hL)`. Consider the case `(unfold PI.ScXuExists.Target LocIdem Glue LocCore at *; done)`.
+-/
 theorem target_of' (hI : LocIdem) (hS : LocSplitP) (hA : BridgeA) (hB : BridgeB) (hL : LocLin) (hG : Glue) :
     _root_.PI.ScXuExists.Target := by
   first

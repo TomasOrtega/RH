@@ -11,18 +11,30 @@ open GlobalTheory.UnitLemma
 
 variable {K : UQ} (B : InvAlg K)
 
+/- English proof (translation)
+Unfold `InvAlg.herm`. Rewrite using `[map_add, mul_add, map_add]`.
+-/
 theorem herm_add_right (x y z₁ z₂ : B.A) : B.herm x y (z₁ + z₂) = B.herm x y z₁ + B.herm x y z₂ := by
   unfold InvAlg.herm
   rw [map_add, mul_add, map_add]
 
+/- English proof (translation)
+Unfold `InvAlg.herm`. Simplify using the standard rewrite rules.
+-/
 theorem herm_zero_right (x y : B.A) : B.herm x y 0 = 0 := by
   unfold InvAlg.herm
   simp
 
+/- English proof (translation)
+Unfold `InvAlg.herm`. Rewrite using `[Algebra.smul_def, map_mul B.σ, B.σ_alg, ← Algebra.smul_def, mul_smul_comm, map_smul, smul_eq_mul]`.
+-/
 theorem herm_smul_right' (x y z : B.A) (a : K.E) : B.herm x y (a • z) = K.c a * B.herm x y z := by
   unfold InvAlg.herm
   rw [Algebra.smul_def, map_mul B.σ, B.σ_alg, ← Algebra.smul_def, mul_smul_comm, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Unfold `InvAlg.herm`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc, map_smul, smul_eq_mul]`.
+-/
 theorem herm_sum_smul_left {n : ℕ} (x z : B.A) (a : Fin n → K.E) (v : Fin n → B.A) :
     B.herm x (∑ j, a j • v j) z = ∑ j, a j * B.herm x (v j) z := by
   unfold InvAlg.herm
@@ -30,11 +42,17 @@ theorem herm_sum_smul_left {n : ℕ} (x z : B.A) (a : Fin n → K.E) (v : Fin n 
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [mul_smul_comm, smul_mul_assoc, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Unfold `InvAlg.herm`. Rewrite using `[map_mul B.σ, hg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_mul_left_of_fixed (x g y z : B.A) (hg : B.σ g = g) :
     B.herm x (g * y) z = B.herm x y (g * z) := by
   unfold InvAlg.herm
   rw [map_mul B.σ, hg]; congr 1; ring
 
+/- English proof (translation)
+Use `conv_lhs => rw [← e.sum_repr z]`. Rewrite using `[Finset.mul_sum, map_sum, Finset.sum_apply']`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+-/
 theorem repr_mul {n : ℕ} (e : Module.Basis (Fin n) K.E B.A) (g z : B.A) (i : Fin n) :
     e.repr (g * z) i = ∑ j, e.repr z j * e.repr (g * e j) i := by
   conv_lhs => rw [← e.sum_repr z]
@@ -48,6 +66,23 @@ namespace GlobalTheory.UnitLemma
 
 open GlobalTheory.UnitLemma.OrthBasis
 
+/- English proof (translation)
+Introduce `K B x w hg hw hspan n e hM hwj`. Set `P : B.A → Prop` to `fun z => ∀ i, B.herm x (e i) z = K.c (e.repr z i)`. Establish `hstep : ∀ z, P z → P (B.g * z)`. Introduce `z hz i`. Rewrite using `[← herm_mul_left_of_fixed B x B.g (e i) z hg]`.
+
+Use `conv_lhs => rw [← e.sum_repr (B.g * e i)]`. Rewrite using `[herm_sum_smul_left, repr_mul, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hz j, RingEquiv.map_mul K.c, hM, mul_comm]`. Establish `hpow : ∀ l : ℕ, P (B.g ^ l * w)`.
+
+Introduce `l`. Proceed by induction on `l with`. Consider the case `zero => simpa [P] using hwj`. Consider the case `succ l ih => rw [pow_succ', mul_assoc]`. Conclude with `hstep _ ih`.
+
+Establish `hspanP : ∀ a ∈ Submodule.span K.E (Set.range fun l : ℕ => B.g ^ l), P (a * w)`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨l, rfl⟩ := hy`. Conclude with `hpow l`.
+
+Consider the case `zero => intro i`. Simplify using `[herm_zero_right]`. Consider the case `add y z _ _ hy hz`. Introduce `i`. Rewrite using `[add_mul, herm_add_right, hy i, hz i, map_add, Finsupp.add_apply, map_add]`.
+
+Consider the case `smul a y _ hy`. Introduce `i`. Rewrite using `[smul_mul_assoc, herm_smul_right', hy i, LinearEquiv.map_smul, Finsupp.smul_apply, smul_eq_mul, RingEquiv.map_mul K.c]`. Establish `hall : ∀ z, P z`. Introduce `z`.
+
+Take `⟨u, rfl⟩` from `hw`. Use `hspanP (z * ((u⁻¹ : B.Aˣ) : B.A)) (by rw [hspan]; exact Submodule.mem_top)` as an intermediate fact. Rewrite `this` using `[mul_assoc, Units.inv_mul, mul_one]`. Then use the resulting hypothesis. Introduce `i j`. Rewrite using `[hall (e j) i, e.repr_self, Finsupp.single_apply]`.
+
+Use `split_ifs with h1 h2 h2`. Conclude with `map_one _`. Conclude with `absurd h1.symm h2`. Conclude with `absurd h2.symm h1`. Conclude with `map_zero _`.
+-/
 theorem herm_basis_orthonormal : ∀ (K : UQ) (B : InvAlg K) (x w : B.A), B.σ B.g = B.g → IsUnit w →
     Submodule.span K.E (Set.range fun l : ℕ => B.g ^ l) = ⊤ → ∀ (n : ℕ) (e : Module.Basis (Fin n) K.E B.A),
     (∀ i j, K.c (e.repr (B.g * e j) i) = e.repr (B.g * e i) j) → (∀ j, B.herm x (e j) w = K.c (e.repr w j)) →

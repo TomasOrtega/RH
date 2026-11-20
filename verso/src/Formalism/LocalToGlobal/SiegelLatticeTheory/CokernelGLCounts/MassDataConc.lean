@@ -26,6 +26,9 @@ def gsPairs : Set (τ × τ) := {p | p.1 ∈ T.genSet ∧ p.2 ∈ T.genSet ∧ T
 
 def CokernelCountConstant : ℝ := ∑' p : τ × τ, (gsPairs T).indicator (fun p => (inner ℂ (T.op p.1) (T.op p.2)).re) p
 
+/- English proof (translation)
+Substitute `hG` using the available equality. Both sides reduce to the same expression.
+-/
 theorem pairSum_eq {g : ℝ} (hG : T.Gam1 = g) : T.pairSum (T.sc T.genSet) = g * SigOf T := by
   subst hG
   rfl
@@ -89,6 +92,9 @@ def bC : Formalism.FourierDecayAlt.S3.MassData (TypX X) :=
         ((normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).μSo * (normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).μSo') }
   { B1 with n0c := B1.AA / B1.ρ0, KV := B1.Sig / B1.ρ0 }
 
+/- English proof (translation)
+Establish `h' : (normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).localVolumeArchimedean ≠ 0` using `h`. Unfold `Formalism.FourierDecayAlt.S3.MassData.InOrdinary`. Express the relevant statement in the definitionally equal form `(normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).localVolumeArchimedean * (normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).μKo ^ 2 / ((normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).μSo * (normalizedFourierDecayDatum X …`. Rewrite using `[mul_div_assoc, mul_div_cancel_left₀ _ h']`.
+-/
 theorem inOrdinary_bC (h : L.localVolumeArchimedean ≠ 0) : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).InOrdinary := by
   have h' : (normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).localVolumeArchimedean ≠ 0 := h
   unfold Formalism.FourierDecayAlt.S3.MassData.InOrdinary
@@ -97,29 +103,49 @@ theorem inOrdinary_bC (h : L.localVolumeArchimedean ≠ 0) : (bC X hb hK FdN FdN
     (normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).μKo ^ 2 / ((normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).μSo * (normalizedFourierDecayDatum X hb hK FdN FdN' u u' X0 L T sd C Th R).μSo')
   rw [mul_div_assoc, mul_div_cancel_left₀ _ h']
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.S3.MassData.InForm`. Express the relevant statement in the definitionally equal form `(bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Sig = (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 * ((bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Sig / (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0)`. Rewrite using `[mul_div_assoc', mul_comm, mul_div_assoc, div_self h, mul_one]`.
+-/
 theorem inForm_bC (h : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 ≠ 0) :
     (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).InForm := by
   unfold Formalism.FourierDecayAlt.S3.MassData.InForm
   change (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Sig = (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 * ((bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Sig / (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0)
   rw [mul_div_assoc', mul_comm, mul_div_assoc, div_self h, mul_one]
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.S3.MassData.InMass`. Express the relevant statement in the definitionally equal form `(bC X hb hK FdN FdN' u u' X0 L T sd C Th R).AA / (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 * (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 = (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).AA`. Rewrite using `[div_mul_eq_mul_div, mul_div_assoc, div_self h, mul_one]`.
+-/
 theorem inMass_bC (h : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 ≠ 0) :
     (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).InMass := by
   unfold Formalism.FourierDecayAlt.S3.MassData.InMass
   change (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).AA / (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 * (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).ρ0 = (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).AA
   rw [div_mul_eq_mul_div, mul_div_assoc, div_self h, mul_one]
 
+/- English proof (translation)
+The claim follows from `pairSum_eq T h`.
+-/
 theorem link_sig (h : T.Gam1 = (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Gam1) :
     T.pairSum (T.sc T.genSet) =
       (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Gam1 * (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).Sig := pairSum_eq T h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 theorem energy_defs :
     (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).e1 = max sd 1 ∧
       (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).δ =
         C * ((D.R.rS : ℝ) + 1) * (C / Th) ^ (Fintype.card (NumberField.InfinitePlace X.B.I.F)) := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inJacMod_bC : (bC X hb hK FdN FdN' u u' X0 L T sd C Th R).InJacMod := rfl
 
+/- English proof (translation)
+Establish `h1 : c0X X u FdN = X.volK2 * (bOf X hb hK FdN FdN' u u' X0 L A).c0`. Express the relevant statement in the definitionally equal form `X.volK2 * (X.muN u FdN).toReal * (X.muH u Set.univ).toReal / (Module.finrank ℂ (X.Vpi u) : ℝ) = X.volK2 * ((X.muN u FdN).toReal * (X.muH u Set.univ).toReal / (Module.finrank ℂ (X.Vpi u) : ℝ))`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : c0X X u' FdN' = X.volK2 * (bOf X hb hK FdN FdN' u u' X0 L A).c0'`. Express the relevant statement in the definitionally equal form `X.volK2 * (X.muN u' FdN').toReal * (X.muH u' Set.univ).toReal / (Module.finrank ℂ (X.Vpi u') : ℝ) = X.volK2 * ((X.muN u' FdN').toReal * (X.muH u' Set.univ).toReal / (Module.finrank ℂ (X.Vpi u') : ℝ))`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2]`. Generalize the expression as in `(bOf X hb hK FdN FdN' u u' X0 L A).c0 = a`. Generalize the expression as in `(bOf X hb hK FdN FdN' u u' X0 L A).c0' = b`. Rewrite using `[show X.volK2 * a * (X.volK2 * b) = X.volK2 ^ 2 * (a * b) by ring, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hV.le, mul_inv, mul_right_comm, inv_mul_cancel₀ hV.ne', one_mul]`.
+-/
 theorem scaled_volume_level_subgroup (hV : 0 < X.volK2) (A : AnIn) :
     (Real.sqrt (c0X X u FdN * c0X X u' FdN'))⁻¹ * X.volK2 =
       (Real.sqrt ((bOf X hb hK FdN FdN' u u' X0 L A).c0 * (bOf X hb hK FdN FdN' u u' X0 L A).c0'))⁻¹ := by
@@ -163,6 +189,11 @@ def MeasCompatψ (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMa
 def MeasCompat : Prop :=
   ∃ ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ, IsCharAF X.B.I.F ψ ∧ Formalism.L2.SG.LocVol.IsStdChar ψ ∧ MeasCompatψ X ψ
 
+/- English proof (translation)
+Unfold `MeasCompat at hC`. Take `⟨ψ, hψ, -, hM⟩` from `hC`. Unfold `MeasCompatψ at hM`. Take `⟨hu, hB⟩` from `hM`. Take `⟨⟨hT1, νH, hO, hCm⟩, hN⟩` from `hu u`.
+
+Take `⟨⟨hT1', νH', hO', hCm'⟩, hN'⟩` from `hu u'`. Take `⟨hTB, νB, hOB, hCB⟩` from `hB X0 hdet`. Conclude with `hV hH ψ hψ hT1 νH hO hCm hT1' νH' hO' hCm' hTB νB hdet hOB hCB hN hN'`.
+-/
 theorem inVolumes_of_compat (hb : AdBridge.AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)
     (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E) (L : LocIn (TypX X)) (A : AnIn)
     (hV : InVolumesAt X hb hK FdN FdN' u u' X0 L A) (hH : HypX X hb FdN FdN' u u') (hC : MeasCompat X)
@@ -278,6 +309,9 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubg
 def InFormC : Prop :=
   (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InForm
 
+/- English proof (translation)
+The claim follows from `inForm_bC X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) T sd C Th ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩ h`.
+-/
 theorem inFormC_bCF (h : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).ρ0 ≠ 0) :
     InFormC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq := inForm_bC X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) T sd C Th
     ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩ h
@@ -286,12 +320,18 @@ def InTypedC : Prop :=
   HypX X hb FdN FdN' u u' → ProdConv X u u' ψ → LocTieX X ψ u → LocTieX X ψ u' → TypFacts X u u' →
     (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InTyped
 
+/- English proof (translation)
+Unfold `ProdConv at hP`. Conclude with `inOrdinary_bC X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) T sd C Th ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩ hP.2.2.2.2.1.ne'`.
+-/
 theorem inOrdinary_bCF (hP : ProdConv X u u' ψ) :
     (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InOrdinary := by
   unfold ProdConv at hP
   exact inOrdinary_bC X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) T sd C Th
     ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩ hP.2.2.2.2.1.ne'
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem inTypedC_of
     (h : InTypedAt X hb hK FdN FdN' u u' X0
       (anOf T (kapN D * Formalism.L2.SG.RealObj.DisintegrationConstant X u u' 1) (Formalism.L2.SG.RealObj.degX X)
@@ -302,6 +342,9 @@ theorem inTypedC_of
         ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩) ψ) :
     InTypedC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq := h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inJacMod_bCF : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InJacMod := rfl
 
 def LevelOneLatticeAgreement : Prop := T.Gam1 = (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).Gam1
@@ -310,6 +353,9 @@ def ttC : Prop :=
   (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).tt =
     ∏ p : TypX X, (1 + 3 / ((Ideal.absNorm p.1.asIdeal : ℕ) : ℝ))
 
+/- English proof (translation)
+Unfold `ttC Formalism.FourierDecayAlt.S3.MassData.tt`. Use `Finset.prod_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Rewrite using `[(h p).1]`. Both sides reduce to the same expression.
+-/
 theorem ttC_of_split (h : GSplitX X) : ttC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq := by
   unfold ttC Formalism.FourierDecayAlt.S3.MassData.tt
   refine Finset.prod_congr rfl (fun p _ => ?_)
@@ -321,6 +367,9 @@ def MassDataDstarC : Prop :=
 
 def EnergyLinkC (jn : ℝ) : Prop := (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).IntN = jn
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.PB.EnergyLink`. Conclude with `⟨h, energy_defs X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) T sd C Th ⟨KVOf X u u' vR Q (VConstants X u u' 1 i0 i0' FdN FdN' νq), KtopVOf X u u' M δ (VConstants X u u' 1 i0 i0' FdN FdN' νq)⟩⟩`.
+-/
 theorem energyLink_bCF (jn : ℝ) (h : EnergyLinkC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq jn) :
     Formalism.FourierDecayAlt.PB.EnergyLink (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq) jn sd C Th D.R.rS
       (Fintype.card (NumberField.InfinitePlace X.B.I.F)) := by

@@ -6,6 +6,11 @@ namespace PositivityTheory.ThKEnd.Cusp
 
 open MeasureTheory PositivityTheory.ThKEnd.Two
 
+/- English proof (translation)
+Introduce `μ 𝓕 h1 h2 h3 x`. Establish `hm : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Establish `mp : MeasurePreserving e.symm (μ.map e) μ` using `(MeasurePreserving.symm e.toHomeomorph.toMeasurableEquiv ⟨hm.measurable, rfl⟩ :)`. Set `k : Γ ≃ Δ` to `e.toEquiv.subtypeEquiv fun a => (he a).symm`. Establish `h4 : IsFundamentalDomain Δ (e.symm ⁻¹' 𝓕) (μ.map e)` using `h2.preimage_of_equiv mp.quasiMeasurePreserving k.bijective fun γ y => by`.
+
+Express the relevant statement in the definitionally equal form `e.symm (e γ * y) = γ * e.symm y`. Simplify using the standard rewrite rules. Establish `h5 : e ⁻¹' (e.symm ⁻¹' 𝓕) = 𝓕` using `by ext y; simp`. Rewrite using `[h (μ.map e) _ inferInstance h4 (by rw [hm.map_apply, h5, h3]), hm.setIntegral_map, h5]`.
+-/
 theorem isAv_transport {A B H : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [MeasurableSpace A] [BorelSpace A]
     [Group B] [TopologicalSpace B] [IsTopologicalGroup B] [MeasurableSpace B] [BorelSpace B] [Mul H] {Γ : Subgroup A} {Δ : Subgroup B}
     (e : A ≃ₜ* B) (he : ∀ x, e x ∈ Δ ↔ x ∈ Γ) {ι : B → H} {f c : H → ℂ} (h : IsAv Δ ι f c) : IsAv Γ (fun x => ι (e x)) f c := by
@@ -23,6 +28,17 @@ theorem isAv_transport {A B H : Type} [Group A] [TopologicalSpace A] [IsTopologi
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G]
   [SecondCountableTopology G] [T2Space G] {Γ S A : Subgroup G} {f c : G → ℂ}
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace S := hS.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace A := hA.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology S := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology A := TopologicalSpace.Subtype.secondCountableTopology _`. Set `B : Subgroup S` to `ρ.eqLocus (MonoidHom.id S)`.
+
+Establish `hB : IsClosed (B : Set S)` using `isClosed_eq hρ continuous_id`. Use `haveI : LocallyCompactSpace B := hB.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology B := TopologicalSpace.Subtype.secondCountableTopology _`. Set `π : S →* B` to `ρ.codRestrict B ρρ`. Establish `cπ : Continuous π` using `hρ.subtype_mk _`.
+
+Establish `sm : Semi (Γ.subgroupOf S) (Γ.subgroupOf A) ((Γ.subgroupOf S).subgroupOf B) (Subgroup.inclusion le) B.subtype (fun s => ⟨(s * (ρ s)⁻¹).1, (ker _).2 (by simp [ρρ])⟩) π` using `⟨continuous_subtype_val.subtype_mk _, continuous_subtype_val, (continuous_subtype_val.comp (continuous_id.mul hρ.inv)).subtype_mk _, cπ, Subgroup.inclusion_injective le, fun s => Subtype.ext (inv_mul_cancel_right s.1 (ρ s).1), fun a => Subtype.ext ((ker _).1 a.2), fun b => Subtyp …`. Use `L.cnt` as an intermediate fact. Use `L.disc` as an intermediate fact. Set `i : ((Γ.subgroupOf S).subgroupOf B) → Γ.subgroupOf S` to `fun x => ⟨x.1.1, x.2⟩`. Establish `ii : Function.Injective i` using `fun a b h => Subtype.ext (Subtype.ext (congrArg Subtype.val h :))`.
+
+Establish `LB : Lat ((Γ.subgroupOf S).subgroupOf B)`. Take `⟨C, c1, c2⟩` from `L.cov`. Use `⟨ii.countable, DiscreteTopology.of_continuous_injective ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) ii, _, c1.image cπ, fun b => ?_⟩` and prove the remaining obligations. Take `⟨γ, g1, g2⟩` from `c2 b.1`. Conclude with `⟨π γ, rat γ g1, _, g2, by rw [map_mul, show π b.1 = b from Subtype.ext b.2]⟩`.
+
+Conclude with `sm.stage L LA LB (inc := S.subtype) continuous_subtype_val hc (fun γ h => hf _ h) h0 fun _ _ _ _ _ _ => by simp`.
+-/
 theorem zero_of_retract (hS : IsClosed (S : Set G)) (hA : IsClosed (A : Set G)) (le : A ≤ S) (L : Lat (Γ.subgroupOf S))
     (LA : Lat (Γ.subgroupOf A)) (ρ : S →* S) (hρ : Continuous ρ) (ρρ : ∀ s, ρ (ρ s) = ρ s) (ker : ∀ s, s.1 ∈ A ↔ ρ s = 1)
     (rat : ∀ s, s.1 ∈ Γ → (ρ s).1 ∈ Γ) (hc : Continuous f) (hf : ∀ γ ∈ Γ, ∀ x, f (γ * x) = f x)
@@ -69,6 +85,15 @@ def prodG (A : Subgroup G) (ι : B →* G) (hn : ∀ b, ∀ a ∈ A, ι b * a * 
 
 variable [MeasurableSpace B] [BorelSpace B] [LocallyCompactSpace B] [SecondCountableTopology B] [T2Space B] {Δ : Subgroup B}
 
+/- English proof (translation)
+Establish `k : ∀ s b, s * (ι b)⁻¹ ∈ A → π s = b` using `fun s b h => by simpa using hπι _ h b`. Establish `k' : ∀ s : prodG A ι hn, s.1 * (ι (π s))⁻¹ ∈ A` using `fun ⟨s, b, h⟩ => by rwa [k s b h]`. Establish `hS : IsClosed (prodG A ι hn : Set G)`. Establish `: (prodG A ι hn : Set G) = (fun s => s * (ι (π s))⁻¹) ⁻¹' A` using `Set.ext fun s => ⟨fun h => k' ⟨s, h⟩, fun h => ⟨_, h⟩⟩`. Rewrite using `[this]`.
+
+Conclude with `hA.preimage (by fun_prop)`. Use `haveI : LocallyCompactSpace (prodG A ι hn) := hS.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace A := hA.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (prodG A ι hn) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology A := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Establish `le : A ≤ prodG A ι hn` using `fun a h => ⟨1, by simpa using h⟩`. Set `π' : prodG A ι hn →* B` to `MonoidHom.mk' (fun s => π s) fun s t => k _ _ (by`. Simplify `mul_mem (k' s) (hn (π s) _ (k' t)))` using `[mul_assoc]`. Establish `sm : Semi (Γ.subgroupOf (prodG A ι hn)) (Γ.subgroupOf A) Δ (Subgroup.inclusion le) (ι.codRestrict _ fun b => ⟨b, by simp⟩) (fun s => ⟨_, k' s⟩) π'` using `⟨continuous_subtype_val.subtype_mk _, hι.subtype_mk _, Continuous.subtype_mk (by fun_prop) _, hπ.comp continuous_subtype_val, Subgroup.inclusion_injective le, fun s => Subtype.ext (inv_mul_cancel_right s.1 _), fun a => k _ _ (by simp), fun b => k (ι b) b (by simp), fun _ => Iff.r …`. Set `i : Γ.subgroupOf (prodG A ι hn) → Γ` to `fun x => ⟨x.1.1, x.2⟩`.
+
+Establish `ii : Function.Injective i` using `fun a b h => Subtype.ext (Subtype.ext (congrArg Subtype.val h :))`. Establish `L` using `sm.lat LA LB ii.countable (DiscreteTopology.of_continuous_injective ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) ii)`. Conclude with `⟨hS, L, fun f cA c hc hf h1 h2 => sm.stage L LA LB (inc := Subgroup.subtype _) continuous_subtype_val hc (fun γ h => hf _ h) h1 h2⟩`.
+-/
 theorem prod_stage [Countable Γ] [DiscreteTopology Γ] (hA : IsClosed (A : Set G)) (LA : Lat (Γ.subgroupOf A)) (LB : Lat Δ) {ι : B →* G}
     (hι : Continuous ι) (hn : ∀ b, ∀ a ∈ A, ι b * a * (ι b)⁻¹ ∈ A) (π : G → B) (hπ : Continuous π) (hπι : ∀ a ∈ A, ∀ b, π (a * ι b) = b)
     (r1 : ∀ b ∈ Δ, ι b ∈ Γ) (r2 : ∀ γ ∈ Γ, π γ ∈ Δ) : IsClosed (prodG A ι hn : Set G) ∧ Lat (Γ.subgroupOf (prodG A ι hn)) ∧

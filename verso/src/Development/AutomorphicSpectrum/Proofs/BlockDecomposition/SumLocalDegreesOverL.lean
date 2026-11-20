@@ -5,6 +5,9 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace GlobalTheory.CompanionTheory.GreenbergWiles
 
+/- English proof (translation)
+Introduce `F _ _ l _ T hT`. Set `_ : Fintype {v : HeightOneSpectrum (𝓞 F) // ((l : ℕ) : 𝓞 F) ∈ v.asIdeal}` to `Fintype.subtype T hT`. Rewrite using `[Finset.sum_subtype T hT]`. Conclude with `GlobalTheory.Proof.LocalDegreeSum.sum_locDeg F l`.
+-/
 theorem sum_locDeg_eq_finrank : ∀ (F : Type) [Field F] [NumberField F] (l : ℕ) [Fact l.Prime]
     (T : Finset (HeightOneSpectrum (𝓞 F))), (∀ v, v ∈ T ↔ ((l : ℕ) : 𝓞 F) ∈ v.asIdeal) →
     ∑ v ∈ T, locDeg v = Module.finrank ℚ F := by

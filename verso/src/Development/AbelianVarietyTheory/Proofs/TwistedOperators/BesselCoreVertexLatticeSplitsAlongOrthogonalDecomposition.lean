@@ -14,6 +14,11 @@ namespace GlobalTheory.AscFin.CoreSum
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : A.gram⁻¹ * ((frameMat B A d.ι)ᴴ * B.gram) * frameMat B A d.ι = 1`. Rewrite using `[Matrix.mul_assoc, hiso, Matrix.nonsing_inv_mul _ (gram_isUnit_det A)]`. Establish `h2 : A.gram⁻¹ * ((frameMat B A d.ι)ᴴ * B.gram) * d.a = 0`. Use `d.perp` as an intermediate fact. Rewrite `this` using `[cT_sig]`.
+
+Rewrite using `[Matrix.mul_assoc, this, Matrix.mul_zero]`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h1, h2, Matrix.one_mulVec, Matrix.zero_mulVec, add_zero]`.
+-/
 theorem orthogonalSumAuxiliaryVectors_gramProjection_retraction {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε)
     (hiso : (frameMat B A d.ι)ᴴ * B.gram * frameMat B A d.ι = A.gram) (y : Fin A.rank → D.host.E) (u : Fin c → D.host.E) :
     (A.gram⁻¹ * ((frameMat B A d.ι)ᴴ * B.gram)) *ᵥ (frameMat B A d.ι *ᵥ y + d.a *ᵥ u) = y := by
@@ -25,6 +30,15 @@ theorem orthogonalSumAuxiliaryVectors_gramProjection_retraction {A B : HSp D} {c
     rw [Matrix.mul_assoc, this, Matrix.mul_zero]
   rw [Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h1, h2, Matrix.one_mulVec, Matrix.zero_mulVec, add_zero]
 
+/- English proof (translation)
+Establish `g` using `d.gram`. Rewrite `g` using `[cT_sig]`. Establish `e2` using `congrArg (fun w => ((d.a)ᴴ * B.gram) *ᵥ w) e`. Simplify using `only [Matrix.mulVec_mulVec, g] at e2`. Establish `e3` using `congrFun e2 p`.
+
+Establish `key : ∀ w : Fin c → D.host.E, (antiDiagonalSignGramMatrix c ε *ᵥ w) p = ε * w p`. Introduce `w`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single p]`. Simplify using `only [antiDiagonalSignGramMatrix]`.
+
+Rewrite using `[if_pos hp]`. Simplify using the standard rewrite rules. Introduce `q _ hq`. Establish `: ¬ (p.1 + q.1 + 1 = c)` using `fun h' => hq (Fin.ext (by omega))`. Simplify using `only [antiDiagonalSignGramMatrix]`.
+
+Rewrite using `[if_neg this, zero_mul]`. Simplify using the standard rewrite rules. Rewrite `e3` using `[key, key, Pi.single_eq_same]`. Conclude with `mul_left_cancel₀ hε e3`.
+-/
 theorem orthogonalSumAuxiliaryVectors_middleCoefficient_eq {A B : HSp D} {c : ℕ} {ε : D.host.E} (hε : ε ≠ 0) (d : HermitianOrthogonalExtensionData A B c ε) (p : Fin c)
     (hp : p.1 + p.1 + 1 = c) (u : Fin c → D.host.E) (t : D.host.E) (e : d.a *ᵥ u = d.a *ᵥ Pi.single p t) : u p = t := by
   have g := d.gram
@@ -49,6 +63,37 @@ theorem orthogonalSumAuxiliaryVectors_middleCoefficient_eq {A B : HSp D} {c : �
 
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Establish `lat2 : G.Λ (.grid (2 * ρ + 2) 0) = (G.colDec (2 * ρ + 2) (by omega) h).lat (G.Λ (.core (2 * ρ + 2))) (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1))` using `G.sp.colLat (2 * ρ + 2) (by omega) h`. Establish `hstair : stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1) ⟨ρ, by omega⟩ = G.pl.stA sc ^ (ρ + 1) * (G.pl.stAbar sc ^ (ρ + 1))⁻¹`. Unfold `stairId`. Rewrite using `[show 2 * ρ + 2 - 1 - ρ = ρ + 1 by omega]`. Establish `hM` using `hF.aB ρ h`.
+
+Establish `hz` using `hF.zB' ρ h`. Use extensionality with `x`. Simplify using `only [lat0, Submodule.mem_comap, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, GlobalTheory.Core.Rk.SumBox.mem_sumLatO]`. Rewrite using `[lat2]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, u, hu, hx⟩`. Establish `hiso2 : (frameMat _ _ (G.colDec (2 * ρ + 2) (by omega) h).ι)ᴴ * (G.V (.grid (2 * ρ + 2) 0)).gram * frameMat _ _ (G.colDec (2 * ρ + 2) (by omega) h).ι = (G.V (.core (2 * ρ + 2))).gram`. Rewrite using `[← hM, Matrix.conjTranspose_mul, ← (F.oB ρ h).isoA, ← (F.dB ρ h).iso]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hQ : (G.V (.core (2 * ρ + 2))).gram⁻¹ * ((frameMat _ _ (G.colDec (2 * ρ + 2) (by omega) h).ι)ᴴ * (G.V (.grid (2 * ρ + 2) 0)).gram) * (F.dB ρ h).i₀ = (F.oB ρ h).qA`.
+
+Rewrite using `[← hM, Matrix.conjTranspose_mul, OrthDec.qA, ← (F.dB ρ h).iso]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hqA : (F.oB ρ h).qA *ᵥ x = y`. Rewrite using `[← hQ, ← Matrix.mulVec_mulVec, hx, orthogonalSumAuxiliaryVectors_gramProjection_retraction _ hiso2]`. Establish `hline` using `F.line 0`.
+
+Establish `hr : (negSp F.Lz).rank = 1` using `hline.1`. Set `i0 : Fin (negSp F.Lz).rank` to `⟨0, by rw [hr]; omega⟩`. Establish `hsub : ∀ j : Fin (negSp F.Lz).rank, j = i0` using `fun j => Fin.ext (by have := j.isLt; show j.1 = 0; omega)`. Establish `hζ0 : F.ζ 0 i0 ≠ 0`. Introduce `h0`.
+
+Apply `hline.2` to reduce the goal to its premises. Establish `: F.ζ 0 = 0` using `funext fun j => by rw [hsub j]; exact h0`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hqB : (F.oB ρ h).qB *ᵥ x = (((F.oB ρ h).qB *ᵥ x) i0 / F.ζ 0 i0) • F.ζ 0`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[hsub j, Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ hζ0]`. Establish `hsplit : (F.oB ρ h).iA *ᵥ ((F.oB ρ h).qA *ᵥ x) + (F.oB ρ h).iB *ᵥ ((F.oB ρ h).qB *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, (F.oB ρ h).iA_qA_add, Matrix.one_mulVec]`. Establish `hx2 : (F.dB ρ h).i₀ *ᵥ x = frameMat _ _ (G.colDec (2 * ρ + 2) (by omega) h).ι *ᵥ y + (G.colDec (2 * ρ + 2) (by omega) h).a *ᵥ Pi.single ⟨ρ, by omega⟩ (((F.oB ρ h).qB *ᵥ x) i0 / F.ζ 0 i0)` using `by conv_lhs => rw [← hsplit, hqA, hqB]`.
+
+Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM, Matrix.mulVec_smul, hz]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec_single, Matrix.col_apply, MulOpposite.smul_eq_mul_unop, Pi.smul_apply, smul_eq_mul, MulOpposite.unop_op]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `ha` using `add_left_cancel (hx.symm.trans hx2)`. Establish `hc` using `GlobalTheory.AscFin.CoreSum.orthogonalSumAuxiliaryVectors_middleCoefficient_eq (neg_ne_zero.2 one_ne_zero) _ ⟨ρ, by omega⟩ (by simp; omega) u _ ha`. Establish `hcJ` using `hu ⟨ρ, by omega⟩`. Rewrite `hcJ` using `[hc, hstair]`. Use `⟨(F.oB ρ h).qA *ᵥ x, hqA ▸ hy, (F.oB ρ h).qB *ᵥ x, ?_, hsplit⟩` and prove the remaining obligations.
+
+Rewrite using `[hqB]`. Conclude with `Submodule.subset_span ⟨_, hcJ, F.ζ 0, Submodule.mem_span_singleton_self _, rfl⟩`. Introduce and unpack `⟨y, hy, b, hb, rfl⟩`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM]`. Use `Submodule.add_mem _ ⟨y, hy, 0, fun p => (stairId _ _ _ p).val.zero_mem, by simp⟩ ?_` and prove the remaining obligations.
+
+Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨s, hs, w, hw, rfl⟩` from `hz`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Use `⟨0, Submodule.zero_mem _, Pi.single ⟨ρ, by omega⟩ (r • s), fun p => ?_, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hp : p = ⟨ρ, by omega⟩`. Substitute `hp` using the available equality. Rewrite using `[Pi.single_eq_same, hstair]`. Conclude with `Submodule.smul_mem _ r hs`. Rewrite using `[Pi.single_eq_of_ne hp]`.
+
+Conclude with `(stairId _ _ _ p).val.zero_mem`. Rewrite using `[Matrix.mulVec_zero, zero_add, ← algebraMap_smul D.host.E r (F.ζ 0), Matrix.mulVec_smul, Matrix.mulVec_smul, hz]`. Use function extensionality and compare the values at `i`. Rewrite using `[Algebra.smul_def r s]`. Simplify using `only [Matrix.mulVec_single, Matrix.col_apply, MulOpposite.smul_eq_mul_unop, Pi.smul_apply, smul_eq_mul, MulOpposite.unop_op]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ hz hz'`.
+
+Consider the case `smul r z _ hz`. Rewrite using `[← algebraMap_smul D.host.E r z, Matrix.mulVec_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ r hz`.
+-/
 theorem besselCoreVertexLattice_eq_orthDecSumLattice (F : Frames G) (hF : Std F) (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.m) :
     lat0 F ρ h = GlobalTheory.Core.Rk.SumBox.sumLatO (F.oB ρ h) (G.Λ (.core (2 * ρ + 2)))
       (idLat (G.pl.stA sc ^ (ρ + 1) * (G.pl.stAbar sc ^ (ρ + 1))⁻¹) (Submodule.span (𝓞 D.host.E) {F.ζ 0})) := by
@@ -134,6 +179,9 @@ theorem besselCoreVertexLattice_eq_orthDecSumLattice (F : Frames G) (hF : Std F)
       rw [← algebraMap_smul D.host.E r z, Matrix.mulVec_smul, algebraMap_smul]
       exact Submodule.smul_mem _ r hz
 
+/- English proof (translation)
+Introduce `D T L sc G F hF ρ h v`. Rewrite using `[besselCoreVertexLattice_eq_orthDecSumLattice F hF ρ h]`. Conclude with `GlobalTheory.Core.Rk.SumSplit.orthAt_sumLatO D _ _ _ _ _ _ v`.
+-/
 theorem besselCoreVertexLattice_splitsAlongOrthDecomposition : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (F : Frames G), Std F →
     ∀ (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.m) (v : GlobalTheory.FinPl.Pl D), OrthAt (F.oB ρ h) (lat0 F ρ h) (G.Λ (.core (2 * ρ + 2)))
       (idLat (G.pl.stA sc ^ (ρ + 1) * (G.pl.stAbar sc ^ (ρ + 1))⁻¹) (Submodule.span (𝓞 D.host.E) {F.ζ 0})) v := by

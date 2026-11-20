@@ -7,6 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.WeightTwoHeckePower
 
+/- English proof (translation)
+Introduce `G gb N hN X r`. Take `⟨⟨d, hd⟩, hA⟩` from `GlobalTheory.UPel.HT.Gen.CxSmooth.genModel_smooth G gb N hN X`. Establish `h` using `GlobalTheory.FibPow.smoothOfRelativeDimension_pow X.univ.A _ hA r`. Conclude with `⟨_, (inferInstance : SmoothOfRelativeDimension (r * (G.m * G.n * Module.finrank ℚ G.F / 2) + d) ((GlobalTheory.KS.pow X.univ.A r).hom ≫ X.s))⟩`.
+-/
 theorem sPow_smooth : ∀ (G : GDatum) (gb : GBase G ℂ) (N : ℕ), 3 ≤ N → ∀ (X : GenModel gb N) (r : ℕ),
     ∃ d : ℕ, SmoothOfRelativeDimension d (sPow X r) := by
   intro G gb N hN X r

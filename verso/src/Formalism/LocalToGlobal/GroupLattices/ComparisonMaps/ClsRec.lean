@@ -24,6 +24,9 @@ def clsR (i : compL L p) (Lt : Fin nV → Submodule W (Fin (m + 1) → Qq)) : C.
   clsOf L (clsC I hdet hk i Lt)
 
 include hH in
+/- English proof (translation)
+Establish `h1` using `(Nat.card_congr (fixEquiv hS r lam0 dom hk I ψ hdet hH i y hy (gOf Lt))).trans (card_stabU _)`. Rewrite `h1` using `[← gOf_spec Lt h]`. Conclude with `h1`.
+-/
 theorem stab_card1 (i : compL L p) (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hy : y = (repP L p i).1)
     (Lt : Fin nV → Submodule W (Fin (m + 1) → Qq)) (h : ∀ v, IsLattice W (Lt v)) :
     Nat.card {γ : gamC sp.cm.sig sp.gram0 (Formalism.L2.Herm.awayFrom₂ L p) y //
@@ -34,6 +37,9 @@ theorem stab_card1 (i : compL L p) (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (
   exact h1
 
 include hH hdet in
+/- English proof (translation)
+Rewrite `hfix` using `[level_action_lattice_eq]`. Establish `h1` using `(fix_iff hk I hdet hH i (gOf Lt) γ.1).2 ⟨hy ▸ γ.2, by rw [← gOf_spec Lt h]; exact hfix⟩`. Conclude with `Subtype.ext (hT _ _ h1)`.
+-/
 theorem trivStab1 (hT : TrivStabU L) (i : compL L p) (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (hy : y = (repP L p i).1) (γ : gamC sp.cm.sig sp.gram0 (Formalism.L2.Herm.awayFrom₂ L p) y)
     (Lt : Fin nV → Submodule W (Fin (m + 1) → Qq)) (h : ∀ v, IsLattice W (Lt v))
@@ -46,6 +52,9 @@ theorem trivStab1 (hT : TrivStabU L) (i : compL L p) (y : GL (Fin R.k) (E ⊗[F]
 set_option maxHeartbeats 2000000 in
 include hH in
 
+/- English proof (translation)
+The claim follows from `clsOf_inj.eq_iff.trans (clsC_iff hS r lam0 dom hk I ψ e hdet hH i i' Lt Lt' h h')`.
+-/
 theorem clsR_iff (i i' : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp)
     (Lt Lt' : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.Tup)
     (h : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.IsLatTup Lt)
@@ -57,6 +66,9 @@ theorem clsR_iff (i i' : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp)
 
 include hH in
 
+/- English proof (translation)
+Take `⟨c', rfl⟩` from `clsOf_surj (L := L) c`. Take `⟨i, Lt, h1, h2⟩` from `clsC_surj hS r lam0 dom hk I ψ e hdet hH c'`. Conclude with `⟨i, Lt, h1, congrArg (clsOf L) h2⟩`.
+-/
 theorem clsR_surj (c : C.cls 0) :
     ∃ (i : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp) (Lt : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.Tup),
       (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.IsLatTup Lt ∧ clsR hk I hdet i Lt = c := by
@@ -67,6 +79,9 @@ theorem clsR_surj (c : C.cls 0) :
 set_option maxHeartbeats 2000000 in
 include hH in
 
+/- English proof (translation)
+The claim follows from `stab_card1 hS r lam0 dom hk I ψ hdet hH i _ rfl Lt h`.
+-/
 theorem stab_card (i : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp)
     (Lt : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.Tup)
     (h : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.IsLatTup Lt) :
@@ -77,6 +92,9 @@ theorem stab_card (i : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp)
 set_option maxHeartbeats 2000000 in
 include hH hdet in
 
+/- English proof (translation)
+Introduce `i γ Lt h hfix` and use `trivStab1 hS r lam0 dom hk I ψ hdet hH hT i _ rfl γ Lt h hfix`.
+-/
 theorem trivStab (hT : TrivStabU L) : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).TrivStab :=
   fun i γ Lt h hfix => trivStab1 hS r lam0 dom hk I ψ hdet hH hT i _ rfl γ Lt h hfix
 

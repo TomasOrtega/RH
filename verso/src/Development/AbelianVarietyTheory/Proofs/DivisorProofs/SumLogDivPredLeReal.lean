@@ -9,6 +9,11 @@ namespace GlobalTheory.PrimeLogSum
 open scoped BigOperators Matrix in
 open Polynomial in
 
+/- English proof (translation)
+Introduce `B hB`. Establish `h` using `_root_.GlobalTheory.PrimeLogSum.sum_log_div_pred_le ⌊B⌋₊`. Establish `hN : (1 : ℝ) ≤ (⌊B⌋₊ : ℝ)`. Establish `: 1 ≤ ⌊B⌋₊` using `Nat.le_floor (by exact_mod_cast hB)`. Conclude with `this` after adjusting the coercions.
+
+Establish `hle : ((⌊B⌋₊ : ℕ) : ℝ) ≤ B` using `Nat.floor_le (by linarith)`. Establish `hlog : Real.log (⌊B⌋₊ : ℝ) ≤ Real.log B` using `Real.log_le_log (by linarith) hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.PrimeLogSum.sum_log_div_pred_le_real : ∀ (B : ℝ), 1 ≤ B →
     ∑ p ∈ (Finset.range (⌊B⌋₊ + 1)).filter Nat.Prime, Real.log p / ((p : ℝ) - 1)
       ≤ Real.log B + 3 := by

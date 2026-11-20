@@ -12,10 +12,16 @@ def p1 (π : R ≃+* k × k) : R →+* k := (RingHom.fst k k).comp π.toRingHom
 
 def p2 (π : R ≃+* k × k) : R →+* k := (RingHom.snd k k).comp π.toRingHom
 
+/- English proof (translation)
+Apply `π.injective` to reduce the goal to its premises. Conclude with `Prod.ext h1 h2`.
+-/
 theorem ext_p (π : R ≃+* k × k) {r s : R} (h1 : p1 π r = p1 π s) (h2 : p2 π r = p2 π s) : r = s := by
   apply π.injective
   exact Prod.ext h1 h2
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `ext_p π (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)`.
+-/
 theorem mat_ext_p (π : R ≃+* k × k) {M N : Matrix n n R} (h1 : M.map (p1 π) = N.map (p1 π))
     (h2 : M.map (p2 π) = N.map (p2 π)) : M = N := by
   ext i j
@@ -24,24 +30,41 @@ theorem mat_ext_p (π : R ≃+* k × k) {M N : Matrix n n R} (h1 : M.map (p1 π)
 variable (σ : R →+* R) (π : R ≃+* k × k) (hπ : ∀ r, π (σ r) = (π r).swap)
 include hπ
 
+/- English proof (translation)
+Use `show (π (σ r)).1 = (π r).2`. Rewrite using `[hπ]`. Both sides reduce to the same expression.
+-/
 theorem p1_sigma_eq_p2 (r : R) : p1 π (σ r) = p2 π r := by
   show (π (σ r)).1 = (π r).2
   rw [hπ]
   rfl
 
+/- English proof (translation)
+Use `show (π (σ r)).2 = (π r).1`. Rewrite using `[hπ]`. Both sides reduce to the same expression.
+-/
 theorem snd_conj (r : R) : p2 π (σ r) = p1 π r := by
   show (π (σ r)).2 = (π r).1
   rw [hπ]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `p1_sigma_eq_p2 σ π hπ (M j i)`.
+-/
 theorem map_conjTranspose_fst (M : Matrix n n R) : (Formalism.UG.cT σ M).map (p1 π) = (M.map (p2 π))ᵀ := by
   ext i j
   exact p1_sigma_eq_p2 σ π hπ (M j i)
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `snd_conj σ π hπ (M j i)`.
+-/
 theorem map_conjTranspose_snd (M : Matrix n n R) : (Formalism.UG.cT σ M).map (p2 π) = (M.map (p1 π))ᵀ := by
   ext i j
   exact snd_conj σ π hπ (M j i)
 
+/- English proof (translation)
+Establish `e1 : (Formalism.UG.cT σ M * J * M).map (p1 π) = (M.map (p2 π))ᵀ * J.map (p1 π) * M.map (p1 π)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_conjTranspose_fst σ π hπ]`. Establish `e2 : (Formalism.UG.cT σ M * J * M).map (p2 π) = (M.map (p1 π))ᵀ * J.map (p2 π) * M.map (p2 π)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_conjTranspose_snd σ π hπ]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite using `[← e1, ← e2, h]`. Conclude with `⟨rfl, rfl⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `mat_ext_p π (by rw [e1, h1]) (by rw [e2, h2])`.
+-/
 theorem unitary_iff (J M : Matrix n n R) :
     Formalism.UG.cT σ M * J * M = J ↔
       (M.map (p2 π))ᵀ * J.map (p1 π) * M.map (p1 π) = J.map (p1 π) ∧
@@ -57,6 +80,9 @@ theorem unitary_iff (J M : Matrix n n R) :
   · rintro ⟨h1, h2⟩
     exact mat_ext_p π (by rw [e1, h1]) (by rw [e2, h2])
 
+/- English proof (translation)
+Establish `h` using `map_conjTranspose_fst σ π hπ J`. Rewrite `h` using `[hJ]`. Rewrite using `[h, Matrix.transpose_transpose]`.
+-/
 theorem hermitian_map_snd (J : Matrix n n R) (hJ : Formalism.UG.cT σ J = J) : J.map (p2 π) = (J.map (p1 π))ᵀ := by
   have h := map_conjTranspose_fst σ π hπ J
   rw [hJ] at h
@@ -67,6 +93,29 @@ omit hπ in
 def proj (J : Matrix n n R) : Formalism.UG.UJ σ J →* GL n k :=
   (Units.map ((p1 π).mapMatrix : Matrix n n R →+* Matrix n n k).toMonoidHom).comp (Formalism.UG.UJ σ J).subtype
 
+/- English proof (translation)
+Establish `hJ1 : IsUnit (J.map (p1 π)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hdet.map _`. Establish `hunit : ∀ x : Formalism.UG.UJ σ J, (((x : GL n R) : Matrix n n R).map (p2 π))ᵀ * J.map (p1 π) * ((x : GL n R) : Matrix n n R).map (p1 π) = J.map (p1 π)` using `fun x => ((unitary_iff σ π hπ J ((x : GL n R) : Matrix n n R)).1 x.2).1`. Establish `hinv1 : ∀ x : GL n R, (x : Matrix n n R).map (p1 π) * ((x⁻¹ : GL n R) : Matrix n n R).map (p1 π) = 1`.
+
+Introduce `x`. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Prove the components needed by the constructor for the conclusion. Introduce `g h hgh`. Establish `h1 : ((g : GL n R) : Matrix n n R).map (p1 π) = ((h : GL n R) : Matrix n n R).map (p1 π)` using `congrArg (fun u : GL n k => (u : Matrix n n k)) hgh`.
+
+Establish `h2 : ((g : GL n R) : Matrix n n R).map (p2 π) = ((h : GL n R) : Matrix n n R).map (p2 π)`. Establish `hg` using `hunit g`. Establish `hh` using `hunit h`. Rewrite `hg` using `[h1]`. Establish `e : (((g : GL n R) : Matrix n n R).map (p2 π))ᵀ * J.map (p1 π) = (((h : GL n R) : Matrix n n R).map (p2 π))ᵀ * J.map (p1 π)`.
+
+Use `congrArg (fun X => X * (((h : GL n R)⁻¹ : GL n R) : Matrix n n R).map (p1 π)) (hg.trans hh.symm)` as an intermediate fact. Simplify using `only [Matrix.mul_assoc, hinv1, Matrix.mul_one] at this`. Simplify `this` using `only [Matrix.mul_assoc]`. Establish `e'` using `congrArg (fun X => X * (J.map (p1 π))⁻¹) e`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hJ1, Matrix.mul_one] at e'`.
+
+Use `congrArg Matrix.transpose e'` as an intermediate fact. Simplify `this` using `only [Matrix.transpose_transpose]`. Conclude with `Subtype.ext (Units.ext (mat_ext_p π h1 h2))`. Introduce `A`. Set `J1 : Matrix n n k` to `J.map (p1 π)`.
+
+Set `A1 : Matrix n n k` to `(A : Matrix n n k)`. Set `B : Matrix n n k` to `(J1 * ((A⁻¹ : GL n k) : Matrix n n k) * J1⁻¹)ᵀ`. Set `M : Matrix n n R` to `Matrix.of fun i j => π.symm (A1 i j, B i j)`. Establish `hM1 : M.map (p1 π) = A1`. Use extensionality with `i j`.
+
+Simplify using `[M, p1]`. Establish `hM2 : M.map (p2 π) = B`. Use extensionality with `i j`. Simplify using `[M, p2]`. Establish `hJ1' : IsUnit J1.det` using `hJ1`.
+
+Establish `key : Bᵀ * J1 * A1 = J1`. Simplify using `only [B, Matrix.transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hJ1', Units.inv_mul, Matrix.mul_one]`. Establish `hU : Formalism.UG.cT σ M * J * M = J`. Rewrite using `[unitary_iff σ π hπ J M, hM1, hM2, hermitian_map_snd σ π hπ J hJ]`.
+
+Use `⟨key, ?_⟩` and prove the remaining obligations. Use `congrArg Matrix.transpose key` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc]`. Conclude with `this`. Establish `hdetM : IsUnit M.det`.
+
+Establish `h` using `congrArg Matrix.det hU`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `h' : IsUnit ((Formalism.UG.cT σ M).det * J.det * M.det)` using `by rw [h]; exact hdet`. Conclude with `isUnit_of_mul_isUnit_right h'`. Use `⟨⟨((Matrix.isUnit_iff_isUnit_det M).2 hdetM).unit, hU⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Units.ext hM1`.
+-/
 theorem proj_bijective (J : Matrix n n R) (hJ : Formalism.UG.cT σ J = J) (hdet : IsUnit J.det) :
     Function.Bijective (proj σ π J) := by
   have hJ1 : IsUnit (J.map (p1 π)).det := by

@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PiSpanVariable
 open IsLocalRing UpperTheory.V.Alg
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using (ringKrullDim_nonneg_of_nontrivial (R := MvPowerSeries (Fin 0) E))`. Consider the case `succ n ih`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (MvPowerSeries.finSuccEquiv E n).toRingEquiv]`. Use `le_trans ?_ ringKrullDim_succ_le_ringKrullDim_powerseries` and prove the remaining obligations.
+
+Move the coercions through the operations in `at ih ⊢`. Use `gcongr`.
+-/
 private theorem dim_ge (E : Type) [Field E] (n : ℕ) :
     ((n : ℕ∞) : WithBot ℕ∞) ≤ ringKrullDim (MvPowerSeries (Fin n) E) := by
   induction n with
@@ -12,17 +17,28 @@ private theorem dim_ge (E : Type) [Field E] (n : ℕ) :
     push_cast at ih ⊢
     gcongr
 
+/- English proof (translation)
+Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules.
+-/
 private theorem mem_max_iff (E : Type) [Field E] (σ : Type) (g : MvPowerSeries σ E) :
     g ∈ maximalIdeal (MvPowerSeries σ E) ↔ MvPowerSeries.constantCoeff g = 0 := by
   rw [mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]
   simp
 
 open MvPowerSeries in
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X s`.
+-/
 private theorem pi_span_X {O σ : Type} [CommRing O] (s : Finset σ) :
     ∀ f : MvPowerSeries σ O, (∀ n : σ →₀ ℕ, (∀ i ∈ s, n i = 0) → coeff n f = 0) →
       f ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O)) :=
   _root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X s
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite `hg` using `[mem_max_iff]`. Consider the cases of `nonempty_fintype σ`. Use `pi_span_X Finset.univ g fun n hn => ?_` and prove the remaining obligations. Establish `: n = 0` using `by ext i; exact hn i (Finset.mem_univ i)`.
+
+Substitute `this` using the available equality. Simplify using `using hg`.
+-/
 private theorem max_eq_span (E : Type) [Field E] (σ : Type) [Finite σ] :
     maximalIdeal (MvPowerSeries σ E) ≤
       Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ E)) := by
@@ -34,6 +50,29 @@ private theorem max_eq_span (E : Type) [Field E] (σ : Type) [Finite σ] :
   subst this
   simpa using hg
 
+/- English proof (translation)
+Introduce `O E _ _ _ _ _ S _ _ _ x n φ t c hc hx ht`. Establish `hinj` using `IsFractionRing.injective O E`. Use `letI : Algebra S (MvPowerSeries (Fin n) E) := φ.toRingHom.toAlgebra`. Establish `halg : ∀ a, algebraMap S (MvPowerSeries (Fin n) E) a = φ a` using `fun _ => rfl`. Use `set m := maximalIdeal (MvPowerSeries (Fin n) E) with hm`.
+
+Establish `hker : ∀ a, a ∈ RingHom.ker x ↔ φ a ∈ m` using `fun a => by`. Rewrite using `[hm, mem_max_iff, hx, RingHom.mem_ker, map_eq_zero_iff _ hinj]`. Use `haveI : (RingHom.ker x).IsPrime := RingHom.ker_isPrime _`. Use `haveI : m.LiesOver (RingHom.ker x) := ⟨by`. Use extensionality with `a`.
+
+Rewrite using `[hker, Ideal.under_def, Ideal.mem_comap, halg]⟩`. Establish `hX : ∀ i, (MvPowerSeries.X i : MvPowerSeries (Fin n) E) ∈ m` using `fun i => by`. Rewrite using `[hm, mem_max_iff]`. Simplify using the standard rewrite rules. Establish `hsm : ∀ g : MvPowerSeries (Fin n) E, c • g = MvPowerSeries.C (algebraMap O E c) * g`.
+
+Introduce `g`. Rewrite using `[Algebra.smul_def, MvPowerSeries.algebraMap_apply]`. Establish `hc' : algebraMap O E c ≠ 0` using `(map_ne_zero_iff _ hinj).2 hc`. Establish `htm : ∀ i, t i ∈ RingHom.ker x` using `fun i => by`. Rewrite using `[hker]`.
+
+Establish `h1 : φ (t i) - c • MvPowerSeries.X i ∈ m` using `Ideal.pow_le_self two_ne_zero (ht i)`. Establish `h2 : c • (MvPowerSeries.X i : MvPowerSeries (Fin n) E) ∈ m`. Rewrite using `[hsm]`. Conclude with `m.mul_mem_left _ (hX i)`. Simplify using `using m.add_mem h1 h2`.
+
+Use `set J := (RingHom.ker x).map (algebraMap S (MvPowerSeries (Fin n) E)) with hJ`. Establish `hle : m ≤ J`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := m) (IsNoetherian.noetherian _) ?_ ?_` and prove the remaining obligations. Rewrite using `[hm, IsLocalRing.jacobson_eq_maximalIdeal _ bot_ne_top]`. Use `(max_eq_span E (Fin n)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h1 : φ (t i) ∈ J ⊔ m • m` using `Submodule.mem_sup_left (Ideal.mem_map_of_mem _ (htm i))`. Establish `h2 : φ (t i) - c • MvPowerSeries.X i ∈ J ⊔ m • m`. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_mul, ← pow_two]`. Conclude with `ht i`. Establish `h3` using `Ideal.mul_mem_left _ (MvPowerSeries.C (algebraMap O E c)⁻¹) (Submodule.sub_mem _ h1 h2)`. Rewrite `h3` using `[sub_sub_cancel, hsm, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc', map_one, one_mul]`. Conclude with `h3`.
+
+Establish `h` using `Ideal.height_le_height_add_of_liesOver (RingHom.ker x) m`. Establish `h0 : m.map (Ideal.Quotient.mk J) = ⊥`. Rewrite using `[Ideal.map_eq_bot_iff_le_ker, Ideal.mk_ker]`. Conclude with `hle`. Establish `hJm : J ≤ m`.
+
+Rewrite using `[hJ, Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Conclude with `(hker a).1 ha`. Use `haveI : Nontrivial (MvPowerSeries (Fin n) E ⧸ J) := Ideal.Quotient.nontrivial_iff.2 (ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top hJm)`. Rewrite `h` using `[← hJ, h0, Ideal.height_bot, add_zero]`.
+
+Use `le_trans ?_ h` and prove the remaining obligations. Establish `hd` using `dim_ge E n`. Rewrite `hd` using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim]`. Conclude with `WithBot.coe_le_coe.1 hd`.
+-/
 theorem UpperTheory.ringKrullDim_mvPowerSeries_fin_field :
     ∀ (O E : Type) [CommRing O] [IsDomain O] [Field E] [Algebra O E] [IsFractionRing O E] (S : Type) [CommRing S] [Algebra O S] [IsNoetherianRing S] (x : S →ₐ[O] O) (n : ℕ) (φ : S →ₐ[O] MvPowerSeries (Fin n) E) (t : Fin n → S) (c : O), c ≠ 0 → (∀ a, MvPowerSeries.constantCoeff (φ a) = algebraMap O E (x a)) → (∀ i, φ (t i) - c • MvPowerSeries.X i ∈ maximalIdeal (MvPowerSeries (Fin n) E) ^ 2) → (n : ℕ∞) ≤ (RingHom.ker x).height := by
   intro O E _ _ _ _ _ S _ _ _ x n φ t c hc hx ht

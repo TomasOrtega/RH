@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {S T : HSp D} {k : ℕ}
 
+/- English proof (translation)
+Use `M.opNorm_le_bound (Finset.sum_nonneg fun _ _ => norm_nonneg _) fun v => ?_` and prove the remaining obligations. Establish `hv : v = fun i => ∑ j, v i j • ev j`. Use function extensionality and compare the values at `i`. Use extensionality with `j'`. Simplify using `[ev, Finset.sum_apply, Pi.single_apply]`.
+
+Use `conv_lhs => rw [hv, M.map_sum]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun r _ => ?_` and prove the remaining obligations. Rewrite using `[M.map_smul_univ, norm_smul, norm_prod, mul_comm]`.
+
+Use `mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun i _ => ?_) (norm_nonneg _)` and prove the remaining obligations. Conclude with `norm_le_pi_norm (v i) (r i)`.
+-/
 theorem mlin_norm_le {m : ℕ} (M : ContinuousMultilinearMap ℝ (fun _ : Fin m => (Fin k → ℝ)) ℂ) :
     ‖M‖ ≤ ∑ l : Fin m → Fin k, ‖M (fun i => ev (l i))‖ := by
   refine M.opNorm_le_bound (Finset.sum_nonneg fun _ _ => norm_nonneg _) fun v => ?_
@@ -39,6 +46,9 @@ def ellAdd (Λ : Ainf D.host.F →+ ℂ) (L : (Fin k → ℝ) →+ WO S T) (x : 
     simp only [map_add, symplOH_add_right]
     exact Λ.map_add _ _)
 
+/- English proof (translation)
+Establish `hs : Continuous fun t => symplOH S T x (L t)` using `(continuous_symplOH_right x).comp hL`. Establish `h1 : Continuous fun t => Λ (symplOH S T x (L t)).1` using `hΛ.comp (continuous_fst.comp hs)`. Conclude with `h1`.
+-/
 theorem continuous_ellAdd (Λ : Ainf D.host.F →+ ℂ) (hΛ : Continuous Λ) (L : (Fin k → ℝ) →+ WO S T)
     (hL : Continuous L) (x : WO S T) : Continuous (ellAdd Λ L x) := by
   have hs : Continuous fun t => symplOH S T x (L t) := (continuous_symplOH_right x).comp hL
@@ -49,6 +59,9 @@ def ellx (Λ : Ainf D.host.F →+ ℂ) (hΛ : Continuous Λ) (L : (Fin k → ℝ
     (x : WO S T) : (Fin k → ℝ) →L[ℝ] ℂ :=
   AddMonoidHom.toRealLinearMap (ellAdd Λ L x) (continuous_ellAdd Λ hΛ L hL x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ellx_apply (Λ : Ainf D.host.F →+ ℂ) (hΛ : Continuous Λ) (L : (Fin k → ℝ) →+ WO S T) (hL : Continuous L)
     (x : WO S T) (t : Fin k → ℝ) : ellx Λ hΛ L hL x t = Λ (symplOH S T x (L t)).1 := rfl
 
@@ -59,6 +72,9 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {Λ : Ainf D.host.F →+ ℂ} (hΛ : C
   {L : (Fin k → ℝ) →+ WO S T} (hL : IsRealFrame L)
 
 include hΛ hψΛ hL in
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Establish `hr : eInf D • L t = L t` using `(wo_real_iff (L t)).mp (hL.2.1 t)`. Simplify using `only [Gf, Ff, heisO, ellx_apply]`. Rewrite using `[hψΛ _ (symplOH_snd x (L t) hr)]`.
+-/
 theorem Gf_eq (f : WO S T → ℂ) (x : WO S T) :
     Gf ψ L f x = fun t => Complex.exp (ellx Λ hΛ L hL.1 x t) * Ff L f x t := by
   funext t
@@ -67,6 +83,9 @@ theorem Gf_eq (f : WO S T → ℂ) (x : WO S T) :
   rw [hψΛ _ (symplOH_snd x (L t) hr)]
 
 include hΛ hψΛ hL in
+/- English proof (translation)
+Rewrite using `[Gf_eq hΛ hψΛ hL]`. Conclude with `((Complex.contDiff_exp (𝕜 := ℝ)).comp (ellx Λ hΛ L hL.1 x).contDiff).mul (hf.smooth k L hL.1 hL.2.1 x)`.
+-/
 theorem Gf_smooth {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (x : WO S T) : ContDiff ℝ ∞ (Gf ψ L f x) := by
   rw [Gf_eq hΛ hψΛ hL]
   exact ((Complex.contDiff_exp (𝕜 := ℝ)).comp (ellx Λ hΛ L hL.1 x).contDiff).mul

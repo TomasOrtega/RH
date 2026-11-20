@@ -19,11 +19,17 @@ def glue (eq : κ ≃ κ' ⊕ κ₁) (a : κ' → R) (b : κ₁ → R) : κ → 
 def glueEquiv (eq : κ ≃ κ' ⊕ κ₁) : ((κ' → R) × (κ₁ → R)) ≃ₗ[R] (κ → R) :=
   (LinearEquiv.sumArrowLequivProdArrow κ' κ₁ R R).symm.trans (LinearEquiv.funCongrLeft R R eq)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [glueEquiv, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, glue]`. Apply the tactic sequence `rcases h : eq k with k' | k₁ <;> simp [LinearMap.funLeft, h, LinearEquiv.sumArrowLequivProdArrow]`.
+-/
 theorem glueEquiv_apply (eq : κ ≃ κ' ⊕ κ₁) (a : κ' → R) (b : κ₁ → R) : glueEquiv eq (a, b) = glue eq a b := by
   funext k
   simp only [glueEquiv, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, glue]
   rcases h : eq k with k' | k₁ <;> simp [LinearMap.funLeft, h, LinearEquiv.sumArrowLequivProdArrow]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, glue]`. Rewrite using `[← Equiv.sum_comp eq.symm, Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+-/
 theorem glue_dot (eq : κ ≃ κ' ⊕ κ₁) (a a' : κ' → R) (b b' : κ₁ → R) :
     glue eq a b ⬝ᵥ glue eq a' b' = a ⬝ᵥ a' + b ⬝ᵥ b' := by
   simp only [dotProduct, glue]
@@ -40,6 +46,9 @@ def glueDarboux {V V₁ : Type} [AddCommGroup V] [Module R V] [AddCommGroup V₁
       LinearEquiv.prodProdProdComm_apply, glueEquiv_apply, glue_dot, hB w w', d₁.form]
     ring
 
+/- English proof (translation)
+Simplify using `[glueDarboux, glueEquiv_apply]`.
+-/
 theorem glueDarboux_e {V V₁ : Type} [AddCommGroup V] [Module R V] [AddCommGroup V₁] [Module R V₁] {Bf : V → V → R}
     {B₁ : V₁ → V₁ → R} (d₁ : Darboux B₁ κ₁) (eq : κ ≃ κ' ⊕ κ₁) (T : V ≃ₗ[R] ((κ' → R) × (κ' → R)) × V₁)
     (hB : ∀ w w', Bf w w' = (T w).1.1 ⬝ᵥ (T w').1.2 - (T w').1.1 ⬝ᵥ (T w).1.2 + B₁ (T w).2 (T w').2) (w : V) :
@@ -113,27 +122,45 @@ def pairI (σ : E →ₐ[F] E) {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F 
   -∑ m, inclR (F := F) (AF F) (planeGram σ X.J H (posS k).1 (posT m).1 * planeGram σ W.J H' (posS k).2 (posT m).2) *
     cA σ (tI H H' u m)
 
+/- English proof (translation)
+Simplify using `only [tI, map_add, Matrix.add_apply]`.
+-/
 theorem tI_add {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d d₁) (a b : Matrix (Fin n) (Fin d) (AE F E))
     (k : Ic d₁ n₁) : tI H H' (a + b) k = tI H H' a k + tI H H' b k := by
   simp only [tI, map_add, Matrix.add_apply]
 
+/- English proof (translation)
+Simplify using `only [tI, map_smul, Matrix.smul_apply]`.
+-/
 theorem tI_smul {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d d₁) (c : AF F) (a : Matrix (Fin n) (Fin d) (AE F E))
     (k : Ic d₁ n₁) : tI H H' (c • a) k = c • tI H H' a k := by
   simp only [tI, map_smul, Matrix.smul_apply]
 
+/- English proof (translation)
+Simplify using `only [sI, map_add, Matrix.add_apply]`.
+-/
 theorem sI_add {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d d₁) (a b : Matrix (Fin n) (Fin d) (AE F E))
     (k : Ic d₁ n₁) : sI H H' (a + b) k = sI H H' a k + sI H H' b k := by
   simp only [sI, map_add, Matrix.add_apply]
 
+/- English proof (translation)
+Simplify using `only [sI, map_smul, Matrix.smul_apply]`.
+-/
 theorem sI_smul {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d d₁) (c : AF F) (a : Matrix (Fin n) (Fin d) (AE F E))
     (k : Ic d₁ n₁) : sI H H' (c • a) k = c • sI H H' a k := by
   simp only [sI, map_smul, Matrix.smul_apply]
 
+/- English proof (translation)
+Simplify using `only [pairI, tI_add, map_add, mul_add, Finset.sum_add_distrib, neg_add]`.
+-/
 theorem pairI_add (σ : E →ₐ[F] E) {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (H : Plane E n n₁)
     (H' : Plane E d d₁) (a b : Matrix (Fin n) (Fin d) (AE F E)) (k : Ic d₁ n₁) :
     pairI σ X W H H' (a + b) k = pairI σ X W H H' a k + pairI σ X W H H' b k := by
   simp only [pairI, tI_add, map_add, mul_add, Finset.sum_add_distrib, neg_add]
 
+/- English proof (translation)
+Simplify using `only [pairI, tI_smul, AlgHom.map_smul_of_tower, mul_smul_comm, ← Finset.smul_sum, smul_neg]`.
+-/
 theorem pairI_smul (σ : E →ₐ[F] E) {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (H : Plane E n n₁)
     (H' : Plane E d d₁) (c : AF F) (a : Matrix (Fin n) (Fin d) (AE F E)) (k : Ic d₁ n₁) :
     pairI σ X W H H' (c • a) k = c • pairI σ X W H H' a k := by
@@ -184,6 +211,17 @@ def restr (eq : κ ≃ κ' ⊕ κ₁) : ((κ → R) → ℂ) →ₗ[ℂ] ((κ₁
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `key : (∀ k, x k ∈ S) ↔ (∀ k, x (eq.symm (.inl k)) ∈ S) ∧ ∀ k, x (eq.symm (.inr k)) ∈ S`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun k => h _, fun k => h _⟩`.
+
+Introduce and unpack `⟨h1, h2⟩ k`. Establish `hk` using `eq.symm_apply_apply k`. Break down `h : eq k with k' | k'` into its components or cases. Rewrite `hk` using `[h]`. Rewrite using `[← hk]`.
+
+Conclude with `h1 k'`. Rewrite `hk` using `[h]`. Rewrite using `[← hk]`. Conclude with `h2 k'`. Unfold `vacGlue`.
+
+Distinguish the cases in `h1 : ∀ k, x (eq.symm (.inl k)) ∈ S`. Distinguish the cases in `h2 : ∀ k, x (eq.symm (.inr k)) ∈ S`. Rewrite using `[Set.indicator_of_mem (s := {y : κ' → R | ∀ k, y k ∈ S}) h1, Set.indicator_of_mem (s := {y : κ₁ → R | ∀ k, y k ∈ S}) h2, Set.indicator_of_mem (s := {y : κ → R | ∀ k, y k ∈ S}) (key.2 ⟨h1, h2⟩)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (s := {y : κ₁ → R | ∀ k, y k ∈ S}) h2, Set.indicator_of_notMem (s := {y : κ → R | ∀ k, y k ∈ S}) (fun h => h2 (key.1 h).2)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (s := {y : κ' → R | ∀ k, y k ∈ S}) h1, Set.indicator_of_notMem (s := {y : κ → R | ∀ k, y k ∈ S}) (fun h => h1 (key.1 h).1)]`. Simplify using the standard rewrite rules.
+-/
 theorem vacGlue_indicator {R : Type} [CommRing R] {κ κ' κ₁ : Type} (eq : κ ≃ κ' ⊕ κ₁) (S : Set R) :
     vacGlue eq (Set.indicator {y : κ' → R | ∀ k, y k ∈ S} 1) (Set.indicator {y : κ₁ → R | ∀ k, y k ∈ S} 1) =
       Set.indicator {y : κ → R | ∀ k, y k ∈ S} 1 := by

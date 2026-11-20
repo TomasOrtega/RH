@@ -7,5 +7,8 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DiffGenNorm.exists_diffGens_norm | exact GlobalTheory.DiffGenNorm.exists_diffGens_norm | (intros; apply GlobalTheory.DiffGenNorm.exists_diffGens_norm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.different_ideal_p_adic_norm : ∀ (E : Type) [Field E] [NumberField E], IsGalois ℚ E → ∃ (m : ℕ) (d : Fin m → 𝓞 E), (∃ n : ℕ, n ≠ 0 ∧ (n : 𝓞 E) ∈ Ideal.span (Set.range d)) ∧ ∀ (p : ℕ) [Fact p.Prime] (φ : 𝓞 E →+* ↥(intO ℂ_[p])), ‖fun k => ((φ (d k) : ↥(intO ℂ_[p])) : ℂ_[p])‖ = (p : ℝ) ^ (-vDiff E p) := by
   first | exact @GlobalTheory.DiffGenNorm.exists_diffGens_norm | exact GlobalTheory.DiffGenNorm.exists_diffGens_norm | (intros; apply GlobalTheory.DiffGenNorm.exists_diffGens_norm <;> assumption)

@@ -7,6 +7,15 @@ open MeasureTheory MeasureTheory.Measure
 
 namespace UpperTheory.Gal.LocD
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ B hB _ _ μ _ χ b`. Use `haveI : LocallyCompactSpace B := hB.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology B := TopologicalSpace.Subtype.secondCountableTopology _`. Take `⟨c', hc'⟩ : ∃ c' : NNReal, map (· * b) μ = c' • μ` from `⟨_, isMulLeftInvariant_eq_smul _ _⟩`. Use `⟨(((χ b)⁻¹ : ℂˣ) : ℂ) * ((c' : ℝ) : ℂ), fun f g => ?_⟩` and prove the remaining obligations.
+
+Use `set H : B → ℂ := fun y => (χ y : ℂ) * f ((y : G)⁻¹ * g) with hH`. Establish `key : pr B μ χ (fun x => f ((b : G)⁻¹ * x)) g = (((χ b)⁻¹ : ℂˣ) : ℂ) * ∫ x, H (x * b) ∂μ`. Unfold `pr`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using `only [hH, map_mul, Units.val_mul, Subgroup.coe_mul, mul_inv_rev, mul_assoc]`. Rewrite using `[Units.val_inv_eq_inv_val]`. Clear denominators, using `[(χ b).ne_zero]` for the nonvanishing conditions. Establish `e` using `(MeasurableEquiv.mulRight b).measurableEmbedding.integral_map (μ := μ) H`.
+
+Rewrite `e` using `[MeasurableEquiv.coe_mulRight]`. Rewrite using `[key, ← e, hc', integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Establish `: pr B μ χ f g = ∫ x, H x ∂μ` using `rfl`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prLeft : PrLeft := by
   intro G _ _ _ _ _ _ B hB _ _ μ _ χ b
   haveI : LocallyCompactSpace B := hB.isClosedEmbedding_subtypeVal.locallyCompactSpace

@@ -18,6 +18,11 @@ section Gen
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `hx`.
+
+Conclude with `⟨n.symm x, hx, n.apply_symm_apply x⟩`.
+-/
 theorem mem_gmap (n : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) (x : V) :
     x ∈ Formalism.HermitianLatticesTheory.gmap n L ↔ n.symm x ∈ L := by
   simp only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]
@@ -27,43 +32,70 @@ theorem mem_gmap (n : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) (x : V) :
   · intro hx
     exact ⟨n.symm x, hx, n.apply_symm_apply x⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_gmap, mem_gmap, mem_gmap]`. Both sides reduce to the same expression.
+-/
 theorem gmap_mul (a b : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap (a * b) L = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b L) := by
   ext x
   rw [mem_gmap, mem_gmap, mem_gmap]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_gmap, mem_gmap, LinearEquiv.symm_symm, LinearEquiv.symm_apply_apply]`.
+-/
 theorem gmap_symm_gmap (n : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap n.symm (Formalism.HermitianLatticesTheory.gmap n L) = L := by
   ext x
   rw [mem_gmap, mem_gmap, LinearEquiv.symm_symm, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_gmap, mem_gmap, LinearEquiv.symm_symm, LinearEquiv.apply_symm_apply]`.
+-/
 theorem gmap_gmap_symm (n : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap n (Formalism.HermitianLatticesTheory.gmap n.symm L) = L := by
   ext x
   rw [mem_gmap, mem_gmap, LinearEquiv.symm_symm, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `L L' hLL`. Rewrite using `[← gmap_symm_gmap n L, hLL, gmap_symm_gmap]`.
+-/
 theorem gmap_injective (n : V ≃ₗ[K] V) : Function.Injective (Formalism.HermitianLatticesTheory.gmap (R := 𝓞 K) n) := by
   intro L L' hLL
   rw [← gmap_symm_gmap n L, hLL, gmap_symm_gmap]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul K s x, map_smul, algebraMap_smul]`.
+-/
 theorem linearEquiv_map_smul_ringOfIntegers (n : V ≃ₗ[K] V) (s : 𝓞 K) (x : V) : n (s • x) = s • n x := by
   rw [← algebraMap_smul K s x, map_smul, algebraMap_smul]
 
+/- English proof (translation)
+Rewrite using `[Formalism.HermitianLatticesTheory.gmap, Submodule.map_span]`. Both sides reduce to the same expression.
+-/
 theorem gmap_span (n : V ≃ₗ[K] V) (S : Set V) :
     Formalism.HermitianLatticesTheory.gmap n (Submodule.span (𝓞 K) S) = Submodule.span (𝓞 K) (n '' S) := by
   rw [Formalism.HermitianLatticesTheory.gmap, Submodule.map_span]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.map_sup]`.
+-/
 theorem gmap_sup (n : V ≃ₗ[K] V) (L L' : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap n (L ⊔ L') = Formalism.HermitianLatticesTheory.gmap n L ⊔ Formalism.HermitianLatticesTheory.gmap n L' := by
   simp only [Formalism.HermitianLatticesTheory.gmap, Submodule.map_sup]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [mem_gmap, Submodule.mem_iInf]`.
+-/
 theorem gmap_iInf {ι : Type} (n : V ≃ₗ[K] V) (f : ι → Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap n (⨅ i, f i) = ⨅ i, Formalism.HermitianLatticesTheory.gmap n (f i) := by
   ext x
   simp only [mem_gmap, Submodule.mem_iInf]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_gmap]`. Use `show (∃ s ∈ p.primeCompl, s • x ∈ Formalism.HermitianLatticesTheory.gmap n L) ↔ ∃ s ∈ p.primeCompl, s • n.symm x ∈ L`. Simplify using `only [mem_gmap, linearEquiv_map_smul_ringOfIntegers]`.
+-/
 theorem locP_gmap (n : V ≃ₗ[K] V) (p : Ideal (𝓞 K)) [p.IsPrime] (L : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.localization₂ p (Formalism.HermitianLatticesTheory.gmap n L) = Formalism.HermitianLatticesTheory.gmap n (Formalism.HermitianLatticesTheory.localization₂ p L) := by
   ext x
@@ -71,11 +103,21 @@ theorem locP_gmap (n : V ≃ₗ[K] V) (p : Ideal (𝓞 K)) [p.IsPrime] (L : Subm
   show (∃ s ∈ p.primeCompl, s • x ∈ Formalism.HermitianLatticesTheory.gmap n L) ↔ ∃ s ∈ p.primeCompl, s • n.symm x ∈ L
   simp only [mem_gmap, linearEquiv_map_smul_ringOfIntegers]
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]`.
+-/
 theorem mem_dual (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (x : V) :
     x ∈ Formalism.HermitianLatticesTheory.dual h L ↔ ∀ y ∈ L, h y x ∈ (1 : Submodule (𝓞 K) K) := by
   simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
     LinearMap.coe_restrictScalars]
 
+/- English proof (translation)
+Establish `hiso : ∀ x y, h (n x) (n y) = h x y` using `hn`. Use extensionality with `x`. Rewrite using `[mem_gmap, mem_dual, mem_dual]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`.
+
+Use `hx (n y) (by rw [mem_gmap, LinearEquiv.symm_apply_apply]; exact hy)` as an intermediate fact. Rewrite `this` using `[← n.apply_symm_apply x, hiso]`. Then use the resulting hypothesis. Introduce `hx y hy`. Rewrite `hy` using `[mem_gmap]`. Use `hx _ hy` as an intermediate fact.
+
+Rewrite `this` using `[← hiso, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem dual_gmap (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom h)
     (L : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.dual h (Formalism.HermitianLatticesTheory.gmap n L) = Formalism.HermitianLatticesTheory.gmap n (Formalism.HermitianLatticesTheory.dual h L) := by
@@ -91,6 +133,9 @@ theorem dual_gmap (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n
     have := hx _ hy
     rwa [← hiso, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply] at this
 
+/- English proof (translation)
+Use `⟨hL.fg.map _, ?_⟩` and prove the remaining obligations. Establish `hspan : Submodule.span K ((Formalism.HermitianLatticesTheory.gmap n L : Submodule (𝓞 K) V) : Set V) = (Submodule.span K (L : Set V)).map (n : V →ₗ[K] V)`. Rewrite using `[Submodule.map_span]`. Both sides reduce to the same expression. Rewrite using `[hspan, hL.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+-/
 theorem isLattice_gmap (n : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) (hL : Submodule.IsLattice K L) :
     Submodule.IsLattice K (Formalism.HermitianLatticesTheory.gmap n L) := by
   refine ⟨hL.fg.map _, ?_⟩
@@ -100,12 +145,18 @@ theorem isLattice_gmap (n : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) (hL : Subm
     rfl
   rw [hspan, hL.span_eq_top, Submodule.map_top, LinearEquiv.range]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem, mem_gmap, Submodule.mem_map_equiv]`.
+-/
 theorem gmap_inf_map (n : V ≃ₗ[K] V) (Λ : Submodule (𝓞 K) V) (U : Submodule K V) :
     Formalism.HermitianLatticesTheory.gmap n Λ ⊓ (U.map (n : V →ₗ[K] V)).restrictScalars (𝓞 K) =
       Formalism.HermitianLatticesTheory.gmap n (Λ ⊓ U.restrictScalars (𝓞 K)) := by
   ext x
   simp only [Submodule.mem_inf, Submodule.restrictScalars_mem, mem_gmap, Submodule.mem_map_equiv]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem, mem_gmap, Submodule.mem_map_equiv, LinearEquiv.symm_symm, LinearEquiv.symm_apply_apply]`.
+-/
 theorem gmap_symm_inf (n : V ≃ₗ[K] V) (Λ : Submodule (𝓞 K) V) (U : Submodule K V) :
     Formalism.HermitianLatticesTheory.gmap n.symm Λ ⊓ U.restrictScalars (𝓞 K) =
       Formalism.HermitianLatticesTheory.gmap n.symm (Λ ⊓ (U.map (n : V →ₗ[K] V)).restrictScalars (𝓞 K)) := by
@@ -126,24 +177,36 @@ section Gen2
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.IsUnimodular at hL ⊢`. Rewrite using `[dual_gmap h n hn, hL]`.
+-/
 theorem isUnimodular_gmap (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom h)
     (L : Submodule (𝓞 K) V) (hL : Formalism.HermitianLatticesTheory.IsUnimodular h L) :
     Formalism.HermitianLatticesTheory.IsUnimodular h (Formalism.HermitianLatticesTheory.gmap n L) := by
   unfold Formalism.HermitianLatticesTheory.IsUnimodular at hL ⊢
   rw [dual_gmap h n hn, hL]
 
+/- English proof (translation)
+Establish `hiso : ∀ x y, h (n x) (n y) = h x y` using `hn`. Introduce `x y`. Rewrite using `[← hiso, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem symm_mem_isom (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom h) :
     n.symm ∈ Formalism.HermitianLatticesTheory.isom h := by
   have hiso : ∀ x y, h (n x) (n y) = h x y := hn
   intro x y
   rw [← hiso, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hΛ`. Conclude with `⟨isLattice_gmap n Λ h1, isUnimodular_gmap h n hn Λ h2, by rw [gmap_inf_map, h3]⟩`.
+-/
 theorem glueSet_move (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom h)
     (U : Submodule K V) (M Λ : Submodule (𝓞 K) V) (hΛ : Λ ∈ GlueSet h U M) :
     Formalism.HermitianLatticesTheory.gmap n Λ ∈ GlueSet h (U.map (n : V →ₗ[K] V)) (Formalism.HermitianLatticesTheory.gmap n M) := by
   obtain ⟨h1, h2, h3⟩ := hΛ
   exact ⟨isLattice_gmap n Λ h1, isUnimodular_gmap h n hn Λ h2, by rw [gmap_inf_map, h3]⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hΛ`. Conclude with `⟨isLattice_gmap n.symm Λ h1, isUnimodular_gmap h n.symm (symm_mem_isom h n hn) Λ h2, by rw [gmap_symm_inf, h3, gmap_symm_gmap]⟩`.
+-/
 theorem glueSet_back (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom h)
     (U : Submodule K V) (M Λ : Submodule (𝓞 K) V)
     (hΛ : Λ ∈ GlueSet h (U.map (n : V →ₗ[K] V)) (Formalism.HermitianLatticesTheory.gmap n M)) :
@@ -152,6 +215,13 @@ theorem glueSet_back (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn 
   exact ⟨isLattice_gmap n.symm Λ h1, isUnimodular_gmap h n.symm (symm_mem_isom h n hn) Λ h2,
     by rw [gmap_symm_inf, h3, gmap_symm_gmap]⟩
 
+/- English proof (translation)
+Establish `hiso : ∀ x y, h (n x) (n y) = h x y` using `hn`. Establish `hsym : ∀ x y, h (n.symm x) (n.symm y) = h x y` using `symm_mem_isom h n hn`. Take `⟨hgi, hgU⟩` from `hg`. Establish `hgiso : ∀ x y, h (g x) (g y) = h x y` using `hgi`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x y show h (n (g (n.symm x))) (n (g (n.symm y))) = h x y`. Rewrite using `[hiso, hgiso, hsym]`. Introduce `u hu`. Take `⟨u₀, hu₀, rfl⟩` from `Submodule.mem_map.mp hu`. Use `show n (g (n.symm (n u₀))) = n u₀`.
+
+Rewrite using `[LinearEquiv.symm_apply_apply, hgU u₀ hu₀]`.
+-/
 theorem isomFix_conj (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom h)
     (U : Submodule K V) (g : V ≃ₗ[K] V) (hg : g ∈ isomFix h U) :
     n * g * n.symm ∈ isomFix h (U.map (n : V →ₗ[K] V)) := by
@@ -168,6 +238,11 @@ theorem isomFix_conj (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn 
     show n (g (n.symm (n u₀))) = n u₀
     rw [LinearEquiv.symm_apply_apply, hgU u₀ hu₀]
 
+/- English proof (translation)
+Establish `hiso : ∀ x y, h (n x) (n y) = h x y` using `hn`. Establish `hsym : ∀ x y, h (n.symm x) (n.symm y) = h x y` using `symm_mem_isom h n hn`. Take `⟨hgi, hgU⟩` from `hg`. Establish `hgiso : ∀ x y, h (g x) (g y) = h x y` using `hgi`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x y show h (n.symm (g (n x))) (n.symm (g (n y))) = h x y`. Rewrite using `[hsym, hgiso, hiso]`. Introduce `u hu show n.symm (g (n u)) = u`. Rewrite using `[hgU (n u) (Submodule.mem_map_of_mem hu), LinearEquiv.symm_apply_apply]`.
+-/
 theorem isomFix_unconj (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom h)
     (U : Submodule K V) (g : V ≃ₗ[K] V) (hg : g ∈ isomFix h (U.map (n : V →ₗ[K] V))) :
     n.symm * g * n ∈ isomFix h U := by
@@ -183,10 +258,16 @@ theorem isomFix_unconj (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (h
     show n.symm (g (n u)) = u
     rw [hgU (n u) (Submodule.mem_map_of_mem hu), LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[gmap_mul, gmap_mul, gmap_symm_gmap]`.
+-/
 theorem gmap_conj (n g : V ≃ₗ[K] V) (Λ : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap (n * g * n.symm) (Formalism.HermitianLatticesTheory.gmap n Λ) = Formalism.HermitianLatticesTheory.gmap n (Formalism.HermitianLatticesTheory.gmap g Λ) := by
   rw [gmap_mul, gmap_mul, gmap_symm_gmap]
 
+/- English proof (translation)
+Rewrite using `[gmap_mul, gmap_mul]`.
+-/
 theorem gmap_unconj (n g : V ≃ₗ[K] V) (Λ : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap (n.symm * g * n) Λ = Formalism.HermitianLatticesTheory.gmap n.symm (Formalism.HermitianLatticesTheory.gmap g (Formalism.HermitianLatticesTheory.gmap n Λ)) := by
   rw [gmap_mul, gmap_mul]
@@ -210,10 +291,22 @@ def stabEquiv (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n ∈
     show n (n.symm (g.1 (n (n.symm x)))) = g.1 x
     simp
 
+/- English proof (translation)
+The claim follows from `(Nat.card_congr (stabEquiv h n hn U Λ)).symm`.
+-/
 theorem card_stabFix_move (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom h)
     (U : Submodule K V) (Λ : Submodule (𝓞 K) V) :
     Nat.card (stabFix h (U.map (n : V →ₗ[K] V)) (Formalism.HermitianLatticesTheory.gmap n Λ)) = Nat.card (stabFix h U Λ) := (Nat.card_congr (stabEquiv h n hn U Λ)).symm
 
+/- English proof (translation)
+Take `⟨hs1, hs2, hs3⟩` from `hs`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Λ hΛ`. Take `⟨Λ₀, h₀, rfl⟩` from `Finset.mem_image.mp hΛ`. Conclude with `glueSet_move h n hn U M Λ₀ (hs1 Λ₀ h₀)`.
+
+Introduce `Λ hΛ`. Take `⟨Λ₀, ⟨h₀, g, hg, hgΛ⟩, huniq⟩` from `hs2 _ (glueSet_back h n hn U M Λ hΛ)`. Use `⟨Formalism.HermitianLatticesTheory.gmap n Λ₀, ⟨Finset.mem_image_of_mem _ h₀, n * g * n.symm, isomFix_conj h n hn U g hg, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_conj, hgΛ, gmap_gmap_symm]`. Introduce and unpack `Λ₂ ⟨hΛ₂, g₂, hg₂, hg₂Λ⟩`.
+
+Take `⟨Λ₃, h₃, rfl⟩` from `Finset.mem_image.mp hΛ₂`. Establish `key : Λ₃ = Λ₀` using `huniq Λ₃ ⟨h₃, n.symm * g₂ * n, isomFix_unconj h n hn U g₂ hg₂, by rw [gmap_unconj, hg₂Λ]⟩`. Rewrite using `[key]`. Introduce `Λ hΛ`. Take `⟨Λ₀, h₀, rfl⟩` from `Finset.mem_image.mp hΛ`.
+
+Use `haveI : Finite (stabFix h U Λ₀) := (hs3 Λ₀ h₀).to_subtype`. Conclude with `Set.finite_coe_iff.mp (Finite.of_equiv _ (stabEquiv h n hn U Λ₀))`.
+-/
 theorem isGlueReps_move (h : V →ₗ⋆[K] V →ₗ[K] K) (n : V ≃ₗ[K] V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom h)
     (U : Submodule K V) (M : Submodule (𝓞 K) V) (s : Finset (Submodule (𝓞 K) V))
     (hs : IsGlueReps h U M s) :
@@ -248,21 +341,33 @@ open Formalism.L2.SG.Pf.Cnt
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Conclude with `hG a`.
+-/
 theorem fvec_move {T : D.host.E} (F G : LFlag (VS D) D.R.rS T) (n : GV D)
     (hG : ∀ a, frame G a = n (frame F a)) : G.fl.fvec = fun a => n (F.fl.fvec a) := by
   funext a
   exact hG a
 
+/- English proof (translation)
+Use `hG i.castSucc` as an intermediate fact. Simplify `this` using `[Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]`.
+-/
 theorem e_move {T : D.host.E} (F G : LFlag (VS D) D.R.rS T) (n : GV D)
     (hG : ∀ a, frame G a = n (frame F a)) (i : Fin D.R.rS) : G.fl.e i = n (F.fl.e i) := by
   have := hG i.castSucc
   simpa [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc] using this
 
+/- English proof (translation)
+Use `hG (Fin.last _)` as an intermediate fact. Simplify `this` using `[Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last]`.
+-/
 theorem z_move {T : D.host.E} (F G : LFlag (VS D) D.R.rS T) (n : GV D)
     (hG : ∀ a, frame G a = n (frame F a)) : G.fl.z = n F.fl.z := by
   have := hG (Fin.last _)
   simpa [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last] using this
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Pf.Cnt.UPair`. Rewrite using `[Submodule.map_span, Set.image_union, ← Set.range_comp, ← Set.range_comp, fvec_move F G n hG, fvec_move F' G' n hG']`. Both sides reduce to the same expression.
+-/
 theorem upair_move {T T' : D.host.E} (F G : LFlag (VS D) D.R.rS T) (F' G' : LFlag (VS D) D.R.rS T') (n : GV D)
     (hG : ∀ a, frame G a = n (frame F a)) (hG' : ∀ a, frame G' a = n (frame F' a)) :
     UPair D G.fl G' = (UPair D F.fl F').map (n : (VS D).V →ₗ[D.host.E] (VS D).V) := by
@@ -271,6 +376,11 @@ theorem upair_move {T T' : D.host.E} (F G : LFlag (VS D) D.R.rS T) (F' G' : LFla
     fvec_move F G n hG, fvec_move F' G' n hG']
   rfl
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.XS`. Rewrite using `[gmap_span]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, x, hx, rfl⟩`. Conclude with `⟨x • F.fl.e a, ⟨a, x, hx, rfl⟩, by rw [map_smul, e_move F G n hG]⟩`. Introduce and unpack `⟨_, ⟨a, x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, x, hx, by rw [map_smul, e_move F G n hG]⟩`.
+-/
 theorem xs_move {T : D.host.E} (F G : LFlag (VS D) D.R.rS T) (n : GV D)
     (hG : ∀ a, frame G a = n (frame F a)) : XS D G.fl = Formalism.HermitianLatticesTheory.gmap n (XS D F.fl) := by
   unfold Formalism.MainNotions.S.XS
@@ -284,6 +394,9 @@ theorem xs_move {T : D.host.E} (F G : LFlag (VS D) D.R.rS T) (n : GV D)
   · rintro ⟨_, ⟨a, x, hx, rfl⟩, rfl⟩
     exact ⟨a, x, hx, by rw [map_smul, e_move F G n hG]⟩
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Pf.Cnt.UUS`. Rewrite using `[gmap_sup, gmap_sup, gmap_sup, gmap_span, gmap_span, Set.image_singleton, Set.image_singleton, xs_move F G n hG, xs_move F' G' n hG', z_move F G n hG, z_move F' G' n hG']`.
+-/
 theorem uus_move {T T' : D.host.E} (F G : LFlag (VS D) D.R.rS T) (F' G' : LFlag (VS D) D.R.rS T') (n : GV D)
     (hG : ∀ a, frame G a = n (frame F a)) (hG' : ∀ a, frame G' a = n (frame F' a)) :
     UUS D G.fl G' = Formalism.HermitianLatticesTheory.gmap n (UUS D F.fl F') := by
@@ -291,6 +404,11 @@ theorem uus_move {T T' : D.host.E} (F G : LFlag (VS D) D.R.rS T) (F' G' : LFlag 
   rw [gmap_sup, gmap_sup, gmap_sup, gmap_span, gmap_span, Set.image_singleton, Set.image_singleton,
     xs_move F G n hG, xs_move F' G' n hG', z_move F G n hG, z_move F' G' n hG']
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Pf.Cnt.MMg`. Rewrite using `[gmap_span, Set.image_union, ← Set.range_comp, ← Set.range_comp, fvec_move F G n hG, fvec_move F' G' n hG']`. Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+
+Simplify using `[map_sub, map_smul]`.
+-/
 theorem mmg_move {T T' : D.host.E} (F G : LFlag (VS D) D.R.rS T) (F' G' : LFlag (VS D) D.R.rS T') (n : GV D)
     (hG : ∀ a, frame G a = n (frame F a)) (hG' : ∀ a, frame G' a = n (frame F' a)) :
     MMg D G.fl G' = Formalism.HermitianLatticesTheory.gmap n (MMg D F.fl F') := by
@@ -302,6 +420,11 @@ theorem mmg_move {T T' : D.host.E} (F G : LFlag (VS D) D.R.rS T) (F' G' : LFlag 
   funext b
   simp [map_sub, map_smul]
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Pf.Cnt.MMof`. Rewrite using `[gmap_iInf]`. Use `congr 1`. Use function extensionality and compare the values at `P`. Use `split_ifs`.
+
+Rewrite using `[mmg_move F G F' G' n hG hG', locP_gmap]`. Rewrite using `[uus_move F G F' G' n hG hG', locP_gmap]`.
+-/
 theorem mmof_move {T T' : D.host.E} (F G : LFlag (VS D) D.R.rS T) (F' G' : LFlag (VS D) D.R.rS T') (n : GV D)
     (hG : ∀ a, frame G a = n (frame F a)) (hG' : ∀ a, frame G' a = n (frame F' a)) :
     MMof D G.fl G' = Formalism.HermitianLatticesTheory.gmap n (MMof D F.fl F') := by
@@ -319,6 +442,11 @@ namespace GlobalTheory.GlueMove
 
 open Formalism.L2.SG.Pf.Cnt
 
+/- English proof (translation)
+Introduce `D T T' F G F' G' n hn hG hG' s hs`. Use `⟨s.image (Formalism.HermitianLatticesTheory.gmap n), ?_, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.GenMass.Glue at hs ⊢`. Rewrite using `[upair_move F G F' G' n hG hG', mmof_move F G F' G' n hG hG']`. Conclude with `isGlueReps_move _ n hn _ _ _ hs`.
+
+Unfold `GlobalTheory.GenMass.glueSum`. Rewrite using `[Finset.sum_image (fun x _ y _ hxy => gmap_injective n hxy)]`. Use `Finset.sum_congr rfl fun Λ _ => ?_` and prove the remaining obligations. Rewrite using `[upair_move F G F' G' n hG hG', card_stabFix_move _ n hn]`.
+-/
 theorem glue_move : ∀ (D : D7) (T T' : D.host.E) (F G : LFlag (VS D) D.R.rS T) (F' G' : LFlag (VS D) D.R.rS T') (n : GV D), n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT → (∀ a, frame G a = n (frame F a)) → (∀ a, frame G' a = n (frame F' a)) → ∀ s : Finset (LV D), Glue F F' s → ∃ s' : Finset (LV D), Glue G G' s' ∧ glueSum G G' s' = glueSum F F' s := by
   intro D T T' F G F' G' n hn hG hG' s hs
   refine ⟨s.image (Formalism.HermitianLatticesTheory.gmap n), ?_, ?_⟩

@@ -20,20 +20,48 @@ namespace GlobalTheory.GenDer
 
 open GlobalTheory.Points
 
+/- English proof (translation)
+Introduce `z _`. Conclude with `(IsLocalRing.specializes_closedPoint z).mem_open (y ⁻¹ᵁ V).isOpen h`.
+-/
 theorem top_le_preimage_of_mem {A : Type} [CommRing A] [IsLocalRing A] {X : Scheme.{0}} (y : Sp A ⟶ X)
     (V : X.Opens) (h : y (IsLocalRing.closedPoint A) ∈ V) : ⊤ ≤ y ⁻¹ᵁ V := by
   intro z _
   exact (IsLocalRing.specializes_closedPoint z).mem_open (y ⁻¹ᵁ V).isOpen h
 
+/- English proof (translation)
+The claim follows from `X.presheaf.germ_res_apply (homOfLE h) p hp f`.
+-/
 theorem germ_resG {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (p : X) (hp : p ∈ V) (f : Γ(X, U)) :
     X.presheaf.germ V p hp (resG X h f) = X.presheaf.germ U p (h hp) f :=
   X.presheaf.germ_res_apply (homOfLE h) p hp f
 
+/- English proof (translation)
+Simplify using `only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_resG {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (f : Γ(X, U)) :
     resG X h' (resG X h f) = resG X (h'.trans h) f := by
   simp only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Use `set ξ := spMap (algebraMap Ω (FractionRing Ω)) ≫ x with hξ`. Use `set p := ξ (IsLocalRing.closedPoint (FractionRing Ω)) with hp`. Take `⟨U, hU, hqU, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (show x (IsLocalRing.closedPoint Ω) ∈ (⊤ : X.Opens) from trivial)`. Establish `hxU : ⊤ ≤ x ⁻¹ᵁ U` using `top_le_preimage_of_mem x U hqU`. Establish `hξU : ⊤ ≤ ξ ⁻¹ᵁ U` using `le_preimage_comp (V := ⊤) _ x hxU (le_preimage_top _)`.
+
+Establish `hpU : p ∈ U` using `hξU (Set.mem_univ _)`. Establish `hpO : p ∈ O` using `hO (Set.mem_univ _)`. Use `letI : Algebra Γ(X, U) (X.presheaf.stalk p) := TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨p, hpU⟩`. Establish `hloc : IsLocalization.AtPrime (X.presheaf.stalk p) (hU.primeIdealOf ⟨p, hpU⟩).asIdeal` using `hU.isLocalization_stalk ⟨p, hpU⟩`. Take `⟨⟨a, s⟩, hmk⟩` from `IsLocalization.mk'_surjective (hU.primeIdealOf ⟨p, hpU⟩).asIdeal.primeCompl (X.presheaf.germ O p hpO f)`.
+
+Establish `hspec` using `IsLocalization.mk'_spec (X.presheaf.stalk p) a s`. Establish `hmk' : IsLocalization.mk' (X.presheaf.stalk p) a s = X.presheaf.germ O p hpO f` using `hmk`. Rewrite `hspec` using `[hmk']`. Establish `halg : ∀ r : Γ(X, U), algebraMap Γ(X, U) (X.presheaf.stalk p) r = X.presheaf.germ U p hpU r` using `fun _ => rfl`. Rewrite `hspec` using `[halg, halg]`.
+
+Establish `hsu : IsUnit (X.presheaf.germ U p hpU (s : Γ(X, U)))`. Rewrite using `[← halg]`. Conclude with `IsLocalization.map_units _ s`. Establish `hps : p ∈ X.basicOpen (s : Γ(X, U))` using `(X.mem_basicOpen (s : Γ(X, U)) p hpU).mpr hsu`. Establish `hg : X.presheaf.germ (O ⊓ U) p (show p ∈ O ⊓ U from ⟨hpO, hpU⟩) (resG X inf_le_left f * resG X inf_le_right (s : Γ(X, U))) = X.presheaf.germ U p hpU a`.
+
+Rewrite using `[map_mul, germ_resG, germ_resG, hspec]`. Take `⟨W₁, hpW₁, iU, iV, heq⟩` from `TopCat.Presheaf.germ_eq X.presheaf p (show p ∈ O ⊓ U from ⟨hpO, hpU⟩) hpU _ _ hg`. Establish `e1 : X.presheaf.map iU.op = X.presheaf.map (homOfLE (leOfHom iU)).op` using `rfl`. Establish `e2 : X.presheaf.map iV.op = X.presheaf.map (homOfLE (leOfHom iV)).op` using `rfl`. Rewrite `heq` using `[e1, e2]`.
+
+Express the relevant statement in the definitionally equal form `resG X (leOfHom iU) _ = resG X (leOfHom iV) a at heq`. Establish `hξW₁ : ⊤ ≤ ξ ⁻¹ᵁ W₁` using `top_le_preimage_of_mem ξ W₁ hpW₁`. Establish `hval` using `congrArg (valR ξ W₁) heq`. Rewrite `hval` using `[valR_res ξ _ hξW₁, valR_res ξ _ hξW₁, valR_mul ξ _ (le_preimage_mono ξ (leOfHom iU) hξW₁), valR_res ξ _ (le_preimage_mono ξ (leOfHom iU) hξW₁), hf, zero_mul, hξ, valR_spMap_comp _ x U hxU]`. Establish `ha0 : a = 0` using `hx U a hxU ((IsFractionRing.injective Ω (FractionRing Ω)) (by rw [← hval, map_zero]))`.
+
+Rewrite `heq` using `[ha0, map_zero, map_mul, resG_resG, resG_resG]`. Use `set O₃ : X.Opens := W₁ ⊓ X.basicOpen (s : Γ(X, U)) with hO₃`. Establish `h₃ : O₃ ≤ W₁` using `inf_le_left`. Establish `hunit : IsUnit (resG X (h₃.trans ((leOfHom iU).trans inf_le_right)) (s : Γ(X, U)))`. Establish `h0 : IsUnit (resG X (X.basicOpen_le (s : Γ(X, U))) (s : Γ(X, U)))` using `RingedSpace.isUnit_res_basicOpen X.toLocallyRingedSpace.toRingedSpace (s : Γ(X, U))`.
+
+Rewrite using `[← resG_resG (X.basicOpen_le (s : Γ(X, U))) (show O₃ ≤ X.basicOpen (s : Γ(X, U)) from inf_le_right)]`. Conclude with `h0.map _`. Use `⟨O₃, h₃.trans ((leOfHom iU).trans inf_le_left), top_le_preimage_of_mem ξ O₃ (show p ∈ O₃ from ⟨hpW₁, hps⟩), ?_⟩` and prove the remaining obligations. Use `congrArg (resG X h₃) heq` as an intermediate fact. Rewrite `this` using `[map_mul, resG_resG, resG_resG, map_zero]`.
+
+Conclude with `(hunit.mul_left_eq_zero).mp this`.
+-/
 theorem eventually_zero {X : Scheme.{0}} {Ω : Type} [CommRing Ω] [IsDomain Ω] [IsLocalRing Ω] (x : Sp Ω ⟶ X)
     (hx : ∀ (O : X.Opens) (f : Γ(X, O)), ⊤ ≤ x ⁻¹ᵁ O → valR x O f = 0 → f = 0) (O : X.Opens) (f : Γ(X, O))
     (hO : ⊤ ≤ (spMap (algebraMap Ω (FractionRing Ω)) ≫ x) ⁻¹ᵁ O)
@@ -86,10 +114,16 @@ theorem eventually_zero {X : Scheme.{0}} {Ω : Type} [CommRing Ω] [IsDomain Ω]
   rw [map_mul, resG_resG, resG_resG, map_zero] at this
   exact (hunit.mul_left_eq_zero).mp this
 
+/- English proof (translation)
+Simplify using `only [valR_eq x U h, map_sub]`.
+-/
 theorem valR_sub {C : Type} [CommRing C] {X : Scheme.{0}} (x : Sp C ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f g : Γ(X, U)) : valR x U (f - g) = valR x U f - valR x U g := by
   simp only [valR_eq x U h, map_sub]
 
+/- English proof (translation)
+Introduce `_ hz` and use `⟨hU hz, hV hz⟩`.
+-/
 theorem top_le_preimage_inf {C : Type} [CommRing C] {X : Scheme.{0}} (x : Sp C ⟶ X) {U V : X.Opens}
     (hU : ⊤ ≤ x ⁻¹ᵁ U) (hV : ⊤ ≤ x ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ (U ⊓ V) :=
   fun _ hz => ⟨hU hz, hV hz⟩
@@ -132,6 +166,9 @@ def valField (hW : ⊤ ≤ ξ ⁻¹ᵁ W) : Subfield K where
 
 variable {ξ W}
 
+/- English proof (translation)
+Establish `h2` using `top_le_preimage_inf ξ hO hO'`. Take `⟨O₃, h₃, hO₃, hz⟩` from `H (O ⊓ O') (resG X inf_le_left f - resG X inf_le_right f') h2 (by rw [valR_sub ξ _ h2, valR_res ξ _ h2, valR_res ξ _ h2, e, sub_self])`. Rewrite `hz` using `[map_sub, resG_resG, resG_resG, sub_eq_zero]`. Rewrite using `[← valR_res ξ (h₃.trans inf_le_left) hO₃, ← valR_res ξ (h₃.trans inf_le_right) hO₃, ← hd.2.2 O O₃ _ hOW f, ← hd.2.2 O' O₃ _ hO'W f', hz]`.
+-/
 theorem valR_der_eq (H : ∀ (O : X.Opens) (f : Γ(X, O)), ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O f = 0 →
       ∃ (O' : X.Opens) (h : O' ≤ O), ⊤ ≤ ξ ⁻¹ᵁ O' ∧ resG X h f = 0)
     (d : Fld X) (hd : IsField W d) {O O' : X.Opens} (f : Γ(X, O)) (f' : Γ(X, O')) (hOW : O ≤ W) (hO'W : O' ≤ W)
@@ -150,6 +187,9 @@ section Der
 
 variable {X : Scheme.{0}} {K : Type} [Field K] (ξ : Sp K ⟶ X) (W : X.Opens)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_valField_iff (hW : ⊤ ≤ ξ ⁻¹ᵁ W) (y : K) :
     y ∈ valField ξ W hW ↔ ∃ (O : X.Opens) (f : Γ(X, O)), O ≤ W ∧ ⊤ ≤ ξ ⁻¹ᵁ O ∧ valR ξ O f = y := Iff.rfl
 
@@ -159,6 +199,9 @@ def valDer (hW : ⊤ ≤ ξ ⁻¹ᵁ W) (d : Fld X) (y : valField ξ W hW) : K :
 
 variable {ξ W}
 
+/- English proof (translation)
+Take `⟨hOW', hO', e'⟩` from `Classical.choose_spec (Classical.choose_spec ((mem_valField_iff ξ W hW y).mp y.2))`. Conclude with `valR_der_eq H d hd _ f hOW' hOW hO' hO (e'.trans e.symm)`.
+-/
 theorem valDer_eq (H : ∀ (O : X.Opens) (f : Γ(X, O)), ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O f = 0 →
       ∃ (O' : X.Opens) (h : O' ≤ O), ⊤ ≤ ξ ⁻¹ᵁ O' ∧ resG X h f = 0)
     (hW : ⊤ ≤ ξ ⁻¹ᵁ W) (d : Fld X) (hd : IsField W d) (y : valField ξ W hW) {O : X.Opens} (f : Γ(X, O))
@@ -166,6 +209,9 @@ theorem valDer_eq (H : ∀ (O : X.Opens) (f : Γ(X, O)), ⊤ ≤ ξ ⁻¹ᵁ O �
   obtain ⟨hOW', hO', e'⟩ := Classical.choose_spec (Classical.choose_spec ((mem_valField_iff ξ W hW y).mp y.2))
   exact valR_der_eq H d hd _ f hOW' hOW hO' hO (e'.trans e.symm)
 
+/- English proof (translation)
+Take `⟨O, f, hOW, hO, ea⟩` from `(mem_valField_iff ξ W hW a).mp a.2`. Take `⟨O', f', hO'W, hO', eb⟩` from `(mem_valField_iff ξ W hW b).mp b.2`. Establish `h2` using `top_le_preimage_inf ξ hO hO'`. Establish `h2W : O ⊓ O' ≤ W` using `inf_le_left.trans hOW`. Rewrite using `[valDer_eq H hW d hd (a + b) (resG X inf_le_left f + resG X inf_le_right f') h2W h2 (by rw [valR_add ξ _ h2, valR_res ξ _ h2, valR_res ξ _ h2, ea, eb]; rfl), valDer_eq H hW d hd a (resG X (inf_le_left : O ⊓ O' ≤ O) f) h2W h2 (by rw [valR_res ξ _ h2, ea]), valDer_eq H hW d hd b (r …`.
+-/
 theorem valDer_add (H : ∀ (O : X.Opens) (f : Γ(X, O)), ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O f = 0 →
       ∃ (O' : X.Opens) (h : O' ≤ O), ⊤ ≤ ξ ⁻¹ᵁ O' ∧ resG X h f = 0)
     (hW : ⊤ ≤ ξ ⁻¹ᵁ W) (d : Fld X) (hd : IsField W d) (a b : valField ξ W hW) :
@@ -180,6 +226,11 @@ theorem valDer_add (H : ∀ (O : X.Opens) (f : Γ(X, O)), ⊤ ≤ ξ ⁻¹ᵁ O 
     valDer_eq H hW d hd b (resG X (inf_le_right : O ⊓ O' ≤ O') f') h2W h2 (by rw [valR_res ξ _ h2, eb]),
     hd.1 _ h2W, valR_add ξ _ h2]
 
+/- English proof (translation)
+Take `⟨O, f, hOW, hO, ea⟩` from `(mem_valField_iff ξ W hW a).mp a.2`. Take `⟨O', f', hO'W, hO', eb⟩` from `(mem_valField_iff ξ W hW b).mp b.2`. Establish `h2` using `top_le_preimage_inf ξ hO hO'`. Establish `h2W : O ⊓ O' ≤ W` using `inf_le_left.trans hOW`. Establish `ea' : valR ξ (O ⊓ O') (resG X inf_le_left f) = a` using `by rw [valR_res ξ _ h2, ea]`.
+
+Establish `eb' : valR ξ (O ⊓ O') (resG X inf_le_right f') = b` using `by rw [valR_res ξ _ h2, eb]`. Rewrite using `[valDer_eq H hW d hd (a * b) (resG X inf_le_left f * resG X inf_le_right f') h2W h2 (by rw [valR_mul ξ _ h2, ea', eb']; rfl), valDer_eq H hW d hd a (resG X (inf_le_left : O ⊓ O' ≤ O) f) h2W h2 ea', valDer_eq H hW d hd b (resG X (inf_le_right : O ⊓ O' ≤ O') f') h2W h2 eb', hd.2.1 …`.
+-/
 theorem valDer_mul (H : ∀ (O : X.Opens) (f : Γ(X, O)), ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O f = 0 →
       ∃ (O' : X.Opens) (h : O' ≤ O), ⊤ ≤ ξ ⁻¹ᵁ O' ∧ resG X h f = 0)
     (hW : ⊤ ≤ ξ ⁻¹ᵁ W) (d : Fld X) (hd : IsField W d) (a b : valField ξ W hW) :
@@ -198,6 +249,11 @@ theorem valDer_mul (H : ∀ (O : X.Opens) (f : Γ(X, O)), ⊤ ≤ ξ ⁻¹ᵁ O 
 
 end Der
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_isTranscendenceBasis F K`. Use `haveI := hs.isAlgebraic_field`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap F K).injective`. Use `haveI : CharZero (IntermediateField.adjoin F (Set.range ((↑) : s → K))) := charZero_of_injective_algebraMap (algebraMap F _).injective`. Use `haveI : Algebra.IsSeparable (IntermediateField.adjoin F (Set.range ((↑) : s → K))) K := Algebra.IsAlgebraic.isSeparable_of_perfectField`.
+
+Conclude with `Algebra.FormallySmooth.of_algebraicIndependent_of_isSeparable hs.1`.
+-/
 theorem formallySmooth_of_charZero (F K : Type) [Field F] [CharZero F] [Field K] [Algebra F K] :
     Algebra.FormallySmooth F K := by
   obtain ⟨s, hs⟩ := exists_isTranscendenceBasis F K
@@ -209,6 +265,19 @@ theorem formallySmooth_of_charZero (F K : Type) [Field F] [CharZero F] [Field K]
     Algebra.IsAlgebraic.isSeparable_of_perfectField
   exact Algebra.FormallySmooth.of_algebraicIndependent_of_isSeparable hs.1
 
+/- English proof (translation)
+Introduce `X Ω _ _ _ _ x hx W d hd hW`. Use `set K := FractionRing Ω`. Use `set ξ := spMap (algebraMap Ω K) ≫ x with hξ`. Establish `H` using `eventually_zero x hx`. Use `set F := valField ξ W hW`.
+
+Use `haveI : CharZero K := ⟨fun m n h => by`. Rewrite `h` using `[← map_natCast (algebraMap Ω K) m, ← map_natCast (algebraMap Ω K) n]`. Conclude with `Nat.cast_injective (IsFractionRing.injective Ω K h)⟩`. Use `haveI : CharZero F := ⟨fun m n h => Nat.cast_injective (R := K) (by simpa using congrArg Subtype.val h)⟩`. Use `haveI : Algebra.FormallySmooth F K := formallySmooth_of_charZero F K`.
+
+Take `⟨d', hadd, hmul, hext⟩` from `GlobalTheory.KS.exists_derivation_extend_of_formallySmooth F K K (RingHom.id K) (valDer ξ W hW d) (valDer_add H hW d hd) (fun a b => valDer_mul H hW d hd a b)`. Use `⟨{ toFun := d' map_add' := hadd map_smul' := ?_ map_one_eq_zero' := ?_ leibniz' := ?_ }, fun O f hOW hO => ?_⟩` and prove the remaining obligations. Introduce `m y`. Use `(AddMonoidHom.mk' d' hadd).map_zsmul m y` as an intermediate fact. Simplify using `only [AddMonoidHom.mk'_apply, zsmul_eq_mul] at this`.
+
+Simplify using `only [RingHom.id_apply, Algebra.smul_def, algebraMap_int_eq, eq_intCast, smul_eq_mul]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `h1` using `hmul 1 1`. Simplify using `only [RingHom.id_apply, _root_.one_mul, _root_.mul_one] at h1`.
+
+Use `show d' 1 = 0`. Take the linear combination `-h1`. Introduce `a b show d' (a * b) = a • d' b + b • d' a`. Simplify using `[hmul, smul_eq_mul]`. Establish `hmem : valR ξ O f ∈ F` using `⟨O, f, hOW, hO, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `_ = d' (algebraMap F K ⟨_, hmem⟩)`. Rewrite using `[hext]`. Conclude with `(valDer_eq H hW d hd ⟨_, hmem⟩ f hOW hO rfl).symm`.
+-/
 theorem exists_derivation_fractionRing : ∀ (X : Scheme.{0}) (Ω : Type) [CommRing Ω] [IsDomain Ω] [IsLocalRing Ω] [CharZero Ω] (x : Sp Ω ⟶ X), (∀ (O : X.Opens) (f : Γ(X, O)), ⊤ ≤ x ⁻¹ᵁ O → valR x O f = 0 → f = 0) → ∀ (W : X.Opens) (d : Fld X), IsField W d → ⊤ ≤ (spMap (algebraMap Ω (FractionRing Ω)) ≫ x) ⁻¹ᵁ W → ∃ dt0 : Derivation ℤ (FractionRing Ω) (FractionRing Ω), ∀ (O : X.Opens) (f : Γ(X, O)), O ≤ W → ⊤ ≤ (spMap (algebraMap Ω (FractionRing Ω)) ≫ x) ⁻¹ᵁ O → valR (spMap (algebraMap Ω (FractionRing Ω)) ≫ x) O (d O f) = dt0 (valR (spMap (algebraMap Ω (FractionRing Ω)) ≫ x) O f) := by
   intro X Ω _ _ _ _ x hx W d hd hW
   set K := FractionRing Ω

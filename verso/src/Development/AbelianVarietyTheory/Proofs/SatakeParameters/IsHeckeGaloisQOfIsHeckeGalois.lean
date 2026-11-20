@@ -7,6 +7,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.NRows
 
+/- English proof (translation)
+Introduce `D i x r hr`. Use `⟨SumRepresentations.contQ_of_continuous D.nd D.naut i r hr.1, ?_, ?_⟩` and prove the remaining obligations. Establish `: CharZero (Kf D.nd i)` using `RingHom.charZero (D.naut.iotaQ i)`. Establish `h` using `GlobalTheory.TraceSemisimple.isSSRep_mapRep _ _ _ (D.naut.iotaQ i) _ _ hr.2.1`. Establish `e : mapRep (iotaOQ D.nd D.naut i) r = mapRep (D.naut.iotaQ i) (mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) r)`.
+
+Use extensionality with `g a b`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`. Introduce `w hw B σ hB hσ`.
+
+Establish `e3 : ((mapRep (iotaOQ D.nd D.naut i) r σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Qbar (D.nd.l i))) = ((r σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).map (iotaOQ D.nd D.naut i)` using `rfl`. Rewrite using `[e3, Matrix.charpoly_map, hr.2.2 w hw B σ hB hσ]`.
+-/
 theorem isHeckeGaloisQ_of_isHeckeGalois : ∀ (D : D7) (i : D.nd.Loc) (x : D.nd.X i)
     (r : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i)),
     IsHeckeGalois D.nd i x r → SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x (mapRep (iotaOQ D.nd D.naut i) r) := by

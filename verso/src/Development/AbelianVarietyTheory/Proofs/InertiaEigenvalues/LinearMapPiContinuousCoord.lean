@@ -10,6 +10,15 @@ set_option maxHeartbeats 1600000
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ O M ι _ _ _ _ _ _ _ e bO hcont f`. Use `letI : TopologicalSpace O := TopologicalSpace.induced bO.equivFun inferInstance`. Establish `key : ∀ c : ι → O, f c = ∑ i, ∑ α, algebraMap ℤ_[l] O (bO.equivFun (c i) α) • (bO α • f (Pi.single i 1))`. Introduce `c`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f c]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hc : (fun j => if i = j then (1:O) else 0) = Pi.single i 1`. Apply the tactic sequence `funext j; by_cases h : i = j <;> simp [Pi.single_apply, h, eq_comm]`. Rewrite using `[hc]`. Use `conv_lhs => rw [← bO.sum_equivFun (c i)]`.
+
+Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_smul]`. Establish `hf : (f : (ι → O) → M) = fun c => ∑ i, ∑ α, algebraMap ℤ_[l] O (bO.equivFun (c i) α) • (bO α • f (Pi.single i 1))` using `funext key`. Rewrite using `[hf]`.
+
+Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun α _ => ?_` and prove the remaining obligations. Conclude with `(hcont _).comp ((continuous_apply α).comp (continuous_induced_dom.comp (continuous_apply i)))`.
+-/
 theorem linearMap_pi_continuous_coord : ∀ {l : ℕ} [Fact l.Prime] {O M ι : Type} [CommRing O] [Algebra ℤ_[l] O] [Fintype ι] [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M] {e : ℕ} (bO : Module.Basis (Fin e) ℤ_[l] O), (∀ m : M, Continuous fun c : ℤ_[l] => algebraMap ℤ_[l] O c • m) → ∀ f : (ι → O) →ₗ[O] M, letI := TopologicalSpace.induced bO.equivFun inferInstance; Continuous f := by
   intro l _ O M ι _ _ _ _ _ _ _ e bO hcont f
   classical

@@ -10,6 +10,9 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
+/- English proof (translation)
+Establish `hσ₁` using `rreg_isURepOn ε`. Take `⟨U, hU⟩` from `data_unitary_equiv hgap hσ₁ (isDerivedOn_smE hσ₁) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) (datumV_ne_bot hP hv₀) hσ hD hV hc hVK hV0`. Conclude with `⟨U, fun g hg x => hU g hg (sigLam ε Ψ v₀ g x) x (sigLam_coe hgap hP hv₀ hg x)⟩`.
+-/
 theorem sigLam_equiv_data (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -23,6 +26,23 @@ theorem sigLam_equiv_data (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv
     (datumV_casimir hP v₀) (datumV_kStable hP v₀) (datumV_ne_bot hP hv₀) hσ hD hV hc hVK hV0
   exact ⟨U, fun g hg x => hU g hg (sigLam ε Ψ v₀ g x) x (sigLam_coe hgap hP hv₀ hg x)⟩
 
+/- English proof (translation)
+Take `⟨-, h1, hg1, hb1⟩` from `hgap`. Take `⟨-, h2, hg2, hb2⟩` from `hgap'`. Establish `hpq0 : (0 : ℝ) ≤ (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ)` using `by positivity`. Distinguish the cases in `hex : ∃ a b : Fin n, ε a ≠ ε b`. Take `⟨a, b, hab⟩` from `hex`.
+
+Establish `hp : 0 < pOf ε`. Unfold `pOf`. Apply `Finset.card_pos.mpr` to reduce the goal to its premises. Break down `Bool.eq_false_or_eq_true (ε a) with ha | ha` into its components or cases. Conclude with `⟨a, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ha⟩⟩`.
+
+Establish `hb : ε b = true`. Rewrite `hab` using `[ha]`. Use `revert hab`. Apply the tactic sequence `cases ε b <;> simp`. Conclude with `⟨b, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb⟩⟩`.
+
+Establish `hq : 0 < qOf ε`. Unfold `qOf`. Apply `Finset.card_pos.mpr` to reduce the goal to its premises. Break down `Bool.eq_false_or_eq_true (ε a) with ha | ha` into its components or cases. Establish `hb : ε b = false`.
+
+Rewrite `hab` using `[ha]`. Use `revert hab`. Apply the tactic sequence `cases ε b <;> simp`. Conclude with `⟨b, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb⟩⟩`. Conclude with `⟨a, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ha⟩⟩`.
+
+Establish `hp' : (1 : ℝ) ≤ (pOf ε : ℝ)` using `by exact_mod_cast hp`. Establish `hq' : (1 : ℝ) ≤ (qOf ε : ℝ)` using `by exact_mod_cast hq`. Establish `hn : (0 : ℝ) ≤ (n : ℝ)` using `Nat.cast_nonneg n`. Establish `hpq : (1 : ℝ) ≤ (pOf ε : ℝ) * (qOf ε : ℝ)` using `by nlinarith`. Establish `hle : (n : ℝ) * 1 ≤ (n : ℝ) * ((pOf ε : ℝ) * (qOf ε : ℝ))` using `mul_le_mul_of_nonneg_left hpq hn`.
+
+Establish `hm` using `lt_min hb1 hb2`. Use `⟨min h1 h2, fun a b hab => le_trans (min_le_left _ _) (hg1 a b hab), fun a b hab => le_trans (min_le_right _ _) (hg2 a b hab), hm, ?_⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Use `push_neg at hex`. Use `⟨(n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + (n : ℝ) + 2, fun a b h => absurd (hex a b) h, fun a b h => absurd (hex a b) h, by linarith, ?_⟩` and prove the remaining obligations.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem puniq_exists_h {lam' : Fin n → ℝ} (hgap : StdGap ε lam) (hgap' : StdGap ε lam') :
     ∃ h : ℝ, GapAtLeast ε lam h ∧ GapAtLeast ε lam' h ∧
       (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h ∧ (n : ℝ) - 1 < h := by
@@ -66,6 +86,17 @@ theorem puniq_exists_h {lam' : Fin n → ℝ} (hgap : StdGap ε lam) (hgap' : St
       fun a b h => absurd (hex a b) h, by linarith, ?_⟩
     linarith
 
+/- English proof (translation)
+Take `⟨h, hg, hg', hb, hn⟩` from `puniq_exists_h hgap hgap'`. Establish `hU' : ∀ g ∈ UJset ε, ∀ y : Hlam ε Ψ' v₀', U.symm (sigLam ε Ψ' v₀' g y) = sigLam ε Ψ v₀ g (U.symm y)`. Introduce `g hgU y`. Use `hU g hgU (U.symm y)` as an intermediate fact. Rewrite `this` using `[LinearIsometryEquiv.apply_symm_apply]`.
+
+Rewrite using `[← this, LinearIsometryEquiv.symm_apply_apply]`. Establish `hK1` using `puniq_isKTypeOf_map U (fun g hgK x => hU g (puniq_kset hgK) x) (sigLam_lowK hgap hP hv₀).1`. Establish `hK2` using `puniq_isKTypeOf_map U.symm (fun g hgK y => hU' g (puniq_kset hgK) y) (sigLam_lowK hgap' hP' hv₀').1`. Establish `b1` using `(sigLam_kType_bounds hgap' hP' hv₀' _ hK1).2 h hg' hb`. Establish `b2` using `(sigLam_kType_bounds hgap hP hv₀ _ hK2).2 h hg hb`.
+
+Rewrite `b1`, `b2` using `[mir_lowK_eq]`. Assume the negation of the conclusion as `hne`. Establish `hne' : lowK ε lam ≠ lowK ε lam'`. Introduce `heq`. Apply `hne` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `a`. Use `congrFun heq a` as an intermediate fact. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c1` using `b1 hne'`.
+
+Establish `c2` using `b2 (Ne.symm hne')`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sigLam_inj (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {lam' : Fin n → ℝ} {T' : S7.KType ε (lowK ε lam')}
     {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)} {v₀' : T'.V} (hgap' : StdGap ε lam')
     (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0) (U : Hlam ε Ψ v₀ ≃ₗᵢ[ℂ] Hlam ε Ψ' v₀')
@@ -95,6 +126,35 @@ theorem sigLam_inj (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v
   have c2 := b2 (Ne.symm hne')
   linarith
 
+/- English proof (translation)
+Establish `hσ₁` using `rreg_isURepOn ε`. Take `⟨U, hU⟩` from `sigLam_equiv_data (Ψ := Ψ) hgap hP hv₀ hσ₁ (isDerivedOn_smE hσ₁) (datumV_isKIrrHW hP' hv₀) (datumV_casimir hP' v₀) (datumV_kStable hP' v₀) (datumV_ne_bot hP' hv₀)`. Set `U' : Hlam ε Ψ v₀ ≃ₗᵢ[ℂ] Hlam ε Ψ' v₀` to `U`. Establish `hUi : ∀ g ∈ UJset ε, ∀ x, U' (sigLam ε Ψ v₀ g x) = sigLam ε Ψ' v₀ g (U' x)` using `fun g hg x => Subtype.ext ((hU g hg x).trans (sigLam_coe hgap hP' hv₀ hg (U' x)).symm)`. Establish `hK` using `puniq_isKTypeOf_map U' (fun g hgK x => hUi g (puniq_kset hgK) x) (sigLam_lowK hgap hP hv₀).1`.
+
+Establish `hKeq` using `(sigLam_lowK hgap hP' hv₀).2 _ hK`. Set `xv : T.V → Hlam ε Ψ v₀` to `fun v => ⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_Hlam hP v⟩`. Establish `hxv_mem : ∀ v, xv v ∈ lowKSubLam ε Ψ v₀`. Introduce `v`. Use `show (xv v : L2 ε) ∈ (datumV ε Ψ v₀).map (smD ε (rreg ε)).subtype`.
+
+Conclude with `⟨⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_smooth hP v₀ v⟩, (mem_datumV_iff hP v₀ _).2 ⟨v, rfl⟩, rfl⟩`. Establish `hA : ∀ v, ∃ v', ((U' (xv v) : Hlam ε Ψ' v₀) : L2 ε) = uniformisationL2 ε Ψ' v₀ v'`. Introduce `v`. Establish `h1 : U' (xv v) ∈ lowKSubLam ε Ψ' v₀`. Rewrite using `[← hKeq]`.
+
+Conclude with `⟨xv v, hxv_mem v, rfl⟩`. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 (Submodule.mem_comap.1 h1)`. Take `⟨v', hv'⟩` from `(mem_datumV_iff hP' v₀ y).1 hy`. Conclude with `⟨v', hyx.symm.trans hv'⟩`. Use `choose A hAv using hA`.
+
+Establish `hj'` using `uniformisationL2_injective hP' hv₀`. Establish `xv_add : ∀ v w, xv (v + w) = xv v + xv w` using `fun v w => Subtype.ext (by rw [Submodule.coe_add]; exact datumEmbedding_add hP v₀ v w)`. Establish `xv_smul : ∀ (c : ℂ) v, xv (c • v) = c • xv v` using `fun c v => Subtype.ext (by rw [Submodule.coe_smul]; exact datumEmbedding_smul hP v₀ c v)`. Establish `hAadd : ∀ v w, A (v + w) = A v + A w`. Introduce `v w`.
+
+Apply `hj'` to reduce the goal to its premises. Rewrite using `[← hAv, xv_add, map_add, Submodule.coe_add, hAv, hAv, datumEmbedding_add hP']`. Establish `hAsmul : ∀ (c : ℂ) v, A (c • v) = c • A v`. Introduce `c v`. Apply `hj'` to reduce the goal to its premises.
+
+Rewrite using `[← hAv, xv_smul, map_smul, Submodule.coe_smul, hAv, datumEmbedding_smul hP']`. Establish `hAk : ∀ (k : S7.KG ε) (v : T.V), A (T.op k v) = T.op k (A v)`. Introduce `k v`. Establish `hk : S7.toMK k ∈ UJset ε` using `(k : S7.UJ ε).2`. Establish `e1 : xv (T.op k v) = sigLam ε Ψ v₀ (S7.toMK k) (xv v)` using `Subtype.ext ((sigLam_coe hgap hP hv₀ hk (xv v)).trans (rightRegular_datumEmbedding hP v₀ v k)).symm`.
+
+Apply `hj'` to reduce the goal to its premises. Rewrite using `[← hAv, e1, hUi _ hk, sigLam_coe hgap hP' hv₀ hk, hAv, rightRegular_datumEmbedding hP' v₀ (A v) k]`. Set `Alin : T.V →ₗ[ℂ] T.V` to `{ toFun := A, map_add' := hAadd, map_smul' := hAsmul }`. Take `⟨c, hc⟩` from `puniq_schur T Alin hAk`. Establish `hc' : ∀ v, A v = c • v` using `hc`.
+
+Establish `key : ∀ g ∈ UJset ε, ∀ v v' : T.V, ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) * inner ℂ v' (Ψ g v) = ((‖uniformisationL2 ε Ψ' v₀ T.w‖ ^ 2 : ℝ) : ℂ) * inner ℂ (A v') (Ψ' g (A v))`. Introduce `g hg v v'`. Rewrite using `[← formulaF_sigLam hgap hP hv₀ hg v v', ← formulaF hgap hP' hv₀ hg (A v) (A v'), ← hAv, ← hAv, ← U'.inner_map_map (xv v') (sigLam ε Ψ v₀ g (xv v)), hUi g hg, Submodule.coe_inner, sigLam_coe hgap hP' hv₀ hg]`. Establish `hr : ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) ≠ 0`. Use `datumEmbedding_highest_ne_zero hgap hP hv₀` as an intermediate fact.
+
+Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.mpr this)` after adjusting the coercions. Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε` using `by show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules. Establish `hw0 : T.w ≠ 0`. Introduce `h`.
+
+Use `T.w_norm` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hW : inner ℂ T.w T.w ≠ 0` using `inner_self_ne_zero.mpr hw0`. Establish `e1` using `key 1 h1 T.w T.w`.
+
+Rewrite `e1` using `[hP.2.1, hP'.2.1]`. Simplify using `only [hc', map_smul, ContinuousLinearMap.one_apply, inner_smul_left, inner_smul_right] at e1`. Establish `hrr : ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) = ((‖uniformisationL2 ε Ψ' v₀ T.w‖ ^ 2 : ℝ) : ℂ) * ((starRingEnd ℂ) c * c)`. Apply `mul_right_cancel₀ hW` to reduce the goal to its premises. Rewrite using `[e1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `g hg`. Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun v' => ?_` and prove the remaining obligations. Establish `e` using `key g hg v v'`. Simplify using `only [hc', map_smul, inner_smul_left, inner_smul_right] at e`.
+
+Establish `e' : ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) * inner ℂ v' (Ψ g v) = ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) * inner ℂ v' (Ψ' g v)`. Rewrite using `[e, hrr]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_left_cancel₀ hr e').symm`.
+-/
 theorem puniq_psi_eq (hgap : StdGap ε lam) {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
     (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam T Ψ') (hv₀ : v₀ ≠ 0) :
     ∀ g ∈ UJset ε, Ψ' g = Ψ g := by
@@ -180,6 +240,21 @@ theorem puniq_psi_eq (hgap : StdGap ε lam) {Ψ' : Matrix (Fin n) (Fin n) ℂ �
     ring
   exact (mul_left_cancel₀ hr e').symm
 
+/- English proof (translation)
+Establish `h1 : inUJ ε 1` using `by show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules. Establish `hk1 : S7.toMK (1 : S7.KG ε) = 1` using `rfl`. Establish `ho : T.op 1 = 1` using `by simp [S7.KType.op]`. Establish `hcomm : ∀ (k : S7.KG ε) (v : T.V), F 1 (T.op k v) = T.op k (F 1 v)`.
+
+Introduce `k v`. Establish `e1` using `hFK k 1 1 h1`. Establish `e2` using `hFK 1 k 1 h1`. Simplify using `only [hk1, ho, mul_one, one_mul] at e1 e2`. Use `congrArg (fun B : T.V →L[ℂ] T.V => B v) (e2.symm.trans e1)` as an intermediate fact.
+
+Simplify `this` using `only [ContinuousLinearMap.mul_apply]`. Take `⟨c, hc⟩` from `puniq_schur T (F 1 : T.V →L[ℂ] T.V).toLinearMap hcomm`. Establish `hF1 : F 1 = c • 1` using `ContinuousLinearMap.ext fun v => by`. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply]`. Conclude with `hc v`.
+
+Establish `hP' : IsPsiFor ε lam T (fun g => F g + (1 - c) • Ψ g)`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k₁ k₂ g hg`. Simplify using `only [hFK _ _ _ hg, hP.1 _ _ _ hg, mul_add, add_mul, mul_smul_comm, smul_mul_assoc]`. Use `show F 1 + (1 - c) • Ψ 1 = 1`.
+
+Rewrite using `[hF1, hP.2.1, ← add_smul]`. Simplify using the standard rewrite rules. Conclude with `puniq_smooth_add_smul hFs hP.2.2.1 (1 - c)`. Introduce `g hg`. Rewrite using `[puniq_casimirV_lin hFs hP.2.2.1 (1 - c) hg, hFc g hg, hP.2.2.2.1 g hg, smul_add, smul_comm ((casVal lam : ℝ) : ℂ) (1 - c)]`.
+
+Introduce `μ hμ`. Conclude with `(puniq_memLp_haar F hF2 μ hμ).add ((hP.2.2.2.2 μ hμ).const_smul (1 - c))`. Use `⟨c, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `puniq_psi_eq hgap hP hP' hv₀ g hg`. Establish `e' : F g + (1 - c) • Ψ g = Ψ g` using `e`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uniq_psi (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (F : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (hFs : S7.SmoothOnGV ε F)
     (hF2 : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε))
     (hFK : ∀ (k₁ k₂ : S7.KG ε) (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g →

@@ -6,6 +6,23 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNotions.G.LatticeSystems Formalism.GradedWeylDivisibility MvPolynomial
 
+/- English proof (translation)
+Use `set c : Kf := algebraMap O Kf w with hc`. Use `set ν : Fin (m + 1) → ℕ := fun t => (lam t - lam (Fin.last m)).toNat with hν`. Use `set e : ℤ := lam (Fin.last m) with he`. Take `⟨b, hb, -⟩` from `lb_basis O (m + 1) (m + 1) ν`. Use `set t : Fin (m + 1) → Kf := fun a => if a.val < r then c⁻¹ else 1 with ht`.
+
+Establish `ht0 : ∀ a, t a ≠ 0`. Introduce `a`. Simplify using `only [ht]`. Use `split_ifs`. Conclude with `inv_ne_zero hw`.
+
+Conclude with `one_ne_zero`. Establish `hB` using `(nablaLBasis O Kf hinj (m + 1) (m + 1) ν b _ hb g hg).2`. Establish `hD` using `(nablaLDiag O Kf hinj (m + 1) (m + 1) ν b _ hb g t hg ht0).2`. Establish `hle : nablaL O Kf (m + 1) (m + 1) ν (g * Matrix.diagonal t) ≤ nablaL O Kf (m + 1) (m + 1) ν g`. Rewrite using `[← hD, ← hB, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Use `set Fi := rowAct Kf g⁻¹ (map (algebraMap O Kf) (b i)) with hFi`. Use `set π' : ℕ := ∑ a : Fin (m + 1) with a.val < r, rowWt i.1 a with hπ`. Establish `h2 : ∏ a, t a ^ rowWt i.1 a = (c⁻¹) ^ π'`. Rewrite using `[hπ, ← Finset.prod_pow_eq_pow_sum, Finset.prod_filter]`.
+
+Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `a _`. Simplify using `only [ht]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h6 : ((c⁻¹) ^ π')⁻¹ = c ^ π'` using `by rw [inv_pow, inv_inv]`.
+
+Use `show (∏ a, t a ^ rowWt i.1 a)⁻¹ • Fi ∈ _`. Rewrite using `[h2, h6, hc, ← map_pow, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨F0, hF0, rfl⟩` from `hF`. Use `⟨F0, hle hF0, ?_⟩` and prove the remaining obligations.
+
+Use `set ρ : ℕ := (Finset.univ.filter fun a : Fin (m + 1) => a.val < r).card with hρ`. Use `show g.det ^ (-e) • F0 = c ^ (-((ρ : ℤ) * e)) • ((g * lb_D (m + 1) r c).det ^ (-e) • F0)`. Establish `h1 : (g * lb_D (m + 1) r c).det = g.det * (c⁻¹) ^ ρ`. Rewrite using `[Matrix.det_mul, lb_D, Matrix.det_diagonal, Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]`. Establish `h5 : ((c⁻¹) ^ ρ) ^ (-e) = c ^ ((ρ : ℤ) * e)`.
+
+Rewrite using `[inv_pow, inv_zpow, zpow_neg, inv_inv, ← zpow_natCast c ρ, ← zpow_mul]`. Rewrite using `[smul_smul, h1, mul_zpow, h5, mul_comm (g.det ^ (-e)), ← mul_assoc, ← zpow_add₀ hw, neg_add_cancel, zpow_zero, one_mul]`.
+-/
 theorem P_rev (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (m r : ℕ) (lam : Fin (m + 1) → ℤ)
     (w : O) (hw : algebraMap O Kf w ≠ 0) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hg : IsUnit g.det)
@@ -54,6 +71,11 @@ theorem P_rev (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
   rw [smul_smul, h1, mul_zpow, h5, mul_comm (g.det ^ (-e)), ← mul_assoc, ← zpow_add₀ hw, neg_add_cancel, zpow_zero,
     one_mul]
 
+/- English proof (translation)
+Establish `hgD : IsUnit (g * lb_D (m + 1) r (algebraMap O Kf w)).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `hg.mul (lb_D_det _ _ _ hw)`. Unfold `H0 at hF ⊢`. Rewrite `hF`, the goal using `[if_pos hlam]`.
+
+Establish `h1 : F ∈ nablaLTw O Kf m lam (g * lb_D (m + 1) r (algebraMap O Kf w))` using `(iInf₂_le _ ⟨hgD, rfl⟩ : _ ≤ nablaLTw O Kf m lam (g * lb_D (m + 1) r (algebraMap O Kf w))) hF`. Establish `h2` using `P_rev O Kf hinj m r lam w hw g hg F h1`. Conclude with `(le_iInf₂ fun h hh => lb_indep O Kf hinj m lam _ h hg hh.1 hh.2 : nablaLTw O Kf m lam g ≤ _) h2`.
+-/
 theorem zpow_smul_mem_H0_colSpan_of_mem_colSpan_mul (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (m r : ℕ) (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam)
     (w : O) (hw : algebraMap O Kf w ≠ 0) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hg : IsUnit g.det)
@@ -74,15 +96,58 @@ section RSLat
 
 variable {p n' : ℕ} (R : RS p n') {m : ℕ}
 
+/- English proof (translation)
+The claim follows from `la_extO R.ι R.σ R.jO (fun x => by obtain ⟨y, hy⟩ := R.std.1.frob x; exact ⟨_, hy⟩) R.std.1.ι_comp s g`.
+-/
 theorem extO_RS (s : ℕ) {k : ℕ} (g : Matrix (Fin k) (Fin k) R.Qq) :
     extO R.O R.ι R.σ s (colSpan R.W g) = colSpan R.O (la_tw R.ι R.σ s g) :=
   la_extO R.ι R.σ R.jO (fun x => by obtain ⟨y, hy⟩ := R.std.1.frob x; exact ⟨_, hy⟩) R.std.1.ι_comp s g
 
+/- English proof (translation)
+Use `show R.ι ((R.σ ^ s) ((p : R.W) • x i)) = _`. Rewrite using `[Algebra.smul_def, map_natCast, map_mul, map_mul, map_natCast, map_natCast]`.
+-/
 theorem tw_p (s : ℕ) {k : ℕ} (x : Fin k → R.Qq) (i : Fin k) :
     twistVec R.ι R.σ s ((p : R.W) • x) i = (p : R.Kf) * R.ι ((R.σ ^ s) (x i)) := by
   show R.ι ((R.σ ^ s) ((p : R.W) • x i)) = _
   rw [Algebra.smul_def, map_natCast, map_mul, map_mul, map_natCast, map_natCast]
 
+/- English proof (translation)
+Establish `hfrW : IsFractionRing R.W R.Qq` using `R.std.1.frac_alt`. Take `⟨g, hg, hsrc, htgt⟩` from `lc_main p n' 1 (m + 1) R.std.1.p_unif R.std.1.res_card R.std.1.prime.two_le (by have := R.std.1.two_le; omega) e he`. Unfold `lb_D`. Use `set c : R.Kf := algebraMap R.O R.Kf R.w with hc`. Establish `hw : c ≠ 0` using `R.w_ne`.
+
+Establish `hpK : (p : R.Kf) = c ^ 2` using `R.p_eq`. Establish `hpK0 : (p : R.Kf) ≠ 0` using `by rw [hpK]; exact pow_ne_zero _ hw`. Establish `hpQ0 : (p : R.Qq) ≠ 0`. Introduce `h0`. Apply `hpK0` to reduce the goal to its premises.
+
+Use `congrArg R.ι h0` as an intermediate fact. Simplify using `using this`. Use `set dK : Fin (m + 1) → R.Kf := fun a => if a.val < 1 then c⁻¹ else 1 with hdK`. Use `set dQ : Fin (m + 1) → R.Qq := fun a => if a.val < 1 then ((p : R.Qq))⁻¹ else 1 with hdQ`. Establish `hDD : ∀ s, la_tw R.ι R.σ s (g * Matrix.diagonal dQ) = la_tw R.ι R.σ s g * Matrix.diagonal dK * Matrix.diagonal dK`.
+
+Introduce `s`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_assoc, Matrix.diagonal_mul_diagonal, Matrix.mul_diagonal, lb_tw_apply, lb_tw_apply, Matrix.mul_diagonal, map_mul, map_mul]`. Use `congr 1`. Simplify using `only [hdQ, hdK]`.
+
+Use `split_ifs`. Rewrite using `[map_inv₀, map_inv₀, map_natCast, map_natCast, hpK, pow_two, mul_inv]`. Simplify using the standard rewrite rules. Establish `e1 : ∀ s, extO R.O R.ι R.σ s e.src = colSpan R.O (la_tw R.ι R.σ s g)` using `fun s => by rw [hsrc]; exact extO_RS R s g`. Establish `e3 : ∀ s, extO R.O R.ι R.σ s e.tgt = colSpan R.O (la_tw R.ι R.σ s g * Matrix.diagonal dK * Matrix.diagonal dK)` using `fun s => by rw [htgt, extO_RS R, hDD]`.
+
+Use `⟨fun s => la_tw R.ι R.σ s g, fun s => la_tw_det _ _ s g hg, e1, ?_, e3⟩` and prove the remaining obligations. Introduce `s`. Use `set gK := la_tw R.ι R.σ s g with hgK`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `LeAt`.
+
+Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[e1]`. Introduce `x hx`. Establish `h1 : gK = gK * Matrix.diagonal dK * Matrix.diagonal (fun a : Fin (m + 1) => if a.val < 1 then c else 1)`. Rewrite using `[Matrix.mul_assoc, Matrix.diagonal_mul_diagonal]`.
+
+Establish `h2 : (fun a : Fin (m + 1) => dK a * (if a.val < 1 then c else 1)) = fun _ => 1`. Use function extensionality and compare the values at `a`. Simplify using `only [hdK]`. Use `split_ifs`. Conclude with `inv_mul_cancel₀ hw`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h2, Matrix.diagonal_one, Matrix.mul_one]`. Establish `hx' : x ∈ colSpan R.O gK` using `hx`. Rewrite `hx'` using `[h1]`. Apply the tactic sequence `have h3 := lb_col (gK * Matrix.diagonal dK) _ (fun a : Fin (m + 1) => if a.val < 1 then R.w else 1) 1 (by intro j; split_ifs <;> simp [hc]) x hx'`.
+
+Rewrite `h3` using `[one_smul]`. Conclude with `h3`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1 : c⁻¹ • twistVec R.ι R.σ s ((p : R.W) • x) = R.w • twistVec R.ι R.σ s x`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, tw_p R, smul_eq_mul, Algebra.smul_def, ← hc, hpK]`. Use `show c⁻¹ * (c ^ 2 * _) = c * R.ι ((R.σ ^ s) (x i))`. Clear the denominators using the available nonvanishing facts. Establish `h2 : twistVec R.ι R.σ s x ∈ colSpan R.O (gK * Matrix.diagonal dK * Matrix.diagonal dK)`.
+
+Rewrite using `[← e3]`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Use `show c⁻¹ • twistVec R.ι R.σ s ((p : R.W) • x) ∈ _`. Rewrite using `[h1]`. Conclude with `lb_col (gK * Matrix.diagonal dK) dK (fun a : Fin (m + 1) => if a.val < 1 then 1 else R.w) R.w (by`.
+
+Introduce `j`. Simplify using `only [hdK]`. Use `split_ifs`. Rewrite using `[← hc, mul_inv_cancel₀ hw, map_one]`. Rewrite using `[mul_one]) _ h2`.
+
+Unfold `colSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Unfold `LeAt`. Distinguish the cases in `hj : j.val < 1`.
+
+Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun i => (g * Matrix.diagonal dQ) i j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[htgt]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+
+Use function extensionality and compare the values at `i show c⁻¹ • twistVec R.ι R.σ s ((p : R.W) • fun i => (g * Matrix.diagonal dQ) i j) i = (gK * Matrix.diagonal dK) i j`. Rewrite using `[tw_p R, Matrix.mul_diagonal, Matrix.mul_diagonal, smul_eq_mul, hgK, lb_tw_apply]`. Simplify using `only [hdQ, hdK, hj, if_true, map_mul, map_inv₀, map_natCast]`. Clear the denominators using the available nonvanishing facts. Apply `Submodule.mem_sup_left` to reduce the goal to its premises.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun i => g i j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsrc]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [twistVec, Matrix.mul_diagonal, hdK, hj, if_false, mul_one, lb_tw_apply]`.
+-/
 theorem edgeLat_RS (e : Edge R.W R.Qq (m + 1)) (he : IsEdge p n' 1 e) :
     ∃ gs : ℕ → Matrix (Fin (m + 1)) (Fin (m + 1)) R.Kf, (∀ s, IsUnit (gs s).det) ∧
       (∀ s, extO R.O R.ι R.σ s e.src = colSpan R.O (gs s)) ∧

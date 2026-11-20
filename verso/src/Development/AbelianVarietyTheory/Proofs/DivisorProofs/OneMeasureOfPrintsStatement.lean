@@ -6,5 +6,8 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop GlobalTheory.CovTop.MeasRd
 open Formalism.MainNotions
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OneMeasureAll.oneMeasure | exact GlobalTheory.OneMeasureAll.oneMeasure | (intros; apply GlobalTheory.OneMeasureAll.oneMeasure <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.one_measure_of_classicalTheorems : Hypotheses2 → ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.OneMeasure D := by
   first | exact @GlobalTheory.OneMeasureAll.oneMeasure | exact GlobalTheory.OneMeasureAll.oneMeasure | (intros; apply GlobalTheory.OneMeasureAll.oneMeasure <;> assumption)

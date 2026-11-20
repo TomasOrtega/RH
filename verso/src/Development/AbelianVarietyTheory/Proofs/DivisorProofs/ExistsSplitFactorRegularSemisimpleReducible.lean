@@ -17,6 +17,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory.SplitFactor
 
+/- English proof (translation)
+Introduce `F E _ _ _ n σ J γ hn hreg hAlg hRank hirr hnf`. Take `⟨k, K, hK, hKA, ⟨e⟩⟩` from `hRank.1`. Use `⟨k, K, hK, hKA, ⟨e⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+
+Establish `h2` using `hRank.2 k K ⟨e⟩`. Establish `hk1 : 1 ≤ k` using `h2.2.1 ⟨⟨0, hn⟩⟩`. Break down `Nat.lt_or_ge k 2 with hk | hk` into its components or cases. Establish `hk' : k = 1` using `by omega`. Establish `hfield : IsField (GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix (Fin n) (Fin n) E))` using `h2.2.2.2 ⟨hk', hall⟩`.
+
+Take `⟨φ, -⟩` from `hAlg.1`. Establish `hfA : IsField (AdjoinRoot (γ : Matrix (Fin n) (Fin n) E).charpoly)` using `φ.toMulEquiv.isField hfield`. Establish `hmax : (Ideal.span {(γ : Matrix (Fin n) (Fin n) E).charpoly}).IsMaximal` using `Ideal.Quotient.maximal_of_isField _ hfA`. Establish `hne : (γ : Matrix (Fin n) (Fin n) E).charpoly ≠ 0` using `(Matrix.charpoly_monic _).ne_zero`. Establish `hprime : Prime (γ : Matrix (Fin n) (Fin n) E).charpoly` using `(Ideal.span_singleton_prime hne).1 hmax.isPrime`.
+
+Conclude with `hirr hprime.irreducible`. Conclude with `hnf ⟨hreg, k, K, hK, hKA, ⟨e⟩, hk, hall⟩`.
+-/
 theorem exists_split_factor : ∀ {F E : Type} [Field F] [Field E] [Algebra F E] {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (γ : GL (Fin n) E), 0 < n → IsRegSS (γ : Matrix (Fin n) (Fin n) E) → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.ClauseAlg σ J γ → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.ClauseRank σ J γ → ¬ Irreducible (γ : Matrix (Fin n) (Fin n) E).charpoly → ¬ IsNonFieldAniso σ J (γ : Matrix (Fin n) (Fin n) E) → ∃ (k : ℕ) (K : Fin k → Type) (_ : ∀ i, Field (K i)) (_ : ∀ i, Algebra F (K i)), Nonempty (GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.plusAlg σ J (γ : Matrix (Fin n) (Fin n) E) ≃ₐ[F] ∀ i, K i) ∧ ∃ i, ¬ IsField (K i ⊗[F] E) := by
   intro F E _ _ _ n σ J γ hn hreg hAlg hRank hirr hnf
   obtain ⟨k, K, hK, hKA, ⟨e⟩⟩ := hRank.1

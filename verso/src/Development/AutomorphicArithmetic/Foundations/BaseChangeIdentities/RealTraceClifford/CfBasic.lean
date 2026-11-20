@@ -14,26 +14,52 @@ namespace UpperTheory.RealTr.CfB
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[ex, AddMonoidAlgebra.single_mul_single]`.
+-/
 private theorem ex_add (x y : Wt n) : ex (x + y) = ex x * ex y := by
   simp [ex, AddMonoidAlgebra.single_mul_single]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ex_zero : ex (0 : Wt n) = 1 := rfl
 
+/- English proof (translation)
+The claim follows from `AddMonoidAlgebra.ext (Finsupp.ext h)`.
+-/
 private theorem cf_ext {f g : FR n} (h : ∀ x, cf f x = cf g x) : f = g :=
   AddMonoidAlgebra.ext (Finsupp.ext h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cf_add (f g : FR n) (x : Wt n) : cf (f + g) x = cf f x + cf g x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cf_smul (c : ℂ) (f : FR n) (x : Wt n) : cf (c • f) x = c * cf f x := rfl
 
+/- English proof (translation)
+Simplify using `[cf, Finsupp.finset_sum_apply]`.
+-/
 private theorem cf_sum {ι : Type} (s : Finset ι) (f : ι → FR n) (x : Wt n) :
     cf (∑ i ∈ s, f i) x = ∑ i ∈ s, cf (f i) x := by
   simp [cf, Finsupp.finset_sum_apply]
 
+/- English proof (translation)
+Simplify using `[cf, ex, Finsupp.single_apply]`.
+-/
 private theorem cf_ex (y x : Wt n) : cf (ex y) x = if y = x then 1 else 0 := by
   classical
   simp [cf, ex, Finsupp.single_apply]
 
+/- English proof (translation)
+Apply `cf_ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[cf_sum]`. Simplify using `only [cf_smul, cf_ex, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq' f.coeff.support x]`.
+
+Use `split_ifs with h`. Both sides reduce to the same expression. Simplify `h` using `[cf]`.
+-/
 private theorem eq_sum (f : FR n) : f = ∑ y ∈ f.coeff.support, cf f y • ex y := by
   classical
   apply cf_ext
@@ -45,6 +71,13 @@ private theorem eq_sum (f : FR n) : f = ∑ y ∈ f.coeff.support, cf f y • ex
   · rfl
   · simpa [cf] using h
 
+/- English proof (translation)
+Use `conv_lhs => rw [eq_sum f]`. Use `conv_rhs => rw [eq_sum f]`. Rewrite using `[Finset.mul_sum, cf_sum, cf_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, cf_smul, cf_smul, ← ex_add, cf_ex, cf_ex]`.
+
+Use `congr 2`. Simplify using `only [eq_iff_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h]`.
+
+Normalize the expressions using the abelian group laws. Introduce `h`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem cf_ex_mul (f : FR n) (x y : Wt n) : cf (ex y * f) x = cf f (x - y) := by
   classical
   conv_lhs => rw [eq_sum f]
@@ -58,6 +91,9 @@ private theorem cf_ex_mul (f : FR n) (x y : Wt n) : cf (ex y * f) x = cf f (x - 
   · intro h; rw [← h]; abel
   · intro h; rw [h]; abel
 
+/- English proof (translation)
+Use `conv_lhs => rw [eq_sum f]`. Rewrite using `[Finset.sum_mul, cf_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, cf_smul, cf_ex_mul]`.
+-/
 private theorem cf_mul (f g : FR n) (x : Wt n) :
     cf (f * g) x = ∑ y ∈ f.coeff.support, cf f y * cf g (x - y) := by
   conv_lhs => rw [eq_sum f]
@@ -65,14 +101,26 @@ private theorem cf_mul (f g : FR n) (x : Wt n) :
   refine Finset.sum_congr rfl fun y _ => ?_
   rw [smul_mul_assoc, cf_smul, cf_ex_mul]
 
+/- English proof (translation)
+Simplify using `[sg, Equiv.Perm.sign_mul]`.
+-/
 private theorem sg_mul (a b : Equiv.Perm (Fin n)) : sg (a * b) = sg a * sg b := by
   simp [sg, Equiv.Perm.sign_mul]
 
+/- English proof (translation)
+Simplify using `[sg]`.
+-/
 private theorem sg_one : sg (1 : Equiv.Perm (Fin n)) = 1 := by simp [sg]
 
+/- English proof (translation)
+Simplify using `[sg, Equiv.Perm.sign_symm]`.
+-/
 private theorem sg_symm (a : Equiv.Perm (Fin n)) : sg a.symm = sg a := by
   simp [sg, Equiv.Perm.sign_symm]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign a) with h | h <;> simp [sg, h]`.
+-/
 private theorem sg_sq (a : Equiv.Perm (Fin n)) : sg a * sg a = 1 := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign a) with h | h <;> simp [sg, h]
 
@@ -85,13 +133,24 @@ private def pe (v : Equiv.Perm (Fin n)) : Wt n ≃+ Wt n where
 
 private def act (v : Equiv.Perm (Fin n)) : FR n ≃ₐ[ℂ] FR n := AddMonoidAlgebra.domCongr ℂ ℂ (pe v)
 
+/- English proof (translation)
+The claim follows from `AddMonoidAlgebra.coeff_domCongr (pe v) f x`.
+-/
 private theorem cf_act (v : Equiv.Perm (Fin n)) (f : FR n) (x : Wt n) :
     cf (act v f) x = cf f (x ∘ v.symm) :=
   AddMonoidAlgebra.coeff_domCongr (pe v) f x
 
+/- English proof (translation)
+The claim follows from `AddMonoidAlgebra.domCongr_single (pe v) x 1`.
+-/
 private theorem act_ex (v : Equiv.Perm (Fin n)) (x : Wt n) : act v (ex x) = ex (x ∘ v) :=
   AddMonoidAlgebra.domCongr_single (pe v) x 1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h v`. Apply `cf_ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[cf_act]`.
+
+Conclude with `h v.symm x`. Introduce `h w x`. Establish `e` using `cf_act w.symm f x`. Rewrite `e` using `[h w.symm]`. Conclude with `e.symm`.
+-/
 private theorem sym_iff (f : FR n) : UpperTheory.RealTr.Sym f ↔ ∀ v, act v f = f := by
   constructor
   · intro h v
@@ -104,6 +163,11 @@ private theorem sym_iff (f : FR n) : UpperTheory.RealTr.Sym f ↔ ∀ v, act v f
     rw [h w.symm] at e
     exact e.symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h v`. Apply `cf_ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[cf_act, cf_smul, h v.symm x, sg_symm]`.
+
+Introduce `h w x`. Establish `e` using `cf_act w.symm f x`. Rewrite `e` using `[h w.symm, cf_smul, sg_symm]`. Conclude with `e.symm`.
+-/
 private theorem asym_iff (f : FR n) : ASym f ↔ ∀ v, act v f = sg v • f := by
   constructor
   · intro h v
@@ -115,6 +179,11 @@ private theorem asym_iff (f : FR n) : ASym f ↔ ∀ v, act v f = sg v • f := 
     rw [h w.symm, cf_smul, sg_symm] at e
     exact e.symm
 
+/- English proof (translation)
+Unfold `alt`. Rewrite using `[Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft w) _ _ fun u => ?_` and prove the remaining obligations. Establish `e : (x ∘ w) ∘ u = x ∘ (Equiv.mulLeft w u)` using `rfl`. Rewrite using `[e, smul_smul]`.
+
+Use `congr 1`. Simplify using `only [Equiv.coe_mulLeft, sg_mul]`. Rewrite using `[← mul_assoc, sg_sq, one_mul]`.
+-/
 private theorem alt_comp (x : Wt n) (w : Equiv.Perm (Fin n)) : alt (x ∘ w) = sg w • alt x := by
   unfold alt
   rw [Finset.smul_sum]
@@ -125,6 +194,11 @@ private theorem alt_comp (x : Wt n) (w : Equiv.Perm (Fin n)) : alt (x ∘ w) = s
   simp only [Equiv.coe_mulLeft, sg_mul]
   rw [← mul_assoc, sg_sq, one_mul]
 
+/- English proof (translation)
+Unfold `alt`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight v) _ _ fun u => ?_` and prove the remaining obligations. Establish `e : (x ∘ u) ∘ v = x ∘ (Equiv.mulRight v u)` using `rfl`. Rewrite using `[map_smul, act_ex, e, smul_smul]`.
+
+Use `congr 1`. Simplify using `only [Equiv.coe_mulRight, sg_mul]`. Rewrite using `[mul_comm (sg v), mul_assoc, sg_sq, mul_one]`.
+-/
 private theorem act_alt (x : Wt n) (v : Equiv.Perm (Fin n)) : act v (alt x) = sg v • alt x := by
   unfold alt
   rw [map_sum, Finset.smul_sum]
@@ -135,6 +209,9 @@ private theorem act_alt (x : Wt n) (v : Equiv.Perm (Fin n)) : act v (alt x) = sg
   simp only [Equiv.coe_mulRight, sg_mul]
   rw [mul_comm (sg v), mul_assoc, sg_sq, mul_one]
 
+/- English proof (translation)
+Unfold `alt`. Rewrite using `[cf_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[cf_smul, cf_ex]`.
+-/
 private theorem cf_alt (x y : Wt n) :
     cf (alt x) y = ∑ w : Equiv.Perm (Fin n), sg w * if x ∘ w = y then 1 else 0 := by
   unfold alt
@@ -142,6 +219,9 @@ private theorem cf_alt (x y : Wt n) :
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [cf_smul, cf_ex]
 
+/- English proof (translation)
+Unfold `alt`. Rewrite using `[Finset.sum_mul, cf_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, cf_smul, cf_ex_mul]`.
+-/
 private theorem cf_alt_mul (f : FR n) (x y : Wt n) :
     cf (alt y * f) x = ∑ w : Equiv.Perm (Fin n), sg w * cf f (x - y ∘ w) := by
   unfold alt
@@ -149,6 +229,11 @@ private theorem cf_alt_mul (f : FR n) (x y : Wt n) :
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [smul_mul_assoc, cf_smul, cf_ex_mul]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[cf_alt]`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_neg fun e => hc w e.symm, mul_zero]`.
+-/
 private theorem alt_supp (x y : Wt n) (h : cf (alt x) y ≠ 0) :
     ∃ w : Equiv.Perm (Fin n), y = x ∘ w := by
   by_contra hc
@@ -158,6 +243,11 @@ private theorem alt_supp (x y : Wt n) (h : cf (alt x) y ≠ 0) :
   refine Finset.sum_eq_zero fun w _ => ?_
   rw [if_neg fun e => hc w e.symm, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[cf_alt, Finset.sum_eq_single 1]`. Simplify using `[sg_one]`. Introduce `w _ hw`. Rewrite using `[if_neg, mul_zero]`. Introduce `e`.
+
+Apply `hw` to reduce the goal to its premises. Use extensionality with `a`. Establish `h : x (w a) = x a` using `congrFun e a`. Simplify using `[hx.injective h]`. Simplify using the standard rewrite rules.
+-/
 private theorem alt_top (x : Wt n) (hx : StrictAnti x) : cf (alt x) x = 1 := by
   rw [cf_alt, Finset.sum_eq_single 1]
   · simp [sg_one]
@@ -170,6 +260,13 @@ private theorem alt_top (x : Wt n) (hx : StrictAnti x) : cf (alt x) x = 1 := by
     simp [hx.injective h]
   · simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Take `⟨w, rfl⟩` from `alt_supp x y h`. Establish `hw : StrictMono w` using `fun a b hab => by`. Assume the negation of the conclusion as `hc`. Conclude with `absurd (hx.antitone (not_lt.1 hc)) (not_le.2 (hy hab))`.
+
+Establish `e : ∀ a, w a = a` using `fun a => by`. Establish `k` using `congrArg (fun g : Fin n ≃o Fin n => g a) (Subsingleton.elim (hw.orderIsoOfSurjective w w.surjective) (OrderIso.refl _))`. Simplify using `using k`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+
+Simplify using `[e]`.
+-/
 private theorem alt_other (x y : Wt n) (hx : StrictAnti x) (hy : StrictAnti y) (hne : y ≠ x) :
     cf (alt x) y = 0 := by
   by_contra h
@@ -185,6 +282,15 @@ private theorem alt_other (x y : Wt n) (hx : StrictAnti x) (hy : StrictAnti y) (
   funext a
   simp [e]
 
+/- English proof (translation)
+Take `⟨a, b, hab, hne⟩` from `Function.not_injective_iff.1 h`. Establish `e : x ∘ (Equiv.swap a b) = x`. Use extensionality with `c`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`.
+
+Rewrite using `[h1, hab]`. Rewrite using `[h2, hab]`. Both sides reduce to the same expression. Establish `s : sg (Equiv.swap a b) = -1` using `by simp [sg, Equiv.Perm.sign_swap hne]`. Establish `k` using `alt_comp x (Equiv.swap a b)`.
+
+Rewrite `k` using `[e, s]`. Apply `cf_ext` to reduce the goal to its premises. Introduce `z`. Establish `c : cf (alt x) z = (-1) * cf (alt x) z` using `by conv_lhs => rw [k]`. Both sides reduce to the same expression.
+
+Establish `d : cf (0 : FR n) z = 0` using `rfl`. Rewrite using `[d]`. Take the linear combination `(1 / 2 : ℂ) * c`.
+-/
 private theorem alt_zero (x : Wt n) (h : ¬ Function.Injective x) : alt x = 0 := by
   obtain ⟨a, b, hab, hne⟩ := Function.not_injective_iff.1 h
   have e : x ∘ (Equiv.swap a b) = x := by
@@ -209,6 +315,15 @@ private theorem alt_zero (x : Wt n) (h : ¬ Function.Injective x) : alt x = 0 :=
 end UpperTheory.RealTr.CfB
 
 open UpperTheory.RealTr.CfB in
+/- English proof (translation)
+Introduce `n`. Use `⟨ex_add, ex_zero, fun f g h => cf_ext h, fun f g c x => ⟨cf_add f g x, cf_smul c f x⟩, cf_ex_mul, ?_, cf_alt_mul, alt_comp, fun x => (asym_iff _).2 (act_alt x), ?_, alt_supp, fun x hx => ⟨alt_top x hx, fun y hy hne => alt_other x y hx hy hne⟩, alt_zero⟩` and prove the remaining obligations. Introduce `f g x h`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Apply `h` to reduce the goal to its premises. Rewrite using `[cf_mul]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `hy : cf f y = 0`. Rewrite using `[hy, zero_mul]`.
+
+Rewrite using `[hc y hy, mul_zero]`. Introduce `f g hf`. Establish `hf'` using `(sym_iff f).1 hf`. Use `⟨fun hg => (asym_iff _).2 fun v => ?_, fun hg => (sym_iff _).2 fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hf', (asym_iff g).1 hg v, mul_smul_comm]`.
+
+Rewrite using `[map_mul, hf', (sym_iff g).1 hg v]`.
+-/
 theorem UpperTheory.RealTr.cfBasic :
     ∀ n : ℕ, (∀ x y : Wt n, ex (x + y) = ex x * ex y) ∧ ex (0 : Wt n) = 1 ∧ (∀ f g : FR n, (∀ x, cf f x = cf g x) → f = g) ∧
       (∀ (f g : FR n) (c : ℂ) x, cf (f + g) x = cf f x + cf g x ∧ cf (c • f) x = c * cf f x) ∧

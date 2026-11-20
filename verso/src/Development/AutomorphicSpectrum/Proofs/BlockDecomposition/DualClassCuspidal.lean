@@ -14,6 +14,13 @@ namespace GlobalTheory.CompanionTheory.DualCusp
 
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `⟨isSmooth_contra π, fun l Λ hΛ => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `(GlobalTheory.ContraRefl.evMap_bijective hG hπ).2 ⟨Λ, hΛ⟩`. Establish `hev : ∀ m : smoothPart π.dual, Λ m = (m : Module.Dual ℂ V) u` using `fun m => (LinearMap.congr_fun (congrArg Subtype.val hu) m).symm`. Take `⟨C, hC, hsupp⟩` from `hs.2 u l l.2`. Use `⟨C⁻¹, hC.inv, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hg` using `[hev, contra_apply]`. Take `⟨z, hz, c, hc, e⟩` from `hsupp g⁻¹ hg`. Use `⟨z⁻¹, inv_mem hz, c⁻¹, Set.inv_mem_inv.2 hc, ?_⟩` and prove the remaining obligations. Establish `h1 : g = (z * c)⁻¹` using `by rw [← e, inv_inv]`. Rewrite using `[h1, mul_inv_rev]`.
+
+Conclude with `(Subgroup.mem_center_iff.1 (inv_mem hz) c⁻¹)`.
+-/
 theorem isSupercuspidal_contra
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U)
     {π : Representation ℂ G V} (hπ : IsAdmissible π) (hs : IsSupercuspidal π) :
@@ -33,6 +40,11 @@ theorem isSupercuspidal_contra
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hadm : IsAdmissible x.rep` using `hA k x.1 _ x.rep x.2.rep.smooth x.2.rep.irr`. Establish `hG` using `GlobalTheory.SqIntUnit.compactOpen_basis k x.1`. Establish `hirr : (contra x.rep).IsIrreducible` using `GlobalTheory.ContraRefl.contra_isIrreducible hG hadm x.2.rep.irr`. Establish `hd : dualCl x = IrrGL.of (contra x.rep) (isSmooth_smoothRep _) hirr` using `dif_pos hirr`. Rewrite using `[hd]`.
+
+Use `⟨IrrGL.isCusp_of.2 ⟨hx.1, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `GlobalTheory.SuperCusp.isCuspidal_of_isSupercuspidal k x.1 _ _ (isSupercuspidal_contra hG hadm (GlobalTheory.CuspCoef.isSupercuspidal_of_isCuspidal k x.1 _ _ hx.2))`.
+-/
 theorem dualCl_isCusp (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (x : IrrGL k) (hx : x.IsCusp) :
     (dualCl x).IsCusp ∧ (dualCl x).1 = x.1 := by
   have hadm : IsAdmissible x.rep := hA k x.1 _ x.rep x.2.rep.smooth x.2.rep.irr

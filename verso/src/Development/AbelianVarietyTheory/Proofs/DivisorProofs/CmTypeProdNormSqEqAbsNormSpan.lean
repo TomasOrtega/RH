@@ -8,6 +8,15 @@ open NumberField MeasureTheory
 
 namespace GlobalTheory.CMTypeNorm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Take `⟨k, -, hk⟩` from `h (φ j)`. Establish `hj : j = k` using `hk j (Or.inl rfl)`. Establish `hi : i = k`.
+
+Apply `hk i` to reduce the goal to its premises. Break down `InfinitePlace.mk_eq_iff.mp hij with h1 | h1` into its components or cases. Conclude with `Or.inl h1.symm`. Conclude with `Or.inr h1.symm`. Rewrite using `[hi, hj]`.
+
+Introduce `w`. Take `⟨k, hk, -⟩` from `h w.embedding`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `show InfinitePlace.mk (φ k) = w`. Rewrite using `[← InfinitePlace.mk_embedding w, InfinitePlace.mk_eq_iff]`.
+
+Break down `hk with h1 | h1` into its components or cases. Conclude with `Or.inl h1.symm`. Conclude with `Or.inr h1.symm`.
+-/
 theorem place_bijective {K : Type} [Field K] [NumberField K] {I : Type} {φ : I → K →+* ℂ} (h : GlobalTheory.CMVal.IsCMType φ) :
     Function.Bijective fun i => InfinitePlace.mk (φ i) := by
   constructor
@@ -29,6 +38,11 @@ theorem place_bijective {K : Type} [Field K] [NumberField K] {I : Type} {φ : I 
     · exact Or.inl h1.symm
     · exact Or.inr h1.symm
 
+/- English proof (translation)
+Introduce `K _ _ _ I _ φ h α`. Establish `h1 : ∏ i, ‖φ i (α : K)‖ ^ 2 = ∏ w : InfinitePlace K, w (α : K) ^ w.mult`. Use `Fintype.prod_bijective _ (place_bijective h) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.apply, IsTotallyComplex.mult_eq]`. Rewrite using `[h1, InfinitePlace.prod_eq_abs_norm, Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int, Nat.cast_natAbs]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem prod_norm_sq_eq_absNorm :
     ∀ (K : Type) [Field K] [NumberField K] [NumberField.IsTotallyComplex K] (I : Type) [Fintype I] (φ : I → K →+* ℂ),
       GlobalTheory.CMVal.IsCMType φ → ∀ α : 𝓞 K,

@@ -13,6 +13,9 @@ namespace GlobalTheory.CxUnfold.OrbitSumGen
 variable {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ)
   (t : (AfP p)ˣ) (hx : Triv G (AfP p) β x t) (Kf : Subgroup G.GAf) (K' : Subgroup (Gr G 1))
 
+/- English proof (translation)
+Introduce `h`. Use `z.2` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+-/
 theorem posV_ne_zero (z : PosV G v β) : z.1 ≠ 0 := by
   intro h
   have := z.2
@@ -26,6 +29,9 @@ def pairOfDat (d : Dat G v β) : Ys G v β x t hx Kf K' :=
 
 variable {G v β}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Projectivization.map _ _ (Projectivization.mk ℂ z hz) = _`. Rewrite using `[Projectivization.map_mk]`. Use `congr 1`.
+-/
 theorem smul_line_mk (y : grp G β) (z : Fin G.n → ℂ) (hz : z ≠ 0) :
     y • lineOf G v β z hz =
       lineOf G v β ((toV G v β y : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z)
@@ -34,6 +40,13 @@ theorem smul_line_mk (y : grp G β) (z : Fin G.n → ℂ) (hz : z ≠ 0) :
   rw [Projectivization.map_mk]
   congr 1
 
+/- English proof (translation)
+Rewrite using `[smul_line_mk]`. Express the relevant statement in the definitionally equal form `Projectivization.mk ℂ _ _ = Projectivization.mk ℂ _ _ ↔ _`. Rewrite using `[Projectivization.mk_eq_mk_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`.
+
+Conclude with `⟨u, by rw [← hu, Units.smul_def]⟩`. Introduce and unpack `⟨c, hc⟩`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Apply `hz` to reduce the goal to its premises.
+
+Apply `toV_injective G v β y` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_apply, hc, zero_smul, map_zero]`. Conclude with `⟨Units.mk0 c hc0, by rw [Units.smul_def, Units.val_mk0, hc]⟩`.
+-/
 theorem smul_line_eq_iff (y : grp G β) (z : Fin G.n → ℂ) (hz : z ≠ 0) :
     y • lineOf G v β z hz = lineOf G v β z hz ↔
       FixL G v β y z := by
@@ -51,6 +64,13 @@ theorem smul_line_eq_iff (y : grp G β) (z : Fin G.n → ℂ) (hz : z ≠ 0) :
       rw [Matrix.toLin'_apply, hc, zero_smul, map_zero]
     exact ⟨Units.mk0 c hc0, by rw [Units.smul_def, Units.val_mk0, hc]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[Matrix.mulVec_smul, smul_smul]`. Use `congrArg (fun w => c⁻¹ • w) he` as an intermediate fact.
+
+Simplify using `only [smul_smul, inv_mul_cancel₀ hc, one_smul] at this`. Rewrite using `[this]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨e, he⟩`.
+
+Conclude with `⟨e, by rw [Matrix.mulVec_smul, he, smul_comm]⟩`.
+-/
 theorem fixL_smul_iff (y : grp G β) (z : Fin G.n → ℂ) (c : ℂ) (hc : c ≠ 0) :
     FixL G v β y (c • z) ↔ FixL G v β y z := by
   constructor
@@ -67,6 +87,19 @@ theorem fixL_smul_iff (y : grp G β) (z : Fin G.n → ℂ) (c : ℂ) (hc : c ≠
 
 variable (G v β)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, k, c, hk1, hk2, hc, h1, h2⟩`. Use `⟨y, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y • LeftCosets.mk _ _ a.1 = LeftCosets.mk _ _ b.1`. Rewrite using `[LeftCosets.smul_mk, LeftCosets.mk_eq_mk, h1]`.
+
+Express the relevant statement in the definitionally equal form `(((toAfF G β x t hx).prod (toP1 G β)) y * a.1)⁻¹ * (((toAfF G β x t hx).prod (toP1 G β)) y * a.1 * k) ∈ _`. Rewrite using `[inv_mul_cancel_left]`. Conclude with `Subgroup.mem_prod.2 ⟨hk1, hk2⟩`. Express the relevant statement in the definitionally equal form `y • lineOf G v β a.2.1 _ = lineOf G v β b.2.1 _`. Rewrite using `[smul_line_mk]`.
+
+Express the relevant statement in the definitionally equal form `Projectivization.mk ℂ _ _ = Projectivization.mk ℂ _ _`. Rewrite using `[Projectivization.mk_eq_mk_iff]`. Use `⟨(Units.mk0 c hc)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, Units.smul_def, smul_smul]`. Simplify using `[hc]`.
+
+Introduce and unpack `⟨y, hy⟩`. Establish `h1` using `congrArg Prod.fst hy`. Establish `h2` using `congrArg Prod.snd hy`. Express the relevant statement in the definitionally equal form `y • LeftCosets.mk _ _ a.1 = LeftCosets.mk _ _ b.1 at h1`. Express the relevant statement in the definitionally equal form `y • lineOf G v β a.2.1 _ = lineOf G v β b.2.1 _ at h2`.
+
+Rewrite `h1` using `[LeftCosets.smul_mk, LeftCosets.mk_eq_mk]`. Rewrite `h2` using `[smul_line_mk]`. Express the relevant statement in the definitionally equal form `Projectivization.mk ℂ _ _ = Projectivization.mk ℂ _ _ at h2`. Rewrite `h2` using `[Projectivization.mk_eq_mk_iff]`. Take `⟨u, hu⟩` from `h2`.
+
+Use `⟨y, (((toAfF G β x t hx).prod (toP1 G β)) y * a.1)⁻¹ * b.1, ((u⁻¹ : ℂˣ) : ℂ), (Subgroup.mem_prod.1 h1).1, (Subgroup.mem_prod.1 h1).2, Units.ne_zero _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(mul_inv_cancel_left _ _).symm`. Rewrite using `[← hu, Units.smul_def, smul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem same_iff_smul (a b : Dat G v β) :
     Same G v β x t hx Kf K' a b ↔ ∃ y : grp G β, y • pairOfDat G v β x t hx Kf K' a = pairOfDat G v β x t hx Kf K' b := by
   constructor
@@ -106,10 +139,16 @@ def ptsToOrbit : Pts G v β x t hx Kf K' → MulAction.orbitRel.Quotient (grp G 
       obtain ⟨y, hy⟩ := (same_iff_smul G v β x t hx Kf K' a b).1 h
       exact Quotient.sound ⟨y⁻¹, show y⁻¹ • _ = _ by rw [← hy, inv_smul_smul]⟩)
 
+/- English proof (translation)
+The claim follows from `(congrArg (ptsToOrbit G v β x t hx Kf K') (Quot.out_eq q)).symm`.
+-/
 theorem ptsToOrbit_eq (q : Pts G v β x t hx Kf K') :
     ptsToOrbit G v β x t hx Kf K' q = Quotient.mk _ (pairOfDat G v β x t hx Kf K' (Quot.out q)) :=
   (congrArg (ptsToOrbit G v β x t hx Kf K') (Quot.out_eq q)).symm
 
+/- English proof (translation)
+Introduce `q₁ q₂ h`. Rewrite `h` using `[ptsToOrbit_eq, ptsToOrbit_eq]`. Take `⟨g, hg⟩` from `Quotient.exact h`. Rewrite using `[← Quot.out_eq q₁, ← Quot.out_eq q₂]`. Conclude with `(Quot.sound ((same_iff_smul G v β x t hx Kf K' _ _).2 ⟨g, hg⟩)).symm`.
+-/
 theorem ptsToOrbit_injective : Function.Injective (ptsToOrbit G v β x t hx Kf K') := by
   intro q₁ q₂ h
   rw [ptsToOrbit_eq, ptsToOrbit_eq] at h
@@ -117,6 +156,9 @@ theorem ptsToOrbit_injective : Function.Injective (ptsToOrbit G v β x t hx Kf K
   rw [← Quot.out_eq q₁, ← Quot.out_eq q₂]
   exact (Quot.sound ((same_iff_smul G v β x t hx Kf K' _ _).2 ⟨g, hg⟩)).symm
 
+/- English proof (translation)
+Use `Nat.card_congr (Equiv.subtypeEquivRight fun y => ?_)` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, Prod.ext_iff]`. Express the relevant statement in the definitionally equal form `_ ↔ y • LeftCosets.mk _ _ d.1 = LeftCosets.mk _ _ d.1 ∧ y • lineOf G v β d.2.1 _ = lineOf G v β d.2.1 _`. Rewrite using `[smul_line_eq_iff, ← MulAction.mem_stabilizer_iff, ← stab_eq_stabilizer]`. Simplify using `only [stab, Subgroup.mem_inf, Subgroup.mem_comap, LeftCosets.mem_map_conj, and_assoc]`.
+-/
 theorem card_stab_eq (d : Dat G v β) :
     Nat.card (Stab G v β x t hx Kf K' d) =
       Nat.card (MulAction.stabilizer (grp G β) (pairOfDat G v β x t hx Kf K' d)) := by
@@ -127,6 +169,15 @@ theorem card_stab_eq (d : Dat G v β) :
   rw [smul_line_eq_iff, ← MulAction.mem_stabilizer_iff, ← stab_eq_stabilizer]
   simp only [stab, Subgroup.mem_inf, Subgroup.mem_comap, LeftCosets.mem_map_conj, and_assoc]
 
+/- English proof (translation)
+Take `⟨k, hk, e⟩` from `LeftCosets.rep_mk (ι := (toAfF G β x t hx).prod (toP1 G β)) (K := Kf.prod K') d.1`. Establish `hz` using `posV_ne_zero G v β d.2`. Take `⟨u, hu⟩ : ∃ u : ℂˣ, u • d.2.1 = Projectivization.rep (lineOf G v β d.2.1 hz)` from `(Projectivization.mk_eq_mk_iff ℂ _ _ (Projectivization.rep_nonzero _) hz).1 (Projectivization.mk_rep (lineOf G v β d.2.1 hz))`. Establish `hpos : 0 < (star (Projectivization.rep (lineOf G v β d.2.1 hz)) ⬝ᵥ (herm G v β *ᵥ Projectivization.rep (lineOf G v β d.2.1 hz))).re`. Rewrite using `[← hu]`.
+
+Use `(pos_iff_smul_toV p G v β 1 d.2.1 u u.ne_zero).1 d.2.2` as an intermediate fact. Simplify `this` using `[Units.smul_def]`. Establish `hfix : FixL G v β y (Projectivization.rep (lineOf G v β d.2.1 hz)) ↔ FixL G v β y d.2.1`. Rewrite using `[← hu, Units.smul_def]`. Conclude with `fixL_smul_iff y _ _ u.ne_zero`.
+
+Simplify using `only [cxF, pairOfDat, hpos, hfix, true_and, e, Prod.fst_mul, Prod.snd_mul]`. Use `split_ifs with hF`. Rewrite `hk` using `[Subgroup.mem_prod]`. Establish `e1 : (d.1.1 * k.1)⁻¹ * toAfF G β x t hx y * (d.1.1 * k.1) = k.1⁻¹ * (d.1.1⁻¹ * toAfF G β x t hx y * d.1.1) * k.1` using `by group`. Establish `e2 : (d.1.2 * k.2)⁻¹ * toP1 G β y * (d.1.2 * k.2) = k.2⁻¹ * (d.1.2⁻¹ * toP1 G β y * d.1.2) * k.2` using `by group`.
+
+Rewrite using `[e1, e2, hf _ hk.1, hf' _ hk.2]`. Both sides reduce to the same expression.
+-/
 theorem cxF_pairOfDat (wt : Polynomial G.F → ℂ) (f : G.GAf → ℂ) (hf : ∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g)
     (f' : Gr G 1 → ℂ) (hf' : ∀ k ∈ K', ∀ g, f' (k⁻¹ * g * k) = f' g) (d : Dat G v β) (y : grp G β) :
     cxF G v wt β x t hx Kf f K' f' (pairOfDat G v β x t hx Kf K' d) y =

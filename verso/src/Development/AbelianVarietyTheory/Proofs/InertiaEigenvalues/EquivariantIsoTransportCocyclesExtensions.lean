@@ -23,6 +23,9 @@ open ReciprocityTheory.Def (d0 d1 C1)
 variable {O G : Type} [CommRing O] [Group G] {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M']
   [Module O M']
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m x => rw [coefRep_tmul, LinearMap.rTensor_tmul, LinearMap.rTensor_tmul, coefRep_tmul, he]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`.
+-/
 theorem rTensor_coefRep (W : Representation O G M) (W' : Representation O G M') (e : M →ₗ[O] M')
     (he : ∀ g x, e (W g x) = W' g (e x)) (X : Type) [AddCommGroup X] [Module O X] (g : G) (y : M ⊗[O] X) :
     LinearMap.rTensor X e (coefRep W X g y) = coefRep W' X g (LinearMap.rTensor X e y) := by
@@ -31,6 +34,9 @@ theorem rTensor_coefRep (W : Representation O G M) (W' : Representation O G M') 
   | tmul m x => rw [coefRep_tmul, LinearMap.rTensor_tmul, LinearMap.rTensor_tmul, coefRep_tmul, he]
   | add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]
 
+/- English proof (translation)
+Rewrite using `[twistRep_apply, twistRep_apply, map_smul, he]`.
+-/
 theorem twist_intertwine (W : Representation O G M) (W' : Representation O G M') (e : M →ₗ[O] M')
     (he : ∀ g x, e (W g x) = W' g (e x)) (χ : G →* Oˣ) (g : G) (x : M) :
     e (twistRep W χ g x) = twistRep W' χ g (e x) := by
@@ -45,6 +51,11 @@ variable {P P' : Type} [AddCommGroup P] [Module O P] [AddCommGroup P'] [Module O
   (hF : ∀ g y, F (π g y) = π' g (F y))
 include hF
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[Z1, Submodule.mem_inf]`. Take `⟨h1, h2⟩` from `hz`. Use `⟨⟨h1.1.comp F, fun _ => Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Rewrite `h2`, the goal using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `x`.
+
+Use `congrFun h2 x` as an intermediate fact. Simplify using `only [d1, LinearMap.coe_mk, AddHom.coe_mk, Pi.zero_apply] at this ⊢`. Rewrite using `[← hF, ← map_sub, ← map_add, this, map_zero]`.
+-/
 theorem mem_Z1_comp {z : G → P} (hz : z ∈ Z1 π ⊤) : (fun g => F (z g)) ∈ Z1 π' ⊤ := by
   rw [Z1, Submodule.mem_inf] at hz ⊢
   obtain ⟨h1, h2⟩ := hz
@@ -55,11 +66,19 @@ theorem mem_Z1_comp {z : G → P} (hz : z ∈ Z1 π ⊤) : (fun g => F (z g)) �
   simp only [d1, LinearMap.coe_mk, AddHom.coe_mk, Pi.zero_apply] at this ⊢
   rw [← hF, ← map_sub, ← map_add, this, map_zero]
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite using `[hb g hg, map_sub, hF]`.
+-/
 theorem cob_comp {z : G → P} (S : Set G) (b : P) (hb : ∀ g ∈ S, z g = π g b - b) :
     ∀ g ∈ S, F (z g) = π' g (F b) - F b := by
   intro g hg
   rw [hb g hg, map_sub, hF]
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[ReciprocityTheory.Def.B1, Submodule.mem_map]`. Take `⟨b, -, rfl⟩` from `hz`. Use `⟨F b, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [d0, LinearMap.coe_mk, AddHom.coe_mk]`.
+
+Rewrite using `[map_sub, hF]`.
+-/
 theorem mem_B1_comp {z : G → P} (hz : z ∈ B1 π ⊤) : (fun g => F (z g)) ∈ B1 π' ⊤ := by
   rw [ReciprocityTheory.Def.B1, Submodule.mem_map] at hz ⊢
   obtain ⟨b, -, rfl⟩ := hz
@@ -75,6 +94,25 @@ end GlobalTheory.TransportCoef
 namespace GlobalTheory.TransportCoef
 open Formalism.MainNotions.N (twistRep coefRep)
 
+/- English proof (translation)
+Introduce `χ X _ _ z z' hzz`. Establish `he' : ∀ g x, e.symm (W' g x) = W g (e.symm x)` using `fun g x => by`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Set `E` to `LinearEquiv.rTensor X e`.
+
+Establish `hE : ∀ y, E y = LinearMap.rTensor X (e : M →ₗ[O] M') y` using `fun _ => rfl`. Establish `hEs : ∀ y, E.symm y = LinearMap.rTensor X (e.symm : M' →ₗ[O] M) y`. Introduce `y`. Apply `E.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, hE, ← LinearMap.comp_apply, ← LinearMap.rTensor_comp]`.
+
+Simplify using the standard rewrite rules. Establish `key : ∀ g y, (E : M ⊗[O] X →ₗ[O] M' ⊗[O] X) (twCoef W χ X g y) = twCoef W' χ X g (E y)` using `fun g y => rTensor_coefRep (twistRep W χ⁻¹) (twistRep W' χ⁻¹) (e : M →ₗ[O] M') (twist_intertwine W W' (e : M →ₗ[O] M') he χ⁻¹) X g y`. Establish `keys : ∀ g y, (E.symm : M' ⊗[O] X →ₗ[O] M ⊗[O] X) (twCoef W' χ X g y) = twCoef W χ X g (E.symm y)` using `fun g y => by show E.symm _ = _`. Rewrite using `[hEs, hEs]`. Conclude with `rTensor_coefRep (twistRep W' χ⁻¹) (twistRep W χ⁻¹) (e.symm : M' →ₗ[O] M) (twist_intertwine W' W (e.symm : M' →ₗ[O] M) he' χ⁻¹) X g y`.
+
+Establish `keyc : ∀ g y, E (coefRep W X g y) = coefRep W' X g (E y)` using `fun g y => rTensor_coefRep W W' (e : M →ₗ[O] M') he X g y`. Establish `hz'f : z' = fun g => (E : M ⊗[O] X →ₗ[O] M' ⊗[O] X) (z g)` using `funext hzz`. Establish `hzf : z = fun g => (E.symm : M' ⊗[O] X →ₗ[O] M ⊗[O] X) (z' g)`. Use function extensionality and compare the values at `g`. Use `show z g = E.symm (z' g)`.
+
+Rewrite using `[hzz, LinearEquiv.symm_apply_apply]`. Use `⟨⟨fun hz => ?_, fun hz' => ?_⟩, ?_, ⟨fun hz => ?_, fun hz' => ?_⟩, fun I => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hz'f]`. Conclude with `mem_Z1_comp _ _ _ key hz`. Rewrite using `[hzf]`.
+
+Conclude with `mem_Z1_comp _ _ _ keys hz'`. Introduce `hz hz' c hc`. Use `⟨E.prodCongr (LinearEquiv.refl O _), fun g x => ?_⟩` and prove the remaining obligations. Take `⟨m, q⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`.
+
+Rewrite using `[LinearEquiv.prodCongr_apply, Ea_apply, LinearEquiv.prodCongr_apply, LinearEquiv.refl_apply, LinearEquiv.refl_apply, Ea_apply]`. Simplify using `only [Prod.mk.injEq, and_true]`. Rewrite using `[map_add, map_smul, keyc, hzz]`. Rewrite using `[hz'f]`. Conclude with `mem_B1_comp _ _ _ key hz`.
+
+Rewrite using `[hzf]`. Conclude with `mem_B1_comp _ _ _ keys hz'`. Introduce and unpack `⟨b, hb⟩`. Use `⟨E b, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hzz]`.
+
+Conclude with `cob_comp _ _ _ key (I : Set G) b hb g hg`. Introduce and unpack `⟨b, hb⟩`. Use `⟨E.symm b, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hzf]`. Conclude with `cob_comp _ _ _ keys (I : Set G) b hb g hg`.
+-/
 theorem transport {O G : Type} [CommRing O] [Group G] [TopologicalSpace G] {M M' : Type} [AddCommGroup M]
     [Module O M] [AddCommGroup M'] [Module O M'] (W : Representation O G M) (W' : Representation O G M')
     (e : M ≃ₗ[O] M') (he : ∀ g x, e (W g x) = W' g (e x)) :

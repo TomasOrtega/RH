@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselToJa
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValueDoubleExact
 open Formalism.BasicNotions
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinPl.suppFirst_all | exact GlobalTheory.FinPl.suppFirst_all | (intros; apply GlobalTheory.FinPl.suppFirst_all <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.besselToJacobiFirstStepFlatMapSupport_all : ∀ D : D7, GlobalTheory.FinPl.SuppFirst D := by
   first | exact @GlobalTheory.FinPl.suppFirst_all | exact GlobalTheory.FinPl.suppFirst_all | (intros; apply GlobalTheory.FinPl.suppFirst_all <;> assumption)

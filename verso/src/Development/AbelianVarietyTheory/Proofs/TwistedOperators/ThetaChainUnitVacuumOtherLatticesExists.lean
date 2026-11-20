@@ -29,14 +29,23 @@ namespace GlobalTheory.CoreVacRe
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+The claim follows from `(G.isV (X := .core i) (by simpa [Node.InRange] using h) (by simp)).sigOK`.
+-/
 theorem reLat_sigOK (G : GridData L sc) (i : ℕ) (h : i ≤ D.R.m) (r : ReLat (G.V (.core i))) : r.sp.SigOK :=
   (G.isV (X := .core i) (by simpa [Node.InRange] using h) (by simp)).sigOK
 
+/- English proof (translation)
+Establish `e : GlobalTheory.AdelicU.frameLat V = GlobalTheory.PlaceModel.latFrame V`. Use extensionality with `y`. Rewrite using `[GlobalTheory.AdelicU.mem_frameLat, GlobalTheory.PlaceModel.mem_latFrame]`. Rewrite using `[e]`. Conclude with `GlobalTheory.PlaceModel.isSelfDualC_latFrame V`.
+-/
 theorem frameLat_selfDual (V : HSp D) : IsSelfDualC V (GlobalTheory.AdelicU.frameLat V) := by
   have e : GlobalTheory.AdelicU.frameLat V = GlobalTheory.PlaceModel.latFrame V := by
     ext y; rw [GlobalTheory.AdelicU.mem_frameLat, GlobalTheory.PlaceModel.mem_latFrame]
   rw [e]; exact GlobalTheory.PlaceModel.isSelfDualC_latFrame V
 
+/- English proof (translation)
+Introduce `D _ _ _ _ _ _ G W _ _ i hi r r' S S' M M'`. Conclude with `GlobalTheory.VacuumO.vacExists D W.ψ W.θ W.ψ_std W.θ_is r.sp r'.sp (cart M) (cart M') (reLat_sigOK G i hi.le r) (reLat_sigOK G (i + 1) hi r') (fun τ => GlobalTheory.ChainOnto.RealData.isCartanInv_cart M τ) (fun τ => GlobalTheory.ChainOnto.RealData.isCartanInv_cart M' τ) _ _ (fram …`.
+-/
 theorem vacExists_reLat : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ (r : ReLat (G.V (.core i)))
     (r' : ReLat (G.V (.core (i + 1)))) (S S' : D.what₂.Tau → SPar) (M : DSModel r.sp S) (M' : DSModel r'.sp S'),
     ∃ f₀, IsVacO W.ψ W.θ r.sp r'.sp (cart M) (cart M') (GlobalTheory.AdelicU.frameLat r.sp : Set _)

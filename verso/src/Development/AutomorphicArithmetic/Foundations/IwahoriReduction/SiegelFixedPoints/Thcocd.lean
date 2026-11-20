@@ -10,6 +10,31 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.KumValUnique
 open scoped MatrixGroups Matrix
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.KZ GlobalTheory.Ord2 GlobalTheory.K4
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l _ hl2 hj A j hOver hjA N _ hN c d e gm hc hd hcc hdc he _hrow _hN10 pr α hAdm`. Establish `hl : l.Prime` using `Fact.out`. Establish `hl0 : l ≠ 0` using `hl.ne_zero`. Use `haveI : NeZero l := ⟨hl0⟩`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`.
+
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : NeZero (l : Ω) := ⟨Nat.cast_ne_zero.mpr hl0⟩`. Use `haveI : ∀ i : ℕ, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => IsSepClosed.hasEnoughRootsOfUnity_pow Ω l i`. Establish `hw : Odd (2 * e - 1)` using `⟨e - 1, by omega⟩`. Establish `hw2 : 2 * e - 1 + 2 = 2 * e + 1` using `by omega`.
+
+Take `⟨c₁, κ, hκ, H⟩` from `UpperTheory.Kd.L.twist l N (2 * e - 1) hw`. Use `⟨c₁, (κ : Qbar l), by exact_mod_cast hκ, ?_⟩` and prove the remaining obligations. Introduce `x δ hδ m n c₀ hm hmn bB hB y`. Establish `hG1 : ∀ r : (ZMod l)ˣ, gm r ∈ CongruenceSubgroup.Gamma1 N` using `fun r => (hAdm.2.2.1 r).1`. Establish `hP : Par l N c d gm`.
+
+Use `⟨hl2, hAdm.1, hN, hc, hd, hcc, hdc, fun r => ?_, fun r => ?_, fun r => (hAdm.2.2.1 r).2⟩` and prove the remaining obligations. Conclude with `CongruenceSubgroup.Gamma0_mem.mpr ((CongruenceSubgroup.Gamma1_mem N _).mp (hG1 r)).2.2`. Simplify using `only [GlobalTheory.KZ.en]`. Rewrite using `[((CongruenceSubgroup.Gamma1_mem N _).mp (hG1 r)).1, ((CongruenceSubgroup.Gamma1_mem N _).mp (hG1 1)).1]`. Establish `hlA : ((l : ℕ) : Ω) ∈ A.nonunits`.
+
+Take `⟨v, hv, hlv⟩` from `hOver`. Rewrite using `[ValuationSubring.mem_nonunits_iff]`. Use `(hv (l : 𝓞 ℚ)).mpr (by exact_mod_cast hlv)` as an intermediate fact. Simplify using `using this`. Establish `hB' : ∀ σ ∈ fixMu Ω (topMu l n m N), LiftB X l N (2 * e - 1) n c₀ (clsBmu X l n m N x c d (2 * e - 1 + 2) gm σ) (bB σ)`.
+
+Rewrite using `[hw2]`. Conclude with `hB`. Use `set δu : (ZMod N)ˣ := ZMod.unitOfCoprime δ hδ with hδu`. Take `⟨g, hgA, hg⟩` from `H ε X c d gm hP hG1 A hlA x m n c₀ hm hmn bB hB' y δu`. Use `⟨g, hgA, ?_⟩` and prove the remaining obligations.
+
+Introduce `s hs hcyc φ hφ tt htt β t hβy hβ1 hlt i`. Establish `hStab : GlobalTheory.Glue.Stab A s` using `fun z => apply_mem_iff_of_mem_Dec (F := ℚ) hs.1 z`. Establish `hval : ∀ a ∈ A, A.valuation (s a - a) < 1` using `fun a ha => hs.2 a ((A.valuation_le_one_iff a).mpr ha)`. Establish `hzt : s (GlobalTheory.Glue.zt ε l m) = GlobalTheory.Glue.zt ε l m` using `GlobalTheory.Col.fix_of_cycMod le_rfl hcyc (GlobalTheory.Glue.IsNTr.isPrimitiveRoot_zt ε l m).pow_eq_one`. Establish `hsg : sgD N l ((δu : ZMod N).val) = sgD N l δ`.
+
+Unfold `sgD`. Use `congr 1`. Use function extensionality and compare the values at `γ`. Simplify using `only [IsDiam, hδu, ZMod.coe_unitOfCoprime, ZMod.natCast_zmod_val, ZMod.natCast_val, ZMod.cast_id', id]`. Establish `hφ' : GlobalTheory.Glue.IsThB X A N l n (X.diam N l (δu : ZMod N).val (GlobalTheory.KA.push (redM l n m (N * N)) (UpperTheory.Kd.L.bTop X l n m N bB) s y)) φ`.
+
+Rewrite using `[show X.diam N l ((δu : ZMod N).val) = X.diam N l δ by unfold Tower.diam; rw [hsg]]`. Conclude with `hφ`. Establish `key` using `hg s hStab hval hzt φ hφ' tt htt β t hβy hβ1 hlt i`. Establish `hinv : ((δu⁻¹ : (ZMod N)ˣ) : ZMod N) = (δ : ZMod N)⁻¹`. Rewrite using `[← ZMod.inv_coe_unit, hδu, ZMod.coe_unitOfCoprime]`.
+
+Rewrite `key` using `[hinv, hw2]`. Establish `gen : ∀ a b : Ω, GlobalTheory.Glue.CgA A l n a b → Cg n (j a) (j b)`. Introduce and unpack `a b ⟨z, hz, h⟩`. Unfold `Cg`. Rewrite using `[← map_sub, h, map_mul, map_pow, map_natCast, norm_mul]`.
+
+Conclude with `mul_le_of_le_one_right (norm_nonneg _) ((hjA z).mp hz)`. Use `gen _ _ key` as an intermediate fact. Use `clear H hg hB hB' hφ hφ' _hrow key gen hsg hStab hval hzt hP hG1 hAdm hlA hjA hj hOver`. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `[GlobalTheory.KummerEisensteinGalois.seqN]`.
+
+Simplify using `only [map_add, map_mul, map_sub, map_pow, map_natCast, map_ratCast]`.
+-/
 theorem UpperTheory.Kd.L.thcocd :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime], l ≠ 2 →
       (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →

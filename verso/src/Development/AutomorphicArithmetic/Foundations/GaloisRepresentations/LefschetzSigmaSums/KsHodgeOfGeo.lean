@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Defin
 
 namespace UpperTheory.Gal.LocalSmoothExtension
 
+/- English proof (translation)
+The claim follows from `ksHodge_of_inputs hW hF UpperTheory.Gal.Cnt.weighted_count_definite_unitary UpperTheory.Gal.Cnt.trace_definite_forms_identity`.
+-/
 theorem ksHodge_of_geo (hW : HolomorphicLefschetzFormula) (hF : FixK) : UpperTheory.Gal.Int.Geo.KSHodge :=
   ksHodge_of_inputs hW hF UpperTheory.Gal.Cnt.weighted_count_definite_unitary UpperTheory.Gal.Cnt.trace_definite_forms_identity
 

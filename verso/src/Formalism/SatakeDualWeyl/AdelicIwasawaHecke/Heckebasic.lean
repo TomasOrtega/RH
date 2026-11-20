@@ -12,6 +12,11 @@ section Generic
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Rewrite using `[DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, rfl⟩`. Introduce and unpack `⟨a, b, rfl⟩`.
+
+Conclude with `⟨a, a.2, b, b.2, rfl⟩`.
+-/
 theorem mem_dc_iff (K : Subgroup G) (g x : G) :
     x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G) ↔
       ∃ a : K, ∃ b : K, x = (a : G) * g * b := by
@@ -22,6 +27,11 @@ theorem mem_dc_iff (K : Subgroup G) (g x : G) :
   · rintro ⟨a, b, rfl⟩
     exact ⟨a, a.2, b, b.2, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[mem_dc_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, rfl⟩`. Rewrite using `[mul_one]`. Conclude with `K.mul_mem a.2 b.2`.
+
+Introduce `hx`. Conclude with `⟨⟨x, hx⟩, 1, by simp⟩`.
+-/
 theorem mem_dc_one (K : Subgroup G) (x : G) :
     x ∈ DoubleCoset.doubleCoset (1 : G) (K : Set G) (K : Set G) ↔ x ∈ K := by
   rw [mem_dc_iff]
@@ -32,6 +42,11 @@ theorem mem_dc_one (K : Subgroup G) (x : G) :
   · intro hx
     exact ⟨⟨x, hx⟩, 1, by simp⟩
 
+/- English proof (translation)
+Unfold `IsBiInv`. Introduce `a b x`. Distinguish the cases in `hx : x ∈ T`. Simplify using `[Set.indicator_apply, hx, hT a b x hx]`. Establish `h' : (a : G) * x * b ∉ T`.
+
+Introduce `h`. Apply `hx` to reduce the goal to its premises. Use `hT a⁻¹ b⁻¹ _ h` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify using `[Set.indicator_apply, hx, h']`.
+-/
 theorem ind_biInv (k : Type) [CommRing k] (K : Subgroup G) (T : Set G)
     (hT : ∀ a b : K, ∀ x : G, x ∈ T → (a : G) * x * b ∈ T) :
     IsBiInv K (T.indicator (1 : G → k)) := by
@@ -46,6 +61,9 @@ theorem ind_biInv (k : Type) [CommRing k] (K : Subgroup G) (T : Set G)
       simpa [mul_assoc] using this
     simp [Set.indicator_apply, hx, h']
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_dc_iff]`. Take `⟨c, d, rfl⟩` from `hx`. Conclude with `⟨a * c, d * b, by simp [mul_assoc]⟩`.
+-/
 theorem dc_stable (K : Subgroup G) (g : G) (a b : K) (x : G)
     (hx : x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)) :
     (a : G) * x * b ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G) := by
@@ -53,23 +71,38 @@ theorem dc_stable (K : Subgroup G) (g : G) (a b : K) (x : G)
   obtain ⟨c, d, rfl⟩ := hx
   exact ⟨a * c, d * b, by simp [mul_assoc]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_hecke_iff (k : Type) [CommRing k] (K : Subgroup G) (f : G → k) :
     f ∈ Hecke k K ↔ IsBiInv K f ∧ FinDosetSupp K f := Iff.rfl
 
+/- English proof (translation)
+Simplify using `[dosetInd, hx]`.
+-/
 theorem dosetInd_of_mem (k : Type) [CommRing k] (K : Subgroup G) (g x : G)
     (hx : x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)) : dosetInd k K g x = 1 := by
   simp [dosetInd, hx]
 
+/- English proof (translation)
+Simplify using `[dosetInd, hx]`.
+-/
 theorem dosetInd_of_not_mem (k : Type) [CommRing k] (K : Subgroup G) (g x : G)
     (hx : x ∉ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)) : dosetInd k K g x = 0 := by
   simp [dosetInd, hx]
 
+/- English proof (translation)
+Establish `h : ((x.out : G) : G ⧸ K) = ((1 : G) : G ⧸ K)` using `by rw [QuotientGroup.out_eq', hx]`. Rewrite `h` using `[QuotientGroup.eq]`. Simplify using `using h`.
+-/
 theorem out_mem_of_eq_one (K : Subgroup G) (x : G ⧸ K) (hx : x = ((1 : G) : G ⧸ K)) :
     x.out ∈ K := by
   have h : ((x.out : G) : G ⧸ K) = ((1 : G) : G ⧸ K) := by rw [QuotientGroup.out_eq', hx]
   rw [QuotientGroup.eq] at h
   simpa using h
 
+/- English proof (translation)
+Introduce `h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' x, QuotientGroup.eq]`. Simplify using `using h`.
+-/
 theorem out_not_mem_of_ne_one (K : Subgroup G) (x : G ⧸ K) (hx : x ≠ ((1 : G) : G ⧸ K)) :
     x.out ∉ K := by
   intro h
@@ -79,6 +112,11 @@ theorem out_not_mem_of_ne_one (K : Subgroup G) (x : G ⧸ K) (hx : x ≠ ((1 : G
 
 end Generic
 
+/- English proof (translation)
+Unfold `Formalism.UG.DosetIndMem`. Introduce `G _ K k _ g`. Rewrite using `[mem_hecke_iff]`. Use `⟨ind_biInv k K _ (fun a b x hx => dc_stable K g a b x hx), ?_⟩` and prove the remaining obligations. Use `⟨{g}, fun x hx => ⟨g, Finset.mem_singleton_self g, (mem_dc_iff K g x).1 ?_⟩⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Conclude with `hx (dosetInd_of_not_mem k K g x h)`.
+-/
 theorem double_coset_indicator_mem : Formalism.UG.DosetIndMem := by
   unfold Formalism.UG.DosetIndMem
   intro G _ K k _ g
@@ -88,6 +126,21 @@ theorem double_coset_indicator_mem : Formalism.UG.DosetIndMem := by
   by_contra h
   exact hx (dosetInd_of_not_mem k K g x h)
 
+/- English proof (translation)
+Unfold `Formalism.UG.HeckeUnit`. Introduce `G _ K k _ f hf`. Unfold `conv`. Establish `hb` using `((mem_hecke_iff k K f).1 hf).1`. Establish `h1 : ∀ y : G, dosetInd k K 1 y = if y ∈ K then 1 else 0`.
+
+Introduce `y`. Distinguish the cases in `hy : y ∈ K`. Rewrite using `[if_pos hy, dosetInd_of_mem]`. Conclude with `(mem_dc_one K y).2 hy`. Rewrite using `[if_neg hy, dosetInd_of_not_mem]`.
+
+Conclude with `fun h => hy ((mem_dc_one K y).1 h)`. Use `⟨funext fun g => ?_, funext fun g => ?_⟩` and prove the remaining obligations. Use `show ∑ᶠ x : G ⧸ K, dosetInd k K 1 (Quotient.out x) * f ((Quotient.out x)⁻¹ * g) = f g`. Establish `e` using `finsum_eq_single (fun x : G ⧸ K => dosetInd k K 1 (Quotient.out x) * f ((Quotient.out x)⁻¹ * g)) ((1 : G) : G ⧸ K) (fun x hx => by show dosetInd k K 1 (Quotient.out x) * f ((Quotient.out x)⁻¹ * g) = 0`. Rewrite using `[h1, if_neg (out_not_mem_of_ne_one K x hx), zero_mul])`.
+
+Rewrite using `[e]`. Establish `hm` using `out_mem_of_eq_one K ((1 : G) : G ⧸ K) rfl`. Rewrite using `[h1, if_pos hm, one_mul]`. Use `hb ⟨(Quotient.out ((1 : G) : G ⧸ K))⁻¹, K.inv_mem hm⟩ 1 g` as an intermediate fact. Simplify using `using this`.
+
+Use `show ∑ᶠ x : G ⧸ K, f (Quotient.out x) * dosetInd k K 1 ((Quotient.out x)⁻¹ * g) = f g`. Establish `e` using `finsum_eq_single (fun x : G ⧸ K => f (Quotient.out x) * dosetInd k K 1 ((Quotient.out x)⁻¹ * g)) ((g : G) : G ⧸ K) (fun x hx => by show f (Quotient.out x) * dosetInd k K 1 ((Quotient.out x)⁻¹ * g) = 0`. Establish `hm : (Quotient.out x)⁻¹ * g ∉ K`. Introduce `h`. Apply `hx` to reduce the goal to its premises.
+
+Rewrite using `[← QuotientGroup.out_eq' x, QuotientGroup.eq]`. Conclude with `h`. Rewrite using `[h1, if_neg hm, mul_zero])`. Rewrite using `[e]`. Establish `hm : (Quotient.out ((g : G) : G ⧸ K))⁻¹ * g ∈ K`.
+
+Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Rewrite using `[h1, if_pos hm, mul_one]`. Use `(hb 1 ⟨(Quotient.out ((g : G) : G ⧸ K))⁻¹ * g, hm⟩ (Quotient.out ((g : G) : G ⧸ K))).symm` as an intermediate fact. Simplify using `using this`.
+-/
 theorem hecke_algebra_unit : Formalism.UG.HeckeUnit := by
   unfold Formalism.UG.HeckeUnit
   intro G _ K k _ f hf
@@ -130,6 +183,17 @@ theorem hecke_algebra_unit : Formalism.UG.HeckeUnit := by
     have := (hb 1 ⟨(Quotient.out ((g : G) : G ⧸ K))⁻¹ * g, hm⟩ (Quotient.out ((g : G) : G ⧸ K))).symm
     simpa using this
 
+/- English proof (translation)
+Unfold `Formalism.UG.HeckeActOne`. Introduce `G _ Γ K k _ W _ _ ρ φ hφ`. Unfold `hAct`. Establish `h1 : ∀ y : G, dosetInd k K 1 y = if y ∈ K then 1 else 0`. Introduce `y`.
+
+Distinguish the cases in `hy : y ∈ K`. Rewrite using `[if_pos hy, dosetInd_of_mem]`. Conclude with `(mem_dc_one K y).2 hy`. Rewrite using `[if_neg hy, dosetInd_of_not_mem]`. Conclude with `fun h => hy ((mem_dc_one K y).1 h)`.
+
+Use `funext fun g => ?_` and prove the remaining obligations. Use `show ∑ᶠ x : G ⧸ K, dosetInd k K 1 (Quotient.out x) • φ (g * Quotient.out x) = φ g`. Establish `e` using `finsum_eq_single (fun x : G ⧸ K => dosetInd k K 1 (Quotient.out x) • φ (g * Quotient.out x)) ((1 : G) : G ⧸ K) (fun x hx => by show dosetInd k K 1 (Quotient.out x) • φ (g * Quotient.out x) = 0`. Rewrite using `[h1, if_neg (out_not_mem_of_ne_one K x hx), zero_smul])`. Rewrite using `[e]`.
+
+Establish `hm` using `out_mem_of_eq_one K ((1 : G) : G ⧸ K) rfl`. Rewrite using `[h1, if_pos hm, one_smul]`. Simplify using `[AMF] at hφ`. Use `hφ 1 Γ.one_mem g _ hm` as an intermediate fact. Rewrite `this` using `[one_mul, show (⟨1, Γ.one_mem⟩ : Γ) = 1 from rfl, map_one]`.
+
+Simplify using `using this`.
+-/
 theorem hecke_action_identity : Formalism.UG.HeckeActOne := by
   unfold Formalism.UG.HeckeActOne
   intro G _ Γ K k _ W _ _ ρ φ hφ
@@ -160,12 +224,18 @@ section Basis
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, e⟩` from `(DoubleCoset.eq K K g (Quotient.out (DoubleCoset.mk K K g))).1 (DoubleCoset.out_eq' K K _).symm`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, e⟩`.
+-/
 theorem mk_out_dc (K : Subgroup G) (g : G) :
     ∃ a b : K, Quotient.out (DoubleCoset.mk K K g) = (a : G) * g * b := by
   obtain ⟨a, ha, b, hb, e⟩ := (DoubleCoset.eq K K g (Quotient.out (DoubleCoset.mk K K g))).1
     (DoubleCoset.out_eq' K K _).symm
   exact ⟨⟨a, ha⟩, ⟨b, hb⟩, e⟩
 
+/- English proof (translation)
+Take `⟨a, b, e⟩` from `mk_out_dc K g`. Rewrite using `[e]`. Conclude with `hf a b g`.
+-/
 theorem biInv_mk_out {k : Type} (K : Subgroup G) (f : G → k) (hf : IsBiInv K f) (g : G) :
     f (Quotient.out (DoubleCoset.mk K K g)) = f g := by
   obtain ⟨a, b, e⟩ := mk_out_dc K g
@@ -181,6 +251,9 @@ def toFs (k : Type) [CommRing k] (K : Subgroup G) (f : Hecke k K) : ClassSet K K
     exact ⟨s, hs, ((DoubleCoset.eq K K s (Quotient.out c)).2 ⟨a, a.2, b, b.2, e⟩).trans
       (DoubleCoset.out_eq' K K c)⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toFs_apply (k : Type) [CommRing k] (K : Subgroup G) (f : Hecke k K) (c : ClassSet K K) :
     toFs k K f c = (f : G → k) (Quotient.out c) := rfl
 
@@ -216,11 +289,25 @@ def heckeEquiv {G : Type} [Group G] (K : Subgroup G) (k : Type) [CommRing k] :
     show c (DoubleCoset.mk K K (Quotient.out d)) = c d
     rw [DoubleCoset.out_eq']
 
+/- English proof (translation)
+Unfold `Formalism.UG.HeckeBasis`. Introduce `G _ K k _`. Conclude with `⟨heckeEquiv K k, fun f g => biInv_mk_out K _ f.2.1 g⟩`.
+-/
 theorem hecke_algebra_basis : Formalism.UG.HeckeBasis := by
   unfold Formalism.UG.HeckeBasis
   intro G _ K k _
   exact ⟨heckeEquiv K k, fun f g => biInv_mk_out K _ f.2.1 g⟩
 
+/- English proof (translation)
+Unfold `Formalism.UG.TjMem`. Introduce `L _ O ϖ k _ n j hϖ`. Rewrite using `[mem_hecke_iff]`. Prove the components needed by the constructor for the conclusion. Unfold `Tj`.
+
+Apply `ind_biInv` to reduce the goal to its premises. Introduce and unpack `a' b' x ⟨a, ha, b, hb, e⟩`. Rewrite using `[Set.mem_setOf_eq]`. Conclude with `⟨↑a' * a, (GLint (Fin n) O).mul_mem a'.2 ha, b * ↑b', (GLint (Fin n) O).mul_mem hb b'.2, by simp only [Units.val_mul, e, mul_assoc]⟩`. Distinguish the cases in `hne : ∃ g0, Tj k n O ϖ j g0 ≠ 0`.
+
+Take `⟨g0, hg0⟩` from `hne`. Unfold `Tj at hg0`. Take `⟨a0, ha0, b0, hb0, e0⟩` from `Set.mem_of_indicator_ne_zero hg0`. Use `⟨{g0}, fun x hx => ⟨g0, Finset.mem_singleton_self _, ?_⟩⟩` and prove the remaining obligations. Unfold `Tj at hx`.
+
+Take `⟨a, ha, b, hb, e⟩` from `Set.mem_of_indicator_ne_zero hx`. Use `⟨⟨a * a0⁻¹, (GLint (Fin n) O).mul_mem ha ((GLint (Fin n) O).inv_mem ha0)⟩, ⟨b0⁻¹ * b, (GLint (Fin n) O).mul_mem ((GLint (Fin n) O).inv_mem hb0) hb⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mk, Units.val_mul, e, e0]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left, Units.mul_inv_cancel_left]`.
+
+Use `push_neg at hne`. Conclude with `⟨∅, fun x hx => absurd (hne x) hx⟩`.
+-/
 theorem Tj_double_coset_mem : Formalism.UG.TjMem := by
   unfold Formalism.UG.TjMem
   intro L _ O ϖ k _ n j hϖ

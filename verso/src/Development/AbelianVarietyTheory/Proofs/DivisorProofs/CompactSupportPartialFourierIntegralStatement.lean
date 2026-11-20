@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.WeilM GlobalTheory.AdelicU Filter Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CoefSupp.coef_supp | exact GlobalTheory.CoefSupp.coef_supp | (intros; apply GlobalTheory.CoefSupp.coef_supp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compact_support_partial_fourier_integral : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → ∀ Φ ∈ GlobalTheory.WeilM.schA F κ,
     ∃ K : Set (κ → Af F), IsCompact K ∧

@@ -25,6 +25,11 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL`. Establish `hsm` using `isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field`. Establish `hid` using `ObjMaps.id_comp_cancel`. Establish `hlow` using `obj_lower_level`. Establish `hrep` using `moduli_rep_of_base hid`.
+
+Establish `hsim` using `SimAlg.sim_group`. Establish `hact` using `Moduli.LevelAction.similitude_acts hsm hid hlow hrep (exists_obj_twist_by_similitude hsim) hsim`. Conclude with `levelMaps_of_parts (exists_levelMap hsm hid hlow hrep) hact (LevCover.levelMap_finite_etale_surjective_of_laws hL) (levelMap_fibre_orbit hL obj_pull hid obj_isAbelianScheme_dim_rigidified_sym hlow (obj_rigid_closed hL) hrep tateIso_differ_by_similitude hsim hact)`.
+-/
 theorem levelMaps_closed : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q → ToroidalLevelCompatibility (H := H) (D := D) := by
   intro hL
 

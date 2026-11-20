@@ -8,6 +8,27 @@ namespace UpperTheory.V.Lit.Dr
 
 variable {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F] {q : ℕ}
 
+/- English proof (translation)
+Introduce `V F _ _ _ _ q w p₀ p t hw hd`. Use `set d : V := p - p₀ with hdd`. Use `set c : V := p₀ + t • d with hc`. Use `set A := fderiv ℝ w c with hAdef`. Establish `hA : HasFDerivAt w A c` using `hw.hasFDerivAt`.
+
+Establish `hin : HasFDerivAt (fun x : V => p₀ + t • (x - p₀)) (t • ContinuousLinearMap.id ℝ V) p`. Simplify using `using (((hasFDerivAt_id p).sub_const p₀).const_smul t).const_add p₀`. Establish `hwin : HasFDerivAt (fun x : V => w (p₀ + t • (x - p₀))) (A.comp (t • ContinuousLinearMap.id ℝ V)) p` using `hA.comp p hin`. Use `set L := (curryLeftLI (𝕜 := ℝ) (E := V) (F := F) (n := q)).toContinuousLinearMap with hL`. Establish `hg : HasFDerivAt (fun x : V => L (w (p₀ + t • (x - p₀)))) (L.comp (A.comp (t • ContinuousLinearMap.id ℝ V))) p` using `L.hasFDerivAt.comp p hwin`.
+
+Establish `hφ : HasFDerivAt (fun x => t ^ q • (L (w (p₀ + t • (x - p₀)))) (x - p₀)) (t ^ q • ((L (w c)).comp (ContinuousLinearMap.id ℝ V) + (L.comp (A.comp (t • ContinuousLinearMap.id ℝ V))).flip d)) p`. Conclude with `(hg.clm_apply ((hasFDerivAt_id p).sub_const p₀)).const_smul (t ^ q)`. Establish `hfun : (fun x ↦ t ^ q • (w (p₀ + t • (x - p₀))).curryLeft (x - p₀)) = fun x => t ^ q • (L (w (p₀ + t • (x - p₀)))) (x - p₀)`. Use function extensionality and compare the values at `x`. Simplify using `[hL]`.
+
+Establish `lhs : HasDerivAt (fun r ↦ r ^ (q + 1) • w (p₀ + r • d)) ((((q + 1 : ℕ) : ℝ) * t ^ q) • w c + t ^ (q + 1) • A d) t`. Establish `h1 : HasDerivAt (fun r : ℝ => p₀ + r • d) d t`. Simplify using `using ((hasDerivAt_id t).smul_const d).const_add p₀`. Establish `h2 : HasDerivAt (fun r => w (p₀ + r • d)) (A d) t` using `hA.comp_hasDerivAt t h1`. Establish `h3` using `(hasDerivAt_pow (q + 1) t).smul h2`.
+
+Use `h3.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[show q + 1 - 1 = q from rfl]`. Conclude with `add_comm _ _`. Establish `hK : ∀ v : Fin (q + 1) → V, ∑ i : Fin (q + 1), (-1 : ℤ) ^ (i : ℕ) • (A (v i)) (Matrix.vecCons d (i.removeNth v)) = A d v`. Introduce `v`.
+
+Establish `hrm : ∀ i : Fin (q + 1), Fin.removeNth i.succ (Matrix.vecCons d v) = Matrix.vecCons d (Fin.removeNth i v)`. Introduce `i`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `cases j using Fin.cases <;> simp [Fin.removeNth_apply, Fin.succ_succAbove_zero, Fin.succ_succAbove_succ]`. Establish `h0` using `congrArg (fun f => f (Matrix.vecCons d v)) hd`.
+
+Simplify using `only [extDeriv, ← hAdef, alternatizeUncurryFin_apply] at h0`. Rewrite `h0` using `[Fin.sum_univ_succ]`. Simplify using `only [hrm, Fin.removeNth_zero, Matrix.tail_cons, Matrix.cons_val_zero, Matrix.cons_val_succ, Fin.val_zero, pow_zero, one_smul, Fin.val_succ, pow_succ, mul_neg_one, neg_smul, Finset.sum_neg_distrib] at h0`. Establish `ht : Fin.tail (Matrix.vecCons d v) = v`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Fin.tail]`. Rewrite `h0` using `[ht]`. Establish `h0' : (A d) v - ∑ i : Fin (q + 1), (-1 : ℤ) ^ (i : ℕ) • (A (v i)) (Matrix.vecCons d (i.removeNth v)) = 0`. Simplify `h0` using `[sub_eq_add_neg]`. Conclude with `(sub_eq_zero.mp h0').symm`.
+
+Use `lhs using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hfun, extDeriv, hφ.fderiv]`. Use extensionality with `v`. Simplify using `[alternatizeUncurryFin_apply, hL]`. Rewrite using `[hK v]`.
+
+Use `module`.
+-/
 theorem poinPt : PoinPt := by
   intro V F _ _ _ _ q w p₀ p t hw hd
   set d : V := p - p₀ with hdd

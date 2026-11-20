@@ -7,6 +7,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.WedgeFrame
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `LinearMap.exists_extend (Module.Basis.span hb).equivFun.toLinearMap`. Establish `hφb : ∀ j, φ (b j) = Pi.single j 1`. Introduce `j`. Establish `h2 : φ (b j) = (Module.Basis.span hb).equivFun (Module.Basis.span hb j)`. Rewrite using `[Module.Basis.span_apply hb j]`.
+
+Conclude with `LinearMap.congr_fun hφ ⟨b j, Submodule.subset_span ⟨j, rfl⟩⟩`. Rewrite using `[h2]`. Use extensionality with `k`. Rewrite using `[Module.Basis.equivFun_self]`. Simplify using `[Pi.single_apply, eq_comm]`.
+
+Introduce `h0`. Establish `h1` using `congrArg (exteriorPower.alternatingMapLinearEquiv ((Matrix.detRowAlternating (n := Fin r) (R := Ω)).compLinearMap φ)) h0`. Rewrite `h1` using `[exteriorPower.alternatingMapLinearEquiv_apply_ιMulti, map_zero]`. Establish `h2 : (fun i => φ (b i)) = (1 : Matrix (Fin r) (Fin r) Ω)`. Use extensionality with `i j`.
+
+Simplify using `[hφb, Matrix.one_apply, Pi.single_apply, eq_comm]`. Establish `h3 : Matrix.det (fun i => φ (b i) : Matrix (Fin r) (Fin r) Ω) = 0` using `h1`. Rewrite `h3` using `[h2, Matrix.det_one]`. Conclude with `one_ne_zero h3`.
+-/
 theorem ιMulti_ne_zero {Ω E : Type} [Field Ω] [AddCommGroup E] [Module Ω E] {r : ℕ} {b : Fin r → E}
     (hb : LinearIndependent Ω b) : exteriorPower.ιMulti Ω r b ≠ 0 := by
   classical
@@ -31,6 +40,17 @@ theorem ιMulti_ne_zero {Ω E : Type} [Field Ω] [AddCommGroup E] [Module Ω E] 
   rw [h2, Matrix.det_one] at h3
   exact one_ne_zero h3
 
+/- English proof (translation)
+Use `choose m hm using fun i => (Submodule.mem_span_range_iff_exists_fun R).1 (hc i)`. Establish `hc' : c = fun i => ∑ j, ((m i j : R) : Ω) • b j`. Use function extensionality and compare the values at `i`. Rewrite using `[← hm i]`. Both sides reduce to the same expression.
+
+Establish `hsum : exteriorPower.ιMulti Ω r (fun i => ∑ j, ((m i j : R) : Ω) • b j) = ∑ σ : Fin r → Fin r, exteriorPower.ιMulti Ω r (fun i => ((m i (σ i) : R) : Ω) • b (σ i))` using `(exteriorPower.ιMulti Ω r).toMultilinearMap.map_sum (fun i j => ((m i j : R) : Ω) • b j)`. Rewrite using `[hc', hsum]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Establish `hsm : exteriorPower.ιMulti Ω r (fun i => ((m i (σ i) : R) : Ω) • b (σ i)) = (∏ i, ((m i (σ i) : R) : Ω)) • exteriorPower.ιMulti Ω r (b ∘ σ)` using `(exteriorPower.ιMulti Ω r).toMultilinearMap.map_smul_univ _ _`. Establish `hR : (∏ i, ((m i (σ i) : R) : Ω)) ∈ R` using `prod_mem fun i _ => (m i (σ i)).2`.
+
+Rewrite using `[hsm]`. Distinguish the cases in `hσ : Function.Injective σ`. Establish `hperm` using `(exteriorPower.ιMulti Ω r).map_perm b (Equiv.ofBijective σ (Finite.injective_iff_bijective.1 hσ))`. Establish `hco : b ∘ (Equiv.ofBijective σ (Finite.injective_iff_bijective.1 hσ)) = b ∘ σ` using `rfl`. Rewrite `hperm` using `[hco]`.
+
+Rewrite using `[hperm]`. Use `Submodule.smul_mem _ (⟨_, hR⟩ : R) ?_` and prove the remaining obligations. Break down `Int.units_eq_one_or (Equiv.Perm.sign (Equiv.ofBijective σ (Finite.injective_iff_bijective.1 hσ))) with h | h` into its components or cases. Rewrite using `[h, one_smul]`. Conclude with `Submodule.mem_span_singleton_self _`.
+
+Rewrite using `[h, Units.neg_smul, one_smul]`. Conclude with `neg_mem (Submodule.mem_span_singleton_self _)`. Establish `h0 : exteriorPower.ιMulti Ω r (b ∘ σ) = 0` using `(exteriorPower.ιMulti Ω r).map_eq_zero_of_not_injective _ fun h => hσ h.of_comp`. Rewrite using `[h0, smul_zero]`. Conclude with `zero_mem _`.
+-/
 theorem ιMulti_mem_span {Ω E : Type} [Field Ω] [AddCommGroup E] [Module Ω E] (R : Subring Ω) {r : ℕ} (b c : Fin r → E)
     (hc : ∀ i, c i ∈ Submodule.span R (Set.range b)) :
     exteriorPower.ιMulti Ω r c ∈ Submodule.span R {exteriorPower.ιMulti Ω r b} := by
@@ -66,6 +86,11 @@ theorem ιMulti_mem_span {Ω E : Type} [Field Ω] [AddCommGroup E] [Module Ω E]
     rw [h0, smul_zero]
     exact zero_mem _
 
+/- English proof (translation)
+Introduce `X Ω _ ξ E _ _ L r b p ⟨hb, hL⟩`. Use `⟨le_antisymm ?_ ?_, ιMulti_ne_zero hb⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `ιMulti_mem_span (regAt ξ p) b c (fun i => hL ▸ hc i)`.
+
+Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `Submodule.subset_span ⟨b, fun i => by rw [hL]; exact Submodule.subset_span ⟨i, rfl⟩, rfl⟩`.
+-/
 theorem wedge_eq_span_ιMulti : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat ξ E) (r : ℕ) (b : Fin r → E) (p : Cpt ξ), L.IsFrameAt b p → L.wedge r p = Submodule.span (regAt ξ p) {exteriorPower.ιMulti Ω r b} ∧ exteriorPower.ιMulti Ω r b ≠ 0 := by
   intro X Ω _ ξ E _ _ L r b p ⟨hb, hL⟩
   refine ⟨le_antisymm ?_ ?_, ιMulti_ne_zero hb⟩

@@ -12,6 +12,13 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.GenericHom
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hg [1, j x, j y, j a * j x]`. Take `⟨c, hc⟩` from `hu 1 (by simp)`. Take `⟨p, hp⟩` from `hu (j x) (by simp)`. Take `⟨q, hq⟩` from `hu (j y) (by simp)`. Take `⟨r, hr⟩` from `hu (j a * j x) (by simp)`.
+
+Rewrite `hc` using `[_root_.one_mul]`. Establish `e1` using `hm x c p (by rw [hc, hp])`. Establish `e2` using `hm y c q (by rw [hc, hq])`. Establish `e3` using `hm a p r (by rw [hp, hr, _root_.mul_assoc])`. Establish `e4` using `hm b q r (by rw [hq, hr, h, _root_.mul_assoc])`.
+
+Apply `mul_right_cancel (b := f c)` to reduce the goal to its premises. Rewrite using `[_root_.mul_assoc, _root_.mul_assoc, e1, e2, e3, e4]`.
+-/
 theorem mul_eq_of_generic {A B P : Type*} [Group A] [Group B] (j : P → A) (f : P → B)
     (hm : ∀ x y z, j x * j y = j z → f x * f y = f z)
     (hg : ∀ s : List A, ∃ u, ∀ h ∈ s, ∃ p, j p = h * u) (a x b y : P)
@@ -29,6 +36,15 @@ theorem mul_eq_of_generic {A B P : Type*} [Group A] [Group B] (j : P → A) (f :
   apply mul_right_cancel (b := f c)
   rw [_root_.mul_assoc, _root_.mul_assoc, e1, e2, e3, e4]
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hg [1, j y, j b * j y, j x * (j b * j y), j c * j z, j z]`. Take `⟨p₀, h₀⟩` from `hu 1 (by simp)`. Take `⟨p₁, h₁⟩` from `hu (j y) (by simp)`. Take `⟨p₂, h₂⟩` from `hu (j b * j y) (by simp)`. Take `⟨p₃, h₃⟩` from `hu (j x * (j b * j y)) (by simp)`.
+
+Take `⟨p₄, h₄⟩` from `hu (j c * j z) (by simp)`. Take `⟨p₅, h₅⟩` from `hu (j z) (by simp)`. Rewrite `h₀` using `[_root_.one_mul]`. Establish `e1` using `hm y p₀ p₁ (by rw [h₀, h₁])`. Establish `e2` using `hm b p₁ p₂ (by rw [h₁, h₂, _root_.mul_assoc])`.
+
+Establish `e3` using `hm x p₂ p₃ (by rw [h₂, h₃]; simp only [_root_.mul_assoc])`. Establish `e4` using `hm a p₃ p₄ (by rw [h₃, h₄, ← h]; simp only [_root_.mul_assoc])`. Establish `e5` using `hm z p₀ p₅ (by rw [h₀, h₅])`. Establish `e6` using `hm c p₅ p₄ (by rw [h₅, h₄, _root_.mul_assoc])`. Apply `mul_right_cancel (b := f p₀)` to reduce the goal to its premises.
+
+Simplify using `only [_root_.mul_assoc]`. Rewrite using `[e1, e2, e3, e4, e5, e6]`.
+-/
 theorem mul_four_eq_of_generic {A B P : Type*} [Group A] [Group B] (j : P → A) (f : P → B)
     (hm : ∀ x y z, j x * j y = j z → f x * f y = f z)
     (hg : ∀ s : List A, ∃ u, ∀ h ∈ s, ∃ p, j p = h * u) (a x b y c z : P)
@@ -53,6 +69,9 @@ theorem mul_four_eq_of_generic {A B P : Type*} [Group A] [Group B] (j : P → A)
 
 variable {k : Type} [Field k] [IsAlgClosed k]
 
+/- English proof (translation)
+Establish `: JacobsonSpace X.left` using `LocallyOfFiniteType.jacobsonSpace X.hom`. Take `⟨c, hcW, hc⟩` from `nonempty_inter_closedPoints hne hW`. Conclude with `⟨Over.homMk (pointOfClosedPoint (K := k) X.hom c hc) (pointOfClosedPoint_comp (K := k) X.hom c hc), fun p => (congrArg (· ∈ W) (pointOfClosedPoint_apply (K := k) X.hom c hc p)).mpr hcW⟩`.
+-/
 theorem exists_point_mem (X : Over (Sp k)) [LocallyOfFiniteType X.hom] (W : Set X.left)
     (hW : IsLocallyClosed W) (hne : W.Nonempty) :
     ∃ x : 𝟙_ (Over (Sp k)) ⟶ X, ∀ p, x.left p ∈ W := by
@@ -61,6 +80,11 @@ theorem exists_point_mem (X : Over (Sp k)) [LocallyOfFiniteType X.hom] (W : Set 
   exact ⟨Over.homMk (pointOfClosedPoint (K := k) X.hom c hc) (pointOfClosedPoint_comp (K := k) X.hom c hc),
     fun p => (congrArg (· ∈ W) (pointOfClosedPoint_apply (K := k) X.hom c hc p)).mpr hcW⟩
 
+/- English proof (translation)
+Use `isNormalScheme_of_smooth (S := Spec (.of k)) X.hom` as an intermediate fact. Establish `: IsReduced X.left` using `IsNormalScheme.isReduced`. Establish `: LocallyOfFiniteType (f.left ≫ Y.hom)` using `by rw [Over.w]; infer_instance`. Use `Over.OverMorphism.ext (ext_of_apply_eq (K := k) Y.hom Set.univ isOpen_univ.isLocallyClosed dense_univ (fun x _ hx => ?_) (by rw [Over.w, Over.w]))` and prove the remaining obligations. Take `⟨p, hp⟩` from `exists_point_mem X {x} hx.isLocallyClosed ⟨x, rfl⟩`.
+
+Establish `h1 : p.left ≫ f.left = p.left ≫ g.left` using `congrArg CommaMorphism.left (h p)`. Establish `h2 : f.left (p.left (IsLocalRing.closedPoint k)) = g.left (p.left (IsLocalRing.closedPoint k))` using `congrArg (fun φ => φ (IsLocalRing.closedPoint k)) h1`. Establish `h3 : p.left (IsLocalRing.closedPoint k) = x` using `hp _`. Conclude with `(congrArg f.left h3).symm.trans (h2.trans (congrArg g.left h3))`.
+-/
 theorem hom_ext_points {X Y : Over (Sp k)}
     [Smooth X.hom] [IsSeparated Y.hom] [LocallyOfFiniteType Y.hom] (f g : X ⟶ Y)
     (h : ∀ x : 𝟙_ (Over (Sp k)) ⟶ X, x ≫ f = x ≫ g) : f = g := by
@@ -79,6 +103,9 @@ theorem hom_ext_points {X Y : Over (Sp k)}
 
 omit [IsAlgClosed k] in
 
+/- English proof (translation)
+Establish `hr : Set.range x.left ⊆ Set.range j.left` using `by rintro _ ⟨p, rfl⟩; exact hx p`. Use `⟨Over.homMk (IsOpenImmersion.lift j.left x.left hr) ?_, Over.OverMorphism.ext (IsOpenImmersion.lift_fac j.left x.left hr)⟩` and prove the remaining obligations. Rewrite using `[← Over.w j, IsOpenImmersion.lift_fac_assoc, Over.w]`.
+-/
 theorem exists_lift {U H Z : Over (Sp k)} (j : U ⟶ H) [IsOpenImmersion j.left] (x : Z ⟶ H)
     (hx : ∀ p, x.left p ∈ Set.range j.left) : ∃ y : Z ⟶ U, y ≫ j = x := by
   have hr : Set.range x.left ⊆ Set.range j.left := by rintro _ ⟨p, rfl⟩; exact hx p
@@ -86,6 +113,15 @@ theorem exists_lift {U H Z : Over (Sp k)} (j : U ⟶ H) [IsOpenImmersion j.left]
     (IsOpenImmersion.lift_fac j.left x.left hr)⟩
   rw [← Over.w j, IsOpenImmersion.lift_fac_assoc, Over.w]
 
+/- English proof (translation)
+Establish `key : ∃ W : Set H.left, IsOpen W ∧ W.Nonempty ∧ ∀ φ ∈ s, ∀ w ∈ W, φ.hom.left w ∈ Set.range j.left`. Proceed by induction on `s with`. Consider the case `nil => exact ⟨Set.univ, isOpen_univ, Set.univ_nonempty, by simp⟩`. Consider the case `cons φ s ih`. Take `⟨W, h1, h2, h3⟩` from `ih`.
+
+Establish `ho : IsOpen (φ.hom.left ⁻¹' Set.range j.left)` using `(IsOpenImmersion.isOpen_range j.left).preimage φ.hom.left.continuous`. Establish `hn : (φ.hom.left ⁻¹' Set.range j.left).Nonempty`. Take `⟨v⟩` from `‹Nonempty U.left›`. Use `⟨φ.inv.left (j.left v), v, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, φ.inv_hom_id]`.
+
+Both sides reduce to the same expression. Use `⟨W ∩ φ.hom.left ⁻¹' Set.range j.left, h1.inter ho, nonempty_preirreducible_inter h1 ho h2 hn, ?_⟩` and prove the remaining obligations. Introduce `ψ hψ w hw`. Break down `List.mem_cons.1 hψ with rfl | hψ` into its components or cases. Conclude with `hw.2`.
+
+Conclude with `h3 ψ hψ w hw.1`. Take `⟨W, h1, h2, h3⟩` from `key`. Take `⟨u, hu⟩` from `exists_point_mem H W h1.isLocallyClosed h2`. Conclude with `⟨u, fun φ hφ => exists_lift j _ fun p => h3 φ hφ _ (hu p)⟩`.
+-/
 theorem exists_generic {U H : Over (Sp k)} [LocallyOfFiniteType H.hom] [IrreducibleSpace H.left]
     (j : U ⟶ H) [IsOpenImmersion j.left] [Nonempty U.left] (s : List (H ≅ H)) :
     ∃ u : 𝟙_ (Over (Sp k)) ⟶ H, ∀ φ ∈ s, ∃ p, p ≫ j = u ≫ φ.hom := by
@@ -114,10 +150,46 @@ theorem exists_generic {U H : Over (Sp k)} [LocallyOfFiniteType H.hom] [Irreduci
 
 omit [IsAlgClosed k] in
 
+/- English proof (translation)
+Rewrite using `[MonObj.comp_mul, ← Category.assoc, toUnit_unique (x ≫ toUnit _) (𝟙 _), Category.id_comp]`.
+-/
 theorem point_comp_mul {X G : Over (Sp k)} [GrpObj G] (x : 𝟙_ (Over (Sp k)) ⟶ X)
     (a : 𝟙_ (Over (Sp k)) ⟶ G) (g : X ⟶ G) : x ≫ ((toUnit X ≫ a) * g) = a * (x ≫ g) := by
   rw [MonObj.comp_mul, ← Category.assoc, toUnit_unique (x ≫ toUnit _) (𝟙 _), Category.id_comp]
 
+/- English proof (translation)
+Introduce `k _ _ H G U _ _ ⟨hc, hs, _, _, hgc⟩ ⟨_, _, _, _, _⟩ j f hj hU hm`. Establish `: IsIntegral H.left` using `isIntegral_of_smooth_of_geometricallyConnected H.hom`. Establish `htr : ∀ (a x : 𝟙_ (Over (Sp k)) ⟶ H), x ≫ (transl a).hom = a * x` using `fun a x => (point_comp_mul x a (𝟙 H)).trans (by rw [Category.comp_id])`. Establish `hg : ∀ s : List (𝟙_ (Over (Sp k)) ⟶ H), ∃ u, ∀ h ∈ s, ∃ p : 𝟙_ (Over (Sp k)) ⟶ U, p ≫ j = h * u`. Introduce `s`.
+
+Take `⟨u, hu⟩` from `exists_generic j (s.map transl)`. Conclude with `⟨u, fun h hh => htr h u ▸ hu _ (List.mem_map_of_mem hh)⟩`. Establish `hdec : ∀ h : 𝟙_ (Over (Sp k)) ⟶ H, ∃ a x : 𝟙_ (Over (Sp k)) ⟶ U, (a ≫ j) * (x ≫ j) = h`. Introduce `h`. Take `⟨u, hu⟩` from `exists_generic j [Iso.refl H, asIso (ι[H]) ≪≫ transl h]`.
+
+Take `⟨x, hx⟩` from `hu (Iso.refl H) (by simp)`. Take `⟨a, ha⟩` from `hu (asIso (ι[H]) ≪≫ transl h) (by simp)`. Use `⟨a, x, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, hx, Iso.trans_hom, ← Category.assoc, htr, asIso_hom, Iso.refl_hom, Category.comp_id, ← Hom.inv_def, inv_mul_cancel_right]`. Set `J : (𝟙_ (Over (Sp k)) ⟶ U) → (U ⟶ H)` to `fun a => j ≫ (transl (a ≫ j)).hom`.
+
+Set `φ : (𝟙_ (Over (Sp k)) ⟶ U) → (U ⟶ G)` to `fun a => (toUnit U ≫ a ≫ f) * f`. Establish `hJ : ∀ a x : 𝟙_ (Over (Sp k)) ⟶ U, x ≫ J a = (a ≫ j) * (x ≫ j)` using `fun a x => by`. Rewrite using `[← htr, Category.assoc]`. Establish `hφ : ∀ a x : 𝟙_ (Over (Sp k)) ⟶ U, x ≫ φ a = (a ≫ f) * (x ≫ f)` using `fun a x => point_comp_mul x _ _`. Establish `hJo : ∀ a, IsOpenImmersion (J a).left` using `fun a => by`.
+
+Establish `: IsIso (transl (a ≫ j)).hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map (transl (a ≫ j)).hom))`. Conclude with `inferInstanceAs (IsOpenImmersion (j.left ≫ (transl (a ≫ j)).hom.left))`. Establish `hcov : ∀ y : H.left, ∃ a, y ∈ Set.range (J a).left`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+
+Take `⟨y, hy⟩` from `hn`. Establish `hcl : IsClosed (⋃ a, Set.range (J a).left)ᶜ` using `(isOpen_iUnion fun a => IsOpenImmersion.isOpen_range (J a).left).isClosed_compl`. Take `⟨h, hh⟩` from `exists_point_mem H _ hcl.isLocallyClosed ⟨y, by simpa using hy⟩`. Take `⟨a, x, e⟩` from `hdec h`. Rewrite `e` using `[← hJ]`.
+
+Substitute `e` using the available equality. Conclude with `hh (IsLocalRing.closedPoint k) (Set.mem_iUnion.2 ⟨a, x.left (IsLocalRing.closedPoint k), rfl⟩)`. Establish `hsU : Smooth U.hom` using `by rw [← Over.w j]; infer_instance`. Set `𝒰 : H.left.OpenCover` to `Scheme.Cover.mkOfCovers (𝟙_ (Over (Sp k)) ⟶ U) (fun _ => U.left) (fun a => (J a).left) (fun y => hcov y) hJo`. Establish `hcomp : ∀ a b, pullback.fst (J a).left (J b).left ≫ (φ a).left = pullback.snd (J a).left (J b).left ≫ (φ b).left`.
+
+Introduce `a b`. Set `Z : Over (Sp k)` to `Over.mk (pullback.fst (J a).left (J b).left ≫ U.hom)`. Establish `: Smooth Z.hom` using `inferInstanceAs (Smooth (pullback.fst (J a).left (J b).left ≫ U.hom))`. Set `p₁ : Z ⟶ U` to `Over.homMk (pullback.fst (J a).left (J b).left) rfl`. Set `p₂ : Z ⟶ U` to `Over.homMk (pullback.snd (J a).left (J b).left) (by show _ = pullback.fst (J a).left (J b).left ≫ U.hom`.
+
+Establish `e` using `congrArg (· ≫ H.hom) (pullback.condition (f := (J a).left) (g := (J b).left))`. Simplify using `only [Category.assoc, Over.w] at e`. Conclude with `e.symm)`. Establish `hp : p₁ ≫ J a = p₂ ≫ J b` using `Over.OverMorphism.ext pullback.condition`. Establish `: p₁ ≫ φ a = p₂ ≫ φ b` using `hom_ext_points _ _ fun z => by`.
+
+Rewrite using `[← Category.assoc, ← Category.assoc, hφ, hφ]`. Use `mul_eq_of_generic (· ≫ j) (· ≫ f) hm hg _ _ _ _ ?_` and prove the remaining obligations. Use `show (a ≫ j) * ((z ≫ p₁) ≫ j) = (b ≫ j) * ((z ≫ p₂) ≫ j)`. Rewrite using `[← hJ, ← hJ, Category.assoc, Category.assoc, hp]`. Conclude with `congrArg CommaMorphism.left this`.
+
+Set `F₀ : H.left ⟶ G.left` to `𝒰.glueMorphisms (fun a => (φ a).left) hcomp`. Establish `hF₀ : ∀ a, (J a).left ≫ F₀ = (φ a).left` using `fun a => 𝒰.ι_glueMorphisms (fun a => (φ a).left) hcomp a`. Set `F : H ⟶ G` to `Over.homMk F₀ (𝒰.hom_ext _ _ fun a => by show (J a).left ≫ F₀ ≫ G.hom = (J a).left ≫ H.hom`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ G.hom) (hF₀ a)).trans ((Over.w (φ a)).trans (Over.w (J a)).symm)))`. Establish `hF : ∀ a x : 𝟙_ (Over (Sp k)) ⟶ U, ((a ≫ j) * (x ≫ j)) ≫ F = (a ≫ f) * (x ≫ f)`.
+
+Introduce `a x`. Establish `: J a ≫ F = φ a` using `Over.OverMorphism.ext (hF₀ a)`. Rewrite using `[← hJ, Category.assoc, this, hφ]`. Establish `hmul : ∀ h h' : 𝟙_ (Over (Sp k)) ⟶ H, (h * h') ≫ F = (h ≫ F) * (h' ≫ F)`. Introduce `h h'`.
+
+Take `⟨c, z, e⟩` from `hdec (h * h')`. Take `⟨a, x, rfl⟩` from `hdec h`. Take `⟨b, y, rfl⟩` from `hdec h'`. Rewrite using `[← e, hF, hF, hF]`. Conclude with `(mul_four_eq_of_generic (· ≫ j) (· ≫ f) hm hg _ _ _ _ _ _ e.symm).symm`.
+
+Use `⟨F, ⟨?_, ?_⟩, hom_ext_points _ _ fun w => ?_⟩` and prove the remaining obligations. Use `hmul 1 1` as an intermediate fact. Rewrite `this` using `[_root_.one_mul]`. Establish `h1 : (1 : 𝟙_ (Over (Sp k)) ⟶ H) ≫ F = 1` using `left_eq_mul.1 this`. Simplify `h1` using `[Hom.one_def]`.
+
+Establish `: Smooth (H ⊗ H).hom` using `inferInstanceAs (Smooth (pullback.fst H.hom H.hom ≫ H.hom))`. Use `hom_ext_points _ _ fun z => ?_` and prove the remaining obligations. Use `hmul (z ≫ fst H H) (z ≫ snd H H)` as an intermediate fact. Rewrite `this` using `[Hom.mul_def, Hom.mul_def, lift_comp_fst_snd]`. Rewrite using `[← Category.assoc, this, ← Category.assoc]`.
+
+Use `congr 1`. Apply the tactic sequence `ext <;> simp`. Take `⟨a, x, e⟩` from `hdec (w ≫ j)`. Rewrite using `[← Category.assoc, ← e, hF]`. Conclude with `hm _ _ _ e`.
+-/
 theorem exists_monHom_extension : ∀ (k : Type) [Field k] [IsAlgClosed k] (H G U : Over (Sp k)) [GrpObj H] [GrpObj G], SmConn H → SmConn G → ∀ (j : U ⟶ H) (f : U ⟶ G), IsOpenImmersion j.left → Nonempty U.left → (∀ x y z : (𝟙_ (Over (Sp k)) ⟶ U), (x ≫ j) * (y ≫ j) = z ≫ j → (x ≫ f) * (y ≫ f) = z ≫ f) → ∃ F : H ⟶ G, IsMonHom F ∧ j ≫ F = f := by
   intro k _ _ H G U _ _ ⟨hc, hs, _, _, hgc⟩ ⟨_, _, _, _, _⟩ j f hj hU hm
   have : IsIntegral H.left := isIntegral_of_smooth_of_geometricallyConnected H.hom

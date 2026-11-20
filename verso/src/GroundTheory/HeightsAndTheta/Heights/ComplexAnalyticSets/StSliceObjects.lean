@@ -17,10 +17,20 @@ def sliceIdeal (J : Ideal (MvPolynomial (Fin n) ℂ)) (L : Matrix (Fin d) (Fin n
 def IsRadicalAt (I : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ) : Prop :=
   ∀ f ∈ I.radical, ∃ s : MvPolynomial (Fin n) ℂ, eval q s ≠ 0 ∧ s * f ∈ I
 
+/- English proof (translation)
+Simplify using `[linPoly, Matrix.mulVec, dotProduct]`.
+-/
 theorem eval_linPoly (L : Matrix (Fin d) (Fin n) ℂ) (i : Fin d) (x : Fin n → ℂ) :
     eval x (linPoly L i) = (L *ᵥ x) i := by
   simp [linPoly, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [zeroSet, Set.mem_inter_iff, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun f hf => h f (Ideal.mem_sup_left hf), funext fun i => ?_⟩` and prove the remaining obligations.
+
+Use `h _ (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩))` as an intermediate fact. Rewrite `this` using `[map_sub, eval_linPoly, eval_C, sub_eq_zero]`. Then use the resulting hypothesis. Introduce and unpack `⟨hJ, hL⟩ f hf`. Establish `hle : sliceIdeal J L q ≤ RingHom.ker (eval x)`. Use `sup_le (fun g hg => RingHom.mem_ker.2 (hJ g hg)) ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, map_sub, eval_linPoly, eval_C, hL, sub_self]`. Conclude with `RingHom.mem_ker.1 (hle hf)`.
+-/
 theorem zeroSet_sliceIdeal (J : Ideal (MvPolynomial (Fin n) ℂ)) (L : Matrix (Fin d) (Fin n) ℂ)
     (q : Fin n → ℂ) : zeroSet (sliceIdeal J L q) = zeroSet J ∩ {x | L *ᵥ x = L *ᵥ q} := by
   ext x
@@ -38,6 +48,9 @@ theorem zeroSet_sliceIdeal (J : Ideal (MvPolynomial (Fin n) ℂ)) (L : Matrix (F
       rw [SetLike.mem_coe, RingHom.mem_ker, map_sub, eval_linPoly, eval_C, hL, sub_self]
     exact RingHom.mem_ker.1 (hle hf)
 
+/- English proof (translation)
+Introduce `f hf` and use `⟨1, by simp, by rw [one_mul]; exact hI hf⟩`.
+-/
 theorem isRadicalAt_of_isRadical {I : Ideal (MvPolynomial (Fin n) ℂ)} (hI : I.IsRadical)
     (q : Fin n → ℂ) : IsRadicalAt I q :=
   fun f hf => ⟨1, by simp, by rw [one_mul]; exact hI hf⟩

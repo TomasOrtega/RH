@@ -5,6 +5,9 @@ open Formalism.BasicNotions GlobalTheory.Diag.PG
 
 namespace GlobalTheory.Diag.PG.DuWinThree
 
+/- English proof (translation)
+Establish `hn' : (n : ℝ) ≠ 0` using `by positivity`. Rewrite using `[mul_pow, ← Real.rpow_natCast (a ^ _), ← Real.rpow_natCast (G ^ _), ← Real.rpow_mul ha.le, ← Real.rpow_mul hG.le, div_mul_cancel₀ _ hn', div_mul_cancel₀ _ hn', Real.rpow_one, Real.rpow_neg hG.le, div_eq_mul_inv]`. Evaluate the numerical expressions.
+-/
 theorem star_pow {a G : ℝ} (ha : 0 < a) (hG : 0 < G) {n : ℕ} (hn : 0 < n) :
     (a ^ ((1 : ℝ) / n) * G ^ (-(2 : ℝ) / n)) ^ n = a / G ^ 2 := by
   have hn' : (n : ℝ) ≠ 0 := by positivity
@@ -13,6 +16,19 @@ theorem star_pow {a G : ℝ} (ha : 0 < a) (hG : 0 < G) {n : ℕ} (hn : 0 < n) :
     Real.rpow_neg hG.le, div_eq_mul_inv]
   norm_num
 
+/- English proof (translation)
+Establish `hk2 : 2 * k ≤ 2 ^ k`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Establish `: j < 2 ^ j` using `Nat.lt_two_pow_self`. Rewrite using `[pow_succ]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hTk : (2 * f : ℝ) ≤ T ^ k`. Combine the equalities or inequalities in the displayed calculation. Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hP : 0 < T ^ k` using `by linarith`. Establish `hpow : (T ^ k) ^ f = T ^ (f * k)` using `by rw [← pow_mul, mul_comm]`.
+
+Prove the components needed by the constructor for the conclusion. Establish `e : T ^ k - 1 = T ^ k * (1 + (-(1 / T ^ k)))` using `by field_simp; ring`. Establish `hsm : 1 / T ^ k ≤ 1` using `by rw [div_le_one hP]; linarith`. Establish `hb` using `one_add_mul_le_pow (a := -(1 / T ^ k)) (by linarith) f`. Establish `hc : (f : ℝ) * (1 / T ^ k) ≤ 1 / 2`.
+
+Rewrite using `[mul_one_div, div_le_iff₀ hP]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : S ^ (f * k) ≤ T ^ (f * k)` using `pow_le_pow_left₀ hS.le h1 _`. Establish `hTn : 0 ≤ T ^ (f * k)` using `by positivity`. Rewrite using `[e, mul_pow, hpow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hn : 0 < f * k` using `Nat.mul_pos hf (by omega)`. Establish `hn' : (0 : ℝ) < ((f * k : ℕ) : ℝ)` using `by exact_mod_cast hn`. Establish `he : (1 + 1 / ((f * k : ℕ) : ℝ)) ^ (f * k) ≤ 3`. Establish `h3 : 1 + 1 / ((f * k : ℕ) : ℝ) ≤ Real.exp (1 / ((f * k : ℕ) : ℝ))`.
+
+Use `Real.add_one_le_exp (1 / ((f * k : ℕ) : ℝ))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]; exact mul_le_mul_of_nonneg_right he (by positivity)`.
+-/
 theorem window {S T : ℝ} {f k : ℕ} (hS : 0 < S) (hT : 2 ≤ T) (hf : 1 ≤ f) (hfk : f ≤ k)
     (h1 : S ≤ T) (h2 : T ≤ (1 + 1 / ((f * k : ℕ) : ℝ)) * S) :
     S ^ (f * k) / 2 ≤ (T ^ k - 1) ^ f ∧ (T ^ k - 1) ^ f ≤ 3 * S ^ (f * k) := by
@@ -57,6 +73,21 @@ namespace GlobalTheory.Diag.PG
 
 open GlobalTheory.Diag.PG.DuWinThree
 
+/- English proof (translation)
+Introduce `D h u`. Establish `hG : 0 < (D.mem u).A.GamP` using `lt_trans one_pos (D.mem u).A.one_lt_gammaP`. Establish `hD : 0 < (D.mem u).A.Dstar` using `(D.mem u).A.Dstar_pos`. Establish `hd : (0 : ℝ) < (D.mem u).A.duStar` using `by exact_mod_cast (D.mem u).A.duStar_pos`. Establish `hT : 2 ≤ (D.mem u).A.T` using `(D.mem u).A.T_prime.two_le`.
+
+Establish `hfk : D.R.f ≤ D.R.k` using `D.R.f_le_k`. Establish `hf : 1 ≤ D.R.f` using `le_trans (by have := D.R.two_le_m; omega) (D.R.m_le_f : D.R.m ≤ D.R.f)`. Establish `hn : 0 < D.R.f * D.R.k` using `Nat.mul_pos hf (by omega)`. Establish `hS : 0 < (D.mem u).A.Tstar`. Unfold `ColumnsAtT.Tstar ColumnsAtT.Xu`.
+
+Check the signs of the components of the expression. Establish `hSn : (D.mem u).A.Tstar ^ (D.R.f * D.R.k) = (D.mem u).A.Dstar / (D.mem u).A.duStar / (D.mem u).A.GamP ^ 2`. Rewrite using `[← star_pow (div_pos hD hd) hG hn, ColumnsAtT.Tstar, ColumnsAtT.Xu, Nat.cast_mul]`. Take `⟨w1, w2⟩` from `D.T_win u`. Take `⟨a, b⟩` from `window hS (by exact_mod_cast hT) hf hfk w1 (by rw [Nat.cast_mul]; exact w2)`.
+
+Rewrite `a`, `b` using `[hSn]`. Rewrite using `[h u, ← D.Dstar_eq u]`. Use `set X := (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f`. Establish `hG2 : (D.mem u).A.GamP ^ (-2 : ℤ) = 1 / (D.mem u).A.GamP ^ 2`. Rewrite using `[zpow_neg, one_div]`.
+
+Use `norm_cast`. Rewrite using `[hG2]`. Use `set c := (D.mem u).A.Dstar / (D.mem u).A.duStar / (D.mem u).A.GamP ^ 2 with hcdef`. Establish `hc0 : 0 < c` using `by positivity`. Establish `e : 1 / (D.mem u).A.GamP ^ 2 * (D.mem u).A.Dstar = ((D.mem u).A.duStar : ℝ) * c`.
+
+Rewrite using `[hcdef]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Use `mul_le_mul_of_nonneg_left a hd.le` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `mul_le_mul_of_nonneg_left b hd.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem duWin_three_of_count : ∀ D : D7, (∀ u, (D.duS u : ℝ) = ((D.mem u).A.duStar : ℝ) *
     (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f) → DuWin D 3 := by
   intro D h u

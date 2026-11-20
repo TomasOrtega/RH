@@ -12,5 +12,8 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_isUnit_mul_transpose_eq_of_posDef | exact GlobalTheory.exists_isUnit_mul_transpose_eq_of_posDef | (intros; apply GlobalTheory.exists_isUnit_mul_transpose_eq_of_posDef <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pos_def_eq_mul_transpose : ∀ (g : ℕ) (Y : Matrix (Fin g) (Fin g) ℝ), Y.PosDef → ∃ A : Matrix (Fin g) (Fin g) ℝ, IsUnit A ∧ A * Aᵀ = Y := by
   first | exact @GlobalTheory.exists_isUnit_mul_transpose_eq_of_posDef | exact GlobalTheory.exists_isUnit_mul_transpose_eq_of_posDef | (intros; apply GlobalTheory.exists_isUnit_mul_transpose_eq_of_posDef <;> assumption)

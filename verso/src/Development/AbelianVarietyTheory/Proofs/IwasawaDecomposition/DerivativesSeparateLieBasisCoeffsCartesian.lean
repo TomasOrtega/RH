@@ -19,6 +19,11 @@ namespace GlobalTheory.ArcLieCoord
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `ext1`. Simplify using `only [Over.comp_left, GlobalTheory.PowLie.zeroPt, GlobalTheory.PowLie.sc, Over.homMk_left]`. Rewrite using `[← spMap_comp]`. Use `congr 1`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations.
+
+Simplify using `[epsScaleR]`.
+-/
 theorem zeroPt_sc {S : Type} [CommRing S] (c : S) : GlobalTheory.PowLie.zeroPt S ≫ GlobalTheory.PowLie.sc c = GlobalTheory.PowLie.zeroPt S := by
   ext1
   simp only [Over.comp_left, GlobalTheory.PowLie.zeroPt, GlobalTheory.PowLie.sc, Over.homMk_left]
@@ -27,6 +32,11 @@ theorem zeroPt_sc {S : Type} [CommRing S] (c : S) : GlobalTheory.PowLie.zeroPt S
   refine RingHom.ext fun r => ?_
   simp [epsScaleR]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PowLie.isTangent_iff]`. Establish `e` using `map_prod (ReciprocityTheory.ChartRestriction.G.Geo.Tor.preHom (G := G') (GlobalTheory.PowLie.zeroPt S)) (fun k => GlobalTheory.PowLie.sc (c k) ≫ v k) Finset.univ`. Use `(e.trans ?_)` and prove the remaining obligations. Use `(Finset.prod_eq_one fun k _ => ?_).trans rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.PowLie.zeroPt S ≫ GlobalTheory.PowLie.sc (c k) ≫ v k = 1`.
+
+Rewrite using `[← Category.assoc, zeroPt_sc, (GlobalTheory.PowLie.isTangent_iff _).1 (hv k)]`. Both sides reduce to the same expression.
+-/
 theorem isTangent_prod {S : Type} [CommRing S] {G' : Over (Sp S)} [GrpObj G'] [IsCommMonObj G'] {n : ℕ}
     (v : Fin n → (epsR S ⟶ G')) (hv : ∀ k, IsTangent (v k)) (c : Fin n → S) :
     IsTangent (∏ k, GlobalTheory.PowLie.sc (c k) ≫ v k) := by
@@ -38,6 +48,17 @@ theorem isTangent_prod {S : Type} [CommRing S] {G' : Over (Sp S)} [GrpObj G'] [I
   rw [← Category.assoc, zeroPt_sc, (GlobalTheory.PowLie.isTangent_iff _).1 (hv k)]
   rfl
 
+/- English proof (translation)
+Introduce `S _ X x G G' _ _ _ φ h n v hv V hA hV b hb`. Use `set w₀ : epsR S ⟶ G' := ∏ k, GlobalTheory.PowLie.sc (b k) ≫ v k with hw₀`. Use `set w₁ : epsR S ⟶ G' := ∏ k, GlobalTheory.PowLie.sc ((0 : Fin n → S) k) ≫ v k with hw₁`. Establish `c₀ : IsLieComb b v w₀` using `(GlobalTheory.PowLie.isLieComb_iff_prod b v w₀).2 rfl`. Establish `c₁ : IsLieComb 0 v w₁` using `(GlobalTheory.PowLie.isLieComb_iff_prod 0 v w₁).2 rfl`.
+
+Establish `t₀ : IsTangent w₀` using `isTangent_prod v hv.1 b`. Establish `t₁ : IsTangent w₁` using `isTangent_prod v hv.1 0`. Establish `l₀` using `tan_le h w₀ t₀ V hV`. Establish `l₁` using `tan_le h w₁ t₁ V hV`. Establish `fst_eq : ∀ (w : epsR S ⟶ G'), IsTangent w → ∀ f : Γ(G.left, V), (valR (w.left ≫ φ) V f).fst = valR ((η[G']).left ≫ φ) V f`.
+
+Introduce `w hw f`. Establish `e1` using `GlobalTheory.HolHom.valR_spMap (TrivSqZeroExt.fstHom S S S).toRingHom (w.left ≫ φ) V (tan_le h w hw V hV) f`. Establish `e2 : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ w.left ≫ φ = (η[G']).left ≫ φ`. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ φ) hw`.
+
+Rewrite `e1` using `[e2]`. Rewrite using `[e1]`. Both sides reduce to the same expression. Establish `e : w₀.left ≫ φ = w₁.left ≫ φ`. Use `GlobalTheory.HolHom.point_ext hA l₀ l₁ fun f => ?_` and prove the remaining obligations.
+
+Use `TrivSqZeroExt.ext ((fst_eq w₀ t₀ f).trans (fst_eq w₁ t₁ f).symm) ?_` and prove the remaining obligations. Rewrite using `[comb_snd h v hv.1 b w₀ c₀ V hV f, comb_snd h v hv.1 0 w₁ c₁ V hV f, hb f]`. Simplify using the standard rewrite rules. Establish `hw : w₀ = w₁` using `ReciprocityTheory.ChartRestriction.G.Chart.inj_over h e`. Conclude with `(hv.2 w₀ t₀).unique c₀ (hw ▸ c₁)`.
+-/
 theorem sep : ∀ {S : Type} [CommRing S] {X : Scheme.{0}} {x : Sp S ⟶ X} {G : Over X} {G' : Over (Sp S)} [GrpObj G] [GrpObj G'] [IsCommMonObj G'] {φ : G'.left ⟶ G.left}, IsGrpPullback G' G x φ → ∀ {n : ℕ} (v : Fin n → (epsR S ⟶ G')), IsLieBasis v → ∀ {V : G.left.Opens}, IsAffineOpen V → ⊤ ≤ ((η[G']).left ≫ φ) ⁻¹ᵁ V → ∀ (b : Fin n → S), (∀ f : Γ(G.left, V), ∑ k, b k * (valR ((v k).left ≫ φ) V f).snd = 0) → b = 0 := by
   intro S _ X x G G' _ _ _ φ h n v hv V hA hV b hb
   set w₀ : epsR S ⟶ G' := ∏ k, GlobalTheory.PowLie.sc (b k) ≫ v k with hw₀

@@ -21,6 +21,13 @@ noncomputable section
 
 namespace GlobalTheory.KTClass
 
+/- English proof (translation)
+Establish `hGQ : ∀ g, g ∈ GQ V ↔ ∃ c, rat V c = g` using `fun g => by`. Rewrite using `[show GQ V = (rat V).range from (range_ratEmb ..).symm]`. Both sides reduce to the same expression. Establish `himg : (rat V) '' {δ | IsConj γ δ} = GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass (GQ V) (rat V γ)`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, hδ, rfl⟩`. Take `⟨c, rfl⟩` from `isConj_iff.1 hδ`. Conclude with `⟨rat V c⁻¹, (hGQ _).2 ⟨c⁻¹, rfl⟩, by simp [map_mul, map_inv, mul_assoc]⟩`. Introduce and unpack `⟨g, hg, rfl⟩`.
+
+Take `⟨c, rfl⟩` from `(hGQ g).1 hg`. Conclude with `⟨c⁻¹ * γ * c, isConj_iff.2 ⟨c⁻¹, by group⟩, by simp [map_mul, map_inv]⟩`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel, ← himg, tsum_image (fun y => f (x⁻¹ * y * x)) (ratEmb_injective _ _).injOn]`.
+-/
 theorem tsum_conj_eq_classKernel {D : D7} {V : HSp D} (γ : GF V) (f : GA D V → ℂ) (x : GA D V) :
     ∑' δ : {δ : GF V | IsConj γ δ}, f (x⁻¹ * rat V δ * x) =
       GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f x := by
@@ -37,6 +44,11 @@ theorem tsum_conj_eq_classKernel {D : D7} {V : HSp D} (γ : GF V) (f : GA D V �
   rw [GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel, ← himg,
     tsum_image (fun y => f (x⁻¹ * y * x)) (ratEmb_injective _ _).injOn]
 
+/- English proof (translation)
+Introduce `D V hPC lam S M T U μa μf μ fa ff hTD Φ K γ Tr x`. Take `⟨hodd, -, -, hnf, hμ, ha, hb⟩` from `hTD`. Establish `hH` using `(GlobalTheory.T.typeHypothesis_forms_agree D V T hnf).1`. Use `haveI : ∀ w, (μa w).IsHaarMeasure := hμ.haar_arch`. Use `haveI : ∀ v, (μf v).IsHaarMeasure := hμ.haar_loc`.
+
+Establish `hU : ∀ 𝔉 : IsoFlag V, 𝔉.Proper → GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.UnipIntegralsVanish 𝔉 (tensor D.sp.cm.sig V.gram fa ff)` using `fun 𝔉 h𝔉 => (hPC.2 D V hodd S M T hH U μa μf _ ⟨fa, ff, ha, hb, rfl⟩ 𝔉 h𝔉).1`. Establish `hcl : ∀ δ ∈ {δ : GF V | IsConj γ δ}, ∀ g, g * δ * g⁻¹ ∈ {δ : GF V | IsConj γ δ}` using `fun δ hδ g => (show IsConj γ δ from hδ).trans (isConj_iff.2 ⟨g, rfl⟩)`. Rewrite using `[GlobalTheory.T.truncated_kernel_orbit_sum D V Φ K _ hU _ hcl Tr x]`. Conclude with `tsum_conj_eq_classKernel γ _ x`.
+-/
 theorem kT_eq_classKernel : ∀ {D : D7} {V : HSp D}, GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.ParabolicAndConstTerm → ∀ {lam : D.what₂.Tau → Fin V.rank → ℤ} {S : D.what₂.Tau → SPar} {M : DSModel V S} {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V} {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)} {μ : Measure (GA D V)} {fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ} {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}, IsTestData V lam M T U μa μf μ fa ff → ∀ (Φ : WittFrame V) (K : Subgroup (GA D V)) (γ : GF V) (Tr : A0 (wittIndex V)) (x : GA D V), kT Φ K {δ | IsConj γ δ} (tensor D.sp.cm.sig V.gram fa ff) Tr x = classKernel (GQ V) (rat V γ) (tensor D.sp.cm.sig V.gram fa ff) x := by
   intro D V hPC lam S M T U μa μf μ fa ff hTD Φ K γ Tr x
   obtain ⟨hodd, -, -, hnf, hμ, ha, hb⟩ := hTD

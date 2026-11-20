@@ -9,5 +9,8 @@ open scoped TensorProduct
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.LiftSys GlobalTheory.Obs
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WedgeDiag.eq_zero_of_diag_additive | exact GlobalTheory.WedgeDiag.eq_zero_of_diag_additive | (intros; apply GlobalTheory.WedgeDiag.eq_zero_of_diag_additive <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exteriorPowerTwo_diagonal_additive_eq_zero_projective : ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [Module.Projective R M] (t : ⋀[R]^2 M), exteriorPower.map 2 (LinearMap.inl R M M + LinearMap.inr R M M) t = exteriorPower.map 2 (LinearMap.inl R M M) t + exteriorPower.map 2 (LinearMap.inr R M M) t → t = 0 := by
   first | exact @GlobalTheory.WedgeDiag.eq_zero_of_diag_additive | exact GlobalTheory.WedgeDiag.eq_zero_of_diag_additive | (intros; apply GlobalTheory.WedgeDiag.eq_zero_of_diag_additive <;> assumption)

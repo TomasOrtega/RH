@@ -12,6 +12,9 @@ open Formalism.MainNotions.S Formalism.MainNotions.BridgeLemma Formalism.L2.S.S7
 
 variable {X : CData} {n₀ : ℕ} {A : ℝ} {J : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Measure.map_map measurable_subtype_coe (measurable_const_mul g), Measure.map_map (measurable_const_mul _) measurable_subtype_coe]`. Both sides reduce to the same expression.
+-/
 theorem map_val_mul' {G : Type} [TopologicalSpace G] [Group G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] (K : Subgroup G) (g : K) (α : Measure K) :
     (α.map (fun x => g * x)).map Subtype.val = (α.map Subtype.val).map (fun x => (g : G) * x) := by

@@ -9,16 +9,73 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.MajPosCpx
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[← hR]`. Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+-/
 theorem gram_sub_eq {n r a b : ℕ} (J : Matrix (Fin n) (Fin n) ℂ) (X Y : Matrix (Fin n) (Fin r) ℂ)
     (f : Fin a → Fin r) (g : Fin b → Fin r) (R : Matrix (Fin a) (Fin b) ℂ)
     (hR : ∀ i j, (X.conjTranspose * J * Y) (f i) (g j) = R i j) :
     (X.submatrix id f).conjTranspose * J * (Y.submatrix id g) = R := by
   ext i j; rw [← hR]; simp [Matrix.mul_apply, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+-/
 theorem mul_submatrix_id {n r a : ℕ} (u : Matrix (Fin n) (Fin n) ℂ) (X : Matrix (Fin n) (Fin r) ℂ)
     (f : Fin a → Fin r) : u * X.submatrix id f = (u * X).submatrix id f := by
   ext i j; simp [Matrix.mul_apply]
 
+/- English proof (translation)
+Introduce `n r J hJ X Y hXX hYY hXY c ε hc l d h`. Use `set Dg : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal (fun i => if ε i then 1 else -1) with hDg`. Establish `hDD : Dg * Dg = 1`. Apply the tactic sequence `rw [hDg, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]; congr 1; funext i; split_ifs <;> norm_num`. Establish `hcc : c.1 * (c⁻¹).1 = 1` using `Units.mul_inv c`.
+
+Establish `hcc' : (c⁻¹).1 * c.1 = 1` using `Units.inv_mul c`. Establish `hcH : (c⁻¹).1.conjTranspose * (c.1).conjTranspose = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hcc, Matrix.conjTranspose_one]`. Establish `hJc : J = (c⁻¹).1.conjTranspose * Dg * (c⁻¹).1`. Establish `e : (c⁻¹).1.conjTranspose * Dg * (c⁻¹).1 = ((c⁻¹).1.conjTranspose * (c.1).conjTranspose) * J * (c.1 * (c⁻¹).1)`.
+
+Rewrite using `[← hc]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, hcH, hcc, Matrix.one_mul, Matrix.mul_one]`. Use `set θ : Matrix (Fin n) (Fin n) ℂ := c.1 * Dg * (c⁻¹).1 with hθ`. Establish `hθθ : θ * θ = 1`.
+
+Simplify using `only [hθ, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (c⁻¹).1 c.1, hcc', Matrix.one_mul, ← Matrix.mul_assoc Dg Dg, hDD, Matrix.one_mul, hcc]`. Establish `hQ : J * θ = (c⁻¹).1.conjTranspose * (c⁻¹).1`. Rewrite using `[hJc]`. Simplify using `only [hθ, Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc (c⁻¹).1 c.1, hcc', Matrix.one_mul, ← Matrix.mul_assoc Dg Dg, hDD, Matrix.one_mul]`. Establish `hQpd : (J * θ).PosDef`. Rewrite using `[hQ]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 (c⁻¹).isUnit)`. Use `set X₁ : Matrix (Fin n) (Fin l) ℂ := X.submatrix id fun j => ⟨j.val, by omega⟩ with hX₁`.
+
+Use `set Y₁ : Matrix (Fin n) (Fin l) ℂ := Y.submatrix id fun j => ⟨j.val, by omega⟩ with hY₁`. Use `set Xb : Matrix (Fin n) (Fin d) ℂ := X.submatrix id fun j => ⟨l + j.val, by omega⟩ with hXb`. Use `set Yb : Matrix (Fin n) (Fin d) ℂ := Y.submatrix id fun j => ⟨l + j.val, by omega⟩ with hYb`. Use `set X₂ : Matrix (Fin n) (Fin (l + d)) ℂ := X.submatrix id fun j => ⟨j.val, by omega⟩ with hX₂`. Use `set Y₂ : Matrix (Fin n) (Fin (l + d)) ℂ := Y.submatrix id fun j => ⟨j.val, by omega⟩ with hY₂`.
+
+Establish `w11 : X₁.conjTranspose * J * X₁ = 0` using `gram_sub_eq J X X _ _ 0 (fun i j => by rw [hXX]; rfl)`. Establish `w1b : X₁.conjTranspose * J * Xb = 0` using `gram_sub_eq J X X _ _ 0 (fun i j => by rw [hXX]; rfl)`. Establish `wbb : Xb.conjTranspose * J * Xb = 0` using `gram_sub_eq J X X _ _ 0 (fun i j => by rw [hXX]; rfl)`. Establish `v11 : X₁.conjTranspose * J * Y₁ = 1` using `gram_sub_eq J X Y _ _ 1 (fun i j => by rw [hXY]; simp [Matrix.one_apply, Fin.ext_iff])`. Establish `v1b : X₁.conjTranspose * J * Yb = 0` using `gram_sub_eq J X Y _ _ 0 (fun i j => by`.
+
+Rewrite using `[hXY, Matrix.one_apply, if_neg]`. Both sides reduce to the same expression. Simplify using `only [Fin.ext_iff]`. Use the proof step `omega)`. Establish `ybb : Yb.conjTranspose * J * Yb = 0` using `gram_sub_eq J Y Y _ _ 0 (fun i j => by rw [hYY]; rfl)`.
+
+Establish `vbb : Xb.conjTranspose * J * Yb = 1` using `gram_sub_eq J X Y _ _ 1 (fun i j => by rw [hXY]; simp [Matrix.one_apply, Fin.ext_iff])`. Establish `w22 : X₂.conjTranspose * J * X₂ = 0` using `gram_sub_eq J X X _ _ 0 (fun i j => by rw [hXX]; rfl)`. Establish `y22 : Y₂.conjTranspose * J * Y₂ = 0` using `gram_sub_eq J Y Y _ _ 0 (fun i j => by rw [hYY]; rfl)`. Establish `v22 : X₂.conjTranspose * J * Y₂ = 1` using `gram_sub_eq J X Y _ _ 1 (fun i j => by rw [hXY]; simp [Matrix.one_apply, Fin.ext_iff])`. Establish `w21 : X₂.conjTranspose * J * X₁ = 0` using `gram_sub_eq J X X _ _ 0 (fun i j => by rw [hXX]; rfl)`.
+
+Take `⟨u₂, A, hu₂J, hu₂X₁, hu₂Xb, hu₂Yb, hu₂v, hA⟩` from `GlobalTheory.T.exists_unipotent_unitary_shift_making_complement_orthogonal n l d J (J * θ) hJ hQpd X₁ Y₁ Xb Yb w11 w1b wbb v11 v1b ybb vbb`. Take `⟨u₁, hu₁J, hu₁X₂, hu₁v, hθX₂⟩` from `GlobalTheory.T.exists_unitary_fixing_mulVec_conj_eq_of_majorant n (l + d) J θ hJ hθθ hQpd X₂ Y₂ w22 y22 v22`. Establish `hu₁X₁ : u₁.1 * X₁ = X₁`. Establish `e : X₁ = X₂.submatrix id (fun j : Fin l => ⟨j.val, by omega⟩)` using `rfl`. Rewrite using `[e, mul_submatrix_id, hu₁X₂]`.
+
+Establish `hu₁Xb : u₁.1 * Xb = Xb`. Establish `e : Xb = X₂.submatrix id (fun j : Fin d => ⟨l + j.val, by omega⟩)` using `rfl`. Rewrite using `[e, mul_submatrix_id, hu₁X₂]`. Use `set u : GL (Fin n) ℂ := u₁ * u₂ with hu`. Establish `huv : u.1 = u₁.1 * u₂.1` using `Units.val_mul u₁ u₂`.
+
+Establish `huJ : (u.1).conjTranspose * J * u.1 = J`. Establish `e : (u₂.1).conjTranspose * (u₁.1).conjTranspose * J * (u₁.1 * u₂.1) = (u₂.1).conjTranspose * ((u₁.1).conjTranspose * J * u₁.1) * u₂.1` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[huv, Matrix.conjTranspose_mul, e, hu₁J, hu₂J]`. Establish `huX₁ : u.1 * X₁ = X₁` using `by rw [huv, Matrix.mul_assoc, hu₂X₁, hu₁X₁]`. Establish `huXb : u.1 * Xb = Xb + X₁ * A`.
+
+Rewrite using `[huv, Matrix.mul_assoc, hu₂Xb, Matrix.mul_add, hu₁Xb, ← Matrix.mul_assoc, hu₁X₁]`. Establish `huYb : u.1 * Yb = u₁.1 * Yb` using `by rw [huv, Matrix.mul_assoc, hu₂Yb]`. Establish `huP : ∀ v : Fin n → ℂ, Matrix.mulVec (X₂.conjTranspose * J) v = 0 → ∃ (w : Fin (l + d) → ℂ) (a : Fin l → ℂ), Matrix.mulVec u.1 v - v = Matrix.mulVec X₂ w + Matrix.mulVec X₁ a`. Introduce `v hv`. Establish `h1 : Matrix.mulVec (X₁.conjTranspose * J) v = 0`.
+
+Use function extensionality and compare the values at `i; exact congrFun hv ⟨i.val, by omega⟩`. Use `set a := Matrix.mulVec A (Matrix.mulVec (Yb.conjTranspose * J) v) with ha`. Establish `h2 : Matrix.mulVec (X₂.conjTranspose * J) (v + Matrix.mulVec X₁ a) = 0`. Rewrite using `[Matrix.mulVec_add, hv, Matrix.mulVec_mulVec, w21, Matrix.zero_mulVec, add_zero]`. Take `⟨w, hw⟩` from `hu₁v _ h2`.
+
+Use `⟨w, a, ?_⟩` and prove the remaining obligations. Rewrite using `[huv, ← Matrix.mulVec_mulVec, hu₂v v h1, ← hw]`. Normalize the expressions using the abelian group laws. Take `⟨N, hN, hNs, hNp⟩` from `GlobalTheory.T.hermitian_flag_unipotent_matrix_exists_sparse n r J X hXX l d h u.1 A huX₁ huXb huP`. Take `⟨hθX', hHpd⟩` from `GlobalTheory.T.hermitian_flag_complement_posDef_factorization n r J θ hJ hQpd X Y hXY l d h u₁.1 A hθX₂ hA`.
+
+Use `set H : Matrix (Fin d) (Fin d) ℂ := Xb.conjTranspose * (J * θ) * (Xb + X₁ * A) with hHdef`. Take `⟨y₀, hy₀⟩` from `GlobalTheory.T.posDef_exists_conjTranspose_mul_mul_eq_one' d H hHpd`. Establish `hθu : θ * u.1 * Xb = u.1 * Yb * H`. Rewrite using `[Matrix.mul_assoc, huXb, hθX', huYb]`. Establish `hy1 : (y₀⁻¹).1.conjTranspose * (y₀.1).conjTranspose = 1`.
+
+Rewrite using `[← Matrix.conjTranspose_mul, Units.mul_inv, Matrix.conjTranspose_one]`. Establish `hHy : H = (y₀⁻¹).1.conjTranspose * (y₀⁻¹).1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hy1, Units.mul_inv, Matrix.one_mul, Matrix.mul_one]`. Use `_ = (y₀⁻¹).1.conjTranspose * ((y₀.1).conjTranspose * H * y₀.1) * (y₀⁻¹).1 := by simp only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [hy₀, Matrix.mul_one]`. Establish `hHinv : H * (y₀.1 * (y₀.1).conjTranspose) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hHy]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [Units.inv_mul, Matrix.mul_one, hy1]`. Establish `huJ' : (u.1).conjTranspose * J = J * (u⁻¹).1`. Combine the equalities or inequalities in the displayed calculation. Establish `hθuY : θ * u.1 * Yb = u.1 * Xb * (y₀.1 * (y₀.1).conjTranspose)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hPX : (u.1).conjTranspose * (J * θ) * u.1 * Xb = J * Yb * ((y₀⁻¹).1.conjTranspose * (y₀⁻¹).1)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J * ((u⁻¹).1 * u.1) * Yb * H := by rw [huJ', hθu]; simp only [Matrix.mul_assoc]`. Use `_ = _ := by rw [Units.inv_mul, Matrix.mul_one, hHy]`.
+
+Establish `hPY : (u.1).conjTranspose * (J * θ) * u.1 * Yb = J * Xb * (y₀.1 * (y₀.1).conjTranspose)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J * ((u⁻¹).1 * u.1) * Xb * (y₀.1 * (y₀.1).conjTranspose) := by rw [huJ', hθuY]; simp only [Matrix.mul_assoc]`. Use `_ = _ := by rw [Units.inv_mul, Matrix.mul_one]`.
+
+Establish `hPH : ((u.1).conjTranspose * (J * θ) * u.1).conjTranspose = (u.1).conjTranspose * (J * θ) * u.1`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hQpd.1.eq]`. Simplify using `only [Matrix.mul_assoc]`. Use `⟨u, N, huJ, hN, hNs, fun v hv => hNp v hv, y₀, fun k hk => ?_⟩` and prove the remaining obligations. Introduce `Xb' Yb' m G M`.
+
+Establish `hG : G.conjTranspose * ((u.1).conjTranspose * (J * θ) * u.1) * G = (u.1).conjTranspose * (J * θ) * u.1` using `GlobalTheory.T.conjTranspose_mul_self_of_witt_frame_unitary n d J ((u.1).conjTranspose * (J * θ) * u.1) Xb Yb y₀ hJ hPH wbb ybb vbb hPX hPY k hk`. Use `show ((c⁻¹).1 * u.1 * G * (u⁻¹).1 * c.1).conjTranspose * ((c⁻¹).1 * u.1 * G * (u⁻¹).1 * c.1) = 1`. Establish `e1 : ((c⁻¹).1 * u.1 * G * (u⁻¹).1 * c.1).conjTranspose * ((c⁻¹).1 * u.1 * G * (u⁻¹).1 * c.1) = (c.1).conjTranspose * ((u⁻¹).1.conjTranspose * (G.conjTranspose * ((u.1).conjTranspose * ((c⁻¹).1.conjTranspose * (c⁻¹).1) * u.1) * G) * (u⁻¹).1) * c.1`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[e1, ← hQ, hG]`.
+
+Establish `e2 : (c.1).conjTranspose * ((u⁻¹).1.conjTranspose * ((u.1).conjTranspose * (J * θ) * u.1) * (u⁻¹).1) * c.1 = (c.1).conjTranspose * ((u.1 * (u⁻¹).1).conjTranspose * (J * θ) * (u.1 * (u⁻¹).1)) * c.1`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e2, Units.mul_inv, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one, hQ]`. Establish `e3 : (c.1).conjTranspose * ((c⁻¹).1.conjTranspose * (c⁻¹).1) * c.1 = ((c⁻¹).1 * c.1).conjTranspose * ((c⁻¹).1 * c.1)`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Rewrite using `[e3, hcc', Matrix.conjTranspose_one, Matrix.one_mul]`.
+-/
 theorem exists_unip_conj_unitary : ∀ (n r : ℕ) (J : Matrix (Fin n) (Fin n) ℂ), J.conjTranspose = J →
     ∀ (X Y : Matrix (Fin n) (Fin r) ℂ), X.conjTranspose * J * X = 0 → Y.conjTranspose * J * Y = 0 → X.conjTranspose * J * Y = 1 →
     ∀ (c : GL (Fin n) ℂ) (ε : Fin n → Bool), (c.1).conjTranspose * J * c.1 = Matrix.diagonal (fun i => if ε i then 1 else -1) →

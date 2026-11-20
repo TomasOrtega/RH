@@ -14,6 +14,13 @@ namespace GlobalTheory.LoopC.BetaUniq
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E}
 
+/- English proof (translation)
+Establish `hle : P.map (γ : S.V →ₗ[E] S.V) ≤ P`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hP x hx`. Establish `heq : P.map (γ : S.V →ₗ[E] S.V) = P` using `Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq γ P)`. Establish `hiso : ∀ x y, S.hT (γ x) (γ y) = S.hT x y` using `hγ`.
+
+Introduce `x hx`. Rewrite `hx`, the goal using `[Formalism.MainNotions.mem_orth_iff]`. Introduce `y hy`. Rewrite `hy` using `[← heq]`. Take `⟨y, hy, rfl⟩` from `hy`.
+
+Conclude with `(hiso y x).trans (hx y hy)`.
+-/
 theorem keeps_orth {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (P : Submodule E S.V)
     (hP : ∀ x ∈ P, γ x ∈ P) : ∀ x ∈ orth S P, γ x ∈ orth S P := by
   have hle : P.map (γ : S.V →ₗ[E] S.V) ≤ P := by
@@ -29,6 +36,9 @@ theorem keeps_orth {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.HermitianLat
   obtain ⟨y, hy, rfl⟩ := hy
   exact (hiso y x).trans (hx y hy)
 
+/- English proof (translation)
+Rewrite `h` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨b, hb, rfl⟩` from `h`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul E (g : 𝓞 E) b, map_natCast]`.
+-/
 theorem exists_of_mem_gsmul {Λ : Submodule (𝓞 E) S.V} {g : ℕ} {a : S.V}
     (h : a ∈ Ideal.span {(g : 𝓞 E)} • Λ) : ∃ l ∈ Λ, a = (g : E) • l := by
   rw [Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists] at h
@@ -36,16 +46,27 @@ theorem exists_of_mem_gsmul {Λ : Submodule (𝓞 E) S.V} {g : ℕ} {a : S.V}
   refine ⟨b, hb, ?_⟩
   rw [← algebraMap_smul E (g : 𝓞 E) b, map_natCast]
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap (𝓞 E) E) g, algebraMap_smul]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hl`.
+-/
 theorem gsmul_mem {Λ : Submodule (𝓞 E) S.V} (g : ℕ) {l : S.V} (hl : l ∈ Λ) :
     (g : E) • l ∈ Ideal.span {(g : 𝓞 E)} • Λ := by
   rw [← map_natCast (algebraMap (𝓞 E) E) g, algebraMap_smul]
   exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hl
 
+/- English proof (translation)
+Introduce `x hx y hy` and use `by rw [← hu, Formalism.HermitianLatticesTheory.dualBasic_mem_dual] at hy exact hy x hx`.
+-/
 theorem int_pair {Λ : Submodule (𝓞 E) S.V} (hu : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) :
     ∀ x ∈ Λ, ∀ y ∈ Λ, S.hT x y ∈ (1 : Submodule (𝓞 E) E) := fun x hx y hy => by
   rw [← hu, Formalism.HermitianLatticesTheory.dualBasic_mem_dual] at hy
   exact hy x hx
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[Formalism.MainNotions.mem_orth_iff]`. Use `⟨S.hT A.fl.z x / (-T'), ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.mem_orth_iff]`. Use `Formalism.MainNotions.hT_zero_of_mem_Xplus A.fl (fun a => ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub, map_smul, A.fl.z_orth, smul_zero, sub_zero]`. Conclude with `hx _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[map_sub, map_smul, A.fl.z_norm, smul_eq_mul, div_mul_cancel₀ _ (neg_ne_zero.2 hT), sub_self]`.
+-/
 theorem exists_sub_smul_mem_orth {r : ℕ} {T' : E} (A : LFlag S r T') (hT : T' ≠ 0) :
     ∀ x ∈ orth S (Xsp A), ∃ a : E, x - a • A.fl.z ∈ orth S (Xplus A) := by
   intro x hx
@@ -61,6 +82,55 @@ end GlobalTheory.LoopC.BetaUniq
 
 namespace GlobalTheory.LoopC.BetaUniq
 
+/- English proof (translation)
+Introduce `E _ _ _ S r T T' Λ g F A B β₁ β₂ hΛ hu hg hT' hpos hFA hFB h1a h1X h1z h1ι h2a h2X h2z h2ι`. Establish `hg0 : (g : E) ≠ 0` using `by exact_mod_cast (show g ≠ 0 by omega)`. Establish `hΛ₁ : ∀ x, β₁ x ∈ Λ ↔ x ∈ Λ` using `FrEqv.aut_mem_iff h1a`. Establish `hΛ₂ : ∀ x, β₂ x ∈ Λ ↔ x ∈ Λ` using `FrEqv.aut_mem_iff h2a`. Establish `hΛ₁' : ∀ x, β₁.symm x ∈ Λ ↔ x ∈ Λ` using `fun x => by`.
+
+Rewrite using `[← hΛ₁ (β₁.symm x), LinearEquiv.apply_symm_apply]`. Establish `hX₁ : ∀ x ∈ Xsp A, β₁ x ∈ Xsp B` using `fun x hx => h1X ▸ Submodule.mem_map_of_mem hx`. Establish `hX₂ : ∀ x ∈ Xsp A, β₂ x ∈ Xsp B` using `fun x hx => h2X ▸ Submodule.mem_map_of_mem hx`. Establish `hX₁' : ∀ y ∈ Xsp B, β₁.symm y ∈ Xsp A` using `fun y hy => by`. Rewrite `hy` using `[← h1X]`.
+
+Take `⟨x, hx, rfl⟩` from `hy`. Simplify using `using hx`. Use `set δ : S.V ≃ₗ[E] S.V := β₁⁻¹ * β₂ with hδ_def`. Establish `hδ_apply : ∀ x, δ x = β₁.symm (β₂ x)` using `fun x => by`. Rewrite using `[hδ_def, LinearEquiv.mul_apply, LinearEquiv.coe_inv]`.
+
+Establish `hδ : δ ∈ Formalism.HermitianLatticesTheory.isom S.hT` using `mul_mem (inv_mem h1a.1) h2a.1`. Establish `hδX : ∀ x ∈ Xsp A, δ x ∈ Xsp A` using `fun x hx => by`. Rewrite using `[hδ_apply]`. Conclude with `hX₁' _ (hX₂ x hx)`. Establish `hδz : δ A.fl.z - A.fl.z ∈ Xsp A`.
+
+Establish `e : δ A.fl.z - A.fl.z = β₁.symm (β₂ A.fl.z - β₁ A.fl.z)`. Rewrite using `[hδ_apply, map_sub, LinearEquiv.symm_apply_apply]`. Rewrite using `[e]`. Use `hX₁' _ ?_` and prove the remaining obligations. Use `(Xsp B).sub_mem h2z h1z` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hδXp : ∀ x ∈ Xplus A, δ x ∈ Xplus A`. Introduce `x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hb`. Rewrite using `[map_add, map_smul]`. Use `(Xplus A).add_mem (Submodule.mem_sup_left (hδX a ha)) ?_` and prove the remaining obligations. Establish `e : c • δ A.fl.z = c • (δ A.fl.z - A.fl.z) + c • A.fl.z` using `by rw [← smul_add]; congr 1; abel`. Rewrite using `[e]`.
+
+Conclude with `(Xplus A).add_mem (Submodule.mem_sup_left ((Xsp A).smul_mem c hδz)) (Submodule.mem_sup_right (Submodule.smul_mem _ c (Submodule.mem_span_singleton_self _)))`. Use `set U : Submodule E S.V := orth S (Xplus A) with hU_def`. Establish `hδU : ∀ x ∈ U, δ x ∈ U` using `keeps_orth hδ _ hδXp`. Establish `hXU : Xsp A ≤ U` using `Formalism.MainNotions.X_le_orth_Xplus A.fl`. Establish `hrad : ∀ x ∈ Xsp A, ∀ y ∈ U, S.hT x y = 0` using `fun x hx y hy => (Formalism.MainNotions.mem_orth_iff _ _).1 hy x (Submodule.mem_sup_left hx)`.
+
+Establish `hrad' : ∀ y ∈ U, ∀ x ∈ Xsp A, S.hT y x = 0` using `fun y hy x hx => Formalism.MainNotions.hT_swap_zero (hrad x hx y hy)`. Use `set M : Submodule (𝓞 E) S.V := Λ ⊓ toO S U with hM_def`. Establish `hM : ∀ x, x ∈ M ↔ x ∈ Λ ∧ x ∈ U` using `fun x => Iff.rfl`. Use `haveI : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.mpr hΛ.fg`. Establish `hMfg : M.FG` using `Submodule.FG.of_le_of_isNoetherian (T := Λ) inf_le_left`.
+
+Establish `hint` using `int_pair hu`. Establish `hUXA : U ≤ orth S (Xsp A)` using `fun y hy => by`. Rewrite `hy`, the goal using `[Formalism.MainNotions.mem_orth_iff]`. Conclude with `fun x hx => hy x (Submodule.mem_sup_left hx)`. Establish `hcong : ∀ x ∈ M, ∃ y ∈ M, δ x - x - (g : E) • y ∈ Xsp A`.
+
+Introduce `x hx`. Take `⟨hxΛ, hxU⟩` from `(hM x).1 hx`. Take `⟨l', hl'Λ, hl'⟩` from `GlobalTheory.Mass.RowPerp.exists_sub_mem S.herm S.nondeg hΛ hu (orth S (Xsp F)) ((g : E)⁻¹ • x) (fun y hyΛ hy => by`. Establish `hyX : y ∈ Xsp F` using `GlobalTheory.Mass.RowPerp.mem_of_perp_perp S.nondeg (Xsp F) y fun w hw => Formalism.MainNotions.hT_swap_zero (hy w ((Formalism.MainNotions.mem_orth_iff _ _).2 hw))`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hFA (Submodule.mem_inf.2 ⟨hyΛ, hyX⟩))`.
+
+Take `⟨l, hlΛ, rfl⟩` from `exists_of_mem_gsmul ha`. Take `⟨t, ht⟩` from `Submodule.mem_one.1 (hint x hxΛ l hlΛ)`. Use `Submodule.mem_one.2 ⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ S.hT, LinearMap.smul_apply, map_add, map_smul, hrad' x hxU b (Submodule.mem_inf.1 hb).2, add_zero, starRingEnd_apply, star_inv₀, star_natCast, smul_eq_mul, smul_eq_mul, ht, inv_mul_cancel_left₀ hg0])`. Use `set l : S.V := x - (g : E) • l' with hl_def`.
+
+Establish `hlΛ : l ∈ Λ`. Rewrite using `[hl_def, ← map_natCast (algebraMap (𝓞 E) E) g, algebraMap_smul]`. Conclude with `Λ.sub_mem hxΛ (Λ.smul_mem _ hl'Λ)`. Establish `hlF : l ∈ Lrep Λ F`. Use `Submodule.mem_inf.2 ⟨hlΛ, ?_⟩` and prove the remaining obligations.
+
+Establish `e : l = (g : E) • ((g : E)⁻¹ • x - l')`. Rewrite using `[hl_def, smul_sub, smul_smul, mul_inv_cancel₀ hg0, one_smul]`. Rewrite using `[e]`. Conclude with `(orth S (Xsp F)).smul_mem _ hl'`. Establish `hlx : l - x ∈ NgX Λ g F A`.
+
+Establish `e : l - x = (g : E) • (-l')` using `by rw [hl_def, smul_neg]; abel`. Rewrite using `[e]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (gsmul_mem g (Λ.neg_mem hl'Λ)))`. Establish `hxA : x ∈ Lrep Λ A` using `Submodule.mem_inf.2 ⟨hxΛ, hUXA hxU⟩`. Establish `hb1 : l - β₁ x ∈ NgX Λ g F B` using `(h1ι x hxA l hlF).1 hlx`.
+
+Establish `hb2 : l - β₂ x ∈ NgX Λ g F B` using `(h2ι x hxA l hlF).1 hlx`. Establish `hdiff : β₂ x - β₁ x ∈ Ideal.span {(g : 𝓞 E)} • Λ ⊔ XLam Λ B`. Establish `hle : NgX Λ g F B ≤ Ideal.span {(g : 𝓞 E)} • Λ ⊔ XLam Λ B` using `sup_le (sup_le le_sup_left hFB) le_sup_right`. Use `(NgX Λ g F B).sub_mem hb1 hb2` as an intermediate fact. Use `hle ?_` and prove the remaining obligations.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hdiff`. Take `⟨lam, hlam, rfl⟩` from `exists_of_mem_gsmul ha`. Establish `hbA : β₁.symm b ∈ Xsp A` using `hX₁' b (Submodule.mem_inf.1 hb).2`.
+
+Establish `key : δ x - x - (g : E) • β₁.symm lam = β₁.symm b`. Establish `e : b = (β₂ x - β₁ x) - (g : E) • lam` using `by rw [← hab]; abel`. Rewrite using `[e, map_sub, map_sub, map_smul, LinearEquiv.symm_apply_apply, hδ_apply]`. Use `⟨β₁.symm lam, (hM _).2 ⟨(hΛ₁' lam).2 hlam, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : β₁.symm lam = (g : E)⁻¹ • (δ x - x - β₁.symm b)`.
+
+Rewrite using `[← key, sub_sub_cancel, smul_smul, inv_mul_cancel₀ hg0, one_smul]`. Rewrite using `[e]`. Conclude with `U.smul_mem _ (U.sub_mem (U.sub_mem (hδU x hxU) hxU) (hXU hbA))`. Rewrite using `[key]`. Conclude with `hbA`.
+
+Establish `hmain : ∀ x ∈ M, δ x - x ∈ Xsp A` using `GlobalTheory.isom_sub_mem_of_congr E S.V S.hT U (Xsp A) M δ g S.herm hXU hrad hpos hMfg (fun x hx => ((hM x).1 hx).2) hδ hδX hg hcong`. Establish `hext : ∀ x ∈ orth S (Xsp A), δ x - x ∈ Xsp A`. Introduce `x hx`. Take `⟨a, hy⟩` from `exists_sub_smul_mem_orth A hT' x hx`. Use `set y := x - a • A.fl.z with hy_def`.
+
+Take `⟨d, hd0, hd⟩` from `GlobalTheory.Mass.RowPerp.exists_smul_mem hΛ y`. Establish `hdM : d • y ∈ M` using `(hM _).2 ⟨hd, by`. Rewrite using `[← algebraMap_smul E d y]`. Conclude with `U.smul_mem _ hy⟩`. Establish `h1` using `hmain _ hdM`.
+
+Rewrite `h1` using `[← algebraMap_smul E d y, map_smul, ← smul_sub]`. Establish `hyX : δ y - y ∈ Xsp A` using `(Submodule.smul_mem_iff _ ((map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).mpr hd0)).1 h1`. Establish `e : δ x - x = a • (δ A.fl.z - A.fl.z) + (δ y - y)`. Rewrite using `[hy_def, map_sub, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `(Xsp A).add_mem ((Xsp A).smul_mem a hδz) hyX`. Introduce `x hx`. Establish `e : β₁ x - β₂ x = -(β₁ (δ x - x))`. Rewrite using `[hδ_apply, map_sub, LinearEquiv.apply_symm_apply, neg_sub]`.
+
+Rewrite using `[e]`. Conclude with `(Xsp B).neg_mem (hX₁ _ (hext x hx))`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : HSpace E) (r : ℕ) (T T' : E)
     (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (F : LFlag S r T) (A B : LFlag S r T')
     (β₁ β₂ : S.V ≃ₗ[E] S.V), Submodule.IsLattice E Λ → Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ → 3 ≤ g → T' ≠ 0 →

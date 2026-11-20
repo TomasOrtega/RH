@@ -203,6 +203,9 @@ import Formalism.RealPlaceAnalysis.StatementC
 
 namespace Bl.DualWeylPullback
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp only [MvPolynomial.aeval_C, MvPolynomial.map_C, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => simp only [map_mul, MvPolynomial.map_X, MvPolynomial.aeval_X, hp]`.
+-/
 private lemma map_aeval_nat {O K σ τ : Type} [CommRing O] [CommRing K] (φ : O →+* K)
     (h : σ → MvPolynomial τ O) (f : MvPolynomial σ O) :
     MvPolynomial.map φ (MvPolynomial.aeval h f) =
@@ -212,6 +215,11 @@ private lemma map_aeval_nat {O K σ τ : Type} [CommRing O] [CommRing K] (φ : O
   | add p q hp hq => simp only [map_add, hp, hq]
   | mul_X p v hp => simp only [map_mul, MvPolynomial.map_X, MvPolynomial.aeval_X, hp]
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.rowAct`. Rewrite using `[map_aeval_nat]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Simplify using `[map_sum]`.
+-/
 private lemma rowAct_map {O K : Type} [CommRing O] [CommRing K] (φ : O →+* K) {k n : ℕ}
     (A : Matrix (Fin k) (Fin k) O) (f : MvPolynomial (Fin k × Fin n) O) :
     MvPolynomial.map φ (Formalism.GradedWeylDivisibility.rowAct O A f) = Formalism.GradedWeylDivisibility.rowAct K (A.map φ) (MvPolynomial.map φ f) := by
@@ -222,6 +230,11 @@ private lemma rowAct_map {O K : Type} [CommRing O] [CommRing K] (φ : O →+* K)
   funext v
   simp [map_sum]
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.colAddGen`. Rewrite using `[map_aeval_nat]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private lemma colAddGen_map {O K : Type} [CommRing O] [CommRing K] (φ : O →+* K) {k n : ℕ}
     (l j : Fin n) (f : MvPolynomial (Fin k × Fin n) O) :
     MvPolynomial.map φ (Formalism.GradedWeylDivisibility.colAddGen O l j f) = Formalism.GradedWeylDivisibility.colAddGen K l j (MvPolynomial.map φ f) := by
@@ -232,6 +245,13 @@ private lemma colAddGen_map {O K : Type} [CommRing O] [CommRing K] (φ : O →+*
   funext v
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.dualWeyl at hf ⊢`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero, MvPolynomial.mem_weightedHomogeneousSubmodule] at hf ⊢`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `d hd`. Conclude with `hf.1 (by`.
+
+Rewrite using `[MvPolynomial.coeff_map]`. Introduce `h0`. Conclude with `hd (hφ (by rw [h0, map_zero])))`. Introduce `l j hlj`. Apply `MvPolynomial.map_injective φ hφ` to reduce the goal to its premises.
+
+Rewrite using `[colAddGen_map, MvPolynomial.map_rename]`. Conclude with `hf.2 l j hlj`.
+-/
 private lemma dualWeyl_pull {O K : Type} [CommRing O] [CommRing K] (φ : O →+* K)
     (hφ : Function.Injective φ) {r n : ℕ} (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) O)
     (hf : MvPolynomial.map φ f ∈ Formalism.GradedWeylDivisibility.dualWeyl K r n ν) : f ∈ Formalism.GradedWeylDivisibility.dualWeyl O r n ν := by
@@ -249,6 +269,13 @@ private lemma dualWeyl_pull {O K : Type} [CommRing O] [CommRing K] (φ : O →+*
     rw [colAddGen_map, MvPolynomial.map_rename]
     exact hf.2 l j hlj
 
+/- English proof (translation)
+Establish `hc : ∀ c : Fin k, ∃ a : Fin k → O, ∑ i, a i • (fun r => g r i) = fun r => g' r c`. Introduce `c`. Establish `h1 : (fun r => g' r c) ∈ Formalism.MainNotions.G.colSpan O g'` using `Submodule.subset_span ⟨c, rfl⟩`. Conclude with `(Submodule.mem_span_range_iff_exists_fun O).1 (h h1)`. Use `choose a ha using hc`.
+
+Use `⟨Matrix.of fun i c => a c i, ?_⟩` and prove the remaining obligations. Use extensionality with `r c`. Establish `h2` using `congrFun (ha c) r`. Simplify using `only [Finset.sum_apply, Pi.smul_apply] at h2`. Rewrite using `[← h2, Matrix.mul_apply]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Simplify using `[Algebra.smul_def, mul_comm]`.
+-/
 private lemma span_mat {O K : Type} [CommRing O] [Field K] [Algebra O K] {k : ℕ}
     (g g' : Matrix (Fin k) (Fin k) K) (h : Formalism.MainNotions.G.colSpan O g' ≤ Formalism.MainNotions.G.colSpan O g) :
     ∃ A : Matrix (Fin k) (Fin k) O, g' = g * A.map (algebraMap O K) := by
@@ -266,6 +293,13 @@ private lemma span_mat {O K : Type} [CommRing O] [Field K] [Algebra O K] {k : �
   intro i _
   simp [Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `span_mat g g' h.ge`. Take `⟨B, hB⟩` from `span_mat g' g h.le`. Use `⟨A, ?_, hA⟩` and prove the remaining obligations. Establish `h1 : g * (A * B).map (algebraMap O K) = g * 1`. Rewrite using `[Matrix.map_mul, ← Matrix.mul_assoc, ← hA, ← hB, Matrix.mul_one]`.
+
+Establish `h2 : (A * B).map (algebraMap O K) = 1`. Establish `h3` using `congrArg (fun M => g⁻¹ * M) h1`. Simplify `h3` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul g hg]`. Establish `h3 : A * B = 1`. Apply `Matrix.map_injective hφ` to reduce the goal to its premises.
+
+Simplify using `using h2`. Establish `h4 : A.det * B.det = 1` using `by rw [← Matrix.det_mul, h3, Matrix.det_one]`. Conclude with `⟨⟨A.det, B.det, h4, by rw [mul_comm]; exact h4⟩, rfl⟩`.
+-/
 private lemma span_unit {O K : Type} [CommRing O] [Field K] [Algebra O K]
     (hφ : Function.Injective (algebraMap O K)) {k : ℕ} (g g' : Matrix (Fin k) (Fin k) K)
     (hg : IsUnit g.det) (h : Formalism.MainNotions.G.colSpan O g = Formalism.MainNotions.G.colSpan O g') :
@@ -284,6 +318,17 @@ private lemma span_unit {O K : Type} [CommRing O] [Field K] [Algebra O K]
   have h4 : A.det * B.det = 1 := by rw [← Matrix.det_mul, h3, Matrix.det_one]
   exact ⟨⟨A.det, B.det, h4, by rw [mul_comm]; exact h4⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) G.coeffs`. Establish `hb0 : (b : O) ≠ 0` using `nonZeroDivisors.coe_ne_zero b`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hw`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hr : algebraMap O K (w ^ n) • G ∈ Set.range (MvPolynomial.map (algebraMap O K))`.
+
+Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_coe, MvPolynomial.mem_coeffs_iff]`. Take `⟨d, hd, rfl⟩` from `hx`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`.
+
+Establish `hd' : G.coeff d ≠ 0`. Introduce `h0`. Apply `MvPolynomial.mem_support_iff.1 hd` to reduce the goal to its premises. Rewrite using `[MvPolynomial.coeff_smul, h0, smul_zero]`. Take `⟨y, hy⟩` from `hb _ (MvPolynomial.coeff_mem_coeffs _ hd')`.
+
+Establish `hu1 : algebraMap O K (↑u⁻¹ : O) * algebraMap O K (↑u : O) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Use `⟨(↑u⁻¹ : O) * y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hy, Algebra.smul_def, hu, map_mul]`. Take the linear combination `(algebraMap O K (w ^ n) * G.coeff d) * hu1`.
+
+Take `⟨G0, h0⟩` from `hr`. Conclude with `⟨G0, h0⟩`.
+-/
 private lemma clear_den {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] (w : O) (hw : Irreducible w) {σ : Type} (G : MvPolynomial σ K) :
     ∃ n : ℕ, ∃ G0 : MvPolynomial σ O,
@@ -311,6 +356,19 @@ private lemma clear_den {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
   obtain ⟨G0, h0⟩ := hr
   exact ⟨G0, h0⟩
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ w hw m mu hmu g hg F hF`. Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `hG : g.det ^ mu (Fin.last m) • Formalism.GradedWeylDivisibility.rowAct K g F ∈ Formalism.GradedWeylDivisibility.dualWeyl K (m + 1) (m + 1) (Formalism.MainNotions.G.nuOf mu)` using `Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable K _ _ _ g F hF)`. Take `⟨n, G0, hG0⟩` from `clear_den w hw (g.det ^ mu (Fin.last m) • Formalism.GradedWeylDivisibility.rowAct K g F)`. Establish `hG0m : G0 ∈ Formalism.GradedWeylDivisibility.dualWeyl O (m + 1) (m + 1) (Formalism.MainNotions.G.nuOf mu)` using `dualWeyl_pull _ hinj _ G0 (by rw [hG0]; exact Submodule.smul_mem _ _ hG)`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.G.H0`. Rewrite using `[if_pos hmu]`. Simplify using `only [Submodule.mem_iInf]`. Introduce and unpack `g' ⟨hg', hspan⟩`.
+
+Take `⟨A, hA, rfl⟩` from `span_unit hinj g g' hg hspan`. Rewrite using `[Formalism.GradedWeylDivisibility.nablaLTwMem O K m mu _ hg']`. Take `⟨U, hU⟩` from `hA`. Use `⟨(↑(U ^ mu (Fin.last m)) : O) • Formalism.GradedWeylDivisibility.rowAct O A G0, Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable O _ _ _ A G0 hG0m), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map (algebraMap O K) ((↑(U ^ mu (Fin.last m)) : O) • Formalism.GradedWeylDivisibility.rowAct O A G0) = _`.
+
+Establish `hz : algebraMap O K ↑(U ^ mu (Fin.last m)) = (algebraMap O K ↑U) ^ mu (Fin.last m)`. Establish `h5 : ((Units.map (algebraMap O K).toMonoidHom (U ^ mu (Fin.last m)) : Kˣ) : K) = algebraMap O K ↑(U ^ mu (Fin.last m))` using `rfl`. Rewrite using `[← h5, map_zpow, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Establish `hdet : (A.map (algebraMap O K)).det = algebraMap O K A.det`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, rowAct_map, hG0, Matrix.det_mul, hdet, ← hU, hz, ← Formalism.GradedWeylDivisibility.rowActMul K (m + 1) (m + 1) (A.map (algebraMap O K)) g, AlgHom.comp_apply, ← algebraMap_smul K (w ^ n) F]`. Simplify using `only [map_smul, smul_smul]`. Use `congr 1`.
+
+Rewrite using `[mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem goal1 :
   ∀ {O K : Type} [inst : CommRing.{0} O] [inst_1 : IsDomain.{0} O] [IsDiscreteValuationRing.{0} O] [inst_3 : Field.{0} K]
   [inst_4 : Algebra.{0, 0} O K] [IsFractionRing.{0, 0} O K] (w : O),

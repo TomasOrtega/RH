@@ -9,6 +9,9 @@ namespace Formalism.MainNotions.Proposition5Numerics
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideCounting Formalism.MainNotions.TestSideWords
 open Formalism.MainNotions.G.WittFrameLocaliserOrders Formalism.MainNotions.G.symbolGeneratorData
 
+/- English proof (translation)
+Establish `hk2 : 1 ≤ k ^ 2` using `by nlinarith`. Establish `h1 : k ≤ k ^ 3` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_cube_mul (k N : ℝ) (hk : 1 ≤ k) (hN : 1 ≤ N) : k ≤ k ^ 3 * N := by
   have hk2 : 1 ≤ k ^ 2 := by nlinarith
   have h1 : k ≤ k ^ 3 := by nlinarith
@@ -16,6 +19,13 @@ theorem le_cube_mul (k N : ℝ) (hk : 1 ≤ k) (hN : 1 ≤ N) : k ≤ k ^ 3 * N 
     _ = k ^ 3 * 1 := (mul_one _).symm
     _ ≤ k ^ 3 * N := mul_le_mul_of_nonneg_left hN (by positivity)
 
+/- English proof (translation)
+Establish `hB` using `hyps_basic hC1 H`. Take `⟨h1, h2, _, _, _, _, _, _, _, _, h11, h12⟩` from `H`. Establish `hr1 : 1 ≤ r` using `by omega`. Establish `hp1 : (1 : ℝ) ≤ (p : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ p)`. Establish `hk1 : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ m + 1)`.
+
+Establish `hN1 : (1 : ℝ) ≤ (TT.card : ℝ)` using `by exact_mod_cast hB.N_pos`. Establish `hrr : (1 : ℝ) ≤ (r : ℝ)` using `by exact_mod_cast hr1`. Establish `hQ1 : (1 : ℝ) ≤ (p : ℝ) ^ goodG' r de h x` using `one_le_pow₀ hp1`. Establish `hcc : (1 : ℝ) ≤ (cStar : ℝ) + ((r : ℝ) * TT.card * c0 + 2 * r * n' * cpp)`. Establish `h8' : (1 : ℝ) ≤ (cStar : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ cStar)`.
+
+Establish `: (0 : ℝ) ≤ (r : ℝ) * TT.card * c0 + 2 * r * n' * cpp` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨z1, _, _⟩` from `factor_le_product_seven C (((m + 1 : ℕ) : ℝ) ^ 3) ((r : ℝ) ^ 2) (TT.card : ℝ) (((p : ℝ) ^ goodG' r de h x) ^ 5) ((cStar : ℝ) + ((r : ℝ) * TT.card * c0 + 2 * r * n' * cpp)) Y hC1 (one_le_pow₀ hk1) (one_le_pow₀ hrr) hN1 (one_le_pow₀ hQ1) hcc (by linarith [hB.two_le_Y])`. Conclude with `le_trans (le_cube_mul _ _ hk1 hN1) (le_trans z1 h12)`.
+-/
 theorem k_le_a {C : ℝ} (hC1 : 1 ≤ C) {p n' m r : ℕ} {TT : Finset (Fin n')} {L₁ L₂ : ℕ} {de h x : ℝ}
     {lam0 : Fin n' → Fin (m + 1) → ℤ} {aT bT : Fin n' → ℤ} {a Y : ℝ} {cpp c0 Dp cStar : ℕ}
     (H : Hyps C p n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar) : ((m + 1 : ℕ) : ℝ) ≤ a := by
@@ -40,6 +50,13 @@ section Geo
 
 variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {L₁ N₁ : ℕ}
 
+/- English proof (translation)
+Unfold `posU`. Use `split_ifs with h`. Conclude with `LL_sub_letters hV hr j _ (llPos_mem Fr j u h)`. Establish `hi : u - (Fr.LLset j).card < r` using `by omega`. Establish `h1` using `hV.2.2.2.1 (j - 1)`.
+
+Rewrite `h1` using `[sub_add_cancel]`. Establish `h2` using `frame_row_monotone Fr L₁ N₁ hV (j - 1) (r - 1) (by omega)`. Establish `h3` using `frame_row_monotone Fr L₁ N₁ hV j _ hi`. Establish `h4` using `frame_entry_le_last Fr L₁ N₁ hV j _ hi`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `Frames.letters`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨by omega, h4⟩, (hV.2.2.2.2.1 j _ hi).1⟩`. Unfold `Frames.IsW`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem posU_mem' (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (u : ℕ) (hu : u < (Fr.LLset j).card + r) :
     posU Fr (Fr.LLset j).card j u ∈ Fr.letters j ∧ ¬ Fr.IsW j (posU Fr (Fr.LLset j).card j u) := by
   unfold posU
@@ -58,6 +75,11 @@ theorem posU_mem' (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (u : ℕ) (
     · unfold Frames.IsW
       omega
 
+/- English proof (translation)
+Establish `hu' : u < (Fr.LLset (segZ j)).card + r` using `by rw [← hnL j]; exact hu`. Take `⟨hx1, hx2⟩` from `posU_mem' hV hr (segZ j) u hu'`. Rewrite `hx1`, `hx2` using `[← hnL j]`. Establish `hB` using `Bo_ge hV hr p hp deg a hdeg (segZ j) _ hx1 hx2`. Establish `hp' : (0 : ℝ) < (p : ℝ)` using `by exact_mod_cast (by omega : 0 < p)`.
+
+Establish `hpos : 0 < Bo p Fr deg (segZ j) (posU Fr (nL j) (segZ j) u)` using `lt_of_lt_of_le (by positivity) hB`. Unfold `slU`. Conclude with `sl_lt_real _ Y (k : ℝ) _ rfl hpos hY (by exact_mod_cast hk)`.
+-/
 theorem sl_lt_Bo (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (p : ℕ) (hp : 1 ≤ p) (deg : Fin n' → ℕ) (a : ℝ) (ha : 0 < a)
     (hdeg : ∀ s ∈ Fr.TT, a ≤ (deg s : ℝ)) (Y : ℝ) (k : ℕ) (hY : 2 ≤ Y) (hk : 1 ≤ k) {J : ℕ} (nL : ZMod J → ℕ)
     (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (u : ℕ) (hu : u < nL j + r) :
@@ -78,6 +100,25 @@ section At
 variable {p n' m r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] {TT : Finset (Fin n')} {L₁ L₂ N₁ G' : ℕ} {F : Frames n' r}
   {lam0 : Fin n' → Fin (m + 1) → ℤ} {a : ℝ}
 
+/- English proof (translation)
+Establish `hV` using `hF.2.1`. Establish `hp2 : 2 ≤ p` using `hpF.out.two_le`. Establish `hp1 : (1 : ℝ) < (p : ℝ)` using `by exact_mod_cast (by omega : 1 < p)`. Establish `ha2` using `hnb.two_le_a`. Introduce `rho dPl dNo hBk bp bn hbp hbn`.
+
+Establish `hsum : ∀ x, ((dPl x + dNo x : ℕ) : ℝ) ≤ 2 * a`. Introduce `x`. Establish `htop : posOf n' (posTL F x) ∈ TT`. Use `(posTL_seg F hV hr hnL x).2.2` as an intermediate fact. Rewrite `this` using `[hF.1]`. Then use the resulting hypothesis.
+
+Establish `e` using `hBk.2 x`. Establish `e2 : dT TT lam0 (posOf n' (posTL F x)) = flatDeg lam0 (posOf n' (posTL F x))`. Unfold `dT`. Rewrite using `[if_pos htop]`. Rewrite `e` using `[e2]`.
+
+Establish `hl : 1 ≤ lowP F p x` using `Nat.one_le_pow _ _ (by omega)`. Establish `e3 : dPl x + dNo x ≤ flatDeg lam0 (posOf n' (posTL F x))`. Use `Nat.mul_le_mul_right (dPl x + dNo x) hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e4 : ((dPl x + dNo x : ℕ) : ℝ) ≤ (flatDeg lam0 (posOf n' (posTL F x)) : ℝ)` using `by exact_mod_cast e3`.
+
+Use `(hfd _ htop).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdp : ∀ x, (dPl x : ℝ) ≤ 2 * a`. Introduce `x`. Use `hsum x` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Establish `h0 : (0 : ℝ) ≤ (dNo x : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdn : ∀ x, (dNo x : ℝ) ≤ 2 * a`. Introduce `x`.
+
+Use `hsum x` as an intermediate fact. Move the coercions through the operations in `at this`. Establish `h0 : (0 : ℝ) ≤ (dPl x : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard : Fintype.card (TL J nL r) ≤ TT.card`.
+
+Use `card_TL_le F hV hr hJ hnL` as an intermediate fact. Rewrite `this` using `[hF.1]`. Then use the resulting hypothesis. Establish `A` using `DnoOf_le (K := K) p hp2 nL dNo TT.card (m + 1) a hr (by omega) hcard hdn ha2 hnb.fourN hka`. Establish `B` using `mult_level_real p dPl bp hbp TT.card a ha2 hcard hdp`. Establish `Cc` using `mult_level_real p dNo bn hbn TT.card a ha2 hcard hdn`.
+
+Establish `hrk : (r : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : r ≤ m + 1)`. Establish `hKk : (K : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : K ≤ m + 1)`. Establish `hk1 : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ m + 1)`. Conclude with `size_fin (TT.card : ℝ) ((m + 1 : ℕ) : ℝ) (r : ℝ) (K : ℝ) (Real.logb p a) _ _ _ (Nat.cast_nonneg _) (by linarith [hnb.one_le_log]) hk1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hrk hKk A B Cc`.
+-/
 theorem sizeAt_of [hpF : Fact p.Prime] (hk : m + 1 = r + K) (hF : FramesOK TT L₁ L₂ N₁ G' F) (hr : 1 ≤ r)
     (hnb : NB p m r TT.card a) (hka : ((m + 1 : ℕ) : ℝ) ≤ a)
     (hfd : ∀ s ∈ TT, a ≤ (flatDeg lam0 s : ℝ) ∧ (flatDeg lam0 s : ℝ) ≤ 2 * a)

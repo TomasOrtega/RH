@@ -22,6 +22,15 @@ noncomputable section
 
 namespace GlobalTheory.TraceAtG
 
+/- English proof (translation)
+Take `⟨rfl, h0, hX, hz, hY⟩` from `hF`. Establish `eA : mt B.V (B.d.emb0 (B.o.emb (h, 1))) ⬝ (B.d.j0 ⬝ B.o.jA) = B.d.j0 ⬝ B.o.jA ⬝ mt B.A h`. Rewrite using `[cancel₂ (B.d.wittDecomp_anisotropicEmbedding_inclAnisotropic _), Matrix.mul_assoc, B.o.emb_jA, Matrix.mul_assoc]`. Establish `eB : mt B.V (B.d.emb0 (B.o.emb (h, 1))) ⬝ (B.d.j0 ⬝ B.o.jB) = B.d.j0 ⬝ B.o.jB`. Rewrite using `[cancel₂ (B.d.wittDecomp_anisotropicEmbedding_inclAnisotropic _), Matrix.mul_assoc, B.o.emb_jB, GlobalTheory.MixModel.mt_one, Matrix.mul_one]`.
+
+Establish `rA : B.d.j0 ⬝ B.o.jA = rat (B.d.i₀ * B.o.iA)` using `(rat_mul _ _).symm`. Establish `rB : B.d.j0 ⬝ B.o.jB = rat (B.d.i₀ * B.o.iB)` using `(rat_mul _ _).symm`. Rewrite `eA` using `[rA]`. Rewrite `eB` using `[rB]`. Establish `hint : (mt B.V (B.d.emb0 (B.o.emb (h, 1)))).map p.π * ((rat (B.d.i₀ * B.o.iA)).map p.π * FA.β) = (rat (B.d.i₀ * B.o.iA)).map p.π * FA.β * g₀.val`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul, eA, Matrix.map_mul, hh]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[FA.γβ, Matrix.mul_one]`. Use `GlobalTheory.LocGrp.eq_embX F _ g₀ ((rat (B.d.i₀ * B.o.iA)).map p.π * FA.β) h0 hint fun j => ?_` and prove the remaining obligations. Break down `lt_trichotomy j.val ρ with hj | hj | hj` into its components or cases.
+
+Conclude with `GlobalTheory.LocGrp.fix_col (GlobalTheory.LocGrp.map_fix p (B.d.wittDecomp_anisotropicEmbedding_inclX _)) _ ⟨j.val, hj⟩ (hX _ j rfl)`. Use `GlobalTheory.LocGrp.fix_vec (GlobalTheory.LocGrp.map_fix p eB) s (Witness.prH p ∘ B.ζ) fun r => (hz j hj r).trans (congrArg (s * ·) ?_)` and prove the remaining obligations. Rewrite using `[vecB, Matrix.mulVec_mulVec]`. Conclude with `RingHom.map_mulVec (Witness.prH p) _ _ r`. Conclude with `GlobalTheory.LocGrp.fix_col (GlobalTheory.LocGrp.map_fix p (B.d.wittDecomp_anisotropicEmbedding_inclY _)) _ ⟨2 * ρ - j.val, by omega⟩ (hY _ j (by simp only; omega))`.
+-/
 theorem mat_embA_besFrame {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {ρ : ℕ} (B : BesLev D ρ) (s : k) {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
     (FA : Frame k B.A.rank n) (F : Frame k B.V.rank (n ⊕ Fin c)) (hF : p.IsBesFrame B s FA F) (h : GA D B.A)
@@ -56,6 +65,35 @@ end
 noncomputable section
 open GlobalTheory.FamTrace
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat row col hc κ hκ`. Establish `hmi : ∀ i, 0 + 2 * (I.rec7 l Z).R.rS + 2 = (I.rec7 l Z).R.m` using `fun i => by`. Establish `h1` using `(a.G i).hs`. Establish `h2` using `(a.G i).S.odd`. Unfold `Ranks.rS`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hbes : ∀ i, (ofSplit (a.G i).q).IsBesFrame a.d.B.lev ((a.G i).sc 0) ((a.G i).FX 0 (Nat.zero_le _)) ((a.G i).FY 0 ((a.G i).s + 1) (Nat.zero_add _))`. Introduce `i`. Establish `hm` using `hmi i`. Establish `key : ∀ Bl : BesLev (I.rec7 l Z) (I.rec7 l Z).R.rS, Bl = (commOf (pk W) u a.g).B 0 _ hm → ∀ (FA : Frame (a.G i).k Bl.A.rank (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) 0)) (F : Frame (a.G i).k Bl.V.rank (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) 0 ⊕ Fin ((a.G i).s …`.
+
+Introduce and unpack `Bl rfl FA F h1 h2`. Consider the cases of `h1`. Consider the cases of `h2`. Conclude with `(a.G i).bes 0 _ hm _ _`. Conclude with `key _ (ha.bot.1 hm) _ _ HEq.rfl HEq.rfl`.
+
+Establish `hmat : ∀ i g, IsMatrixInFrameOfXZero (a.G i) κ g → (a.G i).Mat 0 ((a.G i).s + 1) (Nat.zero_add _) (embA a.d.B.d a.d.B.o κ) (GlobalTheory.RootEx.embX ((a.G i).s + 1) g)` using `fun i g hg => GlobalTheory.TraceAtG.mat_embA_besFrame (ofSplit (a.G i).q) a.d.B.lev _ _ _ (hbes i) κ g hg`. Establish `huniq : ∀ i x m m', (a.G i).Mat 0 ((a.G i).s + 1) (Nat.zero_add _) x m → (a.G i).Mat 0 ((a.G i).s + 1) (Nat.zero_add _) x m' → m = m'`. Introduce `i x m m' h1 h2`. Unfold `GLoc.Mat at h1 h2`. Rewrite `h2` using `[h1]`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Use `congrArg (fun M => ((a.G i).FY 0 ((a.G i).s + 1) (Nat.zero_add _)).γ * M * ((a.G i).FY 0 ((a.G i).s + 1) (Nat.zero_add _)).β) h2` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, Frame.γβ, Matrix.one_mul] at this`. Simplify `this` using `only [Matrix.mul_assoc, Frame.γβ, Matrix.mul_one]`. Establish `hex : ∀ i, ∃ g, IsMatrixInFrameOfXZero (a.G i) κ g` using `fun i => ⟨coordHom _ (a.G i).q.pr _ _ ((a.G i).FX 0 (Nat.zero_le _)).βγ ((a.G i).FX 0 (Nat.zero_le _)).γβ κ, (eq_coordHom_iff _ _ _ _ _ _ κ _).2 rfl⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hlev`. Establish `htr : TraceAtG a κ` using `fun i g hg => hlev i _ (hmat i g hg)`. Use `⟨?_, htr⟩` and prove the remaining obligations. Establish `hsd` using `(ha.x 0 (Nat.zero_le _)).sd`.
+
+Establish `hloc : ∀ i, GlobalTheory.FinPl.Moves ((I.rec7 l Z).sp.X 0) κ (a.g.x 0).L (a.g.x 0).L (· = (a.G i).q.v)`. Introduce `i`. Take `⟨g, hg⟩` from `hex i`. Establish `hlev0` using `htr i g hg`. Set `β` to `GlobalTheory.SplitLat.frameOf (a.G i).q ((I.rec7 l Z).sp.X 0) _ ((a.G i).FX 0 (Nat.zero_le _))`.
+
+Establish `hIs : β.IsLat (a.g.x 0).L (GlobalTheory.SplitLat.stdLat (a.G i).k _)` using `fun x => by`. Rewrite using `[GlobalTheory.SplitLat.mem_std]`. Conclude with `(a.G i).latX 0 (Nat.zero_le _) x`. Establish `key` using `GlobalTheory.T.stabilizes_selfDual_iff_frame_matrix_stabilizes _ (a.G i).k (a.G i).q ((I.rec7 l Z).sp.X 0) _ β (a.g.x 0).L _ hsd hIs κ`. Use `key.2 ?_` and prove the remaining obligations.
+
+Establish `hreg` using `((Chain.ofType_regular _ _ _ _ _ : ((a.G i).S.T (Fin (I.rec7 l Z).R.t)).Regular).2.2 0 ((a.G i).s + 1) (Nat.zero_add _)).2.2`. Establish `hst` using `hreg hlev0`. Establish `hK` using `GlobalTheory.LevX.mem_KO_of_embX_mem_stabLat (a.G i).S.ϖ (stdOrd (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) (l := (a.G i).s + 1) 0 ((a.G i).s + 1) (Nat.zero_add _)) hst`. Establish `hcoord : coordHom ((I.rec7 l Z).sp.X 0) (a.G i).q.pr β.b β.b' β.bb' β.b'b κ = g` using `((eq_coordHom_iff _ _ _ _ _ _ κ g).1 hg).symm`. Rewrite using `[hcoord]`.
+
+Conclude with `GlobalTheory.LevX.smul_stdLat_of_mem_KO hK`. Introduce `y hy`. Establish `hlat` using `((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua (I.rec7 l Z) (fun p => p ∈ a.v.gP)).2 ((I.rec7 l Z).sp.X 0)).2.2.2 (a.g.x 0).L`. Establish `hy' : ∀ j, (mt ((I.rec7 l Z).sp.X 0) κ *ᵥ y) j ∈ GlobalTheory.FinPl.idAt (I.rec7 l Z) (fun p => p ∈ a.v.gP)` using `fun j => by`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Conclude with `Ideal.sum_mem _ fun t _ => Ideal.mul_mem_left _ _ (hy t)`. Establish `hey : ∀ v e, e ∈ GlobalTheory.FinPl.intAt (I.rec7 l Z) (· = v) → ∀ j, (e • y) j ∈ GlobalTheory.FinPl.idAt (I.rec7 l Z) (· = v)` using `fun v e he j => by simpa [smul_eq_mul] using Ideal.mul_mem_right (y j) _ he.1`. Rewrite using `[hlat y hsd.1, hlat _ hsd.1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩`.
+
+Use `⟨hy', fun v hv e he => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(ha.gpin.places v).1 hv`. Rewrite using `[← Matrix.mulVec_smul]`. Conclude with `(hloc i _ (hey _ e he)).1 (h2 _ hv e he)`. Introduce and unpack `⟨-, h2⟩`.
+
+Use `⟨hy, fun v hv e he => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(ha.gpin.places v).1 hv`. Use `h2 _ hv e he` as an intermediate fact. Rewrite `this` using `[← Matrix.mulVec_smul]`. Conclude with `(hloc i _ (hey _ e he)).2 this`.
+
+Introduce and unpack `⟨-, htr⟩ i m hm'`. Take `⟨g, hg⟩` from `hex i`. Rewrite using `[huniq i _ _ _ hm' (hmat i g hg)]`. Conclude with `htr i g hg`.
+-/
 theorem GlobalTheory.TraceAtG.levAtG_embA_iff : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), (GlobalTheory.FamTrace.LevAtG a (embA a.d.B.d a.d.B.o κ) ↔ GlobalTheory.FinPl.Moves ((I.rec7 l Z).sp.X 0) κ (a.g.x 0).L (a.g.x 0).L (fun p => p ∈ a.v.gP) ∧ GlobalTheory.FamTrace.TraceAtG a κ) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat row col hc κ hκ
   have hmi : ∀ i, 0 + 2 * (I.rec7 l Z).R.rS + 2 = (I.rec7 l Z).R.m := fun i => by

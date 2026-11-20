@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hq` using `q.2`. Simplify using `only [GlobalTheory.LoopV.roots, Finset.mem_filter] at hq`. Establish `h` using `hq.2.1`. Establish `h2` using `q.1.2.2`. Rewrite `h` using `[Fin.lt_def]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem root_fst_lt (w : Point D.host.E (D.R.rS + 1)) (q : GlobalTheory.LoopV.roots (ptMat w)) : q.1.1.1 < D.R.rS := by
   have hq := q.2
   simp only [GlobalTheory.LoopV.roots, Finset.mem_filter] at hq
@@ -27,6 +32,9 @@ def ratCoord (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u' : D.what₂.Wor
     (Formalism.L2.SG.HidaSetting.rv X.B.I (X.pl.symm τ) (X.fR ⟨q.1.1.1, root_fst_lt w q⟩))
     (uMat ((γ⁻¹ * (s⁻¹ * y * s) * γ) (X.pl.symm τ)) *ᵥ Formalism.L2.SG.RealObj.frm X u' 1 (X.pl.symm τ) q.1.2)
 
+/- English proof (translation)
+Unfold `ratCoord Formalism.L2.SG.HidaSetting.hJ`. Use `continuous_pi fun τ => continuous_pi fun q => ?_` and prove the remaining obligations. Use `Continuous.dotProduct continuous_const (Continuous.matrix_mulVec continuous_const ?_)` and prove the remaining obligations. Use `Continuous.matrix_mulVec ?_ continuous_const` and prove the remaining obligations. Conclude with `Units.continuous_val.comp (continuous_subtype_val.comp ((continuous_apply _).comp ((continuous_const.mul ((continuous_const.mul continuous_id).mul continuous_const)).mul continuous_const)))`.
+-/
 theorem ratCoord_cont (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1))
     (γ s : X.B.I.Ginf) : Continuous (ratCoord X u' w γ s) := by
   unfold ratCoord Formalism.L2.SG.HidaSetting.hJ

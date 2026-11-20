@@ -36,6 +36,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 
 namespace GlobalTheory.CompanionTheory.WeilLaw
 
+/- English proof (translation)
+Introduce `D n ψ χ θ V μ ω hω Φ p hp a ha g`. Take `⟨m, v, b, e, hm, hv⟩` from `LeftInvSect.exists_levi_unip hp a ha`. Establish `e' : ω (p * g) Φ = ω m (ω v (ω g Φ))`. Rewrite using `[e, map_mul, map_mul]`. Both sides reduce to the same expression.
+
+Establish `z1 : ∀ a : Mx D n n, ((0 : Mx D V.rank n) ⬝ a : Mx D V.rank n) = 0` using `fun a => Matrix.zero_mul a`. Establish `z2 : StdUnn.inner V (0 : Mx D V.rank n) 0 = 0` using `by rw [StdUnn.inner, adj_zero, Matrix.zero_mul]`. Establish `hs : s0 V n + (n : ℂ) / 2 = (V.rank : ℂ) / 2`. Rewrite using `[s0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e', hω.levi m _ hm, z1, hω.unip v b hv, z2, hs]`. Simplify using `[halfTr]`.
+-/
 theorem weil_parabolic_law : ∀ (D : D7) (n : ℕ) (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D) (V : HSp D)
     (μ : Measure (Mx D V.rank n)) (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)),
     IsWeilSch ψ χ θ V μ ω → ∀ (Φ : schwartzA θ V.rank n),

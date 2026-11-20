@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.LiftClassSum
 
+/- English proof (translation)
+Introduce `D X E Y i j b t hxi hQ y hy`. Take `⟨y', hy', he⟩` from `GlobalTheory.T.goodProjector_thetaLift_of_baseLevelLaw D X E Y i j b t hxi hQ y hy`. Take `⟨F, hF, hs⟩` from `GlobalTheory.T.thetaLift_extremalVector_eq_classSum D X E Y i j b t hxi hQ y' hy'`. Conclude with `⟨F, hF, he.trans (hs.trans (LinearMap.congr_fun (sum_eq_classSum_ωP D X E Y i j b t hxi hQ) F).symm)⟩`.
+-/
 theorem exists_projected_thetaLift_eq_sum : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (t : X.T),
     X.R.xi t = (Y.Z.ρ.B i j b).de.chi → X.R.Q t = (Y.Z.ρ.B i j b).de.Q → ∀ y : (X.R.HV j t).H,
     (∀ (h : Bridge.Gf (Vc D j)) (k : (Y.Z.ρ.B i j b).levJ (Y.Z.ρ.tw i b 0 ∅ 1)),

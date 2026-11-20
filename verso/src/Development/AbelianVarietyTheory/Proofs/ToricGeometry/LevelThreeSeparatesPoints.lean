@@ -12,6 +12,11 @@ namespace GlobalTheory.ThetaSeparation
 open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hd`. Take `⟨x₀, hx₀⟩` from `h0`. Rewrite `hd` using `[dense_iff_inter_open]`. Simplify using `only [not_forall] at hd`. Take `⟨U, hUo, hUne, hU⟩` from `hd`.
+
+Establish `hEq : Set.EqOn f (fun _ => (0 : ℂ)) Set.univ` using `_root_.GlobalTheory.SCV.eqOn_of_eqOn_open (g := fun _ => (0 : ℂ)) isOpen_univ isPreconnected_univ hf.differentiableOn (differentiableOn_const 0) hUo hUne (Set.subset_univ _) (fun y hy => by`. Assume the negation of the conclusion as `hne`. Conclude with `hU ⟨y, hy, hne⟩)`. Conclude with `hx₀ (hEq (Set.mem_univ x₀))`.
+-/
 theorem _root_.GlobalTheory.ThetaSeparation.dense_ne_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {f : E → ℂ} (hf : Differentiable ℂ f) (h0 : ∃ x, f x ≠ 0) :
     Dense {x | f x ≠ 0} := by
@@ -30,6 +35,11 @@ theorem _root_.GlobalTheory.ThetaSeparation.dense_ne_zero {E : Type*} [NormedAdd
 
 open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [_root_.ReciprocityTheory.PTheta.eC_zero]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih, ← _root_.ReciprocityTheory.PTheta.eC_add]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma eC_pow_eq_eC_natCast_mul (m : ℕ) (X : ℂ) : _root_.ReciprocityTheory.PTheta.eC X ^ m = _root_.ReciprocityTheory.PTheta.eC ((m : ℂ) * X) := by
   induction m with
   | zero => simp [_root_.ReciprocityTheory.PTheta.eC_zero]
@@ -41,6 +51,9 @@ private lemma eC_pow_eq_eC_natCast_mul (m : ℕ) (X : ℂ) : _root_.ReciprocityT
 
 open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
+/- English proof (translation)
+Establish `d₁` using `_root_.GlobalTheory.ThetaSeparation.dense_ne_zero h₁ e₁`. Establish `d₂` using `_root_.GlobalTheory.ThetaSeparation.dense_ne_zero h₂ e₂`. Establish `o₁ : IsOpen {x | f₁ x ≠ 0}` using `isOpen_ne_fun h₁.continuous continuous_const`. Take `⟨x, hx₁, hx₂⟩` from `(d₁.inter_of_isOpen_left d₂ o₁).nonempty`. Conclude with `⟨x, hx₁, hx₂⟩`.
+-/
 private lemma exists_common_ne_zero_of_differentiable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {f₁ f₂ : E → ℂ} (h₁ : Differentiable ℂ f₁)
     (h₂ : Differentiable ℂ f₂) (e₁ : ∃ x, f₁ x ≠ 0) (e₂ : ∃ x, f₂ x ≠ 0) :
@@ -53,6 +66,43 @@ private lemma exists_common_ne_zero_of_differentiable {E : Type*} [NormedAddComm
 
 open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
+/- English proof (translation)
+Establish `hk : ((N - 3 : ℕ) : ℂ) = (N : ℂ) - 3`. Rewrite using `[Nat.cast_sub hN]`. Evaluate the numerical expressions. Take `⟨x₀, hx₀⟩` from `hne`. Establish `shiftA : ∀ u, ∃ b, t (u + b) ≠ 0` using `fun u => ⟨x₀ - u, by rwa [add_sub_cancel]⟩`.
+
+Establish `shiftB : ∀ u v, ∃ b, t (u + -(v + b)) ≠ 0` using `fun u v => ⟨u - x₀ - v, by convert hx₀ using 2; abel⟩`. Establish `hdA : ∀ u, Differentiable ℂ (fun b => t (u + b))` using `fun u => by fun_prop`. Establish `hdB : ∀ u v, Differentiable ℂ (fun b => t (u + -(v + b)))` using `fun u v => by fun_prop`. Establish `hF : ∀ a b d, t (z + a) * t (z + b) * t (z + -(((N - 3 : ℕ) : ℂ) • d + a + b)) * t (z + d) ^ (N - 3) = γ * (t (z' + a) * t (z' + b) * t (z' + -(((N - 3 : ℕ) : ℂ) • d + a + b)) * t (z' + d) ^ (N - 3))`. Introduce `a b d`.
+
+Use `hf (fun y => t (y + a) * t (y + b) * t (y + -(((N - 3 : ℕ) : ℂ) • d + a + b)) * t (y + d) ^ (N - 3)) ⟨by fun_prop, ?_⟩` and prove the remaining obligations. Introduce `n n' y`. Establish `key : ∀ s, t (y + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n' + s) = _root_.ReciprocityTheory.PTheta.eC (-(1 : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.Reci …`. Introduce `s`. Rewrite using `[← hq n n' (y + s)]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Simplify using `only [key, mul_pow, eC_pow_eq_eC_natCast_mul]`. Establish `harg : -(1 : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (y + a)) + -(1 : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntV …`. Simplify using `only [dotProduct_add, dotProduct_neg, dotProduct_smul, smul_eq_mul]`.
+
+Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← harg, _root_.ReciprocityTheory.PTheta.eC_add, _root_.ReciprocityTheory.PTheta.eC_add, _root_.ReciprocityTheory.PTheta.eC_add]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd₁, hd₂⟩` from `exists_common_ne_zero_of_differentiable (hdA z) (hdA z') (shiftA z) (shiftA z')`.
+
+Take `⟨a, ha⟩` from `shiftA z`. Take `⟨b, hb₁, hb₂⟩` from `exists_common_ne_zero_of_differentiable (hdA z) (hdB z (((N - 3 : ℕ) : ℂ) • d + a)) (shiftA z) (shiftB z _)`. Establish `hγ : γ ≠ 0`. Introduce `h0`. Use `hF a b d` as an intermediate fact.
+
+Rewrite `this` using `[h0, zero_mul]`. Conclude with `mul_ne_zero (mul_ne_zero (mul_ne_zero ha hb₁) hb₂) (pow_ne_zero _ hd₁) this`. Use `set Den : (Fin g → ℂ) → (Fin g → ℂ) → ℂ := fun b x => t (z + b) * t (z + -(((N - 3 : ℕ) : ℂ) • d + (x - z') + b)) * t (z + d) ^ (N - 3) with hDen`. Use `set Num : (Fin g → ℂ) → (Fin g → ℂ) → ℂ := fun b x => γ * (t (z' + b) * t (z' + -(((N - 3 : ℕ) : ℂ) • d + (x - z') + b)) * t (z' + d) ^ (N - 3)) with hNum`. Establish `hDenD : ∀ b, Differentiable ℂ (Den b)`.
+
+Introduce `b`. Simplify using `only [hDen]`. Use `fun_prop`. Establish `hNumD : ∀ b, Differentiable ℂ (Num b)`. Introduce `b`.
+
+Simplify using `only [hNum]`. Use `fun_prop`. Establish `hRel : ∀ b x, t (x + (z - z')) * Den b x = t x * Num b x`. Introduce `b x`. Establish `h` using `hF (x - z') b d`.
+
+Establish `e₁ : z + (x - z') = x + (z - z')` using `by abel`. Establish `e₂ : z' + (x - z') = x` using `by abel`. Rewrite `h` using `[e₁, e₂]`. Simplify using `only [hDen, hNum]`. Take the linear combination `h`.
+
+Establish `hChoice : ∀ x, ∃ b, Den b x ≠ 0 ∧ Num b x ≠ 0`. Introduce `x`. Take `⟨b₁, h₁, h₁'⟩` from `exists_common_ne_zero_of_differentiable (hdA z) (hdA z') (shiftA z) (shiftA z')`. Take `⟨b₂, h₂, h₂'⟩` from `exists_common_ne_zero_of_differentiable (hdB z (((N - 3 : ℕ) : ℂ) • d + (x - z'))) (hdB z' (((N - 3 : ℕ) : ℂ) • d + (x - z'))) (shiftB z _) (shiftB z' _)`. Take `⟨b, hb, hb'⟩` from `exists_common_ne_zero_of_differentiable (f₁ := fun b => t (z + b) * t (z' + b)) (f₂ := fun b => t (z + -(((N - 3 : ℕ) : ℂ) • d + (x - z') + b)) * t (z' + -(((N - 3 : ℕ) : ℂ) • d + (x - z') + b))) (by fun_prop) (by fun_prop) ⟨b₁, mul_ne_zero h₁ h₁'⟩ ⟨b₂, mul_ne_zero h₂ h₂'⟩`.
+
+Take `⟨hb₁, hb₂⟩` from `mul_ne_zero_iff.mp hb`. Take `⟨hb₁', hb₂'⟩` from `mul_ne_zero_iff.mp hb'`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hDen]`. Conclude with `mul_ne_zero (mul_ne_zero hb₁ hb₁') (pow_ne_zero _ hd₁)`.
+
+Simplify using `only [hNum]`. Conclude with `mul_ne_zero hγ (mul_ne_zero (mul_ne_zero hb₂ hb₂') (pow_ne_zero _ hd₂))`. Use `choose B hB using hChoice`. Establish `hdense` using `_root_.GlobalTheory.ThetaSeparation.dense_ne_zero ht ⟨x₀, hx₀⟩`. Establish `cross : ∀ b b' x, Num b x * Den b' x = Num b' x * Den b x`.
+
+Introduce `b b'`. Establish `hfun : (fun x => Num b x * Den b' x) = (fun x => Num b' x * Den b x)` using `Continuous.ext_on hdense (((hNumD b).mul (hDenD b')).continuous) (((hNumD b').mul (hDenD b)).continuous) (by`. Introduce `x hx`. Establish `hx' : t x ≠ 0` using `hx`. Establish `r₁` using `hRel b x`.
+
+Establish `r₂` using `hRel b' x`. Apply `mul_left_cancel₀ hx'` to reduce the goal to its premises. Take the linear combination `Den b x * r₂ - Den b' x * r₁)`. Introduce `x`. Conclude with `congrFun hfun x`.
+
+Use `⟨fun x => Num (B x) x / Den (B x) x, ?_, fun x => div_ne_zero (hB x).2 (hB x).1, ?_⟩` and prove the remaining obligations. Introduce `y`. Establish `hev : (fun x => Num (B y) x / Den (B y) x) =ᶠ[𝓝 y] (fun x => Num (B x) x / Den (B x) x)` using `by filter_upwards [(hDenD (B y)).continuous.continuousAt.eventually_ne (hB y).1] with x hx`. Rewrite using `[div_eq_div_iff hx (hB x).1]`. Conclude with `cross (B y) (B x) x`.
+
+Establish `hquot : DifferentiableAt ℂ (fun x => Num (B y) x / Den (B y) x) y`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(hNumD (B y) y).mul ((hDenD (B y) y).inv (hB y).1)`. Conclude with `hquot.congr_of_eventuallyEq hev.symm`. Introduce `x`.
+
+Establish `r` using `hRel (B x) x`. Use `show t (x + (z - z')) = Num (B x) x / Den (B x) x * t x`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (hB x).1]`. Take the linear combination `r`.
+-/
 private lemma exists_multiplier_of_level_sections_lemma {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
     {t : (Fin g → ℂ) → ℂ} (ht : Differentiable ℂ t)
     (hq : ∀ (n n' : Fin g → ℤ) x, t (x + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') =
@@ -182,6 +232,11 @@ private lemma exists_multiplier_of_level_sections_lemma {g : ℕ} {τ : Matrix (
 open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
 
+/- English proof (translation)
+Introduce `hA hB g τ hτ N hN z z' γ hf`. Take `⟨⟨htd, hq⟩, hne⟩` from `hA g τ hτ`. Establish `hne' : ∃ x, _root_.ReciprocityTheory.PTheta.theta 0 0 x τ ≠ 0`. Take `⟨x, hx⟩` from `Function.ne_iff.mp hne`. Conclude with `⟨x, hx⟩`.
+
+Take `⟨h, hd, hnz, hrel⟩` from `exists_multiplier_of_level_sections_lemma (t := fun x => _root_.ReciprocityTheory.PTheta.theta 0 0 x τ) htd hq hne' hN hf`. Conclude with `hB g τ hτ (z - z') h hd hnz hrel`.
+-/
 theorem _root_.GlobalTheory.ThetaSeparation.level_three_separates_points :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → (Differentiable ℂ (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') = _root_.ReciprocityTheory.PTheta.eC (-(1 : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ z)) * (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) z) ∧ (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) ≠ 0) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → ∀ (w : Fin g → ℂ) (h : (Fin g → ℂ) → ℂ), Differentiable ℂ h → (∀ z, h z ≠ 0) → (∀ z, _root_.ReciprocityTheory.PTheta.theta 0 0 (z + w) τ = h z * _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) → w ∈ _root_.ReciprocityTheory.PTheta.periodLattice τ) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → ∀ N : ℕ, 3 ≤ N → ∀ (z z' : Fin g → ℂ) (γ : ℂ), (∀ f : (Fin g → ℂ) → ℂ, (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') = _root_.ReciprocityTheory.PTheta.eC (-(N : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ z)) * f z) → f z = γ * f z') → z - z' ∈ _root_.ReciprocityTheory.PTheta.periodLattice τ) := by
   intro hA hB g τ hτ N hN z z' γ hf

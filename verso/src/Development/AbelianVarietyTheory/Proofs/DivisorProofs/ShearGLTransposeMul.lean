@@ -29,56 +29,98 @@ def dilGL (t : kˣ) : GL (R ⊕ T) k :=
     rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; rcases i with i | i <;> simp, by
     rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; rcases i with i | i <;> simp⟩
 
+/- English proof (translation)
+Simplify using `[shear]`.
+-/
 @[simp] theorem toRows₁_shear (c : Matrix T R k) (Y : Matrix (R ⊕ T) D k) : (shear c Y).toRows₁ = Y.toRows₁ := by
   simp [shear]
 
+/- English proof (translation)
+Simplify using `[dil]`.
+-/
 @[simp] theorem toRows₁_dil (t : k) (Y : Matrix (R ⊕ T) D k) : (dil t Y).toRows₁ = Y.toRows₁ := by
   simp [dil]
 
+/- English proof (translation)
+Simplify using `[stack]`.
+-/
 @[simp] theorem toRows₁_stack (Y₁ : Matrix R D k) (C : Matrix T R k) : (stack Y₁ C).toRows₁ = Y₁ := by
   simp [stack]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem submatrix_inl_eq (Y : Matrix (R ⊕ T) D k) (τ : R → D) :
     Y.submatrix Sum.inl τ = Y.toRows₁.submatrix id τ := rfl
 
+/- English proof (translation)
+Simplify using `[shear, stack, Matrix.add_mul]`.
+-/
 theorem shear_stack (c : Matrix T R k) (Y₁ : Matrix R D k) (C : Matrix T R k) :
     shear c (stack Y₁ C) = stack Y₁ (C + c) := by
   simp [shear, stack, Matrix.add_mul]
 
+/- English proof (translation)
+Simplify using `[dil, stack, smul_mul]`.
+-/
 theorem dil_stack (t : k) (Y₁ : Matrix R D k) (C : Matrix T R k) :
     dil t (stack Y₁ C) = stack Y₁ (t • C) := by
   simp [dil, stack, smul_mul]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) j <;> simp [shear]`.
+-/
 theorem shear_sub_self (c : Matrix T R k) (Y : Matrix (R ⊕ T) D k) :
     shear c Y - Y = fromRows 0 (c * Y.toRows₁) := by
   ext (i | i) j <;> simp [shear]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) j <;> simp [shearGL, shear, fromBlocks_transpose, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, add_comm]`.
+-/
 theorem shearGL_transpose_mul (c : Matrix T R k) (Y : Matrix (R ⊕ T) D k) :
     (shearGL c).valᵀ * Y = shear c Y := by
   ext (i | i) j <;> simp [shearGL, shear, fromBlocks_transpose, Matrix.mul_apply, Fintype.sum_sum_type,
     Matrix.one_apply, add_comm]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) j <;> simp [dilGL, dil, diagonal_transpose, Matrix.mul_apply, Fintype.sum_sum_type, diagonal_apply]`.
+-/
 theorem dilGL_transpose_mul (t : kˣ) (Y : Matrix (R ⊕ T) D k) :
     (dilGL t : GL (R ⊕ T) k).valᵀ * Y = dil (t : k) Y := by
   ext (i | i) j <;> simp [dilGL, dil, diagonal_transpose, Matrix.mul_apply, Fintype.sum_sum_type, diagonal_apply]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[shearGL, gdet, det_fromBlocks_zero₂₁]`.
+-/
 theorem gdet_shearGL (c : Matrix T R k) : gdet (shearGL c) = 1 := by
   ext; simp [shearGL, gdet, det_fromBlocks_zero₂₁]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[dilGL, gdet, det_diagonal, Fintype.prod_sum_type]`.
+-/
 theorem gdet_dilGL (t : kˣ) : gdet (dilGL t : GL (R ⊕ T) k) = t ^ Fintype.card T := by
   ext; simp [dilGL, gdet, det_diagonal, Fintype.prod_sum_type]
 
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Simplify using `[omB, gdet_shearGL, shearGL_transpose_mul]`.
+-/
 theorem omB_shearGL (ν : kˣ →* ℂˣ) (c : Matrix T R k) (Ψ : Matrix (R ⊕ T) D k → ℂ) (Y : Matrix (R ⊕ T) D k) :
     omB ν ν (shearGL c) 1 Ψ Y = Ψ (shear c Y) := by
   simp [omB, gdet_shearGL, shearGL_transpose_mul]
 
+/- English proof (translation)
+Use `⟨GlobalTheory.SplitWeil.nabs k x ^ ((n : ℝ) / 2), Real.rpow_pos_of_pos (nabs_pos x) _, ?_⟩` and prove the remaining obligations. Rewrite using `[apow, Complex.ofReal_cpow (nabs_pos x).le]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exists_apow_eq (x : kˣ) (n : ℕ) : ∃ r : ℝ, 0 < r ∧ apow x ((n : ℂ) / 2) = r := by
   refine ⟨GlobalTheory.SplitWeil.nabs k x ^ ((n : ℝ) / 2), Real.rpow_pos_of_pos (nabs_pos x) _, ?_⟩
   rw [apow, Complex.ofReal_cpow (nabs_pos x).le]
   push_cast; rfl
 
+/- English proof (translation)
+Simplify using `[omB, gdet_dilGL, dilGL_transpose_mul]`.
+-/
 theorem omB_dilGL (ν : kˣ →* ℂˣ) (t : kˣ) (Ψ : Matrix (R ⊕ T) D k → ℂ) (Y : Matrix (R ⊕ T) D k) :
     omB ν ν (dilGL t : GL (R ⊕ T) k) 1 Ψ Y =
       (ν t : ℂ) ^ Fintype.card T * apow (t ^ Fintype.card T) ((Fintype.card D : ℂ) / 2) * Ψ (dil (t : k) Y) := by
@@ -89,6 +131,9 @@ end GlobalTheory.RankChart
 namespace GlobalTheory.RankChart
 open GlobalTheory.SplitFlip GlobalTheory.LocMod.Inhab ValuativeRel
 
+/- English proof (translation)
+Establish `h` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' (QuotientAddGroup.mk x : H ⧸ L.addSubgroupOf H))`. Rewrite `h` using `[AddSubgroup.mem_addSubgroupOf]`. Use `L.neg_mem h` as an intermediate fact. Simplify `this` using `[neg_add_eq_sub]`.
+-/
 theorem out_mk_sub_mem {G : Type} [AddCommGroup G] (H L : AddSubgroup G) (x : H) :
     (((QuotientAddGroup.mk x : H ⧸ L.addSubgroupOf H).out : H) : G) - x ∈ L := by
   have h := QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' (QuotientAddGroup.mk x : H ⧸ L.addSubgroupOf H))
@@ -96,6 +141,9 @@ theorem out_mk_sub_mem {G : Type} [AddCommGroup G] (H L : AddSubgroup G) (x : H)
   have := L.neg_mem h
   simpa [neg_add_eq_sub] using this
 
+/- English proof (translation)
+Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, ← L.neg_mem_iff]`. Simplify using `[neg_add_eq_sub]`.
+-/
 theorem mk_eq_mk_iff {G : Type} [AddCommGroup G] (H L : AddSubgroup G) (x y : H) :
     (QuotientAddGroup.mk x : H ⧸ L.addSubgroupOf H) = QuotientAddGroup.mk y ↔ (x : G) - y ∈ L := by
   rw [QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, ← L.neg_mem_iff]
@@ -103,6 +151,13 @@ theorem mk_eq_mk_iff {G : Type} [AddCommGroup G] (H L : AddSubgroup G) (x y : H)
 
 open Classical in
 
+/- English proof (translation)
+Use `split_ifs with hx`. Establish `key : ∀ q : H ⧸ L.addSubgroupOf H, F (x + ((q.out : H) : G)) = F ((((QuotientAddGroup.mk (⟨x, hx⟩ : H) : H ⧸ L.addSubgroupOf H) + q).out : H) : G)`. Introduce `q`. Establish `e : (QuotientAddGroup.mk (⟨x, hx⟩ : H) : H ⧸ L.addSubgroupOf H) + q = QuotientAddGroup.mk ((⟨x, hx⟩ : H) + q.out)`. Rewrite using `[QuotientAddGroup.mk_add, QuotientAddGroup.out_eq']`.
+
+Rewrite using `[e]`. Conclude with `(hL (((⟨x, hx⟩ : H) + q.out : H) : G) _ (out_mk_sub_mem H L ((⟨x, hx⟩ : H) + q.out))).symm`. Rewrite using `[Finset.sum_congr rfl fun q _ => key q]`. Conclude with `Fintype.sum_equiv (Equiv.addLeft (QuotientAddGroup.mk (⟨x, hx⟩ : H) : H ⧸ L.addSubgroupOf H)) (fun q => F ((((QuotientAddGroup.mk (⟨x, hx⟩ : H) : H ⧸ L.addSubgroupOf H) + q).out : H) : G)) (fun q => F ((q.out : H) : G)) fun q => rfl`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Use `H.sub_mem (hH _ h) (q.out : H).2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Conclude with `hx this`.
+-/
 theorem sum_shift_out {G : Type} [AddCommGroup G] (F : G → ℂ) (H L : AddSubgroup G)
     [Fintype (H ⧸ L.addSubgroupOf H)] (hL : ∀ x y, y - x ∈ L → F y = F x) (hH : ∀ x, F x ≠ 0 → x ∈ H) (x : G) :
     ∑ q : H ⧸ L.addSubgroupOf H, F (x + ((q.out : H) : G)) =
@@ -128,6 +183,15 @@ theorem sum_shift_out {G : Type} [AddCommGroup G] (F : G → ℂ) (H L : AddSubg
 
 open Classical in
 
+/- English proof (translation)
+Use `split_ifs with hx`. Rewrite using `[Finset.sum_eq_single (QuotientAddGroup.mk (⟨-x, H'.neg_mem hx⟩ : H'))]`. Rewrite using `[if_pos]`. Use `out_mk_sub_mem H' H (⟨-x, H'.neg_mem hx⟩ : H')` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add, add_comm]`. Then use the resulting hypothesis.
+
+Introduce `q _ hq`. Rewrite using `[if_neg]`. Introduce `hmem`. Apply `hq` to reduce the goal to its premises. Rewrite using `[← QuotientAddGroup.out_eq' q, mk_eq_mk_iff]`.
+
+Rewrite using `[sub_neg_eq_add, add_comm]` and apply the resulting hypothesis. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hmem`.
+
+Use `H'.sub_mem (hHH' hmem) (q.out : H').2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Conclude with `hx this`.
+-/
 theorem sum_ite_out {G : Type} [AddCommGroup G] (H H' : AddSubgroup G) [Fintype (H' ⧸ H.addSubgroupOf H')]
     (hHH' : H ≤ H') (c : ℂ) (x : G) :
     ∑ q : H' ⧸ H.addSubgroupOf H', (if x + ((q.out : H') : G) ∈ H then c else 0) = if x ∈ H' then c else 0 := by

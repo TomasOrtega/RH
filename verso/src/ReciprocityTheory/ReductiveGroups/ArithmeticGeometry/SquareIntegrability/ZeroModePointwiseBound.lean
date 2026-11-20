@@ -8,6 +8,29 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `choose γ hγL hγ using fun m : Fin (Module.finrank ℝ (IR I)) → ℤ => dual_lift hI m`. Take `⟨E0, hE0def⟩ : ∃ e : ℝ, Real.exp (-Real.pi * ‖uc (IR I) w‖ ^ 2 - Real.pi / 2 * ‖p2 (IR I) w‖ ^ 2) = e` from `⟨_, rfl⟩`. Establish `hE0 : 0 < E0` using `hE0def ▸ Real.exp_pos _`. Establish `hmode : ∀ m, ‖zmC hI s m w‖ * E0 ≤ Real.sqrt M * Real.exp (-Real.pi * ‖uMap I w - uMap I (-γ m)‖ ^ 2)`. Introduce `m`.
+
+Rewrite using `[← hE0def, mode_norm hI hP hs (hγL m) m (hγ m) w]`. Establish `h1 : uMap I w - uMap I (-γ m) = uc (IR I) w + uc (IR I) (γ m)`. Rewrite using `[map_neg, sub_neg_eq_add, uMap_eq_uc, uMap_eq_uc]`. Rewrite using `[h1]`. Conclude with `mul_le_mul_of_nonneg_right (Real.sqrt_le_sqrt (hM _)) (Real.exp_pos _).le`.
+
+Establish `hinj : Function.Injective (fun m => uMap I (-γ m))`. Introduce `m m' h`. Establish `h' : uc (IR I) (γ m) = uc (IR I) (γ m')`. Simplify using `only [map_neg, uMap_eq_uc, neg_inj] at h`. Conclude with `h`.
+
+Use function extensionality and compare the values at `i`. Establish `e1` using `hγ m i`. Establish `e2` using `hγ m' i`. Rewrite `e1` using `[← Col.inner_uc (K := IR I) (γ m) _ (Ib hI i).2, h', Col.inner_uc (K := IR I) (γ m') _ (Ib hI i).2, e2]`. Conclude with `e1.symm` after adjusting the coercions.
+
+Establish `hfin : ∀ F : Finset (Fin (Module.finrank ℝ (IR I)) → ℤ), ∑ m ∈ F, ‖zmC hI s m w‖ * E0 ≤ Real.sqrt M * T`. Introduce `F`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.sum_image (fun a _ b _ h => hinj h)]`. Use `_ ≤ Real.sqrt M * T := by`.
+
+Apply `mul_le_mul_of_nonneg_left _ (Real.sqrt_nonneg _)` to reduce the goal to its premises. Apply `hT` to reduce the goal to its premises. Introduce `y hy`. Take `⟨m, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `⟨-γ m, X.L.neg_mem (hγL m), rfl⟩`.
+
+Establish `hsumN : Summable fun m : Fin (Module.finrank ℝ (IR I)) → ℤ => ‖zmC hI s m w‖`. Apply `summable_of_sum_le (c := Real.sqrt M * T / E0) (fun m => norm_nonneg _)` to reduce the goal to its premises. Introduce `F`. Rewrite using `[le_div_iff₀ hE0, Finset.sum_mul]`. Conclude with `hfin F`.
+
+Establish `hF` using `tof_torus_inversion (fun t : Fin (Module.finrank ℝ (IR I)) → ℝ => zmG I s (w + tb hI t)) (fib_continuous hI hs w) (fun x n => fib_periodic hI hs w x n) hsumN.of_norm`. Establish `hF' : HasSum (fun m => zmC hI s m w) (zmG I s w)`. Establish `h0 : zmG I s w = zmG I s (w + tb hI 0)` using `by simp [tb]`. Rewrite using `[h0]`. Conclude with `hF`.
+
+Establish `hsq : Real.sqrt (X.ptN2 1 s fun _ => w) = ‖zmG I s w‖ * E0`. Rewrite using `[thetaSectionPointwiseNormSq_eq hI s w]`. Establish `hexp : Real.exp (-(2 * Real.pi) * ‖uc (IR I) w‖ ^ 2 - Real.pi * ‖p2 (IR I) w‖ ^ 2) = E0 ^ 2`. Rewrite using `[← hE0def, ← Real.exp_nat_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp, ← mul_pow, Real.sqrt_sq (mul_nonneg (norm_nonneg _) hE0.le)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hF'.tsum_eq]`.
+
+Conclude with `norm_tsum_le_tsum_norm hsumN`. Use `_ = ∑' m, ‖zmC hI s m w‖ * E0 := tsum_mul_right.symm`. Use `_ ≤ Real.sqrt M * T := (hsumN.mul_right _).tsum_le_of_sum_le hfin`.
+-/
 theorem zeroMode_pointwise_bound [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF}
     {I : Submodule ℤ (Vsp X.dim)} (hI : IsSplit P I) (hP : Ext.PackingCount)
     {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) (w : Vsp X.dim) (T M : ℝ)

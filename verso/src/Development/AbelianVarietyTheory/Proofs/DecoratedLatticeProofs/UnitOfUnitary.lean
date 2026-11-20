@@ -13,6 +13,9 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.ValSchur
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Col.fockF_eq_sum f g (f.support ∪ g.support) Finset.subset_union_left, Formalism.L2.Col.fockF_eq_sum g f (f.support ∪ g.support) Finset.subset_union_right, star_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [star_mul', star_star, star_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockF_swap {σ : Type} (f g : MvPolynomial σ ℂ) : fockF f g = star (fockF g f) := by
   classical
   rw [Formalism.L2.Col.fockF_eq_sum f g (f.support ∪ g.support) Finset.subset_union_left,
@@ -21,6 +24,11 @@ theorem fockF_swap {σ : Type} (f g : MvPolynomial σ ℂ) : fockF f g = star (f
   simp only [star_mul', star_star, star_natCast]
   ring
 
+/- English proof (translation)
+Use `⟨∑ m ∈ f.support, Complex.normSq (f.coeff m) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℝ), ?_, ?_⟩` and prove the remaining obligations. Use `Finset.sum_pos (fun m hm => mul_pos (Complex.normSq_pos.2 (mem_support_iff.1 hm)) ?_) (support_nonempty.2 hf)` and prove the remaining obligations. Conclude with `Finset.prod_pos fun k _ => Nat.factorial_pos _` after adjusting the coercions. Unfold `fockF`. Rewrite using `[Complex.ofReal_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.ofReal_mul, Complex.ofReal_natCast]`.
+-/
 theorem fockF_pos {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) : ∃ r : ℝ, 0 < r ∧ fockF f f = (r : ℂ) := by
   refine ⟨∑ m ∈ f.support, Complex.normSq (f.coeff m) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℝ), ?_, ?_⟩
   · refine Finset.sum_pos (fun m hm => mul_pos (Complex.normSq_pos.2 (mem_support_iff.1 hm)) ?_) (support_nonempty.2 hf)
@@ -32,6 +40,9 @@ theorem fockF_pos {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) : ∃ r :
 
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Unfold `nfAll`. Rewrite using `[star_div₀, star_prod, ← fockF_swap]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => fockF_swap _ _`.
+-/
 theorem nfAll_swap (lam : ι → DomWeight n) (p q : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     nfAll lam p q = star (nfAll lam q p) := by
   unfold nfAll
@@ -39,6 +50,11 @@ theorem nfAll_swap (lam : ι → DomWeight n) (p q : MvPolynomial (ι × Fin n �
   congr 1
   exact Finset.prod_congr rfl fun τ _ => fockF_swap _ _
 
+/- English proof (translation)
+Take `⟨r, hr, e⟩` from `fockF_pos hp`. Use `choose s hs es using fun τ => fockF_pos (f := extremal ℂ n (lam τ)) (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl (lam τ).natW)`. Use `⟨r / ∏ τ, s τ, div_pos hr (Finset.prod_pos fun τ _ => hs τ), ?_⟩` and prove the remaining obligations. Unfold `nfAll`. Rewrite using `[e, Complex.ofReal_div, Complex.ofReal_prod]`.
+
+Simplify using `only [es]`.
+-/
 theorem nfAll_pos (lam : ι → DomWeight n) {p : MvPolynomial (ι × Fin n × Fin n) ℂ} (hp : p ≠ 0) :
     ∃ r : ℝ, 0 < r ∧ nfAll lam p p = (r : ℂ) := by
   obtain ⟨r, hr, e⟩ := fockF_pos hp
@@ -50,14 +66,23 @@ theorem nfAll_pos (lam : ι → DomWeight n) {p : MvPolynomial (ι × Fin n × F
 
 variable {G : ι → Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.Ext.Lw.valC_tr G lam g hg hv`.
+-/
 theorem tr_mem (lam : ι → DomWeight n) (g : ι → Matrix (Fin n) (Fin n) ℂ) (hg : ∀ τ, IsUnit (g τ).det)
     {v : Frames G → ℂ} (hv : v ∈ ValC G lam) : (fun z => v (Frames.tr g hg z)) ∈ ValC G lam :=
   Formalism.MainNotions.Ext.Lw.valC_tr G lam g hg hv
 
+/- English proof (translation)
+Rewrite using `[det_nonsing_inv]`. Conclude with `(hg τ).ringInverse`.
+-/
 theorem isUnit_inv {g : ι → Matrix (Fin n) (Fin n) ℂ} (hg : ∀ τ, IsUnit (g τ).det) (τ : ι) : IsUnit ((g τ)⁻¹).det := by
   rw [det_nonsing_inv]; exact (hg τ).ringInverse
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun τ => by show g τ * ((g τ)⁻¹ * z.1 τ) = z.1 τ rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hg τ), Matrix.one_mul])`.
+-/
 theorem tr_tr_inv {g : ι → Matrix (Fin n) (Fin n) ℂ} (hg : ∀ τ, IsUnit (g τ).det) (hg' : ∀ τ, IsUnit ((g τ)⁻¹).det)
     (z : Frames G) : Frames.tr g hg (Frames.tr (fun τ => (g τ)⁻¹) hg' z) = z :=
   Subtype.ext (funext fun τ => by
@@ -65,17 +90,26 @@ theorem tr_tr_inv {g : ι → Matrix (Fin n) (Fin n) ℂ} (hg : ∀ τ, IsUnit (
     rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hg τ), Matrix.one_mul])
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun τ => by show (g τ)⁻¹ * (g τ * z.1 τ) = z.1 τ rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hg τ), Matrix.one_mul])`.
+-/
 theorem tr_inv_tr {g : ι → Matrix (Fin n) (Fin n) ℂ} (hg : ∀ τ, IsUnit (g τ).det) (hg' : ∀ τ, IsUnit ((g τ)⁻¹).det)
     (z : Frames G) : Frames.tr (fun τ => (g τ)⁻¹) hg' (Frames.tr g hg z) = z :=
   Subtype.ext (funext fun τ => by
     show (g τ)⁻¹ * (g τ * z.1 τ) = z.1 τ
     rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hg τ), Matrix.one_mul])
 
+/- English proof (translation)
+Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Frames.tr, Matrix.mul_assoc]`.
+-/
 theorem fnOf_tr (s : ι → ℤ) (M g : ι → Matrix (Fin n) (Fin n) ℂ) (hg : ∀ τ, IsUnit (g τ).det)
     (P : MvPolynomial (ι × Fin n × Fin n) ℂ) (z : Frames G) :
     fnOf G s M P (Frames.tr g hg z) = fnOf G s (fun τ => M τ * g τ) P z := by
   simp only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Frames.tr, Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨P, hP, e⟩` from `Submodule.mem_map.1 (tr_mem lam o.1 o.2 hv)`. Use `⟨P, hP, funext fun z => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun e (Frames.tr (fun τ => (o.1 τ)⁻¹) (isUnit_inv o.2) z)`. Simplify using `only [tr_tr_inv, fnOf_tr, Pi.one_apply, Matrix.one_mul] at h`. Conclude with `h.symm`.
+-/
 theorem exists_coord (lam : ι → DomWeight n) (o : Frames G) {v : Frames G → ℂ} (hv : v ∈ ValC G lam) :
     ∃ P ∈ CSpan lam, v = fnOf G (shiftOf lam) (fun τ => (o.1 τ)⁻¹) P := by
   obtain ⟨P, hP, e⟩ := Submodule.mem_map.1 (tr_mem lam o.1 o.2 hv)
@@ -85,6 +119,9 @@ theorem exists_coord (lam : ι → DomWeight n) (o : Frames G) {v : Frames G →
   exact h.symm
 
 omit [Fintype ι] in
+/- English proof (translation)
+Establish `h` using `congrArg Matrix.det (hu τ)`. Rewrite `h` using `[det_mul]`. Establish `h2 : IsUnit (G τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (hG τ).isUnit`. Rewrite `h2` using `[← h]`. Conclude with `isUnit_of_mul_isUnit_right h2`.
+-/
 theorem unit_of_unitary (hG : ∀ τ, (G τ).PosDef) {g : ι → Matrix (Fin n) (Fin n) ℂ} (hu : ∀ τ, (g τ)ᴴ * G τ * g τ = G τ) (τ : ι) :
     IsUnit (g τ).det := by
   have h := congrArg Matrix.det (hu τ)
@@ -94,6 +131,9 @@ theorem unit_of_unitary (hG : ∀ τ, (G τ).PosDef) {g : ι → Matrix (Fin n) 
   exact isUnit_of_mul_isUnit_right h2
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use `conv_lhs => rw [← hu τ]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← conjTranspose_mul, Matrix.mul_nonsing_inv _ (hg τ), conjTranspose_one, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hg τ), Matrix.mul_one]`.
+-/
 theorem inv_unitary {g : ι → Matrix (Fin n) (Fin n) ℂ} (hg : ∀ τ, IsUnit (g τ).det) (hu : ∀ τ, (g τ)ᴴ * G τ * g τ = G τ) (τ : ι) :
     ((g τ)⁻¹)ᴴ * G τ * (g τ)⁻¹ = G τ := by
   conv_lhs => rw [← hu τ]
@@ -101,6 +141,11 @@ theorem inv_unitary {g : ι → Matrix (Fin n) (Fin n) ℂ} (hg : ∀ τ, IsUnit
     Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hg τ), Matrix.mul_one]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Establish `h : ∀ τ, ∃ B : Matrix (Fin n) (Fin n) ℂ, IsUnit B.det ∧ G τ = Bᴴ * B` using `fun τ => by open scoped MatrixOrder in`. Take `⟨B, hB, e⟩` from `CStarAlgebra.isStrictlyPositive_iff_eq_star_mul_self.1 (hG τ).isStrictlyPositive`. Conclude with `⟨B, (Matrix.isUnit_iff_isUnit_det _).1 hB, e⟩`. Use `choose B hu hJ using h`. Use `⟨⟨fun τ => (B τ)⁻¹, fun τ => ?_⟩, fun τ => Or.inl ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[det_nonsing_inv]`. Conclude with `(hu τ).ringInverse`. Use `show ((B τ)⁻¹)ᴴ * G τ * (B τ)⁻¹ = 1`. Rewrite using `[hJ τ, conjTranspose_nonsing_inv, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (by rw [det_conjTranspose]; exact (hu τ).star), Matrix.one_mul, Matrix.mul_nonsing_inv _ (hu τ)]`.
+-/
 theorem exists_isON (hG : ∀ τ, (G τ).PosDef) : ∃ o : Frames G, o.IsON := by
   have h : ∀ τ, ∃ B : Matrix (Fin n) (Fin n) ℂ, IsUnit B.det ∧ G τ = Bᴴ * B := fun τ => by
     open scoped MatrixOrder in
@@ -119,6 +164,9 @@ def IsFock (G : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight n) (i
 
 variable {lam : ι → DomWeight n} {ip ip' : (Frames G → ℂ) → (Frames G → ℂ) → ℂ}
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `exists_isON hG`. Take `⟨P, hP, rfl⟩` from `exists_coord lam o hf`. Take `⟨Q, hQ, rfl⟩` from `exists_coord lam o hg`. Rewrite using `[h o ho P hP Q hQ, h' o ho P hP Q hQ]`.
+-/
 theorem IsFock.eq (hG : ∀ τ, (G τ).PosDef) (h : IsFock G lam ip) (h' : IsFock G lam ip') {f g : Frames G → ℂ}
     (hf : f ∈ ValC G lam) (hg : g ∈ ValC G lam) : ip f g = ip' f g := by
   obtain ⟨o, ho⟩ := exists_isON hG
@@ -126,6 +174,9 @@ theorem IsFock.eq (hG : ∀ τ, (G τ).PosDef) (h : IsFock G lam ip) (h' : IsFoc
   obtain ⟨Q, hQ, rfl⟩ := exists_coord lam o hg
   rw [h o ho P hP Q hQ, h' o ho P hP Q hQ]
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `exists_isON hG`. Take `⟨P, hP, rfl⟩` from `exists_coord lam o hf`. Take `⟨Q, hQ, rfl⟩` from `exists_coord lam o hg`. Rewrite using `[h o ho P hP Q hQ, h o ho Q hQ P hP, nfAll_swap]`.
+-/
 theorem IsFock.swap (hG : ∀ τ, (G τ).PosDef) (h : IsFock G lam ip) {f g : Frames G → ℂ}
     (hf : f ∈ ValC G lam) (hg : g ∈ ValC G lam) : ip g f = star (ip f g) := by
   obtain ⟨o, ho⟩ := exists_isON hG
@@ -133,6 +184,9 @@ theorem IsFock.swap (hG : ∀ τ, (G τ).PosDef) (h : IsFock G lam ip) {f g : Fr
   obtain ⟨Q, hQ, rfl⟩ := exists_coord lam o hg
   rw [h o ho P hP Q hQ, h o ho Q hQ P hP, nfAll_swap]
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `exists_isON hG`. Take `⟨P, hP, rfl⟩` from `exists_coord lam o hf`. Rewrite using `[h o ho P hP P hP]`. Conclude with `nfAll_pos lam fun e => h0 (by rw [e, map_zero])`.
+-/
 theorem IsFock.pos (hG : ∀ τ, (G τ).PosDef) (h : IsFock G lam ip) {f : Frames G → ℂ}
     (hf : f ∈ ValC G lam) (h0 : f ≠ 0) : ∃ r : ℝ, 0 < r ∧ ip f f = (r : ℂ) := by
   obtain ⟨o, ho⟩ := exists_isON hG
@@ -140,6 +194,11 @@ theorem IsFock.pos (hG : ∀ τ, (G τ).PosDef) (h : IsFock G lam ip) {f : Frame
   rw [h o ho P hP P hP]
   exact nfAll_pos lam fun e => h0 (by rw [e, map_zero])
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `exists_isON hG`. Take `⟨P, hP, rfl⟩` from `exists_coord lam o hf`. Take `⟨Q, hQ, rfl⟩` from `exists_coord lam o hg`. Establish `ho'` using `ho.tr (fun τ => (k τ)⁻¹) (isUnit_inv hk) (inv_unitary hk hu)`. Establish `e : (fun τ => ((Frames.tr (fun τ => (k τ)⁻¹) (isUnit_inv hk) o).1 τ)⁻¹) = fun τ => (o.1 τ)⁻¹ * k τ` using `funext fun τ => by show ((k τ)⁻¹ * o.1 τ)⁻¹ = _`.
+
+Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ (hk τ)]`. Establish `h2` using `h _ ho' P hP Q hQ`. Rewrite `h2` using `[e]`. Rewrite using `[h o ho P hP Q hQ, ← h2]`. Simplify using `only [fnOf_tr]`.
+-/
 theorem IsFock.tr (hG : ∀ τ, (G τ).PosDef) (h : IsFock G lam ip) {k : ι → Matrix (Fin n) (Fin n) ℂ} (hk : ∀ τ, IsUnit (k τ).det)
     (hu : ∀ τ, (k τ)ᴴ * G τ * k τ = G τ) {f g : Frames G → ℂ} (hf : f ∈ ValC G lam) (hg : g ∈ ValC G lam) :
     ip (fun z => f (Frames.tr k hk z)) (fun z => g (Frames.tr k hk z)) = ip f g := by
@@ -155,6 +214,9 @@ theorem IsFock.tr (hG : ∀ τ, (G τ).PosDef) (h : IsFock G lam ip) {k : ι →
   rw [h o ho P hP Q hQ, ← h2]
   simp only [fnOf_tr]
 
+/- English proof (translation)
+Take `⟨P, -, rfl⟩` from `hf`. Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Pi.one_apply, Matrix.one_mul]`. Use `(continuous_finsetProd _ fun τ _ => ?_).mul ((MvPolynomial.continuous_eval P).comp (continuous_pi fun v => ?_))` and prove the remaining obligations. Conclude with `(((hc τ).matrix_mul continuous_const).matrix_det).zpow₀ _ fun x => Or.inl ((Frames.tr (m x) (hm x) y).2 τ).ne_zero`. Conclude with `((hc v.1).matrix_mul continuous_const).matrix_elem _ _`.
+-/
 theorem continuous_val {X : Type} [TopologicalSpace X] {m : X → ι → Matrix (Fin n) (Fin n) ℂ} (hm : ∀ x τ, IsUnit (m x τ).det)
     (hc : ∀ τ, Continuous fun x => m x τ) (y : Frames G) {f : Frames G → ℂ} (hf : f ∈ ValC G lam) :
     Continuous fun x => f (Frames.tr (m x) (hm x) y) := by
@@ -164,6 +226,11 @@ theorem continuous_val {X : Type} [TopologicalSpace X] {m : X → ι → Matrix 
   · exact (((hc τ).matrix_mul continuous_const).matrix_det).zpow₀ _ fun x => Or.inl ((Frames.tr (m x) (hm x) y).2 τ).ne_zero
   · exact ((hc v.1).matrix_mul continuous_const).matrix_elem _ _
 
+/- English proof (translation)
+Take `⟨f, hf, h0⟩` from `(Submodule.ne_bot_iff _).1 (GlobalTheory.Core.Rk.Top.Model.valC_ne_bot G lam)`. Take `⟨z, hz⟩` from `Function.ne_iff.1 h0`. Establish `hu : ∀ τ, IsUnit (z.1 τ * (y.1 τ)⁻¹).det` using `fun τ => by`. Rewrite using `[det_mul]`. Conclude with `(z.2 τ).mul (isUnit_inv y.2 τ)`.
+
+Use `⟨_, tr_mem lam _ hu hf, ?_⟩` and prove the remaining obligations. Establish `e : Frames.tr _ hu y = z` using `Subtype.ext (funext fun τ => by show z.1 τ * (y.1 τ)⁻¹ * y.1 τ = z.1 τ`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (y.2 τ), Matrix.mul_one])`. Simplify using `only [e]`. Conclude with `hz`.
+-/
 theorem exists_val_ne (lam : ι → DomWeight n) (y : Frames G) : ∃ f ∈ ValC G lam, f y ≠ 0 := by
   obtain ⟨f, hf, h0⟩ := (Submodule.ne_bot_iff _).1 (GlobalTheory.Core.Rk.Top.Model.valC_ne_bot G lam)
   obtain ⟨z, hz⟩ := Function.ne_iff.1 h0
@@ -180,6 +247,39 @@ def IsSesq (ip : (Frames G → ℂ) → (Frames G → ℂ) → ℂ) : Prop :=
   (∀ (a : ℂ) (f f' g : Frames G → ℂ), ip (a • f + f') g = star a * ip f g + ip f' g) ∧
     ∀ (a : ℂ) (f g g' : Frames G → ℂ), ip f (a • g + g') = a * ip f g + ip f g'
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ ip, IsFock G lam ip ∧ IsSesq ip`. Use `swap`. Conclude with `⟨1, one_pos, fun ip h1 h2 => absurd ⟨ip, h1, h2⟩ hex⟩`. Take `⟨ip, hF, hS⟩` from `hex`. Use `set Φ : (Frames G → ℂ) → (Frames G → ℂ) → ℂ := fun f g => ∫ k, g (Frames.tr (m k) (hm k) y) * star (f (Frames.tr (m k) (hm k) y)) ∂ν with hΦ`.
+
+Establish `hcont : ∀ f ∈ ValC G lam, ∀ g ∈ ValC G lam, Continuous fun k => g (Frames.tr (m k) (hm k) y) * star (f (Frames.tr (m k) (hm k) y))` using `fun f hf g hg => (continuous_val hm hc y hg).mul (continuous_val hm hc y hf).star`. Establish `hint : ∀ f ∈ ValC G lam, ∀ g ∈ ValC G lam, Integrable (fun k => g (Frames.tr (m k) (hm k) y) * star (f (Frames.tr (m k) (hm k) y))) ν` using `fun f hf g hg => integrableOn_univ.1 ((hcont f hf g hg).continuousOn.integrableOn_compact isCompact_univ)`. Establish `Φl : ∀ (a : ℂ) (f f' g : Frames G → ℂ), f ∈ ValC G lam → f' ∈ ValC G lam → g ∈ ValC G lam → Φ (a • f + f') g = star a * Φ f g + Φ f' g` using `fun a f f' g hf hf' hg => by`. Simplify using `only [hΦ]`. Rewrite using `[← integral_const_mul, ← integral_add ((hint f hf g hg).const_mul _) (hint f' hf' g hg)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, star_add, star_mul']`. Expand and normalize the polynomial expressions, which then agree. Establish `Φr : ∀ (a : ℂ) (f g g' : Frames G → ℂ), f ∈ ValC G lam → g ∈ ValC G lam → g' ∈ ValC G lam → Φ f (a • g + g') = a * Φ f g + Φ f g'` using `fun a f g g' hf hg hg' => by`.
+
+Simplify using `only [hΦ]`. Rewrite using `[← integral_const_mul, ← integral_add ((hint f hf g hg).const_mul _) (hint f hf g' hg')]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `Φtr : ∀ (g : ι → Matrix (Fin n) (Fin n) ℂ) (hg : ∀ τ, IsUnit (g τ).det), (∀ τ, (g τ)ᴴ * G τ * g τ = G τ) → ∀ f f', Φ (fun z => f (Frames.tr g hg z)) (fun z => f' (Frames.tr g hg z)) = Φ f f'` using `fun g hg hu f f' => by`. Take `⟨k0, hk0⟩` from `hs g hu`. Establish `e : ∀ k, Frames.tr g hg (Frames.tr (m k) (hm k) y) = Frames.tr (m (k0 * k)) (hm _) y` using `fun k => Subtype.ext (funext fun τ => by show g τ * (m k τ * y.1 τ) = m (k0 * k) τ * y.1 τ`. Rewrite using `[hmul, hk0, Matrix.mul_assoc])`.
+
+Simplify using `only [hΦ, e]`. Conclude with `integral_mul_left_eq_self (fun k => f' (Frames.tr (m k) (hm k) y) * star (f (Frames.tr (m k) (hm k) y))) k0`. Take `⟨c, e, he, he0, hce⟩` from `(GlobalTheory.riesz_and_eigenvector_of_sesq_on_fun_space (Frames G) (ValC G lam) inferInstance ip Φ (fun a f f' g _ _ _ => hS.1 a f f' g) (fun a f g g' _ _ _ => hS.2 a f g g') (fun f g hf hg => hF.swap hG hf hg) (fun f hf h0 => by obtain ⟨r, hr, er⟩ := hF.pos hG hf h0; rw [er]; e …`. Take `⟨-, -, ia, is⟩` from `GlobalTheory.sesq_rules_of_combination (ValC G lam) ip (fun a f f' g _ _ _ => hS.1 a f f' g) (fun a f g g' _ _ _ => hS.2 a f g g')`. Take `⟨-, -, pa, ps⟩` from `GlobalTheory.sesq_rules_of_combination (ValC G lam) Φ Φl Φr`.
+
+Set `W : Submodule ℂ (Frames G → ℂ)` to `{ carrier := {g | g ∈ ValC G lam ∧ ∀ f ∈ ValC G lam, Φ f g = c * ip f g} add_mem' := fun {a b} ha hb => ⟨add_mem ha.1 hb.1, fun f hf => by`. Rewrite using `[pa f a b hf ha.1 hb.1, ia f a b hf ha.1 hb.1, ha.2 f hf, hb.2 f hf, mul_add]⟩`. Use the proof step `zero_mem' := ⟨zero_mem _, fun f hf => by`. Establish `h1` using `ps 0 f 0 hf (zero_mem _)`. Establish `h2` using `is 0 f 0 hf (zero_mem _)`.
+
+Rewrite `h1`, `h2` using `[zero_smul, zero_mul]`. Rewrite using `[h1, h2, mul_zero]⟩`. Use the proof step `smul_mem' := fun a b hb => ⟨Submodule.smul_mem _ _ hb.1, fun f hf => by`. Rewrite using `[ps a f b hf hb.1, is a f b hf hb.1, hb.2 f hf]`. Use the proof step `ring⟩ }`.
+
+Establish `hW : W = ValC G lam`. Use `Formalism.L2.SG.Pf.valuation_character_irreducible ι n G (fun τ => Or.inl (hG τ)) lam W (fun g hg => hg.1) ?_ ?_` and prove the remaining obligations. Conclude with `(Submodule.ne_bot_iff _).2 ⟨e, ⟨he, hce⟩, he0⟩`. Introduce `g hu F hFW`. Establish `hg` using `unit_of_unitary hG hu`.
+
+Use `⟨fun z => F (Frames.tr g hg z), ⟨tr_mem lam g hg hFW.1, fun f hf => ?_⟩, fun z z' hz => ?_⟩` and prove the remaining obligations. Establish `hf'` using `tr_mem lam _ (isUnit_inv hg) hf`. Establish `ef : f = fun z => (fun z => f (Frames.tr (fun τ => (g τ)⁻¹) (isUnit_inv hg) z)) (Frames.tr g hg z)`. Use function extensionality and compare the values at `fun z => by simp only [tr_inv_tr]`. Establish `a1` using `Φtr g hg hu (fun z => f (Frames.tr (fun τ => (g τ)⁻¹) (isUnit_inv hg) z)) F`.
+
+Establish `a2` using `hF.tr hG hg hu hf' hFW.1`. Rewrite `a1`, `a2` using `[← ef]`. Conclude with `a1.trans ((hFW.2 _ hf').trans (congrArg (c * ·) a2.symm))`. Conclude with `congrArg F (Subtype.ext (funext fun τ => (hz τ).symm))`. Establish `hall : ∀ f ∈ ValC G lam, ∀ g ∈ ValC G lam, Φ f g = c * ip f g` using `fun f hf g hg => (show g ∈ W from hW ▸ hg).2 f hf`.
+
+Take `⟨f0, hf0, hy⟩` from `exists_val_ne lam y`. Take `⟨r, hr, er⟩` from `hF.pos hG hf0 (fun h => hy (by rw [h]; rfl))`. Establish `h1 : ∀ τ, m 1 τ = 1` using `fun τ => by`. Use `hmul 1 1 τ` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hm 1 τ), Matrix.one_mul]`. Use `_ = 1 := by rw [← this, Matrix.nonsing_inv_mul _ (hm 1 τ)]`. Establish `hcn : Continuous fun k => Complex.normSq (f0 (Frames.tr (m k) (hm k) y))` using `Complex.continuous_normSq.comp (continuous_val hm hc y hf0)`. Establish `hpos : 0 < ∫ k, Complex.normSq (f0 (Frames.tr (m k) (hm k) y)) ∂ν`.
+
+Use `hcn.integral_pos_of_hasCompactSupport_nonneg_nonzero (HasCompactSupport.of_compactSpace _) (fun k => Complex.normSq_nonneg _) (x := 1) ?_` and prove the remaining obligations. Establish `e1 : Frames.tr (m 1) (hm 1) y = y` using `Subtype.ext (funext fun τ => by show m 1 τ * y.1 τ = y.1 τ`. Rewrite using `[h1, Matrix.one_mul])`. Rewrite using `[e1]`. Conclude with `(Complex.normSq_pos.2 hy).ne'`.
+
+Establish `hΦ0 : Φ f0 f0 = ((∫ k, Complex.normSq (f0 (Frames.tr (m k) (hm k) y)) ∂ν : ℝ) : ℂ)`. Simplify using `only [hΦ, Complex.star_def, Complex.mul_conj]`. Conclude with `integral_ofReal`. Establish `hc0` using `hall f0 hf0 f0 hf0`. Rewrite `hc0` using `[hΦ0, er]`.
+
+Use `⟨(∫ k, Complex.normSq (f0 (Frames.tr (m k) (hm k) y)) ∂ν) / r, div_pos hpos hr, fun ip' hF' _ f hf g hg => ?_⟩` and prove the remaining obligations. Establish `hr' : (r : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hr.ne'`. Rewrite using `[Complex.ofReal_div, hc0, mul_div_cancel_right₀ _ hr', hF'.eq hG hF hf hg]`. Conclude with `hall f hf g hg`.
+-/
 theorem avg_eq (hG : ∀ τ, (G τ).PosDef) (lam : ι → DomWeight n) {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
     [CompactSpace K] [T2Space K] [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [ν.IsHaarMeasure]
     (m : K → ι → Matrix (Fin n) (Fin n) ℂ) (hm : ∀ k τ, IsUnit (m k τ).det) (hc : ∀ τ, Continuous fun k => m k τ)

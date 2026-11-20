@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace MainStatements.Hodge.Pf.WedgeProjections
 
+/- English proof (translation)
+Establish `: IsAffineHom (Limits.pullback.diagonal s)` using `inferInstance`. Conclude with `isAffineHom_diagonal_iff.mp this ⊤ (isAffineOpen_top _) U (by simp) V (by simp) hU hV`.
+-/
 theorem affInf {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (hs : IsSeparated s)
     (U V : X.Opens) (hU : IsAffineOpen U) (hV : IsAffineOpen V) : IsAffineOpen (U ⊓ V) := by
   have : IsAffineHom (Limits.pullback.diagonal s) := inferInstance
@@ -31,6 +34,9 @@ theorem affInf {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (hs : I
     le_inf := fun a b c hab hac ↦ ⟨(le_inf hab.1 hac.1 : a.1.1.1 ≤ b.1.1.1 ⊓ c.1.1.1),
       (le_inf hab.2 hac.2 : a.1.2.1 ≤ b.1.2.1 ⊓ c.1.2.1)⟩ }
 
+/- English proof (translation)
+Use `eq_top_iff.2 (fun x _ => ?_)` and prove the remaining obligations. Take `⟨V, hV, hxV, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens) (show φ x ∈ (⊤ : X.Opens) from trivial)`. Take `⟨U, hU, hxU, hUV⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X'.isBasis_affineOpens) (show x ∈ φ ⁻¹ᵁ V from hxV)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(⟨U, hU⟩, ⟨V, hV⟩), hUV⟩, hxU⟩`.
+-/
 theorem pair_cover {X X' : Scheme.{0}} (φ : X' ⟶ X) : ⨆ p : Pair φ, p.1.1.1 = ⊤ := by
   refine eq_top_iff.2 (fun x _ => ?_)
   obtain ⟨V, hV, hxV, -⟩ := (TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens)
@@ -39,6 +45,9 @@ theorem pair_cover {X X' : Scheme.{0}} (φ : X' ⟶ X) : ⨆ p : Pair φ, p.1.1.
     (show x ∈ φ ⁻¹ᵁ V from hxV)
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(⟨U, hU⟩, ⟨V, hV⟩), hUV⟩, hxU⟩
 
+/- English proof (translation)
+Use `letI : SemilatticeInf (Pair φ) := pairSL φ (affInf s hs) (affInf s' hs')`. Set `S : Sys X' (Pair φ)` to `⟨fun p => p.1.1, fun _ _ => rfl, pair_cover φ⟩`. Establish `hq : AllQIso (pairRes φ s')` using `hD R X' s' hs' (Pair φ) S`. Conclude with `(hL R _ _ _ _ (pairRes φ s') hq).2.1.1`.
+-/
 theorem pairRes_pull2_injective (hD : DescentSt) (hL : LowSt) {R : Type} [CommRing R] {X X' : Scheme.{0}}
     (s : X ⟶ Sp R) (s' : X' ⟶ Sp R) (φ : X' ⟶ X) (hs : IsSeparated s) (hs' : IsSeparated s') :
     Function.Injective (pairRes φ s').pull2 := by

@@ -16,5 +16,8 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.OpenOmega
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OpenOmega.ptSurj_of_isOpenNearZero | exact GlobalTheory.OpenOmega.ptSurj_of_isOpenNearZero | (intros; apply GlobalTheory.OpenOmega.ptSurj_of_isOpenNearZero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torsion_points_surjective_open_near_zero : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (GG : PDivGroup p R) (θ : TorsionMap G GG), θ.IsOpenNearZero → ∀ n, PtSurj θ n := by
   first | exact @GlobalTheory.OpenOmega.ptSurj_of_isOpenNearZero | exact GlobalTheory.OpenOmega.ptSurj_of_isOpenNearZero | (intros; apply GlobalTheory.OpenOmega.ptSurj_of_isOpenNearZero <;> assumption)

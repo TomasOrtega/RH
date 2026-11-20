@@ -19,20 +19,34 @@ section SlopeTestRemainingChoices
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfOpen.ho_locConst ψ h`.
+-/
 private theorem ho_locConst {Γ A : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group A] (ψ : Γ →* A)
     (h : IsOpen (ψ.ker : Set Γ)) : IsLocallyConstant ψ :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfOpen.ho_locConst ψ h
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qj17.ho_exists_prime v n hn h`.
+-/
 private theorem ho_exists_prime (v : Pl) (n : ℕ) (hn : n ≠ 0) (h : (n : 𝓞 ℚ) ∈ v.asIdeal) :
     ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ (p : 𝓞 ℚ) ∈ v.asIdeal :=
   _root_.UpperTheory.Reformulated.B.Qj17.ho_exists_prime v n hn h
 
+/- English proof (translation)
+Take `⟨x, y, h⟩ : IsCoprime (a : 𝓞 ℚ) (b : 𝓞 ℚ)` from `hab.cast`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (h ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ ha) (v.asIdeal.mul_mem_left _ hb)))`.
+-/
 private theorem ho_not_both (v : Pl) {a b : ℕ} (hab : a.Coprime b) (ha : (a : 𝓞 ℚ) ∈ v.asIdeal)
     (hb : (b : 𝓞 ℚ) ∈ v.asIdeal) : False := by
   obtain ⟨x, y, h⟩ : IsCoprime (a : 𝓞 ℚ) (b : 𝓞 ℚ) := hab.cast
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (h ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ ha) (v.asIdeal.mul_mem_left _ hb)))
 
+/- English proof (translation)
+Establish `hp : Prime ((l : ℕ) : 𝓞 ℚ)`. Establish `h : Prime ((l : ℕ) : ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Establish `e : ((l : ℕ) : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm ((l : ℕ) : ℤ)` using `by simp`. Rewrite using `[e]`. Conclude with `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm.toMulEquiv).mpr h`.
+
+Establish `hm : (Ideal.span {((l : ℕ) : 𝓞 ℚ)}).IsMaximal` using `((Ideal.span_singleton_prime hp.ne_zero).mpr hp).isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hp.ne_zero)`. Establish `h1` using `hm.eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hv)`. Establish `h2` using `hm.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)`. Conclude with `HeightOneSpectrum.ext (h1.symm.trans h2)`.
+-/
 private theorem ho_place_uniq {l : ℕ} (hl : l.Prime) (v w : Pl) (hv : (l : 𝓞 ℚ) ∈ v.asIdeal)
     (hw : (l : 𝓞 ℚ) ∈ w.asIdeal) : v = w := by
   have hp : Prime ((l : ℕ) : 𝓞 ℚ) := by
@@ -47,6 +61,9 @@ private theorem ho_place_uniq {l : ℕ} (hl : l.Prime) (v w : Pl) (hv : (l : �
   have h2 := hm.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)
   exact HeightOneSpectrum.ext (h1.symm.trans h2)
 
+/- English proof (translation)
+Establish `h` using `hv ((n : ℕ) : 𝓞 ℚ)`. Establish `e : algebraMap ℚ Ω (((n : ℕ) : 𝓞 ℚ) : ℚ) = (n : Ω)` using `by simp`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 private theorem ho_val {Ω : Type} [Field Ω] [CharZero Ω] {A : ValuationSubring Ω} {v : Pl} (hv : IsPlaceOver A v) (n : ℕ) :
     A.valuation (n : Ω) < 1 ↔ ((n : ℕ) : 𝓞 ℚ) ∈ v.asIdeal := by
   have h := hv ((n : ℕ) : 𝓞 ℚ)
@@ -54,6 +71,11 @@ private theorem ho_val {Ω : Type} [Field Ω] [CharZero Ω] {A : ValuationSubrin
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hs : ∑ i ∈ Finset.range n, u ^ i = 0`. Use `mul_geom_sum u n` as an intermediate fact. Rewrite `this` using `[hu, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`.
+
+Establish `h1` using `congrArg (residue O) hs`. Simplify using `only [map_sum, map_pow, h, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, map_zero] at h1`. Establish `h2` using `hn.map (residue O)`. Rewrite `h2` using `[map_natCast, h1]`. Conclude with `not_isUnit_zero h2`.
+-/
 private theorem ho_root {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {u : O} {n : ℕ} (hn : IsUnit (n : O))
     (hu : u ^ n = 1) (h : residue O u = 1) : u = 1 := by
   by_contra hne
@@ -67,6 +89,13 @@ private theorem ho_root {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {u 
   rw [map_natCast, h1] at h2
   exact not_isUnit_zero h2
 
+/- English proof (translation)
+Rewrite using `[orderOf_eq_iff hn]`. Use `⟨Units.ext ?_, fun k hk hk0 h => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, hu, ← Nat.cast_pow, ← hm]`. Simplify using the standard rewrite rules. Establish `h1 : ((q ^ k : ℕ) : ZMod m) = ((1 : ℕ) : ZMod m)`.
+
+Rewrite using `[Nat.cast_pow, ← hu, ← Units.val_pow_eq_pow_val, h]`. Simplify using the standard rewrite rules. Establish `h2 : 1 < q ^ k` using `Nat.one_lt_pow hk0.ne' hq`. Establish `h3 : q ^ k < q ^ n` using `Nat.pow_lt_pow_right hq hk`. Establish `h4` using `(Nat.modEq_iff_dvd' h2.le).1 ((ZMod.natCast_eq_natCast_iff _ _ _).1 h1).symm`.
+
+Establish `h5` using `Nat.le_of_dvd (by omega) h4`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem ho_order {q n m : ℕ} (hq : 1 < q) (hn : 0 < n) (hm : m + 1 = q ^ n) (u : (ZMod m)ˣ)
     (hu : (u : ZMod m) = q) : orderOf u = n := by
   rw [orderOf_eq_iff hn]
@@ -82,6 +111,35 @@ private theorem ho_order {q n m : ℕ} (hq : 1 < q) (hn : 0 < n) (hm : m + 1 = q
     have h5 := Nat.le_of_dvd (by omega) h4
     omega
 
+/- English proof (translation)
+Substitute `hD hI` using the available equality. Use `haveI : IsGalois ℚ Ω := {}`. Take `⟨γ, hγ⟩` from `exists_isFrob hv`. Use `⟨⟨γ, hγ.1⟩, ?_, fun n hn => ?_⟩` and prove the remaining obligations. Establish `key` using `ProfiniteGrp.closedSubgroup_eq_sInf_open (G := G ℚ Ω) ⟨(Ine (F := ℚ) A ⊔ Subgroup.zpowers γ).topologicalClosure, Subgroup.isClosed_topologicalClosure _⟩`.
+
+Establish `h1 : Dec (F` using `ℚ) A ≤ (Ine (F := ℚ) A ⊔ Subgroup.zpowers γ).topologicalClosure := by`. Use `le_trans (le_sInf ?_) key.ge` and prove the remaining obligations. Introduce and unpack `N ⟨hNo, hN⟩`. Establish `h` using `(Subgroup.le_topologicalClosure _).trans hN`. Conclude with `Kum.decGen ℚ Ω A _ γ N hv hγ hNo (le_sup_left.trans h) (h (Subgroup.mem_sup_right (Subgroup.mem_zpowers γ)))`.
+
+Establish `h2 : ((Ine (F` using `ℚ) A).subgroupOf (Dec (F := ℚ) A) ⊔ Subgroup.zpowers (⟨γ, hγ.1⟩ : Dec (F := ℚ) A)).map (Dec (F := ℚ) A).subtype = Ine (F := ℚ) A ⊔ Subgroup.zpowers γ := by`. Rewrite using `[Subgroup.map_sup, Subgroup.subgroupOf_map_subtype, MonoidHom.map_zpowers, inf_eq_left.2 (Ine_le_Dec A)]`. Both sides reduce to the same expression. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Establish `h3` using `h1 x.2`. Rewrite `h3` using `[← h2]`. Conclude with `closure_subtype.2 h3`. Establish `hq : normV v = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Both sides reduce to the same expression. Establish `hq1 : 1 < normV v`. Rewrite using `[hq]`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hqv : ((normV v : ℕ) : 𝓞 ℚ) ∈ v.asIdeal` using `hq ▸ Ideal.absNorm_mem _`. Take `⟨p, hp, hpq, hpv⟩` from `ho_exists_prime v _ (by omega) hqv`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `h1 : 1 < normV v ^ n` using `Nat.one_lt_pow hn.ne' hq1`.
+
+Take `⟨m, hm⟩ : ∃ m, m + 1 = normV v ^ n` from `⟨normV v ^ n - 1, by omega⟩`. Use `haveI : NeZero m := ⟨by omega⟩`. Establish `hmp : m.Coprime p`. Use `((Nat.Prime.coprime_iff_not_dvd hp).2 fun h => ?_).symm` and prove the remaining obligations. Establish `h2 : p ∣ m + 1` using `hm ▸ hpq.trans (dvd_pow_self _ hn.ne')`.
+
+Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 ((Nat.dvd_add_right h).1 h2))`. Establish `hA` using `(ho_val hv p).2 hpv`. Take `⟨hopen, -, -, -, hIne⟩` from `Chr.clsFacts ℚ Ω m`. Establish `hI` using `hIne A fun h => ho_not_both v hmp ((ho_val hv m).1 h) hpv`. Establish `hu : ((Chr.cls ℚ Ω m γ : (ZMod m)ˣ) : ZMod m) = normV v` using `by haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+
+Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω m`. Establish `hv1 : A.valuation ζ ≤ 1`. Establish `h1 : A.valuation ζ ^ m = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`. Conclude with `((pow_eq_one_iff_left (NeZero.ne m)).1 h1).le`. Establish `h2 : γ ζ = ζ ^ normV v`.
+
+Use `(LDataCardLeFinrank.ineFixRoots ℚ Ω p A hA m hmp (ζ ^ normV v) ?_).1 (γ ζ) ?_ (hγ.2 ζ hv1)` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Rewrite using `[← map_pow, hζ.pow_eq_one, map_one]`. Rewrite `h2` using `[Chr.cls_spec m γ ζ hζ.pow_eq_one, pow_eq_pow_mod (normV v) hζ.pow_eq_one]`. Establish `h3` using `hζ.pow_inj (ZMod.val_lt _) (Nat.mod_lt _ (NeZero.pos m)) h2`.
+
+Rewrite using `[← ZMod.natCast_zmod_val ((Chr.cls ℚ Ω m γ : (ZMod m)ˣ) : ZMod m), h3, ZMod.natCast_mod]`. Establish `hord` using `ho_order hq1 hn hm _ hu`. Establish `hle : Dec (F` using `ℚ) A ≤ (Subgroup.zpowers (Chr.cls ℚ Ω m γ)).comap (Chr.cls ℚ Ω m) := by`. Establish `hk : (Chr.cls ℚ Ω m).ker ≤ (Subgroup.zpowers (Chr.cls ℚ Ω m γ)).comap (Chr.cls ℚ Ω m)` using `Subgroup.ker_le_comap _ _`. Conclude with `Kum.decGen ℚ Ω A _ γ _ hv hγ (Subgroup.isOpen_mono hk hopen) (hI.trans hk) (Subgroup.mem_zpowers _)`.
+
+Set `f : Dec (F` to `ℚ) A →* Subgroup.zpowers (Chr.cls ℚ Ω m γ) := ((Chr.cls ℚ Ω m).comp (Dec (F := ℚ) A).subtype).codRestrict _ fun x => hle x.2`. Establish `hg : ∀ x : Subgroup.zpowers (Chr.cls ℚ Ω m γ), x ∈ Subgroup.zpowers (f ⟨γ, hγ.1⟩)`. Introduce and unpack `⟨_, k, rfl⟩`. Conclude with `⟨k, rfl⟩`. Establish `hc : Nat.card (Subgroup.zpowers (Chr.cls ℚ Ω m γ)) = n` using `by rw [Nat.card_zpowers, hord]`.
+
+Establish `hf1 : ∀ s : Dec (F` using `ℚ) A, Chr.cls ℚ Ω m s = 1 → f s = 1 := fun s hs => Subtype.ext hs`. Use `⟨(zmodMulEquivOfGenerator hg hc).symm.toMonoidHom.comp f, ho_locConst _ ?_, fun s hs => ?_, ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono (H₁ := (Chr.cls ℚ Ω m).ker.subgroupOf _) (fun s hs => ?_) (hopen.preimage continuous_subtype_val)` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, hf1 s hs, map_one]`. Rewrite using `[MonoidHom.comp_apply, hf1 s (hI hs), map_one]`.
+
+Conclude with `zmodMulEquivOfGenerator_symm_apply_generator hg hc`.
+-/
 private theorem ho_frob (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (v : Pl)
     (hv : IsPlaceOver A v) (D I : Subgroup (G ℚ Ω)) (hD : D = Dec (F := ℚ) A) (hI : I = Ine (F := ℚ) A) :
     ∃ φ : D, (I.subgroupOf D ⊔ Subgroup.zpowers φ).topologicalClosure = ⊤ ∧
@@ -161,11 +219,23 @@ private theorem ho_frob (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
     · rw [MonoidHom.comp_apply, hf1 s (hI hs), map_one]
     · exact zmodMulEquivOfGenerator_symm_apply_generator hg hc
 
+/- English proof (translation)
+Use `Subgroup.isOpen_mono (fun s hs => ?_) (Chr.clsFacts ℚ Ω N).1` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, Chr.dirG, MonoidHom.comp_apply, MonoidHom.mem_ker.1 hs, map_one]`.
+-/
 private theorem ho_dir_open (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {O : Type} [CommRing O] {N : ℕ} [NeZero N]
     (χ : DirichletCharacter O N) : IsOpen ((Chr.dirG ℚ Ω χ).ker : Set (G ℚ Ω)) := by
   refine Subgroup.isOpen_mono (fun s hs => ?_) (Chr.clsFacts ℚ Ω N).1
   rw [MonoidHom.mem_ker, Chr.dirG, MonoidHom.comp_apply, MonoidHom.mem_ker.1 hs, map_one]
 
+/- English proof (translation)
+Set `r : Oˣ →* (O ⧸ IsLocalRing.maximalIdeal O ^ n)ˣ` to `Units.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O ^ n)).toMonoidHom`. Establish `hl : (l : O) ∈ IsLocalRing.maximalIdeal O` using `by haveI := (dvrFacts l O).2.2.1`. Introduce `h`. Rewrite `h` using `[← map_natCast (algebraMap ℤ_[l] O)]`. Conclude with `PadicInt.p_nonunit (IsUnit.of_map _ _ h)`.
+
+Use `(ho_locConst (r.comp (Chr.Psi l e (Chr.dirG ℚ Ω ψ))) ?_).comp Units.val` and prove the remaining obligations. Establish `ho : IsOpen {g : G ℚ Ω | ‖((cycZ ℚ Ω l g : ℤ_[l]ˣ) : ℤ_[l]) - 1‖ < (l : ℝ) ^ (-(n : ℤ) + 1)}` using `isOpen_lt ((Units.continuous_val.comp (continuous_cycZ ℚ Ω l)).sub continuous_const).norm continuous_const`. Establish `hpos : (0 : ℝ) < (l : ℝ) ^ (-(n : ℤ) + 1)` using `zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((ho.inter (ho_dir_open Ω ψ)).mem_nhds ⟨by simpa using hpos, one_mem _⟩) ?_)` and prove the remaining obligations. Introduce and unpack `g ⟨h1, h2⟩`.
+
+Establish `h3 : Chr.dirG ℚ Ω ψ g = 1` using `h2`. Establish `h4` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ n).1 ((PadicInt.norm_le_pow_iff_norm_lt_pow_add_one _ _).2 h1)`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 h4`. Establish `h5 : r (chiO ℚ Ω l O g) = 1`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show Ideal.Quotient.mk _ (algebraMap ℤ_[l] O ((cycZ ℚ Ω l g : ℤ_[l]ˣ) : ℤ_[l])) = Ideal.Quotient.mk _ 1`. Rewrite using `[Ideal.Quotient.eq, ← map_one (algebraMap ℤ_[l] O), ← map_sub, ← ha, map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hl n)`. Use `show r (chiO ℚ Ω l O g ^ (e : ℤ) * Chr.dirG ℚ Ω ψ g) = 1`. Rewrite using `[h3, mul_one, map_zpow, h5, _root_.one_zpow]`.
+-/
 private theorem ho_psi_cont (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]
     {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter O N) (n : ℕ) :
@@ -194,10 +264,18 @@ private theorem ho_psi_cont (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure �
   show r (chiO ℚ Ω l O g ^ (e : ℤ) * Chr.dirG ℚ Ω ψ g) = 1
   rw [h3, mul_one, map_zpow, h5, _root_.one_zpow]
 
+/- English proof (translation)
+Introduce `s` and use `(QuotientGroup.isQuotientMap_mk _).isOpen_preimage.1 (h s)`.
+-/
 private theorem ho_desc {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {S : Finset Pl} {Y : Type} (f : Gam Ω S → Y)
     (h : IsLocallyConstant fun g : G ℚ Ω => f (toGS Ω _ g)) : IsLocallyConstant f := fun s =>
   (QuotientGroup.isQuotientMap_mk _).isOpen_preimage.1 (h s)
 
+/- English proof (translation)
+Simplify using `only [HV.Sb, Finset.mem_filter] at hp`. Take `⟨h1, h2, h3⟩` from `hp`. Establish `hpp` using `Nat.prime_of_mem_primeFactors h1`. Use `⟨hpp, h2, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Establish `h4` using `(partOrd _ l hl ψ (MulChar.orderOf_pos ψ)).1`. Establish `h5` using `((compOrd O N (kap l ψ) 2 hpp).2.2.2 l _ hl h2.symm (h4 ▸ pow_orderOf_eq_one _) h3).1`. Establish `h6` using `(Nat.modEq_iff_dvd' (by norm_num)).1 h5.symm`. Conclude with `hl.one_lt.ne' (Nat.dvd_one.1 h6)`.
+-/
 private theorem ho_odd {O : Type} [CommRing O] [IsDomain O] {N : ℕ} [NeZero N] (ψ : DirichletCharacter O N) {l : ℕ}
     (hl : l.Prime) {p : ℕ} (hp : p ∈ HV.Sb l ψ) : p.Prime ∧ p ≠ l ∧ p ≠ 2 := by
   simp only [HV.Sb, Finset.mem_filter] at hp
@@ -210,6 +288,13 @@ private theorem ho_odd {O : Type} [CommRing O] [IsDomain O] {N : ℕ} [NeZero N]
   have h6 := (Nat.modEq_iff_dvd' (by norm_num)).1 h5.symm
   exact hl.one_lt.ne' (Nat.dvd_one.1 h6)
 
+/- English proof (translation)
+Establish `h1 : cycZ ℚ Ω l s = 1` using `(places ℚ Ω l A).2.2.2 hAl hs`. Establish `h2 : chiO ℚ Ω l O s = 1` using `by show Units.map (algebraMap ℤ_[l] O).toMonoidHom (cycZ ℚ Ω l s) = 1`. Rewrite using `[h1, map_one]`. Establish `h3 : Chr.dirG ℚ Ω (kap l ψ) s = 1` using `((compIne Ω N p hp A hA).2 O _).2.2 hk hs`. Establish `h4 : kap l ψ ((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N) = 1` using `congrArg Units.val h3`.
+
+Establish `h5 : (Chr.Psi l e (Chr.dirG ℚ Ω ψ) s : O) = th0 l ψ ((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N)` using `by show ((chiO ℚ Ω l O s ^ (e : ℤ) * Chr.dirG ℚ Ω ψ s : Oˣ) : O) = _`. Rewrite using `[h2, _root_.one_zpow, one_mul]`. Use `show ψ ((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N) = _`. Use `conv_lhs => rw [← dirichletPrimeToLPart_mul_lPowerPart l ψ]`. Rewrite using `[MulChar.mul_apply, h4, mul_one]`.
+
+Establish `h6` using `(partOrd _ l hl.out ψ (MulChar.orderOf_pos ψ)).2.2.1`. Use `Units.ext (ho_root ((dvrFacts l O).2.2.2.2.2.2.2.2 _ h6) ?_ h)` and prove the remaining obligations. Rewrite using `[h5, ← MulChar.pow_apply_coe]`. Use `show (lPrime l ψ ^ orderOf (lPrime l ψ)) _ = 1`. Rewrite using `[pow_orderOf_eq_one, MulChar.one_apply_coe]`.
+-/
 private theorem ho_teich (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [hl : Fact l.Prime] {O : Type} [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] {N : ℕ} [NeZero N] (e : ℕ)
     (ψ : DirichletCharacter O N) (A : ValuationSubring Ω) {p : ℕ} (hp : p.Prime) (hA : A.valuation (p : Ω) < 1)
@@ -236,6 +321,35 @@ private theorem ho_teich (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ 
 end SlopeTestRemainingChoices
 
 open NumberField Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base in
+/- English proof (translation)
+Introduce `Ω _ _ _ l hl c N _ e ψ o₁ hd S A F hF`. Establish `hη : ∀ g, F.η (F.π g) = eta4 Ω g` using `fun g => DFunLike.congr_fun hF.η g`. Establish `hΨ : ∀ g, F.Ψ (F.π g) = Chr.Psi l e (Chr.dirG ℚ Ω ψ) g` using `fun g => DFunLike.congr_fun hF.Ψ g`. Take `⟨σ, hσ, hc⟩` from `hF.cc`. Establish `hσ' : IsConjOm σ.toRingEquiv` using `hσ`.
+
+Establish `hl2 : ¬ l ∣ 2` using `fun h => hd.l_odd ((Nat.prime_dvd_prime_iff_eq hl.out Nat.prime_two).1 h)`. Use `{ two := by exact_mod_cast (dvrFacts l c.O).2.2.2.2.2.2.2.2 2 hl2 π_cont := hF.π ▸ continuous_toGS Ω _ η_cont := ho_desc _ ?_ Ψ_cont := fun n => ho_desc _ ?_ csq := ?_ ηc := ?_ Ψc := ?_ vl_notMem := fun h => ?_ D_closed := fun v => hF.D v ▸ isClosed_Dec (A v) I_closed := fun v => …` and prove the remaining obligations. Rewrite using `[← hF.π]`. Simplify using `only [hη]`. Conclude with `ho_locConst _ (ho_dir_open Ω _)`.
+
+Rewrite using `[← hF.π]`. Simplify using `only [hΨ]`. Conclude with `ho_psi_cont Ω e ψ n`. Take `⟨j, hj⟩` from `hσ'`. Establish `h : σ * σ = 1` using `AlgEquiv.ext fun x => j.injective (by`.
+
+Establish `h1 : j (σ (σ x)) = starRingEnd ℂ (j (σ x))` using `hj (σ x)`. Establish `h2 : j (σ x) = starRingEnd ℂ (j x)` using `hj x`. Rewrite using `[AlgEquiv.mul_apply, h1, h2, Complex.conj_conj, AlgEquiv.one_apply])`. Rewrite using `[← hc, ← map_mul, h, map_one]`. Rewrite using `[← hc, hη, eta4, Chr.dirG, MonoidHom.comp_apply, (Chr.clsFacts ℚ Ω 4).2.2.2.1 σ hσ']`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[MulChar.coe_toUnitHom]`. Both sides reduce to the same expression. Establish `h1 : cycZ ℚ Ω l σ = -1` using `hσ'.cyc (E := ℚ)`. Establish `h2 : chiO ℚ Ω l c.O σ = -1` using `by show Units.map (algebraMap ℤ_[l] c.O).toMonoidHom (cycZ ℚ Ω l σ) = -1`.
+
+Rewrite using `[h1]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `h3 : (Chr.dirG ℚ Ω ψ σ : c.O) = (-1) ^ e`. Rewrite using `[Chr.dirG, MonoidHom.comp_apply, (Chr.clsFacts ℚ Ω N).2.2.2.1 σ hσ', MulChar.coe_toUnitHom]`.
+
+Conclude with `hd.par`. Rewrite using `[← hc, hΨ]`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((chiO ℚ Ω l c.O σ ^ (e : ℤ) * Chr.dirG ℚ Ω ψ σ : c.Oˣ) : c.O) = 1`. Rewrite using `[h2, zpow_natCast, Units.val_mul, h3, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one, ← mul_pow]`.
+
+Simplify using the standard rewrite rules. Take `⟨p, hp, hpv⟩` from `(hF.Sb _).1 h`. Take `⟨h1, h2, -⟩` from `ho_odd ψ hl.out hp`. Conclude with `ho_not_both _ ((Nat.coprime_primes h1 hl.out).2 h2) hpv hF.vl`. Establish `key : ∀ D I : Subgroup (G ℚ Ω), D = Dec (F` using `ℚ) (A v) → I = Ine (F := ℚ) (A v) → (I.subgroupOf D).Normal := by`.
+
+Introduce and unpack `_ _ rfl rfl`. Use `infer_instance`. Conclude with `key _ _ (hF.D v) (hF.I v)`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hp2, hpv⟩ : ∃ p : ℕ, p.Prime ∧ p ≠ 2 ∧ (p : 𝓞 ℚ) ∈ v.1.asIdeal := by`. Break down `hv with rfl | hv` into its components or cases.
+
+Conclude with `⟨l, hl.out, hd.l_odd, hF.vl⟩`. Take `⟨p, hp, hpv⟩` from `(hF.Sb _).1 hv`. Take `⟨h1, -, h2⟩` from `ho_odd ψ hl.out hp`. Conclude with `⟨p, h1, h2, hpv⟩`. Establish `h4 : p.Coprime 4` using `((Nat.coprime_primes hp Nat.prime_two).2 hp2).pow_right 2`.
+
+Establish `hs' : s.1 ∈ Ine (F` using `ℚ) (A v) := hF.I v ▸ hs`. Establish `h5 : Chr.cls ℚ Ω 4 s.1 = 1` using `(Chr.clsFacts ℚ Ω 4).2.2.2.2 (A v) (fun h => ho_not_both _ h4 hpv ((ho_val (hF.isOver v) 4).1 h)) hs'`. Use `show F.η (F.π s.1) = 1`. Rewrite using `[hη, eta4, Chr.dirG, MonoidHom.comp_apply, h5, map_one]`. Establish `hvl : ((l : ℕ) : 𝓞 ℚ) ∉ v.1.asIdeal` using `fun h => hv (Or.inl (Subtype.ext (ho_place_uniq hl.out _ _ h hF.vl)))`.
+
+Take `⟨p, hp, hpd, hpv⟩` from `ho_exists_prime v.1 _ (mul_ne_zero hl.out.ne_zero (NeZero.ne N)) ((hF.mem v.1).1 v.2)`. Establish `hpl : p ≠ l` using `fun h => hvl (h ▸ hpv)`. Establish `hpN : p ∣ N` using `((Nat.coprime_primes hp hl.out).2 hpl).dvd_of_dvd_mul_left hpd`. Establish `hk : comp p (kap l ψ) = 1`. Assume the negation of the conclusion as `h`.
+
+Use `hv (Or.inr ((hF.Sb v).2 ⟨p, ?_, hpv⟩))` and prove the remaining obligations. Simplify using `only [HV.Sb, Finset.mem_filter]`. Conclude with `⟨Nat.mem_primeFactors.2 ⟨hp, hpN, NeZero.ne N⟩, hpl, h⟩`. Establish `hs' : s.1 ∈ Ine (F` using `ℚ) (A v) := hF.I v ▸ hs.1.1`. Establish `h1 : residue c.O (F.Ψ (F.π s.1) : c.O) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hs.2)`.
+
+Use `show F.Ψ (F.π s.1) = 1`. Rewrite `h1`, the goal using `[hΨ]`. Conclude with `ho_teich Ω e ψ (A v) hp ((ho_val (hF.isOver v) p).2 hpv) (fun h => hvl ((ho_val (hF.isOver v) l).1 h)) hk hs' h1`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.hostFrame_ok :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), HostData l e ψ o₁ →
     ∀ (S : Finset Pl) (A : S → ValuationSubring Ω) (F : Frame c.O (Formalism.ConjugateSelfDual.G ℚ Ω) (Gam Ω S) S), IsHostFrame Ω c e ψ S A F →

@@ -8,6 +8,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SqLift
 
+/- English proof (translation)
+Introduce `P R R₁ R₀ _ _ _ I J I₁ κ π hJ ρ κ₁ π₁ st g A₀ _ A₁ _ A _ i₁ i₂ i h₁ h₂ h e hA hg`. Take `⟨-, -, -, PR, -⟩` from `P`. Establish `hπ : Function.Surjective π`. Rewrite using `[← st.comp]`. Conclude with `st.surj₁.comp st.surj`.
+
+Establish `hb : spMap π₁ ≫ spMap ρ = spMap π ≫ spMap (RingHom.id R)`. Rewrite using `[Cris.spMap_id, Category.comp_id, ← st.comp, Cris.spMap_comp]`. Set `N : GrpMor (divided₂ hJ) (spMap ρ) A₁ κ (spMap π) A₀ (RingHom.id R) (spMap π₁) i₁` to `GrpMor.of_isGrpPullback st.dpJ hb h₁`. Establish `key : ∀ c, N.pull ((liftMor (divided₂ hJ) h₂).pull c) = (liftMor κ h).pull c` using `fun c ↦ GrpMor.pull_pull (liftMor (divided₂ hJ) h₂) N (liftMor κ h) (fun _ ↦ rfl) e c`. Establish `b` using `PR R A g hA hg I κ st.nil R₀ π hπ st.ker A₀ i h`.
+
+Establish `b₂` using `PR R A g hA hg J (divided₂ hJ) (isDPNilpotent_squareZero hJ) R₁ ρ st.surj st.kerJ A₁ i₂ h₂`. Use `⟨N, ⟨fun x y hxy ↦ ?_, fun y ↦ ?_⟩, fun d ↦ ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `b₂.2 x`. Take `⟨y, rfl⟩` from `b₂.2 y`. Establish `: (liftMor κ h).pull x = (liftMor κ h).pull y`.
+
+Rewrite using `[← key, ← key]`. Conclude with `hxy`. Rewrite using `[b.1 this]`. Take `⟨c, rfl⟩` from `b.2 y`. Conclude with `⟨_, key c⟩`.
+
+Use extensionality with `c show d ((liftMor κ h).pull c) = d (N.pull ((liftMor (divided₂ hJ) h₂).pull c))`. Rewrite using `[key]`.
+-/
 theorem crys_two_reductions : AbelianDeRham → ∀ (R R₁ R₀ : Type) [CommRing R] [CommRing R₁] [CommRing R₀] (I J : Ideal R) (I₁ : Ideal R₁) (κ : DividedPowers I) (π : R →+* R₀)
     (hJ : J ^ 2 = 0) (ρ : R →+* R₁) (κ₁ : DividedPowers I₁) (π₁ : R₁ →+* R₀), IsStep κ π hJ ρ κ₁ π₁ →
     ∀ (g : ℕ) (A₀ : Over (Sp R₀)) [GrpObj A₀] (A₁ : Over (Sp R₁)) [GrpObj A₁] (A : Over (Sp R)) [GrpObj A]

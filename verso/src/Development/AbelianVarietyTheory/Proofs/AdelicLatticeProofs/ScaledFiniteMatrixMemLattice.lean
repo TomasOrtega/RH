@@ -8,6 +8,11 @@ open GlobalTheory.FockCompare GlobalTheory.VacUnique
 
 namespace GlobalTheory.VacUnique.Den
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NatMulIntegralNsmul.exists_nsmul_mem`. Consider the case `exact _root_.GlobalTheory.NatMulIntegralNsmul.exists_nsmul_mem`. Consider the case `(apply _root_.GlobalTheory.NatMulIntegralNsmul.exists_nsmul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatMulIntegralNsmul.exists_nsmul_mem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NatMulIntegralNsmul.exists_nsmul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatMulIntegralNsmul.exists_nsmul_mem ..)`.
+-/
 theorem exists_nsmul_mem_lattice {E : Type} [Field E] [NumberField E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) (h : Submodule.IsLattice E Λ) (v : Fin n → E) :
     ∃ N : ℕ, 0 < N ∧ N • v ∈ Λ := by
@@ -19,6 +24,11 @@ theorem exists_nsmul_mem_lattice {E : Type} [Field E] [NumberField E] {n : ℕ}
   | (intros; apply @_root_.GlobalTheory.NatMulIntegralNsmul.exists_nsmul_mem <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.NatMulIntegralNsmul.exists_nsmul_mem ..)
 
+/- English proof (translation)
+Use `mul_ne_zero ?_ (inv_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`. Introduce `h`. Conclude with `D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (RingOfIntegers.algebraMap.injective _ _)).1 h)`. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`.
+
+Introduce `h`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+-/
 theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   refine mul_ne_zero ?_ (inv_ne_zero ?_)
   · rw [FractionalIdeal.coeIdeal_ne_zero]
@@ -30,6 +40,25 @@ theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
     rw [h, Ideal.bot_mul] at h1
     exact differentIdeal_ne_bot h1
 
+/- English proof (translation)
+Introduce `D S T ΛS ΛT hS hT γ`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, ha0⟩ : ∃ a ∈ D.host.AA, a ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `AA_ne_zero D (FractionalIdeal.eq_zero_iff.2 hc)`.
+
+Rewrite using `[Matrix.matrix_eq_sum_single γ]`. Repeatedly rewrite using `[← Finset.sum_product']`. Use `Finset.sum_induction _ (fun γ => ∃ N : ℕ, 0 < N ∧ N • finRat S T γ ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True)) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `x y ⟨N, hN, hx⟩ ⟨M, hM, hy⟩`. Use `⟨N * M, mul_pos hN hM, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[AddMonoidHom.map_add, nsmul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_nsmul]`. Conclude with `nsmul_mem hx M`. Rewrite using `[mul_nsmul']`.
+
+Conclude with `nsmul_mem hy N`. Conclude with `⟨1, one_pos, by rw [AddMonoidHom.map_zero, nsmul_zero]; exact zero_mem _⟩`. Introduce and unpack `⟨i, j⟩ -`. Take `⟨N, hN, ht⟩` from `exists_nsmul_mem_lattice ΛT hT (Pi.single i (γ i j / a))`. Take `⟨M, hM, hs⟩` from `exists_nsmul_mem_lattice ΛS hS (fun k => star (S.gram⁻¹ j k))`.
+
+Use `⟨N * M, mul_pos hN hM, ?_⟩` and prove the remaining obligations. Use `AddSubgroup.subset_closure ⟨1, fun w => by rw [map_one]; exact one_mem _, fun v hv => absurd trivial hv, a, ha, _, hs, _, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul]`. Use function extensionality and compare the values at `i' j'`. Use `show (pairA D.host.F 0 1) ⊗ₜ[D.host.F] _ = (pairA D.host.F 0 1) ⊗ₜ[D.host.F] _`.
+
+Use `congr 1`. Establish `hG : ∑ k, S.gram⁻¹ j k * S.gram k j' = (1 : Matrix _ _ D.host.E) j j'`. Rewrite using `[← Matrix.mul_apply, Matrix.nonsing_inv_mul _ (Formalism.L2.Theta.gram_det_ne S).isUnit]`. Establish `h2 : ∑ k, star ((M • fun k => star (S.gram⁻¹ j k)) k) * S.gram k j' = (M : D.host.E) * (1 : Matrix _ _ D.host.E) j j'`. Rewrite using `[← hG, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, star_nsmul, star_star, nsmul_eq_mul, mul_assoc]`. Rewrite using `[h2]`. Simplify using `only [Matrix.smul_apply, Pi.smul_apply, nsmul_eq_mul, Matrix.single_apply, Pi.single_apply, Matrix.one_apply, Nat.cast_mul]`. Apply the tactic sequence `by_cases h1 : i = i' <;> by_cases h3 : j = j'`.
+
+Substitute `h1 h3` using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using `[h3]`. Simplify using `[h1, Ne.symm h1]`.
+
+Simplify using `[h1, h3]`.
+-/
 theorem exists_nsmul_finRat_mem : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), Submodule.IsLattice D.host.E ΛS → Submodule.IsLattice D.host.E ΛT → ∀ γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E, ∃ N : ℕ, 0 < N ∧ N • finRat S T γ ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) := by
   intro D S T ΛS ΛT hS hT γ
   obtain ⟨a, ha, ha0⟩ : ∃ a ∈ D.host.AA, a ≠ 0 := by

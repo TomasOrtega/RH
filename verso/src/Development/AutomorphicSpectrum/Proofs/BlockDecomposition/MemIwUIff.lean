@@ -10,6 +10,17 @@ namespace GlobalTheory.CompanionTheory.SatPow
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n : ℕ}
 
+/- English proof (translation)
+Establish `hx1 : ∀ j, Valued.v (x j) ≤ 1` using `fun j => by`. Use `hx j` as an intermediate fact. Use `split_ifs at this with h`. Conclude with `this`. Conclude with `this.le`.
+
+Introduce `i`. Use `show if i.val < k then Valued.v ((M.mulVec x) i) ≤ 1 else Valued.v ((M.mulVec x) i) < 1`. Establish `e : (M.mulVec x) i = ∑ j, M i j * x j` using `rfl`. Rewrite using `[e]`. Use `split_ifs with hik`.
+
+Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_right' (hx1 j)).trans (h1 i j)`. Use `Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Distinguish the cases in `hjk : j.val < k`. Establish `hji : j < i`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Conclude with `(mul_le_of_le_one_right' (hx1 j)).trans_lt (h2 i j hji)`.
+
+Use `hx j` as an intermediate fact. Rewrite `this` using `[if_neg hjk]`. Conclude with `(mul_le_of_le_one_left' (h1 i j)).trans_lt this`.
+-/
 theorem latK_mulVec {M : Matrix (Fin n) (Fin n) L} (h1 : ∀ i j, Valued.v (M i j) ≤ 1)
     (h2 : ∀ i j, j < i → Valued.v (M i j) < 1) (k : ℕ) {x : Fin n → L} (hx : x ∈ latK L n k) :
     M.mulVec x ∈ latK L n k := by
@@ -36,6 +47,23 @@ theorem latK_mulVec {M : Matrix (Fin n) (Fin n) L} (h1 : ∀ i j, Valued.v (M i 
       rw [if_neg hjk] at this
       exact (mul_le_of_le_one_left' (h1 i j)).trans_lt this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg' : (g : GL (Fin n) L) ∈ IwGL L n` using `hg`. Use `⟨fun i j => GlobalTheory.CompanionTheory.KUFactsU.iwGL_entries hg' i j, fun i j hji => ?_⟩` and prove the remaining obligations. Establish `h` using `(Subgroup.mem_iInf.1 hg') ⟨i.val, by omega⟩`.
+
+Establish `hs : (Matrix.GeneralLinearGroup.toLin (g : GL (Fin n) L)) • latK L n i.val = latK L n i.val` using `h`. Establish `he : (Pi.single j (1 : L) : Fin n → L) ∈ latK L n i.val`. Introduce `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+
+Establish `: k.val < i.val` using `hji`. Simplify using `[this]`. Establish `: (Pi.single j (1 : L) : Fin n → L) k = 0` using `Pi.single_eq_of_ne hk _`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hm` using `Set.smul_mem_smul_set (a := Matrix.GeneralLinearGroup.toLin (g : GL (Fin n) L)) he`. Rewrite `hm` using `[hs]`. Establish `hi` using `hm i`. Rewrite `hi` using `[if_neg (lt_irrefl _)]`. Establish `e : ((Matrix.GeneralLinearGroup.toLin (g : GL (Fin n) L)) • (Pi.single j (1 : L) : Fin n → L)) i = ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j` using `by show (Matrix.mulVec ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (Pi.single j (1 : L) : Fin n → L)) i = _`.
+
+Simplify using the standard rewrite rules. Rewrite `hi` using `[e]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`. Establish `hinv` using `(GlobalTheory.LGrp.mem_GU_iff σ n (g : GL (Fin n) L)).1 g.2`. Establish `h1' : ∀ i j, Valued.v (((g : GL (Fin n) L)⁻¹).val i j) ≤ 1` using `fun i j => by`.
+
+Rewrite using `[hinv, hσv]`. Conclude with `h1 _ _`. Establish `h2' : ∀ i j, j < i → Valued.v (((g : GL (Fin n) L)⁻¹).val i j) < 1` using `fun i j hji => by`. Rewrite using `[hinv, hσv]`. Conclude with `h2 _ _ (Fin.rev_lt_rev.2 hji)`.
+
+Use `show (g : GL (Fin n) L) ∈ IwGL L n`. Use `Subgroup.mem_iInf.2 fun k => ?_` and prove the remaining obligations. Use `show (Matrix.GeneralLinearGroup.toLin (g : GL (Fin n) L)) • latK L n k = latK L n k`. Use `Set.Subset.antisymm ?_ fun x hx => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `latK_mulVec h1 h2 k hy`. Use `⟨((g : GL (Fin n) L)⁻¹).val.mulVec x, latK_mulVec h1' h2' k hx, ?_⟩ show ((g : GL (Fin n) L)).val.mulVec (((g : GL (Fin n) L)⁻¹).val.mulVec x) = x` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem mem_iwU_iff (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (g : GU σ n) :
     g ∈ IwU σ n ↔ (∀ i j, Valued.v (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j) ≤ 1) ∧
       ∀ i j, j < i → Valued.v (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j) < 1 := by
@@ -79,6 +107,15 @@ theorem mem_iwU_iff (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (g : GU σ n) :
       show ((g : GL (Fin n) L)).val.mulVec (((g : GL (Fin n) L)⁻¹).val.mulVec x) = x
       rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_iwU_iff hσv g).1 hg`. Take `⟨k1, k2⟩` from `(mem_iwU_iff hσv g⁻¹).1 (inv_mem hg)`. Establish `hprod : (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (((g⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) i i = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+
+Rewrite `hprod` using `[Matrix.mul_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Establish `hrest : Valued.v (∑ j ∈ Finset.univ.erase i, ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j * (((g⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) j i) < 1`. Use `Valuation.map_sum_lt _ one_ne_zero fun j hj => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hj) with hji | hji` into its components or cases.
+
+Conclude with `(mul_le_of_le_one_right' (k1 j i)).trans_lt (h2 i j hji)`. Conclude with `(mul_le_of_le_one_left' (h1 i j)).trans_lt (k2 j i hji)`. Establish `hmain : Valued.v (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i * (((g⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i) = 1`. Establish `e : ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i * (((g⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = 1 - ∑ j ∈ Finset.univ.erase i, ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j * (((g⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) j i`. Rewrite using `[← hprod]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Valuation.map_sub_eq_of_lt_left _ (by simpa using hrest), map_one]`. Rewrite `hmain` using `[map_mul]`. Use `le_antisymm (h1 i i) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem iwU_diag (hσv : ∀ x, Valued.v (σ x) = Valued.v x) {g : GU σ n} (hg : g ∈ IwU σ n) (i : Fin n) :
     Valued.v (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i) = 1 := by
   classical

@@ -7,6 +7,13 @@ namespace PositivityTheory.SiegelWeilFormula.Densx
 open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureTheory Topology Filter GlobalTheory.CompanionTheory.SW
 open scoped TensorProduct ENNReal NNReal
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, S₀, h3⟩`. Use `⟨h1, h2, S₀, fun S hS φinf φ hφi hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[h3 S hS φinf φ hφi hφ, lintegral_smul_measure, ENNReal.smul_def]`. Simplify using `only [ENNReal.coe_one, one_mul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨h1, h2, S₀, h3⟩`. Use `⟨h1, h2, S₀, fun S hS φinf φ hφi hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[h3 S hS φinf φ hφi hφ, lintegral_smul_measure, ENNReal.smul_def]`. Simplify using `only [ENNReal.coe_one, one_mul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isEulerProd_const_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d M n : ℕ}
     (b : Module.Basis (Fin d) F E) (I : Measure (Fin n → Fin M → AF F ⊗[F] E)) (c : ℝ≥0)
     (minf : Measure (Fin n → Fin M → Ainf F ⊗[F] E))

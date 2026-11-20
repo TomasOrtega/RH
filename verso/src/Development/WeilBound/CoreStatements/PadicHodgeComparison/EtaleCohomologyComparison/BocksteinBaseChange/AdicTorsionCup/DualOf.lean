@@ -15,6 +15,13 @@ namespace CrystallineSemistableComparison.AdicCoh
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Take `⟨σ, c, hc⟩` from `gal_step hI M j hj hint hperm htrans n gen hgen s s'`. Take `⟨σ2, c2, hc2⟩` from `gal_step hI M j hj hint hperm htrans n gen hgen s' s`. Establish `hact : ∀ (τ : K.fixingSubgroup) (x : M.T n), M.act n τ (M.toV n x) = M.toV n (pullHl l (sch.map (GlobalTheory.Et.galMap (PadicAlgCl l) M.q (IntermediateField.fixingSubgroupEquiv K τ))) n 0 x)` using `fun τ x => gen_baseChange (N := Hl l M.spc n 0) _ x`. Distinguish the cases in `h0 : c = 0`. Establish `es : extS l hI j hj _ 0 s (gen s) = 0` using `pull_gal_inj M n _ _ (by rw [hc, h0]; exact zero_smul _ _)`.
+
+Establish `es' : extS l hI j hj _ 0 s' (gen s') = 0` using `pull_gal_inj M n _ _ (by rw [hc2, es]; exact gen_smul_zero _)`. Use `⟨σ, 1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[hact, hc, h0, es', one_smul]`. Conclude with `congrArg (M.toV n) (zero_smul _ _)`. Use `⟨σ, algebraMap ℤ_[l] ℚ_[l] c, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).2 h0`. Rewrite using `[hact, hc, toV_smul]`.
+-/
 theorem gal_of (hI : ZIn) (M : Model l K) {r : ℕ} {Y : Fin r → Scheme.{0}}
     (j : ∀ s, Y s ⟶ GlobalTheory.Et.geom (PadicAlgCl l) M.q) (hj : IsSum j) (hint : ∀ s, IsIntegral (Y s))
     (hperm : ∀ σ : K.fixingSubgroup, ∃ (π : Equiv.Perm (Fin r)) (θ : ∀ s, Y s ≅ Y (π s)),
@@ -39,6 +46,15 @@ theorem gal_of (hI : ZIn) (M : Model l K) {r : ℕ} {Y : Fin r → Scheme.{0}}
     · exact (map_ne_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).2 h0
     · rw [hact, hc, toV_smul]
 
+/- English proof (translation)
+Take `⟨r, Y, j, hj, hint, hperm, htrans⟩` from `hg`. Use `⟨fun i hi => ?_, fun i j' hij => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ x : M.T i, x = 0` using `fun x => sum_inj l hI j hj i 0 x fun s => by`. Use `hint s` as an intermediate fact. Use `(AdicGeo.comp_str hM hc j hj s).1` as an intermediate fact.
+
+Use `(AdicGeo.comp_str hM hc j hj s).2` as an intermediate fact. Conclude with `(hl_vanish l hI (j s ≫ AdicGeo.str M) d (i : ℤ) (by exact_mod_cast hi)).elim _ _`. Use `⟨fun v w => ?_⟩` and prove the remaining obligations. Take `⟨c, x, rfl⟩` from `Adic.tmul_surj v`. Take `⟨c', x', rfl⟩` from `Adic.tmul_surj w`.
+
+Rewrite using `[hs x, hs x', tmul_zero, tmul_zero]`. Establish `hgen : ∀ s, ∃ g : Hl l (sch.obj (Y s)) ((i + j' : ℕ) : ℤ) 0, ∀ x, ∃ c : ℤ_[l], x = c • g` using `fun s => by`. Use `hint s` as an intermediate fact. Use `(AdicGeo.comp_str hM hc j hj s).1` as an intermediate fact. Use `(AdicGeo.comp_str hM hc j hj s).2` as an intermediate fact.
+
+Conclude with `hl_cyclic l hI (j s ≫ AdicGeo.str M) d _ (by push_cast; exact_mod_cast hij)`. Use `choose gen hgen using hgen`. Conclude with `⟨r, fun s => M.toV (i + j') (extS l hI j hj _ 0 s (gen s)), gen_span hI M j hj _ gen hgen, fun s s' => gal_of hI M j hj hint hperm htrans _ gen hgen s s', dual_span hI M hM d hc j hj hint i j' hij gen hgen⟩`.
+-/
 theorem dual_of (hI : ZIn) (M : Model l K) (hM : M.Good) (d : ℕ) (hc : M.Conn d) (hg : M.Geo) : M.Dual d := by
   obtain ⟨r, Y, j, hj, hint, hperm, htrans⟩ := hg
   refine ⟨fun i hi => ?_, fun i j' hij => ?_⟩
@@ -65,6 +81,9 @@ end CrystallineSemistableComparison.AdicCoh
 
 namespace CrystallineSemistableComparison
 
+/- English proof (translation)
+Introduce `hI l _ K G hG hC hGeo`. Conclude with `{ cup_ex := fun M _ _ x y => AdicCoh.cup_ex hI M x y fin := fun M hM j => AdicCoh.fin_of hI M (hG M hM) j dual := fun M hM d hc => AdicCoh.dual_of hI M (hG M hM) d hc (hGeo M hM d hc) comp := fun M hM => AdicCoh.comp_of hI G hG hC M hM }`.
+-/
 theorem adic : LAdicCoefficientPassage := by
   intro hI l _ K G hG hC hGeo
   exact { cup_ex := fun M _ _ x y => AdicCoh.cup_ex hI M x y

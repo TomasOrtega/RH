@@ -3,6 +3,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw
 
+/- English proof (translation)
+The claim follows from `LC.lc_of_core (LC.coreLC_of h)`.
+-/
 theorem lc_of (h : FFT) : LC := LC.lc_of_core (LC.coreLC_of h)
 
 end PositivityTheory.Rg.Sw

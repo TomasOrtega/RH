@@ -22,6 +22,9 @@ open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LamT (CMPt)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FrameCoeffLoc.coeff_mul_prod_mem_det | exact GlobalTheory.FrameCoeffLoc.coeff_mul_prod_mem_det | (intros; apply GlobalTheory.FrameCoeffLoc.coeff_mul_prod_mem_det <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.framePolynomial_coeff_bounded_by_determinants : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La →
     ∀ (e : Formalism.L2.Pj.Ix Dw → ℤ) (k : (E →+* ℂ) → ℕ), e none = 0 →

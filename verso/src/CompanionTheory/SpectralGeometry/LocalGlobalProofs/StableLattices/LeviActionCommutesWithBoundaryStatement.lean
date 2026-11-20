@@ -8,6 +8,9 @@ open Formalism.REAL (GlRel KHighest IsWeight)
 open CompanionTheory.D.DSIC (KUnit)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LeviChain.lF_bd_comm | exact GlobalTheory.CompanionTheory.LeviChain.lF_bd_comm | (intros; apply GlobalTheory.CompanionTheory.LeviChain.lF_bd_comm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.levi_action_commutes_with_boundary : ∀ (n : ℕ) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V),
     Monotone lev → GlRel E → ∀ p q : Fin n, lev p = lev q → ∀ x : Cn n V, SuppIn (inU lev) x →
       lF E p q (bd (allT n) E x) = bd (allT n) E (lF E p q x) := by

@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `(Module.Baer.of_divisible ℚ).extension_property P.subtype P.injective_subtype ((Algebra.linearMap ℤ ℚ).comp f)`. Set `b` to `Module.Free.chooseBasis ℤ F`. Take `⟨⟨d, hd⟩, hint⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) (S := ℚ) (fun i => g (b i))`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Use `choose n hn using hint`.
+
+Set `lam : F →ₗ[ℤ] ℤ` to `b.constr ℤ n`. Establish `key : (Algebra.linearMap ℤ ℚ).comp lam = d • g`. Use `b.ext fun i => ?_` and prove the remaining obligations. Simplify `hn i` using `[lam]`. Use `⟨d * d, mul_self_pos.mpr hd0, d • lam, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `LinearMap.congr_fun key x`. Establish `h2` using `LinearMap.congr_fun hg x`. Simplify using `at h1 h2`. Rewrite `h1` using `[h2]`. Establish `h3 : lam x = d * f x` using `by exact_mod_cast h1`.
+
+Simplify using `[h3, mul_assoc]`.
+-/
 theorem exists_pos_mul_extend_int_linearForm (F : Type) [AddCommGroup F] [Module.Free ℤ F]
     [Module.Finite ℤ F] (P : Submodule ℤ F) (f : P →ₗ[ℤ] ℤ) :
     ∃ c : ℤ, 0 < c ∧ ∃ lam : F →ₗ[ℤ] ℤ, ∀ x : P, lam x = c * f x := by

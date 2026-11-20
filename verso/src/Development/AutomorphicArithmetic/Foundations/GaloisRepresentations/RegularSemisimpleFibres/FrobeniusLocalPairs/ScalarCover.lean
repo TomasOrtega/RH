@@ -7,6 +7,9 @@ namespace UpperTheory.Gal.InertialTypesAlt.L
 
 variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h2 : valuation E (x - a) < valuation E x`. Rewrite using `[hx]`. Conclude with `lt_of_le_of_lt h h1`. Establish `h3` using `(valuation E).map_sub_eq_of_lt_left h2`. Rewrite `h3` using `[sub_sub_cancel, hx]`. Then use the resulting hypothesis.
+-/
 private theorem val_of_near {r : ValueGroupWithZero E} (h1 : r < 1) {x a : E} (hx : valuation E x = 1)
     (h : valuation E (x - a) ≤ r) : valuation E a = 1 := by
   have h2 : valuation E (x - a) < valuation E x := by
@@ -15,6 +18,15 @@ private theorem val_of_near {r : ValueGroupWithZero E} (h1 : r < 1) {x a : E} (h
   have h3 := (valuation E).map_sub_eq_of_lt_left h2
   rwa [sub_sub_cancel, hx] at h3
 
+/- English proof (translation)
+Establish `hK` using `IsNonarchimedeanLocalField.isCompact_closedBall E 1`. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun c => {y | valuation E (y - c) < r}) (fun c _ => (IsValuativeTopology.hasBasis_nhds' c).mem_of_mem h0.ne')`. Set `f : E → Eˣ` to `fun c => if hc : c = 0 then 1 else Units.mk0 c hc`. Use `⟨t.image f, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxm : (x : E) ∈ {y : E | valuation E y ≤ 1}` using `by simp [hx]`.
+
+Take `⟨c, hct, hc⟩` from `Set.mem_iUnion₂.mp (ht hxm)`. Establish `hc' : valuation E ((x : E) - c) < r` using `hc`. Establish `hvc : valuation E c = 1` using `val_of_near h1 hx hc'.le`. Establish `hc0 : c ≠ 0`. Introduce `h`.
+
+Rewrite `hvc` using `[h, map_zero]`. Conclude with `zero_ne_one hvc`. Establish `hfc : f c = Units.mk0 c hc0` using `dif_neg hc0`. Use `⟨f c, Finset.mem_image_of_mem f hct, (f c)⁻¹ * x, ?_, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations. Rewrite using `[hfc]`.
+
+Establish `e : (((Units.mk0 c hc0)⁻¹ * x : Eˣ) : E) - 1 = c⁻¹ * ((x : E) - c)`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0]`. Rewrite using `[mul_sub, inv_mul_cancel₀ hc0]`. Rewrite using `[e, map_mul, map_inv₀, hvc, inv_one, one_mul]`. Conclude with `hc'.le`.
+-/
 private theorem units_cover (r : ValueGroupWithZero E) (h0 : 0 < r) (h1 : r < 1) :
     ∃ W : Finset Eˣ, ∀ x : Eˣ, valuation E (x : E) = 1 →
       ∃ t ∈ W, ∃ s : Eˣ, valuation E ((s : E) - 1) ≤ r ∧ x = t * s := by
@@ -41,6 +53,9 @@ private theorem units_cover (r : ValueGroupWithZero E) (h0 : 0 < r) (h1 : r < 1)
   rw [e, map_mul, map_inv₀, hvc, inv_one, one_mul]
   exact hc'.le
 
+/- English proof (translation)
+Proceed by induction on `j generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, ih]`. Simplify using `[Units.coe_map]`.
+-/
 private theorem iter_val (σ : E ≃+* E) (j : ℕ) (x : Eˣ) :
     (((Units.map (σ : E →* E))^[j] x : Eˣ) : E) = σ^[j] (x : E) := by
   induction j generalizing x with
@@ -49,12 +64,36 @@ private theorem iter_val (σ : E ≃+* E) (j : ℕ) (x : Eˣ) :
     rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ih]
     simp [Units.coe_map]
 
+/- English proof (translation)
+Proceed by induction on `j generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply, ih, hσ]`.
+-/
 private theorem iter_isom {σ : E ≃+* E} (hσ : Isom σ) (j : ℕ) (x : E) : valuation E (σ^[j] x) = valuation E x := by
   induction j generalizing x with
   | zero => rfl
   | succ j ih =>
     rw [Function.iterate_succ_apply, ih, hσ]
 
+/- English proof (translation)
+Take `⟨W, hW⟩` from `units_cover r h0 h1`. Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := (ValueGroupWithZero E)ˣ)`. Take `⟨π, hπ⟩` from `ValuativeRel.valuation_surjective (g : ValueGroupWithZero E)`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hπ` using `[map_zero]`. Conclude with `g.ne_zero hπ.symm`. Take `⟨πu, hπu⟩ : ∃ u : Eˣ, (u : E) = π` from `⟨Units.mk0 π hπ0, rfl⟩`. Set `V : Eˣ →* (ValueGroupWithZero E)ˣ` to `Units.map (valuation E).toMonoidWithZeroHom.toMonoidHom`. Establish `hV : ∀ u : Eˣ, ((V u : (ValueGroupWithZero E)ˣ) : ValueGroupWithZero E) = valuation E (u : E)` using `fun u => rfl`.
+
+Establish `hq` using `hσ.pos`. Take `⟨P, hP⟩ : ∃ P : Eˣ, P = ∏ j ∈ Finset.range q, (Units.map (σ : E →* E))^[j] πu` from `⟨_, rfl⟩`. Establish `hf : ∀ j, V ((Units.map (σ : E →* E))^[j] πu) = g` using `fun j => Units.ext (by`. Rewrite using `[hV, iter_val, iter_isom hσ.isom, hπu, hπ])`. Establish `hVP : V P = g ^ q`.
+
+Rewrite using `[hP, map_prod]`. Simplify using `[hf]`. Establish `key : (∏ j ∈ Finset.range q, (Units.map (σ : E →* E))^[j + 1] πu) * πu = (∏ j ∈ Finset.range q, (Units.map (σ : E →* E))^[j] πu) * (Units.map (σ : E →* E))^[q] πu` using `(Finset.prod_range_succ' (fun j => (Units.map (σ : E →* E))^[j] πu) q).symm.trans (Finset.prod_range_succ _ q)`. Establish `hqe : (Units.map (σ : E →* E))^[q] πu = πu` using `Units.ext (by rw [iter_val, hπu, hσ.ord])`. Establish `hPfix : Units.map (σ : E →* E) P = P`.
+
+Rewrite using `[hP, map_prod]`. Simplify using `only [← Function.iterate_succ_apply']`. Conclude with `mul_right_cancel (key.trans (by rw [hqe]))`. Use `⟨(Finset.range q ×ˢ W).image (fun it => πu ^ it.1 * it.2), fun x => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `Subgroup.mem_zpowers_iff.mp (hg (V x))`.
+
+Establish `hq0 : (0 : ℤ) < q` using `by exact_mod_cast hq`. Take `⟨i, hi⟩ : ∃ i : ℕ, (i : ℤ) = m % q` from `⟨(m % q).toNat, Int.toNat_of_nonneg (Int.emod_nonneg _ hq0.ne')⟩`. Establish `hiq : i < q`. Use `Int.emod_lt_of_pos m hq0` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨k, hk⟩ : ∃ k : ℤ, k = m / q` from `⟨_, rfl⟩`. Establish `hm' : m = (i : ℤ) + q * k`. Rewrite using `[hi, hk]`. Use `Int.mul_ediv_add_emod m q` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨y, hy⟩ : ∃ y : Eˣ, y = x * (πu ^ i)⁻¹ * (P ^ k)⁻¹` from `⟨_, rfl⟩`. Establish `hVπ : V πu = g` using `hf 0`. Establish `hVy : V y = 1`. Rewrite using `[hy, map_mul, map_mul, map_inv, map_inv, map_pow, map_zpow, hVπ, hVP, ← hm, hm']`. Use `group`.
+
+Establish `hvy : valuation E (y : E) = 1`. Rewrite using `[← hV, hVy, Units.val_one]`. Take `⟨t, ht, s, hs, hyts⟩` from `hW y hvy`. Use `⟨πu ^ i * t, Finset.mem_image.mpr ⟨(i, t), Finset.mem_product.mpr ⟨Finset.mem_range.mpr hiq, ht⟩, rfl⟩, P ^ k, s, by rw [map_zpow, hPfix], hs, ?_⟩` and prove the remaining obligations. Establish `hx : x = y * P ^ k * πu ^ i`.
+
+Rewrite using `[hy]`. Simplify using the standard rewrite rules. Rewrite using `[hx, hyts]`. The two sides agree by associativity and commutativity.
+-/
 private theorem scalar_cover {σ : E ≃+* E} {q : ℕ} (hσ : Cyc σ q) (r : ValueGroupWithZero E) (h0 : 0 < r) (h1 : r < 1) :
     ∃ T : Finset Eˣ, ∀ x : Eˣ, ∃ t ∈ T, ∃ p s : Eˣ, Units.map (σ : E →* E) p = p ∧
       valuation E ((s : E) - 1) ≤ r ∧ x = t * p * s := by
@@ -115,6 +154,13 @@ private theorem scalar_cover {σ : E ≃+* E} {q : ℕ} (hσ : Cyc σ q) (r : Va
   rw [hx, hyts]
   ac_rfl
 
+/- English proof (translation)
+Establish `hva : valuation E (a : E) = 1` using `val_of_near h1 (x := 1) (by simp) (by rw [Valuation.map_sub_swap]; exact ha)`. Prove the components needed by the constructor for the conclusion. Establish `e : ((a * b : Eˣ) : E) - 1 = (a : E) * ((b : E) - 1) + ((a : E) - 1)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Use `(valuation E).map_add_le ?_ ha` and prove the remaining obligations. Rewrite using `[map_mul, hva, one_mul]`. Conclude with `hb`. Establish `e : ((a⁻¹ : Eˣ) : E) - 1 = ((a⁻¹ : Eˣ) : E) * (1 - (a : E))`.
+
+Rewrite using `[mul_sub, mul_one, Units.inv_mul]`. Establish `hvi : valuation E ((a⁻¹ : Eˣ) : E) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hva, inv_one]`. Rewrite using `[e, map_mul, Valuation.map_sub_swap, hvi, one_mul]`. Conclude with `ha`.
+-/
 private theorem near_scalar {r : ValueGroupWithZero E} (h1 : r < 1) {a b : Eˣ} (ha : valuation E ((a : E) - 1) ≤ r)
     (hb : valuation E ((b : E) - 1) ≤ r) :
     valuation E (((a * b : Eˣ) : E) - 1) ≤ r ∧ valuation E (((a⁻¹ : Eˣ) : E) - 1) ≤ r := by
@@ -135,28 +181,49 @@ private theorem near_scalar {r : ValueGroupWithZero E} (h1 : r < 1) {a b : Eˣ} 
     rw [e, map_mul, Valuation.map_sub_swap, hvi, one_mul]
     exact ha
 
+/- English proof (translation)
+Introduce `i` and use `(near_scalar h1 (ha i) (hb i)).1`.
+-/
 private theorem near_mul {r : ValueGroupWithZero E} (h1 : r < 1) {a b : Fin n → Eˣ} (ha : Near r a) (hb : Near r b) :
     Near r (a * b) := fun i => (near_scalar h1 (ha i) (hb i)).1
 
+/- English proof (translation)
+Introduce `i` and use `(near_scalar h1 (ha i) (ha i)).2`.
+-/
 private theorem near_inv {r : ValueGroupWithZero E} (h1 : r < 1) {a : Fin n → Eˣ} (ha : Near r a) : Near r a⁻¹ :=
   fun i => (near_scalar h1 (ha i) (ha i)).2
 
+/- English proof (translation)
+Introduce `i` and use `by simp`.
+-/
 private theorem near_one (r : ValueGroupWithZero E) : Near r (1 : Fin n → Eˣ) := fun i => by simp
 
+/- English proof (translation)
+Introduce `i` and use `by have h := hσ ((a i : E) - 1) rw [map_sub, map_one] at h simpa [sgT, h] using ha i`.
+-/
 private theorem near_sg {σ : E ≃+* E} (hσ : Isom σ) {r : ValueGroupWithZero E} {a : Fin n → Eˣ} (ha : Near r a) :
     Near r (sgT σ a) := fun i => by
   have h := hσ ((a i : E) - 1)
   rw [map_sub, map_one] at h
   simpa [sgT, h] using ha i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[sgT]`.
+-/
 private theorem sgT_mul (σ : E ≃+* E) (a b : Fin n → Eˣ) : sgT σ (a * b) = sgT σ a * sgT σ b := by
   funext i
   simp [sgT]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[sgT]`.
+-/
 private theorem sgT_inv (σ : E ≃+* E) (a : Fin n → Eˣ) : sgT σ a⁻¹ = (sgT σ a)⁻¹ := by
   funext i
   simp [sgT]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[sgT]`.
+-/
 private theorem sgT_one (σ : E ≃+* E) : sgT σ (1 : Fin n → Eˣ) = 1 := by
   funext i
   simp [sgT]
@@ -171,6 +238,11 @@ private def fixNear (σ : E ≃+* E) (r : ValueGroupWithZero E) (h1 : r < 1) : S
     rintro _ ⟨p, s, hp, hs, rfl⟩
     exact ⟨p⁻¹, s⁻¹, by rw [sgT_inv, hp], near_inv h1 hs, mul_inv _ _⟩
 
+/- English proof (translation)
+Use `show (∃ p s, sgT σ p = p ∧ Near r s ∧ u = ρ * p * s) ↔ ∃ p s, sgT σ p = p ∧ Near r s ∧ ρ⁻¹ * u = p * s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, s, hp, hs, h⟩`. Conclude with `⟨p, s, hp, hs, by rw [h]; group⟩`. Introduce and unpack `⟨p, s, hp, hs, h⟩`.
+
+Use `⟨p, s, hp, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← h]`. Use `group`.
+-/
 private theorem rel_iff {σ : E ≃+* E} {r : ValueGroupWithZero E} (h1 : r < 1) {u ρ : Fin n → Eˣ} :
     Rel σ r u ρ ↔ ρ⁻¹ * u ∈ fixNear σ r h1 := by
   show (∃ p s, sgT σ p = p ∧ Near r s ∧ u = ρ * p * s) ↔
@@ -183,17 +255,28 @@ private theorem rel_iff {σ : E ≃+* E} {r : ValueGroupWithZero E} (h1 : r < 1)
     rw [mul_assoc, ← h]
     group
 
+/- English proof (translation)
+Take `⟨p, s, hp, hs, rfl⟩` from `hm`. Rewrite using `[sgT_mul, hp, mul_div_mul_left_eq_div, div_eq_mul_inv]`. Conclude with `near_mul h1 (near_sg hσ hs) (near_inv h1 hs)`.
+-/
 private theorem fixNear_near {σ : E ≃+* E} (hσ : Isom σ) {r : ValueGroupWithZero E} (h1 : r < 1) {m : Fin n → Eˣ}
     (hm : m ∈ fixNear σ r h1) : Near r (sgT σ m / m) := by
   obtain ⟨p, s, hp, hs, rfl⟩ := hm
   rw [sgT_mul, hp, mul_div_mul_left_eq_div, div_eq_mul_inv]
   exact near_mul h1 (near_sg hσ hs) (near_inv h1 hs)
 
+/- English proof (translation)
+Rewrite using `[sgT_mul, mul_div_mul_comm]`. Conclude with `near_mul h1 hu (fixNear_near hσ h1 hm)`.
+-/
 private theorem near_tw_mul {σ : E ≃+* E} (hσ : Isom σ) {r : ValueGroupWithZero E} (h1 : r < 1) {u m : Fin n → Eˣ}
     (hu : Near r (sgT σ u / u)) (hm : m ∈ fixNear σ r h1) : Near r (sgT σ (u * m) / (u * m)) := by
   rw [sgT_mul, mul_div_mul_comm]
   exact near_mul h1 hu (fixNear_near hσ h1 hm)
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `scalar_cover hσ r h0 h1`. Use `Finite.of_surjective (fun t : Fin n → T => (QuotientGroup.mk (fun i => (t i : Eˣ)) : (Fin n → Eˣ) ⧸ fixNear σ r h1)) ?_` and prove the remaining obligations. Introduce `c`. Take `⟨m, rfl⟩` from `QuotientGroup.mk_surjective c`. Use `choose t ht p s hp hs hm using fun i => hT (m i)`.
+
+Use `⟨fun i => ⟨t i, ht i⟩, ?_⟩` and prove the remaining obligations. Establish `hrel : Rel σ r m (fun i => t i)`. Unfold `Rel`. Conclude with `⟨p, s, funext fun i => hp i, fun i => hs i, funext fun i => hm i⟩`. Conclude with `QuotientGroup.eq.mpr ((rel_iff h1).mp hrel)`.
+-/
 private theorem finite_quot {σ : E ≃+* E} {q : ℕ} (hσ : Cyc σ q) (r : ValueGroupWithZero E) (h0 : 0 < r) (h1 : r < 1) :
     Finite ((Fin n → Eˣ) ⧸ (fixNear σ r h1 : Subgroup (Fin n → Eˣ))) := by
   classical
@@ -209,6 +292,21 @@ private theorem finite_quot {σ : E ≃+* E} {q : ℕ} (hσ : Cyc σ q) (r : Val
     exact ⟨p, s, funext fun i => hp i, fun i => hs i, funext fun i => hm i⟩
   exact QuotientGroup.eq.mpr ((rel_iff h1).mp hrel)
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n σ q hσ r h0 h1`. Establish `hσi` using `hσ.isom`. Use `haveI := finite_quot (n := n) hσ r h0 h1`. Establish `hS1 : ∀ {u m : Fin n → Eˣ}, Near r (sgT σ u / u) → m ∈ fixNear σ r h1 → Near r (sgT σ (u * m) / (u * m))` using `fun hu hm => near_tw_mul hσi h1 hu hm`. Establish `hfin : {ρ : Fin n → Eˣ | ρ ∈ Set.range (Quotient.out : (Fin n → Eˣ) ⧸ fixNear σ r h1 → _) ∧ Near r (sgT σ ρ / ρ)}.Finite` using `(Set.finite_range _).subset (fun ρ h => h.1)`.
+
+Establish `hout : ∀ u : Fin n → Eˣ, u⁻¹ * Quotient.out (QuotientGroup.mk u : (Fin n → Eˣ) ⧸ fixNear σ r h1) ∈ fixNear σ r h1` using `fun u => QuotientGroup.eq.mp (QuotientGroup.out_eq' _).symm`. Establish `hout' : ∀ u : Fin n → Eˣ, (Quotient.out (QuotientGroup.mk u : (Fin n → Eˣ) ⧸ fixNear σ r h1))⁻¹ * u ∈ fixNear σ r h1` using `fun u => QuotientGroup.eq.mp (QuotientGroup.out_eq' _)`. Establish `hS_out : ∀ u : Fin n → Eˣ, Near r (sgT σ u / u) → Near r (sgT σ (Quotient.out (QuotientGroup.mk u : (Fin n → Eˣ) ⧸ fixNear σ r h1)) / Quotient.out (QuotientGroup.mk u : (Fin n → Eˣ) ⧸ fixNear σ r h1))` using `fun u hu => by`. Establish `h` using `hS1 hu (hout u)`. Rewrite `h` using `[mul_inv_cancel_left]`.
+
+Conclude with `h`. Use `⟨hfin.toFinset, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨Quotient.out (QuotientGroup.mk 1 : (Fin n → Eˣ) ⧸ fixNear σ r h1), hfin.mem_toFinset.mpr ⟨⟨_, rfl⟩, hS_out 1 ?_⟩⟩` and prove the remaining obligations. Rewrite using `[sgT_one, div_one]`. Conclude with `near_one r`.
+
+Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Conclude with `⟨_, hfin.mem_toFinset.mpr ⟨⟨_, rfl⟩, hS_out u hu⟩, (rel_iff h1).mpr (hout' u)⟩`. Introduce and unpack `⟨ρ, hρ, hr⟩`.
+
+Establish `h` using `hS1 (hfin.mem_toFinset.mp hρ).2 ((rel_iff h1).mp hr)`. Rewrite `h` using `[mul_inv_cancel_left]`. Conclude with `h`. Introduce `ρ hρ ρ' hρ' hr`. Take `⟨⟨c, rfl⟩, -⟩` from `hfin.mem_toFinset.mp hρ`.
+
+Take `⟨⟨c', rfl⟩, -⟩` from `hfin.mem_toFinset.mp hρ'`. Establish `h` using `QuotientGroup.eq.mpr ((rel_iff h1).mp hr)`. Rewrite `h` using `[QuotientGroup.out_eq', QuotientGroup.out_eq']`. Rewrite using `[h]`. Introduce `a b ha hb`.
+
+Conclude with `⟨near_mul h1 ha hb, near_inv h1 ha⟩`. Introduce `z u ρ`. Rewrite using `[rel_iff h1, rel_iff h1]`. Establish `e : (z * ρ)⁻¹ * (z * u) = ρ⁻¹ * u` using `by group`. Rewrite using `[e]`.
+-/
 theorem reps : Reps := by
   classical
   intro E _ _ _ _ n σ q hσ r h0 h1

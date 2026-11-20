@@ -6,6 +6,9 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 noncomputable section
 namespace GlobalTheory.DetInv
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules.
+-/
 theorem span_p_map_ringEquiv (p : ℕ) {O : Type} [CommRing O] (γ : O ≃+* O) :
     Ideal.span {(p : O)} = Ideal.map (γ : O →+* O) (Ideal.span {(p : O)}) := by
   rw [Ideal.map_span, Set.image_singleton]
@@ -20,6 +23,9 @@ def perfectionEquiv (p : ℕ) [Fact p.Prime] {R : Type} [CommRing R] [CharP R p]
     (RingHom.ext fun x => Perfection.ext (R := R) (p := p) fun n => by simp [Perfection.coeff_map])
     (RingHom.ext fun x => Perfection.ext (R := R) (p := p) fun n => by simp [Perfection.coeff_map])
 
+/- English proof (translation)
+The claim follows from `Perfection.coeff_map p (e : R →+* R) x n`.
+-/
 theorem perfectionEquiv_coeff (p : ℕ) [Fact p.Prime] {R : Type} [CommRing R] [CharP R p]
     (e : R ≃+* R) (x : Perfection R p) (n : ℕ) :
     Perfection.coeff R p n (perfectionEquiv p e x) = e (Perfection.coeff R p n x) :=
@@ -29,6 +35,9 @@ def tiltEquiv (p : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p
     (γ : O ≃+* O) : PreTilt O p ≃+* PreTilt O p :=
   perfectionEquiv p (modPEquiv p γ)
 
+/- English proof (translation)
+Establish `: PreTilt.coeff n (tiltEquiv p γ x) = modPEquiv p γ (PreTilt.coeff n x)` using `perfectionEquiv_coeff p (modPEquiv p γ) x n`. Rewrite using `[this, hy]`. Conclude with `Ideal.quotientEquiv_mk _ _ γ _ y`.
+-/
 theorem tiltEquiv_coeff (p : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     (γ : O ≃+* O) (x : PreTilt O p) (n : ℕ) (y : O)
     (hy : PreTilt.coeff n x = Ideal.Quotient.mk (Ideal.span {(p : O)}) y) :
@@ -38,6 +47,9 @@ theorem tiltEquiv_coeff (p : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [Fact �
   rw [this, hy]
   exact Ideal.quotientEquiv_mk _ _ γ _ y
 
+/- English proof (translation)
+Introduce `p _ O _ _ _ γ`. Use `⟨tiltEquiv p γ, fun x => ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Per.untilt_natural (γ : O →+* O) (tiltEquiv p γ : PreTilt O p →+* PreTilt O p) (fun x n y hy => tiltEquiv_coeff p γ x n y hy) x`. Conclude with `GlobalTheory.Per.fontaineTheta_natural (γ : O →+* O) (tiltEquiv p γ : PreTilt O p →+* PreTilt O p) (fun x n y hy => tiltEquiv_coeff p γ x n y hy) a`.
+-/
 theorem ringEquiv_tilt_theta : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (γ : O ≃+* O), ∃ Γ : PreTilt O p ≃+* PreTilt O p,
     (∀ x, (Γ x).untilt = γ x.untilt) ∧ ∀ a : Ainf p O, WittVector.fontaineTheta O p

@@ -12,11 +12,23 @@ namespace GlobalTheory.FormsSharpTie
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Forms Formalism.L2.KerInert.K2
 
+/- English proof (translation)
+Introduce `a b h`. Simplify using `only [DomWeight.natW]`. Conclude with `Int.toNat_le_toNat (by have := l.anti h; omega)`.
+-/
 theorem natW_antitone {n : ℕ} (l : DomWeight n) : Antitone l.natW := by
   intro a b h
   simp only [DomWeight.natW]
   exact Int.toNat_le_toNat (by have := l.anti h; omega)
 
+/- English proof (translation)
+Introduce `P hP`. Establish `hle : RatSpan D lam ≤ (WtPol ℂ (fun τ r => (lam τ).natW r)).toAddSubgroup`. Unfold `RatSpan`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `p ⟨r, f, hf, rfl⟩`.
+
+Use `show _ ∈ WtPol ℂ _`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `GlobalTheory.KerWt.VV_le_WtPol lam` to reduce the goal to its premises. Unfold `Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ), fun τ => ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : MvPolynomial.map (Int.castRingHom ℂ) (f τ) ∈ delSq ℂ n (lam τ)`. Rewrite using `[← GlobalTheory.Published.span_map_delSq ℤ ℂ (Int.castRingHom ℂ) n (lam τ)]`. Conclude with `Submodule.subset_span ⟨f τ, hf τ, rfl⟩`. Conclude with `Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl _ (natW_antitone (lam τ)) h1`.
+
+Conclude with `hle hP`.
+-/
 theorem ratSpan_le_wtPol (D : D7) {n : ℕ} (lam : D.what₂.Tau → DomWeight n) :
     ∀ P ∈ RatSpan D lam, P ∈ WtPol ℂ (fun τ r => (lam τ).natW r) := by
   intro P hP
@@ -36,6 +48,11 @@ theorem ratSpan_le_wtPol (D : D7) {n : ℕ} (lam : D.what₂.Tau → DomWeight n
     exact Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl _ (natW_antitone (lam τ)) h1
   exact hle hP
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => simp [colSub]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, colSub, MvPolynomial.aeval_X, MvPolynomial.eval_X, Matrix.mul_apply]`.
+
+Use `congr 1`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+-/
 theorem eval_colSub {ι : Type} [Fintype ι] {a : ℕ} (β x : ι → Matrix (Fin a) (Fin a) ℂ) (p : Formalism.L2.DIV.Pol ℂ ι a) :
     MvPolynomial.eval (fun k : ι × Fin a × Fin a => x k.1 k.2.1 k.2.2) (colSub β p) =
       MvPolynomial.eval (fun k : ι × Fin a × Fin a => (x k.1 * β k.1) k.2.1 k.2.2) p := by
@@ -49,11 +66,35 @@ theorem eval_colSub {ι : Type} [Fintype ι] {a : ℕ} (β x : ι → Matrix (Fi
     refine Finset.sum_congr rfl fun r _ => ?_
     simp [mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hx]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem zpow_mul_pow_toNat {x : ℂ} (hx : x ≠ 0) (s : ℤ) : x ^ s * x ^ (-s).toNat = x ^ s.toNat := by
   rw [← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hx]
   congr 1
   omega
 
+/- English proof (translation)
+Establish `hBu : ∀ τ, IsUnit (B τ).det` using `fun τ => isUnit_iff_ne_zero.2 (hB τ)`. Establish `hg' : ∀ y τ, g y τ = (B τ)⁻¹ * fr y τ`. Introduce `y τ`. Rewrite using `[hfr, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hBu τ), Matrix.one_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Set `sub : Formalism.L2.DIV.Pol ℂ ι a →ₐ[ℂ] Formalism.L2.DIV.Pol ℂ ι a` to `MvPolynomial.aeval fun v => ∑ c, MvPolynomial.C ((B v.1)⁻¹ v.2.1 c) * MvPolynomial.X (v.1, c, v.2.2)`. Establish `hsub : ∀ y (p : Formalism.L2.DIV.Pol ℂ ι a), MvPolynomial.eval (fun k : ι × Fin a × Fin a => fr y k.1 k.2.1 k.2.2) (sub p) = MvPolynomial.eval (fun k : ι × Fin a × Fin a => g y k.1 k.2.1 k.2.2) p`. Introduce `y p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => simp [sub]`.
+
+Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, sub, MvPolynomial.aeval_X, MvPolynomial.eval_X, hg', Matrix.mul_apply, map_sum]`. Simplify using the standard rewrite rules. Establish `hdet : ∀ y τ, MvPolynomial.eval (fun k : ι × Fin a × Fin a => g y k.1 k.2.1 k.2.2) (frDet ℂ a τ) = (g y τ).det`.
+
+Introduce `y τ`. Unfold `frDet`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i k`.
+
+Simplify using the standard rewrite rules. Use `⟨MvPolynomial.C (∏ τ, (B τ).det ^ (-s τ).toNat) * (∏ τ, sub (frDet ℂ a τ) ^ (s τ).toNat) * sub P, fun τ => (-s τ).toNat, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [frPolyG, LinearMap.coe_mk, AddHom.coe_mk, map_mul, map_prod, map_pow, MvPolynomial.eval_C, hsub, hdet]`. Establish `e2 : ∀ τ, (g y τ).det ^ s τ * (g y τ).det ^ (-s τ).toNat = (g y τ).det ^ (s τ).toNat` using `fun τ => zpow_mul_pow_toNat (hg y τ) (s τ)`. Simplify using `only [hfr, Matrix.det_mul, mul_pow, Finset.prod_mul_distrib]`.
+
+Rewrite using `[← Finset.prod_congr rfl fun τ _ => e2 τ, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Introduce `y y₂ β hβ hy`. Establish `hgy : ∀ τ, g y₂ τ = g y τ * β τ`. Introduce `τ`.
+
+Establish `h` using `hy τ`. Rewrite `h` using `[hfr, hfr, Matrix.mul_assoc]`. Establish `h2` using `congrArg (fun M => (B τ)⁻¹ * M) h`. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hBu τ), Matrix.one_mul] at h2`. Conclude with `h2`.
+
+Establish `hdβ : ∀ τ, (β τ).det = ∏ r, β τ r r` using `fun τ => Matrix.det_of_upperTriangular (fun r s h => (hβ τ).1 r s h)`. Establish `hev : MvPolynomial.eval (fun x : ι × Fin a × Fin a => g y₂ x.1 x.2.1 x.2.2) P = (∏ τ, ∏ r, β τ r r ^ ν τ r) * MvPolynomial.eval (fun x : ι × Fin a × Fin a => g y x.1 x.2.1 x.2.2) P`. Use `eval_colSub β (g y) P` as an intermediate fact. Rewrite `this` using `[hP β hβ, MvPolynomial.smul_eval]`. Simplify using `only [hgy]`.
+
+Rewrite using `[← this]`. Establish `hne : ∀ τ r, β τ r r ≠ 0` using `fun τ r => (hβ τ).2 r`. Establish `e3 : ∀ τ r, β τ r r ^ ((ν τ r : ℤ) + s τ) = β τ r r ^ ν τ r * β τ r r ^ s τ`. Introduce `τ r`. Rewrite using `[zpow_add₀ (hne τ r), zpow_natCast]`.
+
+Simplify using `only`. Rewrite using `[hev]`. Simplify using `only [hgy, Matrix.det_mul, hdβ, mul_zpow, e3, Finset.prod_mul_distrib, ← Finset.prod_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isVLam_of_wtPol {ι : Type} [Fintype ι] {a : ℕ} {Y : Type} (fr g : Y → ι → Matrix (Fin a) (Fin a) ℂ)
     (B : ι → Matrix (Fin a) (Fin a) ℂ) (hB : ∀ τ, (B τ).det ≠ 0) (hg : ∀ y τ, (g y τ).det ≠ 0)
     (hfr : ∀ y τ, fr y τ = B τ * g y τ) (ν : ι → Fin a → ℕ) (s : ι → ℤ) (P : Formalism.L2.DIV.Pol ℂ ι a)
@@ -120,6 +161,21 @@ theorem isVLam_of_wtPol {ι : Type} [Fintype ι] {a : ℕ} {Y : Type} (fr g : Y 
 
 open Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Finset in
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.KerWt.nu_t_identity D u j hj τ r).1`. Establish `h2` using `(D.chTw u μ).sSharp_eq j hj τ`. Establish `h3` using `(Tw.fm u μ).lam_eq j hj.le τ r`. Establish `h2' : (((D.chTw u μ).sSharp j τ : ℤ) : ℝ) = (((D.hcW u τ).e ⟨j, hj⟩ : ℚ) : ℝ) - ((D.R.k : ℝ) + ((j : ℝ) + 1) * ((D.R.t : ℝ) + 1)) / 2`. Use `congrArg (fun q : ℚ => (q : ℝ)) h2` as an intermediate fact.
+
+Simplify using `only [sExp', Ranks.N] at this`. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `he : ∀ (k : ℕ) (hk : k < D.R.m), k = j → (D.hc τ).e ⟨k, hk⟩ = (D.hcW u τ).e ⟨j, hj⟩`. Introduce and unpack `k hk rfl`.
+
+Rewrite using `[D.hcW_e]`. Apply `Rat.cast_injective (α := ℝ)` to reduce the goal to its premises. Establish `hw : ((((Tw.fm u μ).lam j τ).w r : ℤ) : ℝ) = (((((Tw.fm u μ).lam j τ).w r : ℤ) : ℚ) : ℝ)` using `by push_cast; rfl`. Use `push_cast`. Rewrite using `[h1, h2', hw, h3]`.
+
+Unfold `DV.nuRow DV.srcPar DV.wSz`. Rewrite using `[dif_pos (show 1 ≤ j + 1 ∧ j + 1 ≤ D.R.m by omega), he _ _ (by omega)]`. Simplify using `only [Ranks.N]`. Distinguish the cases in `hr : r.1 < D.R.k`. Rewrite using `[dif_pos hr, dif_pos hr]`.
+
+Simplify using `only [hcToWeightQ, rhoVec]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : (r.1 - D.R.k) / (D.R.t + 1) < D.R.m`. Use `D.R.blk_lt hj.le r hr` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hr, dif_neg hr, dif_pos hb]`. Establish `hdm` using `Nat.div_add_mod (r.1 - D.R.k) (D.R.t + 1)`. Establish `hrk : (r.1 : ℝ) = D.R.k + (D.R.t + 1) * (((r.1 - D.R.k) / (D.R.t + 1) : ℕ) : ℝ) + (((r.1 - D.R.k) % (D.R.t + 1) : ℕ) : ℝ)`. Establish `: r.1 = D.R.k + (D.R.t + 1) * ((r.1 - D.R.k) / (D.R.t + 1)) + (r.1 - D.R.k) % (D.R.t + 1)` using `by omega`.
+
+Conclude with `this` after adjusting the coercions. Simplify using `only [wG]`. Use `push_cast`. Rewrite using `[hrk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sharpWt_rat (D : D7) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ) (hj : j < D.R.m)
     (τ : D.what₂.Tau) (r : Fin (D.R.N j)) :
     ((((nuT D u j τ r : ℤ) - (D.chTw u μ).sSharp j τ : ℤ)) : ℚ) =
@@ -160,6 +216,13 @@ theorem sharpWt_rat (D : D7) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what�
     rw [hrk]
     ring
 
+/- English proof (translation)
+Establish `h` using `sharpWt_rat D Tw u μ j hj τ r`. Use `set z : ℤ := (nuT D u j τ r : ℤ) - (D.chTw u μ).sSharp j τ with hz`. Use `set w : ℤ := ((Tw.fm u μ).lam j τ).w r with hw`. Use `show z = ((Tw.fm u μ).lam j τ).w r - ((j * (D.R.t + 1) / 2 : ℕ) : ℤ)`. Rewrite using `[← hw]`.
+
+Generalize the expression as in `hn : j * (D.R.t + 1) = n`. Establish `h2 : (2 * (w - z) : ℚ) = (n : ℚ)`. Rewrite using `[← hn]`. Use `push_cast`. Rewrite using `[h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h3 : 2 * (w - z) = (n : ℤ)` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nuT_sub_sSharp (D : D7) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ) (hj : j < D.R.m)
     (τ : D.what₂.Tau) (r : Fin (D.R.N j)) :
     (nuT D u j τ r : ℤ) - (D.chTw u μ).sSharp j τ = (lamTG (Tw.fm u μ) j τ).w r := by
@@ -174,6 +237,9 @@ theorem nuT_sub_sSharp (D : D7) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.wh
   have h3 : 2 * (w - z) = (n : ℤ) := by exact_mod_cast h2
   omega
 
+/- English proof (translation)
+Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) r.2`. Establish `hle : l.w ⟨N - 1, by omega⟩ ≤ l.w r` using `l.anti (show r ≤ ⟨N - 1, by omega⟩ from Fin.mk_le_mk.2 (by omega))`. Simplify using `only [DomWeight.natW, DomWeight.detShift, shW, dif_pos hN]`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem natW_add_shift {N : ℕ} (l : DomWeight N) (c : ℤ) (r : Fin N) :
     ((l.natW r : ℕ) : ℤ) + (shW l c).detShift = (shW l c).w r := by
   have hN : 0 < N := lt_of_le_of_lt (Nat.zero_le _) r.2
@@ -185,6 +251,17 @@ theorem natW_add_shift {N : ℕ} (l : DomWeight N) (c : ℤ) (r : Fin N) :
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc0 : G.Consts} {Dx : DivX D}
   {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc0 Dx cX}
 
+/- English proof (translation)
+Introduce `x`. Establish `hx` using `(hV.rat ((ex.tw.fm u μ).emb j x)).1 ⟨x, rfl⟩`. Use `choose P hP hE using hx.2`. Establish `hB : ∀ τ, (atInf (embT D) crd.1 τ).det ≠ 0`. Introduce `τ`.
+
+Use `show ((crd : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ)).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 (Matrix.isUnits_det_units crd).ne_zero`. Establish `hg : ∀ y τ, ((eY y).1 τ).det ≠ 0` using `fun y τ => ((eY y).2 τ).ne_zero`. Establish `key : ∀ c, IsVLam ((t.O u μ).frm j) (fun τ r => (nuT D u j τ r : ℤ) - (D.chTw u μ).sSharp j τ) ((ex.tw.fm u μ).emb j x c)`.
+
+Introduce `c`. Establish `h1` using `isVLam_of_wtPol ((t.O u μ).frm j) (fun y => (eY y).1) (fun τ => atInf (embT D) crd.1 τ) hB hg hfrm (fun τ r => ((ex.tw.fm u μ).lam j τ).natW r) (shiftOf (lamTG (ex.tw.fm u μ) j)) (P c) (ratSpan_le_wtPol D _ (P c) (hP c))`. Establish `hw : (fun τ r => (nuT D u j τ r : ℤ) - (D.chTw u μ).sSharp j τ) = (fun τ r => ((((ex.tw.fm u μ).lam j τ).natW r : ℕ) : ℤ) + shiftOf (lamTG (ex.tw.fm u μ) j) τ)`. Use function extensionality and compare the values at `τ r`. Rewrite using `[nuT_sub_sSharp D ex.tw u μ j hj τ r]`.
+
+Conclude with `(natW_add_shift _ _ r).symm`. Establish `hf : (ex.tw.fm u μ).emb j x c = fun y => (∏ τ, ((eY y).1 τ).det ^ shiftOf (lamTG (ex.tw.fm u μ) j) τ) * MvPolynomial.eval (fun k : D.what₂.Tau × Fin (D.R.N j) × Fin (D.R.N j) => (eY y).1 k.1 k.2.1 k.2.2) (P c)`. Use function extensionality and compare the values at `y`. Rewrite using `[hE c y]`. Simplify using `[fnOf]`.
+
+Rewrite using `[hw, hf]`. Conclude with `h1`. Use `fun c => forms_sharp_description Formalism.L2.KerInert.SharpPolyP.sharp_polynomial_frames D u (D.chTw u μ) (t.O u μ) j hj.le (nuT D u j) _ (key c)` as an intermediate fact. Use `choose Q hQ hQE using this`. Conclude with `⟨Q, hQ, hQE⟩`.
+-/
 theorem formsSharpAt_of_valTied (t : KerEntTied ex) (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ) (hj : j < D.R.m)
     {T : ℕ} {bad : Set (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F))}
     {eY : (D.chTw u μ).Y j ≃ Fr D j hj.le} {okW : D.what₂.places.Pl → Prop} {Ch : Type} {chOf : (D.chTw u μ).cls j → Ch}
@@ -227,6 +304,9 @@ theorem formsSharpAt_of_valTied (t : KerEntTied ex) (u : D.what₂.Word) (μ : D
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
+/- English proof (translation)
+Introduce `j hj` and use `formsSharpAt_of_valTied t u μ j hj (hV j hj) (A.crd j hj.le) (hP.frm j hj.le)`.
+-/
 theorem formsSharpAt_of_pins (t : KerEntTied ex) (u : D.what₂.Word) (μ : D.what₂.Tup) (St : GlobalTheory.TwU.ChainCharts D u μ)
     (A : GlobalTheory.TwU.AdData t u μ St) (dtU : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm →* D.Dt) (hP : GlobalTheory.TwU.AdPins A dtU)
     (okW : ℕ → D.what₂.places.Pl → Prop)

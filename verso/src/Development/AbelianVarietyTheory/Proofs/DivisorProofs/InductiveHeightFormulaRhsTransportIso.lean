@@ -16,11 +16,23 @@ open GlobalTheory.TrueGeo.SmallSec GlobalTheory.FrameGlue.Pull GlobalTheory.Mult
 
 variable {k : Type} [CommRing k]
 
+/- English proof (translation)
+The claim follows from `isEmpty_iff.2 fun y => isEmpty_iff.1 (h σ) (PtsOver.map g hg (spMap σ) y)`.
+-/
 theorem isEmpty_cxPts_of_map {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} (g : Y ⟶ X) (hg : g ≫ p = q)
     (h : ∀ σ : k →+* ℂ, IsEmpty (CxPts p σ)) (σ : k →+* ℂ) : IsEmpty (CxPts q σ) :=
 
   isEmpty_iff.2 fun y => isEmpty_iff.1 (h σ) (PtsOver.map g hg (spMap σ) y)
 
+/- English proof (translation)
+Establish `hY : topologicalKrullDim Y = (e + 1 : ℕ)` using `(IsHomeomorph.topologicalKrullDim_eq _ (Scheme.homeoOfIso (asIso g)).isHomeomorph).trans hX`. Establish `hg' : inv g ≫ q = p` using `by rw [← hg, IsIso.inv_hom_id_assoc]`. Distinguish the cases in `hp0 : ∀ σ : k →+* ℂ, IsEmpty (CxPts p σ)`. Rewrite using `[(GlobalTheory.T.mixedArch_restricted_eq_zero_of_no_complexPoints k X p hp0 e L M).1 r hr]`. Conclude with `(GlobalTheory.T.mixedArch_restricted_eq_zero_of_no_complexPoints k Y q (isEmpty_cxPts_of_map g hg hp0) e _ _).1 _ _`.
+
+Distinguish the cases in `hq0 : ∀ σ : k →+* ℂ, IsEmpty (CxPts q σ)`. Conclude with `absurd (isEmpty_cxPts_of_map (inv g) hg' hq0) hp0`. Take `⟨e₁, he₁, hXa⟩` from `(GlobalTheory.T.projArithAmbient_vertical_or_arithmeticVariety k X p hp (e + 1) hX).resolve_left fun ⟨_, _, _, h⟩ => hp0 h`. Take `⟨e₂, he₂, hYa⟩` from `(GlobalTheory.T.projArithAmbient_vertical_or_arithmeticVariety k Y q hq (e + 1) hY).resolve_left fun ⟨_, _, _, h⟩ => hq0 h`. Take `rfl : e₁ = e` from `by omega`.
+
+Take `rfl : e₂ = e₁` from `by omega`. Unfold `mixArch`. Use `congr 2`. Use function extensionality and compare the values at `n`. Establish `h₁ : (comb (fun a => (L a).pull g hg) n).archInt (M.pull g hg) e₂ (MultPull.isRatSec_pull_map g (hη ▸ specializes_rfl : g (genericPoint Y) ⤳ genericPoint X) hr) = ((comb L n).pull g hg).archInt (M.pull g hg) e₂ (MultPull.isRatSec_pull_map g (hη ▸ specializes_rfl : g (genericPoint …`.
+
+Simplify using `only [HermLB.archInt, (isometric_comb_pull L n g hg).chernInt_eq]`. Rewrite using `[h₁, GlobalTheory.T.archimedeanIntegral_pull_mul_degree k X Y p q e₂ hXa hYa g hg hη (by rw [Published.residueDegree_of_isClosedImmersion]; exact one_ne_zero), Published.residueDegree_of_isClosedImmersion, Nat.cast_one, one_mul]`.
+-/
 theorem mixArch_pull_iso {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k)
     (hp : IsAmb p) (hq : IsAmb q) (g : Y ⟶ X) (hg : g ≫ p = q) (hη : g (genericPoint Y) = genericPoint X) [IsIso g]
     (e : ℕ) (hX : topologicalKrullDim X = (e + 1 : ℕ)) (L : Fin e → HermLB p) (M : HermLB p)
@@ -51,6 +63,9 @@ theorem mixArch_pull_iso {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (p : X
   rw [h₁, GlobalTheory.T.archimedeanIntegral_pull_mul_degree k X Y p q e₂ hXa hYa g hg hη (by rw [Published.residueDegree_of_isClosedImmersion]; exact one_ne_zero),
     Published.residueDegree_of_isClosedImmersion, Nat.cast_one, one_mul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(divOfRatSec (LB.isLB_pull M.isLB g) (MultPull.isRatSec_pull_map g hη hr)).mult y = (divOfRatSec M.isLB hr).mult (g y)`. Take `⟨c, hc⟩` from `exists_chart (LB.isLB_pull M.isLB g) y`. Establish `hc' : g y ∈ M.B.U (c PUnit.unit)` using `Set.mem_iInter.1 hc PUnit.unit`. Rewrite using `[((presents_divOfRatSec _ _).isEqn c y hc).mult_eq, ((presents_divOfRatSec M.isLB hr).isEqn _ _ hc').mult_eq]`. Conclude with `ord_fnMap g hη y _`.
+-/
 theorem mult_pull_iso {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X] [IsLocallyNoetherian Y]
     {p : X ⟶ Sp k} {q : Y ⟶ Sp k} (g : Y ⟶ X) (hg : g ≫ p = q) (hη : g (genericPoint Y) ⤳ genericPoint X) [IsIso g]
     (M : HermLB p) {r : M.B.ι → X.functionFieldˣ} (hr : IsRatSec M.B r) (y : Y) :
@@ -63,6 +78,11 @@ theorem mult_pull_iso {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocall
     ((presents_divOfRatSec M.isLB hr).isEqn _ _ hc').mult_eq]
   exact ord_fnMap g hη y _
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ _ _ p q hp hq g hg hη _ e hX h L M r hr`. Unfold `recVal`. Rewrite using `[mixArch_pull_iso p q hp hq g hg hη e hX L M r hr]`. Use `congr 1`. Use `(finsum_congr fun z => ?_).trans (finsum_comp_equiv (Scheme.homeoOfIso (asIso g)).toEquiv (f := fun x => ((M.div hr).mult x : ℝ) * h x))` and prove the remaining obligations.
+
+Conclude with `congrArg (fun n : ℤ => (n : ℝ) * h (g z)) (mult_pull_iso g hg _ M hr z)`.
+-/
 theorem transport : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X] [IsLocallyNoetherian Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k), IsAmb p → IsAmb q → ∀ (g : Y ⟶ X) (hg : g ≫ p = q) (hη : g (genericPoint Y) = genericPoint X), IsIso g → ∀ e : ℕ, topologicalKrullDim X = (e + 1 : ℕ) → ∀ (h : X → ℝ) (L : Fin e → HermLB p) (M : HermLB p) (r : M.B.ι → X.functionFieldˣ) (hr : IsRatSec M.B r), recVal (fun w => h (g w)) (fun a => (L a).pull g hg) (M.pull g hg) (MultPull.isRatSec_pull_map g (hη ▸ specializes_rfl : g (genericPoint Y) ⤳ genericPoint X) hr) = recVal h L M hr := by
   intro k _ X Y _ _ _ _ p q hp hq g hg hη _ e hX h L M r hr
   unfold recVal

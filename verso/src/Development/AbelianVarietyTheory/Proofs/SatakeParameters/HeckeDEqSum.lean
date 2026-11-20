@@ -14,17 +14,32 @@ namespace GlobalTheory.HeckeRecon
 section SlopeTestRemainingChoices
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `f (g * h' * h) = f (g * (h' * h))`. Rewrite using `[mul_assoc]`.
+-/
 theorem rt_rt {W : Type} [AddCommGroup W] [Module ℂ W] (h h' : GAf L n) (f : GAf L n → W) :
     NG.rt L n h' (NG.rt L n h f) = NG.rt L n (h' * h) f := by
   funext g
   change f (g * h' * h) = f (g * (h' * h))
   rw [mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `f (g * 1) = f g`. Rewrite using `[mul_one]`.
+-/
 theorem rt_one {W : Type} [AddCommGroup W] [Module ℂ W] (f : GAf L n → W) : NG.rt L n 1 f = f := by
   funext g
   change f (g * 1) = f g
   rw [mul_one]
 
+/- English proof (translation)
+Take `⟨Q, hQ, c, hc⟩` from `GlobalTheory.IsotOrth.exists_finite_class (F := NumberField.maximalRealSubfield L) (E := L) N' hN'`. Use `haveI := hQ`. Set `cls : Umax L n → Fin n → Fin n → Q` to `fun κ i j => c ⟨(κ.1.1 : Matrix (Fin n) (Fin n) (AL L)) i j, κ.2 i j⟩`. Establish `key : ∀ a b : Umax L n, cls a = cls b → ((a.1 : GAf L n) : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n N') = (b.1 : GAf L n)`. Introduce `a b hab`.
+
+Rewrite using `[QuotientGroup.eq]`. Conclude with `GlobalTheory.IsotOrth.cong_inv_mul a.2 b.2 (fun i j => by`. Take `⟨z, hz⟩` from `hc _ _ (congrFun (congrFun hab i) j).symm`. Use `⟨z.1, z.2, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg Subtype.val hz)`.
+
+Set `F : (Fin n → Fin n → Q) → GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n N'` to `fun q => if h : ∃ a, cls a = q then ((h.choose.1 : GAf L n) : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n N') else ((1 : GAf L n) : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n N')`. Use `(Set.finite_range F).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨cls ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Establish `h : ∃ a, cls a = cls ⟨x, hx⟩` using `⟨_, rfl⟩`.
+
+Simplify using `only [F, dif_pos h]`. Conclude with `key _ _ h.choose_spec`.
+-/
 theorem finite_cosets (N' : ℕ) (hN' : 0 < N') :
     {c : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n N' | ∃ x : GAf L n, x ∈ Umax L n ∧
       (x : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n N') = c}.Finite := by
@@ -50,6 +65,11 @@ theorem finite_cosets (N' : ℕ) (hN' : 0 < N') :
   exact key _ _ h.choose_spec
 
 open Classical in
+/- English proof (translation)
+Unfold `NG.heckeD`. Rewrite using `[finsum_eq_sum_of_support_subset]`. Introduce `c hc`. Rewrite using `[Set.Finite.coe_toFinset]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hc (dif_neg h)`.
+-/
 theorem heckeD_eq_sum {W : Type} [AddCommGroup W] [Module ℂ W] (J : Subgroup (GAf L n)) (D : Set (GAf L n))
     (hfin : {c : GAf L n ⧸ J | ∃ x ∈ D, (x : GAf L n ⧸ J) = c}.Finite) (f : GAf L n → W) (g : GAf L n) :
     NG.heckeD J D f g = ∑ c ∈ hfin.toFinset,
@@ -61,6 +81,9 @@ theorem heckeD_eq_sum {W : Type} [AddCommGroup W] [Module ℂ W] (J : Subgroup (
   by_contra h
   exact hc (dif_neg h)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[Pi.add_apply, heckeD_eq_sum J D hfin, heckeD_eq_sum J D hfin, heckeD_eq_sum J D hfin, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem heckeD_add {W : Type} [AddCommGroup W] [Module ℂ W] (J : Subgroup (GAf L n)) (D : Set (GAf L n))
     (hfin : {c : GAf L n ⧸ J | ∃ x ∈ D, (x : GAf L n ⧸ J) = c}.Finite) (f f' : GAf L n → W) :
     NG.heckeD J D (f + f') = NG.heckeD J D f + NG.heckeD J D f' := by
@@ -69,6 +92,9 @@ theorem heckeD_add {W : Type} [AddCommGroup W] [Module ℂ W] (J : Subgroup (GAf
   refine Finset.sum_congr rfl fun c _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, heckeD_eq_sum J D hfin, heckeD_eq_sum J D hfin, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem heckeD_smul {W : Type} [AddCommGroup W] [Module ℂ W] (J : Subgroup (GAf L n)) (D : Set (GAf L n))
     (hfin : {c : GAf L n ⧸ J | ∃ x ∈ D, (x : GAf L n ⧸ J) = c}.Finite) (a : ℂ) (f : GAf L n → W) :
     NG.heckeD J D (a • f) = a • NG.heckeD J D f := by
@@ -77,11 +103,23 @@ theorem heckeD_smul {W : Type} [AddCommGroup W] [Module ℂ W] (J : Subgroup (GA
   refine Finset.sum_congr rfl fun c _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[NG.heckeD]`.
+-/
 theorem heckeD_zero {W : Type} [AddCommGroup W] [Module ℂ W] (J : Subgroup (GAf L n)) (D : Set (GAf L n)) :
     NG.heckeD J D (0 : GAf L n → W) = 0 := by
   funext g
   simp [NG.heckeD]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `NG.heckeD`. Rewrite using `[finsum_eq_single _ ((1 : GAf L n) : GAf L n ⧸ J)]`. Establish `h : ∃ x ∈ {x | ∃ u ∈ J, ∃ u' ∈ J, x = u * 1 * u'}, (x : GAf L n ⧸ J) = ((1 : GAf L n) : GAf L n ⧸ J)` using `⟨1, ⟨1, J.one_mem, 1, J.one_mem, by simp⟩, rfl⟩`. Rewrite using `[dif_pos h]`.
+
+Take `⟨⟨u, hu, u', hu', e⟩, -⟩` from `h.choose_spec`. Rewrite using `[e]`. Establish `: u * 1 * u' ∈ J` using `by simpa using J.mul_mem hu hu'`. Conclude with `congrFun (hv _ this) g`. Introduce `c hc`.
+
+Rewrite using `[dif_neg]`. Introduce and unpack `⟨x, ⟨u, hu, u', hu', rfl⟩, hx⟩`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← hx, QuotientGroup.eq]`. Establish `: u * 1 * u' ∈ J` using `by simpa using J.mul_mem hu hu'`.
+
+Simplify using `using J.inv_mem this`.
+-/
 theorem heckeD_one {W : Type} [AddCommGroup W] [Module ℂ W] (J : Subgroup (GAf L n)) (v : GAf L n → W)
     (hv : ∀ κ ∈ J, NG.rt L n κ v = v) :
     NG.heckeD J {x | ∃ u ∈ J, ∃ u' ∈ J, x = u * 1 * u'} v = v := by
@@ -106,6 +144,49 @@ theorem heckeD_one {W : Type} [AddCommGroup W] [Module ℂ W] (J : Subgroup (GAf
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `L _ _ _ n a b S₁ S₂ hS₁ hS₂ N hN φ hφ hex hT`. Take `⟨f₀, hf₀S, hf₀fix, hf₀ne⟩` from `hex`. Use `set J := GlobalTheory.IsotOrth.congSub L n N with hJ`. Set `gens : Set ((GAf L n → a.W) × (GAf L n → b.W))` to `{w | ∃ (h : GAf L n) (f : GAf L n → a.W), f ∈ S₁ ∧ (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) ∧ w = (NG.rt L n h f, NG.rt L n h (φ f))}`. Set `W` to `Submodule.span ℂ gens`.
+
+Establish `hgen : ∀ (h : GAf L n) (f : GAf L n → a.W), f ∈ S₁ → (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) → (NG.rt L n h f, NG.rt L n h (φ f)) ∈ W` using `fun h f hf hfix => Submodule.subset_span ⟨h, f, hf, hfix, rfl⟩`. Establish `hWS : ∀ w ∈ W, w.1 ∈ S₁ ∧ w.2 ∈ S₂`. Introduce `w hw`. Establish `: W ≤ S₁.prod S₂`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨h, f, hf, hfix, rfl⟩`. Conclude with `⟨hS₁.1.stable h f hf, hS₂.1.stable h _ (hφ f hf hfix).1⟩`. Conclude with `this hw`. Establish `hWst : ∀ h, ∀ w ∈ W, (NG.rt L n h w.1, NG.rt L n h w.2) ∈ W`. Introduce `h w hw`.
+
+Establish `: W ≤ W.comap ((NG.rt L n h).prodMap (NG.rt L n h))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨h', f, hf, hfix, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.prodMap_apply, rt_rt, rt_rt]`. Conclude with `hgen _ f hf hfix`.
+
+Conclude with `this hw`. Establish `hfinE : ∀ M', 0 < M' → {c : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n (N * M') | ∃ x ∈ (J : Set (GAf L n)), (x : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n (N * M')) = c}.Finite`. Introduce `M' hM'`. Use `(finite_cosets (N * M') (Nat.mul_pos hN hM')).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨x, (show NG.Cong L n N x from hx).1, rfl⟩`. Set `P : ((GAf L n → a.W) × (GAf L n → b.W)) → Prop` to `fun w => ∃ M : ℕ, 0 < M ∧ ∀ M', 0 < M' → M ∣ M' → NG.heckeD (GlobalTheory.IsotOrth.congSub L n (N * M')) (J : Set (GAf L n)) w.2 = φ (NG.heckeD (GlobalTheory.IsotOrth.congSub L n (N * M')) (J : Set (GAf L n)) w.1)`. Set `Good : Submodule ℂ ((GAf L n → a.W) × (GAf L n → b.W))` to `{ carrier := {w | P w} zero_mem' := ⟨1, one_pos, fun M' _ _ => by simp [heckeD_zero]⟩ add_mem' := by`. Introduce and unpack `w w' ⟨M, hM, hw⟩ ⟨M₁, hM₁, hw'⟩`. Use `⟨M * M₁, Nat.mul_pos hM hM₁, fun M' hM' hd => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hw M' hM' (dvd_trans (dvd_mul_right M M₁) hd)`. Establish `h2` using `hw' M' hM' (dvd_trans (dvd_mul_left M₁ M) hd)`. Simplify using `only [Prod.fst_add, Prod.snd_add]`. Rewrite using `[heckeD_add _ _ (hfinE M' hM'), heckeD_add _ _ (hfinE M' hM'), h1, h2, map_add]`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `c w ⟨M, hM, hw⟩`. Use `⟨M, hM, fun M' hM' hd => ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.smul_fst, Prod.smul_snd]`. Rewrite using `[heckeD_smul _ _ (hfinE M' hM'), heckeD_smul _ _ (hfinE M' hM'), hw M' hM' hd, map_smul] }`. Establish `hWG : W ≤ Good`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨h, f, hf, hfix, rfl⟩`. Take `⟨M, hM, hMc⟩` from `GlobalTheory.T.exists_deeper_congruence_conj_into_congruence L n N h hN`. Use `⟨M, hM, fun M' hM' hd => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hd`.
+
+Establish `hconj : ∀ κ ∈ GlobalTheory.IsotOrth.congSub L n (N * (M * k)), h⁻¹ * κ * h ∈ J`. Introduce `κ hκ`. Rewrite `hκ` using `[← mul_assoc]`. Conclude with `hMc κ (NG.Cong.of_mul_left L n hκ)`. Establish `hle : GlobalTheory.IsotOrth.congSub L n (N * (M * k)) ≤ J` using `fun κ hκ => NG.Cong.of_mul_left L n hκ`.
+
+Take `⟨m, -, hmE⟩` from `GlobalTheory.T.doubleCosetOperator_translate_deeper_level_eq_smul L n J (GlobalTheory.IsotOrth.congSub L n (N * (M * k))) h hle hconj (hfinE _ hM')`. Establish `hfixJ : ∀ κ ∈ J, NG.rt L n κ f = f` using `fun κ hκ => hfix κ hκ`. Establish `hφfixJ : ∀ κ ∈ J, NG.rt L n κ (φ f) = φ f` using `fun κ hκ => (hφ f hf hfix).2 κ hκ`. Use `show NG.heckeD _ _ (NG.rt L n h (φ f)) = φ (NG.heckeD _ _ (NG.rt L n h f))`. Rewrite using `[hmE _ f hfixJ, hmE _ (φ f) hφfixJ, map_smul, hT h f hf hfix]`.
+
+Establish `hWP : ∀ w ∈ W, P w` using `fun w hw => hWG hw`. Establish `hK2 : ∀ u, ((0 : GAf L n → a.W), u) ∈ W → u = 0`. Set `K : Submodule ℂ (GAf L n → b.W)` to `W.comap (LinearMap.inr ℂ _ _)`. Establish `hKsub : NG.IsSubrep b.ρ K` using `⟨fun u hu => hS₂.1.le (hWS _ hu).2, fun h u hu => by`. Use `hWst h _ hu` as an intermediate fact.
+
+Simplify `this⟩` using `[K]`. Establish `hKle : K ≤ S₂` using `fun u hu => (hWS _ hu).2`. Break down `hS₂.2.2 K hKsub hKle with hK | hK` into its components or cases. Introduce `u hu`. Establish `: u ∈ K` using `hu`.
+
+Rewrite `this` using `[hK, Submodule.mem_bot]`. Then use the resulting hypothesis. It suffices to derive a contradiction. Establish `hmem : φ f₀ ∈ K` using `hK ▸ (hφ f₀ hf₀S hf₀fix).1`. Take `⟨M, hM, hMg⟩` from `hWP _ (Submodule.mem_comap.1 hmem)`. Establish `e` using `hMg M hM dvd_rfl`.
+
+Take `⟨m, hm, hmE⟩` from `GlobalTheory.T.doubleCosetOperator_translate_deeper_level_eq_smul L n J (GlobalTheory.IsotOrth.congSub L n (N * M)) 1 (fun κ hκ => NG.Cong.of_mul_left L n hκ) (fun κ hκ => by rw [inv_one, one_mul, mul_one]; exact NG.Cong.of_mul_left L n hκ) (hfinE M hM)`. Establish `hφfixJ : ∀ κ ∈ J, NG.rt L n κ (φ f₀) = φ f₀` using `fun κ hκ => (hφ f₀ hf₀S hf₀fix).2 κ hκ`. Establish `e2` using `hmE _ (φ f₀) hφfixJ`. Rewrite `e2` using `[rt_one, heckeD_one J _ hφfixJ]`. Simplify using `only [LinearMap.inr_apply, heckeD_zero, map_zero] at e`.
+
+Rewrite `e2` using `[e]`. Apply `hf₀ne` to reduce the goal to its premises. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Conclude with `(smul_eq_zero.1 e2.symm).resolve_left hm'`. Establish `hK1 : ∀ u, (u, (0 : GAf L n → b.W)) ∈ W → u = 0`.
+
+Set `K : Submodule ℂ (GAf L n → a.W)` to `W.comap (LinearMap.inl ℂ _ _)`. Establish `hKsub : NG.IsSubrep a.ρ K` using `⟨fun u hu => hS₁.1.le (hWS _ hu).1, fun h u hu => by`. Use `hWst h _ hu` as an intermediate fact. Simplify `this⟩` using `[K]`. Establish `hKle : K ≤ S₁` using `fun u hu => (hWS _ hu).1`.
+
+Break down `hS₁.2.2 K hKsub hKle with hK | hK` into its components or cases. Introduce `u hu`. Establish `: u ∈ K` using `hu`. Rewrite `this` using `[hK, Submodule.mem_bot]`. Then use the resulting hypothesis. It suffices to derive a contradiction.
+
+Establish `hmem : f₀ ∈ K` using `hK ▸ hf₀S`. Establish `h1 : (f₀, (0 : GAf L n → b.W)) ∈ W` using `hmem`. Establish `h2` using `hgen 1 f₀ hf₀S hf₀fix`. Rewrite `h2` using `[rt_one, rt_one]`. Establish `h3` using `W.sub_mem h2 h1`.
+
+Simplify using `only [Prod.mk_sub_mk, sub_self, sub_zero] at h3`. Conclude with `hf₀ne (hK2 _ h3)`. Use `GlobalTheory.T.equivariant_iso_of_translationStable_graph L n a.ρ b.ρ S₁ S₂ W hS₁ hS₂ hWS hWst hK2 hK1 ?_` and prove the remaining obligations. Introduce `hbot`. Use `hgen 1 f₀ hf₀S hf₀fix` as an intermediate fact.
+
+Rewrite `this` using `[hbot, Submodule.mem_bot, rt_one, rt_one]`. Conclude with `hf₀ne (congrArg Prod.snd this)`.
+-/
 theorem recon : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a b : NG.AlgWt L n) (S₁ : Submodule ℂ (GAf L n → a.W)) (S₂ : Submodule ℂ (GAf L n → b.W)), NG.IsIrrRep a.ρ S₁ → NG.IsIrrRep b.ρ S₂ → ∀ N : ℕ, 0 < N → ∀ φ : (GAf L n → a.W) →ₗ[ℂ] (GAf L n → b.W), (∀ f ∈ S₁, (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) → φ f ∈ S₂ ∧ ∀ κ, NG.Cong L n N κ → NG.rt L n κ (φ f) = φ f) → (∃ f ∈ S₁, (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) ∧ φ f ≠ 0) → (∀ (g : GAf L n) (f : GAf L n → a.W), f ∈ S₁ → (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) → φ (NG.heckeD (GlobalTheory.IsotOrth.congSub L n N) {x | ∃ u ∈ GlobalTheory.IsotOrth.congSub L n N, ∃ u' ∈ GlobalTheory.IsotOrth.congSub L n N, x = u * g * u'} f) = NG.heckeD (GlobalTheory.IsotOrth.congSub L n N) {x | ∃ u ∈ GlobalTheory.IsotOrth.congSub L n N, ∃ u' ∈ GlobalTheory.IsotOrth.congSub L n N, x = u * g * u'} (φ f)) → NG.IsoRep S₁ S₂ := by
   intro L _ _ _ n a b S₁ S₂ hS₁ hS₂ N hN φ hφ hex hT
   obtain ⟨f₀, hf₀S, hf₀fix, hf₀ne⟩ := hex

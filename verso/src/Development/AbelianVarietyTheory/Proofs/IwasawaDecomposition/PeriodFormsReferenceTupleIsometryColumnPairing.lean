@@ -24,6 +24,15 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `K B f T w hO hF hP P x hη u F G`. Use `show inner ℂ (P.q.e.e0 u F) (P.q.e.e0 u G) = _`. Establish `hN : ∀ m : (Df.MtHL w.I P.hX w.I.mu0).V, Formalism.HermitianLatticesTheory.normAt (Df.MtHL w.I P.hX w.I.mu0).b (Df.MtHL w.I P.hX w.I.mu0).X (InfinitePlace.mk B.embLL) m = ‖P.q.per.e w.I.mu0 (Df.toCx w.I P.hX w.I.mu0 m)‖` using `GlobalTheory.T.periodRelation_preserves_levelForm_lattice_norm (w.st P.Z₀) w.I P.hX P.z.Xg P.z.tr w.I.mu0 (P.q.t.tA true w.I.mu0) (P.q.per.e w.I.mu0) (P.q.per.crd w.I.mu0)`. Establish `hin : ∀ y y' : Df.MtCx w.I w.I.mu0, inner ℂ (P.q.per.e w.I.mu0 y) (P.q.per.e w.I.mu0 y') = Df.cSum w.I P.hX w.I.mu0 y y'`. Introduce `y y'`.
+
+Take `⟨-, ⟨j, hj⟩, -, hsp⟩` from `GlobalTheory.T.integralFormsHermLattice_good_and_complexBasis w.I P.hX w.I.mu0`. Take `⟨k, hk⟩` from `Df.exists_embLL_im_ne (B := B) P.hX`. Establish `hspan : Submodule.span ℂ (Set.range j) = ⊤`. Rewrite using `[eq_top_iff, ← hsp]`. Conclude with `Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨_, hj _⟩)`.
+
+Conclude with `Df.inner_eq_of_norm_sq B.embLL j hspan k hk (P.q.per.e w.I.mu0).toLinearMap (Df.cSum w.I P.hX w.I.mu0) (fun m => by`. Rewrite using `[hj, LinearEquiv.coe_toLinearMap, ← hN m, GlobalTheory.T.normAt_sq_integralForm_eq_classSumMetric w.I P.hX w.I.mu0 m]) y y'`. Establish `key : ∀ F : ((w.D x.o.Z).mem u).P.Mt, Df.SameForm w.I w.l u w.I.mu0 ((P.q.per.e w.I.mu0).symm (P.q.e.e0 u F)) F` using `fun F => by`. Establish `h` using `P.q.per.ref u ((P.q.per.e w.I.mu0).symm (P.q.e.e0 u F))`. Use `erw [LinearEquiv.apply_symm_apply, LinearEquiv.symm_apply_apply] at h`.
+
+Conclude with `h`. Establish `h1 : ∀ F : ((w.D x.o.Z).mem u).P.Mt, P.q.e.e0 u F = P.q.per.e w.I.mu0 ((P.q.per.e w.I.mu0).symm (P.q.e.e0 u F))` using `fun F => ((P.q.per.e w.I.mu0).apply_symm_apply _).symm`. Rewrite using `[h1 F, h1 G]`. Conclude with `(hin _ _).trans (GlobalTheory.T.rowFormMetric_eq_classSumMetric w.I w.ok w.pins w.l P.hX x.o.Z u w.I.mu0 F G _ _ (key F) (key G)).symm`.
+-/
 theorem eMt0_isometry : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), K.Over B.toPre → Forced K B T →
     pinAnd HasPk K B f T w → ∀ (P : Pre2 K w) (x : St P) (hη : ∀ j v, 1 ≤ j → j ≤ B.R.m → x.o.η j v = P.q.eta j v), ∀ u F G, inner ℂ ((w.D x.o.Z).eMt u F) ((w.D x.o.Z).eMt u G) = TC.ipMt w.I w.l u w.I.mu0 F G := by
   intro K B f T w hO hF hP P x hη u F G

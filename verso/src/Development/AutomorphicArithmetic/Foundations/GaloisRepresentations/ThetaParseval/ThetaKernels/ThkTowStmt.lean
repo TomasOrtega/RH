@@ -30,6 +30,9 @@ def PairEx_k : Prop :=
       ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χX n →
       ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χW d →
       ∀ M : Model σ X W, M.IsGood B.ψ → ∃ om, _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s'
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n d X W r s r' s' hX hW`. Use `⟨h₁ F E σ B hB n d X W r s r' s' hX hW, fun χX χW a b c e M hM => ?_⟩` and prove the remaining obligations. Take `⟨om, hom⟩` from `h₂ F E σ B hB n d X W r s r' s' hX hW M hM χX χW a b c e`. Conclude with `⟨om, hB, hX, hW, hM, a, b, c, e, hom⟩`.
+-/
 theorem pairEx_of_k (h₁ : _root_.PositivityTheory.ThKG.Tow.ModelEx_k) (h₂ : _root_.PositivityTheory.ThKG.Tow.WeilEx_k) : _root_.PositivityTheory.ThKG.Tow.PairEx_k := by
   intro F E _ _ _ _ _ σ B hB n d X W r s r' s' hX hW
   refine ⟨h₁ F E σ B hB n d X W r s r' s' hX hW, fun χX χW a b c e M hM => ?_⟩

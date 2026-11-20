@@ -9,6 +9,9 @@ namespace GlobalTheory.SchwartzFstOp
 variable {V W V' E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup W] [NormedSpace ℝ W]
   [NormedAddCommGroup V'] [NormedSpace ℝ V'] [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `h` using `(ContinuousLinearMap.inl ℝ V V').hasTemperateGrowth.add (Function.HasTemperateGrowth.const ((0 : V), x'))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem hasTemperateGrowth_prodMk_const (x' : V') : Function.HasTemperateGrowth (fun x : V => (x, x')) := by
   have h := (ContinuousLinearMap.inl ℝ V V').hasTemperateGrowth.add
     (Function.HasTemperateGrowth.const ((0 : V), x'))
@@ -16,6 +19,9 @@ theorem hasTemperateGrowth_prodMk_const (x' : V') : Function.HasTemperateGrowth 
   funext x
   simp
 
+/- English proof (translation)
+The claim follows from `AntilipschitzWith.of_le_mul_dist fun x y => by simp only [NNReal.coe_one, one_mul, Prod.dist_eq, dist_self] exact le_max_left _ _`.
+-/
 theorem antilipschitz_prodMk_const (x' : V') : AntilipschitzWith 1 (fun x : V => (x, x')) :=
   AntilipschitzWith.of_le_mul_dist fun x y => by
     simp only [NNReal.coe_one, one_mul, Prod.dist_eq, dist_self]
@@ -24,15 +30,24 @@ theorem antilipschitz_prodMk_const (x' : V') : AntilipschitzWith 1 (fun x : V =>
 def sliceCLM (x' : V') : 𝓢(V × V', ℂ) →L[ℂ] 𝓢(V, ℂ) :=
   SchwartzMap.compCLMOfAntilipschitz ℂ (hasTemperateGrowth_prodMk_const x') (antilipschitz_prodMk_const x')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sliceCLM_apply (x' : V') (f : 𝓢(V × V', ℂ)) (x : V) : sliceCLM x' f x = f (x, x') := rfl
 
 def lineSnd (v' : V') : 𝓢(V × V', ℂ) →L[ℂ] 𝓢(V × V', ℂ) :=
   LineDeriv.lineDerivOpCLM ℂ 𝓢(V × V', ℂ) ((0 : V), v')
 
+/- English proof (translation)
+Rewrite using `[lineSnd, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv]`.
+-/
 theorem lineSnd_apply (v' : V') (f : 𝓢(V × V', ℂ)) (p : V × V') :
     lineSnd v' f p = fderiv ℝ f p ((0 : V), v') := by
   rw [lineSnd, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv]
 
+/- English proof (translation)
+Use extensionality with `p`. Simplify using `only [lineSnd_apply, SchwartzMap.add_apply]`. Rewrite using `[← map_add]`. Simplify using the standard rewrite rules.
+-/
 theorem lineSnd_add (v₁ v₂ : V') (f : 𝓢(V × V', ℂ)) :
     lineSnd (v₁ + v₂) f = lineSnd v₁ f + lineSnd v₂ f := by
   ext p
@@ -40,6 +55,9 @@ theorem lineSnd_add (v₁ v₂ : V') (f : 𝓢(V × V', ℂ)) :
   rw [← map_add]
   simp
 
+/- English proof (translation)
+Use extensionality with `p`. Simplify using `only [lineSnd_apply, SchwartzMap.smul_apply]`. Rewrite using `[show ((0 : V), c • v) = c • ((0 : V), v) by simp, map_smul]`. Simplify using `[Complex.real_smul]`.
+-/
 theorem lineSnd_smul (c : ℝ) (v : V') (f : 𝓢(V × V', ℂ)) :
     lineSnd (c • v) f = (c : ℂ) • lineSnd v f := by
   ext p
@@ -50,6 +68,9 @@ theorem lineSnd_smul (c : ℝ) (v : V') (f : 𝓢(V × V', ℂ)) :
 def opFst (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(W, E)) (f : 𝓢(V × V', ℂ)) (p : W × V') : E :=
   T (sliceCLM p.2 f) p.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opFst_apply (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(W, E)) (f : 𝓢(V × V', ℂ)) (y : W) (x' : V') :
     opFst T f (y, x') = T (sliceCLM x' f) y := rfl
 
@@ -62,6 +83,9 @@ def dSndCLM [FiniteDimensional ℝ V'] (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(W, E)) (
         simp only [opFst, lineSnd_smul, map_smul, SchwartzMap.smul_apply, RingHom.id_apply]
         rw [Complex.coe_smul] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dSndCLM_apply [FiniteDimensional ℝ V'] (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(W, E)) (f : 𝓢(V × V', ℂ)) (p : W × V')
     (v' : V') : dSndCLM T f p v' = opFst T (lineSnd v' f) p := rfl
 

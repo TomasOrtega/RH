@@ -14,6 +14,9 @@ def coneFirstForm {n e : ℕ} (Ψ : (((k : Unit) → PBlk n k) → ℂ) →ₗ[�
     MvPolynomial (Fin n) ℂ :=
   rename (fun p : Σ k : Unit, PBlk n k => p.2) (ReciprocityTheory.ChartRestriction.G.Geo.psiPoly Ψ 0)
 
+/- English proof (translation)
+Rewrite using `[coneFirstForm, eval_rename]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.eval_psiPoly Ψ 0 _`.
+-/
 theorem eval_coneFirstForm {n e : ℕ} (Ψ : (((k : Unit) → PBlk n k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (z : Fin n → ℂ) : eval z (coneFirstForm Ψ) = Ψ (segre fun p : Σ k, PBlk n k => z p.2) 0 := by
   rw [coneFirstForm, eval_rename]

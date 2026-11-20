@@ -18,6 +18,9 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 namespace GlobalTheory.MovedDict
+/- English proof (translation)
+Introduce `hPr hInp D Γ _ _ Pl0 T A Ks _ _ _ R ch hIs p hp x y`. Take `⟨κ, hj⟩` from `_root_.GlobalTheory.T.movedKappa_fock_jets_span hPr hInp ch hIs p hp x y`. Take `⟨hm, hu⟩` from `_root_.GlobalTheory.T.movedKappa_rational_of_arithmetic hPr hInp ch hIs p hp x y κ hj`. Conclude with `⟨κ, hm, hu, hj⟩`.
+-/
 theorem moved_vacuum_kappa_eval : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big),
@@ -48,6 +51,9 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedDict.moved_vacuum_kappa_eval | exact _root_.GlobalTheory.MovedDict.moved_vacuum_kappa_eval | (intros; apply _root_.GlobalTheory.MovedDict.moved_vacuum_kappa_eval <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twisted_moved_vacuum_kappa : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big),

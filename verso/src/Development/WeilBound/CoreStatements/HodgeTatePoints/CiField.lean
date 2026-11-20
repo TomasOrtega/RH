@@ -17,6 +17,13 @@ open MvPolynomial PositivityTheory.HtPt.Gf
 
 variable {B : Type} [Fintype B] {J : B → Type} [∀ k, Fintype (J k)] {K : Type} [Field K]
 
+/- English proof (translation)
+Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[mConeMap, aeval_monomial, aeval_monomial, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp)]`.
+
+Simplify using `only [mul_pow, Finset.prod_mul_distrib, map_mul, map_prod, map_pow, mul_assoc]`. Use `congr 1`. Use `congr 1`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.prod_pow_eq_pow_sum, hg m hm k]`.
+-/
 theorem cone_homog (y : (Σ k, J k) → K) {g : MRing J} {d : B → ℕ} (hg : IsMultiHomog g d) :
     mConeMap y g = C (aeval y g) * ∏ k, X k ^ d k := by
   classical
@@ -33,6 +40,15 @@ theorem cone_homog (y : (Σ k, J k) → K) {g : MRing J} {d : B → ℕ} (hg : I
   refine Finset.prod_congr rfl fun k _ => ?_
   simp only [Finset.prod_pow_eq_pow_sum, hg m hm k]
 
+/- English proof (translation)
+Establish `hm : ∀ e, aeval w (mon c e) = 1` using `fun e => by simp [aeval_mon, hc]`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨0, C a, fun m hm k => ?_, rfl⟩` and prove the remaining obligations. Establish `: m = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `mem_support_iff.1 hm (by rw [coeff_C, if_neg (Ne.symm h)])`. Simplify using `[this]`. Consider the case `add f g hf hg`. Take `⟨N, f', h1, h2⟩` from `hf`.
+
+Take `⟨M, g', h3, h4⟩` from `hg`. Use `⟨N + M, f' * mon c (fun _ => M) + g' * mon c (fun _ => N), hom_add (hom_mul h1 (hom_mon _ _)) (hom_of_eq (hom_mul h3 (hom_mon _ _)) fun k => add_comm _ _), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, hm, h2, h4, mul_one]`. Consider the case `mul_X f q hf`. Take `⟨N, f', h1, h2⟩` from `hf`.
+
+Use `⟨N + 1, f' * mon (Function.update c q.1 q.2) (fun _ => 1), hom_mul h1 (hom_mon _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, h2, aeval_mon, aeval_X, Finset.prod_eq_single q.1 (fun l _ hl => by`. Rewrite using `[Function.update_of_ne hl, hc, one_pow]) (by simp), Function.update_self, pow_one]`.
+-/
 theorem exists_homog_val {w : (Σ k, J k) → K} {c : ∀ k, J k} (hc : ∀ k, w ⟨k, c k⟩ = 1) (f : MRing J) :
     ∃ (N : ℕ) (g : MRing J), IsMultiHomog g (fun _ => N) ∧ aeval w g = aeval w f := by
   classical
@@ -56,6 +72,11 @@ theorem exists_homog_val {w : (Σ k, J k) → K} {c : ∀ k, J k} (hc : ∀ k, w
     rw [map_mul, map_mul, h2, aeval_mon, aeval_X, Finset.prod_eq_single q.1 (fun l _ hl => by
       rw [Function.update_of_ne hl, hc, one_pow]) (by simp), Function.update_self, pow_one]
 
+/- English proof (translation)
+Introduce `s`. Establish `hm : ∀ e, aeval w (mon c e) = 1` using `fun e => by simp [aeval_mon, hc]`. Take `⟨f, g, h0, h⟩` from `hfr s`. Take `⟨N, f', h1, h2⟩` from `exists_homog_val hc f`. Take `⟨M, g', h3, h4⟩` from `exists_homog_val hc g`.
+
+Use `⟨fun _ => N + M, f' * mon c (fun _ => M), g' * mon c (fun _ => N), hom_mul h1 (hom_mon _ _), hom_of_eq (hom_mul h3 (hom_mon _ _)) fun k => add_comm _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hm, h4, mul_one]` and apply the resulting hypothesis. Rewrite using `[map_mul, map_mul, hm, hm, h2, h4, mul_one, mul_one, h]`.
+-/
 theorem birational_of_frac {w : (Σ k, J k) → K} {c : ∀ k, J k} (hc : ∀ k, w ⟨k, c k⟩ = 1)
     (hfr : ∀ s : K, ∃ f g : MRing J, aeval w g ≠ 0 ∧ aeval w f = s * aeval w g) : Birational w := by
   intro s
@@ -68,6 +89,29 @@ theorem birational_of_frac {w : (Σ k, J k) → K} {c : ∀ k, J k} (hc : ∀ k,
   · rwa [map_mul, hm, h4, mul_one]
   · rw [map_mul, map_mul, hm, hm, h2, h4, mul_one, mul_one, h]
 
+/- English proof (translation)
+Use `GlobalTheory.CompanionTheory.Ar.Flat.isFunctionField_of_fg_trdeg ?_ ?_` and prove the remaining obligations. Use `IntermediateField.fg_def.2 ⟨Set.range w, Set.finite_range w, top_le_iff.1 fun s _ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ f : MRing J, aeval w f ∈ IntermediateField.adjoin (ZMod p) (Set.range w)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`.
+
+Consider the case `C a => simp`. Consider the case `add f g hf hg => rw [map_add]`. Conclude with `add_mem hf hg`. Consider the case `mul_X f q hf => rw [map_mul, aeval_X]`. Conclude with `mul_mem hf (IntermediateField.subset_adjoin _ _ ⟨q, rfl⟩)`.
+
+Take `⟨d, g, h, -, -, h0, h1⟩` from `hb s`. Rewrite `h1` using `[← div_eq_iff h0]`. Conclude with `h1 ▸ div_mem (key g) (key h)`. Establish `hker : RingHom.ker (mConeMap w).toRingHom = W` using `hW`. Establish `hprime : W.IsPrime` using `hker ▸ RingHom.ker_isPrime _`.
+
+Establish `hchar : CharP (MRing J ⧸ W) p` using `(CharP.charP_iff_prime_eq_zero Fact.out).2 (by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk W), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hp)`. Set `_` to `ZMod.algebra (MRing J ⧸ W) p`. Establish `: IsScalarTower ℤ (ZMod p) (MRing J ⧸ W)` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)`.
+
+Establish `: Algebra.FiniteType (ZMod p) (MRing J ⧸ W)` using `Algebra.FiniteType.of_restrictScalars_finiteType ℤ (ZMod p) _`. Take `⟨n, h1, h2⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ZMod p) (A := MRing J ⧸ W)`. Establish `hn : n = 1 + Fintype.card B`. Rewrite `h1` using `[hdim]`. Conclude with `h1.symm` after adjusting the coercions.
+
+Set `μ : MRing J ⧸ W →+* MvPolynomial B K` to `Ideal.Quotient.lift W (mConeMap w).toRingHom fun a ha => (hker.ge ha :)`. Establish `hμ : Function.Injective μ` using `RingHom.lift_injective_of_ker_le_ideal W _ hker.le`. Set `_` to `μ.toAlgebra`. Establish `hμ' : ∀ f, algebraMap (MRing J ⧸ W) (MvPolynomial B K) (Ideal.Quotient.mk W f) = mConeMap w f` using `fun f => rfl`. Establish `: FaithfulSMul (MRing J ⧸ W) (MvPolynomial B K)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hμ`.
+
+Establish `: IsScalarTower (ZMod p) (MRing J ⧸ W) (MvPolynomial B K)` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_zmod _ _)`. Establish `hX : ∀ k, IsAlgebraic (MRing J ⧸ W) (X k : MvPolynomial B K)` using `fun k => by`. Use `isAlgebraic_algebraMap (A := MvPolynomial B K) (Ideal.Quotient.mk W (X ⟨k, c k⟩))` as an intermediate fact. Rewrite `this` using `[hμ']`. Simplify `this` using `[mConeMap, hc]`.
+
+Establish `: Algebra.IsAlgebraic (MRing J ⧸ W) (MvPolynomial B K)` using `⟨fun f => by`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C s`. Take `⟨d, g, h, hg, hh, h0, h1⟩` from `hb s`. Use `IsAlgebraic.of_smul (y := Ideal.Quotient.mk W h) (mem_nonZeroDivisors_of_ne_zero fun e => ?_) ?_` and prove the remaining obligations.
+
+Establish `h3` using `hμ' h`. Rewrite `h3` using `[e, map_zero, cone_homog w hh]`. Conclude with `mul_ne_zero (mt C_eq_zero.1 h0) (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k)) h3.symm`. Establish `h3` using `isAlgebraic_algebraMap (A := MvPolynomial B K) (Ideal.Quotient.mk W g)`. Rewrite `h3` using `[hμ', cone_homog w hg, h1, map_mul, mul_assoc, mul_comm, ← cone_homog w hh]`.
+
+Rewrite using `[Algebra.smul_def, hμ']` and apply the resulting hypothesis. Consider the case `add f g hf hg => exact hf.add hg`. Consider the case `mul_X f k hf => exact hf.mul (hX k)⟩`. Establish `e1` using `trdeg_add_eq (ZMod p) (MRing J ⧸ W) (A := MvPolynomial B K)`. Establish `e2` using `trdeg_add_eq (ZMod p) K (A := MvPolynomial B K)`.
+
+Rewrite `e1` using `[h2, trdeg_eq_zero, add_zero, hn]`. Rewrite `e2` using `[MvPolynomial.trdeg_of_isDomain, ← e1, Cardinal.lift_id, Cardinal.mk_fintype, Nat.cast_add, Nat.cast_one]`. Conclude with `(Cardinal.add_nat_inj _).1 e2`.
+-/
 theorem isFunctionField_of_dim {p : ℕ} [Fact p.Prime] [Algebra (ZMod p) K] {w : (Σ k, J k) → K} {c : ∀ k, J k}
     (hc : ∀ k, w ⟨k, c k⟩ = 1) (hb : Birational w) {W : Ideal (MRing J)} (hW : mCoordIdeal w = W)
     (hp : (p : MRing J) ∈ W) (hdim : ringKrullDim (MRing J ⧸ W) = ((1 + Fintype.card B : ℕ) : WithBot ℕ∞)) :
@@ -128,6 +172,27 @@ theorem isFunctionField_of_dim {p : ℕ} [Fact p.Prime] [Algebra (ZMod p) K] {w 
     rw [MvPolynomial.trdeg_of_isDomain, ← e1, Cardinal.lift_id, Cardinal.mk_fintype, Nat.cast_add, Nat.cast_one] at e2
     exact (Cardinal.add_nat_inj _).1 e2
 
+/- English proof (translation)
+Introduce `B _ J _ W p _ ⟨hprime, ⟨S, hS, hWS⟩, hrel⟩ hchar hdim`. Use `choose c hc using hrel`. Establish `hp` using `natCast_mem_of_charOf hchar`. Set `F` to `FractionRing (MRing J ⧸ W)`. Set `π : MRing J →+* F` to `(algebraMap (MRing J ⧸ W) F).comp (Ideal.Quotient.mk W)`.
+
+Establish `hπ : ∀ f, π f = 0 ↔ f ∈ W` using `fun f => by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `map_eq_zero_iff _ (IsFractionRing.injective (MRing J ⧸ W) F)`. Establish `ht : ∀ k, π (X ⟨k, c k⟩) ≠ 0` using `fun k h => hc k ((hπ _).1 h)`. Set `w' : (Σ k, J k) → F` to `fun q => π (X q) / π (X ⟨q.1, c q.1⟩)`.
+
+Set `K` to `Subfield.closure (Set.range w')`. Set `w : (Σ k, J k) → K` to `fun q => ⟨w' q, Subfield.subset_closure ⟨q, rfl⟩⟩`. Establish `hw : ∀ k, w ⟨k, c k⟩ = 1` using `fun k => Subtype.ext (div_self (ht k))`. Establish `hK : CharP K p` using `(CharP.charP_iff_prime_eq_zero Fact.out).2 (K.subtype.injective (by`. Rewrite using `[map_natCast, map_zero, ← map_natCast π, hπ]`.
+
+Conclude with `hp))`. Set `ε : MvPolynomial B K →+* F` to `eval₂Hom K.subtype fun k => π (X ⟨k, c k⟩)`. Establish `hε : ε.comp (mConeMap w).toRingHom = π`. Use `MvPolynomial.ringHom_ext (fun a => ?_) fun q => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `ε (mConeMap w (X q)) = _`. Rewrite using `[mConeMap, aeval_X, map_mul, eval₂Hom_C, eval₂Hom_X']`. Conclude with `div_mul_cancel₀ _ (ht _)`. Establish `hε' : ∀ f, ε (mConeMap w f) = π f` using `fun f => RingHom.congr_fun hε f`. Establish `hW : mCoordIdeal w = W`.
+
+Use `le_antisymm (fun f hf => (hπ f).1 ?_) (hWS.le.trans (Ideal.span_le.2 fun f hf => ?_))` and prove the remaining obligations. Rewrite using `[← hε', show mConeMap w f = 0 from hf, map_zero]`. Take `⟨a, ha⟩` from `hS f hf`. Use `mem_mCoordIdeal ha ?_` and prove the remaining obligations. Establish `h1` using `(hε' f).trans ((hπ f).2 (hWS.ge (Ideal.subset_span hf)))`.
+
+Rewrite `h1` using `[cone_homog w ha, map_mul, eval₂Hom_C, map_prod, mul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `(map_eq_zero_iff _ K.subtype.injective).1 h1`. Take `⟨k, -, hk⟩` from `Finset.prod_eq_zero_iff.1 h1`. Rewrite `hk` using `[map_pow, eval₂Hom_X']`.
+
+Conclude with `absurd hk (pow_ne_zero _ (ht k))`. Establish `hb : Birational w` using `birational_of_frac hw fun s => by`. Establish `hr : Subring.closure (Set.range w') ≤ (K.subtype.comp (aeval w : MRing J →ₐ[ℤ] K).toRingHom).range`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`.
+
+Conclude with `⟨X q, congrArg K.subtype (aeval_X w q)⟩`. Take `⟨y, hy, z, hz, e⟩` from `Subfield.mem_closure_iff.1 s.2`. Take `⟨f, rfl⟩` from `hr hy`. Take `⟨g, rfl⟩` from `hr hz`. Establish `e' : aeval w f / aeval w g = s` using `K.subtype.injective (by rw [map_div₀]; exact e)`.
+
+Distinguish the cases in `h0 : aeval w g = 0`. Conclude with `⟨0, 1, by simp, by simp [← e', h0]⟩`. Conclude with `⟨f, g, h0, (div_eq_iff h0).1 e'⟩`. Set `_` to `ZMod.algebra K p`. Conclude with `⟨K, inferInstance, inferInstance, isFunctionField_of_dim hw hb hW hp hdim, w, hW, hb, fun k => ⟨c k, hw k ▸ one_ne_zero⟩⟩`.
+-/
 theorem curve_field : ∀ (B : Type) [Fintype B] (J : B → Type) [∀ k, Fintype (J k)] (W : Ideal (MRing J)) (p : ℕ) [Fact p.Prime], IsMultiProjPrime W → charOf W = p → ringKrullDim (MRing J ⧸ W) = ((1 + Fintype.card B : ℕ) : WithBot ℕ∞) → ∃ (K : Type) (_ : Field K) (_ : Algebra (ZMod p) K) (_ : GroundTheory.FunctionField.IsFunctionField (ZMod p) K) (w : (Σ k, J k) → K), mCoordIdeal w = W ∧ Birational w ∧ ∀ k, ∃ c, w ⟨k, c⟩ ≠ 0 := by
   intro B _ J _ W p _ ⟨hprime, ⟨S, hS, hWS⟩, hrel⟩ hchar hdim
   choose c hc using hrel

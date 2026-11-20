@@ -4,6 +4,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.RightDerivativeOper
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `WirtingerOperators.zOnly_of_parts hC hH xi_coefficient xi_coefficient_vector xiMem_statement xi_smooth right_derivative_operator_class wirtinger_slice_smooth`.
+-/
 theorem z_only_of_levi_curve (hC : WirtingerOperators.CurveLevi) (hH : WirtingerOperators.HpartLevi) : LevelPointCoordinates.ZOnly :=
   WirtingerOperators.zOnly_of_parts hC hH xi_coefficient xi_coefficient_vector xiMem_statement xi_smooth
     right_derivative_operator_class wirtinger_slice_smooth

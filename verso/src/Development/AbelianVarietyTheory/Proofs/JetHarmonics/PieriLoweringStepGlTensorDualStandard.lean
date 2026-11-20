@@ -24,10 +24,24 @@ def splitCasimirDual {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     ext a
     simp [Finset.smul_sum]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem splitCasimirDual_apply {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
     (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (y : PiLp 2 (fun _ : Fin (n + 1) => V))
     (a : Fin (n + 1)) : splitCasimirDual E y a = ∑ c, E a c (y c) := rfl
 
+/- English proof (translation)
+Introduce `V _ _ _ n E Et β L l hH hadj hEt hL`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.splitCasimir_eigenspace_irreducible_dualStandard V n E Et (splitCasimirDual E) β L l hH hadj hEt (splitCasimirDual_apply E)`. Establish `h4` using `GlobalTheory.T.reducedWignerCoefficient_lowering V n E Et (splitCasimirDual E) β L l hH hadj hEt (splitCasimirDual_apply E)`. Use `⟨_, h1, ?_, h2, h3, h4⟩` and prove the remaining obligations. Introduce `hbot`.
+
+Establish `hbox : Box L (fun j : Fin n => L j.succ + 1)`. Introduce `j`. Use `hH.anti (show j.castSucc < j.succ from Fin.castSucc_lt_succ)` as an intermediate fact. Apply the tactic sequence `constructor <;> simp only <;> omega`. Establish `hne` using `(Formalism.FourierDecayAlt.P.branching_decomposition V n E β L hH).1 _ hbox`.
+
+Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `h5` using `h4 _ v hv`. Establish `hw` using `(wigner_extreme_ne_zero n L l hH.anti).2 hL`. Establish `hz : (Module.End.eigenspace (splitCasimirDual E) (β + L l + (n : ℂ))).starProjection (PiLp.single 2 (Fin.last n) v) = 0`. Establish `hm` using `(Module.End.eigenspace (splitCasimirDual E) (β + L l + (n : ℂ))).starProjection_apply_mem (PiLp.single 2 (Fin.last n) v)`.
+
+Conclude with `(Submodule.eq_bot_iff _).1 hbot _ hm`. Rewrite `h5` using `[hz]`. Establish `h6 : ((wM L (fun j : Fin n => L j.succ + 1) l : ℝ) : ℂ) • v = 0`. Rewrite using `[← h5]`. Both sides reduce to the same expression.
+
+Break down `smul_eq_zero.1 h6 with h | h` into its components or cases. Conclude with `hw (by exact_mod_cast h)`. Conclude with `hv0 h`.
+-/
 theorem pieri_step_lowering : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (Et : Fin (n + 1) → Fin (n + 1) → Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) (β : ℂ) (L : Fin (n + 1) → ℤ) (l : Fin (n + 1)), Hyp E β L → (∀ a b x y, inner ℂ (E a b x) y = inner ℂ x (E b a y)) → (∀ a b y c, Et a b y c = E a b (y c) - if c = b then y a else 0) → (∀ j, L j ≠ L l - 1) → ∃ S : Submodule ℂ (PiLp 2 (fun _ : Fin (n + 1) => V)), Stab Et S ∧ S ≠ ⊥ ∧ (∀ S' : Submodule ℂ (PiLp 2 (fun _ : Fin (n + 1) => V)), S' ≤ S → Stab Et S' → S' = ⊥ ∨ S' = S) ∧ S ≤ CapSp Et (shf β (Function.update L l (L l - 1))) ∧ ∀ (M : Fin n → ℤ) (v : V), v ∈ CapSp (subA E) (shf β M) → S.starProjection (PiLp.single 2 (Fin.last n) v) (Fin.last n) = (GlobalTheory.WigSh.wM L M l : ℂ) • v := by
   intro V _ _ _ n E Et β L l hH hadj hEt hL
   obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.splitCasimir_eigenspace_irreducible_dualStandard V n E Et (splitCasimirDual E) β L l hH hadj hEt

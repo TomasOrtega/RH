@@ -13,6 +13,17 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.VolBr.MpDiv
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P s hs hs0 δ hδ`. Take `⟨ρ, hρ, H⟩` from `GlobalTheory.T.arith_global_maximum_principle_off_divisor k X p D hX P s hs hs0 δ hδ`. Use `⟨max 0 (-Real.log ρ), le_max_left _ _, fun N m f hf hfs => ?_⟩` and prove the remaining obligations. Use `set C : ℝ := max 0 (-Real.log ρ) with hC`. Establish `key` using `H N f (2 * Real.exp (C * m)) hf (fun σ y hy => ?_)`.
+
+Establish `e : Real.exp (δ * N) * (2 * Real.exp (C * m)) = 2 * Real.exp (δ * N + C * m)`. Rewrite using `[Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[e]`. Then use the resulting hypothesis. Take `⟨hp1, hp2⟩` from `GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow k X p P 0 1 s hs m`.
+
+Establish `hm` using `(GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P N 0 _ _ f (s ^ m) hf hp1).2 σ y`. Rewrite `hm` using `[hp2 σ y]`. Simplify using `only [mul_zero, add_zero, mul_one, zero_add] at hm`. Establish `h2` using `hfs.2 σ y`. Rewrite `h2` using `[hm]`.
+
+Establish `hn : 0 ≤ P.nu N 0 σ y f` using `by unfold Pair.nu; positivity`. Establish `h1 : 1 ≤ Real.exp C * P.nu 0 1 σ y s`. Establish `: Real.exp (-Real.log ρ) ≤ Real.exp C` using `Real.exp_le_exp.2 (le_max_right _ _)`. Rewrite `this` using `[Real.exp_neg, Real.exp_log hρ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : 1 ≤ Real.exp (C * m) * P.nu 0 1 σ y s ^ m`. Rewrite using `[mul_comm C, Real.exp_nat_mul, ← mul_pow]`. Conclude with `one_le_pow₀ h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mem_Bl_of_mul_pow : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ s : X.functionField, s ∈ P.H 0 1 → s ≠ 0 → ∀ δ : ℝ, 0 < δ → ∃ C : ℝ, 0 ≤ C ∧ ∀ (N m : ℕ) (f : X.functionField), f ∈ P.H N 0 → f * s ^ m ∈ P.Bl N m 2 → f ∈ P.Bl N 0 (2 * Real.exp (δ * N + C * m)) := by
   intro k _ X _ p D hX P s hs hs0 δ hδ
   obtain ⟨ρ, hρ, H⟩ := GlobalTheory.T.arith_global_maximum_principle_off_divisor k X p D hX P s hs hs0 δ hδ

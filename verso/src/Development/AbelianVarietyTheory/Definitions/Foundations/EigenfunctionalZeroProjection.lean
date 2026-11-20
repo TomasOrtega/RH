@@ -21,6 +21,11 @@ section Induced
 variable {X : Tower Ω ε} {A : ValuationSubring Ω} {N w : ℕ} {j : Ω →+* Qbar l} {pr : X.Fn l → Fin 2 → Qbar l}
   {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l}
 
+/- English proof (translation)
+Take `⟨hf, c, per, hper, hc⟩` from `h`. Take `⟨k, hk⟩` from `exists_le_l_pow l ‖a‖`. Use `⟨hf.smul a, c + k, per, hper, fun n hn b hb φ hφ => ?_⟩` and prove the remaining obligations. Establish `h1` using `cg_mul_left (k := k) (m := n - c) (by omega) hk (hc n (by omega) b hb φ hφ)`. Rewrite `h1` using `[Nat.sub_sub]`.
+
+Simplify `h1` using `[mul_left_comm]`.
+-/
 theorem IsEigenfunctionalOfL2.smul (h : IsEigenfunctionalOfL2 X A N w j pr lam) (a : Qbar l) : IsEigenfunctionalOfL2 X A N w j (a • pr) (a • lam) := by
   obtain ⟨hf, c, per, hper, hc⟩ := h
   obtain ⟨k, hk⟩ := exists_le_l_pow l ‖a‖

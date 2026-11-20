@@ -4,6 +4,13 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x₀ => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `hm : 0 ≤ (μ s).toReal` using `ENNReal.toReal_nonneg`. Establish `hδ : 0 < ε / ((μ s).toReal + 1)` using `div_pos hε (by linarith)`. Establish `hc : Continuous fun z : X × Y => f z.1 z.2 - f x₀ z.2` using `hf.sub (hf.comp (Continuous.prodMk continuous_const continuous_snd))`. Establish `htube : ∀ᶠ x in nhds x₀, ∀ y ∈ C, ‖f x y - f x₀ y‖ < ε / ((μ s).toReal + 1)`.
+
+Apply `hC.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `y _`. Conclude with `(hc.norm.tendsto (x₀, y)).eventually (gt_mem_nhds (by simpa using hδ))`. Use `filter_upwards [htube] with x hx`. Rewrite using `[dist_eq_norm, ← integral_sub (hi x) (hi x₀)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem cont_setIntegral {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [MeasurableSpace Y]
     (μ : Measure Y) (f : X → Y → ℂ) (hf : Continuous f.uncurry) {s C : Set Y} (hs : MeasurableSet s)
     (hC : IsCompact C) (hsC : s ⊆ C) (hμ : μ s < ⊤) (hi : ∀ x, IntegrableOn (f x) s μ) :
@@ -25,6 +32,9 @@ private theorem cont_setIntegral {X Y : Type*} [TopologicalSpace X] [Topological
       rw [div_mul_eq_mul_div, div_lt_iff₀ (by linarith)]
       nlinarith
 
+/- English proof (translation)
+Introduce `K _ _ n r φ hφ`. Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Conclude with `cont_setIntegral (unipMeasure K n r) (fun g X => φ (unipGL X * g)) (hφ.comp ((continuous_unipGL.comp continuous_snd).mul continuous_fst)) measurableSet_unipFundamentalDomain hC hDC ((measure_mono hDC).trans_lt hC.measure_lt_top) (fun g => integrableOn_constantTerm hφ g)`.
+-/
 theorem UpperTheory.continuous_constantTerm :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (φ : AdelicGLn.AdelicGL K n → ℂ), Continuous φ → Continuous (constantTerm r φ) := by
   intro K _ _ n r φ hφ

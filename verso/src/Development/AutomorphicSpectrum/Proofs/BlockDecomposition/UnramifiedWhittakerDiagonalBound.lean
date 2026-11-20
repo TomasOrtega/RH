@@ -24,6 +24,11 @@ section Local
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `hset : ({x : F | x ∈ 𝒪[F]} : Set F) = (valBall F 0 : Set F)`. Rewrite using `[coe_valBall_zero]`. Both sides reduce to the same expression. Establish `h0` using `mem_valBall_iff_le_ord (K := F) (n := 0) hx`. Rewrite using `[← h0]`.
+
+Conclude with `Set.ext_iff.1 hset x`.
+-/
 theorem mem_integers_iff_ord {x : F} (hx : x ≠ 0) : x ∈ 𝒪[F] ↔ 0 ≤ ord x := by
   have hset : ({x : F | x ∈ 𝒪[F]} : Set F) = (valBall F 0 : Set F) := by
     rw [coe_valBall_zero]; rfl
@@ -31,12 +36,20 @@ theorem mem_integers_iff_ord {x : F} (hx : x ≠ 0) : x ∈ 𝒪[F] ↔ 0 ≤ or
   rw [← h0]
   exact Set.ext_iff.1 hset x
 
+/- English proof (translation)
+Rewrite using `[modulus_of_ne_zero hx]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem modulus_eq_zpow {x : F} (hx : x ≠ 0) :
     (modulus x : ℝ) = (residueCard F : ℝ) ^ (-ord x) := by
   rw [modulus_of_ne_zero hx]
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `hq : (2 : ℝ) ≤ (residueCard F : ℝ)`. Conclude with `(one_lt_residueCard (K := F))` after adjusting the coercions. Rewrite using `[modulus_eq_zpow hx, hn, zpow_neg, inv_inv, zpow_natCast]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.lt_two_pow_self (n := n)` after adjusting the coercions.
+
+Use `_ ≤ (residueCard F : ℝ) ^ n := pow_le_pow_left₀ (by norm_num) hq n`.
+-/
 theorem succ_le_modulus_inv {x : F} (hx : x ≠ 0) {n : ℕ} (hn : ord x = n) :
     (n : ℝ) + 1 ≤ (modulus x : ℝ)⁻¹ := by
   have hq : (2 : ℝ) ≤ (residueCard F : ℝ) := by
@@ -48,6 +61,39 @@ theorem succ_le_modulus_inv {x : F} (hx : x ≠ 0) {n : ℕ} (hn : ord x = n) :
 
 variable [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Use `set Ψ : F × F → ℂ := Set.indicator {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} 1 with hΨ`. Use `set f : Fˣ → ℂ := fun u => Ψ (((u * a : Fˣ) : F), ((u⁻¹ : Fˣ) : F)) * ((c₁ u : ℂˣ) : ℂ) * (((c₂ u)⁻¹ : ℂˣ) : ℂ) with hf`. Establish `hpos : (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Establish `hmp : ‖mp a (1 / 2)‖ = (modulus (a : F) : ℝ) ^ (1 / 2 : ℝ)`. Simplify using `only [mp]`.
+
+Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hpos]`. Evaluate the numerical expressions. Establish `hW : GL2LocalData.WcS χ c₁ c₂ Ψ (dg2 a 1) = ((c₁ a : ℂˣ) : ℂ) * mp a (1 / 2) * ∫ u, f u ∂multHaar F` using `GlobalTheory.CompanionTheory.SplitBound.wcS_diag χ c₁ c₂ Ψ a`. Establish `hsupp : ∀ u : Fˣ, f u ≠ 0 → ord (u : F) ≤ 0 ∧ 0 ≤ ord (u : F) + ord (a : F)`. Introduce `u hu`.
+
+Establish `h0 : Ψ (((u * a : Fˣ) : F), ((u⁻¹ : Fˣ) : F)) ≠ 0` using `fun h0 => hu (by simp only [hf]; rw [h0]; simp)`. Establish `hm : (((u * a : Fˣ) : F), ((u⁻¹ : Fˣ) : F)) ∈ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]}`. Assume the negation of the conclusion as `hn`. Conclude with `h0 (Set.indicator_of_notMem hn _)`. Take `⟨m1, m2⟩` from `hm`.
+
+Establish `e1` using `(mem_integers_iff_ord (u * a).ne_zero).1 m1`. Establish `e2` using `(mem_integers_iff_ord (u⁻¹).ne_zero).1 m2`. Rewrite `e1` using `[ord_units_mul]`. Rewrite `e2` using `[ord_units_inv]`. Conclude with `⟨by omega, e1⟩`.
+
+Establish `hnf : ∀ u, ‖f u‖ ≤ 1` using `fun u => by`. Establish `e2 : ‖(((c₂ u)⁻¹ : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[Units.val_inv_eq_inv_val, norm_inv, h₂.2 u, inv_one]`. Simplify using `only [hf, norm_mul, h₁.2 u, e2, mul_one]`. Distinguish the cases in `hm : (((u * a : Fˣ) : F), ((u⁻¹ : Fˣ) : F)) ∈ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]}`.
+
+Simplify using `only [hΨ]`. Rewrite using `[Set.indicator_of_mem hm]`. Simplify using the standard rewrite rules. Simplify using `only [hΨ]`. Rewrite using `[Set.indicator_of_notMem hm]`.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hm : 0 ≤ ord (a : F)`. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le hm`. Establish `hle : (modulus (a : F) : ℝ) ≤ 1`. Establish `: (a : F) ∈ 𝒪[F]` using `(mem_integers_iff_ord a.ne_zero).2 hm`.
+
+Conclude with `modulus_le_one_iff.2 this` after adjusting the coercions. Use `⟨?_, fun _ => hle⟩` and prove the remaining obligations. Use `set S : Set Fˣ := ⋃ i ∈ Finset.range (n + 1), ordShell F (-(i : ℤ)) with hS`. Establish `hμ : multHaar F S ≤ ((n + 1 : ℕ) : ENNReal)`. Use `(measure_biUnion_finset_le _ _).trans ?_` and prove the remaining obligations.
+
+Simplify using `[multHaar_ordShell]`. Establish `hμ' : multHaar F S < ⊤` using `hμ.trans_lt (ENNReal.natCast_lt_top _)`. Establish `hreal : (multHaar F).real S ≤ (n : ℝ) + 1`. Establish `h` using `ENNReal.toReal_mono (ENNReal.natCast_ne_top _) hμ`. Rewrite `h` using `[ENNReal.toReal_natCast]`.
+
+Rewrite using `[measureReal_def]`. Move the coercions through the operations in `at h`. Conclude with `h`. Establish `hz : ∀ u ∉ S, f u = 0`. Introduce `u hu`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨b1, b2⟩` from `hsupp u hne`. Use `hu ?_` and prove the remaining obligations. Simplify using `only [hS, Set.mem_iUnion]`. Use `⟨(-ord (u : F)).toNat, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [mem_ordShell]`. Use linear arithmetic over natural numbers and integers. Establish `hI : ‖∫ u, f u ∂multHaar F‖ ≤ (n : ℝ) + 1`.
+
+Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero hz]`. Use `(norm_setIntegral_le_of_norm_le_const hμ' (fun u _ => hnf u)).trans ?_` and prove the remaining obligations. Simplify using `using hreal`. Rewrite using `[hW, norm_mul, norm_mul, h₁.2 a, one_mul, hmp]`. Establish `hr : (modulus (a : F) : ℝ) ^ (1 / 2 : ℝ) ≤ 1` using `Real.rpow_le_one hpos.le hle (by norm_num)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hzero : ∀ u, f u = 0`. Introduce `u`. Assume the negation of the conclusion as `hne`. Take `⟨b1, b2⟩` from `hsupp u hne`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hW0 : GL2LocalData.WcS χ c₁ c₂ Ψ (dg2 a 1) = 0`. Rewrite using `[hW]`. Simplify using `[funext hzero]`. Rewrite using `[hW0]`.
+
+Conclude with `⟨by simpa using (inv_pos.2 hpos).le, fun h => absurd rfl h⟩`.
+-/
 theorem split_bound (χ : AddChar F Circle) {c₁ c₂ : Fˣ →* ℂˣ} (h₁ : IsUnit1 c₁) (h₂ : IsUnit1 c₂)
     (a : Fˣ) :
     ‖GL2LocalData.WcS χ c₁ c₂ (Set.indicator {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} 1) (dg2 a 1)‖ ≤
@@ -147,11 +193,33 @@ variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchim
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] in
+/- English proof (translation)
+Unfold `GL2LocalData.nsg`. Rewrite using `[if_pos]`. Conclude with `⟨1, by simp⟩`.
+-/
 theorem nsg_one_field : GL2LocalData.nsg E (1 : F) = 1 := by
   unfold GL2LocalData.nsg
   rw [if_pos]
   exact ⟨1, by simp⟩
 
+/- English proof (translation)
+Use `set Φ : E → ℂ := Set.indicator {x : E | x ∈ 𝒪[E]} 1 with hΦ`. Establish `hpos : (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Establish `hdet : ((dg2 a 1 : GL (Fin 2) F).val).det = a`. Simplify using `[dg2, Matrix.det_fin_two]`. Establish `h00 : (dg2 a 1 : GL (Fin 2) F).val 0 0 = a` using `by simp [dg2]`.
+
+Establish `h01 : (dg2 a 1 : GL (Fin 2) F).val 0 1 = 0` using `by simp [dg2]`. Establish `h10 : (dg2 a 1 : GL (Fin 2) F).val 1 0 = 0` using `by simp [dg2]`. Establish `h11 : (dg2 a 1 : GL (Fin 2) F).val 1 1 = 1` using `by simp [dg2]`. Establish `key : ∀ w : ℂ, w = GL2LocalData.Wc χ σ μE lam c Φ (dg2 a 1) → w = 0 ∨ ((modulus (a : F) : ℝ) ≤ 1 ∧ ‖w‖ ≤ 1)`. Introduce and unpack `w rfl`.
+
+Unfold `GL2LocalData.Wc`. Rewrite using `[hdet, h00, h01, h10, h11]`. Distinguish the cases in `h : ∃ t : Eˣ, Algebra.norm F (t : E) = (a : F)`. Rewrite using `[dif_pos h] set t : Eˣ := h.choose with ht`. Establish `htN : Algebra.norm F (t : E) = (a : F)` using `h.choose_spec`.
+
+Establish `ha : (a : F) / a = 1` using `div_self a.ne_zero`. Simplify using `only [GL2LocalData.rW, ha, zero_div, if_true, nsg_one_field]`. Distinguish the cases in `hm : (t : E) ∈ 𝒪[E]`. Use `right`. Establish `hle : (modulus (a : F) : ℝ) ≤ 1`.
+
+Rewrite using `[← htN, ← hmod]`. Conclude with `modulus_le_one_iff.2 hm` after adjusting the coercions. Use `⟨hle, ?_⟩` and prove the remaining obligations. Establish `hv : Φ (algebraMap F E 1 * 1 * (t : E)) = 1`. Simplify using `only [map_one, mul_one, one_mul, hΦ]`.
+
+Conclude with `Set.indicator_of_mem (s := {x : E | x ∈ 𝒪[E]}) hm _`. Rewrite using `[hv]`. Simplify using `only [norm_mul, hc.2 t, one_mul, Complex.norm_cpow_eq_rpow_re_of_pos hpos]`. Simplify using `using Real.rpow_le_one hpos.le hle (by norm_num : (0:ℝ) ≤ 1 / 2)`. Use `left`.
+
+Establish `hv : Φ (algebraMap F E 1 * 1 * (t : E)) = 0`. Simplify using `only [map_one, mul_one, one_mul, hΦ]`. Conclude with `Set.indicator_of_notMem (s := {x : E | x ∈ 𝒪[E]}) hm _`. Rewrite using `[hv]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[dif_neg h]`. Conclude with `Or.inl rfl`. Break down `key _ rfl with h0 | ⟨hle, hn⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `⟨by simpa using (inv_pos.2 hpos).le, fun h => absurd rfl h⟩`.
+
+Conclude with `⟨hn.trans ((one_le_inv₀ hpos).2 hle), fun _ => hle⟩`.
+-/
 theorem field_bound (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E) (lam : ℂ) {c : Eˣ →* ℂˣ}
     (hc : IsUnit1 c) (hmod : ∀ x : E, (modulus x : ℝ) = modulus (Algebra.norm F x)) (a : Fˣ) :
     ‖GL2LocalData.Wc χ σ μE lam c (Set.indicator {x : E | x ∈ 𝒪[E]} 1) (dg2 a 1)‖ ≤ (modulus (a : F) : ℝ)⁻¹ ∧
@@ -204,6 +272,15 @@ theorem field_bound (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure 
 
 end Field
 
+/- English proof (translation)
+Introduce `K _ _ h2 c v m hok hstd hU y`. Establish `hn : (modulus (y : Qv v) : ℝ) = ‖(y : Qv v)‖` using `GroundTheory.Automorphic.GodementSection.modulus_adicCompletion v (y : Qv v)`. Rewrite using `[← hn]`. Consider the cases of `m with`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ => haveI := i₁ haveI := i₂`.
+
+Take `rfl : Φ = _` from `hstd`. Conclude with `split_bound (GP.psiF v)⁻¹ (GlobalTheory.CompanionTheory.WCont.isUnit1_cAt c v w₁) (GlobalTheory.CompanionTheory.WCont.isUnit1_cAt c v w₂) y`. Consider the case `@ns w i σ η Φ => haveI := i`. Take `rfl : Φ = _` from `hstd`. Take `⟨hu, hσ, hη, -⟩` from `hok`.
+
+Establish `hψ : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Take `⟨hχc, hχ1, -⟩` from `(GlobalTheory.CompanionTheory.StdAddChar.isStd_inv_and_trivial_and_nontrivial (Qv v) _ hψ).1`. Establish `hf : Module.finrank (Qv v) (Kv K w) = 2` using `GlobalTheory.CompanionTheory.StdThetaExists.finrank_eq_two_of_unique h2 v w hu`. Establish `hcont : Continuous (algebraMap (Qv v) (Kv K w))` using `continuous_adicCompletionMap v w`. Establish `hWm` using `GlobalTheory.CompanionTheory.NormModulus.wMod (Qv v) _ hχc hχ1 (Kv K w) hf hcont σ hσ η hη`.
+
+Conclude with `field_bound (GP.psiF v)⁻¹ σ _ _ (GlobalTheory.CompanionTheory.WCont.isUnit1_localChar c w) hWm y`.
+-/
 theorem main : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (m : LM c v), m.ok → m.std → Unr c v →
   ∀ y : (Qv v)ˣ, ‖m.W (dg2 y 1)‖ ≤ ‖(y : Qv v)‖⁻¹ ∧ (m.W (dg2 y 1) ≠ 0 → ‖(y : Qv v)‖ ≤ 1) := by
   intro K _ _ h2 c v m hok hstd hU y

@@ -17,6 +17,11 @@ section Frac
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `hJ' : (J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis. Rewrite using `[FractionalIdeal.mem_inv_iff hJ']`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).1 (h _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨y, hy, rfl⟩))`. Introduce `h y hy`. Take `⟨y0, hy0, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`. Conclude with `(FractionalIdeal.mem_one_iff _).2 (h y0 hy0)`.
+-/
 theorem mem_inv_coeIdeal {J : Ideal (𝓞 K)} (hJ : J ≠ ⊥) (x : K) :
     x ∈ ((J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K))⁻¹ ↔
       ∀ y ∈ J, ∃ o : 𝓞 K, algebraMap (𝓞 K) K o = x * algebraMap (𝓞 K) K y := by
@@ -31,6 +36,21 @@ theorem mem_inv_coeIdeal {J : Ideal (𝓞 K)} (hJ : J ≠ ⊥) (x : K) :
     obtain ⟨y0, hy0, rfl⟩ := (FractionalIdeal.mem_coeIdeal _).1 hy
     exact (FractionalIdeal.mem_one_iff _).2 (h y0 hy0)
 
+/- English proof (translation)
+Establish `hlt : J * P < J`. Use `lt_of_le_of_ne Ideal.mul_le_left ?_` and prove the remaining obligations. Introduce `h`. Establish `h2 : J * P = J * ⊤` using `by rw [Ideal.mul_top]; exact h`. Conclude with `hP.ne_top (mul_left_cancel₀ hJ h2)`.
+
+Take `⟨a, haJ, haP⟩` from `SetLike.exists_of_lt hlt`. Establish `ha0 : a ≠ 0` using `fun h => haP (h ▸ Submodule.zero_mem _)`. Establish `haK : algebraMap (𝓞 K) K a ≠ 0`. Introduce `h`. Conclude with `ha0 ((map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 K) K)).1 h)`.
+
+Take `⟨Q, hQ⟩ : J ∣ Ideal.span {a}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 haJ)`. Establish `hQP : ¬ Q ≤ P`. Introduce `hle`. Apply `haP` to reduce the goal to its premises. Establish `h1 : a ∈ Ideal.span {a}` using `Ideal.mem_span_singleton_self a`.
+
+Rewrite `h1` using `[hQ]`. Conclude with `Ideal.mul_mono_right hle h1`. Take `⟨s, hsQ, hsP⟩` from `Set.not_subset.1 hQP`. Use `⟨(algebraMap (𝓞 K) K a)⁻¹, inv_ne_zero haK, ?_, s, hsP, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨o, ho⟩` from `(mem_inv_coeIdeal hJ x).1 hx a haJ`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mem_inv_coeIdeal hJ]`.
+
+Introduce `y hy`. Establish `hsy : y * s ∈ J * Q` using `Ideal.mul_mem_mul hy hsQ`. Rewrite `hsy` using `[← hQ]`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hsy`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `congrArg (algebraMap (𝓞 K) K) ht`. Rewrite `h3` using `[map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h3`.
+-/
 theorem exists_loc_gen {J : Ideal (𝓞 K)} (hJ : J ≠ ⊥) (P : Ideal (𝓞 K)) [hP : P.IsPrime] :
     ∃ c : K, c ≠ 0 ∧
       (∀ x ∈ ((J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K))⁻¹,
@@ -82,16 +102,27 @@ abbrev ddI : Ideal (𝓞 D.host.E) :=
 
 abbrev Nd : ℕ := Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F))
 
+/- English proof (translation)
+Establish `h` using `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (Ideal.absNorm_mem (differentIdeal ℤ (𝓞 D.host.F)))`. Simplify using `using h`.
+-/
 theorem Nd_mem : ((Nd D : ℕ) : 𝓞 D.host.E) ∈ ddI D := by
   have h := Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))
     (Ideal.absNorm_mem (differentIdeal ℤ (𝓞 D.host.F)))
   simpa using h
 
+/- English proof (translation)
+Introduce `h`. Rewrite `h` using `[Nd, Ideal.absNorm_eq_zero_iff]`. Conclude with `differentIdeal_ne_bot h`.
+-/
 theorem Nd_ne : (Nd D : ℕ) ≠ 0 := by
   intro h
   rw [Nd, Ideal.absNorm_eq_zero_iff] at h
   exact differentIdeal_ne_bot h
 
+/- English proof (translation)
+Establish `h1 : ddI D ≠ ⊥`. Introduce `h`. Use `Nd_mem D` as an intermediate fact. Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `Nd_ne D (by exact_mod_cast this)`.
+
+Conclude with `⟨by simp, fun k => pow_ne_zero k h1⟩`.
+-/
 theorem ddI_ne : ddI D ^ 0 ≠ ⊥ ∧ ∀ k : ℕ, ddI D ^ k ≠ ⊥ := by
   have h1 : ddI D ≠ ⊥ := by
     intro h
@@ -100,11 +131,23 @@ theorem ddI_ne : ddI D ^ 0 ≠ ⊥ ∧ ∀ k : ℕ, ddI D ^ k ≠ ⊥ := by
     exact Nd_ne D (by exact_mod_cast this)
   exact ⟨by simp, fun k => pow_ne_zero k h1⟩
 
+/- English proof (translation)
+Rewrite using `[gS, Nat.cast_mul]`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.2 (D.host.g_prime 0).ne_zero) (Nat.cast_ne_zero.2 (D.host.g_prime 1).ne_zero)`.
+-/
 theorem g_ne : ((gS D : ℕ) : D.host.E) ≠ 0 := by
   rw [gS, Nat.cast_mul]
   exact mul_ne_zero (Nat.cast_ne_zero.2 (D.host.g_prime 0).ne_zero)
     (Nat.cast_ne_zero.2 (D.host.g_prime 1).ne_zero)
 
+/- English proof (translation)
+Introduce `hN`. Establish `key : ∀ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 D.host.E) ∉ P`. Introduce `i hi`. Establish `hc : Nat.Coprime (Nd D ^ k) (D.host.g i)` using `Nat.Coprime.pow_left k (Formalism.L2.SG.SplitPrimeNormLemmas.IntG.coprime_gi i)`. Establish `hb` using `Nat.gcd_eq_gcd_ab (Nd D ^ k) (D.host.g i)`.
+
+Rewrite `hb` using `[hc]`. Establish `hb'` using `congrArg (Int.cast : ℤ → 𝓞 D.host.E) hb`. Move the coercions through the operations in `at hb'`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, hb']`.
+
+Conclude with `P.add_mem (P.mul_mem_right _ (by exact_mod_cast hN)) (P.mul_mem_right _ hi)`. Establish `hg' : ((D.host.g 0 : ℕ) : 𝓞 D.host.E) * ((D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ P`. Simplify `hg` using `[gS, Nat.cast_mul]`. Break down `hP.mem_or_mem hg' with h | h` into its components or cases. Conclude with `key 0 h`.
+
+Conclude with `key 1 h`.
+-/
 theorem Nd_not_mem {P : Ideal (𝓞 D.host.E)} [hP : P.IsPrime] (hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P) (k : ℕ) :
     ((Nd D ^ k : ℕ) : 𝓞 D.host.E) ∉ P := by
   intro hN
@@ -125,6 +168,9 @@ theorem Nd_not_mem {P : Ideal (𝓞 D.host.E)} [hP : P.IsPrime] (hg : ((gS D : �
   · exact key 0 h
   · exact key 1 h
 
+/- English proof (translation)
+Establish `ha : (a : ℕ) ≤ D.R.rS` using `a.2.le`. Rewrite using `[show -((D.R.rS : ℤ) - (a : ℕ)) = -(((D.R.rS - a : ℕ) : ℕ) : ℤ) by push_cast [Nat.cast_sub ha]; ring, zpow_neg, zpow_natCast, FractionalIdeal.coeIdeal_pow]`. Both sides reduce to the same expression.
+-/
 theorem ddS_zpow (a : Fin D.R.rS) :
     ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) =
       ((ddI D ^ (D.R.rS - a) : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)⁻¹ := by
@@ -133,11 +179,17 @@ theorem ddS_zpow (a : Fin D.R.rS) :
     zpow_neg, zpow_natCast, FractionalIdeal.coeIdeal_pow]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ddS_zpow, mem_inv_coeIdeal ((ddI_ne D).2 _)]`. Introduce `y _`. Conclude with `⟨y, by simp⟩`.
+-/
 theorem one_mem_ddS (a : Fin D.R.rS) : (1 : D.host.E) ∈ ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) := by
   rw [ddS_zpow, mem_inv_coeIdeal ((ddI_ne D).2 _)]
   intro y _
   exact ⟨y, by simp⟩
 
+/- English proof (translation)
+Rewrite `hx` using `[ddS_zpow, mem_inv_coeIdeal ((ddI_ne D).2 _)]`. Take `⟨o, ho⟩` from `hx _ (by exact Ideal.pow_mem_pow (Nd_mem D) _)`. Conclude with `⟨o, by rw [ho, mul_comm, Nat.cast_pow]⟩`.
+-/
 theorem Nd_mul_mem (a : Fin D.R.rS) {x : D.host.E} (hx : x ∈ ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ)))) :
     ∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o =
       algebraMap (𝓞 D.host.E) D.host.E ((Nd D ^ (D.R.rS - a) : ℕ) : 𝓞 D.host.E) * x := by
@@ -151,23 +203,40 @@ section XS
 
 variable (D : Formalism.BasicNotions.D7) {T : D.host.E} (F : FlagG (VS D) D.R.rS T)
 
+/- English proof (translation)
+The claim follows from `(algebraMap_smul D.host.E s x).symm`.
+-/
 theorem smulO (s : 𝓞 D.host.E) (x : (VS D).V) :
     s • x = (algebraMap (𝓞 D.host.E) D.host.E s) • x := (algebraMap_smul D.host.E s x).symm
 
+/- English proof (translation)
+Use `(Submodule.span_le.2 ?_) hy` and prove the remaining obligations. Introduce and unpack `_ ⟨a, x, hx, rfl⟩`. Conclude with `h a x hx`.
+-/
 theorem xs_gen {y : (VS D).V} (hy : y ∈ XS D F) (P : Submodule (𝓞 D.host.E) (VS D).V)
     (h : ∀ (a : Fin D.R.rS) (x : D.host.E), x ∈ ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) → x • F.e a ∈ P) : y ∈ P := by
   refine (Submodule.span_le.2 ?_) hy
   rintro _ ⟨a, x, hx, rfl⟩
   exact h a x hx
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, 1, one_mem_ddS D a, by simp⟩`.
+-/
 theorem e_mem_XS (a : Fin D.R.rS) : F.e a ∈ XS D F :=
   Submodule.subset_span ⟨a, 1, one_mem_ddS D a, by simp⟩
 
+/- English proof (translation)
+Introduce `y hy`. Use `xs_gen D F hy _ fun a x _ => ?_` and prove the remaining obligations. Conclude with `F.X.smul_mem x (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem XS_le_X : XS D F ≤ F.X.restrictScalars (𝓞 D.host.E) := by
   intro y hy
   refine xs_gen D F hy _ fun a x _ => ?_
   exact F.X.smul_mem x (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Introduce `y hy`. Use `xs_gen D F hy _ fun a x hx => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `Nd_mul_mem D a hx`. Use `⟨((Nd D ^ (D.R.rS - a) : ℕ) : 𝓞 D.host.E), Nd_not_mem D hg _, ?_⟩` and prove the remaining obligations. Rewrite using `[smulO, smul_smul, ← ho, ← smulO]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem XS_le_locP_e (P : Ideal (𝓞 D.host.E)) [P.IsPrime] (hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P) :
     XS D F ≤ Formalism.HermitianLatticesTheory.localization₂ P (Submodule.span (𝓞 D.host.E) (Set.range F.e)) := by
   intro y hy
@@ -177,6 +246,17 @@ theorem XS_le_locP_e (P : Ideal (𝓞 D.host.E)) [P.IsPrime] (hg : ((gS D : ℕ)
   rw [smulO, smul_smul, ← ho, ← smulO]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Use `P.isPrime` as an intermediate fact. Distinguish the cases in `hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Use `⟨fun _ => 1, fun _ => one_ne_zero, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [one_smul]`. Use `le_antisymm (Formalism.L2.SG.Pf.locP_le_locP' (XS_le_locP_e D F P.asIdeal hg)) ?_` and prove the remaining obligations.
+
+Use `Formalism.L2.SG.Pf.localization_mono' (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `e_mem_XS D F a`. Use `choose c hc0 hc1 hc2 using fun a : Fin D.R.rS => exists_loc_gen ((ddI_ne D).2 (D.R.rS - a)) P.asIdeal`. Use `⟨c, hc0, fun h => absurd h hg, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+
+Use `Formalism.L2.SG.Pf.locP_le_locP' ?_` and prove the remaining obligations. Introduce `y hy`. Use `xs_gen D F hy _ fun a x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[ddS_zpow]`. Take `⟨o, rfl⟩` from `hc1 a x hx`.
+
+Use `Formalism.L2.SG.Pf.le_locP' _ _ ?_` and prove the remaining obligations. Rewrite using `[mul_smul, ← smulO]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Use `Formalism.L2.SG.Pf.locP_le_locP' (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Take `⟨s, hs, hsc⟩` from `hc2 a`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smulO, smul_smul]`. Conclude with `Submodule.subset_span ⟨a, _, by rw [ddS_zpow]; exact hsc, rfl⟩`.
+-/
 theorem xs_locGen (P : HeightOneSpectrum (𝓞 D.host.E)) :
     ∃ c : Fin D.R.rS → D.host.E, (∀ a, c a ≠ 0) ∧
       (((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → ∀ a, c a = 1) ∧
@@ -208,6 +288,13 @@ theorem xs_locGen (P : HeightOneSpectrum (𝓞 D.host.E)) :
       rw [smulO, smul_smul]
       exact Submodule.subset_span ⟨a, _, by rw [ddS_zpow]; exact hsc, rfl⟩
 
+/- English proof (translation)
+Use `Submodule.FG.of_le (Submodule.fg_span (Set.finite_range fun a : Fin D.R.rS => (algebraMap (𝓞 D.host.E) D.host.E ((Nd D ^ (D.R.rS - a) : ℕ) : 𝓞 D.host.E))⁻¹ • F.e a)) ?_` and prove the remaining obligations. Introduce `y hy`. Use `xs_gen D F hy _ fun a x hx => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `Nd_mul_mem D a hx`. Establish `hN : algebraMap (𝓞 D.host.E) D.host.E ((Nd D ^ (D.R.rS - a) : ℕ) : 𝓞 D.host.E) ≠ 0`.
+
+Rewrite using `[map_natCast]`. Conclude with `pow_ne_zero _ (Nd_ne D)` after adjusting the coercions. Establish `: x • F.e a = o • ((algebraMap (𝓞 D.host.E) D.host.E ((Nd D ^ (D.R.rS - a) : ℕ) : 𝓞 D.host.E))⁻¹ • F.e a)`. Rewrite using `[smulO, smul_smul, ho, mul_comm, ← mul_assoc, inv_mul_cancel₀ hN, one_mul]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem XS_fg : (XS D F).FG := by
   refine Submodule.FG.of_le (Submodule.fg_span (Set.finite_range fun a : Fin D.R.rS =>
     (algebraMap (𝓞 D.host.E) D.host.E ((Nd D ^ (D.R.rS - a) : ℕ) : 𝓞 D.host.E))⁻¹ • F.e a)) ?_
@@ -227,17 +314,29 @@ section Frames
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `[FlagG.fvec]`.
+-/
 theorem sum_fvec {T : E} (F : FlagG S r T) (c : Fin r → E) (a : E) :
     ∑ i, (Fin.snoc (α := fun _ => E) c a : Fin (r + 1) → E) i • F.fvec i = ∑ i, c i • F.e i + a • F.z := by
   rw [Fin.sum_univ_castSucc]
   simp [FlagG.fvec]
 
+/- English proof (translation)
+Simplify using `[FlagG.fvec]`.
+-/
 theorem fvec_last {T : E} (F : FlagG S r T) : F.fvec (Fin.last r) = F.z := by
   simp [FlagG.fvec]
 
+/- English proof (translation)
+Simplify using `[FlagG.fvec]`.
+-/
 theorem fvec_cast {T : E} (F : FlagG S r T) (a : Fin r) : F.fvec (Fin.castSucc a) = F.e a := by
   simp [FlagG.fvec]
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_span_range_iff_exists_fun E`.
+-/
 theorem mem_X_iff {T : E} (F : FlagG S r T) {x : S.V} : x ∈ F.X ↔ ∃ c : Fin r → E, ∑ i, c i • F.e i = x :=
   Submodule.mem_span_range_iff_exists_fun E
 
@@ -247,6 +346,11 @@ section Indep
 
 variable (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F1 : FlagG (VS D) D.R.rS T')
 
+/- English proof (translation)
+Establish `: Nonempty D.what₂.Tau` using `Fintype.card_pos_iff.1 (by`. Rewrite using `[D.what₂.card_Tau]`. Unfold `Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n`. Use the proof step `positivity)`. Take `⟨τ⟩` from `this`.
+
+Introduce `h`. Use `hx τ` as an intermediate fact. Rewrite `this` using `[h, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem totPos_ne {x : D.host.E} (hx : Formalism.MainNotions.S.LocalSplitGroups.TotPos x) : x ≠ 0 := by
   have : Nonempty D.what₂.Tau := Fintype.card_pos_iff.1 (by
     rw [D.what₂.card_Tau]; unfold Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n; positivity)
@@ -256,6 +360,13 @@ theorem totPos_ne {x : D.host.E} (hx : Formalism.MainNotions.S.LocalSplitGroups.
   rw [h, map_zero, Complex.zero_re] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hdet` using `PI.UnitaryGroupMassFormula.CntFormula.gram_determinant_ne_zero D T T' (Zhat F0 F1) hG`. Establish `hmv : (Ga T T' (Zhat F0 F1)).mulVec c = 0`. Use function extensionality and compare the values at `a`.
+
+Establish `h1 : (VS D).hT (Sum.elim F0.fvec F1.fvec a) (∑ i, c i • Sum.elim F0.fvec F1.fvec i) = 0`. Rewrite using `[hc, map_zero]`. Rewrite `h1` using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul] at h1`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`.
+
+Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ga_gram D F0 F1 a i, brS, mul_comm]`. Conclude with `congrFun (Matrix.eq_zero_of_mulVec_eq_zero hdet hmv)`.
+-/
 theorem indep (hG : GZ T T' (Zhat F0 F1) ≠ 0) : LinearIndependent D.host.E (Sum.elim F0.fvec F1.fvec) := by
   rw [Fintype.linearIndependent_iff]
   intro c hc

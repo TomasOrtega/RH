@@ -16,6 +16,11 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Unfold `translatedForm`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+
+Simplify using `only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.map_X, MvPolynomial.eval_X]`. Use `congr 1`. Apply the tactic sequence `by_cases hv : v.1 = 0 <;> simp [hv]`.
+-/
 theorem eval_substituted_eq_eval_update (x : Fin (d.N + 1) → K) (F : KTp K d.D d.N) (sg : K →+* ℂ)
     (y : Fin (d.D + 1) × Fin (d.N + 1) → ℂ) :
     MvPolynomial.eval y (MvPolynomial.map sg (d.translatedForm x F)) =
@@ -29,6 +34,11 @@ theorem eval_substituted_eq_eval_update (x : Fin (d.N + 1) → K) (F : KTp K d.D
     congr 1
     by_cases hv : v.1 = 0 <;> simp [hv]
 
+/- English proof (translation)
+Rewrite using `[eval_substituted_eq_eval_update, eval_substituted_eq_eval_update]`. Use `congrArg (fun y => MvPolynomial.eval y (MvPolynomial.map sg F)) (funext fun v => ?_)` and prove the remaining obligations. Distinguish the cases in `hv : v.1 = 0`. Simplify using `only [hv, ↓reduceIte]`. Simplify using `only [hv, ↓reduceIte]`.
+
+Take `⟨a, b⟩` from `v`. Consider the cases of `a using Fin.cases with`. Consider the case `zero => exact absurd rfl hv`. Consider the case `succ i => rfl`.
+-/
 theorem eval_substituted_shift_invariant (x : Fin (d.N + 1) → K) (F : KTp K d.D d.N) (sg : K →+* ℂ)
     (t0 : Fin (d.N + 1) → ℂ) (z : BlockSphere d.D (d.N + 1)) :
     MvPolynomial.eval (hintPt t0 z) (MvPolynomial.map sg (d.translatedForm x F)) =
@@ -43,6 +53,17 @@ theorem eval_substituted_shift_invariant (x : Fin (d.N + 1) → K) (F : KTp K d.
     | zero => exact absurd rfl hv
     | succ i => rfl
 
+/- English proof (translation)
+Establish `hpt : ∀ z : BlockSphere (d.D + 1) (d.N + 1), MvPolynomial.eval (blockPoint z) (MvPolynomial.map sg (d.translatedForm x F)) = MvPolynomial.eval (hintPt 0 (Fin.tail z)) (MvPolynomial.map sg (d.translatedForm x F))`. Introduce `z`. Rewrite using `[← eval_substituted_shift_invariant d x F sg (spherePoint (z 0)) (Fin.tail z)]`. Use `congrArg (fun y => MvPolynomial.eval y (MvPolynomial.map sg (d.translatedForm x F))) (funext fun v => ?_)` and prove the remaining obligations. Take `⟨a, b⟩` from `v`.
+
+Consider the cases of `a using Fin.cases with`. Consider the case `zero => rfl`. Consider the case `succ i => rfl`. Establish `key : ∀ g : (Fin d.D → UnitSphereC (d.N + 1)) → ℝ, ∫ z, g (Fin.tail z) ∂(Measure.pi fun _ : Fin (d.D + 1) => sphereProb (d.N + 1)) = ∫ w, g w ∂(Measure.pi fun _ : Fin d.D => sphereProb (d.N + 1))`. Introduce `g`.
+
+Use `haveI hpr : IsProbabilityMeasure (sphereProb (d.N + 1)) := ReciprocityTheory.MultiplicativeHeights.isProbabilityMeasure_sphereProb (Nat.succ_pos _)`. Use `haveI hfin : IsFiniteMeasure (sphereProb (d.N + 1)) := ⟨by rw [MeasureTheory.measure_univ]; exact ENNReal.one_lt_top⟩`. Use `haveI hsf : SigmaFinite (sphereProb (d.N + 1)) := @MeasureTheory.IsFiniteMeasure.toSigmaFinite _ _ _ hfin`. Use `haveI hsf' : ∀ i : Fin (d.D + 1), SigmaFinite ((fun _ : Fin (d.D + 1) => sphereProb (d.N + 1)) i) := fun _ => hsf`. Establish `hmp` using `MeasureTheory.measurePreserving_piFinSuccAbove (fun _ : Fin (d.D + 1) => sphereProb (d.N + 1)) 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use `_ = ∫ p, g p.2 ∂((sphereProb (d.N + 1)).prod (Measure.pi fun _ : Fin d.D => sphereProb (d.N + 1))) := hmp.integral_comp' (fun p : UnitSphereC (d.N + 1) × (Fin d.D → UnitSphereC (d.N + 1)) => g p.2)`. Use `_ = ∫ w, g w ∂(Measure.pi fun _ : Fin d.D => sphereProb (d.N + 1)) := by`. Rewrite using `[MeasureTheory.integral_fun_snd]`.
+
+Simplify using the standard rewrite rules. Unfold `blockSphereMean blockSphereProb`. Repeatedly rewrite using `[hpt]`. Conclude with `key (fun w => Real.log ‖MvPolynomial.eval (hintPt 0 w) (MvPolynomial.map sg (d.translatedForm x F))‖)`.
+-/
 theorem sphereMean_substituted_eq_integral (x : Fin (d.N + 1) → K) (F : KTp K d.D d.N) (sg : K →+* ℂ) :
     blockSphereMean (d.D + 1) (d.N + 1) (MvPolynomial.map sg (d.translatedForm x F)) =
       ∫ z, Real.log ‖MvPolynomial.eval (hintPt 0 z) (MvPolynomial.map sg (d.translatedForm x F))‖
@@ -87,6 +108,15 @@ theorem sphereMean_substituted_eq_integral (x : Fin (d.N + 1) → K) (F : KTp K 
   simp_rw [hpt]
   exact key (fun w => Real.log ‖MvPolynomial.eval (hintPt 0 w) (MvPolynomial.map sg (d.translatedForm x F))‖)
 
+/- English proof (translation)
+Establish `hn : 0 < d.N + 1` using `Nat.succ_pos _`. Use `haveI := sphereMeasure_isProbability hn`. Use `haveI := blockSphereMeasure_isProbability (B := d.D) hn`. Use `set G : UnitSphereC (d.N + 1) × BlockSphere d.D (d.N + 1) → ℝ := fun p => Real.log ‖MvPolynomial.eval (hintPt (spherePoint p.1) p.2) F‖ with hG`. Establish `hmp` using `hint_mpSplit d.D (d.N + 1) hn`.
+
+Establish `hint : Integrable G ((sphereProb (d.N + 1)).prod (blockSphereProb d.D (d.N + 1)))`. Rewrite using `[← hmp.integrable_comp_emb (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (d.D + 1) => UnitSphereC (d.N + 1)) 0).measurableEmbedding]`. Use `(ReciprocityTheory.MultiplicativeHeights.Closed.sphereLogIntegrable (d.D + 1) (d.N + 1) a F hF0 hF).congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hG]`. Rewrite using `[hint_blockPoint_eq]`.
+
+Both sides reduce to the same expression. Rewrite using `[← integral_prod_symm G hint]`. Unfold `blockSphereMean`. Rewrite using `[← hmp.integral_comp (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (d.D + 1) => UnitSphereC (d.N + 1)) 0).measurableEmbedding]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hG]`. Rewrite using `[hint_blockPoint_eq]`. Both sides reduce to the same expression.
+-/
 theorem sphereMean_fubini {F : MvPolynomial (Fin (d.D + 1) × Fin (d.N + 1)) ℂ} {a : Fin (d.D + 1) → ℕ}
     (hF0 : F ≠ 0) (hF : IsMultiHomogeneous a F) :
     blockSphereMean (d.D + 1) (d.N + 1) F =

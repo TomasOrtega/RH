@@ -15,6 +15,11 @@ abbrev locAlg (R : Type) [CommRing R] {D : Type} [CommRing D] [Algebra R D] (s :
     D →ₐ[R] Localization.Away s :=
   IsScalarTower.toAlgHom R D (Localization.Away s)
 
+/- English proof (translation)
+Establish `h1 : x.left.base P ∈ (⨆ i, W i)` using `by rw [hW]; trivial`. Take `⟨i, hi⟩` from `(TopologicalSpace.Opens.mem_iSup).mp h1`. Take `⟨V, ⟨s, rfl⟩, hPV, hVU⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := P) (u := (x.left ⁻¹ᵁ W i).1) hi (x.left ⁻¹ᵁ W i).isOpen`. Use `⟨s, hPV, i, fun q _ ↦ ?_⟩` and prove the remaining obligations. Establish `hq : (spMap (algebraMap D (Localization.Away s))).base q ∈ PrimeSpectrum.basicOpen s`.
+
+Express the relevant statement in the definitionally equal form `s ∉ (PrimeSpectrum.comap (algebraMap D (Localization.Away s)) q).asIdeal`. Introduce `h`. Conclude with `q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h (IsLocalization.Away.algebraMap_isUnit s))`. Conclude with `hVU hq`.
+-/
 theorem sm_loc_of_mem {R : Type} [CommRing R] {X : Over (Sp R)} {K : Type} (W : K → X.left.Opens)
     (hW : ⨆ i, W i = ⊤) {D : Type} [CommRing D] [Algebra R D] (x : Pt X D) (P : PrimeSpectrum D) :
     ∃ s : D, s ∉ P.asIdeal ∧ Sm W (spOver (locAlg R s) ≫ x) := by
@@ -50,12 +55,18 @@ def awL (R : Type) [CommRing R] {D : Type} [CommRing D] [Algebra R D] (a b : D) 
     rw [IsScalarTower.algebraMap_apply R D (Localization.Away b),
       IsLocalization.Away.awayToAwayLeft_eq, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[AlgHom.comp_apply, IsScalarTower.coe_toAlgHom', IsScalarTower.coe_toAlgHom']`. Conclude with `IsLocalization.Away.awayToAwayRight_eq (P := Localization.Away (a * b)) a b z`.
+-/
 theorem awR_comp (R : Type) [CommRing R] {D : Type} [CommRing D] [Algebra R D] (a b : D) :
     (awR R a b).comp (locAlg R a) = locAlg R (a * b) := by
   ext z
   rw [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom', IsScalarTower.coe_toAlgHom']
   exact IsLocalization.Away.awayToAwayRight_eq (P := Localization.Away (a * b)) a b z
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[AlgHom.comp_apply, IsScalarTower.coe_toAlgHom', IsScalarTower.coe_toAlgHom']`. Conclude with `IsLocalization.Away.awayToAwayLeft_eq (P := Localization.Away (a * b)) b a z`.
+-/
 theorem awL_comp (R : Type) [CommRing R] {D : Type} [CommRing D] [Algebra R D] (a b : D) :
     (awL R a b).comp (locAlg R b) = locAlg R (a * b) := by
   ext z
@@ -66,6 +77,19 @@ end GlobalTheory.PtExt
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `R _ X K W hW D _ _ x τ hτ`. Set `S : Set D` to `{s | Sm W (spOver (locAlg R s) ≫ x)}`. Establish `key : ∀ (s : D), s ∈ S → ∀ (E : Type) [CommRing E] [Algebra R E] (ψ : D →ₐ[R] E) (θ : Localization.Away s →ₐ[R] E), θ.comp (locAlg R s) = ψ → θ (τ _ (locAlg R s)) = τ E ψ`. Introduce `s hs E _ _ ψ θ h`. Rewrite using `[← hτ _ _ _ θ hs, h]`.
+
+Establish `span : Ideal.span S = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hSM⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨s, hsM, hs⟩` from `sm_loc_of_mem W hW x ⟨M, hM.isPrime⟩`. Conclude with `hsM (hSM (Ideal.subset_span hs))`.
+
+Set `v : ∀ a : S, Localization.Away a.1` to `fun a ↦ τ _ (locAlg R a.1)`. Take `⟨d, hd, hu⟩` from `Localization.existsUnique_algebraMap_eq_of_span_eq_top S span v (fun a b ↦ by`. Establish `e1` using `key a a.2 _ _ (awR R (a : D) b) (awR_comp R _ _)`. Establish `e2` using `key b b.2 _ _ (awL R (a : D) b) (awL_comp R _ _)`. Conclude with `e1.trans e2.symm)`.
+
+Use `⟨d, fun E _ _ ψ hψ ↦ ?_, fun d' hd' ↦ hu d' fun a ↦ (hd' _ (locAlg R a.1) a.2).symm⟩` and prove the remaining obligations. Establish `spanE : Ideal.span (ψ '' S) = ⊤`. Rewrite using `[← Ideal.map_span, span, Ideal.map_top]`. Apply `Localization.algebraMap_injective_of_span_eq_top _ spanE` to reduce the goal to its premises. Use function extensionality and compare the values at `⟨t, s, hs, ht⟩`.
+
+Substitute `ht` using the available equality. Set `θ : E →ₐ[R] Localization.Away (ψ s)` to `locAlg R (ψ s)`. Set `θ' : Localization.Away s →ₐ[R] Localization.Away (ψ s)` to `Localization.awayMapₐ ψ s`. Establish `hc : θ'.comp (locAlg R s) = θ.comp ψ` using `AlgHom.ext fun z ↦ by`. Simplify using `[θ', θ, Localization.awayMapₐ, IsLocalization.Away.mapₐ, IsLocalization.Away.map, IsLocalization.map_eq]`.
+
+Express the relevant statement in the definitionally equal form `θ (τ E ψ) = θ (ψ d)`. Establish `e : τ _ (locAlg R s) = algebraMap D _ d` using `(hd ⟨s, hs⟩).symm`. Rewrite using `[← hτ E _ ψ θ hψ, ← hc, ← key s hs _ _ θ' rfl, e]`. Conclude with `DFunLike.congr_fun hc d`.
+-/
 theorem natFamily_existsUnique : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (K : Type) (W : K → X.left.Opens), ⨆ i, W i = ⊤ → ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt X D) (τ : ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E), (∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : D →ₐ[R] E) (θ : E →ₐ[R] E'), Sm W (spOver ψ ≫ x) → τ E' (θ.comp ψ) = θ (τ E ψ)) → ∃! d : D, ∀ (E : Type) [CommRing E] [Algebra R E] (ψ : D →ₐ[R] E), Sm W (spOver ψ ≫ x) → τ E ψ = ψ d := by
   intro R _ X K W hW D _ _ x τ hτ
   let S : Set D := {s | Sm W (spOver (locAlg R s) ≫ x)}

@@ -41,6 +41,11 @@ def wA (ρ k : ℕ) (s : Bool) {r : ℕ} (i _j : Fin r) : ℤ :=
 def wB (ρ k : ℕ) (s : Bool) {r : ℕ} (i _j : Fin r) : ℤ :=
   if i.1 < ρ then 0 else if i.1 + 1 < ρ + k then (if s then 0 else -1) else if i.1 = ρ + k then 1 else -1
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[GlobalTheory.IdemSupport.mem_cP, Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨GlobalTheory.IdemSupport.cO D x, hx, GlobalTheory.IdemSupport.cO_cO x⟩`.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[GlobalTheory.IdemSupport.cO_cO]`. Conclude with `hy`.
+-/
 theorem conjPrime_asIdeal (PP : Pl D.host.E) :
     (GlobalTheory.IdemSupport.cP PP).asIdeal = PP.asIdeal.map (GlobalTheory.IdemSupport.cO D) := by
   ext x

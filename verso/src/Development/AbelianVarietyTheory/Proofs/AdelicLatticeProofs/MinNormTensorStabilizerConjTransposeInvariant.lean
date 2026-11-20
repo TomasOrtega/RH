@@ -9,6 +9,13 @@ namespace GlobalTheory.ClassFin
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
+/- English proof (translation)
+Use `⟨(hP.1.eigenvectorUnitary : Matrix ι ι ℂ), fun i => Real.log (hP.1.eigenvalues i) / 2, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Unitary.mul_star_self_of_mem hP.1.eigenvectorUnitary.2`. Establish `h` using `hP.1.det_eq_prod_eigenvalues`. Rewrite `h` using `[hdet]`.
+
+Establish `hprod' : ((∏ i, hP.1.eigenvalues i : ℝ) : ℂ) = 1` using `by push_cast; exact h.symm`. Establish `hprod : ∏ i, hP.1.eigenvalues i = 1` using `by exact_mod_cast hprod'`. Rewrite using `[← Finset.sum_div, ← Real.log_prod (fun i _ => (hP.eigenvalues_pos i).ne'), hprod, Real.log_one, zero_div]`. Use `conv_lhs => rw [hP.1.spectral_theorem]`. Rewrite using `[Unitary.conjStarAlgAut_apply, Matrix.star_eq_conjTranspose]`.
+
+Use `congr 3`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, RCLike.ofReal_real_eq_id, id]`. Rewrite using `[mul_div_cancel₀ _ two_ne_zero, Real.exp_log (hP.eigenvalues_pos i)]`. Both sides reduce to the same expression.
+-/
 private lemma posDef_det_one_exists_unitary_exp_diagonal_sum_zero {ι : Type} [Fintype ι] [DecidableEq ι]
     (P : Matrix ι ι ℂ) (hP : P.PosDef) (hdet : P.det = 1) :
     ∃ (U : Matrix ι ι ℂ) (δ : ι → ℝ), U * Uᴴ = 1 ∧ ∑ i, δ i = 0 ∧
@@ -33,6 +40,9 @@ private lemma posDef_det_one_exists_unitary_exp_diagonal_sum_zero {ι : Type} [F
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
+/- English proof (translation)
+Simplify using `[conjTranspose_mul, Matrix.mul_assoc, diagonal_conjTranspose, -Complex.ofReal_exp, Pi.star_def]`.
+-/
 private lemma unitary_conj_exp_diagonal_conjTranspose {ι : Type} [Fintype ι] [DecidableEq ι]
     (U : Matrix ι ι ℂ) (δ : ι → ℝ) (s : ℝ) :
     ((U * diagonal fun i => ((Real.exp (s * δ i) : ℝ) : ℂ)) * Uᴴ)ᴴ =
@@ -41,6 +51,9 @@ private lemma unitary_conj_exp_diagonal_conjTranspose {ι : Type} [Fintype ι] [
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
+/- English proof (translation)
+Establish `hU' : Uᴴ * U = 1` using `mul_eq_one_comm.mp hU`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Uᴴ U, hU', Matrix.one_mul, ← Matrix.mul_assoc (diagonal _) (diagonal _), diagonal_mul_diagonal]`. Simplify using `only [← Complex.ofReal_mul, ← Real.exp_add, ← add_mul]`.
+-/
 private lemma unitary_conj_exp_diagonal_mul_add_exponents {ι : Type} [Fintype ι] [DecidableEq ι]
     {U : Matrix ι ι ℂ} (hU : U * Uᴴ = 1) (δ : ι → ℝ) (s t : ℝ) :
     ((U * diagonal fun i => ((Real.exp (s * δ i) : ℝ) : ℂ)) * Uᴴ) *
@@ -54,6 +67,15 @@ private lemma unitary_conj_exp_diagonal_mul_add_exponents {ι : Type} [Fintype �
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
+/- English proof (translation)
+Establish `hdetP : (g * gᴴ).det = 1` using `by simp [hg]`. Establish `hP : (g * gᴴ).PosDef` using `(posSemidef_self_mul_conjTranspose g).posDef_iff_isUnit.mpr ((isUnit_iff_isUnit_det _).mpr (by rw [hdetP]; exact isUnit_one))`. Take `⟨U, δ, hU, hδ, hgP⟩` from `posDef_det_one_exists_unitary_exp_diagonal_sum_zero _ hP hdetP`. Use `⟨U, δ, hU, hδ, hgP, ?_⟩` and prove the remaining obligations. Take `⟨-, hactmul, -⟩` from `(_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d v`.
+
+Establish `hgu : IsUnit g.det` using `by rw [hg]; exact isUnit_one`. Establish `hhh : ((U * diagonal fun i => ((Real.exp (1 * δ i) : ℝ) : ℂ)) * Uᴴ) * ((U * diagonal fun i => ((Real.exp (1 * δ i) : ℝ) : ℂ)) * Uᴴ)ᴴ = g * gᴴ`. Rewrite using `[unitary_conj_exp_diagonal_conjTranspose, unitary_conj_exp_diagonal_mul_add_exponents hU, hgP]`. Evaluate the numerical expressions. Use `set h : Matrix ι ι ℂ := (U * diagonal fun i => ((Real.exp (1 * δ i) : ℝ) : ℂ)) * Uᴴ with hh`.
+
+Establish `hk : (g⁻¹ * h) * (g⁻¹ * h)ᴴ = 1`. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc h, hhh, ← Matrix.mul_assoc, ← Matrix.mul_assoc, nonsing_inv_mul _ hgu, Matrix.one_mul, conjTranspose_nonsing_inv, mul_nonsing_inv _ (by simp [hg])]`. Establish `hgk : h = g * (g⁻¹ * h)` using `by rw [← Matrix.mul_assoc, mul_nonsing_inv _ hgu, Matrix.one_mul]`. Establish `hnh : _root_.GlobalTheory.ClassFin.nsq (_root_.GlobalTheory.ClassFin.act d v h) = _root_.GlobalTheory.ClassFin.nsq v`. Rewrite using `[hgk, hactmul, (_root_.GlobalTheory.ClassFin.ActNorm.act_norm_continuity ι m d).1 _ _ hk, hn]`.
+
+Rewrite `hnh` using `[hh]`. Conclude with `_root_.GlobalTheory.ClassFin.act_exp_eq_of_isMinVec ι m d v U δ hv hU hδ (by simpa only [one_mul] using hnh)`.
+-/
 private lemma exists_unitary_exp_diagonal_fixing_of_nsq_eq {ι : Type} [Fintype ι] [DecidableEq ι] {m : ℕ}
     (d : Fin m → ℕ) (v : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ) (hv : _root_.GlobalTheory.ClassFin.IsMinVec d v)
     (g : Matrix ι ι ℂ) (hg : g.det = 1)
@@ -88,6 +110,9 @@ private lemma exists_unitary_exp_diagonal_fixing_of_nsq_eq {ι : Type} [Fintype 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 
+/- English proof (translation)
+Introduce `ι _ _ m d v hv g hg hgv`. Take `⟨U, δ, -, -, hgP, hfix⟩` from `exists_unitary_exp_diagonal_fixing_of_nsq_eq d v hv g hg (by rw [hgv])`. Take `⟨-, hactmul, -⟩` from `(_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d v`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.ClassFin.act_conjTranspose_of_isMinVec : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (m : ℕ) (d : Fin m → ℕ)
     (v : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ), _root_.GlobalTheory.ClassFin.IsMinVec d v → ∀ g : Matrix ι ι ℂ, g.det = 1 →
       _root_.GlobalTheory.ClassFin.act d v g = v → _root_.GlobalTheory.ClassFin.act d v gᴴ = v := by

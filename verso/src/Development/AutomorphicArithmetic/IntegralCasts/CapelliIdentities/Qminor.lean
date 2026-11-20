@@ -92,6 +92,21 @@ noncomputable def UpperTheory.Reformulated.B.Qf10.qdet.{u_1} :
         {n : Nat} (E : Fin n → Fin n → A) (u : Complex) ↦
       @UpperTheory.Reformulated.B.Qf10.qminor A inst inst_1 n n E (@id (Fin n)) (@id (Fin n)) u
 
+/- English proof (translation)
+Introduce `V _ _ E hE k φ h1 h2 h3 u`. Establish `rel : ∀ a b c d : Fin 2, E a b (E c d φ) - E c d (E a b φ) = (if b = c then E a d φ else 0) - (if d = a then E c b φ else 0)`. Introduce `a b c d`. Establish `h` using `congrArg (fun f : Module.End ℂ V => f φ) (hE a b c d)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`.
+
+Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `rab : E 0 0 (E 0 1 φ) - E 0 1 (E 0 0 φ) = E 0 1 φ` using `by simpa using rel 0 0 0 1`. Establish `rac : E 0 0 (E 1 0 φ) - E 1 0 (E 0 0 φ) = -E 1 0 φ` using `by simpa using rel 0 0 1 0`. Establish `rdb : E 1 1 (E 0 1 φ) - E 0 1 (E 1 1 φ) = -E 0 1 φ` using `by simpa using rel 1 1 0 1`.
+
+Establish `rdc : E 1 1 (E 1 0 φ) - E 1 0 (E 1 1 φ) = E 1 0 φ` using `by simpa using rel 1 1 1 0`. Establish `rbc : E 0 1 (E 1 0 φ) - E 1 0 (E 0 1 φ) = E 0 0 φ - E 1 1 φ` using `by simpa using rel 0 1 1 0`. Establish `rad : E 0 0 (E 1 1 φ) - E 1 1 (E 0 0 φ) = 0` using `by simpa using rel 0 0 1 1`. Establish `t1 : ∀ X : Module.End ℂ V, X (E 0 0 φ) + X (E 1 1 φ) = 0` using `fun X => by`. Rewrite using `[← map_add, h1, map_zero]`.
+
+Establish `t2 : ∀ X : Module.End ℂ V, X (E 0 1 φ) - X (E 1 0 φ) = (Complex.I * k) • X φ` using `fun X => by`. Rewrite using `[← map_sub, h2, map_smul]`. Establish `t3 : ∀ X : Module.End ℂ V, X (E 0 0 φ) - X (E 1 1 φ) = Complex.I • (X (E 0 1 φ) + X (E 1 0 φ))` using `fun X => by`. Rewrite using `[← map_sub, h3, map_smul, map_add]`. Establish `hc : (E 0 0 (E 0 0 φ) - E 0 0 (E 1 1 φ) - E 1 1 (E 0 0 φ) + E 1 1 (E 1 1 φ)) + (E 0 1 (E 0 1 φ) + E 0 1 (E 1 0 φ) + E 1 0 (E 0 1 φ) + E 1 0 (E 1 0 φ)) = (-2 * k) • φ`.
+
+Take the linear combination `(norm := module) (t3 (E 0 0) - t3 (E 1 1) + Complex.I • t3 (E 0 1) + Complex.I • t3 (E 1 0)) + Complex.I • (rab + rac - rdb - rdc) + (2 * Complex.I) • h2 + Complex.I_sq • (E 0 1 (E 0 1 φ) + E 0 1 (E 1 0 φ) + E 1 0 (E 0 1 φ) + E 1 0 (E 1 0 φ) + (2 * k) • φ)`. Establish `hw : E 0 1 (E 0 1 φ) - E 0 1 (E 1 0 φ) - E 1 0 (E 0 1 φ) + E 1 0 (E 1 0 φ) = (-k ^ 2) • φ`. Take the linear combination `(norm := module) (t2 (E 0 1) - t2 (E 1 0)) + (Complex.I * k) • h2 + Complex.I_sq • (k ^ 2 • φ)`. Establish `hu : (Finset.univ : Finset (Equiv.Perm (Fin 2))) = {1, Equiv.swap 0 1}` using `by decide`. Establish `hne : (1 : Equiv.Perm (Fin 2)) ≠ Equiv.swap 0 1` using `by decide`.
+
+Establish `hq : ∀ v : ℂ, UpperTheory.Reformulated.B.Qf10.qdet E v φ = v • ((v - 1) • φ + E 1 1 φ) + ((v - 1) • E 0 0 φ + E 0 0 (E 1 1 φ)) - E 1 0 (E 0 1 φ)`. Introduce `v`. Unfold `UpperTheory.Reformulated.B.Qf10.qdet UpperTheory.Reformulated.B.Qf10.qminor UpperTheory.Reformulated.B.Qf10.Tm`. Rewrite using `[hu, Finset.sum_pair hne]`. Simplify using `[List.ofFn_succ, Module.algebraMap_end_apply]`.
+
+Use `module`. Rewrite using `[hq]`. Take the linear combination `(norm := module) u • h1 + (1 / 4 : ℂ) • (t1 (E 0 0) + t1 (E 1 1)) + (1 / 2 : ℂ) • rad - (1 / 4 : ℂ) • hc + (1 / 4 : ℂ) • hw + (1 / 2 : ℂ) • rbc`.
+-/
 theorem UpperTheory.Reformulated.B.Qf10.casimir :
     ∀ {V : Type} [inst : AddCommGroup V]
       [inst_1 : @_root_.Module Complex V Complex.instSemiring (@AddCommGroup.toAddCommMonoid V inst)]

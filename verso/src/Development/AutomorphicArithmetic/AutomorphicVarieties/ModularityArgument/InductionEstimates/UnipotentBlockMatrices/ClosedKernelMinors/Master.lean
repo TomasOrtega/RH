@@ -10,6 +10,11 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Take `⟨-, -, -, hc, -⟩` from `blkLaws (K := K)`. Establish `hL : Continuous fun p : Par K => lv p.1 p.2.1 p.2.2.1`. Establish `: Continuous fun p : Par K => (p.1, p.2.1, p.2.2.1)` using `by fun_prop`. Simplify `hc.comp this` using `only [Function.comp_def]`. Establish `hN : Continuous fun p : Par K => (nn p.2.2.2.2 : G1 K (2 + 2))` using `(continuous_unipOne 2).comp (by fun_prop)`.
+
+Conclude with `(hN.mul hL).mul (continuous_subtype_val.comp (by fun_prop))`.
+-/
 private theorem cont_pt {K : Type} [Field K] [NumberField K] : Continuous (pt (K := K)) := by
   obtain ⟨-, -, -, hc, -⟩ := blkLaws (K := K)
   have hL : Continuous fun p : Par K => lv p.1 p.2.1 p.2.2.1 := by
@@ -19,6 +24,11 @@ private theorem cont_pt {K : Type} [Field K] [NumberField K] : Continuous (pt (K
   exact (hN.mul hL).mul (continuous_subtype_val.comp (by fun_prop))
 
 set_option synthInstance.maxHeartbeats 200000 in
+/- English proof (translation)
+Use `haveI : BorelSpace (KG K (2 + 2) × (UPos (2 + 2) 2 → 𝔸[K])) := Prod.borelSpace`. Use `haveI : BorelSpace (ℝ × KG K (2 + 2) × (UPos (2 + 2) 2 → 𝔸[K])) := Prod.borelSpace`. Use `haveI : SecondCountableTopology (G1 K 2) := inferInstance`. Use `haveI : BorelSpace (G1 K 2 × ℝ × KG K (2 + 2) × (UPos (2 + 2) 2 → 𝔸[K])) := Prod.borelSpace`. Use `haveI : BorelSpace (Par K) := Prod.borelSpace`.
+
+Conclude with `cont_pt.measurable`.
+-/
 private theorem meas_pt {K : Type} [Field K] [NumberField K] : Measurable (pt (K := K)) := by
   haveI : BorelSpace (KG K (2 + 2) × (UPos (2 + 2) 2 → 𝔸[K])) := Prod.borelSpace
   haveI : BorelSpace (ℝ × KG K (2 + 2) × (UPos (2 + 2) 2 → 𝔸[K])) := Prod.borelSpace
@@ -27,6 +37,23 @@ private theorem meas_pt {K : Type} [Field K] [NumberField K] : Measurable (pt (K
   haveI : BorelSpace (Par K) := Prod.borelSpace
   exact cont_pt.measurable
 
+/- English proof (translation)
+Take `⟨hfin, -, -, h4⟩` from `thBasic μ F hF hP hB`. Take `⟨⟨C, hC, hCb⟩, -, -⟩` from `h4 hD`. Establish `hm : Measurable fun g => conj (F g) * W g` using `(Complex.continuous_conj.comp hF).measurable.mul hW`. Establish `hinv : ∀ γ ∈ PK K, ∀ g, conj (F (γ * g)) * W (γ * g) = conj (F g) * W g` using `fun γ hγ g => by`. Take `⟨δ, -, rfl⟩` from `id hγ`.
+
+Rewrite using `[hP _ hγ]`. Conclude with `congrArg _ (hWi _ δ.2 g)`. Establish `hwae : ∀ᵐ y ∂fd μ, (w : RightCosetSpace (Gam K (2 + 2)) → ℂ) (mk (Gam K (2 + 2)) y) = W y` using `ae_restrict_of_ae hw`. Establish `hvae : ∀ᵐ y ∂fd μ, (v : RightCosetSpace (Gam K (2 + 2)) → ℂ) (mk (Gam K (2 + 2)) y) = th F y` using `ae_restrict_of_ae hv`. Establish `hW1 : ∫⁻ y, ‖W y‖ₑ ∂fd μ < ⊤` using `by haveI := isFiniteMeasure_quotientMeasure μ`.
+
+Establish `h1` using `((Lp.memLp w).integrable one_le_two).2`. Rewrite `h1` using `[hasFiniteIntegral_iff_enorm, lintegral_quotientMeasure]`. Use `lt_of_eq_of_lt (lintegral_congr_ae ?_) h1` and prove the remaining obligations. Use `filter_upwards [hwae] with y hy`. Rewrite using `[hy]`.
+
+Establish `hint : Integrable (fun p => conj (F (pt p)) * W (pt p)) (parM μ₂ κ)`. Use `⟨(hm.comp meas_pt).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `h1` using `hU.2.1 (fun g => ‖conj (F g) * W g‖ₑ) hm.enorm fun γ hγ g => by rw [hinv γ hγ]`. Establish `h2 : ∫⁻ y, ∑' q : Cos K, ‖conj (F ((q.out : G1 K (2 + 2)) * y)) * W ((q.out : G1 K (2 + 2)) * y)‖ₑ ∂fd μ ≤ ∫⁻ y, C * ‖W y‖ₑ ∂fd μ`. Use `lintegral_mono fun y => ?_` and prove the remaining obligations.
+
+Simplify using `only [enorm_mul, hWi _ (Quotient.out _ : Gam K (2 + 2)).2, RCLike.enorm_conj]`. Rewrite using `[ENNReal.tsum_mul_right]`. Conclude with `mul_le_mul_left (hCb y) _`. Rewrite `h2` using `[lintegral_const_mul' _ _ hC, h1]`. Establish `h3` using `h2.trans_lt (ENNReal.mul_lt_top hC.lt_top hW1)`.
+
+Rewrite using `[hasFiniteIntegral_iff_enorm]`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_lt, top_le_iff]`. Rewrite `h3` using `[h, ENNReal.mul_top (by simpa using hU.1)]`. Conclude with `lt_irrefl _ h3`.
+
+Use `⟨hint, ?_⟩` and prove the remaining obligations. Rewrite using `[← hU.2.2 _ hm hinv hint, L2.inner_def, integral_quotientMeasure]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hwae, hvae] with y h1 h2`. Establish `hf : (Function.support fun q : Cos K => F ((q.out : G1 K (2 + 2)) * y)).Finite` using `(hfin {y} isCompact_singleton).subset fun q hq => ⟨y, rfl, hq⟩`.
+
+Simplify using `only [hWi _ (Quotient.out _ : Gam K (2 + 2)).2]`. Rewrite using `[tsum_mul_right, ← Complex.conj_tsum, tsum_eq_finsum hf, h1, h2, RCLike.inner_apply, mul_comm]`. Both sides reduce to the same expression.
+-/
 private theorem core {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure]
     (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (κ : Measure (KG K (2 + 2))) [κ.IsHaarMeasure] (c : ℝ) (hU : Unf μ μ₂ κ c)
     (F : G1 K (2 + 2) → ℂ) (hF : Continuous F) (hP : ∀ γ ∈ PK K, ∀ g, F (γ * g) = F g) (hB : InBand F) (hD : Decays F)
@@ -76,6 +103,9 @@ private theorem core {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2
   rw [tsum_mul_right, ← Complex.conj_tsum, tsum_eq_finsum hf, h1, h2, RCLike.inner_apply, mul_comm]
   rfl
 
+/- English proof (translation)
+Introduce `K _ _ μ _ μ₂ _ κ _ c hU F hF hP hB hD v w hv`. Establish `h` using `core μ μ₂ κ c hU F hF hP hB hD v w hv (fun g => (w : RightCosetSpace (Gam K (2 + 2)) → ℂ) (mk (Gam K (2 + 2)) g)) ((Lp.stronglyMeasurable w).measurable.comp (measurable_mk _)) (fun γ hγ g => by rw [mk_mul_of_mem hγ]) (Eventually.of_forall fun _ => rfl)`. Conclude with `⟨h.1, h.2, fun Φ hΦ hi hw => core μ μ₂ κ c hU F hF hP hB hD v w hv Φ hΦ.measurable hi hw⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.master :
     ∀ {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (κ : Measure (KG K (2 + 2))) [κ.IsHaarMeasure] (c : ℝ), Unf μ μ₂ κ c → ∀ (F : G1 K (2 + 2) → ℂ), Continuous F → (∀ γ ∈ PK K, ∀ g, F (γ * g) = F g) → InBand F → Decays F → ∀ v w : L2 μ, Reps μ v (th F) →
       Integrable (fun p => conj (F (pt p)) * (w : RightCosetSpace (Gam K (2 + 2)) → ℂ) (mk (Gam K (2 + 2)) (pt p))) (parM μ₂ κ) ∧

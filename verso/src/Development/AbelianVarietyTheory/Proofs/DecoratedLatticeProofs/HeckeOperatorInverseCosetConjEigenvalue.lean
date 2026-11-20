@@ -28,6 +28,19 @@ variable {D : D7} {V : HSp D}
 
 open GlobalTheory.FinZeta (bddAut bddRep coe_bddRep)
 
+/- English proof (translation)
+Take `⟨he, v, hf⟩` from `GlobalTheory.HeckeDual.idem_of_isPrimeIdem hef`. Take `⟨a, rfl⟩` from `(GlobalTheory.HeckeDual.suppF_iff V hf α).1 hα`. Take `⟨δ, hδ, hσδ⟩` from `GlobalTheory.HeckeDual.exists_skew D`. Use `haveI := GlobalTheory.HeckeDual.isLattice_frameLat V`. Establish `hK : ∀ g, g ∈ {k | k ∈ J ∧ SuppF V f k} ↔ ∃ k ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig V.gram (GlobalTheory.AdelicU.frameLat V) v, GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v k = g` using `fun g => by`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h3` using `(hJ g h2).1 h1`. Take `⟨k, rfl⟩` from `(GlobalTheory.HeckeDual.suppF_iff V hf g).1 h2`. Rewrite `h3` using `[GlobalTheory.AdelicU.KsphC_eq]`.
+
+Establish `h4` using `(GlobalTheory.AdelicU.mem_levelOff.1 h3).2.2 v (Finset.notMem_empty v)`. Rewrite `h4` using `[GlobalTheory.AdelicU.proj_emb_self]`. Conclude with `⟨k, h4, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Establish `h2` using `(GlobalTheory.HeckeDual.suppF_iff V hf _).2 ⟨k, rfl⟩`.
+
+Use `⟨(hJ _ h2).2 ?_, h2⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdelicU.KsphC_eq]`. Conclude with `GlobalTheory.AdelicU.emb_mem_levelOff (Finset.notMem_empty v) hk`. Take `⟨R', h1, h2, h3⟩` from `GlobalTheory.HeckeDual.exists_rep_inv (GlobalTheory.HeckeDual.modular_eq_one D.sp.cm.sig V.gram (fun x => star_star x) hδ hσδ ((GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V) v) (GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v) (GlobalTheory.AdelicU.emb_inj …`. Establish `hϖ0 : (ϖ : D.host.E) ≠ 0` using `fun h => hϖ2 (by`.
+
+Rewrite using `[show ϖ = 0 from RingOfIntegers.ext h]`. Conclude with `zero_mem _)`. Use `⟨R', ⟨e, f, ϖ, _, hS, hef, hϖ, hϖ2, ?_, hJ, hχ, (GlobalTheory.HeckeDual.suppF_iff V hf _).2 (inv_mem ⟨a, rfl⟩), (GlobalTheory.DivDual.divAt_inv_and_mul V e _ d _ he hϖ0 hdiv).1, fun γ hγ => (GlobalTheory.HeckeDual.suppF_iff V hf _).2 (h1 γ hγ).1, fun γ hγ => ⟨?_, (h1 γ hγ).2⟩, h2 …` and prove the remaining obligations. Rewrite using `[dualLab, List.pairwise_reverse, List.pairwise_map]`. Conclude with `hd.imp fun h => neg_le_neg h`.
+
+Take `⟨x, rfl⟩` from `(h1 γ hγ).1`. Conclude with `GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ v x)`.
+-/
 theorem exists_dual_rep (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (P : HeightOneSpectrum (𝓞 D.host.E)) (d : List ℤ) (R : Finset (GA D V))
     (e f : Formalism.L2.Theta.AE D) (ϖ : 𝓞 D.host.E) (α : GA D V)
@@ -74,6 +87,11 @@ theorem exists_dual_rep (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (H
   · obtain ⟨x, rfl⟩ := (h1 γ hγ).1
     exact GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ v x)
 
+/- English proof (translation)
+Rewrite using `[map_sum, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => B (bddRep V α F) F), Finset.sum_const, nsmul_eq_mul]`. Introduce `γ hγ`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `hR γ hγ`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hF k₂ hk₂]`.
+
+Establish `h` using `hinv k₁ (bddRep V α F) F`. Rewrite `h` using `[hF k₁ hk₁]`. Then use the resulting hypothesis.
+-/
 theorem form_sum (B : bddAut V →ₗ[ℂ] bddAut V →ₛₗ[starRingEnd ℂ] ℂ)
     (hinv : ∀ g v w, B (bddRep V g v) (bddRep V g w) = B v w) (K : Set (GA D V)) (F : bddAut V)
     (hF : ∀ k ∈ K, bddRep V k F = F) (α : GA D V) (R : Finset (GA D V))
@@ -87,6 +105,9 @@ theorem form_sum (B : bddAut V →ₗ[ℂ] bddAut V →ₛₗ[starRingEnd ℂ] �
   have h := hinv k₁ (bddRep V α F) F
   rwa [hF k₁ hk₁] at h
 
+/- English proof (translation)
+Establish `h` using `hinv α⁻¹ F (bddRep V α F)`. Rewrite `h` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[h, hsym]`.
+-/
 theorem form_inv (B : bddAut V →ₗ[ℂ] bddAut V →ₛₗ[starRingEnd ℂ] ℂ)
     (hsym : ∀ v w, B w v = starRingEnd ℂ (B v w))
     (hinv : ∀ g v w, B (bddRep V g v) (bddRep V g w) = B v w) (F : bddAut V) (α : GA D V) :
@@ -95,12 +116,32 @@ theorem form_inv (B : bddAut V →ₗ[ℂ] bddAut V →ₛₗ[starRingEnd ℂ] �
   rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] at h
   rw [h, hsym]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, heckeLin_apply]`. Both sides reduce to the same expression.
+-/
 theorem coe_sum_bddRep (f : GA D V → ℂ) (hf : f ∈ bddAut V) (R : Finset (GA D V)) :
     ((∑ γ ∈ R, bddRep V γ ⟨f, hf⟩ : bddAut V) : GA D V → ℂ) = heckeLin V R f := by
   funext g
   rw [Submodule.coe_sum, Finset.sum_apply, heckeLin_apply]
   rfl
 
+/- English proof (translation)
+Introduce `D V J χ Sb _ f hf hJχ ev heig P d R hR`. Take `⟨e, f', ϖ, α, hS, hef, hϖ, hϖ2, hd, hJ, hχ, hα, hdiv, -, hrep⟩` from `id hR`. Take `⟨R', hR', hcard, hR're⟩` from `exists_dual_rep J χ Sb P d R e f' ϖ α hS hef hϖ hϖ2 hd hJ hχ hα hdiv hrep`. Take `⟨B, hsym, hpos, hinv⟩` from `(GlobalTheory.FinZeta.bddRep_unitarisable_and_bounded D V).1`. Use `set F : bddAut V := ⟨f, hf⟩ with hFdef`.
+
+Establish `hFK : ∀ k ∈ {k | k ∈ J ∧ SuppF V f' k}, bddRep V k F = F` using `fun k hk => by`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[coe_bddRep]`. Use `show f (g * k) = f g`. Rewrite using `[hJχ k hk.1, hχ k hk.1 hk.2, one_mul]`.
+
+Establish `e1` using `heig P d R hR`. Establish `e2` using `heig P (dualLab d) R' hR'`. Rewrite `e2` using `[show dualLab (dualLab d) = d by simp [dualLab, List.map_reverse]]`. Establish `s1 : (∑ γ ∈ R, bddRep V γ F) = ev P (dualLab d) • F` using `Subtype.ext (by`. Rewrite using `[coe_sum_bddRep, e1]`.
+
+Use the proof step `rfl)`. Establish `s2 : (∑ γ ∈ R', bddRep V γ F) = ev P d • F` using `Subtype.ext (by`. Rewrite using `[coe_sum_bddRep, e2]`. Use the proof step `rfl)`. Establish `t1` using `form_sum B hinv _ F hFK α R (fun γ hγ => (hrep.1 γ hγ).2)`.
+
+Establish `t2` using `form_sum B hinv _ F hFK α⁻¹ R' hR're`. Rewrite `t2` using `[form_inv B hsym hinv, s2, hcard, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite `t1` using `[s1, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Distinguish the cases in `h0 : F = 0`. Establish `: f = 0` using `congrArg Subtype.val h0`.
+
+Substitute `this` using the available equality. Rewrite using `[map_zero, smul_zero]`. Establish `hb : B F F ≠ 0` using `fun h => by`. Use `hpos F h0` as an intermediate fact. Rewrite `this` using `[h, Complex.zero_re]`.
+
+Conclude with `lt_irrefl _ this`. Establish `hbr : starRingEnd ℂ (B F F) = B F F` using `(hsym F F).symm`. Establish `key : ev P (dualLab d) = starRingEnd ℂ (ev P d)`. Apply `mul_right_cancel₀ hb` to reduce the goal to its premises. Rewrite using `[t1, ← hbr, ← map_mul, t2, map_mul, map_natCast, Complex.conj_conj]`.
+
+Rewrite using `[e1, key]`.
+-/
 theorem heckeLin_eq_conj_of_dualLab : ∀ (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), SphOff J χ Sb → ∀ f ∈ GlobalTheory.FinZeta.bddAut V, (∀ k ∈ J, ∀ g, f (g * k) = χ k * f g) → ∀ e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ, (∀ P d R, Hecke₂ V J χ Sb P d R → heckeLin V R f = e P (dualLab d) • f) → ∀ P d R, Hecke₂ V J χ Sb P d R → heckeLin V R f = conj (e P d) • f := by
   intro D V J χ Sb _ f hf hJχ ev heig P d R hR
   obtain ⟨e, f', ϖ, α, hS, hef, hϖ, hϖ2, hd, hJ, hχ, hα, hdiv, -, hrep⟩ := id hR

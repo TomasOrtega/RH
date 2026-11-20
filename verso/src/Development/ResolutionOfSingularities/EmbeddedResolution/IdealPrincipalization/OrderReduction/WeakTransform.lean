@@ -52,6 +52,15 @@ def MaxContactIdealComapLeControlled : Prop :=
         (maxContactIdeal k p A μ).comap π ≤
           Blowup.exceptionalIdeal π Z * maxContactIdeal k (π ≫ p) A₁ μ
 
+/- English proof (translation)
+Use `revert hi`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Establish `h0 : u.projectionToBase 0 ≫ q = u.isoZero.hom ≫ q`.
+
+Rewrite using `[SequenceOfBlowups.projectionToBase_zero]`. Rewrite using `[h0]`. Use `infer_instance`. Consider the case `succ j ih`. Introduce `hj1`.
+
+Establish `hj : j < u.length` using `hj1`. Use `ih hj.le` as an intermediate fact. Establish `hsucc : u.projectionToBase (j + 1) ≫ q = u.transitionMapSucc j ≫ (u.projectionToBase j ≫ q)`. Rewrite using `[SequenceOfBlowups.projectionToBase_succ, Category.assoc]`. Rewrite using `[hsucc]`.
+
+Conclude with `smooth_comp_of_isBlowupAlongIdealSheaf (u.center_snc j hj) (u.isBlowupAlongIdealSheaf_blowupMorphism j hj)`.
+-/
 theorem smooth_projectionToBase_comp {k : Type u} [Field k] {V : Scheme.{u}}
     {q : V ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.Smooth q] {A : V.IdealSheafData}
     {μ : ℕ} {E : List V.IdealSheafData} (u : MarkedSequenceOfBlowups q A μ E) (i : ℕ)
@@ -73,10 +82,16 @@ theorem smooth_projectionToBase_comp {k : Type u} [Field k] {V : Scheme.{u}}
     rw [hsucc]
     exact smooth_comp_of_isBlowupAlongIdealSheaf (u.center_snc j hj) (u.isBlowupAlongIdealSheaf_blowupMorphism j hj)
 
+/- English proof (translation)
+Rewrite using `[pow_one]`. Conclude with `h`.
+-/
 private theorem le_pow_one_of_le {X : Scheme.{u}} {b Z : X.IdealSheafData} (h : b ≤ Z) :
     b ≤ Z ^ 1 := by
   rw [pow_one]; exact h
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Substitute `hI` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem maxContactIdeal_congr {k : Type u} [Field k] {X : Scheme.{u}}
     (p p' : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.LocallyOfFiniteType p] [AlgebraicGeometry.LocallyOfFiniteType p']
@@ -98,6 +113,9 @@ def weakTransform {k : Type u} [Field k] {V : Scheme.{u}}
   controlledTransform (u.transitionMapSucc i) (u.center i) b 1 (u.isBlowupAlongIdealSheaf_blowupMorphism i hi)
     (le_pow_one_of_le hb)
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.IsLocallyNoetherian (u.schemeAt (i + 1))` using `hN (i + 1) hi`. Establish `h` using `exceptionalIdeal_pow_mul_controlledTransform (u.transitionMapSucc i) (u.center i) b 1 (u.isBlowupAlongIdealSheaf_blowupMorphism i hi) (le_pow_one_of_le hb)`. Rewrite `h` using `[pow_one]`. Conclude with `h`.
+-/
 theorem exceptionalIdeal_mul_weakTransform {k : Type u} [Field k] {V : Scheme.{u}}
     {q : V ⟶ Spec (CommRingCat.of k)} {A : V.IdealSheafData} {μ : ℕ}
     {E : List V.IdealSheafData} (u : MarkedSequenceOfBlowups q A μ E)
@@ -111,6 +129,9 @@ theorem exceptionalIdeal_mul_weakTransform {k : Type u} [Field k] {V : Scheme.{u
   rw [pow_one] at h
   exact h
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.IsLocallyNoetherian (u.schemeAt (i + 1))` using `hN (i + 1) hi`. Establish `h : Blowup.exceptionalIdeal (u.transitionMapSucc i) (u.center i) ^ 1 * c = b.comap (u.transitionMapSucc i)`. Rewrite using `[pow_one]`. Conclude with `hc`. Conclude with `eq_controlledTransform_of_mul_eq_comap (u.transitionMapSucc i) (u.center i) b 1 (u.isBlowupAlongIdealSheaf_blowupMorphism i hi) (le_pow_one_of_le hb) c h`.
+-/
 theorem weakTransform_unique {k : Type u} [Field k] {V : Scheme.{u}}
     {q : V ⟶ Spec (CommRingCat.of k)} {A : V.IdealSheafData} {μ : ℕ}
     {E : List V.IdealSheafData} (u : MarkedSequenceOfBlowups q A μ E)
@@ -125,6 +146,15 @@ theorem weakTransform_unique {k : Type u} [Field k] {V : Scheme.{u}}
   exact eq_controlledTransform_of_mul_eq_comap (u.transitionMapSucc i) (u.center i) b 1 (u.isBlowupAlongIdealSheaf_blowupMorphism i hi)
     (le_pow_one_of_le hb) c h
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.IsLocallyNoetherian (u.schemeAt (i + 1))` using `hN (i + 1) hi`. Establish `hassoc : u.transitionMapSucc i ≫ (u.projectionToBase i ≫ q) = u.projectionToBase (i + 1) ≫ q`. Rewrite using `[← Category.assoc, ← SequenceOfBlowups.projectionToBase_succ]`. Establish `: AlgebraicGeometry.Smooth (u.transitionMapSucc i ≫ (u.projectionToBase i ≫ q))`. Rewrite using `[hassoc]`.
+
+Use `infer_instance`. Establish `: AlgebraicGeometry.LocallyOfFiniteType (u.transitionMapSucc i ≫ (u.projectionToBase i ≫ q))`. Rewrite using `[hassoc]`. Use `infer_instance`. Establish `hAle : u.ideal i ≤ u.center i ^ μ` using `le_pow_of_hasStrictNormalCrossingsWith (u.projectionToBase i ≫ q) (u.center i) (u.ideal i) (u.boundary i) (u.center_snc i hi) μ (u.center_order i hi)`.
+
+Establish `hstep'` using `hstep k (u.schemeAt i) (u.schemeAt (i + 1)) (u.projectionToBase i ≫ q) (u.transitionMapSucc i) (u.center i) (u.boundary i) (u.center_snc i hi) (u.isBlowupAlongIdealSheaf_blowupMorphism i hi) (u.ideal i) μ hμ hAle (u.ideal (i + 1)) (u.ideal_succ i hi)`. Establish `hM : maxContactIdeal k (u.transitionMapSucc i ≫ (u.projectionToBase i ≫ q)) (u.ideal (i + 1)) μ = maxContactIdeal k (u.projectionToBase (i + 1) ≫ q) (u.ideal (i + 1)) μ` using `maxContactIdeal_congr _ _ hassoc _ _ rfl μ`. Rewrite `hstep'` using `[hM]`. Establish `h1 : Blowup.exceptionalIdeal (u.transitionMapSucc i) (u.center i) * u.weakTransform hN i hi b hb = b.comap (u.transitionMapSucc i)` using `exceptionalIdeal_mul_weakTransform u hN i hi b hb`. Establish `hF : Blowup.IsLocallyGeneratedByNonZeroDivisor (Blowup.exceptionalIdeal (u.transitionMapSucc i) (u.center i))` using `((isSmoothDivisor_iff (u.transitionMapSucc i ≫ (u.projectionToBase i ≫ q)) _).1 (isSmoothDivisor_exceptionalIdeal (u.center_snc i hi) (u.isBlowupAlongIdealSheaf_blowupMorphism i hi))).1`.
+
+Use `hF.le_of_mul_le_mul ?_` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `le_trans (Scheme.IdealSheafData.comap_mono (u.transitionMapSucc i) hbm) hstep'`.
+-/
 theorem weakTransform_le_maxContactIdeal {k : Type u} [Field k] [CharZero k]
     {V : Scheme.{u}} {q : V ⟶ Spec (CommRingCat.of k)} {A : V.IdealSheafData} {μ : ℕ}
     {E : List V.IdealSheafData} (hstep : MaxContactIdealComapLeControlled.{u})
@@ -181,6 +211,9 @@ private def strictTransformMaxContactIdeal {k : Type u} [Field k] {V : Scheme.{u
           (Blowup.exceptionalIdeal (u.transitionMapSucc j) (u.center j))
       else ⊤) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem strictTransformMaxContactIdeal_succ {k : Type u} [Field k] {V : Scheme.{u}}
     {q : V ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType q]
     {A' : V.IdealSheafData} {μ : ℕ} {E' : List V.IdealSheafData}
@@ -200,6 +233,29 @@ private def maxContactIdealAt {k : Type u} [Field k] {V : Scheme.{u}}
   haveI := smooth_projectionToBase_comp u i hi
   maxContactIdeal k (u.projectionToBase i ≫ q) (u.ideal i) μ
 
+/- English proof (translation)
+Introduce `k _ _ V q _ _ A' μ hμ E' u hN hcen`. Establish `sm : ∀ i : ℕ, i ≤ u.length → AlgebraicGeometry.Smooth (u.projectionToBase i ≫ q)` using `fun i hi => smooth_projectionToBase_comp u i hi`. Establish `hcart : ∀ i : ℕ, i < u.length → Blowup.IsLocallyGeneratedByNonZeroDivisor (Blowup.exceptionalIdeal (u.transitionMapSucc i) (u.center i))`. Introduce `i hi`. Use `sm i hi.le` as an intermediate fact.
+
+Conclude with `((isSmoothDivisor_iff (u.transitionMapSucc i ≫ (u.projectionToBase i ≫ q)) _).1 (isSmoothDivisor_exceptionalIdeal (u.center_snc i hi) (u.isBlowupAlongIdealSheaf_blowupMorphism i hi))).1`. Establish `hcen' : ∀ i : ℕ, (hi : i < u.length) → strictTransformMaxContactIdeal u hN i ≤ maxContactIdealAt u i hi.le → strictTransformMaxContactIdeal u hN i ≤ u.center i`. Introduce `i hi hM`. Use `sm i hi.le` as an intermediate fact. Use `hcen i hi (strictTransformMaxContactIdeal u hN i) ?_` and prove the remaining obligations.
+
+Establish `h1 : (((u.center i).support : Set ↥(u.schemeAt i))) ⊆ orderAtLeastLocus (u.ideal i) μ` using `u.center_order i hi`. Establish `h2 : (((maxContactIdealAt u i hi.le).support : Set ↥(u.schemeAt i))) = orderAtLeastLocus (u.ideal i) μ` using `by show (((maxContactIdeal k (u.projectionToBase i ≫ q) (u.ideal i) μ).support : Set ↥(u.schemeAt i))) = _`. Rewrite using `[maxContactIdeal_eq_derivIdealSheafIterate]`. Conclude with `support_derivIdealSheafIterate_eq_orderAtLeastLocus k (u.projectionToBase i ≫ q) (u.ideal i) hμ`. Establish `h3 : (((maxContactIdealAt u i hi.le).support : Set ↥(u.schemeAt i))) ⊆ (((strictTransformMaxContactIdeal u hN i).support : Set ↥(u.schemeAt i)))`.
+
+Conclude with `Scheme.IdealSheafData.support_antitone hM` after adjusting the coercions. Rewrite `h3` using `[h2]`. Conclude with `fun x hx => h3 (h1 hx)`. Establish `heq' : ∀ i : ℕ, i < u.length → strictTransformMaxContactIdeal u hN i ≤ u.center i → Blowup.exceptionalIdeal (u.transitionMapSucc i) (u.center i) * strictTransformMaxContactIdeal u hN (i + 1) = (strictTransformMaxContactIdeal u hN i).comap (u.transitionMapSucc i)`. Introduce `i hi hb`.
+
+Establish `hi' : i + 1 ≤ u.length` using `hi`. Establish `: AlgebraicGeometry.IsLocallyNoetherian (u.schemeAt (i + 1))` using `hN (i + 1) hi'`. Establish `hI : (strictTransformMaxContactIdeal u hN i).comap (u.transitionMapSucc i) ≤ Blowup.exceptionalIdeal (u.transitionMapSucc i) (u.center i) ^ 1` using `comap_le_exceptionalIdeal_pow (u.transitionMapSucc i) (le_pow_one_of_le hb)`. Rewrite `hI` using `[pow_one]`. Establish `hc : strictTransformMaxContactIdeal u hN (i + 1) = @idealSheafColon (u.schemeAt (i + 1)) (hN (i + 1) hi') ((strictTransformMaxContactIdeal u hN i).comap (u.transitionMapSucc i)) (Blowup.exceptionalIdeal (u.transitionMapSucc i) (u.center i))`.
+
+Rewrite using `[strictTransformMaxContactIdeal_succ, dif_pos hi']`. Rewrite using `[hc]`. Conclude with `(hcart i hi).mul_idealSheafColon hI`. Establish `main : ∀ i : ℕ, (hi : i ≤ u.length) → strictTransformMaxContactIdeal u hN i ≤ maxContactIdealAt u i hi`. Introduce `i`.
+
+Proceed by induction on `i with`. Consider the case `zero`. Introduce `hi`. Use `sm 0 hi` as an intermediate fact. Establish `: AlgebraicGeometry.Smooth u.isoZero.hom` using `inferInstance`.
+
+Establish `: AlgebraicGeometry.Smooth (u.isoZero.hom ≫ q)` using `inferInstance`. Use `show strictTransformMaxContactIdeal u hN 0 ≤ maxContactIdeal k (u.projectionToBase 0 ≫ q) (u.ideal 0) μ`. Establish `e1 : maxContactIdeal k (u.projectionToBase 0 ≫ q) (u.ideal 0) μ = maxContactIdeal k (u.isoZero.hom ≫ q) (A'.comap u.isoZero.hom) μ` using `maxContactIdeal_congr _ _ (by rw [SequenceOfBlowups.projectionToBase_zero]) _ _ u.ideal_zero μ`. Establish `e2 : maxContactIdeal k (u.isoZero.hom ≫ q) (A'.comap u.isoZero.hom) μ = (maxContactIdeal k q A' μ).comap u.isoZero.hom`. Simplify using `only [maxContactIdeal_eq_derivIdealSheafIterate]`.
+
+Conclude with `derivIdealSheafIterate_comap k q u.isoZero.hom (μ - 1) A'`. Rewrite using `[e1, e2]`. Conclude with `le_rfl`. Consider the case `succ j ih`. Introduce `hj1`.
+
+Establish `hj : j < u.length` using `hj1`. Establish `ihj` using `ih hj.le`. Establish `hb` using `hcen' j hj ihj`. Establish `hw : strictTransformMaxContactIdeal u hN (j + 1) = u.weakTransform hN j hj (strictTransformMaxContactIdeal u hN j) hb` using `MarkedSequenceOfBlowups.weakTransform_unique u hN j hj (strictTransformMaxContactIdeal u hN j) hb (strictTransformMaxContactIdeal u hN (j + 1)) (heq' j hj hb)`. Use `sm j hj.le` as an intermediate fact.
+
+Use `sm (j + 1) hj1` as an intermediate fact. Rewrite using `[hw]`. Conclude with `MarkedSequenceOfBlowups.weakTransform_le_maxContactIdeal h u hμ hN j hj (strictTransformMaxContactIdeal u hN j) hb ihj`. Conclude with `⟨strictTransformMaxContactIdeal u hN, rfl, fun i hi => heq' i hi (hcen' i hi (main i hi.le)), fun i hi => hcen' i hi (main i hi.le)⟩`.
+-/
 theorem existsMaxContactControlledTransforms_of_comapLeControlled (h : MaxContactIdealComapLeControlled.{u}) :
     ExistsMaxContactControlledTransforms.{u} := by
   intro k _ _ V q _ _ A' μ hμ E' u hN hcen

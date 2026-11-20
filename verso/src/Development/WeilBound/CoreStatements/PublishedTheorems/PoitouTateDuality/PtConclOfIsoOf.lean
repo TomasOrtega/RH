@@ -19,6 +19,35 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace PositivityTheory.PTN
 
+/- English proof (translation)
+Introduce `F Ω F' Ω' _ _ _ _ _ _ _ _ _ _ e E hE hPT`. Introduce `l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.galois_group_transport_isomorphism F Ω F' Ω' e E hE`. Take `⟨eO, eV, heO, hV, hV2, hN⟩` from `GlobalTheory.T.ring_isomorphism_transports_places F F' e`. Establish `hloc` using `hL F Ω F' Ω' e E hE Φ hΦ`.
+
+Establish `hpl` using `GlobalTheory.T.ring_equiv_transports_decomposition F Ω F' Ω' e E hE eO eV heO hV`. Establish `hcyc` using `GlobalTheory.T.ring_equiv_cyclotomic_character F Ω F' Ω' e E hE Φ hΦ l r`. Take `⟨inv', hinv'⟩` from `GlobalTheory.T.ring_equiv_transports_inertia F Ω F' Ω' e E hE Φ hΦ (fun A A' hA σ => (hloc A A' hA σ).1) l r hcyc inv`. Set `S' : Finset (HeightOneSpectrum (𝓞 F'))` to `S.map eV.toEmbedding`. Establish `hSS : ∀ v, v ∈ (S : Set (HeightOneSpectrum (𝓞 F))) ↔ eV v ∈ (S' : Set (HeightOneSpectrum (𝓞 F')))`.
+
+Introduce `v`. Simplify using `[S']`. Set `eI : S ≃ S'` to `Equiv.subtypeEquiv eV (fun v => by simp [S'])`. Establish `heI : ∀ v : S, (eI v : HeightOneSpectrum (𝓞 F')) = eV v` using `fun _ => rfl`. Set `Av' : S' → ValuationSubring Ω'` to `fun v' => (Av (eI.symm v')).comap E.symm.toRingHom`.
+
+Establish `hAv'' : ∀ (v : S) (x : Ω), E x ∈ Av' (eI v) ↔ x ∈ Av v`. Introduce `v x`. Simplify using `[Av', ValuationSubring.mem_comap]`. Establish `hPl' : ∀ v' : S', IsPlaceOver (Av' v') v'.1`. Introduce `v'`.
+
+Take `⟨v, rfl⟩` from `eI.surjective v'`. Conclude with `(hpl _ _ (hAv'' v) v.1).1 (hAv v)`. Take `⟨Ψ, hΨ⟩` from `GlobalTheory.T.galois_quotient_equiv_of_matching_places F Ω F' Ω' e E hE Φ hΦ eV hpl (fun A A' hA σ => (hloc A A' hA σ).2.1) _ _ hSS`. Set `μ' : GS Ω' (S' : Set (HeightOneSpectrum (𝓞 F'))) →* (ZMod (l ^ r))ˣ` to `μ.comp (Ψ.symm : GS Ω' (S' : Set (HeightOneSpectrum (𝓞 F'))) →* _)`. Establish `hμ' : μ'.comp (toGS Ω' _) = cycMod F' Ω' l r` using `by ext1 τ`.
+
+Take `⟨σ, rfl⟩` from `Φ.surjective τ`. Establish `h1 : Ψ.symm (toGS Ω' _ (Φ σ)) = toGS Ω _ σ` using `by rw [← hΨ]; simp`. Establish `h2 : μ (toGS Ω _ σ) = cycMod F Ω l r σ` using `DFunLike.congr_fun hμ σ`. Use `show μ (Ψ.symm (toGS Ω' _ (Φ σ))) = _`. Rewrite using `[h1, h2, hcyc]`.
+
+Set `ρ' : Representation (ZMod (l ^ r)) (GS Ω' (S' : Set (HeightOneSpectrum (𝓞 F')))) M` to `ρ.comp (Ψ.symm : GS Ω' (S' : Set (HeightOneSpectrum (𝓞 F'))) →* _)`. Establish `hρ' : ContAction ρ'` using `hρ.comp' Ψ.symm.continuous`. Establish `hl' : l ≠ 2 ∨ IsTotallyComplex F'` using `hl.imp id (GlobalTheory.T.totally_complex_of_ring_equiv F F' e)`. Establish `hζ' : IsPrimitiveRoot (E ζ) (l ^ r)` using `hζ.map_of_injective E.injective`. Establish `hnorm' : InvNormalised (E ζ) inv'`.
+
+Introduce `A' v' hP`. Take `⟨v, rfl⟩` from `eV.surjective v'`. Set `A : ValuationSubring Ω` to `A'.comap E.toRingHom`. Establish `hA : ∀ x, E x ∈ A' ↔ x ∈ A` using `fun x => by simp [A, ValuationSubring.mem_comap]`. Establish `hP0 : IsPlaceOver A v` using `(hpl A A' hA v).2 hP`.
+
+Use `⟨(hinv' A A' hA).1 (hinv A v hP0).1, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.ring_equiv_transports_residue F Ω F' Ω' e E hE Φ hΦ eO eV heO hV hV2 hN l r hcyc A A' hA (hloc A A' hA) ζ v (inv A) (inv' A') (hinv' A A' hA).2 (hinv A v hP0).2`. Establish `hS' : ContainsAbove S' l`. Introduce `v' hv'`. Take `⟨v, rfl⟩` from `eV.surjective v'`.
+
+Establish `: ((l : ℕ) : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[hV, map_natCast]`. Conclude with `hv'`. Conclude with `Finset.mem_map_of_mem _ (hS v this)`. Take `⟨h9, hsha⟩` from `hPT l r hl' hr (E ζ) hζ' inv' hnorm' S' hS' Av' hPl' μ' hμ' M ρ' hρ'`.
+
+Set `eD : ∀ v : S, Dec (F` to `F) (Av v) ≃ₜ* Dec (F := F') (Av' (eI v)) := fun v => subgroupIso Φ _ _ (fun σ => (hloc _ _ (hAv'' v) σ).1)`. Establish `hcomp : ∀ (v : S) (d : Dec (F` using `F) (Av v)), locFam S' Av' (eI v) (eD v d) = Ψ (locFam S Av v d) := by`. Introduce `v d`. Conclude with `(hΨ (d : G F Ω)).symm`. Establish `hχ : ∀ g, μ' (Ψ g) = μ g` using `fun g => by simp [μ']`.
+
+Establish `hρc : ∀ g m, ρ' (Ψ g) m = ρ g m` using `fun g m => by simp [ρ']`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(nineTermExact_iff S Av μ _ ρ hρ).2 ?_` and prove the remaining obligations. Use `GlobalTheory.T.poitou_tate_sequence_transport (locFam S Av) (continuous_locFam S Av) (locFam S' Av') (continuous_locFam S' Av') μ μ' ρ ρ' Ψ eI eD hcomp hχ hρc _ _ hρ hρ' ?_ ((nineTermExact_iff S' Av' μ' _ ρ' hρ').1 h9)` and prove the remaining obligations. Introduce `v z z' hz`.
+
+Use `(hinv' _ _ (hAv'' v)).2 (cocycles2Map _ _ LinearMap.id continuous_id (locFam_apply_eq S Av μ hμ v) z) (cocycles2Map _ _ LinearMap.id continuous_id (locFam_apply_eq S' Av' μ' hμ' (eI v)) z') ?_` and prove the remaining obligations. Introduce `g h g' h' hg hh`. Establish `e1 : g' = eD v g` using `Subtype.ext hg`. Establish `e2 : h' = eD v h` using `Subtype.ext hh`. Substitute `e1 e2` using the available equality.
+
+Conclude with `hz g h`. Conclude with `(shaDual_iff S Av μ ρ).2 (GlobalTheory.T.tate_shafarevich_transport (locFam S Av) (continuous_locFam S Av) (locFam S' Av') (continuous_locFam S' Av') μ μ' ρ ρ' Ψ eI eD hcomp hχ hρc ((shaDual_iff S' Av' μ' ρ').1 hsha))`.
+-/
 theorem ptConcl_of_iso_of (hL : PositivityTheory.PTN.LocHyp) : ∀ (F Ω F' Ω' : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (e : F ≃+* F') (E : Ω ≃+* Ω'), (∀ x : F, E (algebraMap F Ω x) = algebraMap F' Ω' (e x)) → PTConclAt F' Ω' → PTConclAt F Ω := by
   intro F Ω F' Ω' _ _ _ _ _ _ _ _ _ _ e E hE hPT
   intro l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ

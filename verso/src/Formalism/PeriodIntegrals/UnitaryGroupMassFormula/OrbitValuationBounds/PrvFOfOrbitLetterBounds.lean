@@ -14,6 +14,21 @@ namespace PI.OrbBoundFW
 
 variable {D : D7} {L : SizeData₂ D}
 
+/- English proof (translation)
+Introduce `D L X K ce E C6 C hA hS hC`. Introduce `p _ h _hcls hp u i hi r hr hk ep sg be hep hsg h1 h2 h3 h4 Th hB0`. Establish `hAdm` using `admissible_of_jet_bounds h u i r Th ep sg be hep hsg h1 h2 h3 h4 hB0`. Establish `hCor` using `(hA.1 _ hAdm).2 (L.sc.a ^ 2) (setting_sq hS h hp u hi r Th) D.R.k (wOrb D p i r) (eOrb E p u i r) (three_le_k D) (wOrb_pos hS p hi r) (eOrb_bounds hS p u hi r) (dl_off h u i r Th) (dl_on h u i r Th)`. Use `kvalGe_mono hCor ?_` and prove the remaining obligations.
+
+Establish `hg` using `orbit_place_term_le_sum hS K hC.dl1nn hC.dl2 h u hi hr hk Th`. Establish `hw` using `sum_Wc_le hS h u hi r Th`. Establish `hl` using `loss_le hS hC h hp hi r`. Establish `hp5 : (5 : ℝ) ≤ p` using `by exact_mod_cast h.five`. Establish `hgam : Formalism.MainNotions.product_zeroth_first_parts.gam p = Formalism.MainNotions.G.gam p` using `rfl`.
+
+Establish `hgpos : 0 ≤ Formalism.MainNotions.G.gam p`. Unfold `Formalism.MainNotions.G.gam`. Apply `div_nonneg (by linarith)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hsw : 0 ≤ ∑ s, wOrb D p i r s` using `Finset.sum_nonneg fun s _ => (wOrb_pos hS p hi r s).le`.
+
+Establish `hc6 : C6 * (∑ s, wOrb D p i r s) / (p : ℝ) ≤ ce.c6 * (∑ s, wOrb D p i r s) / (p : ℝ)`. Apply `div_le_div_of_nonneg_right _ (by linarith)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right hC.c6 hsw`. Establish `hgw : Formalism.MainNotions.G.gam p * ∑ s ∈ (orbLoc E p h u i r Th).TT, ((orbLoc E p h u i r Th).Wc s : ℝ) ≤ Formalism.MainNotions.G.gam p * (topsOrb D p r : ℝ) * (L.sc.b + L.etaSz + 1 + 3 * L.Sc)`. Rewrite using `[mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left hw hgpos`. Establish `hi1 : i + 1 - 1 = i` using `by omega`. Rewrite `hl` using `[hi1]`. Establish `hF : FOrb D (i + 1) p r = lpF p (nP D p) (fun s => ((D.R.k : ℝ) - 1) * wOrb D p i r s)` using `rfl`. Establish `hE : errF L K ce (i + 1) p r = Formalism.MainNotions.G.gam p * (topsOrb D p r : ℝ) * (L.sc.b + L.etaSz + 1 + 3 * L.Sc) + ce.c6 * (∑ s, wOrb D p i r s) / (p : ℝ) + ((nP D p : ℝ) * (D.R.N (i + 1 - 1) : ℝ) * (D.R.N (i + 1) : ℝ) * (Real.logb p (4 * (nP D p : ℝ) * Nm D * L.sc.a) + 1) …`.
+
+Unfold `errF`. Simplify using `only [wOrb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hE` using `[hi1]`. Use `show g0Pl X K p (i + 1) r + FOrb D (i + 1) p r - errF L K ce (i + 1) p r ≤ (∑ s ∈ (orbLoc E p h u i r Th).TT, (orbLoc E p h u i r Th).baseTerm s + lpF p (nP D p) (fun s => ((D.R.k : ℝ) - 1) * wOrb D p i r s)) - C6 * (∑ s, wOrb D p i r s) / (p : ℝ) - Formalism.MainNotions.product_ …`.
+
+Rewrite using `[hF, hE, hgam]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem prvF_of_orbitLetterBounds : ∀ (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (ce : ErrC) (E : Ent D) (C6 C : ℝ),
     OrbitLetterBoundsAll C6 C → Shape D L X E → CLarge C6 C K ce → OrbitValuationBound E X K ce := by
   intro D L X K ce E C6 C hA hS hC

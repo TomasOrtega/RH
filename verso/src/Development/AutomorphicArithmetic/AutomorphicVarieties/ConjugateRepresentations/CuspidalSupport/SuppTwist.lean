@@ -8,16 +8,27 @@ open UpperTheory.V.Af.Fin (emb e1 e2 blk Bdd)
 open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
+/- English proof (translation)
+Rewrite using `[← Multiset.coe_mapAddMonoidHom, map_sum]`.
+-/
 private theorem sum_map {ι α : Type} [Fintype ι] (f : α → α) (C : ι → Multiset α) :
     ∑ i, (C i).map f = (∑ i, C i).map f := by
   rw [← Multiset.coe_mapAddMonoidHom, map_sum]
 
+/- English proof (translation)
+Proceed by induction on `π using Quotient.inductionOn`. Conclude with `GlobalTheory.SphGal.hasSatGL_twist _ _ _ χ w B hχ h`.
+-/
 private theorem sat_twist {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (π : CG E a) {w : Pl E}
     {B : Multiset ℂˣ} (h : π.HasSat w B) {χ : HChar E} (hχ : χ.UnrAt w) :
     (π.twist χ).HasSat w (B.map (· * χ.val w)) := by
   induction π using Quotient.inductionOn
   exact GlobalTheory.SphGal.hasSatGL_twist _ _ _ χ w B hχ h
 
+/- English proof (translation)
+Introduce and unpack `E _ _ _ a k m B ⟨ι, _, n, π, μ, hk, hn, ha, hμ, hm, hB⟩ x ν hν`. Use `⟨ι, inferInstance, n, fun i => (π i).twist ν, fun i t => (μ i t).map (· + (x : ℂ)), hk, hn, ha, fun i t => ?_, fun t => ?_, hB.mono ?_⟩` and prove the remaining obligations. Establish `h` using `(hμ i t).twist ν`. Rewrite `h` using `[(InfType.expo_of_infType E ν).2.1 x hν t]`. Then use the resulting hypothesis. Rewrite using `[sum_map, hm]`.
+
+Introduce and unpack `w ⟨C, hC, hs⟩`. Conclude with `⟨fun i => (C i).map (· * ν.val w), fun i => sat_twist _ (hC i) (hν.1 w), by rw [sum_map, hs]⟩`.
+-/
 theorem UpperTheory.V.Cj.S.suppTwist :
     UpperTheory.V.Cj.S.SuppTwist := by
   rintro E _ _ _ a k m B ⟨ι, _, n, π, μ, hk, hn, ha, hμ, hm, hB⟩ x ν hν

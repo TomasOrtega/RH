@@ -83,11 +83,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.DiagonalQuotientEigen.qN, _root_.GlobalTheory.IndefiniteRowSideFullHecke.DiagonalQuotientEigen.mulD, Module.End.one_eq_id, Submodule.map_id, Submodule.comap_id]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.DiagonalQuotientEigen.qN_zero (i : ZMod n) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.DiagonalQuotientEigen.qN W T i 0 = _root_.GlobalTheory.IndefiniteRowSideFullHecke.DiagonalQuotientEigen.NΔl W T i := by
   simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.DiagonalQuotientEigen.qN, _root_.GlobalTheory.IndefiniteRowSideFullHecke.DiagonalQuotientEigen.mulD, Module.End.one_eq_id, Submodule.map_id,
     Submodule.comap_id]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => Subtype.ext (h ((h₁ x).trans (h₂ x).symm))`.
+-/
 theorem IsNab.unique {g : W.Gam} {a : LetA O n} {i : ZMod n} {j : ℤ}
     (h : Function.Injective fun x : W.DD T => (a * W.π₀) • x)
     {nb nb' : ↥(qN W T i j) →ₗ[O] ↥(qN W T i j)} (h₁ : IsNab W T g a i j nb) (h₂ : IsNab W T g a i j nb') :
@@ -96,6 +102,9 @@ theorem IsNab.unique {g : W.Gam} {a : LetA O n} {i : ZMod n} {j : ℤ}
 
 end Generic
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> norm_num [cc]`.
+-/
 example : cc 5 0 = 0 ∧ cc 5 1 = -1 ∧ cc 5 (-1) = 1 / 6 := by
   refine ⟨?_, ?_, ?_⟩ <;> norm_num [cc]
 

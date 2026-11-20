@@ -26,6 +26,9 @@ open GroundTheory.Heights₂.Heights (chartProjMatrix chartWeight chartPot chart
 
 open GroundTheory.Heights₂.Heights.ComplexSets
 
+/- English proof (translation)
+Establish `hset : GlobalTheory.CompanionTheory.Ar.Pub.CxChart.setChartSet S σ Ψ = GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartSet S σ i`. Use extensionality with `x`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.Pub.CxChart.setChartSet, GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartSet, hΨ0]`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Pub.CxChart.setChartIdeal, GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartIdeal, hset]`.
+-/
 theorem setChartIdeal_le_chartIdeal {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {S : Set ((Σ k, ι k) → ℂ)} {e m : ℕ} {σ : Fin m ≃ ((k : K) → ι k)} {i : (k : K) → ι k}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hΨ0 : ∀ w, Ψ w 0 = w i) :
@@ -35,6 +38,13 @@ theorem setChartIdeal_le_chartIdeal {K : Type} [Fintype K] {ι : K → Type} [�
     simp only [GlobalTheory.CompanionTheory.Ar.Pub.CxChart.setChartSet, GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartSet, hΨ0]
   rw [GlobalTheory.CompanionTheory.Ar.Pub.CxChart.setChartIdeal, GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartIdeal, hset]
 
+/- English proof (translation)
+Introduce `K _ _ ι _ Q e m σ i Ψ hQ hΨ hΨ0 hdim J hJ`. Establish `hJm` using `GlobalTheory.CompanionTheory.Ar.Pub.CxChart.mem_chartComponents.1 hJ`. Establish `hR : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal Q` using `hQ.2.1.2.1`. Establish `hfin : (projHom J (chartProjMatrix σ Ψ)).toRingHom.Finite`. Establish `hrad : originIdeal m ≤ (leadIdeal J ⊔ linIdeal (chartProjMatrix σ Ψ)).radical`.
+
+Use `Ideal.span_le.2 (Set.range_subset_iff.2 fun a => ?_)` and prove the remaining obligations. Take `⟨r, hr⟩` from `GlobalTheory.CompanionTheory.Ar.Pub.CxChart.cone_pow_mem hR hΨ ((setChartIdeal_le_chartIdeal hΨ0).trans hJm.1.2) a`. Conclude with `⟨r, hr⟩`. Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg_radical hrad (IsNoetherian.noetherian _)`. Conclude with `ConeAvoidsFinite.proof m e N J _ hN`.
+
+Conclude with `⟨FiniteProjHomInjective.proof m e J _ hJm.1.1 (hdim J hJ) hfin, hfin⟩`.
+-/
 theorem chartProj_finite : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e m : ℕ) (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)),

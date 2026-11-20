@@ -9,6 +9,9 @@ open UpperTheory.Gal.CertificateRingHomMap (wop wmul wmap)
 
 namespace UpperTheory.Gal.LocalSmoothExtension
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `Formalism.UG.conv`. Establish `h` using `σ.toAddEquiv.map_finsum (fun x : H ⧸ K => f₁ (Quotient.out x) * f₂ ((Quotient.out x)⁻¹ * g))`. Simplify `h.symm` using `[map_mul]`.
+-/
 private theorem conv_conj (σ : ℂ ≃+* ℂ) {H : Type} [Group H] (K : Subgroup H) (f₁ f₂ : H → ℂ) :
     Formalism.UG.conv K (fun g => σ (f₁ g)) (fun g => σ (f₂ g)) = fun g => σ (Formalism.UG.conv K f₁ f₂ g) := by
   funext g
@@ -17,6 +20,9 @@ private theorem conv_conj (σ : ℂ ≃+* ℂ) {H : Type} [Group H] (K : Subgrou
     (fun x : H ⧸ K => f₁ (Quotient.out x) * f₂ ((Quotient.out x)⁻¹ * g))
   simpa [map_mul] using h.symm
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons j w ih => show Formalism.UG.conv K (fun g => σ (ψ j g)) (wordFn K (fun j g => σ (ψ j g)) w (fun g => σ (f g))) = _`. Rewrite using `[ih, conv_conj]`. Both sides reduce to the same expression.
+-/
 private theorem wordFn_conj (σ : ℂ ≃+* ℂ) {H J : Type} [Group H] (K : Subgroup H) (ψ : J → H → ℂ) (f : H → ℂ)
     (w : List J) :
     wordFn K (fun j g => σ (ψ j g)) w (fun g => σ (f g)) = fun g => σ (wordFn K ψ w f g) := by
@@ -27,6 +33,9 @@ private theorem wordFn_conj (σ : ℂ ≃+* ℂ) {H J : Type} [Group H] (K : Sub
     rw [ih, conv_conj]
     rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `polyFn wmap`. Rewrite using `[Finsupp.sum_mapRange_index (by intro w; simp)]`. Simplify using `[Finsupp.sum, Finset.sum_apply, map_sum, wordFn_conj]`.
+-/
 private theorem polyFn_conj (σ : ℂ ≃+* ℂ) {H J : Type} [Group H] (K : Subgroup H) (ψ : J → H → ℂ) (f : H → ℂ)
     (s : List J →₀ ℂ) :
     polyFn K (fun j g => σ (ψ j g)) (wmap σ.toRingHom s) (fun g => σ (f g)) = fun g => σ (polyFn K ψ s f g) := by
@@ -35,6 +44,11 @@ private theorem polyFn_conj (σ : ℂ ≃+* ℂ) {H J : Type} [Group H] (K : Sub
   rw [Finsupp.sum_mapRange_index (by intro w; simp)]
   simp [Finsupp.sum, Finset.sum_apply, map_sum, wordFn_conj]
 
+/- English proof (translation)
+Unfold `wmul wmap`. Establish `hm : ∀ t : List J →₀ ℂ, Finsupp.mapRange f f.map_zero t = Finsupp.mapRange.addMonoidHom f.toAddMonoidHom t` using `fun t => rfl`. Rewrite using `[Finsupp.sum_mapRange_index (by intro w; simp)]`. Rewrite using `[hm, map_finsuppSum]`. Use `Finsupp.sum_congr (fun w _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_finsuppSum, Finsupp.sum_mapRange_index (by intro w'; simp)]`. Use `Finsupp.sum_congr (fun w' _ => ?_)` and prove the remaining obligations. Rewrite using `[Finsupp.mapRange.addMonoidHom_apply, Finsupp.mapRange_single]`. Use `congr 1`. Conclude with `map_mul f (a w) (s w')`.
+-/
 private theorem wmap_wmul {J : Type} (f : ℂ →+* ℂ) (a s : List J →₀ ℂ) :
     wmap f (wmul a s) = wmul (wmap f a) (wmap f s) := by
   unfold wmul wmap
@@ -49,6 +63,9 @@ private theorem wmap_wmul {J : Type} (f : ℂ →+* ℂ) (a s : List J →₀ �
   congr 1
   exact map_mul f (a w) (s w')
 
+/- English proof (translation)
+Introduce `σ _ _ _ K ψ f` and use `⟨wordFn_conj σ K ψ f, polyFn_conj σ K ψ f, wmap_wmul σ.toRingHom⟩`.
+-/
 theorem polyFnConj_of : PolyFnConj := fun σ _ _ _ K ψ f =>
   ⟨wordFn_conj σ K ψ f, polyFn_conj σ K ψ f, wmap_wmul σ.toRingHom⟩
 

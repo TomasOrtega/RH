@@ -19,6 +19,17 @@ section
 
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CuspCharCheck.isCuspChar_iff]`. Use `⟨τ, hs, rfl, fun a h0 h1 v hv => ?_⟩` and prove the remaining obligations. Use `hc 2 (twoBlock d a) ?_ le_rfl v fun u hu => hv u ?_` and prove the remaining obligations. Introduce `c fin_cases c`. Conclude with `⟨⟨0, by omega⟩, by simp [twoBlock, h0]⟩`.
+
+Conclude with `⟨⟨a, h1⟩, by simp [twoBlock]⟩`. Introduce `i j`. Distinguish the cases in `hij : i.val < a ∧ a ≤ j.val`. Conclude with `Or.inr hij`. Use `left`.
+
+Distinguish the cases in `hb : twoBlock d a i = twoBlock d a j`. Conclude with `hu.2 i j hb`. Establish `hi : a ≤ i.val`. Assume the negation of the conclusion as `hi`. Establish `hj : j.val < a`.
+
+Assume the negation of the conclusion as `hj`. Conclude with `hij ⟨by omega, by omega⟩`. Conclude with `hb (by simp [twoBlock, show i.val < a by omega, hj])`. Establish `hj : j.val < a`. Assume the negation of the conclusion as `hj`.
+
+Conclude with `hb (by simp [twoBlock, show ¬ i.val < a by omega, show ¬ j.val < a by omega])`. Establish `hne : i ≠ j` using `fun e => by subst e; omega`. Rewrite using `[if_neg hne]`. Conclude with `hu.1.1 i j (by simp [twoBlock, show ¬ i.val < a by omega, hj])`.
+-/
 theorem isCuspChar_character {d : ℕ} (τ : FDRep ℂ (GL (Fin d) K)) (hs : Simple τ) (hc : IsCuspidal K τ) :
     CuspElliptic.IsCuspChar τ.character := by
   rw [GlobalTheory.CuspCharCheck.isCuspChar_iff]
@@ -47,6 +58,13 @@ theorem isCuspChar_character {d : ℕ} (τ : FDRep ℂ (GL (Fin d) K)) (hs : Sim
         rw [if_neg hne]
         exact hu.1.1 i j (by simp [twoBlock, show ¬ i.val < a by omega, hj])
 
+/- English proof (translation)
+Establish `h` using `isCuspChar_character τ hs hc`. Take `⟨k, -, hk⟩` from `GlobalTheory.CuspFormula.exists_regular K θ hθ d hd τ.character (GlobalTheory.CuspGL.isIrrChar_of_norm_one _ h.1) (GlobalTheory.CuspGL.isPrimitive_of_isCuspChar _ h)`. Establish `h1` using `hk 1`. Establish `hid : Matrix.toLin' ((1 : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) = 1`. Simplify using `[Module.End.one_eq_id]`.
+
+Establish `hfr : Module.finrank K (Fin d → K) = d` using `by simp`. Rewrite `h1` using `[FDRep.char_one, hid, GlobalTheory.T.invariantSubspaceMobiusInverse_one_prod_Ico K (Fin d → K) (GlobalTheory.CuspGL.rootSum θ k) (GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow K θ k).2 (by rw [hfr]; omega), hfr, Nat.card_eq_fintype_card]`. Establish `hsign : ((-1 : ℂ)) ^ (d - 1) * ∏ i ∈ Finset.Ico 1 d, (1 - (Fintype.card K : ℂ) ^ i) = ∏ i ∈ Finset.Ico 1 d, ((Fintype.card K : ℂ) ^ i - 1)`. Rewrite using `[← Nat.card_Ico 1 d, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => by ring`.
+
+Rewrite `h1` using `[hsign]`. Establish `h2 : ((Module.finrank ℂ τ : ℤ) : ℂ) = ((∏ i ∈ Finset.Ico 1 d, ((q K : ℤ) ^ i - 1) : ℤ) : ℂ)`. Use `push_cast`. Conclude with `h1`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem finrank_of_simple_cuspidal (θ : AlgebraicClosure K →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure K, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) {d : ℕ} (hd : 1 ≤ d)
     (τ : FDRep ℂ (GL (Fin d) K)) (hs : Simple τ) (hc : IsCuspidal K τ) :

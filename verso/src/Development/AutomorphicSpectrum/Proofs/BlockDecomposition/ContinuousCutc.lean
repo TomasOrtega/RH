@@ -21,12 +21,22 @@ namespace GlobalTheory.CompanionTheory.EisE
 
 variable {D : D7} {n r t a b : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [jn, Matrix.smul_apply, Matrix.submatrix_apply, id]`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j | j <;> rfl`.
+-/
 theorem jn_smul (hn : r + t = n) (e : AE D) (x : Mx D a r) (v : Mx D a t) :
     e • jn hn x v = jn hn (e • x) (e • v) := by
   ext i j
   simp only [jn, Matrix.smul_apply, Matrix.submatrix_apply, id]
   rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j | j <;> rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun w hw i j => ?_, fun w hw i j => ?_⟩` and prove the remaining obligations. Use `h w hw i ((finSumFinEquiv.trans (finCongr hn)) (Sum.inl j))` as an intermediate fact. Simplify `this` using `[jn]`.
+
+Use `h w hw i ((finSumFinEquiv.trans (finCongr hn)) (Sum.inr j))` as an intermediate fact. Simplify `this` using `[jn]`. Introduce and unpack `⟨h1, h2⟩ w hw i j`. Simplify using `only [jn, Matrix.submatrix_apply, id]`. Break down `(finSumFinEquiv.trans (finCongr hn)).symm j with j | j` into its components or cases.
+
+Conclude with `h1 w hw i j`. Conclude with `h2 w hw i j`.
+-/
 theorem intOff_jn (hn : r + t = n) {S : Finset (Pl D)} (x : Mx D a r) (v : Mx D a t) :
     IntOff S (jn hn x v) ↔ IntOff S x ∧ IntOff S v := by
   constructor
@@ -42,6 +52,9 @@ theorem intOff_jn (hn : r + t = n) {S : Finset (Pl D)} (x : Mx D a r) (v : Mx D 
     · exact h1 w hw i j
     · exact h2 w hw i j
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [jn, Matrix.submatrix_apply, id]`. Break down `(finSumFinEquiv.trans (finCongr hn)).symm j with j | j` into its components or cases. Conclude with `continuous_fst.matrix_elem i j`. Conclude with `continuous_snd.matrix_elem i j`.
+-/
 theorem continuous_jn (hn : r + t = n) : Continuous (fun z : Mx D a r × Mx D a t => jn hn z.1 z.2) := by
   refine continuous_matrix fun i j => ?_
   simp only [jn, Matrix.submatrix_apply, id]
@@ -53,38 +66,65 @@ def cutc (hn : r + t = n) (X : Mx D a n) : Mx D a r × Mx D a t :=
   (X.submatrix id fun j => (finSumFinEquiv.trans (finCongr hn)) (Sum.inl j),
     X.submatrix id fun j => (finSumFinEquiv.trans (finCongr hn)) (Sum.inr j))
 
+/- English proof (translation)
+Apply the tactic sequence `refine Continuous.prodMk ?_ ?_ <;> exact continuous_matrix fun i j => continuous_id.matrix_elem _ _`.
+-/
 theorem continuous_cutc (hn : r + t = n) : Continuous (cutc (D := D) (a := a) hn) := by
   refine Continuous.prodMk ?_ ?_ <;> exact continuous_matrix fun i j => continuous_id.matrix_elem _ _
 
+/- English proof (translation)
+Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> ext i j <;> simp [cutc, jn]`.
+-/
 theorem cutc_jn (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) : cutc hn (jn hn x v) = (x, v) := by
   refine Prod.ext ?_ ?_ <;> ext i j <;> simp [cutc, jn]
 
+/- English proof (translation)
+Introduce `v hv i j`. Establish `h0 : cv D v e = 0` using `by rw [hS.2 v, if_neg hv]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, h0, zero_mul]`. Conclude with `zero_mem _`.
+-/
 theorem intOff_smul {S : Finset (Pl D)} {e : AE D} (hS : IsIdem S e) (x : Mx D a b) : IntOff S (e • x) := by
   intro v hv i j
   have h0 : cv D v e = 0 := by rw [hS.2 v, if_neg hv]
   simp only [Matrix.smul_apply, smul_eq_mul, map_mul, h0, zero_mul]
   exact zero_mem _
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[adj, hc]`.
+-/
 theorem adj_smul {e : AE D} (hc : cA D e = e) (x : Mx D a b) : adj (e • x) = e • adj x := by
   ext i j
   simp [adj, hc]
 
+/- English proof (translation)
+Simplify using `only [ip, mm, adj_smul hc, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he]`.
+-/
 theorem ip_smul {e : AE D} (he : e * e = e) (hc : cA D e = e) (V : HSp D) (x : Mx D V.rank a) (y : Mx D V.rank b) :
     ip V (e • x) (e • y) = e • ip V x y := by
   simp only [ip, mm, adj_smul hc, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he]
 
+/- English proof (translation)
+Simplify using `only [yv, ip_smul he hc, mm, Matrix.mul_smul]`.
+-/
 theorem yv_smul {e : AE D} (he : e * e = e) (hc : cA D e = e) (V : HSp D) (b₀ : HermE D r)
     (z : Mx D V.rank r × Mx D V.rank t) : yv V b₀ (e • z.1, e • z.2) = e • yv V b₀ z := by
   simp only [yv, ip_smul he hc, mm, Matrix.mul_smul]
 
+/- English proof (translation)
+Simplify using `only [pr, adj_smul hc, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he]`.
+-/
 theorem pr_smul {e : AE D} (he : e * e = e) (hc : cA D e = e) (b₀ : HermE D r) (x y : Mx D r t) :
     pr b₀ (e • x) (e • y) = e • pr b₀ x y := by
   simp only [pr, adj_smul hc, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he]
 
+/- English proof (translation)
+Simplify using `only [qv, ip_smul he hc, yv_smul he hc, pr_smul he hc, smul_sub]`.
+-/
 theorem qv_smul {e : AE D} (he : e * e = e) (hc : cA D e = e) (V : HSp D) (b₀ : HermE D r)
     (z : Mx D V.rank r × Mx D V.rank t) : qv V b₀ (e • z.1, e • z.2) = e • qv V b₀ z := by
   simp only [qv, ip_smul he hc, yv_smul he hc, pr_smul he hc, smul_sub]
 
+/- English proof (translation)
+Establish `: mm x (e • T) = mm x T` using `by conv_rhs => rw [← hx]`. Simplify using `only [mm, Matrix.smul_mul, Matrix.mul_smul]`. Simplify using `only [pch, this]`.
+-/
 theorem pch_smul {ψ : AddChar (AF D.host.F) ℂ} {e : AE D} {x : Mx D t t} (hx : e • x = x) (T : Mx D t t) :
     pch ψ x (e • T) = pch ψ x T := by
   have : mm x (e • T) = mm x T := by
@@ -92,6 +132,9 @@ theorem pch_smul {ψ : AddChar (AF D.host.F) ℂ} {e : AE D} {x : Mx D t t} (hx 
     simp only [mm, Matrix.smul_mul, Matrix.mul_smul]
   simp only [pch, this]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun K hK => by have := h.fin.lt_top_of_isCompact hK rw [Measure.smul_apply] exact ENNReal.mul_lt_top (by simp) this⟩ supp := by rw [Measure.smul_apply, h.supp, smul_zero] invU := fun g hg => by rw [Measure.map_smul, h.invU g hg] invS := fun y hy => by rw [Measure.map_smul, h.inv …`.
+-/
 theorem isOrb_smul {V : HSp D} {b₀ : HermE D r} {e : AE D} {ν : Measure (Mx D V.rank r × Mx D V.rank t)}
     (h : IsOrb V b₀ e ν) (c : ℝ≥0) : IsOrb V b₀ e (c • ν) where
   fin := ⟨fun K hK => by
@@ -103,6 +146,9 @@ theorem isOrb_smul {V : HSp D} {b₀ : HermE D r} {e : AE D} {ν : Measure (Mx D
   invS := fun y hy => by rw [Measure.map_smul, h.invS y hy]
   cov := fun g hg => by rw [Measure.map_smul, h.cov g hg, smul_comm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun K _ => by simp⟩ supp := by simp invU := fun g _ => by simp invS := fun y _ => by simp cov := fun g _ => by simp`.
+-/
 theorem isOrb_zero {V : HSp D} {b₀ : HermE D r} {e : AE D} : IsOrb (t := t) V b₀ e 0 where
   fin := ⟨fun K _ => by simp⟩
   supp := by simp

@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.FockDegFin
 
+/- English proof (translation)
+Take `⟨m, L, hL⟩` from `GlobalTheory.HeisDerivSpan.heisLine_deriv_finite_span F E σ n d X W M ψ hψ`. Establish `hle : Submodule.span ℂ {f₁ : SInf F (Fin n × Fin d) | ∃ u, At (evI F) u ∧ ∃ f ∈ N, ActsD (evI F) (M.heisLine ψ u) f f₁} ≤ ⨆ i, N.map (L i)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f₁ ⟨u, hu, f, hf, hd⟩`. Take `⟨D, hD, hDs⟩` from `hL u hu`.
+
+Rewrite using `[(hD f f₁).1 hd]`. Use `Submodule.span_le.2 ?_ (hDs f)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem i ⟨f, hf, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem span_actsD_finiteDimensional {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (N : Submodule ℂ (SInf F (Fin n × Fin d))) [FiniteDimensional ℂ N] :
@@ -31,6 +36,11 @@ theorem span_actsD_finiteDimensional {F E : Type} [Field F] [NumberField F] [Fie
     exact Submodule.mem_iSup_of_mem i ⟨f, hf, rfl⟩
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW hM j`. Proceed by induction on `j with`. Consider the case `zero => rw [fockDeg_zero]`. Conclude with `GlobalTheory.T.gaussian_span_finite_dimensional F E σ B n d X W M r s r' s' hB hX hW hM`. Consider the case `succ k ih`.
+
+Rewrite using `[fockDeg_succ]`. Use `haveI := ih`. Use `haveI := span_actsD_finiteDimensional M B.ψ hB.std (fockDeg M B.ψ B.emb k)`. Use `infer_instance`.
+-/
 theorem fockDeg_finiteDimensional : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (r s r' s' : ℕ),

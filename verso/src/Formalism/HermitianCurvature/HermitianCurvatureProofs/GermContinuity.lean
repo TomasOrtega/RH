@@ -22,6 +22,11 @@ section place
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Establish `h1` using `Formalism.FourierDecayAlt.P.LastBlockContinuity.continuousOn_weight_product P.k P.r (fun _ _ => 1) (fun _ _ => one_pos) s h 1`. Establish `hmap : Set.MapsTo (fun z : ℂ => ((Complex.normSq z - TT : ℝ), z)) {0}ᶜ (Set.univ ×ˢ {0}ᶜ)` using `fun z hz => ⟨Set.mem_univ _, hz⟩`. Establish `h2` using `h1.comp (Continuous.continuousOn (by fun_prop)) hmap`. Use `h2.congr fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, TBB.nPt]`.
+
+Use `congr 1`. Simplify using `[D.ptGG, D.ptLast]`.
+-/
 theorem nPt_app_cont (TT : ℝ) (h : C.LPt) (s : ℕ) :
     ContinuousOn (fun z : ℂ => TBB.nPt P.k P.r TT (h ++ [(s, z)])) {0}ᶜ := by
   have h1 := Formalism.FourierDecayAlt.P.LastBlockContinuity.continuousOn_weight_product P.k P.r (fun _ _ => 1) (fun _ _ => one_pos) s h 1
@@ -33,10 +38,16 @@ theorem nPt_app_cont (TT : ℝ) (h : C.LPt) (s : ℕ) :
   congr 1
   simp [D.ptGG, D.ptLast]
 
+/- English proof (translation)
+The claim follows from `hf.comp (Continuous.continuousOn (by fun_prop)) fun _ hz => ⟨hz, hz⟩`.
+-/
 theorem diag_cont {f : ℂ × ℂ → ℂ} (hf : ContinuousOn f (({0}ᶜ : Set ℂ) ×ˢ ({0}ᶜ : Set ℂ))) :
     ContinuousOn (fun z : ℂ => f (z, z)) {0}ᶜ :=
   hf.comp (Continuous.continuousOn (by fun_prop)) fun _ hz => ⟨hz, hz⟩
 
+/- English proof (translation)
+Establish `hn` using `nPt_app_cont (P := P) (TBB.TTp p) h s`. Establish `hw : ContinuousOn (fun z : ℂ => ((Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) (h ++ [(s, z)])) * Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) (h ++ [(s, z)])) / TBB.normC nn w : ℝ) : ℂ)) {0}ᶜ` using `Complex.continuous_ofReal.comp_continuousOn (((Real.continuous_sqrt.comp_continuousOn hn).mul (Real.continuous_sqrt.comp_continuousOn hn)).div_const _)`. Establish `hr` using `diag_cont hRR`. Conclude with `Complex.continuous_re.comp_continuousOn (hw.mul hr)`.
+-/
 theorem ew_cont_of_rr (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (i : ℕ)
     (w : List C.Letter) (h : C.LPt) (s : ℕ)
     (hRR : ContinuousOn (fun cc : ℂ × ℂ => p.RR F i w (h ++ [(s, cc.1)]) (h ++ [(s, cc.2)]))
@@ -52,6 +63,11 @@ theorem ew_cont_of_rr (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r 
 
 end place
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p nn F Y K N Cb hCb hF _ b s hb hs hbs h hh w hw _`. Establish `hsz : D.ptSize h + s = b + s - 1` using `by rw [hh.2]; omega`. Use `ew_cont_of_rr p nn F (b + s - 1) w h s ?_` and prove the remaining obligations. Break down `Nat.lt_or_ge (b + s - 1) (P.r + 1) with hlt | hge` into its components or cases. Conclude with `hR Wp Wq P p F hF (b + s - 1) (by omega) w hw.1 h h s (by omega) hsz hsz`.
+
+Establish `he : b + s - 1 = P.r + 1` using `by omega`. Rewrite `hsz`, the goal using `[he]`. Conclude with `Formalism.FourierDecayAlt.P.LastBlockContinuity.rrTop_cont P p F hF Cb hCb w hw.1 h h s (by omega) hsz hsz`.
+-/
 theorem germContAll_of (hR : RRBelowCpt) : GermContAll := by
   intro Wp Wq _ _ _ _ _ _ P p nn F Y K N Cb hCb hF _ b s hb hs hbs h hh w hw _
   have hsz : D.ptSize h + s = b + s - 1 := by rw [hh.2]; omega

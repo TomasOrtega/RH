@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.BCT.AbsHalfConj
 
+/- English proof (translation)
+Unfold `ordL`. Distinguish the cases in `ha : Valued.v a = 0`. Rewrite using `[dif_pos ha, dif_pos (h ▸ ha)]`. Rewrite using `[dif_neg ha, dif_neg (h ▸ ha)]`. Use `congr 2`.
+
+Conclude with `WithZero.coe_inj.1 (by rw [WithZero.coe_unzero, WithZero.coe_unzero, h])`.
+-/
 theorem ordL_congr {L L' : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [Field L']
     [Valued L' (WithZero (Multiplicative ℤ))] {a : L} {b : L'} (h : Valued.v a = Valued.v b) : ordL a = ordL b := by
   unfold ordL
@@ -19,6 +24,13 @@ theorem ordL_congr {L L' : Type} [Field L] [Valued L (WithZero (Multiplicative �
     congr 2
     exact WithZero.coe_inj.1 (by rw [WithZero.coe_unzero, WithZero.coe_unzero, h])
 
+/- English proof (translation)
+Introduce `E _ _ _ w u hne hund x`. Establish `hcu : GlobalTheory.Mem.Chr.ConjPl (IsCMField.complexConj E).toRingEquiv w u` using `((GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) w u).1 hund).resolve_left hne`. Establish `hv : Valued.v (algebraMap E (u.adicCompletion E) x) = Valued.v (algebraMap E (w.adicCompletion E) (IsCMField.complexConj E x))`. Establish `h1 : Valued.v (algebraMap E (u.adicCompletion E) x) = u.valuation E x` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' u x`. Establish `h2 : Valued.v (algebraMap E (w.adicCompletion E) (IsCMField.complexConj E x)) = w.valuation E (IsCMField.complexConj E x)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`.
+
+Rewrite using `[h1, h2]`. Use `hcu (IsCMField.complexConj E x)` as an intermediate fact. Simplify using `only [AlgEquiv.coe_ringEquiv, IsCMField.complexConj_apply_apply] at this`. Conclude with `this`. Establish `hq : qV E u = qV E w`.
+
+Unfold `qV`. Rewrite using `[eq_conjSrc hcu, GlobalTheory.UnrEuler.ConjFac.absNorm_conjSrc]`. Unfold `absHalf`. Rewrite using `[ordL_congr hv, hq]`.
+-/
 theorem absHalf_conjPl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w u : Pl E), u ≠ w → u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) → ∀ x : E, absHalf u (algebraMap E (u.adicCompletion E) x) = absHalf w (algebraMap E (w.adicCompletion E) (IsCMField.complexConj E x)) := by
   intro E _ _ _ w u hne hund x
   have hcu : GlobalTheory.Mem.Chr.ConjPl (IsCMField.complexConj E).toRingEquiv w u :=

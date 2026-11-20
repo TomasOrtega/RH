@@ -23,6 +23,11 @@ section General
 
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨n, u, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨n, q u, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, q.isIntertwining]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem apply_mem_twKer {σ : Representation ℂ G V} {τ : Representation ℂ G W} (q : σ.IntertwiningMap τ)
     (H : Subgroup G) (χ : H →* ℂˣ) {v : V} (hv : v ∈ twKer σ H χ) : q v ∈ twKer τ H χ := by
   induction hv using Submodule.span_induction with
@@ -34,6 +39,27 @@ theorem apply_mem_twKer {σ : Representation ℂ G V} {τ : Representation ℂ G
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Establish `hq1 : Nontrivial (TwJacquet π H χ)` using `Module.nontrivial_of_finrank_pos (R := ℂ) (by omega)`. Establish `hV : Nontrivial V` using `(Submodule.mkQ_surjective (twKer π H χ)).nontrivial`. Establish `hbt : (⊥ : Subrepresentation π) ≠ ⊤`. Introduce `h`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`.
+
+Establish `hmem : x ∈ (⊤ : Subrepresentation π).toSubmodule` using `Submodule.mem_top`. Rewrite `hmem` using `[← h]`. Conclude with `hx ((Submodule.mem_bot ℂ).1 hmem)`. Choose the witnesses or unpack the hypotheses as in `⟨S, hS0, hST⟩ : ∃ S : Subrepresentation π, S ≠ ⊥ ∧ S ≠ ⊤ := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hn { exists_pair_ne := ⟨⊥, ⊤, hbt⟩ eq_bot_or_eq_top := fun S => (eq_or_ne S ⊥).imp_right (hc S) }`. Distinguish the cases in `hSK : S.toSubmodule ≤ twKer π H χ`. Set `i : S.toRepresentation.IntertwiningMap π` to `⟨S.toSubmodule.subtype, fun g => rfl⟩`. Establish `hi : Function.Injective i` using `Subtype.val_injective`.
+
+Establish `hsq` using `IsSubquotient.of_injective i hi`. Establish `hSn : Nontrivial S.toSubmodule` using `Submodule.nontrivial_iff_ne_bot.2 fun h => hS0 (by ext v; rw [h]; rfl)`. Take `⟨Y, _, _, τ, hτs, hτi, q, hq⟩` from `GlobalTheory.SmGL.IrrQuot.exists_irreducible_smooth_quotient S.toRepresentation (hsq.isSmooth hs) (GlobalTheory.ProdLength.hasFiniteLength_of_injective i hi hf) hSn`. Use `⟨⟨Y, τ, hτs, hτi⟩, ⟨S, q, hq⟩, ?_⟩` and prove the remaining obligations. Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 fun w _ => ?_)` and prove the remaining obligations.
+
+Take `⟨v, rfl⟩` from `hq w`. Conclude with `apply_mem_twKer q H χ (hr S v (hSK v.2))`. Take `⟨s, hsS, hsK⟩` from `SetLike.not_le_iff_exists.1 hSK`. Establish `hs0 : (Submodule.mkQ (twKer π H χ)) s ≠ 0` using `fun h => hsK ((Submodule.Quotient.mk_eq_zero _).1 h)`. Establish `hline` using `(finrank_eq_one_iff_of_nonzero' _ hs0).1 h1`.
+
+Set `U : Submodule ℂ V` to `S.toSubmodule`. Establish `hU : ∀ g, U ≤ U.comap (π g)` using `fun g v hv => S.apply_mem_toSubmodule g hv`. Set `σ : Representation ℂ G (V ⧸ U)` to `π.quotient U hU`. Set `p : π.IntertwiningMap σ` to `⟨U.mkQ, fun g => by ext v; rfl⟩`. Establish `hp : Function.Surjective p` using `Submodule.mkQ_surjective U`.
+
+Establish `hsq` using `IsSubquotient.of_surjective p hp`. Establish `hUn : Nontrivial (V ⧸ U)` using `Submodule.Quotient.nontrivial_iff.2 fun h => hST (by ext v; rw [show S.toSubmodule = ⊤ from h]; rfl)`. Establish `hfq : HasFiniteLength σ` using `IsFiniteLength.of_surjective hf (f := Representation.IntertwiningMap.equivLinearMapAsModule π σ p) hp`. Take `⟨Y, _, _, τ, hτs, hτi, q, hq⟩` from `GlobalTheory.SmGL.IrrQuot.exists_irreducible_smooth_quotient σ (hsq.isSmooth hs) hfq hUn`. Use `⟨⟨Y, τ, hτs, hτi⟩, (IsSubquotient.of_surjective q hq).trans hsq, ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 fun w _ => ?_)` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hq w`. Take `⟨v, rfl⟩` from `hp b`. Take `⟨c, hc⟩` from `hline (Submodule.mkQ _ v)`. Establish `hk : v - c • s ∈ twKer π H χ`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul]`. Conclude with `sub_eq_zero.2 hc.symm`. Establish `hpe : p v = p (v - c • s)`. Establish `h0 : p (c • s) = 0` using `(Submodule.Quotient.mk_eq_zero U).2 (U.smul_mem c hsS)`. Establish `h2 : v = (v - c • s) + c • s` using `by abel`.
+
+Use `conv_lhs => rw [h2, map_add, h0, add_zero]`. Rewrite using `[hpe]`. Conclude with `apply_mem_twKer q H χ (apply_mem_twKer p H χ hk)`.
+-/
 theorem exists_subquotient_subsingleton [TopologicalSpace G] [IsTopologicalGroup G] (π : Representation ℂ G V)
     (H : Subgroup G) (χ : H →* ℂˣ) (hs : IsSmooth π) (hf : HasFiniteLength π) (hn : ¬ π.IsIrreducible)
     (h1 : Module.finrank ℂ (TwJacquet π H χ) = 1)
@@ -100,6 +126,13 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨d, c⟩` from `x`. Take `⟨n, rfl⟩ : ∃ n, d = n + 1` from `⟨d - 1, by have := hx.1; simp at this; omega⟩`. Establish `hV : Nontrivial c.rep.V`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`.
+
+Take `⟨a, b, hab⟩` from `c.rep.irr.exists_pair_ne`. Use `hab ?_` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[Subsingleton.elim v 0]`. Conclude with `⟨fun _ => b.toSubmodule.zero_mem, fun _ => a.toSubmodule.zero_mem⟩`.
+
+Establish `hg : IsGenericFor ψ c.rep.ρ` using `GlobalTheory.T.cuspidal_is_generic k ψ hc h1 n _ c.rep.ρ hx.2 hV`. Establish `hle` using `hW ψ hc h1 (n + 1) _ c.rep.ρ c.rep.smooth c.rep.irr`. Use `haveI : Nontrivial (TwJacquet c.rep.ρ (unipB k (Fin (n + 1))) (whitChar ψ (n + 1))) := hg`. Conclude with `Module.finrank_eq_of_rank_eq (le_antisymm hle (Cardinal.one_le_iff_pos.2 rank_pos))`.
+-/
 theorem finrank_twJacquet_of_isCusp (hW : WhitRankIrr k) {ψ : AddChar k Circle} (hc : Continuous ψ) (h1 : ψ ≠ 1)
     {x : IrrGL k} (hx : x.IsCusp) :
     Module.finrank ℂ (TwJacquet x.rep (unipB k (Fin x.1)) (whitChar ψ x.1)) = 1 := by
@@ -118,6 +151,11 @@ theorem finrank_twJacquet_of_isCusp (hW : WhitRankIrr k) {ψ : AddChar k Circle}
   haveI : Nontrivial (TwJacquet c.rep.ρ (unipB k (Fin (n + 1))) (whitChar ψ (n + 1))) := hg
   exact Module.finrank_eq_of_rank_eq (le_antisymm hle (Cardinal.one_le_iff_pos.2 rank_pos))
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hW ψ hc h1 x y N hd hx hy hn`. Establish `hcusp : ∀ a, (![x, y] a).IsCusp` using `Fin.forall_fin_two.2 ⟨hx, hy⟩`. Establish `hP` using `GlobalTheory.CompanionTheory.WhitRank.whitRankProd_of_heredity k (GlobalTheory.T.whittaker_heredity k) ψ hc h1 2 N ![x, y] hd`. Establish `hrank : Module.finrank ℂ (TwJacquet (prodIrr ![x, y] hd) (unipB k (Fin N)) (whitChar ψ N)) = 1` using `hP.trans (Finset.prod_eq_one fun a _ => finrank_twJacquet_of_isCusp hW hc h1 (hcusp a))`. Establish `hf : HasFiniteLength (prodIrr ![x, y] hd)` using `GlobalTheory.ProdFiniteLength.multiProd_hasFiniteLength GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k 2 N (fun a => (![x, y] a).1) (fun a => GlobalTheory.SplitRead.Irr.ofIrrRep (![x, y] a).2.rep) _`.
+
+Establish `hs` using `isSmooth_prodIrr ![x, y] hd`. Take `⟨τ, hτ, hsub⟩` from `exists_subquotient_subsingleton (prodIrr ![x, y] hd) (unipB k (Fin N)) (whitChar ψ N) hs hf hn hrank fun S v hv => by`. Set `i : S.toRepresentation.IntertwiningMap (prodIrr ![x, y] hd)` to `⟨S.toSubmodule.subtype, fun g => rfl⟩`. Conclude with `GlobalTheory.CompanionTheory.PRep.WhitExact.twKer_whitChar_reflect k ψ hc N S.toRepresentation (prodIrr ![x, y] hd) ((IsSubquotient.of_injective i Subtype.val_injective).isSmooth hs) hs S.toSubmodule.subtype Subtype.val_injective (fun g v => rfl) v hv`. Conclude with `⟨τ, hτ, not_nontrivial_iff_subsingleton.2 hsub⟩`.
+-/
 theorem exists_nongeneric_subquotient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     WhitRankIrr k → ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 →
     ∀ (x y : IrrGL k) (N : ℕ) (hd : ∑ a, (![x, y] a).1 = N), x.IsCusp → y.IsCusp →

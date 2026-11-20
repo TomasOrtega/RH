@@ -16,5 +16,8 @@ open Formalism.L2.DIV (kP Pl LevelP)
 open Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames | exact GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames | (intros; apply GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.toEAf_orientedHermitianForm_eq_trace_frames : ∀ {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (Datum.EAf D)) (βT : GL (Fin T.rank) (Datum.EAf D)) (k y : WO S T), toEAf D (hO S T y k) = Matrix.trace (frMapAdj S T βS βT k * frMapO S T βS βT y) := by
   first | exact @GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames | exact GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames | (intros; apply GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames <;> assumption)

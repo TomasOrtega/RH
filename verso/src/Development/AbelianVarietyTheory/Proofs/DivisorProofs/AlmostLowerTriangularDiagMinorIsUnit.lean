@@ -6,6 +6,29 @@ open Classical
 
 namespace GlobalTheory.FlagPush.AlmostLowUnits
 
+/- English proof (translation)
+Establish `hne : a ≠ b` using `fun h => by rw [h] at hb; omega`. Establish `hlt : a < b` using `by rw [Fin.lt_iff_val_lt_val]; omega`. Use `set c := A a a / A a b with hc`. Use `set U := A.updateCol a (fun k => A k a + (-c) • A k b) with hU`. Use `set N := U.submatrix id (Equiv.swap a b) with hN`.
+
+Establish `hdetU : U.det = A.det` using `Matrix.det_updateCol_add_smul_self A hne (-c)`. Establish `hdetN : N.det = - A.det`. Rewrite using `[hN, Matrix.det_permute', Equiv.Perm.sign_swap hne, hdetU]`. Simplify using the standard rewrite rules. Establish `hUapp : ∀ i j, U i j = if j = a then A i a - c * A i b else A i j`.
+
+Introduce `i j`. Rewrite using `[hU, Matrix.updateCol_apply]`. Apply the tactic sequence `split_ifs <;> simp [sub_eq_add_neg]`. Establish `hNapp : ∀ i j, N i j = U i (Equiv.swap a b j)` using `fun _ _ => rfl`. Establish `htri : N.BlockTriangular OrderDual.toDual`.
+
+Introduce `i j hij`. Establish `hij' : i < j` using `OrderDual.toDual_lt_toDual.1 hij`. Rewrite using `[hNapp]`. Distinguish the cases in `hja : j = a`. Rewrite using `[hja, Equiv.swap_apply_left, hUapp, if_neg hne.symm]`.
+
+Rewrite `hij'` using `[hja]`. Conclude with `hl i b (lt_trans hij' hlt) (fun h => (ne_of_lt hij') h.1)`. Distinguish the cases in `hjb : j = b`. Rewrite using `[hjb, Equiv.swap_apply_right, hUapp, if_pos rfl]`. Rewrite `hij'` using `[hjb]`.
+
+Distinguish the cases in `hia : i = a`. Rewrite using `[hia, hc, div_mul_cancel₀ _ hab, sub_self]`. Establish `hia' : i < a`. Establish `h1 : (i : ℕ) < b` using `hij'`. Establish `h2 : (i : ℕ) ≠ a` using `fun h => hia (Fin.ext h)`.
+
+Rewrite using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hl i a hia' (fun h => hia h.1), hl i b (lt_trans hia' hlt) (fun h => hia h.1)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hja hjb, hUapp, if_neg hja]`.
+
+Conclude with `hl i j hij' (fun h => hjb h.2)`. Establish `hprod` using `Matrix.det_of_lowerTriangular N htri`. Establish `hmb : b ∈ Finset.univ.erase a` using `Finset.mem_erase.2 ⟨hne.symm, Finset.mem_univ _⟩`. Rewrite `hprod` using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ a), ← Finset.mul_prod_erase _ _ hmb]`. Establish `hNa : N a a = A a b` using `by rw [hNapp, Equiv.swap_apply_left, hUapp, if_neg hne.symm]`.
+
+Establish `hNb : N b b = A b a - c * A b b` using `by rw [hNapp, Equiv.swap_apply_right, hUapp, if_pos rfl]`. Establish `hrest : ∏ i ∈ (Finset.univ.erase a).erase b, N i i = ∏ i ∈ (Finset.univ.erase a).erase b, A i i`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hib` using `(Finset.mem_erase.1 hi).1`. Establish `hia` using `(Finset.mem_erase.1 (Finset.mem_erase.1 hi).2).1`.
+
+Rewrite using `[hNapp, Equiv.swap_apply_of_ne_of_ne hia hib, hUapp, if_neg hia]`. Rewrite `hprod` using `[hNa, hNb, hrest, hdetN]`. Establish `e : A a b * (A b a - c * A b b) = A a b * A b a - A a a * A b b`. Rewrite using `[hc]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `hprod` using `[← mul_assoc, e]`. Take the linear combination `(-1 : K) * hprod`.
+-/
 theorem det_almost {K : Type} [Field K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K) (a b : Fin n)
     (hb : (b : ℕ) = a + 1) (hab : A a b ≠ 0)
     (hl : ∀ i j : Fin n, i < j → ¬ (i = a ∧ j = b) → A i j = 0) :
@@ -59,6 +82,15 @@ theorem det_almost {K : Type} [Field K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K)
   rw [← mul_assoc, e] at hprod
   linear_combination (-1 : K) * hprod
 
+/- English proof (translation)
+Establish `hP : ∏ i ∈ s, x i ∈ O` using `O.prod_mem hx`. Rewrite `hd0` using `[hd]`. Use `⟨⟨left_ne_zero_of_mul hd0, ?_⟩, fun i hi => ?_⟩` and prove the remaining obligations. Establish `e : y⁻¹ = d⁻¹ * ∏ i ∈ s, x i`. Rewrite using `[hd, mul_inv, mul_assoc, inv_mul_cancel₀ (right_ne_zero_of_mul hd0), mul_one]`.
+
+Rewrite using `[e]`. Conclude with `O.mul_mem hdi hP`. Establish `e : d = x i * (y * ∏ j ∈ s.erase i, x j)`. Rewrite using `[hd, ← Finset.mul_prod_erase s x hi]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h0 : x i * (y * ∏ j ∈ s.erase i, x j) ≠ 0` using `by rw [← e, hd]; exact hd0`. Use `⟨left_ne_zero_of_mul h0, ?_⟩` and prove the remaining obligations. Establish `e' : (x i)⁻¹ = d⁻¹ * (y * ∏ j ∈ s.erase i, x j)`. Rewrite using `[e, mul_inv, mul_assoc, inv_mul_cancel₀ (right_ne_zero_of_mul h0), mul_one]`. Rewrite using `[e']`.
+
+Conclude with `O.mul_mem hdi (O.mul_mem hy (O.prod_mem fun j hj => hx j (Finset.mem_of_mem_erase hj)))`.
+-/
 theorem units_of_det {K α : Type} [Field K] [DecidableEq α] (O : Subring K) {s : Finset α} (x : α → K) (y d : K)
     (hd : d = y * ∏ i ∈ s, x i) (hd0 : d ≠ 0) (hdi : d⁻¹ ∈ O) (hy : y ∈ O) (hx : ∀ i ∈ s, x i ∈ O) :
     (y ≠ 0 ∧ y⁻¹ ∈ O) ∧ ∀ i ∈ s, x i ≠ 0 ∧ (x i)⁻¹ ∈ O := by
@@ -81,6 +113,15 @@ end GlobalTheory.FlagPush.AlmostLowUnits
 
 open GlobalTheory.FlagPush.AlmostLowUnits in
 
+/- English proof (translation)
+Introduce `ι m τ a b hb K _ O g hg hp`. Establish `hlτ : ∀ i j : Fin (m τ), i < j → ¬ (i = a ∧ j = b) → g τ i j = 0` using `fun i j hij h => hg.2.2 τ i j hij (fun h' => h ⟨eq_of_heq (Sigma.mk.inj h'.1).2, eq_of_heq (Sigma.mk.inj h'.2).2⟩)`. Establish `hdetτ` using `det_almost (g τ) a b hb hg.2.1 hlτ`. Establish `hmO : minor τ a b g ∈ O` using `O.sub_mem (O.mul_mem ((hp τ).1 a a) ((hp τ).1 b b)) (O.mul_mem ((hp τ).1 a b) ((hp τ).1 b a))`. Establish `hτ` using `units_of_det O (fun i => g τ i i) (minor τ a b g) ((g τ).det) hdetτ (hp τ).2.1 (hp τ).2.2.1 hmO (fun i _ => (hp τ).1 i i)`.
+
+Use `⟨?_, hτ.1⟩` and prove the remaining obligations. Introduce and unpack `⟨σ, i⟩ h1 h2`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Establish `hia : i ≠ a` using `fun e => h1 (by rw [e])`.
+
+Establish `hib : i ≠ b` using `fun e => h2 (by rw [e])`. Conclude with `hτ.2 i (Finset.mem_erase.2 ⟨hib, Finset.mem_erase.2 ⟨hia, Finset.mem_univ _⟩⟩)`. Establish `htri : (g σ).BlockTriangular OrderDual.toDual` using `fun i j hij => hg.2.2 σ i j (OrderDual.toDual_lt_toDual.1 hij) (fun h' => hσ (congrArg Sigma.fst h'.1))`. Establish `hdet` using `Matrix.det_of_lowerTriangular (g σ) htri`. Establish `h` using `units_of_det O (s := Finset.univ) (fun j => g σ j j) 1 ((g σ).det) (by rw [one_mul]; exact hdet) (hp σ).2.1 (hp σ).2.2.1 O.one_mem (fun j _ => (hp σ).1 j j)`.
+
+Conclude with `h.2 i (Finset.mem_univ _)`.
+-/
 theorem GlobalTheory.FlagPush.almostLow_units : ∀ (ι : Type) (m : ι → ℕ) (τ : ι) (a b : Fin (m τ)), (b : ℕ) = a + 1 →
     ∀ (K : Type) [Field K] (O : Subring K) (g : Mat m K), AlmostLow τ a b g → Par 0 O g →
     (∀ x : Root m, x ≠ ⟨τ, a⟩ → x ≠ ⟨τ, b⟩ → g x.1 x.2 x.2 ≠ 0 ∧ (g x.1 x.2 x.2)⁻¹ ∈ O) ∧

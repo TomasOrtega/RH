@@ -4,12 +4,18 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Simplify using `only [evaluation_obj_map, Arrow.mapCechNerve_app]`. Use `erw [WidePullback.lift_π]`.
+-/
 lemma cechLev_π {f g : Arrow PSh} (F : f ⟶ g) (k : SimplexCategoryᵒᵖ) (j : Fin (k.unop.len + 1)) :
     ((evaluation _ PSh).obj k).map (Arrow.mapCechNerve F) ≫ WidePullback.π (fun _ => g.hom) j =
       WidePullback.π (fun _ => f.hom) j ≫ F.left := by
   simp only [evaluation_obj_map, Arrow.mapCechNerve_app]
   erw [WidePullback.lift_π]
 
+/- English proof (translation)
+Simplify using `only [evaluation_obj_map, Arrow.mapCechNerve_app]`. Use `erw [WidePullback.lift_base]`.
+-/
 lemma cechLev_base {f g : Arrow PSh} (F : f ⟶ g) (k : SimplexCategoryᵒᵖ) :
     ((evaluation _ PSh).obj k).map (Arrow.mapCechNerve F) ≫
         WidePullback.base (fun _ : Fin (k.unop.len + 1) => g.hom) =
@@ -17,6 +23,27 @@ lemma cechLev_base {f g : Arrow PSh} (F : f ⟶ g) (k : SimplexCategoryᵒᵖ) :
   simp only [evaluation_obj_map, Arrow.mapCechNerve_app]
   erw [WidePullback.lift_base]
 
+/- English proof (translation)
+Take `⟨i₀⟩` from `IsCofiltered.nonempty (C := I)`. Set `L : ∀ (s : Cone ((A ⋙ SimplicialObject.cechNerve) ⋙ (evaluation _ PSh).obj k)) (j : Fin (k.unop.len + 1)), s.pt ⟶ cA.pt.left` to `fun s j => hl.lift { pt := s.pt π := { app := fun i => s.π.app i ≫ WidePullback.π (fun _ => (A.obj i).hom) j naturality := by`. Introduce `i i' f`. Establish `h` using `s.w f`. Simplify using `only [Functor.const_obj_obj, Functor.const_obj_map, Category.id_comp, Functor.comp_obj, Arrow.leftFunc_obj, Functor.comp_map, Arrow.leftFunc_map] at h ⊢`.
+
+Rewrite using `[← h]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (s.π.app i ≫ ·) (cechLev_π (A.map f) k j)).trans (Category.assoc _ _ _).symm) } }`. Establish `hLfac : ∀ s j i, L s j ≫ (cA.π.app i).left = s.π.app i ≫ WidePullback.π (fun _ => (A.obj i).hom) j`. Introduce `s j i`. Conclude with `hl.fac _ i`.
+
+Establish `hLbase : ∀ s j i, L s j ≫ cA.pt.hom ≫ (cA.π.app i).right = s.π.app i ≫ WidePullback.base (fun _ : Fin (k.unop.len + 1) => (A.obj i).hom)`. Introduce `s j i`. Establish `hw : (cA.π.app i).left ≫ (A.obj i).hom = cA.pt.hom ≫ (cA.π.app i).right` using `Arrow.w (cA.π.app i)`. Rewrite using `[← hw, ← Category.assoc, hLfac]`. Conclude with `(Category.assoc _ _ _).trans (congrArg (s.π.app i ≫ ·) (WidePullback.π_arrow _ j))`.
+
+Use `⟨{ lift := fun s => WidePullback.lift (L s 0 ≫ cA.pt.hom) (L s) (fun j => by` and prove the remaining obligations. Rewrite using `[← cancel_mono (cA.π.app i₀).right, Category.assoc, Category.assoc, hLbase, hLbase])`. Use `fac := ?_`. Use `uniq := ?_ }⟩`. Introduce `s i`.
+
+Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (WidePullback.lift (L s 0 ≫ cA.pt.hom) (L s) _ ≫ ·) (cechLev_π (cA.π.app i) k j)).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations.
+
+Use `(congrArg (· ≫ (cA.π.app i).left) (WidePullback.lift_π _ _ _ _ j)).trans ?_` and prove the remaining obligations. Conclude with `hLfac s j i`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (WidePullback.lift (L s 0 ≫ cA.pt.hom) (L s) _ ≫ ·) (cechLev_base (cA.π.app i) k)).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations.
+
+Use `(congrArg (· ≫ (cA.π.app i).right) (WidePullback.lift_base _ _ _ _)).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans (hLbase s 0 i)`. Introduce `s m hm`. Establish `hmj : ∀ j, m ≫ WidePullback.π (fun _ => cA.pt.hom) j = L s j`. Introduce `j`.
+
+Apply `hl.hom_ext` to reduce the goal to its premises. Introduce `i`. Use `Eq.trans ?_ (hLfac s j i).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (· ≫ WidePullback.π (fun _ => (A.obj i).hom) j) (hm i))` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Conclude with `congrArg (m ≫ ·) (cechLev_π (cA.π.app i) k j).symm`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Conclude with `(hmj j).trans (WidePullback.lift_π _ _ _ _ j).symm`.
+
+Use `Eq.trans ?_ (WidePullback.lift_base _ _ _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (· ≫ cA.pt.hom) (hmj 0))` and prove the remaining obligations. Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Conclude with `congrArg (m ≫ ·) (WidePullback.π_arrow _ 0).symm`.
+-/
 theorem cech_level_limit (I : Type) [SmallCategory I] [IsCofiltered I] (A : I ⥤ Arrow PSh) (cA : Cone A)
     (hl : IsLimit (Arrow.leftFunc.mapCone cA)) (_hA : ∀ ⦃i j : I⦄ (f : i ⟶ j), IsIso (A.map f).right)
     (hR : ∀ i, IsIso (cA.π.app i).right) (k : SimplexCategoryᵒᵖ) :

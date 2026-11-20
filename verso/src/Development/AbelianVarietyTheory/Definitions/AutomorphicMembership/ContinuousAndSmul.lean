@@ -26,6 +26,15 @@ def christoffel (b : V d → Matrix (Fin d) (Fin d) ℂ) (z ξ : V d) : V d :=
 def jet (b : V d → Matrix (Fin d) (Fin d) ℂ) (n : ℕ) : V d × V d → V d :=
   n.rec Prod.fst fun _ f q => del f q (q.2, -christoffel b q.1 q.2)
 
+/- English proof (translation)
+Use extensionality with `k l`. Establish `e (c : ℂ) : ((∑ k', ∑ l', b k' l' * (Pi.single k 1 + c • Pi.single l 1 : Fin d → ℂ) k' * starRingEnd ℂ ((Pi.single k 1 + c • Pi.single l 1 : Fin d → ℂ) l')).re : ℂ) = b k k + starRingEnd ℂ c * b k l + c * b l k + c * starRingEnd ℂ c * b l l`. Establish `h : ∑ k', ∑ l', b k' l' * (Pi.single k 1 + c • Pi.single l 1 : Fin d → ℂ) k' * starRingEnd ℂ ((Pi.single k 1 + c • Pi.single l 1 : Fin d → ℂ) l') = b k k + starRingEnd ℂ c * b k l + c * b l k + c * starRingEnd ℂ c * b l l`. Simplify using `[Pi.single_apply, mul_add, add_mul, Finset.sum_add_distrib, apply_ite (starRingEnd ℂ)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h]`. Use `Complex.conj_eq_iff_re.1 ?_` and prove the remaining obligations. Establish `h' (i j) : starRingEnd ℂ (b i j) = b j i` using `hb.apply j i`. Simplify using `only [map_add, map_mul, h', Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e₁` using `e 1`. Establish `e₂` using `e (-1)`. Establish `e₃` using `e I`. Establish `e₄` using `e (-I)`. Rewrite `e₁` using `[one_smul]`.
+
+Rewrite `e₂` using `[neg_one_smul, ← sub_eq_add_neg]`. Rewrite `e₄` using `[neg_smul, ← sub_eq_add_neg]`. Rewrite using `[polMat, e₁, e₂, e₃, e₄]`. Simplify using `only [map_one, map_neg, conj_I]`. Take the linear combination `((b l k - b k l) / 2) * I_mul_I`.
+-/
 theorem polMat_form {b : Matrix (Fin d) (Fin d) ℂ} (hb : b.IsHermitian) :
     polMat (fun ξ => (∑ k, ∑ l, b k l * ξ k * starRingEnd ℂ (ξ l)).re) = b := by
   ext k l
@@ -53,24 +62,42 @@ theorem polMat_form {b : Matrix (Fin d) (Fin d) ℂ} (hb : b.IsHermitian) :
   simp only [map_one, map_neg, conj_I]
   linear_combination ((b l k - b k l) / 2) * I_mul_I
 
+/- English proof (translation)
+Rewrite using `[christoffel, WithLp.ofLp_toLp, vecMul_vecMul, nonsing_inv_mul _ h, vecMul_one]`.
+-/
 theorem chris_vecMul {b : V d → Matrix (Fin d) (Fin d) ℂ} {z : V d} (h : IsUnit (b z).det) (ξ : V d) :
     (christoffel b z ξ).ofLp ᵥ* b z = ξ.ofLp ᵥ* Matrix.of fun k l => del (fun v => b v k l) z ξ := by
   rw [christoffel, WithLp.ofLp_toLp, vecMul_vecMul, nonsing_inv_mul _ h, vecMul_one]
 
 variable (b : V d → Matrix (Fin d) (Fin d) ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jet_zero : jet b 0 = Prod.fst := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jet_succ (n : ℕ) (q : V d × V d) : jet b (n + 1) q = del (jet b n) q (q.2, -christoffel b q.1 q.2) := rfl
 
+/- English proof (translation)
+The claim follows from `funext fun q => by rw [jet_succ, jet_zero, del_eq_fderiv differentiableAt_fst, fderiv_fst] rfl`.
+-/
 theorem jet_one : jet b 1 = Prod.snd := funext fun q => by
   rw [jet_succ, jet_zero, del_eq_fderiv differentiableAt_fst, fderiv_fst]
   rfl
 
+/- English proof (translation)
+Rewrite using `[jet_succ, jet_one, del_eq_fderiv differentiableAt_snd, fderiv_snd]`. Both sides reduce to the same expression.
+-/
 theorem jet_two (q : V d × V d) : jet b 2 q = -christoffel b q.1 q.2 := by
   rw [jet_succ, jet_one, del_eq_fderiv differentiableAt_snd, fderiv_snd]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact funext fun q => by simp [jet_two, christoffel, show (of fun _ _ => 0 : Matrix (Fin d) (Fin d) ℂ) = 0 from rfl]`. Consider the case `succ n ih => exact funext fun q => by rw [jet_succ, ih, del_const]; rfl`.
+-/
 theorem jet_const (b : Matrix (Fin d) (Fin d) ℂ) (n : ℕ) : jet (fun _ => b) (n + 2) = fun _ => 0 := by
   induction n with
   | zero => exact funext fun q => by simp [jet_two, christoffel, show (of fun _ _ => 0 : Matrix (Fin d) (Fin d) ℂ) = 0 from rfl]
@@ -78,10 +105,16 @@ theorem jet_const (b : Matrix (Fin d) (Fin d) ℂ) (n : ℕ) : jet (fun _ => b) 
 
 def cutoff (t : ℝ) : ℝ := if t < 1 then ((1 - t) ^ 2)⁻¹ * Real.exp (t - 1)⁻¹ else 0
 
+/- English proof (translation)
+Unfold `cutoff`. Apply the tactic sequence `split_ifs <;> positivity`.
+-/
 theorem cutoff_nonneg (t : ℝ) : 0 ≤ cutoff t := by
   unfold cutoff
   split_ifs <;> positivity
 
+/- English proof (translation)
+Unfold `cutoff`. Use `split_ifs with h`. Conclude with `iff_of_true (mul_pos (inv_pos.2 (pow_pos (sub_pos.2 h) 2)) (Real.exp_pos _)) h`. Conclude with `iff_of_false (lt_irrefl _) h`.
+-/
 theorem cutoff_pos_iff {t : ℝ} : 0 < cutoff t ↔ t < 1 := by
   unfold cutoff
   split_ifs with h
@@ -90,6 +123,11 @@ theorem cutoff_pos_iff {t : ℝ} : 0 < cutoff t ↔ t < 1 := by
 
 def mean (q f : (Fin d → ℂ) → ℝ) : ℝ := (∫ ξ, f ξ * cutoff (q ξ)) / ∫ ξ, cutoff (q ξ)
 
+/- English proof (translation)
+Establish `hT` using `T.isUnit_det'.ne_zero`. Establish `e (g : (Fin d → ℂ) → ℝ) : ∫ ξ, g (T ξ) = |(LinearMap.det T.toLinearMap)⁻¹| * ∫ ξ, g ξ`. Establish `h` using `integral_map_equiv (μ := volume) T.toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv g`. Establish `h'` using `Measure.map_linearMap_addHaar_eq_smul_addHaar volume hT`. Use `h.symm.trans ((congrArg (fun μ => ∫ ξ, g ξ ∂μ) h').trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[integral_smul_measure, ENNReal.toReal_ofReal (abs_nonneg _), smul_eq_mul]`. Conclude with `(congrArg₂ (· / ·) (e fun ξ => f ξ * cutoff (q ξ)) (e fun ξ => cutoff (q ξ))).trans (mul_div_mul_left _ _ (abs_pos.2 (inv_ne_zero hT)).ne')`.
+-/
 theorem mean_comp (q f : (Fin d → ℂ) → ℝ) (T : (Fin d → ℂ) ≃ₗ[ℝ] (Fin d → ℂ)) :
     mean (q ∘ T) (f ∘ T) = mean q f := by
   have hT := T.isUnit_det'.ne_zero
@@ -101,6 +139,11 @@ theorem mean_comp (q f : (Fin d → ℂ) → ℝ) (T : (Fin d → ℂ) ≃ₗ[�
   exact (congrArg₂ (· / ·) (e fun ξ => f ξ * cutoff (q ξ)) (e fun ξ => cutoff (q ξ))).trans
     (mul_div_mul_left _ _ (abs_pos.2 (inv_ne_zero hT)).ne')
 
+/- English proof (translation)
+Unfold `cutoff`. Use `split_ifs with h`. Establish `h₁` using `Real.pow_div_factorial_le_exp (1 - t)⁻¹ (inv_pos.2 (sub_pos.2 h)).le 2`. Rewrite using `[← neg_sub 1 t, inv_neg, Real.exp_neg, ← inv_pow, ← div_eq_mul_inv, div_le_iff₀ (Real.exp_pos _)]`. Evaluate the numerical expressions using `[Nat.factorial] at h₁ ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `zero_le_two`.
+-/
 theorem cutoff_le (t : ℝ) : cutoff t ≤ 2 := by
   unfold cutoff
   split_ifs with h
@@ -110,6 +153,9 @@ theorem cutoff_le (t : ℝ) : cutoff t ≤ 2 := by
     linarith
   · exact zero_le_two
 
+/- English proof (translation)
+The claim follows from `Measurable.ite measurableSet_Iio (by fun_prop) measurable_const`.
+-/
 theorem measurable_cutoff : Measurable cutoff :=
   Measurable.ite measurableSet_Iio (by fun_prop) measurable_const
 
@@ -119,6 +165,11 @@ variable {q : (Fin d → ℂ) → ℝ} (hc : Continuous q) (hh : ∀ (t : ℝ) �
   (hp : ∀ ξ, ξ ≠ 0 → 0 < q ξ)
 include hc hh hp
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩ : ∃ m > 0, ∀ ξ ∈ Metric.sphere (0 : Fin d → ℂ) 1, m ≤ q ξ` from `(isCompact_sphere 0 1).exists_forall_le' hc.continuousOn fun ξ hξ => hp ξ (by rintro rfl; simp at hξ)`. Use `(Metric.isBounded_closedBall (x := 0) (r := max 1 m⁻¹)).subset fun ξ hξ => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, le_max_iff, or_iff_not_imp_left, not_le]`. Introduce `h1`. Establish `h0 : 0 < ‖ξ‖` using `one_pos.trans h1`.
+
+Establish `h2` using `h (‖ξ‖⁻¹ • ξ) (by simp [norm_smul, h0.ne'])`. Establish `h3 : q ξ < 1` using `hξ`. Rewrite `h2` using `[hh, inv_pow, ← div_eq_inv_mul, le_div_iff₀ (by positivity)]`. Rewrite using `[le_inv_comm₀ h0 hm, ← one_div, le_div_iff₀ h0]`. Use polynomial arithmetic with `[mul_pos hm h0]`.
+-/
 theorem isBounded_ball : Bornology.IsBounded {ξ | q ξ < 1} := by
   obtain ⟨m, hm, h⟩ : ∃ m > 0, ∀ ξ ∈ Metric.sphere (0 : Fin d → ℂ) 1, m ≤ q ξ :=
     (isCompact_sphere 0 1).exists_forall_le' hc.continuousOn fun ξ hξ => hp ξ (by rintro rfl; simp at hξ)
@@ -132,6 +183,9 @@ theorem isBounded_ball : Bornology.IsBounded {ξ | q ξ < 1} := by
   rw [le_inv_comm₀ h0 hm, ← one_div, le_div_iff₀ h0]
   nlinarith [mul_pos hm h0]
 
+/- English proof (translation)
+Use `(integrableOn_iff_integrable_of_support_subset (s := {ξ | q ξ < 1}) fun ξ hξ => cutoff_pos_iff.1 ((cutoff_nonneg _).lt_of_ne' hξ)).1 ?_` and prove the remaining obligations. Use `Measure.integrableOn_of_bounded (M := 2) (isBounded_ball hc hh hp).measure_lt_top.ne (measurable_cutoff.comp hc.measurable).aestronglyMeasurable (ae_of_all _ fun ξ => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (cutoff_nonneg _)]`. Conclude with `cutoff_le _`.
+-/
 theorem integrable_cutoff : Integrable fun ξ => cutoff (q ξ) := by
   refine (integrableOn_iff_integrable_of_support_subset (s := {ξ | q ξ < 1}) fun ξ hξ =>
     cutoff_pos_iff.1 ((cutoff_nonneg _).lt_of_ne' hξ)).1 ?_
@@ -140,6 +194,9 @@ theorem integrable_cutoff : Integrable fun ξ => cutoff (q ξ) := by
   rw [Real.norm_of_nonneg (cutoff_nonneg _)]
   exact cutoff_le _
 
+/- English proof (translation)
+Rewrite using `[integral_pos_iff_support_of_nonneg (fun _ => cutoff_nonneg _) (integrable_cutoff hc hh hp)]`. Use `lt_of_lt_of_le ((isOpen_lt hc continuous_const (g := fun _ => 1)).measure_pos volume ⟨0, ?_⟩) (measure_mono fun ξ hξ => (cutoff_pos_iff.2 hξ).ne')` and prove the remaining obligations. Use `hh 0 0` as an intermediate fact. Simplify using `only [smul_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul] at this`. Conclude with `this.trans_lt one_pos`.
+-/
 theorem mass_pos : 0 < ∫ ξ, cutoff (q ξ) := by
   rw [integral_pos_iff_support_of_nonneg (fun _ => cutoff_nonneg _) (integrable_cutoff hc hh hp)]
   refine lt_of_lt_of_le ((isOpen_lt hc continuous_const (g := fun _ => 1)).measure_pos volume ⟨0, ?_⟩)
@@ -148,6 +205,9 @@ theorem mass_pos : 0 < ∫ ξ, cutoff (q ξ) := by
   simp only [smul_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul] at this
   exact this.trans_lt one_pos
 
+/- English proof (translation)
+Rewrite using `[mean, integral_const_mul, mul_div_cancel_right₀ _ (mass_pos hc hh hp).ne']`.
+-/
 theorem mean_const (r : ℝ) : mean q (fun _ => r) = r := by
   rw [mean, integral_const_mul, mul_div_cancel_right₀ _ (mass_pos hc hh hp).ne']
 
@@ -197,6 +257,9 @@ structure IsRegConst (a θ : ChartForm p σ d) (Ψ : CxPts p σ → ℝ → ℝ)
         K * (‖w‖ ^ 2 * a c y ξ.ofLp + √(a c y ξ.ofLp) * ‖η‖ + ‖η‖ ^ 2) ≤
       θ c y ξ.ofLp + (leviForm (fun q : V d × ℂ => Ψ (c.e.symm q.1) ‖q.2‖) (c.e y, w) (ξ, η) (ξ, η)).re / Real.pi
 
+/- English proof (translation)
+The claim follows from `hA K_nonneg := hK δ_pos := hδ smooth _ := contDiffOn_const mono _ s hs t _ h := by have := hs.1 beta_reduce gcongr hess c y _ w _ _ ξ η := by have e : deriv (fun t : ℝ => r + K * t ^ 2) ‖w‖ = K * (2 * ‖w‖) := by simpa using (((hasDerivAt_pow 2 ‖w‖).const_mul K).const_add r).deriv …`.
+-/
 theorem isRegConst_const {a θ : ChartForm p σ d} (ha : ∀ c y ξ, 0 ≤ a c y ξ) (hθ : ∀ c y ξ, 0 ≤ θ c y ξ) (r : ℝ) {A K δ : ℝ}
     (hA : 0 ≤ A) (hK : 0 ≤ K) (hδ : 0 < δ) : IsRegConst a θ (fun _ _ => r) A K δ where
   A_nonneg := hA
@@ -221,6 +284,11 @@ theorem isRegConst_const {a θ : ChartForm p σ d} (ha : ∀ c y ξ, 0 ≤ a c y
 
 variable {a : ChartForm p σ d} {E : ChartMap p σ d} {R : AnRead p σ d}
 
+/- English proof (translation)
+Set `L : (Fin d → ℂ) →ₗ[ℂ] (Fin d → ℂ)` to `(WithLp.linearEquiv 2 ℂ _).toLinearMap ∘ₗ (fderiv ℂ (c'.e ∘ c.e.symm) (c.e y)).toLinearMap ∘ₗ (WithLp.linearEquiv 2 ℂ _).symm.toLinearMap`. Establish `hL : Function.Injective (L.restrictScalars ℝ)` using `(injective_iff_map_eq_zero _).2 fun ξ h =>`. Assume the negation of the conclusion as `fun h0 => AlgChart.dtrans_ne_zero hy hy' h0 h`. Set `T` to `LinearEquiv.ofInjectiveEndo _ hL`. Rewrite using `[rhoIn, rhoIn, ← mean_comp (a c' y) _ T]`.
+
+Use `congr 1`. Conclude with `funext fun ξ => ha.trans hy hy' ξ`. Conclude with `funext fun ξ => congrArg ψ ((hE.trans c c' y hy hy' _).trans (congrArg _ (map_smul T t ξ)))`.
+-/
 theorem rhoIn_eq (ha : IsKaehlerForm R a) (hE : IsExph a E) (ψ : CxPts p σ → ℝ) {c c' : AlgChart p σ d} {y : CxPts p σ}
     (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) (t : ℝ) : rhoIn a E ψ c y t = rhoIn a E ψ c' y t := by
   let L : (Fin d → ℂ) →ₗ[ℂ] (Fin d → ℂ) := (WithLp.linearEquiv 2 ℂ _).toLinearMap ∘ₗ
@@ -238,12 +306,18 @@ variable [SmoothOfRelativeDimension d p]
 def rho (a : ChartForm p σ d) (E : ChartMap p σ d) (ψ : CxPts p σ → ℝ) (y : CxPts p σ) (t : ℝ) : ℝ :=
   rhoIn a E ψ (AlgChart.exists_mem_source (D := d) y).choose y t
 
+/- English proof (translation)
+The claim follows from `rhoIn_eq ha hE ψ (AlgChart.exists_mem_source y).choose_spec hy t`.
+-/
 theorem rho_eq (ha : IsKaehlerForm R a) (hE : IsExph a E) (ψ : CxPts p σ → ℝ) {c : AlgChart p σ d} {y : CxPts p σ}
     (hy : y ∈ c.e.source) (t : ℝ) : rho a E ψ y t = rhoIn a E ψ c y t :=
   rhoIn_eq ha hE ψ (AlgChart.exists_mem_source y).choose_spec hy t
 
 omit [SmoothOfRelativeDimension d p] in
 
+/- English proof (translation)
+The claim follows from `have ⟨_, _, hW, _, _, e⟩ := ha.1 y ⟨_, funext fun ξ => e c y hy hW ξ⟩`.
+-/
 theorem exists_eq_sum (ha : IsKaehlerForm R a) {c : AlgChart p σ d} {y : CxPts p σ} (hy : y ∈ c.e.source) :
     ∃ b : Matrix (Fin d) (Fin d) ℂ, a c y = fun ξ => (∑ k, ∑ l, b k l * ξ k * starRingEnd ℂ (ξ l)).re / Real.pi :=
   have ⟨_, _, hW, _, _, e⟩ := ha.1 y
@@ -251,6 +325,11 @@ theorem exists_eq_sum (ha : IsKaehlerForm R a) {c : AlgChart p σ d} {y : CxPts 
 
 omit [SmoothOfRelativeDimension d p] in
 
+/- English proof (translation)
+Take `⟨b, e⟩` from `exists_eq_sum ha hy`. Rewrite using `[e]`. Use `⟨by fun_prop, fun t ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_div_assoc, ← re_ofReal_mul]`. Simplify using `only [Finset.mul_sum, Pi.smul_apply, real_smul, map_mul, conj_ofReal, ofReal_pow]`.
+
+Use `congr 2`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem continuous_and_smul (ha : IsKaehlerForm R a) {c : AlgChart p σ d} {y : CxPts p σ} (hy : y ∈ c.e.source) :
     Continuous (a c y) ∧ ∀ (t : ℝ) ξ, a c y (t • ξ) = t ^ 2 * a c y ξ := by
   obtain ⟨b, e⟩ := exists_eq_sum ha hy
@@ -261,11 +340,17 @@ theorem continuous_and_smul (ha : IsKaehlerForm R a) {c : AlgChart p σ d} {y : 
   congr 2
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+The claim follows from `have hy := (AlgChart.exists_mem_source (D := d) y).choose_spec mean_const (continuous_and_smul ha hy).1 (continuous_and_smul ha hy).2 (ha.2 _ y hy) r`.
+-/
 theorem rho_const (ha : IsKaehlerForm R a) (E : ChartMap p σ d) (r : ℝ) (y : CxPts p σ) (t : ℝ) :
     rho a E (fun _ => r) y t = r :=
   have hy := (AlgChart.exists_mem_source (D := d) y).choose_spec
   mean_const (continuous_and_smul ha hy).1 (continuous_and_smul ha hy).2 (ha.2 _ y hy) r
 
+/- English proof (translation)
+Establish `hy` using `(AlgChart.exists_mem_source (D := d) y).choose_spec`. Rewrite using `[← rho_const ha E (ψ y) y 0]`. Simplify using `only [rho, rhoIn, zero_smul, hE.zero _ y hy]`.
+-/
 theorem rho_zero (ha : IsKaehlerForm R a) (hE : IsExph a E) (ψ : CxPts p σ → ℝ) (y : CxPts p σ) :
     rho a E ψ y 0 = ψ y := by
   have hy := (AlgChart.exists_mem_source (D := d) y).choose_spec

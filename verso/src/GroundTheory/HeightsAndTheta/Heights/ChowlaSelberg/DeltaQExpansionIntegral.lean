@@ -16,6 +16,11 @@ namespace DeltaQExpansionIntegral
 
 def sigmaSeries (k : ℕ) : PowerSeries ℤ := mk fun n ↦ (σ k n : ℤ)
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[E_qExpansion_coeff _ ⟨2, rfl⟩, coeff_map]`. Establish `hb : bernoulli 4 = -1 / 30` using `by decide +kernel`. Break down `eq_or_ne m 0 with rfl | hm` into its components or cases. Simplify using `[sigmaSeries]`.
+
+Rewrite using `[map_add, map_zsmul]`. Simplify using `[hm, sigmaSeries, hb, coeff_one]`. Evaluate the numerical expressions.
+-/
 theorem qExpansion_E₄ :
     qExpansion 1 E₄ = map (Int.castRingHom ℂ) (1 + (240 : ℤ) • sigmaSeries 3) := by
   ext m
@@ -27,6 +32,11 @@ theorem qExpansion_E₄ :
     simp [hm, sigmaSeries, hb, coeff_one]
     norm_num
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[E_qExpansion_coeff _ ⟨3, rfl⟩, coeff_map]`. Establish `hb : bernoulli 6 = 1 / 42` using `by decide +kernel`. Break down `eq_or_ne m 0 with rfl | hm` into its components or cases. Simplify using `[sigmaSeries]`.
+
+Rewrite using `[map_sub, map_zsmul]`. Simplify using `[hm, sigmaSeries, hb, coeff_one]`. Evaluate the numerical expressions.
+-/
 theorem qExpansion_E₆ :
     qExpansion 1 E₆ = map (Int.castRingHom ℂ) (1 - (504 : ℤ) • sigmaSeries 5) := by
   ext m
@@ -38,6 +48,11 @@ theorem qExpansion_E₆ :
     simp [hm, sigmaSeries, hb, coeff_one]
     norm_num
 
+/- English proof (translation)
+Rewrite using `[sigma_apply, sigma_apply, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.dvd_sum fun d _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Use `push_cast`. Generalize the expression as in `(d : ZMod 12) = x`.
+
+Use `revert x`. Evaluate the decidable proposition.
+-/
 theorem twelve_dvd (n : ℕ) : 12 ∣ 5 * σ 3 n + 7 * σ 5 n := by
   rw [sigma_apply, sigma_apply, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
   refine Finset.dvd_sum fun d _ ↦ ?_
@@ -49,6 +64,9 @@ theorem twelve_dvd (n : ℕ) : 12 ∣ 5 * σ 3 n + 7 * σ 5 n := by
 
 def cSeries : PowerSeries ℤ := mk fun n ↦ (((5 * σ 3 n + 7 * σ 5 n) / 12 : ℕ) : ℤ)
 
+/- English proof (translation)
+Use extensionality with `n`. Establish `h` using `Nat.mul_div_cancel' (twelve_dvd n)`. Rewrite using `[map_add, map_zsmul, map_zsmul, map_zsmul]`. Simplify using `only [cSeries, sigmaSeries, coeff_mk, smul_eq_mul]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem twelve_smul_cSeries :
     (12 : ℤ) • cSeries = (5 : ℤ) • sigmaSeries 3 + (7 : ℤ) • sigmaSeries 5 := by
   ext n
@@ -57,6 +75,11 @@ theorem twelve_smul_cSeries :
   simp only [cSeries, sigmaSeries, coeff_mk, smul_eq_mul]
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `e : (1728 : ℂ) • (⇑CuspForm.discriminant) = ⇑(E₄.pow 3) - ⇑(E₆.pow 2)`. Use function extensionality and compare the values at `τ`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, ModularForm.coe_pow, Pi.pow_apply, smul_eq_mul, CuspForm.coe_discriminant, discriminant_eq_E₄_cube_sub_E₆_sq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← ModularForm.qExpansion_pow one_pos one_mem_strictPeriods_SL E₄ 3, ← ModularForm.qExpansion_pow one_pos one_mem_strictPeriods_SL E₆ 2, ← ModularForm.qExpansion_sub one_pos one_mem_strictPeriods_SL (E₄.pow 3) (E₆.pow 2), ← e, ModularForm.qExpansion_smul one_pos one_mem_strictPer …`.
+
+Both sides reduce to the same expression.
+-/
 theorem qExpansion_discriminant_smul :
     (1728 : ℂ) • qExpansion 1 ModularForm.discriminant =
       qExpansion 1 E₄ ^ 3 - qExpansion 1 E₆ ^ 2 := by
@@ -71,6 +94,15 @@ theorem qExpansion_discriminant_smul :
     ModularForm.qExpansion_smul one_pos one_mem_strictPeriods_SL (1728 : ℂ) CuspForm.discriminant]
   rfl
 
+/- English proof (translation)
+Use `set A := sigmaSeries 3`. Use `set B := sigmaSeries 5`. Use `set Ez : PowerSeries ℤ := 100 * A ^ 2 + 8000 * A ^ 3 - 147 * B ^ 2 + cSeries with hEz`. Establish `hC` using `twelve_smul_cSeries`. Simplify using `only [zsmul_eq_mul, Int.cast_ofNat] at hC`.
+
+Establish `hring : (1 + (240 : ℤ) • A) ^ 3 - (1 - (504 : ℤ) • B) ^ 2 = 1728 * Ez`. Simplify using `only [zsmul_eq_mul, Int.cast_ofNat, hEz]`. Take the linear combination `(-144 : PowerSeries ℤ) * hC`. Establish `key : qExpansion 1 ModularForm.discriminant = map (Int.castRingHom ℂ) Ez`. Establish `h2 : (1728 : ℂ) • map (Int.castRingHom ℂ) Ez = qExpansion 1 E₄ ^ 3 - qExpansion 1 E₆ ^ 2`.
+
+Rewrite using `[qExpansion_E₄, qExpansion_E₆, ← map_pow, ← map_pow, ← map_sub, hring, map_mul, map_ofNat, Algebra.smul_def, map_ofNat]`. Conclude with `smul_right_injective _ (by norm_num : (1728 : ℂ) ≠ 0) (qExpansion_discriminant_smul.trans h2.symm)`. Establish `h0 : constantCoeff Ez = 0`. Simplify using `[hEz, A, B, sigmaSeries, cSeries]`. Take `⟨D, hD⟩` from `X_dvd_iff.mpr h0`.
+
+Use `⟨D, ?_, hD ▸ key⟩` and prove the remaining obligations. Establish `h1` using `discriminant_qExpansion_coeff_one`. Rewrite `h1` using `[key, hD, coeff_map, coeff_succ_X_mul, eq_intCast]`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Conclude with `h1` after adjusting the coercions.
+-/
 theorem proof : Statement := by
   set A := sigmaSeries 3
   set B := sigmaSeries 5

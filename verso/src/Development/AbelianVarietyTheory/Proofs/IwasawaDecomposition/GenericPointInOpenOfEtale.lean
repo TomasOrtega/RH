@@ -9,6 +9,13 @@ noncomputable section
 
 namespace GlobalTheory.GenFibre
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Use `haveI : Module.Flat A R := hφ`. Use `haveI : IsLocalHom (algebraMap A R) := ‹_›`. Use `haveI := Module.FaithfullyFlat.of_flat_of_isLocalHom (A := A) (B := R)`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `a ha`. Establish `h` using `Ideal.comap_map_eq_self_of_faithfullyFlat (A := A) (B := R) ⊥`. Rewrite `h` using `[Ideal.map_bot]`. Establish `: a ∈ Ideal.comap (algebraMap A R) ⊥` using `by rw [Ideal.mem_comap, Ideal.mem_bot]; exact ha`. Rewrite `this` using `[h]`.
+
+Simplify using `using this`.
+-/
 theorem injective_of_flat_local {A R : Type} [CommRing A] [IsLocalRing A] [CommRing R] [IsLocalRing R]
     (φ : A →+* R) (hφ : φ.Flat) [IsLocalHom φ] : Function.Injective φ := by
   letI := φ.toAlgebra
@@ -26,6 +33,19 @@ theorem injective_of_flat_local {A R : Type} [CommRing A] [IsLocalRing A] [CommR
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Use `GlobalTheory.AmpleDown.isNoetherian_gmod Z` as an intermediate fact. Use `haveI : GlobalTheory.IsNormalScheme Z.X := GlobalTheory.IsNormalScheme.of_pred Z.normal`. Use `haveI := Z.flat`. Establish `b₂ : Flat (spMap (algebraMap (𝓞 c.F) c.F))`. Establish `: Module.Flat (𝓞 c.F) c.F` using `IsLocalization.flat c.F (nonZeroDivisors (𝓞 c.F))`.
+
+Conclude with `(HasRingHomProperty.Spec_iff (P := @Flat)).2 (RingHom.flat_algebraMap_iff.2 this)`. Establish `a₂ : Flat (pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F)))` using `MorphismProperty.of_isPullback (P := @Flat) (IsPullback.of_hasPullback _ _).flip b₂`. Set `g0 : PrimeSpectrum (𝓞 c.F)` to `⟨⊥, Ideal.bot_prime⟩`. Establish `hsP : Z.s P = g0`. Establish `s₀ : g0 ⤳ Z.s P` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`.
+
+Take `⟨P', h₁, h₂⟩` from `Flat.generalizingMap Z.s s₀`. Rewrite using `[← hP P' h₁, h₂]`. Set `f0 : PrimeSpectrum c.F` to `⟨⊥, Ideal.bot_prime⟩`. Establish `hf0 : spMap (algebraMap (𝓞 c.F) c.F) f0 = g0`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+
+Use `show Ideal.comap (algebraMap (𝓞 c.F) c.F) ⊥ = ⊥`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective (𝓞 c.F) c.F)`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := Z.s) (g := spMap (algebraMap (𝓞 c.F) c.F)) P f0 (hsP.trans hf0.symm)`. Establish `hC` using `irreducibleComponent_mem_irreducibleComponents P`. Establish `hCo : IsOpen (irreducibleComponent P)` using `GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents hC`.
+
+Establish `hg` using `hC.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ hC)`. Establish `hgP : hC.1.genericPoint = P` using `hP _ (hg.specializes mem_irreducibleComponent)`. Take `⟨w, hwC, ⟨v, rfl⟩⟩` from `Z.jQ_dense.inter_open_nonempty _ (hCo.preimage (pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F))).continuous) ⟨z, by rw [Set.mem_preimage, hz]; exact mem_irreducibleComponent⟩`. Establish `hPw : P ⤳ pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F)) (Z.jQ v)` using `hgP ▸ hg.specializes hwC`. Take `⟨w', h₁, h₂⟩` from `Flat.generalizingMap (pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F))) hPw`.
+
+Use `Z.jQ_open` as an intermediate fact. Take `⟨v', rfl⟩` from `h₁.mem_open Z.jQ.isOpenEmbedding.isOpen_range ⟨v, rfl⟩`. Conclude with `⟨v', by rw [Model.j, Scheme.Hom.comp_apply]; exact h₂⟩`.
+-/
 theorem mem_range_j_of_maximal (Z : GMod Xo c) (P : Z.X) (hP : ∀ q : Z.X, q ⤳ P → q = P) :
     P ∈ Set.range Z.j := by
   have := GlobalTheory.AmpleDown.isNoetherian_gmod Z
@@ -61,6 +81,17 @@ theorem mem_range_j_of_maximal (Z : GMod Xo c) (P : Z.X) (hP : ∀ q : Z.X, q �
   obtain ⟨v', rfl⟩ := h₁.mem_open Z.jQ.isOpenEmbedding.isOpen_range ⟨v, rfl⟩
   exact ⟨v', by rw [Model.j, Scheme.Hom.comp_apply]; exact h₂⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z R _ _ _ ξ hξe`. Use `set x' := ξ (closedPoint (CommRingCat.of R))`. Use `haveI : IsLocalHom (Scheme.stalkClosedPointTo ξ).hom := Scheme.isLocalHom_stalkClosedPointTo ξ`. Establish `hinj` using `injective_of_flat_local _ hξe.1`. Use `haveI : IsDomain (Z.X.presheaf.stalk x') := hinj.isDomain _`.
+
+Establish `hξ` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Introduce and unpack `_ ⟨x0, rfl⟩`. Use `set η := Spec.map (Scheme.stalkClosedPointTo ξ) (jK R x0) with hη`. Establish `hη0 : η.asIdeal = ⊥`. Establish `h0 : x0.asIdeal = ⊥` using `@Ideal.eq_bot_of_prime _ _ x0.asIdeal x0.isPrime`.
+
+Express the relevant statement in the definitionally equal form `Ideal.comap _ (Ideal.comap _ x0.asIdeal) = ⊥`. Rewrite using `[h0, CommRingCat.hom_ofHom, ← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R _), ← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 hinj`. Establish `hp : (jK R ≫ ξ) x0 = Z.X.fromSpecStalk x' η`. Rewrite using `[Scheme.Hom.comp_apply, ← hξ, Scheme.Hom.comp_apply]`.
+
+Rewrite using `[hp]`. Apply `mem_range_j_of_maximal Z` to reduce the goal to its premises. Introduce `q hq`. Establish `hqz : q ∈ Set.range (Z.X.fromSpecStalk x')`. Rewrite using `[Scheme.range_fromSpecStalk]`.
+
+Conclude with `hq.trans (((IsLocalRing.specializes_closedPoint η).map (Z.X.fromSpecStalk x').continuous).trans (specializes_of_eq Scheme.fromSpecStalk_closedPoint))`. Take `⟨Q, rfl⟩` from `hqz`. Establish `hQ : Q ⤳ η` using `(IsPreimmersion.isEmbedding (Z.X.fromSpecStalk x')).specializes_iff.1 hq`. Establish `hQη : Q = η` using `PrimeSpectrum.ext (le_antisymm ((PrimeSpectrum.le_iff_specializes Q η).2 hQ) (hη0 ▸ bot_le))`. Rewrite using `[hQη]`.
+-/
 theorem range_jK_subset_range_j : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     (ξ : Sp R ⟶ Z.X), IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → Set.range (jK R ≫ ξ) ⊆ Set.range Z.j := by

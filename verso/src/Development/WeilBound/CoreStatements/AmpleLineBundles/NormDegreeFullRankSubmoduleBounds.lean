@@ -5,6 +5,11 @@ open scoped BigOperators ComplexOrder
 
 namespace CoverDenseAlt
 
+/- English proof (translation)
+Establish `h : Submodule.span R (Set.range s) = (Submodule.span R (Set.range fun i => (s i : M))).comap G.subtype`. Establish `hr : (Set.range fun i => (s i : M)) = G.subtype '' Set.range s`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, ← Submodule.map_span, Submodule.comap_map_eq_of_injective G.injective_subtype]`.
+
+Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 private theorem card_quotient_span_eq_relIndex {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     (G : Submodule R M) {ι : Type*} (s : ι → G) :
     Nat.card (G ⧸ Submodule.span R (Set.range s)) =
@@ -18,6 +23,25 @@ private theorem card_quotient_span_eq_relIndex {R M : Type*} [CommRing R] [AddCo
   rw [h]
   rfl
 
+/- English proof (translation)
+Establish `hfinZ : Module.Finite ℤ E.carrier` using `Module.Finite.trans (𝓞 K) E.carrier`. Use `set S := Submodule.span (𝓞 K) (Set.range v) with hSdef`. Establish `key : ∀ y : E.carrier, ∃ a : 𝓞 K, a ≠ 0 ∧ a • y ∈ S`. Introduce `y`. Establish `hnot : ¬ LinearIndependent (𝓞 K) (Fin.snoc (α` using `fun _ => E.carrier) v y) := by`.
+
+Introduce `h`. Use `h.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[hn]`. Simplify using `at this`. Take `⟨g, hg, i, hi⟩` from `Fintype.not_linearIndependent_iff.mp hnot`.
+
+Rewrite `hg` using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last] at hg`. Distinguish the cases in `hl : g (Fin.last n) = 0`. It suffices to derive a contradiction. Rewrite `hg` using `[hl, zero_smul, add_zero]`.
+
+Establish `h0` using `Fintype.linearIndependent_iff.mp hv (fun j => g j.castSucc) hg`. Break down `Fin.eq_castSucc_or_eq_last i with ⟨j, rfl⟩ | rfl` into its components or cases. Conclude with `hi (h0 j)`. Conclude with `hi hl`. Use `⟨g (Fin.last n), hl, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_neg_of_add_eq_zero_right hg]`. Conclude with `S.neg_mem (Submodule.sum_mem _ fun j _ => S.smul_mem _ (Submodule.subset_span ⟨j, rfl⟩))`. Establish `hfg : Module.Finite ℤ (E.carrier ⧸ S.toAddSubgroup)` using `Module.Finite.of_surjective (QuotientAddGroup.mk' S.toAddSubgroup).toIntLinearMap (QuotientAddGroup.mk'_surjective _)`. Establish `htor : Module.IsTorsion ℤ (E.carrier ⧸ S.toAddSubgroup)`. Introduce `x`.
+
+Take `⟨y, rfl⟩` from `QuotientAddGroup.mk'_surjective S.toAddSubgroup x`. Take `⟨a, ha0, ha⟩` from `key y`. Establish `hN0 : Ideal.absNorm (Ideal.span {a}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `ha0`.
+
+Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {a}))`. Use `⟨⟨(Ideal.absNorm (Ideal.span {a}) : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hN0)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def]`. Use `show ((Ideal.absNorm (Ideal.span {a}) : ℤ)) • (QuotientAddGroup.mk' S.toAddSubgroup y) = 0`. Rewrite using `[← map_zsmul, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]`.
+
+Establish `e : ((Ideal.absNorm (Ideal.span {a}) : ℤ)) • y = b • (a • y)`. Rewrite using `[smul_smul, hb, Nat.cast_smul_eq_nsmul (𝓞 K), natCast_zsmul]`. Rewrite using `[e]`. Conclude with `S.smul_mem b ha`. Use `haveI := Module.finite_of_fg_torsion _ htor`.
+
+Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+-/
 private theorem index_span_ne_zero_of_linearIndependent {K : Type} [Field K] [NumberField K] (E : HermitianBundle.{0} K)
     {n : ℕ} (hn : Module.finrank (𝓞 K) E.carrier = n) (v : Fin n → E.carrier)
     (hv : LinearIndependent (𝓞 K) v) :
@@ -67,6 +91,29 @@ private theorem index_span_ne_zero_of_linearIndependent {K : Type} [Field K] [Nu
   haveI := Module.finite_of_fg_torsion _ htor
   exact AddSubgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Use `set S := Submodule.span (𝓞 K) (Set.range v) with hSdef`. Establish `hd' : (d : 𝓞 K) ≠ 0` using `by exact_mod_cast hd`. Use `set I : Ideal (𝓞 K) := Ideal.span {(d : 𝓞 K)} with hIdef`. Establish `hIidx : I.toAddSubgroup.index = (d ^ Module.finrank ℚ K).natAbs`. Rewrite using `[← Ideal.absNorm_eq_index, hIdef, Ideal.absNorm_span_singleton, show (d : 𝓞 K) = algebraMap ℤ (𝓞 K) d by simp, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]`.
+
+Establish `hIne : I.toAddSubgroup.index ≠ 0`. Rewrite using `[hIidx]`. Conclude with `Int.natAbs_ne_zero.mpr (pow_ne_zero _ hd)`. Use `haveI : I.toAddSubgroup.FiniteIndex := ⟨hIne⟩`. Use `haveI : Finite (𝓞 K ⧸ I) := I.toAddSubgroup.finite_quotient_of_finiteIndex`.
+
+Use `haveI : Finite (E.carrier ⧸ (⊤ : Submodule (𝓞 K) E.carrier)) := AddSubgroup.index_ne_zero_iff_finite.mp (by rw [Submodule.top_toAddSubgroup, AddSubgroup.index_top]; exact one_ne_zero)`. Establish `hU : Finite (E.carrier ⧸ I • (⊤ : Submodule (𝓞 K) E.carrier))` using `Submodule.finite_quotient_smul I Module.Finite.fg_top`. Establish `hUne : (I • (⊤ : Submodule (𝓞 K) E.carrier)).toAddSubgroup.index ≠ 0` using `AddSubgroup.index_ne_zero_iff_finite.mpr hU`. Establish `hUF : I • (⊤ : Submodule (𝓞 K) E.carrier) ≤ F`. Rewrite using `[Submodule.smul_le]`.
+
+Introduce `r hr x _`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hr`. Rewrite using `[mul_smul, Int.cast_smul_eq_zsmul]`. Conclude with `F.smul_mem c (hdF x)`. Establish `hTU : I • S ≤ I • (⊤ : Submodule (𝓞 K) E.carrier)` using `Submodule.smul_mono le_rfl le_top`.
+
+Use `set f := DistribMulAction.toLinearMap (𝓞 K) E.carrier (d : 𝓞 K) with hfdef`. Establish `hfinj : Function.Injective f` using `smul_right_injective E.carrier hd'`. Establish `hmapS : (I • S).toAddSubgroup = S.toAddSubgroup.map f.toAddMonoidHom`. Rewrite using `[hIdef, Submodule.ideal_span_singleton_smul, Submodule.pointwise_smul_toAddSubgroup]`. Both sides reduce to the same expression.
+
+Establish `hmapT : (I • (⊤ : Submodule (𝓞 K) E.carrier)).toAddSubgroup = (⊤ : AddSubgroup E.carrier).map f.toAddMonoidHom`. Rewrite using `[hIdef, Submodule.ideal_span_singleton_smul, Submodule.pointwise_smul_toAddSubgroup, Submodule.top_toAddSubgroup]`. Both sides reduce to the same expression. Establish `hrel : (I • S).toAddSubgroup.relIndex (I • (⊤ : Submodule (𝓞 K) E.carrier)).toAddSubgroup = S.toAddSubgroup.index`. Rewrite using `[hmapS, hmapT, AddSubgroup.relIndex_map_map_of_injective _ _ hfinj, AddSubgroup.relIndex_top_right]`.
+
+Establish `hT` using `Submodule.index_smul_le I (Finset.univ.image v) (N := S) (by rw [Finset.coe_image, Finset.coe_univ, Set.image_univ])`. Establish `hcard : (Finset.univ.image v).card ≤ n` using `Finset.card_image_le.trans (by simp)`. Establish `hmul2` using `AddSubgroup.relIndex_mul_index (show (I • S).toAddSubgroup ≤ (I • (⊤ : Submodule (𝓞 K) E.carrier)).toAddSubgroup from hTU)`. Rewrite `hmul2` using `[hrel]`. Establish `hUle : (I • (⊤ : Submodule (𝓞 K) E.carrier)).toAddSubgroup.index ≤ I.toAddSubgroup.index ^ n`.
+
+Establish `h1 : S.toAddSubgroup.index * (I • (⊤ : Submodule (𝓞 K) E.carrier)).toAddSubgroup.index ≤ S.toAddSubgroup.index * I.toAddSubgroup.index ^ (Finset.univ.image v).card`. Rewrite using `[hmul2, mul_comm]`. Conclude with `hT`. Establish `h2` using `Nat.le_of_mul_le_mul_left h1 (Nat.pos_of_ne_zero hS)`. Conclude with `h2.trans (Nat.pow_le_pow_right (Nat.pos_of_ne_zero hIne) hcard)`.
+
+Establish `hFU : F.toAddSubgroup.index ≤ (I • (⊤ : Submodule (𝓞 K) E.carrier)).toAddSubgroup.index` using `Nat.le_of_dvd (Nat.pos_of_ne_zero hUne) (AddSubgroup.index_dvd_of_le hUF)`. Establish `hFne : F.toAddSubgroup.index ≠ 0`. Introduce `h`. Establish `hdv` using `AddSubgroup.index_dvd_of_le (show (I • (⊤ : Submodule (𝓞 K) E.carrier)).toAddSubgroup ≤ F.toAddSubgroup from hUF)`. Rewrite `hdv` using `[h]`.
+
+Conclude with `hUne (Nat.eq_zero_of_zero_dvd hdv)`. Use `⟨hFne, ?_⟩` and prove the remaining obligations. Establish `hIr : (I.toAddSubgroup.index : ℝ) = |(d : ℝ)| ^ Module.finrank ℚ K`. Rewrite using `[hIidx, Nat.cast_natAbs, Int.cast_abs, Int.cast_pow, abs_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hFU` after adjusting the coercions. Use `_ ≤ (I.toAddSubgroup.index : ℝ) ^ n := by exact_mod_cast hUle`. Use `_ = _ := by rw [hIr]`.
+-/
 private theorem index_ne_zero_and_le_of_smul_mem {K : Type} [Field K] [NumberField K] (E : HermitianBundle.{0} K)
     (F : Submodule (𝓞 K) E.carrier) {n : ℕ} (v : Fin n → E.carrier)
     (hS : (Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.index ≠ 0)
@@ -142,6 +189,25 @@ private theorem index_ne_zero_and_le_of_smul_mem {K : Type} [Field K] [NumberFie
     _ ≤ (I.toAddSubgroup.index : ℝ) ^ n := by exact_mod_cast hUle
     _ = _ := by rw [hIr]
 
+/- English proof (translation)
+Introduce `K _ _ E F hF`. Establish `hrF : Module.finrank (𝓞 K) F = Module.finrank (𝓞 K) E.carrier` using `hF`. Take `⟨s, hs⟩` from `exists_linearIndependent_of_le_finrank (R := 𝓞 K) (M := F) (n := Module.finrank (𝓞 K) E.carrier) hrF.symm.le`. Establish `hv : LinearIndependent (𝓞 K) (fun i => (s i : E.carrier))` using `hs.map' F.subtype F.ker_subtype`. Set `t : Fin (Module.finrank (𝓞 K) E.carrier) → (⊤ : Submodule (𝓞 K) E.carrier)` to `fun i => ⟨(s i : E.carrier), Submodule.mem_top⟩`.
+
+Establish `ht : LinearIndependent (𝓞 K) t` using `LinearIndependent.of_comp (⊤ : Submodule (𝓞 K) E.carrier).subtype hv`. Establish `hSidx` using `index_span_ne_zero_of_linearIndependent E rfl _ hv`. Establish `hSF : Submodule.span (𝓞 K) (Set.range fun i => (s i : E.carrier)) ≤ F`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Conclude with `(s j).2`. Establish `hcF` using `card_quotient_span_eq_relIndex F s`. Establish `hcT : Nat.card ((⊤ : Submodule (𝓞 K) E.carrier) ⧸ Submodule.span (𝓞 K) (Set.range t)) = (Submodule.span (𝓞 K) (Set.range fun i => (s i : E.carrier))).toAddSubgroup.index`. Rewrite using `[card_quotient_span_eq_relIndex (⊤ : Submodule (𝓞 K) E.carrier) t, Submodule.top_toAddSubgroup, AddSubgroup.relIndex_top_right]`. Establish `hmul` using `AddSubgroup.relIndex_mul_index (show (Submodule.span (𝓞 K) (Set.range fun i => (s i : E.carrier))).toAddSubgroup ≤ F.toAddSubgroup from hSF)`.
+
+Establish `hrelne : (Submodule.span (𝓞 K) (Set.range fun i => (s i : E.carrier))).toAddSubgroup.relIndex F.toAddSubgroup ≠ 0`. Introduce `h`. Rewrite `hmul` using `[h, zero_mul]`. Conclude with `hSidx hmul.symm`. Establish `hFne : F.toAddSubgroup.index ≠ 0`.
+
+Introduce `h`. Rewrite `hmul` using `[h, mul_zero]`. Conclude with `hSidx hmul.symm`. Establish `hdF` using `E.degree_eq_of_linearIndependent F hs (by rw [Fintype.card_fin]; exact hF.symm)`. Establish `hdT : E.degree ⊤ = Real.log (Nat.card ((⊤ : Submodule (𝓞 K) E.carrier) ⧸ Submodule.span (𝓞 K) (Set.range t))) - 1 / 2 * ∑ σ : K →+* ℂ, Real.log (gramDet E.metric σ fun i => ((s i : F) : E.carrier))` using `E.degree_eq_of_linearIndependent (⊤ : Submodule (𝓞 K) E.carrier) ht (by rw [Fintype.card_fin]; exact (finrank_top (𝓞 K) E.carrier).symm)`.
+
+Establish `hdiff : E.degree ⊤ = E.degree F + Real.log (F.toAddSubgroup.index : ℝ)`. Rewrite using `[hdT, hdF, hcT, hcF, ← hmul, Nat.cast_mul, Real.log_mul (by exact_mod_cast hrelne) (by exact_mod_cast hFne)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Establish `hlog0 : 0 ≤ Real.log (F.toAddSubgroup.index : ℝ)` using `Real.log_nonneg (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hFne)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `HermitianBundle.normDegree`. Rewrite using `[hdiff]`. Conclude with `div_le_div_of_nonneg_right (by linarith) hq.le`. Introduce `d hd hdmem`.
+
+Take `⟨-, hbound⟩` from `index_ne_zero_and_le_of_smul_mem E F _ hSidx d hd hdmem`. Establish `hpos : (0 : ℝ) < F.toAddSubgroup.index` using `by exact_mod_cast Nat.pos_of_ne_zero hFne`. Establish `hlogb : Real.log (F.toAddSubgroup.index : ℝ) ≤ (Module.finrank (𝓞 K) E.carrier : ℝ) * (Module.finrank ℚ K * Real.log |(d : ℝ)|)`. Combine the equalities or inequalities in the displayed calculation. Unfold `HermitianBundle.normDegree`.
+
+Rewrite using `[hdiff, add_div, add_le_add_iff_left, div_le_iff₀ hq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem normDegree_full_rank_submodule_bounds : ∀ (K : Type) [Field K] [NumberField K] (E : HermitianBundle.{0} K) (F : Submodule (𝓞 K) E.carrier), E.rank F = Module.finrank (𝓞 K) E.carrier → E.normDegree F ≤ E.normDegree ⊤ ∧ ∀ d : ℤ, d ≠ 0 → (∀ x : E.carrier, d • x ∈ F) → E.normDegree ⊤ ≤ E.normDegree F + Module.finrank (𝓞 K) E.carrier * Real.log |(d : ℝ)| := by
   intro K _ _ E F hF
   classical

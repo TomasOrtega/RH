@@ -7,6 +7,29 @@ open scoped Topology
 
 namespace GlobalTheory.FrameAut.VecForms
 
+/- English proof (translation)
+Introduce `E _ _ _ n S _ _ _ ρ hsp M hM0 hf hk hirr`. Set `j : M →ₗ[ℂ] S →ₗ[ℂ] (UA E n → ℂ)` to `M.subtype`. Establish `himg : Submodule.span ℂ {φ | ∃ f ∈ M, ∃ v, f v = φ} = GlobalTheory.DefU.Pairs.img j`. Unfold `GlobalTheory.DefU.Pairs.img`. Use `congr 1`.
+
+Use extensionality with `φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, v, rfl⟩`. Conclude with `⟨⟨f, hf⟩, v, rfl⟩`. Introduce and unpack `⟨p, v, rfl⟩`.
+
+Conclude with `⟨p.1, p.2, v, rfl⟩`. Rewrite using `[himg]`. Establish `hj : ∀ (p : M) (x : infU E n) (v : S), j p (ρ x v) = RU E n x.1 (j p v)` using `fun p x v => (hf p.1 p.2).2 x v`. Establish `hstab : ∀ x, ∀ φ ∈ GlobalTheory.DefU.Pairs.img j, RU E n x φ ∈ GlobalTheory.DefU.Pairs.img j`. Introduce `x φ hφ`.
+
+Use `GlobalTheory.DefU.Pairs.stable_of (fun a => ?_) (fun k => ?_) x φ hφ` and prove the remaining obligations. Establish `h1 : GlobalTheory.DefU.Pairs.img j ≤ (GlobalTheory.DefU.Pairs.img j).comap (RU E n a.1)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Express the relevant statement in the definitionally equal form `RU E n a.1 _ ∈ GlobalTheory.DefU.Pairs.img j`. Rewrite using `[← hj]`.
+
+Conclude with `GlobalTheory.DefU.Pairs.apply_mem_img _ _ _)`. Conclude with `fun φ hφ => h1 hφ`. Establish `h1 : GlobalTheory.DefU.Pairs.img j ≤ (GlobalTheory.DefU.Pairs.img j).comap (RU E n k.1)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Conclude with `GlobalTheory.DefU.Pairs.apply_mem_img j ⟨(RU E n k.1) ∘ₗ p.1, hk k k.2 p.1 p.2⟩ v)`.
+
+Conclude with `fun φ hφ => h1 hφ`. Establish `hne : GlobalTheory.DefU.Pairs.img j ≠ ⊥`. Take `⟨f, hfM, h0⟩` from `(Submodule.ne_bot_iff _).1 hM0`. Take `⟨v, hv⟩` from `DFunLike.ne_iff.1 h0`. Introduce `e`.
+
+Use `GlobalTheory.DefU.Pairs.apply_mem_img j ⟨f, hfM⟩ v` as an intermediate fact. Rewrite `this` using `[e, Submodule.mem_bot]`. Conclude with `hv this`. Set `Q : finU E n → Module.End ℂ M` to `fun k => ((LinearMap.llcomp ℂ S (UA E n → ℂ) (UA E n → ℂ) (RU E n k.1)) ∘ₗ M.subtype).codRestrict M (fun p => hk k k.2 p.1 p.2)`. Establish `hP : ∀ N : Submodule ℂ M, (∀ k, ∀ p ∈ N, Q k p ∈ N) → N = ⊥ ∨ N = ⊤`.
+
+Introduce `N hN`. Establish `hst : ∀ k ∈ finU E n, ∀ f ∈ N.map M.subtype, (RU E n k) ∘ₗ f ∈ N.map M.subtype`. Introduce and unpack `k hkk _ ⟨p, hp, rfl⟩`. Conclude with `⟨Q ⟨k, hkk⟩ p, hN ⟨k, hkk⟩ p hp, rfl⟩`. Establish `hc : N = (N.map M.subtype).comap M.subtype` using `(Submodule.comap_map_eq_of_injective M.injective_subtype N).symm`.
+
+Break down `hirr _ (Submodule.map_subtype_le M N) hst with h | h` into its components or cases. Use `left`. Rewrite using `[hc, h, Submodule.comap_bot, Submodule.ker_subtype]`. Use `right`. Rewrite using `[hc, h, Submodule.comap_subtype_self]`.
+
+Use `⟨fun φ hφ => ?_, hstab, hne, fun U hle hU => ?_⟩` and prove the remaining obligations. Establish `h1 : GlobalTheory.DefU.Pairs.img j ≤ autU E n` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Conclude with `(hf p.1 p.2).1 v)`. Conclude with `h1 hφ`.
+
+Conclude with `GlobalTheory.DefU.Pairs.eq_bot_or_eq_img hsp (R := fun x => RU E n x.1) hj (Q := Q) (T := fun k => RU E n k.1) (fun _ _ _ => rfl) hP hle (fun x => hU x.1) (fun k => hU k.1)`.
+-/
 theorem isAutRepU_span_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Type) [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S] (ρ : Representation ℂ (infU E n) S), Submodule.span ℂ (Set.range ρ) = ⊤ → ∀ M : Submodule ℂ (S →ₗ[ℂ] (UA E n → ℂ)), M ≠ ⊥ → (∀ f ∈ M, (∀ v, IsAutFormU (f v)) ∧ ∀ (x : infU E n) v, f (ρ x v) = RU E n x (f v)) → (∀ k ∈ finU E n, ∀ f ∈ M, (RU E n k) ∘ₗ f ∈ M) → (∀ N ≤ M, (∀ k ∈ finU E n, ∀ f ∈ N, (RU E n k) ∘ₗ f ∈ N) → N = ⊥ ∨ N = M) → IsAutRepU (Submodule.span ℂ {φ | ∃ f ∈ M, ∃ v, f v = φ}) := by
   intro E _ _ _ n S _ _ _ ρ hsp M hM0 hf hk hirr
   let j : M →ₗ[ℂ] S →ₗ[ℂ] (UA E n → ℂ) := M.subtype

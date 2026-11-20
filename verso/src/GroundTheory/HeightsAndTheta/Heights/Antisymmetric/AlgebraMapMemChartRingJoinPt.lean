@@ -14,6 +14,13 @@ section Pullback
 
 variable {Ω Ω' : Type} [Field Ω] [Field Ω'] [Algebra Ω Ω'] {ι κ : Type}
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Establish `: algebraMap Ω Ω' (x j / x i) = joinPt x z (j, l) / joinPt x z (i, l)`. Simplify using `only [joinPt, segreJoin, map_div₀]`.
+
+Rewrite using `[mul_div_mul_right _ _ hz]`. Rewrite using `[this]`. Conclude with `div_mem_chartRing _ _ _`. Consider the case `algebraMap n`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `Subalgebra.algebraMap_mem _ n`. Consider the case `add y w _ _ hy hw => rw [map_add]`. Conclude with `add_mem hy hw`. Consider the case `mul y w _ _ hy hw => rw [map_mul]`. Conclude with `mul_mem hy hw`.
+-/
 theorem algebraMap_mem_chartRing_joinPt (x : ι → Ω) (z : κ → Ω') (i : ι) (l : κ) (hz : z l ≠ 0)
     {a : Ω} (ha : a ∈ chartRing ℤ x i) :
     algebraMap Ω Ω' a ∈ chartRing ℤ (joinPt x z) (i, l) := by
@@ -31,6 +38,11 @@ theorem algebraMap_mem_chartRing_joinPt (x : ι → Ω) (z : κ → Ω') (i : ι
   | add y w _ _ hy hw => rw [map_add]; exact add_mem hy hw
   | mul y w _ _ hy hw => rw [map_mul]; exact mul_mem hy hw
 
+/- English proof (translation)
+Establish `hx' : algebraMap Ω Ω' (x j) ≠ 0` using `(map_ne_zero _).2 hx`. Establish `: z l / z m = joinPt x z (j, l) / joinPt x z (j, m)`. Simplify using `only [joinPt, segreJoin]`. Rewrite using `[mul_div_mul_left _ _ hx']`. Rewrite using `[this]`.
+
+Conclude with `div_mem_chartRing _ _ _`.
+-/
 theorem div_mem_chartRing_joinPt (x : ι → Ω) (z : κ → Ω') (j : ι) (l m : κ) (hx : x j ≠ 0) :
     z l / z m ∈ chartRing ℤ (joinPt x z) (j, m) := by
   have hx' : algebraMap Ω Ω' (x j) ≠ 0 := (map_ne_zero _).2 hx
@@ -42,6 +54,9 @@ theorem div_mem_chartRing_joinPt (x : ι → Ω) (z : κ → Ω') (j : ι) (l m 
 
 variable {E : Type} [AddCommGroup E] [Module Ω E]
 
+/- English proof (translation)
+Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul', Algebra.smul_def, mul_one, smul_eq_mul, mul_one]`.
+-/
 theorem one_tmul_smul (s : Ω) (v : E) :
     (1 : Ω') ⊗ₜ[Ω] (s • v) = algebraMap Ω Ω' s • ((1 : Ω') ⊗ₜ[Ω] v) := by
   rw [← TensorProduct.smul_tmul, TensorProduct.smul_tmul', Algebra.smul_def, mul_one, smul_eq_mul,
@@ -49,6 +64,11 @@ theorem one_tmul_smul (s : Ω) (v : E) :
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `he using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨b, hb, v, hv, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨a * b, mul_mem ha hb, v, hv, by rw [mul_smul]⟩`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add w w' _ _ hw hw' => rw [smul_add]`. Conclude with `add_mem hw hw'`. Consider the case `neg w _ hw => rw [smul_neg]`. Conclude with `neg_mem hw`.
+-/
 theorem pullbackLat_stable {x : ι → Ω} (B : ChartBundle ℤ x r E) (z : κ → Ω') (q : ι × κ)
     {a : Ω'} (ha : a ∈ chartRing ℤ (joinPt x z) q) {e : Ω' ⊗[Ω] E} (he : e ∈ pullbackLat B z q) :
     a • e ∈ pullbackLat B z q := by
@@ -60,6 +80,9 @@ theorem pullbackLat_stable {x : ι → Ω} (B : ChartBundle ℤ x r E) (z : κ �
   | add w w' _ _ hw hw' => rw [smul_add]; exact add_mem hw hw'
   | neg w _ hw => rw [smul_neg]; exact neg_mem hw
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨a, ha, v, hv, rfl⟩`.
+-/
 theorem smul_one_tmul_mem_pullbackLat {x : ι → Ω} (B : ChartBundle ℤ x r E) (z : κ → Ω')
     (q : ι × κ) {a : Ω'} (ha : a ∈ chartRing ℤ (joinPt x z) q) {v : E} (hv : v ∈ B.lat q.1) :
     a • ((1 : Ω') ⊗ₜ[Ω] v) ∈ pullbackLat B z q :=
@@ -209,11 +232,17 @@ def pullbackBundle {x : ι → Ω} (B : ChartBundle ℤ x r E) (z : κ → Ω') 
       obtain ⟨n, hn⟩ := hw
       exact ⟨n, by rw [smul_neg]; exact neg_mem hn⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ z _ _ _ _ B` and use `⟨pullbackBundle B z, fun _ => rfl⟩`.
+-/
 theorem chartBundlePullback_holds : ChartBundlePullback.Statement :=
   fun _ _ _ _ _ _ _ _ _ _ z _ _ _ _ B => ⟨pullbackBundle B z, fun _ => rfl⟩
 
 end Pullback
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨addBlockPullback_of_chartBundlePullback, fun _ => chartBundlePullback_holds⟩`.
+-/
 theorem AddBlockPullback.equiv :
     ChartBundlePullback.Statement ↔ IndefiniteRowSideFullHecke.Antisym.AddBlockPullback.Statement :=
   ⟨addBlockPullback_of_chartBundlePullback, fun _ => chartBundlePullback_holds⟩

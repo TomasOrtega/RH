@@ -18,11 +18,17 @@ section Slice
 
 variable {W V : Type} [TopologicalSpace W] [TopologicalSpace V] {ψ : W × V → ℝ}
 
+/- English proof (translation)
+The claim follows from `closure_minimal (fun _ hv => subset_tsupport _ hv) ((isClosed_tsupport ψ).preimage (by fun_prop))`.
+-/
 theorem tsupport_slice (w : W) :
     tsupport (fun v => ψ (w, v)) ⊆ (fun v => (w, v)) ⁻¹' tsupport ψ :=
   closure_minimal (fun _ hv => subset_tsupport _ hv)
     ((isClosed_tsupport ψ).preimage (by fun_prop))
 
+/- English proof (translation)
+The claim follows from `IsCompact.of_isClosed_subset (hs.isCompact.image continuous_snd) (isClosed_tsupport _) fun v hv => ⟨(w, v), tsupport_slice w hv, rfl⟩`.
+-/
 theorem slice_compact (hs : HasCompactSupport ψ) (w : W) :
     HasCompactSupport (fun v => ψ (w, v)) :=
   IsCompact.of_isClosed_subset (hs.isCompact.image continuous_snd) (isClosed_tsupport _)
@@ -30,6 +36,9 @@ theorem slice_compact (hs : HasCompactSupport ψ) (w : W) :
 
 end Slice
 
+/- English proof (translation)
+Establish `hI` using `(h.2.2 (fun v => ψ (w, v)) (by fun_prop) (slice_compact hs w) (fun v hv => hU _ (tsupport_slice w hv))).1 b (mem_univ b)`. Conclude with `(ofReal_integral_eq_lintegral_ofReal hI (ae_of_all _ fun v => h0 _)).symm`.
+-/
 theorem lintegral_ofReal_fibre {W V X Y : Type} [TopologicalSpace W] [TopologicalSpace V]
     [MeasurableSpace V] [TopologicalSpace X] [MeasurableSpace X] {μ : Measure V} {ν : Measure X}
     {f : V → Y} {ι : X → Y} {U : Set V} {fam : X → Measure V}
@@ -40,6 +49,15 @@ theorem lintegral_ofReal_fibre {W V X Y : Type} [TopologicalSpace W] [Topologica
     (fun v hv => hU _ (tsupport_slice w hv))).1 b (mem_univ b)
   exact (ofReal_integral_eq_lintegral_ofReal hI (ae_of_all _ fun v => h0 _)).symm
 
+/- English proof (translation)
+Establish `hK : IsCompact (Prod.snd '' tsupport g)` using `hs.isCompact.image continuous_snd`. Establish `hF : IsCompact (Prod.fst '' tsupport g)` using `hs.isCompact.image continuous_fst`. Establish `hz : ∀ p, p ∉ tsupport g → g p = 0` using `fun p hp => image_eq_zero_of_notMem_tsupport hp`. Establish `e : (fun x => ∫ a, g (x, a) ∂α) = fun x => ∫ a in Prod.snd '' tsupport g, g (x, a) ∂α`. Use function extensionality and compare the values at `x`.
+
+Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun a ha => hz _ fun hp => ha ?_).symm` and prove the remaining obligations. Conclude with `⟨_, hp, rfl⟩`. Establish `hsub : tsupport (fun x => ∫ a, g (x, a) ∂α) ⊆ Prod.fst '' tsupport g`. Use `closure_minimal (fun x hx => ?_) hF.isClosed` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Use `hx ?_` and prove the remaining obligations. Establish `: ∀ a, g (x, a) = 0` using `fun a => hz _ fun hp => hn ⟨_, hp, rfl⟩`. Simplify using `[this]`. Use `⟨?_, IsCompact.of_isClosed_subset hF (isClosed_tsupport _) hsub, hsub⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `continuous_parametric_integral_of_continuous (f := fun x a => g (x, a)) (by simpa [Function.uncurry_def] using hc) hK`.
+-/
 theorem param_integral {X A : Type} [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X]
     [FirstCountableTopology X] [TopologicalSpace A] [SecondCountableTopology A] [MeasurableSpace A]
     [BorelSpace A] (α : Measure A) [IsLocallyFiniteMeasure α] {g : X × A → ℝ}
@@ -64,6 +82,11 @@ theorem param_integral {X A : Type} [TopologicalSpace X] [T2Space X] [LocallyCom
   exact continuous_parametric_integral_of_continuous (f := fun x a => g (x, a))
     (by simpa [Function.uncurry_def] using hc) hK
 
+/- English proof (translation)
+Establish `h0 : Measurable (fun p : (A × P) × H => h (p.1.1, p.1.2, p.2))` using `hh.comp (by fun_prop)`. Establish `h1 : Measurable (fun p : A × P => ∫⁻ Z, h (p.1, p.2, Z) ∂ν)` using `h0.lintegral_prod_right'`. Rewrite using `[lintegral_lintegral_swap (f := fun a s => ∫⁻ Z, h (a, s, Z) ∂ν) (by simpa [Function.uncurry_def] using h1.aemeasurable)]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Use `lintegral_lintegral_swap (f := fun a Z => h (a, s, Z)) ?_` and prove the remaining obligations.
+
+Establish `h2 : Measurable (fun p : A × H => h (p.1, s, p.2))` using `hh.comp (by fun_prop)`. Simplify `h2.aemeasurable` using `[Function.uncurry_def]`.
+-/
 theorem swap3 {A P H : Type} [MeasurableSpace A] [MeasurableSpace P] [MeasurableSpace H]
     (α : Measure A) (ρ : Measure P) (ν : Measure H) [SFinite α] [SFinite ρ] [SFinite ν]
     {h : A × P × H → ℝ≥0∞} (hh : Measurable h) :
@@ -78,6 +101,9 @@ theorem swap3 {A P H : Type} [MeasurableSpace A] [MeasurableSpace P] [Measurable
   have h2 : Measurable (fun p : A × H => h (p.1, s, p.2)) := hh.comp (by fun_prop)
   simpa [Function.uncurry_def] using h2.aemeasurable
 
+/- English proof (translation)
+Rewrite using `[← lintegral_indicator hU]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ U`. Rewrite using `[indicator_of_mem hv]`. Rewrite using `[indicator_of_notMem hv, hφ v hv]`.
+-/
 theorem lintegral_eq_setLIntegral {V : Type} [MeasurableSpace V] {μ : Measure V} {U : Set V}
     (hU : MeasurableSet U) {φ : V → ℝ≥0∞} (hφ : ∀ v, v ∉ U → φ v = 0) :
     ∫⁻ v, φ v ∂μ = ∫⁻ v in U, φ v ∂μ := by
@@ -87,6 +113,11 @@ theorem lintegral_eq_setLIntegral {V : Type} [MeasurableSpace V] {μ : Measure V
   · rw [indicator_of_mem hv]
   · rw [indicator_of_notMem hv, hφ v hv]
 
+/- English proof (translation)
+Rewrite using `[lintegral_eq_setLIntegral hUo.measurableSet (fun v hv => by simp [h0 v hv]), h.2.1 (fun v => φ v * F (q v)) (hφ.mul (hF.comp hq.measurable))]`. Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Establish `h1 : ∫⁻ Y, φ Y * F (q Y) ∂(m b) = ∫⁻ Y, F b * φ Y ∂(m b)`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.CompanionTheory.SW.FibreUniq.ae_eq_of_isFibreFamily hι hf h b] with Y hY`.
+
+Rewrite using `[hY.1, mul_comm]`. Rewrite using `[h1, lintegral_const_mul _ hφ]`.
+-/
 theorem lintegral_mul_base' {D H Y : Type} [TopologicalSpace D] [MeasurableSpace D] [BorelSpace D]
     [TopologicalSpace H] [MeasurableSpace H] [BorelSpace H] {δ : Measure D} {ν : Measure H}
     {f : D → Y} {ι : H → Y} {q : D → H} {U : Set D} {m : H → Measure D} (hUo : IsOpen U)
@@ -119,6 +150,13 @@ variable {V₁ D H₁ H₃ A P Y₁ Y₃ : Type}
   [TopologicalSpace P] [T2Space P] [LocallyCompactSpace P] [SecondCountableTopology P]
   [MeasurableSpace P] [BorelSpace P]
 
+/- English proof (translation)
+Set `e : ((V₁ × A × P) × D) ≃ₜ (V₁ × A × P × D)` to `(Homeomorph.prodAssoc _ _ _).trans ((Homeomorph.refl _).prodCongr (Homeomorph.prodAssoc _ _ _))`. Establish `hc : Continuous (ψ ∘ e)` using `hψc.comp e.continuous`. Establish `hs : HasCompactSupport (ψ ∘ e)` using `hψs.comp_homeomorph e`. Establish `ht : ∀ p ∈ tsupport (ψ ∘ e), e p ∈ tsupport ψ` using `fun p hp => by`. Rewrite `hp` using `[tsupport_comp_eq_preimage]`. Then use the resulting hypothesis.
+
+Establish `hU : ∀ p ∈ tsupport (ψ ∘ e), p.2 ∈ U₃` using `fun p hp => (hψt _ (ht p hp)).2`. Take `⟨c1, c2, c3⟩` from `GlobalTheory.T.disintegration_parameter_continuous D H₃ Y₃ (V₁ × A × P) δ ν₃ f₃ ι₃ q₃ U₃ m₃ hU₃ hq₃ hι₃ hf₃ hm₃ (ψ ∘ e) hc hs hU`. Use `⟨_, c1, c2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨v, hv, -⟩` from `c3 z hz`.
+
+Conclude with `(hψt _ (ht _ hv)).1`. Introduce `z`. Conclude with `integral_nonneg fun v => hψ0 _`. Introduce `x a s Z`. Conclude with `lintegral_ofReal_fibre hm₃ hc hs hU (fun p => hψ0 _) (x, a, s) Z`.
+-/
 theorem stage_three {δ : Measure D} {ν₃ : Measure H₃} {f₃ : D → Y₃} {ι₃ : H₃ → Y₃} {q₃ : D → H₃}
     {U₁ : Set V₁} {U₃ : Set D} {m₃ : H₃ → Measure D} (hU₃ : IsOpen U₃) (hq₃ : Continuous q₃)
     (hι₃ : Function.Injective ι₃) (hf₃ : ∀ v, f₃ v = ι₃ (q₃ v))
@@ -147,6 +185,13 @@ theorem stage_three {δ : Measure D} {ν₃ : Measure H₃} {f₃ : D → Y₃} 
   · intro x a s Z
     exact lintegral_ofReal_fibre hm₃ hc hs hU (fun p => hψ0 _) (x, a, s) Z
 
+/- English proof (translation)
+Set `E : ((V₁ × P × H₃) × A) ≃ₜ ((V₁ × A × P) × H₃)` to `{ toFun := fun p => ((p.1.1, p.2, p.1.2.1), p.1.2.2 - Q (q₁ p.1.1, p.1.2.1, p.2)) invFun := fun r => ((r.1.1, r.1.2.2, r.2 + Q (q₁ r.1.1, r.1.2.2, r.1.2.1)), r.1.2.1) left_inv := fun p => by simp right_inv := fun r => by simp continuous_toFun := by fun_prop continuous_invFun := b …`. Establish `hc : Continuous (θ ∘ E)` using `hθc.comp E.continuous`. Establish `hs : HasCompactSupport (θ ∘ E)` using `hθs.comp_homeomorph E`. Take `⟨c1, c2, c3⟩` from `param_integral α hc hs`. Use `⟨_, c1, c2, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `y hy`. Take `⟨p, hp, rfl⟩` from `c3 hy`. Rewrite `hp` using `[tsupport_comp_eq_preimage]`. Conclude with `hθt _ hp`. Introduce `y`.
+
+Conclude with `integral_nonneg fun a => hθ0 _`. Introduce `x s Z`. Establish `hI : Integrable (fun a => (θ ∘ E) ((x, s, Z), a)) α` using `(hc.comp (by fun_prop)).integrable_of_hasCompactSupport (slice_compact hs _)`. Conclude with `(ofReal_integral_eq_lintegral_ofReal hI (ae_of_all _ fun a => hθ0 _)).symm`.
+-/
 theorem stage_two (α : Measure A) [IsLocallyFiniteMeasure α] [AddCommGroup H₃]
     [IsTopologicalAddGroup H₃] {q₁ : V₁ → H₁} (hq₁ : Continuous q₁) {Q : H₁ × P × A → H₃}
     (hQ : Continuous Q) {U₁ : Set V₁} {θ : (V₁ × A × P) × H₃ → ℝ} (hθc : Continuous θ)
@@ -177,6 +222,13 @@ theorem stage_two (α : Measure A) [IsLocallyFiniteMeasure α] [AddCommGroup H�
       (hc.comp (by fun_prop)).integrable_of_hasCompactSupport (slice_compact hs _)
     exact (ofReal_integral_eq_lintegral_ofReal hI (ae_of_all _ fun a => hθ0 _)).symm
 
+/- English proof (translation)
+Set `e : ((P × H₃) × V₁) ≃ₜ (V₁ × P × H₃)` to `Homeomorph.prodComm _ _`. Establish `hc : Continuous (ξ ∘ e)` using `hξc.comp e.continuous`. Establish `hs : HasCompactSupport (ξ ∘ e)` using `hξs.comp_homeomorph e`. Establish `hU : ∀ p ∈ tsupport (ξ ∘ e), p.2 ∈ U₁` using `fun p hp => by`. Rewrite `hp` using `[tsupport_comp_eq_preimage]`.
+
+Conclude with `hξt _ hp`. Take `⟨c1, -, -⟩` from `GlobalTheory.T.disintegration_parameter_continuous V₁ H₁ Y₁ (P × H₃) μ₁ ν₁ f₁ ι₁ q₁ U₁ m₁ hU₁ hq₁ hι₁ hf₁ hm₁ (ξ ∘ e) hc hs hU`. Establish `e1 : (fun z : H₁ × P × H₃ => ∫⁻ x, ENNReal.ofReal (ξ (x, z.2.1, z.2.2)) ∂(m₁ z.1)) = fun z => ENNReal.ofReal (∫ v, (ξ ∘ e) (z.2, v) ∂(m₁ z.1))`. Use function extensionality and compare the values at `z`. Conclude with `lintegral_ofReal_fibre hm₁ hc hs hU (fun p => hξ0 _) z.2 z.1`.
+
+Rewrite using `[e1]`. Conclude with `ENNReal.continuous_ofReal.comp (c1.comp (continuous_snd.prodMk continuous_fst))`.
+-/
 theorem stage_one {μ₁ : Measure V₁} {ν₁ : Measure H₁} {f₁ : V₁ → Y₁} {ι₁ : H₁ → Y₁} {q₁ : V₁ → H₁}
     {U₁ : Set V₁} {m₁ : H₁ → Measure V₁} (hU₁ : IsOpen U₁) (hq₁ : Continuous q₁)
     (hι₁ : Function.Injective ι₁) (hf₁ : ∀ v, f₁ v = ι₁ (q₁ v))
@@ -198,6 +250,15 @@ theorem stage_one {μ₁ : Measure V₁} {ν₁ : Measure H₁} {f₁ : V₁ →
   rw [e1]
   exact ENNReal.continuous_ofReal.comp (c1.comp (continuous_snd.prodMk continuous_fst))
 
+/- English proof (translation)
+Establish `hin : ∀ a s, ∫⁻ Y, ENNReal.ofReal (ψ (x, a, s, Y)) * f (q₁ x, s, q₃ Y + Q (q₁ x, s, a)) ∂δ = ∫⁻ Z, f (q₁ x, s, Z) * ENNReal.ofReal (θ ((x, a, s), Z - Q (q₁ x, s, a))) ∂ν₃`. Introduce `a s`. Establish `hφ : Measurable fun Y => ENNReal.ofReal (ψ (x, a, s, Y))` using `ENNReal.measurable_ofReal.comp (hψc.comp (by fun_prop)).measurable`. Establish `hF : Measurable fun Z => f (q₁ x, s, Z + Q (q₁ x, s, a))` using `hf.comp (by fun_prop)`. Rewrite using `[lintegral_mul_base' hU₃ hq₃ hι₃ hf₃ hm₃ hφ (fun v hv => by rw [hψt (x, a, s, v) hv]; simp) hF]`.
+
+Rewrite using `[← lintegral_add_right_eq_self (fun Z => f (q₁ x, s, Z) * ENNReal.ofReal (θ ((x, a, s), Z - Q (q₁ x, s, a)))) (Q (q₁ x, s, a))]`. Use `lintegral_congr fun Z => ?_` and prove the remaining obligations. Rewrite using `[hθ, add_sub_cancel_right]`. Simplify using `only [hin]`. Establish `hθm : Measurable fun p : A × P × H₃ => ENNReal.ofReal (θ ((x, p.1, p.2.1), p.2.2 - Q (q₁ x, p.2.1, p.1)))` using `ENNReal.measurable_ofReal.comp (hθc.comp (by fun_prop)).measurable`.
+
+Establish `hg : Measurable fun p : A × P × H₃ => f (q₁ x, p.2.1, p.2.2) * ENNReal.ofReal (θ ((x, p.1, p.2.1), p.2.2 - Q (q₁ x, p.2.1, p.1)))` using `(hf.comp (by fun_prop)).mul hθm`. Rewrite using `[swap3 α ρ ν₃ hg]`. Use `lintegral_congr fun s => lintegral_congr fun Z => ?_` and prove the remaining obligations. Establish `hθa : Measurable fun a => ENNReal.ofReal (θ ((x, a, s), Z - Q (q₁ x, s, a)))` using `hθm.comp (by fun_prop : Measurable fun a : A => (a, s, Z))`. Simplify using `only`.
+
+Rewrite using `[lintegral_const_mul _ hθa, hξ]`.
+-/
 theorem disint_inner [AddCommGroup H₃] [IsTopologicalAddGroup H₃] {δ : Measure D}
     {ν₃ : Measure H₃} (α : Measure A) (ρ : Measure P) [ν₃.IsAddHaarMeasure]
     [IsLocallyFiniteMeasure α] [IsLocallyFiniteMeasure ρ]
@@ -244,6 +305,17 @@ theorem disint_inner [AddCommGroup H₃] [IsTopologicalAddGroup H₃] {δ : Meas
   dsimp only
   rw [lintegral_const_mul _ hθa, hξ]
 
+/- English proof (translation)
+Establish `hξm : Measurable fun p : V₁ × P × H₃ => ENNReal.ofReal (ξ p)` using `ENNReal.measurable_ofReal.comp hξc.measurable`. Establish `hg : Measurable fun p : V₁ × P × H₃ => f (q₁ p.1, p.2.1, p.2.2) * ENNReal.ofReal (ξ p)` using `(hf.comp (by fun_prop)).mul hξm`. Establish `hΦ1 : Measurable fun p : V₁ × P => ∫⁻ Z, f (q₁ p.1, p.2, Z) * ENNReal.ofReal (ξ (p.1, p.2, Z)) ∂ν₃` using `(hg.comp (by fun_prop : Measurable fun p : (V₁ × P) × H₃ => (p.1.1, p.1.2, p.2))).lintegral_prod_right'`. Establish `hΦ : Measurable fun x => ∫⁻ s, ∫⁻ Z, f (q₁ x, s, Z) * ENNReal.ofReal (ξ (x, s, Z)) ∂ν₃ ∂ρ` using `hΦ1.lintegral_prod_right'`. Rewrite using `[lintegral_eq_setLIntegral hU₁.measurableSet (fun v hv => by`.
+
+Simplify using `[hξt (v, _) hv]), hm₁.2.1 _ hΦ]`. Establish `hfm : Measurable fun z : H₁ × P × H₃ => f z * ∫⁻ x, ENNReal.ofReal (ξ (x, z.2.1, z.2.2)) ∂(m₁ z.1)` using `hf.mul hL.measurable`. Rewrite using `[lintegral_prod _ hfm.aemeasurable]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Use `haveI := GlobalTheory.CompanionTheory.WeilSiegel.FreeLocal.sigmaFinite_fib hm₁ hU₁ t`.
+
+Establish `hh : Measurable fun p : V₁ × P × H₃ => f (t, p.2.1, p.2.2) * ENNReal.ofReal (ξ p)` using `(hf.comp (by fun_prop)).mul hξm`. Establish `e1 : ∫⁻ x, ∫⁻ s, ∫⁻ Z, f (q₁ x, s, Z) * ENNReal.ofReal (ξ (x, s, Z)) ∂ν₃ ∂ρ ∂(m₁ t) = ∫⁻ x, ∫⁻ s, ∫⁻ Z, f (t, s, Z) * ENNReal.ofReal (ξ (x, s, Z)) ∂ν₃ ∂ρ ∂(m₁ t)`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.CompanionTheory.SW.FibreUniq.ae_eq_of_isFibreFamily hι₁ hf₁ hm₁ t] with x hx`. Rewrite using `[hx.1]`.
+
+Rewrite using `[e1, swap3 (m₁ t) ρ ν₃ hh]`. Establish `hfm2 : Measurable fun p : P × H₃ => f (t, p) * ∫⁻ x, ENNReal.ofReal (ξ (x, p.1, p.2)) ∂(m₁ t)` using `hfm.comp (by fun_prop : Measurable fun p : P × H₃ => (t, p))`. Rewrite using `[lintegral_prod _ hfm2.aemeasurable]`. Use `lintegral_congr fun s => lintegral_congr fun Z => ?_` and prove the remaining obligations. Establish `hxm : Measurable fun x => ENNReal.ofReal (ξ (x, s, Z))` using `hξm.comp (by fun_prop : Measurable fun x : V₁ => (x, s, Z))`.
+
+Simplify using `only`. Rewrite using `[lintegral_const_mul _ hxm]`.
+-/
 theorem disint_base [AddCommGroup H₃] {μ₁ : Measure V₁} {ν₁ : Measure H₁} {ν₃ : Measure H₃}
     (ρ : Measure P) [IsLocallyFiniteMeasure ν₁] [IsLocallyFiniteMeasure ν₃]
     [IsLocallyFiniteMeasure ρ] {f₁ : V₁ → Y₁} {ι₁ : H₁ → Y₁} {q₁ : V₁ → H₁}
@@ -289,6 +361,15 @@ theorem disint_base [AddCommGroup H₃] {μ₁ : Measure V₁} {ν₁ : Measure 
   dsimp only
   rw [lintegral_const_mul _ hxm]
 
+/- English proof (translation)
+Take `⟨θ, hθc, hθs, hθt, hθ0, hθ⟩` from `stage_three (U₁ := U₁) hU₃ hq₃ hι₃ hf₃ hm₃ hψc hψs hψt hψ0`. Take `⟨ξ, hξc, hξs, hξt, hξ0, hξ⟩` from `stage_two α hq₁ hQ hθc hθs hθt hθ0`. Establish `hL` using `stage_one hU₁ hq₁ hι₁ hf₁ hm₁ hξc hξs hξt hξ0`. Establish `key : ∀ z : H₁ × P × H₃, ∫⁻ x, ∫⁻ a, ∫⁻ Y, ENNReal.ofReal (ψ (x, a, z.2.1, Y)) ∂(m₃ (z.2.2 - Q (z.1, z.2.1, a))) ∂α ∂(m₁ z.1) = ∫⁻ x, ENNReal.ofReal (ξ (x, z.2.1, z.2.2)) ∂(m₁ z.1)`. Introduce `z`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.CompanionTheory.SW.FibreUniq.ae_eq_of_isFibreFamily hι₁ hf₁ hm₁ z.1] with x hx`. Rewrite using `[← hξ x]`. Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Rewrite using `[hθ, hx.1]`.
+
+Establish `hψz : ∀ p, p.2.2.2 ∉ U₃ → ψ p = 0` using `fun p hp => image_eq_zero_of_notMem_tsupport fun ht => hp (hψt p ht).2`. Establish `hξz : ∀ y, y.1 ∉ U₁ → ξ y = 0` using `fun y hy => image_eq_zero_of_notMem_tsupport fun ht => hy (hξt y ht)`. Use `⟨by rw [funext key]; exact hL, fun f hf => ?_⟩` and prove the remaining obligations. Simplify using `only [key]`. Rewrite using `[← disint_base ρ hU₁ hq₁ hι₁ hf₁ hm₁ hξc hξz hL hf]`.
+
+Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Conclude with `disint_inner α ρ hU₃ hq₃ hι₃ hf₃ hm₃ hq₁ hQ hψc hψz hθc hθ hξ hf x`.
+-/
 theorem stages_compose_disintegration [AddCommGroup H₃] [IsTopologicalAddGroup H₃] (μ₁ : Measure V₁) (δ : Measure D)
     (ν₁ : Measure H₁) (ν₃ : Measure H₃) (α : Measure A) (ρ : Measure P)
     [IsLocallyFiniteMeasure μ₁] [IsLocallyFiniteMeasure δ] [IsLocallyFiniteMeasure ν₁]
@@ -334,6 +415,9 @@ theorem stages_compose_disintegration [AddCommGroup H₃] [IsTopologicalAddGroup
 
 end Stages
 
+/- English proof (translation)
+Introduce `V₁ D H₁ H₃ A P Y₁ Y₃` and use `@stages_compose_disintegration V₁ D H₁ H₃ A P Y₁ Y₃`.
+-/
 theorem stages_abstract : ∀ (V₁ D H₁ H₃ A P Y₁ Y₃ : Type) [TopologicalSpace V₁] [T2Space V₁] [LocallyCompactSpace V₁] [SecondCountableTopology V₁] [MeasurableSpace V₁] [BorelSpace V₁] [TopologicalSpace D] [T2Space D] [LocallyCompactSpace D] [SecondCountableTopology D] [MeasurableSpace D] [BorelSpace D] [TopologicalSpace H₁] [T2Space H₁] [LocallyCompactSpace H₁] [SecondCountableTopology H₁] [MeasurableSpace H₁] [BorelSpace H₁] [TopologicalSpace H₃] [T2Space H₃] [LocallyCompactSpace H₃] [SecondCountableTopology H₃] [MeasurableSpace H₃] [BorelSpace H₃] [TopologicalSpace A] [T2Space A] [LocallyCompactSpace A] [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A] [TopologicalSpace P] [T2Space P] [LocallyCompactSpace P] [SecondCountableTopology P] [MeasurableSpace P] [BorelSpace P] [AddCommGroup H₃] [IsTopologicalAddGroup H₃] (μ₁ : Measure V₁) (δ : Measure D) (ν₁ : Measure H₁) (ν₃ : Measure H₃) (α : Measure A) (ρ : Measure P) [IsLocallyFiniteMeasure μ₁] [IsLocallyFiniteMeasure δ] [IsLocallyFiniteMeasure ν₁] [ν₃.IsAddHaarMeasure] [IsLocallyFiniteMeasure α] [IsLocallyFiniteMeasure ρ] (f₁ : V₁ → Y₁) (ι₁ : H₁ → Y₁) (q₁ : V₁ → H₁) (U₁ : Set V₁) (m₁ : H₁ → Measure V₁) (f₃ : D → Y₃) (ι₃ : H₃ → Y₃) (q₃ : D → H₃) (U₃ : Set D) (m₃ : H₃ → Measure D) (Q : H₁ × P × A → H₃), IsOpen U₁ → IsOpen U₃ → Continuous q₁ → Continuous q₃ → Function.Injective ι₁ → Function.Injective ι₃ → (∀ v, f₁ v = ι₁ (q₁ v)) → (∀ v, f₃ v = ι₃ (q₃ v)) → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ₁ f₁ ι₁ U₁ ν₁ Set.univ m₁ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily δ f₃ ι₃ U₃ ν₃ Set.univ m₃ → Continuous Q → ∀ ψ : V₁ × A × P × D → ℝ, Continuous ψ → HasCompactSupport ψ → (∀ p ∈ tsupport ψ, p.1 ∈ U₁ ∧ p.2.2.2 ∈ U₃) → (∀ p, 0 ≤ ψ p) → Continuous (fun z : H₁ × P × H₃ => ∫⁻ x, ∫⁻ a, ∫⁻ Y, ENNReal.ofReal (ψ (x, a, z.2.1, Y)) ∂(m₃ (z.2.2 - Q (z.1, z.2.1, a))) ∂α ∂(m₁ z.1)) ∧ ∀ f : H₁ × P × H₃ → ℝ≥0∞, Measurable f → ∫⁻ x, ∫⁻ a, ∫⁻ s, ∫⁻ Y, ENNReal.ofReal (ψ (x, a, s, Y)) * f (q₁ x, s, q₃ Y + Q (q₁ x, s, a)) ∂δ ∂ρ ∂α ∂μ₁ = ∫⁻ z, f z * (∫⁻ x, ∫⁻ a, ∫⁻ Y, ENNReal.ofReal (ψ (x, a, z.2.1, Y)) ∂(m₃ (z.2.2 - Q (z.1, z.2.1, a))) ∂α ∂(m₁ z.1)) ∂(ν₁.prod (ρ.prod ν₃)) :=
   fun V₁ D H₁ H₃ A P Y₁ Y₃ => @stages_compose_disintegration V₁ D H₁ H₃ A P Y₁ Y₃
 

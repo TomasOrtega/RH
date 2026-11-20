@@ -12,6 +12,27 @@ open UpperTheory.V.W (Plc Lp)
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
+/- English proof (translation)
+Introduce `H L _ _ _ n π w ψ hw hc hu hne`. Take `⟨hsm, τ, ⟨-, f, hf0, hfπ, hf⟩, hsq⟩` from `hc`. Take `⟨hs1, hs2, -, -⟩` from `secSpec L n w hw`. Establish `hker : ∀ x, f x = 0 → x = 0`. Set `S : Subrepresentation τ.ρ` to `⟨LinearMap.ker f, by`.
+
+Introduce `g x hx`. Establish `h` using `hf ⟨secW n w g, hs1 g⟩ x`. Establish `h' : f (τ.ρ g x) = RU L n (secW n w g) (f x)`. Rewrite using `[← h]`. Use `show f (τ.ρ g x) = f (τ.ρ (cLoc w (secW n w g)) x)`.
+
+Rewrite using `[hs2 g]`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[h', hx, map_zero]⟩`. Establish `hS : S = ⊥`. Break down `(τ.irred.eq_bot_or_eq_top S) with h | h` into its components or cases.
+
+Conclude with `h`. Use `absurd (LinearMap.ext fun x => ?_) hf0` and prove the remaining obligations. Establish `: x ∈ S.toSubmodule` using `by rw [h]; trivial`. Conclude with `this`. Introduce `x hx`.
+
+Establish `: x ∈ S.toSubmodule` using `hx`. Rewrite `this` using `[hS]`. Conclude with `this`. Choose the witnesses or unpack the hypotheses as in `⟨ω, rfl, hω⟩ : ∃ ω : Fin n → (Kw w)ˣ →* ℂˣ, ψ = (fun i => ω i * absPow (Kw w) (((n : ℂ) - 1) / 2)) ∧ ∀ i, IsSmoothChar (ω i) := by`. Use `⟨fun i => ψ i * absPow (Kw w) (-(((n : ℂ) - 1) / 2)), funext fun i => ?_, fun i => (hsm i).mul (isSmoothChar_of_isUnram (isUnram_absPow _ _))⟩` and prove the remaining obligations.
+
+Establish `h0 : absPow (Kw w) 0 = 1`. Use extensionality with `x`. Simplify using `[absPow]`. Rewrite using `[mul_assoc, ← absPow_add, neg_add_cancel, h0, mul_one]`. Establish `hneω : ∀ i j, i ≠ j → ω i ≠ ω j ∧ ω i ≠ ω j * absPow (Kw w) 1` using `fun i j hij => ⟨fun h => (hne i j hij).1 (by simp only [h]), fun h => (hne i j hij).2 (by`.
+
+Simplify using `only []`. Rewrite using `[h, mul_right_comm])⟩`. Take `⟨E⟩` from `(_root_.UpperTheory.V.Hi.prin_series_irreducible_and_unique_subquotient H (Kw w) n ω hω hneω).2 _ τ.ρ τ.irred hsq`. Take `⟨v₀, hv₀, hfix⟩` from `locSph (Kw w) n _ hu`. Take `⟨v, rfl⟩` from `E.surjective v₀`.
+
+Establish `hv : v ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv₀ (map_zero E)`. Establish `hτ : ∀ u ∈ KO (Kw w) (Fin n), τ.ρ u v = v` using `fun u hu' => by`. Apply `E.injective` to reduce the goal to its premises.
+
+Establish `h1` using `LinearMap.congr_fun (E.isIntertwining' u) v`. Conclude with `h1.trans (hfix u hu')`. Use `⟨f v, hfπ v, fun h => hv (hker v h), fun x hx hK => ?_⟩` and prove the remaining obligations. Establish `h` using `hf ⟨x, hx⟩ v`. Rewrite `hK` using `[← GlobalTheory.HeckeEigConj.KO_eq_KGL]`.
+
+Rewrite using `[← h]`. Use `show f (τ.ρ (cLoc w x) v) = f v`. Rewrite using `[hτ _ hK]`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.unramified_of_split_distinct_characters :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : Submodule ℂ (UA L n → ℂ)) (w : Plc L) (ψ : Fin n → (Kw w)ˣ →* ℂˣ), IsSplitAt w → CompSub π w ψ →
         (∀ i, ∀ u ∈ Hi.Uo (Kw w), ψ i u = 1) → (∀ i i', i ≠ i' → ψ i ≠ ψ i' ∧ ψ i ≠ ψ i' * absPow (Kw w) 1) → IsUnramU π w := by

@@ -17,6 +17,9 @@ namespace GrothendieckMessing
 
 variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R}
 
+/- English proof (translation)
+The claim follows from `GrpMor.of_isGrpPullback (isDPMorphism_of_eq_bot _ rfl _ _) ((Category.comp_id _).trans (Category.id_comp _).symm) h`.
+-/
 theorem redMor {π : R →+* R₀} {A₀ : Over (Sp R₀)} [GrpObj A₀] {A : Over (Sp R)} [GrpObj A]
     {i : A₀.left ⟶ A.left} (h : IsGrpPullback A₀ A (spMap π) i) :
     GrpMor (dp0 R) (𝟙 _) A (dp0 R₀) (𝟙 _) A₀ π (spMap π) i :=
@@ -69,11 +72,17 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {κ : Divide
   {A A' B : Over (Sp R)} [GrpObj A] [GrpObj A'] [GrpObj B]
   {i : A₀.left ⟶ A.left} {i' : A₀.left ⟶ A'.left} {j : B₀.left ⟶ B.left}
 
+/- English proof (translation)
+The claim follows from `(LinearEquiv.ofBijective _ (H g A₀ A i h hA hg).1).dualMap.bijective`.
+-/
 theorem Canonical.crysToDR_bijective (H : Canonical κ π) (h : IsGrpPullback A₀ A (spMap π) i)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
     Function.Bijective (crysToDR κ h) :=
   (LinearEquiv.ofBijective _ (H g A₀ A i h hA hg).1).dualMap.bijective
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨f, _, e⟩ _ hd ↦ push_mem_liftFil κ h k f₀ f e hd, fun e ↦ (H g A₀ A i h hA hg g' B₀ B j k hB hg' f₀ e).exists⟩`.
+-/
 theorem LiftHom.exists_iff (H : LiftHom κ π) (h : IsGrpPullback A₀ A (spMap π) i)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (k : IsGrpPullback B₀ B (spMap π) j) (hB : IsAbelianScheme B)
@@ -83,6 +92,9 @@ theorem LiftHom.exists_iff (H : LiftHom κ π) (h : IsGrpPullback A₀ A (spMap 
   ⟨fun ⟨f, _, e⟩ _ hd ↦ push_mem_liftFil κ h k f₀ f e hd,
     fun e ↦ (H g A₀ A i h hA hg g' B₀ B j k hB hg' f₀ e).exists⟩
 
+/- English proof (translation)
+The claim follows from `(H g A₀ A i h hA hg g' B₀ B j k hB hg' f₀ fun _ hd ↦ push_mem_liftFil κ h k f₀ f e hd).unique ⟨inferInstance, e⟩ ⟨inferInstance, e'⟩`.
+-/
 theorem LiftHom.unique (H : LiftHom κ π) (h : IsGrpPullback A₀ A (spMap π) i)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (k : IsGrpPullback B₀ B (spMap π) j) (hB : IsAbelianScheme B)
@@ -92,6 +104,17 @@ theorem LiftHom.unique (H : LiftHom κ π) (h : IsGrpPullback A₀ A (spMap π) 
   (H g A₀ A i h hA hg g' B₀ B j k hB hg' f₀ fun _ hd ↦ push_mem_liftFil κ h k f₀ f e hd).unique
     ⟨inferInstance, e⟩ ⟨inferInstance, e'⟩
 
+/- English proof (translation)
+Establish `hid : ∀ d : Crys κ (spMap π) A₀, push κ (spMap π) (𝟙 A₀) d = d` using `fun d ↦ by`. Rewrite using `[push_id]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, _, he⟩`.
+
+Establish `he' : i' ≫ e.inv.left = i`. Rewrite using `[← he, Category.assoc, ← Over.comp_left, e.hom_inv_id, Over.id_left, Category.comp_id]`. Use `le_antisymm (fun d hd ↦ ?_) fun d hd ↦ ?_` and prove the remaining obligations. Conclude with `hid d ▸ push_mem_liftFil κ h h' (𝟙 A₀) e.hom (by simpa using he) hd`. Conclude with `hid d ▸ push_mem_liftFil κ h' h (𝟙 A₀) e.inv (by simpa using he') hd`.
+
+Introduce `e`. Take `⟨f, _, ef⟩` from `(H.exists_iff h hA hg h' hA' hg' (𝟙 A₀)).2 fun d hd ↦ by`. Rewrite using `[hid, ← e]`. Conclude with `hd`. Take `⟨f', _, ef'⟩` from `(H.exists_iff h' hA' hg' h hA hg (𝟙 A₀)).2 fun d hd ↦ by`.
+
+Rewrite using `[hid, e]`. Conclude with `hd`. Rewrite `ef`, `ef'` using `[Over.id_left, Category.id_comp]`. Use `⟨⟨f, f', H.unique h hA hg h hA hg (𝟙 A₀) ?_ (by simp), H.unique h' hA' hg' h' hA' hg' (𝟙 A₀) ?_ (by simp)⟩, inferInstance, ef⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, ← Category.assoc, ef, ef', Over.id_left, Category.id_comp]`.
+
+Rewrite using `[Over.comp_left, ← Category.assoc, ef', ef, Over.id_left, Category.id_comp]`.
+-/
 theorem LiftHom.exists_iso_iff (H : LiftHom κ π) (h : IsGrpPullback A₀ A (spMap π) i)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (h' : IsGrpPullback A₀ A' (spMap π) i') (hA' : IsAbelianScheme A')
@@ -117,6 +140,9 @@ theorem LiftHom.exists_iso_iff (H : LiftHom κ π) (h : IsGrpPullback A₀ A (sp
     · rw [Over.comp_left, ← Category.assoc, ef, ef', Over.id_left, Category.id_comp]
     · rw [Over.comp_left, ← Category.assoc, ef', ef, Over.id_left, Category.id_comp]
 
+/- English proof (translation)
+Use `GrpMor.of_hom ?_ (Category.id_comp _).symm (𝟙 A₀)` and prove the remaining obligations. Establish `z : ∀ a ∈ I, π a = 0` using `fun a ha ↦ RingHom.mem_ker.1 (hI ▸ ha)`. Use `(isDPMorphism_iff _ _ _).2 ⟨Ideal.map_le_iff_le_comap.2 fun a ha ↦ z a ha, fun n hn a ha ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[z a ha, z _ (κ.dpow_mem hn ha), dpow_eval_zero _ hn]`.
+-/
 theorem crysRedMor (κ : DividedPowers I) (hI : RingHom.ker π = I) (A₀ : Over (Sp R₀)) [GrpObj A₀] :
     GrpMor κ (spMap π) A₀ (dp0 R₀) (𝟙 _) A₀ π (𝟙 _) (Over.Hom.left (𝟙 A₀)) := by
   refine GrpMor.of_hom ?_ (Category.id_comp _).symm (𝟙 A₀)
@@ -124,6 +150,11 @@ theorem crysRedMor (κ : DividedPowers I) (hI : RingHom.ker π = I) (A₀ : Over
   refine (isDPMorphism_iff _ _ _).2 ⟨Ideal.map_le_iff_le_comap.2 fun a ha ↦ z a ha, fun n hn a ha ↦ ?_⟩
   rw [z a ha, z _ (κ.dpow_mem hn ha), dpow_eval_zero _ hn]
 
+/- English proof (translation)
+Establish `e : ∀ c, (crysRedMor κ hI A₀).pull ((liftMor κ h).pull c) = (redMor h).pull c` using `fun c ↦ GrpMor.pull_pull _ _ _ (fun _ ↦ rfl) (by simp) c`. Use `⟨fun H c ↦ ?_, fun H c ↦ ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hs c`. Rewrite using `[e]`. Conclude with `H c`.
+
+Rewrite using `[← e]`. Conclude with `H _`.
+-/
 theorem corr_crysToDR_iff (hI : RingHom.ker π = I) (h : IsGrpPullback A₀ A (spMap π) i)
     (hs : Function.Surjective (liftMor κ h).pull) (d : Crys κ (spMap π) A₀) (y : HdR A₀) :
     (redMor h).Corr (crysToDR κ h d) y ↔ (crysRedMor κ hI A₀).Corr d y := by
@@ -134,6 +165,19 @@ theorem corr_crysToDR_iff (hI : RingHom.ker π = I) (h : IsGrpPullback A₀ A (s
     rw [e]; exact H c
   · rw [← e]; exact H _
 
+/- English proof (translation)
+Introduce `g A₀ _ A _ i h hA hg`. Take `⟨PF, PH, PB, PR, -⟩` from `P`. Use `letI : Algebra R R₀ := π.toAlgebra`. Take `⟨-, ⟨N, hN⟩, -⟩` from `PH R A g hA hg`. Establish `hF : PrimitiveSubmodule A₀ = Submodule.span R₀ ((redMor h).pull '' (PrimitiveSubmodule A))` using `(PB R A g hA hg R₀ A₀ i h).2`.
+
+Use `(PF.prim hA hg).2.1` as an intermediate fact. Use `⟨PR R A g hA hg I κ hκ R₀ π hπ hI A₀ i h, ⟨N.dualAnnihilator, ?_, ?_⟩, fun y ↦ ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[disjoint_iff, Fil, ← Submodule.dualAnnihilator_sup_eq, hN.sup_eq_top, Submodule.dualAnnihilator_top]`. Use `codisjoint_iff_le_sup.2 fun x _ ↦ Submodule.mem_sup.2 ⟨x ∘ₗ Submodule.projection _ _ hN.symm, ?_, x ∘ₗ Submodule.projection _ _ hN, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.mem_dualAnnihilator _).2 fun c hc ↦ by`.
+
+Rewrite using `[LinearMap.comp_apply, (Submodule.projection_apply_eq_zero_iff hN.symm).2 hc, map_zero]`. Conclude with `(Submodule.mem_dualAnnihilator _).2 fun c hc ↦ by`. Rewrite using `[LinearMap.comp_apply, (Submodule.projection_apply_eq_zero_iff hN).2 hc, map_zero]`. Use extensionality with `c`. Rewrite using `[LinearMap.add_apply, LinearMap.comp_apply, LinearMap.comp_apply, ← map_add, add_comm, Submodule.projection_add_projection_eq_self hN]`.
+
+Introduce `hy`. Set `l : primDR A →ₗ[R] R₀` to `{ toFun c := y ((redMor h).pull c) map_add' := by simp map_smul' r c := by rw [LinearMap.map_smulₛₗ, map_smul]; rfl }`. Take `⟨x, hx⟩` from `Module.projective_lifting_property (Algebra.linearMap R R₀) l hπ`. Use `⟨x ∘ₗ Submodule.projection _ _ hN.symm, (Submodule.mem_dualAnnihilator _).2 fun c hc ↦ by` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, (Submodule.projection_apply_eq_zero_iff hN.symm).2 hc, map_zero], fun c ↦ ?_⟩`.
+
+Establish `z : l (Submodule.projection _ _ hN c) = 0` using `(Submodule.mem_dualAnnihilator _).1 hy _ (hF ▸ Submodule.subset_span ⟨_, Submodule.projection_apply_mem hN c, rfl⟩)`. Express the relevant statement in the definitionally equal form `l c = π (x _)`. Use `conv_lhs => rw [← Submodule.projection_add_projection_eq_self hN c, map_add, z, zero_add, ← hx]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, hx, e⟩`.
+
+Rewrite using `[Fil, hF, Submodule.mem_dualAnnihilator]`. Introduce `c hc`. Use `(Submodule.span_le (p := LinearMap.ker y)).2 (fun c hc ↦ ?_) hc` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `hc`. Conclude with `(e c).trans (by rw [(Submodule.mem_dualAnnihilator _).1 hx c hc, map_zero])`.
+-/
 theorem canonical_of_abelianDeRham (P : AbelianDeRham) (hκ : IsNilDP κ)
     (hπ : Function.Surjective π) (hI : RingHom.ker π = I) : Canonical κ π := by
   intro g A₀ _ A _ i h hA hg
@@ -175,6 +219,9 @@ theorem canonical_of_abelianDeRham (P : AbelianDeRham) (hκ : IsNilDP κ)
     obtain ⟨c, hc, rfl⟩ := hc
     exact (e c).trans (by rw [(Submodule.mem_dualAnnihilator _).1 hx c hc, map_zero])
 
+/- English proof (translation)
+The claim follows from `H p hp _ (by simpa using hR.map (algebraMap R (DualNumber R))) _ _ (isDPNilpotent_squareZero _) R _ (fun r ↦ ⟨TrivSqZeroExt.inl r, rfl⟩) rfl`.
+-/
 theorem at_dualNumber (H : GrothendieckMessing) {p : ℕ} (hp : p.Prime) (hR : IsNilpotent (p : R)) :
     At (epsDP R) (TrivSqZeroExt.fstHom R R R).toRingHom :=
   H p hp _ (by simpa using hR.map (algebraMap R (DualNumber R))) _ _ (isDPNilpotent_squareZero _) R _

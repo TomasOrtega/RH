@@ -13,6 +13,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.SimplicialLabelRefinement
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar w0 hb q ψ hD hψ hT`. Take `⟨lab, hlT, hlab⟩` from `GlobalTheory.T.exists_carrier_dimension_label O bar w0 hb q ψ hD hψ hT`. Take `⟨N, hN⟩` from `GlobalTheory.T.carrier_dimension_label_bounded O bar hb q ψ lab hlab`. Establish `key : ∀ d : ℕ, ∃ φ : InvFun O, IsTwG w0 φ ∧ IsBaryStage bar q ψ lab φ (N - d)`. Introduce `d`.
+
+Proceed by induction on `d with`. Consider the case `zero => exact ⟨ψ, hT, isBaryStage_start hψ hN⟩`. Consider the case `succ d ih`. Take `⟨φ, hφT, hφ⟩` from `ih`. Break down `Nat.eq_zero_or_pos (N - d) with h | h` into its components or cases.
+
+Conclude with `⟨φ, hφT, by rw [show N - (d + 1) = N - d by omega]; exact hφ⟩`. Establish `e : N - d = (N - (d + 1)) + 1` using `by omega`. Rewrite `hφ` using `[e]`. Conclude with `GlobalTheory.T.barycentric_stage_extension O bar w0 hb q ψ lab φ _ hD hψ hT hlT hlab hφT hφ`. Take `⟨φ, hφT, hφ⟩` from `key N`.
+
+Rewrite `hφ` using `[Nat.sub_self]`. Conclude with `⟨φ, lab, hφ.1, hφT, hlT, GlobalTheory.T.simplicialLabelling_of_barycentricStage_zero _ bar q ψ lab φ hlab hφ, hφ.2.1⟩`.
+-/
 theorem exists_simpLab_refinement : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (ψ : InvFun O), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q ψ → IsTwG w0 ψ → ∃ φ lab : InvFun O, IsPolyFan bar q φ ∧ IsTwG w0 φ ∧ IsTwG w0 lab ∧ SimpLab bar q φ lab ∧ Subordinate bar q φ ψ := by
   intro O _ _ _ _ bar w0 hb q ψ hD hψ hT
   obtain ⟨lab, hlT, hlab⟩ := GlobalTheory.T.exists_carrier_dimension_label O bar w0 hb q ψ hD hψ hT

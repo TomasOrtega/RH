@@ -3,6 +3,13 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : ∀ k l, B (ψ l) (ε k) = if k = l then 1 else 0` using `fun k l => hψ k l`. Establish `h2 : ∀ k l, B (ε k) (ψ l) = -(if k = l then 1 else 0)` using `fun k l => by`. Rewrite using `[hB, h1]`. Use `⟨fun j => ψ j + ∑ k, (B (ψ j) (ψ k) / 2) • ε k, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+
+Simplify using `only [map_add, map_sum, map_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hε, h1, h2, mul_zero, Finset.sum_const_zero, add_zero, mul_ite, mul_one, mul_neg, Finset.sum_neg_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Combine the linear relations using `[hB (ψ i) (ψ j)]`. Introduce `i j`. Simplify using `only [map_add, map_sum, map_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hε, h1, mul_zero, Finset.sum_const_zero, add_zero]`. Introduce `j`.
+
+Simplify using `only [add_sub_cancel_left]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+-/
 theorem exists_isotropic_dual_of_skew {V : Type*} [AddCommGroup V] [Module ℚ V] {g : ℕ}
     (B : V →ₗ[ℚ] V →ₗ[ℚ] ℚ) (ε ψ : Fin g → V) (hB : ∀ x y, B x y = -B y x)
     (hε : ∀ i j, B (ε i) (ε j) = 0)
@@ -28,6 +35,11 @@ theorem exists_isotropic_dual_of_skew {V : Type*} [AddCommGroup V] [Module ℚ V
     exact Submodule.sum_mem _ fun k _ =>
       Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
+/- English proof (translation)
+Take `⟨φ, h₁, h₂, h₃⟩` from `exists_isotropic_dual_of_skew (Matrix.toLinearMap₂' ℚ Mq) ε ψ (fun x y => by`. Simplify using `only [Matrix.toLinearMap₂'_apply']`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hM, Matrix.neg_mulVec, neg_dotProduct, dotProduct_comm])`. Use the proof step `(fun i j => by simpa only [Matrix.toLinearMap₂'_apply'] using hε i j)`. Use the proof step `(fun i j => by simpa only [Matrix.toLinearMap₂'_apply'] using hψ i j)`.
+
+Conclude with `⟨φ, fun i j => by simpa only [Matrix.toLinearMap₂'_apply'] using h₁ i j, fun i j => by simpa only [Matrix.toLinearMap₂'_apply'] using h₂ i j, h₃⟩`.
+-/
 theorem exists_isotropic_dual_of_skew_matrix (r g : ℕ) (Mq : Matrix (Fin r) (Fin r) ℚ)
     (ε ψ : Fin g → Fin r → ℚ) (hM : Mqᵀ = -Mq) (hε : ∀ i j, ε i ⬝ᵥ Mq *ᵥ ε j = 0)
     (hψ : ∀ i j, ψ j ⬝ᵥ Mq *ᵥ ε i = if i = j then 1 else 0) :

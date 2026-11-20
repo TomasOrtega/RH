@@ -12,9 +12,17 @@ namespace GlobalTheory.RootSum
 
 variable {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j)
 
+/- English proof (translation)
+Simplify using `[Datum.mult, A.cm t]`.
+-/
 theorem mult_tau (t : D.what₂.Tau) : S.Dw.mult (DV.tauEmb D t) = S.Dw.p := by
   simp [Datum.mult, A.cm t]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : starRingEnd ℂ A.H.rt0 = A.H.rt0`. Establish `h0 : DV.tauEmb D t (A.H.rt : D.host.E) = A.H.rt0` using `A.cm t`. Rewrite `h`, the goal using `[← h0]`. Conclude with `h`.
+
+Establish `hd : (0 : ℝ) < A.H.d` using `by exact_mod_cast A.H.d_prime.pos`. Establish `h2` using `congrArg Complex.re A.H.sqrt_neg_disc_sq`. Establish `h3 : A.H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 h1`. Simplify using `[pow_two, h3] at h2`. Use polynomial arithmetic with `[sq_nonneg A.H.rt0.re]`.
+-/
 theorem conj_tau_ne (t : D.what₂.Tau) : conjEmb (DV.tauEmb D t) (A.H.rt : D.host.E) ≠ A.H.rt0 := by
   intro h
   have h1 : starRingEnd ℂ A.H.rt0 = A.H.rt0 := by
@@ -27,15 +35,31 @@ theorem conj_tau_ne (t : D.what₂.Tau) : conjEmb (DV.tauEmb D t) (A.H.rt : D.ho
   simp [pow_two, h3] at h2
   nlinarith [sq_nonneg A.H.rt0.re]
 
+/- English proof (translation)
+Rewrite using `[Datum.mult, if_neg (conj_tau_ne t)]`.
+-/
 theorem mult_conj_tau (t : D.what₂.Tau) : S.Dw.mult (conjEmb (DV.tauEmb D t)) = S.Dw.q := by
   rw [Datum.mult, if_neg (conj_tau_ne t)]
 
+/- English proof (translation)
+The claim follows from `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))`.
+-/
 theorem tau_inj' {t t' : D.what₂.Tau} (h : DV.tauEmb D t = DV.tauEmb D t') : t = t' :=
   D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => by simp [conjEmb]`.
+-/
 theorem conjEmb_conjEmb' (σ : D.host.E →+* ℂ) : conjEmb (conjEmb σ) = σ :=
   RingHom.ext fun a => by simp [conjEmb]
 
+/- English proof (translation)
+Establish `hmem : ∀ ρ : D.host.E →+* ℂ, ρ ∈ cmTypeOfSqrt D ↔ ρ (A.H.rt : D.host.E) = A.H.rt0` using `fun ρ => by`. Rewrite using `[mem_cm_type_iff, A.rt_eq, A.cmHost_rootComplex_eq_pm_sqrt]`. Distinguish the cases in `h : σ (A.H.rt : D.host.E) = A.H.rt0`. Conclude with `Or.inl ⟨h, DatOf.exists_tauEmb D ((hmem σ).2 h)⟩`. Use `Or.inr ⟨h, ?_⟩` and prove the remaining obligations.
+
+Establish `hc : ComplexEmbedding.conjugate σ ∈ cmTypeOfSqrt D`. Assume the negation of the conclusion as `hc`. Conclude with `h ((hmem σ).1 ((cm_type_mem_iff_conj_not_mem D σ).2 hc))`. Take `⟨t, ht⟩` from `DatOf.exists_tauEmb D hc`. Use `⟨t, RingHom.ext fun a => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun ρ : D.host.E →+* ℂ => starRingEnd ℂ (ρ a)) ht` as an intermediate fact. Simplify using `only [ComplexEmbedding.conjugate_coe_eq, Function.comp_apply, RingHomCompTriple.comp_apply, Complex.conj_conj] at this`. Simplify `this` using `[conjEmb]`.
+-/
 theorem eq_tau_or_conj (σ : D.host.E →+* ℂ) :
     (σ (A.H.rt : D.host.E) = A.H.rt0 ∧ ∃ t, σ = DV.tauEmb D t) ∨
       (σ (A.H.rt : D.host.E) ≠ A.H.rt0 ∧ ∃ t, σ = conjEmb (DV.tauEmb D t)) := by
@@ -61,6 +85,13 @@ def rootLetter (x : DV.Rt D.what₂.Tau N) : Letter S.Dw :=
 
 open Classical in
 
+/- English proof (translation)
+Simplify using `only [rootExp, rootEx, rootSym]`. Distinguish the cases in `h : (x.2 : ℕ) < S.Dw.p`. Establish `hm : (x.2 : ℕ) < S.Dw.mult (DV.tauEmb D x.1)` using `by rw [mult_tau]; exact h`. Simplify using `only [if_pos h, expo_single, letterOf, dif_pos hm, rootLetter, dif_pos h, Option.some.injEq]`. Apply the tactic sequence `by_cases e : l = ⟨DV.tauEmb D x.1, ⟨x.2, hm⟩⟩ <;> simp [e, eq_comm]`.
+
+Establish `hm : S.Dw.p + S.Dw.q - 1 - (x.2 : ℕ) < S.Dw.mult (conjEmb (DV.tauEmb D x.1))`. Rewrite using `[mult_conj_tau]`. Use `S.rank_eq` as an intermediate fact. Use `x.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [if_neg h, expo_single, letterOf, dif_pos hm, rootLetter, dif_neg h, Option.some.injEq]`. Apply the tactic sequence `by_cases e : l = ⟨conjEmb (DV.tauEmb D x.1), ⟨_, hm⟩⟩ <;> simp [e, eq_comm]`.
+-/
 theorem rootExp_eq (x : DV.Rt D.what₂.Tau N) (l : Letter S.Dw) :
     rootExp S x l = if l = rootLetter S x then (if (x.2 : ℕ) < S.Dw.p then 1 else -1) else 0 := by
   classical
@@ -74,6 +105,9 @@ theorem rootExp_eq (x : DV.Rt D.what₂.Tau N) (l : Letter S.Dw) :
     simp only [if_neg h, expo_single, letterOf, dif_pos hm, rootLetter, dif_neg h, Option.some.injEq]
     by_cases e : l = ⟨conjEmb (DV.tauEmb D x.1), ⟨_, hm⟩⟩ <;> simp [e, eq_comm]
 
+/- English proof (translation)
+Distinguish the cases in `h : (x.2 : ℕ) < S.Dw.p`. Rewrite using `[rootLetter, dif_pos h, if_pos h]`. Rewrite using `[rootLetter, dif_neg h, if_neg h]`.
+-/
 theorem rootLetter_key (x : DV.Rt D.what₂.Tau N) :
     ((rootLetter S x).1, ((rootLetter S x).2 : ℕ)) =
       if (x.2 : ℕ) < S.Dw.p then (DV.tauEmb D x.1, (x.2 : ℕ))
@@ -82,6 +116,9 @@ theorem rootLetter_key (x : DV.Rt D.what₂.Tau N) :
   · rw [rootLetter, dif_pos h, if_pos h]
   · rw [rootLetter, dif_neg h, if_neg h]
 
+/- English proof (translation)
+Take `⟨a, i⟩` from `l`. Take `⟨b, k⟩` from `l'`. Take `⟨rfl, h'⟩` from `Prod.mk.inj h`. Take `rfl : i = k` from `Fin.ext h'`. Both sides reduce to the same expression.
+-/
 theorem letter_ext {l l' : Letter S.Dw} (h : (l.1, (l.2 : ℕ)) = (l'.1, (l'.2 : ℕ))) : l = l' := by
   obtain ⟨a, i⟩ := l
   obtain ⟨b, k⟩ := l'
@@ -89,6 +126,19 @@ theorem letter_ext {l l' : Letter S.Dw} (h : (l.1, (l.2 : ℕ)) = (l'.1, (l'.2 :
   obtain rfl : i = k := Fin.ext h'
   rfl
 
+/- English proof (translation)
+Establish `hr` using `S.rank_eq`. Establish `key : ∀ x y, rootLetter S x = rootLetter S y → ((rootLetter S x).1, ((rootLetter S x).2 : ℕ)) = ((rootLetter S y).1, ((rootLetter S y).2 : ℕ))` using `fun x y h => by rw [h]`. Use `⟨fun x y hxy => ?_, fun l => ?_⟩` and prove the remaining obligations. Establish `e` using `key x y hxy`. Rewrite `e` using `[rootLetter_key, rootLetter_key]`.
+
+Establish `hx` using `x.2.2`. Establish `hy` using `y.2.2`. Use `split_ifs at e with h1 h2 h2`. Take `⟨e1, e2⟩` from `Prod.mk.inj e`. Conclude with `Prod.ext (tau_inj' e1) (Fin.ext e2)`.
+
+Conclude with `absurd (Prod.mk.inj e).1 (fun h => conj_tau_ne y.1 (h ▸ A.cm x.1))`. Conclude with `absurd (Prod.mk.inj e).1 (fun h => conj_tau_ne x.1 (h.symm ▸ A.cm y.1))`. Take `⟨e1, e2⟩` from `Prod.mk.inj e`. Establish `e1' : DV.tauEmb D x.1 = DV.tauEmb D y.1`. Use `congrArg conjEmb e1` as an intermediate fact.
+
+Simplify `this` using `[conjEmb_conjEmb']`. Conclude with `Prod.ext (tau_inj' e1') (Fin.ext (by omega))`. Take `⟨σ, i⟩` from `l`. Break down `eq_tau_or_conj (A := A) σ with ⟨hσ, t, rfl⟩ | ⟨hσ, t, rfl⟩` into its components or cases. Establish `hi : (i : ℕ) < S.Dw.p` using `by have := i.isLt; have := mult_tau S t; omega`.
+
+Use `⟨(t, ⟨i, by omega⟩), letter_ext S ?_⟩` and prove the remaining obligations. Rewrite using `[rootLetter_key, if_pos hi]`. Establish `hi : (i : ℕ) < S.Dw.q` using `by have := i.isLt; have := mult_conj_tau S t; omega`. Establish `hn : ¬ (S.Dw.p + S.Dw.q - 1 - i < S.Dw.p)` using `by omega`. Use `⟨(t, ⟨S.Dw.p + S.Dw.q - 1 - i, by omega⟩), letter_ext S ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[rootLetter_key, if_neg hn]`. Conclude with `Prod.ext rfl (by dsimp only; omega)`.
+-/
 theorem rootLetter_bijective : Function.Bijective (rootLetter S) := by
   have hr := S.rank_eq
   have key : ∀ x y, rootLetter S x = rootLetter S y →
@@ -120,6 +170,9 @@ theorem rootLetter_bijective : Function.Bijective (rootLetter S) := by
       rw [rootLetter_key, if_neg hn]
       exact Prod.ext rfl (by dsimp only; omega)
 
+/- English proof (translation)
+Rewrite using `[divOf]`. Repeatedly rewrite using `[rootExp_eq, ite_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+-/
 theorem divOf_root {κ : Lv A} {s : FinalTheorems S κ} (Φ : s.Flag) (k : s.Comp) (x : DV.Rt D.what₂.Tau N) :
     divOf (Φ.C k) (rootExp S x) =
       (if (x.2 : ℕ) < S.Dw.p then 1 else -1 : ℤ) • (Φ.C k).gr (rootLetter S x).1 (rootLetter S x).2 := by
@@ -133,6 +186,11 @@ end GlobalTheory.RootSum
 
 namespace GlobalTheory.RootSum
 
+/- English proof (translation)
+Introduce `D A N j S κ s Φ k`. Rewrite using `[← Fintype.sum_bijective (rootLetter S) (rootLetter_bijective S) (fun x => (Φ.C k).gr (rootLetter S x).1 (rootLetter S x).2) (fun x : Letter S.Dw => (Φ.C k).gr x.1 x.2) (fun _ => rfl)]`. Repeatedly rewrite using `[divOf_root, S.p_eq]`. Rewrite using `[← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Simplify using the standard rewrite rules. Simplify using `only [neg_smul, one_smul, smul_neg]`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sum_two_roots_ge : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp), (∑ x : DV.Rt D.what₂.Tau N, (if (x.2 : ℕ) < j then 0 else 2 : ℤ) • divOf (Φ.C k) (rootExp S x)) = -(∑ x : Letter S.Dw, (Φ.C k).gr x.1 x.2) + ∑ x : DV.Rt D.what₂.Tau N, divOf (Φ.C k) (rootExp S x) := by
   intro D A N j S κ s Φ k
   rw [← Fintype.sum_bijective (rootLetter S) (rootLetter_bijective S)

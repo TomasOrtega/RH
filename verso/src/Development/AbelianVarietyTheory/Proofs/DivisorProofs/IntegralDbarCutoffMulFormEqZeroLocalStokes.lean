@@ -18,6 +18,11 @@ namespace GlobalTheory.CxForm.DbarLocStokes
 
 open GlobalTheory.CxForm GlobalTheory.CxForm.HolAtlas
 
+/- English proof (translation)
+Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `: coefwise (fun f => GlobalTheory.dbar f v (coordVec a)) F = 0`. Use `Finset.sum_eq_zero fun S _ => ?_` and prove the remaining obligations. Establish `hS : (fun x => (bas n).repr (F x) S) =ᶠ[𝓝 v] fun _ => (0 : ℂ)` using `by filter_upwards [h] with x hx`. Simplify using `[hx]`.
+
+Use `beta_reduce`. Rewrite using `[GlobalTheory.dbar_congr hS, GlobalTheory.dbar_const]`. Simplify using the standard rewrite rules. Rewrite using `[this, mul_zero]`.
+-/
 theorem dbarAt_eq_zero_of_eventually {n : ℕ} {F : V n → Alt n} {v : V n} (h : F =ᶠ[𝓝 v] fun _ => 0) :
     dbarAt F v = 0 := by
   refine Finset.sum_eq_zero fun a _ => ?_
@@ -33,6 +38,11 @@ theorem dbarAt_eq_zero_of_eventually {n : ℕ} {F : V n → Alt n} {v : V n} (h 
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+Unfold `HolAtlas.loc`. Use `split_ifs with hw`. Establish `key : ∀ x : A.Pt, x.pt = (A.e j).symm w → (A.fn χ * γ) x = 0` using `fun x hx => by`. Rewrite using `[Pi.mul_apply, HolAtlas.fn, hx, h hw]`. Simplify using the standard rewrite rules.
+
+Conclude with `key _ rfl`. Both sides reduce to the same expression.
+-/
 theorem loc_fn_mul_eq_zero (γ : A.Fld) (χ : M → ℝ) (j : A.ι) (w : V n)
     (h : w ∈ (A.e j).target → χ ((A.e j).symm w) = 0) : A.loc (A.fn χ * γ) j w = 0 := by
   unfold HolAtlas.loc
@@ -48,6 +58,25 @@ namespace GlobalTheory.CxForm.DbarLocStokes
 
 open GlobalTheory.CxForm GlobalTheory.CxForm.HolAtlas
 
+/- English proof (translation)
+Introduce `M _ _ _ _ _ _ n A γ χ i hγ hχ hK`. Use `set K := tsupport χ with hKdef`. Establish `hKc : IsCompact K` using `(isClosed_tsupport χ).isCompact`. Establish `calc0` using `(GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.1 0`. Establish `hP : A.IsForm (A.fn χ * γ)` using `(calc0 _ _ (A.isForm_fn hχ) hγ).2.1`.
+
+Establish `hω : A.IsForm (A.dbar (A.fn χ * γ))` using `(calc0 _ _ hP hγ).2.2.2.2.1`. Establish `hnear : ∀ (j : A.ι) (w : V n), w ∈ (A.e j).target → (A.e j).symm w ∉ K → A.loc (A.fn χ * γ) j =ᶠ[𝓝 w] fun _ => 0`. Introduce `j w hw hwK`. Establish `hW` using `ChartGlue.isOpen_over (A.e j) (isClosed_tsupport χ).isOpen_compl`. Use `filter_upwards [hW.mem_nhds ⟨hw, hwK⟩] with u hu`.
+
+Conclude with `loc_fn_mul_eq_zero A γ χ j u fun _ => image_eq_zero_of_notMem_tsupport hu.2`. Establish `hvan : ∀ x : A.Pt, x.pt ∉ K → A.dbar (A.fn χ * γ) x = 0`. Introduce `x hx`. Use `dbarAt_eq_zero_of_eventually (hnear _ _ (x.ch.map_source x.2) ?_)` and prove the remaining obligations. Rewrite using `[x.ch.left_inv x.2]` and apply the resulting hypothesis.
+
+Rewrite using `[GlobalTheory.T.integral_eq_euclidean_integral_of_support_in_chart A _ i K hω hKc hK hvan]`. Use `set F := A.loc (A.fn χ * γ) i with hFdef`. Use `set B : Set (V n) := A.e i '' K with hBdef`. Establish `hB : IsCompact B` using `hKc.image_of_continuousOn ((A.e i).continuousOn.mono hK)`. Establish `hBt : B ⊆ (A.e i).target`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(A.e i).map_source (hK hy)`. Establish `hF0 : ∀ v ∉ B, F =ᶠ[𝓝 v] fun _ => 0`. Introduce `v hv`. Use `filter_upwards [hB.isClosed.isOpen_compl.mem_nhds hv] with u hu`.
+
+Use `loc_fn_mul_eq_zero A γ χ i u fun ht => image_eq_zero_of_notMem_tsupport fun hk => hu ⟨_, hk, ?_⟩` and prove the remaining obligations. Conclude with `(A.e i).right_inv ht`. Establish `hFs : HasCompactSupport F` using `HasCompactSupport.intro hB fun v hv => (hF0 v hv).self_of_nhds`. Establish `hFC : ∀ S, ContDiff ℝ 1 (fun v => (bas n).repr (F v) S)` using `fun S => contDiff_iff_contDiffAt.2 fun v => by`. Distinguish the cases in `ht : v ∈ (A.e i).target`.
+
+Conclude with `((hP.smooth i S).contDiffAt ((A.e i).open_target.mem_nhds ht)).of_le (by norm_num)`. Establish `h0 : (fun v => (bas n).repr (F v) S) =ᶠ[𝓝 v] fun _ => (0 : ℂ)` using `by filter_upwards [hF0 v fun h => ht (hBt h)] with u hu`. Simplify using `[hu]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq h0`. Establish `hloc : A.loc (A.dbar (A.fn χ * γ)) i = dbarAt F`.
+
+Use function extensionality and compare the values at `v`. Distinguish the cases in `ht : v ∈ (A.e i).target`. Rewrite using `[HolAtlas.loc, dif_pos ht]`. Simplify using `only [HolAtlas.dbar, Pt.crd, Pt.ch, (A.e i).right_inv ht]`. Both sides reduce to the same expression.
+
+Rewrite using `[HolAtlas.loc, dif_neg ht, dbarAt_eq_zero_of_eventually (hF0 v fun h => ht (hBt h))]`. Rewrite using `[hloc]`. Conclude with `GlobalTheory.T.integral_re_topDegreeDensity_dbar_eq_zero F hFC hFs`.
+-/
 theorem integral_dbar_fn_mul_eq_zero : ∀ {M : Type} [TopologicalSpace M] [CompactSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) (γ : A.Fld) (χ : M → ℝ) (i : A.ι), A.IsForm γ → A.SmoothOn univ (fun y => (χ y : ℂ)) → tsupport χ ⊆ (A.e i).source → A.integral (A.dbar (A.fn χ * γ)) = 0 := by
   intro M _ _ _ _ _ _ n A γ χ i hγ hχ hK
   set K := tsupport χ with hKdef

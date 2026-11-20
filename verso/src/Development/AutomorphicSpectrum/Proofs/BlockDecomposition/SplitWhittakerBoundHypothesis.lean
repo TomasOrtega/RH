@@ -16,15 +16,28 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Simplify using `[dg2, Matrix.det_fin_two]`.
+-/
 theorem det_diagonal_two (a : Fˣ) : ((dg2 a 1 : GL (Fin 2) F).val).det = a := by
   simp [dg2, Matrix.det_fin_two]
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Unfold `nsg`. Rewrite using `[if_pos]`. Conclude with `⟨1, by simp⟩`.
+-/
 theorem nsg_one : nsg (F × F) (1 : F) = 1 := by
   unfold nsg
   rw [if_pos]
   exact ⟨1, by simp⟩
 
+/- English proof (translation)
+Establish `hd : GeneralLinearGroup.det (dg2 a 1 : GL (Fin 2) F) = a` using `Units.ext (by`. Simplify using `using det_diagonal_two a)`. Establish `h00 : (dg2 a 1 : GL (Fin 2) F).val 0 0 = a` using `by simp [dg2]`. Establish `h01 : (dg2 a 1 : GL (Fin 2) F).val 0 1 = 0` using `by simp [dg2]`. Establish `h10 : (dg2 a 1 : GL (Fin 2) F).val 1 0 = 0` using `by simp [dg2]`.
+
+Establish `h11 : (dg2 a 1 : GL (Fin 2) F).val 1 1 = 1` using `by simp [dg2]`. Unfold `WcS`. Rewrite using `[hd, det_diagonal_two, h00, h01, h10, h11]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+
+Establish `ha : (a : F) / a = 1` using `div_self a.ne_zero`. Simplify using `only [rW, ha, zero_div, if_true, nsg_one]`. Simplify using `[mul_comm]`.
+-/
 theorem wcS_diag (χ : AddChar F Circle) (c₁ c₂ : Fˣ →* ℂˣ) (Ψ : F × F → ℂ) (a : Fˣ) :
     WcS χ c₁ c₂ Ψ (dg2 a 1) = ((c₁ a : ℂˣ) : ℂ) * mp a (1 / 2) *
       ∫ u : Fˣ, Ψ (((u * a : Fˣ) : F), ((u⁻¹ : Fˣ) : F)) * ((c₁ u : ℂˣ) : ℂ) * (((c₂ u)⁻¹ : ℂˣ) : ℂ) ∂multHaar F := by

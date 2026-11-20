@@ -7,12 +7,18 @@ namespace GlobalTheory.KummerEisensteinGalois.UnitPieceMu
 
 variable {K : Type} [Field K] [CharZero K]
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Use `conv_lhs => rw [← ZMod.natCast_zmod_val c]`. Rewrite using `[ZMod.isUnit_iff_coprime, Nat.coprime_pow_right_iff (by omega), Nat.coprime_comm, hp.coprime_iff_not_dvd]`.
+-/
 theorem isUnit_iff_not_dvd_val (p m : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (c : ZMod (p ^ m)) :
     IsUnit c ↔ ¬ p ∣ c.val := by
   have hp : p.Prime := Fact.out
   conv_lhs => rw [← ZMod.natCast_zmod_val c]
   rw [ZMod.isUnit_iff_coprime, Nat.coprime_pow_right_iff (by omega), Nat.coprime_comm, hp.coprime_iff_not_dvd]
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Rewrite using `[ZMod.isUnit_iff_coprime]`. Conclude with `(hp.coprime_iff_not_dvd.mpr hpN).symm.pow_right m`.
+-/
 theorem isUnit_natCast_of_not_dvd (p m N : ℕ) [Fact p.Prime] (hpN : ¬ p ∣ N) : IsUnit (N : ZMod (p ^ m)) := by
   have hp : p.Prime := Fact.out
   rw [ZMod.isUnit_iff_coprime]
@@ -20,6 +26,19 @@ theorem isUnit_natCast_of_not_dvd (p m N : ℕ) [Fact p.Prime] (hpN : ¬ p ∣ N
 
 omit [CharZero K] in
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hU` using `isUnit_natCast_of_not_dvd p m N hpN`. Establish `h1 : (N : ZMod (p ^ m)) * Ring.inverse (N : ZMod (p ^ m)) = 1` using `Ring.mul_inverse_cancel _ hU`. Establish `hP : (p : ZMod (p ^ m)) ^ m = 0` using `by rw [← Nat.cast_pow, ZMod.natCast_self]`. Establish `hcop : (N : ℤ).natAbs.Coprime ((p ^ m : ℕ) : ℤ).natAbs`.
+
+Simplify using `only [Int.natAbs_natCast]`. Conclude with `(hp.coprime_iff_not_dvd.mpr hpN).symm.pow_right m`. Establish `key : ∀ u : ZMod (p ^ m), z ≡ N * u.val + (p : ℤ) ^ m * x [ZMOD (N * p ^ m : ℕ)] ↔ (u = (z : ZMod (p ^ m)) * Ring.inverse (N : ZMod (p ^ m)) ∧ z ≡ (p : ℤ) ^ m * x [ZMOD N])`. Introduce `u`. Rewrite using `[Nat.cast_mul, ← Int.modEq_and_modEq_iff_modEq_mul hcop, and_comm]`.
+
+Use `and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[← ZMod.intCast_eq_intCast_iff]`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val, hP, zero_mul, add_zero]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite using `[h]`. Take the linear combination `(-u) * h1`. Introduce `h`. Rewrite using `[h]`.
+
+Take the linear combination `(-(z : ZMod (p ^ m))) * h1`. Rewrite using `[Int.modEq_iff_dvd, Int.modEq_iff_dvd, add_sub_assoc]`. Conclude with `dvd_add_right (dvd_mul_right _ _)`. Establish `hmem : (z : ZMod (p ^ m)) * Ring.inverse (N : ZMod (p ^ m)) ∈ primeTo p m ↔ ¬ (p : ℤ) ∣ z`. Rewrite using `[primeTo, mem_filter, ← isUnit_iff_not_dvd_val p m hm, ← dvd_val_iff p m hm, ← isUnit_iff_not_dvd_val p m hm, IsUnit.mul_iff]`.
+
+Simplify using `[hU.ringInverse]`. Simplify using `only [key]`. Distinguish the cases in `hx : z ≡ (p : ℤ) ^ m * x [ZMOD N]`. Simplify using `only [hx, and_true, sum_ite_eq', hmem]`. Simplify using `[hx]`.
+-/
 theorem sum_pick (p m N : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hpN : ¬ p ∣ N) (x z : ℤ) (F : ZMod (p ^ m) → K) :
     ∑ u ∈ primeTo p m, (if z ≡ N * u.val + (p : ℤ) ^ m * x [ZMOD (N * p ^ m : ℕ)] then F u else 0) =
     if ¬ (p : ℤ) ∣ z ∧ z ≡ (p : ℤ) ^ m * x [ZMOD N] then
@@ -53,6 +72,13 @@ theorem sum_pick (p m N : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hpN : ¬ p ∣ N) 
   · simp only [hx, and_true, sum_ite_eq', hmem]
   · simp [hx]
 
+/- English proof (translation)
+Establish `e : ∀ u : ZMod (p ^ m), ∑ a : ZMod (p ^ m), Φ u a * coefPos j (N * p ^ m) ζ (N * u.val + (p : ℤ) ^ m * x) (s a) n = ∑ q ∈ (n : ℤ).divisorsAntidiag, if q.1 ≡ N * u.val + (p : ℤ) ^ m * x [ZMOD (N * p ^ m : ℕ)] then (q.2.sign : K) * ((q.1 : K) / (N * p ^ m : ℕ)) ^ (j - 1) * ∑ a : ZM …`. Introduce `u`. Repeatedly rewrite using `[coefPos_eq, mul_sum]`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `sum_congr rfl fun a _ => by ring`. Simplify using the standard rewrite rules. Rewrite using `[sum_congr rfl fun u _ => e u, sum_comm]`. Use `sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Conclude with `sum_pick p m N hm hpN x q.1 (fun u => (q.2.sign : K) * ((q.1 : K) / (N * p ^ m : ℕ)) ^ (j - 1) * ∑ a : ZMod (p ^ m), Φ u a * ζ ^ (s a * q.2))`.
+-/
 theorem row_sum (p m N j : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hpN : ¬ p ∣ N) (ζ : K) (x : ℤ) (s : ZMod (p ^ m) → ℤ)
     (Φ : ZMod (p ^ m) → ZMod (p ^ m) → K) (n : ℕ) :
     ∑ u ∈ primeTo p m, ∑ a : ZMod (p ^ m),
@@ -78,6 +104,15 @@ theorem row_sum (p m N j : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hpN : ¬ p ∣ N)
   exact sum_pick p m N hm hpN x q.1 (fun u => (q.2.sign : K) * ((q.1 : K) / (N * p ^ m : ℕ)) ^ (j - 1) *
     ∑ a : ZMod (p ^ m), Φ u a * ζ ^ (s a * q.2))
 
+/- English proof (translation)
+Establish `hU` using `isUnit_natCast_of_not_dvd p m N hpN`. Establish `hI` using `hU.ringInverse`. Establish `hval : ∀ z : ℤ, ¬ (p : ℤ) ∣ z → ¬ (p : ℤ) ∣ ((((z : ZMod (p ^ m)) * Ring.inverse (N : ZMod (p ^ m))).val : ℕ) : ℤ)`. Introduce `z hz`. Rewrite using `[Int.natCast_dvd_natCast, ← isUnit_iff_not_dvd_val p m hm]`.
+
+Use `IsUnit.mul ?_ hI` and prove the remaining obligations. Rewrite using `[isUnit_iff_not_dvd_val p m hm, dvd_val_iff p m hm]` and apply the resulting hypothesis. Establish `hdvd : ∀ z : ℤ, (p : ℤ) ^ m ∣ z ↔ (z : ZMod (p ^ m)) = 0`. Introduce `z`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `h` using `col_sum p m N hm hN ψ hψ ζ hζ 0 0 _ _ d d' (hval n₁ h₁) (hval n₂ h₂)`. Simplify using `only [mul_zero, add_zero, zero_mul, zpow_zero, mul_one, hdvd, Int.cast_add, Int.cast_mul, Int.cast_natCast, ZMod.natCast_zmod_val] at h`. Rewrite using `[h, map_mul, ← MulChar.inv_apply]`.
+
+Use `if_congr (and_congr_left' ?_) rfl rfl` and prove the remaining obligations. Rewrite using `[hdvd, ← hI.mul_left_eq_zero (a := ((n₁ * d + n₂ * d' : ℤ) : ZMod (p ^ m)))]`. Use `push_cast`. Apply the tactic sequence `constructor <;> intro h <;> linear_combination h`.
+-/
 theorem col_sum_div (p m N : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hN : 0 < N) (hpN : ¬ p ∣ N)
     (ψ : DirichletCharacter K (p ^ m)) (hψ : ψ.IsPrimitive) (ζ : K) (hζ : IsPrimitiveRoot ζ (N * p ^ m))
     (n₁ n₂ d d' : ℤ) (h₁ : ¬ (p : ℤ) ∣ n₁) (h₂ : ¬ (p : ℤ) ∣ n₂) :
@@ -107,6 +142,27 @@ theorem col_sum_div (p m N : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hN : 0 < N) (hp
   push_cast
   constructor <;> intro h <;> linear_combination h
 
+/- English proof (translation)
+Establish `hx : ∀ c z : ℤ, z ≡ (p : ℤ) ^ m * (c * t) [ZMOD N] ↔ z ≡ c [ZMOD N]`. Introduce `c z`. Establish `h : (p : ℤ) ^ m * (c * t) ≡ c [ZMOD N]`. Use `ht.mul_left c` as an intermediate fact. Rewrite `this` using `[mul_one, mul_left_comm]`. Then use the resulting hypothesis.
+
+Conclude with `⟨fun h' => h'.trans h, fun h' => h'.trans h.symm⟩`. Establish `e1 : ∀ u a : ZMod (p ^ m), ∑ v ∈ primeTo p m, ∑ b : ZMod (p ^ m), ψ (u * b - a * v) * (coefPos (k - 1) (N * p ^ m) ζ (N * u.val + (p : ℤ) ^ m * (a₀ * t)) (N * a.val) i * coefPos 1 (N * p ^ m) ζ (N * v.val + (p : ℤ) ^ m * (b₀ * t)) (N * b.val) j) = (∑ q ∈ (j : ℤ).divisorsAntidiag, …`. Introduce `u a`. Use `row_sum p m N 1 hm hpN ζ (b₀ * t) (fun b => (N : ℤ) * b.val) (fun v b => ψ (u * b - a * v)) j` as an intermediate fact. Simplify using `only [Nat.sub_self, pow_zero, mul_one, hx] at this`.
+
+Rewrite using `[← this]`. Simplify using `only [sum_mul]`. Conclude with `sum_congr rfl fun v _ => sum_congr rfl fun b _ => by ring`. Simplify using `only [e1]`. Rewrite using `[row_sum p m N (k - 1) hm hpN ζ (a₀ * t) (fun a => (N : ℤ) * a.val) (fun u a => ∑ q ∈ (j : ℤ).divisorsAntidiag, if ¬ (p : ℤ) ∣ q.1 ∧ q.1 ≡ b₀ [ZMOD N] then (q.2.sign : K) * ∑ b : ZMod (p ^ m), ψ (u * b - a * ((q.1 : ZMod (p ^ m)) * Ring.inverse (N : ZMod (p ^ m)))) * ζ ^ ((N : ℤ) …`.
+
+Establish `e2 : ∀ (c : Prop) [Decidable c] (C : K) (A B : ℤ × ℤ → K), (if c then C * ((∑ q ∈ (i : ℤ).divisorsAntidiag, A q) * ∑ q ∈ (j : ℤ).divisorsAntidiag, B q) else 0) = ∑ q ∈ (i : ℤ).divisorsAntidiag, ∑ q' ∈ (j : ℤ).divisorsAntidiag, if c then C * (A q * B q') else 0`. Introduce `c _ C A B`. Use `split_ifs`. Rewrite using `[sum_mul_sum]`. Simplify using `only [mul_sum]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[ffMu_eq, eeMu_eq, e2]`. Use `sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Simplify using `only [hx]`. Distinguish the cases in `h₁ : (p : ℤ) ∣ q.1`.
+
+Simplify using `[h₁]`. Distinguish the cases in `g₁ : q.1 ≡ a₀ [ZMOD N]`. Use `swap`. Simplify using `[g₁]`. Rewrite using `[if_pos ⟨h₁, g₁⟩]`.
+
+Simplify using `only [sum_mul (j : ℤ).divisorsAntidiag]`. Rewrite using `[sum_comm, mul_sum]`. Use `sum_congr rfl fun q' hq' => ?_` and prove the remaining obligations. Distinguish the cases in `h₂ : (p : ℤ) ∣ q'.1`. Simplify using `[h₂]`.
+
+Distinguish the cases in `g₂ : q'.1 ≡ b₀ [ZMOD N]`. Use `swap`. Simplify using `[g₂]`. Simplify using `only [if_pos (And.intro h₂ g₂), mul_assoc (q'.2.sign : K)]`. Rewrite using `[← mul_sum, col_sum_div p m N hm hN hpN ψ hψ ζ hζ q.1 q'.1 q.2 q'.2 h₁ h₂, (Int.mem_divisorsAntidiag.mp hq).1, (Int.mem_divisorsAntidiag.mp hq').1]`.
+
+Establish `hc : (p : ℤ) ^ m ∣ (i : ℤ) + j ↔ p ^ m ∣ i + j` using `by norm_cast`. Simplify using `only [hc]`. Rewrite using `[show k - 1 - 1 = k - 2 from rfl, div_pow, div_eq_mul_inv]`. Apply the tactic sequence `by_cases a1 : p ^ m ∣ i + j <;> by_cases a2 : (p : ℤ) ∣ q.2 <;> by_cases a3 : (p : ℤ) ∣ q'.2 <;>`. Simplify using `only [a1, a2, a3, h₁, h₂, g₁, g₂, not_true, not_false_iff, and_true, and_false, and_self, if_true, if_false, mul_zero, zero_mul, false_and]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entry_sum (p m N k : ℕ) [Fact p.Prime] (K : Type) [Field K] [CharZero K] (hm : 1 ≤ m) (hN : 0 < N)
     (hpN : ¬ p ∣ N) (_hk : 3 ≤ k) (ψ : DirichletCharacter K (p ^ m)) (hψ : ψ.IsPrimitive) (ζ : K)
     (hζ : IsPrimitiveRoot ζ (N * p ^ m)) (a₀ b₀ t : ℤ) (ht : (p : ℤ) ^ m * t ≡ 1 [ZMOD N]) (i j : ℕ) :

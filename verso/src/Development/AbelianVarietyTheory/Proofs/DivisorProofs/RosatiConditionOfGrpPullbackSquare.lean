@@ -9,10 +9,26 @@ noncomputable section
 
 namespace GlobalTheory.RosatiPull
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext h1 h2`.
+-/
 theorem sq_left_ext {H : Scheme.{0}} {G : Over H} {Z : Scheme.{0}} {a b : Z ⟶ (G ⊗ G).left}
     (h1 : a ≫ (fst G G).left = b ≫ (fst G G).left) (h2 : a ≫ (snd G G).left = b ≫ (snd G G).left) : a = b :=
   pullback.hom_ext h1 h2
 
+/- English proof (translation)
+Introduce `p _ D S H E A₀ _ P hP AH _ AE _ f φ φ₂ φ₂H actH actE _ hsq hact hR c`. Establish `hu : (lift (fst AE AE ≫ actE.act c) (snd AE AE)).left ≫ φ₂ = φ₂ ≫ (lift (fst AH AH ≫ actH.act c) (snd AH AH)).left`. Apply `sq_left_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, ← Over.comp_left, lift_fst]`. Rewrite using `[hsq.1]`.
+
+Simplify using `only [← Category.assoc, ← Over.comp_left, lift_fst]`. Simplify using `only [Over.comp_left, Category.assoc, hact]`. Rewrite using `[← Category.assoc φ₂, hsq.1, Category.assoc]`. Simplify using `only [Category.assoc, ← Over.comp_left, lift_snd]`. Rewrite using `[hsq.2]`.
+
+Simplify using `only [← Category.assoc, ← Over.comp_left, lift_snd]`. Establish `hv : (lift (fst AE AE) (snd AE AE ≫ actE.act (D.star c).unop)).left ≫ φ₂ = φ₂ ≫ (lift (fst AH AH) (snd AH AH ≫ actH.act (D.star c).unop)).left`. Apply `sq_left_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, ← Over.comp_left, lift_fst]`. Rewrite using `[hsq.1]`.
+
+Simplify using `only [← Category.assoc, ← Over.comp_left, lift_fst]`. Simplify using `only [Category.assoc, ← Over.comp_left, lift_snd]`. Rewrite using `[hsq.2]`. Simplify using `only [← Category.assoc, ← Over.comp_left, lift_snd]`. Simplify using `only [Over.comp_left, Category.assoc, hact]`.
+
+Rewrite using `[← Category.assoc φ₂, hsq.2, Category.assoc]`. Establish `hQ : (P.pull φ₂H).IsLB` using `pull_isLB hP _`. Establish `hR' : (P.pull (φ₂ ≫ φ₂H)).IsLB` using `pull_isLB hP _`. Establish `e3` using `GlobalTheory.GenSpread.lbIso_pull_comp (L := P.pull φ₂H) (M := P.pull φ₂H) φ₂ hu hv (hR c)`. Establish `e1u` using `GlobalTheory.GenSpread.lbIso_pull_pull hP (lift (fst AE AE ≫ actE.act c) (snd AE AE)).left (a := φ₂ ≫ φ₂H) rfl`.
+
+Establish `e2u` using `GlobalTheory.GenSpread.lbIso_pull_pull hP ((lift (fst AE AE ≫ actE.act c) (snd AE AE)).left ≫ φ₂) (a := φ₂H) (Category.assoc _ _ _).symm`. Establish `e1v` using `GlobalTheory.GenSpread.lbIso_pull_pull hP (lift (fst AE AE) (snd AE AE ≫ actE.act (D.star c).unop)).left (a := φ₂ ≫ φ₂H) rfl`. Establish `e2v` using `GlobalTheory.GenSpread.lbIso_pull_pull hP ((lift (fst AE AE) (snd AE AE ≫ actE.act (D.star c).unop)).left ≫ φ₂) (a := φ₂H) (Category.assoc _ _ _).symm`. Conclude with `LBIso.trans (pull_isLB hR' _) (pull_isLB hP _) (pull_isLB hR' _) e1u.symm (LBIso.trans (pull_isLB hP _) (pull_isLB hQ _) (pull_isLB hR' _) e2u (LBIso.trans (pull_isLB hQ _) (pull_isLB hQ _) (pull_isLB hR' _) e3 (LBIso.trans (pull_isLB hQ _) (pull_isLB hP _) (pull_isLB hR' _) e2v. …`.
+-/
 theorem rosatiFor_pull : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (S H E : Scheme.{0}) (A₀ : Over S) [GrpObj A₀] (P : LB (G2 A₀).left), P.IsLB → ∀ (AH : Over H) [GrpObj AH] (AE : Over E) [GrpObj AE] (f : E ⟶ H) (φ : AE.left ⟶ AH.left) (φ₂ : (G2 AE).left ⟶ (G2 AH).left) (φ₂H : (G2 AH).left ⟶ (G2 A₀).left) (actH : OActN D.O AH) (actE : OActN D.O AE), IsGrpPullback AE AH f φ → IsSquare φ φ₂ → (∀ a : D.O, (actE.act a).left ≫ φ = φ ≫ (actH.act a).left) → RosatiFor D actH (P.pull φ₂H) → RosatiFor D actE (P.pull (φ₂ ≫ φ₂H)) := by
   intro p _ D S H E A₀ _ P hP AH _ AE _ f φ φ₂ φ₂H actH actE _ hsq hact hR c
   have hu : (lift (fst AE AE ≫ actE.act c) (snd AE AE)).left ≫ φ₂ =

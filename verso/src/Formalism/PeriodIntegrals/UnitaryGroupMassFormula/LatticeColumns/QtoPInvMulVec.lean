@@ -20,15 +20,29 @@ section Crd
 variable (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p)
   (Q : GL (Idx D.R.rS D.R.k) (FpX X p))
 
+/- English proof (translation)
+Simplify using `only [crd, map_add, Pi.add_comp, Matrix.mulVec_add]`.
+-/
 theorem crd_add (v w : Fin X.B.I.n → TpX X p) : crd X p θ Q (v + w) = crd X p θ Q v + crd X p θ Q w := by
   simp only [crd, map_add, Pi.add_comp, Matrix.mulVec_add]
 
+/- English proof (translation)
+Simplify using `only [crd, map_sub, Pi.sub_comp, Matrix.mulVec_sub]`.
+-/
 theorem crd_sub (v w : Fin X.B.I.n → TpX X p) : crd X p θ Q (v - w) = crd X p θ Q v - crd X p θ Q w := by
   simp only [crd, map_sub, Pi.sub_comp, Matrix.mulVec_sub]
 
+/- English proof (translation)
+Simplify using `only [crd, map_zero, Pi.zero_comp, Matrix.mulVec_zero]`.
+-/
 theorem crd_zero : crd X p θ Q 0 = 0 := by
   simp only [crd, map_zero, Pi.zero_comp, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Establish `h : pr1 θ (t • v) = (θ t).1 • pr1 θ v`. Use function extensionality and compare the values at `i`. Use `show (θ (t * v i)).1 = (θ t).1 * (θ (v i)).1`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+
+Unfold `crd`. Rewrite using `[h, Pi.smul_comp, Matrix.mulVec_smul]`.
+-/
 theorem crd_smul (t : TpX X p) (v : Fin X.B.I.n → TpX X p) :
     crd X p θ Q (t • v) = (θ t).1 • crd X p θ Q v := by
   have h : pr1 θ (t • v) = (θ t).1 • pr1 θ v := by
@@ -39,6 +53,13 @@ theorem crd_smul (t : TpX X p) (v : Fin X.B.I.n → TpX X p) :
   unfold crd
   rw [h, Pi.smul_comp, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Establish `h1 : pr1 θ (M *ᵥ v) = (M.map fun t => (θ t).1) *ᵥ pr1 θ v`. Use function extensionality and compare the values at `i`. Use `show (θ ((M *ᵥ v) i)).1 = ((M.map fun t => (θ t).1) *ᵥ pr1 θ v) i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Prod.fst_sum, Prod.fst_mul, Matrix.map_apply]`. Both sides reduce to the same expression.
+
+Establish `h2 : ((M.map fun t => (θ t).1) *ᵥ pr1 θ v) ∘ (idxEquiv X).symm = Matrix.reindex (idxEquiv X) (idxEquiv X) (M.map fun t => (θ t).1) *ᵥ (pr1 θ v ∘ (idxEquiv X).symm)`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv]`. Use function extensionality and compare the values at `s`. Simplify using `[Function.comp_def]`. Unfold `crd`.
+
+Rewrite using `[h1, h2]`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+-/
 theorem crd_mulVec (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) (v : Fin X.B.I.n → TpX X p) :
     crd X p θ Q (M *ᵥ v) =
       (((Q⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) *
@@ -58,6 +79,9 @@ theorem crd_mulVec (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) (v : Fin X
   rw [h1, h2]
   simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `reindex₂`. Use `show (Matrix.reindexAlgEquiv (FpX X p) (FpX X p) (idxEquiv X).symm ((Q⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p))) *ᵥ w = _`. Rewrite using `[Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Equiv.symm_symm, Matrix.submatrix_mulVec_equiv]`.
+-/
 theorem reindex_inv_mulVec (w : Fin X.B.I.n → FpX X p) :
     ((reindex₂ X p Q)⁻¹ : GL (Fin X.B.I.n) (FpX X p)) *ᵥ w =
       (((Q⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) *ᵥ
@@ -67,6 +91,9 @@ theorem reindex_inv_mulVec (w : Fin X.B.I.n → FpX X p) :
     ((Q⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p))) *ᵥ w = _
   rw [Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Equiv.symm_symm, Matrix.submatrix_mulVec_equiv]
 
+/- English proof (translation)
+Establish `h` using `((hL v).mp hv).1 ((idxEquiv X).symm s)`. Rewrite `h` using `[reindex_inv_mulVec]`. Simplify using `only [Function.comp_apply, Equiv.apply_symm_apply] at h`. Conclude with `h`.
+-/
 theorem crd_int_of_lat (hL : LatBasis X p θ (reindex₂ X p Q)) (v : Fin X.B.I.n → TpX X p)
     (hv : v ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))) (s : Idx D.R.rS D.R.k) :
     crd X p θ Q v s ∈ p.1.adicCompletionIntegers X.B.I.F := by
@@ -75,6 +102,11 @@ theorem crd_int_of_lat (hL : LatBasis X p θ (reindex₂ X p Q)) (v : Fin X.B.I.
   simp only [Function.comp_apply, Equiv.apply_symm_apply] at h
   exact h
 
+/- English proof (translation)
+Use `(hL v).mpr ⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `h1 ((idxEquiv X) i)`. Rewrite using `[reindex_inv_mulVec, Function.comp_apply]`. Conclude with `h`. Introduce `i`.
+
+Establish `hz : (fun j => th2 X p θ (v j)) = 0` using `h2`. Rewrite using `[hz, Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+-/
 theorem lat_of_crd (hL : LatBasis X p θ (reindex₂ X p Q)) (v : Fin X.B.I.n → TpX X p)
     (h2 : pr2 θ v = 0) (h1 : ∀ s, crd X p θ Q v s ∈ p.1.adicCompletionIntegers X.B.I.F) :
     v ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := by

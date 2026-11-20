@@ -14,6 +14,11 @@ open GlobalTheory.CompanionTheory.SmallSec
 
 namespace GlobalTheory.CompanionTheory.SmallSec
 
+/- English proof (translation)
+Establish `hd : (a : F) - 1 ∈ valBall F (ord (1 : F) + 1)`. Rewrite using `[ord_one, zero_add]`. Conclude with `valBall_antitone (by exact_mod_cast hn) ha`. Establish `h` using `ord_add_eq (one_ne_zero : (1 : F) ≠ 0) hd`. Rewrite `h` using `[add_sub_cancel, ord_one]`.
+
+Conclude with `GroundTheory.LocalField.modulus_eq_one_iff.2 h`.
+-/
 theorem modulus_eq_one_of_sub_one_mem_valBall_pos (F : Type) [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ) (hn : 1 ≤ n) (a : Fˣ)
     (ha : (a : F) - 1 ∈ valBall F (n : ℤ)) : modulus (a : F) = 1 := by

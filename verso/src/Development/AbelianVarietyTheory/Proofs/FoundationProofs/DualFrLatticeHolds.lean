@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DualLatticeIsLat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DualLat.dualFr_lattice_and_hdual.1`.
+-/
 theorem dualFrLattice_holds : Formalism.L2.DIV.DualFrLattice :=
   GlobalTheory.DualLat.dualFr_lattice_and_hdual.1
 

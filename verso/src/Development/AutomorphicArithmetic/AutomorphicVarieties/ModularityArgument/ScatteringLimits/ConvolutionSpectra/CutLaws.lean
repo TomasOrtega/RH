@@ -5,6 +5,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `V _ _ _ _ s t hs ht`. Establish `c` using `cutSpec (V := V)`. Establish `nsq : ∀ u : L V, ‖u‖ ^ 2 = ∫ x, ‖u x‖ ^ 2` using `fun u => by`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), L2.inner_def, ← integral_re (L2.integrable_inner u u)]`. Simplify using `only [inner_self_eq_norm_sq]`.
+
+Use `⟨?_, ?_, fun hd => ?_, ?_, ?_, fun u => ?_, fun a => ?_, fun u => ?_, fun u => ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun u => Lp.ext ?_ filter_upwards [c s hs (cut V t u), c t ht u, c _ (hs.inter ht) u] with x h1 h2 h3` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, h1, h3]`. Apply the tactic sequence `by_cases a : x ∈ s <;> by_cases b : x ∈ t <;> simp [a, b, h2]`. Use `LinearMap.IsSymmetric.isSelfAdjoint fun u v => ?_` and prove the remaining obligations.
+
+Simplify using `only [ContinuousLinearMap.coe_coe, L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [c s hs u, c s hs v] with x h1 h2`. Rewrite using `[h1, h2]`. Apply the tactic sequence `by_cases a : x ∈ s <;> simp [a]`.
+
+Use `ContinuousLinearMap.ext fun u => Lp.ext ?_ filter_upwards [c s hs u, c t ht u, c _ (hs.union ht) u, Lp.coeFn_add (cut V s u) (cut V t u)] with x h1 h2 h3 h4` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.add_apply, h3, h4, Pi.add_apply, h1, h2, indicator_union_of_disjoint hd]`. Use `ContinuousLinearMap.ext fun u => Lp.ext ?_ filter_upwards [c _ .univ u] with x h1` and prove the remaining obligations. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+
+Use `ContinuousLinearMap.ext fun u => Lp.ext ?_ filter_upwards [c _ .empty u, Lp.coeFn_zero V 2 (volume : Measure ℝ)] with x h1 h2` and prove the remaining obligations. Rewrite using `[h1, ContinuousLinearMap.zero_apply, h2]`. Simplify using the standard rewrite rules. Use `Lp.norm_le_norm_of_ae_le ?_ filter_upwards [c s hs u] with x h` and prove the remaining obligations. Rewrite using `[h]`.
+
+Conclude with `norm_indicator_le_norm_self _ _`. Use `ContinuousLinearMap.ext fun u => Lp.ext ?_ filter_upwards [sh_ae V a (cut V s u), (measurePreserving_add_right volume a).quasiMeasurePreserving.ae (c s hs u), c _ (measurable_add_const a hs) (sh V a u), sh_ae V a u] with x h1 h2 h3 h4` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, h1, h2, h3]`. Apply the tactic sequence `by_cases b : x + a ∈ s <;> simp [b, h4]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h filter_upwards [c s hs u] with x h1 hx`. Rewrite `h1` using `[h]`. Rewrite using `[h1, indicator_of_notMem hx]`. Introduce `h`. Use `Lp.ext ?_` and prove the remaining obligations.
+
+Use `filter_upwards [c s hs u, h] with x h1 h2`. Rewrite using `[h1]`. Distinguish the cases in `b : x ∈ s`. Simplify using `[b]`. Simplify using `[b, h2 b]`.
+
+Rewrite using `[nsq, ← integral_indicator hs]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [c s hs u] with x h`. Rewrite using `[h]`. Apply the tactic sequence `by_cases b : x ∈ s <;> simp [b]`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.cutLaws :
     ∀ {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] (s t : Set ℝ), MeasurableSet s → MeasurableSet t →
       cut V s ∘L cut V t = cut V (s ∩ t) ∧ IsSelfAdjoint (cut V s) ∧ (Disjoint s t → cut V (s ∪ t) = cut V s + cut V t) ∧ cut V univ = 1 ∧ cut V ∅ = 0 ∧

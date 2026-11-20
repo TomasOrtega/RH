@@ -5,11 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `N` and use `(ha N).comp (Ideal.quotientMap _ f (le_trans (Ideal.pow_right_mono h N) (Ideal.le_comap_pow _ N)))`.
+-/
 private theorem cont_map {Γ R R' : Type} [TopologicalSpace Γ] [CommRing R] [CommRing R'] (f : R →+* R')
     {I : Ideal R} {J : Ideal R'} (h : I ≤ J.comap f) {a : Γ → R} (ha : AdicCont I a) :
     AdicCont J fun g => f (a g) := fun N =>
   (ha N).comp (Ideal.quotientMap _ f (le_trans (Ideal.pow_right_mono h N) (Ideal.le_comap_pow _ N)))
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le, Ideal.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨g, i, j, hp, rfl⟩`. Conclude with `h ⟨g, i, j, hp, rfl⟩`. Introduce and unpack `h _ ⟨g, i, j, hp, rfl⟩`.
+
+Conclude with `h ⟨g, i, j, hp, rfl⟩`.
+-/
 private theorem span_le_iff {G R R' : Type} {n : ℕ} [CommRing R] [CommRing R'] (f : R →+* R')
     (r : G → Fin n → Fin n → R) (p : Fin n → Fin n → Prop) (P : Ideal R') :
     Ideal.span {x | ∃ g i j, p i j ∧ x = f (r g i j)} ≤ P ↔
@@ -21,6 +29,11 @@ private theorem span_le_iff {G R R' : Type} {n : ℕ} [CommRing R] [CommRing R']
   · rintro h _ ⟨g, i, j, hp, rfl⟩
     exact h ⟨g, i, j, hp, rfl⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `residue_surjective (res O S.R (b : S.R))`. Establish `h1 : b - algebraMap O S.B c ∈ S.mB` using `by show S.B.val (b - algebraMap O S.B c) ∈ maximalIdeal S.R`. Rewrite using `[← res_eq_zero_iff O, map_sub, map_sub, AlgHom.commutes, AlgHom.commutes, sub_eq_zero]`. Conclude with `hc.symm`. Establish `h2 : S.inc (b - algebraMap O S.B c) ∈ x` using `hx h1`.
+
+Rewrite `h2` using `[← L.lies]`. Establish `h3 : L.ι (S.inc (b - algebraMap O S.B c)) ∈ maximalIdeal L.R` using `h2`. Rewrite `h3` using `[map_sub, map_sub, AlgHom.commutes, AlgHom.commutes]`. Rewrite using `[← hc, hf c]`. Conclude with `Ideal.Quotient.eq.2 h3`.
+-/
 private theorem res_b {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O]
     {F : Frame l (ResidueField O)} {n : ℕ} (S : Space O F n) (x : Ideal S.A) (L : S.Loc x) (hx : S.mB ≤ S.π x)
     (f : ResidueField O →+* ResidueField L.R) (hf : IsResMap O L.R f) (b : S.B) :
@@ -37,6 +50,15 @@ private theorem res_b {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalR
   rw [← hc, hf c]
   exact Ideal.Quotient.eq.2 h3
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ n hF hn S x L`. Take `⟨-, -, hx⟩` from `UpperTheory.V.Fr.loc_flat hF hn S x L`. Take `⟨⟨hc1, hc2⟩, -⟩` from `UpperTheory.V.Fr.cont_u hF hn S`. Establish `hx0 : S.x0 ≤ (maximalIdeal L.R).comap (L.ι : S.A →+* L.R)`. Rewrite using `[L.lies]`.
+
+Conclude with `Ideal.map_le_iff_le_comap.2 hx`. Establish `h3 : ∀ P : Ideal L.R, (L.ρ.triP ≤ P ↔ S.u.triP ≤ L.im P) ∧ (L.ρ.triM ≤ P ↔ S.u.triM ≤ L.im P) ∧ (L.ρ.ee ≤ P ↔ S.u.ee ≤ L.im P)` using `fun P => ⟨span_le_iff (L.ι : S.A →+* L.R) (fun g i j => S.u.r g i j) (fun i j => j < i) P, span_le_iff (L.ι : S.A →+* L.R) (fun g i j => S.u.r g i j) (fun i j => i < j) P, span_le_iff (L.ι : S.A →+* L.R) (fun g i j => S.u.r g i j) (fun i j => Odd (w n i - w n j)) P⟩`. Establish `him : L.im (maximalIdeal L.R) = x` using `L.lies`. Use `⟨⟨fun i j => cont_map _ hx0 (hc1 i j), fun v i => cont_map _ hx0 (hc2 v i)⟩, fun f hf => ⟨fun g i => ?_, fun v i g => ?_⟩, h3, fun hP => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(res_b S x L hx f hf (S.aB g i)).trans (congrArg f (S.lift.2.1.1 g i))`.
+
+Conclude with `(res_b S x L hx f hf (S.ψB v i g)).trans (congrArg f (S.lift.2.1.2 v i g))`. Assume the negation of the conclusion as `hne`. Conclude with `hP (him ▸ (h3 _).1.1 (IsLocalRing.le_maximalIdeal hne))`. Establish `hk : RingHom.ker ((residue L.R).comp (L.ι : S.A →+* L.R)) = x`. Rewrite using `[← RingHom.comap_ker, IsLocalRing.ker_residue]`.
+
+Conclude with `L.lies`. Use `(UpperTheory.V.Fr.types hF hn S (ResidueField L.R) ((residue L.R).comp (L.ι : S.A →+* L.R))).2` as an intermediate fact. Rewrite `this` using `[hk]`. Rewrite using `[(h3 _).2.1, him]`. Conclude with `(this hx).resolve_left hP`.
+-/
 theorem UpperTheory.V.Fr.loc_rho :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ (x : Ideal S.A) (L : S.Loc x), L.ρ.Cont (maximalIdeal L.R) ∧ (∀ f, IsResMap O L.R f → (L.ρ.map (residue L.R)).IsBar f) ∧ (∀ P : Ideal L.R, (L.ρ.triP ≤ P ↔ S.u.triP ≤ L.im P) ∧ (L.ρ.triM ≤ P ↔ S.u.triM ≤ L.im P) ∧ (L.ρ.ee ≤ P ↔ S.u.ee ≤ L.im P)) ∧ (¬ S.u.triP ≤ x → L.ρ.triP = ⊤ ∧ L.ρ.triM ≤ maximalIdeal L.R) := by
   intro l _ O _ _ _ _ F C₀ n hF hn S x L

@@ -65,6 +65,9 @@ end Maschke
 section G5a
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) {i : N.Loc}
   (r : N.X i → (Formalism.ConjugateSelfDual.G H.E N.Om →* GL (Fin R.nV) (N.O i)))
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.GalS.SplitI_of_TY N r A hr w (N.SQ_l i w hSQ) hL (fun P => hTY.1 i P w hSQ hcond) x`.
+-/
 theorem splitI_of_monodromyInertiaType_of_lgCatN (A : NAut N) (hr : GoodR N i r) (hTY : At.MonodromyInertiaType N A) (w : PlE H)
     (hSQ : w ∈ N.S i ∨ w ∈ N.Q i)
     (hcond : w ∈ N.Q i ∨ (At.Del N i ∧
@@ -91,6 +94,11 @@ def SufficientGaloisClauseAlt (i : N.Loc) : Prop :=
       ¬ (((rb (N.gam0 i w) : GL _ _) : Matrix (Fin R.r) (Fin R.r) _).charpoly).IsRoot
         (IsLocalRing.residue (N.O i) (chi1 N i (N.gam0 i w))) ∧
       ∀ e : ℤ, HOneTwoZero N i w (Formalism.MainNotions.N.twistRep (Formalism.MainNotions.N.glRep rb) (chiEpsBar N i e)))
+/- English proof (translation)
+Rewrite using `[galois_clause_iff_reduced N A i hDel]`. Introduce `hg r hr w hw hl`. Take `⟨hL, hS⟩` from `h hg r hr w hw`. Use `⟨fun hq x => _root_.Formalism.MainNotions.SumRepresentations.splitI_of_monodromyInertiaType_of_lgCatN N r A hr hTY w hw ?_ hL x, fun hgk hS' => ?_, fun hS' rb hrb e => ?_⟩` and prove the remaining obligations. Break down `hq with hq | hq` into its components or cases.
+
+Conclude with `Or.inl hq`. Conclude with `Or.inr ⟨hDel, hq⟩`. Take `⟨⟨rb, hrb⟩, hall⟩` from `hS hS'`. Conclude with `_root_.UpperTheory.GalS.exists_inertia_charpoly_factor_of_tame_type N r A hC hr hT hTY w hS' hgk hL rb hrb (hall rb hrb).1`. Conclude with `(HStarZero_iff N rb w hl ((hS hS').2 rb hrb).1 e).2 (((hS hS').2 rb hrb).2 e)`.
+-/
 theorem galois_clause_of_sufficient_alt (hC : Cheb N) (hT : TieGal N A) (hTY : MonodromyInertiaType N A) (i : N.Loc) (hDel : Del N i)
     (h : _root_.Formalism.MainNotions.SumRepresentations.At.SufficientGaloisClauseAlt N A i) : ConclusionG5 N A i := by
   rw [galois_clause_iff_reduced N A i hDel]
@@ -106,6 +114,9 @@ theorem galois_clause_of_sufficient_alt (hC : Cheb N) (hT : TieGal N A) (hTY : M
   · exact (HStarZero_iff N rb w hl ((hS hS').2 rb hrb).1 e).2 (((hS hS').2 rb hrb).2 e)
 end At
 def SufficientGaloisClauseAlt (D : D7) : Prop := ∀ i, _root_.Formalism.MainNotions.SumRepresentations.At.SufficientGaloisClauseAlt D.nd D.naut i
+/- English proof (translation)
+Introduce `i` and use `_root_.Formalism.MainNotions.SumRepresentations.At.galois_clause_of_sufficient_alt D.nd D.naut h.2.2.2.2.2.2.2.2.1 h.1.2.2 h.2.2.2.2.2.1 i (Del_holds D i) (ho i)`.
+-/
 theorem galois_clause_of_sufficient_alt (D : D7) (h : _root_.Formalism.MainNotions.SumRepresentations.AdmAAlt D) (ho : _root_.Formalism.MainNotions.SumRepresentations.SufficientGaloisClauseAlt D) : ConclusionG5 D := fun i =>
   _root_.Formalism.MainNotions.SumRepresentations.At.galois_clause_of_sufficient_alt D.nd D.naut h.2.2.2.2.2.2.2.2.1 h.1.2.2 h.2.2.2.2.2.1 i (Del_holds D i) (ho i)
 end Formalism.MainNotions.SumRepresentations

@@ -11,6 +11,11 @@ namespace GlobalTheory.BSP.BCCancel
 variable {R S T X Y : Type} [CommRing R] [CommRing S] [CommRing T] [Algebra R S] [Algebra S T] [Algebra R T]
   [IsScalarTower R S T] [AddCommGroup X] [Module R X] [AddCommGroup Y] [Module R Y]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul s x => simp [LinearMap.baseChange_tmul]`. Consider the case `add a b ha hb => simp only [TensorProduct.tmul_add, map_add, ha, hb]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem cancel_comm (f : X →ₗ[R] Y) (z : T ⊗[S] (S ⊗[R] X)) :
     AlgebraTensorModule.cancelBaseChange R S T T Y ((f.baseChange S).lTensor T z) =
       f.baseChange T (AlgebraTensorModule.cancelBaseChange R S T T X z) := by
@@ -23,6 +28,11 @@ theorem cancel_comm (f : X →ₗ[R] Y) (z : T ⊗[S] (S ⊗[R] X)) :
     | add a b ha hb => simp only [TensorProduct.tmul_add, map_add, ha, hb]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Establish `hl : Function.Bijective ((f.baseChange S).lTensor T)`. Conclude with `(LinearEquiv.lTensor T (LinearEquiv.ofBijective _ hf)).bijective`. Establish `hfun : ⇑(f.baseChange T) = AlgebraTensorModule.cancelBaseChange R S T T Y ∘ (f.baseChange S).lTensor T ∘ (AlgebraTensorModule.cancelBaseChange R S T T X).symm`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, cancel_comm, LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[hfun]`. Conclude with `(AlgebraTensorModule.cancelBaseChange R S T T Y).bijective.comp (hl.comp (AlgebraTensorModule.cancelBaseChange R S T T X).symm.bijective)`.
+-/
 theorem bij_up (f : X →ₗ[R] Y) (hf : Function.Bijective (f.baseChange S)) :
     Function.Bijective (f.baseChange T) := by
   have hl : Function.Bijective ((f.baseChange S).lTensor T) := by
@@ -35,6 +45,11 @@ theorem bij_up (f : X →ₗ[R] Y) (hf : Function.Bijective (f.baseChange S)) :
   exact (AlgebraTensorModule.cancelBaseChange R S T T Y).bijective.comp
     (hl.comp (AlgebraTensorModule.cancelBaseChange R S T T X).symm.bijective)
 
+/- English proof (translation)
+Rewrite using `[← Module.FaithfullyFlat.lTensor_bijective_iff_bijective S T]`. Establish `hfun : ⇑((f.baseChange S).lTensor T) = (AlgebraTensorModule.cancelBaseChange R S T T Y).symm ∘ f.baseChange T ∘ AlgebraTensorModule.cancelBaseChange R S T T X`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, ← cancel_comm, LinearEquiv.symm_apply_apply]`. Rewrite using `[hfun]`.
+
+Conclude with `(AlgebraTensorModule.cancelBaseChange R S T T Y).symm.bijective.comp (hf.comp (AlgebraTensorModule.cancelBaseChange R S T T X).bijective)`.
+-/
 theorem bij_down [Module.FaithfullyFlat S T] (f : X →ₗ[R] Y) (hf : Function.Bijective (f.baseChange T)) :
     Function.Bijective (f.baseChange S) := by
   rw [← Module.FaithfullyFlat.lTensor_bijective_iff_bijective S T]
@@ -50,6 +65,15 @@ end GlobalTheory.BSP.BCCancel
 
 namespace GlobalTheory.BSP.BCCancel
 
+/- English proof (translation)
+Use `set L := u.liftBaseChange B`. Establish `h0` using `TensorProduct.isBaseChange A N B`. Establish `hc : IsBaseChange C ((v ∘ₗ L : B ⊗[A] N →ₗ[B] N'').restrictScalars A ∘ₗ TensorProduct.mk A B N 1)`. Use `hw using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+
+Simplify using `[L, LinearMap.liftBaseChange_tmul]`. Establish `h1 : IsBaseChange C (v ∘ₗ L)` using `IsBaseChange.of_comp h0 hc`. Establish `hfun : ⇑(L.baseChange C) = hv.equiv.symm ∘ h1.equiv`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[LinearEquiv.eq_symm_apply]`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c p => simp [IsBaseChange.equiv_tmul, LinearMap.baseChange_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Rewrite using `[hfun]`. Conclude with `hv.equiv.symm.bijective.comp h1.equiv.bijective`.
+-/
 theorem bij_lin {A B C N N' N'' : Type} [CommRing A] [CommRing B] [CommRing C] [Algebra A B] [Algebra B C]
     [Algebra A C] [IsScalarTower A B C] [AddCommGroup N] [Module A N] [AddCommGroup N'] [Module A N']
     [Module B N'] [IsScalarTower A B N'] [AddCommGroup N''] [Module A N''] [Module B N''] [Module C N'']
@@ -79,6 +103,21 @@ end GlobalTheory.BSP.BCCancel
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l _ R _ B C h hc A _ k N _ _ _ _ N' _ _ _ _ N'' _ _ u v w hw hv hwb`. Use `letI : Algebra A B.A := k.toAlgebra`. Use `letI : Algebra B.A C.A := h.f.toAlgebra`. Use `letI : Algebra A C.A := (h.f.comp k).toAlgebra`. Use `haveI : IsScalarTower A B.A C.A := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `letI : Module A N' := Module.compHom N' k`. Use `haveI : IsScalarTower A B.A N' := ⟨fun a b x => mul_smul (k a) b x⟩`. Use `letI : Module B.A N'' := Module.compHom N'' h.f`. Use `letI : Module A N'' := Module.compHom N'' (h.f.comp k)`. Use `haveI : IsScalarTower B.A C.A N'' := ⟨fun a b x => mul_smul (h.f a) b x⟩`.
+
+Use `haveI : IsScalarTower A C.A N'' := ⟨fun a b x => mul_smul (h.f (k a)) b x⟩`. Use `haveI : IsScalarTower A B.A N'' := ⟨fun a b x => by show h.f (k a * b) • x = h.f (k a) • (h.f b • x)`. Rewrite using `[map_mul, mul_smul]⟩`. Set `u' : N →ₗ[A] N'` to `{ toFun := u, map_add' := u.map_add, map_smul' := fun a x => u.map_smulₛₗ a x }`. Set `v' : N' →ₗ[B.A] N''` to `{ toFun := v, map_add' := v.map_add, map_smul' := fun a x => v.map_smulₛₗ a x }`.
+
+Set `w' : N →ₗ[A] N''` to `{ toFun := w, map_add' := w.map_add, map_smul' := fun a x => w.map_smulₛₗ a x }`. Establish `hv' : IsBaseChange C.A v'` using `(GlobalTheory.T.isSemilinearBaseChange_iff_isBaseChange B.A C.A N' N'' v v' fun _ => rfl).1 hv`. Establish `hw' : IsBaseChange C.A ((v'.restrictScalars A).comp u')`. Use `(GlobalTheory.T.isSemilinearBaseChange_iff_isBaseChange A C.A N N'' w w' fun _ => rfl).1 hwb` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `x`. Conclude with `(hw x).symm`. Use `set L := u'.liftBaseChange B.A`. Establish `hC : Function.Bijective (L.baseChange C.A)` using `BCCancel.bij_lin u' v' hv' hw'`. Use `letI : Algebra (B.A ⧸ adI B ^ 1) (C.A ⧸ adI C ^ 1) := (qmap h 1).toAlgebra`.
+
+Use `haveI : IsScalarTower B.A (B.A ⧸ adI B ^ 1) (C.A ⧸ adI C ^ 1) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Module.FaithfullyFlat (B.A ⧸ adI B ^ 1) (C.A ⧸ adI C ^ 1) := hc.ff 1`. Establish `hQ : Function.Bijective (L.baseChange (C.A ⧸ adI C ^ 1))` using `BCCancel.bij_up (S := C.A) L hC`. Establish `hB : Function.Bijective (L.baseChange (B.A ⧸ adI B ^ 1))` using `BCCancel.bij_down (T := C.A ⧸ adI C ^ 1) L hQ`. Use `haveI : IsAdicComplete (adI B) B.A := B.complete`.
+
+Establish `hJ : adI B ^ 1 ≤ Ideal.jacobson ⊥` using `(pow_one (adI B)).le.trans (IsAdicComplete.le_jacobson_bot (adI B))`. Establish `hL : Function.Bijective L` using `GlobalTheory.T.bijective_of_bijective_baseChange_quotient_jacobson B.A (adI B ^ 1) hJ (B.A ⊗[A] N) N' L hB`. Establish `hu' : IsBaseChange B.A u'` using `IsBaseChange.of_equiv (LinearEquiv.ofBijective L hL) fun x => by`. Simplify using `[L, LinearMap.liftBaseChange_tmul]`. Conclude with `(GlobalTheory.T.isSemilinearBaseChange_iff_isBaseChange A B.A N N' u u' fun _ => rfl).2 hu'`.
+-/
 theorem semiBC_of_cover : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (B C : Obj l R) (h : Hom B C), Cover h →
     ∀ (A : Type) [CommRing A] (k : A →+* B.A) (N : Type) [AddCommGroup N] [Module A N] [Module.Finite A N]
     [Module.Projective A N] (N' : Type) [AddCommGroup N'] [Module B.A N'] [Module.Finite B.A N']

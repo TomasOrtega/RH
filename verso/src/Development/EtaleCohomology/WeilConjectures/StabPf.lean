@@ -14,6 +14,11 @@ def proj : geom Ω p ⟶ geom L p :=
     rw [Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, pullback.condition]
     congr 3)
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [proj, Category.assoc, pullback.lift_fst, galMap_fst]`. Simplify using `only [proj, Category.assoc, pullback.lift_snd]`. Rewrite using `[galMap_snd_assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`.
+
+Use extensionality with `x`. Conclude with `(mem_fixingSubgroup_iff _).1 hσ x x.2`.
+-/
 theorem galMap_proj (σ : Ω ≃ₐ[K] Ω) (hσ : σ ∈ L.fixingSubgroup) : galMap Ω p σ ≫ proj L p = proj L p := by
   apply pullback.hom_ext
   · simp only [proj, Category.assoc, pullback.lift_fst, galMap_fst]

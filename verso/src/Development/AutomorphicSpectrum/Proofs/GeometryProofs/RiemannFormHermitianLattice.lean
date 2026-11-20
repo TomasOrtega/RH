@@ -5,11 +5,23 @@ open Filter Topology Matrix
 
 namespace GlobalTheory.CompanionTheory.RiemannForm
 
+/- English proof (translation)
+Establish `h : a ᵥ* A = A *ᵥ a` using `by rw [← vecMul_transpose, hA]`. Rewrite using `[dotProduct_mulVec, h]`.
+-/
 theorem dot_mulVec_symm {g : ℕ} (A : Matrix (Fin g) (Fin g) ℝ) (hA : Aᵀ = A) (a b : Fin g → ℝ) :
     a ⬝ᵥ A *ᵥ b = (A *ᵥ a) ⬝ᵥ b := by
   have h : a ᵥ* A = A *ᵥ a := by rw [← vecMul_transpose, hA]
   rw [dotProduct_mulVec, h]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hnot : y ∉ LinearMap.range A.mulVecLin`. Introduce and unpack `⟨w, hw⟩`. Conclude with `hne ⟨w, by simpa using hw⟩`. Take `⟨φ, hφy, hφ⟩` from `Submodule.exists_le_ker_of_notMem hnot`.
+
+Set `m : Fin g → ℝ` to `fun i => φ (fun j => if i = j then 1 else 0)`. Establish `hφm : ∀ x, φ x = m ⬝ᵥ x`. Introduce `x`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ φ x]`. Simplify using `only [dotProduct, smul_eq_mul, m]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hAm : A *ᵥ m = 0`. Apply `dotProduct_eq_zero_iff.1 ?_` to reduce the goal to its premises. Introduce `w`. Rewrite using `[← dot_mulVec_symm A hA, ← hφm]`.
+
+Conclude with `hφ ⟨w, by simp⟩`. Conclude with `hφy (by rw [hφm, dotProduct_comm]; exact hy m hAm)`.
+-/
 theorem exists_mulVec_eq_of_orthogonal_ker {g : ℕ} (A : Matrix (Fin g) (Fin g) ℝ) (hA : Aᵀ = A)
     (y : Fin g → ℝ) (hy : ∀ m, A *ᵥ m = 0 → y ⬝ᵥ m = 0) : ∃ w, A *ᵥ w = y := by
   by_contra hne
@@ -30,6 +42,29 @@ theorem exists_mulVec_eq_of_orthogonal_ker {g : ℕ} (A : Matrix (Fin g) (Fin g)
     exact hφ ⟨w, by simp⟩
   exact hφy (by rw [hφm, dotProduct_comm]; exact hy m hAm)
 
+/- English proof (translation)
+Take `⟨r, s, e, Q, hQ, hz, hP⟩` from `ToricBasis.exists_adapted_unimodular g Unit (fun _ => Bs) (fun _ => hB)`. Simplify using `only [Finset.univ_unique, Finset.sum_const, Finset.card_singleton, one_smul] at hP`. Establish `hz'` using `fun k l => (hz () k l).1`. Establish `hz''` using `fun k l => (hz () k l).2`. Set `Qr : Matrix (Fin g) (Fin g) ℝ` to `Q.map (fun x : ℤ => (x : ℝ))`.
+
+Establish `hdet : IsUnit Qr.det`. Establish `h : Qr.det = ((Q.det : ℤ) : ℝ)`. Use `(Int.castRingHom ℝ).map_det Q` as an intermediate fact. Simplify `this.symm` using `[RingHom.mapMatrix_apply]`. Rewrite using `[h]`.
+
+Conclude with `hQ.map (Int.castRingHom ℝ)`. Set `w` to `Qr⁻¹ *ᵥ n`. Establish `hw : Qr *ᵥ w = n`. Simplify using `only [w, mulVec_mulVec, mul_nonsing_inv _ hdet, one_mulVec]`. Set `q : Fin r ⊕ Fin s → Fin g → ℤ` to `fun a i => Q i (e a)`.
+
+Establish `hent : ∀ a c, ((Qᵀ * Bs * Q).submatrix e e) a c = q a ⬝ᵥ Bs *ᵥ q c`. Introduce `a c`. Rewrite using `[Matrix.mul_assoc]`. Simplify using `only [submatrix_apply, mul_apply, transpose_apply, q, dotProduct, mulVec]`. Establish `hnsum : n = ∑ a, w (e a) • (fun i => (q a i : ℝ))`.
+
+Rewrite using `[← hw]`. Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Qr, map_apply, q]`. Rewrite using `[← Equiv.sum_comp e]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+
+Establish `hcast : ∀ a c, (fun i => (q a i : ℝ)) ⬝ᵥ (Bs.map (fun x : ℤ => (x : ℝ))) *ᵥ (fun i => (q c i : ℝ)) = ((q a ⬝ᵥ Bs *ᵥ q c : ℤ) : ℝ)`. Introduce `a c`. Simplify using `[dotProduct, mulVec]`. Set `x : Fin r → ℝ` to `fun l => w (e (Sum.inl l))`. Establish `hPx : ((((Qᵀ * Bs * Q).submatrix e e).toBlocks₁₁).map (fun x : ℤ => (x : ℝ))) *ᵥ x = 0`.
+
+Use function extensionality and compare the values at `l`. Establish `h0 : (fun i => (q (Sum.inl l) i : ℝ)) ⬝ᵥ (Bs.map (fun x : ℤ => (x : ℝ))) *ᵥ n = 0`. Rewrite using `[hn, dotProduct_zero]`. Rewrite `h0` using `[hnsum, mulVec_sum, dotProduct_sum, Fintype.sum_sum_type]`. Simplify using `only [mulVec_smul, dotProduct_smul, hcast, ← hent, smul_eq_mul, hz'', Int.cast_zero, mul_zero, Finset.sum_const_zero, add_zero] at h0`.
+
+Simplify using `only [mulVec, dotProduct, map_apply, toBlocks₁₁, of_apply, Pi.zero_apply]`. Use `Eq.trans (Finset.sum_congr rfl fun a _ => ?_) h0` and prove the remaining obligations. Simplify using `only [x]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx : x = 0`.
+
+Assume the negation of the conclusion as `hx`. Use `hP.dotProduct_mulVec_pos hx` as an intermediate fact. Rewrite `this` using `[hPx, dotProduct_zero]`. Conclude with `lt_irrefl _ this`. Rewrite using `[hnsum, Fintype.sum_sum_type]`.
+
+Establish `hl : ∀ l, w (e (Sum.inl l)) = 0` using `fun l => congrFun hx l`. Simplify using `only [hl, zero_smul, Finset.sum_const_zero, zero_add]`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨q (Sum.inr k), ?_, rfl⟩)` and prove the remaining obligations. Apply `ToricBasis.mulVec_eq_zero_of_quad hB` to reduce the goal to its premises. Rewrite using `[← hent]`.
+
+Conclude with `hz' k _`.
+-/
 theorem mem_span_integer_kernel {g : ℕ} (Bs : Matrix (Fin g) (Fin g) ℤ)
     (hB : (Bs.map (fun x : ℤ => (x : ℝ))).PosSemidef) (n : Fin g → ℝ)
     (hn : Bs.map (fun x : ℤ => (x : ℝ)) *ᵥ n = 0) :
@@ -90,6 +125,17 @@ theorem mem_span_integer_kernel {g : ℕ} (Bs : Matrix (Fin g) (Fin g) ℤ)
   rw [← hent]
   exact hz' k _
 
+/- English proof (translation)
+Establish `hn` using `hBS y`. Establish `h2 : y ⬝ᵥ S *ᵥ y = (S *ᵥ y) ⬝ᵥ Y *ᵥ (S *ᵥ y)`. Rewrite using `[← dot_mulVec_symm S hS, hSY _ hn]`. Establish `h3` using `hpos _ hn`. Rewrite `h3` using `[← h2]`.
+
+Establish `hself : ∀ a : Fin g → ℝ, 0 ≤ a ⬝ᵥ a` using `fun a => Finset.sum_nonneg fun i _ => mul_self_nonneg _`. Establish `hnn` using `hself (S *ᵥ y)`. Establish `h4` using `hself (y - c • (S *ᵥ y))`. Establish `h5 : (y - c • (S *ᵥ y)) ⬝ᵥ (y - c • (S *ᵥ y)) = y ⬝ᵥ y - 2 * c * (y ⬝ᵥ S *ᵥ y) + c ^ 2 * ((S *ᵥ y) ⬝ᵥ (S *ᵥ y))`. Simplify using `only [sub_dotProduct, dotProduct_sub, smul_dotProduct, dotProduct_smul, smul_eq_mul, dotProduct_comm (S *ᵥ y) y]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h4` using `[h5]`. Use `⟨le_trans (mul_nonneg hc.le hnn) h3, ?_, fun h0 => ?_⟩` and prove the remaining obligations. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 hc.le]`. Establish `hnz : S *ᵥ y = 0`.
+
+Establish `: (S *ᵥ y) ⬝ᵥ (S *ᵥ y) = 0`. Rewrite `h3` using `[h0]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `dotProduct_self_eq_zero.1 this`. Use `exists_mulVec_eq_of_orthogonal_ker Br hBr y fun m hm => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hSY m hm, dot_mulVec_symm S hS, hnz, zero_dotProduct]`.
+-/
 theorem real_form {g : ℕ} (Br S Y : Matrix (Fin g) (Fin g) ℝ) (c : ℝ) (hc : 0 < c) (hS : Sᵀ = S)
     (hBr : Brᵀ = Br)
     (hpos : ∀ v, Br *ᵥ v = 0 → c * (v ⬝ᵥ v) ≤ v ⬝ᵥ Y *ᵥ v)
@@ -122,6 +168,57 @@ theorem real_form {g : ℕ} (Br S Y : Matrix (Fin g) (Fin g) ℝ) (c : ℝ) (hc 
     refine exists_mulVec_eq_of_orthogonal_ker Br hBr y fun m hm => ?_
     rw [← hSY m hm, dot_mulVec_symm S hS, hnz, zero_dotProduct]
 
+/- English proof (translation)
+Introduce `g Bs τ G c hc hB hτ hpos hG hrel hker y`. Establish `hBs : Bsᵀ = Bs` using `ToricBasis.symm_of_posSemidef hB`. Use `set Br : Matrix (Fin g) (Fin g) ℝ := Bs.map (fun x : ℤ => (x : ℝ)) with hBrdef`. Set `S : Matrix (Fin g) (Fin g) ℝ` to `G.map Complex.re`. Set `Y : Matrix (Fin g) (Fin g) ℝ` to `τ.map Complex.im`.
+
+Establish `hBr : Brᵀ = Br`. Use extensionality with `i j`. Use `congrFun (congrFun hBs i) j` as an intermediate fact. Simplify using `only [transpose_apply] at this`. Simplify using `[hBrdef, this]`.
+
+Establish `him : ∀ i j, (G i j).im = 0`. Introduce `i j`. Establish `h` using `hrel (Pi.single i 1) (Pi.single j 1) 0 0 (by simp) (by simp)`. Establish `e1 : ∀ a : Fin g, (fun k => (((Pi.single a 1 : Fin g → ℤ) k : ℤ) : ℂ)) = Pi.single a 1`. Introduce `a`.
+
+Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hk]`.
+
+Establish `e0 : (fun k => (((0 : Fin g → ℤ) k : ℤ) : ℂ)) = 0`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Simplify using `only [e1, e0, mulVec_zero, add_zero] at h`. Simplify using `using h`.
+
+Establish `hGS : ∀ i j, G i j = (S i j : ℂ)` using `fun i j => Complex.ext (by simp [S]) (by simp [S, him])`. Establish `hS : Sᵀ = S`. Use extensionality with `i j`. Use `hG.apply i j` as an intermediate fact. Simplify using `only [transpose_apply, S, map_apply]`.
+
+Rewrite using `[← this]`. Simplify using the standard rewrite rules. Establish `hGim : ∀ (z : Fin g → ℂ) i, ((G *ᵥ z) i).im = (S *ᵥ (fun j => (z j).im)) i`. Introduce `z i`. Simplify using `only [mulVec, dotProduct, Complex.im_sum, hGS, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]`.
+
+Establish `hGre : ∀ (z : Fin g → ℂ) i, ((G *ᵥ z) i).re = (S *ᵥ (fun j => (z j).re)) i`. Introduce `z i`. Simplify using `only [mulVec, dotProduct, Complex.re_sum, hGS, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Establish `hSYK : ∀ v : Fin g → ℤ, Bs *ᵥ v = 0 → S *ᵥ (Y *ᵥ (fun k => (v k : ℝ))) = fun k => (v k : ℝ)`. Introduce `v hv`.
+
+Use function extensionality and compare the values at `i`. Establish `h` using `hrel (Pi.single i 1) 0 0 v (by simp) hv`. Establish `e1 : (fun k => (((Pi.single i 1 : Fin g → ℤ) k : ℤ) : ℂ)) = Pi.single i 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hk]`. Establish `e2 : (fun j => ((star (τ *ᵥ (fun k => (v k : ℂ)))) j).im) = -(Y *ᵥ (fun k => (v k : ℝ)))`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[mulVec, dotProduct, Y, Complex.im_sum]`. Simplify using `only [e1] at h`. Simplify using `only [Pi.zero_apply, Int.cast_zero, Complex.ofReal_zero] at h`. Establish `e3 : (fun _ : Fin g => (0 : ℂ)) = 0` using `rfl`. Simplify using `only [e3, mulVec_zero, add_zero, zero_add, single_one_dotProduct, zero_dotProduct, zero_sub] at h`.
+
+Rewrite `h` using `[hGim, e2, mulVec_neg]`. Simplify using `only [Pi.neg_apply, Int.cast_neg, neg_inj] at h`. Rewrite using `[h]`. Establish `hSY : ∀ n, Br *ᵥ n = 0 → S *ᵥ (Y *ᵥ n) = n`. Introduce `n hn`.
+
+Establish `hmem` using `mem_span_integer_kernel Bs hB n hn`. Use `clear hn`. Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`.
+
+Conclude with `hSYK v hv`. Consider the case `zero => simp only [mulVec_zero]`. Consider the case `add a b _ _ ha hb => simp only [mulVec_add, ha, hb]`. Consider the case `smul t a _ ha => simp only [mulVec_smul, ha]`. Establish `horth : ∀ j, ∀ v : Fin g → ℤ, Bs *ᵥ v = 0 → (fun k => Bs k j) ⬝ᵥ v = 0`.
+
+Introduce `j v hv`. Establish `h` using `congrFun hv j`. Establish `hs : ∀ k, Bs k j = Bs j k` using `fun k => congrFun (congrFun hBs j) k`. Simplify `h` using `[mulVec, dotProduct, hs]`. Establish `hmul : S * Br = 0`.
+
+Use extensionality with `i j`. Establish `h` using `congrArg Complex.re (congrFun (hker _ (horth j)) i)`. Rewrite `h` using `[hGre]`. Simplify `h` using `[mulVec, dotProduct, mul_apply, hBrdef]`. Establish `hmul' : Br * S = 0`.
+
+Establish `h` using `congrArg transpose hmul`. Rewrite `h` using `[transpose_mul, hS, hBr, transpose_zero]`. Then use the resulting hypothesis. Establish `hBS : ∀ y, Br *ᵥ (S *ᵥ y) = 0`. Introduce `y`. Rewrite using `[mulVec_mulVec, hmul', zero_mulVec]`.
+
+Set `a : Fin g → ℝ` to `fun i => (y i).re`. Set `b : Fin g → ℝ` to `fun i => (y i).im`. Establish `hQ : (y ⬝ᵥ G *ᵥ star y).re = a ⬝ᵥ S *ᵥ a + b ⬝ᵥ S *ᵥ b`. Establish `e1 : (fun j => ((star y) j).re) = a`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[a]`. Establish `e2 : (fun j => ((star y) j).im) = -b`. Use function extensionality and compare the values at `j`. Simplify using `[b]`. Simplify using `only [dotProduct, Complex.re_sum, Complex.mul_re, hGre, hGim, e1, e2, mulVec_neg, Pi.neg_apply, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [a, b]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : ∑ i, ‖y i‖ ^ 2 = a ⬝ᵥ a + b ⬝ᵥ b`. Simplify using `only [dotProduct, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Take `⟨a0, a1, a2⟩` from `real_form Br S Y c hc hS hBr hpos hSY hBS a`. Take `⟨b0, b1, b2⟩` from `real_form Br S Y c hc hS hBr hpos hSY hBS b`. Establish `hspan : ∀ x : Fin g → ℝ, (∃ w, Br *ᵥ w = x) → (fun k => (x k : ℂ)) ∈ Submodule.span ℂ {p : Fin g → ℂ | ∃ u : Fin g → ℤ, (∀ v : Fin g → ℤ, Bs *ᵥ v = 0 → u ⬝ᵥ v = 0) ∧ p = fun k => (u k : ℂ)}`.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Establish `h : (fun k => (((Br *ᵥ w) k : ℝ) : ℂ)) = ∑ j, (w j : ℂ) • (fun k => ((Bs k j : ℤ) : ℂ))`. Use function extensionality and compare the values at `k`. Simplify using `[mulVec, dotProduct, hBrdef, Finset.sum_apply, mul_comm]`. Rewrite using `[h]`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨fun k => Bs k j, horth j, rfl⟩)`. Rewrite using `[hQ, hN]`. Use `⟨by linarith, ?_, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[le_inv_mul_iff₀ hc, mul_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `ha0 : a ⬝ᵥ S *ᵥ a = 0` using `by linarith`. Establish `hb0 : b ⬝ᵥ S *ᵥ b = 0` using `by linarith`. Establish `hy : y = (fun k => (a k : ℂ)) + Complex.I • (fun k => (b k : ℂ))`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `apply Complex.ext <;> simp [a, b]`.
+
+Rewrite using `[hy]`. Conclude with `add_mem (hspan a (a2 ha0)) (Submodule.smul_mem _ _ (hspan b (b2 hb0)))`.
+-/
 theorem form_bounds : ∀ (g : ℕ) (Bs : Matrix (Fin g) (Fin g) ℤ) (τ G : Matrix (Fin g) (Fin g) ℂ) (c : ℝ), 0 < c → (Bs.map (fun x : ℤ => (x : ℝ))).PosSemidef → τᵀ = τ → (∀ v : Fin g → ℝ, Bs.map (fun x : ℤ => (x : ℝ)) *ᵥ v = 0 → c * (v ⬝ᵥ v) ≤ v ⬝ᵥ ((τ.map Complex.im) *ᵥ v)) → G.IsHermitian → (∀ u u' v v' : Fin g → ℤ, Bs *ᵥ v = 0 → Bs *ᵥ v' = 0 → (((fun k => (u k : ℂ)) + τ *ᵥ (fun k => (v k : ℂ))) ⬝ᵥ G *ᵥ star ((fun k => (u' k : ℂ)) + τ *ᵥ (fun k => (v' k : ℂ)))).im = ((v ⬝ᵥ u' - u ⬝ᵥ v' : ℤ) : ℝ)) → (∀ u : Fin g → ℤ, (∀ v : Fin g → ℤ, Bs *ᵥ v = 0 → u ⬝ᵥ v = 0) → G *ᵥ (fun k => (u k : ℂ)) = 0) → ∀ y : Fin g → ℂ, 0 ≤ (y ⬝ᵥ G *ᵥ star y).re ∧ (y ⬝ᵥ G *ᵥ star y).re ≤ c⁻¹ * ∑ i, ‖y i‖ ^ 2 ∧ ((y ⬝ᵥ G *ᵥ star y).re = 0 → y ∈ Submodule.span ℂ {p : Fin g → ℂ | ∃ u : Fin g → ℤ, (∀ v : Fin g → ℤ, Bs *ᵥ v = 0 → u ⬝ᵥ v = 0) ∧ p = fun k => (u k : ℂ)}) := by
   intro g Bs τ G c hc hB hτ hpos hG hrel hker y
   classical

@@ -10,6 +10,33 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP _ i hi`. Use `choose e he using fun τ => (D.hc τ).e_int ⟨i, hi⟩`. Use `⟨e, fun τ => (he τ).symm, fun z hz y hy => ?_⟩` and prove the remaining obligations. Establish `hstar : ∀ x : D.host.E, star x = D.host.conj x` using `bridge_star_holds D.R D.host`. Establish `hz' : (z : D.host.E) ∈ unitary D.host.E`.
+
+Rewrite using `[Unitary.mem_iff, hstar]`. Conclude with `⟨by rw [mul_comm]; exact hz, hz⟩`. Take `⟨k, hk⟩` from `GlobalTheory.Mem.Col2.exists_eq_div_conj D.host ⟨z, hz'⟩`. Simplify using `only at hk`. Set `k' : t.X.Eˣ` to `Units.map t.seam.iE.symm.toRingHom.toMonoidHom k`.
+
+Establish `hik : t.seam.iE (k' : t.X.E) = k` using `t.seam.iE.apply_symm_apply _`. Establish `hq : A.q (ratId t.X.F t.X.E k') = dtU y`. Apply `hP.q_dt` to reduce the goal to its premises. Rewrite using `[hy]`. Establish `hx : Units.map A.iA.toRingHom.toMonoidHom (ratId t.X.F t.X.E k') = ratId D.host.F D.host.E k`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use `show A.iA ((k' : t.X.E) ⊗ₜ[t.X.F] 1) = (k : D.host.E) ⊗ₜ[D.host.F] 1`. Rewrite using `[hP.iA_rat, hik]`. Rewrite using `[hx, h90, MonoidHom.div_apply, MonoidHom.id_apply, eq_div_iff_mul_eq']`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show ((z : D.host.E) ⊗ₜ[D.host.F] (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * (Formalism.UG.sigR (Formalism.L2.Forms.sigD D) _ ((k : D.host.E) ⊗ₜ[D.host.F] 1)) = (k : D.host.E) ⊗ₜ[D.host.F] 1`. Rewrite using `[Formalism.UG.sigR]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Establish `hs : Formalism.L2.Forms.sigD D (k : D.host.E) = D.host.conj k` using `bridge_star_holds D.R D.host _`. Rewrite using `[hs, hk]`.
+
+Establish `hmu : ((D.muTil (i + 1) (A.q (ratId t.X.F t.X.E k')) : ℂˣ) : ℂ) = ∏ τ, TaylorLogMetric.embT D τ (z : D.host.E) ^ e τ`. Take `⟨ι, hι⟩` from `exists_isAdIso t.X.F t.X.E`. Rewrite using `[hP.muTil ι hι ⟨i, hi⟩ (GlobalTheory.Mem.Chr.finPartI _ (Neutral.B1.diagUnits _ k')) _ (GlobalTheory.KerJ.RatPts.isFin_finPart _) ((hι.1 (k' : t.X.E)).trans rfl), GlobalTheory.Mem.Chr.DetGroupModel.fin_diag, Units.val_inv_eq_inv_val]`. Take `⟨n, hn, hinf⟩` from `(hP.mu0 ⟨i, hi⟩).inf`. Rewrite using `[hinf k', ← Finset.prod_inv_distrib, ← t.seam.iT.prod_comp]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hme : n τ = 2 * -e (t.seam.iT τ)`. Establish `h1` using `hn τ`. Simplify using `only [he] at h1`. Conclude with `h1` after adjusting the coercions.
+
+Establish `hka : Formalism.L2.Col.Fields.embC t.X t.seam.σ₀ τ (k' : t.X.E) = TaylorLogMetric.embT D (t.seam.iT τ) (k : D.host.E)`. Rewrite using `[← hik]`. Conclude with `t.seam_ok.1 τ _`. Establish `h1` using `congrArg (TaylorLogMetric.embT D (t.seam.iT τ)) hk`. Rewrite `h1` using `[map_mul]`.
+
+Rewrite `h1` using `[GlobalTheory.Mem.Chr.DetGroupModel.emb_conj]`. Rewrite using `[hka]`. Establish `h0 : TaylorLogMetric.embT D (t.seam.iT τ) (k : D.host.E) ≠ 0` using `by simp`. Generalize the expression as in `TaylorLogMetric.embT D (t.seam.iT τ) (k : D.host.E) = a at *`. Generalize the expression as in `TaylorLogMetric.embT D (t.seam.iT τ) (z : D.host.E) = b at *`.
+
+Establish `hn' : ((‖a‖ : ℝ) : ℂ) ≠ 0` using `by simpa using h0`. Establish `h2 : a * star a = ((‖a‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `h3 : (a / ((‖a‖ : ℝ) : ℂ)) ^ (2 : ℤ) = b`. Rewrite using `[zpow_ofNat, div_pow, div_eq_iff (pow_ne_zero _ hn'), ← h2]`. Take the linear combination `(-a) * h1`. Rewrite using `[hme, zpow_mul, h3, zpow_neg, inv_inv]`. Establish `htw : (t.O u μ).mt (i + 1) (A.q (ratId t.X.F t.X.E k')) = D.muTil (i + 1) (A.q (ratId t.X.F t.X.E k'))`.
+
+Distinguish the cases in `h0 : μ = D.what₂.mu0`. Rewrite using `[(hP.ref h0).2]`. Take `⟨ξ, hξ, hmt⟩` from `hP.tw μ h0 rfl`. Rewrite using `[hmt u, twMt, if_pos ⟨by omega, by omega⟩, MonoidHom.mul_apply, hξ]`. Establish `h1 : ((t.tup μ : Chr t.X.F t.X.E t.X.K)) (ratId t.X.F t.X.E k') = 1`.
+
+Establish `hm` using `(t.tup μ).2`. Conclude with `hm.1.1.1.1.1 ⟨k', rfl⟩`. Rewrite using `[h1, map_one, mul_one]`. Rewrite using `[← hq, htw, hmu]`.
+-/
 theorem mt_ratId : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ i (hi : i < D.R.m), ∃ e : D.what₂.Tau → ℤ, (∀ τ, ((e τ : ℤ) : ℚ) = (D.hc τ).e ⟨i, hi⟩) ∧ ∀ z : D.host.Eˣ, (z : D.host.E) * D.host.conj (z : D.host.E) = 1 → ∀ y : (letI := D.host.cmStar; Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm), Matrix.GeneralLinearGroup.det y.1 = ratId D.host.F D.host.E z → (((t.O u μ).mt (i + 1) (dtU y) : ℂˣ) : ℂ) = ∏ τ, TaylorLogMetric.embT D τ (z : D.host.E) ^ e τ) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP _ i hi
   choose e he using fun τ => (D.hc τ).e_int ⟨i, hi⟩

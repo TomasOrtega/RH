@@ -21,6 +21,23 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R} {D :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `h0`. Substitute `hI` using the available equality. Establish `hloc : ∀ {X : Scheme.{0}} {W : X.Opens} (y : Γ(X, W)), (∀ x ∈ W, ∃ V : X.Opens, ∃ hV : V ≤ W, x ∈ V ∧ (X.presheaf.map (homOfLE hV).op).hom y = 0) → y = 0`. Introduce `X W y h`. Use `choose V hV hxV hy using h`.
+
+Use `TopCat.Sheaf.eq_of_locally_eq' X.sheaf (fun p : W => V p.1 p.2) W (fun p => homOfLE (hV p.1 p.2)) ?_ y 0 ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨x, hx⟩, hxV x hx⟩`. Introduce `p`. Conclude with `(hy p.1 p.2).trans (map_zero _).symm`.
+
+Establish `hvan : ∀ (α : D.toPre.X) (j : Fin 4 → D.toPre.P.L.ι), ((U.gt 0).pG.left.app (D.toPre.P.L.wchart (D.toPre.famφB α) j)).hom ((g α).f j) = 0`. Introduce `α j`. Establish `hz : ((pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) 0)).app ((D.toPre.P.L.LinComb (D.toPre.famφB α) (DegPre.famε 1)).U j)).hom ((g α).f j) = 0`. Distinguish the cases in `hα : α = 0`. Substitute `hα` using the available equality.
+
+Conclude with `h0 j`. Conclude with `hv α hα j`. Use `show (((U.gt 0).q.left ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) 0)).app ((D.toPre.P.L.LinComb (D.toPre.famφB α) (DegPre.famε 1)).U j)).hom ((g α).f j) = 0`. Apply the tactic sequence `try rw [Scheme.comp_app]`. Conclude with `(congrArg (fun z => ((U.gt 0).q.left.app _).hom z) hz).trans (map_zero _)`.
+
+Unfold `NonzeroOnSpecial at hs`. Take `⟨j, hj⟩` from `hs`. Take `⟨S, -, hS⟩` from `hexp`. Use `choose ch hch using fun y : D.toPre.P.A.left => WeightPf.exists_chart D.toPre.P.L D.toPre.P.isLB y`. Apply `hj` to reduce the goal to its premises.
+
+Use `hloc _ fun x hx => ?_` and prove the remaining obligations. Use `⟨U.expW 0 (fun _ => ch ((U.gt 0).pG.left.base x), fun _ => j 0) j S (fun α i => ch (((U.gt 0).pG.left ≫ D.toPre.famφB α i).base x)) (fun α i => ch ((D.toPre.Oφ (U.gt 0).pG α i).base x)), inf_le_left.trans inf_le_right, ?_, ?_⟩` and prove the remaining obligations. Use `TopologicalSpace.Opens.mem_inf.mpr ⟨TopologicalSpace.Opens.mem_inf.mpr ⟨TopologicalSpace.Opens.mem_inf.mpr ⟨?_, ?_⟩, hx⟩, ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.mpr fun _ => hch _`. Conclude with `Set.mem_iInter.mpr fun _ => Set.mem_iInter.mp hx 0`.
+
+Conclude with `WeightPf.mem_finset_inf S _ x fun α _ => TopologicalSpace.Opens.mem_inf.mpr ⟨Set.mem_iInter.mpr fun i => hch _, Set.mem_iInter.mpr fun i => hch _⟩`. Establish `e` using `hS (fun _ => ch ((U.gt 0).pG.left.base x), fun _ => j 0) j (fun α i => ch (((U.gt 0).pG.left ≫ D.toPre.famφB α i).base x)) (fun α i => ch ((D.toPre.Oφ (U.gt 0).pG α i).base x)) rfl (by`. Introduce `a b hab`. Apply the tactic sequence `rcases a with _ | a | a <;> rcases b with _ | b | b <;>`. Conclude with `congrArg (fun f => ch (f.base x)) hab)`.
+
+Rewrite `e` using `[Finset.sum_eq_zero (fun α _ => by rw [hvan, map_zero, zero_mul]), ← Units.val_pow_eq_pow_val]`. Conclude with `(Units.mul_right_eq_zero _).mp e`.
+-/
 theorem leading_expansion_term_ne_zero [IsDiscreteValuationRing R] (hI : I = maximalIdeal R) (U : Unif I D A G) (s : H0 U.LG.L 1)
     (hs : NonzeroOnSpecial U s) (g : ∀ α, D.toPre.SecB 1 α) (hexp : U.ExpandsAt 0 1 s g)
     (hv : ∀ mu, mu ≠ 0 → ∀ j, (pullback.fst D.toPre.P.A.hom (thick R I 0)).app _ ((g mu).f j) = 0) :
@@ -78,6 +95,27 @@ theorem leading_expansion_term_ne_zero [IsDiscreteValuationRing R] (hI : I = max
     rw [Finset.sum_eq_zero (fun α _ => by rw [hvan, map_zero, zero_mul]), ← Units.val_pow_eq_pow_val] at e
     exact (Units.mul_right_eq_zero _).mp e
 
+/- English proof (translation)
+Unfold `SecBGenerates`. Introduce `s'`. Take `⟨c₀, c', h, h0⟩` from `secB_rank_one (hLaws := hLaws) (t := t) (s' := s')`. Use `haveI : Flat D.toPre.P.A.hom := flat_B`. Establish `hc₀ : c₀ ≠ 0`.
+
+Introduce `hz`. Apply `ht` to reduce the goal to its premises. Introduce `j`. Rewrite using `[h0 hz j, map_zero]`. Establish `hdiv : ∃ a : R, c' = c₀ * a`.
+
+Take `⟨m, hm | hm⟩` from `ValuationRing.cond c₀ c'`. Conclude with `⟨m, hm.symm⟩`. Distinguish the cases in `hmu : IsUnit m`. Take `⟨u, rfl⟩` from `hmu`. Use `⟨↑u⁻¹, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hm, _root_.mul_assoc, Units.mul_inv, _root_.mul_one]`. It suffices to derive a contradiction. Establish `hmI : m ∈ I ^ (0 + 1)`. Rewrite using `[zero_add, pow_one, hI]`. Conclude with `(IsLocalRing.mem_maximalIdeal m).mpr hmu`.
+
+Establish `hc' : c' ≠ 0`. Introduce and unpack `rfl`. Conclude with `hc₀ (by rw [← hm, zero_mul])`. Apply `ht` to reduce the goal to its premises. Introduce `j`.
+
+Establish `hj : t.f j = toW D.toPre.P.A.hom _ m * s'.f j`. Use `(sub_eq_zero.mp (toW_mul_eq_zero D.toPre.P.A.hom _ hc' ?_)).symm` and prove the remaining obligations. Rewrite using `[mul_sub, ← _root_.mul_assoc, ← map_mul, hm, h j, sub_self]`. Rewrite using `[hj, map_mul, app_toW_of_mem D.toPre.P.A.hom (I ^ (0 + 1)) _ hmI, zero_mul]`. Take `⟨a, rfl⟩` from `hdiv`.
+
+Establish `hSa : SecIsMul D.toPre.P.A.hom a s' t`. Introduce `j`. Rewrite using `[resTop_scal]`. Use `sub_eq_zero.mp (toW_mul_eq_zero D.toPre.P.A.hom _ hc₀ ?_)` and prove the remaining obligations. Rewrite using `[mul_sub, h j, map_mul, _root_.mul_assoc, sub_self]`.
+
+Use `⟨a, hSa, fun b hb => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `ht` to reduce the goal to its premises. Introduce `j`. Establish `e1` using `hb j`.
+
+Establish `e2` using `hSa j`. Rewrite `e1`, `e2` using `[resTop_scal]`. Establish `hz : t.f j = 0`. Use `toW_mul_eq_zero D.toPre.P.A.hom _ (sub_ne_zero.mpr hne) ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_mul, ← e1, ← e2, sub_self]`.
+
+Rewrite using `[hz, map_zero]`.
+-/
 theorem generates_of_ne (hLaws : Laws) [IsDiscreteValuationRing R] (hI : I = maximalIdeal R)
     (t : D.toPre.SecB 1 0) (ht : ¬ ∀ j, (pullback.fst D.toPre.P.A.hom (thick R I 0)).app _ (t.f j) = 0) :
     SecBGenerates 1 0 t := by

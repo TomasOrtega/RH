@@ -11,6 +11,11 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.HeightCounting.Up
 
+/- English proof (translation)
+Introduce `cDep`. Unfold `AllSt StepW Step`. Use `EvG.imp GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices fun K _ _ _ _ H => large₂.mono (fun B f T _ h hk _ _ w _ P x => ?_) H` and prove the remaining obligations. Take `⟨-, -, -, -, -, -, w0, hP⟩` from `h hk T w x.o.Z`. Use `GlobalTheory.HeightCounting.Up.ListModel.nonempty_grid w x.o.Z x.m.z ⟨1, cDep, K.s.b⟩ fun k e => ?_` and prove the remaining obligations.
+
+Establish `hd` using `hP.distinct`. Simplify using `only [List.nodup_cons, List.mem_cons, List.not_mem_nil, or_false] at hd`. Use `fin_cases k`. Conclude with `hd.1 (Or.inr (Or.inr (Or.inr e.symm)))`. Conclude with `hd.2.1 (Or.inr (Or.inr e.symm))`.
+-/
 theorem nonempty_gridData_allSt : ∀ cDep : ℝ, AllSt fun K _ _ _ _ _ x => Nonempty (GlobalTheory.ChiGrid.GridData x.m.z.R.toRealDat.toLevCh ⟨1, cDep, K.s.b⟩) := by
   intro cDep
   unfold AllSt StepW Step

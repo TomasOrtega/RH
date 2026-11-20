@@ -5,6 +5,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ValuativeRel IsLoc
 open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+
+Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])` using `(Polynomial.lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+
+Conclude with `⟨q, hqm, by rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+-/
 private theorem ec_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
   have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
@@ -19,6 +26,11 @@ private theorem ec_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegr
     obtain ⟨q, hq, -, hqm⟩ := Polynomial.lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)
     exact ⟨q, hqm, by rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
+/- English proof (translation)
+Establish `hc : Continuous fun y : 𝒪[w.adicCompletion L] => ‖j.1 (y : w.adicCompletion L)‖` using `(j.2.comp continuous_subtype_val).norm`. Take `⟨B, hB⟩` from `(isCompact_range hc).bddAbove`. Assume the negation of the conclusion as `hx`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt B (not_le.1 hx)`. Establish `h` using `hB ⟨x ^ n, rfl⟩`.
+
+Simplify using `only [SubmonoidClass.coe_pow, map_pow, norm_pow] at h`. Conclude with `absurd h (not_le.2 hn)`.
+-/
 private theorem ec_le {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime] {w : W.Plc L} (j : W.Emb l w)
     (x : 𝒪[w.adicCompletion L]) : ‖j.1 (x : w.adicCompletion L)‖ ≤ 1 := by
   have hc : Continuous fun y : 𝒪[w.adicCompletion L] => ‖j.1 (y : w.adicCompletion L)‖ :=
@@ -30,6 +42,11 @@ private theorem ec_le {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Pri
   simp only [SubmonoidClass.coe_pow, map_pow, norm_pow] at h
   exact absurd h (not_le.2 hn)
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (w.adicCompletion L) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `h1 : valuation (w.adicCompletion L) (x : w.adicCompletion L) < 1` using `Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 hx`. Establish `h2 : Valued.v (x : w.adicCompletion L) < 1` using `(ValuativeRel.isEquiv (valuation (w.adicCompletion L)) (Valued.v : Valuation (w.adicCompletion L) (WithZero (Multiplicative ℤ)))).lt_one_iff_lt_one.1 h1`. Establish `ht : Filter.Tendsto (fun k : ℕ => (x : w.adicCompletion L) ^ k) Filter.atTop (nhds 0)` using `Valued.tendsto_zero_pow_of_v_lt_one h2`. Establish `ht2` using `(j.2.tendsto 0).comp ht`.
+
+Rewrite `ht2` using `[map_zero]`. Use `tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 (ht2.congr fun k => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 private theorem ec_lt {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime] {w : W.Plc L} (j : W.Emb l w)
     (x : 𝒪[w.adicCompletion L]) (hx : x ∈ maximalIdeal 𝒪[w.adicCompletion L]) :
     ‖j.1 (x : w.adicCompletion L)‖ < 1 := by
@@ -47,10 +64,22 @@ private theorem ec_lt {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Pri
   refine tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 (ht2.congr fun k => ?_)
   simp
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qh13.ec_field j`.
+-/
 private theorem ec_field {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime] {w : W.Plc L} (j : W.Emb l w) :
     ∃ K : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] K ∧ ∀ x, j.1 x ∈ K :=
   _root_.UpperTheory.Reformulated.B.Qh13.ec_field j
 
+/- English proof (translation)
+Introduce `L _ _ l _ w j`. Use `⟨fun c => ?_, fun c' x hx h hu => ?_⟩` and prove the remaining obligations. Take `⟨K, hK, hj⟩` from `ec_field j`. Take `⟨h1, h2, -⟩` from `UpperTheory.V.abelian₂.dvr_intClosure l K`. Set `f : K →ₐ[ℤ_[l]] PadicAlgCl l` to `K.val.restrictScalars ℤ_[l]`.
+
+Establish `hf : Function.Injective f` using `Subtype.val_injective`. Set `e` to `(integralClosure ℤ_[l] K).equivMapOfInjective f hf`. Set `d : Coef l` to `⟨(integralClosure ℤ_[l] K).map f, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e, Module.Finite.equiv e.toLinearEquiv⟩`. Take `⟨c', hc, hd⟩` from `(HV.coefSup l).1 c d`. Use `⟨c', hc, fun x => hd ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨⟨_, hj x⟩, (isIntegral_algHom_iff f hf).1 ((ec_intIff _).2 (ec_le j x)), rfl⟩`. Take `⟨y, hy⟩` from `hu.exists_left_inv`. Establish `hy' : (y : PadicAlgCl l) * j.1 (x : w.adicCompletion L) = 1` using `congrArg Subtype.val hy`. Establish `h1 : ‖(y : PadicAlgCl l)‖ ≤ 1` using `(ec_intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) y).map c'.O.val)`. Establish `h2` using `mul_lt_one_of_nonneg_of_lt_one_right h1 (norm_nonneg _) (ec_lt j x hx)`.
+
+Rewrite `h2` using `[← norm_mul, hy', norm_one]`. Conclude with `lt_irrefl _ h2`.
+-/
 theorem UpperTheory.expChar_integrality_criterion :
     ∀ (L : Type) [Field L] [NumberField L] (l : ℕ) [Fact l.Prime] (w : W.Plc L) (j : W.Emb l w), (∀ c : Coef l, ∃ c' : Coef l, c.O ≤ c'.O ∧ ∀ x : 𝒪[w.adicCompletion L], j.1 (x : w.adicCompletion L) ∈ c'.O) ∧ ∀ (c' : Coef l), ∀ x ∈ maximalIdeal 𝒪[w.adicCompletion L], ∀ h : j.1 (x : w.adicCompletion L) ∈ c'.O, (⟨_, h⟩ : c'.O) ∈ maximalIdeal c'.O := by
   intro L _ _ l _ w j

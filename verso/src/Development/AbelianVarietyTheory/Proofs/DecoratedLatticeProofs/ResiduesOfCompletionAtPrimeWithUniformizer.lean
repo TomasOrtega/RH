@@ -22,25 +22,56 @@ def vI (h : IsCompl P q ι ϖ) (γ : ValueGroupWithZero k) : Ideal (𝓞 E) wher
     calc _ ≤ 1 * γ := mul_le_mul' hc hx
       _ = γ := one_mul γ
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_vI (h : IsCompl P q ι ϖ) {γ : ValueGroupWithZero k} (x : 𝓞 E) : x ∈ vI h γ ↔ valuation k (ι (x : E)) ≤ γ := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨r, 1, P.asIdeal.ne_top_iff_one.mp P.isPrime.ne_top, by simp⟩`.
+-/
 theorem intAt_coe (r : 𝓞 E) : IntAt P (r : E) := ⟨r, 1, P.asIdeal.ne_top_iff_one.mp P.isPrime.ne_top, by simp⟩
 
+/- English proof (translation)
+The claim follows from `(Valuation.mem_integer_iff _ _).mp ((h.int a).mpr ha)`.
+-/
 theorem v_le_one (h : IsCompl P q ι ϖ) {a : E} (ha : IntAt P a) : valuation k (ι a) ≤ 1 :=
   (Valuation.mem_integer_iff _ _).mp ((h.int a).mpr ha)
 
+/- English proof (translation)
+The claim follows from `(h.int a).mp ((Valuation.mem_integer_iff _ _).mpr ha)`.
+-/
 theorem intAt_of_v (h : IsCompl P q ι ϖ) {a : E} (ha : valuation k (ι a) ≤ 1) : IntAt P a :=
   (h.int a).mp ((Valuation.mem_integer_iff _ _).mpr ha)
 
+/- English proof (translation)
+The claim follows from `v_le_one h (intAt_coe r)`.
+-/
 theorem v_int_le_one (h : IsCompl P q ι ϖ) (r : 𝓞 E) : valuation k (ι (r : E)) ≤ 1 := v_le_one h (intAt_coe r)
 
+/- English proof (translation)
+The claim follows from `(hu ϖ).2 le_rfl`.
+-/
 theorem v_unif_lt_one (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) : valuation k (ϖ : k) < 1 := (hu ϖ).2 le_rfl
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem v_unif_ne_zero : valuation k (ϖ : k) ≠ 0 := by simp
 
+/- English proof (translation)
+Introduce `h0`. Use `h.unif` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `ϖ.ne_zero this`.
+-/
 theorem q_ne_zero (h : IsCompl P q ι ϖ) : (q : E) ≠ 0 := by
   intro h0; have := h.unif; rw [h0, map_zero] at this; exact ϖ.ne_zero this
 
+/- English proof (translation)
+Establish `hs0 : (s : E) ≠ 0`. Introduce `h0; apply hs; rw [show s = 0 from by exact_mod_cast h0]; exact P.asIdeal.zero_mem`. Establish `hinv : IntAt P ((s : E)⁻¹)` using `⟨1, s, hs, by simp [hs0]⟩`. Establish `h1` using `v_le_one h hinv`. Establish `h2` using `v_int_le_one h s`.
+
+Establish `hm : valuation k (ι (s : E)) * valuation k (ι ((s : E)⁻¹)) = 1`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ hs0, map_one, map_one]`. Assume the negation of the conclusion as `hne`. Establish `hlt : valuation k (ι (s : E)) < 1` using `lt_of_le_of_ne h2 hne`. Establish `: valuation k (ι (s : E)) * valuation k (ι ((s : E)⁻¹)) < 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[hm]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem v_eq_one_of_not_mem (h : IsCompl P q ι ϖ) {s : 𝓞 E} (hs : s ∉ P.asIdeal) : valuation k (ι (s : E)) = 1 := by
   have hs0 : (s : E) ≠ 0 := by
     intro h0; apply hs; rw [show s = 0 from by exact_mod_cast h0]; exact P.asIdeal.zero_mem
@@ -57,10 +88,34 @@ theorem v_eq_one_of_not_mem (h : IsCompl P q ι ϖ) {s : 𝓞 E} (hs : s ∉ P.a
       _ < 1 := hlt
   rw [hm] at this; exact lt_irrefl _ this
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem coe_mul' (a b : 𝓞 E) : ((a * b : 𝓞 E) : E) = (a : E) * (b : E) := by simp
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem coe_nat' (n : ℕ) : (((n : ℕ) : 𝓞 E) : E) = (n : E) := by simp
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem coe_int' (n : ℤ) : (((n : ℤ) : 𝓞 E) : E) = (n : E) := by simp
 
+/- English proof (translation)
+Establish `hprime : (vI h (valuation k (ϖ : k))).IsPrime`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_vI]`. Introduce `h1`. Simplify using `only [OneMemClass.coe_one, map_one] at h1`.
+
+Conclude with `absurd (lt_of_le_of_lt h1 (v_unif_lt_one hu)) (lt_irrefl _)`. Introduce `a b hab`. Rewrite `*` using `[mem_vI, mem_vI, ← hu, ← hu]`. Rewrite `hab` using `[coe_mul', map_mul, map_mul]`. Assume the negation of the conclusion as `hn`.
+
+Use `push_neg at hn`. Establish `ha : valuation k (ι (a : E)) = 1` using `le_antisymm (v_int_le_one h a) hn.1`. Establish `hb : valuation k (ι (b : E)) = 1` using `le_antisymm (v_int_le_one h b) hn.2`. Rewrite `hab` using `[ha, hb, one_mul]`. Conclude with `lt_irrefl _ hab`.
+
+Establish `hq : ((q : 𝓞 E)) ∈ vI h (valuation k (ϖ : k))`. Rewrite using `[mem_vI, h.unif]`. Simplify using the standard rewrite rules. Establish `hne : vI h (valuation k (ϖ : k)) ≠ ⊥`. Introduce `hb`.
+
+Rewrite `hq` using `[hb, Ideal.mem_bot]`. Apply `q_ne_zero h` to reduce the goal to its premises. Use `congrArg (fun y : 𝓞 E => (y : E)) hq` as an intermediate fact. Simplify using `using this`. Establish `hmax` using `hprime.isMaximal hne`.
+
+Establish `hle : vI h (valuation k (ϖ : k)) ≤ P.asIdeal`. Introduce `x hx`. Assume the negation of the conclusion as `hxP`. Rewrite `hx` using `[mem_vI, v_eq_one_of_not_mem h hxP]`. Conclude with `absurd (lt_of_le_of_lt hx (v_unif_lt_one hu)) (lt_irrefl _)`.
+
+Establish `heq` using `hmax.eq_of_le P.isPrime.ne_top hle`. Rewrite using `[← heq, mem_vI, hu]`.
+-/
 theorem mem_P_iff (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) (x : 𝓞 E) :
     x ∈ P.asIdeal ↔ valuation k (ι (x : E)) < 1 := by
   have hprime : (vI h (valuation k (ϖ : k))).IsPrime := by
@@ -93,11 +148,24 @@ theorem mem_P_iff (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFu
   have heq := hmax.eq_of_le P.isPrime.ne_top hle
   rw [← heq, mem_vI, hu]
 
+/- English proof (translation)
+Rewrite using `[h.unif]`.
+-/
 theorem v_q (h : IsCompl P q ι ϖ) : valuation k (ι (q : E)) = valuation k (ϖ : k) := by rw [h.unif]
 
+/- English proof (translation)
+Rewrite using `[h.norm]`. Conclude with `Ideal.absNorm_mem _`.
+-/
 theorem q_mem (h : IsCompl P q ι ϖ) : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal := by
   rw [h.norm]; exact Ideal.absNorm_mem _
 
+/- English proof (translation)
+Introduce `hq`. Establish `hle : P.asIdeal ^ 2 ≤ vI h (valuation k (ϖ : k) ^ 2)`. Rewrite using `[pow_two, Ideal.mul_le]`. Introduce `a ha b hb`. Rewrite using `[mem_vI, coe_mul', map_mul, map_mul, pow_two]`.
+
+Conclude with `mul_le_mul' ((hu _).mp ((mem_P_iff h hu a).mp ha)) ((hu _).mp ((mem_P_iff h hu b).mp hb))`. Establish `h1` using `hle hq`. Rewrite `h1` using `[mem_vI, coe_nat', v_q h, pow_two]`. Establish `h0 : (0 : ValueGroupWithZero k) < valuation k (ϖ : k)` using `zero_lt_iff.mpr v_unif_ne_zero`. Establish `: (1 : ValueGroupWithZero k) ≤ valuation k (ϖ : k)`.
+
+Establish `h2 : valuation k (ϖ : k) * 1 ≤ valuation k (ϖ : k) * valuation k (ϖ : k)` using `by rwa [mul_one]`. Conclude with `le_of_mul_le_mul_left h2 h0`. Conclude with `absurd (lt_of_le_of_lt this (v_unif_lt_one hu)) (lt_irrefl _)`.
+-/
 theorem q_not_mem_sq (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2 := by
   intro hq
   have hle : P.asIdeal ^ 2 ≤ vI h (valuation k (ϖ : k) ^ 2) := by
@@ -113,6 +181,15 @@ theorem q_not_mem_sq (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSid
     exact le_of_mul_le_mul_left h2 h0
   exact absurd (lt_of_le_of_lt this (v_unif_lt_one hu)) (lt_irrefl _)
 
+/- English proof (translation)
+Use `haveI := P.isMaximal`. Use `letI := Ideal.Quotient.field P.asIdeal`. Establish `hs0 : Ideal.Quotient.mk P.asIdeal s ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hex : ∃ c r s, s ∉ P.asIdeal ∧ algebraMap (𝓞 E) E s * a = algebraMap (𝓞 E) E r ∧ Ideal.Quotient.mk P.asIdeal s * c = Ideal.Quotient.mk P.asIdeal r` using `⟨Ideal.Quotient.mk P.asIdeal r * (Ideal.Quotient.mk P.asIdeal s)⁻¹, r, s, hs, hsa, by field_simp⟩`. Unfold `redP`.
+
+Rewrite using `[dif_pos hex]`. Take `⟨r', s', hs', h1, h2⟩` from `hex.choose_spec`. Establish `hs0' : Ideal.Quotient.mk P.asIdeal s' ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hrr : s * r' = s' * r`. Apply `FaithfulSMul.algebraMap_injective (𝓞 E) E` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, map_mul, ← h1, ← hsa]`. Expand and normalize the polynomial expressions, which then agree. Use `congrArg (Ideal.Quotient.mk P.asIdeal) hrr` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, ← h2]`. Apply `mul_left_cancel₀ hs0'` to reduce the goal to its premises.
+
+Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem reduction_spec {a : E} {r s : 𝓞 E} (hs : s ∉ P.asIdeal) (hsa : algebraMap (𝓞 E) E s * a = algebraMap (𝓞 E) E r) :
     Ideal.Quotient.mk P.asIdeal s * redP P a = Ideal.Quotient.mk P.asIdeal r := by
   haveI := P.isMaximal
@@ -133,6 +210,13 @@ theorem reduction_spec {a : E} {r s : 𝓞 E} (hs : s ∉ P.asIdeal) (hsa : alge
   apply mul_left_cancel₀ hs0'
   rw [← this]; ring
 
+/- English proof (translation)
+Establish `hq` using `q_ne_zero h`. Establish `hsplit : valuation k (ι a) = valuation k (ι (a / (q : E))) * valuation k (ϖ : k)`. Rewrite using `[h.unif, ← map_mul, ← map_mul, div_mul_cancel₀ a hq]`. Establish `h0 : (0 : ValueGroupWithZero k) < valuation k (ϖ : k)` using `zero_lt_iff.mpr v_unif_ne_zero`. Rewrite using `[hu, hsplit]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hle`. Apply `intAt_of_v h` to reduce the goal to its premises. Establish `: valuation k (ι (a / (q : E))) * valuation k (ϖ : k) ≤ 1 * valuation k (ϖ : k)` using `by rwa [one_mul]`. Conclude with `le_of_mul_le_mul_right this h0`.
+
+Introduce `hi`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem v_div_q (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) (a : E) :
     valuation k (ι a) < 1 ↔ IntAt P (a / (q : E)) := by
   have hq := q_ne_zero h
@@ -149,6 +233,15 @@ theorem v_div_q (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFull
     calc _ ≤ 1 * valuation k (ϖ : k) := mul_le_mul' (v_le_one h hi) le_rfl
       _ = _ := one_mul _
 
+/- English proof (translation)
+Use `haveI := P.isMaximal`. Use `letI := Ideal.Quotient.field P.asIdeal`. Take `⟨r, s, hs, hsa⟩` from `ha`. Establish `hs0 : Ideal.Quotient.mk P.asIdeal s ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hspec` using `reduction_spec hs hsa`.
+
+Establish `hv : valuation k (ι a) = valuation k (ι (r : E))`. Establish `e` using `congrArg (fun y => valuation k (ι y)) hsa`. Simplify using `only [map_mul] at e`. Establish `e2 : valuation k (ι (algebraMap (𝓞 E) E s)) = 1` using `v_eq_one_of_not_mem h hs`. Rewrite `e` using `[e2, one_mul]`.
+
+Conclude with `e`. Rewrite using `[hv, ← mem_P_iff h hu, ← Ideal.Quotient.eq_zero_iff_mem, ← hspec]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Conclude with `(mul_eq_zero.mp h0).resolve_left hs0`.
+
+Introduce `h0`. Rewrite using `[h0, mul_zero]`.
+-/
 theorem v_lt_one_iff_red (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) {a : E} (ha : IntAt P a) :
     valuation k (ι a) < 1 ↔ redP P a = 0 := by
   haveI := P.isMaximal
@@ -167,6 +260,11 @@ theorem v_lt_one_iff_red (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRo
   · intro h0; exact (mul_eq_zero.mp h0).resolve_left hs0
   · intro h0; rw [h0, mul_zero]
 
+/- English proof (translation)
+Use `haveI := P.isMaximal`. Use `letI := Ideal.Quotient.field P.asIdeal`. Rewrite using `[isUnit_iff_ne_zero, Ne, ← v_lt_one_iff_red h hu ha]`. Use `v_le_one h ha` as an intermediate fact. Prove the components needed by the constructor for the conclusion.
+
+Introduce `e`. Rewrite using `[e]`. Conclude with `lt_irrefl _`. Introduce `hn`. Conclude with `le_antisymm this (not_lt.mp hn)`.
+-/
 theorem v_eq_one_iff_red (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) {a : E} (ha : IntAt P a) :
     valuation k (ι a) = 1 ↔ IsUnit (redP P a) := by
   haveI := P.isMaximal
@@ -177,9 +275,25 @@ theorem v_eq_one_iff_red (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRo
   · intro e; rw [e]; exact lt_irrefl _
   · intro hn; exact le_antisymm this (not_lt.mp hn)
 
+/- English proof (translation)
+Rewrite using `[h.norm, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem card_quot (h : IsCompl P q ι ϖ) : Nat.card (𝓞 E ⧸ P.asIdeal) = q := by
   rw [h.norm, Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
+/- English proof (translation)
+Use `haveI := P.isMaximal`. Use `letI := Ideal.Quotient.field P.asIdeal`. Establish `hq0 : q ≠ 0`. Introduce `h0`. Apply `q_ne_zero h` to reduce the goal to its premises.
+
+Rewrite using `[h0, Nat.cast_zero]`. Use `haveI : Finite (𝓞 E ⧸ P.asIdeal) := Nat.finite_of_card_ne_zero (by rw [card_quot h]; exact hq0)`. Use `letI := Fintype.ofFinite (𝓞 E ⧸ P.asIdeal)`. Use `haveI := ringChar.charP (𝓞 E ⧸ P.asIdeal)`. Take `⟨n, hp, hcard⟩` from `FiniteField.card (𝓞 E ⧸ P.asIdeal) (ringChar (𝓞 E ⧸ P.asIdeal))`.
+
+Use `set p := ringChar (𝓞 E ⧸ P.asIdeal) with hpdef`. Establish `hqp : q = p ^ (n : ℕ)` using `by rw [← card_quot h, Nat.card_eq_fintype_card, hcard]`. Establish `hpP : ((p : ℕ) : 𝓞 E) ∈ P.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`.
+
+Establish `hv : valuation k (ι (p : E)) < 1`. Use `(mem_P_iff h hu _).mp hpP` as an intermediate fact. Rewrite `this` using `[coe_nat']`. Then use the resulting hypothesis. Establish `hv0 : 0 < valuation k (ι (p : E))`. Rewrite using `[zero_lt_iff, Ne, map_eq_zero, map_eq_zero]`.
+
+Conclude with `hp.ne_zero` after adjusting the coercions. Establish `hle : valuation k (ι (p : E)) ^ 1 ≤ valuation k (ι (p : E)) ^ (n : ℕ)`. Rewrite using `[pow_one, ← map_pow, ← map_pow, ← Nat.cast_pow, ← hqp, ← h.unif, ← hu]`. Conclude with `hv`. Establish `hn1 : (n : ℕ) ≤ 1` using `(pow_le_pow_iff_right_of_lt_one₀ hv0 hv).mp hle`.
+
+Establish `hn : (n : ℕ) = 1` using `le_antisymm hn1 n.pos`. Rewrite `hqp` using `[hn, pow_one]`. Substitute `hqp` using the available equality. Conclude with `⟨hp, inferInstance⟩`.
+-/
 theorem q_prime_char (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) :
     q.Prime ∧ CharP (𝓞 E ⧸ P.asIdeal) q := by
   haveI := P.isMaximal
@@ -207,11 +321,28 @@ theorem q_prime_char (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSid
   subst hqp
   exact ⟨hp, inferInstance⟩
 
+/- English proof (translation)
+Rewrite using `[h.unif, map_natCast]`.
+-/
 theorem unif_eq_cast (h : IsCompl P q ι ϖ) : (ϖ : k) = (q : k) := by rw [h.unif, map_natCast]
 
+/- English proof (translation)
+Use `v_int_le_one h (i : 𝓞 E)` as an intermediate fact. Rewrite `this` using `[coe_nat', map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem v_nat_le_one (h : IsCompl P q ι ϖ) (i : ℕ) : valuation k (i : k) ≤ 1 := by
   have := v_int_le_one h (i : 𝓞 E); rwa [coe_nat', map_natCast] at this
 
+/- English proof (translation)
+Use `haveI := P.isMaximal`. Use `letI := Ideal.Quotient.field P.asIdeal`. Use `haveI := (q_prime_char h hu).2`. Establish `h0 : (0 : ValueGroupWithZero k) < valuation k (ϖ : k)` using `zero_lt_iff.mpr v_unif_ne_zero`. Proceed by induction on `m with`.
+
+Consider the case `zero => intro z _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `z hz`. Establish `hz1 : valuation k (z : k) ≤ valuation k (ϖ : k)` using `le_trans hz (pow_le_of_le_one zero_le' (le_of_lt (v_unif_lt_one hu)) (Nat.succ_ne_zero m))`.
+
+Establish `hzP : ((z : ℤ) : 𝓞 E) ∈ P.asIdeal`. Rewrite using `[mem_P_iff h hu, coe_int', map_intCast, hu]`. Conclude with `hz1`. Establish `hdq : (q : ℤ) ∣ z`. Rewrite using `[← CharP.intCast_eq_zero_iff (𝓞 E ⧸ P.asIdeal) q, ← map_intCast (Ideal.Quotient.mk P.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `hzP`. Take `⟨w, rfl⟩` from `hdq`. Establish `hw : valuation k (w : k) ≤ valuation k (ϖ : k) ^ m`. Rewrite `hz` using `[Int.cast_mul, map_mul, Int.cast_natCast, ← unif_eq_cast h, pow_succ']`. Conclude with `le_of_mul_le_mul_left hz h0`.
+
+Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih w hw)`.
+-/
 theorem dvd_of_v (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) (m : ℕ) :
     ∀ z : ℤ, valuation k (z : k) ≤ valuation k (ϖ : k) ^ m → (q : ℤ) ^ m ∣ z := by
   haveI := P.isMaximal
@@ -237,6 +368,29 @@ theorem dvd_of_v (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFul
     rw [pow_succ']
     exact mul_dvd_mul_left _ (ih w hw)
 
+/- English proof (translation)
+Use `haveI := P.isMaximal`. Use `letI := Ideal.Quotient.field P.asIdeal`. Use `haveI := (q_prime_char h hu).2`. Establish `hq0 : q ≠ 0` using `(q_prime_char h hu).1.ne_zero`. Use `haveI : Finite (𝓞 E ⧸ P.asIdeal) := Nat.finite_of_card_ne_zero (by rw [card_quot h]; exact hq0)`.
+
+Use `letI := Fintype.ofFinite (𝓞 E ⧸ P.asIdeal)`. Establish `hU : {y | valuation k (y - x) < 1} ∈ nhds x`. Rewrite using `[IsValuativeTopology.mem_nhds_iff]`. Conclude with `⟨1, by rintro _ ⟨z, hz, rfl⟩; simpa using hz⟩`. Take `⟨_, hy, a, rfl⟩` from `mem_closure_iff_nhds.mp (h.dense x) _ hU`.
+
+Simplify using `only [Set.mem_setOf_eq] at hy`. Establish `ha : IntAt P a`. Apply `intAt_of_v h` to reduce the goal to its premises. Establish `e : ι a = (ι a - x) + x` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `le_trans (Valuation.map_add _ _ _) (max_le (le_of_lt hy) hx)`. Take `⟨r, s, hs, hsa⟩` from `ha`. Establish `hs0 : Ideal.Quotient.mk P.asIdeal s ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Set `f : Fin q → 𝓞 E ⧸ P.asIdeal` to `fun i => ((i : ℕ) : 𝓞 E ⧸ P.asIdeal)`. Establish `hinj : Function.Injective f`.
+
+Introduce `i j hij`. Use `(CharP.natCast_eq_natCast (𝓞 E ⧸ P.asIdeal) q).mp hij` as an intermediate fact. Conclude with `Fin.ext (this.eq_of_lt_of_lt i.2 j.2)`. Establish `hbij : Function.Bijective f`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`.
+
+Use `⟨hinj, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_fin, ← Nat.card_eq_fintype_card, card_quot h]`. Take `⟨i, hi⟩` from `hbij.2 (Ideal.Quotient.mk P.asIdeal r * (Ideal.Quotient.mk P.asIdeal s)⁻¹)`. Use `⟨i, i.2, ?_⟩` and prove the remaining obligations. Establish `hmem : s * ((i : ℕ) : 𝓞 E) - r ∈ P.asIdeal`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_natCast]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk P.asIdeal s * f i - _ = 0`. Rewrite using `[hi]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hv1` using `(mem_P_iff h hu _).mp hmem`. Establish `hvs : valuation k (ι (algebraMap (𝓞 E) E s)) = 1` using `v_eq_one_of_not_mem h hs`. Establish `hai : valuation k (ι a - (i : ℕ)) < 1`. Establish `e : ι (algebraMap (𝓞 E) E s) * (ι a - ((i : ℕ) : k)) = - ι ((s * ((i : ℕ) : 𝓞 E) - r : 𝓞 E) : E)`. Establish `e2 : (((s * ((i : ℕ) : 𝓞 E) - r : 𝓞 E)) : E) = algebraMap (𝓞 E) E s * (i : ℕ) - algebraMap (𝓞 E) E r`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e2, ← hsa]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `congrArg (valuation k) e` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, hvs, one_mul, Valuation.map_neg]`. Rewrite using `[this]`. Conclude with `hv1`. Rewrite using `[← hu]`. Establish `e : x - ((i : ℕ) : k) = (x - ι a) + (ι a - (i : ℕ))` using `by ring`.
+
+Rewrite using `[e]`. Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ hai)` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `hy`.
+-/
 theorem exists_rep_one (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) (x : k) (hx : valuation k x ≤ 1) :
     ∃ i : ℕ, i < q ∧ valuation k (x - i) ≤ valuation k (ϖ : k) := by
   haveI := P.isMaximal
@@ -288,6 +442,17 @@ theorem exists_rep_one (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowS
   refine lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ hai)
   rw [Valuation.map_sub_swap]; exact hy
 
+/- English proof (translation)
+Establish `h0 : (0 : ValueGroupWithZero k) < valuation k (ϖ : k)` using `zero_lt_iff.mpr v_unif_ne_zero`. Proceed by induction on `n with`. Consider the case `zero => intro x hx; exact ⟨0, by simp, by simpa using hx⟩`. Consider the case `succ n ih`. Introduce `x hx`.
+
+Take `⟨i, hi, hv⟩` from `ih x hx`. Establish `hϖn : ((ϖ : k) ^ n) ≠ 0` using `pow_ne_zero _ ϖ.ne_zero`. Use `set y := (x - i) / (ϖ : k) ^ n with hydef`. Establish `hxy : x - i = y * (ϖ : k) ^ n` using `by rw [hydef, div_mul_cancel₀ _ hϖn]`. Establish `hy : valuation k y ≤ 1`.
+
+Rewrite `hv` using `[hxy, map_mul, map_pow]`. Establish `h0n : (0 : ValueGroupWithZero k) < valuation k (ϖ : k) ^ n` using `pow_pos h0 n`. Conclude with `le_of_mul_le_mul_right (by rwa [one_mul]) h0n`. Take `⟨j, hj, hvj⟩` from `exists_rep_one h hu y hy`. Use `⟨i + q ^ n * j, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : q ^ n * (j + 1) ≤ q ^ n * q` using `Nat.mul_le_mul_left _ hj`. Rewrite using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : x - ((i + q ^ n * j : ℕ) : k) = (ϖ : k) ^ n * (y - j)`. Rewrite `hxy`, the goal using `[unif_eq_cast h]`.
+
+Use `push_cast`. Take the linear combination `hxy`. Rewrite using `[e, map_mul, map_pow, pow_succ]`. Conclude with `mul_le_mul' le_rfl hvj`.
+-/
 theorem exists_rep (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) (n : ℕ) :
     ∀ x : k, valuation k x ≤ 1 → ∃ i : ℕ, i < q ^ n ∧ valuation k (x - i) ≤ valuation k (ϖ : k) ^ n := by
   have h0 : (0 : ValueGroupWithZero k) < valuation k (ϖ : k) := zero_lt_iff.mpr v_unif_ne_zero
@@ -314,6 +479,13 @@ theorem exists_rep (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideF
       rw [e, map_mul, map_pow, pow_succ]
       exact mul_le_mul' le_rfl hvj
 
+/- English proof (translation)
+Rewrite `hx` using `[Valuation.mem_integer_iff]`. Take `⟨i, hi, hv⟩` from `exists_rep h hu n x hx`. Use `⟨i, ⟨hi, by rwa [map_pow]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `i' ⟨hi', hv'⟩`. Rewrite `hv'` using `[map_pow]`.
+
+Establish `hd : valuation k (((i : ℤ) - (i' : ℤ) : ℤ) : k) ≤ valuation k (ϖ : k) ^ n`. Establish `e : (((i : ℤ) - (i' : ℤ) : ℤ) : k) = (x - (i' : k)) - (x - (i : k))` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `le_trans (Valuation.map_sub _ _ _) (max_le hv' hv)`. Use `dvd_of_v h hu n _ hd` as an intermediate fact.
+
+Establish `hmod : i' ≡ i [MOD q ^ n]`. Rewrite using `[Nat.modEq_iff_dvd]`. Use `push_cast`. Conclude with `this`. Conclude with `hmod.eq_of_lt_of_lt hi' hi`.
+-/
 theorem rep (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) (n : ℕ) (x : k) (hx : x ∈ 𝒪[k]) :
     ∃! i : ℕ, i < q ^ n ∧ valuation k (x - (i : k)) ≤ valuation k ((ϖ : k) ^ n) := by
   rw [Valuation.mem_integer_iff] at hx
@@ -330,6 +502,11 @@ theorem rep (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHeck
     rw [Nat.modEq_iff_dvd]; push_cast; exact this
   exact hmod.eq_of_lt_of_lt hi' hi
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `lt_of_le_of_ne y.2 h`. Introduce `h`.
+
+Conclude with `ne_of_lt h`.
+-/
 theorem residue_eq_zero_iff' (y : 𝒪[k]) : IsLocalRing.residue 𝒪[k] y = 0 ↔ valuation k (y : k) < 1 := by
   rw [IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff,
     (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]
@@ -337,6 +514,21 @@ theorem residue_eq_zero_iff' (y : 𝒪[k]) : IsLocalRing.residue 𝒪[k] y = 0 �
   · intro h; exact lt_of_le_of_ne y.2 h
   · intro h; exact ne_of_lt h
 
+/- English proof (translation)
+Establish `hmem : ∀ i : ℕ, (i : k) ∈ 𝒪[k]` using `fun i => (Valuation.mem_integer_iff _ _).mpr (v_nat_le_one h i)`. Set `f : Fin q → 𝓀[k]` to `fun i => IsLocalRing.residue 𝒪[k] ⟨((i : ℕ) : k), hmem i⟩`. Establish `hbij : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`.
+
+Establish `h1 : IsLocalRing.residue 𝒪[k] (⟨((i : ℕ) : k), hmem i⟩ - ⟨((j : ℕ) : k), hmem j⟩) = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr hij`. Rewrite `h1` using `[residue_eq_zero_iff', hu]`. Establish `hd : valuation k ((((i : ℕ) : ℤ) - ((j : ℕ) : ℤ) : ℤ) : k) ≤ valuation k (ϖ : k) ^ 1`.
+
+Rewrite using `[pow_one]`. Use `push_cast`. Conclude with `h1`. Use `dvd_of_v h hu 1 _ hd` as an intermediate fact. Establish `hmod : (j : ℕ) ≡ (i : ℕ) [MOD q ^ 1]`.
+
+Rewrite using `[Nat.modEq_iff_dvd]`. Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Conclude with `Fin.ext (hmod.eq_of_lt_of_lt (by simpa using j.2) (by simpa using i.2)).symm`. Introduce `z`.
+
+Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective z`. Take `⟨i, hi, hv⟩` from `exists_rep_one h hu (x : k) ((Valuation.mem_integer_iff _ _).mp x.2)`. Use `⟨⟨i, hi⟩, ?_⟩` and prove the remaining obligations. Use `show IsLocalRing.residue 𝒪[k] _ = _`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff']`.
+
+Establish `e : ((⟨((i : ℕ) : k), hmem i⟩ - x : 𝒪[k]) : k) = - ((x : k) - i)`. Simplify using the standard rewrite rules. Rewrite using `[e, Valuation.map_neg, hu]`. Conclude with `hv`. Unfold `resCard`.
+
+Rewrite using `[← Nat.card_eq_of_bijective f hbij, Nat.card_eq_fintype_card, Fintype.card_fin]`.
+-/
 theorem resCard_eq (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) : resCard k = q := by
   have hmem : ∀ i : ℕ, (i : k) ∈ 𝒪[k] := fun i => (Valuation.mem_integer_iff _ _).mpr (v_nat_le_one h i)
   let f : Fin q → 𝓀[k] := fun i => IsLocalRing.residue 𝒪[k] ⟨((i : ℕ) : k), hmem i⟩
@@ -364,6 +556,9 @@ theorem resCard_eq (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideF
   unfold resCard
   rw [← Nat.card_eq_of_bijective f hbij, Nat.card_eq_fintype_card, Fintype.card_fin]
 
+/- English proof (translation)
+Introduce `E k _ _ _ _ _ _ _ P q ι ϖ h hu`. Conclude with `⟨v_div_q h hu, fun a ha => v_lt_one_iff_red h hu ha, fun a ha => v_eq_one_iff_red h hu ha, q_ne_zero h, q_mem h, q_not_mem_sq h hu, resCard_eq h hu, fun n x hx => rep h hu n x hx⟩`.
+-/
 theorem residues : ∀ (E k : Type) [Field E] [NumberField E] [StarRing E] [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (ι : E →+* k) (ϖ : kˣ),
     IsCompl P q ι ϖ → GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ →

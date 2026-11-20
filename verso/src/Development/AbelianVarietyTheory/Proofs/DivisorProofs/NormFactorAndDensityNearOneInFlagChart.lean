@@ -17,6 +17,9 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_sub_distrib]`. Establish `h1` using `Fin.sum_univ_succ f`. Establish `h2` using `Fin.sum_univ_castSucc f`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_succ_sub_castSucc {n : ℕ} (f : Fin (n + 1) → ℝ) :
     ∑ i : Fin n, (f i.succ - f i.castSucc) = f (Fin.last n) - f 0 := by
   rw [Finset.sum_sub_distrib]
@@ -24,6 +27,11 @@ theorem sum_succ_sub_castSucc {n : ℕ} (f : Fin (n + 1) → ℝ) :
   have h2 := Fin.sum_univ_castSucc f
   linarith
 
+/- English proof (translation)
+Unfold `nmat`. Distinguish the cases in `h : b < a`. Establish `hab : a ≠ b` using `fun e => lt_irrefl b (e ▸ h)`. Rewrite using `[dif_pos h, if_neg hab, sub_zero]`. Conclude with `PiLp.norm_apply_le z _`.
+
+Apply the tactic sequence `rw [dif_neg h] split_ifs <;> simp`.
+-/
 theorem nmat_entry_le (X : Data E r) (z : V (nd X)) (τ : X.Ψ) (a b : Fin r) :
     ‖nmat X z τ a b - (if a = b then 1 else 0)‖ ≤ ‖z‖ := by
   unfold nmat
@@ -34,6 +42,11 @@ theorem nmat_entry_le (X : Data E r) (z : V (nd X)) (τ : X.Ψ) (a b : Fin r) :
   · rw [dif_neg h]
     split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `[mat, nmat]`. Introduce `a b hab`. Establish `h1 : ¬ b < a` using `fun h => lt_asymm h hab`.
+
+Establish `h2 : a ≠ b` using `ne_of_lt hab`. Simplify using `[mat, nmat, h1, h2]`.
+-/
 theorem det_nmat (X : Data E r) (z : V (nd X)) (τ : X.Ψ) : (mat (nmat X z) τ).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
   · refine Finset.prod_eq_one fun a _ => ?_
@@ -43,10 +56,16 @@ theorem det_nmat (X : Data E r) (z : V (nd X)) (τ : X.Ψ) : (mat (nmat X z) τ)
     have h2 : a ≠ b := ne_of_lt hab
     simp [mat, nmat, h1, h2]
 
+/- English proof (translation)
+Use `haveI : IsEmpty (Fin ((0 : Fin (r + 1)) : ℕ)) := ⟨fun i => absurd i.2 (by simp)⟩`. Rewrite using `[dmin, lminor, Matrix.det_isEmpty, norm_one]`.
+-/
 theorem norm_dmin_zero (X : Data E r) (y : Frame X.Ψ r) (τ : X.Ψ) : ‖dmin X.Gm y τ 0‖ = 1 := by
   haveI : IsEmpty (Fin ((0 : Fin (r + 1)) : ℕ)) := ⟨fun i => absurd i.2 (by simp)⟩
   rw [dmin, lminor, Matrix.det_isEmpty, norm_one]
 
+/- English proof (translation)
+Rewrite using `[PoinPf.dmin_cpt_orth X hx]`. Establish `e : lminor (PoinPf.Gw X z τ) (Fin.last r) = (PoinPf.Gw X z τ).det` using `rfl`. Rewrite using `[e, PoinPf.Gw, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, det_nmat, show (mat (nmat X z) τ).map (starRingEnd ℂ) = (starRingEnd ℂ).mapMatrix (mat (nmat X z) τ) from rfl, ← RingHom.map_det, det_nmat, PoinPf.Jd, Matrix.det_diagonal]`. Simplify using `only [one_mul, map_one, mul_one, norm_prod, Complex.norm_real, Real.norm_eq_abs, PoinPf.abs_sgn]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_dmin_last (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (z : V (nd X)) (τ : X.Ψ) :
     ‖dmin X.Gm (cpt X x z) τ (Fin.last r)‖ = 1 := by
   rw [PoinPf.dmin_cpt_orth X hx]
@@ -57,6 +76,9 @@ theorem norm_dmin_last (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (z : 
   simp only [one_mul, map_one, mul_one, norm_prod, Complex.norm_real, Real.norm_eq_abs, PoinPf.abs_sgn]
   simp
 
+/- English proof (translation)
+The claim follows from `|(la τ i : ℝ) - ((⨆ k, (la τ k : ℝ)) + ⨅ k, (la τ k : ℝ)) / 2| ≤ X.spread la τ / 2 := by have h1 := le_ciSup (Finite.bddAbove_range fun k => (la τ k : ℝ)) i have h2 := ciInf_le (Finite.bddBelow_range fun k => (la τ k : ℝ)) i unfold Data.spread rw [abs_le] constructor <;> linarith`.
+-/
 theorem abs_sub_mid_le (X : Data E r) (la : Wt X.Ψ r) (τ : X.Ψ) (i : Fin r) :
     |(la τ i : ℝ) - ((⨆ k, (la τ k : ℝ)) + ⨅ k, (la τ k : ℝ)) / 2| ≤ X.spread la τ / 2 := by
   have h1 := le_ciSup (Finite.bddAbove_range fun k => (la τ k : ℝ)) i
@@ -65,6 +87,15 @@ theorem abs_sub_mid_le (X : Data E r) (la : Wt X.Ψ r) (τ : X.Ψ) (i : Fin r) :
   rw [abs_le]
   constructor <;> linarith
 
+/- English proof (translation)
+Use `set c := ((⨆ k, (la τ k : ℝ)) + ⨅ k, (la τ k : ℝ)) / 2`. Establish `hs : 0 ≤ X.spread la τ`. Break down `Nat.eq_zero_or_pos r with rfl | hr0` into its components or cases. Simplify using `[Data.spread]`. Use `abs_sub_mid_le X la τ ⟨0, hr0⟩` as an intermediate fact.
+
+Combine the linear relations using `[abs_nonneg ((la τ ⟨0, hr0⟩ : ℝ) - c)]`. Establish `e : ∑ i : Fin r, (la τ i : ℝ) * (L i.succ - L i.castSucc) = ∑ i : Fin r, ((la τ i : ℝ) - c) * (L i.succ - L i.castSucc) + c * ∑ i : Fin r, (L i.succ - L i.castSucc)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[e, sum_succ_sub_castSucc, h0, hr, sub_zero, mul_zero, add_zero]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `(le_abs_self _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_mul]`. Establish `h1` using `abs_sub (L i.succ) (L i.castSucc)`.
+
+Establish `h2 : |L i.succ - L i.castSucc| ≤ 2 * t` using `by linarith [hL i.succ, hL i.castSucc]`. Conclude with `mul_le_mul (abs_sub_mid_le X la τ i) h2 (abs_nonneg _) (by linarith)`. Use `_ = r * t * X.spread la τ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weighted_diff_le (X : Data E r) (la : Wt X.Ψ r) (τ : X.Ψ) (L : Fin (r + 1) → ℝ) {t : ℝ}
     (hL : ∀ i, |L i| ≤ t) (h0 : L 0 = 0) (hr : L (Fin.last r) = 0) :
     ∑ i : Fin r, (la τ i : ℝ) * (L i.succ - L i.castSucc) ≤ r * t * X.spread la τ := by
@@ -94,6 +125,33 @@ theorem weighted_diff_le (X : Data E r) (la : Wt X.Ψ r) (τ : X.Ψ) (L : Fin (r
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ r X la w x hr hx hw z hz`. Establish `hf : (1 : ℝ) ≤ fdeg E` using `one_le_field_half_degree`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hsp : ∀ τ, 0 ≤ X.spread la τ` using `fun τ => by`. Use `abs_sub_mid_le X la τ ⟨0, hr⟩` as an intermediate fact.
+
+Combine the linear relations using `[abs_nonneg ((la τ ⟨0, hr⟩ : ℝ) - ((⨆ k, (la τ k : ℝ)) + ⨅ k, (la τ k : ℝ)) / 2)]`. Establish `hw0 : 0 ≤ w` using `le_trans (Finset.sum_nonneg fun τ _ => hsp τ) hw`. Use `set δ := chartRad E r w with hδdef`. Establish `hwf : 0 < w + fdeg E` using `by linarith`. Establish `hδ0 : 0 < δ` using `by rw [hδdef, chartRad]; positivity`.
+
+Establish `key : (r : ℝ) ^ 3 * δ * (w + fdeg E) * 200 = 1`. Rewrite using `[hδdef, chartRad]`. Establish `: (r : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Establish `hA0 : 0 ≤ (r : ℝ) ^ 3 * δ` using `by positivity`.
+
+Establish `hA : (r : ℝ) ^ 3 * δ ≤ 1 / 200`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (show (1 : ℝ) ≤ w + fdeg E by linarith) hA0]`. Establish `hr2 : (r : ℝ) ^ 2 * δ ≤ (r : ℝ) ^ 3 * δ`. Establish `: (r : ℝ) ^ 2 ≤ (r : ℝ) ^ 3` using `pow_le_pow_right₀ hr1 (by norm_num)`. Conclude with `mul_le_mul_of_nonneg_right this hδ0.le`.
+
+Take `⟨hdom, hd⟩` from `GlobalTheory.dmin_rmul_near_one X x hx (nmat X z) hδ0.le (by linarith) (fun τ a b => (nmat_entry_le X z τ a b).trans hz)`. Express the relevant statement in the definitionally equal form `cpt X x z ∈ X.dom at hdom`. Express the relevant statement in the definitionally equal form `∀ τ i, dmin X.Gm (cpt X x z) τ i ≠ 0 ∧ |Real.log ‖dmin X.Gm (cpt X x z) τ i‖| ≤ 9 * ((r : ℝ) ^ 2 * δ) at hd`. Use `set t := 9 * ((r : ℝ) ^ 2 * δ) with ht`. Establish `ht0 : 0 ≤ t` using `by positivity`.
+
+Use `⟨hdom, ?_, ?_⟩` and prove the remaining obligations. Establish `hne : ∀ τ i, dmin X.Gm (cpt X x z) τ i ≠ 0` using `fun τ i => (hd τ i).1`. Establish `hN` using `CurvPf.neg2log_nfac X la (cpt X x z) hne`. Establish `hbound : -2 * Real.log (X.nfac la (cpt X x z)) ≤ r * t * w`. Rewrite using `[hN]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hsmall : (r : ℝ) * t * w ≤ 1 / 20`. Establish `e1 : (r : ℝ) * t * w = 9 * ((r : ℝ) ^ 3 * δ * w)` using `by rw [ht]; ring`. Establish `e2 : 0 ≤ (r : ℝ) ^ 3 * δ * fdeg E` using `by positivity`. Rewrite using `[e1]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : 0 < X.nfac la (cpt X x z)`. Unfold `Data.nfac`. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_pos_iff.2 (div_ne_zero (hne _ _) (hne _ _))) _`. Establish `e : X.nfac la (cpt X x z) ^ 2 = Real.exp (-(-2 * Real.log (X.nfac la (cpt X x z))))`.
+
+Rewrite using `[show -(-2 * Real.log (X.nfac la (cpt X x z))) = Real.log (X.nfac la (cpt X x z)) + Real.log (X.nfac la (cpt X x z)) by ring, Real.exp_add, Real.exp_log hpos, sq]`. Rewrite using `[e]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Establish `hfac : ∀ τ (i : Fin r), Real.exp (-(2 * t)) ≤ ‖dmin X.Gm (cpt X x z) τ i.castSucc‖ ^ (-2 : ℤ)`. Introduce `τ i`.
+
+Take `⟨h0, h1⟩` from `hd τ i.castSucc`. Establish `hu : 0 < ‖dmin X.Gm (cpt X x z) τ i.castSucc‖` using `norm_pos_iff.2 h0`. Establish `hu' : ‖dmin X.Gm (cpt X x z) τ i.castSucc‖ ≤ Real.exp t`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zpow_neg, zpow_two, Real.exp_neg, two_mul, Real.exp_add]`.
+
+Conclude with `inv_anti₀ (by positivity) (mul_le_mul hu' hu' hu.le (Real.exp_pos _).le)`. Establish `hprod : Real.exp (-(2 * t)) ^ (Fintype.card X.Ψ * r) ≤ densF X x z`. Unfold `densF`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.prod_const, Finset.card_univ, Finset.card_univ, Fintype.card_fin, ← pow_mul, Nat.mul_comm (Fintype.card X.Ψ)]`.
+
+Use `_ ≤ _ := Finset.prod_le_prod (fun τ _ => by positivity) (fun τ _ => Finset.prod_le_prod (fun i _ => by positivity) (fun i _ => hfac τ i))`. Use `le_trans ?_ hprod` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul, QuadraticCoefficientForms.card_Psi X]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `push_cast`.
+
+Establish `e1 : (fdeg E : ℝ) * r * -(2 * t) = -(18 * ((r : ℝ) ^ 3 * δ * fdeg E))` using `by rw [ht]; ring`. Establish `e2 : 0 ≤ (r : ℝ) ^ 3 * δ * w` using `by positivity`. Rewrite using `[e1]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem chart_near_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (la : Wt X.Ψ r) (w : ℝ) (x : Frame X.Ψ r), 0 < r → IsOrth X x → (∑ τ, X.spread la τ) ≤ w →
     ∀ z : V (nd X), ‖z‖ ≤ chartRad E r w → cpt X x z ∈ X.dom ∧

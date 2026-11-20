@@ -26,9 +26,15 @@ def univFlag (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) :
   step_ι := step_incl ι N τ
   isIso_last := GlobalTheory.T.isIso_incl_last' ι N τ
 
+/- English proof (translation)
+Introduce `A _ g a l` and use `GlobalTheory.T.pullback_flag_sections_frame ι N A g a l`.
+-/
 theorem isTaut_univFlag (ι : Type) [Fintype ι] (N : ℕ) : GlobalTheory.FlagZ.Taut.IsTaut ι N (univFlag ι N) :=
   fun A _ g a l => GlobalTheory.T.pullback_flag_sections_frame ι N A g a l
 
+/- English proof (translation)
+Take `⟨g', w, h⟩` from `GlobalTheory.T.tautological_flag_universal ι N (univFlag ι N) (isTaut_univFlag ι N) T g fl'`. Conclude with `⟨g', w, h⟩`.
+-/
 theorem exists_lifts (ι : Type) [Fintype ι] (N : ℕ) (T : Scheme.{0}) (g : T ⟶ Sp ℤ)
     (fl' : ι → Vert.Flag ((Scheme.Modules.pullback g).obj (freeModule (Sp ℤ) (Fin N))) N) : ∃ g', Lifts g fl' g' := by
   obtain ⟨g', w, h⟩ := GlobalTheory.T.tautological_flag_universal ι N (univFlag ι N) (isTaut_univFlag ι N) T g fl'

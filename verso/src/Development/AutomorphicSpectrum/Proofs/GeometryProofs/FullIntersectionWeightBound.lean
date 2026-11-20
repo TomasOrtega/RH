@@ -19,6 +19,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Distinguish the cases in `hb : IsBoundedUnder (· ≤ ·) atTop x`. Establish `hmono : Monotone (fun v : ℝ => ENNReal.ofReal (v / c))` using `fun a b h => ENNReal.ofReal_le_ofReal (div_le_div_of_nonneg_right h hc.le)`. Establish `hcont : Continuous (fun v : ℝ => ENNReal.ofReal (v / c))` using `ENNReal.continuous_ofReal.comp (continuous_id.div_const c)`. Establish `hco : IsCoboundedUnder (· ≤ ·) atTop x` using `isCoboundedUnder_le_of_le atTop hx`. Conclude with `(hmono.map_limsup_of_continuousAt x hcont.continuousAt hb hco).le`.
+
+Establish `hset : {a : ℝ | ∀ᶠ n in atTop, x n ≤ a} = ∅`. Use `Set.eq_empty_iff_forall_notMem.2 fun a ha => hb ⟨a, ?_⟩` and prove the remaining obligations. Simplify `ha` using `[eventually_map]`. Establish `h0 : limsup x atTop = 0`. Rewrite using `[limsup_eq, hset, Real.sInf_empty]`.
+
+Simplify using `[h0]`.
+-/
 theorem ofReal_limsup_div_le (x : ℕ → ℝ) (hx : ∀ τ, 0 ≤ x τ) (c : ℝ) (hc : 0 < c) :
     ENNReal.ofReal (limsup x atTop / c) ≤ limsup (fun τ => ENNReal.ofReal (x τ / c)) atTop := by
   by_cases hb : IsBoundedUnder (· ≤ ·) atTop x
@@ -36,6 +43,29 @@ theorem ofReal_limsup_div_le (x : ℕ → ℝ) (hx : ∀ τ, 0 ≤ x τ) (c : �
       rw [limsup_eq, hset, Real.sInf_empty]
     simp [h0]
 
+/- English proof (translation)
+Establish `hdR : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `hrR : (0 : ℝ) < r` using `by exact_mod_cast hr`. Take `⟨c, hcdef⟩ : ∃ c : ℝ, c = ((D : ℝ) + 1) * d * ((8 * r : ℕ) : ℝ) ^ (D + 1)` from `⟨_, rfl⟩`. Establish `hc : 0 < c` using `by rw [hcdef]; push_cast; positivity`. Rewrite using `[← hcdef]`.
+
+Take `⟨x, hxdef⟩ : ∃ x : ℕ → ℝ, x = fun k : ℕ => smallSectionCount Pr La (1 * k) / (((1 * k : ℕ) : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ))` from `⟨_, rfl⟩`. Establish `hx : ∀ τ, 0 ≤ x τ` using `fun τ => by`. Rewrite using `[hxdef]`. Conclude with `div_nonneg (Real.log_natCast_nonneg _) (by positivity)`. Establish `h1` using `ofReal_limsup_div_le x hx c hc`.
+
+Establish `hav : arVolP Pr La 1 D = limsup x atTop` using `by rw [hxdef]; rfl`. Rewrite using `[hav]`. Use `h1.trans ?_` and prove the remaining obligations. Take `⟨f, hfdef⟩ : ∃ f : ℕ → ENNReal, f = fun k : ℕ => (D.factorial : ENNReal) * GlobalTheory.CompHt.logCard (m (8 * k)) / ((d : ENNReal) * ((8 * k : ℕ) : ENNReal) ^ (D + 1))` from `⟨_, rfl⟩`. Establish `hcv : GlobalTheory.CompHt.countVol D d 8 m = limsup f atTop` using `by rw [hfdef]; rfl`.
+
+Rewrite using `[hcv]`. Establish `h2 : ∀ τ, ENNReal.ofReal (x τ / c) ≤ f (r * τ)`. Introduce `τ`. Break down `Nat.eq_zero_or_pos τ with rfl | hτ` into its components or cases. Establish `: x 0 = 0` using `by rw [hxdef]; simp`.
+
+Simplify using `[this]`. Establish `hτR : (0 : ℝ) < τ` using `by exact_mod_cast hτ`. Take `⟨W, hW⟩ : ∃ W : ℕ, W = d * (8 * (r * τ)) ^ (D + 1)` from `⟨_, rfl⟩`. Establish `hWpos : 0 < W` using `by rw [hW]; positivity`. Establish `hWR : (0 : ℝ) < W` using `by exact_mod_cast hWpos`.
+
+Establish `hle : ENNReal.ofReal (Real.log (Nat.card {s : La τ // Pr τ (s : Ω)})) ≤ GlobalTheory.CompHt.logCard (m (8 * (r * τ)))`. Rewrite using `[← GlobalTheory.CompHt.logCard_coe]`. Conclude with `EReal.toENNReal_le_toENNReal (ENNReal.log_monotone (ENat.toENNReal_le.2 (hcount τ)))`. Establish `hlog : smallSectionCount Pr La (1 * τ) = Real.log (Nat.card {s : La τ // Pr τ (s : Ω)})`. Rewrite using `[one_mul]`.
+
+Both sides reduce to the same expression. Establish `hxe : x τ / c = Real.log (Nat.card {s : La τ // Pr τ (s : Ω)}) * ((D.factorial : ℝ) / W)`. Rewrite using `[hxdef, hcdef, hW]`. Simplify using `only [hlog]`. Generalize the expression as in `Real.log (Nat.card {s : La τ // Pr τ (s : Ω)}) = large₂`.
+
+Simplify using `only [one_mul, Nat.factorial_succ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hfe : f (r * τ) = GlobalTheory.CompHt.logCard (m (8 * (r * τ))) * ((D.factorial : ENNReal) / W)`.
+
+Establish `: (d : ENNReal) * ((8 * (r * τ) : ℕ) : ENNReal) ^ (D + 1) = W`. Rewrite using `[hW]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hfdef]`.
+
+Simplify using `only [this]`. Rewrite using `[mul_comm, mul_div_assoc]`. Rewrite using `[hxe, hfe, ENNReal.ofReal_mul (Real.log_natCast_nonneg _), ENNReal.ofReal_div_of_pos hWR, ENNReal.ofReal_natCast, ENNReal.ofReal_natCast]`. Use `gcongr`. Establish `hm : Tendsto (fun τ : ℕ => r * τ) atTop atTop` using `tendsto_id.const_mul_atTop' hr`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[limsup, limsup, map_map]`. Both sides reduce to the same expression. Use `_ ≤ limsup f atTop := limsup_le_limsup_of_le hm`.
+-/
 theorem arithmeticVolume_div_le_countingVolume {Ω : Type} [Field Ω] (Pr : ℕ → Ω → Prop) (La : ℕ → AddSubgroup Ω) (D d r : ℕ)
     (m : ℕ → ℕ∞) (hd : 0 < d) (hr : 0 < r)
     (hcount : ∀ τ, ((Nat.card {s : La τ // Pr τ (s : Ω)} : ℕ) : ℕ∞) ≤ m (8 * (r * τ))) :
@@ -98,6 +128,11 @@ theorem arithmeticVolume_div_le_countingVolume {Ω : Type} [Field Ω] (Pr : ℕ 
         rw [limsup, limsup, map_map]; rfl
     _ ≤ limsup f atTop := limsup_le_limsup_of_le hm
 
+/- English proof (translation)
+Distinguish the cases in `hS : S.Finite`. Use `haveI : Finite S := hS`. Set `f : {s : L // Pr (s : Ω)} → S` to `fun s => ⟨(s.1 : Ω) * θ, h _ s.1.2 s.2⟩`. Establish `hf : Function.Injective f` using `fun a b hab => by`. Establish `h1 : (a.1 : Ω) * θ = (b.1 : Ω) * θ` using `congrArg Subtype.val hab`.
+
+Conclude with `Subtype.ext (Subtype.ext (mul_right_cancel₀ hθ h1))`. Rewrite using `[← hS.cast_ncard_eq, ← Nat.card_coe_set_eq]`. Conclude with `Nat.card_le_card_of_injective f hf` after adjusting the coercions. Rewrite using `[Set.Infinite.encard_eq hS]`. Conclude with `le_top`.
+-/
 theorem card_le_encard_of_mul {Ω : Type} [Field Ω] (L : AddSubgroup Ω) (Pr : Ω → Prop) (S : Set Ω) (θ : Ω)
     (hθ : θ ≠ 0) (h : ∀ σ ∈ L, Pr σ → σ * θ ∈ S) :
     ((Nat.card {s : L // Pr (s : Ω)} : ℕ) : ℕ∞) ≤ S.encard := by
@@ -112,6 +147,13 @@ theorem card_le_encard_of_mul {Ω : Type} [Field Ω] (L : AddSubgroup Ω) (Pr : 
   · rw [Set.Infinite.encard_eq hS]
     exact le_top
 
+/- English proof (translation)
+Establish `hNs` using `(GlobalTheory.T.hermitian_line_shift_properties RM.K RM.ι (mCoordIdeal RM.y) A κ 1).2.1 hA`. Take `⟨P1, hP1, hsp⟩` from `hNs.semipos`. Establish `h` using `h6 RM.K RM.ι RM.Ω RM.y (Top.dimFl Ψ N) (Small.shiftH A κ) P1 II hD hII RM.arith RM.birational hP1 hsp hNs.nef hNs.conj`. Establish `hsm : IsSmoothHerm A`. Take `⟨_, _, h'⟩` from `hA.semipos`.
+
+Conclude with `h'.1`. Rewrite `h` using `[Small.selfInt_shiftH RM.K RM.ι (mCoordIdeal RM.y) (Top.dimFl Ψ N) A κ II hII RM.arith hsm]`. Establish `hδ : (0 : ℝ) < RM.δ` using `by exact_mod_cast RM.δ_pos`. Establish `hrR : (0 : ℝ) < r` using `by exact_mod_cast hr`. Establish `hden : (0 : ℝ) ≤ ((Top.dimFl Ψ N : ℝ) + 1) * RM.δ * ((8 * r : ℕ) : ℝ) ^ (Top.dimFl Ψ N + 1)` using `by push_cast; positivity`.
+
+Use `(ENNReal.ofReal_le_ofReal (div_le_div_of_nonneg_right h hden)).trans ?_` and prove the remaining obligations. Conclude with `arithmeticVolume_div_le_countingVolume _ _ (Top.dimFl Ψ N) RM.δ r m RM.δ_pos hr hcount`.
+-/
 theorem le_countVol_of_nef {Ψ : Type} [Fintype Ψ] {N : ℕ} (h6 : BirationalPullbackPushforwardFormula) (RM : Top.RootModel Ψ N)
     (hD : 1 ≤ Top.dimFl Ψ N) (II : IntersectionSystem) (hII : IsIntersectionSystem II) (A : HermLine RM.ι)
     (hA : Small.IsNefH (mCoordIdeal RM.y) A) (κ : ℝ) (r : ℕ) (hr : 0 < r) (m : ℕ → ℕ∞)
@@ -136,6 +178,9 @@ theorem le_countVol_of_nef {Ψ : Type} [Fintype Ψ] {N : ℕ} (h6 : BirationalPu
   refine (ENNReal.ofReal_le_ofReal (div_le_div_of_nonneg_right h hden)).trans ?_
   exact arithmeticVolume_div_le_countingVolume _ _ (Top.dimFl Ψ N) RM.δ r m RM.δ_pos hr hcount
 
+/- English proof (translation)
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem slope_alg (I G q δ D t' : ℝ) (hG : G ≠ 0) (hq : q ≠ 0) (hδ : δ ≠ 0) (hD : D + 1 ≠ 0) (e : ℕ) :
     (I / ((D + 1) * G) / q * (G / q ^ e) + t' * (G / q ^ e)) / δ =
       (I + (D + 1) * (q * t') * G) / ((D + 1) * δ * q ^ (e + 1)) := by
@@ -146,6 +191,25 @@ end GlobalTheory.CompanionTheory.Ar.Plug
 
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Introduce `hG h6 E _ _ _ H Dw l Xo c Y _ T o B b II u g hII hT1 hW hBig t`. Establish `hanti : ∀ τ, StrictAnti (u τ)` using `fun τ a b' h => by`. Use `hW.2.1 τ a b' h` as an intermediate fact. Simplify `this` using `[reW]`. Take `⟨C, s, q, m, θ, hC, hs, hs0, hq, hm, hsm⟩` from `GlobalTheory.T.strict_weight_growth_bound hG E H Dw l Xo c Y T o B b u hanti`.
+
+Take `⟨hnef, hdeg, hsl, hV⟩` from `GlobalTheory.T.weight_threshold_limit_coefficients (CMType H) (Dw.p + Dw.q) T II B (reW u) g b s q m hII hT1 hW hBig hs hs0 (fun n => (hq n).1) hm`. Establish `hD : 1 ≤ Top.dimFl (CMType H) (Dw.p + Dw.q)`. Take `⟨τ, hτ⟩` from `GlobalTheory.HostModel.exists_embedding_rt_eq H`. Use `haveI : Nonempty (CMType H) := ⟨⟨τ, hτ⟩⟩`. Establish `h1` using `T.j_pos`.
+
+Establish `h2` using `T.j_lt`. Establish `h3 : 2 ≤ Dw.p + Dw.q` using `by omega`. Use `Nat.mul_pos Fintype.card_pos (Nat.div_pos ?_ (by norm_num))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `choose r hr using fun n => (hq n).2.1`.
+
+Establish `hrpos : ∀ n, 0 < r n` using `fun n => by`. Use `(hq n).1` as an intermediate fact. Rewrite `this` using `[hr n]`. Use linear arithmetic over natural numbers and integers. Establish `hδ : (0 : ℝ) < (T.M B b).δ` using `by exact_mod_cast (T.M B b).δ_pos`.
+
+Establish `hapos` using `hdeg.eventually_const_lt (mul_pos hδ hV)`. Establish `hst : Tendsto (fun n => t - C * s n) atTop (𝓝 t)`. Simplify using `using tendsto_const_nhds.sub (hs0.const_mul C)`. Establish `hlim` using `((hsl.mul hdeg).add (hst.mul hdeg)).div_const ((T.M B b).δ : ℝ)`. Establish `hval : (T.slope II B b (reW u) * ((T.M B b).δ * (T.vol b * Top.flagDeg (reW u))) + t * ((T.M B b).δ * (T.vol b * Top.flagDeg (reW u)))) / ((T.M B b).δ : ℝ) = T.vol b * Top.flagDeg (reW u) * (T.slope II B b (reW u) + t)`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite `hlim` using `[hval]`. Use `le_of_tendsto (ENNReal.tendsto_ofReal hlim) ?_` and prove the remaining obligations. Use `filter_upwards [hnef, hapos] with n hn ha`. Establish `hqn : (0 : ℝ) < q n` using `by exact_mod_cast (hq n).1`.
+
+Establish `hG0 : geomDeg (T.M B b).P (Top.combLine ((T.M B b).line (Top.scale (s n))) (m n)) (Top.dimFl (CMType H) (Dw.p + Dw.q)) ≠ 0`. Introduce `h0`. Rewrite `ha` using `[h0]`. Simplify using `at ha`. Establish `hkey` using `le_countVol_of_nef h6 (T.M B b) hD II hII.1 _ hn (q n * (t - C * s n)) (r n) (hrpos n) (fun τ => (modelSmall (o.toTowerOrigin.Or B b) (τ • u) (Real.exp (τ * t))).encard) (fun τ => by`.
+
+Establish `he : 8 * (r n * τ) = τ * q n` using `by rw [hr n]; ring`. Simplify using `only [he]`. Use `card_le_encard_of_mul _ _ _ (θ n ^ τ) (pow_ne_zero _ (hq n).2.2) fun σ h1 h2 => ?_` and prove the remaining obligations. Use `hsm n τ (t - C * s n) σ h1 h2` as an intermediate fact. Rewrite using `[sub_add_cancel] at this)` and apply the resulting hypothesis.
+
+Rewrite `hkey` using `[← hr n]`. Establish `halg` using `slope_alg (II (T.M B b).K (T.M B b).ι (T.M B b).P (Top.dimFl (CMType H) (Dw.p + Dw.q) + 1) (fun _ => Top.combLine ((T.M B b).line (Top.scale (s n))) (m n))) (geomDeg (T.M B b).P (Top.combLine ((T.M B b).line (Top.scale (s n))) (m n)) (Top.dimFl (CMType H) (Dw.p + Dw.q))) (q n) (( …`. Simplify using `only [Small.normHt]`. Rewrite using `[halg]`. Conclude with `hkey`.
+-/
 theorem volume_ge_slope : Top.Given → BirationalPullbackPushforwardFormula → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (B : ℕ) (b : T.Comp) (II : IntersectionSystem) (u : GlobalTheory.AllWt.Weight Dw) (g : ℝ), IsFullIntersectionSystem II → T.T1 II → Top.WeightHyp T.j (reW u) g → Top.bigB0 (reW u) g < B + 1 → ∀ t : ℝ, ENNReal.ofReal (T.vol b * Top.flagDeg (reW u) * (T.slope II B b (reW u) + t)) ≤ GlobalTheory.CompHt.countVol (Top.dimFl (CMType H) (Dw.p + Dw.q)) (T.M B b).δ 8 fun τ => (modelSmall (o.toTowerOrigin.Or B b) (τ • u) (Real.exp (τ * t))).encard := by
   intro hG h6 E _ _ _ H Dw l Xo c Y _ T o B b II u g hII hT1 hW hBig t
   have hanti : ∀ τ, StrictAnti (u τ) := fun τ a b' h => by

@@ -4,6 +4,29 @@ noncomputable section
 
 namespace Formalism.TruncatedSeriesCounting.WachCoordinates
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, j = m + 1` from `⟨j - 1, by omega⟩`. Establish `hjm : m + 1 - 1 = m` using `by omega`. Unfold `sigE`. Rewrite using `[hjm]`. Establish `hL : (3 : ℝ) ≤ ℓ` using `by exact_mod_cast hℓ`.
+
+Establish `hq : (2 : ℝ) ≤ (ℓ : ℝ) - 1` using `by linarith`. Establish `hq0 : (0 : ℝ) < (ℓ : ℝ) - 1` using `by linarith`. Establish `hq2 : (0 : ℝ) < ((ℓ : ℝ) - 1) ^ 2` using `by positivity`. Establish `hg0 : (0 : ℝ) ≤ g` using `by positivity`. Establish `hA0 : (0 : ℝ) ≤ (h : ℝ) + 2 * g` using `by positivity`.
+
+Establish `hP1 : (1 : ℝ) ≤ (ℓ : ℝ) ^ m` using `one_le_pow₀ (by linarith)`. Establish `hPq : ((ℓ : ℝ) - 1) ^ m ≤ (ℓ : ℝ) ^ m` using `pow_le_pow_left₀ hq0.le (by linarith) m`. Establish `hP0 : (0 : ℝ) < (ℓ : ℝ) ^ m` using `by linarith`. Establish `hM : (Mpar ℓ g h : ℝ) ≤ ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) + 1`. Unfold `Mpar`.
+
+Use `push_cast`. Establish `hc : (((ℓ - 1 : ℕ)) : ℝ) = (ℓ : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]`. Simplify using the standard rewrite rules. Use `Nat.cast_div_le (α := ℝ) (m := h + 2 * g) (n := ℓ - 1)` as an intermediate fact.
+
+Rewrite `this` using `[hc]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM0 : (0 : ℝ) ≤ (Mpar ℓ g h : ℝ)` using `by positivity`. Establish `hr : (ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2 ≤ 3 / 4`.
+
+Rewrite using `[div_le_iff₀ hq2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hr0 : (0 : ℝ) ≤ (ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2` using `by positivity`. Establish `hX0 : (0 : ℝ) ≤ ((3 * g : ℝ) + (Mpar ℓ g h : ℝ) / (ℓ : ℝ) ^ m) * ℓ / ((ℓ : ℝ) - 1) ^ 2 + 1`. Check the signs of the components of the expression.
+
+Establish `hceil` using `Nat.ceil_lt_add_one hX0`. Establish `e1 : ((3 * g : ℝ) + (Mpar ℓ g h : ℝ) / (ℓ : ℝ) ^ m) * ℓ / ((ℓ : ℝ) - 1) ^ 2 = 3 * g * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) + (Mpar ℓ g h : ℝ) * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m`. Clear the denominators using the available nonvanishing facts. Establish `t1 : 3 * g * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) ≤ 9 / 4 * g` using `by nlinarith`. Establish `t2 : (Mpar ℓ g h : ℝ) * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m ≤ 3 / 2 * ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) ^ (m + 1 + 1) + 3 / 4`.
+
+Establish `hB : (0 : ℝ) < ((ℓ : ℝ) - 1) ^ (m + 1 + 1)` using `by positivity`. Establish `s1 : (Mpar ℓ g h : ℝ) * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m ≤ (((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) + 1) * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m` using `by gcongr`. Establish `s2 : (((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) + 1) * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m = ((h : ℝ) + 2 * g) * ℓ / (((ℓ : ℝ) - 1) ^ 3 * (ℓ : ℝ) ^ m) + ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m`. Clear the denominators using the available nonvanishing facts. Establish `s3 : ((h : ℝ) + 2 * g) * ℓ / (((ℓ : ℝ) - 1) ^ 3 * (ℓ : ℝ) ^ m) ≤ 3 / 2 * ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) ^ (m + 1 + 1)`.
+
+Rewrite using `[div_le_div_iff₀ (by positivity) hB]`. Establish `k1 : (ℓ : ℝ) * ((ℓ : ℝ) - 1) ^ m ≤ 3 / 2 * ((ℓ : ℝ) - 1) * (ℓ : ℝ) ^ m`. Establish `: (ℓ : ℝ) ≤ 3 / 2 * ((ℓ : ℝ) - 1)` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `k2` using `mul_le_mul_of_nonneg_left k1 (mul_nonneg hA0 hq2.le)`.
+
+Establish `e2 : ((ℓ : ℝ) - 1) ^ (m + 1 + 1) = ((ℓ : ℝ) - 1) ^ m * ((ℓ : ℝ) - 1) ^ 2` using `by ring`. Rewrite using `[e2]`. Use polynomial arithmetic with `[k2]`. Establish `s4 : ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m ≤ 3 / 4`. Rewrite using `[div_le_iff₀ hP0]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hceil`, the goal using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma sigma_exponent_le_real (ℓ : ℕ) (hℓ : 3 ≤ ℓ) (g h j : ℕ) (hj : 1 ≤ j) :
     (sigE ℓ g h j : ℝ) ≤
       3 / 2 * ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) ^ (j + 1) + 9 / 4 * g + 11 / 4 := by
@@ -73,6 +96,21 @@ private lemma sigma_exponent_le_real (ℓ : ℕ) (hℓ : 3 ≤ ℓ) (g h j : ℕ
   rw [e1] at hceil ⊢
   linarith
 
+/- English proof (translation)
+Introduce `ℓ hℓ G g h j ell rr kap hj hG hg hgh hell hrr hkap`. Establish `hσ` using `sigma_exponent_le_real ℓ hℓ g h j hj`. Unfold `eE a0E`. Establish `hL : (3 : ℝ) ≤ ℓ` using `by exact_mod_cast hℓ`. Establish `hq : (2 : ℝ) ≤ (ℓ : ℝ) - 1` using `by linarith`.
+
+Establish `hB4 : (4 : ℝ) ≤ ((ℓ : ℝ) - 1) ^ (j + 1)`. Use `pow_le_pow_right₀ (by linarith : (1 : ℝ) ≤ (ℓ : ℝ) - 1) (by omega : 2 ≤ j + 1)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hB0 : (0 : ℝ) < ((ℓ : ℝ) - 1) ^ (j + 1)` using `by linarith`. Establish `hg1 : (1 : ℝ) ≤ g` using `by exact_mod_cast hg`.
+
+Establish `hGg : (G : ℝ) ≤ g` using `by exact_mod_cast hG`. Establish `hgh' : (g : ℝ) ≤ h` using `by exact_mod_cast hgh`. Establish `hh1 : (1 : ℝ) ≤ h` using `by linarith`. Establish `hell1 : (1 : ℝ) ≤ ell` using `by exact_mod_cast hell`. Establish `hT : (0 : ℝ) ≤ (h : ℝ) / ((ℓ : ℝ) - 1) ^ (j + 1)` using `by positivity`.
+
+Establish `hΛ : (0 : ℝ) ≤ Real.logb ℓ h` using `Real.logb_nonneg (by linarith) hh1`. Establish `hlog2 : Real.logb ℓ (2 * h) = Real.logb ℓ 2 + Real.logb ℓ h` using `Real.logb_mul (by norm_num) (by positivity)`. Establish `hl2 : Real.logb ℓ 2 ≤ 1`. Use `Real.logb_le_logb_of_le (by linarith : (1 : ℝ) < ℓ) (by norm_num : (0 : ℝ) < 2) (by linarith : (2 : ℝ) ≤ ℓ)` as an intermediate fact. Rewrite `this` using `[Real.logb_self_eq_one (by linarith)]`. Then use the resulting hypothesis.
+
+Establish `hGL : (G : ℝ) / ℓ ≤ g / 3`. Rewrite using `[div_le_div_iff₀ (by positivity) (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hgB : (g : ℝ) / ((ℓ : ℝ) - 1) ^ (j + 1) ≤ g / 4` using `div_le_div_of_nonneg_left (by positivity) (by norm_num) hB4`. Establish `h4g : 4 * (g : ℝ) / ((ℓ : ℝ) - 1) ≤ 2 * g`.
+
+Rewrite using `[div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `eσ : 3 / 2 * ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) ^ (j + 1) = 3 / 2 * ((h : ℝ) / ((ℓ : ℝ) - 1) ^ (j + 1)) + 3 * ((g : ℝ) / ((ℓ : ℝ) - 1) ^ (j + 1))`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hσ` using `[eσ]`.
+
+Rewrite `hkap` using `[hlog2]`. Establish `hge : (g : ℝ) ≤ g * ell` using `by nlinarith`. Establish `hee : (ell : ℝ) ≤ g * ell` using `by nlinarith`. Establish `h1e : (1 : ℝ) ≤ g * ell` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem total_exponent_le_eight_hundred : ExponentBoundOfRankAndKappaBounds := by
   intro ℓ hℓ G g h j ell rr kap hj hG hg hgh hell hrr hkap
   have hσ := sigma_exponent_le_real ℓ hℓ g h j hj

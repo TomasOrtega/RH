@@ -10,6 +10,19 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL.Glue
 
+/- English proof (translation)
+Use `choose m hm0 hm1 hm2 using hm`. Use `⟨∏ q ∈ hfin.toFinset, m q, Finset.prod_ne_zero_iff.mpr fun q _ => hm0 q, fun p => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ hfin.toFinset`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m hp`. Rewrite using `[hk]`.
+
+Use `⟨fun v hv => ?_, fun v hv i => ?_⟩` and prove the remaining obligations. Establish `h1` using `hm1 p v hv`. Establish `h2 : ((m p * k : ℕ) : (A.loc p).Ep) • v = k • ((m p : (A.loc p).Ep) • v)`. Rewrite using `[← Nat.cast_smul_eq_nsmul (A.loc p).Ep, smul_smul]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Rewrite using `[h2]`. Conclude with `nsmul_mem h1 k`. Establish `h1` using `hm2 p v hv i`. Establish `h2 : ((m p * k : ℕ) : (A.loc p).Ep) * v i = (k : (A.loc p).Ep) * ((m p : (A.loc p).Ep) * v i)` using `by push_cast; ring`.
+
+Rewrite using `[h2]`. Conclude with `(A.L p).O.mul_mem (natCast_mem (A.L p).O k) h1`. Establish `hΛ : Λ p = Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : Fin n → (A.loc p).Ep))`. Assume the negation of the conclusion as `h`. Conclude with `hp (hfin.mem_toFinset.mpr h)`.
+
+Use `⟨fun v hv => ?_, fun v hv i => ?_⟩` and prove the remaining obligations. Rewrite using `[hΛ, mem_span_single_iff]`. Introduce `i`. Use `(A.L p).O.mul_mem (natCast_mem (A.L p).O (∏ q ∈ hfin.toFinset, m q)) (hv i)` as an intermediate fact. Simplify `this` using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite `hv` using `[hΛ, mem_span_single_iff]`. Conclude with `(A.L p).O.mul_mem (natCast_mem (A.L p).O _) (hv i)`.
+-/
 theorem exists_uniform_bound {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} (A : Places F E sig) (n : ℕ)
     (Λ : ∀ p, Submodule (A.L p).O (Fin n → (A.loc p).Ep))

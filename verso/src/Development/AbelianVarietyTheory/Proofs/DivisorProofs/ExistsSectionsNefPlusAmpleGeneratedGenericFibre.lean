@@ -22,6 +22,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.GenFibreGen
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX L n hL`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `AmpleTwistNef.nefFib_of_cls_eq ?_ (nefFib_of_isNef (HermLB.isNef_triv (p := p) (D := D))) erw [CechPic.cls_lbPow L.isLB 0, zero_smul]` and prove the remaining obligations. Both sides reduce to the same expression. Use `hX.finite` as an intermediate fact.
+
+Conclude with `(nefFib_pow_iff k X p hX.isProjOver L n hn).2 hL`.
+-/
 theorem nefFib_pow : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L : HermLB p) (n : ℕ), NefFib L → NefFib (L.pow n) := by
   intro k _ X _ p D hX L n hL
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -31,9 +36,17 @@ theorem nefFib_pow : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
   · have := hX.finite
     exact (nefFib_pow_iff k X p hX.isProjOver L n hn).2 hL
 
+/- English proof (translation)
+Introduce `k _ X p x hx` and use `RatDegZeros.mem_range_fst k X p x hx`.
+-/
 theorem exists_fst_eq : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (x : X), CharZero (X.residueField x) → ∃ y : ↥(Limits.pullback (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom ℚ))), Limits.pullback.fst (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom ℚ)) y = x :=
   fun k _ X p x hx => RatDegZeros.mem_range_fst k X p x hx
 
+/- English proof (translation)
+Use `h.finite` as an intermediate fact. Use `h.isIntegral` as an intermediate fact. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.2 h.finite`.
+
+Take `⟨_, L, hL⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB p).1 h.isProjOver`. Establish `hP : IsProjOver (p ≫ spMap (Int.castRingHom k))` using `hL.isProjOver _`. Conclude with `ProjSpace.isProjOver_pullback_snd (Int.castRingHom ℚ) hP`.
+-/
 theorem isProjOver_snd {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
     (h : IsArithVar p D) : IsProjOver (Limits.pullback.snd (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom ℚ))) := by
   have := h.finite
@@ -45,6 +58,15 @@ theorem isProjOver_snd {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
   have hP : IsProjOver (p ≫ spMap (Int.castRingHom k)) := hL.isProjOver _
   exact ProjSpace.isProjOver_pullback_snd (Int.castRingHom ℚ) hP
 
+/- English proof (translation)
+Introduce `hNN k _ X _ p D hX L A n hL hA`. Establish `hN` using `GlobalTheory.T.isNef_rationalFibre_of_nef_finiteFieldFibres k X p D hX (L.pow n) (nefFib_pow k X p D hX L n hL)`. Establish `: IsAffineHom (Limits.pullback.fst (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom ℚ)))` using `isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _).flip inferInstance`. Establish `hA' : IsAmpleLB (A.B.pull (Limits.pullback.fst (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom ℚ))))` using `hA.pull_of_isAffineHom _`. Establish `hK` using `IsAmpleLB.tens_of_isNef hNN ℚ _ _ (isProjOver_snd hX) _ _ hA' hN`.
+
+Take `⟨m, hm, N, t, ht⟩` from `hK.exists_isGenerated_pow`. Establish `hM` using `pull_isLB (((L.pow n).tens A).pow m).isLB (Limits.pullback.fst (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom ℚ)))`. Take `⟨v, hv⟩` from `CechPic.exists_generating_secs_of_cls_eq _ _ _ (isLB_lbPow hK.isLB m) hM (by`. Rewrite using `[CechPic.cls_lbPow hK.isLB m, CechPic.cls_pull (((L.pow n).tens A).pow m).isLB _ hM]`. Use `erw [CechPic.cls_lbPow ((L.pow n).tens A).isLB m]`.
+
+Rewrite using `[map_nsmul]`. Use `congr 1`. Use `erw [CechPic.cls_tens (pull_isLB A.isLB _) (pull_isLB (L.pow n).isLB _), CechPic.cls_tens (L.pow n).isLB A.isLB]`. Rewrite using `[map_add, CechPic.cls_pull A.isLB, CechPic.cls_pull (L.pow n).isLB, add_comm]) (Fin N) t ht`. Use `choose s hs using fun i => GlobalTheory.T.exists_section_extending_rationalGenericFibre_mul_int k X p D hX _ (((L.pow n).tens A).pow m).isLB (v i)`.
+
+Use `⟨m, N, s, hm, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `exists_fst_eq k X p x hx`. Establish `hy : y ∈ ⨆ i, ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (v i)` using `hv ▸ trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Conclude with `⟨i, (hs i y).2 hi⟩`.
+-/
 theorem exists_secs_generic : GlobalTheory.Published.NefNumerics → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L A : HermLB p) (n : ℕ), NefFib L → IsAmpleLB A.B → ∃ (m : ℕ) (N : ℕ) (s : Fin N → (((L.pow n).tens A).pow m).B.Sec), 1 ≤ m ∧ ∀ x : X, CharZero (X.residueField x) → ∃ i, x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s i) := by
   intro hNN k _ X _ p D hX L A n hL hA
   have hN := GlobalTheory.T.isNef_rationalFibre_of_nef_finiteFieldFibres k X p D hX (L.pow n) (nefFib_pow k X p D hX L n hL)

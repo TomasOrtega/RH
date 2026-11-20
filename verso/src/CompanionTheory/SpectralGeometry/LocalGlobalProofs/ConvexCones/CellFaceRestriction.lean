@@ -10,6 +10,53 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.FaceCells
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar _ q ψ hψ X _ _ _ _ hX hD m v hv m' s h hcut`. Establish `hP` using `hψ X hX`. Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hv.strict`. Establish `hNr : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hℓpos : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → β ≠ 0 → 0 < ℓ β` using `fun β hβ hp h0 => by`.
+
+Establish `e1` using `h2 β hβ hp`. Establish `e2` using `hP.pos β hβ hp h0`. Establish `: (0 : ℝ) < ℓ β` using `lt_of_lt_of_le (mul_pos hNr e2) e1`. Conclude with `this` after adjusting the coercions. Take `⟨C, hC⟩` from `hD ℓ (-h) hℓpos`.
+
+Take `⟨S, hS, hcov⟩` from `hP.finite`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b : ℕ, ∀ γ ∈ S, ψ.evalZ γ ≤ b := by`. Use `⟨⌈∑ γ ∈ hS.toFinset, |ψ.evalZ γ|⌉₊, fun γ hγ => ?_⟩` and prove the remaining obligations. Use `le_trans ?_ (Nat.le_ceil _)` and prove the remaining obligations. Conclude with `le_trans (le_abs_self _) (Finset.single_le_sum (f := fun γ => |ψ.evalZ γ|) (fun _ _ => abs_nonneg _) (hS.mem_toFinset.2 hγ))`.
+
+Use `set K : ℕ := C * (1 + N * b) + 1 with hK`. Establish `hKpos : 0 < K` using `Nat.succ_pos _`. Establish `gen : ∀ u ∈ balForms bar X, (∀ y, 0 ≤ u y y) → ψ.evalZ u ≤ b → (0 ≤ h u ∧ (ℓ u : ℝ) = N * ψ.evalZ u) ∨ (0 : ℝ) < K * (ℓ u : ℝ) + h u - K * N * ψ.evalZ u`. Introduce `u hu hp hub`. Distinguish the cases in `heq : (ℓ u : ℝ) = N * ψ.evalZ u`.
+
+Use `left`. Take `⟨k, c, hk, hc⟩` from `h3 u hu hp heq.symm`. Establish `e1 : (k : ℤ) * h u = ∑ i, (c i : ℤ) * h (v i)`. Use `congrArg h hc` as an intermediate fact. Simplify `this` using `[map_sum, map_nsmul, nsmul_eq_mul]`.
+
+Establish `hnn : 0 ≤ (k : ℤ) * h u` using `e1 ▸ Finset.sum_nonneg fun i _ => mul_nonneg (Int.natCast_nonneg _) (hcut.1 i)`. Conclude with `⟨(mul_nonneg_iff_of_pos_left (by exact_mod_cast hk)).1 hnn, heq⟩`. Use `right`. Take `⟨n, hn⟩` from `hP.integral u hu hp`. Establish `hle : (N : ℝ) * ψ.evalZ u ≤ ℓ u` using `h2 u hu hp`.
+
+Establish `hlt : (N : ℝ) * ψ.evalZ u < ℓ u` using `lt_of_le_of_ne hle (Ne.symm heq)`. Rewrite `hlt`, `hub`, the goal using `[hn]`. Establish `hint : (N : ℤ) * n + 1 ≤ ℓ u`. Establish `: (((N : ℤ) * n : ℤ) : ℝ) < ℓ u` using `by push_cast; exact hlt`. Conclude with `this` after adjusting the coercions.
+
+Establish `hint' : (N : ℝ) * n + 1 ≤ ℓ u` using `by exact_mod_cast hint`. Establish `hCu : -h u ≤ C * ℓ u` using `by simpa using hC u hu hp`. Establish `hCu' : -(h u : ℝ) ≤ C * ℓ u` using `by exact_mod_cast hCu`. Establish `hKr : (K : ℝ) = C * (1 + N * b) + 1` using `by rw [hK]; push_cast; ring`. Establish `hCN : (0 : ℝ) ≤ C * N` using `by positivity`.
+
+Establish `a1 : (K - C : ℝ) * 1 ≤ (K - C) * (ℓ u - N * n)` using `mul_le_mul_of_nonneg_left (by linarith) (by rw [hKr]; have : (0 : ℝ) ≤ C * N * b := by positivity nlinarith)`. Establish `a2 : (C * N : ℝ) * n ≤ C * N * b` using `mul_le_mul_of_nonneg_left hub hCN`. Rewrite `a1`, the goal using `[hKr]`. Use the polynomial consequences of the given equalities and inequalities. Establish `core : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → ((K * N : ℕ) : ℝ) * ψ.evalZ β ≤ ((K • ℓ + h) β : ℤ) ∧ (((K * N : ℕ) : ℝ) * ψ.evalZ β = ((K • ℓ + h) β : ℤ) → h β = 0)`.
+
+Introduce `β hβ hp`. Establish `hR : toReal β ∈ psdCone bar X`. Simplify using `using GlobalTheory.PolFan.ConeSub.sum_smul_toReal_mem_psdCone O bar X 1 ![β] ![1] (by simp [hβ]) (by simp [hp]) (by simp)`. Take `⟨e, mm, γ, c, hγ, hγS, hc, hsum⟩` from `hcov (toReal β) hR`. Use `set u : Fin mm → LinearMap.BilinForm ℤ X := fun i => pull e.symm.toLinearMap (γ i) with hu`.
+
+Establish `hβu : toReal β = ∑ i, c i • toReal (u i)` using `LinearMap.ext₂ fun a b => by`. Use `LinearMap.congr_fun₂ hsum (e.symm a) (e.symm b)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply, u]`. Establish `hlin : ψ.LinearOn u` using `(linearOn_pull_iff e.symm.surjective).2 hγ.linear`. Establish `hψβ : ψ.evalZ β = ∑ i, c i * ψ.evalZ (u i)`.
+
+Rewrite using `[← evalR_toReal, hβu, (linearOn_iff ψ u).1 hlin c hc]`. Establish `hℓβ` using `apply_eq_of_toReal_eq hβu ℓ`. Establish `hhβ` using `apply_eq_of_toReal_eq hβu h`. Establish `hT : (((K • ℓ + h) β : ℤ) : ℝ) - ((K * N : ℕ) : ℝ) * ψ.evalZ β = ∑ i, c i * (K * (ℓ (u i) : ℝ) + h (u i) - K * N * ψ.evalZ (u i))`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul, Int.cast_add, Int.cast_mul, Int.cast_natCast, Nat.cast_mul]`.
+
+Rewrite using `[hℓβ, hhβ, hψβ, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hg : ∀ i, (0 ≤ h (u i) ∧ (ℓ (u i) : ℝ) = N * ψ.evalZ (u i)) ∨ (0 : ℝ) < K * (ℓ (u i) : ℝ) + h (u i) - K * N * ψ.evalZ (u i)` using `fun i => gen (u i) (pull_mem _ (hγ.mem i)) (fun y => hγ.nonneg i _) (by rw [hu, evalZ_pull ψ e.symm.surjective]; exact hb _ (hγS i))`. Establish `hterm : ∀ i, 0 ≤ c i * (K * (ℓ (u i) : ℝ) + h (u i) - K * N * ψ.evalZ (u i))` using `fun i => by`. Use `mul_nonneg (hc i) ?_` and prove the remaining obligations.
+
+Break down `hg i with ⟨h0, he⟩ | hpos` into its components or cases. Rewrite using `[he]`. Establish `: (0 : ℝ) ≤ h (u i)` using `by exact_mod_cast h0`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `hpos.le`.
+
+Use `⟨?_, fun heq => ?_⟩` and prove the remaining obligations. Use `Finset.sum_nonneg fun i (_ : i ∈ Finset.univ) => hterm i` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : ∑ i, c i * (K * (ℓ (u i) : ℝ) + h (u i) - K * N * ψ.evalZ (u i)) = 0`. Rewrite using `[← hT, heq, sub_self]`.
+
+Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => hterm i).1 h0`. Establish `: (h β : ℝ) = 0`. Rewrite using `[hhβ]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Break down `eq_or_ne (c i) 0 with hci | hci` into its components or cases.
+
+Rewrite using `[hci, zero_mul]`. Establish `hTi` using `(mul_eq_zero.1 (hz i hi)).resolve_left hci`. Break down `hg i with ⟨-, he⟩ | hpos` into its components or cases. Rewrite `hTi` using `[he]`. Establish `: (h (u i) : ℝ) = 0` using `by linarith`.
+
+Rewrite using `[this, mul_zero]`. Conclude with `absurd hTi hpos.ne'`. Conclude with `this` after adjusting the coercions. Use `⟨fun j => hv.mem _, fun j => hv.nonneg _, linearOn_comp hv.linear s, K * N, K • ℓ + h, Nat.mul_pos hKpos hN, fun i => ?_, fun β hβ hp => (core β hβ hp).1, fun β hβ hp heq => ?_⟩` and prove the remaining obligations. Establish `hz : h (v (s i)) = 0` using `(hcut.2 _).2 ⟨i, rfl⟩`.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul, hz, add_zero, Int.cast_mul, Int.cast_natCast, Nat.cast_mul]`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hh` using `(core β hβ hp).2 heq`. Establish `hℓ : (N : ℝ) * ψ.evalZ β = ℓ β`.
+
+Establish `e1` using `heq`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul, hh, add_zero, Int.cast_mul, Int.cast_natCast, Nat.cast_mul] at e1`. Establish `hKr : (0 : ℝ) < K` using `by exact_mod_cast hKpos`. Establish `: (K : ℝ) * (N * ψ.evalZ β - ℓ β) = 0` using `by linarith`. Combine the linear relations using `[(mul_eq_zero.1 this).resolve_left hKr.ne']`.
+
+Take `⟨k, c, hk, hc⟩` from `h3 β hβ hp hℓ`. Establish `e1 : (k : ℤ) * h β = ∑ j, (c j : ℤ) * h (v j)`. Use `congrArg h hc` as an intermediate fact. Simplify `this` using `[map_sum, map_nsmul, nsmul_eq_mul]`. Rewrite `e1` using `[hh, mul_zero]`.
+
+Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg fun j _ => mul_nonneg (Int.natCast_nonneg (c j)) (hcut.1 j)).1 e1.symm`. Establish `hc0 : ∀ j, j ∉ Set.range s → c j = 0` using `fun j hj => by`. Establish `hne : h (v j) ≠ 0` using `fun h0 => hj ((hcut.2 j).1 h0)`. Use `(mul_eq_zero.1 (hz j (Finset.mem_univ _))).resolve_right hne` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Use `⟨k, fun i => c (s i), hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Rewrite using `[← Finset.sum_map Finset.univ s (fun j => c j • v j)]`. Use `(Finset.sum_subset (Finset.subset_univ _) fun j _ hj => ?_).symm` and prove the remaining obligations. Rewrite using `[hc0 j fun ⟨i, hi⟩ => hj (by simp [← hi]), zero_smul]`.
+-/
 theorem isCell_face_of_isFaceCut : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (ψ : InvFun O), IsPolyFan bar q ψ → ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → Dominates bar X → ∀ (m : ℕ) (v : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ v → ∀ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut v s h → IsCell bar ψ (fun j => v (s j)) := by
   intro O _ _ _ _ bar _ q ψ hψ X _ _ _ _ hX hD m v hv m' s h hcut
   have hP := hψ X hX

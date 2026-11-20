@@ -3,11 +3,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StmtFields
 
 open NumberField Formalism.HC UpperTheory.Top UpperTheory.V
 
+/- English proof (translation)
+Conclude with `(Nat.le_of_dvd (Nat.mul_pos ha hb) (Nat.lcm_dvd (dvd_mul_right a b) (dvd_mul_left b a))).trans (Nat.mul_le_mul hc hd)`.
+-/
 private theorem lcm_le_mul' {a b c d : ℕ} (hc : a ≤ c) (hd : b ≤ d) (ha : 0 < a) (hb : 0 < b) :
     Nat.lcm a b ≤ c * d := by
   exact (Nat.le_of_dvd (Nat.mul_pos ha hb) (Nat.lcm_dvd (dvd_mul_right a b) (dvd_mul_left b a))).trans
     (Nat.mul_le_mul hc hd)
 
+/- English proof (translation)
+Establish `hN0 : N ≠ 0` using `NeZero.ne N`. Establish `hL0 : L ≠ 0`. Introduce and unpack `rfl`. Conclude with `hN0 (Nat.eq_zero_of_zero_dvd hL)`. Use `haveI : NeZero L := ⟨hL0⟩`.
+
+Use `haveI : NeZero ((N : ℕ) : ℚ) := ⟨by exact_mod_cast hN0⟩`. Use `haveI : NeZero ((L : ℕ) : ℚ) := ⟨by exact_mod_cast hL0⟩`. Take `⟨M, hNLM⟩` from `hL`. Establish `hM0 : M ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hN0 (by rw [hNLM, mul_zero])`. Establish `hMdvd : M ∣ N` using `⟨L, by rw [hNLM, mul_comm]⟩`. Establish `hk : N / M = L`. Rewrite using `[hNLM, Nat.mul_div_cancel _ (Nat.pos_of_ne_zero hM0)]`. Establish `hη : IsPrimitiveRoot (ζ ^ M) L`.
+
+Use `hζ.pow_of_dvd hM0 hMdvd` as an intermediate fact. Rewrite `this` using `[hk]`. Then use the resulting hypothesis. Use `haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension N ℚ`. Use `haveI : IsCyclotomicExtension {L} ℚ (CyclotomicField L ℚ) := CyclotomicField.isCyclotomicExtension L ℚ`. Use `haveI : IsGalois ℚ (CyclotomicField N ℚ) := IsCyclotomicExtension.isGalois {N} ℚ _`.
+
+Use `haveI : FiniteDimensional ℚ (CyclotomicField N ℚ) := IsCyclotomicExtension.finiteDimensional {N} ℚ _`. Set `F : IntermediateField ℚ (CyclotomicField N ℚ)` to `IntermediateField.adjoin ℚ {ζ ^ M}`. Use `haveI : IsCyclotomicExtension {L} ℚ F := hη.intermediateField_adjoin_isCyclotomicExtension ℚ`. Establish `hmem : ∀ x : E, j x ∈ F`. Introduce `x`.
+
+Rewrite using `[← IsGalois.fixedField_fixingSubgroup F, IntermediateField.mem_fixedField_iff]`. Introduce `τ hτ`. Rewrite `hτ` using `[IntermediateField.mem_fixingSubgroup_iff]`. Establish `hτη : τ (ζ ^ M) = ζ ^ M` using `hτ _ (IntermediateField.mem_adjoin_simple_self ℚ _)`. Establish `hpow : (τ ζ) ^ N = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`.
+
+Take `⟨a, -, hζa⟩` from `hζ.eq_pow_of_pow_eq_one hpow`. Apply `H τ a hζa.symm` to reduce the goal to its premises. Establish `h1 : ζ ^ (a * M) = ζ ^ (1 * M)`. Rewrite using `[pow_mul, hζa, ← map_pow, hτη, one_mul]`. Establish `hNpos : 0 < N` using `Nat.pos_of_ne_zero hN0`.
+
+Establish `h2 : a * M ≡ 1 * M [MOD N]`. Unfold `Nat.ModEq`. Apply `hζ.pow_inj (Nat.mod_lt _ hNpos) (Nat.mod_lt _ hNpos)` to reduce the goal to its premises. Establish `e1` using `pow_mod_orderOf ζ (a * M)`. Establish `e2` using `pow_mod_orderOf ζ (1 * M)`.
+
+Rewrite `e1`, `e2` using `[← hζ.eq_orderOf]`. Rewrite using `[e1, e2, h1]`. Rewrite `h2` using `[hNLM]`. Conclude with `Nat.ModEq.mul_right_cancel' hM0 h2`. Conclude with `⟨(IsCyclotomicExtension.algEquiv {L} ℚ F (CyclotomicField L ℚ)).toAlgHom.comp (j.codRestrict F.toSubalgebra hmem)⟩`.
+-/
 private theorem descend {E : Type} [Field E] [NumberField E] {N L : ℕ} [NeZero N]
     (j : E →ₐ[ℚ] CyclotomicField N ℚ) {ζ : CyclotomicField N ℚ} (hζ : IsPrimitiveRoot ζ N) (hL : L ∣ N)
     (H : ∀ (τ : CyclotomicField N ℚ ≃ₐ[ℚ] CyclotomicField N ℚ) (a : ℕ), τ ζ = ζ ^ a →
@@ -63,6 +85,9 @@ private theorem descend {E : Type} [Field E] [NumberField E] {N L : ℕ} [NeZero
   exact ⟨(IsCyclotomicExtension.algEquiv {L} ℚ F (CyclotomicField L ℚ)).toAlgHom.comp
     (j.codRestrict F.toSubalgebra hmem)⟩
 
+/- English proof (translation)
+Use `haveI : NeZero c := ⟨hc.ne'⟩`. Use `haveI : NeZero ((c : ℕ) : ℚ) := ⟨by exact_mod_cast hc.ne'⟩`. Use `haveI : IsCyclotomicExtension {c} ℚ (CyclotomicField c ℚ) := CyclotomicField.isCyclotomicExtension c ℚ`. Use `haveI : FiniteDimensional ℚ (CyclotomicField c ℚ) := IsCyclotomicExtension.finiteDimensional {c} ℚ _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem finrank_le {E : Type} [Field E] [NumberField E] {c : ℕ} (hc : 0 < c)
     (j : E →ₐ[ℚ] CyclotomicField c ℚ) : Module.finrank ℚ E ≤ c := by
   haveI : NeZero c := ⟨hc.ne'⟩
@@ -74,6 +99,21 @@ private theorem finrank_le {E : Type} [Field E] [NumberField E] {c : ℕ} (hc : 
     _ = c.totient := IsCyclotomicExtension.finrank _ (Polynomial.cyclotomic.irreducible_rat hc)
     _ ≤ c := Nat.totient_le c
 
+/- English proof (translation)
+Introduce `ψ e q d hq hd E _ _ hE`. Take `⟨N, hNZ, j, ζ, h2, hψ, hqN, hdN, hζ, hτ⟩` from `hE`. Use `haveI := hNZ`. Use `haveI := ψ.ne`. Establish `hψpos : 0 < ψ.N` using `NeZero.pos ψ.N`.
+
+Establish `hApos : 0 < 2 ^ (e + 2)` using `pow_pos two_pos _`. Establish `hLN : Nat.lcm (Nat.lcm (Nat.lcm (2 ^ (e + 2)) ψ.N) q) d ∣ N` using `Nat.lcm_dvd (Nat.lcm_dvd (Nat.lcm_dvd h2 hψ) hqN) hdN`. Establish `d1 : 2 ^ (e + 2) ∣ Nat.lcm (Nat.lcm (Nat.lcm (2 ^ (e + 2)) ψ.N) q) d` using `(Nat.dvd_lcm_left _ _).trans ((Nat.dvd_lcm_left _ _).trans (Nat.dvd_lcm_left _ _))`. Establish `dψ : ψ.N ∣ Nat.lcm (Nat.lcm (Nat.lcm (2 ^ (e + 2)) ψ.N) q) d` using `(Nat.dvd_lcm_right _ _).trans ((Nat.dvd_lcm_left _ _).trans (Nat.dvd_lcm_left _ _))`. Establish `dq : q ∣ Nat.lcm (Nat.lcm (Nat.lcm (2 ^ (e + 2)) ψ.N) q) d` using `(Nat.dvd_lcm_right _ _).trans (Nat.dvd_lcm_left _ _)`.
+
+Establish `dd : d ∣ Nat.lcm (Nat.lcm (Nat.lcm (2 ^ (e + 2)) ψ.N) q) d` using `Nat.dvd_lcm_right _ _`. Establish `jac : ∀ (a m : ℕ), a ≡ 1 [MOD m] → jacobiSym (a : ℤ) m = 1`. Introduce `a m h`. Establish `hm : (a : ℤ) % (m : ℤ) = 1 % (m : ℤ)`. Unfold `Nat.ModEq at h`.
+
+Conclude with `congrArg (Nat.cast (R := ℤ)) h` after adjusting the coercions. Rewrite using `[jacobiSym.mod_left, hm, ← jacobiSym.mod_left, jacobiSym.one_left]`. Establish `hemb` using `descend j hζ hLN (by`. Introduce `τ a hτa ha x`. Use `((hτ τ a hτa).mpr ⟨Or.inl (ha.of_dvd d1), ?_, jac a q (ha.of_dvd dq), jac a d (ha.of_dvd dd)⟩) x` and prove the remaining obligations.
+
+Use `show ψ.χ (a : ZMod ψ.N) = 1`. Establish `h' : ((a : ℕ) : ZMod ψ.N) = ((1 : ℕ) : ZMod ψ.N)` using `(ZMod.natCast_eq_natCast_iff _ _ _).mpr (ha.of_dvd dψ)`. Rewrite using `[h', Nat.cast_one, MulChar.map_one])`. Establish `hLpos : 0 < Nat.lcm (Nat.lcm (Nat.lcm (2 ^ (e + 2)) ψ.N) q) d` using `Nat.pos_of_dvd_of_pos hLN (NeZero.pos N)`. Unfold `condF`.
+
+Establish `hset : Nat.lcm (Nat.lcm (Nat.lcm (2 ^ (e + 2)) ψ.N) q) d ∈ {N | 0 < N ∧ Nonempty (E →ₐ[ℚ] CyclotomicField N ℚ)}` using `⟨hLpos, hemb⟩`. Establish `hmem` using `Nat.sInf_mem ⟨_, hset⟩`. Use `⟨hmem.1, (Nat.sInf_le hset).trans ?_, ?_⟩` and prove the remaining obligations. Establish `hY` using `lcm_le_mul' (le_refl (2 ^ (e + 2))) (le_refl ψ.N) hApos hψpos`. Establish `hX` using `lcm_le_mul' hY (le_refl q) (Nat.lcm_pos hApos hψpos) hq`.
+
+Conclude with `lcm_le_mul' hX (le_refl d) (Nat.lcm_pos (Nat.lcm_pos hApos hψpos) hq) hd`. Take `⟨hpos, ⟨j'⟩⟩` from `hmem`. Conclude with `finrank_le hpos j'`.
+-/
 theorem UpperTheory.V.conductor_bounds_of_isChiField :
     ∀ (ψ : PChar) (e q d : ℕ), 0 < q → 0 < d → ∀ (E : Type) [Field E] [NumberField E], IsChiField ψ e q d E →
       1 ≤ condF E ∧ condF E ≤ 2 ^ (e + 2) * ψ.N * q * d ∧ Module.finrank ℚ E ≤ condF E := by

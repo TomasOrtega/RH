@@ -13,6 +13,9 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4
 
 namespace UpperTheory.V.Z.Kato.Nb
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `h`. Take `⟨k', hk'⟩` from `h'`. Use `⟨k' / k, ?_⟩` and prove the remaining obligations. Rewrite using `[div_pow, div_mul_div_comm, ← hk', hk, eq_div_iff_mul_eq', mul_assoc, mul_left_comm]`.
+-/
 private theorem cgr_solve {K : Type} [Field K] {m : ℕ} {f a b c d : Kˣ} (h : Cgr m f (a * b)) (h' : Cgr m f (c * d)) :
     Cgr m b (c * d / a) := by
   obtain ⟨k, hk⟩ := h
@@ -20,6 +23,29 @@ private theorem cgr_solve {K : Type} [Field K] {m : ℕ} {f a b c d : Kˣ} (h : 
   refine ⟨k' / k, ?_⟩
   rw [div_pow, div_mul_div_comm, ← hk', hk, eq_div_iff_mul_eq', mul_assoc, mul_left_comm]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l _ n N M₀ M w _ _ _ g hL hW x y hxy u hu z β hβ hz A _ _ π`. Take `⟨eqv, hadd, -, hsum, -, -, hgal, -, -, hmul, -⟩` from `sApi Ω ε X l n`. Take `⟨-, iadd, -, -, isum, -⟩` from `sInvApi Ω ε X l N w n`. Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hcyc` using `(sSlD Ω ε X N hN).2.2.2.2.2.2.2 M`.
+
+Establish `cmul : ∀ s t : Ω ≃ₐ[ℚ] Ω, cycM M (s * t) = cycM M s * cycM M t` using `fun s t => (hcyc s).2.1 t`. Establish `crep : ∀ t, cycM M (repM M t : Ω ≃ₐ[ℚ] Ω) = t` using `(hcyc 1).2.2.1`. Establish `cfix : ∀ s : Ω ≃ₐ[ℚ] Ω, s ∈ fixMu Ω M ↔ cycM M s = 1` using `fun s => (hcyc s).2.2.2.1`. Establish `hM` using `sXiMul Ω ε X l n N M₀ M w g hL x y hxy`. Establish `hT` using `sXiTw Ω ε X l n N M₀ M w g hL x y`.
+
+Establish `hI` using `sXiInv Ω ε X l n N M₀ M w g hL hW x y hxy`. Set `B : (ZMod M)ˣ → X.Fn l` to `fun t => Xi X l n N M₀ M w g x y (fun z => z = t) (u (repM M t)) + X.galB l (repM M t) β`. Establish `hB : ∀ t, InvM X l N w n (B t)` using `fun t => (iadd _ _ (hI _ _ (hu.eqv _)) (sGalAct Ω ε X l N w n hN _ β hβ).1).1`. Establish `key : ∀ (s : Ω ≃ₐ[ℚ] Ω) (t : (ZMod M)ˣ), CgF X l n (shB X l M z s t) (Xi X l n N M₀ M w g x y (fun z => z = t) (u s) + (X.galB l s (B (t * (cycM M s)⁻¹)) - B t))`. Introduce `s t`.
+
+Unfold `shB`. Simplify using `only [B]`. Generalize the expression as in `hτ : (repM M t : Ω ≃ₐ[ℚ] Ω) = τ`. Generalize the expression as in `hτ' : (repM M (t * (cycM M s)⁻¹) : Ω ≃ₐ[ℚ] Ω) = τ'`. Establish `c1 : cycM M τ = t` using `hτ ▸ crep _`.
+
+Establish `c2 : cycM M τ' = t * (cycM M s)⁻¹` using `hτ' ▸ crep _`. Generalize the expression as in `hσ : τ⁻¹ * s * τ' = σ`. Establish `e : τ * σ = s * τ'` using `by rw [← hσ]; group`. Establish `hfix : σ ∈ fixMu Ω M`. Rewrite using `[cfix]`.
+
+Establish `h` using `congrArg (cycM M) e`. Rewrite `h` using `[cmul, cmul, c1, c2, mul_comm (cycM M s), inv_mul_cancel_right]`. Conclude with `mul_eq_left.1 h`. Establish `h1` using `hgal τ _ _ (hz σ hfix)`. Rewrite `h1` using `[map_add, map_sub, ← hmul, e, hmul]`.
+
+Establish `h2` using `hT (fun z => z = t) (u σ) τ`. Establish `p2 : (fun z : (ZMod M)ˣ => z * cycM M τ = t) = fun z => z = 1`. Use function extensionality and compare the values at `z`. Rewrite using `[c1, mul_eq_right]`. Rewrite `h2` using `[p2]`.
+
+Establish `h3` using `(hM (fun z => z = t)).1 (tw X (l ^ n) M₀ τ (u σ)) (u s) (tw X (l ^ n) M₀ s (u τ')) (u τ) fun x y h => cgr_solve (hu.coc τ σ x y h) (e ▸ hu.coc s τ' x y h)`. Establish `h4` using `hT (fun z => z = t) (u τ') s`. Establish `p4 : (fun z : (ZMod M)ˣ => z * cycM M s = t) = fun z => z = t * (cycM M s)⁻¹`. Use function extensionality and compare the values at `z`. Rewrite using `[eq_mul_inv_iff_mul_eq]`.
+
+Rewrite `h4` using `[p4]`. Establish `h5` using `eqv.trans (eqv.symm h2) (eqv.trans h3 (hadd _ _ _ _ (eqv.refl _) (hadd _ _ _ _ h4 (eqv.refl _)).2).1)`. Establish `h6` using `eqv.trans h1 (hadd _ _ _ _ h5 (eqv.refl _)).1`. Use `h6 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add]`.
+
+Normalize the expressions using the abelian group laws. Use `⟨fun t => ∑ v ∈ Finset.univ.filter (fun v => π v = t), B v, fun t => isum _ _ _ fun v _ => hB v, fun s t => ?_⟩` and prove the remaining obligations. Establish `h` using `hsum _ (Finset.univ.filter (fun v => π v = t)) _ _ fun v _ => key s v`. Establish `r : ∑ v ∈ Finset.univ.filter (fun v => π v = t * (π (cycM M s))⁻¹), B v = ∑ v ∈ Finset.univ.filter (fun v => π v = t), B (v * (cycM M s)⁻¹)`. Use `symm`.
+
+Use `Finset.sum_equiv (Equiv.mulRight (cycM M s)⁻¹) (fun v => ?_) fun v _ => rfl` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `beta_reduce`. Rewrite using `[r, (hM (fun _ => True)).2.2.2 (u s) A π t, map_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Conclude with `h`.
+-/
 theorem sBridge : SBridge := by
   intro Ω _ _ _ ε X l _ n N M₀ M w _ _ _ g hL hW x y hxy u hu z β hβ hz A _ _ π
   obtain ⟨eqv, hadd, -, hsum, -, -, hgal, -, -, hmul, -⟩ := sApi Ω ε X l n

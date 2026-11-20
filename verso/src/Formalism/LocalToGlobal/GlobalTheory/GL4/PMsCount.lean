@@ -14,6 +14,9 @@ def msLat (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (n : ℕ) : ℝ :=
   (n : ℝ) ^ 2 * (2 * D.R.f * Real.log (C₀ * (C₀ * D.R.f * (n : ℝ) ^ 2 * D.host.v ^ 2 * (Tu D u : ℝ) ^ 2))) +
     4 * D.R.f * n * ((n : ℝ) + 1) * (Real.log (C₀ * D.R.f * (n : ℝ) ^ 2 * D.host.v ^ 2 * (Tu D u : ℝ) ^ 2) / 2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem msBound_eq (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (n : ℕ) :
     msBound D u C₀ n = msLat D u C₀ n +
       2 * D.R.f * (n : ℝ) ^ 2 * (Real.log (Tu D u) + Real.log ((D.host.g 0 : ℝ) * D.host.g 1)) := rfl
@@ -37,6 +40,11 @@ def DualIdx (D : D7) : Prop :=
     ∀ L : Submodule (𝓞 D.host.E) D.sp.X'.V, Submodule.IsLattice D.host.E L → LatT D.sp.X' 1 L →
       (mulDual D.sp.X' M L).relIndex (dualSub D.sp.X' L) = M ^ (2 * D.R.f * (D.R.N D.R.m - 1))
 
+/- English proof (translation)
+Establish `h` using `(Formalism.BasicNotions.factRd D.R D.host).2.2`. Establish `hf : (2 : ℝ) ≤ D.R.f`. Establish `: 2 ≤ D.R.f` using `Nat.le_mul_of_pos_right 2 D.R.ord_pos`. Conclude with `this` after adjusting the coercions. Establish `h0 : 0 ≤ D.host.rdE`.
+
+Use `le_trans ?_ (Formalism.BasicNotions.factRd D.R D.host).1` and prove the remaining obligations. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem two_le_rdE' (D : D7) : 2 ≤ D.host.rdE := by
   have h := (Formalism.BasicNotions.factRd D.R D.host).2.2
   have hf : (2 : ℝ) ≤ D.R.f := by
@@ -47,14 +55,27 @@ theorem two_le_rdE' (D : D7) : 2 ≤ D.host.rdE := by
     positivity
   nlinarith
 
+/- English proof (translation)
+Use `two_le_rdE' D` as an intermediate fact. Use `show 1 ≤ D.host.rdE / 2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_hostv (D : D7) : 1 ≤ D.host.v := by
   have := two_le_rdE' D
   show 1 ≤ D.host.rdE / 2
   linarith
 
+/- English proof (translation)
+Conclude with `Nat.mul_pos two_pos D.R.ord_pos`.
+-/
 theorem one_le_f (D : D7) : 1 ≤ D.R.f := by
   exact Nat.mul_pos two_pos D.R.ord_pos
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[msLat]`. Establish `hv : 1 ≤ D.host.v` using `one_le_hostv D`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast one_le_f D`. Establish `hT : (1 : ℝ) ≤ (Tu D u : ℝ)` using `by exact_mod_cast (D.mem u).A.T_prime.one_lt.le`.
+
+Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `h1 : 1 ≤ C₀ * D.R.f * (n : ℝ) ^ 2 * D.host.v ^ 2 * (Tu D u : ℝ) ^ 2` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hC hf) (one_le_pow₀ hn1)) (one_le_pow₀ hv)) (one_le_pow₀ hT)`. Establish `h2 : 1 ≤ C₀ * (C₀ * D.R.f * (n : ℝ) ^ 2 * D.host.v ^ 2 * (Tu D u : ℝ) ^ 2)` using `one_le_mul_of_one_le_of_one_le hC h1`. Establish `l1` using `Real.log_nonneg h1`. Establish `l2` using `Real.log_nonneg h2`.
+
+Unfold `msLat`. Conclude with `add_nonneg (mul_nonneg (by positivity) (mul_nonneg (by positivity) l2)) (mul_nonneg (by positivity) (div_nonneg l1 (by norm_num)))`.
+-/
 theorem msLat_nonneg (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (hC : 1 ≤ C₀) (n : ℕ) : 0 ≤ msLat D u C₀ n := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · simp [msLat]
@@ -73,6 +94,13 @@ theorem msLat_nonneg (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (hC : 1 ≤ C₀
   exact add_nonneg (mul_nonneg (by positivity) (mul_nonneg (by positivity) l2))
     (mul_nonneg (by positivity) (div_nonneg l1 (by norm_num)))
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos K with h | h` into its components or cases. Rewrite using `[h, Nat.cast_zero, Real.log_zero]`. Conclude with `hB`. Establish `hRc : 0 < Rc`. Break down `Nat.eq_zero_or_pos Rc with h' | h'` into its components or cases.
+
+Rewrite `hK` using `[h', zero_mul]`. Use linear arithmetic over natural numbers and integers. Conclude with `h'`. Establish `hK' : (K : ℝ) ≤ (Rc : ℝ) * (Q : ℝ) ^ n` using `by exact_mod_cast hK`. Establish `hpos : (0 : ℝ) < K` using `by exact_mod_cast h`.
+
+Establish `hRc' : (0 : ℝ) < Rc` using `by exact_mod_cast hRc`. Establish `hQ' : (0 : ℝ) < Q` using `by exact_mod_cast hQ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_mul hRc'.ne' (pow_pos hQ' n).ne', Real.log_pow]`. Use `_ ≤ B + n * Real.log Q := by linarith`.
+-/
 theorem log_card_le {K Rc Q n : ℕ} (hK : K ≤ Rc * Q ^ n) (hQ : 1 ≤ Q) (B : ℝ) (hR : Real.log Rc ≤ B)
     (hB : 0 ≤ B + n * Real.log Q) : Real.log K ≤ B + n * Real.log Q := by
   rcases Nat.eq_zero_or_pos K with h | h
@@ -90,6 +118,23 @@ theorem log_card_le {K Rc Q n : ℕ} (hK : K ≤ Rc * Q ^ n) (hQ : 1 ≤ Q) (B :
         rw [Real.log_mul hRc'.ne' (pow_pos hQ' n).ne', Real.log_pow]
     _ ≤ B + n * Real.log Q := by linarith
 
+/- English proof (translation)
+Introduce `u hT`. Establish `hM0 : 0 < Tu D u * D.host.g 0 * D.host.g 1`. Use `(D.mem u).A.T_prime.pos` as an intermediate fact. Use `(D.host.g_prime 0).pos` as an intermediate fact. Use `(D.host.g_prime 1).pos` as an intermediate fact.
+
+Check the signs of the components of the expression. Establish `hlogM : Real.log ((Tu D u * D.host.g 0 * D.host.g 1 : ℕ) : ℝ) = Real.log (Tu D u) + Real.log ((D.host.g 0 : ℝ) * D.host.g 1)`. Use `(D.mem u).A.T_prime.pos` as an intermediate fact. Use `(D.host.g_prime 0).pos` as an intermediate fact. Use `(D.host.g_prime 1).pos` as an intermediate fact.
+
+Use `push_cast`. Rewrite using `[mul_assoc, Real.log_mul (by positivity) (by positivity)]`. Establish `hlg : 0 ≤ Real.log (Tu D u) + Real.log ((D.host.g 0 : ℝ) * D.host.g 1)`. Rewrite using `[← hlogM]; exact Real.log_nonneg (by exact_mod_cast hM0)`. Establish `key : ∀ (n K Rc : ℕ), K ≤ Rc * ((Tu D u * D.host.g 0 * D.host.g 1) ^ (2 * D.R.f * n)) ^ n → Real.log Rc ≤ msLat D u C₀ n → Real.log K ≤ msBound D u C₀ n`.
+
+Introduce `n K Rc hK hR`. Establish `hQ1 : 1 ≤ (Tu D u * D.host.g 0 * D.host.g 1) ^ (2 * D.R.f * n)` using `Nat.one_le_pow _ _ hM0`. Establish `hlogQ : (n : ℝ) * Real.log (((Tu D u * D.host.g 0 * D.host.g 1) ^ (2 * D.R.f * n) : ℕ) : ℝ) = 2 * D.R.f * (n : ℝ) ^ 2 * (Real.log (Tu D u) + Real.log ((D.host.g 0 : ℝ) * D.host.g 1))`. Rewrite using `[Nat.cast_pow, Real.log_pow, hlogM]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hB` using `log_card_le hK hQ1 _ hR (by`. Rewrite using `[hlogQ]; exact add_nonneg (msLat_nonneg D u C₀ hC n) (mul_nonneg (by positivity) hlg))`. Rewrite `hB` using `[hlogQ]`. Rewrite using `[msBound_eq]`.
+
+Conclude with `hB`. Use `⟨fun i hi => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hLat, e, he, hsep⟩` from `hT.1 i hi`. Take `⟨R, hR, hlog⟩` from `(hI u).1 i hi _ (D.clsLat u i) (fun c => ⟨D.clsLat_lat u i c, hLat c⟩)`. Use `key _ _ R.card ?_ hlog` and prove the remaining obligations.
+
+Use `card_le_of_frames (D.sp.X i) _ (D.R.N i) (D.clsLat u i) e he hsep R hR _ (fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[(hQ u _ hM0).1 i hi _ (D.clsLat_lat u i r) (hLat r)]`. Conclude with `⟨pow_ne_zero _ hM0.ne', le_rfl⟩`. Take `⟨LP, hLP, e, he, hsep⟩` from `hT.2`. Take `⟨R, hR, hlog⟩` from `(hI u).2 _ LP hLP`.
+
+Use `key _ _ R.card ?_ hlog` and prove the remaining obligations. Use `card_le_of_frames D.sp.X' _ _ LP e he hsep R hR _ (fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[(hQ u _ hM0).2 _ (hLP r).1 (hLP r).2]`. Conclude with `⟨pow_ne_zero _ hM0.ne', le_rfl⟩`.
+-/
 theorem msCount_of (D : D7) (C₀ : ℝ) (hC : 1 ≤ C₀) (hI : IsoCount D C₀) (hQ : DualIdx D) : MsCount D C₀ := by
   intro u hT
   have hM0 : 0 < Tu D u * D.host.g 0 * D.host.g 1 := by

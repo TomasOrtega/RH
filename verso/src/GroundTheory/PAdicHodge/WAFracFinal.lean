@@ -26,20 +26,34 @@ variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
   {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 include hε hζ in
+/- English proof (translation)
+Introduce `h` and use `iotaPlus_periodTPlus_ne_zero hε hζ (by rw [h, map_zero])`.
+-/
 theorem periodTPlus_ne_zero : periodTPlus hε ≠ 0 := fun h =>
   iotaPlus_periodTPlus_ne_zero hε hζ (by rw [h, map_zero])
 
 include hε hζ in
+/- English proof (translation)
+Use `isDomain_bCrisPlus (p := p)` as an intermediate fact. Conclude with `IsLocalization.injective (M := Submonoid.powers (periodTPlus hε)) (BCris hε) (powers_le_nonZeroDivisors_of_noZeroDivisors (periodTPlus_ne_zero hε hζ))`.
+-/
 theorem algebraMap_bCris_injective :
     Function.Injective (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)) := by
   have := isDomain_bCrisPlus (p := p)
   exact IsLocalization.injective (M := Submonoid.powers (periodTPlus hε)) (BCris hε)
     (powers_le_nonZeroDivisors_of_noZeroDivisors (periodTPlus_ne_zero hε hζ))
 
+/- English proof (translation)
+Set `` to `galBAction (K := K) hε`. Conclude with `MulAction.injective (α := Gal(PadicAlgCl p/K)) (β := BCris hε) σ`.
+-/
 theorem galB_injective (σ : Gal(PadicAlgCl p/K)) : Function.Injective (galB hε σ) := by
   let := galBAction (K := K) hε
   exact MulAction.injective (α := Gal(PadicAlgCl p/K)) (β := BCris hε) σ
 
+/- English proof (translation)
+Use `set f := algebraMap R S`. Use `set v := IsLocalization.Away.invSelf t (S := S)`. Establish `hvt : f t * v = 1` using `IsLocalization.Away.mul_invSelf t`. Use `⟨f β * v ^ m, fun σ => ?_⟩` and prove the remaining obligations. Establish `hu : f β * v ^ m * f b = f a`.
+
+Establish `e : f β * v ^ m * f b = f (β * b) * v ^ m` using `by rw [map_mul]; ring`. Rewrite using `[e, hβ, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfb : f b ≠ 0` using `fun h0 => hb (hinj (by rw [h0, map_zero]))`. Conclude with `galois_sub_of_mul_eq f (gR σ) (gS σ) (hfg σ) hfb (fun h0 => hfb (hgS σ (by rw [h0, map_zero]))) (hrel σ) hu`.
+-/
 theorem exists_sub_eq_of_mul_eq {G R S : Type*} [CommRing R] [CommRing S] [IsDomain S] [Algebra R S]
     {t : R} [IsLocalization.Away t S] (hinj : Function.Injective (algebraMap R S))
     (gR : G → R →+* R) (gS : G → S →+* S) (hfg : ∀ σ x, gS σ (algebraMap R S x) = algebraMap R S (gR σ x))
@@ -60,6 +74,9 @@ theorem exists_sub_eq_of_mul_eq {G R S : Type*} [CommRing R] [CommRing S] [IsDom
     (fun h0 => hfb (hgS σ (by rw [h0, map_zero]))) (hrel σ) hu
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_padic_mul_periodTPlus (q : ℚ_[p]) :
     algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) (algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q * periodTPlus hε) =
       algebraMap ℚ_[p] (BCris hε) q * periodTCris hε := by
@@ -68,6 +85,9 @@ theorem algebraMap_padic_mul_periodTPlus (q : ℚ_[p]) :
 set_option maxHeartbeats 3200000 in
 include hε hζ in
 
+/- English proof (translation)
+Use `isDomain_bCris hε hζ` as an intermediate fact. Take `⟨u, hu⟩` from `exists_sub_eq_of_mul_eq (S := BCris hε) (t := periodTPlus hε) (algebraMap_bCris_injective hε hζ) (fun σ : Gal(PadicAlgCl p/K) => galPlus σ) (fun σ => galB hε σ) (fun σ x => galB_algebraMap hε σ x) (fun σ => galB_injective hε σ) hb hβ (fun σ => algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) …`. Conclude with `⟨u, fun σ => (hu σ).trans (algebraMap_padic_mul_periodTPlus hε (c σ))⟩`.
+-/
 theorem exists_bCris_of_mul_eq {a b β : BCrisPlus ℂ_[p] p} (hb : b ≠ 0) {m : ℕ}
     (hβ : β * b = periodTPlus hε ^ m * a) (c : Gal(PadicAlgCl p/K) → ℚ_[p])
     (hrel : ∀ σ : Gal(PadicAlgCl p/K), σ • a * b - a * σ • b =
@@ -87,6 +107,13 @@ variable (ρ1 : Set.Ioo (0 : ℝ) 1) (hσ : (p : ℝ)⁻¹ ≤ ((inRad p ρ1 : S
 set_option maxHeartbeats 3200000 in
 include hε hζ h1 in
 
+/- English proof (translation)
+Use `isDomain_bCrisPlus (p := p)` as an intermediate fact. Establish `h3` using `annNorm_frobCirc_sub_eq_zero ρ1 hσ hε hζ hb hφ hY`. Take `⟨g, hg, hgY⟩` from `exists_eigen_of_ann ρ1 (m + 1) Y h3`. Establish `hY' : (𝔽).tildeFrob ((𝓣).ofRad ρ1 g) = (p : (𝓣).RobbaTilde) ^ (m + 1) * (𝓣).ofRad ρ1 g`. Rewrite using `[TeichLift.TeichFrob.tildeFrob_ofRad, hg, map_mul, map_pow, map_natCast, (𝓣).ofRad_res]`.
+
+Take `⟨-, β, -, -, hann⟩` from `exists_bCrisPlus_ann m _ hY'`. Establish `hβ : bcrisToAnn hσ β = Y`. Rewrite using `[hann ρ1 (inRad p ρ1) hσ h1 ρ1 le_rfl g rfl, (𝓣).res_self, hgY]`. Establish `ht` using `bcrisToAnn_periodTPlus hε hζ hσ h1 (le_refl (ρ1 : ℝ)) (tTildeExt p ε ρ1) (ofRad_tTildeExt hε hζ ρ1)`. Rewrite `ht` using `[(𝓣).res_self]`.
+
+Establish `hβb : β * b = periodTPlus hε ^ m * a`. Apply `bcrisToAnn_injective hσ` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_pow, hβ, hY, ht]`. Take `⟨u, hu⟩` from `exists_bCris_of_mul_eq hε hζ hb hβb _ hrel`. Conclude with `not_forall_galB_sub_eq_kummerC hε hζ u hu`.
+-/
 theorem false_of_mul_eq_tTilde_pow [FiniteDimensional ℚ_[p] K] {a b : BCrisPlus ℂ_[p] p} (hb : b ≠ 0)
     (hφ : phiPlus ℂ_[p] p a * b = (p : BCrisPlus ℂ_[p] p) * a * phiPlus ℂ_[p] p b)
     (hrel : ∀ σ : Gal(PadicAlgCl p/K), σ • a * b - a * σ • b =

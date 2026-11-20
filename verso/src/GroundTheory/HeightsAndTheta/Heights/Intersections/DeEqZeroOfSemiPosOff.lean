@@ -10,6 +10,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} {n : ℕ}
   {A A' : HermLine ι} {s s' : MRing ι}
 
+/- English proof (translation)
+Establish `h1` using `hLe K ι P n L A A' s s' hP hL hLp hA hA' hs hs' hnc`. Establish `h2` using `hLe K ι P n L A' A s' s hP hL hLp hA' hA hs' hs (fun W h h' => hnc W h' h)`. Rewrite `h2` using `[De_swap]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem De_eq_zero_of_semiPos (hLe : DeLeSemiPos.Statement) {L : Fin n → HermLine ι}
     (hP : IsArithVar P (n + 2)) (hL : ∀ j, IsSmoothHerm (L j)) (hLp : ∀ j, IsSemiPosHerm (L j))
     (hA : IsSmoothHerm A) (hA' : IsSmoothHerm A') (hs : IsSectionOn P A s) (hs' : IsSectionOn P A' s')
@@ -20,6 +23,17 @@ theorem De_eq_zero_of_semiPos (hLe : DeLeSemiPos.Statement) {L : Fin n → HermL
   rw [De_swap] at h2
   linarith
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `L hL hLp`. Conclude with `De_eq_zero_of_semiPos hLe hP hL (fun j => hLp j (Finset.notMem_empty j)) hA hA' hs hs' hnc`. Consider the case `@insert j S hj ih`.
+
+Introduce `L hL hLp`. Take `⟨T, hT, hTp, hLTp⟩` from `hTw K ι (L j) (hL j)`. Establish `hadd` using `hAdd K ι P n L j (L j) T A A' s s' hP hL (hL j) hT hA hA' hs hs' hnc`. Rewrite `hadd` using `[Function.update_eq_self]`. Establish `hsm : ∀ X : HermLine ι, IsSmoothHerm X → ∀ i, IsSmoothHerm (Function.update L j X i)`.
+
+Introduce `X hX i`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Simplify using `using hX`. Rewrite using `[Function.update_of_ne hij]`. Conclude with `hL i`.
+
+Establish `hpos : ∀ X : HermLine ι, IsSemiPosHerm X → ∀ i, i ∉ S → IsSemiPosHerm (Function.update L j X i)`. Introduce `X hX i hi`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Simplify using `using hX`. Rewrite using `[Function.update_of_ne hij]`.
+
+Conclude with `hLp i (by simp [Finset.mem_insert, hij, hi])`. Rewrite `hadd` using `[ih _ (hsm _ (isSmoothHerm_tensor (hL j) hT)) (hpos _ hLTp), ih _ (hsm _ hT) (hpos _ hTp)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem De_eq_zero_of_semiPos_off (hAdd : DeSlotAdd.Statement) (hTw : SemiPosTwist.Statement)
     (hLe : DeLeSemiPos.Statement) (hP : IsArithVar P (n + 2)) (hA : IsSmoothHerm A)
     (hA' : IsSmoothHerm A') (hs : IsSectionOn P A s) (hs' : IsSectionOn P A' s')
@@ -52,6 +66,9 @@ theorem De_eq_zero_of_semiPos_off (hAdd : DeSlotAdd.Statement) (hTw : SemiPosTwi
       ih _ (hsm _ hT) (hpos _ hTp)] at hadd
     linarith
 
+/- English proof (translation)
+Introduce `K _ ι _ P n L A A' s s' hP hL hA hA' hs hs' hnc`. Establish `h` using `De_eq_zero_of_semiPos_off hAdd hTw hLe hP hA hA' hs hs' hnc Finset.univ L hL (fun j hj => absurd (Finset.mem_univ j) hj)`. Unfold `De at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ProjectiveLineTwo.proof (hAdd : DeSlotAdd.Statement) (hTw : SemiPosTwist.Statement)
     (hLe : DeLeSemiPos.Statement) : SectionSpaceSymmetry := by
   intro K _ ι _ P n L A A' s s' hP hL hA hA' hs hs' hnc

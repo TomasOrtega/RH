@@ -12,9 +12,15 @@ namespace GlobalTheory.TrDualExpand
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Rewrite using `[← RingHom.coe_pow, map_mul]`.
+-/
 theorem iter_mul (σ : K →+* K) (n : ℕ) (a b : K) : σ^[n] (a * b) = σ^[n] a * σ^[n] b := by
   rw [← RingHom.coe_pow, map_mul]
 
+/- English proof (translation)
+Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Conclude with `Fintype.sum_bijective (fun s : ZMod d => (⟨s.val, ZMod.val_lt s⟩ : Fin d)) ⟨fun a b h => ZMod.val_injective d (by simpa using congrArg Fin.val h), fun i => ⟨(i.val : ZMod d), by ext; simp [ZMod.val_natCast_of_lt i.2]⟩⟩ _ _ (fun _ => rfl)`.
+-/
 theorem sum_zmod_val {d : ℕ} [NeZero d] (F : ℕ → K) :
     ∑ s : ZMod d, F s.val = ∑ n ∈ Finset.range d, F n := by
   rw [← Fin.sum_univ_eq_sum_range]
@@ -22,6 +28,9 @@ theorem sum_zmod_val {d : ℕ} [NeZero d] (F : ℕ → K) :
     ⟨fun a b h => ZMod.val_injective d (by simpa using congrArg Fin.val h),
      fun i => ⟨(i.val : ZMod d), by ext; simp [ZMod.val_natCast_of_lt i.2]⟩⟩ _ _ (fun _ => rfl)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[show 2 * (m + 1) = 2 * m + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, ih, Finset.sum_range_succ, if_pos (by omega), if_neg (by omega), add_zero]`.
+-/
 theorem sum_range_even (m : ℕ) (G : ℕ → K) :
     ∑ n ∈ Finset.range (2 * m), (if n % 2 = 0 then G n else 0) = ∑ i ∈ Finset.range m, G (2 * i) := by
   induction m with
@@ -30,6 +39,13 @@ theorem sum_range_even (m : ℕ) (G : ℕ → K) :
     rw [show 2 * (m + 1) = 2 * m + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, ih,
       Finset.sum_range_succ, if_pos (by omega), if_neg (by omega), add_zero]
 
+/- English proof (translation)
+Set `M : Matrix (Fin m) (Fin m) K` to `fun i k => σ^[2 * i.val] (om k)`. Set `Q : Matrix (Fin m) (Fin m) K` to `fun i k => σ^[2 * i.val] (oms k)`. Establish `hMQ : M.transpose * Q = 1`. Use extensionality with `r r'`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← h r r', sum_zmod_val (fun n => if n % 2 = 0 then σ^[n] (om r * oms r') else 0), ← hd, sum_range_even, ← Fin.sum_univ_eq_sum_range (fun i => σ^[2 * i] (om r * oms r'))]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[iter_mul]`. Both sides reduce to the same expression. Establish `hMQ' : M * Q.transpose = 1`. Use `congrArg Matrix.transpose (mul_eq_one_comm.1 hMQ)` as an intermediate fact.
+
+Simplify `this` using `[Matrix.transpose_mul]`. Use `congrFun (congrFun hMQ' i) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Conclude with `this`.
+-/
 theorem even_case {m d : ℕ} [NeZero d] (hd : 2 * m = d) (σ : K →+* K) (om oms : Fin m → K)
     (h : ∀ r r' : Fin m, (∑ s : ZMod d, if s.val % 2 = 0 then σ^[s.val] (om r * oms r') else 0) =
       if r = r' then 1 else 0) (i j : Fin m) :
@@ -51,6 +67,17 @@ theorem even_case {m d : ℕ} [NeZero d] (hd : 2 * m = d) (σ : K →+* K) (om o
   rw [Matrix.mul_apply, Matrix.one_apply] at this
   exact this
 
+/- English proof (translation)
+Take `⟨hc, h⟩` from `hT`. Rewrite `hc` using `[Fintype.card_fin]`. Establish `hs` using `ZMod.val_lt s`. Establish `ht` using `ZMod.val_lt t`. Set `i : Fin (d / 2)` to `⟨s.val / 2, by omega⟩`.
+
+Set `j : Fin (d / 2)` to `⟨t.val / 2, by omega⟩`. Establish `E` using `even_case hc σ om oms h i j`. Establish `hij : (i = j) ↔ (s = t)`. Rewrite using `[Fin.ext_iff, ← (ZMod.val_injective d).eq_iff]`. Simplify using `only [i, j]`.
+
+Use linear arithmetic over natural numbers and integers. Break down `Nat.mod_two_eq_zero_or_one s.val with h0 | h1` into its components or cases. Establish `e1 : s.val = 2 * i.val` using `by simp only [i]; omega`. Establish `e2 : t.val = 2 * j.val` using `by simp only [j]; omega`. Rewrite using `[e1, e2, E]`.
+
+Conclude with `if_congr hij rfl rfl`. Establish `e1 : s.val = 2 * i.val + 1` using `by simp only [i]; omega`. Establish `e2 : t.val = 2 * j.val + 1` using `by simp only [j]; omega`. Repeatedly rewrite using `[e1, e2, Function.iterate_succ_apply', ← map_mul, ← map_sum, E]`. Use `split_ifs with h3 h4 h4`.
+
+Conclude with `map_one σ`. Conclude with `absurd (hij.1 h3) h4`. Conclude with `absurd (hij.2 h4) h3`. Conclude with `map_zero σ`.
+-/
 theorem sum_eq_ite {d : ℕ} [NeZero d] (σ : K →+* K) (om oms : Fin (d / 2) → K)
     (hT : TrDual d σ om oms) (s t : ZMod d) (hst : s.val % 2 = t.val % 2) :
     ∑ k, σ^[s.val] (om k) * σ^[t.val] (oms k) = if s = t then 1 else 0 := by
@@ -83,6 +110,9 @@ end GlobalTheory.TrDualExpand
 
 namespace GlobalTheory.KerStd.HypCoord
 
+/- English proof (translation)
+Introduce `_ _ _ σ om oms hT s t hst` and use `GlobalTheory.TrDualExpand.sum_eq_ite σ om oms hT s t hst`.
+-/
 theorem trDual_expand : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (om oms : Fin (nP D p / 2) → MaximalUnramifiedExtension p),
     TrDual (nP D p) σ om oms → ∀ s t : ZMod (nP D p), s.val % 2 = t.val % 2 →
       ∑ k, σ^[s.val] (om k) * σ^[t.val] (oms k) = if s = t then 1 else 0 :=

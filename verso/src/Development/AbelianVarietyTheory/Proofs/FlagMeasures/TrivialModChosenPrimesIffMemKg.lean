@@ -14,16 +14,31 @@ namespace GlobalTheory.RowLev
 
 open Inhab GlobalTheory.Mem.RowsBundle
 
+/- English proof (translation)
+Unfold `hAf Formalism.UG.hform`. Simplify using `only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hAf_add_left (I : AutInst) (x x' y : Fin I.n → (I.E ⊗[I.F] Af I.F)) :
     hAf I (x + x') y = hAf I x y + hAf I x' y := by
   unfold hAf Formalism.UG.hform
   simp only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `hAf Formalism.UG.hform`. Simplify using `only [Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]`.
+-/
 theorem hAf_smul_left (I : AutInst) (a : I.E ⊗[I.F] Af I.F) (x y : Fin I.n → (I.E ⊗[I.F] Af I.F)) :
     hAf I (a • x) y = Formalism.UG.sigR I.cm.sig (Af I.F) a * hAf I x y := by
   unfold hAf Formalism.UG.hform
   simp only [Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite using `[DualIdeal.mem_extId_smul_iff I _ w'.ne_bot]`. Introduce `y' hy'`. Rewrite using `[← hadj]`. Establish `key : ∀ u ∈ extId I w.asIdeal • I.Lf, ∃ z ∈ extId I w'.asIdeal, (z : I.E ⊗[I.F] Af I.F) = hAf I u y`.
+
+Introduce `u hu`. Use `Submodule.smul_induction_on hu (fun a ha l hl => ?_) (fun u u' hu hu' => ?_)` and prove the remaining obligations. Take `⟨a', ha', e⟩` from `(extId_mul_sup_natCast_conj I).2.2.2.2.2.2 w w' hc a ha`. Use `⟨a' * ⟨_, (GlobalTheory.AdelicLattice.adelicLattice_selfDual I y).1 hy l hl⟩, Ideal.mul_mem_right _ _ ha', ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.coe_mul, e]`.
+
+Use `show _ = hAf I ((a : I.E ⊗[I.F] Af I.F) • l) y`. Rewrite using `[hAf_smul_left]`. Take `⟨z, hz, e⟩` from `hu`. Take `⟨z', hz', e'⟩` from `hu'`. Conclude with `⟨z + z', add_mem hz hz', by rw [Subring.coe_add, e, e', hAf_add_left]⟩`.
+
+Conclude with `key _ (hT' y' hy')`.
+-/
 theorem mapsTo_conj_of_adjoint (I : AutInst) (w w' : HeightOneSpectrum (𝓞 I.E))
     (T T' : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) (hc : IsConj I w w')
     (hadj : ∀ x y, hAf I (T' *ᵥ x) y = hAf I x (T *ᵥ y))
@@ -47,6 +62,9 @@ theorem mapsTo_conj_of_adjoint (I : AutInst) (w w' : HeightOneSpectrum (𝓞 I.E
       exact ⟨z + z', add_mem hz hz', by rw [Subring.coe_add, e, e', hAf_add_left]⟩
   exact key _ (hT' y' hy')
 
+/- English proof (translation)
+Establish `key : ∀ (y : I.Lf) (h : I.fmat x *ᵥ (y : Fin I.n → _) ∈ I.Lf), fr.c ⟨_, h⟩ = fr.c y ↔ (I.fmat x - 1) *ᵥ (y : Fin I.n → _) ∈ extId I w.asIdeal • I.Lf`. Introduce `y h`. Rewrite using `[← sub_eq_zero, ← map_sub, fr.c_ker, Matrix.sub_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression. Conclude with `⟨fun H y hy => (key ⟨y, hy⟩ (mulVec_mem hx hy)).1 (H _ _), fun H y h => (key y h).2 (H y.1 y.2)⟩`.
+-/
 theorem PlFrame.trivial_iff {I : AutInst} {N p : ℕ} {w : HeightOneSpectrum (𝓞 I.E)} (fr : PlFrame I N p w)
     {x : I.Gf} (hx : x ∈ I.Kset) :
     (∀ (y : I.Lf) (h : I.fmat x *ᵥ (y : Fin I.n → _) ∈ I.Lf), fr.c ⟨_, h⟩ = fr.c y) ↔
@@ -58,6 +76,9 @@ theorem PlFrame.trivial_iff {I : AutInst} {N p : ℕ} {w : HeightOneSpectrum (�
     rfl
   exact ⟨fun H y hy => (key ⟨y, hy⟩ (mulVec_mem hx hy)).1 (H _ _), fun H y h => (key y h).2 (H y.1 y.2)⟩
 
+/- English proof (translation)
+Establish `hc : Nat.Coprime (g 0) (g 1)` using `(Nat.coprime_primes (hC.1 0) (hC.1 1)).2 hC.2.1`. Establish `hc' : IsCoprime ((g 0 : ℕ) : 𝓞 I.E) ((g 1 : ℕ) : 𝓞 I.E)` using `Nat.Coprime.cast hc`. Rewrite using `[Nat.cast_mul, ← Ideal.span_singleton_mul_span_singleton, Ideal.mul_eq_inf_of_isCoprime ((Ideal.isCoprime_span_singleton_iff _ _).2 hc')]`. Conclude with `(hC.2.2.1 0).inf (hC.2.2.1 1)`.
+-/
 theorem IsChoice.isRadical_mul {I : AutInst} {g : Fin 2 → ℕ} {Pl : Fin 2 → Type}
     {w : ∀ k, Pl k → HeightOneSpectrum (𝓞 I.E)} (hC : IsChoice I g Pl w) :
     (Ideal.span {((g 0 * g 1 : ℕ) : 𝓞 I.E)}).IsRadical := by
@@ -67,6 +88,21 @@ theorem IsChoice.isRadical_mul {I : AutInst} {g : Fin 2 → ℕ} {Pl : Fin 2 →
     Ideal.mul_eq_inf_of_isCoprime ((Ideal.isCoprime_span_singleton_iff _ _).2 hc')]
   exact (hC.2.2.1 0).inf (hC.2.2.1 1)
 
+/- English proof (translation)
+Introduce `I N g Pl w fr _ hC x hx`. Establish `hx' : x⁻¹ ∈ I.Kset` using `(Ksub I).inv_mem hx`. Establish `hone : 1 ≤ g 0 * g 1` using `Nat.mul_pos (hC.1 0).pos (hC.1 1).pos`. Establish `hmem : ∀ y ∈ I.Lf, (I.fmat x - 1) *ᵥ y ∈ I.Lf` using `fun y hy => by`. Simplify using `using sub_one_pow_mem hx 1 hy`.
+
+Establish `crt` using `fun y hy => GlobalTheory.RowLev.SqfCrt.mem_extId_smul_forall_iff I (g 0 * g 1) hone hC.isRadical_mul _ (hmem y hy)`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `H1` using `fun k v => ((fr k v).trivial_iff hx).1 (H k v)`. Establish `H2 : ∀ k v, ∀ y ∈ I.Lf, (I.fmat x⁻¹ - 1) *ᵥ y ∈ extId I (w k v).asIdeal • I.Lf`.
+
+Introduce `k v y hy`. Establish `h1 : I.fmat x * I.fmat x⁻¹ = 1` using `by rw [← fmat_mul, mul_inv_cancel, fmat_one]`. Establish `h` using `neg_mem (H1 k v _ (mulVec_mem hx' hy))`. Rewrite `h` using `[Matrix.mulVec_mulVec, sub_mul, h1, one_mul, ← Matrix.neg_mulVec, neg_sub]`. Conclude with `h`.
+
+Use `⟨hx, fun y hy => (crt y hy).1 fun u hu => ?_⟩` and prove the remaining obligations. Establish `hk : ∃ k, ((g k : ℕ) : 𝓞 I.E) ∈ u.asIdeal`. Rewrite `hu` using `[Nat.cast_mul]`. Conclude with `(u.isPrime.mem_or_mem hu).elim (fun h => ⟨0, h⟩) fun h => ⟨1, h⟩`. Take `⟨k, hk⟩` from `hk`.
+
+Take `⟨v, rfl | hv⟩` from `hC.2.2.2.2.2.2 k u hk`. Conclude with `H1 k v y hy`. Use `mapsTo_conj_of_adjoint I _ _ _ _ hv (fun a b => ?_) (H2 k v) y hy` and prove the remaining obligations. Simplify `hAf_pow_adjoint x 1 a b` using `only [pow_one]`. Introduce `H k v`.
+
+Use `((fr k v).trivial_iff hx).2 fun y hy => (crt y hy).2 (H.2 y hy) _ ?_` and prove the remaining obligations. Establish `h` using `(hC.2.2.2.1 k v).1`. Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ h`.
+
+Conclude with `Ideal.mul_mem_left _ _ h`.
+-/
 theorem trivial_iff_mem_Kg : ∀ (I : AutInst) (N : ℕ) (g : Fin 2 → ℕ) (Pl : Fin 2 → Type)
     (w : ∀ k, Pl k → HeightOneSpectrum (𝓞 I.E)) (fr : ∀ k v, PlFrame I N (g k) (w k v)), I.n = N →
     IsChoice I g Pl w → ∀ x ∈ I.Kset, (∀ k v (y : I.Lf) (h : I.fmat x *ᵥ (y : Fin I.n → _) ∈ I.Lf),

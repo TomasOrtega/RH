@@ -15,6 +15,11 @@ namespace GlobalTheory.MonoBes
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [GlobalTheory.FinPl.colMul, HypDec.jX, HypDec.pX, rat, mulVec, dotProduct, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `show (incA D) (d.qX i l) * y l * (incA D) (d.e k i) = (incA D) (d.e k i * d.qX i l) * y l`. Rewrite using `[map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem colMul_pX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ) (y : Fin S.rank → AE D) :
     GlobalTheory.FinPl.colMul d.jX i ((d.pX *ᵥ y) i) = rat (fun k l => d.e k i * d.qX i l) *ᵥ y := by
   funext k
@@ -24,6 +29,11 @@ theorem colMul_pX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ
   rw [map_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [GlobalTheory.FinPl.colMul, HypDec.jY, HypDec.pY, rat, mulVec, dotProduct, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `show (incA D) (d.qY i l) * y l * (incA D) (d.e' k i) = (incA D) (d.e' k i * d.qY i l) * y l`. Rewrite using `[map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem colMul_pY {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ) (y : Fin S.rank → AE D) :
     GlobalTheory.FinPl.colMul d.jY i ((d.pY *ᵥ y) i) = rat (fun k l => d.e' k i * d.qY i l) *ᵥ y := by
   funext k
@@ -33,6 +43,9 @@ theorem colMul_pY {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ
   rw [map_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [mulVec, dotProduct, GlobalTheory.FinPl.colMul, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mulVec_eq_sum_colMul {m n : ℕ} (x : Mx D m n) (w : Fin n → AE D) :
     x *ᵥ w = ∑ i, GlobalTheory.FinPl.colMul x i (w i) := by
   funext k
@@ -40,16 +53,33 @@ theorem mulVec_eq_sum_colMul {m n : ℕ} (x : Mx D m n) (w : Fin n → AE D) :
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [mulVec, dotProduct, Finset.sum_apply]`.
+-/
 theorem mulVec_eq_sum_col {m n : ℕ} (x : Matrix (Fin m) (Fin n) D.host.E) (w : Fin n → D.host.E) :
     x *ᵥ w = ∑ i, fun k => x k i * w i := by
   funext k
   simp only [mulVec, dotProduct, Finset.sum_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Simplify using `only [mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+-/
 theorem rank_one_mulVec {m n k : ℕ} (a : Matrix (Fin m) (Fin k) D.host.E) (b : Matrix (Fin k) (Fin n) D.host.E)
     (i : Fin k) (x : Fin n → D.host.E) : (fun r l => a r i * b i l) *ᵥ x = fun r => a r i * (b *ᵥ x) i := by
   funext r
   simp only [mulVec, dotProduct, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `h0 : ∀ x ∈ L, d.i₀ *ᵥ (d.q0 *ᵥ x) ∈ L`. Introduce `x hx`. Establish `e : d.i₀ *ᵥ (d.q0 *ᵥ x) = x - d.e *ᵥ (d.qX *ᵥ x) - d.e' *ᵥ (d.qY *ᵥ x)`. Use `congrArg (· *ᵥ x) d.sum_eq_one_rat` as an intermediate fact. Simplify using `only [add_mulVec, one_mulVec, ← mulVec_mulVec] at this`.
+
+Rewrite using `[sub_sub, eq_sub_iff_add_eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, mulVec_eq_sum_col d.e, mulVec_eq_sum_col d.e']`. Conclude with `L.sub_mem (L.sub_mem hx (L.sum_mem fun i _ => hX i x hx)) (L.sum_mem fun i _ => hY i x hx)`. Introduce `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[colMul_pX]; exact GlobalTheory.OrthSumLat.rat_mulVec_mem_latV _ (fun x hx => by rw [rank_one_mulVec]; exact hX i x hx) hy`. Rewrite using `[colMul_pY]; exact GlobalTheory.OrthSumLat.rat_mulVec_mem_latV _ (fun x hx => by rw [rank_one_mulVec]; exact hY i x hx) hy`.
+
+Conclude with `GlobalTheory.OrthSumLat.rat_mulVec_mem_latV d.q0 h0 hy`. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `e : y = d.jX *ᵥ (d.pX *ᵥ y) + d.j0 *ᵥ (d.p0 *ᵥ y) + d.jY *ᵥ (d.pY *ᵥ y)`. Use `congrArg (· *ᵥ y) d.sum_eq_one` as an intermediate fact. Simplify using `only [add_mulVec, one_mulVec, ← mulVec_mulVec] at this`.
+
+Conclude with `this.symm`. Rewrite using `[e, mulVec_eq_sum_colMul d.jX, mulVec_eq_sum_colMul d.jY]`. Use `add_mem (add_mem (AddSubgroup.sum_mem _ fun i _ => h1 i) ?_) (AddSubgroup.sum_mem _ fun i _ => h2 i)` and prove the remaining obligations. Conclude with `GlobalTheory.OrthSumLat.rat_mulVec_mem_latV d.i₀ (fun x hx => hx) h3`.
+-/
 theorem monoAt_of_proj {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (L : Lat S)
     (hX : ∀ i, ∀ x ∈ L, (fun k => d.e k i * (d.qX *ᵥ x) i) ∈ L)
     (hY : ∀ i, ∀ x ∈ L, (fun k => d.e' k i * (d.qY *ᵥ x) i) ∈ L) (v : GlobalTheory.FinPl.Pl D) :
@@ -84,6 +114,13 @@ section SlopeTestRemainingChoices
 
 variable {A B B₀ : HSp D} {c ρ : ℕ}
 
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct, antiDiagonalSignGramMatrix]`. Rewrite using `[Finset.sum_eq_single j.rev]`. Rewrite using `[if_pos (by simp only [Fin.val_rev]; omega), if_neg (Ne.symm hj), one_mul]`. Introduce `b _ hb`. Rewrite using `[if_neg, zero_mul]`.
+
+Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `ext`. Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem antiDiagonalEpsilonGram_mulVec_of_rev_ne (ε : D.host.E) (u : Fin c → D.host.E) (j : Fin c) (hj : j.rev ≠ j) :
     (antiDiagonalSignGramMatrix c ε *ᵥ u) j = u j.rev := by
   simp only [mulVec, dotProduct, antiDiagonalSignGramMatrix]
@@ -98,10 +135,18 @@ theorem antiDiagonalEpsilonGram_mulVec_of_rev_ne (ε : D.host.E) (u : Fin c → 
     omega
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Simplify using `[mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem mulVec_single_apply {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (j : Fin n) (x : D.host.E) (k : Fin m) :
     (M *ᵥ Pi.single j x) k = M k j * x := by
   simp [mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Establish `hG : B.gramᴴ = B.gram` using `Matrix.ext fun i j => B.herm.eq _ _`. Establish `h1 : a.aᴴ * B.gram * frameMat B A a.ι = 0`. Establish `h` using `congrArg Matrix.conjTranspose a.perp`. Express the relevant statement in the definitionally equal form `((frameMat B A a.ι)ᴴ * B.gram * a.a)ᴴ = 0ᴴ at h`. Simplify `h` using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hG, Matrix.conjTranspose_zero, Matrix.mul_assoc]`.
+
+Establish `h2 : a.aᴴ * B.gram * a.a = antiDiagonalSignGramMatrix c (-1)` using `a.gram`. Rewrite using `[mulVec_add, mulVec_mulVec, mulVec_mulVec, h1, h2, zero_mulVec, zero_add]`.
+-/
 theorem auxiliaryVectors_pairing_eq_antiDiagonal_gram (a : HermitianOrthogonalExtensionData A B c (-1)) (y : Fin A.rank → D.host.E) (u : Fin c → D.host.E) :
     (a.aᴴ * B.gram) *ᵥ (frameMat B A a.ι *ᵥ y + a.a *ᵥ u) = antiDiagonalSignGramMatrix c (-1) *ᵥ u := by
   have hG : B.gramᴴ = B.gram := Matrix.ext fun i j => B.herm.eq _ _
@@ -113,6 +158,33 @@ theorem auxiliaryVectors_pairing_eq_antiDiagonal_gram (a : HermitianOrthogonalEx
   have h2 : a.aᴴ * B.gram * a.a = antiDiagonalSignGramMatrix c (-1) := a.gram
   rw [mulVec_add, mulVec_mulVec, mulVec_mulVec, h1, h2, zero_mulVec, zero_add]
 
+/- English proof (translation)
+Take `⟨hc, he, s, he'⟩` from `hd`. Establish `hrev : ∀ i : Fin ρ, (Fin.castLE (by omega) i : Fin c).rev ≠ Fin.castLE (by omega) i`. Introduce `i h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_rev, Fin.val_castLE] at this`.
+
+Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `qX_eq : ∀ x (i : Fin ρ), (d.qX *ᵥ x) i = star (s i) * ((a.aᴴ * B.gram) *ᵥ x) (Fin.castLE (by omega) i : Fin c).rev`. Introduce `x i`. Rewrite using `[HypDec.qX, he', ← mulVec_mulVec, ← mulVec_mulVec]`.
+
+Simplify using `only [mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [conjTranspose_apply, colsOf, star_mul']`. Put the polynomial expressions in normal form. Establish `qY_eq : ∀ x (i : Fin ρ), (d.qY *ᵥ x) i = star ((-D.host.xi0) ^ (i.1 + 1)) * ((a.aᴴ * B.gram) *ᵥ x) (Fin.castLE (by omega) i : Fin c)`.
+
+Introduce `x i`. Rewrite using `[HypDec.qY, he, ← mulVec_mulVec, ← mulVec_mulVec]`. Simplify using `only [mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [conjTranspose_apply, colsOf, star_mul']`.
+
+Put the polynomial expressions in normal form. Establish `scal : ∀ i : Fin ρ, star (s i) * (-D.host.xi0) ^ (i.1 + 1) = 1`. Introduce `i`. Establish `h1 : (fun k => d.e k i) = frameMat B A a.ι *ᵥ 0 + a.a *ᵥ Pi.single (Fin.castLE (by omega) i : Fin c) ((-D.host.xi0) ^ (i.1 + 1))`. Use function extensionality and compare the values at `k`.
+
+Use `show _ = (frameMat B A a.ι *ᵥ 0 + a.a *ᵥ _) k`. Rewrite using `[he, mulVec_zero, zero_add, mulVec_single_apply]`. Simplify using `only [colsOf]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (d.e'ᴴ * B.gram * d.e) i i = (d.qX *ᵥ fun k => d.e k i) i` using `rfl`.
+
+Establish `h3` using `congrFun (congrFun d.e'e i) i`. Rewrite `h3` using `[h2, h1, qX_eq, auxiliaryVectors_pairing_eq_antiDiagonal_gram, antiDiagonalEpsilonGram_mulVec_of_rev_ne _ _ _ (by rw [Fin.rev_rev]; exact (hrev i).symm), Fin.rev_rev, Pi.single_eq_same, Matrix.one_apply_eq]`. Conclude with `h3`. Use `⟨fun i x hx => ?_, fun i x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, u, hu, rfl⟩` from `hx`.
+
+Use `⟨0, Λ.zero_mem, Pi.single (Fin.castLE (by omega) i : Fin c) (u (Fin.castLE (by omega) i)), fun p => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : p = Fin.castLE (by omega) i`. Substitute `hp` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `hu _`.
+
+Rewrite using `[Pi.single_eq_of_ne hp]`. Conclude with `(𝔟 p).zero_mem`. Use function extensionality and compare the values at `k show _ = (frameMat B A a.ι *ᵥ 0 + a.a *ᵥ _) k`. Rewrite using `[qX_eq, auxiliaryVectors_pairing_eq_antiDiagonal_gram, antiDiagonalEpsilonGram_mulVec_of_rev_ne _ _ _ (by rw [Fin.rev_rev]; exact (hrev i).symm), Fin.rev_rev, mulVec_zero, zero_add, mulVec_single_apply, he]`. Simplify using `only [colsOf]`.
+
+Take the linear combination `(a.a k (Fin.castLE (by omega) i) * u (Fin.castLE (by omega) i)) * scal i`. Take `⟨y, hy, u, hu, rfl⟩` from `hx`. Use `⟨0, Λ.zero_mem, Pi.single (Fin.castLE (by omega) i : Fin c).rev (u (Fin.castLE (by omega) i : Fin c).rev), fun p => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : p = (Fin.castLE (by omega) i : Fin c).rev`. Substitute `hp` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]`. Conclude with `hu _`. Rewrite using `[Pi.single_eq_of_ne hp]`. Conclude with `(𝔟 p).zero_mem`. Establish `hs : s i * star ((-D.host.xi0) ^ (i.1 + 1)) = 1`.
+
+Use `congrArg star (scal i)` as an intermediate fact. Rewrite `this` using `[star_mul', star_star, star_one]`. Conclude with `this`. Use function extensionality and compare the values at `k`. Use `show _ = (frameMat B A a.ι *ᵥ 0 + a.a *ᵥ _) k`.
+
+Rewrite using `[qY_eq, auxiliaryVectors_pairing_eq_antiDiagonal_gram, antiDiagonalEpsilonGram_mulVec_of_rev_ne _ _ _ (hrev i), mulVec_zero, zero_add, mulVec_single_apply, he']`. Simplify using `only [colsOf]`. Take the linear combination `(a.a k (Fin.castLE (by omega) i : Fin c).rev * u (Fin.castLE (by omega) i : Fin c).rev) * hs`.
+-/
 theorem proj_mem (a : HermitianOrthogonalExtensionData A B c (-1)) (d : HypDec B B₀ ρ) (hd : IsAuxiliaryVectorWittDec a d) (Λ : Lat A)
     (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) :
     (∀ i, ∀ x ∈ a.lat Λ 𝔟, (fun k => d.e k i * (d.qX *ᵥ x) i) ∈ a.lat Λ 𝔟) ∧
@@ -184,6 +256,9 @@ theorem proj_mem (a : HermitianOrthogonalExtensionData A B c (-1)) (d : HypDec B
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `D T L sc G F hF ρ h v`. Establish `hL : G.Λ (.grid (2 * ρ + 2) 0) = (G.colDec (2 * ρ + 2) (by omega) h).lat (G.Λ (.core (2 * ρ + 2))) (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1))` using `G.sp.colLat _ _ h`. Take `⟨hX, hY⟩` from `proj_mem (G.colDec (2 * ρ + 2) (by omega) h) (F.dB ρ h) (hF.hB ρ h) (G.Λ (.core (2 * ρ + 2))) (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1))`. Rewrite `hX`, `hY` using `[← hL]`. Conclude with `monoAt_of_proj (F.dB ρ h) _ hX hY v`.
+-/
 theorem monoAt_bes : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (F : Frames G), Std F → ∀ (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.m) (v : GlobalTheory.FinPl.Pl D), MonoAt (F.dB ρ h) (G.Λ (.grid (2 * ρ + 2) 0)) (lat0 F ρ h) v := by
   intro D T L sc G F hF ρ h v
   have hL : G.Λ (.grid (2 * ρ + 2) 0) = (G.colDec (2 * ρ + 2) (by omega) h).lat (G.Λ (.core (2 * ρ + 2)))

@@ -12,10 +12,16 @@ variable {X : Type} [Group X]
 private def twEquiv (Γ : Subgroup X) (θ : X →* X) (hθ : ∀ g ∈ Γ, θ g ∈ Γ) (g : Γ) : Γ ≃ Γ :=
   (Equiv.mulLeft g⁻¹).trans (Equiv.mulRight ⟨θ g, hθ _ g.2⟩)
 
+/- English proof (translation)
+Simplify using `[twEquiv, mul_assoc]`.
+-/
 private theorem twEquiv_apply (Γ : Subgroup X) (θ : X →* X) (hθ : ∀ g ∈ Γ, θ g ∈ Γ) (g δ : Γ) (y : X) :
     y⁻¹ * (twEquiv Γ θ hθ g δ : X) * θ y = ((g : X) * y)⁻¹ * δ * θ ((g : X) * y) := by
   simp [twEquiv, mul_assoc]
 
+/- English proof (translation)
+Establish `: mk H (Quotient.out (mk H x)) = mk H x` using `Quotient.out_eq _`. Take `⟨h, hh⟩` from `mk_eq_mk_iff.1 this`. Conclude with `⟨h, hh.symm⟩`.
+-/
 private theorem out_mk (H : Subgroup X) (x : X) : ∃ h : H, Quotient.out (mk H x) = (h : X) * x := by
   have : mk H (Quotient.out (mk H x)) = mk H x := Quotient.out_eq _
   obtain ⟨h, hh⟩ := mk_eq_mk_iff.1 this
@@ -25,6 +31,11 @@ variable [TopologicalSpace X] [IsTopologicalGroup X] [LocallyCompactSpace X] [T2
   [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X]
 
 omit [LocallyCompactSpace X] [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X] in
+/- English proof (translation)
+Establish `hK : IsCompact ((fun p : X × X => p.1 * p.2 * (θ p.1)⁻¹) '' (C ×ˢ tsupport f))` using `(hC.prod f.hasCompactSupport).image (by fun_prop)`. Establish `ht` using `Γ.tendsto_coe_cofinite_of_discrete (isDiscrete_iff_discreteTopology.2 ‹_›)`. Establish `hfin` using `ht hK.compl_mem_cocompact`. Rewrite `hfin` using `[mem_map, mem_cofinite]`. Use `hfin.subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `δ ⟨y, hy, hf⟩`. Simplify using `only [mem_compl_iff, mem_preimage, not_not]`. Conclude with `⟨(y, y⁻¹ * δ * θ y), ⟨hy, subset_tsupport _ hf⟩, by simp [mul_assoc]⟩`.
+-/
 private theorem finite_meet (Γ : Subgroup X) [DiscreteTopology Γ] (θ : X →* X) (hc : Continuous θ)
     (f : CompactlySupportedContinuousMap X ℂ) {C : Set X} (hC : IsCompact C) :
     {δ : Γ | ∃ y ∈ C, f (y⁻¹ * δ * θ y) ≠ 0}.Finite := by
@@ -38,6 +49,19 @@ private theorem finite_meet (Γ : Subgroup X) [DiscreteTopology Γ] (θ : X →*
   simp only [mem_compl_iff, mem_preimage, not_not]
   exact ⟨(y, y⁻¹ * δ * θ y), ⟨hy, subset_tsupport _ hf⟩, by simp [mul_assoc]⟩
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `f.continuous.bounded_above_of_compact_support f.hasCompactSupport`. Establish `hS` using `finite_meet Γ θ hc f hC`. Use `set M : ℝ≥0∞ := ∑ _δ ∈ hS.toFinset, ENNReal.ofReal B with hM`. Establish `hMt : M ≠ ∞` using `ENNReal.sum_ne_top.2 fun _ _ => ENNReal.ofReal_ne_top`. Establish `hm : MeasurableSet (mk Γ '' C)` using `(hC.image (continuous_mk Γ)).isClosed.measurableSet`.
+
+Establish `hbd : ∀ x, ∑' δ : Γ, ‖f (x⁻¹ * δ * θ x)‖ₑ ≤ (mk Γ ⁻¹' (mk Γ '' C)).indicator (fun _ => M) x`. Introduce `x`. Distinguish the cases in `hx : ∃ g ∈ Γ, ∃ y ∈ C, x = g * y`. Take `⟨g, hg, y, hy, rfl⟩` from `hx`. Rewrite using `[indicator_of_mem (show g * y ∈ mk Γ ⁻¹' (mk Γ '' C) from ⟨y, hy, (mk_mul_of_mem hg y).symm⟩)]`.
+
+Establish `h1 : ∑' δ : Γ, ‖f ((g * y)⁻¹ * δ * θ (g * y))‖ₑ = ∑' δ : Γ, ‖f (y⁻¹ * δ * θ y)‖ₑ`. Rewrite using `[← (twEquiv Γ θ hθ ⟨g, hg⟩).tsum_eq (fun δ : Γ => ‖f (y⁻¹ * δ * θ y)‖ₑ)]`. Simplify using `only [twEquiv_apply]`. Rewrite using `[h1, tsum_eq_sum (s := hS.toFinset)]`. Use `Finset.sum_le_sum fun δ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hB _)`. Introduce `δ hδ`. Assume the negation of the conclusion as `h0`. Conclude with `hδ (hS.mem_toFinset.2 ⟨y, hy, fun h => h0 (by simp [h])⟩)`.
+
+Establish `: ∀ δ : Γ, f (x⁻¹ * δ * θ x) = 0` using `fun δ => by`. Assume the negation of the conclusion as `h0`. Conclude with `hx (hsupp x δ δ.2 h0)`. Simplify using `[this]`. Rewrite using `[← lintegral_tsum fun δ => (Continuous.measurable (by fun_prop)).aemeasurable]`.
+
+Use `ne_top_of_le_ne_top ?_ (lintegral_mono hbd)` and prove the remaining obligations. Rewrite using `[lintegral_indicator (measurable_mk Γ hm), setLIntegral_const, Measure.restrict_apply (measurable_mk Γ hm), ← quotientMeasure_apply μ (isFundamentalDomain_fundamentalDomain Γ μ) hm]`. Conclude with `ENNReal.mul_ne_top hMt ((quotientMeasure_mk_image_le μ hm).trans_lt hC.measure_lt_top).ne`.
+-/
 private theorem tsum_lintegral_ne_top (Γ : Subgroup X) [DiscreteTopology Γ] (μ : Measure X) [μ.IsHaarMeasure]
     (θ : X →* X) (hc : Continuous θ) (hθ : ∀ g ∈ Γ, θ g ∈ Γ)
     (f : CompactlySupportedContinuousMap X ℂ) {C : Set X} (hC : IsCompact C)
@@ -76,6 +100,23 @@ private theorem tsum_lintegral_ne_top (Γ : Subgroup X) [DiscreteTopology Γ] (�
   exact ENNReal.mul_ne_top hMt ((quotientMeasure_mk_image_le μ hm).trans_lt hC.measure_lt_top).ne
 
 omit [LocallyCompactSpace X] [T2Space X] in
+/- English proof (translation)
+Establish `: Countable Γ` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `IsFundamentalDomain.mk' (MeasurableSet.iUnion fun i => (measurableSet_fundamentalDomain Γ).const_smul _).nullMeasurableSet fun x => ?_` and prove the remaining obligations. Take `⟨η, hη, -⟩` from `existsUnique_smul_mem_fundamentalDomain Γ x`. Express the relevant statement in the definitionally equal form `(η : X) * x ∈ fundamentalDomain Γ at hη`. Use `set i : {γ' : Γ // ∃ g ∈ Γ, (γ' : X) = g⁻¹ * γ * θ g} := ⟨⟨η * γ * (θ η)⁻¹, Γ.mul_mem (Γ.mul_mem η.2 hγ) (Γ.inv_mem (hθ _ η.2))⟩, η⁻¹, Γ.inv_mem η.2, by simp⟩ with hi_def`.
+
+Establish `hi : ((d i : X))⁻¹ * γ * θ (d i) = η * γ * (θ η)⁻¹` using `hd i`. Establish `hmem : ((d i : X) * η) ∈ Γ ⊓ twCent θ γ`. Use `⟨Γ.mul_mem (d i).2 η.2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((d i : X) * η)⁻¹ * γ * θ ((d i : X) * η) = γ`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨⟨_, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Use `mem_iUnion.2 ⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_smul_set_iff']`. Express the relevant statement in the definitionally equal form `((d i : X))⁻¹ * (((d i : X) * η) * x) ∈ _`. Use `hη using 1` and compare the differences between its conclusion and the goal.
+
+Use `group`. Introduce and unpack `⟨ε, hε⟩ hεx`. Take `⟨j, hj⟩` from `mem_iUnion.1 hεx`. Rewrite `hj` using `[mem_smul_set_iff']`. Express the relevant statement in the definitionally equal form `((d j : X))⁻¹ * (ε * x) ∈ _ at hj`.
+
+Establish `hεΓ : ε ∈ Γ` using `hε.1`. Establish `hη' : (d j)⁻¹ * (⟨ε, hεΓ⟩ : Γ) = η` using `eq_of_mul_mem_fundamentalDomain Γ (by push_cast; rw [mul_assoc]; exact hj) hη`. Establish `hε' : ε = (d j : X) * η`. Use `congrArg Subtype.val hη'` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Rewrite using `[← this]`. Use `group`. Establish `hc : ε⁻¹ * γ * θ ε = γ` using `hε.2`. Rewrite `hc` using `[hε']`. Establish `hj1 : ((j.1 : Γ) : X) = (i.1 : X)`.
+
+Rewrite using `[← hd j]`. Combine the equalities or inequalities in the displayed calculation. Establish `hji : j = i` using `Subtype.ext (Subtype.ext hj1)`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ε = (d i : X) * η`.
+
+Rewrite using `[hε', hji]`.
+-/
 private theorem isFund (Γ : Subgroup X) [DiscreteTopology Γ] (μ : Measure X) (θ : X →* X)
     (γ : X) {d : {γ' : Γ // ∃ g ∈ Γ, (γ' : X) = g⁻¹ * γ * θ g} → Γ} (hθ : ∀ g ∈ Γ, θ g ∈ Γ) (hγ : γ ∈ Γ)
     (hd : ∀ i, (d i : X)⁻¹ * γ * θ (d i) = i.1) :
@@ -125,6 +166,9 @@ private theorem isFund (Γ : Subgroup X) [DiscreteTopology Γ] (μ : Measure X) 
     change ε = (d i : X) * η
     rw [hε', hji]
 
+/- English proof (translation)
+Rewrite using `[quotientMeasure_eq_map_fundamentalDomainEquiv, integrable_map_equiv, integrableOn_iff_comap_subtypeVal (measurableSet_fundamentalDomain H)]`. Both sides reduce to the same expression.
+-/
 private theorem integrable_quot_iff (H : Subgroup X) [DiscreteTopology H] (μ : Measure X)
     (h : RightCosetSpace H → ℂ) :
     Integrable h (quotientMeasure H μ) ↔ IntegrableOn (fun g => h (mk H g)) (fundamentalDomain H) μ := by
@@ -132,6 +176,35 @@ private theorem integrable_quot_iff (H : Subgroup X) [DiscreteTopology H] (μ : 
     integrableOn_iff_comap_subtypeVal (measurableSet_fundamentalDomain H)]
   rfl
 
+/- English proof (translation)
+Establish `hd : ∀ i : {γ' : Γ // ∃ g ∈ Γ, (γ' : X) = g⁻¹ * γ * θ g}, ∃ d : Γ, (d : X)⁻¹ * γ * θ d = i.1` using `fun i => by`. Take `⟨c, hc, h⟩` from `i.2`. Conclude with `⟨⟨c, hc⟩, h.symm⟩`. Use `choose d hd using hd`. Use `set E : {γ' : Γ // ∃ g ∈ Γ, (γ' : X) = g⁻¹ * γ * θ g} → Set X := fun i => ((d i : Γ) : X) • fundamentalDomain Γ with hE`.
+
+Establish `hEm : ∀ i, MeasurableSet (E i)` using `fun i => (measurableSet_fundamentalDomain Γ).const_smul _`. Establish `hdisj : Pairwise (Disjoint on E)`. Introduce `i j hij`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `y hi hj`.
+
+Rewrite `hi`, `hj` using `[hE, mem_smul_set_iff']`. Establish `h` using `eq_of_mul_mem_fundamentalDomain Γ (η₁ := (d i)⁻¹) (η₂ := (d j)⁻¹) (by push_cast; exact hi) (by push_cast; exact hj)`. Apply `hij` to reduce the goal to its premises. Rewrite `h` using `[inv_inj]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hd i, ← hd j, h]`. Establish `hconj : ∀ i (x : X), ((d i : X) * x)⁻¹ * γ * θ ((d i : X) * x) = x⁻¹ * (i.1 : X) * θ x`. Introduce `i x`. Rewrite using `[← hd i, map_mul]`.
+
+Use `group`. Establish `hterm : ∀ i, ∫ x in E i, f (x⁻¹ * γ * θ x) ∂μ = ∫ x in fundamentalDomain Γ, f (x⁻¹ * (i.1 : X) * θ x) ∂μ`. Introduce `i`. Rewrite using `[hE]`. Simplify using `only`.
+
+Rewrite using `[setIntegral_smul_set μ]`. Repeatedly rewrite using `[hconj]`. Establish `hnorm : ∀ i, ∫ x in E i, ‖f (x⁻¹ * γ * θ x)‖ ∂μ = ∫ x in fundamentalDomain Γ, ‖f (x⁻¹ * (i.1 : X) * θ x)‖ ∂μ`. Introduce `i`. Rewrite using `[hE]`.
+
+Simplify using `only`. Rewrite using `[setIntegral_smul_set μ]`. Repeatedly rewrite using `[hconj]`. Establish `hEi : ∀ i, IntegrableOn (fun x => f (x⁻¹ * γ * θ x)) (E i) μ`. Introduce `i`.
+
+Establish `h` using `(measurePreserving_mul_left μ (d i : X)).integrableOn_comp_preimage (MeasurableEquiv.mulLeft (d i : X)).measurableEmbedding (f := fun x => f (x⁻¹ * γ * θ x)) (s := E i)`. Establish `hpre : (fun x => (d i : X) * x) ⁻¹' (E i) = fundamentalDomain Γ`. Use extensionality with `x`. Simplify using `[hE, Set.mem_smul_set_iff_inv_smul_mem]`. Rewrite `h` using `[hpre]`.
+
+Use `h.1 ?_` and prove the remaining obligations. Simplify `hI i.1` using `only [Function.comp_def, hconj]`. Establish `hint : IntegrableOn (fun x => f (x⁻¹ * γ * θ x)) (⋃ i, E i) μ`. Use `integrableOn_iUnion_of_summable_integral_norm hEi ?_` and prove the remaining obligations. Repeatedly rewrite using `[hnorm]`.
+
+Conclude with `hs.comp_injective Subtype.val_injective`. Establish `h1` using `hasSum_integral_iUnion hEm hdisj hint`. Rewrite `h1` using `[hterm]`. Establish `hinv : ∀ (g : ↥(Γ ⊓ twCent θ γ)) (x : X), f (((g : X) * x)⁻¹ * γ * θ ((g : X) * x)) = f (x⁻¹ * γ * θ x)`. Introduce `g x`.
+
+Establish `hc : (g : X)⁻¹ * γ * θ g = γ` using `g.2.2`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Use `group`.
+
+Use `_ = _ := by rw [hc]`. Establish `hout : ∀ x : X, f ((Quotient.out (mk (Γ ⊓ twCent θ γ) x))⁻¹ * γ * θ (Quotient.out (mk (Γ ⊓ twCent θ γ) x))) = f (x⁻¹ * γ * θ x)`. Introduce `x`. Take `⟨h, hh⟩` from `out_mk (Γ ⊓ twCent θ γ) x`. Rewrite using `[hh, hinv]`.
+
+Establish `hF` using `isFund Γ μ θ γ hθ hγ hd`. Prove the components needed by the constructor for the conclusion. Rewrite using `[integral_quotientMeasure]`. Repeatedly rewrite using `[hout]`. Rewrite using `[IsFundamentalDomain.setIntegral_eq (isFundamentalDomain_fundamentalDomain _ μ) hF hinv]`.
+
+Conclude with `h1`. Rewrite using `[integrable_quot_iff]`. Repeatedly rewrite using `[hout]`. Conclude with `(IsFundamentalDomain.integrableOn_iff (isFundamentalDomain_fundamentalDomain _ μ) hF hinv).2 hint`.
+-/
 private theorem one_class (Γ : Subgroup X) [DiscreteTopology Γ] (μ : Measure X) [μ.IsHaarMeasure]
     (θ : X →* X) (hθ : ∀ g ∈ Γ, θ g ∈ Γ) (f : X → ℂ)
     (hI : ∀ δ : Γ, IntegrableOn (fun x => f (x⁻¹ * δ * θ x)) (fundamentalDomain Γ) μ)
@@ -224,6 +297,21 @@ private theorem one_class (Γ : Subgroup X) [DiscreteTopology Γ] (μ : Measure 
 end UpperTheory.ConvolutionTheory.G.UnitaryOne
 
 open UpperTheory.ConvolutionTheory.G.UnitaryOne in
+/- English proof (translation)
+Introduce `X _ _ _ _ _ _ _ _ Γ _ μ _ _ θ hc hθ f ⟨C, hC, hsupp⟩ ι r hr hex huniq _`. Establish `hfin` using `tsum_lintegral_ne_top Γ μ θ hc hθ f hC hsupp`. Establish `hI : ∀ δ : Γ, IntegrableOn (fun x => f (x⁻¹ * δ * θ x)) (fundamentalDomain Γ) μ` using `fun δ => ⟨(Continuous.aestronglyMeasurable (by fun_prop)), (ne_top_of_le_ne_top hfin (ENNReal.le_tsum δ)).lt_top⟩`. Establish `hs : Summable fun δ : Γ => ∫ x in fundamentalDomain Γ, ‖f (x⁻¹ * δ * θ x)‖ ∂μ`. Use `(ENNReal.summable_toReal hfin).congr fun δ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_norm_eq_lintegral_enorm (hI δ).1]`. Use `⟨?_, fun i => (one_class Γ μ θ hθ f hI hs (r i) (hr i)).2⟩` and prove the remaining obligations. Establish `hsum : ∀ x : X, ∑ᶠ γ : Γ, f ((Quotient.out (mk Γ x))⁻¹ * (γ : X) * θ (Quotient.out (mk Γ x))) = ∑' γ : Γ, f (x⁻¹ * γ * θ x)`. Introduce `x`. Take `⟨h, hh⟩` from `out_mk Γ x`.
+
+Rewrite using `[hh, ← tsum_eq_finsum (L := SummationFilter.unconditional Γ), ← (twEquiv Γ θ hθ h).tsum_eq (fun δ : Γ => f (x⁻¹ * δ * θ x))]`. Simplify using `only [twEquiv_apply]`. Conclude with `(finite_meet Γ θ hc f (isCompact_singleton (x := (h : X) * x))).subset fun δ hδ => ⟨_, rfl, hδ⟩`. Rewrite using `[integral_quotientMeasure]`. Repeatedly rewrite using `[hsum]`.
+
+Establish `h0` using `hasSum_integral_of_summable_integral_norm hI hs`. Set `e : (Σ i : ι, {γ' : Γ // ∃ g ∈ Γ, (γ' : X) = g⁻¹ * r i * θ g}) → Γ` to `fun p => p.2.1`. Establish `he : Function.Injective e`. Introduce and unpack `⟨i, a, g, hg, ha⟩ ⟨j, b, k, hk, hb⟩ hab`. Express the relevant statement in the definitionally equal form `a = b at hab`.
+
+Substitute `hab` using the available equality. Establish `hij : i = j` using `huniq i j (g * k⁻¹) (Γ.mul_mem hg (Γ.inv_mem hk)) (by`. Establish `: r j = k * (k⁻¹ * r j * θ k) * (θ k)⁻¹` using `by group`. Rewrite using `[this, ← hb, ha, map_mul, map_inv]`. Use the proof step `group)`.
+
+Substitute `hij` using the available equality. Both sides reduce to the same expression. Establish `hz : ∀ δ ∉ Set.range e, ∫ x in fundamentalDomain Γ, f (x⁻¹ * (δ : X) * θ x) ∂μ = 0`. Introduce `δ hδ`. Establish `: ∀ x, f (x⁻¹ * (δ : X) * θ x) = 0` using `fun x => by`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨i, hi⟩` from `hex δ δ.2 ⟨x, hne⟩`. Conclude with `hδ ⟨⟨i, δ, hi⟩, rfl⟩`. Simplify using `[this]`. Conclude with `((he.hasSum_iff hz).2 h0).sigma fun i => (one_class Γ μ θ hθ f hI hs (r i) (hr i)).1`.
+-/
 theorem UpperTheory.ConvolutionTheory.G.twistedGeometricSide_unfolding :
     U1 := by
   intro X _ _ _ _ _ _ _ _ Γ _ μ _ _ θ hc hθ f ⟨C, hC, hsupp⟩ ι r hr hex huniq _

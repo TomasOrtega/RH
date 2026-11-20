@@ -10,6 +10,11 @@ def blk {R : Type} [Zero R] {m n : ℕ} (A : Matrix (Fin m) (Fin m) R) (B : Matr
     Matrix (Fin (m + n)) (Fin (m + n)) R :=
   (fromBlocks A 0 0 B).submatrix finSumFinEquiv.symm finSumFinEquiv.symm
 
+/- English proof (translation)
+Unfold `blk`. Rewrite using `[submatrix_mulVec_equiv, fromBlocks_mulVec]`. Use extensionality with `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Establish `: Fin.append x y ∘ finSumFinEquiv = Sum.elim x y`.
+
+Apply the tactic sequence `ext (a | b) <;> simp`. Simplify using `[this]`. Establish `: Fin.append x y ∘ finSumFinEquiv = Sum.elim x y`. Apply the tactic sequence `ext (a | b) <;> simp`. Simplify using `[this]`.
+-/
 theorem blk_mulVec {R : Type} [CommRing R] {m n : ℕ} (A : Matrix (Fin m) (Fin m) R)
     (B : Matrix (Fin n) (Fin n) R) (x : Fin m → R) (y : Fin n → R) :
     blk A B *ᵥ Fin.append x y = Fin.append (A *ᵥ x) (B *ᵥ y) := by
@@ -24,12 +29,18 @@ theorem blk_mulVec {R : Type} [CommRing R] {m n : ℕ} (A : Matrix (Fin m) (Fin 
       ext (a | b) <;> simp
     simp [this]
 
+/- English proof (translation)
+Unfold `blk`. Rewrite using `[submatrix_mul_equiv, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+-/
 theorem blk_mul {R : Type} [CommRing R] {m n : ℕ} (A A' : Matrix (Fin m) (Fin m) R)
     (B B' : Matrix (Fin n) (Fin n) R) : blk A B * blk A' B' = blk (A * A') (B * B') := by
   unfold blk
   rw [submatrix_mul_equiv, fromBlocks_multiply]
   simp
 
+/- English proof (translation)
+Unfold `blk`. Rewrite using `[← submatrix_map, fromBlocks_map]`. Simplify using the standard rewrite rules.
+-/
 theorem blk_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {m n : ℕ}
     (A : Matrix (Fin m) (Fin m) R) (B : Matrix (Fin n) (Fin n) R) :
     (blk A B).map f = blk (A.map f) (B.map f) := by
@@ -37,6 +48,9 @@ theorem blk_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {m n : �
   rw [← submatrix_map, fromBlocks_map]
   simp
 
+/- English proof (translation)
+Unfold `blk`. Establish `: fromBlocks (c • (1 : Matrix (Fin m) (Fin m) R)) 0 0 (c • (1 : Matrix (Fin n) (Fin n) R)) = c • (1 : Matrix (Fin m ⊕ Fin n) (Fin m ⊕ Fin n) R)`. Rewrite using `[← fromBlocks_one, fromBlocks_smul, smul_zero, smul_zero]`. Rewrite using `[this, ← submatrix_one_equiv finSumFinEquiv.symm]`. Both sides reduce to the same expression.
+-/
 theorem blk_smul_one {R : Type} [CommRing R] {m n : ℕ} (c : R) :
     blk (c • (1 : Matrix (Fin m) (Fin m) R)) (c • (1 : Matrix (Fin n) (Fin n) R)) =
       c • (1 : Matrix (Fin (m + n)) (Fin (m + n)) R) := by
@@ -70,6 +84,9 @@ def sum {ε : PreTilt O p} {h₁ h₂ : ℕ} (D₁ : Datum ε h₁ ℤ_[p]) (D�
     simp only [Algebra.ofId_apply, RingHom.comp_apply, RingHom.mapMatrix_apply, this,
       Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Matrix.toLin' ((blk D₁.F D₂.F).map _) _ = _`. Rewrite using `[blk_map, toLin'_apply, blk_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem sum_al {ε : PreTilt O p} {h₁ h₂ : ℕ} (D₁ : Datum ε h₁ ℤ_[p]) (D₂ : Datum ε h₂ ℤ_[p])
     (x : Fin h₁ → O) (y : Fin h₂ → O) :
     (sum D₁ D₂).al (Fin.append x y) = Fin.append (D₁.al x) (D₂.al y) := by
@@ -77,6 +94,9 @@ theorem sum_al {ε : PreTilt O p} {h₁ h₂ : ℕ} (D₁ : Datum ε h₁ ℤ_[p
   rw [blk_map, toLin'_apply, blk_mulVec]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Matrix.toLin' ((blk D₁.G D₂.G).map _) _ = _`. Rewrite using `[blk_map, toLin'_apply, blk_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem sum_bb {ε : PreTilt O p} {h₁ h₂ : ℕ} (D₁ : Datum ε h₁ ℤ_[p]) (D₂ : Datum ε h₂ ℤ_[p])
     (x : Fin h₁ → O) (y : Fin h₂ → O) :
     (sum D₁ D₂).bb (Fin.append x y) = Fin.append (D₁.bb x) (D₂.bb y) := by
@@ -84,6 +104,9 @@ theorem sum_bb {ε : PreTilt O p} {h₁ h₂ : ℕ} (D₁ : Datum ε h₁ ℤ_[p
   rw [blk_map, toLin'_apply, blk_mulVec]
   rfl
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ _ ε hε h₁ h₂ D₁ D₂`. Conclude with `⟨sum D₁ D₂, sum_al D₁ D₂, sum_bb D₁ D₂⟩`.
+-/
 theorem exists_sum_datum : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ (h₁ h₂ : ℕ) (D₁ : Datum ε h₁ ℤ_[p]) (D₂ : Datum ε h₂ ℤ_[p]), ∃ D : Datum ε (h₁ + h₂) ℤ_[p], (∀ x y, D.al (Fin.append x y) = Fin.append (D₁.al x) (D₂.al y)) ∧ ∀ x y, D.bb (Fin.append x y) = Fin.append (D₁.bb x) (D₂.bb y) := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ ε hε h₁ h₂ D₁ D₂
   exact ⟨sum D₁ D₂, sum_al D₁ D₂, sum_bb D₁ D₂⟩

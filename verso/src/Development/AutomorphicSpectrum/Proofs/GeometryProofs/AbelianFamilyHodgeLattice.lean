@@ -24,11 +24,27 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.ChartEig
 
+/- English proof (translation)
+Use `(Submodule.mem_iInf _).1 he a` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+-/
 theorem mem_eig {K V O : Type} [Field K] [AddCommGroup V] [Module K V] [CommRing O] {ρ : O →+* Module.End K V}
     {σ : O →+* K} {e : V} (he : e ∈ eigSp ρ σ) (a : O) : ρ a e = σ a • e := by
   have := (Submodule.mem_iInf _).1 he a
   simpa [sub_eq_zero] using this
 
+/- English proof (translation)
+Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert t A ht ih`. Introduce `f hf hsum`. Rewrite `hsum` using `[Finset.sum_insert ht]`.
+
+Establish `key : ∀ s ∈ A, f s = 0`. Introduce `s hs`. Establish `hne : s ≠ t` using `fun e => ht (e ▸ hs)`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, σ s a ≠ σ t a := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hne (hσ (RingHom.ext h))`. Establish `hg : ∑ u ∈ A, (σ u a - σ t a) • f u = 0`. Establish `e : ∑ u ∈ A, (σ u a - σ t a) • f u = ρ a (f t + ∑ u ∈ A, f u) - σ t a • (f t + ∑ u ∈ A, f u)`. Rewrite using `[map_add, map_sum, mem_eig (hf t (Finset.mem_insert_self _ _)) a, smul_add, Finset.smul_sum]`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_congr rfl fun u hu => (mem_eig (hf u (Finset.mem_insert_of_mem hu)) a).symm]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hsum]`. Simplify using the standard rewrite rules.
+
+Establish `h1` using `ih (fun u => (σ u a - σ t a) • f u) (fun u hu => (eigSp ρ (σ u)).smul_mem _ (hf u (Finset.mem_insert_of_mem hu))) hg s hs`. Conclude with `(smul_eq_zero.1 h1).resolve_left (sub_ne_zero.2 ha)`. Introduce `s hs`. Break down `Finset.mem_insert.1 hs with rfl | hs` into its components or cases. Rewrite `hsum` using `[Finset.sum_eq_zero key, add_zero]`.
+
+Conclude with `hsum`. Conclude with `key s hs`.
+-/
 theorem eig_sum_zero {K V O I : Type} [Field K] [AddCommGroup V] [Module K V] [CommRing O] [DecidableEq I]
     (ρ : O →+* Module.End K V) (σ : I → (O →+* K)) (hσ : Function.Injective σ) (A : Finset I) :
     ∀ f : I → V, (∀ s ∈ A, f s ∈ eigSp ρ (σ s)) → ∑ s ∈ A, f s = 0 → ∀ s ∈ A, f s = 0 := by
@@ -74,6 +90,13 @@ def modelOfEquiv {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G
   add v w := by rw [map_add, M.add]
   smul c v := by rw [map_smul, M.smul]
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Take `⟨j, hj, -⟩` from `GlobalTheory.T.lie_model_existsUnique_semilinear S G R C φ x E F M M'`. Establish `hj' : ∀ e, (M'.pt (j e)).left = spMap (GlobalTheory.CompanionTheory.Ar.dualMap φ) ≫ (M.pt e).left` using `fun e => by`. Use `hj e` as an intermediate fact. Unfold `LieModel.Lifts at this`.
+
+Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis. Use `letI : Algebra R C := φ.toAlgebra`. Use `letI : Module R F := Module.compHom F φ`. Use `haveI : IsScalarTower R C F := ⟨fun r c f => by show (φ r * c) • f = φ r • c • f`. Rewrite using `[mul_smul]⟩`.
+
+Set `jl : E →ₗ[R] F` to `{ toFun := j, map_add' := j.map_add, map_smul' := fun r e => j.map_smulₛₗ r e }`. Establish `hbc : IsBaseChange C jl` using `(GlobalTheory.T.lie_model_finite_base_change S G R x E M).2.2 C F M' jl hj'`. Use `⟨j, IsBaseChange.basis b hbc, hj', fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[IsBaseChange.basis_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_basis_of_base {S : Scheme.{0}} {G : Over S} [GrpObj G] [Smooth G.hom] {R C : Type} [CommRing R]
     [CommRing C] (φ : R →+* C) {x : Sp R ⟶ S} {y : Sp C ⟶ S} (hy : spMap φ ≫ x = y) {E F I : Type}
     [AddCommGroup E] [Module R E] [AddCommGroup F] [Module C F] (M : LieModel G x E) (M' : LieModel G y F)
@@ -98,6 +121,13 @@ theorem exists_basis_of_base {S : Scheme.{0}} {G : Over S} [GrpObj G] [Smooth G.
   rw [IsBaseChange.basis_apply]
   rfl
 
+/- English proof (translation)
+Take `⟨F, _, _, ⟨MF⟩⟩` from `lieModel_exists _ G ℂ (spMap φ)`. Take `⟨j, β, hj, hβ⟩` from `exists_basis_of_base φ (Category.comp_id _) M MF (Pi.basisFun R (Fin g))`. Use `⟨modelOfEquiv MF β.equivFun.symm, fun u => ?_⟩` and prove the remaining obligations. Establish `h : β.equivFun.symm (fun k => φ (u k)) = j u`. Establish `hu : u = ∑ a, u a • (Pi.basisFun R (Fin g)) a`.
+
+Use function extensionality and compare the values at `c`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hu]`. Rewrite using `[map_sum]`. Simplify using `only [Module.Basis.equivFun_symm_apply, map_smulₛₗ, hβ]`.
+
+Use `show (MF.pt (β.equivFun.symm _)).left = _`. Rewrite using `[h, hj]`.
+-/
 theorem exists_model_at {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] [Smooth G.hom] {g : ℕ}
     (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (φ : R →+* ℂ) :
     ∃ N : LieModel G (spMap φ) (Fin g → ℂ), ∀ u : Fin g → R,
@@ -120,6 +150,23 @@ section Deriv
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {g n : ℕ}
   {M : LieModel G (𝟙 (Sp R)) (Fin g → R)} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+* ℂ)}
 
+/- English proof (translation)
+Establish `hF0 : (fun z => (e.ex b z).left) 0 = (1 : Over.mk (spMap (ψ b)) ⟶ G).left` using `congrArg (·.left) (Flat.ExpLift.ex_zero e hb)`. Establish `hpt : ∀ u : Fin g → R, IsDerivAt0 (fun z => (e.ex b z).left) (fun c => ψ b (u c)) (N.pt (fun k => ψ b (u k))).left` using `fun u => by`. Rewrite using `[hN]`. Conclude with `Flat.FrameDeriv.isDerivAt0_pt e hb u`. Establish `h0 : IsDerivAt0 (fun z => (e.ex b z).left) 0 (N.pt 0).left`.
+
+Establish `h3 : (fun c => ψ b ((0 : Fin g → R) c)) = (0 : Fin g → ℂ)`. Use function extensionality and compare the values at `c`. Simplify using the standard rewrite rules. Use `hpt 0` as an intermediate fact. Rewrite `this` using `[h3]`. Then use the resulting hypothesis.
+
+Establish `hsingle : ∀ a : Fin g, IsDerivAt0 (fun z => (e.ex b z).left) (Pi.single a 1) (N.pt (Pi.single a 1)).left`. Introduce `a`. Establish `h3 : (fun c => ψ b ((Pi.single a 1 : Fin g → R) c)) = (Pi.single a 1 : Fin g → ℂ)`. Use function extensionality and compare the values at `c`. Distinguish the cases in `h : c = a`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Use `hpt (Pi.single a 1)` as an intermediate fact. Rewrite `this` using `[h3]`. Then use the resulting hypothesis.
+
+Establish `hsm : ∀ (c : ℂ) (w : Fin g → ℂ), IsDerivAt0 (fun z => (e.ex b z).left) w (N.pt w).left → IsDerivAt0 (fun z => (e.ex b z).left) (c • w) (N.pt (c • w)).left`. Introduce `c w h`. Establish `h1` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_smul h c`. Establish `h2 : (N.pt (c • w)).left = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul c) ≫ (N.pt w).left`. Rewrite using `[N.smul]`.
+
+Use `congr 2`. Rewrite using `[h2]`. Conclude with `h1`. Establish `hs : ∀ s : Finset (Fin g), IsDerivAt0 (fun z => (e.ex b z).left) (∑ a ∈ s, x a • (Pi.single a 1 : Fin g → ℂ)) (N.pt (∑ a ∈ s, x a • (Pi.single a 1 : Fin g → ℂ))).left`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, N.add]`. Conclude with `GlobalTheory.UnifCompare.isDerivAt0_mul (y := spMap (ψ b)) (G := G) hF0 (hsm _ _ (hsingle a)) ih`.
+
+Establish `hx : ∑ a, x a • (Pi.single a 1 : Fin g → ℂ) = x`. Use function extensionality and compare the values at `c`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `hs Finset.univ` as an intermediate fact. Rewrite `this` using `[hx]`. Then use the resulting hypothesis.
+-/
 theorem isDerivAt0_all (e : Flat.FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B)
     (N : LieModel G (spMap (ψ b)) (Fin g → ℂ))
     (hN : ∀ u : Fin g → R, (N.pt (fun k => ψ b (u k))).left =
@@ -169,6 +216,15 @@ theorem isDerivAt0_all (e : Flat.FamExp G M B ψ) {b : Fin n → ℂ} (hb : b �
   have := hs Finset.univ
   rwa [hx] at this
 
+/- English proof (translation)
+Establish `hhol : GlobalTheory.HolHom.HolAt (fun z => (e.ex b z).left) 0`. Set `c : (Fin n → ℂ) × (Fin g → ℂ) → (Sp ℂ ⟶ G.left)` to `fun bz => (e.ex bz.1 bz.2).left`. Establish `h1 : GlobalTheory.HolHom.HolAt c (b, 0)` using `GlobalTheory.HolHom.holAt_of_isHolTo e.hol ⟨hb, trivial⟩`. Establish `hk : DifferentiableAt ℂ (fun z : Fin g → ℂ => (b, z)) 0` using `(differentiableAt_const b).prodMk differentiableAt_id`. Conclude with `GlobalTheory.HolHom.HolAt.precomp (c := c) (k := fun z : Fin g → ℂ => (b, z)) (z := 0) h1 hk`.
+
+Establish `hv` using `(GlobalTheory.HolHom.isDerivAt0_iff _ _ _).1 (isDerivAt0_all e hb N hN x)`. Establish `e1` using `hv.comp f.left`. Set `L' : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ)` to `LinearMap.toContinuousLinearMap L`. Establish `e2 : (fun t => (e.ex b t).left ≫ f.left) = fun t => (e.ex b (L' t)).left`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[← Over.comp_left]`. Use `show _ = (e.ex b (L t)).left`. Rewrite using `[hL]`. Rewrite `e1` using `[e2]`. Establish `e3` using `GlobalTheory.DerivEig.isDerivAt_of_comp_linear hhol L' e1`.
+
+Establish `e4` using `(GlobalTheory.HolHom.isDerivAt0_iff _ _ _).1 (isDerivAt0_all e hb N hN (L x))`. Conclude with `Over.OverMorphism.ext (e4.unique e3)`.
+-/
 theorem pt_linear (e : Flat.FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B)
     (N : LieModel G (spMap (ψ b)) (Fin g → ℂ))
     (hN : ∀ u : Fin g → R, (N.pt (fun k => ψ b (u k))).left =
@@ -201,6 +257,9 @@ section Core
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {G : Over X} [GrpObj G]
   {Li : Type} [AddCommGroup Li] [Module Ω Li]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Ga4.exists_value_basis hξ M z h Mz F hli hsp`.
+-/
 theorem exists_value_basis [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ) (M : LieModel G ξ Li) (z : Sp ℂ ⟶ X)
     (h : genPt ξ ⤳ centre z) {V I : Type} [AddCommGroup V] [Module ℂ V] (Mz : LieModel G z V) [Fintype I]
     (F : I → Li) (hli : LinearIndependent Ω F)
@@ -208,6 +267,15 @@ theorem exists_value_basis [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ) (
     ∃ y : Module.Basis I ℂ V, ∀ j, M.ValAt z (F j) (Mz.pt (y j)) :=
   _root_.UpperTheory.Reformulated.B.Ga4.exists_value_basis hξ M z h Mz F hli hsp
 
+/- English proof (translation)
+Use `(Submodule.mem_iInf _).2 fun a => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker]`. Use `show Bz a y - c a • y = 0`. Use `sub_eq_zero.2 (Mz.inj ?_)` and prove the remaining obligations. Take `⟨h, v, hv, hw⟩` from `(M.valAt_iff z e _).1 hy`.
+
+Take `⟨_, s, hs, hcs⟩` from `hc a`. Use `act.hom a` as an intermediate fact. Establish `e1 : M.Extends ⟨centre z, h⟩ (ρ a e) (v ≫ act.act a)`. Establish `hv'` using `hv`. Rewrite `hv'`, the goal using `[LieModel.extends_iff]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hv'.1`. Rewrite `h1`, the goal using `[LieTangent.isTanAt_iff]`. Rewrite using `[← Category.assoc, h1, MonObj.one_comp]`. Rewrite using `[hρ a e, hv'.2, Category.assoc]`.
+
+Establish `e2` using `hv.smul s`. Rewrite `e2` using `[hs, ← mem_eig he a]`. Establish `e3` using `e1.unique (hξ.inj _) e2`. Rewrite using `[hB, Mz.pt_smul, hw, Category.assoc, e3, ← Category.assoc, LieTangent.base_scale, Category.assoc]`. Conclude with `congrArg (fun c' : ℂ => LieTangent.epsScale z c' ≫ LieTangent.epsBase _ (LieTangent.spec_centre z) ≫ v) hcs`.
+-/
 theorem eig_of_value (hξ : IsCptGen ξ) (M : LieModel G ξ Li) (z : Sp ℂ ⟶ X) {V : Type} [AddCommGroup V] [Module ℂ V]
     (Mz : LieModel G z V) {O : Type} [CommRing O] (act : OAct O G) (ρ : O →+* Module.End Ω Li)
     (hρ : M.IsActOf act.act ρ) (χ : O →+* Ω) (c : O →+* ℂ) (hc : ∀ a, Ar.ValAt ξ z (χ a) (c a))
@@ -236,6 +304,51 @@ theorem eig_of_value (hξ : IsCptGen ξ) (M : LieModel G ξ Li) (z : Sp ℂ ⟶ 
 
 end Core
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K _ J _ y 𝔐 R _ t jj m g n M B₀ ψ e b Bb lab r s sc σ hb hB hσ hF hV`. Establish `sm1` using `𝔐.t.semi.smooth`. Establish `sm2` using `t.semi.smooth`. Establish `hgen` using `𝔐.tie.gen`. Take `⟨z, hz⟩ : ∃ z, z = spMap (ψ b) ≫ jj` from `⟨_, rfl⟩`.
+
+Rewrite `hσ`, `hF`, `hV` using `[← hz]`. Set `q : Cpt 𝔐.ξ` to `⟨centre z, 𝔐.all _⟩`. Establish `hfib : ∀ r' : ℕ, r'.Prime → ¬ InFibre 𝔐.ξ r' q`. Introduce `r' hr'`. Use `not_not.2 ⟨Nat.cast_ne_zero.2 hr'.ne_zero, natCast_mem _ _, ?_⟩` and prove the remaining obligations.
+
+Establish `hu : IsUnit ((r' : ℕ) : 𝔐.X.presheaf.stalk (centre z))`. Use `isUnit_of_map_unit (Scheme.stalkClosedPointTo z).hom _ ?_` and prove the remaining obligations. Rewrite using `[map_natCast]`. Conclude with `(Nat.cast_ne_zero.2 hr'.ne_zero : (r' : ℂ) ≠ 0).isUnit`. Take `⟨u, hu⟩` from `hu`.
+
+Use `⟨((u⁻¹ : (𝔐.X.presheaf.stalk (centre z))ˣ) : 𝔐.X.presheaf.stalk (centre z)), ?_⟩` and prove the remaining obligations. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Establish `h1` using `congrArg (genMap 𝔐.ξ q) (Units.inv_mul u)`. Rewrite `h1` using `[map_mul, hu, map_natCast, map_one]`. Conclude with `h1`.
+
+Take `⟨hVd, -, hlat⟩` from `GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c (𝓞 c.F) (algebraMap (𝓞 c.F) c.F) Y S Ω K J y 𝔐 RingOfIntegers.coe_injective q hfib`. Establish `hσinj : Function.Injective σ`. Take `⟨σ₀, -, hu, hbij, -⟩` from `GlobalTheory.T.cusp_correspondence_bound E H D l Xo c Y S Ω K J y 𝔐 ℂ z`. Rewrite using `[hu σ hσ]`. Conclude with `hbij.1`.
+
+Establish `hemb : Function.Injective 𝔐.emb`. Introduce `u v huv`. Use `hσinj (RingHom.ext fun a => ?_)` and prove the remaining obligations. Take `⟨h1, c1, e1, f1⟩` from `hσ u a`. Take `⟨h2, c2, e2, f2⟩` from `hσ v a`.
+
+Establish `e3 : genMap 𝔐.ξ ⟨centre z, h1⟩ c1 = genMap 𝔐.ξ ⟨centre z, h1⟩ c2`. Use `e1.trans ?_` and prove the remaining obligations. Establish `: genMap 𝔐.ξ ⟨centre z, h1⟩ c2 = 𝔐.emb (id v) a` using `e2`. Rewrite using `[this]`. Simplify using `only [id]`.
+
+Rewrite using `[huv]`. Rewrite using `[← f1, ← f2, hgen.inj _ e3]`. Establish `hfr : ∀ u, ∃ (k : ℕ) (f : Fin k → 𝔐.Li), (𝔐.V u).IsFrameAt f q ∧ (u = lab → k = r ∧ HEq f s)` using `fun u => by`. Distinguish the cases in `hu : u = lab`. Substitute `hu` using the available equality.
+
+Conclude with `⟨r, s, hF _, fun _ => ⟨rfl, HEq.rfl⟩⟩`. Take `⟨U, hU, f, -, hf⟩` from `𝔐.vb u q trivial`. Conclude with `⟨_, f, hf q trivial hU, fun h => absurd h hu⟩`. Use `choose k f hf hlab using hfr`. Take `⟨hk, hfs⟩` from `hlab lab rfl`.
+
+Substitute `hk` using the available equality. Establish `hfs'` using `eq_of_heq hfs`. Substitute `hfs'` using the available equality. Establish `hmem : ∀ u i, f u i ∈ 𝔐.M.lat q ∧ f u i ∈ eigSp 𝔐.ρ (𝔐.emb u)`. Introduce `u i`.
+
+Establish `h1 : f u i ∈ 𝔐.V u q`. Rewrite using `[(hf u).2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Rewrite `h1` using `[hVd u]`. Conclude with `h1`.
+
+Establish `hli : LinearIndependent Ω (fun p : (Σ u, Fin (k u)) => f p.1 p.2)`. Use `Fintype.linearIndependent_iff.2 fun a ha p => ?_` and prove the remaining obligations. Rewrite `ha` using `[Fintype.sum_sigma]`. Establish `h0` using `eig_sum_zero 𝔐.ρ 𝔐.emb hemb Finset.univ (fun u => ∑ i, a ⟨u, i⟩ • f u i) (fun u _ => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hmem u i).2) ha p.1 (Finset.mem_univ _)`. Conclude with `Fintype.linearIndependent_iff.1 (hf p.1).1 (fun i => a ⟨p.1, i⟩) h0 p.2`.
+
+Establish `hsp : 𝔐.M.lat q = Submodule.span (regAt 𝔐.ξ q) (Set.range fun p : (Σ u, Fin (k u)) => f p.1 p.2)`. Rewrite using `[hlat]`. Use `le_antisymm (iSup_le fun u => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[← hVd u, (hf u).2]`. Conclude with `Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨⟨u, i⟩, rfl⟩)`.
+
+Introduce and unpack `_ ⟨⟨u, i⟩, rfl⟩`. Use `Submodule.mem_iSup_of_mem u ?_` and prove the remaining obligations. Rewrite using `[← hVd u, (hf u).2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Take `⟨N, hN⟩` from `exists_model_at M (ψ b)`.
+
+Take `⟨Mz', hMz⟩` from `SabLie.lieModel_of_sabMap E H 𝔐.X (Sp R) t 𝔐.t jj m ℂ (spMap (ψ b)) _ N`. Substitute `hz` using the available equality. Establish `hBz : ∀ a x, Mz'.pt (Bb a x) = Mz'.pt x ≫ 𝔐.t.act.act a`. Introduce `a x`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[hMz, pt_linear e hb N hN (t.act.act a) (Bb a) (fun x => hB a x) x, Over.comp_left, Over.comp_left, hMz, Category.assoc, Category.assoc, m.act a]`. Take `⟨yb, hyb⟩` from `exists_value_basis hgen 𝔐.M _ (𝔐.all _) Mz' _ hli hsp`. Establish `hey : ∀ p : (Σ u, Fin (k u)), yb p ∈ eigSp Bb (σ p.1)` using `fun p => eig_of_value hgen 𝔐.M _ Mz' 𝔐.t.act 𝔐.ρ 𝔐.act (𝔐.emb p.1) (σ p.1) (hσ p.1) Bb hBz (hmem p.1 p.2).2 (hyb p)`. Establish `hx : ∀ i, yb ⟨lab, i⟩ = fun k' => ψ b (sc i k')`. Introduce `i`.
+
+Take `⟨v, hv1, hv2⟩` from `hV i`. Establish `h1 : v = Mz'.pt (fun k' => ψ b (sc i k'))`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[hv2, hMz, hN, Category.assoc]`. Rewrite `hv1` using `[h1]`.
+
+Conclude with `Mz'.inj (LieModel.ValAt.unique hgen (hyb ⟨lab, i⟩) hv1)`. Establish `hfun : (fun i k' => ψ b (sc i k')) = fun i => yb ⟨lab, i⟩` using `funext fun i => (hx i).symm`. Rewrite using `[hfun]`. Use `⟨yb.linearIndependent.comp _ sigma_mk_injective, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hey ⟨lab, i⟩`. Introduce `w hw`. Set `wt : CMType H ⊕ CMType H → (Fin g → ℂ)` to `fun u => ∑ i, yb.repr w ⟨u, i⟩ • yb ⟨u, i⟩`. Establish `hsum : ∑ u, wt u = w`.
+
+Use `yb.sum_repr w` as an intermediate fact. Rewrite `this` using `[Fintype.sum_sigma]`. Then use the resulting hypothesis. Establish `hwt : ∀ u, wt u ∈ eigSp Bb (σ u)` using `fun u => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hey ⟨u, i⟩)`. Establish `h0` using `eig_sum_zero Bb σ hσinj Finset.univ (fun u => wt u - if u = lab then w else 0) (fun u _ => by`. Distinguish the cases in `hu : u = lab`.
+
+Substitute `hu` using the available equality. Simplify using `using Submodule.sub_mem _ (hwt _) hw`. Simplify `hwt u) (by` using `[hu]`. Rewrite using `[Finset.sum_sub_distrib, hsum]`. Use the proof step `simp) lab (Finset.mem_univ _)`.
+
+Establish `h1 : wt lab = w` using `by simpa [sub_eq_zero] using h0`. Rewrite using `[← h1]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem values_eig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (R : Type) [CommRing R] (t : SAB H (Sp R)) (jj : Sp R ⟶ 𝔐.X) (m : SABMap t 𝔐.t jj) (g n : ℕ) (M : LieModel t.G (𝟙 (Sp R)) (Fin g → R)) (B₀ : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : Flat.FamExp t.G M B₀ ψ) (b : Fin n → ℂ) (Bb : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) (lab : CMType H ⊕ CMType H) (r : ℕ) (s : Fin r → 𝔐.Li) (sc : Fin r → Fin g → R) (σ : CMType H ⊕ CMType H → (𝓞 E →+* ℂ)), b ∈ B₀ → (∀ a' x, e.ex b (Bb a' x) = e.ex b x ≫ t.act.act a') → 𝔐.LabVal (spMap (ψ b) ≫ jj) id σ → (∀ h : genPt 𝔐.ξ ⤳ centre (spMap (ψ b) ≫ jj), (𝔐.V lab).IsFrameAt s ⟨centre (spMap (ψ b) ≫ jj), h⟩) → (∀ i, ∃ v : epsAt (spMap (ψ b) ≫ jj) ⟶ 𝔐.t.G, 𝔐.M.ValAt (spMap (ψ b) ≫ jj) (s i) v ∧ v.left = spMap (GlobalTheory.CompanionTheory.Ar.dualMap (ψ b)) ≫ (M.pt (sc i)).left ≫ m.φ) → LinearIndependent ℂ (fun i k => ψ b (sc i k)) ∧ Submodule.span ℂ (Set.range fun i k => ψ b (sc i k)) = eigSp Bb (σ lab) := by
   intro E _ _ _ H D l Xo c Y S Ω _ _ K _ J _ y 𝔐 R _ t jj m g n M B₀ ψ e b Bb lab r s sc σ hb hB hσ hF hV
   classical

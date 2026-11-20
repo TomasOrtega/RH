@@ -37,6 +37,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Top.Bl
 
+/- English proof (translation)
+Introduce `hG hCov hHM hCW hW hD hH hC hA hWb hRF hL N Γ p hp hN hS hM`. Establish `hz` using `GlobalTheory.T.zeta_uniform_of_extension ⟨hCov, hHM, hCW, hH, hC⟩ hL N SExt.none Γ hN`. Substitute `hp` using the available equality. Use `GlobalTheory.T.eta_size_recursion hA hWb hRF hL _ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `witExE_of_witMv _ (GlobalTheory.T.witnesses_pass_along_set_division _ hS)`.
+
+Conclude with `GlobalTheory.Fc.EvP.of_all fun _ K _ q => hz K q`. Conclude with `GlobalTheory.T.local_langlands_prm_reduction hG hCov hHM hCW hW hD hH hC hA hRF hL N Γ _ rfl hN hM`.
+-/
 theorem exBL_isLinked_prmR : GlobalTheory.Published.GreenCuspidal → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.WeberRayFieldSt → GlobalTheory.NT.RayField → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (Γ : GeoP) (p : Prm hL), p = prmR N SExt.none Γ → (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (NEb hL K B f T w Z Wt p0 t nch n xd c)) → PositionMv p.s → (GlobalTheory.Fc.EvP fun _ K => ∀ q : WPt p.s K, GlobalTheory.CuspMult.MultEq q.x.what₂.r.z.R.toRealDat) → GlobalTheory.Fc.ExBL KPx (IsBuiltE p.s) (IsGoodE p.s) (IsLinked p) := by
   intro hG hCov hHM hCW hW hD hH hC hA hWb hRF hL N Γ p hp hN hS hM
   have hz := GlobalTheory.T.zeta_uniform_of_extension ⟨hCov, hHM, hCW, hH, hC⟩ hL N SExt.none Γ hN

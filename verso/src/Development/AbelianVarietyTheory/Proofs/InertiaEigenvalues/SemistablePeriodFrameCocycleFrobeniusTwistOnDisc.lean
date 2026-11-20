@@ -14,6 +14,23 @@ noncomputable section
 
 namespace GlobalTheory.BKLim.FrobTwistKappa
 
+/- English proof (translation)
+Introduce `l _ K bk τ d ρ s g G Φ i Ψ V ε hG hΦ hi hΨ hκ h`. Establish `hsmul : ∀ (f : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀) (c : bk.DA bk.ρ₀) (M : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀)), (c • M).map f = f c • M.map f` using `fun f c M => by ext a b; simp`. Establish `hΦG : ∀ x, Φ (G x) = G (Φ x)`. Establish `e : (WittVector.frobenius : Ainf l →+* Ainf l).comp (Per.σA (g : GQ l)) = (Per.σA (g : GQ l)).comp WittVector.frobenius` using `RingHom.ext fun a => (GlobalTheory.Prism.PullGal.σA_frobenius (g : GQ l) a).symm`. Establish `hc` using `(GlobalTheory.BSP.FrobRational.isDiscMap_comp hG hΦ).unique (e ▸ GlobalTheory.BSP.FrobRational.isDiscMap_comp hΦ hG)`.
+
+Conclude with `fun x => RingHom.congr_fun hc x`. Establish `hΦi : Φ.comp i = i.comp Ψ`. Establish `e : (WittVector.frobenius : Ainf l →+* Ainf l).comp bk.ev = bk.ev.comp (frobS l bk.a)` using `RingHom.ext fun x => (bk.ev_frob x).symm`. Conclude with `(GlobalTheory.BSP.FrobRational.isDiscMap_comp hi hΦ).unique (e ▸ GlobalTheory.BSP.FrobRational.isDiscMap_comp hΨ hi)`. Establish `hΦiS : ∀ x, Φ (bk.iS x) = bk.iS (frobS l bk.a x)` using `fun x => by`.
+
+Express the relevant statement in the definitionally equal form `Φ (toDisc l (bk.ev X) bk.ρ₀ (bk.ev x)) = toDisc l (bk.ev X) bk.ρ₀ (bk.ev (frobS l bk.a x))`. Rewrite using `[hΦ.ext, bk.ev_frob]`. Establish `hFD : (s.F.map ((toDisc l (X : bk.S) bk.ρ₀).comp C)).map i = s.F.map (bk.iS.comp C)`. Use extensionality with `a b`. Conclude with `hi.ext _`.
+
+Establish `hGFD : (s.F.map (bk.iS.comp C)).map G = s.F.map (bk.iS.comp C)`. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `G (toDisc l (bk.ev X) bk.ρ₀ (bk.ev (C (s.F a b)))) = toDisc l (bk.ev X) bk.ρ₀ (bk.ev (C (s.F a b)))`. Rewrite using `[hG.ext, bk.ev_C, bk.gal_w]`. Establish `e1 : (V.map i).map Φ = (V.map Ψ).map i`.
+
+Use extensionality with `a b`. Conclude with `RingHom.congr_fun hΦi (V a b)`. Establish `e2 : (ε.map bk.iA).map Φ = (ε.map WittVector.frobenius).map bk.iA`. Use extensionality with `a b`. Conclude with `hΦ.ext _`.
+
+Establish `e3 : ((V.map i).map G).map Φ = ((V.map Ψ).map i).map G`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[hΦG]`. Conclude with `congrArg G (RingHom.congr_fun hΦi (V a b))`.
+
+Establish `h1` using `congrArg (fun M => M.map Φ) h`. Simplify using `only [hsmul, Matrix.map_mul] at h1`. Rewrite `h1` using `[map_pow, map_pow, hΦG, hΦiS, e1, e2, e3]`. Establish `eL : (s.F.map ((toDisc l (X : bk.S) bk.ρ₀).comp C) * V.map Ψ).map i = s.F.map (bk.iS.comp C) * (V.map Ψ).map i`. Rewrite using `[Matrix.map_mul, hFD]`.
+
+Rewrite using `[eL, Matrix.map_mul, hGFD, Matrix.mul_assoc (s.F.map (bk.iS.comp C)), ← Matrix.mul_assoc (s.κ g), hκ, Matrix.mul_assoc]`. Establish `h2` using `congrArg (fun M => s.F.map (bk.iS.comp C) * M) h1`. Simplify using `only [Matrix.mul_smul] at h2`. Conclude with `h2`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (s : WSeed bk d ρ τ) (g : ↥(GK K)) (G Φ : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀) (i : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀) (Ψ : bk.DS bk.ρ₀ →+* bk.DS bk.ρ₀) (V : Matrix (Fin d) (Fin d) (bk.DS bk.ρ₀)) (ε : Matrix (Fin d) (Fin d) (Ainf l)), IsDiscMap (Per.σA (g : GQ l)) G → IsDiscMap WittVector.frobenius Φ → IsDiscMap bk.ev i → IsDiscMap (frobS l bk.a) Ψ → s.κ g * s.F.map (bk.iS.comp C) = s.F.map (bk.iS.comp C) * (s.κ g).map Φ → G (bk.iS bk.E) ^ s.N • (V.map i * ε.map bk.iA) = bk.iS bk.E ^ s.N • (s.κ g * (V.map i).map G) → G (bk.iS (frobS l bk.a bk.E)) ^ s.N • ((s.F.map ((toDisc l (X : bk.S) bk.ρ₀).comp C) * V.map Ψ).map i * (ε.map WittVector.frobenius).map bk.iA) = bk.iS (frobS l bk.a bk.E) ^ s.N • (s.κ g * ((s.F.map ((toDisc l (X : bk.S) bk.ρ₀).comp C) * V.map Ψ).map i).map G) := by
   intro l _ K bk τ d ρ s g G Φ i Ψ V ε hG hΦ hi hΨ hκ h
   have hsmul : ∀ (f : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀) (c : bk.DA bk.ρ₀) (M : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀)),

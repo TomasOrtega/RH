@@ -5,8 +5,16 @@ namespace UpperTheory.N.Num
 
 variable {l N h : ℕ} {y : ℝ}
 
+/- English proof (translation)
+The claim follows from `le_max_left _ _`.
+-/
 theorem one_le_sN (l N : ℕ) : 1 ≤ sN l N := le_max_left _ _
 
+/- English proof (translation)
+Establish `h1` using `natLog_le_lam hl (one_le_sN l N) hy (n := 2 * h) (by push_cast; linarith)`. Establish `h2` using `natLog_le_lam hl (one_le_sN l N) hy hN`. Establish `h3` using `s_le_lam (s := sN l N) hl hy`. Unfold `lamN`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lamN_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (N : ℝ) ≤ 8 * y) :
     (lamN l N h : ℝ) ≤ 3 * lam l (sN l N) y := by
   have h1 := natLog_le_lam hl (one_le_sN l N) hy (n := 2 * h) (by push_cast; linarith)
@@ -16,6 +24,11 @@ theorem lamN_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (
   push_cast
   linarith
 
+/- English proof (translation)
+Establish `h1` using `lamN_le hl hy hh hN`. Establish `h2` using `lam_le hl (one_le_sN l N) hy`. Establish `hs : (1 : ℝ) ≤ sN l N` using `by exact_mod_cast one_le_sN l N`. Establish `h3 : (h : ℝ) * sN l N ≤ 4 * y * sN l N` using `mul_le_mul_of_nonneg_right hh (by linarith)`. Establish `h4 : 1 ≤ y * sN l N` using `by nlinarith`.
+
+Unfold `eL`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem eL_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (N : ℝ) ≤ 8 * y) :
     (eL l N h : ℝ) ≤ 1000 * y * sN l N := by
   have h1 := lamN_le hl hy hh hN
@@ -27,6 +40,11 @@ theorem eL_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (N 
   push_cast
   nlinarith
 
+/- English proof (translation)
+Establish `hs` using `one_le_sN l N`. Establish `h2` using `lamN_le hl hy hh hN`. Establish `hl1` using `one_le_lam (s := sN l N) hl hy`. Unfold `c0L`. Use `push_cast`.
+
+Establish `hn1 : (n : ℝ) + 1 ≤ 9 * a` using `by linarith`. Establish `hL0 : (0 : ℝ) ≤ lamN l N h` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (by linarith) h2 hL0 (by linarith)` to reduce the goal to its premises. Use `_ ≤ 1000 * a * lam l (sN l N) y := by nlinarith`.
+-/
 theorem cyclotomicWeightExponent_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (N : ℝ) ≤ 8 * y) {n : ℕ} {a : ℝ}
     (ha : 1 ≤ a) (hn : (n : ℝ) ≤ 8 * a) : (c0L l N h n : ℝ) ≤ 1000 * a * lam l (sN l N) y := by
   have hs := one_le_sN l N
@@ -41,6 +59,11 @@ theorem cyclotomicWeightExponent_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ
         apply mul_le_mul (by linarith) h2 hL0 (by linarith)
     _ ≤ 1000 * a * lam l (sN l N) y := by nlinarith
 
+/- English proof (translation)
+Establish `h1` using `lamN_le hl hy hh hN`. Establish `hΛ` using `one_le_lam (s := sN l N) hl hy`. Establish `ht' : (1 : ℝ) ≤ t` using `by exact_mod_cast ht`. Unfold `cBL`. Use `push_cast`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cBL_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (N : ℝ) ≤ 8 * y) {n t : ℕ} {a : ℝ}
     (ha : 1 ≤ a) (hn : (n : ℝ) ≤ 2 * a) (ht : 1 ≤ t) :
     (cBL l N h n t : ℝ) ≤ 1000 * t * a * lam l (sN l N) y := by

@@ -28,6 +28,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AnPer.ChernClause
 
+/- English proof (translation)
+Introduce `A _ g hA L u P hP M u' hM hex H χ ψ hAH hψ x x'`. Take `⟨n, a, b, hc, rfl⟩` from `hψ`. Take `⟨K, r, j, hR, hS, hF, hj⟩` from `hcharts (fibUnif u) (hsep A hA) M.U hM.cover`. Establish `hB : K.Based`. Take `⟨k, hk⟩` from `hR.1 (0, 0) trivial`.
+
+Conclude with `⟨k, fun z _ ↦ by rwa [Subsingleton.elim z 0]⟩`. Take `⟨i, uu, ℓ, hi, huu, hℓ, hz⟩` from `hpull K r M j hj _ hc`. Take `⟨fr, af, lg, f1, f2, a1, a2, a3, a4, a5⟩` from `hframe A L u M u' hM hex H χ hAH K r hF j hj`. Take `⟨e, he⟩` from `hlift K r M hM j hj fr af f1 f2 i hi uu huu`. Set `β : u.Λ → u.Λ → ℂ` to `fun l m ↦ (Real.pi : ℂ) * ((m : Fin g → ℂ) ⬝ᵥ H.mulVec (star (l : Fin g → ℂ)))`.
+
+Take `⟨c, hcc⟩` from `halg K af lg (fun l m ↦ algebraMap ℂ (Hol (fibFam u).V) (β l m)) a1 a2 a3 a4 a5 e uu ℓ.1 he hℓ`. Set `pr : primDR A → (u.Λ →+ Hol (fibFam u).V)` to `fun c ↦ { toFun x := algebraMap ℂ (Hol (fibFam u).V) (P x c) map_zero' := by rw [map_zero, LinearMap.zero_apply, map_zero] map_add' x y := by rw [map_add, LinearMap.add_apply, map_add] }`. Establish `hpr : ∀ c : primDR A, r.coef.pull1 c.1 = K.perCl (pr c)` using `fun c ↦ hP c K r hF`. Take `⟨c', hc'⟩` from `hcup K (fun k ↦ pr (a k)) (fun k ↦ pr (b k)) ℓ c (fun l m ↦ algebraMap ℂ (Hol (fibFam u).V) (β l m)) (by`. Rewrite using `[← hz, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ ↦ by rw [GlobalTheory.CatCoh.CoefMap.pullCohomologyTwo_cup, hpr, hpr]) hcc`. Set `δ : u.Λ → u.Λ → ℂ` to `fun l m ↦ ∑ k, P l (a k) * P m (b k) - β l m`. Establish `d1 : ∀ l l' m, δ (l + l') m = δ l m + δ l' m` using `fun l l' m ↦ by`. Simplify using `only [δ, β, map_add, LinearMap.add_apply, Submodule.coe_add, star_add, Matrix.mulVec_add, dotProduct_add, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `d2 : ∀ l m m', δ l (m + m') = δ l m + δ l m'` using `fun l m m' ↦ by`. Simplify using `only [δ, β, map_add, LinearMap.add_apply, Submodule.coe_add, add_dotProduct, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Set `β' : u.Λ →+ u.Λ →+ Hol (fibFam u).V` to `AddMonoidHom.mk' (fun l ↦ AddMonoidHom.mk' (fun m ↦ algebraMap ℂ (Hol (fibFam u).V) (δ l m)) fun m m' ↦ by rw [d2, map_add]) fun l l' ↦ AddMonoidHom.ext fun m ↦ by`. Express the relevant statement in the definitionally equal form `algebraMap ℂ (Hol (fibFam u).V) (δ (l + l') m) = algebraMap ℂ (Hol (fibFam u).V) (δ l m) + algebraMap ℂ (Hol (fibFam u).V) (δ l' m)`.
+
+Rewrite using `[d1, map_add]`. Establish `hs` using `hsym K (fun c hc ↦ h1 K hR hB c hc) (fun G hG ↦ h0 K hR G fun T T' φ h ↦ (hG T T' φ h).symm) hS hR β' c' (fun T T' T'' φ ψ ↦ by`. Rewrite using `[hc']`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = algebraMap ℂ (Hol (fibFam u).V) (δ φ.deg ψ.deg)`.
+
+Simplify using `only [δ, map_sub, map_sum, map_mul]`. Use the proof step `rfl) x x'`. Establish `hs' : δ x x' = δ x' x`. Use `congrArg (Hol.ev (W := (fibFam u).V) 0 trivial) hs` as an intermediate fact. Express the relevant statement in the definitionally equal form `Hol.ev (W := (fibFam u).V) 0 trivial (algebraMap ℂ _ (δ x x')) = Hol.ev (W := (fibFam u).V) 0 trivial (algebraMap ℂ _ (δ x' x)) at this`.
+
+Simplify using `using this`. Rewrite using `[wedgeForm_apply, ← hah H hAH.1 x x', Finset.sum_sub_distrib]`. Simplify using `only [δ, β] at hs'`. Establish `e2 : ∑ k, P x (b k) * P x' (a k) = ∑ k, P x' (a k) * P x (b k)` using `Finset.sum_congr rfl fun k _ ↦ mul_comm _ _`. Rewrite using `[e2]`.
+
+Take the linear combination `hs'`.
+-/
 theorem pchern_of (hsep : ∀ {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → A.left.IsSeparated)
  (hcharts : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} {B : Type} [CommRing B] {X : Scheme.{0}} {s : X ⟶ Sp B} {σ : B →+* Hol F.V} (u : Unif F s σ), X.IsSeparated → ∀ {N : Type} (𝒰 : N → X.Opens), ⨆ i, 𝒰 i = ⊤ → ∃ (K : Charts F) (r : Real K s σ) (j : K.K → N), K.Rich ∧ (∀ l k', ∃ k, K.le l k' k ∧ K.le (-l) k k') ∧ r.IsFor u ∧ ∀ k, ⊤ ≤ r.x k ⁻¹ᵁ 𝒰 (j k))
  (hpull : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} {B : Type} [CommRing B] {X : Scheme.{0}} {s : X ⟶ Sp B} {σ : B →+* Hol F.V} (K : Charts F) (r : Real K s σ) (M : LB X) (j : K.K → M.ι), (∀ k, ⊤ ≤ r.x k ⁻¹ᵁ M.U (j k)) → ∀ z : SecondDeRham s, IsChern (dp0 B) s M z → ∃ (i : K.Obj → M.ι) (uu : ∀ T T' : K.Obj, (T ⟶ T') → T'.C) (ℓ : GlobalTheory.CatCoh.Z2 K.Oc), (∀ T, ⊤ ≤ (r.obj T).x ⁻¹ᵁ M.U (i T)) ∧ (∀ (T T' : K.Obj) (φ : T ⟶ T') (hh : ⊤ ≤ (r.obj T').x ⁻¹ᵁ (M.U (i T') ⊓ M.U (i T))), Ideal.Quotient.mk T'.J (uu T T' φ) = evalAt (r.obj T').x (M.U (i T') ⊓ M.U (i T)) hh (M.g (i T') (i T)).val) ∧ (∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T' ⟶ T''), (show ∀ T T' T'' : K.Obj, (T ⟶ T') → (T' ⟶ T'') → T''.C from ℓ.1) T T' T'' φ ψ ∈ T''.J ∧ dpExp T''.δ ((show ∀ T T' T'' : K.Obj, (T ⟶ T') → (T' ⟶ T'') → T''.C from ℓ.1) T T' T'' φ ψ) * uu T T'' (φ ≫ ψ) = ψ.φ (uu T T' φ) * uu T' T'' ψ) ∧ r.coef.pull2 z = GlobalTheory.CatCoh.H2.mk K.Oc ℓ)
@@ -90,6 +109,9 @@ theorem pchern_of (hsep : ∀ {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj 
   rw [e2]
   linear_combination hs'
 
+/- English proof (translation)
+The claim follows from `pchern_of @_root_.GlobalTheory.T.abelianScheme_isSeparated_of_affine_base @_root_.GlobalTheory.T.exists_translationClosed_charts_subordinate_to_cover @_root_.GlobalTheory.T.isCrystallineChern_on_analytic_thickenings @_root_.GlobalTheory.T.exists_frame_factorOfAutomorphy_log @_roo …`.
+-/
 theorem pchern : GlobalTheory.AnPer.PChern (-1) :=
   pchern_of @_root_.GlobalTheory.T.abelianScheme_isSeparated_of_affine_base @_root_.GlobalTheory.T.exists_translationClosed_charts_subordinate_to_cover @_root_.GlobalTheory.T.isCrystallineChern_on_analytic_thickenings @_root_.GlobalTheory.T.exists_frame_factorOfAutomorphy_log @_root_.GlobalTheory.T.exists_units_comparing_lifted_transitions_factor @_root_.GlobalTheory.T.log_cocycle_cohomologous_alt @_root_.GlobalTheory.T.cup_period_classes_sum_const @_root_.GlobalTheory.T.const_biadditive_coboundary_symmetric @GlobalTheory.pi_mul_hermitian_alternation @_root_.GlobalTheory.T.degZeroCocycle_exists_coboundary_of_rich_based @_root_.GlobalTheory.T.exists_holomorphic_param_of_degZero_compatible
 

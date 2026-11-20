@@ -33,6 +33,9 @@ variable (T : Thick (nlFun γ p X q κ)) {B : Type} [CommRing B] (f : T.B →+* 
 
 def homOf : T ⟶ ofMap T f J δ hJ hdp adm := mkH f (fun _ => rfl) hdp hJ rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem homOf_φ : (homOf T f J δ hJ hdp adm).φ = f := rfl
 
 variable {T f J δ hJ hdp adm}
@@ -51,17 +54,26 @@ def descOf {T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (g : B →+* T'.B) (
       rw [← φ.pt, ← e, Functor.map_comp]
       rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem descOf_φ {T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (g : B →+* T'.B) (hg : g.comp f = φ.φ)
     (hdp' : IsDPMorphism δ T'.δ g) (hle : J ≤ T'.J.comap g) :
     (descOf (hJ := hJ) (hdp := hdp) (adm := adm) φ g hg hdp' hle).φ = g := rfl
 
 end OfMap
 
+/- English proof (translation)
+Rewrite using `[pt, ← φ.pt]`. Both sides reduce to the same expression.
+-/
 theorem pt_hom {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') :
     pt T' = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T := by
   rw [pt, ← φ.pt]
   rfl
 
+/- English proof (translation)
+Introduce `x _`. Establish `hx` using `h (show (Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle))).base x ∈ (⊤ : (Spec (CommRingCat.of (T.B ⧸ T.J))).Opens) from trivial)`. Rewrite using `[pt_hom φ]`. Conclude with `hx`.
+-/
 theorem inU_hom {V : X.Opens} {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (h : InU V T) : InU V T' := by
   intro x _
   have hx := h (show (Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle))).base x ∈
@@ -69,6 +81,9 @@ theorem inU_hom {V : X.Opens} {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T')
   rw [pt_hom φ]
   exact hx
 
+/- English proof (translation)
+Use `⟨fun h => by simpa using (T.adm.1 h).map f, fun h => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `T.adm.2 h`. Conclude with `⟨n, by rw [← Ideal.map_pow, hn, Ideal.zero_eq_bot, Ideal.map_bot]; rfl⟩`.
+-/
 theorem admissible_map (T : Thick (nlFun γ p X q κ)) {B : Type} [CommRing B] (f : T.B →+* B) :
     (p ≠ 0 → IsNilpotent (p : B)) ∧ (p = 0 → IsNilpotent (T.J.map f)) := by
   refine ⟨fun h => by simpa using (T.adm.1 h).map f, fun h => ?_⟩
@@ -80,9 +95,15 @@ abbrev pq (B : Type) [CommRing B] : PDPoly B := GlobalTheory.PDA.Model.pdPoly B
 def eta {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) : DividedPowers ((pq B).ext J) :=
   Classical.choose (FubiniStudyChowHeightFormula₂.Adr.exists_std B J δ (pq B))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.exists_std B J δ (pq B))`.
+-/
 theorem eta_std {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) : (pq B).IsStd δ (eta δ) :=
   Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.exists_std B J δ (pq B))
 
+/- English proof (translation)
+Introduce `_ hx` and use `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hx)`.
+-/
 theorem le_ext {B : Type} [CommRing B] (J : Ideal B) : J ≤ ((pq B).ext J).comap (algebraMap B (pq B).P) :=
   fun _ hx => Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hx)
 
@@ -94,6 +115,9 @@ def polyJ (T : Thick (nlFun γ p X q κ)) (hp : p ≠ 0) : T ⟶ polyT T hp := h
 
 abbrev trI (T : Thick (nlFun γ p X q κ)) (s : ℕ) : Ideal (pq T.B).P := fil (eta T.δ) (max s 1)
 
+/- English proof (translation)
+The claim follows from `FubiniStudyChowHeightFormula₂.Adr.Fil.fil_isSubDPIdeal _ _ (le_max_right _ _)`.
+-/
 theorem trI_sub (T : Thick (nlFun γ p X q κ)) (s : ℕ) : (eta T.δ).IsSubDPIdeal (trI T s) :=
   FubiniStudyChowHeightFormula₂.Adr.Fil.fil_isSubDPIdeal _ _ (le_max_right _ _)
 
@@ -104,6 +128,9 @@ abbrev trJ (T : Thick (nlFun γ p X q κ)) (s : ℕ) : Ideal (trB T s) := ((pq T
 def trD (T : Thick (nlFun γ p X q κ)) (s : ℕ) : DividedPowers (trJ T s) :=
   Classical.choose (FubiniStudyChowHeightFormula₂.Adr.Fil.exists_quot (eta T.δ) (trI T s) (trI_sub T s))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.Fil.exists_quot (eta T.δ) (trI T s) (trI_sub T s))`.
+-/
 theorem trD_spec (T : Thick (nlFun γ p X q κ)) (s : ℕ) :
     IsDPMorphism (eta T.δ) (trD T s) (Ideal.Quotient.mk (trI T s)) ∧
       ∀ (C : Type) [CommRing C] (J'' : Ideal C) (δ'' : DividedPowers J'') (g : trB T s →+* C),
@@ -113,9 +140,15 @@ theorem trD_spec (T : Thick (nlFun γ p X q κ)) (s : ℕ) :
 abbrev trF (T : Thick (nlFun γ p X q κ)) (s : ℕ) : T.B →+* trB T s :=
   (Ideal.Quotient.mk (trI T s)).comp (algebraMap T.B (pq T.B).P)
 
+/- English proof (translation)
+Introduce `_ hx` and use `Ideal.mem_map_of_mem _ (le_ext T.J hx)`.
+-/
 theorem trF_le (T : Thick (nlFun γ p X q κ)) (s : ℕ) : T.J ≤ (trJ T s).comap (trF T s) :=
   fun _ hx => Ideal.mem_map_of_mem _ (le_ext T.J hx)
 
+/- English proof (translation)
+The claim follows from `IsDPMorphism.comp _ (trD_spec T s).1 (eta_std T.δ).dp`.
+-/
 theorem trF_dp (T : Thick (nlFun γ p X q κ)) (s : ℕ) : IsDPMorphism T.δ (trD T s) (trF T s) :=
   IsDPMorphism.comp _ (trD_spec T s).1 (eta_std T.δ).dp
 
@@ -126,6 +159,9 @@ def polyTr (T : Thick (nlFun γ p X q κ)) (s : ℕ)
 def locD (T : Thick (nlFun γ p X q κ)) (f : T.B) : DividedPowers (T.J.map (algebraMap T.B (Localization.Away f))) :=
   Classical.choose (FubiniStudyChowHeightFormula₂.Adr.flatExt T.B (Localization.Away f) T.J T.δ)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.flatExt T.B (Localization.Away f) T.J T.δ)`.
+-/
 theorem locD_dp (T : Thick (nlFun γ p X q κ)) (f : T.B) :
     IsDPMorphism T.δ (locD T f) (algebraMap T.B (Localization.Away f)) :=
   Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.flatExt T.B (Localization.Away f) T.J T.δ)
@@ -139,6 +175,9 @@ def quoD (T : Thick (nlFun γ p X q κ)) {K : Ideal T.B} (hK : T.δ.IsSubDPIdeal
     DividedPowers (T.J.map (Ideal.Quotient.mk K)) :=
   Classical.choose (FubiniStudyChowHeightFormula₂.Adr.Fil.exists_quot T.δ K hK)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.Fil.exists_quot T.δ K hK)`.
+-/
 theorem quoD_spec (T : Thick (nlFun γ p X q κ)) {K : Ideal T.B} (hK : T.δ.IsSubDPIdeal K) :
     IsDPMorphism T.δ (quoD T hK) (Ideal.Quotient.mk K) ∧
       ∀ (C : Type) [CommRing C] (J'' : Ideal C) (δ'' : DividedPowers J'') (g : T.B ⧸ K →+* C),

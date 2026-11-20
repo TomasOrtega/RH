@@ -19,6 +19,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.AnHol
 
 variable {m : ℕ}
 
+/- English proof (translation)
+Establish `hd` using `fcHolo_det_differentiableAt M b₀ hM`. Use `GlobalTheory.HolFrameMatrix.differentiableAt_of_mul_eq_one (fun b => (M b)⁻¹) M b₀ hM ?_ i j` and prove the remaining obligations. Use `filter_upwards [hd.continuousAt.eventually_ne h0] with b hb`. Conclude with `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hb)`.
+-/
 theorem inv_differentiableAt {n : ℕ} (M : (Fin m → ℂ) → Matrix (Fin n) (Fin n) ℂ) (b₀ : Fin m → ℂ)
     (hM : ∀ i j, DifferentiableAt ℂ (fun b => M b i j) b₀) (h0 : (M b₀).det ≠ 0) (i j : Fin n) :
     DifferentiableAt ℂ (fun b => (M b)⁻¹ i j) b₀ := by
@@ -27,6 +30,13 @@ theorem inv_differentiableAt {n : ℕ} (M : (Fin m → ℂ) → Matrix (Fin n) (
   filter_upwards [hd.continuousAt.eventually_ne h0] with b hb
   exact Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hb)
 
+/- English proof (translation)
+Establish `hr : (Matrix.of X).rank = r`. Simplify using `using LinearIndependent.rank_matrix (M := Matrix.of X) hX`. Establish `hs : Function.Surjective (Matrix.of X).mulVecLin`. Rewrite using `[← LinearMap.range_eq_top]`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises.
+
+Simplify `hr` using `[Matrix.rank]`. Use `choose c hc using fun a : Fin r => hs (Pi.single a 1)`. Use `⟨Matrix.of fun k a => c a k, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `congrFun (hc b) a` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.one_apply, Pi.single_apply, eq_comm]`.
+-/
 theorem exists_rightInverse_of_li {r g : ℕ} (X : Fin r → Fin g → ℂ) (hX : LinearIndependent ℂ X) :
     ∃ N : Matrix (Fin g) (Fin r) ℂ, Matrix.of X * N = 1 := by
   classical
@@ -42,6 +52,17 @@ theorem exists_rightInverse_of_li {r g : ℕ} (X : Fin r → Fin g → ℂ) (hX 
   have := congrFun (hc b) a
   simpa [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.one_apply, Pi.single_apply, eq_comm] using this
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_rightInverse_of_li (X b₀) hli`. Set `G : (Fin m → ℂ) → Matrix (Fin r) (Fin r) ℂ` to `fun b => Matrix.of (X b) * N`. Establish `hG : ∀ i j, DifferentiableAt ℂ (fun b => G b i j) b₀` using `fun i j => by`. Simplify using `only [G, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `DifferentiableAt.fun_sum fun k _ => (differentiableAt_pi.1 (hX i) k).mul_const _`.
+
+Establish `hG0 : (G b₀).det ≠ 0` using `by simp [G, hN]`. Establish `hdet` using `(fcHolo_det_differentiableAt G b₀ hG).continuousAt.eventually_ne hG0`. Establish `hZ : ∀ j, DifferentiableAt ℂ (fun b => ∑ k, Y b n k * N k j) b₀` using `fun j => DifferentiableAt.fun_sum fun k _ => (differentiableAt_pi.1 (hY n) k).mul_const _`. Establish `hI` using `inv_differentiableAt G b₀ hG hG0`. Establish `hR : DifferentiableAt ℂ (fun b => ∑ j, (∑ k, Y b n k * N k j) * (G b)⁻¹ j i) b₀` using `DifferentiableAt.fun_sum fun j _ => (hZ j).mul (hI j i)`.
+
+Use `hR.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hA, hdet] with b hb hd`. Establish `e1 : ∀ j, ∑ k, Y b n k * N k j = ∑ i', A b i' n * G b i' j` using `fun j => by`. Simplify using `only [hb n, G, Matrix.mul_apply, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun i' _ => Finset.sum_congr rfl fun k _ => by ring`. Establish `e2 : G b * (G b)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd)`. Simplify using `only [e1, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [_root_.mul_assoc, ← Finset.mul_sum]`.
+
+Establish `e3 : ∀ i', ∑ j, G b i' j * (G b)⁻¹ j i = (1 : Matrix (Fin r) (Fin r) ℂ) i' i` using `fun i' => by`. Rewrite using `[← e2, Matrix.mul_apply]`. Simplify using `[e3, Matrix.one_apply]`.
+-/
 theorem coef_differentiableAt {r g : ℕ} {κ : Type*}
     (X : (Fin m → ℂ) → Fin r → Fin g → ℂ) (Y : (Fin m → ℂ) → κ → Fin g → ℂ)
     (A : (Fin m → ℂ) → Matrix (Fin r) κ ℂ) (b₀ : Fin m → ℂ)
@@ -77,6 +98,9 @@ theorem coef_differentiableAt {r g : ℕ} {κ : Type*}
     rw [← e2, Matrix.mul_apply]
   simp [e3, Matrix.one_apply]
 
+/- English proof (translation)
+Use `differentiableAt_pi.2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `h : ty k = τ`. Simplify `differentiableAt_pi.1 hf k` using `[tyPart, h]`. Simplify using `[tyPart, h]`.
+-/
 theorem tyPart_differentiableAt {E : Type} [Field E] {g : ℕ} (ty : Fin g → (E →+* ℂ)) (τ : E →+* ℂ)
     (f : (Fin m → ℂ) → Fin g → ℂ) (b₀ : Fin m → ℂ) (hf : DifferentiableAt ℂ f b₀) :
     DifferentiableAt ℂ (fun b => tyPart ty τ (f b)) b₀ := by
@@ -85,6 +109,9 @@ theorem tyPart_differentiableAt {E : Type} [Field E] {g : ℕ} (ty : Fin g → (
   · simpa [tyPart, h] using differentiableAt_pi.1 hf k
   · simp [tyPart, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Distinguish the cases in `h : ty k = τ`. Simplify using `[tyPart, h, Finset.sum_apply]`. Simplify using `[tyPart, h, Finset.sum_apply]`.
+-/
 theorem tyPart_sum_smul {E : Type} [Field E] {g : ℕ} {κ : Type*} [Fintype κ] (ty : Fin g → (E →+* ℂ)) (τ : E →+* ℂ)
     (c : κ → ℂ) (z : κ → Fin g → ℂ) : tyPart ty τ (∑ m, c m • z m) = ∑ m, c m • tyPart ty τ (z m) := by
   funext k
@@ -92,6 +119,9 @@ theorem tyPart_sum_smul {E : Type} [Field E] {g : ℕ} {κ : Type*} [Fintype κ]
   · simp [tyPart, h, Finset.sum_apply]
   · simp [tyPart, h, Finset.sum_apply]
 
+/- English proof (translation)
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap, Chart.dualMapR]`.
+-/
 theorem dualMap_eq {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) :
     GlobalTheory.CompanionTheory.Ar.dualMap φ = Chart.dualMapR φ := by
   refine RingHom.ext fun x => ?_
@@ -103,6 +133,61 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 open GlobalTheory.CompanionTheory.Ar.Flat.AnHol in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c τ τ' σ g ty FU hty hrt hτ e ρ Φ he hflat R _ x vR wR m B ψ v w hB hψ hfr b₀ hb₀`. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Establish `hev : ∀ t, DifferentiableAt ℂ (fun b => ψ b t) b₀` using `fun t => (hψ t).differentiableAt (hB.mem_nhds hb₀)`. Establish `h₁ : IsHolTo B (fun b => spMap (ψ b))` using `GlobalTheory.ThetaValueCont.isHolTo_spMap hB ψ hψ`. Establish `h₂ : IsHolTo B (fun b => spMap (ψ b) ≫ under x)` using `GlobalTheory.HolHom.isHolTo_of_holAt hB fun z hz => (GlobalTheory.HolHom.holAt_of_isHolTo h₁ hz).comp _`.
+
+Establish `hov : ∀ b ∈ B, (spMap (ψ b) ≫ under x) ≫ Xo.s = spMap (σ.comp (IntermediateField.inclusion c.le).toRingHom)` using `fun b hb => by`. Establish `h` using `(hfr b hb).1.1`. Establish `h'` using `congrArg (· ≫ spMap (IntermediateField.inclusion c.le).toRingHom) h`. Simplify using `only [Category.assoc] at h'`. Simplify using `only [under, Category.assoc]`.
+
+Rewrite using `[pullback.condition, h']`. Simplify using `[spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Take `⟨B', i, P, hB', hb', hsub, hP, hu⟩` from `FU.lift m B (fun b => spMap (ψ b) ≫ under x) hB hov h₂ b₀ hb₀`. Establish `hun : ∀ b ∈ B', under (spMap (ψ b) ≫ x) = FU.u i (P b)` using `fun b hb => by`. Rewrite using `[hu b hb]`.
+
+Simplify using `only [under, Category.assoc]`. Establish `hc : ∀ a : 𝓞 E, (σ.comp (tauIn c (ComplexEmbedding.conjugate τ))) a = ComplexEmbedding.conjugate τ' (a : E)`. Introduce `a`. Establish `h1 : tauIn c (ComplexEmbedding.conjugate τ) a = tauIn c τ (H.bar a)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show ComplexEmbedding.conjugate τ (a : E) = τ ((H.bar a : 𝓞 E) : E)`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression. Use `show σ (tauIn c (ComplexEmbedding.conjugate τ) a) = _`. Rewrite using `[h1, hτ, H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+
+Both sides reduce to the same expression. Use `choose! xx hxx using fun b (hb : b ∈ B') => (GlobalTheory.T.uniformised_eigen_frame_one E H D l Xo c τ τ' σ g ty FU hty hrt hτ i (e i) (P b) _ (v b) (w b) (he i) (hP.1 b hb) (hun b hb) (hfr b (hsub hb)).1).exists`. Establish `hVW : ∀ b ∈ B', LinearIndependent ℂ (xx b).1 ∧ (∀ z, tyPart ty τ' z ∈ Submodule.span ℂ (Set.range (xx b).1)) ∧ LinearIndependent ℂ (xx b).2.1`. Introduce `b hb`. Take `⟨-, -, hv, hw⟩` from `(hfr b (hsub hb)).1`.
+
+Take `⟨V, hVd, hVl, hVs⟩` from `exists_directions_of_isEigFrame E H D l Xo _ g ty FU i (P b) _ (σ.comp (tauIn c τ)) τ' D.p (v b) (hP.1 b hb) (hun b hb) hτ hv`. Take `⟨W, hWd, hWl, -⟩` from `exists_directions_of_isEigFrame E H D l Xo _ g ty FU i (P b) _ _ (ComplexEmbedding.conjugate τ') D.q (w b) (hP.1 b hb) (hun b hb) hc hw`. Establish `eV : (xx b).1 = V` using `funext fun a => (hVd a _).1 ((hxx b hb).1 a)`. Establish `eW : (xx b).2.1 = W` using `funext fun a => (hWd a _).1 ((hxx b hb).2.1 a)`. Rewrite using `[eV, eW]`.
+
+Conclude with `⟨hVl, hVs, hWl⟩`. Establish `hnb : ∀ᶠ b in 𝓝 b₀, b ∈ B'` using `hB'.mem_nhds hb'`. Establish `hVd : ∀ a, DifferentiableAt ℂ (fun b => (xx b).1 a) b₀` using `fun a => GlobalTheory.HolFrameMatrix.differentiableAt_coord FU i (vR a).left ψ hB' hP (fun b => (xx b).1 a) (fun b hb => by`. Use `(hxx b hb).1 a` as an intermediate fact. Rewrite `this` using `[(hfr b (hsub hb)).2.1 a, dualMap_eq]`.
+
+Conclude with `this) hb' hev`. Establish `hWd : ∀ a, DifferentiableAt ℂ (fun b => (xx b).2.1 a) b₀` using `fun a => GlobalTheory.HolFrameMatrix.differentiableAt_coord FU i (wR a).left ψ hB' hP (fun b => (xx b).2.1 a) (fun b hb => by`. Use `(hxx b hb).2.1 a` as an intermediate fact. Rewrite `this` using `[(hfr b (hsub hb)).2.2 a, dualMap_eq]`. Conclude with `this) hb' hev`.
+
+Establish `hPd : ∀ n, DifferentiableAt ℂ (fun b => P b (e i n)) b₀` using `fun n => (hP.2 (e i n)).differentiableAt (hB'.mem_nhds hb')`. Establish `hBd : ∀ j n, DifferentiableAt ℂ (fun b => (xx b).2.2.2.1 j n) b₀` using `fun j n => coef_differentiableAt (fun b => (xx b).2.1) (fun b n => tyPart ty (ComplexEmbedding.conjugate τ') (P b (e i n))) (fun b => (xx b).2.2.2.1) b₀ hWd (fun n => tyPart_differentiableAt ty _ _ b₀ (hPd n)) (hVW b₀ hb').2.2 (by filter_upwards [hnb] with b hb n using (hxx b hb) …`. Take `⟨Hm, hHh, -, hHi⟩` from `id (hP.1 b₀ hb').2.2.2.2`. Take `⟨-, -, hd⟩` from `GlobalTheory.T.period_hermitian_type_compatibility E H (FU.Di i) g ty (P b₀) Hm (hP.1 b₀ hb') hHh hHi`. Establish `hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q`.
+
+Rewrite using `[(FU.sig i).1, (FU.sig i).2]`. Simplify using the standard rewrite rules. Set `S : Matrix (Fin D.p ⊕ Fin D.q) (Fin D.p ⊕ Fin D.q) ℂ` to `Matrix.of fun m n => τ' (sesq (FU.Di i) (e i m) (e i n))`. Establish `hS : S.det ≠ 0`. Use `hd 0 _ (e i) hcard (he i)` as an intermediate fact.
+
+Establish `h2 : S = (Matrix.of fun m n => sesq (FU.Di i) (e i m) (e i n)).map τ'` using `rfl`. Rewrite using `[h2, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ').2 this`. Establish `hSu : IsUnit S.det` using `isUnit_iff_ne_zero.2 hS`. Establish `hFe : ∀ b ∈ B', (xx b).2.2.1 = (xx b).2.2.2.1 * S⁻¹` using `fun b hb => by`.
+
+Establish `: (xx b).2.2.1 * S = (xx b).2.2.2.1`. Use extensionality with `j n`. Rewrite using `[Matrix.mul_apply]`. Conclude with `(hxx b hb).2.2.2.1 j n`. Rewrite using `[← this, Matrix.mul_nonsing_inv_cancel_right _ _ hSu]`.
+
+Establish `hFd : ∀ j n, DifferentiableAt ℂ (fun b => (xx b).2.2.1 j n) b₀` using `fun j n => by`. Establish `: DifferentiableAt ℂ (fun b => ((xx b).2.2.2.1 * S⁻¹) j n) b₀`. Simplify using `only [Matrix.mul_apply]`. Conclude with `DifferentiableAt.fun_sum fun k _ => (hBd j k).mul_const _`. Use `this.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hnb] with b hb`. Rewrite using `[hFe b hb]`. Use `choose! A hA using fun b (hb : b ∈ B') (n : Fin D.p ⊕ Fin D.q) => (Submodule.mem_span_range_iff_exists_fun ℂ).1 ((hVW b hb).2.1 (P b (e i n)))`. Set `Am : (Fin m → ℂ) → Matrix (Fin D.p) (Fin D.p ⊕ Fin D.q) ℂ` to `fun b => Matrix.of fun k n => A b n k`. Establish `hAd : ∀ k n, DifferentiableAt ℂ (fun b => Am b k n) b₀` using `fun k n => coef_differentiableAt (fun b => (xx b).1) (fun b n => tyPart ty τ' (P b (e i n))) Am b₀ hVd (fun n => tyPart_differentiableAt ty _ _ b₀ (hPd n)) (hVW b₀ hb').1 (by filter_upwards [hnb] with b hb n using (hA b hb n).symm) k n`.
+
+Establish `hexp : ∀ b ∈ B', ∀ (C : Matrix (Fin D.p) (Fin D.p ⊕ Fin D.q) ℂ) (a : Fin D.p), tyPart ty τ' (∑ m, C a m • P b (e i m)) = ∑ k, (Am b * C.transpose) k a • (xx b).1 k`. Introduce `b hb C a`. Rewrite using `[tyPart_sum_smul]`. Repeatedly rewrite using `[← hA b hb, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `[Am, mul_comm]`. Take `⟨C₀, hC₀⟩` from `(hxx b₀ hb').2.2.2.2.2.1`.
+
+Establish `hM0 : Am b₀ * C₀.transpose = 1`. Use extensionality with `k a`. Establish `h1` using `hexp b₀ hb' C₀ a`. Rewrite `h1` using `[hC₀ a]`. Establish `h2` using `Fintype.linearIndependent_iff.1 (hVW b₀ hb').1 (fun k => (Am b₀ * C₀.transpose) k a - (1 : Matrix (Fin D.p) (Fin D.p) ℂ) k a) (by simp [sub_smul, Finset.sum_sub_distrib, ← h1, Matrix.one_apply]) k`.
+
+Conclude with `sub_eq_zero.1 h2`. Set `M : (Fin m → ℂ) → Matrix (Fin D.p) (Fin D.p) ℂ` to `fun b => Am b * C₀.transpose`. Establish `hMd : ∀ k a, DifferentiableAt ℂ (fun b => M b k a) b₀` using `fun k a => by`. Simplify using `only [M, Matrix.mul_apply]`. Conclude with `DifferentiableAt.fun_sum fun n _ => (hAd k n).mul_const _`.
+
+Establish `hM0' : (M b₀).det ≠ 0` using `by simp [M, hM0]`. Establish `hMe` using `(fcHolo_det_differentiableAt M b₀ hMd).continuousAt.eventually_ne hM0'`. Establish `hMi` using `inv_differentiableAt M b₀ hMd hM0'`. Set `Cb : (Fin m → ℂ) → Matrix (Fin D.p) (Fin D.p ⊕ Fin D.q) ℂ` to `fun b => (C₀.transpose * (M b)⁻¹).transpose`. Establish `hCd : ∀ a n, DifferentiableAt ℂ (fun b => Cb b a n) b₀` using `fun a n => by`.
+
+Simplify using `only [Cb, Matrix.transpose_apply, Matrix.mul_apply]`. Conclude with `DifferentiableAt.fun_sum fun k _ => (hMi k a).const_mul _`. Establish `hlift : ∀ᶠ b in 𝓝 b₀, b ∈ B' ∧ ∀ a, tyPart ty τ' (∑ m, Cb b a m • P b (e i m)) = (xx b).1 a` using `by filter_upwards [hnb, hMe] with b hb hdet`. Use `⟨hb, fun a => ?_⟩` and prove the remaining obligations. Establish `h1 : Am b * (Cb b).transpose = 1`.
+
+Simplify using `only [Cb, Matrix.transpose_transpose]`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hdet)`. Rewrite using `[hexp b hb, h1]`. Simplify using `[Matrix.one_apply]`.
+
+Set `Dt : (Fin m → ℂ) → ℂ` to `fun b => (Matrix.fromRows (Cb b) (xx b).2.2.1).det`. Establish `hDd : DifferentiableAt ℂ Dt b₀`. Use `fcHolo_det_differentiableAt (fun b => Matrix.fromRows (Cb b) (xx b).2.2.1) b₀ fun r n => ?_` and prove the remaining obligations. Break down `r with r | r` into its components or cases. Simplify using `using hCd r n`.
+
+Simplify using `using hFd r n`. Establish `hDe : ∀ᶠ b in 𝓝 b₀, b ∈ B' ∧ Dt b = (xx b).2.2.2.2` using `by filter_upwards [hlift] with b hb`. Conclude with `⟨hb.1, (hxx b hb.1).2.2.2.2.2.2 _ hb.2⟩`. Establish `hD0 : Dt b₀ ≠ 0`. Rewrite using `[hDe.self_of_nhds.2]`.
+
+Conclude with `(hxx b₀ hb').2.2.2.2.1`. Establish `hq : DifferentiableAt ℂ (fun b => ρ i / Dt b) b₀`. Simplify using `only [div_eq_mul_inv]`. Conclude with `hDd.fun_inv hD0 |>.const_mul _`. Use `hq.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hlift, hDe] with b hb hb'`. Establish `hne : Dt b ≠ 0`. Rewrite using `[hb'.2]`. Conclude with `(hxx b hb.1).2.2.2.2.1`. Establish `hfl` using `hflat i (P b) _ (v b) (w b) (xx b).1 (xx b).2.1 (Cb b) (xx b).2.2.1 (xx b).2.2.2.1 (hP.1 b hb.1) (hun b hb.1) (hfr b (hsub hb.1)).1 (hxx b hb.1).1 (hxx b hb.1).2.1 hb.2 (hxx b hb.1).2.2.1 (hxx b hb.1).2.2.2.1`.
+
+Rewrite using `[eq_div_iff hne]`. Conclude with `hfl`.
+-/
 theorem anHol : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ τ' : E →+* ℂ) (σ : c.F →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty), IsTypeFn H D.p D.q ty → τ' (H.rt : E) = H.rt0 → (∀ a : 𝓞 E, σ (tauIn c τ a) = τ' (a : E)) → ∀ (e : ∀ i : Fin FU.n, Fin D.p ⊕ Fin D.q → (FU.Di i).La) (ρ : Fin FU.n → ℂ) (Φ : CFn Xo c), (∀ i, LinearIndependent (𝓞 E) (e i)) → (∀ i, IsFlatAn Set.univ τ τ' σ Φ FU i (e i) (ρ i)) → ∀ (R : Type) [CommRing R] (x : Sp R ⟶ Xo.XF c) (vR : Fin D.p → (epsAt (under x) ⟶ Xo.univ.t.G)) (wR : Fin D.q → (epsAt (under x) ⟶ Xo.univ.t.G)) (m : ℕ) (B : Set (Fin m → ℂ)) (ψ : (Fin m → ℂ) → (R →+* ℂ)) (v : ∀ b, Vecs (spMap (ψ b) ≫ x) D.p) (w : ∀ b, Vecs (spMap (ψ b) ≫ x) D.q), IsOpen B → (∀ r, DifferentiableOn ℂ (fun b => ψ b r) B) → (∀ b ∈ B, IsFramed Set.univ τ σ (spMap (ψ b) ≫ x) (v b) (w b) ∧ (∀ a, (v b a).left = spMap (dualMap (ψ b)) ≫ (vR a).left) ∧ ∀ j, (w b j).left = spMap (dualMap (ψ b)) ≫ (wR j).left) → DifferentiableOn ℂ (fun b => Φ (spMap (ψ b) ≫ x) (v b) (w b)) B := by
   intro E _ _ _ H D l Xo c τ τ' σ g ty FU hty hrt hτ e ρ Φ he hflat R _ x vR wR m B ψ v w hB hψ hfr b₀ hb₀
   classical

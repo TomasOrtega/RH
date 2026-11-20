@@ -37,27 +37,51 @@ namespace Comp
 
 variable (S : Comp b A A')
 
+/- English proof (translation)
+Rewrite using `[← S.sum_p x, ← S.sum_p y]`. Simplify using `[h]`.
+-/
 theorem ext_p {x y : A'} (h : ∀ a, S.p a x = S.p a y) : x = y := by
   rw [← S.sum_p x, ← S.sum_p y]; simp [h]
 
+/- English proof (translation)
+Rewrite using `[← S.p_inc, one_smul]`.
+-/
 theorem p_inc' (a : ι) (x : A) : S.p a (S.inc x) = b.repr 1 a • x := by
   rw [← S.p_inc, one_smul]
 
+/- English proof (translation)
+Simplify using `[map_sum, S.p_inc, Finsupp.single_apply]`.
+-/
 theorem p_sum (m : ι → A) (a : ι) : S.p a (∑ a', b a' • S.inc (m a')) = m a := by
   classical
   simp [map_sum, S.p_inc, Finsupp.single_apply]
 
+/- English proof (translation)
+Use `S.ext_p fun a => ?_` and prove the remaining obligations. Rewrite using `[S.p_inc', S.p_inc, Algebra.algebraMap_eq_smul_one, map_smul, Finsupp.smul_apply, smul_eq_mul, smul_smul, mul_comm]`.
+-/
 theorem inc_smul (o : O) (x : A) : S.inc (o • x) = algebraMap O O' o • S.inc x := by
   refine S.ext_p fun a => ?_
   rw [S.p_inc', S.p_inc, Algebra.algebraMap_eq_smul_one, map_smul, Finsupp.smul_apply,
     smul_eq_mul, smul_smul, mul_comm]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← S.sum_p x]`. Simplify using `[Finset.smul_sum, smul_smul, S.p_inc, ← Algebra.smul_def, Finsupp.single_apply]`.
+-/
 theorem p_smul (a : ι) (o : O) (x : A') : S.p a (algebraMap O O' o • x) = o • S.p a x := by
   classical
   conv_lhs => rw [← S.sum_p x]
   simp [Finset.smul_sum, smul_smul, S.p_inc, ← Algebra.smul_def, Finsupp.single_apply]
 
 include S in
+/- English proof (translation)
+Use `letI : Module O A' := Module.compHom A' (algebraMap O O')`. Use `haveI : IsScalarTower O O' A' := ⟨fun o c x => by`. Express the relevant statement in the definitionally equal form `(o • c) • x = algebraMap O O' o • c • x`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Set `f : A →ₗ[O] A'` to `{ S.inc with map_smul' := S.inc_smul }`.
+
+Set `F : O' ⊗[O] A →ₗ[O'] A'` to `f.liftBaseChange O'`. Establish `hF : ∀ c x, F (c ⊗ₜ x) = c • S.inc x` using `fun c x => LinearMap.liftBaseChange_tmul _ _ _ _`. Establish `hl : ∀ t, ∑ a, b a ⊗ₜ[O] S.p a (F t) = t`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul c x`. Simplify using `only [hF, S.p_inc, ← TensorProduct.smul_tmul]`. Rewrite using `[← TensorProduct.sum_tmul, b.sum_repr]`. Consider the case `add x y hx hy => simp only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hx, hy]`.
+
+Use `(LinearEquiv.ofBijective F ⟨fun s t h => ?_, fun x => ⟨∑ a, b a ⊗ₜ[O] S.p a x, ?_⟩⟩).length_eq.symm` and prove the remaining obligations. Rewrite using `[← hl s, ← hl t, h]`. Simplify using `only [map_sum, hF, S.sum_p]`.
+-/
 theorem length_eq : Module.length O' A' = Module.length O' (O' ⊗[O] A) := by
   letI : Module O A' := Module.compHom A' (algebraMap O O')
   haveI : IsScalarTower O O' A' := ⟨fun o c x => by
@@ -88,6 +112,9 @@ def Compat (N : Submodule O A) (N' : Submodule O' A') : Prop := ∀ x, x ∈ N' 
 
 variable {S}
 
+/- English proof (translation)
+The claim follows from `(h _).2 fun a => by rw [S.p_inc']; exact N.smul_mem _ hx`.
+-/
 theorem Compat.inc_mem {N : Submodule O A} {N' : Submodule O' A'} (h : S.Compat N N') {x : A}
     (hx : x ∈ N) : S.inc x ∈ N' :=
   (h _).2 fun a => by rw [S.p_inc']; exact N.smul_mem _ hx
@@ -117,12 +144,31 @@ def Compat.quot {N : Submodule O A} {N' : Submodule O' A'} (h : S.Compat N N') :
 
 variable (S)
 
+/- English proof (translation)
+Introduce `_` and use `by simp`.
+-/
 theorem compat_top : S.Compat ⊤ ⊤ := fun _ => by simp
 
+/- English proof (translation)
+Introduce `x` and use `by simp only [Submodule.mem_bot] exact ⟨fun h a => by rw [h, map_zero], fun h => S.ext_p fun a => by rw [h, map_zero]⟩`.
+-/
 theorem compat_bot : S.Compat ⊥ ⊥ := fun x => by
   simp only [Submodule.mem_bot]
   exact ⟨fun h a => by rw [h, map_zero], fun h => S.ext_p fun a => by rw [h, map_zero]⟩
 
+/- English proof (translation)
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `: ∀ c : O', ∀ a, S.p a (c • x) ∈ Submodule.span O T`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Introduce `c a`. Rewrite using `[S.p_inc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hy)`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => intro c a`. Rewrite using `[smul_add, map_add]`. Conclude with `add_mem (hx c a) (hy c a)`. Consider the case `smul d x _ hx => intro c a`.
+
+Rewrite using `[smul_smul]`. Conclude with `hx _ a`. Simplify using `using this 1`. Introduce `hx`. Establish `: ∀ y ∈ Submodule.span O T, S.inc y ∈ Submodule.span O' (S.inc '' T)`.
+
+Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul d x _ hx => rw [S.inc_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[← S.sum_p x]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (this _ (hx a))`.
+-/
 theorem compat_span (T : Set A) : S.Compat (Submodule.span O T) (Submodule.span O' (S.inc '' T)) := by
   intro x
   constructor
@@ -157,6 +203,13 @@ variable [TopologicalSpace A] [DiscreteTopology A] [IsTopologicalAddGroup A] [Co
   (he : ∀ a g m, S.p a (ρ' g m) = ρ g (S.p a m))
 include he
 
+/- English proof (translation)
+Introduce `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf a`. Use `⟨(continuous_of_discreteTopology (f := S.p a)).comp hf.1, fun g h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.p a (f (g * h)) = S.p a (f g) + ρ g (S.p a (f h))`.
+
+Rewrite using `[hf.2, map_add, he]`. Introduce `hf`. Use `⟨?_, fun g h => S.ext_p fun a => ?_⟩` and prove the remaining obligations. Establish `: f = fun g => ∑ a, b a • S.inc (S.p a (f g))` using `by funext g; rw [S.sum_p]`. Rewrite using `[this]`.
+
+Conclude with `continuous_finset_sum _ fun a _ => ((continuous_of_discreteTopology (f := S.inc)).comp (hf a).1).const_smul (b a)`. Rewrite using `[map_add, he]`. Conclude with `(hf a).2 g h`.
+-/
 theorem compatible_cocycles : (S.pi Γ).Compat (Z1 ρ) (Z1 ρ') := by
   intro f
   constructor
@@ -172,6 +225,13 @@ theorem compatible_cocycles : (S.pi Γ).Compat (Z1 ρ) (Z1 ρ') := by
         ((continuous_of_discreteTopology (f := S.inc)).comp (hf a).1).const_smul (b a)
     · rw [map_add, he]; exact (hf a).2 g h
 
+/- English proof (translation)
+Introduce `f`. Simplify using `only [Submodule.mem_comap, mem_coboundaries1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩ a`. Use `⟨S.p a m, fun g => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `S.p a (f.1 g) = _`. Rewrite using `[← he, ← map_sub]`. Conclude with `congrArg _ (hm g)`. Introduce `hf choose m hm using hf`. Use `⟨∑ a', b a' • S.inc (m a'), fun g => S.ext_p fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, he, S.p_sum]`. Conclude with `hm a g`.
+-/
 theorem compatible_coboundaries : (S.compatible_cocycles he).sub.Compat ((B1 ρ).comap (Z1 ρ).subtype)
     ((B1 ρ').comap (Z1 ρ').subtype) := by
   intro f
@@ -189,6 +249,9 @@ theorem compatible_coboundaries : (S.compatible_cocycles he).sub.Compat ((B1 ρ)
 
 def h1 : Comp b (H1 ρ) (H1 ρ') := (S.compatible_coboundaries he).quot
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem p_res {Δ : Type} [Group Δ] [TopologicalSpace Δ] (φ : Δ →* Γ) (hφ : Continuous φ) (a : ι)
     (x : H1 ρ') :
     (S.h1 (ρ := ρ.comp φ) (ρ' := ρ'.comp φ) (fun a g m => he a (φ g) m)).p a (resH1 ρ' φ hφ x) =
@@ -196,6 +259,9 @@ theorem p_res {Δ : Type} [Group Δ] [TopologicalSpace Δ] (φ : Δ →* Γ) (h�
   obtain ⟨x, rfl⟩ := Submodule.mkQ_surjective _ x
   rfl
 
+/- English proof (translation)
+Introduce `x`. Simplify using `only [H1ur, LinearMap.mem_ker]`. Use `((S.h1 (ρ := ρ.comp J.subtype) (ρ' := ρ'.comp J.subtype) (fun a g m => he a _ m)).compat_bot (resH1 ρ' J.subtype continuous_subtype_val x)).trans (forall_congr' fun a => ?_)` and prove the remaining obligations. Rewrite using `[← S.p_res he J.subtype continuous_subtype_val a x]`. Conclude with `Submodule.mem_bot _`.
+-/
 theorem compat_H1ur (J : Subgroup Γ) : (S.h1 he).Compat (H1ur ρ J) (H1ur ρ' J) := by
   intro x
   simp only [H1ur, LinearMap.mem_ker]
@@ -205,6 +271,9 @@ theorem compat_H1ur (J : Subgroup Γ) : (S.h1 he).Compat (H1ur ρ J) (H1ur ρ' J
   rw [← S.p_res he J.subtype continuous_subtype_val a x]
   exact Submodule.mem_bot _
 
+/- English proof (translation)
+Introduce `x`. Simplify using `only [mem_Sel, ← S.p_res he]`. Conclude with `⟨fun h a i => (hL i _).1 (h i) a, fun h i => (hL i _).2 fun a => h a i⟩`.
+-/
 theorem compat_Sel {I : Type} {Δ : I → Type} [∀ i, Group (Δ i)] [∀ i, TopologicalSpace (Δ i)]
     (φ : ∀ i, Δ i →* Γ) (hφ : ∀ i, Continuous (φ i)) (L : LocCond ρ φ) (L' : LocCond ρ' φ)
     (hL : ∀ i, (S.h1 (ρ := ρ.comp (φ i)) (ρ' := ρ'.comp (φ i))
@@ -245,9 +314,19 @@ def fracComp : Comp b (FractionRing O) (FractionRing O') where
     rw [map_smul, Finsupp.smul_apply, fracBasis, Module.Basis.localizationLocalization_repr_algebraMap,
       Algebra.smul_def (b.repr c a), smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fracComp_inc (x : FractionRing O) :
     (fracComp b).inc x = algebraMap (FractionRing O) (FractionRing O') x := rfl
 
+/- English proof (translation)
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ a`. Use `⟨b.repr c a, ?_⟩` and prove the remaining obligations. Use `(fracComp b).p_inc a c 1` as an intermediate fact.
+
+Simplify `this.symm` using `[fracComp_inc, ← Algebra.algebraMap_eq_smul_one]`. Introduce `h choose m hm using h`. Rewrite using `[← (fracComp b).sum_p x]`. Use `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ⟨algebraMap O O' (m a), ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, fracComp_inc]`.
+
+Simplify using `[← IsScalarTower.algebraMap_apply]`.
+-/
 theorem frac_compat : (fracComp b).Compat (LinearMap.range (Algebra.linearMap O (FractionRing O)))
     (LinearMap.range (Algebra.linearMap O' (FractionRing O'))) := by
   intro x
@@ -265,12 +344,20 @@ theorem frac_compat : (fracComp b).Compat (LinearMap.range (Algebra.linearMap O 
 
 def divComp (r : ℕ) : Comp b (Fin r → KmodO O) (Fin r → KmodO O') := (frac_compat b).quot.pi (Fin r)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divComp_inc {r : ℕ} (y : Fin r → FractionRing O) (j : Fin r) :
     (divComp b r).inc (fun j => Submodule.Quotient.mk (y j)) j =
       Submodule.Quotient.mk (algebraMap (FractionRing O) (FractionRing O') (y j)) := rfl
 
 open Formalism.MainNotions.BlochKatoReduction
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `(frac_compat b).quot.p a ((((1 : O'ˣ)⁻¹ * (Units.map ((algebraMap O O').comp φ).toMonoidHom (χ g))⁻¹ : O'ˣ) : O') • ∑ k, algebraMap O O' (φ ((ρ g : Matrix (Fin r) (Fin r) O₀) j k)) • m k) = (((1 : Oˣ)⁻¹ * (Units.map φ.toMonoidHom (χ g))⁻¹ : Oˣ) : O) • ∑ k, (φ ((ρ g : Matrix (Fin …`. Establish `: (((1 : O'ˣ)⁻¹ * (Units.map ((algebraMap O O').comp φ).toMonoidHom (χ g))⁻¹ : O'ˣ) : O') = algebraMap O O' (((1 : Oˣ)⁻¹ * (Units.map φ.toMonoidHom (χ g))⁻¹ : Oˣ) : O)`. Simplify using `[← map_inv]`. Rewrite using `[this, Comp.p_smul, map_sum]`.
+
+Simplify using `only [Comp.p_smul]`.
+-/
 theorem divComp_equiv {Γ O₀ : Type} [Group Γ] [CommRing O₀] (φ : O₀ →+* O) {r : ℕ}
     (ρ : Γ →* GL (Fin r) O₀) (χ : Γ →* O₀ˣ) (a : ι) (g : Γ) (m : Fin r → KmodO O') :
     (divComp b r).p a (twRep ((algebraMap O O').comp φ) ρ χ 1 g m) =
@@ -295,6 +382,23 @@ def fracClasses {Γ O₀ : Type} [Group Γ] [TopologicalSpace Γ] [CommRing O₀
     (∀ g a, (z : Γ → Fin r → KmodO O) g a = Submodule.Quotient.mk (y g a)) ∧
     x = Submodule.Quotient.mk z}
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, c, y, hc, hy, hz, rfl⟩ choose n d hF hy using hy`. Establish `hd : ∀ g a, algebraMap O (FractionRing O) (φ (d g a)) ≠ 0` using `fun g a => by`. Simplify `hFr _ _ _ _ _ (hF g a)` using `[map_eq_zero_iff φ hφ]`.
+
+Set `y₀ : Γ → Fin r → FractionRing O` to `fun g a => algebraMap O (FractionRing O) (φ (n g a)) / algebraMap O (FractionRing O) (φ (d g a))`. Establish `hy₀ : ∀ g a, algebraMap O (FractionRing O) (φ (d g a)) * y₀ g a = algebraMap O (FractionRing O) (φ (n g a))` using `fun g a => mul_div_cancel₀ _ (hd g a)`. Establish `hyy : ∀ g a, algebraMap (FractionRing O) (FractionRing O') (y₀ g a) = y g a`. Introduce `g a`. Establish `h1` using `congrArg (algebraMap (FractionRing O) (FractionRing O')) (hy₀ g a)`.
+
+Establish `h2` using `hy g a`. Simplify using `only [RingHom.comp_apply, ← IsScalarTower.algebraMap_apply] at h2`. Rewrite `h2` using `[IsScalarTower.algebraMap_apply O (FractionRing O) (FractionRing O'), IsScalarTower.algebraMap_apply O (FractionRing O) (FractionRing O')]`. Rewrite `h1` using `[map_mul, ← h2]`. Conclude with `mul_left_cancel₀ ((map_ne_zero _).2 (hd g a)) h1`.
+
+Set `z₀ : Γ → Fin r → KmodO O` to `fun g a => Submodule.Quotient.mk (y₀ g a)`. Establish `hzz : ((divComp b r).pi Γ).inc z₀ = z`. Use function extensionality and compare the values at `g a`. Rewrite using `[hz, ← hyy]`. Both sides reduce to the same expression.
+
+Establish `hz₀ : z₀ ∈ Z1 ρ`. Take `⟨a, u, hu⟩` from `hu`. Use `((divComp b r).compatible_cocycles he z).1 z.2 a` as an intermediate fact. Rewrite `this` using `[← hzz, Comp.p_inc', ← hu]`. Simplify `(Z1 ρ).smul_mem (↑u⁻¹ : O) this` using `[smul_smul]`.
+
+Use `⟨Submodule.Quotient.mk ⟨z₀, hz₀⟩, ⟨⟨z₀, hz₀⟩, c, y₀, hc, fun g a => ⟨_, _, hF g a, hy₀ g a⟩, fun _ _ => rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext hzz)`. Introduce and unpack `⟨_, ⟨z, c, y, hc, hy, hz, rfl⟩, rfl⟩`. Use `⟨((divComp b r).compatible_cocycles he).sub.inc z, c, fun g a => algebraMap (FractionRing O) (FractionRing O') (y g a), hc, fun g a => ?_, fun g a => ?_, rfl⟩` and prove the remaining obligations. Take `⟨n, d, hF, hy⟩` from `hy g a`.
+
+Use `⟨n, d, hF, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (algebraMap (FractionRing O) (FractionRing O')) hy`. Simplify `h1` using `[← IsScalarTower.algebraMap_apply]`. Express the relevant statement in the definitionally equal form `(frac_compat b).quot.inc (z.1 g a) = _`. Rewrite using `[hz]`.
+
+Both sides reduce to the same expression.
+-/
 theorem fracClasses_eq {Γ O₀ : Type} [Group Γ] [TopologicalSpace Γ] [CommRing O₀] (φ : O₀ →+* O)
     (hφ : Function.Injective φ) {r : ℕ} (ρ : Representation O Γ (Fin r → KmodO O))
     (ρ' : Representation O' Γ (Fin r → KmodO O'))
@@ -355,6 +459,11 @@ variable {O O' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Co
   [IsDiscreteValuationRing O'] [Algebra O O'] [FaithfulSMul O O'] [Module.Finite O O']
   {ι : Type} [Fintype ι] {b : Module.Basis ι O O'}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `: (1 : O') ∈ IsLocalRing.maximalIdeal O'`. Rewrite using `[← b.sum_repr 1]`. Use `Ideal.sum_mem _ fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_right _ _ fun hu => h a (isUnit_of_map_unit _ _ hu)`. Conclude with `this isUnit_one`.
+-/
 theorem exists_unit_repr_one (b : Module.Basis ι O O') : ∃ a, IsUnit (b.repr 1 a) := by
   by_contra h
   push Not at h
@@ -365,6 +474,9 @@ theorem exists_unit_repr_one (b : Module.Basis ι O O') : ∃ a, IsUnit (b.repr 
     exact Ideal.mul_mem_right _ _ fun hu => h a (isUnit_of_map_unit _ _ hu)
   exact this isUnit_one
 
+/- English proof (translation)
+Establish `he` using `GlobalTheory.ramificationIdx_maximalIdeal_pos O O'`. Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.lenN`. Rewrite using `[S.length_eq, GlobalTheory.length_baseChange_dvr, ← map_natCast (algebraMap O O'), GlobalTheory.addVal_algebraMap, ENat.toNat_mul, ENat.toNat_coe, ENat.toENNReal_mul, Nat.cast_mul, ENat.toENNReal_coe]`. Conclude with `ENNReal.mul_div_mul_right _ _ (by exact_mod_cast he.ne') (ENNReal.natCast_ne_top _)`.
+-/
 theorem lenN_eq {A A' : Type} [AddCommGroup A] [Module O A] [AddCommGroup A'] [Module O' A']
     (S : Comp b A A') (l : ℕ) : Formalism.MainNotions.BlochKatoReduction.Gen.lenN O' l A' = Formalism.MainNotions.BlochKatoReduction.Gen.lenN O l A := by
   have he := GlobalTheory.ramificationIdx_maximalIdeal_pos O O'
@@ -379,6 +491,11 @@ section Main
 
 open Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen Formalism.GaloisCohomology
 
+/- English proof (translation)
+Use `Comp.compat_Sel _ he _ _ _ _ fun v => ?_` and prove the remaining obligations. Unfold `bkCond`. Use `split_ifs with h1 h2`. Conclude with `hL v h1`. Conclude with `Comp.compat_top _`.
+
+Conclude with `S.compat_H1ur _ _`.
+-/
 theorem compat_selAll {O O' : Type} [CommRing O] [CommRing O'] [Algebra O O'] {ι : Type} [Fintype ι]
     {b : Module.Basis ι O O'} {A A' : Type} [AddCommGroup A] [Module O A] [AddCommGroup A']
     [Module O' A'] (S : Comp b A A') [TopologicalSpace A] [DiscreteTopology A]
@@ -418,9 +535,17 @@ def selG {O : Type} [CommRing O] [IsDomain O] (φ : X.O0 i →+* O)
     Submodule O (H1 (twRep φ (X.rhoS i s) (chiS i s) 1)) :=
   SelAll _ N.plOm (bkCond _ N.plOm (X.l i) (Spl i ∪ ↑Q) (bkG bkP i s φ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem selT_eq (k : ℕ) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E))) :
     selT bkP i s k Q 1 = selG bkP i s (phiK X i k) Q := rfl
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis O O'`. Establish `he` using `divComp_equiv b φ (X.rhoS i s) (chiS i s)`. Use `lenN_eq (b := b) (Comp.Compat.sub (S := (divComp b D.R.r).h1 he) ?_) l` and prove the remaining obligations. Use `compat_selAll _ he _ _ _ _ _ fun v h1 => ?_` and prove the remaining obligations. Establish `hv : v ∈ placesOver D.host.E (X.l i)` using `h1`.
+
+Unfold `bkG`. Rewrite using `[dif_pos hv, dif_pos hv, fracClasses_eq b φ hφ ((twRep φ (X.rhoS i s) (chiS i s) 1).comp (DecV N v).subtype) ((twRep ((algebraMap O O').comp φ) (X.rhoS i s) (chiS i s) 1).comp (DecV N v).subtype) (fun a g m => he a g.1 m) (exists_unit_repr_one b) _ _ ?_]`. Conclude with `Comp.compat_span _ _`. Conclude with `fun _ _ _ _ _ h => h.1`.
+-/
 theorem lenN_selG {O O' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing O']
     [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O'] [FaithfulSMul O O'] [Module.Finite O O']
     (φ : X.O0 i →+* O) (hφ : Function.Injective φ) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E)))
@@ -439,6 +564,9 @@ theorem lenN_selG {O O' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRi
   · exact Comp.compat_span _ _
   · exact fun _ _ _ _ _ h => h.1
 
+/- English proof (translation)
+Use `haveI := X.Ok_fin i k`. Use `haveI : FaithfulSMul (X.O i) (X.Ok i k) := (faithfulSMul_iff_algebraMap_injective _ _).2 (X.Ok_inj i k)`. Conclude with `lenN_selG bkP i s (O' := X.Ok i k) (algebraMap (X.O0 i) (X.O i)) (X.O_inj i) Q (X.l i)`.
+-/
 theorem sLen_eq (k : ℕ) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E))) :
     sLen bkP i s k Q 1 = lenN (X.O i) (X.l i) (selG bkP i s (algebraMap (X.O0 i) (X.O i)) Q) := by
   haveI := X.Ok_fin i k
@@ -448,6 +576,9 @@ theorem sLen_eq (k : ℕ) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E))) :
 
 end Main
 
+/- English proof (translation)
+Rewrite using `[sLen_eq, sLen_eq]`.
+-/
 theorem sLen_level_free (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (k k' : ℕ)
     (Q : Finset (HeightOneSpectrum (𝓞 D.host.E))) :
     Formalism.MainNotions.BlochKatoReduction.Gen.sLen (Formalism.MainNotions.BlochKatoReduction.bk0 D) i s k Q 1 =

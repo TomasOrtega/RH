@@ -16,6 +16,9 @@ def rowsPoly {n d : ℕ} (F : Matrix (Fin n) (Fin n) ℂ) (s : Fin d → Fin n)
     (p : MvPolynomial (Fin d × Fin n) ℂ) : MvPolynomial (Fin n × Fin n) ℂ :=
   bind₁ (fun ij : Fin d × Fin n => ∑ l, C (F (s ij.1) l) * X (l, ij.2)) p
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `eval₂Hom (RingHom.id ℂ) (entries U) (bind₁ _ p) = eval₂Hom (RingHom.id ℂ) _ p`. Rewrite using `[eval₂Hom_bind₁]`. Use `congr 2`. Use function extensionality and compare the values at `ij`. Simplify using `[entries, Matrix.mul_apply]`.
+-/
 theorem eval_rowsPoly {n d : ℕ} (F : Matrix (Fin n) (Fin n) ℂ) (s : Fin d → Fin n)
     (p : MvPolynomial (Fin d × Fin n) ℂ) (U : Matrix (Fin n) (Fin n) ℂ) :
     eval (entries U) (rowsPoly F s p) = eval (entries ((F * U).submatrix s id)) p := by
@@ -25,6 +28,9 @@ theorem eval_rowsPoly {n d : ℕ} (F : Matrix (Fin n) (Fin n) ℂ) (s : Fin d �
   funext ij
   simp [entries, Matrix.mul_apply]
 
+/- English proof (translation)
+Use `⟨star F * Matrix.of (Function.extend s (fun i => A i) 0), ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, mem_unitaryGroup_iff.mp hF, Matrix.one_mul]`. Use extensionality with `i j`. Simplify using `[hs.extend_apply]`.
+-/
 theorem exists_rows_eq {n d : ℕ} {F : Matrix (Fin n) (Fin n) ℂ} (hF : F ∈ unitaryGroup (Fin n) ℂ)
     {s : Fin d → Fin n} (hs : Function.Injective s) (A : Matrix (Fin d) (Fin n) ℂ) :
     ∃ U : Matrix (Fin n) (Fin n) ℂ, (F * U).submatrix s id = A := by
@@ -33,6 +39,9 @@ theorem exists_rows_eq {n d : ℕ} {F : Matrix (Fin n) (Fin n) ℂ} (hF : F ∈ 
   ext i j
   simp [hs.extend_apply]
 
+/- English proof (translation)
+Take `⟨U, hU⟩` from `exists_rows_eq hF hs A`. Introduce `h`. Apply `hA` to reduce the goal to its premises. Rewrite using `[← hU, ← eval_rowsPoly, h, map_zero]`.
+-/
 theorem rowsPoly_ne_zero {n d : ℕ} {F : Matrix (Fin n) (Fin n) ℂ} (hF : F ∈ unitaryGroup (Fin n) ℂ)
     {s : Fin d → Fin n} (hs : Function.Injective s) {p : MvPolynomial (Fin d × Fin n) ℂ}
     {A : Matrix (Fin d) (Fin n) ℂ} (hA : eval (entries A) p ≠ 0) : rowsPoly F s p ≠ 0 := by
@@ -41,6 +50,19 @@ theorem rowsPoly_ne_zero {n d : ℕ} {F : Matrix (Fin n) (Fin n) ℂ} (hF : F �
   apply hA
   rw [← hU, ← eval_rowsPoly, h, map_zero]
 
+/- English proof (translation)
+Introduce `n d J hJ hd`. Take `⟨W, ⟨S, hS⟩, ⟨A₀, hA₀⟩, hsub⟩` from `hO n d J hJ hd`. Establish `hA₀'` using `hA₀`. Rewrite `hA₀'` using `[hS]`. Take `⟨p, hpS, hp⟩` from `hA₀'`.
+
+Establish `good : ∀ A : Matrix (Fin d) (Fin n) ℂ, eval (entries A) p ≠ 0 → IsFiniteProjection J A` using `fun A hA => hsub (by rw [hS]; exact ⟨p, hpS, hA⟩)`. Establish `hdn : d ≤ n`. Establish `h` using `ringKrullDim_quotient_le J`. Rewrite `h` using `[hd, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`. Conclude with `h` after adjusting the coercions.
+
+Use `⟨⟨W, ⟨S, hS⟩, ⟨A₀, hA₀⟩, hsub⟩, fun D hD hcl => ?_, fun m F => ?_⟩` and prove the remaining obligations. Take `⟨U, hUu, hUp⟩` from `hU n (rowsPoly 1 (Fin.castLE hdn) p) (rowsPoly_ne_zero (one_mem _) (Fin.castLE_injective hdn) hp)`. Establish `hUp' : eval (entries (U.submatrix (Fin.castLE hdn) id)) p ≠ 0`. Use `eval_rowsPoly 1 (Fin.castLE hdn) p U` as an intermediate fact. Rewrite `this` using `[Matrix.one_mul]`.
+
+Conclude with `this ▸ hUp`. Establish `hAo : U.submatrix (Fin.castLE hdn) id ∈ orthoRows d n` using `by show _ * _ = _`. Rewrite using `[conjTranspose_submatrix, ← submatrix_mul _ _ _ _ _ Function.bijective_id, ← star_eq_conjTranspose, mem_unitaryGroup_iff.mp hUu, submatrix_one _ (Fin.castLE_injective hdn)]`. Establish `hopen : IsOpen {B : Matrix (Fin d) (Fin n) ℂ | eval (entries B) p ≠ 0}` using `isOpen_ne_fun ((MvPolynomial.continuous_eval p).comp (continuous_pi fun ij => continuous_id.matrix_elem ij.1 ij.2)) continuous_const`. Take `⟨B, hBp, hBD⟩` from `mem_closure_iff.mp (hcl hAo) _ hopen hUp'`.
+
+Conclude with `⟨B, hBD, good B hBp⟩`. Establish `hQ : (∏ ks : Fin m × (Fin d ↪ Fin n), rowsPoly (F ks.1 : Matrix (Fin n) (Fin n) ℂ) ks.2 p) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun ks _ => rowsPoly_ne_zero (F ks.1).2 ks.2.injective hp`. Take `⟨U, hUu, hUQ⟩` from `hU n _ hQ`. Use `⟨U, hUu, fun k s => good _ ?_⟩` and prove the remaining obligations. Rewrite `hUQ` using `[map_prod]`.
+
+Use `Finset.prod_ne_zero_iff.mp hUQ (k, s) (Finset.mem_univ _)` as an intermediate fact. Express the relevant statement in the definitionally equal form `eval (entries U) (rowsPoly _ _ p) ≠ 0 at this`. Rewrite `this` using `[eval_rowsPoly]`. Then use the resulting hypothesis.
+-/
 theorem proof (hO : FiniteProjectionsContainOpen.Statement) (hU : UnitaryZariskiDense.Statement) :
     FiniteProjectionsGeneric.Statement := by
   classical

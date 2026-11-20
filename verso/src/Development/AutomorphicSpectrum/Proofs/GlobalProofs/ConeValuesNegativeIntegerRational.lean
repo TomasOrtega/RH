@@ -15,6 +15,17 @@ def LineDeg {r : ℕ} (i : Fin r) (d : ℕ) (g : (Fin r → ℕ) → ℂ) : Prop
   ∀ m : Fin r → ℕ, ∃ q : Polynomial ℂ, q.degree < (d : WithBot ℕ) ∧
     ∀ t : ℕ, g (m + t • (Pi.single i 1 : Fin r → ℕ)) = q.eval (t : ℂ)
 
+/- English proof (translation)
+Distinguish the cases in `h0 : q.natDegree = 0`. Rewrite using `[Polynomial.eq_C_of_natDegree_eq_zero h0]`. Simplify using the standard rewrite rules. Establish `hq0 : q ≠ 0` using `fun h => h0 (by simp [h])`. Establish `hX : (Polynomial.X + 1 : Polynomial ℂ).natDegree = 1` using `Polynomial.natDegree_X_add_C 1`.
+
+Establish `hnat : (q.comp (Polynomial.X + 1)).natDegree = q.natDegree`. Rewrite using `[Polynomial.natDegree_comp, hX, mul_one]`. Establish `hlc : (q.comp (Polynomial.X + 1)).leadingCoeff = q.leadingCoeff`. Establish `hm : (Polynomial.X + 1 : Polynomial ℂ).Monic` using `Polynomial.monic_X_add_C 1`. Rewrite using `[Polynomial.leadingCoeff_comp (by rw [hX]; exact one_ne_zero), hm.leadingCoeff, one_pow, mul_one]`.
+
+Establish `hp0 : q.comp (Polynomial.X + 1) ≠ 0`. Introduce `h`. Apply `hq0` to reduce the goal to its premises. Rewrite using `[← Polynomial.leadingCoeff_eq_zero, ← hlc, h, Polynomial.leadingCoeff_zero]`. Establish `hdeg : (q.comp (Polynomial.X + 1)).degree = q.degree`.
+
+Rewrite using `[Polynomial.degree_eq_natDegree hp0, Polynomial.degree_eq_natDegree hq0, hnat]`. Establish `hlt` using `Polynomial.degree_sub_lt hdeg hp0 hlc`. Rewrite `hlt` using `[hdeg, Polynomial.degree_eq_natDegree hq0]`. Rewrite `hq` using `[Polynomial.degree_eq_natDegree hq0]`. Establish `h1 : q.natDegree < d + 1` using `by exact_mod_cast hq`.
+
+Establish `h2 : q.natDegree ≤ d` using `Nat.lt_succ_iff.mp h1`. Conclude with `lt_of_lt_of_le hlt (by exact_mod_cast h2)`.
+-/
 theorem degree_shift_sub_lt (q : Polynomial ℂ) (d : ℕ) (hq : q.degree < ((d + 1 : ℕ) : WithBot ℕ)) :
     (q.comp (Polynomial.X + 1) - q).degree < (d : WithBot ℕ) := by
   by_cases h0 : q.natDegree = 0
@@ -40,6 +51,11 @@ theorem degree_shift_sub_lt (q : Polynomial ℂ) (d : ℕ) (hq : q.degree < ((d 
     have h2 : q.natDegree ≤ d := Nat.lt_succ_iff.mp h1
     exact lt_of_lt_of_le hlt (by exact_mod_cast h2)
 
+/- English proof (translation)
+Introduce `m`. Take `⟨q, hq, hg⟩` from `h m`. Use `⟨q.comp (Polynomial.X + 1) - q, degree_shift_sub_lt q d hq, fun t => ?_⟩` and prove the remaining obligations. Establish `e1 : m + t • (Pi.single i 1 : Fin r → ℕ) + Pi.single i 1 = m + (t + 1) • (Pi.single i 1 : Fin r → ℕ)`. Rewrite using `[add_smul, one_smul, add_assoc]`.
+
+Simplify using `only [fd]`. Rewrite using `[e1, hg, hg, Polynomial.eval_sub, Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_one, Nat.cast_add, Nat.cast_one]`.
+-/
 theorem LineDeg.fd_self {r : ℕ} {i : Fin r} {d : ℕ} {g : (Fin r → ℕ) → ℂ}
     (h : LineDeg i (d + 1) g) : LineDeg i d (fd i g) := by
   intro m
@@ -52,6 +68,11 @@ theorem LineDeg.fd_self {r : ℕ} {i : Fin r} {d : ℕ} {g : (Fin r → ℕ) →
   rw [e1, hg, hg, Polynomial.eval_sub, Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_X,
     Polynomial.eval_one, Nat.cast_add, Nat.cast_one]
 
+/- English proof (translation)
+Introduce `m`. Take `⟨q₁, hq₁, hg₁⟩` from `h (m + Pi.single k 1)`. Take `⟨q₂, hq₂, hg₂⟩` from `h m`. Use `⟨q₁ - q₂, lt_of_le_of_lt (Polynomial.degree_sub_le _ _) (max_lt hq₁ hq₂), fun t => ?_⟩` and prove the remaining obligations. Simplify using `only [fd]`.
+
+Rewrite using `[add_right_comm, hg₁, hg₂, Polynomial.eval_sub]`.
+-/
 theorem LineDeg.fd_any {r : ℕ} {i : Fin r} {d : ℕ} {g : (Fin r → ℕ) → ℂ} (k : Fin r)
     (h : LineDeg i d g) : LineDeg i d (fd k g) := by
   intro m
@@ -61,6 +82,11 @@ theorem LineDeg.fd_any {r : ℕ} {i : Fin r} {d : ℕ} {g : (Fin r → ℕ) → 
   simp only [fd]
   rw [add_right_comm, hg₁, hg₂, Polynomial.eval_sub]
 
+/- English proof (translation)
+Take `⟨q, hq, hg⟩` from `h m`. Establish `hq0 : q = 0`. Assume the negation of the conclusion as `hne`. Rewrite `hq` using `[Polynomial.degree_eq_natDegree hne]`. Establish `: q.natDegree < 0` using `by exact_mod_cast hq`.
+
+Use linear arithmetic over natural numbers and integers. Use `hg 0` as an intermediate fact. Simplify using `only [zero_smul, add_zero, hq0, Polynomial.eval_zero] at this`. Conclude with `this`.
+-/
 theorem LineDeg.eq_zero {r : ℕ} {i : Fin r} {g : (Fin r → ℕ) → ℂ}
     (h : LineDeg i 0 g) (m : Fin r → ℕ) : g m = 0 := by
   obtain ⟨q, hq, hg⟩ := h m
@@ -73,6 +99,15 @@ theorem LineDeg.eq_zero {r : ℕ} {i : Fin r} {g : (Fin r → ℕ) → ℂ}
   simp only [zero_smul, add_zero, hq0, Polynomial.eval_zero] at this
   exact this
 
+/- English proof (translation)
+Proceed by induction on `cs with`. Consider the case `nil => simpa [GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DL] using h`. Consider the case `cons c cs ih`. Establish `e : GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DL (c :: cs) g = fd c (GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DL cs g)` using `rfl`. Rewrite using `[e]`.
+
+Distinguish the cases in `hc : c = i`. Rewrite using `[hc, List.count_cons_self]`. Break down `Nat.eq_zero_or_pos (d - cs.count i) with h0 | hpos` into its components or cases. Establish `h3 : d - (cs.count i + 1) = 0` using `by omega`. Rewrite using `[h3]`.
+
+Rewrite `ih` using `[h0]`. Conclude with `ih.fd_any i`. Take `⟨e', he⟩ : ∃ e', d - cs.count i = e' + 1` from `⟨d - cs.count i - 1, by omega⟩`. Establish `h3 : d - (cs.count i + 1) = e'` using `by omega`. Rewrite using `[h3]`.
+
+Rewrite `ih` using `[he]`. Conclude with `ih.fd_self`. Establish `h3 : (c :: cs).count i = cs.count i` using `by simp [List.count_cons, hc]`. Rewrite using `[h3]`. Conclude with `ih.fd_any c`.
+-/
 theorem LineDeg.DL {r : ℕ} {i : Fin r} {d : ℕ} {g : (Fin r → ℕ) → ℂ} (h : LineDeg i d g)
     (cs : List (Fin r)) : LineDeg i (d - cs.count i) (DL cs g) := by
   induction cs with
@@ -96,6 +131,15 @@ theorem LineDeg.DL {r : ℕ} {i : Fin r} {d : ℕ} {g : (Fin r → ℕ) → ℂ}
       rw [h3]
       exact ih.fd_any c
 
+/- English proof (translation)
+Introduce `m`. Set `c : ι → ℂ` to `fun j => ((b j + ∑ k, a j k * (m k : ℝ) : ℝ) : ℂ)`. Use `⟨∏ j, (Polynomial.C ((a j i : ℝ) : ℂ) * Polynomial.X + Polynomial.C (c j)) ^ p, ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `hnd : (∏ j, (Polynomial.C ((a j i : ℝ) : ℂ) * Polynomial.X + Polynomial.C (c j)) ^ p).natDegree ≤ Fintype.card ι * p`. Establish `hj : ∀ j, ((Polynomial.C ((a j i : ℝ) : ℂ) * Polynomial.X + Polynomial.C (c j)) ^ p).natDegree ≤ p`.
+
+Introduce `j`. Combine the equalities or inequalities in the displayed calculation. Use `(Polynomial.natDegree_prod_le _ _).trans ((Finset.sum_le_sum fun j _ => hj j).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Polynomial.eval_prod]`. Simplify using `only [coneTerm, neg_neg, Complex.cpow_natCast, Polynomial.eval_pow, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [c, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, Nat.cast_add, Nat.cast_mul, Nat.cast_ite, Nat.cast_one, Nat.cast_zero, mul_ite, mul_one, mul_zero, mul_add, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lineDeg_coneTerm (ι : Type) [Fintype ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ) (i : Fin r)
     (p : ℕ) : LineDeg i (Fintype.card ι * p + 1) (coneTerm a b (-(p : ℂ))) := by
   classical
@@ -125,6 +169,9 @@ theorem lineDeg_coneTerm (ι : Type) [Fintype ι] (r : ℕ) (a : ι → Fin r �
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `ι _ r a b cs i N p hN hlt m`. Establish `h` using `(lineDeg_coneTerm ι r a b i p).DL cs`. Rewrite `h` using `[hN, show Fintype.card ι * p + 1 - N = 0 by omega]`. Conclude with `h.eq_zero m`.
+-/
 theorem DL_coneTerm_neg_natCast_eq_zero : ∀ (ι : Type) [Fintype ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ) (cs : List (Fin r)) (i : Fin r) (N p : ℕ), cs.count i = N → Fintype.card ι * p < N →
   ∀ m, DL cs (coneTerm a b (-(p : ℂ))) m = 0 := by
   intro ι _ r a b cs i N p hN hlt m

@@ -14,6 +14,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.VolBr
 
+/- English proof (translation)
+Take `⟨N, i, hi, e⟩` from `hX.isProjOver`. Establish `: LocallyOfFiniteType p` using `by subst e; infer_instance`. Establish `: Module.Finite ℤ k` using `hX.finite`. Establish `h1` using `Scheme.Hom.finiteType_appLE p (isAffineOpen_top (Sp k)) hU (by simp)`. Establish `h2 : (algebraMap ℤ k).FiniteType` using `RingHom.finiteType_algebraMap.mpr inferInstance`.
+
+Establish `h3 : ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).FiniteType` using `RingHom.FiniteType.of_surjective _ fun x => ⟨(Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom x, by simp⟩`. Establish `h4` using `h1.comp (h3.comp h2)`. Rewrite using `[← RingHom.finiteType_algebraMap]`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`.
+-/
 theorem finiteType_int_of_isAffineOpen {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
     (hX : IsArithVar p D) {U : X.Opens} (hU : IsAffineOpen U) : Algebra.FiniteType ℤ Γ(X, U) := by
   obtain ⟨N, i, hi, e⟩ := hX.isProjOver
@@ -28,6 +33,29 @@ theorem finiteType_int_of_isAffineOpen {k : Type} [CommRing k] {X : Scheme.{0}} 
   convert h4 using 1
   exact RingHom.ext_int _ _
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P s hs hs0 δ hδ σ y₀`. Use `set i := pick (P.L.φ σ).isLB y₀`. Use `set j := pick (P.A.φ σ).isLB y₀`. Establish `hyi : y₀ ∈ ptsIn p σ (P.L.B.U i)` using `mem_pick _ _`. Establish `hyj : y₀ ∈ ptsIn p σ (P.A.B.U j)` using `mem_pick _ _`.
+
+Establish `hxV : y₀.1 (IsLocalRing.closedPoint ℂ) ∈ P.L.B.U i ⊓ P.A.B.U j` using `GlobalTheory.CxPts.mem_ptsIn.1 (GlobalTheory.CxPts.mem_ptsIn_inf.2 ⟨hyi, hyj⟩)`. Take `⟨U, hUa, hxU, hUV⟩` from `Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens hxV`. Establish `hUi : U ≤ P.L.B.U i` using `hUV.trans inf_le_left`. Establish `hUj : U ≤ P.A.B.U j` using `hUV.trans inf_le_right`. Establish `hy₀U : y₀ ∈ ptsIn p σ U` using `GlobalTheory.CxPts.mem_ptsIn.2 hxU`.
+
+Establish `hgen : genericPoint X ∈ U` using `gen_mem hxU`. Establish `: Nonempty U` using `⟨⟨_, hxU⟩⟩`. Establish `: CharZero Γ(X, U)` using `RingHom.charZero (evHom hy₀U)`. Establish `: Algebra.FiniteType ℤ Γ(X, U)` using `finiteType_int_of_isAffineOpen hX hUa`. Set `_ : TopologicalSpace (Γ(X, U) →+* ℂ)` to `TopologicalSpace.induced (fun x : Γ(X, U) →+* ℂ => (x : Γ(X, U) → ℂ)) inferInstance`.
+
+Establish `hcont : ∀ (M : HermLB p) (c : M.B.ι), U ≤ M.B.U c → ∀ σ' : k →+* ℂ, ContinuousOn (fun y => (M.φ σ').φ c y / 2) (ptsIn p σ' U)`. Introduce `M c hc σ' y hy`. Conclude with `((M.cInf σ' c y (ptsIn_mono hc hy)).continuousAt.div_const 2).continuousWithinAt`. Take `⟨ψ, hψc, hψv, hsurj, hnb⟩` from `GlobalTheory.T.exists_continuous_read_on_affineOpen_ringHoms k X p D hX U hUa (fun σ' y => (P.L.φ σ').φ i y / 2) (hcont P.L i hUi)`. Take `⟨ψ', hψ'c, hψ'v, -, -⟩` from `GlobalTheory.T.exists_continuous_read_on_affineOpen_ringHoms k X p D hX U hUa (fun σ' y => (P.A.φ σ').φ j y / 2) (hcont P.A j hUj)`.
+
+Establish `hsreg : ∀ x ∈ U, RegAt x (P.loc 0 1 s i j)` using `fun x hx => hs x i j (hUi hx) (hUj hx)`. Take `⟨s', hs'⟩` from `exists_fnOf_eq hgen hsreg`. Establish `hs'0 : s' ≠ 0`. Introduce and unpack `rfl`. Simplify using `[Pair.loc, hs0] at hs'`.
+
+Take `⟨W', K, hW', hK, hKs, hmain⟩` from `GlobalTheory.T.local_max_principle_weighted_finiteType_int Γ(X, U) ψ hψc s' hs'0 (evHom hy₀U) δ hδ`. Establish `hgc : Continuous (fun x : Γ(X, U) →+* ℂ => ‖x s'‖ * Real.exp (-ψ' x))` using `(((continuous_apply s').comp continuous_induced_dom).norm).mul (Real.continuous_exp.comp hψ'c.neg)`. Choose the witnesses or unpack the hypotheses as in `⟨ρ, hρ, hρK⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ∀ x ∈ K, ρ ≤ ‖x s'‖ * Real.exp (-ψ' x) := by`. Break down `K.eq_empty_or_nonempty with hKe | hKne` into its components or cases. Conclude with `⟨1, one_pos, by simp [hKe]⟩`.
+
+Take `⟨x₁, hx₁, hmin⟩` from `hK.exists_isMinOn hKne hgc.continuousOn`. Conclude with `⟨_, mul_pos (norm_pos_iff.2 (hKs x₁ hx₁)) (Real.exp_pos _), fun x hx => isMinOn_iff.mp hmin x hx⟩`. Use `⟨{z | ∃ hz : z ∈ ptsIn p σ U, evHom hz ∈ W'}, ρ, hnb σ y₀ hy₀U W' hW', hρ, ?_⟩` and prove the remaining obligations. Introduce `N f R hf hR y hyW`. Take `⟨hyU, hyW'⟩` from `hyW`.
+
+Establish `hfreg : ∀ x ∈ U, RegAt x (P.loc N 0 f i j)` using `fun x hx => hf x i j (hUi hx) (hUj hx)`. Take `⟨f', hf'⟩` from `exists_fnOf_eq hgen hfreg`. Establish `hnuF : ∀ (σ' : k →+* ℂ) (z : CxPts p σ') (hz : z ∈ ptsIn p σ' U), P.nu N 0 σ' z f = ‖evHom hz f'‖ * Real.exp (-(N * ψ (evHom hz)))`. Introduce `σ' z hz`. Rewrite using `[GlobalTheory.T.hermLineBundlePairNorm_independent_of_frames k X p P N 0 f hf σ' z i j (ptsIn_mono hUi hz) (ptsIn_mono hUj hz), ← hf', ratVal_fnOf hz hgen, ev_eq hz, hψv σ' z hz]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hnuS : ∀ (σ' : k →+* ℂ) (z : CxPts p σ') (hz : z ∈ ptsIn p σ' U), P.nu 0 1 σ' z s = ‖evHom hz s'‖ * Real.exp (-ψ' (evHom hz))`. Introduce `σ' z hz`.
+
+Rewrite using `[GlobalTheory.T.hermLineBundlePairNorm_independent_of_frames k X p P 0 1 s hs σ' z i j (ptsIn_mono hUi hz) (ptsIn_mono hUj hz), ← hs', ratVal_fnOf hz hgen, ev_eq hz, hψ'v σ' z hz]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hnuF σ y hyU]`.
+
+Use `hmain N f' R ?_ (evHom hyU) hyW'` and prove the remaining obligations. Introduce `x hx`. Take `⟨σ', z, hz, rfl⟩` from `hsurj x`. Rewrite using `[← hnuF σ' z hz]`. Conclude with `hR σ' z (by rw [hnuS σ' z hz]; exact hρK _ hx)`.
+-/
 theorem Pair.max_principle_near : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ s : X.functionField, s ∈ P.H 0 1 → s ≠ 0 → ∀ δ : ℝ, 0 < δ → ∀ (σ : k →+* ℂ) (y₀ : CxPts p σ), ∃ (W : Set (CxPts p σ)) (ρ : ℝ), W ∈ 𝓝 y₀ ∧ 0 < ρ ∧ ∀ (N : ℕ) (f : X.functionField) (R : ℝ), f ∈ P.H N 0 → (∀ (σ' : k →+* ℂ) (y : CxPts p σ'), ρ ≤ P.nu 0 1 σ' y s → P.nu N 0 σ' y f ≤ R) → ∀ y ∈ W, P.nu N 0 σ y f ≤ Real.exp (δ * N) * R := by
   intro k _ X _ p D hX P s hs hs0 δ hδ σ y₀
   set i := pick (P.L.φ σ).isLB y₀

@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep GlobalTheory.FieldPair
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PairStep.exists_isolated_of_lcCut_zero | exact GlobalTheory.PairStep.exists_isolated_of_lcCut_zero | (intros; apply GlobalTheory.PairStep.exists_isolated_of_lcCut_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_isolated_lcCentre_of_zero_lcThreshold : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → 1 ≤ n →
     letI := algebraΓOfHom p;

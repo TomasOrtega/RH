@@ -13,10 +13,16 @@ variable {K K' A B : Type*} [Field K] [Field K'] [Field A] [Field B] [Algebra K 
   (e : K ≃+* K') (f : A ≃+* B) (hf : ∀ x : K, f (algebraMap K A x) = algebraMap K' B (e x))
 
 include hf in
+/- English proof (translation)
+Rewrite using `[RingEquiv.symm_apply_eq, hf, RingEquiv.apply_symm_apply]`.
+-/
 theorem symm_algebraMap_transport (x : K') : f.symm (algebraMap K' B x) = algebraMap K A (e.symm x) := by
   rw [RingEquiv.symm_apply_eq, hf, RingEquiv.apply_symm_apply]
 
 include hf in
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `(hf x).symm`.
+-/
 theorem comp_algebraMap_transport :
     (algebraMap K' B).comp e.toRingHom = (f : A →+* B).comp (algebraMap K A) := by
   ext x
@@ -39,10 +45,16 @@ def galTransport : (A ≃ₐ[K] A) ≃* (B ≃ₐ[K'] B) where
   right_inv _ := by ext; simp
   map_mul' _ _ := by ext; simp
 
+/- English proof (translation)
+Simplify using `[galTransport]`.
+-/
 theorem galTransport_apply (σ : A ≃ₐ[K] A) (a : A) : galTransport e f hf σ (f a) = f (σ a) := by
   simp [galTransport]
 
 include e f hf in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun σ τ => by obtain ⟨σ', rfl⟩ := (galTransport e f hf).surjective σ obtain ⟨τ', rfl⟩ := (galTransport e f hf).surjective τ rw [← map_mul, ← map_mul, mul_comm' σ' τ']⟩⟩`.
+-/
 theorem isMulCommutative_transport [IsMulCommutative (A ≃ₐ[K] A)] :
     IsMulCommutative (B ≃ₐ[K'] B) :=
   ⟨⟨fun σ τ => by
@@ -51,19 +63,31 @@ theorem isMulCommutative_transport [IsMulCommutative (A ≃ₐ[K] A)] :
     rw [← map_mul, ← map_mul, mul_comm' σ' τ']⟩⟩
 
 include e f hf in
+/- English proof (translation)
+The claim follows from `Module.Finite.of_equiv_equiv e f (comp_algebraMap_transport e f hf)`.
+-/
 theorem finiteDimensional_transport [FiniteDimensional K A] : FiniteDimensional K' B :=
   Module.Finite.of_equiv_equiv e f (comp_algebraMap_transport e f hf)
 
 include e f hf in
+/- English proof (translation)
+The claim follows from `IsGalois.of_equiv_equiv (comp_algebraMap_transport e f hf)`.
+-/
 theorem isGalois_transport [IsGalois K A] : IsGalois K' B :=
   IsGalois.of_equiv_equiv (comp_algebraMap_transport e f hf)
 
 include e f hf in
+/- English proof (translation)
+The claim follows from `have := isGalois_transport e f hf { toIsMulCommutative := isMulCommutative_transport e f hf }`.
+-/
 theorem isAbelianGalois_transport [IsAbelianGalois K A] : IsAbelianGalois K' B :=
   have := isGalois_transport e f hf
   { toIsMulCommutative := isMulCommutative_transport e f hf }
 
 include hf in
+/- English proof (translation)
+Rewrite using `[Algebra.norm_eq_of_equiv_equiv e f (comp_algebraMap_transport e f hf), RingEquiv.apply_symm_apply]`.
+-/
 theorem norm_transport (a : A) : e (Algebra.norm K a) = Algebra.norm K' (f a) := by
   rw [Algebra.norm_eq_of_equiv_equiv e f (comp_algebraMap_transport e f hf), RingEquiv.apply_symm_apply]
 
@@ -80,6 +104,11 @@ def transportField (M : IntermediateField K Ω) : IntermediateField K' Ω' :=
       change ε (algebraMap K Ω (e.symm x)) = _
       rw [hε, e.apply_symm_apply]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `ε.symm (ε x) ∈ M`. Rewrite using `[RingEquiv.symm_apply_apply]`. Conclude with `hx`.
+
+Introduce `h`. Conclude with `⟨_, h, ε.apply_symm_apply y⟩`.
+-/
 theorem mem_transportField {M : IntermediateField K Ω} {y : Ω'} :
     y ∈ transportField e ε hε M ↔ ε.symm y ∈ M := by
   constructor
@@ -90,6 +119,9 @@ theorem mem_transportField {M : IntermediateField K Ω} {y : Ω'} :
   · intro h
     exact ⟨_, h, ε.apply_symm_apply y⟩
 
+/- English proof (translation)
+Rewrite using `[mem_transportField, RingEquiv.symm_apply_apply]`.
+-/
 theorem apply_mem_transportField {M : IntermediateField K Ω} {x : Ω} :
     ε x ∈ transportField e ε hε M ↔ x ∈ M := by
   rw [mem_transportField, RingEquiv.symm_apply_apply]
@@ -103,22 +135,37 @@ def transportFieldEquiv (M : IntermediateField K Ω) : M ≃+* transportField e 
   map_add' _ _ := Subtype.ext (map_add ε _ _)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_transportFieldEquiv (M : IntermediateField K Ω) (x : M) :
     (transportFieldEquiv e ε hε M x : Ω') = ε x :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (hε x)`.
+-/
 theorem transportFieldEquiv_algebraMap (M : IntermediateField K Ω) (x : K) :
     transportFieldEquiv e ε hε M (algebraMap K M x) = algebraMap K' (transportField e ε hε M) (e x) :=
   Subtype.ext (hε x)
 
+/- English proof (translation)
+The claim follows from `isAbelianGalois_transport e (transportFieldEquiv e ε hε M) (transportFieldEquiv_algebraMap e ε hε M)`.
+-/
 theorem isAbelianGalois_transportField (M : IntermediateField K Ω) [IsAbelianGalois K M] :
     IsAbelianGalois K' (transportField e ε hε M) :=
   isAbelianGalois_transport e (transportFieldEquiv e ε hε M) (transportFieldEquiv_algebraMap e ε hε M)
 
+/- English proof (translation)
+The claim follows from `finiteDimensional_transport e (transportFieldEquiv e ε hε M) (transportFieldEquiv_algebraMap e ε hε M)`.
+-/
 theorem finiteDimensional_transportField (M : IntermediateField K Ω) [FiniteDimensional K M] :
     FiniteDimensional K' (transportField e ε hε M) :=
   finiteDimensional_transport e (transportFieldEquiv e ε hε M) (transportFieldEquiv_algebraMap e ε hε M)
 
+/- English proof (translation)
+The claim follows from `norm_transport e (transportFieldEquiv e ε hε M) (transportFieldEquiv_algebraMap e ε hε M) z`.
+-/
 theorem norm_transportField (M : IntermediateField K Ω) (z : M) :
     e (Algebra.norm K z) = Algebra.norm K' (transportFieldEquiv e ε hε M z) :=
   norm_transport e (transportFieldEquiv e ε hε M) (transportFieldEquiv_algebraMap e ε hε M) z
@@ -126,6 +173,9 @@ theorem norm_transportField (M : IntermediateField K Ω) (z : M) :
 variable [IsGalois K Ω] [IsGalois K' Ω']
 
 include hε in
+/- English proof (translation)
+Take `⟨L, _, _, hyL⟩` from `exists_finite_abelian_mem hy`. Use `isAbelianGalois_transportField e ε hε L` as an intermediate fact. Conclude with `le_maximalAbelianExtension _ ((apply_mem_transportField e ε hε).2 hyL)`.
+-/
 theorem apply_mem_maximalAbelianExtension {y : Ω} (hy : y ∈ maximalAbelianExtension K Ω) :
     ε y ∈ maximalAbelianExtension K' Ω' := by
   obtain ⟨L, _, _, hyL⟩ := exists_finite_abelian_mem hy
@@ -134,12 +184,18 @@ theorem apply_mem_maximalAbelianExtension {y : Ω} (hy : y ∈ maximalAbelianExt
 
 include hε in
 
+/- English proof (translation)
+Use `⟨fun h => ?_, apply_mem_maximalAbelianExtension e ε hε⟩` and prove the remaining obligations. Use `apply_mem_maximalAbelianExtension e.symm ε.symm (symm_algebraMap_transport e ε hε) h` as an intermediate fact. Rewrite `this` using `[RingEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem mem_maximalAbelianExtension_transport_iff {y : Ω} :
     ε y ∈ maximalAbelianExtension K' Ω' ↔ y ∈ maximalAbelianExtension K Ω := by
   refine ⟨fun h => ?_, apply_mem_maximalAbelianExtension e ε hε⟩
   have := apply_mem_maximalAbelianExtension e.symm ε.symm (symm_algebraMap_transport e ε hε) h
   rwa [RingEquiv.symm_apply_apply] at this
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_transportField, ← mem_maximalAbelianExtension_transport_iff e ε hε, RingEquiv.apply_symm_apply]`.
+-/
 theorem transportField_maximalAbelianExtension :
     transportField e ε hε (maximalAbelianExtension K Ω) = maximalAbelianExtension K' Ω' := by
   ext y
@@ -151,10 +207,16 @@ def maximalAbelianExtensionTransport :
     (IntermediateField.equivOfEq (transportField_maximalAbelianExtension e ε hε)).toRingEquiv
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_maximalAbelianExtensionTransport (y : maximalAbelianExtension K Ω) :
     (maximalAbelianExtensionTransport e ε hε y : Ω') = ε y :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (hε x)`.
+-/
 theorem maximalAbelianExtensionTransport_algebraMap (x : K) :
     maximalAbelianExtensionTransport e ε hε (algebraMap K _ x) = algebraMap K' _ (e x) :=
   Subtype.ext (hε x)
@@ -170,12 +232,18 @@ variable {K K' : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonar
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace K']
   [IsNonarchimedeanLocalField K'] in
 include he in
+/- English proof (translation)
+Rewrite using `[← he, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`.
+-/
 theorem symm_vle_iff (x y : K') : e.symm x ≤ᵥ e.symm y ↔ x ≤ᵥ y := by
   rw [← he, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace K']
   [IsNonarchimedeanLocalField K'] in
 include he in
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff, ← (valuation K').vle_one_iff, ← (valuation K).vle_one_iff, ← map_one e, he]`.
+-/
 theorem apply_mem_integer_iff (x : K) : e x ∈ 𝒪[K'] ↔ x ∈ 𝒪[K] := by
   rw [Valuation.mem_integer_iff, Valuation.mem_integer_iff, ← (valuation K').vle_one_iff,
     ← (valuation K).vle_one_iff, ← map_one e, he]
@@ -191,6 +259,9 @@ def integerEquivOfVle : 𝒪[K] ≃+* 𝒪[K'] where
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace K']
   [IsNonarchimedeanLocalField K'] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_integerEquivOfVle (x : 𝒪[K]) : (integerEquivOfVle e he x : K') = e x :=
   rfl
 
@@ -199,15 +270,28 @@ def residueFieldEquivOfVle : 𝓀[K] ≃+* 𝓀[K'] :=
 
 include he in
 
+/- English proof (translation)
+The claim follows from `(Nat.card_congr (residueFieldEquivOfVle e he).toEquiv).symm`.
+-/
 theorem card_residueField_eq_of_vle : Nat.card 𝓀[K'] = Nat.card 𝓀[K] :=
   (Nat.card_congr (residueFieldEquivOfVle e he).toEquiv).symm
 
 include he in
+/- English proof (translation)
+Rewrite using `[← map_natCast (residueFieldEquivOfVle e he), Ne, map_eq_zero_iff _ (residueFieldEquivOfVle e he).injective]`.
+-/
 theorem natCast_residueField_ne_zero_iff (m : ℕ) : (m : 𝓀[K']) ≠ 0 ↔ (m : 𝓀[K]) ≠ 0 := by
   rw [← map_natCast (residueFieldEquivOfVle e he), Ne, map_eq_zero_iff _ (residueFieldEquivOfVle e he).injective]
 
 include he in
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `hϖ' : Irreducible (integerEquivOfVle e he ϖ)` using `(MulEquiv.irreducible_iff (f := (integerEquivOfVle e he).toMulEquiv) (x := ϖ)).2 hϖ`. Use `set p := unitsEquivIntProd hϖ x`. Establish `hx : (x : K) = (ϖ : K) ^ Multiplicative.toAdd p.1 * ((p.2 : 𝒪[K]) : K)`. Rewrite using `[← coe_unitsOfIntProd hϖ, ← unitsEquivIntProd_symm_apply, MulEquiv.symm_apply_apply]`.
+
+Use `set y : K'ˣ := unitsOfIntProd hϖ' (p.1, Units.map (integerEquivOfVle e he).toMonoidHom p.2)`. Establish `hy : e (x : K) = (y : K')`. Rewrite using `[coe_unitsOfIntProd, hx, map_mul, map_zpow₀]`. Both sides reduce to the same expression. Establish `h2 : (unitsEquivIntProd hϖ' y).1 = p.1`.
+
+Express the relevant statement in the definitionally equal form `((unitsEquivIntProd hϖ') ((unitsEquivIntProd hϖ').symm _)).1 = _`. Rewrite using `[MulEquiv.apply_symm_apply]`. Rewrite `h2` using `[unitsEquivIntProd_fst]`. Rewrite using `[hy]`. Conclude with `Multiplicative.ofAdd.injective (h2.trans (unitsEquivIntProd_fst hϖ x))`.
+-/
 theorem ord_apply_of_vle (x : Kˣ) : ord (e (x : K)) = ord (x : K) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
   have hϖ' : Irreducible (integerEquivOfVle e he ϖ) :=
@@ -238,6 +322,11 @@ variable {K K' : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonar
   (ε : Ω ≃+* Ω') (hε : ∀ x : K, ε (algebraMap K Ω x) = algebraMap K' Ω' (e x))
 
 include he hε in
+/- English proof (translation)
+Rewrite `hy`, the goal using `[maximalUnramifiedExtension_eq_adjoin]`. Establish `hS : unramifiedRoots K Ω ⊆ (transportField e.symm ε.symm (symm_algebraMap_transport e ε hε) (IntermediateField.adjoin K' (unramifiedRoots K' Ω')) : Set Ω)`. Introduce `ξ hξ`. Rewrite using `[SetLike.mem_coe, mem_transportField, RingEquiv.symm_symm]`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises.
+
+Take `⟨m, hm, hξm⟩` from `mem_unramifiedRoots_iff.1 hξ`. Conclude with `mem_unramifiedRoots_iff.2 ⟨m, (natCast_residueField_ne_zero_iff e he m).2 hm, by`. Rewrite using `[← map_pow, hξm, map_one]⟩`. Use `(IntermediateField.adjoin_le_iff.2 hS) hy` as an intermediate fact. Rewrite `this` using `[mem_transportField, RingEquiv.symm_symm]`. Then use the resulting hypothesis.
+-/
 theorem apply_mem_maximalUnramifiedExtension_of_vle {y : Ω}
     (hy : y ∈ maximalUnramifiedExtension K Ω) : ε y ∈ maximalUnramifiedExtension K' Ω' := by
   rw [maximalUnramifiedExtension_eq_adjoin] at hy ⊢
@@ -261,6 +350,9 @@ def transportedArtinMap :
       ((localArtinMap K Ω).comp (Units.map e.symm.toRingHom.toMonoidHom))
 
 omit [ValuativeRel K'] [TopologicalSpace K'] [IsNonarchimedeanLocalField K'] in
+/- English proof (translation)
+Establish `h` using `galTransport_apply e (maximalAbelianExtensionTransport e ε hε) (maximalAbelianExtensionTransport_algebraMap e ε hε) (localArtinMap K Ω (Units.map e.symm.toRingHom.toMonoidHom x')) ⟨y, hy⟩`. Conclude with `congrArg Subtype.val h`.
+-/
 theorem transportedArtinMap_apply (x' : K'ˣ) {y : Ω} (hy : y ∈ maximalAbelianExtension K Ω) :
     ((transportedArtinMap K Ω e ε hε x'
       ⟨ε y, (mem_maximalAbelianExtension_transport_iff e ε hε).2 hy⟩ :
@@ -273,6 +365,9 @@ theorem transportedArtinMap_apply (x' : K'ˣ) {y : Ω} (hy : y ∈ maximalAbelia
   exact congrArg Subtype.val h
 
 omit [ValuativeRel K'] [TopologicalSpace K'] [IsNonarchimedeanLocalField K'] in
+/- English proof (translation)
+Establish `h` using `transportedArtinMap_apply e ε hε x' ((mem_maximalAbelianExtension_transport_iff e ε hε).1 (by rwa [RingEquiv.apply_symm_apply] : ε (ε.symm y') ∈ maximalAbelianExtension K' Ω'))`. Simplify using `only [RingEquiv.apply_symm_apply] at h`. Conclude with `h`.
+-/
 theorem transportedArtinMap_apply' (x' : K'ˣ) {y' : Ω'}
     (hy' : y' ∈ maximalAbelianExtension K' Ω') :
     ((transportedArtinMap K Ω e ε hε x' ⟨y', hy'⟩ : maximalAbelianExtension K' Ω') : Ω') =
@@ -287,6 +382,27 @@ theorem transportedArtinMap_apply' (x' : K'ˣ) {y' : Ω'}
 
 include he in
 
+/- English proof (translation)
+Establish `he'` using `symm_vle_iff e he`. Establish `hε'` using `symm_algebraMap_transport e ε hε`. Use `eq_localArtinMap_of (fun π' hπ' => ?_) (fun L' _ _ x' hx' => ?_)` and prove the remaining obligations. Use `set π : Kˣ := Units.map e.symm.toRingHom.toMonoidHom π'`. Establish `hπ : ord (π : K) = 1`.
+
+Rewrite using `[← hπ', ← ord_apply_of_vle e.symm he' π']`. Both sides reduce to the same expression. Rewrite using `[eq_maximalUnramifiedExtensionFrobenius_iff]`. Introduce `ξ hξ`. Take `⟨m, hm, hξm⟩` from `mem_unramifiedRoots_iff.1 hξ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[restrictAb_apply, transportedArtinMap_apply']`. Establish `hur : ε.symm (ξ : Ω') ∈ maximalUnramifiedExtension K Ω`. Use `apply_mem_maximalUnramifiedExtension_of_vle e.symm he' ε.symm hε' ξ.2` as an intermediate fact. Conclude with `this`.
+
+Establish `h1` using `localArtinMap_uniformizer_apply (Ω := Ω) hπ hur`. Establish `hm' : (m : 𝓀[K]) ≠ 0` using `(natCast_residueField_ne_zero_iff e he m).1 hm`. Establish `hpow : (⟨ε.symm (ξ : Ω'), hur⟩ : maximalUnramifiedExtension K Ω) ^ m = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val hξm` as an intermediate fact.
+
+Simplify using `only [SubmonoidClass.coe_pow, OneMemClass.coe_one] at this ⊢`. Rewrite using `[← map_pow, this, map_one]`. Rewrite `h1` using `[maximalUnramifiedExtensionFrobenius_apply_of_pow_eq_one hm' hpow]`. Rewrite using `[show (⟨ε.symm (ξ : Ω'), _⟩ : maximalAbelianExtension K Ω) = ⟨ε.symm (ξ : Ω'), maximalUnramifiedExtension_le_maximalAbelianExtension hur⟩ from rfl, h1]`. Simplify using `only [SubmonoidClass.coe_pow, map_pow, RingEquiv.apply_symm_apply, card_residueField_eq_of_vle e he]`.
+
+Use `set L := transportField e.symm ε.symm hε' L'`. Establish `: FiniteDimensional K L` using `finiteDimensional_transportField e.symm ε.symm hε' L'`. Establish `: IsAbelianGalois K L` using `isAbelianGalois_transportField e.symm ε.symm hε' L'`. Take `⟨z', rfl⟩` from `hx'`. Use `set x : Kˣ := Units.map e.symm.toRingHom.toMonoidHom (normUnits K' L' z')`.
+
+Establish `hx : x ∈ (normUnits K L).range`. Use `⟨Units.map (transportFieldEquiv e.symm ε.symm hε' L').toRingHom.toMonoidHom z', ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Algebra.norm K (transportFieldEquiv e.symm ε.symm hε' L' (z' : L')) = e.symm (Algebra.norm K' (z' : L'))`. Conclude with `(norm_transportField e.symm ε.symm hε' L' (z' : L')).symm`.
+
+Establish `hker : restrictAb L (le_maximalAbelianExtension L) (localArtinMap K Ω x) = 1`. Rewrite using `[← MonoidHom.comp_apply, ← MonoidHom.mem_ker, ker_restrictAb_localArtinMap]`. Conclude with `hx`. Use extensionality with `y'`. Rewrite using `[restrictAb_apply, transportedArtinMap_apply', AlgEquiv.one_apply]`.
+
+Establish `hyL : ε.symm (y' : Ω') ∈ L`. Rewrite using `[mem_transportField, RingEquiv.symm_symm, RingEquiv.apply_symm_apply]`. Conclude with `y'.2`. Establish `h2` using `congrArg (fun ρ : L ≃ₐ[K] L => ((ρ ⟨ε.symm (y' : Ω'), hyL⟩ : L) : Ω)) hker`. Simplify using `only [restrictAb_apply, AlgEquiv.one_apply] at h2`.
+
+Rewrite using `[h2, RingEquiv.apply_symm_apply]`.
+-/
 theorem transportedArtinMap_eq : transportedArtinMap K Ω e ε hε = localArtinMap K' Ω' := by
   have he' := symm_vle_iff e he
   have hε' := symm_algebraMap_transport e ε hε
@@ -342,6 +458,9 @@ theorem transportedArtinMap_eq : transportedArtinMap K Ω e ε hε = localArtinM
 
 include he in
 
+/- English proof (translation)
+Establish `hx : Units.map e.symm.toRingHom.toMonoidHom (Units.map e.toRingHom.toMonoidHom x) = x`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[← transportedArtinMap_eq e he ε hε, transportedArtinMap_apply, hx]`.
+-/
 theorem transport_localArtinMap_apply (x : Kˣ) {y : Ω} (hy : y ∈ maximalAbelianExtension K Ω) :
     ε ((localArtinMap K Ω x ⟨y, hy⟩ : maximalAbelianExtension K Ω) : Ω) =
       ((localArtinMap K' Ω' (Units.map e.toRingHom.toMonoidHom x)
@@ -361,6 +480,11 @@ variable {K K' : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonar
 
 open Filter Topology in
 
+/- English proof (translation)
+Use `vle_map_iff_of_valuation_lt_one_iff e.toRingHom (fun z => ?_) x y` and prove the remaining obligations. Rewrite using `[← tendsto_pow_atTop_nhds_zero_iff, ← tendsto_pow_atTop_nhds_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(hc'.tendsto 0).comp h` as an intermediate fact.
+
+Simplify `this` using `[Function.comp_def]`. Introduce `h`. Use `(hc.tendsto 0).comp h` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+-/
 theorem vle_apply_iff_of_continuous (e : K ≃+* K') (hc : Continuous e) (hc' : Continuous e.symm)
     (x y : K) : e x ≤ᵥ e y ↔ x ≤ᵥ y := by
   refine vle_map_iff_of_valuation_lt_one_iff e.toRingHom (fun z => ?_) x y
@@ -376,6 +500,9 @@ theorem vle_apply_iff_of_continuous (e : K ≃+* K') (hc : Continuous e) (hc' : 
 variable {Ω Ω' : Type*} [Field Ω] [Field Ω'] [Algebra K Ω] [Algebra K' Ω'] [IsSepClosure K Ω]
   [IsSepClosure K' Ω']
 
+/- English proof (translation)
+The claim follows from `transport_localArtinMap_apply e (vle_apply_iff_of_continuous e hc hc') ε hε x hy`.
+-/
 theorem transport_localArtinMap_apply_of_continuous (e : K ≃+* K') (hc : Continuous e)
     (hc' : Continuous e.symm) (ε : Ω ≃+* Ω')
     (hε : ∀ x : K, ε (algebraMap K Ω x) = algebraMap K' Ω' (e x)) (x : Kˣ) {y : Ω}
@@ -388,6 +515,11 @@ theorem transport_localArtinMap_apply_of_continuous (e : K ≃+* K') (hc : Conti
 
 variable [Algebra K Ω'] [IsSepClosure K Ω']
 
+/- English proof (translation)
+Establish `h` using `transport_localArtinMap_apply (RingEquiv.refl K) (fun _ _ => Iff.rfl) ε.toRingEquiv (fun c => ε.commutes c) x hy`. Establish `hx : Units.map (RingEquiv.refl K).toRingHom.toMonoidHom x = x`. Use `ext`. Both sides reduce to the same expression. Rewrite `h` using `[hx]`.
+
+Conclude with `h`.
+-/
 theorem localArtinMap_algEquiv_apply (ε : Ω ≃ₐ[K] Ω') (x : Kˣ) {y : Ω}
     (hy : y ∈ maximalAbelianExtension K Ω) :
     ε ((localArtinMap K Ω x ⟨y, hy⟩ : maximalAbelianExtension K Ω) : Ω) =

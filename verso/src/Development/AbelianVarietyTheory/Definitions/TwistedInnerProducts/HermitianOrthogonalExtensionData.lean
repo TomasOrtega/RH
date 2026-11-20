@@ -48,16 +48,36 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 abbrev neg (V : Formalism.BasicNotions.HSpace E) : Formalism.BasicNotions.HSpace E := sgn true V
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sgn_false (V : Formalism.BasicNotions.HSpace E) : sgn false V = V := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem neg_hT (V : Formalism.BasicNotions.HSpace E) (x y : V.V) : (neg V).hT x y = -V.hT x y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem neg_gram (V : Formalism.BasicNotions.HSpace E) : (neg V).gram = -V.gram := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem neg_sig (V : Formalism.BasicNotions.HSpace E) (τ : E →+* ℂ) : (neg V).sig τ = ((V.sig τ).2, (V.sig τ).1) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sgn_rank (ε : Bool) (V : Formalism.BasicNotions.HSpace E) : (sgn ε V).rank = V.rank := rfl
 
+/- English proof (translation)
+Take `⟨e, P, hP⟩` from `h`. Set `s : Fin p ⊕ Fin q ≃ Fin q ⊕ Fin p` to `Equiv.sumComm _ _`. Use `⟨e.trans s, Units.map (Matrix.reindexAlgEquiv ℂ ℂ s).toMonoidHom P, ?_⟩` and prove the remaining obligations. Establish `h1 : Formalism.UG.Jpq q p = -(Formalism.UG.Jpq p q).submatrix s.symm s.symm`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, s, Matrix.one_apply]`.
+
+Rewrite using `[h1, ← hP, ← Matrix.submatrix_mul_equiv _ _ _ s.symm, ← Matrix.submatrix_mul_equiv _ _ _ s.symm, ← Matrix.neg_mul, ← Matrix.mul_neg]`. Both sides reduce to the same expression.
+-/
 theorem hasSignature_neg {n : Type} {J : Matrix n n ℂ} {p q : ℕ} (h : Formalism.UG.HasSignature J p q) :
     Formalism.UG.HasSignature (-J) q p := by
   obtain ⟨e, P, hP⟩ := h
@@ -69,6 +89,11 @@ theorem hasSignature_neg {n : Type} {J : Matrix n n ℂ} {p q : ℕ} (h : Formal
     ← Matrix.mul_neg]
   rfl
 
+/- English proof (translation)
+Consider the cases of `ε`. Conclude with `h`. Introduce `τ`. Establish `e : (neg V).gram.map τ = -(V.gram.map τ)` using `by ext i j; simp [neg_gram]`. Use `show Formalism.UG.HasSignature ((neg V).gram.map τ) (V.sig τ).2 (V.sig τ).1`.
+
+Rewrite using `[e]`. Conclude with `hasSignature_neg (h τ)`.
+-/
 theorem sigOK_sgn (ε : Bool) {V : Formalism.BasicNotions.HSpace E} (h : V.SigOK) : (sgn ε V).SigOK := by
   cases ε
   · exact h
@@ -80,6 +105,11 @@ theorem sigOK_sgn (ε : Bool) {V : Formalism.BasicNotions.HSpace E} (h : V.SigOK
 
 end Sign
 
+/- English proof (translation)
+Consider the cases of `ε`. Both sides reduce to the same expression. Use extensionality with `g`. Establish `e : JR (F` using `D.host.F) (AF D.host.F) (neg V).gram = -JR (F := D.host.F) (AF D.host.F) V.gram := by`. Use extensionality with `i j`.
+
+Simplify using `[JR, neg_gram]`. Use `show Formalism.UG.cT _ _ * JR (F := D.host.F) (AF D.host.F) (neg V).gram * _ = JR (F := D.host.F) (AF D.host.F) (neg V).gram ↔ Formalism.UG.cT _ _ * JR (F := D.host.F) (AF D.host.F) V.gram * _ = JR (F := D.host.F) (AF D.host.F) V.gram`. Rewrite using `[e, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+-/
 theorem hr_sgn (ε : Bool) (V : HSp D) :
     HR (AF D.host.F) D.sp.cm.sig (sgn ε V).gram = HR (AF D.host.F) D.sp.cm.sig V.gram := by
   cases ε
@@ -98,32 +128,56 @@ def ofSgn (ε : Bool) (V : HSp D) : GA D (sgn ε V) ≃* GA D V where
   right_inv _ := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_ofSgn (ε : Bool) (V : HSp D) (g : GA D (sgn ε V)) : Formalism.L2.Theta.mt V (ofSgn ε V g) = Formalism.L2.Theta.mt (sgn ε V) g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSgn_false (V : HSp D) (g : GA D V) : ofSgn false V g = g := rfl
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk continuous_subtype_val _`.
+-/
 theorem continuous_ofSgn (ε : Bool) (V : HSp D) : Continuous (ofSgn ε V) :=
   Continuous.subtype_mk continuous_subtype_val _
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk continuous_subtype_val _`.
+-/
 theorem continuous_ofSgn_symm (ε : Bool) (V : HSp D) : Continuous (ofSgn ε V).symm :=
   Continuous.subtype_mk continuous_subtype_val _
 
+/- English proof (translation)
+Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[neg_gram, Matrix.neg_mul, Matrix.mul_neg, neg_neg]`. Conclude with `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (gram_det_ne V))`.
+-/
 theorem neg_gram_inv (V : HSp D) : (neg V).gram⁻¹ = -V.gram⁻¹ := by
   refine Matrix.inv_eq_right_inv ?_
   rw [neg_gram, Matrix.neg_mul, Matrix.mul_neg, neg_neg]
   exact Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (gram_det_ne V))
 
+/- English proof (translation)
+Unfold `hO`. Rewrite using `[neg_gram_inv]`. Simplify using `[Finset.sum_neg_distrib]`.
+-/
 theorem hO_neg (S T : HSp D) (x y : WO S T) : hO (neg S) T x y = -hO S T x y := by
   unfold hO
   rw [neg_gram_inv]
   simp [Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Unfold `symplO`. Rewrite using `[hO_neg, mul_neg, map_neg]`.
+-/
 theorem symplO_neg (S T : HSp D) (x y : WO S T) : symplO (neg S) T x y = -symplO S T x y := by
   unfold symplO
   rw [hO_neg, mul_neg, map_neg]
 
 def sgnM (ε : Bool) {k : ℕ} (s : Matrix (Fin k) (Fin k) ℂ) : Matrix (Fin k) (Fin k) ℂ := cond ε (-s) s
 
+/- English proof (translation)
+Consider the cases of `ε`. Conclude with `h`. Establish `e : gramAt D (neg V) τ = -gramAt D V τ` using `by ext i j; simp [gramAt, neg_gram] show IsCartanInv (gramAt D (neg V) τ) (-s)`. Rewrite using `[e]`. Use `⟨by simpa using h.1, by simpa using h.2.1, by simpa using h.2.2⟩` and prove the remaining obligations.
+-/
 theorem isCartanInv_sgn (ε : Bool) (V : HSp D) (τ : D.what₂.Tau) {s : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (h : IsCartanInv (gramAt D V τ) s) : IsCartanInv (gramAt D (sgn ε V) τ) (sgnM ε s) := by
   cases ε
@@ -140,6 +194,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def princGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (I : Ideal (𝓞 E)) : Subgroup (GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :=
   (Formalism.UG.bc (Ideal.Quotient.mk (idS F I))).ker.map (frGL β)
 
+/- English proof (translation)
+Establish `key : ∀ y : GL (Fin n) (Formalism.L2.Herm.intAf F E), Formalism.UG.bc (Ideal.Quotient.mk (idS F I)) y = 1 ↔ ∀ i j, (y.1 - 1) i j ∈ idS F I`. Introduce `y`. Rewrite using `[Units.ext_iff, ← Matrix.ext_iff]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`.
+
+Establish `h1 : (1 : GL (Fin n) (Formalism.L2.Herm.intAf F E ⧸ idS F I)).1 i j = Ideal.Quotient.mk (idS F I) ((1 : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) i j)`. Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+
+Conclude with `⟨fun ⟨y, hy, e⟩ => ⟨y, e, (key y).1 hy⟩, fun ⟨y, e, hy⟩ => ⟨y, (key y).2 hy, e⟩⟩`.
+-/
 theorem mem_princGL {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {I : Ideal (𝓞 E)} {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} :
     x ∈ princGL β I ↔ ∃ y, frGL β y = x ∧ ∀ i j, (y.1 - 1) i j ∈ idS F I := by
   have key : ∀ y : GL (Fin n) (Formalism.L2.Herm.intAf F E),
@@ -156,12 +217,18 @@ theorem mem_princGL {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {I : Ide
     rfl
   exact ⟨fun ⟨y, hy, e⟩ => ⟨y, e, (key y).1 hy⟩, fun ⟨y, e, hy⟩ => ⟨y, (key y).2 hy, e⟩⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_princGL]`. Use `⟨fun ⟨y, hy, _⟩ => ⟨y, hy⟩, fun ⟨y, hy⟩ => ⟨y, hy, fun i j => ?_⟩⟩` and prove the remaining obligations. Simplify using `[idS, Ideal.map_top]`.
+-/
 theorem princGL_top (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : princGL β ⊤ = St β := by
   ext x
   rw [mem_princGL]
   refine ⟨fun ⟨y, hy, _⟩ => ⟨y, hy⟩, fun ⟨y, hy⟩ => ⟨y, hy, fun i j => ?_⟩⟩
   simp [idS, Ideal.map_top]
 
+/- English proof (translation)
+Introduce `_ hx` and use `by obtain ⟨y, h2, h3⟩ := mem_princGL.1 hx exact mem_princGL.2 ⟨y, h2, fun i j => Ideal.map_mono h (h3 i j)⟩`.
+-/
 theorem princGL_mono (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {I I' : Ideal (𝓞 E)} (h : I ≤ I') :
     princGL β I ≤ princGL β I' := fun _ hx => by
   obtain ⟨y, h2, h3⟩ := mem_princGL.1 hx
@@ -205,19 +272,31 @@ abbrev Maps : Type := SmT N.M →ₗ[ℂ] (GA D N.V → ℂ)
 
 abbrev Cusp (θ : InfFam D) : Submodule ℂ N.Maps := MultT θ N.M ∅ 1
 
+/- English proof (translation)
+The claim follows from `Submodule.map_mono (Submodule.span_mono fun _ h => ⟨h.aut, h.cusp, fun _ _ hk => absurd hk (Set.notMem_empty _), h.equiv, h.cont⟩)`.
+-/
 theorem multT_le_cusp (θ : InfFam D) (J : Set (GA D N.V)) (χ : GA D N.V → ℂ) : MultT θ N.M J χ ≤ N.Cusp θ :=
   Submodule.map_mono (Submodule.span_mono fun _ h => ⟨h.aut, h.cusp, fun _ _ hk => absurd hk (Set.notMem_empty _), h.equiv, h.cont⟩)
 
 def princ (I : Ideal (𝓞 D.host.E)) : Subgroup (GL (Fin N.V.rank) (Lev.EAf D)) :=
   UA D.sp.cm N.V.gram ⊓ princGL N.β I
 
+/- English proof (translation)
+The claim follows from `and_congr_right fun _ => mem_princGL`.
+-/
 theorem mem_princ {I : Ideal (𝓞 D.host.E)} {x : GL (Fin N.V.rank) (Lev.EAf D)} :
     x ∈ N.princ I ↔ x ∈ UA D.sp.cm N.V.gram ∧ ∃ y, frGL N.β y = x ∧ ∀ i j, (y.1 - 1) i j ∈ idS D.host.F I :=
   and_congr_right fun _ => mem_princGL
 
+/- English proof (translation)
+Rewrite using `[princ, princGL_top]`.
+-/
 theorem princ_top : N.princ ⊤ = UA D.sp.cm N.V.gram ⊓ St N.β := by
   rw [princ, princGL_top]
 
+/- English proof (translation)
+The claim follows from `inf_le_inf_left _ (princGL_mono _ h)`.
+-/
 theorem princ_mono {I I' : Ideal (𝓞 D.host.E)} (h : I ≤ I') : N.princ I ≤ N.princ I' :=
   inf_le_inf_left _ (princGL_mono _ h)
 
@@ -244,6 +323,9 @@ def WRep.toSgn {S T : HSp D} (ω : WRep S T) : WRep (sgn ε S) T :=
 def IsWeil (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : WRep S T) : Prop :=
   IsWeilDatumO ψ (sgn ε S) T χS χT (ω.toSgn ε)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isWeil_false (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : WRep S T) :
     IsWeil ψ false S T χS χT ω ↔ IsWeilDatumO ψ S T χS χT ω := Iff.rfl
 
@@ -263,6 +345,9 @@ def IsFinVec (f : WO S.V T.V → ℂ) : Prop :=
   IsThetaFunO ψ (sgn ε S.V) T.V f ∧
     ∀ τ, IsFockVacAt (heisO ψ (sgn ε S.V) T.V) θ τ (cplxO (cartS ε S τ) (cart T.M τ)) f
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.2.theta, h.2.fock⟩`.
+-/
 theorem IsVac.isFinVec {f : WO S.V T.V → ℂ} (h : IsVac ψ θ ε S T f) : IsFinVec ψ θ ε S T f :=
   ⟨h.2.theta, h.2.fock⟩
 
@@ -283,6 +368,9 @@ def IsCosetVec (e : AE D) (I : Ideal (𝓞 D.host.E)) (c : Coset S T I) (f₀ f 
 
 variable {S T}
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨_, h1⟩` from `h i j`. Take `⟨_, h2⟩` from `h' i j`. Conclude with `cmpS_inj I hI (h1.symm.trans h2)`.
+-/
 theorem InCosetOf.unique {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) {c c' : Coset S T I} {x : WO S.V T.V}
     (h : InCosetOf S T I c x) (h' : InCosetOf S T I c' x) : c = c' := by
   ext i j
@@ -290,12 +378,18 @@ theorem InCosetOf.unique {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) {c c' : Co
   obtain ⟨_, h2⟩ := h' i j
   exact cmpS_inj I hI (h1.symm.trans h2)
 
+/- English proof (translation)
+Use `⟨fun ⟨c, h⟩ i j => (h i j).1, fun h => ?_⟩` and prove the remaining obligations. Use `choose c hc using fun i j => cmpS_surj (F := D.host.F) I hI (Ideal.Quotient.mk _ ⟨_, h i j⟩)`. Conclude with `⟨fun i j => c i j, fun i j => ⟨h i j, (hc i j).symm⟩⟩`.
+-/
 theorem exists_inCosetOf {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) (x : WO S.V T.V) :
     (∃ c, InCosetOf S T I c x) ↔ IsIntM (frMapO S.V T.V S.β T.β x) := by
   refine ⟨fun ⟨c, h⟩ i j => (h i j).1, fun h => ?_⟩
   choose c hc using fun i j => cmpS_surj (F := D.host.F) I hI (Ideal.Quotient.mk _ ⟨_, h i j⟩)
   exact ⟨fun i j => c i j, fun i j => ⟨h i j, (hc i j).symm⟩⟩
 
+/- English proof (translation)
+Use `Ideal.finiteQuotientOfFreeOfNeBot I hI` as an intermediate fact. Conclude with `Pi.finite`.
+-/
 theorem finite_coset {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) : Finite (Coset S T I) := by
   have := Ideal.finiteQuotientOfFreeOfNeBot I hI
   exact Pi.finite
@@ -323,6 +417,9 @@ structure IsIntw {V W : HSp D} {S S' : D.what₂.Tau → SPar} {X P : Type} [Add
   invg : ∀ τ, ∀ Y ∈ lieAt W τ, ∀ φ φ' v v', (∀ z, HasDerivAt (fun t : ℝ => ω (1, oneP θ W τ Y t) (pt φ) z) (pt φ' z) 0) →
     DerT M' τ Y v v' → It φ' v + It φ v' = 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.ne, h.bdd, h.eqK, h.eqg, h.invK, h.invg⟩, fun h => ⟨h.ne, h.bdd, h.eqK, h.eqg, h.invK, h.invg⟩⟩`.
+-/
 theorem isIntw_iff {V W : HSp D} {S S' : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (M' : DSModel W S')
     (ω : WRep V W) (pt : PolF D W.rank V.rank → (WO V W → ℂ)) (It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M) :
     IsIntw θ M M' ω pt It ↔ IsItW θ M M' ω pt It :=
@@ -331,6 +428,9 @@ theorem isIntw_iff {V W : HSp D} {S S' : D.what₂.Tau → SPar} (θ : InfFam D)
 def WRep.swap {S T : HSp D} (ω : WRep S T) : GA D T × GA D S →* Module.End ℂ (WO S T → ℂ) :=
   ω.comp (MulEquiv.prodComm (M := GA D T) (N := GA D S)).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem WRep.swap_apply {S T : HSp D} (ω : WRep S T) (h : GA D T) (g : GA D S) : ω.swap (h, g) = ω (g, h) := rfl
 
 structure ArrS (S T : Node D) where
@@ -392,10 +492,16 @@ def ArrT.IsLiftConj (a : ArrT S T) (Tp : Pol S T →ₗ⋆[ℂ] SmT T.M →ₗ[�
 
 variable {ψ θ ε}
 
+/- English proof (translation)
+The claim follows from `funext fun g => h.eq F P v g`.
+-/
 theorem ArrS.IsLift.int_eq {a : ArrS S T} {m : T.MeasDat} {f : WO S.V T.V → ℂ} {io : T.Cusp θ →ₗ[ℂ] S.Cusp θ}
     (h : a.IsLift ψ θ ε m f io) (F : T.Cusp θ) (P : Pol S T) (v : SmT T.M) :
     a.int m (fock ψ θ ε S T f P) (F.1 v) = (io F).1 (a.It P v) := funext fun g => h.eq F P v g
 
+/- English proof (translation)
+The claim follows from `funext fun g => h.eq F P v g`.
+-/
 theorem ArrT.IsLift.int_eq {a : ArrT S T} {m : S.MeasDat} {f : WO S.V T.V → ℂ} {io : S.Cusp θ →ₗ[ℂ] T.Cusp θ}
     (h : a.IsLift ψ θ ε m f io) (F : S.Cusp θ) (P : Pol S T) (v : SmT S.M) :
     a.int m (fock ψ θ ε S T f P) (F.1 v) = (io F).1 (a.It P v) := funext fun g => h.eq F P v g
@@ -416,27 +522,48 @@ def Node.castMaps (h : S = S') : S.Maps ≃ₗ[ℂ] S'.Maps := h ▸ LinearEquiv
 
 def Node.castCusp (θ : InfFam D) (h : S = S') : S.Cusp θ ≃ₗ[ℂ] S'.Cusp θ := h ▸ LinearEquiv.refl ℂ (S.Cusp θ)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem Node.coe_castCusp (θ : InfFam D) (h : S = S') (F : S.Cusp θ) :
     (Node.castCusp θ h F).1 = Node.castMaps h F.1 := by subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem Node.castMaps_mem (θ : InfFam D) (h : S = S') (F : S.Maps) : Node.castMaps h F ∈ S'.Cusp θ ↔ F ∈ S.Cusp θ := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ArrS.is_cast (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (ε : Bool) (hS : S = S') (hT : T = T') (a : ArrS S T)
     (χS χT : (AE D)ˣ →* Circle) : (a.cast hS hT).Is ψ θ ε χS χT ↔ a.Is ψ θ ε χS χT := by subst hS hT; rfl
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Both sides reduce to the same expression.
+-/
 theorem isFinVec_cast (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (ε : Bool) (hS : S = S') (hT : T = T')
     (f : WO S.V T.V → ℂ) : IsFinVec ψ θ ε S' T' (castFun hS hT f) ↔ IsFinVec ψ θ ε S T f := by subst hS hT; rfl
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ArrS.isLift_cast (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (ε : Bool) (hS : S = S') (hT : T = T') (a : ArrS S T)
     (m : T.MeasDat) (f : WO S.V T.V → ℂ) (io : T'.Cusp θ →ₗ[ℂ] S'.Cusp θ) :
     (a.cast hS hT).IsLift ψ θ ε (m.cast hT) (castFun hS hT f) io ↔
       a.IsLift ψ θ ε m f ((Node.castCusp θ hS).symm.toLinearMap ∘ₗ io ∘ₗ (Node.castCusp θ hT).toLinearMap) := by
   subst hS hT; rfl
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ArrS.cast_vac (hS : S = S') (hT : T = T') (a : ArrS S T) : (a.cast hS hT).vac = castFun hS hT a.vac := by
   subst hS hT; rfl
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Conclude with `h`.
+-/
 theorem ArrS.cast_It_congr (hS : S = S') (hT : T = T') {a b : ArrS S T} (h : a.It = b.It) :
     (a.cast hS hT).It = (b.cast hS hT).It := by subst hS hT; exact h
 
@@ -468,15 +595,30 @@ def antiDiagonalSignGramMatrix (K : Type) [Ring K] (c : ℕ) (p q : Fin c) : K :
 def staircaseExtensionIdeal (𝔰 : Ideal (𝓞 D.host.E)) (c : ℕ) (p : Fin c) : FrId D :=
   (D.host.AA * ((D.host.conj • 𝔰 : Ideal (𝓞 D.host.E)) : FrId D)⁻¹) ^ (c - p.1) * (D.host.AAbar⁻¹ * (𝔰 : FrId D)) ^ (p.1 + 1)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : antiDiagonalSignGramMatrix ℤ 1 0 0 = -1 := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : (Matrix.of (antiDiagonalSignGramMatrix ℤ 2)) = !![0, 1; 1, 0] := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : (Matrix.of (antiDiagonalSignGramMatrix ℤ 3)) = !![0, 0, 1; 0, -1, 0; 1, 0, 0] := by decide
 
+/- English proof (translation)
+Simplify using `[staircaseExtensionIdeal, Ideal.pointwise_smul_def, Ideal.map_top]`.
+-/
 example : staircaseExtensionIdeal (D := D) ⊤ 1 0 = D.host.AA * D.host.AAbar⁻¹ := by
   simp [staircaseExtensionIdeal, Ideal.pointwise_smul_def, Ideal.map_top]
 
+/- English proof (translation)
+Simplify using `[neg_hT]`.
+-/
 example (V : HSp D) (x y : V.V) : (neg (neg V)).hT x y = V.hT x y := by simp [neg_hT]
 
 end GlobalTheory.Grid

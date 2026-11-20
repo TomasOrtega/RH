@@ -13,6 +13,25 @@ namespace GlobalTheory.CompanLatAd
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hM.fg`. Establish `hSE : Submodule.span E ((S : Set (Fin n → E))) = ⊤`. Rewrite using `[← Submodule.span_span_of_tower (𝓞 E) E, hS]`. Conclude with `hM.span_eq_top`. Set `Θ : (Fin n → E) →ₗ[𝓞 E] (S → E)` to `{ toFun := fun y s => hform τ J s.1 y map_add' := fun y y' => by`.
+
+Use function extensionality and compare the values at `s`. Simplify using `only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun r y => by`. Use function extensionality and compare the values at `s`. Simplify using `only [RingHom.id_apply, Pi.smul_apply]`.
+
+Rewrite using `[show r • y = (r : E) • y from (algebraMap_smul E r y).symm, GlobalTheory.LevelHecke.DualConj.hform_smul_right, Algebra.smul_def] }`. Establish `hΘ : Function.Injective Θ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Establish `h0 : ∀ x ∈ Submodule.span E (S : Set (Fin n → E)), hform τ J x y = 0`.
+
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact congrFun hy ⟨x, hx⟩`. Consider the case `zero => simp [hform]`. Consider the case `add x x' _ _ hx hx'`.
+
+Establish `e : hform τ J (x + x') y = hform τ J x y + hform τ J x' y`. Simplify using `only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`. Rewrite using `[e, hx, hx', add_zero]`. Consider the case `smul c x _ hx => rw [GlobalTheory.LevelHecke.DualConj.hform_smul_left, hx, mul_zero]`. Establish `hJy : J *ᵥ y = 0`.
+
+Use function extensionality and compare the values at `i`. Use `h0 (Pi.single i 1) (by rw [hSE]; trivial)` as an intermediate fact. Use `show (J *ᵥ y) i = 0`. Rewrite using `[← this]`. Simplify using `[hform, Pi.single_apply, Matrix.mulVec, dotProduct]`.
+
+Establish `: y = J⁻¹ *ᵥ (J *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul J hJ, Matrix.one_mulVec]`. Rewrite using `[this, hJy, Matrix.mulVec_zero]`. Set `P : Submodule (𝓞 E) (S → E)` to `LinearMap.range (LinearMap.pi fun s : S => (Algebra.linearMap (𝓞 E) E).comp (LinearMap.proj s) : (S → 𝓞 E) →ₗ[𝓞 E] (S → E))`. Establish `hP : P.FG` using `by show (LinearMap.range _).FG`.
+
+Rewrite using `[← Submodule.map_top]`. Conclude with `Module.Finite.fg_top.map _`. Use `haveI := isNoetherian_of_fg_of_noetherian _ hP`. Use `Submodule.fg_of_fg_map_injective Θ hΘ (Submodule.FG.of_le_of_isNoetherian (T := P) ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Establish `hy'` using `(GlobalTheory.LevelHecke.DualConj.mem_dualL τ J M y).1 hy`. Use `choose f hf using fun s : S => hy' s.1 (hS ▸ Submodule.subset_span s.2)`. Use `⟨f, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Conclude with `hf s`.
+-/
 theorem dualL_fg {n : ℕ} (τ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (hJ : IsUnit J.det)
     (M : Submodule (𝓞 E) (Fin n → E)) (hM : Submodule.IsLattice E M) : (dualL τ J M).FG := by
   classical
@@ -73,6 +92,27 @@ namespace GlobalTheory.CompanLatAd
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `set c := inclE (F := F) (v.adicCompletion F) (a : E) with hc`. Establish `hincl : ∀ y y' : Fin n → E, (fun i => inclE (F` using `F) (v.adicCompletion F) ((y + y') i)) = (fun i => inclE (F := F) (v.adicCompletion F) (y i)) + fun i => inclE (F := F) (v.adicCompletion F) (y' i) := by`. Introduce `y y'`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Establish `hsm : ∀ y : Fin n → E, (fun i => inclE (F` using `F) (v.adicCompletion F) ((a • y) i)) = c • fun i => inclE (F := F) (v.adicCompletion F) (y i) := by`. Introduce `y`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hc, ← map_mul]`. Rewrite using `[Algebra.smul_def]`.
+
+Establish `hcw : ∀ w ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) N, c • w ∈ latS (F := F) (v.adicCompletion F) (intV E v) (Ideal.span {a} • N) := by`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨y, hy, rfl⟩` from `hw`.
+
+Rewrite using `[← hsm]`. Conclude with `Submodule.subset_span ⟨a • y, Submodule.smul_mem_smul (Ideal.mem_span_singleton_self a) hy, rfl⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add w w' _ _ hw hw' => rw [smul_add]`.
+
+Conclude with `add_mem hw hw'`. Consider the case `smul s w _ hw`. Rewrite using `[Subring.smul_def, smul_comm]`. Conclude with `Submodule.smul_mem _ s hw`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨y, hy, rfl⟩` from `hz`. Take `⟨p, hp, q, hq, rfl⟩` from `Submodule.mem_sup.1 hy`.
+
+Rewrite `hq` using `[Submodule.ideal_span_singleton_smul]`. Take `⟨q', hq', rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hq`. Conclude with `⟨_, Submodule.subset_span ⟨p, hp, rfl⟩, _, Submodule.subset_span ⟨q', hq', rfl⟩, by show (fun i => inclE (F := F) (v.adicCompletion F) ((p + a • q') i)) = _`. Rewrite using `[hincl, hsm]⟩`. Consider the case `zero => exact ⟨0, zero_mem _, 0, zero_mem _, by simp⟩`.
+
+Consider the case `add z z' _ _ hz hz'`. Take `⟨m, hm, w, hw, rfl⟩` from `hz`. Take `⟨m', hm', w', hw', rfl⟩` from `hz'`. Conclude with `⟨m + m', add_mem hm hm', w + w', add_mem hw hw', by rw [smul_add]; abel⟩`. Consider the case `smul s z _ hz`.
+
+Take `⟨m, hm, w, hw, rfl⟩` from `hz`. Use `⟨s • m, Submodule.smul_mem _ s hm, s • w, Submodule.smul_mem _ s hw, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Subring.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce and unpack `⟨m, hm, w, hw, rfl⟩`. Establish `h1 : (M : Set (Fin n → E)) ⊆ ((M ⊔ Ideal.span {a} • N : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E))` using `SetLike.coe_subset_coe.2 le_sup_left`. Establish `h2 : ((Ideal.span {a} • N : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) ⊆ ((M ⊔ Ideal.span {a} • N : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E))` using `SetLike.coe_subset_coe.2 le_sup_right`. Conclude with `add_mem (Submodule.span_mono (Set.image_mono h1) hm) (Submodule.span_mono (Set.image_mono h2) (hcw w hw))`.
+-/
 theorem mem_latS_sup_smul_iff (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (M N : Submodule (𝓞 E) (Fin n → E)) (a : 𝓞 E)
     (z : Fin n → E ⊗[F] v.adicCompletion F) :
     z ∈ latS (F := F) (v.adicCompletion F) (intV E v) (M ⊔ Ideal.span {a} • N) ↔
@@ -134,6 +174,9 @@ end GlobalTheory.CompanLatAd
 
 namespace GlobalTheory.CompanLatAd
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hM.fg.sup ((Submodule.FG.smul (IsNoetherian.noetherian (Ideal.span {a})) (dualL_fg (sp.cm.sig : E →+* E) J hJ M hM)))`. Rewrite using `[eq_top_iff, ← hM.span_eq_top]`. Conclude with `Submodule.span_mono (SetLike.coe_subset_coe.2 le_sup_left)`.
+-/
 theorem isLattice_compan {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) (hJ : IsUnit J.det) (a : 𝓞 E)
     (M : Submodule (𝓞 E) (Fin N → E)) (hM : Submodule.IsLattice E M) :
@@ -143,6 +186,25 @@ theorem isLattice_compan {R : Ranks} {F E : Type} [Field F] [NumberField F] [Fie
   · rw [eq_top_iff, ← hM.span_eq_top]
     exact Submodule.span_mono (SetLike.coe_subset_coe.2 le_sup_left)
 
+/- English proof (translation)
+Establish `hcomp : ∀ M : Submodule (𝓞 E) (Fin N → E), compan (sp` using `sp) J a M = M ⊔ Ideal.span {a} • dualL (σ : E →+* E) J M := by`. Introduce `M`. Unfold `compan dualL`. Rewrite using `[hσ]`. Establish `hLb : Submodule.IsLattice E Lb` using `⟨hfg, hspan⟩`.
+
+Establish `hfin : Module.Finite (𝓞 E) Lb` using `Module.Finite.iff_fg.mpr hfg`. Establish `hlatAd : ∀ M : Submodule (𝓞 E) (Fin N → E), Submodule.IsLattice E M → Submodule.IsLattice E (latAd x M)`. Introduce `M hM`. Establish `e : latAd x M = Formalism.UG.CS.globLat x M` using `Submodule.span_eq (Formalism.UG.CS.globLat x M)`. Rewrite using `[e]`.
+
+Conclude with `Formalism.UG.P.csGlob_lattice M (Module.Finite.iff_fg.mpr hM.fg) hM.span_eq_top x`. Establish `hΛ` using `hlatAd Lb hLb`. Establish `hcL` using `isLattice_compan sp J hJ a Lb hLb`. Establish `hcΛ` using `isLattice_compan sp J hJ a (latAd x Lb) hΛ`. Establish `hRHS` using `hlatAd _ hcL`.
+
+Establish `key : ∀ (v : HeightOneSpectrum (𝓞 F)) (z : Fin N → E ⊗[F] v.adicCompletion F), z ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) (compan (sp := sp) J a (latAd x Lb)) ↔ z ∈ latS (F := F) (v.adicCompletion F) (intV E v) (latAd x (compan (sp := sp) J a Lb)) := by`. Introduce `v z`. Use `set g := bc (prV (E := E) v) x with hg`. Establish `hgU : g ∈ UPts σ J (v.adicCompletion F)` using `GlobalTheory.MemDual.bc_prV_mem_UPts σ J v hx`. Establish `hcar1` using `GlobalTheory.LocCarry.mem_latS_latAd_iff x Lb hfin hspan v`.
+
+Establish `hcar2` using `GlobalTheory.LocCarry.mem_latS_latAd_iff x (compan (sp := sp) J a Lb) (Module.Finite.iff_fg.mpr hcL.fg) hcL.span_eq_top v`. Establish `hdm` using `GlobalTheory.DualCompletion.dual_move F E σ N J v (latAd x Lb) Lb g hJ hΛ hLb hgU hcar1`. Establish `hgg : ∀ w : Fin N → E ⊗[F] v.adicCompletion F, ((g⁻¹ : GL (Fin N) _) : Matrix (Fin N) (Fin N) _) *ᵥ ((g : Matrix (Fin N) (Fin N) _) *ᵥ w) = w`. Introduce `w`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Establish `hgg' : ∀ w : Fin N → E ⊗[F] v.adicCompletion F, (g : Matrix (Fin N) (Fin N) _) *ᵥ (((g⁻¹ : GL (Fin N) _) : Matrix (Fin N) (Fin N) _) *ᵥ w) = w`. Introduce `w`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[hcar2, hcomp, hcomp, mem_latS_sup_smul_iff, mem_latS_sup_smul_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨m, hm, w, hw, rfl⟩`. Conclude with `⟨_, (hcar1 m).1 hm, _, (hdm w).1 hw, by rw [Matrix.mulVec_add, Matrix.mulVec_smul]⟩`. Introduce and unpack `⟨m, hm, w, hw, he⟩`. Use `⟨(g : Matrix (Fin N) (Fin N) _) *ᵥ m, (hcar1 _).2 (by rw [hgg]; exact hm), (g : Matrix (Fin N) (Fin N) _) *ᵥ w, (hdm _).2 (by rw [hgg]; exact hw), ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul, ← Matrix.mulVec_add, ← he, hgg']`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `w hw`. Use `GlobalTheory.LatLocGlob.mem_of_forall_locLat (F := F) _ (Module.Finite.iff_fg.mpr hRHS.fg) hRHS.span_eq_top w fun v => ?_` and prove the remaining obligations. Conclude with `(key v _).1 (Submodule.subset_span ⟨w, hw, rfl⟩)`. Introduce `w hw`.
+
+Use `GlobalTheory.LatLocGlob.mem_of_forall_locLat (F := F) _ (Module.Finite.iff_fg.mpr hcΛ.fg) hcΛ.span_eq_top w fun v => ?_` and prove the remaining obligations. Conclude with `(key v _).2 (Submodule.subset_span ⟨w, hw, rfl⟩)`.
+-/
 theorem compan_latAd_eq {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (sp : Spaces R F E) {N : ℕ} (σ : E →ₐ[F] E) (hσ : (σ : E →+* E) = sp.cm.sig) (J : Matrix (Fin N) (Fin N) E)
     (hJ : IsUnit J.det) (a : 𝓞 E) (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -199,6 +261,9 @@ theorem compan_latAd_eq {R : Ranks} {F E : Type} [Field F] [NumberField F] [Fiel
     refine GlobalTheory.LatLocGlob.mem_of_forall_locLat (F := F) _ (Module.Finite.iff_fg.mpr hcΛ.fg) hcΛ.span_eq_top w fun v => ?_
     exact (key v _).2 (Submodule.subset_span ⟨w, hw, rfl⟩)
 
+/- English proof (translation)
+Introduce `R F E _ _ _ _ _ _ sp N σ hσ J hJ a x hx Lb hfg hspan P`. Rewrite using `[compan_latAd_eq sp σ hσ J hJ a x hx Lb hfg hspan]`.
+-/
 theorem locP_companion_latAd : ∀ {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (sp : Spaces R F E) {N : ℕ} (σ : E →ₐ[F] E), (σ : E →+* E) = sp.cm.sig → ∀ (J : Matrix (Fin N) (Fin N) E), IsUnit J.det → ∀ (a : 𝓞 E) (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), x ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) → ∀ (Lb : Submodule (𝓞 E) (Fin N → E)), Lb.FG → Submodule.span E (Lb : Set (Fin N → E)) = ⊤ → ∀ (P : HeightOneSpectrum (𝓞 E)), Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (compan (sp := sp) J a (latAd x Lb)) = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (latAd x (compan (sp := sp) J a Lb)) := by
   intro R F E _ _ _ _ _ _ sp N σ hσ J hJ a x hx Lb hfg hspan P
   rw [compan_latAd_eq sp σ hσ J hJ a x hx Lb hfg hspan]

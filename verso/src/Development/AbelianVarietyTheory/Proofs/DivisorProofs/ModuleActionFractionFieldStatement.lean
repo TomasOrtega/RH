@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_fibre_generator_basis | exact GlobalTheory.exists_fibre_generator_basis | (intros; apply GlobalTheory.exists_fibre_generator_basis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.module_action_fraction_field : ∀ (R O : Type) [CommRing R] [CommRing O] (J : Type) [Fintype J] (b : Module.Basis J ℤ O)
     (M : Type) [AddCommGroup M] [Module R M] [Module O M] [SMulCommClass R O M]
     (K : Type) [Field K] [Algebra R K],

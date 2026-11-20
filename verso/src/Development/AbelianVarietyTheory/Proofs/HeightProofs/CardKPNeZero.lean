@@ -8,6 +8,11 @@ namespace GlobalTheory.Plug.TwistLevels
 
 open Formalism.L2.Host
 
+/- English proof (translation)
+Introduce `h`. Apply `hψ` to reduce the goal to its premises. Introduce `x hx`. Use `h x hx` as an intermediate fact. Rewrite `this` using `[HChar.loc_mul, hd x hx, one_mul]`.
+
+Conclude with `this`.
+-/
 theorem not_unrAt_mul {L : Type} [Field L] [NumberField L] {d ψ : HChar L} {v : HeightOneSpectrum (𝓞 L)}
     (hd : d.UnrAt v) (hψ : ¬ ψ.UnrAt v) : ¬ (d * ψ).UnrAt v := by
   intro h
@@ -17,11 +22,17 @@ theorem not_unrAt_mul {L : Type} [Field L] [NumberField L] {d ψ : HChar L} {v :
   rw [HChar.loc_mul, hd x hx, one_mul] at this
   exact this
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[HChar.loc_mul, hd x hx, hψ x hx, one_mul]`.
+-/
 theorem unrAt_mul {L : Type} [Field L] [NumberField L] {d ψ : HChar L} {v : HeightOneSpectrum (𝓞 L)}
     (hd : d.UnrAt v) (hψ : ψ.UnrAt v) : (d * ψ).UnrAt v := by
   intro x hx
   rw [HChar.loc_mul, hd x hx, hψ x hx, one_mul]
 
+/- English proof (translation)
+Establish `h : Nat.card (kP Q) = Ideal.absNorm Q.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[h, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `Q.ne_bot`.
+-/
 theorem card_residueField_ne_zero {L : Type} [Field L] [NumberField L] (Q : HeightOneSpectrum (𝓞 L)) : Nat.card (kP Q) ≠ 0 := by
   have h : Nat.card (kP Q) = Ideal.absNorm Q.asIdeal := by
     rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
@@ -31,6 +42,11 @@ theorem card_residueField_ne_zero {L : Type} [Field L] [NumberField L] (Q : Heig
 def ramSet (P : Pre) (Ξ : Set (HChar P.host.E)) : Set (HeightOneSpectrum (𝓞 P.host.E)) :=
   {Q | ((P.host.pde * P.host.pde' : ℕ) : 𝓞 P.host.E) ∈ Q.asIdeal ∨ ∃ χ ∈ Ξ, ¬ χ.UnrAt Q}
 
+/- English proof (translation)
+Establish `h1 : ((B.host.pde : ℕ) : 𝓞 B.host.E) ∉ Q.asIdeal` using `fun h => hn (by rw [Nat.cast_mul]; exact Q.asIdeal.mul_mem_right _ h)`. Establish `h2 : ((B.host.pde' : ℕ) : 𝓞 B.host.E) ∉ Q.asIdeal` using `fun h => hn (by rw [Nat.cast_mul]; exact Q.asIdeal.mul_mem_left _ h)`. Establish `hψ : ¬ (T.psi w).UnrAt Q` using `fun h => ((T.psi_is w).ram Q).1 h hQ`. Unfold `TwDat.xiTw`. Use `split_ifs`.
+
+Conclude with `not_unrAt_mul (f.isDel'.unr Q h2) hψ`. Conclude with `not_unrAt_mul (f.isDel.unr Q h1) hψ`.
+-/
 theorem not_unrAt_xiTw (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : B.places.Pl) (Q : HeightOneSpectrum (𝓞 B.host.E))
     (hQ : Q ∈ T.Q w) (hn : ((B.host.pde * B.host.pde' : ℕ) : 𝓞 B.host.E) ∉ Q.asIdeal) : ¬ (T.xiTw f w).UnrAt Q := by
   have h1 : ((B.host.pde : ℕ) : 𝓞 B.host.E) ∉ Q.asIdeal := fun h =>
@@ -43,6 +59,17 @@ theorem not_unrAt_xiTw (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : B.places.P
   · exact not_unrAt_mul (f.isDel'.unr Q h2) hψ
   · exact not_unrAt_mul (f.isDel.unr Q h1) hψ
 
+/- English proof (translation)
+Establish `hpde : B.host.pde * B.host.pde' ≠ 0` using `mul_ne_zero (B.toPre.level_prime _ B.host.pde_level.1).ne_zero (B.toPre.level_prime _ B.host.pde_level.2).ne_zero`. Establish `hZ` using `GlobalTheory.Mem.Top.TwFin.finite_mem (K := B.host.E) hpde`. Establish `h1 : ∀ Q : HeightOneSpectrum (𝓞 B.host.E), ((B.host.pde * B.host.pde' : ℕ) : 𝓞 B.host.E) ∉ Q.asIdeal → ((B.host.pde : ℕ) : 𝓞 B.host.E) ∉ Q.asIdeal` using `fun Q hn h => hn (by rw [Nat.cast_mul]; exact Q.asIdeal.mul_mem_right _ h)`. Establish `h2 : ∀ Q : HeightOneSpectrum (𝓞 B.host.E), ((B.host.pde * B.host.pde' : ℕ) : 𝓞 B.host.E) ∉ Q.asIdeal → ((B.host.pde' : ℕ) : 𝓞 B.host.E) ∉ Q.asIdeal` using `fun Q hn h => hn (by rw [Nat.cast_mul]; exact Q.asIdeal.mul_mem_left _ h)`. Break down `hχ with hχ | ⟨w, rfl⟩` into its components or cases.
+
+Break down `hχ with rfl | rfl | rfl` into its components or cases. Conclude with `Set.finite_empty.subset fun Q hQ => hQ fun _ _ => rfl`. Use `hZ.subset fun Q hQ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hQ (f.isDel.unr Q (h1 Q hn))`.
+
+Use `hZ.subset fun Q hQ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hQ (f.isDel'.unr Q (h2 Q hn))`. Use `(hZ.union (T.Q w).finite_toSet).subset fun Q hQ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+
+Simplify using `only [Set.mem_union, Finset.mem_coe, not_or] at hc`. Establish `hψ : (T.psi w).UnrAt Q` using `((T.psi_is w).ram Q).2 hc.2`. Apply `hQ` to reduce the goal to its premises. Unfold `TwDat.xiTw`. Use `split_ifs`.
+
+Conclude with `unrAt_mul (f.isDel'.unr Q (h2 Q hc.1)) hψ`. Conclude with `unrAt_mul (f.isDel.unr Q (h1 Q hc.1)) hψ`.
+-/
 theorem ram_finite (B : Base) (f : Fr B.toPre) (T : TwDat B) (χ : HChar B.host.E) (hχ : χ ∈ T.set f) :
     {Q : HeightOneSpectrum (𝓞 B.host.E) | ¬ χ.UnrAt Q}.Finite := by
   have hpde : B.host.pde * B.host.pde' ≠ 0 :=
@@ -75,6 +102,21 @@ theorem ram_finite (B : Base) (f : Fr B.toPre) (T : TwDat B) (χ : HChar B.host.
 
 open Classical in
 
+/- English proof (translation)
+Introduce `P f Ξ`. Distinguish the cases in `hA : (ramSet P Ξ).Finite`. Use `⟨hA.toFinset.powerset.image (fun S => P.host.g 0 * P.host.g 1 * ∏ q ∈ S.image (fun Q => Nat.card (kP Q)), q), ?_, ?_⟩` and prove the remaining obligations. Introduce `M hM`. Take `⟨S, -, rfl⟩` from `Finset.mem_image.1 hM`.
+
+Use `mul_ne_zero (mul_ne_zero (P.host.g_prime 0).ne_zero (P.host.g_prime 1).ne_zero) ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `q hq`. Take `⟨Q, -, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `card_residueField_ne_zero Q`.
+
+Introduce `B hB T hT w S hS`. Substitute `hB` using the available equality. Establish `hT' : T.set f = Ξ` using `eq_of_heq hT`. Use `Finset.mem_image.2 ⟨S, Finset.mem_powerset.2 fun Q hQ => hA.mem_toFinset.2 ?_, rfl⟩` and prove the remaining obligations. Break down `hS Q hQ with h | h` into its components or cases.
+
+Conclude with `Or.inl h`. Distinguish the cases in `hn : ((B.host.pde * B.host.pde' : ℕ) : 𝓞 B.host.E) ∈ Q.asIdeal`. Conclude with `Or.inl hn`. Use `Or.inr ⟨T.xiTw f w, ?_, not_unrAt_xiTw B f T w Q h hn⟩` and prove the remaining obligations. Rewrite using `[← hT']`.
+
+Conclude with `Set.mem_union_right _ ⟨w, rfl⟩`. Use `⟨∅, by simp, ?_⟩` and prove the remaining obligations. Introduce `B hB T hT w S hS`. Substitute `hB` using the available equality. It suffices to derive a contradiction.
+
+Apply `hA` to reduce the goal to its premises. Establish `hT' : T.set f = Ξ` using `eq_of_heq hT`. Establish `hpde : B.host.pde * B.host.pde' ≠ 0` using `mul_ne_zero (B.toPre.level_prime _ B.host.pde_level.1).ne_zero (B.toPre.level_prime _ B.host.pde_level.2).ne_zero`. Establish `hfin` using `(GlobalTheory.Mem.Top.TwFin.tw_fin B f T).1`. Use `((GlobalTheory.Mem.Top.TwFin.finite_mem (K := B.host.E) hpde).union (hfin.biUnion fun χ hχ => ram_finite B f T χ hχ)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `Q (h | ⟨χ, hχ, hr⟩)`. Conclude with `Or.inl h`. Use `Or.inr (Set.mem_biUnion (x := χ) ?_ hr)` and prove the remaining obligations. Rewrite using `[hT']`. Conclude with `hχ`.
+-/
 theorem levels_bounded : ∀ (P : Pre) (f : Fr P) (Ξ : Set (Formalism.L2.Host.HChar P.host.E)), ∃ Ms : Finset ℕ, (∀ M ∈ Ms, M ≠ 0) ∧
     ∀ (B : Base) (hB : B.toPre = P) (T : TwDat B), HEq (T.set (hB ▸ f)) Ξ → ∀ (w : B.places.Pl)
       (S : Finset (HeightOneSpectrum (𝓞 B.host.E))),

@@ -20,6 +20,9 @@ variable {A : Type u} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Schem
 
 omit [IsNoetherianRing A] [F.IsQuasicoherent] in
 include hU in
+/- English proof (translation)
+Rewrite using `[inter_eq_iInf]`. Conclude with `hU m t`.
+-/
 lemma isAffineOpen_inter {m : ℕ} (t : Fin (m + 1) → ι) :
     IsAffineOpen (inter (X := X.toTopCat) 𝔘 t) := by
   rw [inter_eq_iInf]
@@ -27,6 +30,9 @@ lemma isAffineOpen_inter {m : ℕ} (t : Fin (m + 1) → ι) :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(reesSectionsMap I hF hV' _).coeff n = resF F hle ((reesSectionsMap I hF hV x).coeff n)`. Rewrite using `[← reesSectionsEquiv_apply, reesSectionsEquiv_res hle hF hV hV', reesSectionsEquiv_apply]`. Both sides reduce to the same expression.
+-/
 lemma reesCoef_res {V V' : X.Opens} (hle : V' ≤ V) (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
     (n : ℕ) (x : Γ(reesSheaf I F, reesPr I X ⁻¹ᵁ V)) :
     reesCoef I hF hV' n (resF _ (Scheme.Hom.preimage_mono _ hle) x) =
@@ -36,12 +42,18 @@ lemma reesCoef_res {V V' : X.Opens} (hle : V' ≤ V) (hV : IsAffineOpen V) (hV' 
   rfl
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+The claim follows from `reesCoef_res I hF h hV hV' n x`.
+-/
 lemma reesCoef_res' {V V' : X.Opens} (h : V' ≤ V) (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
     (n : ℕ) (x : (reesPre I F).obj (op V)) :
     reesCoef I hF hV' n (res (reesPre I F) h x) = res (modulesAb F).obj h (reesCoef I hF hV n x) :=
   reesCoef_res I hF h hV hV' n x
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Apply `idealPowι_app_injective I n` to reduce the goal to its premises. Establish `e1 : res (modulesAb (idealPow I F n)).obj h (reesDeg I hF hV n x) = resF (idealPow I F n) h (reesDeg I hF hV n x)` using `rfl`. Establish `e2 : res (reesPre I F) h x = resF (reesSheaf I F) (Scheme.Hom.preimage_mono _ h) x` using `rfl`. Rewrite using `[e1, e2, idealPowι_reesDeg, app_resF, idealPowι_reesDeg]`. Conclude with `reesCoef_res I hF h hV hV' n x`.
+-/
 lemma reesDeg_res' {V V' : X.Opens} (h : V' ≤ V) (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
     (n : ℕ) (x : Γ(reesSheaf I F, reesPr I X ⁻¹ᵁ V)) :
     reesDeg I hF hV' n (res (reesPre I F) h x) =
@@ -54,6 +66,9 @@ lemma reesDeg_res' {V V' : X.Opens} (h : V' ≤ V) (hV : IsAffineOpen V) (hV' : 
   exact reesCoef_res I hF h hV hV' n x
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Apply `reesSectionsMap_injective hF hV'` to reduce the goal to its premises. Establish `e1 : res (reesPre I F) h (reesInc I hF hV n x) = resF (reesSheaf I F) (Scheme.Hom.preimage_mono _ h) (reesInc I hF hV n x)` using `rfl`. Establish `e2 : res (modulesAb (idealPow I F n)).obj h x = resF (idealPow I F n) h x` using `rfl`. Rewrite using `[e1, e2, ← reesSectionsEquiv_apply hF hV' (resF _ _ _), reesSectionsEquiv_res h hF hV hV', reesSectionsEquiv_apply, reesSectionsMap_reesInc, reesSectionsMap_reesInc, PolynomialModule.map_lsingle, resFA_apply, app_resF]`.
+-/
 lemma reesInc_res' {V V' : X.Opens} (h : V' ≤ V) (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
     (n : ℕ) (x : Γ(idealPow I F n, V)) :
     reesInc I hF hV' n (res (modulesAb (idealPow I F n)).obj h x) =

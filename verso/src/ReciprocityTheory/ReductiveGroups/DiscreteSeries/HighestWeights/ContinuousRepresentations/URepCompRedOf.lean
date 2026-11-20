@@ -12,6 +12,9 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Kset, inUJ, Set.mem_setOf_eq] at *`. Take `⟨hu, hc⟩` from `hg`. Establish `h1 : star g * g = 1` using `Matrix.mem_unitaryGroup_iff'.mp hu`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, h1, Matrix.one_mul]`.
+-/
 lemma inUJ_of_mem_K (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) : inUJ ε g := by
   simp only [Kset, inUJ, Set.mem_setOf_eq] at *
   obtain ⟨hu, hc⟩ := hg
@@ -22,6 +25,11 @@ def cr2K (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset
   ⟨⟨⟨g, star g, Unitary.mul_star_self_of_mem hg.1, Unitary.star_mul_self_of_mem hg.1⟩,
     inUJ_of_mem_K ε hg⟩, hg⟩
 
+/- English proof (translation)
+Simplify using `only [KRep.units, actM]`. Use `conv_rhs => rw [Matrix.matrix_eq_sum_single X]`. Establish `h : ∀ a b, Matrix.single a b (X a b) = X a b • Matrix.single a b (1 : ℂ)`. Introduce `a b`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+
+Simplify using `only [h, map_sum, map_smul]`. Simplify using `[LinearMap.sum_apply, ContinuousLinearMap.sum_apply]`.
+-/
 lemma KRep.actM_units {ε : Fin n → Bool} (R : KRep ε) (X : Matrix (Fin n) (Fin n) ℂ) (v : R.V) :
     actM R.units X v = R.dτ X v := by
   simp only [KRep.units, actM]
@@ -40,6 +48,25 @@ def compactRepOfUnitaryDifferential (ε : Fin n → Bool) (H : Type) [NormedAddC
   haveI : CompleteSpace H := FiniteDimensional.complete ℂ H
   { V := H, τ := τ, cont := hτ, dτ := dτ, hasDeriv := hd }
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hσ`. Take `⟨τ, hτc, hτ⟩` from `hU n ε H σ hσ`. Take `⟨dτ, hd⟩` from `hD n ε H τ hτc`. Take `⟨hRel, hUnit⟩` from `hR n ε (compactRepOfUnitaryDifferential ε H τ hτc dτ hd)`. Take `⟨m, x, μ, h1, h2, h3, h4, h5, h6⟩` from `hC n ε (compactRepOfUnitaryDifferential ε H τ hτc dτ hd)`.
+
+Use `⟨(compactRepOfUnitaryDifferential ε H τ hτc dτ hd).units, hRel, hUnit, ?_, m, x, μ, h1, h2, h3, ?_⟩` and prove the remaining obligations. Introduce `X hX v`. Establish `hK : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ Kset ε` using `fun t => (Formalism.REAL.maximal_compact_facts n ε).2.2.2.1 _ (Formalism.REAL.inK_smul_real ε hX t)`. Establish `hγ : ∀ t : ℝ, toMK (cr2K ε (hK t)) = NormedSpace.exp ((t : ℂ) • X)` using `fun t => rfl`. Establish `hder` using `hd X hX (fun t => cr2K ε (hK t)) hγ`.
+
+Use `erw [KRep.actM_units (compactRepOfUnitaryDifferential ε H τ hτc dτ hd) X v]`. Establish `hfun : (fun t : ℝ => (σ (NormedSpace.exp ((t : ℂ) • X))) v) = fun t : ℝ => (((τ (cr2K ε (hK t)) : unitary (H →L[ℂ] H)) : H →L[ℂ] H)) v`. Use function extensionality and compare the values at `t`. Rewrite using `[hτ, hγ]`. Rewrite using `[hfun]`.
+
+Establish `h2` using `((ContinuousLinearMap.apply ℂ H v).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hder`. Conclude with `h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i g hg v hv`. Use `h5 i (cr2K ε hg) v hv` as an intermediate fact.
+
+Simplify using `only [KRep.op, compactRepOfUnitaryDifferential] at this`. Establish `e : σ g = ((τ (cr2K ε hg) : unitary (H →L[ℂ] H)) : H →L[ℂ] H)`. Rewrite using `[hτ]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `this`. Introduce `i`. Take `⟨T, φ, -, hop, hdτ, hw⟩` from `h6 i`. Use `⟨T, φ, ?_, ?_, hw⟩` and prove the remaining obligations. Introduce `k v`.
+
+Establish `e : σ (toMK k) = ((τ k : unitary (H →L[ℂ] H)) : H →L[ℂ] H)` using `(hτ k).symm`. Rewrite using `[e]`. Conclude with `hop k v`. Introduce `a b hab v`. Establish `hc : Matrix.single a b (1 : ℂ) * Jm ε = Jm ε * Matrix.single a b 1` using `by show Matrix.single a b (1 : ℂ) * Matrix.diagonal _ = Matrix.diagonal _ * Matrix.single a b 1`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.single_apply]`. Distinguish the cases in `h : a = i ∧ b = j`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[hab]`.
+
+Simplify using `[h]`. Conclude with `hdτ _ hc v`.
+-/
 theorem uRepCompRed_of (hU : URepHomStatement) (hD : DerivExistsStatement)
     (hR : KRepRelStatement) (hC : CompRedStatement) : URepCompRedStatement := by
   intro n ε H _ _ _ σ hσ

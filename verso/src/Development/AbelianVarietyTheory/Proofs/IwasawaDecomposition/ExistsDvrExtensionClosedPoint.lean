@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.TraitLift
 
+/- English proof (translation)
+Establish `key : ∀ (x y : X) (hxy : x = y) (g : X.presheaf.stalk y ⟶ CommRingCat.of V), Spec.map ((X.presheaf.stalkCongr (Inseparable.of_eq hxy)).hom ≫ g) ≫ X.fromSpecStalk x = Spec.map g ≫ X.fromSpecStalk y`. Introduce `x y hxy g`. Substitute `hxy` using the available equality. Simplify using the standard rewrite rules. Establish `hc' : Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom ψ = (X.presheaf.stalkCongr (Inseparable.of_eq h)).hom ≫ Scheme.stalkClosedPointTo χ ≫ CommRingCat.ofHom f`.
+
+Use extensionality with `a`. Conclude with `congrArg (fun g : _ →+* V => g a) hc`. Use `conv_lhs => rw [← Scheme.Spec_stalkClosedPointTo_fromSpecStalk χ]`. Use `conv_rhs => rw [← Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ]`. Simplify using `only [spMap, ← Category.assoc, ← Spec.map_comp]`.
+
+Rewrite using `[hc', key _ _ h]`.
+-/
 theorem eq_of_stalkClosedPointTo' {X : Scheme.{0}} {R W V : Type} [CommRing R] [IsLocalRing R] [CommRing W]
     [IsLocalRing W] [CommRing V] [IsLocalRing V] (ξ : Sp R ⟶ X) (χ : Sp W ⟶ X) (h : ξ (closedPoint R) = χ (closedPoint W))
     (ψ : R →+* V) (f : W →+* V)
@@ -36,6 +43,21 @@ theorem eq_of_stalkClosedPointTo' {X : Scheme.{0}} {R W V : Type} [CommRing R] [
   simp only [spMap, ← Category.assoc, ← Spec.map_comp]
   rw [hc', key _ _ h]
 
+/- English proof (translation)
+Introduce `X R _ _ _ ξ hR hξ hur W _ _ _ hW ϖ hϖ χ hχ`. Take `⟨-, -, hRc, -⟩` from `hR`. Use `haveI := hRc`. Establish `hpt : ξ (closedPoint R) = χ (closedPoint W)` using `hχ.symm`. Set `φ : X.presheaf.stalk (ξ (closedPoint R)) →+* R` to `(Scheme.stalkClosedPointTo ξ).hom`.
+
+Set `α : X.presheaf.stalk (ξ (closedPoint R)) →+* W` to `((X.presheaf.stalkCongr (Inseparable.of_eq hpt)).hom ≫ Scheme.stalkClosedPointTo χ).hom`. Use `haveI : IsLocalHom α := by`. Simplify using `only [α, CommRingCat.hom_comp]`. Use `infer_instance`. Use `haveI : IsLocalHom φ := Scheme.isLocalHom_stalkClosedPointTo' ξ`.
+
+Take `⟨hflat, hmax, hfin⟩` from `hξ`. Establish `hfin' : (ResidueField.map φ).Finite`. Rewrite `hfin` using `[← ResidueField.map_comp_residue]`. Conclude with `RingHom.Finite.of_comp_finite hfin`. Establish `hur' : (ResidueField.map φ).FormallyUnramified`.
+
+Rewrite `hur` using `[← ResidueField.map_comp_residue]`. Conclude with `RingHom.FormallyUnramified.of_comp hur`. Take `⟨θ, q, hqm, hqθ, hqd, hgen, hind⟩` from `GlobalTheory.T.exists_primitive_element_unramified φ hfin hur`. Take `⟨M, _, u, v, huv, hvf, hvu⟩` from `GlobalTheory.T.exists_common_unramified_extension (ResidueField.map φ) (ResidueField.map α) hfin' hur'`. Take `⟨V, _, _, _, f, τ, hV, hfinj, hfloc, hirr, hτ⟩` from `GlobalTheory.T.exists_dvr_residue_lift_irreducible W hW v hvf hvu`.
+
+Use `haveI := hV.2.1`. Set `σ : ResidueField R →+* ResidueField V` to `τ.comp u`. Establish `hσ : ∀ a, σ (residue R (φ a)) = residue V ((f.comp α) a)`. Introduce `a`. Establish `h1` using `congrArg (fun g => g (residue _ a)) huv`.
+
+Simplify using `only [RingHom.comp_apply, ResidueField.map_residue] at h1`. Simplify using `only [σ, RingHom.comp_apply, h1, hτ]`. Take `⟨η, hη, -⟩` from `GlobalTheory.T.exists_hensel_root_residue φ (f.comp α) σ hσ θ q hqm hqθ hqd`. Establish `hgp` using `GlobalTheory.T.polynomial_approx_pow_maximal φ hmax θ hgen`. Establish `hip` using `GlobalTheory.T.polynomial_approx_uniqueness φ hflat hmax θ q hqm hqθ hgp hind`.
+
+Take `⟨ψ, hψ, hψl⟩` from `GlobalTheory.T.hensel_roots_compatible φ (f.comp α) inferInstance θ η q hqm hqθ hη hgp hip`. Conclude with `⟨V, inferInstance, inferInstance, inferInstance, f, ψ, hV, hfinj, hfloc, hψl, hirr ϖ hϖ, eq_of_stalkClosedPointTo' ξ χ hpt ψ f hψ⟩`.
+-/
 theorem exists_lift : ∀ (X : Scheme.{0}) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ X), IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ ϖ : W, Irreducible ϖ → ∀ (χ : Sp W ⟶ X), χ (closedPoint W) = ξ (closedPoint R) → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (f : W →+* V) (ψ : R →+* V), CDvr V ∧ Function.Injective f ∧ IsLocalHom f ∧ IsLocalHom ψ ∧ Irreducible (f ϖ) ∧ spMap f ≫ χ = spMap ψ ≫ ξ := by
   intro X R _ _ _ ξ hR hξ hur W _ _ _ hW ϖ hϖ χ hχ
   obtain ⟨-, -, hRc, -⟩ := hR

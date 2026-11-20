@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.InterpCurvBound
 
+/- English proof (translation)
+The claim follows from `|((((1 - σ : ℝ) : ℂ) * x + (σ : ℂ) * y + w).re)| ≤ (|c₀| + |c₃| + k) * M * ((1 - σ) * a + σ * b) := by rw [Complex.add_re, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul] have h1 : |x.re| ≤ |c₀| * M * a := (Complex.abs_re_le_norm x).trans (hx.trans (mul_le_mul_of_no …`.
+-/
 theorem fin_ineq {x y w : ℂ} {σ a b c₀ c₃ k M : ℝ} (hσ0 : 0 ≤ σ) (hσ1 : σ ≤ 1) (ha : 0 ≤ a)
     (hb : 0 ≤ b) (hM : 0 ≤ M) (hx : ‖x‖ ≤ c₀ * M * a) (hy : ‖y‖ ≤ c₃ * M * b)
     (hw : |w.re| ≤ k * M * ((1 - σ) * a + σ * b)) :
@@ -37,6 +40,33 @@ theorem fin_ineq {x y w : ℂ} {σ a b c₀ c₃ k M : ℝ} (hσ0 : 0 ≤ σ) (h
     nlinarith
   nlinarith
 
+/- English proof (translation)
+Introduce `ι n _ _ _ Cμ C₀ C₂ C₃ K U H₀ H r s G h₀ h hr hs hG hPC hA hF hF₀ hW`. Establish `hC'0 : 0 ≤ |C₀| + |C₃| + 2 * C₂ ^ 2 + 4 * |K| + 3 * K ^ 2` using `by positivity`. Break down `isEmpty_or_nonempty n with hn | hn` into its components or cases. Introduce `z hz`. Use `⟨?_, hG z hz, fun ξ η => ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨by ext i; exact isEmptyElim i, fun x hx => (hx (Subsingleton.elim _ _)).elim⟩`. Establish `h1` using `gnorm_nonneg (G z) ξ`. Establish `h2` using `gnorm_nonneg (G z) η`. Use `opNorm_le_of_bound (by positivity) fun v => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim v 0]`.
+
+Simplify using the standard rewrite rules. Take `⟨i⟩` from `hn`. Establish `hCμ : ∀ z ∈ U, 0 ≤ Cμ`. Introduce `z hz`. Establish `hv : (Pi.single i 1 : n → ℂ) ≠ 0`.
+
+Introduce `h0`. Use `congrFun h0 i` as an intermediate fact. Simplify using `at this`. Establish `ha` using `(posDef_iff.1 (h₀.posDef z hz)).2 _ hv`. Establish `ha' : 0 < (form (H₀ z) (Pi.single i 1) (Pi.single i 1)).re` using `(Complex.lt_def.1 ha).1`.
+
+Take `⟨h1, h2⟩` from `hPC z hz (Pi.single i 1)`. Establish `h3 : r z ^ (-Cμ) ≤ r z ^ Cμ` using `le_of_mul_le_mul_right (h1.trans h2) ha'`. Use `(Real.rpow_le_rpow_left_iff (hr z hz)).1 h3` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hWz` using `fun z (hz : z ∈ U) => hW (hCμ z hz) z hz`.
+
+Establish `hPs : IsPosFrame U (interp H₀ H s)` using `GlobalTheory.T.interpolation_positive_frame h₀ h hs fun z hz => ⟨(hWz z hz).1, (hWz z hz).2.1⟩`. Use `twoFormBound_curv_two_mul hPs hG hC'0 fun z hz ξ v => ?_` and prove the remaining obligations. Take `⟨hs0, hs1, hWξ⟩` from `hWz z hz`. Establish `hf₀` using `h₀.isHermFrame`. Establish `hf` using `h.isHermFrame`.
+
+Establish `hfs` using `hPs.isHermFrame`. Establish `hsC : ContDiffAt ℝ 2 s z` using `(hs.contDiffAt (h₀.isOpen.mem_nhds hz)).of_le (by norm_cast)`. Establish `e₀` using `GlobalTheory.T.chern_curvature_hermitian_formula (hf₀.two hz) (hf₀.eventually_herm hz) (hf₀.isUnit z hz) ξ v`. Establish `e₁` using `GlobalTheory.T.chern_curvature_hermitian_formula (hf.two hz) (hf.eventually_herm hz) (hf.isUnit z hz) ξ v`. Establish `es` using `GlobalTheory.T.chern_curvature_hermitian_formula (hfs.two hz) (hfs.eventually_herm hz) (hfs.isUnit z hz) ξ v`.
+
+Establish `eX` using `GlobalTheory.T.interpolated_connection_difference (hf₀.one hz) (hf.one hz) (hsC.differentiableAt two_ne_zero) (hf₀.isUnit z hz) (hf.isUnit z hz) (hfs.isUnit z hz) ξ v`. Establish `eD` using `GlobalTheory.T.ddbar_form_interpolated_hermitian (hf₀.two hz) (hf.two hz) hsC (hf₀.eventually_herm hz) (hf.eventually_herm hz) (hf₀.isUnit z hz) (hf.isUnit z hz) ξ v`. Establish `eI` using `GlobalTheory.T.interpolated_form_constant_formula (s z) (h₀.posDef z hz).isHermitian (h.posDef z hz).isHermitian e₀ e₁ es eD eX`. Establish `hreal : starRingEnd ℂ (form (interp H₀ H s z) (curv (interp H₀ H s) z ξ ξ *ᵥ v) v) = form (interp H₀ H s z) (curv (interp H₀ H s) z ξ ξ *ᵥ v) v`. Rewrite using `[conj_form (hPs.posDef z hz).isHermitian, form_curv (hfs.two hz) (hfs.eventually_herm hz) (hfs.isUnit z hz)]`.
+
+Establish `hnorm` using `(Complex.abs_re_eq_norm.2 (Complex.conj_eq_iff_im.1 hreal)).symm`. Establish `hρ : 0 < r z ^ (-Cμ)` using `Real.rpow_pos_of_pos (by linarith [hr z hz]) _`. Establish `hρb : r z ^ (-Cμ) * (form (H z) v v).re ≤ (form (H₀ z) v v).re`. Establish `h2` using `(hPC z hz v).2`. Establish `h3 : r z ^ (-Cμ) * r z ^ Cμ = 1`.
+
+Rewrite using `[Real.rpow_neg (by linarith [hr z hz]), inv_mul_cancel₀ (Real.rpow_pos_of_pos (by linarith [hr z hz]) _).ne']`. Combine the equalities or inequalities in the displayed calculation. Establish `hY : gnorm (H₀ z) ((conn H z ξ - conn H₀ z ξ) *ᵥ v) ≤ C₂ * gnorm (G z) ξ * gnorm (H₀ z) v` using `(gnorm_mulVec_le (h₀.posDef z hz) (h₀.posDef z hz).posSemidef _ v).trans (mul_le_mul_of_nonneg_right ((hA z hz).2.2 ξ) (gnorm_nonneg _ _))`. Establish `hB` using `GlobalTheory.T.interpolated_form_dichotomy (h₀.posDef z hz) (h.posDef z hz) hs0 hs1 hρ (gnorm_nonneg (G z) ξ) (im_leviForm_apply_self hsC ξ) (hPC z hz v).1 hρb hY eX (hWξ ξ)`. Establish `hΦ₀` using `hF₀.norm_form_le hz ξ v`.
+
+Establish `hΦ` using `hF.norm_form_le hz ξ v`. Rewrite `hΦ₀` using `[gnorm_sq (h₀.posDef z hz).posSemidef]`. Rewrite `hΦ` using `[gnorm_sq (h.posDef z hz).posSemidef]`. Establish `hV : gnorm (interp H₀ H s z) v ^ 2 = (1 - s z) * (form (H₀ z) v v).re + s z * (form (H z) v v).re`. Rewrite using `[gnorm_sq (hPs.posDef z hz).posSemidef]`.
+
+Use `show (form (((1 - s z : ℝ) : ℂ) • H₀ z + (s z : ℂ) • H z) v v).re = _`. Rewrite using `[form_add, form_smul, form_smul, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Establish `ha : 0 ≤ (form (H₀ z) v v).re` using `by rw [← gnorm_sq (h₀.posDef z hz).posSemidef]; positivity`. Establish `hb : 0 ≤ (form (H z) v v).re` using `by rw [← gnorm_sq (h.posDef z hz).posSemidef]; positivity`. Rewrite using `[hnorm, eI, hV]`.
+
+Use `(fin_ineq hs0 hs1 ha hb (sq_nonneg (gnorm (G z) ξ)) hΦ₀ hΦ hB).trans_eq (by ring)` and prove the remaining obligations.
+-/
 theorem interp_curv_bound : ∀ {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n] {Cμ C₀ C₂ C₃ K : ℝ} {U : Set (ι → ℂ)} {H₀ H : (ι → ℂ) → Matrix n n ℂ} {r s : (ι → ℂ) → ℝ} {G : (ι → ℂ) → Matrix ι ι ℂ}, IsPosFrame U H₀ → IsPosFrame U H → (∀ z ∈ U, 1 < r z) → ContDiffOn ℝ ∞ s U → (∀ z ∈ U, (G z).PosSemidef) → PowComparable U r Cμ H₀ H → OneFormBound U H₀ G (fun z ξ => conn H z ξ - conn H₀ z ξ) C₂ → TwoFormBound U H G (curv H) C₃ → TwoFormBound U H₀ G (curv H₀) C₀ → (0 ≤ Cμ → WeightBound K Cμ U r s G) → TwoFormBound U (interp H₀ H s) G (curv (interp H₀ H s)) (2 * (|C₀| + |C₃| + 2 * C₂ ^ 2 + 4 * |K| + 3 * K ^ 2)) := by
   intro ι n _ _ _ Cμ C₀ C₂ C₃ K U H₀ H r s G h₀ h hr hs hG hPC hA hF hF₀ hW
   have hC'0 : 0 ≤ |C₀| + |C₃| + 2 * C₂ ^ 2 + 4 * |K| + 3 * K ^ 2 := by positivity

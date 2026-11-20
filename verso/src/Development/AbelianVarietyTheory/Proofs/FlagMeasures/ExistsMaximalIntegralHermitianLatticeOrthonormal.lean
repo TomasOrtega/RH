@@ -11,6 +11,11 @@ namespace GlobalTheory.Mass.MaxExists
 
 open NumberField Matrix in
 open scoped ENNReal Classical in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Mass.IsIntLat`. Use `⟨hL, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.HermitianLatticesTheory.IsIntegralLat`. Introduce `x hx y hy`. Unfold `_root_.Formalism.HermitianLatticesTheory.IsUnimodular at hU`.
+
+Establish `hy' : y ∈ _root_.Formalism.HermitianLatticesTheory.dual h M` using `by rw [hU]; exact hy`. Conclude with `(_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual h M y).1 hy' x hx`.
+-/
 private lemma isIntLat_of_isUnimodular {K V : Type} [Field K] [NumberField K] [StarRing K]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     {h : V →ₗ⋆[K] V →ₗ[K] K} {M : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K M)
@@ -25,6 +30,27 @@ private lemma isIntLat_of_isUnimodular {K V : Type} [Field K] [NumberField K] [S
 
 open NumberField Matrix in
 open scoped ENNReal Classical in
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h hK hS hN`. Establish `D` using `fun M hM => _root_.GlobalTheory.Mass.DiscOrder.main K V h hK hS hN M hM`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ n : ℕ, ∀ M : Submodule (𝓞 K) V, _root_.GlobalTheory.Mass.IsIntLat h M → _root_.GlobalTheory.Mass.discN h M = n → ∃ M', _root_.GlobalTheory.Mass.IsMaxLat h M' ∧ M ≤ M'`. Introduce `n`.
+
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `M hM hn`. Distinguish the cases in `hmax : ∀ N : Submodule (𝓞 K) V, _root_.GlobalTheory.Mass.IsIntLat h N → M ≤ N → N = M`. Conclude with `⟨M, by unfold _root_.GlobalTheory.Mass.IsMaxLat; exact ⟨hM, hmax⟩, le_rfl⟩`.
+
+Use `push_neg at hmax`. Take `⟨N, hNi, hMN, hne⟩` from `hmax`. Take `⟨hidx0, hdisc⟩` from `(D M hM).2.2.1 N hNi hMN`. Establish `hidx1 : _root_.GlobalTheory.Mass.idxN N M ≠ 1`. Introduce `h1`.
+
+Conclude with `hne (le_antisymm (_root_.GlobalTheory.Mass.DiscOrder.idxN_eq_one.1 h1) hMN)`. Establish `hNpos : 0 < _root_.GlobalTheory.Mass.discN h N` using `Nat.pos_of_ne_zero (D N hNi).1`. Establish `hlt : _root_.GlobalTheory.Mass.discN h N < n`. Rewrite using `[← hn, hdisc]`. Establish `h2 : 2 ≤ _root_.GlobalTheory.Mass.idxN N M` using `by omega`.
+
+Establish `h4 : 1 < _root_.GlobalTheory.Mass.idxN N M ^ 2` using `Nat.one_lt_pow (by norm_num) (by omega)`. Combine the equalities or inequalities in the displayed calculation. Take `⟨M', hM', hNM'⟩` from `ih _ hlt N hNi rfl`. Conclude with `⟨M', hM', hMN.trans hNM'⟩`. Conclude with `fun M hM => key _ M hM rfl`.
+
+Introduce `M hL hU`. Establish `hI` using `isIntLat_of_isUnimodular hL hU`. Establish `hD1 : _root_.GlobalTheory.Mass.discN h M = 1` using `((D M hI).2.1).2 hU`. Establish `hbad : _root_.GlobalTheory.Mass.badP h M = ∅`. Unfold `_root_.GlobalTheory.Mass.badP`.
+
+Use extensionality with `P`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and, not_not]`. Introduce `hP`. Use `(D M hI).2.2.2.2.1 P hP ?_` and prove the remaining obligations. Rewrite using `[hD1, Nat.cast_one]`.
+
+Conclude with `fun h1 => hP.ne_top ((Ideal.eq_top_iff_one P).2 h1)`. Use `⟨?_, hbad, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.Mass.IsMaxLat`. Use `⟨hI, fun N hNi hMN => ?_⟩` and prove the remaining obligations. Take `⟨_, hdisc⟩` from `(D M hI).2.2.1 N hNi hMN`.
+
+Rewrite `hdisc` using `[hD1]`. Establish `h1 : _root_.GlobalTheory.Mass.idxN N M ^ 2 = 1` using `Nat.eq_one_of_mul_eq_one_left hdisc.symm`. Establish `h1' : _root_.GlobalTheory.Mass.idxN N M = 1`. Simplify using `using h1`. Conclude with `le_antisymm (_root_.GlobalTheory.Mass.DiscOrder.idxN_eq_one.1 h1') hMN`.
+
+Unfold `_root_.GlobalTheory.Mass.lamMax`. Rewrite using `[hbad]`. Conclude with `finprod_mem_empty`. Introduce `M n hO`. Conclude with `⟨_root_.ReciprocityTheory.ChartRestriction.L3.isLattice_of_ortho hO, _root_.ReciprocityTheory.ChartRestriction.L3.isUnimodular_of_ortho hO, _root_.ReciprocityTheory.ChartRestriction.L3.finrank_of_ortho hO⟩`.
+-/
 theorem _root_.GlobalTheory.Mass.MaxExists.main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), _root_.Formalism.HermitianLatticesTheory.IsCMUnram K → h.IsSymm → h.Nondegenerate → (∀ M : Submodule (𝓞 K) V, _root_.GlobalTheory.Mass.IsIntLat h M → ∃ M', _root_.GlobalTheory.Mass.IsMaxLat h M' ∧ M ≤ M') ∧ (∀ M : Submodule (𝓞 K) V, Submodule.IsLattice K M → _root_.Formalism.HermitianLatticesTheory.IsUnimodular h M → _root_.GlobalTheory.Mass.IsMaxLat h M ∧ _root_.GlobalTheory.Mass.badP h M = ∅ ∧ _root_.GlobalTheory.Mass.lamMax h M = 1) ∧ (∀ (M : Submodule (𝓞 K) V) (n : ℕ), _root_.Formalism.HermitianLatticesTheory.IsOrthoLattice h M n → Submodule.IsLattice K M ∧ _root_.Formalism.HermitianLatticesTheory.IsUnimodular h M ∧ Module.finrank K V = n) := by
   intro K V _ _ _ _ _ _ _ _ h hK hS hN
   have D := fun M hM => _root_.GlobalTheory.Mass.DiscOrder.main K V h hK hS hN M hM

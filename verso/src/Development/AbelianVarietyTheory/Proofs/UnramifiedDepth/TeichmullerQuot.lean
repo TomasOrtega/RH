@@ -11,6 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.WittQuot
 
+/- English proof (translation)
+Use `set q : MvPolynomial (Fin n) ℤ := (∑ j, (MvPolynomial.X j) ^ p) - (∑ j, MvPolynomial.X j) ^ p with hq`. Establish `hd : MvPolynomial.C (p : ℤ) ∣ q`. Rewrite using `[MvPolynomial.C_dvd_iff_zmod, hq]`. Simplify using `only [map_sub, map_sum, map_pow, MvPolynomial.map_X]`. Rewrite using `[sum_pow_char, sub_self]`.
+
+Rewrite `hd` using `[MvPolynomial.C_dvd_iff_dvd_coeff]`. Use `conv_rhs => rw [q.as_sum]`. Express the relevant statement in the definitionally equal form `_ * ∑ m ∈ q.support, MvPolynomial.monomial m (q.coeff m / (p : ℤ)) = _`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_natCast (MvPolynomial.C : ℤ →+* _), MvPolynomial.C_mul_monomial, Int.mul_ediv_cancel' (hd m)]`.
+-/
 private lemma wS_mul (p : ℕ) [hp : Fact p.Prime] (n : ℕ) : (p : MvPolynomial (Fin n) ℤ) * wS p n =
     (∑ j, (MvPolynomial.X j) ^ p) - (∑ j, MvPolynomial.X j) ^ p := by
   set q : MvPolynomial (Fin n) ℤ := (∑ j, (MvPolynomial.X j) ^ p) - (∑ j, MvPolynomial.X j) ^ p with hq
@@ -26,6 +33,11 @@ private lemma wS_mul (p : ℕ) [hp : Fact p.Prime] (n : ℕ) : (p : MvPolynomial
   rw [← map_natCast (MvPolynomial.C : ℤ →+* _), MvPolynomial.C_mul_monomial,
     Int.mul_ediv_cancel' (hd m)]
 
+/- English proof (translation)
+Establish `hmem : x - WittVector.teichmuller p (x.coeff 0) ∈ Ideal.span {(p : WittVector p K) ^ 1}`. Rewrite using `[WittVector.mem_span_p_pow_iff_le_coeff_eq_zero, ← WittVector.le_coeff_eq_iff_le_sub_coeff_eq_zero]`. Introduce `i hi`. Take `rfl : i = 0` from `by omega`. Rewrite using `[WittVector.teichmuller_coeff_zero]`.
+
+Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.mp hmem`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[pow_one]`. Rewrite using `[mul_comm, hw]`. Normalize the expressions using the abelian group laws.
+-/
 private lemma teich_decomp (p : ℕ) [Fact p.Prime] {K : Type} [CommRing K] [CharP K p]
     [PerfectRing K p] (x : WittVector p K) :
     ∃ y : WittVector p K, x = WittVector.teichmuller p (x.coeff 0) + p * y := by
@@ -41,6 +53,17 @@ private lemma teich_decomp (p : ℕ) [Fact p.Prime] {K : Type} [CommRing K] [Cha
   rw [pow_one] at hw
   rw [mul_comm, hw]; abel
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε ϖ hϖ W _ pr hpr hker`. Establish `hp2 : pr ((p : Ainf.A p O) ^ 2) = 0`. Rewrite using `[← RingHom.mem_ker, hker]; exact Ideal.subset_span (by simp)`. Establish `hϖ0 : pr (WittVector.teichmuller p ϖ) = 0`. Rewrite using `[← RingHom.mem_ker, hker]; exact Ideal.subset_span (by simp)`.
+
+Use `⟨fun w => ?_, fun n a => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hpr w`. Take `⟨y, hy⟩` from `teich_decomp p x`. Use `⟨x.coeff 0, pr y, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hy]`.
+
+Rewrite using `[map_add, map_mul, map_natCast]`. Take `⟨w, hw⟩` from `((teichSum p (Fin n) Finset.univ).2 (PreTilt O p) a (wS p n) (wS_mul p n)).1`. Establish `h` using `congrArg pr hw`. Rewrite `h` using `[map_sum, map_add, map_add, map_mul, map_mul, hp2, zero_mul, add_zero, map_natCast]`. Rewrite using `[h, MvPolynomial.aeval_def]`.
+
+Both sides reduce to the same expression. Establish `hK` using `((a0 p C v O hv).2.2.1 ϖ hϖ).2.2`. Establish `hm : WittVector.teichmuller p c ∈ Ideal.span {(p : WittVector p (PreTilt O p)), WittVector.teichmuller p ϖ}`. Rewrite using `[← hK, RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hc`.
+
+Take `⟨x, y, hxy⟩` from `Ideal.mem_span_pair.mp hm`. Establish `h` using `congrArg (WittVector.constantCoeff (p := p) (R := PreTilt O p)) hxy`. Rewrite `h` using `[map_add, map_mul, map_mul, map_natCast, CharP.cast_eq_zero, mul_zero, zero_add]`. Simplify using `only [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero] at h`. Rewrite using `[← h, map_mul, map_mul, hϖ0, mul_zero]`.
+-/
 theorem teichmuller_quot :
   (∀ (p : ℕ) [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {v : Valuation C NNReal} (O : Type) [CommRing O] [Algebra O C]
     [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (hv : v.Integers O) (ε : PreTilt O p)

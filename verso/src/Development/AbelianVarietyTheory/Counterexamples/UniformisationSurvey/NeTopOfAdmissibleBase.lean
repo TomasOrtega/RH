@@ -14,6 +14,9 @@ section Torus
 
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X]
 
+/- English proof (translation)
+Use `forall_congr' fun χ => ?_` and prove the remaining obligations. Establish `: (res (fun x _ => show t.left.base x ∈ (⊤ : TopologicalSpace.Opens _) from trivial) (pullU t.left ⊤ (charUnit S X χ)) : Γ((splitTorus S X).left, ⊤)ˣ).val = t.left.appTop.hom (charUnit S X χ).val`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[← this, Units.ext_iff]`.
+-/
 theorem torusEndOf_iff (h : X → X) (t : splitTorus S X ⟶ splitTorus S X) : TorusEndOf X h t ↔
       ∀ χ, t.left.appTop.hom (charUnit S X χ).val = (charUnit S X (h χ)).val := by
   refine forall_congr' fun χ => ?_
@@ -23,6 +26,9 @@ theorem torusEndOf_iff (h : X → X) (t : splitTorus S X ⟶ splitTorus S X) : T
     rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]; rfl
   rw [← this, Units.ext_iff]
 
+/- English proof (translation)
+Use `(splitTorusPointsEquiv S X _).injective (MonoidHom.ext fun χ => Units.ext ?_)` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `Multiplicative.ofAdd.surjective χ`. Rewrite using `[splitTorusPointsEquiv_val, splitTorusPointsEquiv_val, (torusEndOf_iff _ _).1 ht, (torusEndOf_iff _ _).1 ht']`.
+-/
 theorem torusEndOf_unique {h : X → X} {t t' : splitTorus S X ⟶ splitTorus S X}
     (ht : TorusEndOf X h t) (ht' : TorusEndOf X h t') : t = t' := by
   refine (splitTorusPointsEquiv S X _).injective (MonoidHom.ext fun χ => Units.ext ?_)
@@ -30,6 +36,9 @@ theorem torusEndOf_unique {h : X → X} {t t' : splitTorus S X ⟶ splitTorus S 
   rw [splitTorusPointsEquiv_val, splitTorusPointsEquiv_val, (torusEndOf_iff _ _).1 ht,
     (torusEndOf_iff _ _).1 ht']
 
+/- English proof (translation)
+The claim follows from `(torusEndOf_iff _ _).2 fun χ => by rw [SplitTorusHom.appTop_comp, (torusEndOf_iff _ _).1 ht', (torusEndOf_iff _ _).1 ht]; rfl`.
+-/
 theorem torusEndOf_comp {h h' : X → X} {t t' : splitTorus S X ⟶ splitTorus S X}
     (ht : TorusEndOf X h t) (ht' : TorusEndOf X h' t') : TorusEndOf X (h ∘ h') (t ≫ t') :=
   (torusEndOf_iff _ _).2 fun χ => by

@@ -19,6 +19,13 @@ variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Fie
   [IsFractionRing O K] {n : ℕ}
 
 omit [IsFractionRing O K] in
+/- English proof (translation)
+Use `⟨lt_of_le_of_ne hle hne, fun C hAC hCB => ?_⟩` and prove the remaining obligations. Take `⟨x, hxC, hxA⟩` from `SetLike.exists_of_lt hAC`. Take `⟨a, ha⟩` from `hx x (hCB.le hxC)`. Establish `hu : IsUnit a`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hxA (by simpa using add_mem ha (hm a h))`. Establish `h1 : a • d ∈ C` using `by simpa using sub_mem hxC (hAC.le ha)`. Establish `h2 : d ∈ C` using `(Submodule.smul_mem_iff_of_isUnit C hu).1 h1`. Use `hCB.not_ge fun y hy => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hx y hy`.
+
+Simplify using `using add_mem (hAC.le hb) (C.smul_mem b h2)`.
+-/
 theorem covBy_of_cyclic {A B : Submodule O (Fin n → K)} (hle : A ≤ B) (hne : A ≠ B) (d : Fin n → K)
     (hx : ∀ x ∈ B, ∃ a : O, x - a • d ∈ A) (hd : d ∈ B)
     (hm : ∀ a ∈ IsLocalRing.maximalIdeal O, a • d ∈ A) : A ⋖ B := by
@@ -34,6 +41,13 @@ theorem covBy_of_cyclic {A B : Submodule O (Fin n → K)} (hle : A ≤ B) (hne :
   obtain ⟨b, hb⟩ := hx y hy
   simpa using add_mem (hAC.le hb) (C.smul_mem b h2)
 
+/- English proof (translation)
+Use `haveI : N.IsLattice K := ⟨hfg, hsp⟩`. Set `b` to `Module.Free.chooseBasis O N`. Establish `h : Submodule.span O (Set.range (b.extendOfIsLattice K)) = N`. Establish `h1 : Set.range (b.extendOfIsLattice K) = N.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`.
+
+Use `congr 1`. Conclude with `funext fun i => b.extendOfIsLattice_apply K i`. Rewrite using `[h1, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]`. Establish `e` using `LinearMap.BilinForm.dualSubmodule_dualSubmodule_flip_of_basis (R := O) B hB (b.extendOfIsLattice K)`. Rewrite `e` using `[h]`.
+
+Rewrite using `[← e]`. Conclude with `fun w hw => hu w hw`.
+-/
 theorem bidual (B : LinearMap.BilinForm K (Fin n → K)) (hB : B.Nondegenerate)
     (N : Submodule O (Fin n → K)) (hfg : N.FG) (hsp : Submodule.span K (N : Set (Fin n → K)) = ⊤)
     (u : Fin n → K)
@@ -66,6 +80,21 @@ noncomputable def cmp (π : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F
 
 variable {π : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`.
+
+Conclude with `⟨_, Submodule.subset_span ⟨y, hy, rfl⟩, rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by funext b; simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x, hx, rfl⟩` from `hx`. Take `⟨y, hy, rfl⟩` from `hy`.
+
+Conclude with `⟨x + y, add_mem hx hy, by funext b; simp⟩`. Consider the case `smul c x _ hx`. Take `⟨x, hx, rfl⟩` from `hx`. Establish `hc : (1 : E) ⊗ₜ[F] (c : v.adicCompletion F) ∈ intV E v` using `Subring.subset_closure (Or.inr ⟨⟨c.1, c.2⟩, rfl⟩)`. Use `⟨_, (loc v L).smul_mem ⟨_, hc⟩ hx, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `b`. Express the relevant statement in the definitionally equal form `π ((1 : E) ⊗ₜ[F] (c : v.adicCompletion F) * x b) = (c : v.adicCompletion F) * π (x b)`. Rewrite using `[map_mul, hπ]`. Introduce and unpack `⟨y, hy, rfl⟩`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => simp only [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy`. Simplify using `only [Pi.add_apply, map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Use `(cmp π L).smul_mem ⟨_, hint _ c.2⟩ hx` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`. Conclude with `map_mul π (c : E ⊗[F] v.adicCompletion F) (x b)`.
+-/
 theorem mem_cmp (hπ : ∀ a, π ((1 : E) ⊗ₜ[F] a) = a)
     (hint : ∀ t ∈ intV E v, π t ∈ v.adicCompletionIntegers F) (L : Submodule (𝓞 E) (Fin n → E))
     (a : Fin n → v.adicCompletion F) :
@@ -103,6 +132,17 @@ theorem mem_cmp (hπ : ∀ a, π ((1 : E) ⊗ₜ[F] a) = a)
       funext b
       exact map_mul π (c : E ⊗[F] v.adicCompletion F) (x b)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `(Module.Finite.iff_fg).1 hL.1`. Use `Submodule.fg_def.2 ⟨(fun x i => π (inclE (F := F) _ (x i))) '' (s : Set (Fin n → E)), s.finite_toSet.image _, le_antisymm (Submodule.span_mono (Set.image_mono ?_)) ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span`. Rewrite using `[cmp, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp only [Pi.zero_apply, map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Simplify using `only [Pi.add_apply, map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`.
+
+Establish `hc : inclE (F` using `F) (v.adicCompletion F) (c : E) ∈ intV E v := Subring.subset_closure (Or.inl ⟨⟨c, c, rfl⟩, rfl⟩)`. Use `Submodule.smul_mem _ (⟨_, hint _ hc⟩ : v.adicCompletionIntegers F) hx` as an intermediate fact. Use `Set.mem_of_eq_of_mem ?_ this` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Express the relevant statement in the definitionally equal form `π (inclE _ ((c : E) * x b)) = π _ * π _`.
+
+Rewrite using `[map_mul, map_mul]`.
+-/
 theorem cmp_fg (hint : ∀ t ∈ intV E v, π t ∈ v.adicCompletionIntegers F)
     {L : Submodule (𝓞 E) (Fin n → E)} (hL : IsLat L) : (cmp π L).FG := by
   obtain ⟨s, hs⟩ := (Module.Finite.iff_fg).1 hL.1
@@ -126,6 +166,17 @@ theorem cmp_fg (hint : ∀ t ∈ intV E v, π t ∈ v.adicCompletionIntegers F)
       change π (inclE _ ((c : E) * x b)) = π _ * π _
       rw [map_mul, map_mul]
 
+/- English proof (translation)
+Establish `key : ∀ x : Fin n → E, (fun i => π (inclE (F` using `F) _ (x i))) ∈ Submodule.span (v.adicCompletion F) (cmp π L : Set (Fin n → v.adicCompletion F)) := by`. Introduce `x`. Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))` using `hL.2 ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (Submodule.subset_span ⟨x, hx, rfl⟩)`.
+
+Consider the case `zero => simp only [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Simplify using `only [Pi.add_apply, map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ hx`. Use `Submodule.smul_mem _ (π (inclE (F := F) _ c)) hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`. Express the relevant statement in the definitionally equal form `π (inclE _ ((c : E) * x b)) = π _ * π _`.
+
+Rewrite using `[map_mul, map_mul]`. Rewrite using `[eq_top_iff, ← (Pi.basisFun (v.adicCompletion F) (Fin n)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Set.mem_of_eq_of_mem ?_ (key (Pi.single i 1))` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem cmp_span {L : Submodule (𝓞 E) (Fin n → E)} (hL : IsLat L) :
     Submodule.span (v.adicCompletion F) (cmp π L : Set (Fin n → v.adicCompletion F)) = ⊤ := by
   have key : ∀ x : Fin n → E, (fun i => π (inclE (F := F) _ (x i))) ∈
@@ -151,6 +202,13 @@ theorem cmp_span {L : Submodule (𝓞 E) (Fin n → E)} (hL : IsLat L) :
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨_, h y hy, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `b`. Simplify using `only [Pi.smul_apply, map_nsmul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem cmp_nsmul (T : ℕ) {L M : Submodule (𝓞 E) (Fin n → E)} (h : ∀ y ∈ M, T • y ∈ L) :
     ∀ y ∈ cmp π M, T • y ∈ cmp π L := by
   intro y hy
@@ -183,12 +241,18 @@ noncomputable def pairing (J : Matrix (Fin n) (Fin n) E) :
   Matrix.toBilin' (J.map ((p₁ sp).comp (inclE (F := F) (v.adicCompletion F))))
 
 omit [StarRing E] in
+/- English proof (translation)
+Apply `LinearMap.BilinForm.nondegenerate_toBilin'_of_det_ne_zero'` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hdet`.
+-/
 theorem pairing_nondegenerate {J : Matrix (Fin n) (Fin n) E} (hdet : J.det ≠ 0) :
     (pairing sp J).Nondegenerate := by
   apply LinearMap.BilinForm.nondegenerate_toBilin'_of_det_ne_zero'
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
   exact (map_ne_zero _).2 hdet
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_one]`. Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨a, h⟩, rfl⟩⟩`.
+-/
 theorem mem_one_iff (a : v.adicCompletion F) :
     a ∈ (1 : Submodule (v.adicCompletionIntegers F) (v.adicCompletion F)) ↔
       a ∈ v.adicCompletionIntegers F := by
@@ -201,6 +265,11 @@ variable {sp} {cm : CMData F E} {J : Matrix (Fin n) (Fin n) E}
   (hdiag : ∀ a : v.adicCompletion F, sp ((1 : E) ⊗ₜ[F] a) = (a, a))
 
 include hsig in
+/- English proof (translation)
+Rewrite using `[pairing, Matrix.toBilin'_apply, hR, hform, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`.
+
+Establish `: p₁ sp (sigR cm.sig (v.adicCompletion F) (x i)) = p₂ sp (x i)` using `congrArg Prod.fst (hsig _)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem fst_hR (x y : Fin n → E ⊗[F] v.adicCompletion F) :
     p₁ sp (hR cm.sig J (v.adicCompletion F) x y) =
       pairing sp J (fun b => p₂ sp (x b)) (fun b => p₁ sp (y b)) := by
@@ -214,6 +283,11 @@ theorem fst_hR (x y : Fin n → E ⊗[F] v.adicCompletion F) :
   rfl
 
 include hsig hJ in
+/- English proof (translation)
+Rewrite using `[← fst_hR hsig]`. Establish `hτ : ∀ a, sigR cm.sig (v.adicCompletion F) (sigR cm.sig (v.adicCompletion F) a) = a` using `fun a => sp.injective (by rw [hsig, hsig]; rfl)`. Establish `hJ' : IsHerm (sigR cm.sig (v.adicCompletion F)) (J.map (inclE (F` using `F) (v.adicCompletion F))) := by`. Use function extensionality and compare the values at `i j`. Conclude with `congrArg (inclE (F := F) (v.adicCompletion F)) (congrFun (congrFun hJ i) j)`.
+
+Use `GlobalTheory.DualFrames.hform_swap _ hτ _ hJ' x y` as an intermediate fact. Rewrite using `[hR, hR, ← this]`. Conclude with `(congrArg Prod.fst (hsig _)).symm`.
+-/
 theorem snd_hR (x y : Fin n → E ⊗[F] v.adicCompletion F) :
     p₂ sp (hR cm.sig J (v.adicCompletion F) x y) =
       pairing sp J (fun b => p₂ sp (y b)) (fun b => p₁ sp (x b)) := by
@@ -230,30 +304,53 @@ theorem snd_hR (x y : Fin n → E ⊗[F] v.adicCompletion F) :
 
 omit [StarRing E] in
 include hdiag in
+/- English proof (translation)
+The claim follows from `split_integral_local F E v sp hdiag t`.
+-/
 theorem int_iff (t : E ⊗[F] v.adicCompletion F) : t ∈ intV E v ↔
     p₁ sp t ∈ v.adicCompletionIntegers F ∧ p₂ sp t ∈ v.adicCompletionIntegers F :=
   split_integral_local F E v sp hdiag t
 
 omit [StarRing E] in
 include hdiag in
+/- English proof (translation)
+The claim follows from `mem_cmp (fun a => congrArg Prod.fst (hdiag a)) (fun t ht => ((int_iff hdiag t).1 ht).1) L a`.
+-/
 theorem mem_cmp₁ (L : Submodule (𝓞 E) (Fin n → E)) (a : Fin n → v.adicCompletion F) :
     a ∈ cmp (p₁ sp) L ↔ ∃ y ∈ loc v L, (fun b => p₁ sp (y b)) = a :=
   mem_cmp (fun a => congrArg Prod.fst (hdiag a)) (fun t ht => ((int_iff hdiag t).1 ht).1) L a
 
 omit [StarRing E] in
 include hdiag in
+/- English proof (translation)
+The claim follows from `mem_cmp (fun a => congrArg Prod.snd (hdiag a)) (fun t ht => ((int_iff hdiag t).1 ht).2) L a`.
+-/
 theorem mem_cmp₂ (L : Submodule (𝓞 E) (Fin n → E)) (a : Fin n → v.adicCompletion F) :
     a ∈ cmp (p₂ sp) L ↔ ∃ y ∈ loc v L, (fun b => p₂ sp (y b)) = a :=
   mem_cmp (fun a => congrArg Prod.snd (hdiag a)) (fun t ht => ((int_iff hdiag t).1 ht).2) L a
 
 include hJ hdet hsig hdiag
 
+/- English proof (translation)
+Rewrite using `[(split_components F E cm n J hJ hdet v sp hsig hdiag).1 L y, mem_cmp₁ hdiag, mem_cmp₂ hdiag]`. Simplify using `only [funext_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_loc_iff (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E ⊗[F] v.adicCompletion F) :
     y ∈ loc v L ↔ (fun b => p₁ sp (y b)) ∈ cmp (p₁ sp) L ∧ (fun b => p₂ sp (y b)) ∈ cmp (p₂ sp) L := by
   rw [(split_components F E cm n J hJ hdet v sp hsig hdiag).1 L y, mem_cmp₁ hdiag, mem_cmp₂ hdiag]
   simp only [funext_iff]
   rfl
 
+/- English proof (translation)
+Establish `hD` using `(GlobalTheory.T.dual_lattice_local_characterization F E cm n J hJ hdet L hL).2.1 v`. Prove the components needed by the constructor for the conclusion. Introduce `hu w hw`. Take `⟨z, hz, rfl⟩` from `(mem_cmp₂ hdiag _ _).1 hu`. Take `⟨x, hx, rfl⟩` from `(mem_cmp₁ hdiag _ _).1 hw`.
+
+Rewrite using `[← fst_hR hsig]`. Conclude with `((int_iff hdiag _).1 ((hD x).1 hx z hz)).1`. Introduce `hu`. Use `bidual _ (pairing_nondegenerate sp hdet) _ (cmp_fg (fun t ht => ((int_iff hdiag t).1 ht).2) hL) (cmp_span hL) u fun w hw => ?_` and prove the remaining obligations. Rewrite using `[mem_one_iff]`.
+
+Use `hu w ((mem_cmp₁ hdiag _ _).2 ⟨fun b => sp.symm (w b, 0), ?_, ?_⟩)` and prove the remaining obligations. Use `(hD _).2 fun z hz => (int_iff hdiag _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[fst_hR hsig, ← mem_one_iff]`. Use `hw _ ((mem_cmp₂ hdiag _ _).2 ⟨z, hz, rfl⟩)` as an intermediate fact. Simplify `this` using `[p₁]`.
+
+Rewrite using `[snd_hR hJ hsig]`. Establish `: (fun b => p₂ sp (sp.symm (w b, 0))) = 0` using `by funext b; simp [p₂]`. Rewrite using `[this, map_zero, LinearMap.zero_apply]`. Conclude with `zero_mem _`. Use function extensionality and compare the values at `b`.
+
+Simplify using `[p₁]`.
+-/
 theorem mem_cmp₂_iff {L : Submodule (𝓞 E) (Fin n → E)} (hL : IsLat L)
     (u : Fin n → v.adicCompletion F) :
     u ∈ cmp (p₂ sp) L ↔
@@ -280,6 +377,21 @@ theorem mem_cmp₂_iff {L : Submodule (𝓞 E) (Fin n → E)} (hL : IsLat L)
         exact zero_mem _
     · funext b; simp [p₁]
 
+/- English proof (translation)
+Establish `hD` using `(GlobalTheory.T.dual_lattice_local_characterization F E cm n J hJ hdet L hL.1).2.1 v`. Take `⟨-, d, hd, hcyc⟩` from `GlobalTheory.T.hermitianLattice_level_local_dual_quotient_length_one F E cm n J hJ hdet T f L hT hs hf hL v hv`. Establish `hmax` using `((SplitPrime.split_place F E cm T hT hs).2 v hv).2.1`. Establish `hd'` using `(mem_cmp₁ hdiag _ _).2 ⟨d, hd, rfl⟩`. Use `covBy_of_cyclic ?_ ?_ _ ?_ hd' ?_` and prove the remaining obligations.
+
+Conclude with `Submodule.span_mono (Set.image_mono fun x hx => Submodule.subset_span (hL.2.1 x hx))`. Introduce `hAB`. Take `⟨x, hx, hxL⟩` from `hL.2.2.2.2 v hv`. Use `hxL ((mem_loc_iff hJ hdet hsig hdiag L x).2 ⟨hAB ▸ (mem_cmp₁ hdiag _ _).2 ⟨x, hx, rfl⟩, (mem_cmp₂_iff hJ hdet hsig hdiag hL.1 _).2 ?_⟩)` and prove the remaining obligations. Rewrite using `[← hAB]`.
+
+Introduce `w hw`. Take `⟨z, hz, rfl⟩` from `(mem_cmp₁ hdiag _ _).1 hw`. Rewrite using `[← snd_hR hJ hsig]`. Conclude with `((int_iff hdiag _).1 ((hD x).1 hx z hz)).2`. Introduce `w hw`.
+
+Take `⟨x, hx, rfl⟩` from `(mem_cmp₁ hdiag _ _).1 hw`. Take `⟨a, ha, hxa⟩` from `hcyc x hx`. Use `⟨⟨_, ((int_iff hdiag _).1 ha).1⟩, (mem_cmp₁ hdiag _ _).2 ⟨_, hxa, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Express the relevant statement in the definitionally equal form `p₁ sp (x b - a * d b) = p₁ sp (x b) - p₁ sp a * p₁ sp (d b)`.
+
+Rewrite using `[map_sub, map_mul]`. Introduce `a ha`. Rewrite `ha` using `[hmax, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `ha`. Rewrite using `[mul_smul, Nat.cast_smul_eq_nsmul]`.
+
+Use `Submodule.smul_mem _ _ (cmp_nsmul T ?_ _ hd')` and prove the remaining obligations. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => rw [← Nat.cast_smul_eq_nsmul E]`. Conclude with `hL.2.2.1 x hx`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem cmp₁_covBy {T f : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} (hT : T.Prime) (hs : SplitsIn E T)
     (hf : Module.finrank ℚ E = 2 * f) (hL : TLat cm.sig J T f L) (hv : (T : 𝓞 F) ∈ v.asIdeal) :
     cmp (p₁ sp) L ⋖ cmp (p₁ sp) (dualL cm.sig J L) := by
@@ -325,6 +437,19 @@ namespace GlobalTheory.St.G
 
 open LevelConj
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ cm n J hJ hdet T f L M hT hs hf hL hM v hv`. Take `⟨sp, hsig, hdiag⟩` from `((SplitPrime.split_place F E cm T hT hs).2 v hv).2.2`. Establish `hint : ∀ t ∈ intV E v, p₁ sp t ∈ v.adicCompletionIntegers F` using `fun t ht => ((int_iff hdiag t).1 ht).1`. Take `⟨g, hA, hB⟩` from `GlobalTheory.T.exists_GL_conj_lattice_pairs_covBy_dvr (v.adicCompletionIntegers F) (v.adicCompletion F) n _ _ _ _ (cmp_fg hint (GlobalTheory.T.dual_lattice_local_characterization F E cm n J hJ hdet L hL.1).1) (cmp_fg hint (GlobalTheory.T.dual_lattice_local_characterization F E cm …`. Take `⟨⟨h, hh⟩, hg, -⟩` from `(split_components F E cm n J hJ hdet v sp hsig hdiag).2.1 g`.
+
+Establish `hg' : ∀ x, (fun b => p₁ sp ((h.1 *ᵥ x) b)) = g.1 *ᵥ fun b => p₁ sp (x b)`. Introduce `x`. Use function extensionality and compare the values at `b`. Rewrite using `[← hg]`. Conclude with `RingHom.map_mulVec (p₁ sp) h.1 x b`.
+
+Establish `hinv : ∀ x y, hR cm.sig J (v.adicCompletion F) (h.1 *ᵥ x) (h.1 *ᵥ y) = hR cm.sig J (v.adicCompletion F) x y`. Introduce `x y`. Establish `h0 : cT (sigR cm.sig (v.adicCompletion F)) h.1 * J.map (inclE (F` using `F) (v.adicCompletion F)) * h.1 = J.map (inclE (F := F) (v.adicCompletion F)) := hh`. Establish `h1 : sigR cm.sig (v.adicCompletion F) ∘ (h.1 *ᵥ x) = (h.1.map (sigR cm.sig (v.adicCompletion F))) *ᵥ (sigR cm.sig (v.adicCompletion F) ∘ x)`. Use function extensionality and compare the values at `i`.
+
+Conclude with `RingHom.map_mulVec _ h.1 x i`. Rewrite using `[hR, hR, GlobalTheory.DualFrames.hform_eq_dot, GlobalTheory.DualFrames.hform_eq_dot, h1, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`. Conclude with `congrArg (fun N => _ ⬝ᵥ N *ᵥ y) h0`. Establish `hp : ∀ x w, pairing sp J (fun b => p₂ sp ((h.1 *ᵥ x) b)) (g.1 *ᵥ w) = pairing sp J (fun b => p₂ sp (x b)) w`. Introduce `x w`.
+
+Establish `hw : w = fun b => p₁ sp (sp.symm (w b, 0))` using `by funext b; simp [p₁]`. Rewrite using `[hw, ← hg', ← fst_hR hsig, ← fst_hR hsig, hinv]`. Use `⟨h, hh, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_loc_iff hJ hdet hsig hdiag, mem_loc_iff hJ hdet hsig hdiag, hg', ← hA, mem_cmp₂_iff hJ hdet hsig hdiag hL.1, mem_cmp₂_iff hJ hdet hsig hdiag hM.1]`. Use `and_congr Iff.rfl ⟨fun H w' hw' => ?_, fun H w hw => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, rfl⟩` from `GlobalTheory.DualFrames.exists_mulVec g w'`. Rewrite using `[hp]`. Conclude with `H w ((hB w).2 hw')`. Rewrite using `[← hp]`. Conclude with `H _ ((hB w).1 hw)`.
+-/
 theorem exists_unitary_of_TLat :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (T f : ℕ) (L M : Submodule (𝓞 E) (Fin n → E)), T.Prime → SplitsIn E T → Module.finrank ℚ E = 2 * f → TLat cm.sig J T f L → TLat cm.sig J T f M → ∀ (v : HeightOneSpectrum (𝓞 F)), (T : 𝓞 F) ∈ v.asIdeal → ∃ h ∈ UPts cm.sig J (v.adicCompletion F), ∀ x, x ∈ loc v L ↔ h.1 *ᵥ x ∈ loc v M := by
   intro F E _ _ _ _ _ _ cm n J hJ hdet T f L M hT hs hf hL hM v hv

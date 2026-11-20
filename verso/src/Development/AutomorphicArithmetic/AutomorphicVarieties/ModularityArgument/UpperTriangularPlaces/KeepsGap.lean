@@ -12,6 +12,15 @@ section
 open UpperTheory.V.Af.Bc
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `hB' : IsPlaceOver B (w.under (𝓞 F))` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply F K Ω]`. Conclude with `hB (algebraMap (𝓞 F) (𝓞 K) x)`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) hB' hA`. Establish `hmem : ∀ x, x ∈ B ↔ g x ∈ g • B` using `fun x => ValuationSubring.smul_mem_pointwise_smul_iff.symm`.
+
+Establish `hval : ∀ y, (g • B).valuation (g y) < 1 ↔ B.valuation y < 1` using `fun y => by`. Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, ← hmem, ← hmem, map_eq_zero_iff _ g.injective]`. Establish `hdec : ∀ s ∈ Dec (F` using `K) B, g * res F Ω K s * g⁻¹ ∈ Dec (F := F) (g • B) := fun s hs => by`. Establish `h1 : res F Ω K s • B = B` using `hs`. Use `show (g * res F Ω K s * g⁻¹) • g • B = g • B`.
+
+Rewrite using `[mul_smul, mul_smul, inv_smul_smul, h1]`. Use `⟨g, hdec, fun s hs => ⟨hdec s hs.1, fun x hx => ?_⟩⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `g.surjective x`. Establish `e : (g * res F Ω K s * g⁻¹) (g y) = g (s y)` using `by show g (s (g.symm (g y))) = _`. Rewrite using `[AlgEquiv.symm_apply_apply]`.
+
+Rewrite using `[e, ← map_sub, hval]`. Conclude with `hs.2 y ((B.valuation_le_one_iff _).2 ((hmem y).2 (((g • B).valuation_le_one_iff _).1 hx)))`.
+-/
 private theorem conj_into {F K Ω : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω] [Algebra F K]
     [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω]
     (w : HeightOneSpectrum (𝓞 K)) {A B : ValuationSubring Ω} (hA : IsPlaceOver A (w.under (𝓞 F)))
@@ -37,6 +46,13 @@ private theorem conj_into {F K Ω : Type} [Field F] [NumberField F] [Field K] [N
   rw [e, ← map_sub, hval]
   exact hs.2 y ((B.valuation_le_one_iff _).2 ((hmem y).2 (((g • B).valuation_le_one_iff _).1 hx)))
 
+/- English proof (translation)
+Take `⟨χ, hχ, ⟨P, hP⟩, hI⟩` from `hκ`. Take `⟨g, hD, hIn⟩` from `conj_into w hA hB`. Set `d : ↥(Dec (F` to `K) B) →* ↥(Dec (F := F) A) := (((MulAut.conj g).toMonoidHom.comp (res F Ω K)).comp (Dec (F := K) B).subtype).codRestrict _ fun s => hD s s.2`. Establish `hd : ∀ s, (d s : G F Ω) = g * res F Ω K s * g⁻¹` using `fun _ => rfl`. Establish `hcyc : ∀ (ψ : G F Ω →* (Qbar l)ˣ) (s : G K Ω), ψ (g * res F Ω K s * g⁻¹) = ψ (res F Ω K s)` using `fun ψ s => by`.
+
+Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Establish `hrep : ∀ s : G K Ω, P * r g * r (res F Ω K s) * (P * r g)⁻¹ = P * r (g * res F Ω K s * g⁻¹) * P⁻¹` using `fun s => by`. Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`. Use `⟨fun i => (κ i).comp d, fun i => (χ i).comp (res F Ω K), fun i s hs => hχ i _ hs, ⟨P * r g, fun s => ?_⟩, fun i s hs => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.comp_apply, hrep]`. Conclude with `hP (d s)`. Establish `h` using `hI i (d s) (hIn s hs)`. Rewrite `h` using `[hd, hcyc, hcyc]`. Conclude with `h`.
+-/
 private theorem flag_at_place {F K Ω : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω] [Algebra F K]
     [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω]
     {l : ℕ} [Fact l.Prime] {n M : ℕ} {m : Fin n → ℤ} {r : G F Ω →* GL (Fin n) (Qbar l)}
@@ -64,6 +80,11 @@ private theorem flag_at_place {F K Ω : Type} [Field F] [NumberField F] [Field K
 
 end
 
+/- English proof (translation)
+Introduce `F L Ω _ _ _ _ _ _ _ _ _ _ _ l _ n M m r hM hflag hgap w hw _ B hB`. Establish `hlow : ((l : ℕ) : 𝓞 F) ∈ (w.under (𝓞 F)).asIdeal`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 L) _ ∈ w.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Take `⟨A, hA, κ, hκ⟩` from `hflag _ hlow`.
+
+Take `⟨κ', hκ'⟩` from `flag_at_place w hA hB hκ`. Establish `hfl : IsFlagOn _ _ κ'` using `hκ'.choose_spec.2.1`. Conclude with `⟨κ', hfl, Lev.unlGap L Ω l n M hM m _ w hw B hB _ hκ' hgap⟩`.
+-/
 theorem UpperTheory.V.Z.Keep.keepsGap :
     ∀ (F L Ω : Type) [Field F] [NumberField F] [Field L] [NumberField L] [Field Ω] [Algebra F L] [Algebra F Ω] [Algebra L Ω] [IsScalarTower F L Ω] [IsAlgClosure F Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n M : ℕ) (m : Fin n → ℤ) (r : G F Ω →* GL (Fin n) (Qbar l)), 1 ≤ M → (∀ w : HeightOneSpectrum (𝓞 F), ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → ∃ A : ValuationSubring Ω, IsPlaceOver A w ∧ ∃ κ, Af.FlagAt M m r A κ) → (∀ i j, m i ≠ m j + 1) → Z.Win.Keeps r L := by
   intro F L Ω _ _ _ _ _ _ _ _ _ _ _ l _ n M m r hM hflag hgap w hw _ B hB

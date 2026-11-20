@@ -18,11 +18,17 @@ open MvPowerSeries
 
 variable {C : Type} [Field C]
 
+/- English proof (translation)
+Use extensionality with `ν`. Rewrite using `[h ν (fun _ _ => Set.notMem_empty _)]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_zero_of_van {τ : Type} {f : MvPowerSeries τ C} (h : Van (∅ : Set τ) f) : f = 0 := by
   ext ν
   rw [h ν (fun _ _ => Set.notMem_empty _)]
   simp
 
+/- English proof (translation)
+The claim follows from `eq_zero_of_van (Van.subst Set.univ (fun _ => map_zero _) (fun _ _ ν _ => by simp) (van_univ hf))`.
+-/
 theorem subst_zero' {σ τ : Type} [Finite σ] {f : MvPowerSeries σ C} (hf : constantCoeff f = 0) :
     subst (fun _ : σ => (0 : MvPowerSeries τ C)) f = 0 :=
   eq_zero_of_van (Van.subst Set.univ (fun _ => map_zero _) (fun _ _ ν _ => by simp) (van_univ hf))
@@ -31,6 +37,9 @@ section General
 
 variable {d : ℕ} {I : Fin 2 → Type} {κ : Type} [Fintype κ] (X : RawChart C d I κ)
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Rewrite using `[constantCoeff_smul, cc_subst ha, hlg, smul_zero]`.
+-/
 theorem cc_lin (hlg : ∀ i, constantCoeff (X.lg i) = 0) (M : Matrix κ κ C) {τ : Type}
     {a : κ → MvPowerSeries τ C} (ha : ∀ i, constantCoeff (a i) = 0) (x : κ) :
     constantCoeff (∑ y, M x y • subst a (X.lg y)) = 0 := by
@@ -38,12 +47,20 @@ theorem cc_lin (hlg : ∀ i, constantCoeff (X.lg i) = 0) (M : Matrix κ κ C) {�
   refine Finset.sum_eq_zero fun y _ => ?_
   rw [constantCoeff_smul, cc_subst ha, hlg, smul_zero]
 
+/- English proof (translation)
+Unfold `endP`. Rewrite using `[cc_subst (cc_lin X hlg M ha), hex]`.
+-/
 theorem cc_endP (hlg : ∀ i, constantCoeff (X.lg i) = 0) (hex : ∀ i, constantCoeff (X.ex i) = 0)
     (M : Matrix κ κ C) {τ : Type} {a : κ → MvPowerSeries τ C} (ha : ∀ i, constantCoeff (a i) = 0) (i : κ) :
     constantCoeff (endP X M a i) = 0 := by
   unfold endP
   rw [cc_subst (cc_lin X hlg M ha), hex]
 
+/- English proof (translation)
+Establish `hA` using `hasSubst_of_constantCoeff_zero ha`. Establish `hB` using `hasSubst_of_constantCoeff_zero hb`. Unfold `endP`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (cc_lin X hlg M ha)) hB]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[← coe_substAlgHom hB, map_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, coe_substAlgHom hB, subst_comp_subst_apply hA hB]`.
+-/
 theorem subst_endP (hlg : ∀ i, constantCoeff (X.lg i) = 0) (M : Matrix κ κ C) {τ υ : Type} [Finite τ]
     {a : κ → MvPowerSeries τ C} (ha : ∀ i, constantCoeff (a i) = 0)
     {b : τ → MvPowerSeries υ C} (hb : ∀ i, constantCoeff (b i) = 0) (i : κ) :
@@ -58,12 +75,18 @@ theorem subst_endP (hlg : ∀ i, constantCoeff (X.lg i) = 0) (M : Matrix κ κ C
   refine Finset.sum_congr rfl fun y _ => ?_
   rw [map_smul, coe_substAlgHom hB, subst_comp_subst_apply hA hB]
 
+/- English proof (translation)
+Use `split_ifs`. Use `exacts [ha _, hb _]`.
+-/
 theorem cc_pair {τ : Type} {a b : κ → MvPowerSeries τ C} (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) (p : Fin 2 × κ) :
     constantCoeff (if p.1 = 0 then a p.2 else b p.2) = 0 := by
   split_ifs
   exacts [ha _, hb _]
 
+/- English proof (translation)
+Unfold `hAt`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (cc_pair ha ha')) (hasSubst_of_constantCoeff_zero hb)]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem subst_hAt {τ υ : Type} [Finite τ] {a a' : κ → MvPowerSeries τ C} (ha : ∀ i, constantCoeff (a i) = 0)
     (ha' : ∀ i, constantCoeff (a' i) = 0)
     {b : τ → MvPowerSeries υ C} (hb : ∀ i, constantCoeff (b i) = 0) :
@@ -75,6 +98,9 @@ theorem subst_hAt {τ υ : Type} [Finite τ] {a a' : κ → MvPowerSeries τ C} 
   funext p
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use `eq_zero_of_van (Van.subst {s : Fin 2 × κ | s.1 = 0} (cc_pair (fun _ => map_zero _) hb) ?_ hh)` and prove the remaining obligations. Introduce `s hs ν _`. Establish `h0 : s.1 = 0` using `hs`. Rewrite using `[if_pos h0, map_zero]`.
+-/
 theorem hAt_zero_left (hh : ∀ e : Fin 2 × κ →₀ ℕ, (∀ s ∈ e.support, s.1 ≠ 0) → coeff e X.h = 0) {τ : Type}
     {b : κ → MvPowerSeries τ C} (hb : ∀ i, constantCoeff (b i) = 0) : hAt X (fun _ => 0) b = 0 := by
   refine eq_zero_of_van (Van.subst {s : Fin 2 × κ | s.1 = 0} (cc_pair (fun _ => map_zero _) hb) ?_ hh)
@@ -82,6 +108,9 @@ theorem hAt_zero_left (hh : ∀ e : Fin 2 × κ →₀ ℕ, (∀ s ∈ e.support
   have h0 : s.1 = 0 := hs
   rw [if_pos h0, map_zero]
 
+/- English proof (translation)
+Use `eq_zero_of_van (Van.subst {s : Fin 2 × κ | s.1 = 1} (cc_pair ha (fun _ => map_zero _)) ?_ hh)` and prove the remaining obligations. Introduce `s hs ν _`. Establish `h1 : s.1 = 1` using `hs`. Rewrite using `[if_neg (by rw [h1]; decide), map_zero]`.
+-/
 theorem hAt_zero_right (hh : ∀ e : Fin 2 × κ →₀ ℕ, (∀ s ∈ e.support, s.1 ≠ 1) → coeff e X.h = 0) {τ : Type}
     {a : κ → MvPowerSeries τ C} (ha : ∀ i, constantCoeff (a i) = 0) : hAt X a (fun _ => 0) = 0 := by
   refine eq_zero_of_van (Van.subst {s : Fin 2 × κ | s.1 = 1} (cc_pair ha (fun _ => map_zero _)) ?_ hh)
@@ -89,6 +118,9 @@ theorem hAt_zero_right (hh : ∀ e : Fin 2 × κ →₀ ℕ, (∀ s ∈ e.suppor
   have h1 : s.1 = 1 := hs
   rw [if_neg (by rw [h1]; decide), map_zero]
 
+/- English proof (translation)
+Unfold `hAt`. Rewrite using `[cc_subst (cc_pair ha hb), ← coeff_zero_eq_constantCoeff_apply]`. Conclude with `hh 0 (by simp)`.
+-/
 theorem cc_hAt (hh : ∀ e : Fin 2 × κ →₀ ℕ, (∀ s ∈ e.support, s.1 ≠ 0) → coeff e X.h = 0) {τ : Type}
     {a b : κ → MvPowerSeries τ C} (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) :
     constantCoeff (hAt X a b) = 0 := by
@@ -102,6 +134,11 @@ section Square
 
 variable {dd : ℕ}
 
+/- English proof (translation)
+Establish `hA` using `hasSubst_of_constantCoeff_zero ha`. Unfold `inCol`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hA]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[subst_X hA]`.
+-/
 theorem subst_inCol {τ : Type} {a : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : ∀ i, constantCoeff (a i) = 0)
     (col : Fin 2) (f : MvPowerSeries (Fin dd) C) :
     subst a (inCol col f) = subst (fun k => a (col, k)) f := by
@@ -114,6 +151,15 @@ theorem subst_inCol {τ : Type} {a : Fin 2 × Fin dd → MvPowerSeries τ C} (ha
 
 variable {d d' : ℕ} {I I' : Fin 2 → Type} (X : RawChart C d I (Fin dd)) (Z : RawChart C d' I' (Fin 2 × Fin dd))
 
+/- English proof (translation)
+Establish `hZ : ∀ x, constantCoeff (Z.lg x) = 0` using `fun x => by`. Rewrite using `[hlg, inCol, cc_subst (fun _ => constantCoeff_X _), hlg0]`. Unfold `endP`. Rewrite using `[hex, subst_inCol (cc_lin Z hZ _ ha)]`. Use `split_ifs with hc`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single s]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[hlg, subst_inCol ha]`.
+
+Simplify using `[hc]`. Introduce `t _ ht`. Simplify using `[ht]`. Simplify using the standard rewrite rules. Simplify using `only [Matrix.of_apply, hc, false_and, if_false, zero_smul, Finset.sum_const_zero]`.
+
+Conclude with `subst_zero' (hex0 i)`.
+-/
 theorem matrixEnd_block (hlg : ∀ x, Z.lg x = inCol x.1 (X.lg x.2)) (hex : ∀ x, Z.ex x = inCol x.1 (X.ex x.2))
     (hlg0 : ∀ i, constantCoeff (X.lg i) = 0) (hex0 : ∀ i, constantCoeff (X.ex i) = 0) (r s : Fin 2)
     (M : Matrix (Fin dd) (Fin dd) C) {τ : Type} {a : Fin 2 × Fin dd → MvPowerSeries τ C}
@@ -137,6 +183,11 @@ theorem matrixEnd_block (hlg : ∀ x, Z.lg x = inCol x.1 (X.lg x.2)) (hex : ∀ 
   · simp only [Matrix.of_apply, hc, false_and, if_false, zero_smul, Finset.sum_const_zero]
     exact subst_zero' (hex0 i)
 
+/- English proof (translation)
+Establish `hA` using `hasSubst_of_constantCoeff_zero (cc_pair ha hb)`. Unfold `hAt`. Rewrite using `[hh, ← coe_substAlgHom hA, map_sum]`. Use `Finset.sum_congr rfl fun col _ => ?_` and prove the remaining obligations. Rewrite using `[coe_substAlgHom hA, hCol, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hA]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[subst_X hA]`.
+-/
 theorem hAt_square (hh : Z.h = ∑ col, hCol col X.h) {τ : Type} {a b : Fin 2 × Fin dd → MvPowerSeries τ C}
     (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) :
     hAt Z a b = ∑ col, hAt X (fun k => a (col, k)) (fun k => b (col, k)) := by
@@ -150,6 +201,21 @@ theorem hAt_square (hh : Z.h = ∑ col, hCol col X.h) {τ : Type} {a b : Fin 2 �
   funext q
   rw [subst_X hA]
 
+/- English proof (translation)
+Establish `hint : ∀ (r s : Fin 2) (M : Matrix (Fin dd) (Fin dd) C), (∀ i, IntS V (endP X M (MvPowerSeries.X : Fin dd → MvPowerSeries (Fin dd) C) i)) → ∀ x, IntS V (endP Z (Matrix.of fun x y : Fin 2 × Fin dd => if x.1 = r ∧ y.1 = s then M x.2 y.2 else 0) (MvPowerSeries.X : Fin 2 × Fin dd → M …`. Introduce and unpack `r s M hM ⟨col, i⟩`. Rewrite using `[matrixEnd_block X Z hlg hex hlg0 hex0 r s M (fun _ => constantCoeff_X _)]`. Use `split_ifs`. Establish `hb : ∀ k : Fin dd, constantCoeff (MvPowerSeries.X (s, k) : MvPowerSeries (Fin 2 × Fin dd) C) = 0` using `fun _ => constantCoeff_X _`.
+
+Establish `h1` using `intS_subst hb (fun _ => intS_X _) (hM i)`. Rewrite `h1` using `[subst_endP X hlg0 M (fun _ => constantCoeff_X _) hb]`. Simplify `h1` using `only [subst_X (hasSubst_of_constantCoeff_zero hb)]`. Conclude with `intS_zero`. Use `⟨hint r s M H.1, hint s r M' H.2.1, ?_⟩` and prove the remaining obligations.
+
+Establish `hZ : ∀ x, constantCoeff (Z.lg x) = 0` using `fun x => by`. Rewrite using `[hlg, inCol, cc_subst (fun _ => constantCoeff_X _), hlg0]`. Establish `hZ' : ∀ x, constantCoeff (Z.ex x) = 0` using `fun x => by`. Rewrite using `[hex, inCol, cc_subst (fun _ => constantCoeff_X _), hex0]`. Establish `hg : ∀ (κ : Type) (j : Fin 2) (x : κ), constantCoeff (gp C κ j x) = 0` using `fun _ _ _ => constantCoeff_X _`.
+
+Establish `hb : ∀ q : Fin 2 × Fin dd, constantCoeff (MvPowerSeries.X (q.1, (if q.1 = 0 then s else r, q.2)) : MvPowerSeries (Fin 2 × (Fin 2 × Fin dd)) C) = 0` using `fun _ => constantCoeff_X _`. Establish `hB` using `hasSubst_of_constantCoeff_zero hb`. Establish `h1` using `intS_subst hb (fun _ => intS_X _) H.2.2`. Rewrite using `[subst_mvExp hb (by`. Rewrite using `[map_sub, cc_hAt X (hax 0) (cc_endP X hlg0 hex0 M (hg _ 0)) (hg _ 1), cc_hAt X (hax 0) (hg _ 0) (cc_endP X hlg0 hex0 M' (hg _ 1)), sub_zero]),`.
+
+Use `subst_sub hB, subst_hAt X (cc_endP X hlg0 hex0 M (hg _ 0)) (hg _ 1) hb,`. Use `subst_hAt X (hg _ 0) (cc_endP X hlg0 hex0 M' (hg _ 1)) hb] at h1`. Simplify using `only [subst_endP X hlg0 _ (hg _ _) hb] at h1`. Simplify using `only [gp, subst_X hB, if_true, one_ne_zero, if_false] at h1`. Rewrite using `[hAt_square X Z hh (cc_endP Z hZ hZ' _ (hg _ 0)) (hg _ 1), hAt_square X Z hh (hg _ 0) (cc_endP Z hZ hZ' _ (hg _ 1)), Finset.sum_eq_single r, Finset.sum_eq_single s]`.
+
+Simplify using `only [matrixEnd_block X Z hlg hex hlg0 hex0 _ _ _ (hg _ _), if_true]`. Conclude with `h1`. Introduce `t _ ht`. Simplify using `only [matrixEnd_block X Z hlg hex hlg0 hex0 _ _ _ (hg _ _), if_neg ht]`. Conclude with `hAt_zero_right X (hax 1) (fun _ => hg _ _ _)`.
+
+Simplify using the standard rewrite rules. Introduce `t _ ht`. Simplify using `only [matrixEnd_block X Z hlg hex hlg0 hex0 _ _ _ (hg _ _), if_neg ht]`. Conclude with `hAt_zero_left X (hax 0) (fun _ => hg _ _ _)`. Simplify using the standard rewrite rules.
+-/
 theorem isEnd_block_raw [CharZero C] (V : VF C) (hlg : ∀ x, Z.lg x = inCol x.1 (X.lg x.2))
     (hex : ∀ x, Z.ex x = inCol x.1 (X.ex x.2)) (hh : Z.h = ∑ col, hCol col X.h)
     (hlg0 : ∀ i, constantCoeff (X.lg i) = 0) (hex0 : ∀ i, constantCoeff (X.ex i) = 0)
@@ -203,6 +269,15 @@ theorem isEnd_block_raw [CharZero C] (V : VF C) (hlg : ∀ x, Z.lg x = inCol x.1
 
 end Square
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d I0 _ p d' I X hlg hex hh r s M M' H`. Use `isEnd_block_raw X (Y.rawSelf p) V (fun x => by rw [hlg]; rfl) (fun x => by rw [hex]; rfl) (by rw [hh]; rfl) (fun i => ?_) (fun i => ?_) (fun g => ?_) r s M M' H` and prove the remaining obligations. Rewrite using `[hlg] show constantCoeff (un1 (Y.lg i)) = 0`. Rewrite using `[constantCoeff_uncurry, ← coeff_zero_eq_constantCoeff_apply, Y.lg_lin i 0 (by simp), coeff_zero_eq_constantCoeff_apply, constantCoeff_X]`. Rewrite using `[hex] show constantCoeff (un1 (Y.ex i)) = 0`.
+
+Rewrite using `[constantCoeff_uncurry]`. Conclude with `Y.ex_const i`. Rewrite using `[hh] fin_cases g`. Use `coeff_of_ev_zero Y.h 0 ![0, pt C dd 0] rfl ?_ Y.gauge.ax0` and prove the remaining obligations. Introduce `g' hg'`.
+
+Rewrite using `[fin_two_eq_one_sub_of_ne' 0 g' hg']`. Both sides reduce to the same expression. Use `coeff_of_ev_zero Y.h 1 ![pt C dd 0, 0] rfl ?_ Y.gauge.ax1` and prove the remaining obligations. Introduce `g' hg'`. Rewrite using `[fin_two_eq_one_sub_of_ne' 1 g' hg']`.
+
+Both sides reduce to the same expression.
+-/
 theorem isEnd_block : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ)
     (Y : FBChart C V O dd) (d : ℕ) (I0 : Type) [Fintype I0] (p : SelfData Y d I0) (d' : ℕ) (I : Fin 2 → Type)
     (X : RawChart C d' I (Fin dd)), (X.lg = fun i => un1 (Y.lg i)) → (X.ex = fun i => un1 (Y.ex i)) → X.h = Y.h →

@@ -20,6 +20,15 @@ namespace ArcObj
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `c` using `n.cart.comp (isGrpPullback_of_iso ψ)`. Rewrite `c` using `[Category.comp_id]`. Take `⟨α, hα, hφ⟩` from `grpPullback_iso c n'.cart`. Establish `ha : ∀ x, (u.act.act x).left ≫ α.hom.left = α.hom.left ≫ (u'.act.act x).left` using `fun x => by`. Establish `e : (t.act.act x).left ≫ ψ.hom.left = ψ.hom.left ≫ (t'.act.act x).left` using `congrArg (fun q => q.left) (hact x)`.
+
+Apply `n'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ, Category.assoc, n'.act, ← Category.assoc, n.act, ← Category.assoc, hφ, Category.assoc, Category.assoc, e]`. Simplify using `only [Category.assoc, Over.w]`. Establish `hb : LBIso u.PP.L (u'.PP.L.pull α.hom.left)`. Take `⟨w, hw⟩` from `hL`.
+
+Take `⟨w₁, g₁, -⟩` from `(isPullCubical_iff _ _ _).1 n.lin`. Take `⟨w₂, g₂, -⟩` from `(isPullCubical_iff _ _ _).1 n'.lin`. Establish `hw'` using `(isGen_iff w).1 hw`. Take `⟨w₃, T⟩` from `exists_comp t.PP.isLB w w₁ hw' g₁ t'.PP.isLB u.PP.isLB`. Choose the witnesses or unpack the hypotheses as in `⟨w₄, g₄⟩ : ∃ w₄ : LB.Iso u.PP.L (t'.PP.L.pull (α.hom.left ≫ n'.cm.F)), PGen w₄ := by`.
+
+Rewrite using `[hφ]`. Conclude with `⟨w₃, T.pgen_comp t.PP.isLB hw' g₁⟩`. Take `⟨w₅, T'⟩` from `exists_cancel t'.PP.isLB w₂ w₄ g₂ g₄ u'.PP.isLB u.PP.isLB`. Conclude with `⟨w₅, (isGen_iff w₅).2 (T'.pgen_cancel t'.PP.isLB g₂ g₄)⟩`. Conclude with `⟨⟨CubeMap.ofHom α.hom, isGrpPullback_of_iso α, rfl, ha, HeckePoint.isPullCubical_of_iso hG hA α.hom u.cub u'.cub hb⟩, hφ⟩`.
+-/
 theorem exists_sabMap_of_iso (hG : GlobalFnsSt) {S S' : Scheme.{0}} {t t' : SAB H S} {u u' : SAB H S'} {f : S' ⟶ S}
     (n : SABMap u t f) (n' : SABMap u' t' f) (hA : IsAbelianScheme u.G) (ψ : t.G ≅ t'.G) [IsMonHom ψ.hom]
     (hact : ∀ x, t.act.act x ≫ ψ.hom = ψ.hom ≫ t'.act.act x) (hL : LBIso t.PP.L (t'.PP.L.pull ψ.hom.left)) :
@@ -46,6 +55,9 @@ theorem exists_sabMap_of_iso (hG : GlobalFnsSt) {S S' : Scheme.{0}} {t t' : SAB 
   exact ⟨⟨CubeMap.ofHom α.hom, isGrpPullback_of_iso α, rfl, ha,
     HeckePoint.isPullCubical_of_iso hG hA α.hom u.cub u'.cub hb⟩, hφ⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `ObjMaps.exists_sab_cancel m n`.
+-/
 theorem exists_sab_fac {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S}
     {g : S'' ⟶ S'} {h : S'' ⟶ S} (m : SABMap t' t f) (n : SABMap t'' t h) (e : h = g ≫ f) :
     ∃ m' : SABMap t'' t' g, n.φ = m'.φ ≫ m.φ := by
@@ -54,12 +66,36 @@ theorem exists_sab_fac {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'
 
 variable {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `objMap_unique_of_field hS m m'`.
+-/
 theorem objMap_eq (hS : SerreSt) {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {F : Type} [Field F]
     {s : S ⟶ Sp B} {s' : Sp F ⟶ Sp B} {o : Obj D l b s} {o₁ : Obj D l b s'} {y y' : Sp F ⟶ S} (e : y = y')
     (m : ObjMap o₁ o y) (m' : ObjMap o₁ o y') : m.toSABMap.φ = m'.toSABMap.φ := by
   subst e
   exact objMap_unique_of_field hS m m'
 
+/- English proof (translation)
+Establish `hid : spMap (RingHom.id (KA l)) = 𝟙 _` using `Spec.map_id _`. Establish `hs' : y' ≫ pullback.fst _ _ ≫ Xo.s = y ≫ pullback.fst _ _ ≫ Xo.s`. Rewrite using `[pullback.condition, reassoc_of% hs]`. Take `⟨o, ⟨m₁⟩⟩` from `obj_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ _ (y ≫ pullback.fst _ _ ≫ Xo.s) y`. Use `rfl rfl (by rw [hid, Category.comp_id]) Y.oF`.
+
+Take `⟨o', ⟨m₂⟩⟩` from `obj_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ _ (y ≫ pullback.fst _ _ ≫ Xo.s) y'`. Use `rfl rfl (by rw [hid, Category.comp_id, hs']) Y'.oF`. Take `⟨k₁, e₁⟩` from `ObjMaps.exists_sab_comp Y.m m₁.toSABMap`. Take `⟨k₂, e₂⟩` from `ObjMaps.exists_sab_comp Y'.m m₂.toSABMap`. Take `⟨n, hn⟩` from `exists_sab_fac m k₁ hy`.
+
+Take `⟨n', hn'⟩` from `exists_sab_fac m' k₂ hy'`. Take `⟨ν, hν⟩` from `exists_sabMap_of_iso hL.globalFns n n' ⟨inferInstance, o.t.semi.smooth, o.proper, o.t.semi.geomConnected⟩ ψ hact hb`. Establish `hνw : ν.φ ≫ o'.t.G.hom = o.t.G.hom` using `ν.cart.1.w.trans (Category.comp_id _)`. Establish `hψ : n.φ ≫ ψ.hom.left ≫ m'.φ = ν.φ ≫ m₂.toSABMap.φ ≫ Y'.m.φ`. Rewrite using `[← e₂, hn', reassoc_of% hν]`.
+
+Establish `key : ∀ (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) (σ' : 𝟙_ (Over (Xo.XF c)) ⟶ Y'.oF.t.G) (x : 𝟙_ (Over (Sp K)) ⟶ o.t.G) (x' : 𝟙_ (Over (Sp K)) ⟶ o'.t.G), ((∃ v, σ = Y.oF.etaA v ∧ σ' = Y'.oF.etaA v) ∨ ∃ v, σ = Y.oF.eta v ∧ σ' = Y'.oF.eta v) → x.left ≫ m₁.toSABMap.φ = y ≫ σ.left → x'.le …`. Introduce `σ σ' x x' h hx hx'`. Establish `b : x.left ≫ o.t.G.hom = 𝟙 _` using `Over.w x`. Establish `b' : x'.left ≫ o'.t.G.hom = 𝟙 _` using `Over.w x'`. Establish `q` using `hlev σ σ' h (x.left ≫ n.φ) (by rw [Category.assoc, n.cart.1.w, reassoc_of% b]) (by rw [Category.assoc, ← hn, e₁, reassoc_of% hx])`.
+
+Rewrite using `[Category.id_comp]`. Apply `k₂.cart.1.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ _) ≫ k₂.φ = _ ≫ k₂.φ`. Rewrite using `[e₂, Category.assoc, ← hψ, reassoc_of% hx', ← q, Category.assoc]`. Rewrite using `[Category.assoc, hνw, b, b']`.
+
+Set `ν' : ObjMap o o' (𝟙 _)` to `⟨ν, fun a => key _ _ _ _ (Or.inr ⟨a, rfl, rfl⟩) (m₁.eta a) (m₂.eta a), fun a => key _ _ _ _ (Or.inl ⟨a, rfl, rfl⟩) (m₁.etaA a) (m₂.etaA a)⟩`. Take `⟨p₁, f₁⟩` from `ObjComp.objMap_comp Y.m0 m₁`. Take `⟨p₀, f₀⟩` from `ObjComp.objMap_comp m₂ ν'`. Take `⟨p₂, f₂⟩` from `ObjComp.objMap_comp Y'.m0 p₀`. Establish `hf` using `(Xo.rep _ _ inferInstance o).unique ⟨Category.assoc _ _ _, ⟨p₁⟩⟩ ⟨by rw [Category.id_comp, Category.assoc, hs'], ⟨p₂⟩⟩`.
+
+Establish `hp : m₁.toSABMap.φ ≫ Y.m0.toSABMap.φ = (ν.φ ≫ m₂.toSABMap.φ) ≫ Y'.m0.toSABMap.φ` using `f₁.symm.trans ((objMap_eq hL.serre hf p₁ p₂).trans (f₂.trans (congrArg (· ≫ _) f₀)))`. Rewrite `hf` using `[Category.id_comp]`. Take `rfl : y = y'` from `pullback.hom_ext hf hs`. Use `⟨rfl, fun T g g₁ g₂ τ h₁ h₂ h₃ h₄ h₅ => ?_⟩` and prove the remaining obligations. Take `⟨u, u₁, u₂⟩ : ∃ u : T ⟶ o.t.G.left, u ≫ m₁.toSABMap.φ = g₁ ∧ u ≫ o.t.G.hom = τ` from `⟨m₁.cart.1.lift g₁ τ h₂, m₁.cart.1.lift_fst _ _ _, m₁.cart.1.lift_snd _ _ _⟩`.
+
+Establish `a₁ : u ≫ n.φ = g`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ _) ≫ m.φ = _ ≫ m.φ`. Rewrite using `[Category.assoc, ← hn, e₁, reassoc_of% u₁, h₃]`. Rewrite using `[Category.assoc, n.cart.1.w, reassoc_of% u₂, h₁]`.
+
+Establish `a₂ : u ≫ ν.φ ≫ m₂.toSABMap.φ = g₂`. Apply `Y'.m0.cart.1.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ _) ≫ Y'.m0.toSABMap.φ = _ ≫ Y'.m0.toSABMap.φ`. Rewrite using `[Category.assoc, ← hp, reassoc_of% u₁, h₄]`. Rewrite using `[Category.assoc, Category.assoc, m₂.cart.1.w, reassoc_of% hνw, reassoc_of% u₂, ← h₅, h₂]`.
+
+Rewrite using `[← a₁, ← a₂, Category.assoc, hψ, Category.assoc, Category.assoc]`.
+-/
 theorem point_eq (hL : Laws) {Xo : Moduli D l} {c : Coeff l} {O O' : Type} [CommRing O] [CommRing O']
     {β : O →+* c.F} {β' : O' →+* c.F} {Y : Model Xo c β} {Y' : Model Xo c β'} {S : Scheme.{0}} {χ : S ⟶ Y.X}
     {χ' : S ⟶ Y'.X} {t t' : SAB H S} (m : SABMap t Y.t χ) (m' : SABMap t' Y'.t χ') (ψ : t.G ≅ t'.G) [IsMonHom ψ.hom]
@@ -134,6 +170,15 @@ theorem point_eq (hL : Laws) {Xo : Moduli D l} {c : Coeff l} {O O' : Type} [Comm
 
 end ArcObj
 
+/- English proof (translation)
+Introduce `hL _ E _ _ _ H D l Xo c k _ bF a O O' _ _ β β' Y Y' χ χ' W W' hD ψ bc hψ _ hbc hU hact y y' hy hy' hs hs' hlev`. Establish `hb : LBIso W.t.PP.L (W'.t.PP.L.pull ψ.hom.left)`. Take `⟨w, hw, -⟩` from `hU.lg`. Rewrite using `[← W.P.bundle, ← W'.P.bundle, ← hbc]`. Conclude with `⟨w, hw⟩`.
+
+Take `⟨e, h⟩` from `ArcObj.point_eq hL W.m W'.m ψ hact hb _ y y' hy hy' (hs.trans hs'.symm) hlev`. Use `⟨e, fun hm T g g₁ g₂ h₁ h₂ h₃ => ?_⟩` and prove the remaining obligations. Use `ThetaShiftProofs.isOpenImmersion_jK_powerSeries k` as an intermediate fact. Establish `q : (g ≫ W.t.G.hom) ≫ χ = (g₁ ≫ Y.oF.t.G.hom) ≫ Y.j`. Establish `h₁' : g ≫ W.m.cm.F = g₁ ≫ Y.m.cm.F` using `h₁`.
+
+Rewrite using `[Category.assoc, ← W.m.cart.1.w, reassoc_of% h₁', Y.m.cart.1.w, Category.assoc]`. Both sides reduce to the same expression. Establish `hr : Set.range (g ≫ W.t.G.hom) ⊆ Set.range (jK (PowerSeries k))`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `arcWit_mem_range_jK_of_mem_range_j E H D l Xo c k bF a O β Y χ W _ ⟨(g₁ ≫ Y.oF.t.G.hom) p, congrArg (fun z => z p) q.symm⟩`.
+
+Establish `hτ` using `IsOpenImmersion.lift_fac (jK (PowerSeries k)) _ hr`. Use `h T g g₁ g₂ _ hτ.symm ?_ h₁ h₂ h₃` and prove the remaining obligations. Rewrite using `[← cancel_mono Y.j, ← q, Category.assoc _ y, hy, ← Category.assoc _ (jK _), hτ]`.
+-/
 theorem arcWit_point_eq_of_iso : Laws → Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (k : Type) [Field k] (bF : c.F →+* k) (a : ArcIn D l (RingHom.id c.F) k bF) (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F) (Y : Model Xo c β) (Y' : Model Xo c β') (χ : Sp (PowerSeries k) ⟶ Y.X) (χ' : Sp (PowerSeries k) ⟶ Y'.X) (W : ArcWit Y (a.restrict β) (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := k)) PowerSeries.X χ) (W' : ArcWit Y' (a.restrict β') (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := k)) PowerSeries.X χ') (hD : IsPullDeg (RingHom.id (PowerSeries k)) W'.P.D.toPre W.P.D.toPre), ∀ (ψ : W.t.G ≅ W'.t.G) (bc : W.t.G ≅ (Over.pullback (specOf (RingHom.id (PowerSeries k)))).obj W'.t.G), IsMonHom ψ.hom → IsMonHom bc.hom → bc.hom.left ≫ pullback.fst W'.t.G.hom (specOf (RingHom.id (PowerSeries k))) = ψ.hom.left → IsPullUnif (RingHom.id (PowerSeries k)) hD bc W'.P.U W.P.U → (∀ x, W.t.act.act x ≫ ψ.hom = ψ.hom ≫ W'.t.act.act x) → ∀ (y y' : Sp (FractionRing (PowerSeries k)) ⟶ Xo.XF c), y ≫ Y.j = jK (PowerSeries k) ≫ χ → y' ≫ Y'.j = jK (PowerSeries k) ≫ χ' → y ≫ pullback.snd _ _ = jK (PowerSeries k) ≫ spMap (PowerSeries.C (R := k)) ≫ spMap bF → y' ≫ pullback.snd _ _ = jK (PowerSeries k) ≫ spMap (PowerSeries.C (R := k)) ≫ spMap bF → (∀ (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) (σ' : 𝟙_ (Over (Xo.XF c)) ⟶ Y'.oF.t.G), ((∃ v, σ = Y.oF.etaA v ∧ σ' = Y'.oF.etaA v) ∨ ∃ v, σ = Y.oF.eta v ∧ σ' = Y'.oF.eta v) → ∀ g : Sp (FractionRing (PowerSeries k)) ⟶ W.t.G.left, g ≫ W.t.G.hom = jK (PowerSeries k) → g ≫ W.m.φ = y ≫ σ.left ≫ Y.m.φ → g ≫ ψ.hom.left ≫ W'.m.φ = y' ≫ σ'.left ≫ Y'.m.φ) → y = y' ∧ (Mono Y.j → ∀ (T : Scheme.{0}) (g : T ⟶ W.t.G.left) (g₁ : T ⟶ Y.oF.t.G.left) (g₂ : T ⟶ Y'.oF.t.G.left), g ≫ W.m.φ = g₁ ≫ Y.m.φ → g₁ ≫ Y.m0.toSABMap.φ = g₂ ≫ Y'.m0.toSABMap.φ → g₁ ≫ Y.oF.t.G.hom = g₂ ≫ Y'.oF.t.G.hom → g ≫ ψ.hom.left ≫ W'.m.φ = g₂ ≫ Y'.m.φ) := by
   intro hL _ E _ _ _ H D l Xo c k _ bF a O O' _ _ β β' Y Y' χ χ' W W' hD ψ bc hψ _ hbc hU hact y y' hy hy' hs hs' hlev
   have hb : LBIso W.t.PP.L (W'.t.PP.L.pull ψ.hom.left) := by

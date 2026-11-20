@@ -18,6 +18,19 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 
 omit [NumberField F] [IsTotallyReal F] [DecidableEq ι] in
 
+/- English proof (translation)
+Introduce `D`. Take `⟨k, hk0, hk⟩` from `h₄ D`. Set `e` to `Pi.basis fun _ : ι => integralBasis E`. Take `⟨C, hC⟩` from `h₂ (coordEmbed E ι) e (traceHerm h v) volume (Measure.pi.isAddHaarMeasure _) h₃ h₁.1 (by rw [h₁.2, finrank_eq_card_basis e])`. Use `⟨Real.sqrt (C * |(k : ℝ)| ^ Fintype.card (Σ _ : ι, Free.ChooseBasisIndex ℤ (𝓞 E))), fun La hLa => ?_⟩` and prove the remaining obligations.
+
+Set `φ : W →+ (ι → E)` to `(v.equivFun : W →ₗ[E] ι → E).toAddMonoidHom`. Establish `hφ : ∀ x, v.equivFun.symm (φ x) = x` using `fun x => v.equivFun.symm_apply_apply x`. Establish `hmem : ∀ y, y ∈ La.map φ ↔ v.equivFun.symm y ∈ La`. Introduce `y`. Rewrite using `[AddSubgroup.mem_map]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[hφ]` and apply the resulting hypothesis. Introduce `hy`. Conclude with `⟨_, hy, v.equivFun.apply_symm_apply y⟩`.
+
+Establish `harch : archLattice v La = AddSubgroup.toIntSubmodule ((La.map φ).map (coordEmbed E ι))`. Rewrite using `[archLattice, AddSubgroup.map_map]`. Both sides reduce to the same expression. Take `⟨hfg, hspan⟩` from `h₅ La hLa.isLattice`. Take `⟨hint, hdual⟩` from `hk La hLa`.
+
+Take `⟨hD, hZ, hcov⟩` from `hC (La.map φ) k hk0 hfg hspan (fun x hx y hy => hint _ ((hmem x).1 hx) _ ((hmem y).1 hy)) (fun y hy => by`. Rewrite using `[hmem, map_zsmul]`. Use `hdual _ fun x hx => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `hy (φ x) (AddSubgroup.mem_map_of_mem φ hx)`. Conclude with `⟨n, by rw [traceHerm_apply, hφ] at hn; exact hn⟩)`.
+
+Rewrite using `[harch]`. Conclude with `⟨hD, hZ, (le_abs_self _).trans (Real.abs_le_sqrt hcov)⟩`.
+-/
 theorem ArchCovolumeBound.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (h₁ : CoordEmbedBasis.Statement E ι)
     (h₂ : IntegralFormCovolume.Statement (ι → E) (InfinitePlace E → ι → ℂ)

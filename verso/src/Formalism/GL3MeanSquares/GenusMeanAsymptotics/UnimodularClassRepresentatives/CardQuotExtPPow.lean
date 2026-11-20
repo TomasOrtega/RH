@@ -19,6 +19,9 @@ scoped instance starO : StarRing (𝓞 K) where
     rw [map_mul, mul_comm]
   star_add := map_add (conjO K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem star_def (a : 𝓞 K) : star a = conjO K a := rfl
 
 scoped instance starQ [hF : Fact (IsFixF K F)] (𝔭 : Ideal (𝓞 F)) (k : ℕ) :
@@ -33,15 +36,24 @@ scoped instance starQ [hF : Fact (IsFixF K F)] (𝔭 : Ideal (𝓞 F)) (k : ℕ)
     rw [map_mul, mul_comm]
   star_add := map_add _
 
+/- English proof (translation)
+The claim follows from `NormLifting.conjQ_mk _ _ a`.
+-/
 theorem star_mk [Fact (IsFixF K F)] (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : 𝓞 K) :
     star (Ideal.Quotient.mk (extP K 𝔭 ^ k) a) = Ideal.Quotient.mk (extP K 𝔭 ^ k) (star a) := NormLifting.conjQ_mk _ _ a
 
+/- English proof (translation)
+Establish `h` using `Ideal.absNorm_algebraMap (𝓞 F) (𝓞 K) 𝔭`. Rewrite `h` using `[← IsFractionRing.finrank_eq (𝓞 F) F (𝓞 K) K, MeanB.finrank_eq_two hK hF]`. Conclude with `h`.
+-/
 theorem absNorm_extP_eq_sq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) : Ideal.absNorm (extP K 𝔭) = Ideal.absNorm 𝔭 ^ 2 := by
   have h := Ideal.absNorm_algebraMap (𝓞 F) (𝓞 K) 𝔭
   rw [← IsFractionRing.finrank_eq (𝓞 F) F (𝓞 K) K, MeanB.finrank_eq_two hK hF] at h
   exact h
 
+/- English proof (translation)
+Establish `h1 : Ideal.absNorm (extP K 𝔭 ^ k) = Ideal.absNorm 𝔭 ^ (2 * k)`. Rewrite using `[map_pow, absNorm_extP_eq_sq hK hF h𝔭, ← pow_mul]`. Rewrite using `[← h1, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem absNorm_extP_pow (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     Nat.card (𝓞 K ⧸ extP K 𝔭 ^ k) = Ideal.absNorm 𝔭 ^ (2 * k) := by
@@ -49,6 +61,11 @@ theorem absNorm_extP_pow (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (h
     rw [map_pow, absNorm_extP_eq_sq hK hF h𝔭, ← pow_mul]
   rw [← h1, Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
+/- English proof (translation)
+Establish `h0 : extP K 𝔭 ^ k ≠ ⊥`. Rewrite using `[← Ideal.zero_eq_bot]`. Conclude with `pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact map_ne_bot_of_isMaximal h𝔭)`. Use `first`. Consider the case `exact Ideal.finiteQuotientOfFreeOfNeBot _ h0`.
+
+Consider the case `exact (Ideal.absNorm_ne_zero_iff _).mp (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact h0)`.
+-/
 theorem finite_quot {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) : Finite (𝓞 K ⧸ extP K 𝔭 ^ k) := by
   have h0 : extP K 𝔭 ^ k ≠ ⊥ := by
     rw [← Ideal.zero_eq_bot]
@@ -61,23 +78,42 @@ def piQ (K : Type) {F : Type} [Field K] [Field F] [Algebra F K] (𝔭 : Ideal (�
     (𝓞 K ⧸ extP K 𝔭 ^ (k + 1)) →+* (𝓞 K ⧸ extP K 𝔭 ^ k) :=
   Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ k))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piQ_mk (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : 𝓞 K) :
     piQ K 𝔭 k (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ a := rfl
 
+/- English proof (translation)
+Introduce `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨Ideal.Quotient.mk _ a, rfl⟩`.
+-/
 theorem piQ_surjective (𝔭 : Ideal (𝓞 F)) (k : ℕ) : Function.Surjective (piQ K 𝔭 k) := by
   intro x
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective x
   exact ⟨Ideal.Quotient.mk _ a, rfl⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[star_mk, piQ_mk, piQ_mk, star_mk]`.
+-/
 theorem piQ_star [Fact (IsFixF K F)] (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : 𝓞 K ⧸ extP K 𝔭 ^ (k + 1)) :
     piQ K 𝔭 k (star a) = star (piQ K 𝔭 k a) := by
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a
   rw [star_mk, piQ_mk, piQ_mk, star_mk]
 
+/- English proof (translation)
+Rewrite using `[RingHom.mem_ker, piQ_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem mk_mem_ker_piQ (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : 𝓞 K) :
     Ideal.Quotient.mk (extP K 𝔭 ^ (k + 1)) a ∈ RingHom.ker (piQ K 𝔭 k) ↔ a ∈ extP K 𝔭 ^ k := by
   rw [RingHom.mem_ker, piQ_mk, Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Use `haveI := finite_quot (K := K) h𝔭 (k + 1)`. Establish `hA` using `absNorm_extP_pow hK hF h𝔭 (k + 1)`. Establish `hB` using `absNorm_extP_pow hK hF h𝔭 k`. Establish `hC : Nat.card ((𝓞 K ⧸ extP K 𝔭 ^ (k + 1)) ⧸ RingHom.ker (piQ K 𝔭 k)) = Nat.card (𝓞 K ⧸ extP K 𝔭 ^ k)` using `Nat.card_congr (RingHom.quotientKerEquivOfSurjective (piQ_surjective (K := K) 𝔭 k)).toEquiv`. Establish `hmul : Nat.card (𝓞 K ⧸ extP K 𝔭 ^ (k + 1)) = Nat.card (RingHom.ker (piQ K 𝔭 k)) * Nat.card ((𝓞 K ⧸ extP K 𝔭 ^ (k + 1)) ⧸ RingHom.ker (piQ K 𝔭 k))` using `by first`.
+
+Consider the case `exact Submodule.card_eq_card_quotient_mul_card _`. Consider the case `(rw [mul_comm]; exact Submodule.card_eq_card_quotient_mul_card _)`. Consider the case `(rw [mul_comm]; exact AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (RingHom.ker (piQ K 𝔭 k)).toAddSubgroup)`. Consider the case `exact AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (RingHom.ker (piQ K 𝔭 k)).toAddSubgroup`. Rewrite `hmul` using `[hC, hA, hB]`.
+
+Establish `hN : 0 < Ideal.absNorm 𝔭 ^ (2 * k)` using `pow_pos (Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact ne_bot h𝔭)) _`. Establish `e : Ideal.absNorm 𝔭 ^ (2 * (k + 1)) = Ideal.absNorm 𝔭 ^ 2 * Ideal.absNorm 𝔭 ^ (2 * k)`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hmul` using `[e]`. Conclude with `(Nat.eq_of_mul_eq_mul_right hN hmul).symm`.
+-/
 theorem card_ker_piQ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) (k : ℕ) : Nat.card (RingHom.ker (piQ K 𝔭 k)) = Ideal.absNorm 𝔭 ^ 2 := by
   haveI := finite_quot (K := K) h𝔭 (k + 1)
@@ -107,11 +143,19 @@ def idQ (K : Type) {F : Type} [Field K] [Field F] [Algebra F K] (𝔭 : Ideal (�
     Ideal (𝓞 K ⧸ extP K 𝔭 ^ k) :=
   (extP K 𝔭 ^ j).map (Ideal.Quotient.mk _)
 
+/- English proof (translation)
+Use `show a ∈ (extP K 𝔭 ^ j).map (Ideal.Quotient.mk _) ↔ _`. Rewrite using `[Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective]`.
+-/
 theorem mem_idQ {𝔭 : Ideal (𝓞 F)} {k j : ℕ} {a : 𝓞 K ⧸ extP K 𝔭 ^ k} :
     a ∈ idQ K 𝔭 k j ↔ ∃ z ∈ extP K 𝔭 ^ j, Ideal.Quotient.mk _ z = a := by
   show a ∈ (extP K 𝔭 ^ j).map (Ideal.Quotient.mk _) ↔ _
   rw [Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective]
 
+/- English proof (translation)
+Rewrite using `[mem_idQ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', hz', he⟩`. Rewrite `he` using `[Ideal.Quotient.eq]`. Establish `h1 : z' - z ∈ extP K 𝔭 ^ j` using `Ideal.pow_le_pow_right hjk he`.
+
+Establish `h2 : z = z' - (z' - z)` using `by ring`. Rewrite using `[h2]`. Conclude with `Ideal.sub_mem _ hz' h1`. Introduce `hz`. Conclude with `⟨z, hz, rfl⟩`.
+-/
 theorem mk_mem_idQ {𝔭 : Ideal (𝓞 F)} {k j : ℕ} (hjk : j ≤ k) {z : 𝓞 K} :
     Ideal.Quotient.mk (extP K 𝔭 ^ k) z ∈ idQ K 𝔭 k j ↔ z ∈ extP K 𝔭 ^ j := by
   rw [mem_idQ]
@@ -125,12 +169,20 @@ theorem mk_mem_idQ {𝔭 : Ideal (𝓞 F)} {k j : ℕ} (hjk : j ≤ k) {z : 𝓞
   · intro hz
     exact ⟨z, hz, rfl⟩
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `mem_idQ.mp ha`. Rewrite using `[star_mk]`. Conclude with `mem_idQ.mpr ⟨star z, conjO_mem_pow hF.out 𝔭 j z hz, rfl⟩`.
+-/
 theorem star_mem_idQ [hF : Fact (IsFixF K F)] {𝔭 : Ideal (𝓞 F)} {k j : ℕ}
     {a : 𝓞 K ⧸ extP K 𝔭 ^ k} (ha : a ∈ idQ K 𝔭 k j) : star a ∈ idQ K 𝔭 k j := by
   obtain ⟨z, hz, rfl⟩ := mem_idQ.mp ha
   rw [star_mk]
   exact mem_idQ.mpr ⟨star z, conjO_mem_pow hF.out 𝔭 j z hz, rfl⟩
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `mem_idQ.mp ha`. Take `⟨y, hy, rfl⟩` from `mem_idQ.mp hb`. Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h1 : x * y ∈ extP K 𝔭 ^ (j + j)`. Rewrite using `[pow_add]`.
+
+Conclude with `Ideal.mul_mem_mul hx hy`. Conclude with `Ideal.pow_le_pow_right (by omega) h1`.
+-/
 theorem mul_eq_zero_idQ {𝔭 : Ideal (𝓞 F)} {k j : ℕ} (hjk : k ≤ 2 * j)
     {a b : 𝓞 K ⧸ extP K 𝔭 ^ k} (ha : a ∈ idQ K 𝔭 k j) (hb : b ∈ idQ K 𝔭 k j) : a * b = 0 := by
   obtain ⟨x, hx, rfl⟩ := mem_idQ.mp ha
@@ -141,6 +193,9 @@ theorem mul_eq_zero_idQ {𝔭 : Ideal (𝓞 F)} {k j : ℕ} (hjk : k ≤ 2 * j)
     exact Ideal.mul_mem_mul hx hy
   exact Ideal.pow_le_pow_right (by omega) h1
 
+/- English proof (translation)
+Use extensionality with `a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[mk_mem_ker_piQ, mk_mem_idQ (Nat.le_succ k)]`.
+-/
 theorem ker_piQ (𝔭 : Ideal (𝓞 F)) (k : ℕ) : RingHom.ker (piQ K 𝔭 k) = idQ K 𝔭 (k + 1) k := by
   ext a
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a

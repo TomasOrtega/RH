@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.KoszulCount
 
+/- English proof (translation)
+Establish `hmem : ∀ j, a' j ∈ maximalIdeal R ↔ a j ∈ maximalIdeal R` using `fun j => by`. Rewrite using `[h j]`. Conclude with `Ideal.unit_mul_mem_iff_mem _ w.isUnit`. Set `e : {j : Fin d // a j ∈ maximalIdeal R} ≃ {j : Fin d // a' j ∈ maximalIdeal R}` to `Equiv.subtypeEquivRight (fun j => (hmem j).symm)`. Establish `hu : IsUnit (IsLocalRing.residue R (w : R))` using `w.isUnit.map _`.
+
+Establish `key : (fun j : {j : Fin d // a' j ∈ maximalIdeal R} => ((maximalIdeal R).toCotangent ⟨_, j.2⟩ : CotangentSpace R)) = (fun j => hu.unit • ((maximalIdeal R).toCotangent ⟨_, (e.symm j).2⟩ : CotangentSpace R))`. Use function extensionality and compare the values at `j`. Take `⟨j, hj⟩` from `j`. Establish `hj' : a j ∈ maximalIdeal R` using `(hmem j).1 hj`. Establish `hsub : (⟨a' j, hj⟩ : maximalIdeal R) = (w : R) • (⟨a j, hj'⟩ : maximalIdeal R)` using `Subtype.ext (by simp [h j])`.
+
+Use `show (maximalIdeal R).toCotangent ⟨a' j, hj⟩ = hu.unit • (maximalIdeal R).toCotangent ⟨a j, hj'⟩`. Rewrite using `[hsub, map_smul, Units.smul_def, IsUnit.unit_spec, ← IsLocalRing.ResidueField.algebraMap_eq, algebraMap_smul]`. Rewrite using `[key]`. Conclude with `(hl.units_smul (fun _ => hu.unit)).comp e.symm e.symm.injective`.
+-/
 theorem cotangent_independent_unit_mul {R : Type} [CommRing R] [IsLocalRing R] {d : ℕ}
     (a a' : Fin d → R) (w : Rˣ) (h : ∀ j, a' j = w * a j)
     (hl : LinearIndependent (ResidueField R) (fun j : {j : Fin d // a j ∈ maximalIdeal R} =>
@@ -43,6 +50,11 @@ theorem cotangent_independent_unit_mul {R : Type} [CommRing R] [IsLocalRing R] {
   rw [key]
   exact (hl.units_smul (fun _ => hu.unit)).comp e.symm e.symm.injective
 
+/- English proof (translation)
+Establish `e1` using `congrArg (X.presheaf.germ (L.U i ⊓ L.U c) x ⟨hi, hc⟩) (s.compat i c)`. Rewrite `e1` using `[map_mul]`. Establish `r1 : X.presheaf.germ (L.U i ⊓ L.U c) x ⟨hi, hc⟩ (X.presheaf.map (homOfLE inf_le_left : L.U i ⊓ L.U c ⟶ L.U i).op (s.f i)) = X.presheaf.germ (L.U i) x hi (s.f i)` using `X.presheaf.germ_res_apply (homOfLE inf_le_left) x ⟨hi, hc⟩ (s.f i)`. Establish `r2 : X.presheaf.germ (L.U i ⊓ L.U c) x ⟨hi, hc⟩ (X.presheaf.map (homOfLE inf_le_right : L.U i ⊓ L.U c ⟶ L.U c).op (s.f c)) = X.presheaf.germ (L.U c) x hc (s.f c)` using `X.presheaf.germ_res_apply (homOfLE inf_le_right) x ⟨hi, hc⟩ (s.f c)`. Rewrite using `[← r1, ← r2]`.
+
+Conclude with `e1`.
+-/
 theorem germ_chart_eq {X : Scheme.{0}} {L : LB X} (s : L.Sec) (i c : L.ι) {x : X}
     (hi : x ∈ L.U i) (hc : x ∈ L.U c) :
     X.presheaf.germ (L.U i) x hi (s.f i) =
@@ -61,17 +73,28 @@ theorem germ_chart_eq {X : Scheme.{0}} {L : LB X} (s : L.Sec) (i c : L.ι) {x : 
   rw [← r1, ← r2]
   exact e1
 
+/- English proof (translation)
+Set `φ : L.Sec →+ Γ(X, L.U c)` to `{ toFun := fun s => s.f c, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Conclude with `(map_sum φ (fun p => a p • b p) Finset.univ).trans (Finset.sum_congr rfl fun p _ => rfl)`.
+-/
 theorem sum_smul_f {X : Scheme.{0}} {L : LB X} {n : ℕ} (a : Fin n → Γ(X, ⊤)) (b : Fin n → L.Sec)
     (c : L.ι) : (∑ p, a p • b p).f c = ∑ p, resG X le_top (a p) * (b p).f c := by
   let φ : L.Sec →+ Γ(X, L.U c) :=
     { toFun := fun s => s.f c, map_zero' := rfl, map_add' := fun _ _ => rfl }
   exact (map_sum φ (fun p => a p • b p) Finset.univ).trans (Finset.sum_congr rfl fun p _ => rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resG_algebraMap (Y : Var ℂ) (V : Y.X.Opens) (a : ℂ) :
     resG Y.X (le_top : V ≤ ⊤) (algebraMap ℂ Γ(Y.X, ⊤) a) =
       ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX Y.str V a := by
   rfl
 
+/- English proof (translation)
+Use `haveI := Y.smooth_str`. Establish `hsm : Smooth Y.str` using `SmoothOfRelativeDimension.smooth Y.dim Y.str`. Establish `e : V ≤ Y.str ⁻¹ᵁ ⊤` using `by simp`. Establish `happ` using `HasRingHomProperty.appLE @Smooth Y.str hsm ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ e`. Establish `heq : ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX Y.str V = (Y.str.appLE ⊤ V e).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`.
+
+Use extensionality with `a`. Rewrite using `[← resG_algebraMap, GlobalTheory.ProjVar.Var.algebraMap_Γ]`. Both sides reduce to the same expression. Rewrite using `[heq]`. Conclude with `(RingHom.Smooth.respectsIso.cancel_left_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv (Y.str.appLE ⊤ V e)).mpr happ`.
+-/
 theorem algX_smooth (Y : Var ℂ) {V : Y.X.Opens} (hV : IsAffineOpen V) :
     (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX Y.str V).Smooth := by
   haveI := Y.smooth_str
@@ -87,6 +110,21 @@ theorem algX_smooth (Y : Var ℂ) {V : Y.X.Opens} (hV : IsAffineOpen V) :
   exact (RingHom.Smooth.respectsIso.cancel_left_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv
     (Y.str.appLE ⊤ V e)).mpr happ
 
+/- English proof (translation)
+Use `letI : Algebra ℂ Γ(Y.X, V) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX Y.str V).toAlgebra`. Use `haveI : Algebra.Smooth ℂ Γ(Y.X, V) := algX_smooth Y hV`. Take `⟨Q, hQ, hQu⟩` from `GlobalTheory.bertini_cotangent_independent ℂ Γ(Y.X, V) (fun p : Fin n => resG Y.X hVc ((b p).f c)) d`. Use `⟨Q, hQ, fun u hu x hx hnz => ?_⟩` and prove the remaining obligations. Establish `hgres : ∀ {U W : Y.X.Opens} (h : W ≤ U) (hxW : x ∈ W) (z : Γ(Y.X, U)), Y.X.presheaf.germ W x hxW (resG Y.X h z) = Y.X.presheaf.germ U x (h hxW) z` using `fun h hxW z => Y.X.presheaf.germ_res_apply (homOfLE h) x hxW z`.
+
+Establish `hgs : ∀ {U : Y.X.Opens} (hxU : x ∈ U) (z : Γ(Y.X, U)), gs (𝟙 Y.X) x U z = Y.X.presheaf.germ U x hxU z`. Introduce `U hxU z`. Simplify using `[gs, hxU]`. Both sides reduce to the same expression. Set `x' : V` to `⟨x, hx⟩`.
+
+Set `q` to `(hV.primeIdealOf x').asIdeal`. Use `letI : Algebra Γ(Y.X, V) (Y.X.presheaf.stalk (x' : Y.X)) := TopCat.Presheaf.algebra_section_stalk Y.X.presheaf x'`. Use `haveI := hV.isLocalization_stalk x'`. Establish `hf : ∃ p, resG Y.X hVc ((b p).f c) ∉ q`. Take `⟨p, hp⟩` from `hnz`.
+
+Take `⟨k, hk, hunit⟩` from `(mem_nonzeroLocus (b p) x).1 hp`. Rewrite `hunit` using `[ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.gs_sec L (b p) k c x hk (hVc hx)]`. Establish `hu2 : IsUnit (Y.X.presheaf.germ (L.U c) x (hVc hx) ((b p).f c))`. Rewrite using `[← hgs (hVc hx)]`. Conclude with `isUnit_of_mul_isUnit_right hunit`.
+
+Use `⟨p, fun hmem => ?_⟩` and prove the remaining obligations. Establish `h0` using `(GlobalTheory.residue_algebraMap_eq_zero_iff_mem (R := Y.X.presheaf.stalk (x' : Y.X)) q _).2 hmem`. Establish `e2 : algebraMap Γ(Y.X, V) (Y.X.presheaf.stalk (x' : Y.X)) (resG Y.X hVc ((b p).f c)) = Y.X.presheaf.germ (L.U c) x (hVc hx) ((b p).f c)` using `hgres hVc hx _`. Rewrite `h0` using `[e2, IsLocalRing.residue_eq_zero_iff]`. Conclude with `h0 hu2`.
+
+Establish `hLI` using `hQu u hu q (Y.X.presheaf.stalk (x' : Y.X)) hf`. Use `cotangent_independent_unit_mul _ _ 1 (fun j => ?_) hLI` and prove the remaining obligations. Rewrite using `[Units.val_one, one_mul, sum_smul_f, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_mul]`.
+
+Establish `e1 : algebraMap Γ(Y.X, V) (Y.X.presheaf.stalk (x' : Y.X)) (algebraMap ℂ Γ(Y.X, V) (u (j, p))) = Y.X.presheaf.germ (L.U c) x (hVc hx) (resG Y.X le_top (algebraMap ℂ Γ(Y.X, ⊤) (u (j, p))))` using `by show Y.X.presheaf.germ V x hx (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX Y.str V (u (j, p))) = _`. Rewrite using `[← resG_algebraMap, hgres, hgres]`. Establish `e2 : algebraMap Γ(Y.X, V) (Y.X.presheaf.stalk (x' : Y.X)) (resG Y.X hVc ((b p).f c)) = Y.X.presheaf.germ (L.U c) x (hVc hx) ((b p).f c)` using `hgres hVc hx _`. Rewrite using `[e1, e2]`.
+-/
 theorem bertini_on_affine (Y : Var ℂ) (L : LB Y.X) (n d : ℕ) (b : Fin n → L.Sec) (c : L.ι)
     {V : Y.X.Opens} (hV : IsAffineOpen V) (hVc : V ≤ L.U c) :
     ∃ Q : MvPolynomial (Fin d × Fin n) ℂ, Q ≠ 0 ∧
@@ -142,6 +180,15 @@ theorem bertini_on_affine (Y : Var ℂ) (L : LB Y.X) (n d : ℕ) (b : Fin n → 
       Y.X.presheaf.germ (L.U c) x (hVc hx) ((b p).f c) := hgres hVc hx _
   rw [e1, e2]
 
+/- English proof (translation)
+Introduce `Y L hL n d b hb`. Use `haveI : CompactSpace Y.X := (Var.isNoetherian_X Y).toCompactSpace`. Take `⟨m, V, c, hVa, hVc, hcov⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.exists_affine_chart_cover L hL`. Use `choose Q hQ hQu using fun k : Fin m => bertini_on_affine Y L n d b (c k) (hVa k) (hVc k)`. Use `⟨∏ k, Q k, Finset.prod_ne_zero_iff.2 fun k _ => hQ k, fun C hC => ?_⟩` and prove the remaining obligations.
+
+Introduce `x i hx`. Establish `hCk : ∀ k, MvPolynomial.eval (fun p => C p.1 p.2) (Q k) ≠ 0`. Introduce `k`. Rewrite `hC` using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.1 hC k (Finset.mem_univ _)`.
+
+Establish `hxV : x ∈ ⨆ k, V k` using `by rw [hcov]; trivial`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hxV`. Establish `hnz : ∃ p, x ∈ nonzeroLocus (b p)`. Establish `: x ∈ ⨆ j, nonzeroLocus (b j)` using `by rw [hb]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`.
+
+Establish `h6` using `hQu k (fun p => C p.1 p.2) (hCk k) x hk hnz`. Use `cotangent_independent_unit_mul _ _ (IsUnit.map (ConcreteCategory.hom (Y.X.presheaf.germ (L.U i ⊓ L.U (c k)) x ⟨hx, hVc k hk⟩)) (L.g i (c k)).isUnit).unit (fun j => ?_) h6` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`. Conclude with `germ_chart_eq _ i (c k) hx (hVc k hk)`.
+-/
 theorem bertini_cotIndep : ∀ (Y : Var ℂ) (L : LB Y.X), L.IsLB → ∀ (n d : ℕ) (b : Fin n → L.Sec), (⨆ j, nonzeroLocus (b j) = ⊤) → ∃ Q : MvPolynomial (Fin d × Fin n) ℂ, Q ≠ 0 ∧ ∀ C : Fin d → Fin n → ℂ, MvPolynomial.eval (fun p => C p.1 p.2) Q ≠ 0 → CotIndep (fun k => ∑ j, algebraMap ℂ Γ(Y.X, ⊤) (C k j) • b j) := by
   intro Y L hL n d b hb
   classical

@@ -18,26 +18,55 @@ section Frob
 
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNormedRing
 
+/- English proof (translation)
+Rewrite using `[hsn, Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `(Real.rpow_natCast _ 2).symm`.
+-/
 theorem hsn_eq_norm {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : hsn A = ‖A‖ := by
   rw [hsn, Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]
   congr 1
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   exact (Real.rpow_natCast _ 2).symm
 
+/- English proof (translation)
+Rewrite using `[hsn_eq_norm, hsn_eq_norm, hsn_eq_norm]`. Conclude with `Matrix.frobenius_norm_mul A B`.
+-/
 theorem hsn_mul_le {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) : hsn (A * B) ≤ hsn A * hsn B := by
   rw [hsn_eq_norm, hsn_eq_norm, hsn_eq_norm]
   exact Matrix.frobenius_norm_mul A B
 
 end Frob
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem hsn_nonneg' {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hsn A := Real.sqrt_nonneg _
 
+/- English proof (translation)
+Unfold `hsn`. Use `Real.continuous_sqrt.comp (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `exact (continuous_iff_continuousAt.2 fun t => (GlobalTheory.Mem.Lift.hasDerivAt_exp_entry X t i j).continuousAt).norm.pow 2`.
+-/
 theorem continuous_hsn_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     Continuous fun s : ℝ => hsn (NormedSpace.exp (s • X) : Matrix (Fin n) (Fin n) ℂ) := by
   unfold hsn
   refine Real.continuous_sqrt.comp (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_)
   exact (continuous_iff_continuousAt.2 fun t => (GlobalTheory.Mem.Lift.hasDerivAt_exp_entry X t i j).continuousAt).norm.pow 2
 
+/- English proof (translation)
+Introduce `D θ hθ V τ X hX N`. Take `⟨M, hM⟩` from `(isCompact_Icc (a := (-1 : ℝ)) (b := 1)).exists_bound_of_continuousOn (continuous_hsn_exp X).continuousOn`. Use `set m : ℝ := max 1 (max M (hsn (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ))) with hmdef`. Establish `hm1 : 1 ≤ m` using `le_max_left _ _`. Establish `hbound : ∀ τ' (s : ℝ), |s| ≤ 1 → hsn (cmp θ τ' (oneP θ V τ X s)) ≤ m`.
+
+Introduce `τ' s hs`. Establish `h` using `GlobalTheory.Mem.Lift.isAtTau_oneP hθ hX s`. Distinguish the cases in `e : τ' = τ`. Substitute `e show hsn (infMat _ _ (θ τ') _) ≤ m` using the available equality. Rewrite using `[h.2.1]`.
+
+Use `hM s ⟨(abs_le.1 hs).1, (abs_le.1 hs).2⟩` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans (this.trans (le_max_of_le_right (le_max_left _ _)))`. Use `show hsn (infMat _ _ (θ τ') _) ≤ m`. Rewrite using `[h.2.2 τ' e]`.
+
+Conclude with `le_max_of_le_right (le_max_right _ _)`. Establish `hkey : ∀ (x : GA D V) (t : ℝ) τ', |t| < 1 → 1 + hsn (cmp θ τ' x) ≤ (1 + hsn (cmp θ τ' (x * oneP θ V τ X t))) * m`. Introduce `x t τ' ht`. Establish `hx : x = x * oneP θ V τ X t * oneP θ V τ X (-t)`. Rewrite using `[mul_assoc, ← GlobalTheory.Mem.Lift.oneP_add hθ hX, add_neg_cancel, GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one]`.
+
+Establish `h1 : hsn (cmp θ τ' x) ≤ hsn (cmp θ τ' (x * oneP θ V τ X t)) * m`. Establish `e2 : cmp θ τ' x = cmp θ τ' (x * oneP θ V τ X t) * cmp θ τ' (oneP θ V τ X (-t))` using `by show infMat _ _ (θ τ') x = infMat _ _ (θ τ') _ * infMat _ _ (θ τ') _`. Rewrite using `[← GlobalTheory.PointAtPlaceHom.infMat_mul, ← hx]`. Rewrite using `[e2]`. Conclude with `(hsn_mul_le _ _).trans (mul_le_mul_of_nonneg_left (hbound τ' (-t) (by rw [abs_neg]; exact ht.le)) (hsn_nonneg' _))`.
+
+Use polynomial arithmetic with `[hsn_nonneg' (cmp θ τ' (x * oneP θ V τ X t))]`. Use `⟨m ^ (N * Fintype.card D.what₂.Tau), by positivity, fun x t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun τ' _ => inv_nonneg.2 (pow_nonneg (by linarith [hsn_nonneg' (cmp θ τ' (x * oneP θ V τ X t))]) N)) (fun τ' _ => ?_)` and prove the remaining obligations. Establish `ha` using `hsn_nonneg' (cmp θ τ' (x * oneP θ V τ X t))`.
+
+Establish `hb` using `hsn_nonneg' (cmp θ τ' x)`. Establish `hk` using `hkey x t τ' ht`. Establish `hpa : 0 < (1 + hsn (cmp θ τ' (x * oneP θ V τ X t))) ^ N` using `pow_pos (by linarith) N`. Establish `hpb : 0 < (1 + hsn (cmp θ τ' x)) ^ N` using `pow_pos (by linarith) N`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hpb, inv_mul_eq_div, ← div_pow]`.
+
+Use `pow_le_pow_left₀ (div_nonneg (by linarith) (by linarith)) ?_ N` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem decay_oneP : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau)
     (X : Matrix (Fin V.rank) (Fin V.rank) ℂ), X ∈ lieAt V τ → ∀ N : ℕ, ∃ L : ℝ, 0 ≤ L ∧
       ∀ (x : GA D V) (t : ℝ), |t| < 1 → ∏ τ', ((1 + hsn (cmp θ τ' (x * oneP θ V τ X t))) ^ N)⁻¹ ≤

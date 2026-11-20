@@ -15,15 +15,24 @@ def inertiaGroup (Q : Ideal (𝓞 L)) : Subgroup (L ≃ₐ[K] L) :=
 
 variable {K L}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_inertiaGroup {Q : Ideal (𝓞 L)} {τ : L ≃ₐ[K] L} :
     τ ∈ inertiaGroup K L Q ↔ ∀ x : 𝓞 L, galRestrict (𝓞 K) K L (𝓞 L) τ x - x ∈ Q :=
   Iff.rfl
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `algebraMap_galRestrict_apply (𝓞 K) τ x`.
+-/
 theorem galRestrict_apply_eq_smul (τ : L ≃ₐ[K] L) (x : 𝓞 L) :
     galRestrict (𝓞 K) K L (𝓞 L) τ x = τ • x := by
   apply RingOfIntegers.ext
   exact algebraMap_galRestrict_apply (𝓞 K) τ x
 
+/- English proof (translation)
+Use extensionality with `τ`. Rewrite using `[mem_inertiaGroup]`. Simplify using `only [galRestrict_apply_eq_smul]`. Both sides reduce to the same expression.
+-/
 theorem inertiaGroup_eq_inertia (Q : Ideal (𝓞 L)) :
     inertiaGroup K L Q = Q.toAddSubgroup.inertia (L ≃ₐ[K] L) := by
   ext τ
@@ -31,11 +40,17 @@ theorem inertiaGroup_eq_inertia (Q : Ideal (𝓞 L)) :
   simp only [galRestrict_apply_eq_smul]
   rfl
 
+/- English proof (translation)
+Simplify using `only [← galRestrict_apply_eq_smul]`. Both sides reduce to the same expression.
+-/
 theorem isFrobAt_iff_forall (τ : L ≃ₐ[K] L) (Q : Ideal (𝓞 L)) :
     IsFrobAt K L τ Q ↔ ∀ x : 𝓞 L, τ • x - x ^ Nat.card (𝓞 K ⧸ Q.under (𝓞 K)) ∈ Q := by
   simp only [← galRestrict_apply_eq_smul]
   rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[Ideal.mem_under, Ideal.mem_under, Ideal.pointwise_smul_eq_comap, Ideal.mem_comap]`. Establish `: σ⁻¹ • (algebraMap (𝓞 K) (𝓞 L) a) = algebraMap (𝓞 K) (𝓞 L) a`. Rewrite using `[← galRestrict_apply_eq_smul, AlgEquiv.commutes]`. Conclude with `iff_of_eq (congrArg (· ∈ Q) this)`.
+-/
 theorem under_smul_ideal (σ : L ≃ₐ[K] L) (Q : Ideal (𝓞 L)) : (σ • Q).under (𝓞 K) = Q.under (𝓞 K) := by
   ext a
   rw [Ideal.mem_under, Ideal.mem_under, Ideal.pointwise_smul_eq_comap, Ideal.mem_comap]
@@ -43,6 +58,9 @@ theorem under_smul_ideal (σ : L ≃ₐ[K] L) (Q : Ideal (𝓞 L)) : (σ • Q).
     rw [← galRestrict_apply_eq_smul, AlgEquiv.commutes]
   exact iff_of_eq (congrArg (· ∈ Q) this)
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[isFrobAt_iff_forall]`. Introduce `x`. Rewrite using `[under_smul_ideal, Ideal.pointwise_smul_eq_comap, Ideal.mem_comap]`. Simplify `h (σ⁻¹ • x)` using `[smul_sub, mul_smul]`.
+-/
 theorem isFrobAt_smul (σ τ : L ≃ₐ[K] L) (Q : Ideal (𝓞 L)) (h : IsFrobAt K L τ Q) :
     IsFrobAt K L (σ * τ * σ⁻¹) (σ • Q) := by
   rw [isFrobAt_iff_forall] at h ⊢
@@ -54,11 +72,17 @@ section Over
 
 variable (v : HeightOneSpectrum (𝓞 K)) (Q Q' : Ideal (𝓞 L)) [Q.IsPrime] [Q.LiesOver v.asIdeal]
 
+/- English proof (translation)
+Take `⟨⟨Q, h1, h2⟩⟩` from `(inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 L)))`. Conclude with `⟨Q, h1, h2⟩`.
+-/
 theorem exists_liesOver (L : Type) [Field L] [NumberField L] [Algebra K L] (v : HeightOneSpectrum (𝓞 K)) :
     ∃ Q : Ideal (𝓞 L), Q.IsPrime ∧ Q.LiesOver v.asIdeal := by
   obtain ⟨⟨Q, h1, h2⟩⟩ := (inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 L)))
   exact ⟨Q, h1, h2⟩
 
+/- English proof (translation)
+Establish `: Algebra.IsUnramifiedAt (𝓞 K) Q` using `Ideal.ramificationIdx_eq_one_iff.mp (hv Q inferInstance inferInstance)`. Establish `e` using `h.eq_of_isUnramifiedAt h' Q.primeCompl_le_nonZeroDivisors`. Apply `(galRestrict (𝓞 K) K L (𝓞 L)).injective` to reduce the goal to its premises. Conclude with `AlgEquiv.ext fun x => DFunLike.congr_fun e x`.
+-/
 theorem isFrobAt_unique (hv : IsUnramifiedIn K v L) (τ τ' : L ≃ₐ[K] L) (h : IsFrobAt K L τ Q)
     (h' : IsFrobAt K L τ' Q) : τ = τ' := by
   have : Algebra.IsUnramifiedAt (𝓞 K) Q :=
@@ -69,15 +93,24 @@ theorem isFrobAt_unique (hv : IsUnramifiedIn K v L) (τ τ' : L ≃ₐ[K] L) (h 
 
 variable [IsGalois K L]
 
+/- English proof (translation)
+The claim follows from `Ideal.exists_smul_eq_of_isGaloisGroup v.asIdeal Q Q' (L ≃ₐ[K] L)`.
+-/
 theorem exists_smul_eq [Q'.IsPrime] [Q'.LiesOver v.asIdeal] : ∃ σ : L ≃ₐ[K] L, σ • Q = Q' :=
   Ideal.exists_smul_eq_of_isGaloisGroup v.asIdeal Q Q' (L ≃ₐ[K] L)
 
 include v in
+/- English proof (translation)
+Rewrite using `[inertiaGroup_eq_inertia]`. Conclude with `(Ideal.card_inertia_eq_ramificationIdxIn (G := L ≃ₐ[K] L) v.asIdeal Q).trans (Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal Q (L ≃ₐ[K] L))`.
+-/
 theorem card_inertiaGroup : Nat.card (inertiaGroup K L Q) = Q.ramificationIdx (𝓞 K) := by
   rw [inertiaGroup_eq_inertia]
   exact (Ideal.card_inertia_eq_ramificationIdxIn (G := L ≃ₐ[K] L) v.asIdeal Q).trans
     (Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal Q (L ≃ₐ[K] L))
 
+/- English proof (translation)
+Take `⟨σ, rfl⟩` from `exists_smul_eq v Q Q'`. Use `isFrobAt_smul σ τ Q h` as an intermediate fact. Rewrite `this` using `[hc σ τ, mul_inv_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem isFrobAt_of_comm (hc : ∀ a b : L ≃ₐ[K] L, a * b = b * a) [Q'.IsPrime]
     [Q'.LiesOver v.asIdeal] (τ : L ≃ₐ[K] L) (h : IsFrobAt K L τ Q) : IsFrobAt K L τ Q' := by
   obtain ⟨σ, rfl⟩ := exists_smul_eq v Q Q'

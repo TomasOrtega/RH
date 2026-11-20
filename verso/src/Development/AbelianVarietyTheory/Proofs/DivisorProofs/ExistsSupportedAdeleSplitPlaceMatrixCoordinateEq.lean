@@ -9,6 +9,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.VacLift
 
+/- English proof (translation)
+Establish `hp : ∀ (s : E →ₐ[F] Fv F v) (z : AE F E), piW s z = splitProj s (compFin F E v z)` using `fun s z => rfl`. Establish `hs : ∀ (s : E →ₐ[F] Fv F v) (u : AF F) (z : AE F E), piW s (u • z) = evFin F v u * piW s z`. Introduce `s u z`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `congr 1`.
+
+Rewrite using `[hp]`. Express the relevant statement in the definitionally equal form `splitProj s (TensorProduct.tmul F (evFin F v u) (1 : E)) = _`. Rewrite using `[splitProj_tmul, map_one, mul_one]`. Use `⟨GlobalTheory.LatVac.liftV v a • Supp.splitIdemAd h t, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+
+Rewrite using `[smul_smul, ← smul_eq_mul u, GlobalTheory.LatVac.at_liftV v a u hu, zero_smul]`. Rewrite using `[hs, hp, Supp.splitIdemAd, Supp.compFin_singleTens_self]`. Simplify using `[splitIdem]`. Rewrite using `[hs, hp, Supp.splitIdemAd, Supp.compFin_singleTens_self, GlobalTheory.LatVac.evFin_liftV]`. Simplify using `[splitIdem]`.
+-/
 theorem exists_lift_scalar {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (v : Pl F) (t : E →ₐ[F] Fv F v) (a : Fv F v) :
     ∃ z : AE F E, At (evFin F v) z ∧ piW (t.comp σ) z = 0 ∧ piW t z = a := by
@@ -28,6 +35,11 @@ theorem exists_lift_scalar {F E : Type} [Field F] [NumberField F] [Field E] [Num
   · rw [hs, hp, Supp.splitIdemAd, Supp.compFin_singleTens_self, GlobalTheory.LatVac.evFin_liftV]
     simp [splitIdem]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d h v t b c Y`. Use `choose f hf using exists_lift_scalar h v t`. Use `⟨(b.1 * Y * c.1ᵀ).map f, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Use extensionality with `i j`.
+
+Conclude with `(hf _).1 u hu`. Conclude with `Matrix.ext fun i j => (hf _).2.1`. Establish `e : ((b.1 * Y * c.1ᵀ).map f).map (piW t) = b.1 * Y * c.1ᵀ` using `Matrix.ext fun i j => (hf _).2.2`. Rewrite using `[e, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one, Matrix.mul_one]`.
+-/
 theorem exists_lift : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ},
     IsCMExt F E σ → ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v))
     (Y : Matrix (Fin n) (Fin d) (Fv F v)), ∃ x : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) x ∧

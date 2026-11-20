@@ -6,6 +6,9 @@ open NumberField MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.JSW
 
 namespace GlobalTheory.JSW
 
+/- English proof (translation)
+Introduce `E _ _ _ a X _ ν k γ hk φ hb g` and use `integral_fderiv_chart_eq_of ν k γ (fun p => GlobalTheory.T.rapidlyDecreasingKernel_mul_adjointConjCoefficient E a X ν k γ hk p) φ hb g`.
+-/
 theorem integral_fderiv_chart_eq : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (X : Type) [MeasurableSpace X] (ν : Measure X)
     (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)), IsRapidInf ν k γ → ∀ φ : Sm E a,
     (∀ i, ∃ C : ℝ, ∀ g, ‖(lie E a (lieBasis E a i) φ).1 g‖ ≤ C) → ∀ g,

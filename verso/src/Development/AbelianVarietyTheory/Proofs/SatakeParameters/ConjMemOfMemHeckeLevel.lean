@@ -11,6 +11,9 @@ def cosetTr (U' U : Subgroup Gf) (g : Gf) (h : ∀ u ∈ U', g⁻¹ * u * g ∈ 
     convert this using 1
     group
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cosetTr_mk (U' U : Subgroup Gf) (g : Gf) (h : ∀ u ∈ U', g⁻¹ * u * g ∈ U) (x : Gf) :
     cosetTr U' U g h (x : Gf ⧸ U') = ((x * g : Gf) : Gf ⧸ U) := rfl
 
@@ -20,8 +23,14 @@ noncomputable def cosetTrace {U' U : Subgroup Gf} (h : U' ≤ U) {M : Type*} [Ad
 
 def heckeLevel (U : Subgroup Gf) (g : Gf) : Subgroup Gf := U ⊓ U.map (MulAut.conj g).toMonoidHom
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem heckeLevel_le (U : Subgroup Gf) (g : Gf) : heckeLevel U g ≤ U := inf_le_left
 
+/- English proof (translation)
+Take `⟨-, v, hv, rfl⟩` from `hu`. Simplify `hv` using `[MulAut.conj_apply, mul_assoc]`.
+-/
 theorem conj_mem_of_mem_heckeLevel {U : Subgroup Gf} {g u : Gf} (hu : u ∈ heckeLevel U g) : g⁻¹ * u * g ∈ U := by
   obtain ⟨-, v, hv, rfl⟩ := hu
   simpa [MulAut.conj_apply, mul_assoc] using hv

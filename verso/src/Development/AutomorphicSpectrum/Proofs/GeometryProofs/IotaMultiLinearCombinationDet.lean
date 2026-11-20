@@ -11,6 +11,15 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `Ω Vs _ _ _ p P v`. Establish `hA : (exteriorPower.ιMulti Ω p).compLinearMap (Fintype.linearCombination Ω v) = (Matrix.detRowAlternating : (Fin p → Ω) [⋀^Fin p]→ₗ[Ω] Ω).smulRight (exteriorPower.ιMulti Ω p v)`. Use `(Pi.basisFun Ω (Fin p)).ext_alternating fun u hu => ?_` and prove the remaining obligations. Set `s : Equiv.Perm (Fin p)` to `Equiv.ofBijective u (Finite.injective_iff_bijective.1 hu)`. Establish `e : (fun i => Pi.basisFun Ω (Fin p) (u i)) = (fun i => Pi.basisFun Ω (Fin p) i) ∘ s` using `rfl`.
+
+Rewrite using `[e, AlternatingMap.map_perm, AlternatingMap.map_perm]`. Use `congr 1`. Establish `e1 : (Matrix.detRowAlternating : (Fin p → Ω) [⋀^Fin p]→ₗ[Ω] Ω) (fun i => Pi.basisFun Ω (Fin p) i) = 1`. Express the relevant statement in the definitionally equal form `Matrix.det (Matrix.of fun i => Pi.basisFun Ω (Fin p) i) = 1`. Rewrite using `[show (Matrix.of fun i => Pi.basisFun Ω (Fin p) i) = 1 from by`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm], Matrix.det_one]`. Rewrite using `[AlternatingMap.smulRight_apply, e1, one_smul, AlternatingMap.compLinearMap_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Conclude with `AlternatingMap.congr_fun hA P`.
+-/
 theorem ιMulti_matrix_transform : ∀ (Ω Vs : Type) [Field Ω] [AddCommGroup Vs] [Module Ω Vs] (p : ℕ) (P : Matrix (Fin p) (Fin p) Ω) (v : Fin p → Vs),
     exteriorPower.ιMulti Ω p (fun i => ∑ k, P i k • v k) = P.det • exteriorPower.ιMulti Ω p v := by
   intro Ω Vs _ _ _ p P v

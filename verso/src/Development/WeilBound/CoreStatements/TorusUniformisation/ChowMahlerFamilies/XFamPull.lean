@@ -18,6 +18,25 @@ open PositivityTheory.Xgn.A_pull_line (comb)
 open PositivityTheory.Xgn.A_pull_exists (pow_mul_mem)
 open GlobalTheory.CompanionTheory.Ar.Num.LocFreeBC (smul_mem_spanOver mem_spanOver_of_mem)
 
+/- English proof (translation)
+Establish `hj : ∀ s : ∀ k : K ⊕ K', Sum.elim ι ι' k, mseg (joinCoord x z) s = mseg x (restrictChart s) * mseg z (fun k => s (.inr k))` using `fun s => PositivityTheory.Xgn.A_pull_line.mseg_join (AlgHom.id O Ω) x z s`. Establish `hne : ∀ s : ∀ k : K ⊕ K', Sum.elim ι ι' k, mseg (joinCoord x z) s ≠ 0 → mseg x (restrictChart s) ≠ 0`. Introduce `s hs`. Rewrite `hs` using `[hj]`. Conclude with `left_ne_zero_of_mul hs`.
+
+Use `⟨fun s _ a ha v hv => smul_mem_spanOver _ _ ha hv, ?_⟩` and prove the remaining obligations. Introduce `s t hs ht v hv`. Use `beta_reduce at hv ⊢`. Establish `hq` using `div_mem_chartRing (o := O) (mseg (joinCoord x z)) t s`. Use `set q := mseg (joinCoord x z) s / mseg (joinCoord x z) t with hqdef`.
+
+Rewrite `hv` using `[spanOver]`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩` from `hy`. Take `⟨n, hn⟩` from `pow_mul_mem (joinCoord x z) s t hs a ha`.
+
+Take `⟨m, hm⟩` from `hfam.2 _ _ (hne s hs) (hne t ht) e he`. Establish `hw` using `div_mem_chartRing (o := O) (mseg (joinCoord x z)) t (comb (restrictChart t) s)`. Use `set w := mseg (joinCoord x z) (comb (restrictChart t) s) / mseg (joinCoord x z) t with hwdef`. Establish `ht'` using `hne t ht`. Establish `hqw : q = w * (mseg x (restrictChart s) / mseg x (restrictChart t))`.
+
+Establish `h1 : mseg (joinCoord x z) (comb (restrictChart t) s) = mseg x (restrictChart t) * mseg z (fun k => s (.inr k))` using `hj _`. Rewrite using `[hqdef, hwdef, h1, hj s]`. Clear the denominators using the available nonvanishing facts. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `h : q ^ (n + m) • a • f e = (q ^ n * a * w ^ m) • f ((mseg x (restrictChart s) / mseg x (restrictChart t)) ^ m • e)`.
+
+Rewrite using `[hf, hf, smul_smul, smul_smul, pow_add, mul_assoc (q ^ n * a), ← mul_pow, ← hqw]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `smul_mem_spanOver _ _ (mul_mem hn (pow_mem hw m)) (mem_spanOver_of_mem _ ⟨_, hm, rfl⟩)`.
+
+Consider the case `zero => exact ⟨0, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨m, hm⟩` from `ha`. Take `⟨n, hn⟩` from `hb`. Use `⟨m + n, ?_⟩` and prove the remaining obligations.
+
+Establish `h : q ^ (m + n) • (a + b) = q ^ n • q ^ m • a + q ^ m • q ^ n • b`. Rewrite using `[smul_add, smul_smul, smul_smul, ← pow_add, ← pow_add, add_comm n m]`. Rewrite using `[h]`. Conclude with `add_mem (smul_mem_spanOver _ _ (pow_mem hq n) hm) (smul_mem_spanOver _ _ (pow_mem hq m) hn)`. Consider the case `neg a _ ha`.
+
+Take `⟨m, hm⟩` from `ha`. Conclude with `⟨m, by rw [smul_neg]; exact neg_mem hm⟩`.
+-/
 theorem latFamily_join {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {K : Type} [Fintype K]
     {ι : K → Type} [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) {K' : Type} [Fintype K'] {ι' : K' → Type}
     [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω) {V : Type} [AddCommGroup V] [Module Ω V]
@@ -72,6 +91,11 @@ theorem latFamily_join {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {K :
     obtain ⟨m, hm⟩ := ha
     exact ⟨m, by rw [smul_neg]; exact neg_mem hm⟩
 
+/- English proof (translation)
+Take `⟨h0, ⟨u, hu, hw⟩, -, h01, hχ⟩` from `h`. Take `⟨u, rfl⟩` from `hu`. Use `⟨?_, R.algebraMap_mem _, ⟨algebraMap O Ω ((u⁻¹ : Oˣ) * w ^ (p - 2)), R.algebraMap_mem _, ?_⟩, h01, fun τ => ⟨?_, ?_, fun a => R.algebraMap_mem _⟩⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap O Ω)]`. Conclude with `(map_ne_zero_iff _ hinj).2 h0`.
+
+Establish `h2 : p - 1 = p - 2 + 1` using `by have := hp.two_le; omega`. Rewrite using `[← map_mul, mul_assoc, ← pow_succ, ← h2, hw, Units.inv_mul_cancel_left, map_natCast]`. Simplify using `only [(hχ τ).1, map_zero]`. Simplify using `only [(hχ τ).2, map_one]`.
+-/
 theorem charData {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω]
     (hinj : Function.Injective (algebraMap O Ω)) {F : Type} [Zero F] [One F] {Sg : Type} (p : ℕ)
     (hp : p.Prime) (w : O) (χ : Sg → F → O)
@@ -89,6 +113,13 @@ theorem charData {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω]
   · simp only [(hχ τ).1, map_zero]
   · simp only [(hχ τ).2, map_one]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hy' : ∀ i, y i ∈ R'` using `fun i => hy i (Set.mem_univ i)`. Establish `e : (DistribMulAction.toAddMonoidHom (Fin n → Ω) w) y = ∑ i, y i • (w • (Pi.single i (1 : Ω) : Fin n → Ω))`. Express the relevant statement in the definitionally equal form `w • y = _`. Use `conv_lhs => rw [pi_eq_sum_univ' y]`.
+
+Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Rewrite using `[e]`. Use `sum_mem fun i _ => smul_mem_spanOver _ _ (hy' i) (mem_spanOver_of_mem _ ⟨_, h ⟨Pi.single i 1, ?_, rfl⟩, rfl⟩)` and prove the remaining obligations. Introduce `j _`.
+
+Express the relevant statement in the definitionally equal form `(Pi.single i (1 : Ω) : Fin n → Ω) j ∈ R`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+-/
 theorem mul_std_le {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {n : ℕ} (R R' : Subalgebra O Ω)
     (w : Ω) (A : AddSubgroup (Fin n → Ω)) (h : mulLat w (stdLat R _) ≤ A) :
     mulLat w (stdLat R' _) ≤ spanOver R' (bcMap Ω Ω _ '' (A : Set (Fin n → Ω))) := by
@@ -108,6 +139,9 @@ theorem mul_std_le {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {n : ℕ
   split_ifs
   exacts [one_mem _, zero_mem _]
 
+/- English proof (translation)
+Take `rfl : f = id` from `funext hf`. Rewrite using `[h, Set.image_id]`. Both sides reduce to the same expression.
+-/
 theorem span_eq {O Ω V : Type} [CommRing O] [Field Ω] [Algebra O Ω] [AddCommGroup V] [Module Ω V]
     (R : Subalgebra O Ω) (L L' : AddSubgroup V) (h : L = L') (f : V → V) (hf : ∀ v, f v = v) :
     AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ L, v = a • e} = spanOver R (f '' (L' : Set V)) := by
@@ -117,6 +151,17 @@ theorem span_eq {O Ω V : Type} [CommRing O] [Field Ω] [Algebra O Ω] [AddCommG
 
 end PositivityTheory.Xgn.A_fam_pull
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x hinj F _ _ _ n Sg _ r s p hp w χ φ D hD K' _ _ ι' _ z`. Establish `hc` using `((PositivityTheory.Xgn.t_chart_noeth_frac O Ω K ι x).2.2 K' ι' z).2`. Establish `hcd` using `PositivityTheory.Xgn.A_fam_pull.charData hinj p hp w χ hD.char`. Use `⟨⟨?_, fun τ => ?_, hD.char, fun c h => ?_, fun c h => ?_⟩, fun h1 => ⟨fun c h => ?_, fun haf => ⟨fun c h τ => ?_, fun h2 c h => ?_⟩, fun hl τ i => ?_⟩, fun Lie W Om OmHT hB => ?_⟩` and prove the remaining obligations. Conclude with `PositivityTheory.Xgn.A_fam_pull.latFamily_join x z _ hD.famM _ (fun _ => rfl)`.
+
+Take `⟨a1, a2, a3, a4, a5, a6, a7⟩` from `hD.fam τ`. Conclude with `⟨PositivityTheory.Xgn.A_fam_pull.latFamily_join x z _ a1 _ (fun _ => rfl), PositivityTheory.Xgn.A_fam_pull.latFamily_join x z _ a2 _ (fun _ => rfl), PositivityTheory.Xgn.A_fam_pull.latFamily_join x z _ a3 _ (fun _ => rfl), PositivityTheory.Xgn.A_fam_pull.latFamily_join x z _ a4 _ …`. Conclude with `(GlobalTheory.T.lattice_base_change_larger_ring_holds (D (restrictChart c)) _ p _ _ (hcd _) (hD.base _ (hc c h).1) Ω _ (fun a ha => (hc c h).2 ha)).2`. Conclude with `PositivityTheory.Xgn.test_facts_base_change (D (restrictChart c)) _ _ (hc c h).2 p _ _ φ (hD.test _ (hc c h).1)`. Conclude with `((PositivityTheory.Xgn.good_lattice_base_change (D (restrictChart c)) _ p _ _ (hcd _) (hD.base _ (hc c h).1) (h1 _ (hc c h).1)).2 Ω _ (fun a ha => (hc c h).2 ha)).1`.
+
+Establish `e` using `((((PositivityTheory.Xgn.good_lattice_base_change (D (restrictChart c)) _ p _ _ (hcd _) (hD.base _ (hc c h).1) (h1 _ (hc c h).1)).2 Ω _ (fun a ha => (hc c h).2 ha)).2 τ).1)`. Conclude with `(PositivityTheory.Xgn.A_fam_pull.mul_std_le _ _ _ _ (haf _ (hc c h).1 τ)).trans e.ge`. Conclude with `((GlobalTheory.T.lattice_second_goodness (D (restrictChart c)) _ p _ _ (hcd _) (hD.base _ (hc c h).1) (h1 _ (hc c h).1) (h2 _ (hc c h).1) (haf _ (hc c h).1)).2 Ω _ (fun a ha => (hc c h).2 ha)).1`. Take `⟨u, a, hu, hA⟩` from `hl τ i`. Use `⟨u, pullDeg (K' := K') a, hu, fun c h v => ?_⟩` and prove the remaining obligations.
+
+Use `PositivityTheory.Xgn.A_pull_line.main (AlgHom.id O Ω) x z u a _ hA (fun c => (pullFamily O x z D c).xId (fun a => algebraMap O Ω (χ τ a)) i) (fun c h => ?_) c h v` and prove the remaining obligations. Establish `e` using `((((PositivityTheory.Xgn.good_lattice_base_change (D (restrictChart c)) _ p _ _ (hcd _) (hD.base _ (hc c h).1) (h1 _ (hc c h).1)).2 Ω _ (fun a ha => (hc c h).2 ha)).2 τ).2.2 i)`. Conclude with `e.trans (PositivityTheory.Xgn.A_fam_pull.span_eq _ _ _ rfl _ (fun _ => rfl)).symm`. Use `choose Lie' hLie using fun τ => (PositivityTheory.Xgn.t_pull_exists O Ω K ι x _ _ (Lie τ)).1 K' ι' z choose W' hW using fun τ => (PositivityTheory.Xgn.t_pull_exists O Ω K ι x _ _ (W τ)).1 K' ι' z choose Om' hOm using fun τ => (PositivityTheory.Xgn.t_pull_exists O Ω K ι x _ _ (Om …`. Use `⟨Lie', W', Om', OmHT', fun τ c h => ?_, fun τ => ⟨hLie τ, hW τ, hOm τ, hOmHT τ⟩⟩` and prove the remaining obligations.
+
+Take `⟨b1, b2, b3, b4⟩` from `hB τ _ (hc c h).1`. Conclude with `⟨(hLie τ c h).trans (PositivityTheory.Xgn.A_fam_pull.span_eq _ _ _ b1 _ (fun _ => rfl)), (hW τ c h).trans (PositivityTheory.Xgn.A_fam_pull.span_eq _ _ _ b2 _ (fun _ => rfl)), (hOm τ c h).trans (PositivityTheory.Xgn.A_fam_pull.span_eq _ _ _ b3 _ (fun _ => rfl)), (hOmHT τ c h).tran …`.
+-/
 theorem PositivityTheory.Xgn.t_fam_pull : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω), Function.Injective (algebraMap O Ω) → ∀ {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} [Fintype Sg] {r s : Sg → ℕ} (p : ℕ), p.Prime → ∀ (w : O) (χ : Sg → F → O) (φ : Equiv.Perm Sg) (D : (∀ k, ι k) → LieLatticeData Ω F n Sg r s), IsLatticeFamily O x p w χ φ D → ∀ (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω), IsLatticeFamily O (joinCoord x z) p w χ φ (pullFamily O x z D) ∧ ((∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))) → (∀ c, mseg (joinCoord x z) c ≠ 0 → (pullFamily O x z D c).Good₁ (chartRing O (mseg (joinCoord x z)) c) p (fun τ a => algebraMap O Ω (χ τ a))) ∧ ((∀ c, mseg x c ≠ 0 → ∀ τ, mulLat (algebraMap O Ω w) (stdLat (chartRing O (mseg x) c) _) ≤ (D c).af (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a))) → (∀ c, mseg (joinCoord x z) c ≠ 0 → ∀ τ, mulLat (algebraMap O Ω w) (stdLat (chartRing O (mseg (joinCoord x z)) c) _) ≤ (pullFamily O x z D c).af (chartRing O (mseg (joinCoord x z)) c) p (fun a => algebraMap O Ω (χ τ a))) ∧ ((∀ c, mseg x c ≠ 0 → (D c).Good₂ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))) → (∀ c, mseg (joinCoord x z) c ≠ 0 → (pullFamily O x z D c).Good₂ (chartRing O (mseg (joinCoord x z)) c) p (fun τ a => algebraMap O Ω (χ τ a))))) ∧ ((∀ τ i, ∃ (u : Ω) (a : _ → ℤ), u ≠ 0 ∧ IsLine O x u a fun c => (D c).xId (fun a => algebraMap O Ω (χ τ a)) i) → (∀ τ i, ∃ (u : Ω) (a : _ → ℤ), u ≠ 0 ∧ IsLine O (joinCoord x z) u a fun c => (pullFamily O x z D c).xId (fun a => algebraMap O Ω (χ τ a)) i))) ∧ ∀ (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (Fin (s τ) → Ω)), HasBundles O x D Lie W Om OmHT → ∃ (Lie' W' : ∀ τ, ChartBundle O (mseg (joinCoord x z)) (r τ) (Fin (r τ) → Ω)) (Om' OmHT' : ∀ τ, ChartBundle O (mseg (joinCoord x z)) (s τ) (Fin (s τ) → Ω)), HasBundles O (joinCoord x z) (pullFamily O x z D) Lie' W' Om' OmHT' ∧ ∀ τ, IsPull O x z (Lie τ) (Lie' τ) ∧ IsPull O x z (W τ) (W' τ) ∧ IsPull O x z (Om τ) (Om' τ) ∧ IsPull O x z (OmHT τ) (OmHT' τ) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x hinj F _ _ _ n Sg _ r s p hp w χ φ D hD K' _ _ ι' _ z
   have hc := ((PositivityTheory.Xgn.t_chart_noeth_frac O Ω K ι x).2.2 K' ι' z).2

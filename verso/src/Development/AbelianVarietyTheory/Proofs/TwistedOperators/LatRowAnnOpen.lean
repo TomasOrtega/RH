@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.AscFin.AnnOpen
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM i hi`. Establish `sdG : ∀ i, i ≤ D.R.m → IsSelfDualC (G.V (.grid i 0)) (G.Λ (.grid i 0))`. Introduce `i hi`. Consider the cases of `i with`. Consider the case `zero`.
+
+Take `⟨c, hc⟩` from `(hL.βY 0 (by have := D.R.two_le_m; omega) : ∃ c, _)`. Conclude with `Formalism.IndefR.Eqv.KerDiag.isSelfDualC_of_base hc`. Consider the case `succ i => exact (G.sp.V_is (i + 1) 0 (by omega) hi (by omega)).sd`. Establish `hS : IsSelfDualC (G.pS (.chi i 0)) (G.latS (.chi i 0))` using `isSelfDualC_neg (sdG (i + 1) hi)`. Establish `hT : IsSelfDualC (G.pT (.chi i 0)) (G.latT (.chi i 0))` using `sdG i hi.le`.
+
+Establish `hfin` using `GlobalTheory.T.isFiniteAdelicMatrixLattice_depthLatticeOfPair G (.chi i 0) hS hT`. Take `⟨U, hU, h0, hUA⟩` from `hfin.opn`. Use `⟨U, hU, h0, fun u' hu' hfu' u hu => ?_⟩` and prove the remaining obligations. Establish `hu'R : u' ∈ latRow G i` using `hUA u' hu' hfu'`. Establish `key` using `(GlobalTheory.SelfDualAt.latO_ann_at D W.ψ W.ψ_std _ _ _ _ hS hT (fun _ => True) u (hfin.fin u hu)).1 hu.1 u' hu'R.1`.
+
+Establish `e : symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) u u' = -symplO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)) u u'`. Establish `hinv : ∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) D.host.E), (-A)⁻¹ = -A⁻¹`. Introduce `n A`. Distinguish the cases in `h : IsUnit A.det`. Conclude with `Matrix.inv_eq_left_inv (by rw [neg_mul_neg, Matrix.nonsing_inv_mul A h])`.
+
+Establish `h' : ¬ IsUnit (-A).det`. Rewrite using `[Matrix.det_neg]`. Introduce `hu`. Conclude with `h (isUnit_of_mul_isUnit_right hu)`. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.nonsing_inv_apply_not_isUnit _ h', neg_zero]`.
+
+Simplify using `only [symplO, hO, negSp_gram, hinv, Matrix.neg_apply, map_neg, neg_mul, mul_neg, Finset.sum_neg_distrib]`. Rewrite `key` using `[e, AddChar.map_neg_eq_inv]`. Conclude with `inv_eq_one.mp key`.
+-/
 theorem latRow_ann_open : All fun {D} _ _ {sc} {G} W _ => ∀ i, i < D.R.m → ∃ U : Set (WO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0))),
     IsOpen U ∧ (0 : WO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0))) ∈ U ∧
     ∀ u' ∈ U, MxAt (fun _ => True) u' → ∀ u ∈ latRow G i, W.ψ (symplO _ _ u u') = 1 := by

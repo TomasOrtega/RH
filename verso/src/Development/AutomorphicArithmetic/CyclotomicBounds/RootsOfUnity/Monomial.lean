@@ -8,6 +8,9 @@ namespace UpperTheory.Mu
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Use `le_trans ?_ (GlobalTheory.finrank_mul_abs_norm_rpow_le_sum_sq x)` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ |((Algebra.norm ℚ x : ℚ) : ℝ)|`. Conclude with `GlobalTheory.one_le_abs_norm_of_isIntegral hx h0` after adjusting the coercions. Conclude with `le_mul_of_one_le_right (Nat.cast_nonneg _) (Real.one_le_rpow h1 (by positivity))`.
+-/
 private theorem finrank_le_sum_sq_of_isIntegral {x : K} (hx : IsIntegral ℤ x) (h0 : x ≠ 0) :
     (Module.finrank ℚ K : ℝ) ≤ ∑ σ : K →+* ℂ, ‖σ x‖ ^ 2 := by
   refine le_trans ?_ (GlobalTheory.finrank_mul_abs_norm_rpow_le_sum_sq x)
@@ -15,6 +18,19 @@ private theorem finrank_le_sum_sq_of_isIntegral {x : K} (hx : IsIntegral ℤ x) 
     exact_mod_cast GlobalTheory.one_le_abs_norm_of_isIntegral hx h0
   exact le_mul_of_one_le_right (Nat.cast_nonneg _) (Real.one_le_rpow h1 (by positivity))
 
+/- English proof (translation)
+Establish `hφ : ∀ φ : K →+* ℂ, ∑ i, ‖φ (z i)‖ ^ 2 = 1`. Introduce `φ`. Establish `h` using `congrArg φ h1`. Rewrite `h` using `[map_sum, map_one]`. Establish `h2 : ∀ i, φ (star (z i) * z i) = ((‖φ (z i)‖ ^ 2 : ℝ) : ℂ)`.
+
+Introduce `i`. Rewrite using `[map_mul, hconj, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h` using `[h2]`.
+
+Conclude with `h` after adjusting the coercions. Establish `htot : ∑ i, ∑ φ : K →+* ℂ, ‖φ (z i)‖ ^ 2 = (Module.finrank ℚ K : ℝ)`. Rewrite using `[Finset.sum_comm]`. Simplify using `[hφ, Embeddings.card]`. Establish `hd : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, z i ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Simplify using `[hall] at h1`. Use `⟨i, fun j hji => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hj`. Establish `hnn : ∀ k ∈ Finset.univ, 0 ≤ ∑ φ : K →+* ℂ, ‖φ (z k)‖ ^ 2` using `fun k _ => Finset.sum_nonneg fun _ _ => by positivity`. Establish `hsub` using `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ {i, j}) (fun k hk _ => hnn k hk)`. Rewrite `hsub` using `[Finset.sum_pair (Ne.symm hji), htot]`. Use `finrank_le_sum_sq_of_isIntegral (hz i) hi` as an intermediate fact.
+
+Use `finrank_le_sum_sq_of_isIntegral (hz j) hj` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem exists_single_of_sum_star_mul {n : ℕ} [Star K]
     (hconj : ∀ (φ : K →+* ℂ) (x : K), φ (star x) = starRingEnd ℂ (φ x))
     (z : Fin n → K) (hz : ∀ i, IsIntegral ℤ (z i)) (h1 : ∑ i, star (z i) * z i = 1) :
@@ -49,9 +65,19 @@ private theorem exists_single_of_sum_star_mul {n : ℕ} [Star K]
   have := finrank_le_sum_sq_of_isIntegral (hz j) hj
   linarith
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.NGCut.TorsionTotientBound.torsionOrder_le K`.
+-/
 theorem torsionOrder_le (K : Type) [Field K] [NumberField K] : Units.torsionOrder K ≤ 2 * Module.finrank ℚ K ^ 2 :=
   Formalism.L2.SG.NGCut.TorsionTotientBound.torsionOrder_le K
 
+/- English proof (translation)
+Take `⟨n, hn, hxn⟩` from `Embeddings.pow_eq_one_of_norm_eq_one K ℂ hx h`. Take `⟨y, rfl⟩ : ∃ y : 𝓞 K, (y : K) = x` from `⟨⟨x, hx⟩, rfl⟩`. Establish `hyn : y ^ n = 1`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Simplify using `using hxn`.
+
+Establish `hmem : Units.ofPowEqOne y n hyn hn.ne' ∈ Units.torsion K`. Rewrite using `[Units.torsion, CommGroup.mem_torsion, isOfFinOrder_iff_pow_eq_one]`. Conclude with `⟨n, hn, Units.ext (by simpa using hyn)⟩`. Rewrite `hmem` using `[← Units.rootsOfUnity_eq_torsion, mem_rootsOfUnity]`. Use `congrArg (fun v : (𝓞 K)ˣ => ((v : 𝓞 K) : K)) hmem` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem pow_torsionOrder_eq_one {x : K} (hx : IsIntegral ℤ x) (h : ∀ φ : K →+* ℂ, ‖φ x‖ = 1) :
     x ^ Units.torsionOrder K = 1 := by
   obtain ⟨n, hn, hxn⟩ := Embeddings.pow_eq_one_of_norm_eq_one K ℂ hx h
@@ -66,6 +92,9 @@ theorem pow_torsionOrder_eq_one {x : K} (hx : IsIntegral ℤ x) (h : ∀ φ : K 
   have := congrArg (fun v : (𝓞 K)ˣ => ((v : 𝓞 K) : K)) hmem
   simpa using this
 
+/- English proof (translation)
+Establish `h3` using `congrArg φ h1`. Rewrite `h3` using `[map_mul, hconj, map_one, Complex.conj_mul']`. Establish `h4 : ‖φ z‖ ^ 2 = 1` using `by exact_mod_cast h3`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4`.
+-/
 theorem norm_eq_one_of_star_mul [Star K] (hconj : ∀ (φ : K →+* ℂ) (x : K), φ (star x) = starRingEnd ℂ (φ x))
     {z : K} (h1 : star z * z = 1) (φ : K →+* ℂ) : ‖φ z‖ = 1 := by
   have h3 := congrArg φ h1
@@ -73,6 +102,21 @@ theorem norm_eq_one_of_star_mul [Star K] (hconj : ∀ (φ : K →+* ℂ) (x : K)
   have h4 : ‖φ z‖ ^ 2 = 1 := by exact_mod_cast h3
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4
 
+/- English proof (translation)
+Establish `hcol : ∀ b, ∑ a, star (g a b) * g a b = 1`. Introduce `b`. Establish `h` using `congrFun (congrFun hg b) b`. Simplify `h` using `[Matrix.mul_apply, Matrix.conjTranspose_apply]`. Establish `horth : ∀ b b', b ≠ b' → ∑ a, star (g a b) * g a b' = 0`.
+
+Introduce `b b' hbb`. Establish `h` using `congrFun (congrFun hg b) b'`. Simplify `h` using `[Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply_ne hbb]`. Use `choose f hf using fun b => exists_single_of_sum_star_mul hconj (fun a => g a b) (fun a => hint a b) (hcol b)`. Establish `hdiag : ∀ b, star (g (f b) b) * g (f b) b = 1`.
+
+Introduce `b`. Establish `h` using `hcol b`. Rewrite `h` using `[Finset.sum_eq_single (f b) (fun j _ hj => by simp [hf b j hj]) (by simp)]`. Then use the resulting hypothesis. Establish `hne : ∀ b, g (f b) b ≠ 0`. Introduce `b h`.
+
+Establish `h'` using `hdiag b`. Simplify using `[h] at h'`. Establish `hinj : Function.Injective f`. Introduce `b b' hbb`. Assume the negation of the conclusion as `hb`.
+
+Establish `h` using `horth b b' hb`. Rewrite `h` using `[Finset.sum_eq_single (f b) (fun j _ hj => by simp [hf b j hj]) (by simp)]`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `hne b (star_eq_zero.mp h)`. Rewrite `h` using `[hbb]`.
+
+Conclude with `hne b' h`. Use `⟨fun b => g (f b) b, Equiv.ofBijective f (Finite.injective_iff_bijective.mp hinj), fun b => pow_torsionOrder_eq_one (hint _ _) (norm_eq_one_of_star_mul hconj (hdiag b)), ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Equiv.ofBijective_apply]`. Use `split_ifs with h`.
+
+Rewrite using `[h]`. Conclude with `hf b a h`.
+-/
 theorem exists_monomial [StarRing K] (hconj : ∀ (φ : K →+* ℂ) (x : K), φ (star x) = starRingEnd ℂ (φ x))
     (n : ℕ) (g : Matrix (Fin n) (Fin n) K) (hg : gᴴ * g = 1) (hint : ∀ a b, IsIntegral ℤ (g a b)) :
     ∃ (t : Fin n → K) (σ : Equiv.Perm (Fin n)), (∀ b, t b ^ Units.torsionOrder K = 1) ∧
@@ -112,6 +156,13 @@ theorem exists_monomial [StarRing K] (hconj : ∀ (φ : K →+* ℂ) (x : K), φ
   · rw [h]
   · exact hf b a h
 
+/- English proof (translation)
+Establish `hT : 0 < Units.torsionOrder K` using `Units.torsionOrder_pos K`. Set `R : Finset K` to `(Polynomial.nthRoots (Units.torsionOrder K) (1 : K)).toFinset`. Set `P : Finset ((Fin n → K) × Equiv.Perm (Fin n))` to `Fintype.piFinset (fun _ => R) ×ˢ Finset.univ`. Set `Φ : (Fin n → K) × Equiv.Perm (Fin n) → Matrix (Fin n) (Fin n) K` to `fun p => Matrix.of fun a b => if a = p.2 b then p.1 b else 0`. Establish `hsub : {g : Matrix (Fin n) (Fin n) K | gᴴ * g = 1 ∧ ∀ a b, IsIntegral ℤ (g a b)} ⊆ ↑(P.image Φ)`.
+
+Introduce and unpack `g ⟨hg, hint⟩`. Take `⟨t, σ, ht, rfl⟩` from `exists_monomial hconj n g hg hint`. Rewrite using `[Finset.coe_image]`. Use `⟨(t, σ), ?_, rfl⟩` and prove the remaining obligations. Simplify using `[P, R, Finset.mem_coe, Finset.mem_product, Fintype.mem_piFinset, Multiset.mem_toFinset, Polynomial.mem_nthRoots hT, ht]`.
+
+Use `⟨(P.image Φ).finite_toSet.subset hsub, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `[P, Fintype.card_piFinset, Fintype.card_perm]`. Use `_ ≤ Units.torsionOrder K ^ n * n.factorial := by gcongr`. Conclude with `(Multiset.toFinset_card_le _).trans (Polynomial.card_nthRoots _ _)`.
+-/
 theorem unitary_integral_finite_and_ncard_le [StarRing K]
     (hconj : ∀ (φ : K →+* ℂ) (x : K), φ (star x) = starRingEnd ℂ (φ x)) (n : ℕ) :
     {g : Matrix (Fin n) (Fin n) K | gᴴ * g = 1 ∧ ∀ a b, IsIntegral ℤ (g a b)}.Finite ∧

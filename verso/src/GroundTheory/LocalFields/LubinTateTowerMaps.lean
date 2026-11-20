@@ -17,6 +17,9 @@ def restrictAutFun {E F : IntermediateField K Ω} (h : F ≤ E) [Normal K F] (σ
     F ≃ₐ[K] F :=
   AlgHom.restrictNormal' ((E.val.comp (σ : E →ₐ[K] E)).comp (inclusion h)) F
 
+/- English proof (translation)
+Use `AlgHom.restrictNormal_commutes ((E.val.comp (σ : E →ₐ[K] E)).comp (inclusion h)) F x` as an intermediate fact. Simplify using `only [restrictAutFun, AlgHom.restrictNormal', AlgEquiv.coe_ofBijective]`. Conclude with `this`.
+-/
 theorem restrictAutFun_apply {E F : IntermediateField K Ω} (h : F ≤ E) [Normal K F]
     (σ : E ≃ₐ[K] E) (x : F) : ((restrictAutFun h σ x : F) : Ω) = σ ⟨x, h x.2⟩ := by
   have := AlgHom.restrictNormal_commutes ((E.val.comp (σ : E →ₐ[K] E)).comp (inclusion h)) F x
@@ -34,20 +37,32 @@ def restrictAut {E F : IntermediateField K Ω} (h : F ≤ E) [Normal K F] :
     rw [this]
     rfl)
 
+/- English proof (translation)
+The claim follows from `restrictAutFun_apply h σ x`.
+-/
 theorem restrictAut_apply {E F : IntermediateField K Ω} (h : F ≤ E) [Normal K F]
     (σ : E ≃ₐ[K] E) (x : F) : ((restrictAut h σ x : F) : Ω) = σ ⟨x, h x.2⟩ :=
   restrictAutFun_apply h σ x
 
+/- English proof (translation)
+The claim follows from `AlgEquiv.ext fun x => Subtype.ext (by rw [restrictAut_apply, restrictAut_apply, restrictAut_apply])`.
+-/
 theorem restrictAut_restrictAut {E F G : IntermediateField K Ω} (h₁ : F ≤ E) (h₂ : G ≤ F)
     [Normal K F] [Normal K G] (σ : E ≃ₐ[K] E) :
     restrictAut h₂ (restrictAut h₁ σ) = restrictAut (h₂.trans h₁) σ :=
   AlgEquiv.ext fun x => Subtype.ext (by
     rw [restrictAut_apply, restrictAut_apply, restrictAut_apply])
 
+/- English proof (translation)
+The claim follows from `AlgEquiv.ext fun x => Subtype.ext (by rw [restrictAut_apply])`.
+-/
 theorem restrictAut_self {E : IntermediateField K Ω} [Normal K E] (σ : E ≃ₐ[K] E) :
     restrictAut le_rfl σ = σ :=
   AlgEquiv.ext fun x => Subtype.ext (by rw [restrictAut_apply])
 
+/- English proof (translation)
+Use `AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `hE x x.2`. Use `congrArg (fun τ : F n ≃ₐ[K] F n => ((τ ⟨x, hn⟩ : F n) : Ω)) (h n)` as an intermediate fact. Simplify using `only [restrictAut_apply] at this`. Conclude with `this`.
+-/
 theorem algEquiv_ext_of_restrictAut {ι : Type*} {F : ι → IntermediateField K Ω}
     [∀ n, Normal K (F n)] {E : IntermediateField K Ω} (hle : ∀ n, F n ≤ E)
     (hE : ∀ x ∈ E, ∃ n, x ∈ F n) {σ σ' : E ≃ₐ[K] E}
@@ -58,6 +73,19 @@ theorem algEquiv_ext_of_restrictAut {ι : Type*} {F : ι → IntermediateField K
   simp only [restrictAut_apply] at this
   exact this
 
+/- English proof (translation)
+Establish `hτ' : ∀ i j (x : Ω) (hi : x ∈ F i) (hj : x ∈ F j), ((τ i ⟨x, hi⟩ : F i) : Ω) = ((τ j ⟨x, hj⟩ : F j) : Ω)`. Introduce `i j x hi hj`. Break down `le_total i j with h | h` into its components or cases. Rewrite using `[← hτ i j h, restrictAut_apply]`. Rewrite using `[← hτ j i h, restrictAut_apply]`.
+
+Set `S : ℕ → Subalgebra K Ω` to `fun n => (F n).toSubalgebra`. Establish `hS : Monotone S` using `fun _ _ h => hF h`. Set `f : ∀ n, S n →ₐ[K] Ω` to `fun n => (F n).val.comp (τ n : F n →ₐ[K] F n)`. Establish `hf : ∀ (i j : ℕ) (h : S i ≤ S j), f i = (f j).comp (Subalgebra.inclusion h)`. Introduce `i j h`.
+
+Use extensionality with `x`. Conclude with `hτ' i j x x.2 (h x.2)`. Establish `hT : E.toSubalgebra ≤ iSup S` using `fun x hx => by`. Take `⟨n, hn⟩` from `hE x hx`. Conclude with `(le_iSup S n) hn`.
+
+Set `g` to `Subalgebra.iSupLift S hS.directed_le f hf E.toSubalgebra hT`. Establish `hg : ∀ (x : E) (n : ℕ) (hn : (x : Ω) ∈ F n), g x = ((τ n ⟨x, hn⟩ : F n) : Ω)` using `fun x n hn => Subalgebra.iSupLift_of_mem (K := S) x hn`. Establish `hgE : ∀ x : E, g x ∈ E` using `fun x => by`. Take `⟨n, hn⟩` from `hE x x.2`. Rewrite using `[hg x n hn]`.
+
+Conclude with `hle n (τ n ⟨x, hn⟩).2`. Set `g' : E →ₐ[K] E` to `g.codRestrict E.toSubalgebra hgE`. Use `⟨AlgEquiv.ofBijective g' (Algebra.IsAlgebraic.algHom_bijective _), fun n => ?_⟩` and prove the remaining obligations. Use `AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[restrictAut_apply, AlgEquiv.ofBijective_apply]`.
+
+Conclude with `hg ⟨x, hle n x.2⟩ n x.2`.
+-/
 theorem exists_algEquiv_of_compatible {F : ℕ → IntermediateField K Ω} (hF : Monotone F)
     [∀ n, Normal K (F n)] {E : IntermediateField K Ω} [Algebra.IsAlgebraic K E]
     (hle : ∀ n, F n ≤ E) (hE : ∀ x ∈ E, ∃ n, x ∈ F n) (τ : ∀ n, F n ≃ₐ[K] F n)
@@ -105,6 +133,9 @@ def unitsReduce (π : 𝒪[K]) {m n : ℕ} (h : m ≤ n) :
   Units.map (Ideal.Quotient.factor
     (Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow π h))).toMonoidHom
 
+/- English proof (translation)
+Rewrite using `[unitsReduce, Units.coe_map, ← ha]`. Conclude with `Ideal.Quotient.factor_mk _ a`.
+-/
 theorem coe_unitsReduce (π : 𝒪[K]) {m n : ℕ} (h : m ≤ n) (u : (𝒪[K] ⧸ Ideal.span {π ^ n})ˣ)
     (a : 𝒪[K]) (ha : Ideal.Quotient.mk _ a = (u : 𝒪[K] ⧸ Ideal.span {π ^ n})) :
     (unitsReduce π h u : 𝒪[K] ⧸ Ideal.span {π ^ m}) = Ideal.Quotient.mk _ a := by
@@ -114,9 +145,15 @@ theorem coe_unitsReduce (π : 𝒪[K]) {m n : ℕ} (h : m ≤ n) (u : (𝒪[K] �
 def unitsMk (π : 𝒪[K]) (n : ℕ) : 𝒪[K]ˣ →* (𝒪[K] ⧸ Ideal.span {π ^ n})ˣ :=
   Units.map (Ideal.Quotient.mk (Ideal.span {π ^ n})).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsMk (π : 𝒪[K]) (n : ℕ) (u : 𝒪[K]ˣ) :
     (unitsMk π n u : 𝒪[K] ⧸ Ideal.span {π ^ n}) = Ideal.Quotient.mk _ (u : 𝒪[K]) := rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (coe_unitsReduce π h _ _ rfl)`.
+-/
 theorem unitsReduce_unitsMk (π : 𝒪[K]) {m n : ℕ} (h : m ≤ n) (u : 𝒪[K]ˣ) :
     unitsReduce π h (unitsMk π n u) = unitsMk π m u :=
   Units.ext (coe_unitsReduce π h _ _ rfl)
@@ -130,6 +167,11 @@ variable {Ω : Type*} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValu
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω]
 variable {π : 𝒪[K]} (hπ : Irreducible π) {f g : PowerSeries 𝒪[K]}
 
+/- English proof (translation)
+Establish `h1 : (⟨psEval φ (fun _ => (z : Ω)), hmem⟩ : E) = psEval φ (fun _ => z)` using `Subtype.ext (psEval_coe E φ (fun _ => z) fun _ => hz)`. Establish `hτ : valuation Ω ((τ z : E) : Ω) < 1`. Rewrite using `[valuation_coe_lt_one_iff, valuation_algEquiv_apply_of_isAlgebraic, ← valuation_coe_lt_one_iff]`. Conclude with `hz`. Rewrite using `[h1, algEquiv_psEval τ φ (fun _ => z) fun _ => by rw [← valuation_coe_lt_one_iff]; exact hz]`.
+
+Conclude with `(psEval_coe E φ (fun _ => τ z) fun _ => hτ).symm`.
+-/
 theorem algEquiv_psEval_coe {E : IntermediateField K Ω} [FiniteDimensional K E]
     (τ : E ≃ₐ[K] E) (φ : PowerSeries 𝒪[K]) (z : E) (hz : valuation Ω (z : Ω) < 1)
     (hmem : psEval φ (fun _ => (z : Ω)) ∈ E) :
@@ -149,6 +191,9 @@ def lubinTateChar (hf : IsLubinTateSeries π f) (n : ℕ) {E : IntermediateField
     (hE : lubinTateField Ω hπ hf n ≤ E) : (E ≃ₐ[K] E) →* (𝒪[K] ⧸ Ideal.span {π ^ n})ˣ :=
   (lubinTateGalEquiv hπ hf n).toMonoidHom.comp (restrictAut hE)
 
+/- English proof (translation)
+The claim follows from `(restrictAut_apply hE σ ⟨x.val, val_mem_lubinTateField hπ hf hx⟩).symm.trans (lubinTateGalEquiv_spec hf n (restrictAut hE σ) x hx a ha)`.
+-/
 theorem lubinTateChar_spec (hf : IsLubinTateSeries π f) {n : ℕ} {E : IntermediateField K Ω}
     (hE : lubinTateField Ω hπ hf n ≤ E) (σ : E ≃ₐ[K] E)
     {x : IdealPoint Ω (lubinTateFormalGroup hπ hf)} (hx : x ∈ lubinTateTorsion Ω hf n) (a : 𝒪[K])
@@ -157,6 +202,11 @@ theorem lubinTateChar_spec (hf : IsLubinTateSeries π f) {n : ℕ} {E : Intermed
   (restrictAut_apply hE σ ⟨x.val, val_mem_lubinTateField hπ hf hx⟩).symm.trans
     (lubinTateGalEquiv_spec hf n (restrictAut hE σ) x hx a ha)
 
+/- English proof (translation)
+Take `⟨l, hl, hann, -⟩` from `exists_generator_lubinTateTorsion (Ω := Ω) (hπ := hπ) hf n`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (lubinTateChar hπ hf n hE σ : 𝒪[K] ⧸ Ideal.span {π ^ n})`. Establish `h1` using `lubinTateChar_spec hπ hf hE σ hl b hb`. Rewrite `h1` using `[h l hl]`. Establish `h2 : b • l = a • l` using `(IdealPoint.ext h1).symm`.
+
+Rewrite using `[← hb, Ideal.Quotient.eq, ← hann, sub_smul, sub_eq_zero]`. Conclude with `h2`.
+-/
 theorem lubinTateChar_eq_of_apply (hf : IsLubinTateSeries π f) {n : ℕ} {E : IntermediateField K Ω}
     (hE : lubinTateField Ω hπ hf n ≤ E) (σ : E ≃ₐ[K] E) (a : 𝒪[K])
     (h : ∀ (x) (hx : x ∈ lubinTateTorsion Ω (hπ := hπ) hf n),
@@ -171,6 +221,9 @@ theorem lubinTateChar_eq_of_apply (hf : IsLubinTateSeries π f) {n : ℕ} {E : I
   rw [← hb, Ideal.Quotient.eq, ← hann, sub_smul, sub_eq_zero]
   exact h2
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (lubinTateChar hπ hf n hE σ : 𝒪[K] ⧸ Ideal.span {π ^ n})`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_unitsReduce π hmn _ a ha, lubinTateChar_eq_of_apply hπ hf _ σ a]`. Introduce `x hx`. Conclude with `lubinTateChar_spec hπ hf hE σ (lubinTateTorsion_mono hπ hf hmn hx) a ha`.
+-/
 theorem lubinTateChar_reduce (hf : IsLubinTateSeries π f) {m n : ℕ} (hmn : m ≤ n)
     {E : IntermediateField K Ω} (hE : lubinTateField Ω hπ hf n ≤ E) (σ : E ≃ₐ[K] E) :
     lubinTateChar hπ hf m ((lubinTateField_mono hπ hf hmn).trans hE) σ =
@@ -182,6 +235,9 @@ theorem lubinTateChar_reduce (hf : IsLubinTateSeries π f) {m n : ℕ} (hmn : m 
   intro x hx
   exact lubinTateChar_spec hπ hf hE σ (lubinTateTorsion_mono hπ hf hmn hx) a ha
 
+/- English proof (translation)
+Use `lubinTateChar_reduce hπ hf hmn le_rfl σ` as an intermediate fact. Simplify using `only [lubinTateChar, MonoidHom.coe_comp, Function.comp_apply, restrictAut_self] at this`. Conclude with `this`.
+-/
 theorem lubinTateGalEquiv_restrictAut (hf : IsLubinTateSeries π f) {m n : ℕ} (hmn : m ≤ n)
     (σ : lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n) :
     lubinTateGalEquiv hπ hf m (restrictAut (lubinTateField_mono hπ hf hmn) σ) =
@@ -190,6 +246,15 @@ theorem lubinTateGalEquiv_restrictAut (hf : IsLubinTateSeries π f) {m n : ℕ} 
   simp only [lubinTateChar, MonoidHom.coe_comp, Function.comp_apply, restrictAut_self] at this
   exact this
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (lubinTateChar hπ hf n hEf σ : 𝒪[K] ⧸ Ideal.span {π ^ n})`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← ha, lubinTateChar_eq_of_apply hπ hg hEg σ a]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `(lubinTatePointEquiv hg hf).surjective y`.
+
+Establish `hx : x ∈ lubinTateTorsion Ω hf n` using `(lubinTatePointEquiv_mem_torsion_iff hg hf n x).mp hy`. Use `set τ := restrictAut hEf σ`. Establish `hyF : (lubinTatePointEquiv hg hf x).val ∈ lubinTateField Ω hπ hf n` using `val_mem_lubinTateField_of_mem hπ hf hg hy`. Establish `h1 : ((σ ⟨(lubinTatePointEquiv hg hf x).val, hEg (val_mem_lubinTateField hπ hg hy)⟩ : E) : Ω) = ((τ ⟨(lubinTatePointEquiv hg hf x).val, hyF⟩ : lubinTateField Ω hπ hf n) : Ω)` using `(restrictAut_apply hEf σ ⟨_, hyF⟩).symm`. Rewrite using `[h1]`.
+
+Establish `h2` using `algEquiv_psEval_coe τ (lubinTateHom hπ hg hf 1).toPowerSeries ⟨x.val, val_mem_lubinTateField hπ hf hx⟩ x.valuation_lt_one hyF`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[← map_smul, lubinTatePointEquiv_val]`. Use `congr 2`. Use function extensionality and compare the values at `_`.
+
+Rewrite using `[restrictAut_apply]`. Conclude with `lubinTateChar_spec hπ hf hEf σ hx a ha`.
+-/
 theorem lubinTateChar_eq (hf : IsLubinTateSeries π f) (hg : IsLubinTateSeries π g) {n : ℕ}
     {E : IntermediateField K Ω} (hEf : lubinTateField Ω hπ hf n ≤ E)
     (hEg : lubinTateField Ω hπ hg n ≤ E) (σ : E ≃ₐ[K] E) :

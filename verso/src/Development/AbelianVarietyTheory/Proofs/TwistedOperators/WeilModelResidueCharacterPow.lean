@@ -19,6 +19,17 @@ namespace GlobalTheory.ArchimedeanUnitaryL2
 open MeasureTheory
 open scoped ENNReal
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ n d X W M ψ χX χW om _ _ _ _ _ _ _ _ _ hW γ _ T hA μ hμ t f`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg, hg0⟩ : ∃ g : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → ℂ, g ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) ∧ g 0 ≠ 0 := by`. Use `⟨_, GlobalTheory.SchANonzero.indicator_intPts_mem_SB F _, ?_⟩` and prove the remaining obligations. Establish `h0 : (0 : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) ∈ GlobalTheory.SchANonzero.intPts F (Fin n × Fin d)` using `fun i _ v => zero_mem (v.adicCompletionIntegers F)`. Rewrite using `[Set.indicator_of_mem h0]`.
+
+Conclude with `one_ne_zero`. Take `⟨μA, hμA, c, hc0, hct, hc⟩` from `exists_haar F _ μ g hg hg0`. Set `r : (Fin n × Fin d → AF F) → ℂ` to `fun x => g fun i => (x i).2`. Establish `hS : tens (evI F) f r ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `hr : ∀ x z, At (evI F) z → r (x + z) = r x`.
+
+Introduce `x z hz`. Use `congrArg g (funext fun i => ?_)` and prove the remaining obligations. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[snd_eq_zero hz i, add_zero]`. Establish `hU` using `(GlobalTheory.WeilM.IsUWeilPair.isUSplitting hW).unit μA hμA (γ (Multiplicative.ofAdd t), 1) (tens (evI F) f r) hS`.
+
+Establish `hAct : om (γ (Multiplicative.ofAdd t), 1) (tens (evI F) f r) = tens (evI F) (T t f) r` using `hA t f r ⟨hr, hS⟩`. Express the relevant statement in the definitionally equal form `∫⁻ x, ‖om (γ (Multiplicative.ofAdd t), 1) (tens (evI F) f r) x‖ₑ ^ 2 ∂μA = _ at hU`. Rewrite `hU` using `[hAct]`. Establish `h1` using `((hc (T t f)).symm.trans hU).trans (hc f)`. Use `haveI := opensMeasurable F (Fin n × Fin d)`.
+
+Rewrite using `[integral_sq_eq μ (T t f).continuous, integral_sq_eq μ f.continuous, (ENNReal.mul_right_inj hc0 hct).1 h1]`.
+-/
 theorem integral_norm_sq_eq_pair_left : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
       IsStd ψ → (∀ i j, σ (X.J j i) = X.J i j) → X.J.det ≠ 0 → (∀ i j, σ (W.J j i) = -W.J i j) → W.J.det ≠ 0 →

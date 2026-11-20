@@ -137,6 +137,9 @@ def levelsOfCh_tie (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
     rw [MulAut.conj_apply, inv_inv]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨c.2, rfl, fun x hx => by rw [hx]⟩`.
+-/
 theorem levelsOfCh_cover (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
     (lam0 : Fin nV → Fin n' → Fin (m + 1) → ℤ) (dom : ∀ v, IsDominant (lam0 v)) (hk : m + 1 = R.k)
     (I : LocId L p nV W Qq) (ψ : Formalism.L2.Herm.awayFrom₂ L p →* Oˣ)
@@ -152,6 +155,9 @@ def ChartsCover {p : ℕ} {G : GAtP p} {Fl : Fills G} (Lv : Levels Fl) (i : ℕ)
     (em : ∀ β, cmp β → Lv.compS i) : Prop :=
   Function.Bijective (fun x : Σ β, cmp β => em x.1 x.2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x x' h => by obtain ⟨b, a⟩ := x obtain ⟨b', a'⟩ := x' simpa using h, fun c => ⟨c.2, rfl⟩⟩`.
+-/
 theorem levelsOfCh_chartsCover (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
     (lam0 : Fin nV → Fin n' → Fin (m + 1) → ℤ) (dom : ∀ v, IsDominant (lam0 v)) (hk : m + 1 = R.k)
     (I : LocId L p nV W Qq) (ψ : Formalism.L2.Herm.awayFrom₂ L p →* Oˣ)

@@ -14,12 +14,34 @@ def Sys : Prop := ∀ (A : CommRingCat.{0}) (Ω : Type) [Field Ω] (ι : A →+*
       ∃ (j : J) (h : B ⟶ D.obj j), g ≫ h = t.app j ∧ (φ j).comp h.hom = φB) ∧
     (∀ (j : J) (x : D.obj j), φ j x ≠ 0 → ∃ (k : J) (a : j ⟶ k), IsUnit ((D.map a).hom x))
 
+/- English proof (translation)
+Use `t.naturality a` as an intermediate fact. Simplify using `only [Functor.const_obj_obj, Functor.const_obj_map, Category.id_comp] at this`. Conclude with `this.symm`.
+-/
 theorem t_nat {J : Type} [SmallCategory J] {A : CommRingCat.{0}} {D : J ⥤ CommRingCat.{0}}
     (t : (Functor.const J).obj A ⟶ D) {j k : J} (a : j ⟶ k) : t.app j ≫ D.map a = t.app k := by
   have := t.naturality a
   simp only [Functor.const_obj_obj, Functor.const_obj_map, Category.id_comp] at this
   exact this.symm
 
+/- English proof (translation)
+Introduce `A Ω _ ι`. Take `⟨J, _, _, D, t, φ, hEt, hpt, hcomp, habs, hloc⟩` from `hS A Ω ι`. Set `O : CommRingCat.{0}` to `colimit D`. Set `s : D ⟶ (Functor.const J).obj O` to `(colimit.cocone D).ι`. Set `j0 : J` to `IsFiltered.nonempty.some`.
+
+Set `f : A ⟶ O` to `t.app j0 ≫ colimit.ι D j0`. Establish `hf : ∀ j, t.app j ≫ colimit.ι D j = f`. Introduce `j`. Set `k` to `IsFiltered.max j j0`. Use `show t.app j ≫ colimit.ι D j = t.app j0 ≫ colimit.ι D j0`.
+
+Rewrite using `[← colimit.w D (IsFiltered.leftToMax j j0), ← colimit.w D (IsFiltered.rightToMax j j0), ← Category.assoc, ← Category.assoc, t_nat, t_nat]`. Set `cΩ : Cocone D` to `{ pt := CommRingCat.of Ω ι := { app := fun j => CommRingCat.ofHom (φ j) naturality := by`. Introduce `j k a`. Use extensionality with `x`. Use `DFunLike.congr_fun (hcomp j k a) x` as an intermediate fact.
+
+Simplify using `using this } }`. Set `ψ : O →+* Ω` to `(colimit.desc D cΩ).hom`. Establish `hψ : ∀ j (y : D.obj j), ψ (colimit.ι D j y) = φ j y`. Introduce `j y`. Use `colimit.ι_desc cΩ j` as an intermediate fact.
+
+Conclude with `DFunLike.congr_fun (congrArg CommRingCat.Hom.hom this) y`. Use `⟨O, f, ψ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨J, inferInstance, inferInstance, D, t, s, colimit.isColimit D, fun j => ⟨hEt j, hf j⟩⟩` and prove the remaining obligations. Use extensionality with `a`. Use `DFunLike.congr_fun (hpt j0) a` as an intermediate fact.
+
+Simplify using `only [RingHom.comp_apply] at this ⊢`. Rewrite using `[← this, ← hψ]`. Both sides reduce to the same expression. Introduce `x hx`. Take `⟨j, y, rfl⟩` from `Concrete.colimit_exists_rep D x`.
+
+Rewrite `hx` using `[hψ]`. Take `⟨k, a, hu⟩` from `hloc j y hx`. Establish `: colimit.ι D j y = colimit.ι D k ((D.map a).hom y)`. Rewrite using `[← colimit.w D a]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `hu.map (colimit.ι D k).hom`. Introduce `B g hg φB hφB`. Take `⟨j, h, hh1, hh2⟩` from `habs B g hg φB hφB`. Use `⟨h ≫ colimit.ι D j, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, hh1, hf]`. Use extensionality with `b`. Simplify using `only [RingHom.comp_apply, CommRingCat.hom_comp]`. Rewrite using `[hψ]`. Conclude with `DFunLike.congr_fun hh2 b`.
+-/
 theorem Absorb_of (hS : Sys) : LateralTheory.E.ColimPf.Absorb := by
   intro A Ω _ ι
   obtain ⟨J, _, _, D, t, φ, hEt, hpt, hcomp, habs, hloc⟩ := hS A Ω ι
@@ -79,6 +101,15 @@ def Sys2 : Prop := ∀ (A : CommRingCat.{0}) (Ω : Type) [Field Ω] (ι : A →+
     (∀ (j : J) (B : CommRingCat.{0}) (g : D.obj j ⟶ B), Et g → ∀ φB : B →+* Ω, φB.comp g.hom = φ j →
       ∃ (k : J) (a : j ⟶ k) (h : B ⟶ D.obj k), g ≫ h = D.map a)
 
+/- English proof (translation)
+Introduce `A Ω _ ι`. Take `⟨J, i1, i2, D, t, φ, hEt, hpt, hcomp, habs, hst⟩` from `h2 A Ω ι`. Use `⟨J, i1, i2, D, t, φ, hEt, hpt, hcomp, habs, ?_⟩` and prove the remaining obligations. Introduce `j x hx`. Set `B : CommRingCat.{0}` to `CommRingCat.of (Localization.Away x)`.
+
+Set `g : D.obj j ⟶ B` to `CommRingCat.ofHom (algebraMap (D.obj j) (Localization.Away x))`. Establish `hg : Et g`. Express the relevant statement in the definitionally equal form `(algebraMap (D.obj j) (Localization.Away x)).Etale`. Rewrite using `[RingHom.etale_algebraMap]`. Use `infer_instance`.
+
+Establish `hu : IsUnit (φ j x)` using `isUnit_iff_ne_zero.mpr hx`. Set `φB : B →+* Ω` to `IsLocalization.Away.lift x hu`. Take `⟨k, a, h, hh⟩` from `hst j B g hg φB (IsLocalization.Away.lift_comp x hu)`. Use `⟨k, a, ?_⟩` and prove the remaining obligations. Establish `e : (D.map a).hom x = h.hom (algebraMap (D.obj j) (Localization.Away x) x)`.
+
+Rewrite using `[← hh]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit x).map h.hom`.
+-/
 theorem Sys_of (h2 : Sys2) : Sys := by
   intro A Ω _ ι
   obtain ⟨J, i1, i2, D, t, φ, hEt, hpt, hcomp, habs, hst⟩ := h2 A Ω ι
@@ -99,6 +130,9 @@ theorem Sys_of (h2 : Sys2) : Sys := by
   rw [e]
   exact (IsLocalization.Away.algebraMap_isUnit x).map h.hom
 
+/- English proof (translation)
+The claim follows from `Absorb_of (Sys_of h2)`.
+-/
 theorem etaleAbsorbing_of_strongFilteredEtaleSystemExists (h2 : Sys2) : LateralTheory.E.ColimPf.Absorb := Absorb_of (Sys_of h2)
 
 end LateralTheory.E.AbsorbPf

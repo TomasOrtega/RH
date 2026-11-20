@@ -16,6 +16,9 @@ namespace VerticalPointChart
 
 variable {T : Type} [Fintype T] {K' : Type} [Field K']
 
+/- English proof (translation)
+Establish `h` using `Inter.AvoidRing.isMultiHomog_X (R := ℤ) (ι := fun _ : Unit => T) () t`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Consider the cases of `u`. Simplify using the standard rewrite rules.
+-/
 theorem form_X (t : T) : IsMultiHomog (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) (fun _ => 1) := by
   have h := Inter.AvoidRing.isMultiHomog_X (R := ℤ) (ι := fun _ : Unit => T) () t
   convert h using 1
@@ -23,16 +26,25 @@ theorem form_X (t : T) : IsMultiHomog (X ⟨(), t⟩ : MRing (fun _ : Unit => T)
   cases u
   simp
 
+/- English proof (translation)
+The claim follows from `Inter.AvoidRing.isMultiHomog_mul hf hg`.
+-/
 theorem form_mul {f g : MRing (fun _ : Unit => T)} {a b : ℕ} (hf : IsMultiHomog f (fun _ => a))
     (hg : IsMultiHomog g (fun _ => b)) : IsMultiHomog (f * g) (fun _ => a + b) :=
   Inter.AvoidRing.isMultiHomog_mul hf hg
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `Inter.AvoidRing.isMultiHomog_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `form_mul ih (form_X t)`.
+-/
 theorem form_X_pow (t : T) (n : ℕ) :
     IsMultiHomog ((X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ^ n) (fun _ => n) := by
   induction n with
   | zero => rw [pow_zero]; exact Inter.AvoidRing.isMultiHomog_one
   | succ n ih => rw [pow_succ]; exact form_mul ih (form_X t)
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+-/
 theorem form_add {f g : MRing (fun _ : Unit => T)} {a : ℕ} (hf : IsMultiHomog f (fun _ => a))
     (hg : IsMultiHomog g (fun _ => a)) : IsMultiHomog (f + g) (fun _ => a) := by
   classical
@@ -41,6 +53,9 @@ theorem form_add {f g : MRing (fun _ : Unit => T)} {a : ℕ} (hf : IsMultiHomog 
   · exact hf m h k
   · exact hg m h k
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Use `form_add hf ?_` and prove the remaining obligations. Introduce `m hm`. Rewrite `hm` using `[support_neg]`. Conclude with `hg m hm`.
+-/
 theorem form_sub {f g : MRing (fun _ : Unit => T)} {a : ℕ} (hf : IsMultiHomog f (fun _ => a))
     (hg : IsMultiHomog g (fun _ => a)) : IsMultiHomog (f - g) (fun _ => a) := by
   rw [sub_eq_add_neg]
@@ -49,10 +64,16 @@ theorem form_sub {f g : MRing (fun _ : Unit => T)} {a : ℕ} (hf : IsMultiHomog 
   rw [support_neg] at hm
   exact hg m hm
 
+/- English proof (translation)
+Introduce `m hm`. Simplify using `at hm`.
+-/
 theorem form_zero (a : ℕ) : IsMultiHomog (0 : MRing (fun _ : Unit => T)) (fun _ => a) := by
   intro m hm
   simp at hm
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[C_apply]`. Establish `: m = 0` using `Finset.mem_singleton.mp (support_monomial_subset hm)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem form_C (n : ℤ) : IsMultiHomog (C n : MRing (fun _ : Unit => T)) (fun _ => 0) := by
   classical
   intro m hm k
@@ -61,6 +82,9 @@ theorem form_C (n : ℤ) : IsMultiHomog (C n : MRing (fun _ : Unit => T)) (fun _
   subst this
   simp
 
+/- English proof (translation)
+Substitute `hnn` using the available equality. Establish `h0 : f - g ∈ mCoordIdeal y` using `HilbertSamuel.SmallSectionsNonzero.mem_mCoordIdeal_of_aeval_eq_zero y (form_sub hf hg) (by rw [map_sub, he, sub_self])`. Establish `h1` using `W.sub_mem hfW (hPW h0)`. Rewrite `h1` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_aeval_eq (y : (Σ _ : Unit, T) → K') {W : Ideal (MRing (fun _ : Unit => T))}
     (hPW : mCoordIdeal y ≤ W) {f g : MRing (fun _ : Unit => T)} {n n' : ℕ}
     (hf : IsMultiHomog f (fun _ => n)) (hg : IsMultiHomog g (fun _ => n')) (hnn : n = n')
@@ -74,11 +98,17 @@ theorem mem_of_aeval_eq (y : (Σ _ : Unit, T) → K') {W : Ideal (MRing (fun _ :
 
 omit [Fintype T] in
 
+/- English proof (translation)
+The claim follows from `(hWp.mem_or_mem h).resolve_left fun h' => ht (hWp.mem_of_pow_mem _ h')`.
+-/
 theorem mem_of_X_pow_mul {W : Ideal (MRing (fun _ : Unit => T))} (hWp : W.IsPrime) {t : T}
     (ht : (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ∉ W) {n : ℕ} {f : MRing (fun _ : Unit => T)}
     (h : X ⟨(), t⟩ ^ n * f ∈ W) : f ∈ W :=
   (hWp.mem_or_mem h).resolve_left fun h' => ht (hWp.mem_of_pow_mem _ h')
 
+/- English proof (translation)
+Take `⟨δ, k, hk, he⟩` from `HilbertSamuel.SmallSectionsNonzero.exists_form_of_mem_chartRingZ y (fun _ => t) (fun _ => hyt) hr`. Establish `hδ : δ = fun _ => δ ()` using `funext fun u => by cases u; rfl`. Rewrite `hk` using `[hδ]`. Use `⟨δ (), k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[he, Fintype.prod_unique]`.
+-/
 theorem exists_rep (y : (Σ _ : Unit, T) → K') {t : T} (hyt : y ⟨(), t⟩ ≠ 0) {r : K'}
     (hr : r ∈ chartRingZ y (fun _ => t)) :
     ∃ (e : ℕ) (k : MRing (fun _ : Unit => T)), IsMultiHomog k (fun _ => e) ∧
@@ -92,6 +122,9 @@ theorem exists_rep (y : (Σ _ : Unit, T) → K') {t : T} (hyt : y ⟨(), t⟩ �
 
 omit [Fintype T] in
 
+/- English proof (translation)
+The claim follows from `mem_curveRing.mp b.2 (fun _ => t) (fun _ => hyt)`.
+-/
 theorem mem_chart (y : (Σ _ : Unit, T) → K') {t : T} (hyt : y ⟨(), t⟩ ≠ 0) (b : curveRing y) :
     (b : K') ∈ chartRingZ y (fun _ => t) :=
   mem_curveRing.mp b.2 (fun _ => t) (fun _ => hyt)
@@ -100,6 +133,11 @@ def chartPrime (y : (Σ _ : Unit, T) → K') (t : T) (W : Ideal (MRing (fun _ : 
   {r | ∃ (d : ℕ) (g : MRing (fun _ : Unit => T)), IsMultiHomog g (fun _ => d) ∧ g ∈ W ∧
     r * y ⟨(), t⟩ ^ d = aeval y g}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, g, hg, hgW, hd⟩`. Apply `mem_of_X_pow_mul hWp ht (n := d)` to reduce the goal to its premises. Use `mem_of_aeval_eq y hPW (form_mul (form_X_pow t e) hg) (form_mul (form_X_pow t d) hk) (by omega) ?_ (W.mul_mem_left _ hgW)` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, aeval_X]`.
+
+Take the linear combination `(-(y ⟨(), t⟩ ^ e)) * hd + (y ⟨(), t⟩ ^ d) * hr`. Introduce `hkW`. Conclude with `⟨e, k, hk, hkW, hr⟩`.
+-/
 theorem mem_chartPrime_iff (y : (Σ _ : Unit, T) → K') {t : T} {W : Ideal (MRing (fun _ : Unit => T))}
     (hPW : mCoordIdeal y ≤ W) (hWp : W.IsPrime) (ht : (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ∉ W) {r : K'}
     {e : ℕ} {k : MRing (fun _ : Unit => T)} (hk : IsMultiHomog k (fun _ => e))
@@ -114,6 +152,11 @@ theorem mem_chartPrime_iff (y : (Σ _ : Unit, T) → K') {t : T} {W : Ideal (MRi
   · intro hkW
     exact ⟨e, k, hk, hkW, hr⟩
 
+/- English proof (translation)
+Take `⟨d, g, hg, hgW, hd⟩` from `hr`. Take `⟨e, g', hg', hg'W, he⟩` from `hr'`. Establish `h1` using `form_mul (form_X_pow t e) hg`. Rewrite `h1` using `[add_comm e d]`. Establish `h2 : IsMultiHomog (X ⟨(), t⟩ ^ e * g + X ⟨(), t⟩ ^ d * g') (fun _ => d + e)` using `form_add h1 (form_mul (form_X_pow t d) hg')`.
+
+Establish `h3 : X ⟨(), t⟩ ^ e * g + X ⟨(), t⟩ ^ d * g' ∈ W` using `W.add_mem (W.mul_mem_left _ hgW) (W.mul_mem_left _ hg'W)`. Establish `h4 : (r + r') * y ⟨(), t⟩ ^ (d + e) = aeval y (X ⟨(), t⟩ ^ e * g + X ⟨(), t⟩ ^ d * g')`. Simplify using `only [map_add, map_mul, map_pow, aeval_X]`. Take the linear combination `(y ⟨(), t⟩ ^ e) * hd + (y ⟨(), t⟩ ^ d) * he`. Conclude with `⟨d + e, _, h2, h3, h4⟩`.
+-/
 theorem chartPrime_add (y : (Σ _ : Unit, T) → K') {t : T} {W : Ideal (MRing (fun _ : Unit => T))} {r r' : K'}
     (hr : r ∈ chartPrime y t W) (hr' : r' ∈ chartPrime y t W) : r + r' ∈ chartPrime y t W := by
   obtain ⟨d, g, hg, hgW, hd⟩ := hr
@@ -129,6 +172,9 @@ theorem chartPrime_add (y : (Σ _ : Unit, T) → K') {t : T} {W : Ideal (MRing (
     linear_combination (y ⟨(), t⟩ ^ e) * hd + (y ⟨(), t⟩ ^ d) * he
   exact ⟨d + e, _, h2, h3, h4⟩
 
+/- English proof (translation)
+Take `⟨d, g, hg, hgW, hd⟩` from `hr`. Take `⟨e, k, hk, hce⟩` from `exists_rep y hyt hc`. Use `⟨e + d, k * g, form_mul hk hg, W.mul_mem_left _ hgW, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Take the linear combination `(r * y ⟨(), t⟩ ^ d) * hce + (aeval y k) * hd`.
+-/
 theorem chartPrime_mul (y : (Σ _ : Unit, T) → K') {t : T} (hyt : y ⟨(), t⟩ ≠ 0)
     {W : Ideal (MRing (fun _ : Unit => T))} {c r : K'} (hc : c ∈ chartRingZ y (fun _ => t))
     (hr : r ∈ chartPrime y t W) : c * r ∈ chartPrime y t W := by
@@ -149,10 +195,20 @@ def chartPrimeB (y : (Σ _ : Unit, T) → K') (t : T) (W : Ideal (MRing (fun _ :
     change ((c : K') * b) ∈ chartPrime y t W
     exact chartPrime_mul y hyt (mem_chart y hyt c) hb
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_chartPrimeB {y : (Σ _ : Unit, T) → K'} {t : T} {W : Ideal (MRing (fun _ : Unit => T))}
     {hyt : y ⟨(), t⟩ ≠ 0} {b : curveRing y} : b ∈ chartPrimeB y t W hyt ↔ (b : K') ∈ chartPrime y t W :=
   Iff.rfl
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one]`. Introduce `h`. Establish `h1` using `(mem_chartPrime_iff y hPW hWp ht (r := ((1 : curveRing y) : K')) (e := 0) (k := 1) Inter.AvoidRing.isMultiHomog_one (by simp)).mp (mem_chartPrimeB.mp h)`. Conclude with `hWp.ne_top ((Ideal.eq_top_iff_one W).mpr h1)`.
+
+Introduce `a b hab`. Take `⟨e, k, hk, ha⟩` from `exists_rep y hyt (mem_chart y hyt a)`. Take `⟨e', k', hk', hb⟩` from `exists_rep y hyt (mem_chart y hyt b)`. Establish `hkk : k * k' ∈ W` using `(mem_chartPrime_iff y hPW hWp ht (r := ((a * b : curveRing y) : K')) (form_mul hk hk') (by rw [Subring.coe_mul, map_mul]; linear_combination ((b : K') * y ⟨(), t⟩ ^ e') * ha + (aeval y k) * hb)).mp (mem_chartPrimeB.mp hab)`. Break down `hWp.mem_or_mem hkk with h | h` into its components or cases.
+
+Conclude with `Or.inl ⟨e, k, hk, h, ha⟩`. Conclude with `Or.inr ⟨e', k', hk', h, hb⟩`.
+-/
 theorem chartPrimeB_isPrime (y : (Σ _ : Unit, T) → K') {t : T} {W : Ideal (MRing (fun _ : Unit => T))}
     (hPW : mCoordIdeal y ≤ W) (hWp : W.IsPrime) (ht : (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ∉ W)
     (hyt : y ⟨(), t⟩ ≠ 0) : (chartPrimeB y t W hyt).IsPrime := by
@@ -171,6 +227,15 @@ theorem chartPrimeB_isPrime (y : (Σ _ : Unit, T) → K') {t : T} {W : Ideal (MR
     · exact Or.inl ⟨e, k, hk, h, ha⟩
     · exact Or.inr ⟨e', k', hk', h, hb⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[curvePtIdeal, Ideal.span_le]`. Introduce and unpack `b ⟨δ, g, h, hg, hh, hgW, hhW, hb⟩`. Take `⟨e, k, hk, hbk⟩` from `exists_rep y hyt (mem_chart y hyt b)`. Establish `hδ : δ = fun _ => δ ()` using `funext fun u => by cases u; rfl`.
+
+Rewrite `hg`, `hh` using `[hδ]`. Establish `hkh : k * h ∈ W` using `mem_of_aeval_eq y hPW (form_mul (form_X_pow t e) hg) (form_mul hk hh) rfl (by simp only [map_mul, map_pow, aeval_X]; linear_combination (-(y ⟨(), t⟩ ^ e)) * hb + (aeval y h) * hbk) (W.mul_mem_left _ hgW)`. Conclude with `⟨e, k, hk, (hWp.mem_or_mem hkh).resolve_right hhW, hbk⟩`. Introduce `b hb`. Take `⟨d, g, hg, hgW, hd⟩` from `mem_chartPrimeB.mp hb`.
+
+Apply `Ideal.subset_span` to reduce the goal to its premises. Establish `hX : IsMultiHomog ((X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ^ d) (fun _ => d)` using `form_X_pow t d`. Establish `hXW : (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ^ d ∉ W` using `fun h => ht (hWp.mem_of_pow_mem _ h)`. Establish `hv : (b : K') * aeval y ((X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ^ d) = aeval y g`. Rewrite using `[map_pow, aeval_X]`.
+
+Conclude with `hd`. Conclude with `⟨fun _ => d, g, _, hg, hX, hgW, hXW, hv⟩`.
+-/
 theorem curvePtIdeal_eq (y : (Σ _ : Unit, T) → K') {t : T} {W : Ideal (MRing (fun _ : Unit => T))}
     (hPW : mCoordIdeal y ≤ W) (hWp : W.IsPrime) (ht : (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ∉ W)
     (hyt : y ⟨(), t⟩ ≠ 0) : curvePtIdeal y W = chartPrimeB y t W hyt := by
@@ -193,6 +258,13 @@ theorem curvePtIdeal_eq (y : (Σ _ : Unit, T) → K') {t : T} {W : Ideal (MRing 
       exact hd
     exact ⟨fun _ => d, g, _, hg, hX, hgW, hXW, hv⟩
 
+/- English proof (translation)
+Use `chartPrimeB_isPrime y hPW hWp ht hyt` as an intermediate fact. Establish `hnm : (n : curveRing y) ∈ chartPrimeB y t W hyt`. Use `mem_chartPrimeB.mpr ⟨0, C n, form_C n, hnW, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `: Module.Finite ℤ (curveRing y ⧸ chartPrimeB y t W hyt)` using `Module.Finite.of_surjective (Ideal.Quotient.mkₐ ℤ (chartPrimeB y t W hyt)).toLinearMap Ideal.Quotient.mk_surjective`.
+
+Establish `htor : Module.IsTorsion ℤ (curveRing y ⧸ chartPrimeB y t W hyt)`. Introduce `x`. Use `⟨⟨n, mem_nonZeroDivisors_of_ne_zero hn⟩, ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `show n • Ideal.Quotient.mk _ b = 0`.
+
+Rewrite using `[zsmul_eq_mul, ← map_intCast (Ideal.Quotient.mk (chartPrimeB y t W hyt)), ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ hnm`. Establish `: Finite (curveRing y ⧸ chartPrimeB y t W hyt)` using `Module.finite_of_fg_torsion _ htor`. Conclude with `Ideal.Quotient.maximal_of_isField _ (Finite.isField_of_domain _)`.
+-/
 theorem chartPrimeB_isMaximal (y : (Σ _ : Unit, T) → K') {t : T} {W : Ideal (MRing (fun _ : Unit => T))}
     (hB : Module.Finite ℤ (curveRing y))
     (hPW : mCoordIdeal y ≤ W) (hWp : W.IsPrime) (ht : (X ⟨(), t⟩ : MRing (fun _ : Unit => T)) ∉ W)
@@ -238,12 +310,20 @@ def locSub (y : (Σ _ : Unit, T) → K') (m : Ideal (curveRing y)) (hm : m.IsPri
 
 omit [Fintype T] in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locSub {y : (Σ _ : Unit, T) → K'} {m : Ideal (curveRing y)} {hm : m.IsPrime} {r : K'} :
     r ∈ locSub y m hm ↔ ∃ a b : curveRing y, b ∉ m ∧ (b : K') * r = a :=
   Iff.rfl
 
 omit [Fintype T] in
 
+/- English proof (translation)
+Rewrite `hr` using `[chartRingZ]`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨⟨⟨⟩, u⟩, rfl⟩` from `hx`. Conclude with `h u`.
+
+Consider the case `algebraMap n`. Rewrite using `[algebraMap_int_eq, eq_intCast]`. Conclude with `intCast_mem _ n`. Consider the case `add x x' _ _ hx hx' => exact add_mem hx hx'`. Consider the case `mul x x' _ _ hx hx' => exact mul_mem hx hx'`.
+-/
 theorem chart_le_locSub (y : (Σ _ : Unit, T) → K') (m : Ideal (curveRing y)) (hm : m.IsPrime) (t : T)
     (h : ∀ u : T, y ⟨(), u⟩ / y ⟨(), t⟩ ∈ locSub y m hm) {r : K'} (hr : r ∈ chartRingZ y (fun _ => t)) :
     r ∈ locSub y m hm := by
@@ -262,6 +342,31 @@ end VerticalPointChart
 
 open VerticalPointChart in
 
+/- English proof (translation)
+Introduce `T _ K' _ _ y s hy hs hsP W hW t ht`. Establish `hWp : W.IsPrime` using `hW.1.1.1`. Establish `hPW : mCoordIdeal y ≤ W` using `le_sup_left.trans hW.1.1.2`. Establish `hyt : y ⟨(), t⟩ ≠ 0` using `fun h0 => ht (hPW (HilbertSamuel.SmallSectionsNonzero.X_mem_mCoordIdeal y _ h0))`. Establish `hv` using `IndefiniteRowSideFullHecke.HeightsSet.CurveDivVertical.full Unit (fun _ => T) (mCoordIdeal y) s (fun _ => 1) hy hs hsP W hW`.
+
+Rewrite `hv` using `[IsHorizontal, ← Ne, Submodule.ne_bot_iff]`. Take `⟨n, hn, hn0⟩` from `hv`. Establish `hCB` using `hC T K' y hy`. Establish `hmax` using `chartPrimeB_isMaximal y hCB.1 hPW hWp ht hyt hn0 (Ideal.mem_comap.mp hn)`. Rewrite using `[curvePtIdeal_eq y hPW hWp ht hyt]`.
+
+Establish `hmp : (chartPrimeB y t W hyt).IsPrime` using `hmax.isPrime`. Establish `hrat : ∀ u : T, y ⟨(), u⟩ / y ⟨(), t⟩ ∈ locSub y _ hmp`. Take `⟨t', hyt', h'⟩` from `hCB.2.2 _ hmax`. Establish `hinv : y ⟨(), t'⟩ / y ⟨(), t⟩ ∈ locSub y _ hmp`. Take `⟨a, b, hb, hab⟩` from `h' t`.
+
+Establish `hab' : (a : K') * y ⟨(), t'⟩ = b * y ⟨(), t⟩`. Rewrite using `[← hab]`. Clear the denominators using the available nonvanishing facts. Use `mem_locSub.mpr ⟨b, a, ?_, ?_⟩` and prove the remaining obligations. Introduce `ha`.
+
+Take `⟨d, g, hg, hgW, hd⟩` from `mem_chartPrimeB.mp ha`. Take `⟨e, k, hk, hbk⟩` from `exists_rep y hyt (mem_chart y hyt b)`. Apply `hb` to reduce the goal to its premises. Use `mem_chartPrimeB.mpr ⟨e, k, hk, ?_, hbk⟩` and prove the remaining obligations. Apply `mem_of_X_pow_mul hWp ht (n := d + 1)` to reduce the goal to its premises.
+
+Use `mem_of_aeval_eq y hPW (form_mul (form_mul hg (form_X t')) (form_X_pow t e)) (form_mul (form_X_pow t (d + 1)) hk) (by omega) ?_ (W.mul_mem_right _ (W.mul_mem_right _ hgW))` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, aeval_X]`. Take the linear combination `(-(y ⟨(), t'⟩ * y ⟨(), t⟩ ^ e)) * hd + (y ⟨(), t⟩ ^ (d + 1)) * hbk + (y ⟨(), t⟩ ^ d * y ⟨(), t⟩ ^ e) * hab'`. Rewrite using `[← hab]`. Clear the denominators using the available nonvanishing facts.
+
+Introduce `u`. Take `⟨a, b, hb, hab⟩` from `h' u`. Establish `hu : y ⟨(), u⟩ / y ⟨(), t'⟩ ∈ locSub y _ hmp` using `mem_locSub.mpr ⟨a, b, hb, hab⟩`. Establish `hprod` using `mul_mem hu hinv`. Establish `he : y ⟨(), u⟩ / y ⟨(), t'⟩ * (y ⟨(), t'⟩ / y ⟨(), t⟩) = y ⟨(), u⟩ / y ⟨(), t⟩`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite `hprod` using `[he]`. Then use the resulting hypothesis. Use `⟨hmax, fun u => mem_locSub.mp (hrat u), fun d g hg => ⟨fun hgW => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hr : aeval y g * y ⟨(), t⟩ ^ (-(d : ℤ)) ∈ chartRingZ y (fun _ => t)` using `HilbertSamuel.NormCountBounded.aeval_mul_zpow_mem y t hg`. Take `⟨a, b, hb, hab⟩` from `mem_locSub.mp (chart_le_locSub y _ hmp t hrat hr)`.
+
+Rewrite `hab` using `[zpow_neg, zpow_natCast]`. Establish `hab' : (b : K') * aeval y g = a * y ⟨(), t⟩ ^ d`. Rewrite using `[← hab]`. Clear the denominators using the available nonvanishing facts. Use `⟨a, b, ?_, hb, hab'⟩` and prove the remaining obligations.
+
+Take `⟨e, k, hk, hbk⟩` from `exists_rep y hyt (mem_chart y hyt b)`. Use `mem_chartPrimeB.mpr ⟨e + d, k * g, form_mul hk hg, W.mul_mem_left _ hgW, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Take the linear combination `(-(y ⟨(), t⟩ ^ e)) * hab' + (aeval y g) * hbk`. Introduce and unpack `⟨a, b, ha, hb, hab⟩`.
+
+Take `⟨e, w, hw, hwW, hae⟩` from `mem_chartPrimeB.mp ha`. Take `⟨f, k, hk, hbk⟩` from `exists_rep y hyt (mem_chart y hyt b)`. Establish `hkW : k ∉ W` using `fun hkW => hb (mem_chartPrimeB.mpr ⟨f, k, hk, hkW, hbk⟩)`. Establish `h1 : X ⟨(), t⟩ ^ e * (k * g) ∈ W` using `mem_of_aeval_eq y hPW (form_mul (form_X_pow t (d + f)) hw) (form_mul (form_X_pow t e) (form_mul hk hg)) (by omega) (by`. Simplify using `only [map_mul, map_pow, aeval_X]`.
+
+Take the linear combination `(-(y ⟨(), t⟩ ^ (d + f))) * hae + (y ⟨(), t⟩ ^ e * aeval y g) * hbk - (y ⟨(), t⟩ ^ e * y ⟨(), t⟩ ^ f) * hab)`. Use the proof step `(W.mul_mem_left _ hwW)`. Conclude with `(hWp.mem_or_mem (mem_of_X_pow_mul hWp ht h1)).resolve_left hkW`.
+-/
 theorem VertPointChart.proof (hC : CurveCharts.Statement) : VertPointChart.Statement := by
   intro T _ K' _ _ y s hy hs hsP W hW t ht
   have hWp : W.IsPrime := hW.1.1.1

@@ -7,6 +7,13 @@ open Matrix GlobalTheory.CompanionTheory.Jp
 
 namespace GlobalTheory.CompanionTheory.Jp.AvgRight
 
+/- English proof (translation)
+Introduce `O _ _ n ϖ φ hφ j`. Establish `hout : ∀ x : GL (Ix n) O, φ (Quotient.out (QuotientGroup.mk x : GL (Ix n) O ⧸ Gam2 (n` using `n) ϖ)) = φ x := by`. Introduce `x`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (Gam2 (n := n) ϖ) x`. Rewrite using `[hh]`.
+
+Conclude with `hφ x h.1 h.2`. Establish `hshift : ∀ u : GL (Ix n) O ⧸ Gam2 (n` using `n) ϖ, φ (Quotient.out u * j) = φ (Quotient.out (u * (QuotientGroup.mk j : GL (Ix n) O ⧸ Gam2 (n := n) ϖ))) := by`. Introduce `u`. Rewrite using `[← hout (Quotient.out u * j)]`. Use `congr 2`.
+
+Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.out_eq']`. Unfold `avgK`. Use `congr 1`. Rewrite using `[finsum_congr hshift]`. Conclude with `finsum_comp_equiv (Equiv.mulRight (QuotientGroup.mk j : GL (Ix n) O ⧸ Gam2 (n := n) ϖ)) (f := fun u => φ (Quotient.out u))`.
+-/
 theorem avgK_right_invariant : ∀ (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ) (ϖ : O) (φ : GL (Ix n) O → ℂ),
     (∀ κ, ∀ γ ∈ Gam2 (n := n) ϖ, φ (κ * γ) = φ κ) → ∀ j : GL (Ix n) O,
       avgK ϖ (fun κ => φ (κ * j)) = avgK ϖ φ := by

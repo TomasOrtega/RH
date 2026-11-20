@@ -8,12 +8,22 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.EisM
 
+/- English proof (translation)
+Simplify using `only [petersson, norm_mul, Complex.norm_conj, zpow_natCast, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos z.im_pos]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma norm_petersson_self (k : ℕ) (h : ℍ → ℂ) (z : ℍ) :
     ‖petersson (k : ℤ) h h z‖ = ‖h z‖ ^ 2 * z.im ^ k := by
   simp only [petersson, norm_mul, Complex.norm_conj, zpow_natCast, norm_pow, Complex.norm_real,
     Real.norm_eq_abs, abs_of_pos z.im_pos]
   ring
 
+/- English proof (translation)
+Rewrite using `[IsZeroAtImInfty, ZeroAtFilter, tendsto_zero_iff_norm_tendsto_zero]`. Establish `him : Tendsto (fun τ : ℍ => τ.im) atImInfty atTop` using `tendsto_comap`. Establish `hsq : Tendsto (fun τ : ℍ => ‖h τ‖ ^ 2) atImInfty (𝓝 0)`. Establish `hlim : Tendsto (fun τ : ℍ => max C 0 * (τ.im)⁻¹) atImInfty (𝓝 0)`. Simplify using `using (tendsto_inv_atTop_zero.comp him).const_mul (max C 0)`.
+
+Use `squeeze_zero' (Eventually.of_forall fun τ => by positivity) ?_ hlim` and prove the remaining obligations. Use `filter_upwards [him.eventually_ge_atTop 1] with τ hτ`. Establish `hpos : 0 < τ.im` using `τ.im_pos`. Establish `hpow : τ.im ≤ τ.im ^ k`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[le_mul_inv_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation. Use `(Real.continuous_sqrt.tendsto 0).comp hsq` as an intermediate fact. Simplify `this` using `[Function.comp_def, Real.sqrt_sq (norm_nonneg _)]`.
+-/
 lemma isZeroAtImInfty_of_bound (k : ℕ) (hk : 1 ≤ k) (h : ℍ → ℂ) (C : ℝ)
     (hC : ∀ τ : ℍ, ‖h τ‖ ^ 2 * τ.im ^ k ≤ C) : IsZeroAtImInfty h := by
   rw [IsZeroAtImInfty, ZeroAtFilter, tendsto_zero_iff_norm_tendsto_zero]
@@ -37,6 +47,15 @@ lemma isZeroAtImInfty_of_bound (k : ℕ) (hk : 1 ≤ k) (h : ℍ → ℂ) (C : �
 
 end GlobalTheory.EisM
 
+/- English proof (translation)
+Introduce `k L N ε a hk hL hNL hcf`. Use `haveI : NeZero L := ⟨hL.ne'⟩`. Take `⟨f, hf⟩` from `GlobalTheory.T.modularForm_gammaOne_of_coeffSeq k L N ε a hL hNL hcf.1`. Take `⟨C, hC⟩` from `hcf.2`. Establish `hall : ∀ γ : SL(2, ℤ), IsZeroAtImInfty ((f : ℍ → ℂ) ∣[(k : ℤ)] γ)`.
+
+Introduce `γ`. Use `isZeroAtImInfty_of_bound k hk _ C fun τ => ?_` and prove the remaining obligations. Establish `h1` using `congrArg norm (petersson_slash_SL (k : ℤ) (f : ℍ → ℂ) f γ τ)`. Rewrite `h1` using `[norm_petersson_self, norm_petersson_self, hf]`. Rewrite using `[hf, h1]`.
+
+Conclude with `hC _`. Use `⟨⟨f.toSlashInvariantForm, f.holo', ?_⟩, hf⟩` and prove the remaining obligations. Introduce `c hc`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`. Rewrite using `[OnePoint.isZeroAt_iff_forall_SL2Z hc]`.
+
+Introduce `γ _`. Conclude with `hall γ`.
+-/
 theorem GlobalTheory.EisM.cuspForm_of_CF : ∀ (k L N : ℕ) (ε : DirichletCharacter ℂ N) (a : ℕ → ℂ), 1 ≤ k → 0 < L → N ∣ L →
     CF k L (ch ε) a → ∃ f : CuspForm (Gamma1 L) (k : ℤ), ⇑f = qs a := by
   intro k L N ε a hk hL hNL hcf

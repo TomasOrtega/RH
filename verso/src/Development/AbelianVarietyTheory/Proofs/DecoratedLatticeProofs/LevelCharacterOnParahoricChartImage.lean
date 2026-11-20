@@ -34,6 +34,53 @@ namespace GlobalTheory.ChartChi
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D c w hw j hj s hs PP hPP v φ hφ ι hι ξl hξ y hy d hd`. Establish `hlev` using `(GlobalTheory.chart_level_iff D c w hw j hj s hs PP hPP v φ hφ ι hι y).2 hy`. Take `⟨hr, hL, hfl⟩` from `hs`. Take `⟨e, he⟩` from `GlobalTheory.ChartSplitIso.exists_equiv_emb D s j v φ ι hfl.selfDual hfl.frame hι`. Establish `hv : v = PP.under (𝓞 D.host.F)` using `(GlobalTheory.PlaceProjAt.under_resCard D v φ PP hφ).1`.
+
+Take `⟨ε, hε, hch⟩` from `hι`. Rewrite `hlev` using `[Lev.levG, Lev.mem_levA, hL]`. Establish `hmem` using `hlev.2`. Rewrite `hmem` using `[mem_lev, mem_parLev]`. Take `⟨⟨-, hS, -, hQ⟩, -⟩` from `hmem`.
+
+Establish `hPc : PP ∈ c.Pg` using `by classical`. Rewrite using `[hw.union]`. Conclude with `Finset.mem_union_right _ hPP`. Establish `hone : ∀ PP', PP' ∈ c.Pg → PP' ≠ PP → redFn s.β PP' (Lev.finE s.V (ι y)) = 1`. Introduce `PP' hP' hne`.
+
+Use `GlobalTheory.ChainOnto.RedOne.redFn_eq_one D s.V s.β _ PP' hS ?_` and prove the remaining obligations. Establish `hu : PP'.under (𝓞 D.host.F) ≠ v`. Introduce `h`. Conclude with `hne (GlobalTheory.LevelPlaces.injOn_under D c hw.com hP' hPc (h.trans hv))`. Rewrite using `[he y]`.
+
+Conclude with `GlobalTheory.AdelicU.proj_emb_ne _ _ hu _`. Establish `hsub : ∀ PP', PP' ∈ w.Pg ∨ PP' ∈ w.Q → PP' ∈ c.Pg` using `by classical`. Introduce `PP' h`. Rewrite using `[hw.union]`. Conclude with `Finset.mem_union.2 h`.
+
+Rewrite using `[Lev.levChi, hL]`. Use `set L := Lev.datY s.V.rank D.R.r D.R.t j hr w.Pg w.Q (LevelP.triv w.Pg D.R.r ℂ) w.chi w.ξ Lev.Frm.B with hLd`. Establish `hLxq : L.xq = fun PP => (w.ξ PP)⁻¹` using `by rw [hLd]; simp [Lev.datY]`. Establish `hLPg : L.Pg = w.Pg` using `rfl`. Establish `hLQ : L.Q = w.Q` using `rfl`.
+
+Establish `hLr : L.r = D.R.r` using `rfl`. Use `set x := Lev.finE s.V (ι y) with hx`. Establish `h1 : ext1 L.P.H (⇑L.P.chi) (rTup s.β L x) = 1` using `Lev.subgroupCharExtension_one_apply (LevelP.triv w.Pg D.R.r ℂ).H _`. Establish `h2 : ∏ PP ∈ L.Pg, ∏ c ∈ Finset.range L.s, (L.cg (c + 1) PP) (dBlk (blkOf L.r L.t) (c + 1) (redFn s.β PP x)) = 1`. Use `Finset.prod_eq_one fun PP' hP' => Finset.prod_eq_one fun c' _ => ?_` and prove the remaining obligations.
+
+Establish `hne : PP' ≠ PP`. Introduce and unpack `rfl`. Conclude with `Finset.disjoint_left.1 hw.disj hP' hPP`. Rewrite using `[hone PP' (hsub _ (Or.inl hP')) hne, dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]`. Establish `h3 : ∏ PP ∈ L.Q, (L.xq PP) (dBlk (blk2 L.r) 1 (redFn s.β PP x)) = (L.xq PP) (dBlk (blk2 L.r) 1 (redFn s.β PP x))`.
+
+Use `Finset.prod_eq_single PP (fun PP' hP' hne => ?_) (fun h => absurd hPP h)` and prove the remaining obligations. Rewrite using `[hone PP' (hsub _ (Or.inr hP')) hne, dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]`. Unfold `levFn`. Rewrite using `[h1, h2, h3, one_mul, one_mul, hLxq]`. Take `⟨⟨rr, -, -, hrel, hN⟩, -⟩` from `GlobalTheory.PlaceRed.red_dict D v φ PP hφ`.
+
+Establish `hQP : redFn s.β PP x ∈ blockTri (blk2 D.R.r)` using `hQ PP hPP`. Take `⟨Y, hY⟩` from `hS`. Use `set G := (grpCo φ s.V (frCo φ s.β) (ι y)).val with hG`. Establish `hi : intGL D.host.F D.host.E _ Y = s.β⁻¹ * x * s.β`. Rewrite using `[← hY]`.
+
+Simplify using `[frGL, MulAut.conj_apply]`. Use `group`. Establish `hxm : Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) x = Matrix.GeneralLinearGroup.map (rdA φ) (Formalism.L2.Theta.matHom s.V (ι y))`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `show GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ (x.val i j) = rdA φ ((Formalism.L2.Theta.matHom s.V (ι y)).val i j)`.
+
+Conclude with `GlobalTheory.SplitProjChart.rdE_toEAf φ _`. Establish `hm : Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) (s.β⁻¹ * x * s.β) = grpCo φ s.V (frCo φ s.β) (ι y)`. Rewrite using `[MonoidHom.map_mul, MonoidHom.map_mul, MonoidHom.map_inv, hxm]`. Both sides reduce to the same expression. Establish `key : ∀ a b, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ ((Y.val a b : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D) = G a b`.
+
+Introduce `a b`. Rewrite using `[hG, ← hm, ← hi]`. Both sides reduce to the same expression. Establish `hint : ∀ a b, G a b ∈ v.adicCompletionIntegers D.host.F` using `fun a b => key a b ▸ (hN _ (Y.val a b).2).1`. Establish `hred : ∀ a b, rr ⟨G a b, hint a b⟩ = (redFn s.β PP x).val a b`.
+
+Introduce `a b`. Take `⟨h, hh⟩` from `hN _ (Y.val a b).2`. Rewrite using `[← hY, redFn_frGL]`. Establish `e : (⟨G a b, hint a b⟩ : v.adicCompletionIntegers D.host.F) = ⟨GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ (Y.val a b : Lev.EAf D), h⟩` using `Subtype.ext (key a b).symm`. Rewrite using `[e, hh]`.
+
+Both sides reduce to the same expression. Establish `hT : ∀ i : Blocks j D.R.t, blk2 D.R.r (ε (.inr i)) = 1`. Introduce `i`. Use `GlobalTheory.ChartLevel.eps_inr_ge ε hε i` as an intermediate fact. Simplify using `[blk2, not_lt.2 this]`.
+
+Set `f : Blocks j D.R.t → {a : Fin s.V.rank // blk2 D.R.r a = 1}` to `fun i => ⟨ε (.inr i), hT i⟩`. Establish `hfb : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `i i' h`. Use `congrArg Subtype.val h` as an intermediate fact.
+
+Conclude with `Sum.inr_injective (ε.injective this)`. Introduce and unpack `⟨a, ha⟩`. Take `⟨p, rfl⟩` from `ε.surjective a`. Break down `p with p | p` into its components or cases. It suffices to derive a contradiction.
+
+Establish `hp : ((ε (.inl p) : Fin s.V.rank) : ℕ) < D.R.r` using `by rw [hε]; exact p.2`. Simplify using `[blk2, hp] at ha`. Conclude with `⟨p, rfl⟩`. Set `ef` to `Equiv.ofBijective f hfb`. Set `Gi : Matrix (Fin s.V.rank) (Fin s.V.rank) (v.adicCompletionIntegers D.host.F)` to `fun a b => ⟨G a b, hint a b⟩`.
+
+Set `A : Matrix {a : Fin s.V.rank // blk2 D.R.r a = 1} {a : Fin s.V.rank // blk2 D.R.r a = 1} (v.adicCompletionIntegers D.host.F)` to `Gi.submatrix Subtype.val Subtype.val`. Establish `hdA : (d : Fv D.host.F v) = ((A.det : v.adicCompletionIntegers D.host.F) : Fv D.host.F v)`. Rewrite using `[hd]`. Establish `e1 : ((A.det : v.adicCompletionIntegers D.host.F) : Fv D.host.F v) = (G.submatrix (Subtype.val : {a : Fin s.V.rank // blk2 D.R.r a = 1} → Fin s.V.rank) (Subtype.val : {a : Fin s.V.rank // blk2 D.R.r a = 1} → Fin s.V.rank)).det`. Rewrite using `[show ((A.det : v.adicCompletionIntegers D.host.F) : Fv D.host.F v) = (v.adicCompletionIntegers D.host.F).subtype A.det from rfl, RingHom.map_det]`.
+
+Use `congr 1`. Rewrite using `[e1, ← Matrix.det_submatrix_equiv_self ef]`. Use `congr 1`. Use `Matrix.ext fun i i' => ?_` and prove the remaining obligations. Use `congrFun (congrFun (hch y).2 (.inr i)) (.inr i')` as an intermediate fact.
+
+Conclude with `this.symm`. Establish `hk : ((dBlk (blk2 D.R.r) 1 (redFn s.β PP x) : (kP PP)ˣ) : kP PP) = rr A.det`. Rewrite using `[diag_block_det_val 1 hQP, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`.
+
+Conclude with `(hred a b).symm`. Establish `hrel' : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.RedRel φ PP (d : Fv D.host.F v) ((dBlk (blk2 D.R.r) 1 (redFn s.β PP x) : (kP PP)ˣ) : kP PP)`. Rewrite using `[hrel]`. Use `⟨hdA ▸ A.det.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`.
+
+Use `congr 1`. Conclude with `Subtype.ext hdA`. Establish `hξd` using `hξ d _ hrel'`. Use `show ((((w.ξ PP)⁻¹) (dBlk (blk2 D.R.r) 1 (redFn s.β PP x)) : ℂˣ) : ℂ) = _`. Rewrite using `[MonoidHom.inv_apply, hξd]`.
+-/
 theorem levChi_chart : ∀ (D : D7) (c : Com D) (w : Twist D), w.Is c → ∀ j ≤ D.R.m, ∀ s : PiLocalization₂ D, IsStage c w j s → ∀ PP ∈ w.Q, ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v), IsProjAt φ PP → ∀ ι, IsChart s j φ ι → ∀ ξl, LiftsChar φ PP ξl (w.ξ PP) → ∀ y ∈ parahoric (Fv D.host.F v) (Fin D.R.r) (Blocks j D.R.t), ∀ d : (Fv D.host.F v)ˣ, (d : Fv D.host.F v) = y.1.toBlocks₂₂.det → Lev.levChi s.V s.β s.L (ι y) = (((ξl d)⁻¹ : ℂˣ) : ℂ) := by
   intro D c w hw j hj s hs PP hPP v φ hφ ι hι ξl hξ y hy d hd
   have hlev := (GlobalTheory.chart_level_iff D c w hw j hj s hs PP hPP v φ hφ ι hι y).2 hy

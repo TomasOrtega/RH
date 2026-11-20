@@ -12,6 +12,9 @@ private def psi {K : Type} [Field K] (w : InfinitePlace K) : ℝ →+* w.Complet
   else ((ringEquivComplexOfIsComplex (not_isReal_iff_isComplex.1 hw)).symm : ℂ ≃+* w.Completion).toRingHom.comp
     Complex.ofRealHom
 
+/- English proof (translation)
+Unfold `psi`. Use `split_ifs with hw`. Conclude with `(isometryEquivRealOfIsReal hw).symm.continuous`. Conclude with `(isometryEquivComplexOfIsComplex (not_isReal_iff_isComplex.1 hw)).symm.continuous.comp Complex.continuous_ofReal`.
+-/
 private theorem continuous_psi {K : Type} [Field K] (w : InfinitePlace K) : Continuous (psi w) := by
   unfold psi
   split_ifs with hw
@@ -19,6 +22,9 @@ private theorem continuous_psi {K : Type} [Field K] (w : InfinitePlace K) : Cont
   · exact (isometryEquivComplexOfIsComplex (not_isReal_iff_isComplex.1 hw)).symm.continuous.comp
       Complex.continuous_ofReal
 
+/- English proof (translation)
+Unfold `posRealElem psi`. Use `split_ifs with hw`. Simplify using `[InfinitePlace.mult, hw]`. Simplify using `[InfinitePlace.mult, hw, Real.sqrt_sq hρ.le]`.
+-/
 private theorem posRealElem_eq {K : Type} [Field K] (w : InfinitePlace K) {ρ : ℝ} (hρ : 0 < ρ) :
     posRealElem w (ρ ^ w.mult) = psi w ρ := by
   unfold posRealElem psi
@@ -26,6 +32,9 @@ private theorem posRealElem_eq {K : Type} [Field K] (w : InfinitePlace K) {ρ : 
   · simp [InfinitePlace.mult, hw]
   · simp [InfinitePlace.mult, hw, Real.sqrt_sq hρ.le]
 
+/- English proof (translation)
+Establish `h` using `Rat.denseRange_cast (𝕜 := ℝ) |>.equalizer hf hg (funext fun q => by simp)`. Conclude with `RingHom.ext (congrFun h)`.
+-/
 private theorem real_hom_unique {A : Type} [Field A] [TopologicalSpace A] [T2Space A] (f g : ℝ →+* A)
     (hf : Continuous f) (hg : Continuous g) : f = g := by
   have h := Rat.denseRange_cast (𝕜 := ℝ) |>.equalizer hf hg (funext fun q => by simp)
@@ -33,11 +42,17 @@ private theorem real_hom_unique {A : Type} [Field A] [TopologicalSpace A] [T2Spa
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[← coe_infiniteProj, infiniteProj_posIdele]`. Conclude with `posRealElem_eq w hρ`.
+-/
 private theorem posIdele_fst {K : Type} [Field K] [NumberField K] (ρ : ℝ) (hρ : 0 < ρ) (w : InfinitePlace K) :
     ((posIdele ρ hρ : IdeleGroup K) : NumberField.AdeleRing (𝓞 K) K).1 w = psi w ρ := by
   rw [← coe_infiniteProj, infiniteProj_posIdele]
   exact posRealElem_eq w hρ
 
+/- English proof (translation)
+Establish `hx : ((posIdele ρ hρ : IdeleGroup F) : NumberField.AdeleRing (𝓞 F) F).1 = (RingHom.pi fun v : InfinitePlace F => psi v) ρ` using `funext fun v => posIdele_fst ρ hρ v`. Rewrite using `[hx, posIdele_fst]`. Establish `hc : Continuous (((Pi.evalRingHom (fun w : InfinitePlace E => w.Completion) w).comp (InfinitePlace.infiniteAdeleRingMap (K` using `F) (L := E))).comp (RingHom.pi fun v : InfinitePlace F => psi v)) := (continuous_apply w).comp (InfinitePlace.continuous_infiniteAdeleRingMap.comp (continuous_pi fun v => continuous_psi v))`. Conclude with `congrArg (fun f : ℝ →+* w.Completion => f ρ) (real_hom_unique _ (psi w) hc (continuous_psi w))`.
+-/
 private theorem inf_posIdele (ρ : ℝ) (hρ : 0 < ρ) (w : InfinitePlace E) :
     InfinitePlace.infiniteAdeleRingMap (K := F) (L := E) (((posIdele ρ hρ : IdeleGroup F) : NumberField.AdeleRing (𝓞 F) F).1) w =
       ((posIdele ρ hρ : IdeleGroup E) : NumberField.AdeleRing (𝓞 E) E).1 w := by
@@ -51,10 +66,16 @@ private theorem inf_posIdele (ρ : ℝ) (hρ : 0 < ρ) (w : InfinitePlace E) :
       (continuous_pi fun v => continuous_psi v))
   exact congrArg (fun f : ℝ →+* w.Completion => f ρ) (real_hom_unique _ (psi w) hc (continuous_psi w))
 
+/- English proof (translation)
+The claim follows from `IsDedekindDomain.FiniteAdeleRing.ext K fun v => posIdele_finite ρ hρ v`.
+-/
 private theorem fin_posIdele {K : Type} [Field K] [NumberField K] (ρ : ℝ) (hρ : 0 < ρ) :
     ((posIdele ρ hρ : IdeleGroup K) : NumberField.AdeleRing (𝓞 K) K).2 = 1 :=
   IsDedekindDomain.FiniteAdeleRing.ext K fun v => posIdele_finite ρ hρ v
 
+/- English proof (translation)
+Rewrite using `[AdeleBaseChange.adeleMap_apply]`. Use `Prod.ext (funext fun w => inf_posIdele ρ hρ w) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AdeleBaseChange.finiteAdeleMap F E _ = _`. Rewrite using `[fin_posIdele, fin_posIdele, map_one]`.
+-/
 private theorem adeleMap_posIdele (ρ : ℝ) (hρ : 0 < ρ) :
     AdeleBaseChange.adeleMap F E ((posIdele ρ hρ : IdeleGroup F) : NumberField.AdeleRing (𝓞 F) F) =
       ((posIdele ρ hρ : IdeleGroup E) : NumberField.AdeleRing (𝓞 E) E) := by
@@ -63,6 +84,11 @@ private theorem adeleMap_posIdele (ρ : ℝ) (hρ : 0 < ρ) :
   change AdeleBaseChange.finiteAdeleMap F E _ = _
   rw [fin_posIdele, fin_posIdele, map_one]
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((s ^ Module.finrank F E : {r : ℝ // 0 < r}) : ℝ) ^ ((n * Module.finrank ℚ E : ℝ))⁻¹ = (s : ℝ) ^ ((n * Module.finrank ℚ F : ℝ))⁻¹`. Establish `hk : Module.finrank ℚ F * Module.finrank F E = Module.finrank ℚ E` using `Module.finrank_mul_finrank ℚ F E`. Establish `hk0 : (Module.finrank F E : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hd : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
+
+Establish `hn0 : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Rewrite using `[Positive.val_pow, ← Real.rpow_natCast, ← Real.rpow_mul s.2.le, ← hk]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem exponent (n : ℕ) (hn : 0 < n) (s : {r : ℝ // 0 < r}) :
     rpowHom ((n * Module.finrank ℚ E : ℝ))⁻¹ (s ^ Module.finrank F E) =
       rpowHom ((n * Module.finrank ℚ F : ℝ))⁻¹ s := by
@@ -78,6 +104,13 @@ private theorem exponent (n : ℕ) (hn : 0 < n) (s : {r : ℝ // 0 < r}) :
   push_cast
   field_simp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n s`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `hn : 0 < n` using `i.pos`. Establish `h1 : centralSection E n (s ^ Module.finrank F E) = diagUnits n fun _ => posIdeleHom E (rpowHom ((n * Module.finrank ℚ F : ℝ))⁻¹ s)`. Rewrite using `[centralSection, MonoidHom.comp_apply, MonoidHom.comp_apply, exponent n hn, scalarUnits_apply]`.
+
+Establish `h2 : centralSection F n s = diagUnits n fun _ => posIdeleHom F (rpowHom ((n * Module.finrank ℚ F : ℝ))⁻¹ s)`. Rewrite using `[centralSection, MonoidHom.comp_apply, MonoidHom.comp_apply, scalarUnits_apply]`. Rewrite using `[h1, h2, coe_diagUnits]`. Express the relevant statement in the definitionally equal form `AdeleBaseChange.adeleMap F E (((diagUnits n fun _ => posIdeleHom F _ : AdelicGLn.AdelicGL F n)).val i j) = _`. Rewrite using `[coe_diagUnits]`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, posIdeleHom_apply, posIdeleHom_apply]`. Conclude with `adeleMap_posIdele _ _`. Rewrite using `[Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ h, map_zero]`.
+-/
 theorem UpperTheory.centralSection_baseChange :
     CentBC := by
   intro F E _ _ _ _ _ n s

@@ -38,14 +38,26 @@ def dmap {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) : DualNumber A 
   map_zero' := by ext <;> simp
   map_add' := by intro x y; ext <;> simp <;> ring
 
+/- English proof (translation)
+Simplify using `[dmap]`.
+-/
 @[simp] theorem dmap_fst {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (z : DualNumber A) :
     (dmap φ z).fst = φ z.fst := by simp [dmap]
 
+/- English proof (translation)
+Simplify using `[dmap]`.
+-/
 @[simp] theorem dmap_snd {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (z : DualNumber A) :
     (dmap φ z).snd = φ z.snd := by simp [dmap]
 
+/- English proof (translation)
+Simplify using `[mergeHom]`.
+-/
 @[simp] theorem mergeHom_fst (z : R2 S) : (mergeHom S z).fst = z.fst.fst := by simp [mergeHom]
 
+/- English proof (translation)
+Simplify using `[mergeHom]`.
+-/
 @[simp] theorem mergeHom_snd (z : R2 S) : (mergeHom S z).snd = z.fst.snd + z.snd.fst := by simp [mergeHom]
 
 def ovHom {X : Scheme.{0}} (x : Sp S ⟶ X) {A B : Type} [CommRing A] [CommRing B] (a : S →+* A) (b : S →+* B)
@@ -54,6 +66,9 @@ def ovHom {X : Scheme.{0}} (x : Sp S ⟶ X) {A B : Type} [CommRing A] [CommRing 
     change spMap φ ≫ spMap a ≫ x = spMap b ≫ x
     rw [← Category.assoc, ← spMap_comp_eq, h])
 
+/- English proof (translation)
+Rewrite using `[← spMap_comp_eq, h]`. Use `show Spec.map (CommRingCat.ofHom (RingHom.id B)) = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`.
+-/
 theorem spMap_comp_eq_id {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (ψ : B →+* A)
     (h : φ.comp ψ = RingHom.id B) : spMap φ ≫ spMap ψ = 𝟙 _ := by
   rw [← spMap_comp_eq, h]
@@ -68,6 +83,29 @@ open GlobalTheory.VertSpanZero
 
 variable {S : Type} [CommRing S]
 
+/- English proof (translation)
+Set `x` to `g ≫ G.hom`. Set `α` to `algebraMap S (DualNumber S)`. Set `i₁ : DualNumber S →+* R2 S` to `TrivSqZeroExt.inlHom (DualNumber S) (DualNumber S)`. Set `i₂ : DualNumber S →+* R2 S` to `dmap α`. Set `j : S →+* R2 S` to `i₁.comp α`.
+
+Set `fs : DualNumber S →+* S` to `(TrivSqZeroExt.fstHom S S S).toRingHom`. Set `r₁ : R2 S →+* DualNumber S` to `(TrivSqZeroExt.fstHom (DualNumber S) (DualNumber S) (DualNumber S)).toRingHom`. Set `r₂ : R2 S →+* DualNumber S` to `dmap fs`. Apply the tactic sequence `have hi₂ : i₂.comp α = j := by ext s <;> simp [i₂, i₁, j, α, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `have hm : (mergeHom S).comp j = α := by ext s <;> simp [i₁, j, α, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Apply the tactic sequence `have hr₁ : r₁.comp j = α := by ext s <;> simp [r₁, i₁, j, α, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `have hr₂ : r₂.comp j = α := by ext s <;> simp [r₂, fs, i₁, j, α, TrivSqZeroExt.algebraMap_eq_inl]`. Set `K₁ : Over.mk (spMap j ≫ x) ⟶ tEpsG x` to `ovHom x α j i₁ rfl`. Set `K₂ : Over.mk (spMap j ≫ x) ⟶ tEpsG x` to `ovHom x α j i₂ hi₂`. Set `M : tEpsG x ⟶ Over.mk (spMap j ≫ x)` to `ovHom x j α (mergeHom S) hm`.
+
+Set `R₁ : tEpsG x ⟶ Over.mk (spMap j ≫ x)` to `ovHom x j α r₁ hr₁`. Set `R₂ : tEpsG x ⟶ Over.mk (spMap j ≫ x)` to `ovHom x j α r₂ hr₂`. Set `C : Over.mk (spMap j ≫ x) ⟶ G` to `Over.homMk (spMap j ≫ g) (Category.assoc _ _ _)`. Set `φ : tEpsG x ⟶ Over.mk x` to `Over.homMk (spMap α) rfl`. Set `P : Over.mk (spMap j ≫ x) ⟶ G` to `C * ((K₁ ≫ p) * (K₂ ≫ q))`.
+
+Establish `hC : ∀ (ρ : R2 S →+* DualNumber S) (h : ρ.comp j = α), ovHom x j α ρ h ≫ C = g'` using `fun ρ h => Over.OverMorphism.ext (by`. Express the relevant statement in the definitionally equal form `spMap ρ ≫ spMap j ≫ g = g'.left`. Rewrite using `[hg', ← Category.assoc, ← spMap_comp_eq, h])`. Establish `hid : ∀ (ρ : R2 S →+* DualNumber S) (h : ρ.comp j = α) (κ : DualNumber S →+* R2 S) (h' : κ.comp α = j), ρ.comp κ = RingHom.id _ → ovHom x j α ρ h ≫ ovHom x α j κ h' = 𝟙 _` using `fun ρ h κ h' e => Over.OverMorphism.ext (by`. Express the relevant statement in the definitionally equal form `spMap ρ ≫ spMap κ = 𝟙 _`.
+
+Conclude with `spMap_comp_eq_id ρ κ e)`. Establish `hred : ∀ (ρ : R2 S →+* DualNumber S) (h : ρ.comp j = α) (κ : DualNumber S →+* R2 S) (h' : κ.comp α = j), ρ.comp κ = α.comp fs → ovHom x j α ρ h ≫ ovHom x α j κ h' = φ ≫ redOver x` using `fun ρ h κ h' e => Over.OverMorphism.ext (by`. Express the relevant statement in the definitionally equal form `spMap ρ ≫ spMap κ = spMap α ≫ spMap fs`. Rewrite using `[← spMap_comp_eq, ← spMap_comp_eq, e])`. Apply the tactic sequence `have hMK₁ : M ≫ K₁ = 𝟙 _ := hid _ hm _ rfl (by ext s <;> simp [i₁])`.
+
+Apply the tactic sequence `have hMK₂ : M ≫ K₂ = 𝟙 _ := hid _ hm _ hi₂ (by ext s <;> simp [i₂, α, TrivSqZeroExt.algebraMap_eq_inl])`. Apply the tactic sequence `have hR₁K₁ : R₁ ≫ K₁ = 𝟙 _ := hid _ hr₁ _ rfl (by ext s <;> simp [r₁, i₁])`. Apply the tactic sequence `have hR₁K₂ : R₁ ≫ K₂ = φ ≫ redOver x := hred _ hr₁ _ hi₂ (by ext s <;> simp [r₁, i₂, fs, α, TrivSqZeroExt.algebraMap_eq_inl])`. Apply the tactic sequence `have hR₂K₁ : R₂ ≫ K₁ = φ ≫ redOver x := hred _ hr₂ _ rfl (by ext s <;> simp [r₂, i₁, fs, α, TrivSqZeroExt.algebraMap_eq_inl])`. Apply the tactic sequence `have hR₂K₂ : R₂ ≫ K₂ = 𝟙 _ := hid _ hr₂ _ hi₂ (by ext s <;> simp [r₂, i₂, fs, α, TrivSqZeroExt.algebraMap_eq_inl])`.
+
+Establish `eM : M ≫ P = g' * (p * q)`. Simplify using `only [P, comp_mul]`. Rewrite using `[hC, ← Category.assoc M K₁, ← Category.assoc M K₂, hMK₁, hMK₂, Category.id_comp, Category.id_comp]`. Establish `e1 : R₁ ≫ P = g' * p`. Simplify using `only [P, comp_mul]`.
+
+Rewrite using `[hC, ← Category.assoc R₁ K₁, ← Category.assoc R₁ K₂, hR₁K₁, hR₁K₂, Category.id_comp, Category.assoc, hq, comp_one, _root_.mul_one]`. Establish `e2 : R₂ ≫ P = g' * q`. Simplify using `only [P, comp_mul]`. Rewrite using `[hC, ← Category.assoc R₂ K₁, ← Category.assoc R₂ K₂, hR₂K₁, hR₂K₂, Category.id_comp, Category.assoc, hp, comp_one, _root_.one_mul]`. Establish `hgp : spMap fs ≫ (g' * p).left = g`.
+
+Express the relevant statement in the definitionally equal form `(redOver x ≫ (g' * p)).left = g`. Rewrite using `[comp_mul, hp, _root_.mul_one]`. Express the relevant statement in the definitionally equal form `spMap fs ≫ g'.left = g`. Rewrite using `[hg', ← Category.assoc, spMap_fst_algebraMap, Category.id_comp]`. Establish `hP1 : spMap r₁ ≫ P.left = (g' * p).left` using `by rw [← e1]; rfl`.
+
+Establish `hPO : ⊤ ≤ P.left ⁻¹ᵁ O` using `GlobalTheory.CechKS.le_preimage_of_red hP1 (GlobalTheory.CechKS.le_preimage_of_red hgp hO)`. Rewrite using `[← eM, ← e1, ← e2]`. Express the relevant statement in the definitionally equal form `(valR (spMap (mergeHom S) ≫ P.left) O f).snd = (valR (spMap r₁ ≫ P.left) O f).snd + (valR (spMap r₂ ≫ P.left) O f).snd`. Rewrite using `[GlobalTheory.Points.valR_spMap_comp _ _ _ hPO f, GlobalTheory.Points.valR_spMap_comp _ _ _ hPO f, GlobalTheory.Points.valR_spMap_comp _ _ _ hPO f]`. Simplify using `[r₁, r₂, fs]`.
+-/
 theorem snd_valR_mul_mul {X : Scheme.{0}} {G : Over X} [GrpObj G] (g : Sp S ⟶ G.left)
     (g' : tEpsG (g ≫ G.hom) ⟶ G) (hg' : g'.left = spMap (algebraMap S (DualNumber S)) ≫ g)
     (p q : tEpsG (g ≫ G.hom) ⟶ G) (hp : redOver (g ≫ G.hom) ≫ p = 1) (hq : redOver (g ≫ G.hom) ≫ q = 1)
@@ -146,6 +184,13 @@ namespace GlobalTheory.EpsAdd
 
 open GlobalTheory.VertSpanZero
 
+/- English proof (translation)
+Introduce `X G _ S _ g g' hg' n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `u _ O hO f`. Rewrite using `[List.ofFn_zero, List.prod_nil, _root_.mul_one, hg', GlobalTheory.Points.valR_spMap_comp _ _ _ hO f]`.
+
+Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Consider the case `succ n ih`. Introduce `u hu O hO f`. Establish `hu' : ∀ a, redOver (g ≫ G.hom) ≫ u a = 1` using `fun a => Over.OverMorphism.ext (hu a)`. Establish `hrest : redOver (g ≫ G.hom) ≫ (List.ofFn fun i : Fin n => u i.succ).prod = 1`.
+
+Use `redOver_comp_prod _ _ fun w hw => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(List.mem_ofFn' _ w).1 hw`. Conclude with `hu' _`. Rewrite using `[List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ, snd_valR_mul_mul g g' hg' _ _ (hu' 0) hrest O hO f, ih (fun i => u i.succ) (fun a => hu _) O hO f]`.
+-/
 theorem snd_valR_mul_prod : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (S : Type) [CommRing S] (g : Sp S ⟶ G.left)
     (g' : tEpsG (g ≫ G.hom) ⟶ G), g'.left = spMap (algebraMap S (DualNumber S)) ≫ g →
     ∀ (n : ℕ) (u : Fin n → (tEpsG (g ≫ G.hom) ⟶ G)),

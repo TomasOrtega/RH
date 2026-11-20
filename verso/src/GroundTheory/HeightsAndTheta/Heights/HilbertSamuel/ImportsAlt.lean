@@ -10,6 +10,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `S _ K _ _ ι _ _ V N hS hH M _ _ _ _ 𝓜 hfin hgr hV e`. Take `⟨c₂, hc₂⟩` from `hH M 𝓜 hfin hgr hV e`. Take `⟨c₃, hc₃⟩` from `hC S K ι V M 𝓜 (fun c => e + c • N) hS hgr hV (fun P hP _ => hU S K ι V N hS hH M 𝓜 hfin hgr hV e P hP)`. Conclude with `⟨max c₂ c₃, fun c hc => ⟨hc₂ c (le_of_max_le_left hc), hc₃ c (le_of_max_le_right hc)⟩⟩`.
+-/
 theorem GenerationOfH1Vanishing.proof (hU : ClosedPtGenUniform.Statement) (hC : GenNearCover.Statement) :
     GenerationOfH1Vanishing.Statement := by
   intro S _ K _ _ ι _ _ V N hS hH M _ _ _ _ 𝓜 hfin hgr hV e

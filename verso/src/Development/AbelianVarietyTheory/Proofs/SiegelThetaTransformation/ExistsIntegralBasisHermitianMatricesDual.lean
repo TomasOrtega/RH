@@ -11,12 +11,31 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+The claim follows from `map_add _ _ _`.
+-/
 theorem cc_add (x y : E) : cc (x + y) = cc x + cc y := map_add _ _ _
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 theorem cc_zero : cc (0 : E) = 0 := map_zero _
+/- English proof (translation)
+The claim follows from `IsCMField.complexConj_apply_apply E x`.
+-/
 theorem cc_cc (x : E) : cc (cc x) = x := IsCMField.complexConj_apply_apply E x
+/- English proof (translation)
+The claim follows from `map_rat_smul (IsCMField.complexConj E) q x`.
+-/
 theorem cc_smul (q : ℚ) (x : E) : cc (q • x) = q • cc x :=
   map_rat_smul (IsCMField.complexConj E) q x
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_coe_sort Ψ (fun τ => g τ + g (ComplexEmbedding.conjugate τ)), Finset.sum_add_distrib, ← Finset.sum_add_sum_compl Ψ]`. Use `congr 1`. Use `symm`. Use `Finset.sum_bij' (fun τ _ => ComplexEmbedding.conjugate τ) (fun τ _ => ComplexEmbedding.conjugate τ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`.
+
+Conclude with `Finset.mem_compl.2 ((hΨ τ).1 hτ)`. Introduce `τ hτ`. Assume the negation of the conclusion as `hc`. Conclude with `Finset.mem_compl.1 hτ ((hΨ τ).2 hc)`. Introduce `τ _`.
+
+Conclude with `star_star τ`. Introduce `τ _`. Conclude with `star_star τ`. Introduce `τ _`. Both sides reduce to the same expression.
+-/
 theorem sum_univ {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) (g : (E →+* ℂ) → ℂ) :
     ∑ σ, g σ = ∑ τ : Ψ, (g τ + g (ComplexEmbedding.conjugate τ.1)) := by
   rw [Finset.sum_coe_sort Ψ (fun τ => g τ + g (ComplexEmbedding.conjugate τ)),
@@ -33,6 +52,13 @@ theorem sum_univ {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) (g : (E →+* ℂ
   · intro τ _; exact star_star τ
   · intro τ _; rfl
 
+/- English proof (translation)
+Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := x)`. Establish `h2 : ∑ σ : E →ₐ[ℚ] ℂ, σ x = ∑ σ : E →+* ℂ, σ x` using `(Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) _ _ (fun _ => rfl)).symm`. Rewrite `h` using `[h2, sum_univ hΨ]`. Establish `h3 : ∀ τ : Ψ, ComplexEmbedding.conjugate τ.1 x = τ.1 x` using `fun τ => by`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← Base.map_cc, hx]`.
+
+Simplify using `only [h3, ← two_mul, ← Finset.mul_sum] at h`. Establish `h4 : algebraMap ℚ ℂ (Algebra.trace ℚ E x) = ((Algebra.trace ℚ E x : ℚ) : ℂ)` using `rfl`. Rewrite `h` using `[h4]`. Use `push_cast`. Rewrite using `[h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem half_trace {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {x : E} (hx : cc x = x) :
     (((1 / 2 : ℚ) * Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ τ : Ψ, τ.1 x := by
   have h := trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := x)
@@ -47,6 +73,15 @@ theorem half_trace {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {x : E} (hx : c
   push_cast
   rw [h]; ring
 
+/- English proof (translation)
+Set `f : Ψ ⊕ Ψ → (E →* ℂ)` to `Sum.elim (fun τ => (τ.1 : E →* ℂ)) (fun τ => (ComplexEmbedding.conjugate τ.1 : E →* ℂ))`. Establish `inj : ∀ a b : E →+* ℂ, (a : E →* ℂ) = (b : E →* ℂ) → a = b` using `fun a b e => RingHom.ext fun x => DFunLike.congr_fun e x`. Establish `hf : Function.Injective f`. Introduce and unpack `(a | a) (b | b) e`. Rewrite using `[Subtype.ext (inj _ _ e)]`.
+
+Conclude with `absurd ((inj _ _ e) ▸ a.2) ((hΨ b.1).1 b.2)`. Conclude with `absurd ((inj _ _ e).symm ▸ b.2) ((hΨ a.1).1 a.2)`. Use `congrArg ComplexEmbedding.conjugate (inj _ _ e)` as an intermediate fact. Establish `e2 : a.1 = b.1` using `(star_star a.1).symm.trans (this.trans (star_star b.1))`. Rewrite using `[Subtype.ext e2]`.
+
+Establish `li` using `(linearIndependent_monoidHom E ℂ).comp f hf`. Use `Fintype.linearIndependent_iff.1 li (Sum.elim u v) (by` as an intermediate fact. Use function extensionality and compare the values at `x`. Use `h x` as an intermediate fact. Rewrite `this` using `[Finset.sum_add_distrib]`.
+
+Simplify `this)` using `[f, Fintype.sum_sum_type, Finset.sum_apply, mul_comm]`. Use function extensionality and compare the values at `τ`. Conclude with `this (Sum.inl τ)`.
+-/
 theorem indep {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) (u v : Ψ → ℂ)
     (h : ∀ x : E, ∑ τ : Ψ, (τ.1 x * u τ + conj (τ.1 x) * v τ) = 0) : u = 0 := by
   let f : Ψ ⊕ Ψ → (E →* ℂ) := Sum.elim (fun τ => (τ.1 : E →* ℂ))
@@ -88,9 +123,15 @@ def HermSub (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) :
     simp only [ccT, transpose_apply, map_apply, Matrix.smul_apply] at h1 ⊢
     rw [cc_smul, h1]
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, diag_apply, ccT, transpose_apply, map_apply, cc, map_sum]`.
+-/
 theorem cc_trace {N : ℕ} (X : Matrix (Fin N) (Fin N) E) : cc X.trace = (ccT X).trace := by
   simp only [Matrix.trace, diag_apply, ccT, transpose_apply, map_apply, cc, map_sum]
 
+/- English proof (translation)
+Establish `hX : ccT X.1 = X.1` using `X.2`. Establish `hY : ccT Y.1 = Y.1` using `Y.2`. Rewrite using `[cc_trace, Base.ccT_mul, hX, hY, trace_mul_comm]`.
+-/
 theorem cc_trace_mul {N : ℕ} (X Y : HermSub E N) : cc (X.1 * Y.1).trace = (X.1 * Y.1).trace := by
   have hX : ccT X.1 = X.1 := X.2
   have hY : ccT Y.1 = Y.1 := Y.2
@@ -104,10 +145,24 @@ def form (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) :
     (fun X Y Y' => by simp [mul_add])
     (fun q X Y => by simp [mul_left_comm])
 
+/- English proof (translation)
+The claim follows from `half_trace hΨ (cc_trace_mul X Y)`.
+-/
 theorem form_eq {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {N : ℕ} (X Y : HermSub E N) :
     ((form E N X Y : ℚ) : ℂ) = ∑ τ : Ψ, τ.1 (X.1 * Y.1).trace :=
   half_trace hΨ (cc_trace_mul X Y)
 
+/- English proof (translation)
+Establish `h1` using `form_eq hΨ X X`. Rewrite `h1` using `[h]`. Establish `hX : ccT X.1 = X.1` using `X.2`. Establish `h2 : ∀ τ : Ψ, τ.1 (X.1 * X.1).trace = ((∑ a, ∑ b, normSq (τ.1 (X.1 a b)) : ℝ) : ℂ)` using `fun τ => by`. Simplify using `only [Matrix.trace, diag_apply, mul_apply, map_sum, map_mul]`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h3 : cc (X.1 a b) = X.1 b a` using `congrFun (congrFun hX b) a`. Rewrite using `[← h3, Base.map_cc, Complex.mul_conj]`. Simplify using `only [h2] at h1`.
+
+Establish `h4 : ∑ τ : Ψ, ∑ a, ∑ b, normSq (τ.1 (X.1 a b)) = 0` using `by exact_mod_cast h1.symm`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty Ψ := by`. Take `⟨σ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `hσ : σ ∈ Ψ`. Conclude with `⟨⟨σ, hσ⟩⟩`.
+
+Conclude with `⟨⟨ComplexEmbedding.conjugate σ, by`. Assume the negation of the conclusion as `hc`. Conclude with `hσ ((hΨ σ).2 hc)⟩⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`.
+
+Establish `n0 : ∀ (τ : Ψ) a b, 0 ≤ normSq (τ.1 (X.1 a b))` using `fun _ _ _ => normSq_nonneg _`. Establish `h5` using `(Finset.sum_eq_zero_iff_of_nonneg fun τ _ => Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => n0 τ a b).1 h4 τ (Finset.mem_univ _)`. Establish `h6` using `(Finset.sum_eq_zero_iff_of_nonneg fun a _ => Finset.sum_nonneg fun b _ => n0 τ a b).1 h5 a (Finset.mem_univ _)`. Establish `h7` using `(Finset.sum_eq_zero_iff_of_nonneg fun b _ => n0 τ a b).1 h6 b (Finset.mem_univ _)`. Simplify using `using h7`.
+-/
 theorem form_self {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {N : ℕ} (X : HermSub E N)
     (h : form E N X X = 0) : X = 0 := by
   have h1 := form_eq hΨ X X
@@ -138,12 +193,24 @@ theorem form_self {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {N : ℕ} (X : H
   have h7 := (Finset.sum_eq_zero_iff_of_nonneg fun b _ => n0 τ a b).1 h6 b (Finset.mem_univ _)
   simpa using h7
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun X hX => form_self hΨ X (hX X), fun X hX => form_self hΨ X (hX X)⟩`.
+-/
 theorem form_nondeg {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) (N : ℕ) :
     (form E N).Nondegenerate :=
   ⟨fun X hX => form_self hΨ X (hX X), fun X hX => form_self hΨ X (hX X)⟩
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `h : ∀ p : ι × Fin N × Fin N, ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * X p.1 p.2.1 p.2.2)`. Introduce `p`. Establish `ha : IsAlgebraic ℤ (X p.1 p.2.1 p.2.2)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨d, hd, hi⟩` from `ha.exists_integral_multiple`. Use `⟨d.natAbs, Int.natAbs_pos.2 hd, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hi` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq d with e | e` into its components or cases. Rewrite `hi` using `[e]`. Simplify using `using hi`. Rewrite `hi` using `[e]`.
+
+Simplify using `using hi.neg`. Use `choose d hd hi using h`. Use `⟨∏ p, d p, Finset.prod_pos fun p _ => hd p, fun i a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (i, a, b)), Matrix.smul_apply, smul_eq_mul, Nat.cast_mul, mul_assoc]`. Use `IsIntegral.mul ?_ (hi (i, a, b))` and prove the remaining obligations.
+
+Simplify using `using isIntegral_algebraMap (R := ℤ) (A := E) (x := ((∏ p ∈ Finset.univ.erase (i, a, b), d p : ℕ) : ℤ))`.
+-/
 theorem exists_den {ι : Type} [Fintype ι] {N : ℕ} (X : ι → Matrix (Fin N) (Fin N) E) :
     ∃ c : ℕ, 0 < c ∧ ∀ i, IntM ((c : E) • X i) := by
   have h : ∀ p : ι × Fin N × Fin N, ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * X p.1 p.2.1 p.2.2) := by
@@ -164,6 +231,19 @@ theorem exists_den {ι : Type} [Fintype ι] {N : ℕ} (X : ι → Matrix (Fin N)
   simpa using isIntegral_algebraMap (R := ℤ) (A := E)
     (x := ((∏ p ∈ Finset.univ.erase (i, a, b), d p : ℕ) : ℤ))
 
+/- English proof (translation)
+Establish `key : ∀ (τ : Ψ) (a b : Fin N), L (Pi.single τ (Matrix.single a b 1)) = 0`. Introduce `τ a b`. Use `indep hΨ (fun τ => L (Pi.single τ (Matrix.single a b 1))) (fun τ => L (Pi.single τ (Matrix.single b a 1))) (fun x => by` as an intermediate fact. Establish `hm : Matrix.single a b x + Matrix.single b a (cc x) ∈ HermSub E N` using `by show ccT _ = _`. Use extensionality with `k l`.
+
+Simplify using `only [ccT, transpose_apply, map_apply, Matrix.add_apply, Matrix.single_apply, cc_add, apply_ite cc, cc_cc, cc_zero, and_comm]`. Rewrite using `[add_comm]`. Rewrite using `[← h ⟨_, hm⟩]`. Simplify using `only [← smul_eq_mul, ← map_smul, ← map_add, ← map_sum]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `σ`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single σ]`. Use extensionality with `k l`. Simplify using `[Matrix.single_apply, apply_ite σ.1, Base.map_cc]`. Introduce `τ _ hτ`.
+
+Simplify using `[Pi.single_eq_of_ne hτ.symm]`. Use the proof step `simp)`. Conclude with `congrFun this τ`. Use `LinearMap.pi_ext fun τ Z => ?_` and prove the remaining obligations. Establish `hZ : (Pi.single τ Z : CM Ψ N N) = ∑ a, ∑ b, Z a b • (Pi.single τ (Matrix.single a b 1) : CM Ψ N N)`.
+
+Use function extensionality and compare the values at `σ`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_single, smul_eq_mul, mul_one]`. Conclude with `Matrix.matrix_eq_sum_single Z`.
+
+Simplify using `[Finset.sum_apply, Pi.single_eq_of_ne hσ]`. Rewrite using `[hZ]`. Simplify using `only [map_sum, map_smul, key, smul_zero, Finset.sum_const_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem functional_eq_zero {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {N : ℕ}
     (L : CM Ψ N N →ₗ[ℂ] ℂ) (h : ∀ X : HermSub E N, L (fun τ => X.1.map τ.1) = 0) : L = 0 := by
   have key : ∀ (τ : Ψ) (a b : Fin N), L (Pi.single τ (Matrix.single a b 1)) = 0 := by
@@ -201,6 +281,25 @@ theorem functional_eq_zero {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {N : �
   simp only [map_sum, map_smul, key, smul_zero, Finset.sum_const_zero]
   simp
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ hΨ N R hR`. Set `b₀` to `Module.finBasis ℚ (HermSub E N)`. Take `⟨d, hd, hdi⟩` from `exists_den (fun i => (b₀ i).1)`. Establish `hu : ((R : ℚ) * d) ≠ 0` using `by positivity`. Set `b` to `b₀.unitsSMul (fun _ => Units.mk0 _ hu)`.
+
+Establish `hb : ∀ i, (b i).1 = (R : E) • ((d : E) • (b₀ i).1)` using `fun i => by`. Simplify using `only [b, Module.Basis.unitsSMul_apply, Units.smul_def, Units.val_mk0, Submodule.coe_smul]`. Use extensionality with `k l`. Simplify using `[Rat.smul_def, mul_assoc]`. Set `t` to `(form E N).dualBasis (form_nondeg hΨ N) b`.
+
+Establish `ht : ∀ i j, form E N (t i) (b j) = if i = j then 1 else 0` using `fun i j => by`. Rewrite using `[LinearMap.BilinForm.apply_dualBasis_left]`. Simplify using `only [eq_comm]`. Take `⟨c, hc, hci⟩` from `exists_den (fun i => (t i).1)`. Use `⟨_, fun i => (b i).1, fun i => (t i).1, c, hc, fun i => ⟨(b i).2, (t i).2, hci i, _, hdi i, ?_, hb i⟩, fun i j => ?_, fun Z => ?_⟩` and prove the remaining obligations.
+
+Establish `: (d : E) • (b₀ i).1 = ((d : ℚ) • b₀ i).1`. Use extensionality with `k l`. Simplify using `[Rat.smul_def]`. Rewrite using `[this]`. Conclude with `((d : ℚ) • b₀ i).2`.
+
+Apply the tactic sequence `rw [← form_eq hΨ, ht] split_ifs <;> simp`. Establish `hrep : ∀ (X : HermSub E N) j, b.repr X j = form E N (t j) X` using `fun X j => by conv_rhs => rw [← b.sum_repr X]`. Simplify using `only [map_sum, map_smul, ht, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use function extensionality and compare the values at `τ`. Use extensionality with `k l`.
+
+Set `L : CM Ψ N N →ₗ[ℂ] ℂ` to `{ toFun := fun Z => Z τ k l - (∑ j, (∑ σ : Ψ, (((t j).1).map σ.1 * Z σ).trace) • ((b j).1).map τ.1) k l map_add' := fun Z W => by`. Simplify using `only [Pi.add_apply, Matrix.mul_add, trace_add, Finset.sum_add_distrib, add_smul, Matrix.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun s Z => by`. Simplify using `only [Pi.smul_apply, Matrix.mul_smul, trace_smul, ← Finset.smul_sum, smul_assoc, Matrix.smul_apply, RingHom.id_apply, smul_sub] }`.
+
+Establish `hL : L = 0` using `functional_eq_zero hΨ L fun X => by`. Establish `h1 : ∀ j, (∑ σ : Ψ, (((t j).1).map σ.1 * X.1.map σ.1).trace) = ((b.repr X j : ℚ) : ℂ)` using `fun j => by`. Rewrite using `[hrep, form_eq hΨ]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, AddMonoidHom.map_trace]`.
+
+Use `show τ.1 (X.1 k l) - (∑ j, (∑ σ : Ψ, (((t j).1).map σ.1 * X.1.map σ.1).trace) • ((b j).1).map τ.1) k l = 0`. Simplify using `only [h1]`. Establish `h2 : X.1 = ∑ j, b.repr X j • (b j).1` using `by conv_lhs => rw [← b.sum_repr X]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Rewrite using `[sub_eq_zero]`.
+
+Use `conv_lhs => rw [h2]`. Simplify using `[Matrix.sum_apply, Rat.smul_def]`. Conclude with `sub_eq_zero.1 (LinearMap.congr_fun hL Z)`.
+-/
 theorem exists_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ N R : ℕ, 0 < R → ∃ (m : ℕ) (β T : Fin m → Matrix (Fin N) (Fin N) E) (c : ℕ), 0 < c ∧ (∀ i, ccT (β i) = β i ∧ ccT (T i) = T i ∧ Den c (T i) ∧ ∃ y : Matrix (Fin N) (Fin N) E, IntM y ∧ ccT y = y ∧ β i = (R : E) • y) ∧ (∀ i j, ∑ τ : Ψ, τ.1 (T i * β j).trace = if i = j then 1 else 0) ∧ ∀ Z : CM Ψ N N, Z = fun τ => ∑ j, (∑ σ : Ψ, ((T j).map σ.1 * Z σ).trace) • (β j).map τ.1 := by
   intro E _ _ _ Ψ hΨ N R hR
   let b₀ := Module.finBasis ℚ (HermSub E N)

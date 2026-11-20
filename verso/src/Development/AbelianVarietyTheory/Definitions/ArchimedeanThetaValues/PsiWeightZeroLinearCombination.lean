@@ -12,21 +12,33 @@ section Const
 
 variable {Z Y W : Scheme.{0}} {J J' : Type} [Fintype J] [Fintype J']
 
+/- English proof (translation)
+Apply `eq_top_iff.2` to reduce the goal to its premises. Introduce `x _`. Simplify using `[LB.wchart, Inh.trivLB]`.
+-/
 theorem wchart_triv (φ : J → (Y ⟶ Z)) (j : J → (Inh.trivLB Z).ι) : LB.wchart (Inh.trivLB Z) φ j = ⊤ := by
   apply eq_top_iff.2
   intro x _
   simp [LB.wchart, Inh.trivLB]
 
+/- English proof (translation)
+Unfold `res`. Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem res_self {U : Y.Opens} (h : U ≤ U) (x : Γ(Y, U)ˣ) : res h x = x := by
   unfold res
   ext
   simp
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Unfold `gv at h`. Rewrite `h` using `[res_self, res_self]`. Then use the resulting hypothesis.
+-/
 theorem gv_inj {V : Y.Opens} (hV : V = ⊤) {a b : Γ(Y, ⊤)ˣ} (h : gv a V = gv b V) : a = b := by
   subst hV
   unfold gv at h
   rwa [res_self, res_self] at h
 
+/- English proof (translation)
+Use `ext`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE h2).op).hom ((Y.presheaf.map (homOfLE h1).op).hom (x : Γ(Y, U))) = (Y.presheaf.map (homOfLE (h2.trans h1)).op).hom x`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem res_res_lemma {Y : Scheme.{0}} {U V W : Y.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(Y, U)ˣ) :
     res h2 (res h1 x) = res (h2.trans h1) x := by
   ext
@@ -35,10 +47,16 @@ private theorem res_res_lemma {Y : Scheme.{0}} {U V W : Y.Opens} (h1 : V ≤ U) 
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `wchart_triv φ j`.
+-/
 private theorem linComb_trivLB_U_eq_univ (φ : J → (Y ⟶ Z)) (ε : J → ℤ) (j : ((Inh.trivLB Z).LinComb φ ε).ι) :
     ((Inh.trivLB Z).LinComb φ ε).U j = ⊤ :=
   wchart_triv φ j
 
+/- English proof (translation)
+Take `⟨j0, -⟩ : ∃ j : ((Inh.trivLB Z).LinComb φ ε).ι, True` from `⟨fun _ => PUnit.unit, trivial⟩`. Use `⟨res (linComb_trivLB_U_eq_univ φ ε j0).ge (t.s j0), fun j => ?_⟩` and prove the remaining obligations. Take `rfl : j = j0` from `funext fun _ => rfl`. Conclude with `((res_res_lemma _ _ _).trans (res_self _ _)).symm`.
+-/
 theorem exists_isConst {φ : J → (Y ⟶ Z)} {ε : J → ℤ} (t : LB.Gen (LB.LinComb (Inh.trivLB Z) φ ε)) :
     ∃ a : Γ(Y, ⊤)ˣ, IsConst t a := by
   obtain ⟨j0, -⟩ : ∃ j : ((Inh.trivLB Z).LinComb φ ε).ι, True := ⟨fun _ => PUnit.unit, trivial⟩
@@ -46,11 +64,17 @@ theorem exists_isConst {φ : J → (Y ⟶ Z)} {ε : J → ℤ} (t : LB.Gen (LB.L
   obtain rfl : j = j0 := funext fun _ => rfl
   exact ((res_res_lemma _ _ _).trans (res_self _ _)).symm
 
+/- English proof (translation)
+Establish `j : J → (Inh.trivLB Z).ι` using `fun _ => PUnit.unit`. Conclude with `gv_inj (wchart_triv φ j) ((ha j).symm.trans (hb j))`.
+-/
 theorem isConst_unique {φ : J → (Y ⟶ Z)} {ε : J → ℤ} {t : LB.Gen (LB.LinComb (Inh.trivLB Z) φ ε)}
     {a b : Γ(Y, ⊤)ˣ} (ha : IsConst t a) (hb : IsConst t b) : a = b := by
   have j : J → (Inh.trivLB Z).ι := fun _ => PUnit.unit
   exact gv_inj (wchart_triv φ j) ((ha j).symm.trans (hb j))
 
+/- English proof (translation)
+Consider the cases of `t`. Consider the cases of `t'`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(h j).trans (h' j).symm`.
+-/
 theorem gen_eq_of_isConst {L : LB Y} {t t' : LB.Gen L} {a : Γ(Y, ⊤)ˣ} (h : IsConst t a) (h' : IsConst t' a) :
     t = t' := by
   cases t
@@ -59,6 +83,11 @@ theorem gen_eq_of_isConst {L : LB Y} {t t' : LB.Gen L} {a : Γ(Y, ⊤)ˣ} (h : I
   funext j
   exact (h j).trans (h' j).symm
 
+/- English proof (translation)
+Take `⟨j0, -⟩ : ∃ j : ((Inh.trivLB Z).LinComb φ ε).ι, True` from `⟨fun _ => PUnit.unit, trivial⟩`. Take `⟨j1, -⟩ : ∃ j : ((Inh.trivLB Z).LinComb φ' ε').ι, True` from `⟨fun _ => PUnit.unit, trivial⟩`. Establish `e` using `h j0 j1 (fun _ _ _ => rfl) (fun _ _ _ => rfl) (fun _ _ _ => rfl)`. Rewrite `e` using `[ha j0, hb j1]`. Unfold `gv at e`.
+
+Use `gv_inj ?_ ((res_res_lemma _ _ a).symm.trans (e.trans (res_res_lemma _ _ b)))` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `⟨wchart_triv φ j0, wchart_triv φ' j1⟩`.
+-/
 theorem eq_of_corr {φ : J → (Y ⟶ Z)} {ε : J → ℤ} {φ' : J' → (Y ⟶ Z)} {ε' : J' → ℤ}
     {t : LB.Gen (LB.LinComb (Inh.trivLB Z) φ ε)} {t' : LB.Gen (LB.LinComb (Inh.trivLB Z) φ' ε')}
     {a b : Γ(Y, ⊤)ˣ} (ha : IsConst t a) (hb : IsConst t' b)
@@ -72,11 +101,19 @@ theorem eq_of_corr {φ : J → (Y ⟶ Z)} {ε : J → ℤ} {φ' : J' → (Y ⟶ 
   simp
   exact ⟨wchart_triv φ j0, wchart_triv φ' j1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨eq_of_corr ha hb, fun e => by subst e; exact corr_of_isConst ha hb⟩`.
+-/
 theorem corr_iff_eq {φ : J → (Y ⟶ Z)} {ε : J → ℤ} {φ' : J' → (Y ⟶ Z)} {ε' : J' → ℤ}
     {t : LB.Gen (LB.LinComb (Inh.trivLB Z) φ ε)} {t' : LB.Gen (LB.LinComb (Inh.trivLB Z) φ' ε')}
     {a b : Γ(Y, ⊤)ˣ} (ha : IsConst t a) (hb : IsConst t' b) :
     LB.Gen.Corr (Inh.trivLB Z) φ ε φ' ε' t t' ↔ a = b := ⟨eq_of_corr ha hb, fun e => by subst e; exact corr_of_isConst ha hb⟩
 
+/- English proof (translation)
+Establish `: IsIso (Scheme.Hom.appTop f)` using `inferInstanceAs (IsIso (f.app ⊤))`. Introduce `a b h`. Use `ext1`. Establish `h'` using `congrArg Units.val h`. Simplify using `only [pullTop, Units.coe_map, MonoidHom.coe_coe] at h'`.
+
+Conclude with `(asIso (Scheme.Hom.appTop f)).commRingCatIsoToRingEquiv.injective h'`.
+-/
 theorem pullTop_injective (f : W ⟶ Y) [IsIso f] : Function.Injective (pullTop f) := by
   have : IsIso (Scheme.Hom.appTop f) := inferInstanceAs (IsIso (f.app ⊤))
   intro a b h
@@ -85,6 +122,9 @@ theorem pullTop_injective (f : W ⟶ Y) [IsIso f] : Function.Injective (pullTop 
   simp only [pullTop, Units.coe_map, MonoidHom.coe_coe] at h'
   exact (asIso (Scheme.Hom.appTop f)).commRingCatIsoToRingEquiv.injective h'
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_isConst u`. Establish `e` using `eq_of_corr (isConst_pullGen ha f) (isConst_oneGen _) h`. Establish `: a = 1` using `pullTop_injective f (e.trans (map_one _).symm)`. Rewrite `ha` using `[this]`. Then use the resulting hypothesis.
+-/
 theorem isConst_one_of_corr_oneGen {φ : J → (Y ⟶ Z)} {ε : J → ℤ}
     (u : LB.Gen (LB.LinComb (Inh.trivLB Z) φ ε)) (f : W ⟶ Y) [IsIso f]
     (h : LB.Gen.Corr (Inh.trivLB Z) _ _ _ _ (LB.pullGen _ φ ε u f) (LB.oneGen _)) : IsConst u 1 := by
@@ -108,26 +148,46 @@ section UnitOn
 
 variable {A B : Type} [CommRing A] [CommRing B]
 
+/- English proof (translation)
+Unfold `unitOn`. Conclude with `map_one _`.
+-/
 theorem unitOn_one : unitOn (1 : Aˣ) = 1 := by
   unfold unitOn
   exact map_one _
 
+/- English proof (translation)
+Unfold `unitOn`. Conclude with `map_mul _ _ _`.
+-/
 theorem unitOn_mul (u v : Aˣ) : unitOn (u * v) = unitOn u * unitOn v := by
   unfold unitOn
   exact map_mul _ _ _
 
+/- English proof (translation)
+Unfold `unitOn`. Conclude with `map_inv _ _`.
+-/
 theorem unitOn_inv (u : Aˣ) : unitOn u⁻¹ = (unitOn u)⁻¹ := by
   unfold unitOn
   exact map_inv _ _
 
+/- English proof (translation)
+Unfold `unitOn`. Conclude with `map_zpow _ _ _`.
+-/
 theorem unitOn_zpow (u : Aˣ) (n : ℤ) : unitOn (u ^ n) = unitOn u ^ n := by
   unfold unitOn
   exact map_zpow _ _ _
 
+/- English proof (translation)
+Unfold `unitOn`. Conclude with `map_pow _ _ _`.
+-/
 theorem unitOn_pow (u : Aˣ) (n : ℕ) : unitOn (u ^ n) = unitOn u ^ n := by
   unfold unitOn
   exact map_pow _ _ _
 
+/- English proof (translation)
+Establish `e : (unitOn : Aˣ → Γ(Sp A, ⊤)ˣ) = Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of A)).symm.commRingCatIsoToRingEquiv.toMulEquiv`. Use function extensionality and compare the values at `u`. Use `ext`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `(Units.mapEquiv _).bijective`.
+-/
 theorem unitOn_bijective : Function.Bijective (unitOn : Aˣ → Γ(Sp A, ⊤)ˣ) := by
   have e : (unitOn : Aˣ → Γ(Sp A, ⊤)ˣ) =
       Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of A)).symm.commRingCatIsoToRingEquiv.toMulEquiv := by
@@ -137,8 +197,14 @@ theorem unitOn_bijective : Function.Bijective (unitOn : Aˣ → Γ(Sp A, ⊤)ˣ)
   rw [e]
   exact (Units.mapEquiv _).bijective
 
+/- English proof (translation)
+The claim follows from `unitOn_bijective.injective.eq_iff`.
+-/
 theorem unitOn_inj {u v : Aˣ} : unitOn u = unitOn v ↔ u = v := unitOn_bijective.injective.eq_iff
 
+/- English proof (translation)
+Use `ext1`. Use `congrArg (fun g => g.hom (u : A)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Conclude with `this.symm`.
+-/
 theorem pullTop_unitOn (f : A →+* B) (u : Aˣ) :
     pullTop (Spec.map (CommRingCat.ofHom f)) (unitOn u) = unitOn (Units.map f.toMonoidHom u) := by
   ext1
@@ -185,18 +251,33 @@ variable (q : X → (FractionRing K)ˣ)
 
 omit [Module.Free ℤ X] [Module.Finite ℤ X] in
 
+/- English proof (translation)
+Simplify using `only [polar, add_comm a b]`. Conclude with `mul_right_comm _ _ _`.
+-/
 theorem polar_comm (a b : X) : polar q a b = polar q b a := by
   simp only [polar, add_comm a b]
   exact mul_right_comm _ _ _
 
+/- English proof (translation)
+The claim follows from `cg_isConst _ _ _`.
+-/
 theorem psi_isConst (y : X) : IsConst ((toricPre K X q).psi y) (unitOn (q y)) := cg_isConst _ _ _
 
+/- English proof (translation)
+The claim follows from `(isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _)`.
+-/
 theorem rigK_isConst : IsConst (toricPre K X q).rigK 1 := (isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _)
 
+/- English proof (translation)
+The claim follows from `(isConst_mulGen (isConst_mulGen (isConst_mulGen (psi_isConst q _) (isConst_invGen (psi_isConst q _))) (isConst_invGen (psi_isConst q _))) (isConst_invGen (rigK_isConst q))).of_eq (by simp only [polar, unitOn_mul, unitOn_inv, inv_one]; exact _root_.mul_one _)`.
+-/
 theorem tau_isConst (a b : X) : IsConst ((toricPre K X q).tau a b) (unitOn (polar q a b)) := (isConst_mulGen (isConst_mulGen (isConst_mulGen (psi_isConst q _) (isConst_invGen (psi_isConst q _)))
     (isConst_invGen (psi_isConst q _))) (isConst_invGen (rigK_isConst q))).of_eq
   (by simp only [polar, unitOn_mul, unitOn_inv, inv_one]; exact _root_.mul_one _)
 
+/- English proof (translation)
+Unfold `DegPre.PsiEven`. Use `forall_congr' fun y => (corr_iff_eq (isConst_mulGen (psi_isConst q _) (isConst_pullGen (cg_isConst _ _ 1) _)) (psi_isConst q y)).trans ?_` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `⟨fun e => unitOn_inj.1 ((_root_.mul_one _).symm.trans e), fun e => (_root_.mul_one _).trans (congrArg unitOn e)⟩`.
+-/
 theorem psiEven_iff : (toricPre K X q).PsiEven ↔ ∀ y, q (-y) = q y := by
   unfold DegPre.PsiEven
   refine forall_congr' fun y => (corr_iff_eq (isConst_mulGen (psi_isConst q _)
@@ -204,8 +285,14 @@ theorem psiEven_iff : (toricPre K X q).PsiEven ↔ ∀ y, q (-y) = q y := by
   rw [map_one]
   exact ⟨fun e => unitOn_inj.1 ((_root_.mul_one _).symm.trans e), fun e => (_root_.mul_one _).trans (congrArg unitOn e)⟩
 
+/- English proof (translation)
+The claim follows from `(psiEven_iff q).2 h`.
+-/
 theorem psiEven (h : ∀ y, q (-y) = q y) : (toricPre K X q).PsiEven := (psiEven_iff q).2 h
 
+/- English proof (translation)
+Unfold `DegPre.TauBimult`. Use `forall_congr' fun a => forall_congr' fun a' => forall_congr' fun b => (corr_iff_eq (isConst_mulGen (tau_isConst q _ _) (isConst_pullGen (cg_isConst _ _ 1) _)) (isConst_mulGen (tau_isConst q _ _) (tau_isConst q _ _))).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, ← unitOn_mul]`. Conclude with `⟨fun e => unitOn_inj.1 ((_root_.mul_one _).symm.trans e), fun e => (_root_.mul_one _).trans (congrArg unitOn e)⟩`.
+-/
 theorem tauBimult_iff :
     (toricPre K X q).TauBimult ↔ ∀ a a' b, polar q (a + a') b = polar q a b * polar q a' b := by
   unfold DegPre.TauBimult
@@ -215,8 +302,14 @@ theorem tauBimult_iff :
   rw [map_one, ← unitOn_mul]
   exact ⟨fun e => unitOn_inj.1 ((_root_.mul_one _).symm.trans e), fun e => (_root_.mul_one _).trans (congrArg unitOn e)⟩
 
+/- English proof (translation)
+The claim follows from `(tauBimult_iff q).2 h`.
+-/
 theorem tauBimult (h : ∀ a a' b, polar q (a + a') b = polar q a b * polar q a' b) : (toricPre K X q).TauBimult := (tauBimult_iff q).2 h
 
+/- English proof (translation)
+Establish `: IsIso (zero2 (toricPre K X q).P.A)` using `isIso_zero2 _`. Conclude with `isConst_one_of_corr_oneGen u _ h`.
+-/
 theorem isConst_one_of_zero2 {J : Type} [Fintype J]
     {φ : J → (((toricPre K X q).P.A ⊗ (toricPre K X q).P.A).left ⟶ (toricPre K X q).P.A.left)} {ε : J → ℤ}
     (u : LB.Gen (LB.LinComb (toricPre K X q).P.L φ ε))
@@ -236,6 +329,9 @@ def toricOAct (O : Type) [Ring O] [StarRing O] [Module O X]
         (b := unitOn (polar q y (star a • y'))) (by rw [map_one, _root_.mul_one, h]))
       (tau_isConst q y (star a • y'))
 
+/- English proof (translation)
+Unfold `TraceFormTwistIso`. Conclude with `⟨cg _ _ 1, cg_isGen _ _ 1, corr_of_isConst ((isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _)) (isConst_oneGen _), fun y => corr_of_isConst ((isConst_mulGen (tau_isConst q y (w • y)) ((isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _))).of_eq (congrArg (fun z => unit …`.
+-/
 theorem psi_weight_zero_linear_combination (O : Type) [CommRing O] [StarRing O] [Module O X] (h) (w : O)
     (hw : ∀ y, polar q y (w • y) = q y) :
     TraceFormTwistIso (toricPre K X q) (toricOAct q O h) w := by
@@ -246,6 +342,9 @@ theorem psi_weight_zero_linear_combination (O : Type) [CommRing O] [StarRing O] 
       ((isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _))).of_eq
         (congrArg (fun z => unitOn z * 1) (hw y))) (isConst_mulGen (psi_isConst q y) (rigK_isConst q))⟩
 
+/- English proof (translation)
+Unfold `DegPre.toOpen jK`. Establish `e1` using `congrArg (fun g => g.hom x) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap K (FractionRing K))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e1 ⊢`. Rewrite using `[e1, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+-/
 theorem jK_toOpen (V : (Sp K).Opens) (x : K) :
     ((jK K).app V).hom (DegPre.toOpen V x) =
       ((TK K).left.presheaf.map (homOfLE le_top).op).hom
@@ -257,6 +356,11 @@ theorem jK_toOpen (V : (Sp K).Opens) (x : K) :
   rw [e1, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.naturality]
   rfl
 
+/- English proof (translation)
+Rewrite using `[show ((toricPre K X q).psi y).s j = gv (unitOn (q y)) _ from cg_isConst _ _ _ j, jK_toOpen]`. Unfold `gv res unitOn`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, hq]`. Use `conv_rhs => rw [← CommRingCat.comp_apply]`. Use `erw [← Functor.map_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem psi_eq_toOpen (y : X) (r : K) (hq : (q y : FractionRing K) = algebraMap K _ r)
     (j : PUnit → (toricPre K X q).P.L.ι) (V : (Sp K).Opens)
     (h : jK K ⁻¹ᵁ V ≤ (LB.LinComb (toricPre K X q).P.L (K := PUnit) (fun _ => (toricPre K X q).xK y)
@@ -270,16 +374,25 @@ theorem psi_eq_toOpen (y : X) (r : K) (hq : (q y : FractionRing K) = algebraMap 
   erw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `j V _ _ _ h'`. Conclude with `⟨DegPre.toOpen V (u : K), u.isUnit.map _, psi_eq_toOpen q y u h j V h'⟩`.
+-/
 theorem psiUnitOn (y : X) (u : Kˣ) (h : (q y : FractionRing K) = algebraMap K _ u) :
     PsiUnitOn (toricPre K X q) y Set.univ := by
   intro j V _ _ _ h'
   exact ⟨DegPre.toOpen V (u : K), u.isUnit.map _, psi_eq_toOpen q y u h j V h'⟩
 
+/- English proof (translation)
+Introduce `j V _ _ h'`. Conclude with `⟨DegPre.toOpen V r, Ideal.mem_map_of_mem _ hr, psi_eq_toOpen q y r h j V h'⟩`.
+-/
 theorem psiIn (y : X) (J : Ideal K) (r : K) (hr : r ∈ J) (h : (q y : FractionRing K) = algebraMap K _ r) :
     (toricPre K X q).PsiIn y J := by
   intro j V _ _ h'
   exact ⟨DegPre.toOpen V r, Ideal.mem_map_of_mem _ hr, psi_eq_toOpen q y r h j V h'⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Fin.elim0, fun i => i.elim0, fun w _ => ⟨Fin.elim0, ⟨Fin.elim0, fun i => i.elim0, toUnit_unique _ _⟩, fun c _ => funext fun i => i.elim0⟩⟩`.
+-/
 theorem lieMult_zero (O : Type) [CommRing O] [StarRing O] [Module O X] (h) {F : Type} [Field F] (f : K →+* F)
     (τ : O →+* F) :
     LieMult (ofRingAct (toricOAct q O h).onB.toRingAct) (spMap f) τ 0 := ⟨Fin.elim0, fun i => i.elim0, fun w _ => ⟨Fin.elim0, ⟨Fin.elim0, fun i => i.elim0, toUnit_unique _ _⟩,
@@ -287,6 +400,9 @@ theorem lieMult_zero (O : Type) [CommRing O] [StarRing O] [Module O X] (h) {F : 
 
 variable (F : Type) [Field F] [Algebra (FractionRing K) F]
 
+/- English proof (translation)
+The claim follows from `(isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _)`.
+-/
 theorem cubAt_isConst (x x' y : TF (R := K) F ⟶ (toricPre K X q).P.A) :
     IsConst (DegPre.cubAt (toricPre K X q) F x x' y) 1 := (isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _)
 
@@ -302,9 +418,21 @@ def pt (t : Multiplicative X →* Fˣ) : GtPtF (toricPre K X q) F where
         (map_mul t (Multiplicative.ofAdd a) (Multiplicative.ofAdd a'))).trans (unitOn_mul _ _))))
     (isConst_mulGen (cg_isConst _ _ _) (cg_isConst _ _ _))
 
+/- English proof (translation)
+The claim follows from `cg_isConst _ _ _`.
+-/
 theorem pt_isConst (t : Multiplicative X →* Fˣ) (χ : X) :
     IsConst ((pt q F t).s χ) (unitOn (t (Multiplicative.ofAdd χ))) := cg_isConst _ _ _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `t t' e`. Use `MonoidHom.ext fun χ => ?_` and prove the remaining obligations. Establish `h4` using `pt_isConst q F t' (Multiplicative.toAdd χ)`. Rewrite `h4` using `[← e]`.
+
+Conclude with `unitOn_inj.1 (isConst_unique (pt_isConst q F t _) h4)`. Introduce and unpack `⟨b, s, hs, s0, sm⟩`. Take `rfl : b = DegPre.zeroF _ F` from `toUnit_unique _ _`. Use `choose a ha using fun χ => exists_isConst (s χ)`. Establish `h0` using `eq_of_corr (ha 0) (isConst_oneGen _) s0`.
+
+Establish `hm` using `fun χ χ' => eq_of_corr (isConst_mulGen (ha (χ + χ')) (cubAt_isConst q F _ _ _)) (isConst_mulGen (ha χ) (ha χ')) (sm χ χ')`. Set `u` to `fun χ => Function.surjInv (unitOn_bijective (A := F)).2 (a χ)`. Establish `hu : ∀ χ, unitOn (u χ) = a χ` using `fun χ => Function.surjInv_eq _ _`. Apply the tactic sequence `refine ⟨{ toFun := fun χ => u (Multiplicative.toAdd χ) map_one' := unitOn_inj.1 ((hu _).trans (h0.trans unitOn_one.symm)) map_mul' := fun χ χ' => unitOn_inj.1 ((hu _).trans ((_root_.mul_one _).symm.trans ((hm _ _).trans (by rw [unitOn_mul, hu, hu] <;> rfl)))) }, ?_⟩`. Unfold `pt`.
+
+Use `congr 1`. Use `first`. Consider the case `exact funext fun χ => gen_eq_of_isConst (cg_isConst _ _ _) ((ha χ).of_eq (hu χ).symm)`. Consider the case `exact heq_of_eq (funext fun χ => gen_eq_of_isConst (cg_isConst _ _ _) ((ha χ).of_eq (hu χ).symm))`.
+-/
 theorem pt_bijective : Function.Bijective (pt q F) := by
   constructor
   · intro t t' e
@@ -330,11 +458,23 @@ theorem pt_bijective : Function.Bijective (pt q F) := by
       | exact funext fun χ => gen_eq_of_isConst (cg_isConst _ _ _) ((ha χ).of_eq (hu χ).symm)
       | exact heq_of_eq (funext fun χ => gen_eq_of_isConst (cg_isConst _ _ _) ((ha χ).of_eq (hu χ).symm))
 
+/- English proof (translation)
+Substitute `hW` using the available equality. Simplify using `using e`.
+-/
 private theorem eq_of_map_eq_of_eq_univ {Y : Scheme.{0}} {W : Y.Opens} (hW : W = ⊤) (h : W ≤ ⊤) {a b : Γ(Y, ⊤)}
     (e : (Y.presheaf.map (homOfLE h).op).hom a = (Y.presheaf.map (homOfLE h).op).hom b) : a = b := by
   subst hW
   simpa using e
 
+/- English proof (translation)
+Use `⟨fun hP => ?_, fun ⟨r, hr, h⟩ => psiIn q y J r hr h⟩` and prove the remaining obligations. Establish `hs : Function.Surjective (DegPre.toOpen (⊤ : (Spec (CommRingCat.of K)).Opens))`. Introduce `z`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom z, ?_⟩` and prove the remaining obligations. Unfold `DegPre.toOpen`.
+
+Simplify using the standard rewrite rules. Take `⟨r', hr', e⟩` from `hP (fun _ => PUnit.unit) ⊤ (isAffineOpen_top _) (by intro x _; exact trivial) (le_top.trans (wchart_triv _ _).ge)`. Take `⟨r, hr, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ hs).1 hr'`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[show ((toricPre K X q).psi y).s (fun _ => PUnit.unit) = gv (unitOn (q y)) _ from cg_isConst _ _ _ _, jK_toOpen]`.
+
+Unfold `gv res unitOn at e`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe] at e`. Use `conv_rhs at e => rw [← CommRingCat.comp_apply]`. Use `erw [← Functor.map_comp] at e`. Establish `e2` using `eq_of_map_eq_of_eq_univ (by simp) _ e`.
+
+Conclude with `((Scheme.ΓSpecIso (CommRingCat.of (FractionRing K))).symm.commRingCatIsoToRingEquiv.injective e2).symm`.
+-/
 theorem psiIn_iff (y : X) (J : Ideal K) :
     (toricPre K X q).PsiIn y J ↔ ∃ r ∈ J, (q y : FractionRing K) = algebraMap K _ r := by
   refine ⟨fun hP => ?_, fun ⟨r, hr, h⟩ => psiIn q y J r hr h⟩
@@ -357,6 +497,9 @@ theorem psiIn_iff (y : X) (J : Ideal K) :
 
 section Examples
 
+/- English proof (translation)
+Simplify using `only [polar]`. Rewrite using `[← zpow_neg, ← zpow_neg, ← zpow_add, ← zpow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polar_zpow_sq (u : (FractionRing K)ˣ) (a b : ℤ) :
     polar (fun n : ℤ => u ^ (n ^ 2)) a b = u ^ (2 * a * b) := by
   simp only [polar]
@@ -364,12 +507,18 @@ theorem polar_zpow_sq (u : (FractionRing K)ˣ) (a b : ℤ) :
   congr 1
   ring
 
+/- English proof (translation)
+Unfold `toricPre tatePre P0 pi0`. Use `congr 1`. Use function extensionality and compare the values at `n`. Conclude with `congrArg (cg _ _) (unitOn_zpow _ _)`.
+-/
 theorem toricPre_tate : toricPre InhTate.R ℤ (fun n => piK ^ (n ^ 2)) = tatePre := by
   unfold toricPre tatePre P0 pi0
   congr 1
   funext n
   exact congrArg (cg _ _) (unitOn_zpow _ _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨psiEven _ fun y => by rw [neg_sq], tauBimult _ fun a a' b => by rw [polar_zpow_sq, polar_zpow_sq, polar_zpow_sq, ← zpow_add] congr 1 ring, ⟨toricOAct _ ℤ fun a y z => by rw [polar_zpow_sq, polar_zpow_sq, star_trivial, smul_eq_mul, smul_eq_mul] congr 1 ring⟩⟩`.
+-/
 example (u : (FractionRing K)ˣ) :
     (toricPre K ℤ (fun n => u ^ (n ^ 2))).PsiEven ∧ (toricPre K ℤ (fun n => u ^ (n ^ 2))).TauBimult ∧
       Nonempty ((toricPre K ℤ (fun n => u ^ (n ^ 2))).OAct ℤ) :=
@@ -383,6 +532,9 @@ example (u : (FractionRing K)ˣ) :
       congr 1
       ring⟩⟩
 
+/- English proof (translation)
+Rewrite using `[psiEven_iff]`. Introduce `h`. Establish `h1` using `h 1`. Rewrite `h1` using `[zpow_neg, zpow_one]`. Conclude with `hu (by nth_rw 1 [← h1]; exact inv_mul_cancel u)`.
+-/
 example (u : (FractionRing K)ˣ) (hu : u * u ≠ 1) : ¬ (toricPre K ℤ (fun n => u ^ n)).PsiEven := by
   rw [psiEven_iff]
   intro h
@@ -390,6 +542,11 @@ example (u : (FractionRing K)ˣ) (hu : u * u ≠ 1) : ¬ (toricPre K ℤ (fun n 
   rw [zpow_neg, zpow_one] at h1
   exact hu (by nth_rw 1 [← h1]; exact inv_mul_cancel u)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[psiIn_iff]`. Introduce and unpack `⟨r, hr, h⟩`. Rewrite `h` using `[Ideal.mem_bot.1 hr, map_zero]`. Conclude with `(q y).ne_zero h`.
+
+Rewrite using `[psiIn_iff]`. Introduce and unpack `⟨r, hr, h⟩`. Establish `: r = 1` using `IsFractionRing.injective K (FractionRing K) (by rw [← h, map_one, Units.val_one])`. Conclude with `hJ ((Ideal.eq_top_iff_one J).2 (this ▸ hr))`.
+-/
 example (y : X) (J : Ideal K) (hJ : J ≠ ⊤) :
     ¬ (toricPre K X q).PsiIn y ⊥ ∧ ¬ (toricPre K X (fun _ => 1)).PsiIn y J := by
   constructor
@@ -402,6 +559,9 @@ example (y : X) (J : Ideal K) (hJ : J ≠ ⊤) :
     have : r = 1 := IsFractionRing.injective K (FractionRing K) (by rw [← h, map_one, Units.val_one])
     exact hJ ((Ideal.eq_top_iff_one J).2 (this ▸ hr))
 
+/- English proof (translation)
+Introduce `e` and use `h ((zpowersHom Fˣ).injective ((pt_bijective q F).1 e))`.
+-/
 example (q : ℤ → (FractionRing K)ˣ) (u v : Fˣ) (h : u ≠ v) :
     pt q F (zpowersHom Fˣ u) ≠ pt q F (zpowersHom Fˣ v) :=
   fun e => h ((zpowersHom Fˣ).injective ((pt_bijective q F).1 e))

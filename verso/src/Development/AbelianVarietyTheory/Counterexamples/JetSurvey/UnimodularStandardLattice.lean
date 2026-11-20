@@ -12,12 +12,18 @@ open NumberField Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor Gl
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 omit [IsCMField E] in
+/- English proof (translation)
+Simplify using `[stdLat, Submodule.mem_pi, Submodule.mem_one]`.
+-/
 theorem mem_stdLat (v : Fin n → E) : v ∈ stdLat E n ↔ ∀ j, ∃ b : 𝓞 E, (b : E) = v j := by
   simp [stdLat, Submodule.mem_pi, Submodule.mem_one]
 
 set_option autoImplicit false in
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `RingOfIntegers.isIntegral_coe y`. Introduce `h`. Conclude with `⟨⟨x, h⟩, rfl⟩`.
+-/
 private lemma mem_range_algebraMap_iff_isIntegral_int (x : E) :
     x ∈ (algebraMap (𝓞 E) E).range ↔ IsIntegral ℤ x := by
   constructor
@@ -29,6 +35,9 @@ private lemma mem_range_algebraMap_iff_isIntegral_int (x : E) :
 set_option autoImplicit false in
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
+/- English proof (translation)
+Rewrite using `[mem_range_algebraMap_iff_isIntegral_int, mem_range_algebraMap_iff_isIntegral_int]`. Use `⟨fun h => ?_, fun h => h.map (IsCMField.complexConj E)⟩` and prove the remaining obligations. Simplify using `using h.map (IsCMField.complexConj E).symm`.
+-/
 private lemma complexConj_mem_integers_iff (x : E) :
     IsCMField.complexConj E x ∈ (algebraMap (𝓞 E) E).range ↔
       x ∈ (algebraMap (𝓞 E) E).range := by
@@ -40,6 +49,13 @@ set_option autoImplicit false in
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 
+/- English proof (translation)
+Unfold `_root_.Formalism.L2.Pj.GenLat.Unimod _root_.Formalism.L2.Pj.stdLat`. Introduce `v`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one, ← RingHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hv w hw`.
+
+Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ ((complexConj_mem_integers_iff (v j)).2 (hv j)) (hw j)`. Introduce `h i`. Establish `hs` using `h (Pi.single i 1) fun j => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+
+Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`. Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hs`. Conclude with `(complexConj_mem_integers_iff (v i)).1 hs`.
+-/
 theorem _root_.GlobalTheory.Survey.UnimodularStandardLattice.unimod_std :
     (⟨_root_.Formalism.L2.Pj.stdLat E n⟩ : _root_.Formalism.L2.Pj.GenLat E n).Unimod := by
   unfold _root_.Formalism.L2.Pj.GenLat.Unimod _root_.Formalism.L2.Pj.stdLat
@@ -62,6 +78,9 @@ theorem _root_.GlobalTheory.Survey.UnimodularStandardLattice.unimod_std :
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp, Submodule.smul_le_right, Submodule.smul_le_right⟩`.
+-/
 theorem trivAt_std (bad : ℕ) : (⟨stdLat E n⟩ : GenLat E n).TrivAt bad :=
   ⟨1, by simp, Submodule.smul_le_right, Submodule.smul_le_right⟩
 

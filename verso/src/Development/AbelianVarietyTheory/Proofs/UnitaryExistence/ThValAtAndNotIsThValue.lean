@@ -31,6 +31,11 @@ section Descent
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {a : ℤ}
 
 omit [GrpObj A] in
+/- English proof (translation)
+Establish `h1 : IsPullback (snd T A).left (fst T A).left A.hom T.hom` using `(IsPullback.of_hasPullback T.hom A.hom).flip`. Establish `h2 : IsPullback (snd T' A).left (fst T' A).left A.hom T'.hom` using `(IsPullback.of_hasPullback T'.hom A.hom).flip`. Use `IsPullback.of_right ?_ ?_ h1` and prove the remaining obligations. Rewrite using `[← Over.comp_left, whiskerRight_snd, Over.w h]`. Conclude with `h2`.
+
+Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerRight_fst]`.
+-/
 theorem isPullback_whisker {T T' : Over S} (h : T' ⟶ T) :
     IsPullback (h ▷ A).left (fst T' A).left (fst T A).left h.left := by
   have h1 : IsPullback (snd T A).left (fst T A).left A.hom T.hom := (IsPullback.of_hasPullback T.hom A.hom).flip
@@ -39,6 +44,9 @@ theorem isPullback_whisker {T T' : Over S} (h : T' ⟶ T) :
   · rw [← Over.comp_left, whiskerRight_snd, Over.w h]; exact h2
   · rw [← Over.comp_left, ← Over.comp_left, whiskerRight_fst]
 
+/- English proof (translation)
+Take `⟨f₁, p₁⟩` from `s`. Take `⟨f₂, p₂⟩` from `s'`. Take `rfl : f₁ = f₂` from `funext h`. Both sides reduce to the same expression.
+-/
 theorem sec_ext {X : Scheme.{0}} {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j = s'.f j) : s = s' := by
   obtain ⟨f₁, p₁⟩ := s
   obtain ⟨f₂, p₂⟩ := s'
@@ -46,6 +54,9 @@ theorem sec_ext {X : Scheme.{0}} {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j 
   rfl
 
 omit [GrpObj A] in
+/- English proof (translation)
+Introduce `y hy`. Establish `h1 : ((h ▷ A).left ≫ (snd T A).left).base y ∈ (L.U (j 0) : Set A.left)` using `Set.mem_iInter.1 hy 0`. Rewrite `h1` using `[← Over.comp_left, whiskerRight_snd]`. Conclude with `Set.mem_iInter.2 fun i => by rw [Subsingleton.elim i 0]; exact h1`.
+-/
 theorem chart_ge {T T' : Over S} (h : T' ⟶ T) (j : Fin 1 → L.ι) :
     (h ▷ A).left ⁻¹ᵁ (LPow A L a T).U j ≤ (LPow A L a T').U j := by
   intro y hy
@@ -53,12 +64,18 @@ theorem chart_ge {T T' : Over S} (h : T' ⟶ T) (j : Fin 1 → L.ι) :
   rw [← Over.comp_left, whiskerRight_snd] at h1
   exact Set.mem_iInter.2 fun i => by rw [Subsingleton.elim i 0]; exact h1
 
+/- English proof (translation)
+The claim follows from `(gs_res r z (chart_le_res A L (h ▷ A) (whiskerRight_snd _ _) a j) hz _).trans (gs_pull r (h ▷ A).left z _ (chart_le_res A L (h ▷ A) (whiskerRight_snd _ _) a j hz) _)`.
+-/
 theorem gs_pullS {T T' : Over S} (h : T' ⟶ T) (s : LB.Sec (LPow A L a T)) {Z : Scheme.{0}}
     (r : Z ⟶ (T' ⊗ A).left) (z : Z) (j : Fin 1 → L.ι) (hz : r z ∈ (LPow A L a T').U j) :
     gs r z ((LPow A L a T').U j) ((pullS A a h s).f j) = gs (r ≫ (h ▷ A).left) z ((LPow A L a T).U j) (s.f j) :=
   (gs_res r z (chart_le_res A L (h ▷ A) (whiskerRight_snd _ _) a j) hz _).trans
     (gs_pull r (h ▷ A).left z _ (chart_le_res A L (h ▷ A) (whiskerRight_snd _ _) a j hz) _)
 
+/- English proof (translation)
+The claim follows from `sec_ext fun j => fn_ext fun y hy => by refine (gs_pullS h' _ _ y j hy).trans ((gs_pullS h _ _ y j (chart_le_res A L (h' ▷ A) (whiskerRight_snd _ _) a j hy)).trans (Eq.trans ?_ (gs_pullS _ _ _ y j hy).symm)) rw [comp_whiskerRight, Over.comp_left] rfl`.
+-/
 theorem pullS_comp {T T' T'' : Over S} (h' : T'' ⟶ T') (h : T' ⟶ T) (s : LB.Sec (LPow A L a T)) :
     pullS A a h' (pullS A a h s) = pullS A a (h' ≫ h) s :=
   sec_ext fun j => fn_ext fun y hy => by
@@ -67,6 +84,21 @@ theorem pullS_comp {T T' T'' : Over S} (h' : T'' ⟶ T') (h : T' ⟶ T) (s : LB.
     rw [comp_whiskerRight, Over.comp_left]
     rfl
 
+/- English proof (translation)
+Establish `P` using `(isPullback_whisker (A := A) π).flip`. Establish `: Flat (π ▷ A).left` using `MorphismProperty.of_isPullback P ‹_›`. Establish `: Surjective (π ▷ A).left` using `MorphismProperty.of_isPullback P ‹_›`. Establish `: QuasiCompact (π ▷ A).left` using `MorphismProperty.of_isPullback P ‹_›`. Establish `appLE : ∀ {Z Y : Scheme.{0}} (g : Z ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ g ⁻¹ᵁ U) (b : Γ(Y, U)) (z : Z), gs (𝟙 Z) z ⊤ ((g.appLE U ⊤ h).hom b) = gs g z U b` using `fun {Z Y} g U h b z => (gs_res (𝟙 Z) z h trivial ((g.app U).hom b)).trans ((gs_pull (𝟙 Z) g z U (h (x := z) trivial) b).trans (by rw [Category.id_comp]))`.
+
+Establish `desc : ∀ j : Fin 1 → L.ι, ∃ b : Γ((T ⊗ A).left, (LPow A L a T).U j), ((π ▷ A).left.app _).hom b = ((T' ⊗ A).left.presheaf.map (homOfLE (chart_ge π j)).op).hom (F'.f j)` using `fun j => by`. Use `FunDescent.exists_app_eq _ _ _ fun Z g₁ g₂ h₁ h₂ e => fn_ext fun z _ => ?_` and prove the remaining obligations. Rewrite using `[appLE, appLE, gs_res _ z _ (h₁ (x := z) trivial), gs_res _ z _ (h₂ (x := z) trivial)]`. Establish `w : g₂ ≫ (T' ⊗ A).hom = g₁ ≫ (T' ⊗ A).hom`. Rewrite using `[← Over.w (π ▷ A), ← Category.assoc, ← e, Category.assoc]`.
+
+Set `G₁ : Over.mk (g₁ ≫ (T' ⊗ A).hom) ⟶ T' ⊗ A` to `Over.homMk g₁ rfl`. Set `G₂ : Over.mk (g₁ ≫ (T' ⊗ A).hom) ⟶ T' ⊗ A` to `Over.homMk g₂ w`. Establish `E : G₁ ≫ π ▷ A = G₂ ≫ π ▷ A` using `Over.OverMorphism.ext e`. Establish `E₁ : (G₁ ≫ fst _ _) ≫ π = (G₂ ≫ fst _ _) ≫ π`. Rewrite using `[Category.assoc, Category.assoc, ← whiskerRight_fst, ← Category.assoc, E, Category.assoc]`.
+
+Establish `E₂ : G₂ ≫ snd _ _ = G₁ ≫ snd _ _`. Rewrite using `[← whiskerRight_snd π, ← Category.assoc, ← E, Category.assoc]`. Establish `k : ∀ G : Over.mk (g₁ ≫ (T' ⊗ A).hom) ⟶ T' ⊗ A, G ≫ snd _ _ = G₁ ≫ snd _ _ → G.left z ∈ (LPow A L a T').U j → gs G.left z _ (F'.f j) = gs (lift (𝟙 _) (G₁ ≫ snd _ _)).left z _ ((pullS A a (G ≫ fst _ _) F').f j)` using `fun G hG hz => by`. Establish `e' : (lift (𝟙 _) (G₁ ≫ snd _ _)).left ≫ ((G ≫ fst _ _) ▷ A).left = G.left`. Rewrite using `[← Over.comp_left, lift_whiskerRight, Category.id_comp, ← hG, ← comp_lift, lift_fst_snd, Category.comp_id]`.
+
+Use `Eq.trans ?_ (gs_pullS _ _ _ z j (chart_ge (G ≫ fst _ _) j ?_)).symm` and prove the remaining obligations. Rewrite using `[e']`. Conclude with `(congrArg (fun q => q z ∈ (LPow A L a T').U j) e').mpr hz`. Conclude with `(k G₁ rfl (chart_ge π j (h₁ (x := z) trivial))).trans ((congrArg (fun u => gs _ z _ (LB.Sec.f u j)) (H _ _ _ E₁)).trans (k G₂ E₂ (chart_ge π j (h₂ (x := z) trivial))).symm)`. Use `choose b hb using desc`.
+
+Establish `hv : ∀ j (w : (T' ⊗ A).left), (π ▷ A).left w ∈ (LPow A L a T).U j → gs (𝟙 _ ≫ (π ▷ A).left) w _ (b j) = gs (𝟙 _) w _ (F'.f j)` using `fun j w hw => (gs_pull (𝟙 _) _ w _ hw _).symm.trans ((congrArg (gs (𝟙 _) w _) (hb j)).trans (gs_res (𝟙 _) w (chart_ge π j) hw _))`. Use `⟨⟨b, fun j j' => FunDescent.app_injective (π ▷ A).left _ (fn_ext fun w hw => ?_)⟩, sec_ext fun j => fn_ext fun w hw => ?_⟩` and prove the remaining obligations. Establish `hw' : (𝟙 _ ≫ (π ▷ A).left) w ∈ (LPow A L a T).U j ⊓ (LPow A L a T).U j'` using `hw`. Use `(gs_pull (𝟙 _) _ w _ hw' _).trans (Eq.trans ?_ (gs_pull (𝟙 _) _ w _ hw' _).symm)` and prove the remaining obligations. Use `((gs_res _ w _ hw' _).trans ((hv j w hw'.1).trans (sec_trans (L := L) (φ := fun _ : Fin 1 => (snd T' A).left) (ε := fun _ => a) F' (𝟙 _) w (chart_ge (a := a) π j hw'.1) (chart_ge (a := a) π j' hw'.2)))).trans (Eq.symm ?_)` and prove the remaining obligations.
+
+Use `(gs_mul _ w _ hw' _ _).trans (congrArg₂ (· * ·) ((gs_unit _ w _ hw' _).trans (congrArg Units.val ((gm_linComb L _ _ _ w j j' hw'.1 hw'.2).trans ?_))) ((gs_res _ w _ hw' _).trans (hv j' w hw'.2)))` and prove the remaining obligations. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, VVRank.whisker_snd_left]`. Conclude with `(gs_pullS π _ _ w j hw).trans (hv j w (chart_le_res A L (π ▷ A) (whiskerRight_snd _ _) a j hw))`.
+-/
 theorem exists_descend {T T' : Over S} (π : T' ⟶ T) [Flat π.left] [Surjective π.left] [QuasiCompact π.left]
     (F' : LB.Sec (LPow A L a T'))
     (H : ∀ (T'' : Over S) (g₁ g₂ : T'' ⟶ T'), g₁ ≫ π = g₂ ≫ π → pullS A a g₁ F' = pullS A a g₂ F') :

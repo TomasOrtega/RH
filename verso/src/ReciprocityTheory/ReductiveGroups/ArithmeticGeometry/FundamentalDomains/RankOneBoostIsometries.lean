@@ -16,6 +16,11 @@ variable {r : ℕ} (X : Data E r) (τ : X.Ψ)
 noncomputable def rk (p w : Fin r → ℂ) : Matrix (Fin r) (Fin r) ℂ :=
   Matrix.of fun i a => p i * ∑ b, τ.1 (X.Gm a b) * conj (w b)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, rk, Matrix.of_apply, hermC, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `c _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rk_mulVec (p w v : Fin r → ℂ) :
     Matrix.mulVec (rk X τ p w) v = hermC τ.1 X.Gm v w • p := by
   funext i
@@ -30,6 +35,9 @@ theorem rk_mulVec (p w v : Fin r → ℂ) :
 noncomputable def boost (e f : Fin r → ℂ) (m σ : ℝ) : Matrix (Fin r) (Fin r) ℂ :=
   1 + (((σ - 1) / m : ℝ) : ℂ) • rk X τ e f + (((σ⁻¹ - 1) / m : ℝ) : ℂ) • rk X τ f e
 
+/- English proof (translation)
+Simplify using `only [boost, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, rk_mulVec, smul_smul]`.
+-/
 theorem boost_mulVec (e f : Fin r → ℂ) (m σ : ℝ) (v : Fin r → ℂ) :
     Matrix.mulVec (boost X τ e f m σ) v =
       v + ((((σ - 1) / m : ℝ) : ℂ) * hermC τ.1 X.Gm v f) • e +
@@ -44,6 +52,11 @@ variable {e f : Fin r → ℂ} {m : ℝ} (hm : 0 < m) (hee : hermC τ.1 X.Gm e e
 
 include hm hee hff hef hfe
 
+/- English proof (translation)
+Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hσ0 : (σ : ℂ) ≠ 0` using `by exact_mod_cast hσ.ne'`. Rewrite using `[boost_mulVec, boost_mulVec]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.hermC_add_left, ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left, hee, hff, hef, hfe, inv_inv]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem boost_comp {σ : ℝ} (hσ : 0 < σ) (w : Fin r → ℂ) :
     Matrix.mulVec (boost X τ e f m σ) (Matrix.mulVec (boost X τ e f m σ⁻¹) w) = w := by
   have hm0 : (m : ℂ) ≠ 0 := by exact_mod_cast hm.ne'
@@ -56,6 +69,11 @@ theorem boost_comp {σ : ℝ} (hσ : 0 < σ) (w : Fin r → ℂ) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hσ0 : (σ : ℂ) ≠ 0` using `by exact_mod_cast hσ.ne'`. Rewrite using `[boost_mulVec, boost_mulVec]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.hermC_add_left, ReciprocityTheory.ChartRestriction.G.FD.hermC_add_right, ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left, ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_right, hee, hff, hef, hfe, map_mul, Complex.conj_ofRe …`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.FD.hermC_conj τ.1 X.Gm_herm v e, ← ReciprocityTheory.ChartRestriction.G.FD.hermC_conj τ.1 X.Gm_herm v f]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem boost_isom {σ : ℝ} (hσ : 0 < σ) (u v : Fin r → ℂ) :
     hermC τ.1 X.Gm (Matrix.mulVec (boost X τ e f m σ) u) (Matrix.mulVec (boost X τ e f m σ) v) =
       hermC τ.1 X.Gm u v := by

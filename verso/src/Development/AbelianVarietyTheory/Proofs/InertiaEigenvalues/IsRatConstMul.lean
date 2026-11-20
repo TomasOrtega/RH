@@ -27,6 +27,11 @@ def UntwRat : Prop :=
           ∀ w ∈ ratVec R i (c0L i) C.σ₂.fieldRange,
             IsRat T i hV C (κ i) (fun g => ph * thetaKO (R.ωP i A.μ0) s g (harmVec R i u w f))
 
+/- English proof (translation)
+Take `⟨φ', ⟨f₂, hf₂, rfl⟩, rfl⟩` from `h`. Take `⟨c', rfl⟩` from `RingHom.mem_fieldRange.1 hc`. Use `⟨C.rd (wtA κ) (c' • f₂), ⟨c' • f₂, ⟨(sec _ _ _ _).smul_mem c' hf₂.1, ?_⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hf₂.2`.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [castDict, Cover.rd, map_smulₛₗ, map_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isRat_const_mul {D : D7} (T : CoreJ D) (i : Fin D.R.m) {σ : T.Q.c.F →+* ℂ} (hV : T.V ((i : ℕ) + 1) σ = Wc D i)
     (C : Cover T ((i : ℕ) + 1) σ) (κ : WeightFamilies.Wt D ((i : ℕ) + 1)) (φ : GA D (Wc D i) → ℂ) (c : ℂ)
     (h : IsRat T i hV C κ φ) (hc : c ∈ C.σ₂.fieldRange) : IsRat T i hV C κ (fun g => c * φ g) := by

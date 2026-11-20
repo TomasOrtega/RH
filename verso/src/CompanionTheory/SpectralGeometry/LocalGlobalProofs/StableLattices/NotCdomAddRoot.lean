@@ -11,9 +11,23 @@ open PI.UpqRep (CDom root)
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`.
+-/
 theorem height_root (a b : Fin n) : ∑ i : Fin n, ((i : ℕ) : ℝ) * root a b i = ((a : ℕ) : ℝ) - ((b : ℕ) : ℝ) := by
   simp [root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]
 
+/- English proof (translation)
+Introduce and unpack `⟨c, hc, h⟩`. Establish `h1 : ∑ i : Fin n, ((i : ℕ) : ℝ) * (μ - (μ + root a b)) i = ((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)`. Establish `: ∀ i : Fin n, ((i : ℕ) : ℝ) * (μ - (μ + root a b)) i = -(((i : ℕ) : ℝ) * root a b i)`. Introduce `i`. Simplify using the standard rewrite rules.
+
+Simplify using `only [this, Finset.sum_neg_distrib, height_root]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∑ i : Fin n, ((i : ℕ) : ℝ) * (∑ x, ∑ y, (c x y : ℝ) • root x y) i = ∑ x, ∑ y, (c x y : ℝ) * (((x : ℕ) : ℝ) - ((y : ℕ) : ℝ))`. Simplify using `only [← height_root, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∑ x, ∑ y, (c x y : ℝ) * (((x : ℕ) : ℝ) - ((y : ℕ) : ℝ)) ≤ 0`.
+
+Use `Finset.sum_nonpos fun x _ => Finset.sum_nonpos fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : c x y = 0`. Simplify using `[h0]`. Establish `hxy : ((x : ℕ) : ℝ) < ((y : ℕ) : ℝ)` using `by exact_mod_cast (hc x y h0).1`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg _) (by linarith)`.
+
+Establish `hab' : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Rewrite `h1` using `[h, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem not_cdom_add_root (ε : Fin n → Bool) (μ : Fin n → ℝ) {a b : Fin n} (hab : a < b) :
     ¬ CDom ε (μ + root a b) μ := by
   rintro ⟨c, hc, h⟩
@@ -39,6 +53,13 @@ theorem not_cdom_add_root (ε : Fin n → Bool) (μ : Fin n → ℝ) {a b : Fin 
   rw [h, h2] at h1
   linarith
 
+/- English proof (translation)
+Introduce `c`. Establish `h` using `LinearMap.congr_fun (hE c c a b) v`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hv c, map_smul] at h`. Rewrite `h` using `[sub_eq_iff_eq_add]`. Rewrite using `[h]`.
+
+Apply the tactic sequence `by_cases h1 : c = a <;> by_cases h2 : b = c`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using `[root]`. Substitute `h1` using the available equality.
+
+Simplify using `[root, h2, Ne.symm h2, add_smul, add_comm]`. Substitute `h2` using the available equality. Simplify using `[root, h1, add_smul, add_comm]`. Simplify using `[root, h1, h2, Ne.symm h2]`.
+-/
 theorem isWeight_apply {V : Type} [AddCommGroup V] [Module ℂ V] {E : Fin n → Fin n → Module.End ℂ V}
     (hE : GlRel E) {μ : Fin n → ℝ} {v : V} (hv : IsWeight E μ v) (a b : Fin n) :
     IsWeight E (μ + root a b) (E a b v) := by
@@ -53,6 +74,13 @@ theorem isWeight_apply {V : Type} [AddCommGroup V] [Module ℂ V] {E : Fin n →
   · subst h2; simp [root, h1, add_smul, add_comm]
   · simp [root, h1, h2, Ne.symm h2]
 
+/- English proof (translation)
+Introduce `hS hW n ε H _ _ σ S E hσ hm μ T hT hTS`. Take `⟨hfin, hst, -, ⟨v, hvT, hv0, hvw⟩, hdom⟩` from `hT`. Establish `hmap : (T.comap S.subtype).map S.subtype = T`. Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.mpr hTS`.
+
+Establish `hfinU : FiniteDimensional ℂ (T.comap S.subtype)` using `(Submodule.comapSubtypeEquivOfLe hTS).symm.finiteDimensional`. Establish `hU` using `(hS n ε H σ S E hσ hm _ hfinU).2 (by rw [hmap]; exact hst)`. Establish `hw : IsWeight E μ (⟨v, hTS hvT⟩ : S)` using `(hW n ε H σ S E hσ hm μ _).2 hvw`. Use `⟨⟨v, hTS hvT⟩, fun h => hv0 (congrArg Subtype.val h), hvT, hw, fun a b hab hε => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Establish `hmem` using `hU a b hε ⟨v, hTS hvT⟩ hvT`. Establish `hw'` using `(hW n ε H σ S E hσ hm _ _).1 (isWeight_apply hm.gl hw a b)`. Conclude with `not_cdom_add_root ε μ hab (hdom _ _ hmem (fun h => hne (Subtype.ext h)) hw')`.
+-/
 theorem hwOfType : CompanionTheory.D.DSIC.StabLink → CompanionTheory.D.DSIC.WtLink → CompanionTheory.D.DSIC.HWofType := by
   intro hS hW n ε H _ _ σ S E hσ hm μ T hT hTS
   obtain ⟨hfin, hst, -, ⟨v, hvT, hv0, hvw⟩, hdom⟩ := hT

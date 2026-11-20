@@ -14,6 +14,9 @@ open GlobalTheory.SeeSaw GlobalTheory.Unf
 
 namespace GlobalTheory.AdForm.ChartVal
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Conclude with `GlobalTheory.AdForm.RdLaw.infM_fin θ V k hk τ`.
+-/
 theorem infM_fin' {D : D7} (θ : InfFam D) (V : HSp D) {n : ℕ} (hn : V.rank = n) (k : GA D V) (hk : k ∈ GfC V)
     (τ : D.what₂.Tau) : infM θ V hn k τ = 1 := by
   subst hn
@@ -23,6 +26,21 @@ end GlobalTheory.AdForm.ChartVal
 
 open GlobalTheory.AdForm.ChartVal in
 
+/- English proof (translation)
+Introduce `B X I hok hpins l Z u a Ch A hA θ hθ i hi φ hφ`. Set `eY : (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi` to `{ toFun := fun y => ⟨y.1, y.2⟩, invFun := fun z => ⟨z.1, z.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Establish `hV` using `GlobalTheory.Mem.Col2.TC.val_tied I hok hpins l Z u a i hi (A.bad i) (Ch i) (A.chOf i) (A.K i hi) eY ⟨A.kb i, hA.reads i hi⟩ (fun _ => rfl)`. Establish `hF` using `(hV.Fi φ).1 hφ`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `c`. Take `⟨Ψ, hΨ, he⟩` from `Submodule.mem_map.1 (hF (A.chOf i c))`. Establish `hval` using `(Submodule.mem_pi.1 (Submodule.mem_inf.1 hΨ).2) ((A.K i hi (A.chOf i c)).y ⟨c, rfl⟩) (Set.mem_univ _)`. Establish `e2 : Ψ ((A.K i hi (A.chOf i c)).y ⟨c, rfl⟩) = fun z => φ c (eY.symm z)` using `congrFun he ⟨c, rfl⟩`. Rewrite `hval` using `[e2]`.
+
+Conclude with `hval`. Introduce `β y γ hγ c k hk κ y' hy`. Take `⟨Ψ, hΨ, he⟩` from `Submodule.mem_map.1 (hF β)`. Establish `hAd : Ψ ∈ AdFun (A.K i hi β).lev (embT (I.rec7 l Z))` using `(Submodule.mem_inf.1 hΨ).1`. Establish `hfun : (fun (c : {c // A.chOf i c = β}) (z : Frames (gramC (gramN (I.rec7 l Z) i hi) (embT (I.rec7 l Z)))) => φ c.1 ⟨z.1, z.2⟩) = fun c => Ψ ((A.K i hi β).y c)` using `he.symm`.
+
+Establish `laws` using `GlobalTheory.AdForm.RdLaw.rdS_laws (I.rec7 l Z) θ hθ ((I.rec7 l Z).sp.X i) (B.R.N i) (rankN (I.rec7 l Z) i hi) (gramN (I.rec7 l Z) i hi) rfl (B.T u) (I.rec7 l Z).R.f (A.bad i) (A.K i hi β).lev {c // A.chOf i c = β} (A.K i hi β).y (A.K i hi β).y_bij _ (fun c z => φ c.1 ⟨z.1, z.2⟩) …`. Take `⟨hL, hK, hR, -⟩` from `laws`. Establish `hκ` using `(hA.U i hi β κ.1).1 κ.2`. Take `⟨hκf, κ', hκ'⟩` from `hκ`. Establish `hchi` using `hA.chi i hi β κ κ' hκ'`.
+
+Establish `hval` using `(GlobalTheory.AdForm.rdS_val (I.rec7 l Z) θ hθ ((I.rec7 l Z).sp.X i) (B.R.N i) (rankN (I.rec7 l Z) i hi) (gramN (I.rec7 l Z) i hi) rfl (B.T u) (I.rec7 l Z).R.f (A.bad i) (A.K i hi β).lev {c // A.chOf i c = β} (A.K i hi β).y (A.K i hi β).y_bij Ψ hAd ⟨y'.1, y'.2⟩ (A.h i β c)).2.2 ( …`. Establish `h1` using `infM_fin' θ ((I.rec7 l Z).sp.X i) (rankN (I.rec7 l Z) i hi) (A.h i β c) (hA.h i hi β c).1 τ`. Use `show y'.1 τ = infM θ _ _ (A.h i β c) τ * y'.1 τ`. Use `erw [h1, Matrix.one_mul])`. Use `show rdS θ _ (rankN (I.rec7 l Z) i hi) (A.K i hi β).lev (A.K i hi β).y (fun c z => φ c.1 ⟨z.1, z.2⟩) ⟨y.1, y.2⟩ (γ * (A.h i β c * k) * κ.1) = _`.
+
+Establish `e1` using `hL γ hγ (A.h i β c * k * κ.1)`. Establish `e2` using `hK κ.1 hκf κ' hκ' (A.h i β c * k)`. Establish `e3` using `hR k hk ⟨y'.1, y'.2⟩ hy (A.h i β c)`. Establish `e5` using `congrArg (fun F => rdS θ ((I.rec7 l Z).sp.X i) (rankN (I.rec7 l Z) i hi) (A.K i hi β).lev (A.K i hi β).y F ⟨y'.1, y'.2⟩ (A.h i β c)) hfun`. Establish `e6 : Ψ ((A.K i hi β).y c) ⟨y'.1, y'.2⟩ = φ c.1 y'` using `(congrFun (congrFun hfun c) ⟨y'.1, y'.2⟩).symm`.
+
+Establish `e4` using `e3.trans (e5.trans (hval.trans e6))`. Rewrite using `[mul_assoc]`. Conclude with `e1.trans (e2.trans (congrArg₂ (· * ·) (congrArg (fun x : ℂˣ => (x : ℂ)) hchi.symm) e4))`.
+-/
 theorem GlobalTheory.AdForm.rd_charts : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ θ, IsInfFam θ → ∀ (i : ℕ) (hi : i ≤ B.R.m), ∀ φ ∈ (I.fm l u a).Fi i, (∀ c, (fun z : FrN (I.rec7 l Z) (B.R.N i) => φ c ⟨z.1, z.2⟩) ∈ ValC _ (Formalism.L2.Forms.lamT (D := (I.rec7 l Z)) u i)) ∧ ∀ β y, ∀ γ ∈ GQ ((I.rec7 l Z).sp.X i), ∀ c, ∀ k ∈ GinfC ((I.rec7 l Z).sp.X i), ∀ (κ : A.U i β) (y' : (I.chain l u a).Y i), IsTr (G := fun _ => 1) (infM θ _ (rankN (I.rec7 l Z) i hi) k) ⟨y.1, y.2⟩ ⟨y'.1, y'.2⟩ → A.rd θ i hi β φ y (γ * (A.h i β c * k) * κ.1) = (A.chi i β κ : ℂ) * φ c.1 y' := by
   intro B X I hok hpins l Z u a Ch A hA θ hθ i hi φ hφ
   let eY : (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi :=

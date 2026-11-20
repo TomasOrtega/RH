@@ -14,6 +14,13 @@ section Transport
 variable {Y X : TopCat.{u}} {κ : Type w} {P : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}}
   {P' : (Opens Y)ᵒᵖ ⥤ AddCommGrpCat.{u}}
 
+/- English proof (translation)
+Set `E : ∀ n, Cochain P' U n → Cochain P (φ ∘ U) n` to `fun n σ i => res P (hinter i).ge (e _ (σ i))`. Set `E' : ∀ n, Cochain P (φ ∘ U) n → Cochain P' U n` to `fun n σ i => (e _).symm (res P (hinter i).le (σ i))`. Establish `hEE' : ∀ n σ, E n (E' n σ) = σ` using `fun n σ => funext fun i => by`. Simplify using `only [E, E', AddEquiv.apply_symm_apply, res_res, res_refl]`. Establish `hE'E : ∀ n σ, E' n (E n σ) = σ` using `fun n σ => funext fun i => by`.
+
+Simplify using `only [E, E', res_res, res_refl, AddEquiv.symm_apply_apply]`. Establish `hE'0 : ∀ n, E' n 0 = 0` using `fun n => funext fun i => by`. Simplify using `only [E', Pi.zero_apply, map_zero]`. Establish `hEd : ∀ n σ, E (n + 1) (d P' U n σ) = d P (φ ∘ U) n (E n σ)` using `fun n σ => funext fun i => by`. Simplify using `only [E, d_apply, map_sum, map_zsmul, he, res_res]`.
+
+Introduce `n σ hσ`. Establish `hσ' : d P' U (n + 1) (E' (n + 1) σ) = 0`. Rewrite using `[← hE'E (n + 2) (d P' U (n + 1) _), hEd, hEE', hσ, hE'0]`. Take `⟨τ, hτ⟩` from `hU n _ hσ'`. Conclude with `⟨E n τ, by rw [← hEd, hτ, hEE']⟩`.
+-/
 lemma cechAcyclic_of_transport (φ : Opens Y → Opens X) (hφ : Monotone φ)
     (e : ∀ W, P'.obj (op W) ≃+ P.obj (op (φ W)))
     (he : ∀ {V W : Opens Y} (h : V ≤ W) (x : P'.obj (op W)),
@@ -51,6 +58,9 @@ noncomputable abbrev modulesAb (F : X.Modules) :
 def IsBasicCover (V : X.Opens) {κ : Type u} (U : κ → X.Opens) : Prop :=
   IsAffineOpen V ∧ ∃ h : κ → Γ(X, V), (∀ a, U a = X.basicOpen (h a)) ∧ iSup U = V
 
+/- English proof (translation)
+The claim follows from `| 0, i => by rw [Fin.prod_univ_one] apply le_antisymm (inter_le _ i 0) intro x hx rw [mem_inter_iff] intro a rwa [Fin.fin_one_eq_zero a] | n + 1, i => by rw [inter_succ, inter_basicOpen h (i ∘ Fin.succ), Fin.prod_univ_succ (fun a => h (i a)), Scheme.basicOpen_mul] rfl`.
+-/
 lemma inter_basicOpen {V : X.Opens} {κ : Type u} (h : κ → Γ(X, V)) :
     ∀ {n : ℕ} (i : Fin (n + 1) → κ),
       inter (X := X.toTopCat) (fun a => X.basicOpen (h a)) i = X.basicOpen (∏ a, h (i a))
@@ -66,6 +76,9 @@ lemma inter_basicOpen {V : X.Opens} {κ : Type u} (h : κ → Γ(X, V)) :
       Scheme.basicOpen_mul]
     rfl
 
+/- English proof (translation)
+The claim follows from `hU.2.choose_spec.2 inter_mem V κ U hU n i := by obtain ⟨hV, h, hUh, -⟩ := hU have : U = fun a => X.basicOpen (h a) := funext hUh subst this rw [inter_basicOpen h i] exact hV.basicOpen _ exists_refinement V hV O hO := by choose f hfO hxf using fun x : V => hV.exists_basicOpen_le ( …`.
+-/
 lemma isCoverSystem_isBasicCover :
     IsCoverSystem (X := X.toTopCat) IsAffineOpen (fun {κ} V U => IsBasicCover (κ := κ) V U) where
   iSup_eq V κ U hU := hU.2.choose_spec.2
@@ -89,6 +102,13 @@ lemma isCoverSystem_isBasicCover :
     obtain ⟨x, hx, hyx⟩ := this
     exact Opens.mem_iSup.2 ⟨⟨x, hx⟩, hyx⟩
 
+/- English proof (translation)
+Establish `key : ∀ (W : Y.Opens) (x : X), x ∈ g ''ᵁ W ↔ ∃ y ∈ W, g y = x` using `fun W x => by`. Rewrite using `[← SetLike.mem_coe, Scheme.Hom.coe_image]`. Both sides reduce to the same expression. Use `SetLike.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[mem_inter_iff, key]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ a`. Conclude with `(key _ _).2 ⟨y, (mem_inter_iff U i y).1 hy a, rfl⟩`. Introduce `hx choose y hy hyx using fun a => (key _ x).1 (hx a)`. Use `⟨y 0, (mem_inter_iff U i (y 0)).2 fun a => ?_, hyx 0⟩` and prove the remaining obligations.
+
+Establish `: y a = y 0` using `g.isOpenEmbedding.injective ((hyx a).trans (hyx 0).symm)`. Rewrite using `[← this]`. Conclude with `hy a`.
+-/
 lemma image_inter {Y : Scheme.{u}} (g : Y ⟶ X) [IsOpenImmersion g] {κ : Type w}
     (U : κ → Y.Opens) {n : ℕ} (i : Fin (n + 1) → κ) :
     g ''ᵁ inter (X := Y.toTopCat) U i = inter (X := X.toTopCat) (fun a => g ''ᵁ U a) i := by
@@ -107,6 +127,17 @@ lemma image_inter {Y : Scheme.{u}} (g : Y ⟶ X) [IsOpenImmersion g] {κ : Type 
     rw [← this]
     exact hy a
 
+/- English proof (translation)
+Take `⟨hV, h, hUh, hsup⟩` from `hU`. Establish `hUeq : U = fun a => X.basicOpen (h a)` using `funext hUh`. Substitute `hUeq` using the available equality. Set `F' : (Spec Γ(X, V)).Modules` to `F.restrict hV.fromSpec`. Set `M` to `(modulesSpecToSheaf.obj F').presheaf.obj (op ⊤)`.
+
+Set `U' : κ → Opens (Spec Γ(X, V)).toTopCat` to `fun a => PrimeSpectrum.basicOpen (h a)`. Establish `hsup' : iSup U' = ⊤`. Establish `h1 : hV.fromSpec ⁻¹ᵁ (⨆ a, X.basicOpen (h a)) = ⊤`. Rewrite using `[hsup]`. Conclude with `hV.fromSpec_preimage_self`.
+
+Rewrite `h1` using `[Scheme.Hom.preimage_iSup]`. Simplify `h1` using `only [hV.fromSpec_preimage_basicOpen]`. Establish `hM : CechAcyclic (tildeAb M).obj U'` using `cechCondition_tilde M ⊤ ⟨1, PrimeSpectrum.basicOpen_one.symm⟩ κ U' (fun a => ⟨h a, rfl⟩) hsup'`. Establish `: F'.IsQuasicoherent` using `Scheme.Modules.isQuasicoherent_restrictFunctor hV.fromSpec F`. Establish `hiso : IsIso F'.fromTildeΓ` using `Scheme.Modules.isIso_fromTildeΓ_of_isQuasicoherent F'`.
+
+Set `e : tildeAb M ≅ modulesAb F'` to `(SheafOfModules.toSheaf _).mapIso (@asIso _ _ _ _ F'.fromTildeΓ hiso)`. Establish `hF' : CechAcyclic (modulesAb F').obj U'` using `CechAcyclic.of_retract U' e.inv.hom e.hom.hom (congrArg (fun f => f.hom) e.inv_hom_id) hM`. Establish `key` using `cechAcyclic_of_transport (P := (modulesAb F).obj) (P' := (modulesAb F').obj) (fun W => hV.fromSpec ''ᵁ W) (fun _ _ hle => hV.fromSpec.image_mono hle) (fun W => AddEquiv.refl _) (fun _ _ => rfl) U' (fun i => image_inter hV.fromSpec U' i) hF'`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+
+Conclude with `(hV.fromSpec_image_basicOpen (h a)).symm`.
+-/
 theorem cechAcyclic_of_isBasicCover (F : X.Modules) [F.IsQuasicoherent] {V : X.Opens}
     {κ : Type u} [Finite κ] {U : κ → X.Opens} (hU : IsBasicCover V U) :
     CechAcyclic (modulesAb F).obj U := by
@@ -138,11 +169,17 @@ theorem cechAcyclic_of_isBasicCover (F : X.Modules) [F.IsQuasicoherent] {V : X.O
   funext a
   exact (hV.fromSpec_image_basicOpen (h a)).symm
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ hU` and use `cechAcyclic_of_isBasicCover F hU`.
+-/
 lemma goodAcyclic_modulesAb (F : X.Modules) [F.IsQuasicoherent] :
     GoodAcyclic (X := X.toTopCat) IsAffineOpen (fun {κ} V U => IsBasicCover (κ := κ) V U)
       (modulesAb F) :=
   fun _ _ _ _ _ hU => cechAcyclic_of_isBasicCover F hU
 
+/- English proof (translation)
+The claim follows from `SetLike.ext fun x => by rw [mem_inter_iff, ← SetLike.mem_coe, Opens.coe_iInf, Set.mem_iInter] rfl`.
+-/
 lemma inter_eq_iInf {ι : Type w} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) :
     inter (X := X.toTopCat) U i = ⨅ a, U (i a) :=
   SetLike.ext fun x => by
@@ -151,6 +188,9 @@ lemma inter_eq_iInf {ι : Type w} (U : ι → X.Opens) {n : ℕ} (i : Fin n → 
 
 variable [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{u})]
 
+/- English proof (translation)
+The claim follows from `nonempty_cechH_equiv isCoverSystem_isBasicCover U hU (fun i => by rw [inter_eq_iInf]; exact hUaff _ i) n (modulesAb F) (goodAcyclic_modulesAb F)`.
+-/
 theorem nonempty_cechH_equiv_H (F : X.Modules) [F.IsQuasicoherent] {ι : Type w}
     (U : ι → X.Opens) (hU : iSup U = ⊤)
     (hUaff : ∀ (n : ℕ) (i : Fin (n + 1) → ι), IsAffineOpen (⨅ a, U (i a))) (n : ℕ) :

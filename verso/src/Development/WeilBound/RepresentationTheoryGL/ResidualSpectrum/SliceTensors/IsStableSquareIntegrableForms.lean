@@ -16,6 +16,15 @@ namespace PositivityTheory.Rg.Rs.PrSt
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k`. Express the relevant statement in the definitionally equal form `φ.1 (splitCentre E N t * g * finGL E N k) = φ.1 (g * finGL E N k)`. Rewrite using `[mul_assoc, h]`. Consider the case `cpt k`.
+
+Express the relevant statement in the definitionally equal form `φ.1 (splitCentre E N t * g * infGL E N (Unitary.toUnits k)) = φ.1 (g * infGL E N (Unitary.toUnits k))`. Rewrite using `[mul_assoc, h]`. Consider the case `lie X`. Express the relevant statement in the definitionally equal form `lieD X φ.1 (splitCentre E N t * g) = lieD X φ.1 g`. Establish `e : chart φ.1 (splitCentre E N t * g) = chart φ.1 g`.
+
+Use function extensionality and compare the values at `x`. Unfold `chart`. Use `split_ifs`. Rewrite using `[mul_assoc, h]`. Both sides reduce to the same expression.
+
+Unfold `lieD`. Rewrite using `[e]`.
+-/
 theorem splitInv_act (o : Op E N) {φ : Sm E N} (h : ∀ t g, φ.1 (splitCentre E N t * g) = φ.1 g) (t : ℝ)
     (g : GA E N) : (act o φ).1 (splitCentre E N t * g) = (act o φ).1 g := by
   cases o with
@@ -36,6 +45,15 @@ theorem splitInv_act (o : Op E N) {φ : Sm E N} (h : ∀ t g, φ.1 (splitCentre 
     unfold lieD
     rw [e]
 
+/- English proof (translation)
+Set `μ : Measure (GA E N)` to `Measure.haar`. Establish `: μ.IsMulRightInvariant` using `GlobalTheory.CovolGL.isMulRightInvariant E N μ`. Establish `hA` using `PrAut.isAutForm_act hF o h`. Rewrite using `[← memL2_iff_isSqInt (μ := μ) (ContAut.continuous_of_isOpen_stab E N _ hA.level) hA.left (splitInv_act o h'.1)]`. Establish `hm : MemL2Quotient (latticeGL E N) μ φ.1` using `memL2_of_isAutForm h h'`.
+
+Consider the cases of `o with`. Consider the case `fin k => exact hm.mul_right (finGL E N k)`. Consider the case `cpt k => exact hm.mul_right (infGL E N (Unitary.toUnits k))`. Consider the case `lie X`. Set `ν : Measure (Lie E N)` to `Measure.addHaar`.
+
+Take `⟨α, hα, e⟩` from `GlobalTheory.AutGrowth.SelfSmoothing.exists_smoothing_eq_self hF E N ν φ h`. Establish `e' : (act (.lie X) φ).1 = GlobalTheory.CuspQuot.smoothing ν (GlobalTheory.AutGrowth.dens X α) φ.1`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `lieD X φ.1 g = _`. Use `conv_lhs => rw [← e]`.
+
+Conclude with `GlobalTheory.AutGrowth.lieD_smoothing_eq_dens E N ν α hα φ.1 φ.2 X g`. Rewrite using `[e']`. Conclude with `SmoothingSquareIntegrable.memL2_of_smoothing μ ν (GlobalTheory.AutGrowth.isTest_dens X hα) (ContAut.continuous_of_isOpen_stab E N φ h.level) hm`.
+-/
 theorem isSqInt_act (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (o : Op E N) {φ : Sm E N} (h : IsAutForm φ)
     (h' : IsSqInt φ.1) : IsSqInt (act o φ).1 := by
   let μ : Measure (GA E N) := Measure.haar
@@ -71,6 +89,9 @@ def ainv : Submodule ℂ (Sm E N) where
     change c * φ.1 _ = c * φ.1 g
     rw [ha t g]
 
+/- English proof (translation)
+Set `μ : Measure (GA E N)` to `Measure.haar`. Establish `hle : A2 E N ≤ GlobalTheory.DiscClosure.autSub E N ⊓ GlobalTheory.DiscClosure.squareIntegrableSmoothSubmoduleGL μ ⊓ ainv E N` using `Submodule.span_le.2 fun ψ hψ => ⟨⟨hψ.1, memL2_of_isAutForm hψ.1 hψ.2⟩, hψ.2.1⟩`. Take `⟨⟨h1, h2⟩, h3⟩` from `hle hφ`. Conclude with `⟨h1, (memL2_iff_isSqInt (ContAut.continuous_of_isOpen_stab E N φ h1.level) h1.left h3).1 h2⟩`.
+-/
 theorem mem_square_integrable_forms {φ : Sm E N} (hφ : φ ∈ A2 E N) : IsAutForm φ ∧ IsSqInt φ.1 := by
   let μ : Measure (GA E N) := Measure.haar
   have hle : A2 E N ≤ GlobalTheory.DiscClosure.autSub E N ⊓ GlobalTheory.DiscClosure.squareIntegrableSmoothSubmoduleGL μ ⊓ ainv E N :=
@@ -78,6 +99,11 @@ theorem mem_square_integrable_forms {φ : Sm E N} (hφ : φ ∈ A2 E N) : IsAutF
   obtain ⟨⟨h1, h2⟩, h3⟩ := hle hφ
   exact ⟨h1, (memL2_iff_isSqInt (ContAut.continuous_of_isOpen_stab E N φ h1.level) h1.left h3).1 h2⟩
 
+/- English proof (translation)
+Introduce `o φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem ψ hψ => exact Submodule.subset_span ⟨PrAut.isAutForm_act hF o hψ.1, isSqInt_act hF o hψ.1 hψ.2⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem isStable_square_integrable_forms (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) : IsStable (A2 E N) := by
   intro o φ hφ
   induction hφ using Submodule.span_induction with
@@ -93,6 +119,11 @@ open GlobalTheory.CapOrth
 variable {μ : Measure (GA E N)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {W : Submodule ℂ (Sm E N)}
   (h : ∀ φ ∈ W, MemL2Quotient (latticeGL E N) μ φ.1)
 
+/- English proof (translation)
+Establish `hrr : rt E N g (rt E N g⁻¹ ψ) = ψ`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `e : toL2ₗ μ W h ⟨ψ, hψ⟩ = R (latticeGL E N) μ g (toL2ₗ μ W h ⟨rt E N g⁻¹ ψ, hg' ψ hψ⟩)`. Rewrite using `[R_toL2ₗ h ⟨_, hg' ψ hψ⟩ (by rw [hrr]; exact hψ)]`. Conclude with `congrArg _ (Subtype.ext hrr.symm)`.
+
+Rewrite using `[cls_mk h (hg φ hφ), cls_mk h hψ, cls_mk h hφ, cls_mk h (hg' ψ hψ), ← R_toL2ₗ h ⟨φ, hφ⟩ (hg φ hφ), e]`. Set `Ui : L2 (latticeGL E N) μ →ₗᵢ[ℂ] L2 (latticeGL E N) μ` to `⟨(R (latticeGL E N) μ g).toLinearMap, norm_R g⟩`. Conclude with `Ui.inner_map_map _ _`.
+-/
 theorem inner_rt {g : GA E N} (hg : ∀ φ ∈ W, rt E N g φ ∈ W) (hg' : ∀ φ ∈ W, rt E N g⁻¹ φ ∈ W) {φ ψ : Sm E N}
     (hφ : φ ∈ W) (hψ : ψ ∈ W) :
     inner ℂ (cls h (rt E N g φ)) (cls h ψ) = inner ℂ (cls h φ) (cls h (rt E N g⁻¹ ψ)) := by
@@ -105,6 +136,15 @@ theorem inner_rt {g : GA E N} (hg : ∀ φ ∈ W, rt E N g φ ∈ W) (hg' : ∀ 
   let Ui : L2 (latticeGL E N) μ →ₗᵢ[ℂ] L2 (latticeGL E N) μ := ⟨(R (latticeGL E N) μ g).toLinearMap, norm_R g⟩
   exact Ui.inner_map_map _ _
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k`. Use `⟨act (.fin k⁻¹), fun U hU u hu => hU _ u hu, fun φ hφ ψ hψ => ?_⟩` and prove the remaining obligations. Establish `e : (finGL E N k)⁻¹ = finGL E N k⁻¹` using `(map_inv _ k).symm`. Use `inner_rt h (g := finGL E N k) (fun x hx => hW (.fin k) x hx) (fun x hx => by rw [e]; exact hW (.fin k⁻¹) x hx) hφ hψ` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `this`. Consider the case `cpt k`. Use `⟨act (.cpt k⁻¹), fun U hU u hu => hU _ u hu, fun φ hφ ψ hψ => ?_⟩` and prove the remaining obligations. Establish `e : (infGL E N (Unitary.toUnits k))⁻¹ = infGL E N (Unitary.toUnits k⁻¹)`.
+
+Rewrite using `[map_inv, map_inv]`. Use `inner_rt h (g := infGL E N (Unitary.toUnits k)) (fun x hx => hW (.cpt k) x hx) (fun x hx => by rw [e]; exact hW (.cpt k⁻¹) x hx) hφ hψ` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`. Consider the case `lie X`.
+
+Use `⟨-act (.lie X), fun U hU u hu => U.neg_mem (hU _ u hu), fun φ hφ ψ hψ => ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.LieSkew.lie_skew E N μ W h hW hA X ⟨φ, hφ⟩ ⟨ψ, hψ⟩`. Rewrite using `[LinearMap.neg_apply, show -(act (.lie X) ψ) = (-1 : ℂ) • act (.lie X) ψ by simp, cls_smul h (-1 : ℂ) (hW (.lie X) ψ hψ), inner_smul_right, cls_mk h (hW (.lie X) φ hφ), cls_mk h hψ, cls_mk h hφ, cls_mk h (hW (.lie X) ψ hψ), neg_one_mul]`. Conclude with `e`.
+-/
 theorem exists_adj (hW : IsStable W) (hA : ∀ φ ∈ W, IsAutForm φ) (o : Op E N) :
     ∃ B : Module.End ℂ (Sm E N), (∀ U : Submodule ℂ (Sm E N), IsStable U → ∀ u ∈ U, B u ∈ U) ∧
       ∀ φ ∈ W, ∀ ψ ∈ W, inner ℂ (cls h (act o φ)) (cls h ψ) = inner ℂ (cls h φ) (cls h (B ψ)) := by

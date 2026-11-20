@@ -8,6 +8,21 @@ namespace GlobalTheory.EtC.ConeConn
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `R _ S hc φ ψ hφ hψ w hw`. Set `Φ : Cochain (sgl S.X₂) (res R S.X₁) 0` to `Cochain.fromSingleMk φ (zero_add 0)`. Establish `hw1 : w.1 = Cochain.fromSingleMk ψ (zero_add 1)`. Take `⟨f, hf⟩` from `Cochain.fromSingleMk_surjective w.1 1 (zero_add 1)`. Rewrite using `[← hf]`.
+
+Use `congr 1`. Rewrite using `[← hw, ← hf, Cochain.fromSingleMk_v]`. Conclude with `(Iso.inv_hom_id_assoc _ _).symm`. Establish `h1 : δ 0 1 Φ = (Cochain.ofHom (S.map (CochainComplex.singleFunctor (Shv R) 0)).g).comp w.1 (zero_add 1)`. Rewrite using `[hw1, Cochain.δ_fromSingleMk φ (zero_add 0) 1 1 (zero_add 1), ← hψ]`.
+
+Conclude with `Cochain.fromSingleMk_precomp S.g ψ (zero_add 1)`. Establish `h2 : (Cochain.ofHom (S.map (CochainComplex.singleFunctor (Shv R) 0)).f).comp Φ (zero_add 0) = Cochain.ofHom (resAug S.X₁)`. Use `(Cochain.fromSingleMk_precomp S.f φ (zero_add 0)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hφ]`. Apply `(Cochain.fromSingleEquiv (X := S.X₁) (K := res R S.X₁) (p := 0) (zero_add 0)).injective` to reduce the goal to its premises.
+
+Rewrite using `[Cochain.fromSingleEquiv_fromSingleMk]`. Express the relevant statement in the definitionally equal form `resι R S.X₁ = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 S.X₁).inv ≫ (Cochain.ofHom (resAug S.X₁)).v 0 0 (add_zero 0)`. Rewrite using `[Cochain.ofHom_v]`. Both sides reduce to the same expression. Establish `h3 : Cochain.ofHom (mappingCone.descShortComplex (S.map (CochainComplex.singleFunctor (Shv R) 0))) = (mappingCone.snd (S.map (CochainComplex.singleFunctor (Shv R) 0)).f).comp (Cochain.ofHom (S.map (CochainComplex.singleFunctor (Shv R) 0)).g) (zero_add 0)`.
+
+Rewrite using `[mappingCone.descShortComplex, mappingCone.ofHom_desc, mappingCone.descCochain]`. Simplify using the standard rewrite rules. Establish `h4 : (Cochain.ofHom (mappingCone.map _ (resMap R S.f) (resAug S.X₁) (resAug S.X₂) hc)).comp (mappingCone.fst (resMap R S.f)).1 (zero_add 1) = (mappingCone.fst (S.map (CochainComplex.singleFunctor (Shv R) 0)).f).1.comp (Cochain.ofHom (resAug S.X₁)) (add_zero 1)`. Simplify using `[mappingCone.map, mappingCone.ofHom_desc, mappingCone.descCochain, Cochain.add_comp]`. Both sides reduce to the same expression.
+
+Use `symm`. Use `sub_eq_zero.1 ((CohomologyClass.mk_sub _ _).symm.trans ?_)` and prove the remaining obligations. Use `(CohomologyClass.mk_eq_zero_iff _).2 ((mem_coboundaries_iff _ 0 (zero_add 1)).2 ⟨(mappingCone.snd (S.map (CochainComplex.singleFunctor (Shv R) 0)).f).comp Φ (zero_add 0), ?_⟩)` and prove the remaining obligations. Establish `e1` using `δ_zero_cochain_comp (mappingCone.snd (S.map (CochainComplex.singleFunctor (Shv R) 0)).f) Φ 1 (zero_add 1)`. Rewrite `e1` using `[h1, mappingCone.δ_snd, Int.negOnePow_zero, one_smul, Cochain.neg_comp, Cochain.comp_assoc_of_second_is_zero_cochain, h2, ← Cochain.comp_assoc_of_first_is_zero_cochain, ← h3, ← h4]`.
+
+Use `e1.trans ?_` and prove the remaining obligations. Simplify using `[zcomp, sub_eq_add_neg]`.
+-/
 theorem cone_connecting_class : ∀ (R : Type) [CommRing R] (S : ShortComplex (Shv R))
     (hc : (CochainComplex.singleFunctor (Shv R) 0).map S.f ≫ resAug S.X₂ = resAug S.X₁ ≫ resMap R S.f)
     (φ : S.X₂ ⟶ (res R S.X₁).X 0) (ψ : S.X₃ ⟶ (res R S.X₁).X 1),

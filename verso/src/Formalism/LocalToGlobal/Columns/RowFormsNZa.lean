@@ -13,6 +13,11 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Establish `h1` using `congrArg φ h`. Rewrite `h1` using `[map_sum, map_one]`. Establish `h2 : ((∑ i, Complex.normSq (φ ((x i : 𝓞 E) : E)) : ℝ) : ℂ) = 1`. Rewrite using `[← h1, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hconj, Complex.normSq_eq_conj_mul_self]`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem nz_sum_normSq (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = starRingEnd ℂ (φ x)) {ι : Type} [Fintype ι]
     (x : ι → 𝓞 E) (h : ∑ i, star ((x i : 𝓞 E) : E) * ((x i : 𝓞 E) : E) = 1) (φ : E →+* ℂ) :
     ∑ i, Complex.normSq (φ ((x i : 𝓞 E) : E)) = 1 := by
@@ -24,6 +29,15 @@ theorem nz_sum_normSq (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = sta
     rw [map_mul, hconj, Complex.normSq_eq_conj_mul_self]
   exact_mod_cast h2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hb`. Establish `hy : x a * x b ≠ 0` using `mul_ne_zero ha hb`. Establish `key : ∀ v : InfinitePlace E, v (((x a * x b : 𝓞 E)) : E) < 1`. Introduce `v`. Establish `h1` using `nz_sum_normSq hconj x h v.embedding`.
+
+Establish `h2 : Complex.normSq (v.embedding ((x a : 𝓞 E) : E)) + Complex.normSq (v.embedding ((x b : 𝓞 E) : E)) ≤ 1`. Rewrite using `[← h1, ← Finset.sum_pair (f := fun i => Complex.normSq (v.embedding ((x i : 𝓞 E) : E))) hab]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun i _ _ => Complex.normSq_nonneg _`. Rewrite `h2` using `[Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq, InfinitePlace.norm_embedding_eq, InfinitePlace.norm_embedding_eq]`. Establish `h3 : v (((x a * x b : 𝓞 E)) : E) = v ((x a : 𝓞 E) : E) * v ((x b : 𝓞 E) : E)`.
+
+Rewrite using `[show (((x a * x b : 𝓞 E)) : E) = ((x a : 𝓞 E) : E) * ((x b : 𝓞 E) : E) from map_mul (algebraMap (𝓞 E) E) _ _, map_mul]`. Rewrite using `[h3]`. Use polynomial arithmetic with `[sq_nonneg (v ((x a : 𝓞 E) : E) - v ((x b : 𝓞 E) : E))]`. Take `⟨v0⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Use `InfinitePlace.one_le_of_lt_one (w := v0) hy fun z _ => key z` as an intermediate fact.
+
+Conclude with `absurd (key v0) (not_lt.mpr this)`.
+-/
 theorem nz_two_zero (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = starRingEnd ℂ (φ x)) {ι : Type} [Fintype ι]
     (x : ι → 𝓞 E) (h : ∑ i, star ((x i : 𝓞 E) : E) * ((x i : 𝓞 E) : E) = 1) {a b : ι} (hab : a ≠ b)
     (ha : x a ≠ 0) : x b = 0 := by
@@ -47,6 +61,15 @@ theorem nz_two_zero (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = starR
   have := InfinitePlace.one_le_of_lt_one (w := v0) hy fun z _ => key z
   exact absurd (key v0) (not_lt.mpr this)
 
+/- English proof (translation)
+Establish `hex : ∃ i, x i ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Rewrite `h` using `[Finset.sum_eq_zero (fun i _ => by rw [hc i]; simp)]`. Conclude with `zero_ne_one h`.
+
+Take `⟨i, hi⟩` from `hex`. Establish `hz : ∀ j, j ≠ i → x j = 0` using `fun j hj => nz_two_zero hconj x h (Ne.symm hj) hi`. Use `⟨i, ?_, hz⟩` and prove the remaining obligations. Rewrite using `[← h]`. Use `symm`.
+
+Apply `Finset.sum_eq_single i` to reduce the goal to its premises. Introduce `j _ hj`. Rewrite using `[hz j hj]`. Simplify using the standard rewrite rules. Introduce `hn`.
+
+Conclude with `absurd (Finset.mem_univ i) hn`.
+-/
 theorem nz_mono (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = starRingEnd ℂ (φ x)) {ι : Type} [Fintype ι]
     (x : ι → 𝓞 E) (h : ∑ i, star ((x i : 𝓞 E) : E) * ((x i : 𝓞 E) : E) = 1) :
     ∃ i, star ((x i : 𝓞 E) : E) * ((x i : 𝓞 E) : E) = 1 ∧ ∀ j, j ≠ i → x j = 0 := by
@@ -68,10 +91,18 @@ theorem nz_mono (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = starRingE
   · intro hn
     exact absurd (Finset.mem_univ i) hn
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `Submodule.mem_one.mp (star_coe_mem_one z)`. Conclude with `⟨r, hr⟩`.
+-/
 theorem nz_exists_star (z : 𝓞 E) : ∃ z' : 𝓞 E, ((z' : 𝓞 E) : E) = star ((z : 𝓞 E) : E) := by
   obtain ⟨r, hr⟩ := Submodule.mem_one.mp (star_coe_mem_one z)
   exact ⟨r, hr⟩
 
+/- English proof (translation)
+Take `⟨z', hz'⟩` from `nz_exists_star z`. Use `⟨z', ?_, hz'⟩` and prove the remaining obligations. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `e1 : ((z' * z : 𝓞 E) : E) = ((z' : 𝓞 E) : E) * ((z : 𝓞 E) : E)` using `map_mul (algebraMap (𝓞 E) E) z' z`. Establish `e2 : ((1 : 𝓞 E) : E) = 1` using `map_one (algebraMap (𝓞 E) E)`.
+
+Use `show ((z' * z : 𝓞 E) : E) = ((1 : 𝓞 E) : E)`. Rewrite using `[e1, e2, hz', hz]`.
+-/
 theorem nz_exists_inv {z : 𝓞 E} (hz : star ((z : 𝓞 E) : E) * ((z : 𝓞 E) : E) = 1) :
     ∃ z' : 𝓞 E, z' * z = 1 ∧ ((z' : 𝓞 E) : E) = star ((z : 𝓞 E) : E) := by
   obtain ⟨z', hz'⟩ := nz_exists_star z
@@ -82,6 +113,9 @@ theorem nz_exists_inv {z : 𝓞 E} (hz : star ((z : 𝓞 E) : E) * ((z : 𝓞 E)
   show ((z' * z : 𝓞 E) : E) = ((1 : 𝓞 E) : E)
   rw [e1, e2, hz', hz]
 
+/- English proof (translation)
+Introduce `hw`. Take `⟨z', h1, -⟩` from `nz_exists_inv hz`. Establish `: (1 : 𝓞 E) ∈ w.asIdeal` using `h1 ▸ w.asIdeal.mul_mem_left z' hw`. Conclude with `one_notMem w this`.
+-/
 theorem nz_unit_notMem {z : 𝓞 E} (hz : star ((z : 𝓞 E) : E) * ((z : 𝓞 E) : E) = 1) (w : HeightOneSpectrum (𝓞 E)) :
     z ∉ w.asIdeal := by
   intro hw
@@ -89,6 +123,25 @@ theorem nz_unit_notMem {z : 𝓞 E} (hz : star ((z : 𝓞 E) : E) * ((z : 𝓞 E
   have : (1 : 𝓞 E) ∈ w.asIdeal := h1 ▸ w.asIdeal.mul_mem_left z' hw
   exact one_notMem w this
 
+/- English proof (translation)
+Establish `hz0 : ((z : 𝓞 E) : E) ≠ 0`. Introduce `h0`. Rewrite `hz` using `[h0, mul_zero]`. Conclude with `zero_ne_one hz`. Take `⟨z', hz'1, hz'⟩` from `nz_exists_inv hz`.
+
+Use `set γ : Sp E 1 ≃ₗ[E] Sp E 1 := LinearEquiv.smulOfNeZero E (Sp E 1) ((z : 𝓞 E) : E) hz0 with hγdef`. Establish `hγx : ∀ x : Sp E 1, γ x = ((z : 𝓞 E) : E) • x` using `fun x => rfl`. Establish `hγo : ∀ x : Sp E 1, γ x = z • x` using `fun x => by`. Rewrite using `[hγx]`. Conclude with `(algebraMap_smul E z x)`.
+
+Establish `hiso : γ ∈ isom (hStd E 1)`. Introduce `x y`. Rewrite using `[hγx, hγx, hStd_apply, hStd_apply, ← one_mul (∑ i, star (x i) * y i), ← hz, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `haut : γ ∈ autLat (stdLat E 1)`. Rewrite using `[mem_autLat]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩ show γ x ∈ stdLat E 1`.
+
+Rewrite using `[hγo]`. Conclude with `(stdLat E 1).smul_mem z hx`. Introduce `x hx`. Use `⟨z' • x, (stdLat E 1).smul_mem z' hx, ?_⟩` and prove the remaining obligations. Use `show γ (z' • x) = x`.
+
+Rewrite using `[hγo, smul_smul, mul_comm, hz'1, one_smul]`. Establish `huni : UnipMod w (stdLat E 1) γ`. Use `⟨haut, 1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`. Establish `: ((((γ : Sp E 1 →ₗ[E] Sp E 1) : Module.End E (Sp E 1)) - 1) : Module.End E (Sp E 1)) x = (z - 1) • x` using `by show γ x - x = (z - 1) • x`.
+
+Rewrite using `[hγo, sub_smul, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul h1 hx`. Establish `hfr : finrank E (Sp E 1) = 1` using `by simp`. Establish `hone : γ = 1` using `isometry_unipotent_mod_eq_one (hStd E 1) hStd_isSymm (hStd_trace_pos hconj) stdLat_lattice hw hg hgw (by rw [hfr, mul_one]; exact hbig) hiso huni`.
+
+Establish `h2` using `congrArg (fun e : Sp E 1 ≃ₗ[E] Sp E 1 => e (fun _ => 1) 0) hone`. Establish `h3 : ((z : 𝓞 E) : E) = 1` using `by simpa [hγx] using h2`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `show ((z : 𝓞 E) : E) = ((1 : 𝓞 E) : E)`. Rewrite using `[h3]`.
+
+Conclude with `(map_one (algebraMap (𝓞 E) E)).symm`.
+-/
 theorem nz_one_of_congr (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = starRingEnd ℂ (φ x))
     {w : Ideal (𝓞 E)} (hw : w ≠ ⊤) {g : ℕ} (hg : g.Prime) (hgw : (g : 𝓞 E) ∈ w) (hbig : finrank ℚ E + 1 < g)
     {z : 𝓞 E} (hz : star ((z : 𝓞 E) : E) * ((z : 𝓞 E) : E) = 1) (h1 : z - 1 ∈ w) : z = 1 := by
@@ -139,6 +192,9 @@ theorem nz_one_of_congr (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = s
 
 end Gen
 
+/- English proof (translation)
+The claim follows from `nz_one_of_congr hX.conjE w.isPrime.ne_top hg hgw (by rw [hX.finrank_E]; exact hbig) hz h1`.
+-/
 theorem nz_root_one {X : Fields} (hX : X.Ok) (w : HeightOneSpectrum (𝓞 X.E)) {g : ℕ} (hg : g.Prime)
     (hgw : (g : 𝓞 X.E) ∈ w.asIdeal) (hbig : 2 * X.f + 1 < g) {z : 𝓞 X.E}
     (hz : star ((z : 𝓞 X.E) : X.E) * ((z : 𝓞 X.E) : X.E) = 1) (h1 : z - 1 ∈ w.asIdeal) : z = 1 :=

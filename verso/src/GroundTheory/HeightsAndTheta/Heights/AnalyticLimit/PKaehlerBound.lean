@@ -14,8 +14,16 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChar
 
 noncomputable section
 
+/- English proof (translation)
+Use `norm_cast`.
+-/
 theorem two_le_smooth_kb : (2 : WithTop ℕ∞) ≤ ∞ := by norm_cast
 
+/- English proof (translation)
+Establish `hK : ∀ j, IsCompact ((R.ψ j).symm '' closure (R.W'' j))` using `fun j => by`. Establish `hc : IsCompact (closure (R.W'' j))` using `(R.isCompact_closure_middle j).of_isClosed_subset isClosed_closure ((R.closure_W''_subset j).trans subset_closure)`. Use `hc.image_of_continuousOn ((R.ψ j).continuousOn_symm.mono ?_)` and prove the remaining obligations. Conclude with `(R.closure_W''_subset j).trans (subset_closure.trans ((R.closure_W'_subset j).trans (R.W_subset j)))`. Use `(isCompact_iUnion hK).of_isClosed_subset isClosed_univ fun x _ => ?_` and prove the remaining obligations.
+
+Take `⟨j, hx, hxW⟩` from `R.cover x`. Conclude with `Set.mem_iUnion.2 ⟨j, R.ψ j x, subset_closure hxW, (R.ψ j).left_inv hx⟩`.
+-/
 theorem regChartData_isCompact_univ {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X}
     (R : RegChartData A) : IsCompact (Set.univ : Set X) := by
   have hK : ∀ j, IsCompact ((R.ψ j).symm '' closure (R.W'' j)) := fun j => by
@@ -31,6 +39,9 @@ theorem regChartData_isCompact_univ {D : ℕ} {X : Type} [TopologicalSpace X] {A
 
 variable {D : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+The claim follows from `|levi (θ.φ p ∘ (A.chart j).symm) y u| ≤ M * levi (om.φ p ∘ (A.chart j).symm) y u := by set c := A.chart j with hc set O := c.target ∩ c.symm ⁻¹' (θ.U p ∩ om.U p) with hO have hOo : IsOpen O := c.continuousOn_symm.isOpen_inter_preimage c.open_target ((θ.isOpen_U p).inter (om.isOpe …`.
+-/
 theorem levi_abs_le_local (A : FinHolAtlas D X) (θ om : LocPot X) (hθ : IsPotential A θ)
     (hom : IsPotential A om) (hpos : IsPosPot A om) (p : X) (j : Fin A.n)
     (hp : p ∈ (A.chart j).source) :
@@ -84,6 +95,9 @@ theorem levi_abs_le_local (A : FinHolAtlas D X) (θ om : LocPot X) (hθ : IsPote
     have : 0 ≤ s ^ 2 := sq_nonneg s
     nlinarith
 
+/- English proof (translation)
+The claim follows from `|levi (θ.φ x ∘ (A.chart k).symm) y v| ≤ M * levi (om.φ x ∘ (A.chart k).symm) y v := by classical have hsrc : ∀ p, p ∈ (A.chart (chartIdx A p)).source := fun p => Classical.choose_spec (A.cover p) have key := fun p => levi_abs_le_local A θ om hθ hom hpos p (chartIdx A p) (hsrc p) …`.
+-/
 theorem levi_abs_le_global (A : FinHolAtlas D X) (hX : IsCompact (Set.univ : Set X))
     (θ om : LocPot X) (hθ : IsPotential A θ) (hom : IsPotential A om) (hpos : IsPosPot A om) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ x k, ∀ y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (θ.U x ∩ om.U x),
@@ -171,6 +185,25 @@ theorem levi_abs_le_global (A : FinHolAtlas D X) (hX : IsCompact (Set.univ : Set
   rw [htr θ hθ hqθ hqp.1, htr om hom hqom hqp.2]
   nlinarith
 
+/- English proof (translation)
+Introduce `D X _ A R`. Take `⟨M, hM0, hM⟩` from `levi_abs_le_global A (regChartData_isCompact_univ R) R.θ R.om R.θ_pot R.om_pot R.om_pos`. Establish `hK : (0 : ℝ) < M + 1` using `by linarith`. Establish `hsm : ∀ P : LocPot X, IsPotential A P → ∀ x k, ∀ y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' P.U x, ContDiffAt ℝ 2 (P.φ x ∘ (A.chart k).symm) y` using `fun P hP x k y hy => ((hP.1 x k).of_le two_le_smooth_kb).contDiffAt (((A.chart k).continuousOn_symm.isOpen_inter_preimage (A.chart k).open_target (P.isOpen_U x)).mem_nhds hy)`. Establish `hsmul : ∀ (P : LocPot X) (a : ℝ) x k y, ContDiffAt ℝ 2 (P.φ x ∘ (A.chart k).symm) y → ∀ w, levi ((P.rsmul a).φ x ∘ (A.chart k).symm) y w = a * levi (P.φ x ∘ (A.chart k).symm) y w`.
+
+Introduce `P a x k y hy w`. Establish `h` using `levi_add_smul a (contDiffAt_const (c := (0 : ℝ))) hy w`. Establish `he : (P.rsmul a).φ x ∘ (A.chart k).symm = fun z => (0 : ℝ) + a * (P.φ x ∘ (A.chart k).symm) z`. Use function extensionality and compare the values at `z`. Simplify using `[LocPot.rsmul]`.
+
+Rewrite using `[he, h, levi_const, zero_add]`. Establish `key : ∀ x k, ∀ y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (R.θ.U x ∩ R.om.U x), ∀ w : Fin D → ℂ, levi ((thetaOmega R).φ x ∘ (A.chart k).symm) y w = levi (R.θ.φ x ∘ (A.chart k).symm) y w + levi (R.om.φ x ∘ (A.chart k).symm) y w ∧ levi ((R.om.rsmul (M + 1)).φ x ∘ (A.chart k).sym …`. Introduce `x k y hy w`. Establish `hθs` using `hsm R.θ R.θ_pot x k y ⟨hy.1, hy.2.1⟩`. Establish `homs` using `hsm R.om R.om_pot x k y ⟨hy.1, hy.2.2⟩`.
+
+Use `⟨?_, hsmul R.om (M + 1) x k y homs w, hM x k y hy w, ?_⟩` and prove the remaining obligations. Establish `he : (thetaOmega R).φ x ∘ (A.chart k).symm = fun z => (R.θ.φ x ∘ (A.chart k).symm) z + 1 * (R.om.φ x ∘ (A.chart k).symm) z`. Use function extensionality and compare the values at `z`. Use `show R.θ.φ x _ + R.om.φ x _ = _`. Simplify using the standard rewrite rules.
+
+Rewrite using `[he, levi_add_smul 1 hθs homs w, one_mul]`. Break down `eq_or_ne w 0 with h0 | h0` into its components or cases. Rewrite using `[h0, levi_zero]`. Conclude with `(R.om_pos x k y ⟨hy.1, hy.2.2⟩ w h0).le`. Use `⟨⟨R.om.rsmul (M + 1), ReciprocityTheory.AnForm.M.isPotentialRsmul A (M + 1) R.om R.om_pot, fun x k y hy w hw => ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsmul R.om (M + 1) x k y (hsm R.om R.om_pot x k y hy) w]`. Conclude with `mul_pos hK (R.om_pos x k y hy w hw)`. Introduce `x k y hy w`. Establish `hy' : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (R.θ.U x ∩ R.om.U x)` using `⟨hy.1, hy.2.1.2.1, hy.2.1.2.2⟩`. Take `⟨h1, h2, h3, h4⟩` from `key x k y hy' w`.
+
+Use `show 1 * levi ((thetaOmega R).φ x ∘ (A.chart k).symm) y w ≤ 1 * levi ((R.om.rsmul (M + 1)).φ x ∘ (A.chart k).symm) y w`. Rewrite using `[h1, h2]`. Use `abs_le.mp h3` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Introduce `x k y hy w`.
+
+Establish `hy' : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (R.θ.U x ∩ R.om.U x)` using `⟨hy.1, hy.2.2.1, hy.2.2.2⟩`. Take `⟨h1, h2, h3, h4⟩` from `key x k y hy' w`. Use `show -1 * levi ((R.om.rsmul (M + 1)).φ x ∘ (A.chart k).symm) y w ≤ 1 * levi ((thetaOmega R).φ x ∘ (A.chart k).symm) y w`. Rewrite using `[h1, h2]`. Use `abs_le.mp h3` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem KaehlerBound.proof : KaehlerBound.Statement := by
   intro D X _ A R
   obtain ⟨M, hM0, hM⟩ := levi_abs_le_global A (regChartData_isCompact_univ R) R.θ R.om R.θ_pot

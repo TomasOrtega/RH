@@ -19,6 +19,9 @@ def FixRed (X : HidaSetting D) (red : X.B.I.Gf → G0g D.nd)
         Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) j i).val : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) •
         incl X.B.I (b kv j) ∈ wLf X (D.naut.plGw kv.1 kv.2)
 
+/- English proof (translation)
+Introduce `k hk kv` and use `⟨b kv, (hf kv).1, (hf kv).2 k hk⟩`.
+-/
 theorem goodAt_of_fixRed {X : HidaSetting D} {red : X.B.I.Gf → G0g D.nd}
     {b : (Σ k : Fin 2, D.nd.PlG k) → Fin D.R.r → Fin X.B.I.n → X.B.I.E} (hf : FixRed X red b) :
     ∀ k ∈ X.B.I.Kset, GoodAt X k (red k) :=

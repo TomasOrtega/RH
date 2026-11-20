@@ -13,11 +13,20 @@ namespace GaussNormBasic
 variable {L : Type*} [NormedField L] [IsUltrametricDist L]
 
 omit [IsUltrametricDist L] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem normAbv_apply (x : L) : normAbv L x = ‖x‖ := rfl
 
+/- English proof (translation)
+The claim follows from `fun x y ↦ IsUltrametricDist.isNonarchimedean_norm x y`.
+-/
 theorem isNonarchimedean_normAbv : IsNonarchimedean (normAbv L) :=
   fun x y ↦ IsUltrametricDist.isNonarchimedean_norm x y
 
+/- English proof (translation)
+Use `gaussNormOf_le _ ((gaussNormOf_nonneg _ g).trans (le_max_left _ _)) fun m ↦ ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`. Conclude with `(isNonarchimedean_normAbv _ _).trans (max_le_max (le_gaussNormOf _ g m) (le_gaussNormOf _ g' m))`.
+-/
 theorem gaussNorm_add_le {ι : Type*} (g g' : MvPolynomial ι L) :
     gaussNormOf (normAbv L) (g + g') ≤
       max (gaussNormOf (normAbv L) g) (gaussNormOf (normAbv L) g') := by
@@ -26,6 +35,9 @@ theorem gaussNorm_add_le {ι : Type*} (g g' : MvPolynomial ι L) :
   exact (isNonarchimedean_normAbv _ _).trans
     (max_le_max (le_gaussNormOf _ g m) (le_gaussNormOf _ g' m))
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (fun x ↦ gaussNormOf (normAbv L) x ≤ r) (fun _ _ ha hb ↦ (gaussNorm_add_le _ _).trans (max_le ha hb)) (by rw [gaussNormOf_zero]; exact hr) h`.
+-/
 theorem gaussNorm_sum_le {ι β : Type*} (s : Finset β) (f : β → MvPolynomial ι L) {r : ℝ}
     (hr : 0 ≤ r) (h : ∀ b ∈ s, gaussNormOf (normAbv L) (f b) ≤ r) :
     gaussNormOf (normAbv L) (∑ b ∈ s, f b) ≤ r :=
@@ -35,6 +47,9 @@ theorem gaussNorm_sum_le {ι β : Type*} (s : Finset β) (f : β → MvPolynomia
 
 omit [IsUltrametricDist L] in
 
+/- English proof (translation)
+Use `gaussNormOf_le _ (norm_nonneg b) fun m ↦ ?_` and prove the remaining obligations. Rewrite using `[coeff_monomial, normAbv_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem gaussNorm_monomial_le {ι : Type*} (d : ι →₀ ℕ) (b : L) :
     gaussNormOf (normAbv L) (monomial d b) ≤ ‖b‖ := by
   classical
@@ -44,27 +59,44 @@ theorem gaussNorm_monomial_le {ι : Type*} (d : ι →₀ ℕ) (b : L) :
 
 omit [IsUltrametricDist L] in
 
+/- English proof (translation)
+Rewrite using `[← C_1, gaussNormOf_C, normAbv_apply, norm_one]`.
+-/
 theorem gaussNorm_one {ι : Type*} : gaussNormOf (normAbv L) (1 : MvPolynomial ι L) = 1 := by
   rw [← C_1, gaussNormOf_C, normAbv_apply, norm_one]
 
+/- English proof (translation)
+The claim follows from `(gaussNormOf_mul_le isNonarchimedean_normAbv a b).trans (mul_le_one₀ ha (gaussNormOf_nonneg _ b) hb)`.
+-/
 theorem mul_le_one_of_gaussNorm {ι : Type*} {a b : MvPolynomial ι L}
     (ha : gaussNormOf (normAbv L) a ≤ 1) (hb : gaussNormOf (normAbv L) b ≤ 1) :
     gaussNormOf (normAbv L) (a * b) ≤ 1 :=
   (gaussNormOf_mul_le isNonarchimedean_normAbv a b).trans
     (mul_le_one₀ ha (gaussNormOf_nonneg _ b) hb)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction f (fun x ↦ gaussNormOf (normAbv L) x ≤ 1) (fun _ _ ha hb ↦ mul_le_one_of_gaussNorm ha hb) gaussNorm_one.le h`.
+-/
 theorem gaussNorm_prod_le_one {ι β : Type*} (s : Finset β) (f : β → MvPolynomial ι L)
     (h : ∀ b ∈ s, gaussNormOf (normAbv L) (f b) ≤ 1) :
     gaussNormOf (normAbv L) (∏ b ∈ s, f b) ≤ 1 :=
   Finset.prod_induction f (fun x ↦ gaussNormOf (normAbv L) x ≤ 1)
     (fun _ _ ha hb ↦ mul_le_one_of_gaussNorm ha hb) gaussNorm_one.le h
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `gaussNorm_one.le`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `mul_le_one_of_gaussNorm ih h`.
+-/
 theorem gaussNorm_pow_le_one {ι : Type*} (f : MvPolynomial ι L)
     (h : gaussNormOf (normAbv L) f ≤ 1) (n : ℕ) : gaussNormOf (normAbv L) (f ^ n) ≤ 1 := by
   induction n with
   | zero => rw [pow_zero]; exact gaussNorm_one.le
   | succ n ih => rw [pow_succ]; exact mul_le_one_of_gaussNorm ih h
 
+/- English proof (translation)
+Use `conv_lhs => rw [g.as_sum, map_sum]`. Use `gaussNorm_sum_le _ _ (gaussNormOf_nonneg _ g) fun m _ ↦ ?_` and prove the remaining obligations. Rewrite using `[bind₁_monomial]`. Use `(gaussNormOf_mul_le isNonarchimedean_normAbv _ _).trans ?_` and prove the remaining obligations. Rewrite using `[gaussNormOf_C]`.
+
+Establish `h1` using `gaussNorm_prod_le_one m.support (fun i ↦ f i ^ m i) fun i _ ↦ gaussNorm_pow_le_one _ (hf i) _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gaussNorm_bind₁_le {ι κ : Type*} (f : ι → MvPolynomial κ L)
     (hf : ∀ i, gaussNormOf (normAbv L) (f i) ≤ 1) (g : MvPolynomial ι L) :
     gaussNormOf (normAbv L) (bind₁ f g) ≤ gaussNormOf (normAbv L) g := by
@@ -80,6 +112,11 @@ theorem gaussNorm_bind₁_le {ι κ : Type*} (f : ι → MvPolynomial κ L)
         mul_le_mul_of_nonneg_left h1 ((normAbv L).nonneg _)
     _ ≤ gaussNormOf (normAbv L) g := by rw [mul_one]; exact le_gaussNormOf _ g m
 
+/- English proof (translation)
+Use `(gaussNorm_add_le _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `gaussNorm_sum_le _ _ zero_le_one fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[C_mul_X_eq_monomial]`. Conclude with `(gaussNorm_monomial_le _ _).trans (hb j)`. Rewrite using `[gaussNormOf_C, normAbv_apply]`.
+
+Conclude with `hc`.
+-/
 theorem gaussNorm_linearForm_le {κ : Type*} [Fintype κ] (b : κ → L) (c : L)
     (hb : ∀ j, ‖b j‖ ≤ 1) (hc : ‖c‖ ≤ 1) :
     gaussNormOf (normAbv L) (∑ j, C (b j) * X j + C c : MvPolynomial κ L) ≤ 1 := by
@@ -89,6 +126,9 @@ theorem gaussNorm_linearForm_le {κ : Type*} [Fintype κ] (b : κ → L) (c : L)
     exact (gaussNorm_monomial_le _ _).trans (hb j)
   · rw [gaussNormOf_C, normAbv_apply]; exact hc
 
+/- English proof (translation)
+The claim follows from `gaussNorm_bind₁_le _ (fun i ↦ gaussNorm_linearForm_le _ _ (hB i) (ha i)) g`.
+-/
 theorem gaussNorm_affineSubst_le {ι κ : Type*} [Fintype κ] (B : Matrix ι κ L) (a : ι → L)
     (hB : ∀ i j, ‖B i j‖ ≤ 1) (ha : ∀ i, ‖a i‖ ≤ 1) (g : MvPolynomial ι L) :
     gaussNormOf (normAbv L) (affineSubst B a g) ≤ gaussNormOf (normAbv L) g :=
@@ -96,6 +136,11 @@ theorem gaussNorm_affineSubst_le {ι κ : Type*} [Fintype κ] (B : Matrix ι κ 
 
 omit [IsUltrametricDist L] in
 
+/- English proof (translation)
+Establish `h : ∀ i, bind₁ (fun k ↦ ∑ l, C (B' k l) * X l + C (a' k)) (∑ j, C (B i j) * X j + C (a i) : MvPolynomial κ L) = ∑ l, C ((B * B') i l) * X l + C ((B.mulVec a' + a) i)`. Introduce `i`. Simplify using `only [map_add, map_sum, map_mul, bind₁_C_right, bind₁_X_right, mul_add, Finset.sum_add_distrib, Finset.mul_sum, Matrix.mul_apply, Matrix.mulVec, dotProduct, Pi.add_apply, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm (s := Finset.univ (α := κ)) (t := Finset.univ (α := μ))]`. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `affineSubst`. Rewrite using `[bind₁_bind₁]`. Simplify using `only [h]`.
+-/
 theorem affineSubst_affineSubst {ι κ μ : Type*} [Fintype κ] [Fintype μ] (B : Matrix ι κ L)
     (a : ι → L) (B' : Matrix κ μ L) (a' : κ → L) (g : MvPolynomial ι L) :
     affineSubst B' a' (affineSubst B a g) = affineSubst (B * B') (B.mulVec a' + a) g := by
@@ -114,6 +159,11 @@ theorem affineSubst_affineSubst {ι κ μ : Type*} [Fintype κ] [Fintype μ] (B 
 
 omit [IsUltrametricDist L] in
 
+/- English proof (translation)
+Unfold `affineSubst`. Establish `: (fun i ↦ ∑ j, C ((1 : Matrix ι ι L) i j) * X j + C ((0 : ι → L) i)) = (X : ι → MvPolynomial ι L)`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.one_apply]`. Rewrite using `[this, bind₁_X_left]`.
+
+Both sides reduce to the same expression.
+-/
 theorem affineSubst_one_zero {ι : Type*} [Fintype ι] [DecidableEq ι] (g : MvPolynomial ι L) :
     affineSubst (1 : Matrix ι ι L) 0 g = g := by
   unfold affineSubst
@@ -124,6 +174,9 @@ theorem affineSubst_one_zero {ι : Type*} [Fintype ι] [DecidableEq ι] (g : MvP
   rw [this, bind₁_X_left]
   rfl
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (fun x ↦ ‖x‖ ≤ 1) (fun _ _ ha hb ↦ (IsUltrametricDist.isNonarchimedean_norm _ _).trans (max_le ha hb)) (by simp) h`.
+-/
 theorem norm_sum_le_one {β : Type*} (s : Finset β) (f : β → L) (h : ∀ b ∈ s, ‖f b‖ ≤ 1) :
     ‖∑ b ∈ s, f b‖ ≤ 1 :=
   Finset.sum_induction f (fun x ↦ ‖x‖ ≤ 1)
@@ -134,6 +187,19 @@ end GaussNormBasic
 
 open GaussNormBasic in
 
+/- English proof (translation)
+Introduce `L _ _ _`. Use `⟨fun ι g g' ↦ ⟨gaussNorm_add_le g g', gaussNormOf_mul_le isNonarchimedean_normAbv g g'⟩, fun ι κ _ B a hB ha g ↦ gaussNorm_affineSubst_le B a hB ha g, ?_, ?_⟩` and prove the remaining obligations. Introduce `ι _ _ B a hB ha hdet hinv g`. Use `le_antisymm (gaussNorm_affineSubst_le B a hB ha g) ?_` and prove the remaining obligations. Use `set a' : ι → L := -(B⁻¹.mulVec a)`.
+
+Establish `ha' : ∀ i, ‖a' i‖ ≤ 1` using `fun i ↦ by`. Simplify using `only [a', Pi.neg_apply, norm_neg, Matrix.mulVec, dotProduct]`. Conclude with `norm_sum_le_one _ _ fun j _ ↦ by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hinv i j) (norm_nonneg _) (ha j)`.
+
+Establish `hcomp : affineSubst B⁻¹ a' (affineSubst B a g) = g`. Rewrite using `[affineSubst_affineSubst, Matrix.mul_nonsing_inv _ hdet]`. Establish `: B.mulVec a' + a = 0`. Simplify using `only [a', Matrix.mulVec_neg, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec, neg_add_cancel]`. Rewrite using `[this, affineSubst_one_zero]`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `ι κ _ _ P hP hsurj g classical`. Use `le_antisymm (gaussNorm_affineSubst_le P 0 hP (fun _ ↦ by simp) g) ?_` and prove the remaining obligations. Use `choose x hx hPx using fun i : ι ↦ hsurj (Pi.single i 1) fun j ↦ by`. Apply the tactic sequence `rw [Pi.single_apply]; split_ifs <;> simp`.
+
+Set `S : Matrix κ ι L` to `fun k i ↦ x i k`. Establish `hPS : P * S = 1`. Use extensionality with `j i`. Use `congrFun (hPx i) j` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [S, this, Pi.single_apply]`. Establish `hcomp : affineSubst S 0 (affineSubst P 0 g) = g`. Rewrite using `[affineSubst_affineSubst, hPS, Matrix.mulVec_zero, add_zero, affineSubst_one_zero]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GaussNormBasic.proof : GaussNormBasic.Statement := by
   intro L _ _ _
   refine ⟨fun ι g g' ↦ ⟨gaussNorm_add_le g g', gaussNormOf_mul_le isNonarchimedean_normAbv g g'⟩,

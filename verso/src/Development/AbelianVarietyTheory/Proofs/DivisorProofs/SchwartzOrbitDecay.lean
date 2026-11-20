@@ -14,6 +14,19 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThKSoDecay
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair φ hφ hφS N`. Take `⟨q, x, y, hxy, Cc, c, C0, A, hCc, hc, hcov⟩` from `GlobalTheory.T.exists_siegel_domain_reduction hP.siegelSetUnitary F E σ B n X r s hPair.base hPair.herm`. Take `⟨C1, k, hC1⟩` from `GlobalTheory.T.schwartz_siegel_domain_decay hP F E σ B n d X W M χX χW om r s r' s' hPair q x y hxy Cc hCc c hc φ hφ hφS (A * N)`. Establish `hB` using `GlobalTheory.T.theta_basic_properties hP.base F E σ B n d X W M χX χW om r s r' s' hPair`. Use `⟨max C0 0 ^ N * C1, k, fun f g h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨γ, hγ, t, a, κ, ht', ha, hκ, hg, hht⟩` from `hcov g`. Establish `hΦ : pureA F f φ ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, φ, hφ, rfl⟩`. Establish `e : theta om (pureA F f φ) g h = theta om (pureA F f φ) (a * κ) h`. Rewrite using `[← hg]`. Use `(hB.1 _ hΦ).2.1 γ hγ 1 (one_mem _) g h` as an intermediate fact.
+
+Rewrite `this` using `[one_mul]`. Conclude with `this.symm`. Establish `hP0 : (0 : ℝ) ≤ 1 + ∏ i, t i` using `add_nonneg zero_le_one (Finset.prod_nonneg fun i _ => hc.le.trans (ht' i))`. Establish `hq : (qht g : ℝ) ≤ max C0 0 * (1 + ∏ i, t i) ^ A`. Establish `h1 : qht g ≤ ht (a * κ)`.
+
+Rewrite using `[← hg]`. Conclude with `ciInf_le (OrderBot.bddBelow _) (⟨γ, hγ⟩ : ratU σ X.J)`. Conclude with `(NNReal.coe_le_coe.2 h1).trans (hht.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg hP0 A)))`. Establish `hC0 : (0 : ℝ) ≤ max C0 0` using `le_max_right _ _`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) hq N) (norm_nonneg _)`. Use `_ = max C0 0 ^ N * (‖theta om (pureA F f φ) (a * κ) h‖ * (1 + ∏ i, t i) ^ (A * N)) := by`. Rewrite using `[mul_pow, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ max C0 0 ^ N * (C1 * semK (Fin n × Fin d) k f * (ht h : ℝ) ^ k) := mul_le_mul_of_nonneg_left (hC1 f t a κ h ht' ha hκ) (pow_nonneg hC0 N)`. Use `_ = max C0 0 ^ N * C1 * semK (Fin n × Fin d) k f * (ht h : ℝ) ^ k := by ring`.
+-/
 theorem soDecayUnif (hP : KP) : SoDecayUnif := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair φ hφ hφS N
   obtain ⟨q, x, y, hxy, Cc, c, C0, A, hCc, hc, hcov⟩ :=
@@ -47,6 +60,9 @@ theorem soDecayUnif (hP : KP) : SoDecayUnif := by
         mul_le_mul_of_nonneg_left (hC1 f t a κ h ht' ha hκ) (pow_nonneg hC0 N)
     _ = max C0 0 ^ N * C1 * semK (Fin n × Fin d) k f * (ht h : ℝ) ^ k := by ring
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.soDecay_of_prints_of_soDecayUnif hP.base (soDecayUnif hP)`.
+-/
 theorem soDecay (hP : KP) : SoDecay := GlobalTheory.T.soDecay_of_prints_of_soDecayUnif hP.base (soDecayUnif hP)
 
 end GlobalTheory.ThKSoDecay

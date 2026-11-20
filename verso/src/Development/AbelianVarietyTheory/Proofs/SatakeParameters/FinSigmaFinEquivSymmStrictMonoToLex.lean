@@ -6,6 +6,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[finSigmaFinEquiv_apply]`. Use `congr 1`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : (i : ℕ) < s` using `lt_of_lt_of_le i.2 x.1.2.le`.
+
+Simplify using `only [hi, dif_pos]`. Both sides reduce to the same expression.
+-/
 theorem finSigmaFinEquiv_val_eq_range {s : ℕ} (t : Fin s → ℕ) (x : (a : Fin s) × Fin (t a)) :
     ((finSigmaFinEquiv x : Fin (∑ a, t a)) : ℕ) =
       (∑ i ∈ Finset.range x.1, (fun i : ℕ => if h : i < s then t ⟨i, h⟩ else 0) i) + x.2 := by
@@ -17,6 +22,15 @@ theorem finSigmaFinEquiv_val_eq_range {s : ℕ} (t : Fin s → ℕ) (x : (a : Fi
   simp only [hi, dif_pos]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Fin.lt_def, finSigmaFinEquiv_val_eq_range, finSigmaFinEquiv_val_eq_range]`. Use `set t' : ℕ → ℕ := fun i => if h : i < s then t ⟨i, h⟩ else 0 with ht'`. Break down `Sigma.Lex.lt_def.mp hxy with h | ⟨h, h2⟩` into its components or cases. Establish `h' : (x.1 : ℕ) < y.1` using `h`. Establish `hsub : Finset.range (x.1 + 1) ⊆ Finset.range y.1` using `Finset.range_subset_range.mpr h'`.
+
+Establish `hle : (Finset.range (x.1 + 1)).sum t' ≤ (Finset.range y.1).sum t'` using `Finset.sum_le_sum_of_subset hsub`. Use `replace hle := (Finset.sum_range_succ t' x.1).symm.trans_le hle`. Establish `hx : t' x.1 = t x.1` using `by simp [ht', x.1.2]`. Establish `h3 : (x.2 : ℕ) < t x.1` using `x.2.2`. Establish `h4 : (∑ i ∈ Finset.range x.1, t' i) = (Finset.range x.1).sum t'` using `rfl`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨a, i⟩` from `x`. Take `⟨b, j⟩` from `y`. Express the relevant statement in the definitionally equal form `a = b at h`. Substitute `h` using the available equality.
+
+Express the relevant statement in the definitionally equal form `i < j at h2`. Establish `: (i : ℕ) < j` using `h2`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finSigmaFinEquiv_lt_of_lex_lt {s : ℕ} (t : Fin s → ℕ) (x y : (a : Fin s) × Fin (t a))
     (hxy : toLex x < toLex y) :
     (finSigmaFinEquiv x : Fin (∑ a, t a)) < finSigmaFinEquiv y := by
@@ -42,6 +56,11 @@ theorem finSigmaFinEquiv_lt_of_lex_lt {s : ℕ} (t : Fin s → ℕ) (x y : (a : 
     simp only
     omega
 
+/- English proof (translation)
+Introduce `s t c d hcd`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_lt]`. Break down `hn.lt_or_eq with h | h` into its components or cases. Use `finSigmaFinEquiv_lt_of_lex_lt t _ _ h` as an intermediate fact.
+
+Simplify using `only [Equiv.apply_symm_apply] at this`. Conclude with `absurd hcd (not_lt.mpr this.le)`. Establish `h' : finSigmaFinEquiv.symm d = finSigmaFinEquiv.symm c` using `toLex.injective h`. Use `finSigmaFinEquiv.symm.injective h'` as an intermediate fact. Conclude with `absurd hcd (by rw [this]; exact lt_irrefl _)`.
+-/
 theorem finSigmaFinEquiv_symm_strictMono_lex :
     ∀ (s : ℕ) (t : Fin s → ℕ), StrictMono fun c : Fin (∑ a, t a) =>
       (toLex (finSigmaFinEquiv.symm c) : Σₗ a, Fin (t a)) := by

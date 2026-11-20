@@ -26,6 +26,13 @@ def sympBil {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (c : S →ₐ[R
     (fun a x y => by
       simp only [symp, hTens, Matrix.smul_apply, smul_mul_assoc, ← Finset.smul_sum, mul_smul_comm, map_smul])
 
+/- English proof (translation)
+Establish `e12 : ∀ i j, B (b (.inl i)) (b (.inr j)) = if i = j then 1 else 0` using `fun i j => by split_ifs with h`. Substitute `h` using the available equality. Conclude with `h12 i`. Conclude with `h12' i j h`. Establish `e21 : ∀ i j, B (b (.inr i)) (b (.inl j)) = if i = j then -1 else 0` using `fun i j => by split_ifs with h`.
+
+Substitute `h` using the available equality. Conclude with `h21 i`. Conclude with `h21' i j h`. Use `⟨⟨b.equivFun ≪≫ₗ LinearEquiv.sumArrowLequivProdArrow κ κ R R, fun w w' => ?_⟩, fun w => rfl⟩` and prove the remaining obligations. Use `show B w w' = (fun k => b.repr w (.inl k)) ⬝ᵥ (fun k => b.repr w' (.inr k)) - (fun k => b.repr w' (.inl k)) ⬝ᵥ (fun k => b.repr w (.inr k))`.
+
+Use `conv_lhs => rw [← b.sum_repr w, ← b.sum_repr w']`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Fintype.sum_sum_type, map_add, LinearMap.add_apply, h11, h22, e12, e21, smul_eq_mul, mul_zero, Finset.sum_const_zero, zero_add, add_zero, mul_ite, Finset.sum_ite_eq', Finset.mem_univ, if_true, dotProduct, mul_one …`. Rewrite using `[sub_eq_add_neg, add_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem exists_darboux_of_basis {R W κ : Type} [CommRing R] [Invertible (2 : R)] [AddCommGroup W] [Module R W]
     [Fintype κ] (B : LinearMap.BilinForm R W) (b : Basis (κ ⊕ κ) R W)
     (h11 : ∀ i j, B (b (.inl i)) (b (.inl j)) = 0) (h22 : ∀ i j, B (b (.inr i)) (b (.inr j)) = 0)
@@ -54,6 +61,9 @@ theorem exists_darboux_of_basis {R W κ : Type} [CommRing R] [Invertible (2 : R)
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 omit [DecidableEq α] [DecidableEq β] in
+/- English proof (translation)
+Establish `h : ∀ g : α → β → α → β → M, ∑ i, ∑ j, ∑ k, ∑ l, g i j k l = ∑ p : α × β, ∑ q : α × β, g p.1 p.2 q.1 q.2` using `fun g => by`. Simplify using `only [Fintype.sum_prod_type]`. Rewrite using `[h, h fun i j k l => f k l i j, Finset.sum_comm]`.
+-/
 theorem sum_four_swap {M : Type} [AddCommMonoid M] (f : α → β → α → β → M) :
     ∑ i, ∑ j, ∑ k, ∑ l, f i j k l = ∑ i, ∑ j, ∑ k, ∑ l, f k l i j := by
   have h : ∀ g : α → β → α → β → M,
@@ -63,6 +73,13 @@ theorem sum_four_swap {M : Type} [AddCommMonoid M] (f : α → β → α → β 
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
 
+/- English proof (translation)
+Introduce `x`. Use `show Algebra.trace F E (-1 * hTens σ JA JB x x) = 0`. Establish `h : σ (hTens σ JA JB x x) = -hTens σ JA JB x x`. Simplify using `only [hTens, map_sum, map_mul, hσ, hA, hB]`. Simplify using `only [← Finset.sum_neg_distrib]`.
+
+Rewrite using `[sum_four_swap]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `ht : Algebra.trace F E (σ (hTens σ JA JB x x)) = Algebra.trace F E (hTens σ JA JB x x)` using `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective σ (Function.Involutive.bijective hσ)) _`. Rewrite `ht` using `[h, map_neg]`.
+
+Rewrite using `[neg_one_mul, map_neg]`. Take the linear combination `(1 / 2 : F) * ht`.
+-/
 theorem isAlt_sympBil [CharZero F] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {JA : Matrix α α E} {JB : Matrix β β E}
     (hA : ∀ i j, σ (JA j i) = JA i j) (hB : ∀ i j, σ (JB j i) = -JB i j) : (sympBil σ (-1) JA JB).IsAlt := by
   intro x
@@ -80,6 +97,19 @@ theorem isAlt_sympBil [CharZero F] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) 
   rw [neg_one_mul, map_neg]
   linear_combination (1 / 2 : F) * ht
 
+/- English proof (translation)
+Establish `hi : Function.Injective (sympBil σ (-1) JA JB)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h1 : JAᵀ * x * JB = 0`. Use extensionality with `k l`.
+
+Use `(traceForm_nondegenerate F E).1 _ fun a => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun hx (Matrix.single k l (σ (-a)))` as an intermediate fact. Express the relevant statement in the definitionally equal form `Algebra.trace F E (-1 * hTens σ JA JB x _) = 0 at this`. Rewrite using `[Algebra.traceForm_apply, ← this]`. Use `congr 1`.
+
+Establish `hs : ∀ i j, ∑ k', ∑ l', x i j * JA i k' * JB j l' * σ (Matrix.single k l (σ (-a)) k' l') = x i j * JA i k * JB j l * -a` using `fun i j => by`. Rewrite using `[Finset.sum_eq_single k, Finset.sum_eq_single l]`. Rewrite using `[Matrix.single_apply_same, hσ]`. Introduce `l' _ h`. Rewrite using `[Matrix.single_apply_of_col_ne _ _ h.symm, map_zero, mul_zero]`.
+
+Simplify using the standard rewrite rules. Introduce `k' _ h`. Use `Finset.sum_eq_zero fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply_of_row_ne h.symm, map_zero, mul_zero]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [hTens, hs, Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : x = (JAᵀ)⁻¹ * (JAᵀ * x * JB) * JB⁻¹`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ (Ne.isUnit hB), Matrix.nonsing_inv_mul_cancel_left _ _ (by rw [det_transpose]; exact Ne.isUnit hA)]`. Rewrite using `[h2, h1, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hi⟩`.
+-/
 theorem bijective_sympBil [CharZero F] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {JA : Matrix α α E}
     {JB : Matrix β β E} (hA : JA.det ≠ 0) (hB : JB.det ≠ 0) : Function.Bijective (sympBil σ (-1) JA JB) := by
   have hi : Function.Injective (sympBil σ (-1) JA JB) := by
@@ -119,11 +149,17 @@ def matBC : R ⊗[F] Matrix α β E ≃ₗ[R] Matrix α β (R ⊗[F] E) :=
   (TensorProduct.piRight F R R (fun _ : α => β → E)) ≪≫ₗ
     LinearEquiv.piCongrRight fun _ => TensorProduct.piRight F R R (fun _ : β => E)
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem matBC_one (x : Matrix α β E) :
     matBC R ((1 : R) ⊗ₜ[F] x) = x.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) R) := by
   ext i j
   rfl
 
+/- English proof (translation)
+Establish `ht : ∀ e : E, Algebra.trace R (R ⊗[F] E) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) R e) = algebraMap F R (Algebra.trace F E e) := fun e => by show Algebra.trace R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`. Establish `hc : ∀ e : E, Algebra.TensorProduct.map (AlgHom.id R R) σ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) R e) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) R (σ e) := fun e => rfl`. Rewrite using `[symp, symp, ← ht]`. Simplify using `only [hTens, Matrix.map_apply, hc, map_mul, map_sum, map_neg, map_one]`.
+-/
 theorem symp_map (σ : E →ₐ[F] E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
     symp (R := R) (Algebra.TensorProduct.map (AlgHom.id R R) σ) (-1) (JA.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) R))
       (JB.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) R)) (x.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) R))
@@ -137,6 +173,17 @@ theorem symp_map (σ : E →ₐ[F] E) (JA : Matrix α α E) (JB : Matrix β β E
   rw [symp, symp, ← ht]
   simp only [hTens, Matrix.map_apply, hc, map_mul, map_sum, map_neg, map_one]
 
+/- English proof (translation)
+Establish `halt` using `isAlt_sympBil σ hσ hA hB`. Establish `hrk : finrank F (Matrix α β E) = 2 * Fintype.card (α × β)`. Rewrite using `[Module.finrank_matrix, h2, Fintype.card_prod]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨b₀, hb₀⟩` from `GlobalTheory.exists_isSymplecticBasis_of_finrank halt (bijective_sympBil σ hσ hA' hB') hrk`.
+
+Set `ε` to `Fintype.equivFin (α × β)`. Set `b : Basis ((α × β) ⊕ (α × β)) F (Matrix α β E)` to `b₀.reindex (Equiv.sumCongr ε ε).symm`. Establish `hl : ∀ i, b (.inl i) = b₀ (.inl (ε i))` using `fun i => by simp [b]`. Establish `hr : ∀ i, b (.inr i) = b₀ (.inr (ε i))` using `fun i => by simp [b]`. Set `b'` to `(b.baseChange R).map (matBC R)`.
+
+Establish `hb' : ∀ i j, sympBil (Algebra.TensorProduct.map (AlgHom.id R R) σ) (-1) (JA.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) R)) (JB.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) R)) (b' i) (b' j) = algebraMap F R (sympBil σ (-1) JA JB (b i) (b j)) := fun i j => by`. Simplify using `only [b', Basis.map_apply, Basis.baseChange_apply, matBC_one]`. Conclude with `symp_map R σ JA JB _ _`. Take `⟨co, hco⟩` from `exists_darboux_of_basis _ b' (fun i j => by rw [hb', hl, hl, GlobalTheory.IsSymplecticFamily.left_left hb₀, map_zero]) (fun i j => by rw [hb', hr, hr, GlobalTheory.IsSymplecticFamily.right_right hb₀, map_zero]) (fun i => by rw [hb', hl, hr, GlobalTheory.IsSymplecticFamily.left_ri …`. Rewrite using `[hb', hl, hr, ← halt.neg_eq, GlobalTheory.IsSymplecticFamily.left_right_ne hb₀ _ _ (ε.injective.ne h.symm), neg_zero, map_zero])`.
+
+Use `⟨co, fun x => ⟨fun k => b.repr x (.inl k), fun k => b.repr x (.inr k), ?_⟩⟩` and prove the remaining obligations. Establish `hx : ∀ i, b'.repr (x.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) R)) i = algebraMap F R (b.repr x i) := fun i => by`. Rewrite using `[← matBC_one]`. Simplify using `[b', Algebra.smul_def]`. Rewrite using `[hco]`.
+
+Simplify using `only [hx]`.
+-/
 theorem exists_darboux [CharZero F] [Invertible (2 : R)] (h2 : finrank F E = 2) (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) {JA : Matrix α α E} {JB : Matrix β β E}
     (hA : ∀ i j, σ (JA j i) = JA i j) (hB : ∀ i j, σ (JB j i) = -JB i j) (hA' : JA.det ≠ 0) (hB' : JB.det ≠ 0) :
@@ -174,6 +221,9 @@ theorem exists_darboux [CharZero F] [Invertible (2 : R)] (h2 : finrank F E = 2) 
   rw [hco]
   simp only [hx]
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hM⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Use `h.2.2 (star v) (by simpa using hv)` as an intermediate fact. Rewrite `this` using `[star_star, hM]`. Simplify using `at this`.
+-/
 theorem det_ne_zero_of_isCartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan M θ) :
     M.det ≠ 0 := by
   intro h0
@@ -196,6 +246,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 open GlobalTheory in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X Y r s r' s' hB hX hY`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Apply `((B.emb w).1 : E →+* ℂ).injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`.
+
+Establish `hX' : X.J.det ≠ 0` using `fun h0 => by`. Apply `Tw.RatDarboux.det_ne_zero_of_isCartan (hX.cartan w)` to reduce the goal to its premises. Use `((B.emb w).1 : E →+* ℂ).map_det X.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`.
+
+Establish `hY' : Y.J.det ≠ 0` using `fun h0 => by`. Apply `Tw.RatDarboux.det_ne_zero_of_isCartan (hY.cartan w)` to reduce the goal to its premises. Use `((B.emb w).1 : E →+* ℂ).map_det Y.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Rewrite using `[Matrix.det_smul]`.
+
+Conclude with `mul_eq_zero_of_right _ this.symm`. Conclude with `Tw.RatDarboux.exists_darboux (AF F) hB.cm.2.2.1 σ hσ hX.herm hY.skew hX' hY'`.
+-/
 theorem Tw.RatDarboux.exists_rational_darboux : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → Y.IsSkew σ B r' s' →
     ∃ co : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp (R := AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (-1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J)) (Fin n × Fin d),

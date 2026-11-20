@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R _ A _ hs`. Take `⟨W, i1, i2, hfin, hproj, ⟨t⟩⟩` from `GlobalTheory.T.exists_tangentRepresentation_smooth_groupScheme R A hs`. Take `⟨j, hj⟩` from `GlobalTheory.T.exists_global_oneForms_isBaseChange_tangentRep R A W t`. Conclude with `GlobalTheory.AbCoh.hasFrame_of_isBaseChange R _ (OAff A.hom) W j hj`.
+-/
 theorem hasFrame_of_smooth_grpObj : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A],
     Smooth A.hom → HasFrame (OAff A.hom) := by
   intro R _ A _ hs

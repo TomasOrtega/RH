@@ -13,6 +13,15 @@ noncomputable section
 
 namespace GlobalTheory.PinchLift
 
+/- English proof (translation)
+Establish `le : ∀ p : (PUnit → J) × L.ι, ((⟨J, W, g⟩ : LB X).pull f).U p.1 ⊓ L.U p.2 ≤ L.U p.2 ⊓ f ⁻¹ᵁ W (p.1 PUnit.unit)` using `fun p y h => ⟨h.2, (mem_pull (L := (⟨J, W, g⟩ : LB X)) (F := f)).1 h.1⟩`. Use `⟨⟨fun p => res (le p) (s (p.1 PUnit.unit) p.2)⁻¹⟩, (isGen_iff_germ _).2 fun y p q hp hq => ?_⟩` and prove the remaining obligations. Establish `v : ∀ p : (PUnit → J) × L.ι, y ∈ ((⟨J, W, g⟩ : LB X).pull f).U p.1 ⊓ L.U p.2 → gm (𝟙 Y) y _ (res (le p) (s (p.1 PUnit.unit) p.2)⁻¹) = (gm (𝟙 Y) y (L.U p.2 ⊓ f ⁻¹ᵁ W (p.1 PUnit.unit)) (s (p.1 PUnit.unit) p.2))⁻¹` using `fun p hp => (gm_res _ y _ hp _).trans (map_inv _ _)`. Establish `hp'` using `le p hp`. Establish `hq'` using `le q hq`.
+
+Establish `e1` using `gm_pull_g (⟨J, W, g⟩ : LB X) f (𝟙 Y) y p.1 q.1 hp.1 hq.1`. Establish `e2 : gm (𝟙 Y ≫ f) y (W (p.1 PUnit.unit) ⊓ W (q.1 PUnit.unit)) (g _ _) = gm f y (W (p.1 PUnit.unit) ⊓ W (q.1 PUnit.unit)) (g _ _)`. Rewrite using `[Category.id_comp]`. Establish `e3` using `hg (p.1 PUnit.unit) (q.1 PUnit.unit) y p.2 hp'.2 hq'.2 hp'.1`. Establish `e4` using `hs (q.1 PUnit.unit) p.2 q.2 y hp'.1 hq'.1 hq'.2`.
+
+Establish `e5` using `(e1.trans e2).trans (e3.trans (congrArg (· * _) e4))`. Use `(v p hp).trans (Eq.trans ?_ (congrArg₂ (· * ·) ((gm_div' ((⟨J, W, g⟩ : LB X).pull f) L (𝟙 Y) y p q hp hq).trans (congrArg (· * _) e5)) (v q hq)).symm)` and prove the remaining obligations. Establish `key : ∀ {G : Type} [CommGroup G] (a b c : G), c⁻¹ = a * b * c⁻¹ * a⁻¹ * b⁻¹`. Introduce `G _ a b c`. Rewrite using `[mul_assoc (a * b * c⁻¹), ← mul_inv, mul_right_comm, mul_inv_cancel, _root_.one_mul]`.
+
+Conclude with `key _ _ _`.
+-/
 theorem lbIso_pull_of_genOn (X Y : Scheme.{0}) (f : Y ⟶ X) (L : LB Y) (J : Type) (W : J → X.Opens)
     (g : ∀ x y, Γ(X, W x ⊓ W y)ˣ) (s : ∀ x k, Γ(Y, L.U k ⊓ f ⁻¹ᵁ W x)ˣ)
     (hs : ∀ x, GlobalTheory.PinchLift.GenOn L (f ⁻¹ᵁ W x) (s x))

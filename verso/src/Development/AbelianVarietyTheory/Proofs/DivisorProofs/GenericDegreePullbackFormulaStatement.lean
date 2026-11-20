@@ -9,5 +9,8 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTest.gdegPull | exact GlobalTheory.CovTest.gdegPull | (intros; apply GlobalTheory.CovTest.gdegPull <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generic_degree_pullback_formula : GdegPull := by
   first | exact @GlobalTheory.CovTest.gdegPull | exact GlobalTheory.CovTest.gdegPull | (intros; apply GlobalTheory.CovTest.gdegPull <;> assumption)

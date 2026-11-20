@@ -26,6 +26,9 @@ section Lat
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Unfold `nabAt`. Repeatedly rewrite using `[tauLatG E K ι n emb]`. Conclude with `(Formalism.L2.Col.nabK_gLat lam _ (embGL emb γ)).ge ⟨x, hx, rfl⟩`.
+-/
 private theorem nabAt_map (emb : ι → E →+* K) (lam : ι → DomWeight n) (γ : GL (Fin n) E) (M : Submodule (𝓞 E) (Fin n → E))
     (x : VV K lam) (hx : x ∈ nabAt emb lam M) :
     rhoV emb lam γ x ∈ nabAt emb lam (M.map ((Matrix.mulVecLin (γ : Matrix (Fin n) (Fin n) E)).restrictScalars (𝓞 E))) := by
@@ -34,10 +37,16 @@ private theorem nabAt_map (emb : ι → E →+* K) (lam : ι → DomWeight n) (�
   exact (Formalism.L2.Col.nabK_gLat lam _ (embGL emb γ)).ge ⟨x, hx, rfl⟩
 
 omit [NumberField K] in
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[inside₂]`.
+-/
 private theorem invTr_invTr (B : GL (Fin n) K) : inside₂ K n (inside₂ K n B) = B := by
   apply Units.ext
   simp [inside₂]
 
+/- English proof (translation)
+Take `⟨B₀, h₀⟩` from `GlobalTheory.LatBasisAt.basisAtEx K n M hM w`. Establish `h1 : IsBasisAt w (colLat (inside₂ K n B₀)) B` using `Eq.trans (Eq.symm (GlobalTheory.DualWeylDual.isBasisAt_dualFr w hM.fg h₀)) hB`. Establish `h2` using `GlobalTheory.DualWeylDual.isBasisAt_dualFr w (Submodule.fg_span (Set.finite_range _)) h1`. Rewrite `h2` using `[show Submodule.span (𝓞 K) _ = colLat (inside₂ K n B₀) from rfl, GlobalTheory.DualWeylDual.dualFr_colLat, invTr_invTr]`. Conclude with `Eq.trans h₀ h2`.
+-/
 private theorem isBasisAt_of_dualFr (w : HeightOneSpectrum (𝓞 K)) {M : Submodule (𝓞 K) (Fin n → K)}
     (hM : Submodule.IsLattice K M) {B : GL (Fin n) K} (hB : IsBasisAt w (dualFr M) B) : IsBasisAt w M (inside₂ K n B) := by
   obtain ⟨B₀, h₀⟩ := GlobalTheory.LatBasisAt.basisAtEx K n M hM w
@@ -47,6 +56,13 @@ private theorem isBasisAt_of_dualFr (w : HeightOneSpectrum (𝓞 K)) {M : Submod
   rw [show Submodule.span (𝓞 K) _ = colLat (inside₂ K n B₀) from rfl, GlobalTheory.DualWeylDual.dualFr_colLat, invTr_invTr] at h2
   exact Eq.trans h₀ h2
 
+/- English proof (translation)
+Establish `hF' : F.1 ∈ transLat lam (nabStd K lam) M` using `hF`. Use `show (funEquiv lam F).1 ∈ transLat _ (nabStd K _) _`. Simplify using `only [transLat, Submodule.mem_iInf] at hF' ⊢`. Introduce `w B hB`. Take `⟨s, hs, h⟩` from `hF' w (invTrK B) fun τ => isBasisAt_of_dualFr w (hM τ) (hB τ)`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `h1` using `(funEquiv_mem_nabStd lam ((s : K) • rhoK lam (invTrK B)⁻¹ F)).1 h`. Establish `e : invTrK (invTrK B)⁻¹ = B⁻¹`. Rewrite using `[map_inv]`. Conclude with `congrArg (·⁻¹) (funext fun τ => invTr_invTr (B τ))`.
+
+Rewrite `h1` using `[map_smul, funEquiv_rhoK, e]`. Conclude with `h1`.
+-/
 private theorem funEquiv_nabK (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K))
     (hM : ∀ τ, Submodule.IsLattice K (M τ)) (F : VV K lam) (hF : F ∈ nabK lam M) :
     funEquiv lam F ∈ nabK (fun τ => (lam τ).dual) fun τ => dualFr (M τ) := by
@@ -63,6 +79,9 @@ private theorem funEquiv_nabK (lam : ι → DomWeight n) (M : ι → Submodule (
   rw [map_smul, funEquiv_rhoK, e] at h1
   exact h1
 
+/- English proof (translation)
+The claim follows from `((isFunForm_iff_eq lam _ _).1 (GlobalTheory.BrRat.isFunForm_map φ lam (isFunForm_funEquiv lam F))).symm`.
+-/
 private theorem funEquiv_mapVV {K : Type} [Field K] (φ : K →+* ℂ) (lam : ι → DomWeight n) (F : VV K lam) :
     funEquiv lam (mapVV φ lam F) = mapVV φ _ (funEquiv lam F) :=
   ((isFunForm_iff_eq lam _ _).1 (GlobalTheory.BrRat.isFunForm_map φ lam (isFunForm_funEquiv lam F))).symm
@@ -73,12 +92,20 @@ section Ad
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[← SetLike.mem_coe, GlobalTheory.RepsCompare.coe_hLat, ← GlobalTheory.RepsCompare.inv_mulVec_mem_iff]`. Both sides reduce to the same expression.
+-/
 private theorem mem_hLat (V : HSp D) (g : Bridge.Gf V) (x : Fin V.rank → D.host.E) :
     x ∈ Bridge.hLat V g ↔ (g.1⁻¹).1 *ᵥ (fun i => (1 : Af D.host.F) ⊗ₜ[D.host.F] x i) ∈
       GlobalTheory.AdLat.hat D.host.F (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)) := by
   rw [← SetLike.mem_coe, GlobalTheory.RepsCompare.coe_hLat, ← GlobalTheory.RepsCompare.inv_mulVec_mem_iff]
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ (h : Bridge.Gf V) (k : Bridge.Gf V), k ∈ (levEnv V β L).J → Bridge.hLat V h ≤ Bridge.hLat V (h * k)`. Introduce `h k hk x hx`. Rewrite `hx`, the goal using `[mem_hLat, ← GlobalTheory.PrincInLevel.eq_latC hβ]`. Establish `h1` using `GlobalTheory.RepsCompare.mulVec_mem_hat hβ L (inv_mem hk) hx`. Rewrite `h1` using `[Matrix.mulVec_mulVec, ← Units.val_mul]`.
+
+Rewrite using `[Subgroup.coe_mul, _root_.mul_inv_rev]` and apply the resulting hypothesis. Use `le_antisymm ?_ (key h k k.2)` and prove the remaining obligations. Use `key (h * k) (k : Bridge.Gf V)⁻¹ (inv_mem k.2)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+-/
 private theorem hLat_mul_lev {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) (L : LevDat D.host.E ℂ V.rank) (h : Bridge.Gf V) (k : (levEnv V β L).J) :
     Bridge.hLat V (h * k) = Bridge.hLat V h := by
@@ -92,6 +119,17 @@ private theorem hLat_mul_lev {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ 
   have := key (h * k) (k : Bridge.Gf V)⁻¹ (inv_mem k.2)
   rwa [mul_inv_cancel_right] at this
 
+/- English proof (translation)
+Set `φ : D.host.E →+* Af D.host.F ⊗[D.host.F] D.host.E` to `inclR (F := D.host.F) (Af D.host.F)`. Establish `e1 : (Bridge.ratF V γ).1 = Formalism.UG.bc φ γE` using `by show Formalism.UG.bc _ (matHom V γ.1) = _`. Rewrite using `[show matHom V γ.1 = _ from hγ]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Establish `e2 : ∀ x : Fin V.rank → D.host.E, x ∈ Bridge.hLat V (Bridge.ratF V γ * h) ↔ (γE⁻¹).1 *ᵥ x ∈ Bridge.hLat V h`. Introduce `x`. Establish `e3 : (Formalism.UG.bc φ γE⁻¹).1 *ᵥ (fun i => (1 : Af D.host.F) ⊗ₜ[D.host.F] x i) = fun i => (1 : Af D.host.F) ⊗ₜ[D.host.F] ((γE⁻¹).1 *ᵥ x) i`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(RingHom.map_mulVec φ (γE⁻¹).1 x i).symm`. Rewrite using `[mem_hLat, mem_hLat, Subgroup.coe_mul, _root_.mul_inv_rev, e1, Units.val_mul, ← Matrix.mulVec_mulVec, ← map_inv, e3]`. Use extensionality with `x`. Rewrite using `[e2]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations. Use `show γE.1 *ᵥ ((γE⁻¹).1 *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Introduce and unpack `⟨z, hz, rfl⟩ show (γE⁻¹).1 *ᵥ (γE.1 *ᵥ z) ∈ _`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]` and apply the resulting hypothesis.
+-/
 private theorem hLat_rat (V : HSp D) (γ : GQ V) (γE : GL (Fin V.rank) D.host.E) (hγ : Bridge.IsRatMat V γ γE) (h : Bridge.Gf V) :
     Bridge.hLat V (Bridge.ratF V γ * h) = (Bridge.hLat V h).map (γE.1.mulVecLin.restrictScalars (𝓞 D.host.E)) := by
   let φ : D.host.E →+* Af D.host.F ⊗[D.host.F] D.host.E := inclR (F := D.host.F) (Af D.host.F)
@@ -119,6 +157,15 @@ private theorem hLat_rat (V : HSp D) (γ : GQ V) (γE : GL (Fin V.rank) D.host.E
     show (γE⁻¹).1 *ᵥ (γE.1 *ᵥ z) ∈ _
     rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_hLat, ← GlobalTheory.PrincInLevel.eq_latC hβ]`. Establish `e : ((Formalism.UG.bc (Lev.swapAE D) (finHom V g))⁻¹).1 *ᵥ (fun i => Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (x i)) = fun i => Algebra.TensorProduct.comm D.host.F _ D.host.E ((((finHom V g)⁻¹).1 *ᵥ (fun i => (1 : Af D.host.F) ⊗ₜ[D.host.F] x i)) i) := by`. Rewrite using `[← map_inv]`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `_ = Lev.swapAE D _`. Rewrite using `[RingHom.map_mulVec (Lev.swapAE D)]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((Formalism.UG.bc (Lev.swapAE D) (finHom V g))⁻¹).1 *ᵥ (fun i => Formalism.UG.inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (x i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ ↔ _`. Rewrite using `[e]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ _ hz` as an intermediate fact. Simplify using `only [AlgEquiv.symm_apply_apply] at this`. Conclude with `this`.
+
+Introduce `hz`. Conclude with `GlobalTheory.PrincInLevel.swap_mem_hatL Λ _ hz`.
+-/
 private theorem globLat_eq {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) (g : GA D V) :
     Formalism.UG.CS.globLat (Lev.finE V g) Λ = Bridge.hLat V ((finHom V).rangeRestrict g) := by
@@ -145,6 +192,11 @@ private theorem globLat_eq {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : 
   · intro hz
     exact GlobalTheory.PrincInLevel.swap_mem_hatL Λ _ hz
 
+/- English proof (translation)
+Take `⟨e, -, he, -, hN, -⟩` from `hc`. Take `⟨γE, hγ⟩` from `GlobalTheory.RationalValues.exists_isRatMat (P.decG g)`. Establish `h1 : e ((f : S.Cl → S.V) (P.decC g)) ∈ nabAt (labLL D) lam (Bridge.hLat V (P.y (P.decC g)))`. Rewrite using `[← hN (P.decC g)]`. Conclude with `⟨_, hf _, rfl⟩`.
+
+Establish `e3 : Bridge.hLat V g = (Bridge.hLat V (P.y (P.decC g))).map ((γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E).mulVecLin.restrictScalars (𝓞 D.host.E))` using `(congrArg (Bridge.hLat V) (P.dec_spec g)).trans ((hJ _ _).trans (hLat_rat V _ γE hγ _))`. Use `⟨P.decK g, rhoV (labLL D) lam γE (e ((f : S.Cl → S.V) (P.decC g))), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (nabAt (labLL D) lam) e3).ge (nabAt_map (labLL D) lam γE _ _ h1)`. Conclude with `congrArg ((χ (P.decK g) : ℂ) • ·) ((congrArg (C.ρ (P.decG g)) (he _)).trans (hm.1 _ γE hγ _).symm)`.
+-/
 private theorem ext_mem {V : HSp D} {C : Bridge.CoefDat D V} {S : CSD D.what₂.LL} {J : Subgroup (Bridge.Gf V)}
     {χ : J →* ℂˣ} {P : Bridge.ClassPres (Bridge.ratF V) S D.what₂.embLL C.ρ J χ} {lam : D.what₂.Tau → DomWeight V.rank}
     {c0 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] C.W} {pair del}
@@ -164,6 +216,17 @@ private theorem ext_mem {V : HSp D} {C : Bridge.CoefDat D V} {S : CSD D.what₂.
   · exact (congrArg (nabAt (labLL D) lam) e3).ge (nabAt_map (labLL D) lam γE _ _ h1)
   · exact congrArg ((χ (P.decK g) : ℂ) • ·) ((congrArg (C.ρ (P.decG g)) (he _)).trans (hm.1 _ γE hγ _).symm)
 
+/- English proof (translation)
+Substitute `hY` using the available equality. Establish `e : lam' = lam` using `funext fun τ => by`. Use `hw τ` as an intermediate fact. Generalize the expression as in `lam' τ = a at this`. Generalize the expression as in `lam τ = b at this`.
+
+Consider the cases of `a`. Consider the cases of `b`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `i`. Conclude with `this i`.
+
+Substitute `e` using the available equality. Establish `hr : (Prod.map id (Prod.map (Fin.cast h) (Fin.cast h)) : D.what₂.Tau × Fin V.rank × Fin V.rank → _) = id`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite `hU` using `[hr, MvPolynomial.rename_id_apply]`.
+
+Take `rfl : U = mapVV D.what₂.embLL lam' v` from `Subtype.ext hU`. Rewrite using `[(isFunForm_iff_eq _ _ _).1 ((SumModel.readOK lam').1 _), funEquiv_mapVV, TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.rhoVr_mapVV]`. Use `TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.inLat_of_mem _ w ?_` and prove the remaining obligations. Establish `e1 : Formalism.UG.CS.globLat (finG V y) Λ = Bridge.hLat V ((finHom V).rangeRestrict y.1)` using `globLat_eq hβ y.1`. Establish `e2` using `TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.comap_eq_map fr 1 (Bridge.hLat V ((finHom V).rangeRestrict y.1)) (Formalism.UG.CS.globLat (finG V y) Λ) fun z => by rw [e1, Units.val_one, Matrix.one_mulVec]`.
+
+Rewrite `e2` using `[mul_one]`. Use `e2 ▸ TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.nabAtr_map _ _ _ _ _ ?_` and prove the remaining obligations. Conclude with `funEquiv_nabK lam' _ (fun τ => GlobalTheory.TauLat.tauLatLattice _ _ _ _ (labLL D) τ _ (GlobalTheory.RepsCompare.isLattice_hLat _ _)) v hv`.
+-/
 private theorem inLat_value {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) (Y : LSp D) (hY : Y = ⟨V, Λ⟩) (h : V.rank = Y.sp.rank) (lam : D.what₂.Tau → DomWeight V.rank)
     (lam' : D.what₂.Tau → DomWeight Y.sp.rank) (hw : ∀ τ a, (lam' τ).w (Fin.cast h a) = (lam τ).w a) (y : GfC Y.sp)
@@ -208,6 +271,15 @@ end GlobalTheory.FormFinVal
 
 set_option maxHeartbeats 1600000 in
 open GlobalTheory.FormFinVal in
+/- English proof (translation)
+Use `⟨0, fun CF _ => ⟨0, fun ε C _ => ⟨0, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ _ t w x hx y`. Take `⟨gram, c₀, c₁, hT, hco⟩` from `ch.S.co_is`. Establish `hc` using `hS.core`. Establish `hf : ∀ c : (A.MtildeCSD t).Cl, (formOf F t x).1 c ∈ (A.MtildeCSD t).Nab c` using `fun c => hx c (Set.mem_univ c)`.
+
+Take `⟨k, u, hu, hv⟩` from `ext_mem (hT.coefR t) hT.mapR (fun h k => hLat_mul_lev hc.lev.βX (R.datXt t) h k) (formOf F t x) hf (toXf y)`. Establish `h0` using `(congrFun (hc.models.jX t (formOf F t x)) (toXf y)).trans hv`. Establish `i0 : Fin D.R.m` using `⟨0, by have := D.R.two_le_m; omega⟩`. Take `⟨a, ha⟩` from `GlobalTheory.FormCoef.typeX_mem R t D.what₂.embLL.fieldRange (GlobalTheory.RationalValues.chiVal_of_chiW R hc.grp.chiW) (GlobalTheory.RationalValues.xiR_mem R hc.lev hc.fam.pl_onto hc.fam.muVal hT.ok i0 t) k`. Take `⟨n, hn, hak⟩ : ∃ n : ℕ, 0 < n ∧ (levEnv D.sp.X' R.βX (R.datXt t)).χ k ^ n = 1` from `isOfFinOrder_iff_pow_eq_one.1 (GlobalTheory.LevSplit.levFn_finOrd _ _ _)`.
+
+Establish `hak' : a ^ n = 1` using `D.what₂.embLL.injective (by rw [map_pow, ha, ← Units.val_pow_eq_pow_val, hak, map_one, Units.val_one])`. Establish `hai : IsIntegral ℤ a` using `IsIntegral.of_pow hn (by rw [hak']; exact isIntegral_one)`. Establish `h1 : (R.HX t).e (R.jX t (formOf F t x)) (toXf y) = c₀ (a • u)` using `h0.trans (GlobalTheory.RationalValues.smul_eq_of c₀ ha rfl)`. Establish `hw : ∀ τ a, (listedWt ch.G (.grid 0 D.R.m) τ).w (Fin.cast (rank_zero_m ch.G) a) = (Bridge.lamRdef (Ptw D) τ).w a` using `fun τ a => by`. Express the relevant statement in the definitionally equal form `(wtOf _ (GlobalTheory.SignedHC.entries (parV D ch.sc.cGap 0 D.R.m τ))).w _ = _`.
+
+Rewrite using `[parV_zero D ch.sc.cGap le_rfl τ]`. Conclude with `wtOf_entries_eq (rank_zero_m ch.G) (GlobalTheory.ForcedWeights.lamRForced D τ) a`. Conclude with `inLat_value hc.lev.βX (ch.G.node (.grid 0 D.R.m)) (colY_m _) (rank_zero_m ch.G) _ _ hw y (a • u) (Submodule.smul_mem _ (⟨a, hai⟩ : 𝓞 D.what₂.LL) hu) _ (by rw [SumChoice.formC, h1, hco]) _ w`.
+-/
 theorem _root_.GlobalTheory.T.integralGoodForm_values_mem_scaledDualWeylLattice : BigC fun {D} {_} _ _ {_} {_} {A} {_} _ _ _ {R} F ch _ _ => ∀ (t : _) (w : PlL D), ∀ x ∈ (A.fam.R t).Mt (A.fam.lvl F.P0 F.ψ0), ∀ y,
   InLat _ w 0 (latAt ch.S.toGridChoice (.grid 0 D.R.m) y) (rowVal ch.S.toGridChoice (ch.S.formC t (R.jX t (formOf F t x)) y)) := by
   refine ⟨0, fun CF _ => ⟨0, fun ε C _ => ⟨0, ?_⟩⟩⟩

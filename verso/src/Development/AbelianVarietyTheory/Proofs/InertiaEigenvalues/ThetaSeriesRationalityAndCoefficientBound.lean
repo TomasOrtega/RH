@@ -33,6 +33,15 @@ variable {D : D7}
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Establish `hC : GlobalTheory.Core5 X.R.toRealDat X.F.lv2` using `⟨X.char.lev, X.char.grp, X.char.fam, X.char.models, X.char.thP⟩`. Take `⟨c', w, hw, hfr, B, hB⟩` from `exists_framed_half hP X.size hC X.geo X.unif X.inGeo`. Take `⟨kap, lam, hs⟩` from `scalars_exist (F := X.F) (realDatMovedReadingsKeepScalars X.R w)`. Establish `hch : (fullHeckeRealDatMovedReadings X.R w kap lam).Char3 X.F` using `heckeCharacterisation_transfer_movedReadings X.char hs`. Take `⟨B', -, hB', -⟩` from `@geoHalf_upd D X.Γ _ _ X.Pl0 X.T X.A3.A (setCE X.core c') X.alg (moveR X.R.toRealDat w) _ kap X.R.lam X.R.err0 B`.
+
+Take `⟨κ, v₀, fw, bar, O, pins, rho, eqa, ct, phase⟩` from `B'`. Take `rfl : v₀ = X.geo.v₀` from `(eq_of_heq hB').trans hB`. Set `g : @GeoHalf D X.Γ _ _ X.Pl0 X.T X.A3.A (setCE X.core c') X.alg (fullHeckeRealDatMovedReadings X.R w kap lam).toRealDat fun _ => 1` to `@GeoHalf.mk D X.Γ _ _ X.Pl0 X.T X.A3.A (setCE X.core c') X.alg (fullHeckeRealDatMovedReadings X.R w kap lam).toRealDat _ κ X.geo.v₀ fw bar O pins rho eqa ct phase`. Establish `hpb : X.core.pb = X.R.C.P.pb` using `GlobalTheory.CoverHalf.primes_eq_of_halfIs X.core.toCore X.R.toRealDat X.geo.fw.laws.toLawsM hC.lev ((X.geo.pins ⟨0, by have := D.R.two_le_m; omega⟩).2.tuple ()).half`. Take `⟨hI, hU, hInt⟩` from `@GlobalTheory.RealGeoIn.inGeo_and_lUnif_and_lIntegral hP D X.Γ _ _ X.Pl0 X.T X.A3.A (setCE X.core c') X.alg (fullHeckeRealDatMovedReadings X.R w kap lam).toRealDat _ g ⟨hch.lev, hch.grp.red_R, hch.grp.red_L, hch.grp.record, hch.fam, hch.models, hch.chain, hch.thP⟩ hch.grp.chiW hp …`.
+
+Establish `hst : ∀ i, (X.R.FW i).MKStable` using `fun i => (X.integral i).2.2`. Set `X' : RealSide D` to `@RealSide.mk D X.Γ X.grp X.fin X.Pl0 X.I0 X.T X.A3 (setCE X.core c') X.alg (fullHeckeRealDatMovedReadings X.R w kap lam) X.F X.cG g hch X.phs X.guard X.valKs X.idem hU hInt hI X.finT X.host X.std X.size`. Set `Y' : SerSide X' E` to `{ S := moveS w Y.YS YS := moveYS kap lam Y.YS hw hst sup := Y.sup H := moveH kap lam Y.YS hw hst Y.H reads := reads_move kap lam Y.YS hw hst Y.reads del := Y.del Z := moveZ kap lam hw hst Y.Z U_eq := Y.U_eq psi_eq := Y.psi_eq low := Y.low Sb := Y.Sb B_range := Y.B_range hk_emb := …`. Use `⟨X', Y', ⟨hF.galois, hF.star, hF.vals, hF.ray, hF.roots, hF.split⟩, hfr, fun i j b => (ratRow_move kap lam Y.YS hw hst X.geo.v₀ Y.Z.good i j b).1, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← rd_move kap lam hw hst Y.Z]`.
+
+Conclude with `h`.
+-/
 theorem exists_framed (hP : GlobalTheory.Published.CuspRapidDecay) (X : RealSide D) {E : IntegralHeckeForms.XD D} (Y : SerSide X E) (hF : FieldOk X) :
     ∃ (X' : RealSide D) (Y' : SerSide X' E), FieldOk X' ∧
       (∀ (j : Fin D.R.m) hV, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin X'.core X'.R.toRealDat j X'.core.σ₀ hV) ∧
@@ -86,6 +95,9 @@ section
 
 open GlobalTheory.TwInputs GlobalTheory.TwSys GlobalTheory.TwAll GlobalTheory.SupLaw GlobalTheory.LiftLeaf
 
+/- English proof (translation)
+Introduce `hP hA hR hS D X E Y hF`. Take `⟨X', Y', hF', hfr, h1, h2⟩` from `GlobalTheory.Unframe.exists_framed hP X Y hF`. Conclude with `⟨fun i hi j b => h1 i j b (GlobalTheory.T.exists_rational_thetaSeries_of_twistSeriesSideData hA hR D X' E Y' hF' hfr i hi j b), h2 (GlobalTheory.T.universalSeriesCoeff_boundedInSup_of_twistSeriesSideData hA hR hS D X' E Y' hF' hfr)⟩`.
+-/
 theorem GlobalTheory.Unframe.rat_and_xiBdd : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.SerInt → ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), FieldOk X → (∀ i, D.ntw.NonzeroIndexPlace i → ∀ j b, RatRow Y.YS X.geo.v₀ Y.Z.good i j b) ∧ XiBdd Y.Z.rd := by
   intro hP hA hR hS D X E Y hF
   obtain ⟨X', Y', hF', hfr, h1, h2⟩ := GlobalTheory.Unframe.exists_framed hP X Y hF

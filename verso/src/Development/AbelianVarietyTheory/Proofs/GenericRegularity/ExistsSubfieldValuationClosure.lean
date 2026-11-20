@@ -4,6 +4,37 @@ namespace GlobalTheory
 
 open Topology Filter in
 
+/- English proof (translation)
+Introduce `U _ v S`. Use `⟨{ carrier := {u | ∀ γ : WithZero (Multiplicative ℤ), γ ≠ 0 → ∃ s ∈ S, v (u - s) < γ} zero_mem' := ?hz, one_mem' := ?ho, add_mem' := ?ha, neg_mem' := ?hn, mul_mem' := ?hm, inv_mem' := ?hi }, fun _ => Iff.rfl⟩` and prove the remaining obligations. Use `case hz =>`. Introduce `γ hγ`. Conclude with `⟨0, S.zero_mem, by rw [sub_self, map_zero]; exact zero_lt_iff.2 hγ⟩`.
+
+Use `case ho =>`. Introduce `γ hγ`. Conclude with `⟨1, S.one_mem, by rw [sub_self, map_zero]; exact zero_lt_iff.2 hγ⟩`. Use `case ha =>`. Introduce `a b ha hb γ hγ`.
+
+Take `⟨s, hs, hs'⟩` from `ha γ hγ`. Take `⟨t, ht, ht'⟩` from `hb γ hγ`. Use `⟨s + t, S.add_mem hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[show a + b - (s + t) = (a - s) + (b - t) by ring]`. Conclude with `v.map_add_lt hs' ht'`.
+
+Use `case hn =>`. Introduce `a ha γ hγ`. Take `⟨s, hs, hs'⟩` from `ha γ hγ`. Use `⟨-s, S.neg_mem hs, ?_⟩` and prove the remaining obligations. Rewrite using `[show -a - -s = -(a - s) by ring, Valuation.map_neg]`.
+
+Conclude with `hs'`. Use `case hm =>`. Introduce `a b ha hb γ hγ`. Take `⟨M, haM, hbM, hM1⟩ : ∃ M : WithZero (Multiplicative ℤ), v a ≤ M ∧ v b ≤ M ∧ 1 ≤ M` from `⟨max (max (v a) (v b)) 1, le_trans (le_max_left _ _) (le_max_left _ _), le_trans (le_max_right _ _) (le_max_left _ _), le_max_right _ _⟩`. Establish `hM0 : M ≠ 0` using `ne_of_gt (lt_of_lt_of_le zero_lt_one hM1)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ0, hδγ, hδ1⟩ : ∃ δ : WithZero (Multiplicative ℤ), δ ≠ 0 ∧ δ ≤ γ * M⁻¹ ∧ δ ≤ 1 := by`. Use `⟨min (γ * M⁻¹) 1, ?_, min_le_left _ _, min_le_right _ _⟩` and prove the remaining obligations. Break down `le_total (γ * M⁻¹) 1 with h | h` into its components or cases. Rewrite using `[min_eq_left h]`. Conclude with `mul_ne_zero hγ (inv_ne_zero hM0)`.
+
+Rewrite using `[min_eq_right h]`. Conclude with `one_ne_zero`. Take `⟨s, hs, hs'⟩` from `ha δ hδ0`. Take `⟨t, ht, ht'⟩` from `hb δ hδ0`. Use `⟨s * t, S.mul_mem hs ht, ?_⟩` and prove the remaining obligations.
+
+Establish `hMδ : M * δ ≤ γ`. Combine the equalities or inequalities in the displayed calculation. Establish `hvt : v t ≤ M`. Rewrite using `[show t = b - (b - t) by ring]`. Conclude with `v.map_sub_le hbM (le_trans (le_of_lt ht') (le_trans hδ1 hM1))`.
+
+Rewrite using `[show a * b - s * t = a * (b - t) + (a - s) * t by ring]`. Use `v.map_add_lt ?_ ?_` and prove the remaining obligations. Rewrite using `[v.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[v.map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `case hi =>`. Introduce `a ha γ hγ`. Distinguish the cases in `h0 : a = 0`. Substitute `h0` using the available equality.
+
+Rewrite using `[inv_zero]`. Conclude with `⟨0, S.zero_mem, by rw [sub_self, map_zero]; exact zero_lt_iff.2 hγ⟩`. Establish `hva : v a ≠ 0` using `(v.ne_zero_iff).2 h0`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ0, hδa, hδγ⟩ : ∃ δ : WithZero (Multiplicative ℤ), δ ≠ 0 ∧ δ ≤ v a ∧ δ ≤ γ * (v a * v a) := by`. Use `⟨min (v a) (γ * (v a * v a)), ?_, min_le_left _ _, min_le_right _ _⟩` and prove the remaining obligations.
+
+Break down `le_total (v a) (γ * (v a * v a)) with h | h` into its components or cases. Rewrite using `[min_eq_left h]`. Conclude with `hva`. Rewrite using `[min_eq_right h]`. Conclude with `mul_ne_zero hγ (mul_ne_zero hva hva)`.
+
+Take `⟨s, hs, hs'⟩` from `ha δ hδ0`. Establish `hvs : v s = v a` using `v.map_eq_of_sub_lt (by rw [v.map_sub_swap]; exact lt_of_lt_of_le hs' hδa)`. Establish `hs0 : s ≠ 0`. Introduce `h`. Rewrite `hvs` using `[h, map_zero]`.
+
+Conclude with `hva hvs.symm`. Use `⟨s⁻¹, S.inv_mem hs, ?_⟩` and prove the remaining obligations. Establish `key : a⁻¹ - s⁻¹ = (s - a) * (a⁻¹ * s⁻¹)`. Rewrite using `[sub_mul, mul_left_comm, mul_inv_cancel₀ hs0, mul_one, ← mul_assoc, mul_inv_cancel₀ h0, one_mul]`. Rewrite using `[key, v.map_mul, v.map_mul, v.map_inv, v.map_inv, hvs, v.map_sub_swap]`.
+
+Establish `hpos : 0 < (v a)⁻¹ * (v a)⁻¹` using `zero_lt_iff.2 (mul_ne_zero (inv_ne_zero hva) (inv_ne_zero hva))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_subfield_valuation_closure :
     ∀ (U : Type) [Field U] (v : Valuation U (WithZero (Multiplicative ℤ))) (S : Subfield U),
       ∃ S' : Subfield U, ∀ u, u ∈ S' ↔

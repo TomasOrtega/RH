@@ -90,9 +90,15 @@ def TorsionTrivialisation : Prop :=
         (∀ y, PsiUnitOn D y Set.univ) ∧
         ∀ s : FractionRing (𝓞 K') →+* ℂ, PsiNormOne D s
 
+/- English proof (translation)
+Simplify using `[canε, Fin.sum_univ_succ]`.
+-/
 example (k : ℕ) : ∑ i, canε k i = 0 := by
   simp [canε, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ => 1⟩, by intro i j; erw [Out.Inh.linComb_triv_g, _root_.one_mul]; dsimp only; repeat erw [map_one], by intro j j' _ _ _; dsimp only [LB.pullGen, LB.oneGen]; repeat erw [map_one]⟩`.
+-/
 example (S : Scheme.{0}) : IsDiagPull (Out.Inh.zeroPolAV S) (𝟙 _) :=
   ⟨⟨fun _ => 1⟩, by
     intro i j; erw [Out.Inh.linComb_triv_g, _root_.one_mul]; dsimp only; repeat erw [map_one], by

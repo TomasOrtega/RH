@@ -15,9 +15,19 @@ def drop {n : ℕ} (ν : Fin n → ℕ) (s : Fin n) : ℕ := ν s - Formalism.Gr
 
 def antiOf {n : ℕ} (ν : Fin n → ℕ) (s : Fin n) : ℕ := ∑ t ∈ Finset.Ici s, drop ν t
 
+/- English proof (translation)
+Introduce `s s' h` and use `Finset.sum_le_sum_of_subset (Finset.Ici_subset_Ici.2 h)`.
+-/
 theorem antiOf_antitone {n : ℕ} (ν : Fin n → ℕ) : Antitone (antiOf ν) := fun s s' h =>
   Finset.sum_le_sum_of_subset (Finset.Ici_subset_Ici.2 h)
 
+/- English proof (translation)
+Unfold `antiOf`. Rewrite using `[Finset.Ici_eq_cons_Ioi, Finset.sum_cons]`. Use `congr 1`. Unfold `Formalism.GradedWeylDivisibility.nuNext`. Use `split_ifs with h`.
+
+Use `congr 1`. Use extensionality with `t`. Simplify using `only [Finset.mem_Ioi, Finset.mem_Ici, Fin.lt_def, Fin.le_iff_val_le_val]`. Use linear arithmetic over natural numbers and integers. Establish `: Finset.Ioi s = ∅`.
+
+Use extensionality with `t`. Simplify using `only [Finset.mem_Ioi, Finset.notMem_empty, iff_false, Fin.lt_def, not_lt]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Finset.sum_empty]`.
+-/
 theorem antiOf_eq {n : ℕ} (ν : Fin n → ℕ) (s : Fin n) :
     antiOf ν s = drop ν s + Formalism.GradedWeylDivisibility.nuNext (antiOf ν) s := by
   unfold antiOf
@@ -35,6 +45,11 @@ theorem antiOf_eq {n : ℕ} (ν : Fin n → ℕ) (s : Fin n) :
       omega
     rw [this, Finset.sum_empty]
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.hw`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `antiOf_eq ν s` as an intermediate fact. Unfold `drop at this`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem hw_antiOf (R : Type) [CommRing R] {n : ℕ} (ν : Fin n → ℕ) :
     Formalism.GradedWeylDivisibility.hw R le_rfl (antiOf ν) = Formalism.GradedWeylDivisibility.hw R le_rfl ν := by
   unfold Formalism.GradedWeylDivisibility.hw
@@ -44,6 +59,9 @@ theorem hw_antiOf (R : Type) [CommRing R] {n : ℕ} (ν : Fin n → ℕ) :
   congr 1
   omega
 
+/- English proof (translation)
+Use `show Formalism.GradedWeylDivisibility.weyl R N N le_rfl ν = _`. Unfold `Formalism.GradedWeylDivisibility.weyl`. Rewrite using `[hw_antiOf]`.
+-/
 theorem weyl_eq_antiOf (R : Type) [CommRing R] (N : ℕ) (ν : Fin N → ℕ) :
     WeylLatticeDuality.weyl R N N le_rfl ν = Formalism.GradedWeylDivisibility.weyl R N N le_rfl (antiOf ν) := by
   show Formalism.GradedWeylDivisibility.weyl R N N le_rfl ν = _
@@ -61,9 +79,17 @@ def Expands (ν : Fin N → ℕ) (φ : Matrix (Fin N) (Fin N) ℂ_[p] → ℂ_[p
   ∃ (m : ℕ) (o : Fin m → ℂ_[p]) (h : Fin m → MvPolynomial (Fin N × Fin N) ℤ),
     (∀ j, ‖o j‖ ≤ 1) ∧ (∀ j, h j ∈ WeylLatticeDuality.weyl ℤ N N le_rfl ν) ∧ φ = fun y => ∑ j, o j * ev (h j) y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, fun j => j.elim0, fun j => j.elim0, by funext y; simp⟩`.
+-/
 theorem expands_zero (ν : Fin N → ℕ) : Expands (p := p) ν 0 :=
   ⟨0, Fin.elim0, Fin.elim0, fun j => j.elim0, fun j => j.elim0, by funext y; simp⟩
 
+/- English proof (translation)
+Take `⟨m, o, h, ho, hh, rfl⟩` from `hφ`. Take `⟨m', o', h', ho', hh', rfl⟩` from `hψ`. Use `⟨m + m', Fin.append o o', Fin.append h h', fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) j <;> simp [ho, ho']`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) j <;> simp [hh, hh']`.
+
+Use function extensionality and compare the values at `y`. Simplify using `[Fin.sum_univ_add]`.
+-/
 theorem expands_add {ν : Fin N → ℕ} {φ ψ : Matrix (Fin N) (Fin N) ℂ_[p] → ℂ_[p]} (hφ : Expands ν φ)
     (hψ : Expands ν ψ) : Expands ν (φ + ψ) := by
   obtain ⟨m, o, h, ho, hh, rfl⟩ := hφ
@@ -74,6 +100,11 @@ theorem expands_add {ν : Fin N → ℕ} {φ ψ : Matrix (Fin N) (Fin N) ℂ_[p]
   · funext y
     simp [Fin.sum_univ_add]
 
+/- English proof (translation)
+Take `⟨m, o, h, ho, hh, rfl⟩` from `hφ`. Use `⟨m, fun j => c * o j, h, fun j => ?_, hh, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hc (norm_nonneg _) (ho j)`. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [Finset.mul_sum, mul_assoc]`.
+-/
 theorem expands_smul {ν : Fin N → ℕ} {φ : Matrix (Fin N) (Fin N) ℂ_[p] → ℂ_[p]} (c : ℂ_[p]) (hc : ‖c‖ ≤ 1)
     (hφ : Expands ν φ) : Expands ν (fun y => c * φ y) := by
   obtain ⟨m, o, h, ho, hh, rfl⟩ := hφ
@@ -82,6 +113,27 @@ theorem expands_smul {ν : Fin N → ℕ} {φ : Matrix (Fin N) (Fin N) ℂ_[p] �
   · funext y
     simp only [Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Set `O` to `ball p`. Set `M : Matrix (Fin N) (Fin N) O` to `fun a b => ⟨g a b, hg a b⟩`. Establish `hsub : O.subtype.comp (Int.castRingHom O) = Int.castRingHom ℂ_[p]` using `RingHom.ext_int _ _`. Rewrite `hf` using `[weyl_eq_antiOf]`. Establish `h1 : map (Int.castRingHom O) f ∈ Formalism.GradedWeylDivisibility.weyl O N N le_rfl (antiOf ν)`.
+
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨w, by beta_reduce`. Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_hw_map (Int.castRingHom O), Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map]⟩`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_zsmul]`.
+
+Conclude with `zsmul_mem hx c`. Establish `h2` using `GlobalTheory.WeylRowAll.rowAct_mem_weyl_square O N (antiOf ν) (antiOf_antitone ν) M _ h1`. Establish `e : (fun y => ev f (g * y)) = fun y => eval (fun k : Fin N × Fin N => y k.1 k.2) (map O.subtype (Formalism.GradedWeylDivisibility.rowAct O M (map (Int.castRingHom O) f)))`. Use function extensionality and compare the values at `y`. Unfold `ev`.
+
+Establish `: (eval (fun k : Fin N × Fin N => (g * y) k.1 k.2)).comp (map (Int.castRingHom ℂ_[p])) = ((eval (fun k : Fin N × Fin N => y k.1 k.2)).comp (map O.subtype)).comp ((Formalism.GradedWeylDivisibility.rowAct O M (n` using `N)).toRingHom.comp (map (Int.castRingHom O))) := by`. Use `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun v => ?_` and prove the remaining obligations. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.mul_apply, M, O]`. Conclude with `RingHom.congr_fun this f`. Rewrite using `[e]`.
+
+Generalize the expression as in `Formalism.GradedWeylDivisibility.rowAct O M (map (Int.castRingHom O) f) = F at h2`. Proceed by induction on `h2 using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Use `⟨1, fun _ => 1, fun _ => Formalism.GradedWeylDivisibility.applyWord ℤ w (Formalism.GradedWeylDivisibility.hw ℤ le_rfl (antiOf ν)), fun _ => by simp, fun _ => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[weyl_eq_antiOf]`. Conclude with `Submodule.subset_span ⟨w, rfl⟩`. Use function extensionality and compare the values at `y`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, one_mul, ev]`. Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_hw_map (Int.castRingHom O), Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, map_map, hsub]`.
+
+Consider the case `zero`. Use `expands_zero (p := p) ν using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+
+Use `expands_add hx hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Consider the case `smul c x _ hx`.
+
+Use `expands_smul (c : ℂ_[p]) c.2 hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Rewrite using `[smul_eq_C_mul, map_mul, map_C, eval_mul, eval_C]`. Both sides reduce to the same expression.
+-/
 theorem expands_rowSubst (ν : Fin N → ℕ) (g : Matrix (Fin N) (Fin N) ℂ_[p]) (hg : ∀ a b, ‖g a b‖ ≤ 1)
     {f : MvPolynomial (Fin N × Fin N) ℤ} (hf : f ∈ WeylLatticeDuality.weyl ℤ N N le_rfl ν) :
     Expands ν (fun y => ev f (g * y)) := by
@@ -138,6 +190,11 @@ theorem expands_rowSubst (ν : Fin N → ℕ) (g : Matrix (Fin N) (Fin N) ℂ_[p
     rw [smul_eq_C_mul, map_mul, map_C, eval_mul, eval_C]
     rfl
 
+/- English proof (translation)
+Set `O` to `ball p`. Set `Mo : Matrix (Fin N) (Fin N) O` to `fun a b => ⟨g a b, hg a b⟩`. Establish `hM : g = Mo.map O.subtype` using `by ext a b; rfl`. Establish `hadj : g.adjugate a b = ((Mo.adjugate a b : O) : ℂ_[p])`. Establish `h` using `RingHom.map_adjugate O.subtype Mo`.
+
+Rewrite using `[hM]`. Conclude with `(congrFun (congrFun h a) b).symm`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv', norm_mul, norm_inv, hd, inv_one, one_mul, hadj]`. Conclude with `(Mo.adjugate a b).2`.
+-/
 theorem inv_entry_le {g : Matrix (Fin N) (Fin N) ℂ_[p]} (hg : ∀ a b, ‖g a b‖ ≤ 1) (hd : ‖g.det‖ = 1) (a b : Fin N) :
     ‖g⁻¹ a b‖ ≤ 1 := by
   let O := ball p
@@ -153,6 +210,19 @@ theorem inv_entry_le {g : Matrix (Fin N) (Fin N) ℂ_[p]} (hg : ∀ a b, ‖g a 
 
 variable {T : Type} [Fintype T]
 
+/- English proof (translation)
+Proceed by induction on `hF using AddSubgroup.closure_induction with`. Consider the case `mem F hF`. Take `⟨r, f, hr, hf, rfl⟩` from `hF`. Use `choose m o h ho hh he using fun τ => expands_rowSubst (ν τ) (g τ) (hg τ) (hf τ)`. Establish `hb : ∀ x : ∀ τ, Fin (m τ), ‖c * r * ∏ τ, o τ (x τ)‖ ≤ 1` using `fun x => by`.
+
+Rewrite using `[norm_mul, norm_mul, norm_prod]`. Conclude with `mul_le_one₀ (mul_le_one₀ hc (norm_nonneg _) hr) (Finset.prod_nonneg fun _ _ => norm_nonneg _) (Finset.prod_le_one (fun _ _ => norm_nonneg _) fun τ _ => ho τ _)`. Establish `hgen : ∀ x : ∀ τ, Fin (m τ), (fun y : T → Matrix (Fin N) (Fin N) ℂ_[p] => (c * r * ∏ τ, o τ (x τ)) * ∏ τ, eval (fun k : Fin N × Fin N => y τ k.1 k.2) (map (Int.castRingHom ℂ_[p]) (h τ (x τ)))) ∈ WeylLatticeDuality.DelW p T N ν` using `fun x => AddSubgroup.subset_closure ⟨c * r * ∏ τ, o τ (x τ), fun τ => h τ (x τ), hb x, fun τ => hh τ _, rfl⟩`. Use `AddSubgroup.sum_mem _ (t := Finset.univ) (fun x _ => hgen x) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[Finset.sum_apply]`. Establish `e : ∀ τ, eval (fun k : Fin N × Fin N => (g τ * y τ) k.1 k.2) (map (Int.castRingHom ℂ_[p]) (f τ)) = ∑ j, o τ j * ev (h τ j) (y τ)` using `fun τ => congrFun (he τ) (y τ)`. Simplify using `only [e]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_mul_distrib]`. Simplify using `only [ev]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `zero_mem (WeylLatticeDuality.DelW p T N ν) using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Consider the case `add F G _ _ hF hG`. Use `add_mem hF hG using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+
+Simplify using `[mul_add]`. Consider the case `neg F _ hF`. Use `neg_mem hF using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
+-/
 theorem subst_mem {ν : T → Fin N → ℕ} (g : T → Matrix (Fin N) (Fin N) ℂ_[p]) (c : ℂ_[p]) (hc : ‖c‖ ≤ 1)
     (hg : ∀ τ a b, ‖g τ a b‖ ≤ 1) {F : (T → Matrix (Fin N) (Fin N) ℂ_[p]) → ℂ_[p]}
     (hF : F ∈ WeylLatticeDuality.DelW p T N ν) :
@@ -191,6 +261,13 @@ theorem subst_mem {ν : T → Fin N → ℕ} (g : T → Matrix (Fin N) (Fin N) �
     convert neg_mem hF using 1
     funext y; simp
 
+/- English proof (translation)
+Introduce `hc hg hd`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hc0 : c ≠ 0` using `fun h0 => by rw [h0, norm_zero] at hc; exact zero_ne_one hc`. Establish `hu : ∀ τ, IsUnit (g τ).det` using `fun τ => isUnit_iff_ne_zero.2 fun h0 => by`.
+
+Use `hd τ` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Use `subst_mem (fun τ => (g τ)⁻¹) c⁻¹ (by rw [norm_inv, hc, inv_one]) (fun τ => inv_entry_le (hg τ) (hd τ)) h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hu _), Matrix.one_mul, inv_mul_cancel_left₀ hc0]`. Conclude with `subst_mem g c hc.le hg`.
+-/
 theorem subst_mem_iff (p : ℕ) [Fact p.Prime] (T : Type) [Fintype T] (N : ℕ) (ν : T → Fin N → ℕ)
     (g : T → Matrix (Fin N) (Fin N) ℂ_[p]) (c : ℂ_[p]) (F : (T → Matrix (Fin N) (Fin N) ℂ_[p]) → ℂ_[p]) :
     ‖c‖ = 1 → (∀ τ a b, ‖g τ a b‖ ≤ 1) → (∀ τ, ‖(g τ).det‖ = 1) →

@@ -12,6 +12,9 @@ open scoped TensorProduct
 
 def UnitsOpenTens : Prop := ∀ {D : D7} (X : HidaSetting D), IsOpen {z : Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E | IsUnit z}
 
+/- English proof (translation)
+Establish `e2` using `RingHom.map_det (inclR (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F)) (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')))`. Rewrite `e2` using `[RingHom.mapMatrix_apply]`. Use `show IsUnit ((gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).map (inclR (Ainf X.B.I.F))).det`. Rewrite using `[← e2]`. Conclude with `(isUnit_iff_ne_zero.2 hd).map _`.
+-/
 theorem isUnit_det_TI {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
     (hT : ∀ i j, X.B.I.cm.sig (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) j i) =
       gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) i j)
@@ -24,6 +27,15 @@ theorem isUnit_det_TI {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
   rw [← e2]
   exact (isUnit_iff_ne_zero.2 hd).map _
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP Ω a hCh`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Take `⟨hmr, hcomp, hsmul, hgram, hcTmul, hcT1, -, -⟩` from `rmulFacts_holds X`. Establish `hd` using `detNZ_holds X u' ψ hT μinf νinf fibInf hP`. Establish `hdetc : ContinuousAt (fun T => (a T).det) (TI X u' hT)` using `(continuous_id.matrix_det).continuousAt.comp hCh.2.2.1`.
+
+Establish `hU1 : {T | IsUnit (a T).det} ∈ 𝓝 (TI X u' hT)` using `hdetc.preimage_mem_nhds ((hU X).mem_nhds (by show IsUnit (a (TI X u' hT)).det`. Rewrite using `[hCh.2.1, Matrix.det_one]`. Conclude with `isUnit_one))`. Use `⟨Ω ∩ {T | IsUnit (a T).det}, Set.inter_subset_left, Filter.inter_mem hCh.1 hU1, fun T hT1 => ⟨(Matrix.isUnit_iff_isUnit_det _).2 hT1.2, fun Y hY => ?_⟩⟩` and prove the remaining obligations. Apply `linIndep_of_isUnit_det (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J` to reduce the goal to its premises.
+
+Rewrite using `[hY, ← hCh.2.2.2 T hT1.1, hgram, gramR_Y0_eq_TI X u' hT, Matrix.det_mul, Matrix.det_mul]`. Establish `hc : (cTI X (a T)).det = sigR (Ainf X.B.I.F) X.B.I.cm.sig (a T).det`. Rewrite using `[cTI, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hc]`.
+
+Conclude with `((hT1.2.map _).mul (isUnit_det_TI X u' hT hd)).mul hT1.2`.
+-/
 theorem nearFacts_of (hU : UnitsOpenTens) : NearFacts := by
   intro D X u' ψ hT μinf νinf fibInf hP Ω a hCh
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X

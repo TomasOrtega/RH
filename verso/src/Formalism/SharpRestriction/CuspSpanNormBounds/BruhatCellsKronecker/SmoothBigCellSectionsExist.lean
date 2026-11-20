@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hV : L.aaV = L0.aaV` using `funext fun i => funext fun s => (h i s).1.trans (h0 i s).1.symm`. Establish `hP : L.aaP = L0.aaP` using `funext fun i => funext fun s => (h i s).2.1.trans (h0 i s).2.1.symm`. Establish `hr : L.ρ = L0.ρ` using `funext fun i => funext fun s => (h i s).2.2.trans (h0 i s).2.2.symm`. Unfold `ThA ThS ThInvF`. Simplify using `only [hV, hP, hr]`.
+-/
 theorem ThA_congr {CA : ℝ} {u u' : D.what₂.Word} {x : D.what₂.Tau → LocalDataRealPlace D} {L L0 : LatticeDataWithDual D}
     (h : IsLatGLOB D L) (h0 : IsLatGLOB D L0) : ThA D CA u u' x L = ThA D CA u u' x L0 := by
   have hV : L.aaV = L0.aaV := funext fun i => funext fun s => (h i s).1.trans (h0 i s).1.symm
@@ -23,21 +26,40 @@ theorem ThA_congr {CA : ℝ} {u u' : D.what₂.Word} {x : D.what₂.Tau → Loca
   unfold ThA ThS ThInvF
   simp only [hV, hP, hr]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i s`. Conclude with `(h i s).2.2`.
+-/
 theorem rho_eq {L : LatticeDataWithDual D} (h : IsLatGLOB D L) : L.ρ = rhoReal D := by
   funext i s
   exact (h i s).2.2
 
+/- English proof (translation)
+Unfold `gE`. Conclude with `Nat.cast_ne_zero.2 (Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)`.
+-/
 theorem gE_ne (D : D7) : gE D ≠ 0 := by
   unfold gE
   exact Nat.cast_ne_zero.2 (Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)
 
+/- English proof (translation)
+Unfold `gE`. Simplify using the standard rewrite rules.
+-/
 theorem plEmb_gE (D : D7) (v : D.what₂.Tau) : plEmb D v (gE D) = ((D.host.g 0 * D.host.g 1 : ℕ) : ℂ) := by
   unfold gE
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gE_ne D, Or.inr fun v => by rw [plEmb_gE]; exact Complex.natCast_im _⟩`.
+-/
 theorem psiAx_gE (D : D7) : PsiAx D (gE D) :=
   ⟨gE_ne D, Or.inr fun v => by rw [plEmb_gE]; exact Complex.natCast_im _⟩
 
+/- English proof (translation)
+Use `⟨D.host.rdE, ⟨rdE_pos D, fun i s _ => (h i s).2.2⟩, fun v => ?_⟩` and prove the remaining obligations. Establish `hr : (D.host.rdE : ℂ) ≠ 0` using `by exact_mod_cast (rdE_pos D).ne'`. Establish `h0 : ((D.host.g 0 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (D.host.g_prime 0).ne_zero`. Establish `h1 : ((D.host.g 1 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (D.host.g_prime 1).ne_zero`. Use `show (((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ)) = cPsi D (gE D) v / (D.host.rdE : ℂ)`.
+
+Unfold `cPsi`. Rewrite using `[plEmb_gE]`. Unfold `Formalism.BasicNotions.Host.ka Formalism.BasicNotions.Host.v`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frame_axioms_bessel_datum {large₂ : SizeData₂ D} {X : TermTie D} {u u' : D.what₂.Word} {Cw : ℝ} (Y : LoopTie D large₂ X u u' Cw)
     (hT : 0 < Tr D u) (hT' : 0 < Tr D u') {L : LatticeDataWithDual D} (h : IsLatGLOB D L) :
     FrameAx D (gE D) L (fun v => localBesselDatumAtRealPlace Y hT hT' v) := by
@@ -53,6 +75,9 @@ theorem frame_axioms_bessel_datum {large₂ : SizeData₂ D} {X : TermTie D} {u 
   field_simp
   ring
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hx v`. Take `⟨_, _, _, _, h5, h6, _⟩` from `Y.goodW v`. Conclude with `⟨h1.symm, h2.symm, h3.symm, h5, h6, rfl⟩`.
+-/
 theorem local_match_bessel_datum {large₂ : SizeData₂ D} {X : TermTie D} {u u' : D.what₂.Word} {Cw : ℝ} (Y : LoopTie D large₂ X u u' Cw)
     (hT : 0 < Tr D u) (hT' : 0 < Tr D u') {x : D.what₂.Tau → LocalDataRealPlace D} (hx : IsLocA D u u' x) (v : D.what₂.Tau) :
     LocMatch D (Tr D u) (Tr D u') (x v) (localBesselDatumAtRealPlace Y hT hT' v) := by
@@ -60,6 +85,9 @@ theorem local_match_bessel_datum {large₂ : SizeData₂ D} {X : TermTie D} {u u
   obtain ⟨_, _, _, _, h5, h6, _⟩ := Y.goodW v
   exact ⟨h1.symm, h2.symm, h3.symm, h5, h6, rfl⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `h`.
+-/
 theorem interlace_cast {k n n' : ℕ} (e : n' = n) (hk : k ≤ n) (hk' : k ≤ n') (u : Fin k → ℝ) (lam : Fin n → ℝ)
     (h : InterlaceS hk u lam) : InterlaceS hk' u (fun i => lam (Fin.cast e i)) := by
   subst e
@@ -139,9 +167,17 @@ def ConstantBoundAlt : Prop :=
 
 end Steps
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Nlet_five (D : D7) : Nlet D 5 = NA D := by
   rfl
 
+/- English proof (translation)
+Take `⟨_, _, h3, h4, _⟩` from `hH.2.1`. Take `⟨t, ht⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Establish `hr : 4 * D.R.rS + 8 = 2 * D.R.m + 4`. Simplify using `only [Ranks.rS]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h5 : 2 * D.R.m + 4 ≤ D.R.m ^ 4` using `by nlinarith [Nat.pow_le_pow_left h2 2, Nat.pow_le_pow_left h2 3, sq_nonneg (D.R.m : ℤ)]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem k_ge_of_hyp {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT : ℝ} (hH : hyp D large₂ C0 C' Cl Cg cb Cu cT CT) :
     4 * D.R.rS + 8 ≤ D.R.k := by
   obtain ⟨_, _, h3, h4, _⟩ := hH.2.1
@@ -152,15 +188,61 @@ theorem k_ge_of_hyp {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT : ℝ} (
   have h5 : 2 * D.R.m + 4 ≤ D.R.m ^ 4 := by nlinarith [Nat.pow_le_pow_left h2 2, Nat.pow_le_pow_left h2 3, sq_nonneg (D.R.m : ℤ)]
   omega
 
+/- English proof (translation)
+The claim follows from `finprod_nonneg fun _ => finprod_nonneg fun _ => by positivity`.
+-/
 theorem typed_places_factor_nonneg (D : D7) : 0 ≤ ∏ᶠ p ∈ typedPl D, (1 + 3 / (Ideal.absNorm p.asIdeal : ℝ)) := finprod_nonneg fun _ => finprod_nonneg fun _ => by positivity
 
+/- English proof (translation)
+Unfold `dimPi`. Check the signs of the components of the expression.
+-/
 theorem dimPi_nonneg (D : D7) (u : D.what₂.Word) : 0 ≤ dimPi (hc := D.hcW) u := by
   unfold dimPi
   positivity
 
+/- English proof (translation)
+Rewrite using `[← D.Dstar_eq D.u₀]`. Conclude with `(D.mem D.u₀).A.Dstar_pos`.
+-/
 theorem Dstar_pos (D : D7) : 0 < D.what₂.Dstar := by
   rw [← D.Dstar_eq D.u₀]; exact (D.mem D.u₀).A.Dstar_pos
 
+/- English proof (translation)
+Introduce `u u' hne`. Establish `hT : 0 < Tr D u` using `Nat.cast_pos.2 (D.mem u).A.T_prime.pos`. Establish `hT' : 0 < Tr D u'` using `Nat.cast_pos.2 (D.mem u').A.T_prime.pos`. Take `⟨f, hf⟩` from `s1 u u' hne hT hT'`. Take `⟨hS1, _, hEq⟩` from `hForm u u' hne hT hT' f hf`.
+
+Use `⟨hS1.of_norm, ?_⟩` and prove the remaining obligations. Introduce `x L hx hL hcut hsm hTh`. Establish `hk` using `k_ge_of_hyp hH`. Take `⟨_, _, _, _, _, _, hI, hne', hmod, _, _, _, _, hTg⟩` from `hH.1`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hv, _⟩` from `hH.2.1`.
+
+Take `⟨δ, M, hA, hG1, hG2, hG3, hG4⟩` from `hG hk`. Take `⟨L0, hL0, hLat, hLa, hrest⟩` from `hAr hk δ M hA hG1 hG3 hG4`. Establish `hmd : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2]` using `((hmod u).2 : _ = _).trans ((hmod u').2 : _ = _).symm`. Establish `hcop : ∀ w : D.what₂.Word, Nat.Coprime (D.mem w).A.T (Lat.gS D)` using `fun w => Nat.Coprime.mul_right ((Nat.coprime_primes (D.mem w).A.T_prime (D.host.g_prime 0)).2 (hTg w).1) ((Nat.coprime_primes (D.mem w).A.T_prime (D.host.g_prime 1)).2 (hTg w).2)`. Take `⟨hKd, hcW⟩` from `hrest u u' (D.mem u).A.T_prime.pos (D.mem u').A.T_prime.pos hmd (hcop u) (hcop u')`.
+
+Establish `hcnt` using `hC hk δ M hA u u' hmd`. Take `⟨cW, hcW0, hcWid⟩` from `hcW hcnt.1`. Take `⟨ϖ, Dsup, hϖ, hD1, hD2, hDe, hDb⟩` from `s3 δ M hA u u'`. Take `⟨Kd, hAx, hK, he0, he1⟩` from `hKd Dsup hD1 hD2`. Take `⟨ι, hι, c, hRows, hle⟩` from `s4 u u' hne hT hT' f hf δ M hA hmd hG2 hcnt ϖ Dsup hϖ (by linarith) hDb L0 Kd hL0 (hAx.2.1 _ le_rfl) (hK _ le_rfl) cW hcW0 hcWid`.
+
+Use `choose μsec hsec using s2 u u' hT hT'`. Establish `hN : Nlet D 5 = NA D` using `Nlet_five D`. Establish `hN0 : 0 ≤ NA D`. Unfold `NA`. Check the signs of the components of the expression.
+
+Establish `hThe : ThS D CA CA (Nlet D 5) (Tr D u) (Tr D u') (gE D) x L0 = ThA D CA u u' x L`. Rewrite using `[ThA_congr hL hL0, hN]`. Both sides reduce to the same expression. Establish `hA'` using `hThA (gE D) (Tr D u) (Tr D u') x L0 Kd (fun v => localBesselDatumAtRealPlace (Y u u') hT hT' v) f μsec ι c (by norm_num) hv (psiAx_gE D) hLat (frame_axioms_bessel_datum (Y u u') hT hT' hL0) hAx.toF (fun v => ⟨local_match_bessel_datum (Y u u') hT hT' hx v, (hf v).1, hsec v⟩) (fun …`. Rewrite using `[(hx v).1, (hx v).2.1, (hx v).2.2]`.
+
+Conclude with `⟨interlace_cast (dimS_eq D.R) _ _ _ _ (hI u v), interlace_cast (dimS_eq D.R) _ _ _ _ (hI u' v)⟩)`. Use the proof step `(fun v => by rw [(hx v).2.1, (hx v).2.2]; exact hne' u u' hne v)`. Use the proof step `(fun v => by rw [(hx v).1]; exact hgap v)`. Use the proof step `(fun v => by rw [(hx v).2.1, (hx v).2.2]; exact (hcut v).1)`. Use the proof step `(fun v => by`.
+
+Take `⟨_, _, h3, h4, h5⟩` from `hcut v`. Rewrite using `[hN]`. Use `⟨h3, ?_, h4, h5⟩` and prove the remaining obligations. Establish `: 0 ≤ NA D ^ 3 / 2` using `by positivity`. Use the proof step `linarith)`.
+
+Use the proof step `(fun v => by rw [hN]; exact (hcut v).2.1)`. Use the proof step `(by rw [hThe, ← Real.rpow_natCast]; exact hsm)`. Use the proof step `(by rw [hThe]; exact hTh) hRows`. Rewrite `hA'` using `[hThe]`. Establish `hprod : ∏ i ∈ Finset.Icc 1 (D.R.rS + 1), (1 + Kd.e i) = Dsup`.
+
+Rewrite using `[Finset.prod_Icc_succ_top (by omega), he1, Finset.prod_eq_one, one_mul]`. Introduce `i hi`. Rewrite using `[he0 i (Finset.mem_Icc.1 hi).1 (Finset.mem_Icc.1 hi).2, add_zero]`. Rewrite `hA'` using `[hprod]`. Establish `h5` using `s5 u u' hne hT hT' f hf δ M hA hcnt L0 hL0 hLat hLa cW hcW0 hcWid μsec hsec`.
+
+Use `set Th := ThA D CA u u' x L with hThdef`. Establish `hpow : 0 ≤ (CA / Th) ^ D.R.f`. Establish `: Even D.R.f` using `⟨D.R.n, by unfold Ranks.f; ring⟩`. Conclude with `this.pow_nonneg _`. Establish `hr0 : (0 : ℝ) ≤ (D.R.rS : ℝ) + 1` using `by positivity`.
+
+Use `set A : ℝ := (1 + CA * ((D.R.rS : ℝ) + 1) * (CA / Th) ^ D.R.f) * Dsup with hAdef`. Establish `hA1 : 0 ≤ 1 + CA * ((D.R.rS : ℝ) + 1) * (CA / Th) ^ D.R.f` using `by positivity`. Establish `hA0 : 0 ≤ A` using `mul_nonneg hA1 (by linarith)`. Use `set dd : ℝ := (D.duS u : ℝ) * (D.duS u' : ℝ) / D.what₂.Dstar with hdd`. Establish `hdd0 : 0 ≤ dd` using `div_nonneg (by positivity) (Dstar_pos D).le`.
+
+Use `set q : ℝ := (D.duS u : ℝ) / dimPi (hc := D.hcW) u with hq`. Establish `hq0 : 0 ≤ q` using `div_nonneg (Nat.cast_nonneg _) (dimPi_nonneg D u)`. Use `set S : ℝ := (∑' q, formTerm (Y u u') hT hT' Vm f q).re with hSdef`. Use `set E : ℝ := Real.exp (8 * qS D) with hEdef`. Establish `hE0 : 0 ≤ E` using `(Real.exp_pos _).le`.
+
+Establish `hchain : ENNReal.ofReal (q * S) ≤ ENNReal.ofReal (A * (E * dd))`. Rewrite using `[ENNReal.ofReal_mul hq0, ENNReal.ofReal_mul hA0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul hq0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ ENNReal.ofReal A * ENNReal.ofReal (E * dd) := mul_le_mul' le_rfl h5`. Establish `hreal : q * S ≤ A * (E * dd)` using `(ENNReal.ofReal_le_ofReal_iff (mul_nonneg hA0 (mul_nonneg hE0 hdd0))).1 hchain`. Establish `hDal : Dsup * E ≤ 1 + eSum D Ce` using `le_trans (mul_le_mul_of_nonneg_right hDe hE0) hAl`. Establish `hreal' : q * S ≤ (1 + CA * ((D.R.rS : ℝ) + 1) * (CA / Th) ^ D.R.f) * (1 + eSum D Ce) * dd`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `mul_le_mul_of_nonneg_right _ hdd0` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hDal hA1`. Establish `hre : gaG D * (∑' P, gsFam D u u' P).re = q * S`. Use `congrArg Complex.re hEq` as an intermediate fact. Rewrite `this` using `[Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Then use the resulting hypothesis.
+
+Establish `hgs : genScal D u u' = (∏ᶠ p ∈ typedPl D, (1 + 3 / (Ideal.absNorm p.asIdeal : ℝ))) * (gaG D * (∑' P, gsFam D u u' P).re)`. Unfold `genScal gsFam`. Rewrite using `[mul_assoc]`. Rewrite using `[hgs, hre, Real.rpow_natCast]`. Establish `hf3` using `typed_places_factor_nonneg D`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem theorem_S_of_estimates {large₂ : SizeData₂ D} {X : TermTie D} {Cw : ℝ} {Y : ∀ u u', LoopTie D large₂ X u u' Cw} {Z : TermLocs D X}
     {cN : D.what₂.Word → D.what₂.Word → ℝ} {Vm : ValMap D.R.k D.R.rS} {CA CA' Ce₀ Ce C0 C' Cl Cg cb Cu cT CT : ℝ}
     (hCA : 0 ≤ CA) (hForm : SpectralWeightsCM D large₂ X Cw Y Vm) (hThA : admA D CA CA' 5 Vm) (hG : GlobalLatticeMajorantHypothesis D Z cN)
@@ -272,14 +354,31 @@ theorem theorem_S_of_estimates {large₂ : SizeData₂ D} {X : TermTie D} {Cw : 
         mul_le_mul_of_nonneg_left hreal' hf3
     _ = _ := by rw [hdd]; ring
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, h => absurd h (by norm_num) | _ + 1, _, L, _ => Formalism.MainNotions.S.Inh.big_cell_section_of_local_bessel L`.
+-/
 theorem section_exists : ∀ (k r : ℕ) (L : LocBessel k r), 1 ≤ k → ∃ μsec, IsSection k r L.z L.z' μsec
   | 0, _, _, h => absurd h (by norm_num)
   | _ + 1, _, L, _ => Formalism.MainNotions.S.Inh.big_cell_section_of_local_bessel L
 
+/- English proof (translation)
+Introduce `u u' hT hT' v` and use `section_exists D.R.k D.R.rS (localBesselDatumAtRealPlace (Y u u') hT hT' v) (by have := D.R.m_add_three_le_k; omega)`.
+-/
 theorem smooth_big_cell_sections_exist (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (Cw : ℝ) (Y : ∀ u u', LoopTie D large₂ X u u' Cw) :
     SmoothBigCellSectionsExist D large₂ X Cw Y := fun u u' hT hT' v =>
   section_exists D.R.k D.R.rS (localBesselDatumAtRealPlace (Y u u') hT hT' v) (by have := D.R.m_add_three_le_k; omega)
 
+/- English proof (translation)
+Establish `H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0` using `⟨hH.2.1, hH.1, hH.2.2⟩`. Establish `h1` using `std_ncgap H τ`. Take `⟨_, _, h3, h4, _⟩` from `hH.2.1`. Establish `hmN : 8 ≤ D.R.m` using `by exact_mod_cast hm8`. Establish `hm4 : 8 * D.R.m ≤ D.R.m ^ 4`.
+
+Establish `: 8 ≤ D.R.m ^ 3` using `le_trans (by omega) (Nat.le_self_pow (by norm_num) D.R.m)`. Combine the equalities or inequalities in the displayed calculation. Establish `hkm : 8 * D.R.m ≤ D.R.k` using `le_trans hm4 (le_trans h3 h4)`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hmr : (D.R.m : ℝ) ≤ D.R.r` using `by exact_mod_cast (by omega : D.R.m ≤ D.R.r)`.
+
+Establish `hf1 : (1 : ℝ) ≤ D.R.f`. Establish `: 1 ≤ D.R.f` using `le_trans (Nat.one_le_pow _ _ (by omega)) h3`. Conclude with `this` after adjusting the coercions. Establish `hNl : Nlet D 5 = 10 * (D.R.m : ℝ)`. Rewrite using `[← std_castM D]`.
+
+Unfold `Nlet`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hN2 : Nlet D 5 ≤ 2 * (D.R.r : ℝ)`. Rewrite using `[hNl]`.
+
+Establish `: 10 * D.R.m ≤ 2 * D.R.r` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hnum` using `std_num_nc CA Cl D.R.m D.R.r D.R.f large₂.sc.L (Nlet D 5) hm8 hmr hCA hCl hf1 (std_L_ge D large₂) (by rw [hNl]; positivity) hN2`. Introduce `a b hab`. Conclude with `le_trans hnum (h1 a b hab)`.
+-/
 theorem gap_of_hyp {large₂ : SizeData₂ D} {CA C0 C' Cl Cg cb Cu cT CT : ℝ} (hH : hyp D large₂ C0 C' Cl Cg cb Cu cT CT)
     (hCl : 8 ≤ Cl) (hm8 : (8 : ℝ) ≤ D.R.m) (hCA : 128 * |CA| ≤ D.R.m) (τ : D.what₂.Tau) :
     GapAtLeast (epsSH D.R) (lamSH D.R (D.hc τ))
@@ -309,6 +408,9 @@ theorem gap_of_hyp {large₂ : SizeData₂ D} {CA C0 C' Cl Cg cb Cu cT CT : ℝ}
   intro a b hab
   exact le_trans hnum (h1 a b hab)
 
+/- English proof (translation)
+Unfold `IntegralityFromMetric`. Introduce `_ hA hH`. Unfold `Adm1 at hA`. Take `⟨-, -, -, -, -, -, -, -, -, hThA, -, hG, hC, hForm, hAr, -, -, -⟩` from `hA`. Conclude with `theorem_S_of_estimates hCA hForm hThA hG hC hAr hH (fun τ => gap_of_hyp hH hCl hm8 hCAm τ) s1 (smooth_big_cell_sections_exist D large₂ X Cw Y) s3 s4 s5 hAl`.
+-/
 theorem theorem_S_of_column_estimates {large₂ : SizeData₂ D} {X : TermTie D} {Cw : ℝ} {Y : ∀ u u', LoopTie D large₂ X u u' Cw} {Z : TermLocs D X}
     {cN : D.what₂.Word → D.what₂.Word → ℝ} {Vm : ValMap D.R.k D.R.rS}
     {Ca Cq C0 C' Cl Cg cb Cu cT CT CA CA' Ce₀ Ce : ℝ}
@@ -325,6 +427,15 @@ theorem theorem_S_of_column_estimates {large₂ : SizeData₂ D} {X : TermTie D}
 
 open Formalism.FourierDecayAlt.S3 in
 
+/- English proof (translation)
+Take `⟨hp, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20, q21, q22, q23, q24, q25, q26, q27, q28, q29, q30, q31, q32, q33, _, _⟩` from `hP`. Establish `hc0 : 0 < B.c0` using `div_pos (mul_pos q23 q21) q27`. Establish `hc0' : 0 < B.c0'` using `div_pos (mul_pos q24 q22) q28`. Set `B' : MassData P` to `{ B with δ := 0, supdens := 1, e1 := 1, KtopV := B.IntN / (B.c0 * B.c0'), KV := B.n0c * (B.IntN / (B.c0 * B.c0')), Sig := B.ρ0 * (B.n0c * (B.IntN / (B.c0 * B.c0'))), Kgs2 := B.tt * B.Gam1 * (B.ρ0 * (B.n0c * (B.IntN / (B.c0 * B.c0')))) }`. Establish `hK0 : 0 ≤ B.IntN / (B.c0 * B.c0')` using `div_nonneg hI (mul_pos hc0 hc0').le`.
+
+Establish `hmain` using `Formalism.FourierDecayAlt.P.mass_formula_constant_one P B' ⟨hp, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20, q21, q22, q23, q24, q25, q26, q27, q28, q29, q30, q31, q32, q33, zero_le_one, le_rfl⟩ (le_refl _) rfl ⟨by show B.n0c * (B.Int …`. Rewrite using `[mul_div_cancel₀ _ (mul_pos hc0 hc0').ne']`. Use the proof step `linarith)`. Use `h2 h3 h4 h5 h6 h7 h8 h9 h10 h11`. Establish `h` using `hmain.2.1`.
+
+Establish `htt : 0 < B.tt` using `Finset.prod_pos fun p _ => by`. Use `(hp p).1` as an intermediate fact. Check the signs of the components of the expression. Establish `h' : B.tt * (B.d / B.dimπ) * (B.n0c * (B.IntN / (B.c0 * B.c0'))) ≤ (1 + 0) * 1 * B.tt * (B.d * B.d' / B.Dstar)` using `h`. Establish `h'' : B.tt * (B.d / B.dimπ * (B.n0c * (B.IntN / (B.c0 * B.c0')))) ≤ B.tt * (B.d * B.d' / B.Dstar)`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left h'' htt`.
+-/
 theorem massData_const {P : Type} [Fintype P] (B : MassData P) (hP : B.Pos) (hI : 0 ≤ B.IntN) (h1 : B.InMass) (h2 : B.InJacMod)
     (h3 : B.InNu) (h4 : B.InInfinity) (h5 : B.InVolumes) (h6 : B.InLevelS) (h7 : B.InMasses) (h8 : B.InColumns)
     (h9 : B.InOrdinary) (h10 : B.InTyped) (h11 : B.InIndices) :
@@ -391,6 +502,15 @@ def ParamsBound : Prop :=
           (fun v p => (localBesselDatumAtRealPlace (Y u u') hT hT' v).J (f v) (bigCell D.R.k D.R.rS p.1 (μsec v p.2))) =
         ENNReal.ofReal (B.n0c / B.al * (B.IntN / (B.c0 * B.c0')))
 
+/- English proof (translation)
+Introduce `u u' hne hT hT' f hf δ M hA hcnt L hL hLat hLa cW hcW hid μsec hsec`. Take `⟨P, _, B, hP, hI, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, hal, ed, ed', eD, eπ, eJ⟩` from `h u u' hne hT hT' f hf δ M hA hcnt L hL hLat hLa cW hcW hid μsec hsec`. Establish `hb` using `massData_const B hP hI h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11`. Rewrite `hb` using `[ed, ed', eD, eπ]`. Establish `hal0 : 0 < B.al`.
+
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, h, -⟩` from `hP`. Conclude with `h`. Establish `hq0 : 0 ≤ (D.duS u : ℝ) / dimPi (hc` using `D.hcW) u := div_nonneg (Nat.cast_nonneg _) (dimPi_nonneg D u)`. Establish `hdd0 : 0 ≤ (D.duS u : ℝ) * (D.duS u' : ℝ) / D.what₂.Dstar` using `div_nonneg (by positivity) (Dstar_pos D).le`. Rewrite using `[ENNReal.ofReal_mul hq0, mul_assoc, eJ, ← ENNReal.ofReal_mul hq0]`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_eq_mul_inv B.n0c]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ B.al⁻¹ * ((D.duS u : ℝ) * (D.duS u' : ℝ) / D.what₂.Dstar) := mul_le_mul_of_nonneg_left hb (inv_nonneg.2 hal0.le)`.
+
+Use `_ ≤ Real.exp (8 * qS D) * ((D.duS u : ℝ) * (D.duS u' : ℝ) / D.what₂.Dstar) := mul_le_mul_of_nonneg_right hal hdd0`.
+-/
 theorem constant_bound_of_massDataBound (h : ParamsBound D large₂ X Cw Y Z cN) : ConstantBoundAlt D large₂ X Cw Y Z cN := by
   intro u u' hne hT hT' f hf δ M hA hcnt L hL hLat hLa cW hcW hid μsec hsec
   obtain ⟨P, _, B, hP, hI, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, hal, ed, ed', eD, eπ, eJ⟩ :=
@@ -414,6 +534,11 @@ theorem constant_bound_of_massDataBound (h : ParamsBound D large₂ X Cw Y Z cN)
 
 end MassDataStep
 
+/- English proof (translation)
+Take `⟨x0, H⟩` from `H`. Take `⟨x2, _, hm⟩` from `ev_m Fm (max 8 (128 * |CA|))`. Unfold `ConclusionF1 UnderF`. Use `ownEv_intro Fm (max x0 x2) fun x hx hx1 i => ?_` and prove the remaining obligations. Introduce `hH`.
+
+Take `⟨X, Cw, Y, Z, cN, Vm, a1, a2, a3, a4, a5, s1, s3, s4, s5, hAl⟩` from `H x (le_trans (le_max_left _ _) hx) hx1 i hH`. Establish `hmx` using `hm x (le_trans (le_max_right _ _) hx) i`. Conclude with `theorem_S_of_estimates hCA a1 a2 a3 a4 a5 hH (gap_of_hyp hH hCl (le_trans (le_max_left _ _) hmx) (le_trans (le_max_right _ _) hmx)) s1 (smooth_big_cell_sections_exist _ _ X Cw Y) s3 s4 s5 hAl`.
+-/
 theorem family_theorem_S_of_pointwise {eps : ℝ} (Fm : FamP eps) {C0 Cg cb Cu cT CT CA CA' Ce₀ Ce : ℝ} (hCA : 0 ≤ CA)
     (hCl : 8 ≤ sCl Fm)
     (H : ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x,
@@ -441,6 +566,15 @@ section RowsLemmas
 open Finset
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `hs : ∀ r : ℝ, star (r : ℂ) = (r : ℂ)` using `fun r => Complex.conj_ofReal r`. Establish `hsq : ∀ x y, (((Real.sqrt (n0 x * n0 y) : ℝ) : ℂ))⁻¹ * (((φ x)⁻¹ : ℝ) : ℂ) * (((φ y)⁻¹ : ℝ) : ℂ) = (((Real.sqrt (n0 x) * φ x)⁻¹ : ℝ) : ℂ) * (((Real.sqrt (n0 y) * φ y)⁻¹ : ℝ) : ℂ)`. Introduce `x y`. Rewrite using `[Real.sqrt_mul (hn0 x)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `H1` using `h1.dotProduct_mulVec_nonneg (fun x => a x * (((φ x)⁻¹ : ℝ) : ℂ))`. Establish `H2` using `h2.dotProduct_mulVec_nonneg (fun x => a x * (((Real.sqrt (n0 x) * φ x)⁻¹ : ℝ) : ℂ))`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Finset.mul_sum] at H1 H2`. Establish `H` using `add_nonneg H1 H2`.
+
+Rewrite `H` using `[← Finset.sum_add_distrib]`. Use `H using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Establish `e` using `hsq x y`. Rewrite using `[star_mul', star_mul', hs, hs]`. Move the coercions through the operations in `at e ⊢`. Simplify using `only [div_eq_mul_inv]`. Take the linear combination `(star (a x) * a y * Kg x y) * e`.
+-/
 theorem quad_rows {J : Type} [Fintype J] (Kt Kg C0 : J → J → ℂ) (Dsup : ℝ) (n0 φ : J → ℝ) (hn0 : ∀ x, 0 ≤ n0 x)
     (h1 : ((Dsup : ℂ) • (Matrix.of fun x y => Kt x y) -
       Matrix.of fun x y => Kg x y / ((Real.sqrt (n0 x * n0 y) : ℝ) : ℂ)).PosSemidef)
@@ -470,6 +604,11 @@ theorem quad_rows {J : Type} [Fintype J] (Kt Kg C0 : J → J → ℂ) (Dsup : �
   simp only [div_eq_mul_inv]
   linear_combination (star (a x) * a y * Kg x y) * e
 
+/- English proof (translation)
+Establish `e : ∀ x, ∑ y ∈ X, F x y = ∑ y ∈ X.filter p, F x y + ∑ y ∈ X.filter (fun x => ¬ p x), F x y` using `fun x => (Finset.sum_filter_add_sum_filter_not X p (F x)).symm`. Establish `z1 : ∑ x ∈ X.filter p, ∑ y ∈ X.filter (fun x => ¬ p x), F x y = 0` using `Finset.sum_eq_zero fun x hx => Finset.sum_eq_zero fun y hy => h1 x y (Finset.mem_filter.1 hx).2 (Finset.mem_filter.1 hy).2`. Establish `z2 : ∑ x ∈ X.filter (fun x => ¬ p x), ∑ y ∈ X.filter p, F x y = 0` using `Finset.sum_eq_zero fun x hx => Finset.sum_eq_zero fun y hy => h2 x y (Finset.mem_filter.1 hx).2 (Finset.mem_filter.1 hy).2`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not X p]`. Simplify using `only [e, Finset.sum_add_distrib]`.
+
+Rewrite using `[z1, z2, add_zero, zero_add]`.
+-/
 theorem sum_split {α : Type} [DecidableEq α] (X : Finset α) (p : α → Prop) [DecidablePred p] (F : α → α → ℂ)
     (h1 : ∀ x y, p x → ¬ p y → F x y = 0) (h2 : ∀ x y, ¬ p x → p y → F x y = 0) :
     ∑ x ∈ X, ∑ y ∈ X, F x y =
@@ -486,6 +625,11 @@ theorem sum_split {α : Type} [DecidableEq α] (X : Finset α) (p : α → Prop)
   simp only [e, Finset.sum_add_distrib]
   rw [z1, z2, add_zero, zero_add]
 
+/- English proof (translation)
+Unfold `nMod`. Use `finprod_nonneg fun p => inv_nonneg.mpr ?_` and prove the remaining obligations. Use `first`. Consider the case `(unfold Loc.Model.modK; positivity)`. Consider the case `(simp only [Loc.Model.modK]; positivity)`.
+
+Consider the case `skip`.
+-/
 theorem nMod_nonneg (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (T T' : ℕ)
     (a s : ℕ) (t : D.host.E) : 0 ≤ nMod δ M T T' a s t := by
   unfold nMod
@@ -495,15 +639,32 @@ theorem nMod_nonneg (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc
   | (simp only [Loc.Model.modK]; positivity)
   | skip
 
+/- English proof (translation)
+The claim follows from `| [], _ => zero_le_one | (t, s) :: rest, a => mul_nonneg (pow_nonneg (nMod_nonneg δ M T T' a s t) _) (phiFrom_nonneg δ M T T' i rest (a + s))`.
+-/
 theorem phiFrom_nonneg (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (T T' i : ℕ) : ∀ (l : List (D.host.E × ℕ)) (a : ℕ), 0 ≤ phiFrom δ M T T' i a l
   | [], _ => zero_le_one
   | (t, s) :: rest, a => mul_nonneg (pow_nonneg (nMod_nonneg δ M T T' a s t) _) (phiFrom_nonneg δ M T T' i rest (a + s))
 
+/- English proof (translation)
+Unfold `n0`. Check the signs of the components of the expression.
+-/
 theorem local_norm_nonneg_alt {c : ℝ} (hc : 0 ≤ c) (T T' : ℕ) (w : Point D.host.E (D.R.rS + 1)) : 0 ≤ n0 c T T' w := by
   unfold n0
   positivity
 
+/- English proof (translation)
+Establish `hc : ∀ x : D.host.E, x ≠ 0 → D.conjF x ≠ 0` using `fun x hx => (map_ne_zero D.conjF).2 hx`. Unfold `kind at hk`. Distinguish the cases in `h0 : Dmin w D.R.rS = 0`. Rewrite `hk` using `[if_pos h0]`. Distinguish the cases in `h0' : Dmin w' D.R.rS = 0`.
+
+Unfold `Gpt`. Rewrite using `[h0', zero_mul, mul_zero, sub_zero]`. Conclude with `mul_ne_zero (hdet w') (hc _ (hdet w'))`. Rewrite using `[if_neg h0'] at hk; exact absurd hk (by simp)`. Rewrite `hk` using `[if_neg h0]`.
+
+Distinguish the cases in `h0' : Dmin w' D.R.rS = 0`. Rewrite using `[if_pos h0'] at hk; exact absurd hk (by simp)`. Rewrite `hk` using `[if_neg h0']`. Establish `hz : zetaOf w = zetaOf w'` using `Option.some.inj hk`. Establish `e : ∀ v : Point D.host.E (D.R.rS + 1), Dmin v D.R.rS ≠ 0 → Gpt T T' v = Dmin v D.R.rS * D.conjF (Dmin v D.R.rS) * (zetaOf v * D.conjF (zetaOf v) - (T : D.host.E) * T')`.
+
+Introduce `v hv`. Unfold `Gpt zetaOf`. Rewrite using `[map_div₀]`. Use `hc _ hv` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `hw` using `[e w h0]`. Rewrite using `[e w' h0', ← hz]`. Conclude with `mul_ne_zero (mul_ne_zero h0' (hc _ h0')) (right_ne_zero_of_mul hw)`.
+-/
 theorem good_of_kind (hdet : ∀ w : Point D.host.E (D.R.rS + 1), Dmin w (D.R.rS + 1) ≠ 0) (T T' : ℕ)
     {w w' : Point D.host.E (D.R.rS + 1)} (hk : kind w = kind w') (hw : Gpt T T' w ≠ 0) : Gpt T T' w' ≠ 0 := by
   have hc : ∀ x : D.host.E, x ≠ 0 → D.conjF x ≠ 0 := fun x hx => (map_ne_zero D.conjF).2 hx
@@ -539,6 +700,9 @@ section RowsAbstract
 open Finset
 open scoped ComplexOrder
 
+/- English proof (translation)
+Unfold `phiA`. Use `first`. Consider the case `exact phiFrom_nonneg _ _ _ _ _ _ _`. Consider the case `skip`.
+-/
 theorem phiA_nonneg (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (T T' : ℕ) {i : ℕ} (h : Point D.host.E i) : 0 ≤ phiA δ M T T' h := by
   unfold phiA
@@ -548,6 +712,15 @@ theorem phiA_nonneg (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc
 
 variable {P ι : Type}
 
+/- English proof (translation)
+Establish `hs : ∀ r : ℝ, star (r : ℂ) = (r : ℂ)` using `fun r => Complex.conj_ofReal r`. Establish `hw : ∀ x : Xg, good x.1` using `fun x => hX x.1 x.2`. Establish `Q` using `quad_rows (fun x y : Xg => Kt x.1 y.1) (fun x y : Xg => Kg x.1 y.1) (fun x y : Xg => ∑ ρ ∈ R, c0 ρ x.1 * star (c0 ρ y.1)) Dsup (fun x : Xg => n0 x.1) (fun x : Xg => φ x.1) (fun x => hn0 x.1) (h1 Xg Subtype.val hw) (h2 Xg Subtype.val hw) (fun x : Xg => a x.1)`. Establish `term : ∀ ρ p q, c ρ p * star (c ρ q) = c0 ρ p * star (c0 ρ q) * ((((Real.sqrt (n0 p) * φ p)⁻¹ * (Real.sqrt (n0 q) * φ q)⁻¹ : ℝ)) : ℂ)`. Introduce `ρ p q`.
+
+Distinguish the cases in `hp : c0 ρ p = 0`. Simplify using `[hc, hp]`. Distinguish the cases in `hq : c0 ρ q = 0`. Simplify using `[hc, hq]`. Rewrite using `[hc, hc, star_mul', hs, ← hde ρ p hp, ← hde ρ q hq]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Finset.sum_coe_sort Xg]`. Use `Q using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_coe_sort Xg]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [hKe, Finset.sum_mul, term]`.
+-/
 theorem good_abstract (good : P → Prop) (K Kt Kg : P → P → ℂ) (c0 c : ι → P → ℂ) (R : Finset ι) (Dsup : ℝ)
     (n0 φ e : P → ℝ) (hn0 : ∀ w, 0 ≤ n0 w)
     (hKe : ∀ p q, K p q = (Dsup : ℂ) * Kt p q / ((φ p * φ q : ℝ) : ℂ))
@@ -582,6 +755,15 @@ theorem good_abstract (good : P → Prop) (K Kt Kg : P → P → ℂ) (c0 c : ι
   refine Finset.sum_congr rfl fun y _ => ?_
   simp only [hKe, Finset.sum_mul, term]
 
+/- English proof (translation)
+Unfold `KLE PSDK at *`. Introduce `X a`. Use `show 0 ≤ ∑ p ∈ X, ∑ q ∈ X, star (a p) * (K p q - ∑ ρ ∈ R, c ρ p * star (c ρ q)) * a q`. Establish `hs` using `sum_split X good (fun p q => star (a p) * (K p q - ∑ ρ ∈ R, c ρ p * star (c ρ q)) * a q) (fun p q hp hq => by`. Establish `h0 : ∀ ρ, c ρ q = 0` using `fun ρ => hbad ρ q hq`.
+
+Simplify using `[(hmix p q hp hq).1, h0])`. Use the proof step `(fun p q hp hq => by`. Establish `h0 : ∀ ρ, c ρ p = 0` using `fun ρ => hbad ρ p hp`. Simplify using `[(hmix q p hq hp).2, h0])`. Rewrite using `[hs]`.
+
+Use `add_nonneg (hgood _ a fun p hp => (Finset.mem_filter.1 hp).2) ?_` and prove the remaining obligations. Establish `hz : ∀ p ∈ X.filter (fun x => ¬ good x), ∀ q, star (a p) * (K p q - ∑ ρ ∈ R, c ρ p * star (c ρ q)) * a q = star (a p) * K p q * a q`. Introduce `p hp q`. Establish `h0 : ∀ ρ, c ρ p = 0` using `fun ρ => hbad ρ p (Finset.mem_filter.1 hp).2`. Simplify using `[h0]`.
+
+Establish `e2 : ∑ p ∈ X.filter (fun x => ¬ good x), ∑ q ∈ X.filter (fun x => ¬ good x), star (a p) * (K p q - ∑ ρ ∈ R, c ρ p * star (c ρ q)) * a q = ∑ p ∈ X.filter (fun x => ¬ good x), ∑ q ∈ X.filter (fun x => ¬ good x), star (a p) * K p q * a q` using `Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun q _ => hz p hp q`. Rewrite using `[e2]`. Conclude with `hPSD _ a`.
+-/
 theorem dom_abstract (good : P → Prop) (K : P → P → ℂ) (c : ι → P → ℂ) (R : Finset ι)
     (hbad : ∀ ρ w, ¬ good w → c ρ w = 0) (hmix : ∀ p q, good p → ¬ good q → K p q = 0 ∧ K q p = 0) (hPSD : PSDK K)
     (hgood : ∀ (Xg : Finset P) (a : P → ℂ), (∀ p ∈ Xg, good p) →
@@ -615,6 +797,11 @@ theorem dom_abstract (good : P → Prop) (K : P → P → ℂ) (c : ι → P →
 variable {Tau : Type} [Fintype Tau] (HSv : Tau → Type) (ip : ∀ v, HSv v → HSv v → ℂ) (n : P → ℝ) (c c0 : ι → P → ℂ)
   (V : ∀ v, P → HSv v) (cW : ℝ)
 
+/- English proof (translation)
+Use `(hsum.mul_left (Real.sqrt cW)⁻¹).congr fun h => ?_` and prove the remaining obligations. Establish `e : ‖c ρ h * ((Real.sqrt (n h) : ℝ) : ℂ)‖ = ‖c0 ρ h * (((Real.sqrt cW)⁻¹ : ℝ) : ℂ)‖`. Rewrite using `[hA1]`. Rewrite `e` using `[norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), Real.norm_of_nonneg (inv_nonneg.mpr (Real.sqrt_nonneg _))]`. Rewrite using `[e]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem summ_abstract
     (hA1 : ∀ ρ w, c ρ w * ((Real.sqrt (n w) : ℝ) : ℂ) = c0 ρ w * (((Real.sqrt cW)⁻¹ : ℝ) : ℂ)) (ρ : ι)
     (hsum : Summable fun w => ‖c0 ρ w‖ * ∏ v, Real.sqrt (ip v (V v w) (V v w)).re) :
@@ -627,6 +814,13 @@ theorem summ_abstract
   rw [e]
   ring
 
+/- English proof (translation)
+Establish `hsq : (((Real.sqrt cW)⁻¹ : ℝ) : ℂ) * (((Real.sqrt cW)⁻¹ : ℝ) : ℂ) = ((cW⁻¹ : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt hcW.le]`. Establish `hs : ∀ r : ℝ, star (r : ℂ) = (r : ℂ)` using `fun r => Complex.conj_ofReal r`. Establish `key : ∀ ρ (q : P × P), c ρ q.1 * star (c ρ q.2) * ((Real.sqrt (n q.1) * Real.sqrt (n q.2) : ℝ) : ℂ) = ((cW⁻¹ : ℝ) : ℂ) * (c0 ρ q.1 * star (c0 ρ q.2))`. Introduce `ρ q`.
+
+Establish `e1` using `hA1 ρ q.1`. Establish `e2` using `congrArg star (hA1 ρ q.2)`. Rewrite `e2` using `[star_mul', star_mul', hs, hs]`. Rewrite using `[← hsq, Complex.ofReal_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Unfold `SRowForm`. Repeatedly rewrite using `[key, mul_assoc, tsum_mul_left, Complex.re_ofReal_mul, ENNReal.ofReal_mul (inv_nonneg.mpr hcW.le), ENNReal.tsum_mul_left]`. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul hcW.le, mul_inv_cancel₀ hcW.ne', ENNReal.ofReal_one, one_mul]`.
+-/
 theorem form_abstract (hcW : 0 < cW)
     (hA1 : ∀ ρ w, c ρ w * ((Real.sqrt (n w) : ℝ) : ℂ) = c0 ρ w * (((Real.sqrt cW)⁻¹ : ℝ) : ℂ)) :
     ∑' ρ, ENNReal.ofReal (∑' q : P × P, c0 ρ q.1 * star (c0 ρ q.2) * ∏ v, ip v (V v q.1) (V v q.2)).re =
@@ -651,6 +845,9 @@ theorem form_abstract (hcW : 0 < cW)
 
 end RowsAbstract
 
+/- English proof (translation)
+The claim follows from `| [], _, j, hj => absurd hj (by simp) | (t, s) :: rest, h, j, hj => by simp only [List.map_cons, List.sum_cons] at hj ⊢ by_cases hjs : j < s · refine ⟨s - 1 - j, by omega, t, (h (t, s) (by simp)).1, fun j' => ?_⟩ simp only [ptEntry] by_cases hj' : j' = j · subst hj' rw [if_pos ⟨b …`.
+-/
 theorem ptEntry_col {K : Type} [Zero K] : ∀ (bs : List (K × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) →
     ∀ j, j < (bs.map Prod.snd).sum → ∃ i, i < (bs.map Prod.snd).sum ∧ ∃ t : K, t ≠ 0 ∧
       ∀ j', ptEntry bs i j' = if j' = j then t else 0
@@ -678,6 +875,11 @@ theorem ptEntry_col {K : Type} [Zero K] : ∀ (bs : List (K × ℕ)), (∀ b ∈
         · rw [if_neg (by omega), if_neg hj']
       · rw [if_neg (fun hh => h2 hh.2), if_neg (by omega)]
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Take `⟨i, hi, t, ht, hcol⟩` from `ptEntry_col p.1 p.2.1 j.val (by rw [p.2.2]; exact j.2)`.
+
+Establish `h1` using `congrFun h0 ⟨i, by rw [← p.2.2]; exact hi⟩`. Simplify using `only [Matrix.mulVec, dotProduct, ptMat, hcol, Pi.zero_apply] at h1`. Rewrite `h1` using `[Finset.sum_eq_single j (fun b _ hb => by rw [if_neg (fun hh => hb (Fin.ext hh)), zero_mul]) (fun hh => absurd (Finset.mem_univ j) hh), if_pos rfl]`. Conclude with `(mul_eq_zero.1 h1).resolve_left ht`.
+-/
 theorem ptMat_det_ne {K : Type} [Field K] {n : ℕ} (p : Point K n) : (ptMat p).det ≠ 0 := by
   intro hdet
   obtain ⟨v, hv, h0⟩ := Matrix.exists_mulVec_eq_zero_iff.2 hdet
@@ -690,6 +892,11 @@ theorem ptMat_det_ne {K : Type} [Field K] {n : ℕ} (p : Point K n) : (ptMat p).
     (fun hh => absurd (Finset.mem_univ j) hh), if_pos rfl] at h1
   exact (mul_eq_zero.1 h1).resolve_left ht
 
+/- English proof (translation)
+Unfold `LocalSplitGroups.Dmin`. Rewrite using `[dif_pos le_rfl]`. Establish `: (ptMat w).submatrix (Fin.castLE (le_refl (D.R.rS + 1))) (Fin.castLE (le_refl (D.R.rS + 1))) = ptMat w`. Use extensionality with `a b`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `ptMat_det_ne w`.
+-/
 theorem Dmin_top_ne (w : Point D.host.E (D.R.rS + 1)) : LocalSplitGroups.Dmin w (D.R.rS + 1) ≠ 0 := by
   unfold LocalSplitGroups.Dmin
   rw [dif_pos le_rfl]
@@ -725,6 +932,25 @@ def ColumnDecomposition : Prop :=
           ∏ v, hsInner (Vm.V (localBesselDatumAtRealPlace (Y u u') hT hT' v) (f v) (locBlocks D (rhoReal D) v q.1.1))
             (Vm.V (localBesselDatumAtRealPlace (Y u u') hT hT' v) (f v) (locBlocks D (rhoReal D) v q.2.1))).re
 
+/- English proof (translation)
+Introduce `u u' hne hT hT' f hf δ M hA hmd hG2 hcnt ϖ Dsup hϖ hD0 hDb L Kd hL hPSD hK cW hcW hid`. Take `⟨ι, hι, c0, hsupp, hdom, hsum, hform⟩` from `h u u' hne hT hT' f hf`. Establish `hρ : L.ρ = rhoReal D` using `rho_eq hL`. Rewrite `hid`, the goal using `[hρ]`. Take `⟨n, hn⟩ : ∃ n : Point D.host.E (D.R.rS + 1) → ℝ, n = fun h => ptWeightG D (rhoReal D) (Tr D u) (Tr D u') h.1` from `⟨_, rfl⟩`.
+
+Take `⟨e, he⟩ : ∃ e : Point D.host.E (D.R.rS + 1) → ℝ, e = fun w => (Real.sqrt cW * Real.sqrt (n w))⁻¹` from `⟨_, rfl⟩`. Take `⟨c, hc⟩ : ∃ c : ι → Point D.host.E (D.R.rS + 1) → ℂ, c = fun ρ w => c0 ρ w * ((e w : ℝ) : ℂ)` from `⟨_, rfl⟩`. Establish `hc' : ∀ ρ w, c ρ w = c0 ρ w * ((e w : ℝ) : ℂ)` using `fun ρ w => by rw [hc]`. Establish `he' : ∀ w, e w = (Real.sqrt cW * Real.sqrt (n w))⁻¹` using `fun w => by rw [he]`. Establish `hn' : ∀ w : Point D.host.E (D.R.rS + 1), n w = ptWeightG D (rhoReal D) (Tr D u) (Tr D u') w.1` using `fun w => by rw [hn]`.
+
+Establish `hc0 : ∀ ρ w, c0 ρ w = 0 → c ρ w = 0` using `fun ρ w h0 => by rw [hc', h0, zero_mul]`. Establish `hA1 : ∀ ρ w, c ρ w * ((Real.sqrt (n w) : ℝ) : ℂ) = c0 ρ w * (((Real.sqrt cW)⁻¹ : ℝ) : ℂ)`. Introduce `ρ w`. Distinguish the cases in `h0 : c0 ρ w = 0`. Rewrite using `[hc0 ρ w h0, h0, zero_mul, zero_mul]`.
+
+Establish `hn0 : 0 < Real.sqrt (n w)` using `Real.sqrt_pos.2 (by rw [hn' w]; exact (hsupp ρ w h0).2.2)`. Rewrite using `[hc', he' w, mul_assoc, ← Complex.ofReal_mul, mul_inv, mul_assoc, inv_mul_cancel₀ hn0.ne', mul_one]`. Establish `hde : ∀ ρ w, c0 ρ w ≠ 0 → (Real.sqrt (n0 (cN u u') (D.mem u).A.T (D.mem u').A.T w) * phiA δ M (D.mem u).A.T (D.mem u').A.T w)⁻¹ = e w`. Introduce `ρ w hw`. Establish `e1` using `congrArg Real.sqrt (hid w (hsupp ρ w hw).2.1)`.
+
+Rewrite `e1` using `[Real.sqrt_mul (local_norm_nonneg_alt hcnt.1.le _ _ _), Real.sqrt_sq (phiA_nonneg δ M _ _ _), Real.sqrt_mul hcW.le]`. Rewrite using `[he' w, hn' w, e1]`. Establish `hKe : ∀ p q, Kd.K (D.R.rS + 1) p q = (Dsup : ℂ) * KtopG M δ (D.mem u).A.T (D.mem u').A.T p q / ((phiA δ M (D.mem u).A.T (D.mem u').A.T p * phiA δ M (D.mem u).A.T (D.mem u').A.T q : ℝ) : ℂ)`. Introduce `p q`. Rewrite using `[hK]`.
+
+Simplify using `[KA, Kglob]`. Establish `hmix : ∀ p q, Gpt (D.mem u).A.T (D.mem u').A.T p ≠ 0 → ¬ Gpt (D.mem u).A.T (D.mem u').A.T q ≠ 0 → Kd.K (D.R.rS + 1) p q = 0 ∧ Kd.K (D.R.rS + 1) q p = 0`. Introduce `p q hp hq`. Establish `hk : kind p ≠ kind q` using `fun hk => hq (good_of_kind Dmin_top_ne _ _ hk hp)`. Rewrite using `[hKe, hKe]`.
+
+Unfold `KtopG`. Rewrite using `[if_neg hk, if_neg (Ne.symm hk)]`. Simplify using the standard rewrite rules. Establish `hbad : ∀ ρ w, ¬ Gpt (D.mem u).A.T (D.mem u').A.T w ≠ 0 → c ρ w = 0` using `fun ρ w hw => hc0 ρ w (by_contra fun h0 => hw (hsupp ρ w h0).1)`. Use `⟨ι, hι, c, ⟨fun R => ?_, fun ρ => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `dom_abstract (fun w => Gpt (D.mem u).A.T (D.mem u').A.T w ≠ 0) _ c R hbad hmix hPSD (good_abstract (fun w => Gpt (D.mem u).A.T (D.mem u').A.T w ≠ 0) _ (KtopG M δ (D.mem u).A.T (D.mem u').A.T) (Kgs D.s u u') c0 c R Dsup (n0 (cN u u') (D.mem u).A.T (D.mem u').A.T) (phiA δ M (D.mem …`. Use `summ_abstract (fun v => (localBesselDatumAtRealPlace (Y u u') hT hT' v).Wq →L[ℂ] (localBesselDatumAtRealPlace (Y u u') hT hT' v).Wp) (fun _ => hsInner) n c c0 (fun v h => Vm.V (localBesselDatumAtRealPlace (Y u u') hT hT' v) (f v) (locBlocks D (rhoReal D) v h.1)) cW hA1 ρ (hsum ρ)` as an intermediate fact. Rewrite `this` using `[hn]`. Conclude with `this`. Use `form_abstract (fun v => (localBesselDatumAtRealPlace (Y u u') hT hT' v).Wq →L[ℂ] (localBesselDatumAtRealPlace (Y u u') hT hT' v).Wp) (fun _ => hsInner) n c c0 (fun v h => Vm.V (localBesselDatumAtRealPlace (Y u u') hT hT' v) (f v) (locBlocks D (rhoReal D) v h.1)) cW hcW hA1` as an intermediate fact.
+
+Rewrite `this` using `[hn]`. Conclude with `hform.trans (le_of_eq this)`.
+-/
 theorem column_bound_of_decomposition (h : ColumnDecomposition D large₂ X Cw Y Vm) : ColumnDominationBound D large₂ X Cw Y Z cN Vm := by
   intro u u' hne hT hT' f hf δ M hA hmd hG2 hcnt ϖ Dsup hϖ hD0 hDb L Kd hL hPSD hK cW hcW hid
   obtain ⟨ι, hι, c0, hsupp, hdom, hsum, hform⟩ := h u u' hne hT hT' f hf
@@ -792,6 +1018,13 @@ def PrimeSumStep (Ce : ℝ) : Prop :=
   Real.exp (4 * ∑' p : PlF D, (Nat.card 𝓀[(D.s.atP p).Fp] : ℝ) ^ (-((D.R.k : ℤ) - 2 * D.R.rS - 2))) ≤ 2 ∧
   Real.exp (4 * ∑' p : PlF D, (Nat.card 𝓀[(D.s.atP p).Fp] : ℝ) ^ (-((D.R.k : ℤ) - 2 * D.R.rS - 2))) ≤ 1 + eSum D Ce
 
+/- English proof (translation)
+Introduce `δ M hA u u'`. Establish `hex : ∀ p : PlF D, ∃ ϖ : 𝒪[(D.s.atP p).Fp], Irreducible ϖ` using `fun p => by`. Use `(hA p).1.loc` as an intermediate fact. Conclude with `IsDiscreteValuationRing.exists_irreducible _`. Use `choose ϖ hϖ using hex`.
+
+Establish `hb0 : ∀ p : PlF D, 0 ≤ (Nat.card 𝓀[(D.s.atP p).Fp] : ℝ) ^ (-((D.R.k : ℤ) - 2 * D.R.rS - 2))` using `fun p => zpow_nonneg (Nat.cast_nonneg _) _`. Establish `hS0 : 0 ≤ 4 * ∑' p : PlF D, (Nat.card 𝓀[(D.s.atP p).Fp] : ℝ) ^ (-((D.R.k : ℤ) - 2 * D.R.rS - 2))` using `mul_nonneg (by norm_num) (tsum_nonneg hb0)`. Use `⟨ϖ, _, hϖ, Real.one_le_exp hS0, hp.2.1, hp.2.2, fun γ hg hG => ?_⟩` and prove the remaining obligations. Establish `hGt` using `((Z δ M hA u u').G_pt γ).2 hG`. Establish `hloc` using `((Z δ M hA u u').generic_iff γ hGt.1).1 hg`.
+
+Unfold `densT`. Use `tprod_le_of_prod_le' (Real.one_le_exp hS0) fun s => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_sum, Finset.mul_sum]`. Use `_ ≤ _ := Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left (hp.1.sum_le_tsum s fun p _ => hb0 p) (by norm_num))`.
+-/
 theorem density_bound_of_local_density {Ce : ℝ} (hk : 4 * D.R.rS + 8 ≤ D.R.k) (hd : ExactLocalDensityAllModels D) (hp : PrimeSumStep D Ce) : DensityBound D X Z Ce := by
   intro δ M hA u u'
   have hex : ∀ p : PlF D, ∃ ϖ : 𝒪[(D.s.atP p).Fp], Irreducible ϖ := fun p => by
@@ -818,6 +1051,11 @@ theorem density_bound_of_local_density {Ce : ℝ} (hk : 4 * D.R.rS + 8 ≤ D.R.k
 
 end Dens
 
+/- English proof (translation)
+Unfold `IntegralityFromMetric`. Introduce `hT hA hH`. Establish `hA'` using `hA`. Unfold `Adm1 at hA'`. Take `⟨-, -, -, -, -, -, -, -, -, -, hd, -, -, -, -, -, -, -⟩` from `hA'`.
+
+Conclude with `theorem_S_of_column_estimates hCA hCl hm8 hCAm s1 (density_bound_of_local_density D X Z (k_ge_of_hyp hH) hd s3) (column_bound_of_decomposition D large₂ X Cw Y Z cN Vm s4) (constant_bound_of_massDataBound D large₂ X Cw Y Z cN s5) hAl hT hA hH`.
+-/
 theorem theorem_S_of_refined_estimates {large₂ : SizeData₂ D} {X : TermTie D} {Cw : ℝ} {Y : ∀ u u', LoopTie D large₂ X u u' Cw} {Z : TermLocs D X}
     {cN : D.what₂.Word → D.what₂.Word → ℝ} {Vm : ValMap D.R.k D.R.rS}
     {Ca Cq C0 C' Cl Cg cb Cu cT CT CA CA' Ce₀ Ce : ℝ}
@@ -833,6 +1071,13 @@ theorem theorem_S_of_refined_estimates {large₂ : SizeData₂ D} {X : TermTie D
   exact theorem_S_of_column_estimates hCA hCl hm8 hCAm s1 (density_bound_of_local_density D X Z (k_ge_of_hyp hH) hd s3)
     (column_bound_of_decomposition D large₂ X Cw Y Z cN Vm s4) (constant_bound_of_massDataBound D large₂ X Cw Y Z cN s5) hAl hT hA hH
 
+/- English proof (translation)
+Introduce `_ hA`. Take `⟨_, _, _, _, _, _, _, _, _, hThA, hDens, ⟨xG, hG⟩, ⟨xC, hC⟩, ⟨xF, hF⟩, ⟨xA, hAr⟩, _⟩` from `hA`. Take `⟨xS, hS⟩` from `S`. Use `family_theorem_S_of_pointwise (Ce₀ := Ce₀) Fm hCA hCl ⟨max (max xG xC) (max (max xF xA) xS), fun x hx hx1 i hH => ?_⟩` and prove the remaining obligations. Establish `h1 : xG ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`.
+
+Establish `h2 : xC ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `h3 : xF ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_right _ _)) hx`. Establish `h4 : xA ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_right _ _)) hx`. Establish `h5 : xS ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Take `⟨s1, s3, hAl, s4, s5⟩` from `hS x h5 hx1 i hH`.
+
+Conclude with `⟨X x hx1 i, Cw, Y x hx1 i, Z x hx1 i, cN x i, Vm _ _, hF x h3 i hx1 hH, hThA x i, hG x h1 i hx1, hC x h2 i hx1, hAr x h4 i hH, s1, density_bound_of_local_density _ _ _ (k_ge_of_hyp hH) (hDens x i) s3, column_bound_of_decomposition _ _ _ _ _ _ _ _ s4, constant_bound_of_massDataBou …`.
+-/
 theorem family_theorem_S_of_estimates {eps : ℝ} (Fm : FamP eps) (X : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i)) (Cw : ℝ)
     (Y : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) u u', LoopTie (Fm.D x i) (Fm.L x i) (X x hx i) u u' Cw)
     (Z : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), TermLocs (Fm.D x i) (X x hx i))

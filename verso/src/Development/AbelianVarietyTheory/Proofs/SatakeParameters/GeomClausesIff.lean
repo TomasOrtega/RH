@@ -162,15 +162,26 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Bas
 def ObjMap.ptEquiv (m : ObjMap o' o f) (T : Over S') : (T ⟶ o'.A) ≃* ((Over.map f).obj T ⟶ o.A) :=
   MulEquiv.ofBijective (pushHom m.cart T) ⟨GlobalTheory.SiegelPull.push_injective m.cart T, GlobalTheory.SiegelPull.push_surjective m.cart T⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ObjMap.ptEquiv_left (m : ObjMap o' o f) (T : Over S') (x : T ⟶ o'.A) :
     (m.ptEquiv T x).left = x.left ≫ m.φ := rfl
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by rw [ObjMap.ptEquiv_left, Over.comp_left, Over.comp_left, ObjMap.ptEquiv_left, Category.assoc, m.act, Category.assoc])`.
+-/
 theorem ObjMap.ptEquiv_act (m : ObjMap o' o f) (T : Over S') (x : T ⟶ o'.A) (c : D.O) :
     m.ptEquiv T (x ≫ o'.act.act c) = m.ptEquiv T x ≫ o.act.act c :=
   Over.OverMorphism.ext (by
     rw [ObjMap.ptEquiv_left, Over.comp_left, Over.comp_left, ObjMap.ptEquiv_left, Category.assoc, m.act,
       Category.assoc])
 
+/- English proof (translation)
+Take `⟨Zl, Zr, Zh⟩` from `Z`. Express the relevant statement in the definitionally equal form `Zl ⟶ S' at g`. Express the relevant statement in the definitionally equal form `g ≫ f = Zh at hg`. Substitute `hg` using the available equality. Use `⟨m.ptEquiv (Over.mk g), fun x => rfl, fun n a c z => ?_⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.weilIs_iff_of_isGrpPullback_comm _ _ o.A o'.A f m.φ _ _ (pull_isLB o.isLB _) (pull_isLB o'.isLB _) m.cart (GlobalTheory.SiegelPull.diag_iso m.sq m.pol) (Over.mk g) n a c _ _ z rfl rfl`.
+-/
 theorem ObjMap.exists_ptEquiv (m : ObjMap o' o f) (Z : Over S) (g : Z.left ⟶ S') (hg : g ≫ f = Z.hom) :
     ∃ σ : (Over.mk g ⟶ o'.A) ≃* (Z ⟶ o.A), (∀ x, (σ x).left = x.left ≫ m.φ) ∧
       ∀ (n : ℤ) (a c : Over.mk g ⟶ o'.A) (z : Γ(Z.left, ⊤)ˣ),
@@ -194,6 +205,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
   {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o' : Obj b N s'} {o : Obj b N s} {f : S' ⟶ S}
 
+/- English proof (translation)
+Establish `key : ∀ y : T ⟶ o'.A, σ (j ≫ y) = j₀ ≫ m.ptEquiv T y` using `fun y => Over.OverMorphism.ext (by`. Rewrite using `[hσ, Over.comp_left, Over.comp_left, ObjMap.ptEquiv_left, hj, Category.assoc])`. Use `and_congr (forall₂_congr fun mm v => ?_) (and_congr (forall_congr' fun mm => ?_) (forall₃_congr fun mm v w => ?_))` and prove the remaining obligations. Rewrite using `[← key, map_eq_one_iff _ σ.injective]`. Rewrite using `[σ.surjective.forall]`.
+
+Use `forall_congr' fun q => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, map_eq_one_iff _ σ.injective]`. Conclude with `iff_congr Iff.rfl (exists_congr fun v => by rw [← key, σ.injective.eq_iff])`. Rewrite using `[← key, ← key]`. Conclude with `hW _ _ _ _`.
+-/
 theorem ObjMap.geom_clauses_iff (m : ObjMap o' o f) (ℓ : ℕ) [Fact ℓ.Prime] {T : Over S'}
     (ev : ℕ → (D.Ix → ℤ_[ℓ]) → (T ⟶ o'.A)) (k : Type) [Field k] (x : Sp k ⟶ S') (x₀ : Sp k ⟶ S)
     (j : Over.mk x ⟶ T) (j₀ : Over.mk x₀ ⟶ (Over.map f).obj T) (hj : j₀.left = j.left)
@@ -232,6 +248,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
   {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o' : Obj b N s'} {o : Obj b N s} {f : S' ⟶ S}
 
+/- English proof (translation)
+Unfold `Obj.IsTateL`. Use `and_congr (forall₃_congr fun mm v w => ?_) (and_congr (forall₃_congr fun mm c v => ?_) (and_congr (forall₂_congr fun mm v => ?_) (and_congr (forall₂_congr fun mm v => ?_) ?_)))` and prove the remaining obligations. Rewrite using `[← map_mul, (m.ptEquiv T).injective.eq_iff]`. Rewrite using `[← ObjMap.ptEquiv_act, (m.ptEquiv T).injective.eq_iff]`. Conclude with `(map_eq_one_iff _ (m.ptEquiv T).injective).symm`.
+
+Rewrite using `[← map_pow, (m.ptEquiv T).injective.eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h k _ _ x₀ j₀`. Establish `hx : (j₀.left ≫ T.hom) ≫ f = x₀`. Establish `h0 : j₀.left ≫ ((Over.map f).obj T).hom = x₀` using `Over.w j₀`.
+
+Simplify `h0` using `only [Over.map_obj_hom, Category.assoc]`. Take `⟨σ, hσ, hW⟩` from `m.exists_ptEquiv (Over.mk x₀) (j₀.left ≫ T.hom) hx`. Take `⟨χ, h1, h2, hc⟩` from `h k (j₀.left ≫ T.hom) (Over.homMk j₀.left rfl)`. Conclude with `⟨χ, h1, h2, (m.geom_clauses_iff ℓ ev k _ x₀ (Over.homMk j₀.left rfl) j₀ rfl σ hσ hW χ).1 hc⟩`. Introduce `h k _ _ x j`.
+
+Establish `hw : j.left ≫ T.hom = x` using `Over.w j`. Set `j₀ : Over.mk (x ≫ f) ⟶ (Over.map f).obj T` to `Over.homMk j.left (by`. Rewrite using `[Over.map_obj_hom, ← Category.assoc, hw]`. Use the proof step `rfl)`. Take `⟨σ, hσ, hW⟩` from `m.exists_ptEquiv (Over.mk (x ≫ f)) x rfl`.
+
+Take `⟨χ, h1, h2, hc⟩` from `h k (x ≫ f) j₀`. Conclude with `⟨χ, h1, h2, (m.geom_clauses_iff ℓ ev k x (x ≫ f) j j₀ rfl σ hσ hW χ).2 hc⟩`.
+-/
 theorem ObjMap.isTateL_iff (m : ObjMap o' o f) (ℓ : ℕ) [Fact ℓ.Prime] (T : Over S')
     (ev : ℕ → (D.Ix → ℤ_[ℓ]) → (T ⟶ o'.A)) :
     o'.IsTateL ℓ T ev ↔ o.IsTateL ℓ ((Over.map f).obj T) (fun mm v => m.ptEquiv T (ev mm v)) := by

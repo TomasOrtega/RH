@@ -5,6 +5,9 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `|u| ≤ ((⌊η⌋₊ + R.t + 2 : ℕ) : ℤ) := by intro R P j s S η hv hb u hu obtain ⟨c, hc⟩ := R.t_odd have ht1 : ((R.t : ℤ) - 1) / 2 = c := by rw [hc]; push_cast; omega have ht2 : ((R.t : ℤ) + 1) / 2 = c + 1 := by rw [hc]; push_cast; omega have htc : (R.t : ℤ) = 2 * c + 1 := by rw [hc]; …`.
+-/
 theorem jT1_mem_window_of_bounded_v : ∀ {R : Ranks} (P : HCParam R) (j : Fin R.m) (s : Bool) (S η : ℝ),
     (∀ i, 0 ≤ ((P.v i : ℚ) : ℝ) ∧ ((P.v i : ℚ) : ℝ) ≤ S) →
     (∀ i, |((P.b i - P.e j : ℚ) : ℝ)| ≤ η) → ∀ u ∈ jT1 P j s,

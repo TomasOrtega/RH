@@ -10,5 +10,8 @@ open GlobalTheory.PRep (IsAdmissible)
 open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TrMult.realStable_of_harishChandra | exact GlobalTheory.TrMult.realStable_of_harishChandra | (intros; apply GlobalTheory.TrMult.realStable_of_harishChandra <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.real_stable_of_characters : GlobalTheory.Published.HarishChandraCharacters → RealStable := by
   first | exact @GlobalTheory.TrMult.realStable_of_harishChandra | exact GlobalTheory.TrMult.realStable_of_harishChandra | (intros; apply GlobalTheory.TrMult.realStable_of_harishChandra <;> assumption)

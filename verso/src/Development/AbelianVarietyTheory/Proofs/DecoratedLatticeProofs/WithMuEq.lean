@@ -9,6 +9,11 @@ namespace GlobalTheory.SeeSaw.MuUnits
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Distinguish the cases in `h : (∃ g ∈ Q.J, g.val = x.toRows₁) ∧ MaxM x.toRows₂`. Take `⟨⟨g, hg, e⟩, h2⟩` from `h`. Establish `hg' : g ∈ Q'.J` using `hJ ▸ hg`. Rewrite using `[Q.Phi_of_mem μ ⟨g, hg⟩ e h2, Q'.Phi_of_mem μ' ⟨g, hg'⟩ e h2, hl g hg hg', hμ _ (valuation_det_of_mem_KO (Q.le_KO hg))]`. Establish `h' : ¬ ((∃ g ∈ Q'.J, g.val = x.toRows₁) ∧ MaxM x.toRows₂)` using `by rwa [← hJ]`.
+
+Rewrite using `[not_not.1 (mt (Q.Phi_ne_zero_iff μ).1 h), not_not.1 (mt (Q'.Phi_ne_zero_iff μ').1 h')]`.
+-/
 theorem Phi_eq {a t : Type} [Fintype a] [DecidableEq a] [Fintype t] [DecidableEq t] (Q Q' : TypeDatum k a)
     (hJ : Q.J = Q'.J) (hl : ∀ x (hx : x ∈ Q.J) (hx' : x ∈ Q'.J), Q.lam ⟨x, hx⟩ = Q'.lam ⟨x, hx'⟩)
     (μ μ' : kˣ →* ℂˣ) (hμ : ∀ x : kˣ, valuation k (x : k) = 1 → μ x = μ' x) (x : Matrix (a ⊕ t) a k) :
@@ -21,6 +26,15 @@ theorem Phi_eq {a t : Type} [Fintype a] [DecidableEq a] [Fintype t] [DecidableEq
   · have h' : ¬ ((∃ g ∈ Q'.J, g.val = x.toRows₁) ∧ MaxM x.toRows₂) := by rwa [← hJ]
     rw [not_not.1 (mt (Q.Phi_ne_zero_iff μ).1 h), not_not.1 (mt (Q'.Phi_ne_zero_iff μ').1 h')]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => exact ⟨rfl, fun _ _ _ => rfl⟩`. Consider the case `succ j ih`. Take `⟨hJ, hl⟩` from `ih`. Use `set Q := P.iter t μ hμ j`.
+
+Use `set Q' := P.iter t μ' hμ' j`. Establish `hS : Q.stepJ t = Q'.stepJ t`. Use extensionality with `g`. Rewrite using `[TypeDatum.mem_stepJ, TypeDatum.mem_stepJ, hJ]`. Use `⟨?_, fun x hx hx' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[TypeDatum.iter_succ, TypeDatum.iter_succ]`. Express the relevant statement in the definitionally equal form `(Q.stepJ t).comap _ = (Q'.stepJ t).comap _`. Rewrite using `[hS]`. Establish `hx1 : (reGL (ixSucc r t j)).symm x ∈ Q.stepJ t` using `hx`. Establish `hx1' : (reGL (ixSucc r t j)).symm x ∈ Q'.stepJ t` using `hx'`.
+
+Express the relevant statement in the definitionally equal form `(Q.step t (μ (j + 1)) (hμ _)).lam ⟨_, hx1⟩ = (Q'.step t (μ' (j + 1)) (hμ' _)).lam ⟨_, hx1'⟩`. Establish `hg' : ((Q.corner ⟨_, hx1⟩ : Q.J) : GL _ k) ∈ Q'.J` using `hJ ▸ (Q.corner ⟨_, hx1⟩).2`. Use `(Q.step_lam _ _ ⟨_, hx1⟩ (Q.corner ⟨_, hx1⟩) (Q.corner_val _)).trans (Eq.trans ?_ (Q'.step_lam _ _ ⟨_, hx1'⟩ ⟨_, hg'⟩ (Q.corner_val _)).symm)` and prove the remaining obligations. Rewrite using `[hl _ (Q.corner ⟨_, hx1⟩).2 hg', h _ _ (valuation_det_of_mem_KO (Q.le_KO (Q.corner ⟨_, hx1⟩).2)), h _ _ (valuation_det_of_mem_KO hx1.1)]`.
+-/
 theorem iter_eq {r t : Type} [Fintype r] [DecidableEq r] [Fintype t] [DecidableEq t] (P : TypeDatum k r)
     (μ μ' : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (hμ' : ∀ j, IsTame (μ' j))
     (h : ∀ j (x : kˣ), valuation k (x : k) = 1 → μ j x = μ' j x) (j : ℕ) :
@@ -47,6 +61,11 @@ theorem iter_eq {r t : Type} [Fintype r] [DecidableEq r] [Fintype t] [DecidableE
       rw [hl _ (Q.corner ⟨_, hx1⟩).2 hg',
         h _ _ (valuation_det_of_mem_KO (Q.le_KO (Q.corner ⟨_, hx1⟩).2)), h _ _ (valuation_det_of_mem_KO hx1.1)]
 
+/- English proof (translation)
+Introduce `h`. Establish `E` using `iter_eq (t := t) S.P μ S.μ hμ S.tame h`. Use `⟨fun j a H => funext fun x => ?_, fun j a H => ⟨?_, fun x hx hx' => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(S.P.iter t μ hμ j).Phi t (μ (j + 1)) _ = (S.P.iter t S.μ S.tame j).Phi t (S.μ (j + 1)) _`. Conclude with `Phi_eq _ _ (E j).1 (E j).2 _ _ (h (j + 1)) _`.
+
+Express the relevant statement in the definitionally equal form `(S.P.iter t μ hμ j).J.comap _ = (S.P.iter t S.μ S.tame j).J.comap _`. Rewrite using `[(E j).1]`. Both sides reduce to the same expression. Conclude with `(E j).2 _ hx hx'`.
+-/
 theorem withMu_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (s κ : ℕ)
     (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t] (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) :
     (∀ j (x : kˣ), valuation k (x : k) = 1 → μ j x = S.μ j x) →

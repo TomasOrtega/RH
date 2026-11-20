@@ -19,9 +19,15 @@ noncomputable section
 
 namespace GlobalTheory.FlatModel.GenericPush
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem one_left_eq {S T : Scheme.{0}} (x : T ⟶ S) (G : Over S) [GrpObj G] :
     (1 : Over.mk x ⟶ G).left = x ≫ η[G].left := rfl
 
+/- English proof (translation)
+Rewrite using `[← Geo.Tor.spMap_comp]`. Use `congr 1`. Apply the tactic sequence `exact RingHom.ext fun x => by ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem eps_alg' {S : Type} [CommRing S] (a : S) :
     spMap (epsMul a) ≫ spMap (algebraMap S (DualNumber S)) = spMap (algebraMap S (DualNumber S)) := by
   rw [← Geo.Tor.spMap_comp]
@@ -32,6 +38,13 @@ end GlobalTheory.FlatModel.GenericPush
 
 open GlobalTheory.FlatModel.GenericPush in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν L _ _ yL σ s hs w hT hE`. Establish `he : η[Y.oF.t.G].left ≫ ν.φ = (r ≫ pullback.fst _ _) ≫ η[Xo.univ.t.G].left`. Establish `h0` using `ν.cm.e_comm`. Rewrite `h0` using `[ν.base]`. Conclude with `h0`.
+
+Use `⟨⟨?_, ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ν.cart.1.w, ← Category.assoc, hT.1, Category.assoc]`. Rewrite using `[← Category.assoc, hT.2, one_left_eq, one_left_eq, Category.assoc, he]`. Simplify using `only [Category.assoc]`. Establish `key : w ≫ (Y.oF.t.act.act a).left = spMap (epsMul (s a)) ≫ w`.
+
+Apply `Y.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Y.m.act, ← Category.assoc, hE a, Category.assoc]`. Rewrite using `[Category.assoc, Over.w, Category.assoc, hT.1, ← Category.assoc, eps_alg']`. Use `show (w ≫ ν.φ) ≫ (Xo.univ.t.act.act a).left = spMap (epsMul (algebraMap c.F L (embK c σ a))) ≫ w ≫ ν.φ`. Rewrite using `[hs, Category.assoc, ← ν.act, ← Category.assoc, key, Category.assoc]`.
+-/
 theorem GlobalTheory.FlatModel.tan_eig_push : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)
     (Y : Model Xo' c' (c'.V W).subtype) (r : Xo'.XF c' ⟶ Xo.XF c)

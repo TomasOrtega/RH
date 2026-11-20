@@ -21,6 +21,11 @@ local notation "ordF" => GroundTheory.LocalField.ord
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Use `continuous_def.2 fun U _ => isOpen_iff_forall_mem_open.2 fun x hx => ?_` and prove the remaining obligations. Use `⟨(fun y => x⁻¹ * y) ⁻¹' (χ.ker : Set Fˣ), fun y hy => ?_, hχ.preimage (continuous_const_mul _), by simp⟩` and prove the remaining obligations. Establish `h : χ (x⁻¹ * y) = 1` using `hy`. Rewrite `h` using `[map_mul, map_inv, inv_mul_eq_one]`. Use `show χ y ∈ U`.
+
+Rewrite using `[← h]`. Conclude with `hx`.
+-/
 theorem continuous_of_isSmoothChar {χ : Fˣ →* ℂˣ} (hχ : IsSmoothChar χ) : Continuous χ := by
   refine continuous_def.2 fun U _ => isOpen_iff_forall_mem_open.2 fun x hx => ?_
   refine ⟨(fun y => x⁻¹ * y) ⁻¹' (χ.ker : Set Fˣ), fun y hy => ?_,
@@ -31,16 +36,27 @@ theorem continuous_of_isSmoothChar {χ : Fˣ →* ℂˣ} (hχ : IsSmoothChar χ)
   rw [← h]
   exact hx
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.LocalField.mem_valBall, ← GroundTheory.LocalField.normalizedValuation_eq_exp_ord c.ne_zero, GroundTheory.LocalField.normalizedValuation_le_iff]`.
+-/
 theorem valuation_le_iff_mem_valBall (x : F) (c : Fˣ) :
     valuation F x ≤ valuation F (c : F) ↔ x ∈ valBall F (ordF (c : F)) := by
   rw [GroundTheory.LocalField.mem_valBall, ← GroundTheory.LocalField.normalizedValuation_eq_exp_ord c.ne_zero,
     GroundTheory.LocalField.normalizedValuation_le_iff]
 
+/- English proof (translation)
+Use `GroundTheory.LocalField.ord_units_mul y y⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, Units.val_one, GroundTheory.LocalField.ord_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_inv (y : Fˣ) : ordF ((y⁻¹ : Fˣ) : F) = -ordF (y : F) := by
   have := GroundTheory.LocalField.ord_units_mul y y⁻¹
   rw [mul_inv_cancel, Units.val_one, GroundTheory.LocalField.ord_one] at this
   omega
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.LocalField.mem_unitFiltrationUnits_iff_valBall ha]`. Establish `hyi : ((y⁻¹ : Fˣ) : F) ∈ valBall F (-m)`. Rewrite using `[GroundTheory.LocalField.mem_valBall_iff_le_ord (y⁻¹).ne_zero, ord_inv, hy]`. Use `GroundTheory.LocalField.mul_mem_valBall hyi h` as an intermediate fact. Rewrite `this` using `[show -m + (m + (a : ℤ)) = a by ring]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Units.val_mul, mul_sub, Units.inv_mul]`.
+-/
 theorem inv_mul_mem_of_sub_mem {a : ℕ} (ha : 1 ≤ a) {y z : Fˣ} {m : ℤ} (hy : ordF (y : F) = m)
     (h : (z : F) - y ∈ valBall F (m + a)) : y⁻¹ * z ∈ unitFiltrationUnits F a := by
   rw [GroundTheory.LocalField.mem_unitFiltrationUnits_iff_valBall ha]
@@ -51,6 +67,9 @@ theorem inv_mul_mem_of_sub_mem {a : ℕ} (ha : 1 ≤ a) {y z : Fˣ} {m : ℤ} (h
   convert this using 1
   rw [Units.val_mul, mul_sub, Units.inv_mul]
 
+/- English proof (translation)
+Establish `h1` using `GroundTheory.LocalField.unitFiltration_sub_one_mem_valBall h`. Establish `h2 : (y : F) ∈ valBall F m` using `(GroundTheory.LocalField.mem_valBall_iff_le_ord y.ne_zero).2 hy.ge`. Use `GroundTheory.LocalField.mul_mem_valBall h2 h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Units.val_mul, mul_sub, ← mul_assoc, Units.mul_inv, one_mul, mul_one]`.
+-/
 theorem sub_mem_of_inv_mul_mem {a : ℕ} {y z : Fˣ} {m : ℤ} (hy : ordF (y : F) = m)
     (h : y⁻¹ * z ∈ unitFiltrationUnits F a) : (z : F) - y ∈ valBall F (m + a) := by
   have h1 := GroundTheory.LocalField.unitFiltration_sub_one_mem_valBall h
@@ -61,6 +80,11 @@ theorem sub_mem_of_inv_mul_mem {a : ℕ} {y z : Fˣ} {m : ℤ} (hy : ordF (y : F
 
 variable {χ : Fˣ →* ℂˣ} {ψ : AddChar F Circle}
 
+/- English proof (translation)
+Establish `ha` using `GroundTheory.LocalField.quasiCharConductor_pos hχ hr`. Establish `hw` using `inv_mul_mem_of_sub_mem ha hy (by rwa [sub_add_cancel])`. Establish `hk : χ (y⁻¹ * z) = 1` using `GroundTheory.LocalField.unitFiltrationUnits_quasiCharConductor_le_ker hχ hw`. Establish `hχz : χ y * χ (y⁻¹ * z) = χ z` using `by rw [← map_mul, mul_inv_cancel_left]`. Rewrite `hχz` using `[hk, mul_one]`.
+
+Establish `hψz : ψ (z : F) = ψ (y : F)`. Rewrite using `[show (z : F) = y + ((z : F) - y) by ring, AddChar.map_add_eq_mul, GroundTheory.LocalField.isTrivialOn_addCharConductor hψ hψ1 _ h, mul_one]`. Rewrite using `[← hχz, hψz]`.
+-/
 theorem term_eq (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (hχ : Continuous χ) (hr : ¬ IsUnramifiedChar χ)
     {y z : Fˣ} (hy : ordF (y : F) = addCharConductor ψ - quasiCharConductor χ)
     (h : (z : F) - y ∈ valBall F (addCharConductor ψ)) :
@@ -75,6 +99,25 @@ theorem term_eq (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (hχ : Continuous χ) (h
       GroundTheory.LocalField.isTrivialOn_addCharConductor hψ hψ1 _ h, mul_one]
   rw [← hχz, hψz]
 
+/- English proof (translation)
+Use `set m : ℤ := addCharConductor ψ - quasiCharConductor χ with hm`. Use `set π := unifUnit F`. Establish `hy : ∀ t : unitsModFiltration F (quasiCharConductor χ), ordF ((π ^ m * unitsModRep t : Fˣ) : F) = m`. Introduce `t`. Rewrite using `[GroundTheory.LocalField.ord_units_mul, GroundTheory.LocalField.ord_unifUnit_zpow, GroundTheory.LocalField.mem_unitFiltrationUnits_zero_iff_ord.1 (GroundTheory.LocalField.unitsModRep_mem t), add_zero]`.
+
+Set `g : unitsModFiltration F (quasiCharConductor χ) → Fˣ` to `fun t => Classical.choose (hR2 _ (hy t)).exists`. Establish `hg : ∀ t, g t ∈ R ∧ ((π ^ m * unitsModRep t : Fˣ) : F) - g t ∈ valBall F (addCharConductor ψ)` using `fun t => Classical.choose_spec (hR2 _ (hy t)).exists`. Establish `hnm : m + (quasiCharConductor χ : ℤ) = addCharConductor ψ` using `by rw [hm, sub_add_cancel]`. Establish `ha` using `GroundTheory.LocalField.quasiCharConductor_pos hχ hr`. Use `symm`.
+
+Unfold `GroundTheory.LocalField.gaussSum`. Use `Finset.sum_bij (fun t _ => g t) (fun t _ => (hg t).1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `t₁ _ t₂ _ h12`. Establish `h1` using `(hg t₁).2`. Establish `h2` using `(hg t₂).2`.
+
+Rewrite `h1` using `[h12]`. Establish `hd : ((π ^ m * unitsModRep t₂ : Fˣ) : F) - ((π ^ m * unitsModRep t₁ : Fˣ) : F) ∈ valBall F (m + (quasiCharConductor χ : ℤ))`. Rewrite using `[hnm]`. Use `sub_mem h2 h1` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Establish `hw` using `inv_mul_mem_of_sub_mem ha (hy t₁) hd`. Rewrite `hw` using `[mul_inv_rev, mul_assoc, inv_mul_cancel_left]`. Use `GroundTheory.LocalField.eq_of_mem_unitsModCoset (x := unitsModRep t₂) (GroundTheory.LocalField.mem_unitsModCoset.2 hw) ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.LocalField.mem_unitsModCoset, inv_mul_cancel]`. Conclude with `one_mem _`.
+
+Introduce `r hr`. Establish `hu : π ^ (-m) * r ∈ unitFiltrationUnits F 0`. Rewrite using `[GroundTheory.LocalField.mem_unitFiltrationUnits_zero_iff_ord, GroundTheory.LocalField.ord_units_mul, GroundTheory.LocalField.ord_unifUnit_zpow, hR1 r hr]`. Expand and normalize the polynomial expressions, which then agree. Use `set t : unitsModFiltration F (quasiCharConductor χ) := QuotientGroup.mk ⟨_, hu⟩`.
+
+Use `⟨t, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `hc : (unitsModRep t)⁻¹ * (π ^ (-m) * r) ∈ unitFiltrationUnits F (quasiCharConductor χ)` using `GroundTheory.LocalField.mem_unitsModCoset.1 (GroundTheory.LocalField.mem_unitsModCoset_mk (c := quasiCharConductor χ) hu)`. Establish `he : (π ^ m * unitsModRep t)⁻¹ * r = (unitsModRep t)⁻¹ * (π ^ (-m) * r)`. Rewrite using `[mul_inv_rev, zpow_neg, mul_assoc]`. Establish `hs` using `sub_mem_of_inv_mul_mem (hy t) (he ▸ hc)`.
+
+Rewrite `hs` using `[hnm]`. Use `(hR2 _ (hy t)).unique (hg t) ⟨hr, ?_⟩` and prove the remaining obligations. Rewrite using `[← neg_sub]`. Conclude with `neg_mem hs`. Introduce `t _`.
+
+Establish `h` using `term_eq hψ hψ1 hχ hr (hy t) (z := g t) (by rw [← neg_sub]; exact neg_mem (hg t).2)`. Conclude with `h.symm`.
+-/
 theorem sum_shellReps_eq_gaussSum (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (hχ : Continuous χ)
     (hr : ¬ IsUnramifiedChar χ) {R : Finset Fˣ}
     (hR1 : ∀ r ∈ R, ordF (r : F) = addCharConductor ψ - quasiCharConductor χ)
@@ -137,6 +180,23 @@ end GlobalTheory.DelEps.GaussBridge
 
 open GlobalTheory.DelEps.GaussBridge in
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ hψ1 χ hχ`. Take `⟨hq, hord, hun, hexp, hcond⟩` from `GlobalTheory.DelGlob.localVocabularyDictionary F`. Take `⟨h1, -⟩` from `GlobalTheory.DelEps.isTateEps_tateEps_and_ne_zero F ψ hψ hψ1 χ hχ`. Take `⟨c, a, R, hc, ha, hR, he⟩` from `h1`. Establish `hχc` using `continuous_of_isSmoothChar hχ`.
+
+Establish `hcord : GroundTheory.LocalField.ord (c : F) = GroundTheory.LocalField.addCharConductor ψ`. Rewrite using `[hcond ψ c hc, hord c]`. Establish `ha'` using `hexp χ a ha`. Distinguish the cases in `hu : GroundTheory.LocalField.IsUnramifiedChar χ`. Establish `e1 : tateEps ψ χ = (((χ c)⁻¹ : ℂˣ) : ℂ)` using `IsTateEps.unique ⟨c, a, R, hc, ha, hR, he⟩ (isTateEps_of_isUnram hc ((hun χ).2 hu))`.
+
+Rewrite using `[e1, GroundTheory.LocalField.localEpsilon_of_isUnramified hu, sub_self, mul_zero, Complex.cpow_zero, mul_one]`. Use `set π := GroundTheory.LocalField.unifUnit F`. Use `set N := GroundTheory.LocalField.addCharConductor ψ`. Establish `hw : π ^ (-N) * c ∈ GroundTheory.LocalField.unitFiltrationUnits F 0`. Rewrite using `[GroundTheory.LocalField.mem_unitFiltrationUnits_zero_iff_ord, GroundTheory.LocalField.ord_units_mul, GroundTheory.LocalField.ord_unifUnit_zpow, hcord]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hk : χ (π ^ (-N) * c) = 1` using `hu hw`. Establish `hχc' : χ c = χ π ^ N`. Establish `e : c = π ^ N * (π ^ (-N) * c)` using `by rw [zpow_neg, mul_inv_cancel_left]`. Rewrite using `[e, map_mul, hk, mul_one, map_zpow]`.
+
+Rewrite using `[hχc', Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, zpow_neg]`. Rewrite using `[he, GroundTheory.LocalField.localEpsilon_eq_gaussSum hψ hψ1 hχc hu, hq, ← ha']`. Establish `hR1 : ∀ r ∈ R, GroundTheory.LocalField.ord (r : F) = GroundTheory.LocalField.addCharConductor ψ - GroundTheory.LocalField.quasiCharConductor χ`. Introduce `r hr`. Rewrite using `[← hord, hR.1 r hr, hord, hcord, ha']`.
+
+Establish `hR2 : ∀ y : Fˣ, GroundTheory.LocalField.ord (y : F) = GroundTheory.LocalField.addCharConductor ψ - GroundTheory.LocalField.quasiCharConductor χ → ∃! r : Fˣ, r ∈ R ∧ (y : F) - r ∈ GroundTheory.LocalField.valBall F (GroundTheory.LocalField.addCharConductor ψ)`. Introduce `y hy`. Use `hR.2 y (by rw [hord, hord, hy, hcord, ha'])` as an intermediate fact. Simplify using `only [valuation_le_iff_mem_valBall, hcord] at this`. Conclude with `this`.
+
+Rewrite using `[← sum_shellReps_eq_gaussSum hψ hψ1 hχc hu hR1 hR2]`. Use `congr 1`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val]`.
+-/
 theorem GlobalTheory.DelEps.tateEps_eq_localEpsilon_half : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), Continuous ψ →
     ψ ≠ 1 → ∀ χ : Fˣ →* ℂˣ, IsSmoothChar χ → tateEps ψ χ = GroundTheory.LocalField.localEpsilon χ ψ (1 / 2) := by

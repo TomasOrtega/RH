@@ -4,6 +4,35 @@ open scoped Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G _ _ μ _ hm Γ Q hΓ hQΓ D₀ D hD₀ hD ι _ γ hγ hbij f hf hfi`. Establish `hmp : ∀ g : G, MeasurePreserving (fun x => g * x) μ μ` using `fun g => ⟨hm g, Measure.IsMulLeftInvariant.map_mul_left_eq_self g⟩`. Use `haveI : MeasurableConstSMul G G := ⟨fun g => hm g⟩`. Establish `hemb : ∀ g : G, MeasurableEmbedding (fun x => g * x)` using `fun g => measurableEmbedding_const_smul (α := G) g`. Establish `hI1 : ∀ H : Subgroup G, MeasurableConstSMul H G` using `fun H => ⟨fun g => hm (g : G)⟩`.
+
+Establish `hI2 : ∀ H : Subgroup G, SMulInvariantMeasure H G μ` using `fun H => ⟨fun g s hs => (hmp (g : G)).measure_preimage hs.nullMeasurableSet⟩`. Use `haveI := hI1 Γ`. Use `haveI := hI1 Q`. Use `haveI := hI2 Γ`. Use `haveI := hI2 Q`.
+
+Use `haveI : Countable Q := (Subgroup.inclusion_injective hQΓ).countable`. Use `set s : ι → Set G := fun i => (⟨γ i, hγ i⟩ : Γ) • D₀ with hs`. Establish `hsim : ∀ i, s i = (fun x => γ i * x) '' D₀` using `fun i => rfl`. Establish `hnull : ∀ i, NullMeasurableSet (s i) μ` using `fun i => hD₀.nullMeasurableSet_smul _`. Establish `hkey : ∀ (q q' : Q) (i j : ι), (q : G) * γ i = q' * γ j → q = q' ∧ i = j`.
+
+Introduce `q q' i j h`. Establish `hij : i = j`. Take `⟨k, -, hk⟩` from `hbij (γ i) (hγ i)`. Establish `h1` using `hk i (by simp)`. Establish `h2` using `hk j (by`.
+
+Establish `: γ i * (γ j)⁻¹ = (q : G)⁻¹ * q'`. Rewrite using `[mul_inv_eq_iff_eq_mul, mul_assoc, ← h, inv_mul_cancel_left]`. Use `show γ i * (γ j)⁻¹ ∈ Q`. Rewrite using `[this]`. Conclude with `Q.mul_mem (Q.inv_mem q.2) q'.2)`.
+
+Rewrite using `[h1, h2]`. Substitute `hij` using the available equality. Conclude with `⟨Subtype.ext (mul_right_cancel h), rfl⟩`. Establish `hsm : ∀ (q : Q) (i : ι), q • s i = (⟨(q : G) * γ i, Γ.mul_mem (hQΓ q.2) (hγ i)⟩ : Γ) • D₀`. Introduce `q i`.
+
+Use `show (fun x => (q : G) * x) '' ((fun x => γ i * x) '' D₀) = (fun x => ((q : G) * γ i) * x) '' D₀`. Rewrite using `[Set.image_image]`. Simplify using `only [mul_assoc]`. Establish `hdisj : Pairwise (Function.onFun (AEDisjoint μ) s)`. Introduce `i j hij`.
+
+Use `hD₀.aedisjoint (fun h => hij ?_)` and prove the remaining obligations. Conclude with `(hkey 1 1 i j (by simpa using congrArg Subtype.val h)).2`. Establish `hD₁ : IsFundamentalDomain Q (⋃ i, s i) μ`. Use `⟨NullMeasurableSet.iUnion hnull, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hD₀.ae_covers] with x hx`.
+
+Take `⟨δ, hδ⟩` from `hx`. Take `⟨i, hi, -⟩` from `hbij (δ : G)⁻¹ (Γ.inv_mem δ.2)`. Use `⟨⟨_, Q.inv_mem hi⟩, Set.mem_iUnion.2 ⟨i, ⟨δ • x, hδ, ?_⟩⟩⟩` and prove the remaining obligations. Use `show γ i * ((δ : G) * x) = ((δ : G)⁻¹ * (γ i)⁻¹)⁻¹ * x`. Simplify using `[mul_assoc]`.
+
+Introduce `q q' hqq show AEDisjoint μ (q • ⋃ i, s i) (q' • ⋃ i, s i)`. Rewrite using `[Set.smul_set_iUnion, Set.smul_set_iUnion, AEDisjoint.iUnion_left_iff]`. Introduce `i`. Rewrite using `[AEDisjoint.iUnion_right_iff]`. Introduce `j`.
+
+Rewrite using `[hsm, hsm]`. Use `hD₀.aedisjoint (fun h => hqq ?_)` and prove the remaining obligations. Conclude with `(hkey q q' i j (congrArg Subtype.val h)).1`. Establish `hf' : ∀ (q : Q) (x : G), f (q • x) = f x` using `fun q x => hf q q.2 x`. Establish `hfi₁ : IntegrableOn f (⋃ i, s i) μ` using `(hD.integrableOn_iff hD₁ hf').1 hfi`.
+
+Rewrite using `[hD.setIntegral_eq hD₁ hf', integral_iUnion_ae hnull hdisj hfi₁]`. Establish `hint : ∀ i, IntegrableOn (fun g => f (γ i * g)) D₀ μ` using `fun i => ((hmp (γ i)).integrableOn_image (hemb (γ i))).1 (hsim i ▸ hfi₁.mono_set (Set.subset_iUnion s i))`. Rewrite using `[integral_tsum (fun i => (hint i).aestronglyMeasurable)]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[hsim, (hmp (γ i)).setIntegral_image_emb (hemb (γ i))]`.
+
+Establish `h1 : ∑' i, ∫⁻ a in D₀, ‖f (γ i * a)‖ₑ ∂μ = ∫⁻ a in ⋃ i, s i, ‖f a‖ₑ ∂μ`. Rewrite using `[lintegral_iUnion₀ hnull hdisj]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[hsim]`. Conclude with `(hmp (γ i)).setLIntegral_comp_emb (hemb (γ i)) (fun a => ‖f a‖ₑ) D₀`.
+
+Rewrite using `[h1]`. Conclude with `hfi₁.2.ne`.
+-/
 theorem integral_tsum_cosetReps_eq_integral_fundamentalDomain :
     ∀ {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) [μ.IsMulLeftInvariant],
     (∀ g : G, Measurable (fun x => g * x)) →

@@ -35,11 +35,17 @@ def extGL (f : GL (Fin a) (Cinf E) → ℂ) (x : Lie E a) : ℂ := if h : IsUnit
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `h : IsUnit (Matrix.of (toL y.val))` using `y.isUnit`. Establish `e : h.unit = y` using `Units.ext h.unit_spec`. Rewrite using `[extGL, dif_pos h, e]`.
+-/
 theorem extGL_val (f : GL (Fin a) (Cinf E) → ℂ) (y : GL (Fin a) (Cinf E)) : extGL f (toL y.val) = f y := by
   have h : IsUnit (Matrix.of (toL y.val)) := y.isUnit
   have e : h.unit = y := Units.ext h.unit_spec
   rw [extGL, dif_pos h, e]
 
+/- English proof (translation)
+The claim follows from `Filter.eventually_of_mem (isOpen_invSet.mem_nhds hx) fun z hz => by obtain ⟨u, hu⟩ := hz have e : z = toL u.val := hu.symm rw [e, extGL_val, h]`.
+-/
 theorem extGL_eventuallyEq {f : GL (Fin a) (Cinf E) → ℂ} {F : Lie E a → ℂ} (h : ∀ y, f y = F (toL y.val))
     {x : Lie E a} (hx : x ∈ invSet E a) : extGL f =ᶠ[𝓝 x] F :=
   Filter.eventually_of_mem (isOpen_invSet.mem_nhds hx) fun z hz => by
@@ -53,8 +59,18 @@ def coordL (τ : E →+* ℂ) : Cinf E →L[ℝ] ℂ :=
       map_add' := map_add _
       map_smul' := fun c z => by unfold coord; split_ifs <;> simp }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coordL_apply (τ : E →+* ℂ) (z : Cinf E) : coordL τ z = coord τ z := rfl
 
+/- English proof (translation)
+Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem f hf`. Break down `hf with ⟨τ, i, j, rfl⟩ | ⟨τ, rfl⟩` into its components or cases. Use `DifferentiableAt.congr_of_eventuallyEq (f := fun x => coordL τ (x i j)) (by fun_prop) (extGL_eventuallyEq (by exact fun _ => rfl) hx)` and prove the remaining obligations. Use `DifferentiableAt.congr_of_eventuallyEq (f := fun x => (coordL τ (Matrix.of x).det)⁻¹) ?_ (extGL_eventuallyEq (by exact fun _ => rfl) hx)` and prove the remaining obligations.
+
+Conclude with `((coordL τ).differentiableAt.comp x (contDiff_det.differentiable (by simp) x)).inv (((Matrix.isUnit_iff_isUnit_det _).1 hx).map (coord τ)).ne_zero`. Consider the case `algebraMap c`. Conclude with `(differentiableAt_const c).congr_of_eventuallyEq (extGL_eventuallyEq (by exact fun _ => rfl) hx)`. Consider the case `add f g _ _ h1 h2`. Conclude with `(h1.add h2).congr_of_eventuallyEq (extGL_eventuallyEq (fun y => by simp [extGL_val]) hx)`.
+
+Consider the case `mul f g _ _ h1 h2`. Conclude with `(h1.mul h2).congr_of_eventuallyEq (extGL_eventuallyEq (fun y => by simp [extGL_val]) hx)`.
+-/
 theorem differentiableAt_extGL {f : GL (Fin a) (Cinf E) → ℂ} (hf : f ∈ regFun E a) {x : Lie E a} (hx : x ∈ invSet E a) :
     DifferentiableAt ℝ (extGL f) x := by
   induction hf using Algebra.adjoin_induction with
@@ -80,6 +96,11 @@ def dmat (Ξ : AlgRep E a) : Lie E a →ₗ[ℝ] Matrix (Fin Ξ.d) (Fin Ξ.d) �
   map_add' X Y := by ext i j; simp
   map_smul' c X := by ext i j; simp
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (extGL fun y => Ξ.mat y i j) (fderiv ℝ (extGL fun y => Ξ.mat y i j) (oneL E a)) (toL (c 0).val)`. Rewrite using `[h0]`. Conclude with `(differentiableAt_extGL (Ξ.reg i j) isUnit_one).hasFDerivAt`. Establish `h2` using `h.comp_hasDerivAt (0 : ℝ) hc`. Simplify using `only [Function.comp_def, extGL_val] at h2`.
+
+Conclude with `h2`.
+-/
 theorem hasDerivAt_curve (Ξ : AlgRep E a) (c : ℝ → GL (Fin a) (Cinf E)) (X : Lie E a) (h0 : c 0 = 1)
     (hc : HasDerivAt (fun t => toL (c t).val) X 0) (i j : Fin Ξ.d) :
     HasDerivAt (fun t => Ξ.mat (c t) i j) (Ξ.dmat X i j) 0 := by
@@ -89,6 +110,15 @@ theorem hasDerivAt_curve (Ξ : AlgRep E a) (c : ℝ → GL (Fin a) (Cinf E)) (X 
   simp only [Function.comp_def, extGL_val] at h2
   exact h2
 
+/- English proof (translation)
+Set `T : Lie E a →L[ℝ] Lie E a` to `(rmul (toL (y⁻¹).val)).comp (lmul (toL y.val))`. Establish `hT : T (oneL E a) = oneL E a` using `(congrArg (· * (y⁻¹).val) (mul_one y.val)).trans y.mul_inv`. Establish `hd` using `fun i j => (differentiableAt_extGL (Ξ.reg i j) (x := oneL E a) isUnit_one).hasFDerivAt`. Use extensionality with `i j`. Establish `h1` using `HasFDerivAt.fun_sum (u := Finset.univ) fun l _ => (hd l j).const_mul (Ξ.mat y i l)`.
+
+Establish `h2` using `HasFDerivAt.fun_sum (u := Finset.univ) fun l _ => (HasFDerivAt.comp (oneL E a) (hT.symm ▸ hd i l) T.hasFDerivAt).mul_const (Ξ.mat y l j)`. Establish `h3` using `h1.unique (h2.congr_of_eventuallyEq (Filter.eventually_of_mem (isOpen_invSet.mem_nhds isUnit_one) fun z hz => by`. Take `⟨u, hu⟩` from `hz`. Establish `e : z = toL u.val` using `hu.symm`. Establish `e2 : T (toL u.val) = toL (y * u * y⁻¹).val` using `rfl`.
+
+Simplify using `only [e, Function.comp_apply, e2, extGL_val]`. Rewrite using `[← Matrix.mul_apply, ← Matrix.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel_right]))`. Establish `h4` using `congrArg (fun D : Lie E a →L[ℝ] ℂ => D (toL X)) h3`. Simplify using `only [_root_.sum_apply, _root_.smul_apply, ContinuousLinearMap.comp_apply, smul_eq_mul, hT] at h4`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`.
+
+Conclude with `h4.trans (Finset.sum_congr rfl fun l _ => mul_comm _ _)`.
+-/
 theorem mat_mul_dmat (Ξ : AlgRep E a) (y : GL (Fin a) (Cinf E)) (X : Matrix (Fin a) (Fin a) (Cinf E)) :
     Ξ.mat y * Ξ.dmat (toL X) = Ξ.dmat (toL (y.val * X * (y⁻¹).val)) * Ξ.mat y := by
   classical
@@ -123,6 +153,9 @@ def triv : AlgRep E a where
     have : IsSimpleModule ℂ (Fin 1 → ℂ) := isSimpleModule_iff_finrank_eq_one.2 (by simp)
     exact eq_bot_or_eq_top W
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `extGL_eventuallyEq (f := fun y => (triv E a).mat y i j) (F := fun _ => (1 : Matrix (Fin 1) (Fin 1) ℂ) i j) (fun _ => rfl) (x := oneL E a) isUnit_one`. Express the relevant statement in the definitionally equal form `fderiv ℝ _ _ X = 0`. Rewrite using `[h.fderiv_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem dmat_triv (X : Lie E a) : (triv E a).dmat X = 0 := by
   ext i j
   have h := extGL_eventuallyEq (f := fun y => (triv E a).mat y i j) (F := fun _ => (1 : Matrix (Fin 1) (Fin 1) ℂ) i j)
@@ -133,6 +166,9 @@ theorem dmat_triv (X : Lie E a) : (triv E a).dmat X = 0 := by
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Unfold `coord`. Use `split_ifs`. Conclude with `⟨Pi.constRingHom _ _, fun _ => rfl⟩`. Conclude with `⟨(Pi.constRingHom _ _).comp (starRingEnd ℂ), fun z => by simp⟩`.
+-/
 theorem exists_section (τ : E →+* ℂ) : ∃ s : ℂ →+* Cinf E, ∀ z, coord τ (s z) = z := by
   unfold coord
   split_ifs
@@ -165,6 +201,9 @@ def std (τ : E →+* ℂ) (ha : 0 < a) : AlgRep E a where
     ext i
     simp [Matrix.mulVec, dotProduct, hj']
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `extGL_eventuallyEq (f := fun y => (std τ ha).mat y i j) (F := fun x => coordL τ (x i j)) (fun _ => rfl) (x := oneL E a) isUnit_one`. Express the relevant statement in the definitionally equal form `fderiv ℝ _ _ X = _`. Rewrite using `[h.fderiv_eq]`. Conclude with `congrArg (fun L : Lie E a →L[ℝ] ℂ => L X) (((coordL τ).comp ((ContinuousLinearMap.proj j).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin a => Fin a → Cinf E) i))).fderiv)`.
+-/
 theorem dmat_std (τ : E →+* ℂ) (ha : 0 < a) (X : Lie E a) : (std τ ha).dmat X = (Matrix.of X).map (coord τ) := by
   ext i j
   have h := extGL_eventuallyEq (f := fun y => (std τ ha).mat y i j) (F := fun x => coordL τ (x i j))
@@ -198,6 +237,9 @@ def dCo {q : ℕ} (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] M) : Herm E a [⋀^Fin (
       map_add' := fun X Y => AlternatingMap.ext fun v => LinearMap.congr_fun (map_add L (toL X.1) (toL Y.1)) (ω v)
       map_smul' := fun c X => AlternatingMap.ext fun v => LinearMap.congr_fun (map_smul L c (toL X.1)) (ω v) }
 
+/- English proof (translation)
+The claim follows from `AlternatingMap.alternatizeUncurryFin_apply _ _`.
+-/
 theorem dCo_apply {q : ℕ} (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] M) (X : Fin (q + 1) → Herm E a) :
     dCo L ω X = ∑ i : Fin (q + 1), (-1 : ℤ) ^ (i : ℕ) • L (toL (X i).1) (ω (i.removeNth X)) :=
   AlternatingMap.alternatizeUncurryFin_apply _ _
@@ -209,6 +251,9 @@ def HasCohomology : Prop :=
 
 variable {κ L}
 
+/- English proof (translation)
+Introduce `k X` and use `by rw [dCo_apply, dCo_apply, map_sum] refine Finset.sum_congr rfl fun i _ => ?_ rw [map_zsmul, ← Module.End.mul_apply, h, Module.End.mul_apply, ← hω] rfl`.
+-/
 theorem IsCochain.dCo (h : ∀ (k : Kinf E a) (X : Herm E a), κ k * L (toL X.1) = L (toL (adHerm k X).1) * κ k)
     {q : ℕ} {ω : Herm E a [⋀^Fin q]→ₗ[ℝ] M} (hω : IsCochain κ ω) : IsCochain κ (dCo L ω) := fun k X => by
   rw [dCo_apply, dCo_apply, map_sum]
@@ -216,11 +261,19 @@ theorem IsCochain.dCo (h : ∀ (k : Kinf E a) (X : Herm E a), κ k * L (toL X.1)
   rw [map_zsmul, ← Module.End.mul_apply, h, Module.End.mul_apply, ← hω]
   rfl
 
+/- English proof (translation)
+The claim follows from `Or.inl ⟨AlternatingMap.constOfIsEmpty ℝ _ _ m, fun k _ => (hκ k).symm, AlternatingMap.ext fun X => by simp [dCo_apply, hL], fun h => h0 (DFunLike.congr_fun h 0)⟩`.
+-/
 theorem hasCohomology_of_invariant {m : M} (h0 : m ≠ 0) (hκ : ∀ k, κ k m = m) (hL : ∀ X, L X m = 0) :
     HasCohomology κ L :=
   Or.inl ⟨AlternatingMap.constOfIsEmpty ℝ _ _ m, fun k _ => (hκ k).symm,
     AlternatingMap.ext fun X => by simp [dCo_apply, hL], fun h => h0 (DFunLike.congr_fun h 0)⟩
 
+/- English proof (translation)
+Rewrite using `[dCo_apply, dCo_apply, Fin.sum_univ_succ, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Simplify using `[Matrix.vecCons]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : i.succ.removeNth (Matrix.vecCons Z X) = Matrix.vecCons Z (i.removeNth X)`.
+
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) j <;> simp [Fin.removeNth]`. Simplify using `[e, pow_succ]`.
+-/
 theorem dCo_cons {q : ℕ} (ω : Herm E a [⋀^Fin (q + 1)]→ₗ[ℝ] M) (Z : Herm E a) (X : Fin (q + 1) → Herm E a) :
     dCo L ω (Matrix.vecCons Z X) = L (toL Z.1) (ω X) - dCo L (ω.curryLeft Z) X := by
   rw [dCo_apply, dCo_apply, Fin.sum_univ_succ, sub_eq_add_neg, ← Finset.sum_neg_distrib]
@@ -232,6 +285,17 @@ theorem dCo_cons {q : ℕ} (ω : Herm E a [⋀^Fin (q + 1)]→ₗ[ℝ] M) (Z : H
       refine Fin.cases ?_ (fun j => ?_) j <;> simp [Fin.removeNth]
     simp [e, pow_succ]
 
+/- English proof (translation)
+Set `Z : Herm E a` to `⟨1, IsSelfAdjoint.one _⟩`. Establish `hZ : ∀ k, adHerm k Z = Z` using `fun k => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `k.1 * 1 * star k.1 = 1`. Rewrite using `[mul_one]`. Conclude with `k.2.2)`.
+
+Introduce and unpack `(⟨ω, -, h1, h2⟩ | ⟨q, ω, h0, h1, h2⟩)`. Use `h2 (AlternatingMap.ext fun X => ?_)` and prove the remaining obligations. Establish `h3` using `DFunLike.congr_fun h1 fun _ => Z`. Rewrite `h3` using `[dCo_apply, Fin.sum_univ_one, h, Subsingleton.elim (Fin.removeNth _ _) X]`. Simplify `h3` using `[hc]`.
+
+Set `s : M →ₗ[ℝ] M` to `(c⁻¹ • LinearMap.id : M →ₗ[ℂ] M).restrictScalars ℝ`. Use `h2 (s.compAlternatingMap (ω.curryLeft Z)) (fun k X => ?_) (AlternatingMap.ext fun X => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c⁻¹ • ω (Matrix.vecCons Z _) = κ k (c⁻¹ • ω (Matrix.vecCons Z X))`. Rewrite using `[map_smul, ← h0]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) j <;> simp [hZ]`. Establish `h3` using `dCo_cons (L := L) ω Z X`. Rewrite `h3` using `[h1, h, AlternatingMap.zero_apply, eq_comm, sub_eq_zero, dCo_apply]`. Rewrite using `[dCo_apply, ← inv_smul_smul₀ hc (ω X), h3, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm c⁻¹, ← map_smul (L _) c⁻¹]`. Both sides reduce to the same expression.
+-/
 theorem not_hasCohomology_of_central {c : ℂ} (hc : c ≠ 0) (h : ∀ m, L (oneL E a) m = c • m) :
     ¬ HasCohomology κ L := by
   let Z : Herm E a := ⟨1, IsSelfAdjoint.one _⟩
@@ -277,9 +341,15 @@ def tensorLie (π : CuspSub E a) (Ξ : AlgRep E a) : Lie E a →ₗ[ℝ] Module.
       ← algebraMap_smul ℂ c (_ + _ : Module.End ℂ (π.V ⊗[ℂ] (Fin Ξ.d → ℂ))), map_smul,
       LinearMap.rTensor_smul, LinearMap.lTensor_smul, smul_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorLie_tmul (π : CuspSub E a) (Ξ : AlgRep E a) (X : Lie E a) (φ : π.V) (v : Fin Ξ.d → ℂ) :
     tensorLie π Ξ X (φ ⊗ₜ v) = π.op (.lie X) φ ⊗ₜ v + φ ⊗ₜ (Ξ.dmat X *ᵥ v) := rfl
 
+/- English proof (translation)
+Use `TensorProduct.ext' fun φ v => ?_` and prove the remaining obligations. Establish `h1 : π.op (.cpt k) (π.op (.lie (toL X.1)) φ) = π.op (.lie (toL (adHerm k X).1)) (π.op (.cpt k) φ)` using `Subtype.ext (LinearMap.congr_fun (GlobalTheory.CapAdInv.rt_lie (Unitary.toUnits k) X.1) φ.1)`. Establish `h2 : Ξ.mat (Unitary.toUnits k) * Ξ.dmat (toL X.1) = Ξ.dmat (toL (adHerm k X).1) * Ξ.mat (Unitary.toUnits k)` using `Ξ.mat_mul_dmat (Unitary.toUnits k) X.1`. Simplify using `only [Module.End.mul_apply, tensorK, tensorLie_tmul, map_add, TensorProduct.map_tmul, Matrix.toLin'_apply, Matrix.mulVec_mulVec, h1, h2]`.
+-/
 theorem tensorK_mul_tensorLie (π : CuspSub E a) (Ξ : AlgRep E a) (k : Kinf E a) (X : Herm E a) :
     tensorK π Ξ k * tensorLie π Ξ (toL X.1) = tensorLie π Ξ (toL (adHerm k X).1) * tensorK π Ξ k := by
   refine TensorProduct.ext' fun φ v => ?_
@@ -294,6 +364,13 @@ def IsCohFor (π : CuspSub E a) (Ξ : AlgRep E a) : Prop := HasCohomology (tenso
 
 def IsCohomological (π : CuspSub E a) : Prop := ∃ Ξ : AlgRep E a, IsCohFor π Ξ
 
+/- English proof (translation)
+Set `φ : (CuspSub.triv E ha).V` to `⟨oneFn E a, Submodule.mem_span_singleton_self _⟩`. Use `hasCohomology_of_invariant (m := φ ⊗ₜ fun _ => 1) (fun h => oneFn_ne_zero (E := E) (a := a) ?_) (fun k => ?_) fun X => ?_` and prove the remaining obligations. Establish `key : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] (v : V), v ⊗ₜ[ℂ] (fun _ : Fin 1 => (1 : ℂ)) = 0 → v = 0` using `fun v h => by`. Establish `h1` using `congrArg (fun x => TensorProduct.rid ℂ _ (LinearMap.lTensor _ (LinearMap.proj (0 : Fin 1)) x)) h`. Simplify using `only [LinearMap.lTensor_tmul, LinearMap.proj_apply, TensorProduct.rid_tmul, one_smul, map_zero] at h1`.
+
+Conclude with `h1`. Conclude with `congrArg Subtype.val (key φ h)`. Rewrite using `[tensorK, TensorProduct.map_tmul]`. Use `congr 1`. Conclude with `Matrix.one_mulVec (fun _ : Fin 1 => (1 : ℂ))`.
+
+Establish `e : (CuspSub.triv E ha).op (.lie X) φ = 0` using `Subtype.ext (lie_oneFn X)`. Rewrite using `[tensorLie_tmul, e, AlgRep.dmat_triv]`. Simplify using the standard rewrite rules.
+-/
 theorem isCohFor_triv (ha : a ≤ 1) : IsCohFor (CuspSub.triv E ha) (AlgRep.triv E a) := by
   let φ : (CuspSub.triv E ha).V := ⟨oneFn E a, Submodule.mem_span_singleton_self _⟩
   refine hasCohomology_of_invariant (m := φ ⊗ₜ fun _ => 1) (fun h => oneFn_ne_zero (E := E) (a := a) ?_) (fun k => ?_)
@@ -311,6 +388,13 @@ theorem isCohFor_triv (ha : a ≤ 1) : IsCohFor (CuspSub.triv E ha) (AlgRep.triv
     rw [tensorLie_tmul, e, AlgRep.dmat_triv]
     simp
 
+/- English proof (translation)
+Use `not_hasCohomology_of_central one_ne_zero fun m => ?_` and prove the remaining obligations. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `tmul φ v`.
+
+Establish `e : (CuspSub.triv E le_rfl).op (.lie (oneL E 1)) φ = 0`. Take `⟨c, e⟩` from `Submodule.mem_span_singleton.1 φ.2`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lie E 1 _ φ.1 = 0`. Rewrite using `[← e, map_smul, lie_oneFn, smul_zero]`.
+
+Establish `e2 : (AlgRep.std τ one_pos).dmat (oneL E 1) = 1` using `(AlgRep.dmat_std τ one_pos _).trans (Matrix.map_one _ (map_zero _) (map_one _))`. Rewrite using `[tensorLie_tmul, e, e2]`. Simplify using the standard rewrite rules.
+-/
 theorem not_isCohFor_triv_std (τ : E →+* ℂ) : ¬ IsCohFor (CuspSub.triv E le_rfl) (AlgRep.std τ one_pos) := by
   refine not_hasCohomology_of_central one_ne_zero fun m => ?_
   induction m using TensorProduct.induction_on with
@@ -339,20 +423,38 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def IsTemperedGL (π : Representation ℂ (GL (Fin N) k) V) : Prop :=
   ∃ (h : ℕ) (δ : Fin h → IrrGL k) (hd : ∑ i, (δ i).1 = N), (∀ i, IsUnitaryLSeg (δ i)) ∧ Nonempty (π.Equiv (prodIrr δ hd))
 
+/- English proof (translation)
+Take `⟨h, δ, hd, h1, ⟨ψ⟩⟩` from `H`. Conclude with `⟨h, δ, hd, h1, ⟨φ.symm.trans ψ⟩⟩`.
+-/
 theorem IsTemperedGL.of_equiv {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W}
     (H : IsTemperedGL π) (φ : π.Equiv σ) : IsTemperedGL σ := by
   obtain ⟨h, δ, hd, h1, ⟨ψ⟩⟩ := H
   exact ⟨h, δ, hd, h1, ⟨φ.symm.trans ψ⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun _ => δ, by simp, fun _ => h, nonempty_equiv_prodIrr_one δ _⟩`.
+-/
 theorem isTemperedGL_of_isUnitaryLSeg {δ : IrrGL k} (h : IsUnitaryLSeg δ) : IsTemperedGL δ.rep :=
   ⟨1, fun _ => δ, by simp, fun _ => h, nonempty_equiv_prodIrr_one δ _⟩
 
+/- English proof (translation)
+Take `⟨h, δ, hd, h1, h2⟩` from `H`. Conclude with `⟨List.ofFn δ, [], fun x hx => by obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hx; exact h1 i, by simp, h, δ, hd, by simp [factors], h2⟩`.
+-/
 theorem IsTemperedGL.isComplementaryProduct {π : Representation ℂ (GL (Fin N) k) V} (H : IsTemperedGL π) :
     IsComplementaryProduct π := by
   obtain ⟨h, δ, hd, h1, h2⟩ := H
   exact ⟨List.ofFn δ, [], fun x hx => by obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hx; exact h1 i, by simp, h, δ, hd,
     by simp [factors], h2⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `key : ∀ (N : ℕ) (π : Representation ℂ (GL (Fin N) k) ℂ), N = 1 → IsTemperedGL π → IsUnitarisable π`. Introduce and unpack `N π hN ⟨h, δ, hd, h1, ⟨φ⟩⟩`. Establish `hp : ∀ i, 1 ≤ (δ i).1` using `fun i => by`. Take `⟨Δ, hΔ⟩` from `(h1 i).1`.
+
+Conclude with `hΔ.deg_eq ▸ Nat.mul_pos Δ.len_pos Δ.d_pos`. Establish `h2 : h ≤ 1` using `by simpa [hd, hN] using Finset.sum_le_sum (s := Finset.univ) fun i _ => hp i`. Establish `h3 : h ≠ 0` using `by rintro rfl; simp [hN] at hd`. Take `rfl : h = 1` from `by omega`. Take `⟨x, rfl⟩ : ∃ x, δ = fun _ => x` from `⟨δ 0, funext fun i => congrArg δ (Subsingleton.elim _ _)⟩`.
+
+Take `rfl : x.1 = N` from `by simpa using hd`. Take `⟨ψ⟩` from `nonempty_equiv_prodIrr_one x hd`. Conclude with `isUnitarisable_of_equiv (ψ.trans φ.symm) (h1 0).2`. Conclude with `key 1 _ rfl`. Introduce `hu`.
+
+Establish `hc` using `isCuspidal_detRep_one hs`. Set `φ` to `IrrGL.equivOf (detRep (Fin 1) χ) hc.1 (isIrreducible_ofChar _)`. Conclude with `(isTemperedGL_of_isUnitaryLSeg (isUnitaryLSeg_of_isCusp (IrrGL.isCusp_of.2 ⟨one_pos, hc⟩) (isUnitarisable_of_equiv φ hu))).of_equiv φ.symm`.
+-/
 theorem isTemperedGL_detRep_one {χ : kˣ →* ℂˣ} (hs : IsSmoothChar χ) :
     IsTemperedGL (detRep (Fin 1) χ) ↔ IsUnitarisable (detRep (Fin 1) χ) := by
   constructor

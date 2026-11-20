@@ -34,6 +34,23 @@ open scoped ContDiff Topology in
 open NumberField Matrix in
 variable {𝔸 L G : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [NormedAddCommGroup L] [NormedSpace ℝ L] [Group G] in
 
+/- English proof (translation)
+Establish `hmul` using `H.mul`. Establish `anti` using `H.anti`. Establish `invol` using `H.invol`. Simplify using `only [_root_.GlobalTheory.SmoothForms.expMap] at hφ`. Use `haveI : IsArtinianRing 𝔸 := IsArtinianRing.of_finite ℝ 𝔸`.
+
+Take `⟨Λ, hΛ, hexp, hlog⟩` from `hl`. Establish `hΛ0 : Λ 1 = 0`. Simplify using `using hlog.self_of_nhds`. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `p₀`.
+
+Use `set u := c p₀`. Establish `hu' : u * σ u = 1` using `mul_eq_one_comm.mp (hu p₀)`. Set `k : P → 𝔸` to `fun p => σ u * c p`. Establish `hk : ContDiff ℝ ∞ k` using `contDiff_const.mul hc`. Establish `hk0 : k p₀ = 1` using `hu p₀`.
+
+Establish `hku : ∀ p, σ (k p) * k p = 1`. Introduce `p`. Simplify using `only [k, anti, invol]`. Combine the equalities or inequalities in the displayed calculation. Establish `hck : ∀ p, c p = u * k p`.
+
+Introduce `p`. Simplify using `only [k]`. Rewrite using `[← mul_assoc, hu', one_mul]`. Establish `hev : ∀ᶠ p in 𝓝 p₀, NormedSpace.exp (j (Λ (k p))) = k p`. Use `hk.continuous.continuousAt (x := p₀)` as an intermediate fact.
+
+Rewrite `this` using `[ContinuousAt, hk0]`. Conclude with `(this.eventually hexp).mono fun p hp => hp (hku p)`. Establish `hF : ContDiffAt ℝ ∞ (fun p => φ ((g * s u) * s (NormedSpace.exp (j (Λ (k p)))))) p₀`. Establish `h1 : ContDiffAt ℝ ∞ (fun p => Λ (k p)) p₀`. Establish `: ContDiffAt ℝ ∞ Λ (k p₀)` using `by rw [hk0]; exact hΛ`.
+
+Conclude with `this.comp p₀ hk.contDiffAt`. Establish `h2 : ContDiffAt ℝ ∞ (fun X : L => φ ((g * s u) * s (NormedSpace.exp (j X)))) (Λ (k p₀))`. Rewrite using `[hk0, hΛ0]`. Conclude with `hφ _`. Conclude with `ContDiffAt.comp (g := fun X : L => φ ((g * s u) * s (NormedSpace.exp (j X)))) p₀ h2 h1`.
+
+Use `hF.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hev] with p hp`. Rewrite using `[hp, hck p, hmul _ _ (hu p₀) (hku p), mul_assoc]`.
+-/
 theorem _root_.GlobalTheory.SmoothForms.contDiff_family [FiniteDimensional ℝ 𝔸] {σ : 𝔸 →ₗ[ℝ] 𝔸} {j : L →ₗ[ℝ] 𝔸}
     {s : 𝔸 → G} (H : _root_.GlobalTheory.SmoothForms.IsLieData σ j s)
     (hl : _root_.GlobalTheory.SmoothForms.HasLog σ j) {φ : G → ℂ}
@@ -125,6 +142,11 @@ structure Sized {V : Type} [AddCommGroup V] [Module E V] (h : V →ₗ[E] V →�
 open scoped ContDiff Topology in
 open NumberField Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Establish `hs : star a = (NumberField.IsCMField.complexConj E) a` using `rfl`. Establish `key : ∀ φ : E →+* ℂ, ‖canonicalEmbedding E (star a) φ‖ = ‖canonicalEmbedding E a φ‖`. Introduce `φ`. Rewrite using `[canonicalEmbedding.apply_at, canonicalEmbedding.apply_at, hs, NumberField.IsCMField.complexEmbedding_complexConj, Complex.norm_conj]`. Unfold `house`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun φ => (key φ).le.trans (norm_le_pi_norm _ φ)`. Conclude with `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun φ => (key φ).ge.trans (norm_le_pi_norm _ φ)`.
+-/
 theorem _root_.GlobalTheory.SmoothForms.house_star (a : E) : house (star a) = house a := by
   have hs : star a = (NumberField.IsCMField.complexConj E) a := rfl
   have key : ∀ φ : E →+* ℂ, ‖canonicalEmbedding E (star a) φ‖ = ‖canonicalEmbedding E a φ‖ := by

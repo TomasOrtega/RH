@@ -27,6 +27,11 @@ namespace GlobalTheory.HalfSplit
 
 def kIdx (k : ℕ) (A : Type) [AddCommGroup A] : ℕ := (nsmulAddMonoidHom k : A →+ A).range.index
 
+/- English proof (translation)
+Unfold `kIdx AddSubgroup.relIndex`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_map, AddMonoidHom.mem_range, nsmulAddMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, hyx⟩`. Conclude with `⟨⟨y, hy⟩, Subtype.ext (by simpa using hyx)⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, y.2, by simp⟩`.
+-/
 theorem relIndex_eq_kIdx {G : Type} [AddCommGroup G] (H : AddSubgroup G) (k : ℕ) :
     (AddSubgroup.map (nsmulAddMonoidHom k) H).relIndex H = kIdx k H := by
   unfold kIdx AddSubgroup.relIndex
@@ -39,6 +44,11 @@ theorem relIndex_eq_kIdx {G : Type} [AddCommGroup G] (H : AddSubgroup G) (k : �
   · rintro ⟨y, rfl⟩
     exact ⟨y, y.2, by simp⟩
 
+/- English proof (translation)
+Unfold `kIdx`. Rewrite using `[← AddSubgroup.index_map_equiv _ e]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_map, AddMonoidHom.mem_range, nsmulAddMonoidHom_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨e y, by simp⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨k • e.symm y, ⟨e.symm y, rfl⟩, by simp⟩`.
+-/
 theorem kIdx_congr {A B : Type} [AddCommGroup A] [AddCommGroup B] (e : A ≃+ B) (k : ℕ) :
     kIdx k A = kIdx k B := by
   unfold kIdx
@@ -52,6 +62,11 @@ theorem kIdx_congr {A B : Type} [AddCommGroup A] [AddCommGroup B] (e : A ≃+ B)
   · rintro ⟨y, rfl⟩
     exact ⟨k • e.symm y, ⟨e.symm y, rfl⟩, by simp⟩
 
+/- English proof (translation)
+Unfold `kIdx`. Rewrite using `[← AddSubgroup.index_prod]`. Use `congr 1`. Use extensionality with `⟨a, b⟩`. Simplify using `only [AddSubgroup.mem_prod, AddMonoidHom.mem_range, nsmulAddMonoidHom_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, y⟩, hxy⟩`. Conclude with `⟨⟨x, congrArg Prod.fst hxy⟩, ⟨y, congrArg Prod.snd hxy⟩⟩`. Introduce and unpack `⟨⟨x, hx⟩, ⟨y, hy⟩⟩`. Conclude with `⟨(x, y), Prod.ext hx hy⟩`.
+-/
 theorem kIdx_prod {A B : Type} [AddCommGroup A] [AddCommGroup B] (k : ℕ) :
     kIdx k (A × B) = kIdx k A * kIdx k B := by
   unfold kIdx
@@ -65,6 +80,9 @@ theorem kIdx_prod {A B : Type} [AddCommGroup A] [AddCommGroup B] (k : ℕ) :
   · rintro ⟨⟨x, hx⟩, ⟨y, hy⟩⟩
     exact ⟨(x, y), Prod.ext hx hy⟩
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.index_eq_one.2 (eq_top_iff.2 fun x _ => ⟨0, Subsingleton.elim _ _⟩)`.
+-/
 theorem kIdx_subsingleton {A : Type} [AddCommGroup A] [Subsingleton A] (k : ℕ) : kIdx k A = 1 :=
   AddSubgroup.index_eq_one.2 (eq_top_iff.2 fun x _ => ⟨0, Subsingleton.elim _ _⟩)
 
@@ -75,6 +93,9 @@ section split
 variable (h : R → AddSubgroup M) (hmem : ∀ e u, u ∈ h e ↔ e • u = u) (Λ : AddSubgroup M) {e f : R}
 
 include hmem in
+/- English proof (translation)
+The claim follows from `AddSubgroup.mem_inf.2 ⟨hΛe u hu, (hmem _ _).2 (by rw [smul_smul, he])⟩`.
+-/
 theorem smul_mem_inf (he : e * e = e) (hΛe : ∀ u ∈ Λ, e • u ∈ Λ) {u : M} (hu : u ∈ Λ) : e • u ∈ Λ ⊓ h e :=
   AddSubgroup.mem_inf.2 ⟨hΛe u hu, (hmem _ _).2 (by rw [smul_smul, he])⟩
 
@@ -114,6 +135,9 @@ def splitEquiv (he : e * e = e) (hf : f * f = f) (hef : e * f = 0) (hfe : f * e 
 
 end split
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j hj hji => horth i hi j hj (Ne.symm hji)) (fun h => absurd hi h), hid i hi]`.
+-/
 theorem sum_idem {ι : Type} (s : Finset ι) (cs : ι → R) (hid : ∀ i ∈ s, cs i * cs i = cs i)
     (horth : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → cs i * cs j = 0) :
     (∑ i ∈ s, cs i) * (∑ i ∈ s, cs i) = ∑ i ∈ s, cs i := by
@@ -121,6 +145,13 @@ theorem sum_idem {ι : Type} (s : Finset ι) (cs : ι → R) (hid : ∀ i ∈ s,
   refine Finset.sum_congr rfl fun i hi => ?_
   rw [Finset.sum_eq_single i (fun j hj hji => horth i hi j hj (Ne.symm hji)) (fun h => absurd hi h), hid i hi]
 
+/- English proof (translation)
+Proceed by induction on `P using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.prod_empty]`. Use `haveI : Subsingleton ↥(Λ ⊓ h 0) := ⟨fun a b => by`. Establish `ha` using `(hmem _ _).1 (AddSubgroup.mem_inf.1 a.2).2`.
+
+Establish `hb` using `(hmem _ _).1 (AddSubgroup.mem_inf.1 b.2).2`. Rewrite `ha`, `hb` using `[zero_smul]`. Conclude with `Subtype.ext (ha.symm.trans hb)⟩`. Conclude with `kIdx_subsingleton k`. Consider the case `insert a s ha ih`.
+
+Establish `hs : ∀ i ∈ s, i ∈ insert a s` using `fun i hi => Finset.mem_insert_of_mem hi`. Establish `ha' : a ∈ insert a s` using `Finset.mem_insert_self a s`. Establish `hne : ∀ j ∈ s, a ≠ j` using `fun j hj haj => ha (haj ▸ hj)`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, ← ih (fun i hi => hid i (hs i hi)) (fun i hi j hj => horth i (hs i hi) j (hs j hj)) (fun i hi => hΛ i (hs i hi)), kIdx_congr (splitEquiv h hmem Λ (hid a ha') (sum_idem s cs (fun i hi => hid i (hs i hi)) (fun i hi j hj => horth i (hs i …`.
+-/
 theorem kIdx_half_sum (h : R → AddSubgroup M) (hmem : ∀ e u, u ∈ h e ↔ e • u = u) (Λ : AddSubgroup M)
     {ι : Type} (P : Finset ι) (cs : ι → R) (hid : ∀ i ∈ P, cs i * cs i = cs i)
     (horth : ∀ i ∈ P, ∀ j ∈ P, i ≠ j → cs i * cs j = 0) (hΛ : ∀ i ∈ P, ∀ u ∈ Λ, cs i • u ∈ Λ) (k : ℕ) :
@@ -150,6 +181,9 @@ theorem kIdx_half_sum (h : R → AddSubgroup M) (hmem : ∀ e u, u ∈ h e ↔ e
         (fun u hu => by rw [Finset.sum_smul]; exact AddSubgroup.sum_mem _ fun i hi => hΛ i (hs i hi) u hu)),
       kIdx_prod]
 
+/- English proof (translation)
+Introduce `D S T Λ ι P cs hid horth hΛ k`. Rewrite using `[relIndex_eq_kIdx]`. Simplify using `only [relIndex_eq_kIdx]`. Conclude with `kIdx_half_sum (GlobalTheory.PlaceModel.half S T) (fun e u => GlobalTheory.PlaceModel.mem_half S T) Λ P cs hid horth hΛ k`.
+-/
 theorem relIndex_nsmul_half_sum : ∀ {D : D7} (S T : HSp D) (Λ : AddSubgroup (WO S T)) {ι : Type} (P : Finset ι) (cs : ι → AE D), (∀ i ∈ P, cs i * cs i = cs i) → (∀ i ∈ P, ∀ j ∈ P, i ≠ j → cs i * cs j = 0) → (∀ i ∈ P, ∀ u ∈ Λ, cs i • u ∈ Λ) → ∀ k : ℕ, (AddSubgroup.map (nsmulAddMonoidHom k) (Λ ⊓ GlobalTheory.PlaceModel.half S T (∑ i ∈ P, cs i))).relIndex (Λ ⊓ GlobalTheory.PlaceModel.half S T (∑ i ∈ P, cs i)) = ∏ i ∈ P, (AddSubgroup.map (nsmulAddMonoidHom k) (Λ ⊓ GlobalTheory.PlaceModel.half S T (cs i))).relIndex (Λ ⊓ GlobalTheory.PlaceModel.half S T (cs i)) := by
   intro D S T Λ ι P cs hid horth hΛ k
   rw [relIndex_eq_kIdx]

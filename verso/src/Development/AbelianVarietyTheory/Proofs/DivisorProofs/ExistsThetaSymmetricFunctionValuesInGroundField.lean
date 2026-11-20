@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.UMin.SymRat
 
+/- English proof (translation)
+Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `ex : x₀ = ρ ≫ x` using `Over.OverMorphism.ext (hx.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Establish `ey : y₀ = ρ ≫ y` using `Over.OverMorphism.ext (hy.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Rewrite using `[ex, ey, ← MonObj.comp_mul]`.
+
+Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+-/
 theorem grpPullback_self {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 S) (𝟙 G.left) := by
   refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩
   let ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T := Over.homMk (𝟙 T.left) (by simp)
@@ -26,15 +31,24 @@ theorem grpPullback_self {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullbac
   rw [ex, ey, ← MonObj.comp_mul]
   exact (Category.id_comp _).trans (Category.comp_id _).symm
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_ring {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Consider the cases of `s`. Consider the cases of `s'`. Simplify using `only [LB.Sec.mk.injEq]`. Conclude with `funext h`.
+-/
 theorem sec_eq {X : Scheme.{0}} {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j = s'.f j) : s = s' := by
   cases s; cases s'
   simp only [LB.Sec.mk.injEq]
   exact funext h
 
+/- English proof (translation)
+Use `sec_eq (sec_ext_val hL (fun y J hJ => ?_))` and prove the remaining obligations. Use `(VVRank.sv_pullS G a h' _ (𝟙 _) y hJ).trans ((VVRank.sv_pullS G a h s _ y hJ).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (VVRank.sv_pullS G a (h' ≫ h) s (𝟙 _) y hJ).symm` and prove the remaining obligations. Rewrite using `[MonoidalCategory.comp_whiskerRight, Over.comp_left, Category.assoc]`.
+-/
 theorem pullS_comp {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.left} (hL : L.IsLB) (a : ℤ) {T T' T'' : Over S}
     (h : T' ⟶ T) (h' : T'' ⟶ T') (s : LB.Sec (LPow G L a T)) :
     VVRank.pullS G a h' (VVRank.pullS G a h s) = VVRank.pullS G a (h' ≫ h) s := by
@@ -45,6 +59,9 @@ theorem pullS_comp {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.left} (hL 
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} {ρ : LB.Gen (L.pull (eSec G))}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `rfl : u = u'` from `Over.OverMorphism.ext hu`. Conclude with `⟨pt, H⟩`.
+-/
 theorem thList_congr {m : ℕ} {R : Type} [CommRing R] {x : Sp R ⟶ S} (θ : SecAt G L x) {K : Type} [Field K]
     {y y' : Sp K ⟶ S} (e : y = y') (u : Over.mk y ⟶ Over.mk x) (u' : Over.mk y' ⟶ Over.mk x) (hu : u.left = u'.left)
     {N : ℕ} {pt : Fin N → (Over.mk y ⟶ G)} {c : Fin N → K} (H : ThList G L ρ m y (VVRank.pullS G _ u θ) pt c) :
@@ -57,6 +74,23 @@ end GlobalTheory.UMin.SymRat
 
 namespace GlobalTheory.UMin.SymRat
 
+/- English proof (translation)
+Introduce `S G _ _ L ρ hL hρ g m N Ω _ _ x θ hm hN hP`. Take `⟨Ω', instF, instA, pt₀, c₀, hfd, hgal, -, hT, hτ⟩` from `GlobalTheory.T.theta_constants_listed_finite_galois_extension S G L ρ hL hρ g m N Ω x θ hm hN hP`. Use `haveI := hfd`. Use `haveI := hgal`. Establish `sb` using `GlobalTheory.T.thetaSymmetricFunctionsDegreeFactorial_basic_properties`.
+
+Establish `hfix : ∀ j, ∃ e : Ω, algebraMap Ω Ω' e = symTup c₀ j`. Introduce `j`. Establish `hm : symTup c₀ j ∈ Set.range (algebraMap Ω Ω')` using `(IsGalois.mem_range_algebraMap_iff_fixed _).2 fun τ => by`. Take `⟨σ, hσ⟩` from `hτ τ`. Establish `e1 : τ (symTup c₀ j) = symTup (fun b => τ (c₀ b)) j` using `sb.2.2.1 Ω' Ω' (τ : Ω' →+* Ω') N c₀ j`.
+
+Rewrite using `[e1, show (fun b => τ (c₀ b)) = fun b => c₀ (σ b) from funext hσ, sb.2.1 Ω' N c₀ σ]`. Take `⟨e, he⟩` from `hm`. Conclude with `⟨e, he⟩`. Use `choose e he using hfix`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+
+Introduce `K _ i pt c hc j`. Set `k : K →+* AlgebraicClosure K` to `algebraMap K (AlgebraicClosure K)`. Use `letI : Algebra Ω (AlgebraicClosure K) := (k.comp i).toAlgebra`. Use `haveI : Algebra.IsAlgebraic Ω Ω' := Algebra.IsAlgebraic.of_finite Ω Ω'`. Set `jj : Ω' →ₐ[Ω] AlgebraicClosure K` to `IsAlgClosed.lift`.
+
+Establish `hcomp : (jj : Ω' →+* AlgebraicClosure K).comp (algebraMap Ω Ω') = k.comp i` using `RingHom.ext fun r => jj.commutes r`. Take `⟨p1, -, h1⟩` from `GlobalTheory.T.isThetaConstantListOfFibre_pullback_field_extension S G L ρ hL hρ m N Ω' (AlgebraicClosure K) (jj : Ω' →+* AlgebraicClosure K) _ _ pt₀ c₀ hT`. Take `⟨p2, -, h2⟩` from `GlobalTheory.T.isThetaConstantListOfFibre_pullback_field_extension S G L ρ hL hρ m N K (AlgebraicClosure K) k _ _ pt c hc`. Simplify using `only [SecAt.pull] at h1 h2`. Rewrite `h1`, `h2` using `[pullS_comp G hL]`.
+
+Establish `ey1 : spMap (jj : Ω' →+* AlgebraicClosure K) ≫ spMap (algebraMap Ω Ω') ≫ x = spMap (k.comp i) ≫ x`. Rewrite using `[← Category.assoc, spMap_comp_ring, hcomp]`. Establish `ey2 : spMap k ≫ spMap i ≫ x = spMap (k.comp i) ≫ x`. Rewrite using `[← Category.assoc, spMap_comp_ring]`. Take `⟨q1, H1⟩` from `thList_congr θ ey1 _ (Over.homMk (spMap (k.comp i)) rfl : Over.mk (spMap (k.comp i) ≫ x) ⟶ Over.mk x) (by simp only [Over.comp_left, Over.homMk_left]; rw [spMap_comp_ring, hcomp]) h1`.
+
+Take `⟨q2, H2⟩` from `thList_congr θ ey2 _ (Over.homMk (spMap (k.comp i)) rfl : Over.mk (spMap (k.comp i) ≫ x) ⟶ Over.mk x) (by simp only [Over.comp_left, Over.homMk_left]; rw [spMap_comp_ring]) h2`. Establish `hPy : PolFib G L g (spMap (k.comp i) ≫ x)` using `(GlobalTheory.T.principallyPolarisedFibre_iff_of_grpPullback S S G L G L (𝟙 S) (𝟙 G.left) hL hL (grpPullback_self G) (GlobalTheory.ThetaAffineGlue.lbIso_pull_id hL) g Ω x).2 (AlgebraicClosure K) (k.comp i) hP`. Establish `hmAC : (m : AlgebraicClosure K) ≠ 0`. Rewrite using `[← map_natCast (k.comp i) m]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hm.pos.ne')`.
+
+Take `⟨σ, hσ⟩` from `(GlobalTheory.T.thetaConstantLists_unique_up_to_perm_scalar S G L ρ hL hρ g m m N N (AlgebraicClosure K) (spMap (k.comp i) ≫ x) hm hmAC hm hmAC hPy).1 _ q2 q1 _ _ H2 H1`. Apply `k.injective` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem symAt_exists : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left)
     (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m N : ℕ) (Ω : Type) [Field Ω] [CharZero Ω]
     (x : Sp Ω ⟶ S) (θ : SecAt G L x), Odd m → N = m ^ (4 * g) → PolFib G L g x → ∃ e : Fin N → Ω, SymAt G L ρ m x θ e := by

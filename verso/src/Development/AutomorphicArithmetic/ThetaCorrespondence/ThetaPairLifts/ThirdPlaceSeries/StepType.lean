@@ -14,6 +14,29 @@ open GlobalTheory.TypeAbove
 noncomputable section
 namespace UpperTheory.GalS
 open UpperTheory.Lit.Car (IneAb comm_le_ine)
+/- English proof (translation)
+Introduce `D P hDZ h0 h1 h2' h5 i k hl r hr x PI hPI v τ hτ hsq hroot`. Establish `h2` using `_root_.UpperTheory.GalS.weak' h2'`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hnc` using `nc_of_label P hDZ h1 i k v PI τ hτ hsq hroot`. Take `⟨u, hu, hm0, hlab, hconj⟩` from `hDZ i k v PI τ hτ hsq hroot`.
+
+Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `hcard : ∀ a : (ZMod (D.host.g k))[X], Multiset.card (Formalism.CyclotomicNorms.rootsBar a) = a.natDegree` using `fun a => by`. Unfold `Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[← (IsAlgClosed.splits _).natDegree_eq_card_roots, natDegree_map]`. Establish `hroot0 : ∀ y ∈ Formalism.CyclotomicNorms.rootsBar ((P.lz k).lab τ * (X - C (u : ZMod (D.host.g k))) ^ D.R.t), y ≠ 0`.
+
+Introduce and unpack `y hy rfl`. Unfold `Formalism.CyclotomicNorms.rootsBar at hy`. Establish `h` using `isRoot_of_mem_roots hy`. Rewrite `h` using `[IsRoot.def, ← coeff_zero_eq_eval_zero, coeff_map, map_eq_zero, mul_coeff_zero, coeff_zero_eq_eval_zero (_ ^ _)]`. Break down `mul_eq_zero.1 h with h | h` into its components or cases.
+
+Conclude with `((P.lz k).lab_spec τ).2.2 h`. Simplify using `at h`. Establish `key : ∀ w, w ∈ placesOver D.host.E (D.host.g k) → IsSplitPl D.host w → Nc D.nd D.naut (D.naut.locV i PI w) → D.naut.mono0 (D.naut.locV i PI w) → (D.naut.items₂ k w (D.naut.locV i PI w)).natDegree = D.R.nV → (∀ y ∈ Formalism.CyclotomicNorms.rootsBar (D.naut.items₂ k w (D.naut.locV …` using `D.host.E) (D.nd.plOm.1 w), D.naut.inePol (D.naut.wdOf i (mapRep (iotaOQ D.nd D.naut i) (r x)) w) σ = ((Formalism.CyclotomicNorms.rootsBar (D.naut.items₂ k w (D.naut.locV i PI w))).map fun y => X - C (P.om k w y σ)).prod := by`. Introduce `w hw hs hn hm hdeg hnz`. Establish `hwl : w ∈ placesOver D.host.E (D.nd.l i)` using `hl ▸ hw`.
+
+Take `⟨Pa, hB⟩` from `h1 i PI`. Take `⟨hdR, heq, -⟩` from `compatR D h0 h2 h5 i r hr x PI Pa hPI hB w hwl (by rw [hB.2.2.2.1 w hs]; exact hn)`. Rewrite `heq` using `[hB.2.2.2.1 w hs]`. Establish `hdim : D.naut.lpDim (D.naut.locV i PI w) = D.R.nV`. Establish `h` using `D.naut.wdOf_dim i (mapRep (iotaOQ D.nd D.naut i) (r x)) w`.
+
+Rewrite `h` using `[heq.dim, D.naut.lpDim_tw]`. Then use the resulting hypothesis. Use `⟨hdR, ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `heq.mono ?_` and prove the remaining obligations. Rewrite using `[D.naut.monomial_twist_iff]`. Conclude with `hm`.
+
+Establish `hab : IneAb D.nd D.naut (D.naut.lpTw (D.naut.locV i PI w) ((1 - (D.R.nV : ℝ)) / 2))` using `fun s hs' => by`. Rewrite using `[D.naut.inePol_tw _ _ s (comm_le_ine w hs'), D.naut.lpDim_tw, P.inertiaCharpoly_eigenvalues k w hw _ (hdeg.trans hdim.symm) s (comm_le_ine w hs'), Multiset.map_congr rfl (fun y hy => by rw [comm_triv _ (P.om k w y) (P.om_one k w y (hnz y hy)) (P.om_mul k w y (hnz y hy)) s hs', C_ …`. Rewrite using `[heq.ine ⟨(D.naut.monomial_twist_iff _ _).2 hm, hab⟩ σ hσ, D.naut.inePol_tw _ _ σ hσ]`. Conclude with `P.inertiaCharpoly_eigenvalues k w hw _ (hdeg.trans hdim.symm) σ hσ`. Introduce `w M hwM`.
+
+Break down `hwM with ⟨rfl, rfl⟩ | ⟨hc, rfl⟩` into its components or cases. Establish `hdeg : (D.naut.items₂ k (D.naut.plGw k v) (D.naut.locV i PI (D.naut.plGw k v))).natDegree = D.R.nV`. Rewrite using `[hlab, ((P.lz k).lab_spec τ).1.natDegree_mul ((monic_X_sub_C _).pow _), ((P.lz k).lab_spec τ).2.1, (monic_X_sub_C _).natDegree_pow, natDegree_X_sub_C, mul_one]`. Both sides reduce to the same expression. Establish `h` using `key _ (D.naut.plGw_over k v) (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v) (hnc _ (Or.inl rfl)) hm0 hdeg (by rw [hlab]; exact hroot0)`.
+
+Rewrite `h` using `[hlab]`. Conclude with `h`. Take `⟨hw, hs⟩` from `conj_over_split D (D.naut.plGw_over k v) (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v) hc`. Take `⟨hm, hdeg, hroots⟩` from `hconj w hc`. Establish `h` using `key w hw hs (hnc w (Or.inr hc)) hm hdeg (by`.
+
+Rewrite using `[hroots]`. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `inv_ne_zero (hroot0 z hz))`. Rewrite `h` using `[hroots]`.
+
+Conclude with `h`.
+-/
 theorem stepType_alt : _root_.GlobalTheory.Pass.stepType_proof_tyz := by
   intro D P hDZ h0 h1 h2' h5 i k hl r hr x PI hPI v τ hτ hsq hroot
   have h2 := _root_.UpperTheory.GalS.weak' h2'

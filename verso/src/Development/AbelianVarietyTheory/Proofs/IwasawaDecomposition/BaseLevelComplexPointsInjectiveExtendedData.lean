@@ -31,6 +31,9 @@ section Conc
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hb : LinearIndependent D.what₂.LL (R.toRealDat.bL F.lv2 b i)` using `(Module.finBasis D.what₂.LL (R.toRealDat.WL F.lv2 b i)).linearIndependent.map' (R.toRealDat.WL F.lv2 b i).subtype (Submodule.ker_subtype _)`. Use `(injective_iff_map_eq_zero _).2 fun c hc => funext fun l => ?_` and prove the remaining obligations. Establish `h1` using `Fintype.linearIndependent_iff.1 (hU _ _ hb) _ ((Formalism.IndefR.FWT.principal_form_tensor_expansion R F b i c).symm.trans hc) l`. Establish `h2` using `congrArg (Links.cj (twAt D.what₂.embLL A3.A.v0)) h1`. Rewrite `h2` using `[cj_cj, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem baseLevelComplexPoints_injective_of_independent (R : RealDat3 D A3 Ks) (F : Face3 D A3) (b : Bool) (i : Fin D.R.m)
     (hU : ∀ (n : ℕ) (c : Fin n → (Fin (R.nW i) → D.what₂.LL)), LinearIndependent D.what₂.LL c →
       LinearIndependent ℂ fun k => (R.FW i).j (sg0 D A3.A) (c k)) :
@@ -47,6 +50,9 @@ end Conc
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ => ?_` and prove the remaining obligations. Introduce `B f T w _ _ _ _ Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' hF _ _ j' _ _ _`. Conclude with `baseLevelComplexPoints_injective_of_independent z'.R z'.F false j' (GlobalTheory.TiedUnif.indep_span_of_tie z'.geo.fw z'.pins.char.base.models.HW z'.geo.bar hF.2.1.jUnif j' _).1`.
+-/
 theorem baseLevelComplexPoints_injective_extendedData : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

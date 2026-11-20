@@ -11,9 +11,19 @@ namespace GlobalTheory.WittFrameSig
 
 open Matrix
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.Jpq, fromBlocks_multiply]`.
+-/
 theorem Jpq_mul_self (r s : ℕ) : Formalism.UG.Jpq r s * Formalism.UG.Jpq r s = 1 := by
   simp [Formalism.UG.Jpq, fromBlocks_multiply]
 
+/- English proof (translation)
+Set `e : Fin n ≃ Fin r ⊕ Fin s` to `(finCongr hn.symm).trans finSumFinEquiv.symm`. Use `set B : Matrix (Fin r ⊕ Fin s) (Fin n) ℂ := Formalism.UG.Jpq r s * Aᴴ * J₀ with hB`. Establish `hBA : B * A = 1`. Rewrite using `[hB, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Aᴴ, hA, Jpq_mul_self]`. Establish `hAB : A * B = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).2 hBA`.
+
+Establish `hJ : Bᴴ * Formalism.UG.Jpq r s * B = J₀`. Combine the equalities or inequalities in the displayed calculation. Use `GlobalTheory.WittSignature.le_of_isotropic_standard (B * X) (Yᴴ * J₀ᴴ * A) ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hJ, hxx]`.
+-/
 theorem le_of_isotropic_diag {n r s k : ℕ} (hn : r + s = n) (J₀ : Matrix (Fin n) (Fin n) ℂ)
     (A : Matrix (Fin n) (Fin r ⊕ Fin s) ℂ) (hA : Aᴴ * J₀ * A = Formalism.UG.Jpq r s)
     (X Y : Matrix (Fin n) (Fin k) ℂ) (hxx : Xᴴ * J₀ * X = 0) (hxy : Xᴴ * J₀ * Y = 1) : k ≤ r ∧ k ≤ s := by
@@ -40,6 +50,17 @@ namespace GlobalTheory.WittFrameSig
 
 open Matrix
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n X r s hB hX r₀ Xf Yf hW`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `set τ : E →+* ℂ := (B.emb w).1 with hτ`. Establish `hc : ∀ x, τ (σ x) = star (τ x)` using `hB.cm.2.2.2 τ`. Take `⟨hrs, A, hA⟩` from `hX.sig w`.
+
+Establish `hmap : ∀ {a b : ℕ} (P : Matrix (Fin n) (Fin a) E) (Q : Matrix (Fin n) (Fin b) E), (Formalism.UG.cT (σ : E →+* E) P * ((1 : E) • X.J.map σ) * Q).map τ = (P.map τ)ᴴ * (X.J.map τ).map (starRingEnd ℂ) * Q.map τ`. Introduce `a b P Q`. Rewrite using `[one_smul, Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use extensionality with `i j`.
+
+Simplify using `[Formalism.UG.cT, conjTranspose_apply, hc]`. Use extensionality with `i j`. Simplify using `[hc]`. Establish `hA' : Aᴴ * (X.J.map τ).map (starRingEnd ℂ) * A = Formalism.UG.Jpq r s`. Establish `h` using `congrArg (fun M => M.map (starRingEnd ℂ)) hA`.
+
+Simplify using `only [Matrix.map_mul] at h`. Establish `hD : (fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).map (starRingEnd ℂ) = fromBlocks 1 0 0 (-1)`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.one_apply] <;> split_ifs <;> simp`. Rewrite `h` using `[hD]`.
+
+Rewrite using `[Formalism.UG.Jpq, ← h]`. Apply the tactic sequence `congr 2 <;> ext i j <;> simp [conjTranspose_apply]`. Use `le_of_isotropic_diag hrs _ A hA' (Xf.map τ) (Yf.map τ) ?_ ?_` and prove the remaining obligations. Rewrite using `[← hmap, hW.xx, Matrix.map_zero _ (map_zero _)]`. Rewrite using `[← hmap, hW.xy, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem wittFrame_le_signature : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n : ℕ) (X : Spc F E n) (r s : ℕ), B.IsGood σ → X.IsHerm σ B r s →
     ∀ (r₀ : ℕ) (Xf Yf : Matrix (Fin n) (Fin r₀) E), GlobalTheory.SiegelSet.IsWittFrame σ ((1 : E) • X.J.map σ) Xf Yf →

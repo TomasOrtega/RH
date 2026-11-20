@@ -26,10 +26,18 @@ def vecT (p : KB.Pl P Wp Wq) (N : ℕ) (c : I → ℝ) (Fi : I → B.Mat P.k P.r
     (L : I → (Wq →L[ℂ] Wp) →L[ℂ] HS Wp Wq) (Q : C.LPt) : HT I Wp Wq :=
   WithLp.toLp 2 (fun i => ((√(c i) * omT p N Q : ℝ) : ℂ) • L i (p.V (Fi i) Q))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vecT_apply (p : KB.Pl P Wp Wq) (N : ℕ) (c : I → ℝ) (Fi : I → B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (L : I → (Wq →L[ℂ] Wp) →L[ℂ] HS Wp Wq) (Q : C.LPt) (i : I) :
     vecT p N c Fi L Q i = ((√(c i) * omT p N Q : ℝ) : ℂ) • L i (p.V (Fi i) Q) := rfl
 
+/- English proof (translation)
+Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hs : ((√(c i) : ℝ) : ℂ) * ((√(c i) : ℝ) : ℂ) = (c i : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (hc i)]`. Rewrite using `[vecT_apply, vecT_apply, inner_smul_left, inner_smul_right, inner_smul_left, inner_smul_right]`.
+
+Simplify using `only [Complex.conj_ofReal, Complex.ofReal_mul, map_mul]`. Rewrite using `[← hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_vecT (p : KB.Pl P Wp Wq) (N : ℕ) (c : I → ℝ) (hc : ∀ i, 0 ≤ c i)
     (Fi : I → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (L : I → (Wq →L[ℂ] Wp) →L[ℂ] HS Wp Wq) (Q Q' : C.LPt) :
     ⟪vecT p N c Fi L Q, vecT p N c Fi L Q'⟫_ℂ =

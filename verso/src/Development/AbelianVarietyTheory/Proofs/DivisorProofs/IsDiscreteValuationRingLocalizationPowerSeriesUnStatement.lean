@@ -9,5 +9,8 @@ open GlobalTheory.LocM (KeyAt)
 open GlobalTheory.FlagMod (GChart ev tau tau_le le_preimage_comp)
 open scoped LaurentSeries
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PowerSeriesUniformiser.main | exact GlobalTheory.PowerSeriesUniformiser.main | (intros; apply GlobalTheory.PowerSeriesUniformiser.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isDiscreteValuationRing_localization_powerSeries_uniformiser : ∀ (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (ϖ : A), Irreducible ϖ → ∃ _ : (Ideal.span {(PowerSeries.C ϖ : PowerSeries A)}).IsPrime, IsDiscreteValuationRing (Localization.AtPrime (Ideal.span {(PowerSeries.C ϖ : PowerSeries A)})) := by
   first | exact @GlobalTheory.PowerSeriesUniformiser.main | exact GlobalTheory.PowerSeriesUniformiser.main | (intros; apply GlobalTheory.PowerSeriesUniformiser.main <;> assumption)

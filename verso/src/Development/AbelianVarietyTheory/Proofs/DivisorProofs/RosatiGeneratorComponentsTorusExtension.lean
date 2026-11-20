@@ -33,6 +33,15 @@ variable (hs : ∀ a b, ℓ a b = ℓ b a)
   (hc : ∀ a a' b, e₀ b = 1 → ℓ (a * a') b = ℓ a b + ℓ a' b - κ (Additive.ofMul (N.θ (ev a) (ev a') (ev b))))
 
 include hc in
+/- English proof (translation)
+Set `S : Subgroup (Γ × Multiplicative N.X)` to `MonoidHom.eqLocus (ev.comp (MonoidHom.fst _ _)) ((cHom N).comp (MonoidHom.snd _ _))`. Set `φ : S →* Multiplicative Q` to `MonoidHom.mk' (fun p => Multiplicative.ofAdd (ℓ p.1.1 b - κ (Additive.ofMul (g.s p.1.2.toAdd)))) fun p p' => by`. Establish `e : ev p.1.1 = N.c p.1.2.toAdd` using `p.2`. Establish `e' : ev p'.1.1 = N.c p'.1.2.toAdd` using `p'.2`. Establish `m` using `congrArg (fun u => κ (Additive.ofMul u)) (g.mult p.1.2.toAdd p'.1.2.toAdd)`.
+
+Simplify using `only [ofMul_mul, map_add] at m`. Rewrite using `[← ofAdd_add]`. Use `congr 1`. Use `show ℓ (p.1.1 * p'.1.1) b - κ (Additive.ofMul (g.s (p.1.2.toAdd + p'.1.2.toAdd))) = _`. Rewrite using `[hc _ _ _ h₀, e, e', hb]`.
+
+Take the linear combination `(norm := abel) -m`. Set `s : Fin r → S` to `fun k => ⟨(x k, Multiplicative.ofAdd (χ k)), hx k⟩`. Establish `h` using `congrArg Multiplicative.toAdd (map_prod φ (fun k => s k ^ n k) Finset.univ)`. Simplify using `only [map_zpow, toAdd_prod, toAdd_zpow] at h`. Establish `c₁ : (∏ k, s k ^ n k).1.1 = ∏ k, x k ^ n k`.
+
+Simplify using `[s, Prod.fst_prod]`. Establish `c₂ : (∏ k, s k ^ n k).1.2.toAdd = ∑ k, n k • χ k`. Simplify using `[s, Prod.snd_prod, toAdd_prod]`. Rewrite using `[← c₁, ← c₂]`. Conclude with `h`.
+-/
 theorem left_sum {r : ℕ} (x : Fin r → Γ) (χ : Fin r → N.X) (hx : ∀ k, ev (x k) = N.c (χ k)) (n : Fin r → ℤ)
     (b : Γ) (g : N.Gt) (hb : ev b = g.b) (h₀ : e₀ b = 1) :
     ℓ (∏ k, x k ^ n k) b - κ (Additive.ofMul (g.s (∑ k, n k • χ k))) =
@@ -61,6 +70,15 @@ theorem left_sum {r : ℕ} (x : Fin r → Γ) (χ : Fin r → N.X) (hx : ∀ k, 
   exact h
 
 include hs hc in
+/- English proof (translation)
+Set `S : Subgroup (Γ × N.Gt)` to `MonoidHom.eqLocus (ev.comp (MonoidHom.fst _ _)) (N.projB.comp (MonoidHom.snd _ _))`. Set `φ : S →* Multiplicative Q` to `MonoidHom.mk' (fun p => Multiplicative.ofAdd (ℓ a p.1.1 - κ (Additive.ofMul (p.1.2.s χ)))) fun p p' => by`. Establish `e : ev p.1.1 = p.1.2.b` using `p.2`. Establish `e' : ev p'.1.1 = p'.1.2.b` using `p'.2`. Rewrite using `[← ofAdd_add]`.
+
+Use `congr 1`. Use `show ℓ a (p.1.1 * p'.1.1) - κ (Additive.ofMul ((p.1.2 * p'.1.2).s χ)) = _`. Rewrite using `[hs, hc _ _ _ h₀, e, e', ha, NumD.Gt.mul_s, hs a, hs a, N.cub.s12 p.1.2.b, N.cub.s01 p.1.2.b]`. Simplify using `only [ofMul_mul, ofMul_div, map_add, map_sub]`. Normalize the expressions using the abelian group laws.
+
+Set `s : Fin r → S` to `fun k => ⟨(y k, g k), hy k⟩`. Establish `h` using `congrArg Multiplicative.toAdd (map_prod φ (fun k => s k ^ n k) Finset.univ)`. Simplify using `only [map_zpow, toAdd_prod, toAdd_zpow] at h`. Establish `c₁ : (∏ k, s k ^ n k).1.1 = ∏ k, y k ^ n k`. Simplify using `[s, Prod.fst_prod]`.
+
+Establish `c₂ : (∏ k, s k ^ n k).1.2 = ∏ k, g k ^ n k`. Simplify using `[s, Prod.snd_prod]`. Rewrite using `[← c₁, ← c₂]`. Conclude with `h`.
+-/
 theorem right_sum {r : ℕ} (y : Fin r → Γ) (g : Fin r → N.Gt) (hy : ∀ k, ev (y k) = (g k).b) (n : Fin r → ℤ)
     (a : Γ) (χ : N.X) (ha : ev a = N.c χ) (h₀ : e₀ a = 1) :
     ℓ a (∏ k, y k ^ n k) - κ (Additive.ofMul ((∏ k, g k ^ n k).s χ)) =
@@ -88,6 +106,11 @@ theorem right_sum {r : ℕ} (y : Fin r → Γ) (g : Fin r → N.Gt) (hy : ∀ k,
   exact h
 
 include hs hc in
+/- English proof (translation)
+Simplify using `only [PVu, ofMul_prod, map_sum, ofMul_zpow, map_zsmul, ← Finset.sum_add_distrib, ← smul_add]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hc _ _ _ (by rw [map_mul, a₀, y₀, _root_.mul_one]), hs (a i), hs (y i), hc _ _ _ (a₀ i), hc _ _ _ (y₀ i), map_mul, ha, ha, hy, hy, hs (a j) (a i), hs (y j) (a i), hs (y j) (y i)]`. Simplify using `only [ofMul_mul, ofMul_div, map_add, map_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem quad_mul {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (a y : Fin r → Γ) (χ : Fin r → N.X) (g : Fin r → N.Gt)
     (ha : ∀ k, ev (a k) = N.c (χ k)) (hy : ∀ k, ev (y k) = (g k).b) (a₀ : ∀ k, e₀ (a k) = 1) (y₀ : ∀ k, e₀ (y k) = 1) :
     ∑ i, ∑ j, W i j • ℓ (a i * y i) (a j * y j) = ∑ i, ∑ j, W i j • ℓ (a i) (a j) + ∑ i, ∑ j, W i j • ℓ (y i) (y j) +
@@ -102,6 +125,17 @@ theorem quad_mul {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (a y : Fin r → Γ)
   abel
 
 include hs hc in
+/- English proof (translation)
+Establish `ea : ∀ i, ev (a i) = N.c (χ₁ i)` using `fun i => by`. Establish `: N.c (χ₁ i) = cHom N (∏ k, Multiplicative.ofAdd (χ k) ^ A i k)`. Rewrite using `[h₁]`. Use `show _ = N.c _`. Simplify using `[toAdd_prod]`.
+
+Rewrite using `[this, ha, map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [map_zpow, map_zpow, hx]; rfl`. Establish `eb : ∀ i, ev (b i) = (∏ k, g k ^ A' i k).b` using `fun i => by`. Rewrite using `[← N.projB_apply, hb, map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [map_zpow, map_zpow, hy]; rfl`.
+
+Establish `a₀ : ∀ i, e₀ (a i) = 1` using `fun i => by simp [ha, map_prod, x₀]`. Establish `b₀ : ∀ i, e₀ (b i) = 1` using `fun i => by simp [hb, map_prod, y₀]`. Rewrite using `[quad_mul ev e₀ ℓ κ hs hc W a y χ₁ g ea hy a₀ y₀, quad_mul ev e₀ ℓ κ hs hc W x b χ _ hx eb x₀ b₀]`. Establish `e₁ : ∀ i j, ℓ (a i) (y j) - κ (Additive.ofMul ((g j).s (χ₁ i))) = ∑ k, A i k • (ℓ (x k) (y j) - κ (Additive.ofMul ((g j).s (χ k))))` using `fun i j => by`. Rewrite using `[ha, h₁, left_sum ev e₀ ℓ κ hc x χ hx _ _ _ (hy j) (y₀ j)]`.
+
+Establish `e₂ : ∀ i j, ℓ (x i) (b j) - κ (Additive.ofMul ((∏ k, g k ^ A' j k).s (χ i))) = ∑ k, A' j k • (ℓ (x i) (y k) - κ (Additive.ofMul ((g k).s (χ i))))` using `fun i j => by`. Rewrite using `[hb, right_sum ev e₀ ℓ κ hs hc y g hy _ _ _ (hx i) (x₀ i)]`. Establish `hC` using `GlobalTheory.TensRosati.key_sum (fun k m => ℓ (x k) (y m) - κ (Additive.ofMul ((g m).s (χ k)))) W A A' h`. Simplify using `only [e₁, e₂]`. Rewrite using `[hC]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem total {r : ℕ} (W A A' : Matrix (Fin r) (Fin r) ℤ)
     (h : A.transpose * (W + W.transpose) = (W + W.transpose) * A') (x y a b : Fin r → Γ) (χ χ₁ : Fin r → N.X)
     (g : Fin r → N.Gt) (hx : ∀ k, ev (x k) = N.c (χ k)) (hy : ∀ k, ev (y k) = (g k).b) (x₀ : ∀ k, e₀ (x k) = 1)
@@ -145,6 +179,9 @@ section Flat
 variable {X X' Y Z : Scheme.{0}} {M : LB X} {K₁ : Type} [Fintype K₁] {pr : K₁ → (X' ⟶ X)} {e : K₁ → ℤ}
   {K : Type} [Fintype K]
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun a => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (a, k)`.
+-/
 theorem le_flat (φ' : K → (Y ⟶ X')) (j : K × K₁ → M.ι) :
     LB.wchart M (fun p : K × K₁ => φ' p.1 ≫ pr p.2) j ≤ LB.wchart (LB.LinComb M pr e) φ' (fun a k => j (a, k)) :=
   fun _ hy => Set.mem_iInter.2 fun a => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (a, k)
@@ -153,6 +190,11 @@ def flat (φ' : K → (Y ⟶ X')) (ε : K → ℤ) (t : LB.Gen (LB.LinComb (LB.L
     LB.Gen (LB.LinComb M (fun p : K × K₁ => φ' p.1 ≫ pr p.2) (fun p => ε p.1 * e p.2)) :=
   ⟨fun j : K × K₁ → M.ι => res (le_flat φ' j) (t.s (fun a k => j (a, k)))⟩
 
+/- English proof (translation)
+Use `isGen_of_gm _ fun y j j' h h' => ?_` and prove the remaining obligations. Use `(gm_res (𝟙 Y) y _ h _).trans ((gen_trans ht (𝟙 Y) y (le_flat φ' j h) (le_flat φ' j' h')).trans (congrArg₂ (· * ·) ?_ (gm_res (𝟙 Y) y _ h' _).symm))` and prove the remaining obligations. Unfold `trF`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Use `(congrArg (· ^ ε a) (gm_linComb M pr e (𝟙 Y ≫ φ' a) y (fun k => j (a, k)) (fun k => j' (a, k)) (Set.mem_iInter.1 (le_flat (e := e) φ' j h) a) (Set.mem_iInter.1 (le_flat (e := e) φ' j' h') a))).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← zpow_mul, mul_comm (e i), Category.assoc]`.
+-/
 theorem flat_isGen (φ' : K → (Y ⟶ X')) (ε : K → ℤ) (t : LB.Gen (LB.LinComb (LB.LinComb M pr e) φ' ε))
     (ht : t.IsGen) : (flat φ' ε t).IsGen := by
   refine isGen_of_gm _ fun y j j' h h' => ?_
@@ -168,9 +210,15 @@ theorem flat_isGen (φ' : K → (Y ⟶ X')) (ε : K → ℤ) (t : LB.Gen (LB.Lin
   dsimp only
   rw [← zpow_mul, mul_comm (e i), Category.assoc]
 
+/- English proof (translation)
+Introduce `ψ` and use `hJ.mem pr ψ`.
+-/
 theorem good_comb {z : Z} {J : (Z ⟶ X) → M.ι} (hJ : Good M z J) :
     Good (LB.LinComb M pr e) z (fun ψ k => J (ψ ≫ pr k)) := fun ψ => hJ.mem pr ψ
 
+/- English proof (translation)
+Use `Eq.trans ?_ (val_of t r z (fun ψ k => J (ψ ≫ pr k)) (fun a k => J (r ≫ φ' a ≫ pr k)) (fun a => funext fun k => congrArg J (Category.assoc _ _ _))).symm` and prove the remaining obligations. Conclude with `gm_res r z _ (hJ.mem (fun p : K × K₁ => φ' p.1 ≫ pr p.2) r) _`.
+-/
 theorem val_flat (φ' : K → (Y ⟶ X')) (ε : K → ℤ) (t : LB.Gen (LB.LinComb (LB.LinComb M pr e) φ' ε)) (r : Z ⟶ Y)
     {z : Z} {J : (Z ⟶ X) → M.ι} (hJ : Good M z J) :
     val (flat φ' ε t) r z J = val t r z (fun ψ k => J (ψ ≫ pr k)) := by
@@ -210,6 +258,11 @@ section Cube
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Use `⟨thK, inferInstance, _, _, LB.pullGen L.L (thφ G (x3 G)) thε c.t (lift a (lift a' b)).left, DVR.pullGen_isGen _ _ _ _ c.isGen _, ?_, fun y I hI => ?_, val_cub c r hJ a a' b⟩` and prove the remaining obligations. Use `prod_cub a a' b (U := Multiplicative (FreeAbelianGroup (T.left ⟶ G.left))) (fun m => Multiplicative.ofAdd (FreeAbelianGroup.of m))` as an intermediate fact. Establish `e` using `congrArg Multiplicative.toAdd this`. Simplify using `only [toAdd_prod, toAdd_zpow, toAdd_mul, toAdd_inv, toAdd_ofAdd] at e`. Rewrite using `[e, lam, lam, lam]`.
+
+Normalize the expressions using the abelian group laws. Use `(val_cub c e hI a a' b).trans ?_` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `(isCub_cubV c hI).face₃ _ _`.
+-/
 theorem cube_mem_norm (L : RigLB G) (c : CubicalStr G L) {T T₀ T' : Over S} (e : T₀ ⟶ T) (r : T' ⟶ T) {z : T'.left}
     {J} (hJ : Good L.L z J) (a a' b : T ⟶ G) (hb : e ≫ b = 1) :
     (lam (a * a') b - lam a b - lam a' b, Additive.ofMul (cubV c z J (r ≫ a) (r ≫ a') (r ≫ b))) ∈
@@ -233,6 +286,11 @@ section Total
 variable {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A']
   {r : ℕ} (pr : Fin r → (A' ⟶ A))
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [mul_smul, ← Finset.smul_sum, Fin.sum_univ_six]`. Rewrite using `[← flat_eq, ← flat_eq, ← flat_eq, ← flat_eq, ← flat_eq, ← flat_eq]`. Rewrite using `[show rosatiε 0 = 1 from rfl, show rosatiε 1 = -1 from rfl, show rosatiε 2 = -1 from rfl, show rosatiε 3 = -1 from rfl, show rosatiε 4 = 1 from rfl, show rosatiε 5 = 1 from rfl]`. Simplify using `only [one_smul, neg_smul, sub_eq_add_neg]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ros_flat (W : Matrix (Fin r) (Fin r) ℤ) (f g : A' ⟶ A') :
     ∑ p : Fin 6 × ((Fin r × Fin r) × Fin 4), (rosatiε p.1 * tensε W p.2) •
       FreeAbelianGroup.of (rosatiφ A' f g p.1 ≫ tensφ pr p.2) =
@@ -258,6 +316,33 @@ open GlobalTheory.TensRosati
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
   {F : Type} [Field F] [Algebra (FractionRing R) F] {N N' : NumD F}
 
+/- English proof (translation)
+Use `letI := D.P.isAb.comm`. Use `letI := D'.P.isAb.comm`. Take `⟨u, hu, u₀, hv⟩` from `hρ`. Take `⟨z⟩ : Nonempty (Sp F)` from `inferInstanceAs (Nonempty (PrimeSpectrum F))`. Establish `hJ : Good D.P.L z ν.J` using `fun ψ => ν.good ψ trivial`.
+
+Set `τ : Fˣ →* ((Sp F).presheaf.stalk z)ˣ` to `Units.map (toStk z).toMonoidHom`. Establish `tθ : ∀ a b c, τ (N.θ a b c) = cubV D.cub (T` using `TF (R := R) F) z ν.J (ν.eA a) (ν.eA b) (ν.eA c) := fun a b c => Units.ext ((Units.coe_map _ _).trans ((congrArg (toStk z) (ν.θ_eq a b c)).trans (toStk_valF _ _ z (hJ.mem _ _) _)))`. Set `e : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D'.P.A ⊗ D'.P.A` to `lift η[D'.P.A] η[D'.P.A]`. Set `p : TF (R` to `R) F ⟶ D'.P.A ⊗ D'.P.A := lift (ν'.eA a) (ν'.eA b)`. Set `H` to `normGens D.P.L (Z := Sp F) e.left p.left hJ`.
+
+Set `ev : (D'.P.A ⊗ D'.P.A ⟶ D.P.A) →* N.A` to `ν.eA.symm.toMonoidHom.comp (preHom p)`. Set `ℓ : (D'.P.A ⊗ D'.P.A ⟶ D.P.A) → (D'.P.A ⊗ D'.P.A ⟶ D.P.A) → _ ⧸ H` to `fun x y => (QuotientAddGroup.mk' H).comp (AddMonoidHom.inl _ _) (lam x y)`. Set `κ : Additive Fˣ →+ _ ⧸ H` to `((QuotientAddGroup.mk' H).comp (AddMonoidHom.inr _ _)).comp τ.toAdditive`. Establish `hs : ∀ x y, ℓ x y = ℓ y x` using `fun x y => by simp only [ℓ, lam_comm x y]`. Establish `hc : ∀ x x' y, preHom e y = 1 → ℓ (x * x') y = ℓ x y + ℓ x' y - κ (Additive.ofMul (N.θ (ev x) (ev x') (ev y)))` using `fun x x' y hy => by`.
+
+Establish `m` using `(QuotientAddGroup.eq_zero_iff _).2 (cube_mem_norm ⟨D.P.L, D.rig, D.P.isLB, D.rig_gen⟩ D.cub e p hJ x x' y hy)`. Establish `t : τ (N.θ (ev x) (ev x') (ev y)) = cubV D.cub (T` using `TF (R := R) F) z ν.J (p ≫ x) (p ≫ x') (p ≫ y) := by`. Rewrite using `[tθ]`. Simplify using `only [ev, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Establish `m' : ℓ (x * x') y - ℓ x y - ℓ x' y + κ (Additive.ofMul (N.θ (ev x) (ev x') (ev y))) = 0`. Use `Eq.trans ?_ m` and prove the remaining obligations. Simplify using `only [ℓ, ← map_sub]`. Use `(map_add (QuotientAddGroup.mk' H) _ _).symm.trans (congrArg _ (Prod.ext (add_zero _) ?_))` and prove the remaining obligations. Conclude with `(zero_add _).trans (congrArg Additive.ofMul t)`.
+
+Take the linear combination `(norm := abel) m'`. Establish `one : ∀ k, η[D'.P.A] ≫ T.pr k = 1` using `fun k => by`. Use `T.pr_hom k` as an intermediate fact. Simplify using `[Hom.one_def]`. Establish `tot` using `total ev (preHom e) ℓ κ hs hc W A A' h (fun k => fst _ _ ≫ T.pr k) (fun k => snd _ _ ≫ T.pr k) (fun k => (fst _ _ ≫ f) ≫ T.pr k) (fun k => (snd _ _ ≫ g) ≫ T.pr k) χ χ₁ gs (fun k => (congrArg ν.eA.symm (lift_fst_assoc _ _ _)).trans (ha k)) (fun k => (congrArg ν.eA.symm (lift_snd_a …`.
+
+Rewrite using `[Category.assoc, hf, GlobalTheory.MatrixAction.comp_finsetProd]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [GrpObj.comp_zpow])`. Use the proof step `(fun i => by`. Rewrite using `[Category.assoc, hg, GlobalTheory.MatrixAction.comp_finsetProd]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [GrpObj.comp_zpow]) h₁`.
+
+Establish `hm : ∀ (x y : D'.P.A ⊗ D'.P.A ⟶ D'.P.A) (i : Fin r), (x * y) ≫ T.pr i = (x ≫ T.pr i) * (y ≫ T.pr i)` using `fun x y i => by`. Use `T.pr_hom i` as an intermediate fact. Conclude with `MonObj.mul_comp x y (T.pr i)`. Establish `mq : ∀ x : D'.P.A ⊗ D'.P.A ⟶ D'.P.A, (QuotientAddGroup.mk' H).comp (AddMonoidHom.inl _ _) (qf T.pr W x) = ∑ i, ∑ j, W i j • ℓ (x ≫ T.pr i) (x ≫ T.pr j)` using `fun x => by`. Simplify using `only [qf, map_sum, map_zsmul, ℓ]`.
+
+Establish `mem : (∑ q : Fin 6 × ((Fin r × Fin r) × Fin 4), (rosatiε q.1 * tensε W q.2) • FreeAbelianGroup.of (rosatiφ D'.P.A f g q.1 ≫ tensφ T.pr q.2), Additive.ofMul (τ (PVu W χ (fun i => ∏ k, gs k ^ A' i k) / PVu W χ₁ gs))) ∈ H`. Use `(QuotientAddGroup.eq_zero_iff _).1 ?_` and prove the remaining obligations. Establish `s : ∀ (x) (v : Fˣ), (QuotientAddGroup.mk (x, Additive.ofMul (τ v)) : _ ⧸ H) = (QuotientAddGroup.mk' H).comp (AddMonoidHom.inl _ _) x + κ (Additive.ofMul v)` using `fun x v => (congrArg _ (Prod.ext (add_zero _).symm (zero_add _).symm)).trans (map_add (QuotientAddGroup.mk' H) _ _)`. Rewrite using `[s, ros_flat]`. Simplify using `only [map_add, map_sub, mq, hm, ofMul_div]`.
+
+Rewrite using `[tot]`. Normalize the expressions using the abelian group laws. Take `⟨K, _, φ, ε, t, ht, hF, t₀, tv⟩` from `mem`. Establish `he : e.left ≫ (snd D'.P.A D'.P.A).left ≫ D'.P.A.hom = 𝟙 _`. Rewrite using `[Over.w]`.
+
+Conclude with `Over.w e`. Establish `key` using `gen_unique' D.P.isLB (formEq_of_eq hF.symm) _ e.left he (surj_comp (surj_snd GlobalTheory.globalFns_holds D'.P.isAb _) (GlobalTheory.globalFns_holds _ _ D'.P.isAb).2) (flat_isGen _ _ u hu) ht (fun y I hI => by`. Establish `c` using `val_corr (good_comb (pr := tensφ T.pr) (e := tensε W) hI) u₀ (𝟙 _)`. Establish `c'` using `(val_pull (good_comb (pr := tensφ T.pr) (e := tensε W) hI) u (zero2 D'.P.A) (𝟙 _)).symm.trans (c.trans (val_one _))`. Rewrite `c'` using `[Category.id_comp]`.
+
+Conclude with `((val_flat _ _ u _ hI).trans c').trans (t₀ y I hI).symm) (Sp F) p.left z ν.J hJ`. Establish `k2 : toStk z (ρ a b) = (τ (PVu W χ (fun i => ∏ k, gs k ^ A' i k) / PVu W χ₁ gs)).val`. Rewrite using `[hv]`. Use `(toStk_valF _ _ z ((good_comb (pr := tensφ T.pr) (e := tensε W) hJ).mem _ _) _).trans ?_` and prove the remaining obligations. Conclude with `congrArg Units.val ((val_flat _ _ u p.left hJ).symm.trans (key.trans tv))`.
+
+Establish `k3 : ρ a b = (PVu W χ (fun i => ∏ k, gs k ^ A' i k) / PVu W χ₁ gs : Fˣ)` using `(toStk z).injective (k2.trans (Units.coe_map _ _))`. Rewrite using `[k3, ← Units.val_mul, div_mul_cancel]`.
+-/
 theorem ros_value (T : Tens D D' W) (ν : NumOf D F N) (ν' : NumOf D' F N') (A A' : Matrix (Fin r) (Fin r) ℤ)
     (h : A.transpose * (W + W.transpose) = (W + W.transpose) * A') (f g : D'.P.A ⟶ D'.P.A)
     (hf : letI := D.P.isAb.comm; ∀ i, f ≫ T.pr i = ∏ j, T.pr j ^ A i j)
@@ -351,6 +436,11 @@ end GlobalTheory.Mum.RosComp
 
 open GlobalTheory.Mum.RosComp in
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D D' r W T F _ _ _ N N' ν ν' E _ _ _ H ρ hρ _ o hact x ρ'' hros χ b gs hb`. Use `letI := H.starRing`. Establish `h` using `hρ (star x)`. Rewrite `h` using `[show H.bar (star x) = x from star_star x]`. Use `ros_value T ν ν' (ρ (star x)) (ρ x) h _ _ (hact.2 _) (hact.2 _) ρ'' hros (N'.c χ) b (TensTor.chi T ν ν' χ) _ gs (fun j => ?_) hb (fun i => ?_)` and prove the remaining obligations.
+
+Simplify using `only [TensTor.cmp, TensTor.chi]`. Rewrite using `[ν.eA.symm_apply_eq, ν.c_eq, ν'.c_eq, ν.eX.apply_symm_apply]`. Simplify using `only [DegPre.cF, Category.assoc, T.c_pr]`. Simplify using `only [TensTor.chi, AddEquiv.apply_symm_apply, hact.1, map_sum, map_zsmul]`.
+-/
 theorem GlobalTheory.Mum.TensRos.rosVT_components : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ), (∀ a, (ρ a).transpose * (W + W.transpose) = (W + W.transpose) * ρ (H.bar a)) → ∀ [Module (𝓞 E) D'.toPre.X] (o : letI := H.starRing; D'.toPre.OAct (𝓞 E)), (letI := H.starRing; T.IsAct o ρ) → ∀ (x : 𝓞 E) (ρ'' : N'.A → N'.A → F), (letI := H.starRing; GlobalTheory.Mum.TensRos.RosVT T ν ν' (o.onB.act (star x)) (o.onB.act x) ρ'') → ∀ (χ : N'.X) (b : N'.A) (gs : Fin r → N.Gt), (∀ j, GlobalTheory.Mum.TensTor.cmp T ν ν' b j = (gs j).b) → (letI := H.starRing; ρ'' (N'.c χ) b * GlobalTheory.Mum.TensRos.PV W (GlobalTheory.Mum.TensTor.chi T ν ν') (ν'.eX.symm (star x • ν'.eX χ)) gs = GlobalTheory.Mum.TensRos.PV W (GlobalTheory.Mum.TensTor.chi T ν ν') χ (fun i => ∏ j, gs j ^ ρ x i j)) := by
   intro R _ _ _ _ D D' r W T F _ _ _ N N' ν ν' E _ _ _ H ρ hρ _ o hact x ρ'' hros χ b gs hb
   letI := H.starRing

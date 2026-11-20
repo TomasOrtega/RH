@@ -7,21 +7,43 @@ open scoped BigOperators
 
 namespace GlobalTheory.ProdTheta
 
+/- English proof (translation)
+Simplify using `only [coordB, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem coordB_add (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (k : Fin r)
     (z x : VC D N N') : coordB D T b k (z + x) = coordB D T b k z + coordB D T b k x := by
   simp only [coordB, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `coordB`. Use `fun_prop`.
+-/
 theorem coordB_differentiable (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
     (k : Fin r) : Differentiable ℂ (coordB D T b k) := by
   unfold coordB
   fun_prop
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ (by norm_num), ih]`.
+-/
 theorem neg_one_zpow_sum {ι : Type} (s : Finset ι) (m : ι → ℤ) :
     (-1 : ℂ) ^ (∑ k ∈ s, m k) = ∏ k ∈ s, (-1 : ℂ) ^ m k := by
   induction s using Finset.induction_on with
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ (by norm_num), ih]
 
+/- English proof (translation)
+Introduce `D T N N' r b g hP hL hg hq`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `pullB`. Establish `hc` using `coordB_differentiable D T b`. Use `fun_prop`.
+
+Introduce `x hx z`. Establish `hx'` using `(hL x).1 hx`. Use `choose m hm hU using fun k => hq _ (hx' k)`. Establish `hre : Real.sqrt D.host.d / 2 * (Hf D T x x).re = ((∑ k, m k : ℤ) : ℝ)`. Unfold `Hf`.
+
+Rewrite using `[hP, Complex.div_ofReal_re, Complex.re_sum, Int.cast_sum, Finset.sum_div, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hm k, q1, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Establish `hal : al D T x = ∏ k, (-1 : ℂ) ^ m k`. Unfold `al`.
+
+Rewrite using `[hre, round_intCast, neg_one_zpow_sum]`. Establish `hUU : U D T x (pullB D T b g) z = ∏ k, U1 T.abelian₂ (coordB D T b k x) g (coordB D T b k z)`. Unfold `U U1 pullB Hf`. Rewrite using `[Finset.prod_mul_distrib, ← Complex.exp_sum, hP, hP]`. Simplify using `only [coordB_add]`.
+
+Use `congr 2`. Rewrite using `[Finset.sum_div, Finset.sum_div, Finset.mul_sum, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hal, hUU, ← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun k _ => hU k _`.
+-/
 theorem pullB_mem_ThSp : ∀ (D : D7) (T : Tor D) (N N' r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (g : ℂ → ℂ), (∀ z w : VC D N N', ∑ τ, ∑ i, ∑ j, z τ i j * (starRingEnd ℂ) (w τ i j) = ∑ k, coordB D T b k z * (starRingEnd ℂ) (coordB D T b k w)) → (∀ x : VC D N N', x ∈ LaB D T b ↔ ∀ k, coordB D T b k x ∈ T.abelian₂) → Differentiable ℂ g → (∀ ω ∈ T.abelian₂, ∃ m : ℤ, q1 D T.abelian₂ ω = m ∧ ∀ z, (-1 : ℂ) ^ m * U1 T.abelian₂ ω g z = g z) → pullB D T b g ∈ ThSp D T (LaB D T b) := by
   intro D T N N' r b g hP hL hg hq
   refine ⟨?_, ?_⟩

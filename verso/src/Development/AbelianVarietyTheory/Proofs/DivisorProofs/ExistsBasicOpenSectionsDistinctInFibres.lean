@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SectionsSpread
 
+/- English proof (translation)
+Take `⟨I, hI⟩` from `GlobalTheory.T.equalizer_sections_closed_ideal R X hX x y hx hy`. Establish `h1 : ¬ ∀ r ∈ I, e r = 0` using `fun h => hne ((hI K e).2 h)`. Use `push_neg at h1`. Take `⟨r, hrI, hr⟩` from `h1`. Use `⟨r, hr, fun F _ ψ hψ heq => hψ ((hI F ψ).1 heq r hrI)⟩` and prove the remaining obligations.
+-/
 theorem sep_elem (R : Type) [CommRing R] (X : Over (Sp R)) (hX : IsSeparated X.hom)
     (K : Type) [Field K] (e : R →+* K) (x y : Sp R ⟶ X.left)
     (hx : x ≫ X.hom = 𝟙 _) (hy : y ≫ X.hom = 𝟙 _) (hne : spMap e ≫ x ≠ spMap e ≫ y) :
@@ -21,6 +24,15 @@ theorem sep_elem (R : Type) [CommRing R] (X : Over (Sp R)) (hX : IsSeparated X.h
   obtain ⟨r, hrI, hr⟩ := h1
   refine ⟨r, hr, fun F _ ψ hψ heq => hψ ((hI F ψ).1 heq r hrI)⟩
 
+/- English proof (translation)
+Introduce `R _ X hX K _ e _ t ht hsep`. Set `g : (Sp R ⟶ X.left) × (Sp R ⟶ X.left) → R` to `fun p => if h : p.1 ∈ t ∧ p.2 ∈ t ∧ p.1 ≠ p.2 then Classical.choose (sep_elem R X hX K e p.1 p.2 (ht _ h.1) (ht _ h.2.1) (hsep _ h.1 _ h.2.1 h.2.2)) else 1`. Establish `hg : ∀ p : (Sp R ⟶ X.left) × (Sp R ⟶ X.left), e (g p) ≠ 0 ∧ ∀ (F : Type) [Field F] (ψ : R →+* F), ψ (g p) ≠ 0 → p.1 ∈ t → p.2 ∈ t → p.1 ≠ p.2 → spMap ψ ≫ p.1 ≠ spMap ψ ≫ p.2`. Introduce `p`. Distinguish the cases in `h : p.1 ∈ t ∧ p.2 ∈ t ∧ p.1 ≠ p.2`.
+
+Establish `hs` using `Classical.choose_spec (sep_elem R X hX K e p.1 p.2 (ht _ h.1) (ht _ h.2.1) (hsep _ h.1 _ h.2.1 h.2.2))`. Simplify using `only [g, dif_pos h]`. Conclude with `⟨hs.1, fun F _ ψ hψ _ _ _ => hs.2 F ψ hψ⟩`. Simplify using `only [g, dif_neg h]`. Conclude with `⟨by simp, fun F _ ψ _ h1 h2 h3 => absurd ⟨h1, h2, h3⟩ h⟩`.
+
+Use `⟨∏ p ∈ t ×ˢ t, g p, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun p _ => (hg p).1`. Introduce `F _ ψ hu x hx y hy hxy`. Establish `hmem : (x, y) ∈ t ×ˢ t` using `Finset.mem_product.2 ⟨hx, hy⟩`.
+
+Establish `hdvd : g (x, y) ∣ ∏ p ∈ t ×ˢ t, g p` using `Finset.dvd_prod_of_mem g hmem`. Establish `hu' : IsUnit (ψ (g (x, y)))` using `isUnit_of_dvd_unit (map_dvd ψ hdvd) hu`. Conclude with `(hg (x, y)).2 F ψ hu'.ne_zero hx hy hxy`.
+-/
 theorem pairs : ∀ (R : Type) [CommRing R] (X : Over (Sp R)), IsSeparated X.hom → ∀ (K : Type) [Field K] (e : R →+* K), Function.Injective e → ∀ t : Finset (Sp R ⟶ X.left), (∀ x ∈ t, x ≫ X.hom = 𝟙 _) → (∀ x ∈ t, ∀ y ∈ t, x ≠ y → spMap e ≫ x ≠ spMap e ≫ y) → ∃ f : R, e f ≠ 0 ∧ ∀ (F : Type) [Field F] (ψ : R →+* F), IsUnit (ψ f) → ∀ x ∈ t, ∀ y ∈ t, x ≠ y → spMap ψ ≫ x ≠ spMap ψ ≫ y := by
   intro R _ X hX K _ e _ t ht hsep
   classical

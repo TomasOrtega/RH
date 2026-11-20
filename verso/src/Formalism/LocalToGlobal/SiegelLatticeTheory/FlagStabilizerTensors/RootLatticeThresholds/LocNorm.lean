@@ -33,6 +33,9 @@ def MeasP : Prop :=
         ((locS hB u u' τ).Φ (trG (C.Q τ) (C.Qi τ) ((gamW X u u' w) (vOf X τ)) * Matrix.of x)))
       ((νl w (vOf X τ)).map (Formalism.L2.SG.Pf.LocJEq.Smap C τ ((gamW X u u' w) (vOf X τ))))
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.hsNormSq Formalism.MainNotions.S.hsInner`. Simplify using `only [ContinuousLinearMap.smul_apply, inner_smul_left, inner_smul_right, ← Finset.mul_sum]`. Rewrite using `[← mul_assoc, Complex.mul_conj, Complex.re_ofReal_mul]`.
+-/
 private theorem hsNormSq_real_smul' {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (c : ℂ) (A : Wq →L[ℂ] Wp) :
     Formalism.MainNotions.S.hsNormSq (c • A) = Complex.normSq c * Formalism.MainNotions.S.hsNormSq A := by
@@ -40,6 +43,15 @@ private theorem hsNormSq_real_smul' {Wp Wq : Type*} [NormedAddCommGroup Wp] [Inn
   simp only [ContinuousLinearMap.smul_apply, inner_smul_left, inner_smul_right, ← Finset.mul_sum]
   rw [← mul_assoc, Complex.mul_conj, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Introduce `w hrow hrep`. Use `⟨K0 Y u u' C hB, hK, hW, ?_⟩` and prove the remaining obligations. Establish `hs : Formalism.L2.SG.Pf.OOCore3.sclV Y u u' ≠ 0`. Introduce `h0`. Unfold `K0 at hK`.
+
+Rewrite `hK` using `[h0, div_zero]`. Conclude with `lt_irrefl _ hK`. Establish `hfac : ∀ τ, Formalism.MainNotions.S.hsNormSq ((locS hB u u' τ).J (Formalism.L2.SG.Pf.JointAmplitudePoints.nu1P C u u' w τ) (Formalism.L2.SG.Pf.JointAmplitudePoints.gamP C u u' w τ)) = Complex.normSq (aT u u' C hB τ) * Formalism.MainNotions.S.hsNormSq (haveI` using `FiniteDimensional.complete ℂ (X.Vloc u (vOf X τ)) Jv (νl w (vOf X τ)) (X.Wloc u (vOf X τ)) (X.Wloc u' (vOf X τ)) ((gamW X u u' w) (vOf X τ))) := by`. Introduce `τ`. Rewrite using `[hU w hrow hrep τ]`.
+
+Conclude with `(congrArg Formalism.MainNotions.S.hsNormSq (Formalism.L2.SG.Pf.LocJEq.locJ_map_eq (C := C) (hB := hB) u u' τ _ _ (hM w τ))).trans (hsNormSq_real_smul' _ _)`. Unfold `Formalism.L2.SG.Pf.JointAmplitudePoints.localAmplitudeProduct`. Simplify using `only [hfac, Finset.prod_mul_distrib]`. Rewrite using `[← Equiv.prod_comp X.pl.symm]`. Unfold `vOf K0`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem locNormPK_of (hU : LocUniqP u u' C hB νl) (hM : MeasP u u' C hB νl) (hK : 0 < K0 Y u u' C hB)
     (hW : Formalism.L2.SG.Pf.OOCore3.WinK large₂ C1 (K0 Y u u' C hB)) : Formalism.L2.SG.Pf.OOCore3.LocNormPK Y u u' C hB large₂ C1 νl := by
   intro w hrow hrep

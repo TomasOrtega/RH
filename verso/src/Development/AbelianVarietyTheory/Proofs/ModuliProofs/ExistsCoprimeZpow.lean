@@ -18,22 +18,34 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 
 abbrev Mc (l : Level H) : Ideal (𝓞 E) := l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)
 
+/- English proof (translation)
+Establish `h1 : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.coprime]`. Conclude with `Submodule.mem_top`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 h1`. Conclude with `⟨y, hy, by rw [← hxy, add_sub_cancel_right]; exact hx⟩`.
+-/
 theorem exists_idem (l : Level H) : ∃ e ∈ Mc l, 1 - e ∈ l.Mb := by
   have h1 : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) := by
     rw [l.coprime]; exact Submodule.mem_top
   obtain ⟨x, hx, y, hy, hxy⟩ := Submodule.mem_sup.1 h1
   exact ⟨y, hy, by rw [← hxy, add_sub_cancel_right]; exact hx⟩
 
+/- English proof (translation)
+Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem M_pos (l : Level H) : 0 < l.M := by
   have := l.three_le
   omega
 
+/- English proof (translation)
+Rewrite `h` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨b, -, hb⟩` from `h`. Conclude with `⟨b, by rw [← hb, Nat.cast_smul_eq_nsmul]⟩`.
+-/
 theorem modN_of_mem_span {n : ℕ} {a : D.La}
     (h : a ∈ Ideal.span {(n : 𝓞 E)} • (⊤ : Submodule (𝓞 E) D.La)) : D.ModN n a := by
   rw [Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists] at h
   obtain ⟨b, -, hb⟩ := h
   exact ⟨b, by rw [← hb, Nat.cast_smul_eq_nsmul]⟩
 
+/- English proof (translation)
+Apply `modN_of_mem_span` to reduce the goal to its premises. Establish `h1 : c • a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • l.Mb • (⊤ : Submodule (𝓞 E) D.La)` using `Submodule.smul_mem_smul hc ha`. Rewrite `h1` using `[← Submodule.mul_smul, mul_comm, l.prod]`. Then use the resulting hypothesis.
+-/
 theorem modN_smul_Mb (l : Level H) {c : 𝓞 E} (hc : c ∈ Mc l) {a : D.La}
     (ha : a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)) : D.ModN l.M (c • a) := by
   apply modN_of_mem_span
@@ -41,6 +53,9 @@ theorem modN_smul_Mb (l : Level H) {c : 𝓞 E} (hc : c ∈ Mc l) {a : D.La}
     Submodule.smul_mem_smul hc ha
   rwa [← Submodule.mul_smul, mul_comm, l.prod] at h1
 
+/- English proof (translation)
+Apply `modN_of_mem_span` to reduce the goal to its premises. Establish `h1 : c • a ∈ l.Mb • l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)` using `Submodule.smul_mem_smul hc ha`. Rewrite `h1` using `[← Submodule.mul_smul, l.prod]`. Then use the resulting hypothesis.
+-/
 theorem modN_smul_Mc (l : Level H) {c : 𝓞 E} (hc : c ∈ l.Mb) {a : D.La}
     (ha : a ∈ Mc l • (⊤ : Submodule (𝓞 E) D.La)) : D.ModN l.M (c • a) := by
   apply modN_of_mem_span
@@ -48,6 +63,11 @@ theorem modN_smul_Mc (l : Level H) {c : 𝓞 E} (hc : c ∈ l.Mb) {a : D.La}
     Submodule.smul_mem_smul hc ha
   rwa [← Submodule.mul_smul, l.prod] at h1
 
+/- English proof (translation)
+Take `⟨e, he, he'⟩` from `exists_idem l`. Take `⟨b₁, hb₁⟩` from `modN_smul_Mb l he ha`. Take `⟨b₂, hb₂⟩` from `modN_smul_Mc l he' ha'`. Use `⟨b₁ + b₂, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← hb₁, ← hb₂, ← add_smul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem modN_of_mem_both (l : Level H) {a : D.La} (ha : a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La))
     (ha' : a ∈ Mc l • (⊤ : Submodule (𝓞 E) D.La)) : D.ModN l.M a := by
   obtain ⟨e, he, he'⟩ := exists_idem l
@@ -57,6 +77,11 @@ theorem modN_of_mem_both (l : Level H) {a : D.La} (ha : a ∈ l.Mb • (⊤ : Su
   rw [smul_add, ← hb₁, ← hb₂, ← add_smul]
   simp
 
+/- English proof (translation)
+Establish `hM : (l.M : 𝓞 E) ∈ l.Mb`. Establish `h1 : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `(Ideal.mul_le_inf.trans inf_le_left) h1`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul hM Submodule.mem_top`.
+-/
 theorem nsmul_M_mem (l : Level H) (a : D.La) : l.M • a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) := by
   have hM : (l.M : 𝓞 E) ∈ l.Mb := by
     have h1 : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) := by
@@ -65,12 +90,18 @@ theorem nsmul_M_mem (l : Level H) (a : D.La) : l.M • a ∈ l.Mb • (⊤ : Sub
   rw [← Nat.cast_smul_eq_nsmul (𝓞 E)]
   exact Submodule.smul_mem_smul hM Submodule.mem_top
 
+/- English proof (translation)
+Establish `h` using `hf 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := f 0) (by rw [_root_.mul_one]; exact h.symm)`.
+-/
 theorem add_map_zero {M Q : Type} [AddCommGroup M] [Group Q] {f : M → Q} (hf : ∀ a c, f (a + c) = f a * f c) :
     f 0 = 1 := by
   have h := hf 0 0
   rw [add_zero] at h
   exact mul_left_cancel (a := f 0) (by rw [_root_.mul_one]; exact h.symm)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, pow_zero]`. Conclude with `add_map_zero hf`. Consider the case `succ n ih => rw [succ_nsmul, hf, ih, pow_succ]`.
+-/
 theorem add_map_nsmul {M Q : Type} [AddCommGroup M] [Group Q] {f : M → Q} (hf : ∀ a c, f (a + c) = f a * f c)
     (n : ℕ) (a : M) : f (n • a) = f a ^ n := by
   induction n with
@@ -79,6 +110,9 @@ theorem add_map_nsmul {M Q : Type} [AddCommGroup M] [Group Q] {f : M → Q} (hf 
 
 variable {k : Type} [Field k] {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
 
+/- English proof (translation)
+Establish `hn : 0 < n` using `Nat.pos_of_dvd_of_pos h hN`. Establish `hq : 0 < N / n` using `Nat.div_pos (Nat.le_of_dvd hN h) hn`. Use `I.tower n (N / n) hn hq a` as an intermediate fact. Rewrite `this` using `[Nat.mul_div_cancel' h]`. Then use the resulting hypothesis.
+-/
 theorem ev_pow_div (I : TateIso D k Q act e) {n N : ℕ} (hN : 0 < N) (h : n ∣ N) (a : D.La) :
     I.ev N a ^ (N / n) = I.ev n a := by
   have hn : 0 < n := Nat.pos_of_dvd_of_pos h hN
@@ -86,6 +120,9 @@ theorem ev_pow_div (I : TateIso D k Q act e) {n N : ℕ} (hN : 0 < N) (h : n ∣
   have := I.tower n (N / n) hn hq a
   rwa [Nat.mul_div_cancel' h] at this
 
+/- English proof (translation)
+Establish `hn : 0 < n` using `Nat.pos_of_dvd_of_pos h hN`. Establish `hq : 0 < N / n` using `Nat.div_pos (Nat.le_of_dvd hN h) hn`. Use `I.ζ_pow n (N / n) hn hq` as an intermediate fact. Rewrite `this` using `[Nat.mul_div_cancel' h]`. Then use the resulting hypothesis.
+-/
 theorem zeta_pow_div (I : TateIso D k Q act e) {n N : ℕ} (hN : 0 < N) (h : n ∣ N) :
     I.ζ N ^ (N / n) = I.ζ n := by
   have hn : 0 < n := Nat.pos_of_dvd_of_pos h hN
@@ -93,6 +130,9 @@ theorem zeta_pow_div (I : TateIso D k Q act e) {n N : ℕ} (hN : 0 < N) (h : n �
   have := I.ζ_pow n (N / n) hn hq
   rwa [Nat.mul_div_cancel' h] at this
 
+/- English proof (translation)
+Establish `: NeZero N` using `⟨hN.ne'⟩`. Take `⟨i, -, hi⟩` from `(IsPrimitiveRoot.coe_units_iff.2 hζ).eq_pow_of_pow_eq_one (ξ := (ξ : k)) (by rw [← Units.val_pow_eq_pow_val, hξ.pow_eq_one, Units.val_one])`. Establish `hξi : ξ = ζ ^ i` using `Units.ext (by rw [Units.val_pow_eq_pow_val, hi])`. Establish `hcop : i.Coprime N` using `(hζ.pow_iff_coprime hN i).1 (by rw [← hξi]; exact hξ)`. Conclude with `⟨i, Nat.isCoprime_iff_coprime.2 hcop, by rw [hξi, zpow_natCast]⟩`.
+-/
 theorem exists_coprime_zpow {N : ℕ} (hN : 0 < N) {ζ ξ : kˣ} (hζ : IsPrimitiveRoot ζ N) (hξ : IsPrimitiveRoot ξ N) :
     ∃ ν : ℤ, IsCoprime ν (N : ℤ) ∧ ξ = ζ ^ ν := by
   have : NeZero N := ⟨hN.ne'⟩
@@ -102,6 +142,15 @@ theorem exists_coprime_zpow {N : ℕ} (hN : 0 < N) {ζ ξ : kˣ} (hζ : IsPrimit
   have hcop : i.Coprime N := (hζ.pow_iff_coprime hN i).1 (by rw [← hξi]; exact hξ)
   exact ⟨i, Nat.isCoprime_iff_coprime.2 hcop, by rw [hξi, zpow_natCast]⟩
 
+/- English proof (translation)
+Take `⟨ν, hνc, hξν⟩` from `exists_coprime_zpow hN (I.ζ_prim N hN) hξ`. Establish `hA0` using `l.A_pos`. Establish `h1 : I.ζ l.A ^ ν = I.ζ l.A`. Combine the equalities or inequalities in the displayed calculation. Establish `hA1 : (l.A : ℤ) ∣ ν - 1`.
+
+Use `((I.ζ_prim l.A hA0).zpow_eq_one_iff_dvd _).1 ?_` and prove the remaining obligations. Rewrite using `[zpow_sub, zpow_one, h1, mul_inv_cancel]`. Take `⟨g, hgN, -, hgM, hgA⟩` from `hM ν hN hνc hA1`. Use `⟨LevelTwist.twist I g (hν g), ?_, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[LevelTwist.twist_ζ, hξν]`.
+
+Conclude with `LevelTwist.zeta_zpow_congr I hN hgN`. Rewrite using `[LevelTwist.twist_ev]`. Conclude with `LevelTwist.ev_congr I hA0 (hgA a)`. Rewrite using `[LevelTwist.twist_ev]`. Use `LevelTwist.ev_congr I (M_pos l) (modN_of_mem_both l (hgM a) ?_)` and prove the remaining obligations.
+
+Conclude with `Submodule.sub_mem _ (LevelTwist.map_mem_smul_top _ _ ha) ha`.
+-/
 theorem exists_adjust
     (hν : ∀ (g : Sim D) (n m : ℕ), 0 < n → 0 < m → (n : ℤ) ∣ g.ν (n * m) - g.ν n ∧ IsCoprime (g.ν n) (n : ℤ))
     (l : Level H) (N : ℕ)
@@ -131,6 +180,23 @@ theorem exists_adjust
     refine LevelTwist.ev_congr I (M_pos l) (modN_of_mem_both l (hgM a) ?_)
     exact Submodule.sub_mem _ (LevelTwist.map_mem_smul_top _ _ ha) ha
 
+/- English proof (translation)
+Use `choose b hb using fun a => (I.onto N hN (α a)).1 (hpow a)`. Set `K : Submodule (𝓞 E) D.La` to `LinearMap.range ((N : 𝓞 E) • LinearMap.id)`. Establish `memK : ∀ x y, I.ev N x = I.ev N y → x - y ∈ K`. Introduce `x y hxy`. Take `⟨z, hz⟩` from `(tateIso_ev_eq_iff I hN x y).1 hxy`.
+
+Conclude with `LinearMap.mem_range.2 ⟨z, by rw [hz, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul]⟩`. Set `β : D.La →ₗ[𝓞 E] D.La ⧸ K` to `{ toFun := fun a => Submodule.Quotient.mk (b a) map_add' := fun a c => by`. Rewrite using `[← Submodule.Quotient.mk_add]`. Use `(Submodule.Quotient.eq K).2 (memK _ _ ?_)` and prove the remaining obligations. Rewrite using `[hb, I.add, hb, hb, hadd]`.
+
+Use the proof step `map_smul' := fun c a => by`. Rewrite using `[RingHom.id_apply, ← Submodule.Quotient.mk_smul]`. Use `(Submodule.Quotient.eq K).2 (memK _ _ ?_)` and prove the remaining obligations. Rewrite using `[hb, I.lin, hb, hlin] }`. Use `D.proj` as an intermediate fact.
+
+Take `⟨f, hf⟩` from `Module.projective_lifting_property K.mkQ β K.mkQ_surjective`. Establish `hfα : ∀ a, I.ev N (f a) = α a`. Introduce `a`. Establish `h1 : (Submodule.Quotient.mk (f a) : D.La ⧸ K) = Submodule.Quotient.mk (b a)` using `LinearMap.congr_fun hf a`. Take `⟨z, hz⟩` from `LinearMap.mem_range.1 ((Submodule.Quotient.eq K).1 h1)`.
+
+Rewrite using `[← hb a]`. Conclude with `(tateIso_ev_eq_iff I hN _ _).2 ⟨z, by rw [← hz, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul]⟩`. Take `⟨ν, hνc, hξν⟩` from `exists_coprime_zpow hN (I.ζ_prim N hN) hξ`. Establish `hEF : ∀ a c, (N : ℤ) ∣ D.EF (f a) (f c) - ν * D.EF a c`. Introduce `a c`.
+
+Establish `h1` using `I.isom N hN (f a) (f c)`. Rewrite `h1` using `[hfα, hfα]`. Establish `h2` using `he _ _ _ _ (hiso a c) h1`. Rewrite `h2` using `[hξν, ← zpow_mul]`. Use `((I.ζ_prim N hN).zpow_eq_one_iff_dvd _).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[zpow_sub, ← h2, mul_inv_cancel]`. Take `⟨g, hgf, hgν⟩` from `hL f ν hN hνc hEF`. Use `⟨LevelTwist.twist I g (hν g), ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[LevelTwist.twist_ζ, hξν]`. Conclude with `LevelTwist.zeta_zpow_congr I hN hgν`.
+
+Rewrite using `[LevelTwist.twist_ev, ← hfα a]`. Conclude with `LevelTwist.ev_congr I hN (hgf a)`.
+-/
 theorem exists_of_level
     (hν : ∀ (g : Sim D) (n m : ℕ), 0 < n → 0 < m → (n : ℤ) ∣ g.ν (n * m) - g.ν n ∧ IsCoprime (g.ν n) (n : ℤ))
     (N : ℕ)
@@ -186,6 +252,17 @@ theorem exists_of_level
   · rw [LevelTwist.twist_ev, ← hfα a]
     exact LevelTwist.ev_congr I hN (hgf a)
 
+/- English proof (translation)
+Establish `: NeZero N` using `⟨hN.ne'⟩`. Establish `hA0 : 0 < A` using `Nat.pos_of_dvd_of_pos hA hN`. Establish `: NeZero A` using `⟨hA0.ne'⟩`. Establish `hω` using `IsCyclotomicExtension.zeta_spec N B (CyclotomicField N B)`. Use `set ω := IsCyclotomicExtension.zeta N B (CyclotomicField N B)`.
+
+Establish `hq : 0 < N / A` using `Nat.div_pos (Nat.le_of_dvd hN hA) hA0`. Establish `hω' : IsPrimitiveRoot (ω ^ (N / A)) A`. Use `hω.pow_of_dvd hq.ne' (Nat.div_dvd_of_dvd hA)` as an intermediate fact. Rewrite `this` using `[Nat.div_div_self hA hN.ne']`. Then use the resulting hypothesis. Establish `hη : IsPrimitiveRoot (algebraMap B (CyclotomicField N B) ζ) A` using `hζ.map_of_injective (algebraMap B (CyclotomicField N B)).injective`.
+
+Take `⟨i, hiA, hi⟩` from `hω'.eq_pow_of_pow_eq_one hη.pow_eq_one`. Establish `hic : i.Coprime A` using `(hω'.pow_iff_coprime hA0 i).1 (by rw [hi]; exact hη)`. Take `⟨v, hv⟩` from `ZMod.unitsMap_surjective hA (ZMod.unitOfCoprime i hic)`. Establish `hji : (v : ZMod N).val % A = i % A`. Establish `h1` using `congrArg (fun u : (ZMod A)ˣ => (u : ZMod A)) hv`.
+
+Simplify using `only [ZMod.unitsMap_val, ZMod.coe_unitOfCoprime] at h1`. Rewrite `h1` using `[← ZMod.natCast_val]`. Conclude with `(ZMod.natCast_eq_natCast_iff' _ _ _).1 h1`. Establish `hξ : IsPrimitiveRoot (ω ^ (v : ZMod N).val) N` using `hω.pow_of_coprime _ (ZMod.val_coe_unit_coprime v)`. Use `⟨CyclotomicField N B, inferInstance, inferInstance, (hξ.isUnit hN.ne').unit, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `IsCyclotomicExtension.finiteDimensional {N} B (CyclotomicField N B)`. Conclude with `IsPrimitiveRoot.coe_units_iff.1 (by rw [IsUnit.unit_spec]; exact hξ)`. Rewrite using `[IsUnit.unit_spec, ← pow_mul, mul_comm, pow_mul, pow_eq_pow_mod _ hω'.pow_eq_one, hji, Nat.mod_eq_of_lt hiA, hi]`.
+-/
 theorem exists_root_ext (B : Type) [Field B] [CharZero B] {A N : ℕ} (hN : 0 < N) (hA : A ∣ N) {ζ : B}
     (hζ : IsPrimitiveRoot ζ A) :
     ∃ (L : Type) (_ : Field L) (_ : Algebra B L) (ξ : Lˣ), FiniteDimensional B L ∧ IsPrimitiveRoot ξ N ∧

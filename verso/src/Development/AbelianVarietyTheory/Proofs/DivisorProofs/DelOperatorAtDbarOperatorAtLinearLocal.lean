@@ -10,23 +10,45 @@ namespace GlobalTheory.CxForm
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [coefwise, map_add, Finsupp.add_apply, h, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem coefwise_add_of {T : (V n → ℂ) → ℂ} {F G : V n → Alt n}
     (h : ∀ S, T (fun x => (bas n).repr (F x) S + (bas n).repr (G x) S) =
       T (fun x => (bas n).repr (F x) S) + T (fun x => (bas n).repr (G x) S)) :
     coefwise T (fun x => F x + G x) = coefwise T F + coefwise T G := by
   simp only [coefwise, map_add, Finsupp.add_apply, h, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [coefwise, map_smul, Finsupp.smul_apply, h, Finset.smul_sum, smul_assoc]`.
+-/
 theorem coefwise_const_smul_of {T : (V n → ℂ) → ℂ} {F : V n → Alt n} (c : ℂ)
     (h : ∀ S, T (fun x => c • (bas n).repr (F x) S) = c • T (fun x => (bas n).repr (F x) S)) :
     coefwise T (fun x => c • F x) = c • coefwise T F := by
   simp only [coefwise, map_smul, Finsupp.smul_apply, h, Finset.smul_sum, smul_assoc]
 
+/- English proof (translation)
+Simplify using `only [coefwise, map_sum, Finsupp.finset_sum_apply, h, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem coefwise_sum_of {T : (V n → ℂ) → ℂ} {ι : Type} (t : Finset ι) {F : ι → V n → Alt n}
     (h : ∀ S, T (fun x => ∑ i ∈ t, (bas n).repr (F i x) S) = ∑ i ∈ t, T (fun x => (bas n).repr (F i x) S)) :
     coefwise T (fun x => ∑ i ∈ t, F i x) = ∑ i ∈ t, coefwise T (F i) := by
   simp only [coefwise, map_sum, Finsupp.finset_sum_apply, h, Finset.sum_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Introduce `n v`. Use `⟨fun F G hF hG => ⟨?_, ?_⟩, fun F c hF => ⟨?_, ?_⟩, fun ι t F hF => ⟨?_, ?_⟩, fun F G h => ⟨?_, ?_⟩, fun c => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[delAt, delAt, delAt, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_add_of fun S => by rw [GlobalTheory.del_add (hF S) (hG S)]; rfl, mul_add]`.
+
+Rewrite using `[dbarAt, dbarAt, dbarAt, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_add_of fun S => by rw [GlobalTheory.dbar_add (hF S) (hG S)]; rfl, mul_add]`. Rewrite using `[delAt, delAt, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[coefwise_const_smul_of c fun S => by rw [GlobalTheory.del_const_smul c (hF S)]; rfl, mul_smul_comm]`. Rewrite using `[dbarAt, dbarAt, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_const_smul_of c fun S => by rw [GlobalTheory.dbar_const_smul c (hF S)]; rfl, mul_smul_comm]`. Simplify using `only [delAt]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_sum_of t fun S => by`. Rewrite using `[GlobalTheory.del_sum fun i hi => hF i hi S, ContinuousLinearMap.sum_apply], Finset.mul_sum]`. Simplify using `only [dbarAt]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_sum_of t fun S => by`. Rewrite using `[GlobalTheory.dbar_sum fun i hi => hF i hi S, ContinuousLinearMap.sum_apply], Finset.mul_sum]`. Establish `e (S) : del (fun x => (bas n).repr (F x) S) v = del (fun x => (bas n).repr (G x) S) v` using `GlobalTheory.del_congr (h.fun_comp fun y => (bas n).repr y S)`.
+
+Simplify using `only [delAt, coefwise, e]`. Establish `e (S) : dbar (fun x => (bas n).repr (F x) S) v = dbar (fun x => (bas n).repr (G x) S) v` using `GlobalTheory.dbar_congr (h.fun_comp fun y => (bas n).repr y S)`. Simplify using `only [dbarAt, coefwise, e]`. Simplify using `[delAt, coefwise]`. Simplify using `[dbarAt, coefwise]`.
+-/
 theorem delAt_dbarAt_linear_local : ∀ (n : ℕ) (v : V n),
     (∀ F G : V n → Alt n, (∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v) →
       (∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (G x) S) v) →

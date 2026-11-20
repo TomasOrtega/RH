@@ -11,6 +11,11 @@ open scoped BigOperators
 
 namespace GlobalTheory.FinWeil
 
+/- English proof (translation)
+Unfold `idx`. Rewrite using `[← AddSubgroup.inf_relIndex_right A.toAddSubgroup, ← AddSubgroup.inf_relIndex_right B.toAddSubgroup]`. Establish `: A.toAddSubgroup ⊓ C.toAddSubgroup = B.toAddSubgroup ⊓ C.toAddSubgroup`. Use extensionality with `x`. Use `SetLike.ext_iff.1 h x` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[this]`.
+-/
 theorem idx_congr_of_inf_eq {R X : Type} [CommRing R] [AddCommGroup X] [Module R X]
     {A B C : Submodule R X} (h : A ⊓ C = B ⊓ C) : idx A C = idx B C := by
   unfold idx
@@ -21,6 +26,23 @@ theorem idx_congr_of_inf_eq {R X : Type} [CommRing R] [AddCommGroup X] [Module R
     simpa using this
   rw [this]
 
+/- English proof (translation)
+Introduce `R X M _ _ _ _ _ σ w γ W h lam hl A B C hA hB hC hadj hAC v hv`. Take `⟨x, hx, P, hP, hfin, hann, hle⟩` from `id hadj`. Take `⟨hAB, hBA, -, hsB, hsA⟩` from `GlobalTheory.T.adjacent_selfDual_lattices_index_simple h A B hA hB x hx P hP hfin hann hle`. Establish `hn : Nat.card (R ⧸ P) ≠ 0` using `Nat.card_pos.ne'`. Establish `hAB0 : idx A B ≠ 0` using `hAB ▸ hn`.
+
+Establish `hBA0 : idx B A ≠ 0` using `hBA ▸ hn`. Establish `hBC0 : idx B C ≠ 0` using `AddSubgroup.relIndex_ne_zero_trans hBA0 hAC`. Establish `hsq : lam (idx A B) ^ 2 = (idx A B : ℂ)`. Rewrite using `[hAB]`. Conclude with `(hl.2 P hP hfin).1`.
+
+Establish `lAB` using `hl.1 _ hAB0`. Establish `lBC` using `hl.1 _ hBC0`. Establish `lAC` using `hl.1 _ hAC`. Establish `homBC` using `((GlobalTheory.T.sumOp_transversal_fixes_linear_and_of_le h B C hC).2.1 hBC0).2.2`. Establish `homAC` using `((GlobalTheory.T.sumOp_transversal_fixes_linear_and_of_le h A C hC).2.1 hAC).2.2`.
+
+Establish `fixB` using `((GlobalTheory.T.sumOp_transversal_fixes_linear_and_of_le h A B hB).2.1 hAB0).2.1 v hv`. Unfold `normOp`. Rewrite using `[homBC, smul_smul]`. Distinguish the cases in `h1 : B ⊓ C ≤ A`. Distinguish the cases in `h2 : A ⊓ C ≤ B`.
+
+Establish `he : A ⊓ C = B ⊓ C` using `le_antisymm (le_inf h2 inf_le_right) (le_inf h1 inf_le_right)`. Rewrite using `[GlobalTheory.T.heisenbergSum_comp_of_adjacent_of_inf_eq h lam hl A B C hA hB hC hadj hAC he v hv, smul_smul, ← idx_congr_of_inf_eq he]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hT : A ⊓ B ⊔ A ⊓ C = A`.
+
+Break down `hsA (A ⊓ B ⊔ A ⊓ C) le_sup_left (sup_le inf_le_left inf_le_left) with h3 | h3` into its components or cases. Conclude with `absurd (le_sup_right.trans h3) h2`. Conclude with `h3`. Take `⟨hi, hs⟩` from `GlobalTheory.T.heisenbergIntertwiningSum_comp_of_intermediate_lattice h B A C hB hA hC hBA0 hAC hT.ge`. Rewrite using `[← hs _ fixB, (GlobalTheory.T.heisenberg_intertwining_sums_comp_eq_index h A B hA hB hAB0).2 v hv, homAC, smul_smul, hi, hBA.trans hAB.symm, map_mul, ← hsq]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hT : A ⊓ B ⊔ B ⊓ C = B`. Break down `hsB (A ⊓ B ⊔ B ⊓ C) le_sup_left (sup_le inf_le_right inf_le_left) with h3 | h3` into its components or cases. Conclude with `absurd (le_sup_right.trans h3) h1`.
+
+Conclude with `h3`. Take `⟨hi, hs⟩` from `GlobalTheory.T.heisenbergIntertwiningSum_comp_of_intermediate_lattice h A B C hA hB hC hAB0 hBC0 (by rw [inf_comm B A]; exact hT.ge)`. Rewrite using `[hs v hv, hi, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem normOp_comp_of_adj : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}, IsHeis σ w γ W → ∀ lam : ℕ →* ℂ, GoodNorm σ lam → ∀ (A B C : Submodule R X), SelfDual γ A → SelfDual γ B → SelfDual γ C → Adj A B → idx A C ≠ 0 → ∀ v, Fixes W A v → normOp lam W B C (normOp lam W A B v) = normOp lam W A C v := by
   intro R X M _ _ _ _ _ σ w γ W h lam hl A B C hA hB hC hadj hAC v hv
   obtain ⟨x, hx, P, hP, hfin, hann, hle⟩ := id hadj

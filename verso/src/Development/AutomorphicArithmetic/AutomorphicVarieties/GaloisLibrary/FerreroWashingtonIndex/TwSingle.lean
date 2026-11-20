@@ -27,6 +27,9 @@ def tw {k G Q : Type} [CommRing k] [CommGroup G] [CommGroup Q] (χ : G →* kˣ)
       map_one' := by simp [MonoidAlgebra.one_def]
       map_mul' a b := by simp [MonoidAlgebra.single_mul_single] }
 
+/- English proof (translation)
+Simplify using `[tw]`.
+-/
 theorem tw_single {k G Q : Type} [CommRing k] [CommGroup G] [CommGroup Q] (χ : G →* kˣ) (π : G →* Q) (g : G) (a : k) :
     tw χ π (MonoidAlgebra.single g a) = MonoidAlgebra.single (π g) (a * χ g) := by
   simp [tw]
@@ -71,6 +74,9 @@ def evenF {G : Type} [Group G] (J : G) : AddSubgroup (G → ZMod 2) where
   add_mem' {a b} ha hb g := by simp [ha g, hb g]
   neg_mem' {a} ha g := by simp [ha g]
 
+/- English proof (translation)
+Use `decide +kernel`.
+-/
 example : gc 7 3 1 = 1 := by decide +kernel
 
 end UpperTheory.V.FW

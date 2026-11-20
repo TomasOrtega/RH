@@ -21,7 +21,13 @@ namespace Scale
 variable (s : Scale)
 
 def ez : ℝ := s.eps / s.J
+/- English proof (translation)
+The claim follows from `div_pos s.eps_pos (lt_of_lt_of_le one_pos s.one_le_J)`.
+-/
 theorem ez_pos : 0 < s.ez := div_pos s.eps_pos (lt_of_lt_of_le one_pos s.one_le_J)
+/- English proof (translation)
+The claim follows from `div_le_self s.eps_pos.le s.one_le_J`.
+-/
 theorem ez_le : s.ez ≤ s.eps := div_le_self s.eps_pos.le s.one_le_J
 
 def L : ℝ := s.x ^ s.eps

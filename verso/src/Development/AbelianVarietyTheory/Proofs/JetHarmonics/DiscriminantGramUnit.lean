@@ -17,10 +17,16 @@ variable {k A O : Type} [CommRing k] [CommRing A] [Algebra k A] [CommRing O] [Al
 abbrev cut (k : Type) {A : Type} [CommRing k] [CommRing A] [Algebra k A] (e : A) : Submodule k A :=
   LinearMap.range (LinearMap.mulLeft k e)
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `ha`. Conclude with `⟨y * c, by simp [mul_left_comm]⟩`.
+-/
 theorem mul_mem_cut {e : A} (y : A) {a : A} (ha : a ∈ cut k e) : y * a ∈ cut k e := by
   obtain ⟨c, rfl⟩ := ha
   exact ⟨y * c, by simp [mul_left_comm]⟩
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `ha`. Simplify using `[← mul_assoc, he]`.
+-/
 theorem e_mul_of_mem {e : A} (he : e * e = e) {a : A} (ha : a ∈ cut k e) : e * a = a := by
   obtain ⟨c, rfl⟩ := ha
   simp [← mul_assoc, he]
@@ -55,6 +61,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SplitUnramifiedPlaces ReciprocityTh
 
 variable {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z a => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sig_eq_bar [StarRing R] (x : Op p R) : AvDefs.sig p R x = bar p R x := by
   induction x using TensorProduct.induction_on with
   | zero => simp

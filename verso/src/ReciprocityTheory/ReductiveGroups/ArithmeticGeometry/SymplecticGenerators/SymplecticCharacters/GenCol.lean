@@ -11,10 +11,18 @@ def ColsFixed (k : ℕ) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) : P
     (∀ r, M r (Sum.inl i) = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) r (Sum.inl i)) ∧
     (∀ r, M r (Sum.inr i) = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) r (Sum.inr i))
 
+/- English proof (translation)
+Introduce `i _`. Conclude with `⟨fun r => rfl, fun r => rfl⟩`.
+-/
 theorem colsFixed_one (k : ℕ) : ColsFixed k (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) := by
   intro i _
   exact ⟨fun r => rfl, fun r => rfl⟩
 
+/- English proof (translation)
+Introduce `i hi`. Use `⟨fun r => ?_, fun r => ?_⟩` and prove the remaining obligations. Establish `e : (O * M) r (Sum.inl i) = (O * (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)) r (Sum.inl i)`. Simplify using `only [Matrix.mul_apply, (hM i hi).1]`. Rewrite using `[e, Matrix.mul_one, (hO i hi).1]`.
+
+Establish `e : (O * M) r (Sum.inr i) = (O * (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)) r (Sum.inr i)`. Simplify using `only [Matrix.mul_apply, (hM i hi).2]`. Rewrite using `[e, Matrix.mul_one, (hO i hi).2]`.
+-/
 theorem colsFixed_mul {k : ℕ} {O M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hO : ColsFixed k O) (hM : ColsFixed k M) : ColsFixed k (O * M) := by
   intro i hi
@@ -26,10 +34,18 @@ theorem colsFixed_mul {k : ℕ} {O M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g
       simp only [Matrix.mul_apply, (hM i hi).2]
     rw [e, Matrix.mul_one, (hO i hi).2]
 
+/- English proof (translation)
+Simplify using `[Matrix.J, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 private theorem J_mul_apply_inl (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (j : Fin g)
     (q : Fin g ⊕ Fin g) : (J (Fin g) ℤ * M) (Sum.inl j) q = -M (Sum.inr j) q := by
   simp [Matrix.J, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `h1` using `SymplecticGroup.mem_iff.1 (SymplecticGroup.transpose_mem hM)`. Rewrite `h1` using `[Matrix.transpose_transpose, Matrix.mul_assoc]`. Establish `h2` using `congrArg (fun A : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ => A p q) h1`. Rewrite `h2` using `[Matrix.mul_apply, Finset.sum_eq_single r0]`. Rewrite `h2` using `[Matrix.transpose_apply]`.
+
+Conclude with `h2`. Introduce `r _ hr`. Rewrite using `[Matrix.transpose_apply, h r hr, zero_mul]`. Introduce `hr`. Conclude with `absurd (Finset.mem_univ _) hr`.
+-/
 private theorem symplectic_entry_mul_J_mul_of_single_column_entry {M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hM : M ∈ symplecticGroup (Fin g) ℤ) {p r0 : Fin g ⊕ Fin g} (h : ∀ r, r ≠ r0 → M r p = 0)
     (q : Fin g ⊕ Fin g) : M r0 p * (J (Fin g) ℤ * M) r0 q = J (Fin g) ℤ p q := by
@@ -44,6 +60,13 @@ private theorem symplectic_entry_mul_J_mul_of_single_column_entry {M : Matrix (F
   · intro hr
     exact absurd (Finset.mem_univ _) hr
 
+/- English proof (translation)
+Establish `hi1` using `hF i hi`. Establish `hA : ∀ r, r ≠ Sum.inl i → M r (Sum.inl i) = 0` using `fun r hr => by`. Rewrite using `[hi1.1 r, Matrix.one_apply_ne hr]`. Establish `hB : ∀ r, r ≠ Sum.inr i → M r (Sum.inr i) = 0` using `fun r hr => by`. Rewrite using `[hi1.2 r, Matrix.one_apply_ne hr]`.
+
+Establish `hA1 : M (Sum.inl i) (Sum.inl i) = 1` using `by rw [hi1.1, Matrix.one_apply_eq]`. Establish `hB1 : M (Sum.inr i) (Sum.inr i) = 1` using `by rw [hi1.2, Matrix.one_apply_eq]`. Establish `hij : i ≠ j` using `fun h => by subst h; omega`. Apply the tactic sequence `have e1 := symplectic_entry_mul_J_mul_of_single_column_entry hM hA (Sum.inl j)`. Apply the tactic sequence `have e2 := symplectic_entry_mul_J_mul_of_single_column_entry hM hB (Sum.inl j)`.
+
+Rewrite `e1` using `[hA1, one_mul, J_mul_apply_inl]`. Rewrite `e2` using `[hB1, one_mul]`. Prove the components needed by the constructor for the conclusion. Simplify `e2` using `[Matrix.J, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, hij]`. Simplify `e1` using `[Matrix.J]`.
+-/
 theorem low_entries {k : ℕ} {M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hM : M ∈ symplecticGroup (Fin g) ℤ) (hF : ColsFixed k M) {i j : Fin g} (hi : (i : ℕ) < k)
     (hj : k ≤ (j : ℕ)) : M (Sum.inl i) (Sum.inl j) = 0 ∧ M (Sum.inr i) (Sum.inl j) = 0 := by
@@ -63,17 +86,29 @@ theorem low_entries {k : ℕ} {M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) �
   · simpa [Matrix.J, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, hij] using e2
   · simpa [Matrix.J] using e1
 
+/- English proof (translation)
+Conclude with `J_mul_apply_inl M j q`.
+-/
 theorem J_mul_inl (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (j : Fin g) (q : Fin g ⊕ Fin g) :
     (J (Fin g) ℤ * M) (Sum.inl j) q = -M (Sum.inr j) q := by
   exact J_mul_apply_inl M j q
 
+/- English proof (translation)
+Apply the tactic sequence `exact symplectic_entry_mul_J_mul_of_single_column_entry hM h q`.
+-/
 theorem col_single_entry {M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hM : M ∈ symplecticGroup (Fin g) ℤ) {p r0 : Fin g ⊕ Fin g} (h : ∀ r, r ≠ r0 → M r p = 0)
     (q : Fin g ⊕ Fin g) : M r0 p * (J (Fin g) ℤ * M) r0 q = J (Fin g) ℤ p q := by
   exact symplectic_entry_mul_J_mul_of_single_column_entry hM h q
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eJ_apply (j i l : Fin g) : eJ j i l = if j = i ∧ j = l then 1 else 0 := rfl
 
+/- English proof (translation)
+Simplify using `only [eJ_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Ne.symm h, h]`.
+-/
 theorem sum_eJ (j i : Fin g) (x : Fin g → ℤ) :
     ∑ l, eJ j i l * x l = if i = j then x j else 0 := by
   simp only [eJ_apply]
@@ -82,15 +117,26 @@ theorem sum_eJ (j i : Fin g) (x : Fin g → ℤ) :
     simp
   · simp [Ne.symm h, h]
 
+/- English proof (translation)
+Simplify using `[spTransl, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem spTransl_mul_inl (S : Matrix (Fin g) (Fin g) ℤ) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
     (i : Fin g) (p : Fin g ⊕ Fin g) :
     (spTransl S * M) (Sum.inl i) p = M (Sum.inl i) p + ∑ l, S i l * M (Sum.inr l) p := by
   simp [spTransl, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `[spTransl, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem spTransl_mul_inr (S : Matrix (Fin g) (Fin g) ℤ) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
     (i : Fin g) (p : Fin g ⊕ Fin g) : (spTransl S * M) (Sum.inr i) p = M (Sum.inr i) p := by
   simp [spTransl, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `only [spPJ, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.sub_apply, sub_mul, Finset.sum_sub_distrib, sum_eJ]`. Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `split_ifs with h`. Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem spPJ_mul_inl (j : Fin g) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g)
     (p : Fin g ⊕ Fin g) :
     (spPJ j * M) (Sum.inl i) p = if i = j then M (Sum.inr j) p else M (Sum.inl i) p := by
@@ -103,6 +149,11 @@ theorem spPJ_mul_inl (j : Fin g) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g)
     ring
   · ring
 
+/- English proof (translation)
+Simplify using `only [spPJ, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.sub_apply, Matrix.neg_apply, sub_mul, neg_mul, Finset.sum_sub_distrib, Finset.sum_neg_distrib, sum_eJ]`. Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `split_ifs with h`. Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem spPJ_mul_inr (j : Fin g) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g)
     (p : Fin g ⊕ Fin g) :
     (spPJ j * M) (Sum.inr i) p = if i = j then -M (Sum.inl j) p else M (Sum.inr i) p := by
@@ -116,18 +167,29 @@ theorem spPJ_mul_inr (j : Fin g) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g)
     ring
   · ring
 
+/- English proof (translation)
+Introduce `i hi`. Apply the tactic sequence `refine ⟨fun r => ?_, fun r => ?_⟩ <;> rcases r with r | r <;>`. Simplify using `[spTransl, Matrix.one_apply, hS i hi]`.
+-/
 theorem colsFixed_spTransl {k : ℕ} {S : Matrix (Fin g) (Fin g) ℤ}
     (hS : ∀ i : Fin g, (i : ℕ) < k → ∀ l, S l i = 0) : ColsFixed k (spTransl S) := by
   intro i hi
   refine ⟨fun r => ?_, fun r => ?_⟩ <;> rcases r with r | r <;>
     simp [spTransl, Matrix.one_apply, hS i hi]
 
+/- English proof (translation)
+Introduce `i hi`. Establish `hij : j ≠ i` using `fun h => by subst h; omega`. Apply the tactic sequence `refine ⟨fun r => ?_, fun r => ?_⟩ <;> rcases r with r | r <;>`. Simplify using `[spPJ, Matrix.single_apply, Matrix.one_apply, hij]`.
+-/
 theorem colsFixed_spPJ {k : ℕ} (j : Fin g) (hj : k ≤ (j : ℕ)) : ColsFixed k (spPJ j) := by
   intro i hi
   have hij : j ≠ i := fun h => by subst h; omega
   refine ⟨fun r => ?_, fun r => ?_⟩ <;> rcases r with r | r <;>
     simp [spPJ, Matrix.single_apply, Matrix.one_apply, hij]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.zero_apply]`. Establish `e : ∑ l, u a * v l * (u l * v b) = u a * v b * (v ⬝ᵥ u)`. Rewrite using `[dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+
+Rewrite using `[e, h, mul_zero]`.
+-/
 theorem vecMulVec_sq {u v : Fin g → ℤ} (h : v ⬝ᵥ u = 0) : vecMulVec u v * vecMulVec u v = 0 := by
   ext a b
   simp only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.zero_apply]
@@ -144,13 +206,22 @@ def rkU (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0) : (Matrix (Fin g) (Fin g) ℤ
   inv_val := by
     rw [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_add, Matrix.mul_one, vecMulVec_sq h]; abel
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rkU_val (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0) :
     ((rkU u v h : (Matrix (Fin g) (Fin g) ℤ)ˣ) : Matrix (Fin g) (Fin g) ℤ) = 1 + vecMulVec u v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rkU_inv_val (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0) :
     (((rkU u v h)⁻¹ : (Matrix (Fin g) (Fin g) ℤ)ˣ) : Matrix (Fin g) (Fin g) ℤ) =
       1 - vecMulVec u v := rfl
 
+/- English proof (translation)
+Simplify using `only [spDiag, rkU_val, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, add_zero, Matrix.add_apply, Matrix.one_apply, Matrix.vecMulVec_apply, add_mul, Finset.sum_add_distrib, ite_mul, …`. Rewrite using `[Finset.mul_sum]`. Conclude with `congrArg _ (Finset.sum_congr rfl fun l _ => by ring)`.
+-/
 theorem spDiag_rk_mul_inl (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0)
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g) (p : Fin g ⊕ Fin g) :
     (spDiag (rkU u v h) * M) (Sum.inl i) p = M (Sum.inl i) p + u i * ∑ l, v l * M (Sum.inl l) p := by
@@ -161,6 +232,9 @@ theorem spDiag_rk_mul_inl (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0)
   rw [Finset.mul_sum]
   exact congrArg _ (Finset.sum_congr rfl fun l _ => by ring)
 
+/- English proof (translation)
+Simplify using `only [spDiag, rkU_inv_val, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero_add, Matrix.transpose_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.vecMulVec_apply, sub_mul, Fins …`. Rewrite using `[Finset.mul_sum]`. Conclude with `congrArg _ (Finset.sum_congr rfl fun l _ => by ring)`.
+-/
 theorem spDiag_rk_mul_inr (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0)
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g) (p : Fin g ⊕ Fin g) :
     (spDiag (rkU u v h) * M) (Sum.inr i) p = M (Sum.inr i) p - v i * ∑ l, u l * M (Sum.inr l) p := by
@@ -171,6 +245,9 @@ theorem spDiag_rk_mul_inr (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0)
   rw [Finset.mul_sum]
   exact congrArg _ (Finset.sum_congr rfl fun l _ => by ring)
 
+/- English proof (translation)
+Introduce `i hi`. Simplify using `only [spDiag, rkU_val, rkU_inv_val]`. Apply the tactic sequence `refine ⟨fun r => ?_, fun r => ?_⟩ <;> rcases r with r | r <;>`. Simplify using `[Matrix.vecMulVec_apply, hu i hi, hv i hi, Matrix.one_apply, eq_comm]`.
+-/
 theorem colsFixed_spDiag_rk {k : ℕ} {u v : Fin g → ℤ} (h : v ⬝ᵥ u = 0)
     (hu : ∀ i : Fin g, (i : ℕ) < k → u i = 0) (hv : ∀ i : Fin g, (i : ℕ) < k → v i = 0) :
     ColsFixed k (spDiag (rkU u v h)) := by
@@ -179,6 +256,29 @@ theorem colsFixed_spDiag_rk {k : ℕ} {u v : Fin g → ℤ} (h : v ⬝ᵥ u = 0)
   refine ⟨fun r => ?_, fun r => ?_⟩ <;> rcases r with r | r <;>
     simp [Matrix.vecMulVec_apply, hu i hi, hv i hi, Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih => ?_`. Introduce `M hM hF hn`. Distinguish the cases in `hb : ∀ j, M (Sum.inr j) (Sum.inl k) = 0`. Conclude with `⟨1, Submonoid.one_mem _, colsFixed_one _, fun j => by rw [Matrix.one_mul]; exact hb j⟩`.
+
+Use `push_neg at hb`. Take `⟨j0, hd⟩` from `hb`. Establish `hkj0 : (k : ℕ) ≤ (j0 : ℕ)`. Assume the negation of the conclusion as `hlt`. Conclude with `hd (low_entries hM hF (not_le.mp hlt) le_rfl).2`.
+
+Use `set a := M (Sum.inl j0) (Sum.inl k) with ha`. Use `set d := M (Sum.inr j0) (Sum.inl k) with hdd`. Use `set S : Matrix (Fin g) (Fin g) ℤ := (-(a / d)) • eJ j0 with hS`. Establish `hSsymm : S.IsSymm`. Simplify using `[hS, Matrix.IsSymm, Matrix.transpose_smul, Matrix.transpose_single]`.
+
+Establish `hSk : ∀ i : Fin g, (i : ℕ) < k → ∀ l, S l i = 0`. Introduce `i hi l`. Establish `hne : j0 ≠ i` using `fun h => by subst h; omega`. Simplify using `[hS, Matrix.single_apply, hne]`. Establish `hO1 : spPJ j0 * spTransl S ∈ spH g` using `Submonoid.mul_mem _ (spPJ_mem j0) (spTransl_mem hSsymm)`.
+
+Establish `hspH : spH g ≤ symplecticGroup (Fin g) ℤ` using `Submonoid.closure_le.2 (spGens_subset g)`. Establish `hM' : spPJ j0 * spTransl S * M ∈ symplecticGroup (Fin g) ℤ` using `Submonoid.mul_mem _ (hspH hO1) hM`. Establish `hF' : ColsFixed k (spPJ j0 * spTransl S * M)` using `colsFixed_mul (colsFixed_mul (colsFixed_spPJ j0 hkj0) (colsFixed_spTransl hSk)) hF`. Establish `hkey : (a % d).natAbs < d.natAbs`. Establish `h1` using `Int.natAbs_lt_natAbs_of_nonneg_of_lt (Int.emod_nonneg a hd) (Int.emod_lt a hd)`.
+
+Rewrite `h1` using `[Int.natAbs_cast]`. Then use the resulting hypothesis. Establish `hrow : ∀ j, (spPJ j0 * spTransl S * M) (Sum.inr j) (Sum.inl k) = if j = j0 then -(a % d) else M (Sum.inr j) (Sum.inl k)`. Introduce `j`. Rewrite using `[Matrix.mul_assoc, spPJ_mul_inr, spTransl_mul_inl, spTransl_mul_inr]`. Use `split_ifs with hj`.
+
+Use `congr 1`. Establish `e : ∑ l, S j0 l * M (Sum.inr l) (Sum.inl k) = -(a / d) * d`. Simplify using `only [hS, Matrix.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[← Finset.mul_sum, sum_eJ, if_pos rfl]`. Rewrite using `[e, Int.emod_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. Establish `hlt : ∑ j, ((spPJ j0 * spTransl S * M) (Sum.inr j) (Sum.inl k)).natAbs < n`. Rewrite using `[← hn]`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises.
+
+Introduce `j _`. Rewrite using `[hrow j]`. Use `split_ifs with hj`. Substitute `hj` using the available equality. Rewrite using `[Int.natAbs_neg]`.
+
+Conclude with `hkey.le`. Conclude with `le_rfl`. Use `⟨j0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[hrow j0, if_pos rfl, Int.natAbs_neg]`. Conclude with `hkey`.
+
+Take `⟨O2, hO2, hF2, h2⟩` from `ih _ hlt _ hM' hF' rfl`. Use `⟨O2 * (spPJ j0 * spTransl S), Submonoid.mul_mem _ hO2 hO1, colsFixed_mul hF2 (colsFixed_mul (colsFixed_spPJ j0 hkj0) (colsFixed_spTransl hSk)), fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc]`. Conclude with `h2 j`.
+-/
 theorem phase1 (k : Fin g) (n : ℕ) : ∀ M ∈ symplecticGroup (Fin g) ℤ, ColsFixed k M →
     ∑ j, (M (Sum.inr j) (Sum.inl k)).natAbs = n →
     ∃ O ∈ spH g, ColsFixed k O ∧ ∀ j, (O * M) (Sum.inr j) (Sum.inl k) = 0 := by

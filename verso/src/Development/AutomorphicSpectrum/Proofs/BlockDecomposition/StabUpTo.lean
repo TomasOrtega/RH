@@ -37,11 +37,23 @@ def StabUpTo {L : Type} [CommRing L] {n r : ℕ} (X : Matrix (Fin n) (Fin r) L) 
     (j : Fin r) : Prop :=
   ∀ l : Fin r, l ≤ j → ∃ b : Fin r → L, g *ᵥ (fun a => X a l) = X *ᵥ b ∧ ∀ m : Fin r, j < m → b m = 0
 
+/- English proof (translation)
+Use extensionality with `u v`. Apply the tactic sequence `by_cases h : b u = b v <;> simp [bd, h, h0]`.
+-/
 theorem bd_map {ι A B : Type} [Zero A] [Zero B] (b : ι → ℤ) (φ : A → B) (h0 : φ 0 = 0) (M : Matrix ι ι A) :
     (bd b M).map φ = bd b (M.map φ) := by
   ext u v
   by_cases h : b u = b v <;> simp [bd, h, h0]
 
+/- English proof (translation)
+Use extensionality with `u v`. Simplify using `only [bd, Matrix.of_apply, Matrix.mul_apply]`. Distinguish the cases in `h : b u = b v`. Rewrite using `[if_pos h]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h1 : b u = b w`. Rewrite using `[if_pos h1, if_pos (h1.symm.trans h)]`. Rewrite using `[if_neg h1]`. Break down `lt_or_gt_of_ne h1 with h2 | h2` into its components or cases. Rewrite using `[show N w v = 0 from hN (by omega), mul_zero, zero_mul]`.
+
+Rewrite using `[show M u w = 0 from hM h2, zero_mul, zero_mul]`. Rewrite using `[if_neg h]`. Use `(Finset.sum_eq_zero fun w _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `h1 : b u = b w`. Rewrite using `[if_neg (fun e => h (h1.trans e)), mul_zero]`.
+
+Rewrite using `[if_neg h1, zero_mul]`.
+-/
 theorem bd_mul {ι A : Type} [Fintype ι] [CommRing A] {b : ι → ℤ} {M N : Matrix ι ι A}
     (hM : M.BlockTriangular b) (hN : N.BlockTriangular b) : bd b (M * N) = bd b M * bd b N := by
   ext u v

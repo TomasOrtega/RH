@@ -9,6 +9,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.DualVectorFamily
 
+/- English proof (translation)
+Establish `hs : (t ^ (1 / 2 : ℝ)) ^ 2 = t`. Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions. Establish `hq : ∀ l ∈ s, q l ≤ t ^ (1 / 2 : ℝ)`. Introduce `l hl`.
+
+Use `h l hl` as an intermediate fact. Rewrite `this` using `[← hs]`. Conclude with `(ENNReal.pow_le_pow_left_iff (by norm_num)).1 this`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+
+Conclude with `Finset.sum_le_sum fun l hl => by gcongr; exact hq l hl`. Use `_ = (∑ l ∈ s, p l) ^ 2 * t := by rw [mul_pow, hs]`.
+-/
 theorem sum_mul_sq_le {κ : Type} (s : Finset κ) (p q : κ → ℝ≥0∞) (t : ℝ≥0∞) (h : ∀ l ∈ s, q l ^ 2 ≤ t) :
     (∑ l ∈ s, p l * q l) ^ 2 ≤ (∑ l ∈ s, p l) ^ 2 * t := by
   have hs : (t ^ (1 / 2 : ℝ)) ^ 2 = t := by
@@ -25,6 +32,25 @@ theorem sum_mul_sq_le {κ : Type} (s : Finset κ) (p q : κ → ℝ≥0∞) (t :
         exact Finset.sum_le_sum fun l hl => by gcongr; exact hq l hl
     _ = (∑ l ∈ s, p l) ^ 2 * t := by rw [mul_pow, hs]
 
+/- English proof (translation)
+Establish `tA : ∀ i j, Tst ((fun i j => adj (Φ₁ j i) : Matrix ι ι (X.G → ℂ)) i j)` using `fun i j => (hKB X _ (t₁ j i)).2.2.2.1`. Take `⟨k₁, c₁, v₁⟩` from `hVE X ι (fun i j => adj (Φ₁ j i)) tA`. Take `⟨k, c, v⟩` from `hVE X ι Φ₂ t₂`. Take `⟨C₁, Ω₁, C₁t, Ω₁c, n₁⟩` from `hVN X ι (fun i j => adj (Φ₁ j i)) tA`. Take `⟨C₂, Ω₂, C₂t, Ω₂c, n₂⟩` from `hVN X ι Φ₂ t₂`.
+
+Use `⟨k₁, fun x i => ∑ l, M l i • k (th x) l, fun i => ⟨c₁ i, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun l _ => ((c l).comp hth).const_smul (M l i)`. Introduce `x i u`. Conclude with `(hVI X ι Φ₁ x i (k₁ x i) u t₁).2 (v₁ x i)`. Introduce `x i u`.
+
+Rewrite using `[inner_sum]`. Simplify using `only [inner_smul_right, (hVI X ι Φ₂ (th x) _ (k (th x) _) u t₂).1 (v _ _), Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const, mul_comm]`.
+
+Use `set P : ℝ≥0∞ := ∑ i, (∑ l, ‖M l i‖ₑ) ^ 2 with hP`. Establish `Pt : P ≠ ⊤` using `ENNReal.sum_ne_top.2 fun i _ => ENNReal.pow_ne_top (ENNReal.sum_ne_top.2 fun l _ => enorm_ne_top)`. Use `⟨C₁ + P * C₂, Ω₁ ∪ th '' Ω₂, ENNReal.add_ne_top.2 ⟨C₁t, ENNReal.mul_ne_top Pt C₂t⟩, Ω₁c.union (Ω₂c.image hth), fun x i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_self_add`.
+
+Conclude with `(hCB X).2.2.1 _ _ Set.subset_union_left x`. Establish `hb : ∀ l ∈ (Finset.univ : Finset ι), ‖k (th x) l‖ₑ ^ 2 ≤ C₂ * cnt X.Γ (Ω₁ ∪ th '' Ω₂) x`. Introduce `l _`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(hCB X).2.2.1 _ _ Set.subset_union_right x`.
+
+Establish `hsum : ‖∑ l, M l i • k (th x) l‖ₑ ≤ ∑ l, ‖M l i‖ₑ * ‖k (th x) l‖ₑ`. Use `(enorm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[enorm_smul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.single_le_sum (f := fun i => (∑ l, ‖M l i‖ₑ) ^ 2) (fun _ _ => zero_le) (Finset.mem_univ i)`.
+
+Use `_ = P * C₂ * cnt X.Γ (Ω₁ ∪ th '' Ω₂) x := by rw [mul_assoc]`. Use `_ ≤ (C₁ + P * C₂) * cnt X.Γ (Ω₁ ∪ th '' Ω₂) x := by gcongr`. Conclude with `le_add_self`. Introduce `U Φ tΦ oΦ x`. Establish `hfun : (fun y => ∑ i, ∑ j, Φ i j y * M j i) = fun y => ∑ p : ι × ι, Φ p.1 p.2 y * M p.2 p.1`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[Fintype.sum_prod_type]`. Rewrite using `[hfun, (hKL X (ι × ι) (fun p => Φ p.1 p.2) (fun p => M p.2 p.1) fun p => tΦ _ _).2, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, inner_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_right, hPt X ι Φ₁ Φ₂ Φ T₁ T₂ U t₁ t₂ tΦ o₁ o₂ oΦ x (th x) i l (k₁ x i) (k (th x) l) (v₁ x i) (v _ l), mul_comm]`.
+-/
 theorem abs_vecs (hKB : KerBasic) (hKL : KerLin) (hCB : CntBasic) (hVE : VecEx) (hVN : VecNorm)
     (hVI : VecInner) (hPt : PtEq) (X : Ctx) (th : X.G → X.G) (hth : Continuous th)
     (hcnt : ∀ (Ω : Set X.G) x, cnt X.Γ Ω (th x) = cnt X.Γ (th '' Ω) x)
@@ -101,6 +127,11 @@ theorem abs_vecs (hKB : KerBasic) (hKL : KerLin) (hCB : CntBasic) (hVE : VecEx) 
       hPt X ι Φ₁ Φ₂ Φ T₁ T₂ U t₁ t₂ tΦ o₁ o₂ oΦ x (th x) i l (k₁ x i) (k (th x) l) (v₁ x i) (v _ l),
       mul_comm]
 
+/- English proof (translation)
+Introduce `hR hKB hKL hCB hCP hVE hVN hVI hPt E _ _ _ a b D ι _ Φ₁ Φ₂ T₁ T₂ M h₁ h₂ o₁ o₂`. Take `⟨k₁, k₂, c, r₁, r₂, n, d⟩` from `abs_vecs hKB hKL hCB hVE hVN hVI hPt (ctx hR D) th (hCP E a b).2.1 (hCP E a b).1 Φ₁ Φ₂ T₁ T₂ M h₁ h₂ o₁ o₂`. Use `⟨k₁, k₂, ⟨c, r₁, r₂, n, ?_⟩⟩` and prove the remaining obligations. Introduce `U Φ hΦ hop x`. Rewrite using `[(hCP E a b).2.2]`.
+
+Conclude with `d U Φ hΦ hop x`.
+-/
 theorem vecsEx_of : RatProper → KerBasic → KerLin → CntBasic → CntPair → VecEx → VecNorm → VecInner → PtEq →
     VecsEx := by
   intro hR hKB hKL hCB hCP hVE hVN hVI hPt E _ _ _ a b D ι _ Φ₁ Φ₂ T₁ T₂ M h₁ h₂ o₁ o₂

@@ -10,6 +10,15 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 
 namespace GlobalTheory.TriFrame
 
+/- English proof (translation)
+Introduce `p hp R K _ _ _ _ _ _ _ _ hR hc`. Establish `: Algebra.EssFiniteType R K` using `.of_isLocalization K (nonZeroDivisors R)`. Establish `hnf : ¬ IsField R`. Introduce `hf`. Rewrite `hR` using `[isField_iff_maximalIdeal_eq.1 hf, Ideal.mem_bot]`.
+
+Establish `h : (p : K) = 0` using `by rw [← map_natCast (algebraMap R K), hR, map_zero]`. Conclude with `hp.ne_zero (Nat.cast_eq_zero.1 h)`. Take `⟨V, hV, hd⟩` from `exists_discreteValuationSubring_dominating_of_essFiniteType (L := K) hnf`. Take `⟨h₁, h₂⟩` from `(localSubring_range_le_valuationSubring_iff _ V).1 hd`. Establish `hpV : (p : V) ∈ maximalIdeal V`.
+
+Rewrite using `[← ValuationSubring.coe_mem_nonunits_iff]`. Simplify using `using h₂ _ hR`. Take `⟨C, φ, φi, hφ⟩` from `GlobalTheory.ShFam.Pad.Pull.exists_scf_embedding_dvd p V hp hpV ((Cardinal.mk_subtype_le _).trans ((IsLocalization.cardinalMk_le (nonZeroDivisors R)).trans hc))`. Set `θ : K →+* ↥C.S` to `IsFractionRing.lift (A := V) (g := (intO ↥C.S).subtype.comp φ) ((intO ↥C.S).subtype_injective.comp φi)`. Establish `hθ (v : V) : θ v = φ v` using `IsFractionRing.lift_algebraMap _ v`.
+
+Use `⟨C, θ, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg norm (hθ ⟨_, h₁ a⟩)).le.trans (φ ⟨_, h₁ a⟩).2`. Use `(congrArg norm (hθ ⟨_, h₁ a⟩)).trans_lt (lt_of_not_ge fun hge => ?_)` and prove the remaining obligations. Establish `hd` using `hφ 1 ⟨_, h₁ a⟩ (by simpa using hge)`. Conclude with `(ValuationSubring.coe_mem_nonunits_iff (a := ⟨_, h₁ a⟩)).mp (h₂ a ha) (isUnit_of_dvd_one hd)`.
+-/
 theorem exists_local_scf_embedding : ∀ (p : ℕ), p.Prime → ∀ (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] [CharZero K], (p : R) ∈ maximalIdeal R → Cardinal.mk R ≤ Cardinal.continuum → ∃ (C : SCF p) (θ : K →+* ↥C.S), (∀ a, ‖θ (algebraMap R K a)‖ ≤ 1) ∧ ∀ a ∈ maximalIdeal R, ‖θ (algebraMap R K a)‖ < 1 := by
   intro p hp R K _ _ _ _ _ _ _ _ hR hc
   have : Algebra.EssFiniteType R K := .of_isLocalization K (nonZeroDivisors R)

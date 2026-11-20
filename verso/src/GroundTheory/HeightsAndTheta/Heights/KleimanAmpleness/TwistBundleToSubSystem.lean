@@ -15,6 +15,11 @@ section Twist
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Rewrite using `[Submodule.mul_eq_span_mul_set]`. Express the relevant statement in the definitionally equal form `Submodule.span _ _ = _`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_mul, SetLike.mem_coe, smul_eq_mul]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, y, hy, rfl⟩`. Conclude with `⟨q, hq, y, hy, rfl⟩`. Introduce and unpack `⟨q, hq, y, hy, rfl⟩`. Conclude with `⟨q, hq, y, hy, rfl⟩`.
+-/
 theorem SubSystem.twist_sub_eq_mul_sub (F Q : SubSystem S x Ω) (I : Chart x) :
     (F.twist Q).sub I = Q.sub I * F.sub I := by
   rw [Submodule.mul_eq_span_mul_set]
@@ -74,6 +79,9 @@ def LineBundle.tensor (L L' : LineBundle S x) : LineBundle S x where
     refine ⟨P' * P, ?_⟩
     rw [SubSystem.twist_sub_eq_mul_sub, mul_mul_mul_comm, hP', hP, one_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem LineBundle.tensor_toSubSystem (L L' : LineBundle S x) :
     (L.tensor L').toSubSystem = L.toSubSystem.twist L'.toSubSystem := rfl
 
@@ -81,6 +89,11 @@ def LineBundle.tpow (L : LineBundle S x) : ℕ → LineBundle S x
   | 0 => twistBundle S x 0
   | n + 1 => (L.tpow n).tensor L
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Express the relevant statement in the definitionally equal form `((L.tpow n).toSubSystem).twist L.toSubSystem = _`. Rewrite using `[ih]`.
+
+Both sides reduce to the same expression.
+-/
 theorem LineBundle.tpow_toSubSystem (L : LineBundle S x) (n : ℕ) :
     (L.tpow n).toSubSystem = L.toSubSystem.pow n := by
   induction n with
@@ -90,8 +103,16 @@ theorem LineBundle.tpow_toSubSystem (L : LineBundle S x) (n : ℕ) :
     rw [ih]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistBundle_toSubSystem (c : ℤ) : (twistBundle S x c).toSubSystem = twistSys S x c := rfl
 
+/- English proof (translation)
+Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Rewrite using `[SubSystem.twist_sub_eq_mul_sub]`. Express the relevant statement in the definitionally equal form `twistMod S x b I * twistMod S x a I = twistMod S x (a + b) I`.
+
+Rewrite using `[twistMod_eq_span b I hi, twistMod_eq_span a I hi, twistMod_eq_span (a + b) I hi, Submodule.span_mul_span, Set.singleton_mul_singleton, ← zpow_add₀ hxi, add_comm b a]`.
+-/
 theorem twistSys_twist_twistSys (a b : ℤ) :
     (twistSys S x a).twist (twistSys S x b) = twistSys S x (a + b) := by
   refine SubSystem.ext_sub fun I => ?_
@@ -109,6 +130,13 @@ section Section
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun a _ => ∃ (g s : Poly S N) (e : ℕ), g ∈ J ∧ s ∈ monos I.1 ∧ g.IsHomogeneous e ∧ s.IsHomogeneous e ∧ a = aeval x g / aeval x s) ?_ ?_ ?_ ?_ ha` and prove the remaining obligations. Introduce and unpack `_ h`. Conclude with `h`. Conclude with `⟨0, 1, 0, J.zero_mem, one_mem _, isHomogeneous_zero _ _ _, isHomogeneous_one _ _, by simp⟩`. Introduce and unpack `_ _ - - ⟨g, s, e, hg, hs, hge, hse, rfl⟩ ⟨g', s', e', hg', hs', hge', hse', rfl⟩`.
+
+Use `⟨g * s' + s * g', s * s', e + e', J.add_mem (J.mul_mem_right _ hg) (J.mul_mem_left _ hg'), mul_mem hs hs', (hge.mul hse').add (hse.mul hge'), hse.mul hse', ?_⟩` and prove the remaining obligations. Rewrite using `[div_add_div _ _ (eval_ne_zero_of_mem_monos I hs) (eval_ne_zero_of_mem_monos I hs')]`. Simplify using `only [map_add, map_mul]`. Introduce and unpack `c _ - ⟨g, s, e, hg, hs, hge, hse, rfl⟩`. Take `⟨f, t, d, ht, hf, htd, hc⟩` from `c.2`.
+
+Use `⟨f * g, t * s, d + e, J.mul_mem_left _ hg, mul_mem ht hs, hf.mul hge, htd.mul hse, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def, hc, map_mul, map_mul, div_mul_div_comm]`.
+-/
 theorem idealMod_mem_form (J : Ideal (Poly S N)) (I : Chart x) {a : Ω} (ha : a ∈ idealMod J I) :
     ∃ (g s : Poly S N) (e : ℕ), g ∈ J ∧ s ∈ monos I.1 ∧ g.IsHomogeneous e ∧ s.IsHomogeneous e ∧
       a = aeval x g / aeval x s := by
@@ -127,6 +155,11 @@ theorem idealMod_mem_form (J : Ideal (Poly S N)) (I : Chart x) {a : Ω} (ha : a 
     refine ⟨f * g, t * s, d + e, J.mul_mem_left _ hg, mul_mem ht hs, hf.mul hge, htd.mul hse, ?_⟩
     rw [chartRing_smul_def, hc, map_mul, map_mul, div_mul_div_comm]
 
+/- English proof (translation)
+Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem y hy`. Take `⟨i, hi, rfl⟩` from `hy`. Conclude with `hI i hi`. Consider the case `one => exact (Ideal.ne_top_iff_one pp).mp hp.ne_top`.
+
+Consider the case `mul a b _ _ ha hb => exact fun hab => (hp.mem_or_mem hab).elim ha hb`.
+-/
 theorem monos_not_mem {pp : Ideal (Poly S N)} [hp : pp.IsPrime] {I : Finset (Fin (N + 1))}
     (hI : ∀ i ∈ I, (X i : Poly S N) ∉ pp) {s : Poly S N} (hs : s ∈ monos I) : s ∉ pp := by
   induction hs using Submonoid.closure_induction with
@@ -136,6 +169,21 @@ theorem monos_not_mem {pp : Ideal (Poly S N)} [hp : pp.IsPrime] {I : Finset (Fin
   | one => exact (Ideal.ne_top_iff_one pp).mp hp.ne_top
   | mul a b _ _ ha hb => exact fun hab => (hp.mem_or_mem hab).elim ha hb
 
+/- English proof (translation)
+Take `⟨r, h, hh⟩` from `hL`. Use `hW.isPrime` as an intermediate fact. Take `⟨i, hi⟩` from `hW.relevant`. Establish `hxi : x i ≠ 0`. Introduce `h0`.
+
+Conclude with `hi (hW.le ((mem_primeOf_of_isHomogeneous x (isHomogeneous_X S i)).mpr (by`. Rewrite using `[aeval_X]`. Conclude with `h0)))`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Establish `hle : L.sub (singleChart hxi) ≤ idealMod pp (singleChart hxi) * L.sub (singleChart hxi)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `hcon (h j) (hh.mem_secs j) (singleChart hxi)` as an intermediate fact.
+
+Rewrite `this` using `[SubSystem.twist_sub_eq_mul_sub]`. Conclude with `this`. Take `⟨P, hP⟩` from `L.invertible (singleChart hxi)`. Establish `h1 : (1 : Submodule (chartRing S x (singleChart hxi)) Ω) ≤ idealMod pp (singleChart hxi)`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨g, s, d, hg, hs, hgd, hsd, h1g⟩` from `idealMod_mem_form pp _ (Submodule.one_le.mp h1)`. Establish `hs0` using `eval_ne_zero_of_mem_monos (singleChart hxi) hs`. Rewrite `h1g` using `[eq_div_iff hs0, one_mul]`. Establish `hgs : g - s ∈ pp` using `hW.le ((mem_primeOf_of_isHomogeneous x (hgd.sub hsd)).mpr (by`. Rewrite using `[map_sub, h1g, sub_self]))`.
+
+Establish `hsp : s ∈ pp`. Use `pp.sub_mem hg hgs` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Use `monos_not_mem (pp := pp) (I := {i}) (fun j hj => ?_) hs hsp` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.mp hj]`.
+
+Conclude with `hi`.
+-/
 theorem exists_sec_not_mem (L : LineBundle S x) (hL : IsVeryAmple L.toSubSystem)
     {pp : Ideal (Poly S N)} {e : ℕ} (hW : IsSubvar x pp e) :
     ∃ s ∈ L.secs, ∃ I, s ∉ (L.twist (idealSys x pp)).sub I := by
@@ -180,6 +228,17 @@ section Dim
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Establish `hup : ringKrullDim (Poly k N ⧸ primeOf (S` using `k) x) ≤ ((N + 1 : ℕ) : WithBot ℕ∞) := by`. Establish `h1` using `ringKrullDim_le_of_surjective (Ideal.Quotient.mk (primeOf (S := k) x)) Ideal.Quotient.mk_surjective`. Rewrite `h1` using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`. Conclude with `h1` after adjusting the coercions. Establish `hlo : ((e + 1 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (Poly k N ⧸ primeOf (S` using `k) x) := by`.
+
+Rewrite using `[← hW.dim]`. Conclude with `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hW.le) (Ideal.Quotient.factor_surjective hW.le)`. Take `⟨n, hn⟩ : ∃ n : ℕ, ringKrullDim (Poly k N ⧸ primeOf (S` from `k) x) = (n : WithBot ℕ∞) := by`. Generalize the expression as in `ringKrullDim (Poly k N ⧸ primeOf (S := k) x) = d at hup hlo ⊢`. Proceed by induction on `d using WithBot.recBotCoe with`.
+
+Consider the case `bot => exact absurd hlo (by simp)`. Consider the case `coe m`. Proceed by induction on `m using ENat.recTopCoe with`. Consider the case `top`. It suffices to derive a contradiction.
+
+Establish `h2 : ((⊤ : ℕ∞) : WithBot ℕ∞) ≤ ((N + 1 : ℕ) : ℕ∞)` using `hup`. Conclude with `ENat.natCast_ne_top (N + 1) (top_le_iff.mp (WithBot.coe_le_coe.mp h2))`. Consider the case `coe n => exact ⟨n, rfl⟩`. Rewrite `hlo` using `[hn]`. Establish `hle : e + 1 ≤ n` using `by exact_mod_cast hlo`.
+
+Take `⟨i, hi⟩` from `hW.relevant`. Use `⟨n - 1, ⟨inferInstance, fun p hp d => homogeneousComponent_mem_primeOf x hp d, le_rfl, ⟨i, fun h => hi (hW.le h)⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hn, Nat.sub_add_cancel (by omega)]`.
+-/
 theorem exists_dim_of_isSubvar {pp : Ideal (Poly k N)} {e : ℕ} (hW : IsSubvar x pp e) :
     ∃ D : ℕ, IsSubvar x (primeOf (S := k) x) D := by
   have hup : ringKrullDim (Poly k N ⧸ primeOf (S := k) x) ≤ ((N + 1 : ℕ) : WithBot ℕ∞) := by

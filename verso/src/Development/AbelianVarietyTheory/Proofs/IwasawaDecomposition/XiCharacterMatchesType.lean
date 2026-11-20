@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting.Up
 
+/- English proof (translation)
+Introduce `_ hL`. Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c _ _ _ μ hμ => ?_` and prove the remaining obligations. Establish `a` using `t.r.z.lev.xiH (t.r.Y.tupT μ)`. Establish `b` using `t.r.Y.tupTie μ hμ`. Establish `d` using `congrFun n.xi μ`.
+
+Use `a.trans (Eq.trans ?_ d.symm)` and prove the remaining obligations. Conclude with `congrArg w.I.xi ((t.r.tup_ix _).symm.trans b)`.
+-/
 theorem xiH_tupT_layer : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ n _ => ∀ μ, Used0 (w.D Z) μ → t.r.z.R.toLevCh.xiH (t.r.Y.tupT μ) = n.tp.xi μ := by
   intro _ hL
   refine GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c _ _ _ μ hμ => ?_

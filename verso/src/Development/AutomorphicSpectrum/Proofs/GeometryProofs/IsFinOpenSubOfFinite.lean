@@ -9,6 +9,13 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
+/- English proof (translation)
+Use `haveI := hY`. Use `haveI : IsIso (⊤ : Y.left.Opens).ι := by rw [← Scheme.topIso_hom]; infer_instance`. Establish `hfin : IsFinite ((⊤ : Y.left.Opens).ι ≫ Y.hom)` using `inferInstance`. Establish `hle` using `GlobalTheory.T.finite_open_le_closed_fibre R Y.left Y.hom ⊤ (h.left ⁻¹ᵁ W) hfin (fun x hx => by`. Apply `hW` to reduce the goal to its premises.
+
+Establish `hw : h.left ≫ X.hom = Y.hom` using `Over.w h`. Establish `hc` using `Scheme.Hom.comp_apply h.left X.hom x`. Rewrite `hc` using `[hw]`. Rewrite using `[← hc]`. Conclude with `hx)`.
+
+Conclude with `hle (show z ∈ (⊤ : Y.left.Opens) from trivial)`.
+-/
 theorem mem_of_finite_of_closedFibre {R : Type} [CommRing R] [IsLocalRing R]
     {X : Over (Spec (CommRingCat.of R))} (W : X.left.Opens)
     (hW : ∀ x : X.left, X.hom x = IsLocalRing.closedPoint R → x ∈ W)
@@ -30,6 +37,13 @@ abbrev openOver {S : Scheme.{0}} (X : Over S) (U : X.left.Opens) : Over S := Ove
 
 abbrev openIncl {S : Scheme.{0}} (X : Over S) (U : X.left.Opens) : openOver X U ⟶ X := Over.homMk U.ι rfl
 
+/- English proof (translation)
+Establish `hr : Set.range x.left ⊆ Set.range U.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hx z`. Establish `hc : IsOpenImmersion.lift U.ι x.left hr ≫ U.ι = x.left` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Use `⟨Over.homMk (IsOpenImmersion.lift U.ι x.left hr) ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Over.mk_hom]`. Rewrite using `[← Category.assoc, hc]`. Conclude with `Over.w x`. Use `ext1`.
+
+Conclude with `hc`.
+-/
 theorem exists_factor_openIncl {S : Scheme.{0}} {X Y : Over S} (U : X.left.Opens) (x : Y ⟶ X)
     (hx : ∀ z, x.left z ∈ U) : ∃ x' : Y ⟶ openOver X U, x' ≫ openIncl X U = x := by
   have hr : Set.range x.left ⊆ Set.range U.ι := by
@@ -44,6 +58,19 @@ theorem exists_factor_openIncl {S : Scheme.{0}} {X Y : Over S} (U : X.left.Opens
   · ext1
     exact hc
 
+/- English proof (translation)
+Introduce `R _ _ _ T _ Γ U hfin hU`. Use `haveI := hfin`. Establish `hV : IsFinite (openOver Γ.G U).hom` using `hfin`. Use `haveI := hV`. Use `⟨hfin, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x`. Use `mem_of_finite_of_closedFibre U hU (𝟙_ _) ?_ η[Γ.G] x` and prove the remaining obligations. Use `show IsFinite (𝟙 _)`. Use `infer_instance`. Introduce `S x y hx hy z`.
+
+Take `⟨x', rfl⟩` from `exists_factor_openIncl U x hx`. Take `⟨y', rfl⟩` from `exists_factor_openIncl U y hy`. Establish `hP : IsFinite (openOver Γ.G U ⊗ openOver Γ.G U).hom`. Rewrite using `[Over.tensorObj_hom]`. Use `infer_instance`.
+
+Establish `key` using `mem_of_finite_of_closedFibre U hU _ hP ((fst _ _ ≫ openIncl Γ.G U) * (snd _ _ ≫ openIncl Γ.G U))`. Establish `heq : x' ≫ openIncl Γ.G U * y' ≫ openIncl Γ.G U = lift x' y' ≫ ((fst _ _ ≫ openIncl Γ.G U) * (snd _ _ ≫ openIncl Γ.G U))`. Rewrite using `[comp_mul]`. Simplify using the standard rewrite rules. Rewrite using `[heq]`.
+
+Simplify using `using key ((lift x' y').left z)`. Introduce `S x hx z`. Take `⟨x', rfl⟩` from `exists_factor_openIncl U x hx`. Establish `key` using `mem_of_finite_of_closedFibre U hU _ hV (openIncl Γ.G U)⁻¹`. Establish `heq : (x' ≫ openIncl Γ.G U)⁻¹ = x' ≫ (openIncl Γ.G U)⁻¹`.
+
+Simplify using `[Hom.inv_def]`. Rewrite using `[heq]`. Simplify using `using key (x'.left z)`.
+-/
 theorem QFGroup.isFinOpenSub_of_closedFibre :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (T : Type) [CommGroup T] (Γ : QFGroup R T)
       (U : Γ.G.left.Opens), IsFinite (U.ι ≫ Γ.G.hom) →

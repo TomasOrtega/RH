@@ -37,6 +37,9 @@ variable {D : D7}
 variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Use `Finset.eq_empty_of_forall_notMem fun PP hPP => ?_` and prove the remaining obligations. Establish `h` using `(hL.Q_ram A.μ0 PP).2 (Or.inl hPP)`. Rewrite `h` using `[hL.xi_base]`. Conclude with `h fun x _ => rfl`.
+-/
 theorem Q_base_empty (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ := by
   refine Finset.eq_empty_of_forall_notMem fun PP hPP => ?_
   have h := (hL.Q_ram A.μ0 PP).2 (Or.inl hPP)
@@ -71,6 +74,11 @@ section Place
 variable (R : RealDat D A Ks) (i : Fin D.R.m) (t : T0) {Cl : Type} [Fintype Cl] (h : Cl → GA D (Vc D i))
   {K' : Type} [Field K'] {jL : D.what₂.LL →+* K'} {σ' : K' →+* ℂ}
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.levFn`. Simplify using `only [Units.val_mul, Units.coe_prod]`. Use `S.mul_mem (S.mul_mem ?_ (S.prod_mem fun PP hPP => S.prod_mem fun c _ => hcg _ _ hPP _)) (S.prod_mem fun PP hPP => hxq _ hPP _)` and prove the remaining obligations. Unfold `Formalism.L2.DIV.ext1`. Use `split_ifs`.
+
+Establish `e : (Lev.flag1L L).P.chi = 1` using `rfl`. Rewrite using `[e, MonoidHom.one_apply, Units.val_one]`. Conclude with `S.one_mem`. Simplify using `only [Units.val_one]`. Conclude with `S.one_mem`.
+-/
 theorem levFn_flag1_mem {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ n) (S : Subfield ℂ)
     (hcg : ∀ c, ∀ PP ∈ L.Pg, ∀ u, ((L.cg c PP u : ℂˣ) : ℂ) ∈ S) (hxq : ∀ PP ∈ L.Q, ∀ u, ((L.xq PP u : ℂˣ) : ℂ) ∈ S)
     (x : GL (Fin n) (Lev.EAf D)) :
@@ -89,6 +97,15 @@ theorem levFn_flag1_mem {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (L : Formalism.L
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `k`. Establish `hcg : ∀ c, ∀ PP ∈ (R.toLevCh.datVt i t).Pg, ∀ u, (((R.toLevCh.datVt i t).cg c PP u : ℂˣ) : ℂ) ∈ D.what₂.embLL.fieldRange`. Introduce `c PP hPP u`. Establish `e : (R.toLevCh.datVt i t).cg c PP u = (R.chi ((i : ℕ) + 1) PP u)⁻¹`. Simplify using `[LevCh.datVt, Lev.datY]`.
+
+Rewrite using `[e, Units.val_inv_eq_inv_val]`. Take `⟨a, ha⟩` from `hchi PP hPP u`. Conclude with `Subfield.inv_mem _ ⟨a, ha.symm⟩`. Establish `hxq : ∀ PP ∈ (R.toLevCh.datVt i t).Q, ∀ u, (((R.toLevCh.datVt i t).xq PP u : ℂˣ) : ℂ) ∈ D.what₂.embLL.fieldRange`. Introduce `PP hPP u`.
+
+Establish `e : (R.toLevCh.datVt i t).xq PP u = R.xiR t PP u`. Simplify using `[LevCh.datVt, Lev.datY]`. Rewrite using `[e]`. Take `⟨a, ha⟩` from `hxi PP hPP u`. Conclude with `⟨a, ha.symm⟩`.
+
+Take `⟨a, ha⟩` from `levFn_flag1_mem (R.βV i) (R.toLevCh.datVt i t) D.what₂.embLL.fieldRange hcg hxq _`. Conclude with `⟨a, ha.symm⟩`.
+-/
 theorem hχ_of (hchi : ∀ PP ∈ R.Pg, ∀ u, ∃ a, ((R.chi ((i : ℕ) + 1) PP u : ℂˣ) : ℂ) = D.what₂.embLL a)
     (hxi : ∀ PP ∈ R.Q t, ∀ u, ∃ a, ((R.xiR t PP u : ℂˣ) : ℂ) = D.what₂.embLL a) :
     ∀ k, ∃ a, (((levEnvOf (Vc D i) (R.βV i) (R.toLevCh.datVt i t) R.pl (A.ok t)).lev.χ k : ℂˣ) : ℂ) = D.what₂.embLL a := by

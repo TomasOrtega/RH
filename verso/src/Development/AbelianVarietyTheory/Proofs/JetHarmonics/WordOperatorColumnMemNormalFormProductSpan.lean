@@ -14,14 +14,29 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModul
 
 omit [StarModule ℂ A] in
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, one_mem _, [], rfl, by simp, by simp⟩`.
+-/
 theorem word_one_mem_nfSpan (d : Q.NFData P A) (T : Set A) : (1 : A) ∈ nfSpan d T 0 0 0 :=
   Submodule.subset_span ⟨1, one_mem _, [], rfl, by simp, by simp⟩
 
 omit [StarModule ℂ A] in
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, one_mem _, [X], rfl, by simpa using hX, by simp⟩`.
+-/
 theorem word_letter_mem_nfSpan (d : Q.NFData P A) (T : Set A) {X : A} (hX : X ∈ T) : X ∈ nfSpan d T 0 0 1 :=
   Submodule.subset_span ⟨1, one_mem _, [X], rfl, by simpa using hX, by simp⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.T.normalFormProductSpan_left_mul_closed P A d hd (hats d.L)`. Unfold `nfSpan at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, H, hH, hT, rfl⟩` from `hx`.
+
+Take `⟨t, rfl⟩` from `List.length_eq_one_iff.mp hH`. Establish `ht : t ∈ hats d.L` using `hT t (by simp)`. Establish `a1` using `h2 0 (fun X hX => word_letter_mem_nfSpan d _ hX) n 0 n t ht y hy`. Establish `a2` using `(h1 _ _ _ _ a1).2.1`. Establish `a3` using `(h1 _ _ _ _ a2).1 b hb`.
+
+Simplify `a3` using `[mul_assoc]`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x x' _ _ ih ih' => rw [add_mul]`. Conclude with `add_mem ih ih'`.
+
+Consider the case `smul c x _ ih => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c ih`.
+-/
 theorem word_mul_mem_nfSpan (d : Q.NFData P A) (hd : HatHyp d) {n : ℕ} {x y : A}
     (hx : x ∈ nfSpan d (hats d.L) 1 0 1) (hy : y ∈ nfSpan d (hats d.L) n 0 n) :
     x * y ∈ nfSpan d (hats d.L) (n + 1) 0 (n + 1) := by
@@ -42,6 +57,19 @@ theorem word_mul_mem_nfSpan (d : Q.NFData P A) (hd : HatHyp d) {n : ℕ} {x y : 
 
 end
 
+/- English proof (translation)
+Introduce `P A _ _ _ _ d hd L st s ht S _ _ w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `_ e`. Establish `: ((ofWord L st ([] : List (Letter ℂ S))).F * TL.bTA L []) = 1`.
+
+Simplify using `[ofWord, Start.frame, TL.bTA, bT]`. Rewrite using `[this, Matrix.one_apply]`. Use `split_ifs`. Conclude with `word_one_mem_nfSpan d _`. Conclude with `zero_mem _`.
+
+Consider the case `cons l w ih`. Introduce `hA e`. Establish `hAw : admitted st w` using `⟨(List.nodup_cons.mp (by simpa only [List.map_cons] using hA.1)).2, fun l' h => hA.2.1 l' (by simp [h]), fun l' h => hA.2.2.1 l' (by simp [h]), (List.pairwise_cons.mp hA.2.2.2).2⟩`. Rewrite using `[Formalism.FourierDecayAlt.P.word_recursion A S P.r L st l w ht.1 hA e, Matrix.mul_apply]`. Use `Submodule.sum_mem _ fun e' _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : ((∑ i : Fin 2, eU l.intersection_update_fsHerm_neg_one i 0 * TL.letterCol L st l w i : SlopeTestRemainingChoices S A) e e') ∈ nfSpan d (hats d.L) 1 0 1`. Rewrite using `[Matrix.sum_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Submodule.sum_mem _ fun e'' _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [eU, Matrix.of_apply]`. Use `split_ifs`. Rewrite using `[one_mul]`. Conclude with `GlobalTheory.T.letterCol_mem_normalFormProductSpan P A d hd L st s ht S l w hA i e'' e'`. Rewrite using `[zero_mul]`.
+
+Conclude with `zero_mem _`. Conclude with `word_mul_mem_nfSpan d hd h1 (ih hAw e')`.
+-/
 theorem word_mem_nfSpan : ∀ (P : M.Par) (A : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] (d : Q.NFData P A), HatHyp d → ∀ (L : LevelData A P.r) (st : Start A) (s : ℂ), Comparison₂ d L st s → ∀ (S : Type) [Fintype S] [DecidableEq S], ∀ w : List (Letter ℂ S), admitted st w → ∀ e : Ix S, ((ofWord L st w).F * TL.bTA L w) e e1 ∈ nfSpan d (hats d.L) w.length 0 w.length := by
   intro P A _ _ _ _ d hd L st s ht S _ _ w
   induction w with

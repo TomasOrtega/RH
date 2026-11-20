@@ -54,6 +54,9 @@ abbrev twoXPt : MRing (PBlk 1) := C 2 * X ⟨(), 0⟩
 
 abbrev twoIdealPt : Ideal (MRing (PBlk 1)) := Ideal.span {C 2}
 
+/- English proof (translation)
+Establish `h` using `mem_curveRing.mp b.2 (fun _ => 0) (fun _ => by simp [IndefiniteRowSideFullHecke.HeightsSet.yPt])`. Rewrite `h` using `[chartRingZ_yPt, Algebra.mem_bot]`. Take `⟨n, hn⟩` from `h`. Conclude with `⟨n, by rw [← hn]; simp⟩`.
+-/
 theorem exists_int_of_mem_curveRing_yPt (b : curveRing IndefiniteRowSideFullHecke.HeightsSet.yPt) : ∃ n : ℤ, (b : ℚ) = n := by
   have h := mem_curveRing.mp b.2 (fun _ => 0) (fun _ => by simp [IndefiniteRowSideFullHecke.HeightsSet.yPt])
   rw [chartRingZ_yPt, Algebra.mem_bot] at h

@@ -15,6 +15,13 @@ def LenPoleL {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} : Pro
     Module.length (Op X la G.N) (↥(Q.AAp T (Q.mm S T e)) ⧸ (Q.AA T).comap (Q.AAp T (Q.mm S T e)).subtype) ≤
       ((Nat.choose (T - 1) (WeightFamilies.dimY D j) * ∑ᶠ ζ, Q.mm S T e ζ * fdeg ζ : ℕ) : ℕ∞)
 
+/- English proof (translation)
+Introduce `large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hHyp hLat hSup hLAM hQ G Gc PH Prw Pet Pd hTW hTTh hTZ hTQ hTEt hDH hDS hDL hPG hSRd hSRho hSRhoP hPD hCB la Q hB hC hTie hLift hCZ hCM hIla e he V' hV'`. Establish `hΘ` using `theta_le_msup_of_hypC (X j h1 h2) S hHyp`. Establish `hspK` using `(span_Thc_of_hypC hHyp).2.2`. Take `⟨-, hSet, -, -, hH2, -⟩` from `hHyp`. Establish `hka` using `ka_eq_addL_of_setC hSet`.
+
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hT0, hDT, -⟩` from `hSet`. Establish `hok : Q.Ok S K.CRm T (cc D large₂ C2 A2 CR wL)` using `⟨hB, hC, hTie, hCZ, hCM⟩`. Establish `hw : ∀ k, G.w k ∈ (X j h1 h2).WWc S.sW wL`. Introduce `k`. Rewrite using `[← hTW.1]`.
+
+Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Establish `hth'M : ∀ i, G.th' i ∈ B.Mlat j wF` using `fun i => hH2.2.1 (hTTh i).1`. Conclude with `localBound G la Q S K.CRm (cc D large₂ C2 A2 CR wL) e (nus la) hka hLat hΘ hspK hT0 hDT hw hTW.2.1 (fun i => (hTTh i).1) hth'M (fun k => (hTZ.1 k).1) (fun k => (hTZ.1 k).2.1) (fun k => (hTZ.1 k).2.2.2) hTZ.2.1 hTZ.2.2 hTQ.2.1 hTQ.2.2.1 hB hC hTie hCM (fun ζ => vEt_nonneg_comb hCB …`.
+-/
 theorem localC_of_len
     (hLB : ∀ (j : ℕ) (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j), LenBase (X := X) (ka := ka) (wL := wL) (wF := wF))
     (hLP : ∀ (j : ℕ) (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j), LenPoleL (X := X) (ka := ka) (wL := wL) (wF := wF)) :

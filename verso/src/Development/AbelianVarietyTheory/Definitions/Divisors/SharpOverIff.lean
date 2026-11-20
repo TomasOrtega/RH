@@ -47,6 +47,9 @@ def SharpBy (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ) {T : Scheme.{0}} 
     (∀ (T' : Over T) (y : Fin 8 → (T' ⟶ c.A)), ∃! x : T' ⟶ P.A, ∀ a, x ≫ pr a = y a) ∧
     LBIso P.L (LB.LinComb c.P (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨c, h, pr, h'⟩ => ⟨c, pr, h, h'⟩, fun ⟨c, pr, h, h'⟩ => ⟨c, h, pr, h'⟩⟩`.
+-/
 theorem sharpOver_iff (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ) {T : Scheme.{0}} (P : PolAV T) (u : T ⟶ F.X) :
     SharpOver F W P u ↔ ∃ c pr, SharpBy F W P u c pr :=
   ⟨fun ⟨c, h, pr, h'⟩ => ⟨c, pr, h, h'⟩, fun ⟨c, pr, h, h'⟩ => ⟨c, h, pr, h'⟩⟩
@@ -60,6 +63,9 @@ def MatRel (W : Matrix (Fin 8) (Fin 8) ℤ) {X : Type} [AddCommGroup X] (a b : F
 def IsCpl {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] (j : O →+* R) : Prop :=
   ∃ e : AdicCompletion (maximalIdeal O) O ≃+* R, ∀ a, e (algebraMap O _ a) = j a
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨RingEquiv.refl _, fun _ => rfl⟩`.
+-/
 theorem isCpl_self (O : Type) [CommRing O] [IsLocalRing O] :
     IsCpl (algebraMap O (AdicCompletion (maximalIdeal O) O)) :=
   ⟨RingEquiv.refl _, fun _ => rfl⟩

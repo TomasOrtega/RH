@@ -16,10 +16,16 @@ section General
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] [IsLocalRing S]
 
+/- English proof (translation)
+The claim follows from `(IsLocalRing.specializes_closedPoint (R := R) _).map z.continuous`.
+-/
 theorem centre_specializes (z : Spec (CommRingCat.of R) ⟶ X) (φ : R →+* S) :
     centre (Spec.map (CommRingCat.ofHom φ) ≫ z) ⤳ centre z :=
   (IsLocalRing.specializes_closedPoint (R := R) _).map z.continuous
 
+/- English proof (translation)
+Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk x), Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, h]`.
+-/
 theorem stalk_square {x y : X} (hs : y ⤳ x) {A B : CommRingCat.{0}} (g : X.presheaf.stalk x ⟶ A)
     (g' : X.presheaf.stalk y ⟶ B) (φ : A ⟶ B)
     (h : Spec.map g' ≫ X.fromSpecStalk y = Spec.map φ ≫ Spec.map g ≫ X.fromSpecStalk x) :
@@ -28,6 +34,9 @@ theorem stalk_square {x y : X} (hs : y ⤳ x) {A B : CommRingCat.{0}} (g : X.pre
   rw [← cancel_mono (X.fromSpecStalk x), Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc,
     Scheme.SpecMap_stalkSpecializes_fromSpecStalk, h]
 
+/- English proof (translation)
+Establish `h` using `X.presheaf.stalkSpecializes_comp h0 hs`. Establish `h2 : X.presheaf.stalkSpecializes hs ≫ (X.presheaf.stalkSpecializes h0 ≫ Scheme.stalkClosedPointTo ξ) = X.presheaf.stalkSpecializes h1 ≫ Scheme.stalkClosedPointTo ξ` using `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ Scheme.stalkClosedPointTo ξ) h)`. Conclude with `congrArg (fun g => g.hom s) h2`.
+-/
 theorem genMap_specializes {x y : X} (hs : y ⤳ x) (h0 : genPt ξ ⤳ y) (h1 : genPt ξ ⤳ x)
     (s : X.presheaf.stalk x) :
     genMap ξ ⟨y, h0⟩ ((X.presheaf.stalkSpecializes hs).hom s) = genMap ξ ⟨x, h1⟩ s := by
@@ -37,6 +46,9 @@ theorem genMap_specializes {x y : X} (hs : y ⤳ x) (h0 : genPt ξ ⤳ y) (h1 : 
     (Category.assoc _ _ _).symm.trans (congrArg (· ≫ Scheme.stalkClosedPointTo ξ) h)
   exact congrArg (fun g => g.hom s) h2
 
+/- English proof (translation)
+Take `⟨hz, s, rfl, rfl⟩` from `h`. Establish `hs : centre y ⤳ centre z` using `hy ▸ centre_specializes z φ`. Use `⟨h0, (X.presheaf.stalkSpecializes hs).hom s, genMap_specializes hs h0 hz s, ?_⟩` and prove the remaining obligations. Establish `key` using `stalk_square hs (Scheme.stalkClosedPointTo z) (Scheme.stalkClosedPointTo y) (CommRingCat.ofHom φ) ((Scheme.Spec_stalkClosedPointTo_fromSpecStalk y).trans (hy.symm.trans (congrArg (Spec.map (CommRingCat.ofHom φ) ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z)).symm))`. Conclude with `congrArg (fun g => g.hom s) key`.
+-/
 theorem valAt_restrict {z : Spec (CommRingCat.of R) ⟶ X} (φ : R →+* S) {y : Spec (CommRingCat.of S) ⟶ X}
     (hy : Spec.map (CommRingCat.ofHom φ) ≫ z = y) (h0 : genPt ξ ⤳ centre y) {a : Ω} {r : R}
     (h : ValAt ξ z a r) : ValAt ξ y a (φ r) := by
@@ -48,12 +60,20 @@ theorem valAt_restrict {z : Spec (CommRingCat.of R) ⟶ X} (φ : R →+* S) {y :
       (congrArg (Spec.map (CommRingCat.ofHom φ) ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z)).symm))
   exact congrArg (fun g => g.hom s) key
 
+/- English proof (translation)
+Take `⟨s, hs, rfl⟩` from `(CptModel.unitAt_iff ξ _ a).1 ha`. Take `⟨r, hr⟩` from `hs.map (Scheme.stalkClosedPointTo z).hom`. Conclude with `⟨r, h, s, rfl, hr.symm⟩`.
+-/
 theorem valAt_of_unit {z : Spec (CommRingCat.of R) ⟶ X} (h : genPt ξ ⤳ centre z) {a : Ω}
     (ha : unitAt ξ ⟨centre z, h⟩ a) : ∃ r : Rˣ, ValAt ξ z a r := by
   obtain ⟨s, hs, rfl⟩ := (CptModel.unitAt_iff ξ _ a).1 ha
   obtain ⟨r, hr⟩ := hs.map (Scheme.stalkClosedPointTo z).hom
   exact ⟨r, h, s, rfl, hr.symm⟩
 
+/- English proof (translation)
+Establish `key : ∀ s t : Ω, L.IsGenAt p s → L.IsGenAt p t → s / t ∈ regAt ξ p`. Introduce `s t hs ht`. Establish `: s ∈ Submodule.span (regAt ξ p) {t}` using `ht.2 ▸ hs.2 ▸ Submodule.mem_span_singleton_self s`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 this`. Rewrite using `[show c • t = (c : Ω) * t from rfl, mul_div_cancel_right₀ _ ht.1]`.
+
+Conclude with `c.2`. Conclude with `⟨div_ne_zero hs.1 ht.1, key s t hs ht, by rw [inv_div]; exact key t s ht hs⟩`.
+-/
 theorem unitAt_div {L : Lat ξ Ω} {p : Cpt ξ} {s t : Ω} (hs : L.IsGenAt p s) (ht : L.IsGenAt p t) :
     unitAt ξ p (s / t) := by
   have key : ∀ s t : Ω, L.IsGenAt p s → L.IsGenAt p t → s / t ∈ regAt ξ p := by
@@ -64,6 +84,11 @@ theorem unitAt_div {L : Lat ξ Ω} {p : Cpt ξ} {s t : Ω} (hs : L.IsGenAt p s) 
     exact c.2
   exact ⟨div_ne_zero hs.1 ht.1, key s t hs ht, by rw [inv_div]; exact key t s ht hs⟩
 
+/- English proof (translation)
+Take `⟨hz, s, rfl, rfl⟩` from `h`. Establish `hb : Function.Bijective (f.stalkMap (centre z)).hom` using `ConcreteCategory.bijective_of_isIso _`. Take `⟨t, rfl⟩` from `hb.2 s`. Use `⟨(ProjCoord.push η f ⟨centre z, hz⟩).2, t, ?_, ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun (ProjCoord.genMap_push η f ⟨centre z, hz⟩) t`.
+
+Conclude with `congrArg (fun g => g.hom t) (Scheme.stalkClosedPointTo_comp z f)`.
+-/
 theorem valAt_push {Y : Scheme.{0}} {η : Spec (CommRingCat.of Ω) ⟶ Y} {z : Spec (CommRingCat.of R) ⟶ Y}
     (f : Y ⟶ X) [IsOpenImmersion f] {a : Ω} {r : R} (h : ValAt η z a r) : ValAt (η ≫ f) (z ≫ f) a r := by
   obtain ⟨hz, s, rfl, rfl⟩ := h
@@ -73,6 +98,9 @@ theorem valAt_push {Y : Scheme.{0}} {η : Spec (CommRingCat.of Ω) ⟶ Y} {z : S
   · exact DFunLike.congr_fun (ProjCoord.genMap_push η f ⟨centre z, hz⟩) t
   · exact congrArg (fun g => g.hom t) (Scheme.stalkClosedPointTo_comp z f)
 
+/- English proof (translation)
+Use `⟨ProjCoord.specializes_of_injective φ hφ _, CptModel.tS _ a, CptModel.genMap_toStalk φ ⟨_, ProjCoord.specializes_of_injective φ hφ _⟩ a, ?_⟩` and prove the remaining obligations. Establish `h1` using `Scheme.germ_stalkClosedPointTo_Spec (R := CommRingCat.of A) (S := CommRingCat.of R) (CommRingCat.ofHom χ)`. Establish `h3` using `(congrArg ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ ·) h1).trans (Iso.inv_hom_id_assoc _ _)`. Conclude with `congrArg (fun f => f.hom a) h3`.
+-/
 theorem valAt_affine {A : Type} [CommRing A] (φ : A →+* Ω) (hφ : Function.Injective φ) (χ : A →+* R) (a : A) :
     ValAt (CptModel.pt φ) (Spec.map (CommRingCat.ofHom χ)) (φ a) (χ a) := by
   refine ⟨ProjCoord.specializes_of_injective φ hφ _, CptModel.tS _ a,
@@ -82,6 +110,9 @@ theorem valAt_affine {A : Type} [CommRing A] (φ : A →+* Ω) (hφ : Function.I
   have h3 := (congrArg ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ ·) h1).trans (Iso.inv_hom_id_assoc _ _)
   exact congrArg (fun f => f.hom a) h3
 
+/- English proof (translation)
+The claim follows from `e ▸ valAt_push f (valAt_affine φ hφ χ a)`.
+-/
 theorem valAt_chart {A : Type} [CommRing A] (φ : A →+* Ω) (hφ : Function.Injective φ)
     (f : Spec (CommRingCat.of A) ⟶ X) [IsOpenImmersion f] (e : ξ = CptModel.pt φ ≫ f) (χ : A →+* R) (a : A) :
     ValAt ξ (Spec.map (CommRingCat.ofHom χ) ≫ f) (φ a) (χ a) :=
@@ -96,6 +127,11 @@ open scoped Classical
 
 variable (k : Type) [Field k]
 
+/- English proof (translation)
+Break down `i with _ | q` into its components or cases. Conclude with `one_pos`. Express the relevant statement in the definitionally equal form `0 < (Submodule.IsPrincipal.generator q.asIdeal).natDegree`. Establish `hg` using `Ideal.span_singleton_generator q.asIdeal`. Use `natDegree_pos_iff_degree_pos.2 (degree_pos_of_ne_zero_of_nonunit (fun h => q.ne_bot ?_) fun h => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← hg, h]`. Simplify using the standard rewrite rules. Conclude with `q.isPrime.ne_top (hg ▸ Ideal.span_singleton_eq_top.2 h)`.
+-/
 theorem projective_line_place_degree_pos (i : (projLine k).I) : 0 < (projLine k).w i := by
   rcases i with _ | q
   · exact one_pos
@@ -105,6 +141,11 @@ theorem projective_line_place_degree_pos (i : (projLine k).I) : 0 < (projLine k)
     · rw [← hg, h]; simp
     · exact q.isPrime.ne_top (hg ▸ Ideal.span_singleton_eq_top.2 h)
 
+/- English proof (translation)
+Break down `i with _ | q` into its components or cases. Express the relevant statement in the definitionally equal form `RatFunc.inftyValuation k _ = 1`. Conclude with `Valuation.IsTrivialOn.eq_one a ha`. Express the relevant statement in the definitionally equal form `q.valuation (RatFunc k) _ = 1`. Rewrite using `[IsScalarTower.algebraMap_apply k k[X] (RatFunc k), HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`.
+
+Conclude with `fun h => q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h ((IsUnit.mk0 a ha).map _))`.
+-/
 theorem projective_line_place_trivial_on_constants (i : (projLine k).I) (a : k) (ha : a ≠ 0) : (projLine k).v i (algebraMap k (RatFunc k) a) = 1 := by
   rcases i with _ | q
   · change RatFunc.inftyValuation k _ = 1
@@ -114,6 +155,29 @@ theorem projective_line_place_trivial_on_constants (i : (projLine k).I) (a : k) 
       HeightOneSpectrum.intValuation_eq_one_iff]
     exact fun h => q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h ((IsUnit.mk0 a ha).map _))
 
+/- English proof (translation)
+Establish `ex : ∃ i, ((projLine k).v i).valuationSubring = W` using `by haveI : W.valuation.IsTrivialOn k := ⟨fun a ha => by`. Establish `a1` using `(W.valuation_le_one_iff _).2 (hk a)`. Establish `a2` using `(W.valuation_le_one_iff _).2 (hk a⁻¹)`. Rewrite `a2` using `[map_inv₀, map_inv₀, inv_le_one₀ (by simpa [zero_lt_iff] using ha)]`. Conclude with `le_antisymm a1 a2⟩`.
+
+Break down `lt_or_ge 1 (W.valuation RatFunc.X) with hlt | hle` into its components or cases. Use `⟨none, ?_⟩` and prove the remaining obligations. Use `RatFunc.valuation_isEquiv_inftyValuation_of_one_lt_valuation_X hlt` as an intermediate fact. Rewrite `this` using `[Valuation.isEquiv_iff_valuationSubring, W.valuationSubring_valuation]`. Conclude with `this.symm`.
+
+Use `haveI : W.valuation.IsNontrivial := by`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, y ∉ W := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hW (eq_top_iff.2 fun y _ => h y)`.
+
+Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Introduce `h; exact hy ((W.valuation_le_one_iff _).1 (by rw [h]; exact zero_le_one))`. Introduce `h`. Conclude with `hy ((W.valuation_le_one_iff _).1 h.le)`. Set `q` to `RatFunc.valuationIdeal hle`.
+
+Use `⟨some q, ?_⟩` and prove the remaining obligations. Establish `hp : ∀ a : k[X], W.valuation (algebraMap k[X] (RatFunc k) a) ≤ 1` using `Polynomial.valuation_le_one_of_valuation_X_le_one k hle`. Establish `hq : ∀ a ∈ q.asIdeal, W.valuation (algebraMap k[X] (RatFunc k) a) < 1`. Introduce `a ha`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`.
+
+Rewrite using `[map_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hp c)) (RatFunc.valuation_uniformizingPolynomial_lt_one hle)`. Establish `hle' : (q.valuation (RatFunc k)).valuationSubring ≤ W`. Introduce `x hx`. Take `⟨n, d, h⟩` from `q.exists_primeCompl_mul_eq_of_integer x hx`.
+
+Establish `hd : W.valuation (algebraMap k[X] (RatFunc k) d) = 1`. Assume the negation of the conclusion as `hne`. Take `⟨y, i, hi, e⟩` from `q.isMaximal.exists_inv d.2`. Establish `h1 : W.valuation (algebraMap k[X] (RatFunc k) (y * d)) < 1`. Rewrite using `[map_mul, map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hp y)) (lt_of_le_of_ne (hp d) hne)`. Establish `h2` using `W.valuation.map_add_lt h1 (hq i hi)`. Rewrite `h2` using `[← map_add, e, map_one, map_one]`. Conclude with `lt_irrefl _ h2`. Establish `h3` using `hp n`.
+
+Rewrite `h3` using `[← h, map_mul, hd, mul_one]`. Conclude with `(W.valuation_le_one_iff _).1 h3`. Rewrite `hle'` using `[← HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring]`. Conclude with `(HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring q).symm.trans (ValuationSubring.eq_of_le_of_ne_top _ hle' hW)`. Take `⟨i, hi⟩` from `ex`.
+
+Use `⟨i, hi, fun j hj => ?_⟩` and prove the remaining obligations. Establish `e : ((projLine k).v j).IsEquiv ((projLine k).v i)`. Rewrite using `[Valuation.isEquiv_iff_valuationSubring, hi, hj]`. Apply the tactic sequence `rcases i with _ | p <;> rcases j with _ | q`. Both sides reduce to the same expression.
+
+Conclude with `absurd e (RatFunc.adicValuation_not_isEquiv_infty_valuation q)`. Conclude with `absurd e.symm (RatFunc.adicValuation_not_isEquiv_infty_valuation p)`. Conclude with `congrArg some (HeightOneSpectrum.eq_of_valuation_isEquiv_valuation e)`.
+-/
 theorem projective_line_places_all_valuations (W : ValuationSubring (RatFunc k)) (hW : W ≠ ⊤) (hk : ∀ a : k, algebraMap k (RatFunc k) a ∈ W) :
     ∃! i, ((projLine k).v i).valuationSubring = W := by
   have ex : ∃ i, ((projLine k).v i).valuationSubring = W := by
@@ -172,10 +236,16 @@ theorem projective_line_places_all_valuations (W : ValuationSubring (RatFunc k))
   · exact absurd e.symm (RatFunc.adicValuation_not_isEquiv_infty_valuation p)
   · exact congrArg some (HeightOneSpectrum.eq_of_valuation_isEquiv_valuation e)
 
+/- English proof (translation)
+Use `⟨{RatFunc.X}, ?_⟩` and prove the remaining obligations. Simplify using `using RatFunc.adjoin_X (K := k)`.
+-/
 theorem ratFunc_fg : (⊤ : IntermediateField k (RatFunc k)).FG := by
   refine ⟨{RatFunc.X}, ?_⟩
   simpa using RatFunc.adjoin_X (K := k)
 
+/- English proof (translation)
+Use `haveI : Algebra.IsAlgebraic k[X] (RatFunc k) := IsLocalization.isAlgebraic _ (nonZeroDivisors k[X])`. Use `trdeg_add_eq k k[X] (A := RatFunc k)` as an intermediate fact. Rewrite `this` using `[Polynomial.trdeg_of_isDomain, trdeg_eq_zero, add_zero]`. Conclude with `this.symm`.
+-/
 theorem ratFunc_trdeg : Algebra.trdeg k (RatFunc k) = 1 := by
   haveI : Algebra.IsAlgebraic k[X] (RatFunc k) := IsLocalization.isAlgebraic _ (nonZeroDivisors k[X])
   have := trdeg_add_eq k k[X] (A := RatFunc k)
@@ -192,6 +262,35 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 variable {o κ Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
+/- English proof (translation)
+Take `⟨ξ, e⟩ : ∃ ξ : Spec (CommRingCat.of Ω) ⟶ Proj (homogeneousSubmodule κ o), ∀ c, ξ = CptModel.pt (chartEval x c (hx c)) ≫ Proj.awayι _ (X c) (X_mem c) one_pos` from `⟨CptModel.pt (chartEval x c₀ (hx c₀)) ≫ Proj.awayι _ (X c₀) (X_mem c₀) one_pos, fun c => pt_awayι_eq _ _ (X_mem c₀) (X_mem c) one_pos one_pos _ _⟩`. Establish `hi` using `fun c => chartEval_injective x c (hx c) hinj`. Establish `ch` using `fun c => chart ξ _ (hi c) _ (e c)`. Establish `hr : ∀ c (q : Proj (homogeneousSubmodule κ o)), q ∈ Proj.basicOpen _ (X c) → ∃ p, Proj.awayι _ (X c) (X_mem c) one_pos p = q` using `fun c q hq => by`. Rewrite `hq` using `[← Proj.opensRange_awayι _ _ (X_mem c) one_pos]`.
+
+Conclude with `hq`. Establish `hr' : ∀ c p, Proj.awayι (homogeneousSubmodule κ o) (X c) (X_mem c) one_pos p ∈ Proj.basicOpen _ (X c)` using `fun c p => by`. Rewrite using `[← Proj.opensRange_awayι _ _ (X_mem c) one_pos]`. Conclude with `⟨p, rfl⟩`. Establish `hreg : ∀ c p h a, a ∈ Algebra.adjoin o (Set.range fun j => x j / x c) → a ∈ regAt ξ ⟨Proj.awayι (homogeneousSubmodule κ o) (X c) (X_mem c) one_pos p, h⟩`.
+
+Introduce `c p h a ha`. Take `⟨z, rfl⟩` from `(mem_range_chartEval x c (hx c) a).2 ha`. Take `⟨_, -, h2⟩` from `ch c p`. Conclude with `(h2 _).2 ⟨z, 1, (Ideal.ne_top_iff_one _).1 p.2.ne_top, by simp, by simp⟩`. Establish `hin : ∀ c (p : Cpt ξ), InChart ξ x c p ↔ p.1 ∈ Proj.basicOpen _ (X c)`.
+
+Introduce and unpack `c ⟨q, h⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hc⟩`. Take `⟨d, hd⟩` from `exists_mem_basicOpen q`. Take `⟨p, rfl⟩` from `hr d q hd`.
+
+Take `⟨_, -, h2⟩` from `ch d p`. Take `⟨a, s, hs, -, eq⟩` from `(h2 _).1 (hc d)`. Establish `h3` using `Proj.awayι_preimage_basicOpen (homogeneousSubmodule κ o) (X_mem d) one_pos (X_mem c) one_pos`. Establish `h4 : s = a * Away.isLocalizationElem (X_mem d) (X_mem c)`. Apply `hi d` to reduce the goal to its premises.
+
+Establish `h5 : chartEval x d (hx d) (Away.isLocalizationElem (X_mem (o` using `o) d) (X_mem c)) = x c / x d := (chartEval_mk x d (hx d) 1 _ _).trans (by simp)`. Rewrite using `[map_mul, h5, ← eq]`. Use `hx c` as an intermediate fact. Use `hx d` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+
+Establish `h6 : p ∈ Proj.awayι (homogeneousSubmodule κ o) (X d) (X_mem d) one_pos ⁻¹ᵁ Proj.basicOpen _ (X c)`. Rewrite using `[h3]`. Introduce `hm`. Conclude with `hs (h4 ▸ Ideal.mul_mem_left _ a hm)`. Conclude with `h6`.
+
+Introduce `hq`. Take `⟨p, rfl⟩` from `hr c q hq`. Conclude with `⟨hx c, fun j => hreg c p h _ (Algebra.subset_adjoin ⟨j, rfl⟩)⟩`. Establish `hinjall : ∀ p : Cpt ξ, Function.Injective (genMap ξ p)`. Introduce and unpack `⟨q, h⟩`.
+
+Take `⟨d, hd⟩` from `exists_mem_basicOpen q`. Take `⟨p, rfl⟩` from `hr d q hd`. Conclude with `(ch d p).2.1`. Use `⟨ξ, ⟨⟨?_, hinjall⟩, fun p => ?_, fun c _ => ?_, fun c _ a => ⟨fun ha => ?_, fun ha => ?_⟩⟩, e⟩` and prove the remaining obligations. Rewrite using `[← CptModel.genMap_self]`.
+
+Use `⟨hinjall _, fun a => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, v, hv, h0, huv⟩` from `hgen a`. Establish `hs : CptModel.self ξ = ⟨Proj.awayι (homogeneousSubmodule κ o) (X c₀) (X_mem c₀) one_pos (genPt (CptModel.pt (chartEval x c₀ (hx c₀)))), (ch c₀ _).1⟩` using `Subtype.ext (congrArg genPt (e c₀))`. Express the relevant statement in the definitionally equal form `a ∈ regAt ξ (CptModel.self ξ)`. Rewrite using `[hs]`.
+
+Take `⟨u, rfl⟩` from `(mem_range_chartEval x c₀ (hx c₀) _).2 hu`. Take `⟨v, rfl⟩` from `(mem_range_chartEval x c₀ (hx c₀) _).2 hv`. Use `((ch c₀ _).2.2 _).2 ⟨u, v, ?_, h0, huv⟩` and prove the remaining obligations. Rewrite using `[CptModel.genPt_asIdeal]`. Conclude with `h0`.
+
+Take `⟨d, hd⟩` from `exists_mem_basicOpen p.1`. Conclude with `⟨d, (hin d p).2 hd⟩`. Use `⟨Proj.basicOpen _ (X c), Proj.isAffineOpen_basicOpen _ _ (X_mem c) one_pos, fun q => ⟨fun hq => ?_, fun ⟨h, hq⟩ => (hin c ⟨q, h⟩).1 hq⟩⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hr c q hq`. Conclude with `⟨(ch c p).1, (hin c ⟨_, (ch c p).1⟩).2 hq⟩`.
+
+Introduce and unpack `⟨q, h⟩ hq`. Take `⟨p, rfl⟩` from `hr c q ((hin c ⟨q, h⟩).1 hq)`. Conclude with `hreg c p h a ha`. Use `(mem_range_chartEval x c (hx c) a).1 (mem_range_of_forall _ a fun p => ?_)` and prove the remaining obligations. Take `⟨h, -, h2⟩` from `ch c p`.
+
+Conclude with `(h2 a).1 (ha ⟨_, h⟩ ((hin c ⟨_, h⟩).2 (hr' c p)))`.
+-/
 theorem coordTie_charts (x : κ → Ω) (hx : ∀ c, x c ≠ 0) (c₀ : κ)
     (hinj : ∀ (n : ℕ) (g : MvPolynomial κ o), g.IsHomogeneous n → aeval x g = 0 → g = 0)
     (hgen : ∀ a : Ω, ∃ u ∈ Algebra.adjoin o (Set.range fun j => x j / x c₀),
@@ -280,20 +379,32 @@ theorem coordTie_charts (x : κ → Ω) (hx : ∀ c, x c ≠ 0) (c₀ : κ)
 def ratio (c j : κ) : Away (homogeneousSubmodule κ o) (X c : MvPolynomial κ o) :=
   Away.mk _ (X_mem c) 1 (X j) (X_mem j)
 
+/- English proof (translation)
+The claim follows from `(chartEval_mk x c hc 1 _ _).trans (by simp)`.
+-/
 theorem chartEval_ratio (x : κ → Ω) (c j : κ) (hc : x c ≠ 0) :
     chartEval (o := o) x c hc (ratio c j) = x j / x c := (chartEval_mk x c hc 1 _ _).trans (by simp)
 
 def cst (c : κ) (a : o) : Away (homogeneousSubmodule κ o) (X c : MvPolynomial κ o) :=
   Away.mk _ (X_mem c) 0 (C a) (isHomogeneous_C κ a)
 
+/- English proof (translation)
+The claim follows from `(chartEval_mk x c hc 0 _ _).trans (by simp)`.
+-/
 theorem chartEval_cst (x : κ → Ω) (c : κ) (hc : x c ≠ 0) (a : o) :
     chartEval (o := o) x c hc (cst c a) = algebraMap o Ω a := (chartEval_mk x c hc 0 _ _).trans (by simp)
 
+/- English proof (translation)
+Take `⟨hz, t, rfl, rfl⟩` from `h`. Conclude with `⟨hz, t ^ n, map_pow _ _ _, map_pow _ _ _⟩`.
+-/
 theorem valAt_pow {Y : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ Y} {R : Type} [CommRing R] [IsLocalRing R]
     {z : Spec (CommRingCat.of R) ⟶ Y} {a : Ω} {r : R} (h : ValAt ξ z a r) (n : ℕ) : ValAt ξ z (a ^ n) (r ^ n) := by
   obtain ⟨hz, t, rfl, rfl⟩ := h
   exact ⟨hz, t ^ n, map_pow _ _ _, map_pow _ _ _⟩
 
+/- English proof (translation)
+Take `⟨hz, t, rfl, rfl⟩` from `h`. Conclude with `⟨t, rfl⟩`.
+-/
 theorem mem_regAt_of_valAt {Y : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ Y} {R : Type} [CommRing R]
     [IsLocalRing R] {z : Spec (CommRingCat.of R) ⟶ Y} {a : Ω} {r : R} (h : ValAt ξ z a r)
     (h0 : genPt ξ ⤳ centre z) : a ∈ regAt ξ ⟨centre z, h0⟩ := by

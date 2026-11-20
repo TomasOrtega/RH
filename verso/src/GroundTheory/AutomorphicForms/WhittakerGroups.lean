@@ -19,6 +19,15 @@ variable {F : Type*} [Field F] {n : ℕ}
 def superdiagSum (M : Matrix (Fin n) (Fin n) F) : F :=
   ∑ i : Fin n, ∑ j : Fin n, if j.val = i.val + 1 then M i j else 0
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Establish `hne : i ≠ j` using `fun h => by rw [h] at hij; omega`. Establish `key : ∀ k : Fin n, (u : Matrix (Fin n) (Fin n) F) i k * (v : Matrix (Fin n) (Fin n) F) k j = (if k = i then (v : Matrix (Fin n) (Fin n) F) i j else 0) + (if k = j then (u : Matrix (Fin n) (Fin n) F) i j else 0)`. Introduce `k`. Distinguish the cases in `hki : k = i`.
+
+Substitute `hki` using the available equality. Rewrite using `[if_pos rfl, if_neg hne, hu.2 k, one_mul, add_zero]`. Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality. Rewrite using `[if_neg hki, if_pos rfl, hv.2 k, mul_one, zero_add]`.
+
+Rewrite using `[if_neg hki, if_neg hkj, add_zero]`. Break down `lt_or_gt_of_ne hki with hlt | hgt` into its components or cases. Rewrite using `[hu.1 hlt, zero_mul]`. Establish `: j < k`. Establish `h1 : i.val < k.val` using `hgt`.
+
+Establish `h2 : k.val ≠ j.val` using `fun h => hkj (Fin.ext h)`. Use `show j.val < k.val`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hv.1 this, mul_zero]`. Rewrite using `[Finset.sum_congr rfl fun k _ => key k, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _), add_comm]`.
+-/
 theorem mul_apply_of_val_eq_succ {u v : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n)
     (hv : v ∈ Iwasawa.unipotent F n) {i j : Fin n} (hij : j.val = i.val + 1) :
     ((u * v : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j =
@@ -47,6 +56,11 @@ theorem mul_apply_of_val_eq_succ {u v : GL (Fin n) F} (hu : u ∈ Iwasawa.unipot
   rw [Finset.sum_congr rfl fun k _ => key k, Finset.sum_add_distrib, Finset.sum_ite_eq',
     Finset.sum_ite_eq', if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _), add_comm]
 
+/- English proof (translation)
+Unfold `superdiagSum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with h`. Conclude with `mul_apply_of_val_eq_succ hu hv h`. Rewrite using `[add_zero]`.
+-/
 theorem superdiagSum_mul {u v : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n)
     (hv : v ∈ Iwasawa.unipotent F n) :
     superdiagSum ((u * v : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) =
@@ -60,6 +74,9 @@ theorem superdiagSum_mul {u v : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n)
   · exact mul_apply_of_val_eq_succ hu hv h
   · rw [add_zero]
 
+/- English proof (translation)
+Unfold `superdiagSum`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `Matrix.one_apply_ne (fun e => by rw [e] at h; omega)`. Both sides reduce to the same expression.
+-/
 theorem superdiagSum_one : superdiagSum (1 : Matrix (Fin n) (Fin n) F) = 0 := by
   unfold superdiagSum
   refine Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_
@@ -72,21 +89,35 @@ def psiN (ψ₀ : AddChar F ℂ) (g : GL (Fin n) F) : ℂ :=
 
 variable (ψ₀ : AddChar F ℂ)
 
+/- English proof (translation)
+Rewrite using `[psiN, superdiagSum_mul hu hv, AddChar.map_add_eq_mul]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+-/
 theorem psiN_mul {u v : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n)
     (hv : v ∈ Iwasawa.unipotent F n) : psiN ψ₀ (u * v) = psiN ψ₀ u * psiN ψ₀ v := by
   rw [psiN, superdiagSum_mul hu hv, AddChar.map_add_eq_mul]
   rfl
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[psiN, Units.val_one, superdiagSum_one, AddChar.map_zero_eq_one]`.
+-/
 theorem psiN_one : psiN ψ₀ (1 : GL (Fin n) F) = 1 := by
   rw [psiN, Units.val_one, superdiagSum_one, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Establish `h : psiN ψ₀ u⁻¹ * psiN ψ₀ u = 1`. Rewrite using `[← psiN_mul ψ₀ ((Iwasawa.unipotent F n).inv_mem hu) hu, inv_mul_cancel, psiN_one]`. Conclude with `eq_inv_of_mul_eq_one_left h`.
+-/
 theorem psiN_inv {u : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n) :
     psiN ψ₀ u⁻¹ = (psiN ψ₀ u)⁻¹ := by
   have h : psiN ψ₀ u⁻¹ * psiN ψ₀ u = 1 := by
     rw [← psiN_mul ψ₀ ((Iwasawa.unipotent F n).inv_mem hu) hu, inv_mul_cancel, psiN_one]
   exact eq_inv_of_mul_eq_one_left h
 
+/- English proof (translation)
+Introduce `h`. Use `AddChar.map_add_eq_mul ψ₀ (superdiagSum (g : Matrix (Fin n) (Fin n) F)) (-superdiagSum (g : Matrix (Fin n) (Fin n) F))` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one]`. Rewrite `h` using `[psiN]`. Rewrite `this` using `[h, zero_mul]`.
+
+Conclude with `one_ne_zero this`.
+-/
 theorem psiN_ne_zero (g : GL (Fin n) F) : psiN ψ₀ g ≠ 0 := by
   intro h
   have := AddChar.map_add_eq_mul ψ₀ (superdiagSum (g : Matrix (Fin n) (Fin n) F))
@@ -102,6 +133,9 @@ def psiNHom : Iwasawa.unipotent F n →* ℂ where
   map_mul' u v := psiN_mul ψ₀ u.2 v.2
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiNHom_apply (u : Iwasawa.unipotent F n) : psiNHom ψ₀ u = psiN ψ₀ (u : GL (Fin n) F) :=
   rfl
 
@@ -109,9 +143,17 @@ def sigmaMat (M : Matrix (Fin n) (Fin n) F) : Matrix (Fin n) (Fin n) F :=
   fun i j => M (Fin.rev j) (Fin.rev i)
 
 omit [Field F] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigmaMat_apply (M : Matrix (Fin n) (Fin n) F) (i j : Fin n) :
     sigmaMat M i j = M (Fin.rev j) (Fin.rev i) := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [sigmaMat_apply, Matrix.mul_apply]`. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sigmaMat_mul (M M' : Matrix (Fin n) (Fin n) F) :
     sigmaMat (M * M') = sigmaMat M' * sigmaMat M := by
   ext i j
@@ -121,6 +163,9 @@ theorem sigmaMat_mul (M M' : Matrix (Fin n) (Fin n) F) :
   simp only [Fin.revPerm_apply]
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [sigmaMat_apply, Matrix.one_apply, Fin.rev_inj]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Rewrite using `[if_neg (Ne.symm h), if_neg h]`.
+-/
 theorem sigmaMat_one : sigmaMat (1 : Matrix (Fin n) (Fin n) F) = 1 := by
   ext i j
   simp only [sigmaMat_apply, Matrix.one_apply, Fin.rev_inj]
@@ -129,10 +174,16 @@ theorem sigmaMat_one : sigmaMat (1 : Matrix (Fin n) (Fin n) F) = 1 := by
   · rw [if_neg (Ne.symm h), if_neg h]
 
 omit [Field F] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[sigmaMat_apply]`.
+-/
 theorem sigmaMat_sigmaMat (M : Matrix (Fin n) (Fin n) F) : sigmaMat (sigmaMat M) = M := by
   ext i j
   simp [sigmaMat_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[mul_permGL_apply, permGL_mul_apply, Matrix.transpose_apply, sigmaMat_apply]`. Use `congr 1`.
+-/
 theorem sigmaMat_eq (M : Matrix (Fin n) (Fin n) F) :
     sigmaMat M = ((permGL F (Fin.revPerm (n := n)) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * Mᵀ *
       ((permGL F (Fin.revPerm (n := n)) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) := by
@@ -140,6 +191,13 @@ theorem sigmaMat_eq (M : Matrix (Fin n) (Fin n) F) :
   rw [mul_permGL_apply, permGL_mul_apply, Matrix.transpose_apply, sigmaMat_apply]
   congr 1
 
+/- English proof (translation)
+Unfold `superdiagSum`. Rewrite using `[Finset.sum_comm, ← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Fin.revPerm_apply, sigmaMat_apply, Fin.rev_rev]`. Establish `hiff : (Fin.rev a).val = (Fin.rev b).val + 1 ↔ b.val = a.val + 1`. Simplify using `only [Fin.val_rev]`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h : b.val = a.val + 1`. Rewrite using `[if_pos (hiff.2 h), if_pos h]`. Rewrite using `[if_neg (fun h' => h (hiff.1 h')), if_neg h]`.
+-/
 theorem superdiagSum_sigmaMat (M : Matrix (Fin n) (Fin n) F) :
     superdiagSum (sigmaMat M) = superdiagSum M := by
   unfold superdiagSum
@@ -162,32 +220,56 @@ def sigma (g : GL (Fin n) F) : GL (Fin n) F :=
     by rw [← sigmaMat_mul, Units.inv_mul, sigmaMat_one],
     by rw [← sigmaMat_mul, Units.mul_inv, sigmaMat_one]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_sigma (g : GL (Fin n) F) :
     ((sigma g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = sigmaMat (g : Matrix (Fin n) (Fin n) F) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigma_apply (g : GL (Fin n) F) (i j : Fin n) :
     ((sigma g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j =
       (g : Matrix (Fin n) (Fin n) F) (Fin.rev j) (Fin.rev i) := rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [Units.val_mul, coe_sigma, coe_sigma, coe_sigma, Units.val_mul, sigmaMat_mul]) @[simp]`.
+-/
 theorem sigma_mul (g h : GL (Fin n) F) : sigma (g * h) = sigma h * sigma g :=
   Units.ext (by rw [Units.val_mul, coe_sigma, coe_sigma, coe_sigma, Units.val_mul, sigmaMat_mul])
 
 @[simp]
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [coe_sigma, Units.val_one, sigmaMat_one]) @[simp]`.
+-/
 theorem sigma_one : sigma (1 : GL (Fin n) F) = 1 :=
   Units.ext (by rw [coe_sigma, Units.val_one, sigmaMat_one])
 
 @[simp]
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [coe_sigma, coe_sigma, sigmaMat_sigmaMat])`.
+-/
 theorem sigma_sigma (g : GL (Fin n) F) : sigma (sigma g) = g :=
   Units.ext (by rw [coe_sigma, coe_sigma, sigmaMat_sigmaMat])
 
+/- English proof (translation)
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← sigma_mul, mul_inv_cancel, sigma_one]`.
+-/
 theorem sigma_inv (g : GL (Fin n) F) : sigma g⁻¹ = (sigma g)⁻¹ := by
   refine eq_inv_of_mul_eq_one_left ?_
   rw [← sigma_mul, mul_inv_cancel, sigma_one]
 
+/- English proof (translation)
+The claim follows from `sigma_sigma`.
+-/
 theorem sigma_involutive : Function.Involutive (sigma : GL (Fin n) F → GL (Fin n) F) :=
   sigma_sigma
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[sigma_apply]`. Conclude with `hu.1 (Fin.rev_lt_rev.2 hij)`. Rewrite using `[sigma_apply]`. Conclude with `hu.2 (Fin.rev i)`.
+-/
 theorem sigma_mem_unipotent {u : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n) :
     sigma u ∈ Iwasawa.unipotent F n := by
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
@@ -196,41 +278,71 @@ theorem sigma_mem_unipotent {u : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n
   · rw [sigma_apply]
     exact hu.2 (Fin.rev i)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => sigma_sigma u ▸ sigma_mem_unipotent h, sigma_mem_unipotent⟩`.
+-/
 theorem sigma_mem_unipotent_iff {u : GL (Fin n) F} :
     sigma u ∈ Iwasawa.unipotent F n ↔ u ∈ Iwasawa.unipotent F n :=
   ⟨fun h => sigma_sigma u ▸ sigma_mem_unipotent h, sigma_mem_unipotent⟩
 
+/- English proof (translation)
+Rewrite `hb`, the goal using `[mem_borel_iff]`. Introduce `i j hij`. Rewrite using `[sigma_apply]`. Conclude with `hb _ _ (Fin.rev_lt_rev.2 hij)`.
+-/
 theorem sigma_mem_borel {b : GL (Fin n) F} (hb : b ∈ borel n F) : sigma b ∈ borel n F := by
   rw [mem_borel_iff] at hb ⊢
   intro i j hij
   rw [sigma_apply]
   exact hb _ _ (Fin.rev_lt_rev.2 hij)
 
+/- English proof (translation)
+Rewrite using `[psiN, psiN, coe_sigma, superdiagSum_sigmaMat]`.
+-/
 theorem psiN_sigma (ψ₀ : AddChar F ℂ) (g : GL (Fin n) F) : psiN ψ₀ (sigma g) = psiN ψ₀ g := by
   rw [psiN, psiN, coe_sigma, superdiagSum_sigmaMat]
 
 def theta (g : GL (Fin n) F) : GL (Fin n) F := (sigma g)⁻¹
 
+/- English proof (translation)
+The claim follows from `(sigma_inv g).symm`.
+-/
 theorem theta_eq (g : GL (Fin n) F) : theta g = sigma g⁻¹ := (sigma_inv g).symm
 
+/- English proof (translation)
+Rewrite using `[theta, theta, theta, sigma_mul, _root_.mul_inv_rev]`. Use the proof step `@[simp]`.
+-/
 theorem theta_mul (g h : GL (Fin n) F) : theta (g * h) = theta g * theta h := by
   rw [theta, theta, theta, sigma_mul, _root_.mul_inv_rev]
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[theta, theta, ← sigma_inv g, sigma_sigma, inv_inv]`.
+-/
 theorem theta_theta (g : GL (Fin n) F) : theta (theta g) = g := by
   rw [theta, theta, ← sigma_inv g, sigma_sigma, inv_inv]
 
+/- English proof (translation)
+Rewrite using `[theta, ← sigma_inv g, sigma_sigma]`.
+-/
 theorem sigma_theta (g : GL (Fin n) F) : sigma (theta g) = g⁻¹ := by
   rw [theta, ← sigma_inv g, sigma_sigma]
 
+/- English proof (translation)
+Rewrite using `[sigma_mul, sigma_mul, theta_eq, theta, inv_inv, mul_assoc]`.
+-/
 theorem sigma_mul_mul_inv (a g b : GL (Fin n) F) :
     sigma (a * g * b⁻¹) = theta b * sigma g * (theta a)⁻¹ := by
   rw [sigma_mul, sigma_mul, theta_eq, theta, inv_inv, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `(Iwasawa.unipotent F n).inv_mem (sigma_mem_unipotent hu)`.
+-/
 theorem theta_mem_unipotent {u : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n) :
     theta u ∈ Iwasawa.unipotent F n :=
   (Iwasawa.unipotent F n).inv_mem (sigma_mem_unipotent hu)
 
+/- English proof (translation)
+Rewrite using `[theta, psiN_inv ψ₀ (sigma_mem_unipotent hu), psiN_sigma]`.
+-/
 theorem psiN_theta (ψ₀ : AddChar F ℂ) {u : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n) :
     psiN ψ₀ (theta u) = (psiN ψ₀ u)⁻¹ := by
   rw [theta, psiN_inv ψ₀ (sigma_mem_unipotent hu), psiN_sigma]
@@ -243,18 +355,34 @@ def thetaN : Iwasawa.unipotent F n ≃* Iwasawa.unipotent F n where
   map_mul' _ _ := Subtype.ext (theta_mul _ _)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_thetaN (u : Iwasawa.unipotent F n) :
     ((thetaN u : Iwasawa.unipotent F n) : GL (Fin n) F) = theta (u : GL (Fin n) F) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaN_symm : (thetaN : Iwasawa.unipotent F n ≃* Iwasawa.unipotent F n).symm = thetaN :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Iwasawa.coe_diagGL, Matrix.diagonal_mul, permGL_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem diag_mul_permGL_apply (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n)) (r c : Fin n) :
     ((Iwasawa.diagGL F n t * permGL F w : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) r c =
       if r = w c then (t r : F) else 0 := by
   rw [Units.val_mul, Iwasawa.coe_diagGL, Matrix.diagonal_mul, permGL_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[sigma_apply, permGL_apply, permGL_apply]`. Simplify using `only [Equiv.Perm.mul_apply, Fin.revPerm_apply]`. Establish `hiff : Fin.rev j = w (Fin.rev i) ↔ i = Fin.rev (w⁻¹ (Fin.rev j))`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Introduce `h`.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules. Distinguish the cases in `h : Fin.rev j = w (Fin.rev i)`. Rewrite using `[if_pos h, if_pos (hiff.1 h)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (hiff.2 h'))]`.
+-/
 theorem sigma_permGL (w : Equiv.Perm (Fin n)) :
     sigma (permGL F w) = permGL F (Fin.revPerm * w⁻¹ * Fin.revPerm) := by
   refine Units.ext ?_
@@ -273,6 +401,9 @@ theorem sigma_permGL (w : Equiv.Perm (Fin n)) :
   · rw [if_pos h, if_pos (hiff.1 h)]
   · rw [if_neg h, if_neg (fun h' => h (hiff.2 h'))]
 
+/- English proof (translation)
+Take `⟨b₁, hb₁, b₂, hb₂, rfl⟩` from `mem_doubleCoset.1 hg`. Use `mem_doubleCoset.2 ⟨sigma b₂, sigma_mem_borel hb₂, sigma b₁, sigma_mem_borel hb₁, ?_⟩` and prove the remaining obligations. Rewrite using `[sigma_mul, sigma_mul, sigma_permGL, ← mul_assoc]`.
+-/
 theorem sigma_mem_doubleCoset_permGL {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)}
     (hg : g ∈ doubleCoset (permGL F w) (borel n F : Set (GL (Fin n) F)) (borel n F)) :
     sigma g ∈ doubleCoset (permGL F (Fin.revPerm * w⁻¹ * Fin.revPerm))
@@ -281,6 +412,11 @@ theorem sigma_mem_doubleCoset_permGL {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)}
   refine mem_doubleCoset.2 ⟨sigma b₂, sigma_mem_borel hb₂, sigma b₁, sigma_mem_borel hb₁, ?_⟩
   rw [sigma_mul, sigma_mul, sigma_permGL, ← mul_assoc]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [sigma_apply, Iwasawa.coe_diagGL, Matrix.diagonal_apply, Fin.rev_inj, Function.comp_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h), if_neg h]`.
+-/
 theorem sigma_diagGL (t : Fin n → Fˣ) :
     sigma (Iwasawa.diagGL F n t) = Iwasawa.diagGL F n (t ∘ Fin.rev) := by
   refine Units.ext ?_
@@ -292,6 +428,13 @@ theorem sigma_diagGL (t : Fin n → Fˣ) :
     simp
   · rw [if_neg (Ne.symm h), if_neg h]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[sigma_apply, diag_mul_permGL_apply, diag_mul_permGL_apply]`. Establish `hiff : Fin.rev j = w (Fin.rev i) ↔ i = w j`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `hw (Fin.rev i)` as an intermediate fact. Rewrite `this` using `[← h, Fin.rev_rev, Fin.rev_rev]`. Conclude with `this.symm`. Introduce `h`.
+
+Rewrite using `[h, hw j]`. Distinguish the cases in `h : i = w j`. Rewrite using `[if_pos (hiff.2 h), if_pos h, h, ht j]`. Rewrite using `[if_neg (fun h' => h (hiff.1 h')), if_neg h]`.
+-/
 theorem sigma_diag_mul_permGL_eq (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n))
     (hw : ∀ b, w (Fin.rev (w b)) = Fin.rev b) (ht : ∀ b, t (w b) = t (Fin.rev b)) :
     sigma (Iwasawa.diagGL F n t * permGL F w) = Iwasawa.diagGL F n t * permGL F w := by
@@ -310,6 +453,9 @@ theorem sigma_diag_mul_permGL_eq (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n))
   · rw [if_pos (hiff.2 h), if_pos h, h, ht j]
   · rw [if_neg (fun h' => h (hiff.1 h')), if_neg h]
 
+/- English proof (translation)
+The claim follows from `Matrix.single_mul_single_of_ne a i j i (Ne.symm h) b`.
+-/
 theorem single_mul_single_self_of_ne {i j : Fin n} (h : i ≠ j) (a b : F) :
     Matrix.single i j a * Matrix.single i j b = 0 :=
   Matrix.single_mul_single_of_ne a i j i (Ne.symm h) b
@@ -322,24 +468,39 @@ def rootElt (i j : Fin n) (a : F) : GL (Fin n) F :=
       by rw [sub_mul, one_mul, mul_add, mul_one, single_mul_single_self_of_ne h, add_zero,
         add_sub_cancel_right]⟩
 
+/- English proof (translation)
+Rewrite using `[rootElt, dif_neg h]`.
+-/
 theorem coe_rootElt {i j : Fin n} (h : i ≠ j) (a : F) :
     ((rootElt i j a : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 1 + Matrix.single i j a := by
   rw [rootElt, dif_neg h]
 
+/- English proof (translation)
+Rewrite using `[rootElt, dif_pos rfl]`.
+-/
 theorem rootElt_self (i : Fin n) (a : F) : rootElt i i a = 1 := by
   rw [rootElt, dif_pos rfl]
 
+/- English proof (translation)
+Rewrite using `[coe_rootElt h, Matrix.add_apply, Matrix.single_apply]`. Use the proof step `@[simp]`.
+-/
 theorem rootElt_apply {i j : Fin n} (h : i ≠ j) (a : F) (r c : Fin n) :
     ((rootElt i j a : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) r c =
       (1 : Matrix (Fin n) (Fin n) F) r c + if i = r ∧ j = c then a else 0 := by
   rw [coe_rootElt h, Matrix.add_apply, Matrix.single_apply]
 
 @[simp]
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Rewrite using `[h, rootElt_self]`. Conclude with `Units.ext (by rw [coe_rootElt h, Matrix.single_zero, add_zero, Units.val_one])`.
+-/
 theorem rootElt_zero (i j : Fin n) : rootElt i j (0 : F) = 1 := by
   by_cases h : i = j
   · rw [h, rootElt_self]
   · exact Units.ext (by rw [coe_rootElt h, Matrix.single_zero, add_zero, Units.val_one])
 
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Rewrite using `[h, rootElt_self, rootElt_self, rootElt_self, mul_one]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, coe_rootElt h, coe_rootElt h, coe_rootElt h, add_mul, one_mul, mul_add, mul_one, single_mul_single_self_of_ne h, add_zero, Matrix.single_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rootElt_add (i j : Fin n) (a b : F) :
     rootElt i j (a + b) = rootElt i j a * rootElt i j b := by
   by_cases h : i = j
@@ -354,13 +515,24 @@ def rootEltHom (i j : Fin n) : Multiplicative F →* GL (Fin n) F where
   map_one' := rootElt_zero i j
   map_mul' a b := rootElt_add i j a.toAdd b.toAdd
 
+/- English proof (translation)
+The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← rootElt_add, neg_add_cancel, rootElt_zero]) @[simp]`.
+-/
 theorem rootElt_neg (i j : Fin n) (a : F) : rootElt i j (-a) = (rootElt i j a)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← rootElt_add, neg_add_cancel, rootElt_zero])
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rootEltHom_apply (i j : Fin n) (a : Multiplicative F) :
     rootEltHom i j a = rootElt i j a.toAdd := rfl
 
+/- English proof (translation)
+Establish `hne : i ≠ j` using `ne_of_lt h`. Use `⟨fun r c hrc => ?_, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[rootElt_apply hne, Matrix.one_apply_ne (ne_of_gt (show c < r from hrc)), zero_add]`. Use `if_neg fun e => ?_` and prove the remaining obligations. Rewrite `hrc` using `[← e.1, ← e.2]`.
+
+Conclude with `lt_asymm h hrc`. Rewrite using `[rootElt_apply hne, Matrix.one_apply_eq, if_neg fun e => hne (e.1.trans e.2.symm), add_zero]`.
+-/
 theorem rootElt_mem_unipotent {i j : Fin n} (h : i < j) (a : F) :
     rootElt i j a ∈ Iwasawa.unipotent F n := by
   have hne : i ≠ j := ne_of_lt h
@@ -371,6 +543,11 @@ theorem rootElt_mem_unipotent {i j : Fin n} (h : i < j) (a : F) :
     exact lt_asymm h hrc
   · rw [rootElt_apply hne, Matrix.one_apply_eq, if_neg fun e => hne (e.1.trans e.2.symm), add_zero]
 
+/- English proof (translation)
+Unfold `superdiagSum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem superdiagSum_add (M M' : Matrix (Fin n) (Fin n) F) :
     superdiagSum (M + M') = superdiagSum M + superdiagSum M' := by
   unfold superdiagSum
@@ -380,6 +557,13 @@ theorem superdiagSum_add (M M' : Matrix (Fin n) (Fin n) F) :
   refine Finset.sum_congr rfl fun j _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `superdiagSum`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Rewrite using `[Matrix.single_apply_same]`. Introduce `c _ hc`. Rewrite using `[Matrix.single_apply_of_col_ne i i hc.symm, ite_self]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Introduce `r _ hr`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply_of_row_ne hr.symm, ite_self]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem superdiagSum_single (i j : Fin n) (a : F) :
     superdiagSum (Matrix.single i j a) = if j.val = i.val + 1 then a else 0 := by
   unfold superdiagSum
@@ -395,6 +579,9 @@ theorem superdiagSum_single (i j : Fin n) (a : F) :
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Rewrite using `[psiN, coe_rootElt h, superdiagSum_add, superdiagSum_one, zero_add, superdiagSum_single]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `AddChar.map_zero_eq_one ψ₀`.
+-/
 theorem psiN_rootElt (ψ₀ : AddChar F ℂ) {i j : Fin n} (h : i ≠ j) (a : F) :
     psiN ψ₀ (rootElt i j a) = if j.val = i.val + 1 then ψ₀ a else 1 := by
   rw [psiN, coe_rootElt h, superdiagSum_add, superdiagSum_one, zero_add, superdiagSum_single]
@@ -402,6 +589,11 @@ theorem psiN_rootElt (ψ₀ : AddChar F ℂ) {i j : Fin n} (h : i ≠ j) (a : F)
   · rfl
   · exact AddChar.map_zero_eq_one ψ₀
 
+/- English proof (translation)
+Use extensionality with `r c`. Distinguish the cases in `hc : c = j`. Substitute `hc` using the available equality. Rewrite using `[Matrix.mul_single_apply_same, diag_mul_permGL_apply, Matrix.single_apply]`. Distinguish the cases in `hr : r = w i`.
+
+Substitute `hr` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hr, if_neg (fun e => hr (e.1.symm)), zero_mul]`. Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hc, Matrix.single_apply_of_col_ne _ _ (Ne.symm hc)]`.
+-/
 theorem diag_mul_permGL_mul_single (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n)) (i j : Fin n)
     (a : F) :
     ((Iwasawa.diagGL F n t * permGL F w : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) *
@@ -416,6 +608,11 @@ theorem diag_mul_permGL_mul_single (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n)) 
     · rw [if_neg hr, if_neg (fun e => hr (e.1.symm)), zero_mul]
   · rw [Matrix.mul_single_apply_of_ne _ _ _ _ _ hc, Matrix.single_apply_of_col_ne _ _ (Ne.symm hc)]
 
+/- English proof (translation)
+Use extensionality with `r c`. Distinguish the cases in `hr : r = k`. Substitute `hr` using the available equality. Rewrite using `[Matrix.single_mul_apply_same, diag_mul_permGL_apply, Matrix.single_apply]`. Distinguish the cases in `hc : c = j`.
+
+Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun e => hc (w.injective e).symm), if_neg (fun e => hc e.2.symm), mul_zero]`. Rewrite using `[Matrix.single_mul_apply_of_ne _ _ _ _ _ hr, Matrix.single_apply_of_row_ne (Ne.symm hr)]`.
+-/
 theorem single_mul_diag_mul_permGL (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n)) (k j : Fin n)
     (b : F) :
     Matrix.single k (w j) b *
@@ -431,6 +628,11 @@ theorem single_mul_diag_mul_permGL (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n)) 
     · rw [if_neg (fun e => hc (w.injective e).symm), if_neg (fun e => hc e.2.symm), mul_zero]
   · rw [Matrix.single_mul_apply_of_ne _ _ _ _ _ hr, Matrix.single_apply_of_row_ne (Ne.symm hr)]
 
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[rootElt_self, rootElt_self, mul_one, mul_inv_cancel]`. Establish `h' : w i ≠ w j` using `fun e => h (w.injective e)`. Rewrite using `[mul_inv_eq_iff_eq_mul]`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul (Iwasawa.diagGL F n t * permGL F w) (rootElt i j a), Units.val_mul (rootElt (w i) (w j) _) (Iwasawa.diagGL F n t * permGL F w), coe_rootElt h, coe_rootElt h', mul_add, add_mul, mul_one, one_mul, diag_mul_permGL_mul_single, single_mul_diag_mul_permGL]`. Use `congr 2`. Establish `: (t (w j) : F) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem conj_rootElt (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n)) (i j : Fin n) (a : F) :
     (Iwasawa.diagGL F n t * permGL F w) * rootElt i j a * (Iwasawa.diagGL F n t * permGL F w)⁻¹ =
       rootElt (w i) (w j) ((t (w i) : F) / (t (w j) : F) * a) := by
@@ -454,10 +656,18 @@ section Topology
 
 variable {F : Type*} [Field F] [TopologicalSpace F] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `continuous_matrix fun i j => Units.continuous_val.matrix_elem (Fin.rev j) (Fin.rev i)`.
+-/
 theorem continuous_sigmaMat_val :
     Continuous fun g : GL (Fin n) F => sigmaMat (g : Matrix (Fin n) (Fin n) F) :=
   continuous_matrix fun i j => Units.continuous_val.matrix_elem (Fin.rev j) (Fin.rev i)
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨continuous_sigmaMat_val, ?_⟩` and prove the remaining obligations. Establish `: (fun g : GL (Fin n) F => (((sigma g)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) = fun g => sigmaMat ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Use function extensionality and compare the values at `g`. Rewrite using `[← sigma_inv, coe_sigma]`. Rewrite using `[this]`.
+
+Conclude with `continuous_matrix fun i j => Units.continuous_coe_inv.matrix_elem (Fin.rev j) (Fin.rev i)`.
+-/
 theorem continuous_sigma : Continuous (sigma : GL (Fin n) F → GL (Fin n) F) := by
   refine Units.continuous_iff.2 ⟨continuous_sigmaMat_val, ?_⟩
   have : (fun g : GL (Fin n) F => (((sigma g)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) =
@@ -476,17 +686,35 @@ def sigmaHomeo : GL (Fin n) F ≃ₜ GL (Fin n) F where
   continuous_invFun := continuous_sigma
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigmaHomeo_apply (g : GL (Fin n) F) : sigmaHomeo g = sigma g := rfl
 
 variable [IsTopologicalRing F]
 
+/- English proof (translation)
+The claim follows from `continuous_sigma.inv`.
+-/
 theorem continuous_theta : Continuous (theta : GL (Fin n) F → GL (Fin n) F) :=
   continuous_sigma.inv
 
+/- English proof (translation)
+The claim follows from `(continuous_theta.comp continuous_subtype_val).subtype_mk _`.
+-/
 theorem continuous_thetaN :
     Continuous (thetaN : Iwasawa.unipotent F n → Iwasawa.unipotent F n) :=
   (continuous_theta.comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Establish `: (rootElt i i : F → GL (Fin n) F) = fun _ => 1` using `funext fun a => rootElt_self i a`. Rewrite using `[this]`. Conclude with `continuous_const`.
+
+Establish `hval : Continuous fun a : F => ((rootElt i j a : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Use `continuous_matrix fun r c => ?_` and prove the remaining obligations. Simplify using `only [rootElt_apply h]`. Use `continuous_const.add ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `continuous_id`. Conclude with `continuous_const`. Use `Units.continuous_iff.2 ⟨hval, ?_⟩` and prove the remaining obligations. Establish `: (fun a : F => (((rootElt i j a)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) = fun a => ((rootElt i j (-a) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[rootElt_neg]`. Rewrite using `[this]`. Conclude with `hval.comp continuous_neg`.
+-/
 theorem continuous_rootElt (i j : Fin n) : Continuous (rootElt i j : F → GL (Fin n) F) := by
   by_cases h : i = j
   · subst h
@@ -510,6 +738,9 @@ theorem continuous_rootElt (i j : Fin n) : Continuous (rootElt i j : F → GL (F
 
 end Topology
 
+/- English proof (translation)
+The claim follows from `_root_.GroundTheory.Variant₂.N1.eq_one_of_forall_norm_zpow_sub_one_lt h`.
+-/
 theorem eq_one_of_forall_norm_zpow_sub_one_lt {z : ℂ} (h : ∀ m : ℤ, ‖z ^ m - 1‖ < 1) : z = 1 :=
   _root_.GroundTheory.Variant₂.N1.eq_one_of_forall_norm_zpow_sub_one_lt h
 
@@ -520,6 +751,13 @@ open ValuativeRel Topology
 variable (F : Type*) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   (n : ℕ)
 
+/- English proof (translation)
+Establish `hball : {z : ℂ | ‖z - 1‖ < 1} ∈ 𝓝 (ψ₀ 0)`. Rewrite using `[AddChar.map_zero_eq_one]`. Establish `: {z : ℂ | ‖z - 1‖ < 1} = Metric.ball 1 1`. Use extensionality with `z`. Simplify using `[dist_eq_norm]`.
+
+Rewrite using `[this]`. Conclude with `Metric.ball_mem_nhds 1 one_pos`. Take `⟨γ, -, hγ⟩` from `(IsValuativeTopology.hasBasis_nhds_zero F).mem_iff.1 (hψ.continuousAt.preimage_mem_nhds hball)`. Use `⟨γ, fun x hx => eq_one_of_forall_norm_zpow_sub_one_lt fun m => ?_⟩` and prove the remaining obligations. Establish `hmx : m • x ∈ (valuation F).ltAddSubgroup γ` using `AddSubgroup.zsmul_mem _ (Valuation.mem_ltAddSubgroup_iff.2 hx) m`.
+
+Use `hγ (Valuation.mem_ltAddSubgroup_iff.1 hmx)` as an intermediate fact. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq] at this`. Rewrite `this` using `[AddChar.map_zsmul_eq_zpow]`. Then use the resulting hypothesis.
+-/
 theorem exists_ball_addChar_eq_one {ψ₀ : AddChar F ℂ} (hψ : Continuous ψ₀) :
     ∃ γ : (ValueGroupWithZero F)ˣ, ∀ x : F, valuation F x < γ → ψ₀ x = 1 := by
   have hball : {z : ℂ | ‖z - 1‖ < 1} ∈ 𝓝 (ψ₀ 0) := by
@@ -538,6 +776,11 @@ theorem exists_ball_addChar_eq_one {ψ₀ : AddChar F ℂ} (hψ : Continuous ψ�
   simp only [Set.mem_preimage, Set.mem_ofPred_eq] at this
   rwa [AddChar.map_zsmul_eq_zpow] at this
 
+/- English proof (translation)
+Establish `hset : (Iwasawa.unipotent F n : Set (GL (Fin n) F)) = (⋂ i : Fin n, ⋂ j : Fin n, ⋂ (_ : j < i), {g : GL (Fin n) F | (g : Matrix (Fin n) (Fin n) F) i j = 0}) ∩ ⋂ i : Fin n, {g : GL (Fin n) F | (g : Matrix (Fin n) (Fin n) F) i i = 1}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Iwasawa.mem_unipotent, Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq]`. Conclude with `⟨fun h => ⟨fun i j hij => h.1 hij, h.2⟩, fun h => ⟨fun i j hij => h.1 i j hij, h.2⟩⟩`. Rewrite using `[hset]`.
+
+Apply the tactic sequence `refine IsClosed.inter (isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (GLnLocal.continuous_entry F n i j) continuous_const) (isClosed_iInter fun i => isClosed_eq (GLnLocal.continuous_entry F n i i) continuous_const)`.
+-/
 theorem isClosed_unipotent : IsClosed (Iwasawa.unipotent F n : Set (GL (Fin n) F)) := by
   have hset : (Iwasawa.unipotent F n : Set (GL (Fin n) F)) =
       (⋂ i : Fin n, ⋂ j : Fin n, ⋂ (_ : j < i),
@@ -563,6 +806,21 @@ instance sigmaCompactSpace_GL : SigmaCompactSpace (GL (Fin n) F) := inferInstanc
 instance sigmaCompactSpace_unipotent : SigmaCompactSpace (Iwasawa.unipotent F n) :=
   (isClosed_unipotent F n).sigmaCompactSpace
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `exists_ball_addChar_eq_one F hψ`. Use `set A := (valuation F).ltAddSubgroup γ`. Establish `hAo : IsOpen (A : Set F)` using `AddSubgroup.isOpen_of_mem_nhds A ((IsValuativeTopology.hasBasis_nhds_zero F).mem_of_mem trivial)`. Set `V : Set (Iwasawa.unipotent F n)` to `⋂ i : Fin n, ⋂ j : Fin n, {u | ((u : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j ∈ A ∨ j.val ≠ i.val + 1}`. Establish `hVo : IsOpen V`.
+
+Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hij : j.val = i.val + 1`. Establish `: {u : Iwasawa.unipotent F n | ((u : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j ∈ A ∨ j.val ≠ i.val + 1} = (fun u : Iwasawa.unipotent F n => ((u : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j) ⁻¹' (A : Set F)`. Use extensionality with `u`. Simplify using `[hij]`.
+
+Rewrite using `[this]`. Apply the tactic sequence `exact hAo.preimage ((GLnLocal.continuous_entry F n i j).comp continuous_subtype_val)`. Establish `: {u : Iwasawa.unipotent F n | ((u : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j ∈ A ∨ j.val ≠ i.val + 1} = Set.univ`. Use extensionality with `u`. Simplify using `[hij]`.
+
+Rewrite using `[this]`. Conclude with `isOpen_univ`. Establish `h1V : (1 : Iwasawa.unipotent F n) ∈ V`. Simplify using `only [V, Set.mem_iInter, Set.mem_ofPred_eq]`. Introduce `i j`.
+
+Distinguish the cases in `hij : j.val = i.val + 1`. Use `left`. Establish `hne : i ≠ j` using `fun e => by rw [e] at hij; omega`. Rewrite using `[OneMemClass.coe_one, Units.val_one, Matrix.one_apply_ne hne]`. Conclude with `A.zero_mem`.
+
+Conclude with `Or.inr hij`. Take `⟨K, hKc, hKV⟩` from `exists_openSubgroup_isCompact_subset (hVo.mem_nhds h1V)`. Use `⟨K.toSubgroup, hKc, K.isOpen, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hkV : k ∈ V` using `hKV hk`. Simplify using `only [V, Set.mem_iInter, Set.mem_ofPred_eq] at hkV`.
+
+Use `hγ _ ?_` and prove the remaining obligations. Use `Valuation.mem_ltAddSubgroup_iff.1 (A.sum_mem fun i _ => A.sum_mem fun j _ => ?_)` and prove the remaining obligations. Use `split_ifs with hij`. Conclude with `(hkV i j).resolve_right (not_not.2 hij)`. Conclude with `A.zero_mem`.
+-/
 theorem exists_compactOpen_psiN_trivial {ψ₀ : AddChar F ℂ} (hψ : Continuous ψ₀) :
     ∃ K : Subgroup (Iwasawa.unipotent F n), IsCompact (K : Set (Iwasawa.unipotent F n)) ∧
       IsOpen (K : Set (Iwasawa.unipotent F n)) ∧ ∀ k ∈ K, psiN ψ₀ (k : GL (Fin n) F) = 1 := by

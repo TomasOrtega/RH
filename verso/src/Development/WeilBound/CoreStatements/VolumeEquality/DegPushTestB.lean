@@ -4,6 +4,11 @@ namespace SheetDecomposition
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.HilbertSamuel
 
+/- English proof (translation)
+Establish `hX : IsProjVarF (P.map (MvPolynomial.map (Int.castRingHom ℚ))) d` using `isProjVarF_map_of_isArithVar hP`. Establish `hXN : NumbersDVR.IsMultiProjPrime (P.map (MvPolynomial.map (Int.castRingHom ℚ)))` using `(Bridge.isMultiProjPrime_iff _).mpr hX.1`. Establish `hd : FieldNumbers.relDim (P.map (MvPolynomial.map (Int.castRingHom ℚ))) = d`. Rewrite using `[FieldNumbers.relDim_of_ringKrullDim_eq _ _ hX.2]`. Simplify using `only [Nat.cast_add, add_sub_cancel_right]`.
+
+Both sides reduce to the same expression. Conclude with `⟨intNumMultilinear _ d hXN.multiHomog hXN.relevant hd, fun _ => rfl⟩`.
+-/
 theorem exists_multilinear_gen {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P (d + 1)) :
     ∃ F : MultilinearMap ℤ (fun _ : Fin d => K → ℤ) ℤ,

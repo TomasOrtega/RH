@@ -12,6 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.Arithm
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Use `ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, ← ContinuousLinearMap.adjoint_inner_left, X.Rph_spec, X.Rph_spec]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, ← ContinuousLinearMap.comp_apply, ← ContinuousLinearMap.comp_apply, reT_comm]`.
+-/
 theorem reT_rph (S : Set (Tup2 D)) : (ReT X S).comp X.Rph = X.Rph.comp (ReT X S) := by
   refine ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_
   rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, ← ContinuousLinearMap.adjoint_inner_left,
@@ -21,6 +24,21 @@ theorem reT_rph (S : Set (Tup2 D)) : (ReT X S).comp X.Rph = X.Rph.comp (ReT X S)
   rw [ContinuousLinearMap.adjoint_inner_left, ← ContinuousLinearMap.comp_apply, ← ContinuousLinearMap.comp_apply,
     reT_comm]
 
+/- English proof (translation)
+Establish `hPE : (ReT X {t}).comp X.B.Re = ReT X {t}`. Rewrite using `[← reT_univ' X, reT_inter, Set.inter_univ]`. Establish `hEP : X.B.Re.comp (ReT X {t}) = ReT X {t}`. Rewrite using `[← reT_univ' X, reT_inter, Set.univ_inter]`. Establish `hPP : (ReT X {t}).comp (ReT X {t}) = ReT X {t}`.
+
+Rewrite using `[reT_inter, Set.inter_self]`. Establish `hR` using `reT_rph X {t}`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `v ⟨y, rfl⟩`. Use `⟨⟨ReT X {t} y, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show X.B.Re (X.Rph (ReT X {t} y)) = ReT X {t} (X.Rph y)`. Use `congrArg (fun L => L y) hR` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply] at this`. Rewrite using `[← this]`. Use `congrArg (fun L => L (X.Rph y)) hEP` as an intermediate fact.
+
+Simplify `this` using `only [ContinuousLinearMap.comp_apply]`. Use `show ReT X {t} (ReT X {t} (X.Rph y)) - ReT X {t} (X.Rph y) = 0`. Use `congrArg (fun L => L (X.Rph y)) hPP` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply] at this`. Rewrite using `[this, sub_self]`.
+
+Introduce and unpack `v ⟨⟨y, hy⟩, hv⟩`. Establish `hv' : ReT X {t} v = v`. Establish `: ReT X {t} v - v = 0` using `hv`. Conclude with `sub_eq_zero.1 this`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Use `show ReT X {t} (X.Rph y) = v`. Establish `hy' : X.B.Re (X.Rph y) = v` using `hy`. Rewrite using `[← hv', ← hy']`. Use `congrArg (fun L => L (X.Rph y)) hPE` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply] at this`.
+
+Conclude with `this.symm`.
+-/
 theorem HH_eq_VT (t : Tup2 D) :
     Formalism.L2.SG.RowsDef.HH X.B.I X.B.μf X.B.fund (ReT X {t}) X.Rph = Formalism.L2.SG.Pf.RowsGoodRed.VT X t := by
   have hPE : (ReT X {t}).comp X.B.Re = ReT X {t} := by
@@ -55,6 +73,9 @@ theorem HH_eq_VT (t : Tup2 D) :
     simp only [ContinuousLinearMap.comp_apply] at this
     exact this.symm
 
+/- English proof (translation)
+Introduce `t _ _`. Establish `hint` using `Formalism.L2.SG.Pf.RowDictPf.hint_of_gap X hG`. Establish `hB` using `Formalism.L2.SG.Closed.RowsBij_holds X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec (eT X {t}) (ReT X {t}) (reT_spec X (etInt_holds X) {t}) X.B.H X.B.σ X.dv X.B.w (fun v => (X.ds v).2.2.1) (fun v => (X.ds v).2.2.2.1) (Formalism.L2.SG.EvalTRph.isFdeg_dv X) (fun v => (X.low v …`. Unfold `dimX`. Rewrite using `[← Formalism.L2.SG.RowsDef.finrank_HH_eq_Dcount hB.1 hB.2, HH_eq_VT]`.
+-/
 theorem dcountEq_holds (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) : Formalism.L2.SG.Pf.RowsGoodRed.DcountEq X := by
   intro t _ _
   have hint := Formalism.L2.SG.Pf.RowDictPf.hint_of_gap X hG

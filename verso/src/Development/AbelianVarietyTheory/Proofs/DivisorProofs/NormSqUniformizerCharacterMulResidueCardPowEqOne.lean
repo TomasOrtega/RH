@@ -7,6 +7,27 @@ open MeasureTheory Matrix ValuativeRel
 
 namespace GlobalTheory.HeisUnit
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d ι hinj Tr hTr hTrIso S hS hSiso χ hχ φ0 hφ0 hι0 hne ϖ hϖ i0 horth`. Use `set F := ∑ T : Fin d → SplitFlip.Res k 1, Tr (cosetRep ϖ i0 T) φ0 with hF`. Establish `hFSB : F ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → k)` using `Submodule.sum_mem _ fun T _ => (hTr _ φ0 hφ0).1`. Establish `hSg : S (diagAt ϖ i0) φ0 = (χ ϖ : ℂ) • F`. Apply `hinj (hS _ φ0 hφ0) (Submodule.smul_mem _ _ hFSB)` to reduce the goal to its premises.
+
+Rewrite using `[hχ _ φ0 hφ0, map_smul, map_sum, det_diagAt, hι0]`. Use function extensionality and compare the values at `Y`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, (hTr _ φ0 hφ0).2, hι0]`. Rewrite using `[intInd_diagAt_eq_sum ϖ hϖ]`. Use `letI : MeasurableSpace (Fin n × Fin d → k) := borel _`.
+
+Use `haveI : BorelSpace (Fin n × Fin d → k) := ⟨rfl⟩`. Set `μ : Measure (Fin n × Fin d → k)` to `Measure.addHaar`. Establish `hμ : μ.IsAddHaarMeasure` using `inferInstance`. Establish `hiso` using `hSiso (diagAt ϖ i0) φ0 hφ0 μ hμ`. Rewrite `hiso` using `[hSg]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, enorm_mul, mul_pow] at hiso`. Rewrite `hiso` using `[lintegral_const_mul' _ _ (by simp [enorm_eq_nnnorm])]`. Take `⟨hFtop, hFint, -, hFi⟩` from `GlobalTheory.T.schwartzBruhat_lintegral_sq_ne_top μ hμ F hFSB`. Take `⟨h0top, h0int, h0ne, -⟩` from `GlobalTheory.T.schwartzBruhat_lintegral_sq_ne_top μ hμ φ0 hφ0`. Establish `hN0 : (∫⁻ y, ‖φ0 y‖ₑ ^ 2 ∂μ).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨h0ne hne, h0top⟩`.
+
+Establish `hint : ∀ T T' : Fin d → SplitFlip.Res k 1, Integrable (fun y => Tr (cosetRep ϖ i0 T) φ0 y * (starRingEnd ℂ) (Tr (cosetRep ϖ i0 T') φ0 y)) μ` using `fun T T' => (GlobalTheory.T.schwartzBruhat_lintegral_sq_ne_top μ hμ _ (hTr _ φ0 hφ0).1).2.2.2 _ (hTr _ φ0 hφ0).1`. Establish `hsum : ∫ y, F y * (starRingEnd ℂ) (F y) ∂μ = (Fintype.card (Fin d → SplitFlip.Res k 1) : ℂ) * ∫ y, φ0 y * (starRingEnd ℂ) (φ0 y) ∂μ`. Establish `hpt : ∀ y, F y * (starRingEnd ℂ) (F y) = ∑ T : Fin d → SplitFlip.Res k 1, ∑ T' : Fin d → SplitFlip.Res k 1, Tr (cosetRep ϖ i0 T) φ0 y * (starRingEnd ℂ) (Tr (cosetRep ϖ i0 T') φ0 y)`. Introduce `y`. Rewrite using `[hF, Finset.sum_apply, map_sum, Finset.sum_mul_sum]`.
+
+Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_finsetSum _ fun T _ => integrable_finsetSum _ fun T' _ => hint T T']`. Repeatedly rewrite using `[integral_finsetSum _ fun T' _ => hint _ T']`. Rewrite using `[Finset.card_univ.symm, ← nsmul_eq_mul, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single T (fun T' _ hT' => horth μ hμ T T' (Ne.symm hT')) (fun h => absurd (Finset.mem_univ _) h)]`. Conclude with `hTrIso μ hμ _ φ0 hφ0 φ0 hφ0`. Rewrite `hsum` using `[hFint, h0int]`. Establish `hLF : (∫⁻ y, ‖F y‖ₑ ^ 2 ∂μ).toReal = (Fintype.card (Fin d → SplitFlip.Res k 1) : ℝ) * (∫⁻ y, ‖φ0 y‖ₑ ^ 2 ∂μ).toReal`. Conclude with `hsum` after adjusting the coercions.
+
+Establish `hiso'` using `congrArg ENNReal.toReal hiso`. Rewrite `hiso'` using `[ENNReal.toReal_mul, ENNReal.toReal_pow, toReal_enorm, hLF]`. Establish `hcard : (Fintype.card (Fin d → SplitFlip.Res k 1) : ℝ) = (GlobalTheory.SplitWeil.resCard k : ℝ) ^ d`. Rewrite using `[Fintype.card_fun, Fintype.card_fin, Fintype.card_eq_nat_card]`. Establish `: Nat.card (SplitFlip.Res k 1) = GlobalTheory.SplitWeil.resCard k` using `Nat.card_congr (Ideal.quotEquivOfEq (pow_one 𝓂[k])).toEquiv`.
+
+Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hiso'` using `[hcard]`. Apply `mul_right_cancel₀ hN0` to reduce the goal to its premises.
+
+Take the linear combination `hiso'`.
+-/
 theorem normSq_unif_mul_resCard_pow_eq_one : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ},
     ∀ (ι : ((Fin n × Fin d → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)),
     Set.InjOn ι (GlobalTheory.WeilM.SB (Fin n × Fin d → k) : Set _) →

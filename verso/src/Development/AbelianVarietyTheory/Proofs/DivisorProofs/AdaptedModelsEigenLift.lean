@@ -11,6 +11,9 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ThKIsoSwapSumm
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he' χX χW om r s r' s' hP Ψ hΨ`. Establish `hφs : e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (incV F H'.y)) Ψ) ∈ schA F (Fin n × Fin d₁)` using `he₀.maps _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hP.base.std _ Ψ hΨ)`. Take `⟨C, -, hC⟩` from `GlobalTheory.T.adapted_evaluation_restriction hK F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he' hP.base ⟨r, s, r', s', hP.herm, hP.skew⟩`. Conclude with `(hC _ hφs).1`.
+-/
 theorem summable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),
     H'.IsAdapted σ B W W₁ i₀ i₁ → M₁.IsGood B.ψ → ∀ (e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁), IsEv B M M₁ 1 H'.ι (iso0 n H') e₀ →

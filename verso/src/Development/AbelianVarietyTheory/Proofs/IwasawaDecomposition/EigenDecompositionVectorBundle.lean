@@ -11,6 +11,13 @@ open GlobalTheory.LB (resG_resG le_iSup_inf)
 
 variable {X : Scheme.{0}} {F G : X.Modules}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.VB.isFrame_iff]`. Introduce `V h`. Establish `hcomp : (appLinear N.incl V) ∘ (fun i => resM N.toMod h (N.mkSec (e i) (he i))) = fun i => resM F h (e i)` using `funext fun i => by`. Simplify using `only [Function.comp, appLinear_apply]`. Rewrite using `[app_resM]`.
+
+Both sides reduce to the same expression. Use `⟨LinearIndependent.of_comp (appLinear N.incl V) (hcomp ▸ hli V h), ?_⟩` and prove the remaining obligations. Introduce and unpack `y -`. Establish `hx` using `hsp V h _ (N.incl_app_mem y)`. Rewrite `hx` using `[← hcomp, Set.range_comp, Submodule.span_image]`.
+
+Take `⟨y', hy', e'⟩` from `hx`. Establish `: y' = y` using `N.incl_app_injective V (by rwa [appLinear_apply] at e')`. Conclude with `this ▸ hy'`.
+-/
 theorem isFrame_mkSec (N : Sub F) {U : X.Opens} {ν : Type} [Fintype ν] (e : ν → Γ(F, U))
     (he : ∀ i, e i ∈ N.sec U)
     (hli : ∀ (V : X.Opens) (h : V ≤ U), LinearIndependent Γ(X, V) fun i => resM F h (e i))

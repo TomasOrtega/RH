@@ -39,8 +39,14 @@ def UAtGrp {R : Type} [Zero R] (ev : AF F → R) : Subgroup (UA σ X.J) where
       rw [Matrix.mul_sub, h1, Matrix.mul_one]; abel
     rw [e, smul_neg, ← Matrix.mul_smul, ha u hu, Matrix.mul_zero, neg_zero]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_UAtGrp {R : Type} [Zero R] (ev : AF F → R) (g : UA σ X.J) : g ∈ UAtGrp σ X ev ↔ g ∈ UAt σ X ev := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Subgroup.closure_eq (UAtGrp σ X ev)`.
+-/
 theorem closure_UAt {R : Type} [Zero R] (ev : AF F → R) : Subgroup.closure (UAt σ X ev) = UAtGrp σ X ev :=
   Subgroup.closure_eq (UAtGrp σ X ev)
 

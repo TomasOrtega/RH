@@ -12,6 +12,15 @@ variable {S : Type} [Ring S] {st : S →+ S}
 
 def cay (M : ℕ) (y : S) : S := (1 + y) * ∑ j ∈ Finset.range M, y ^ j
 
+/- English proof (translation)
+Establish `h1 : st 1 = 1` using `GlobalTheory.TwoStepUnipotent.st_one hm hi`. Unfold `cay`. Generalize the expression as in `hG : ∑ j ∈ Finset.range M, y ^ j = G`. Establish `a1 : (1 - y) * G = 1` using `by rw [← hG, mul_neg_geom_sum, h0, sub_zero]`. Establish `a2 : G * (1 - y) = 1` using `by rw [← hG, geom_sum_mul_neg, h0, sub_zero]`.
+
+Establish `b1 : st G * (1 + y) = 1`. Use `congrArg st a1` as an intermediate fact. Rewrite `this` using `[hm, map_sub, h1, hy, sub_neg_eq_add]`. Then use the resulting hypothesis. Establish `b2 : (1 + y) * st G = 1`. Use `congrArg st a2` as an intermediate fact.
+
+Rewrite `this` using `[hm, map_sub, h1, hy, sub_neg_eq_add]`. Then use the resulting hypothesis. Establish `c1 : st ((1 + y) * G) * ((1 + y) * G) = 1`. Rewrite using `[hm, map_add, h1, hy]`. Combine the equalities or inequalities in the displayed calculation. Establish `c2 : ((1 + y) * G) * ((1 - y) * st G) = 1`.
+
+Rewrite using `[mul_assoc, ← mul_assoc G, a2, one_mul, b2]`. Use `⟨c1, ?_⟩` and prove the remaining obligations. Rewrite using `[left_inv_eq_right_inv c1 c2, c2]`.
+-/
 theorem cay_unitary (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x) {M : ℕ} {y : S}
     (h0 : y ^ M = 0) (hy : st y = -y) : st (cay M y) * cay M y = 1 ∧ cay M y * st (cay M y) = 1 := by
   have h1 : st 1 = 1 := GlobalTheory.TwoStepUnipotent.st_one hm hi
@@ -34,6 +43,11 @@ theorem cay_unitary (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st
   refine ⟨c1, ?_⟩
   rw [left_inv_eq_right_inv c1 c2, c2]
 
+/- English proof (translation)
+Unfold `cay`. Establish `e : ∑ j ∈ Finset.range M, y ^ (j + 1) = y * ∑ j ∈ Finset.range M, y ^ j`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => pow_succ' y j`. Rewrite using `[e]`.
+
+Generalize the expression as in `hG : ∑ j ∈ Finset.range M, y ^ j = G`. Establish `a1 : (1 - y) * G = 1` using `by rw [← hG, mul_neg_geom_sum, h0, sub_zero]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cay_sub {M : ℕ} {y : S} (h0 : y ^ M = 0) :
     cay M y - 1 - (y + y) = (y + y) * ∑ j ∈ Finset.range M, y ^ (j + 1) := by
   unfold cay
@@ -46,6 +60,51 @@ theorem cay_sub {M : ℕ} {y : S} (h0 : y ^ M = 0) :
         noncomm_ring
     _ = _ := by rw [a1]; simp
 
+/- English proof (translation)
+Establish `h1 : st 1 = 1` using `GlobalTheory.TwoStepUnipotent.st_one hm hi`. Establish `hsh : st h = h` using `GlobalTheory.TwoStepUnipotent.st_half hm hi hh hc`. Establish `hhx : ∀ x, h * x + h * x = x` using `fun x => by rw [← add_mul, hh, one_mul]`. Establish `hhN : ∀ i, ∀ x ∈ N i, h * x ∈ N i` using `fun i x hx => by`. Establish `: h * x = p i (h * x)` using `by conv_lhs => rw [← hpf i x hx, ← hhx x, map_add, mul_add, hhx]`.
+
+Rewrite using `[this]`. Conclude with `hpN _ _`. Establish `hle0 : ∀ i, N i ≤ N 0` using `fun i => by`. Proceed by induction on `i with`. Consider the case `zero => exact le_rfl`.
+
+Consider the case `succ i ih => exact (hle i).trans ih`. Establish `hnil : ∀ y ∈ N 0, y ^ 2 ^ m = 0` using `fun y hy => by`. Establish `: ∀ k, y ^ 2 ^ k ∈ N k` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using hy`.
+
+Consider the case `succ k ih => rw [pow_succ, pow_mul, sq]`. Conclude with `hmul _ _ ih _ ih`. Conclude with `hz _ (this m)`. Establish `umul : ∀ g g' : S, (st g * g = 1 ∧ g * st g = 1) → (st g' * g' = 1 ∧ g' * st g' = 1) → (st (g * g') * (g * g') = 1 ∧ g * g' * st (g * g') = 1)` using `fun g g' u u' => by`. Rewrite using `[hm]`.
+
+Conclude with `⟨by rw [mul_assoc, ← mul_assoc (st g), u.1, one_mul, u'.1], by rw [mul_assoc, ← mul_assoc g', u'.2, one_mul, u.2]⟩`. Establish `ust : ∀ g : S, (st g * g = 1 ∧ g * st g = 1) → (st (st g) * st g = 1 ∧ st g * st (st g) = 1)` using `fun g u => by rw [hi]; exact u.symm`. Establish `nmul : ∀ i (g g' : S), g - 1 ∈ N i → g' - 1 ∈ N i → g * g' - 1 ∈ N i` using `fun i g g' u u' => by`. Establish `: g * g' - 1 = (g - 1) * (g' - 1) + (g - 1) + (g' - 1)` using `by noncomm_ring`. Rewrite using `[this]`.
+
+Conclude with `add_mem (add_mem (hle i (hmul i _ u _ u')) u) u'`. Establish `nlead : ∀ i (g g' x x' : S), g - 1 ∈ N i → g' - 1 ∈ N i → g - 1 - x ∈ N (i + 1) → g' - 1 - x' ∈ N (i + 1) → g * g' - 1 - (x + x') ∈ N (i + 1)` using `fun i g g' x x' u u' v v' => by`. Establish `: g * g' - 1 - (x + x') = (g - 1) * (g' - 1) + (g - 1 - x) + (g' - 1 - x')` using `by noncomm_ring`. Rewrite using `[this]`. Conclude with `add_mem (add_mem (hmul i _ u _ u') v) v'`.
+
+Establish `key : ∀ i ≤ m, ∃ K' : Set S, IsCompact K' ∧ (∀ g ∈ K', (st g * g = 1 ∧ g * st g = 1) ∧ g - 1 ∈ N 0) ∧ ∀ g, (st g * g = 1 ∧ g * st g = 1) ∧ g - 1 ∈ N i → ∃ γ ∈ S₀, ((st γ * γ = 1 ∧ γ * st γ = 1) ∧ γ - 1 ∈ N 0) ∧ ∃ k ∈ K', g = γ * k`. Introduce `i him`. Proceed by induction on `him using Nat.decreasingInduction with`. Consider the case `self`. Establish `one : (st 1 * 1 = 1 ∧ 1 * st 1 = 1) ∧ (1 : S) - 1 ∈ N 0` using `by simp [h1]`.
+
+Use `⟨{1}, isCompact_singleton, fun g hg => by rw [Set.mem_singleton_iff.1 hg]; exact one, fun g hg => ⟨1, one_mem _, one, 1, rfl, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[one_mul, ← sub_eq_zero]`. Conclude with `hz _ hg.2`. Consider the case `of_succ i _ ih`. Take `⟨K', hK', hU, hcov'⟩` from `ih`.
+
+Take `⟨q, hq⟩ : ∃ q : S → S, ∀ z, q z = h * (h * (p i z - st (p i z)))` from `⟨_, fun _ => rfl⟩`. Establish `qc : Continuous q`. Rewrite using `[show q = fun z => h * (h * (p i z - st (p i z))) from funext hq]`. Use `hp i` as an intermediate fact. Use `fun_prop`.
+
+Establish `qN : ∀ z, q z ∈ N i` using `fun z => by`. Rewrite using `[hq]`. Conclude with `hhN _ _ (hhN _ _ (sub_mem (hpN i z) (hst _ _ (hpN i z))))`. Establish `qs : ∀ z, st (q z) = - q z` using `fun z => by`. Rewrite using `[hq, hm, hm, hsh, map_sub, hi, ← hc, ← hc, ← mul_neg, ← mul_neg, neg_sub]`.
+
+Establish `q0 : ∀ z ∈ S₀, q z ∈ S₀` using `fun z hz => by`. Rewrite using `[hq]`. Conclude with `mul_mem hh0 (mul_mem hh0 (sub_mem (hp0 i z hz) (h0 _ (hp0 i z hz))))`. Establish `qsub : ∀ z z', q (z - z') = q z - q z'` using `fun z z' => by`. Simplify using `only [hq, map_sub]`.
+
+Use `noncomm_ring`. Take `⟨c, hcd⟩ : ∃ c : S → S, ∀ z, c z = cay (2 ^ m) (q z)` from `⟨_, fun _ => rfl⟩`. Establish `cc : Continuous c`. Rewrite using `[show c = fun z => cay (2 ^ m) (q z) from funext hcd]`. Unfold `cay`.
+
+Use `fun_prop`. Establish `cu : ∀ z, st (c z) * c z = 1 ∧ c z * st (c z) = 1` using `fun z => by`. Rewrite using `[hcd]`. Conclude with `cay_unitary hm hi (hnil _ (hle0 i (qN z))) (qs z)`. Establish `cl : ∀ z, c z - 1 - (q z + q z) ∈ N (i + 1)` using `fun z => by`.
+
+Rewrite using `[hcd, cay_sub (hnil _ (hle0 i (qN z)))]`. Use `hmul _ _ (add_mem (qN z) (qN z)) _ (sum_mem fun j hj => ?_)` and prove the remaining obligations. Use `clear hj`. Proceed by induction on `j with`. Consider the case `zero => simpa using qN z`.
+
+Consider the case `succ j ih => rw [pow_succ]`. Conclude with `hle i (hmul _ _ ih _ (qN z))`. Establish `cN : ∀ z, c z - 1 ∈ N i` using `fun z => by`. Simplify using `using add_mem (hle i (cl z)) (add_mem (qN z) (qN z))`. Establish `c0 : ∀ z ∈ S₀, c z ∈ S₀` using `fun z hz => by`.
+
+Rewrite using `[hcd]`. Conclude with `mul_mem (add_mem (one_mem _) (q0 z hz)) (sum_mem fun j _ => pow_mem (q0 z hz) j)`. Establish `sN : ∀ z, st (c z) - 1 ∈ N i` using `fun z => by`. Simplify `hst _ _ (cN z)` using `[h1]`. Establish `sl : ∀ z, st (c z) - 1 - -(q z + q z) ∈ N (i + 1)` using `fun z => by`.
+
+Use `hst _ _ (cl z)` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, map_add, h1, qs, ← neg_add]`. Then use the resulting hypothesis. Use `⟨(fun x : S × S => x.1 * c x.2) '' (K' ×ˢ K), (hK'.prod hK).image (by fun_prop), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, z⟩, ⟨hk, -⟩, rfl⟩`. Conclude with `⟨umul _ _ (hU k hk).1 (cu z), nmul _ _ _ (hU k hk).2 (hle0 i (cN z))⟩`.
+
+Introduce and unpack `g ⟨u, hg⟩`. Take `⟨y, hy, hyK⟩` from `hcov (g - 1)`. Establish `gl : g - 1 - (q (g - 1) + q (g - 1)) ∈ N (i + 1)`. Establish `e : g - 1 - (q (g - 1) + q (g - 1)) = -(h * (st (g - 1) * (g - 1)))`. Rewrite using `[hq, hhx, hpf i _ hg, map_sub, h1]`.
+
+Establish `: (st g - 1) * (g - 1) = -((g - 1) + (st g - 1))`. Rewrite using `[sub_mul, mul_sub, u.1]`. Use `noncomm_ring`. Rewrite using `[this]`. Generalize the expression as in `g - 1 = n`.
+
+Generalize the expression as in `st g - 1 = n'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `neg_mem (hhN _ _ (hmul _ _ (hst _ _ hg) _ hg))`. Establish `t` using `nlead i _ _ _ _ (nmul i _ _ (sN y) hg) (sN (g - 1 - y)) (nlead i _ _ _ _ (sN y) hg (sl y) gl) (sl (g - 1 - y))`.
+
+Establish `e : -(q y + q y) + (q (g - 1) + q (g - 1)) + -(q (g - 1 - y) + q (g - 1 - y)) = 0`. Rewrite using `[qsub (g - 1) y]`. Normalize the expressions using the abelian group laws. Rewrite `t` using `[e, sub_zero]`. Take `⟨γ, hγ, uγ, k, hk, hgk⟩` from `hcov' _ ⟨umul _ _ (umul _ _ (ust _ (cu y)) u) (ust _ (cu (g - 1 - y))), t⟩`.
+
+Use `⟨c y * γ, mul_mem (c0 y hy) hγ, ⟨umul _ _ (cu y) uγ.1, nmul _ _ _ (hle0 i (cN y)) uγ.2⟩, _, ⟨(k, g - 1 - y), ⟨hk, hyK⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `key 0 (Nat.zero_le m)`.
+-/
 theorem compact_mod_of_filtration [TopologicalSpace S] [IsTopologicalRing S] (S₀ : Subring S) (h : S) (K : Set S)
     (N : ℕ → AddSubgroup S) (p : ℕ → S →+ S) (m : ℕ) (hcont : Continuous st)
     (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
@@ -180,6 +239,9 @@ def raise (i : ℕ) : AddSubgroup S where
 
 variable {ε w}
 
+/- English proof (translation)
+Introduce `a b hab` and use `by have : ε a * (x * y) * ε b = ∑ c, (ε a * x * ε c) * (ε c * y * ε b) := by calc ε a * (x * y) * ε b = ε a * x * (∑ c, ε c) * y * ε b := by rw [he.complete]; simp only [mul_one, mul_assoc] _ = _ := by simp only [Finset.mul_sum, Finset.sum_mul] refine Finset.sum_congr rfl fun c _ …`.
+-/
 theorem raise_mul (he : CompleteOrthogonalIdempotents ε) (i : ℕ) {x y : S} (hx : x ∈ raise ε w i) (hy : y ∈ raise ε w i) :
     x * y ∈ raise ε w (i + 1) := fun a b hab => by
   have : ε a * (x * y) * ε b = ∑ c, (ε a * x * ε c) * (ε c * y * ε b) := by
@@ -196,9 +258,15 @@ theorem raise_mul (he : CompleteOrthogonalIdempotents ε) (i : ℕ) {x y : S} (h
   · rw [hy c b (by push_cast at hab; omega), mul_zero]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Introduce `_ hx a b hab` and use `hx a b (by push_cast; omega)`.
+-/
 theorem raise_le (i : ℕ) : raise ε w (i + 1) ≤ raise ε w i := fun _ hx a b hab => hx a b (by push_cast; omega)
 
 omit [Fintype ι] in
+/- English proof (translation)
+Introduce `a b hab` and use `by obtain ⟨a', ha, wa⟩ := hs a obtain ⟨b', hb, wb⟩ := hs b have := congrArg st (hx b' a' (by omega)) rwa [hm, hm, ← ha, ← hb, hi, hi, map_zero, ← mul_assoc] at this`.
+-/
 theorem raise_st (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
     (hs : ∀ a, ∃ a', st (ε a) = ε a' ∧ w a' = - w a) (i : ℕ) {x : S} (hx : x ∈ raise ε w i) : st x ∈ raise ε w i :=
   fun a b hab => by
@@ -207,6 +275,17 @@ theorem raise_st (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x)
     have := congrArg st (hx b' a' (by omega))
     rwa [hm, hm, ← ha, ← hb, hi, hi, map_zero, ← mul_assoc] at this
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨m, hmb⟩ : ∃ m : ℕ, ∀ a b, w a ≤ w b + m := by`. Take `⟨M, hM⟩` from `(Set.finite_range fun ab : ι × ι => (w ab.1 - w ab.2).toNat).bddAbove`. Use `⟨M, fun a b => ?_⟩` and prove the remaining obligations. Establish `: (w a - w b).toNat ≤ M` using `hM ⟨(a, b), rfl⟩`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hall : ∀ x, ∑ ab : ι × ι, ε ab.1 * x * ε ab.2 = x` using `fun x => by`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [← Finset.mul_sum, ← Finset.sum_mul, he.complete, mul_one, one_mul]`. Set `p : ℕ → S →+ S` to `fun i => { toFun := fun x => ∑ ab ∈ Finset.univ.filter (fun ab : ι × ι => ¬ w ab.1 ≤ w ab.2 + i), ε ab.1 * x * ε ab.2 map_zero' := by simp map_add' := fun x y => by simp only [mul_add, add_mul, Finset.sum_add_distrib] }`. Use `compact_mod_of_filtration S₀ h K (raise ε w) p m hcont hm hi h0 hh0 hh hc hK hcov (fun i => ?_) (fun i x => ?_) (fun i x hx => ?_) (fun i x hx => ?_) raise_le (fun i x hx y hy => raise_mul he i hx hy) (fun i x hx => raise_st hm hi hs i hx) (fun x hx => ?_)` and prove the remaining obligations.
+
+Conclude with `continuous_finsetSum _ fun ab _ => by fun_prop`. Use `sum_mem fun ab hab a b h' => ?_` and prove the remaining obligations. Establish `hab'` using `(Finset.mem_filter.1 hab).2`. Distinguish the cases in `ea : a = ab.1`. Establish `eb : ab.2 ≠ b` using `fun eb => hab' (by rw [eb, ← ea]; exact h')`.
+
+Rewrite using `[mul_assoc, mul_assoc _ (ε ab.2), he.ortho eb, mul_zero, mul_zero]`. Rewrite using `[← mul_assoc, ← mul_assoc, he.ortho ea, zero_mul, zero_mul, zero_mul]`. Use `Eq.trans ?_ (hall x)` and prove the remaining obligations. Conclude with `Finset.sum_filter_of_ne fun ab _ hne h' => hne (hx _ _ h')`. Conclude with `sum_mem fun ab _ => mul_mem (mul_mem (he0 _) hx) (he0 _)`.
+
+Rewrite using `[← hall x]`. Conclude with `Finset.sum_eq_zero fun ab _ => hx _ _ (hmb _ _)`.
+-/
 theorem compact_mod_of_weights [TopologicalSpace S] [IsTopologicalRing S] (S₀ : Subring S) (h : S) (K : Set S)
     (hcont : Continuous st) (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
     (h0 : ∀ x ∈ S₀, st x ∈ S₀) (hh0 : h ∈ S₀) (hh : h + h = 1) (hc : ∀ x, h * x = x * h)
@@ -252,6 +331,11 @@ def fam (st : S →+ S) (u : κ → S) : Option (κ ⊕ κ) → S :=
 def wt (d : κ → ℕ) (M : ℕ) : Option (κ ⊕ κ) → ℤ :=
   fun x => x.elim 0 (Sum.elim (fun j => (M : ℤ) - d j) fun j => (d j : ℤ) - M)
 
+/- English proof (translation)
+Use `CompleteOrthogonalIdempotents.option ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(j | j)`. Conclude with `hu.idem j`. Conclude with `(hm _ _).symm.trans (congrArg st (hu.idem j).eq)`. Introduce and unpack `(i | i) (j | j) hij`.
+
+Conclude with `hu.ortho fun e => hij (congrArg _ e)`. Conclude with `h13 i j`. Conclude with `h31 i j`. Use `(hm _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hu.ortho (fun e => hij (congrArg _ e.symm)), map_zero]`.
+-/
 theorem fam_complete (hm : ∀ x y, st (x * y) = st y * st x) {u : κ → S} (hu : OrthogonalIdempotents u)
     (h13 : ∀ i j, u i * st (u j) = 0) (h31 : ∀ i j, st (u i) * u j = 0) : CompleteOrthogonalIdempotents (fam st u) := by
   refine CompleteOrthogonalIdempotents.option ⟨?_, ?_⟩
@@ -265,6 +349,9 @@ theorem fam_complete (hm : ∀ x y, st (x * y) = st y * st x) {u : κ → S} (hu
     · refine (hm _ _).symm.trans ?_
       rw [hu.ortho (fun e => hij (congrArg _ e.symm)), map_zero]
 
+/- English proof (translation)
+Introduce and unpack `(_ | j | j)`. Use `⟨none, ?_, by simp [wt]⟩` and prove the remaining obligations. Simplify using `[fam, GlobalTheory.TwoStepUnipotent.st_one hm hi, hi, add_comm]`. Conclude with `⟨some (.inr j), rfl, by simp [wt]⟩`. Conclude with `⟨some (.inl j), hi _, by simp [wt]⟩`.
+-/
 theorem fam_st (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x) (u : κ → S) (d : κ → ℕ) (M : ℕ) :
     ∀ a, ∃ a', st (fam st u a) = fam st u a' ∧ wt d M a' = - wt d M a := by
   rintro (_ | j | j)
@@ -273,6 +360,25 @@ theorem fam_st (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) =
   · exact ⟨some (.inr j), rfl, by simp [wt]⟩
   · exact ⟨some (.inl j), hi _, by simp [wt]⟩
 
+/- English proof (translation)
+Establish `e1 : 1 - ∑ j, u j = fam st u none + ∑ j, fam st u (some (.inr j))` using `by simp [fam]; abel`. Establish `e3 : 1 - st (∑ j, u j) = fam st u none + ∑ j, fam st u (some (.inl j))` using `by simp [fam]; abel`. Establish `flip : ∀ i j, u j * st x * u i = 0 ↔ st (u i) * x * st (u j) = 0` using `fun i j => by`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `congrArg st h` as an intermediate fact. Rewrite `this` using `[hm, hm, hi, map_zero, ← mul_assoc]`. Then use the resulting hypothesis. Introduce `h`. Use `congrArg st h` as an intermediate fact. Rewrite `this` using `[hm, hm, hi, hi, map_zero, ← mul_assoc]`. Then use the resulting hypothesis.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, fun i j hij => h (some (.inl j)) (some (.inl i)) (by simp [wt]; omega), fun i j hij => (flip i j).2 (h (some (.inr i)) (some (.inr j)) (by simp [wt]; omega))⟩` and prove the remaining obligations. Rewrite using `[e1, e3]`. Simplify using `only [add_mul, mul_add, Finset.sum_mul, Finset.mul_sum]`.
+
+Rewrite using `[h none none (by simp), Finset.sum_eq_zero fun j _ => h _ none (by have := hd j; simp [wt]; omega), Finset.sum_eq_zero fun j _ => ?_]`. Simplify using the standard rewrite rules. Rewrite using `[h none _ (by have := hd j; simp [wt]; omega), Finset.sum_eq_zero fun i _ => h _ _ (by have := hd j; have := hd i; simp [wt]; omega), add_zero]`. Introduce and unpack `⟨k1, k2, k3⟩`. Establish `l1 : ∀ a, (∀ j, a ≠ some (.inl j)) → fam st u a * (1 - ∑ j, u j) = fam st u a` using `fun a ha => by`.
+
+Rewrite using `[mul_sub, mul_one, Finset.mul_sum, sub_eq_self]`. Conclude with `Finset.sum_eq_zero fun j _ => he.ortho (ha j)`. Establish `l3 : ∀ b, (∀ j, some (.inr j) ≠ b) → (1 - st (∑ j, u j)) * fam st u b = fam st u b` using `fun b hb => by`. Rewrite using `[sub_mul, one_mul, map_sum, Finset.sum_mul, sub_eq_self]`. Conclude with `Finset.sum_eq_zero fun j _ => he.ortho (hb j)`.
+
+Establish `l : ∀ a b, (∀ j, a ≠ some (.inl j)) → (∀ j, some (.inr j) ≠ b) → fam st u a * x * fam st u b = 0` using `fun a b ha hb => by`. Rewrite using `[← l1 a ha, ← l3 b hb]`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `(_ | i | i) (_ | j | j) hab`. Conclude with `l _ _ (by simp) (by simp)`.
+
+Conclude with `l _ _ (by simp) (by simp)`. Use `hd j` as an intermediate fact. Simplify using `[wt] at hab`. Use linear arithmetic over natural numbers and integers. Use `hd i` as an intermediate fact.
+
+Simplify using `[wt] at hab`. Use linear arithmetic over natural numbers and integers. Conclude with `k2 j i (by simp [wt] at hab; omega)`. Use `hd i` as an intermediate fact. Use `hd j` as an intermediate fact.
+
+Simplify using `[wt] at hab`. Use linear arithmetic over natural numbers and integers. Conclude with `l _ _ (by simp) (by simp)`. Conclude with `l _ _ (by simp) (by simp)`. Conclude with `(flip i j).1 (k3 i j (by simp [wt] at hab; omega))`.
+-/
 theorem mem_raise_fam (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x) {u : κ → S}
     (he : CompleteOrthogonalIdempotents (fam st u)) {d : κ → ℕ} {M : ℕ} (hd : ∀ j, d j < M) (x : S) :
     x ∈ raise (fam st u) (wt d M) 0 ↔ (1 - ∑ j, u j) * x * (1 - st (∑ j, u j)) = 0 ∧
@@ -330,6 +436,13 @@ open scoped TensorProduct
 open NumberField IsDedekindDomain MeasureTheory Matrix
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions Formalism.UG GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups GlobalTheory.AutFunCompare
 
+/- English proof (translation)
+Establish `e : C * single j j (1 : A) * L * m * (C * single i i (1 : A) * L) = C * single j i ((L * m * C) j i) * L`. Use `Matrix.single_mul_mul_single j j i i (1 : A) (L * m * C) 1` as an intermediate fact. Rewrite `this` using `[one_mul, mul_one]`. Rewrite using `[← this]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e]`. Use `⟨fun h => ?_, fun h => by simp [h]⟩` and prove the remaining obligations. Use `congrArg (fun X => (L * X * C) j i) h` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, hL, Matrix.one_mul] at this`. Rewrite `this` using `[Matrix.mul_assoc _ L C, hL]`.
+
+Simplify using `using this`.
+-/
 theorem sandwich_eq_zero {A : Type} [CommRing A] {n r : ℕ} {C : Matrix (Fin n) (Fin r) A} {L : Matrix (Fin r) (Fin n) A}
     (hL : L * C = 1) (m : Matrix (Fin n) (Fin n) A) (i j : Fin r) :
     C * single j j (1 : A) * L * m * (C * single i i (1 : A) * L) = 0 ↔ (L * m * C) j i = 0 := by
@@ -344,6 +457,11 @@ theorem sandwich_eq_zero {A : Type} [CommRing A] {n r : ℕ} {C : Matrix (Fin n)
   rw [Matrix.mul_assoc _ L C, hL] at this
   simpa using this
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `hi : d i using Nat.strong_induction_on generalizing i with`. Consider the case `_ n ih`. Introduce `j hij`. Rewrite using `[h, Matrix.sub_apply, Matrix.neg_apply, hX i j (hi ▸ hij), Matrix.mul_apply, Finset.sum_eq_zero fun k _ => ?_]`.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hk : d i ≤ d k`. Rewrite using `[hX i k hk, mul_zero]`. Rewrite using `[ih (d k) (by omega) k rfl j (by omega), zero_mul]`.
+-/
 theorem triangular_inv {A : Type} [CommRing A] {r : ℕ} (d : Fin r → ℕ) (X Y : Matrix (Fin r) (Fin r) A)
     (h : Y = -X - Y * X) (hX : ∀ i j, d i ≤ d j → X j i = 0) : ∀ i j, d i ≤ d j → Y j i = 0 := by
   intro i
@@ -359,6 +477,23 @@ theorem triangular_inv {A : Type} [CommRing A] {r : ℕ} (d : Fin r → ℕ) (X 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   (hc : CMData F E) (V : HSpace E)
 
+/- English proof (translation)
+Rewrite using `[adj_map]`. Use `set φ := inclR (F := F) (E := E) (AF F)`. Establish `hL' : L.map φ * C.map φ = 1` using `by rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e : V.gram⁻¹ * cT (hc.sig : E →+* E) (C * L) * V.gram = V.gram⁻¹ * cT (hc.sig : E →+* E) L * (cT (hc.sig : E →+* E) C * V.gram)`. Rewrite using `[cT_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `hT : cT (hc.sig : E →+* E) C * V.gram * (V.gram⁻¹ * cT (hc.sig : E →+* E) L) = 1`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ (gram_det_isUnit V), ← cT_mul, hL, cT_one]`. Rewrite using `[e]`. Generalize the expression as in `cT (hc.sig : E →+* E) C * V.gram = T at hT ⊢`.
+
+Generalize the expression as in `V.gram⁻¹ * cT (hc.sig : E →+* E) L = P at hT ⊢`. Establish `e1 : 1 - (P * T).map φ = (1 - P * T).map φ`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use extensionality with `i k`. Take `⟨a, ha⟩` from `h (fun j => (1 - P * T : Matrix (Fin V.rank) (Fin V.rank) E) j k) (by`. Establish `: T * (1 - P * T) = 0`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, hT, Matrix.mul_one, Matrix.one_mul, sub_self]`. Use function extensionality and compare the values at `j`.
+
+Conclude with `congrFun (congrFun this j) k)`. Establish `h2 : (1 - (C * L).map φ) * C.map φ = 0`. Rewrite using `[Matrix.sub_mul, Matrix.map_mul, Matrix.mul_assoc, hL', Matrix.mul_one, Matrix.one_mul, sub_self]`. Establish `h3` using `congrArg ((1 - (C * L).map φ) *ᵥ ·) ha`. Simplify using `only [Matrix.mulVec_mulVec, h2, Matrix.zero_mulVec] at h3`.
+
+Rewrite using `[e1]`. Conclude with `congrFun h3 i`. Introduce `h x hx`. Use `⟨(L.map φ * m) *ᵥ fun i => φ (x i), ?_⟩` and prove the remaining obligations. Establish `h1 : (T.map φ) *ᵥ (fun i => φ (x i)) = 0`.
+
+Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec φ T x i` as an intermediate fact. Rewrite `this` using `[hx]`. Simplify `this.symm` using `[Function.comp_def]`. Establish `h2` using `congrArg (· *ᵥ fun i => φ (x i)) h`.
+
+Simplify using `only [Matrix.zero_mulVec] at h2`. Rewrite `h2` using `[← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.map_mul (L := P), ← Matrix.mulVec_mulVec _ (P.map φ), h1, Matrix.mulVec_zero, sub_zero, Matrix.sub_mul, Matrix.one_mul, Matrix.sub_mulVec, sub_eq_zero, Matrix.map_mul, Matrix.mul_assoc]`. Rewrite using `[h2, Matrix.mulVec_mulVec]`.
+-/
 theorem perp_iff_idem {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) E) (L : Matrix (Fin r) (Fin V.rank) E)
     (hL : L * C = 1) (m : Matrix (Fin V.rank) (Fin V.rank) (AF F ⊗[F] E)) :
     (∀ x : Fin V.rank → E, (cT (hc.sig : E →+* E) C * V.gram) *ᵥ x = 0 →
@@ -413,15 +548,30 @@ def radSet {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) E) (d : Fin r → ℕ) : S
 noncomputable def idem {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) E) (L : Matrix (Fin r) (Fin V.rank) E) (j : Fin r) :
     Matrix (Fin V.rank) (Fin V.rank) (AF F ⊗[F] E) := (C * single j j (1 : E) * L).map (inclR (F := F) (AF F))
 
+/- English proof (translation)
+Rewrite using `[idem, Matrix.map_mul, Matrix.map_mul, Matrix.map_single, map_one]`.
+-/
 theorem idem_eq {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) E) (L : Matrix (Fin r) (Fin V.rank) E) (j : Fin r) :
     idem (F := F) V C L j = C.map (inclR (F := F) (AF F)) * single j j (1 : AF F ⊗[F] E) * L.map (inclR (F := F) (AF F)) := by
   rw [idem, Matrix.map_mul, Matrix.map_mul, Matrix.map_single, map_one]
 
+/- English proof (translation)
+Simplify using `only [idem_eq]`. Rewrite using `[← Matrix.sum_mul, ← Matrix.mul_sum, Matrix.sum_single_one, Matrix.mul_one, Matrix.map_mul]`.
+-/
 theorem sum_idem {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) E) (L : Matrix (Fin r) (Fin V.rank) E) :
     ∑ j, idem (F := F) V C L j = (C * L).map (inclR (F := F) (AF F)) := by
   simp only [idem_eq]
   rw [← Matrix.sum_mul, ← Matrix.mul_sum, Matrix.sum_single_one, Matrix.mul_one, Matrix.map_mul]
 
+/- English proof (translation)
+Establish `e : ∀ j : Fin r, V.gram⁻¹ * cT (hc.sig : E →+* E) (C * single j j (1 : E) * L) * V.gram = V.gram⁻¹ * cT (hc.sig : E →+* E) L * cT (hc.sig : E →+* E) (single j j (1 : E)) * (cT (hc.sig : E →+* E) C * V.gram)` using `fun j => by`. Rewrite using `[cT_mul, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `e2 : ∀ i j : Fin r, C * single i i (1 : E) * L * (C * single j j (1 : E) * L) = C * (single i i (1 : E) * single j j (1 : E)) * L` using `fun i j => by`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc L C, hL, Matrix.one_mul]`. Use `fam_complete (adj_mul hc V) ⟨fun j => ?_, fun i j hij => ?_⟩ (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Use `show _ * _ = _`. Rewrite using `[idem, ← Matrix.map_mul, e2, Matrix.single_mul_single_same, one_mul]`. Use `show _ * _ = _`.
+
+Rewrite using `[idem, idem, ← Matrix.map_mul, e2, Matrix.single_mul_single_of_ne (h := hij)]`. Simplify using the standard rewrite rules. Rewrite using `[idem, idem, adj_map, e, ← Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc] at hLL ⊢`. Rewrite using `[← Matrix.mul_assoc V.gram⁻¹, ← Matrix.mul_assoc L, hLL]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[idem, idem, adj_map, e, ← Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc] at h0 ⊢`. Rewrite using `[← Matrix.mul_assoc V.gram C, ← Matrix.mul_assoc (cT _ C), h0]`. Simplify using the standard rewrite rules.
+-/
 theorem idem_complete {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) E) (L : Matrix (Fin r) (Fin V.rank) E) (hL : L * C = 1)
     (h0 : cT (hc.sig : E →+* E) C * V.gram * C = 0) (hLL : L * V.gram⁻¹ * cT (hc.sig : E →+* E) L = 0) :
     CompleteOrthogonalIdempotents (fam (adj hc V) (idem V C L)) := by
@@ -448,10 +598,30 @@ theorem idem_complete {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) E) (L : Matrix 
     rw [← Matrix.mul_assoc V.gram C, ← Matrix.mul_assoc (cT _ C), h0]
     simp
 
+/- English proof (translation)
+Establish `h` using `(adj_mul_self_iff hc V g.1).2 g.2`. Conclude with `(Units.inv_eq_of_mul_eq_one_left h).symm`.
+-/
 theorem adj_mat (g : GA hc V) : adj hc V (HA.mat _ hc.sig V.gram g).1 = (HA.mat _ hc.sig V.gram g⁻¹).1 := by
   have h := (adj_mul_self_iff hc V g.1).2 g.2
   exact (Units.inv_eq_of_mul_eq_one_left h).symm
 
+/- English proof (translation)
+Rewrite using `[mem_raise_fam (adj_mul hc V) (adj_adj hc V) (idem_complete hc V C L hL h0 hLL) hd, sum_idem, ← perp_iff_idem hc V C L hL, map_sub, adj_mat, GlobalTheory.TwoStepUnipotent.st_one (adj_mul hc V) (adj_adj hc V)]`. Establish `hinv : (HA.mat _ hc.sig V.gram g⁻¹).1 * (HA.mat _ hc.sig V.gram g).1 = 1` using `Units.inv_mul g.1`. Unfold `radSet`. Rewrite using `[Set.mem_ofPred_eq]`. Generalize the expression as in `(HA.mat _ hc.sig V.gram g⁻¹).1 = y at hinv ⊢`.
+
+Generalize the expression as in `(HA.mat _ hc.sig V.gram g).1 = x at hinv ⊢`. Use `set φ := inclR (F := F) (E := E) (AF F)`. Establish `hL' : L.map φ * C.map φ = 1` using `by rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `sw : ∀ (m : Matrix (Fin V.rank) (Fin V.rank) (AF F ⊗[F] E)) (i j : Fin r), idem V C L j * m * idem V C L i = 0 ↔ (L.map φ * m * C.map φ : Matrix (Fin r) (Fin r) (AF F ⊗[F] E)) j i = 0` using `fun m i j => by rw [idem_eq, idem_eq]; exact sandwich_eq_zero hL' m i j`. Simplify using `only [sw]`.
+
+Establish `co : ∀ (i : Fin r) (a : Fin r → AF F ⊗[F] E), (x - 1) *ᵥ (fun k => φ (C k i)) = C.map φ *ᵥ a → ∀ j, (L.map φ * (x - 1) * C.map φ : Matrix (Fin r) (Fin r) (AF F ⊗[F] E)) j i = a j` using `fun i a ha j => by`. Use `congrArg (L.map φ *ᵥ ·) ha` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, hL', Matrix.one_mulVec] at this`. Conclude with `congrFun this j`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Establish `k : ∀ i j : Fin r, d i ≤ d j → (L.map φ * (x - 1) * C.map φ : Matrix (Fin r) (Fin r) (AF F ⊗[F] E)) j i = 0` using `fun i j hij => by`. Take `⟨a, ha, ha'⟩` from `h1 i`. Rewrite using `[co i a ha', ha j hij]`. Use `⟨h2, k, triangular_inv d _ _ ?_ k⟩` and prove the remaining obligations.
+
+Establish `e : (x - 1) * C.map φ = C.map φ * (L.map φ * (x - 1) * C.map φ)`. Use extensionality with `k i`. Take `⟨a, -, ha'⟩` from `h1 i`. Rewrite using `[Matrix.mul_apply (M := C.map φ)]`. Simplify using `only [co i a ha']`.
+
+Conclude with `congrFun ha' k`. Establish `e' : y - 1 = -(x - 1) - (y - 1) * (x - 1)`. Rewrite using `[sub_mul, mul_sub, hinv]`. Use `noncomm_ring`. Rewrite using `[Matrix.mul_assoc (L.map φ * (y - 1)), ← e]`.
+
+Use `conv_lhs => rw [e']`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Introduce and unpack `⟨h2, h1, -⟩`. Use `⟨fun i => ?_, h2⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `h2 (fun k => C k i) (funext fun j => congrFun (congrFun h0 j) i)`.
+
+Conclude with `⟨a, fun j hij => by rw [← co i a ha, h1 i j hij], ha⟩`.
+-/
 theorem mem_radSet_iff {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) E) (L : Matrix (Fin r) (Fin V.rank) E) (hL : L * C = 1)
     (h0 : cT (hc.sig : E →+* E) C * V.gram * C = 0) (hLL : L * V.gram⁻¹ * cT (hc.sig : E →+* E) L = 0)
     {d : Fin r → ℕ} {M : ℕ} (hd : ∀ j, d j < M) (g : GA hc V) :
@@ -496,6 +666,31 @@ theorem mem_radSet_iff {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) E) (L : Matrix
     obtain ⟨a, ha⟩ := h2 (fun k => C k i) (funext fun j => congrFun (congrFun h0 j) i)
     exact ⟨a, fun j hij => by rw [← co i a ha, h1 i j hij], ha⟩
 
+/- English proof (translation)
+Take `⟨L, hL, hLL⟩` from `exists_dual hc V C hC h0`. Choose the witnesses or unpack the hypotheses as in `⟨M, hd⟩ : ∃ M, ∀ j, d j < M := by`. Take `⟨M, hM⟩` from `(Set.finite_range d).bddAbove`. Conclude with `⟨M + 1, fun j => Nat.lt_succ_of_le (hM ⟨j, rfl⟩)⟩`. Take `⟨K, hK, hKs⟩` from `tens_cocompact (F := F) (E := E)`.
+
+Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Use `set φ := inclR (F := F) (E := E) (AF F) with hφ`. Establish `he` using `idem_complete hc V C L hL h0 hLL`. Establish `hs` using `fam_st (adj_mul hc V) (adj_adj hc V) (idem (F := F) V C L) d M`.
+
+Establish `h1` using `GlobalTheory.TwoStepUnipotent.st_one (adj_mul hc V) (adj_adj hc V)`. Establish `hcont : Continuous (adj hc V)` using `(continuous_const.matrix_mul (continuous_id.matrix_map (GlobalTheory.AdelicUnitaryTop.continuous_sigR (AF F) hc.sig)).matrix_transpose).matrix_mul continuous_const`. Establish `hst0 : ∀ x ∈ (φ.mapMatrix (m` using `Fin V.rank)).range, adj hc V x ∈ (φ.mapMatrix (m := Fin V.rank)).range := by`. Introduce and unpack `_ ⟨X, rfl⟩`. Conclude with `⟨_, (adj_map hc V X).symm⟩`.
+
+Establish `hmem : ∀ g, g ∈ Subgroup.closure (radSet hc V C d) ↔ (HA.mat _ hc.sig V.gram g).1 - 1 ∈ raise (fam (adj hc V) (idem V C L)) (wt d M) 0` using `fun g => by`. Use `⟨fun hg => ?_, fun hg => Subgroup.subset_closure ((mem_radSet_iff hc V C L hL h0 hLL hd g).2 hg)⟩` and prove the remaining obligations. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx => exact (mem_radSet_iff hc V C L hL h0 hLL hd x).1 hx`. Consider the case `one => exact (sub_self (1 : Matrix (Fin V.rank) (Fin V.rank) (AF F ⊗[F] E))).symm ▸ zero_mem _`.
+
+Consider the case `mul x y _ _ hx hy`. Establish `e : (HA.mat _ hc.sig V.gram (x * y)).1 = (HA.mat _ hc.sig V.gram x).1 * (HA.mat _ hc.sig V.gram y).1` using `rfl`. Rewrite using `[e]`. Generalize the expression as in `(HA.mat _ hc.sig V.gram x).1 = a at hx ⊢`. Generalize the expression as in `(HA.mat _ hc.sig V.gram y).1 = b at hy ⊢`.
+
+Establish `: a * b - 1 = (a - 1) * (b - 1) + (a - 1) + (b - 1)` using `by noncomm_ring`. Rewrite using `[this]`. Conclude with `add_mem (add_mem (raise_le 0 (raise_mul he 0 hx hy)) hx) hy`. Consider the case `inv x _ hx`. Use `raise_st (adj_mul hc V) (adj_adj hc V) hs 0 hx` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, adj_mat, h1]`. Then use the resulting hypothesis. Apply the tactic sequence `obtain ⟨K', hK', k1, k2⟩ := compact_mod_of_weights (st := adj hc V) (w := wt d M) (φ.mapMatrix (m := Fin V.rank)).range (Matrix.scalar _ (φ (1 / 2))) (Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => K) hcont (adj_mul hc V) (adj_adj hc V) hst0 ⟨Matrix.scalar _ (1 / 2), by ext i …`. Conclude with `⟨_, ⟨Matrix.of y, rfl⟩, fun i _ j _ => hy i j⟩) he`. Use the proof step `(by`. Establish `hu : ∀ j, idem (F` using `F) V C L j ∈ (φ.mapMatrix (m := Fin V.rank)).range := fun j => ⟨_, rfl⟩`.
+
+Establish `hv : ∀ j : Fin r ⊕ Fin r, Sum.elim (idem (F` using `F) V C L) (fun j => adj hc V (idem V C L j)) j ∈ (φ.mapMatrix (m := Fin V.rank)).range := by`. Introduce and unpack `(j | j)`. Use `exacts [hu j, hst0 _ (hu j)]`. Introduce and unpack `(_ | j)`. Use `exacts [sub_mem (one_mem _) (sum_mem fun j _ => hv j), hv j]) hs`.
+
+Set `lift : ∀ x : Matrix (Fin V.rank) (Fin V.rank) (AF F ⊗[F] E), (adj hc V x * x = 1 ∧ x * adj hc V x = 1) ∧ x - 1 ∈ raise (fam (adj hc V) (idem V C L)) (wt d M) 0 → Subgroup.closure (radSet hc V C d)` to `fun x hx => ⟨⟨⟨x, adj hc V x, hx.1.2, hx.1.1⟩, (adj_mul_self_iff hc V _).1 hx.1.1⟩, (hmem _).2 hx.2⟩`. Set `f : Subgroup.closure (radSet hc V C d) → _` to `fun n => Units.embedProduct _ (HA.mat _ hc.sig V.gram n.1)`. Establish `hf : Topology.IsInducing f` using `Units.isInducing_embedProduct.comp (Topology.IsInducing.subtypeVal.comp Topology.IsInducing.subtypeVal)`. Use `⟨f ⁻¹' ((fun x => (x, MulOpposite.op (adj hc V x))) '' K'), hf.isCompact_preimage' (hK'.image (continuous_id.prodMk (MulOpposite.continuous_op.comp hcont))) ?_, fun n => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨lift x (k1 x hx), rfl⟩`. Establish `u` using `(adj_mul_self_iff hc V _).2 n.1.2`. Take `⟨γ, ⟨a, ha⟩, p1, k, hk, p2⟩` from `k2 (HA.mat _ hc.sig V.gram n.1).1 ⟨⟨u, mul_eq_one_comm.1 u⟩, (hmem _).1 n.2⟩`. Take `⟨b, hb⟩` from `hst0 γ ⟨a, ha⟩`. Use `⟨lift γ p1, ?_, lift k (k1 k hk), ⟨k, hk, rfl⟩, Subtype.ext (Subtype.ext (Units.ext p2))⟩` and prove the remaining obligations.
+
+Establish `inj : Function.Injective (φ.mapMatrix (m` using `Fin V.rank)) := Matrix.map_injective inclA_injective`. Establish `hab : a * b = 1` using `inj (by rw [map_mul, ha, hb, map_one, p1.1.2])`. Use `⟨⟨⟨a, b, hab, mul_eq_one_comm.1 hab⟩, inj ?_⟩, Subtype.ext (Units.ext ha)⟩` and prove the remaining obligations. Establish `hγ' : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) hc.sig) γ * V.gram.map φ * γ = V.gram.map φ` using `(lift γ p1).1.2`. Rewrite `hγ'` using `[← ha]`.
+
+Rewrite using `[map_mul, map_mul]`. Conclude with `(congrArg (· * V.gram.map φ * a.map φ) (GlobalTheory.AutFunCounterexample.cT_map_gen hc.sig a).symm).trans hγ'`.
+-/
 theorem closure_radSet_cocompact {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) E) (hC : LinearIndependent E Cᵀ)
     (h0 : cT (hc.sig : E →+* E) C * V.gram * C = 0) (d : Fin r → ℕ) :
     ∃ K : Set (Subgroup.closure (radSet hc V C d)), IsCompact K ∧
@@ -579,6 +774,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D B ρ e he`. Establish `key : ∀ (d : Fin ρ → ℕ) (H : Subgroup (GA D B)), H = Subgroup.closure (radSet D.sp.cm B e d) → ∃ K : Set H, IsCompact K ∧ ∀ n, ∃ γ ∈ (GQ B).subgroupOf H, ∃ k ∈ K, n = γ * k`. Introduce and unpack `d _ rfl`. Rewrite using `[GlobalTheory.AutFunCompare.GQ_eq]`. Conclude with `closure_radSet_cocompact D.sp.cm B e he.1 he.2 d`.
+
+Use `⟨key Fin.val _ rfl, key (fun _ => 0) _ ?_⟩` and prove the remaining obligations. Establish `hs : (NI B e : Set (GA D B)) = radSet D.sp.cm B e fun _ => 0`. Use extensionality with `g`. Rewrite using `[GlobalTheory.AutFunCompare.NI_eq, SetLike.mem_coe, GlobalTheory.AutFunCompare.mem_unipRad_colSpan]`. Use `and_congr ⟨fun h i => ⟨0, fun _ _ => rfl, ?_⟩, fun h => ?_⟩ Iff.rfl` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_zero]`. Conclude with `funext fun k => congrFun (congrFun h k) i`. Use extensionality with `k i`. Take `⟨a, ha, h'⟩` from `h i`. Rewrite `h'` using `[show a = 0 from funext fun j => ha j le_rfl, Matrix.mulVec_zero]`.
+
+Conclude with `congrFun h' k`. Rewrite using `[← hs, Subgroup.closure_eq]`.
+-/
 theorem radicals_cocompact : ∀ (D : D7) (B : HSp D) (ρ : ℕ) (e : Matrix (Fin B.rank) (Fin ρ) D.host.E), IsIsoSub B e → (∃ K : Set (NFlag B e), IsCompact K ∧ ∀ n, ∃ γ ∈ NFlagQ B e, ∃ k ∈ K, n = γ * k) ∧ (∃ K : Set (NI B e), IsCompact K ∧ ∀ n, ∃ γ ∈ NIQ B e, ∃ k ∈ K, n = γ * k) := by
   intro D B ρ e he
   have key : ∀ (d : Fin ρ → ℕ) (H : Subgroup (GA D B)), H = Subgroup.closure (radSet D.sp.cm B e d) →

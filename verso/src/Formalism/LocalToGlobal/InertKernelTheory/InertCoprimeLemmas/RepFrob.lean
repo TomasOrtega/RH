@@ -12,16 +12,35 @@ open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 
 variable {p : ℕ} [hp : Fact p.Prime]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nK (x : MaximalUnramifiedExtension p) : ‖x‖ = ‖(x : ℂ_[p])‖ := rfl
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+-/
 theorem nadd1 {a b : ℂ_[p]} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a + b‖ ≤ c := (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `nadd1 ha (by rwa [norm_neg])`.
+-/
 theorem nsub1 {a b : ℂ_[p]} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a - b‖ ≤ c := by
   rw [sub_eq_add_neg]
   exact nadd1 ha (by rwa [norm_neg])
 
+/- English proof (translation)
+The claim follows from `inv_le_one_of_one_le₀ (by exact_mod_cast hp.out.one_lt.le)`.
+-/
 theorem pinv_le_one : (p : ℝ)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ (by exact_mod_cast hp.out.one_lt.le)
 
+/- English proof (translation)
+Take `⟨-, -, -, -, h⟩` from `hσ`. Establish `h1 : ‖((σ a : MaximalUnramifiedExtension p) : ℂ_[p]) - ((a : MaximalUnramifiedExtension p) : ℂ_[p]) ^ p‖ ≤ 1`. Establish `h0` using `h a ha`. Rewrite `h0` using `[nK]`. Move the coercions through the operations in `at h0`.
+
+Conclude with `h0.trans pinv_le_one`. Establish `h2 : ‖((a : MaximalUnramifiedExtension p) : ℂ_[p]) ^ p‖ ≤ 1`. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) (by rwa [nK] at ha)`. Rewrite using `[nK]`.
+
+Establish `h3` using `nadd1 h1 h2`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem unr_norm_le {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p} (hσ : Formalism.InvariantFactorPaths.G7.UnrOK (MaximalUnramifiedExtension p) p σ) {a : MaximalUnramifiedExtension p} (ha : ‖a‖ ≤ 1) :
     ‖σ a‖ ≤ 1 := by
   obtain ⟨-, -, -, -, h⟩ := hσ
@@ -37,12 +56,28 @@ theorem unr_norm_le {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedEx
   have h3 := nadd1 h1 h2
   rwa [sub_add_cancel] at h3
 
+/- English proof (translation)
+Establish `h : (N : ℂ_[p]) = ((algebraMap ℚ_[p] (PadicAlgCl p) (N : ℚ_[p]) : PadicAlgCl p) : ℂ_[p])`. Simplify using the standard rewrite rules. Rewrite using `[h, PadicComplex.norm_extends']`. Conclude with `Padic.norm_natCast_eq_one_iff.2 hc.symm`.
+-/
 theorem norm_nat_coprime {N : ℕ} (hc : Nat.Coprime N p) : ‖(N : ℂ_[p])‖ = 1 := by
   have h : (N : ℂ_[p]) = ((algebraMap ℚ_[p] (PadicAlgCl p) (N : ℚ_[p]) : PadicAlgCl p) : ℂ_[p]) := by
     simp
   rw [h, PadicComplex.norm_extends']
   exact Padic.norm_natCast_eq_one_iff.2 hc.symm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hu1 : ‖u‖ ≤ 1`. Establish `h3` using `nadd1 (a := u - 1) (b := 1) (c := 1) h1.le (by rw [norm_one])`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hg : ∀ i : ℕ, ‖∑ j ∈ Finset.range i, u ^ j‖ ≤ 1` using `fun i => IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun j _ => by`.
+
+Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) hu1`. Establish `hi : ∀ i : ℕ, ‖u ^ i - 1‖ ≤ ‖u - 1‖` using `fun i => by`. Rewrite using `[← geom_sum_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hg i`. Use `_ = ‖u - 1‖ := one_mul _`. Establish `hS : ‖∑ i ∈ Finset.range N, (u ^ i - 1)‖ ≤ ‖u - 1‖` using `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => hi i`. Establish `hsum : ∑ i ∈ Finset.range N, u ^ i = (N : ℂ_[p]) + ∑ i ∈ Finset.range N, (u ^ i - 1)`. Rewrite using `[Finset.sum_sub_distrib]`.
+
+Simplify using the standard rewrite rules. Establish `hz : ∑ i ∈ Finset.range N, u ^ i = 0`. Establish `h2 : (∑ i ∈ Finset.range N, u ^ i) * (u - 1) = 0`. Rewrite using `[geom_sum_mul, hu, sub_self]`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd (sub_eq_zero.1 h) hne`. Establish `hNn` using `norm_nat_coprime (p := p) hc`. Establish `h4 : ‖(N : ℂ_[p]) + ∑ i ∈ Finset.range N, (u ^ i - 1)‖ = 1`. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hNn]; exact (hS.trans_lt h1).ne'), hNn]`.
+
+Conclude with `max_eq_left (hS.trans h1.le)`. Rewrite `h4` using `[← hsum, hz, norm_zero]`. Conclude with `zero_ne_one h4`.
+-/
 theorem eq_one_of_root {u : ℂ_[p]} {N : ℕ} (hc : Nat.Coprime N p) (hu : u ^ N = 1) (h1 : ‖u - 1‖ < 1) :
     u = 1 := by
   by_contra hne
@@ -77,6 +112,11 @@ theorem eq_one_of_root {u : ℂ_[p]} {N : ℕ} (hc : Nat.Coprime N p) (hu : u ^ 
   rw [← hsum, hz, norm_zero] at h4
   exact zero_ne_one h4
 
+/- English proof (translation)
+Establish `hx` using `Formalism.L2.G.Pend.wToC_mem_Wp p x`. Establish `hpp : p.Prime` using `Fact.out`. Establish `hle : Subring.closure {ζ : ℂ_[p] | ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ ζ ^ n = 1} ≤ (Subfield.closure {ζ : ℂ_[p] | ∃ n : ℕ, 0 < n ∧ ¬ p ∣ n ∧ ζ ^ n = 1}).toSubring`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `ζ ⟨n, hn, hc, hz⟩`.
+
+Conclude with `Subfield.subset_closure ⟨n, hn, (Nat.Prime.coprime_iff_not_dvd hpp).1 hc.symm, hz⟩`. Establish `hsub : ((Subring.closure {ζ : ℂ_[p] | ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ ζ ^ n = 1} : Subring ℂ_[p]) : Set ℂ_[p]) ⊆ ((Subfield.closure {ζ : ℂ_[p] | ∃ n : ℕ, 0 < n ∧ ¬ p ∣ n ∧ ζ ^ n = 1} : Subfield ℂ_[p]) : Set ℂ_[p])` using `fun y hy => hle hy`. Conclude with `closure_mono hsub hx`.
+-/
 theorem wToC_mem_kur (x : WW p) : Formalism.L2.G.Pend.wToC p x ∈ MaximalUnramifiedExtension p := by
   have hx := Formalism.L2.G.Pend.wToC_mem_Wp p x
   have hpp : p.Prime := Fact.out
@@ -94,10 +134,33 @@ variable (p) in
 
 def wK : WW p →+* MaximalUnramifiedExtension p := (Formalism.L2.G.Pend.wToC p).codRestrict (MaximalUnramifiedExtension p) wToC_mem_kur
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wK_coe (x : WW p) : ((wK p x : MaximalUnramifiedExtension p) : ℂ_[p]) = Formalism.L2.G.Pend.wToC p x := rfl
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.G.Pend.norm_wToC_le p x`.
+-/
 theorem norm_wK_le (x : WW p) : ‖wK p x‖ ≤ 1 := Formalism.L2.G.Pend.norm_wToC_le p x
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, WittVector.teichmuller_zero, map_zero, map_zero, zero_pow hp.out.ne_zero]`. Take `⟨m, hm, hc, h1⟩` from `Formalism.L2.G.Pend.exists_coprime_pow_eq_one p hy`. Use `set a : MaximalUnramifiedExtension p := wK p (WittVector.teichmuller p y) with ha`. Establish `ham : a ^ m = 1` using `by rw [ha, ← map_pow, ← map_pow, h1, map_one, map_one]`.
+
+Establish `hσm : (σ a) ^ m = 1` using `by rw [← map_pow, ham, map_one]`. Establish `hz : (a : ℂ_[p]) ^ m = 1`. Use `congrArg (fun z : MaximalUnramifiedExtension p => (z : ℂ_[p])) ham` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+
+Establish `hcz : ((σ a : MaximalUnramifiedExtension p) : ℂ_[p]) ^ m = 1`. Use `congrArg (fun z : MaximalUnramifiedExtension p => (z : ℂ_[p])) hσm` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hnz : ‖(a : ℂ_[p])‖ = 1`.
+
+Use `congrArg norm hz` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 this`. Establish `ha0 : (a : ℂ_[p]) ≠ 0` using `by intro h0; rw [h0, norm_zero] at hnz; exact zero_ne_one hnz`. Establish `hb : ‖((σ a - a ^ p : MaximalUnramifiedExtension p) : ℂ_[p])‖ ≤ (p : ℝ)⁻¹` using `hσ.2.2.2.2 a (by rw [nK, hnz])`.
+
+Use `set u : ℂ_[p] := ((σ a : MaximalUnramifiedExtension p) : ℂ_[p]) * ((a : ℂ_[p]) ^ p)⁻¹ with hu`. Establish `hap0 : (a : ℂ_[p]) ^ p ≠ 0` using `pow_ne_zero _ ha0`. Establish `hum : u ^ m = 1`. Rewrite using `[hu, mul_pow, hcz, inv_pow, ← pow_mul, mul_comm p m, pow_mul, hz, one_pow, inv_one, mul_one]`. Establish `hu1 : ‖u - 1‖ < 1`.
+
+Establish `e : u - 1 = ((σ a - a ^ p : MaximalUnramifiedExtension p) : ℂ_[p]) * ((a : ℂ_[p]) ^ p)⁻¹`. Rewrite using `[hu]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, norm_mul, norm_inv, norm_pow, hnz, one_pow, inv_one, mul_one]`.
+
+Conclude with `lt_of_le_of_lt hb (inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt))`. Establish `hu'` using `eq_one_of_root hc hum hu1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e2 : ((σ a : MaximalUnramifiedExtension p) : ℂ_[p]) = u * (a : ℂ_[p]) ^ p` using `by rw [hu]; field_simp`. Rewrite using `[e2, hu', one_mul]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem frob_teich {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p} (hσ : Formalism.InvariantFactorPaths.G7.UnrOK (MaximalUnramifiedExtension p) p σ) (y : Formalism.MainNotions.FormalGroupSystem.kb p) :
     σ (wK p (WittVector.teichmuller p y)) = wK p (WittVector.teichmuller p y) ^ p := by
   by_cases hy : y = 0
@@ -134,6 +197,19 @@ theorem frob_teich {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExt
   push_cast
   rfl
 
+/- English proof (translation)
+Use `set f : WW p →+* MaximalUnramifiedExtension p := σ.comp (wK p) with hf`. Use `set g : WW p →+* MaximalUnramifiedExtension p := (wK p).comp (sigW p) with hg`. Establish `ht : ∀ y, f (WittVector.teichmuller p y) = g (WittVector.teichmuller p y)`. Introduce `y`. Rewrite using `[hf, hg, RingHom.comp_apply, RingHom.comp_apply, frob_teich hσ y, Formalism.L2.G.Pend.sigW_teich, map_pow, map_pow]`.
+
+Establish `hfl : ∀ c, ‖f c‖ ≤ 1` using `fun c => unr_norm_le hσ (norm_wK_le c)`. Establish `hgl : ∀ c, ‖g c‖ ≤ 1` using `fun c => norm_wK_le _`. Use `show f x = g x`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Formalism.L2.G.Pend.eq_of_close p` to reduce the goal to its premises.
+
+Introduce `N`. Take `⟨c, hc⟩` from `WittVector.dvd_sub_sum_teichmuller_iterateFrobeniusEquiv_coeff x N`. Use `set S := ∑ i ∈ Finset.Iic N, (WittVector.teichmuller p (((_root_.frobeniusEquiv (Formalism.MainNotions.FormalGroupSystem.kb p) p).symm ^ i) (x.coeff i)) * (p : WW p) ^ i) with hS`. Establish `hfS : f S = g S`. Rewrite using `[hS, map_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ht, map_pow, map_pow, map_natCast, map_natCast]`. Establish `hx : x = S + (p : WW p) ^ (N + 1) * c` using `by rw [← hc]; ring`. Establish `e : ((f x : MaximalUnramifiedExtension p) : ℂ_[p]) - ((g x : MaximalUnramifiedExtension p) : ℂ_[p]) = (p : ℂ_[p]) ^ (N + 1) * (((f c : MaximalUnramifiedExtension p) : ℂ_[p]) - ((g c : MaximalUnramifiedExtension p) : ℂ_[p]))`. Rewrite using `[hx, map_add, map_add, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast, hfS]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_pow, Formalism.L2.G.Pend.norm_p_C]`. Establish `h1 : ‖((f c : MaximalUnramifiedExtension p) : ℂ_[p]) - ((g c : MaximalUnramifiedExtension p) : ℂ_[p])‖ ≤ 1` using `nsub1 (hfl c) (hgl c)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_one]`. Conclude with `pow_le_pow_of_le_one (by positivity) pinv_le_one (Nat.le_succ N)`.
+-/
 theorem frob_wK {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p} (hσ : Formalism.InvariantFactorPaths.G7.UnrOK (MaximalUnramifiedExtension p) p σ) (x : WW p) :
     σ (wK p x) = wK p (sigW p x) := by
   set f : WW p →+* MaximalUnramifiedExtension p := σ.comp (wK p) with hf
@@ -168,6 +244,9 @@ theorem frob_wK {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtens
       rw [mul_one]
       exact pow_le_pow_of_le_one (by positivity) pinv_le_one (Nat.le_succ N)
 
+/- English proof (translation)
+The claim follows from `| 0, s => s.elim0 | n + 1, s => by rw [finRotate_apply, Fin.val_add, Fin.val_one', Nat.add_mod_mod]`.
+-/
 theorem finRotate_val : ∀ {n : ℕ} (s : Fin n), ((finRotate n s : Fin n) : ℕ) = (s.val + 1) % n
   | 0, s => s.elim0
   | n + 1, s => by
@@ -180,13 +259,22 @@ variable (X : Sys p) (E : Formalism.L2.G.Pend.CEmbC X.G)
 def twT (v : X.Pl) (t : ℕ) : X.G.P.Qq v →+* ℂ_[p] :=
   E.iK.comp ((X.G.P.ι v).comp (X.G.P.σ v ^ t : X.G.P.Qq v ≃+* X.G.P.Qq v).toRingHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twE_eq (v : X.Pl) (s : Fin (X.G.P.n' v)) : twE X E v s = twT X E v s.val := rfl
 
+/- English proof (translation)
+Rewrite using `[← Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap p]`. Conclude with `E.compat v t x`.
+-/
 theorem twT_alg (v : X.Pl) (t : ℕ) (x : X.G.P.W v) :
     twT X E v t (algebraMap (X.G.P.W v) (X.G.P.Qq v) x) = Formalism.L2.G.Pend.wToC p ((sigW p)^[t] (E.rd v x)) := by
   rw [← Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap p]
   exact E.compat v t x
 
+/- English proof (translation)
+Use `(X.G.P.setting v).frac_alt` as an intermediate fact. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := X.G.P.W v) x`. Rewrite using `[map_div₀, twT_alg, twT_alg]`. Conclude with `div_mem (wToC_mem_kur _) (wToC_mem_kur _)`.
+-/
 theorem twT_mem (v : X.Pl) (t : ℕ) (x : X.G.P.Qq v) : twT X E v t x ∈ MaximalUnramifiedExtension p := by
   have := (X.G.P.setting v).frac_alt
   obtain ⟨a, b, -, rfl⟩ := IsFractionRing.div_surjective (A := X.G.P.W v) x
@@ -195,9 +283,17 @@ theorem twT_mem (v : X.Pl) (t : ℕ) (x : X.G.P.Qq v) : twT X E v t x ∈ Maxima
 
 def twTK (v : X.Pl) (t : ℕ) : X.G.P.Qq v →+* MaximalUnramifiedExtension p := (twT X E v t).codRestrict (MaximalUnramifiedExtension p) (twT_mem X E v t)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext ((twT_alg X E v t x).trans (wK_coe _).symm)`.
+-/
 theorem twTK_alg (v : X.Pl) (t : ℕ) (x : X.G.P.W v) :
     twTK X E v t (algebraMap (X.G.P.W v) (X.G.P.Qq v) x) = wK p ((sigW p)^[t] (E.rd v x)) := Subtype.ext ((twT_alg X E v t x).trans (wK_coe _).symm)
 
+/- English proof (translation)
+Use `(X.G.P.setting v).frac_alt` as an intermediate fact. Establish `h : σ.comp (twTK X E v t) = twTK X E v (t + 1)`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (X.G.P.W v))` to reduce the goal to its premises. Use extensionality with `y`. Simplify using `only [RingHom.comp_apply]`.
+
+Rewrite using `[twTK_alg, twTK_alg, frob_wK hσ, Function.iterate_succ_apply']`. Conclude with `RingHom.congr_fun h x`.
+-/
 theorem frob_twTK {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p} (hσ : Formalism.InvariantFactorPaths.G7.UnrOK (MaximalUnramifiedExtension p) p σ) (v : X.Pl) (t : ℕ)
     (x : X.G.P.Qq v) : σ (twTK X E v t x) = twTK X E v (t + 1) x := by
   have := (X.G.P.setting v).frac_alt
@@ -208,6 +304,9 @@ theorem frob_twTK {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExte
     rw [twTK_alg, twTK_alg, frob_wK hσ, Function.iterate_succ_apply']
   exact RingHom.congr_fun h x
 
+/- English proof (translation)
+Establish `hs : (X.G.P.σ v ^ t : X.G.P.Qq v ≃+* X.G.P.Qq v) = X.G.P.σ v ^ (t % X.G.P.n' v)` using `by conv_lhs => rw [← Nat.div_add_mod t (X.G.P.n' v)]`. Rewrite using `[pow_add, pow_mul, (X.G.P.setting v).period, one_pow, one_mul]`. Unfold `twT`. Rewrite using `[hs]`.
+-/
 theorem twT_mod (v : X.Pl) (t : ℕ) : twT X E v t = twT X E v (t % X.G.P.n' v) := by
   have hs : (X.G.P.σ v ^ t : X.G.P.Qq v ≃+* X.G.P.Qq v) = X.G.P.σ v ^ (t % X.G.P.n' v) := by
     conv_lhs => rw [← Nat.div_add_mod t (X.G.P.n' v)]
@@ -215,6 +314,11 @@ theorem twT_mod (v : X.Pl) (t : ℕ) : twT X E v t = twT X E v (t % X.G.P.n' v) 
   unfold twT
   rw [hs]
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `Formalism.L2.Th1.Top.frobExistsH p h5`. Establish `hσ' : Formalism.InvariantFactorPaths.G7.UnrOK (MaximalUnramifiedExtension p) p σ` using `hσ`. Use `⟨σ, fun v s => twTK X E v s.val, wK p, hσ', fun v s x => rfl, fun v s x => ?_, fun w => ?_, fun w => frob_wK hσ' w, fun w => norm_wK_le w⟩` and prove the remaining obligations. Rewrite using `[frob_twTK X E hσ']`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show twT X E v (s.val + 1) x = twT X E v (finRotate _ s).val x`. Rewrite using `[twT_mod X E v (s.val + 1), finRotate_val]`. Use `show Formalism.L2.G.Pend.wToC p w = Formalism.L2.G.Pend.k0ToC p (algebraMap _ _ w)`. Conclude with `(Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap p w).symm`.
+-/
 theorem frobTw_of (h5 : 5 ≤ p) : FrobTw X E := by
   obtain ⟨σ, hσ⟩ := Formalism.L2.Th1.Top.frobExistsH p h5
   have hσ' : Formalism.InvariantFactorPaths.G7.UnrOK (MaximalUnramifiedExtension p) p σ := hσ

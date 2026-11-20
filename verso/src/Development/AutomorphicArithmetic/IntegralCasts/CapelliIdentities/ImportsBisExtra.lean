@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n f`. Use `haveI : IsTopologicalRing k := inferInstance`. Establish `key : ∀ M : Matrix (Fin n) (Fin n) k, f M = ∑ i, ∑ j, M i j * f (Matrix.single i j 1)`. Introduce `M`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single M]`.
+
+Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: Matrix.single i j (M i j) = (M i j) • Matrix.single i j (1 : k)`. Simplify using `[Matrix.smul_single]`. Rewrite using `[this, map_smul, smul_eq_mul]`.
+
+Establish `: (⇑f : Matrix (Fin n) (Fin n) k → k) = fun M => ∑ i, ∑ j, M i j * f (Matrix.single i j 1)` using `funext key`. Rewrite using `[this]`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(continuous_id.matrix_elem i j).mul continuous_const`.
+-/
 theorem UpperTheory.Reformulated.B.DYlb5.main :
     ∀ {k : Type} [inst : Field k] [inst_1 : ValuativeRel k] [inst_2 : TopologicalSpace k] [IsNonarchimedeanLocalField k]
       {n : ℕ} (f : Module.Dual k (Matrix (Fin n) (Fin n) k)), Continuous (⇑f : Matrix (Fin n) (Fin n) k → k) := by

@@ -8,6 +8,15 @@ open GlobalTheory.CompanionTheory.Ar Matrix
 
 variable {Ω₀ Ω Ω₃ V : Type} [Field Ω₀] [Field Ω] [Field Ω₃] [AddCommGroup V] [Module Ω V] {r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Conclude with `⟨fun l => fn (a l), hA a ha, rfl⟩`. Consider the case `zero => exact ⟨0, h0, by simp⟩`.
+
+Consider the case `add y z _ _ ihy ihz`. Take `⟨g, hg, rfl⟩` from `ihy`. Take `⟨g', hg', rfl⟩` from `ihz`. Conclude with `⟨g + g', hadd g g' hg hg', by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `smul a y _ ih`.
+
+Take `⟨g, hg, rfl⟩` from `ih`. Use `⟨(a : Ω) • g, hsm a a.2 g hg, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Subring.smul_def, smul_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coords_of_mem_span (fn : Ω₀ →+* Ω) (c : Fin r → V) (R : Subring Ω) (A : Set (Fin r → Ω₀)) (P : (Fin r → Ω) → Prop)
     (h0 : P 0) (hadd : ∀ g g', P g → P g' → P (g + g')) (hsm : ∀ a ∈ R, ∀ g, P g → P (a • g))
     (hA : ∀ a ∈ A, P fun l => fn (a l)) {x : V}
@@ -29,6 +38,9 @@ theorem coords_of_mem_span (fn : Ω₀ →+* Ω) (c : Fin r → V) (R : Subring 
     rw [Subring.smul_def, smul_smul]
     rfl
 
+/- English proof (translation)
+Establish `h' : ∑ l, (g - g') l • c l = 0`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h, sub_self]`. Use `Fintype.linearIndependent_iff.1 hc (g - g') h'` as an intermediate fact. Use function extensionality and compare the values at `l`. Conclude with `sub_eq_zero.1 (this l)`.
+-/
 theorem coords_unique {c : Fin r → V} (hc : LinearIndependent Ω c) {g g' : Fin r → Ω} (h : ∑ l, g l • c l = ∑ l, g' l • c l) :
     g = g' := by
   have h' : ∑ l, (g - g') l • c l = 0 := by
@@ -37,6 +49,9 @@ theorem coords_unique {c : Fin r → V} (hc : LinearIndependent Ω c) {g g' : Fi
   funext l
   exact sub_eq_zero.1 (this l)
 
+/- English proof (translation)
+Simplify using `only [hG, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem sum_mulVec (c bb : Fin r → V) (G : Matrix (Fin r) (Fin r) Ω) (hG : ∀ m, bb m = ∑ l, G l m • c l) (v : Fin r → Ω) :
     ∑ m, v m • bb m = ∑ l, (G *ᵥ v) l • c l := by
   simp only [hG, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]
@@ -44,6 +59,15 @@ theorem sum_mulVec (c bb : Fin r → V) (G : Matrix (Fin r) (Fin r) Ω) (hG : �
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Establish `key : ∀ k : Fin r, ∃ l : Fin r →₀ Ω, (∀ j : Fin r, (k : ℕ) < j → l j = 0) ∧ X k = ∑ j, l j • Y j`. Introduce `k`. Establish `hk : X k ∈ flagStep Ω Y ((k : ℕ) + 1)`. Rewrite using `[← h]`. Conclude with `Submodule.subset_span ⟨k, by simp, rfl⟩`.
+
+Take `⟨l, hl, hlx⟩` from `(Finsupp.mem_span_image_iff_linearCombination Ω).1 hk`. Use `⟨l, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[Finsupp.mem_supported']`. Conclude with `hl j (by simp; omega)`. Rewrite using `[← hlx, Finsupp.linearCombination_apply, Finsupp.sum_fintype]`.
+
+Introduce `i`. Simplify using the standard rewrite rules. Use `choose l hl1 hl2 using key`. Use `⟨Matrix.of fun j k => l k j, ?_, fun k => by simpa using hl2 k⟩` and prove the remaining obligations. Introduce `j k hjk`.
+
+Conclude with `hl1 k j hjk`.
+-/
 private theorem exists_triangular_of_flags_eq (X Y : Fin r → V) (h : ∀ n, flagStep Ω X n = flagStep Ω Y n) :
     ∃ S : Matrix (Fin r) (Fin r) Ω, S.BlockTriangular id ∧ ∀ k, X k = ∑ j, S j k • Y j := by
   have key : ∀ k : Fin r, ∃ l : Fin r →₀ Ω, (∀ j : Fin r, (k : ℕ) < j → l j = 0) ∧ X k = ∑ j, l j • Y j := by
@@ -63,6 +87,11 @@ private theorem exists_triangular_of_flags_eq (X Y : Fin r → V) (h : ∀ n, fl
   intro j k hjk
   exact hl1 k j hjk
 
+/- English proof (translation)
+Rewrite using `[hX m, ← Finset.add_sum_erase _ _ (Finset.mem_univ m), add_sub_cancel_left]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `j hj`. Distinguish the cases in `hjm : j < m`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hjm, rfl⟩)`.
+
+Establish `hmj : m < j` using `lt_of_le_of_ne (not_lt.1 hjm) (Ne.symm (Finset.ne_of_mem_erase hj))`. Rewrite using `[hS hmj, zero_smul]`. Conclude with `zero_mem _`.
+-/
 private theorem sub_diag_smul_mem_flag_of_triangular (X Y : Fin r → V) (S : Matrix (Fin r) (Fin r) Ω) (hS : S.BlockTriangular id)
     (hX : ∀ k, X k = ∑ j, S j k • Y j) (m : Fin r) : X m - S m m • Y m ∈ flagStep Ω Y m := by
   rw [hX m, ← Finset.add_sum_erase _ _ (Finset.mem_univ m), add_sub_cancel_left]
@@ -74,6 +103,13 @@ private theorem sub_diag_smul_mem_flag_of_triangular (X Y : Fin r → V) (S : Ma
     rw [hS hmj, zero_smul]
     exact zero_mem _
 
+/- English proof (translation)
+Establish `himg : Finset.Iic m = Finset.univ.image (Fin.castLE m.2)`. Use extensionality with `x`. Simplify using `only [Finset.mem_Iic, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨⟨x, by rw [Fin.le_def] at hx; omega⟩, Fin.ext rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Rewrite using `[Fin.le_def, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[himg, Finset.prod_image]`.
+
+Introduce `a _ b _ hab`. Conclude with `Fin.castLE_injective _ hab`.
+-/
 private theorem prod_Iic_eq_prod_castLE' {M : Type} [CommMonoid M] (m : Fin r) (f : Fin r → M) :
     ∏ x ∈ Finset.Iic m, f x = ∏ b : Fin ((m : ℕ) + 1), f (Fin.castLE m.2 b) := by
   have himg : Finset.Iic m = Finset.univ.image (Fin.castLE m.2) := by
@@ -89,6 +125,15 @@ private theorem prod_Iic_eq_prod_castLE' {M : Type} [CommMonoid M] (m : Fin r) (
   intro a _ b _ hab
   exact Fin.castLE_injective _ hab
 
+/- English proof (translation)
+Establish `hmat : (Matrix.of fun a b : Fin ((m : ℕ) + 1) => (u * W) (I a) (Fin.castLE m.2 b)) = (Matrix.of fun a c : Fin ((m : ℕ) + 1) => u (I a) (Fin.castLE m.2 c)) * (Matrix.of fun c b : Fin ((m : ℕ) + 1) => W (Fin.castLE m.2 c) (Fin.castLE m.2 b))`. Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[(Finset.sum_image (s := Finset.univ) (g := Fin.castLE m.2) (f := fun j => u (I a) j * W j (Fin.castLE m.2 b)) fun x _ y _ h => Fin.castLE_injective _ h).symm]`. Use `(Finset.sum_subset (Finset.subset_univ _) fun j _ hj => ?_).symm` and prove the remaining obligations.
+
+Establish `hjm : (m : ℕ) < j`. Assume the negation of the conclusion as `hc`. Conclude with `hj (Finset.mem_image.2 ⟨⟨j, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Establish `hlt : Fin.castLE m.2 b < j`. Rewrite using `[Fin.lt_def, Fin.coe_castLE]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `mul_eq_zero_of_right _ (hW hlt)`. Rewrite using `[hmat, Matrix.det_mul, Matrix.det_of_upperTriangular (M := Matrix.of fun c b : Fin ((m : ℕ) + 1) => W (Fin.castLE m.2 c) (Fin.castLE m.2 b))]`. Simplify using `only [Matrix.of_apply]`. Introduce `c b hbc`.
+
+Simplify using `only [Matrix.of_apply]`. Apply `hW` to reduce the goal to its premises. Use `show Fin.castLE m.2 b < Fin.castLE m.2 c`. Rewrite using `[Fin.lt_def, Fin.coe_castLE, Fin.coe_castLE]`. Conclude with `hbc`.
+-/
 private theorem det_submatrix_mul_triangular_eq (u W : Matrix (Fin r) (Fin r) Ω) (hW : W.BlockTriangular id) (m : Fin r)
     (I : Fin ((m : ℕ) + 1) → Fin r) :
     (Matrix.of fun a b : Fin ((m : ℕ) + 1) => (u * W) (I a) (Fin.castLE m.2 b)).det =
@@ -119,6 +164,51 @@ private theorem det_submatrix_mul_triangular_eq (u W : Matrix (Fin r) (Fin r) Ω
     rw [Fin.lt_def, Fin.coe_castLE, Fin.coe_castLE]
     exact hbc
 
+/- English proof (translation)
+Establish `hG0 : ∀ k, ∃ g : Fin r → Ω, ((∀ l, i (g l) ∈ O) ∧ ∀ φ : Fin r → Ω₀, (∀ a ∈ A, ∑ l, φ l * a l = 0) → ∑ l, fn (φ l) * g l = 0) ∧ bb k = ∑ l, g l • c l`. Introduce `k`. Establish `hk : bb k ∈ Submodule.span R {w | ∃ a ∈ A, w = ∑ m, fn (a m) • c m}` using `hspan ▸ Submodule.subset_span ⟨k, rfl⟩`. Use `coords_of_mem_span fn c R A _ ?_ ?_ ?_ ?_ hk` and prove the remaining obligations. Conclude with `⟨fun l => by simp, fun φ _ => by simp⟩`.
+
+Introduce and unpack `g g' ⟨hg1, hg2⟩ ⟨hg1', hg2'⟩`. Use `⟨fun l => by simpa using add_mem (hg1 l) (hg1' l), fun φ hφ => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib, hg2 φ hφ, hg2' φ hφ, add_zero]`. Introduce and unpack `a ha g ⟨hg1, hg2⟩`. Use `⟨fun l => by simpa using mul_mem (hR a ha) (hg1 l), fun φ hφ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[show ∑ l, fn (φ l) * (a * g l) = a * ∑ l, fn (φ l) * g l by`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring, hg2 φ hφ, mul_zero]`. Introduce `a ha`.
+
+Use `⟨fun l => hfn _, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_zero fn, ← hφ a ha, map_sum]`. Simplify using `[map_mul]`. Use `choose g hg1 hgeq using hG0`. Take `⟨G, hGdef⟩ : ∃ G : Matrix (Fin r) (Fin r) Ω, G = Matrix.of fun l k => g k l` from `⟨_, rfl⟩`.
+
+Establish `hGk : ∀ k, bb k = ∑ l, G l k • c l` using `fun k => by rw [hGdef]; exact hgeq k`. Establish `hGunit : IsUnit G`. Rewrite using `[← Matrix.mulVec_injective_iff_isUnit]`. Introduce `v w hvw`. Apply `coords_unique hbb` to reduce the goal to its premises.
+
+Rewrite using `[sum_mulVec c bb G hGk v, sum_mulVec c bb G hGk w, hvw]`. Establish `hφ0 : ∀ φ : Fin r → Ω₀, (∀ a ∈ A, ∑ l, φ l * a l = 0) → φ = 0`. Introduce `φ hφ`. Establish `hv : (fun l => fn (φ l)) ᵥ* G = 0`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply, hGdef, Matrix.of_apply]`. Conclude with `(hg1 k).2 φ hφ`. Use `(Matrix.vecMul_injective_iff_isUnit.2 hGunit) (hv.trans (Matrix.zero_vecMul G).symm)` as an intermediate fact. Use function extensionality and compare the values at `l`. Apply `fn.injective` to reduce the goal to its premises.
+
+Rewrite using `[Pi.zero_apply, map_zero]`. Conclude with `congrFun this l`. Establish `hspanA : ∀ j : Fin r, Pi.single j (1 : Ω₀) ∈ Submodule.span Ω₀ A`. Introduce `j`. Assume the negation of the conclusion as `hj`.
+
+Take `⟨f, hfj, hfA⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hj inferInstance`. Establish `hφ` using `hφ0 (fun l => f fun j => if l = j then 1 else 0) (fun a ha => by`. Establish `hfa : f a = 0`. Establish `: f a ∈ (Submodule.span Ω₀ A).map f` using `Submodule.mem_map_of_mem (Submodule.subset_span ha)`. Rewrite `this` using `[hfA]`.
+
+Conclude with `(Submodule.mem_bot _).1 this`. Rewrite `hfa` using `[LinearMap.pi_apply_eq_sum_univ f a]`. Simplify `hfa)` using `[mul_comm]`. Apply `hfj` to reduce the goal to its premises. Establish `h1 : (Pi.single j (1 : Ω₀) : Fin r → Ω₀) = fun k => if j = k then 1 else 0`.
+
+Use extensionality with `k`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[h1]`. Conclude with `congrFun hφ j`. Establish `hcoord : ∀ x ∈ Submodule.span Ω₀ A, ∃ h : Fin r → Ω, (∀ m, i (h m) ∈ O) ∧ (fun l => fn (x l)) = G *ᵥ h`.
+
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Establish `hmem : ∑ m, fn (a m) • c m ∈ Submodule.span R (Set.range bb)` using `hspan ▸ Submodule.subset_span ⟨a, ha, rfl⟩`. Establish `hrange : Set.range bb = {w | ∃ e ∈ Set.range (fun k : Fin r => (Pi.single k (1 : Ω) : Fin r → Ω)), w = ∑ m, (RingHom.id Ω) (e m) • bb m}`.
+
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨_, ⟨k, rfl⟩, by simp [Pi.single_apply]⟩`. Introduce and unpack `⟨_, ⟨k, rfl⟩, rfl⟩`.
+
+Conclude with `⟨k, by simp [Pi.single_apply]⟩`. Rewrite `hmem` using `[hrange]`. Take `⟨h, hh, heq⟩` from `coords_of_mem_span (RingHom.id Ω) bb R _ (fun h => ∀ m, i (h m) ∈ O) (fun m => by simp) (fun g g' hg hg' m => by simpa using add_mem (hg m) (hg' m)) (fun a ha g hg m => by simpa using mul_mem (hR a ha) (hg m)) (by`. Introduce and unpack `_ ⟨k, rfl⟩ m`. Distinguish the cases in `hmk : m = k`.
+
+Substitute `hmk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hmk]) hmem`. Use `⟨h, hh, coords_unique hc ?_⟩` and prove the remaining obligations. Rewrite using `[← sum_mulVec c bb G hGk h, ← heq]`.
+
+Consider the case `zero => exact ⟨0, fun m => by simp, by funext l; simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨h, hh, he⟩` from `hx`. Take `⟨h', hh', he'⟩` from `hy`. Use `⟨h + h', fun m => by simpa using add_mem (hh m) (hh' m), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_add, ← he, ← he']`. Use function extensionality and compare the values at `l`. Simplify using the standard rewrite rules. Consider the case `smul a x _ hx`. Take `⟨h, hh, he⟩` from `hx`.
+
+Use `⟨fn a • h, fun m => by simpa using mul_mem (hfn a) (hh m), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, ← he]`. Use function extensionality and compare the values at `l`. Simplify using the standard rewrite rules. Establish `hj : ∀ j, ∃ h : Fin r → Ω, (∀ m, i (h m) ∈ O) ∧ Pi.single j 1 = G *ᵥ h`.
+
+Introduce `j`. Take `⟨h, hh, he⟩` from `hcoord _ (hspanA j)`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Use function extensionality and compare the values at `l`.
+
+Distinguish the cases in `hlj : l = j`. Substitute `hlj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hlj]`. Use `choose h hh1 hh2 using hj`.
+
+Use `⟨G, Matrix.of fun m j => h j m, fun l k => by rw [hGdef]; exact (hg1 k).1 l, fun l k => hh1 k l, ?_, hGk⟩` and prove the remaining obligations. Use extensionality with `l j`. Use `congrFun (hh2 j) l` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`.
+
+Rewrite using `[← this, Pi.single_apply]`.
+-/
 private theorem exists_integral_change_of_basis_of_span_eq (fn : Ω₀ →+* Ω) (i : Ω →+* Ω₃) (c bb : Fin r → V) (hc : LinearIndependent Ω c)
     (O : ValuationSubring Ω₃) (R : Subring Ω) (A : Set (Fin r → Ω₀))
     (hR : ∀ a ∈ R, i a ∈ O) (hfn : ∀ a, i (fn a) ∈ O) (hbb : LinearIndependent Ω bb)
@@ -241,6 +331,41 @@ private theorem exists_integral_change_of_basis_of_span_eq (fn : Ω₀ →+* Ω)
   simp only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]
   rw [← this, Pi.single_apply]
 
+/- English proof (translation)
+Take `⟨T', hT'tri, hT'⟩` from `exists_triangular_of_flags_eq b₀ (fun m' => ∑ l, u l m' • c l) hf`. Take `⟨T, hTtri, hT⟩` from `exists_triangular_of_flags_eq (fun m' => ∑ l, u l m' • c l) b₀ (fun n => (hf n).symm)`. Establish `hTT : T * T' = 1`. Use extensionality with `a k`. Establish `h1 : ∑ j, T' j k • (fun m' => ∑ l, u l m' • c l) j = ∑ l, (T *ᵥ fun j => T' j k) l • b₀ l` using `sum_mulVec b₀ _ T hT _`.
+
+Establish `h2 : b₀ k = ∑ l, (1 : Matrix (Fin r) (Fin r) Ω) l k • b₀ l`. Simplify using `[Matrix.one_apply]`. Establish `e` using `coords_unique h₀ (h2.symm.trans ((hT' k).trans h1))`. Establish `e2` using `congrFun e a`. Simplify using `only [Matrix.mulVec, dotProduct] at e2`.
+
+Rewrite using `[Matrix.mul_apply, ← e2]`. Establish `hdet : T'.det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hTT` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_one]`.
+
+Conclude with `zero_ne_one this`. Establish `hdiag : ∀ k, T' k k ≠ 0`. Introduce `k`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular hT'tri]`. Conclude with `Finset.prod_ne_zero_iff.1 hdet k (Finset.mem_univ k)`.
+
+Use `⟨fun k => (T' k k)⁻¹, fun k => inv_ne_zero (hdiag k), ?_⟩` and prove the remaining obligations. Introduce `O R A bb hR hfn hbb hbbf hspan`. Take `⟨S, hStri, hS⟩` from `exists_triangular_of_flags_eq bb b₀ hbbf`. Take `⟨G, Hinv, hG, hH, hGH, hGk⟩` from `exists_integral_change_of_basis_of_span_eq fn i c bb hc O R A hR hfn hbb hspan`. Use `⟨fun k => S k k, sub_diag_smul_mem_flag_of_triangular bb b₀ S hStri hS, ?_⟩` and prove the remaining obligations.
+
+Establish `hb0 : ∀ k, b₀ k = ∑ l, (u * T') l k • c l`. Introduce `k`. Rewrite using `[hT' k, sum_mulVec c _ u (fun m => rfl)]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+
+Establish `hGeq : G = u * (T' * S)`. Rewrite using `[← Matrix.mul_assoc]`. Use extensionality with `l k`. Establish `e` using `coords_unique hc ((hGk k).symm.trans ((hS k).trans (sum_mulVec c b₀ (u * T') hb0 _)))`. Establish `e2` using `congrFun e l`.
+
+Simplify using `only [Matrix.mulVec, dotProduct] at e2`. Rewrite using `[e2, Matrix.mul_apply]`. Establish `hW : (T' * S).BlockTriangular id` using `hT'tri.mul hStri`. Establish `hWdiag : ∀ k, (T' * S) k k = T' k k * S k k`. Introduce `k`.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single k]`. Introduce `j _ hjk`. Break down `lt_or_gt_of_ne hjk with h | h` into its components or cases. Rewrite using `[hT'tri h, zero_mul]`. Rewrite using `[hStri h, mul_zero]`.
+
+Simplify using the standard rewrite rules. Establish `hHG : Hinv.map i * G.map i = 1`. Rewrite using `[← Matrix.map_mul, mul_eq_one_comm.1 hGH, Matrix.map_one _ (map_zero i) (map_one i)]`. Introduce `m`. Establish `hsup` using `sup_minor_eq_one O (Matrix.of fun a l => i (Hinv (Fin.castLE m.2 a) l)) (Matrix.of fun l b => i (G l (Fin.castLE m.2 b))) (fun a l => hH _ _) (fun l b => hG _ _) (by`.
+
+Use extensionality with `a b`. Establish `e` using `congrFun (congrFun hHG (Fin.castLE m.2 a)) (Fin.castLE m.2 b)`. Rewrite `e`, the goal using `[Matrix.mul_apply]`. Simplify using `only [Matrix.map_apply, Matrix.of_apply] at e ⊢`. Rewrite using `[e, Matrix.one_apply, Matrix.one_apply]`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Establish `: Fin.castLE m.2 a ≠ Fin.castLE m.2 b` using `fun h => hab (Fin.castLE_injective _ h)`. Simplify using `[hab, this])`.
+
+Simplify using `only [Matrix.of_apply] at hsup`. Establish `hfun : (fun I : Fin ((m : ℕ) + 1) → Fin r => O.valuation (Matrix.of fun a b : Fin ((m : ℕ) + 1) => i (G (I a) (Fin.castLE m.2 b))).det) = fun I => O.valuation (Matrix.of fun a b : Fin ((m : ℕ) + 1) => u.map i (I a) (Fin.castLE m.2 b)).det * O.valuation (i (∏ b : Fin ((m : ℕ) + 1) …`. Use function extensionality and compare the values at `I`. Establish `hdG : (Matrix.of fun a b : Fin ((m : ℕ) + 1) => i (G (I a) (Fin.castLE m.2 b))).det = i (Matrix.of fun a b : Fin ((m : ℕ) + 1) => G (I a) (Fin.castLE m.2 b)).det`. Rewrite using `[RingHom.map_det]`.
+
+Both sides reduce to the same expression. Establish `hdU : (Matrix.of fun a b : Fin ((m : ℕ) + 1) => u.map i (I a) (Fin.castLE m.2 b)).det = i (Matrix.of fun a b : Fin ((m : ℕ) + 1) => u (I a) (Fin.castLE m.2 b)).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hdG, hdU, hGeq, det_submatrix_mul_triangular_eq u _ hW m I, map_mul, map_mul]`.
+
+Rewrite `hsup` using `[hfun]`. Establish `hpull : ∀ (κ : O.ValueGroup) (f : (Fin ((m : ℕ) + 1) → Fin r) → O.ValueGroup), (Finset.univ.sup fun I => f I * κ) = (Finset.univ.sup f) * κ`. Introduce `κ f`. Use `Finset.comp_sup_eq_sup_comp (s := Finset.univ) (f := f) (fun x => x * κ) (fun x y => Monotone.map_sup (fun a b (h : a ≤ b) => mul_le_mul_left h κ) x y) (by simp [bot_eq_zero])` as an intermediate fact. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Rewrite `hsup` using `[hpull]`. Establish `e1` using `prod_Iic_eq_prod_castLE' m (fun x => O.valuation (i (S x x)))`. Establish `e2` using `prod_Iic_eq_prod_castLE' m (fun x => (T' x x)⁻¹)`. Simplify using `only at e1 e2 ⊢`.
+
+Rewrite using `[e1, e2]`. Simplify using `only [hWdiag, map_prod, map_mul, Finset.prod_mul_distrib, map_inv₀, Finset.prod_inv_distrib] at hsup ⊢`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← hsup]`. The two sides agree by associativity and commutativity.
+-/
 theorem flag_val (fn : Ω₀ →+* Ω) (i : Ω →+* Ω₃) (c b₀ : Fin r → V) (u : Matrix (Fin r) (Fin r) Ω) (hc : LinearIndependent Ω c)
     (h₀ : LinearIndependent Ω b₀) (hf : ∀ n, flagStep Ω b₀ n = flagStep Ω (fun m' => ∑ l, u l m' • c l) n) :
     ∃ β : Fin r → Ω, (∀ m, β m ≠ 0) ∧ ∀ (O : ValuationSubring Ω₃) (R : Subring Ω) (A : Set (Fin r → Ω₀)) (bb : Fin r → V),

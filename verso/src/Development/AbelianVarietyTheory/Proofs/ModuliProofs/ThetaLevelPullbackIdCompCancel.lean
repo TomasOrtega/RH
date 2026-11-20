@@ -18,16 +18,27 @@ namespace GlobalTheory.ZM
 variable {o : Type} [CommRing o] {g k : ℕ} {J : Type} {b : TBase o k} {S S' S'' : Scheme.{0}}
   {s : S ⟶ Sp o} {s' : S' ⟶ Sp o} {s'' : S'' ⟶ Sp o}
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullPull L' φ' φ' rfl) (chartPullSame L _ _ _ φ' fun _ => rfl) H`.
+-/
 theorem lbIso_pull_comp {X X' X'' : Scheme.{0}} {L : LB X} {L' : LB X'} {φ : X' ⟶ X}
     (H : LBIso L' (L.pull φ)) (φ' : X'' ⟶ X') : LBIso (L'.pull φ') (L.pull (φ' ≫ φ)) :=
   LBIso.chartPull (chartPullPull L' φ' φ' rfl) (chartPullSame L _ _ _ φ' fun _ => rfl) H
 
+/- English proof (translation)
+Use `⟨𝟙 _, ?_, ?_, fun i => by simp, fun j => by simp⟩` and prove the remaining obligations. Establish `: IsMonHom (Iso.refl t.A).hom` using `inferInstanceAs (IsMonHom (𝟙 _))`. Conclude with `isGrpPullback_of_iso (Iso.refl t.A)`. Conclude with `LBIso.chartPull (chartPullId t.L) (chartPullPull t.L _ _ rfl) (GlobalTheory.PolBaseChange.lbIso_refl t.isLB)`.
+-/
 theorem TMap.refl (t : TObj g k J b s) : TMap t t (𝟙 S) := by
   refine ⟨𝟙 _, ?_, ?_, fun i => by simp, fun j => by simp⟩
   · have : IsMonHom (Iso.refl t.A).hom := inferInstanceAs (IsMonHom (𝟙 _))
     exact isGrpPullback_of_iso (Iso.refl t.A)
   · exact LBIso.chartPull (chartPullId t.L) (chartPullPull t.L _ _ rfl) (GlobalTheory.PolBaseChange.lbIso_refl t.isLB)
 
+/- English proof (translation)
+Take `⟨φ, h₁, h₂, h₃, h₄⟩` from `h`. Take `⟨φ', k₁, k₂, k₃, k₄⟩` from `h'`. Use `⟨φ' ≫ φ, k₁.comp h₁, ?_, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans t''.isLB (pull_isLB t'.isLB _) (pull_isLB t.isLB _) k₂ (lbIso_pull_comp h₂ φ')`. Rewrite using `[← Category.assoc, k₃, Category.assoc, h₃, Category.assoc]`.
+
+Rewrite using `[← Category.assoc, k₄, Category.assoc, h₄, Category.assoc]`.
+-/
 theorem TMap.comp {t : TObj g k J b s} {t' : TObj g k J b s'} {t'' : TObj g k J b s''} {f : S' ⟶ S} {f' : S'' ⟶ S'}
     (h' : TMap t'' t' f') (h : TMap t' t f) : TMap t'' t (f' ≫ f) := by
   obtain ⟨φ, h₁, h₂, h₃, h₄⟩ := h
@@ -37,6 +48,15 @@ theorem TMap.comp {t : TObj g k J b s} {t' : TObj g k J b s'} {t'' : TObj g k J 
   · rw [← Category.assoc, k₃, Category.assoc, h₃, Category.assoc]
   · rw [← Category.assoc, k₄, Category.assoc, h₄, Category.assoc]
 
+/- English proof (translation)
+Take `⟨φ, h₁, h₂, h₃, h₄⟩` from `h`. Take `⟨ψ, k₁, k₂, k₃, k₄⟩` from `n`. Establish `hp` using `h₁.1`. Take `⟨F, hF, hw⟩ : ∃ F : t''.A.left ⟶ t'.A.left, F ≫ φ = ψ ∧ F ≫ t'.A.hom = t''.A.hom ≫ f'` from `⟨hp.lift ψ (t''.A.hom ≫ f') (by rw [k₁.1.w, Category.assoc]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Substitute `hF` using the available equality.
+
+Use `⟨F, h₁.cancel k₁ hw, ?_, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans t''.isLB (pull_isLB t.isLB _) (pull_isLB t'.isLB _) k₂ (lbIso_pull_comp h₂ F).symm`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, k₃, Category.assoc, Category.assoc, h₃]`. Establish `a₁ : (t''.pt i).left ≫ t''.A.hom = 𝟙 S''` using `Over.w (t''.pt i)`.
+
+Establish `a₂ : (t'.pt i).left ≫ t'.A.hom = 𝟙 S'` using `Over.w (t'.pt i)`. Rewrite using `[Category.assoc, hw, ← Category.assoc, a₁, Category.assoc, a₂]`. Simplify using the standard rewrite rules. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, k₄, Category.assoc, Category.assoc, h₄]`.
+
+Rewrite using `[Category.assoc, hw, ← Category.assoc, Over.w, Category.assoc, Over.w, hw]`.
+-/
 theorem TMap.cancel {t : TObj g k J b s} {t' : TObj g k J b s'} {t'' : TObj g k J b s''} {f : S' ⟶ S} {f' : S'' ⟶ S'}
     (h : TMap t' t f) (n : TMap t'' t (f' ≫ f)) : TMap t'' t' f' := by
   obtain ⟨φ, h₁, h₂, h₃, h₄⟩ := h
@@ -56,6 +76,9 @@ theorem TMap.cancel {t : TObj g k J b s} {t' : TObj g k J b s'} {t'' : TObj g k 
     · rw [Category.assoc, k₄, Category.assoc, Category.assoc, h₄]
     · rw [Category.assoc, hw, ← Category.assoc, Over.w, Category.assoc, Over.w, hw]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ t _ _` and use `⟨TMap.refl t, fun _ _ h => ⟨fun h' => h'.comp h, fun n => h.cancel n⟩⟩`.
+-/
 theorem tmap_id_comp_cancel : ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (S S' S'' : Scheme.{0}) (s : S ⟶ Sp o) (s' : S' ⟶ Sp o) (s'' : S'' ⟶ Sp o) (t : TObj g k J b s) (t' : TObj g k J b s') (t'' : TObj g k J b s''), TMap t t (𝟙 S) ∧ ∀ (f : S' ⟶ S) (f' : S'' ⟶ S'), TMap t' t f → (TMap t'' t' f' ↔ TMap t'' t (f' ≫ f)) :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ t _ _ => ⟨TMap.refl t, fun _ _ h => ⟨fun h' => h'.comp h, fun n => h.cancel n⟩⟩
 

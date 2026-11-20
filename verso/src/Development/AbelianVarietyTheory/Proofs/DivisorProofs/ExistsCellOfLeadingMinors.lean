@@ -9,6 +9,9 @@ open Matrix
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `| 0, N, _ => ⟨1, 1, ⟨fun i => Fin.elim0 i, fun i => Fin.elim0 i⟩, fun i => Fin.elim0 i, fun i => Fin.elim0 i, by ext i; exact Fin.elim0 i⟩ | n + 1, N, hN => by set P : Matrix (Fin n) (Fin n) R := N.submatrix Fin.castSucc Fin.castSucc with hP have hPm : ∀ (k : ℕ) (hk : k ≤ n), IsU …`.
+-/
 theorem exists_lowInv_mul_upperUni_of_leadingMinors :
     ∀ (n : ℕ) (N : Matrix (Fin n) (Fin n) R),
       (∀ (k : ℕ) (hk : k ≤ n), IsUnit (N.submatrix (Fin.castLE hk) (Fin.castLE hk)).det) →
@@ -112,6 +115,13 @@ theorem exists_lowInv_mul_upperUni_of_leadingMinors :
     | last => simpa using hdu
     | cast i' => simpa using hL₀d i'
 
+/- English proof (translation)
+Take `⟨L, U, hL, hUz, hUd, hLU⟩` from `exists_lowInv_mul_upperUni_of_leadingMinors m (M.submatrix id w) h`. Use `⟨fun p => U p.1.1 p.1.2, L, hL, ?_⟩` and prove the remaining obligations. Establish `hU : upMat (fun p : Above m => U p.1.1 p.1.2) = U`. Use extensionality with `i j`. Unfold `upMat`.
+
+Distinguish the cases in `hij : i < j`. Rewrite using `[dif_pos hij]`. Rewrite using `[dif_neg hij]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+
+Rewrite using `[if_pos rfl, hUd]`. Rewrite using `[if_neg e, hUz i j (lt_of_le_of_ne (not_lt.1 hij) (Ne.symm e))]`. Rewrite using `[hU]`. Conclude with `hLU`.
+-/
 theorem exists_inCell_of_leadingMinors_isUnit {m : ℕ} (M : Matrix (Fin m) (Fin m) R) (w : Equiv.Perm (Fin m))
     (h : ∀ (k : ℕ) (hk : k ≤ m), IsUnit ((M.submatrix id w).submatrix (Fin.castLE hk) (Fin.castLE hk)).det) :
     ∃ a, InCell M w a := by

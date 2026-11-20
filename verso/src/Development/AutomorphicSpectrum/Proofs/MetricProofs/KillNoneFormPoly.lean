@@ -8,6 +8,17 @@ namespace GlobalTheory.CompanionTheory.Ar.PB
 
 open MvPolynomial
 
+/- English proof (translation)
+Unfold `formPoly`. Rewrite using `[map_sum]`. Use `symm`. Use `Finset.sum_of_injOn (fun (w : Fin n → σ) j => some (w j)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `w _ w' _ h`.
+
+Use function extensionality and compare the values at `j`. Conclude with `Option.some_injective _ (congrFun h j)`. Introduce `w _`. Conclude with `Finset.mem_univ _`. Introduce `w _ hw`.
+
+Establish `: ∃ j, w j = none`. Assume the negation of the conclusion as `hc`. Apply `hw` to reduce the goal to its premises. Establish `hc' : ∀ j, (w j).isSome` using `fun j => by`. Consider the cases of `h : w j with`.
+
+Consider the case `none => exact absurd ⟨j, h⟩ hc`. Consider the case `some _ => rfl`. Conclude with `⟨fun j => (w j).get (hc' j), Finset.mem_coe.2 (Finset.mem_univ _), by funext j; simp⟩`. Take `⟨j, hj⟩` from `this`. Rewrite using `[map_mul, map_prod, Finset.prod_eq_zero (Finset.mem_univ j) (by simp [hj]), mul_zero]`.
+
+Introduce `w _`. Simplify using `[map_prod]`.
+-/
 theorem killNone_formPoly {σ : Type} [Fintype σ] (n : ℕ) (a : (Fin n → Option σ) → ℝ) :
     aeval (fun o : Option σ => o.elim (0 : MvPolynomial σ ℝ) X) (formPoly n a)
       = formPoly n fun w => a fun j => some (w j) := by
@@ -35,6 +46,11 @@ theorem killNone_formPoly {σ : Type} [Fintype σ] (n : ℕ) (a : (Fin n → Opt
   · intro w _
     simp [map_prod]
 
+/- English proof (translation)
+Establish `h : (aeval (fun o : Option (Ψ × Fin N) => o.elim (0 : MvPolynomial (Ψ × Fin N) ℝ) X)).comp toWtS = toWt.comp (aeval (fun o : Option (Ψ × Fin N) => o.elim (0 : MvPolynomial (Ψ × Fin N) ℝ) X))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `o`. Consider the cases of `o with`. Consider the case `none => simp [toWtS, toWt]`.
+
+Consider the case `some p`. Simplify using `only [toWtS, toWt, AlgHom.comp_apply, aeval_X, Option.elim_some, aeval_rename]`. Establish `: ((fun o : Option (Ψ × Fin N) => o.elim (0 : MvPolynomial (Ψ × Fin N) ℝ) X) ∘ some) = X` using `rfl`. Rewrite using `[this, aeval_X_left_apply]`. Conclude with `DFunLike.congr_fun h Q`.
+-/
 theorem killNone_toWtS {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Option (Ψ × Fin N)) ℝ) :
     aeval (fun o : Option (Ψ × Fin N) => o.elim (0 : MvPolynomial (Ψ × Fin N) ℝ) X) (toWtS Q)
       = toWt (aeval (fun o : Option (Ψ × Fin N) => o.elim (0 : MvPolynomial (Ψ × Fin N) ℝ) X) Q) := by
@@ -50,6 +66,9 @@ theorem killNone_toWtS {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Option (Ψ × Fi
       rw [this, aeval_X_left_apply]
   exact DFunLike.congr_fun h Q
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C r => simp [toWt]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]`. Simplify using `[toWt, gap]`.
+-/
 theorem eval_toWt_gap {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Ψ × Fin N) ℝ) (lam : Ψ × Fin N → ℝ) :
     eval lam (toWt Q) = eval (gap lam) Q := by
   induction Q using MvPolynomial.induction_on with
@@ -57,6 +76,13 @@ theorem eval_toWt_gap {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Ψ × Fin N) ℝ)
   | add p q hp hq => simp only [map_add, hp, hq]
   | mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]; simp [toWt, gap]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C r => simp [toWtS]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`.
+
+Use `congr 1`. Consider the cases of `i with`. Consider the case `none => simp [toWtS, gapS]`. Consider the case `some q`. Simplify using `only [toWtS, gapS, gap, aeval_X, eval_X, Option.elim_some, eval_rename]`.
+
+Both sides reduce to the same expression.
+-/
 theorem eval_toWtS_gapS {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Option (Ψ × Fin N)) ℝ) (lam : Ψ × Fin N → ℝ)
     (s : ℝ) : eval (fun o => o.elim s lam) (toWtS Q) = eval (gapS lam s) Q := by
   induction Q using MvPolynomial.induction_on with
@@ -71,6 +97,9 @@ theorem eval_toWtS_gapS {Ψ : Type} {N : ℕ} (Q : MvPolynomial (Option (Ψ × F
       simp only [toWtS, gapS, gap, aeval_X, eval_X, Option.elim_some, eval_rename]
       rfl
 
+/- English proof (translation)
+Introduce `Ψ _ N n`. Use `⟨fun a => ?_, eval_toWt_gap, eval_toWtS_gapS⟩` and prove the remaining obligations. Rewrite using `[killNone_toWtS, killNone_formPoly]`.
+-/
 theorem poly_s_zero : ∀ (Ψ : Type) [Fintype Ψ] (N n : ℕ),
     (∀ (a : (Fin n → Option (Ψ × Fin N)) → ℝ),
       aeval (fun o : Option (Ψ × Fin N) => o.elim 0 X) (toWtS (formPoly n a))

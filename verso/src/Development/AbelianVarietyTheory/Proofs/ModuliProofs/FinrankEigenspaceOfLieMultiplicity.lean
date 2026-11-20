@@ -15,6 +15,11 @@ open GlobalTheory.KS
 
 namespace GlobalTheory.UnifEigenRank
 
+/- English proof (translation)
+Set `W' : Fin n → E` to `fun i => ⟨W i, hW i⟩`. Establish `hc : ∀ c : Fin n → k, ((Fintype.linearCombination k W' c : E) : V) = ∑ i, c i • W i` using `fun c => by`. Simplify using `[Fintype.linearCombination_apply, W']`. Establish `hb : Function.Bijective (Fintype.linearCombination k W')`. Use `(Function.bijective_iff_existsUnique _).2 fun z => ?_` and prove the remaining obligations.
+
+Use `(existsUnique_congr fun c => ?_).1 (h z z.2)` and prove the remaining obligations. Rewrite using `[Subtype.ext_iff, hc, eq_comm]`. Rewrite using `[← (LinearEquiv.ofBijective _ hb).finrank_eq, Module.finrank_fin_fun]`.
+-/
 theorem finrank_of_existsUnique {k V : Type} [Field k] [AddCommGroup V] [Module k V] (E : Submodule k V) {n : ℕ}
     (W : Fin n → V) (hW : ∀ i, W i ∈ E) (h : ∀ z ∈ E, ∃! c : Fin n → k, z = ∑ i, c i • W i) :
     Module.finrank k E = n := by
@@ -32,6 +37,23 @@ end GlobalTheory.UnifEigenRank
 open GlobalTheory.UnifLieBasis in
 open ReciprocityTheory.ChartRestriction.G.Chart (prodPts scaleD isTan_iff isLieComb_iff isTan_scale) in
 
+/- English proof (translation)
+Introduce `P₀ u Hm χ hu O _ act F hF τ n hn`. Use `act.hom` as an intermediate fact. Set `j : epsPt (𝟙 (Sp ℂ)) ≅ epsR ℂ` to `Over.isoMk (Iso.refl _) (by simp)`. Set `e : (epsPt (𝟙 (Sp ℂ)) ⟶ P₀.A) ≃* (epsR ℂ ⟶ P₀.A)` to `MulEquiv.ofBijective (preHom j.inv) (j.symm.homCongr (Iso.refl P₀.A)).symm.bijective`. Establish `he : ∀ w, (e w).left = w.left` using `fun w => Category.id_comp _`.
+
+Establish `one : (1 : Over.mk (𝟙 (Sp ℂ)) ⟶ P₀.A).left = η[P₀.A].left` using `Category.id_comp _`. Take `⟨v, hv, hb⟩` from `LiePull.basis_transport e (P := IsLieEigen act (𝟙 _) τ) (R := fun c u v => u.left = spMap (epsScale c) ≫ v.left) (R' := fun c u v => u.left = spMap (epsScaleR c) ≫ v.left) (Q := fun w => IsTangent w ∧ ∀ a, w ≫ act.act a = Chart.spMap (scaleD (τ a)) ≫ w) (fun w => and_congr (by rw …`. Rewrite using `[Over.OverMorphism.ext_iff, Over.comp_left, Over.comp_left, Over.comp_left, he]`. Use the proof step `rfl))`. Use the proof step `(fun c u v => by rw [he, he]; rfl) n hn`.
+
+Establish `key : ∀ (z : Fin P₀.g → ℂ) (w : epsR ℂ ⟶ P₀.A), IsTangent w → u.IsDiff z w → ((∀ a, w ≫ act.act a = Chart.spMap (scaleD (τ a)) ≫ w) ↔ z ∈ ⨅ a, Module.End.eigenspace (F a) (τ a))`. Introduce `z w hw hd`. Rewrite using `[Submodule.mem_iInf]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`.
+
+Establish `h1 : u.IsDiff (F a z) (w ≫ act.act a)` using `isDiff_comp u (act.act a) (LinearMap.toContinuousLinearMap (F a)) (hF a) hw hd`. Establish `h2` using `isDiff_smul u ((isTan_iff _).2 hw) hd (τ a)`. Establish `t1` using `isTangent_comp (act.act a) hw`. Establish `t2` using `(isTan_iff _).1 (isTan_scale (τ a) ((isTan_iff _).2 hw))`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `(hu.tan₁ _ t1).unique h1 (by rw [h]; exact h2)`. Introduce `h`. Rewrite `h1` using `[h]`. Conclude with `(hu.tan₂ _).unique ⟨t1, h1⟩ ⟨t2, h2⟩`.
+
+Use `choose W hW using fun i => (hu.tan₁ (v i) (hv i).1).exists`. Establish `ht : ∀ i, Chart.IsTan (R` using `ℂ) (G := P₀.A) (v i) := fun i => (isTan_iff _).2 (hv i).1`. Establish `hp : ∀ c : Fin n → ℂ, IsTangent (prodPts (R` using `ℂ) (G := P₀.A) c v) ∧ u.IsDiff (∑ i, c i • W i) (prodPts (R := ℂ) (G := P₀.A) c v) := by`. Introduce `c`. Take `⟨a, b⟩` from `isDiff_list_prod u (fun i => c i • W i) _ (fun i => isTan_scale (c i) (ht i)) (fun i => isDiff_smul u (ht i) (hW i) (c i))`.
+
+Conclude with `⟨(isTan_iff _).1 a, b⟩`. Use `UnifEigenRank.finrank_of_existsUnique _ W (fun i => (key _ _ (hv i).1 (hW i)).1 (hv i).2) fun z hz => ?_` and prove the remaining obligations. Take `⟨w, hw, hd⟩` from `(hu.tan₂ z).exists`. Use `(existsUnique_congr fun c => ?_).1 (hb w ⟨hw, (key _ _ hw hd).2 hz⟩)` and prove the remaining obligations. Use `Iff.trans (isLieComb_iff c v w) ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hu.tan₁ _ hw).unique hd (by rw [h]; exact (hp c).2)`. Rewrite `hd` using `[h]`. Conclude with `(hu.tan₂ _).unique ⟨hw, hd⟩ (hp c)`.
+-/
 theorem GlobalTheory.UnifEigenRank.finrank_eigenspace_of_lieMult : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (O : Type) [CommRing O] (act : OAct O P₀.A) (F : O → Module.End ℂ (Fin P₀.g → ℂ)), (∀ a z, u.ex (F a z) = u.ex z ≫ act.act a) → ∀ (τ : O →+* ℂ) (n : ℕ), LieMult act (𝟙 _) τ n → Module.finrank ℂ ↥(⨅ a, Module.End.eigenspace (F a) (τ a)) = n := by
   intro P₀ u Hm χ hu O _ act F hF τ n hn
   have := act.hom

@@ -13,6 +13,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `g.q_hom` as an intermediate fact. Use `g.i_hom` as an intermediate fact. Use `g.q_flat` as an intermediate fact. Use `g.q_surj` as an intermediate fact. Use `g.q_affine` as an intermediate fact.
+
+Establish `hp` using `g.isKernel`. Establish `: Mono g.q` using `⟨fun {Y} x y hxy => by`. Establish `h1 : (x * y⁻¹) ≫ g.q = toUnit _ ≫ η[thickObj R I e D.P.A]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, hxy, mul_inv_cancel]`. Both sides reduce to the same expression.
+
+Establish `h2 : hp.lift _ _ h1 = 1` using `GlobalTheory.UU.point_eq_of_subsingleton _ _`. Establish `h3` using `hp.lift_fst _ _ h1`. Rewrite `h3` using `[h2, MonObj.one_comp]`. Conclude with `mul_inv_eq_one.1 h3.symm⟩`. Establish `: Mono g.q.left` using `inferInstanceAs (Mono ((Over.forget _).map g.q))`.
+
+Establish `: EffectiveEpi g.q.left` using `inferInstance`. Establish `: IsIso g.q.left` using `isIso_of_mono_of_strongEpi _`. Use `D.P.isAb.proper` as an intermediate fact. Establish `: IsProper (thickObj R I e D.P.A).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`. Express the relevant statement in the definitionally equal form `IsProper (thickObj R I e G).hom`.
+
+Rewrite using `[← Over.w g.q]`. Use `infer_instance`.
+-/
 theorem isProper_thick {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G) [Subsingleton D.X] :
     IsProper (pullback.snd G.hom (thick R I e)) := by
@@ -39,6 +50,13 @@ theorem isProper_thick {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : D
   rw [← Over.w g.q]
   infer_instance
 
+/- English proof (translation)
+Introduce and unpack `K _ _ t ⟨q, hq⟩`. Take `⟨φ, rfl⟩` from `Spec.map_surjective t`. Establish `hk : ∀ a ∈ maximalIdeal R ^ (e + 1), φ.hom a = 0` using `fun a ha => by`. Establish `h1 : a ∈ maximalIdeal R` using `Ideal.pow_le_self (Nat.succ_ne_zero e) ha`. Establish `h2 : Ideal.comap φ.hom q.asIdeal = maximalIdeal R` using `congrArg PrimeSpectrum.asIdeal hq`.
+
+Rewrite `h1` using `[← h2, show q.asIdeal = ⊥ from @Ideal.eq_bot_of_prime _ _ _ q.2]`. Conclude with `h1`. Set `u : Sp K ⟶ Spec (CommRingCat.of (R ⧸ maximalIdeal R ^ (e + 1)))` to `Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift _ φ.hom hk))`. Establish `hu : u ≫ thick R (maximalIdeal R) e = Spec.map φ`. Rewrite using `[← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Establish `hp` using `(IsPullback.of_hasPullback (pullback.snd G.hom (thick R (maximalIdeal R) e)) u).paste_horiz (IsPullback.of_hasPullback G.hom (thick R (maximalIdeal R) e))`. Rewrite using `[← hu, ← hp.isoPullback_inv_snd]`. Use `infer_instance`.
+-/
 theorem closedPoint_mem_abLocus {R : Type} [CommRing R] [IsLocalRing R] {e : ℕ}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
     (h : IsProper (pullback.snd G.hom (thick R (maximalIdeal R) e))) : closedPoint R ∈ abLocus G := by
@@ -65,6 +83,11 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open Formalism.MainNotions.DIV.Cons (SCF intO)
 open GlobalTheory.LocM GlobalTheory.LocM.Cht
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y p C P A _ hs`. Establish `hloc : IsLocalHom A.f` using `⟨fun a ha => by`. Assume the negation of the conclusion as `h`. Conclude with `(mem_maximalIdeal _).1 ((mem_maximalIdeal_ball (A.f a)).2 (A.f_loc a ((mem_maximalIdeal _).2 h))) ha⟩`. Establish `e1 : spMap A.f (closedPoint _) = closedPoint A.R` using `comap_closedPoint A.f`.
+
+Establish `e2 : P.yt (closedPoint ↥(intO ↥C.S)) = A.ι (closedPoint A.R)`. Rewrite using `[← A.fac]`. Conclude with `congrArg A.ι e1`. Rewrite using `[e2]`. Conclude with `(abLocus_pullback abLocusOne Y.t.semi A.m.cart.1 _).2 (closedPoint_mem_abLocus (isProper_thick (A.U.U.toUnifPre.gt 0)))`.
+-/
 theorem abOfTriv : GlobalTheory.LocM.Cht.AbOfTrivSt := by
   intro E _ _ _ H Dw l Xo c O _ β Y p C P A _ hs
   have hloc : IsLocalHom A.f := ⟨fun a ha => by

@@ -3,10 +3,34 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.N
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineFormalismOfRegular
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology Polynomial
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_range_succ', Finset.prod_range_succ]`.
+-/
 private theorem shift_prod {R : Type} [CommMonoid R] (a : ℕ → R) (f : ℕ) :
     (∏ i ∈ Finset.range f, a (i + 1)) * a 0 = (∏ i ∈ Finset.range f, a i) * a f := by
   rw [← Finset.prod_range_succ', Finset.prod_range_succ]
 
+/- English proof (translation)
+Establish `hinj : ∀ (i : ℕ) (y : B), y ≠ 0 → (PD.φ ^ i) y ≠ 0`. Introduce `i y hy h`. Apply `hy` to reduce the goal to its premises. Establish `h1 : Function.Injective (PD.φ ^ i)`. Rewrite using `[AlgHom.coe_pow]`.
+
+Conclude with `PD.φ_inj.iterate i`. Conclude with `h1 (h.trans (map_zero _).symm)`. Establish `hK : ∀ (i : ℕ) (y : K₀), (PD.φ ^ i) (algebraMap K₀ B y) = algebraMap K₀ B ((PD.σ ^ i) y)`. Introduce `i y`. Proceed by induction on `i with`.
+
+Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_succ', AlgHom.mul_apply, AlgHom.mul_apply, ih, PD.φ_K₀]`. Establish `hprod : ∀ a : ℕ → B, (∀ i, PD.ι (a i) ∈ PD.Fil 0) → PD.ι (∏ i ∈ Finset.range f, a i) ∈ PD.Fil 0`. Introduce `a ha`. Rewrite using `[map_prod]`.
+
+Conclude with `Finset.prod_induction _ (fun y => y ∈ PD.Fil 0) (fun y z hy hz => by simpa using PD.Fil_mul 0 0 y z hy hz) PD.one_mem fun i _ => ha i`. Establish `hδ : δ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hinj f b hb (by rw [hφ, map_zero, zero_mul])`. Use `set c := ∏ i ∈ Finset.range f, (PD.φ ^ i) b with hc`.
+
+Establish `hc0 : c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hinj i b hb`. Establish `hφc : PD.φ c = algebraMap K₀ B δ * c`. Apply `mul_right_cancel₀ hb` to reduce the goal to its premises. Establish `h` using `shift_prod (fun i => (PD.φ ^ i) b) f`. Simplify using `only [pow_succ', AlgHom.mul_apply, pow_zero, AlgHom.one_apply] at h`.
+
+Rewrite `h` using `[← map_prod, ← hc, hφ]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Use `set N := ∏ i ∈ Finset.range f, (PD.σ ^ i) δ with hN`. Establish `hσN : PD.σ N = N`.
+
+Apply `mul_right_cancel₀ hδ` to reduce the goal to its premises. Establish `h` using `shift_prod (fun i => (PD.σ ^ i) δ) f`. Simplify using `only [pow_succ', AlgHom.mul_apply, pow_zero, AlgHom.one_apply] at h`. Rewrite `h` using `[← map_prod, ← hN, hσ]`. Conclude with `h`.
+
+Take `⟨x, hx⟩` from `PD.fund (algebraMap K₀ B N) (by rw [PD.φ_K₀, hσN]) (by`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply K₀ K BdR, Algebra.algebraMap_eq_smul_one]`. Conclude with `(PD.Fil 0).smul_mem _ PD.one_mem)`. Use `⟨∏ i ∈ Finset.range f, (PD.φ ^ i) c, x, Finset.prod_ne_zero_iff.2 fun i _ => hinj i c hc0, ?_, hprod _ fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, hN, map_prod, map_prod, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← AlgHom.mul_apply, ← pow_succ', pow_succ, AlgHom.mul_apply, hφc, map_mul, hK]`. Rewrite using `[hc, map_prod]`. Use `hprod _ fun j => ?_` and prove the remaining obligations. Rewrite using `[← AlgHom.mul_apply, ← pow_add]`.
+
+Conclude with `hF _`. Rewrite `hx` using `[IsScalarTower.algebraMap_apply Qp K₀ B]`. Conclude with `(algebraMap K₀ B).injective hx`.
+-/
 private theorem descend {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
     {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
@@ -65,6 +89,9 @@ private theorem descend {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Fiel
   · rw [IsScalarTower.algebraMap_apply Qp K₀ B] at hx
     exact (algebraMap K₀ B).injective hx
 
+/- English proof (translation)
+Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm]`. Establish `h1` using `minpoly.algHom_eq f f.toRingHom.injective x`. Establish `h2` using `minpoly.algHom_eq K.val K.val.toRingHom.injective x`. Conclude with `congrArg spectralValue (h1.trans h2.symm)`.
+-/
 private theorem norm_algHom' {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (Om l)}
     (f : ↥K →ₐ[ℚ_[l]] Om l) (x : ↥K) : ‖f x‖ = ‖(x : Om l)‖ := by
   rw [← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm]
@@ -72,6 +99,15 @@ private theorem norm_algHom' {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ
   have h2 := minpoly.algHom_eq K.val K.val.toRingHom.injective x
   exact congrArg spectralValue (h1.trans h2.symm)
 
+/- English proof (translation)
+Introduce `l _ K f hf hσ b δ hb hφ hF`. Take `⟨T⟩` from `tiedP l`. Use `haveI := GlobalTheory.RegularRing.isDomain_of_tied T K`. Establish `e : ((PP l).PD K).φ = (PP l).φB` using `AlgHom.ext ((PP l).PD_φ K)`. Establish `hFil : ∀ y, y ∈ ((PP l).PD K).Fil 0 ↔ y ∈ ((PP l).PD (botExt l)).Fil 0` using `fun y => by`.
+
+Rewrite using `[← SetLike.mem_coe, (PP l).PD_Fil K (botExt l), SetLike.mem_coe]`. Take `⟨c, x, hc, hφc, hFc, hx⟩` from `descend ((PP l).PD K) f (fun y => by rw [AlgHom.coe_pow, hσ]) b δ hb (by rw [e, AlgHom.coe_pow, hφ]) (fun i => by rw [e, AlgHom.coe_pow, (PP l).PD_ι, hFil]; exact hF i)`. Rewrite `hφc` using `[e]`. Rewrite `hFc` using `[(PP l).PD_ι, hFil]`. Establish `h1` using `UpperTheory.norm_le_one_of_frobenius_eigenvector_mem_fil_zero c x hc hφc hFc`.
+
+Establish `h2` using `congrArg (fun y : ↥(K0 K) => ‖(K0 K).val y‖) hx`. Simplify using `only [map_prod, norm_prod, AlgHom.commutes] at h2`. Establish `h3 : ∀ i : ℕ, ‖(K0 K).val ((((PP l).PD K).σ ^ i) δ)‖ = ‖(δ : Om l)‖` using `fun i => norm_algHom' ((K0 K).val.comp (((PP l).PD K).σ ^ i)) δ`. Simplify using `only [h3] at h2`. Rewrite `h2` using `[Finset.prod_const, Finset.card_range, norm_algebraMap']`.
+
+Rewrite `h1` using `[h2]`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hf.ne').1 h1`.
+-/
 theorem UpperTheory.norm_le_one_of_frobenius_pow_eigenvector_mem_fil_zero :
     ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (f : ℕ), 0 < f → (∀ x : ↥(K0 K), (((PP l).PD K).σ)^[f] x = x) → ∀ (b : Bcr l) (δ : ↥(K0 K)), b ≠ 0 → ((PP l).φB)^[f] b = algebraMap ↥(K0 K) (Bcr l) δ * b → (∀ i : ℕ, (PP l).ιB (((PP l).φB)^[i] b) ∈ ((PP l).PD (botExt l)).Fil 0) → ‖(δ : Om l)‖ ≤ 1 := by
   intro l _ K f hf hσ b δ hb hφ hF

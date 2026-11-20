@@ -16,6 +16,85 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce `n m hmn Kg _ _ _ _ _ _ μ _ ι hι hK`. Assume the negation of the conclusion as `hneg`. Use `push Not at hneg`. Use `set j : ℕ := n - m with hjdef`. Establish `hjn : j ≤ n` using `Nat.sub_le n m`.
+
+Establish `hj1 : 1 ≤ j` using `by omega`. Establish `hιG : ∀ k, InG (ι k)` using `fun k => ((hK (ι k)).2 ⟨k, rfl⟩).1`. Establish `hιK : ∀ k, InK (ι k)` using `fun k => (hK (ι k)).2 ⟨k, rfl⟩`. Use `set ΩZ : Set (M2 n) := {x | ∀ k, ι k * x ∈ DomZ n} with hΩZdef`. Establish `hΩZo : IsOpen ΩZ` using `isOpen_setK (hFz n m 0).1 Kg ι hι`.
+
+Establish `hGΩZ : GSet n ⊆ ΩZ` using `fun g hg k => (hFz n m 0).2.1 (inG_mul (hιG k) hg)`. Establish `hDZ : ∀ y ∈ DomZ n, y ∈ Dom n` using `fun y hy => hy.1`. Establish `hFdCD : ContDiffOn ℂ ∞ (Fd (n` using `n) m) (DomZ n) := ((hFd n m).1).of_le le_top`. Use `set ρ : Matrix (Fin n) (Fin n) ℂ → Kg → ℂ := fun Y => rhoP ι m 0 Y with hρdef`. Establish `hρc : ∀ Y, Continuous (ρ Y)` using `fun Y => CrxMa.continuous_rhoP hFz m ι hι hιG Y`.
+
+Use `set Φ : Matrix (Fin n) (Fin n) ℂ → M2 n → ℂ := fun Y x => ∫ k, Fd m (ι k * x) * ρ Y k ∂μ with hΦdef`. Establish `hΦ : ∀ Y, ContDiffOn ℂ ∞ (Φ Y) ΩZ` using `fun Y => (holInt n Kg μ ΩZ (fun k x => Fd m (ι k * x) * ρ Y k) hΩZo (fun N => (continuousOn_iteratedFDeriv_translate (Fd m) (DomZ n) (hFz n m 0).1 hFdCD Kg ι hι _ (hρc Y) N).mono (Set.prod_mono subset_rfl (fun x hx => hx))) (fun k => (hFdCD.comp (contDiff_mulLeft (ι k)).contDiffO …`. Establish `stepA : ∀ Y a b, InG a → InG b → detD (fun H => Φ Y (a * nU H * b)) = 0` using `fun Y a b ha hb => CrxMa.stepA_Z hFd hFz m Kg μ ι hι hK hneg Y a b ha hb`. Establish `stepB : ∀ Y g, InG g → detD (fun T : Matrix (blkA (n` using `n) j) (blkA j) ℂ => detD (fun S : Matrix (blkB (n := n) j) (blkB j) ℂ => Φ Y (g * mX 1 (embOn (blkA j) T) (embOn (blkB j) S) 1))) = 0 := by`. Introduce `Y`.
+
+Use `topComp n j (Φ Y) ΩZ hΩZo hGΩZ (hΦ Y) ?_ (stepA Y)` and prove the remaining obligations. Introduce `x P' S' hxM hx hP hS`. Simplify using `only [hΦdef]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[← mul_assoc, Fd_kpart m j (ι k * x) (hDZ _ (hx k)) P' S' hP hS]`. Use `set a1 : ℂ := deriv (fun z : ℂ => (∏ i ∈ Finset.range j, ((i : ℂ) - z)) * (∏ i ∈ Finset.range (n - j), ((i : ℂ) - m - z))) 0`. Establish `ha1 : a1 ≠ 0` using `deriv_prod_range_sub_mul_prod_ne_zero n m hmn`. Use `set Ψ : Matrix (Fin n) (Fin n) ℂ → M2 n → ℂ := fun Y x => ∫ k, hF j m 0 (ι k * x) * ρ Y k ∂μ with hΨdef`. Establish `stepC : ∀ Y g, InG g → Ψ Y g = 0` using `fun Y g hg => Cx3.stepC hFd hDj hSph hFz m j hj1 hjn ha1 μ ι hι hιG (ρ Y) (hρc Y) (fun g hg => stepB Y g hg) g hg`.
+
+Establish `stepD : ∀ Y (N : ℕ) (W : Fin N → M2 n) (g : M2 n), InG g → ∫ k, iteratedFDeriv ℂ N (hF j m 0) (ι k * g) (fun i => ι k * g * W i) * ρ Y k ∂μ = 0` using `fun Y N W g hg => Cx3.stepD j (m : ℤ) 0 μ ι hι hιG (ρ Y) (hρc Y) (fun g hg => stepC Y g hg) N W g hg`. Establish `stepE : ∀ (N : ℕ) (v : Fin (N + 1) → M2 n) (a0 b0 : Fin n), v 0 = WD 0 (Matrix.single a0 b0 1) → (∀ a b, v a * v b = 0) → ∫ k, iteratedFDeriv ℂ (N + 1) (hF j (m : ℤ) 0) (ι k) (fun i => ι k * v i) * fV (m : ℤ) 0 (ι k) ∂μ = 0`. Introduce `N v a0 b0 hv0 hv`. Establish `hdom : ∀ k, ι k ∈ Dom n` using `fun k => gset_sub_dom (hιG k)`. Use `set F1 : M2 n → ℂ := rit (hF j (m : ℤ) 0) N (fun i => v i.succ) with hF1def`.
+
+Establish `hF1 : ContDiffOn ℂ ∞ F1 (Dom n)` using `rit_contDiffOn _ _ isOpen_dom (contDiffOn_hF j (m : ℤ) 0) N _`. Establish `hF1law : ∀ P x, InP P → x ∈ Dom n → F1 (P * x) = c1 (m : ℤ) 0 P * F1 x` using `rit_law _ (Dom n) isOpen_dom (contDiffOn_hF j (m : ℤ) 0) (c1 (m : ℤ) 0) (fun P x hP hx => mul_mem_dom hP hx) (fun P x hP hx => hF_law j (m : ℤ) 0 hP hx) N _`. Establish `e1 : ∀ k, iteratedFDeriv ℂ (N + 1) (hF j (m : ℤ) 0) (ι k) (fun i => ι k * v i) = rit F1 1 (fun _ => v 0) (ι k)`. Introduce `k`. Rewrite using `[← rit_eq (hF j (m : ℤ) 0) (Dom n) isOpen_dom (contDiffOn_hF j (m : ℤ) 0) (N + 1) v hv (ι k) (hdom k)]`.
+
+Both sides reduce to the same expression. Establish `hT` using `rit_transpose infInv F1 (c1 (m : ℤ) 0) (c2 (m : ℤ) 0) hF1 hF1law (fun P hP => modulus_characters_product (m : ℤ) 0 hP) Kg μ ι hι hK 1 (fV (m : ℤ) 0) (contDiffOn_fV (m : ℤ) 0) (fun P x hP hx => fV_law (m : ℤ) 0 hP hx) (fun _ => v 0) (fun a b => hv 0 0)`. Repeatedly rewrite using `[e1]`. Rewrite using `[hT]`. Establish `e2 : ∀ k, rit (fV (m : ℤ) 0) 1 (fun i => (fun _ : Fin 1 => v 0) (Fin.rev i)) (ι k) = ((m : ℂ) - n) * (fV (m : ℤ) 0 (ι k) * ((u1 (ι k))⁻¹ * u2 (ι k)) b0 a0)`.
+
+Introduce `k`. Use `show fderiv ℂ (fV (m : ℤ) 0) (ι k) (ι k * v 0) = _`. Rewrite using `[hv0, fderiv_fV_R m (ι k) (hdom k) a0 b0]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨L, c, kl, hKl⟩` from `hKS n m a0 b0 Kg ι hK`.
+
+Use `GlobalTheory.isMulRightInvariant_of_compactSpace μ` as an intermediate fact. Establish `hF1c : Continuous fun k => F1 (ι k)` using `cont_on_K F1 hF1 Kg ι hι hdom`. Establish `e3 : ∀ l, ∫ k, F1 (ι k) * rhoP ι m 0 1 (k * kl l) ∂μ = 0`. Introduce `l`. Establish `h` using `integral_mul_right_eq_self (μ := μ) (fun k => F1 (ι (k * (kl l)⁻¹)) * rhoP ι m 0 1 k) (kl l)`.
+
+Simplify using `only [mul_inv_cancel_right] at h`. Rewrite using `[h]`. Establish `hg : InG (ι (kl l)⁻¹)` using `hιG _`. Use `stepD 1 N (fun i => v i.succ) (ι (kl l)⁻¹) hg` as an intermediate fact. Rewrite using `[← this]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [map_mul]`. Rewrite using `[hF1def, rit_eq (hF j (m : ℤ) 0) (Dom n) isOpen_dom (contDiffOn_hF j (m : ℤ) 0) N _ (fun a b => hv _ _) _ (gset_sub_dom (inG_mul (hιG k) hg))]`. Establish `e4 : ∀ k, F1 (ι k) * rit (fV (m : ℤ) 0) 1 (fun i => (fun _ : Fin 1 => v 0) (Fin.rev i)) (ι k) = ((m : ℂ) - n) * ∑ l, c l * (F1 (ι k) * rhoP ι m 0 1 (k * kl l))`. Introduce `k`.
+
+Rewrite using `[e2, hKl k, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations. Repeatedly rewrite using `[e4]`. Rewrite using `[integral_const_mul, integral_finsetSum]`. Repeatedly rewrite using `[integral_const_mul, e3, mul_zero, Finset.sum_const_zero]`.
+
+Simplify using the standard rewrite rules. Introduce `l _`. Conclude with `Integrable.const_mul (integrable_of_continuous_K μ (hF1c.mul ((hρc 1).comp (continuous_id.mul continuous_const)))) _`. Establish `stepE' : ∀ (K : ℕ) (v : Fin K → M2 n) (i0 : Fin K) (a0 b0 : Fin n), v i0 = WD 0 (Matrix.single a0 b0 1) → (∀ a b, v a * v b = 0) → ∫ k, iteratedFDeriv ℂ K (hF j (m : ℤ) 0) (ι k) (fun i => ι k * v i) * fV (m : ℤ) 0 (ι k) ∂μ = 0`. Introduce `K v i0 a0 b0 hvi hv`.
+
+Take `⟨N, rfl⟩ : ∃ N, K = N + 1` from `⟨K - 1, by have := i0.2; omega⟩`. Use `set σ : Equiv.Perm (Fin (N + 1)) := Equiv.swap 0 i0 with hσ`. Establish `hsym : ∀ k, iteratedFDeriv ℂ (N + 1) (hF j (m : ℤ) 0) (ι k) (fun i => ι k * v i) = iteratedFDeriv ℂ (N + 1) (hF j (m : ℤ) 0) (ι k) (fun i => ι k * (v ∘ σ) i)`. Introduce `k`. Use `TC.iterSymm (M2 n) (hF j (m : ℤ) 0) (Dom n) isOpen_dom (contDiffOn_hF j (m : ℤ) 0) (ι k) (gset_sub_dom (hιG k)) (N + 1) (fun i => ι k * v i) σ` as an intermediate fact.
+
+Rewrite using `[← this]`. Both sides reduce to the same expression. Repeatedly rewrite using `[hsym]`. Use `stepE N (v ∘ σ) a0 b0 ?_ (fun a b => hv _ _)` and prove the remaining obligations. Simplify using `[hσ, hvi]`.
+
+Establish `hLRLQ : ∀ (T : Matrix (blkA (n` using `n) j) (blkA j) ℂ) (S : Matrix (blkB (n := n) j) (blkB j) ℂ) (T' : Matrix (blkA (n := n) j) (blkA j) ℂ) (S' : Matrix (blkB (n := n) j) (blkB j) ℂ), (LR (blkA j) 1 T + LQ (blkB j) 1 S) * (LR (blkA j) 1 T' + LQ (blkB j) 1 S') = 0 := by`. Introduce `T S T' S'`. Rewrite using `[LR_apply, LQ_apply, LR_apply, LQ_apply, one_mul, one_mul, one_mul, one_mul, add_comm (WD 0 _), ← WD_add, add_zero, zero_add, add_comm (WD 0 _), ← WD_add, add_zero, zero_add]`. Conclude with `WD_mul_WD_B_A j T S T' S'`. Establish `hDc : ∀ (K : ℕ) (v : Fin K → M2 n), (∀ a b, v a * v b = 0) → Continuous (fun k => iteratedFDeriv ℂ K (hF j (m : ℤ) 0) (ι k) (fun i => ι k * v i))`.
+
+Introduce `K v hv`. Establish `e : (fun k => iteratedFDeriv ℂ K (hF j (m : ℤ) 0) (ι k) (fun i => ι k * v i)) = fun k => rit (hF j (m : ℤ) 0) K v (ι k)`. Use function extensionality and compare the values at `k`. Rewrite using `[rit_eq (hF j (m : ℤ) 0) (Dom n) isOpen_dom (contDiffOn_hF j (m : ℤ) 0) K v hv (ι k) (gset_sub_dom (hιG k))]`. Rewrite using `[e]`.
+
+Conclude with `cont_on_K _ (rit_contDiffOn _ _ isOpen_dom (contDiffOn_hF j (m : ℤ) 0) K v) Kg ι hι (fun k => gset_sub_dom (hιG k))`. Establish `hfVc : Continuous (fun k => fV (m : ℤ) 0 (ι k))` using `cont_on_K _ (contDiffOn_fV (m : ℤ) 0) Kg ι hι (fun k => gset_sub_dom (hιG k))`. Establish `stepF : ∫ k, detD (fun T : Matrix (blkA (n` using `n) j) (blkA j) ℂ => detD (fun S : Matrix (blkB (n := n) j) (blkB j) ℂ => hF j (m : ℤ) 0 (ι k + ι k * LR (blkA j) 1 T + ι k * LQ (blkB j) 1 S))) * fV (m : ℤ) 0 (ι k) ∂μ = 0 := by`. Establish `hcA : Fintype.card (blkA (n` using `n) j) = j := card_blkA hjn`. Establish `e : ∀ k, detD (fun T : Matrix (blkA (n` using `n) j) (blkA j) ℂ => detD (fun S : Matrix (blkB (n := n) j) (blkB j) ℂ => hF j (m : ℤ) 0 (ι k + ι k * LR (blkA j) 1 T + ι k * LQ (blkB j) 1 S))) = ∑ σ : Equiv.Perm (blkA (n := n) j), ∑ τ : Equiv.Perm (blkB (n := n) j), (Equiv.Perm.sign σ : ℂ) * (Equiv.Perm.sign τ : ℂ) * iteratedFD …`.
+
+Introduce `k`. Use `detD_detD_comp (hF j (m : ℤ) 0) (Dom n) isOpen_dom (contDiffOn_hF j (m : ℤ) 0) (ι k) (gset_sub_dom (hιG k)) ((mulL (ι k)).comp (LR (blkA j) 1)) ((mulL (ι k)).comp (LQ (blkB j) 1))` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply, mulL_apply] at this`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun σ _ => Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[fin_append_mul]`. Repeatedly rewrite using `[e, Finset.sum_mul]`. Rewrite using `[integral_finsetSum]`. Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum]`.
+
+Use `Finset.sum_eq_zero fun τ _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[integral_const_mul, integral_const_mul]`. Use `mul_eq_zero_of_right _ (mul_eq_zero_of_right _ ?_)` and prove the remaining obligations. Establish `h0 : 0 < Fintype.card (blkA (n` using `n) j) := by omega`.
+
+Use `stepE' _ _ (Fin.castAdd _ ⟨0, h0⟩) ((Fintype.equivFin (blkA (n := n) j)).symm ⟨0, h0⟩ : Fin n) (σ ((Fintype.equivFin (blkA (n := n) j)).symm ⟨0, h0⟩) : Fin n) ?_ ?_` and prove the remaining obligations. Rewrite using `[Fin.append_left, LR_apply, one_mul, embOn_single_pf]`. Introduce `a b`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun a => ?_) a <;> refine Fin.addCases (fun b => ?_) (fun b => ?_) b <;>`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+
+Simplify using `using hLRLQ _ 0 _ 0`. Simplify using `using hLRLQ _ 0 0 _`. Simplify using `using hLRLQ 0 _ _ 0`. Simplify using `using hLRLQ 0 _ 0 _`. Introduce `τ _`.
+
+Use `integrable_of_continuous_K μ (((continuous_const.mul (hDc _ _ ?_)).mul hfVc))` and prove the remaining obligations. Introduce `a b`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun a => ?_) a <;> refine Fin.addCases (fun b => ?_) (fun b => ?_) b <;>`. Simplify using `only [Fin.append_left, Fin.append_right]`. Simplify using `using hLRLQ _ 0 _ 0`.
+
+Simplify using `using hLRLQ _ 0 0 _`. Simplify using `using hLRLQ 0 _ _ 0`. Simplify using `using hLRLQ 0 _ 0 _`. Introduce `σ _`. Use `integrable_finsetSum _ fun τ _ => ?_` and prove the remaining obligations.
+
+Use `integrable_of_continuous_K μ (((continuous_const.mul (hDc _ _ ?_)).mul hfVc))` and prove the remaining obligations. Introduce `a b`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun a => ?_) a <;> refine Fin.addCases (fun b => ?_) (fun b => ?_) b <;>`. Simplify using `only [Fin.append_left, Fin.append_right]`. Simplify using `using hLRLQ _ 0 _ 0`.
+
+Simplify using `using hLRLQ _ 0 0 _`. Simplify using `using hLRLQ 0 _ _ 0`. Simplify using `using hLRLQ 0 _ 0 _`. Establish `hWz : ∀ (T T' : Matrix (blkA (n` using `n) j) (blkA j) ℂ) (S S' : Matrix (blkB (n := n) j) (blkB j) ℂ), (LR (blkA j) 1 T + LQ (blkB j) 1 S) * (LR (blkA j) 1 T' + LQ (blkB j) 1 S') = 0 := by`. Introduce `T T' S S'`.
+
+Establish `e : ∀ (T : Matrix (blkA (n` using `n) j) (blkA j) ℂ) (S : Matrix (blkB (n := n) j) (blkB j) ℂ), LR (blkA j) 1 T + LQ (blkB j) 1 S = WD (embOn (blkB j) S) (embOn (blkA j) T) := by`. Introduce `T S`. Rewrite using `[LR_apply, LQ_apply, one_mul, one_mul, add_comm, ← WD_add, add_zero, zero_add]`. Rewrite using `[e, e]`. Conclude with `WD_mul_WD_B_A j T S T' S'`.
+
+Establish `weight_sum_eq` using `transpose_detD infInv (hF j (m : ℤ) 0) (fV (m : ℤ) 0) (c1 (m : ℤ) 0) (c2 (m : ℤ) 0) (contDiffOn_hF j (m : ℤ) 0) (contDiffOn_fV (m : ℤ) 0) (fun P' x hP hx => hF_law j (m : ℤ) 0 hP hx) (fun P' x hP hx => fV_law (m : ℤ) 0 hP hx) (fun P' hP => modulus_characters_product (m : ℤ) 0 hP) …`. Rewrite `weight_sum_eq` using `[stepF]`. Establish `stepE3 : ∫ k, hF j (m : ℤ) 0 (ι k) * detD (fun T : Matrix (blkA (n` using `n) j) (blkA j) ℂ => detD (fun S : Matrix (blkB (n := n) j) (blkB j) ℂ => fV (m : ℤ) 0 (ι k + ι k * LR (blkA j) 1 T + ι k * LQ (blkB j) 1 S))) ∂μ = 0 := by`. Establish `hs : ((-1 : ℂ) ^ (Fintype.card (blkA (n` using `n) j) + Fintype.card (blkB (n := n) j))) ≠ 0 := pow_ne_zero _ (by norm_num)`. Conclude with `(mul_eq_zero.1 weight_sum_eq.symm).resolve_left hs`.
+
+Establish `hcst' : (∏ i ∈ Finset.range j, (((m : ℤ) : ℂ) - n + i)) * (∏ i ∈ Finset.range (n - j), (((0 : ℤ) : ℂ) - n + i)) ≠ 0`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`.
+
+Establish `: ((m : ℤ) : ℂ) - n + i = (((m : ℤ) - n + i : ℤ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this]; exact_mod_cast (by omega : (m : ℤ) - n + i ≠ 0)`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`.
+
+Establish `: ((0 : ℤ) : ℂ) - n + i = (((0 : ℤ) - n + i : ℤ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this]; exact_mod_cast (by omega : (0 : ℤ) - n + i ≠ 0)`. Establish `stepG : ∫ k, (((‖minorOn (blkA j) (wM (ι k))‖ ^ 2 * ‖minorOn (blkB j) (wM (ι k))‖ ^ 2 : ℝ)) : ℂ) ∂μ = 0`. Establish `e : ∀ k, hF j (m : ℤ) 0 (ι k) * detD (fun T : Matrix (blkA (n` using `n) j) (blkA j) ℂ => detD (fun S : Matrix (blkB (n := n) j) (blkB j) ℂ => fV (m : ℤ) 0 (ι k + ι k * LR (blkA j) 1 T + ι k * LQ (blkB j) 1 S))) = ((∏ i ∈ Finset.range j, (((m : ℤ) : ℂ) - n + i)) * (∏ i ∈ Finset.range (n - j), (((0 : ℤ) : ℂ) - n + i))) * (((‖minorOn (blkA j) (wM (ι …`. Introduce `k`.
+
+Establish `r : (fun T : Matrix (blkA (n` using `n) j) (blkA j) ℂ => detD (fun S : Matrix (blkB (n := n) j) (blkB j) ℂ => fV (m : ℤ) 0 (ι k + ι k * LR (blkA j) 1 T + ι k * LQ (blkB j) 1 S))) = (fun T => detD (fun S => fV (m : ℤ) 0 (ι k * mX 1 (embOn (blkB j) S) (embOn (blkA j) T) 1))) := by`. Use function extensionality and compare the values at `T`. Use `congr 1`. Use function extensionality and compare the values at `S`. Rewrite using `[mul_mX, LR_apply, LQ_apply, one_mul, one_mul, add_assoc, add_assoc, add_comm (ι k * WD 0 _)]`.
+
+Rewrite using `[r, dpDual cayley uAct n j (m : ℤ) 0 (ι k) hjn (hιG k)]`. Establish `hu` using `wM_mem_unitary (hιK k)`. Rewrite using `[minorOn_inv_of_unitary hu, hF, minorOn_inv_of_unitary hu]`. Establish `h1` using `scalar_section_mul_conjugate_section (hιK k) (m : ℤ) 0`. Establish `ha : minorOn (blkA j) (wM (ι k)) * star (minorOn (blkA j) (wM (ι k))) = ((‖minorOn (blkA j) (wM (ι k))‖ ^ 2 : ℝ) : ℂ)`.
+
+Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hb : minorOn (blkB j) (wM (ι k)) * star (minorOn (blkB j) (wM (ι k))) = ((‖minorOn (blkB j) (wM (ι k))‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Move the coercions through the operations in `at ha hb`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_pow, Complex.ofReal_pow]`.
+
+Take the linear combination `(((∏ i ∈ Finset.range j, (((m : ℤ) : ℂ) - n + i)) * (∏ i ∈ Finset.range (n - j), (((0 : ℤ) : ℂ) - n + i))) * minorOn (blkA j) (wM (ι k)) * star (minorOn (blkA j) (wM (ι k))) * minorOn (blkB j) (wM (ι k)) * star (minorOn (blkB j) (wM (ι k)))) * h1 + 0 * ha + 0 * hb + (((∏ i ∈ Fins …`. Rewrite `stepE3` using `[e, integral_const_mul]`. Conclude with `(mul_eq_zero.1 stepE3).resolve_left hcst'`. Establish `hpos` using `pos_int j Kg μ ι hι hK`. Rewrite `stepG` using `[integral_complex_ofReal]`.
+
+Conclude with `hpos.ne' (by exact_mod_cast stepG)`.
+-/
 theorem vacuum_nonvanishing_of_facts (hFd : FdProps) (hDj : DjFd) (hKS : KSplit) (hSph : SphU) (hFz : FzHol) : Crux0 := by
   intro n m hmn Kg _ _ _ _ _ _ μ _ ι hι hK
   by_contra hneg

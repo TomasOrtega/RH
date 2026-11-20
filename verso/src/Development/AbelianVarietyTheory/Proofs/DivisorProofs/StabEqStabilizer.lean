@@ -19,19 +19,34 @@ def rep (y : LeftCosets ι K) : G := Quotient.out (y : G ⧸ K)
 
 variable {ι K}
 
+/- English proof (translation)
+The claim follows from `QuotientGroup.out_eq' (s := K) (y : G ⧸ K)`.
+-/
 theorem mk_rep (y : LeftCosets ι K) : mk ι K (rep ι K y) = y :=
   QuotientGroup.out_eq' (s := K) (y : G ⧸ K)
 
+/- English proof (translation)
+The claim follows from `QuotientGroup.eq`.
+-/
 theorem mk_eq_mk {x y : G} : mk ι K x = mk ι K y ↔ x⁻¹ * y ∈ K :=
   QuotientGroup.eq
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_mk (η : Γ) (x : G) : η • mk ι K x = mk ι K (ι η * x) := rfl
 
+/- English proof (translation)
+Establish `h : mk ι K x = mk ι K (rep ι K (mk ι K x))` using `(mk_rep _).symm`. Rewrite `h` using `[mk_eq_mk]`. Conclude with `⟨_, h, by group⟩`.
+-/
 theorem rep_mk (x : G) : ∃ k ∈ K, rep ι K (mk ι K x) = x * k := by
   have h : mk ι K x = mk ι K (rep ι K (mk ι K x)) := (mk_rep _).symm
   rw [mk_eq_mk] at h
   exact ⟨_, h, by group⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Simplify `hk` using `[mul_assoc]`. Introduce `h`. Conclude with `⟨_, h, by simp [mul_assoc]⟩`.
+-/
 theorem mem_map_conj {x g : G} : g ∈ K.map (MulAut.conj x).toMonoidHom ↔ x⁻¹ * g * x ∈ K := by
   constructor
   · rintro ⟨k, hk, rfl⟩
@@ -39,6 +54,11 @@ theorem mem_map_conj {x g : G} : g ∈ K.map (MulAut.conj x).toMonoidHom ↔ x�
   · intro h
     exact ⟨_, h, by simp [mul_assoc]⟩
 
+/- English proof (translation)
+Use extensionality with `η`. Rewrite using `[MulAction.mem_stabilizer_iff, smul_mk, mk_eq_mk, Subgroup.mem_comap, mem_map_conj]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `K.inv_mem h` as an intermediate fact.
+
+Simplify `this` using `[mul_assoc]`. Introduce `h`. Use `K.inv_mem h` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem stabilizer_mk (x : G) :
     MulAction.stabilizer Γ (mk ι K x) = (K.map (MulAut.conj x).toMonoidHom).comap ι := by
   ext η
@@ -57,6 +77,9 @@ section Terms
 
 variable {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂]
 
+/- English proof (translation)
+Rewrite using `[LeftCosets.stabilizer_mk]`. Use extensionality with `η`. Simplify using `only [stab, Subgroup.mem_inf, Subgroup.mem_comap, LeftCosets.mem_map_conj, Subgroup.mem_prod, MonoidHom.prod_apply, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv]`.
+-/
 theorem stab_eq_stabilizer (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (x : G₁ × G₂) :
     stab ι₁ ι₂ K₁ K₂ x = MulAction.stabilizer Γ (LeftCosets.mk (ι₁.prod ι₂) (K₁.prod K₂) x) := by
   rw [LeftCosets.stabilizer_mk]

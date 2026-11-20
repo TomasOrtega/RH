@@ -15,5 +15,8 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BalProj.chart_dense_interior | exact GlobalTheory.BalProj.chart_dense_interior | (intros; apply GlobalTheory.BalProj.chart_dense_interior <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dense_affineChart_preimage_interior : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (U : Y.X.affineOpens), Dense ((chart U).base ⁻¹' (interior Y : Set Y.X)) := by
   first | exact @GlobalTheory.BalProj.chart_dense_interior | exact GlobalTheory.BalProj.chart_dense_interior | (intros; apply GlobalTheory.BalProj.chart_dense_interior <;> assumption)

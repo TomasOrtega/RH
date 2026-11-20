@@ -4,6 +4,11 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `h`. Take `⟨⟨z, s⟩, hs⟩` from `IsLocalization.surj Q.primeCompl y`. Establish `e : algebraMap B (Localization.AtPrime Q) (b * s) = algebraMap B (Localization.AtPrime Q) (a * z)`. Rewrite using `[map_mul, map_mul, hy, mul_assoc, hs]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists Q.primeCompl _).mp e`.
+
+Use `⟨c * s, Q.primeCompl.mul_mem c.2 s.2, c * z, ?_⟩` and prove the remaining obligations. Take the linear combination `hc`.
+-/
 theorem exists_notMem_dvd_mul_of_algebraMap_dvd {B : Type} [CommRing B] (Q : Ideal B) [Q.IsPrime]
     {a b : B}
     (h : algebraMap B (Localization.AtPrime Q) a ∣ algebraMap B (Localization.AtPrime Q) b) :
@@ -17,6 +22,25 @@ theorem exists_notMem_dvd_mul_of_algebraMap_dvd {B : Type} [CommRing B] (Q : Ide
   refine ⟨c * s, Q.primeCompl.mul_mem c.2 s.2, c * z, ?_⟩
   linear_combination hc
 
+/- English proof (translation)
+Establish `hdvr : IsDiscreteValuationRing (Localization.AtPrime (𝔭.map (algebraMap A' B')))` using `isDiscreteValuationRing_of_height_eq_one _ h1 _`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (Localization.AtPrime (𝔭.map (algebraMap A' B')))`. Establish `hm : maximalIdeal (Localization.AtPrime (𝔭.map (algebraMap A' B'))) = Ideal.span {ϖ}` using `hϖ.maximalIdeal_eq`. Take `⟨p, hp𝔭, hp⟩ : ∃ p ∈ 𝔭, ¬ ϖ ^ 2 ∣ algebraMap B' (Localization.AtPrime (𝔭.map (algebraMap A' B'))) (algebraMap A' B' p)` from `by by_contra! H`. Establish `hle : maximalIdeal (Localization.AtPrime (𝔭.map (algebraMap A' B'))) ≤ Ideal.span {ϖ ^ 2}`.
+
+Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, Ideal.map_le_iff_le_comap]`. Introduce `q hq`. Rewrite using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Conclude with `H q hq`. Establish `hmem : ϖ ∈ Ideal.span {ϖ ^ 2}` using `hle (hm ▸ Ideal.mem_span_singleton_self ϖ)`.
+
+Rewrite `hmem` using `[Ideal.mem_span_singleton]`. Take `⟨r, hr⟩` from `hmem`. Apply `hϖ.not_isUnit` to reduce the goal to its premises. Use `isUnit_iff_exists_inv.mpr ⟨r, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hϖ.ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[mul_one]`. Take the linear combination `-hr`. Establish `hxm : algebraMap B' (Localization.AtPrime (𝔭.map (algebraMap A' B'))) (algebraMap A' B' p) ∈ maximalIdeal (Localization.AtPrime (𝔭.map (algebraMap A' B')))`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hp𝔭)`.
+
+Establish `hx0 : algebraMap B' (Localization.AtPrime (𝔭.map (algebraMap A' B'))) (algebraMap A' B' p) ≠ 0` using `fun h => hp (h ▸ dvd_zero _)`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Establish `hn : n = 1`. Break down `n with _ | _ | n` into its components or cases. It suffices to derive a contradiction.
+
+Rewrite `hu` using `[pow_zero, mul_one]`. Conclude with `(mem_maximalIdeal _).mp hxm (hu ▸ u.isUnit)`. Both sides reduce to the same expression. It suffices to derive a contradiction. Apply `hp` to reduce the goal to its premises.
+
+Rewrite using `[hu]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow ϖ (by omega)) _`. Substitute `hn` using the available equality. Establish `hc0 : algebraMap B' (Localization.AtPrime (𝔭.map (algebraMap A' B'))) c ≠ 0`. Introduce `h`.
+
+Apply `hc` to reduce the goal to its premises. Apply `IsLocalization.injective (Localization.AtPrime (𝔭.map (algebraMap A' B'))) (𝔭.map (algebraMap A' B')).primeCompl_le_nonZeroDivisors` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Take `⟨m, v, hv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc0 hϖ`. Establish `hass : Associated (algebraMap B' (Localization.AtPrime (𝔭.map (algebraMap A' B'))) c) (algebraMap B' (Localization.AtPrime (𝔭.map (algebraMap A' B'))) (algebraMap A' B' (p ^ m)))`.
+
+Rewrite using `[map_pow, map_pow, hu, hv, pow_one, mul_pow]`. Conclude with `(associated_unit_mul_left _ _ v.isUnit).trans (associated_unit_mul_left _ _ (u.isUnit.pow m)).symm`. Conclude with `⟨p ^ m, exists_notMem_dvd_mul_of_algebraMap_dvd _ hass.dvd, exists_notMem_dvd_mul_of_algebraMap_dvd _ hass.symm.dvd⟩`.
+-/
 theorem exists_locally_associated_algebraMap_of_height_eq_one (A' B' : Type) [CommRing A']
     [CommRing B'] [IsDomain B'] [IsNoetherianRing B'] [IsIntegrallyClosed B'] [Algebra A' B']
     (𝔭 : Ideal A') (hQ : (𝔭.map (algebraMap A' B')).IsPrime)

@@ -24,6 +24,11 @@ open GlobalTheory.LFun.ConjPlace (dGL invT dGL_comm invT_dGL)
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `hc : Commute (dGL n p n) (PhiU n (x.adicCompletion E))` using `dGL_comm p _`. Establish `e : (PhiU n (x.adicCompletion E))⁻¹ * (dGL n p n)⁻¹ * PhiU n (x.adicCompletion E) = (dGL n p n)⁻¹`. Rewrite using `[mul_assoc, hc.inv_left.eq, inv_mul_cancel_left]`. Express the relevant statement in the definitionally equal form `invT (cloc x).symm n ((MulAut.conj (PhiU n (x.adicCompletion E))).symm (dGL n p n)⁻¹) = _`. Rewrite using `[MulAut.conj_symm_apply, e]`.
+
+Conclude with `invT_dGL (cloc x).symm p n`.
+-/
 private theorem fx_dGL_inv (x : Pl E) (n : ℕ) (p : (x.adicCompletion E)ˣ) :
     fx x n (dGL n p n)⁻¹ =
       dGL n (Units.map ((cloc x).symm : x.adicCompletion E →* (cw x).adicCompletion E) p) n := by
@@ -34,6 +39,9 @@ private theorem fx_dGL_inv (x : Pl E) (n : ℕ) (p : (x.adicCompletion E)ˣ) :
   rw [MulAut.conj_symm_apply, e]
   exact invT_dGL (cloc x).symm p n
 
+/- English proof (translation)
+Establish `h` using `Tj_fx x n hp hp0 (Nat.sub_le n i) ((dGL n (Units.mk0 p hp0) n)⁻¹ * (fx x n).symm g)`. Rewrite `h` using `[map_mul, fx_dGL_inv, MulEquiv.apply_symm_apply, mul_inv_cancel_left, Nat.sub_sub_self hi]`. Conclude with `h.symm`.
+-/
 private theorem Tj_fx_symm (x : Pl E) (n : ℕ) {p : x.adicCompletion E} (hp : IsUnifV E x p) (hp0 : p ≠ 0) {i : ℕ}
     (hi : i ≤ n) (g : GLw n (cw x)) :
     Tj ℂ n (Ov E x) p i ((fx x n).symm g) =
@@ -45,6 +53,13 @@ private theorem Tj_fx_symm (x : Pl E) (n : ℕ) {p : x.adicCompletion E} (hp : I
   rw [map_mul, fx_dGL_inv, MulEquiv.apply_symm_apply, mul_inv_cancel_left, Nat.sub_sub_self hi] at h
   exact h.symm
 
+/- English proof (translation)
+Rewrite `hs` using `[pairRtT_cw]`. Establish `h` using `saturation_transport_pair ((fx x a).prodCongr (fx x b)).symm (fun g => ?_) (absNorm_cw x).symm (fun ϖ' hϖ' => ?_) hs`. Establish `e : ((pairRt a b x).comp ((fx x a).prodCongr (fx x b)).symm.toMonoidHom).comp ((fx x a).prodCongr (fx x b)).symm.symm.toMonoidHom = pairRt a b x` using `by ext1 g`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`.
+
+Conclude with `h`. Use `show g ∈ (KGL (cw x) a).prod (KGL (cw x) b) ↔ ((fx x a).prodCongr (fx x b)).symm g ∈ (KGL x a).prod (KGL x b)`. Rewrite using `[Subgroup.mem_prod, Subgroup.mem_prod]`. Establish `h1` using `mem_fx_iff x a ((fx x a).symm g.1)`. Establish `h2` using `mem_fx_iff x b ((fx x b).symm g.2)`.
+
+Rewrite `h1`, `h2` using `[MulEquiv.apply_symm_apply]`. Conclude with `and_congr h1.symm h2.symm`. Establish `hp0 : ϖ' ≠ 0` using `fun e => by simp [IsUnifV, e] at hϖ'`. Use `⟨Units.map ((cloc x).symm : x.adicCompletion E →* (cw x).adicCompletion E) (Units.mk0 ϖ' hp0), (cloc_symm_v x ϖ').trans hϖ', fun i hi j hj g => ?_⟩` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (Tj_fx_symm x a hϖ' hp0 hi g.1) (Tj_fx_symm x b hϖ' hp0 hj g.2)`.
+-/
 private theorem satake_conjugate_inverse {a b : ℕ} (x : Pl E) {G : H E a b → ℂ} {B₁ B₂ : Multiset ℂˣ}
     (hs : IsSat2 (cw x) (pairRtT a b (cw x)) G B₁ B₂) :
     IsSat2 x (pairRt a b x) G (B₁.map (·⁻¹)) (B₂.map (·⁻¹)) := by
@@ -71,6 +86,11 @@ private theorem satake_conjugate_inverse {a b : ℕ} (x : Pl E) {G : H E a b →
 
 end Back
 
+/- English proof (translation)
+Introduce `E _ _ _ a b w G B₁ B₂ _ hs`. Establish `e : GlobalTheory.ThetaSatake.cw (GlobalTheory.ThetaSatake.cw w) = w` using `GlobalTheory.ThetaPull.conjSrc_conjSrc w`. Establish `hs' : IsSat2 (GlobalTheory.ThetaSatake.cw (GlobalTheory.ThetaSatake.cw w)) (pairRtT a b (GlobalTheory.ThetaSatake.cw (GlobalTheory.ThetaSatake.cw w))) G B₁ B₂`. Rewrite using `[e]`. Conclude with `hs`.
+
+Conclude with `satake_conjugate_inverse (GlobalTheory.ThetaSatake.cw w) hs'`.
+-/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.sat2Back :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (G : H E a b → ℂ) (B₁ B₂ : Multiset ℂˣ), IsSplitAt w → IsSat2 w (pairRtT a b w) G B₁ B₂ →
     IsSat2 (cPl w) (pairRt a b (cPl w)) G (inv B₁) (inv B₂) := by

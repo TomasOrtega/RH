@@ -29,13 +29,22 @@ namespace GroundTheory.Heights₂.Heights.ChowlaSelberg
 
 open NumberField GroundTheory.Global GroundTheory.Global.Elliptic GroundTheory.Arith.Abelian
 
+/- English proof (translation)
+The claim follows from `KroneckerLimit.proof KroneckerSplit.proof PowerIntegral.proof ShiftedSumIntegral.proof CotangentSum.proof LogEta.proof GammaZetaLimit.proof`.
+-/
 theorem KroneckerLimit.full : KroneckerLimit.Statement :=
   KroneckerLimit.proof KroneckerSplit.proof PowerIntegral.proof ShiftedSumIntegral.proof
     CotangentSum.proof LogEta.proof GammaZetaLimit.proof
 
+/- English proof (translation)
+The claim follows from `PhTau.proof DeltaEta.proof`.
+-/
 theorem PhTau.full : PhTau.Statement :=
   PhTau.proof DeltaEta.proof
 
+/- English proof (translation)
+The claim follows from `ClassMean.proof S KroneckerLimit.full (ClassEpstein.proof S) (ZetaFactor.proof S) PhTau.full PhScale.proof`.
+-/
 theorem ClassMean.full {K : Type} [Field K] [NumberField K] [Algebra.IsQuadraticExtension ℚ K]
     (S : PrimeDiscriminant K) : ClassMean.Statement S :=
   ClassMean.proof S KroneckerLimit.full (ClassEpstein.proof S) (ZetaFactor.proof S) PhTau.full

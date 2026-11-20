@@ -58,6 +58,9 @@ def PartB (T : LocLat G Qp LL O) : Prop :=
   ∀ (i : ZMod n) (y : W.DD T), MemInv W T i y →
     (y ∈ W.Nl T i ↔ ∀ ζ : LL, IsPrimitiveRoot ζ (PD.p ^ W.s) → MemLoc W T i ζ y)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by simpa using hy, (1 : LocRing W i ζ) ⊗ₜ[LetA O n] (⟨y, hy⟩ : ↥(W.Nl T i)), by simp⟩`.
+-/
 example (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (y : W.DD T) (hy : y ∈ W.Nl T i) :
     MemLoc W T i ζ y :=
   ⟨0, by simpa using hy, (1 : LocRing W i ζ) ⊗ₜ[LetA O n] (⟨y, hy⟩ : ↥(W.Nl T i)), by simp⟩
@@ -80,6 +83,9 @@ end Generic
 
 open TensorProduct in
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥(K : IntermediateField ℚ_[l] (_root_.Formalism.BasicNotions.Loc.Om l)) := K.2`. Establish `hle : _root_.Formalism.BasicNotions.Loc.K0 K ≤ (K : IntermediateField ℚ_[l] (_root_.Formalism.BasicNotions.Loc.Om l))` using `inf_le_left`. Use `haveI : FiniteDimensional ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.K0 K) := Module.Finite.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion hle).injective`. Conclude with `⟨Module.finrank_pos.ne'⟩`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.LocalRingStructure.letters_neZero {l : ℕ} [Fact l.Prime] (K : _root_.Formalism.BasicNotions.Loc.FinExt l) :
     NeZero (Module.finrank ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.K0 K)) := by
   haveI : FiniteDimensional ℚ_[l] ↥(K : IntermediateField ℚ_[l] (_root_.Formalism.BasicNotions.Loc.Om l)) := K.2
@@ -94,6 +100,11 @@ def letterMax {l : ℕ} [Fact l.Prime] (K : FinExt l)
   haveI := letters_neZero K
   Finset.univ.sup m
 
+/- English proof (translation)
+Use `haveI := letters_neZero K`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨i, -, hi⟩` from `Finset.exists_mem_eq_sup Finset.univ Finset.univ_nonempty m`. Conclude with `⟨i, hi.symm⟩`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `Finset.le_sup (f := m) (Finset.mem_univ i)`.
+-/
 example {l : ℕ} [Fact l.Prime] (K : FinExt l) (m : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℕ) :
     IsGreatest (Set.range m) (letterMax K m) := by
   haveI := letters_neZero K

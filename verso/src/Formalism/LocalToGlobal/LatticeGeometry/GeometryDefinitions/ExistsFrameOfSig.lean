@@ -11,6 +11,19 @@ namespace Formalism.L2.Geo.Def.G1
 
 section Frames
 
+/- English proof (translation)
+Take `⟨e, P, hP⟩` from `h`. Use `set A : Matrix (Fin p ⊕ Fin 0) (Fin p ⊕ Fin 0) ℂ := (P : Matrix (Fin p ⊕ Fin 0) (Fin p ⊕ Fin 0) ℂ) with hA`. Establish `hJ : Jpq p 0 = 1`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Simplify using `[Jpq, Matrix.one_apply]`. Conclude with `j.elim0`. Conclude with `i.elim0`. Conclude with `i.elim0`. Establish `hcT : cT (starRingEnd ℂ) A = A.conjTranspose`.
+
+Use extensionality with `i j`. Simplify using `[cT, Matrix.conjTranspose_apply]`. Rewrite `hP` using `[hJ, hcT]`. Establish `hdetA : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det _).1 P.isUnit`. Establish `hM' : M.reindex e e = (A⁻¹).conjTranspose * A⁻¹`.
+
+Establish `h1 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hdetA`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Use `_ = (A⁻¹).conjTranspose * (A.conjTranspose * M.reindex e e * A) * A⁻¹ := by`. Rewrite using `[Matrix.conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = (A⁻¹).conjTranspose * A⁻¹ := by rw [hP, Matrix.mul_one]`. Use `⟨A.submatrix e e, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_submatrix_equiv_self]`. Conclude with `hdetA`.
+
+Rewrite using `[Matrix.inv_submatrix_equiv, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, ← hM']`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem exists_frame_of_sig {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ) (p : ℕ)
     (h : HasSignature M p 0) : ∃ Y : Matrix ι ι ℂ, IsUnit Y.det ∧ (Y⁻¹).conjTranspose * Y⁻¹ = M := by
   obtain ⟨e, P, hP⟩ := h
@@ -39,6 +52,9 @@ theorem exists_frame_of_sig {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matri
     ext i j
     simp
 
+/- English proof (translation)
+Rewrite using `[frameOf, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem frameOf_spec {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ)
     (h : ∃ Y : Matrix ι ι ℂ, IsUnit Y.det ∧ (Y⁻¹).conjTranspose * Y⁻¹ = M) :
     IsUnit (frameOf M).det ∧ ((frameOf M)⁻¹).conjTranspose * (frameOf M)⁻¹ = M := by
@@ -53,6 +69,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 
 open Formalism.L2.Herm
 
+/- English proof (translation)
+Simplify using `only [crdLat, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Rewrite `hy` using `[(crd S).injective hyx]`. Then use the resulting hypothesis. Introduce `hx`.
+
+Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem crdLat_mem (S : HSpace E) (L : Submodule (𝓞 E) S.V) (x : S.V) : crd S x ∈ crdLat S L ↔ x ∈ L := by
   simp only [crdLat, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]
   constructor
@@ -61,6 +82,11 @@ theorem crdLat_mem (S : HSpace E) (L : Submodule (𝓞 E) S.V) (x : S.V) : crd S
   · intro hx
     exact ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Use `⟨hL.fg.map _, ?_⟩` and prove the remaining obligations. Establish `hset : (crdLat S L : Set (Fin S.rank → E)) = (crd S : S.V →ₗ[E] (Fin S.rank → E)) '' (L : Set S.V)`. Use extensionality with `u`. Simplify using `[crdLat]`. Rewrite using `[hset, Submodule.span_image, hL.span_eq_top, Submodule.map_top]`.
+
+Conclude with `LinearMap.range_eq_top.2 (crd S).surjective`.
+-/
 theorem crdLat_lattice (S : HSpace E) (L : Submodule (𝓞 E) S.V) (hL : Submodule.IsLattice E L) :
     Submodule.IsLattice E (crdLat S L) := by
   refine ⟨hL.fg.map _, ?_⟩

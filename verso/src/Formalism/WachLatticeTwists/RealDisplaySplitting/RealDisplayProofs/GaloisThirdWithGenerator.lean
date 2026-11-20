@@ -16,6 +16,11 @@ open ReciprocityTheory.ChartRestriction.T2 (PadicCoeff FracTop IsFGTop cupFG IsC
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `ι _ _ colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT cols eO cB vδ N h0 c1 L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD _ _ _ _ Fs Hf₁ I γQ ζ ζO nQ u s …`. Establish `hfin : ∀ w ∈ cols, Module.Finite (FractionRing O) (Hf₂ (conj w))`. Introduce `w hw`. Establish `hr` using `hRows (conj w) (hrows ▸ Finset.mem_image_of_mem conj hw)`. Conclude with `finite_Hf_dec ℓ (Aw (conj w)) hr.1 (Dat (conj w)) ε hO hFr hcyc hr.2.2.1 hr.2.2.2.1 (Hf₂ (conj w))`.
+
+Conclude with `h ι colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT L tens v₁ κ V iL qV Ff κz F Vo VS Io IS T₁ T₂ ρ₁ ρ₂ inc π γ lam VT VT' Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u s₀ y HfW Hf₂ Pe ince eve heve PE incE evE hevE Hfe₁ HfE₁ HfE₂ uz hinjO hO hFr hA hcyc hinc hur hAv …`.
+-/
 theorem realDisplay3_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[ℓ] O] [Module.Finite ℤ_[ℓ] O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -61,6 +66,11 @@ theorem realDisplay3_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [Is
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `ι _ _ colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT cols eO cB vδ N h0 c1 L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD _ _ _ _ Fs Hf₁ I γQ ζ ζO nQ u s …`. Establish `hfin : ∀ w ∈ cols, Module.Finite (FractionRing O) (Hf₂ (conj w))`. Introduce `w hw`. Establish `hr` using `hRows (conj w) (hrows ▸ Finset.mem_image_of_mem conj hw)`. Conclude with `finite_Hf_dec ℓ (Aw (conj w)) hr.1 (Dat (conj w)) ε hO hFr hcyc hr.2.2.1 hr.2.2.2.1 (Hf₂ (conj w))`.
+
+Conclude with `h ι colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT L tens v₁ κ V iL qV Ff κz F Vo VS Io IS T₁ T₂ ρ₁ ρ₂ inc π γ lam VT VT' Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u s₀ y HfW Hf₂ Pe ince eve heve PE incE evE hevE Hfe₁ HfE₁ HfE₂ uz hinjO hO hFr hA hcyc hinc hur hAv …`.
+-/
 theorem realDisplayWA3_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[ℓ] O] [Module.Finite ℤ_[ℓ] O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -106,6 +116,9 @@ theorem realDisplayWA3_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `ι _ _ colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT cols eO cB vδ N h0 c1 L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u s₀ y _ _ …`. Conclude with `h ι colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT L tens v₁ κ V iL qV Ff κz F Vo VS Io IS T₁ T₂ ρ₁ ρ₂ inc π γ lam VT VT' Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u s₀ y HfW Hf₂ Pe ince eve heve PE incE evE hevE Hfe₁ HfE₁ HfE₂ uz hinjO hO hFr hA hcyc hinc hur hAv …`.
+-/
 theorem realDisplayAll3_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[ℓ] O] [Module.Finite ℤ_[ℓ] O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -142,6 +155,9 @@ theorem realDisplayAll3_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] 
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `ι _ _ colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT cols eO cB vδ N h0 c1 L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u s₀ y _ _ …`. Conclude with `h ι colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT L tens v₁ κ V iL qV Ff κz F Vo VS Io IS T₁ T₂ ρ₁ ρ₂ inc π γ lam VT VT' Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u s₀ y HfW Hf₂ Pe ince eve heve PE incE evE hevE Hfe₁ HfE₁ HfE₂ uz hinjO hO hFr hA hcyc hinc hur hAv …`.
+-/
 theorem realDisplayAllWA3_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[ℓ] O] [Module.Finite ℤ_[ℓ] O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -176,6 +192,9 @@ theorem realDisplayAllWA3_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O
     (fun Kc k0 _ _ c φ =>
       colPsi_lc ℓ (M := blockRestrictedRepresentationType bl ρk c) r χ E e₁ δ hO hA hur (fun m => pi_ko_torsion O _ m) _ _ Kc k0 φ)
 
+/- English proof (translation)
+Take `⟨D, hD, h1, h2, h3, h4, i1, i2, i3, i4, i5, hall⟩` from `h`. Use `⟨D, hD, h1, h2, h3, h4, i1, i2, i3, i4, i5, ?_⟩` and prove the remaining obligations. Introduce `_ _ _ _ _ _ _ _ _ _ Z`. Take `⟨a1, a2, a3, a4⟩` from `hall Z`. Conclude with `⟨realDisplay3_of _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ a1, realDisplayWA3_of _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ a2, realDisplayAll3_of _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ a3, realDisplayAllWA3_of _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ a …`.
+-/
 theorem primOver3_of (ℓ : ℕ) [Fact ℓ.Prime] (O O' : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O'] (e : ℕ) {X d : Type}
     [Fintype d] [DecidableEq d] (Ek Ω : Type) [Field Ek] [NumberField Ek] [Field Ω] [Algebra Ek Ω]
@@ -192,12 +211,18 @@ theorem primOver3_of (ℓ : ℕ) [Fact ℓ.Prime] (O O' : Type) [CommRing O] [Is
     realDisplayAll3_of _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ a3,
     realDisplayAllWA3_of _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ a4⟩
 
+/- English proof (translation)
+Introduce `ℓ _ O _ _ _ _ X _ T d _ _ Ek Ω _ _ _ _ _ r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ`. Take `⟨eB, e₁, s, hAB, hall⟩` from `galois_theorem_primitive_data ℓ O X T d Ek Ω r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ`. Conclude with `⟨eB, e₁, s, hAB, fun O' _ _ _ _ _ _ e he hspl => primOver3_of ℓ O O' e Ek Ω T r π t ht bl χ₁ ε g₀ eB e₁ s (hall O' e he hspl)⟩`.
+-/
 theorem galois_theorem_third_form : GaloisTheoremThirdForm := by
   intro ℓ _ O _ _ _ _ X _ T d _ _ Ek Ω _ _ _ _ _ r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ
   obtain ⟨eB, e₁, s, hAB, hall⟩ := galois_theorem_primitive_data ℓ O X T d Ek Ω r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ
   exact ⟨eB, e₁, s, hAB, fun O' _ _ _ _ _ _ e he hspl =>
     primOver3_of ℓ O O' e Ek Ω T r π t ht bl χ₁ ε g₀ eB e₁ s (hall O' e he hspl)⟩
 
+/- English proof (translation)
+Introduce `ℓ _ O _ _ _ _ X _ T d _ _ Ek Ω _ _ _ _ _ r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ`. Take `⟨eB, e₁, s, hAB, O', i1, i2, i3, i4, i5, i6, e, he, hO⟩` from `galois_theorem_with_extension ℓ O X T d Ek Ω r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ`. Conclude with `⟨eB, e₁, s, hAB, O', i1, i2, i3, i4, i5, i6, e, he, primOver3_of ℓ O O' e Ek Ω T r π t ht bl χ₁ ε g₀ eB e₁ s hO⟩`.
+-/
 theorem galois_third_with_extension : GaloisThirdWithExtension := by
   intro ℓ _ O _ _ _ _ X _ T d _ _ Ek Ω _ _ _ _ _ r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ
   obtain ⟨eB, e₁, s, hAB, O', i1, i2, i3, i4, i5, i6, e, he, hO⟩ :=
@@ -205,6 +230,9 @@ theorem galois_third_with_extension : GaloisThirdWithExtension := by
   exact ⟨eB, e₁, s, hAB, O', i1, i2, i3, i4, i5, i6, e, he,
     primOver3_of ℓ O O' e Ek Ω T r π t ht bl χ₁ ε g₀ eB e₁ s hO⟩
 
+/- English proof (translation)
+Introduce `ℓ _ O _ _ _ _ X _ T d _ _ Ek Ω _ _ _ _ _ r π t ht bl χ₁ ε g₀ s₀ y hP hA h2 hG3 hg hcyc L ϖ hϖ`. Take `⟨eB, e₁, s, hAB, O', i1, i2, i3, i4, i5, i6, e, he, hO, hc, hg'⟩` from `galois_theorem_with_generator ℓ O X T d Ek Ω r π t ht bl χ₁ ε g₀ s₀ y hP hA h2 hG3 hg hcyc L ϖ hϖ`. Conclude with `⟨eB, e₁, s, hAB, O', i1, i2, i3, i4, i5, i6, e, he, primOver3_of ℓ O O' e Ek Ω T r π t ht bl χ₁ ε g₀ eB e₁ s hO, hc, hg'⟩`.
+-/
 theorem galois_third_with_generator : GaloisThirdWithGenerator := by
   intro ℓ _ O _ _ _ _ X _ T d _ _ Ek Ω _ _ _ _ _ r π t ht bl χ₁ ε g₀ s₀ y hP hA h2 hG3 hg hcyc L ϖ hϖ
   obtain ⟨eB, e₁, s, hAB, O', i1, i2, i3, i4, i5, i6, e, he, hO, hc, hg'⟩ :=

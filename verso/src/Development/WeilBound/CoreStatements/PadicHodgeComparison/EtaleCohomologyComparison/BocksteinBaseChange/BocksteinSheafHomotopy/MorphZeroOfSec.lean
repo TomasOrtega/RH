@@ -14,21 +14,41 @@ namespace CrystallineSemistableComparison.TwSeq
 
 open GlobalTheory.EtC
 
+/- English proof (translation)
+The claim follows from `map_nsmul (CupSpec.mapHom X Y x) k f`.
+-/
 theorem sec_nsmul {R : Type} [CommRing R] {X Y : Shv R} (f : X ⟶ Y) (k : ℕ) {U : Scheme.{0}} (x : Sec X U) :
     Sec.map (k • f) x = k • Sec.map f x := map_nsmul (CupSpec.mapHom X Y x) k f
 
+/- English proof (translation)
+The claim follows from `map_nsmul (f.hom.app (op U)).hom k x`.
+-/
 theorem sec_map_nsmul {R : Type} [CommRing R] {X Y : Shv R} (f : X ⟶ Y) (k : ℕ) {U : Scheme.{0}} (x : Sec X U) :
     Sec.map f (k • x) = k • Sec.map f x := map_nsmul (f.hom.app (op U)).hom k x
 
+/- English proof (translation)
+The claim follows from `map_nsmul (X.obj.map g.op).hom k x`.
+-/
 theorem res_nsmul {R : Type} [CommRing R] {X : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (k : ℕ) (x : Sec X U) :
     Sec.res g (k • x) = k • Sec.res g x := map_nsmul (X.obj.map g.op).hom k x
 
+/- English proof (translation)
+The claim follows from `map_zero (X.obj.map g.op).hom`.
+-/
 theorem res_zero {R : Type} [CommRing R] {X : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) : Sec.res g (0 : Sec X U) = 0 :=
   map_zero (X.obj.map g.op).hom
 
+/- English proof (translation)
+The claim follows from `map_zero (f.hom.app (op U)).hom`.
+-/
 theorem sec_map_zero' {R : Type} [CommRing R] {X Y : Shv R} (f : X ⟶ Y) {U : Scheme.{0}} : Sec.map f (0 : Sec X U) = 0 :=
   map_zero (f.hom.app (op U)).hom
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Establish `: ((q : ℕ) : ULift.{1} (ZMod q)) = 0`. Apply `ULift.ext` to reduce the goal to its premises. Rewrite using `[ULift.down_natCast, ZMod.natCast_self]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, zero_smul]`.
+-/
 theorem sec_char {q : ℕ} {F : Shv (ZMod q)} {U : Scheme.{0}} (x : Sec F U) : q • x = 0 := by
   rw [← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]
   have : ((q : ℕ) : ULift.{1} (ZMod q)) = 0 := by
@@ -37,17 +57,58 @@ theorem sec_char {q : ℕ} {F : Shv (ZMod q)} {U : Scheme.{0}} (x : Sec F U) : q
     rfl
   rw [this, zero_smul]
 
+/- English proof (translation)
+Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use extensionality with `U x`. Conclude with `h U.unop x`.
+-/
 theorem morph_zero_of_sec {R : Type} [CommRing R] {X Y : Shv R} (f : X ⟶ Y)
     (h : ∀ (U : Scheme.{0}) (x : Sec X U), Sec.map f x = 0) : f = 0 := by
   apply Sheaf.hom_ext
   ext U x
   exact h U.unop x
 
+/- English proof (translation)
+The claim follows from `SheafSectionLemmas.loc_mono (SheafSectionLemmas.loc_true V) fun W k _ => ⟨Sec.res k x, by rw [← CupSpec.map_res, hx, TwSec.res_comp]⟩`.
+-/
 theorem loc_of_img {R : Type} [CommRing R] {X Y : Shv R} (f : X ⟶ Y) {U V : Scheme.{0}} (g : V ⟶ U) (y : Sec Y U)
     (x : Sec X V) (hx : Sec.map f x = Sec.res g y) :
     Loc V fun W k => ∃ x' : Sec X W, Sec.map f x' = Sec.res (k ≫ g) y :=
   SheafSectionLemmas.loc_mono (SheafSectionLemmas.loc_true V) fun W k _ => ⟨Sec.res k x, by rw [← CupSpec.map_res, hx, TwSec.res_comp]⟩
 
+/- English proof (translation)
+Introduce `p a b _ i`. Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `: NeZero (p ^ (a + b))` using `⟨pow_ne_zero _ hp⟩`. Establish `: NeZero (p ^ a)` using `⟨pow_ne_zero _ hp⟩`. Establish `: NeZero (p ^ b)` using `⟨pow_ne_zero _ hp⟩`.
+
+Take `⟨π, hπ, hπg⟩` from `redSheaf hG (dvdB p a b) i`. Take `⟨π', hπ', hπ'g⟩` from `redSheaf hG (dvdA p a b) i`. Take `⟨m, hmdef⟩ : ∃ m : tw (p ^ (a + b)) i ⟶ tw (p ^ (a + b)) i, m = p ^ b • 𝟙 _` from `⟨_, rfl⟩`. Establish `hm : ∀ (U : Scheme.{0}) (x : Sec (tw (p ^ (a + b)) i) U), Sec.map m x = p ^ b • x` using `fun U x => by`. Rewrite using `[hmdef]`.
+
+Conclude with `sec_nsmul _ _ x`. Establish `hw : m ≫ π = 0` using `morph_zero_of_sec _ fun U x => by`. Express the relevant statement in the definitionally equal form `Sec.map π (Sec.map m x) = 0`. Rewrite using `[hm, sec_map_nsmul]`. Conclude with `sec_char (q := p ^ b) (F := tw (p ^ b) i) (Sec.map π x)`.
+
+Establish `hQ : p ^ a • m = 0`. Rewrite using `[hmdef, smul_smul, ← pow_add]`. Conclude with `morph_zero_of_sec _ fun U x => by rw [sec_nsmul]; exact sec_char x`. Establish `hπepi : Epi π`. Use `SheafSectionLemmas.epi_of_loc π fun U y => ?_` and prove the remaining obligations.
+
+Break down `Nat.eq_zero_or_pos b with hb | hb` into its components or cases. Establish `hy : y = 0`. Establish `h0` using `sec_char (q := p ^ b) (F := tw (p ^ b) i) y`. Establish `h1 : p ^ b = 1` using `by rw [hb, pow_zero]`. Conclude with `(one_nsmul y).symm.trans ((congrArg (fun n : ℕ => n • y) h1.symm).trans h0)`.
+
+Conclude with `SheafSectionLemmas.loc_mono (SheafSectionLemmas.loc_true U) fun V g _ => ⟨0, by rw [sec_map_zero', hy]; exact (res_zero g).symm⟩`. Use `SheafSectionLemmas.loc_bind (TwSec.tw_loc hG (p ^ b) i U y) fun V g hy => ?_` and prove the remaining obligations. Break down `hy with hy | ⟨ξ, c, hy⟩` into its components or cases. Conclude with `loc_of_img π g y 0 (by rw [sec_map_zero']; exact hy.symm)`. Use `SheafSectionLemmas.loc_mono (KummerTwistLemmas.rootLoc p a b hb V ξ) fun W k ⟨ζ, hζ⟩ => ⟨c • twGen i ζ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[sec_map_nsmul, hπg]`. Express the relevant statement in the definitionally equal form `c • twGen i (pw (dvdB p a b) ζ) = Sec.res (k ≫ g) (show Sec (tw (p ^ b) i) U from y)`. Rewrite using `[TwSec.res_comp, hy, res_nsmul, twGen_res]`. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `ζ.1 ^ (p ^ (a + b) / p ^ b) = (k.appTop.hom) ξ.1`. Rewrite using `[← hζ, Nat.pow_div (Nat.le_add_left b a) (Nat.pos_of_ne_zero hp), Nat.add_sub_cancel]`. Establish `hepi : Epi (kernel.lift π m hw)`. Use `SheafSectionLemmas.epi_lift_of_loc m π hw fun U y hy => ?_` and prove the remaining obligations. Use `SheafSectionLemmas.loc_bind (TwSec.tw_loc hG (p ^ (a + b)) i U y) fun V g hy' => ?_` and prove the remaining obligations.
+
+Break down `hy' with hy' | ⟨ζ, c, hy'⟩` into its components or cases. Conclude with `loc_of_img m g y 0 (by rw [sec_map_zero']; exact hy'.symm)`. Break down `isEmpty_or_nonempty V with hV | hV` into its components or cases. Conclude with `loc_of_img m g y 0 ((SheafSectionLemmas.sec_subsingleton_of_isEmpty _ V).elim _ _)`. Establish `h0 : c • twGen i (pw (dvdB p a b) ζ) = 0`.
+
+Use `congrArg (Sec.res g) hy` as an intermediate fact. Rewrite `this` using `[res_zero, CupSpec.map_res, hy', sec_map_nsmul, hπg]`. Conclude with `this`. Take `⟨d, rfl⟩` from `(hG (p ^ b) i).2.1 V (pw (dvdB p a b) ζ) c h0`. Conclude with `loc_of_img m g y (d • twGen i ζ) (by rw [hm, smul_smul, hy'])`.
+
+Establish `hker : kernel.ι m ≫ π' = 0`. Use `SheafSectionLemmas.ker_comp_zero m π' fun U y hy => ?_` and prove the remaining obligations. Use `SheafSectionLemmas.sec_eq_of_loc _ _ (SheafSectionLemmas.loc_mono (TwSec.tw_loc hG (p ^ (a + b)) i U y) fun V g hy' => ?_)` and prove the remaining obligations. Rewrite using `[res_zero, CupSpec.map_res]`. Break down `hy' with hy' | ⟨ζ, c, hy'⟩` into its components or cases.
+
+Rewrite using `[hy', sec_map_zero']`. Break down `isEmpty_or_nonempty V with hV | hV` into its components or cases. Conclude with `(SheafSectionLemmas.sec_subsingleton_of_isEmpty _ V).elim _ _`. Establish `h0 : (p ^ b * c) • twGen i ζ = 0`. Use `congrArg (Sec.res g) hy` as an intermediate fact.
+
+Rewrite `this` using `[res_zero, CupSpec.map_res, hy', hm, smul_smul]`. Conclude with `this`. Establish `hd` using `(hG (p ^ (a + b)) i).2.1 V ζ _ h0`. Rewrite `hd` using `[pow_add, mul_comm (p ^ a)]`. Take `⟨d, rfl⟩` from `Nat.dvd_of_mul_dvd_mul_left (pow_pos (Nat.pos_of_ne_zero hp) b) hd`.
+
+Rewrite using `[hy', sec_map_nsmul, hπ'g, ← smul_smul]`. Conclude with `sec_char (q := p ^ a) (F := tw (p ^ a) i) _`. Take `⟨e, hedef⟩ : ∃ e, e = kernel.lift π m hw` from `⟨_, rfl⟩`. Establish `he : e ≫ kernel.ι π = m` using `by rw [hedef]; exact kernel.lift_ι _ _ _`. Establish `: Epi e` using `by rw [hedef]; exact hepi`.
+
+Establish `hz : kernel.ι e ≫ π' = 0`. Establish `h1 : kernel.ι e ≫ m = 0` using `by rw [← he, kernel.condition_assoc, zero_comp]`. Rewrite using `[← kernel.lift_ι m (kernel.ι e) h1, Category.assoc, hker, comp_zero]`. Take `⟨l, hl⟩ : ∃ l, e ≫ l = π'` from `⟨Abelian.epiDesc e π' hz, Abelian.comp_epiDesc e π' hz⟩`. Establish `hcomp : kernel.ι π ≫ π' = p ^ b • l`.
+
+Apply `(cancel_epi e).1` to reduce the goal to its premises. Establish `h2 : e ≫ kernel.ι π ≫ π' = m ≫ π'` using `by rw [← Category.assoc, he]`. Rewrite using `[h2, Preadditive.comp_nsmul, hl, hmdef, Preadditive.nsmul_comp, Category.id_comp]`. Establish `htor : p ^ a • kernel.ι π = 0`. Apply `(cancel_epi e).1` to reduce the goal to its premises.
+
+Rewrite using `[Preadditive.comp_nsmul, he, hQ, comp_zero]`. Conclude with `⟨π, π', l, hπ, hπ', hπepi, htor, hcomp⟩`.
+-/
 theorem twSeq (hG : E.InGen) : InTwSeq := by
   intro p a b _ i
   have hp : p ≠ 0 := (Fact.out : p.Prime).ne_zero

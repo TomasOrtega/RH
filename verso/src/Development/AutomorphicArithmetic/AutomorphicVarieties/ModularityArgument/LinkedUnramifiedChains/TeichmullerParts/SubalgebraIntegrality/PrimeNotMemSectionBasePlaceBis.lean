@@ -18,17 +18,26 @@ namespace UpperTheory.V.Z.J.D.AuxBlock5
 variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
   [IsAlgClosure L Ω] {n : ℕ}
 
+/- English proof (translation)
+Unfold `CaseU.cmp`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 private theorem cmp_of {w : Plc L} (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : UA L n) :
     cmp n w ((away l L n).rangeRestrict x) = cLoc w x := by
   unfold CaseU.cmp
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Unfold `CaseU.cmp`. Rewrite using `[dif_neg (not_not.2 h)]`. Both sides reduce to the same expression.
+-/
 private theorem cmp_over_l {w : Plc L} (h : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal) (x : Ga l L n) : cmp n w x = 1 := by
   unfold CaseU.cmp
   rw [dif_neg (not_not.2 h)]
   rfl
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `(away l L n).rangeRestrict_surjective x`. Take `⟨y, rfl⟩` from `(away l L n).rangeRestrict_surjective y`. Use `Subtype.ext (funext fun w => ?_)` and prove the remaining obligations. Establish `e` using `h w.1`. Rewrite `e` using `[cmp_of w.2, cmp_of w.2]`. Then use the resulting hypothesis.
+-/
 private theorem ext_cmp {x y : Ga l L n} (h : ∀ w, cmp n w x = cmp n w y) : x = y := by
   obtain ⟨x, rfl⟩ := (away l L n).rangeRestrict_surjective x
   obtain ⟨y, rfl⟩ := (away l L n).rangeRestrict_surjective y
@@ -36,16 +45,27 @@ private theorem ext_cmp {x y : Ga l L n} (h : ∀ w, cmp n w x = cmp n w y) : x 
   have e := h w.1
   rwa [cmp_of w.2, cmp_of w.2] at e
 
+/- English proof (translation)
+Use `ext_cmp fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Apply the tactic sequence `rcases h w with h | h <;> rw [h] <;> simp`.
+-/
 private theorem comm_of {a b : Ga l L n} (h : ∀ w, cmp n w a = 1 ∨ cmp n w b = 1) : Commute a b := by
   refine ext_cmp fun w => ?_
   rw [map_mul, map_mul]
   rcases h w with h | h <;> rw [h] <;> simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ ↔ algebraMap (𝓞 (Lp L)) (𝓞 L) _ ∈ u.asIdeal`. Rewrite using `[map_natCast]`.
+-/
 private theorem l_under {u : Plc L} :
     ((l : ℕ) : 𝓞 L) ∈ u.asIdeal ↔ ((l : ℕ) : 𝓞 (Lp L)) ∈ (u.under (𝓞 (Lp L))).asIdeal := by
   change _ ↔ algebraMap (𝓞 (Lp L)) (𝓞 L) _ ∈ u.asIdeal
   rw [map_natCast]
 
+/- English proof (translation)
+Establish `hw1 : ∀ v, v = w → cLoc v x = 1`. Introduce and unpack `v rfl`. Conclude with `h1`. Break down `(GlobalTheory.SplitPts.over_split hw).2.2 u hu with rfl | rfl` into its components or cases. Conclude with `h1`.
+
+Establish `hce` using `GlobalTheory.SplitPts.comp_eq x (conjSrc (GlobalTheory.SplitPts.conjE L) w)`. Rewrite `hce` using `[hw1 _ (GlobalTheory.SplitPts.conjSrc_conjSrc_cm w), Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul]`. Conclude with `Units.ext hce`.
+-/
 private theorem cLoc_over {w u : Plc L} (hw : IsSplitAt w) (x : UA L n) (h1 : cLoc w x = 1)
     (hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) : cLoc u x = 1 := by
   have hw1 : ∀ v, v = w → cLoc v x = 1 := by
@@ -58,6 +78,11 @@ private theorem cLoc_over {w u : Plc L} (hw : IsSplitAt w) (x : UA L n) (h1 : cL
       Matrix.transpose_one, Matrix.one_mul] at hce
     exact Units.ext hce
 
+/- English proof (translation)
+Distinguish the cases in `hl : ((l : ℕ) : 𝓞 L) ∈ u.asIdeal`. Conclude with `cmp_over_l hl x`. Establish `hl' : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal` using `fun h => hl (l_under.2 (hu ▸ l_under.1 h))`. Take `⟨x, rfl⟩` from `(away l L n).rangeRestrict_surjective x`. Rewrite `h1` using `[cmp_of hl']`.
+
+Rewrite using `[cmp_of hl]`. Conclude with `cLoc_over hw x h1 hu`.
+-/
 private theorem cmp_over {w u : Plc L} (hw : IsSplitAt w) (x : Ga l L n) (h1 : cmp n w x = 1)
     (hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) : cmp n u x = 1 := by
   by_cases hl : ((l : ℕ) : 𝓞 L) ∈ u.asIdeal
@@ -68,19 +93,37 @@ private theorem cmp_over {w u : Plc L} (hw : IsSplitAt w) (x : Ga l L n) (h1 : c
   rw [cmp_of hl]
   exact cLoc_over hw x h1 hu
 
+/- English proof (translation)
+The claim follows from `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu)`.
+-/
 private theorem loc_one {w u : Plc L} {x : UA L n} (hx : x ∈ locU n w)
     (hu : u.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))) : cLoc u x = 1 :=
   MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu)
 
 variable (s : HidaSetting l L Ω)
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+-/
 private theorem under_w (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   ext x
   exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)
 
+/- English proof (translation)
+The claim follows from `UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω _ _ (s.hA v) (s.split v (Or.inr h)) _ (under_w s v)`.
+-/
 private theorem split_of {v : Plc (Lp L)} (h : v ∈ s.St ∨ v = s.v0) : IsSplitAt (s.w v) :=
   UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω _ _ (s.hA v) (s.split v (Or.inr h)) _ (under_w s v)
 
+/- English proof (translation)
+Introduce `h`. Establish `hp` using `s.p_prime`. Establish `hcard : Nat.card (𝓞 (Lp L) ⧸ s.v0.asIdeal) = s.p` using `s.norm_v0_eq_one`. Establish `hl0 : ((l : ℕ) : 𝓞 (Lp L) ⧸ s.v0.asIdeal) = 0`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem.2 h : _) |> fun e => by simpa using e`.
+
+Establish `hp0 : ((s.p : ℕ) : 𝓞 (Lp L) ⧸ s.v0.asIdeal) = 0`. Use `card_nsmul_eq_zero' (G := 𝓞 (Lp L) ⧸ s.v0.asIdeal) (x := 1)` as an intermediate fact. Rewrite `this` using `[hcard]`. Simplify using `using this`. Establish `hco : Nat.Coprime l s.p` using `(Nat.coprime_primes (Fact.out : l.Prime) hp).2 (Ne.symm s.p_ne)`.
+
+Establish `h1 : (1 : 𝓞 (Lp L) ⧸ s.v0.asIdeal) = 0`. Use `Nat.Coprime.isCoprime hco` as an intermediate fact. Take `⟨a, b, e⟩` from `this`. Establish `e'` using `congrArg (Int.cast : ℤ → 𝓞 (Lp L) ⧸ s.v0.asIdeal) e`. Move the coercions through the operations in `at e'`.
+
+Rewrite `e'` using `[hl0, hp0]`. Simplify using `using e'.symm`. Establish `hsub : Subsingleton (𝓞 (Lp L) ⧸ s.v0.asIdeal)` using `subsingleton_of_zero_eq_one h1.symm`. Rewrite `hcard` using `[Nat.card_of_subsingleton (0 : 𝓞 (Lp L) ⧸ s.v0.asIdeal)]`. Conclude with `hp.one_lt.ne hcard`.
+-/
 private theorem SectionSplitPlaces : ((l : ℕ) : 𝓞 (Lp L)) ∉ s.v0.asIdeal := by
   intro h
   have hp := s.p_prime
@@ -103,6 +146,11 @@ private theorem SectionSplitPlaces : ((l : ℕ) : 𝓞 (Lp L)) ∉ s.v0.asIdeal 
   rw [Nat.card_of_subsingleton (0 : 𝓞 (Lp L) ⧸ s.v0.asIdeal)] at hcard
   exact hp.one_lt.ne hcard
 
+/- English proof (translation)
+Introduce `e`. Establish `e'` using `l_under.1 e`. Rewrite `e'` using `[under_w]`. Break down `h with h | rfl` into its components or cases. Conclude with `s.St_l _ h e'`.
+
+Conclude with `SectionSplitPlaces s e'`.
+-/
 private theorem away_of {v : Plc (Lp L)} (h : v ∈ s.St ∨ v = s.v0) : ((l : ℕ) : 𝓞 L) ∉ (s.w v).asIdeal := by
   intro e
   have e' := l_under.1 e
@@ -111,10 +159,16 @@ private theorem away_of {v : Plc (Lp L)} (h : v ∈ s.St ∨ v = s.v0) : ((l : �
   · exact s.St_l _ h e'
   · exact SectionSplitPlaces s e'
 
+/- English proof (translation)
+Simplify using `only [GaS, Subgroup.mem_iInf, MonoidHom.mem_ker]`.
+-/
 private theorem mem_GaS {x : Ga l L n} : x ∈ GaS n s ↔
     ∀ w : Plc L, w.under (𝓞 (Lp L)) ∉ s.St ∧ w.under (𝓞 (Lp L)) ≠ s.v0 → cmp n w x = 1 := by
   simp only [GaS, Subgroup.mem_iInf, MonoidHom.mem_ker]
 
+/- English proof (translation)
+Break down `hw with hw | hw` into its components or cases. Establish `e : cmp n (s.w (w.under (𝓞 (Lp L)))) x = 1` using `congrFun (congrArg Prod.fst h) ⟨_, hw⟩`. Conclude with `cmp_over (split_of s (Or.inl hw)) x e (under_w s _).symm`. Establish `e : cmp n (s.w s.v0) x = 1` using `congrArg Prod.snd h`. Conclude with `cmp_over (split_of s (Or.inr rfl)) x e (by rw [under_w, hw])`.
+-/
 private theorem toGS_one {x : Ga l L n} (h : toGS n s x = 1) {w : Plc L}
     (hw : w.under (𝓞 (Lp L)) ∈ s.St ∨ w.under (𝓞 (Lp L)) = s.v0) : cmp n w x = 1 := by
   rcases hw with hw | hw
@@ -123,6 +177,13 @@ private theorem toGS_one {x : Ga l L n} (h : toGS n s x = 1) {w : Plc L}
   · have e : cmp n (s.w s.v0) x = 1 := congrArg Prod.snd h
     exact cmp_over (split_of s (Or.inr rfl)) x e (by rw [under_w, hw])
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, fun w _ => map_one _⟩`. Consider the case `insert a T ha ih`. Take `⟨x, hx, hx'⟩` from `ih fun v hv => hT v (Finset.mem_insert_of_mem hv)`. Take `⟨⟨j, hj, hj', -, -⟩, -⟩` from `secU l L Ω s n hn (s.w a) (hT a (Finset.mem_insert_self _ _))`.
+
+Establish `hloc : ∀ g (u : Plc L), u.under (𝓞 (Lp L)) ≠ a → cLoc u (j g) = 1` using `fun g u hu => loc_one (hj g) (by rwa [under_w])`. Use `⟨x * j (f a), fun v hv => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Rewrite using `[map_mul, hj', hx' _ (by rwa [under_w]), one_mul]`. Rewrite using `[map_mul, hx v hv, hloc _ _ (by rw [under_w]; exact fun e => ha (e ▸ hv)), mul_one]`.
+
+Rewrite using `[map_mul, hx' w fun h => hw (Finset.mem_insert_of_mem h), hloc _ w fun h => hw (h ▸ Finset.mem_insert_self _ _), one_mul]`.
+-/
 private theorem build (hn : 1 ≤ n) (T : Finset (Plc (Lp L))) (hT : ∀ v ∈ T, IsSplitAt (s.w v))
     (f : ∀ v, GLw n (s.w v)) :
     ∃ x : UA L n, (∀ v ∈ T, cLoc (s.w v) x = f v) ∧ ∀ w : Plc L, w.under (𝓞 (Lp L)) ∉ T → cLoc w x = 1 := by
@@ -141,6 +202,15 @@ private theorem build (hn : 1 ≤ n) (T : Finset (Plc (Lp L))) (hT : ∀ v ∈ T
     · rw [map_mul, hx' w fun h => hw (Finset.mem_insert_of_mem h),
         hloc _ w fun h => hw (h ▸ Finset.mem_insert_self _ _), one_mul]
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_one _).2 ?_, fun g => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩ h1`. Use `Subtype.ext (ext_cmp fun w => ?_)` and prove the remaining obligations. Rewrite using `[show ((1 : GaS n s) : Ga l L n) = 1 from rfl, map_one]`. Distinguish the cases in `hw : w.under (𝓞 (Lp L)) ∈ s.St ∨ w.under (𝓞 (Lp L)) = s.v0`.
+
+Conclude with `toGS_one s h1 hw`. Conclude with `(mem_GaS s).1 hx w (not_or.1 hw)`. Take `⟨x, hx, hx'⟩` from `build s hn s.St (fun v hv => split_of s (Or.inl hv)) fun v => if h : v ∈ s.St then g.1 ⟨v, h⟩ else 1`. Take `⟨⟨j, hj, hj', -, -⟩, -⟩` from `secU l L Ω s n hn (s.w s.v0) (split_of s (Or.inr rfl))`. Establish `hloc : ∀ (u : Plc L), u.under (𝓞 (Lp L)) ≠ s.v0 → cLoc u (j g.2) = 1` using `fun u hu => loc_one (hj _) (by rwa [under_w])`.
+
+Establish `hS : (away l L n).rangeRestrict (x * j g.2) ∈ GaS n s`. Use `(mem_GaS s).2 fun w hw => ?_` and prove the remaining obligations. Distinguish the cases in `hl : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal`. Conclude with `cmp_over_l hl _`. Rewrite using `[cmp_of hl, map_mul, hx' w hw.1, hloc w hw.2, one_mul]`.
+
+Use `⟨⟨_, hS⟩, Prod.ext (funext fun u => ?_) ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cmp n (s.w u) ((away l L n).rangeRestrict (x * j g.2)) = g.1 u`. Rewrite using `[cmp_of (away_of s (Or.inl u.2)), map_mul, hx _ u.2, dif_pos u.2, hloc _ (by rw [under_w]; exact fun e => s.v0_St (e ▸ u.2)), mul_one]`. Express the relevant statement in the definitionally equal form `cmp n (s.w s.v0) ((away l L n).rangeRestrict (x * j g.2)) = g.2`. Rewrite using `[cmp_of (away_of s (Or.inr rfl)), map_mul, hx' _ (by rw [under_w]; exact s.v0_St), hj', one_mul]`.
+-/
 private theorem bij (hn : 1 ≤ n) : Function.Bijective ((toGS n s).comp (GaS n s).subtype) := by
   classical
   refine ⟨(injective_iff_map_eq_one _).2 ?_, fun g => ?_⟩
@@ -167,26 +237,43 @@ private theorem bij (hn : 1 ≤ n) : Function.Bijective ((toGS n s).comp (GaS n 
     · change cmp n (s.w s.v0) ((away l L n).rangeRestrict (x * j g.2)) = g.2
       rw [cmp_of (away_of s (Or.inr rfl)), map_mul, hx' _ (by rw [under_w]; exact s.v0_St), hj', one_mul]
 
+/- English proof (translation)
+Unfold `secS`. Rewrite using `[dif_pos h]`. Conclude with `⟨(MulEquiv.ofBijective _ h).apply_symm_apply g, ((MulEquiv.ofBijective _ h).symm g).2⟩`.
+-/
 private theorem secS_spec (h : Function.Bijective ((toGS n s).comp (GaS n s).subtype)) (g : GS n s) :
     toGS n s (secS n s g) = g ∧ secS n s g ∈ GaS n s := by
   unfold secS
   rw [dif_pos h]
   exact ⟨(MulEquiv.ofBijective _ h).apply_symm_apply g, ((MulEquiv.ofBijective _ h).symm g).2⟩
 
+/- English proof (translation)
+Simplify using `only [KS, Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker, Subgroup.mem_comap]`.
+-/
 private theorem mem_KS {k : Ga l L n} : k ∈ KS n s ↔ toGS n s k = 1 ∧
     ∀ w : Plc L, w.under (𝓞 (Lp L)) ∉ s.S → cmp n w k ∈ KO (w.adicCompletion L) (Fin n) := by
   simp only [KS, Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker, Subgroup.mem_comap]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun e => h (Or.inr (Or.inl e)), fun e => h (Or.inr (Or.inr e))⟩`.
+-/
 private theorem notS {w : Plc L} (h : w.under (𝓞 (Lp L)) ∉ s.S) :
     w.under (𝓞 (Lp L)) ∉ s.St ∧ w.under (𝓞 (Lp L)) ≠ s.v0 :=
   ⟨fun e => h (Or.inr (Or.inl e)), fun e => h (Or.inr (Or.inr e))⟩
 
+/- English proof (translation)
+Simplify using `only [Ub, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap]`.
+-/
 private theorem mem_Ub {x : Ga l L n} : x ∈ Ub n s ↔
     (∀ u : s.St, cmp n (s.w u) x ∈ KO ((s.w u).adicCompletion L) (Fin n)) ∧ cmp n (s.w s.v0) x ∈ Kc _ n 1 := by
   simp only [Ub, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap]
 
 variable {s}
 
+/- English proof (translation)
+Establish `hq : ∀ q : Q.Q, False` using `fun q => Q.notS q (by`. Establish `h : (Q.wq q).under (𝓞 (Lp L)) ∈ V.S'`. Rewrite using `[Q.range]`. Conclude with `Or.inr ⟨q, rfl⟩`. Rewrite using `[hV] at h)` and apply the resulting hypothesis.
+
+Simplify using `only [UQ, Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker, Subgroup.mem_comap, hV]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, fun q => (hq q).elim⟩⟩`.
+-/
 private theorem mem_UQ {V : s.Lev} (Q : QData V) (hV : V.S' = s.S) {x : Ub n s} : x ∈ UQ n Q ↔
     ∀ w : Plc L, w.under (𝓞 (Lp L)) ∉ s.S → cmp n w (x : Ga l L n) ∈ KO (w.adicCompletion L) (Fin n) := by
   have hq : ∀ q : Q.Q, False := fun q => Q.notS q (by
@@ -200,6 +287,19 @@ private theorem mem_UQ {V : s.Lev} (Q : QData V) (hV : V.S' = s.S) {x : Ub n s} 
 end UpperTheory.V.Z.J.D.AuxBlock5
 
 open UpperTheory.V.Z.J.D.AuxBlock5 in
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n hn V hV`. Establish `hb` using `bij s hn`. Use `⟨hb, fun g k hk => comm_of fun w => ?_, fun Q g => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hw : w.under (𝓞 (Lp L)) ∈ s.St ∨ w.under (𝓞 (Lp L)) = s.v0`. Conclude with `Or.inr (toGS_one s ((mem_KS s).1 hk).1 hw)`.
+
+Conclude with `Or.inl ((mem_GaS s).1 (secS_spec s hb g).2 w (not_or.1 hw))`. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hU` using `(mem_Ub s).1 x.2`. Establish `hs` using `secS_spec s hb (toGS n s (x : Ga l L n))`. Use `⟨(secS n s (toGS n s (x : Ga l L n)))⁻¹ * x, (mem_KS s).2 ⟨?_, fun w hw => ?_⟩, toGS n s (x : Ga l L n), Subgroup.mem_prod.2 ⟨fun u _ => hU.1 u, hU.2⟩, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_inv, hs.1, inv_mul_cancel]`. Rewrite using `[map_mul, map_inv, (mem_GaS s).1 hs.2 w (notS s hw), inv_one, one_mul]`. Conclude with `(mem_UQ Q hV).1 hx w hw`. Introduce and unpack `⟨k, hk, p, hp, rfl⟩`. Take `⟨hk1, hk2⟩` from `(mem_KS s).1 hk`.
+
+Establish `hs` using `secS_spec s hb p`. Establish `hU : secS n s p * k ∈ Ub n s`. Use `(mem_Ub s).2 ⟨fun u => ?_, ?_⟩` and prove the remaining obligations. Establish `e : cmp n (s.w u) (secS n s p) = p.1 u` using `congrFun (congrArg Prod.fst hs.1) u`. Rewrite using `[map_mul, e, toGS_one s hk1 (Or.inl (by rw [UpperTheory.V.Z.J.D.AuxBlock5.under_w]; exact u.2)), mul_one]`.
+
+Conclude with `(Subgroup.mem_prod.1 hp).1 u (Set.mem_univ _)`. Establish `e : cmp n (s.w s.v0) (secS n s p) = p.2` using `congrArg Prod.snd hs.1`. Rewrite using `[map_mul, e, toGS_one s hk1 (Or.inr (by rw [UpperTheory.V.Z.J.D.AuxBlock5.under_w])), mul_one]`. Conclude with `(Subgroup.mem_prod.1 hp).2`. Use `⟨⟨_, hU⟩, (mem_UQ Q hV).2 fun w hw => ?_, rfl⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `cmp n w (secS n s p * k) ∈ _`. Rewrite using `[map_mul, (mem_GaS s).1 hs.2 w (notS s hw), one_mul]`. Conclude with `hk2 w hw`.
+-/
 theorem UpperTheory.V.Z.J.D.secSp :
     SecS := by
   intro l _ L Ω _ _ _ _ _ _ s n hn V hV

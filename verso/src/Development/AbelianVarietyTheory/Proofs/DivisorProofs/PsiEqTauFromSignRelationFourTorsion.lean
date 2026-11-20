@@ -27,27 +27,45 @@ open GlobalTheory.UT.SymFrame
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O D.X]
 
+/- English proof (translation)
+Establish `h` using `o.onB.map_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+-/
 theorem act_zero' (o : D.OAct O) : o.onB.act (0 : O) = 1 := by
   have h := o.onB.map_add 0 0
   rw [add_zero] at h
   exact mul_eq_left.1 h.symm
 
+/- English proof (translation)
+The claim follows from `(o.onB.map_add a c).symm`.
+-/
 theorem act_add' (o : D.OAct O) (a c : O) : o.onB.act a * o.onB.act c = o.onB.act (a + c) :=
   (o.onB.map_add a c).symm
 
+/- English proof (translation)
+The claim follows from `(o.onB.map_mul c a).symm`.
+-/
 theorem act_comp' (o : D.OAct O) (a c : O) : o.onB.act a ≫ o.onB.act c = o.onB.act (c * a) :=
   (o.onB.map_mul c a).symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, act_zero', pow_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, ← act_add', ih, o.onB.map_one, pow_succ]`.
+-/
 theorem act_natCast' (o : D.OAct O) (n : ℕ) : o.onB.act (n : O) = 𝟙 D.P.A ^ n := by
   induction n with
   | zero => rw [Nat.cast_zero, act_zero', pow_zero]
   | succ n ih => rw [Nat.cast_succ, ← act_add', ih, o.onB.map_one, pow_succ]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, Nat.cast_zero, zero_mul, act_zero']`. Consider the case `succ n ih => rw [pow_succ, ih, act_add', Nat.cast_succ, add_one_mul]`.
+-/
 theorem act_pow' (o : D.OAct O) (a : O) (n : ℕ) : o.onB.act a ^ n = o.onB.act ((n : O) * a) := by
   induction n with
   | zero => rw [pow_zero, Nat.cast_zero, zero_mul, act_zero']
   | succ n ih => rw [pow_succ, ih, act_add', Nat.cast_succ, add_one_mul]
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_four]`. Use `show k (x ≫ 𝟙 A ^ 5).left ^ (2 : ℤ) * k (x ≫ 𝟙 A ^ 4).left ^ (-3 : ℤ) * k (x ≫ 𝟙 A).left ^ (-2 : ℤ) * k (x ≫ 1).left ^ (3 : ℤ) = _`. Rewrite using `[MonObj.comp_pow, MonObj.comp_pow, MonObj.comp_one, Category.comp_id, zpow_neg, zpow_neg, zpow_ofNat, zpow_ofNat, zpow_ofNat, zpow_ofNat]`.
+-/
 theorem prod_gam {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A] (x : T ⟶ A) {U : Type} [CommGroup U]
     (k : (T.left ⟶ A.left) → U) :
     ∏ i : Fin 4, k (x.left ≫ (![(𝟙 A ^ 5).left, (𝟙 A ^ 4).left, 𝟙 _, (1 : A ⟶ A).left] : Fin 4 → _) i) ^
@@ -61,6 +79,23 @@ theorem prod_gam {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A] (x 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hm : ∀ t : O, IsMonHom (o.onB.act t)` using `o.onB.hom`. Establish `Gu` using `(grep_gen (Y := D.P.A) u hu.1 (o.onB.act 4).left).congr (P' := fun _ _ h => h (o.onB.act 4 * (o.onB.act 4 ≫ o.onB.act w)).left * (h (o.onB.act 4).left ^ 2)⁻¹ * (h (o.onB.act 4 ≫ o.onB.act w).left)⁻¹ * h (1 : D.P.A ⟶ D.P.A).left ^ 2) (fun _ _ h => GlobalTheory.PsiWZeroPull.prod_fo …`. Establish `Gra` using `(grep_gen (Y := D.P.A) ra hra.1 (lift (o.onB.act 4 ≫ o.onB.act (1 + w)) (𝟙 D.P.A)).left).congr (fun _ _ h => prod_ros _ _ _ _ h) (fun _ _ _ _ _ => rfl)`. Establish `Grw` using `(grep_gen (Y := D.P.A) rw' hrw.1 (lift (o.onB.act 4 ≫ o.onB.act w) (𝟙 D.P.A)).left).congr (fun _ _ h => prod_ros _ _ _ _ h) (fun _ _ _ _ _ => rfl)`. Establish `Gga` using `(grep_gen (Y := D.P.A) gam hgam.1 (o.onB.act (1 + w)).left).congr (fun _ _ h => prod_gam _ h) (fun _ _ _ _ _ => rfl)`.
+
+Establish `Ggw` using `(grep_gen (Y := D.P.A) gam hgam.1 (o.onB.act w).left).congr (fun _ _ h => prod_gam _ h) (fun _ _ _ _ _ => rfl)`. Establish `Ggb` using `(grep_gen (Y := D.P.A) gam hgam.1 (Over.Hom.left (𝟙 D.P.A))).congr (fun _ _ h => prod_gam _ h) (fun _ _ _ _ _ => rfl)`. Establish `Gt2` using `grep_cub (D := D) (Y := D.P.A) (o.onB.act 4 * o.onB.act 4) (o.onB.act 4 ≫ o.onB.act (star w * w)) (𝟙 D.P.A)`. Establish `Gt1` using `grep_cub (D := D) (Y := D.P.A) (o.onB.act 4) (o.onB.act 4) (𝟙 D.P.A)`. Establish `key` using `(((Gu.mul (Gra.pow 2)).mul Gga).mul (((((Gt2.pow 2).mul (Gt1.pow 2)).mul (Ggb.pow 2)).mul (Grw.pow 2)).mul Ggw).inv).triv hG (fun U _ h => by clear Gu Gra Grw Gga Ggw Ggb Gt2 Gt1`.
+
+Establish `e1 : 𝟙 D.P.A = o.onB.act 1` using `o.onB.map_one.symm`. Establish `e0 : (1 : D.P.A ⟶ D.P.A) = o.onB.act 0` using `(act_zero' o).symm`. Establish `hsw : star w = 1 - w` using `eq_sub_of_add_eq' hw`. Simplify using `only [e1, e0, act_add', act_comp', act_pow', star_add, star_one, hsw]`. Put the polynomial expressions in normal form.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one]`. Use the proof step `abel) (fun y I hI => by`. Use `clear Gu Gra Grw Gga Ggw Ggb Gt2 Gt1`. Establish `C : IsCub (cubV D.cub (T` using `𝟙_ _) y I) := isCub_cubV D.cub hI`.
+
+Establish `o1 : ∀ t : O, (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A).left ≫ (o.onB.act t).left = (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A).left` using `fun t => by`. Rewrite using `[← Over.comp_left, MonObj.one_comp]`. Establish `l1 : ∀ t t' : O, (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A).left ≫ (lift (o.onB.act t ≫ o.onB.act t') (𝟙 D.P.A)).left = (lift (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A) 1).left` using `fun t t' => by`. Rewrite using `[← Over.comp_left, comp_lift, Category.comp_id, ← Category.assoc, MonObj.one_comp, MonObj.one_comp]`. Use `beta_reduce`.
+
+Rewrite using `[o1, l1, l1, o1, o1, Over.id_left, Category.comp_id, normd_one hu hI, normd_one hgam hI]`. Establish `r1` using `hra.val_origin hI`. Establish `r2` using `hrw.val_origin hI`. Unfold `val₂ at r1 r2`. Rewrite using `[r1, r2]`.
+
+Simplify using `only [MonObj.comp_mul, MonObj.one_comp, Category.comp_id, _root_.mul_one, C.face, one_pow, inv_one, normd_one hgam hI]) T b z J hJ`. Establish `c4 : b ≫ o.onB.act 4 = b ^ 4`. Use `act_natCast' o 4` as an intermediate fact. Rewrite `this` using `[Nat.cast_ofNat]`. Rewrite using `[this, comp_id_pow]`.
+
+Use `beta_reduce at key`. Simplify using `only [← Over.comp_left, comp_lift, ← Category.assoc, c4, MonObj.comp_mul, Category.comp_id] at key`. Conclude with `mul_inv_eq_one.1 key`.
+-/
 theorem core_id (hG : GlobalFnsSt) (o : D.OAct O) (w : O) (u : GlobalTheory.PsiRescale.FourGen D.P.L (o.onB.act w)) (hu : Normd u)
     (gam : LB.Gen (LB.LinComb D.P.L (K := Fin 4) ![(𝟙 D.P.A ^ 5).left, (𝟙 D.P.A ^ 4).left, 𝟙 _, (1 : D.P.A ⟶ D.P.A).left] ![2, -3, -2, 3]))
     (hgam : Normd gam)
@@ -126,6 +161,25 @@ theorem core_id (hG : GlobalFnsSt) (o : D.OAct O) (w : O) (u : GlobalTheory.PsiR
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `R _ _ D F _ _ O _ _ _ o w hw u hu gam hgam p q r hq hr hgq hgr z J hJ s s' s'' hs hs' hs'' hss`. Establish `hG : GlobalFnsSt` using `GlobalTheory.firstFiveLaws.1.globalFns`. Establish `hb4 : cP D (TF (R` using `R) F) p.y = p.g.b ^ 4 := cPoint_y p`. Take `⟨qb, qv⟩` from `(GlobalTheory.TorusExt.gtAct_iff_val hG o w p.g q.g).1 hgq`. Take `⟨rb, rv⟩` from `(GlobalTheory.TorusExt.gtAct_iff_val hG o (1 + w) p.g r.g).1 hgr`.
+
+Establish `eq1` using `qv (w • p.y) z J hJ`. Establish `eq2` using `rv ((1 + w) • p.y) z J hJ`. Establish `sm1 : star w • w • p.y = (star w * w) • p.y` using `smul_smul _ _ _`. Establish `sm2 : star (1 + w) • (1 + w) • p.y = (p.y + p.y) + (star w * w) • p.y`. Rewrite using `[smul_smul, show star (1 + w) * (1 + w) = 1 + 1 + star w * w by`.
+
+Rewrite using `[star_add, star_one]`. Take the linear combination `hw, add_smul, add_smul, one_smul]`. Establish `e3 : (1 + w) • p.y = p.y + w • p.y` using `by rw [add_smul, one_smul]`. Rewrite `eq1` using `[sm1, GlobalTheory.TorusExt.cPoint_smul o, hb4]`. Rewrite `eq2` using `[sm2, GlobalTheory.TorusExt.cPoint_smul o, hb4]`.
+
+Establish `g1` using `GlobalTheory.TorusExt.charVal_add p.g hJ p.y p.y`. Establish `g2` using `GlobalTheory.TorusExt.charVal_add p.g hJ (p.y + p.y) ((star w * w) • p.y)`. Rewrite `g2` using `[cPoint_add, GlobalTheory.TorusExt.cPoint_smul o, hb4]`. Rewrite `g1` using `[hb4]`. Establish `cid` using `core_id hG o w u hu gam hgam (GlobalTheory.TorusExt.rosGen hG o (1 + w)) (GlobalTheory.TorusExt.rosGen_isRos hG o (1 + w)) (GlobalTheory.TorusExt.rosGen hG o w) (GlobalTheory.TorusExt.rosGen_isRos hG o w) hw p.g.b z hJ`.
+
+Establish `vτ : @id ((TF (R` using `R) F).left.presheaf.stalk z)ˣ (val (D.tau p.y (w • p.y)) (jFK (R := R) F) z J) = @id ((TF (R := R) F).left.presheaf.stalk z)ˣ (val (D.psi ((1 + w) • p.y)) (jFK (R := R) F) z J) * (@id ((TF (R := R) F).left.presheaf.stalk z)ˣ (val (D.psi p.y) (jFK (R := R) F) z J))⁻¹ * (@id ((TF ( …`. Rewrite using `[e3]`. Conclude with `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) ((val_inv _ _).trans (congrArg (·⁻¹) ((val_pull hJ _ _ _).trans rfl))))`. Establish `gq : val gam q.g.b.left z J = val gam (p.g.b ≫ o.onB.act w).left z J` using `by rw [qb]`. Establish `gr : val gam r.g.b.left z J = val gam (p.g.b ≫ o.onB.act (1 + w)).left z J` using `by rw [rb]`.
+
+Rewrite `hs'` using `[hq, gq]`. Rewrite `hs''` using `[hr, gr]`. Rewrite using `[vτ, hb4]`. Simplify using `only [id_eq] at hs hs' hs'' ⊢`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Establish `E` using `fun {a c : ((TF (R := R) F).left.presheaf.stalk z)ˣ} (e : a = c) => congrArg Additive.ofMul e`. Establish `hs` using `E hs`. Establish `hs'` using `E hs'`. Establish `hs''` using `E hs''`. Establish `hss` using `E hss`.
+
+Establish `eq1` using `E eq1`. Establish `eq2` using `E eq2`. Establish `g1` using `E g1`. Establish `g2` using `E g2`. Establish `cid` using `E cid`.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at hs hs' hs'' hss eq1 eq2 g1 g2 cid ⊢`. Take the linear combination `(norm := module) hs'' - 2 • hs - hs' - hss + 2 • eq2 - 2 • eq1 + 2 • g2 + 2 • g1 + cid`.
+-/
 theorem sign_rel : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (O : Type) [CommRing O] [StarRing O] [Module O D.X] (o : D.OAct O) (w : O), w + star w = 1 → ∀ u : GlobalTheory.PsiRescale.FourGen D.P.L (o.onB.act w), Normd u → ∀ gam : LB.Gen (LB.LinComb D.P.L (K := Fin 4) ![(𝟙 D.P.A ^ 5).left, (𝟙 D.P.A ^ 4).left, 𝟙 _, (1 : D.P.A ⟶ D.P.A).left] ![2, -3, -2, 3]), Normd gam → ∀ p q r : QkPt D F 4, q.y = w • p.y → r.y = (1 + w) • p.y → GtAct o w p.g q.g → GtAct o (1 + w) p.g r.g → ∀ (z : (TF (R := R) F).left) J, Good D.P.L z J → ∀ s s' s'' : ((TF (R := R) F).left.presheaf.stalk z)ˣ, s * (@id ((TF (R := R) F).left.presheaf.stalk z)ˣ (val (D.psi (p.y)) (jFK (R := R) F) z J) * rigV D (TF (R := R) F).hom z J) = val (p.g.s p.y) (𝟙 _) z J ^ 2 * val gam p.g.b.left z J → s' * (@id ((TF (R := R) F).left.presheaf.stalk z)ˣ (val (D.psi (q.y)) (jFK (R := R) F) z J) * rigV D (TF (R := R) F).hom z J) = val (q.g.s q.y) (𝟙 _) z J ^ 2 * val gam q.g.b.left z J → s'' * (@id ((TF (R := R) F).left.presheaf.stalk z)ˣ (val (D.psi (r.y)) (jFK (R := R) F) z J) * rigV D (TF (R := R) F).hom z J) = val (r.g.s r.y) (𝟙 _) z J ^ 2 * val gam r.g.b.left z J → s'' = s ^ 2 * s' → @id ((TF (R := R) F).left.presheaf.stalk z)ˣ (val (D.tau p.y (w • p.y)) (jFK (R := R) F) z J) * val u (cP D (TF (R := R) F) p.y).left z J = @id ((TF (R := R) F).left.presheaf.stalk z)ˣ (val (D.psi (p.y)) (jFK (R := R) F) z J) * rigV D (TF (R := R) F).hom z J := by
   intro R _ _ D F _ _ O _ _ _ o w hw u hu gam hgam p q r hq hr hgq hgr z J hJ s s' s'' hs hs' hs'' hss
   have hG : GlobalFnsSt := GlobalTheory.firstFiveLaws.1.globalFns

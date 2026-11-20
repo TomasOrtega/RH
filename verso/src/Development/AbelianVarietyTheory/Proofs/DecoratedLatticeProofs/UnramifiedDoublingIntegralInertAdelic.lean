@@ -18,6 +18,17 @@ open GlobalTheory.Core.Rk.IP
 
 namespace GlobalTheory.LocZetaInertAd
 
+/- English proof (translation)
+Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast (by omega : 0 < q)`. Establish `hq1 : (1 : ℝ) < q` using `by exact_mod_cast (by omega : 1 < q)`. Establish `hy : ‖GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.varY q ε s‖ = (q : ℝ) ^ (-(2 * s.re + 1))`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.varY, norm_mul, hε, one_mul, Complex.norm_natCast_cpow_of_pos (by omega)]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Establish `hQ : ((q ^ 2 : ℕ) : ℝ) ^ ((n : ℝ) / 2) = (q : ℝ) ^ (n : ℝ)`. Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast (q : ℝ) 2, ← Real.rpow_mul hq0.le]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `key : (q : ℝ) ^ (-(2 * s.re + 1)) * (q : ℝ) ^ (n : ℝ) < 1`. Rewrite using `[← Real.rpow_add hq0]`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg hq1 (by linarith)`.
+
+Establish `hpos : (0 : ℝ) ≤ (q : ℝ) ^ (-(2 * s.re + 1))` using `(Real.rpow_pos_of_pos hq0 _).le`. Use `⟨?_, fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg hq1 (by linarith)`. Rewrite using `[hy]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_mul_of_nonneg_left ((hα i).1.trans hQ.le) hpos) key`. Rewrite using `[hy]`. Use `(hα i).2` as an intermediate fact. Rewrite `this` using `[Units.val_inv_eq_inv_val, norm_inv]`. Conclude with `lt_of_le_of_lt (mul_le_mul_of_nonneg_left (this.trans hQ.le) hpos) key`.
+-/
 theorem domain_of_bound {q : ℕ} (hq : 2 ≤ q) {n : ℕ} (α : Fin (n / 2) → ℂˣ) {ε : ℂ} (hε : ‖ε‖ = 1) {s : ℂ}
     (hs : (n : ℝ) < s.re) (hα : ∀ i, ‖((α i : ℂˣ) : ℂ)‖ ≤ ((q ^ 2 : ℕ) : ℝ) ^ ((n : ℝ) / 2) ∧
       ‖(((α i)⁻¹ : ℂˣ) : ℂ)‖ ≤ ((q ^ 2 : ℕ) : ℝ) ^ ((n : ℝ) / 2)) :
@@ -51,6 +62,29 @@ end GlobalTheory.LocZetaInertAd
 namespace GlobalTheory.LocZetaInertAd
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `hU D hPB A L hL χ b hχ hRes v hv hunr μ hμ hμK s hs φ hφ par c hc`. Establish `hcm` using `isCMExt_host D`. Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `hcm.2.2.1`. Choose the witnesses or unpack the hypotheses as in `⟨w, h⟩ : ∃ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v := by`. Use `v.isMaximal` as an intermediate fact.
+
+Take `⟨Q, hQ, hl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Conclude with `⟨⟨Q, hQ.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩`. Establish `hc'` using `hc`. Take `⟨-, V, _, _, ρ, x, ℓ, hpar, hℓ, hcx⟩` from `hc'`. Establish `hfix` using `(hpar w h).mem_fixed`.
+
+Break down `hpar w h with ⟨hsplit, -⟩ | ⟨hw, c', ϖ0, e, α, hUI, he, hsat, hBw⟩` into its components or cases. Conclude with `absurd hsplit hv`. Establish `hϖ0 : ϖ0 ≠ 0`. Introduce `h0`. Use `hUI.2.2.2.1` as an intermediate fact.
+
+Rewrite `this` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe this`. Set `ϖ : (w.adicCompletion D.host.E)ˣ` to `Units.mk0 ϖ0 hϖ0`. Take `⟨hUnr, hχϖ, hχϖb, Φ, hΦ, hφΦ⟩` from `GlobalTheory.KerInert.sphSec_inert D A L hL χ b hRes v w h hw (hunr w h) s φ hφ c' ϖ e hUI he`. Set `ρ' : Representation ℂ (Formalism.UG.GU c' A.rank) V` to `ρ.comp e.symm.toMonoidHom`.
+
+Establish `hℓ' : ∀ k ∈ Formalism.UG.KU c' A.rank, ∀ g, ℓ (ρ' (k * g) x) = ℓ (ρ' g x)`. Introduce `k hk g`. Establish `hk' : e.symm k ∈ stabLoc D.sp.cm.sig A.gram L v` using `(he.2.2 _).2 (by simpa using hk)`. Use `hℓ _ hk' (e.symm g)` as an intermediate fact. Simplify `this` using `[ρ']`.
+
+Establish `hdom : ℓ x ≠ 0 → GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.Domain (GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.varY (Formalism.UG.qV D.host.F v) (GlobalTheory.LFun.locChar χ⁻¹ w ϖ) s) α`. Introduce `hx0`. Establish `hc1 : c 1 ≠ 0` using `by rw [hcx, map_one, Module.End.one_apply]; exact hx0`. Take `⟨-, hbd⟩` from `hPB A L hL v hv par c hc hc1 w h`. Establish `hN : Ideal.absNorm w.asIdeal = Formalism.UG.qV D.host.F v ^ 2` using `GlobalTheory.LFun.InertChart.absNorm_eq h2 hw`.
+
+Establish `hq : 2 ≤ Formalism.UG.qV D.host.F v` using `hUI.2.2.2.2.2.1`. Use `GlobalTheory.LocZetaInertAd.domain_of_bound hq α (GlobalTheory.LFun.norm_locChar _ _ _) (by exact_mod_cast hs) fun i => ?_` and prove the remaining obligations. Establish `h1` using `hbd (α i) (by rw [hBw]; simp [GlobalTheory.LGrp.bcParam])`. Establish `h3` using `hbd (α i)⁻¹ (by rw [hBw]; simp [GlobalTheory.LGrp.bcParam])`. Rewrite `h1`, `h3` using `[hN]`.
+
+Conclude with `⟨h1, h3⟩`. Take `⟨hΦK, hsum⟩` from `GlobalTheory.DoublingSumU.hasSum_doubling_inert hU (w.adicCompletion D.host.E) ϖ c' (Formalism.UG.qV D.host.F v) A.rank hUI (GlobalTheory.LFun.locChar χ⁻¹ w) hUnr b hχϖb s Φ hΦ V ρ' x α hsat ℓ hℓ' hdom`. Establish `hsum' : HasSum (fun a : Gv A v ⧸ stabLoc D.sp.cm.sig A.gram L v => φ (ioAt A v a.out) * c a.out) (GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.stdL (Formalism.UG.qV D.host.F v) A.rank α (GlobalTheory.LFun.locChar χ⁻¹ w ϖ) (s + 1 / 2) / GlobalTheory.Indefinite …`. Use `GlobalTheory.T.hasSum_quotient_of_hasSum_mulEquiv_quotient _ _ e _ _ he.2.2 (fun g => φ (ioAt A v g) * c g) ?_ _ ?_` and prove the remaining obligations. Introduce `g k hk show φ (ioAt A v (g * k)) * c (g * k) = φ (ioAt A v g) * c g`.
+
+Rewrite using `[hφΦ, hφΦ, map_mul, hΦK _ _ ((he.2.2 k).1 hk), hcx, hcx, map_mul, Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hfix k hk]`. Establish `hfun : ∀ a : Formalism.UG.GU c' A.rank ⧸ Formalism.UG.KU c' A.rank, φ (ioAt A v (e.symm a.out)) * c (e.symm a.out) = Φ (GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.io1 c' A.rank a.out) * ℓ (ρ' a.out x)` using `fun a => by`. Rewrite using `[hφΦ, hcx, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Simplify using `only [hfun]`.
+
+Conclude with `hsum`. Use `haveI := hL.1`. Take `⟨hint, hval⟩` from `GlobalTheory.T.integral_right_invariant_eq_sum_open_subgroup_cosets (Gv A v) μ (stabLoc D.sp.cm.sig A.gram L v) (isOpen_stabLoc _ _ _ v) hμK (fun g => φ (ioAt A v g) * c g) _ (fun g k hk => by show φ (ioAt A v (g * k)) * c (g * k) = φ (ioAt A v g) * c g`. Rewrite using `[hφΦ, hφΦ, map_mul, hΦK _ _ ((he.2.2 k).1 hk), hcx, hcx, map_mul, Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hfix k hk]) hsum'`. Use `⟨hint, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hval, GlobalTheory.LFun.LvTw_div_dv_inert_eq_stdL _ _ par (GlobalTheory.LFun.val χ) v w A.rank b α s h2 hw (GlobalTheory.LFun.isUnram_of_isInertAt hw) hBw, ← hχϖ, hcx 1, map_one, Module.End.one_apply]`.
+-/
 theorem localZetaOn_inert : GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.UnramDoublingInert → ∀ D : D7, ParamBoundOn D (fun v => ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v) → LocalZetaOn D fun v => ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v := by
   intro hU D hPB A L hL χ b hχ hRes v hv hunr μ hμ hμK s hs φ hφ par c hc
   classical

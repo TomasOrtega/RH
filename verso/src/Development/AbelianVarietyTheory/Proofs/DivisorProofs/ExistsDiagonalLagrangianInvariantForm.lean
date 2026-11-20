@@ -63,6 +63,9 @@ variable (F κ) in
 
 def Lext : (Vi F κ × Vf F κ → ℂ) →ₗ[ℂ] ℂ := (LinearMap.exists_extend (I0 F κ)).choose
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (LinearMap.exists_extend (I0 F κ)).choose_spec ⟨h, hh⟩`.
+-/
 theorem Lext_apply (h : Vi F κ × Vf F κ → ℂ) (hh : Integrable h (mu F κ)) :
     Lext F κ h = ∫ p, h p ∂(mu F κ) :=
   LinearMap.congr_fun (LinearMap.exists_extend (I0 F κ)).choose_spec ⟨h, hh⟩
@@ -79,8 +82,14 @@ def dI : Vi F κ →L[ℝ] (κ ⊕ κ → mixedEmbedding.mixedSpace F) :=
       map_add' := fun u u' => by funext i; cases i <;> simp
       map_smul' := fun c u => by funext i; cases i <;> simp }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dI_apply (u : Vi F κ) : dI F κ u = Sum.elim (eI F κ u) (eI F κ u) := rfl
 
+/- English proof (translation)
+Establish `h1 : ‖eI F κ u‖ ≤ ‖dI F κ u‖` using `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => by`. Simplify `norm_le_pi_norm (dI F κ u) (Sum.inl j)` using `[dI_apply]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_le_dI (u : Vi F κ) : ‖u‖ ≤ ‖(eI F κ).symm.toContinuousLinearMap‖ * ‖dI F κ u‖ := by
   have h1 : ‖eI F κ u‖ ≤ ‖dI F κ u‖ :=
     (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => by
@@ -96,6 +105,9 @@ def compD : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ
     ⟨1, ‖(eI F κ).symm.toContinuousLinearMap‖, fun u => (norm_le_dI u).trans (by
       rw [pow_one]; gcongr; linarith)⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (Sum.elim (glue p) (glue p) i).1) * g (fun i => (Sum.elim (glue p) (glue p) i).2) = f (dI F κ p.1) * g (Sum.elim p.2 p.2)`. Apply the tactic sequence `congr 2 <;> funext i <;> cases i <;> simp [glue, dI_apply]`.
+-/
 theorem resD_pureA (f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ)
     (g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (p : Vi F κ × Vf F κ) :
     resD F κ (pureA F f g) p = compD F κ f p.1 * g (Sum.elim p.2 p.2) := by
@@ -103,6 +115,11 @@ theorem resD_pureA (f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) 
       g (fun i => (Sum.elim (glue p) (glue p) i).2) = f (dI F κ p.1) * g (Sum.elim p.2 p.2)
   congr 2 <;> funext i <;> cases i <;> simp [glue, dI_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `have hd : Continuous fun v : Vf F κ => (Sum.elim v v : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) := continuous_pi fun i => by cases i <;> exact continuous_apply _`. Establish `hr : Continuous fun z : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F => fun j => z (Sum.inl j)` using `continuous_pi fun j => continuous_apply _`. Use `(hg.1.continuous.comp hd).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (hg.2.isCompact.image hr) fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hv ⟨Sum.elim v v, subset_tsupport _ h, rfl⟩`.
+-/
 theorem integrable_diag_SB {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F)) :
     Integrable (fun v : Vf F κ => g (Sum.elim v v)) Measure.addHaar := by
@@ -115,6 +132,9 @@ theorem integrable_diag_SB {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → �
   by_contra h
   exact hv ⟨Sum.elim v v, subset_tsupport _ h, rfl⟩
 
+/- English proof (translation)
+Establish `e : resD F κ (pureA F f g) = fun p => compD F κ f p.1 * g (Sum.elim p.2 p.2)`. Use function extensionality and compare the values at `(resD_pureA f g)`. Rewrite using `[e]`. Conclude with `(compD F κ f).integrable.mul_prod (integrable_diag_SB hg)`.
+-/
 theorem integrable_resD_pureA (f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ)
     {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F)) :
     Integrable (resD F κ (pureA F f g)) (mu F κ) := by
@@ -123,6 +143,11 @@ theorem integrable_resD_pureA (f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mix
   rw [e]
   exact (compD F κ f).integrable.mul_prod (integrable_diag_SB hg)
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Conclude with `integrable_resD_pureA f hg`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `integrable_zero _ _ _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `hx.add hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `hx.smul c`.
+-/
 theorem integrable_resD {φ : (κ ⊕ κ → AdeleRing (𝓞 F) F) → ℂ} (hφ : φ ∈ schA F (κ ⊕ κ)) :
     Integrable (resD F κ φ) (mu F κ) := by
   induction hφ using Submodule.span_induction with
@@ -133,6 +158,9 @@ theorem integrable_resD {φ : (κ ⊕ κ → AdeleRing (𝓞 F) F) → ℂ} (hφ
   | add x y _ _ hx hy => rw [map_add]; exact hx.add hy
   | smul c x _ hx => rw [map_smul]; exact hx.smul c
 
+/- English proof (translation)
+Rewrite using `[lDiag, LinearMap.comp_apply, Lext_apply _ (integrable_resD_pureA f hg), SchwartzMap.integralCLM_apply]`. Establish `e : resD F κ (pureA F f g) = fun p => compD F κ f p.1 * g (Sum.elim p.2 p.2)`. Use function extensionality and compare the values at `(resD_pureA f g)`. Rewrite using `[e, mu]`. Conclude with `(integral_prod_mul (fun u => compD F κ f u) (fun v : Vf F κ => g (Sum.elim v v))).trans (mul_comm _ _)`.
+-/
 theorem lDiag_pureA (f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ)
     {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F)) :
     lDiag F κ (pureA F f g) = (∫ v : Vf F κ, g (Sum.elim v v) ∂Measure.addHaar) *
@@ -144,6 +172,9 @@ theorem lDiag_pureA (f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F)
   rw [e, mu]
   exact (integral_prod_mul (fun u => compD F κ f u) (fun v : Vf F κ => g (Sum.elim v v))).trans (mul_comm _ _)
 
+/- English proof (translation)
+Introduce `g hg`. Use `⟨(∫ v : Vf F κ, g (Sum.elim v v) ∂Measure.addHaar) • ((SchwartzMap.integralCLM ℂ (volume : Measure (Vi F κ))).comp (compD F κ)), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[lDiag_pureA f hg]`. Both sides reduce to the same expression.
+-/
 theorem lDiag_adm : lDiag F κ ∈ (adeleClass F).adm (κ ⊕ κ) := by
   intro g hg
   refine ⟨(∫ v : Vf F κ, g (Sum.elim v v) ∂Measure.addHaar) •
@@ -153,12 +184,18 @@ theorem lDiag_adm : lDiag F κ ∈ (adeleClass F).adm (κ ⊕ κ) := by
 
 instance mu_inv : (mu F κ).IsAddRightInvariant := by unfold mu; infer_instance
 
+/- English proof (translation)
+Simplify using `[dotProduct, Fintype.sum_sum_type]`.
+-/
 theorem dot_anti (a y : κ → AF F) : Sum.elim a a ⬝ᵥ Sum.elim y (-y) = 0 := by
   simp [dotProduct, Fintype.sum_sum_type]
 
 def shiftOf (x : κ → AF F) : Vi F κ × Vf F κ :=
   ((eI F κ).symm (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1), fun i => (x i).2)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (eI F κ (p.1 + (eI F κ).symm _) i) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (eI F κ p.1 i) + (x i).1`. Rewrite using `[map_add, ContinuousLinearEquiv.apply_symm_apply, Pi.add_apply, map_add, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem glue_add_shiftOf (p : Vi F κ × Vf F κ) (x : κ → AF F) : glue (p + shiftOf x) = glue p + x := by
   funext i
   refine Prod.ext ?_ ?_
@@ -167,6 +204,11 @@ theorem glue_add_shiftOf (p : Vi F κ × Vf F κ) (x : κ → AF F) : glue (p + 
     rw [map_add, ContinuousLinearEquiv.apply_symm_apply, Pi.add_apply, map_add, RingEquiv.symm_apply_apply]
   · rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use `show ψ (Sum.elim (glue p) (glue p) ⬝ᵥ Sum.elim y (-y) + ⅟(2 : AF F) * (Sum.elim x x ⬝ᵥ Sum.elim y (-y))) * φ (Sum.elim (glue p) (glue p) + Sum.elim x x) = φ (Sum.elim (glue (p + shiftOf x)) (glue (p + shiftOf x)))`. Rewrite using `[dot_anti, dot_anti, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul, glue_add_shiftOf]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `cases i <;> rfl`.
+-/
 theorem resD_schr (ψ : AddChar (AF F) ℂ) (x y : κ → AF F) (φ : (κ ⊕ κ → AF F) → ℂ) :
     resD F κ (schr ψ (Sum.elim x x, Sum.elim y (-y)) φ) = fun p => resD F κ φ (p + shiftOf x) := by
   funext p
@@ -177,6 +219,9 @@ theorem resD_schr (ψ : AddChar (AF F) ℂ) (x y : κ → AF F) (φ : (κ ⊕ κ
   funext i
   cases i <;> rfl
 
+/- English proof (translation)
+Establish `hi` using `integrable_resD hφ`. Rewrite using `[lDiag, LinearMap.comp_apply, LinearMap.comp_apply, resD_schr, Lext_apply _ (hi.comp_add_right (shiftOf x)), Lext_apply _ hi]`. Conclude with `integral_add_right_eq_self _ _`.
+-/
 theorem lDiag_schr (ψ : AddChar (AF F) ℂ) (x y : κ → AF F) {φ : (κ ⊕ κ → AF F) → ℂ}
     (hφ : φ ∈ schA F (κ ⊕ κ)) : lDiag F κ (schr ψ (Sum.elim x x, Sum.elim y (-y)) φ) = lDiag F κ φ := by
   have hi := integrable_resD hφ
@@ -184,6 +229,25 @@ theorem lDiag_schr (ψ : AddChar (AF F) ℂ) (x y : κ → AF F) {φ : (κ ⊕ �
     Lext_apply _ (hi.comp_add_right (shiftOf x)), Lext_apply _ hi]
   exact integral_add_right_eq_self _ _
 
+/- English proof (translation)
+Take `⟨hO, hK⟩` from `PI.IntAdCpctOpenWork.main F`. Use `set O := {x : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), x v ∈ v.adicCompletionIntegers F}`. Establish `h0 : (0 : FiniteAdeleRing (𝓞 F) F) ∈ O` using `fun v => (v.adicCompletionIntegers F).zero_mem`. Use `set U : Set (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) := Set.univ.pi fun _ => O`. Establish `hUo : IsOpen U` using `isOpen_set_pi Set.finite_univ fun _ _ => hO`.
+
+Establish `hUc : IsCompact U` using `isCompact_univ_pi fun _ => hK`. Use `set g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ := U.indicator fun _ => 1`. Establish `hg : g ∈ SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F)` using `⟨(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) ⟨hUc.isClosed, hUo⟩).isLocallyConstant, HasCompactSupport.intro hUc fun z hz => Set.indicator_of_notMem hz _⟩`. Use `set V : Set (Vf F κ) := Set.univ.pi fun _ => O`. Establish `hVo : IsOpen V` using `isOpen_set_pi Set.finite_univ fun _ _ => hO`.
+
+Establish `hVc : IsCompact V` using `isCompact_univ_pi fun _ => hK`. Establish `hgV : (fun v : Vf F κ => g (Sum.elim v v)) = V.indicator fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `v`. Simplify using `only [g, U, V, Set.indicator_apply, Set.mem_univ_pi, Sum.forall, Sum.elim_inl, Sum.elim_inr, and_self]`. Establish `hc : (∫ v : Vf F κ, g (Sum.elim v v) ∂Measure.addHaar) ≠ 0`.
+
+Rewrite using `[hgV, integral_indicator_const _ hVo.measurableSet]`. Establish `hpos : 0 < (Measure.addHaar : Measure (Vf F κ)) V` using `hVo.measure_pos _ ⟨0, fun i _ => h0⟩`. Establish `hfin : (Measure.addHaar : Measure (Vf F κ)) V < ⊤` using `hVc.measure_lt_top`. Establish `: 0 < (Measure.addHaar : Measure (Vf F κ)).real V` using `ENNReal.toReal_pos hpos.ne' hfin.ne`. Simplify using `using this.ne'`.
+
+Set `b : ContDiffBump (0 : κ ⊕ κ → mixedEmbedding.mixedSpace F)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Set `f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ` to `h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff)`. Establish `hT : SchwartzMap.integralCLM ℂ (volume : Measure (Vi F κ)) (compD F κ f) ≠ 0`. Rewrite using `[SchwartzMap.integralCLM_apply]`.
+
+Establish `e : ∀ u, compD F κ f u = ((b (dI F κ u) : ℝ) : ℂ)` using `fun u => rfl`. Simplify using `only [e, integral_complex_ofReal]`. Establish `hcs : HasCompactSupport fun u : Vi F κ => b (dI F κ u)`. Use `HasCompactSupport.intro (isCompact_closedBall (0 : Vi F κ) (‖(eI F κ).symm.toContinuousLinearMap‖ * 2)) fun u hu => b.zero_of_le_dist ?_` and prove the remaining obligations. Rewrite using `[dist_zero_right]`.
+
+Assume the negation of the conclusion as `h`. Use `hu (mem_closedBall_zero_iff.2 ((norm_le_dI u).trans ?_))` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (le_of_lt (lt_of_not_ge h)) (norm_nonneg _)`. Establish `hpos` using `(b.continuous.comp (dI F κ).continuous).integral_pos_of_hasCompactSupport_nonneg_nonzero (μ := (volume : Measure (Vi F κ))) (x := 0) hcs (fun u => b.nonneg) (by`. Simplify using `only [Function.comp_apply, map_zero]`.
+
+Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`. Conclude with `one_ne_zero)`. Conclude with `hpos.ne'` after adjusting the coercions. Use `⟨pureA F f g, Submodule.subset_span ⟨f, g, hg, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[lDiag_pureA f hg]`.
+
+Conclude with `mul_ne_zero hc hT`.
+-/
 theorem exists_lDiag_ne : ∃ φ ∈ schA F (κ ⊕ κ), lDiag F κ φ ≠ 0 := by
   obtain ⟨hO, hK⟩ := PI.IntAdCpctOpenWork.main F
   set O := {x : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), x v ∈ v.adicCompletionIntegers F}
@@ -237,6 +301,9 @@ end GlobalTheory.DiagForm
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ _ ψ κ _`. Conclude with `⟨DiagForm.lDiag F κ, DiagForm.lDiag_adm, fun x y φ hφ => DiagForm.lDiag_schr ψ x y hφ, DiagForm.exists_lDiag_ne⟩`.
+-/
 theorem diagLagrangian_form : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (κ : Type) [Fintype κ],
     ∃ l : ((κ ⊕ κ → AF F) → ℂ) →ₗ[ℂ] ℂ, l ∈ (adeleClass F).adm (κ ⊕ κ) ∧
       (∀ (x y : κ → AF F), ∀ φ ∈ schA F (κ ⊕ κ), l (schr ψ (Sum.elim x x, Sum.elim y (-y)) φ) = l φ) ∧

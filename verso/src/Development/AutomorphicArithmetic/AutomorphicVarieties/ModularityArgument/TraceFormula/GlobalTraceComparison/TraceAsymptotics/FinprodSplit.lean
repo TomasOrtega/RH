@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
+/- English proof (translation)
+Introduce `α S Z T F hZ hT hd h1`. Establish `key : ∏ᶠ w ∈ S, F w = ∏ w ∈ T ∪ Z, F w`. Apply `finprod_mem_eq_prod_of_inter_mulSupport_eq` to reduce the goal to its premises. Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Function.mem_mulSupport, Finset.coe_union, Set.mem_union, Finset.mem_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hS, hF⟩`. Use `⟨?_, hF⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hF (h1 w hS (fun h => hn (Or.inr h)) (fun h => hn (Or.inl h)))`.
+
+Introduce and unpack `⟨hw | hw, hF⟩`. Conclude with `⟨hT w hw, hF⟩`. Conclude with `⟨hZ w hw, hF⟩`. Rewrite using `[key, Finset.prod_union hd, mul_comm]`.
+-/
 theorem finprodSplit : FinprodSplit := by
   intro α S Z T F hZ hT hd h1
   classical

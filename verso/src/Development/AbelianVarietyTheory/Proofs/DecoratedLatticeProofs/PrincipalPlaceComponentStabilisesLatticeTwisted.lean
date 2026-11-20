@@ -47,6 +47,13 @@ namespace GlobalTheory.LocSuppTw
 
 variable {D : D7}
 
+/- English proof (translation)
+Distinguish the cases in `hc : IsHalf e x ∧ IsIntM (frMapO S T βS βT x)`. Rewrite `hx` using `[if_pos hc]`. Establish `hG` using `left_ne_zero_of_mul hx`. Unfold `omegaG at hG`. Use `split_ifs at hG with hd`.
+
+Use `⟨hc.2, fun PP hPP => ?_, hd.2⟩` and prove the remaining obligations. Take `⟨a, ha, -, -⟩` from `hd.2`. Rewrite using `[← ha ⟨PP, hPP⟩]`. Conclude with `Matrix.isUnits_det_units (a ⟨PP, hPP⟩)`. Conclude with `absurd rfl hG`.
+
+Rewrite `hx` using `[if_neg hc]`. Conclude with `absurd rfl hx`.
+-/
 theorem datum_specQ (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D))
     (L : LevDat D.host.E ℂ S.rank) (χ ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (Q : Finset (Pl D.host.E)) (e : AE D)
     (x : WO S T)
@@ -71,17 +78,26 @@ theorem datum_specQ (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL 
   · rw [if_neg hc] at hx
     exact absurd rfl hx
 
+/- English proof (translation)
+Take `⟨e₁, h₁⟩` from `GlobalTheory.ExportSeries.SplitSet.mono ⟨e, h⟩ Finset.subset_union_left`. Conclude with `⟨e₁, h₁⟩`.
+-/
 theorem idemSum_left {e : AE D} {P Q : Finset (Pl D.host.E)} (h : IsIdemSum e (P ∪ Q)) :
     ∃ e₁ : AE D, IsIdemSum e₁ P := by
   obtain ⟨e₁, h₁⟩ := GlobalTheory.ExportSeries.SplitSet.mono ⟨e, h⟩ Finset.subset_union_left
   exact ⟨e₁, h₁⟩
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `mul_mem hc (hN i j)`.
+-/
 theorem isIntM_smul' {b a : ℕ} {c : EAf D} (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
     {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) : IsIntM (c • N) := by
   intro i j
   rw [Matrix.smul_apply, smul_eq_mul]
   exact mul_mem hc (hN i j)
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h2 : (c • N) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `isIntM_smul' hc hN i j`. Establish `hsub : (⟨(c • N) i j, h2⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ⟨c, hc⟩ * ⟨N i j, hN i j⟩` using `Subtype.ext (by simp [Matrix.smul_apply])`. Unfold `redM`. Rewrite using `[dif_pos h2, dif_pos (hN i j), hsub, map_mul, h1, one_mul]`.
+-/
 theorem redM_smul_of_res {b a : ℕ} {c : EAf D} (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (PP : Pl D.host.E)
     (h1 : Formalism.L2.DIV.resS D.host.F PP ⟨c, hc⟩ = 1) {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) :
     redM PP (c • N) = redM PP N := by
@@ -96,11 +112,19 @@ end GlobalTheory.LocSuppTw
 
 namespace GlobalTheory.LocSuppTw
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[Matrix.mul_apply, Finset.mul_sum, mul_assoc]`.
+-/
 theorem smul_mul_gen {R : Type} [CommRing R] {a b c : ℕ} (f : R) (A : Matrix (Fin a) (Fin b) R)
     (G : Matrix (Fin b) (Fin c) R) : (f • A) * G = f • (A * G) := by
   ext i k
   simp [Matrix.mul_apply, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `hR : R = b⁻¹ * a` using `by rw [← h, inv_mul_cancel_left]`. Establish `hmem : R ∈ blockTri (blkOf r t)`. Rewrite using `[hR]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ hb) ha`. Use `⟨hmem, ?_⟩` and prove the remaining obligations.
+
+Establish `hle` using `blockTri_blkOf_le (κ := κ) (n := n) r t`. Establish `ha2` using `hle ha`. Establish `hb2` using `hle hb`. Unfold `upperLeftBlock at ha1 hb1 ⊢`. Rewrite using `[hR, extendMatrixByIdentityAlongIndices_mul (blkR hr) (Subgroup.inv_mem _ hb2) ha2, extendOne_inv (blkR hr) hb2, ha1, hb1, inv_one, one_mul]`.
+-/
 theorem tri_of_mul_eq {κ : Type} [Field κ] {n r t : ℕ} (hr : r ≤ n) {a b R : GL (Fin n) κ} (h : b * R = a)
     (ha : a ∈ blockTri (blkOf r t)) (hb : b ∈ blockTri (blkOf r t)) (ha1 : upperLeftBlock hr a = 1) (hb1 : upperLeftBlock hr b = 1) :
     R ∈ blockTri (blkOf r t) ∧ upperLeftBlock hr R = 1 := by
@@ -117,6 +141,37 @@ theorem tri_of_mul_eq {κ : Type} [Field κ] {n r t : ℕ} (hr : r ≤ n) {a b R
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D S T ΛS βS βT L χ ξ e hSD hFr hST hId hH g x hx hgx PP hPP _`. Establish `hHalf : IsHalf e x`. Assume the negation of the conclusion as `hn`. Conclude with `hx (if_neg fun h => hn h.1)`. Take `⟨hI1, hU1, a, ha, haT, haH⟩` from `datum_specQ S T βS βT L χ ξ L.Q e x hx`.
+
+Take `⟨hI2, hU2, a', ha', ha'T, ha'H⟩` from `datum_specQ S T βS βT L χ ξ L.Q e (actO S T g 1 x) hgx`. Take `⟨γ, hγ⟩ : ∃ γ : GL (Fin S.rank) (Lev.EAf D), γ = βS⁻¹ * Lev.finE S g * βS` from `⟨_, rfl⟩`. Establish `hact : frMapO S T βS βT (actO S T g 1 x) = frMapO S T βS βT x * (γ⁻¹ : GL (Fin S.rank) (Lev.EAf D)).val`. Rewrite using `[hγ]`. Conclude with `GlobalTheory.T.frameMatrix_weilPairAction_left_inv D S T βS βT g x`.
+
+Take `⟨e₁, h₁⟩` from `idemSum_left hId`. Take `⟨hc, hres⟩` from `GlobalTheory.InnerSteps.resS_idemSum h₁`. Establish `hcc : toEAf D e₁ * toEAf D e₁ = toEAf D e₁`. Rewrite using `[← map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self h₁]`. Establish `hmul : toEAf D e₁ • frMapO S T βS βT x * (γ⁻¹ : GL (Fin S.rank) (Lev.EAf D)).val = toEAf D e₁ • (frMapO S T βS βT x * (γ⁻¹ : GL (Fin S.rank) (Lev.EAf D)).val)` using `smul_mul_gen _ _ _`.
+
+Establish `hI2' : IsIntM (frMapO S T βS βT x * (γ⁻¹ : GL (Fin S.rank) (Lev.EAf D)).val)`. Rewrite using `[← hact]`. Conclude with `hI2`. Establish `hu1 : IsIntM (toEAf D e₁ • frMapO S T βS βT x)` using `isIntM_smul' hc hI1`. Establish `hu1g : IsIntM (toEAf D e₁ • frMapO S T βS βT x * (γ⁻¹ : GL (Fin S.rank) (Lev.EAf D)).val)`.
+
+Rewrite using `[hmul]`. Conclude with `isIntM_smul' hc hI2'`. Establish `hsupp : ∀ i j, toEAf D e₁ * (toEAf D e₁ • frMapO S T βS βT x) i j = (toEAf D e₁ • frMapO S T βS βT x) i j`. Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hcc]`.
+
+Establish `hred1 : ∀ PP ∈ L.Pg, redM PP (toEAf D e₁ • frMapO S T βS βT x) = redM PP (frMapO S T βS βT x)` using `fun PP hP => redM_smul_of_res hc PP (hres PP hP) hI1`. Establish `hred2 : ∀ PP ∈ L.Pg, redM PP (toEAf D e₁ • frMapO S T βS βT x * (γ⁻¹ : GL (Fin S.rank) (Lev.EAf D)).val) = redM PP (frMapO S T βS βT (actO S T g 1 x))`. Introduce `PP hP`. Rewrite using `[hmul, hact]`. Conclude with `redM_smul_of_res hc PP (hres PP hP) hI2'`.
+
+Take `⟨hγ1, hγ2, htop⟩` from `GlobalTheory.T.integral_idempotent_mul_of_unit_topBlock_reductions (D := D) T.rank S.rank hST L.Pg e₁ h₁ (toEAf D e₁ • frMapO S T βS βT x) γ hu1 hu1g hsupp (fun PP hP => by rw [hred1 PP hP]; exact hU1 PP hP) (fun PP hP => by rw [hred2 PP hP]; exact hU2 PP hP)`. Take `⟨hγ3, hγ4⟩` from `GlobalTheory.T.selfDualFrame_conj_integral_smul_of_integral S ΛS βS hSD hFr (Lev.finE S g) (GlobalTheory.LevSplit.finE_mem_UA S g) γ hγ e₁ hγ1 hγ2`. Take `⟨hεε, hεc⟩` from `GlobalTheory.T.idempotentSum_add_conj_idempotent_conj_fixed L.Pg e₁ h₁`. Take `⟨k, -, hk⟩` from `GlobalTheory.T.exists_idempotent_component_of_group_element S (GlobalTheory.LevelNbhd.finPartG S g) (e₁ + cA D e₁) (GlobalTheory.LevelNbhd.finPartG_mem_GfC S g) hεε hεc`. Establish `hkE` using `GlobalTheory.T.finiteEmbedding_idempotent_patch_in_frame S βS (GlobalTheory.LevelNbhd.finPartG S g) k (e₁ + cA D e₁) hk`.
+
+Rewrite `hkE` using `[GlobalTheory.SuppLevO.finE_finPartG, ← hγ]`. Take `⟨hkSt, hkred⟩` from `GlobalTheory.T.frameIdempotentCutMatrix_mem_stabiliser_reduction S.rank βS γ (Lev.finE S k) L.Pg e₁ h₁ hγ1 hγ2 hγ3 hγ4 hkE`. Establish `hpk : GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) k = GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) g` using `(GlobalTheory.T.localProjection_eq_of_idempotent_patch S _ (GlobalTheory.LevelNbhd.finPartG S g) k _ (GlobalTheory.T.adeleTensorComponent_idempotentSum_add_conj_eq_one L.Pg e₁ h₁ PP hPP) hk).trans (GlobalTheory.SuppLevO.proj_finPartG S g _)`. Establish `hyv : GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) (gAt S (.inl (PP.under (𝓞 D.host.F))) g) = GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) g` using `GlobalTheory.AdelicU.proj_emb_self (σ := D.sp.cm.sig) (J := S.gram) _ _`. Establish `hkloc` using `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D S βS ΛS hFr k).mp hkSt`.
+
+Establish `hyS : Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g) ∈ Formalism.L2.DIV.St βS`. Rewrite using `[GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D S βS ΛS hFr]`. Introduce `w`. Distinguish the cases in `hw : w = PP.under (𝓞 D.host.F)`. Substitute `hw` using the available equality.
+
+Rewrite using `[hyv, ← hpk]`. Conclude with `hkloc _`. Use `show GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram w (GlobalTheory.AdelicU.emb D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) (GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) g)) ∈ _`. Rewrite using `[GlobalTheory.AdelicU.proj_emb_ne (h := hw)]`. Conclude with `one_mem _`.
+
+Establish `hk' : Lev.finE S k = Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g) * Lev.finE S ((gAt S (.inl (PP.under (𝓞 D.host.F))) g)⁻¹ * k)`. Rewrite using `[map_mul, map_inv, mul_inv_cancel_left]`. Establish `hk'S : Lev.finE S ((gAt S (.inl (PP.under (𝓞 D.host.F))) g)⁻¹ * k) ∈ Formalism.L2.DIV.St βS`. Rewrite using `[map_mul, map_inv]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ hyS) hkSt`.
+
+Establish `hproj1 : GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) ((gAt S (.inl (PP.under (𝓞 D.host.F))) g)⁻¹ * k) = 1`. Rewrite using `[map_mul, map_inv, hpk, hyv, inv_mul_cancel]`. Establish `hR : Formalism.L2.DIV.redFn βS PP (Lev.finE S k) = Formalism.L2.DIV.redFn βS PP (Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g))`. Rewrite using `[hk', Formalism.L2.DIV.redFn_mul hyS hk'S, GlobalTheory.T.latticeReduction_eq_one_of_local_component_one D S βS _ PP hk'S hproj1, mul_one]`. Establish `hmulGL : a' ⟨PP, hPP⟩ * Formalism.L2.DIV.redFn βS PP (Lev.finE S k) = a ⟨PP, hPP⟩`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, hkred PP hPP, ha' ⟨PP, hPP⟩, ha ⟨PP, hPP⟩]`. Establish `htopPP` using `htop PP hPP`. Rewrite `htopPP` using `[hred2 PP hPP, hred1 PP hPP]`. Conclude with `htopPP`.
+
+Establish `hrb : ∀ b : ∀ PP : ↥L.Pg, GL (Fin S.rank) (kP PP.1), (fun PP => upperLeftBlock L.hr (b PP)) ∈ L.P.H → ∀ PP, upperLeftBlock L.hr (b PP) = 1`. Introduce `b hb PP'`. Rewrite `hb` using `[hH, Subgroup.mem_bot]`. Conclude with `congrFun hb PP'`. Take `⟨h1, h2⟩` from `tri_of_mul_eq L.hr hmulGL (haT _) (ha'T _) (hrb a haH _) (hrb a' ha'H _)`.
+
+Rewrite using `[← hR]`. Conclude with `⟨hyS, h1, h2⟩`.
+-/
 theorem finE_gAt_mem : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ S.rank) (χ ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (e : AE D), IsSelfDualC S ΛS → Formalism.L2.DIV.IsFrame βS ΛS → S.rank ≤ T.rank → IsIdemSum e (L.Pg ∪ L.Q) → L.P.H = ⊥ → ∀ (g : GA D S) (x : WO S T), (fun x : WO S T => if IsHalf e x ∧ IsIntM (frMapO S T βS βT x) then omegaG L χ (fun PP => redM PP (frMapO S T βS βT x)) * omegaQ L.Q L.r ξ 1 (fun PP => redM PP (frMapO S T βS βT x)) else 0) x ≠ 0 → (fun x : WO S T => if IsHalf e x ∧ IsIntM (frMapO S T βS βT x) then omegaG L χ (fun PP => redM PP (frMapO S T βS βT x)) * omegaQ L.Q L.r ξ 1 (fun PP => redM PP (frMapO S T βS βT x)) else 0) (actO S T g 1 x) ≠ 0 → ∀ PP ∈ L.Pg, (∀ PP' ∈ L.Pg ∪ L.Q, PP'.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F) → PP' = PP) → Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g) ∈ Formalism.L2.DIV.St βS ∧ Formalism.L2.DIV.redFn βS PP (Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g)) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf L.r L.t) ∧ Formalism.L2.DIV.upperLeftBlock L.hr (Formalism.L2.DIV.redFn βS PP (Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g))) = 1 := by
   intro D S T ΛS βS βT L χ ξ e hSD hFr hST hId hH g x hx hgx PP hPP _
   have hHalf : IsHalf e x := by

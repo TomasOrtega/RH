@@ -8,6 +8,15 @@ open Classical
 
 namespace GlobalTheory.RealWeilF
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ nS nT θ ι hι w`. Use `⟨w - iotaVF ι (piWF θ w), piWF θ w, ?_, by abel⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply]`. Use `set a := infPartF F E ((w - iotaVF ι (piWF θ w)) i j) with ha`.
+
+Establish `hθ : ∀ w', θ w' a = 0`. Introduce `w'`. Rewrite using `[ha, Matrix.sub_apply, map_sub, map_sub]`. Simplify using `only [iotaVF, piWF, Matrix.of_apply]`. Rewrite using `[hι.comp]`.
+
+Conclude with `sub_self _`. Establish `h0` using `hι.ext (Formalism.L2.Fam.ThC.pairE a 0) (Formalism.L2.Fam.ThC.snd_pairE a 0) (by`. Introduce `w'`. Establish `: infPartF F E (Formalism.L2.Fam.ThC.pairE a 0) = a` using `Formalism.L2.Fam.ThC.fst_pairE a 0`. Rewrite using `[this]`.
+
+Conclude with `hθ w')`. Establish `: infPartF F E (Formalism.L2.Fam.ThC.pairE a 0) = a` using `Formalism.L2.Fam.ThC.fst_pairE a 0`. Rewrite using `[← this, h0, map_zero]`.
+-/
 theorem exists_realZero_add_iotaVF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (nS nT : ℕ)
     (θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)) (ι : (InfinitePlace F → ℂ) →+ AEF F E), IsChartF θ ι →
       ∀ w : WOF F E nS nT, ∃ (u : WOF F E nS nT) (v : IxF F nS nT → ℂ), u.map (infPartF F E) = 0 ∧ w = u + iotaVF ι v := by

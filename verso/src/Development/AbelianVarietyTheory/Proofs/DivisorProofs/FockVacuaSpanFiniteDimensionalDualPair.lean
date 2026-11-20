@@ -14,15 +14,36 @@ namespace GlobalTheory.FockKFin.VacFin
 
 open GlobalTheory.ThK.EvAt0.PolD Formalism.BasicNotions.TH
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+-/
 theorem incM_map_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n m : Type}
     (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) :
     (incM F J).map (piInf τ) = J.map τ.1 := by
   ext i j
   simp [incM, piInf, compInf, inclR, infEmb_tmul]
 
+/- English proof (translation)
+Simplify using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]`.
+-/
 theorem Jm_transpose (p q : ℕ) : (Jm p q)ᵀ = Jm p q := by
   simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]
 
+/- English proof (translation)
+Establish `hb` using `h.base`. Use `choose A hA hAθ using fun w => GlobalTheory.RealLift.frameEx_holds _ _ _ _ _ (h.herm.sig w) (h.herm.cartan w)`. Use `choose C hC hCθ using fun w => GlobalTheory.RealLift.frameEx_holds _ _ _ _ _ (h.skew.sig w) (h.skew.cartan w)`. Establish `hA1 : ∀ w, GlobalTheory.RealLift.IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[incM_map_piInf, one_smul]`.
+
+Conclude with `hA w`. Establish `hC1 : ∀ w, GlobalTheory.RealLift.IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf]`. Conclude with `hC w`. Establish `fr : GlobalTheory.RealLift.Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`.
+
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.FockMapEx.fockEx_of_derEx GlobalTheory.HeisDer.derEx F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hb.cm hb.std fr`. Take `⟨D, hD⟩` from `GlobalTheory.HeisDer.derEx F E σ (Fin n) (Fin d) (Fin n × Fin d) B.ψ (incM F X.J) (incM F W.J) M.co hb.std`. Establish `hDd : ∀ u, At (evI F) u → ∀ f : SInf F (Fin n × Fin d), D u f = dOp (arc (M.co.e u).1) (arc (M.co.e u).2) f`. Introduce `u hu f`. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[(hD u hu f).2 x, dOp_apply]`. Apply the tactic sequence `try rfl`. Establish `tw : ∀ w (c : Matrix (Ix r s) (Ix r' s') ℂ) (e : ℂ), A w * (e • (Jm r s * c * Jm r' s')) * (C w)ᵀ = e • (X.θ w * (A w * c * (C w)ᵀ) * (W.θ w)ᵀ)`. Introduce `w c e`. Establish `h2 : (C w)ᵀ * (W.θ w)ᵀ = Jm r' s' * (C w)ᵀ`.
+
+Rewrite using `[← Matrix.transpose_mul, hCθ w, Matrix.transpose_mul, Jm_transpose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [← hAθ w, ← h2]; simp only [Matrix.mul_assoc]`. Use `⟨Φ (PiTensorProduct.tprod ℂ fun _ => 1), fun g ⟨ε, hε⟩ => ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.VacLn.vacLine_of_derEx GlobalTheory.HeisDer.derEx F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C Φ hb.cm hb.std fr hΦ g ε ?_` and prove the remaining obligations. Introduce `u u' hu hu' c hc hc' f f' hf hf'`. Establish `e1 : f = D u g` using `(GlobalTheory.RealLift.actsLaws F _ g f (D u g)).2.2.2.2 _ hf (hD u hu g).1`. Establish `e2 : f' = D u' g` using `(GlobalTheory.RealLift.actsLaws F _ g f' (D u' g)).2.2.2.2 _ hf' (hD u' hu' g).1`. Rewrite using `[e1, e2, hDd u hu, hDd u' hu']`.
+
+Conclude with `hε u u' hu hu' (fun w => by rw [hc' w, tw, ← hc w])`.
+-/
 theorem vac_mem_line {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ) (h : GlobalTheory.ThK.IsPair B M χX χW om r s r' s') :
@@ -62,6 +83,11 @@ theorem vac_mem_line {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 
 end GlobalTheory.FockKFin.VacFin
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' h`. Take `⟨v, hv⟩` from `GlobalTheory.FockKFin.VacFin.vac_mem_line σ B n d X W M χX χW om r s r' s' h`. Establish `hle : GlobalTheory.FockKFin.vacSp M B.emb ≤ Submodule.span ℂ {v}`. Use `Submodule.span_le.2 fun g hg => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hv g hg`.
+
+Conclude with `Submodule.smul_mem _ z (Submodule.subset_span rfl)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem GlobalTheory.FockKFin.vacSp_finiteDimensional : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ), GlobalTheory.ThK.IsPair B M χX χW om r s r' s' → FiniteDimensional ℂ (GlobalTheory.FockKFin.vacSp M B.emb) := by

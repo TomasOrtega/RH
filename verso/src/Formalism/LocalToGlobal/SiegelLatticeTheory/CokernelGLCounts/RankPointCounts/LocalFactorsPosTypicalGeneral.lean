@@ -17,6 +17,13 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Set `p : TypX X` to `⟨v, hv⟩`. Establish `hlat : ∃ L : Submodule (𝓞 X.B.I.E) (Fin X.B.I.n → X.B.I.E), Submodule.IsLattice X.B.I.E L ∧ (L : Set (Fin X.B.I.n → X.B.I.E)) = (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))` using `⟨X.B.I.L, ⟨X.B.I.L_fg, X.B.I.L_span⟩, rfl⟩`. Establish `hL` using `locTieX_of X ψ u (hloc u) (Formalism.L2.SG.Pf.LocVolPrim.primX X u locFramePrim)`. Establish `hL'` using `locTieX_of X ψ u' (hloc u') (Formalism.L2.SG.Pf.LocVolPrim.primX X u' locFramePrim)`. Establish `hTF` using `Formalism.L2.SG.Pf.typFacts_holds X hb u u'`.
+
+Establish `h` using `locMassTyp X.B.I.cm.sig X.B.I.J ψ v (gAt X v) (frameOf X u) (frameOf X u') (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) ⟨MassDataVolumesW.stepCM X, MassDataVolumesW.stepHerm X, hψ, hs⟩ _ _ (MassDataLevelSSteps.FrameW.frameOf_isStd X u) (MassDataLevelSSteps.FrameW.frameOf_isStd X u') ( …`. Establish `hpos` using `div_pos (mul_pos (gv_pos X p (kg_sub_kv X p) subset_rfl) (gv_pos X p (kg_sub_knat X p u) (knat_sub_kv X p u))) (mul_pos (sv_pos X u p (kg_sub_kv X p) subset_rfl) (sv_pos X u' p (kg_sub_kv X p) subset_rfl))`. Establish `hR : 0 < MX X u u' ψ v / localVolumeUnit X ψ v`. Unfold `MX localVolumeUnit OmX`. Rewrite using `[if_pos hv, if_pos hv]`.
+
+Conclude with `lt_of_lt_of_eq hpos h.symm`. Establish `hU0 : 0 ≤ localVolumeUnit X ψ v` using `ENNReal.toReal_nonneg`. Break down `div_pos_iff.1 hR with ⟨h1, h2⟩ | ⟨-, h2⟩` into its components or cases. Conclude with `⟨h1, h2⟩`. Conclude with `absurd h2 (not_lt.2 hU0)`.
+-/
 theorem local_factors_pos_typical_general {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (ψ : AddChar (AF X.B.I.F) ℂ)
     (hψ : IsCharAF X.B.I.F ψ) (hs : IsStdChar ψ) (hloc : ∀ w : D.what₂.Word, LocCompatX X ψ w)
     (u u' : D.what₂.Word) (v : PlX X) (hv : TypAt X v) : 0 < MX X u u' ψ v ∧ 0 < localVolumeUnit X ψ v := by

@@ -10,6 +10,9 @@ namespace GlobalTheory.Published
 
 def DiscreteSeriesCoefficientsCuspidal : Prop := GlobalTheory.Dec.CoefCusp
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem discreteSeriesCoefficientsCuspidal_iff : DiscreteSeriesCoefficientsCuspidal ↔
     ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
       (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsSqIntIrr ε σ →
@@ -25,6 +28,9 @@ namespace CoefficientsCuspidal
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Establish `hg : (umat g)ᴴ * Jm ε * umat g = Jm ε` using `g.2`. Unfold `herm`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hg]`.
+-/
 theorem herm_mulVec (g : UJ ε) (a b : Fin n → ℂ) :
     herm (Jm ε) (umat g *ᵥ a) (umat g *ᵥ b) = herm (Jm ε) a b := by
   have hg : (umat g)ᴴ * Jm ε * umat g = Jm ε := g.2

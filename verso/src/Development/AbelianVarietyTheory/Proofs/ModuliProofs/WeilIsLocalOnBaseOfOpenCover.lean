@@ -17,6 +17,9 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.CommPairing
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {k : ℤ}
 
+/- English proof (translation)
+Unfold `gm pullU`. Rewrite using `[dif_pos (show (f ≫ g) z ∈ (⊤ : X.Opens) from trivial), dif_pos (show f z ∈ (⊤ : Y.Opens) from trivial)]`. Use `ext`. Simplify using `only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, Scheme.Hom.comp_app, CommRingCat.hom_comp, RingHom.comp_apply, Scheme.Hom.appTop]`. Both sides reduce to the same expression.
+-/
 private theorem gm_comp_global_eq_gm_units_map {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (c : Γ(X, ⊤)ˣ) :
     gm (f ≫ g) z ⊤ c = gm f z ⊤ (Units.map g.appTop.hom.toMonoidHom c) := by
   unfold gm pullU
@@ -25,6 +28,15 @@ private theorem gm_comp_global_eq_gm_units_map {X Y Z : Scheme.{0}} (f : Z ⟶ Y
   simp only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, Scheme.Hom.comp_app, CommRingCat.hom_comp, RingHom.comp_apply, Scheme.Hom.appTop]
   rfl
 
+/- English proof (translation)
+Take `⟨θx, hx, hxv⟩` from `exists_pull hL h θx'`. Take `⟨θy, hy, hyv⟩` from `exists_pull hL h θy'`. Establish `Hc` using `(commIsOf_iff hL θx θy c).1 (H θx θy hx hy)`. Rewrite using `[commIsOf_iff hL]`. Introduce `Z r z J hJ`.
+
+Establish `e` using `Hc Z (r ≫ (g ▷ A).left) z J hJ`. Establish `e1 : r ≫ (g ▷ A).left ≫ (h ▷ A).left = r`. Rewrite using `[← Over.comp_left, ← comp_whiskerRight, w, id_whiskerRight, Over.id_left, Category.comp_id]`. Establish `e2 : ∀ x : T' ⟶ A, r ≫ (g ▷ A).left ≫ (translT A (h ≫ x)).left ≫ (h ▷ A).left = r ≫ (translT A x).left`. Introduce `x`.
+
+Rewrite using `[← Over.comp_left _ _ _ (translT A (h ≫ x)), whisker_translT, Over.comp_left, ← Category.assoc (g ▷ A).left, ← Over.comp_left _ _ _ (g ▷ A), ← comp_whiskerRight, w, id_whiskerRight, Over.id_left, Category.id_comp]`. Establish `e3 : r ≫ (g ▷ A).left ≫ (fst T A).left = (r ≫ (fst T' A).left) ≫ g.left`. Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left, Category.assoc]`. Rewrite `e` using `[hxv _ _ _ _ hJ, hxv _ _ _ _ hJ, hyv _ _ _ _ hJ, hyv _ _ _ _ hJ, hx, hy]`. Simplify using `only [Category.assoc] at e`.
+
+Rewrite `e` using `[e1, e2, e2, e3, gm_comp_global_eq_gm_units_map]`. Conclude with `e`.
+-/
 theorem commIsOf_of_retract (hL : L.IsLB) {T T' : Over S} (g : T' ⟶ T) (h : T ⟶ T') (w : g ≫ h = 𝟙 T')
     {c : Γ(T.left, ⊤)ˣ} (θx' θy' : ThetaGrp A L k T')
     (H : ∀ θx θy : ThetaGrp A L k T, θx.pt = h ≫ θx'.pt → θy.pt = h ≫ θy'.pt → CommIsOf A L k θx θy c) :
@@ -48,6 +60,11 @@ theorem commIsOf_of_retract (hL : L.IsLB) {T T' : Over S} (g : T' ⟶ T) (h : T 
   rw [e1, e2, e2, e3, gm_comp_global_eq_gm_units_map] at e
   exact e
 
+/- English proof (translation)
+Establish `he : (j.left.isoImage V').hom ≫ (j.left ''ᵁ V').ι = V'.ι ≫ j.left` using `Scheme.Hom.isoImage_hom_ι _ _`. Use `⟨Over.homMk (j.left.isoImage V').hom ?_, Over.homMk (j.left.isoImage V').inv ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (j.left.isoImage V').hom ≫ (j.left ''ᵁ V').ι ≫ T.hom = V'.ι ≫ T'.hom`. Rewrite using `[← Category.assoc, he, Category.assoc, Over.w j]`. Use `show (j.left.isoImage V').inv ≫ V'.ι ≫ T'.hom = (j.left ''ᵁ V').ι ≫ T.hom`.
+
+Rewrite using `[← Over.w j, ← Category.assoc V'.ι, ← he, Category.assoc, Iso.inv_hom_id_assoc]`. Apply `Over.OverMorphism.ext show (j.left.isoImage V').inv ≫ (j.left.isoImage V').hom = 𝟙 _` to reduce the goal to its premises. Conclude with `Iso.inv_hom_id _`. Apply `Over.OverMorphism.ext show (j.left.isoImage V').hom ≫ (j.left ''ᵁ V').ι = V'.ι ≫ j.left` to reduce the goal to its premises. Conclude with `he`.
+-/
 private theorem exists_overRes_section_image_openImmersion {T T' : Over S} (j : T' ⟶ T) [IsOpenImmersion j.left]
     (V' : T'.left.Opens) :
     ∃ (a : overRes V' ⟶ overRes (j.left ''ᵁ V')) (b : overRes (j.left ''ᵁ V') ⟶ overRes V'),
@@ -65,6 +82,17 @@ private theorem exists_overRes_section_image_openImmersion {T T' : Over S} (j : 
     show (j.left.isoImage V').hom ≫ (j.left ''ᵁ V').ι = V'.ι ≫ j.left
     exact he
 
+/- English proof (translation)
+Take `⟨V', hpV', ⟨θx₀, θy₀, hx₀, hy₀⟩, HV'⟩` from `H p`. Take `⟨a, b, hba, ha⟩` from `exists_overRes_section_image_openImmersion j V'`. Establish `hb : b ≫ overResι V' ≫ j = overResι (j.left ''ᵁ V')`. Rewrite using `[← ha, ← Category.assoc, hba, Category.id_comp]`. Use `⟨j.left ''ᵁ V', ⟨p, hpV', rfl⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨θx, hx, -⟩` from `exists_pull hL b θx₀`. Take `⟨θy, hy, -⟩` from `exists_pull hL b θy₀`. Use `⟨θx, θy, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, hx₀, ← hb]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[hy, hy₀, ← hb]`. Simplify using `only [Category.assoc]`. Introduce `θx θy hx hy`. Establish `key` using `commIsOf_of_retract hL b a hba θx θy (c := unitRes V' (Units.map j.left.appTop.hom.toMonoidHom c)) (fun θ₁ θ₂ h₁ h₂ => HV' θ₁ θ₂ (by rw [h₁, hx, ← Category.assoc, ha, Category.assoc]) (by rw [h₂, hy, ← Category.assoc, ha, Category.assoc]))`. Establish `hbl : b.left ≫ V'.ι ≫ j.left = (j.left ''ᵁ V').ι` using `congrArg Over.Hom.left hb`.
+
+Establish `hu : Units.map b.left.appTop.hom.toMonoidHom (unitRes V' (Units.map j.left.appTop.hom.toMonoidHom c)) = unitRes (j.left ''ᵁ V') c`. Unfold `unitRes`. Rewrite using `[← hbl]`. Use `ext`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, Scheme.Hom.comp_app, CommRingCat.hom_comp, RingHom.comp_apply, Scheme.Hom.appTop]`.
+
+Both sides reduce to the same expression. Rewrite `key` using `[hu]`. Conclude with `key`.
+-/
 theorem local_of_openImmersion (hL : L.IsLB) {T T' : Over S} (j : T' ⟶ T) [IsOpenImmersion j.left]
     {x y : T ⟶ A} {c : Γ(T.left, ⊤)ˣ}
     (H : WeilIs A L k (j ≫ x) (j ≫ y) (Units.map j.left.appTop.hom.toMonoidHom c)) (p : T'.left) :
@@ -103,6 +131,15 @@ theorem local_of_openImmersion (hL : L.IsLB) {T T' : Over S} (j : T' ⟶ T) [IsO
 
 end GlobalTheory.WeilLocal
 
+/- English proof (translation)
+Introduce `S I U A _ G _ ψ hU hψ L M hL hM hML hA hG k x y x' y' c hx hy hW`. Use `haveI : IsCommMonObj A := hA.comm`. Unfold `Out.WeilIs`. Introduce `p`. Take `⟨i, hi⟩` from `GlobalTheory.CoverGlue.exists_mem hU p`.
+
+Take `⟨j, hj⟩ : ∃ j : Over.mk ((Out.baseOver (U i).toScheme).hom ≫ (U i).ι) ⟶ Out.baseOver S, j.left = (U i).ι` from `⟨Over.homMk (U i).ι (by simp [Out.baseOver]), rfl⟩`. Use `haveI : IsOpenImmersion j.left := by`. Rewrite using `[hj]`. Use `infer_instance`. Establish `hx₀ : (j ≫ x).left = (x' i).left ≫ ψ i` using `by rw [Over.comp_left, hj, hx i]`.
+
+Establish `hy₀ : (j ≫ y).left = (y' i).left ≫ ψ i` using `by rw [Over.comp_left, hj, hy i]`. Establish `H₀` using `(GlobalTheory.weilIs_iff_of_isGrpPullback_comm S (U i).toScheme A (G i) (U i).ι (ψ i) L (M i) hL (hM i) (hψ i) (hML i) (Out.baseOver (U i).toScheme) k (x' i) (y' i) (j ≫ x) (j ≫ y) (Units.map (U i).ι.appTop.hom.toMonoidHom c) hx₀ hy₀).1 (hW i)`. Establish `H₁ : Out.WeilIs A L k (j ≫ x) (j ≫ y) (Units.map j.left.appTop.hom.toMonoidHom c)`. Rewrite using `[hj]`. Conclude with `H₀`.
+
+Take `⟨V, hV, hl, hc⟩` from `GlobalTheory.WeilLocal.local_of_openImmersion hL j H₁ ⟨p, hi⟩`. Use `⟨V, ?_, hl, hc⟩` and prove the remaining obligations. Rewrite `hV` using `[hj]`. Conclude with `hV`.
+-/
 theorem GlobalTheory.weilIs_of_openCover : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (A : Over S) [GrpObj A] (G : ∀ i, Over (U i).toScheme) [∀ i, GrpObj (G i)] (ψ : ∀ i, (G i).left ⟶ A.left), iSup U = ⊤ → (∀ i, IsGrpPullback (G i) A (U i).ι (ψ i)) → ∀ (L : LB A.left) (M : ∀ i, LB (G i).left), L.IsLB → (∀ i, (M i).IsLB) → (∀ i, LBIso (M i) (L.pull (ψ i))) → IsAbelianScheme A → (∀ i, IsAbelianScheme (G i)) → ∀ (k : ℤ) (x y : Out.baseOver S ⟶ A) (x' y' : ∀ i, Out.baseOver (U i).toScheme ⟶ G i) (c : Γ(S, ⊤)ˣ), (∀ i, (x' i).left ≫ ψ i = (U i).ι ≫ x.left) → (∀ i, (y' i).left ≫ ψ i = (U i).ι ≫ y.left) → (∀ i, Out.WeilIs (G i) (M i) k (x' i) (y' i) (Units.map (U i).ι.appTop.hom.toMonoidHom c)) → Out.WeilIs A L k x y c := by
   intro S I U A _ G _ ψ hU hψ L M hL hM hML hA hG k x y x' y' c hx hy hW
   haveI : IsCommMonObj A := hA.comm

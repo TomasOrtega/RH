@@ -135,6 +135,9 @@ def IndefiniteRowSideFullHecke.face (P : IndefiniteRowSideFullHecke ex) (Dcf : �
 
 export Formalism.IndefR (errCan phEff)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem IndefiniteRowSideFullHecke.face_eq (P : IndefiniteRowSideFullHecke ex) (Dcf Spf) (Del h0 : ℕ) (Csz : ℝ) :
     P.face Dcf Spf Del h0 Csz = faceT P.toRowSideFamily Dcf Spf (P.zsc Del h0 Csz) := rfl
 
@@ -387,15 +390,29 @@ structure Rows : Prop where
 
   ties : p.Ties
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, p.hm⟩⟩`.
+-/
 theorem nonempty_lift (p : PtAt ex Csz) : Nonempty (Fin D.R.m) := ⟨⟨0, p.hm⟩⟩
 
+/- English proof (translation)
+Unfold `phEff`. Rewrite using `[p.phsOne i, map_one]`.
+-/
 theorem phEff_one (i : Fin D.R.m) : phEff p.R i = 1 := by
   unfold phEff
   rw [p.phsOne i, map_one]
 
+/- English proof (translation)
+The claim follows from `p.charW.base.lev.xi_inj (by rw [p.tupXi D.what₂.mu0 (Or.inl rfl), p.Tp.trueColumnChoices_heckeChar_reference_eq_one, p.charW.base.lev.xi_base])`.
+-/
 theorem tupleRead_baseTuple_eq_family : p.tupT D.what₂.mu0 = p.P.A3.A.μ0 :=
   p.charW.base.lev.xi_inj (by rw [p.tupXi D.what₂.mu0 (Or.inl rfl), p.Tp.trueColumnChoices_heckeChar_reference_eq_one, p.charW.base.lev.xi_base])
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hw he`. Apply `p.charW.tup.mu_ne (D.plEq w) hw` to reduce the goal to its premises. Rewrite using `[← p.tupAt w, he, p.tupleRead_baseTuple_eq_family]`. Introduce `hne`.
+
+Assume the negation of the conclusion as `hw`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← p.tupTie _ (Or.inr ⟨w, rfl⟩), ← p.tupTie _ (Or.inl rfl), p.tupAt w, p.charW.tup.mu_off (D.plEq w) hw, p.tupleRead_baseTuple_eq_family]`.
+-/
 theorem tw_iff (w : D.what₂.places.Pl) : D.plEq w ∈ p.R.twPl ↔ D.what₂.muAt w ≠ D.what₂.mu0 := by
   constructor
   · intro hw he
@@ -415,19 +432,34 @@ variable {P : IndefiniteRowSideFullHecke ex} {Del h0 : ℕ} {hDel : D.s.Del = (D
   {Rc : RecT ex} {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} {B : RealTB Rc P.toRowSideFamily Dcf Spf (P.zsc Del h0 Csz) S}
   {Qp : RealPins B.Q} {Qr : RealRec B.Q}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Rc, S, B, Qp, Qr, h, rfl⟩`.
+-/
 theorem realised_ofReal (h : RealRecPins Qp Qr) : (ofReal P Del h0 hDel hh0 Dcf Spf gamDvd B Qp Qr).Realised :=
   ⟨Rc, S, B, Qp, Qr, h, rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofReal_S (b : Bool) :
     (ofReal P Del h0 hDel hh0 Dcf Spf gamDvd B Qp Qr).S b = (B.Q.Rl.toCx3 B.Q.F).data B.Q.F.cr b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofReal_N (C CH : ℝ) : (ofReal P Del h0 hDel hh0 Dcf Spf gamDvd B Qp Qr).N C CH = B.Q.Rl.num B.Q.F C CH := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem exportRow_ofReal : (ofReal P Del h0 hDel hh0 Dcf Spf gamDvd B Qp Qr).ExportRow ↔
     Formalism.IndefR.NX.NMjT B.Q B.Q.cG B.Q.Sx B.Q.nexp ex.nch := Iff.rfl
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hE, hI.jEvBar, hI.geoAct, hI.evInj, hB.ioExt, hB.oneMap, hP, hs, hk, B.Q.frames hf, hd, hψ, h0', hN, hG, hw, ht⟩`.
+-/
 theorem rows_ofReal (hE : B.Q.Rl.toRealDat.ExAt) (hI : InB B) (hB : RowsB B) (hP : PrimRows3 B.Q.Rl B.Q.F)
     (hs : P.A3.fam3.TypesSep3) (hk : P.A3.fam3.Ok3 1) (hf : B.Q.FramesEx)
     (hd : DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I) (hψ : PsiPPTie D P.P0 P.ψ0 P.Ps P.ψs P.I.eG)
@@ -444,6 +476,9 @@ namespace Realised
 variable {p} (h : p.Realised)
 include h
 
+/- English proof (translation)
+The claim follows from `let ⟨Rc, S, B, Qp, Qr, a, e⟩ := h Eq.subst (motive := Q) e (hQ Rc S B Qp Qr a)`.
+-/
 theorem induction {Q : PtAt ex Csz → Prop}
     (hQ : ∀ (Rc : RecT ex) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc)
       (B : RealTB Rc p.P.toRowSideFamily p.Dcf p.Spf (p.P.zsc p.Del p.h0 Csz) S) (Qp : RealPins B.Q) (Qr : RealRec B.Q),
@@ -451,10 +486,19 @@ theorem induction {Q : PtAt ex Csz → Prop}
   let ⟨Rc, S, B, Qp, Qr, a, e⟩ := h
   Eq.subst (motive := Q) e (hQ Rc S B Qp Qr a)
 
+/- English proof (translation)
+The claim follows from `let ⟨Rc, _⟩ := h; ⟨Rc⟩`.
+-/
 theorem tiedRec : TiedRec ex := let ⟨Rc, _⟩ := h; ⟨Rc⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, B, _⟩ := h; B.Q.sp`.
+-/
 theorem sp : HEq (p.Spf p.P.Zs) p.P.Sp := let ⟨_, _, B, _⟩ := h; B.Q.sp
 
+/- English proof (translation)
+The claim follows from `h.induction (Q := fun p => ∃ sEE : (p.R.toCx3 p.F).EE →ₗ⋆[ℂ] (p.F.fc (p.R.toCx3 p.F).zs).Sp.HH, HEq ((p.R.toCx3 p.F).colOf p.F.cr ((p.R.toCx3 p.F).colDef (fun u t => (zetaEps (p.R.toCx3 p.F) p.F.cr sEE u t)⁻¹) sEE)) p.P.C) fun _ _ B _ _ _ => ⟨B.Q.sEE, B.Q.col⟩`.
+-/
 theorem col : ∃ sEE : (p.R.toCx3 p.F).EE →ₗ⋆[ℂ] (p.F.fc (p.R.toCx3 p.F).zs).Sp.HH,
     HEq ((p.R.toCx3 p.F).colOf p.F.cr
       ((p.R.toCx3 p.F).colDef (fun u t => (zetaEps (p.R.toCx3 p.F) p.F.cr sEE u t)⁻¹) sEE)) p.P.C :=
@@ -463,18 +507,32 @@ theorem col : ∃ sEE : (p.R.toCx3 p.F).EE →ₗ⋆[ℂ] (p.F.fc (p.R.toCx3 p.F
       ((p.R.toCx3 p.F).colDef (fun u t => (zetaEps (p.R.toCx3 p.F) p.F.cr sEE u t)⁻¹) sEE)) p.P.C)
     fun _ _ B _ _ _ => ⟨B.Q.sEE, B.Q.col⟩
 
+/- English proof (translation)
+The claim follows from `h.induction (Q := fun p => (∃ tr, p.R.TrISem p.F tr ∧ TrISepWith p.P.A3 tr) → p.R.TrISem p.F p.P.A3.trI ∧ p.P.A3.fam3.TrISep) fun _ _ B _ _ _ => B.Q.trSem`.
+-/
 theorem trSem : (∃ tr, p.R.TrISem p.F tr ∧ TrISepWith p.P.A3 tr) → p.R.TrISem p.F p.P.A3.trI ∧ p.P.A3.fam3.TrISep :=
   h.induction (Q := fun p => (∃ tr, p.R.TrISem p.F tr ∧ TrISepWith p.P.A3 tr) → p.R.TrISem p.F p.P.A3.trI ∧ p.P.A3.fam3.TrISep)
     fun _ _ B _ _ _ => B.Q.trSem
 
+/- English proof (translation)
+The claim follows from `h.induction (Q := fun p => ∃ Rc : RecT ex, p.R.C = Rc.T.n.cf ∧ HEq p.Tp Rc.T.n.tp ∧ p.R.ψ = Rc.T.theta.W.ψ) fun Rc _ B Qp Qr _ => ⟨Rc, Qp.cfEq, Qr.tpEq, B.Q.psiPin⟩`.
+-/
 theorem exists_frame : ∃ Rc : RecT ex, p.R.C = Rc.T.n.cf ∧ HEq p.Tp Rc.T.n.tp ∧ p.R.ψ = Rc.T.theta.W.ψ :=
   h.induction (Q := fun p => ∃ Rc : RecT ex, p.R.C = Rc.T.n.cf ∧ HEq p.Tp Rc.T.n.tp ∧ p.R.ψ = Rc.T.theta.W.ψ)
     fun Rc _ B Qp Qr _ => ⟨Rc, Qp.cfEq, Qr.tpEq, B.Q.psiPin⟩
 
+/- English proof (translation)
+Take `⟨Rc, e, -⟩` from `h.exists_frame`. Conclude with `e ▸ Rc.T.chrVal`.
+-/
 theorem valLL0 : Formalism.L2.Host.ValLL0 D p.R.C := by
   obtain ⟨Rc, e, -⟩ := h.exists_frame
   exact e ▸ Rc.T.chrVal
 
+/- English proof (translation)
+Take `⟨Rc, e, e', -⟩` from `h.exists_frame`. Use `Rc.T.chrPsi` as an intermediate fact. Use `revert e'`. Generalize the expression as in `p.Tp = t`. Generalize the expression as in `p.R.C = c at e t ⊢`.
+
+Substitute `e` using the available equality. Introduce `e'`. Conclude with `eq_of_heq e' ▸ this`.
+-/
 theorem psiChoice : Formalism.L2.Host.PsiChoiceCompatible D p.R.C ex.nch p.Tp := by
   obtain ⟨Rc, e, e', -⟩ := h.exists_frame
   have := Rc.T.chrPsi
@@ -487,10 +545,19 @@ theorem psiChoice : Formalism.L2.Host.PsiChoiceCompatible D p.R.C ex.nch p.Tp :=
 
 end Realised
 
+/- English proof (translation)
+The claim follows from `h.core.small`.
+-/
 theorem Ties.small {p : PtAt ex Csz} (h : p.Ties) : GlobalTheory.FinalJoin2.FieldSmall D L := h.core.small
 
+/- English proof (translation)
+The claim follows from `h.types.eSerTie`.
+-/
 theorem Ties.eSer {p : PtAt ex Csz} (h : p.Ties) : GlobalTheory.GLq.ESerTie D := h.types.eSerTie
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ex.xd.thetaBase_invariant_action i _ b a, h.data i j b a⟩`.
+-/
 theorem Ties.mem_xd_iff {p : PtAt ex Csz} (h : p.Ties) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     (a : D.nexp.Dat i ((j : ℕ) + 1) b) : a ∈ ex.xd.xd0 i _ b ↔ ∀ u : D.nexp.U, D.nexp.actG i _ b u (D.nexp.th i _ b a) =
       ((D.nexp.psiU i b u : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)) • D.nexp.th i _ b a :=
@@ -509,15 +576,24 @@ def FamHyp : FamClass := fun Fm =>
 def EvPt {eps : ℝ} (Fm : FamP eps) (Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop) : Prop :=
   ∃ x0 : ℝ, ∀ (x : ℝ) (hx : Fm.x1 < x), x0 ≤ x → ∀ (i : Fm.Ix x) (p : Pt Fm x hx i), p.Rows → Q x hx i p
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun x hx _ => h x hx⟩`.
+-/
 theorem EvPt.of_forall {eps : ℝ} {Fm : FamP eps} {Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop}
     (h : ∀ x hx i p, p.Rows → Q x hx i p) : EvPt Fm Q := ⟨0, fun x hx _ => h x hx⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨a, h⟩ := h let ⟨b, h'⟩ := h' ⟨max a b, fun x hx hle i p hp => ⟨h x hx ((le_max_left _ _).trans hle) i p hp, h' x hx ((le_max_right _ _).trans hle) i p hp⟩⟩`.
+-/
 theorem EvPt.and {eps : ℝ} {Fm : FamP eps} {Q Q' : ∀ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop}
     (h : EvPt Fm Q) (h' : EvPt Fm Q') : EvPt Fm fun x hx i p => Q x hx i p ∧ Q' x hx i p :=
   let ⟨a, h⟩ := h
   let ⟨b, h'⟩ := h'
   ⟨max a b, fun x hx hle i p hp => ⟨h x hx ((le_max_left _ _).trans hle) i p hp, h' x hx ((le_max_right _ _).trans hle) i p hp⟩⟩
 
+/- English proof (translation)
+Introduce `⟨x0, g⟩` and use `let ⟨x, hx, i, p, a, b⟩ := h x0; g x hx a i p b`.
+-/
 theorem not_evPt_false {eps : ℝ} {Fm : FamP eps}
     (h : ∀ x0, ∃ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i), x0 ≤ x ∧ p.Rows) : ¬ EvPt Fm fun _ _ _ _ => False :=
   fun ⟨x0, g⟩ => let ⟨x, hx, i, p, a, b⟩ := h x0; g x hx a i p b
@@ -536,15 +612,27 @@ def ToricFunctorialityCondition : Prop := Closed FamHyp fun Fm CH => DIVinN Fm �
 def Fun0 : Prop := Closed FamHyp fun Fm CH => DIVinN Fm →
   EvPt Fm fun _ _ _ p => ∀ C, (p.S false).FUN (p.N C CH)
 
+/- English proof (translation)
+The claim follows from `Closed.imp h fun _ _ _ a hN => let ⟨x0, b⟩ := a hN; ⟨x0, fun x hx hle i p hp _ => b x hx hle i p hp⟩`.
+-/
 theorem Fun0.toric (h : Fun0) : ToricFunctorialityCondition :=
   Closed.imp h fun _ _ _ a hN => let ⟨x0, b⟩ := a hN; ⟨x0, fun x hx hle i p hp _ => b x hx hle i p hp⟩
 
+/- English proof (translation)
+The claim follows from `div_nonneg (le_max_left _ _) (mul_nonneg (zero_le_one.trans (by exact_mod_cast (Formalism.EigenvalueLevelCeiling.ramified_basic_bound K w).2.1)) (Nat.cast_nonneg _))`.
+-/
 example {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df : DefSide Bs} (S : IndefData Df)
     (F0 : HeightOneSpectrum (𝓞 K) → Bs.J → ℝ) (w : HeightOneSpectrum (𝓞 K)) : 0 ≤ errCan S F0 w :=
   div_nonneg (le_max_left _ _) (mul_nonneg (zero_le_one.trans (by exact_mod_cast (Formalism.EigenvalueLevelCeiling.ramified_basic_bound K w).2.1)) (Nat.cast_nonneg _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {Csz : ℝ} (p : PtAt ex Csz) : p.Z.l6u = 0 := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example {Csz : ℝ} (p : PtAt ex Csz) : p.F.lv2.P0 = p.P.P0 ∧ p.F.lv2.P1 = p.P.Ps := ⟨rfl, rfl⟩
 
 end GlobalTheory.BigTop

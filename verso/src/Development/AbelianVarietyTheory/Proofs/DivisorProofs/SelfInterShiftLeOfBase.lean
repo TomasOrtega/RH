@@ -9,6 +9,11 @@ open scoped ENNReal Classical
 
 namespace GlobalTheory.SelfInterImage
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.HeightShift.isImageHeight_shift K V Ω Nm W ev D _ (fun _ => t) (fun _ => rfl) (isImageHeight_imageHeight hex)`. Establish `e : (∑ _σ : K →+* ℂ, t) / (Module.finrank ℚ K : ℝ) = t`. Rewrite using `[Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul]`. Establish `: (Module.finrank ℚ K : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `h1` using `[e]`. Conclude with `GlobalTheory.ImageHeightUnique.isImageHeight_unique (isImageHeight_imageHeight ⟨_, h1⟩) h1`.
+-/
 theorem imageHeight_exp_smul {K V Ω : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] {Nm : (K →+* ℂ) → V → ℝ} {W : Submodule (𝓞 K) V}
     {ev : V →ₗ[K] Ω} {D : ℕ} (hex : ∃ x, IsImageHeight Nm W ev D x) (t : ℝ) :

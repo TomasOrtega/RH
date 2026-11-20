@@ -14,6 +14,9 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 def kv (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (a : CC K n) (x : G1 K n) : L2 μ :=
   (InnerProductSpace.toDual ℂ (L2 μ)).symm (rconvCLM (Gam K n) μ a x)
 
+/- English proof (translation)
+Rewrite using `[kv, InnerProductSpace.toDual_symm_apply, rconvCLM_apply]`.
+-/
 theorem inner_kv (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (a : CC K n) (x : G1 K n) (φ : L2 μ) :
     ⟪kv μ a x, φ⟫_ℂ = rconv (Gam K n) μ a φ x := by
   rw [kv, InnerProductSpace.toDual_symm_apply, rconvCLM_apply]

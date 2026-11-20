@@ -12,5 +12,8 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TotalPos.fibForm_posDef | exact GlobalTheory.TotalPos.fibForm_posDef | (intros; apply GlobalTheory.TotalPos.fibForm_posDef <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.period_chart_form_equation : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (A : Over S) [GrpObj A] (D' : ℕ) (h' : IsRegVar (A.hom ≫ p) D') (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ w : VMetric p (omega A) g, (∀ σ (y : CxPts p σ), ∃ (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), y ∈ c.e.source ∧ IsPeriodChart w c τ ex) → ∀ (σ : k →+* ℂ) (Ω₀ : (h'.atlas σ).Fld) (κ : (h.atlas σ).Fld), (h'.atlas σ).IsRealForm 1 Ω₀ → (h.atlas σ).IsRealForm 1 κ → (∀ (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → IsFlatOn h' Ω₀ c.e.target τ ex) → (∀ x, (hermMat (κ x)).PosDef) → ∀ x, (hermMat (fibForm h h' Ω₀ κ x)).PosDef := by
   first | exact @GlobalTheory.TotalPos.fibForm_posDef | exact GlobalTheory.TotalPos.fibForm_posDef | (intros; apply GlobalTheory.TotalPos.fibForm_posDef <;> assumption)

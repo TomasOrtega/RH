@@ -20,6 +20,11 @@ def gridT {D : D7} (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (l : ℕ) (j :
 def grid1T {D : D7} (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (l : ℕ) (j : Fin (nfE D)) : Finset ℝ :=
   Formalism.L2.SG.Pf.CarrierSz.grid1Of ((Formalism.L2.SG.SpectralTiesReal.gOf D e).place (plE D j)) l (4 * Formalism.FourierDecayAlt.C.Kst * (D.R.rS + 1))
 
+/- English proof (translation)
+Introduce `j hj1 hjm`. Proceed by induction on `j with`. Consider the case `zero => omega`. Consider the case `succ n ih`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases.
+
+Substitute `hn` using the available equality. Conclude with `h.hb1`. Establish `h1` using `ih hn (by omega)`. Establish `h2` using `h.hgap n hn (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem b_ge_one (c : Formalism.FourierDecayAlt.Sz.Cfg) (h : c.Ok) : ∀ j, 1 ≤ j → j ≤ c.m → 1 ≤ c.b j := by
   intro j hj1 hjm
   induction j with
@@ -31,6 +36,11 @@ theorem b_ge_one (c : Formalism.FourierDecayAlt.Sz.Cfg) (h : c.Ok) : ∀ j, 1 �
       have h2 := h.hgap n hn (by omega)
       linarith
 
+/- English proof (translation)
+Take `⟨Cb, hCb0, hCb⟩` from `hTL`. Use `⟨Cb, hCb0, fun {D} X _ C u u' e de de' l hdat => ?_⟩` and prove the remaining obligations. Establish `key : ∀ j : Fin (nfE _), ∃ Θj : Formalism.FourierDecayAlt.Top.TopLift D.R.k D.R.rS (X.Vloc u (tauE X e j)) (X.Vloc u' (tauE X e j)), (∃ (Xo : Formalism.FourierDecayAlt.Q.ActualOps D.R.k D.R.rS (towersOf X C u u' e j).base.z (towersOf X C u u' e j).base.z' (towersOf X C u u' e j). …`. Introduce `j`. Take `⟨Xo, μ, L, st, hD⟩` from `hdat j`.
+
+Take `⟨Θj, h1, h2⟩` from `hCb _ _ (parE e u u' de de' j) (towersOf X C u u' e j).base Xo μ L st (l + 1) hD`. Conclude with `⟨Θj, ⟨Xo, μ, L, st, hD, h1⟩, h2⟩`. Use `choose Θ hΘ using key`. Conclude with `⟨Θ, fun j => (hΘ j).1, fun j => (hΘ j).2⟩`.
+-/
 theorem lift_ITc (hTL : Formalism.FourierDecayAlt.KB.TopLiftExists2) : ∃ Cb : ℝ, 0 ≤ Cb ∧
     ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ) (u u' : D.what₂.Word)
       (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (de de' : ℕ → ℝ) (l : ℕ),
@@ -81,6 +91,9 @@ theorem lift_ITc (hTL : Formalism.FourierDecayAlt.KB.TopLiftExists2) : ∃ Cb : 
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ)
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.CarrierSz.gridsRich_ch _ hlen (fun v => by show gridT e l v = _; unfold gridT; rfl) (fun v => by show grid1T e l v = _; unfold grid1T; rfl)`.
+-/
 theorem gridsRich_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (fc : ∀ j : Fin (nfE D), Formalism.FourierDecayAlt.B.Mat D.R.k D.R.rS → (X.Vloc u' (tauE X e j) →L[ℂ] X.Vloc u (tauE X e j)))
@@ -94,6 +107,9 @@ theorem gridsRich_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.
   Formalism.L2.SG.Pf.CarrierSz.gridsRich_ch _ hlen (fun v => by show gridT e l v = _; unfold gridT; rfl)
     (fun v => by show grid1T e l v = _; unfold grid1T; rfl)
 
+/- English proof (translation)
+Establish `hDel : (0 : ℝ) < (D.s.Del : ℝ)` using `by exact_mod_cast D.s.Del_pos`. Use `Formalism.L2.SG.Pf.CarrierSz.gridsOK_ch _ hlen (fun v => by show gridT e l v = _; unfold gridT; rfl) (fun v => by show grid1T e l v = _; unfold grid1T; rfl) (Formalism.L2.SG.Pf.CarrierSz.pNe_of _ hDel (fun x => (hOk x).hv0) (fun x j h1 h2 => b_ge_one _ (hOk x) j h1 h2) hl2)` and prove the remaining obligations.
+-/
 theorem gridsOK_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (fc : ∀ j : Fin (nfE D), Formalism.FourierDecayAlt.B.Mat D.R.k D.R.rS → (X.Vloc u' (tauE X e j) →L[ℂ] X.Vloc u (tauE X e j)))

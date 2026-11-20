@@ -14,6 +14,11 @@ namespace GlobalTheory.AlgTranslate
 
 open GlobalTheory.GalTheta
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `GlobalTheory.ThetaConj.taylor_zero D α`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.sum_insert hi]`.
+
+Rewrite using `[← ih, ← GlobalTheory.ThetaConj.taylor_mul D _ (hf i)]`. Conclude with `GlobalTheory.ThetaConj.taylor_add D ((hf i).const_mul _) (by fun_prop) α`.
+-/
 theorem taylor_sum (D : D7) {N N' : ℕ} {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → VC D N N' → ℂ)
     (hf : ∀ i, Differentiable ℂ (f i)) (α : Mono D N N') :
     TaylorLogMetric.taylor D (fun z => ∑ i ∈ s, c i * f i z) α = ∑ i ∈ s, c i * TaylorLogMetric.taylor D (f i) α := by
@@ -25,6 +30,15 @@ theorem taylor_sum (D : D7) {N N' : ℕ} {ι : Type} (s : Finset ι) (c : ι →
     rw [← ih, ← GlobalTheory.ThetaConj.taylor_mul D _ (hf i)]
     exact GlobalTheory.ThetaConj.taylor_add D ((hf i).const_mul _) (by fun_prop) α
 
+/- English proof (translation)
+Take `⟨pr, hpr⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap Qbar ℂ) (LinearMap.ker_eq_bot.2 Subtype.val_injective)`. Establish `hp : ∀ a : Qbar, pr (a : ℂ) = a` using `fun a => LinearMap.congr_fun hpr a`. Use `⟨fun i => pr (c i), fun i => (pr (c i)).2, ?_⟩` and prove the remaining obligations. Establish `ht : ∀ α, TaylorLogMetric.taylor D (fun z => ∑ i, c i * f i z) α = TaylorLogMetric.taylor D (fun z => ∑ i, (pr (c i) : ℂ) * f i z) α`. Introduce `α`.
+
+Establish `h1 : (pr (TaylorLogMetric.taylor D (fun z => ∑ i, c i * f i z) α) : ℂ) = TaylorLogMetric.taylor D (fun z => ∑ i, c i * f i z) α` using `congrArg Subtype.val (hp ⟨_, h α⟩)`. Rewrite using `[← h1, taylor_sum D _ _ _ hf, taylor_sum D _ _ _ hf, map_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: c i * TaylorLogMetric.taylor D (f i) α = (⟨_, ha i α⟩ : Qbar) • c i` using `mul_comm _ _`.
+
+Rewrite using `[this, map_smul, mul_comm]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `z`. Establish `e1` using `GlobalTheory.EntireTaylor.hasSum_taylor_mono D N N' (fun z => ∑ i, c i * f i z) (by fun_prop) z`. Establish `e2` using `GlobalTheory.EntireTaylor.hasSum_taylor_mono D N N' (fun z => ∑ i, (pr (c i) : ℂ) * f i z) (by fun_prop) z`.
+
+Simplify using `only [ht] at e1`. Conclude with `e1.unique e2`.
+-/
 theorem exists_alg_comb (D : D7) {N N' k : ℕ} (c : Fin k → ℂ) (f : Fin k → VC D N N' → ℂ)
     (hf : ∀ i, Differentiable ℂ (f i)) (ha : ∀ i, CoefIn D (f i) Qbar)
     (h : CoefIn D (fun z => ∑ i, c i * f i z) Qbar) :
@@ -50,6 +64,19 @@ theorem exists_alg_comb (D : D7) {N N' k : ℕ} (c : Fin k → ℂ) (f : Fin k �
   simp only [ht] at e1
   exact e1.unique e2
 
+/- English proof (translation)
+Introduce `D cc δ hc N N' L L' hL hL' e he hq x hx`. Establish `hG : StandardLatticesGL3.admG1 D` using `(GlobalTheory.InducedType.induced_type D).1`. Take `⟨-, -, -, -, hfg, -, -⟩` from `GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hG cc δ hc N N' (La D (tor0 D cc δ) L L') (Or.inr ⟨L, L', hL, hL', rfl⟩)`. Take `⟨m, r, B, hB⟩` from `GlobalTheory.T.exists_orthonormal_frame_var D N N'`. Take `⟨R, hR, hRA⟩` from `GlobalTheory.T.exists_nsmul_padded_lattice_mem_basis_product D hG cc δ hc N N' m r L L' B hB hfg`.
+
+Establish `hee : IsTr D (tor0 D cc δ) (La D (tor0 D cc δ) L L') e e`. Use `IsTr.single D (tor0 D cc δ) (A := La D (tor0 D cc δ) L L') e 1 0 1 one_pos (by simp)` as an intermediate fact. Simplify `this` using `[U_zero]`. Take `⟨G₁, ⟨k, c, t, n, hn, ht, rfl⟩, hGG⟩` from `exists_restriction D cc δ hc L L' hL hL' B hB e e he hee`. Establish `hS` using `GlobalTheory.ThetaAlgebraic.good_sigma hG (GlobalTheory.T.forall_use1 D) hc hB`.
+
+Use `set S := StandardLatticesGL3.pullB D (tor0 D cc δ) B (sgStar (lamOf D cc δ))`. Establish `hT` using `fun i => hS.transl hG hc hB (t := t i) ⟨n, hn, ht i⟩`. Establish `hd : ∀ i, Differentiable ℂ (U D (tor0 D cc δ) (t i) S)` using `fun i => (hS _ ⟨n, hn, ht i⟩).differentiable`. Take `⟨c', hc', he'⟩` from `exists_alg_comb D c (fun i z => U D (tor0 D cc δ) (t i) S (pad D m z)) (fun i => (hd i).comp (differentiable_pad D m)) (fun i α => by`. Rewrite using `[GlobalTheory.ConjRestrict.taylor_pad D m (hd i)]`.
+
+Conclude with `(hT i).coefIn _)`. Use the proof step `(by rw [hGG] at hq; exact hq)`. Establish `hg` using `GlobalTheory.ThetaAlgebraic.Good.sum Finset.univ _ fun i _ => (hT i).const_mul (hc' i)`. Establish `hpx : pad D m x ∈ GlobalTheory.ThetaAlgebraic.sat (StandardLatticesGL3.LaB D (tor0 D cc δ) B)`. Take `⟨j, hj, hx⟩` from `hx`.
+
+Use `⟨R * j, mul_pos hR hj, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← pad_nsmul]`. Conclude with `hRA _ hx`. Establish `hgen` using `hg _ hpx`. Establish `e1 : e = fun z => (fun w => ∑ i, c' i * U D (tor0 D cc δ) (t i) S w) (pad D m z)` using `hGG.trans he'`.
+
+Introduce `α`. Rewrite using `[e1, U_pad D _ m x (fun w => ∑ i, c' i * U D (tor0 D cc δ) (t i) S w), GlobalTheory.ConjRestrict.taylor_pad D m hgen.differentiable]`. Conclude with `hgen.coefIn _`.
+-/
 theorem coefIn_translate : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), StandardLatticesGL3.Crv D cc δ → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), StandardLatticesGL3.SD D L → StandardLatticesGL3.SD D L' → ∀ e ∈ Th D (tor0 D cc δ) L L', CoefIn D e Qbar → ∀ x, StandardLatticesGL3.LaQ D (tor0 D cc δ) L L' x → CoefIn D (U D (tor0 D cc δ) x e) Qbar := by
   intro D cc δ hc N N' L L' hL hL' e he hq x hx
   have hG : StandardLatticesGL3.admG1 D := (GlobalTheory.InducedType.induced_type D).1

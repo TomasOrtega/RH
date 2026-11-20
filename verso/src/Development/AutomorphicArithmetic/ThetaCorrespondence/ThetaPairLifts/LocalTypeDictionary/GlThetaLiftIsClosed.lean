@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 
 section
 namespace UpperTheory.Lit.Mix
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Lit.HoweDuality.thetaLift_gl_of_zelevinsky_classification polynomialRing`.
+-/
 theorem gl_thetaLift_isClosed : _root_.GlobalTheory.ThetaLiftGL.ThetaLiftGeneralLinearStatement := _root_.UpperTheory.Lit.HoweDuality.thetaLift_gl_of_zelevinsky_classification polynomialRing
 end UpperTheory.Lit.Mix
 end

@@ -63,6 +63,9 @@ def IsPullUnifPre {I : Ideal R} {I' : Ideal R'} (φ : R →+* R') {D : DegData R
         res (X := (thickObj R' I' e G').left) inf_le_right
           (pullU (fstG I' e G').left _ (wL.s (jL, jL')))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h⟩`.
+-/
 theorem IsPullUnifPre.toIsPullUnif {I : Ideal R} {I' : Ideal R'} {φ : R →+* R'} {D : DegData R I}
     {D' : DegData R' I'} {hD : IsPullDeg φ D.toPre D'.toPre}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
@@ -168,6 +171,9 @@ def ExpPullInjSt : Prop :=
       U'.LG = L' → U'.gen = eA → IsPullUnifPre φ hD bc U.toUnifPre U' →
       ∀ k : ℕ, 1 ≤ k → U'.ExpBij k
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ I I' hR hR' φ hI hφ D A G _ _ hG U W hW hgen G' _ _ bc hbc A' hA' eA heA hwA L' wL he hwL hrig`. Take `⟨D', ⟨hD⟩⟩` from `h1 R R' I I' hR hR' φ hI hφ D A G hG U W hW hgen G' bc hbc A' hA' eA heA hwA L' wL he hwL hrig`. Take `⟨U', hL, hg, hP⟩` from `h2 R R' I I' hR hR' φ hI hφ D A G hG U W hW hgen G' bc hbc A' hA' eA heA hwA L' wL he hwL hrig D' hD`. Establish `hx` using `h3 R R' I I' hR hR' φ hI hφ D A G hG U W hW hgen G' bc hbc A' hA' eA heA hwA L' wL he hwL hrig D' hD U' hL hg hP`. Conclude with `⟨D', hD, { toUnifPre := U', expand := hx }, hL, hg, IsPullUnifPre.toIsPullUnif hP⟩`.
+-/
 theorem unifBaseChangeInj_of_seams (h1 : PullDegInjSt) (h2 : PullPreInjSt) (h3 : ExpPullInjSt) :
     UnifBaseChangeInjSt := by
   intro R R' _ _ _ _ I I' hR hR' φ hI hφ D A G _ _ hG U W hW hgen G' _ _ bc hbc A' hA' eA heA hwA
@@ -250,6 +256,9 @@ def PullPreCSInjSt : Prop :=
     ∀ (D' : DegData R' I') (hD : IsPullDeg φ D.toPre D'.toPre), IsPullDegCS hD →
       ∃ U' : UnifPre I' D' A' G', U'.LG = L' ∧ U'.gen = eA ∧ IsPullUnifPre φ hD bc U.toUnifPre U'
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ I I' hR hR' φ hI hφ D A G _ _ hG U W hW hgen G' _ _ bc hbc A' hA' eA heA hwA L' wL he hwL hrig`. Take `⟨D', hD, hCS⟩` from `h1 R R' I I' hR hR' φ hI hφ D A G hG U W hW hgen G' bc hbc A' hA' eA heA hwA L' wL he hwL hrig`. Take `⟨U', hL, hg, hP⟩` from `h2 R R' I I' hR hR' φ hI hφ D A G hG U W hW hgen G' bc hbc A' hA' eA heA hwA L' wL he hwL hrig D' hD hCS`. Establish `hx` using `h3 R R' I I' hR hR' φ hI hφ D A G hG U W hW hgen G' bc hbc A' hA' eA heA hwA L' wL he hwL hrig D' hD U' hL hg hP`. Conclude with `⟨D', hD, { toUnifPre := U', expand := hx }, hL, hg, IsPullUnifPre.toIsPullUnif hP⟩`.
+-/
 theorem unifBaseChangeInj_of_seamsCS (h1 : PullDegCSInjSt) (h2 : PullPreCSInjSt)
     (h3 : ExpPullInjSt) : UnifBaseChangeInjSt := by
   intro R R' _ _ _ _ I I' hR hR' φ hI hφ D A G _ _ hG U W hW hgen G' _ _ bc hbc A' hA' eA heA hwA

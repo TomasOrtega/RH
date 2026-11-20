@@ -19,15 +19,26 @@ def Loc (m : ℕ∞) (f : Mat k r → E) (g : Mat k r) : Prop :=
   ∃ U : Set (Mat k r), ∃ f' : Mat k r → E, IsOpen U ∧ g ∈ U ∧ ContDiffOn ℝ (m : WithTop ℕ∞) f' U ∧
     ∀ x ∈ U, x ∈ GV k r → f x = f' x
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hf', he⟩` from `h`. Conclude with `⟨U, f', hU, hgU, hf'.of_le (WithTop.coe_le_coe.2 hmm), he⟩`.
+-/
 theorem loc_mono {m m' : ℕ∞} (hmm : m ≤ m') {f : Mat k r → E} {g : Mat k r} (h : Loc m' f g) : Loc m f g := by
   obtain ⟨U, f', hU, hgU, hf', he⟩ := h
   exact ⟨U, f', hU, hgU, hf'.of_le (WithTop.coe_le_coe.2 hmm), he⟩
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hf', he⟩` from `h`. Conclude with `⟨U, hU, hgU, fun x hx => ⟨U, f', hU, hx, hf', he⟩⟩`.
+-/
 theorem loc_spread {m : ℕ∞} {f : Mat k r → E} {g : Mat k r} (h : Loc m f g) :
     ∃ U : Set (Mat k r), IsOpen U ∧ g ∈ U ∧ ∀ x ∈ U, Loc m f x := by
   obtain ⟨U, f', hU, hgU, hf', he⟩ := h
   exact ⟨U, hU, hgU, fun x hx => ⟨U, f', hU, hx, hf', he⟩⟩
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hf', he⟩` from `h`. Establish `hγ` using `Formalism.FourierDecayAlt.P.B5.curve_hasDerivAt g X 0`. Establish `hγ0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g` using `by simp`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 (0 : ℝ), g * NormedSpace.exp ((t : ℂ) • X) ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hU.mem_nhds hgU)`. Establish `hev : ∀ᶠ t : ℝ in 𝓝 (0 : ℝ), f (g * NormedSpace.exp ((t : ℂ) • X)) = f' (g * NormedSpace.exp ((t : ℂ) • X))` using `by filter_upwards [hmem] with t ht`.
+
+Conclude with `he _ ht (Formalism.FourierDecayAlt.P.B5.curve_mem hg hX t)`. Establish `hf'd : DifferentiableAt ℝ f' (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X))`. Rewrite using `[hγ0]`. Conclude with `(hf'.contDiffAt (hU.mem_nhds hgU)).differentiableAt (by exact_mod_cast (show m ≠ 0 from fun h0 => by simp [h0] at hm))`. Conclude with `((hf'd.comp (0 : ℝ) hγ.differentiableAt).congr_of_eventuallyEq hev).hasDerivAt`.
+-/
 theorem loc_hasDerivAt {m : ℕ∞} (hm : 1 ≤ m) {f : Mat k r → E} {g X : Mat k r} (h : Loc m f g)
     (hg : g ∈ GV k r) (hX : inLie k r X) :
     HasDerivAt (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) (RdV X f g) 0 := by
@@ -44,6 +55,11 @@ theorem loc_hasDerivAt {m : ℕ∞} (hm : 1 ≤ m) {f : Mat k r → E} {g X : Ma
     exact (hf'.contDiffAt (hU.mem_nhds hgU)).differentiableAt (by exact_mod_cast (show m ≠ 0 from fun h0 => by simp [h0] at hm))
   exact ((hf'd.comp (0 : ℝ) hγ.differentiableAt).congr_of_eventuallyEq hev).hasDerivAt
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hf', he⟩` from `h`. Use `⟨U, fun x => fderiv ℝ f' x (x * X), hU, hgU, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hf'.fderiv_of_isOpen (m := (m : WithTop ℕ∞)) hU (by push_cast; exact le_rfl)`. Conclude with `h1.clm_apply (mulRightRealCLM X).contDiff.contDiffOn`. Introduce `x hx hxG`.
+
+Establish `hd : DifferentiableAt ℝ f' x` using `(hf'.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hx)`. Conclude with `(hasDerivAt_of_ext hU hx hxG hX hd he).deriv`.
+-/
 theorem loc_RdV {m : ℕ∞} {f : Mat k r → E} {g X : Mat k r} (hX : inLie k r X) (h : Loc (m + 1) f g) :
     Loc m (RdV X f) g := by
   obtain ⟨U, f', hU, hgU, hf', he⟩ := h
@@ -55,6 +71,11 @@ theorem loc_RdV {m : ℕ∞} {f : Mat k r → E} {g X : Mat k r} (hX : inLie k r
       (hf'.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hx)
     exact (hasDerivAt_of_ext hU hx hxG hX hd he).deriv
 
+/- English proof (translation)
+Proceed by induction on `w generalizing m with`. Consider the case `nil`. Simplify using `only [List.length_nil, add_zero] at hle`. Conclude with `loc_mono (by exact_mod_cast hle) h`. Consider the case `cons X w ih`.
+
+Establish `h1 : Loc ((m + 1 : ℕ) : ℕ∞) (Rw w f) g` using `ih (fun Y hY => hw Y (List.mem_cons_of_mem X hY)) (m + 1) (by simp at hle; omega)`. Establish `h2 : Loc ((m : ℕ∞) + 1) (Rw w f) g` using `by simpa using h1`. Conclude with `loc_RdV (hw X (by simp)) h2`.
+-/
 theorem loc_Rw {N : ℕ} {f : Mat k r → E} {g : Mat k r} (h : Loc (N : ℕ∞) f g) (w : List (Mat k r))
     (hw : ∀ X ∈ w, inLie k r X) (m : ℕ) (hle : m + w.length ≤ N) : Loc (m : ℕ∞) (Rw w f) g := by
   induction w generalizing m with
@@ -67,6 +88,11 @@ theorem loc_Rw {N : ℕ} {f : Mat k r → E} {g : Mat k r} (h : Loc (N : ℕ∞)
     have h2 : Loc ((m : ℕ∞) + 1) (Rw w f) g := by simpa using h1
     exact loc_RdV (hw X (by simp)) h2
 
+/- English proof (translation)
+Establish `hγ` using `Formalism.FourierDecayAlt.P.B5.curve_hasDerivAt g X 0`. Establish `hγ0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g` using `by simp`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 (0 : ℝ), g * NormedSpace.exp ((t : ℂ) • X) ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hU.mem_nhds hg)`. Use `show deriv (fun t : ℝ => f₁ (g * NormedSpace.exp ((t : ℂ) • X))) 0 = deriv (fun t : ℝ => f₂ (g * NormedSpace.exp ((t : ℂ) • X))) 0`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises.
+
+Use `filter_upwards [hmem] with t ht`. Conclude with `he _ ht (Formalism.FourierDecayAlt.P.B5.curve_mem hgG hX t)`.
+-/
 theorem rdV_congr {f₁ f₂ : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen U) {g X : Mat k r} (hg : g ∈ U)
     (hgG : g ∈ GV k r) (hX : inLie k r X) (he : ∀ x ∈ U, x ∈ GV k r → f₁ x = f₂ x) :
     RdV X f₁ g = RdV X f₂ g := by
@@ -80,6 +106,11 @@ theorem rdV_congr {f₁ f₂ : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen U
   filter_upwards [hmem] with t ht
   exact he _ ht (Formalism.FourierDecayAlt.P.B5.curve_mem hgG hX t)
 
+/- English proof (translation)
+Establish `key : HasDerivAt (fun t : ℝ => (L.map fun i => c i • h i (g * NormedSpace.exp ((t : ℂ) • X))).sum) ((L.map fun i => c i • RdV X (h i) g).sum) 0`. Proceed by induction on `L with`. Consider the case `nil => simpa using hasDerivAt_const (0 : ℝ) (0 : E)`. Consider the case `cons i L ih`. Simplify using `only [List.map_cons, List.sum_cons]`.
+
+Conclude with `((loc_hasDerivAt le_rfl (hL i (by simp)) hg hX).const_smul (c i)).add (ih (fun j hj => hL j (by simp [hj])))`. Conclude with `key.deriv`.
+-/
 theorem rdV_sum {ι : Type*} (L : List ι) (c : ι → ℂ) (h : ι → Mat k r → E) {g X : Mat k r}
     (hg : g ∈ GV k r) (hX : inLie k r X) (hL : ∀ i ∈ L, Loc 1 (h i) g) :
     RdV X (fun x => (L.map fun i => c i • h i x).sum) g = (L.map fun i => c i • RdV X (h i) g).sum := by
@@ -97,10 +128,16 @@ def Xa (k r : ℕ) (a b : Fin (2 * r + k + 1)) : Mat k r := hpart1 (Hpk k r) (Ma
 
 def Xb (k r : ℕ) (a b : Fin (2 * r + k + 1)) : Mat k r := hpart2 (Hpk k r) (Matrix.single a b 1)
 
+/- English proof (translation)
+Unfold `Hpk`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem hpk_entry (i j : Fin (2 * r + k + 1)) : ‖Hpk k r i j‖ ≤ 1 := by
   unfold Hpk
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.Qx2.hpk_inv, Matrix.conjTranspose_single, star_one]`. Establish `e : (Hpk k r * Matrix.single b a (1 : ℂ) * Hpk k r) i j = Hpk k r i b * Hpk k r a j`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, ite_mul, Finset.sum_ite_eq]`. Rewrite using `[e, norm_mul]`. Apply the tactic sequence `exact mul_le_one₀ (hpk_entry i b) (norm_nonneg _) (hpk_entry a j)`.
+-/
 theorem conj_entry (a b i j : Fin (2 * r + k + 1)) :
     ‖((Hpk k r)⁻¹ * (Matrix.single a b (1 : ℂ))ᴴ * Hpk k r) i j‖ ≤ 1 := by
   rw [Formalism.FourierDecayAlt.P.Qx2.hpk_inv, Matrix.conjTranspose_single, star_one]
@@ -109,10 +146,18 @@ theorem conj_entry (a b i j : Fin (2 * r + k + 1)) :
   rw [e, norm_mul]
   exact mul_le_one₀ (hpk_entry i b) (norm_nonneg _) (hpk_entry a j)
 
+/- English proof (translation)
+Simplify using `only [Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem single_entry (a b i j : Fin (2 * r + k + 1)) : ‖(Matrix.single a b (1 : ℂ) : Mat k r) i j‖ ≤ 1 := by
   simp only [Matrix.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `⟨Formalism.FourierDecayAlt.P.Qx2.hpart1_lie _, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Xa, hpart1, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, norm_mul]`. Apply the tactic sequence `have h1 := single_entry (k := k) (r := r) a b i j`. Apply the tactic sequence `have h2 := conj_entry (k := k) (r := r) a b i j`. Establish `h3` using `norm_sub_le ((Matrix.single a b (1 : ℂ) : Mat k r) i j) (((Hpk k r)⁻¹ * (Matrix.single a b (1 : ℂ))ᴴ * Hpk k r) i j)`.
+
+Establish `hn : ‖(1 / 2 : ℂ)‖ = 1 / 2` using `by norm_num`. Rewrite using `[hn]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Xa_unit (a b : Fin (2 * r + k + 1)) : unitLie k r (Xa k r a b) := by
   refine ⟨Formalism.FourierDecayAlt.P.Qx2.hpart1_lie _, fun i j => ?_⟩
   simp only [Xa, hpart1, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, norm_mul]
@@ -124,6 +169,11 @@ theorem Xa_unit (a b : Fin (2 * r + k + 1)) : unitLie k r (Xa k r a b) := by
   rw [hn]
   linarith
 
+/- English proof (translation)
+Use `⟨Formalism.FourierDecayAlt.P.Qx2.hpart2_lie _, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have h1 := single_entry (k := k) (r := r) a b i j`. Apply the tactic sequence `have h2 := conj_entry (k := k) (r := r) a b i j`. Establish `h3` using `norm_add_le ((Matrix.single a b (1 : ℂ) : Mat k r) i j) (((Hpk k r)⁻¹ * (Matrix.single a b (1 : ℂ))ᴴ * Hpk k r) i j)`. Establish `h4` using `norm_sub_le ((Matrix.single a b (1 : ℂ) : Mat k r) i j) (((Hpk k r)⁻¹ * (Matrix.single a b (1 : ℂ))ᴴ * Hpk k r) i j)`.
+
+Simplify using `only [Xb, hpart2, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, smul_eq_mul, norm_mul]`. Evaluate the numerical expressions using `at h1 h2 h3 h4 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Xb_unit (a b : Fin (2 * r + k + 1)) : unitLie k r (Xb k r a b) := by
   refine ⟨Formalism.FourierDecayAlt.P.Qx2.hpart2_lie _, fun i j => ?_⟩
   have h1 := single_entry (k := k) (r := r) a b i j
@@ -136,10 +186,16 @@ theorem Xb_unit (a b : Fin (2 * r + k + 1)) : unitLie k r (Xb k r a b) := by
   norm_num at h1 h2 h3 h4 ⊢
   linarith
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem top_apply' (Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (Mat k r → E) → (Mat k r → E))
     (u : ℂ) (c d : Fin (2 * r + k + 1)) (f : Mat k r → E) (g : Mat k r) :
     Top Eop u c d f g = (if c = d then u • f g else 0) + Eop c d f g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem EH_apply (a b : Fin (2 * r + k + 1)) (f : Mat k r → E) (g : Mat k r) :
     Q.EH k r a b f g = RdV (Xa k r a b) f g + Complex.I • RdV (Xb k r a b) f g := rfl
 
@@ -150,6 +206,17 @@ def expand (k r : ℕ) : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1)
     (expand k r ts).map (fun cw => (cw.1, Xa k r t.2.1 t.2.2 :: cw.2)) ++
     (expand k r ts).map (fun cw => (Complex.I * cw.1, Xb k r t.2.1 t.2.2 :: cw.2))
 
+/- English proof (translation)
+Proceed by induction on `ts with`. Consider the case `nil`. Introduce `cw hcw`. Simplify using `[expand] at hcw`. Substitute `hcw` using the available equality.
+
+Simplify using the standard rewrite rules. Consider the case `cons t ts ih`. Introduce `cw hcw`. Simplify using `only [expand, List.mem_append, List.mem_map] at hcw`. Break down `hcw with (⟨cw', hcw', rfl⟩ | ⟨cw', hcw', rfl⟩) | ⟨cw', hcw', rfl⟩` into its components or cases.
+
+Take `⟨h1, h2⟩` from `ih cw' hcw'`. Conclude with `⟨h1, by simpa using Nat.le_succ_of_le h2⟩`. Take `⟨h1, h2⟩` from `ih cw' hcw'`. Use `⟨?_, by simpa using h2⟩` and prove the remaining obligations. Introduce `X hX`.
+
+Break down `List.mem_cons.1 hX with rfl | hX` into its components or cases. Conclude with `Xa_unit _ _`. Conclude with `h1 X hX`. Take `⟨h1, h2⟩` from `ih cw' hcw'`. Use `⟨?_, by simpa using h2⟩` and prove the remaining obligations.
+
+Introduce `X hX`. Break down `List.mem_cons.1 hX with rfl | hX` into its components or cases. Conclude with `Xb_unit _ _`. Conclude with `h1 X hX`.
+-/
 theorem expand_words (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) :
     ∀ cw ∈ expand k r ts, (∀ X ∈ cw.2, unitLie k r X) ∧ cw.2.length ≤ ts.length := by
   induction ts with
@@ -180,6 +247,9 @@ theorem expand_words (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 
 def foldT (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) (f : Mat k r → E) : Mat k r → E :=
   (ts.map fun t => Top (Q.EH k r) t.1 t.2.1 t.2.2).foldr (fun T h => T h) f
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons i L ih`. Rewrite using `[List.map_cons, List.sum_cons, ih, List.map_cons, List.sum_cons, smul_add, mul_smul]`.
+-/
 theorem sum_map_mul_smul {ι : Type*} (L : List ι) (c : ℂ) (a : ι → ℂ) (x : ι → E) :
     (L.map fun i => (c * a i) • x i).sum = c • (L.map fun i => a i • x i).sum := by
   induction L with
@@ -187,6 +257,17 @@ theorem sum_map_mul_smul {ι : Type*} (L : List ι) (c : ℂ) (a : ι → ℂ) (
   | cons i L ih =>
     rw [List.map_cons, List.sum_cons, ih, List.map_cons, List.sum_cons, smul_add, mul_smul]
 
+/- English proof (translation)
+Proceed by induction on `ts with`. Consider the case `nil`. Introduce `f g _ _`. Simplify using `[foldT, expand, Rw]`. Consider the case `cons t ts ih`.
+
+Introduce `f g hg hloc`. Take `⟨U, hU, hgU, hUloc⟩` from `loc_spread (loc_mono (m := (ts.length : ℕ∞)) (by exact_mod_cast Nat.le_succ ts.length) hloc)`. Establish `heq : ∀ x ∈ U, x ∈ GV k r → foldT ts f x = ((expand k r ts).map fun cw => cw.1 • Rw cw.2 f x).sum` using `fun x hx hxG => ih f x hxG (hUloc x hx)`. Establish `hlocw : ∀ cw ∈ expand k r ts, Loc 1 (Rw cw.2 f) g`. Introduce `cw hcw`.
+
+Take `⟨h1, h2⟩` from `expand_words ts cw hcw`. Simplify using `using loc_Rw hloc cw.2 (fun X hX => And.left (h1 X hX)) 1 (by simp only [List.length_cons]; omega)`. Establish `hR : ∀ Y, inLie k r Y → RdV Y (foldT ts f) g = ((expand k r ts).map fun cw => cw.1 • Rw (Y :: cw.2) f g).sum`. Introduce `Y hY`. Rewrite using `[rdV_congr hU hgU hg hY heq]`.
+
+Conclude with `rdV_sum (expand k r ts) (fun cw => cw.1) (fun cw => Rw cw.2 f) hg hY hlocw`. Establish `hXa : inLie k r (Xa k r t.2.1 t.2.2)` using `And.left (Xa_unit _ _)`. Establish `hXb : inLie k r (Xb k r t.2.1 t.2.2)` using `And.left (Xb_unit _ _)`. Use `show Top (Q.EH k r) t.1 t.2.1 t.2.2 (foldT ts f) g = _`. Rewrite using `[top_apply', EH_apply, hR _ hXa, hR _ hXb, heq g hgU hg]`.
+
+Simplify using `only [expand, List.map_append, List.sum_append, List.map_map, Function.comp_def, sum_map_mul_smul]`. Apply the tactic sequence `split_ifs <;> simp [add_assoc]`.
+-/
 theorem expand_eq (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) :
     ∀ (f : Mat k r → E) (g : Mat k r), g ∈ GV k r → Loc (ts.length : ℕ∞) f g →
       foldT ts f g = ((expand k r ts).map fun cw => cw.1 • Rw cw.2 f g).sum := by
@@ -218,12 +299,26 @@ theorem expand_eq (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))
     simp only [expand, List.map_append, List.sum_append, List.map_map, Function.comp_def, sum_map_mul_smul]
     split_ifs <;> simp [add_assoc]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [List.flatMap_cons, List.map_append, List.sum_append, ih]`.
+-/
 theorem sum_flatMap {α β : Type*} (l : List α) (φ : α → List β) (ψ : β → E) :
     ((l.flatMap φ).map ψ).sum = (l.map fun a => ((φ a).map ψ).sum).sum := by
   induction l with
   | nil => simp
   | cons a l ih => simp [List.flatMap_cons, List.map_append, List.sum_append, ih]
 
+/- English proof (translation)
+Establish `hm : Q.mdim k r 0 = 2 * r + k + 1` using `by simp [Q.mdim]`. Set `ts : Equiv.Perm (Fin (Q.mdim k r 0)) → List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))` to `fun σ => List.ofFn fun j : Fin (Q.mdim k r 0) => (Q.uC k r 0 Y - ((j : ℕ) : ℂ), Q.posL k r 0 (σ j), Q.posL k r 0 j)`. Use `⟨(Finset.univ : Finset (Equiv.Perm (Fin (Q.mdim k r 0)))).toList.flatMap (fun σ => (expand k r (ts σ)).map fun cw => (((Equiv.Perm.sign σ : ℤ) : ℂ) * cw.1, cw.2)), ?_, ?_⟩` and prove the remaining obligations. Introduce `cw hcw`. Simplify using `only [List.mem_flatMap, List.mem_map] at hcw`.
+
+Take `⟨σ, _, cw', hm', rfl⟩` from `hcw`. Use `expand_words (k := k) (r := r) (ts σ) cw' hm'` as an intermediate fact. Use `⟨this.1, this.2.trans ?_⟩` and prove the remaining obligations. Simplify using `[ts, hm]`. Introduce `E _ _ UU f hf g hgU hg`.
+
+Establish `hloc : ∀ σ, Loc ((ts σ).length : ℕ∞) f g`. Introduce `σ`. Take `⟨U, f', a, b, c, d⟩` from `hf g hgU`. Use `⟨U, f', a, b, ?_, d⟩` and prove the remaining obligations. Simplify `c` using `[ts, hm]`.
+
+Establish `e1 : Q.CV k r Y f g = ∑ σ, (((Equiv.Perm.sign σ : ℤ) : ℂ)) • foldT (ts σ) f g`. Simplify using `only [Q.CV, Q.capL, qminorOp, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Use `congr 1`. Simplify using `only [foldT, ts, List.map_ofFn]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, sum_flatMap, Finset.sum_map_toList]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[expand_eq (ts σ) f g hg (hloc σ), List.map_map, ← sum_map_mul_smul]`. Both sides reduce to the same expression.
+-/
 theorem cvWordSumG (k r : ℕ) (Y : ℂ) : ∃ L : List (ℂ × List (B.Mat k r)),
     (∀ cw ∈ L, (∀ X ∈ cw.2, B.unitLie k r X) ∧ cw.2.length ≤ 2 * r + k + 1) ∧
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (UU : Set (B.Mat k r)) (f : B.Mat k r → E),
@@ -260,6 +355,9 @@ theorem cvWordSumG (k r : ℕ) (Y : ℂ) : ∃ L : List (ℂ × List (B.Mat k r)
 
 end Formalism.FourierDecayAlt.P.CapelliWordSumExpansion
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.CapelliWordSumExpansion.cvWordSumG k r Y`.
+-/
 theorem Formalism.FourierDecayAlt.P.capelli_word_sum_general (k r : ℕ) (Y : ℂ) : ∃ L : List (ℂ × List (Formalism.FourierDecayAlt.B.Mat k r)),
     (∀ cw ∈ L, (∀ X ∈ cw.2, Formalism.FourierDecayAlt.B.unitLie k r X) ∧ cw.2.length ≤ 2 * r + k + 1) ∧
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (UU : Set (Formalism.FourierDecayAlt.B.Mat k r))
@@ -268,5 +366,8 @@ theorem Formalism.FourierDecayAlt.P.capelli_word_sum_general (k r : ℕ) (Y : �
         Formalism.FourierDecayAlt.Q.CV k r Y f g = (L.map fun cw => cw.1 • Formalism.FourierDecayAlt.B.Rw cw.2 f g).sum :=
   Formalism.FourierDecayAlt.P.CapelliWordSumExpansion.cvWordSumG k r Y
 
+/- English proof (translation)
+Introduce `k r Y` and use `Formalism.FourierDecayAlt.P.CapelliWordSumExpansion.cvWordSumG k r Y`.
+-/
 theorem Formalism.FourierDecayAlt.P.capelli_word_sum : Formalism.FourierDecayAlt.JF.CVWordSum :=
   fun k r Y => Formalism.FourierDecayAlt.P.CapelliWordSumExpansion.cvWordSumG k r Y

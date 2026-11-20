@@ -17,6 +17,9 @@ namespace GlobalTheory.Mem.Df
 
 open Formalism.L2.TwC
 
+/- English proof (translation)
+Establish `hm : z ∈ PadicComplexInt l` using `(Subring.mem_inf.1 hz).2`. Rewrite `hm` using `[PadicComplexInt, Valuation.mem_valuationSubring_iff]`. Rewrite using `[PadicComplex.norm_eq_norm]`. Conclude with `(Valued.toNormedField.norm_le_one_iff).2 hm`.
+-/
 theorem norm_le_one_of_mem_clC' (l : ℕ) [Fact l.Prime] (F : IntermediateField ℚ_[l] (PadicAlgCl l)) {z : ℂ_[l]}
     (hz : z ∈ clC l F) : ‖z‖ ≤ 1 := by
   have hm : z ∈ PadicComplexInt l := (Subring.mem_inf.1 hz).2
@@ -24,6 +27,17 @@ theorem norm_le_one_of_mem_clC' (l : ℕ) [Fact l.Prime] (F : IntermediateField 
   rw [PadicComplex.norm_eq_norm]
   exact (Valued.toNormedField.norm_le_one_iff).2 hm
 
+/- English proof (translation)
+Set `ψ : O →+* ℂ_[l]` to `(clC l F).subtype.comp e.toRingHom`. Establish `hψ : Function.Injective ψ` using `fun a b h => e.injective (Subtype.ext h)`. Set `iC : FractionRing O →+* ℂ_[l]` to `IsFractionRing.lift hψ`. Establish `hiC : ∀ a : O, iC (algebraMap O (FractionRing O) a) = ψ a` using `fun a => IsFractionRing.lift_algebraMap hψ a`. Use `⟨iC, fun x => ⟨fun hx => ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := O) x`. Establish `hb0 : algebraMap O (FractionRing O) b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `hψb : ψ b ≠ 0`. Rewrite using `[← hiC]`. Conclude with `(map_ne_zero iC).2 hb0`.
+
+Rewrite `hx` using `[map_div₀, hiC, hiC, norm_div, div_le_one (norm_pos_iff.2 hψb)]`. Establish `hmem` using `hratio _ (e a).2 _ (e b).2 hx`. Use `⟨e.symm ⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Apply `iC.injective` to reduce the goal to its premises. Rewrite using `[hiC, map_div₀, hiC, hiC]`.
+
+Use `show ((e (e.symm ⟨_, hmem⟩) : clC l F) : ℂ_[l]) = _`. Rewrite using `[e.apply_symm_apply]`. Both sides reduce to the same expression. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[hiC]`.
+
+Conclude with `norm_le_one_of_mem_clC' l F (e a).2`.
+-/
 theorem exists_iC_of_clC (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O]
     (F : IntermediateField ℚ_[l] (PadicAlgCl l)) (e : O ≃+* clC l F)
     (hratio : ∀ x ∈ clC l F, ∀ y ∈ clC l F, ‖x‖ ≤ ‖y‖ → x / y ∈ clC l F) :

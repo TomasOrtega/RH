@@ -5,6 +5,15 @@ open CategoryTheory Polynomial GlobalTheory.NormalDescent TensorProduct
 
 namespace GlobalTheory.NormalDescent
 
+/- English proof (translation)
+Introduce `A B K _ _ _ _ _ _ _ φ hφ b`. Use `letI := φ.toAlgebra`. Use `haveI : Module.Finite A B := hφ`. Take `⟨g, hgm, hg⟩` from `(Algebra.IsIntegral.isIntegral (R := A) b)`. Establish `hT : aeval (Algebra.lmul K (K ⊗[A] B) (1 ⊗ₜ b)) (g.map (algebraMap A K)) = 0`.
+
+Rewrite using `[Polynomial.aeval_algHom_apply, Polynomial.aeval_map_algebraMap]`. Establish `: (1 : K) ⊗ₜ[A] b = Algebra.TensorProduct.includeRight b` using `rfl`. Rewrite using `[this, Polynomial.aeval_algHom_apply, show aeval b g = 0 from hg, map_zero, map_zero]`. Establish `hd` using `GlobalTheory.T.charpoly_dvd_pow_finrank_of_aeval_eq_zero _ _ hT`. Rewrite `hd` using `[← Polynomial.map_pow]`.
+
+Take `⟨P, hP⟩` from `IsIntegrallyClosed.eq_map_mul_C_of_dvd K (hgm.pow _) hd`. Use `⟨P, ?_⟩` and prove the remaining obligations. Establish `hm : (charK φ hφ K b).Monic` using `charK_monic φ hφ K b`. Establish `: (Algebra.lmul K (K ⊗[A] B) (1 ⊗ₜ b)).charpoly = charK φ hφ K b` using `rfl`. Rewrite `hP` using `[this, hm.leadingCoeff, C_1, mul_one]`.
+
+Conclude with `hP`.
+-/
 theorem exists_map_eq_charK : ∀ {A B K : Type} [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [CommRing B] [Field K]
     [Algebra A K] [IsFractionRing A K] (φ : A →+* B) (hφ : φ.Finite) (b : B),
     ∃ P : A[X], P.map (algebraMap A K) = charK φ hφ K b := by

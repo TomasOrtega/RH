@@ -1,6 +1,25 @@
 import Mathlib
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `ι _ g b hb hg`. Use `choose C hC using hg`. Establish `hC0 : ∀ i, 0 ≤ C i` using `fun i => by`. Establish `h` using `hC i 0`. Simplify using `only [abs_zero, add_zero, Real.one_rpow, mul_one] at h`.
+
+Conclude with `(norm_nonneg _).trans h`. Use `set n : ℝ := (Fintype.card ι : ℝ) with hn`. Use `Asymptotics.IsBigO.of_bound ((∏ i, C i) * n ^ b) ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ v : EuclideanSpace ℝ ι in Filter.cocompact _, 0 < ‖v‖` using `tendsto_norm_cocompact_atTop.eventually (Filter.eventually_gt_atTop 0)`. Use `filter_upwards [hev] with v hv`.
+
+Establish `hne : Nonempty ι`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Establish `: v = 0` using `Subsingleton.elim _ _`. Simplify using `[this] at hv`.
+
+Take `⟨i₀, -, hi₀⟩` from `Finset.exists_max_image Finset.univ (fun i => |v i|) Finset.univ_nonempty`. Establish `hn1 : (1:ℝ) ≤ n` using `by rw [hn]; exact_mod_cast Fintype.card_pos`. Establish `hnorm : ‖v‖ ≤ n * |v i₀|`. Establish `h2 : ‖v‖ ^ 2 ≤ (n * |v i₀|) ^ 2`. Rewrite using `[EuclideanSpace.norm_sq_eq]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.norm_eq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hi₀ i (Finset.mem_univ _)) 2`. Use `_ = n * |v i₀| ^ 2 := by simp [hn]`. Use `_ ≤ (n * |v i₀|) ^ 2 := by`.
+
+Rewrite using `[mul_pow]; exact mul_le_mul_of_nonneg_right (by nlinarith) (sq_nonneg _)`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h2`. Establish `hnpos : 0 < n` using `by linarith`. Establish `hpos : 0 < ‖v‖ / n` using `by positivity`. Establish `hle : ‖v‖ / n ≤ 1 + |v i₀|`.
+
+Rewrite using `[div_le_iff₀ hnpos]`. Use polynomial arithmetic with `[abs_nonneg (v i₀)]`. Establish `hw : (1 + |v i₀|) ^ (-b) ≤ n ^ b * ‖v‖ ^ (-b)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow (norm_nonneg _) hnpos.le, Real.rpow_neg hnpos.le, div_inv_eq_mul, mul_comm]`.
+
+Establish `hrest : ∏ i ∈ Finset.univ.erase i₀, ‖g i (v i)‖ ≤ ∏ i ∈ Finset.univ.erase i₀, C i` using `Finset.prod_le_prod (fun i _ => norm_nonneg _) (fun i _ => (hC i (v i)).trans (mul_le_of_le_one_right (hC0 i) (Real.rpow_le_one_of_one_le_of_nonpos (by linarith [abs_nonneg (v i)]) (by linarith))))`. Establish `h0 : ‖g i₀ (v i₀)‖ ≤ C i₀ * (n ^ b * ‖v‖ ^ (-b))` using `(hC i₀ _).trans (mul_le_mul_of_nonneg_left hw (hC0 i₀))`. Establish `hsplitg` using `Finset.mul_prod_erase Finset.univ (fun i => ‖g i (v i)‖) (Finset.mem_univ i₀)`. Establish `hsplitC` using `Finset.mul_prod_erase Finset.univ C (Finset.mem_univ i₀)`. Rewrite using `[norm_prod, Real.norm_of_nonneg (Real.rpow_nonneg (norm_nonneg _) _), ← hsplitg, ← hsplitC]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.prod_rpow_decay_isBigO_cocompact : ∀ (ι : Type) [Fintype ι] (g : ι → ℝ → ℂ) (b : ℝ), 0 ≤ b → (∀ i, ∃ C : ℝ, ∀ t : ℝ, ‖g i t‖ ≤ C * (1 + |t|) ^ (-b)) → (fun v : EuclideanSpace ℝ ι => ∏ i, g i (v i)) =O[Filter.cocompact (EuclideanSpace ℝ ι)] (fun v => ‖v‖ ^ (-b)) := by
   intro ι _ g b hb hg
   classical

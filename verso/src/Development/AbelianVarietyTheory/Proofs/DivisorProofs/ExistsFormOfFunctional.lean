@@ -6,6 +6,19 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 
 namespace GlobalTheory.FlagPoly
 
+/- English proof (translation)
+Introduce `ι _ _ N d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `Φ`. Use `⟨C (Φ 1), isHomogeneous_C _ _, fun lam => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[ev]`. Consider the case `succ d ih`. Introduce `Φ`. Use `choose P hP hev using fun x : ι × Fin N => ih (Φ ∘ₗ LinearMap.mulLeft ℝ (-X x : Pol ι N))`. Use `⟨∑ x, X x * P x, ?_, fun lam => ?_⟩` and prove the remaining obligations.
+
+Use `IsHomogeneous.sum _ _ _ fun x _ => ?_` and prove the remaining obligations. Use `(isHomogeneous_X ℝ x).mul (hP x)` as an intermediate fact. Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Establish `h1 : linRoot lam ^ (d + 1) = ∑ x : ι × Fin N, lam x.1 x.2 • (-X x * linRoot lam ^ d)`. Establish `h0 : linRoot lam = ∑ x : ι × Fin N, lam x.1 x.2 • (-X x : Pol ι N)`.
+
+Simplify using `[linRoot, smul_eq_C_mul]`. Rewrite using `[pow_succ']`. Use `conv_lhs => enter [1]`. Rewrite using `[h0]`. Rewrite using `[Finset.sum_mul]`.
+
+Simplify using `only [smul_mul_assoc]`. Rewrite using `[h1, map_sum]`. Unfold `ev`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Use `hev x lam` as an intermediate fact. Unfold `ev at this`. Rewrite using `[map_mul, this, map_smul, eval_X]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_form_of_functional : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (d : ℕ) (Φ : Pol ι N →ₗ[ℝ] ℝ), ∃ P : Pol ι N, P.IsHomogeneous d ∧ ∀ lam : ι → Fin N → ℝ, ev lam P = Φ (linRoot lam ^ d) := by
   intro ι _ _ N d
   induction d with

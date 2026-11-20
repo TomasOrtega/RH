@@ -12,6 +12,9 @@ noncomputable section
 
 namespace SegreFlagClosureTrdeg
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Introduce `j _ hj`. Establish `hjk : ¬ (j : ℕ) < k` using `fun h => hj (Finset.mem_map.2 ⟨⟨j, h⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Simplify using `[flagCoord, hjk]`.
+-/
 theorem sum_flagCoord {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Module Ω E] {Φ : Type*} [Field Φ]
     [Algebra Ω Φ] {N k : ℕ} (hkN : k ≤ N) (w e : Module.Basis (Fin N) Ω E) (t : Fin N → Φ) (a : Fin N → Φ) :
     ∑ j, flagCoord w e t k j * a j =
@@ -24,6 +27,11 @@ theorem sum_flagCoord {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Modu
   have hjk : ¬ (j : ℕ) < k := fun h => hj (Finset.mem_map.2 ⟨⟨j, h⟩, Finset.mem_univ _, Fin.ext rfl⟩)
   simp [flagCoord, hjk]
 
+/- English proof (translation)
+Set `_` to `w.invertibleToMatrix e`. Establish `hS` using `PairConeLinesIndep.linearChange_indep (w.toMatrix e) (isUnit_of_invertible _) t ht`. Establish `h` using `hS.comp (Fin.castLE hkN) (Fin.castLE_injective hkN)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Simplify using `[flagCoord, Module.Basis.toMatrix_apply, j.isLt]`.
+-/
 theorem flagCoord_indep {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Module Ω E] {Φ : Type} [Field Φ]
     [Algebra Ω Φ] {N k : ℕ} (hkN : k ≤ N) (w e : Module.Basis (Fin N) Ω E) (t : Fin N → Φ)
     (ht : AlgebraicIndependent Ω t) :
@@ -40,6 +48,37 @@ end SegreFlagClosureTrdeg
 
 open SegreFlagClosureTrdeg in
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ _ _ _ _ e t ht k hk hkN`. Take `⟨l, m', hl, hm', hal⟩` from `halg O ϖ hϖ Ω K ι y d hV N E B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht k hk hkN`. Use `set z := flagClosurePt y w e φ φ' t k with hzdef`. Set `gV : (Σ k, ι k) → MvPolynomial (Option (Option K)) Φ` to `fun q => C (algebraMap Ω Φ (y q)) * X (some (some q.1))`. Set `gZ : (Σ o, bundleIdx (bundleIdx ι M) M' o) → MvPolynomial (Option (Option K)) Φ` to `fun p => C (z p) * X p.1`.
+
+Set `xs : Fin k ⊕ Unit → MvPolynomial (Option (Option K)) Φ` to `Sum.elim (fun i : Fin k => C (z ⟨some none, l i⟩) * X (some none)) (fun _ : Unit => C (z ⟨none, m'⟩) * X none)`. Establish `hOΩ : Function.Injective (algebraMap O Ω)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `hmem : a ∈ (pointIdeal O y).comap (C : O →+* MRing ι O)`.
+
+Rewrite using `[Ideal.mem_comap, pointIdeal, RingHom.mem_ker, pointConeMap, aeval_C, MvPolynomial.algebraMap_apply, ha, map_zero]`. Rewrite `hmem` using `[hV.noTorsion]`. Simplify using `using hmem`. Establish `hOL : Function.Injective (algebraMap O (MvPolynomial (Option (Option K)) Φ))`. Rewrite using `[IsScalarTower.algebraMap_eq O Φ (MvPolynomial (Option (Option K)) Φ), IsScalarTower.algebraMap_eq O Ω Φ, MvPolynomial.algebraMap_eq]`.
+
+Conclude with `(C_injective _ _).comp ((algebraMap Ω Φ).injective.comp hOΩ)`. Establish `hZ : Algebra.trdeg O (MRing (bundleIdx (bundleIdx ι M) M') O ⧸ pointIdeal O z) = Algebra.trdeg O (Algebra.adjoin O (Set.range gZ))`. Establish `e1` using `(Ideal.quotientKerEquivRange (pointConeMap O z)).trdeg_eq`. Establish `e2 : (pointConeMap O z).range = Algebra.adjoin O (Set.range gZ)` using `aeval_range _`. Rewrite `e1` using `[e2]`.
+
+Conclude with `e1`. Establish `hw : AlgebraicIndependent Ω (fun k : K => (X (some (some k)) : MvPolynomial (Option (Option K)) Φ))` using `((algebraicIndependent_X (Option (Option K)) Φ).restrictScalars (algebraMap Ω Φ).injective).comp _ ((Option.some_injective _).comp (Option.some_injective _))`. Set `j : MvPolynomial K Ω →ₐ[O] MvPolynomial (Option (Option K)) Φ` to `(aeval fun k : K => (X (some (some k)) : MvPolynomial (Option (Option K)) Φ)).restrictScalars O`. Establish `hjc : j.comp (pointConeMap O y) = aeval gV`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `q`. Simplify using `[j, gV, pointConeMap, MvPolynomial.algebraMap_apply]`. Establish `hV' : Algebra.trdeg O (MRing ι O ⧸ pointIdeal O y) = Algebra.trdeg O (Algebra.adjoin O (Set.range gV))`. Establish `e1` using `(Ideal.quotientKerEquivRange (pointConeMap O y)).trdeg_eq`. Establish `e2` using `((pointConeMap O y).range.equivMapOfInjective j hw).trdeg_eq`.
+
+Rewrite `e2` using `[← AlgHom.range_comp, hjc, aeval_range]`. Conclude with `e1.trans e2`. Establish `hVZ : Set.range gV ⊆ Set.range gZ`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨⟨some (some q.1), q.2⟩, rfl⟩`.
+
+Establish `hxZ : Set.range xs ⊆ Set.range gZ`. Introduce and unpack `_ ⟨i | _, rfl⟩`. Conclude with `⟨⟨some none, l i⟩, rfl⟩`. Conclude with `⟨⟨none, m'⟩, rfl⟩`. Set `b` to `Pi.basisFun Ω (Fin k)`.
+
+Set `ψ : Fin k → Module.Dual Ω (Fin k → Ω)` to `fun i => b.dualBasis.equivFun.symm (fun j => φ (l i) (w (Fin.castLE hkN j)))`. Establish `hψb : ∀ i j, ψ i (b j) = φ (l i) (w (Fin.castLE hkN j))`. Introduce `i j`. Rewrite using `[← Module.Basis.dualBasis_equivFun]`. Simplify using `[ψ, Finsupp.single_apply]`.
+
+Establish `hψ : LinearIndependent Ω ψ` using `hl.map' b.dualBasis.equivFun.symm.toLinearMap b.dualBasis.equivFun.symm.ker`. Establish `hind'` using `PairConeLinesIndep.proof Ω Φ K k (Fin k → Ω) b ψ hψ (fun j => flagCoord w e t k (Fin.castLE hkN j)) (flagCoord_indep hkN w e t ht) _ hm'`. Establish `hxs : xs = Sum.elim (fun i : Fin k => C (∑ j, flagCoord w e t k (Fin.castLE hkN j) * algebraMap Ω Φ (ψ i (b j))) * X (some none)) (fun _ : Unit => (C (z ⟨none, m'⟩) * X none : MvPolynomial (Option (Option K)) Φ))`. Use function extensionality and compare the values at `i`. Break down `i with i | _` into its components or cases.
+
+Simplify using `only [xs, Sum.elim_inl, hψb]`. Use `congr 2`. Conclude with `sum_flagCoord hkN w e t _`. Both sides reduce to the same expression. Rewrite `hind'` using `[← hxs]`.
+
+Establish `hle : ∀ a ∈ Algebra.adjoin O (Set.range gV), a ∈ Algebra.adjoin Ω (Set.range fun k : K => (X (some (some k)) : MvPolynomial (Option (Option K)) Φ))`. Introduce `a ha`. Use `Algebra.adjoin_le (S := (Algebra.adjoin Ω (Set.range fun k : K => (X (some (some k)) : MvPolynomial (Option (Option K)) Φ))).restrictScalars O) ?_ ha` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_restrictScalars]`.
+
+Establish `hc : (C (algebraMap Ω Φ (y q)) : MvPolynomial (Option (Option K)) Φ) ∈ Algebra.adjoin Ω (Set.range fun k : K => (X (some (some k)) : MvPolynomial (Option (Option K)) Φ))`. Rewrite using `[← MvPolynomial.algebraMap_apply]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Conclude with `Subalgebra.mul_mem _ hc (Algebra.subset_adjoin ⟨q.1, rfl⟩)`. Set `fr : Algebra.adjoin O (Set.range gV) →+* Algebra.adjoin Ω (Set.range fun k : K => (X (some (some k)) : MvPolynomial (Option (Option K)) Φ))` to `{ toFun := fun a => ⟨a, hle a a.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`.
+
+Set `_ : Algebra (Algebra.adjoin O (Set.range gV)) (Algebra.adjoin Ω (Set.range fun k : K => (X (some (some k)) : MvPolynomial (Option (Option K)) Φ)))` to `fr.toAlgebra`. Establish `: IsScalarTower (Algebra.adjoin O (Set.range gV)) (Algebra.adjoin Ω (Set.range fun k : K => (X (some (some k)) : MvPolynomial (Option (Option K)) Φ))) (MvPolynomial (Option (Option K)) Φ)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hxind : AlgebraicIndependent (Algebra.adjoin O (Set.range gV)) xs` using `hind'.restrictScalars (K := Algebra.adjoin Ω (Set.range fun k : K => (X (some (some k)) : MvPolynomial (Option (Option K)) Φ))) fun a b h => Subtype.ext (congrArg Subtype.val h :)`. Establish `key` using `AdjoinTrdegAdd.proof O (MvPolynomial (Option (Option K)) Φ) hOL (Set.range gV) (Set.range gZ) (Fin k ⊕ Unit) xs hxZ hxind (by rintro _ ⟨p, rfl⟩; exact hal p)`. Rewrite `key` using `[Set.union_eq_right.mpr hVZ]`.
+
+Rewrite using `[hZ, hV', key, Fintype.card_sum, Fintype.card_fin, Fintype.card_unit]`.
+-/
 theorem SegreFlagClosureTrdeg.proof (halg : SegreFlagConeAlg.Statement) : SegreFlagClosureTrdeg.Statement := by
   intro O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ _ _ _ _ e t ht
     k hk hkN

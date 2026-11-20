@@ -5,6 +5,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.FlatLocCompl
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, -, rfl⟩`. Conclude with `⟨e, by rw [Algebra.smul_def, map_pow]⟩`. Introduce and unpack `⟨e, rfl⟩`.
+
+Conclude with `⟨e, Submodule.mem_top, by rw [Algebra.smul_def, map_pow]⟩`.
+-/
 theorem mem_pow_smul_top_iff {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (r : R) (k : ℕ) (z : S) :
     z ∈ ((Ideal.span {r}) ^ k • ⊤ : Submodule R S) ↔ z ∈ Ideal.span {(algebraMap R S r) ^ k} := by
   rw [Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists,
@@ -15,10 +20,36 @@ theorem mem_pow_smul_top_iff {R S : Type} [CommRing R] [CommRing S] [Algebra R S
   · rintro ⟨e, rfl⟩
     exact ⟨e, Submodule.mem_top, by rw [Algebra.smul_def, map_pow]⟩
 
+/- English proof (translation)
+Rewrite using `[mem_pow_smul_top_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_pow_smul_top_self_iff {R : Type} [CommRing R] (r : R) (k : ℕ) (z : R) :
     z ∈ ((Ideal.span {r}) ^ k • ⊤ : Submodule R R) ↔ z ∈ Ideal.span {r ^ k} := by
   rw [mem_pow_smul_top_iff]; rfl
 
+/- English proof (translation)
+Use `set I : Ideal B := Ideal.span {p} with hI`. Use `haveI : IsAdicComplete I E := by`. Rewrite using `[← IsAdicComplete.map_algebraMap_iff (S := E)]`. Rewrite using `[hI, Ideal.map_span, Set.image_singleton]` and apply the resulting hypothesis. Set `f : B →ₗ[B] E` to `Algebra.linearMap B E`.
+
+Establish `hle : ∀ k, (I ^ k • ⊤ : Submodule B B) ≤ (I ^ k • ⊤ : Submodule B E).comap f`. Introduce `k z hz`. Rewrite using `[Submodule.mem_comap, mem_pow_smul_top_iff]`. Rewrite `hz` using `[mem_pow_smul_top_self_iff, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hz`.
+
+Conclude with `Ideal.mem_span_singleton.2 ⟨algebraMap B E c, by simp [f, map_pow]⟩`. Set `fk : ∀ k : ℕ, AdicCompletion I B →ₗ[B] E ⧸ (I ^ k • ⊤ : Submodule B E)` to `fun k => (Submodule.mapQ _ _ f (hle k)) ∘ₗ AdicCompletion.eval I B k`. Establish `hfk : ∀ {m n : ℕ} (hmn : m ≤ n), Submodule.factorPow I E hmn ∘ₗ fk n = fk m`. Introduce `m n hmn`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Simplify using `only [fk, LinearMap.comp_apply, AdicCompletion.eval_apply]`. Rewrite using `[← AdicCompletion.transitionMap_comp_eval_apply I B hmn x]`. Take `⟨b, hb⟩` from `Submodule.Quotient.mk_surjective _ (x.val n)`. Rewrite using `[← hb]`. Both sides reduce to the same expression.
+
+Set `G : AdicCompletion I B →ₗ[B] E` to `IsAdicComplete.lift I fk hfk`. Establish `hG : ∀ k x, Submodule.Quotient.mk (p` using `(I ^ k • ⊤ : Submodule B E)) (G x) = fk k x := fun k x => IsAdicComplete.mk_lift I hfk k x`. Establish `hbij : Function.Bijective G`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Use extensionality with `k`. Establish `h1` using `hG k x`. Rewrite `h1` using `[hx, Submodule.Quotient.mk_zero]`. Take `⟨b, hb⟩` from `Submodule.Quotient.mk_surjective _ (x.val k)`.
+
+Establish `h2 : fk k x = Submodule.Quotient.mk (f b)`. Simplify using `only [fk, LinearMap.comp_apply, AdicCompletion.eval_apply, ← hb]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, eq_comm, Submodule.Quotient.mk_eq_zero, mem_pow_smul_top_iff]`. Rewrite using `[← hb, AdicCompletion.val_zero_apply, Submodule.Quotient.mk_eq_zero, mem_pow_smul_top_self_iff]`.
+
+Conclude with `hinj b k h1`. Introduce `y choose b hb using fun k => hden y k`. Establish `hcau : ∀ k, b k ≡ b (k + 1) [SMOD (I ^ k • ⊤ : Submodule B B)]`. Introduce `k`. Rewrite using `[SModEq.sub_mem, mem_pow_smul_top_self_iff]`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `h3 : algebraMap B E (b k - b (k + 1)) = (algebraMap B E (b k) - y) - (algebraMap B E (b (k + 1)) - y)` using `by rw [map_sub]; ring`. Rewrite using `[h3]`. Use `Ideal.sub_mem _ (hb k) ?_` and prove the remaining obligations. Use `Ideal.span_singleton_le_span_singleton.2 ?_ (hb (k + 1))` and prove the remaining obligations.
+
+Conclude with `pow_dvd_pow _ (Nat.le_succ k)`. Use `⟨AdicCompletion.mk I B (AdicCompletion.AdicCauchySequence.mk I B b hcau), ?_⟩` and prove the remaining obligations. Rewrite using `[IsHausdorff.eq_iff_smodEq (I := I)]`. Introduce `k`. Rewrite using `[SModEq, hG]`.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (f (b k)) = Submodule.Quotient.mk y`. Rewrite using `[← SModEq, SModEq.sub_mem, mem_pow_smul_top_iff]`. Conclude with `hb k`. Conclude with `Module.Flat.of_linearEquiv (LinearEquiv.ofBijective G hbij).symm`.
+-/
 theorem flat_of_levels {B E : Type} [CommRing B] [IsNoetherianRing B] [CommRing E] [Algebra B E] (p : B)
     (hc : IsAdicComplete (Ideal.span {algebraMap B E p}) E)
     (hinj : ∀ (b : B) (k : ℕ), algebraMap B E b ∈ Ideal.span {(algebraMap B E p) ^ k} →
@@ -87,6 +118,21 @@ end GlobalTheory.FlatLocCompl
 
 namespace GlobalTheory.FlatLocCompl
 
+/- English proof (translation)
+Set `B` to `Localization.Away (letπ : LetA O n)`. Set `g : B →+* E` to `IsLocalization.Away.lift (S := B) (letπ : LetA O n) hπ`. Use `letI : Algebra B E := g.toAlgebra`. Establish `hg : ∀ a : LetA O n, algebraMap B E (algebraMap (LetA O n) B a) = algebraMap (LetA O n) E a` using `fun a => IsLocalization.Away.lift_eq (S := B) (letπ : LetA O n) hπ a`. Use `haveI : IsScalarTower (LetA O n) B E := IsScalarTower.of_algebraMap_eq fun a => (hg a).symm`.
+
+Establish `hp : algebraMap B E (p : B) = (p : E)` using `map_natCast _ _`. Use `haveI : Module.Flat B E := by`. Use `flat_of_levels (p : B) (by rwa [hp]) ?_ ?_` and prove the remaining obligations. Introduce `b k hb`. Rewrite `hb` using `[hp]`.
+
+Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers (letπ : LetA O n)) b`. Establish `h1 : IsLocalization.mk' B a s * algebraMap (LetA O n) B s = algebraMap (LetA O n) B a` using `IsLocalization.mk'_spec B a s`. Establish `h2 : algebraMap (LetA O n) E a ∈ Ideal.span {(p : E) ^ k}`. Rewrite using `[← hg, ← h1, map_mul]`. Conclude with `Ideal.mul_mem_right _ _ hb`.
+
+Take `⟨c, rfl⟩` from `hsat a k h2`. Use `Ideal.mem_span_singleton.2 ⟨IsLocalization.mk' B c s, ?_⟩` and prove the remaining obligations. Use `show IsLocalization.mk' B ((p : LetA O n) ^ k * c) s = (p : B) ^ k * IsLocalization.mk' B c s`. Rewrite using `[← IsLocalization.mul_mk'_eq_mk'_of_mul, map_pow, map_natCast]`. Introduce `y k`.
+
+Take `⟨a, m, h⟩` from `hden y k`. Set `s : Submonoid.powers (letπ : LetA O n)` to `⟨letπ ^ m, m, rfl⟩`. Use `⟨IsLocalization.mk' B a s, ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Establish `h1 : IsLocalization.mk' B a s * algebraMap (LetA O n) B (letπ ^ m) = algebraMap (LetA O n) B a` using `IsLocalization.mk'_spec B a s`.
+
+Establish `h2 : algebraMap B E (IsLocalization.mk' B a s) * algebraMap (LetA O n) E (letπ ^ m) = algebraMap (LetA O n) E a` using `by rw [← hg, ← hg, ← map_mul, h1]`. Take `⟨v, hv⟩` from `hπ.pow m`. Rewrite `hv` using `[← map_pow]`. Establish `h3 : algebraMap B E (IsLocalization.mk' B a s) - y = -((y * algebraMap (LetA O n) E (letπ ^ m) - algebraMap (LetA O n) E a) * ↑v⁻¹)`. Rewrite using `[← h2, ← hv, neg_mul_eq_neg_mul, neg_sub, ← sub_mul, mul_assoc, Units.mul_inv, mul_one]`.
+
+Rewrite using `[h3]`. Conclude with `(Ideal.neg_mem_iff _).2 (Ideal.mul_mem_right _ _ h)`. Conclude with `Module.Flat.trans (LetA O n) B E`.
+-/
 theorem flat_letA (O : Type) [CommRing O] [IsNoetherianRing O] (n : ℕ) [NeZero n] (E : Type) [CommRing E]
     [Algebra (LetA O n) E] (p : ℕ) (hπ : IsUnit (algebraMap (LetA O n) E letπ))
     (hc : IsAdicComplete (Ideal.span {(p : E)}) E)

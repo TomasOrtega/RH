@@ -14,6 +14,9 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨u, s, rfl, hs, ha, hu⟩` from `h`. Use `⟨rhoVr (labLL D) lam γ u, s, (TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.rhoVr_mapVV lam γ u).symm, hs, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul]`. Conclude with `TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.nabAtr_map _ lam γ Λ _ hu`.
+-/
 private theorem inLat_gl (D : D7) {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (w : PlL D) (a : ℝ)
     (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (γ : GL (Fin n) D.host.E) (v : VV ℂ lam) (h : InLat lam w a Λ v) :
     InLat lam w a (Λ.map ((Matrix.mulVecLin (γ : Matrix (Fin n) (Fin n) D.host.E)).restrictScalars (𝓞 D.host.E)))
@@ -23,6 +26,15 @@ private theorem inLat_gl (D : D7) {n : ℕ} (lam : D.what₂.Tau → DomWeight n
   rw [← map_smul]
   exact TestFunctionNorms.GlobalTheory.CompanionTheory.TestVal.nabAtr_map _ lam γ Λ _ hu
 
+/- English proof (translation)
+Introduce `D n lam w a Λ U v`. Establish `e : SDLat.smulLat U.1 Λ = Λ.map ((Matrix.mulVecLin ((Unitary.toUnits U : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E)).restrictScalars (𝓞 D.host.E))` using `rfl`. Rewrite using `[e]`. Generalize the expression as in `(Unitary.toUnits U : GL (Fin n) D.host.E) = γ`. Use `⟨fun h => ?_, inLat_gl D lam w a Λ γ v⟩` and prove the remaining obligations.
+
+Establish `h2` using `inLat_gl D lam w a _ γ⁻¹ _ h`. Establish `e1 : rhoVr (tauE D) lam γ⁻¹ (rhoVr (tauE D) lam γ v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `e2 : (Λ.map ((Matrix.mulVecLin (γ : Matrix (Fin n) (Fin n) D.host.E)).restrictScalars (𝓞 D.host.E))).map ((Matrix.mulVecLin ((γ⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E)).restrictScalars (𝓞 D.host.E)) = Λ`. Rewrite using `[← Submodule.map_comp]`.
+
+Establish `e3 : ((Matrix.mulVecLin ((γ⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E)).restrictScalars (𝓞 D.host.E)).comp ((Matrix.mulVecLin (γ : Matrix (Fin n) (Fin n) D.host.E)).restrictScalars (𝓞 D.host.E)) = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `show (γ⁻¹).1 *ᵥ (γ.1 *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e3, Submodule.map_id]`.
+
+Rewrite `h2` using `[e1, e2]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.WildA.latMove :
     ∀ (D : D7) {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (w : PlL D) (a : ℝ) (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
       (U : Matrix.unitaryGroup (Fin n) D.host.E) (v : VV ℂ lam),

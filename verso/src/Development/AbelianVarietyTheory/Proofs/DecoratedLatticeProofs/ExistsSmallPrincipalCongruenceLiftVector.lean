@@ -23,6 +23,13 @@ noncomputable section
 
 namespace GlobalTheory.Core.Rk.SmallEx
 
+/- English proof (translation)
+Take `⟨f, f0, hf⟩` from `GlobalTheory.VacuumO.exists_ne_zero ψ θ hψ hθ S T sS sT hS hT ΛS ΛT dS dT`. Take `⟨i1, i2, i3, i4, i5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Set `_ : MeasurableSpace (WO S T)` to `Formalism.IndefR.Datum.measMx _ _`. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`. Establish `h1` using `(hf 1).1`.
+
+Simplify using `only [one_mul] at h1`. Take `⟨⟨μ, 𝓕, hμ⟩, c, hc⟩` from `GlobalTheory.T.exists_normalise_meanSquare_of_cocompact' (WO S T) (ratL T S) K hK hcov f h1.cont f0 (by`. Introduce and unpack `_ ⟨g, rfl⟩ w`. Establish `e` using `h1.quasi g w`. Establish `e'` using `congrArg norm e`.
+
+Rewrite `e'` using `[norm_mul, hψ.1.2.1, one_mul]`. Conclude with `e')`. Conclude with `⟨fun w => c * f w, hψ, hθ, (hf c).1, (hf c).2.1, (hf c).2.2, ⟨(μ, 𝓕), hμ⟩, fun p hp => hc p.1 p.2 hp.1 hp.2.1 hp.2.2⟩`.
+-/
 theorem exists_isVacO {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -44,6 +51,11 @@ theorem exists_isVacO {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) 
   exact ⟨fun w => c * f w, hψ, hθ, (hf c).1, (hf c).2.1, (hf c).2.2, ⟨(μ, 𝓕), hμ⟩,
     fun p hp => hc p.1 p.2 hp.1 hp.2.1 hp.2.2⟩
 
+/- English proof (translation)
+Introduce `D ψ θ A H χA om sA sH hθ _ hW hA hH _ β Z hP`. Establish `dA` using `GlobalTheory.Core.Rk.AbsConv.isSelfDualC_frameLat A`. Establish `dH` using `GlobalTheory.Core.Rk.AbsConv.isSelfDualC_frameLat H`. Take `⟨βH, hβH⟩` from `GlobalTheory.AdelicFrame.exists_isFrame (F := D.host.F) (frameLat H) dH.1.fg dH.1.span_eq_top`. Take `⟨f₀, hf₀⟩` from `exists_isVacO ψ θ hW.std hθ A H sA sH hA hH _ _ dA dH`.
+
+Establish `hsp : ∃ e : AE D, IsIdemSum e ((prinDat A Z).Pg ∪ ∅)`. Take `⟨e, he⟩` from `hP.idem`. Conclude with `⟨e, by rw [Finset.union_empty]; exact he⟩`. Take `⟨f, hf⟩` from `GlobalTheory.PlaceDatum.stepVecExists D ψ θ A H sA sH (frameLat A) (frameLat H) β βH (prinDat A Z) (fun _ => 1) ∅ (fun _ => 1) dA dH hP.frame hβH (Finset.disjoint_empty_right _) hsp f₀ hf₀`. Conclude with `⟨βH, f₀, f, hβH, hf⟩`.
+-/
 theorem exists_small_stepVec : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A H : HSp D) (χA : (AE D)ˣ →* Circle) (om : WRep A H) (sA : RealMat A) (sH : RealMat H), IsInfFam θ → (∃ η, GlobalTheory.WeilParts.IsEtaTilde D η) → IsWeilDatumO ψ A H χA 1 om → (∀ τ, IsCartanInv (gramAt D A τ) (sA τ)) → (∀ τ, IsCartanInv (gramAt D H τ) (sH τ)) → A.rank ≤ H.rank → ∀ (β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D)) (Z : Finset (Formalism.L2.DIV.Pl D.host.E)), Places A β Z → ∃ (βH : GL (Fin H.rank) (Formalism.IndefR.Lev.EAf D)) (f₀ f : WO A H → ℂ), Formalism.L2.DIV.IsFrame βH (frameLat H) ∧ IsStepVecOf ψ θ A H sA sH (frameLat A) (frameLat H) β βH (prinDat A Z) (fun _ => 1) ∅ (fun _ => 1) f₀ f := by
   classical
   intro D ψ θ A H χA om sA sH hθ _ hW hA hH _ β Z hP

@@ -6,6 +6,17 @@ open GroundTheory.Global.AdeleBaseChange
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.Tf.Geo
 open scoped ENNReal NumberField.AdeleRing TensorProduct
 
+/- English proof (translation)
+Introduce `K _ _ n R`. Take `⟨c, N, hc, h⟩` from `UpperTheory.adelicNorm_vecMul_ge_of_height K n`. Establish `hR : 0 < max 1 R + 1` using `by positivity`. Take `⟨C, hC, hC'⟩` from `Reduction.exists_isCompact_forall_of_pos_le_height (K := K) (n := n) (ε := (c * (max 1 R + 1) ^ N)⁻¹) (by positivity)`. Use `⟨Subtype.val ⁻¹' C, isClosed_normOneGL.isClosedEmbedding_subtypeVal.isCompact_preimage hC, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨γ, hγ⟩` from `exists_lt_of_ciInf_lt (hx.trans_lt ((le_max_right 1 R).trans_lt (lt_add_one _)))`. Take `⟨δ, hδ, y, hy, e⟩` from `hC' ((γ : G1 K n) * x : G1 K n) ((γ : G1 K n) * x).2 fun v hv => by`. Rewrite using `[inv_le_iff_one_le_mul₀' (by positivity)]`. Establish `h0` using `h ((γ : G1 K n) * x : G1 K n) v hv`. Establish `hq` using `AutomorphicForm.height_pos (K := K) ((γ : G1 K n) * x : G1 K n).1`.
+
+Establish `hp : 0 ≤ Reduction.height ((γ : G1 K n) * x : G1 K n).1 v`. Assume the negation of the conclusion as `hn`. Establish `: 0 ≤ c * AutomorphicForm.height (K` using `K) ((γ : G1 K n) * x : G1 K n).1 ^ N := by`. Check the signs of the components of the expression. Use polynomial arithmetic with `[not_le.1 hn]`.
+
+Conclude with `h0.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hq.le hγ.le N) hc.le) hp)`. Set `d : G1 K n` to `⟨δ, rationalGL_le_normOneGL hδ⟩`. Establish `hd : d ∈ Gam K n` using `hδ`. Use `⟨(γ : G1 K n)⁻¹ * d, mul_mem (inv_mem γ.2) hd, d⁻¹ * ((γ : G1 K n) * x), ?_, by group⟩` and prove the remaining obligations. Establish `e' : δ * y = ((γ : G1 K n) * x : G1 K n).1` using `e`.
+
+Express the relevant statement in the definitionally equal form `δ⁻¹ * ((γ : G1 K n) * x : G1 K n).1 ∈ C`. Rewrite using `[← e', inv_mul_cancel_left]`. Conclude with `hy`.
+-/
 theorem UpperTheory.exists_compact_fundamental_set_of_height_le :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (R : ℝ), ∃ C : Set (G1 K n), IsCompact C ∧
         ∀ x : G1 K n, qht x ≤ R → ∃ g ∈ Gam K n, ∃ y ∈ C, x = g * y := by

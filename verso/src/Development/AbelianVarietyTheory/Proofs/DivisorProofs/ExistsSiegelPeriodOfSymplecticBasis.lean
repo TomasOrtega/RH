@@ -10,21 +10,63 @@ open Matrix
 
 namespace GlobalTheory.RiemannRel
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Complex.im_sum, Finset.sum_add_distrib]`.
+-/
 theorem map_im_mul {n : Type} [Fintype n] (P Q : Matrix n n ℂ) :
     (P * Q).map Complex.im = P.map Complex.re * Q.map Complex.im + P.map Complex.im * Q.map Complex.re := by
   ext i j
   simp [Matrix.mul_apply, Complex.im_sum, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Complex.re_sum, Finset.sum_sub_distrib]`.
+-/
 theorem map_re_mul {n : Type} [Fintype n] (P Q : Matrix n n ℂ) :
     (P * Q).map Complex.re = P.map Complex.re * Q.map Complex.re - P.map Complex.im * Q.map Complex.im := by
   ext i j
   simp [Matrix.mul_apply, Complex.re_sum, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc]`. Simplify using `[hermForm, Matrix.mul_apply, dotProduct, Matrix.mulVec]`.
+-/
 theorem hermForm_cols {h : ℕ} (Hm P Q : Matrix (Fin h) (Fin h) ℂ) (i j : Fin h) :
     (Pᵀ * Hm * Q.map star) i j = hermForm Hm (fun k => P k i) (fun k => Q k j) := by
   rw [Matrix.mul_assoc]
   simp [hermForm, Matrix.mul_apply, dotProduct, Matrix.mulVec]
 
+/- English proof (translation)
+Use `set G := Mᵀ * Hm * M.map star with hGdef`. Establish `hGh : G.IsHermitian`. Establish `h1 : M.map star = (Mᵀ)ᴴ` using `by ext i j; simp`. Rewrite using `[hGdef, h1]`. Conclude with `Matrix.isHermitian_mul_mul_conjTranspose _ hH`.
+
+Use `set R := G.map Complex.re with hR`. Establish `hRs : Rᵀ = R`. Use extensionality with `i j`. Use `congrArg Complex.re (hGh.apply i j)` as an intermediate fact. Simplify `this` using `[hR]`.
+
+Establish `hGR : G = R.map Complex.ofReal`. Use extensionality with `i j`. Use `congrFun (congrFun hG i) j` as an intermediate fact. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hR]`.
+
+Simplify `this` using `[hR]`. Establish `hRp : R.PosDef`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos (by simpa [Matrix.IsHermitian] using hRs) fun x hx => ?_` and prove the remaining obligations. Use `set xc : Fin h → ℂ := fun i => (x i : ℂ) with hxc`. Establish `hst : star (M.mulVec xc) = (M.map star).mulVec xc`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, hxc]`. Establish `hne : M.mulVec xc ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+
+Establish `h1 : (Lᵀ * Hm * M.map star).mulVec xc = 0`. Rewrite using `[← Matrix.mulVec_mulVec, ← hst, h0]`. Simplify using the standard rewrite rules. Establish `h2 : ((Lᵀ * Hm * M.map star).map Complex.im).mulVec x = 0`. Use function extensionality and compare the values at `i`.
+
+Use `congrArg Complex.im (congrFun h1 i)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, hxc, Complex.im_sum]`. Rewrite `h2` using `[hA, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `h3` using `hpos _ hne`. Establish `h4 : M.mulVec xc ⬝ᵥ Hm.mulVec (star (M.mulVec xc)) = xc ⬝ᵥ G.mulVec xc`.
+
+Rewrite using `[hst, hGdef, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec xc, Matrix.vecMul_transpose]`. Rewrite `h3` using `[h4]`. Simplify `h3` using `[Matrix.mulVec, dotProduct, hxc, Complex.re_sum, hR]`. Establish `hRu : IsUnit R.det` using `hRp.det_pos.ne'.isUnit`. Establish `hMu : IsUnit M.det`.
+
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `h1 : G.det = 0`. Rewrite using `[hGdef, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0]`. Simplify using the standard rewrite rules.
+
+Establish `h2 : G.det = (R.det : ℂ)`. Rewrite using `[hGR]`. Conclude with `(Complex.ofRealHom.map_det R).symm`. Rewrite `h2` using `[h1]`. Conclude with `hRu.ne_zero (Complex.ofReal_eq_zero.1 h2.symm)`.
+
+Use `set τ := M⁻¹ * L with hτ`. Establish `hL : L = M * τ` using `by rw [hτ, Matrix.mul_nonsing_inv_cancel_left _ _ hMu]`. Establish `hA' : Lᵀ * Hm * M.map star = τᵀ * G` using `by conv_lhs => rw [hL]`. Rewrite using `[hGdef, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `hB' : Lᵀ * Hm * L.map star = τᵀ * G * τ.map star`. Establish `: L.map star = M.map star * τ.map star` using `by conv_lhs => rw [hL]`. Conclude with `Matrix.map_mul (f := starRingEnd ℂ)`. Rewrite using `[this, ← Matrix.mul_assoc, hA']`. Use `set X := τ.map Complex.re with hX`.
+
+Use `set Y := τ.map Complex.im with hY`. Establish `e1 : τᵀ.map Complex.re = Xᵀ` using `rfl`. Establish `e2 : τᵀ.map Complex.im = Yᵀ` using `rfl`. Establish `e3 : (τ.map star).map Complex.re = X` using `by ext i j; simp [hX]`. Establish `e4 : (τ.map star).map Complex.im = -Y` using `by ext i j; simp [hY]`.
+
+Rewrite `hB` using `[hB', map_im_mul, ← hA', hA, hA', map_re_mul, e1, e2, e3, e4, hG, ← hR]`. Rewrite `hA` using `[hA', map_im_mul, e1, e2, hG, ← hR, Matrix.mul_zero, zero_add]`. Establish `hRY : R * Y = 1`. Use `congrArg Matrix.transpose hA` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, hRs, Matrix.transpose_one]`. Then use the resulting hypothesis.
+
+Establish `hYi : R⁻¹ = Y` using `Matrix.inv_eq_right_inv hRY`. Establish `hYi' : R⁻¹ = Yᵀ` using `Matrix.inv_eq_left_inv hA`. Establish `hXs : Xᵀ = X`. Rewrite `hB` using `[Matrix.mul_zero, sub_zero, Matrix.mul_neg, Matrix.mul_assoc, hRY, Matrix.mul_one, Matrix.one_mul]`. Conclude with `(neg_add_eq_zero.1 hB)`.
+
+Use `⟨hMu, ?_, hYi ▸ hRp.inv⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply `Complex.ext` to reduce the goal to its premises. Conclude with `congrFun (congrFun hXs i) j`. Conclude with `congrFun (congrFun (hYi'.symm.trans hYi) i) j`.
+-/
 theorem matrix_form {h : ℕ} (Hm L M : Matrix (Fin h) (Fin h) ℂ) (hH : Hm.IsHermitian)
     (hpos : ∀ z : Fin h → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re)
     (hG : (Mᵀ * Hm * M.map star).map Complex.im = 0)
@@ -112,6 +154,17 @@ theorem matrix_form {h : ℕ} (Hm L M : Matrix (Fin h) (Fin h) ℂ) (hH : Hm.IsH
   · exact congrFun (congrFun hXs i) j
   · exact congrFun (congrFun (hYi'.symm.trans hYi) i) j
 
+/- English proof (translation)
+Introduce `h Hm v hH hpos hv`. Set `L : Matrix (Fin h) (Fin h) ℂ` to `Matrix.of fun k i => v (.inl i) k`. Set `M : Matrix (Fin h) (Fin h) ℂ` to `Matrix.of fun k i => v (.inr i) k`. Take `⟨hM, hs, hp⟩` from `matrix_form Hm L M hH hpos (by`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.map_apply, hermForm_cols]`. Use `(hv (.inr i) (.inr j)).trans ?_` and prove the remaining obligations. Simplify using `[omegaStd])`. Use the proof step `(by`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.map_apply, hermForm_cols]`. Use `(hv (.inl i) (.inr j)).trans ?_` and prove the remaining obligations. Simplify using `[omegaStd, Pi.single_apply, Matrix.one_apply, eq_comm])`. Use the proof step `(by`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.map_apply, hermForm_cols]`. Use `(hv (.inl i) (.inl j)).trans ?_` and prove the remaining obligations. Simplify using `[omegaStd])`. Use `letI : Invertible M := Matrix.invertibleOfIsUnitDet M hM`. Use `⟨M⁻¹ * L, M.toLinearEquiv' inferInstance, hs, hp, fun a => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `M.mulVec (per (M⁻¹ * L) a) = _`. Rewrite using `[per, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv_cancel_left _ _ hM]`. Use function extensionality and compare the values at `k`. Simplify using `[L, M, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, mul_comm]`.
+-/
 theorem exists_siegel_of_symplectic : ∀ (h : ℕ) (Hm : Matrix (Fin h) (Fin h) ℂ) (v : Fin h ⊕ Fin h → (Fin h → ℂ)), Hm.IsHermitian → (∀ z : Fin h → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re) → (∀ i j, (hermForm Hm (v i) (v j)).im = (omegaStd (Pi.single i 1 : Fin h ⊕ Fin h → ℤ) (Pi.single j 1) : ℝ)) → ∃ (τ : Matrix (Fin h) (Fin h) ℂ) (T : (Fin h → ℂ) ≃ₗ[ℂ] (Fin h → ℂ)), τ.IsSymm ∧ (τ.map Complex.im).PosDef ∧ ∀ a, T (per τ a) = ∑ i, a i • v i := by
   intro h Hm v hH hpos hv
   let L : Matrix (Fin h) (Fin h) ℂ := Matrix.of fun k i => v (.inl i) k

@@ -15,6 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.LatIdx
 
+/- English proof (translation)
+Introduce `L _ _ ϖ c q hq r n d t ht k₁ hk₁ k₂ hk₂`. Establish `hv : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))` using `hq.2.2.2.1`. Establish `h0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, map_zero]`.
+
+Conclude with `WithZero.zero_ne_coe hv`. Establish `h1 : Valued.v ϖ ≤ 1`. Rewrite using `[hv, ← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zero, Multiplicative.ofAdd_le]`. Evaluate the numerical expressions. Rewrite using `[GlobalTheory.T.relIndex_integralMatrices_leftMul_unitary_KU_invariant c r n t k₁ k₂ hk₁ hk₂, ht, GlobalTheory.T.relIndex_integralMatrices_diagonal_uniformizer_pow ϖ (q ^ 2) h0 h1 (GlobalTheory.T.relIndex_uniformizer_pow_mul_integers_eq_sq_pow ϖ c q hq) r n d, GlobalTheory.T.diag …`.
+-/
 theorem relIndex_intMat_translate : ∀ {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (c : L →+* L) (q : ℕ), IsUnramInv ϖ c q → ∀ (r n : ℕ) (d : Fin r → ℤ) (t : GU c r), t.1.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KU c r, ∀ k₂ ∈ KU c r, (GlobalTheory.InertHomIdx.intMat L r n).relIndex ((GlobalTheory.InertHomIdx.intMat L r n).map (GlobalTheory.InertHomIdx.lmul (k₁ * t * k₂).1.1)) = (q ^ 2) ^ (n * (∑ i, max (d i) 0).toNat) := by
   intro L _ _ ϖ c q hq r n d t ht k₁ hk₁ k₂ hk₂
 

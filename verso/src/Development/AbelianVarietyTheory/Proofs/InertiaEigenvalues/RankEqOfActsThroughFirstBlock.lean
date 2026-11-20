@@ -5,6 +5,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Global
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : (LinearMap.range F.mulVecLin).map (e : (Fin n → K) →ₗ[K] _) = (LinearMap.range ε.mulVecLin).map (LinearMap.inl K (Fin r → K) (Fin t → K))`. Use extensionality with `⟨a, b⟩`. Simplify using `only [Submodule.mem_map, LinearMap.mem_range, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨u, rfl⟩, hx⟩`.
+
+Rewrite `hx` using `[LinearEquiv.coe_coe, h]`. Conclude with `⟨_, ⟨(e u).1, rfl⟩, by simpa using hx⟩`. Introduce and unpack `⟨_, ⟨v, rfl⟩, hx⟩`. Use `⟨_, ⟨e.symm (v, 0), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, h]`.
+
+Simplify using `using hx`. Unfold `Matrix.rank`. Rewrite using `[← LinearEquiv.finrank_map_eq e, key]`. Conclude with `(Submodule.equivMapOfInjective _ LinearMap.inl_injective _).finrank_eq.symm`.
+-/
 theorem _root_.GlobalTheory.rank_eq_of_acts_through_first_block {K : Type} [Field K] {n r t : ℕ}
     (e : (Fin n → K) ≃ₗ[K] ((Fin r → K) × (Fin t → K))) (F : Matrix (Fin n) (Fin n) K)
     (ε : Matrix (Fin r) (Fin r) K) (h : ∀ u, e (F.mulVec u) = (ε.mulVec (e u).1, 0)) :

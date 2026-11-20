@@ -20,6 +20,9 @@ section
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Establish `h1 : (((modulus (a : F) : ℝ)) : ℂ) ≠ 0` using `by exact_mod_cast h0.ne'`. Simplify using `only [mp]`. Rewrite using `[Complex.cpow_def_of_ne_zero h1, Complex.ofReal_log h0.le]`.
+-/
 theorem mp_eq_exp (a : Fˣ) (s : ℂ) :
     mp a s = Complex.exp (((Real.log (modulus (a : F) : ℝ) : ℝ) : ℂ) * s) := by
   have h0 : (0 : ℝ) < (modulus (a : F) : ℝ) := by exact_mod_cast modulus_pos a.ne_zero
@@ -27,17 +30,28 @@ theorem mp_eq_exp (a : Fˣ) (s : ℂ) :
   simp only [mp]
   rw [Complex.cpow_def_of_ne_zero h1, Complex.ofReal_log h0.le]
 
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Simplify using `only [mp]`. Conclude with `Complex.norm_cpow_eq_rpow_re_of_pos h0 z`.
+-/
 theorem norm_mp' (a : Fˣ) (z : ℂ) : ‖mp a z‖ = (modulus (a : F) : ℝ) ^ z.re := by
   have h0 : (0 : ℝ) < (modulus (a : F) : ℝ) := by exact_mod_cast modulus_pos a.ne_zero
   simp only [mp]
   exact Complex.norm_cpow_eq_rpow_re_of_pos h0 z
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, modulus_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem modulus_mul' (a b : Fˣ) :
     (modulus ((a * b : Fˣ) : F) : ℝ) = (modulus (a : F) : ℝ) * (modulus (b : F) : ℝ) := by
   rw [Units.val_mul, modulus_mul]
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `e1 : A ^ (σ - 2 * ε) = A ^ (1 - ε) * A ^ (1 / 2 - ε) * A ^ (-(3 / 2) : ℝ) * A ^ σ`. Rewrite using `[← Real.rpow_add hA, ← Real.rpow_add hA, ← Real.rpow_add hA]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : B ^ (2 * σ - ε) = B ^ (1 - ε) * B ^ (-1 : ℝ) * B ^ (2 * σ)`.
+
+Rewrite using `[← Real.rpow_add hB, ← Real.rpow_add hB]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, Real.mul_rpow hA.le hB.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exponents {A B σ ε : ℝ} (hA : 0 < A) (hB : 0 < B) :
     (A * B) ^ (1 - ε) * A ^ (1 / 2 - ε) * A ^ (-(3 / 2) : ℝ) * B ^ (-1 : ℝ) * (A ^ σ * B ^ (2 * σ)) =
       A ^ (σ - 2 * ε) * B ^ (2 * σ - ε) := by
@@ -64,12 +78,20 @@ def gI (W : GL (Fin 3) F → ℂ) (W' : GL (Fin 2) F → ℂ) (p : Fˣ × Fˣ ×
 def lI (p : Fˣ × Fˣ × GL (Fin 2) F) : ℝ :=
   Real.log (modulus (p.1 : F) : ℝ) + 2 * Real.log (modulus (p.2.1 : F) : ℝ)
 
+/- English proof (translation)
+Establish `hl : Measurable (fun a : Fˣ => Real.log (modulus (a : F) : ℝ))` using `Real.measurable_log.comp (NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val)).measurable`. Conclude with `(hl.comp measurable_fst).add ((hl.comp (measurable_fst.comp measurable_snd)).const_mul 2)`.
+-/
 theorem measurable_lI : Measurable (lI (F := F)) := by
   have hl : Measurable (fun a : Fˣ => Real.log (modulus (a : F) : ℝ)) :=
     Real.measurable_log.comp (NNReal.continuous_coe.comp
       (continuous_modulus.comp Units.continuous_val)).measurable
   exact (hl.comp measurable_fst).add ((hl.comp (measurable_fst.comp measurable_snd)).const_mul 2)
 
+/- English proof (translation)
+Establish `hc : ∀ z : ℂ, Measurable (fun a : Fˣ => mp a z)` using `fun z => by`. Establish `h1 : Continuous (fun a : Fˣ => (((modulus (a : F) : ℝ)) : ℂ))` using `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val))`. Use `(h1.cpow continuous_const fun a => Or.inl ?_).measurable` and prove the remaining obligations. Establish `: (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Simplify using `using this`.
+
+Conclude with `((GlobalTheory.T.measurable_dual_rankin_selberg_integrand F W W' h3.1 h2.1).mul ((hc _).comp measurable_fst)).mul ((hc _).comp (measurable_fst.comp measurable_snd))`.
+-/
 theorem measurable_gI {W : GL (Fin 3) F → ℂ} {W' : GL (Fin 2) F → ℂ} (h3 : TemperedBoundGL3 W) (h2 : TemperedBoundGL2 W') :
     Measurable (gI W W') := by
   have hc : ∀ z : ℂ, Measurable (fun a : Fˣ => mp a z) := fun z => by
@@ -82,6 +104,9 @@ theorem measurable_gI {W : GL (Fin 3) F → ℂ} {W' : GL (Fin 2) F → ℂ} (h3
   exact ((GlobalTheory.T.measurable_dual_rankin_selberg_integrand F W W' h3.1 h2.1).mul ((hc _).comp measurable_fst)).mul
     ((hc _).comp (measurable_fst.comp measurable_snd))
 
+/- English proof (translation)
+Establish `hKm : MeasurableSet (GL2LocalData.K2 F)` using `(GLnLocal.isCompact_integralGL F 2).isClosed.measurableSet`. Establish `h0 : ∀ᵐ k ∂((Ad3.LFS.hG ψ).restrict (GL2LocalData.K2 F)), k ∈ GL2LocalData.K2 F` using `ae_restrict_mem hKm`. Establish `h1 : ∀ᵐ z ∂((multHaar F).prod ((Ad3.LFS.hG ψ).restrict (GL2LocalData.K2 F))), z.2 ∈ GL2LocalData.K2 F` using `Measure.quasiMeasurePreserving_snd.ae h0`. Conclude with `Measure.quasiMeasurePreserving_snd.ae h1`.
+-/
 theorem ae_mem_maximal_compact (ψ : AddChar F Circle) [SFinite ((Ad3.LFS.hG ψ).restrict (GL2LocalData.K2 F))] :
     ∀ᵐ p ∂GL2LocalData.mIw ψ, p.2.2 ∈ GL2LocalData.K2 F := by
   have hKm : MeasurableSet (GL2LocalData.K2 F) := (GLnLocal.isCompact_integralGL F 2).isClosed.measurableSet
@@ -90,6 +115,23 @@ theorem ae_mem_maximal_compact (ψ : AddChar F Circle) [SFinite ((Ad3.LFS.hG ψ)
     Measure.quasiMeasurePreserving_snd.ae h0
   exact Measure.quasiMeasurePreserving_snd.ae h1
 
+/- English proof (translation)
+Take `⟨a, b, k⟩` from `p`. Take `⟨k₃, hk₃, k₂, hk₂, e3, e2⟩` from `GlobalTheory.T.dual_whittaker_iwasawa_coordinates F a b k hp`. Establish `hA : (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Establish `hB : (0 : ℝ) < (modulus (b : F) : ℝ)` using `by exact_mod_cast modulus_pos b.ne_zero`. Establish `q1 : ((1 : Fˣ) / (a * b)⁻¹) = a * b` using `by simp`.
+
+Establish `q2 : ((1 : Fˣ) / b⁻¹) = b` using `by simp`. Establish `q3 : (b⁻¹ / (a * b)⁻¹ : Fˣ) = a`. Rewrite using `[div_inv_eq_mul, mul_comm a b, inv_mul_cancel_left]`. Take `⟨n3, s3⟩` from `hb₃ 1 b⁻¹ (a * b)⁻¹ k₃ hk₃`. Establish `n2` using `hb₂ b⁻¹ (a * b)⁻¹ k₂ hk₂`.
+
+Rewrite `n3` using `[q1, modulus_mul']`. Rewrite `s3` using `[q2, q3]`. Rewrite `n2` using `[q3]`. Establish `hRHS : ∀ x : Fˣ, ∀ δ : ℝ, 0 ≤ Set.indicator {a : Fˣ | (modulus (a : F) : ℝ) ≤ B₃} (fun a : Fˣ => (modulus (a : F) : ℝ) ^ δ) x` using `fun x δ => Set.indicator_nonneg (fun _ _ => by positivity) x`. Simplify using `only [gI, lI, e3, e2]`.
+
+Use `set x := W (dg 1 b⁻¹ (a * b)⁻¹ * k₃) with hx`. Use `set y := W' (dg2 b⁻¹ (a * b)⁻¹ * k₂) with hy`. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0]`. Simplify using `only [zero_mul, norm_zero]`.
+
+Conclude with `mul_nonneg (by positivity) (mul_nonneg (hRHS _ _) (mul_nonneg (hRHS _ _) zero_le_one))`. Take `⟨sb, sa⟩` from `s3 hx0`. Rewrite using `[Set.indicator_of_mem (show a ∈ {a : Fˣ | (modulus (a : F) : ℝ) ≤ B₃} from sa), Set.indicator_of_mem (show b ∈ {a : Fˣ | (modulus (a : F) : ℝ) ≤ B₃} from sb), mul_one]`. Use `set A : ℝ := (modulus (a : F) : ℝ) with hAd`. Use `set B : ℝ := (modulus (b : F) : ℝ) with hBd`.
+
+Establish `hE : Real.exp (σ * (Real.log A + 2 * Real.log B)) = A ^ σ * B ^ (2 * σ)`. Rewrite using `[Real.rpow_def_of_pos hA, Real.rpow_def_of_pos hB, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hr1 : (-(3 / 2) : ℂ).re = -(3 / 2)` using `by norm_num`.
+
+Establish `hr2 : (-1 : ℂ).re = -1` using `by norm_num`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_mp', norm_mp', hr1, hr2, hE, ← hAd, ← hBd]`. Establish `m3 : ‖x‖ ≤ max C₃ 0 * (A * B) ^ (1 - ε)` using `n3.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Establish `m2 : ‖y‖ ≤ max C₂ 0 * A ^ (1 / 2 - ε)` using `n2.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Establish `hm` using `mul_le_mul m3 m2 (norm_nonneg _) (by positivity)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bound_gI {W : GL (Fin 3) F → ℂ} {W' : GL (Fin 2) F → ℂ} {ε σ C₃ B₃ C₂ : ℝ}
     (hb₃ : ∀ (t₁ t₂ t₃ : Fˣ), ∀ k ∈ GLnLocal.integralGL F 3,
       ‖W (dg t₁ t₂ t₃ * k)‖ ≤ C₃ * (modulus ((t₁ / t₃ : Fˣ) : F) : ℝ) ^ (1 - ε) ∧
@@ -148,6 +190,15 @@ theorem bound_gI {W : GL (Fin 3) F → ℂ} {W' : GL (Fin 2) F → ℂ} {ε σ C
           (A ^ σ * B ^ (2 * σ))) := by ring
     _ = _ := by rw [exponents hA hB]
 
+/- English proof (translation)
+Use `haveI hμ : (Ad3.LFS.hG ψ).IsHaarMeasure := by unfold Ad3.LFS.hG; infer_instance`. Establish `hKc` using `GLnLocal.isCompact_integralGL F 2`. Use `haveI : IsFiniteMeasure ((Ad3.LFS.hG ψ).restrict (GL2LocalData.K2 F)) := ⟨by rw [Measure.restrict_apply_univ]; exact hKc.measure_lt_top⟩`. Use `set ε : ℝ := min (1 / 4) (σ / 4) with hε`. Establish `hε0 : 0 < ε` using `lt_min (by norm_num) (by positivity)`.
+
+Establish `hε1 : ε < 1 / 2` using `(min_le_left _ _).trans_lt (by norm_num)`. Establish `hε2 : ε ≤ σ / 4` using `min_le_right _ _`. Take `⟨C₃, B₃, hb₃⟩` from `h3.2 ε hε0 hε1`. Take `⟨C₂, B₂, hb₂⟩` from `h2.2 ε hε0 hε1`. Establish `hi₁` using `GlobalTheory.T.integrable_modulus_pow_on_bounded_units F (σ - 2 * ε) B₃ (by linarith)`.
+
+Establish `hi₂` using `GlobalTheory.T.integrable_modulus_pow_on_bounded_units F (2 * σ - ε) B₃ (by linarith)`. Establish `hi₃ : Integrable (fun _ : GL (Fin 2) F => (1 : ℝ)) ((Ad3.LFS.hG ψ).restrict (GL2LocalData.K2 F))` using `integrable_const _`. Establish `hprod` using `(hi₁.mul_prod (hi₂.mul_prod hi₃)).const_mul (max C₃ 0 * max C₂ 0)`. Establish `hmeas : AEStronglyMeasurable (fun p => ‖gI W W' p‖ * Real.exp (σ * lI p)) (GL2LocalData.mIw ψ)` using `((measurable_gI h3 h2).norm.mul (Real.measurable_exp.comp (measurable_lI.const_mul σ))).aestronglyMeasurable`. Use `Integrable.mono' hprod hmeas ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_mem_maximal_compact ψ] with p hp`. Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Conclude with `bound_gI hb₃ (fun x y k hk => (hb₂ x y k hk).1) p hp`.
+-/
 theorem integrable_gI (ψ : AddChar F Circle) {W : GL (Fin 3) F → ℂ} {W' : GL (Fin 2) F → ℂ}
     (h3 : TemperedBoundGL3 W) (h2 : TemperedBoundGL2 W') (σ : ℝ) (hσ : 0 < σ) :
     Integrable (fun p => ‖gI W W' p‖ * Real.exp (σ * lI p)) (GL2LocalData.mIw ψ) := by
@@ -174,6 +225,11 @@ theorem integrable_gI (ψ : AddChar F Circle) {W : GL (Fin 3) F → ℂ} {W' : G
   rw [Real.norm_of_nonneg (by positivity)]
   exact bound_gI hb₃ (fun x y k hk => (hb₂ x y k hk).1) p hp
 
+/- English proof (translation)
+Simplify using `only [GL2LocalData.iw, gI, lI, mp_eq_exp]`. Use `push_cast`. Establish `e : Complex.exp (((Real.log (modulus (p.1 : F) : ℝ) : ℝ) : ℂ) * (u - 3 / 2)) * Complex.exp (((Real.log (modulus (p.2.1 : F) : ℝ) : ℝ) : ℂ) * (2 * u - 1)) = Complex.exp (((Real.log (modulus (p.1 : F) : ℝ) : ℝ) : ℂ) * (-(3 / 2))) * Complex.exp (((Real.log (modulus (p.2.1 : F) : ℝ) …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_assoc _ (Complex.exp _) (Complex.exp _), e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iw_eq (W : GL (Fin 3) F → ℂ) (W' : GL (Fin 2) F → ℂ) (u : ℂ) (p : Fˣ × Fˣ × GL (Fin 2) F) :
     GL2LocalData.iw (GL2LocalData.dW3 W) (GL2LocalData.dW2 W') u p = gI W W' p * Complex.exp (u * (lI p : ℂ)) := by
   simp only [GL2LocalData.iw, gI, lI, mp_eq_exp]
@@ -190,6 +246,9 @@ theorem iw_eq (W : GL (Fin 3) F → ℂ) (W' : GL (Fin 2) F → ℂ) (u : ℂ) (
   rw [mul_assoc _ (Complex.exp _) (Complex.exp _), e]
   ring
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ W W' h3 h2`. Establish `key` using `GlobalTheory.T.differentiableOn_laplace_integral_right_half (GL2LocalData.mIw ψ) (gI W W') lI (measurable_gI h3 h2).aestronglyMeasurable measurable_lI (integrable_gI ψ h3 h2)`. Use `key.congr fun u _ => ?_` and prove the remaining obligations. Simplify using `only [GL2LocalData.zetaGL3GL2, iw_eq]`.
+-/
 theorem holo : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle) (W : GL (Fin 3) F → ℂ) (W' : GL (Fin 2) F → ℂ), TemperedBoundGL3 W → TemperedBoundGL2 W' → DifferentiableOn ℂ (fun u => GL2LocalData.zetaGL3GL2 ψ (GL2LocalData.dW3 W) (GL2LocalData.dW2 W') u) {u : ℂ | 0 < u.re} := by
   intro F _ _ _ _ _ _ ψ W W' h3 h2
   have key := GlobalTheory.T.differentiableOn_laplace_integral_right_half (GL2LocalData.mIw ψ) (gI W W') lI (measurable_gI h3 h2).aestronglyMeasurable

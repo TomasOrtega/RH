@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.QChi.LocVal
 
+/- English proof (translation)
+Take `⟨z, r, hr, hrx, hz⟩` from `(GlobalTheory.TwU.exists_midLev_iff I.Ch I.sel (I.tup a) (I.cst a) i P ((I.idx a).h i al P) 1).2 (Subgroup.one_mem _)`. Use `⟨r, hr, hrx, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hP : P.1 ∈ (B.primes X).vGs`. Rewrite using `[chiInv_at_type I hOk a i al P hP 1 1 r hr hrx 1 (one_mem _) (fun x _ => by simp) (congE_refl _ _ _)]`. Establish `e : (((I.idx a).levG i al) ⟨P.1, hP⟩).lam ⟨1, one_mem _⟩ = 1` using `map_one (((I.idx a).levG i al) ⟨P.1, hP⟩).lam`.
+
+Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hQ : P.1 ∈ I.Q a` using `(Finset.mem_union.mp P.2).resolve_left hP`. Rewrite using `[chiInv_at_twist I hOk a i hi al P hQ 1 1 r hr hrx 1 (one_mem _) (by simp) (congE_refl _ _ _)]`. Establish `e : (((I.idx a).levQ i al) ⟨P.1, hQ⟩).lam ⟨1, one_mem _⟩ = 1` using `map_one (((I.idx a).levQ i al) ⟨P.1, hQ⟩).lam`.
+
+Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 theorem midLev_one_one {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a : I.ι) (i : ℕ) (hi : i < B.R.m) (al : (I.idx a).β i)
     (P : SBof I a) : GlobalTheory.TwU.MidLev (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) i P ((I.idx a).h i al P) 1 1 := by
   classical
@@ -33,6 +40,13 @@ theorem midLev_one_one {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨fb0, h0⟩` from `GlobalTheory.Mem.Col2.AdT.frNear_exists I hOk l Z a n k`. Use `⟨fun P => if IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) then 1 else fb0 P, fun P => ?_, fun P hP => if_pos hP⟩` and prove the remaining obligations. Distinguish the cases in `hv : IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1)`. Simplify using `only [if_pos hv]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `GlobalTheory.AwayFr.congAt_of_prV_eq _ _ hv ((I.cst a).D P) k 1 (by rw [map_one, hk])`. Simplify using `using h2`. Establish `h2` using `GlobalTheory.AwayFr.congAt_of_prV_eq _ _ hv ((I.cst a).D P) 1 k (by rw [map_one, hk])`. Simplify using `using h2`. Simplify using `only [if_neg hv]`.
+
+Conclude with `h0 P`.
+-/
 theorem exists_frNear_one_over {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (n : ℕ)
     (k : GL (Fin n) (AfE (I.rec7 l Z).host.F (I.rec7 l Z).host.E)) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))
     (hk : bc (prV (E := (I.rec7 l Z).host.E) v) k = 1) :
@@ -49,6 +63,11 @@ theorem exists_frNear_one_over {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk :
   · simp only [if_neg hv]
     exact h0 P
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Establish `hw : IsOver (P.under (𝓞 F)) P`. Unfold `IsOver`. Rewrite using `[HeightOneSpectrum.under_asIdeal]`. Establish `hne : P.under (𝓞 F) ≠ v` using `fun e => hP (e ▸ hw)`.
+
+Unfold `GlobalTheory.TwU.NearAt`. Use `GlobalTheory.AwayFr.congAt_of_prV_eq _ _ hw d _ _ ?_` and prove the remaining obligations. Rewrite using `[map_one, map_one, map_mul, map_mul, GlobalTheory.Mem.Col2.ChartLevel.emb_ne hne, mul_one, ← map_mul, inv_mul_cancel, map_one]`.
+-/
 theorem nearAt_emb_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (𝓞 E)) (hP : ¬ IsOver v P) (d : ℕ)
     (x : GL (Fin n) (E ⊗[F] v.adicCompletion F)) (y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (g : GL (Fin n) E) (hg : g = 1) :
@@ -68,6 +87,27 @@ namespace GlobalTheory.Mem.Col2.QChi
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z Ch0 chOf0 F u a Q h1 Ch _ chOf K g hQ _ _ hRd hFin _ _ Lb0 _ v hvQ β x`. Take `⟨k, hR, hk1⟩` from `hRd`. Take `⟨c, rfl⟩` from `hR.onto β`. Take `⟨fb, hfb, hfb1⟩` from `LocVal.exists_frNear_one_over I hOk l Z a _ (k (chOf c)) v (hk1 _ v ((hQ v).1 hvQ))`. Establish `hm : B.R.m - 1 < B.R.m` using `by omega`.
+
+Establish `hlast : B.R.m - 1 + 1 = B.R.m` using `by omega`. Set `y0 : SBof I a → Sp B.fields.E (B.R.N (B.R.m - 1))` to `fun P => ((GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a _ ((I.stp u a _).rep c) P).2 hlast).1.some`. Establish `H` using `lev_mid hOk hPins hR c hfb (hFin _) hm y0 (Rel := fun P g z => MidAt I hm c.1 P g z ∧ (B.R.m - 1 + 1 = B.R.m → GlobalTheory.TwU.SameCoset I.sel (I.tup a) (I.cst a) P (g (y0 P)) (y0 P))) (fun _ P => ((GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a _ ((I.stp u a …`. Establish `hx : bc (prV (E` using `(I.rec7 l Z).host.E) v) (GlobalTheory.Mem.Col2.ChartLevel.emb v x.1) ∈ (K (chOf c)).lev.Uloc v := by`. Rewrite using `[GlobalTheory.Mem.Col2.ChartLevel.emb_self]`.
+
+Conclude with `x.2`. Establish `key : ∀ (P : SBof I a) (j : ℕ), j = B.R.m - 2 + 1 → ∀ b, (I.idx a).h j b P = 1`. Introduce and unpack `P j rfl b`. Conclude with `(hOk.idx_ok a).last_h b P`. Establish `hall : ∀ P : SBof I a, ∃ g z, ((MidAt I hm c.1 P g z ∧ (B.R.m - 1 + 1 = B.R.m → GlobalTheory.TwU.SameCoset I.sel (I.tup a) (I.cst a) P (g (y0 P)) (y0 P))) ∧ GlobalTheory.TwU.InFrame (sm I l Z) fb (I.cst a).D P (GlobalTheory.Mem.Col2.ChartLevel.emb v x.1) g) ∧ z = (if h : IsOver v …`.
+
+Introduce `P`. Distinguish the cases in `hP : IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1)`. Take `⟨g, z, hrel, hin⟩` from `H.1 P v hP _ (((K (chOf c)).lev.U_eq _).1 (GlobalTheory.Mem.Col2.ChartLevel.embU _ v x).2).1 hx`. Establish `hnp : NearPair I l Z a v P x.1 g z`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hmid` using `hrel.1`. Unfold `MidAt at hmid`. Rewrite `hmid` using `[key P _ (by omega)]`. Conclude with `hmid`. Establish `hin'` using `hin`.
+
+Unfold `NearV`. Unfold `GlobalTheory.TwU.InFrame at hin'`. Rewrite `hin'` using `[hfb1 P hP]`. Use `first`. Consider the case `(simp only [GlobalTheory.TwU.ratA, map_one, inv_one, one_mul, mul_one] at hin'; exact hin')`.
+
+Consider the case `(erw [map_one, inv_one, one_mul, mul_one] at hin'; exact hin')`. Consider the case `(convert hin' using 2; simp)`. Establish `hh : IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) ∧ ∃ g z, NearPair I l Z a v P x.1 g z` using `⟨hP, g, z, hnp⟩`. Use `⟨g, z, ⟨hrel, hin⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[dif_pos hh]`.
+
+Conclude with `nearPair_val_unique I hOk l Z a v P x.1 _ _ _ _ hnp hh.2.choose_spec.choose_spec`. Use `⟨1, 1, ⟨⟨LocVal.midLev_one_one I hOk a _ hm _ P, fun _ t => ?_⟩, ?_⟩, by rw [dif_neg (fun h => hP (And.left h))]⟩` and prove the remaining obligations. Establish `e : ((1 : Sp B.fields.E (B.R.N (B.R.m - 1)) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N (B.R.m - 1))) (y0 P) - y0 P) t = 0` using `by show (y0 P - y0 P) t = 0`. Rewrite using `[sub_self]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, mul_zero]`. Simplify using `using GlobalTheory.TopInv.intAt_nat (P := P.1) 0`. Unfold `GlobalTheory.TwU.InFrame`. Conclude with `LocVal.nearAt_emb_one v _ hP _ _ _ _ (map_one (GlobalTheory.TwU.seamGL (sm I l Z)))`. Use `choose gg zz hgz hz using hall`.
+
+Establish `hc` using `H.2.2 (GlobalTheory.Mem.Col2.ChartLevel.embU _ v x) gg zz hgz`. Unfold `valV`. Rewrite using `[← Finset.prod_congr rfl fun P _ => hz P]`. Conclude with `hc`.
+-/
 theorem chi_embU_mul_valV : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (Ch0 : B.Word → ℕ → Type) (chOf0 : ∀ u i, ((I.rec7 l Z).mem u).C.cls i → Ch0 u i) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch0 u) (chOf0 u)) (u : B.Word) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (h1 : 1 ≤ B.R.m - 1) (Ch : Type) (_ : Finite Ch) (chOf : (I.stp u a (B.R.m - 1)).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) (badQ (I.rec7 l Z) Q) (B.R.m - 1) (Nat.sub_le _ _) (fun c : {c // chOf c = β} => (I.chain l u a).stab (B.R.m - 1) c.1) (fun c => latCrd (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _) (I.latAt u a (B.R.m - 1) c.1))) (g : Ch → Ch0 u (B.R.m - 1)), (∀ v, v ∈ Q ↔ I.UnderQ a v) → (∀ u, I.StdF l Z u (F u)) → (∀ u j v h, (F u).glevJ.fr j v h = 1) → (∃ k : Ch → GA B (B.R.N (B.R.m - 1)), I.Reads u a (B.R.m - 1) chOf (fun β => (K β).lev.Lb) (fun β => (K β).lev.U) (fun β => (K β).lev.chi) (fun c => ((K (chOf c)).y ⟨c, rfl⟩).1) (fun c s => ((K (chOf c)).stabI ⟨c, rfl⟩ s).1) k ∧ ∀ β (v : HeightOneSpectrum (𝓞 B.host.F)), I.UnderQ a v → bc (prV (E := B.host.E) v) (k β) = 1) → (∀ β, GlobalTheory.Mem.Col2.AdT.ChiFin I l Z (K β).lev) → (∀ β, ∀ v, v ∉ Q → (K β).lev.Uloc v = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.Uloc v) → (∀ β (κ : (K β).lev.U) (κ' : ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.U), κ.1 = κ'.1 → (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → (K β).lev.chi κ = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.chi κ') → ∀ (Lb0 : Submodule (𝓞 (I.rec7 l Z).host.E) (Fin ((I.rec7 l Z).sp.X (B.R.m - 1)).rank → (I.rec7 l Z).host.E)), (F u).levJ.Lb = reL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) Lb0 → ∀ (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), v ∈ Q → ∀ β (x : (K β).lev.Uloc v), (((K β).lev.chi (GlobalTheory.Mem.Col2.ChartLevel.embU (K β).lev v x) : ℂˣ) : ℂ) * GlobalTheory.Mem.Col2.QChi.valV I l Z a v x.1 = 1 := by
   intro B X I hOk hPins l Z Ch0 chOf0 F u a Q h1 Ch _ chOf K g hQ _ _ hRd hFin _ _ Lb0 _ v hvQ β x
   classical

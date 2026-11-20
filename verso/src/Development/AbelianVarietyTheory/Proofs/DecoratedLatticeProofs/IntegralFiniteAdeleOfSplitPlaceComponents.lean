@@ -8,6 +8,17 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Fam
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset (Fin n), ∀ z, (∑ i ∈ s, E i) * z = z → (∀ i ∈ s, G i z) → z ∈ S`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `z hz _`.
+
+Rewrite `hz` using `[Finset.sum_empty, zero_mul]`. Rewrite using `[← hz]`. Conclude with `hS0`. Consider the case `insert a s ha ih`. Introduce `z hz hzi`.
+
+Rewrite `hz` using `[Finset.sum_insert ha]`. Use `(hint a z).2 ⟨?_, hzi a (Finset.mem_insert_self a s)⟩` and prove the remaining obligations. Establish `hET : E a * ∑ i ∈ s, E i = 0`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => hE a i fun h => ha (h ▸ hi)`.
+
+Establish `hw : (1 - E a) * z = (∑ i ∈ s, E i) * z`. Combine the equalities or inequalities in the displayed calculation. Use `ih _ ?_ fun i hi => ?_` and prove the remaining obligations. Take the linear combination `(-1 : R) * hw + (-z) * hET`. Conclude with `hG i a z (fun h => ha (h ▸ hi)) (hzi i (Finset.mem_insert_of_mem hi))`.
+
+Conclude with `fun z hz hzi => key Finset.univ z hz fun i _ => hzi i`.
+-/
 theorem GlobalTheory.IntPlaces.mem_of_idem_sum {R : Type} [CommRing R] {n : ℕ} (S : Set R) (hS0 : (0 : R) ∈ S)
     (E : Fin n → R) (hEE : ∀ i, E i * E i = E i) (hE : ∀ i j, i ≠ j → E i * E j = 0) (G : Fin n → R → Prop)
     (hint : ∀ i z, z ∈ S ↔ (1 - E i) * z ∈ S ∧ G i z) (hG : ∀ i j z, i ≠ j → G i z → G i ((1 - E j) * z)) :
@@ -37,6 +48,17 @@ theorem GlobalTheory.IntPlaces.mem_of_idem_sum {R : Type} [CommRing R] {n : ℕ}
 
 open GlobalTheory.IdemSupport in
 
+/- English proof (translation)
+Introduce `D n k _ _ _ _ q P hI hP π' hπ hint z0 hz0 hzi0`. Establish `hΦ` using `GlobalTheory.StdFrames.comp_toAd D`. Establish `hd : ∀ i, IsDelta ((GlobalTheory.StdFrames.toAd D).comp (Formalism.IndefR.Datum.toEAf D)) (P i) (q i).e` using `fun i => delta_of_isIdemAt hΦ (hI i)`. Establish `horth : ∀ i j, i ≠ j → (q i).e * (q j).e = 0`. Introduce `i j hij`.
+
+Use `hΦ.ext' (by rw [RingHom.map_mul, (hd i).1, zero_mul, RingHom.map_zero]) fun Q => ?_` and prove the remaining obligations. Rewrite using `[ev_mul, ev_zero]`. Distinguish the cases in `hQ : Q = P i`. Rewrite using `[(hd j).2.2 Q (fun h => hij (hP (hQ.symm.trans h))), mul_zero]`. Rewrite using `[(hd i).2.2 Q hQ, zero_mul]`.
+
+Establish `hidem : ∀ i, (q i).e * (q i).e = (q i).e`. Introduce `i`. Use `hΦ.ext' (by rw [RingHom.map_mul, (hd i).1, zero_mul]) fun Q => ?_` and prove the remaining obligations. Rewrite using `[ev_mul]`. Distinguish the cases in `hQ : Q = P i`.
+
+Rewrite using `[hQ, (hd i).2.1, mul_one]`. Rewrite using `[(hd i).2.2 Q hQ, zero_mul]`. Establish `hpr : ∀ i j, i ≠ j → π' i (Formalism.IndefR.Datum.toEAf D (q j).e) = 0`. Introduce `i j hij`. Rewrite using `[hπ, ← (q i).pr_sec ((q i).pr (q j).e), (q i).sec_pr, horth i j hij, map_zero]`.
+
+Use `GlobalTheory.IntPlaces.mem_of_idem_sum (Formalism.L2.Herm.intAf D.host.F D.host.E : Set _) (zero_mem _) (fun i => Formalism.IndefR.Datum.toEAf D (q i).e) (fun i => by rw [← RingHom.map_mul, hidem]) (fun i j hij => by rw [← RingHom.map_mul, horth i j hij, RingHom.map_zero]) (fun i …` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, RingHom.map_sub, RingHom.map_one, hpr i j hij, sub_zero, one_mul]`. Conclude with `hz`.
+-/
 theorem GlobalTheory.IntPlaces.mem_intAf_of_split : ∀ (D : D7) (n : ℕ) (k : Fin n → Type) [∀ i, Field (k i)] [∀ i, ValuativeRel (k i)] [∀ i, TopologicalSpace (k i)] [∀ i, IsNonarchimedeanLocalField (k i)] (q : ∀ i, GlobalTheory.FinPl.SplitPt D (k i)) (P : Fin n → Formalism.L2.DIV.Pl D.host.E), (∀ i, Formalism.L2.NTheta.IsIdemAt (q i).e (P i)) → Function.Injective P → ∀ (π' : ∀ i, Formalism.IndefR.Datum.EAf D →+* k i), (∀ i a, π' i (Formalism.IndefR.Datum.toEAf D a) = (q i).pr a) → (∀ i (z : Formalism.IndefR.Datum.EAf D), z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ (1 - Formalism.IndefR.Datum.toEAf D (q i).e) * z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ π' i z ∈ 𝒪[k i]) → ∀ z : Formalism.IndefR.Datum.EAf D, Formalism.IndefR.Datum.toEAf D (∑ i, (q i).e) * z = z → (∀ i, π' i z ∈ 𝒪[k i]) → z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   intro D n k _ _ _ _ q P hI hP π' hπ hint z0 hz0 hzi0
   have hΦ := GlobalTheory.StdFrames.comp_toAd D

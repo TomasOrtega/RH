@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.HSNef.LeCard
 
+/- English proof (translation)
+Introduce `k _ X _ p A B hBA`. Take `⟨P, rfl, rfl, h1⟩` from `hBA`. Establish `hrep` using `Pair.rep_base k X p P`. Establish `eL : P.L.smallSec.encard = (P.Bl 1 0 1).encard` using `SmallBall.encard_eq_Bl P hrep.1 P.L.smallSec 1 zero_le_one fun u => by`. Simplify using `only [HermLB.smallSec, Set.mem_setOf_eq, one_pow]`.
+
+Establish `eA : P.A.smallSec.encard = (P.Bl 0 1 1).encard` using `SmallBall.encard_eq_Bl P hrep.2.1 P.A.smallSec 1 zero_le_one fun u => by`. Simplify using `only [HermLB.smallSec, Set.mem_setOf_eq, one_pow]`. Rewrite using `[eL, eA]`. Use `Set.encard_le_encard fun f hf => ?_` and prove the remaining obligations. Establish `e` using `NuMul.mul_mem_H_and_nu_mul k X p P 1 (-1) 0 1 1 f h1.1 hf.1`.
+
+Rewrite `e` using `[one_mul, add_zero, neg_add_cancel]`. Use `⟨e.1, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[e.2 σ y]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem encard_smallSec_le : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k),
     ∀ A B : HermLB p, Le B A → B.smallSec.encard ≤ A.smallSec.encard := by
   intro k _ X _ p A B hBA

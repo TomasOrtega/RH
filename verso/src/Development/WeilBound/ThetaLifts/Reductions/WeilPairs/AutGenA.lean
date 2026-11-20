@@ -17,6 +17,15 @@ namespace PositivityTheory.ThKW.GenA
 
 section Abstract
 
+/- English proof (translation)
+Establish `hd : ∀ N : Matrix ι ι K, (N.map σ)ᵀ.det = σ N.det` using `fun N => by`. Rewrite using `[det_transpose]`. Conclude with `(RingHom.map_det (σ : K →+* K) N).symm`. Prove the components needed by the constructor for the conclusion. Use `congrArg Matrix.det h` as an intermediate fact.
+
+Rewrite `this` using `[det_mul, det_mul, hd]`. Use `mul_right_cancel₀ hP ?_` and prove the remaining obligations. Take the linear combination `this`. Establish `hm : (M - 1).map σ = M.map σ - 1`. Use extensionality with `i j`.
+
+Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]`. Establish `e : ((M - 1).map σ)ᵀ * P * M = P * -(M - 1)`. Rewrite using `[hm, transpose_sub, transpose_one, Matrix.sub_mul, Matrix.sub_mul, h, Matrix.one_mul, neg_sub, Matrix.mul_sub, Matrix.mul_one]`. Use `congrArg Matrix.det e` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, det_mul, hd, det_neg]`.
+
+Use `mul_right_cancel₀ hP ?_` and prove the remaining obligations. Take the linear combination `this`.
+-/
 theorem det_unit_sig {K ι G : Type} [Field K] [Fintype ι] [DecidableEq ι] [FunLike G K K] [RingHomClass G K K] (σ : G)
     {M P : Matrix ι ι K} (hP : P.det ≠ 0) (h : (M.map σ)ᵀ * P * M = P) :
     M.det * σ M.det = 1 ∧ M.det * σ (M - 1).det = (-1) ^ Fintype.card ι * (M - 1).det := by
@@ -38,6 +47,13 @@ theorem det_unit_sig {K ι G : Type} [Field K] [Fintype ι] [DecidableEq ι] [Fu
     refine mul_right_cancel₀ hP ?_
     linear_combination this
 
+/- English proof (translation)
+Establish `h1 : (Gm⁻¹ * (a.map σ)ᵀ * Gm) * a = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (a.map σ)ᵀ, ha, Matrix.nonsing_inv_mul _ hG]`. Establish `h2 : a * Gm⁻¹ * (a.map σ)ᵀ = Gm⁻¹`. Establish `h3` using `mul_eq_one_comm.1 h1`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hG, Matrix.mul_one]`. Use `_ = Gm⁻¹ := by rw [h3, Matrix.one_mul]`. Establish `e : ((b ⊗ₖ aᵀ).map σ)ᵀ = (b.map σ)ᵀ ⊗ₖ a.map σ`. Use extensionality with `⟨i, j⟩ ⟨k, l⟩`. Simplify using `[Matrix.kroneckerMap_apply, map_mul]`.
+
+Rewrite using `[e, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, hb]`. Use `congr 1`. Use `conv_rhs => rw [← h2]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+-/
 theorem kron_unit_sig {K G : Type} [Field K] [FunLike G K K] [RingHomClass G K K] (σ : G) {m n : ℕ}
     {a Gm : Matrix (Fin n) (Fin n) K} {b H : Matrix (Fin m) (Fin m) K} (hG : IsUnit Gm.det)
     (ha : (a.map σ)ᵀ * Gm * a = Gm) (hb : (b.map σ)ᵀ * H * b = H) :
@@ -57,6 +73,9 @@ theorem kron_unit_sig {K G : Type} [Field K] [FunLike G K K] [RingHomClass G K K
   conv_rhs => rw [← h2]
   simp only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `GlobalTheory.Mem.ThetaNonzero.exists_isCartanInv ?_ (isUnit_iff_ne_zero.2 ?_)` and prove the remaining obligations. Use `show ((r : ℂ) • G)ᴴ = (r : ℂ) • G`. Rewrite using `[conjTranspose_smul, hG, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (Complex.ofReal_ne_zero.2 hr)) hd`.
+-/
 theorem cart_exists {k : ℕ} (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ = G) (hd : G.det ≠ 0) (r : ℝ) (hr : r ≠ 0) :
     ∃ s, Formalism.IndefR.Datum.IsCartanInv ((r : ℂ) • G) s := by
   refine GlobalTheory.Mem.ThetaNonzero.exists_isCartanInv ?_ (isUnit_iff_ne_zero.2 ?_)
@@ -65,6 +84,13 @@ theorem cart_exists {k : ℕ} (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ = G) (
   · rw [det_smul]
     exact mul_ne_zero (pow_ne_zero _ (Complex.ofReal_ne_zero.2 hr)) hd
 
+/- English proof (translation)
+Establish `hr' : (r : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hr`. Take `⟨s, h1, h2⟩` from `GlobalTheory.T.exists_cartanInvolution_comm_quasiReflection _ ((r : ℂ) • G) (by rw [conjTranspose_smul, hG, Complex.star_def, Complex.conj_ofReal]) (by rw [det_smul]; exact mul_ne_zero (pow_ne_zero _ hr') hd) y (by`. Establish `e : star y ⬝ᵥ ((r : ℂ) • G) *ᵥ y = (r : ℂ) * (star y ⬝ᵥ G *ᵥ y)`. Simplify using `only [dotProduct, mulVec, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+
+Rewrite using `[e]`. Conclude with `mul_ne_zero hr' hy)`. Use `⟨s, h1, ?_⟩` and prove the remaining obligations. Establish `e : d • vecMulVec y (star y ᵥ* G) = (d / r) • vecMulVec y (star y ᵥ* ((r : ℂ) • G))`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.smul_apply, vecMulVec_apply, vecMul, dotProduct, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `h2 _`.
+-/
 theorem cart_refl {k : ℕ} (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ = G) (hd : G.det ≠ 0) (r : ℝ) (hr : r ≠ 0)
     (y : Fin k → ℂ) (hy : star y ⬝ᵥ G *ᵥ y ≠ 0) (d : ℂ) :
     ∃ s, Formalism.IndefR.Datum.IsCartanInv ((r : ℂ) • G) s ∧
@@ -88,6 +114,9 @@ theorem cart_refl {k : ℕ} (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ = G) (hd
   rw [e]
   exact h2 _
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.RealWeil.blk_mul, GlobalTheory.RealWeil.blk_mul]`. Apply the tactic sequence `congr 1 <;> funext w`. Use `exacts [h1 w, h2 w]`.
+-/
 theorem blk_comm {O : Type} [Fintype O] [DecidableEq O] {m n : ℕ} {sT b : O → Matrix (Fin m) (Fin m) ℂ}
     {sS a : O → Matrix (Fin n) (Fin n) ℂ} (h1 : ∀ w, sT w * b w = b w * sT w) (h2 : ∀ w, a w * sS w = sS w * a w) :
     GlobalTheory.RealWeil.blk sT sS * GlobalTheory.RealWeil.blk b a = GlobalTheory.RealWeil.blk b a * GlobalTheory.RealWeil.blk sT sS := by
@@ -99,26 +128,47 @@ end Abstract
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)`.
+-/
 theorem incAF_injective : Function.Injective (incAF F E) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)
 
+/- English proof (translation)
+The claim follows from `g.2`.
+-/
 theorem mt_unitary (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g : GAF σ J) :
     ((mtF σ J g).map (cAF σ))ᵀ * J.map (incAF F E) * mtF σ J g = J.map (incAF F E) := g.2
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext e)`.
+-/
 theorem mt_ext {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {g h : GAF σ J} (e : mtF σ J g = mtF σ J h) :
     g = h := Subtype.ext (Units.ext e)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_one (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : mtF σ J 1 = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_mul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g h : GAF σ J) :
     mtF σ J (g * h) = mtF σ J g * mtF σ J h := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem map_unitary (σ : E →ₐ[F] E) {n : ℕ} (J a : Matrix (Fin n) (Fin n) E) :
     ((a.map (incAF F E)).map (cAF σ))ᵀ * J.map (incAF F E) * a.map (incAF F E) =
       ((a.map σ)ᵀ * J * a).map (incAF F E) := by
   rw [Matrix.map_mul, Matrix.map_mul]
   rfl
 
+/- English proof (translation)
+Introduce `h0`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, h0, mul_zero]`. Conclude with `hJ.2 this.symm`.
+-/
 theorem det_ne_of_unitary {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     {a : Matrix (Fin n) (Fin n) E} (h : (a.map σ)ᵀ * J * a = J) : a.det ≠ 0 := by
   intro h0
@@ -126,21 +176,35 @@ theorem det_ne_of_unitary {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fi
   rw [det_mul, det_mul, h0, mul_zero] at this
   exact hJ.2 this.symm
 
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) ((1 : AF F) ⊗ₜ[F] x) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+-/
 theorem infPart_incAF (x : E) : infPartF F E (incAF F E x) = (1 : Ainf F) ⊗ₜ[F] x := by
   show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) ((1 : AF F) ⊗ₜ[F] x) = _
   rw [Algebra.TensorProduct.map_tmul, map_one]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[conjTranspose_apply, Matrix.map_apply, Matrix.map_apply, ← hcm.2.2.2, hJ.1]`.
+-/
 theorem herm_map {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     (τ : E →+* ℂ) : (J.map τ)ᴴ = J.map τ := by
   ext i j
   rw [conjTranspose_apply, Matrix.map_apply, Matrix.map_apply, ← hcm.2.2.2, hJ.1]
 
+/- English proof (translation)
+Rewrite using `[show (J.map τ).det = τ J.det from (RingHom.map_det τ J).symm]`. Conclude with `(map_ne_zero τ).2 hJ.2`.
+-/
 theorem det_map_ne {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) (τ : E →+* ℂ) :
     (J.map τ).det ≠ 0 := by
   rw [show (J.map τ).det = τ J.det from (RingHom.map_det τ J).symm]
   exact (map_ne_zero τ).2 hJ.2
 
+/- English proof (translation)
+Introduce `him`. Establish `h1 : star (τ ξ₀) = -τ ξ₀` using `by rw [← hcm.2.2.2, hξ, map_neg]`. Establish `hre : (τ ξ₀).re = 0`. Use `congrArg Complex.re h1` as an intermediate fact. Rewrite `this` using `[Complex.star_def, Complex.conj_re, Complex.neg_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Apply `h0` to reduce the goal to its premises. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `Complex.ext (by rw [hre, Complex.zero_re]) (by rw [him, Complex.zero_im])`.
+-/
 theorem im_ne {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {ξ₀ : E} (h0 : ξ₀ ≠ 0) (hξ : σ ξ₀ = -ξ₀) (τ : E →+* ℂ) :
     (τ ξ₀).im ≠ 0 := by
   intro him
@@ -154,12 +218,22 @@ theorem im_ne {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {ξ₀ : E} (h0 : ξ�
   rw [map_zero]
   exact Complex.ext (by rw [hre, Complex.zero_re]) (by rw [him, Complex.zero_im])
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.UnRep.hermE, dotProduct, mulVec, transpose_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem hermE_alt (c : E ≃ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     GlobalTheory.UnRep.hermE c Jᵀ x y = (fun b => c (y b)) ⬝ᵥ J *ᵥ x := by
   simp only [GlobalTheory.UnRep.hermE, dotProduct, mulVec, transpose_apply, Finset.mul_sum]
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Establish `e1 : ∀ y : Fin n → E, (fun b => c ((M *ᵥ y) b)) = (fun b => c (y b)) ᵥ* (M.map (c : E →ₐ[F] E))ᵀ` using `fun y => by`. Rewrite using `[vecMul_transpose]`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec ((c : E →ₐ[F] E) : E →+* E) M y i`. Establish `e : ∀ x y, GlobalTheory.UnRep.hermE c Jᵀ (M *ᵥ x) (M *ᵥ y) = (fun b => c (y b)) ⬝ᵥ ((M.map (c : E →ₐ[F] E))ᵀ * J * M) *ᵥ x` using `fun x y => by`.
+
+Rewrite using `[hermE_alt, e1, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`. Apply the tactic sequence `have hs : ∀ i : Fin n, (fun b => c ((Pi.single i (1 : E) : Fin n → E) b)) = (Pi.single i (1 : E) : Fin n → E) := fun i => funext fun b => by by_cases h : b = i <;> simp [h]`. Use `⟨fun h => ?_, fun h x y => by rw [e, h, hermE_alt]⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `h (Pi.single j 1) (Pi.single i 1)` as an intermediate fact.
+
+Rewrite `this` using `[e, hermE_alt, hs]`. Simplify using `using this`.
+-/
 theorem isUnE_iff (c : E ≃ₐ[F] E) {n : ℕ} (J M : Matrix (Fin n) (Fin n) E) :
     GlobalTheory.UnRep.IsUnE c Jᵀ M ↔ (M.map (c : E →ₐ[F] E))ᵀ * J * M = J := by
   have e1 : ∀ y : Fin n → E, (fun b => c ((M *ᵥ y) b)) = (fun b => c (y b)) ᵥ* (M.map (c : E →ₐ[F] E))ᵀ :=
@@ -178,6 +252,11 @@ theorem isUnE_iff (c : E ≃ₐ[F] E) {n : ℕ} (J M : Matrix (Fin n) (Fin n) E)
   rw [e, hermE_alt, hs] at this
   simpa using this
 
+/- English proof (translation)
+Establish `h' : ∀ z, τ (c z) = star (τ z)` using `fun z => by rw [← hcm.2.2.2, ← hc]; rfl`. Rewrite using `[hermE_alt, RingHom.map_dotProduct]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[h']`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec τ J x i).symm`.
+-/
 theorem quad_map {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (c : E ≃ₐ[F] E) (hc : (c : E →ₐ[F] E) = σ) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) (τ : E →+* ℂ) :
     star (τ ∘ x) ⬝ᵥ J.map τ *ᵥ (τ ∘ x) = τ (GlobalTheory.UnRep.hermE c Jᵀ x x) := by
@@ -189,6 +268,11 @@ theorem quad_map {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (c : E ≃ₐ[F] E)
   · funext i
     exact (RingHom.map_mulVec τ J x i).symm
 
+/- English proof (translation)
+Establish `h' : ∀ z, τ (c z) = star (τ z)` using `fun z => by rw [← hcm.2.2.2, ← hc]; rfl`. Establish `e : τ ∘ (Jᵀ *ᵥ fun b => c (x b)) = star (τ ∘ x) ᵥ* J.map τ`. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, mulVec, vecMul, dotProduct, transpose_apply, map_sum, map_mul, Matrix.map_apply, Pi.star_apply, h']`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+
+Rewrite using `[GlobalTheory.UnRep.refl, ← RingHom.mapMatrix_apply, map_add, map_one, ← e]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply, map_mul]`.
+-/
 theorem refl_map {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (c : E ≃ₐ[F] E) (hc : (c : E →ₐ[F] E) = σ) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) (u : E) (τ : E →+* ℂ) :
     (GlobalTheory.UnRep.refl c Jᵀ x u).map τ =

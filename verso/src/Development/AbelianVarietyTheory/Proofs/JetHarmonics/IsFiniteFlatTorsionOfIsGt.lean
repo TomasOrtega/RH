@@ -23,10 +23,26 @@ variable {S : Scheme.{0}} {T G B : Over S} [GrpObj T] [GrpObj G] [GrpObj B]
 noncomputable def torsionHom (q : G ⟶ B) [IsMonHom q] (N : ℕ) : torsion G N ⟶ torsion B N :=
   torsionLift (torsion.ι G N ≫ q) (by rw [← MonObj.pow_comp, torsionι_pow, MonObj.one_comp])
 
+/- English proof (translation)
+The claim follows from `torsionLift_ι _ _`.
+-/
 theorem torsionHom_ι (q : G ⟶ B) [IsMonHom q] (N : ℕ) :
     torsionHom q N ≫ torsion.ι B N = torsion.ι G N ≫ q :=
   torsionLift_ι _ _
 
+/- English proof (translation)
+Establish `inj : ∀ {W : Over S} {x y : W ⟶ T}, x ≫ i = y ≫ i → x = y` using `fun h => hk.hom_ext h (toUnit_unique _ _)`. Establish `ex : ∀ {W : Over S} (x : W ⟶ G), x ≫ q = 1 → ∃ y : W ⟶ T, y ≫ i = x` using `fun x h => ⟨hk.lift x (toUnit _) (by rw [h, Hom.one_def]), hk.lift_fst _ _ _⟩`. Establish `hiq : i ≫ q = 1` using `by rw [hk.w, Hom.one_def]`. Establish `hpow : ∀ {W : Over S} (x : W ⟶ torsion G N), (x ≫ torsion.ι G N) ^ N = 1` using `fun x => by`. Rewrite using `[← MonObj.comp_pow, torsionι_pow, MonObj.comp_one]`.
+
+Take `⟨c, hc⟩` from `ex (a ^ N) (by`. Rewrite using `[MonObj.pow_comp, hP.w, ← MonObj.comp_pow, torsionι_pow, MonObj.comp_one])`. Establish `hsr : s ≫ a ≫ q = r ≫ torsion.ι G N ≫ q`. Rewrite using `[hP.w, ← Category.assoc, hQ.w, Category.assoc, torsionHom_ι]`. Take `⟨t, ht⟩` from `ex ((s ≫ a) / (r ≫ torsion.ι G N)) (by`.
+
+Rewrite using `[GrpObj.div_comp, Category.assoc, Category.assoc, hsr, div_self'])`. Use `⟨c, t, ⟨?_⟩, ⟨PullbackCone.isLimitAux' _ fun W => ?_⟩⟩` and prove the remaining obligations. Apply `inj` to reduce the goal to its premises. Rewrite using `[comp_mulN, MonObj.pow_comp, ht, div_pow, hpow, div_one, Category.assoc, hc, MonObj.comp_pow]`. Establish `hW : W.fst ≫ c = W.snd ^ N` using `by rw [W.condition, comp_mulN]`.
+
+Establish `hg : ((W.fst ≫ a) / (W.snd ≫ i)) ^ N = 1`. Rewrite using `[div_pow, ← MonObj.pow_comp _ _ i, ← hW, Category.assoc, hc, MonObj.comp_pow, div_self']`. Establish `hl : W.fst ≫ b = torsionLift _ hg ≫ torsionHom q N`. Apply `torsion_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, torsionHom_ι, ← Category.assoc (torsionLift _ hg), torsionLift_ι, GrpObj.div_comp, Category.assoc, Category.assoc, hiq, MonObj.comp_one, div_one, hP.w]`.
+
+Use `⟨hQ.lift W.fst _ hl, hQ.lift_fst _ _ _, ?_, ?_⟩` and prove the remaining obligations. Apply `inj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(_ ≫ t) ≫ i = _`. Rewrite using `[Category.assoc, ht, GrpObj.comp_div, ← Category.assoc, ← Category.assoc, hQ.lift_fst, hQ.lift_snd, torsionLift_ι, div_div_cancel]`. Introduce `(m : W.pt ⟶ Q) (h1 : m ≫ s = W.fst) (h2 : m ≫ t = W.snd)`.
+
+Express the relevant statement in the definitionally equal form `m = _`. Use `hQ.hom_ext (by rw [hQ.lift_fst, h1]) ?_` and prove the remaining obligations. Apply `torsion_hom_ext` to reduce the goal to its premises. Rewrite using `[hQ.lift_snd, torsionLift_ι, ← h1, ← h2, Category.assoc, Category.assoc, Category.assoc, ht, GrpObj.comp_div, div_div_cancel]`.
+-/
 theorem exists_isPullback_mulN [IsCommMonObj G] (i : T ⟶ G) (q : G ⟶ B) [IsMonHom i] [IsMonHom q]
     (hk : IsPullback i (toUnit _) q (η : 𝟙_ _ ⟶ B)) (N : ℕ)
     {P Q : Over S} {a : P ⟶ G} {b : P ⟶ torsion B N} (hP : IsPullback a b q (torsion.ι B N))
@@ -69,6 +85,11 @@ theorem exists_isPullback_mulN [IsCommMonObj G] (i : T ⟶ G) (q : G ⟶ B) [IsM
       rw [hQ.lift_snd, torsionLift_ι, ← h1, ← h2, Category.assoc, Category.assoc, Category.assoc,
         ht, GrpObj.comp_div, div_div_cancel]
 
+/- English proof (translation)
+Establish `hP` using `IsPullback.of_hasPullback q (torsion.ι B N)`. Establish `hQ` using `IsPullback.of_hasPullback (pullback.snd q (torsion.ι B N)) (torsionHom q N)`. Take `⟨c, t, H⟩` from `exists_isPullback_mulN i q hk N hP hQ`. Establish `hP'` using `hP.map (Over.forget S)`. Use `MorphismProperty.of_isPullback_of_descendsAlong (P := Pr) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) (hQ.map (Over.forget S)) ⟨⟨?_, ?_⟩, ?_⟩ ?_` and prove the remaining obligations.
+
+Conclude with `MorphismProperty.of_isPullback (P := @Surjective) hP' ‹_›`. Conclude with `MorphismProperty.of_isPullback (P := @Flat) hP' ‹_›`. Conclude with `MorphismProperty.of_isPullback (P := @QuasiCompact) hP' ‹_›`. Conclude with `MorphismProperty.of_isPullback (P := Pr) (H.map (Over.forget S)).flip h`.
+-/
 theorem torsionHom_of_mulN (Pr : MorphismProperty Scheme.{0}) [Pr.IsStableUnderBaseChange]
     [Pr.DescendsAlong (@Surjective ⊓ @Flat ⊓ @QuasiCompact)]
     [IsCommMonObj G] (i : T ⟶ G) (q : G ⟶ B) [IsMonHom i] [IsMonHom q]
@@ -90,6 +111,15 @@ end ExtensionTorsion
 
 open ExtensionTorsion in
 
+/- English proof (translation)
+Introduce and unpack `S E G _ _ ⟨D⟩ N hN h1 h2`. Use `D.q_hom` as an intermediate fact. Use `D.i_hom` as an intermediate fact. Use `D.q_flat` as an intermediate fact. Use `D.q_surjective` as an intermediate fact.
+
+Use `D.q_affine` as an intermediate fact. Use `E.free` as an intermediate fact. Use `E.finite` as an intermediate fact. Establish `hN' : N ≠ 0` using `by omega`. Establish `hf : IsFinite (mulN (splitTorus S E.X) N).left` using `Diag.isFinite_mulN S E.X hN'`.
+
+Establish `hl : Flat (mulN (splitTorus S E.X) N).left` using `Diag.flat_mulN S E.X hN'`. Use `flat_descendsAlong_fpqc` as an intermediate fact. Use `isAffineHom_descendsAlong_fpqc.{0}` as an intermediate fact. Establish `a1 : Flat (torsionHom D.q N).left` using `torsionHom_of_mulN @Flat D.i D.q D.isKernel N hl`. Establish `a2 : IsAffineHom (torsionHom D.q N).left` using `torsionHom_of_mulN @IsAffineHom D.i D.q D.isKernel N inferInstance`.
+
+Establish `a3 : UniversallyClosed (torsionHom D.q N).left` using `torsionHom_of_mulN @UniversallyClosed D.i D.q D.isKernel N inferInstance`. Establish `a4 : LocallyOfFiniteType (torsionHom D.q N).left` using `torsionHom_of_mulN @LocallyOfFiniteType D.i D.q D.isKernel N inferInstance`. Establish `a5 : IsFinite (torsionHom D.q N).left` using `(IsFinite.iff_isIntegralHom_and_locallyOfFiniteType _).mpr ⟨IsIntegralHom.iff_universallyClosed_and_isAffineHom.mpr ⟨a3, a2⟩, a4⟩`. Rewrite using `[← Over.w (torsionHom D.q N)]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem isFinite_flat_torsion_of_isGt :
     ∀ (S : Scheme.{0}) (E : SplitExt S) (G : Over S) [GrpObj G] [IsCommMonObj G], E.IsGt G → ∀ N : ℕ, 1 ≤ N → IsFinite (torsion E.B N).hom → Flat (torsion E.B N).hom → IsFinite (torsion G N).hom ∧ Flat (torsion G N).hom := by
   rintro S E G _ _ ⟨D⟩ N hN h1 h2

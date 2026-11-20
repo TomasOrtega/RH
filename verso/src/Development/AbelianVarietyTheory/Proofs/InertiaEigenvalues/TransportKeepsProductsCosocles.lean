@@ -36,6 +36,9 @@ def subrepComp (ρ : Representation ℂ H V) (φ : G →* H) (hφ : Function.Sur
   right_inv _ := rfl
   map_rel_iff' := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(subrepComp ρ φ hφ).isSimpleOrder_iff`.
+-/
 theorem isIrreducible_comp_iff {ρ : Representation ℂ H V} {φ : G →* H} (hφ : Function.Surjective φ) :
     (pull ρ φ).IsIrreducible ↔ ρ.IsIrreducible :=
   (subrepComp ρ φ hφ).isSimpleOrder_iff
@@ -51,6 +54,11 @@ def equivComp {ρ : Representation ℂ H V} {σ : Representation ℂ H W} (φ : 
   equivOfBijective ⟨e.toLinearMap, fun g => e.toIntertwiningMap.isIntertwining' (φ g)⟩
     e.toLinearEquiv.bijective
 
+/- English proof (translation)
+Take `⟨hi, f, hf, hS⟩` from `h`. Use `⟨(isIrreducible_comp_iff hφ).1 hi, intertwiningOfComp hφ f, hf, fun S hS' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hS ((subrepComp π φ hφ).symm S) (((subrepComp π φ hφ).symm.isCoatom_iff S).2 hS')`. Establish `h2` using `congrArg Subrepresentation.toSubmodule h1`. Establish `inj : Function.Injective (Subrepresentation.toSubmodule (ρ` using `π)) := by`.
+
+Introduce and unpack `⟨a, _⟩ ⟨b, _⟩ rfl`. Both sides reduce to the same expression. Conclude with `inj h2`.
+-/
 theorem isCosocle_of_comp {σ : Representation ℂ H W} {π : Representation ℂ H V} {φ : G →* H}
     (hφ : Function.Surjective φ) (h : IsCosocle (pull σ φ) (pull π φ)) : IsCosocle σ π := by
   obtain ⟨hi, f, hf, hS⟩ := h
@@ -63,6 +71,9 @@ theorem isCosocle_of_comp {σ : Representation ℂ H W} {π : Representation ℂ
 
 variable [TopologicalSpace G] [TopologicalSpace H]
 
+/- English proof (translation)
+Introduce `v` and use `(hρ v).preimage hφ`.
+-/
 theorem isSmooth_comp {ρ : Representation ℂ H V} (hρ : IsSmooth ρ) {φ : G →* H} (hφ : Continuous φ) :
     IsSmooth (pull ρ φ) := fun v => (hρ v).preimage hφ
 
@@ -72,17 +83,29 @@ section GLMap
 
 variable {n R S : Type} [Fintype n] [DecidableEq n] [CommRing R] [CommRing S]
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem glMap_symm_glMap (j : R ≃+* S) (g : GL n R) :
     GeneralLinearGroup.map (j.symm : S →+* R) (GeneralLinearGroup.map (j : R →+* S) g) = g := by
   ext; simp
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem glMap_glMap_symm (j : R ≃+* S) (g : GL n S) :
     GeneralLinearGroup.map (j : R →+* S) (GeneralLinearGroup.map (j.symm : S →+* R) g) = g := by
   ext; simp
 
+/- English proof (translation)
+Introduce `g` and use `⟨_, glMap_glMap_symm j g⟩`.
+-/
 theorem glMap_surjective (j : R ≃+* S) : Function.Surjective (GeneralLinearGroup.map (n := n) (j : R →+* S)) :=
   fun g => ⟨_, glMap_glMap_symm j g⟩
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨Units.continuous_val.matrix_map hj, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `Units.continuous_coe_inv.matrix_map hj`.
+-/
 theorem continuous_glMap [TopologicalSpace R] [TopologicalSpace S] (j : R →+* S) (hj : Continuous j) :
     Continuous (GeneralLinearGroup.map (n := n) j) := by
   refine Units.continuous_iff.2 ⟨Units.continuous_val.matrix_map hj, ?_⟩
@@ -105,22 +128,34 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
 def leviMap (j : k' →+* k) : Levi k' m →* Levi k m :=
   MonoidHom.pi fun a => (GeneralLinearGroup.map j).comp (Pi.evalMonoidHom (fun a => GL (m a) k') a)
 
+/- English proof (translation)
+Use `ext`. Simplify using `[RingHom.map_det]`.
+-/
 theorem det_glMap {p : Type} [Fintype p] [DecidableEq p] (j : k' →+* k) (g : GL p k') :
     GeneralLinearGroup.det (GeneralLinearGroup.map j g) = Units.map j.toMonoidHom (GeneralLinearGroup.det g) := by
   ext; simp [RingHom.map_det]
 
+/- English proof (translation)
+The claim follows from `mem_parab_iff.2 fun a b i l hab => by show j (((p : GL n k') : Matrix n n k') (e ⟨a, i⟩) (e ⟨b, l⟩)) = 0 rw [mem_parab_iff.1 p.2 a b i l hab, map_zero]`.
+-/
 theorem glMap_mem_parab (e : (Σ a, m a) ≃ n) (j : k' →+* k) (p : parab k' e) :
     GeneralLinearGroup.map j (p : GL n k') ∈ parab k e :=
   mem_parab_iff.2 fun a b i l hab => by
     show j (((p : GL n k') : Matrix n n k') (e ⟨a, i⟩) (e ⟨b, l⟩)) = 0
     rw [mem_parab_iff.1 p.2 a b i l hab, map_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Use extensionality with `i l`. Both sides reduce to the same expression.
+-/
 theorem leviProj_glMap (e : (Σ a, m a) ≃ n) (j : k' →+* k) (p : parab k' e) :
     leviProj k e ⟨_, glMap_mem_parab e j p⟩ = leviMap j (leviProj k' e p) := by
   funext a
   ext i l
   rfl
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `show absPow k _ (GeneralLinearGroup.det (GeneralLinearGroup.map j (h a))) = _`. Rewrite using `[det_glMap, habs]`.
+-/
 theorem deltaHalf_leviMap (j : k' →+* k)
     (habs : ∀ (s : ℂ) (x : k'ˣ), absPow k s (Units.map j.toMonoidHom x) = absPow k' s x) (h : Levi k' m) :
     deltaHalf k m (leviMap j h) = deltaHalf k' m h := by
@@ -189,10 +224,18 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
   {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
   [Fintype n] [DecidableEq n] {W : Type} [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+The claim follows from `funext fun a => glMap_symm_glMap j (h a)`.
+-/
 theorem leviMap_symm_leviMap (j : k ≃+* k') (h : Levi k m) :
     leviMap (j.symm : k' →+* k) (leviMap (j : k →+* k') h) = h :=
   funext fun a => glMap_symm_glMap j (h a)
 
+/- English proof (translation)
+Establish `hρ' : ∀ h, ρ h = ρ' (leviMap (j.symm.symm : k →+* k') h)` using `fun h => by`. Rewrite using `[hρ]`. Conclude with `congrArg ρ (leviMap_symm_leviMap j h).symm`. Set `Φ : (parInd e ρ).IntertwiningMap (pull (parInd e ρ') (GeneralLinearGroup.map (j : k →+* k')))` to `⟨{ toFun := indFun e j hj' habs hρ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }, fun g => LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => by show f.1.1 (GeneralLinearGroup.map (j.symm : k' →+* k) x * g) = f.1.1 (GeneralLinearGroup.map (j.symm : k' →+* …`. Rewrite using `[map_mul, glMap_symm_glMap]))⟩`.
+
+Use `⟨equivOfBijective Φ ⟨fun f f' h => Subtype.ext (Subtype.ext (funext fun g => ?_)), fun F => ?_⟩⟩` and prove the remaining obligations. Establish `h2 : f.1.1 (GeneralLinearGroup.map (j.symm : k' →+* k) (GeneralLinearGroup.map (j : k →+* k') g)) = f'.1.1 (GeneralLinearGroup.map (j.symm : k' →+* k) (GeneralLinearGroup.map (j : k →+* k') g))` using `congrFun (congrArg (fun F : IndSp e ρ' => F.1.1) h) _`. Rewrite `h2` using `[glMap_symm_glMap]`. Then use the resulting hypothesis. Use `⟨indFun (k := k') (k' := k) e j.symm hj habs' hρ' F, Subtype.ext (Subtype.ext (funext fun x => ?_))⟩ show F.1.1 (GeneralLinearGroup.map (j.symm.symm : k →+* k') (GeneralLinearGroup.map (j.symm : k' →+* k) x)) = F.1.1 x` and prove the remaining obligations. Rewrite using `[glMap_symm_glMap]`.
+-/
 theorem nonempty_equiv_parInd (e : (Σ a, m a) ≃ n) (j : k ≃+* k') (hj : Continuous j) (hj' : Continuous j.symm)
     (habs : ∀ (s : ℂ) (x : k'ˣ), absPow k s (Units.map (j.symm : k' →+* k).toMonoidHom x) = absPow k' s x)
     (habs' : ∀ (s : ℂ) (x : kˣ), absPow k' s (Units.map (j : k →+* k').toMonoidHom x) = absPow k s x)
@@ -229,6 +272,11 @@ section Classes
 variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
+/- English proof (translation)
+Take `⟨n, π, π', e, h1, h2, he⟩` from `h`. Take `⟨rfl, h1⟩` from `Sigma.mk.inj_iff.1 h1`. Take `⟨-, h2⟩` from `Sigma.mk.inj_iff.1 h2`. Take `⟨a⟩` from `IrrRep.cl_eq_iff.1 (eq_of_heq h1)`. Take `⟨b⟩` from `IrrRep.cl_eq_iff.1 (eq_of_heq h2)`.
+
+Set `f : π.ρ.Equiv (pull π'.ρ (GeneralLinearGroup.map (i : k →+* k')))` to `equivOfBijective ⟨e.toLinearMap, fun g => LinearMap.ext fun v => he g v⟩ e.bijective`. Conclude with `⟨a.trans (f.trans (equivComp _ b.symm))⟩`.
+-/
 theorem nonempty_equiv_of_repRel (i : k ≃+* k') {N : ℕ} (y : IrrRep (GL (Fin N) k)) (y' : IrrRep (GL (Fin N) k'))
     (h : RepRel i (cls y) (cls y')) : Nonempty (y.ρ.Equiv (pull y'.ρ (GeneralLinearGroup.map (i : k →+* k')))) := by
   obtain ⟨n, π, π', e, h1, h2, he⟩ := h
@@ -240,6 +288,11 @@ theorem nonempty_equiv_of_repRel (i : k ≃+* k') {N : ℕ} (y : IrrRep (GL (Fin
     equivOfBijective ⟨e.toLinearMap, fun g => LinearMap.ext fun v => he g v⟩ e.bijective
   exact ⟨a.trans (f.trans (equivComp _ b.symm))⟩
 
+/- English proof (translation)
+Take `⟨n, π, π', e, rfl, rfl, he⟩` from `h`. Use `congrArg (Sigma.mk n) (IrrRep.cl_eq_iff.2 ?_)` and prove the remaining obligations. Take `⟨b⟩` from `IrrRep.nonempty_equiv_rep π`. Set `f : π'.ρ.Equiv (pull π.ρ (GeneralLinearGroup.map (i.symm : k' →+* k)))` to `equivOfBijective ⟨e.symm.toLinearMap, fun g => LinearMap.ext fun v => by`. Apply `e.injective` to reduce the goal to its premises.
+
+Use `show e (e.symm (π'.ρ g v)) = e (π.ρ (GeneralLinearGroup.map (i.symm : k' →+* k) g) (e.symm v))`. Rewrite using `[e.apply_symm_apply, he, e.apply_symm_apply]`. Conclude with `congrArg (fun g => π'.ρ g v) (glMap_glMap_symm i g).symm⟩ e.symm.bijective`. Conclude with `⟨f.trans (equivComp _ b.symm)⟩`.
+-/
 theorem eq_of_repRel (i : k ≃+* k') (hi : Continuous i.symm) {z : IrrGL k} {z' : IrrGL k'} (h : RepRel i z z') :
     z' = IrrGL.of (pull z.rep (GeneralLinearGroup.map (i.symm : k' →+* k)))
       (isSmooth_comp z.2.rep.smooth (continuous_glMap (i.symm : k' →+* k) hi))
@@ -257,6 +310,13 @@ theorem eq_of_repRel (i : k ≃+* k') (hi : Continuous i.symm) {z : IrrGL k} {z'
 
 end Classes
 
+/- English proof (translation)
+Introduce `k k' _ _ _ _ _ _ _ _ _ _ i hi r N x x' hd hd' y y' hx hy hc`. Establish `T1` using `GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation k k' i hi`. Establish `hi' : Continuous i.symm` using `T1.1`. Establish `T2` using `GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation k' k i.symm hi'`. Establish `hs : ∀ a, IsSmooth (pull (x a).rep (GeneralLinearGroup.map (i.symm : k' →+* k)))` using `fun a => isSmooth_comp (x a).2.rep.smooth (continuous_glMap (i.symm : k' →+* k) hi')`.
+
+Establish `hirr : ∀ a, (pull (x a).rep (GeneralLinearGroup.map (i.symm : k' →+* k))).IsIrreducible` using `fun a => (isIrreducible_comp_iff (glMap_surjective i.symm)).2 (x a).2.rep.irr`. Establish `hx' : x' = fun a => IrrGL.of _ (hs a) (hirr a)` using `funext fun a => eq_of_repRel i hi' (hx a)`. Substitute `hx'` using the available equality. Establish `A` using `(nonempty_equiv_of_repRel i y y' hy).some`. Establish `B` using `(nonempty_equiv_parInd (stdBlocks (fun a => (x a).1) hd) i hi hi' T2.2.2.2.2 T1.2.2.2.2 (ρ := piTensor fun a => (x a).rep) (ρ' := piTensor fun a => pull (x a).rep (GeneralLinearGroup.map (i.symm : k' →+* k))) (fun _ => rfl)).some`.
+
+Establish `C : (multiProd (stdBlocks (fun a => (x a).1) hd) (fun a => pull (x a).rep (GeneralLinearGroup.map (i.symm : k' →+* k)))).Equiv (prodIrr (fun a => IrrGL.of _ (hs a) (hirr a)) hd')` using `prodIrrEquiv hd (fun a => pull (x a).rep (GeneralLinearGroup.map (i.symm : k' →+* k))) hs hirr`. Establish `D : (prodIrr x hd).Equiv (pull (prodIrr (fun a => IrrGL.of _ (hs a) (hirr a)) hd') (GeneralLinearGroup.map (i : k →+* k')))` using `B.trans (equivComp _ C)`. Establish `E : IsCosocle (pull y'.ρ (GeneralLinearGroup.map (i : k →+* k'))) (pull (prodIrr (fun a => IrrGL.of _ (hs a) (hirr a)) hd') (GeneralLinearGroup.map (i : k →+* k')))` using `hc.of_equiv A D`. Conclude with `isCosocle_of_comp (glMap_surjective i) E`.
+-/
 theorem isCosocle_prodIrr_transport : ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [CharZero k] [Field k'] [ValuativeRel k'] [TopologicalSpace k']
     [IsNonarchimedeanLocalField k'] [CharZero k'] (i : k ≃+* k'), Continuous i → ∀ (r N : ℕ) (x : Fin r → IrrGL k)

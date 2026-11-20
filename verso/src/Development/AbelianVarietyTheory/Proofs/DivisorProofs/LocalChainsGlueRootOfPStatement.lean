@@ -15,5 +15,8 @@ open scoped TensorProduct Pointwise
 open GlobalTheory.ChainPts
 open GlobalTheory.ChainDesc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainDesc.exists_presentations_of_isLoc | exact GlobalTheory.ChainDesc.exists_presentations_of_isLoc | (intros; apply GlobalTheory.ChainDesc.exists_presentations_of_isLoc <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_chains_glue_root_of_p : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (E : ℕ → B.X.Modules) (ι : ∀ n, E n ⟶ freeModule B.X (Fin h)) (I : Type) (V : I → B.X.Opens) (D : ∀ i, ChainOn p h o Lie Om π γ (V i)), [CharZero O] → IsRootOfP p π (p - 1) → IsLoc M ι V D → ∃ (q l : ℕ → EPres B Λ) (tq : ∀ n, E n ⟶ (q n).mod.V) (tl : ∀ n, E n ⟶ (l n).mod.V), (∀ n ≤ o, IsQuot M (ι n) (baseOn h π) (q n).mod (tq n)) ∧ (∀ n < o, IsQuot M (ι n) (latOf (ι (n + 1))) (l n).mod (tl n)) ∧ ∀ n < o, IsExtA (q (n + 1)).mod (q n).mod (l n).mod := by
   first | exact @GlobalTheory.ChainDesc.exists_presentations_of_isLoc | exact GlobalTheory.ChainDesc.exists_presentations_of_isLoc | (intros; apply GlobalTheory.ChainDesc.exists_presentations_of_isLoc <;> assumption)

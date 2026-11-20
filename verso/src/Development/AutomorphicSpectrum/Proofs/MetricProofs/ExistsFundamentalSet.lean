@@ -13,6 +13,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp
 open NumberField Matrix MeasureTheory Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GroundTheory.Heights₂.Heights.FiniteCovolume
 open scoped ENNReal InnerProductSpace ComplexOrder
 
+/- English proof (translation)
+Use `isOpen_iff_mem_nhds.2 fun x0 hx0 => ?_` and prove the remaining obligations. Use `Filter.eventually_all.2 fun τ => ReciprocityTheory.ChartRestriction.G.AR.Up.ExhB.posDef_eventually (fun t : Fin n → ℂ => 1 - (ballMat q t τ)ᴴ * ballMat q t τ) (fun a b => ?_) (fun t => ?_) x0 (hx0 τ)` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply, ballMat, Matrix.of_apply]`. Conclude with `continuous_const.sub (continuous_finsetSum _ fun c _ => (continuous_star.comp (continuous_apply _)).mul (continuous_apply _))`. Establish `: (1 - (ballMat q t τ)ᴴ * ballMat q t τ)ᴴ = 1 - (ballMat q t τ)ᴴ * ballMat q t τ`.
+
+Simplify using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_mul]`. Conclude with `this`.
+-/
 theorem isOpen_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ Fin n) :
     IsOpen (ballDom q) := by
   refine isOpen_iff_mem_nhds.2 fun x0 hx0 => ?_
@@ -25,6 +30,19 @@ theorem isOpen_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j 
       simp [Matrix.conjTranspose_sub, Matrix.conjTranspose_mul]
     exact this
 
+/- English proof (translation)
+Use `⟨X ∩ ⋂ i, {t | ψ t ≤ ψ (A i t)}, ?_, Set.inter_subset_left, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hX.inter (MeasurableSet.iInter fun i => measurableSet_le hψ (hψ.comp (hA i)))`. Introduce `t ht`. Take `⟨i₀, hi₀⟩` from `(hrel t ht t ht).1 (hrefl t ht)`. Establish `hne : {i | ψ (A i t) ≤ ψ t}.Nonempty` using `⟨i₀, by simp [← hi₀]⟩`.
+
+Take `⟨i, hi, hmin⟩` from `Set.exists_min_image _ (fun i => ψ (A i t)) (hfin t ht (ψ t)) hne`. Establish `hmin' : ∀ k, ψ (A i t) ≤ ψ (A k t)` using `fun k => by`. Distinguish the cases in `hk : ψ (A k t) ≤ ψ t`. Conclude with `hmin k hk`. Conclude with `le_trans hi (le_of_not_ge hk)`.
+
+Establish `hit : A i t ∈ X` using `hmaps i ht`. Establish `hR : Rel t (A i t)` using `(hrel t ht _ hit).2 ⟨i, rfl⟩`. Use `⟨A i t, ⟨hit, Set.mem_iInter.2 fun k => ?_⟩, hR⟩` and prove the remaining obligations. Establish `h1 : Rel (A i t) (A k (A i t))` using `(hrel _ hit _ (hmaps k hit)).2 ⟨k, rfl⟩`. Take `⟨l, hl⟩` from `(hrel t ht _ (hmaps k hit)).1 (htrans _ _ _ hR h1)`.
+
+Use `show ψ (A i t) ≤ ψ (A k (A i t))`. Rewrite using `[hl]`. Conclude with `hmin' l`. Introduce and unpack `t ⟨ht, htm⟩ t' ⟨ht', htm'⟩ hR`. Take `⟨i, hi⟩` from `(hrel t ht t' ht').1 hR`.
+
+Take `⟨k, hk⟩` from `(hrel t' ht' t ht).1 (hsymm _ _ hR)`. Establish `h1 : ψ t ≤ ψ t'`. Establish `: ψ t ≤ ψ (A i t)` using `Set.mem_iInter.1 htm i`. Rewrite `this` using `[← hi]`. Then use the resulting hypothesis. Establish `h2 : ψ t' ≤ ψ t`.
+
+Establish `: ψ t' ≤ ψ (A k t')` using `Set.mem_iInter.1 htm' k`. Rewrite `this` using `[← hk]`. Then use the resulting hypothesis. Conclude with `hinj ht ht' (le_antisymm h1 h2)`.
+-/
 theorem exists_transversal {α ι : Type*} [MeasurableSpace α] [Countable ι] (X : Set α)
     (hX : MeasurableSet X) (A : ι → α → α) (hA : ∀ i, Measurable (A i)) (ψ : α → ℝ)
     (hψ : Measurable ψ) (hinj : Set.InjOn ψ X) (Rel : α → α → Prop)
@@ -67,18 +85,38 @@ theorem exists_transversal {α ι : Type*} [MeasurableSpace α] [Countable ι] (
 section Lat
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
+/- English proof (translation)
+Distinguish the cases in `hz : z = 0`. Simplify using `[hz]`. Conclude with `(R.pos z hz).le`.
+-/
 theorem RiemLat.quad_nonneg (R : RiemLat E g Λ) (z : Fin g → ℂ) : 0 ≤ (z ⬝ᵥ R.Hm *ᵥ star z).re := by
   by_cases hz : z = 0
   · simp [hz]
   · exact (R.pos z hz).le
 
+/- English proof (translation)
+The claim follows from `R.quad_nonneg _`.
+-/
 theorem RiemLat.normSq_nonneg (R : RiemLat E g Λ) (x : Λ) : 0 ≤ R.normSq x := R.quad_nonneg _
 
+/- English proof (translation)
+Establish `h` using `R.alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, R.alt] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem RiemLat.form_antisymm (R : RiemLat E g Λ) (x y : Λ) : R.form y x = - R.form x y := by
   have h := R.alt (x + y)
   simp only [map_add, LinearMap.add_apply, R.alt] at h
   linarith
 
+/- English proof (translation)
+Use `set z := R.P x`. Use `set w := R.P y`. Establish `key : ∀ s : ℝ, 0 ≤ R.normSq y * (s * s) + (2 * (R.form x y : ℤ) : ℝ) * s + R.normSq x`. Introduce `s`. Establish `h` using `R.quad_nonneg (z + ((s : ℂ) * Complex.I) • w)`.
+
+Establish `e1 : (z ⬝ᵥ R.Hm *ᵥ star z).re = R.normSq x` using `rfl`. Establish `e2 : (w ⬝ᵥ R.Hm *ᵥ star w).re = R.normSq y` using `rfl`. Establish `e3 : (z ⬝ᵥ R.Hm *ᵥ star w).im = (R.form x y : ℤ)` using `R.im x y`. Establish `e4 : (w ⬝ᵥ R.Hm *ᵥ star z).im = (R.form y x : ℤ)` using `R.im y x`. Rewrite `e4` using `[R.form_antisymm x y]`.
+
+Establish `hexp : (z + ((s : ℂ) * Complex.I) • w) ⬝ᵥ R.Hm *ᵥ star (z + ((s : ℂ) * Complex.I) • w) = (z ⬝ᵥ R.Hm *ᵥ star z) + (-(s : ℂ) * Complex.I) * (z ⬝ᵥ R.Hm *ᵥ star w) + ((s : ℂ) * Complex.I) * (w ⬝ᵥ R.Hm *ᵥ star z) + (s : ℂ) ^ 2 * (w ⬝ᵥ R.Hm *ᵥ star w)`. Simplify using `only [star_add, star_smul, mulVec_add, mulVec_smul, add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul, star_mul', Complex.star_def, Complex.conj_ofReal, Complex.conj_I]`. Establish `hI` using `Complex.I_mul_I`. Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hexp]`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.mul_im, e1, e2, e3, e4, sq] at h`. Move the coercions through the operations in `at h`. Use polynomial arithmetic with `[h]`.
+
+Establish `hd` using `discrim_le_zero key`. Rewrite `hd` using `[discrim]`. Use polynomial arithmetic with `[hd]`.
+-/
 theorem RiemLat.form_sq_le (R : RiemLat E g Λ) (x y : Λ) :
     ((R.form x y : ℤ) : ℝ) ^ 2 ≤ R.normSq x * R.normSq y := by
   set z := R.P x
@@ -110,6 +148,19 @@ theorem RiemLat.form_sq_le (R : RiemLat E g Λ) (x y : Λ) :
   rw [discrim] at hd
   nlinarith [hd]
 
+/- English proof (translation)
+Use `haveI := R.free`. Use `haveI := R.fin`. Set `b` to `Module.Free.chooseBasis ℤ Λ`. Set `ι` to `Module.Free.ChooseBasisIndex ℤ Λ`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, ∀ i : ι, c * R.normSq (b i) ≤ (N : ℝ) ^ 2 := by`.
+
+Take `⟨N, hN⟩` from `exists_nat_ge (∑ i : ι, |c * R.normSq (b i)| + 1)`. Use `⟨N, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : |c * R.normSq (b i)| ≤ ∑ i : ι, |c * R.normSq (b i)|` using `Finset.single_le_sum (f := fun i : ι => |c * R.normSq (b i)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `h2` using `le_abs_self (c * R.normSq (b i))`. Establish `h3 : (0 : ℝ) ≤ ∑ i : ι, |c * R.normSq (b i)|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hfin : (Set.pi Set.univ fun _ : ι => Set.Icc (-(N : ℤ)) N).Finite` using `Set.Finite.pi fun _ => Set.finite_Icc _ _`. Use `Set.Finite.of_finite_image (f := fun x (i : ι) => R.form x (b i)) (hfin.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ i -`. Establish `h1` using `R.form_sq_le x (b i)`.
+
+Establish `h2 : R.normSq x * R.normSq (b i) ≤ c * R.normSq (b i)` using `mul_le_mul_of_nonneg_right hx (R.normSq_nonneg _)`. Establish `h3 : ((R.form x (b i) : ℤ) : ℝ) ^ 2 ≤ (N : ℝ) ^ 2` using `h1.trans (h2.trans (hN i))`. Establish `h4` using `abs_le.1 (abs_le_of_sq_le_sq h3 (by positivity))`. Prove the components needed by the constructor for the conclusion. Use `h4.1` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Use `h4.2` as an intermediate fact. Conclude with `this` after adjusting the coercions. Introduce `x _ y _ hxy`. Use `R.unimod.1 (b.ext fun i => ?_)` and prove the remaining obligations.
+
+Conclude with `congrFun hxy i`.
+-/
 theorem RiemLat.finite_normSq_le (R : RiemLat E g Λ) (c : ℝ) : {x | R.normSq x ≤ c}.Finite := by
   haveI := R.free
   haveI := R.fin
@@ -141,6 +192,13 @@ theorem RiemLat.finite_normSq_le (R : RiemLat E g Λ) (c : ℝ) : {x | R.normSq 
     refine R.unimod.1 (b.ext fun i => ?_)
     exact congrFun hxy i
 
+/- English proof (translation)
+Use `choose y hy using fun i => R.unimod.2 (b.coord i)`. Use `⟨Matrix.of fun i k => ((b.repr (y i) k : ℤ) : ℂ), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1 : R.form (y i) (b j) = ∑ k, b.repr (y i) k * R.form (b k) (b j)`. Establish `e : R.form (∑ k, b.repr (y i) k • b k) (b j) = ∑ k, b.repr (y i) k * R.form (b k) (b j)`.
+
+Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite `e` using `[b.sum_repr]`. Then use the resulting hypothesis. Establish `h2 : R.form (y i) (b j) = if i = j then 1 else 0`. Rewrite using `[hy i]`. Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply, eq_comm]`.
+
+Establish `h3` using `congrArg (fun z : ℤ => (z : ℂ)) (h1.symm.trans h2)`. Simplify using `only [Int.cast_sum, Int.cast_mul] at h3`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[h3]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem RiemLat.left_inv_gram (R : RiemLat E g Λ) {ι : Type} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι ℤ Λ) :
     ∃ Y : Matrix ι ι ℂ, Y * (Matrix.of fun i j => ((R.form (b i) (b j) : ℤ) : ℂ)) = 1 := by
@@ -163,6 +221,29 @@ theorem RiemLat.left_inv_gram (R : RiemLat E g Λ) {ι : Type} [Fintype ι] [Dec
 def RiemLat.perMat (R : RiemLat E g Λ) {ι : Type} (b : ι → Λ) : Matrix (Fin g) ι ℂ :=
   Matrix.of fun a i => R.P (b i) a
 
+/- English proof (translation)
+Use `set Q := R.perMat b with hQ`. Use `set Qb : Matrix (Fin g) ι ℂ := Q.map (starRingEnd ℂ) with hQb`. Use `set S : Matrix ι ι ℂ := Qᵀ * R.Hm * Qb with hS`. Establish `hSe : ∀ i j, S i j = R.P (b i) ⬝ᵥ R.Hm *ᵥ star (R.P (b j))`. Introduce `i j`.
+
+Simplify using `only [hS, hQb, hQ, Matrix.mul_apply, dotProduct, mulVec, RiemLat.perMat, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Pi.star_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`. Establish `hSc : Qᴴ * R.Hmᵀ * Q = S.map (starRingEnd ℂ)`.
+
+Establish `hH : R.Hm.map (starRingEnd ℂ) = R.Hmᵀ`. Use `R.herm` as an intermediate fact. Use extensionality with `a c`. Establish `h` using `this.apply c a`. Simplify using `using h`.
+
+Establish `: S.map (starRingEnd ℂ) = (Qᵀ).map (starRingEnd ℂ) * R.Hm.map (starRingEnd ℂ) * Qb.map (starRingEnd ℂ)`. Rewrite using `[hS, Matrix.map_mul, Matrix.map_mul]`. Rewrite using `[this, hH]`. Use `congr 2`. Use extensionality with `a c`.
+
+Simplify using `[hQb]`. Establish `hdiff : S - S.map (starRingEnd ℂ) = (2 * Complex.I) • (Matrix.of fun i j => ((R.form (b i) (b j) : ℤ) : ℂ))`. Use extensionality with `i j`. Establish `h` using `R.im (b i) (b j)`. Rewrite `h` using `[← hSe]`.
+
+Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Establish `key : ∀ w : ℂ, w - (starRingEnd ℂ) w = 2 * Complex.I * ((w.im : ℝ) : ℂ)`. Introduce `w`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Establish `h5` using `key (S i j)`.
+
+Rewrite `h5` using `[h]`. Simplify using `using h5`. Use `set c : ℂ := 2 * Complex.I with hcdef`. Establish `hc0 : c ≠ 0` using `by simp [hcdef]`. Establish `h1 : Matrix.fromCols (c⁻¹ • (Y * Qᵀ * R.Hm)) (-(c⁻¹ • (Y * Qᴴ * R.Hmᵀ))) * Matrix.fromRows Qb Q = 1`.
+
+Rewrite using `[Matrix.fromCols_mul_fromRows]`. Establish `: Y * (S - S.map (starRingEnd ℂ)) = c • 1` using `by rw [hdiff, Matrix.mul_smul, hY]`. Rewrite `this` using `[← hSc, hS, Matrix.mul_sub]`. Simplify using `only [Matrix.smul_mul, Matrix.neg_mul]`. Rewrite using `[← sub_eq_add_neg, ← smul_sub]`.
+
+Establish `e : Y * Qᵀ * R.Hm * Qb - Y * Qᴴ * R.Hmᵀ * Q = c • 1`. Rewrite using `[← this]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Establish `h2` using `(Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq hc)).1 h1`.
+
+Rewrite `h2` using `[Matrix.fromRows_mul_fromCols, ← Matrix.fromBlocks_one]`. Establish `h3` using `(Matrix.fromBlocks_inj.1 h2).2.2.2`. Establish `h4 : Q * (Y * Qᴴ * R.Hmᵀ) = (-c) • 1`. Use `congrArg (fun M => (-c) • M) h3` as an intermediate fact. Simplify using `only [Matrix.mul_neg, Matrix.mul_smul, smul_neg, neg_smul, smul_smul] at this`.
+
+Simplify `this` using `[mul_inv_cancel₀ hc0]`. Rewrite using `[show (-2 * Complex.I) = -c by simp [hcdef]]`. Rewrite using `[← h4]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem RiemLat.riemann_rel (R : RiemLat E g Λ) {ι : Type} [Fintype ι] [DecidableEq ι]
     (b : ι → Λ) (hc : Fintype.card ι = Fintype.card (Fin g ⊕ Fin g)) (Y : Matrix ι ι ℂ)
     (hY : Y * (Matrix.of fun i j => ((R.form (b i) (b j) : ℤ) : ℂ)) = 1) :
@@ -222,6 +303,25 @@ theorem RiemLat.riemann_rel (R : RiemLat E g Λ) {ι : Type} [Fintype ι] [Decid
   rw [← h4]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `haveI := (R t₀).fin`. Take `⟨Y, hY⟩` from `(R t₀).left_inv_gram b`. Establish `hc : Fintype.card ι = Fintype.card (Fin g ⊕ Fin g)`. Use `(R t₀).rank` as an intermediate fact. Rewrite `this` using `[Module.finrank_eq_card_basis b]`.
+
+Simplify using `only [Fintype.card_sum, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hPc : ∀ y, Continuous fun t : U => (R t).P y` using `fun y => continuousOn_iff_continuous_restrict.1 (hR.2 y).continuousOn`. Establish `hrel : ∀ t : U, ((R t).perMat b * Y * ((R t).perMat b)ᴴ) * (R t).Hmᵀ = (-2 * Complex.I) • (1 : Matrix (Fin g) (Fin g) ℂ)`. Introduce `t`.
+
+Use `(R t).riemann_rel b hc Y ?_` and prove the remaining obligations. Rewrite using `[hR.1 t t.2 t₀ ht₀]`. Conclude with `hY`. Set `N : U → Matrix (Fin g) (Fin g) ℂ` to `fun t => (R t).perMat b * Y * ((R t).perMat b)ᴴ`. Establish `hQc : Continuous fun t : U => (R t).perMat b` using `continuous_matrix fun a i => (continuous_apply a).comp (hPc (b i))`.
+
+Establish `hNc : Continuous N` using `(hQc.matrix_mul continuous_const).matrix_mul hQc.matrix_conjTranspose`. Use `set c : ℂ := -2 * Complex.I with hcdef`. Establish `hc0 : c ≠ 0` using `by simp [hcdef]`. Establish `hinv : ∀ t : U, (R t).Hm = (c • (N t)⁻¹)ᵀ`. Introduce `t`.
+
+Establish `h1 : N t * (c⁻¹ • (R t).Hmᵀ) = 1`. Rewrite using `[Matrix.mul_smul, hrel t, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[Matrix.inv_eq_right_inv h1, smul_smul, mul_inv_cancel₀ hc0, one_smul, Matrix.transpose_transpose]`. Establish `hdet : ∀ t : U, (N t).det ≠ 0`. Introduce `t h0`.
+
+Establish `h1` using `congrArg Matrix.det (hrel t)`. Rewrite `h1` using `[Matrix.det_mul]`. Express the relevant statement in the definitionally equal form `(N t).det * _ = _ at h1`. Rewrite `h1` using `[h0, zero_mul, Matrix.det_smul, Matrix.det_one]`. Conclude with `(mul_ne_zero (pow_ne_zero _ hc0) one_ne_zero) h1.symm`.
+
+Establish `hNi : Continuous fun t : U => (N t)⁻¹`. Establish `: (fun t : U => (N t)⁻¹) = fun t => ((N t).det)⁻¹ • (N t).adjugate`. Use function extensionality and compare the values at `t`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Rewrite using `[this]`.
+
+Conclude with `(hNc.matrix_det.inv₀ hdet).smul hNc.matrix_adjugate`. Establish `hHc : Continuous fun t : U => (R t).Hm`. Establish `: (fun t : U => (R t).Hm) = fun t => (c • (N t)⁻¹)ᵀ` using `funext hinv`. Rewrite using `[this]`. Conclude with `(hNi.const_smul c).matrix_transpose`.
+
+Rewrite using `[continuousOn_iff_continuous_restrict]`. Express the relevant statement in the definitionally equal form `Continuous fun t : U => ((R t).P x ⬝ᵥ (R t).Hm *ᵥ star ((R t).P x)).re`. Conclude with `Complex.continuous_re.comp ((hPc x).dotProduct (hHc.matrix_mulVec (hPc x).star))`.
+-/
 theorem continuousOn_normSq_of_holomorphic_family {n : ℕ} {U : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → RiemLat E g Λ}
     (hR : IsHolFam U R) (x : Λ) {t₀ : Fin n → ℂ} (ht₀ : t₀ ∈ U) {ι : Type} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι ℤ Λ) : ContinuousOn (fun t => (R t).normSq x) U := by
@@ -272,6 +372,9 @@ theorem continuousOn_normSq_of_holomorphic_family {n : ℕ} {U : Set (Fin n → 
   change Continuous fun t : U => ((R t).P x ⬝ᵥ (R t).Hm *ᵥ star ((R t).P x)).re
   exact Complex.continuous_re.comp ((hPc x).dotProduct (hHc.matrix_mulVec (hPc x).star))
 
+/- English proof (translation)
+Break down `U.eq_empty_or_nonempty with rfl | ⟨t₀, ht₀⟩` into its components or cases. Simplify using the standard rewrite rules. Use `haveI := (R t₀).free`. Use `haveI := (R t₀).fin`. Conclude with `continuousOn_normSq_of_holomorphic_family hR x ht₀ (Module.Free.chooseBasis ℤ Λ)`.
+-/
 theorem continuousOn_normSq {n : ℕ} {U : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → RiemLat E g Λ}
     (hR : IsHolFam U R) (x : Λ) : ContinuousOn (fun t => (R t).normSq x) U := by
   rcases U.eq_empty_or_nonempty with rfl | ⟨t₀, ht₀⟩
@@ -286,8 +389,16 @@ end Lat
 section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearEquiv.refl _ _, fun _ => rfl⟩`.
+-/
 theorem RiemLat.eqvBy_refl (R : RiemLat E g Λ) : R.EqvBy R 1 := ⟨LinearEquiv.refl _ _, fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨h₀, hx⟩` from `h`. Use `⟨h₀.symm, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hx (γ⁻¹ x)`. Establish `h2 : γ (γ⁻¹ x) = x` using `γ.apply_symm_apply x`. Rewrite `h1` using `[h2]`.
+
+Rewrite using `[h1, LinearEquiv.symm_apply_apply]`.
+-/
 theorem RiemLat.EqvBy.symm {R R' : RiemLat E g Λ} {γ : Λ ≃ₗ[𝓞 E] Λ} (h : R.EqvBy R' γ) : R'.EqvBy R γ⁻¹ := by
   obtain ⟨h₀, hx⟩ := h
   refine ⟨h₀.symm, fun x => ?_⟩
@@ -296,6 +407,9 @@ theorem RiemLat.EqvBy.symm {R R' : RiemLat E g Λ} {γ : Λ ≃ₗ[𝓞 E] Λ} (
   rw [h2] at h1
   rw [h1, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨h₀, hx⟩` from `h`. Take `⟨h₁, hy⟩` from `h'`. Conclude with `⟨h₀.trans h₁, fun x => (hy (γ x)).trans (congrArg h₁ (hx x))⟩`.
+-/
 theorem RiemLat.EqvBy.trans {R R' R'' : RiemLat E g Λ} {γ γ' : Λ ≃ₗ[𝓞 E] Λ} (h : R.EqvBy R' γ)
     (h' : R'.EqvBy R'' γ') : R.EqvBy R'' (γ' * γ) := by
   obtain ⟨h₀, hx⟩ := h
@@ -304,6 +418,55 @@ theorem RiemLat.EqvBy.trans {R R' R'' : RiemLat E g Λ} {γ γ' : Λ ≃ₗ[𝓞
 
 end Main
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F Δ Γ hΓ`. Establish `hXo : IsOpen (ballDom F.q)` using `isOpen_ballDom F.q`. Establish `hXm : MeasurableSet (ballDom F.q)` using `hXo.measurableSet`. Use `haveI := (F.R (Δ.π 1)).free`. Use `haveI := (F.R (Δ.π 1)).fin`.
+
+Set `b` to `Module.Free.chooseBasis ℤ Λ`. Set `u : (Fin n → ℂ) → ℝ` to `fun t => ∑ i, (F.R t).normSq (b i)`. Establish `huc : ContinuousOn u (ballDom F.q)` using `continuousOn_finset_sum _ fun i _ => continuousOn_normSq F.hol (b i)`. Use `haveI : Countable Λ := b.repr.toEquiv.injective.countable`. Establish `hext : ∀ γ γ' : Λ ≃ₗ[𝓞 E] Λ, (∀ i, γ (b i) = γ' (b i)) → γ = γ'`.
+
+Introduce `γ γ' h`. Establish `h1` using `b.ext (f₁ := (γ : Λ →ₗ[𝓞 E] Λ).toAddMonoidHom.toIntLinearMap) (f₂ := (γ' : Λ →ₗ[𝓞 E] Λ).toAddMonoidHom.toIntLinearMap) h`. Conclude with `LinearEquiv.ext fun x => LinearMap.congr_fun h1 x`. Use `haveI : Countable (Λ ≃ₗ[𝓞 E] Λ) := Function.Injective.countable (f := fun (γ : Λ ≃ₗ[𝓞 E] Λ) i => γ (b i)) fun γ γ' h => hext γ γ' fun i => congrFun h i`. Set `δ : Γ → latticeStab Δ.h Δ.e.range` to `fun γ => Δ.α.symm ⟨γ.1, hΓ.1 γ.2⟩`.
+
+Establish `hαδ : ∀ γ : Γ, (Δ.α (δ γ)).1 = γ.1` using `fun γ => by simp [δ]`. Set `a₀ : Γ → archUnitary Δ.h (Pi.basisFun E (Fin (j + j')))` to `fun γ => archEmbed Δ.h (Pi.basisFun E (Fin (j + j'))) (δ γ)`. Use `choose A G hAd hGd hAπ hpot using Δ.act`. Set `B : Γ → (Fin n → ℂ) → Fin n → ℂ` to `fun γ => A (a₀ γ)`. Establish `hBπ : ∀ γ a, Δ.π (a₀ γ * a) = B γ (Δ.π a)` using `fun γ a => hAπ _ a`.
+
+Establish `hmemπ : ∀ a, Δ.π a ∈ ballDom F.q` using `fun a => Δ.π_range ▸ Set.mem_range_self a`. Establish `hsurj : ∀ t ∈ ballDom F.q, ∃ a, Δ.π a = t` using `fun t ht => by`. Rewrite `ht` using `[← Δ.π_range]`. Conclude with `ht`. Establish `hBX : ∀ γ, Set.MapsTo (B γ) (ballDom F.q) (ballDom F.q)`.
+
+Introduce `γ t ht`. Take `⟨a, rfl⟩` from `hsurj t ht`. Rewrite using `[← hBπ]`. Conclude with `hmemπ _`. Establish `hBc : ∀ γ, ContinuousOn (B γ) (ballDom F.q)` using `fun γ => (hAd _).continuousOn`.
+
+Establish `hact : ∀ (γ : Γ) t, t ∈ ballDom F.q → (F.R t).EqvBy (F.R (B γ t)) γ.1`. Introduce `γ t ht`. Take `⟨a, rfl⟩` from `hsurj t ht`. Establish `h` using `Δ.α_act (δ γ) a`. Rewrite `h` using `[hαδ]`.
+
+Rewrite using `[← hBπ]`. Conclude with `h`. Establish `hiso : ∀ (γ : Γ) t, t ∈ ballDom F.q → ∀ x, (F.R (B γ t)).normSq (γ.1 x) = (F.R t).normSq x`. Introduce `γ t ht x`. Take `⟨a, rfl⟩` from `hsurj t ht`.
+
+Rewrite using `[← hBπ, Δ.len, Δ.len]`. Establish `h1` using `Δ.α_eq (δ γ) x`. Rewrite `h1` using `[hαδ]`. Rewrite using `[h1]`. Establish `h2` using `invApply_archEmbed_mul Δ.h (Pi.basisFun E (Fin (j + j'))) (δ γ : Δ.h.unitaryGroup) a (Δ.e x)`.
+
+Conclude with `congrArg (fun y => Δ.κ * Δ.M.len y ^ 2) h2`. Establish `hrel : ∀ t ∈ ballDom F.q, ∀ t' ∈ ballDom F.q, F.Eqv Γ t t' ↔ ∃ γ : Γ, t' = B γ t`. Introduce `t ht t' ht'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, h⟩`.
+
+Use `⟨⟨γ, hγ⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `hact ⟨γ, hγ⟩ t ht`. Establish `h2 : (F.R (B ⟨γ, hγ⟩ t)).EqvBy (F.R t') 1`. Establish `h3` using `h1.symm.trans h`. Simplify using `using h3`.
+
+Conclude with `(F.univ (F.R t') (F.form_eq t') (F.sig t' ht')).unique ⟨ht', (F.R t').eqvBy_refl⟩ ⟨hBX _ ht, h2⟩`. Introduce and unpack `⟨γ, rfl⟩`. Conclude with `⟨γ.1, γ.2, hact γ t ht⟩`. Establish `hfinu : ∀ t ∈ ballDom F.q, ∀ c : ℝ, {γ : Γ | u (B γ t) ≤ c}.Finite`. Introduce `t ht c`.
+
+Establish `hS` using `(F.R t).finite_normSq_le c`. Establish `hfinp : (Set.pi Set.univ fun _ : Module.Free.ChooseBasisIndex ℤ Λ => {x | (F.R t).normSq x ≤ c}).Finite` using `Set.Finite.pi fun _ => hS`. Use `Set.Finite.of_finite_image (f := fun (γ : Γ) i => (γ⁻¹ : Γ).1 (b i)) (hfinp.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, hγ, rfl⟩ i -`. Establish `h1` using `hiso γ t ht ((γ⁻¹ : Γ).1 (b i))`.
+
+Establish `h2 : γ.1 ((γ⁻¹ : Γ).1 (b i)) = b i` using `γ.1.apply_symm_apply _`. Rewrite `h1` using `[h2]`. Use `show (F.R t).normSq ((γ⁻¹ : Γ).1 (b i)) ≤ c`. Rewrite using `[← h1]`. Conclude with `(Finset.single_le_sum (f := fun i => (F.R (B γ t)).normSq (b i)) (fun _ _ => RiemLat.normSq_nonneg _ _) (Finset.mem_univ i)).trans hγ`.
+
+Introduce `γ _ γ' _ h`. Establish `h1 : (γ⁻¹ : Γ).1 = (γ'⁻¹ : Γ).1` using `hext _ _ fun i => congrFun h i`. Conclude with `inv_injective (Subtype.ext h1)`. Take `⟨φ, hφ⟩` from `exists_measurableEmbedding_real (Fin n → ℂ)`. Set `ũ : (Fin n → ℂ) → ℝ` to `(ballDom F.q).piecewise u 0`.
+
+Establish `hũ : Measurable ũ` using `huc.measurable_piecewise continuousOn_const hXm`. Set `ψ : (Fin n → ℂ) → ℝ` to `fun t => 4 * (⌈ũ t⌉₊ : ℝ) + Real.arctan (φ t)`. Establish `hψ : Measurable ψ` using `(measurable_const.mul (measurable_from_nat.comp (Nat.measurable_ceil.comp hũ))).add (Real.measurable_arctan.comp hφ.measurable)`. Establish `hψinj : Function.Injective ψ`. Introduce `t t' h`.
+
+Establish `hb` using `Real.arctan_lt_pi_div_two (φ t)`. Establish `hb'` using `Real.arctan_lt_pi_div_two (φ t')`. Establish `hc` using `Real.neg_pi_div_two_lt_arctan (φ t)`. Establish `hc'` using `Real.neg_pi_div_two_lt_arctan (φ t')`. Establish `hpi` using `Real.pi_lt_four`.
+
+Simplify using `only [ψ] at h`. Establish `hn : ⌈ũ t⌉₊ = ⌈ũ t'⌉₊`. Break down `lt_trichotomy ⌈ũ t⌉₊ ⌈ũ t'⌉₊ with h1 | h1 | h1` into its components or cases. Establish `: (⌈ũ t⌉₊ : ℝ) + 1 ≤ ⌈ũ t'⌉₊` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `h1`. Establish `: (⌈ũ t'⌉₊ : ℝ) + 1 ≤ ⌈ũ t⌉₊` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h` using `[hn]`. Conclude with `hφ.injective (Real.arctan_injective (by linarith))`.
+
+Set `B' : Γ → (Fin n → ℂ) → Fin n → ℂ` to `fun γ => (ballDom F.q).piecewise (B γ) id`. Establish `hB' : ∀ γ t, t ∈ ballDom F.q → B' γ t = B γ t` using `fun γ t ht => Set.piecewise_eq_of_mem _ _ _ ht`. Take `⟨FF, h1, h2, h3, h4⟩` from `exists_transversal (ι := Γ) (ballDom F.q) hXm B' (fun γ => (hBc γ).measurable_piecewise continuousOn_id hXm) ψ hψ hψinj.injOn (F.Eqv Γ) (fun γ t ht => by rw [hB' γ t ht]; exact hBX γ ht) (fun t ht t' ht' => by`. Rewrite using `[hrel t ht t' ht']`. Conclude with `exists_congr fun γ => by rw [hB' γ t ht])`.
+
+Use the proof step `(fun t _ => ⟨1, Γ.one_mem, (F.R t).eqvBy_refl⟩)`. Use the proof step `(fun t t' ⟨γ, hγ, h⟩ => ⟨γ⁻¹, Γ.inv_mem hγ, h.symm⟩)`. Use the proof step `(fun t t' t'' ⟨γ, hγ, h⟩ ⟨γ', hγ', h'⟩ => ⟨γ' * γ, Γ.mul_mem hγ' hγ, h.trans h'⟩)`. Use the proof step `(fun t ht c => by`. Use `(hfinu t ht (c + 2)).subset fun γ hγ => ?_` and prove the remaining obligations.
+
+Establish `hγ' : ψ (B' γ t) ≤ c` using `hγ`. Rewrite `hγ'` using `[hB' γ t ht]`. Establish `hs` using `hBX γ ht`. Establish `hu : ũ (B γ t) = u (B γ t)` using `Set.piecewise_eq_of_mem _ _ _ hs`. Establish `hc` using `Real.neg_pi_div_two_lt_arctan (φ (B γ t))`.
+
+Establish `hpi` using `Real.pi_lt_four`. Establish `hle` using `Nat.le_ceil (ũ (B γ t))`. Establish `hnn : (0 : ℝ) ≤ ⌈ũ (B γ t)⌉₊` using `Nat.cast_nonneg _`. Simplify using `only [ψ] at hγ'`. Use `show u (B γ t) ≤ c + 2`.
+
+Rewrite using `[← hu]`. Use the proof step `linarith)`. Conclude with `⟨FF, h1, h2, h3, h4⟩`.
+-/
 theorem exists_isFundSet : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (Δ : GroupDict F) (Γ : Subgroup (Λ ≃ₗ[𝓞 E] Λ)), F.IsArith Γ → ∃ FF, F.IsFundSet Γ FF := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F Δ Γ hΓ
   classical

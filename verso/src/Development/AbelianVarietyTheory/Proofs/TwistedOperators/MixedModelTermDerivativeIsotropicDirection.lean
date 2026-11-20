@@ -18,6 +18,17 @@ namespace GlobalTheory.MixedTerm.IsoDeriv
 
 variable {D : D7} {θ : InfFam D}
 
+/- English proof (translation)
+Establish `hL` using `GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ z`. Set `L : ℝ →+ WO V W` to `{ toFun := fun t => isoPart V W C (lineAt θ τ z t) map_zero' := by unfold isoPart; rw [AddMonoidHom.map_zero, Matrix.zero_mul] map_add' := fun s t => by unfold isoPart; rw [AddMonoidHom.map_add, Matrix.add_mul] }`. Establish `hL' : IsLineAt θ τ (dirAt V W C τ z) L`. Use `⟨(continuous_isoPart V W C).comp hL.1, fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Use `show (isoPart V W C (lineAt θ τ z t)).map (finPart D) = 0`.
+
+Unfold `isoPart`. Rewrite using `[Matrix.map_mul, hL.2.1, Matrix.zero_mul]`. Use `show compAt θ τ' (isoPart V W C (lineAt θ τ z t)) = _`. Unfold `isoPart`. Rewrite using `[GlobalTheory.OrientedHeis.compAt_mul, hL.2.2]`.
+
+Establish `e : compAt θ τ' ((adj D C * V.gram).map (incA D)) = (adj D C * V.gram).map (tauE D τ')`. Unfold `compAt`. Rewrite using `[Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `e`.
+
+Conclude with `GlobalTheory.FockCompare.comp_incA hθ τ' e`. Rewrite using `[e]`. Use `split_ifs with h`. Substitute `h` using the available equality. Unfold `dirAt`.
+
+Rewrite using `[Matrix.smul_mul]`. Rewrite using `[Matrix.zero_mul]`. Rewrite using `[GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ (GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ _) hL']`. Both sides reduce to the same expression.
+-/
 theorem isoPart_lineAt (hθ : IsInfFam θ) (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (τ : D.what₂.Tau) (z : Matrix (Fin W.rank) (Fin r) ℂ) (t : ℝ) :
     isoPart V W C (lineAt θ τ z t) = lineAt θ τ (dirAt V W C τ z) t := by
@@ -55,6 +66,11 @@ namespace GlobalTheory.MixedTerm.IsoDeriv
 
 variable {D : D7} {θ : InfFam D}
 
+/- English proof (translation)
+Establish `hL` using `GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ z`. Rewrite using `[GlobalTheory.T.mixedModelHeisenbergPhase_eq_cexp_realPoints D V W r C C' hCC ψ hψ θ hθ y _ (hL.2.1 t)]`. Use `congr 4`. Simplify using `only [hL.2.2 t]`. Rewrite using `[Finset.sum_eq_single τ (fun b _ hb => by rw [if_neg hb, Matrix.mul_zero, Matrix.trace_zero, Complex.zero_re, mul_zero]) (by simp), if_pos rfl, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, Complex.re_ofReal_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phase_lineAt (hθ : IsInfFam θ) (V W : HSp D) {r : ℕ} (C C' : Matrix (Fin V.rank) (Fin r) D.host.E)
     (hCC : adj D C * V.gram * C' = 1) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (y : Matrix (Fin W.rank) (Fin r) D.host.E) (τ : D.what₂.Tau) (z : Matrix (Fin W.rank) (Fin r) ℂ) (t : ℝ) :
@@ -72,6 +88,19 @@ end GlobalTheory.MixedTerm.IsoDeriv
 
 namespace GlobalTheory.MixedTerm.IsoDeriv
 
+/- English proof (translation)
+Introduce `D V V' W r C C' B hs hCC ψ hψ θ hθ μ 𝓨 h G hG τ z y`. Take `⟨c, hc⟩ : ∃ c : ℝ, c = 2 * (Matrix.trace ((pairQ W y).map (tauE D τ) * z)).re` from `⟨_, rfl⟩`. Rewrite using `[← hc]`. Establish `hL'r` using `GlobalTheory.OrientedHeis.isRealDir_lineAt (S := V) (T := W) hθ τ (dirAt V W C τ z)`. Establish `hg : ∀ t : ℝ, term ψ V V' W C C' B μ 𝓨 (heisO ψ V W (lineAt θ τ (dirAt V W C τ z) t) G) y = Complex.exp (2 * Real.pi * Complex.I * ((t * c : ℝ) : ℂ)) * term ψ V V' W C C' B μ 𝓨 G y` using `fun t => by`.
+
+Rewrite using `[← isoPart_lineAt hθ V W C τ z t, GlobalTheory.T.mixedModelTerm_heisenbergIsotropic_character D V V' W r C C' B hs ψ hψ μ 𝓨 h G hG y _, phase_lineAt hθ V W C C' hCC hψ y τ z t, hc]`. Establish `hd1 : HasDerivAt (fun t : ℝ => term ψ V V' W C C' B μ 𝓨 (heisO ψ V W (lineAt θ τ (dirAt V W C τ z) t) G) y) (2 * Real.pi * Complex.I * (c : ℂ) * term ψ V V' W C C' B μ 𝓨 G y) 0`. Establish `h1 : HasDerivAt (fun t : ℝ => 2 * Real.pi * Complex.I * ((t * c : ℝ) : ℂ)) (2 * Real.pi * Complex.I * (c : ℂ)) 0`. Use `(((hasDerivAt_id (0 : ℝ)).mul_const c).ofReal_comp).const_mul (2 * Real.pi * Complex.I)` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2` using `(h1.cexp).mul_const (term ψ V V' W C C' B μ 𝓨 G y)`. Rewrite `h2` using `[zero_mul, Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul]`. Conclude with `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => hg t)`. Take `⟨K, hK⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ (GlobalTheory.OrientedHeis.theta_dLine hθ hψ hL'r hG)`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓨) := ⟨by rw [Measure.restrict_apply_univ, h.2.2]; exact ENNReal.one_lt_top⟩`.
+
+Establish `e0 : heisO ψ V W (lineAt θ τ (dirAt V W C τ z) 0) (GlobalTheory.OrientedHeis.dLine ψ V W (lineAt θ τ (dirAt V W C τ z)) G) = Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ (dirAt V W C τ z) G`. Rewrite using `[AddMonoidHom.map_zero, GlobalTheory.OrientedHeis.heisO_zero]`. Both sides reduce to the same expression. Establish `hd2 : HasDerivAt (fun t : ℝ => term ψ V V' W C C' B μ 𝓨 (heisO ψ V W (lineAt θ τ (dirAt V W C τ z) t) G) y) (term ψ V V' W C C' B μ 𝓨 (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ (dirAt V W C τ z) G) y) 0`. Rewrite using `[← e0]`.
+
+Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict 𝓨) (x₀ := (0 : ℝ)) (F' := fun t x => heisO ψ V W (isoPart V W C' (Matrix.map y (incA D))) (heisO ψ V W (lineAt θ τ (dirAt V W C τ z) t) (GlobalTheory.OrientedHeis.dLine ψ V W (lineAt θ τ (dirAt V W C τ z)) G)) (is …` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun t => (integrableOn_heisO V W C hψ h (GlobalTheory.OrientedHeis.theta_heisO_real hθ hψ (hL'r.2 t) hG) _ _).aestronglyMeasurable`. Conclude with `integrableOn_heisO V W C hψ h (GlobalTheory.OrientedHeis.theta_heisO_real hθ hψ (hL'r.2 0) hG) _ _`. Conclude with `(integrableOn_heisO V W C hψ h (GlobalTheory.OrientedHeis.theta_heisO_real hθ hψ (hL'r.2 0) (GlobalTheory.OrientedHeis.theta_dLine hθ hψ hL'r hG)) _ _).aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun x t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.HeisOrtho.norm_heisO hψ.1, GlobalTheory.HeisOrtho.norm_heisO hψ.1]`. Conclude with `hK _`. Use `Filter.Eventually.of_forall fun x t _ => ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.OrientedHeis.hasDerivAt_heisO hθ hψ hL'r hG _ t).const_mul _`. Rewrite using `[hd2.unique hd1]`.
+-/
 theorem term_dRho_dirAt : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → adj D C * V.gram * C' = 1 → ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ G : WO V W → ℂ, IsThetaFunO ψ V W G → ∀ (τ : D.what₂.Tau) (z : Matrix (Fin W.rank) (Fin r) ℂ) (y : Matrix (Fin W.rank) (Fin r) D.host.E), term ψ V V' W C C' B μ 𝓨 (Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ (dirAt V W C τ z) G) y = (2 * Real.pi * Complex.I * ((2 * (Matrix.trace ((pairQ W y).map (tauE D τ) * z)).re : ℝ) : ℂ)) * term ψ V V' W C C' B μ 𝓨 G y := by
   intro D V V' W r C C' B hs hCC ψ hψ θ hθ μ 𝓨 h G hG τ z y
   obtain ⟨c, hc⟩ : ∃ c : ℝ, c = 2 * (Matrix.trace ((pairQ W y).map (tauE D τ) * z)).re := ⟨_, rfl⟩

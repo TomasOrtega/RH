@@ -6,11 +6,23 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `isReduced_ofLocalizationMaximal R fun P _ => by haveI := ReciprocityTheory.AnForm.R.isDomain_of_isRegularLocalRing (R := Localization.AtPrime P) infer_instance`.
+-/
 theorem isReduced_of_isRegularRing (R : Type) [CommRing R] [IsRegularRing R] : IsReduced R :=
   isReduced_ofLocalizationMaximal R fun P _ => by
     haveI := ReciprocityTheory.AnForm.R.isDomain_of_isRegularLocalRing (R := Localization.AtPrime P)
     infer_instance
 
+/- English proof (translation)
+Use `letI : Algebra K L := ι.toRingHom.toAlgebra`. Use `haveI : IsScalarTower A K L := IsScalarTower.of_algebraMap_eq fun a => (ι.commutes a).symm`. Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap K L) (LinearMap.ker_eq_bot.mpr (algebraMap K L).injective)`. Establish `hcomp : (r.restrictScalars A) ∘ₗ ι.toLinearMap = LinearMap.id`. Use extensionality with `k`.
+
+Conclude with `LinearMap.congr_fun hr k`. Introduce `x y hxy`. Establish `h` using `congrArg (LinearMap.lTensor M (r.restrictScalars A)) hxy`. Establish `key : ∀ z : M ⊗[A] K, LinearMap.lTensor M (r.restrictScalars A) (Algebra.TensorProduct.map (AlgHom.id A M) ι z) = z`. Introduce `z`.
+
+Establish `: (LinearMap.lTensor M (r.restrictScalars A)) ∘ₗ (LinearMap.lTensor M ι.toLinearMap) = LinearMap.id`. Rewrite using `[← LinearMap.lTensor_comp, hcomp, LinearMap.lTensor_id]`. Establish `e : Algebra.TensorProduct.map (AlgHom.id A M) ι z = LinearMap.lTensor M ι.toLinearMap z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Rewrite using `[e]`. Conclude with `LinearMap.congr_fun this z`. Rewrite `h` using `[key, key]`. Then use the resulting hypothesis.
+-/
 theorem tensor_map_injective_of_field (A M K L : Type) [CommRing A] [CommRing M] [Algebra A M]
     [Field K] [Field L] [Algebra A K] [Algebra A L] (ι : K →ₐ[A] L) :
     Function.Injective (Algebra.TensorProduct.map (AlgHom.id A M) ι) := by
@@ -42,6 +54,17 @@ end GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A L _ _ _ _ _`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨S, rfl⟩` from `TensorProduct.exists_finset x`. Use `set T : Subalgebra A L := Algebra.adjoin A ((S.image Prod.snd : Finset L) : Set L) with hT`. Use `haveI : Algebra.FiniteType A T := (Subalgebra.fg_iff_finiteType T).mp (Subalgebra.fg_adjoin_finset _)`.
+
+Set `K` to `FractionRing T`. Use `haveI : Algebra.EssFiniteType T K := Algebra.EssFiniteType.of_isLocalization K (nonZeroDivisors T)`. Use `haveI : Algebra.EssFiniteType A K := Algebra.EssFiniteType.comp A T K`. Establish `hinj : Function.Injective (IsScalarTower.toAlgHom T T L)` using `Subtype.val_injective`. Set `ι : K →ₐ[A] L` to `(IsFractionRing.liftAlgHom (K := K) hinj).restrictScalars A`.
+
+Establish `hι : ∀ t : T, ι (algebraMap T K t) = t` using `fun t => by`. Simplify using `[ι, IsFractionRing.liftAlgHom_apply]`. Establish `hmem : ∀ i ∈ S, i.2 ∈ T` using `fun i hi => Algebra.subset_adjoin (by simpa using ⟨i.1, hi⟩)`. Set `y : AdicCompletion (maximalIdeal A) A ⊗[A] K` to `∑ i ∈ S.attach, i.1.1 ⊗ₜ[A] algebraMap T K ⟨i.1.2, hmem i.1 i.2⟩`. Set `Φ` to `Algebra.TensorProduct.map (AlgHom.id A (AdicCompletion (maximalIdeal A) A)) ι`.
+
+Establish `hΦ : Φ y = ∑ i ∈ S, i.1 ⊗ₜ[A] i.2`. Simplify using `only [y, map_sum, Φ, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hι]`. Conclude with `Finset.sum_attach S (fun i => i.1 ⊗ₜ[A] i.2)`. Use `haveI : IsRegularRing (AdicCompletion (maximalIdeal A) A ⊗[A] K) := formalFibre_isRegularRing_of_essFiniteType_int A K`. Use `haveI := isReduced_of_isRegularRing (AdicCompletion (maximalIdeal A) A ⊗[A] K)`.
+
+Take `⟨n, hn⟩` from `hx`. Establish `hy : IsNilpotent y` using `⟨n, tensor_map_injective_of_field A _ K L ι (by rw [map_pow, map_zero, hΦ, hn])⟩`. Rewrite using `[← hΦ, IsReduced.eq_zero y hy, map_zero]`.
+-/
 theorem formalFibre_isReduced_of_field :
     ∀ (A L : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A] [Field L] [Algebra A L],
       IsReduced (AdicCompletion (maximalIdeal A) A ⊗[A] L) := by

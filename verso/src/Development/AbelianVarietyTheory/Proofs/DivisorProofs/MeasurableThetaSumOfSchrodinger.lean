@@ -24,6 +24,9 @@ section
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+-/
 theorem continuous_mixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   change Continuous fun x : InfiniteAdeleRing F =>
     ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)),
@@ -32,6 +35,9 @@ theorem continuous_mixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F)
   · exact (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)
   · exact (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)
 
+/- English proof (translation)
+Establish `h1 : Continuous fun x : κ → AdeleRing (𝓞 F) F => fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1` using `continuous_pi fun i => (continuous_mixed F).comp (continuous_fst.comp (continuous_apply i))`. Establish `h2 : Continuous fun x : κ → AdeleRing (𝓞 F) F => fun i => (x i).2` using `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`. Conclude with `(f.continuous.comp h1).mul (hg.1.continuous.comp h2)`.
+-/
 theorem continuous_pureA {κ : Type} [Fintype κ] (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     Continuous (GlobalTheory.WeilM.pureA F f g) := by
@@ -41,6 +47,11 @@ theorem continuous_pureA {κ : Type} [Fintype κ] (f : SchwartzMap (κ → mixed
     continuous_pi fun i => continuous_snd.comp (continuous_apply i)
   exact (f.continuous.comp h1).mul (hg.1.continuous.comp h2)
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `continuous_pureA F f hg`. Consider the case `zero => exact continuous_const`.
+
+Consider the case `add _ _ _ _ h1 h2 => exact h1.add h2`. Consider the case `smul c _ _ h => exact h.const_smul c`.
+-/
 theorem continuous_of_mem_schA {κ : Type} [Fintype κ] {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ}
     (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ) : Continuous Φ := by
   induction hΦ using Submodule.span_induction with
@@ -51,11 +62,23 @@ theorem continuous_of_mem_schA {κ : Type} [Fintype κ] {Φ : (κ → AdeleRing 
   | add _ _ _ _ h1 h2 => exact h1.add h2
   | smul c _ _ h => exact h.const_smul c
 
+/- English proof (translation)
+The claim follows from `(Module.finBasis ℚ F).equivFun.injective.countable`.
+-/
 theorem countable_field : Countable F :=
   (Module.finBasis ℚ F).equivFun.injective.countable
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ κ _ Φ hΦ`. Use `letI : MeasurableSpace ((κ → AF F) × (κ → AF F)) := borel _`. Use `haveI : BorelSpace ((κ → AF F) × (κ → AF F)) := ⟨rfl⟩`. Use `haveI := countable_field F`. Establish `hc` using `continuous_of_mem_schA F hΦ`.
+
+Set `T : (κ → F) → (κ → AF F) × (κ → AF F) → ℂ` to `fun ξ w => GlobalTheory.WeilM.schr ψ w Φ (fun i => algebraMap F (AF F) (ξ i))`. Establish `hT : ∀ ξ, Continuous (T ξ)`. Introduce `ξ`. Simplify using `only [T, GlobalTheory.WeilM.schr]`. Use `(hψ.1.comp ?_).mul (hc.comp ?_)` and prove the remaining obligations.
+
+Use `fun_prop`. Use `fun_prop`. Establish `hs : ∀ w, Summable fun ξ => T ξ w`. Introduce `w`. Establish `h` using `GlobalTheory.WeilM.summable_of_mem_schA F (GlobalTheory.SchwartzTranslate.schA_translate F w.1 hΦ)`.
+
+Use `Summable.of_norm_bounded h.norm fun ξ => ?_` and prove the remaining obligations. Simplify using `only [T, GlobalTheory.WeilM.schr, norm_mul, hψ.2.1, one_mul]`. Conclude with `le_rfl`. Express the relevant statement in the definitionally equal form `Measurable fun w => ∑' ξ, T ξ w`. Conclude with `measurable_of_tendsto_metrizable' (atTop : Filter (Finset (κ → F))) (f := fun s w => ∑ ξ ∈ s, T ξ w) (fun s => Finset.measurable_sum s fun ξ _ => (hT ξ).measurable) (tendsto_pi_nhds.2 fun w => (hs w).hasSum)`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (κ : Type) [Fintype κ], ∀ Φ ∈ GlobalTheory.WeilM.schA F κ,
     @Measurable _ _ (borel _) _ (fun w : (κ → AF F) × (κ → AF F) => GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr ψ w Φ)) := by
   intro F _ _ ψ hψ κ _ Φ hΦ

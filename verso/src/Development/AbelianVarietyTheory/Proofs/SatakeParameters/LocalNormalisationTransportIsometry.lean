@@ -39,9 +39,17 @@ def diagonalPowFourEquiv (φ : (n → ℂ) ≃ₗ[ℂ] (n → ℂ)) : (Fin 4 × 
     simp only [e, LinearEquiv.apply_symm_apply]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem slice_pow4E (φ : (n → ℂ) ≃ₗ[ℂ] (n → ℂ)) (a : Fin 4) (z : Fin 4 × n → ℂ) :
     slice a (diagonalPowFourEquiv φ z) = φ (slice a z) := rfl
 
+/- English proof (translation)
+Use `show (∑ w, ∑ w', x w * blk4 h w w' * conj (y w')) = ∑ a : Fin 4, ∑ i, ∑ j, x (a, i) * h i j * conj (y (a, j))`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single a]`. Simplify using `[blk4]`.
+
+Introduce `b _ hb`. Simplify using `[blk4, Ne.symm hb]`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`.
+-/
 theorem fourCopiesHermitianForm_eq_sum_blocks (h : Matrix n n ℂ) (x y : Fin 4 × n → ℂ) :
     matH (blk4 h) x y = ∑ a : Fin 4, matH h (slice a x) (slice a y) := by
   show (∑ w, ∑ w', x w * blk4 h w w' * conj (y w')) = ∑ a : Fin 4, ∑ i, ∑ j, x (a, i) * h i j * conj (y (a, j))
@@ -54,6 +62,9 @@ theorem fourCopiesHermitianForm_eq_sum_blocks (h : Matrix n n ℂ) (x y : Fin 4 
   · intro hh
     exact absurd (Finset.mem_univ _) hh
 
+/- English proof (translation)
+Rewrite using `[fourCopiesHermitianForm_eq_sum_blocks, fourCopiesHermitianForm_eq_sum_blocks]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[slice_pow4E, slice_pow4E]`. Conclude with `hφ _ _`.
+-/
 theorem blockwiseActionOnFourCopies_isometry (φ : (n → ℂ) ≃ₗ[ℂ] (n → ℂ)) (h : Matrix n n ℂ)
     (hφ : IsIsom (matH h) (matH h) (φ : (n → ℂ) →ₗ[ℂ] (n → ℂ))) (x y : Fin 4 × n → ℂ) :
     matH (blk4 h) (diagonalPowFourEquiv φ x) (diagonalPowFourEquiv φ y) = matH (blk4 h) x y := by
@@ -62,6 +73,13 @@ theorem blockwiseActionOnFourCopies_isometry (φ : (n → ℂ) ≃ₗ[ℂ] (n �
   rw [slice_pow4E, slice_pow4E]
   exact hφ _ _
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨diagonalPowFourEquiv φ x, fun a => hx a, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Use `⟨(diagonalPowFourEquiv φ).symm x, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show φ (slice a ((diagonalPowFourEquiv φ).symm x)) ∈ Λ`. Rewrite using `[← slice_pow4E, LinearEquiv.apply_symm_apply]`. Conclude with `hx a`. Use `show g (diagonalPowFourEquiv φ ((diagonalPowFourEquiv φ).symm x)) = g x`.
+
+Rewrite using `[LinearEquiv.apply_symm_apply]`.
+-/
 theorem imgLat_pull (φ : (n → ℂ) ≃ₗ[ℂ] (n → ℂ)) (Λ : AddSubgroup (n → ℂ))
     (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) :
     imgLat (((diagonalPowFourEquiv φ).trans g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))
@@ -79,6 +97,15 @@ theorem imgLat_pull (φ : (n → ℂ) ≃ₗ[ℂ] (n → ℂ)) (Λ : AddSubgroup
     · show g (diagonalPowFourEquiv φ ((diagonalPowFourEquiv φ).symm x)) = g x
       rw [LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `a₀ b₀ dK ha hdK lam hlam n _ _ h Λ θ p _ ι φ hφ H`. Take `⟨g₁, ε, hiso, hnd, hidx, hε, hker⟩` from `H`. Establish `hI` using `imgLat_pull φ Λ g₁`. Use `⟨(diagonalPowFourEquiv φ).trans g₁, ε, ?_, ?_, ?_, hε, ?_⟩` and prove the remaining obligations. Introduce `x y`.
+
+Apply the tactic sequence `exact (hiso (diagonalPowFourEquiv φ x) (diagonalPowFourEquiv φ y)).trans (blockwiseActionOnFourCopies_isometry φ h hφ x y)`. Rewrite using `[hI]`. Conclude with `hnd`. Rewrite using `[hI]`. Conclude with `hidx`.
+
+Use function extensionality and compare the values at `z`. Establish `t1 : tens4 (fun z => θ (φ z)) z = tens4 θ (diagonalPowFourEquiv φ z)` using `rfl`. Rewrite using `[t1, hker]`. Simplify using `only [Pi.smul_apply]`. Use `congr 1`.
+
+Unfold `kernel4`. Rewrite using `[hI]`. Both sides reduce to the same expression.
+-/
 theorem locNorm_pull : ∀ (a₀ : ℕ) (b₀ : ℤ) (dK : ℕ) (ha : 0 < a₀) (hdK : 0 < dK) (lam : ℂ) (hlam : lam ≠ 0) (n : Type) [Fintype n] [DecidableEq n] (h : Matrix n n ℂ) (Λ : AddSubgroup (n → ℂ)) (θ : (n → ℂ) → ℂ) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (φ : (n → ℂ) ≃ₗ[ℂ] (n → ℂ)), IsIsom (matH h) (matH h) (φ : (n → ℂ) →ₗ[ℂ] (n → ℂ)) → LocNorm a₀ b₀ dK ha hdK lam hlam h Λ θ p ι → LocNorm a₀ b₀ dK ha hdK lam hlam h (Λ.comap φ.toLinearMap.toAddMonoidHom) (fun z => θ (φ z)) p ι := by
   intro a₀ b₀ dK ha hdK lam hlam n _ _ h Λ θ p _ ι φ hφ H
   obtain ⟨g₁, ε, hiso, hnd, hidx, hε, hker⟩ := H

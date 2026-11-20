@@ -22,6 +22,9 @@ abbrev PowOver (L : LB A.left) (k : ℤ) (T : Over X) : LB (T ⊗ A).left :=
 def Lands (L : LB A.left) {W : Over X} (v : W ⟶ A) (i : L.ι) : Prop :=
   ⊤ ≤ v.left ⁻¹ᵁ L.U i
 
+/- English proof (translation)
+Substitute `hv` using the available equality. Introduce `y hy`. Conclude with `Set.mem_iInter.2 fun _ => h hy`.
+-/
 lemma Lands.le_wchart {L : LB A.left} {W Z : Over X} {x : Z ⟶ A} {p : W ⟶ Z} {v : W ⟶ A}
     (hv : p ≫ x = v) {i : L.ι} (h : Lands L v i) :
     ⊤ ≤ p.left ⁻¹ᵁ LB.wchart L (K := Fin 1) (fun _ => x.left) (fun _ => i) := by
@@ -57,6 +60,9 @@ def rigVal (L : RigLB A) (W : Over X) (i : L.L.ι) (hi : Lands L.L (1 : W ⟶ A)
       (fun _ hy => Set.mem_iInter.2 fun _ => hi hy)).hom.toMonoidHom
     (L.rig.s fun _ => i)
 
+/- English proof (translation)
+Rewrite using `[lift_snd_assoc, Hom.one_def, Category.assoc, IsMonHom.one_hom]`.
+-/
 lemma origin_comp {T W : Over X} (t : W ⟶ T) (φ : A ⟶ A) [IsMonHom φ] :
     lift t (1 : W ⟶ A) ≫ snd T A ≫ φ = 1 := by
   rw [lift_snd_assoc, Hom.one_def, Category.assoc, IsMonHom.one_hom]
@@ -75,10 +81,16 @@ def IsEndPull (L : RigLB A) (φ : A ⟶ A) [IsMonHom φ] (a b : ℤ) {T : Over X
 
 def transl {T : Over X} (b : T ⟶ A) : T ⊗ A ⟶ A := snd T A * (fst T A ≫ b)
 
+/- English proof (translation)
+Rewrite using `[transl, comp_mul, lift_snd, lift_fst_assoc]`.
+-/
 lemma lift_transl {T W : Over X} (b : T ⟶ A) (t : W ⟶ T) (v : W ⟶ A) :
     lift t v ≫ transl b = v * (t ≫ b) := by
   rw [transl, comp_mul, lift_snd, lift_fst_assoc]
 
+/- English proof (translation)
+Rewrite using `[lift_snd_assoc, Hom.inv_def]`.
+-/
 lemma lift_neg {T W : Over X} (t : W ⟶ T) (v : W ⟶ A) :
     lift t v ≫ snd T A ≫ ι[A] = v⁻¹ := by
   rw [lift_snd_assoc, Hom.inv_def]
@@ -115,6 +127,9 @@ def IsTranslatedPull (L : RigLB A) (φ : A ⟶ A) [IsMonHom φ] (N : ℕ) {T : O
 
 def trivL (Y : Scheme.{0}) : LB Y := ⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩
 
+/- English proof (translation)
+The claim follows from `Finset.prod_eq_one fun k _ => by have h : pullU (φ k) _ ((trivL Y).g (j k) (j' k)) = 1 := map_one _ rw [h] exact (congrArg (· ^ ε k) (map_one _)).trans (one_zpow _)`.
+-/
 lemma linComb_trivL_g {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Z ⟶ Y)) (ε : K → ℤ)
     (j j') : (LB.LinComb (trivL Y) φ ε).g j j' = 1 :=
   Finset.prod_eq_one fun k _ => by
@@ -139,6 +154,9 @@ def trivIso {T : Over X} (f : T ⊗ A ⟶ A) (a b : ℤ) :
     LB.Iso (PullPow (trivRig A).L f b) (PowOver (trivRig A).L a T) := ⟨fun _ => 1⟩
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Introduce `p q` and use `by have h₁ : (PowOver (trivRig A).L a T).g p.1 q.1 = 1 := linComb_trivL_g _ _ _ _ have h₂ : (PullPow (trivRig A).L f b).g p.2 q.2 = 1 := linComb_trivL_g _ _ _ _ have h : (LB.div (PowOver (trivRig A).L a T) (PullPow (trivRig A).L f b)).g p q = 1 := by simp only [LB.div] rw [h₁, h₂ …`.
+-/
 lemma trivIso_isGen {T : Over X} (f : T ⊗ A ⟶ A) (a b : ℤ) : (trivIso f a b).IsGen :=
   fun p q => by
     have h₁ : (PowOver (trivRig A).L a T).g p.1 q.1 = 1 := linComb_trivL_g _ _ _ _
@@ -151,18 +169,30 @@ lemma trivIso_isGen {T : Over X} (f : T ⊗ A ⟶ A) (a b : ℤ) : (trivIso f a 
     exact (map_one _).trans (map_one _).symm
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 lemma isoVal_trivIso {T W : Over X} (f : T ⊗ A ⟶ A) (a b : ℤ) (t : W ⟶ T) (v u : W ⟶ A)
     (hu : lift t v ≫ f = u) (i j) (hi) (hj) : isoVal (trivIso f a b) t v u hu i j hi hj = 1 :=
   map_one _
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 lemma secVal_trivOne {T W : Over X} (k : ℤ) (t : W ⟶ T) (v : W ⟶ A) (i) (hi) :
     secVal (trivOne k T) t v i hi = 1 :=
   map_one _
 
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 lemma rigVal_trivRig (W : Over X) (i) (hi) : rigVal (trivRig A) W i hi = 1 :=
   map_one _
 
+/- English proof (translation)
+Use `⟨trivOne N T, ⟨trivIso _ _ _, ⟨trivIso_isGen _ _ _, ?_⟩, ?_⟩, hN, hb, trivIso _ _ _, trivIso _ _ _, ⟨trivIso_isGen _ _ _, ?_⟩, trivIso_isGen _ _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `all_goals`. Introduce `W t`. Use `intros`. Simplify using `[isoVal_trivIso, secVal_trivOne, rigVal_trivRig]`.
+-/
 theorem isTranslatedPull_triv (φ : A ⟶ A) [IsMonHom φ] {N : ℕ} (hN : Odd N) {T : Over X}
     (b : T ⟶ A) (hb : b ^ N = 1) :
     IsTranslatedPull (trivRig A) φ N b (trivOne 1 T) (trivOne N T) := by

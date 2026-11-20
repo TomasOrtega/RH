@@ -4,6 +4,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.T
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.DecEmb
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
+/- English proof (translation)
+Use `letI : TopologicalSpace k := ⊥`. Use `haveI : DiscreteTopology k := ⟨rfl⟩`. Establish `h1' : (κ σ : k) ≠ 1` using `fun h => h1 (Units.ext h)`. Establish `hρ : ∀ g x, Loc.chRep κ g x = (κ g : k) * x` using `fun _ _ => rfl`. Establish `hlc : IsLocallyConstant κ`.
+
+Use `(IsLocallyConstant.iff_exists_open _).2 fun g => ⟨(fun h => g⁻¹ * h) ⁻¹' (κ.ker : Set H), hκ.preimage (continuous_const.mul continuous_id), by simp, fun h hh => ?_⟩` and prove the remaining obligations. Establish `: κ (g⁻¹ * h) = 1` using `hh`. Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this.symm`. Establish `hca : ContAction (Loc.chRep κ)`.
+
+Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[continuous_prod_of_discrete_right]`. Introduce `y`. Conclude with `(hlc.comp fun u : kˣ => (u : k) * y).continuous`. Take `⟨f1, f2, e1, e2⟩` from `Loc.tateFin hP φ hφ k k (Loc.chRep κ) hca`.
+
+Establish `z0 : H0 (Loc.chRep κ) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `m hm`. Use `(mem_riemannRochSpace_iff_regularAt_everywhere _ _).1 hm σ` as an intermediate fact. Rewrite `this` using `[hρ]`.
+
+Rewrite using `[Submodule.mem_bot]`. Assume the negation of the conclusion as `h`. Conclude with `h1' (mul_right_cancel₀ h (by rw [this, one_mul]))`. Establish `z2 : Loc.H0dual ((Loc.cycA v l k).comp φ) (Loc.chRep κ) = ⊥`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `f hf`. Rewrite using `[Submodule.mem_bot]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `hf σ x` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply, h2, hρ, ← smul_eq_mul, map_smul, smul_eq_mul, Units.val_one]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `h1' (mul_right_cancel₀ h this)`. Rewrite `e1` using `[e2, z0, z2, if_neg hvl, finrank_bot, finrank_bot]`. Use `haveI : Subsingleton (H1 (Loc.chRep κ)) := Module.finrank_zero_iff.1 e1`. Establish `hz1 : z ∈ Z1 (Loc.chRep κ)` using `⟨hz.continuous, hc⟩`.
+
+Establish `: (Submodule.Quotient.mk ⟨z, hz1⟩ : H1 (Loc.chRep κ)) = 0` using `Subsingleton.elim _ _`. Rewrite `this` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, mem_coboundaries1]`. Conclude with `this`.
+-/
 private theorem lv_gen (hP : Loc.LocalPublishedTheorems) {v l : ℕ} [Fact v.Prime] [Fact l.Prime] (hvl : v ≠ l) {H : Type} [Group H]
     [TopologicalSpace H] [IsTopologicalGroup H] (φ : H →* Formalism.BasicNotions.Loc.GQ v) (hφ : Topology.IsOpenEmbedding φ)
     (k : Type) [Field k] [Finite k] [CharP k l] [Algebra ℤ_[l] k] (κ : H →* kˣ) (hκ : IsOpen (κ.ker : Set H))
@@ -49,6 +66,11 @@ private theorem lv_gen (hP : Loc.LocalPublishedTheorems) {v l : ℕ} [Fact v.Pri
   rw [Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, mem_coboundaries1] at this
   exact this
 
+/- English proof (translation)
+Use `haveI : Fact v.Prime := ⟨hv⟩`. Take `⟨w, hw, hAw⟩` from `GlobalTheory.DecLocal.exists_place_below (p := v) (F := ℚ) A hA`. Take `⟨j, rfl⟩` from `(Loc.decEmb (F := ℚ) (Ω := Ω) (v := v)).1 A w hAw hw`. Take `⟨φ, hφ, -, -, -, hcyc, -⟩` from `((Loc.decEmb (F := ℚ) (Ω := Ω) (v := v)).2 j).2`. Use `lv_gen hP hvl φ hφ k κ hκ σ h1 (Units.ext ?_) z hz hc` and prove the remaining obligations.
+
+Rewrite `h2` using `[← hcyc l σ]`. Conclude with `h2`.
+-/
 private theorem lv_dec (hP : Loc.LocalPublishedTheorems) {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {v l : ℕ} (hv : v.Prime)
     [Fact l.Prime] (hvl : v ≠ l) (A : ValuationSubring Ω) (hA : A.valuation (v : Ω) < 1)
     (k : Type) [Field k] [Finite k] [CharP k l] [Algebra ℤ_[l] k] (κ : Dec (F := ℚ) A →* kˣ)
@@ -63,6 +85,9 @@ private theorem lv_dec (hP : Loc.LocalPublishedTheorems) {Ω : Type} [Field Ω] 
   rw [← hcyc l σ] at h2
   exact h2
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, ← sub_eq_zero (a := residue O a), ← map_sub, residue_eq_zero_iff]`. Use `⟨fun h => ?_, hred _⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `((IsLocalRing.notMem_maximalIdeal.1 hn).map red).ne_zero h`.
+-/
 private theorem lv_red {O k : Type} [CommRing O] [IsLocalRing O] [Field k] (red : O →+* k)
     (hred : ∀ a ∈ maximalIdeal O, red a = 0) (a b : O) : red a = red b ↔ residue O a = residue O b := by
   rw [← sub_eq_zero, ← map_sub, ← sub_eq_zero (a := residue O a), ← map_sub, residue_eq_zero_iff]
@@ -70,6 +95,27 @@ private theorem lv_red {O k : Type} [CommRing O] [IsLocalRing O] [Field k] (red 
   by_contra hn
   exact ((IsLocalRing.notMem_maximalIdeal.1 hn).map red).ne_zero h
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD hP k _ _ red hred γ hγ p hp z hz hc`. Take `⟨f1, f2, -, -, -, -, -, -, -, -, -, fo, -⟩` from `facts D hD`. Take `⟨hpp, hpl, -, -⟩` from `f1 p hp`. Take `⟨hσ, hom, hne⟩` from `f2 p (Finset.mem_insert_of_mem hp)`. Establish `hl : l.Prime` using `Fact.out`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, hγ'⟩ : ∃ i j, lamW i ≠ lamW j ∧ ∀ g, γ g * D.ps j g = D.ps i g := by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hγ`. Break down `hγ with rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases. Conclude with `⟨2, 3, by decide, fun g => by simp [Raw.ps]⟩`. Conclude with `⟨1, 2, by decide, fun g => by simp [Raw.ps, Raw.be]⟩`.
+
+Conclude with `⟨0, 3, by decide, fun g => by simp [Raw.ps]⟩`. Conclude with `⟨3, 2, by decide, fun g => by simp [Raw.ps]⟩`. Conclude with `⟨2, 1, by decide, fun g => by simp [Raw.ps, Raw.be]⟩`. Conclude with `⟨3, 0, by decide, fun g => by simp [Raw.ps]⟩`. Establish `hγr : ∀ g, red (γ g : c.O) * red (D.ps j g : c.O) = red (D.ps i g : c.O)` using `fun g => by`.
+
+Rewrite using `[← map_mul, ← Units.val_mul, hγ']`. Use `letI : Algebra ℤ_[l] k := (red.comp (algebraMap ℤ_[l] c.O)).toAlgebra`. Establish `hl0 : (l : k) = 0`. Establish `hloc` using `(dvrFacts l c.O).2.2.1`. Establish `hm : (l : c.O) ∈ maximalIdeal c.O`.
+
+Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] c.O), isUnit_map_iff]`. Conclude with `PadicInt.p_nonunit`. Simplify using `using hred _ hm`. Use `haveI : CharP k l := (CharP.charP_iff_prime_eq_zero hl).2 hl0`. Set `κ : D.Gp p →* kˣ` to `((Units.map red.toMonoidHom).comp γ).comp (D.Gp p).subtype`.
+
+Establish `hκ : ∀ g : D.Gp p, (κ g : k) = red (γ g : c.O)` using `fun _ => rfl`. Establish `hker : D.rbar.ker.comap (D.Gp p).subtype ≤ κ.ker`. Introduce `g hg`. Establish `hg' : D.rbar g = 1` using `hg`. Establish `h1 : ∀ a, red (D.ps a g : c.O) = 1` using `fun a => by`.
+
+Rewrite using `[← map_one red, lv_red red hred, map_one]`. Use `congrFun (congrFun hg' a) a` as an intermediate fact. Simplify `this` using `[Raw.rbar, Raw.r0, diagRep]`. Use `Units.ext ?_` and prove the remaining obligations. Use `hγr g` as an intermediate fact.
+
+Rewrite `this` using `[h1, h1, mul_one]`. Conclude with `this`. Use `lv_dec hP hpp hpl (D.pl p) (hD.pl_over p hpp) k κ (Subgroup.isOpen_mono hker (fo.preimage continuous_subtype_val)) ⟨D.sg p, hσ⟩ (fun h => ?_) ?_ z hz hc` and prove the remaining obligations. Establish `h' : red (γ (D.sg p) : c.O) = 1` using `congrArg Units.val h`. Use `hγr (D.sg p)` as an intermediate fact.
+
+Rewrite `this` using `[h', one_mul, lv_red red hred]`. Conclude with `hne i j hij this.symm`. Establish `: red (chiO ℚ Ω l c.O (D.sg p) : c.O) = red 1`. Rewrite using `[lv_red red hred, map_one]`. Conclude with `(hD.om_bar _).symm.trans hom`.
+
+Rewrite `this` using `[map_one]`. Conclude with `this`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.locVanP :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → Loc.LocalPublishedTheorems → ∀ (k : Type) [Field k] [Finite k] (red : c.O →+* k), (∀ a ∈ maximalIdeal c.O, red a = 0) → ∀ γ ∈ [D.al, D.be, D.th, D.al⁻¹, D.be⁻¹, D.th⁻¹], ∀ p ∈ D.Sb, ∀ z : D.Gp p → k, IsLocallyConstant z → (∀ g h : D.Gp p, z (g * h) = z g + red (γ g : c.O) * z h) → ∃ m, ∀ g : D.Gp p, z g = red (γ g : c.O) * m - m := by
   intro Ω _ _ _ l _ c D hD hP k _ _ red hred γ hγ p hp z hz hc

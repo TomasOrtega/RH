@@ -6,6 +6,17 @@ namespace Formalism.FourierDecayAlt.P.GramConjugationNorm
 open Finset Filter Topology Formalism.FourierDecayAlt.TA
 open scoped InnerProductSpace ComplexConjugate
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `p hp`. Consider the cases of `n with`.
+
+Consider the case `zero`. Simplify using `[PT] at hp; subst hp; exact ⟨by simp [lvl], by simp⟩`. Consider the case `succ n`. Rewrite `hp` using `[PT]`. Simplify using `only [mem_biUnion, mem_attach, true_and, mem_image, Subtype.exists, mem_range] at hp`.
+
+Take `⟨m, hm, h, hh, t, ht, rfl⟩` from `hp`. Establish `h0` using `ih m (by omega) h hh`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h0.1` as an intermediate fact. Simplify using `only [lvl] at this`.
+
+Simplify using `[lvl, Formalism.FourierDecayAlt.TA.ext, this]`. Use linear arithmetic over natural numbers and integers. Introduce `b hb`. Simplify using `only [Formalism.FourierDecayAlt.TA.ext, List.mem_append, List.mem_singleton] at hb`. Break down `hb with hb | rfl` into its components or cases.
+
+Conclude with `h0.2 b hb`. Conclude with `⟨by simp; omega, hNZ _ _ t ht⟩`.
+-/
 theorem isPt_PT {E : Type} [Field E] [DecidableEq E] (Sg : ℕ → ℕ → Finset E) (hNZ : NZSg Sg) :
     ∀ n p, p ∈ PT Sg n → IsPt n p := by
   intro n
@@ -33,6 +44,15 @@ theorem isPt_PT {E : Type} [Field E] [DecidableEq E] (Sg : ℕ → ℕ → Finse
 section gram
 variable {E : Type} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Set `S : Submodule ℂ H` to `Submodule.span ℂ (V '' (P : Set (Pt E)))`. Establish `: FiniteDimensional ℂ S` using `FiniteDimensional.span_of_finite ℂ ((P.finite_toSet).image V)`. Establish `hex : ∀ p, p ∈ P → ∃ v : S, (v : H) = V p` using `fun p hp => ⟨⟨V p, Submodule.subset_span ⟨p, hp, rfl⟩⟩, rfl⟩`. Use `choose! v hv using hex`. Set `b` to `stdOrthonormalBasis ℂ S`.
+
+Establish `key : gram k V P = ∑ j, ∑ p ∈ P, ∑ p' ∈ P, conj (⟪b j, v p⟫_ℂ) * k p p' * ⟪b j, v p'⟫_ℂ`. Unfold `gram`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun p' hp' => ?_` and prove the remaining obligations. Establish `h1 : ⟪V p, V p'⟫_ℂ = ⟪v p, v p'⟫_ℂ`. Rewrite using `[← hv p hp, ← hv p' hp']`. Both sides reduce to the same expression. Rewrite using `[h1, ← b.sum_inner_mul_inner (v p) (v p'), Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inner_conj_symm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, Complex.re_sum]`. Conclude with `Finset.sum_nonneg fun j _ => hk.2 (fun p => ⟪b j, v p⟫_ℂ)`.
+-/
 theorem gram_re_nonneg (k : Pt E → Pt E → ℂ) (V : Pt E → H) (P : Finset (Pt E))
     (hk : PSDOn P k) : 0 ≤ (gram k V P).re := by
   classical
@@ -58,6 +78,11 @@ theorem gram_re_nonneg (k : Pt E → Pt E → ℂ) (V : Pt E → H) (P : Finset 
   rw [key, Complex.re_sum]
   exact Finset.sum_nonneg fun j _ => hk.2 (fun p => ⟪b j, v p⟫_ℂ)
 
+/- English proof (translation)
+Unfold `gram`. Rewrite using `[map_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun p' hp' => ?_` and prove the remaining obligations. Rewrite using `[map_mul, inner_conj_symm, hk.1 p hp p' hp']`.
+-/
 theorem gram_conj (k : Pt E → Pt E → ℂ) (V : Pt E → H) (P : Finset (Pt E))
     (hk : PSDOn P k) : conj (gram k V P) = gram k V P := by
   unfold gram
@@ -68,6 +93,9 @@ theorem gram_conj (k : Pt E → Pt E → ℂ) (V : Pt E → H) (P : Finset (Pt E
   refine Finset.sum_congr rfl fun p' hp' => ?_
   rw [map_mul, inner_conj_symm, hk.1 p hp p' hp']
 
+/- English proof (translation)
+Establish `h1 : (gram k V P).im = 0` using `Complex.conj_eq_iff_im.1 (gram_conj k V P hk)`. Establish `h2 : gram k V P = (((gram k V P).re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [h1])`. Rewrite using `[h2, Complex.norm_real, Complex.ofReal_re, Real.norm_eq_abs, abs_of_nonneg (gram_re_nonneg k V P hk)]`.
+-/
 theorem gram_norm (k : Pt E → Pt E → ℂ) (V : Pt E → H) (P : Finset (Pt E))
     (hk : PSDOn P k) : ‖gram k V P‖ = (gram k V P).re := by
   have h1 : (gram k V P).im = 0 := Complex.conj_eq_iff_im.1 (gram_conj k V P hk)
@@ -75,6 +103,13 @@ theorem gram_norm (k : Pt E → Pt E → ℂ) (V : Pt E → H) (P : Finset (Pt E
   rw [h2, Complex.norm_real, Complex.ofReal_re, Real.norm_eq_abs,
     abs_of_nonneg (gram_re_nonneg k V P hk)]
 
+/- English proof (translation)
+Establish `h0` using `gram_re_nonneg _ V P hk`. Establish `h1 : gram (fun h h' => (c : ℂ) * k h h' - ∑ t ∈ R, T t h h') V P = (c : ℂ) * gram k V P - ∑ t ∈ R, gram (T t) V P`. Unfold `gram`. Establish `h2 : ∑ t ∈ R, ∑ p ∈ P, ∑ p' ∈ P, T t p p' * ⟪V p, V p'⟫_ℂ = ∑ p ∈ P, ∑ p' ∈ P, ∑ t ∈ R, T t p p' * ⟪V p, V p'⟫_ℂ`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun p _ => Finset.sum_comm`. Rewrite using `[h2, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun p' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sub_mul, Finset.sum_mul, mul_assoc]`. Rewrite `h0` using `[h1, Complex.sub_re, Complex.re_ofReal_mul, Complex.re_sum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gram_dom {ι : Type} (R : Finset ι) (c : ℝ) (k : Pt E → Pt E → ℂ)
     (T : ι → Pt E → Pt E → ℂ) (V : Pt E → H) (P : Finset (Pt E))
     (hk : PSDOn P (fun h h' => (c : ℂ) * k h h' - ∑ t ∈ R, T t h h')) :
@@ -100,6 +135,11 @@ end gram
 section words
 variable {W : Type} [Fintype W]
 
+/- English proof (translation)
+Establish `h1 : ∀ w ∈ (Finset.univ : Finset W), th w * g w ≤ th w * wsup len B g`. Introduce `w _`. Distinguish the cases in `h : th w = 0`. Simplify using `[h]`. Conclude with `mul_le_mul_of_nonneg_left (le_ciSup (f := fun w : {w // len w ≤ B} => g w.1) (Set.finite_range _).bddAbove ⟨w, hth.2.2 w h⟩) (hth.1 w)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prob_le_wsup (len : W → ℕ) (B : ℕ) (th : W → ℝ) (hth : IsProb len B th) (g : W → ℝ) :
     ∑ w, th w * g w ≤ wsup len B g := by
   have h1 : ∀ w ∈ (Finset.univ : Finset W), th w * g w ≤ th w * wsup len B g := by
@@ -112,6 +152,11 @@ theorem prob_le_wsup (len : W → ℕ) (B : ℕ) (th : W → ℝ) (hth : IsProb 
   calc ∑ w, th w * g w ≤ ∑ w, th w * wsup len B g := Finset.sum_le_sum h1
     _ = wsup len B g := by rw [← Finset.sum_mul, hth.2.1, one_mul]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun w' _ => (Finset.mul_sum _ _ _).symm`. Use `_ ≤ ∑ w', th w' * (c * S w') := Finset.sum_le_sum fun w' _ => mul_le_mul_of_nonneg_left (hdom w') (hth.1 w')`. Use `_ = c * ∑ w', th w' * S w' := by`.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun w' _ => by ring`. Use `_ ≤ c * wsup len B S := mul_le_mul_of_nonneg_left (prob_le_wsup len B th hth S) hc`.
+-/
 theorem avg_le {ι : Type} (R : Finset ι) (len : W → ℕ) (B : ℕ) (th : W → ℝ)
     (hth : IsProb len B th) (g : ι → W → ℝ) (S : W → ℝ) (c : ℝ) (hc : 0 ≤ c)
     (hdom : ∀ w', ∑ t0 ∈ R, g t0 w' ≤ c * S w') :
@@ -135,6 +180,15 @@ namespace Formalism.FourierDecayAlt.P
 open Finset Filter Topology Formalism.FourierDecayAlt.TA Formalism.FourierDecayAlt.P.GramConjugationNorm
 open scoped InnerProductSpace ComplexConjugate
 
+/- English proof (translation)
+Introduce `E _ _ H _ _ W _ len Kl Nw D Sg Φ bd4 i s w R hNZ hs hsi hir hK hA hE hb hEst hw hR`. Take `⟨th, hth, hest⟩` from `hEst w hw`. Take `⟨hA1, -, -, hA4⟩` from `hA i s (by omega) hsi hir`. Establish `hHd : ∀ h ∈ PT Sg (i - s), IsPt (i - s) h` using `isPt_PT Sg hNZ _`. Establish `he : 0 ≤ 1 + D.e i` using `by have := (hE i (by omega) hir).1; linarith`.
+
+Establish `step1 : Cosets D Sg Φ w i s R ≤ ∑ t0 ∈ R, bd4 * ∑ w', th w' * (gram (D.Th i s t0) (Φ w') (PT Sg (i - s))).re`. Unfold `Cosets`. Use `Finset.sum_le_sum fun t0 _ => ?_` and prove the remaining obligations. Conclude with `hest _ _ hHd (hA1 t0 _ hHd) t0 _ (fun t ht => by`. Rewrite `ht` using `[Finset.mem_filter]`.
+
+Conclude with `⟨hNZ _ _ t ht.1, ht.2⟩)`. Establish `step2` using `avg_le R len (len w + (s + 1) * Kl) th hth (fun t0 w' => (gram (D.Th i s t0) (Φ w') (PT Sg (i - s))).re) (fun w' => Slev D Sg Φ w' (i - s)) (1 + D.e i) he (fun w' => gram_dom R (1 + D.e i) (D.K (i - s)) (D.Th i s) (Φ w') _ (hA4 R _ hR hHd))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ bd4 * ((1 + D.e i) * wsup len (len w + (s + 1) * Kl) (fun w' => Slev D Sg Φ w' (i - s))) := mul_le_mul_of_nonneg_left step2 hb`.
+
+Use `_ = _ := by ring`.
+-/
 theorem cosets_last_block_size_ge_two : Formalism.FourierDecayAlt.TA.CosetsS := by
   intro E _ _ H _ _ W _ len Kl Nw D Sg Φ bd4 i s w R hNZ hs hsi hir hK hA hE hb hEst hw hR
   classical
@@ -160,6 +214,31 @@ theorem cosets_last_block_size_ge_two : Formalism.FourierDecayAlt.TA.CosetsS := 
         mul_le_mul_of_nonneg_left step2 hb
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `E _ _ H _ _ W _ len Kl Nw D Sg Φ tr Pat1 pat1 c1 ep1 i w R hNZ hi hir hK hA hE hP hEst hLat hw hR`. Take `⟨th, hth, hest⟩` from `hEst w hw`. Take `⟨hA1, -, -, hA4⟩` from `hA i 1 le_rfl hi hir`. Establish `hHd : ∀ h ∈ PT Sg (i - 1), IsPt (i - 1) h` using `isPt_PT Sg hNZ _`. Establish `he : 0 ≤ 1 + D.e i` using `by have := (hE i hi hir).1; linarith`.
+
+Use `set Hd := PT Sg (i - 1) with hHdd`. Use `set g : E → W → ℝ := fun t0 w' => (gram (D.Th i 1 t0) (Φ w') Hd).re with hg`. Establish `hg0 : ∀ t0 w', 0 ≤ g t0 w'` using `fun t0 w' => gram_re_nonneg _ _ _ (hA1 t0 Hd hHd)`. Establish `hdom : ∀ w', ∑ t0 ∈ R, g t0 w' ≤ (1 + D.e i) * Slev D Sg Φ w' (i - 1)` using `fun w' => gram_dom R (1 + D.e i) (D.K (i - 1)) (D.Th i 1) (Φ w') _ (hA4 R _ hR hHd)`. Use `set M : ℝ := wsup len (len w + Kl) (fun w' => Slev D Sg Φ w' (i - 1)) with hM`.
+
+Establish `hM0 : 0 ≤ M` using `Real.iSup_nonneg fun w' => gram_re_nonneg _ _ _ (hK.2 (i - 1) (by omega) Hd hHd)`. Establish `hC0 : 0 ≤ (1 + D.e i) * M` using `mul_nonneg he hM0`. Set `f : E → E → ℝ` to `fun t0 l => if l ∈ D.Lv i ∧ l ≠ 0 then c1 l * ∑ w', th (pat1 l) w' * g t0 w' else 0`. Establish `hf0 : ∀ t0 l, 0 ≤ f t0 l`. Introduce `t0 l`.
+
+Simplify using `only [f]`. Use `split_ifs`. Conclude with `mul_nonneg (hLat.1 l) (Finset.sum_nonneg fun w' _ => mul_nonneg ((hth _).1 w') (hg0 t0 w'))`. Conclude with `le_rfl`. Establish `hsumf : ∀ l, ∑ t0 ∈ R, f t0 l ≤ if l ∈ D.Lv i ∧ l ≠ 0 then c1 l * ((1 + D.e i) * M) else 0`.
+
+Introduce `l`. Simplify using `only [f]`. Use `split_ifs with h`. Rewrite using `[← Finset.mul_sum]`. Conclude with `mul_le_mul_of_nonneg_left (avg_le R len (len w + Kl) (th (pat1 l)) (hth _) g _ _ he hdom) (hLat.1 l)`.
+
+Simplify using the standard rewrite rules. Establish `hpart : ∀ u : Finset E, ∑ l ∈ u, ∑ t0 ∈ R, f t0 l ≤ ep1 * ((1 + D.e i) * M)`. Introduce `u`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_filter, Finset.sum_mul]`.
+
+Use `_ ≤ ep1 * ((1 + D.e i) * M) := mul_le_mul_of_nonneg_right (hLat.2 _ fun x hx => (Finset.mem_filter.1 hx).2) hC0`. Establish `hsummable : ∀ t0 ∈ R, Summable (f t0)`. Introduce `t0 ht0`. Use `summable_of_sum_le (hf0 t0) (c := ep1 * ((1 + D.e i) * M)) fun u => ?_` and prove the remaining obligations. Use `le_trans (Finset.sum_le_sum fun l _ => ?_) (hpart u)` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun t => f t l) (fun t _ => hf0 t l) ht0`. Establish `hcls : ∀ t0 ∈ R, ∑ t ∈ (Sg i 1).filter (fun t => t - t0 ∈ D.La i 1), (Nst (Φ w) Hd (D.Th i 1 t0) 1 t t).re ≤ g t0 w + ∑' l, f t0 l`. Introduce `t0 ht0`. Establish `hpsd` using `hA1 t0 Hd hHd`. Take `⟨h0, hl⟩` from `hest Hd (D.Th i 1 t0) hHd hpsd`.
+
+Use `hP w Hd (D.Th i 1 t0) hHd hpsd t0 ((Sg i 1).filter (fun t => t - t0 ∈ D.La i 1)) (fun t ht => by rw [Finset.mem_filter] at ht; exact ⟨hNZ _ _ t ht.1, ht.2⟩) (∑' l, f t0 l) (fun L hL => by` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun l hlL => ?_` and prove the remaining obligations. Simplify using `only [f, if_pos (hL l hlL)]`. Conclude with `hl l (hL l hlL).1 (hL l hlL).2`.
+
+Use `_ ≤ ∑' l, f t0 l := (hsummable t0 ht0).sum_le_tsum L (fun l _ => hf0 t0 l))`. Rewrite `this` using `[h0, gram_norm _ _ _ hpsd]`. Then use the resulting hypothesis. Establish `htsum : ∑ t0 ∈ R, ∑' l, f t0 l ≤ ep1 * ((1 + D.e i) * M)`. Rewrite using `[← Summable.tsum_finsetSum hsummable]`. Conclude with `Real.tsum_le_of_sum_le (fun l => Finset.sum_nonneg fun t0 _ => hf0 t0 l) hpart`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `Cosets`. Use `Finset.sum_le_sum fun t0 ht0 => ?_` and prove the remaining obligations. Use `hcls t0 ht0` and compare the differences between its conclusion and the goal. Use `_ = ∑ t0 ∈ R, g t0 w + ∑ t0 ∈ R, ∑' l, f t0 l := Finset.sum_add_distrib`.
+
+Use `_ ≤ (1 + D.e i) * Slev D Sg Φ w (i - 1) + ep1 * ((1 + D.e i) * M) := add_le_add (hdom w) htsum`. Use `_ = _ := by ring`.
+-/
 theorem cosets_last_block_size_one : Formalism.FourierDecayAlt.TA.CosetsOne := by
   intro E _ _ H _ _ W _ len Kl Nw D Sg Φ tr Pat1 pat1 c1 ep1 i w R hNZ hi hir hK hA hE hP hEst hLat
     hw hR

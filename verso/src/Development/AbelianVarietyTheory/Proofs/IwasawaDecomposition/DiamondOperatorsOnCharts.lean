@@ -16,6 +16,15 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.DiaChart
 
+/- English proof (translation)
+Establish `h1 : ∀ (q : D) (g₀ : G), (fun r => ∃ g : G, r = f (g • g₀ • q)) = fun r => ∃ g : G, r = f (g • q)` using `fun q g₀ => by`. Use function extensionality and compare the values at `r`. Use `propext ⟨fun ⟨g, e⟩ => ⟨g * g₀, by rw [mul_smul]; exact e⟩, fun ⟨g, e⟩ => ⟨g * g₀⁻¹, by` and prove the remaining obligations. Rewrite using `[mul_smul, inv_smul_smul]`. Conclude with `e⟩⟩`.
+
+Establish `h2 : ∀ q : D, f (prefRep pref (Quotient.mk (MulAction.orbitRel G D) q)) = Classical.epsilon (p` using `fun r => ∃ g : G, r = f (g • q)) (h := ⟨f q⟩) := fun q => by`. Establish `hex : ∃ p, Quotient.mk (MulAction.orbitRel G D) p = Quotient.mk (MulAction.orbitRel G D) q ∧ pref p`. Take `⟨g, hg⟩` from `Classical.epsilon_spec (p := fun r => ∃ g : G, r = f (g • q)) ⟨f q, 1, by rw [one_smul]⟩`. Use `⟨g • q, Quotient.sound ⟨g, rfl⟩, (h _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`.
+
+Conclude with `hg.symm`. Unfold `prefRep`. Rewrite using `[dif_pos hex]`. Take `⟨g, hg⟩ : ∃ g : G, g • q = hex.choose` from `Quotient.exact hex.choose_spec.1`. Establish `h3` using `(h _).1 hex.choose_spec.2`.
+
+Rewrite using `[h3, ← hg, h1]`. Rewrite using `[h2, h2]`. Simplify using `only [hd]`.
+-/
 theorem normal_rep {G D A : Type} [Group G] [MulAction G D] (f : D → A) (pref : D → Prop)
     (h : ∀ q, pref q ↔ f q = Classical.epsilon (p := fun r => ∃ g : G, r = f (g • q)) (h := ⟨f q⟩))
     (d d' : D) (hd : ∀ g : G, f (g • d') = f (g • d)) :
@@ -44,16 +53,27 @@ section Pt
 variable {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ}
 
+/- English proof (translation)
+Unfold `PtY.mv`. Conclude with `dif_pos ⟨q.1.1.2, q.2⟩`.
+-/
 theorem mv_dia (q : PtAt R sel mu cst u j) (P : Pr.vT u) (a : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) :
     PtY.mv q (DecoSet.dia1 P a q.1.1.deco) = ⟨(⟨(DecoSet.dia1 P a q.1.1.deco, q.1.1.1.2), q.1.1.2⟩, q.1.2), q.2⟩ := by
   unfold PtY.mv
   exact dif_pos ⟨q.1.1.2, q.2⟩
 
+/- English proof (translation)
+Rewrite using `[mv_dia]`. Both sides reduce to the same expression.
+-/
 theorem cosetIn_dia (q : PtAt R sel mu cst u j) (P : Pr.vT u) (a : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) :
     cosetIn (PtY.mv q (DecoSet.dia1 P a q.1.1.deco) : PtAt R sel mu cst u j) = cosetIn q := by
   rw [mv_dia]
   rfl
 
+/- English proof (translation)
+Establish `h2 : q.1.2 = ∅`. Use `q.2` as an intermediate fact. Rewrite `this` using `[ysAt_ys_of_ne sel mu cst h]`. Conclude with `this`. Use function extensionality and compare the values at `P`.
+
+Unfold `cosetIn`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+-/
 theorem cosetIn_of_ne (h : j + 1 ≠ R.m) (q : PtAt R sel mu cst u j) : cosetIn q = fun _ => ∅ := by
   have h2 : q.1.2 = ∅ := by
     have := q.2
@@ -71,6 +91,11 @@ variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 abbrev dp (u : B.Word) (a : I.ι) (i : ℕ) (P : (B.primes X).vT u) (s : (𝓞 B.fields.E ⧸ P.1.asIdeal)ˣ) (c : (I.stp u a i).Cl) :
     (I.stp u a i).D c.1 := PtY.mv ((I.stp u a i).rep c) (DecoSet.dia1 P s ((I.stp u a i).rep c).1.1.deco)
 
+/- English proof (translation)
+Distinguish the cases in `h : i + 1 = B.R.m`. Establish `h2` using `@normal_rep ((I.stp0 u a i).G c.1) ((I.stp0 u a i).D c.1) _ _ ((I.stp0 u a i).actD c.1) (fun q => cosetIn q) (I.pref u a i c.1) (fun q => ⟨fun hq => hq.2.1 h, fun hq => ⟨fun h0 => by have := B.R.two_le_m; omega, fun _ => hq, fun h0 => by omega⟩⟩) ((I.stp u a i).rep c) (dp I u a i …`. Establish `e` using `((l.lev u a).lev i).dia_act c.1 P s g ((I.stp u a i).rep c)`. Conclude with `(congrArg (fun q : (I.stp0 u a i).D c.1 => cosetIn q) e.symm).trans (cosetIn_dia _ P s))`. Use `h2.trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (fun q => cosetIn ((I.stp u a i).rp c.1 q)) ((I.stp u a i).rp_spec c.1 c.2)`. Rewrite using `[cosetIn_of_ne h, cosetIn_of_ne h]`.
+-/
 theorem cosetIn_rep (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) (P : (B.primes X).vT u) (s : (𝓞 B.fields.E ⧸ P.1.asIdeal)ˣ)
     (c : (I.stp u a i).Cl) :
     cosetIn ((I.stp u a i).rep ((I.stp u a i).cl c.1 (dp I u a i P s c))) = cosetIn ((I.stp u a i).rep c) := by
@@ -86,6 +111,19 @@ theorem cosetIn_rep (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) (P : (B.prime
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hβ` using the available equality. Establish `hch : chOf ((I.stp u a i).cl c.1 (dp I u a i P s c)) = chOf c` using `(h.key _ _).2 ⟨rfl, cosetIn_rep I l u a i P s c⟩`. Establish `hg` using `(I.stp u a i).mv_smul c.1 (dp I u a i P s c)`. Establish `hco` using `cosetIn_rep I l u a i P s c`. Establish `hco' : cosetIn (dp I u a i P s c) = cosetIn ((I.stp u a i).rep c)` using `cosetIn_dia _ P s`.
+
+Generalize the expression as in `(I.stp u a i).mv c.1 (dp I u a i P s c) = g at hg ⊢`. Rewrite `hδ` using `[← hch]`. Establish `hlev` using `h.lev ((I.stp u a i).cl c.1 (dp I u a i P s c))`. Establish `hchr` using `h.chr ((I.stp u a i).cl c.1 (dp I u a i P s c))`. Generalize the expression as in `y ((I.stp u a i).cl c.1 (dp I u a i P s c)) = y' at hlev hchr ⊢`.
+
+Take `⟨γ, κ⟩` from `g`. Establish `hk : (I.stp u a i).act c.1 (1, κ) ((I.stp u a i).rep ((I.stp u a i).cl c.1 (dp I u a i P s c))) = (I.stp u a i).act c.1 (γ⁻¹, 1) (dp I u a i P s c)`. Use `Eq.trans ?_ (congrArg ((I.stp u a i).act c.1 (γ⁻¹, 1)) hg)` and prove the remaining obligations. Use `Eq.trans ?_ (((I.stp u a i).actD c.1).mul_smul (γ⁻¹, 1) (γ, κ) _)` and prove the remaining obligations. Rewrite using `[Prod.mk_mul_mk, inv_mul_cancel, one_mul]`.
+
+Both sides reduce to the same expression. Establish `hpt : PtOf (y' * (y'⁻¹ * (ratAd B.host.F γ⁻¹ * (y c * δ))) * k (chOf ((I.stp u a i).cl c.1 (dp I u a i P s c)))) ((I.stp u a i).act c.1 (1, κ) ((I.stp u a i).rep ((I.stp u a i).cl c.1 (dp I u a i P s c)))).1.1`. Rewrite using `[hk, mul_inv_cancel_left, mul_assoc]`. Conclude with `GlobalTheory.T.isPointOf_rational_unitary_adelic_mul _ _ _ _ _ _ _ γ⁻¹ _ _ hδ`. Establish `hx` using `(hlev _ _ hpt).2 ⟨(1, κ), map_one (ufGL _ _), rfl, by`.
+
+Use `Eq.trans ?_ (hco'.trans hco.symm)` and prove the remaining obligations. Use `(congrArg (fun q : (I.stp u a i).D c.1 => cosetIn q) hk).trans ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.couplingCoset_frames_invariant_rational_unitary _ _ _ _ _ _ _ _ _ (GlobalTheory.Mem.FieldsLaws.fields_ok B) l.pr _ _ γ⁻¹ rfl rfl⟩`. Use `⟨⟨_, hx⟩, ?_, hchr ⟨_, hx⟩ (1, κ) (map_one (ufGL _ _)) hpt⟩` and prove the remaining obligations. Use `show y c * δ = ratAd B.host.F γ * y' * (y'⁻¹ * (ratAd B.host.F γ⁻¹ * (y c * δ)))`.
+
+Rewrite using `[mul_assoc, mul_inv_cancel_left, ← mul_assoc]`. Unfold `ratAd`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel, map_one, map_one, one_mul]`.
+-/
 theorem exists_level (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) {Ch : Type} {chOf : (I.stp u a i).Cl → Ch}
     {Lb : Ch → Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)} {U : Ch → Subgroup (GA B (B.R.N i))} {chi : ∀ β, U β →* ℂˣ}
     {y : (I.stp u a i).Cl → GA B (B.R.N i)} {st : ∀ c, (I.stp u a i).Stab c → GL (Fin (B.R.N i)) B.host.E} {k : Ch → GA B (B.R.N i)}
@@ -128,6 +166,17 @@ theorem exists_level (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) {Ch : Type} 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hX` using `FieldsLaws.fields_ok B`. Establish `hPr` using `l.pr`. Establish `hover : ∀ w : HeightOneSpectrum (𝓞 B.host.E), w.under (𝓞 B.host.F) = v → w = P.1 ∨ w = conjPrime₂ P.1` using `fun w hw => (under_eq_iff B.host P.1 w).1 (hw.trans hP)`. Take `⟨d1, d2, d3, d4⟩` from `GlobalTheory.T.diamondElement_integral_support_lastRow _ _ B.sp.cm _ _ _ _ J S (X.piT u) P.1 v hv z δ hJ hP.symm hover (decoFin_mem_of_mem_divs P.2) (hPr.piT_notMem_sq hX u P.2) (conj_piT_notMem hPr u P) (fun x => by rw [hL]; exact h.lb _ x) hs hδ`. Take `⟨p₀, hp₀, hN⟩` from `h.k_std (chOf c)`.
+
+Establish `hdis : Disjoint (B.primes X).vGs (I.Q a)` using `Finset.disjoint_left.2 fun w hw hw' => by`. Take `⟨j, hj⟩` from `exists_g_mem hPr ⟨w, hw⟩`. Conclude with `GlobalTheory.Proof.NarrowJetMoments.notMem_of_mem_QE hI.sel_ok hw' (hPr.g_prime j) (hI.g_mem j) hj`. Establish `hT : ∀ w : HeightOneSpectrum (𝓞 B.host.E), w.under (𝓞 B.host.F) = v → (B.T u : 𝓞 B.host.E) ∈ w.asIdeal` using `fun w hw => by`. Rewrite `hv` using `[← hw]`.
+
+Establish `h1 : algebraMap (𝓞 B.host.F) (𝓞 B.host.E) (B.T u : 𝓞 B.host.F) ∈ w.asIdeal` using `hv`. Rewrite `h1` using `[map_natCast]`. Then use the resulting hypothesis. Use `GlobalTheory.T.isPointOf_last_coordinate_dilation_one_prime _ _ B.sp.cm _ _ _ _ (y c) δ.1 (k (chOf c)) ((I.stp u a i).rep c).1.1 _ P s _ ((h.pt c).of_extTo (I.Q_subset_SQ a) hdis) hp₀.uni (by subst hJ; exact δ.2) (hN ▸ hp₀.lat) d1 d2 (fun w hw => d3 w fun e => ?_) (h.k_T _ P) (fu …` and prove the remaining obligations. Break down `hw with hw | hw | ⟨hw, hne⟩` into its components or cases. Conclude with `T_notMem_vGs hPr u ⟨w, hw⟩ (hT w e)`.
+
+Conclude with `GlobalTheory.Proof.NarrowJetMoments.notMem_of_mem_QE hI.sel_ok hw (hPr.T_prime u) (hI.T_mem u) (hT w e)`. Break down `hover w e with e' | e'` into its components or cases. Conclude with `hne e'`. Use `conj_piT_notMem hPr u P ?_` and prove the remaining obligations. Establish `h1 : X.piT u ∈ w.asIdeal` using `decoFin_mem_of_mem_divs hw`.
+
+Rewrite `h1` using `[e']`. Conclude with `h1`. Conclude with `congrArg (fun q : PtAt B.R I.sel (I.tup a) (I.cst a) u i => q.1.1.deco) (mv_dia _ P s)`. Conclude with `(congrArg (fun q : PtAt B.R I.sel (I.tup a) (I.cst a) u i => q.1.1.fr) (mv_dia ((I.stp u a i).rep c) P s) :)`.
+-/
 theorem isPt_dia (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) {Ch : Type} {chOf : (I.stp u a i).Cl → Ch}
     {Lb : Ch → Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)} {U : Ch → Subgroup (GA B (B.R.N i))} {chi : ∀ β, U β →* ℂˣ}
     {y : (I.stp u a i).Cl → GA B (B.R.N i)} {st : ∀ c, (I.stp u a i).Stab c → GL (Fin (B.R.N i)) B.host.E} {k : Ch → GA B (B.R.N i)}
@@ -173,6 +222,23 @@ theorem isPt_dia (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) {Ch 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hPins l Z u a i hi bad Ch chOf K eY eV hR hs hY hV`. Take `⟨k, hR⟩` from `hR`. Establish `hJ` using `((GlobalTheory.T.trueColumn_spaces_standard_in_frameCoords I hI hPins l Z).2.2.2 i hi).1`. Establish `hch : ∀ v s c, chOf ((I.fm l u a).dil i v s c) = chOf c` using `fun v s c => (hR.key _ _).2 ⟨rfl, cosetIn_rep I l u a i v s c⟩`. Establish `hy : ∀ β (c : {c // chOf c = β}), ((K β).y c).1 = ((K (chOf c.1)).y ⟨c.1, rfl⟩).1`.
+
+Introduce and unpack `_ ⟨c, rfl⟩`. Both sides reduce to the same expression. Establish `key : ∀ v (s : ((I.atT l u a).Fv v)ˣ) (z : ℤ), (z : (I.atT l u a).Fv v) = s → ∀ β (c : {c // chOf c = β}) δ, IsDia (K β).lev (eV v).1 (eV v).2 z δ → ∃ x : (K β).lev.U, ((K β).y c * δ).1 = bc (n` using `Fin ((I.rec7 l Z).R.N i)) (inclE (F := (I.rec7 l Z).host.F) (E := (I.rec7 l Z).host.E) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) ((I.stp u a i).gam c.1.1 ((I.stp u a i).mv c.1.1 (dp I u a i v s c.1))) * ((K β).y ⟨(I.fm l u a).dil i v s c.1, (hch v s c.1).tran …`. Introduce and unpack `v s z hz _ ⟨c, rfl⟩ δ hδ`. Establish `h1` using `isPt_dia I hI l u a i hR v s c hJ (K (chOf c)).lev rfl (eV v).1 (eV v).2 (hV v) (hs _ _ _) z hz δ hδ`.
+
+Take `⟨x, hx1, hx2⟩` from `exists_level I l u a i hR v s c δ.1 h1 (chOf c) (hch v s c)`. Use `⟨x, ?_, hx2⟩` and prove the remaining obligations. Rewrite using `[hy (chOf c) ⟨(I.fm l u a).dil i v s c, _⟩]`. Conclude with `hx1`. Establish `hU : ∀ b (g : (I.stp u a i).G b), (I.stp u a i).gam b g ∈ UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) i hi)` using `fun b g => by`.
+
+Rewrite using `[hJ]`. Use `show cT _ _ * 1 * _ = 1`. Rewrite using `[mul_one]`. Conclude with `((l.ch u a).step i).unit b g`. Use `⟨hch, fun v s z hz β c δ hδ => ?_, fun v s z hz β c δ hδ g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx, -⟩` from `key v s z hz β c δ hδ`. Use `(DoubleCoset.eq _ _ _ _).2 ?_` and prove the remaining obligations. Establish `hγ` using `hU c.1.1 ((I.stp u a i).mv c.1.1 (dp I u a i v s c.1))`. Establish `hxU` using `(((K β).lev.U_eq x.1).1 x.2).1`. Establish `hγ' : bc (n` using `Fin ((I.rec7 l Z).R.N i)) (inclE (F := (I.rec7 l Z).host.F) (E := (I.rec7 l Z).host.E) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) ((I.stp u a i).gam c.1.1 ((I.stp u a i).mv c.1.1 (dp I u a i v s c.1))) ∈ UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (Fini …`.
+
+Use `mul_mem (mul_mem ((K β).y c * δ).2 (inv_mem hxU)) (inv_mem ((K β).y ⟨(I.fm l u a).dil i v s c.1, (hch v s c.1).trans c.2⟩).2)` as an intermediate fact. Rewrite `this` using `[hx, mul_inv_cancel_right, mul_inv_cancel_right]`. Then use the resulting hypothesis. Conclude with `⟨⟨_, hγ'⟩, ⟨_, hγ, rfl⟩, ⟨x.1, hxU⟩, x.2, Subtype.ext hx⟩`. Take `⟨x, hx, hc⟩` from `key v s z hz β c δ hδ`. Use function extensionality and compare the values at `t`.
+
+Establish `h1` using `hg _ (hU c.1.1 ((I.stp u a i).mv c.1.1 (dp I u a i v s c.1))) _ ((K β).y c * δ) x hx (eY t) (eY (frMul B.fields.emb B.embLL ((I.stp u a i).gam c.1.1 ((I.stp u a i).mv c.1.1 (dp I u a i v s c.1)))⁻¹ t)) (fun τ => by`. Rewrite using `[hY, hY]`. Establish `e` using `congrArg (fun q => q.1 τ) ((frEquiv B.fields.emb B.embLL ((I.stp u a i).gam c.1.1 ((I.stp u a i).mv c.1.1 (dp I u a i v s c.1)))).apply_symm_apply t)`. Use `e.symm.trans ?_` and prove the remaining obligations. Establish `e2 : embAt B.embLL B.fields.emb τ = Formalism.L2.Forms.embT (I.rec7 l Z) τ` using `FieldsLaws.embLL_comp_emb B τ`.
+
+Unfold `Formalism.L2.Forms.atInf`. Rewrite using `[← e2]`. Use the proof step `rfl)`. Rewrite using `[h1, hc]`. Both sides reduce to the same expression.
+-/
 theorem dilTied : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 B.host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf c = β} => (I.chain l u a).stab i c.1) (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c.1))) (eY : (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi) (eV : (I.atT l u a).vT ≃ {v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) // (B.T u : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal}), I.ReadsK l Z u a i hi chOf K → (∀ β, FunKilled (K β).lev (X.piT u)) → I.IdY l Z u a i hi eY → I.IdV l u a eV → DilationCompatibleChart (D := (I.rec7 l Z)) (I.fm l u a) eY eV chOf (lat := fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c)) K := by
   intro B X I hI hPins l Z u a i hi bad Ch chOf K eY eV hR hs hY hV
   obtain ⟨k, hR⟩ := hR

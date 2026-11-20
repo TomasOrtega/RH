@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `G V _ _ _ _ _ ρ v hS`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `g hg`. Simplify using `only [Set.mem_ofPred_eq] at hg`. Establish `hc : Filter.Tendsto (fun h : G => g⁻¹ * h) (nhds g) (nhds 1)`.
+
+Use `((continuous_const_mul g⁻¹ : Continuous (fun h : G => g⁻¹ * h)).tendsto g)` as an intermediate fact. Simplify using `using this`. Use `filter_upwards [hc hS] with h hh`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq] at hh ⊢`. Establish `: h = g * (g⁻¹ * h)` using `by group`.
+
+Rewrite using `[this, map_mul, Module.End.mul_apply, hh, hg]`.
+-/
 theorem UpperTheory.Reformulated.B.Yhd4.main :
     ∀ {G V : Type} [inst : Group G] [inst_1 : TopologicalSpace G] [ContinuousMul G] [inst_3 : AddCommGroup V]
       [inst_4 : _root_.Module ℂ V] (ρ : Representation ℂ G V) (v : V),

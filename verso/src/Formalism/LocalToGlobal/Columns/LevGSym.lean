@@ -12,18 +12,30 @@ def symIdx (k rS i : ℕ) : ℕ := if i < k then i + rS else if i < k + rS then 
 
 def symIdxInv (k rS i : ℕ) : ℕ := if i < rS then i + k else if i < rS + k then i - rS else i
 
+/- English proof (translation)
+Unfold `symIdx symIdxInv`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem symIdxInv_symIdx (k rS i : ℕ) : symIdxInv k rS (symIdx k rS i) = i := by
   unfold symIdx symIdxInv
   split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `symIdx symIdxInv`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem symIdx_symIdxInv (k rS i : ℕ) : symIdx k rS (symIdxInv k rS i) = i := by
   unfold symIdx symIdxInv
   split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `symIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem symIdx_lt {k rS n i : ℕ} (h : k + rS ≤ n) (hi : i < n) : symIdx k rS i < n := by
   unfold symIdx
   split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `symIdxInv`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem symIdxInv_lt {k rS n i : ℕ} (h : k + rS ≤ n) (hi : i < n) : symIdxInv k rS i < n := by
   unfold symIdxInv
   split_ifs <;> omega
@@ -36,10 +48,16 @@ def symPerm (n k rS : ℕ) : Equiv.Perm (Fin n) :=
       right_inv := fun i => Fin.ext (symIdx_symIdxInv k rS i.val) }
   else Equiv.refl _
 
+/- English proof (translation)
+Rewrite using `[symPerm, dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem symPerm_val {n k rS : ℕ} (h : k + rS ≤ n) (i : Fin n) : (symPerm n k rS i).val = symIdx k rS i.val := by
   rw [symPerm, dif_pos h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[symPerm, dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem symPerm_symm_val {n k rS : ℕ} (h : k + rS ≤ n) (i : Fin n) : ((symPerm n k rS).symm i).val = symIdxInv k rS i.val := by
   rw [symPerm, dif_pos h]
   rfl
@@ -51,10 +69,16 @@ def toSymOrd (n k rS : ℕ) : GL (Fin n) κ →* GL (Fin n) κ :=
 
 variable {κ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toSymOrd_val (n k rS : ℕ) (M : GL (Fin n) κ) (i j : Fin n) :
     ((toSymOrd κ n k rS M : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) i j =
       (M : Matrix (Fin n) (Fin n) κ) ((symPerm n k rS).symm i) ((symPerm n k rS).symm j) := rfl
 
+/- English proof (translation)
+Rewrite using `[toSymOrd_val, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+-/
 theorem toSymOrd_val' (n k rS : ℕ) (M : GL (Fin n) κ) (i j : Fin n) :
     ((toSymOrd κ n k rS M : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) (symPerm n k rS i) (symPerm n k rS j) =
       (M : Matrix (Fin n) (Fin n) κ) i j := by
@@ -66,6 +90,9 @@ def HPsymF (n k rS : ℕ) : Subgroup (GL (Fin n) κ) := (HPsym κ n k rS).comap 
 
 variable {κ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_HPsymF {n k rS : ℕ} {M : GL (Fin n) κ} : M ∈ HPsymF κ n k rS ↔ toSymOrd κ n k rS M ∈ HPsym κ n k rS := Iff.rfl
 
 variable {K : Type} [Field K]
@@ -73,6 +100,9 @@ variable {K : Type} [Field K]
 def chiSymF (ψ : AddChar κ K) (n k rS : ℕ) : ↥(HPsymF κ n k rS) →* Kˣ :=
   (chiSym ψ n k rS).comp ((toSymOrd κ n k rS).subgroupComap (HPsym κ n k rS))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chiSymF_apply (ψ : AddChar κ K) (n k rS : ℕ) (M : ↥(HPsymF κ n k rS)) :
     chiSymF ψ n k rS M = chiSym ψ n k rS ⟨toSymOrd κ n k rS M.1, M.2⟩ := rfl
 
@@ -101,10 +131,26 @@ section SymFrameLemmas
 
 variable {κ : Type} [CommRing κ]
 
+/- English proof (translation)
+Unfold `fine`. Rewrite using `[if_pos h]`.
+-/
 theorem fine_self_lt {n i : ℕ} (h : i < n) : fine n [] i = i := by
   unfold fine
   rw [if_pos h]
 
+/- English proof (translation)
+Rewrite using `[mem_HPsymF]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hbt, hdiag⟩, hN⟩`. Use `⟨fun i j hij => ?_, fun i => ?_, fun i j hi hj => ?_⟩` and prove the remaining obligations. Rewrite using `[← toSymOrd_val' n k rS M i j]`.
+
+Apply `hbt` to reduce the goal to its premises. Use `show fine n [] (symPerm n k rS j).val < fine n [] (symPerm n k rS i).val`. Rewrite using `[fine_self_lt (symPerm n k rS j).2, fine_self_lt (symPerm n k rS i).2, symPerm_val h, symPerm_val h]`. Conclude with `hij`. Rewrite using `[← toSymOrd_val' n k rS M i i]`.
+
+Conclude with `hdiag _ (symPerm n k rS i).2`. Rewrite using `[← toSymOrd_val' n k rS M i j]`. Apply `hN` to reduce the goal to its premises. Apply the tactic sequence `rw [symPerm_val h]; unfold symIdx; split_ifs <;> omega`. Apply the tactic sequence `rw [symPerm_val h]; unfold symIdx; split_ifs <;> omega`.
+
+Apply the tactic sequence `rw [symPerm_val h, hj]; unfold symIdx; split_ifs <;> omega`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨⟨fun i j hij => ?_, fun i _ => ?_⟩, fun i j hi1 hi2 hj => ?_⟩` and prove the remaining obligations. Establish `hij' : j.val < i.val` using `by simpa [fine_self_lt j.2, fine_self_lt i.2] using hij`. Rewrite using `[toSymOrd_val]`.
+
+Apply `h1` to reduce the goal to its premises. Rewrite using `[← symPerm_val h ((symPerm n k rS).symm j), ← symPerm_val h ((symPerm n k rS).symm i), Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Conclude with `hij'`. Rewrite using `[toSymOrd_val]`. Conclude with `h2 _`.
+
+Rewrite using `[toSymOrd_val]`. Apply `h3` to reduce the goal to its premises. Apply the tactic sequence `rw [symPerm_symm_val h]; unfold symIdxInv; split_ifs <;> omega`. Apply the tactic sequence `rw [symPerm_symm_val h, hj]; unfold symIdxInv; split_ifs <;> omega`.
+-/
 theorem mem_HPsymF_iff {n k rS : ℕ} (h : k + rS ≤ n) {M : GL (Fin n) κ} :
     M ∈ HPsymF κ n k rS ↔
       (∀ i j : Fin n, symIdx k rS j.val < symIdx k rS i.val → (M : Matrix (Fin n) (Fin n) κ) i j = 0) ∧
@@ -181,6 +227,9 @@ def insGL (N c k N' : ℕ) (hk : k ≤ N) (hN : N' = N + c) : GL (Fin N) κ →*
 
 variable {κ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem insGL_val (N c k N' : ℕ) (hk : k ≤ N) (hN : N' = N + c) (A : GL (Fin N) κ) (a b : Fin N') :
     ((insGL κ N c k N' hk hN A : GL (Fin N') κ) : Matrix (Fin N') (Fin N') κ) a b =
       Matrix.fromBlocks (A : Matrix (Fin N) (Fin N) κ) 0 0 1 (insEquiv N c k N' hk hN a) (insEquiv N c k N' hk hN b) := rfl
@@ -196,6 +245,11 @@ def elemGL {n : ℕ} (i j : Fin n) (hij : i ≠ j) (c : κ) : GL (Fin n) κ :=
     (Matrix.transvection_mul_transvection_same i j hij c (-c)).trans (by rw [add_neg_cancel, Matrix.transvection_zero]),
     (Matrix.transvection_mul_transvection_same i j hij (-c) c).trans (by rw [neg_add_cancel, Matrix.transvection_zero])⟩
 
+/- English proof (translation)
+Use `show (Matrix.transvection i j c) a b = _`. Rewrite using `[Matrix.transvection, Matrix.add_apply]`. Use `congr 1`. Distinguish the cases in `h1 : a = i`. Substitute `h1` using the available equality.
+
+Distinguish the cases in `h2 : b = j`. Substitute `h2` using the available equality. Simplify using `[Matrix.single_apply]`. Simplify using `[Matrix.single_apply, h2, Ne.symm h2]`. Simplify using `[Matrix.single_apply, h1, Ne.symm h1]`.
+-/
 theorem elemGL_apply {n : ℕ} (i j : Fin n) (hij : i ≠ j) (c : κ) (a b : Fin n) :
     ((elemGL i j hij c : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) a b = (1 : Matrix (Fin n) (Fin n) κ) a b + if a = i ∧ b = j then c else 0 := by
   show (Matrix.transvection i j c) a b = _
@@ -208,6 +262,23 @@ theorem elemGL_apply {n : ℕ} (i j : Fin n) (hij : i ≠ j) (c : κ) (a b : Fin
     · simp [Matrix.single_apply, h2, Ne.symm h2]
   · simp [Matrix.single_apply, h1, Ne.symm h1]
 
+/- English proof (translation)
+Introduce `hle`. Establish `hkn : k < n` using `by omega`. Establish `h0n : 0 < n` using `by omega`. Establish `hne : (⟨k, hkn⟩ : Fin n) ≠ ⟨0, h0n⟩`. Introduce `e`.
+
+Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hmem : elemGL (⟨k, hkn⟩ : Fin n) ⟨0, h0n⟩ hne (1 : κ) ∈ HPsymF κ n k rS`. Rewrite using `[mem_HPsymF_iff (by omega)]`.
+
+Use `⟨fun i j hij => ?_, fun i => ?_, fun i j hi hj => ?_⟩` and prove the remaining obligations. Rewrite using `[elemGL_apply]`. Establish `hij' : i ≠ j` using `fun e => by rw [e] at hij; exact lt_irrefl _ hij`. Rewrite using `[Matrix.one_apply_ne hij', zero_add, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Simplify using `only [symIdx, Fin.val_mk] at hij`. Apply the tactic sequence `split_ifs at hij <;> omega`. Rewrite using `[elemGL_apply, Matrix.one_apply_eq, if_neg, add_zero]`. Introduce and unpack `⟨h1, h2⟩`. Use `congrArg Fin.val (h1.symm.trans h2)` as an intermediate fact.
+
+Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[elemGL_apply, Matrix.one_apply_ne, zero_add, if_neg]`. Introduce and unpack `⟨h1, -⟩`. Use `congrArg Fin.val h1` as an intermediate fact.
+
+Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hU` using `hle hmem`. Establish `h1 : ((elemGL (⟨k, hkn⟩ : Fin n) ⟨0, h0n⟩ hne (1 : κ) : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) ⟨k, hkn⟩ ⟨0, h0n⟩ = 0`. Apply `hU.1` to reduce the goal to its premises. Use `show fine n [] 0 < fine n [] k`. Rewrite using `[fine_self_lt h0n, fine_self_lt hkn]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[elemGL_apply, Matrix.one_apply_ne hne, zero_add, if_pos ⟨rfl, rfl⟩]`. Conclude with `one_ne_zero h1`.
+-/
 theorem HPsymF_not_le_HU [Nontrivial κ] {n k rS : ℕ} (hn : n = k + 2 * rS + 1) (hk : 1 ≤ k) (hr : 1 ≤ rS) :
     ¬ HPsymF κ n k rS ≤ HU κ n := by
   intro hle
@@ -242,6 +313,9 @@ theorem HPsymF_not_le_HU [Nontrivial κ] {n k rS : ℕ} (hn : n = k + 2 * rS + 1
 
 end SymNonVac
 
+/- English proof (translation)
+The claim follows from `HPsymF_not_le_HU rfl le_rfl le_rfl`.
+-/
 example : ¬ HPsymF (ZMod 2) 4 1 1 ≤ HU (ZMod 2) 4 := HPsymF_not_le_HU rfl le_rfl le_rfl
 
 end Formalism.L2.Col

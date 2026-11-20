@@ -13,17 +13,28 @@ namespace GlobalTheory.Ord2
 
 open GlobalTheory.SmallMat
 
+/- English proof (translation)
+Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, h, Ring.inverse_one, one_smul, Matrix.adjugate_fin_two]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.trace_fin_two]`.
+-/
 theorem noab_inv_det_one {K : Type} [Field K] (A : GL (Fin 2) K) (h : (A : Matrix (Fin 2) (Fin 2) K).det = 1) :
     ((A⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) = (A : Matrix (Fin 2) (Fin 2) K).trace • 1 - A := by
   rw [Matrix.coe_units_inv, Matrix.inv_def, h, Ring.inverse_one, one_smul, Matrix.adjugate_fin_two]
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.trace_fin_two]
 
+/- English proof (translation)
+Rewrite `h` using `[Matrix.det_fin_two]`. Rewrite using `[Matrix.det_fin_two, Matrix.trace_fin_two]`. Simplify using `[Matrix.add_apply, Matrix.one_apply] at h`. Take the linear combination `h`.
+-/
 theorem noab_trace_eq {K : Type} [Field K] (Z : Matrix (Fin 2) (Fin 2) K) (h : (1 + Z).det = 1) : Z.trace = - Z.det := by
   rw [Matrix.det_fin_two] at h
   rw [Matrix.det_fin_two, Matrix.trace_fin_two]
   simp [Matrix.add_apply, Matrix.one_apply] at h
   linear_combination h
 
+/- English proof (translation)
+Establish `e : ∀ m : ℕ, ‖((m : ℕ) : Qbar l)‖ = ‖((m : ℕ) : ℚ_[l])‖` using `fun m => by`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap']`. Establish `e2 : (2 : Qbar l) = ((2 : ℕ) : Qbar l)` using `by norm_num`. Rewrite using `[e2, e, e]`. Distinguish the cases in `h2 : l = 2`.
+
+Substitute `h2` using the available equality. Conclude with `le_rfl`. Rewrite using `[Padic.norm_natCast_eq_one_iff.2 ((Nat.coprime_primes (Fact.out) Nat.prime_two).2 h2), Padic.norm_p]`. Conclude with `inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt.le)`.
+-/
 theorem noab_norm_two (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Qbar l)‖ ≤ ‖(2 : Qbar l)‖ := by
   have e : ∀ m : ℕ, ‖((m : ℕ) : Qbar l)‖ = ‖((m : ℕ) : ℚ_[l])‖ := fun m => by
     rw [← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap']
@@ -34,6 +45,13 @@ theorem noab_norm_two (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Qbar l)‖ ≤ 
   · rw [Padic.norm_natCast_eq_one_iff.2 ((Nat.coprime_primes (Fact.out) Nat.prime_two).2 h2), Padic.norm_p]
     exact inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt.le)
 
+/- English proof (translation)
+Introduce `l _ ε Z hε0 hε1 hZ b`. Establish `hε2 : ε ^ 2 * ε ≤ ε ^ 2` using `by simpa using mul_le_mul_of_nonneg_left hε1 (sq_nonneg ε)`. Proceed by induction on `b with`. Consider the case `zero => simpa using GlobalTheory.SmallMat.sm_zero (l := l) (sq_nonneg ε)`. Consider the case `succ b ih`.
+
+Establish `e : (1 + Z) ^ (b + 1) - 1 - ((b + 1 : ℕ) : Qbar l) • Z = ((1 + Z) ^ b - 1 - (b : Qbar l) • Z) + ((1 + Z) ^ b - 1 - (b : Qbar l) • Z) * Z + (b : Qbar l) • (Z * Z)`. Simplify using `only [pow_succ, Nat.cast_succ, add_smul, one_smul, mul_add, add_mul, sub_mul, mul_one, one_mul, Matrix.smul_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `(ih.add ((ih.mul hZ (sq_nonneg ε)).mono hε2)).add ?_` and prove the remaining obligations.
+
+Use `((hZ.mul hZ hε0).smul_le (mul_nonneg hε0 hε0) (GlobalTheory.SmallMat.norm_natCast_le_one b)).mono (le_of_eq (sq ε).symm)` and prove the remaining obligations.
+-/
 theorem noab_pow : ∀ (l : ℕ) [Fact l.Prime] (ε : ℝ) (Z : Matrix (Fin 2) (Fin 2) (Qbar l)), 0 ≤ ε → ε ≤ 1 →
     GlobalTheory.SmallMat.Sm ε Z → ∀ b : ℕ, GlobalTheory.SmallMat.Sm (ε ^ 2) ((1 + Z) ^ b - 1 - (b : Qbar l) • Z) := by
   intro l _ ε Z hε0 hε1 hZ b
@@ -50,6 +68,11 @@ theorem noab_pow : ∀ (l : ℕ) [Fact l.Prime] (ε : ℝ) (Z : Matrix (Fin 2) (
     refine (ih.add ((ih.mul hZ (sq_nonneg ε)).mono hε2)).add ?_
     refine ((hZ.mul hZ hε0).smul_le (mul_nonneg hε0 hε0) (GlobalTheory.SmallMat.norm_natCast_le_one b)).mono (le_of_eq (sq ε).symm)
 
+/- English proof (translation)
+Introduce `l _ ε L hε0 hL`. Proceed by induction on `L with`. Consider the case `nil => simpa using GlobalTheory.SmallMat.sm_zero (l := l) hε0`. Consider the case `cons M L ih`. Rewrite using `[List.map_cons, List.sum_cons]`.
+
+Conclude with `(hL M (by simp)).add (ih fun N hN => hL N (by simp [hN]))`.
+-/
 theorem noab_sum_list : ∀ (l : ℕ) [Fact l.Prime] (ε : ℝ) (L : List (Matrix (Fin 2) (Fin 2) (Qbar l))), 0 ≤ ε →
     (∀ M ∈ L, GlobalTheory.SmallMat.Sm ε (M - 1)) → GlobalTheory.SmallMat.Sm ε ((L.map (fun M => M - 1)).sum) := by
   intro l _ ε L hε0 hL
@@ -59,6 +82,15 @@ theorem noab_sum_list : ∀ (l : ℕ) [Fact l.Prime] (ε : ℝ) (L : List (Matri
     rw [List.map_cons, List.sum_cons]
     exact (hL M (by simp)).add (ih fun N hN => hL N (by simp [hN]))
 
+/- English proof (translation)
+Introduce `l _ ε L hε0 hε1 hL`. Establish `hε2 : ε ^ 2 ≤ ε` using `by simpa [sq] using mul_le_mul_of_nonneg_left hε1 hε0`. Proceed by induction on `L with`. Consider the case `nil => simpa using GlobalTheory.SmallMat.sm_zero (l := l) (sq_nonneg ε)`. Consider the case `cons M L ih`.
+
+Establish `hL' : ∀ N ∈ L, GlobalTheory.SmallMat.Sm ε (N - 1)` using `fun N hN => hL N (by simp [hN])`. Establish `hM : GlobalTheory.SmallMat.Sm ε (M - 1)` using `hL M (by simp)`. Establish `ih'` using `ih hL'`. Establish `hS` using `noab_sum_list l ε L hε0 hL'`. Establish `hP : GlobalTheory.SmallMat.Sm ε (L.prod - 1)`.
+
+Use `(ih'.mono hε2).add hS` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `e : (M :: L).prod - 1 - ((M :: L).map (fun M => M - 1)).sum = (M - 1) * (L.prod - 1) + (L.prod - 1 - (L.map (fun M => M - 1)).sum)`. Rewrite using `[List.prod_cons, List.map_cons, List.sum_cons]`. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `((hM.mul hP hε0).mono (le_of_eq (sq ε).symm)).add ih'`.
+-/
 theorem noab_prod : ∀ (l : ℕ) [Fact l.Prime] (ε : ℝ) (L : List (Matrix (Fin 2) (Fin 2) (Qbar l))), 0 ≤ ε → ε ≤ 1 →
     (∀ M ∈ L, GlobalTheory.SmallMat.Sm ε (M - 1)) →
     GlobalTheory.SmallMat.Sm (ε ^ 2) (L.prod - 1 - (L.map (fun M => M - 1)).sum) := by
@@ -81,6 +113,13 @@ theorem noab_prod : ∀ (l : ℕ) [Fact l.Prime] (ε : ℝ) (L : List (Matrix (F
     rw [e]
     exact ((hM.mul hP hε0).mono (le_of_eq (sq ε).symm)).add ih'
 
+/- English proof (translation)
+Introduce `l _ N a`. Establish `hρ : ‖((l : ℕ) : ℚ_[l])‖ < 1` using `Padic.norm_p_lt_one`. Establish `hex : ∀ i, ∃ s : ℕ, ‖((l : ℕ) : ℚ_[l])‖ ^ s * ‖a i‖ ≤ 1` using `fun i => by`. Distinguish the cases in `h : a i = 0`. Conclude with `⟨0, by simp [h]⟩`.
+
+Take `⟨s, hs⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 (norm_pos_iff.2 h)) hρ`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← le_div_iff₀ (norm_pos_iff.2 h), one_div]`. Conclude with `hs.le`. Use `choose f hf using hex`.
+
+Use `⟨∑ i, f i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `le_trans (mul_le_mul_of_nonneg_right (pow_le_pow_of_le_one (norm_nonneg _) hρ.le (Finset.single_le_sum (fun j _ => Nat.zero_le (f j)) (Finset.mem_univ i))) (norm_nonneg _)) (hf i)`.
+-/
 theorem noab_denom : ∀ (l : ℕ) [Fact l.Prime] (N : ℕ) (a : Fin N → ℚ_[l]), ∃ s : ℕ, ∀ i, ‖((l : ℕ) : ℚ_[l]) ^ s * a i‖ ≤ 1 := by
   intro l _ N a
   have hρ : ‖((l : ℕ) : ℚ_[l])‖ < 1 := Padic.norm_p_lt_one
@@ -97,6 +136,19 @@ theorem noab_denom : ∀ (l : ℕ) [Fact l.Prime] (N : ℕ) (a : Fin N → ℚ_[
   exact le_trans (mul_le_mul_of_nonneg_right (pow_le_pow_of_le_one (norm_nonneg _) hρ.le
     (Finset.single_le_sum (fun j _ => Nat.zero_le (f j)) (Finset.mem_univ i))) (norm_nonneg _)) (hf i)
 
+/- English proof (translation)
+Introduce `l _ ε A A' Z Z' β hε0 hε1 hAA' hA hA' hZ hZZ`. Establish `hε2 : ε ^ 2 ≤ ε` using `by simpa [sq] using mul_le_mul_of_nonneg_left hε1 hε0`. Establish `hZ' : GlobalTheory.SmallMat.Sm ε Z'`. Use `(hZZ.mono hε2).sub hZ` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Establish `hE` using `noab_pow l ε Z hε0 hε1 hZ β`. Establish `hE'` using `noab_pow l ε Z' hε0 hε1 hZ' β`. Establish `hU : GlobalTheory.SmallMat.Sm ε ((1 + Z) ^ β - 1)`. Use `(hE.mono hε2).add (hZ.smul_le hε0 (GlobalTheory.SmallMat.norm_natCast_le_one β))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Establish `hV : GlobalTheory.SmallMat.Sm ε ((1 + Z') ^ β - 1)`. Use `(hE'.mono hε2).add (hZ'.smul_le hε0 (GlobalTheory.SmallMat.norm_natCast_le_one β))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `e : A * (1 + Z) ^ β * A' * (1 + Z') ^ β - 1 - (β : Qbar l) • (A * Z * A' - Z) = A * ((1 + Z) ^ β - 1 - (β : Qbar l) • Z) * A' + ((1 + Z') ^ β - 1 - (β : Qbar l) • Z') + (β : Qbar l) • (Z' + Z) + (A * ((1 + Z) ^ β - 1) * A') * ((1 + Z') ^ β - 1)`. Generalize the expression as in `(1 + Z) ^ β = P`.
+
+Generalize the expression as in `(1 + Z') ^ β = P'`. Simplify using `only [mul_sub, sub_mul, mul_one, one_mul, Matrix.mul_smul, Matrix.smul_mul, smul_add, smul_sub, mul_assoc, ← mul_assoc A A', hAA']`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Establish `h1 : GlobalTheory.SmallMat.Sm (ε ^ 2) (A * ((1 + Z) ^ β - 1 - (β : Qbar l) • Z) * A')`.
+
+Use `(hA.mul hE zero_le_one).mul hA' (by positivity); rwa [one_mul, mul_one] at this` as an intermediate fact. Establish `h3 : GlobalTheory.SmallMat.Sm (ε ^ 2) ((β : Qbar l) • (Z' + Z))` using `hZZ.smul_le (sq_nonneg ε) (GlobalTheory.SmallMat.norm_natCast_le_one β)`. Establish `h4 : GlobalTheory.SmallMat.Sm (ε ^ 2) ((A * ((1 + Z) ^ β - 1) * A') * ((1 + Z') ^ β - 1))`. Use `((hA.mul hU zero_le_one).mul hA' (by positivity)).mul hV (by positivity)` as an intermediate fact. Rewrite `this` using `[one_mul, mul_one, ← sq]`. Then use the resulting hypothesis.
+
+Conclude with `((h1.add hE').add h3).add h4`.
+-/
 theorem noab_comm : ∀ (l : ℕ) [Fact l.Prime] (ε : ℝ) (A A' Z Z' : Matrix (Fin 2) (Fin 2) (Qbar l)) (β : ℕ), 0 ≤ ε → ε ≤ 1 →
     A * A' = 1 → GlobalTheory.SmallMat.Sm 1 A → GlobalTheory.SmallMat.Sm 1 A' → GlobalTheory.SmallMat.Sm ε Z → GlobalTheory.SmallMat.Sm (ε ^ 2) (Z' + Z) →
     GlobalTheory.SmallMat.Sm (ε ^ 2) (A * (1 + Z) ^ β * A' * (1 + Z') ^ β - 1 - (β : Qbar l) • (A * Z * A' - Z)) := by
@@ -128,6 +180,33 @@ theorem noab_comm : ∀ (l : ℕ) [Fact l.Prime] (ε : ℝ) (A A' Z Z' : Matrix 
     rwa [one_mul, mul_one, ← sq] at this
   exact ((h1.add hE').add h3).add h4
 
+/- English proof (translation)
+Introduce `l _ c Γ _ _ _ _ r hr hint hdet g`. Use `set R : Γ →* Matrix (Fin 2) (Fin 2) (Qbar l) := (Units.coeHom _).comp r with hRdef`. Establish `hRint : ∀ x, Sm 1 (R x)` using `fun x i j => commHt_norm_le_one_of_mem c _ (hint x i j)`. Use `set ρ : ℝ := ‖((l : ℕ) : Qbar l)‖ with hρ`. Establish `hρeq : ρ = (l : ℝ)⁻¹`.
+
+Rewrite using `[hρ, ← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap', Padic.norm_p]`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hρ0 : 0 < ρ` using `by rw [hρeq]; positivity`. Establish `hρ1 : ρ < 1` using `by rw [hρeq]; exact inv_lt_one_of_one_lt₀ hl1`. Establish `hρρ : ρ * ρ ≤ ρ` using `by simpa using mul_le_mul_of_nonneg_left hρ1.le hρ0.le`.
+
+Set `U : Subgroup Γ` to `{ carrier := {x | (R x).det = 1 ∧ Sm ρ (R x - 1)} one_mem' := by`. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, sub_self]`. Conclude with `sm_zero hρ0.le`. Use the proof step `mul_mem' := by`.
+
+Introduce and unpack `x y ⟨hx1, hx2⟩ ⟨hy1, hy2⟩`. Use `⟨by rw [map_mul, Matrix.det_mul, hx1, hy1, one_mul], ?_⟩` and prove the remaining obligations. Establish `e : R (x * y) - 1 = (R x - 1) + (R y - 1) + (R x - 1) * (R y - 1)`. Rewrite using `[map_mul]`. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(hx2.add hy2).add ((hx2.mul hy2 hρ0.le).mono hρρ)`. Use the proof step `inv_mem' := by`. Introduce and unpack `x ⟨hx1, hx2⟩`.
+
+Establish `hinv : R x⁻¹ = (R x).trace • 1 - R x`. Simplify using `only [hRdef, MonoidHom.coe_comp, Function.comp_apply, map_inv, Units.coeHom_apply]`. Conclude with `noab_inv_det_one (r x) hx1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Matrix.det_mul (R x⁻¹) (R x)`.
+
+Rewrite `h` using `[← map_mul, inv_mul_cancel, map_one, Matrix.det_one, hx1, mul_one]`. Conclude with `h.symm`. Use `set Z := R x - 1 with hZ`. Establish `hRx : R x = 1 + Z` using `by rw [hZ, add_sub_cancel]`. Establish `htr : Z.trace = - Z.det` using `noab_trace_eq Z (by rw [← hRx]; exact hx1)`.
+
+Establish `e : R x⁻¹ - 1 = Z.trace • (1 : Matrix (Fin 2) (Fin 2) (Qbar l)) - Z`. Rewrite using `[hinv, hRx, Matrix.trace_add, Matrix.trace_one, Fintype.card_fin]`. Use `module`. Rewrite using `[e]`. Use `(sm_scalar ?_ hρ0.le).sub hx2` and prove the remaining obligations.
+
+Rewrite using `[htr, norm_neg]`. Conclude with `(hx2.det hρ0.le).trans (by rw [sq]; exact hρρ) }`. Establish `hRc : Continuous R` using `Units.continuous_val.comp hr`. Establish `hdeq : ∀ x, (R x).det = 1 ↔ (R x).det ≠ -1` using `fun x => by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite using `[h]`. Evaluate the numerical expressions. Introduce `h`. Establish `h2` using `hdet x`.
+
+Rewrite `h2` using `[sq]`. Conclude with `(mul_self_eq_one_iff.1 h2).resolve_right h`. Establish `hU : IsOpen (U : Set Γ)`. Establish `hset : (U : Set Γ) = {x | (R x).det ≠ -1} ∩ ⋂ i, ⋂ j, (fun x => (R x - 1) i j) ⁻¹' Metric.closedBall 0 ρ`. Use extensionality with `x`.
+
+Rewrite using `[show x ∈ (U : Set Γ) ↔ ((R x).det = 1 ∧ Sm ρ (R x - 1)) from Iff.rfl, hdeq x]`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Metric.mem_closedBall, dist_zero_right, Set.mem_setOf_eq]`. Both sides reduce to the same expression. Rewrite using `[hset]`. Use `(isOpen_ne_fun (hRc.matrix_det) continuous_const).inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_)` and prove the remaining obligations.
+
+Conclude with `(IsUltrametricDist.isOpen_closedBall 0 hρ0.ne').preimage ((hRc.sub continuous_const).matrix_elem i j)`. Use `haveI : Finite (Γ ⧸ U) := Subgroup.quotient_finite_of_isOpen U hU`. Take `⟨k, hk0, -, hk⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.index_ne_zero_of_finite (H := U)) g`. Conclude with `⟨k, hk0, hk.1, hk.2⟩`.
+-/
 theorem noab_congr_pow : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] (r : Γ →* GL (Fin 2) (Qbar l)), Continuous r →
     (∀ g i j, (r g : Matrix (Fin 2) (Fin 2) (Qbar l)) i j ∈ c.O) →
@@ -198,6 +277,83 @@ theorem noab_congr_pow : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (Γ : Type) [
   obtain ⟨k, hk0, -, hk⟩ := Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.index_ne_zero_of_finite (H := U)) g
   exact ⟨k, hk0, hk.1, hk.2⟩
 
+/- English proof (translation)
+Introduce `l _ c Γ _ _ _ _ r lam hr hint hdet hirr hlam hker`. Use `set R : Γ →* Matrix (Fin 2) (Fin 2) (Qbar l) := (Units.coeHom _).comp r with hRdef`. Establish `hRint : ∀ x, Sm 1 (R x)` using `fun x i j => commHt_norm_le_one_of_mem c _ (hint x i j)`. Use `set ρ : ℝ := ‖((l : ℕ) : Qbar l)‖ with hρ`. Establish `hρeq : ρ = (l : ℝ)⁻¹`.
+
+Rewrite using `[hρ, ← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap', Padic.norm_p]`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hρ0 : 0 < ρ` using `by rw [hρeq]; positivity`. Establish `hρ1 : ρ < 1` using `by rw [hρeq]; exact inv_lt_one_of_one_lt₀ hl1`. Establish `hρZ : ‖((l : ℕ) : ℤ_[l])‖ = ρ` using `by rw [PadicInt.norm_p, hρeq]`.
+
+Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, lam g ≠ 1 := by`. Assume the negation of the conclusion as `h; push_neg at h; exact hne (MonoidHom.ext fun x => by simpa using h x)`. Take `⟨k, hk0, hkdet, hksm⟩` from `noab_congr_pow l c Γ r hr hint hdet g`. Use `set h0 := g ^ k with hh0`.
+
+Use `set v0 : ℤ_[l] := Multiplicative.toAdd (lam h0) with hv0def`. Establish `hv0 : v0 ≠ 0`. Establish `hg' : Multiplicative.toAdd (lam g) ≠ 0` using `fun h => hg (by simpa using congrArg Multiplicative.ofAdd h)`. Rewrite using `[hv0def, hh0, map_pow, toAdd_pow, nsmul_eq_mul]`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.2 hk0.ne') hg'`.
+
+Establish `hpow : ∀ n : ℕ, (R (h0 ^ l ^ n)).det = 1 ∧ Sm (ρ ^ (n + 1)) (R (h0 ^ l ^ n) - 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using ⟨hkdet, hksm⟩`. Consider the case `succ n ih`.
+
+Establish `he : R (h0 ^ l ^ (n + 1)) = R (h0 ^ l ^ n) ^ l` using `by rw [pow_succ, pow_mul, map_pow]`. Use `⟨by rw [he, Matrix.det_pow, ih.1, one_pow], ?_⟩` and prove the remaining obligations. Establish `h1` using `noab_pow l (ρ ^ (n + 1)) (R (h0 ^ l ^ n) - 1) (by positivity) (pow_le_one₀ hρ0.le hρ1.le) ih.2 l`. Rewrite `h1` using `[add_sub_cancel]`. Establish `h2` using `ih.2.smul ((l : ℕ) : Qbar l)`.
+
+Establish `e : R (h0 ^ l ^ (n + 1)) - 1 = (R (h0 ^ l ^ n) ^ l - 1 - ((l : ℕ) : Qbar l) • (R (h0 ^ l ^ n) - 1)) + ((l : ℕ) : Qbar l) • (R (h0 ^ l ^ n) - 1)`. Rewrite using `[he]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `(h1.mono ?_).add (h2.mono ?_)` and prove the remaining obligations.
+
+Rewrite using `[← pow_mul]; exact pow_le_pow_of_le_one hρ0.le hρ1.le (by omega)`. Rewrite using `[← hρ, pow_succ' ρ (n + 1)]`. Take `⟨N, γ, a, haug⟩` from `GlobalTheory.T.exists_augmentation_combination_eq_id_traceless_irreducible l c Γ r hint hirr`. Take `⟨s, hs⟩` from `noab_denom l N a`. Use `set b : Fin N → ℤ_[l] := fun i => ⟨((l : ℕ) : ℚ_[l]) ^ s * a i, hs i⟩ with hbdef`.
+
+Take `⟨C, hC⟩` from `GlobalTheory.T.galoisHom_zl_lipschitz_of_ker_le_linearGroup l c Γ r lam hr hint hlam hker`. Establish `key : ∀ n : ℕ, ρ ^ (s + n) * ‖v0‖ ≤ C * ρ ^ (2 * n + 1)`. Introduce `n`. Use `set h := h0 ^ l ^ n with hhdef`. Use `set Z := R h - 1 with hZdef`.
+
+Use `set Z' := R h⁻¹ - 1 with hZ'def`. Use `set ε : ℝ := ρ ^ (n + 1) with hεdef`. Use `set τ : ℝ := ρ ^ (2 * n + 1) with hτdef`. Take `⟨hdet1, hZ⟩` from `hpow n`. Establish `hε0 : 0 ≤ ε` using `by positivity`.
+
+Establish `hε1 : ε ≤ 1` using `pow_le_one₀ hρ0.le hρ1.le`. Establish `hτ0 : 0 ≤ τ` using `by positivity`. Establish `hεε : ε ^ 2 ≤ τ` using `by rw [← pow_mul]; exact pow_le_pow_of_le_one hρ0.le hρ1.le (by omega)`. Establish `hτε : τ ≤ ε` using `pow_le_pow_of_le_one hρ0.le hρ1.le (by omega)`. Establish `hε2ε : ε ^ 2 ≤ ε` using `hεε.trans hτε`.
+
+Establish `hRh : R h = 1 + Z` using `by rw [hZdef, add_sub_cancel]`. Establish `hRh' : R h⁻¹ = 1 + Z'` using `by rw [hZ'def, add_sub_cancel]`. Establish `htr : Z.trace = - Z.det` using `noab_trace_eq Z (by rw [← hRh]; exact hdet1)`. Establish `htrn : ‖Z.trace‖ ≤ ε ^ 2` using `by rw [htr, norm_neg]; exact hZ.det hε0`. Establish `hZ'Z : Z' + Z = Z.trace • (1 : Matrix (Fin 2) (Fin 2) (Qbar l))`.
+
+Establish `hinv : R h⁻¹ = (R h).trace • 1 - R h`. Simplify using `only [hRdef, MonoidHom.coe_comp, Function.comp_apply, map_inv, Units.coeHom_apply]`. Conclude with `noab_inv_det_one (r h) hdet1`. Rewrite using `[hZ'def, hinv, hRh, Matrix.trace_add, Matrix.trace_one, Fintype.card_fin]`. Use `module`.
+
+Establish `hZ'Zs : Sm (ε ^ 2) (Z' + Z)` using `by rw [hZ'Z]; exact sm_scalar htrn (by positivity)`. Establish `hZ' : Sm ε Z'`. Use `(hZ'Zs.mono hε2ε).sub hZ` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Use `set β : Fin N → ℕ := fun i => (b i).appr (2 * n + 1) with hβdef`.
+
+Use `set A : Fin N → Matrix (Fin 2) (Fin 2) (Qbar l) := fun i => R (γ i) with hAdef`. Use `set A' : Fin N → Matrix (Fin 2) (Fin 2) (Qbar l) := fun i => R (γ i)⁻¹ with hA'def`. Establish `hAA' : ∀ i, A i * A' i = 1` using `fun i => by simp only [hAdef, hA'def, ← map_mul, mul_inv_cancel, map_one]`. Use `set D : Fin N → Matrix (Fin 2) (Fin 2) (Qbar l) := fun i => A i * Z * A' i - Z with hDdef`. Use `set F : Fin N → Matrix (Fin 2) (Fin 2) (Qbar l) := fun i => A i * (1 + Z) ^ β i * A' i * (1 + Z') ^ β i with hFdef`.
+
+Establish `hE3 : ∀ i, Sm (ε ^ 2) (F i - 1 - (β i : Qbar l) • D i)` using `fun i => noab_comm l ε (A i) (A' i) Z Z' (β i) hε0 hε1 (hAA' i) (hRint _) (hRint _) hZ hZ'Zs`. Establish `hD : ∀ i, Sm ε (D i)` using `fun i => by`. Establish `h1` using `((hRint (γ i)).mul hZ zero_le_one).mul (hRint (γ i)⁻¹) (by positivity)`. Rewrite `h1` using `[one_mul, mul_one]`. Conclude with `h1.sub hZ`.
+
+Establish `hF : ∀ i, Sm ε (F i - 1)` using `fun i => by`. Use `((hE3 i).mono hε2ε).add ((hD i).smul_le hε0 (norm_natCast_le_one (β i)))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `set P : Γ := (h⁻¹) ^ (l ^ s) * (List.ofFn fun i => γ i * h ^ β i * (γ i)⁻¹ * (h⁻¹) ^ β i).prod with hPdef`. Establish `hRP : R P = (1 + Z') ^ (l ^ s) * (List.ofFn F).prod`.
+
+Rewrite using `[hPdef, map_mul, map_pow, map_list_prod, List.map_ofFn, hRh']`. Use `congrArg (fun L => _ * List.prod L) (congrArg List.ofFn (funext fun i => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_mul, map_pow, hFdef, hAdef, hA'def, hRh, hRh']`. Establish `hlamP : ‖Multiplicative.toAdd (lam P)‖ = ρ ^ (s + n) * ‖v0‖`. Establish `hfac : ∀ i, lam (γ i * h ^ β i * (γ i)⁻¹ * (h⁻¹) ^ β i) = 1` using `fun i => by`.
+
+Simplify using `only [map_mul, map_pow, map_inv]`. Rewrite using `[mul_comm (lam (γ i)) _, mul_assoc, mul_assoc, mul_inv_cancel_left, inv_pow, mul_inv_cancel]`. Establish `hprod : lam (List.ofFn fun i => γ i * h ^ β i * (γ i)⁻¹ * (h⁻¹) ^ β i).prod = 1`. Rewrite using `[map_list_prod, List.map_ofFn, List.prod_ofFn]`. Conclude with `Finset.prod_eq_one fun i _ => hfac i`.
+
+Establish `e : Multiplicative.toAdd (lam P) = -(((l ^ s : ℕ) : ℤ_[l]) * (((l ^ n : ℕ) : ℤ_[l]) * v0))`. Rewrite using `[hPdef, map_mul lam, hprod, mul_one, map_pow lam, map_inv lam, hhdef, map_pow lam]`. Simplify using `only [toAdd_pow, toAdd_inv, nsmul_eq_mul, hv0def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_neg, norm_mul, norm_mul, Nat.cast_pow, Nat.cast_pow, norm_pow, norm_pow, hρZ, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsm : Sm τ (R P - 1)` using `by set ls : Qbar l := ((l ^ s : ℕ) : Qbar l) with hlsdef`. Establish `hls : ‖ls‖ ≤ 1` using `norm_natCast_le_one _`. Use `set t := Z.trace with htdef`. Use `set aQ : Fin N → Qbar l := fun i => algebraMap ℚ_[l] (Qbar l) (a i) with haQ`.
+
+Use `set bQ : Fin N → Qbar l := fun i => ls * aQ i with hbQ`. Use `set Q1 := (1 + Z') ^ (l ^ s) with hQ1`. Use `set Q2 := (List.ofFn F).prod with hQ2`. Establish `hE1 : Sm (ε ^ 2) (Q1 - 1 - ls • Z')` using `noab_pow l ε Z' hε0 hε1 hZ' (l ^ s)`. Establish `hE2 : Sm (ε ^ 2) (Q2 - 1 - ∑ i, (F i - 1))`.
+
+Use `noab_prod l ε (List.ofFn F) hε0 hε1 (fun M hM => by` as an intermediate fact. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hM`. Conclude with `hF i)`. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[List.map_ofFn, List.sum_ofFn]`.
+
+Both sides reduce to the same expression. Establish `hβb : ∀ i, ‖(β i : Qbar l) - bQ i‖ ≤ τ` using `fun i => by`. Establish `hsp` using `PadicInt.appr_spec (2 * n + 1) (b i)`. Rewrite `hsp` using `[← PadicInt.norm_le_pow_iff_mem_span_pow]`. Establish `e : (β i : Qbar l) - bQ i = - algebraMap ℚ_[l] (Qbar l) ((b i - (β i : ℤ_[l]) : ℤ_[l]) : ℚ_[l])`.
+
+Rewrite using `[PadicInt.coe_sub, PadicInt.coe_natCast, map_sub, map_natCast]`. Simplify using `only [hβdef, hbQ, haQ, hlsdef, hbdef, map_mul, map_pow, map_natCast, Nat.cast_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_neg, norm_algebraMap', ← PadicInt.norm_def]`. Use `hsp.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[hτdef, hρeq, zpow_neg, zpow_natCast, inv_pow]`. Use `set X := Z - (t / 2) • (1 : Matrix (Fin 2) (Fin 2) (Qbar l)) with hXdef`. Establish `hXtr : X.trace = 0`. Rewrite using `[hXdef, Matrix.trace_sub, Matrix.trace_smul, Matrix.trace_one, Fintype.card_fin, ← htdef]`. Simplify using `only [smul_eq_mul, Nat.cast_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsumD : ∑ i, aQ i • D i = X` using `by conv_rhs => rw [haug X hXtr]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[haQ, algebraMap_smul]`. Use `congr 1`.
+
+Establish `hA'i : (((r (γ i))⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) = A' i`. Simplify using `[hA'def, hRdef, map_inv]`. Establish `hAi : ((r (γ i) : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) = A i` using `rfl`. Rewrite using `[hA'i, hAi, hDdef, hXdef]`. Simplify using `only [mul_sub, sub_mul, Matrix.mul_smul, Matrix.smul_mul, mul_one, hAA' i]`.
+
+Normalize the expressions using the abelian group laws. Establish `hsumB : ∑ i, bQ i • D i = ls • X`. Rewrite using `[← hsumD, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hbQ]; exact mul_smul _ _ _`. Establish `hiden : R P - 1 = (Q1 - 1 - ls • Z') + (Q2 - 1 - ∑ i, (F i - 1)) + ∑ i, (F i - 1 - (β i : Qbar l) • D i) + ∑ i, ((β i : Qbar l) - bQ i) • D i + (Q1 - 1) * (Q2 - 1) + (ls * (t / 2)) • (1 : Matrix (Fin 2) (Fin 2) (Qbar l))`.
+
+Establish `e1 : ∑ i, (F i - 1 - (β i : Qbar l) • D i) = ∑ i, (F i - 1) - ∑ i, (β i : Qbar l) • D i` using `Finset.sum_sub_distrib _ _`. Establish `e2 : ∑ i, ((β i : Qbar l) - bQ i) • D i = ∑ i, (β i : Qbar l) • D i - ls • X`. Rewrite using `[← hsumB, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => sub_smul _ _ _`. Establish `e3 : Z' = t • 1 - Z` using `eq_sub_of_add_eq hZ'Z`.
+
+Rewrite using `[e1, e2, hRP, e3, hXdef]`. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one]`. Use `module`. Establish `hQ1s : Sm ε (Q1 - 1)`. Use `(hE1.mono hε2ε).add (hZ'.smul_le hε0 hls)` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hSF : Sm ε (∑ i, (F i - 1))` using `Sm.sum _ hε0 _ fun i _ => hF i`. Establish `hQ2s : Sm ε (Q2 - 1)`. Use `(hE2.mono hε2ε).add hSF` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Establish `hlast : Sm τ ((ls * (t / 2)) • (1 : Matrix (Fin 2) (Fin 2) (Qbar l)))`. Use `sm_scalar ?_ hτ0` and prove the remaining obligations. Rewrite using `[norm_mul, norm_div]`. Establish `h2n` using `noab_norm_two l`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[one_mul, hεdef, hτdef, ← pow_mul, div_eq_iff hρ0.ne', ← pow_succ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hiden]`. Use `(((((hE1.mono hεε).add (hE2.mono hεε)).add (Sm.sum _ hτ0 _ fun i _ => (hE3 i).mono hεε)).add (Sm.sum _ hτ0 _ fun i _ => ?_)).add ((hQ1s.mul hQ2s hε0).mono ?_)).add hlast` and prove the remaining obligations.
+
+Conclude with `((hD i).smul _).mono ((mul_le_mul (hβb i) hε1 hε0 hτ0).trans (le_of_eq (mul_one τ)))`. Rewrite using `[← sq]`. Conclude with `hεε`. Use `hC (2 * n + 1) P (fun i j => by rw [norm_pow]; exact hsm i j)` as an intermediate fact. Rewrite `this` using `[hlamP, norm_pow]`.
+
+Conclude with `this`. Establish `hbound : ∀ m : ℕ, ‖v0‖ ≤ C * ρ ^ (m + 1)`. Introduce `m`. Establish `h` using `key (s + m)`. Establish `e : ρ ^ (2 * (s + m) + 1) = ρ ^ (s + (s + m)) * ρ ^ (m + 1)` using `by rw [← pow_add]; congr 1; omega`.
+
+Rewrite `h` using `[e, mul_left_comm]`. Conclude with `le_of_mul_le_mul_left h (by positivity)`. Establish `ht : Filter.Tendsto (fun m : ℕ => C * ρ ^ (m + 1)) Filter.atTop (nhds (C * 0))` using `((tendsto_pow_atTop_nhds_zero_of_lt_one hρ0.le hρ1).comp (Filter.tendsto_add_atTop_nat 1)).const_mul C`. Establish `h0' : ‖v0‖ ≤ C * 0` using `ge_of_tendsto' ht hbound`. Rewrite `h0'` using `[mul_zero]`.
+
+Conclude with `hv0 (norm_le_zero_iff.1 h0')`.
+-/
 theorem hom_padicInt_trivial : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (Γ : Type) [Group Γ] [TopologicalSpace Γ]
     [IsTopologicalGroup Γ] [CompactSpace Γ] (r : Γ →* GL (Fin 2) (Qbar l)) (lam : Γ →* Multiplicative ℤ_[l]),
     Continuous r → (∀ g i j, (r g : Matrix (Fin 2) (Fin 2) (Qbar l)) i j ∈ c.O) →

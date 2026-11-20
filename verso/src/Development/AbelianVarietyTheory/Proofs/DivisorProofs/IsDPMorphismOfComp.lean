@@ -13,6 +13,15 @@ variable {B S : Type} [CommRing B] [CommRing S] [Algebra B S] (M : Submonoid B)
 
 include M in
 
+/- English proof (translation)
+Take `⟨⟨a, s⟩, ha⟩` from `IsLocalization.surj M u`. Take `⟨⟨c, t⟩, hc⟩` from `IsLocalization.surj M v`. Simplify using `only at ha hc`. Establish `h1 : algebraMap B S (a * t * j) = algebraMap B S (c * s * j')`. Simplify using `only [map_mul, ← ha, ← hc]`.
+
+Take the linear combination `(algebraMap B S s * algebraMap B S t) * h`. Take `⟨m, hm⟩` from `(IsLocalization.eq_iff_exists M S).1 h1`. Establish `h2 : ((m : B) * (a * t)) ^ n * δ.dpow n j = ((m : B) * (c * s)) ^ n * δ.dpow n j'`. Rewrite using `[← δ.dpow_mul hj, ← δ.dpow_mul hj']`. Use `congr 1`.
+
+Take the linear combination `hm`. Establish `h3` using `congrArg (algebraMap B S) h2`. Simplify using `only [map_mul, map_pow, ← ha, ← hc, mul_pow] at h3`. Establish `hu : IsUnit ((algebraMap B S m) ^ n * (algebraMap B S s) ^ n * (algebraMap B S t) ^ n)` using `(((IsLocalization.map_units S m).pow n).mul ((IsLocalization.map_units S s).pow n)).mul ((IsLocalization.map_units S t).pow n)`. Apply `hu.mul_left_cancel` to reduce the goal to its premises.
+
+Take the linear combination `h3`.
+-/
 theorem wellDef {u v : S} {j j' : B} (hj : j ∈ J) (hj' : j' ∈ J)
     (h : u * algebraMap B S j = v * algebraMap B S j') (n : ℕ) :
     u ^ n * algebraMap B S (δ.dpow n j) = v ^ n * algebraMap B S (δ.dpow n j') := by
@@ -37,6 +46,11 @@ theorem wellDef {u v : S} {j j' : B} (hj : j ∈ J) (hj' : j' ∈ J)
 
 include M in
 
+/- English proof (translation)
+Take `⟨⟨j, s⟩, hj⟩` from `(IsLocalization.mem_map_algebraMap_iff M S).1 hx`. Take `⟨⟨j', t⟩, hj'⟩` from `(IsLocalization.mem_map_algebraMap_iff M S).1 hy`. Simplify using `only at hj hj'`. Take `⟨u, hu⟩` from `(IsLocalization.map_units S (s * t)).exists_left_inv`. Simplify using `only [Submonoid.coe_mul, map_mul] at hu`.
+
+Use `⟨u, t * j, s * j', J.mul_mem_left _ j.2, J.mul_mem_left _ j'.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← hj]`. Take the linear combination `(-x) * hu`. Rewrite using `[map_mul, ← hj']`. Take the linear combination `(-y) * hu`.
+-/
 theorem rep₂ {x y : S} (hx : x ∈ J.map (algebraMap B S)) (hy : y ∈ J.map (algebraMap B S)) :
     ∃ (u : S) (j j' : B), j ∈ J ∧ j' ∈ J ∧ x = u * algebraMap B S j ∧
       y = u * algebraMap B S j' := by
@@ -51,6 +65,9 @@ theorem rep₂ {x y : S} (hx : x ∈ J.map (algebraMap B S)) (hy : y ∈ J.map (
 
 include M in
 
+/- English proof (translation)
+Take `⟨u, j, _, hj, _, e, _⟩` from `rep₂ M hx hx`. Conclude with `⟨u, j, hj, e⟩`.
+-/
 theorem rep {x : S} (hx : x ∈ J.map (algebraMap B S)) :
     ∃ (u : S) (j : B), j ∈ J ∧ x = u * algebraMap B S j := by
   obtain ⟨u, j, _, hj, _, e, _⟩ := rep₂ M hx hx
@@ -64,6 +81,9 @@ def ext (n : ℕ) (x : S) : S :=
 
 include M in
 
+/- English proof (translation)
+Establish `h : ∃ p : S × B, p.2 ∈ J ∧ u * algebraMap B S j = p.1 * algebraMap B S p.2` using `⟨(u, j), hj, rfl⟩`. Rewrite using `[ext, dif_pos h]`. Conclude with `(wellDef M δ hj h.choose_spec.1 h.choose_spec.2 n).symm`.
+-/
 theorem ext_eq (n : ℕ) (u : S) {j : B} (hj : j ∈ J) :
     ext δ n (u * algebraMap B S j) = u ^ n * algebraMap B S (δ.dpow n j) := by
   have h : ∃ p : S × B, p.2 ∈ J ∧ u * algebraMap B S j = p.1 * algebraMap B S p.2 :=
@@ -110,13 +130,28 @@ def dp : DividedPowers (J.map (algebraMap B S)) where
       δ.dpow_comp hn hj, map_mul, map_natCast]
     ring
 
+/- English proof (translation)
+The claim follows from `ext_eq M δ n u hj`.
+-/
 theorem dp_dpow (n : ℕ) (u : S) {j : B} (hj : j ∈ J) :
     (dp M δ).dpow n (u * algebraMap B S j) = u ^ n * algebraMap B S (δ.dpow n j) :=
   ext_eq M δ n u hj
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨le_rfl, fun {n} a ha ↦ by simpa using dp_dpow M δ n (1 : S) ha⟩`.
+-/
 theorem isDPMorphism : IsDPMorphism δ (dp (S := S) M δ) (algebraMap B S) :=
   ⟨le_rfl, fun {n} a ha ↦ by simpa using dp_dpow M δ n (1 : S) ha⟩
 
+/- English proof (translation)
+Take `⟨N, h⟩` from `h`. Establish `key : ∀ l : List (ℕ × S), (∀ p ∈ l, p.2 ∈ J.map (algebraMap B S)) → ∃ (c : S) (l' : List (ℕ × B)), (∀ p ∈ l', p.2 ∈ J) ∧ (l'.map Prod.fst).sum = (l.map Prod.fst).sum ∧ (l.map fun p ↦ (dp M δ).dpow p.1 p.2).prod = c * algebraMap B S (l'.map fun p ↦ δ.dpow p.1 p.2).prod`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact fun _ ↦ ⟨1, [], by simp⟩`.
+
+Consider the case `cons p l ih`. Introduce `hl`. Take `⟨c, l', h1, h2, h3⟩` from `ih fun q hq ↦ hl q (by simp [hq])`. Take `⟨u, j, hj, e⟩` from `rep M (hl p (by simp))`. Use `⟨u ^ p.1 * c, (p.1, j) :: l', ?_, by simp [h2], ?_⟩` and prove the remaining obligations.
+
+Introduce `q hq`. Break down `List.mem_cons.1 hq with rfl | hq` into its components or cases. Use `exacts [hj, h1 q hq]`. Simplify using `only [List.map_cons, List.prod_cons, map_mul]`. Rewrite using `[h3, e, dp_dpow M δ _ _ hj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨N, fun l hl hN ↦ ?_⟩` and prove the remaining obligations. Take `⟨c, l', h1, h2, h3⟩` from `key l hl`. Rewrite using `[h3, h l' h1 (h2 ▸ hN), map_zero, mul_zero]`.
+-/
 theorem isNilDP (h : IsNilDP δ) : IsNilDP (dp (S := S) M δ) := by
   obtain ⟨N, h⟩ := h
   have key : ∀ l : List (ℕ × S), (∀ p ∈ l, p.2 ∈ J.map (algebraMap B S)) →
@@ -142,6 +177,9 @@ theorem isNilDP (h : IsNilDP δ) : IsNilDP (dp (S := S) M δ) := by
   obtain ⟨c, l', h1, h2, h3⟩ := key l hl
   rw [h3, h l' h1 (h2 ▸ hN), map_zero, mul_zero]
 
+/- English proof (translation)
+Use `⟨by rw [Ideal.map_map]; exact h.1, fun {n} x hx ↦ ?_⟩` and prove the remaining obligations. Take `⟨u, j, hj, rfl⟩` from `rep M hx`. Establish `hm : g (algebraMap B S j) ∈ J''` using `h.1 (Ideal.mem_map_of_mem _ hj)`. Establish `e : δ''.dpow n (g (algebraMap B S j)) = g (algebraMap B S (δ.dpow n j))` using `h.2 j hj`. Rewrite using `[dp_dpow M δ _ _ hj, map_mul, δ''.dpow_mul hm, e, map_mul, map_pow]`.
+-/
 theorem isDPMorphism_of_comp {C : Type} [CommRing C] {J'' : Ideal C} (δ'' : DividedPowers J'')
     (g : S →+* C) (h : IsDPMorphism δ δ'' (g.comp (algebraMap B S))) :
     IsDPMorphism (dp M δ) δ'' g := by
@@ -151,6 +189,9 @@ theorem isDPMorphism_of_comp {C : Type} [CommRing C] {J'' : Ideal C} (δ'' : Div
   have e : δ''.dpow n (g (algebraMap B S j)) = g (algebraMap B S (δ.dpow n j)) := h.2 j hj
   rw [dp_dpow M δ _ _ hj, map_mul, δ''.dpow_mul hm, e, map_mul, map_pow]
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ δ b h ↦ ⟨dp (Submonoid.powers b) δ, isNilDP _ δ h, isDPMorphism _ δ, fun _ _ _ δ'' g hg ↦ isDPMorphism_of_comp _ δ δ'' g hg⟩`.
+-/
 theorem exists_away : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J) (b : B), IsNilDP δ → ∃ δ' : DividedPowers (J.map (algebraMap B (Localization.Away b))), IsNilDP δ' ∧ IsDPMorphism δ δ' (algebraMap B (Localization.Away b)) ∧ ∀ (C : Type) [CommRing C] (J'' : Ideal C) (δ'' : DividedPowers J'') (g : Localization.Away b →+* C), IsDPMorphism δ δ'' (g.comp (algebraMap B _)) → IsDPMorphism δ' δ'' g :=
   fun _ _ _ δ b h ↦ ⟨dp (Submonoid.powers b) δ, isNilDP _ δ h, isDPMorphism _ δ,
     fun _ _ _ δ'' g hg ↦ isDPMorphism_of_comp _ δ δ'' g hg⟩

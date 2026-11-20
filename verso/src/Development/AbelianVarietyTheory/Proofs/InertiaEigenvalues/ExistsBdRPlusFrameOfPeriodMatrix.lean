@@ -12,6 +12,15 @@ noncomputable section
 
 namespace GlobalTheory.PMon.FrameOne
 
+/- English proof (translation)
+Take `⟨m, d, k, hli, hsp⟩` from `GlobalTheory.filtration_adapted_basis A hA inferInstance hsep`. Establish `hspan : ⊤ ≤ Submodule.span L (Set.range d)`. Rewrite using `[← htop, hsp a0]`. Conclude with `Submodule.span_mono (Set.image_subset_range _ _)`. Set `b` to `Module.Basis.mk hli hspan`.
+
+Establish `hcard : Fintype.card n = Fintype.card (Fin m)`. Establish `h1` using `Module.finrank_eq_card_basis b`. Rewrite `h1` using `[Module.finrank_fintype_fun_eq_card]`. Conclude with `h1`. Set `e : n ≃ Fin m` to `Fintype.equivOfCardEq hcard`.
+
+Use `⟨d ∘ e, k ∘ e, hli.comp e e.injective, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hsp a]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨e.symm i, by simpa using hi, by simp⟩`. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨e j, hj, rfl⟩`.
+-/
 theorem adapted_basis_fin {L : Type} [Field L] {n : Type} [Fintype n] [DecidableEq n]
     (A : ℤ → Submodule L (n → L)) (hA : Antitone A) (hsep : ∀ x, (∀ a, x ∈ A a) → x = 0)
     (a0 : ℤ) (htop : A a0 = ⊤) :
@@ -43,22 +52,40 @@ namespace GlobalTheory.PMon.FrameOne
 
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 
+/- English proof (translation)
+The claim follows from `((P.PD (botExt l)).Fil a).zero_mem`.
+-/
 theorem fil_zero (a : ℤ) : (0 : P.R.BdR) ∈ Fil P a := ((P.PD (botExt l)).Fil a).zero_mem
 
+/- English proof (translation)
+The claim follows from `((P.PD (botExt l)).Fil a).add_mem hx hy`.
+-/
 theorem fil_add {a : ℤ} {x y : P.R.BdR} (hx : x ∈ Fil P a) (hy : y ∈ Fil P a) : x + y ∈ Fil P a :=
   ((P.PD (botExt l)).Fil a).add_mem hx hy
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem ((P.PD (botExt l)).Fil a) h`.
+-/
 theorem fil_sum {ι : Type} (s : Finset ι) {a : ℤ} (f : ι → P.R.BdR) (h : ∀ i ∈ s, f i ∈ Fil P a) :
     ∑ i ∈ s, f i ∈ Fil P a :=
   Submodule.sum_mem ((P.PD (botExt l)).Fil a) h
 
+/- English proof (translation)
+Proceed by induction on `b, hab using Int.le_induction with`. Consider the case `base => exact hx`. Consider the case `succ c _ ih => exact ih ((P.PD (botExt l)).Fil_anti c hx)`.
+-/
 theorem fil_anti {a b : ℤ} (hab : a ≤ b) {x : P.R.BdR} (hx : x ∈ Fil P b) : x ∈ Fil P a := by
   induction b, hab using Int.le_induction with
   | base => exact hx
   | succ c _ ih => exact ih ((P.PD (botExt l)).Fil_anti c hx)
 
+/- English proof (translation)
+The claim follows from `(P.PD (botExt l)).Fil_exh x`.
+-/
 theorem fil_exh (x : P.R.BdR) : ∃ a, x ∈ Fil P a := (P.PD (botExt l)).Fil_exh x
 
+/- English proof (translation)
+The claim follows from `(P.PD (botExt l)).Fil_sep x h`.
+-/
 theorem fil_sep (x : P.R.BdR) (h : ∀ a, x ∈ Fil P a) : x = 0 := (P.PD (botExt l)).Fil_sep x h
 
 end GlobalTheory.PMon.FrameOne
@@ -67,6 +94,87 @@ namespace GlobalTheory.PMon.FrameOne
 
 open Matrix
 
+/- English proof (translation)
+Introduce `l _ P AI T n _ _ K A Q hA0 hAQ`. Take `⟨S, θ, hS, -, hθ0, hθOm, hθg⟩` from `GlobalTheory.T.exists_theta_deRhamFilZero_surjective l P AI T`. Take `⟨hfield, -, htz, hinv, -, hmul, -, htzact, -, -, -⟩` from `GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T`. Use `haveI : Nontrivial P.R.BdR := ⟨hfield.exists_pair_ne⟩`. Use `set Q' : Matrix n n P.R.BdR := (Q : Matrix n n P.R.BdR) with hQ'`.
+
+Set `eK : ↥K.1 →+* P.R.BdR` to `(algebraMap (Om l) P.R.BdR).comp (K.1.val : ↥K.1 →+* Om l)`. Establish `hE0 : ∀ c, eK c ∈ Fil P 0` using `fun c => (hS _).1 (hθOm (c : Om l)).1`. Establish `hEg : ∀ (g : ↥(GK K)) c, P.actQdR (g : GQ l) (eK c) = eK c`. Introduce `g c`. Use `show P.actQdR (g : GQ l) (algebraMap (Om l) P.R.BdR (c : Om l)) = algebraMap (Om l) P.R.BdR (c : Om l)`.
+
+Rewrite using `[P.actQdR_Om, (IntermediateField.mem_fixingSubgroup_iff _ _).mp g.2 _ c.2]`. Establish `hEinj : ∀ c, eK c = 0 → c = 0`. Introduce `c hc`. Establish `: (c : Om l) = 0` using `(map_eq_zero_iff _ (algebraMap (Om l) P.R.BdR).injective).1 hc`. Conclude with `Subtype.ext this`.
+
+Establish `hEadd : ∀ c d, eK (c + d) = eK c + eK d` using `fun c d => map_add eK c d`. Establish `hEmul : ∀ c d, eK (c * d) = eK c * eK d` using `fun c d => map_mul eK c d`. Establish `hE00 : eK 0 = 0` using `map_zero eK`. Establish `hEsum : ∀ (f : n → ↥K.1), eK (∑ j, f j) = ∑ j, eK (f j)` using `fun f => map_sum eK f _`. Set `vec : (n → ↥K.1) → n → P.R.BdR` to `fun c => Q' *ᵥ fun j => eK (c j)`.
+
+Set `Af : ℤ → Submodule ↥K.1 (n → ↥K.1)` to `fun a => { carrier := {c | ∀ i, vec c i ∈ Fil P a} add_mem' := by`. Introduce `c d hc hd i`. Establish `: vec (c + d) = vec c + vec d`. Simplify using `only [vec, Pi.add_apply, hEadd, ← Matrix.mulVec_add]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `fil_add P (hc i) (hd i)`. Use the proof step `zero_mem' := by`. Introduce `i`. Establish `: vec 0 = 0`.
+
+Simplify using `only [vec, Pi.zero_apply, hE00]`. Conclude with `Matrix.mulVec_zero _`. Rewrite using `[this]`. Conclude with `fil_zero P a`. Use the proof step `smul_mem' := by`.
+
+Introduce `k c hc i`. Establish `: vec (k • c) = eK k • vec c`. Simplify using `only [vec, Pi.smul_apply, smul_eq_mul, hEmul, ← Matrix.mulVec_smul]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Simplify using `using hmul 0 a _ _ (hE0 k) (hc i) }`. Establish `hAnti : Antitone Af`. Introduce `a b hab c hc i`. Conclude with `fil_anti P hab (hc i)`. Establish `hSep : ∀ c, (∀ a, c ∈ Af a) → c = 0`.
+
+Introduce `c hc`. Establish `hv : vec c = 0` using `funext fun i => fil_sep P _ fun a => hc a i`. Establish `h2 : (fun j => eK (c j)) = 0`. Establish `h3 : ((Q⁻¹ : GL n P.R.BdR) : Matrix n n P.R.BdR) *ᵥ vec c = fun j => eK (c j)`. Simplify using `only [vec, Matrix.mulVec_mulVec, hQ']`.
+
+Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[← h3, hv, Matrix.mulVec_zero]`. Use function extensionality and compare the values at `j`. Conclude with `hEinj _ (congrFun h2 j)`. Use `choose f hf using fun p : n × n => fil_exh P (Q' p.1 p.2)`.
+
+Set `a0 : ℤ` to `-∑ p : n × n, |f p|`. Establish `ha0 : ∀ p, a0 ≤ f p`. Introduce `p`. Establish `h1 : |f p| ≤ ∑ q : n × n, |f q|` using `Finset.single_le_sum (f := fun q => |f q|) (fun q _ => abs_nonneg _) (Finset.mem_univ p)`. Establish `h2` using `neg_abs_le (f p)`.
+
+Simplify using `only [a0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTop : Af a0 = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `c _ i`.
+
+Use `fil_sum P _ _ fun j _ => ?_` and prove the remaining obligations. Use `hmul (f (i, j)) 0 _ _ (hf (i, j)) (hE0 (c j))` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `fil_anti P (ha0 (i, j)) this`. Take `⟨d, k, hli, hsp⟩` from `adapted_basis_fin Af hAnti hSep a0 hTop`.
+
+Establish `hdk : ∀ j i, vec (d j) i ∈ Fil P (k j)`. Introduce `j`. Establish `: d j ∈ Af (k j)`. Rewrite using `[hsp]`. Conclude with `Submodule.subset_span ⟨j, show k j ≤ k j from le_refl _, rfl⟩`.
+
+Conclude with `this`. Set `U0 : Matrix n n P.R.BdR` to `Matrix.of fun i j => tz P (-(k j)) * vec (d j) i`. Establish `hU0 : ∀ i j, U0 i j ∈ Fil P 0`. Introduce `i j`. Use `(htz (k j) (-(k j)) _).1 (hdk j i)` as an intermediate fact.
+
+Rewrite `this` using `[add_neg_cancel]`. Then use the resulting hypothesis. Establish `hvg : ∀ (g : ↥(GK K)) j, (A g) *ᵥ (fun m => P.actQdR (g : GQ l) (vec (d j) m)) = vec (d j)`. Introduce `g j`. Establish `: (fun m => P.actQdR (g : GQ l) (vec (d j) m)) = (Q'.map (P.actQdR (g : GQ l))) *ᵥ (fun p => eK (d j p))`. Use function extensionality and compare the values at `m`.
+
+Simplify using `only [vec, Matrix.mulVec, dotProduct, map_sum, map_mul, hEg, Matrix.map_apply]`. Rewrite using `[this, Matrix.mulVec_mulVec, hAQ]`. Establish `hEig : ∀ g : ↥(GK K), A g * U0.map (P.actQdR (g : GQ l)) = U0 * Matrix.diagonal fun j => algebraMap ℚ_[l] P.R.BdR ((P.χQ (g : GQ l) ^ (-(k j)) : ℚ_[l]ˣ) : ℚ_[l])`. Introduce `g`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`. Establish `key : ∀ X : P.R.BdR, (∑ m, A g i m * (X * P.actQdR (g : GQ l) (vec (d j) m))) = X * vec (d j) i`. Introduce `X`. Rewrite using `[← congrFun (hvg g j) i, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+
+Simplify using `only [U0, Matrix.map_apply, Matrix.of_apply, map_mul, htzact]`. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : ∀ q : ℚ_[l], ∃ h : algebraMap ℚ_[l] P.R.BdR q ∈ S, θ ⟨_, h⟩ = algebraMap ℚ_[l] ℂ_[l] q`. Introduce `q`.
+
+Take `⟨h, hh⟩` from `hθOm (algebraMap ℚ_[l] (Om l) q)`. Establish `e : algebraMap ℚ_[l] P.R.BdR q = algebraMap (Om l) P.R.BdR (algebraMap ℚ_[l] (Om l) q)` using `IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR q`. Use `⟨e ▸ h, ?_⟩` and prove the remaining obligations. Establish `e2 : (⟨algebraMap ℚ_[l] P.R.BdR q, e ▸ h⟩ : ↥S) = ⟨_, h⟩` using `Subtype.ext e`. Rewrite using `[e2, hh]`.
+
+Use `show algebraMap (PadicAlgCl l) ℂ_[l] (algebraMap ℚ_[l] (PadicAlgCl l) q) = _`. Conclude with `(IsScalarTower.algebraMap_apply ℚ_[l] (PadicAlgCl l) ℂ_[l] q).symm`. Set `U0S : Matrix n n ↥S` to `Matrix.of fun i j => ⟨U0 i j, (hS _).2 (hU0 i j)⟩`. Set `M : Matrix n n ℂ_[l]` to `U0S.map θ`. Establish `hgS : ∀ (g : GQ l) i j, P.actQdR g (U0 i j) ∈ S` using `fun g i j => (hθg g (U0S i j)).1`.
+
+Set `Aθ : ↥(GK K) → Matrix n n ℂ_[l]` to `fun g => (Matrix.of fun i j => (⟨A g i j, (hS _).2 (hA0 g i j)⟩ : ↥S)).map θ`. Establish `hc1 : ∀ (g : ↥(GK K)) (j : n), (Aθ g) *ᵥ (fun i => Formalism.Per.σC (g : GQ l) (M i j)) = algebraMap ℚ_[l] ℂ_[l] ((P.χQ (g : GQ l) ^ (-(k j)) : ℚ_[l]ˣ) : ℚ_[l]) • (fun i => M i j)`. Introduce `g j`. Use function extensionality and compare the values at `i`. Take `⟨hc, hcθ⟩` from `hq ((P.χQ (g : GQ l) ^ (-(k j)) : ℚ_[l]ˣ) : ℚ_[l])`.
+
+Establish `hE` using `congrFun (congrFun (hEig g) i) j`. Rewrite `hE` using `[Matrix.mul_apply, Matrix.mul_diagonal]`. Establish `hsum : (∑ m, (⟨A g i m, (hS _).2 (hA0 g i m)⟩ : ↥S) * ⟨P.actQdR (g : GQ l) (U0 m j), hgS g m j⟩) = U0S i j * ⟨_, hc⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hE` using `[U0S]`.
+
+Establish `h3` using `congrArg θ hsum`. Rewrite `h3` using `[map_sum, map_mul, hcθ]`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, Aθ, M, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[mul_comm, ← h3]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Use `congr 1`. Conclude with `((hθg _ (U0S m j)).2).symm`. Establish `hvecx : ∀ (c' : n → ↥K.1) i, vec (∑ j, c' j • d j) i = ∑ j, eK (c' j) * vec (d j) i`. Introduce `c' i`.
+
+Simplify using `only [vec, Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hEsum, hEmul]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `hc2 : ∀ (a : ℤ) (c : n → Om l), (∀ j, c j ∈ K.1) → (∀ j, -(k j) ≠ a → c j = 0) → ∑ j, (c j : ℂ_[l]) • (fun i => M i j) = 0 → c = 0`.
+
+Introduce `a c hcK hcw hsum`. Set `c' : n → ↥K.1` to `fun j => ⟨c j, hcK j⟩`. Establish `hc'0 : ∀ j, -(k j) ≠ a → c' j = 0` using `fun j hj => Subtype.ext (hcw j hj)`. Establish `hmemc : ∀ j, eK (c' j) ∈ S` using `fun j => (hθOm (c j)).1`. Establish `hθc : ∀ j, θ ⟨eK (c' j), hmemc j⟩ = (c j : ℂ_[l])` using `fun j => (hθOm (c j)).2`.
+
+Establish `hx1 : ∀ i, tz P a * vec (∑ j, c' j • d j) i ∈ Fil P 1`. Introduce `i`. Establish `hi` using `congrFun hsum i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hi`. Establish `h0 : θ (∑ j, (⟨eK (c' j), hmemc j⟩ : ↥S) * U0S i j) = 0`.
+
+Rewrite using `[map_sum]`. Simplify using `only [map_mul, hθc]`. Simplify `hi` using `[M]`. Establish `h1` using `(hθ0 _).1 h0`. Establish `h2 : ((∑ j, (⟨eK (c' j), hmemc j⟩ : ↥S) * U0S i j : ↥S) : P.R.BdR) = tz P a * vec (∑ j, c' j • d j) i`.
+
+Rewrite using `[hvecx, Finset.mul_sum]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, U0S, U0, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : -(k j) = a`. Rewrite using `[hj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc'0 j hj, hE00]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h2]`. Conclude with `h1`.
+
+Establish `hxA : (∑ j, c' j • d j) ∈ Af (1 - a)`. Introduce `i`. Use `(htz (1 - a) a (vec (∑ j, c' j • d j) i)).2 (by rw [sub_add_cancel]; exact hx1 i)` as an intermediate fact. Conclude with `this`. Establish `hxB : (∑ j, c' j • d j) ∈ Submodule.span ↥K.1 (d '' {j | k j = -a})`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : -(k j) = a`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, show k j = -a by omega, rfl⟩)`. Rewrite using `[hc'0 j hj, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+
+Establish `hdisj` using `hli.disjoint_span_image (s := {j | 1 - a ≤ k j}) (t := {j | k j = -a}) (Set.disjoint_left.2 fun j h1 h2 => by simp only [Set.mem_setOf_eq] at h1 h2; omega)`. Rewrite `hxA` using `[hsp]`. Establish `hx0 : (∑ j, c' j • d j) = 0` using `(Submodule.disjoint_def.1 hdisj) _ hxA hxB`. Use `Fintype.linearIndependent_iff.1 hli c' hx0` as an intermediate fact. Use function extensionality and compare the values at `j`.
+
+Conclude with `congrArg Subtype.val (this j)`. Establish `hliC : LinearIndependent ℂ_[l] (fun j i => M i j)` using `GlobalTheory.T.linearIndependent_cyclotomicEigenvectors_weights l P n K Aθ n (fun j i => M i j) (fun j => -(k j)) hc1 hc2`. Establish `hunit : IsUnit M` using `Matrix.linearIndependent_cols_iff_isUnit.1 hliC`. Establish `hdet : θ U0S.det ≠ 0`. Rewrite using `[RingHom.map_det]`.
+
+Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hunit).ne_zero`. Establish `hdetU : U0.det = (U0S.det : P.R.BdR)`. Use `RingHom.map_det S.subtype U0S` as an intermediate fact. Rewrite `this` using `[show S.subtype.mapMatrix U0S = U0 from by ext; rfl]`. Conclude with `this.symm`.
+
+Establish `hnot1 : U0.det ∉ Fil P 1` using `fun h => hdet ((hθ0 _).2 (hdetU ▸ h))`. Establish `hdet0 : U0.det ∈ Fil P 0` using `hdetU ▸ (hS _).1 (U0S.det).2`. Take `⟨y, hy0, hy⟩` from `hinv _ hdet0 hnot1`. Establish `hadj : ∀ i j, U0.adjugate i j ∈ Fil P 0`. Establish `e : U0.adjugate = S.subtype.mapMatrix U0S.adjugate`.
+
+Rewrite using `[RingHom.map_adjugate, show S.subtype.mapMatrix U0S = U0 from by ext; rfl]`. Introduce `i j`. Rewrite using `[e]`. Conclude with `(hS _).1 (U0S.adjugate i j).2`. Set `U : GL n P.R.BdR` to `⟨U0, y • U0.adjugate, by rw [Matrix.mul_smul, Matrix.mul_adjugate, smul_smul, mul_comm y, hy, one_smul], by rw [Matrix.smul_mul, Matrix.adjugate_mul, smul_smul, mul_comm y, hy, one_smul]⟩`.
+
+Use `⟨U, fun j => -(k j), ⟨hU0, fun i j => ?_⟩, hEig⟩` and prove the remaining obligations. Use `show (y • U0.adjugate) i j ∈ Fil P 0`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Simplify using `using hmul 0 0 _ _ hy0 (hadj i j)`.
+-/
 theorem frame_of_period_matrix : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (A : ↥(GK K) → Matrix n n P.R.BdR) (Q : GL n P.R.BdR), (∀ g i j, A g i j ∈ Fil P 0) → (∀ g : ↥(GK K), A g * (Q : Matrix n n P.R.BdR).map (P.actQdR (g : GQ l)) = Q) → ∃ (U : GL n P.R.BdR) (w : n → ℤ), UnitM P U ∧ ∀ g : ↥(GK K), A g * (U : Matrix n n P.R.BdR).map (P.actQdR (g : GQ l)) = (U : Matrix n n P.R.BdR) * Matrix.diagonal fun j => algebraMap ℚ_[l] P.R.BdR ((P.χQ (g : GQ l) ^ w j : ℚ_[l]ˣ) : ℚ_[l]) := by
   intro l _ P AI T n _ _ K A Q hA0 hAQ
   obtain ⟨S, θ, hS, -, hθ0, hθOm, hθg⟩ := GlobalTheory.T.exists_theta_deRhamFilZero_surjective l P AI T

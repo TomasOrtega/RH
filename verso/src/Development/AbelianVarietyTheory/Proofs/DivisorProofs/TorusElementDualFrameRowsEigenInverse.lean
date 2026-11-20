@@ -7,6 +7,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `R _ m r X Y X' Y' d e A B hX'X hY'Y hX'Y hY'X hde hed hAX hAY hAP hAB`. Take `⟨P, hP⟩ : ∃ P, P = 1 - X * Y' - Y * X'` from `⟨_, rfl⟩`. Rewrite `hAP`, the goal using `[← hP]`. Establish `hsum : X * Y' + Y * X' + P = 1` using `by rw [hP]; abel`. Establish `hY'P : Y' * P = 0`.
+
+Rewrite using `[hP, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hY'X, hY'Y, Matrix.one_mul, Matrix.zero_mul, sub_self, zero_sub, neg_zero]`. Establish `hX'P : X' * P = 0`. Rewrite using `[hP, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hX'X, hX'Y, Matrix.one_mul, Matrix.zero_mul, sub_zero, sub_self]`. Establish `hPX : P * X = 0`. Rewrite using `[hP, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, hY'X, hX'X, Matrix.mul_one, Matrix.mul_zero, sub_self, sub_zero]`.
+
+Establish `hPY : P * Y = 0`. Rewrite using `[hP, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, hY'Y, hX'Y, Matrix.mul_one, Matrix.mul_zero, sub_zero, sub_self]`. Establish `hPP : P * P = P`. Establish `h1 : P * P = P * (1 - X * Y' - Y * X')` using `by rw [← hP]`. Rewrite using `[h1, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPX, hPY, Matrix.zero_mul, Matrix.zero_mul, sub_zero, sub_zero]`.
+
+Establish `hA : A = X * d * Y' + Y * e * X' + P`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_add, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hAX, hAY, hAP]`. Establish `hY'A : Y' * A = d * Y'`. Rewrite using `[hA, Matrix.mul_add, Matrix.mul_add, hY'P, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hY'X, hY'Y, Matrix.one_mul, Matrix.zero_mul, Matrix.zero_mul, add_zero, add_zero]`.
+
+Establish `hX'A : X' * A = e * X'`. Rewrite using `[hA, Matrix.mul_add, Matrix.mul_add, hX'P, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hX'X, hX'Y, Matrix.one_mul, Matrix.zero_mul, Matrix.zero_mul, zero_add, add_zero]`. Establish `hPA : P * A = P`. Rewrite using `[hA, Matrix.mul_add, Matrix.mul_add, hPP, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPX, hPY, Matrix.zero_mul, Matrix.zero_mul, Matrix.zero_mul, Matrix.zero_mul, zero_add, zero_add]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.torus_dual_frame_rows_eigen : ∀ (R : Type) [CommRing R] (m r : ℕ) (X Y : Matrix (Fin m) (Fin r) R) (X' Y' : Matrix (Fin r) (Fin m) R) (d e : Matrix (Fin r) (Fin r) R) (A B : Matrix (Fin m) (Fin m) R), X' * X = 0 → Y' * Y = 0 → X' * Y = 1 → Y' * X = 1 → d * e = 1 → e * d = 1 → A * X = X * d → A * Y = Y * e → A * (1 - X * Y' - Y * X') = 1 - X * Y' - Y * X' → A * B = 1 → Y' * B = e * Y' ∧ X' * B = d * X' ∧ (1 - X * Y' - Y * X') * B = 1 - X * Y' - Y * X' := by
   intro R _ m r X Y X' Y' d e A B hX'X hY'Y hX'Y hY'X hde hed hAX hAY hAP hAB
   obtain ⟨P, hP⟩ : ∃ P, P = 1 - X * Y' - Y * X' := ⟨_, rfl⟩

@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {S : Scheme.{0}}
 
+/- English proof (translation)
+Set `f : D.La →+ Additive Q` to `AddMonoidHom.mk' (fun x => Additive.ofMul (I.ev n x)) fun x y => by`. Simplify using `[I.add]`. Conclude with `congrArg Additive.toMul (map_nsmul f m x)`.
+-/
 theorem TateIsoO.ev_nsmul {k : Type} [Field k] {Q : Type} [Group Q] {act : D.O → Q → Q}
     {e : ℕ → Q → Q → kˣ → Prop} (I : TateIsoO D k Q act e) (n m : ℕ) (x : D.La) :
     I.ev n (m • x) = I.ev n x ^ m := by
@@ -17,6 +20,9 @@ theorem TateIsoO.ev_nsmul {k : Type} [Field k] {Q : Type} [Group Q] {act : D.O �
     simp [I.add]
   exact congrArg Additive.toMul (map_nsmul f m x)
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos N' with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `absurd ((Nat.coprime_zero_left p).1 hc) (Fact.out : p.Prime).one_lt.ne'`. Conclude with `h`.
+-/
 theorem levelPos_of_coprime {N' : ℕ} (hc : N'.Coprime p) : 0 < N' := by
   rcases Nat.eq_zero_or_pos N' with h | h
   · subst h
@@ -52,9 +58,15 @@ def Obj.forget {b : Base D R} {N' : ℕ} {s : S ⟶ Sp R} (o : Obj b N' s) (N : 
     have := I.tower N (N' / N) hN hk (by rw [Nat.mul_div_cancel' hd]; exact hc) y
     rwa [Nat.mul_div_cancel' hd] at this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Obj.forget_A {b : Base D R} {N' : ℕ} {s : S ⟶ Sp R} (o : Obj b N' s) (N : ℕ) (hd : N ∣ N')
     (hc : N'.Coprime p) : (o.forget N hd hc).A = o.A := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Obj.forget_eta {b : Base D R} {N' : ℕ} {s : S ⟶ Sp R} (o : Obj b N' s) (N : ℕ) (hd : N ∣ N')
     (hc : N'.Coprime p) (y : D.La) : (o.forget N hd hc).eta y = o.eta ((N' / N) • y) := rfl
 

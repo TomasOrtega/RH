@@ -13,6 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SpecialFibreLocus
 
+/- English proof (translation)
+Introduce `hG V _ _ _ D A G _ _ U ϑ`. Take `⟨f, hf⟩` from `GlobalTheory.FewZeros.exists_weight_zero hG U ϑ`. Take `⟨s, hs⟩` from `GlobalTheory.FewZeros.exists_sec_of_formEq_id D.toPre.P.isLB (fun U _ k => by`. Establish `e : toUnit D.toPre.P.A ≫ D.toPre.c 0 = 1` using `cPoint_zero (D := D.toPre) _`. Establish `e₁ : padd D.toPre.P.A (𝟙 D.toPre.P.A) 1 = 𝟙 D.toPre.P.A` using `_root_.mul_one (𝟙 D.toPre.P.A)`.
+
+Establish `e₂ : toUnit D.toPre.P.A ≫ η[D.toPre.P.A] = 1` using `rfl`. Simplify using `[Out.DegPre.famφB, Out.DegPre.famε, Fin.prod_univ_four, e, e₁, e₂]) f`. Conclude with `⟨s, fun y => hs ▸ hf y⟩`.
+-/
 theorem exists_sec_nonzeroLocus_iff : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (IsLocalRing.maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G] (U : Unif (IsLocalRing.maximalIdeal V) D A G) (ϑ : H0 U.LG.L 1), ∃ θ : LB.Sec D.toPre.P.L, ∀ y : (thickObj V (IsLocalRing.maximalIdeal V) 0 G).left, (fstG (IsLocalRing.maximalIdeal V) 0 G).left y ∈ nonzeroLocus ϑ ↔ (U.gt 0).pG.left y ∈ nonzeroLocus θ := by
   intro hG V _ _ _ D A G _ _ U ϑ
   obtain ⟨f, hf⟩ := GlobalTheory.FewZeros.exists_weight_zero hG U ϑ

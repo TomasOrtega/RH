@@ -17,6 +17,11 @@ set_option linter.unusedSectionVars false
 variable {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M] [IsScalarTower S (MRingOver S ι) M]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : q = 0`. Introduce `m hm`. Simplify using `[h0] at hm`. Establish `hc` using `QuotPartGraded.nonneg_of_isWeightedHomogeneous hq h0`. Use `(QuotPartGraded.isMultiHomog_iff q _).2 ?_` and prove the remaining obligations.
+
+Establish `hcc : (fun k => (((c k).toNat : ℕ) : ℤ)) = c` using `funext fun k => Int.toNat_of_nonneg (hc k)`. Rewrite using `[hcc]`. Conclude with `hq`.
+-/
 theorem isMultiHomog_of_weighted {q : MRingOver S ι} {c : K → ℤ}
     (hq : IsWeightedHomogeneous (QuotPartGraded.blockWeight ι) q c) :
     IsMultiHomog q (fun k => (c k).toNat) := by
@@ -29,6 +34,11 @@ theorem isMultiHomog_of_weighted {q : MRingOver S ι} {c : K → ℤ}
     rw [hcc]
     exact hq
 
+/- English proof (translation)
+Distinguish the cases in `h0 : q = 0`. Rewrite using `[h0, zero_smul]`. Conclude with `Submodule.zero_mem _`. Establish `hc` using `QuotPartGraded.nonneg_of_isWeightedHomogeneous hq h0`. Establish `h` using `hM.2 _ e q m (isMultiHomog_of_weighted hq) hm`.
+
+Establish `hcc : (fun k => (((c k).toNat : ℕ) : ℤ)) = c` using `funext fun k => Int.toNat_of_nonneg (hc k)`. Rewrite `h` using `[hcc]`. Then use the resulting hypothesis.
+-/
 theorem smul_mem_of_weighted {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.IsMGraded S ι 𝓜) {q : MRingOver S ι}
     {c e : K → ℤ} (hq : IsWeightedHomogeneous (QuotPartGraded.blockWeight ι) q c) {m : M} (hm : m ∈ 𝓜 e) :
     q • m ∈ 𝓜 (e + c) := by
@@ -44,6 +54,17 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 open Classical in
 
+/- English proof (translation)
+Use `set 𝒜 := weightedHomogeneousSubmodule S (QuotPartGraded.blockWeight ι)`. Use `set s := (DirectSum.decompose 𝒜 f).support`. Establish `hsum : ∑ c ∈ s, ((DirectSum.decompose 𝒜 f c : MRingOver S ι)) • m = 0`. Rewrite using `[← Finset.sum_smul, DirectSum.sum_support_decompose 𝒜 f]`. Conclude with `Module.mem_annihilator.1 hf m`.
+
+Take `⟨g, hg⟩ : ∃ g : (K → ℤ) → MRingOver S ι, ∀ c, g c = (DirectSum.decompose 𝒜 f c : MRingOver S ι)` from `⟨_, fun _ => rfl⟩`. Establish `hgm : ∀ c, g c ∈ 𝒜 c` using `fun c => (hg c).symm ▸ (DirectSum.decompose 𝒜 f c).2`. Simplify using `only [← hg] at hsum`. It suffices to establish `h : g i • m = 0 by rw [hg] at h; exact h`. Distinguish the cases in `hi : i ∈ s`.
+
+Establish `hind` using `(iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero 𝓜).1 hM.1.submodule_iSupIndep`. Establish `hinj : Set.InjOn (fun c : K → ℤ => e + c) s` using `fun a _ b _ h => add_left_cancel h`. Establish `key` using `hind (s.image fun c => e + c) (fun d => g (d - e) • m) (by`. Introduce `d hd`. Take `⟨c, _, rfl⟩` from `Finset.mem_image.1 hd`.
+
+Rewrite using `[add_sub_cancel_left]`. Conclude with `smul_mem_of_weighted hM ((mem_weightedHomogeneousSubmodule _ _ _ _).1 (hgm c)) hm)`. Use the proof step `(by`. Rewrite using `[Finset.sum_image hinj]`. Simplify `hsum)` using `only [add_sub_cancel_left]`.
+
+Use the proof step `(e + i) (Finset.mem_image_of_mem _ hi)`. Simplify `key` using `only [add_sub_cancel_left]`. Rewrite using `[hg, DFinsupp.notMem_support_iff.1 hi, ZeroMemClass.coe_zero, zero_smul]`.
+-/
 theorem component_smul_eq_zero {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.IsMGraded S ι 𝓜)
     {f : MRingOver S ι} (hf : f ∈ Module.annihilator (MRingOver S ι) M) (i : K → ℤ) {e : K → ℤ} {m : M}
     (hm : m ∈ 𝓜 e) :
@@ -76,6 +97,9 @@ theorem component_smul_eq_zero {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.I
     simpa only [add_sub_cancel_left] using key
   · rw [hg, DFinsupp.notMem_support_iff.1 hi, ZeroMemClass.coe_zero, zero_smul]
 
+/- English proof (translation)
+Use `Module.mem_annihilator.2 fun m => ?_` and prove the remaining obligations. Establish `hm : m ∈ ⨆ e, 𝓜 e` using `by rw [hM.1.submodule_iSup_eq_top]; exact Submodule.mem_top`. Use `Submodule.iSup_induction 𝓜 (motive := fun x => q • x = 0) hm (fun e x hx => hq e x hx) (smul_zero q) ?_` and prove the remaining obligations. Introduce `x y hx hy`. Rewrite using `[smul_add, hx, hy, add_zero]`.
+-/
 theorem mem_annihilator_of_homog {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.IsMGraded S ι 𝓜) {q : MRingOver S ι}
     (hq : ∀ e, ∀ m ∈ 𝓜 e, q • m = 0) : q ∈ Module.annihilator (MRingOver S ι) M := by
   refine Module.mem_annihilator.2 fun m => ?_
@@ -87,11 +111,27 @@ theorem mem_annihilator_of_homog {𝓜 : (K → ℤ) → Submodule S M} (hM : KH
 def prodSet (𝓜 : (K → ℤ) → Submodule S M) (P : Ideal (MRingOver S ι)) : Set M :=
   {y | ∃ (p : MRingOver S ι) (a : K → ℕ) (m : M) (c : K → ℤ), IsMultiHomog p a ∧ p ∈ P ∧ m ∈ 𝓜 c ∧ y = p • m}
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨p, a, m, c, hp, -, hm, rfl⟩`. Conclude with `⟨_, hM.2 a c p m hp hm⟩`.
+-/
 theorem prodSet_homog {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.IsMGraded S ι 𝓜) (P : Ideal (MRingOver S ι)) :
     ∀ y ∈ prodSet 𝓜 P, ∃ c, y ∈ 𝓜 c := by
   rintro _ ⟨p, a, m, c, hp, -, hm, rfl⟩
   exact ⟨_, hM.2 a c p m hp hm⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Take `⟨T, hT, hPT⟩` from `hP`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr n _`. Rewrite `hr` using `[hPT]`.
+
+Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem t ht`. Take `⟨a, ha⟩` from `hT t ht`. Establish `htP : t ∈ P` using `hPT ▸ Ideal.subset_span ht`. Establish `hn : n ∈ ⨆ e, 𝓜 e` using `by rw [hM.1.submodule_iSup_eq_top]; exact Submodule.mem_top`.
+
+Establish `h0 : t • (0 : M) ∈ Submodule.span (MRingOver S ι) (prodSet 𝓜 P)`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Use `Submodule.iSup_induction 𝓜 (motive := fun x => t • x ∈ Submodule.span (MRingOver S ι) (prodSet 𝓜 P)) hn (fun e x hx => Submodule.subset_span ⟨t, a, x, e, ha, htP, hx, rfl⟩) h0 ?_` and prove the remaining obligations. Introduce `x y hx hy`.
+
+Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `zero => rw [zero_smul]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_smul]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [smul_eq_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ a hx`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, a, m, c, -, hp, -, rfl⟩`.
+
+Conclude with `Submodule.smul_mem_smul hp Submodule.mem_top`.
+-/
 theorem smul_top_eq_span {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.IsMGraded S ι 𝓜) {P : Ideal (MRingOver S ι)}
     (hP : IsMultiHomogIdeal P) :
     (P • ⊤ : Submodule (MRingOver S ι) M) = Submodule.span (MRingOver S ι) (prodSet 𝓜 P) := by
@@ -121,6 +161,11 @@ theorem smul_top_eq_span {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.IsMGrad
     rintro _ ⟨p, a, m, c, -, hp, -, rfl⟩
     exact Submodule.smul_mem_smul hp Submodule.mem_top
 
+/- English proof (translation)
+Establish `hx'` using `GradedSubquot.span_le_span_monTimes (S := S) (ι := ι) H hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, hc⟩` from `GradedSubquot.monTimes_homog hM hH hy`.
+
+Conclude with `Submodule.mem_iSup_of_mem c (Submodule.mem_inf.2 ⟨GradedSubquot.monTimes_subset_span H hy, hc⟩)`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => exact Submodule.add_mem _ hy hz`. Consider the case `smul s y _ hy => exact Submodule.smul_mem _ s hy`.
+-/
 theorem mem_iSup_span_inf {𝓜 : (K → ℤ) → Submodule S M} (hM : KH.IsMGraded S ι 𝓜) {H : Set M}
     (hH : ∀ x ∈ H, ∃ c, x ∈ 𝓜 c) {x : M} (hx : x ∈ Submodule.span (MRingOver S ι) H) :
     x ∈ ⨆ c, (Submodule.span (MRingOver S ι) H).restrictScalars S ⊓ 𝓜 c := by
@@ -140,6 +185,23 @@ open GradedSubmodules in
 attribute [local instance] MvPolynomial.weightedGradedAlgebra in
 open Classical in
 
+/- English proof (translation)
+Introduce `S _ K _ ι _ M _ _ _ _ 𝓜 hM`. Use `⟨?_, fun P hP => ?_⟩` and prove the remaining obligations. Use `set 𝒜 := weightedHomogeneousSubmodule S (QuotPartGraded.blockWeight ι)`. Use `⟨{q | (∃ a, IsMultiHomog q a) ∧ q ∈ Module.annihilator (MRingOver S ι) M}, fun q hq => hq.1, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `f hf`. Rewrite using `[← DirectSum.sum_support_decompose 𝒜 f]`. Use `Ideal.sum_mem _ fun i _ => Ideal.subset_span ⟨⟨_, isMultiHomog_of_weighted ((mem_weightedHomogeneousSubmodule _ _ _ _).1 (DirectSum.decompose 𝒜 f i).2)⟩, ?_⟩` and prove the remaining obligations. Conclude with `mem_annihilator_of_homog hM fun e m hm => component_smul_eq_zero hM hf i hm`. Conclude with `Ideal.span_le.2 fun q hq => hq.2`.
+
+Establish `hspan` using `smul_top_eq_span hM hP`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hind1 : iSupIndep (subGrading 𝓜 (P • ⊤ : Submodule (MRingOver S ι) M))` using `GradedSubquot.iSupIndep_comap hM.1.submodule_iSupIndep ((P • ⊤ : Submodule (MRingOver S ι) M).subtype.restrictScalars S) (fun a b h => Subtype.ext h)`. Establish `hsup1 : ⨆ c, subGrading 𝓜 (P • ⊤ : Submodule (MRingOver S ι) M) c = ⊤`. Use `eq_top_iff.mpr fun x _ => ?_` and prove the remaining obligations.
+
+Establish `hx : (x : M) ∈ Submodule.span (MRingOver S ι) (prodSet 𝓜 P)` using `hspan ▸ x.2`. Establish `h` using `GradedSubquot.mem_iSup_inf hM (prodSet_homog hM P) hspan.ge x hx`. Conclude with `(show (⨆ c, ((Submodule.span (MRingOver S ι) (prodSet 𝓜 P)).comap (P • ⊤ : Submodule (MRingOver S ι) M).subtype).restrictScalars S ⊓ subGrading 𝓜 (P • ⊤ : Submodule (MRingOver S ι) M) c) ≤ ⨆ c, subGrading 𝓜 (P • ⊤ : Submodule (MRingOver S ι) M) c from iSup_mono fun c => inf_le_ri …`. Conclude with `⟨DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind1 hsup1, fun a c p m hp hm => hM.2 a c p (m : M) hp hm⟩`. Use `set L := (P • ⊤ : Submodule (MRingOver S ι) M) with hLdef set f := L.mkQ.restrictScalars S with hfdef`.
+
+Establish `hker : LinearMap.ker f = L.restrictScalars S`. Use extensionality with `x`. Simplify using `[hfdef]`. Establish `hind` using `hM.1.submodule_iSupIndep`. Establish `hL : LinearMap.ker f ≤ ⨆ c, (LinearMap.ker f ⊓ 𝓜 c)`.
+
+Rewrite using `[hker]`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span (MRingOver S ι) (prodSet 𝓜 P)` using `hspan ▸ hx`. Use `mem_iSup_span_inf hM (prodSet_homog hM P) hx'` as an intermediate fact. Rewrite `this` using `[← hspan]`. Then use the resulting hypothesis.
+
+Establish `hind2` using `GradedSubquot.iSupIndep_map_of_ker_le hind f hL`. Establish `hsup2 : ⨆ c, quotGrading 𝓜 L c = ⊤`. Express the relevant statement in the definitionally equal form `⨆ c, (𝓜 c).map f = ⊤`. Rewrite using `[← Submodule.map_iSup, hM.1.submodule_iSup_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `Submodule.mkQ_surjective L`.
+
+Use `⟨DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind2 hsup2, ?_⟩` and prove the remaining obligations. Introduce and unpack `a c p _ hp ⟨x, hx, rfl⟩`. Conclude with `⟨p • x, hM.2 a c p x hp hx, L.mkQ.map_smul p x⟩`.
+-/
 theorem GradedSubmodules.proof : GradedSubmodules.Statement := by
   intro S _ K _ ι _ M _ _ _ _ 𝓜 hM
   refine ⟨?_, fun P hP => ?_⟩

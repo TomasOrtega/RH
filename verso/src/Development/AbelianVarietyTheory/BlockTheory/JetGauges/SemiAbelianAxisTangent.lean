@@ -87,10 +87,16 @@ def vecRep (X : Scheme.{0}) (d : ℕ) : (vecFunctor X d ⋙ forget _).Representa
 
 instance (X : Scheme.{0}) (d : ℕ) : GrpObj (vecObj X d) := GrpObj.ofRepresentableBy _ _ (vecRep X d)
 
+/- English proof (translation)
+The claim follows from `((yonedaGrpObjIsoOfRepresentableBy _ _ (vecRep X d)).hom.app (Opposite.op T)).hom.map_mul x y`.
+-/
 theorem vecEquiv_mul {X : Scheme.{0}} {d : ℕ} {T : Over X} (x y : T ⟶ vecObj X d) :
     vecEquiv T (x * y) = vecEquiv T x * vecEquiv T y :=
   ((yonedaGrpObjIsoOfRepresentableBy _ _ (vecRep X d)).hom.app (Opposite.op T)).hom.map_mul x y
 
+/- English proof (translation)
+The claim follows from `((yonedaGrpObjIsoOfRepresentableBy _ _ (vecRep X d)).hom.app (Opposite.op T)).hom.map_one`.
+-/
 theorem vecEquiv_one {X : Scheme.{0}} {d : ℕ} {T : Over X} :
     vecEquiv T (1 : T ⟶ vecObj X d) = 1 :=
   ((yonedaGrpObjIsoOfRepresentableBy _ _ (vecRep X d)).hom.app (Opposite.op T)).hom.map_one
@@ -109,6 +115,11 @@ variable {X : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X) (d : ℕ)
 def vecPt {A : Type} [CommRing A] [Algebra S A] (v : Fin d → A) : overAt x0 A ⟶ vecObj X d :=
   (vecEquiv (overAt x0 A)).symm (Multiplicative.ofAdd fun j => toΓ A (v j))
 
+/- English proof (translation)
+Apply `(vecEquiv _).injective` to reduce the goal to its premises. Establish `h : vecEquiv _ (homAt x0 f ≫ vecPt x0 d v) = Multiplicative.ofAdd fun j => (spMap (f : A →+* B)).appTop.hom ((vecEquiv _ (vecPt x0 d v)).toAdd j)` using `rfl`. Rewrite using `[h, vecPt, vecPt, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Conclude with `congrArg (fun q => q.hom (v j)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (f : A →+* B))).symm`.
+-/
 theorem homAt_vecPt {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B]
     (f : A →ₐ[S] B) (v : Fin d → A) : homAt x0 f ≫ vecPt x0 d v = vecPt x0 d fun j => f (v j) := by
   apply (vecEquiv _).injective
@@ -120,6 +131,9 @@ theorem homAt_vecPt {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebr
   exact congrArg (fun q => q.hom (v j))
     (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (f : A →+* B))).symm
 
+/- English proof (translation)
+Apply `(vecEquiv _).injective` to reduce the goal to its premises. Rewrite using `[vecEquiv_mul, vecPt, vecPt, vecPt, Equiv.apply_symm_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Conclude with `funext fun j => map_add (toΓ A) (v j) (w j)`.
+-/
 theorem vecPt_add {A : Type} [CommRing A] [Algebra S A] (v w : Fin d → A) :
     vecPt x0 d (v + w) = vecPt x0 d v * vecPt x0 d w := by
   apply (vecEquiv _).injective
@@ -127,11 +141,17 @@ theorem vecPt_add {A : Type} [CommRing A] [Algebra S A] (v w : Fin d → A) :
     Equiv.apply_symm_apply]
   exact funext fun j => map_add (toΓ A) (v j) (w j)
 
+/- English proof (translation)
+Apply `(vecEquiv _).injective` to reduce the goal to its premises. Rewrite using `[vecEquiv_one, vecPt, Equiv.apply_symm_apply]`. Conclude with `funext fun j => map_zero (toΓ A)`.
+-/
 theorem vecPt_zero {A : Type} [CommRing A] [Algebra S A] : vecPt x0 d (0 : Fin d → A) = 1 := by
   apply (vecEquiv _).injective
   rw [vecEquiv_one, vecPt, Equiv.apply_symm_apply]
   exact funext fun j => map_zero (toΓ A)
 
+/- English proof (translation)
+Introduce `v w h` and use `by have h' := (vecEquiv (overAt x0 A)).symm.injective h funext j exact (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv).1 (congrFun h' j)`.
+-/
 theorem vecPt_injective {A : Type} [CommRing A] [Algebra S A] :
     Function.Injective (vecPt x0 d : (Fin d → A) → _) := fun v w h => by
   have h' := (vecEquiv (overAt x0 A)).symm.injective h

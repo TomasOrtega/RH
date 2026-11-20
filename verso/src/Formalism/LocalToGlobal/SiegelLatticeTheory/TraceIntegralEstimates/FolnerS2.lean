@@ -28,10 +28,16 @@ def Cg (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Set (GH k r) := {g | g.to
 
 def nrm {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∑ i, ∑ j, ‖M i j‖
 
+/- English proof (translation)
+The claim follows from `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => continuous_norm.comp ((continuous_apply j).comp (continuous_apply i))`.
+-/
 theorem continuous_nrm {n : ℕ} : Continuous (nrm (n := n)) :=
   continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
     continuous_norm.comp ((continuous_apply j).comp (continuous_apply i))
 
+/- English proof (translation)
+Unfold `nrm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem entry_le_nrm {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖M i j‖ ≤ nrm M := by
   unfold nrm
   calc ‖M i j‖ ≤ ∑ j', ‖M i j'‖ := Finset.single_le_sum (f := fun j' => ‖M i j'‖) (fun _ _ => norm_nonneg _)
@@ -44,29 +50,55 @@ def fG (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (g : GH k r) : ℝ :=
 
 variable {z : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+The claim follows from `isClosedEmbedding_val`.
+-/
 theorem isClosedEmbedding_toM : Topology.IsClosedEmbedding (toM : GH k r → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :=
   isClosedEmbedding_val
 
+/- English proof (translation)
+The claim follows from `isClosedEmbedding_toM.isCompact_preimage (unitary_weyl_compact k r z hz hT)`.
+-/
 theorem isCompact_Cg (hz : inWb k r z) (hT : 0 < Tz k r z) : IsCompact (Cg k r z) :=
   isClosedEmbedding_toM.isCompact_preimage (unitary_weyl_compact k r z hz hT)
 
+/- English proof (translation)
+The claim follows from `(isClosed_S (unitary_weyl_compact k r z hz hT)).preimage continuous_toM`.
+-/
 theorem isClosed_Sg (hz : inWb k r z) (hT : 0 < Tz k r z) : IsClosed (Sg k r z) :=
   (isClosed_S (unitary_weyl_compact k r z hz hT)).preimage continuous_toM
 
+/- English proof (translation)
+Use `show (1 : GH k r).toM ∈ UWset k r z`. Rewrite using `[toM_one]`. Conclude with `one_mem_UW`.
+-/
 theorem one_mem_Cg : (1 : GH k r) ∈ Cg k r z := by
   show (1 : GH k r).toM ∈ UWset k r z; rw [toM_one]; exact one_mem_UW
 
+/- English proof (translation)
+Use `show (a * b).toM ∈ UWset k r z`. Rewrite using `[toM_mul]`. Conclude with `mul_mem_UW ha hb`.
+-/
 theorem mul_mem_Cg {a b : GH k r} (ha : a ∈ Cg k r z) (hb : b ∈ Cg k r z) : a * b ∈ Cg k r z := by
   show (a * b).toM ∈ UWset k r z; rw [toM_mul]; exact mul_mem_UW ha hb
 
+/- English proof (translation)
+Use `show a⁻¹.toM ∈ UWset k r z`. Rewrite using `[toM_inv]`. Conclude with `inv_mem_UW ha`.
+-/
 theorem inv_mem_Cg {a : GH k r} (ha : a ∈ Cg k r z) : a⁻¹ ∈ Cg k r z := by
   show a⁻¹.toM ∈ UWset k r z; rw [toM_inv]; exact inv_mem_UW ha
 
+/- English proof (translation)
+Establish `h : Continuous (fun p : GH k r × GH k r => nrm ((p.2 * p.1).toM - 1))` using `continuous_nrm.comp ((continuous_toM.comp (continuous_snd.mul continuous_fst)).sub continuous_const)`. Conclude with `(isCompact_Cg hz hT).continuous_sInf h`.
+-/
 theorem continuous_fG (hz : inWb k r z) (hT : 0 < Tz k r z) : Continuous (fG k r z) := by
   have h : Continuous (fun p : GH k r × GH k r => nrm ((p.2 * p.1).toM - 1)) :=
     continuous_nrm.comp ((continuous_toM.comp (continuous_snd.mul continuous_fst)).sub continuous_const)
   exact (isCompact_Cg hz hT).continuous_sInf h
 
+/- English proof (translation)
+Unfold `fG`. Use `congr 1`. Use extensionality with `t`. Simplify using `only [Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨c, hc, rfl⟩; exact ⟨c * c₀, mul_mem_Cg hc hc₀, by rw [mul_assoc]⟩`. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨c * c₀⁻¹, mul_mem_Cg hc (inv_mem_Cg hc₀), by rw [mul_assoc, inv_mul_cancel_left]⟩`.
+-/
 theorem fG_mul_left {c₀ : GH k r} (hc₀ : c₀ ∈ Cg k r z) (g : GH k r) : fG k r z (c₀ * g) = fG k r z g := by
   unfold fG
   congr 1
@@ -77,6 +109,15 @@ theorem fG_mul_left {c₀ : GH k r} (hc₀ : c₀ ∈ Cg k r z) (g : GH k r) : f
   · rintro ⟨c, hc, rfl⟩
     exact ⟨c * c₀⁻¹, mul_mem_Cg hc (inv_mem_Cg hc₀), by rw [mul_assoc, inv_mul_cancel_left]⟩
 
+/- English proof (translation)
+Establish `hK : IsCompact {x : MtM (2 * r + k + 1) | nrm (Matrix.of x - 1) ≤ ρ}`. Use `Metric.isCompact_of_isClosed_isBounded ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_le (continuous_nrm.comp (continuous_id.sub continuous_const)) continuous_const`. Use `(Metric.isBounded_iff_subset_closedBall 0).2 ⟨ρ + 1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`.
+
+Establish `hρ : 0 ≤ ρ` using `le_trans (by unfold nrm; positivity) hx`. Use `(pi_norm_le_iff_of_nonneg (by linarith)).2 fun i => (pi_norm_le_iff_of_nonneg (by linarith)).2 fun j => ?_` and prove the remaining obligations. Establish `h1` using `le_trans (entry_le_nrm _ i j) hx`. Establish `h2 : ‖(1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) i j‖ ≤ 1`. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.sub_apply, sub_add_cancel]`. Both sides reduce to the same expression. Use `_ ≤ ‖(Matrix.of x - 1) i j‖ + ‖(1 : Matrix _ _ ℂ) i j‖ := norm_add_le _ _`. Use `_ ≤ ρ + 1 := add_le_add h1 h2`.
+
+Conclude with `(isClosedEmbedding_val (hG := unitary_hermitian_group k r)).isCompact_preimage hK`.
+-/
 theorem isCompact_ball1 (ρ : ℝ) : IsCompact {x : GH k r | nrm (x.toM - 1) ≤ ρ} := by
   have hK : IsCompact {x : MtM (2 * r + k + 1) | nrm (Matrix.of x - 1) ≤ ρ} := by
     refine Metric.isCompact_of_isClosed_isBounded ?_ ?_
@@ -94,6 +135,11 @@ theorem isCompact_ball1 (ρ : ℝ) : IsCompact {x : GH k r | nrm (x.toM - 1) ≤
         _ ≤ ρ + 1 := add_le_add h1 h2
   exact (isClosedEmbedding_val (hG := unitary_hermitian_group k r)).isCompact_preimage hK
 
+/- English proof (translation)
+Establish `hC` using `isCompact_Cg (k := k) (r := r) hz hT`. Establish `hB` using `isCompact_ball1 (k := k) (r := r) ρ`. Establish `hL : IsCompact ((fun p : GH k r × GH k r => p.1⁻¹ * p.2) '' (Cg k r z ×ˢ {x : GH k r | nrm (x.toM - 1) ≤ ρ}))` using `(hC.prod hB).image (continuous_fst.inv.mul continuous_snd)`. Use `hL.of_isClosed_subset ((isClosed_le (continuous_fG hz hT) continuous_const).inter (isClosed_Sg hz hT)) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨hg, -⟩`.
+
+Establish `hF : Continuous (fun c : GH k r => nrm ((c * g).toM - 1))` using `continuous_nrm.comp ((continuous_toM.comp (continuous_id.mul continuous_const)).sub continuous_const)`. Take `⟨c, hc, hmin⟩` from `hC.exists_isMinOn ⟨1, one_mem_Cg⟩ hF.continuousOn`. Establish `hle : nrm ((c * g).toM - 1) ≤ fG k r z g` using `le_csInf (Set.Nonempty.image _ ⟨1, one_mem_Cg⟩) (by rintro _ ⟨c', hc', rfl⟩; exact hmin hc')`. Conclude with `⟨(c, c * g), ⟨hc, show nrm ((c * g).toM - 1) ≤ ρ from le_trans hle hg⟩, by simp⟩`.
+-/
 theorem isCompact_sublevel (hz : inWb k r z) (hT : 0 < Tz k r z) (ρ : ℝ) :
     IsCompact ({x | fG k r z x ≤ ρ} ∩ Sg k r z) := by
   have hC := isCompact_Cg (k := k) (r := r) hz hT
@@ -111,11 +157,19 @@ theorem isCompact_sublevel (hz : inWb k r z) (hT : 0 < Tz k r z) (ρ : ℝ) :
 
 def aT (k r : ℕ) : GH k r := mk (unitary_hermitian_group k r) (dS k r 2) (dS_mem_UH (by norm_num))
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, toM_one]`. Consider the case `succ m ih => rw [pow_succ, pow_succ, toM_mul, ih]`.
+-/
 theorem toM_pow (x : GH k r) (m : ℕ) : (x ^ m).toM = x.toM ^ m := by
   induction m with
   | zero => rw [pow_zero, pow_zero, toM_one]
   | succ m ih => rw [pow_succ, pow_succ, toM_mul, ih]
 
+/- English proof (translation)
+Unfold `dS`. Rewrite using `[Matrix.diagonal_pow]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.pow_apply]`.
+
+Use `push_cast`. Rewrite using `[← zpow_natCast ((s : ℂ) ^ fexp k r i) m, ← zpow_natCast (s : ℂ) m, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm]`.
+-/
 theorem dS_pow (s : ℝ) (m : ℕ) : (dS k r s) ^ m = dS k r (s ^ m) := by
   unfold dS
   rw [Matrix.diagonal_pow]
@@ -126,6 +180,9 @@ theorem dS_pow (s : ℝ) (m : ℕ) : (dS k r s) ^ m = dS k r (s ^ m) := by
   rw [← zpow_natCast ((s : ℂ) ^ fexp k r i) m, ← zpow_natCast (s : ℂ) m, ← _root_.zpow_mul, ← _root_.zpow_mul,
     mul_comm]
 
+/- English proof (translation)
+Establish `h2 : (2 : ℝ) ^ m ≠ 0` using `pow_ne_zero _ (by norm_num)`. Establish `hh : (1 / 2 : ℝ) ^ m ≠ 0` using `pow_ne_zero _ (by norm_num)`. Establish `e1 : (1 / 2 : ℝ) ^ m = ((2 : ℝ) ^ m)⁻¹` using `by rw [one_div, inv_pow]`. Unfold `cjB`. Rewrite using `[toM_mul, toM_mul, toM_inv, toM_pow, aT, toM_mk, dS_pow, dS_inv_eq h2, dS_inv_eq hh, e1, inv_inv]`.
+-/
 theorem toM_cjB_aT (m : ℕ) (g : GH k r) :
     (cjB (aT k r ^ m) g).toM = dS k r ((1 / 2 : ℝ) ^ m) * g.toM * (dS k r ((1 / 2 : ℝ) ^ m))⁻¹ := by
   have h2 : (2 : ℝ) ^ m ≠ 0 := pow_ne_zero _ (by norm_num)
@@ -134,12 +191,34 @@ theorem toM_cjB_aT (m : ℕ) (g : GH k r) :
   unfold cjB
   rw [toM_mul, toM_mul, toM_inv, toM_pow, aT, toM_mk, dS_pow, dS_inv_eq h2, dS_inv_eq hh, e1, inv_inv]
 
+/- English proof (translation)
+Establish `e` using `toM_cjB_aT (k := k) (r := r) 1 s`. Rewrite `e` using `[pow_one, pow_one]`. Use `show s.toM ∈ Sset k r z ↔ (cjB (aT k r) s).toM ∈ Sset k r z`. Rewrite using `[e, dS_conj_S_iff (by norm_num : (1 / 2 : ℝ) ≠ 0)]`.
+-/
 theorem aT_iff (z : Fin (2 * r + k + 1) → ℂ) (s : GH k r) : s ∈ Sg k r z ↔ cjB (aT k r) s ∈ Sg k r z := by
   have e := toM_cjB_aT (k := k) (r := r) 1 s
   rw [pow_one, pow_one] at e
   show s.toM ∈ Sset k r z ↔ (cjB (aT k r) s).toM ∈ Sset k r z
   rw [e, dS_conj_S_iff (by norm_num : (1 / 2 : ℝ) ≠ 0)]
 
+/- English proof (translation)
+Establish `hC` using `isCompact_Cg (k := k) (r := r) hz hT`. Establish `hI` using `(isClosedEmbedding_val (hG := unitary_hermitian_group k r)).isInducing`. Rewrite `hV` using `[hI.nhds_eq_comap, Filter.mem_comap]`. Take `⟨t, ht, htV⟩` from `hV`. Take `⟨δ, hδ, hball⟩` from `Metric.mem_nhds_iff.1 ht`.
+
+Use `set L := (fun p : GH k r × GH k r => p.1⁻¹ * p.2) '' (Cg k r z ×ˢ K) with hLdef`. Establish `hL : IsCompact L` using `(hC.prod hK).image (continuous_fst.inv.mul continuous_snd)`. Take `⟨B, hB⟩` from `hL.exists_bound_of_continuousOn (continuous_val (hG := unitary_hermitian_group k r)).continuousOn`. Establish `hlim : Tendsto (fun m : ℕ => (1 / 2 : ℝ) ^ m * B) atTop (𝓝 0)`. Use `(tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num : (1 / 2 : ℝ) < 1)).mul_const B` as an intermediate fact.
+
+Rewrite `this` using `[zero_mul]`. Then use the resulting hypothesis. Use `filter_upwards [hlim.eventually (eventually_lt_nhds hδ)] with m hm`. Introduce `x hx`. Take `⟨h, hh, n, hn, hxn⟩` from `(hKS hx : x.toM ∈ Sset k r z)`. Use `set c : GH k r := mk (unitary_hermitian_group k r) h hh.1 with hcdef`.
+
+Establish `hcC : c ∈ Cg k r z` using `by show c.toM ∈ UWset k r z; rw [hcdef, toM_mk]; exact hh`. Use `set ν : GH k r := c⁻¹ * x with hνdef`. Establish `hνL : ν ∈ L` using `⟨(c, x), ⟨hcC, hx⟩, rfl⟩`. Establish `hdet : IsUnit h.det`. Use `det_ne_zero c` as an intermediate fact.
+
+Rewrite `this` using `[hcdef, toM_mk]`. Conclude with `isUnit_iff_ne_zero.2 this`. Establish `hνN : ν.toM = n`. Rewrite using `[hνdef, toM_mul, toM_inv, hcdef, toM_mk, hxn, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mul]`. Establish `hxe : x = c * ν` using `by rw [hνdef, mul_inv_cancel_left]`.
+
+Establish `hs0 : (0 : ℝ) < (1 / 2) ^ m` using `by positivity`. Establish `hs1 : ((1 / 2 : ℝ)) ^ m ≤ 1` using `pow_le_one₀ (by norm_num) (by norm_num)`. Establish `hcfix : cjB (aT k r ^ m) c = c` using `by ext1`. Rewrite using `[toM_cjB_aT, dS_inv_eq hs0.ne', hcdef, toM_mk]`. Conclude with `dS_conj_UW hs0.ne' hh`.
+
+Rewrite using `[hxe, cjB_mul, hcfix]`. Use `Set.mul_mem_mul hcC (htV (hball ?_))` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_pi_lt_iff hδ]`. Introduce `i`. Rewrite using `[dist_pi_lt_iff hδ]`.
+
+Introduce `j`. Use `show dist ((cjB (aT k r ^ m) ν).toM i j) ((1 : GH k r).toM i j) < δ`. Rewrite using `[toM_one, dist_eq_norm, ← Matrix.sub_apply, toM_cjB_aT, hνN]`. Establish `hbd : ‖n i j‖ ≤ B`. Rewrite using `[← hνN]`.
+
+Conclude with `le_trans (le_trans (norm_le_pi_norm (ν.val i) j) (norm_le_pi_norm ν.val i)) (hB ν hνL)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem contractV (hz : inWb k r z) (hT : 0 < Tz k r z) (K : Set (GH k r)) (hK : IsCompact K) (hKS : K ⊆ Sg k r z)
     (V : Set (GH k r)) (hV : V ∈ 𝓝 (1 : GH k r)) :
     ∀ᶠ m : ℕ in atTop, ∀ x ∈ K, cjB (aT k r ^ m) x ∈ Cg k r z * V := by

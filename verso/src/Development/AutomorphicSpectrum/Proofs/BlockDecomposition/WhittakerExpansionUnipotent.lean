@@ -11,11 +11,17 @@ namespace GlobalTheory.CompanionTheory.GA.WhitU
 
 abbrev idl (a : ℚˣ) : (𝔸[ℚ])ˣ := Units.map (algebraMap ℚ 𝔸[ℚ]).toMonoidHom a
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dia, dg, idl, AdelicGLn.diagonal]`.
+-/
 theorem dia_dg (a : ℚˣ) : dia (dg a 1 1) = (dg (idl a) 1 1 : G3) := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dia, dg, idl, AdelicGLn.diagonal]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[dg, uni, Matrix.mul_apply, Fin.sum_univ_three, idl]`.
+-/
 theorem conj (a : ℚˣ) (x : 𝔸[ℚ]) : (dg (idl a) 1 1 : G3) * uni x 0 0 =
     uni (algebraMap ℚ 𝔸[ℚ] a * x) 0 0 * (dg (idl a) 1 1 : G3) := by
   apply Units.ext
@@ -23,6 +29,11 @@ theorem conj (a : ℚˣ) (x : 𝔸[ℚ]) : (dg (idl a) 1 1 : G3) * uni x 0 0 =
   fin_cases i <;> fin_cases j <;>
     simp [dg, uni, Matrix.mul_apply, Fin.sum_univ_three, idl]
 
+/- English proof (translation)
+Establish `e : dia (dg a 1 1) * (uni x 0 0 * g) = uni (algebraMap ℚ 𝔸[ℚ] a * x) 0 0 * (dg (idl a) 1 1 * g)`. Rewrite using `[dia_dg, ← mul_assoc, conj, mul_assoc]`. Establish `e2 : algebraMap ℚ 𝔸[ℚ] ((a : ℚ) - 1) * x = algebraMap ℚ 𝔸[ℚ] a * x + -x`. Rewrite using `[map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, hV.psi W hW, e2, add_zero, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pt {V : Submodule ℂ (G3 → ℂ)} (hV : WhA V) {W : G3 → ℂ} (hW : W ∈ V) (a : ℚˣ) (g : G3)
     (x : 𝔸[ℚ]) :
     W (dia (dg a 1 1) * (uni x 0 0 * g)) * (adelicChar ℚ (-x) : ℂ) =

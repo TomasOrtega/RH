@@ -13,6 +13,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PackLoc
 
+/- English proof (translation)
+Introduce `D θ Y V d S S' M₀ MP τ e v₀ v g₀ B c₁ lam q Cb k hB hBJ hBz hk hmco hint hInt hc₁ hlam hCb hb g hg`. Use `set z : Fin V.rank → ℂ := fun i => tauE D τ (zv d i) with hz`. Establish `hBinv : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B ((Matrix.isUnit_iff_isUnit_det B).mp hB)`. Establish `hBinv' : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B ((Matrix.isUnit_iff_isUnit_det B).mp hB)`. Establish `hg' : B * g * B⁻¹ ∈ Formalism.MainNotions.S.UJset (MP.ε τ)`.
+
+Establish `hg0 : gᴴ * gramAt D V τ * g = gramAt D V τ` using `hg`. Use `show (B * g * B⁻¹)ᴴ * Formalism.REAL.Jm (MP.ε τ) * (B * g * B⁻¹) = Formalism.REAL.Jm (MP.ε τ)`. Establish `hBi : (B⁻¹)ᴴ * Bᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hBinv', Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (B⁻¹)ᴴ * (Bᴴ * Formalism.REAL.Jm (MP.ε τ) * B) * B⁻¹ := by rw [hBJ, hg0]`. Use `_ = ((B⁻¹)ᴴ * Bᴴ) * Formalism.REAL.Jm (MP.ε τ) * (B * B⁻¹) := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (MP.ε τ) := by rw [hBi, hBinv']; simp`.
+
+Take `⟨hbI, hbB⟩` from `hb _ hg'`. Use `set F : Matrix (Fin Y.rank) (Fin Y.rank) ℂ → ℂ := fun x => ⟪v, MP.σ τ (B * g * B⁻¹ * GlobalTheory.PackLoc.embOpt e x) v⟫_ℂ with hF`. Establish `hfun : (fun u => GlobalTheory.PackLoc.mco MP τ g₀ v₀ (g * GlobalTheory.PackLoc.embAt θ d τ (GlobalTheory.PackLoc.ptY M₀ τ u))) = fun u => F (GlobalTheory.ConjDS.rv (Formalism.MainNotions.S.umat u))` using `funext (hmco g hg)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`.
+
+Conclude with `(hint F).mpr hbI`. Establish `hcol : B *ᵥ (g *ᵥ z) = fun a => (B * g * B⁻¹) a (e none)`. Use function extensionality and compare the values at `a`. Establish `: (B * g * B⁻¹) *ᵥ (B *ᵥ z) = B *ᵥ (g *ᵥ z)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc (B * g), hBinv, Matrix.mul_one, ← Matrix.mulVec_mulVec]`.
+
+Rewrite using `[← this, hBz]`. Simplify using `[Matrix.mulVec_single]`. Use `set L := eu (B *ᵥ (g *ᵥ z)) with hL`. Establish `hLdef : L = Real.sqrt (∑ a, ‖(B * g * B⁻¹) a (e none)‖ ^ 2)`. Rewrite using `[hL, hcol]`.
+
+Both sides reduce to the same expression. Establish `hI : (∫ u, ‖GlobalTheory.PackLoc.mco MP τ g₀ v₀ (g * GlobalTheory.PackLoc.embAt θ d τ (GlobalTheory.PackLoc.ptY M₀ τ u))‖ ∂(Formalism.REAL.muG (M₀.ε τ))) = lam * ∫ h, ‖F (Formalism.MainNotions.S.umat h)‖ ∂(Formalism.REAL.muG ((GlobalTheory.ConjDS.conjModel M₀).ε τ))`. Use `hInt (fun x => ‖F x‖)` as an intermediate fact. Rewrite `this` using `[smul_eq_mul]`. Rewrite using `[← this]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[hmco g hg u]`. Establish `hL0 : 0 ≤ L` using `Real.sqrt_nonneg _`. Establish `hexp : 2 * V.rank + 5 = 2 * k + 7` using `by omega`.
+
+Establish `hnorm : ‖((lam * c₁ : ℝ) : ℂ)‖ = lam * c₁`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (mul_pos hlam hc₁)]`. Rewrite using `[hI, hnorm, hexp]`. Establish `hInn : 0 ≤ ∫ h, ‖F (Formalism.MainNotions.S.umat h)‖ ∂(Formalism.REAL.muG ((GlobalTheory.ConjDS.conjModel M₀).ε τ))` using `integral_nonneg (fun _ => norm_nonneg _)`. Break down `hL0.lt_or_eq with hLp | hLz` into its components or cases.
+
+Establish `hbB' : ∫ h, ‖F (Formalism.MainNotions.S.umat h)‖ ∂(Formalism.REAL.muG ((GlobalTheory.ConjDS.conjModel M₀).ε τ)) ≤ c₁ * Cb * L ^ (-(2 * (k : ℝ) + 7))` using `by rw [hLdef]; exact hbB`. Establish `hpow : L ^ (-(2 * (k : ℝ) + 7)) * L ^ (2 * k + 7) = 1`. Rewrite using `[Real.rpow_neg hL0, ← Real.rpow_natCast]`. Use `push_cast`. Conclude with `inv_mul_cancel₀ (Real.rpow_pos_of_pos hLp _).ne'`.
+
+Establish `hLn : 0 ≤ L ^ (2 * k + 7)` using `pow_nonneg hL0 _`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_of_nonneg_left hCb (mul_pos hlam hc₁).le`. Use `_ = Real.exp q * (lam * c₁) := by ring`. Rewrite using `[← hLz, zero_pow (by omega), mul_zero]`.
+
+Conclude with `mul_nonneg (Real.exp_pos q).le (mul_pos hlam hc₁).le`.
+-/
 theorem farClause : ∀ (D : D7) (θ : InfFam D) (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (S S' : D.what₂.Tau → SPar) (M₀ : DSModel Y S')
   (MP : DSModel V S) (τ : D.what₂.Tau) (e : Option (Fin Y.rank) ≃ Fin V.rank) (v₀ v : MP.H τ)
   (g₀ B : Matrix (Fin V.rank) (Fin V.rank) ℂ) (c₁ lam q Cb : ℝ) (k : ℕ),

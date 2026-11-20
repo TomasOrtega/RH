@@ -3,6 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.QuadraticExtension
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Two
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `P S b hmono hcov hcard`. Use `choose m hm using hcov`. Establish `key : ∀ T : Finset P, T.card ≤ b`. Introduce `T`. Take `⟨hfN, hbN⟩` from `hcard (T.sup m)`.
+
+Establish `hsub : (↑T : Set P) ⊆ S (T.sup m)`. Introduce `x hx`. Conclude with `hmono (Finset.le_sup (f := m) hx) (hm x)`. Establish `hfin : (S (T.sup m)).Finite` using `Set.toFinite _`. Establish `h1` using `Nat.card_mono hfin hsub`.
+
+Establish `h2 : Nat.card (↑T : Set P) = T.card` using `by simp`. Use linear arithmetic over natural numbers and integers. Establish `hfin : Finite P`. Assume the negation of the conclusion as `hnot`. Rewrite `hnot` using `[not_finite_iff_infinite]`.
+
+Take `⟨T, hT⟩` from `Infinite.exists_subset_card_eq P (b + 1)`. Use `key T` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Use `Fintype.ofFinite P` as an intermediate fact.
+
+Rewrite using `[Nat.card_eq_fintype_card, ← Finset.card_univ]`. Conclude with `key _`.
+-/
 theorem UpperTheory.V.Two.cardUnion :
     ∀ (P : Type) (S : ℕ → Set P) (b : ℕ), Monotone S → (∀ x, ∃ n, x ∈ S n) → (∀ n, CardLe (S n) b) → CardLe P b := by
   intro P S b hmono hcov hcard

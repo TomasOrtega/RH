@@ -24,6 +24,9 @@ namespace UpperTheory.ConvolutionTheory.Loc.NearIdentityCentralizer
 
 open UpperTheory.ConvolutionTheory.Loc.BallG
 
+/- English proof (translation)
+Simplify using `[quotIntegral, h]`.
+-/
 private theorem quot_zero {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) (H : Subgroup G) (ν : Measure H) {F : G → ℂ}
     (h : ∀ g, F g = 0) : quotIntegral μ H ν F = 0 := by
   simp [quotIntegral, h]
@@ -32,14 +35,25 @@ section Alg
 
 variable {k E : Type} [Field k] [Field E] [Algebra k E] {n : ℕ}
 
+/- English proof (translation)
+Introduce `x y h` and use `by ext i j exact (algebraMap k E).injective (congrArg (fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E) i j) h)`.
+-/
 private theorem incl_inj : Function.Injective (incl : GL (Fin n) k → GL (Fin n) E) := fun x y h => by
   ext i j
   exact (algebraMap k E).injective (congrArg (fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E) i j) h)
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `σ.commutes _`.
+-/
 private theorem sigma_incl (σ : E ≃ₐ[k] E) (y : GL (Fin n) k) : sigmaGL σ (incl y : GL (Fin n) E) = incl y := by
   ext i j
   exact σ.commutes _
 
+/- English proof (translation)
+Unfold `normGL`. Proceed by induction on `Module.finrank k E with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[twNorm_succ, ih, pow_succ y, map_mul]`.
+
+Use `congr 1`. Use `clear ih`. Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [pow_succ_apply, sigma_incl, ih]`.
+-/
 private theorem norm_incl (σ : E ≃ₐ[k] E) (y : GL (Fin n) k) :
     normGL σ (incl y : GL (Fin n) E) = incl (y ^ Module.finrank k E) := by
   unfold normGL
@@ -53,24 +67,41 @@ private theorem norm_incl (σ : E ≃ₐ[k] E) (y : GL (Fin n) k) :
     | zero => rfl
     | succ m ih => rw [pow_succ_apply, sigma_incl, ih]
 
+/- English proof (translation)
+Establish `e : ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = (γ : Matrix (Fin n) (Fin n) k).map (algebraMap k E)` using `rfl`. Rewrite using `[e, Matrix.charpoly_map, Polynomial.separable_map]`. Both sides reduce to the same expression.
+-/
 private theorem sep_incl (γ : GL (Fin n) k) :
     ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly.Separable ↔ IsRegSemisimple γ := by
   have e : ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = (γ : Matrix (Fin n) (Fin n) k).map (algebraMap k E) := rfl
   rw [e, Matrix.charpoly_map, Polynomial.separable_map]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+-/
 private theorem sep_conj (x h : GL (Fin n) E) : ((h * x * h⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly =
     (x : Matrix (Fin n) (Fin n) E).charpoly := by
   rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
+/- English proof (translation)
+The claim follows from `Units.ext (UpperTheory.V.Z.Tf.Orb.centComm E n a x y ha (congrArg Units.val hx) (congrArg Units.val hy))`.
+-/
 private theorem comm_of_sep {a x y : GL (Fin n) E} (ha : (a : Matrix (Fin n) (Fin n) E).charpoly.Separable)
     (hx : x * a = a * x) (hy : y * a = a * y) : x * y = y * x :=
   Units.ext (UpperTheory.V.Z.Tf.Orb.centComm E n a x y ha (congrArg Units.val hx) (congrArg Units.val hy))
 
+/- English proof (translation)
+Rewrite using `[← sigmaGL_pow, ← IsGalois.card_aut_eq_finrank, pow_card_eq_one', sigmaGL_one]`.
+-/
 private theorem theta_pow [FiniteDimensional k E] [IsGalois k E] (σ : E ≃ₐ[k] E) :
     (sigmaGL σ : Monoid.End (GL (Fin n) E)) ^ Module.finrank k E = 1 := by
   rw [← sigmaGL_pow, ← IsGalois.card_aut_eq_finrank, pow_card_eq_one', sigmaGL_one]
 
+/- English proof (translation)
+Rewrite using `[mem_twCent, mem_twCent, twConj, map_mul, map_mul, map_inv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mem_twCent_conj {G : Type} [Group G] (θ : Monoid.End G) (δ g x : G) :
     x ∈ twCent θ δ ↔ g⁻¹ * x * g ∈ twCent θ (twConj θ g δ) := by
   rw [mem_twCent, mem_twCent, twConj, map_mul, map_mul, map_inv]
@@ -93,6 +124,9 @@ variable {k E : Type} [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace 
   (hr : r < valuation E (Module.finrank k E : E))
 
 include hr in
+/- English proof (translation)
+Apply `incl_inj (E := E)` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_inv]`. Use `rootConj E n _ r hr _ hu _ hu' _ ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, ← h, map_mul, map_mul, map_inv]`.
+-/
 private theorem root_conj {u u' y : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) ∈ ball n r) (hu' : (incl u' : GL (Fin n) E) ∈ ball n r)
     (h : y⁻¹ * u ^ Module.finrank k E * y = u' ^ Module.finrank k E) : y⁻¹ * u * y = u' := by
   apply incl_inj (E := E)
@@ -101,6 +135,9 @@ private theorem root_conj {u u' y : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) 
   rw [← map_pow, ← map_pow, ← h, map_mul, map_mul, map_inv]
 
 include hgen hr in
+/- English proof (translation)
+Take `⟨hc, -, hb⟩` from `bridge k E σ`. Take `⟨x, hx⟩` from `((hb n).2.2.1 hgen ((incl y)⁻¹ * g * incl y')).mp (rigidNear E n σ _ hc r hr _ hu _ hu' (sigma_incl σ u) (sigma_incl σ u') _ (by show _ * _ * sigmaGL σ _ = _`. Simplify using `only [map_mul, map_inv, sigma_incl] at h ⊢`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨y * x * y'⁻¹, by rw [map_mul, map_mul, map_inv, hx]; group⟩`.
+-/
 private theorem rigid {u u' y y' : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) ∈ ball n r) (hu' : (incl u' : GL (Fin n) E) ∈ ball n r)
     {g : GL (Fin n) E} (h : g⁻¹ * incl (y * u * y⁻¹) * sigmaGL σ g = incl (y' * u' * y'⁻¹)) : ∃ x : GL (Fin n) k, incl x = g := by
   obtain ⟨hc, -, hb⟩ := bridge k E σ
@@ -113,6 +150,15 @@ private theorem rigid {u u' y y' : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) �
   exact ⟨y * x * y'⁻¹, by rw [map_mul, map_mul, map_inv, hx]; group⟩
 
 include hgen hr in
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_twCent, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨x, rfl⟩` from `rigid hgen hr hu hu h`.
+
+Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Rewrite `h` using `[sigma_incl, ← map_inv, ← map_mul, ← map_mul]`. Establish `h1` using `incl_inj h`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff, ← conj_pow]`. Use `(Commute.pow_right ?_ _).eq` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite `hx` using `[Subgroup.mem_centralizer_singleton_iff]`. Establish `h1` using `root_conj hr hu hu (y := y⁻¹ * x * y) (by`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[sigma_incl, ← map_inv, ← map_mul, ← map_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem cent_eq {u : GL (Fin n) k} (hu : (incl u : GL (Fin n) E) ∈ ball n r) (y : GL (Fin n) k) :
     twCent (sigmaGL σ) (incl (y * u * y⁻¹) : GL (Fin n) E) =
       (Subgroup.centralizer {y * u ^ Module.finrank k E * y⁻¹}).map incl := by
@@ -144,6 +190,53 @@ end UpperTheory.ConvolutionTheory.Loc.NearIdentityCentralizer
 
 open UpperTheory.ConvolutionTheory.Loc.NearIdentityCentralizer UpperTheory.ConvolutionTheory.Loc.BallG UpperTheory.V.Z.Tf.Orb in
 
+/- English proof (translation)
+Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n _ _ _ _ μE μk hμE hμk r hr K hK hKo hKc φ hφ f hf hs h2 h1`. Take `⟨hc, -, hb⟩` from `bridge k E σ`. Establish `hj` using `(hb n).2.2.2.1`. Take `⟨_, _, _, -⟩` from `gLTop E n`. Take `⟨_, _, _, -⟩` from `gLTop k n`.
+
+Establish `hθ : Continuous (sigmaGL σ : GL (Fin n) E → GL (Fin n) E)` using `((extCont k E).2.2 n).2 σ`. Establish `mem : ∀ {g : GL (Fin n) E}, g ∈ K ↔ g ∈ ball n r` using `fun {g} => by rw [← hK]; rfl`. Use `⟨fun δ γ h μδ μγ hδ hN hμδ hμγ hmap => ?_, fun γ μγ _ hno _ => ?_⟩` and prove the remaining obligations. Use `swap`. Use `quot_zero _ _ _ fun y => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h0`. Take `⟨u, -, hu⟩` from `h2 _ h0`. Conclude with `hno ⟨incl u, (incl y)⁻¹, by rw [norm_incl, ← hu, map_mul, map_mul, map_inv, inv_inv]⟩`. Establish `hγE : ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly.Separable`. Rewrite using `[← sep_conj _ h, ← hN]`.
+
+Conclude with `hδ`. Establish `hγ : IsRegSemisimple γ` using `(sep_incl γ).mp hγE`. Distinguish the cases in `hex : ∃ u y : GL (Fin n) k, (incl u : GL (Fin n) E) ∈ ball n r ∧ γ = y * u ^ Module.finrank k E * y⁻¹`. Use `swap`. Rewrite using `[twOrbIntegralC, orbIntegralC, quot_zero, quot_zero]`.
+
+Introduce `y`. Assume the negation of the conclusion as `h0`. Take `⟨u, hu, e⟩` from `h2 _ h0`. Conclude with `hex ⟨u, y, mem.1 hu, by rw [← e]; group⟩`. Introduce `g`.
+
+Assume the negation of the conclusion as `h0`. Take `⟨κ, -, u, hu, e⟩` from `hs _ h0`. Use `replace hu := mem.1 hu`. Establish `e1` using `congrArg (twNorm (sigmaGL σ) (Module.finrank k E)) e`. Rewrite `e1` using `[← twConj, twNorm_twConj_of_pow_eq_one _ (theta_pow σ), twNorm_twConj_of_pow_eq_one _ (theta_pow σ), ← normGL, ← normGL, hN, norm_incl]`.
+
+Take `⟨y, hy⟩` from `conjDesc k E n γ (u ^ Module.finrank k E) hγ ⟨κ * g⁻¹ * h, by`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hex ⟨u, y⁻¹, hu, by rw [hy]; group⟩`. Take `⟨u, y, hu, hγu⟩` from `hex`. Establish `hN1 : normGL σ (incl (y * u * y⁻¹) : GL (Fin n) E) = incl γ` using `by rw [norm_incl, conj_pow, hγu]`.
+
+Take `⟨g, hg⟩` from `normInj k E σ hgen n γ hγ δ (incl (y * u * y⁻¹)) ⟨h, hN⟩ ⟨1, by simpa using hN1⟩`. Take `⟨μ', hμ', hmap'⟩` from `haarConj (GL (Fin n) E) _ _ g (mem_twCent_conj (sigmaGL σ) δ g) μδ hμδ`. Rewrite using `[← twOrbConj k E σ n μE hμE δ g μδ μ' hδ hμδ hμ' hmap' φ hφ]`. Establish `hz : h⁻¹ * g * incl γ = incl γ * (h⁻¹ * g)`. Establish `e` using `hN1`.
+
+Rewrite `e` using `[hg, normGL, twNorm_twConj_of_pow_eq_one _ (theta_pow σ), ← normGL, hN]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpt : (fun x : twCent (sigmaGL σ) δ => g⁻¹ * (x : GL (Fin n) E) * g) = fun x : twCent (sigmaGL σ) δ => h⁻¹ * (x : GL (Fin n) E) * h`. Use function extensionality and compare the values at `x`. Establish `e` using `comm_of_sep hγE (Subgroup.mem_centralizer_singleton_iff.mp (conj_twCent_mem_centralizer _ (theta_pow σ) hN x.2)) hz`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `hmap'` using `[hpt, hmap]`. Use `clear hμ' hpt`. Use `revert μ'`. Rewrite using `[← hg]`.
+
+Introduce `μ' hmap'`. Establish `hT : IsClosed (Subgroup.centralizer ({γ} : Set (GL (Fin n) k)) : Set (GL (Fin n) k))`. Establish `e : (Subgroup.centralizer ({γ} : Set (GL (Fin n) k)) : Set (GL (Fin n) k)) = {x | x * γ = γ * x}` using `Set.ext fun x => Subgroup.mem_centralizer_singleton_iff`. Rewrite using `[e]`. Conclude with `isClosed_eq (by fun_prop) (by fun_prop)`.
+
+Establish `hinv` using `(haarComm (GL (Fin n) k) _ hT (fun a ha b hb => comm_of_sep hγ (Subgroup.mem_centralizer_singleton_iff.mp ha) (Subgroup.mem_centralizer_singleton_iff.mp hb)) μγ hμγ).2.1`. Establish `hreg : IsTwRegSemisimple σ (incl (y * u * y⁻¹) : GL (Fin n) E)`. Rewrite using `[IsTwRegSemisimple, hN1]`. Conclude with `hγE`. Take `⟨D, hD, hDs⟩` from `orbProper k E σ hgen n _ hreg _ hφ.2`.
+
+Use `haveI : ValuativeExtension k k := ⟨fun _ _ => Iff.rfl⟩`. Take `⟨a1, a2, a3, -⟩` from `untwist k n μk γ`. Take `⟨D', hD', hDs'⟩` from `orbProper k k 1 a1 n γ (a3 hγ) _ hf.2`. Establish `hKo' : IsOpen ((K.comap (incl : GL (Fin n) k →* GL (Fin n) E) : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k))` using `hKo.preimage hj.continuous`. Establish `hKc' : IsCompact ((K.comap (incl : GL (Fin n) k →* GL (Fin n) E) : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k))` using `hj.isCompact_preimage hKc`.
+
+Rewrite using `[twOrbIntegralC, quotDesc _ _ incl hj μE μk hμE (unimod gLTop E n μE hμE).1 hμk (unimod gLTop k n μk hμk).1 K hKo hKc _ _ μ' μγ hT (by rw [cent_eq hgen hr hu y, ← hγu]) hμγ hinv hmap'.symm (fun g => φ (twConj (sigmaGL σ) g (incl (y * u * y⁻¹)))) (hφ.1.continuous.comp (by unfold t …`. Rewrite `hs` using `[Subgroup.mem_centralizer_singleton_iff]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `(fun g _ => ⟨g, 1, one_mem _, by simp⟩)`.
+
+Use the proof step `⟨D', hD', fun x hx => by`. Take `⟨t, ht, d, hd, e⟩` from `hDs' x (by rw [twConj, a2]; exact subset_tsupport _ hx)`. Use `⟨t, ?_, d, hd, e⟩` and prove the remaining obligations. Rewrite `ht` using `[mem_twCent, a2]`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congr 2`. Use function extensionality and compare the values at `x`. Use `set w := (y⁻¹ * x)⁻¹ * u * (y⁻¹ * x) with hwdef`. Establish `e : ∀ κ, twConj (sigmaGL σ) (incl x * κ) (incl (y * u * y⁻¹)) = κ⁻¹ * incl w * sigmaGL σ κ` using `fun κ => by`.
+
+Simplify using `only [hwdef, twConj, map_mul, map_inv, sigma_incl, mul_inv_rev, inv_inv, mul_assoc]`. Establish `e' : x⁻¹ * γ * x = w ^ Module.finrank k E`. Use `conj_pow (a := (y⁻¹ * x)⁻¹) (b := u) (i := Module.finrank k E)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Rewrite using `[hwdef, this, hγu]`.
+
+Use `group`. Establish `e'' : ∀ κ, ((MonoidHom.id _) x * κ)⁻¹ * γ * ((MonoidHom.id _) x * κ) = κ⁻¹ * w ^ Module.finrank k E * κ` using `fun κ => by`. Rewrite using `[← e', MonoidHom.id_apply]`. Use `group`. Simplify using `only [e, e'']`.
+
+Distinguish the cases in `hw : (incl w : GL (Fin n) E) ∈ K`. Conclude with `(h1 w hw).symm`. Rewrite using `[setIntegral_eq_zero_of_forall_eq_zero, setIntegral_eq_zero_of_forall_eq_zero]`. Introduce `κ hκ`. Assume the negation of the conclusion as `h0`.
+
+Take `⟨u', hu', e2⟩` from `h2 _ h0`. Establish `e3` using `root_conj hr hu (mem.1 hu') (y := y⁻¹ * x * κ) (by rw [← e2, ← e', hγu]; group)`. Establish `e4 : w = κ * u' * κ⁻¹` using `by rw [← e3, hwdef]; group`. Rewrite `hw` using `[e4, map_mul, map_mul, map_inv]`. Conclude with `hw (K.mul_mem (K.mul_mem hκ hu') (K.inv_mem hκ))`.
+
+Introduce `κ hκ`. Assume the negation of the conclusion as `h0`. Take `⟨κ', hκ', u', hu', e2⟩` from `hs _ h0`. Establish `s1 : sigmaGL σ κ ∈ K` using `mem.2 ((sg_mem_ball_iff hc.isom).mpr (mem.1 hκ))`. Establish `s2 : sigmaGL σ κ' ∈ K` using `mem.2 ((sg_mem_ball_iff hc.isom).mpr (mem.1 hκ'))`.
+
+Establish `h5` using `K.mul_mem (K.mul_mem hκ (K.mul_mem (K.mul_mem (K.inv_mem hκ') hu') s2)) (K.inv_mem s1)`. Rewrite `h5` using `[← e2, show κ * (κ⁻¹ * incl w * sigmaGL σ κ) * (sigmaGL σ κ)⁻¹ = incl w by group]`. Conclude with `hw h5`. Introduce `x hx`. Take `⟨κ, hκ, u', hu', e⟩` from `hs _ hx`.
+
+Take `⟨z, hz⟩` from `rigid hgen hr hu (mem.1 hu') (y := y) (y' := 1) (g := x * κ⁻¹) (by`. Rewrite using `[one_mul, inv_one, mul_one, map_mul (sigmaGL σ), map_inv]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨z, κ, hκ, by rw [hz]; group⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.Loc.nearCore :
     ∀ (k E : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
         [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]

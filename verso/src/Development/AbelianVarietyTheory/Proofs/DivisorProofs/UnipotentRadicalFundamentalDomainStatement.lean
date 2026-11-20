@@ -14,6 +14,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB GlobalTheory.ThK.FlagCT GlobalTheory.ThK.FlagPar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdPar.exists_haar_fundamentalDomain_mass_one | exact GlobalTheory.StdPar.exists_haar_fundamentalDomain_mass_one | (intros; apply GlobalTheory.StdPar.exists_haar_fundamentalDomain_mass_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unipotent_radical_fundamental_domain : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E),
       GlobalTheory.SiegelSet.IsWittFrame σ J X Y → ∀ S : Finset (Fin r),

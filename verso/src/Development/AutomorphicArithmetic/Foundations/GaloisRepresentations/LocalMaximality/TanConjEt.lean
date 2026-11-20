@@ -8,6 +8,17 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Establish `bridge : ∀ (W : Y.Opens) (hW : y.1 (IsLocalRing.closedPoint ℂ) ∈ W) (b : Γ(Y, W)), (Scheme.stalkClosedPointTo y.1).hom ((Y.presheaf.germ W _ hW).hom b) = valR y.1 W b`. Introduce `W hW b`. Establish `hh : ⊤ ≤ y.1 ⁻¹ᵁ W` using `(Points.le_preimage_iff y.1 W).mpr hW`. Rewrite using `[valR, dif_pos hh]`. Use `congrArg (fun g => g.hom b) (Scheme.germ_stalkClosedPointTo y.1 W hW)` as an intermediate fact.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite using `[this]`. Simplify using `[Scheme.Hom.appLE]`. Both sides reduce to the same expression. Establish `glue : ∀ (W : Y.Opens) (hW : y.1 (IsLocalRing.closedPoint ℂ) ∈ W) (c : ℂ), (Y.presheaf.germ W _ hW).hom (algebraMap ℂ (Sec s' W) c) = (Y.presheaf.germ ⊤ _ trivial).hom ((secMap s' ⊤).hom c)`.
+
+Introduce `W hW c`. Use `show (Y.presheaf.germ W _ hW).hom ((s'.appLE ⊤ W _).hom _) = (Y.presheaf.germ ⊤ _ trivial).hom ((s'.appLE ⊤ ⊤ _).hom _)`. Rewrite using `[← Scheme.Hom.appLE_map (i := (homOfLE le_top).op), CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply]`. Conclude with `le_top`. Use `letI alg : Algebra ℂ (Y.presheaf.stalk (y.1 (IsLocalRing.closedPoint ℂ))) := ((Y.presheaf.germ ⊤ _ trivial).hom.comp (secMap s' ⊤).hom).toAlgebra`.
+
+Establish `hev : ∀ c : ℂ, (Scheme.stalkClosedPointTo y.1).hom (algebraMap ℂ _ c) = c`. Introduce `c`. Establish `htop : ⊤ ≤ y.1 ⁻¹ᵁ (⊤ : Y.Opens)` using `Points.le_preimage_top y.1`. Conclude with `(bridge ⊤ trivial _).trans (Points.valR_constFn_of_over s' (RingHom.id ℂ) y.1 y.2 ⊤ htop c)`. Use `⟨alg, { toRingHom := (Scheme.stalkClosedPointTo y.1).hom, commutes' := hev }, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `W hW c`. Conclude with `glue W hW c`. Introduce `W hW b`. Conclude with `bridge W hW b`.
+-/
 private theorem exists_stalk {Y : Scheme.{0}} (s' : Y ⟶ Sp ℂ) (y : CxPts s' (RingHom.id ℂ)) :
     ∃ (_ : Algebra ℂ (Y.presheaf.stalk (y.1 (IsLocalRing.closedPoint ℂ))))
       (ev : (Y.presheaf.stalk (y.1 (IsLocalRing.closedPoint ℂ))) →ₐ[ℂ] ℂ),
@@ -50,11 +61,21 @@ end UpperTheory.Gal.productCup_of_system
 
 namespace UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Establish `hs : Function.Surjective ev` using `fun c => ⟨algebraMap ℂ S c, by simp⟩`. Rewrite using `[← IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective ev hs), RingHom.mem_ker]`.
+-/
 private theorem mem_max_iff {S : Type} [CommRing S] [IsLocalRing S] [Algebra ℂ S] (ev : S →ₐ[ℂ] ℂ) (a : S) :
     a ∈ IsLocalRing.maximalIdeal S ↔ ev a = 0 := by
   have hs : Function.Surjective ev := fun c => ⟨algebraMap ℂ S c, by simp⟩
   rw [← IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective ev hs), RingHom.mem_ker]
 
+/- English proof (translation)
+Use `letI : Algebra (Sec s' V) (Y.presheaf.stalk y0) := (Y.presheaf.germ V y0 h).hom.toAlgebra`. Use `haveI : IsScalarTower ℂ (Sec s' V) (Y.presheaf.stalk y0) := IsScalarTower.of_algebraMap_eq (fun c => (halg c).symm)`. Set `p : Ideal (Sec s' V)` to `(hV.primeIdealOf ⟨y0, h⟩).asIdeal`. Use `haveI : p.IsPrime := (hV.primeIdealOf ⟨y0, h⟩).isPrime`. Use `haveI : IsLocalization.AtPrime (Y.presheaf.stalk y0) p := hV.isLocalization_stalk ⟨y0, h⟩`.
+
+Establish `hp : ∀ b : Sec s' V, b ∈ p ↔ ev (algebraMap (Sec s' V) _ b) = 0`. Introduce `b`. Rewrite using `[← mem_max_iff ev, ← IsLocalization.AtPrime.comap_maximalIdeal (Y.presheaf.stalk y0) p]`. Both sides reduce to the same expression. Take `⟨δ, h1, h2, h3⟩` from `UpperTheory.kaehler_functional_vanishing_of_localization_at_prime (B := Sec s' V) (S := Y.presheaf.stalk y0) p ev hp d φ (fun b ω => (hs b ω).trans (by rw [he]; rfl)) (fun ω hω => by`.
+
+Take `⟨m, b, ω', hb, hω⟩` from `hk ω hω`. Conclude with `⟨m, b, ω', fun i => (he (b i)).symm.trans (hb i), hω⟩)`. Conclude with `⟨δ, h1, h2, h3⟩`.
+-/
 private theorem exists_der {Y : Scheme.{0}} (s' : Y ⟶ Sp ℂ) (y0 : Y)
     [Algebra ℂ (Y.presheaf.stalk y0)] (ev : (Y.presheaf.stalk y0) →ₐ[ℂ] ℂ)
     (V : Y.Opens) (hV : IsAffineOpen V) (h : y0 ∈ V)
@@ -90,12 +111,20 @@ private noncomputable def pb {Z Y : Scheme.{0}} (c : Y ⟶ Z) (U : Z.Opens) (y0 
     Γ(Z, U) →+* Y.presheaf.stalk y0 :=
   (Y.presheaf.germ (c ⁻¹ᵁ U) y0 h).hom.comp (c.app U).hom
 
+/- English proof (translation)
+Simplify using `[pb, Scheme.Hom.appLE, TopCat.Presheaf.germ_res_apply]`.
+-/
 private theorem pb_res {Z Y : Scheme.{0}} (c : Y ⟶ Z) {U U0 : Z.Opens} (e0 : U0 ≤ U) {W : Y.Opens}
     (e : W ≤ c ⁻¹ᵁ U) (y0 : Y) (hW : y0 ∈ W) (h : y0 ∈ c ⁻¹ᵁ U0) (f : Γ(Z, U)) :
     pb c U0 y0 h ((Z.presheaf.map (homOfLE e0).op).hom f) =
       (Y.presheaf.germ W y0 hW).hom ((c.appLE U W e).hom f) := by
   simp [pb, Scheme.Hom.appLE, TopCat.Presheaf.germ_res_apply]
 
+/- English proof (translation)
+Establish `key` using `semiHom_appSec hc U`. Unfold `SemiHom at key`. Establish `e1 : appSec s s' c U (algebraMap ℂ (Sec s U) r) = algebraMap ℂ (Sec s' (c ⁻¹ᵁ U)) r`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, key r 1, map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[← halg _ h r, ← e1]`. Both sides reduce to the same expression.
+-/
 private theorem pb_const {Z Y : Scheme.{0}} {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ} (c : Y ⟶ Z) (hc : c ≫ s = s')
     (U : Z.Opens) (y0 : Y) (h : y0 ∈ c ⁻¹ᵁ U) [Algebra ℂ (Y.presheaf.stalk y0)]
     (halg : ∀ (W : Y.Opens) (h : y0 ∈ W) (r : ℂ),
@@ -109,6 +138,11 @@ private theorem pb_const {Z Y : Scheme.{0}} {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp �
   rw [← halg _ h r, ← e1]
   rfl
 
+/- English proof (translation)
+Take `⟨V, hVa, hV, e⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp Y.isBasis_affineOpens h`. Establish `eq : pb c U y0 h = (Y.presheaf.germ V y0 hV).hom.comp (c.appLE U V e).hom`. Use extensionality with `f`. Simplify using `[pb, Scheme.Hom.appLE, TopCat.Presheaf.germ_res_apply]`. Rewrite using `[eq]`.
+
+Apply `RingHom.FormallyEtale.comp` to reduce the goal to its premises. Use `HasRingHomProperty.appLE @Etale c hc ⟨U, hU⟩ ⟨V, hVa⟩ e` as an intermediate fact. Conclude with `this.formallyEtale`. Use `letI := (Y.presheaf.germ V y0 hV).hom.toAlgebra haveI := (show IsAffineOpen V from hVa).isLocalization_stalk ⟨y0, hV⟩`. Conclude with `Algebra.FormallyEtale.of_isLocalization ((show IsAffineOpen V from hVa).primeIdealOf ⟨y0, hV⟩).asIdeal.primeCompl`.
+-/
 private theorem pb_etale {Z Y : Scheme.{0}} (c : Y ⟶ Z) (hc : Etale c) (U : Z.Opens) (hU : IsAffineOpen U)
     (y0 : Y) (h : y0 ∈ c ⁻¹ᵁ U) : (pb c U y0 h).FormallyEtale := by
   obtain ⟨V, hVa, hV, e⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.mp Y.isBasis_affineOpens h
@@ -125,6 +159,25 @@ private theorem pb_etale {Z Y : Scheme.{0}} (c : Y ⟶ Z) (hc : Etale c) (U : Z.
 
 end UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Introduce `Z Y s s' d c1 c2 h1 h2 y hc hcc A A' hA hA'`. Take `⟨inst, ev, halg, hev⟩` from `exists_stalk s' y`. Take `⟨U, V, hV1, hV2, t, hyV, hU, hV, φ, hφs, hφ1, hφ2, hφk⟩` from `hA`. Take `⟨U', V', hV1', hV2', t', hyV', hU', hV', φ', hφs', hφ1', hφ2', hφk'⟩` from `hA'`. Establish `hy0V : y.1 (IsLocalRing.closedPoint ℂ) ∈ V` using `CxPts.mem_ptsIn.mp hyV`.
+
+Establish `hy0V' : y.1 (IsLocalRing.closedPoint ℂ) ∈ V'` using `CxPts.mem_ptsIn.mp hyV'`. Establish `hmU : c1 (y.1 (IsLocalRing.closedPoint ℂ)) ∈ U ⊓ U'` using `⟨hV1 hy0V, hV1' hy0V'⟩`. Take `⟨U0, hU0a, hmem, hle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp Z.isBasis_affineOpens hmU`. Establish `h1' : y.1 (IsLocalRing.closedPoint ℂ) ∈ c1 ⁻¹ᵁ U0` using `hmem`. Establish `hpt : c2 (y.1 (IsLocalRing.closedPoint ℂ)) = c1 (y.1 (IsLocalRing.closedPoint ℂ))`.
+
+Use `congrArg (fun g : Sp ℂ ⟶ Z => g (IsLocalRing.closedPoint ℂ)) hcc` as an intermediate fact. Conclude with `this.symm`. Establish `h2' : y.1 (IsLocalRing.closedPoint ℂ) ∈ c2 ⁻¹ᵁ U0` using `by show c2 (y.1 (IsLocalRing.closedPoint ℂ)) ∈ U0`. Rewrite using `[hpt]`. Conclude with `hmem`.
+
+Use `letI : Algebra (Sec s U0) (Y.presheaf.stalk (y.1 (IsLocalRing.closedPoint ℂ))) := (pb c1 U0 _ h1').toAlgebra`. Use `haveI : Algebra.FormallyEtale (Sec s U0) (Y.presheaf.stalk (y.1 (IsLocalRing.closedPoint ℂ))) := pb_etale c1 hc U0 hU0a _ h1'`. Use `haveI : IsScalarTower ℂ (Sec s U0) (Y.presheaf.stalk (y.1 (IsLocalRing.closedPoint ℂ))) := IsScalarTower.of_algebraMap_eq (fun r => (pb_const c1 h1 U0 _ h1' halg r).symm)`. Set `a2 : Sec s U0 →ₐ[ℂ] Y.presheaf.stalk (y.1 (IsLocalRing.closedPoint ℂ))` to `{ toRingHom := pb c2 U0 _ h2', commutes' := pb_const c2 h2 U0 _ h2' halg }`. Establish `hval : ∀ f : Sec s U0, ev (algebraMap (Sec s U0) _ f) = ev (a2 f)`.
+
+Introduce `f`. Establish `e1 : ev (pb c1 U0 _ h1' f) = valR (y.1 ≫ c1) U0 f` using `(hev _ h1' _).trans (Points.valR_comp y.1 c1 U0 f).symm`. Establish `e2 : ev (pb c2 U0 _ h2' f) = valR (y.1 ≫ c2) U0 f` using `(hev _ h2' _).trans (Points.valR_comp y.1 c2 U0 f).symm`. Use `show ev (pb c1 U0 _ h1' f) = ev (pb c2 U0 _ h2' f)`. Rewrite using `[e1, e2, hcc]`.
+
+Take `⟨δ, hδ1, hδ2, hδ3⟩` from `exists_der s' _ ev V hV hy0V (halg V hy0V) d φ (fun b => CxPts.ev s' (RingHom.id ℂ) V b y) (fun b => (hev V hy0V b).symm) hφs hφk`. Take `⟨δ', hδ1', hδ2', hδ3'⟩` from `exists_der s' _ ev V' hV' hy0V' (halg V' hy0V') d φ' (fun b => CxPts.ev s' (RingHom.id ℂ) V' b y) (fun b => (hev V' hy0V' b).symm) hφs' hφk'`. Establish `e0 : U0 ≤ U` using `hle.trans inf_le_left`. Establish `e0' : U0 ≤ U'` using `hle.trans inf_le_right`. Set `τ : Fin d → Sec s U0` to `fun l => (Z.presheaf.map (homOfLE e0).op).hom (t l)`.
+
+Set `τ' : Fin d → Sec s U0` to `fun l => (Z.presheaf.map (homOfLE e0').op).hom (t' l)`. Use `UpperTheory.derivation_eq_of_formallyEtale_of_evaluation_eq (A := Sec s U0) a2 ev hval d δ δ' hδ1 hδ1' hδ3 hδ3' τ τ' A A' ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `l show δ (pb c1 U0 _ h1' (τ l)) = _`. Rewrite using `[show pb c1 U0 _ h1' (τ l) = _ from pb_res c1 e0 hV1 _ hy0V h1' (t l)]`. Conclude with `(hδ2 _).trans (hφ1 l)`.
+
+Introduce `j show δ (pb c2 U0 _ h2' (τ j)) = _`. Rewrite using `[show pb c2 U0 _ h2' (τ j) = _ from pb_res c2 e0 hV2 _ hy0V h2' (t j)]`. Conclude with `(hδ2 _).trans (hφ2 j)`. Introduce `l show δ' (pb c1 U0 _ h1' (τ' l)) = _`. Rewrite using `[show pb c1 U0 _ h1' (τ' l) = _ from pb_res c1 e0' hV1' _ hy0V' h1' (t' l)]`.
+
+Conclude with `(hδ2' _).trans (hφ1' l)`. Introduce `j show δ' (pb c2 U0 _ h2' (τ' j)) = _`. Rewrite using `[show pb c2 U0 _ h2' (τ' j) = _ from pb_res c2 e0' hV2' _ hy0V' h2' (t' j)]`. Conclude with `(hδ2' _).trans (hφ2' j)`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.tanConj_etale :
     ∀ (Z Y : Scheme.{0}) (s : Z ⟶ Sp ℂ) (s' : Y ⟶ Sp ℂ) (d : ℕ) (c1 c2 : Y ⟶ Z) (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') (y : CxPts s' (RingHom.id ℂ)), Etale c1 → y.1 ≫ c1 = y.1 ≫ c2 → ∀ A A' : Matrix (Fin d) (Fin d) ℂ, IsTan d c1 c2 h1 h2 y A → IsTan d c1 c2 h1 h2 y A' → ∃ P : Matrix (Fin d) (Fin d) ℂ, IsUnit P.det ∧ A' = P * A * P⁻¹ := by
   intro Z Y s s' d c1 c2 h1 h2 y hc hcc A A' hA hA'

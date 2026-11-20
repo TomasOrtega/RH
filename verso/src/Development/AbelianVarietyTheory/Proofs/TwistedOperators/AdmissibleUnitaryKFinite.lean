@@ -19,6 +19,9 @@ namespace GlobalTheory.HCUnitary
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Use extensionality with `g`. Use `⟨fun hg => ⟨hg.2, ?_⟩, fun hg => ⟨mem_UJset_of_mem_Kset hg, hg.1⟩⟩` and prove the remaining obligations. Establish `h1 : g * gᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hg.2`. Establish `h2 : gᴴ * Jm ε * g = Jm ε` using `hg.1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem maxCpt_UJset (ε : Fin n → Bool) : GlobalTheory.LinRed.maxCpt (UJset ε) = Kset ε := by
   ext g
   refine ⟨fun hg => ⟨hg.2, ?_⟩, fun hg => ⟨mem_UJset_of_mem_Kset hg, hg.1⟩⟩
@@ -27,6 +30,9 @@ theorem maxCpt_UJset (ε : Fin n → Bool) : GlobalTheory.LinRed.maxCpt (UJset �
   calc g * Jm ε = g * (gᴴ * Jm ε * g) := by rw [h2]
     _ = Jm ε * g := by rw [Matrix.mul_assoc, ← Matrix.mul_assoc g, h1, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hW : IsIsoFlag ε (fun i : Fin 0 => i.elim0) (fun _ : Fin 1 => (⊥ : Submodule ℂ (Fin n → ℂ)))` using `⟨rfl, monotone_const, fun i => i.elim0, fun x hx y _ => by`. Rewrite using `[(Submodule.mem_bot ℂ).1 hx]`. Use the proof step `simp⟩`. Establish `h` using `(GlobalTheory.T.leviModulusOne_linearReductive_exp_mul_exp n ε 0 _ _ hW (fun i => i.elim0)).1`. Rewrite `h` using `[leviOne_zero hW, mats_top]`. Then use the resulting hypothesis.
+-/
 theorem isLinRed_UJset (ε : Fin n → Bool) : GlobalTheory.LinRed.IsLinRed (UJset ε) := by
   have hW : IsIsoFlag ε (fun i : Fin 0 => i.elim0) (fun _ : Fin 1 => (⊥ : Submodule ℂ (Fin n → ℂ))) :=
     ⟨rfl, monotone_const, fun i => i.elim0, fun x hx y _ => by
@@ -36,10 +42,26 @@ theorem isLinRed_UJset (ε : Fin n → Bool) : GlobalTheory.LinRed.IsLinRed (UJs
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Unfold `GlobalTheory.LinRed.IsKStable IsKStableOn`. Rewrite using `[maxCpt_UJset]`.
+-/
 theorem isKStable_iff {S : Submodule ℂ H} : GlobalTheory.LinRed.IsKStable (UJset ε) π S ↔ IsKStableOn ε π S := by
   unfold GlobalTheory.LinRed.IsKStable IsKStableOn
   rw [maxCpt_UJset]
 
+/- English proof (translation)
+Take `⟨hfin, hst, hirr, ⟨v, hvS, hv0, hv⟩, hdom⟩` from `hS`. Establish `hpre : ∀ S' : Submodule ℂ H, IsKStableOn ε π S' → IsKStableOn ε π (S ⊓ S'.comap T)` using `fun S' h k hk w hw => ⟨hst k hk w hw.1, by`. Establish `: T (π k w) ∈ S'` using `by rw [hT k hk w hw.1]; exact h k hk _ hw.2`. Conclude with `this⟩`. Establish `hbot : IsKStableOn ε π ⊥` using `fun k _ w hw => by`.
+
+Rewrite using `[(Submodule.mem_bot ℂ).1 hw, map_zero]`. Conclude with `Submodule.zero_mem _`. Break down `hirr _ inf_le_left (hpre ⊥ hbot) with h0 | h1` into its components or cases. Use `right`. Establish `hinj : ∀ w ∈ S, T w = 0 → w = 0` using `fun w hw h => by`.
+
+Establish `: w ∈ S ⊓ (⊥ : Submodule ℂ H).comap T` using `⟨hw, h⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Then use the resulting hypothesis. Use `⟨inferInstance, ?_, fun S' hle hS' => ?_, ⟨T v, ⟨v, hvS, rfl⟩, fun h => hv0 (hinj v hvS h), fun θ hθ => ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `k hk _ ⟨w, hw, rfl⟩`. Conclude with `⟨π k w, hst k hk w hw, hT k hk w hw⟩`.
+
+Break down `hirr _ inf_le_left (hpre S' hS') with h | h` into its components or cases. Use `left`. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `hle hx`. Establish `: w ∈ S ⊓ S'.comap T` using `⟨hw, hx⟩`.
+
+Rewrite `this` using `[h, Submodule.mem_bot]`. Rewrite using `[this, map_zero]`. Conclude with `Submodule.zero_mem _`. Conclude with `Or.inr (le_antisymm hle (Submodule.map_le_iff_le_comap.2 (inf_eq_left.1 h)))`. Rewrite using `[← hT _ hθ v hvS, hv θ hθ, map_smul]`.
+
+Introduce and unpack `μ _ ⟨w, hw, rfl⟩ hw0 hwt`. Use `hdom μ w hw (fun h => hw0 (by rw [h, map_zero])) fun θ hθ => ?_` and prove the remaining obligations. Use `sub_eq_zero.1 (hinj _ (S.sub_mem (hst _ hθ w hw) (S.smul_mem _ hw)) ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hT _ hθ w hw, hwt θ hθ, sub_self]`. Conclude with `Or.inl (eq_bot_iff.2 (Submodule.map_le_iff_le_comap.2 (inf_eq_left.1 h1)))`.
+-/
 theorem isKTypeOf_map {Λ : Fin n → ℝ} {S : Submodule ℂ H} (hS : IsKTypeOf ε π Λ S) (T : H →ₗ[ℂ] H)
     (hT : ∀ k ∈ Kset ε, ∀ w ∈ S, T (π k w) = π k (T w)) : S.map T = ⊥ ∨ IsKTypeOf ε π Λ (S.map T) := by
   obtain ⟨hfin, hst, hirr, ⟨v, hvS, hv0, hv⟩, hdom⟩ := hS
@@ -73,6 +95,17 @@ theorem isKTypeOf_map {Λ : Fin n → ℝ} {S : Submodule ℂ H} (hS : IsKTypeOf
       rw [map_sub, map_smul, hT _ hθ w hw, hwt θ hθ, sub_self]
   · exact Or.inl (eq_bot_iff.2 (Submodule.map_le_iff_le_comap.2 (inf_eq_left.1 h1)))
 
+/- English proof (translation)
+Unfold `GlobalTheory.LinRed.IsAdmOn IsAdmRep`. Simplify using `only [isKStable_iff]`. Rewrite using `[maxCpt_UJset]`. Use `and_congr_right fun h1 => and_congr_right fun h2 => and_congr_right fun h3 => ?_` and prove the remaining obligations. Take `⟨hA, hB⟩` from `GlobalTheory.KTypeHighest.ktype_highest_weight n ε H π h1 h2 h3`.
+
+Use `⟨fun h Λ => ?_, fun h S hfin hst hirr => ?_⟩` and prove the remaining obligations. Distinguish the cases in `he : ∃ S₀, IsKTypeOf ε π Λ S₀`. Take `⟨S₀, hS₀⟩` from `he haveI := h S₀ hS₀.1 hS₀.2.1 hS₀.2.2.1`. Use `Submodule.finiteDimensional_of_le (sSup_le_sSup (t := {S' | ∃ T : H →ₗ[ℂ] H, S' = S₀.map T ∧ ∀ k ∈ Kset ε, ∀ w ∈ S₀, T (π k w) = π k (T w)}) fun S hS => ?_)` and prove the remaining obligations. Take `⟨B, hB1, hB2⟩` from `hB Λ S₀ S hS₀ hS.2`.
+
+Conclude with `⟨B, hB2.symm, fun k hk w _ => hB1 k hk w⟩`. Conclude with `Submodule.finiteDimensional_of_le (S₂ := ⊥) (sSup_le fun S hS => absurd ⟨S, hS.2⟩ he)`. Distinguish the cases in `h0 : S = ⊥`. Use `Submodule.finiteDimensional_of_le (S₂ := ⊥) (sSup_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨T, rfl, -⟩`.
+
+Rewrite using `[h0, Submodule.map_bot]`. Take `⟨Λ, hΛ⟩` from `hA S hfin h0 hst hirr haveI := h Λ`. Use `Submodule.finiteDimensional_of_le (S₂ := sSup {S | S ≤ ⊤ ∧ IsKTypeOf ε π Λ S}) (sSup_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨T, rfl, hT⟩`. Break down `isKTypeOf_map hΛ T hT with hb | hk` into its components or cases.
+
+Rewrite using `[hb]`. Conclude with `bot_le`. Conclude with `le_sSup ⟨le_top, hk⟩`.
+-/
 theorem isAdmOn_iff [CompleteSpace H] : GlobalTheory.LinRed.IsAdmOn (UJset ε) π ↔ IsAdmRep ε π := by
   unfold GlobalTheory.LinRed.IsAdmOn IsAdmRep
   simp only [isKStable_iff]
@@ -100,6 +133,9 @@ theorem isAdmOn_iff [CompleteSpace H] : GlobalTheory.LinRed.IsAdmOn (UJset ε) �
       · rw [hb]; exact bot_le
       · exact le_sSup ⟨le_top, hk⟩
 
+/- English proof (translation)
+Use `⟨fun h n ε H _ _ _ σ hU hI => isAdmOn_iff.1 (h n _ (isLinRed_UJset ε) H σ hU hI), fun h n ε H _ _ _ π hπ v w hv => h n _ (isLinRed_UJset ε) H π (isAdmOn_iff.2 hπ) v w ?_⟩` and prove the remaining obligations. Take `⟨S, h1, h2, h3⟩` from `hv`. Conclude with `⟨S, h1, h2, isKStable_iff.2 h3⟩`.
+-/
 theorem admissible_and_analytic : (GlobalTheory.Published.IrreducibleUnitaryAdmissible → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → IsIrredOn (UJset ε) σ → IsAdmRep ε σ) ∧ (GlobalTheory.Published.KFiniteCoefficientsAnalytic → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsAdmRep ε π → ∀ v w : H, IsKFin ε π v → AnalyticOnUJ ε fun g => ⟪w, π g v⟫_ℂ) := by
   refine ⟨fun h n ε H _ _ _ σ hU hI => isAdmOn_iff.1 (h n _ (isLinRed_UJset ε) H σ hU hI),
     fun h n ε H _ _ _ π hπ v w hv => h n _ (isLinRed_UJset ε) H π (isAdmOn_iff.2 hπ) v w ?_⟩

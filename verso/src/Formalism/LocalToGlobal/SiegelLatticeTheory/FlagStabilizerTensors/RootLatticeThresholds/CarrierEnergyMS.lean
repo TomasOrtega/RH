@@ -47,6 +47,25 @@ def TypNorm : Prop :=
   ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D),
     ∏ p : TypX X, ((Ideal.absNorm p.1.asIdeal : ℕ) : ℝ) = ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ^ D.R.f
 
+/- English proof (translation)
+Introduce `hψ hstd hC`. Use `set k := (D.R.rS + 1) * (2 * D.R.rS + 3) with hk`. Establish `hZpos : ∀ v, 0 < ZZX X u u' ψ v` using `fun v => (hC.1 v).2.2.1`. Establish `hU00m : Multipliable (fun v : OrdX X => localVolumeUnit X ψ v.1)` using `hC.2.2.2.1`. Establish `hZm : Multipliable (ZZX X u u' ψ)` using `hC.2.2.2.2.2.1`.
+
+Establish `hloc : ∀ v, localVolumeUnit X ψ v = (dN X v ^ e1 D * nT X v) * ZZX X u u' ψ v`. Introduce `v`. Distinguish the cases in `hv : TypAt X v`. Rewrite using `[hT D X u u' ψ hψ hstd v hv (hZpos v)]`. Simplify using `only [nT, if_pos hv]`.
+
+Rewrite using `[hO D X u u' ψ hψ hstd v hv]`. Simplify using `only [nT, if_neg hv, mul_one]`. Take `⟨hDf, hDp⟩` from `hD D X`. Use `set s : Set (PlX X) := ↑(Formalism.L2.SG.TypedSets.typSet X.B.I.F (D.host.g 0) (D.host.g 1)) with hs`. Establish `hnTs : Function.mulSupport (nT X) ⊆ s`.
+
+Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (by unfold nT; exact if_neg (show ¬ TypAt X v from h))`. Establish `hnTf : HasFiniteMulSupport (nT X)` using `(Finset.finite_toSet _).subset hnTs`. Establish `hAf : HasFiniteMulSupport (fun v => dN X v ^ e1 D * nT X v)` using `(hDf.pow _).mul hnTf`.
+
+Establish `h1 : (∏' v : OrdX X, localVolumeUnit X ψ v.1) * ∏ p : TypX X, localVolumeUnit X ψ p.1 = ∏' v, localVolumeUnit X ψ v`. Establish `hsm : Multipliable ((localVolumeUnit X ψ) ∘ ((↑) : s → PlX X))` using `Multipliable.of_finite`. Establish `hscm : Multipliable ((localVolumeUnit X ψ) ∘ ((↑) : ↑sᶜ → PlX X))` using `hU00m`. Rewrite using `[← Multipliable.tprod_mul_tprod_compl hsm hscm, mul_comm]`. Use `congr 1`.
+
+Rewrite using `[tprod_fintype]`. Both sides reduce to the same expression. Establish `h2 : ∏' v, localVolumeUnit X ψ v = (∏ᶠ v, (dN X v ^ e1 D * nT X v)) * ∏' v, ZZX X u u' ψ v`. Rewrite using `[tprod_congr hloc, Multipliable.tprod_mul (multipliable_of_hasFiniteMulSupport hAf) hZm, tprod_eq_finprod hAf]`. Establish `h3 : (∏ᶠ v, (dN X v ^ e1 D * nT X v)) = D.host.rdE ^ (D.R.f * e1 D) * ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ^ (D.R.f * k)`.
+
+Establish `hDpow : HasFiniteMulSupport (fun v => dN X v ^ e1 D)` using `hDf.pow _`. Rewrite using `[finprod_mul_distrib hDpow hnTf, ← finprod_pow hDf, hDp, hR D X, ← pow_mul]`. Use `congr 1`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (nT X) hnTs, pow_mul, ← hN D X, ← Finset.prod_pow]`. Rewrite using `[← Finset.prod_coe_sort]`.
+
+Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Unfold `nT`. Conclude with `if_pos (show TypAt X p.1 from p.2)`. Unfold `LemmaMS`. Use `show (∏' v : OrdX X, localVolumeUnit X ψ v.1) * ∏ p : TypX X, localVolumeUnit X ψ p.1 = _ * (∏' v : PlX X, ZZX X u u' ψ v)`.
+
+Rewrite using `[h1, h2, h3]`.
+-/
 theorem lemmaMSStd_of (hO : MSOrd) (hT : MSTyp) (hD : DiffProd) (hR : DiscRd) (hN : TypNorm)
     {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word)
     (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) : LemmaMSStd X u u' ψ := by

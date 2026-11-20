@@ -10,6 +10,19 @@ open ReciprocityTheory.AnForm.A
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ θ : ℝ, z + circleMap a s θ • w = (z + a • w) + circleMap 0 1 θ • ((s : ℂ) • w)`. Introduce `θ`. Use extensionality with `i`. Simplify using `only [circleMap, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.ofReal_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hU : ∀ ζ : ℂ, ‖ζ‖ ≤ 1 → (z + a • w) + ζ • ((s : ℂ) • w) ∈ V`. Introduce `ζ hζ`. Establish `hn : ‖(s : ℂ) * ζ‖ ≤ s`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hs.le]`. Use polynomial arithmetic with `[norm_nonneg ζ]`.
+
+Establish `h1 : a + (s : ℂ) * ζ ∈ closedBall a s`. Rewrite using `[mem_closedBall, dist_eq_norm]`. Simplify using `using hn`. Establish `h2` using `hV _ h1`. Establish `e : z + (a + (s : ℂ) * ζ) • w = (z + a • w) + ζ • ((s : ℂ) • w)`.
+
+Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e]`. Conclude with `h2`.
+
+Take `⟨hi, hle⟩` from `h.2 (z + a • w) ((s : ℂ) • w) hU`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `CircleIntegrable at hi ⊢`. Simplify `hi` using `only [key]`. Unfold `Real.circleAverage at hle ⊢`.
+
+Simplify `hle` using `only [key]`.
+-/
 theorem psh_line {V : Set (Fin D → ℂ)} {φ : (Fin D → ℂ) → ℝ} (h : IsPsh V φ)
     (z w : Fin D → ℂ) {a : ℂ} {s : ℝ} (hs : 0 < s)
     (hV : ∀ ζ ∈ closedBall a s, z + ζ • w ∈ V) :
@@ -44,11 +57,25 @@ theorem psh_line {V : Set (Fin D → ℂ)} {φ : (Fin D → ℂ) → ℝ} (h : I
 
 noncomputable def ej (j : Fin D) : Fin D → ℂ := Pi.single j 1
 
+/- English proof (translation)
+Simplify using `only [ej, Pi.add_apply, Pi.smul_apply, Pi.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem line_coord (x : Fin D → ℂ) (j i : Fin D) (ζ : ℂ) :
     (x + ζ • ej j) i = x i + if i = j then ζ else 0 := by
   simp only [ej, Pi.add_apply, Pi.smul_apply, Pi.single_apply, smul_eq_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hc0 : 0 < |C| + 1` using `by positivity`. Establish `hK0 : 0 < 2 * (|C| + 1) / ε` using `by positivity`. Take `⟨A, hA⟩ : ∃ A : ℝ, A = ε / 2 * (exp 1 + a0) + (|C| + 1) * (log (2 * (|C| + 1) / ε) - 1)` from `⟨_, rfl⟩`. Use `⟨2 * (A - T) / ε + 1, fun y hy hy0 => ?_⟩` and prove the remaining obligations. Establish `he : (2 : ℝ) ≤ exp 1`.
+
+Use `Real.add_one_le_exp (1 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx : 0 < exp 1 + a0 + y` using `by linarith`. Establish `hlog0 : 0 ≤ log (exp 1 + a0 + y)` using `Real.log_nonneg (by linarith)`. Establish `h1 : log ((exp 1 + a0 + y) / (2 * (|C| + 1) / ε)) ≤ (exp 1 + a0 + y) / (2 * (|C| + 1) / ε) - 1` using `Real.log_le_sub_one_of_pos (by positivity)`.
+
+Rewrite `h1` using `[Real.log_div hx.ne' hK0.ne']`. Establish `h2 : C * log (exp 1 + a0 + y) ≤ (|C| + 1) * log (exp 1 + a0 + y)`. Apply `mul_le_mul_of_nonneg_right _ hlog0` to reduce the goal to its premises. Use `le_abs_self C` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h3` using `mul_le_mul_of_nonneg_left (show log (exp 1 + a0 + y) ≤ (exp 1 + a0 + y) / (2 * (|C| + 1) / ε) + (log (2 * (|C| + 1) / ε) - 1) by linarith) hc0.le`. Establish `h3'` using `mul_add (|C| + 1) ((exp 1 + a0 + y) / (2 * (|C| + 1) / ε)) (log (2 * (|C| + 1) / ε) - 1)`. Establish `h4 : (|C| + 1) * ((exp 1 + a0 + y) / (2 * (|C| + 1) / ε)) = ε / 2 * (exp 1 + a0 + y)`. Clear the denominators using the available nonvanishing facts. Establish `h5 : ε * (2 * (A - T) / ε + 1) = 2 * (A - T) + ε`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h6` using `mul_le_mul_of_nonneg_left hy hε.le`. Use polynomial arithmetic with `[h2, h3, h3', h4, h5, h6, hA]`.
+-/
 theorem loglog_bound (C a0 ε T : ℝ) (hε : 0 < ε) (ha0 : 0 ≤ a0) :
     ∃ Y : ℝ, ∀ y, Y ≤ y → 0 ≤ y → C * log (exp 1 + a0 + y) - ε * y < T := by
   have hc0 : 0 < |C| + 1 := by positivity
@@ -82,6 +109,41 @@ section partA
 
 variable {U : Set (Fin D → ℂ)} {S : Finset (Fin D)} {u : (Fin D → ℂ) → ℝ} {C : ℝ}
 
+/- English proof (translation)
+Establish `hxi : ∀ i ∈ S, x i ≠ 0` using `fun i hi h0 => hxA ⟨i, hi, h0⟩`. Establish `hgood : ∀ ζ ∈ closedBall (0 : ℂ) r, ζ ≠ -x j → x + ζ • ej j ∈ U \ coordDiv S`. Introduce `ζ hζ hne`. Use `⟨hdisc ζ hζ, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i, hi, h0⟩`.
+
+Rewrite `h0` using `[line_coord]`. Use `split_ifs at h0 with hij`. Substitute `hij` using the available equality. Conclude with `hne (by linear_combination h0)`. Rewrite `h0` using `[add_zero]`.
+
+Conclude with `hxi i hi h0`. Establish `hx1 : ∀ i, ‖x i‖ < 1`. Establish `h0` using `hU1 (hdisc 0 (Metric.mem_closedBall_self hr.le))`. Rewrite `h0` using `[zero_smul, add_zero, mem_ball, dist_zero_right]`. Introduce `i`.
+
+Conclude with `lt_of_le_of_lt (norm_le_pi_norm x i) h0`. Take `⟨a0, ha0def⟩ : ∃ a0 : ℝ, a0 = ∑ i ∈ S.erase j, log ‖x i‖⁻¹` from `⟨_, rfl⟩`. Establish `ha0 : 0 ≤ a0`. Rewrite using `[ha0def]`. Use `Finset.sum_nonneg (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Real.log_inv]`. Conclude with `neg_nonneg.2 (Real.log_nonpos (norm_nonneg _) (hx1 i).le)`. Establish `hcont : ContinuousOn (fun ζ : ℂ => u (x + ζ • ej j)) (closedBall 0 r \ ↑({-x j} : Finset ℂ))`. Establish `hmaps : Set.MapsTo (fun ζ : ℂ => x + ζ • ej j) (closedBall 0 r \ ↑({-x j} : Finset ℂ)) (U \ coordDiv S)`. Introduce `ζ hζ`.
+
+Conclude with `hgood ζ hζ.1 (fun h => hζ.2 (by simp [h]))`. Establish `hcf : Continuous (fun ζ : ℂ => x + ζ • ej j)` using `continuous_const.add (continuous_id.smul continuous_const)`. Conclude with `ContinuousOn.comp (g := u) (f := fun ζ : ℂ => x + ζ • ej j) hc hcf.continuousOn hmaps`. Establish `hgrow : ∀ ε > 0, ∀ T : ℝ, ∃ η > 0, ∀ e ∈ ({-x j} : Finset ℂ), ∀ ζ ∈ closedBall (0 : ℂ) r \ ↑({-x j} : Finset ℂ), dist ζ e < η → u (x + ζ • ej j) + ε * log ‖ζ - e‖ < T`. Introduce `ε hε T`.
+
+Take `⟨Y, hY⟩` from `loglog_bound C a0 ε T hε ha0`. Use `⟨exp (-(max Y 0 + 1)), exp_pos _, ?_⟩` and prove the remaining obligations. Introduce `e he ζ hζ hdist`. Rewrite `he` using `[Finset.mem_singleton]`. Substitute `he` using the available equality.
+
+Establish `hne : ζ ≠ -x j` using `fun h => hζ.2 (by simp [h])`. Establish `hpos : 0 < ‖ζ - -x j‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne)`. Rewrite `hdist` using `[dist_eq_norm]`. Take `⟨y, hy⟩ : ∃ y : ℝ, y = log ‖ζ - -x j‖⁻¹` from `⟨_, rfl⟩`. Establish `hylog : log ‖ζ - -x j‖ = -y` using `by rw [hy, Real.log_inv, neg_neg]`.
+
+Establish `hyY : max Y 0 + 1 ≤ y`. Establish `h1` using `Real.log_lt_log hpos hdist`. Rewrite `h1` using `[Real.log_exp]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ i ∈ S, log ‖(x + ζ • ej j) i‖⁻¹ = y + a0`.
+
+Rewrite using `[← Finset.add_sum_erase S _ hj]`. Use `congr 1`. Rewrite using `[line_coord, if_pos rfl, hy, sub_neg_eq_add, add_comm]`. Rewrite using `[ha0def]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `i hi`. Rewrite using `[line_coord, if_neg (Finset.ne_of_mem_erase hi), add_zero]`. Establish `hgz` using `hg _ (hgood ζ hζ.1 hne)`. Rewrite `hgz` using `[hsum]`. Establish `h1` using `hY y (by linarith [le_max_left Y 0]) (by linarith [le_max_right Y 0])`.
+
+Establish `h2 : exp 1 + (y + a0) = exp 1 + a0 + y` using `by ring`. Rewrite `hgz` using `[h2]`. Rewrite using `[hylog]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : ∀ a s, 0 < s → closedBall a s ⊆ ball (0 : ℂ) r \ ↑({-x j} : Finset ℂ) → u (x + a • ej j) ≤ circleAverage (fun ζ => u (x + ζ • ej j)) a s`.
+
+Introduce `a s hs hs2`. Use `(psh_line hpsh x (ej j) hs (fun ζ hζ => ?_)).2` and prove the remaining obligations. Establish `h1` using `hs2 hζ`. Conclude with `hgood ζ (ball_subset_closedBall h1.1) (fun h => h1.2 (by simp [h]))`. Establish `hF0 : (0 : ℂ) ∉ ({-x j} : Finset ℂ)`.
+
+Rewrite using `[Finset.mem_singleton]`. Introduce `h`. Conclude with `hxi j hj (by linear_combination h)`. Establish `hFr : ∀ f ∈ ({-x j} : Finset ℂ), f ∈ ball (0 : ℂ) r`. Introduce `f hf`.
+
+Rewrite `hf` using `[Finset.mem_singleton]`. Substitute `hf` using the available equality. Rewrite using `[mem_ball, dist_zero_right, norm_neg]`. Conclude with `hxj`. Establish `hmean` using `smg2 hr hF0 hFr hcont hgrow hsub`.
+
+Establish `hcs : ContinuousOn (fun ζ : ℂ => u (x + ζ • ej j)) (sphere 0 r)`. Use `hcont.mono (fun ζ hζ => ⟨sphere_subset_closedBall hζ, fun h => ?_⟩)` and prove the remaining obligations. Establish `h1 : ζ = -x j` using `by simpa using h`. Rewrite `hζ` using `[mem_sphere, dist_zero_right, h1, norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨ζ, hζ, hle⟩` from `exists_sphere_ge hr hcs hmean`. Conclude with `⟨ζ, hζ, by simpa only [zero_smul, add_zero] using hle⟩`.
+-/
 theorem slice_step (hU1 : U ⊆ ball 0 1) (hc : ContinuousOn u (U \ coordDiv S))
     (hpsh : IsPsh (U \ coordDiv S) u)
     (hg : ∀ z ∈ U \ coordDiv S, u z ≤ C * log (exp 1 + ∑ i ∈ S, log ‖z i‖⁻¹))
@@ -185,6 +247,51 @@ open ReciprocityTheory.AnForm.A
 
 variable {D : ℕ} {U : Set (Fin D → ℂ)} {S : Finset (Fin D)} {u : (Fin D → ℂ) → ℝ} {C : ℝ}
 
+/- English proof (translation)
+Take `⟨R, hR0, hRU⟩` from `Metric.isOpen_iff.1 hU p hp`. Establish `e0 : ∀ᶠ r in 𝓝[>] (0 : ℝ), 0 < r` using `self_mem_nhdsWithin`. Establish `e1 : ∀ᶠ r in 𝓝[>] (0 : ℝ), r < R / 2` using `nhdsWithin_le_nhds (eventually_lt_nhds (half_pos hR0))`. Establish `e2 : ∀ᶠ r in 𝓝[>] (0 : ℝ), ∀ i ∈ S, p i ≠ 0 → r < ‖p i‖ / 4`. Rewrite using `[Filter.eventually_all_finset]`.
+
+Introduce `i _`. Distinguish the cases in `h0 : p i = 0`. Conclude with `Filter.Eventually.of_forall (fun _ h => absurd h0 h)`. Establish `h4 : ∀ᶠ r in 𝓝[>] (0 : ℝ), r < ‖p i‖ / 4` using `nhdsWithin_le_nhds (eventually_lt_nhds (div_pos (norm_pos_iff.2 h0) (by norm_num : (0 : ℝ) < 4)))`. Conclude with `h4.mono (fun _ h _ => h)`.
+
+Take `⟨r, hr0, hrR, hrp⟩` from `(e0.and (e1.and e2)).exists`. Use `set L : Set (Fin D → ℂ) := closedBall p (3 * r / 2) ∩ ⋂ i ∈ S, {y | r / 2 ≤ ‖y i‖} with hL`. Establish `hLc : IsCompact L` using `(isCompact_closedBall p _).inter_right (isClosed_biInter fun i _ => isClosed_le continuous_const (continuous_apply i).norm)`. Establish `hLsub : L ⊆ U \ coordDiv S`. Introduce `y hy`.
+
+Use `⟨hRU ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hy.1`. Rewrite `h1` using `[mem_closedBall]`. Rewrite using `[mem_ball]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce and unpack `⟨i, hi, hyi⟩`. Establish `h1` using `Set.mem_iInter₂.1 hy.2 i hi`. Simplify using `only [Set.mem_setOf_eq, hyi, norm_zero] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨Mb, hMb⟩` from `hLc.bddAbove_image (hc.mono hLsub)`.
+
+Use `⟨r / 2, half_pos hr0, Mb, ?_⟩` and prove the remaining obligations. Establish `key : ∀ F : Finset (Fin D), (∀ i ∈ F, i ∈ S ∧ p i = 0) → ∀ x : Fin D → ℂ, x ∉ coordDiv S → (∀ i, dist (x i) (p i) < 3 * r / 2) → (∀ i ∈ S, p i = 0 → i ∉ F → r / 2 < ‖x i‖) → (∀ i ∈ F, ‖x i‖ < r / 2) → ∃ y ∈ L, u x ≤ u y`. Introduce `F`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty`.
+
+Introduce `_ x _ hxd hxm _`. Use `⟨x, ⟨?_, ?_⟩, le_rfl⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall, dist_pi_le_iff (by linarith)]`. Conclude with `fun i => (hxd i).le`. Use `Set.mem_iInter₂.2 fun i hi => ?_ show r / 2 ≤ ‖x i‖` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : p i = 0`. Conclude with `(hxm i hi h0 (by simp)).le`. Establish `h1` using `hrp i hi h0`. Establish `h2` using `hxd i`. Rewrite `h2` using `[dist_eq_norm]`.
+
+Establish `h3` using `norm_sub_norm_le (p i) (x i)`. Rewrite `h3` using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `@insert j F hjF ih`. Introduce `hF x hxS hxd hxm hxF`.
+
+Establish `hj` using `hF j (Finset.mem_insert_self j F)`. Establish `hxj : ‖x j‖ < r / 2` using `hxF j (Finset.mem_insert_self j F)`. Establish `hdisc : ∀ ζ ∈ closedBall (0 : ℂ) r, x + ζ • ej j ∈ U`. Introduce `ζ hζ`. Rewrite `hζ` using `[mem_closedBall, dist_zero_right]`.
+
+Apply `hRU` to reduce the goal to its premises. Rewrite using `[mem_ball, dist_pi_lt_iff hR0]`. Introduce `i`. Rewrite using `[line_coord, dist_eq_norm]`. Use `split_ifs with hij`.
+
+Substitute `hij` using the available equality. Rewrite using `[hj.2, sub_zero]`. Conclude with `lt_of_le_of_lt (norm_add_le _ _) (by linarith)`. Rewrite using `[add_zero, ← dist_eq_norm]`. Combine the linear relations using `[hxd i]`.
+
+Take `⟨ζ, hζ, hle⟩` from `slice_step hU1 hc hpsh hg hj.1 hr0 hxS (by linarith) hdisc`. Rewrite `hζ` using `[mem_sphere, dist_zero_right]`. Establish `hnew : r / 2 < ‖x j + ζ‖`. Establish `h1` using `norm_sub_norm_le ζ (-(x j))`. Rewrite `h1` using `[norm_neg, sub_neg_eq_add, add_comm]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS' : x + ζ • ej j ∉ coordDiv S`. Introduce and unpack `⟨i, hi, h0⟩`. Rewrite `h0` using `[line_coord]`. Use `split_ifs at h0 with hij`.
+
+Substitute `hij` using the available equality. Rewrite `hnew` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h0` using `[add_zero]`. Conclude with `hxS ⟨i, hi, h0⟩`.
+
+Establish `hd' : ∀ i, dist ((x + ζ • ej j) i) (p i) < 3 * r / 2`. Introduce `i`. Rewrite using `[line_coord]`. Use `split_ifs with hij`. Substitute `hij` using the available equality.
+
+Rewrite using `[hj.2, dist_zero_right]`. Conclude with `lt_of_le_of_lt (norm_add_le _ _) (by linarith)`. Rewrite using `[add_zero]`. Conclude with `hxd i`. Establish `hm' : ∀ i ∈ S, p i = 0 → i ∉ F → r / 2 < ‖(x + ζ • ej j) i‖`.
+
+Introduce `i hi h0 hiF`. Rewrite using `[line_coord]`. Use `split_ifs with hij`. Substitute `hij` using the available equality. Conclude with `hnew`.
+
+Rewrite using `[add_zero]`. Conclude with `hxm i hi h0 (by simp [hij, hiF])`. Establish `hF' : ∀ i ∈ F, ‖(x + ζ • ej j) i‖ < r / 2`. Introduce `i hi`. Establish `hij : i ≠ j` using `fun h => hjF (h ▸ hi)`.
+
+Rewrite using `[line_coord, if_neg hij, add_zero]`. Conclude with `hxF i (Finset.mem_insert_of_mem hi)`. Take `⟨y, hyL, hy⟩` from `ih (fun i hi => hF i (Finset.mem_insert_of_mem hi)) (x + ζ • ej j) hS' hd' hm' hF'`. Conclude with `⟨y, hyL, hle.trans hy⟩`. Introduce `z ⟨hzb, hzS⟩`.
+
+Rewrite `hzb` using `[mem_ball, dist_pi_lt_iff (half_pos hr0)]`. Establish `hd : ∀ i, dist (z i) (p i) < 3 * r / 2` using `fun i => by linarith [hzb i]`. Establish `hm : ∀ i ∈ S, p i = 0 → i ∉ S.filter (fun i => p i = 0) → r / 2 < ‖z i‖` using `fun i hi h0 hiT => absurd (Finset.mem_filter.2 ⟨hi, h0⟩) hiT`. Establish `hF : ∀ i ∈ S.filter (fun i => p i = 0), ‖z i‖ < r / 2`. Introduce `i hi`.
+
+Establish `h1` using `hzb i`. Rewrite `h1` using `[(Finset.mem_filter.1 hi).2, dist_zero_right]`. Conclude with `h1`. Take `⟨y, hyL, hy⟩` from `key (S.filter (fun i => p i = 0)) (fun i hi => Finset.mem_filter.1 hi) z hzS hd hm hF`. Conclude with `hy.trans (hMb ⟨y, hyL, rfl⟩)`.
+-/
 theorem local_bound (hU : IsOpen U) (hU1 : U ⊆ ball 0 1) (hc : ContinuousOn u (U \ coordDiv S))
     (hpsh : IsPsh (U \ coordDiv S) u)
     (hg : ∀ z ∈ U \ coordDiv S, u z ≤ C * log (exp 1 + ∑ i ∈ S, log ‖z i‖⁻¹))
@@ -309,6 +416,11 @@ theorem local_bound (hU : IsOpen U) (hU1 : U ⊆ ball 0 1) (hc : ContinuousOn u 
   obtain ⟨y, hyL, hy⟩ := key (S.filter (fun i => p i = 0)) (fun i hi => Finset.mem_filter.1 hi) z hzS hd hm hF
   exact hy.trans (hMb ⟨y, hyL, rfl⟩)
 
+/- English proof (translation)
+Introduce `K hK hKU`. Use `choose! ρ hρ M hM using fun p (hp : p ∈ U) => local_bound hU hU1 hc hpsh hg hp`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun p : K => ball (p : Fin D → ℂ) (ρ p)) (fun _ => isOpen_ball) (fun z hz => Set.mem_iUnion.2 ⟨⟨z, hz⟩, mem_ball_self (hρ z (hKU hz))⟩)`. Use `⟨∑ p ∈ t, |M p|, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨hzK, hzS⟩, rfl⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨p, hpt, hzp⟩ : ∃ p ∈ t, z ∈ ball (p : Fin D → ℂ) (ρ p) := by`. Simplify `ht hzK` using `only [Set.mem_iUnion, exists_prop]`. Establish `h1` using `hM p (hKU p.2) z ⟨hzp, hzS⟩`. Establish `h2 : |M p| ≤ ∑ q ∈ t, |M q|` using `Finset.single_le_sum (f := fun q : K => |M (q : Fin D → ℂ)|) (fun q _ => abs_nonneg _) hpt`. Conclude with `h1.trans ((le_abs_self _).trans h2)`.
+-/
 theorem part_a (hU : IsOpen U) (hU1 : U ⊆ ball 0 1) (hc : ContinuousOn u (U \ coordDiv S))
     (hpsh : IsPsh (U \ coordDiv S) u)
     (hg : ∀ z ∈ U \ coordDiv S, u z ≤ C * log (exp 1 + ∑ i ∈ S, log ‖z i‖⁻¹)) :
@@ -329,6 +441,9 @@ theorem part_a (hU : IsOpen U) (hU1 : U ⊆ ball 0 1) (hc : ContinuousOn u (U \ 
 end
 
 section
+/- English proof (translation)
+Use `(intervalIntegrable_const (c := B)).mono_fun hf.aestronglyMeasurable ?_` and prove the remaining obligations. Conclude with `ae_of_all _ (fun θ => by`. Simplify using `only [Real.norm_eq_abs]`. Conclude with `(hB θ).trans (le_abs_self B))`.
+-/
 theorem ii_of_bdd {f : ℝ → ℝ} (hf : Measurable f) (B : ℝ) (hB : ∀ θ, |f θ| ≤ B) (a b : ℝ) :
     IntervalIntegrable f volume a b := by
   refine (intervalIntegrable_const (c := B)).mono_fun hf.aestronglyMeasurable ?_
@@ -336,6 +451,25 @@ theorem ii_of_bdd {f : ℝ → ℝ} (hf : Measurable f) (B : ℝ) (hB : ∀ θ, 
     simp only [Real.norm_eq_abs]
     exact (hB θ).trans (le_abs_self B))
 
+/- English proof (translation)
+Establish `usc_comp : ∀ Q : ℝ → E, Continuous Q → (∀ θ, Q θ ∈ K) → UpperSemicontinuous (fun θ => ψ (Q θ))`. Introduce `Q hQ hQK θ y hy`. Establish `h1 : Tendsto Q (𝓝 θ) (𝓝[U] (Q θ))` using `tendsto_nhdsWithin_iff.2 ⟨hQ.tendsto θ, Filter.Eventually.of_forall (fun θ' => hKU (hQK θ'))⟩`. Conclude with `h1.eventually (hψ (Q θ) (hKU (hQK θ)) y hy)`. Establish `bnd : ∀ y ∈ K, |ψ y| ≤ |m| + |M|`.
+
+Introduce `y hy`. Rewrite using `[abs_le]`. Establish `h1` using `hm y hy`. Establish `h2` using `hM y hy`. Establish `h3` using `neg_abs_le m`.
+
+Establish `h4` using `le_abs_self M`. Establish `h5` using `abs_nonneg m`. Establish `h6` using `abs_nonneg M`. Apply the tactic sequence `constructor <;> linarith`. Establish `meas0 : Measurable (fun θ => ψ (P0 θ))` using `(usc_comp P0 hP0c hP0K).measurable`.
+
+Establish `bndG : ∀ x, (∀ θ, P x θ ∈ K) → ∀ θ, |max (ψ (P x θ)) (ψ (P0 θ))| ≤ |m| + |M|`. Introduce `x hxK θ`. Rewrite using `[abs_le]`. Establish `h1` using `abs_le.1 (bnd _ (hxK θ))`. Establish `h2` using `abs_le.1 (bnd _ (hP0K θ))`.
+
+Conclude with `⟨le_trans h1.1 (le_max_left _ _), max_le h1.2 h2.2⟩`. Establish `hlimG : ∀ θ, Tendsto (fun x => max (ψ (P x θ)) (ψ (P0 θ))) l (𝓝 (ψ (P0 θ)))`. Introduce `θ`. Rewrite using `[tendsto_order]`. Use `⟨fun a ha => Filter.Eventually.of_forall (fun x => lt_of_lt_of_le ha (le_max_right _ _)), fun b hb => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Tendsto (fun x => P x θ) l (𝓝[U] (P0 θ))` using `tendsto_nhdsWithin_iff.2 ⟨hlim θ, hPK.mono (fun x hx => hKU (hx θ))⟩`. Use `filter_upwards [h1.eventually (hψ (P0 θ) (hKU (hP0K θ)) b hb)] with x hx`. Conclude with `max_lt hx hb`. Establish `hT : Tendsto (fun x => ∫ θ in (0 : ℝ)..2 * π, max (ψ (P x θ)) (ψ (P0 θ))) l (𝓝 (∫ θ in (0 : ℝ)..2 * π, ψ (P0 θ)))`. Apply `intervalIntegral.tendsto_integral_filter_of_dominated_convergence (fun _ => |m| + |M|)` to reduce the goal to its premises.
+
+Use `filter_upwards [hPc, hPK] with x hx hxK`. Conclude with `((usc_comp (P x) hx hxK).measurable.max meas0).aestronglyMeasurable`. Use `filter_upwards [hPK] with x hxK`. Conclude with `Filter.Eventually.of_forall (fun θ _ => by`. Rewrite using `[Real.norm_eq_abs]`.
+
+Conclude with `bndG x hxK θ)`. Conclude with `intervalIntegrable_const`. Conclude with `Filter.Eventually.of_forall (fun θ _ => hlimG θ)`. Establish `hev` using `(tendsto_order.1 hT).2 _ (lt_add_of_pos_right _ hε)`. Use `filter_upwards [hev, hPc, hPK] with x hx hxc hxK`.
+
+Establish `hmeas` using `(usc_comp (P x) hxc hxK).measurable`. Establish `hIF : IntervalIntegrable (fun θ => ψ (P x θ)) volume 0 (2 * π)` using `ii_of_bdd hmeas (|m| + |M|) (fun θ => bnd _ (hxK θ)) 0 (2 * π)`. Establish `hIG : IntervalIntegrable (fun θ => max (ψ (P x θ)) (ψ (P0 θ))) volume 0 (2 * π)` using `ii_of_bdd (hmeas.max meas0) (|m| + |M|) (bndG x hxK) 0 (2 * π)`. Establish `hle : ∫ θ in (0 : ℝ)..2 * π, ψ (P x θ) ≤ ∫ θ in (0 : ℝ)..2 * π, max (ψ (P x θ)) (ψ (P0 θ))` using `intervalIntegral.integral_mono_on (by positivity) hIF hIG (fun θ _ => le_max_left _ _)`. Conclude with `le_trans hle hx.le`.
+-/
 theorem avg_lim {E X : Type*} [TopologicalSpace E] {ψ : E → ℝ} {U K : Set E}
     (hψ : UpperSemicontinuousOn ψ U) (hKU : K ⊆ U) {m M : ℝ} (hm : ∀ y ∈ K, m ≤ ψ y)
     (hM : ∀ y ∈ K, ψ y ≤ M) {l : Filter X} [l.IsCountablyGenerated] (P : X → ℝ → E)

@@ -6,6 +6,9 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `f j k N e m τ`. Simplify using `only [restTransport, restRename, RestTerms.blockPowerSum, rootPsum, RingHom.comp_apply, map_sum, map_pow, MvPolynomial.map_X, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, rename_X]`. Conclude with `Equiv.sum_comp e (fun i => (X (τ, i) : RootPoly f j k) ^ m)`.
+-/
 theorem RestCutTransportPsum.proof : RestCutTransportPsum.Statement := by
   intro f j k N e m τ
   simp only [restTransport, restRename, RestTerms.blockPowerSum, rootPsum, RingHom.comp_apply,

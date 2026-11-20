@@ -10,6 +10,11 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Matrix
 open scoped TensorProduct
 open Formalism.MainNotions.S
 
+/- English proof (translation)
+Take `⟨k, m, hm, hgen⟩` from `PI.WAU.B.exists_gen I.L (Module.Finite.iff_fg.mpr I.L_fg)`. Take `⟨N, hN⟩` from `PI.WAU.B.exists_PN I m x`. Use `⟨N, hN.1, fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `PI.WAU.B.mulVec_lam hm hgen (N • I.fmat x) (fun j => by rw [Matrix.smul_mulVec]; exact (hN.2 j).1) hw` as an intermediate fact. Rewrite `this` using `[Matrix.smul_mulVec]`. Then use the resulting hypothesis.
+
+Use `PI.WAU.B.mulVec_lam hm hgen (N • I.fmat x⁻¹) (fun j => by rw [Matrix.smul_mulVec]; exact (hN.2 j).2) hw` as an intermediate fact. Rewrite `this` using `[Matrix.smul_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem glob_bound (I : AutInst) (x : I.Gf) :
     ∃ N : ℕ, 0 < N ∧ (∀ w ∈ I.Lf, N • (I.fmat x *ᵥ w) ∈ I.Lf) ∧
       (∀ w ∈ I.Lf, N • (I.fmat x⁻¹ *ᵥ w) ∈ I.Lf) := by
@@ -23,6 +28,13 @@ theorem glob_bound (I : AutInst) (x : I.Gf) :
       (fun j => by rw [Matrix.smul_mulVec]; exact (hN.2 j).2) hw
     rwa [Matrix.smul_mulVec] at this
 
+/- English proof (translation)
+Establish `ha : (N : v.adicCompletion F) ≠ 0`. Introduce `h0`. Rewrite `hN` using `[h0, map_zero]`. Conclude with `zero_ne_one hN`. Set `c : v.adicCompletionIntegers F` to `⟨(N : v.adicCompletion F)⁻¹, by rw [mem_adicCompletionIntegers, map_inv₀, hN, inv_one]⟩`.
+
+Establish `hc : c * (N : v.adicCompletionIntegers F) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[c, ha]`. Establish `h' : (N : v.adicCompletionIntegers F) • y ∈ P`. Rewrite using `[Nat.cast_smul_eq_nsmul]` and apply the resulting hypothesis.
+
+Use `P.smul_mem c h'` as an intermediate fact. Rewrite `this` using `[smul_smul, hc, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem cancel_nat {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {N : ℕ}
     (hN : Valued.v ((N : v.adicCompletion F)) = 1) {M : Type} [AddCommGroup M]
     [Module (v.adicCompletionIntegers F) M] (P : Submodule (v.adicCompletionIntegers F) M) {y : M}
@@ -41,12 +53,20 @@ theorem cancel_nat {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (
   have := P.smul_mem c h'
   rwa [smul_smul, hc, one_smul] at this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[PI.FinKW.vecV]`.
+-/
 theorem vecV_nsmul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (N : ℕ)
     (u : Fin I.n → I.E ⊗[I.F] Af I.F) :
     PI.FinKW.vecV I v (N • u) = N • PI.FinKW.vecV I v u := by
   funext i
   simp [PI.FinKW.vecV]
 
+/- English proof (translation)
+Take `⟨w, hwv, hww⟩` from `PI.FinKW.local_vector_lift I v z`. Establish `hw : w ∈ I.Lf` using `PI.FinKW.memLocFrom_of PI.FinKW.local_vector_injective I w (fun u => by`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[hwv]` and apply the resulting hypothesis.
+
+Rewrite using `[hww u hu]`. Conclude with `zero_mem _)`. Establish `h1` using `PI.FinKW.LocTo.mem_local_lattice_iff I _ (hM w hw) v`. Rewrite `h1` using `[vecV_nsmul, vecV_mulVec', hwv]`. Conclude with `cancel_nat v hv _ h1`.
+-/
 theorem loc_stab (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (Mx : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) {N : ℕ}
     (hv : Valued.v ((N : v.adicCompletion I.F)) = 1)
@@ -64,6 +84,15 @@ theorem loc_stab (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   rw [vecV_nsmul, vecV_mulVec', hwv] at h1
   exact cancel_nat v hv _ h1
 
+/- English proof (translation)
+Take `⟨N, hN0, h1, h2⟩` from `glob_bound I x`. Apply `(Formalism.UG.P.levelaf_finite_places (F := I.F) (N : 𝓞 I.F) (by exact_mod_cast hN0.ne')).subset` to reduce the goal to its premises. Introduce `v hv`. Assume the negation of the conclusion as `hlt`. Apply `hv` to reduce the goal to its premises.
+
+Establish `hle` using `(mem_adicCompletionIntegers _ _ _).1 (Formalism.UG.P.levelaf_int_mem_v (F := I.F) v (N : 𝓞 I.F))`. Rewrite `hle` using `[map_natCast]`. Establish `hval : Valued.v ((N : v.adicCompletion I.F)) = 1`. Use `le_antisymm hle (not_lt.mp ?_)` and prove the remaining obligations. Simplify `hlt` using `[map_natCast]`.
+
+Establish `hinv : (I.fmat x⁻¹).map (PI.FinKW.psiV I v).toRingHom * (I.fmat x).map (PI.FinKW.psiV I v).toRingHom = 1`. Rewrite using `[← Matrix.map_mul, PI.WAU.B.fmat_inv_mul]`. Simplify using the standard rewrite rules. Introduce `z`. Rewrite using `[matV_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `loc_stab I v _ hval h1 z`. Introduce `hz`. Use `loc_stab I v _ hval h2 _ hz` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem finite_bad (I : AutInst) (x : I.Gf) :
     {v | matV I v (x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∉ Kv I v}.Finite := by
   obtain ⟨N, hN0, h1, h2⟩ := glob_bound I x
@@ -88,11 +117,23 @@ theorem finite_bad (I : AutInst) (x : I.Gf) :
     have := loc_stab I v _ hval h2 _ hz
     rwa [Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec] at this
 
+/- English proof (translation)
+Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`.
+-/
 theorem matV_inv_mul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (y x : I.Gf) :
     matV I v ((y⁻¹ * x : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) =
       (matV I v (y : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)))⁻¹ * matV I v (x : GL (Fin I.n) _) := by
   rw [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `x hx`. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `right`.
+
+Conclude with `(compact_local_global I x).2 (fun v => hx v (by simp))`. Consider the case `insert a S ha ih`. Introduce `x hx`. Take `⟨y, hy, hsupp⟩` from `lift_unitary' I a _ (matrix_v_unitary I a x)`. Establish `hx'` using `ih (y⁻¹ * x) (fun v hv => by`.
+
+Rewrite using `[matV_inv_mul]`. Distinguish the cases in `hva : v = a`. Substitute `hva` using the available equality. Rewrite using `[hy, inv_mul_cancel]`. Conclude with `one_mem _`.
+
+Rewrite using `[hsupp v hva, inv_one, one_mul]`. Conclude with `hx v (by simp [hva, hv]))`. Establish `hyc : y ∈ Subgroup.closure ({y | ∃ v, SuppAt I v y} ∪ (PI.AdIndexEq.Ksub I : Set I.Gf))` using `Subgroup.subset_closure (Or.inl ⟨a, hsupp⟩)`. Use `mul_mem hyc hx'` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem reduce_aux (I : AutInst) (S : Finset (HeightOneSpectrum (𝓞 I.F))) :
     ∀ x : I.Gf, (∀ v, v ∉ S → matV I v (x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Kv I v) →
       x ∈ Subgroup.closure ({y | ∃ v, SuppAt I v y} ∪ (PI.AdIndexEq.Ksub I : Set I.Gf)) := by
@@ -119,6 +160,9 @@ theorem reduce_aux (I : AutInst) (S : Finset (HeightOneSpectrum (𝓞 I.F))) :
     have := mul_mem hyc hx'
     rwa [mul_inv_cancel_left] at this
 
+/- English proof (translation)
+Introduce `I x`. Establish `hfin` using `finite_bad I x`. Conclude with `reduce_aux I hfin.toFinset x (fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hfin.mem_toFinset.2 h))`.
+-/
 theorem reduce_local : ReduceLoc := by
   intro I x
   have hfin := finite_bad I x

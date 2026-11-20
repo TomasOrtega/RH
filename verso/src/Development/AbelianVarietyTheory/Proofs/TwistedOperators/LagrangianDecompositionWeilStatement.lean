@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StoneVonNeumannSchwartzBruhatTransverseLagrangiaStatement
 open ValuativeRel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SvNAnyChar.main | exact GlobalTheory.SvNAnyChar.main | (intros; apply GlobalTheory.SvNAnyChar.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lagrangian_decomposition_weil : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     [Invertible (2 : k)] {κ : Type} [Fintype κ] {n d : ℕ} (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →
     ∀ (wT wM : Matrix (Fin n) (Fin d) k →+ (κ → k) × (κ → k)),

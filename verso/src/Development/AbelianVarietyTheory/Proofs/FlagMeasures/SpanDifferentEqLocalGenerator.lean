@@ -19,6 +19,9 @@ namespace GlobalTheory.LocDiffGen
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : (D.s.atP p).ιF (a : D.host.F) ≤ᵥ (D.s.atP p).ιF 1`. Rewrite using `[(D.s.atP p).val, map_one]`. Conclude with `p.valuation_le_one (K := D.host.F) a`. Rewrite `h1` using `[map_one, Valuation.Compatible.vle_iff_le (v := valuation (D.s.atP p).Fp), map_one]`. Conclude with `(Valuation.mem_integer_iff _ _).2 h1`.
+-/
 theorem iF_int (p : PlF D) (a : 𝓞 D.host.F) :
     (D.s.atP p).ιF (a : D.host.F) ∈ 𝒪[(D.s.atP p).Fp] := by
   have h1 : (D.s.atP p).ιF (a : D.host.F) ≤ᵥ (D.s.atP p).ιF 1 := by
@@ -27,6 +30,15 @@ theorem iF_int (p : PlF D) (a : 𝓞 D.host.F) :
   rw [map_one, Valuation.Compatible.vle_iff_le (v := valuation (D.s.atP p).Fp), map_one] at h1
   exact (Valuation.mem_integer_iff _ _).2 h1
 
+/- English proof (translation)
+Use `haveI : Fact (Loc.resChar p).Prime := (D.s.atP p).ellPrime`. Take `⟨-, hδ, -, hO, hpsi, -⟩` from `Z.agree p`. Establish `hx : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p * z) ∈ (Z.M p).L.O`. Rewrite using `[← (Z.M p).L.additive_character_dual_ring]`. Introduce `y hy`.
+
+Rewrite `hy` using `[hO]`. Rewrite using `[hpsi]`. Establish `e : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p * z) * y * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p)⁻¹ = y * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep z`. Establish `e2 : Z.δ p * z * (Z.δ p)⁻¹ = z` using `by field_simp`. Rewrite using `[← e2, map_mul (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep) (Z.δ p * z) (Z.δ p)⁻¹, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(PI.LocDualGen.Top.psi_tower PI.LocDualGen.Psi.addCharKernel (D.s.atP p) _).2 ?_` and prove the remaining obligations. Rewrite using `[map_neg, PI.LocDualGen.Top.tr_smul, map_neg, norm_neg]`. Conclude with `hz _ (PI.UnitaryGroupMassFormula.CntFormula.DeltaC.trace_mem (D.s.atP p) hy)`.
+
+Rewrite `hx` using `[hO, (D.s.atP p).O_def]`. Establish `hi : IsIntegral 𝒪[(D.s.atP p).Fp] (Z.δ p * z)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[(D.s.atP p).Fp] (D.s.atP p).Fp (D.s.atP p).Ep) (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep).injective).1 hx`. Conclude with `PI.UnitaryGroupMassFormula.CntFormula.DeltaC.mem_of_isIntegral_fp (D.s.atP p) hi`.
+-/
 theorem dual_sub (Z : LocDat D) (p : PlF D) (z : (D.s.atP p).Fp)
     (hz : haveI := (D.s.atP p).ellPrime; ∀ c ∈ 𝒪[(D.s.atP p).Fp],
       ‖Algebra.trace ℚ_[Loc.resChar p] (D.s.atP p).Fp (c * z)‖ ≤ 1) :
@@ -53,6 +65,13 @@ theorem dual_sub (Z : LocDat D) (p : PlF D) (z : (D.s.atP p).Fp)
       (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep).injective).1 hx
   exact PI.UnitaryGroupMassFormula.CntFormula.DeltaC.mem_of_isIntegral_fp (D.s.atP p) hi
 
+/- English proof (translation)
+Take `⟨t, ht, hne, -, hinv⟩` from `PI.CntNotIntW.locDiff_of PI.CntNotIntW.trace_dual_lattice (PI.CntNotIntW.dualApprox_of PI.CntNotIntW.small_powers_bound PI.CntNotIntW.tensorLiftSurjective) PI.CntNotIntW.small_powers_bound D Z.δ Z.M Z.agree p`. Establish `hB` using `PI.CntNotIntW.dual_mul_different_integral D t ht x hx`. Set `w : 𝓞 D.host.F` to `⟨_, (mem_integralClosure_iff ℤ D.host.F).2 hB⟩`. Establish `hw : (D.s.atP p).ιF (w : D.host.F) ∈ 𝒪[(D.s.atP p).Fp]` using `iF_int p w`. Establish `hw' : (D.s.atP p).ιF (w : D.host.F) = (D.s.atP p).ιF t * (D.s.atP p).ιF (x : D.host.F)`.
+
+Rewrite using `[← map_mul]`. Both sides reduce to the same expression. Establish `ht0 : (D.s.atP p).ιF t ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hδ0 : Z.δ p ≠ 0` using `left_ne_zero_of_mul hne`. Establish `e : (Z.δ p)⁻¹ * (D.s.atP p).ιF (x : D.host.F) = (D.s.atP p).ιF (w : D.host.F) * (Z.δ p * (D.s.atP p).ιF t)⁻¹`.
+
+Rewrite using `[hw']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_mem hw hinv`.
+-/
 theorem diff_sub (Z : LocDat D) (p : PlF D) (x : 𝓞 D.host.F) (hx : x ∈ differentIdeal ℤ (𝓞 D.host.F)) :
     (Z.δ p)⁻¹ * (D.s.atP p).ιF (x : D.host.F) ∈ 𝒪[(D.s.atP p).Fp] := by
   obtain ⟨t, ht, hne, -, hinv⟩ := PI.CntNotIntW.locDiff_of PI.CntNotIntW.trace_dual_lattice
@@ -71,6 +90,9 @@ theorem diff_sub (Z : LocDat D) (p : PlF D) (x : 𝓞 D.host.F) (hx : x ∈ diff
   rw [e]
   exact mul_mem hw hinv
 
+/- English proof (translation)
+Use `haveI : Fact (Loc.resChar p).Prime := (D.s.atP p).ellPrime`. Use `haveI := (D.s.atP p).lf`. Conclude with `dual_sub Z p _ (fun c hc => trace_dual_local D.host.F p (D.s.atP p).Fp (D.s.atP p).qlCont (D.s.atP p).qlFin (D.s.atP p).ιF (D.s.atP p).dense (D.s.atP p).val t ht c hc)`.
+-/
 theorem dual_glob (Z : LocDat D) (p : PlF D) (t : D.host.F)
     (ht : ∀ a : 𝓞 D.host.F, ∃ n : ℤ, Algebra.trace ℚ D.host.F (t * a) = n) :
     Z.δ p * (D.s.atP p).ιF t ∈ 𝒪[(D.s.atP p).Fp] := by
@@ -79,6 +101,29 @@ theorem dual_glob (Z : LocDat D) (p : PlF D) (t : D.host.F)
   exact dual_sub Z p _ (fun c hc => trace_dual_local D.host.F p (D.s.atP p).Fp (D.s.atP p).qlCont
     (D.s.atP p).qlFin (D.s.atP p).ιF (D.s.atP p).dense (D.s.atP p).val t ht c hc)
 
+/- English proof (translation)
+Introduce `D Z p`. Take `⟨-, hδ, -, hO, -, -⟩` from `Z.agree p`. Establish `hmem : ∀ c ∈ 𝒪[(D.s.atP p).Fp], algebraMap (D.s.atP p).Fp (D.s.atP p).Ep c ∈ (Z.M p).L.O`. Introduce `c hc`. Rewrite using `[hO]`.
+
+Conclude with `PI.CntNotIntW.algMap_mem_O D p c hc`. Establish `hf : ∀ x : 𝓞 D.host.F, (D.s.atP p).ιE (algebraMap D.host.F D.host.E x) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF (x : D.host.F))` using `fun x => (D.s.atP p).compat _`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_span_singleton]`. Use `⟨⟨_, hmem _ (diff_sub Z p x hx)⟩, ?_⟩` and prove the remaining obligations. Use `show algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((Z.δ p)⁻¹ * (D.s.atP p).ιF (x : D.host.F)) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p) = _`. Rewrite using `[← map_mul]`. Use `show _ = (D.s.atP p).ιE (algebraMap D.host.F D.host.E (x : D.host.F))`.
+
+Rewrite using `[hf]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, SetLike.mem_coe] set N := Submodule.span (Z.M p).L.O ((fun x : 𝓞 D.host.F => (D.s.atP p).ιE (algebraMap D.host.F D.host.E x)) '' (differentIdeal ℤ (𝓞 D.host.F) : Set (𝓞 D.host.F))) with hN`. Establish `h10 : (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F) ≠ 0` using `one_ne_zero`.
+
+Establish `hIJ : ((differentIdeal ℤ (𝓞 D.host.F) : Ideal (𝓞 D.host.F)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F) * FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F) = 1`. Rewrite using `[coeIdeal_differentIdeal (A := ℤ) (K := ℚ) (L := D.host.F) (B := 𝓞 D.host.F)]`. Conclude with `inv_mul_cancel₀ (FractionalIdeal.dual_ne_zero ℤ ℚ h10)`. Establish `key : ∀ y : D.host.F, y ∈ (((differentIdeal ℤ (𝓞 D.host.F) : Ideal (𝓞 D.host.F)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F) * FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F)) → algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p …`. Introduce `y hy`.
+
+Rewrite `hy` using `[← FractionalIdeal.mem_coe, FractionalIdeal.coe_mul]`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `m hm n hn`. Take `⟨x, hx, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hm`. Establish `hn'` using `(FractionalIdeal.mem_dual h10).1 hn`.
+
+Establish `ht : ∀ a : 𝓞 D.host.F, ∃ k : ℤ, Algebra.trace ℚ D.host.F (n * a) = k`. Introduce `a`. Take `⟨k, hk⟩` from `hn' _ ((FractionalIdeal.mem_one_iff _).2 ⟨a, rfl⟩)`. Conclude with `⟨k, by rw [← Algebra.traceForm_apply, ← hk]; simp⟩`. Establish `hc` using `dual_glob Z p n ht`.
+
+Establish `e : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p * (D.s.atP p).ιF (algebraMap (𝓞 D.host.F) D.host.F x * n)) = (⟨_, hmem _ hc⟩ : (Z.M p).L.O) • (D.s.atP p).ιE (algebraMap D.host.F D.host.E (x : D.host.F))`. Rewrite using `[hf, Subring.smul_def]`. Use `show _ = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p * (D.s.atP p).ιF n) * _`. Rewrite using `[← map_mul, map_mul (D.s.atP p).ιF]`. Use `congr 1`.
+
+Use `show _ = _ * (D.s.atP p).ιF (algebraMap (𝓞 D.host.F) D.host.F x)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `N.smul_mem _ (Submodule.subset_span ⟨x, hx, rfl⟩)`. Introduce `a b ha hb`.
+
+Rewrite using `[map_add, mul_add, map_add]`. Conclude with `N.add_mem ha hb`. Establish `h1` using `key 1 (by rw [hIJ]; exact (FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩)`. Establish `e1 : Z.δ p * (D.s.atP p).ιF 1 = Z.δ p` using `by rw [map_one, mul_one]`. Rewrite `h1` using `[e1]`.
+
+Conclude with `h1`.
+-/
 theorem span_different_eq : ∀ (D : D7) (Z : LocDat D) (p : PlF D), Submodule.span (Z.M p).L.O ((fun x : 𝓞 D.host.F => (D.s.atP p).ιE (algebraMap D.host.F D.host.E x)) '' (differentIdeal ℤ (𝓞 D.host.F) : Set (𝓞 D.host.F))) = Submodule.span (Z.M p).L.O {algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p)} := by
   intro D Z p
   obtain ⟨-, hδ, -, hO, -, -⟩ := Z.agree p

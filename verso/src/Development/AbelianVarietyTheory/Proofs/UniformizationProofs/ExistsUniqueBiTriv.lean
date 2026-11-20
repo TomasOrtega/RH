@@ -52,6 +52,9 @@ def Rep (L : LB X) (Y : Over S) (F : ∀ (U : Type) [CommGroup U], ((Y.left ⟶ 
 variable {F F' : ∀ (U : Type) [CommGroup U], ((Y.left ⟶ X) → U) → U}
   {v v' : ∀ (T : Over S), (T ⟶ Y) → ∀ z : T.left, ((T.left ⟶ X) → L.ι) → (T.left.presheaf.stalk z)ˣ}
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, hF, hv⟩` from `h`. Take `⟨K', _, φ', ε', t', ht', hF', hv'⟩` from `h'`. Conclude with `⟨K ⊕ K', inferInstance, _, _, LB.mulGen L φ ε φ' ε' t t', DVR.mulGen_isGen _ _ _ _ _ _ _ ht ht', fun U _ k => DVR.prod_sum₂ _ (hF U k) (hF' U k), fun T σ z J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (hv T σ z J hJ) (hv' T σ z J hJ))⟩`.
+-/
 theorem Rep.mul (h : Rep L Y F v) (h' : Rep L Y F' v') :
     Rep L Y (fun U _ k => F U k * F' U k) (fun T σ z J => v T σ z J * v' T σ z J) := by
   obtain ⟨K, _, φ, ε, t, ht, hF, hv⟩ := h
@@ -60,6 +63,9 @@ theorem Rep.mul (h : Rep L Y F v) (h' : Rep L Y F' v') :
     fun U _ k => DVR.prod_sum₂ _ (hF U k) (hF' U k), fun T σ z J hJ =>
       (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (hv T σ z J hJ) (hv' T σ z J hJ))⟩
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, hF, hv⟩` from `h`. Use `⟨K, inferInstance, _, _, LB.invGen L φ ε t, DVR.invGen_isGen _ _ _ _ ht, fun U _ k => ?_, fun T σ z J hJ => (val_inv _ _).trans (congrArg (·⁻¹) (hv T σ z J hJ))⟩` and prove the remaining obligations. Use `show _ = (F U k)⁻¹`. Rewrite using `[← hF U k, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun a _ => zpow_neg _ _`.
+-/
 theorem Rep.inv (h : Rep L Y F v) : Rep L Y (fun U _ k => (F U k)⁻¹) (fun T σ z J => (v T σ z J)⁻¹) := by
   obtain ⟨K, _, φ, ε, t, ht, hF, hv⟩ := h
   refine ⟨K, inferInstance, _, _, LB.invGen L φ ε t, DVR.invGen_isGen _ _ _ _ ht, fun U _ k => ?_, fun T σ z J hJ =>
@@ -68,6 +74,9 @@ theorem Rep.inv (h : Rep L Y F v) : Rep L Y (fun U _ k => (F U k)⁻¹) (fun T �
   rw [← hF U k, ← Finset.prod_inv_distrib]
   exact Finset.prod_congr rfl fun a _ => zpow_neg _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨K, inferInstance, _, _, LB.pullGen L φ ε t p.left, DVR.pullGen_isGen _ _ _ _ ht _, hF, fun _ _ _ _ hJ => val_pull hJ _ _ _⟩`.
+-/
 theorem Rep.pull {K : Type} [Fintype K] {Y' : Over S} {φ : K → (Y'.left ⟶ X)} {ε : K → ℤ}
     {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) (p : Y ⟶ Y')
     (hF : ∀ (U : Type) [CommGroup U] (h : (Y.left ⟶ X) → U), ∏ k, h (p.left ≫ φ k) ^ ε k = F U h) :
@@ -75,6 +84,9 @@ theorem Rep.pull {K : Type} [Fintype K] {Y' : Over S} {φ : K → (Y'.left ⟶ X
   ⟨K, inferInstance, _, _, LB.pullGen L φ ε t p.left, DVR.pullGen_isGen _ _ _ _ ht _, hF,
     fun _ _ _ _ hJ => val_pull hJ _ _ _⟩
 
+/- English proof (translation)
+Take `⟨K', _, φ', ε', t', ht', hF', hv'⟩` from `h`. Take `⟨t, ht, hv⟩` from `Geo.Tor.exists_gen hL (φ' := φ) (ε' := ε) (fun U _ k => (hF' U k).trans (hF U k)) t' ht'`. Conclude with `⟨t, ht, fun T σ z J hJ => (hv _ _ z J hJ).trans (hv' T σ z J hJ)⟩`.
+-/
 theorem Rep.exists_gen (hL : L.IsLB) (h : Rep L Y F v) {K : Type} [Fintype K] (φ : K → (Y.left ⟶ X)) (ε : K → ℤ)
     (hF : ∀ (U : Type) [CommGroup U] (h : (Y.left ⟶ X) → U), F U h = ∏ k, h (φ k) ^ ε k) :
     ∃ t : LB.Gen (LB.LinComb L φ ε), t.IsGen ∧
@@ -83,6 +95,9 @@ theorem Rep.exists_gen (hL : L.IsLB) (h : Rep L Y F v) {K : Type} [Fintype K] (�
   obtain ⟨t, ht, hv⟩ := Geo.Tor.exists_gen hL (φ' := φ) (ε' := ε) (fun U _ k => (hF' U k).trans (hF U k)) t' ht'
   exact ⟨t, ht, fun T σ z J hJ => (hv _ _ z J hJ).trans (hv' T σ z J hJ)⟩
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, hF', hv⟩` from `h`. Use `(hv T σ z J hJ).symm.trans ((gen_unique' hL (fun U _ k => ?_) Y.hom e.left (Over.w e) hY ht (LB.isGen_oneGen L) (fun y I hI => (hv _ e y I hI).trans ((he y I hI).trans (val_one _).symm)) _ σ.left z J hJ).trans (val_one _))` and prove the remaining obligations. Rewrite using `[hF', hF]`. Conclude with `Fintype.prod_empty _`.
+-/
 theorem Rep.eq_one (hL : L.IsLB) (hY : Function.Surjective Y.hom.appTop.hom) (h : Rep L Y F v)
     (hF : ∀ (U : Type) [CommGroup U] (h : (Y.left ⟶ X) → U), F U h = 1) (e : 𝟙_ (Over S) ⟶ Y)
     (he : ∀ z J, Good L z J → v _ e z J = 1) (T : Over S) (σ : T ⟶ Y) (z : T.left) (J) (hJ : Good L z J) :

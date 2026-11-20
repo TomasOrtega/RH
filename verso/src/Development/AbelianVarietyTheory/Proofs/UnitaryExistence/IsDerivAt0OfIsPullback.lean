@@ -24,23 +24,44 @@ variable {g : ℕ} {X Y : Scheme.{0}}
 def jet (w : Fin g → ℂ) (F : (Fin g → ℂ) → ℂ) : DualNumber ℂ :=
   TrivSqZeroExt.inl (F 0) + TrivSqZeroExt.inr (fderiv ℂ F 0 w)
 
+/- English proof (translation)
+Simplify using `[jet]`.
+-/
 theorem fst_jet (w : Fin g → ℂ) (F : (Fin g → ℂ) → ℂ) : (jet w F).fst = F 0 := by simp [jet]
 
+/- English proof (translation)
+Simplify using `[jet]`.
+-/
 theorem snd_jet (w : Fin g → ℂ) (F : (Fin g → ℂ) → ℂ) : (jet w F).snd = fderiv ℂ F 0 w := by simp [jet]
 
+/- English proof (translation)
+Rewrite using `[jet, jet, h.fderiv_eq, h.eq_of_nhds]`.
+-/
 theorem jet_congr (w : Fin g → ℂ) {F F' : (Fin g → ℂ) → ℂ} (h : F =ᶠ[𝓝 0] F') : jet w F = jet w F' := by
   rw [jet, jet, h.fderiv_eq, h.eq_of_nhds]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [fst_jet, snd_jet, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem jet_const (w : Fin g → ℂ) (a : ℂ) : jet w (fun _ => a) = algebraMap ℂ (DualNumber ℂ) a := by
   ext <;> simp [fst_jet, snd_jet, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [fst_jet, snd_jet, fderiv_fun_add h h']`.
+-/
 theorem jet_add (w : Fin g → ℂ) {F F' : (Fin g → ℂ) → ℂ} (h : DifferentiableAt ℂ F 0) (h' : DifferentiableAt ℂ F' 0) :
     jet w (fun z => F z + F' z) = jet w F + jet w F' := by
   ext <;> simp [fst_jet, snd_jet, fderiv_fun_add h h']
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [fst_jet, snd_jet, fderiv_fun_neg]`.
+-/
 theorem jet_neg (w : Fin g → ℂ) (F : (Fin g → ℂ) → ℂ) : jet w (fun z => - F z) = - jet w F := by
   ext <;> simp [fst_jet, snd_jet, fderiv_fun_neg]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[fst_jet]`. Simplify using `[fst_jet, snd_jet, fderiv_fun_mul h h', mul_comm]`.
+-/
 theorem jet_mul (w : Fin g → ℂ) {F F' : (Fin g → ℂ) → ℂ} (h : DifferentiableAt ℂ F 0) (h' : DifferentiableAt ℂ F' 0) :
     jet w (fun z => F z * F' z) = jet w F * jet w F' := by
   ext
@@ -50,12 +71,18 @@ theorem jet_mul (w : Fin g → ℂ) {F F' : (Fin g → ℂ) → ℂ} (h : Differ
 def evEps (v : Sp (DualNumber ℂ) ⟶ X) (U : X.Opens) (h : ⊤ ≤ v ⁻¹ᵁ U) : Γ(X, U) →+* DualNumber ℂ :=
   (v.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom).hom
 
+/- English proof (translation)
+Simplify using `only [evEps, CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply (φ.appLE U V e), Scheme.Hom.appLE_comp_appLE]`.
+-/
 theorem evEps_appLE (v : Sp (DualNumber ℂ) ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (V : X.Opens) (e : V ≤ φ ⁻¹ᵁ U)
     (f : Γ(Y, U)) (hV : ⊤ ≤ v ⁻¹ᵁ V) (hU : ⊤ ≤ (v ≫ φ) ⁻¹ᵁ U) :
     evEps v V hV ((φ.appLE U V e).hom f) = evEps (v ≫ φ) U hU f := by
   simp only [evEps, CommRingCat.hom_comp, RingHom.comp_apply]
   rw [← CommRingCat.comp_apply (φ.appLE U V e), Scheme.Hom.appLE_comp_appLE]
 
+/- English proof (translation)
+Simplify using `only [evEps, CommRingCat.hom_comp, RingHom.comp_apply]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(v.appLE V ⊤ hV).hom ((X.presheaf.map (homOfLE h).op).hom f) = _`. Rewrite using `[← CommRingCat.comp_apply (X.presheaf.map _), Scheme.Hom.map_appLE]`.
+-/
 theorem evEps_res (v : Sp (DualNumber ℂ) ⟶ X) {U V : X.Opens} (h : V ≤ U) (f : Γ(X, U)) (hV : ⊤ ≤ v ⁻¹ᵁ V)
     (hU : ⊤ ≤ v ⁻¹ᵁ U) : evEps v V hV (resG X h f) = evEps v U hU f := by
   simp only [evEps, CommRingCat.hom_comp, RingHom.comp_apply]
@@ -63,6 +90,11 @@ theorem evEps_res (v : Sp (DualNumber ℂ) ⟶ X) {U V : X.Opens} (h : V ≤ U) 
   change (v.appLE V ⊤ hV).hom ((X.presheaf.map (homOfLE h).op).hom f) = _
   rw [← CommRingCat.comp_apply (X.presheaf.map _), Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Rewrite using `[← valAt'_appLE _ v U ⊤ h f le_top, valAt'_eq_valAt _ le_top]`. Use `congrArg (fun k => k.hom ((v.appLE U ⊤ h).hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite `this` using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+
+Conclude with `this.symm`.
+-/
 theorem fst_evEps (v : Sp (DualNumber ℂ) ⟶ X) (x : Sp ℂ ⟶ X)
     (hx : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = x) (U : X.Opens) (h : ⊤ ≤ v ⁻¹ᵁ U) (f : Γ(X, U)) :
     (evEps v U h f).fst = valAt' x U f := by
@@ -74,6 +106,9 @@ theorem fst_evEps (v : Sp (DualNumber ℂ) ⟶ X) (x : Sp ℂ ⟶ X)
   rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE] at this
   exact this.symm
 
+/- English proof (translation)
+Use `congrArg (fun k => k.hom a) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ))))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite `this` using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `this`.
+-/
 theorem evEps_spMap (a : Γ(Sp ℂ, ⊤)) (h) :
     evEps (spMap (algebraMap ℂ (DualNumber ℂ))) ⊤ h a =
       algebraMap ℂ (DualNumber ℂ) ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom a) := by
@@ -83,6 +118,15 @@ theorem evEps_spMap (a : Γ(Sp ℂ, ⊤)) (h) :
   rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE] at this
   exact this
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Use `⟨fun h p _ => h (Set.mem_univ _), fun h p _ => ?_⟩` and prove the remaining obligations. Establish `hs : Function.Surjective (PrimeSpectrum.comap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)`. Introduce `q`. Establish `: q ∈ Set.range (PrimeSpectrum.comap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)`.
+
+Rewrite using `[range_comap_of_surjective _ _ (fun a => ⟨TrivSqZeroExt.inl a, rfl⟩)]`. Introduce `b hb`. Establish `hb' : b.fst = 0` using `hb`. Use `q.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: b ^ 2 = 0`.
+
+Apply the tactic sequence `ext <;> simp [pow_two, hb']`. Rewrite using `[this]`. Conclude with `zero_mem _`. Conclude with `this`. Take `⟨q, rfl⟩` from `hs p`.
+
+Conclude with `h (Set.mem_univ q)`.
+-/
 theorem top_le_preimage_eps (v : Sp (DualNumber ℂ) ⟶ X) (x : Sp ℂ ⟶ X)
     (hx : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = x) (U : X.Opens) :
     ⊤ ≤ v ⁻¹ᵁ U ↔ ⊤ ≤ x ⁻¹ᵁ U := by
@@ -103,6 +147,11 @@ theorem top_le_preimage_eps (v : Sp (DualNumber ℂ) ⟶ X) (x : Sp ℂ ⟶ X)
   obtain ⟨q, rfl⟩ := hs p
   exact h (Set.mem_univ q)
 
+/- English proof (translation)
+Use `and_congr_right fun h0 => forall_congr' fun U => forall_congr' fun h => forall_congr' fun f => ?_` and prove the remaining obligations. Use `⟨fun H => TrivSqZeroExt.ext ?_ ?_, fun H => ?_⟩` and prove the remaining obligations. Rewrite using `[fst_jet, fst_evEps v _ h0]`. Rewrite using `[snd_jet]`. Conclude with `H`.
+
+Rewrite using `[← snd_jet, ← H]`. Both sides reduce to the same expression.
+-/
 theorem isDerivAt0_iff (e : (Fin g → ℂ) → (Sp ℂ ⟶ X)) (w : Fin g → ℂ) (v : Sp (DualNumber ℂ) ⟶ X) :
     IsDerivAt0 e w v ↔ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = e 0 ∧
       ∀ (U : X.Opens) (h : ⊤ ≤ v ⁻¹ᵁ U) (f : Γ(X, U)), evEps v U h f = jet w (fun z => valAt' (e z) U f) := by
@@ -112,6 +161,9 @@ theorem isDerivAt0_iff (e : (Fin g → ℂ) → (Sp ℂ ⟶ X)) (w : Fin g → �
   · rw [snd_jet]; exact H
   · rw [← snd_jet, ← H]; rfl
 
+/- English proof (translation)
+Rewrite `H`, the goal using `[isDerivAt0_iff]`. Use `⟨by rw [← Category.assoc, H.1], fun U h f => ?_⟩` and prove the remaining obligations. Establish `h' : ⊤ ≤ v ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `by rwa [Scheme.Hom.comp_preimage] at h`. Rewrite using `[← evEps_appLE v φ U (φ ⁻¹ᵁ U) le_rfl f h' h, H.2, ← Scheme.Hom.app_eq_appLE]`. Simplify using `only [valAt'_comp]`.
+-/
 theorem isDerivAt0_comp {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → ℂ} {v : Sp (DualNumber ℂ) ⟶ X}
     (H : IsDerivAt0 e w v) (φ : X ⟶ Y) : IsDerivAt0 (fun z => e z ≫ φ) w (v ≫ φ) := by
   rw [isDerivAt0_iff] at H ⊢
@@ -120,6 +172,19 @@ theorem isDerivAt0_comp {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → 
   rw [← evEps_appLE v φ U (φ ⁻¹ᵁ U) le_rfl f h' h, H.2, ← Scheme.Hom.app_eq_appLE]
   simp only [valAt'_comp]
 
+/- English proof (translation)
+Rewrite using `[isDerivAt0_iff]`. Use `⟨h0, fun U hU f => ?_⟩` and prove the remaining obligations. Take `⟨h, hhU, hh₀⟩` from `hV.exists_basicOpen_le (V := U) ⟨_, (top_le_preimage_iff_mem _ U).1 ((top_le_preimage_eps v _ h0 U).1 hU)⟩ ((top_le_preimage_iff_mem _ V).1 ((top_le_preimage_eps v _ h0 V).1 hv))`. Establish `hD₀ : ⊤ ≤ e 0 ⁻¹ᵁ X.basicOpen h` using `(top_le_preimage_iff_mem _ _).2 hh₀`. Establish `hDv : ⊤ ≤ v ⁻¹ᵁ X.basicOpen h` using `(top_le_preimage_eps v _ h0 _).2 hD₀`.
+
+Establish `hn₀ : valAt' (e 0) V h ≠ 0` using `(top_le_preimage_basicOpen_iff _ V h).1 hD₀`. Establish `hev : ∀ᶠ z in 𝓝 0, ⊤ ≤ e z ⁻¹ᵁ X.basicOpen h` using `by filter_upwards [(H h).1.continuousAt.eventually_ne hn₀] with z hz`. Conclude with `(top_le_preimage_basicOpen_iff _ V h).2 hz`. Establish `hloc` using `hV.isLocalization_basicOpen h`. Take `⟨⟨a, _, n, rfl⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers h) (resG X hhU f)`.
+
+Establish `ha' : resG X hhU f * resG X (X.basicOpen_le h) (h ^ n) = resG X (X.basicOpen_le h) a` using `ha`. Establish `hb₀ : valAt' (e 0) V (h ^ n) ≠ 0`. Rewrite using `[valAt'_pow _ (top_le_preimage_mono _ (X.basicOpen_le h) hD₀)]`. Conclude with `pow_ne_zero n hn₀`. Establish `hmul : (fun z => valAt' (e z) U f * valAt' (e z) V (h ^ n)) =ᶠ[𝓝 0] fun z => valAt' (e z) V a` using `by filter_upwards [hev] with z hz`.
+
+Rewrite using `[← valAt'_res _ hhU f hz, ← valAt'_res _ (X.basicOpen_le h) (h ^ n) hz, ← valAt'_mul, ha', valAt'_res _ _ _ hz]`. Establish `hf : DifferentiableAt ℂ (fun z => valAt' (e z) U f) 0`. Use `((H a).1.mul ((H (h ^ n)).1.inv hb₀)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hmul, (H (h ^ n)).1.continuousAt.eventually_ne hb₀] with z h1 h2`. Simplify using `only [Pi.mul_apply, Pi.inv_apply]`.
+
+Rewrite using `[eq_mul_inv_iff_mul_eq₀ h2]`. Conclude with `h1`. Establish `hu : IsUnit (jet w fun z => valAt' (e z) V (h ^ n))`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, fst_jet]`. Conclude with `hb₀.isUnit`.
+
+Use `hu.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[← jet_mul w hf (H _).1, jet_congr w hmul, ← (H a).2, ← (H _).2, ← evEps_res v hhU f hDv hU, ← evEps_res v (X.basicOpen_le h) _ hDv hv, ← evEps_res v (X.basicOpen_le h) a hDv hv, ← map_mul, ha']`.
+-/
 theorem isDerivAt0_of_affine {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → ℂ} {v : Sp (DualNumber ℂ) ⟶ X}
     (h0 : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = e 0) {V : X.Opens} (hV : IsAffineOpen V)
     (hv : ⊤ ≤ v ⁻¹ᵁ V)
@@ -158,6 +223,29 @@ theorem isDerivAt0_of_affine {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g
   rw [← jet_mul w hf (H _).1, jet_congr w hmul, ← (H a).2, ← (H _).2, ← evEps_res v hhU f hDv hU,
     ← evEps_res v (X.basicOpen_le h) _ hDv hv, ← evEps_res v (X.basicOpen_le h) a hDv hv, ← map_mul, ha']
 
+/- English proof (translation)
+Rewrite `hd` using `[isDerivAt0_iff]`. Establish `h0 : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = e 0`. Use `H.hom_ext (by rw [Category.assoc, hd.1]) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hv, hs, ← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+
+Take `⟨S, hS, hyS, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := y (default : PrimeSpectrum ℂ)) trivial`. Establish `hyS' : ⊤ ≤ y ⁻¹ᵁ S` using `(top_le_preimage_iff_mem y S).2 hyS`. Establish `hey : (e 0 ≫ φ) ≫ p = y` using `by rw [Category.assoc, H.w, ← Category.assoc, hs, Category.id_comp]`. Take `⟨U, hU, hxU, hUS⟩` from `exists_isAffineOpen_mem_and_subset (X := Z) (U := p ⁻¹ᵁ S) (x := (e 0 ≫ φ) (default : PrimeSpectrum ℂ)) ((top_le_preimage_iff_mem _ _).1 ((top_le_preimage_comp _ p S).1 (hey.symm ▸ hyS')))`. Establish `hUS' : U ≤ p ⁻¹ᵁ S` using `hUS`.
+
+Establish `hVdef : φ ⁻¹ᵁ U = φ ⁻¹ᵁ U ⊓ s ⁻¹ᵁ ⊤` using `by simp`. Establish `hV : IsAffineOpen (φ ⁻¹ᵁ U)`. Establish `: IsAffine _` using `isAffineOpen_top (Sp ℂ)`. Establish `: IsAffine _` using `hU`. Establish `: IsAffine _` using `hS`.
+
+Conclude with `.of_isIso (Scheme.Hom.isPullback_resLE H (US := S) (UT := ⊤) (UX := U) hyS' hUS' hVdef).isoPullback.hom`. Establish `po` using `(isIso_pushoutSection_iff H (US := S) (UT := ⊤) (UX := U) hyS' hUS' hVdef).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ hS (isAffineOpen_top _) hU)`. Establish `hgen` using `CommRingCat.closure_range_union_range_eq_top_of_isPushout po`. Establish `hU₀ : ⊤ ≤ (e 0 ≫ φ) ⁻¹ᵁ U` using `(top_le_preimage_iff_mem _ _).2 hxU`. Establish `hV₀ : ⊤ ≤ e 0 ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `(top_le_preimage_comp _ φ U).1 hU₀`.
+
+Establish `hVv : ⊤ ≤ v ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `(top_le_preimage_eps v _ h0 _).2 hV₀`. Establish `hUv : ⊤ ≤ (v ≫ φ) ⁻¹ᵁ U` using `by rwa [Scheme.Hom.comp_preimage]`. Establish `hN` using `(hol U 0).1.mem_nhds (x := 0) ⟨trivial, hU₀⟩`. Establish `hev : ∀ᶠ z in 𝓝 0, ⊤ ≤ e z ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `by filter_upwards [hN] with z hz using (top_le_preimage_comp _ φ U).1 hz.2`. Establish `hconst : ∀ (a : Γ(Y, φ ⁻¹ᵁ U)) (c : ℂ), (∀ z, ⊤ ≤ e z ⁻¹ᵁ (φ ⁻¹ᵁ U) → valAt' (e z) _ a = c) → evEps v _ hVv a = algebraMap ℂ _ c → DifferentiableAt ℂ (fun z => valAt' (e z) _ a) 0 ∧ evEps v _ hVv a = jet w (fun z => valAt' (e z) _ a)` using `fun a c h1 h2 => by`.
+
+Establish `h3 : (fun z => valAt' (e z) _ a) =ᶠ[𝓝 0] fun _ => c` using `hev.mono h1`. Conclude with `⟨(differentiableAt_const c).congr_of_eventuallyEq h3, by rw [jet_congr w h3, jet_const, h2]⟩`. Use `isDerivAt0_of_affine h0 hV hVv fun a => ?_` and prove the remaining obligations. Establish `ha : a ∈ Subring.closure _` using `hgen.ge (Subring.mem_top a)`. Proceed by induction on `ha using Subring.closure_induction with`.
+
+Consider the case `mem x hx`. Break down `hx with ⟨b, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Establish `h3 : (fun z => valAt' (e z) _ ((φ.appLE U (φ ⁻¹ᵁ U) le_rfl).hom b)) =ᶠ[𝓝 0] fun z => valAt' (e z ≫ φ) U b` using `hev.mono fun z hz => valAt'_appLE _ _ _ _ _ _ hz`. Conclude with `⟨((hol U b).2.differentiableAt hN).congr_of_eventuallyEq h3, by rw [jet_congr w h3, ← hd.2 U hUv b, evEps_appLE]⟩`. Use `hconst _ ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom b) (fun z hz => ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[valAt'_appLE _ _ _ _ _ _ hz, hs]`. Use `valAt'_id_top ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom b)` as an intermediate fact. Simplify using `using this`. Rewrite using `[evEps_appLE v s ⊤ _ _ b hVv le_top]`. Use `evEps_spMap b le_top` as an intermediate fact.
+
+Rewrite using `[← this]`. Use `congr 1`. Use `congr 1`. Consider the case `zero => exact hconst _ 0 (fun z _ => valAt'_zero _ _) (by simp)`. Consider the case `one => exact hconst _ 1 (fun z hz => valAt'_one _ hz) (by simp)`.
+
+Consider the case `add x y _ _ hx hy`. Simplify using `only [valAt'_add]`. Conclude with `⟨hx.1.add hy.1, by rw [jet_add w hx.1 hy.1, map_add, hx.2, hy.2]⟩`. Consider the case `neg x _ hx`. Simplify using `only [valAt'_neg]`.
+
+Conclude with `⟨hx.1.neg, by rw [jet_neg w, map_neg, hx.2]⟩`. Consider the case `mul x y _ _ hx hy`. Simplify using `only [valAt'_mul]`. Conclude with `⟨hx.1.mul hy.1, by rw [jet_mul w hx.1 hy.1, map_mul, hx.2, hy.2]⟩`.
+-/
 theorem isDerivAt0_of_isPullback {Z : Scheme.{0}} {φ : Y ⟶ Z} {s : Y ⟶ Sp ℂ} {p : Z ⟶ X} {y : Sp ℂ ⟶ X}
     (H : IsPullback φ s p y) {e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)} (hs : ∀ z, e z ≫ s = 𝟙 _)
     (hol : IsHolTo Set.univ (fun z => e z ≫ φ)) {w : Fin g → ℂ} {v : Sp (DualNumber ℂ) ⟶ Y}
@@ -231,6 +319,21 @@ end FibreDeriv
 
 open FibreDeriv in
 
+/- English proof (translation)
+Introduce `X G y g e Y φ s e₁ H he hol hd`. Establish `hee : (fun z => (e z).left) = fun z => e₁ z ≫ φ` using `funext fun z => (he z).1.symm`. Establish `hs : ∀ z, e₁ z ≫ s = 𝟙 _` using `fun z => (he z).2`. Establish `key : ∀ (w : Fin g → ℂ) (v : Sp (DualNumber ℂ) ⟶ Y), v ≫ s = spMap (algebraMap ℂ (DualNumber ℂ)) → (IsDerivAt0 e₁ w v ↔ IsDerivAt0 (fun z => (e z).left) w (v ≫ φ))` using `fun w v hv => by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `isDerivAt0_comp h φ` as an intermediate fact. Rewrite `this` using `[← hee]`. Conclude with `this`. Introduce `h`.
+
+Use `isDerivAt0_of_isPullback H hs ?_ hv ?_` and prove the remaining obligations. Rewrite using `[← hee]`. Conclude with `hol`. Rewrite using `[← hee]`. Conclude with `h`.
+
+Establish `hw : ∀ v : Sp (DualNumber ℂ) ⟶ Y, v ≫ s = spMap (algebraMap ℂ (DualNumber ℂ)) → (v ≫ φ) ≫ G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y` using `fun v hv => by`. Rewrite using `[Category.assoc, H.w, ← Category.assoc, hv]`. Use `⟨fun w => ?_, fun v hv h0 => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, huniq⟩` from `hd.1 w`. Establish `huw : u.left ≫ G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y` using `Over.w u`.
+
+Use `⟨H.lift u.left _ huw, ⟨H.lift_snd _ _ _, (key w _ (H.lift_snd _ _ _)).2 ?_⟩, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[H.lift_fst]`. Conclude with `hu`. Establish `h1` using `huniq (Over.homMk (v ≫ φ) (hw v hv.1)) ((key w v hv.1).1 hv.2)`. Use `H.hom_ext ?_ (by rw [H.lift_snd, hv.1])` and prove the remaining obligations.
+
+Rewrite using `[H.lift_fst, ← h1]`. Both sides reduce to the same expression. Establish `h1` using `hd.2 (Over.homMk (v ≫ φ) (hw v hv)) (by`. Express the relevant statement in the definitionally equal form `_ ≫ v ≫ φ = _`. Rewrite using `[← Category.assoc, h0, (he 0).1])`.
+
+Simplify using `only [key _ v hv]`. Conclude with `h1`.
+-/
 theorem isDerivAt0_fibre :
     ∀ (X : Scheme.{0}) (G : Over X) (y : Sp ℂ ⟶ X) (g : ℕ) (e : (Fin g → ℂ) → (Over.mk y ⟶ G)) (Y : Scheme.{0}) (φ : Y ⟶ G.left) (s : Y ⟶ Sp ℂ) (e₁ : (Fin g → ℂ) → (Sp ℂ ⟶ Y)), IsPullback φ s G.hom y → (∀ z, e₁ z ≫ φ = (e z).left ∧ e₁ z ≫ s = 𝟙 _) → IsHolTo Set.univ (fun z => (e z).left) → ((∀ w, ∃! v : epsPt y ⟶ G, IsDerivAt0 (fun z => (e z).left) w v.left) ∧ ∀ v : epsPt y ⟶ G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e 0).left → ∃! w, IsDerivAt0 (fun z => (e z).left) w v.left) → ((∀ w, ∃! v : Sp (DualNumber ℂ) ⟶ Y, v ≫ s = spMap (algebraMap ℂ (DualNumber ℂ)) ∧ IsDerivAt0 e₁ w v) ∧ ∀ v : Sp (DualNumber ℂ) ⟶ Y, v ≫ s = spMap (algebraMap ℂ (DualNumber ℂ)) → spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = e₁ 0 → ∃! w, IsDerivAt0 e₁ w v) := by
   intro X G y g e Y φ s e₁ H he hol hd

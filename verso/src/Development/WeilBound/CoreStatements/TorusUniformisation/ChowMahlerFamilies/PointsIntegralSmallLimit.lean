@@ -13,6 +13,13 @@ namespace PositivityTheory.Xgn.SmallPotentialLimit
 
 open MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P
 
+/- English proof (translation)
+Establish `key : ∀ Ψ y w, sheetDensity P Ψ φ g y w = sheetDensity P Ψ φ g' y w`. Introduce `Ψ y w`. Unfold `sheetDensity`. Use `split_ifs with hγ`. Rewrite using `[h _ hγ.choose_spec.2.self_of_nhds.2.1]`.
+
+Both sides reduce to the same expression. Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Simplify using `only [key]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pts_congr {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) {e : ℕ}
     (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) {g g' : ((Σ k, ι k) → ℂ) → ℝ} (h : ∀ z ∈ mcPts P, g z = g' z) :
     ptsIntegral P φ g = ptsIntegral P φ g' := by
@@ -28,6 +35,11 @@ theorem pts_congr {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k
     simp only [key]
   · rfl
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Q.U x)` using `(A.chart j).isOpen_inter_preimage_symm (Q.isOpen_U x)`. Establish `hmem : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Q.U x` using `⟨(A.chart j).map_source hj, by show (A.chart j).symm (A.chart j x) ∈ Q.U x`. Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `Q.mem_U x⟩`.
+
+Conclude with `((h.1 x j).contDiffAt (hopen.mem_nhds hmem)).of_le (by`. Establish `h2 : ((2 : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `WithTop.coe_le_coe.2 le_top`. Conclude with `h2)`.
+-/
 theorem isC2At_of_isPotential {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {Q : LocPot X}
     (h : IsPotential A Q) (x : X) : IsTwiceDifferentiableAt A Q x := by
   intro j hj
@@ -46,10 +58,16 @@ section Sys
 
 variable {e : ℕ} {σ : Type} (S : AnSys e σ)
 
+/- English proof (translation)
+Establish `h : Real.exp 1 ≤ rW S.L S.s y` using `rW_ge S.L S.s S.norm_le y`. Conclude with `(Real.le_log_iff_exp_le (lt_of_lt_of_le (Real.exp_pos 1) h)).2 h`.
+-/
 theorem one_le_log (y : S.X) : 1 ≤ Real.log (rW S.L S.s y) := by
   have h : Real.exp 1 ≤ rW S.L S.s y := rW_ge S.L S.s S.norm_le y
   exact (Real.le_log_iff_exp_le (lt_of_lt_of_le (Real.exp_pos 1) h)).2 h
 
+/- English proof (translation)
+The claim follows from `|S.ph a y - S.phT a t y| ≤ (|S.C| + |S.C₅|) * Real.log (rW S.L S.s y) := by obtain ⟨-, hC, hle, -⟩ := (S.reg a).2.2 t h0 h1 have h2 := hC y have h3 := hle y hy have h4 := ((S.sing a).2.2.2 y hy).1 have h5 := one_le_log S y rw [abs_of_nonpos (by linarith)] have h6 : S.C ≤ |S.C| * …`.
+-/
 theorem defect_bound (a : σ) {t : ℝ} (h0 : 0 < t) (h1 : t ≤ S.t₀) {y : S.X} (hy : y ∉ bdry S.s) :
     |S.ph a y - S.phT a t y| ≤ (|S.C| + |S.C₅|) * Real.log (rW S.L S.s y) := by
   obtain ⟨-, hC, hle, -⟩ := (S.reg a).2.2 t h0 h1
@@ -64,6 +82,9 @@ theorem defect_bound (a : σ) {t : ℝ} (h0 : 0 < t) (h1 : t ≤ S.t₀) {y : S.
     mul_le_mul_of_nonneg_right (le_abs_self _) (by linarith)
   linarith
 
+/- English proof (translation)
+Establish `hcl : IsClosed (bdry S.s)` using `LeviFormBoundaryTopology.isClosed_bdry S.sec`. Introduce `y hy`. Conclude with `((LeviFormBoundaryTopology.continuousAt_of_smoothOn S.A hcl.isOpen_compl (S.sing a).2.1 hy).sub (LeviFormBoundaryTopology.continuousAt_of_smoothOn S.A isOpen_univ ((S.reg a).2.2 t h0 h1).1 (Set.mem_univ y))).continuousWithinAt`.
+-/
 theorem defect_cont (a : σ) {t : ℝ} (h0 : 0 < t) (h1 : t ≤ S.t₀) :
     ContinuousOn (fun y => S.ph a y - S.phT a t y) (bdry S.s)ᶜ := by
   have hcl : IsClosed (bdry S.s) := LeviFormBoundaryTopology.isClosed_bdry S.sec
@@ -72,6 +93,21 @@ theorem defect_cont (a : σ) {t : ℝ} (h0 : 0 < t) (h1 : t ≤ S.t₀) :
     (LeviFormBoundaryTopology.continuousAt_of_smoothOn S.A isOpen_univ ((S.reg a).2.2 t h0 h1).1
       (Set.mem_univ y))).continuousWithinAt
 
+/- English proof (translation)
+Introduce `j Kc hK hKc`. Establish `hcl : IsClosed (bdry S.s)` using `LeviFormBoundaryTopology.isClosed_bdry S.sec`. Establish `hO : IsOpen ((S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' (bdry S.s)ᶜ)` using `(S.A.chart j).isOpen_inter_preimage_symm hcl.isOpen_compl`. Use `set O := (S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' (bdry S.s)ᶜ with hOdef`. Establish `hnull` using `(anSys_open_basics e σ S).2.1 j`.
+
+Establish `hae : (Kc : Set (Fin e → ℂ)) =ᵐ[volume] (Kc ∩ O : Set (Fin e → ℂ))` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 hnull] with y hy`. Use `propext ⟨fun h => ⟨h, hK h, ?_⟩, fun h => h.1⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Conclude with `hy ⟨hK h, hcon⟩`. Use `IntegrableOn.congr_set_ae ?_ hae` and prove the remaining obligations.
+
+Establish `hm : MeasurableSet (Kc ∩ O)` using `hKc.measurableSet.inter hO.measurableSet`. Establish `i1` using `(mIntegrableCont S.A Φ hΦ (fun _ => (1 : ℝ)) continuous_const j Kc hK hKc).mono_set (Set.inter_subset_left (t := O))`. Establish `i2` using `(logNormIntegrable S.A S.L S.s S.m S.W S.potL S.sec S.snc Φ hΦ j Kc hK hKc).mono_set (Set.inter_subset_left (t := O))`. Establish `i3` using `((i1.norm.const_mul (Real.exp 1)).add (i2.norm.const_mul 2)).const_mul (|S.C| + |S.C₅|)`. Use `Integrable.mono' i3 ?_ ?_` and prove the remaining obligations.
+
+Use `ContinuousOn.aestronglyMeasurable ?_ hm` and prove the remaining obligations. Use `ContinuousOn.mul ?_ ((locDensCont S.A Φ hΦ j).mono fun y hy => hy.2.1)` and prove the remaining obligations. Conclude with `(defect_cont S a h0 h1).comp ((S.A.chart j).continuousOn_symm.mono fun y hy => hy.2.1) fun y hy => hy.2.2`. Use `filter_upwards [ae_restrict_mem hm] with y hy`. Establish `hb` using `defect_bound S a h0 h1 (y := (S.A.chart j).symm y) hy.2.2`.
+
+Establish `hr : Real.exp 1 ≤ rW S.L S.s ((S.A.chart j).symm y)` using `rW_ge S.L S.s S.norm_le _`. Establish `hl : Real.log (rW S.L S.s ((S.A.chart j).symm y)) ≤ Real.exp 1 + 2 * |logNormSec S.L S.s ((S.A.chart j).symm y)|`. Use `Real.log_le_sub_one_of_pos (lt_of_lt_of_le (Real.exp_pos 1) hr)` as an intermediate fact. Establish `h2` using `neg_abs_le (logNormSec S.L S.s ((S.A.chart j).symm y))`. Unfold `rW at this ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : 0 ≤ |S.C| + |S.C₅|` using `by positivity`. Establish `hb2` using `hb.trans (mul_le_mul_of_nonneg_left hl hc)`. Use `mul_le_mul_of_nonneg_right hb2 (abs_nonneg (locDens S.A Φ j y))` as an intermediate fact. Simplify using `only [Pi.add_apply, Real.norm_eq_abs, abs_mul, one_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem defect_integrable (a : σ) {t : ℝ} (h0 : 0 < t) (h1 : t ≤ S.t₀) (Φ : Fin e → LocPot S.X)
     (hΦ : ∀ i, IsPotential S.A (Φ i)) : MIntegrable S.A Φ (fun y => S.ph a y - S.phT a t y) := by
   intro j Kc hK hKc
@@ -112,6 +148,25 @@ theorem defect_integrable (a : σ) {t : ℝ} (h0 : 0 < t) (h1 : t ≤ S.t₀) (�
     simp only [Pi.add_apply, Real.norm_eq_abs, abs_mul, one_mul]
     linarith
 
+/- English proof (translation)
+Use `letI : MeasurableSpace S.X := borel S.X`. Use `haveI : BorelSpace S.X := ⟨rfl⟩`. Establish `hcl : IsClosed (bdry S.s)` using `LeviFormBoundaryTopology.isClosed_bdry S.sec`. Establish `ht0 : 0 < S.t₀` using `(S.reg a).1`. Establish `hlim` using `hC S.A S.Θ S.L S.s S.m S.W S.potΘ S.posΘ S.potL S.sec S.snc S.norm_le (fun i => S.th (w i)) (fun i => S.ph (w i)) (fun i => S.phT (w i)) S.C₅ S.C S.t₀ (fun i => S.sing (w i)) (fun i => S.reg (w i)) (fun i => S.c2 (w i)) (fun _ => 0) (fun t y => if 0 < t ∧ t ≤ S.t₀ then S.ph a y - …`.
+
+Distinguish the cases in `h : 0 < t ∧ t ≤ S.t₀`. Simplify using `only [if_pos h]`. Conclude with `defect_cont S a h.1 h.2`. Simplify using `only [if_neg h]`. Conclude with `continuousOn_const)`.
+
+Use the proof step `(fun t y hy => by`. Distinguish the cases in `h : 0 < t ∧ t ≤ S.t₀`. Simplify using `only [if_pos h]`. Conclude with `defect_bound S a h.1 h.2 hy`. Simplify using `only [if_neg h, abs_zero]`.
+
+Conclude with `mul_nonneg (by positivity) (zero_le_one.trans (one_le_log S y)))`. Use the proof step `(by`. Use `Metric.tendstoLocallyUniformlyOn_iff.2 fun ε hε x hx => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `S.A.cover x`. Establish `hO : IsOpen ((S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' (bdry S.s)ᶜ)` using `(S.A.chart j).isOpen_inter_preimage_symm hcl.isOpen_compl`.
+
+Establish `hm : S.A.chart j x ∈ (S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' (bdry S.s)ᶜ` using `⟨(S.A.chart j).map_source hj, by show (S.A.chart j).symm (S.A.chart j x) ∈ (bdry S.s)ᶜ`. Rewrite using `[(S.A.chart j).left_inv hj]`. Conclude with `hx⟩`. Take `⟨Kc, hKc, hxK, hK⟩` from `exists_compact_subset hO hm`. Establish `hu` using `Metric.tendstoUniformlyOn_iff.1 (S.c2 a j Kc hK hKc).1 ε hε`.
+
+Use `⟨(S.A.chart j).source ∩ S.A.chart j ⁻¹' Kc, mem_nhdsWithin_of_mem_nhds (inter_mem ((S.A.chart j).open_source.mem_nhds hj) (((S.A.chart j).continuousAt hj).preimage_mem_nhds (mem_interior_iff_mem_nhds.1 hxK))), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hu, Ioc_mem_nhdsGT ht0] with t ht ht' y hy`. Establish `h1` using `ht _ hy.2`. Simplify using `only [Function.comp_apply, (S.A.chart j).left_inv hy.1] at h1`. Rewrite using `[if_pos ⟨ht'.1, ht'.2⟩, Real.dist_eq, zero_sub, abs_neg]`.
+
+Rewrite using `[Real.dist_eq] at h1)` and apply the resulting hypothesis. Establish `h0 : mInt S.A (fun i => S.th (w i) + LocPot.ofFun (S.ph (w i))) (fun _ => (0 : ℝ)) = 0`. Unfold `mInt`. Use `split_ifs`. Simplify using `[integralWith]`.
+
+Both sides reduce to the same expression. Establish `h2` using `hlim.2`. Rewrite `h2` using `[h0]`. Use `h2.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT ht0] with t ht`.
+
+Simplify using `only [if_pos (show 0 < t ∧ t ≤ S.t₀ from ⟨ht.1, ht.2⟩)]`. Both sides reduce to the same expression.
+-/
 theorem tendsto_base (hC : ConvergenceSignedStatement) (a : σ) (w : Fin e → σ) :
     Tendsto (fun t => mInt S.A (fun i => S.potT (w i) t) (fun y => S.ph a y - S.phT a t y))
       (𝓝[>] 0) (𝓝 0) := by
@@ -175,6 +230,9 @@ section Real
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {D : ℕ} {σ : Type} {S : AnSys D σ}
   {P : Ideal (MRing ι)} (Re : Realis S P)
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Rewrite using `[A.smul c z' hc, B.smul c z' hc, hab]`. Establish `h0 : (∏ k, ‖c k‖ ^ B.a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Rewrite using `[Real.log_mul h0 (A.pos z' hz').ne', Real.log_mul h0 (B.pos z' hz').ne']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_sub_orbit {A B : HermLine ι} (hab : A.a = B.a) {z z' : (Σ k, ι k) → ℂ}
     (hz' : ∀ k, ∃ i, z' ⟨k, i⟩ ≠ 0) (h : SameOrbit z z') :
     Real.log (A.h z) - Real.log (B.h z) = Real.log (A.h z') - Real.log (B.h z') := by
@@ -185,6 +243,11 @@ theorem log_sub_orbit {A B : HermLine ι} (hab : A.a = B.a) {z z' : (Σ k, ι k)
   rw [Real.log_mul h0 (A.pos z' hz').ne', Real.log_mul h0 (B.pos z' hz').ne']
   ring
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨V, hV, hxV, G, hG, hGe⟩` from `Re.ref_pot a x hx`. Use `⟨V ∩ Re.R.U x, hV.inter (Re.R.isOpen_U x), ⟨hxV, Re.R.mem_U x⟩, G, fun j => (hG j).mono fun y hy => ⟨hy.1, hy.2.1⟩, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e1` using `hGe y hy.1`. Establish `e2` using `log_sub_orbit (Re.line_deg a t) (Re.R.mem y y (Re.R.mem_U y)).1 (Re.R.compat x y y ⟨hy.2, Re.R.mem_U y⟩)`.
+
+Establish `e3` using `Re.line_eq a t h0 h1 y`. Express the relevant statement in the definitionally equal form `Real.log ((Re.ref a).h (Re.R.lift x y)) - (S.th a).φ (Re.π x) (Re.π y) = _ at e1`. Express the relevant statement in the definitionally equal form `Real.log ((Re.line a t).h (Re.R.lift x y)) - ((S.th a).φ (Re.π x) (Re.π y) + S.phT a t (Re.π y)) = _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem line_samePot (a : σ) {t : ℝ} (h0 : 0 < t) (h1 : t ≤ S.t₀) :
     SamePot Re.R.A Set.univ (potOf Re.R (Re.line a t)) ((S.potT a t).pullback Re.π Re.holo.1) := by
   intro x hx
@@ -200,6 +263,13 @@ theorem line_samePot (a : σ) {t : ℝ} (h0 : 0 < t) (h1 : t ≤ S.t₀) :
     ((S.th a).φ (Re.π x) (Re.π y) + S.phT a t (Re.π y)) = _
   linarith
 
+/- English proof (translation)
+Introduce `j y hy`. Take `⟨k, hk⟩` from `A.cover (h ((B.chart j).symm y))`. Establish `a1` using `hh.2 j k y ⟨hy.1, hk⟩`. Establish `a2` using `hg k (A.chart k (h ((B.chart j).symm y))) ⟨(A.chart k).map_source hk, by show (A.chart k).symm (A.chart k (h ((B.chart j).symm y))) ∈ U`. Rewrite using `[(A.chart k).left_inv hk]`.
+
+Conclude with `hy.2⟩`. Establish `a3 : AnalyticAt ℂ ((g ∘ (A.chart k).symm) ∘ (A.chart k ∘ h ∘ (B.chart j).symm)) y` using `AnalyticAt.comp a2 a1`. Use `a3.congr ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (h ∘ (B.chart j).symm) y` using `hh.1.continuousAt.comp ((B.chart j).continuousAt_symm hy.1)`. Use `filter_upwards [hc.preimage_mem_nhds ((A.chart k).open_source.mem_nhds hk)] with z hz`.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[(A.chart k).left_inv (show h ((B.chart j).symm z) ∈ (A.chart k).source from hz)]`.
+-/
 theorem holoOn_comp {e e' : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {A : FinHolAtlas e X}
     {B : FinHolAtlas e' Y} {h : Y → X} (hh : HoloMap B A h) {U : Set X} {g : X → ℂ} (hg : A.HoloOn U g) :
     B.HoloOn (h ⁻¹' U) (fun y => g (h y)) := by
@@ -219,6 +289,21 @@ theorem holoOn_comp {e e' : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalS
   simp only [Function.comp_apply]
   rw [(A.chart k).left_inv (show h ((B.chart j).symm z) ∈ (A.chart k).source from hz)]
 
+/- English proof (translation)
+Establish `hAn : Re.R.A.IsAnalyticSubset (Re.π ⁻¹' bdry S.s)`. Introduce `x`. Use `⟨Re.π ⁻¹' S.L.U (Re.π x), (S.L.isOpen_U _).preimage Re.holo.1, S.L.mem_U _, 1, fun _ y => S.s (Re.π x) (Re.π y), fun _ => holoOn_comp Re.holo (S.sec.1 (Re.π x)), ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hz, hzU⟩`. Conclude with `⟨hzU, fun _ => (LeviFormBoundaryTopology.bdry_iff S.sec hzU).1 hz⟩`. Introduce and unpack `⟨hzU, hz⟩`. Conclude with `⟨(LeviFormBoundaryTopology.bdry_iff S.sec hzU).2 (hz 0), hzU⟩`. Establish `hInt` using `LeviFormBoundaryTopology.interior_bdry_eq_empty S.sec S.snc`.
+
+Establish `hInt' : interior (Re.π ⁻¹' bdry S.s) = ∅`. Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce `x hx`. Establish `hns : ¬ interior (Re.π ⁻¹' bdry S.s) ⊆ Re.π ⁻¹' Re.br` using `fun hs => by`. Use `interior_maximal hs isOpen_interior hx` as an intermediate fact.
+
+Rewrite `this` using `[Re.degree.2.2.2.1]`. Conclude with `this`. Take `⟨y, hy, hyb⟩` from `Set.not_subset.1 hns`. Take `⟨E, hyE, hE, -⟩` from `exists_localHomeomorph_of_isDegreeOff Re.holo Re.degree y hyb`. Establish `hn : E '' (E.source ∩ interior (Re.π ⁻¹' bdry S.s)) ∈ 𝓝 (E y)` using `E.image_mem_nhds hyE (inter_mem (E.open_source.mem_nhds hyE) (isOpen_interior.mem_nhds hy))`.
+
+Establish `hsub : E '' (E.source ∩ interior (Re.π ⁻¹' bdry S.s)) ⊆ bdry S.s`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[← hE hz.1]`. Conclude with `(interior_subset hz.2 : z ∈ Re.π ⁻¹' bdry S.s)`. Use `mem_interior_iff_mem_nhds.2 (mem_of_superset hn hsub)` as an intermediate fact.
+
+Rewrite `this` using `[hInt]`. Conclude with `this`. Introduce `j`. Establish `h` using `analyticNull Re.R.A _ hAn hInt' j`. Establish `hc : (Re.π ⁻¹' S.open')ᶜ = Re.π ⁻¹' bdry S.s`.
+
+Use extensionality with `z`. Simplify using `[AnSys.open']`. Rewrite using `[hc]`. Rewrite `h` using `[Set.inter_comm, (Re.R.A.chart j).image_source_inter_eq']`. Conclude with `h`.
+-/
 theorem preimage_null : IsNull Re.R.A (Re.π ⁻¹' S.open')ᶜ := by
   have hAn : Re.R.A.IsAnalyticSubset (Re.π ⁻¹' bdry S.s) := by
     intro x
@@ -258,6 +343,13 @@ theorem preimage_null : IsNull Re.R.A (Re.π ⁻¹' S.open')ᶜ := by
   rw [Set.inter_comm, (Re.R.A.chart j).image_source_inter_eq'] at h
   exact h
 
+/- English proof (translation)
+Establish `hlog : ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → logNorm (A.tensor (Re.line a₀ t).inv).inv 1 z = Real.log (A.h z) - Real.log ((Re.line a₀ t).h z)`. Introduce `z hz`. Rewrite using `[logNorm_inv_one]`. Express the relevant statement in the definitionally equal form `Real.log (A.h z * ((Re.line a₀ t).h z)⁻¹) = _`. Rewrite using `[Real.log_mul (A.pos z hz).ne' (inv_ne_zero ((Re.line a₀ t).pos z hz).ne'), Real.log_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdeg : (A.tensor (Re.line a₀ t).inv).a = 0`. Express the relevant statement in the definitionally equal form `A.a + -(Re.line a₀ t).a = 0`. Rewrite using `[ha, Re.line_deg, add_neg_cancel]`. Establish `hΦ : ∀ i, IsPotential S.A (S.potT (w i) t)` using `fun i => (anSys_open_basics D σ S).2.2.2.1 (w i) t h0 h1`.
+
+Rewrite using `[pts_congr P _ fun z hz => (hlog z hz.1).symm, ptsIntegral_eq_mInt' hE resBridge Re.R Re.arith (fun j => Re.line_smooth (w j) t h0 h1) (isSmoothHerm_inv (isSmoothHerm_tensor hA (isSmoothHerm_inv (Re.line_smooth a₀ t h0 h1)))) (isSectionOn_inv_one Re.arith.2.1.1 hdeg), ← (degreeFo …`. Use `(mInt_congr_samePot D Re.R.X Re.R.A (Re.π ⁻¹' S.open') _ _ _ _ (preimage_null Re) (fun i x _ => line_samePot Re (w i) h0 h1 x (Set.mem_univ x)) (fun i x _ => isC2At_of_isPotential _ (isPotentialPullback S.A Re.R.A Re.π Re.holo _ (hΦ i)) x) fun x hx => ?_).1` and prove the remaining obligations. Rewrite using `[hlog _ (Re.R.mem x x (Re.R.mem_U x)).1, hph x hx, Re.line_eq a₀ t h0 h1 x]`. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pts_eq (hE : ResExistsStatement) (a₀ : σ) (A : HermLine ι) (w : Fin D → σ) (hA : IsSmoothHerm A)
     (ha : A.a = (Re.ref a₀).a)
     (hph : ∀ x, Re.π x ∈ S.open' → Real.log (A.h (Re.R.lift x x)) =
@@ -296,6 +388,11 @@ end Real
 
 end PositivityTheory.Xgn.SmallPotentialLimit
 
+/- English proof (translation)
+Introduce `hI K _ ι _ D σ S P Re a₀ A w hA ha hph`. Establish `h` using `(PositivityTheory.Xgn.SmallPotentialLimit.tendsto_base S hI.convergenceSigned a₀ w).const_mul (Re.deg : ℝ)`. Rewrite `h` using `[mul_zero]`. Use `h.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT (S.reg a₀).1] with t ht`.
+
+Conclude with `(PositivityTheory.Xgn.SmallPotentialLimit.pts_eq Re hI.resExists a₀ A w hA ha hph ht.1 ht.2).symm`.
+-/
 theorem PositivityTheory.Xgn.points_integral_small_limit : Inputs → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (D : ℕ) (σ : Type) (S : AnSys D σ) (P : Ideal (MRing ι)) (Re : Realis S P) (a₀ : σ) (A : HermLine ι) (w : Fin D → σ), IsSmoothHerm A → A.a = (Re.ref a₀).a → (∀ x, Re.π x ∈ S.open' → Real.log (A.h (Re.R.lift x x)) = Real.log ((Re.ref a₀).h (Re.R.lift x x)) + S.ph a₀ (Re.π x)) → Tendsto (fun t => ptsIntegral P (pot fun j => Re.line (w j) t) (fun z => Real.log (A.h z) - Real.log ((Re.line a₀ t).h z))) (𝓝[>] 0) (𝓝 0) := by
   intro hI K _ ι _ D σ S P Re a₀ A w hA ha hph
   have h := (PositivityTheory.Xgn.SmallPotentialLimit.tendsto_base S hI.convergenceSigned a₀ w).const_mul (Re.deg : ℝ)

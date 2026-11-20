@@ -23,18 +23,30 @@ open GlobalTheory.OrbitSep
 
 namespace GlobalTheory.LogKSDiv.GenChange
 
+/- English proof (translation)
+Simplify using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Apply the tactic sequence `ext x <;> simp [dualMap]`.
+-/
 theorem dualMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     dualMap (g.comp f) = (dualMap g).comp (dualMap f) := by
   ext x <;> simp [dualMap]
 
+/- English proof (translation)
+Simplify `U.2.map_fromSpec W.2 (homOfLE h).op` using `[spMap, GlobalTheory.LogKS.chart]`.
+-/
 theorem chart_res {X : Scheme.{0}} (U W : X.affineOpens) (h : W.1 ≤ U.1) :
     spMap (X.presheaf.map (homOfLE h).op).hom ≫ GlobalTheory.LogKS.chart U = GlobalTheory.LogKS.chart W := by
   simpa [spMap, GlobalTheory.LogKS.chart] using U.2.map_fromSpec W.2 (homOfLE h).op
 
+/- English proof (translation)
+Take `⟨f, g, hfg, hxf⟩` from `exists_basicOpen_le_affine_inter U.2 U'.2 x ⟨hx, hx'⟩`. Conclude with `⟨X.affineBasicOpen f, X.basicOpen_le f, (show X.basicOpen f ≤ U'.1 from hfg ▸ X.basicOpen_le g), f, g, rfl, hfg, hxf⟩`.
+-/
 theorem common_basic {X : Scheme.{0}} (U U' : X.affineOpens) (x : X) (hx : x ∈ U.1) (hx' : x ∈ U'.1) :
     ∃ (W : X.affineOpens) (hW : W.1 ≤ U.1) (hW' : W.1 ≤ U'.1) (f : Γ(X, U.1)) (f' : Γ(X, U'.1)),
       W.1 = X.basicOpen f ∧ W.1 = X.basicOpen f' ∧ x ∈ W.1 := by
@@ -42,6 +54,11 @@ theorem common_basic {X : Scheme.{0}} (U U' : X.affineOpens) (x : X) (hx : x ∈
   exact ⟨X.affineBasicOpen f, X.basicOpen_le f, (show X.basicOpen f ≤ U'.1 from hfg ▸ X.basicOpen_le g), f, g, rfl,
     hfg, hxf⟩
 
+/- English proof (translation)
+Establish `hr : Set.range y ⊆ Set.range (GlobalTheory.LogKS.chart W)`. Rewrite using `[GlobalTheory.LogKS.chart, W.2.range_fromSpec]`. Introduce and unpack `_ ⟨z', rfl⟩`. Take `⟨z, hz⟩` from `hy`. Establish `: z' = z` using `Subsingleton.elim _ _`.
+
+Conclude with `this ▸ hz`. Establish `: IsOpenImmersion (GlobalTheory.LogKS.chart W)` using `W.2.isOpenImmersion_fromSpec`. Use `⟨(Spec.preimage (IsOpenImmersion.lift (GlobalTheory.LogKS.chart W) y hr)).hom, ?_⟩` and prove the remaining obligations. Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem exists_rho {X : Scheme.{0}} (W : X.affineOpens) {K : Type} [Field K] (y : Sp K ⟶ X)
     (hy : ∃ z, y z ∈ W.1) : ∃ ρW : Γ(X, W.1) →+* K, spMap ρW ≫ GlobalTheory.LogKS.chart W = y := by
   have hr : Set.range y ⊆ Set.range (GlobalTheory.LogKS.chart W) := by
@@ -55,6 +72,9 @@ theorem exists_rho {X : Scheme.{0}} (W : X.affineOpens) {K : Type} [Field K] (y 
   simp only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]
   exact IsOpenImmersion.lift_fac _ _ _
 
+/- English proof (translation)
+Establish `: IsOpenImmersion (GlobalTheory.LogKS.chart U)` using `U.2.isOpenImmersion_fromSpec`. Rewrite `hρ` using `[← chart_res U W h, ← Category.assoc, ← spMap_comp']`. Establish `h2` using `Spec.map_inj.1 ((cancel_mono (GlobalTheory.LogKS.chart U)).1 hρ)`. Simplify using `using congrArg CommRingCat.Hom.hom h2`.
+-/
 theorem rho_fac {X : Scheme.{0}} (U W : X.affineOpens) (h : W.1 ≤ U.1) {K : Type} [CommRing K]
     (ρ : Γ(X, U.1) →+* K) (ρW : Γ(X, W.1) →+* K)
     (hρ : spMap ρ ≫ GlobalTheory.LogKS.chart U = spMap ρW ≫ GlobalTheory.LogKS.chart W) :
@@ -64,6 +84,11 @@ theorem rho_fac {X : Scheme.{0}} (U W : X.affineOpens) (h : W.1 ≤ U.1) {K : Ty
   have h2 := Spec.map_inj.1 ((cancel_mono (GlobalTheory.LogKS.chart U)).1 hρ)
   simpa using congrArg CommRingCat.Hom.hom h2
 
+/- English proof (translation)
+Take `⟨W, hWa⟩` from `W`. Simplify using `only at hf hW ⊢`. Substitute `hf` using the available equality. Use `letI := (X.presheaf.map (homOfLE hW).op).hom.toAlgebra`. Establish `: IsLocalization.Away f Γ(X, X.basicOpen f)` using `U.2.isLocalization_basicOpen f`.
+
+Use `⟨IsLocalization.Away.algebraMap_isUnit f, fun r' => ?_⟩` and prove the remaining obligations. Take `⟨m, r, h⟩` from `IsLocalization.Away.surj f r'`. Conclude with `⟨r, m, h⟩`.
+-/
 theorem basic_loc {X : Scheme.{0}} (U W : X.affineOpens) (hW : W.1 ≤ U.1) (f : Γ(X, U.1))
     (hf : W.1 = X.basicOpen f) :
     IsUnit ((X.presheaf.map (homOfLE hW).op).hom f) ∧
@@ -78,6 +103,13 @@ theorem basic_loc {X : Scheme.{0}} (U W : X.affineOpens) (hW : W.1 ≤ U.1) (f :
   obtain ⟨m, r, h⟩ := IsLocalization.Away.surj f r'
   exact ⟨r, m, h⟩
 
+/- English proof (translation)
+Establish `hδmul : ∀ x y, D (ρW (x * y)) - ρW (DlW (x * y)) = ρW x * (D (ρW y) - ρW (DlW y)) + ρW y * (D (ρW x) - ρW (DlW x))`. Introduce `x y`. Rewrite using `[map_mul, Derivation.leibniz, Derivation.leibniz, map_add, smul_eq_mul, smul_eq_mul, smul_eq_mul, smul_eq_mul, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hδres : ∀ r, D (ρW (res r)) - ρW (DlW (res r)) = 0` using `fun r => by rw [hD, hc, sub_self]`.
+
+Establish `hpow : ∀ m : ℕ, D (ρW (res f ^ m)) - ρW (DlW (res f ^ m)) = 0` using `fun m => by`. Rewrite using `[← map_pow]`. Conclude with `hδres _`. Introduce `r'`. Take `⟨r, m, h⟩` from `hloc r'`.
+
+Use `hδmul r' (res f ^ m)` as an intermediate fact. Rewrite `this` using `[h, hδres, hpow, mul_zero, zero_add]`. Establish `hu : ρW (res f ^ m) ≠ 0` using `((hf.pow m).map ρW).ne_zero`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this.symm).resolve_left hu)`.
+-/
 theorem der_through {k K R RW : Type} [CommRing k] [Field K] [Algebra k K] [CommRing R] [CommRing RW]
     (res : R →+* RW) (ρW : RW →+* K) (f : R) (hf : IsUnit (res f))
     (hloc : ∀ r' : RW, ∃ (r : R) (m : ℕ), r' * res f ^ m = res r)
@@ -100,6 +132,11 @@ theorem der_through {k K R RW : Type} [CommRing k] [Field K] [Algebra k K] [Comm
   have hu : ρW (res f ^ m) ≠ 0 := ((hf.pow m).map ρW).ne_zero
   exact sub_eq_zero.1 ((mul_eq_zero.1 this.symm).resolve_left hu)
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨a, b, hb, hx⟩` from `hfr x`. Establish `h1` using `congrArg D₁ hx`. Establish `h2` using `congrArg D₂ hx`. Rewrite `h1`, `h2` using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`.
+
+Rewrite `h2` using `[← h a, ← h b]`. Conclude with `mul_left_cancel₀ hb (by linear_combination h1 - h2)`.
+-/
 theorem der_ext_frac {k K R : Type} [CommRing k] [Field K] [Algebra k K] [CommRing R] (ρ : R →+* K)
     (hfr : ∀ x : K, ∃ a b : R, ρ b ≠ 0 ∧ x * ρ b = ρ a) (D₁ D₂ : Derivation k K K)
     (h : ∀ r, D₁ (ρ r) = D₂ (ρ r)) : D₁ = D₂ := by
@@ -111,6 +148,9 @@ theorem der_ext_frac {k K R : Type} [CommRing k] [Field K] [Algebra k K] [CommRi
   rw [← h a, ← h b] at h2
   exact mul_left_cancel₀ hb (by linear_combination h1 - h2)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, GlobalTheory.LogKSDiv.symPair, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_symPair {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ}
     (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (P : GlobalTheory.LogKSDiv.PairIx H Dw) :
@@ -119,6 +159,9 @@ theorem map_symPair {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reci
   simp only [Matrix.map_apply, GlobalTheory.LogKSDiv.symPair, Matrix.of_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`.
+-/
 theorem der_sum_apply {k A M ι : Type} [CommRing k] [CommRing A] [Algebra k A] [AddCommGroup M] [Module A M]
     [Module k M] [IsScalarTower k A M] (s : Finset ι) (d : ι → Derivation k A M) (x : A) :
     (∑ i ∈ s, d i) x = ∑ i ∈ s, d i x := by
@@ -132,6 +175,49 @@ end GlobalTheory.LogKSDiv.GenChange
 namespace GlobalTheory.LogKSDiv.GenChange
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z hpq hFA _ _ w w' D D' A hG hG' hA`. Use `letI := (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)).toAlgebra`. Take `⟨U, hU, ρ, n, e, v, ε, Dl, hρ, hvT, hvB, hw, hKS, hD⟩` from `hG`. Take `⟨U', hU', ρ', n', e', v', ε', Dl', hρ', hvT', hvB', hw', hKS', hD'⟩` from `hG'`. Establish `hin : ∀ (U₀ : TF.Y.X.affineOpens) (ρ₀ : Γ(TF.Y.X, U₀.1) →+* (X₀ TF.Y Z).functionField) (_ : spMap ρ₀ ≫ GlobalTheory.LogKS.chart U₀ = genPt TF Z ≫ (barComp TF.Y Z).ι) (z : Sp (X₀ TF.Y Z).functionField), (genPt TF Z ≫ (barComp TF.Y Z).ι) z ∈ U₀.1`.
+
+Introduce `U₀ ρ₀ h z`. Rewrite using `[← h, Scheme.Hom.comp_apply, GlobalTheory.LogKS.chart]`. Use `show _ ∈ (U₀.1 : Set TF.Y.X)`. Rewrite using `[← U₀.2.range_fromSpec]`. Conclude with `⟨_, rfl⟩`.
+
+Set `z0 : Sp (X₀ TF.Y Z).functionField` to `IsLocalRing.closedPoint _`. Take `⟨W, hWU, hWU', f, f', hWf, hWf', hxW⟩` from `common_basic U U' ((genPt TF Z ≫ (barComp TF.Y Z).ι) z0) (hin U ρ hρ z0) (hin U' ρ' hρ' z0)`. Take `⟨ρW, hρW⟩` from `exists_rho W (genPt TF Z ≫ (barComp TF.Y Z).ι) ⟨z0, hxW⟩`. Establish `hfacU : ρ = ρW.comp (TF.Y.X.presheaf.map (homOfLE hWU).op).hom` using `rho_fac U W hWU ρ ρW (hρ.trans hρW.symm)`. Establish `hfacU' : ρ' = ρW.comp (TF.Y.X.presheaf.map (homOfLE hWU').op).hom` using `rho_fac U' W hWU' ρ' ρW (hρ'.trans hρW.symm)`.
+
+Take `⟨hinj, hfr⟩` from `GlobalTheory.T.affineOpen_to_functionField_injective_and_fraction TF.Y.X (barComp TF.Y Z) W (hWU.trans hU) ρW hρW`. Establish `hcr` using `chart_res U W hWU`. Establish `hcr'` using `chart_res U' W hWU'`. Take `⟨hfu, hfloc⟩` from `basic_loc U W hWU f hWf`. Take `⟨hfu', hfloc'⟩` from `basic_loc U' W hWU' f' hWf'`.
+
+Establish `hv'WB` using `GlobalTheory.T.tangentBasis_affineOpen_restrict_basicOpen E H TF.Y.X TF.Y.t U' W hWU' f' hWf' n' v' hvT' hvB'`. Use `choose DlW hDlW hDlWc using fun j => GlobalTheory.T.exists_logDerivation_extension_basicOpen TF.Y.X c.F TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U W hWU f hWf (Dl j).1 (Dl j).2`. Use `choose Dl'W hDl'W hDl'Wc using fun k => GlobalTheory.T.exists_logDerivation_extension_basicOpen TF.Y.X c.F TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U' W hWU' f' hWf' (Dl' k).1 (Dl' k).2`. Establish `hKS0` using `fun j => GlobalTheory.T.kodairaSpencer_condition_restrict_basicOpen_of_affine E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) U W hWU f hWf n v (Dl j).1 (DlW j) (symPair e (ε j)) (hDlWc j) (hKS j)`. Establish `hKS0'` using `fun k => GlobalTheory.T.kodairaSpencer_condition_restrict_basicOpen_of_affine E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) U' W hWU' f' hWf' n' v' (Dl' k).1 (Dl'W k) (symPair e' (ε' k)) (hDl'Wc k) (hKS' k)`.
+
+Simplify using `only [RingHom.mapMatrix_apply, map_symPair] at hKS0 hKS0'`. Generalize the expression as in `(TF.Y.X.presheaf.map (homOfLE hWU).op).hom = resU at hfacU hcr hfu hfloc hDlWc hKS0`. Generalize the expression as in `(TF.Y.X.presheaf.map (homOfLE hWU').op).hom = resU' at hfacU' hcr' hfu' hfloc' hv'WB hDl'Wc hKS0'`. Set `vW : Fin n → (Sp (DualNumber Γ(TF.Y.X, W.1)) ⟶ TF.Y.t.G.left)` to `fun a => spMap (dualMap resU) ≫ v a`. Set `v'W : Fin n' → (Sp (DualNumber Γ(TF.Y.X, W.1)) ⟶ TF.Y.t.G.left)` to `fun c => spMap (dualMap resU') ≫ v' c`.
+
+Establish `hbc` using `GlobalTheory.T.tangent_combination_preserved_by_baseChange E H TF.Y.X TF.Y.t _ _ resU (GlobalTheory.LogKS.chart U) (GlobalTheory.LogKS.chart W) hcr`. Establish `hbc'` using `GlobalTheory.T.tangent_combination_preserved_by_baseChange E H TF.Y.X TF.Y.t _ _ resU' (GlobalTheory.LogKS.chart U') (GlobalTheory.LogKS.chart W) hcr'`. Establish `hvWT : ∀ a, IsTanAtG TF.Y.t (GlobalTheory.LogKS.chart W) (vW a)` using `fun a => hbc.1 _ (hvT a)`. Establish `hv'WT : ∀ c, IsTanAtG TF.Y.t (GlobalTheory.LogKS.chart W) (v'W c)` using `fun c => hbc'.1 _ (hvT' c)`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin n) (Fin n') Γ(TF.Y.X, W.1), ∀ a, IsCombAtG TF.Y.t (GlobalTheory.LogKS.chart W) v'W (B a) (vW a)` from `⟨fun a => (hv'WB (vW a) (hvWT a)).exists.choose, fun a => (hv'WB (vW a) (hvWT a)).exists.choose_spec⟩`.
+
+Establish `htan' : ∀ τ k, IsTanAtG TF.Y.t (spMap ρW ≫ GlobalTheory.LogKS.chart W) (w' τ k)`. Introduce `τ k`. Rewrite using `[hw']`. Conclude with `(GlobalTheory.T.tangent_combination_preserved_by_baseChange E H TF.Y.X TF.Y.t _ _ ρ' (GlobalTheory.LogKS.chart U') (spMap ρW ≫ GlobalTheory.LogKS.chart W) (hρ'.trans hρW.symm)).1 _ (hvT' _)`. Establish `hgen : ∀ τ i c, ρW (B (e ⟨τ, i⟩) c) = flatFrame A e e' (e ⟨τ, i⟩) c`.
+
+Introduce `τ i`. Establish `h1` using `(GlobalTheory.T.tangent_combination_preserved_by_baseChange E H TF.Y.X TF.Y.t _ _ ρW (GlobalTheory.LogKS.chart W) (spMap ρW ≫ GlobalTheory.LogKS.chart W) rfl).2 _ v'W (B (e ⟨τ, i⟩)) (vW (e ⟨τ, i⟩)) (hB (e ⟨τ, i⟩))`. Establish `hvw : spMap (dualMap ρW) ≫ vW (e ⟨τ, i⟩) = w τ i`. Rewrite using `[hw, hfacU, dualMap_comp', spMap_comp', Category.assoc]`. Establish `hv'w : (fun c => spMap (dualMap ρW) ≫ v'W c) = fun c => w' (e'.symm c).1 (e'.symm c).2`.
+
+Use function extensionality and compare the values at `c`. Rewrite using `[hw', Sigma.eta, Equiv.apply_symm_apply, hfacU', dualMap_comp', spMap_comp', Category.assoc]`. Rewrite `h1` using `[hvw, hv'w]`. Establish `h2` using `GlobalTheory.T.isCombAtZeroSection_eigenBlock_flattened_frame E H Dw TF.Y.X TF.Y.t _ (spMap ρW ≫ GlobalTheory.LogKS.chart W) n n' e e' w' A τ i (w τ i) htan' (by rw [hρW]; exact hA τ i)`. Establish `h3` using `GlobalTheory.T.generic_tangentCoefficients_unique_affineOpen_basis E H TF.Y.X TF.Y.t W _ ρW hinj hfr n' v'W hv'WT hv'WB _ _ (w τ i) (hv'w ▸ h1) (hv'w ▸ h2)`.
+
+Conclude with `fun c => congrFun h3 c`. Establish `hρB : ∀ a c, ρW (B a c) = flatFrame A e e' a c`. Introduce `a c`. Take `⟨⟨τ, i⟩, rfl⟩` from `e.surjective a`. Conclude with `hgen τ i c`.
+
+Establish `hBmap : B.map ρW = flatFrame A e e'`. Use extensionality with `a c`. Conclude with `hρB a c`. Establish `hBd : ∀ (τ σ : E →+* ℂ) (i : Fin (Dw.mult τ)) (k : Fin (Dw.mult σ)), τ ≠ σ → B (e ⟨τ, i⟩) (e' ⟨σ, k⟩) = 0`. Introduce `τ σ i k hne`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[hρB, map_zero]`. Simplify using `[flatFrame, Matrix.blockDiagonal'_apply, hne]`. Use `choose cfs hcfs using fun j => GlobalTheory.T.transpose_mul_symPair_mem_span_balancedTensors E H Dw _ n n' e e' ε' B hBd (ε j)`. Set `LW : Matrix (Fin Dw.dim) (Fin Dw.dim) Γ(TF.Y.X, W.1)` to `Matrix.of fun k j => cfs j k`.
+
+Establish `hKSW` using `fun j => GlobalTheory.T.kodairaSpencer_change_of_tangent_frame E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) W n n' vW v'W B (DlW j) _ hvWT hv'WT hB (hKS0 j)`. Take `⟨Aact, hAact⟩` from `GlobalTheory.T.existsUnique_cmOrderActionMatrix_on_affineOpen E H TF.Y.X TF.Y.t W n' v'W hv'WT hv'WB`. Take `⟨eW, heW⟩` from `TF.logKS W n' v'W Aact hv'WT hv'WB hAact`. Establish `hrel : ∀ j, DlW j = ∑ k, LW k j • Dl'W k`. Introduce `j`.
+
+Establish `h1` using `(heW ⟨DlW j, hDlW j⟩ _).1 (hKSW j)`. Establish `h2` using `fun k => (heW ⟨Dl'W k, hDl'W k⟩ _).1 (hKS0' k)`. Establish `h3 : eW ⟨DlW j, hDlW j⟩ = eW (∑ k, LW k j • (⟨Dl'W k, hDl'W k⟩ : LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) W))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← h1, map_sum, Submodule.coe_sum, hcfs j]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Submodule.coe_smul, ← h2 k]`. Both sides reduce to the same expression. Use `congrArg Subtype.val (eW.injective h3)` as an intermediate fact. Simplify `this` using `[Submodule.coe_sum]`.
+
+Establish `hDW : ∀ j r, D j (ρW r) = ρW (DlW j r)` using `fun j => der_through resU ρW f hfu hfloc (Dl j).1 (DlW j) (hDlWc j) (D j) (fun r => by`. Use `hD j r` as an intermediate fact. Rewrite `this` using `[hfacU]`. Conclude with `this)`. Establish `hD'W : ∀ k r, D' k (ρW r) = ρW (Dl'W k r)` using `fun k => der_through resU' ρW f' hfu' hfloc' (Dl' k).1 (Dl'W k) (hDl'Wc k) (D' k) (fun r => by`.
+
+Use `hD' k r` as an intermediate fact. Rewrite `this` using `[hfacU']`. Conclude with `this)`. Use `⟨n, n', e, e', ε, ε', Matrix.of fun k j => ρW (cfs j k), fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun M => Matrix.map M ρW) (hcfs j)`.
+
+Simplify using `only [Matrix.map_mul, Matrix.transpose_map, hBmap, map_symPair] at h`. Rewrite using `[h]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_symPair ρW e' (ε' k)]`. Both sides reduce to the same expression. Apply `der_ext_frac ρW hfr` to reduce the goal to its premises. Introduce `r`. Rewrite using `[hDW j r, hrel j, der_sum_apply, der_sum_apply, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.smul_apply, Derivation.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, hD'W]`. Both sides reduce to the same expression.
+-/
 theorem genKS_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), 1 ≤ Dw.p + Dw.q → FnAlgClosed Xo c → ∀ [IsIntegral (X₀ TF.Y Z)] [SmoothOfRelativeDimension Dw.dim (s₀ TF.Y Z)], ∀ (w w' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber (X₀ TF.Y Z).functionField) ⟶ TF.Y.t.G.left)) (D D' : Fin Dw.dim → GlobalTheory.LogKSDiv.GenDer TF Z) (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (X₀ TF.Y Z).functionField), GlobalTheory.LogKSDiv.GenKS TF Z w D → GlobalTheory.LogKSDiv.GenKS TF Z w' D' → (∀ τ i, IsCombAtG TF.Y.t ((show Sp (X₀ TF.Y Z).functionField ⟶ X₀ TF.Y Z from (X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z))) ≫ (barComp TF.Y Z).ι) (w' τ) (A τ i) (w τ i)) →
     ∃ (n n' : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (e' : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n')
       (ε ε' : Fin Dw.dim ≃ GlobalTheory.LogKSDiv.PairIx H Dw) (L : Matrix (Fin Dw.dim) (Fin Dw.dim) (X₀ TF.Y Z).functionField),

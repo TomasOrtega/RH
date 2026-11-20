@@ -15,11 +15,25 @@ def lowerOrder (N : ℕ) (M : ℕ → Matrix m m F) (n : ℕ) : Matrix (m ⊕ m)
   fromBlocks (if n = N then 1 else 0) (if n + 1 = N then -1 else 0) (if n = 0 then M 0 else 0) (M (n + 1))
 
 omit [Fintype m] in
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem norm_one_apply_le (i j : m) : ‖(1 : Matrix m m F) i j‖ ≤ 1 := by
   rw [Matrix.one_apply]
   split_ifs <;> simp
 
 omit [Fintype m] in
+/- English proof (translation)
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `only [lowerOrder, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]`. Use `split_ifs`. Conclude with `norm_one_apply_le i j`. Simplify using the standard rewrite rules.
+
+Use `split_ifs`. Rewrite using `[Matrix.neg_apply, norm_neg]`. Conclude with `norm_one_apply_le i j`. Simplify using the standard rewrite rules. Use `split_ifs`.
+
+Conclude with `hM.int 0 i j`. Simplify using the standard rewrite rules. Conclude with `hM.int (n + 1) i j`. Use `top := by`. Establish `h1 : N + 1 ≠ N` using `by omega`.
+
+Establish `h2 : N ≠ 0` using `by omega`. Simplify using `[lowerOrder, h1, h2, hM.top]`. Use `small n hn i j := by`. Establish `h1 : n ≠ N` using `by omega`. Establish `h2 : n + 1 ≠ N` using `by omega`.
+
+Establish `h3 : n ≠ 0` using `by omega`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `only [lowerOrder, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, if_neg h1, if_neg h2, if_neg h3, Matrix.zero_apply, norm_zero, zero_lt_one]`. Conclude with `hM.small (n + 1) (by omega) i j`.
+-/
 theorem lowerOrder_normal {N : ℕ} (hN : 1 ≤ N) {M : ℕ → Matrix m m F} (hM : Normal (N + 1) M) :
     Normal N (lowerOrder N M) where
   int n i j := by
@@ -51,6 +65,13 @@ theorem lowerOrder_normal {N : ℕ} (hN : 1 ≤ N) {M : ℕ → Matrix m m F} (h
         Matrix.zero_apply, norm_zero, zero_lt_one]
     exact hM.small (n + 1) (by omega) i j
 
+/- English proof (translation)
+Establish `h : ∀ n, (lowerOrder (K + 1) M n).mulVec (fun k => z k ^ q ^ n) (Sum.inl i) = (if n = K + 1 then z (Sum.inl i) ^ q ^ (K + 1) else 0) + (if n = K then -z (Sum.inr i) ^ q ^ K else 0)`. Introduce `n`. Simplify using `only [lowerOrder, Matrix.fromBlocks_mulVec, Sum.elim_inl, Pi.add_apply, Function.comp_def]`. Distinguish the cases in `h1 : n = K + 1`. Substitute `h1` using the available equality.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `h2 : n = K`. Substitute `h2` using the available equality. Simplify using `[Matrix.neg_mulVec]`. Establish `h3 : n ≠ K` using `h2`.
+
+Simplify using `[h1, h3]`. Simplify using `only [gsum, Finset.sum_apply, h, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_range]`. Rewrite using `[if_pos (by omega), if_pos (by omega), sub_eq_add_neg]`.
+-/
 theorem gsum_lowerOrder_inl (q : ℕ) {K D : ℕ} (hD : K + 1 ≤ D) (M : ℕ → Matrix m m F) (z : m ⊕ m → F) (i : m) :
     gsum q D (lowerOrder (K + 1) M) z (Sum.inl i) = z (Sum.inl i) ^ q ^ (K + 1) - z (Sum.inr i) ^ q ^ K := by
 
@@ -70,6 +91,13 @@ theorem gsum_lowerOrder_inl (q : ℕ) {K D : ℕ} (hD : K + 1 ≤ D) (M : ℕ �
   simp only [gsum, Finset.sum_apply, h, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_range]
   rw [if_pos (by omega), if_pos (by omega), sub_eq_add_neg]
 
+/- English proof (translation)
+Establish `h : ∀ n, (lowerOrder N M n).mulVec (fun k => z k ^ q ^ n) (Sum.inr i) = (if n = 0 then (M 0).mulVec (fun j => z (Sum.inl j) ^ q ^ 0) i else 0) + (M (n + 1)).mulVec (fun j => z (Sum.inl j) ^ q ^ (n + 1)) i`. Introduce `n`. Simplify using `only [lowerOrder, Matrix.fromBlocks_mulVec, Sum.elim_inr, Pi.add_apply, Function.comp_def, hz]`. Use `congr 1`. Use `split_ifs with h0`.
+
+Substitute `h0` using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Use `congr 2`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[← pow_mul, ← pow_succ']`. Simplify using `only [gsum, Finset.sum_apply, h, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_range]`. Rewrite using `[Finset.sum_range_succ' _ (D + 1), if_pos (by omega), add_comm]`.
+-/
 theorem gsum_lowerOrder_inr (q : ℕ) (N D : ℕ) (M : ℕ → Matrix m m F) (z : m ⊕ m → F)
     (hz : ∀ i, z (Sum.inr i) = z (Sum.inl i) ^ q) (i : m) :
     gsum q D (lowerOrder N M) z (Sum.inr i) = gsum q (D + 1) M (fun j => z (Sum.inl j)) i := by
@@ -92,6 +120,17 @@ theorem gsum_lowerOrder_inr (q : ℕ) (N D : ℕ) (M : ℕ → Matrix m m F) (z 
 
 end Lower
 
+/- English proof (translation)
+Introduce `F _ _ _ _ p _ _ m _ _ e D he hD M hM b hb`. Take `⟨D, rfl⟩ : ∃ D', D = D' + 1` from `⟨D - 1, by omega⟩`. Take `⟨z, hzI, hzs⟩` from `H F p (m ⊕ m) e D he (by omega) (lowerOrder (K + 1) M) (lowerOrder_normal (by omega) hM) (Sum.elim 0 b) (by`. Introduce `k`. Break down `k with k | k` into its components or cases.
+
+Simplify using the standard rewrite rules. Conclude with `hb k)`. Establish `hz : ∀ i, z (Sum.inr i) = z (Sum.inl i) ^ p ^ e`. Introduce `i`. Establish `h0` using `congrFun hzs (Sum.inl i)`.
+
+Rewrite `h0` using `[gsum_lowerOrder_inl (p ^ e) (by omega)]`. Simplify using `only [Sum.elim_inl, Pi.zero_apply] at h0`. Establish `hqK : (p ^ e) ^ K = p ^ (e * K)` using `(pow_mul p e K).symm`. Establish `h1 : (z (Sum.inl i) ^ p ^ e - z (Sum.inr i)) ^ p ^ (e * K) = 0`. Rewrite using `[sub_pow_char_pow, ← hqK, ← pow_mul, ← pow_succ']`.
+
+Conclude with `h0`. Conclude with `(sub_eq_zero.mp (pow_eq_zero_iff (pow_ne_zero _ (Fact.out : p.Prime).ne_zero) |>.mp h1)).symm`. Use `⟨fun j => z (Sum.inl j), fun j => hzI (Sum.inl j), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[← gsum_lowerOrder_inr (p ^ e) (K + 1) D M z hz i, hzs]`.
+
+Both sides reduce to the same expression.
+-/
 theorem glOnto_succ (K : ℕ) (H : GLOnto (K + 1)) : GLOnto (K + 2) := by
   intro F _ _ _ _ p _ _ m _ _ e D he hD M hM b hb
   obtain ⟨D, rfl⟩ : ∃ D', D = D' + 1 := ⟨D - 1, by omega⟩
@@ -118,6 +157,11 @@ theorem glOnto_succ (K : ℕ) (H : GLOnto (K + 1)) : GLOnto (K + 2) := by
   rw [← gsum_lowerOrder_inr (p ^ e) (K + 1) D M z hz i, hzs]
   rfl
 
+/- English proof (translation)
+Introduce `N hN H`. Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base => exact H`. Consider the case `succ n hn ih`. Take `⟨K, rfl⟩ : ∃ K, n = K + 1` from `⟨n - 1, by omega⟩`.
+
+Conclude with `glOnto_succ K ih`.
+-/
 theorem glOnto_of_one : ∀ N : ℕ, 1 ≤ N → GLOnto 1 → GLOnto N := by
   intro N hN H
   induction N, hN using Nat.le_induction with

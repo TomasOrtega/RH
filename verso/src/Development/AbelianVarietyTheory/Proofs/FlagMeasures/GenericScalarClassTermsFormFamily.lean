@@ -9,6 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SnFamGenAll
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, ?_⟩` and prove the remaining obligations. Introduce `C' Cl _ _ D large₂ X Y u u' _`. Establish `hG : ∀ t : TauC Y u u', t ∈ (Y.tO u u').genSet → t.G ≠ 0`. Introduce `t ht h0`.
+
+Establish `h1 : (Y.tO u u').G t ≠ 0` using `ht.1`. Apply `h1` to reduce the goal to its premises. Use `show Gt t = 0`. Simplify using `[Gt, h0]`. Conclude with `GlobalTheory.T.genericTerms_scalarClasses_form_family D X Y u u' (fun t ht t' ht' _ hs hc => GlobalTheory.T.corank_one_scalar_pair_symmetric D X Y u u' t t' (hG t ht) (hG t' ht') hs hc) (fun t ht t' ht' t'' ht'' _ _ hs hc hs' hc' => GlobalTheory.T.scalarCorankOnePairs_trans D X Y …`.
+-/
 theorem famGen : GlobalTheory.SnFam.FamGen := by
   intro Cg cb Cw cT CT C0
   refine ⟨0, 0, ?_⟩

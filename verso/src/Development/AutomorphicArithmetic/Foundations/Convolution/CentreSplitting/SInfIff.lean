@@ -14,6 +14,9 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 open scoped TensorProduct
 
+/- English proof (translation)
+Rewrite using `[map_add, map_add, map_smul, Cm.ofCusp_uAction, Cm.ofCusp_uAction, Cm.uC_tmul, Cm.uC_tmul, one_smul]`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.ConvolutionTheory.Dp.sInfIff_uC {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
     (p q : UEnv E n) (ψ : cuspForms E n) :
     Cm.uC E n ((1 : ℂ) ⊗ₜ p + Complex.I ⊗ₜ q) (Cm.ofCusp E n ψ) =
@@ -21,6 +24,21 @@ private theorem UpperTheory.ConvolutionTheory.Dp.sInfIff_uC {E : Type} [Field E]
   rw [map_add, map_add, map_smul, Cm.ofCusp_uAction, Cm.ofCusp_uAction, Cm.uC_tmul, Cm.uC_tmul, one_smul]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ n μ _ π V h τ m`. Rewrite using `[UpperTheory.ConvolutionTheory.Dp.infZc E n π τ m]`. Establish `hcen` using `(UpperTheory.ConvolutionTheory.Dp.capZc E n τ).1`. Establish `hform` using `(UpperTheory.ConvolutionTheory.Dp.formsIrr E n μ V h.summand).2.2.2`. Establish `hcls` using `(UpperTheory.ConvolutionTheory.Dp.clsBasic E n μ).1`.
+
+Unfold `SInf`. Use `and_congr_right fun _ => ⟨fun H i φ hφ => ?_, fun H ν _ β hβ i v hv => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, q, hq, hzc⟩` from `Cm.exists_re_im_center (hcen i)`. Rewrite `hφ` using `[← Cm.map_carrier π]`. Take `⟨ψ, hψ, rfl⟩` from `hφ`.
+
+Establish `hψ' : ψ ∈ formsIn μ V` using `h.carrier_eq ▸ hψ`. Take `⟨hψc, hψV⟩` from `hψ'`. Establish `hz : clsL μ ((uActionCusp E n p ψ + Complex.I • uActionCusp E n q ψ) - m.esymm (i + 1) • ψ) = 0`. Use `UpperTheory.ConvolutionTheory.Dp.diracSep E n μ (Measure.haar : Measure (archGroup E n)) _ fun β hβ => ?_` and prove the remaining obligations. Establish `h1` using `H Measure.haar β hβ i _ hψV`.
+
+Rewrite `h1` using `[hzc, UpperTheory.ConvolutionTheory.Dp.lactCen_of_gen E n (UpperTheory.ConvolutionTheory.Tf.expGen E n) μ Measure.haar β hβ p hp q hq ψ hψc]`. Rewrite using `[map_sub, map_smul, map_sub, map_smul, h1, sub_self]`. Establish `hz0` using `hcls _ (sub_mem (add_mem (uActionCusp_mem_centralCuspForms p hψc) (Submodule.smul_mem _ _ (uActionCusp_mem_centralCuspForms q hψc))) (Submodule.smul_mem _ _ hψc)) hz`. Rewrite using `[hzc, sInfIff_uC, sub_eq_zero.1 hz0, map_smul]`. Take `⟨p, hp, q, hq, hzc⟩` from `Cm.exists_re_im_center (hcen i)`.
+
+Rewrite using `[hzc]`. Establish `hclosed : IsClosed {v : LL μ | Oinf μ ν (lact ((1 : ℂ) ⊗ₜ p + Complex.I ⊗ₜ q) β) v = m.esymm (i + 1) • Oinf μ ν β v}` using `isClosed_eq (ContinuousLinearMap.continuous _) ((continuous_const_smul (m.esymm (i + 1))).comp (Oinf μ ν β).continuous)`. Establish `hsub : (((formsIn μ V).map (clsL μ) : Submodule ℂ (LL μ)) : Set (LL μ)) ⊆ {v : LL μ | Oinf μ ν (lact ((1 : ℂ) ⊗ₜ p + Complex.I ⊗ₜ q) β) v = m.esymm (i + 1) • Oinf μ ν β v}`. Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`. Establish `hφ : Cm.ofCusp E n ψ ∈ π.V` using `Cm.mem_carrier.1 (h.carrier_eq.symm ▸ hψ)`.
+
+Establish `e` using `H i _ hφ`. Rewrite `e` using `[hzc, sInfIff_uC]`. Establish `e'` using `Cm.ofCusp_injective (e.trans (map_smul (Cm.ofCusp E n) _ ψ).symm)`. Express the relevant statement in the definitionally equal form `Oinf μ ν _ (clsL μ ψ) = _`. Rewrite using `[UpperTheory.ConvolutionTheory.Dp.lactCen_of_gen E n (UpperTheory.ConvolutionTheory.Tf.expGen E n) μ ν β hβ p hp q hq ψ hψ.1, e', map_smul, map_smul]`.
+
+Establish `hv' : v ∈ ((formsIn μ V).map (clsL μ)).topologicalClosure` using `by rw [hform]; exact hv`. Conclude with `closure_minimal hsub hclosed hv'`.
+-/
 theorem UpperTheory.ConvolutionTheory.Dp.sInfIff :
     UpperTheory.ConvolutionTheory.Dp.SInfIff := by
   intro E _ _ _ n μ _ π V h τ m

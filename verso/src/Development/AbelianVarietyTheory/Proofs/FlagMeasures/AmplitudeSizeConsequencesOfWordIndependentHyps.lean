@@ -9,9 +9,37 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp.SizesProof
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun _ _ => Finset.prod_pos fun _ hb => sub_pos.2 (h (Finset.mem_filter.1 hb).2)`.
+-/
 theorem vand_pos {n : ℕ} {x : Fin n → ℝ} (h : StrictAnti x) : 0 < Formalism.MainNotions.S.vand x :=
   Finset.prod_pos fun _ _ => Finset.prod_pos fun _ hb => sub_pos.2 (h (Finset.mem_filter.1 hb).2)
 
+/- English proof (translation)
+Introduce `D large₂ C' Cl Cg cb Cu cT CT C0 hb h`. Take `⟨⟨-, -, hmf, hfk, -, -, -, -, -, -, -, hg1, hg1', hg2, hg2', -, -, -, hv, -, -, hgap, hT, hCl, hCl0⟩, -, -⟩` from `h`. Establish `hL : 1 < large₂.sc.L` using `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`. Establish `hbe : Real.exp 1 < large₂.sc.b` using `Real.exp_lt_exp.2 hL`. Establish `hb1 : 1 < large₂.sc.b` using `lt_trans (by simpa using Real.exp_lt_exp.2 (zero_lt_one (α := ℝ))) hbe`.
+
+Establish `hm : D.R.m = 2 * D.R.rS + 2`. Use `D.R.two_le_m` as an intermediate fact. Take `⟨a, ha⟩` from `D.R.m_even`. Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hr : D.R.r = 2 * D.R.rS + D.R.k + 1` using `by unfold Ranks.r; omega`. Establish `hk : (1 : ℝ) ≤ D.R.k` using `by have := D.R.m_add_three_le_k; exact_mod_cast (by omega : 1 ≤ D.R.k)`. Establish `hkb : (1 : ℝ) ≤ D.R.k * large₂.sc.b` using `by nlinarith`. Establish `h8 : (1 : ℝ) ≤ (D.R.k * large₂.sc.b) ^ 8` using `one_le_pow₀ hkb`. Establish `hrd : D.host.rdE = 2 * D.host.v` using `by unfold Host.v; ring`.
+
+Establish `hgg : 1 ≤ gg D` using `by unfold gg; nlinarith`. Establish `hu : ∀ w τ, StrictAnti (uS D w τ)` using `fun w τ => by`. Establish `hk0 : D.R.k = (D.R.k - 1) + 1` using `by have := D.R.m_add_three_le_k; omega`. Establish `key : ∀ (i : ℕ) (hi : i + 1 < D.R.k), uS D w τ ⟨i + 1, hi⟩ < uS D w τ ⟨i, by omega⟩` using `fun i hi => by`. Establish `a` using `(D.hcW w τ).u_gt_v ⟨i, by omega⟩`.
+
+Establish `b` using `(D.hcW w τ).v_gt_u ⟨i, by omega⟩`. Unfold `uS`. Conclude with `b.trans a` after adjusting the coercions. Introduce and unpack `⟨a, ha⟩ ⟨c, hc⟩ hac`. Establish `hac' : a < c` using `hac`.
+
+Proceed by induction on `c, hac' using Nat.le_induction with`. Consider the case `base => exact key a hc`. Consider the case `succ c hc' ih => exact (key c hc).trans (ih (by omega) hc')`. Use `⟨hL, Real.log_exp _, hbe, hm, hr, D.what₂.card_Tau, hCl, hmf.trans hfk, hv, hrd, rfl, hrd ▸ hb, hgg, ?_, ?_, ?_, fun w => (hT w).2, fun w τ => ⟨vand_pos (hu w τ), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[two_mul, Real.rpow_add (by linarith)]`.
+
+Conclude with `mul_le_mul hg1' hg2' (by linarith) (by linarith)`. Establish `: large₂.sc.b ^ (8 : ℝ) ≤ large₂.sc.b ^ Cg`. Use `le_trans ?_ (hg1.trans hg1')` and prove the remaining obligations. Rewrite using `[show (8 : ℝ) = ((8 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Conclude with `pow_le_pow_left₀ (by linarith) (by nlinarith) 8`.
+
+Conclude with `(Real.rpow_le_rpow_left_iff hb1).1 this`. Use `le_trans ?_ (hg1.trans hg1')` and prove the remaining obligations. Conclude with `le_trans (by nlinarith) (le_self_pow₀ hkb (by norm_num))`. Establish `h1 : 0 < D.host.ka` using `div_pos Real.pi_pos (by linarith)`. Establish `h2 : 0 < D.host.rdE` using `by linarith`.
+
+Establish `h3 : 0 < gg D` using `by linarith`. Establish `h4 : 0 < VV D τ` using `mul_pos (D.dsig_pos τ) (Finset.prod_pos fun i _ => by positivity)`. Establish `h5` using `vand_pos (hu w τ)`. Unfold `Tcrit`. Check the signs of the components of the expression.
+
+Introduce `τ`. Establish `hp : 0 ≤ Cl * D.R.k * (D.R.m : ℝ) ^ 4` using `by positivity`. Establish `key : ∀ (i : ℕ) (hi : i + 1 < 2 * D.R.rS + D.R.k + 1), Cl * D.R.k * (D.R.m : ℝ) ^ 4 < lamD D τ ⟨i, by omega⟩ - lamD D τ ⟨i + 1, hi⟩` using `fun i hi => by`. Use `hgap τ ⟨i, by omega⟩ (by simpa [hr] using hi)` as an intermediate fact. Establish `h0 : (0 : ℝ) ≤ D.R.r * (D.R.m : ℝ) ^ 10` using `by positivity`.
+
+Conclude with `lt_of_le_of_lt (le_add_of_nonneg_right h0) this`. Introduce and unpack `⟨a, ha⟩ ⟨c, hc⟩ hac`. Establish `hac' : a < c` using `hac`. Proceed by induction on `c, hac' using Nat.le_induction with`. Consider the case `base => exact key a hc`.
+
+Consider the case `succ c hc' ih`. Use `key c hc` as an intermediate fact. Use `ih (by omega) hc'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sizes_of_hyp : ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ), D.host.rdE ≤ large₂.sc.b →
     HypZ D large₂ C' Cl Cg cb Cu cT CT C0 → Sizes D large₂ Cl Cg CT := by
   intro D large₂ C' Cl Cg cb Cu cT CT C0 hb h

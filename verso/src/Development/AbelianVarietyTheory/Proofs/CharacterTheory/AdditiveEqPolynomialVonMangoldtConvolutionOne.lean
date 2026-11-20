@@ -7,10 +7,18 @@ namespace GlobalTheory.CuspGL
 
 variable {F : Type} [Field F]
 
+/- English proof (translation)
+The claim follows from `eq_of_monic_of_associated hg hf (hg'.associated_of_dvd hf' (hg'.prime.dvd_of_dvd_pow h))`.
+-/
 theorem mangoldtConv_eq_of_dvd_pow {f g : F[X]} (hf : f.Monic) (hf' : Irreducible f) (hg : g.Monic)
     (hg' : Irreducible g) {n : ℕ} (h : g ∣ f ^ n) : g = f :=
   eq_of_monic_of_associated hg hf (hg'.associated_of_dvd hf' (hg'.prime.dvd_of_dvd_pow h))
 
+/- English proof (translation)
+Establish `: {g : F[X] | g.Monic ∧ Irreducible g ∧ ∃ k : ℕ, 0 < k ∧ f ^ m = g ^ k} = {f}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, hg', k, hk, h⟩`.
+
+Conclude with `mangoldtConv_eq_of_dvd_pow hf hf' hg hg' (n := m) (h ▸ dvd_pow_self g hk.ne')`. Introduce and unpack `rfl`. Conclude with `⟨hf, hf', m, hm, rfl⟩`. Rewrite using `[mangoldt, this, finsum_mem_singleton]`.
+-/
 theorem mangoldt_pow (s : F[X] → ℂ) (f : F[X]) (m : ℕ) (hf : f.Monic) (hf' : Irreducible f) (hm : 0 < m) :
     mangoldt s (f ^ m) = s f := by
   have : {g : F[X] | g.Monic ∧ Irreducible g ∧ ∃ k : ℕ, 0 < k ∧ f ^ m = g ^ k} = {f} := by
@@ -23,6 +31,11 @@ theorem mangoldt_pow (s : F[X] → ℂ) (f : F[X]) (m : ℕ) (hf : f.Monic) (hf'
       exact ⟨hf, hf', m, hm, rfl⟩
   rw [mangoldt, this, finsum_mem_singleton]
 
+/- English proof (translation)
+Establish `: {g : F[X] | g.Monic ∧ Irreducible g ∧ ∃ k : ℕ, 0 < k ∧ P = g ^ k} = ∅`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨hg, hg', k, hk, h'⟩`. Conclude with `h ⟨g, k, hg, hg', hk, h'⟩`.
+
+Rewrite using `[mangoldt, this, finsum_mem_empty]`.
+-/
 theorem mangoldt_eq_zero (s : F[X] → ℂ) (P : F[X])
     (h : ¬ ∃ (f : F[X]) (m : ℕ), f.Monic ∧ Irreducible f ∧ 0 < m ∧ P = f ^ m) : mangoldt s P = 0 := by
   have : {g : F[X] | g.Monic ∧ Irreducible g ∧ ∃ k : ℕ, 0 < k ∧ P = g ^ k} = ∅ := by
@@ -32,6 +45,13 @@ theorem mangoldt_eq_zero (s : F[X] → ℂ) (P : F[X])
     exact h ⟨g, k, hg, hg', hk, h'⟩
   rw [mangoldt, this, finsum_mem_empty]
 
+/- English proof (translation)
+Unfold `conv`. Use `finsum_mem_eq_of_bijOn (fun x => x.1) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce and unpack `⟨D, E⟩ ⟨hD, _, h⟩`. Conclude with `⟨hD, E, h.symm⟩`. Introduce and unpack `⟨D, E⟩ ⟨hD, _, h⟩ ⟨D', E'⟩ ⟨_, _, h'⟩ h''`.
+
+Simplify using `only at h h' h'' hD`. Substitute `h''` using the available equality. Rewrite using `[mul_left_cancel₀ hD.ne_zero (h.trans h'.symm)]`. Introduce and unpack `D ⟨hD, E, h⟩`. Conclude with `⟨(D, E), ⟨hD, hD.of_mul_monic_left (h ▸ hP), h.symm⟩, rfl⟩`.
+
+Introduce `x _`. Simplify using the standard rewrite rules.
+-/
 theorem conv_const_one_eq_divisorSum (a : F[X] → ℂ) (P : F[X]) (hP : P.Monic) :
     conv a (fun _ => 1) P = ∑ᶠ D ∈ {D : F[X] | D.Monic ∧ D ∣ P}, a D := by
   unfold conv
@@ -47,11 +67,29 @@ theorem conv_const_one_eq_divisorSum (a : F[X] → ℂ) (P : F[X]) (hP : P.Monic
   · intro x _
     simp
 
+/- English proof (translation)
+Use `Polynomial.fintypeSubtypeMonicDvd P hP.ne_zero` as an intermediate fact. Conclude with `Set.finite_coe_iff.mp (Finite.of_fintype {g : F[X] // g.Monic ∧ g ∣ P})`.
+-/
 theorem mangoldtConv_finite_monicDivisors (P : F[X]) (hP : P.Monic) :
     {D : F[X] | D.Monic ∧ D ∣ P}.Finite := by
   have := Polynomial.fintypeSubtypeMonicDvd P hP.ne_zero
   exact Set.finite_coe_iff.mp (Finite.of_fintype {g : F[X] // g.Monic ∧ g ∣ P})
 
+/- English proof (translation)
+Take `⟨n, R, hR, hQR⟩` from `WfDvdMonoid.max_power_factor hQ.ne_zero hf'`. Establish `hnot : f ^ (n + 1) ∉ {D : F[X] | D.Monic ∧ D ∣ Q}`. Introduce and unpack `⟨_, h⟩`. Rewrite `h` using `[hQR, pow_succ, mul_dvd_mul_iff_left (pow_ne_zero n hf.ne_zero)]`. Conclude with `hR h`.
+
+Rewrite using `[← mangoldt_pow s f (n + 1) hf hf' n.succ_pos, ← finsum_mem_insert _ hnot (mangoldtConv_finite_monicDivisors Q hQ)]`. Use `finsum_mem_inter_support_eq _ _ _ ?_` and prove the remaining obligations. Use extensionality with `D`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_insert_iff, Function.mem_support]`. Use `and_congr_left fun hD => ?_` and prove the remaining obligations.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hDm, hd⟩`. Take `⟨g, m, hg, hg', hm, rfl⟩` from `not_not.mp (mt (mangoldt_eq_zero s D) hD)`. Distinguish the cases in `hgf : g = f`. Substitute `hgf` using the available equality.
+
+Break down `lt_trichotomy m (n + 1) with h | h | h` into its components or cases. Conclude with `Or.inr ⟨hDm, hQR ▸ (pow_dvd_pow g (by omega)).mul_right R⟩`. Conclude with `Or.inl (by rw [h])`. It suffices to derive a contradiction. Establish `h2 : g ^ (n + 1) * g ∣ g ^ (n + 1) * R`.
+
+Establish `h3 : g ^ (n + 1 + 1) ∣ g * Q` using `(pow_dvd_pow g (by omega)).trans hd`. Rewrite `h3` using `[hQR, ← mul_assoc, ← pow_succ', pow_succ g (n + 1)]`. Conclude with `h3`. Conclude with `hR ((mul_dvd_mul_iff_left (pow_ne_zero _ hf.ne_zero)).mp h2)`. Use `Or.inr ⟨hDm, ?_⟩` and prove the remaining obligations.
+
+Establish `hc : IsCoprime g f`. Rewrite using `[hg'.coprime_iff_not_dvd]`. Introduce `h`. Conclude with `hgf (mangoldtConv_eq_of_dvd_pow hf hf' hg hg' (n := 1) (by simpa using h))`. Conclude with `(hc.pow_left (m := m)).dvd_of_dvd_mul_left hd`.
+
+Introduce and unpack `(rfl | ⟨hDm, hd⟩)`. Use `⟨hf.pow _, ?_⟩` and prove the remaining obligations. Rewrite using `[hQR, ← mul_assoc, ← pow_succ']`. Conclude with `dvd_mul_right _ _`. Conclude with `⟨hDm, hd.mul_left f⟩`.
+-/
 theorem mangoldt_divisorSum_mul (s : F[X] → ℂ) (f Q : F[X]) (hf : f.Monic) (hf' : Irreducible f)
     (hQ : Q.Monic) :
     ∑ᶠ D ∈ {D : F[X] | D.Monic ∧ D ∣ f * Q}, mangoldt s D =
@@ -93,6 +131,17 @@ theorem mangoldt_divisorSum_mul (s : F[X] → ℂ) (f Q : F[X]) (hf : f.Monic) (
       exact dvd_mul_right _ _
     · exact ⟨hDm, hd.mul_left f⟩
 
+/- English proof (translation)
+Proceed by induction on `hn : P.natDegree using Nat.strong_induction_on generalizing P with`. Consider the case `_ n ih`. Distinguish the cases in `hu : IsUnit P`. Establish `h1 : P = 1` using `hP.isUnit_iff.mp hu`. Substitute `h1` using the available equality.
+
+Establish `h0 : s 1 = 0`. Use `hs 1 1 monic_one monic_one` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_add.mp this`. Rewrite using `[h0]`.
+
+Use `symm`. Use `finsum_mem_of_eqOn_zero fun D hD => ?_` and prove the remaining obligations. Use `mangoldt_eq_zero s D ?_` and prove the remaining obligations. Introduce and unpack `⟨g, m, _, hg', hm, rfl⟩`. Conclude with `hg'.not_isUnit (isUnit_of_dvd_one ((dvd_pow_self g hm.ne').trans hD.2))`.
+
+Take `⟨f, hf, hf', Q, rfl⟩` from `Polynomial.exists_monic_irreducible_factor P hu`. Establish `hQ : Q.Monic` using `hf.of_mul_monic_left hP`. Establish `hlt : Q.natDegree < n`. Rewrite using `[← hn, hf.natDegree_mul hQ]`. Use `hf'.natDegree_pos` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[mangoldt_divisorSum_mul s f Q hf hf' hQ, hs f Q hf hQ, ih _ hlt Q hQ rfl]`.
+-/
 theorem IsAdditive.eq_divisorSum_mangoldt {s : F[X] → ℂ} (hs : IsAdditive s) (P : F[X]) (hP : P.Monic) :
     s P = ∑ᶠ D ∈ {D : F[X] | D.Monic ∧ D ∣ P}, mangoldt s D := by
   induction hn : P.natDegree using Nat.strong_induction_on generalizing P with
@@ -118,6 +167,9 @@ theorem IsAdditive.eq_divisorSum_mangoldt {s : F[X] → ℂ} (hs : IsAdditive s)
         omega
       rw [mangoldt_divisorSum_mul s f Q hf hf' hQ, hs f Q hf hQ, ih _ hlt Q hQ rfl]
 
+/- English proof (translation)
+Introduce `F _ s hs`. Use `⟨fun P hP => ?_, mangoldt_pow s, mangoldt_eq_zero s⟩` and prove the remaining obligations. Rewrite using `[conv_const_one_eq_divisorSum _ P hP]`. Conclude with `hs.eq_divisorSum_mangoldt P hP`.
+-/
 theorem mangoldt_conv_spec : ∀ (F : Type) [Field F] (s : F[X] → ℂ), IsAdditive s →
     (∀ P : F[X], P.Monic → s P = conv (mangoldt s) (fun _ => 1) P) ∧
     (∀ (f : F[X]) (m : ℕ), f.Monic → Irreducible f → 0 < m → mangoldt s (f ^ m) = s f) ∧

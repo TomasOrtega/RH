@@ -23,6 +23,15 @@ open Formalism.FourierDecayAlt Formalism.L2.SG.NGCut Formalism.L2.SG.NGAnalytic 
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D X`. Establish `hn : 2 * D.R.rS + 2 ≤ X.B.I.n`. Rewrite using `[X.n_eq]`. Establish `h1` using `D.R.rS_two`. Establish `h2` using `D.R.r_eq`.
+
+Establish `h3` using `D.R.k_ge`. Use linear arithmetic over natural numbers and integers. Establish `hH : ∀ i j, star (X.B.I.J j i) = X.B.I.J i j` using `fun i j => by`. Use `congrFun (congrFun X.B.I.J_herm i) j` as an intermediate fact. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at this`.
+
+Conclude with `this`. Take `⟨X0, hX⟩` from `exists_nondegenerate X.B.I.E X.B.I.n (2 * D.R.rS + 2) hn X.B.I.J hH X.B.I.J_det`. Use `⟨X0, ?_⟩` and prove the remaining obligations. Establish `e : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.gramE X.B.I.cm.sig X.B.I.J X0 = PI.NormGramAtOrigin.gram (starRingEnd _) X.B.I.J X0`. Use extensionality with `a b`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hX`.
+-/
 theorem closed_steps_gram_vectors : NondegenerateGramTuple := by
   intro D X
   have hn : 2 * D.R.rS + 2 ≤ X.B.I.n := by
@@ -42,6 +51,9 @@ theorem closed_steps_gram_vectors : NondegenerateGramTuple := by
     ext a b; rfl
   rw [e]; exact hX
 
+/- English proof (translation)
+Establish `hPts : StepPointsG` using `Formalism.L2.SG.Pf.MainEqPoints.stepPointsG_of_leaves Formalism.L2.SG.Closed.AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds Formalism.L2.SG.Closed.ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds Formalis …`. Establish `hNorm : StepNormOneG` using `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.Gen.stepNormOneG_of_leaves Formalism.L2.SG.Closed.AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds Formalism.L2.SG.Closed.ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClo …`. Establish `hLoc : ∀ D, Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D 39` using `fun D => ((GlobalTheory.local_nongeneric_bound_record_family 39 le_rfl).2.1 D).1`. Conclude with `⟨Formalism.FourierDecayAlt.P.norm_chain, Formalism.L2.SG.Pf.stepClassG_holds, hPts, hNorm, tieOfCtx_of closed_steps_gram_vectors, Formalism.L2.SG.NGPin.stepPinExists, Formalism.L2.SG.Pf.MainEqVanish.stepTermVanishG_of_form Formalism.L2.SG.Pf.formGC_holds, Formalism.L2.SG.Pf.formN …`.
+-/
 theorem closed_steps_equal_words :
     PN.NGChain ∧ StepClassG ∧ StepPointsG ∧ StepNormOneG ∧ TieOfCtx ∧ StepPinExists ∧
       StepTermVanishG ∧ Formalism.L2.SG.NGVanish.FormNGC ∧

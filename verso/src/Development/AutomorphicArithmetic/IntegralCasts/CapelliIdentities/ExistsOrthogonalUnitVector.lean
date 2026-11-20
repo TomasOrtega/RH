@@ -17,6 +17,19 @@ noncomputable def UpperTheory.Reformulated.B.ExistsOrthogonalBasisWithUnitNorms.
 
 open Formalism.HermitianLattices.Ext.L3.WA in
 
+/- English proof (translation)
+Set `A : AddSubgroup K` to `{ carrier := {a | ∃ m ∈ L, h m v = a} zero_mem' := ⟨0, L.zero_mem, by simp⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨m, hm, rfl⟩ ⟨m', hm', rfl⟩`. Conclude with `⟨m + m', L.add_mem hm hm', by simp⟩`. Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨m, hm, rfl⟩`.
+
+Conclude with `⟨-m, L.neg_mem hm, by simp⟩ }`. Establish `hmul : ∀ s ∈ S, ∀ a ∈ A, s * a ∈ A`. Introduce and unpack `s hs _ ⟨m, hm, rfl⟩`. Conclude with `⟨star s • m, hL.smul_mem _ (hS.star_mem s hs) _ hm, by`. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul]⟩`.
+
+Establish `hne : ∃ a ∈ A, a ≠ 0`. Establish `hu : ∃ u, h u v ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hv (hn.2 v hc)`.
+
+Take `⟨u, hu⟩` from `hu`. Take `⟨t, ht, htu⟩` from `hL.span u`. Use `⟨_, ⟨t • u, htu, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[map_smulₛₗ, ht, hu]`. Establish `hbd : ∃ t : K, t ≠ 0 ∧ ∀ a ∈ A, t * a ∈ S`.
+
+Take `⟨t, ht, htv⟩` from `hL.span v`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Simplify using `using hL.int m hm _ htv`. Take `⟨α, ⟨w, hw, hα⟩, hα0, hdiv⟩` from `hS.principal A hmul hne hbd`.
+
+Use `⟨α⁻¹, hL.dual _ fun m hm => ?_, w, hw, ?_⟩` and prove the remaining obligations. Simplify `hdiv _ ⟨m, hm, rfl⟩` using `[mul_comm]`. Rewrite using `[map_smul, hα, smul_eq_mul, inv_mul_cancel₀ hα0]`.
+-/
 private theorem UpperTheory.Reformulated.B.ExistsOrthogonalBasisWithUnitNorms.exists_primitive {K V : Type} [Field K] [StarRing K] [AddCommGroup V]
     [Module K V] {S : Subring K} {h : V →ₗ⋆[K] V →ₗ[K] K} (hS : IsHermSemilocal S)
     (hn : h.Nondegenerate) {L : AddSubgroup V} (hL : IsSelfDualMod S h L) {v : V} (hv : v ≠ 0) :
@@ -55,6 +68,19 @@ private theorem UpperTheory.Reformulated.B.ExistsOrthogonalBasisWithUnitNorms.ex
 
 open Formalism.HermitianLattices.Ext.L3.WA in
 
+/- English proof (translation)
+Establish `hsym : ∀ u v, star (h u v) = h v u` using `fun u v => hs.eq u v`. Set `φ : V →ₗ[K] (Fin k → K)` to `LinearMap.pi fun i => h (x i)`. Establish `hker : LinearMap.ker φ ≠ ⊥` using `LinearMap.ker_ne_bot_of_finrank_lt (by simpa using hk)`. Take `⟨v, hvk, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hker`. Establish `hxv : ∀ i, h (x i) v = 0` using `fun i => congrFun (LinearMap.mem_ker.mp hvk) i`.
+
+Take `⟨a, hyL, w₀, hw₀, hwy⟩` from `UpperTheory.Reformulated.B.ExistsOrthogonalBasisWithUnitNorms.exists_primitive hS hn hL hv0`. Establish `hxy : ∀ i, h (x i) (a • v) = 0` using `fun i => by rw [map_smul, hxv, smul_zero]`. Generalize the expression as in `a • v = y at hyL hwy hxy`. Establish `hyx : ∀ i, h y (x i) = 0` using `fun i => by rw [← hsym, hxy, star_zero]`. Establish `hyw₀ : h y w₀ = 1` using `by rw [← hsym, hwy, star_one]`.
+
+Set `w : V` to `w₀ - ∑ i, ((h (x i) (x i))⁻¹ * h (x i) w₀) • x i`. Establish `hwL : w ∈ L` using `L.sub_mem hw₀ (L.sum_mem fun i _ => hL.smul_mem _ (S.mul_mem (hxu i).2.2 (hL.int _ (hxL i) _ hw₀)) _ (hxL i))`. Establish `hyw : h y w = 1`. Simplify using `[w, map_sub, map_sum, hyx, hyw₀]`. Establish `hxw : ∀ j, h (x j) w = 0`.
+
+Introduce `j`. Establish `hj` using `(hxu j).1`. Simplify using `only [w, map_sub, map_sum, map_smul, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single j]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `i _ hij`. Rewrite using `[hxo j i hij.symm, mul_zero]`. Simplify using the standard rewrite rules. Take `⟨c, hc, d, hd, hu⟩` from `hp w y hyw (hL.int _ hwL _ hwL) (hL.int _ hyL _ hyL)`.
+
+Use `⟨c • w + d • y, L.add_mem (hL.smul_mem _ hc _ hwL) (hL.smul_mem _ hd _ hyL), fun i => ?_, hu⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, hxw, hxy, smul_zero, smul_zero, add_zero]`.
+-/
 private theorem UpperTheory.Reformulated.B.ExistsOrthogonalBasisWithUnitNorms.exists_extend {K V : Type} [Field K] [StarRing K] [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] {S : Subring K} {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hS : IsHermSemilocal S) (hs : h.IsSymm) (hn : h.Nondegenerate)
@@ -93,6 +119,19 @@ private theorem UpperTheory.Reformulated.B.ExistsOrthogonalBasisWithUnitNorms.ex
   refine ⟨c • w + d • y, L.add_mem (hL.smul_mem _ hc _ hwL) (hL.smul_mem _ hd _ hyL), fun i => ?_, hu⟩
   rw [map_add, map_smul, map_smul, hxw, hxy, smul_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ S h _ hS hs hn hp L hL`. Establish `key : ∀ k : ℕ, k ≤ Module.finrank K V → ∃ x : Fin k → V, (∀ i, x i ∈ L) ∧ (∀ i j, i ≠ j → h (x i) (x j) = 0) ∧ ∀ i, Formalism.HermitianLattices.Ext.L3.WA.IsUnitIn S (h (x i) (x i))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact fun _ => ⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩`.
+
+Consider the case `succ k ih`. Introduce `hk`. Take `⟨x, hxL, hxo, hxu⟩` from `ih (by omega)`. Take `⟨z, hzL, hxz, hzu⟩` from `UpperTheory.Reformulated.B.ExistsOrthogonalBasisWithUnitNorms.exists_extend hS hs hn hp hL (by omega) x hxL hxo hxu`. Establish `hzx : ∀ i, h z (x i) = 0` using `fun i => by`.
+
+Rewrite using `[← hs.eq, hxz, map_zero]`. Use `⟨Fin.cons z x, fun i => ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hzL`. Simplify using `using hxL i`.
+
+Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact absurd rfl hij`. Consider the case `succ j => simpa using hzx j`.
+
+Consider the case `succ i`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simpa using hxz i`. Consider the case `succ j => simpa using hxo i j fun e => hij (by rw [e])`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `using hzu`. Simplify using `using hxu i`. Conclude with `key _ le_rfl`.
+-/
 theorem UpperTheory.Reformulated.B.ExistsOrthogonalBasisWithUnitNorms.exists_ortho_unit :
     ∀ {K V : Type} [inst : Field K] [inst_1 : StarRing K] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module K V]
       {S : Subring K} {h : V →ₗ⋆[K] V →ₗ[K] K} [FiniteDimensional K V],

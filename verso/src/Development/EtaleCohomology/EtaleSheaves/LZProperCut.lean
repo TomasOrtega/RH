@@ -29,6 +29,11 @@ def LZPreimage : Prop := ∀ (A : Type) [CommRing A] [IsLocalRing A] (B : Type) 
 def LZFibre : Prop := ∀ (A : Type) [CommRing A] [IsLocalRing A] {X : Scheme.{0}} (r : X ⟶ Spec (CommRingCat.of A)),
   _root_.IsPreconnected (r.base ⁻¹' {IsLocalRing.closedPoint A}) → PreconnectedSpace ↑(pullback r (cpt A))
 
+/- English proof (translation)
+Apply `hF A r` to reduce the goal to its premises. Take `⟨B, _, _, _, s, hs, hconn, hfib⟩` from `hS A r hr`. Establish `hB` using `hconn hX`. Establish `: IsLocalRing B` using `hH A B hB`. Establish `key : r.base ⁻¹' {IsLocalRing.closedPoint A} = s.base ⁻¹' {IsLocalRing.closedPoint B}`.
+
+Rewrite using `[← hP A B, ← hs]`. Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `hfib _`.
+-/
 theorem noeth_of (hS : LZStein) (hH : LZHensFinite) (hP : LZPreimage) (hF : LZFibre)
     (A : Type) [CommRing A] [IsLocalRing A] [HenselianLocalRing A] [IsNoetherianRing A] {X : Scheme.{0}}
     (r : X ⟶ Spec (CommRingCat.of A)) (hr : IsProper r) (hX : ConnectedSpace X) :
@@ -43,6 +48,9 @@ theorem noeth_of (hS : LZStein) (hH : LZHensFinite) (hP : LZPreimage) (hF : LZFi
   rw [key]
   exact hfib _
 
+/- English proof (translation)
+Introduce `A _ _ _ X r hr hX`. Assume the negation of the conclusion as `hn`. Take `⟨A', _, _, _, _, X', r', hr', hX', hn'⟩` from `hR A r hr hX hn`. Conclude with `hn' (noeth_of hS hH hP hF A' r' hr' hX')`.
+-/
 theorem goal_of (hR : LZReduce) (hS : LZStein) (hH : LZHensFinite) (hP : LZPreimage) (hF : LZFibre) :
     LateralTheory.E.LineZeroCut.LZProper := by
   intro A _ _ _ X r hr hX

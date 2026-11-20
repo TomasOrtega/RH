@@ -18,6 +18,11 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Establish `he : ∀ i (w : V n), ContinuousOn (fun v => dbar (g i) v w) Ω`. Introduce `i w`. Establish `hd` using `(hg i).continuousOn_fderiv_of_isOpen hΩ one_le_two`. Simplify using `only [dbar_apply]`. Conclude with `((hd.clm_apply continuousOn_const).add ((hd.clm_apply continuousOn_const).const_smul Complex.I)).const_smul (1 / 2 : ℂ)`.
+
+Establish `hM : ContinuousOn (fun v => Matrix.of fun i b => dbar (g i) v (coordVec b)) Ω` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun b => he i _`. Conclude with `(continuous_id.matrix_det).comp_continuousOn hM`.
+-/
 theorem continuousOn_det_dbar {n : ℕ} {Ω : Set (V n)} (hΩ : IsOpen Ω) {g : Fin n → V n → ℂ}
     (hg : ∀ i, ContDiffOn ℝ 2 (g i) Ω) :
     ContinuousOn (fun v => (Matrix.of fun i b => dbar (g i) v (coordVec b)).det) Ω := by
@@ -31,6 +36,9 @@ theorem continuousOn_det_dbar {n : ℕ} {Ω : Set (V n)} (hΩ : IsOpen Ω) {g : 
     continuousOn_pi.2 fun i => continuousOn_pi.2 fun b => he i _
   exact (continuous_id.matrix_det).comp_continuousOn hM
 
+/- English proof (translation)
+Apply `Matrix.det_eq_zero_of_row_eq_zero j` to reduce the goal to its premises. Introduce `b`. Simplify using `[dbar_congr h]`.
+-/
 theorem det_dbar_eq_zero_of_row {n : ℕ} {g : Fin n → V n → ℂ} {v : V n} (j : Fin n)
     (h : g j =ᶠ[𝓝 v] fun _ => 0) :
     (Matrix.of fun i b => dbar (g i) v (coordVec b)).det = 0 := by
@@ -38,6 +46,43 @@ theorem det_dbar_eq_zero_of_row {n : ℕ} {g : Fin n → V n → ℂ} {v : V n} 
   intro b
   simp [dbar_congr h]
 
+/- English proof (translation)
+Introduce `n S U K f j u c hU hK hKU hsmall hf hf0 hfb hdb`. Establish `hΩ : IsOpen (offHyp S U)` using `GlobalTheory.T.isOpen_offCoordinateHyperplanes S U hU`. Establish `hΩm : MeasurableSet (offHyp S U)` using `hΩ.measurableSet`. Establish `hKc : IsClosed K` using `hK.isClosed`. Establish `hwt : ∀ v ∈ offHyp S U, ∀ a, 0 < poinWt S v a` using `fun v hv => (GlobalTheory.T.poincareCoordinateLength_mem_Icc_and_pos S v (hsmall v hv.1)).2 hv.2`.
+
+Establish `hoff : ∀ g : Fin n → V n → ℂ, (∀ v ∈ offHyp S U, v ∉ K → g j v = 0) → ∀ v ∈ offHyp S U, v ∉ K → (Matrix.of fun i b => dbar (g i) v (coordVec b)).det = 0` using `fun g hg v hv hvK => det_dbar_eq_zero_of_row j (Filter.eventually_of_mem ((hΩ.sdiff hKc).mem_nhds ⟨hv, hvK⟩) fun x hx => hg x hx.1 hx.2)`. Establish `hbd : ∀ (g : Fin n → V n → ℂ) (c' : ℝ), (∀ v ∈ offHyp S U, v ∈ K → ∀ i b, ‖dbar (g i) v (coordVec b)‖ * (poinWt S v (u i) * poinWt S v b) ≤ c') → ∀ v ∈ offHyp S U, v ∈ K → ‖(Matrix.of fun i b => dbar (g i) v (coordVec b)).det‖ ≤ (n.factorial : ℝ) * |c'| ^ n * ∏ a, (poinWt S v a)⁻ …` using `fun g c' h v hv hvK => GlobalTheory.T.norm_det_le_of_weighted_entry_bound _ u _ c' (hwt v hv) (h v hv hvK)`. Establish `hint` using `GlobalTheory.T.integrableOn_offCoordinateHyperplanes_of_poincareBound S U K (fun v => (Matrix.of fun i b => dbar (f i) v (coordVec b)).det) _ hU hK hKU hsmall (continuousOn_det_dbar hΩ hf) (hoff f hf0) (hbd f c hdb)`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Take `⟨C, χ, hχs, hχ01, hχ0, hχ1, hχd⟩` from `GlobalTheory.T.exists_logCutoff_coordinateHyperplanes_poincareBound S`.
+
+Set `F : ℕ → Fin n → V n → ℂ` to `fun k => Function.update f j (fun x => (χ k x : ℂ) * f j x)`. Establish `hFj : ∀ k, F k j = fun x => (χ k x : ℂ) * f j x` using `fun k => by simp [F]`. Establish `hFi : ∀ k i, i ≠ j → F k i = f i` using `fun k i hi => by simp [F, Function.update_of_ne hi]`. Establish `hχC : ∀ k, ContDiffOn ℝ 2 (fun x => (χ k x : ℂ)) (offHyp S U)` using `fun k => (Complex.ofRealCLM.contDiff.comp (by exact_mod_cast contDiff_infty.1 (hχs k) 2)).contDiffOn`. Establish `hFs : ∀ k i, ContDiffOn ℝ 2 (F k i) (offHyp S U)`.
+
+Introduce `k i`. Distinguish the cases in `hi : i = j`. Rewrite using `[hi, hFj]`. Conclude with `(hχC k).mul (hf j)`. Rewrite using `[hFi k i hi]`.
+
+Conclude with `hf i`. Establish `hF0 : ∀ k, ∀ v ∈ offHyp S U, v ∉ K → F k j v = 0` using `fun k v hv hvK => by`. Rewrite using `[hFj]`. Simplify using `[hf0 v hv hvK]`. Establish `hzero : ∀ k, ∫ v in offHyp S U, (Matrix.of fun i b => dbar (F k i) v (coordVec b)).det = 0`.
+
+Introduce `k`. Establish `hsub : K ∩ tsupport (χ k) ⊆ offHyp S U`. Introduce and unpack `v ⟨hvK, hvt⟩`. Use `⟨hKU hvK, fun a ha h0 => ?_⟩` and prove the remaining obligations. Conclude with `(notMem_tsupport_iff_eventuallyEq.2 (hχ0 k v ⟨a, ha, h0⟩)) hvt`.
+
+Use `GlobalTheory.T.integral_dbarJacobian_det_eq_zero_of_compactSupport (offHyp S U) (K ∩ tsupport (χ k)) (F k) j hΩ (hK.inter_right (isClosed_tsupport _)) hsub (hFs k) ?_` and prove the remaining obligations. Introduce `v hv hvn`. Distinguish the cases in `hvK : v ∈ K`. Establish `: v ∉ tsupport (χ k)` using `fun h => hvn ⟨hvK, h⟩`. Rewrite using `[hFj]`.
+
+Simplify using `[image_eq_zero_of_notMem_tsupport this]`. Conclude with `hF0 k v hv hvK`. Establish `hFb : ∀ k, ∀ v ∈ offHyp S U, v ∈ K → ∀ i b, ‖dbar (F k i) v (coordVec b)‖ * (poinWt S v (u i) * poinWt S v b) ≤ |c| + |C| * |c|`. Introduce `k v hv hvK i b`. Establish `hw` using `hwt v hv`.
+
+Establish `hCc : 0 ≤ |C| * |c|` using `mul_nonneg (abs_nonneg _) (abs_nonneg _)`. Distinguish the cases in `hi : i = j`. Rewrite using `[hi, hFj]`. Establish `hvn` using `hΩ.mem_nhds hv`. Rewrite using `[dbar_mul (a := fun x => (χ k x : ℂ)) (b := f j) (((hχC k).differentiableOn two_ne_zero).differentiableAt hvn) (((hf j).differentiableOn two_ne_zero).differentiableAt hvn) (coordVec b)]`.
+
+Establish `h1` using `hdb v hv hvK j b`. Establish `h2` using `hχd k v b`. Establish `h3` using `hfb v hv hvK`. Establish `hχv` using `hχ01 k v`. Establish `hp : 0 ≤ poinWt S v (u j) * poinWt S v b` using `mul_nonneg (hw _).le (hw _).le`.
+
+Establish `hA : 0 ≤ ‖dbar (f j) v (coordVec b)‖ * (poinWt S v (u j) * poinWt S v b)` using `mul_nonneg (norm_nonneg _) hp`. Establish `hB : 0 ≤ ‖dbar (fun x => (χ k x : ℂ)) v (coordVec b)‖ * poinWt S v b` using `mul_nonneg (norm_nonneg _) (hw _).le`. Establish `hE : 0 ≤ ‖f j v‖ * poinWt S v (u j)` using `mul_nonneg (norm_nonneg _) (hw _).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg hχv.1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ |c| + |C| * |c| := by`. Use `add_le_add ?_ ?_` and prove the remaining obligations. Conclude with `(mul_le_of_le_one_left hA hχv.2).trans (h1.trans (le_abs_self c))`. Conclude with `mul_le_mul (h2.trans (le_abs_self C)) (h3.trans (le_abs_self c)) hE (abs_nonneg _)`.
+
+Rewrite using `[hFi k i hi]`. Conclude with `(hdb v hv hvK i b).trans ((le_abs_self c).trans (le_add_of_nonneg_right hCc))`. Set `bound : V n → ℝ` to `K.indicator fun v => (n.factorial : ℝ) * |(|c| + |C| * |c|)| ^ n * ∏ a, (poinWt S v a)⁻¹ ^ 2`. Establish `hbint : Integrable bound (volume.restrict (offHyp S U))`. Rewrite using `[integrable_indicator_iff hKc.measurableSet, IntegrableOn, Measure.restrict_restrict hKc.measurableSet]`.
+
+Conclude with `IntegrableOn.mono_set ((GlobalTheory.T.poincare_volume_integrableOn_compact_punctured_polydisc S K hK fun v hv => hsmall v (hKU hv)).const_mul ((n.factorial : ℝ) * |(|c| + |C| * |c|)| ^ n)) Set.inter_subset_left`. Establish `hmeas : ∀ k, AEStronglyMeasurable (fun v => (Matrix.of fun i b => dbar (F k i) v (coordVec b)).det) (volume.restrict (offHyp S U))` using `fun k => (continuousOn_det_dbar hΩ (hFs k)).aestronglyMeasurable hΩm`. Establish `hle : ∀ k, ∀ᵐ v ∂(volume.restrict (offHyp S U)), ‖(Matrix.of fun i b => dbar (F k i) v (coordVec b)).det‖ ≤ bound v`. Introduce `k`. Use `(ae_restrict_iff' hΩm).2 (Filter.Eventually.of_forall fun v hv => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hvK : v ∈ K`. Simplify using `only [bound, Set.indicator_of_mem hvK]`. Conclude with `hbd (F k) _ (hFb k) v hv hvK`. Simplify using `only [bound, Set.indicator_of_notMem hvK]`. Rewrite using `[hoff (F k) (hF0 k) v hv hvK, norm_zero]`.
+
+Establish `hlim : ∀ᵐ v ∂(volume.restrict (offHyp S U)), Tendsto (fun k => (Matrix.of fun i b => dbar (F k i) v (coordVec b)).det) atTop (𝓝 ((Matrix.of fun i b => dbar (f i) v (coordVec b)).det))`. Use `(ae_restrict_iff' hΩm).2 (Filter.Eventually.of_forall fun v hv => ?_)` and prove the remaining obligations. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hχ1 v hv.2] with k hk`. Use `congr 1`.
+
+Use extensionality with `i b`. Distinguish the cases in `hi : i = j`. Simplify using `only [Matrix.of_apply, hi, hFj]`. Rewrite using `[dbar_congr (f := f j) (g := fun x => (χ k x : ℂ) * f j x) (hk.mono fun x hx => by simp [hx])]`. Simplify using `only [Matrix.of_apply, hFi k i hi]`.
+
+Establish `hT` using `tendsto_integral_of_dominated_convergence bound hmeas hbint hle hlim`. Establish `h0 : (fun k => ∫ v in offHyp S U, (Matrix.of fun i b => dbar (F k i) v (coordVec b)).det) = fun _ => 0`. Use function extensionality and compare the values at `hzero`. Rewrite `hT` using `[h0]`. Conclude with `tendsto_nhds_unique hT tendsto_const_nhds`.
+-/
 theorem integral_det_dbar_eq_zero_of_poincare : ∀ {n : ℕ} (S : Finset (Fin n)) (U K : Set (V n)) (f : Fin n → V n → ℂ)
     (j : Fin n) (u : Equiv.Perm (Fin n)) (c : ℝ), IsOpen U → IsCompact K → K ⊆ U →
     (∀ v ∈ U, ∀ a ∈ S, ‖v a‖ ≤ 1 / 2) → (∀ i, ContDiffOn ℝ 2 (f i) (offHyp S U)) →

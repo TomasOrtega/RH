@@ -26,9 +26,20 @@ def latticeOfTau (τ : ℍ) : PeriodPair where
     simp at hre
     exact ⟨rfl, hre⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma latticeOfTau_ω₁ (τ : ℍ) : (latticeOfTau τ).ω₁ = τ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma latticeOfTau_ω₂ (τ : ℍ) : (latticeOfTau τ).ω₂ = 1 := rfl
 
+/- English proof (translation)
+Establish `hE : E hk τ = (1 / 2 : ℂ) * eisensteinSeries (N` using `1) 0 k τ := rfl`. Establish `h1 : (latticeOfTau τ).G k = ∑' v : Fin 2 → ℤ, eisSummand k v τ`. Rewrite using `[PeriodPair.G, ← (latticeOfTau τ).latticeEquivProd.symm.toEquiv.tsum_eq, ← (finTwoArrowEquiv ℤ).tsum_eq]`. Use `tsum_congr fun v ↦ ?_` and prove the remaining obligations. Simplify using `only [LinearEquiv.coe_toEquiv, PeriodPair.latticeEquiv_symm_apply, finTwoArrowEquiv_apply, latticeOfTau_ω₁, latticeOfTau_ω₂, mul_one, eisSummand, zpow_neg, zpow_natCast]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, tsum_eisSummand_eq_riemannZeta_mul_eisensteinSeries hk, hE]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem G_latticeOfTau {k : ℕ} (hk : 3 ≤ k) (τ : ℍ) :
     (latticeOfTau τ).G k = 2 * riemannZeta k * E hk τ := by
   have hE : E hk τ = (1 / 2 : ℂ) * eisensteinSeries (N := 1) 0 k τ := rfl
@@ -42,6 +53,11 @@ theorem G_latticeOfTau {k : ℕ} (hk : 3 ≤ k) (τ : ℍ) :
   rw [h1, tsum_eisSummand_eq_riemannZeta_mul_eisensteinSeries hk, hE]
   ring
 
+/- English proof (translation)
+Establish `h` using `riemannZeta_two_mul_nat (k := 3) (by norm_num)`. Establish `hb : bernoulli 6 = 1 / 42` using `by decide +kernel`. Rewrite `h` using `[hb]`. Evaluate the numerical expressions using `[Nat.factorial] at h`. Rewrite using `[h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma riemannZeta_six : riemannZeta 6 = π ^ 6 / 945 := by
   have h := riemannZeta_two_mul_nat (k := 3) (by norm_num)
   have hb : bernoulli 6 = 1 / 42 := by decide +kernel
@@ -50,12 +66,18 @@ lemma riemannZeta_six : riemannZeta 6 = π ^ 6 / 945 := by
   rw [h]
   ring
 
+/- English proof (translation)
+Rewrite using `[PeriodPair.g₂, G_latticeOfTau (k := 4) (by norm_num)]`. Establish `: ((4 : ℕ) : ℂ) = 4` using `by norm_num`. Rewrite using `[this, riemannZeta_four]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem g₂_latticeOfTau (τ : ℍ) : (latticeOfTau τ).g₂ = 4 / 3 * π ^ 4 * E₄ τ := by
   rw [PeriodPair.g₂, G_latticeOfTau (k := 4) (by norm_num)]
   have : ((4 : ℕ) : ℂ) = 4 := by norm_num
   rw [this, riemannZeta_four]
   ring
 
+/- English proof (translation)
+Rewrite using `[PeriodPair.g₃, G_latticeOfTau (k := 6) (by norm_num)]`. Establish `: ((6 : ℕ) : ℂ) = 6` using `by norm_num`. Rewrite using `[this, riemannZeta_six]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem g₃_latticeOfTau (τ : ℍ) : (latticeOfTau τ).g₃ = 8 / 27 * π ^ 6 * E₆ τ := by
   rw [PeriodPair.g₃, G_latticeOfTau (k := 6) (by norm_num)]
   have : ((6 : ℕ) : ℂ) = 6 := by norm_num
@@ -64,12 +86,18 @@ theorem g₃_latticeOfTau (τ : ℍ) : (latticeOfTau τ).g₃ = 8 / 27 * π ^ 6 
 
 def modularJ (τ : ℍ) : ℂ := E₄ τ ^ 3 / ModularForm.discriminant τ
 
+/- English proof (translation)
+Establish `h` using `ModularForm.discriminant_eq_E₄_cube_sub_E₆_sq τ`. Rewrite using `[discr, g₂_latticeOfTau, g₃_latticeOfTau, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem discr_latticeOfTau (τ : ℍ) :
     discr (latticeOfTau τ) = (2 * π) ^ 12 * ModularForm.discriminant τ := by
   have h := ModularForm.discriminant_eq_E₄_cube_sub_E₆_sq τ
   rw [discr, g₂_latticeOfTau, g₃_latticeOfTau, h]
   ring
 
+/- English proof (translation)
+Establish `hΔ` using `ModularForm.discriminant_ne_zero τ`. Establish `hπ : (π : ℂ) ≠ 0` using `ofReal_ne_zero.2 Real.pi_ne_zero`. Rewrite using `[weierstrassCurve_j, discr_latticeOfTau, g₂_latticeOfTau, modularJ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weierstrassCurve_latticeOfTau_j (τ : ℍ) :
     (weierstrassCurve (latticeOfTau τ)).j = modularJ τ := by
   have hΔ := ModularForm.discriminant_ne_zero τ
@@ -78,6 +106,13 @@ theorem weierstrassCurve_latticeOfTau_j (τ : ℍ) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hγ : (γ : GL (Fin 2) ℝ) ∈ 𝒮ℒ` using `⟨γ, rfl⟩`. Establish `h4` using `SlashInvariantForm.slash_action_eqn'' E₄ hγ τ`. Establish `hΔ` using `SlashInvariantForm.slash_action_eqn'' CuspForm.discriminant hγ τ`. Simplify using `only [CuspForm.coe_discriminant] at hΔ`. Establish `hd` using `denom_ne_zero (γ : GL (Fin 2) ℝ) τ`.
+
+Establish `hΔ0` using `ModularForm.discriminant_ne_zero τ`. Rewrite using `[modularJ, modularJ, show γ • τ = (γ : GL (Fin 2) ℝ) • τ from rfl, h4, hΔ]`. Establish `: (denom (γ : GL (Fin 2) ℝ) τ ^ (4 : ℤ)) ^ 3 = denom (γ : GL (Fin 2) ℝ) τ ^ (12 : ℤ)`. Rewrite using `[← zpow_natCast, ← zpow_mul]`. Evaluate the numerical expressions.
+
+Rewrite using `[mul_pow, this, mul_div_mul_left _ _ (zpow_ne_zero _ hd)]`.
+-/
 theorem modularJ_smul (γ : SL(2, ℤ)) (τ : ℍ) : modularJ (γ • τ) = modularJ τ := by
   have hγ : (γ : GL (Fin 2) ℝ) ∈ 𝒮ℒ := ⟨γ, rfl⟩
   have h4 := SlashInvariantForm.slash_action_eqn'' E₄ hγ τ

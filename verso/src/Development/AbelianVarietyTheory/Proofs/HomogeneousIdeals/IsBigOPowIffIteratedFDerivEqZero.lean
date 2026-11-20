@@ -33,6 +33,11 @@ section Character
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ExpOfFrechetDerivative.eq_exp_fderiv`. Consider the case `exact _root_.GlobalTheory.ExpOfFrechetDerivative.eq_exp_fderiv`. Consider the case `(apply _root_.GlobalTheory.ExpOfFrechetDerivative.eq_exp_fderiv <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ExpOfFrechetDerivative.eq_exp_fderiv <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ExpOfFrechetDerivative.eq_exp_fderiv <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ExpOfFrechetDerivative.eq_exp_fderiv ..)`.
+-/
 theorem eq_cexp_fderiv_of_map_add {f : E → ℂ} (hf : DifferentiableAt ℂ f 0) (h0 : f 0 ≠ 0)
     (hm : ∀ x y, f (x + y) = f x * f y) (z : E) : f z = cexp (fderiv ℂ f 0 z) := by
   first
@@ -49,6 +54,11 @@ section Alternating
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `h1` using `hE (I • u) (I • v)`. Establish `h2` using `hE (I • u) v`. Establish `h3` using `hE u (I • v)`. Establish `h4` using `hE u v`. Simplify using `only [hB, sub_im, mul_im, I_re, I_im, zero_mul, one_mul, zero_add] at h1 h2 h3 h4 ⊢`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith`.
+-/
 theorem alt_I_smul_I_smul {B : V → V → ℂ} (hB : ∀ z u, B (I • z) u = I * B z u)
     (hE : ∀ u v, (B v u - B u v).im = 0) (u v : V) :
     B (I • v) (I • u) - B (I • u) (I • v) = B v u - B u v := by
@@ -91,6 +101,11 @@ variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimension
 
 end Lattice
 
+/- English proof (translation)
+Establish `h1 : deriv (fun z : ℂ => z ^ 2 + z ^ 4) = fun z => 2 * z + 4 * z ^ 3`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Establish `h2 : deriv (fun z : ℂ => 2 * z + 4 * z ^ 3) 0 = 2`. Use `(((hasDerivAt_id (0 : ℂ)).const_mul 2).fun_add ((hasDerivAt_pow 3 0).const_mul 4)).deriv` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[quadPart, iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod, iteratedDeriv_succ, iteratedDeriv_one, h1, h2]`. Simplify using `[sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (z : ℂ) : quadPart (fun z : ℂ => z ^ 2 + z ^ 4) z = z ^ 2 := by
   have h1 : deriv (fun z : ℂ => z ^ 2 + z ^ 4) = fun z => 2 * z + 4 * z ^ 3 := by
     funext z; simp
@@ -102,6 +117,9 @@ example (z : ℂ) : quadPart (fun z : ℂ => z ^ 2 + z ^ 4) z = z ^ 2 := by
   simp [sq]
   ring
 
+/- English proof (translation)
+Rewrite using `[jacobiTheta₂_add_left', ← mul_assoc, ← mul_assoc, one_mul, ← exp_add, ← exp_add, conj_I]`. Use `congr 2`. Take the linear combination `((π : ℂ) / 2 - π + π / 2) * I_sq`.
+-/
 example (z : ℂ) : cexp (π * (z + I) ^ 2 / 2) * jacobiTheta₂ (z + I) I =
     1 * cexp (π * (z * conj I) + π * (I * conj I) / 2) * (cexp (π * z ^ 2 / 2) * jacobiTheta₂ z I) := by
   rw [jacobiTheta₂_add_left', ← mul_assoc, ← mul_assoc, one_mul, ← exp_add, ← exp_add, conj_I]

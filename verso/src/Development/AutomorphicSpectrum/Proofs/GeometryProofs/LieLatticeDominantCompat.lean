@@ -20,6 +20,11 @@ section BC
 
 variable {S : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R']
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Use `letI := f.toAlgebra`. Take `⟨j, hj, -, hsp⟩` from `GlobalTheory.T.lie_model_base_change_map S G R R' x E E' M M'`. Establish `e : (fun k => j (b k)) = b'`. Use function extensionality and compare the values at `fun k => M'.inj (Over.OverMorphism.ext ((hj _).trans (hb k).symm))`.
+
+Use `hsp hs n b` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem bc {G : Over S} [GrpObj G] (hs : Smooth G.hom) (f : R →+* R') (x : Sp R ⟶ S) (y : Sp R' ⟶ S)
     (hy : Spec.map (CommRingCat.ofHom f) ≫ x = y) {E E' : Type} [AddCommGroup E] [Module R E] [AddCommGroup E']
     [Module R' E'] (M : LieModel G x E) (M' : LieModel G y E') {n : ℕ} (b : Module.Basis (Fin n) R E)
@@ -34,11 +39,19 @@ theorem bc {G : Over S} [GrpObj G] (hs : Smooth G.hom) (f : R →+* R') (x : Sp 
   have := hsp hs n b
   rwa [e] at this
 
+/- English proof (translation)
+Use `RingHom.ext fun t => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem dualMap_comp {R'' : Type} [CommRing R''] (a : R →+* R') (b : R' →+* R'') :
     (dualMap b).comp (dualMap a) = dualMap (b.comp a) := by
   refine RingHom.ext fun t => ?_
   ext <;> simp [dualMap]
 
+/- English proof (translation)
+Set `u : Over.mk x' ⟶ Over.mk x` to `Over.homMk (Spec.map (CommRingCat.ofHom φ)) h`. Establish `e : (LieEx.zsec x' : _ ⟶ LieEx.ob x' R') ≫ LieCarrier.epsHom φ x x' h = u ≫ LieEx.zsec x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `congr 2`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `[dualMap]`. Use `(LieEx.isTanAt_iff x' G _).2 ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, e, Category.assoc, (LieEx.isTanAt_iff x G _).1 hv, MonObj.comp_one]`.
+-/
 theorem tan_pull {G : Over S} [GrpObj G] (φ : R →+* R') (x : Sp R ⟶ S) (x' : Sp R' ⟶ S)
     (h : Spec.map (CommRingCat.ofHom φ) ≫ x = x') (v : epsAt x ⟶ G) (hv : IsTanAt G x v) :
     IsTanAt G x' (LieCarrier.epsHom φ x x' h ≫ v) := by
@@ -65,10 +78,18 @@ def Ext (g : A →+* Ω) (x : Sp A ⟶ X) (M : LieModel G ξ E) (e : E) (v : eps
 
 variable {g : A →+* Ω} {x : Sp A ⟶ X} {M : LieModel G ξ E}
 
+/- English proof (translation)
+The claim follows from `LieCarrier.tan_ext g hg _ v v' hv.1 hv'.1 (hv.2.symm.trans hv'.2)`.
+-/
 theorem Ext.unique (hg : Function.Injective g) {e : E} {v v' : epsAt x ⟶ G} (hv : Ext g x M e v)
     (hv' : Ext g x M e v') : v = v' :=
   LieCarrier.tan_ext g hg _ v v' hv.1 hv'.1 (hv.2.symm.trans hv'.2)
 
+/- English proof (translation)
+Use `⟨(LieEx.isTanAt_iff _ G _).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, (LieEx.isTanAt_iff _ G _).1 hv.1, (LieEx.isTanAt_iff _ G _).1 hv'.1, _root_.mul_one]`. Establish `e1 : M.pt e = LieCarrier.epsHom g x ξ hx ≫ v` using `Over.OverMorphism.ext hv.2`. Establish `e2 : M.pt e' = LieCarrier.epsHom g x ξ hx ≫ v'` using `Over.OverMorphism.ext hv'.2`. Establish `: M.pt (e + e') = LieCarrier.epsHom g x ξ hx ≫ (v * v')`.
+
+Rewrite using `[M.add, MonObj.comp_mul, e1, e2]`. Conclude with `congrArg CommaMorphism.left this`.
+-/
 theorem Ext.mul (hx : Spec.map (CommRingCat.ofHom g) ≫ x = ξ) {e e' : E} {v v' : epsAt x ⟶ G}
     (hv : Ext g x M e v) (hv' : Ext g x M e' v') : Ext g x M (e + e') (v * v') := by
   refine ⟨(LieEx.isTanAt_iff _ G _).2 ?_, ?_⟩
@@ -79,6 +100,11 @@ theorem Ext.mul (hx : Spec.map (CommRingCat.ofHom g) ≫ x = ξ) {e e' : E} {v v
       rw [M.add, MonObj.comp_mul, e1, e2]
     exact congrArg CommaMorphism.left this
 
+/- English proof (translation)
+Use `⟨(LieEx.isTanAt_iff _ G _).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, LieEx.zsec_hom]`. Conclude with `(LieEx.isTanAt_iff _ G _).1 hv.1`. Express the relevant statement in the definitionally equal form `(M.pt (g c • e)).left = Spec.map (CommRingCat.ofHom (dualMap g)) ≫ Spec.map (CommRingCat.ofHom (epsMul c)) ≫ v.left`. Rewrite using `[M.smul, hv.2]`.
+
+Establish `: Spec.map (CommRingCat.ofHom (epsMul (g c))) ≫ Spec.map (CommRingCat.ofHom (dualMap g)) = Spec.map (CommRingCat.ofHom (dualMap g)) ≫ Spec.map (CommRingCat.ofHom (epsMul c))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, LieCarrier.dualMap_epsMul]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ v.left) this).trans (Category.assoc _ _ _))`.
+-/
 theorem Ext.smul {e : E} {v : epsAt x ⟶ G} (hv : Ext g x M e v) (c : A) :
     Ext g x M (g c • e) (LieEx.hom x (c • (LinearMap.id : A →ₗ[A] A)) ≫ v) := by
   refine ⟨(LieEx.isTanAt_iff _ G _).2 ?_, ?_⟩
@@ -93,6 +119,11 @@ theorem Ext.smul {e : E} {v : epsAt x ⟶ G} (hv : Ext g x M e v) (c : A) :
         LieCarrier.dualMap_epsMul]
     exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ v.left) this).trans (Category.assoc _ _ _))
 
+/- English proof (translation)
+Use `⟨(LieEx.isTanAt_iff x G _).2 (MonObj.comp_one _), ?_⟩` and prove the remaining obligations. Establish `h0 : M.pt 0 = 1`. Use `M.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+
+Establish `: M.pt 0 = LieCarrier.epsHom g x ξ hx ≫ (1 : epsAt x ⟶ G)` using `by rw [h0, MonObj.comp_one]`. Conclude with `congrArg CommaMorphism.left this`.
+-/
 theorem Ext.zero (hx : Spec.map (CommRingCat.ofHom g) ≫ x = ξ) : Ext g x M 0 (1 : epsAt x ⟶ G) := by
   refine ⟨(LieEx.isTanAt_iff x G _).2 (MonObj.comp_one _), ?_⟩
   have h0 : M.pt 0 = 1 := by
@@ -116,14 +147,23 @@ instance : AddCommGroup (ExtE hx M) := inferInstanceAs (AddCommGroup ↥(extLat 
 
 def val : ExtE hx M →+ E := (extLat hx M).subtype
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective`.
+-/
 theorem val_inj : Function.Injective (val : ExtE hx M →+ E) := Subtype.val_injective
 
+/- English proof (translation)
+The claim follows from `let ⟨_, hv⟩ := y.2 ⟨_, hv.smul c⟩`.
+-/
 theorem smul_mem (c : A) (y : ExtE hx M) : g c • val y ∈ extLat hx M :=
   let ⟨_, hv⟩ := y.2
   ⟨_, hv.smul c⟩
 
 instance : SMul A (ExtE hx M) := ⟨fun c y => ⟨g c • val y, smul_mem c y⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_smul (c : A) (y : ExtE hx M) : val (c • y) = g c • val y := rfl
 
 instance : Module A (ExtE hx M) where
@@ -134,10 +174,16 @@ instance : Module A (ExtE hx M) where
   add_smul a b y := val_inj (by simp [val_smul, add_smul])
   zero_smul y := val_inj (by simp [val_smul])
 
+/- English proof (translation)
+The claim follows from `y.2`.
+-/
 theorem val_spec (y : ExtE hx M) : ∃ v, Ext g x M (val y) v := y.2
 
 def vec (y : ExtE hx M) : epsAt x ⟶ G := (val_spec y).choose
 
+/- English proof (translation)
+The claim follows from `(val_spec y).choose_spec`.
+-/
 theorem vec_spec (y : ExtE hx M) : Ext g x M (val y) (vec y) := (val_spec y).choose_spec
 
 def extModel (hg : Function.Injective g) (hx : Spec.map (CommRingCat.ofHom g) ≫ x = ξ) (M : LieModel G ξ E) :
@@ -165,6 +211,13 @@ variable {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ : Sp Ω 
   {A A' : Type} [CommRing A] [CommRing A'] {g : A →+* Ω} {g' : A' →+* Ω'} {ρ : A →+* A'}
   {x : Sp A ⟶ X} {x' : Sp A' ⟶ X'}
 
+/- English proof (translation)
+Establish `tw` using `tan_pull ρ x (x' ≫ f) hρ v hv.1`. Establish `h1` using `LieMove.liftEps_left hG (LieCarrier.epsHom ρ x (x' ≫ f) hρ ≫ v)`. Establish `h1' : (LieMove.liftEps hG (LieCarrier.epsHom ρ x (x' ≫ f) hρ ≫ v)).left ≫ φ = Spec.map (CommRingCat.ofHom (dualMap ρ)) ≫ v.left` using `h1`. Use `⟨LieMove.liftEps hG (LieCarrier.epsHom ρ x (x' ≫ f) hρ ≫ v), ⟨(LieMove.tan_iff hG _).2 (by rw [LieMove.push_lift]; exact tw), ?_⟩, h1'⟩` and prove the remaining obligations. Establish `key : Spec.map (CommRingCat.ofHom (dualMap i)) ≫ Spec.map (CommRingCat.ofHom (dualMap g)) = Spec.map (CommRingCat.ofHom (dualMap g')) ≫ Spec.map (CommRingCat.ofHom (dualMap ρ))`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, dualMap_comp, dualMap_comp, hρ']`. Use `hG.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[hj, hv.2, Category.assoc, h1', ← Category.assoc, key, Category.assoc]`. Establish `w₁` using `Over.w (M'.pt (j e))`. Establish `w₂` using `Over.w (LieCarrier.epsHom g' x' ξ' hx' ≫ LieMove.liftEps hG (LieCarrier.epsHom ρ x (x' ≫ f) hρ ≫ v))`.
+
+Conclude with `w₁.trans w₂.symm`.
+-/
 theorem ext_up (hG : IsGrpPullback G' G f φ)
     (hj : ∀ e, (M'.pt (j e)).left ≫ φ = Spec.map (CommRingCat.ofHom (dualMap i)) ≫ (M.pt e).left)
     (hρ : Spec.map (CommRingCat.ofHom ρ) ≫ x = x' ≫ f) (hρ' : g'.comp ρ = i.comp g)
@@ -187,6 +240,13 @@ theorem ext_up (hG : IsGrpPullback G' G f φ)
     have w₂ := Over.w (LieCarrier.epsHom g' x' ξ' hx' ≫ LieMove.liftEps hG (LieCarrier.epsHom ρ x (x' ≫ f) hρ ≫ v))
     exact w₁.trans w₂.symm
 
+/- English proof (translation)
+Take `⟨n, ⟨b⟩⟩` from `GlobalTheory.T.lie_model_free_over_local_ring X G hs A x (ExtE hx M) (extModel hg hx M)`. Establish `up : ∀ k, ∃ u : epsAt x' ⟶ G', Ext g' x' M' (j (val (b k))) u ∧ u.left ≫ φ = Spec.map (CommRingCat.ofHom (dualMap ρ)) ≫ (vec (b k)).left` using `fun k => ext_up hG hj hρ hρ' hx' (vec_spec (b k))`. Use `choose u hu huφ using up`. Set `b' : Fin n → ExtE hx' M'` to `fun k => ⟨j (val (b k)), u k, hu k⟩`. Take `⟨-, hsp⟩` from `bc hs ρ x (x' ≫ f) hρ (extModel hg hx M) (LieMove.pushModel hG (extModel hg' hx' M')) b b' (fun k => by`.
+
+Establish `e₁ : vec (b' k) = u k` using `(vec_spec (b' k)).unique hg' (hu k)`. Use `show (vec (b' k)).left ≫ φ = _`. Rewrite using `[e₁]`. Conclude with `huφ k)`. Take `⟨y, rfl⟩ : ∃ y : ExtE hx' M', val y = e'` from `⟨⟨e', v', hv'⟩, rfl⟩`.
+
+Establish `hy : y ∈ Submodule.span A' (Set.range b')` using `by rw [hsp]; trivial`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun A').1 hy`. Conclude with `⟨n, fun k => val (b k), c, fun k => val_spec (b k), map_sum val _ _⟩`.
+-/
 theorem core [IsLocalRing A] (hs : Smooth G.hom) (hG : IsGrpPullback G' G f φ)
     (hj : ∀ e, (M'.pt (j e)).left ≫ φ = Spec.map (CommRingCat.ofHom (dualMap i)) ≫ (M.pt e).left)
     (hg : Function.Injective g) (hg' : Function.Injective g')
@@ -212,6 +272,9 @@ theorem core [IsLocalRing A] (hs : Smooth G.hom) (hG : IsGrpPullback G' G f φ)
   obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun A').1 hy
   exact ⟨n, fun k => val (b k), c, fun k => val_spec (b k), map_sum val _ _⟩
 
+/- English proof (translation)
+Use `M'.inj (Over.OverMorphism.ext (hG.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm)))` and prove the remaining obligations. Establish `key : Spec.map (CommRingCat.ofHom (epsMul (i a))) ≫ Spec.map (CommRingCat.ofHom (dualMap i)) = Spec.map (CommRingCat.ofHom (dualMap i)) ≫ Spec.map (CommRingCat.ofHom (epsMul a))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, LieCarrier.dualMap_epsMul]`. Rewrite using `[hj, M.smul, M'.smul, Category.assoc, hj, ← Category.assoc (Spec.map (CommRingCat.ofHom (epsMul (i a)))), key, Category.assoc]`.
+-/
 theorem semilin (hG : IsGrpPullback G' G f φ)
     (hj : ∀ e, (M'.pt (j e)).left ≫ φ = Spec.map (CommRingCat.ofHom (dualMap i)) ≫ (M.pt e).left) (a : Ω) (e : V) :
     j (a • e) = i a • j e := by
@@ -223,6 +286,11 @@ theorem semilin (hG : IsGrpPullback G' G f φ)
   rw [hj, M.smul, M'.smul, Category.assoc, hj, ← Category.assoc (Spec.map (CommRingCat.ofHom (epsMul (i a)))), key,
     Category.assoc]
 
+/- English proof (translation)
+Establish `hs : LinearIndepOn Ω id (Set.range b)` using `hb.linearIndepOn_id`. Set `B` to `Module.Basis.extend hs`. Use `haveI : Module.Finite Ω V := Module.Finite.of_basis b₁`. Use `haveI := Module.Finite.finite_basis B`. Set `eq` to `Finite.equivFin (hs.extend (Set.subset_univ _))`.
+
+Establish `h` using `(hall _ (B.reindex eq)).comp (fun k => eq ⟨b k, hs.subset_extend _ (Set.mem_range_self k)⟩) (fun a c hac => hb.injective (congrArg Subtype.val (eq.injective hac)))`. Use `h using 2 with k` and compare the differences between its conclusion and the goal. Simplify using `only [Function.comp, B, Module.Basis.reindex_apply, Equiv.symm_apply_apply, Module.Basis.extend_apply_self]`.
+-/
 theorem indep_of_bases {F : Type} [AddCommGroup F] [Module Ω' F] {m : ℕ} (b₁ : Module.Basis (Fin m) Ω V) (j : V →+ F)
     (hall : ∀ (m : ℕ) (B : Module.Basis (Fin m) Ω V), LinearIndependent Ω' fun k => j (B k))
     {n : ℕ} (b : Fin n → V) (hb : LinearIndependent Ω b) : LinearIndependent Ω' fun k => j (b k) := by
@@ -239,6 +307,19 @@ theorem indep_of_bases {F : Type} [AddCommGroup F] [Module Ω' F] {m : ℕ} (b�
 
 end Pull
 
+/- English proof (translation)
+Introduce `X X' Ω Ω' _ _ ξ ξ' f i G G' _ _ _ _ φ V V' _ _ _ _ M M' j hξ hξ' hd hG hs hj`. Establish `hbc : ∀ (m : ℕ) (B : Module.Basis (Fin m) Ω V), LinearIndependent Ω' (fun k => j (B k)) ∧ Submodule.span Ω' (Set.range fun k => j (B k)) = ⊤` using `fun m B => bc hs i ξ (ξ' ≫ f) (Eq.symm hd) M (LieMove.pushModel hG M') B (fun k => j (B k)) (fun k => hj _)`. Take `⟨m, ⟨b₁⟩⟩` from `GlobalTheory.T.lie_model_free_over_local_ring X G hs Ω ξ V M`. Use `⟨⟨semilin hG hj, fun n b hb => indep_of_bases b₁ j (fun m B => (hbc m B).1) b hb⟩, ?_, ?_⟩` and prove the remaining obligations. Use `top_le_iff.1 ((hbc m b₁).2.symm.le.trans (Submodule.span_mono ?_))` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, rfl⟩`. Use function extensionality and compare the values at `p'`. Establish `hp : genPt ξ ⤳ f p'.1` using `RegAtDom.map_genPt hd ▸ p'.2.map f.continuous`. Establish `hx` using `LieCarrier.genMap_fromSpecStalk (ξ := ξ) ⟨f p'.1, hp⟩`.
+
+Establish `hx'` using `LieCarrier.genMap_fromSpecStalk (ξ := ξ') p'`. Establish `hρ : Spec.map (CommRingCat.ofHom (f.stalkMap p'.1).hom) ≫ X.fromSpecStalk (f p'.1) = X'.fromSpecStalk p'.1 ≫ f` using `Scheme.SpecMap_stalkMap_fromSpecStalk f`. Establish `hρ' : (genMap ξ' p').comp (f.stalkMap p'.1).hom = i.comp (genMap ξ ⟨f p'.1, hp⟩)` using `RingHom.ext (RegAtDom.genMap_stalkMap hd p'.1 p'.2 hp)`. Establish `car` using `fun e => (lieLat_carrier X G Ω ξ V M ⟨f p'.1, hp⟩).1 e`. Establish `car'` using `fun e => (lieLat_carrier X' G' Ω' ξ' V' M' p').1 e`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `e' he'`. Take `⟨v', hv'⟩` from `(car' e').1 he'`. Take `⟨n, b, c, hb, rfl⟩` from `core (A := X.presheaf.stalk (f p'.1)) (A' := X'.presheaf.stalk p'.1) (g := genMap ξ ⟨f p'.1, hp⟩) (g' := genMap ξ' p') (ρ := (f.stalkMap p'.1).hom) (x := X.fromSpecStalk (f p'.1)) (x' := X'.fromSpecStalk p'.1) (M := M) (M' := M') (j := j) hs hG hj (hξ.inj _) (hξ'.inj p') hρ hρ' h …`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Establish `h₁ : j (b k) ∈ M.lat.pull ξ' f j p'` using `Submodule.subset_span ⟨hp, b k, (car _).2 (hb k), rfl⟩`. Conclude with `Submodule.smul_mem _ (⟨genMap ξ' p' (c k), c k, rfl⟩ : regAt ξ' p') h₁`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, e, he, rfl⟩`. Take `⟨v, hv⟩` from `(car e).1 he`.
+
+Take `⟨v', hv', -⟩` from `ext_up (A := X.presheaf.stalk (f p'.1)) (A' := X'.presheaf.stalk p'.1) (g := genMap ξ ⟨f p'.1, hp⟩) (g' := genMap ξ' p') (ρ := (f.stalkMap p'.1).hom) (x := X.fromSpecStalk (f p'.1)) (x' := X'.fromSpecStalk p'.1) (M := M) (M' := M') (j := j) hG hj hρ hρ' hx' hv`. Conclude with `(car' _).2 ⟨v', hv'⟩`.
+-/
 theorem main : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω'] (ξ : Sp Ω ⟶ X) (ξ' : Sp Ω' ⟶ X') (f : X' ⟶ X)
     (i : Ω →+* Ω') (G : Over X) (G' : Over X') [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
     (φ : G'.left ⟶ G.left) (V V' : Type) [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V']

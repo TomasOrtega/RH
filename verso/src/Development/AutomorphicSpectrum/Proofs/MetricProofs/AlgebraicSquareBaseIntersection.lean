@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.SqFirst
 
+/- English proof (translation)
+Establish `hh : A'.h = A.h ∘ (fun (z' : (Σ k', ι' k') → ℂ) (p : Σ k, ι k) => z' (v p))` using `funext hp.2`. Unfold `IsSmoothHerm`. Rewrite using `[hh]`. Use `ContDiffOn.comp hA ?_ ?_` and prove the remaining obligations. Conclude with `(contDiff_pi.2 fun p => contDiff_apply ℝ ℂ (v p)).contDiffOn`.
+
+Introduce `z hz k`. Take `⟨i', hi'⟩` from `hz (κ k)`. Take `⟨⟨k₁, i⟩, hp'⟩` from `hb.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `e : κ k₁ = κ k`. Use `hb.2.2.1 ⟨k₁, i⟩` as an intermediate fact.
+
+Rewrite `this` using `[hp']`. Conclude with `this.symm`. Take `rfl` from `hb.1 e`. Conclude with `⟨i, by simpa [hp'] using hi'⟩`.
+-/
 theorem isSmoothHerm_of_pull {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type}
     [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')}
     {A : HermLine ι} {A' : HermLine ι'} (hb : IsBlockMap κ v) (hA : IsSmoothHerm A)
@@ -33,6 +40,17 @@ theorem isSmoothHerm_of_pull {K K' : Type} [Fintype K] [Fintype K'] {ι : K → 
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `hκ : ∀ k, k ≠ k₀ → Q.κ 0 k = Q.κ 1 k` using `fun k hk => by`. Take `⟨i, -⟩` from `Q.arithY.2.1.2.2 k`. Use `congrArg Sigma.fst (Q.same ⟨k, i⟩ hk)` as an intermediate fact. Rewrite `this` using `[(Q.block 0).2.2.1, (Q.block 1).2.2.1]`. Then use the resulting hypothesis. Use `⟨?_, fun z' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h.1]`. Use function extensionality and compare the values at `k'`. Break down `Q.all k' with ⟨k, rfl⟩ | rfl` into its components or cases. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality.
+
+Establish `hn : ¬ ∃ k', Q.κ 1 k' = Q.κ 0 k`. Introduce and unpack `⟨k', hk'⟩`. Distinguish the cases in `h' : k' = k`. Substitute `h'` using the available equality. Conclude with `Q.new ⟨k', hk'.symm⟩`.
+
+Conclude with `h' ((Q.block 0).1 ((hκ k' h').trans hk'))`. Rewrite using `[pullDeg, pullDeg, (Q.block 0).1.extend_apply, hb.1, Function.extend_apply' _ _ _ hn]`. Both sides reduce to the same expression. Rewrite using `[pullDeg, pullDeg, (Q.block 0).1.extend_apply, hκ k hk, (Q.block 1).1.extend_apply]`. Establish `hn : ¬ ∃ k', Q.κ 0 k' = Q.κ 1 k₀` using `Q.new`.
+
+Rewrite using `[pullDeg, pullDeg, (Q.block 1).1.extend_apply, hb.1, Function.extend_apply' _ _ _ hn]`. Both sides reduce to the same expression. Rewrite using `[h.2]`. Conclude with `hb.2 _ _ fun p hp => by rw [Q.same p hp]`.
+-/
 theorem pull_one_of_base {P : Ideal (MRing ι)} {d : ℕ} {k₀ : K} {xi2 : K → ℤ} (Q : AlgSq P d k₀ xi2)
     {A : HermLine ι} {A₀ : HermLine Q.ιW} (hb : FromBase k₀ A) (h : IsPullHerm (Q.κ 0) (Q.v 0) A A₀) :
     IsPullHerm (Q.κ 1) (Q.v 1) A A₀ := by
@@ -61,6 +79,9 @@ theorem pull_one_of_base {P : Ideal (MRing ι)} {d : ℕ} {k₀ : K} {xi2 : K �
   · rw [h.2]
     exact hb.2 _ _ fun p hp => by rw [Q.same p hp]
 
+/- English proof (translation)
+Rewrite using `[← hI (fun j => f j) (fun j => hf j) (Equiv.swap ⟨a, ha⟩ ⟨b, hb⟩)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp, Equiv.swap_apply_def, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem swap_nat {V : Type*} {n : ℕ} (I : (Fin n → V) → ℝ) (S : V → Prop)
     (hI : ∀ L : Fin n → V, (∀ j, S (L j)) → ∀ σ : Equiv.Perm (Fin n), I (L ∘ σ) = I L)
     (f : ℕ → V) (hf : ∀ j, S (f j)) (a b : ℕ) (ha : a < n) (hb : b < n) :
@@ -71,21 +92,33 @@ theorem swap_nat {V : Type*} {n : ℕ} (I : (Fin n → V) → ℝ) (S : V → Pr
   simp only [Function.comp, Equiv.swap_apply_def, Fin.ext_iff]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Unfold `interp`. Apply the tactic sequence `split_ifs <;> assumption`.
+-/
 theorem interp_mem {V : Type*} {S : V → Prop} {x₁ x₂ a : V} (h₁ : S x₁) (h₂ : S x₂) (h₃ : S a)
     (k i j : ℕ) : S (interp k i x₁ x₂ a j) := by
   unfold interp
   split_ifs <;> assumption
 
+/- English proof (translation)
+Unfold `consWord`. Apply the tactic sequence `split_ifs <;> assumption`.
+-/
 theorem consWord_mem {V : Type*} {S : V → Prop} {x x₁ x₂ a : V} (h₀ : S x) (h₁ : S x₁) (h₂ : S x₂)
     (h₃ : S a) (k i j : ℕ) : S (consWord k i x x₁ x₂ a j) := by
   unfold consWord
   split_ifs <;> assumption
 
+/- English proof (translation)
+Unfold `word`. Apply the tactic sequence `split_ifs <;> assumption`.
+-/
 theorem word_mem {V : Type*} {S : V → Prop} {x₁ x₂ a : V} (h₁ : S x₁) (h₂ : S x₂) (h₃ : S a)
     (D k i : ℕ) (j : Fin D) : S (word D k i x₁ x₂ a j) := by
   unfold word
   split_ifs <;> assumption
 
+/- English proof (translation)
+Rewrite using `[swap_nat I S hI (consWord k i x₁ x₁ x₂ a) (consWord_mem h₁ h₁ h₂ h₃ k i) 0 2 (by omega) (by omega)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [consWord, interp]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | contradiction`.
+-/
 theorem consWord_left {V : Type*} {D : ℕ} (I : (Fin (D + 2) → V) → ℝ) (S : V → Prop)
     (hI : ∀ L : Fin (D + 2) → V, (∀ j, S (L j)) → ∀ σ : Equiv.Perm (Fin (D + 2)), I (L ∘ σ) = I L)
     (k i : ℕ) (hi : i < k) (hD : 2 * k ≤ D + 1) {x₁ x₂ a : V} (h₁ : S x₁) (h₂ : S x₂) (h₃ : S a) :
@@ -96,6 +129,9 @@ theorem consWord_left {V : Type*} {D : ℕ} (I : (Fin (D + 2) → V) → ℝ) (S
   simp only [consWord, interp]
   split_ifs <;> first | rfl | omega | contradiction
 
+/- English proof (translation)
+Rewrite using `[swap_nat I S hI (consWord k i x₂ x₁ x₂ a) (consWord_mem h₂ h₁ h₂ h₃ k i) 1 (2 * i + 1) (by omega) (by omega), swap_nat I S hI (interp k i x₁ x₂ a) (interp_mem h₁ h₂ h₃ k i) 2 (2 * i + 2) (by omega) (by omega)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [consWord, interp]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | contradiction`.
+-/
 theorem consWord_right {V : Type*} {D : ℕ} (I : (Fin (D + 2) → V) → ℝ) (S : V → Prop)
     (hI : ∀ L : Fin (D + 2) → V, (∀ j, S (L j)) → ∀ σ : Equiv.Perm (Fin (D + 2)), I (L ∘ σ) = I L)
     (k i : ℕ) (hi : i < k) (hD : 2 * k ≤ D + 1) {x₁ x₂ a : V} (h₁ : S x₁) (h₂ : S x₂) (h₃ : S a) :
@@ -108,6 +144,33 @@ theorem consWord_right {V : Type*} {D : ℕ} (I : (Fin (D + 2) → V) → ℝ) (
   simp only [consWord, interp]
   split_ifs <;> first | rfl | omega | contradiction
 
+/- English proof (translation)
+Introduce `hIn II hII K _ ι _ P d k₀ xi2 Q Xi X₀ X₁ hxi hsm h0 h1 A A₀ hAs hAb hA0`. Establish `hR` using `GlobalTheory.T.algebraic_square_xi_intersection hIn II hII K ι P d k₀ xi2 Q Xi X₀ X₁ hxi hsm h0 h1`. Take `⟨hP1, hP0⟩` from `GlobalTheory.T.algebraic_square_intersection_pullback hIn II hII K ι P d k₀ xi2 Q`. Establish `hX0 : IsSmoothHerm X₀` using `isSmoothHerm_of_pull (Q.block 0) hsm h0`. Establish `hX1 : IsSmoothHerm X₁` using `isSmoothHerm_of_pull (Q.block 1) hsm h1`.
+
+Establish `hA0s : IsSmoothHerm A₀` using `isSmoothHerm_of_pull (Q.block 0) hAs hA0`. Establish `hA1 : IsPullHerm (Q.κ 1) (Q.v 1) A A₀` using `pull_one_of_base Q hAb hA0`. Establish `hdeg : ((X₁.a (Q.κ 1 k₀) : ℤ) : ℝ) = -2`. Rewrite using `[h1.1, pullDeg, (Q.block 1).1.extend_apply, hxi, Q.xi_two_base_eq_neg_two]`. Evaluate the numerical expressions.
+
+Establish `hsym : ∀ L : Fin (d + 3) → HermLine Q.ιW, (∀ j, IsSmoothHerm (L j)) → ∀ σ : Equiv.Perm (Fin (d + 3)), II Q.KW Q.ιW Q.PW (d + 3) (L ∘ σ) = II Q.KW Q.ιW Q.PW (d + 3) L` using `fun L hL σ => (hII.1 Q.KW Q.ιW).1 Q.PW (d + 3) L σ Q.arithW hL`. Establish `hrot : ∀ (L' : Fin (d + 2) → HermLine Q.ιW) (N : HermLine Q.ιW), (∀ j, IsSmoothHerm (L' j)) → IsSmoothHerm N → II Q.KW Q.ιW Q.PW (d + 3) (Fin.snoc L' N) = II Q.KW Q.ιW Q.PW (d + 3) (Fin.cons N L')`. Introduce `L' N hL' hN`. Rewrite using `[Fin.snoc_eq_cons_rotate]`. Use `hsym (Fin.cons N L') (fun j => ?_) (finRotate _)` and prove the remaining obligations.
+
+Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using hN`. Simplify using `using hL' j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e1` using `hP1 (fun _ => A) (fun _ => A₀) X₁ (fun _ => hAs) (fun _ => hA0) hX1`.
+
+Establish `e2` using `hP0 (Fin.snoc (α := fun _ => HermLine ι) (fun _ => A) Xi) (Fin.snoc (α := fun _ => HermLine Q.ιW) (fun _ => A₀) X₁) (fun j => by`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using hsm`. Simplify using `using hAs)`. Use the proof step `(fun j => by`.
+
+Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using h1`. Simplify using `using hA1)`. Rewrite `e1` using `[e2, hdeg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `k hk hkD set g : ℕ → ℝ := fun i => II Q.KW Q.ιW Q.PW (d + 3) (fun j : Fin (d + 3) => interp k i X₀ X₁ A₀ j) with hg`. Establish `hstep : ∀ i ∈ Finset.range k, 2 * (ptsIntegral Q.PW (pot (Fin.cons X₀ (word (d + 1) k i X₀ X₁ A₀) : Fin (d + 2) → HermLine Q.ιW)) (Q.logNormT Xi) - ptsIntegral Q.PW (pot (Fin.cons X₁ (word (d + 1) k i X₀ X₁ A₀) : Fin (d + 2) → HermLine Q.ιW)) (Q.logNormT Xi)) = g (i + 1) - g i`. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.mp hi`. Establish `e0 : (Fin.cons X₀ (Fin.cons X₀ (word (d + 1) k i X₀ X₁ A₀)) : Fin (d + 3) → HermLine Q.ιW) = fun j : Fin (d + 3) => consWord k i X₀ X₀ X₁ A₀ j` using `cons_cons_word (d + 1) k i hk X₀ X₀ X₁ A₀`.
+
+Establish `e1 : (Fin.cons X₁ (Fin.cons X₁ (word (d + 1) k i X₀ X₁ A₀)) : Fin (d + 3) → HermLine Q.ιW) = fun j : Fin (d + 3) => consWord k i X₁ X₀ X₁ A₀ j` using `cons_cons_word (d + 1) k i hk X₁ X₀ X₁ A₀`. Rewrite using `[← hR (word (d + 1) k i X₀ X₁ A₀) (word_mem hX0 hX1 hA0s _ _ _), e0, e1]`. Establish `l` using `consWord_left (D := d + 1) (II Q.KW Q.ιW Q.PW (d + 3)) IsSmoothHerm hsym k i hi' (by omega) hX0 hX1 hA0s`. Establish `r` using `consWord_right (D := d + 1) (II Q.KW Q.ιW Q.PW (d + 3)) IsSmoothHerm hsym k i hi' (by omega) hX0 hX1 hA0s`. Rewrite using `[l, r]`.
+
+Establish `h00 : g 0 = 0`. Apply the tactic sequence `rw [← hP0 (mix (1 + 2 * k) Xi A) (mix (1 + 2 * k) X₁ A₀) (fun j => by unfold mix; split_ifs <;> assumption) (fun j => by unfold mix; split_ifs <;> assumption)]`. Simplify using `only [hg]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [interp, mix]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | contradiction`. Establish `hgk : g k = -2 * II K ι P (d + 2) (mix (2 * k) Xi A)`. Apply the tactic sequence `have e := hP1 (mix (2 * k) Xi A) (mix (2 * k) X₀ A₀) X₁ (fun j => by unfold mix; split_ifs <;> assumption) (fun j => by unfold mix; split_ifs <;> assumption) hX1`. Apply the tactic sequence `rw [hrot _ X₁ (fun j => by unfold mix; split_ifs <;> assumption) hX1, hdeg] at e`.
+
+Rewrite using `[← e]`. Simplify using `only [hg]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations.
+
+Simplify using `[interp]`. Simplify using `only [Fin.cons_succ, interp, mix, Fin.val_succ]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | contradiction`. Establish `hsum` using `Finset.sum_range_sub g k`. Rewrite `hsum` using `[← Finset.sum_congr rfl hstep, ← Finset.mul_sum, h00, hgk]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem firstHalf : Inputs → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (d : ℕ) (k₀ : K) (xi2 : K → ℤ) (Q : AlgSq P d k₀ xi2) (Xi : HermLine ι) (X₀ X₁ : HermLine Q.ιW), Xi.a = xi2 → IsSmoothHerm Xi → IsPullHerm (Q.κ 0) (Q.v 0) Xi X₀ → IsPullHerm (Q.κ 1) (Q.v 1) Xi X₁ → ∀ (A : HermLine ι) (A₀ : HermLine Q.ιW), IsSmoothHerm A → FromBase k₀ A → IsPullHerm (Q.κ 0) (Q.v 0) A A₀ → II K ι P (d + 2) (fun _ => A) = 0 ∧ ∀ k : ℕ, 1 ≤ k → 2 * k ≤ d + 2 → II K ι P (d + 2) (mix (2 * k) Xi A) = -∑ i ∈ Finset.range k, (ptsIntegral Q.PW (pot (Fin.cons X₀ (word (d + 1) k i X₀ X₁ A₀) : Fin (d + 2) → HermLine Q.ιW)) (Q.logNormT Xi) - ptsIntegral Q.PW (pot (Fin.cons X₁ (word (d + 1) k i X₀ X₁ A₀) : Fin (d + 2) → HermLine Q.ιW)) (Q.logNormT Xi)) := by
   intro hIn II hII K _ ι _ P d k₀ xi2 Q Xi X₀ X₁ hxi hsm h0 h1 A A₀ hAs hAb hA0
   have hR := GlobalTheory.T.algebraic_square_xi_intersection hIn II hII K ι P d k₀ xi2 Q Xi X₀ X₁ hxi hsm h0 h1

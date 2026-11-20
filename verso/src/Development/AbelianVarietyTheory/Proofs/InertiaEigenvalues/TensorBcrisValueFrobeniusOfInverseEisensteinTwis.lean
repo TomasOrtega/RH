@@ -13,6 +13,21 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.BKGal.PhiVal
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T jB y hY hy hφ`. Establish `hEM : ∀ τ i, E K l e ^ η * y τ i ∈ A O K` using `fun τ i => mem_tot.1 ((Descent.mem_invOf _).1 hY).1 τ i`. Set `g : ι → ZMod a → A O K` to `fun i τ => ⟨E K l e ^ η * y τ i, hEM τ i⟩`. Set `m : OA l O` to `frobOA l O (1 ⊗ₜ ϖ.ev a (eis l a e)) ^ η`. Use `⟨m, fun i => frobOA l O (ϖ.iTot t K (g i)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_pow]`. Conclude with `(FrobEis.isUnit_toB_frob_eis l a e O ϖ).pow η`. Set `EW : ZMod a → invE l e (A O K)` to `fun _ => ⟨(EIn l e (A O K) : K⟦X⟧), le_away _ _ (EIn l e (A O K)).2⟩`. Establish `h2 : ϖ.iW t K EW = inclO l O (1 ⊗ₜ ϖ.ev a (eis l a e))` using `(ϖ.iW_of_mem t K (fun _ => EIn l e (A O K))).trans (congrArg _ (ϖ.iTot_E t K))`. Establish `hA : ∀ i, inclO l O m * frobOW l O (toW t ϖ D.toPhiMod ⟨y, hy⟩ i) = inclO l O (frobOA l O (ϖ.iTot t K (g i)))`.
+
+Introduce `i`. Establish `h1 : ϖ.iW t K (fun τ => ⟨(g i τ : K⟦X⟧), le_away _ _ (g i τ).2⟩) = ϖ.iW t K EW ^ η * ϖ.iW t K (fun τ => ⟨y τ i, mem_tot.1 hy τ i⟩)`. Rewrite using `[← map_pow, ← map_mul]`. Use `congr 1`. Rewrite using `[← frobOW_inclO, ← ϖ.iW_of_mem t K, h1, map_mul, h2, toW_apply, map_pow (inclO l O), map_pow (frobOW l O), frobOW_inclO]`.
+
+Rewrite using `[phiW_apply, inclL_apply, ← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, hA i]`. Rewrite using `[← LinearEquiv.map_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, toBcris_apply]`. Set `liftA : (ZMod a → A O K) → ZMod a → invL l (S O K e)` to `fun F τ => ⟨F τ, le_away _ _ (A_le_S l e (F τ).2)⟩`. Establish `key : liftA (frobAc l fun _ => EIn l e (A O K)) ^ η * coordL D.toPhiMod (invL l (S O K e)) ⟨D.phi y, hφ⟩ i = liftA (frobAc l (g i))`.
+
+Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : (coordL D.toPhiMod (invL l (S O K e)) ⟨D.phi y, hφ⟩ i τ : K⟦X⟧) = frob K l (y (τ - 1) i)`. Express the relevant statement in the definitionally equal form `(D.mxInv τ *ᵥ D.phi y τ) i = _`. Rewrite using `[PhiMod.phi_apply, Matrix.mulVec_mulVec, PhiMod.mxInv_mul_mx, Matrix.one_mulVec, frobV_apply]`.
+
+Simplify using `only [liftA, Pi.mul_apply, Pi.pow_apply, Subalgebra.coe_mul, Subalgebra.coe_pow, h1, coe_frobAc, frobTot_apply, g, map_mul, map_pow]`. Both sides reduce to the same expression. Establish `h3` using `congrArg (ϖ.iB t K) key`. Simplify using `only [map_mul, map_pow, liftA, FrobCoord.iB_of_A, ϖ.iTot_frob t K, ϖ.iTot_E t K] at h3`. Rewrite using `[← h3, map_pow]`.
+-/
 theorem isCrisVal_phi : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (η H : ℕ) (D : BKDat O K l e a ι η H) (T : LocLat (Gl l) ℚ_[l] K O) (jB : (ι → OB l O) ≃ₗ[OB l O] TW (OB l O) T), ∀ y ∈ D.Y, ∀ (hy : y ∈ ME D.toPhiMod) (hφ : D.phi y ∈ D.MMl), IsCrisVal t ϖ D.toPhiMod jB (phiW t ϖ D.toPhiMod (toW t ϖ D.toPhiMod ⟨y, hy⟩)) (jB (toBcris t ϖ D.toPhiMod ⟨D.phi y, hφ⟩)) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T jB y hY hy hφ
   have hEM : ∀ τ i, E K l e ^ η * y τ i ∈ A O K := fun τ i => mem_tot.1 ((Descent.mem_invOf _).1 hY).1 τ i

@@ -15,6 +15,9 @@ variable (E a) in
 
 abbrev invA : GA E a →* GA E a := invT a (Ad E)
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `Matrix.transpose_transpose g.val`.
+-/
 theorem invA_invA (g : GA E a) : invA E a (invA E a g) = g := by
   apply Units.ext
   exact Matrix.transpose_transpose g.val

@@ -16,6 +16,11 @@ namespace GlobalTheory.LineNull
 
 open GlobalTheory.CurveDens
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Take `⟨U, t, t', ht, ht', hU⟩` from `AdjFlag.exists_frames hL hL' y`. Establish `a` using `AdjFlag.form_frame_pos (h.restrict hl hL) ht hU`. Establish `b` using `AdjFlag.form_frame_pos (h.restrict hl' hL') ht' hU`. Rewrite `a` using `[h.form_restrict hl hL t t hU]`.
+
+Rewrite `b` using `[h.form_restrict hl' hL' t' t' hU]`. Establish `e` using `(hv U t t' y hU).symm.trans (hv' U t t' y hU)`. Conclude with `mul_right_cancel₀ a.ne' (mul_right_cancel₀ b.ne' e)`.
+-/
 theorem isCosSq_unique {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {V L L' : X.Modules} {r : ℕ}
     (h : Met p σ V r) {l : L ⟶ V} {l' : L' ⟶ V} (hL : IsVB L 1) (hL' : IsVB L' 1) (hl : IsSubbundle l)
     (hl' : IsSubbundle l') {v v' : CxPts p σ → ℝ} (hv : IsCosSq h l l' v) (hv' : IsCosSq h l l' v') : v = v' := by
@@ -28,6 +33,15 @@ theorem isCosSq_unique {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
   have e := (hv U t t' y hU).symm.trans (hv' U t t' y hU)
   exact mul_right_cancel₀ a.ne' (mul_right_cancel₀ b.ne' e)
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl hfl A σ v hv α _ ε`. Take `⟨r, hr, -, h₂⟩` from `exists_ratSec_fam5 k B Y q p d hB.toIsArithVar hY.toIsArithVar hB.regular π w E h H flB fl hfl A`. Take `⟨v', hv', hlt⟩` from `h₂ σ`. Take `rfl : v = v'` from `isCosSq_unique _ (fl.isVB 1) ((flB.pull π).isVB 1) (fl.isSubbundle 1) ((flB.pull π).isSubbundle 1) hv hv'`. Generalize the expression as in `((fam5 π w H flB fl A 0).dual.tens (fam5 π w H flB fl A 4)).div hr = D at hlt`.
+
+Establish `hset : {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ (D.supp : Set Y)} = (offSupp p σ D)ᶜ`. Use extensionality with `y`. Rewrite using `[Set.mem_compl_iff, offSupp, mem_ptsIn]`. Conclude with `not_not.symm`. Establish `hA : MeasurableSet {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ (D.supp : Set Y)}`.
+
+Rewrite using `[hset]`. Conclude with `(isOpen_ptsIn _).measurableSet.compl`. Use `measure_mono_null (t := {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ (D.supp : Set Y)}) (fun y hy => ?_) ?_` and prove the remaining obligations. Rewrite using `[hset]`. Conclude with `fun hm => (hlt y hm).1.ne hy`.
+
+Conclude with `GlueCoverNull.glueMeas_null _ _ hA fun c => ChernNull.chart_null hY.toIsArithVar D.supp.isClosed (CartierDiv.genericPoint_notMem_supp D) σ c`.
+-/
 theorem part_cosSq_one : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)
     (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2),

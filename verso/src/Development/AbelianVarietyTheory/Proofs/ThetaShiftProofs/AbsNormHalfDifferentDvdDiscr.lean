@@ -9,6 +9,11 @@ open Formalism.L2.Pj Formalism.L2.Pj.QAt Formalism.MainNotions Formalism.BasicNo
 
 namespace GlobalTheory.ArcCM
 
+/- English proof (translation)
+Establish `ht : differentIdeal ℤ (𝓞 D.host.E) = differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) * (differentIdeal ℤ (𝓞 D.host.K)).map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))` using `differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 D.host.K) (𝓞 D.host.E)`. Establish `hdvd : D.host.𝔟 ∣ differentIdeal ℤ (𝓞 D.host.E)`. Rewrite using `[ht, D.host.𝔟_spec.1, mul_assoc]`. Conclude with `dvd_mul_right _ _`. Establish `h1` using `map_dvd Ideal.absNorm hdvd`.
+
+Rewrite `h1` using `[NumberField.absNorm_differentIdeal D.host.E (𝓞 D.host.E)]`. Then use the resulting hypothesis.
+-/
 theorem absNorm_halfDifferent_dvd_discr (D : D7) :
     Ideal.absNorm D.host.𝔟 ∣ (NumberField.discr D.host.E).natAbs := by
   have ht : differentIdeal ℤ (𝓞 D.host.E) = differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) *
@@ -20,6 +25,17 @@ theorem absNorm_halfDifferent_dvd_discr (D : D7) :
   have h1 := map_dvd Ideal.absNorm hdvd
   rwa [NumberField.absNorm_differentIdeal D.host.E (𝓞 D.host.E)] at h1
 
+/- English proof (translation)
+Introduce `_ D T h hG j hj σ hσ k`. Take `⟨Xx, h1, h2, h3, -⟩` from `GlobalTheory.LatticeData.exists_dataX_of_hasPrinc D T h j hj σ hσ (hG j hj σ hσ) k`. Use `⟨{ Xx with NA := (NumberField.discr D.host.E).natAbs NC := Ideal.absNorm D.host.ccK NA_pos := Int.natAbs_pos.2 (NumberField.discr_ne_zero D.host.E) NC_pos := Nat.pos_of_ne_zero fun e => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 e) NA_sub := fun x hx => ?_ NC_sub := fun x hx …` and prove the remaining obligations. Rewrite `hx` using `[h3]`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem v hv`. Take `⟨a, ha, u, hu, rfl⟩` from `hv`. Take `⟨z, hz⟩` from `GlobalTheory.LatticeData.absNorm_mul_mem_one D ha`. Take `⟨c, hc⟩` from `absNorm_halfDifferent_dvd_discr D`. Establish `e : (((NumberField.discr D.host.E).natAbs : ℕ) : D.host.E) * a = algebraMap (𝓞 D.host.E) D.host.E ((c : 𝓞 D.host.E) * z)`.
+
+Rewrite using `[hc, map_mul, map_natCast, hz, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[smul_smul, e, algebraMap_smul]`. Conclude with `Xx.L'.smul_mem _ hu`. Consider the case `zero => simp`.
+
+Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `add_mem hv hw`. Consider the case `smul c v _ hv => rw [smul_comm]`. Conclude with `Xx.L'.smul_mem c hv`. Rewrite using `[h3]`.
+
+Conclude with `Submodule.subset_span ⟨_, GlobalTheory.LatticeData.absNorm_ccK_mem D, x, hx, rfl⟩`.
+-/
 theorem exists_dataX_discr_absNorm : FactPrincipalDatum → ∀ (D : D7) (T : Core D) (h : LawsCore T), GlobalTheory.RunIn.GamAt T → ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → ∀ k : (T.U j σ).Comp, ∃ Xx : DataX D.host.E D.R.r, Xx.toData = (T.U j σ).X k ∧ Xx.g = T.Q.l.M ∧ Xx.NA = (discr D.host.E).natAbs ∧ Xx.NC = Ideal.absNorm D.host.ccK ∧ Xx.Λ = Submodule.span (𝓞 D.host.E) {v | ∃ a ∈ D.host.AA, ∃ u ∈ Xx.L', v = a • u} := by
   intro _ D T h hG j hj σ hσ k
   obtain ⟨Xx, h1, h2, h3, -⟩ :=

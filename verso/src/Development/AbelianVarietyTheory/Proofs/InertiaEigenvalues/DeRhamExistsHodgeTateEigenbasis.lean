@@ -14,6 +14,35 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL m r' hdR τ' hτ`. Use `haveI := K.2`. Use `haveI := LL.2`. Establish `hDR : IsDR (P.PD K) (repOf r')`. Unfold `IsDR`.
+
+Rewrite using `[hdR, Module.finrank_fin_fun]`. Use `haveI hfinD : FiniteDimensional ↥LL.1 ↥(DdR (P.PD K) (repOf r')) := by`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Use `haveI : Subsingleton ((Fin 0 → ↥LL.1) ⊗[ℚ_[l]] P.R.BdR) := ⟨fun x y => by`. Establish `h : ∀ z : (Fin 0 → ↥LL.1) ⊗[ℚ_[l]] P.R.BdR, z = 0` using `fun z => by`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul v b => rw [Subsingleton.elim v 0, TensorProduct.zero_tmul]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`. Rewrite using `[h x, h y]⟩`.
+
+Use `infer_instance`. Conclude with `Module.finite_of_finrank_pos (by rw [hdR]; exact Nat.mul_pos Module.finrank_pos hm)`. Take `⟨m', d, k, had⟩` from `GlobalTheory.DRFil.exists_adapted (P.PD K) (GlobalTheory.DRFil.isField_dR T) (repOf r') (GlobalTheory.DRFil.filSpans T K LL (repOf r') hDR) τ'`. Set `u' : Fin m' → Fin m → P.R.BdR` to `fun i => coordF P LL m (d i)`. Establish `hspan' : ∀ (n : ℤ) (y : Fin m → P.R.BdR), (∀ j, y j ∈ (P.PD K).Fil n) → ∃ f : Fin m' → P.R.BdR, (∀ i, f i ∈ (P.PD K).Fil (n - k i)) ∧ y = ∑ i, f i • u' i`.
+
+Introduce `n y hy`. Establish `hY : (∑ j, (Pi.single j 1 : Fin m → ↥LL.1) ⊗ₜ[ℚ_[l]] y j) ∈ FilV (P.PD K) (LL` using `↥LL.1) (V := Fin m → ↥LL.1) n := Submodule.sum_mem _ fun j _ => GlobalTheory.DRFil.tmul_mem_FilV (P.PD K) _ (hy j)`. Establish `hcY : coordF P LL m (∑ j, (Pi.single j 1 : Fin m → ↥LL.1) ⊗ₜ[ℚ_[l]] y j) = y`. Use function extensionality and compare the values at `j'`. Simplify using `[map_sum, Finset.sum_apply, Pi.single_apply]`.
+
+Take `⟨r, hr, he⟩` from `had.span n _ hY`. Use `⟨fun i => mulF P LL (r i), fun i => mulF_mem_fil P LL K (hr i), ?_⟩` and prove the remaining obligations. Establish `e1` using `coordF_sm P LL m (GlobalTheory.DRFil.idem P.R.BdR τ') (∑ j, (Pi.single j 1 : Fin m → ↥LL.1) ⊗ₜ[ℚ_[l]] y j)`. Rewrite `e1` using `[mulF_idem P LL K τ' hτ, one_smul, hcY]`. Rewrite using `[← e1, he, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => coordF_sm P LL m (r i) (d i)`. Establish `htop : ⊤ ≤ Submodule.span P.R.BdR (Set.range u')`. Introduce and unpack `y -`. Use `choose f hf using fun j => (P.PD K).Fil_exh (y j)`. Establish `hn : ∀ j, y j ∈ (P.PD K).Fil (-(∑ j, |f j|))`.
+
+Introduce `j`. Establish `hle : -(∑ j, |f j|) ≤ f j`. Establish `h1 : |f j| ≤ ∑ j, |f j|` using `Finset.single_le_sum (f := fun j => |f j|) (fun j _ => abs_nonneg _) (Finset.mem_univ j)`. Establish `h2` using `neg_abs_le (f j)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `SetLike.le_def.1 (GlobalTheory.DRFil.fil_antitone (P.PD K) hle) (hf j)`. Take `⟨c, -, hc⟩` from `hspan' _ y hn`. Rewrite using `[hc]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `letI : Field P.R.BdR := (GlobalTheory.DRFil.isField_dR T).toField`.
+
+Establish `hle1 : m ≤ m'`. Establish `h1` using `finrank_range_le_card (R := P.R.BdR) u'`. Rewrite `h1` using `[Set.finrank, eq_top_iff.2 htop, finrank_top, Module.finrank_fin_fun, Fintype.card_fin]`. Conclude with `h1`. Establish `hle2 : m' ≤ m`.
+
+Use `GlobalTheory.Per.Components.card_le_of_idem_indep (GlobalTheory.DRFil.idem_mul_idem (F := P.R.BdR) τ') (GlobalTheory.DRFil.idem_ne_zero (F := P.R.BdR) τ') (fun i j => GlobalTheory.DRFil.ext ℚ_[l] P.R.BdR ((Pi.basisFun ↥LL.1 (Fin m)).coord j) (d i)) (fun r hr => had.indep r (by` as an intermediate fact. Rewrite using `[GlobalTheory.DRFil.eq_sum_basis (Pi.basisFun ↥LL.1 (Fin m)) (∑ i, GlobalTheory.DRFil.sm ℚ_[l] P.R.BdR ↥LL.1 (Fin m → ↥LL.1) (r i) (d i))]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [GlobalTheory.DRFil.ext_sm, GlobalTheory.DRFil.sm_self]`.
+
+Rewrite using `[hr j, map_zero, LinearMap.zero_apply]))`. Simplify using `using this`. Take `rfl : m = m'` from `le_antisymm hle1 hle2`. Establish `hind : LinearIndependent P.R.BdR u'` using `linearIndependent_of_top_le_span_of_card_eq_finrank htop (by simp)`. Use `⟨u', k, fun a => ?_, fun i j => coordF_mem_fil P LL m K (had.mem i).2 j, fun g hg i => ?_, hspan', hind⟩` and prove the remaining obligations.
+
+Rewrite using `[had.multV_eq a, Multiset.count_map]`. Simplify using `[Finset.sum_boole, eq_comm]`. Both sides reduce to the same expression. Establish `h1` using `coordF_act P LL m K r' g hg (d i)`. Rewrite `h1` using `[((GlobalTheory.DRFil.mem_DdR (P.PD K) (repOf r') (d i)).1 (had.mem i).1.1) g]`.
+
+Conclude with `h1.symm`.
+-/
 theorem exists_dR_frame : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
     ∀ (K LL : FinExt l) (m : ℕ) (r' : ↥(GK K) →* Matrix.GeneralLinearGroup (Fin m) ↥LL.1),
     Module.finrank ↥LL.1 ↥(DdR (P.PD K) (repOf r')) = Module.finrank ℚ_[l] ↥K.1 * m →
@@ -110,6 +139,11 @@ end GlobalTheory.HTBasis
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL m r' ρ hdR τ' hτ K' _hK hL`. Take `⟨u, k, hcount, hmem, heq, hspan, hind⟩` from `GlobalTheory.HTBasis.exists_dR_frame l P AI T K LL m r' hdR τ' hτ`. Establish `hU` using `GlobalTheory.T.hodgeTateSymbolMatrix_isUnit_det (GlobalTheory.HTBasis.thetaOf T) u k hmem hspan hind`. Use `⟨((Matrix.isUnit_iff_isUnit_det _).2 hU).unit, k, hcount, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hfix : ∀ x ∈ LL.1, (g : GQ l) x = x` using `fun x hx => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg x (hL hx)`.
+
+Conclude with `GlobalTheory.T.hodgeTateSymbolMatrix_equivariant (GlobalTheory.HTBasis.thetaOf T) r' u k hmem g (heq g hfix)`.
+-/
 theorem GlobalTheory.HTBasis.htc_basis : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (m : ℕ) (r' : ↥(GK K) →* Matrix.GeneralLinearGroup (Fin m) ↥LL.1), let ρ : Representation ↥LL.1 ↥(GK K) (Fin m → ↥LL.1) := ((Matrix.toLinAlgEquiv' : Matrix (Fin m) (Fin m) ↥LL.1 ≃ₐ[↥LL.1] _) : _ →* _).comp ((Units.coeHom _).comp r'); Module.finrank ↥LL.1 ↥(DdR (P.PD K) ρ) = Module.finrank ℚ_[l] ↥K.1 * m → ∀ τ' : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, (∀ x : ↥K.1, ((τ' x : ↥LL.1) : Om l) = (x : Om l)) → ∀ (K' : FinExt l), K.1 ≤ K'.1 → LL.1 ≤ K'.1 → ∃ (Pm : Matrix.GeneralLinearGroup (Fin m) ℂ_[l]) (k : Fin m → ℤ), (∀ a : ℤ, ((Multiset.map k Finset.univ.val).count a : ℤ) = multV (P.PD K) ρ τ' a) ∧ ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → (r' g : Matrix (Fin m) (Fin m) ↥LL.1).map (fun x => (((x : ↥LL.1) : Om l) : ℂ_[l])) * (Pm : Matrix (Fin m) (Fin m) ℂ_[l]).map (Per.σC (g : GQ l)) = (Pm : Matrix (Fin m) (Fin m) ℂ_[l]) * Matrix.diagonal (fun i => ((((P.χQ (g : GQ l)) ^ (-k i) : ℚ_[l]ˣ) : ℚ_[l]) : ℂ_[l])) := by
   intro l _ P AI T K LL m r' ρ hdR τ' hτ K' _hK hL
   obtain ⟨u, k, hcount, hmem, heq, hspan, hind⟩ :=

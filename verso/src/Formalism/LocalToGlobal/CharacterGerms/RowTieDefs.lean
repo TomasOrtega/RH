@@ -117,16 +117,25 @@ def OnLf (g : Fin 2) (a a' : ZMod d) (w : WV I) : Prop :=
 def hLf (g : Fin 2) (a a' : ZMod d) : MvPowerSeries (WV I) C :=
   fun μ => if ∀ w ∈ μ.support, X.OnLf g a a' w then MvPowerSeries.coeff μ X.hRow else 0
 
+/- English proof (translation)
+Unfold `OnLf`. Simplify using `only [sub_self, sub_zero]`. Conclude with `or_comm`.
+-/
 theorem onLf_swap (a a' : ZMod d) (w : WV I) : X.OnLf 1 a' a w ↔ X.OnLf 0 a a' w := by
   unfold OnLf
   simp only [sub_self, sub_zero]
   exact or_comm
 
+/- English proof (translation)
+Unfold `hLf`. Use function extensionality and compare the values at `μ`. Conclude with `if_congr (by simp only [onLf_swap]) rfl rfl`.
+-/
 theorem hLf_swap (a a' : ZMod d) : X.hLf 1 a' a = X.hLf 0 a a' := by
   unfold hLf
   funext μ
   exact if_congr (by simp only [onLf_swap]) rfl rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Apply `h` to reduce the goal to its premises. Use `show (if ∀ w ∈ μ.support, X.OnLf g a a' w then MvPowerSeries.coeff μ X.hRow else 0) = 0`. Rewrite using `[if_neg hn]`.
+-/
 theorem hLf_leaf (g : Fin 2) (a a' : ZMod d) (μ : WV I →₀ ℕ)
     (h : MvPowerSeries.coeff μ (X.hLf g a a') ≠ 0) : ∀ w ∈ μ.support, X.OnLf g a a' w := by
   by_contra hn

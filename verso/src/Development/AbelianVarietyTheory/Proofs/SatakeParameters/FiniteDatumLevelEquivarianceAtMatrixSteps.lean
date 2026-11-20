@@ -15,6 +15,23 @@ namespace GlobalTheory.TwV
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie hEx hMu i hi him _ β β' x x' x₁ x₁' κ κ' e1 e1' z`. Establish `hm` using `m_eq t μ`. Establish `hi0 : i < D.R.m` using `by omega`. Establish `hi1 : i + 1 < D.R.m` using `by omega`. Establish `H0 : (∃ p, IsPtAd A a i (Nat.le_of_succ_le hi) β x p) ∧ ∃ p', IsPtAd A a (i + 1) hi β' x' p'` using `⟨hEx _ _ _ _, hEx _ _ _ _⟩`.
+
+Establish `H1 : (∃ p, IsPtAd A a i (Nat.le_of_succ_le hi) β x₁ p) ∧ ∃ p', IsPtAd A a (i + 1) hi β' x₁' p'` using `⟨hEx _ _ _ _, hEx _ _ _ _⟩`. Unfold `xiAd`. Rewrite using `[dif_pos H0, dif_pos H1]`. Establish `hp` using `H0.1.choose_spec`. Establish `hp'` using `H0.2.choose_spec`.
+
+Establish `hq` using `H1.1.choose_spec`. Establish `hq'` using `H1.2.choose_spec`. Generalize the expression as in `H0.1.choose = p at hp ⊢`. Generalize the expression as in `H0.2.choose = p' at hp' ⊢`. Generalize the expression as in `H1.1.choose = q at hq ⊢`.
+
+Generalize the expression as in `H1.2.choose = q' at hq' ⊢`. Unfold `xiPt`. Rewrite using `[dif_pos him, dif_pos him]`. Take `⟨k, c, hk, hc, hχ, hd⟩` from `GlobalTheory.T.levelMoved_point_frames_matrixSteps A dtU a hPin hTie i hi0 him.le β x x₁ κ e1 p q hp hq`. Take `⟨k', c', hk', hc', hχ', hd'⟩` from `GlobalTheory.T.levelMoved_point_frames_matrixSteps A dtU a hPin hTie (i + 1) hi1 him β' x' x₁' κ' e1' p' q' hp' hq'`.
+
+Take `⟨hN, hf⟩` from `GlobalTheory.T.chartPoint_mul_level_same_decoration A dtU a hPin hTie i (Nat.le_of_succ_le hi) β x x₁ κ e1 p q hp hq`. Take `⟨hN', hf'⟩` from `GlobalTheory.T.chartPoint_mul_level_same_decoration A dtU a hPin hTie (i + 1) hi β' x' x₁' κ' e1' p' q' hp' hq'`. Take `⟨hmu, -⟩` from `GlobalTheory.T.muCharacter_det_level_eq_local_tame_product A dtU a hPin hTie hMu i hi0 i (Nat.le_of_succ_le hi) β κ _ hd`. Take `⟨-, hmu'⟩` from `GlobalTheory.T.muCharacter_det_level_eq_local_tame_product A dtU a hPin hTie hMu i hi0 (i + 1) hi β' κ' _ hd'`. Apply the tactic sequence `have core : ∀ W, muOf t u μ dtU (i + 1) (Matrix.GeneralLinearGroup.det κ'.1) * ((((St i (Nat.le_of_succ_le hi)).K β).lev.chi κ : ℂˣ) : ℂ) * t.seam.σ₀ (XiEntry t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) i (A.ib i hi β) (A.ib (i + 1) hi1 β') q q' W) = muOf t u μ dtU (i + 1) (Matrix.G …`.
+
+Introduce `W`. Establish `e0 : phiT t.X.K q.deco.1 q'.deco.1 W = phiT t.X.K p.deco.1 p'.deco.1 W`. Unfold `phiT`. Use `@if_congr _ _ _ (_) (_) _ _ _ _ ?_ rfl rfl` and prove the remaining obligations. Simplify using `only [Deco.at, hN, hN', hf, hf']`.
+
+Establish `law` using `GlobalTheory.MatLaw.xiEntry_law hPin.fields.ok t.pr_ok hPin.sel (t.idx_ok μ) him (γ := 1) (γ' := 1) (p := p) (q := q) (p' := p') (q' := q') (κ := k) (κ' := k') (a := c) (a' := c') (fun P => by rw [hk P, OneMemClass.coe_one, one_mul]) (fun P => by rw [hk' P, OneMemClass.coe_one, o …`. Establish `hW : ((1 : UF t.X.E (D.R.N (i + 1))).1.toLinearMap ∘ₗ W ∘ₗ (1 : UF t.X.E (D.R.N i)).1.symm.toLinearMap) = W` using `LinearMap.ext fun v => rfl`. Rewrite `law` using `[hW, Finset.prod_mul_distrib]`. Establish `law'` using `congrArg t.seam.σ₀ law`. Simplify using `only [map_mul, Units.val_mul, Pi.inv_apply] at law'`.
+
+Establish `hCC : t.seam.σ₀ (((∏ P, c P : t.X.Kˣ)) : t.X.K) * t.seam.σ₀ ((((∏ P, c P)⁻¹ : t.X.Kˣ)) : t.X.K) = 1`. Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`. Apply the tactic sequence `linear_combination (-(t.seam.σ₀ (∏ P, rhoT t.Ch t.sel (t.tup μ) i P ((LinearEquiv.det ((k' P)⁻¹).1 : t.X.Eˣ) : t.X.E)) * t.seam.σ₀ (((∏ P, c P : t.X.Kˣ)) : t.X.K) * t.seam.σ₀ (XiEntry t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) i (A.ib i hi β) (A.ib (i + 1) hi1 β') q q' W))) * hmu + …`. Conclude with `core _`.
+-/
 theorem levAt_mat : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     PtEx A a → MuLaw t u μ dtU → ∀ i hi, i < t.m2 → PtAway A a i hi → LevAt A dtU a i hi) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie hEx hMu i hi him _ β β' x x' x₁ x₁' κ κ' e1 e1' z

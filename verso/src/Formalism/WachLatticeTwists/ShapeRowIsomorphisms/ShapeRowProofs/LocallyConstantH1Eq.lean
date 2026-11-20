@@ -11,9 +11,19 @@ noncomputable section
 
 namespace Formalism.RepresentationBoundsCohomology.LocallyConstantCohomology
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locallyConstantH1_eq {O Γ M : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module O M]
     (ρ : Representation O Γ M) : lcH1 ρ = ReciprocityTheory.ChartRestriction.T2.HcLC ρ := rfl
 
+/- English proof (translation)
+Introduce `p _ K O _ _ _ _ _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ Dw _ ε e hK hO hF i hε ⟨u⟩ hact`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Rewrite using `[locallyConstantH1_eq]`. Conclude with `ReciprocityTheory.ChartRestriction.T2.quotShape_G hK hO hF i (ε := ε.comp Dw.subtype) hε e he u _ (fun g m => hact g.1 g.2 m)`.
+
+Introduce `he I hI`. Substitute `he` using the available equality. Rewrite using `[locallyConstantH1_eq]`. Conclude with `ReciprocityTheory.ChartRestriction.T2.quotShape_G_unr hK hO hF i u _ (fun g m => by`. Use `hact g.1 g.2 m` as an intermediate fact.
+
+Simplify using `only [pow_zero, inv_one, Units.val_one, one_smul] at this`. Conclude with `this) I hI`.
+-/
 theorem shapeRow : StatShapeRow := by
   intro p _ K O _ _ _ _ _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ Dw _ ε e hK hO hF i hε ⟨u⟩ hact
   constructor
@@ -30,6 +40,11 @@ theorem shapeRow : StatShapeRow := by
         simp only [pow_zero, inv_one, Units.val_one, one_smul] at this
         exact this) I hI
 
+/- English proof (translation)
+Introduce `p _ O _ _ _ _ _ hinj E Ω _ _ _ _ _ Aw hp v hv A T' _ _ _ _ M _ _ _ _ r χ ε e hε hM hact`. Take `⟨K, hK, i, h1, h2, h3⟩` from `ReciprocityTheory.ChartRestriction.T2.exists_dec_equiv (F := E) Aw hp`. Take `⟨_, _, _, _, hO, hF⟩` from `hT2Core.out.top p O hinj`. Establish `h` using `shapeRow p K O A T' (Ω ≃ₐ[E] Ω) M r χ (Aw.decompositionSubgroup E) ε e hK hO hF i (h1 O _ hε) hM hact`. Rewrite `h` using `[h3 v hv]`.
+
+Use `⟨h.1, fun he => h.2 he _ fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 g, Subgroup.mem_subgroupOf]`.
+-/
 theorem shapeDec : StatShapeDec := by
   intro p _ O _ _ _ _ _ hinj E Ω _ _ _ _ _ Aw hp v hv A T' _ _ _ _ M _ _ _ _ r χ ε e hε hM hact
   obtain ⟨K, hK, i, h1, h2, h3⟩ := ReciprocityTheory.ChartRestriction.T2.exists_dec_equiv (F := E) Aw hp

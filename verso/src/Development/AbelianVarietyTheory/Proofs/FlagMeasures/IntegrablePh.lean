@@ -16,6 +16,9 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.KernelExpansion
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℂ (S.map (T : H →ₗ[ℂ] H))` using `Submodule.finiteDimensional_of_le LinearMap.map_le_range`. Establish `hc : IsClosed ((fun z => T z) ⁻¹' (S.map (T : H →ₗ[ℂ] H) : Set H))` using `(Submodule.closed_of_finiteDimensional _).preimage T.continuous`. Establish `hx : x ∈ closure (S : Set H)` using `hS x`. Conclude with `hc.closure_subset_iff.2 (fun z hz => ⟨z, hz, rfl⟩) hx`.
+-/
 theorem exists_mem_of_dense {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (T : H →L[ℂ] H)
     [FiniteDimensional ℂ (LinearMap.range (T : H →ₗ[ℂ] H))] (S : Submodule ℂ H) (hS : Dense (S : Set H))
     (x : H) : ∃ g ∈ S, T g = T x := by
@@ -26,6 +29,17 @@ theorem exists_mem_of_dense {H : Type} [NormedAddCommGroup H] [InnerProductSpace
   have hx : x ∈ closure (S : Set H) := hS x
   exact hc.closure_subset_iff.2 (fun z hz => ⟨z, hz, rfl⟩) hx
 
+/- English proof (translation)
+Substitute `hD` using the available equality. Set `b` to `stdOrthonormalBasis ℂ (LinearMap.range (T : H →ₗ[ℂ] H))`. Establish `hfix : ∀ i, T (b i : H) = b i`. Introduce `i`. Take `⟨z, hz⟩` from `(b i).2`.
+
+Use `congrArg (fun A : H →L[ℂ] H => A z) hT.1` as an intermediate fact. Rewrite using `[← hz]`. Conclude with `this`. Establish `hexp : ∀ g, T g = ∑ i, ⟪(b i : H), g⟫_ℂ • (b i : H)`. Introduce `g`.
+
+Establish `h` using `congrArg Subtype.val (b.sum_repr' ⟨T g, g, rfl⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_inner] at h`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hT.2.1, hfix]`.
+
+Apply the tactic sequence `refine ⟨fun i => b i, b.orthonormal.comp_linearIsometry (Submodule.subtypeₗᵢ _), ?_, hfix, hexp⟩`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(b i).2`.
+
+Introduce and unpack `_ ⟨g, rfl⟩ show T g ∈ _`. Rewrite using `[hexp]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem exists_orthonormal {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (T : H →L[ℂ] H)
     [FiniteDimensional ℂ (LinearMap.range (T : H →ₗ[ℂ] H))]
     (hT : IsOrthProjOnto T (LinearMap.range (T : H →ₗ[ℂ] H))) (D : ℕ)
@@ -74,6 +88,11 @@ def compactSub {X : Type} [TopologicalSpace X] [MeasurableSpace X] (μ : Measure
     filter_upwards [ha, Lp.coeFn_smul c a] with z h1 h2 hz
     rw [h2, Pi.smul_apply, h1 hz, smul_zero]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SumSmulAeEq.coeFn_sum_smul_ae_eq`. Consider the case `exact _root_.GlobalTheory.SumSmulAeEq.coeFn_sum_smul_ae_eq`. Consider the case `(apply _root_.GlobalTheory.SumSmulAeEq.coeFn_sum_smul_ae_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SumSmulAeEq.coeFn_sum_smul_ae_eq <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SumSmulAeEq.coeFn_sum_smul_ae_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SumSmulAeEq.coeFn_sum_smul_ae_eq ..)`.
+-/
 theorem coeFn_sum_smul {X ι : Type} [MeasurableSpace X] (μ : Measure X) (s : Finset ι) (c : ι → ℂ)
     (y : ι → Lp ℂ 2 μ) (F : ι → X → ℂ) (h : ∀ i, (y i : X → ℂ) =ᵐ[μ] F i) :
     ((∑ i ∈ s, c i • y i : Lp ℂ 2 μ) : X → ℂ) =ᵐ[μ] fun x => ∑ i ∈ s, c i * F i x := by
@@ -85,6 +104,17 @@ theorem coeFn_sum_smul {X ι : Type} [MeasurableSpace X] (μ : Measure X) (s : F
   | (intros; apply @_root_.GlobalTheory.SumSmulAeEq.coeFn_sum_smul_ae_eq <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SumSmulAeEq.coeFn_sum_smul_ae_eq ..)
 
+/- English proof (translation)
+Establish `hc : ∀ i, Continuous fun z => c i * star (F i z)` using `fun i => continuous_const.mul (hF i).star`. Use `ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero' (hk.sub (continuous_finset_sum _ fun i _ => hc i)).locallyIntegrable fun s hs => ?_` and prove the remaining obligations. Establish `hm : MeasurableSet s` using `hs.isClosed.measurableSet`. Establish `hg` using `indicatorConstLp_coeFn (p := 2) (hs := hm) (hμs := hs.measure_lt_top.ne) (c := (1 : ℂ)) (μ := μ)`. Establish `h1` using `hp (indicatorConstLp 2 hm hs.measure_lt_top.ne (1 : ℂ)) ⟨s, hs, by filter_upwards [hg] with z hz hzs`.
+
+Rewrite using `[hz, Set.indicator_of_notMem hzs]⟩`. Establish `e : ∀ u : X → ℂ, ∫ z, u z * (indicatorConstLp 2 hm hs.measure_lt_top.ne (1 : ℂ) : Lp ℂ 2 μ) z ∂μ = ∫ z in s, u z ∂μ`. Introduce `u`. Rewrite using `[← integral_indicator hm]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hg] with z hz`. Rewrite using `[hz]`. Apply the tactic sequence `by_cases hzs : z ∈ s <;> simp [hzs]`. Rewrite using `[integral_sub (hk.continuousOn.integrableOn_compact hs) ((continuous_finset_sum _ fun i _ => hc i).continuousOn.integrableOn_compact hs), integral_finset_sum _ fun i _ => (hc i).continuousOn.integrableOn_compact hs, ← e, h1, sub_eq_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_const_mul, ← e, mul_comm, L2.inner_def]`. Use `congr 1`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h i] with z hz`. Rewrite using `[hz]`.
+
+Simplify using `[mul_comm]`.
+-/
 theorem ae_eq_of_pairing {X ι : Type} [Fintype ι] [TopologicalSpace X] [T2Space X] [SigmaCompactSpace X]
     [MeasurableSpace X] [BorelSpace X] (μ : Measure X) [IsLocallyFiniteMeasure μ] (k : X → ℂ) (hk : Continuous k)
     (c : ι → ℂ) (y : ι → Lp ℂ 2 μ) (F : ι → X → ℂ) (hF : ∀ i, Continuous (F i))
@@ -118,6 +148,11 @@ theorem ae_eq_of_pairing {X ι : Type} [Fintype ι] [TopologicalSpace X] [T2Spac
   rw [hz]
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `e : (fun x => ⟪(y : X → ℂ) x, (y : X → ℂ) x⟫_ℂ) =ᵐ[μ] fun x => F x * star (F x)` using `by filter_upwards [h] with z hz`. Rewrite using `[hz, RCLike.inner_apply]`. Both sides reduce to the same expression. Use `⟨(L2.integrable_inner y y).congr e, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_congr_ae e, ← L2.inner_def, inner_self_eq_norm_sq_to_K, hy]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem integral_mul_star {X : Type} [MeasurableSpace X] (μ : Measure X) (y : Lp ℂ 2 μ) (F : X → ℂ)
     (h : (y : X → ℂ) =ᵐ[μ] F) (hy : ‖y‖ = 1) :
     Integrable (fun x => F x * star (F x)) μ ∧ ∫ x, F x * star (F x) ∂μ = 1 := by
@@ -129,6 +164,11 @@ theorem integral_mul_star {X : Type} [MeasurableSpace X] (μ : Measure X) (y : L
   rw [← integral_congr_ae e, ← L2.inner_def, inner_self_eq_norm_sq_to_K, hy]
   simp
 
+/- English proof (translation)
+Establish `e : ∑ i, F i * star (F i) = ((∑ i, ‖F i‖ ^ 2 : ℝ) : ℂ)`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Complex.mul_conj' (F i)`. Rewrite using `[e, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`.
+
+Use `le_trans ?_ (Finset.sum_mul_sq_le_sq_mul_sq univ (fun i => ‖c i‖) (fun i => ‖F i‖))` and prove the remaining obligations. Use `gcongr`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem norm_sum_sq_le {ι : Type} [Fintype ι] (c F : ι → ℂ) :
     ‖∑ i, c i * F i‖ ^ 2 ≤ (∑ i, ‖c i‖ ^ 2) * ‖∑ i, F i * star (F i)‖ := by
   have e : ∑ i, F i * star (F i) = ((∑ i, ‖F i‖ ^ 2 : ℝ) : ℂ) := by
@@ -141,12 +181,22 @@ theorem norm_sum_sq_le {ι : Type} [Fintype ι] (c F : ι → ℂ) :
   refine (norm_sum_le _ _).trans (le_of_eq ?_)
   simp
 
+/- English proof (translation)
+Establish `h` using `Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin n))) (fun a => ε a = true)`. Simplify using `only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at h`. Unfold `rkR`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_mul_rank_le {n : ℕ} (ε : Fin n → Bool) : 2 * rkR ε ≤ n := by
   have h := Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin n))) (fun a => ε a = true)
   simp only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at h
   unfold rkR
   omega
 
+/- English proof (translation)
+Take `⟨hc, hle, hi⟩` from `GlobalTheory.T.discrete_series_coefficient_integrable_majorant B d h hd hdec`. Establish `h1` using `hi 0 le_rfl fun v => by`. Break down `Nat.eq_zero_or_pos (rkR (B.I.ε v)) with h0 | h0` into its components or cases. Conclude with `Or.inl h0`. Use `right`.
+
+Establish `h2 : (2 : ℝ) * rkR (B.I.ε v) ≤ B.I.n` using `by exact_mod_cast two_mul_rank_le _`. Establish `h3 : (0 : ℝ) < rkR (B.I.ε v)` using `by exact_mod_cast h0`. Establish `h4` using `Real.sqrt_pos.2 h3`. Use `lt_of_lt_of_le ?_ (hb v)` and prove the remaining obligations. Establish `h5 : (B.I.n : ℝ) * rkR (B.I.ε v) < (B.I.n : ℝ) ^ 2` using `by nlinarith`.
+
+Use polynomial arithmetic with `[mul_lt_mul_of_pos_right h5 h4]`. Use `h1.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `using hle g`.
+-/
 theorem integrable_ph (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) (hd : IsDSData B d) (hdec : LocDec B h)
     (hb : HBig B 32 h) : Integrable (ph B d) (muInf B.I) := by
   obtain ⟨hc, hle, hi⟩ := GlobalTheory.T.discrete_series_coefficient_integrable_majorant B d h hd hdec
@@ -163,6 +213,29 @@ theorem integrable_ph (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) 
   refine h1.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)
   simpa using hle g
 
+/- English proof (translation)
+Introduce `B d h hd hn hdec hb hfin T hT`. Take `⟨hT2, hL, hS, -⟩` from `GlobalTheory.CongTop.adelic_topology B.I`. Establish `: BorelSpace B.I.GA` using `inferInstance`. Establish `: (Measure.pi fun v => Formalism.REAL.muG (B.I.ε v)).IsHaarMeasure` using `Measure.pi.isHaarMeasure _`. Establish `: (B.I.muA B.μf).IsHaarMeasure` using `Measure.prod.instIsHaarMeasure _ _`.
+
+Take `⟨-, -, -, hP⟩` from `GlobalTheory.T.globalConvolutionOrthogonalProjector_proof B d hd (integrable_ph B d h hd hdec hb)`. Take `⟨hproj, -, -, hfd, hD⟩` from `hP T hT`. Use `hfd hfin` as an intermediate fact. Take `⟨hbd, hKc, hKi, -⟩` from `GlobalTheory.T.automorphicKernel_convergence_properties B d h hd hn hdec hb`. Take `⟨y, hy, hspan, hfix, hexp⟩` from `exists_orthonormal T hproj B.D hD`.
+
+Establish `hrep : ∀ g ∈ compactSub ((B.I.muA B.μf).restrict B.fund), IsContRep B (T g) (fun x => ∫ z in B.fund, kern B.I (phe B d) x z * (g : B.I.GA → ℂ) z ∂(B.I.muA B.μf))`. Introduce and unpack `g ⟨C, hC, hg⟩`. Conclude with `GlobalTheory.T.isContRep_kernel_integral_compact_support B d h hd hn hdec hb T hT g C hC hg`. Establish `huniq : ∀ (u : B.I.L2 B.μf B.fund) f f', IsContRep B u f → IsContRep B u f' → f' = f` using `fun u f f' h1 h2 => (GlobalTheory.ExtContRep.ext_ae_eq_contRep B u f h1).2.1 f' h2`. Establish `hF : ∀ i, ∃ F, IsContRep B (y i) F`.
+
+Introduce `i`. Take `⟨g, hg, e⟩` from `exists_mem_of_dense T (compactSub _) (GlobalTheory.T.dense_compactly_supported_L2 B) (y i)`. Conclude with `⟨_, hfix i ▸ e ▸ hrep g hg⟩`. Use `choose F hF using hF`. Establish `hK : ∀ x z, kern B.I (phe B d) x z = ∑ i, F i x * star (F i z)`.
+
+Introduce `x z`. Establish `hkx : Continuous fun z => kern B.I (phe B d) x z` using `Continuous.comp (g := fun p : B.I.GA × B.I.GA => kern B.I (phe B d) p.1 p.2) (f := fun z => (x, z)) hKc (Continuous.prodMk_right x)`. Establish `h0` using `ae_eq_of_pairing ((B.I.muA B.μf).restrict B.fund) _ hkx (fun i => F i x) y F (fun i => (hF i).1) (fun i => (hF i).2.2) fun g hg => by`. Establish `h1 : IsContRep B (T g) fun x => ∑ i, ⟪y i, g⟫_ℂ * F i x`. Use `⟨continuous_finset_sum _ fun i _ => continuous_const.mul (hF i).1, fun γ hγ x => ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [(hF i).2.1 γ hγ]`. Rewrite using `[hexp]`. Conclude with `coeFn_sum_smul _ _ _ y F fun i => (hF i).2.2`. Conclude with `congrFun (huniq _ _ _ h1 (hrep g hg)) x`. Establish `z0 : IsContRep B 0 0` using `⟨continuous_const, fun _ _ _ => rfl, Lp.coeFn_zero _ _ _⟩`.
+
+Establish `z1 : IsContRep B 0 fun z => kern B.I (phe B d) x z - ∑ i, F i x * star (F i z)`. Use `⟨hkx.sub (continuous_finset_sum _ fun i _ => continuous_const.mul (hF i).1.star), fun γ hγ w => ?_, (Lp.coeFn_zero _ _ _).trans h0.symm⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[(hKi γ hγ x w).2]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [(hF i).2.1 γ hγ]`. Conclude with `sub_eq_zero.1 (congrFun (huniq _ _ _ z0 z1) z)`. Establish `hI` using `fun i => integral_mul_star _ (y i) (F i) (hF i).2.2 (hy.1 i)`. Use `⟨y, F, hy, hspan, hF, hK, ?_, ?_, fun c x => ?_⟩` and prove the remaining obligations. Simplify using `only [hK]`.
+
+Conclude with `integrable_finset_sum _ fun i _ => (hI i).1`. Simplify using `only [hK]`. Rewrite using `[integral_finset_sum _ fun i _ => (hI i).1]`. Simplify using `only [(hI _).2]`. Simplify using the standard rewrite rules.
+
+Use `(norm_sum_sq_le c fun i => F i x).trans ?_` and prove the remaining obligations. Rewrite using `[← hK]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Use `(norm_tsum_le_tsum_norm (hbd x x).1).trans ((hbd x x).2.trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[mul_inv, ← sq, ← pow_mul]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kernelB : KernelB := by
   intro B d h hd hn hdec hb hfin T hT
   obtain ⟨hT2, hL, hS, -⟩ := GlobalTheory.CongTop.adelic_topology B.I

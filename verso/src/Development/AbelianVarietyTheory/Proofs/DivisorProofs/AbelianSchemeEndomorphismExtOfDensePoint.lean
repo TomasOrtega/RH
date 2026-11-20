@@ -13,6 +13,11 @@ open Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `W _ G _ hG Ω _ pt hpt f f' h`. Establish `: Smooth G.hom` using `hG.smooth`. Establish `: IsProper G.hom` using `hG.proper`. Establish `: IsDominant pt` using `⟨hpt⟩`. Establish `: QuasiCompact pt` using `inferInstance`.
+
+Use `IsSchemeTheoreticallyDominant.of_isDominant pt` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (pullback.fst G.hom pt)` using `IsSchemeTheoreticallyDominant.of_isPullback (IsPullback.of_hasPullback G.hom pt).flip`. Conclude with `Over.OverMorphism.ext (ext_of_schDom G.hom ((Over.w f).trans (Over.w f').symm) (pullback.fst G.hom pt) h)`.
+-/
 theorem abelianScheme_end_ext_of_dense : ∀ (W : Scheme.{0}) [IsIntegral W] (G : Over W) [GrpObj G], IsAbelianScheme G → ∀ (Ω : Type) [Field Ω] (pt : Sp Ω ⟶ W), Dense (Set.range pt) → ∀ (f f' : G ⟶ G), pullback.fst G.hom pt ≫ f.left = pullback.fst G.hom pt ≫ f'.left → f = f' := by
   intro W _ G _ hG Ω _ pt hpt f f' h
   have : Smooth G.hom := hG.smooth

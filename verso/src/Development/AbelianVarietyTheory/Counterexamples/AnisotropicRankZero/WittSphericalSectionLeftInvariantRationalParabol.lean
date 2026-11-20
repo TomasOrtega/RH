@@ -11,9 +11,21 @@ namespace GlobalTheory.AnisotropicResidueNonvanishing
 
 variable {D : D7} {V V₀ : HSp D} {r : ℕ} (d : HypDec V V₀ r)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, fun p hp => triv_of_isCompact (isClosed_stab d) (continuous_absDet d) hl.isCompact_K p hp⟩`.
+-/
 theorem isIwasawa (l : Lvl V) (hl : l.Good) (h : HasIw d l.K) : IsIwasawa (absDet d) l.K :=
   ⟨h, fun p hp => triv_of_isCompact (isClosed_stab d) (continuous_absDet d) hl.isCompact_K p hp⟩
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `mem_ratMx.1 ((mem_GQ_iff _ _).1 hq)`. Establish `hα : (onX d q).1 = rat (d.qX * γ * d.e)`. Rewrite using `[eq_of_mul_jX d (mul_jX d q), ← hγ, rat_mul, rat_mul, Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `hdet : ((Matrix.GeneralLinearGroup.det (onX d q) : (AE D)ˣ) : AE D) = incA D (d.qX * γ * d.e).det`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hα, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hne : (d.qX * γ * d.e).det ≠ 0`. Introduce `h0`. Establish `h1 : (1 : AE D) = 0`.
+
+Rewrite using `[← (Matrix.GeneralLinearGroup.det (onX d q)).mul_inv, hdet, h0, map_zero, zero_mul]`. Conclude with `one_ne_zero (incA_injective (D := D) (by rw [map_one, map_zero]; exact h1))`. Establish `hu : Matrix.GeneralLinearGroup.det (onX d q) = Units.map (incA D).toMonoidHom (Units.mk0 _ hne)` using `Units.ext hdet`. Use `show absA D (Matrix.GeneralLinearGroup.det (onX d q)) = 1`. Rewrite using `[hu]`.
+
+Conclude with `absE_inclR _`.
+-/
 theorem absDet_rat (q : stab d) (hq : (q : GA D V) ∈ GQ V) : absDet d q = 1 := by
   obtain ⟨γ, hγ⟩ := mem_ratMx.1 ((mem_GQ_iff _ _).1 hq)
   have hα : (onX d q).1 = rat (d.qX * γ * d.e) := by
@@ -34,6 +46,11 @@ theorem absDet_rat (q : stab d) (hq : (q : GA D V) ∈ GQ V) : absDet d q = 1 :=
   rw [hu]
   exact absE_inclR _
 
+/- English proof (translation)
+Establish `hI : IsIwasawa (absDet d) l.K` using `isIwasawa d l hl h`. Introduce `γ hγ g`. Establish `hγ'` using `Subgroup.mem_inf.1 hγ`. Establish `e : iwAbs (absDet d) l.K (((⟨γ, hγ'.1⟩ : stab d) : GA D V) * g) = iwAbs (absDet d) l.K g`. Rewrite using `[hI.iwAbs_left, absDet_rat d _ hγ'.2, one_mul]`.
+
+Use `show npow (iwAbs (absDet d) l.K (γ * g)) _ = npow (iwAbs (absDet d) l.K g) _`. Conclude with `congrArg (fun t => npow t (s + (rhoH V r : ℂ))) e`.
+-/
 theorem witt_spherical_section_left_invariant_rational_parabolic (l : Lvl V) (hl : l.Good) (h : HasIw d l.K) (s : ℂ) :
     LeftInv (stab d ⊓ GQ V) (sphericalSectionIwasawa d l.K s) := by
   have hI : IsIwasawa (absDet d) l.K := isIwasawa d l hl h

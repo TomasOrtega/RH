@@ -16,6 +16,9 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.HypMass.HH
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.WeilSiegel.Free GlobalTheory.CompanionTheory.WeilSiegel.HypStep GlobalTheory.CompanionTheory.WeilSiegel.HypMass
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ p hp hM h₀ d b v lam hlam m hm`. Establish `hL` using `GlobalTheory.T.contDiffOn_chart_globalWhittakerCoefficient F E σ hσ d b p M v`. Conclude with `lt_top_iff_ne_top.2 (GlobalTheory.T.local_siegel_weil_unramified_measure F E σ hσ M J hJ p hp hM d b v lam hlam m hm _ (latV b v) hL.1 hL.2).2.1`.
+-/
 theorem finite_lt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ p : ℕ, 1 ≤ p → 2 * p < M → ∀ (h₀ : ∀ a b : Fin p, σ ((0 : Matrix (Fin p) (Fin p) E) b a) = (0 : Matrix (Fin p) (Fin p) E) a b) (d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → ∀ (m : HermR (Fv F v) σ p → Measure (Fin p → Fin M → Fv F v ⊗[F] E)), IsGramFibFree (Fv F v) σ J p (coordW (Fv F v) b lam p M) (coordHerm (Fv F v) σ b lam p) m → m (hermOf (Fv F v) σ (0 : Matrix (Fin p) (Fin p) E) h₀) (latV b v) < ⊤ := by
   intro F E _ _ _ _ _ σ hσ M J hJ p hp hM h₀ d b v lam hlam m hm
   have hL := GlobalTheory.T.contDiffOn_chart_globalWhittakerCoefficient F E σ hσ d b p M v
@@ -31,6 +34,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypMass.HH
 
+/- English proof (translation)
+Establish `hU : MeasurableSet (⋃ i, A i)` using `MeasurableSet.iUnion hA`. Rewrite using `[← lintegral_add_compl Ψ hU]`. Establish `h2 : ∫⁻ y in (⋃ i, A i)ᶜ, Ψ y ∂μ = 0`. Establish `: ∫⁻ y in (⋃ i, A i)ᶜ, Ψ y ∂μ = ∫⁻ _ in (⋃ i, A i)ᶜ, 0 ∂μ`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Rewrite using `[Filter.EventuallyEq, ae_restrict_iff' hU.compl]`. Use `filter_upwards [h0] with y hy hyc`. Conclude with `hy hyc`. Simplify using `using this`. Rewrite using `[h2, add_zero, lintegral_iUnion hA hd]`.
+
+Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[setLIntegral_congr_fun (g := fun _ => κ i) (hA i) (fun y hy => hv i y hy), setLIntegral_const]`.
+-/
 theorem lintegral_pieces {V ι : Type} [MeasurableSpace V] [Countable ι] (μ : Measure V) (A : ι → Set V)
     (hA : ∀ i, MeasurableSet (A i)) (hd : Pairwise (Function.onFun Disjoint A)) (Ψ : V → ℝ≥0∞)
     (κ : ι → ℝ≥0∞) (hv : ∀ i, ∀ y ∈ A i, Ψ y = κ i) (h0 : ∀ᵐ y ∂μ, y ∉ ⋃ i, A i → Ψ y = 0) :
@@ -52,12 +62,20 @@ end GlobalTheory.CompanionTheory.WeilSiegel.HypMass.HH
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypMass.HH
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Simplify using `[hermOf]`.
+-/
 theorem hermOf_zero_val (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (R : Type) [CommRing R]
     [Algebra F R] (p : ℕ) (h : ∀ a b : Fin p, σ ((0 : Matrix (Fin p) (Fin p) E) b a) = (0 : Matrix (Fin p) (Fin p) E) a b) :
     ((hermOf R σ (0 : Matrix (Fin p) (Fin p) E) h : HermR R σ p) : Matrix (Fin p) (Fin p) (R ⊗[F] E)) = 0 := by
   funext i j
   simp [hermOf]
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) < a` using `by exact_mod_cast pos_iff_ne_zero.2 ha`. Rewrite using `[show (a : ℝ≥0∞) ^ n = ENNReal.ofReal ((a : ℝ) ^ n) by`. Rewrite using `[ENNReal.ofReal_pow hpos.le, ENNReal.ofReal_coe_nnreal],`. Use the proof step `← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Rewrite using `[Nat.add_sub_cancel_left, pow_add, inv_pow, ← mul_assoc, mul_inv_cancel₀ (by positivity), one_mul]`.
+-/
 theorem pow_index (a : ℝ≥0) (ha : a ≠ 0) (n N : ℕ) (hn : n ≤ N) :
     (a : ℝ≥0∞) ^ n * ENNReal.ofReal ((((a : ℝ))⁻¹) ^ N) = ENNReal.ofReal ((((a : ℝ))⁻¹) ^ (N - n)) := by
   have hpos : (0 : ℝ) < a := by exact_mod_cast pos_iff_ne_zero.2 ha
@@ -68,6 +86,11 @@ theorem pow_index (a : ℝ≥0) (ha : a ≠ 0) (n N : ℕ) (hn : n ≤ N) :
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hn
   rw [Nat.add_sub_cancel_left, pow_add, inv_pow, ← mul_assoc, mul_inv_cancel₀ (by positivity), one_mul]
 
+/- English proof (translation)
+Establish `hz : ∀ (Y : Fin n → Fin M → Fv F v ⊗[F] E) (a : Fin 1 → Fin n → Fv F v ⊗[F] E), ((latV b v).indicator 1 : (Fin (n + 1) → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞) (actW (Fv F v) σ (hypOne J) g (consA a Y)) = 0`. Introduce `Y a`. Use `Set.indicator_of_notMem (fun hmem => hg ?_) _` and prove the remaining obligations. Introduce `p i k`. Establish `h` using `hmem 0 i k`.
+
+Establish `e : actW (Fv F v) σ (hypOne J) g (e0 _ M) p = actW (Fv F v) σ (hypOne J) g (consA a Y) 0` using `rfl`. Rewrite using `[e]`. Conclude with `h`. Simplify using `[stageInt, hz]`.
+-/
 theorem stageInt_zero {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M n d : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (b : Module.Basis (Fin d) F E) {v : HeightOneSpectrum (𝓞 F)}
     (lam : Measure (Fv F v)) (m' : Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (g : HA (Fv F v) σ (hypOne J))
@@ -85,6 +108,61 @@ theorem stageInt_zero {F E : Type} [Field F] [NumberField F] [Field E] [Algebra 
     exact h
   simp [stageInt, hz]
 
+/- English proof (translation)
+Establish `hJ' : IsHermND σ (hypOne J)` using `(GlobalTheory.CompanionTheory.WeilSiegel.HypStep.hypOne_isHermND_and_e0_mem F E σ hσ M J hJ).1`. Use `filter_upwards [GlobalTheory.T.local_content_zeta_series F E σ hσ d b, GlobalTheory.T.primitive_vectors_content_decomposition F E σ hσ M J hJ d b] with v hc hp lam hlam m m₁ m' hm hm₁ hm'`. Take `⟨ι, hι, c, w, hC, hZ⟩` from `hc`. Take `⟨pM, pL, pD, pE⟩` from `hp ι c w hC`. Take `⟨c1, c2, c3, -, -⟩` from `hC`.
+
+Establish `hloc : IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F v`. Take `⟨r1, r2, r3, r4, -⟩` from `id hloc`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`.
+
+Use `haveI := r4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨a1, a2, a3, a4, -, -, -, a8, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`. Use `haveI := a1`. Use `haveI := a2`.
+
+Use `haveI := a3`. Use `haveI := a4`. Use `haveI := a8 1 (M + 2)`. Use `set S₁ := hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂ with hS₁`. Use `set P := primV σ J b v with hP`.
+
+Set `A : ι → Set (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E)` to `fun i => {y | ∃ y₀ ∈ P, y = scalT (c i) y₀}`. Use `haveI := a8 (n + 1) (M + 2)`. Establish `hlatM : MeasurableSet (latV b v : Set (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E))` using `(GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hσ d b 1 (M + 2) v).2.1.measurableSet`. Establish `hlatM' : MeasurableSet (latV b v : Set (Fin (n + 1) → Fin (M + 2) → Fv F v ⊗[F] E))` using `(GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hσ d b (n + 1) (M + 2) v).2.1.measurableSet`. Establish `hinv : ∀ i, ∃ u : Fv F v ⊗[F] E, u * c i = 1` using `fun i => by`.
+
+Take `⟨x, hx⟩` from `(c1 i).1`. Conclude with `⟨(x⁻¹ : (Fv F v ⊗[F] E)ˣ), by rw [← hx]; exact x.inv_mul⟩`. Use `choose u hu using hinv`. Establish `hscal : ∀ (x y : Fv F v ⊗[F] E) (z : Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E), scalT x (scalT y z) = scalT (x * y) z` using `fun x y z => by`. Use function extensionality and compare the values at `p i`.
+
+Simplify using `[scalT, mul_assoc]`. Establish `hone : ∀ z : Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E, scalT (1 : Fv F v ⊗[F] E) z = z` using `fun z => by`. Use function extensionality and compare the values at `p i`. Simplify using `[scalT]`. Establish `hAset : ∀ i, A i = (scalT (u i)) ⁻¹' P` using `fun i => by`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y₀, hy₀, rfl⟩ show scalT (u i) (scalT (c i) y₀) ∈ P`. Rewrite using `[hscal, hu, hone]`. Conclude with `hy₀`.
+
+Introduce `hy`. Use `⟨scalT (u i) y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hscal, mul_comm, hu, hone]`. Establish `hcont : ∀ x : Fv F v ⊗[F] E, Continuous (scalT x : (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E) → _)` using `fun x => continuous_pi fun p => continuous_pi fun i => continuous_const.mul ((continuous_apply i).comp (continuous_apply p))`. Establish `hAm : ∀ i, MeasurableSet (A i)` using `fun i => by`.
+
+Rewrite using `[hAset]`. Conclude with `(hcont (u i)).measurable pM`. Establish `hAd : Pairwise (Function.onFun Disjoint A)`. Introduce `i j hij`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨y₀, hy₀, rfl⟩ ⟨y₁, hy₁, he⟩`. Conclude with `hij (pD i j y₀ hy₀ y₁ hy₁ he)`. Establish `hfree : ∀ᵐ y ∂(m₁ S₁), LinearIndependent (Fv F v ⊗[F] E) y ∧ gramR (Fv F v) σ (hypOne J) y = 0`. Establish `h` using `hm₁.1 S₁`. Establish `h2` using `compl_mem_ae_iff.2 h`.
+
+Rewrite `h2` using `[compl_compl]`. Use `filter_upwards [h2] with y hy`. Take `⟨hy1, hy2⟩` from `hy`. Use `⟨hy2, ?_⟩` and prove the remaining obligations. Establish `h3 : gramR (Fv F v) σ (hypOne J) y = ((S₁ : HermR (Fv F v) σ 1) : Matrix (Fin 1) (Fin 1) (Fv F v ⊗[F] E))` using `hy1`.
+
+Rewrite using `[h3, hS₁, hermOf_zero_val]`. Establish `hlatE : ∀ᵐ y ∂(m₁ S₁), y ∉ ⋃ i, A i → y ∉ latV b v` using `by filter_upwards [hfree] with y hy hyA hyl`. Take `⟨i, y₀, hy₀, he⟩` from `pE y hy.1 hy.2 hyl`. Conclude with `hyA (Set.mem_iUnion.2 ⟨i, y₀, hy₀, he⟩)`. Establish `hAl : ∀ i, ∀ y ∈ A i, y ∈ latV b v`.
+
+Introduce and unpack `i y ⟨y₀, hy₀, rfl⟩`. Conclude with `pL i y₀ hy₀`. Establish `e1 : m₁ S₁ (latV b v) = ∑' i, m₁ S₁ (A i)`. Establish `h` using `lintegral_pieces (m₁ S₁) A hAm hAd ((latV b v).indicator 1) (fun _ => 1) (fun i y hy => by simp [Set.indicator_of_mem (hAl i y hy)]) (by filter_upwards [hlatE] with y hy hyA`. Simplify using `[Set.indicator_of_notMem (hy hyA)])`.
+
+Rewrite `h` using `[lintegral_indicator_one hlatM]`. Simplify using `using h`. Establish `e2 : ∀ i, m₁ S₁ (A i) = m₁ S₁ P * ENNReal.ofReal ((((qv v ^ w i : ℝ≥0) : ℝ)⁻¹) ^ (M + 1))`. Introduce `i`. Take `⟨t, ht1, ht2⟩` from `c3 i`.
+
+Establish `hq0 : qv v ≠ 0`. Introduce `h0`. Establish `: Ideal.absNorm v.asIdeal = 0` using `by simpa [qv] using h0`. Conclude with `v.ne_bot (Ideal.absNorm_eq_zero_iff.1 this)`. Establish `ha : qv v ^ w i ≠ 0` using `pow_ne_zero _ hq0`.
+
+Establish `hs` using `GlobalTheory.T.local_rank_one_zero_fibre_volume F E σ hσ (M + 2) (hypOne J) hJ' (by omega) h₂ d b v lam hlam m₁ hm₁ (c i) (qv v ^ w i) t (c1 i).1 ha (c2 i lam hlam) ht1 (by rw [ht2]; push_cast; rfl) (A i) (hAm i)`. Establish `hset : {y | scalT (c i) y ∈ A i} = P`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y₀, hy₀, he⟩`.
+
+Establish `: scalT (u i) (scalT (c i) y) = scalT (u i) (scalT (c i) y₀)` using `by rw [he]`. Rewrite `this` using `[hscal, hscal, hu, hone, hone]`. Conclude with `this ▸ hy₀`. Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`.
+
+Rewrite `hs` using `[hset]`. Establish `hpos : (0 : ℝ) < ((qv v ^ w i : ℝ≥0) : ℝ)` using `by exact_mod_cast pos_iff_ne_zero.2 ha`. Establish `hN : M + 2 - 1 = M + 1` using `by omega`. Rewrite `hs` using `[hN]`. Rewrite using `[hs, mul_comm ((((qv v ^ w i : ℝ≥0) : ℝ≥0∞)) ^ (M + 1)), mul_assoc]`.
+
+Establish `hmul : ((((qv v ^ w i : ℝ≥0) : ℝ≥0∞)) ^ (M + 1)) * ENNReal.ofReal ((((qv v ^ w i : ℝ≥0) : ℝ)⁻¹) ^ (M + 1)) = 1`. Use `pow_index (qv v ^ w i) ha (M + 1) (M + 1) le_rfl` as an intermediate fact. Simplify using `using this`. Rewrite using `[hmul, mul_one]`. Establish `hr : ∀ i, (((qv v ^ w i : ℝ≥0) : ℝ)⁻¹) = ((qv v : ℝ) ^ w i)⁻¹` using `fun i => by push_cast; rfl`.
+
+Establish `hsum : ∀ s : ℕ, 1 ≤ s → ∑' i, ENNReal.ofReal ((((qv v ^ w i : ℝ≥0) : ℝ)⁻¹) ^ s) = ENNReal.ofReal (zetaV E v s)`. Introduce `s hs`. Establish `h` using `hZ s hs`. Simplify using `only [hr]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun i => by positivity) h.summable, h.tsum_eq]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨Ψ, hΨm, hΨ, hint⟩` from `GlobalTheory.T.zero_block_coefficient_induction_left F E σ hσ M J hJ n hn1 hnM h₀ h₁ h₂ (Fv F v) hloc d b lam hlam.1 m m₁ m' hm hm₁ hm' ((latV b v).indicator 1) (measurable_one.indicator hlatM')`. Rewrite `hint` using `[lintegral_indicator_one hlatM']`. Use `set L' := m' (hermOf (Fv F v) σ (0 : Matrix (Fin n) (Fin n) E) h₀) (latV b v) with hL'`. Establish `hval : ∀ i, ∀ y ∈ A i, Ψ y = (((qv v ^ w i : ℝ≥0) : ℝ≥0∞)) ^ n * L'`.
+
+Introduce and unpack `i y ⟨y₀, hy₀, rfl⟩`. Take `⟨g, hg1, hg2⟩` from `GlobalTheory.T.local_unit_scaling_lattice_measure F E σ hσ M J hJ n d b v lam hlam (m' (hermOf (Fv F v) σ (0 : Matrix (Fin n) (Fin n) E) h₀)) (c i) (qv v ^ w i) (c1 i).1 (c1 i).2 (c2 i lam hlam) y₀ hy₀`. Rewrite using `[← hg1, hΨ g, hg2]`. Establish `hz : ∀ᵐ y ∂(m₁ S₁), y ∉ ⋃ i, A i → Ψ y = 0` using `by filter_upwards [hfree, hlatE] with y hy hl hyA`. Take `⟨g, rfl⟩` from `GlobalTheory.T.local_isotropic_orbit_of_e0 F E σ hσ M J hJ v y hy.1 hy.2`.
+
+Rewrite using `[hΨ g]`. Conclude with `stageInt_zero σ J b lam _ g (hl hyA)`. Rewrite using `[hint, lintegral_pieces (m₁ S₁) A hAm hAd Ψ _ hval hz]`. Establish `hterm : ∀ i, (((qv v ^ w i : ℝ≥0) : ℝ≥0∞)) ^ n * L' * m₁ S₁ (A i) = L' * m₁ S₁ P * ENNReal.ofReal ((((qv v ^ w i : ℝ≥0) : ℝ)⁻¹) ^ (M + 1 - n))`. Introduce `i`.
+
+Establish `hq0 : qv v ^ w i ≠ 0`. Use `pow_ne_zero _ fun h0 => ?_` and prove the remaining obligations. Establish `: Ideal.absNorm v.asIdeal = 0` using `by simpa [qv] using h0`. Conclude with `v.ne_bot (Ideal.absNorm_eq_zero_iff.1 this)`. Rewrite using `[e2, ← pow_index (qv v ^ w i) hq0 n (M + 1) (by omega)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hterm]`. Rewrite using `[ENNReal.tsum_mul_left, hsum _ (by omega)]`. Rewrite using `[e1]`. Simplify using `only [e2]`.
+
+Rewrite using `[ENNReal.tsum_mul_left, hsum _ (by omega)]`.
+-/
 theorem good_local (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ) (hn1 : 1 ≤ n)
     (hnM : 2 * n < M)
@@ -261,6 +339,11 @@ end GlobalTheory.CompanionTheory.WeilSiegel.HypMass.HH
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypMass.HH
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Establish `h2 : 2 ≤ Ideal.absNorm v.asIdeal` using `by omega`. Establish `: (qv v : ℝ) = (Ideal.absNorm v.asIdeal : ℝ)` using `by simp [qv]`. Rewrite using `[this]`.
+
+Conclude with `h2` after adjusting the coercions.
+-/
 theorem qv_ge_two {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) : (2 : ℝ) ≤ (qv v : ℝ) := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
   have h1 : Ideal.absNorm v.asIdeal ≠ 1 := fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)
@@ -269,6 +352,11 @@ theorem qv_ge_two {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (�
   rw [this]
   exact_mod_cast h2
 
+/- English proof (translation)
+Establish `hp : 0 < 1 - u` using `by linarith`. Establish `hw : 1 ≤ (1 - u)⁻¹` using `(one_le_inv₀ hp).2 (by linarith)`. Use `⟨hw, ?_, one_le_pow₀ hw, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_le_iff_one_le_mul₀ hp]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[inv_pow, inv_le_iff_one_le_mul₀ (by positivity)]`. Use polynomial arithmetic with `[mul_nonneg h0 h0, mul_nonneg (mul_nonneg h0 h0) h0, mul_nonneg h0 (sub_nonneg.2 h1)]`.
+-/
 theorem inv_one_sub_bounds {u : ℝ} (h0 : 0 ≤ u) (h1 : u ≤ 1 / 4) :
     1 ≤ (1 - u)⁻¹ ∧ (1 - u)⁻¹ ≤ 1 + 4 * u ∧ 1 ≤ ((1 - u)⁻¹) ^ 2 ∧ ((1 - u)⁻¹) ^ 2 ≤ 1 + 4 * u := by
   have hp : 0 < 1 - u := by linarith
@@ -279,6 +367,15 @@ theorem inv_one_sub_bounds {u : ℝ} (h0 : 0 ≤ u) (h1 : u ≤ 1 / 4) :
   · rw [inv_pow, inv_le_iff_one_le_mul₀ (by positivity)]
     nlinarith [mul_nonneg h0 h0, mul_nonneg (mul_nonneg h0 h0) h0, mul_nonneg h0 (sub_nonneg.2 h1)]
 
+/- English proof (translation)
+Establish `hq` using `qv_ge_two v`. Establish `hq1 : (1 : ℝ) ≤ (qv v : ℝ)` using `by linarith`. Establish `hq0 : (0 : ℝ) < (qv v : ℝ)` using `by linarith`. Establish `hsq : (4 : ℝ) ≤ (qv v : ℝ) ^ 2` using `by nlinarith`. Establish `hu : ∀ t : ℕ, 2 ≤ t → ((qv v : ℝ) ^ t)⁻¹ ≤ 1 / (qv v : ℝ) ^ 2` using `fun t ht => by`.
+
+Rewrite using `[one_div]`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_right₀ hq1 ht)`. Establish `hq4 : 1 / (qv v : ℝ) ^ 2 ≤ 1 / 4` using `one_div_le_one_div_of_le (by norm_num) hsq`. Unfold `zetaV`. Use `split_ifs with hf`.
+
+Establish `h1` using `hu (2 * s) (by omega)`. Take `⟨a, b', -, -⟩` from `inv_one_sub_bounds (u := ((qv v : ℝ) ^ (2 * s))⁻¹) (by positivity) (h1.trans hq4)`. Conclude with `⟨a, b'.trans (by linarith)⟩`. Establish `h1` using `hu s hs`. Take `⟨-, -, a, b'⟩` from `inv_one_sub_bounds (u := ((qv v : ℝ) ^ s)⁻¹) (by positivity) (h1.trans hq4)`.
+
+Conclude with `⟨a, b'.trans (by linarith)⟩`.
+-/
 theorem zetaV_bounds {F : Type} [Field F] [NumberField F] (E : Type) [Field E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (s : ℕ) (hs : 2 ≤ s) :
     1 ≤ zetaV E v s ∧ zetaV E v s ≤ 1 + 4 * (1 / (qv v : ℝ) ^ 2) := by
@@ -299,6 +396,9 @@ theorem zetaV_bounds {F : Type} [Field F] [NumberField F] (E : Type) [Field E] [
     obtain ⟨-, -, a, b'⟩ := inv_one_sub_bounds (u := ((qv v : ℝ) ^ s)⁻¹) (by positivity) (h1.trans hq4)
     exact ⟨a, b'.trans (by linarith)⟩
 
+/- English proof (translation)
+The claim follows from `|x * p * Z₁ - 1| ≤ 4 * |x - 1| + 2 * e + |y - 1| := by have hy2 : y ≤ 2 := by linarith [(abs_le.1 hy1).2] have hp2 : p ≤ 2 := by nlinarith have hZ : Z₁ ≤ 2 := by linarith have e1 : x * p * Z₁ - 1 = (x - 1) * (p * Z₁) + p * (Z₁ - Z₂) + (y - 1) := by rw [hy]; ring have b1 : |(x - 1 …`.
+-/
 theorem real_bound {x y p Z₁ Z₂ e : ℝ} (hy : y = p * Z₂) (hp : 0 ≤ p) (h1 : 1 ≤ Z₁) (h1' : Z₁ ≤ 1 + e)
     (h2 : 1 ≤ Z₂) (h2' : Z₂ ≤ 1 + e) (he : e ≤ 1) (hy1 : |y - 1| ≤ 1) :
     |x * p * Z₁ - 1| ≤ 4 * |x - 1| + 2 * e + |y - 1| := by
@@ -317,6 +417,17 @@ theorem real_bound {x y p Z₁ Z₂ e : ℝ} (hy : y = p * Z₂) (hp : 0 ≤ p) 
   rw [e1]
   exact (abs_add_le _ _).trans (add_le_add ((abs_add_le _ _).trans (add_le_add b1 b2)) le_rfl)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ n hn1 hnM h₀ h₁ h₂ d b lam hlam m m₁ m' hm hm₁ hm' fin₁ sum₁ fin' sum'`. Establish `hJ' : IsHermND σ (hypOne J)` using `(GlobalTheory.CompanionTheory.WeilSiegel.HypStep.hypOne_isHermND_and_e0_mem F E σ hσ M J hJ).1`. Establish `fin₀ : ∀ v, m v (hermOf (Fv F v) σ (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) h₁) (latV b v) < ⊤` using `fun v => GlobalTheory.CompanionTheory.WeilSiegel.HypMass.HH.finite_lt F E σ hσ (M + 2) (hypOne J) hJ' (n + 1) (by omega) (by omega) h₁ d b v (lam v) (hlam v) (m v) (hm v)`. Use `⟨fin₀, ?_⟩` and prove the remaining obligations. Establish `hq : Summable fun v : HeightOneSpectrum (𝓞 F) => 1 / (qv v : ℝ) ^ 2`.
+
+Use `GlobalTheory.CompanionTheory.SW.Primes.summable_one_div_absNorm_sq F` as an intermediate fact. Simplify `this` using `[qv]`. Establish `hB : Summable fun v : HeightOneSpectrum (𝓞 F) => 4 * |(m' v (hermOf (Fv F v) σ (0 : Matrix (Fin n) (Fin n) E) h₀) (latV b v)).toReal - 1| + 2 * (4 * (1 / (qv v : ℝ) ^ 2)) + |(m₁ v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) (latV b v)).toReal - 1|` using `((sum'.mul_left 4).add ((hq.mul_left 4).mul_left 2)).add sum₁`. Establish `hsmall : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, |(m₁ v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) (latV b v)).toReal - 1| < 1` using `sum₁.tendsto_cofinite_zero.eventually (gt_mem_nhds one_pos)`. Use `Summable.of_norm_bounded_eventually hB ?_` and prove the remaining obligations.
+
+Use `filter_upwards [good_local F E σ hσ M J hJ n hn1 hnM h₀ h₁ h₂ d b, hsmall] with v hg hs`. Take `⟨g1, g2⟩` from `hg (lam v) (hlam v) (m v) (m₁ v) (m' v) (hm v) (hm₁ v) (hm' v)`. Take `⟨z1, z1'⟩` from `zetaV_bounds E v (M + 1 - n) (by omega)`. Take `⟨z2, z2'⟩` from `zetaV_bounds E v (M + 1) (by omega)`. Establish `hq2` using `qv_ge_two v`.
+
+Establish `he : 4 * (1 / (qv v : ℝ) ^ 2) ≤ 1`. Establish `h4 : (4 : ℝ) ≤ (qv v : ℝ) ^ 2` using `by nlinarith`. Rewrite using `[mul_one_div, div_le_one (by positivity)]`. Conclude with `h4`. Rewrite using `[Real.norm_eq_abs, abs_abs, g1, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`.
+
+Use `real_bound ?_ ENNReal.toReal_nonneg z1 z1' z2 z2' he hs.le` and prove the remaining obligations. Rewrite using `[g2, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`.
+-/
 theorem mass_isotropic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 1 ≤ n → 2 * n < M → ∀ (h₀ : ∀ a b : Fin n, σ ((0 : Matrix (Fin n) (Fin n) E) b a) = (0 : Matrix (Fin n) (Fin n) E) a b) (h₁ : ∀ a b : Fin (n + 1), σ ((0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) b a) = (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) a b) (h₂ : ∀ a b : Fin 1, σ ((0 : Matrix (Fin 1) (Fin 1) E) b a) = (0 : Matrix (Fin 1) (Fin 1) E) a b) (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), (∀ v, IsStdV v (lam v)) → ∀ (m : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ (n + 1) → Measure (Fin (n + 1) → Fin (M + 2) → Fv F v ⊗[F] E)) (m₁ : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E)) (m' : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ n → Measure (Fin n → Fin M → Fv F v ⊗[F] E)), (∀ v, IsGramFibFree (Fv F v) σ (hypOne J) (n + 1) (coordW (Fv F v) b (lam v) (n + 1) (M + 2)) (coordHerm (Fv F v) σ b (lam v) (n + 1)) (m v)) → (∀ v, IsGramFibFree (Fv F v) σ (hypOne J) 1 (coordW (Fv F v) b (lam v) 1 (M + 2)) (coordHerm (Fv F v) σ b (lam v) 1) (m₁ v)) → (∀ v, IsGramFibFree (Fv F v) σ J n (coordW (Fv F v) b (lam v) n M) (coordHerm (Fv F v) σ b (lam v) n) (m' v)) → (∀ v, m₁ v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) (latV b v) < ⊤) → Summable (fun v => |(m₁ v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) (latV b v)).toReal - 1|) → (∀ v, m' v (hermOf (Fv F v) σ (0 : Matrix (Fin n) (Fin n) E) h₀) (latV b v) < ⊤) → Summable (fun v => |(m' v (hermOf (Fv F v) σ (0 : Matrix (Fin n) (Fin n) E) h₀) (latV b v)).toReal - 1|) → (∀ v, m v (hermOf (Fv F v) σ (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) h₁) (latV b v) < ⊤) ∧ Summable (fun v => |(m v (hermOf (Fv F v) σ (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) h₁) (latV b v)).toReal - 1|) := by
   intro F E _ _ _ _ _ σ hσ M J hJ n hn1 hnM h₀ h₁ h₂ d b lam hlam m m₁ m' hm hm₁ hm' fin₁ sum₁ fin' sum'
   have hJ' : IsHermND σ (hypOne J) := (GlobalTheory.CompanionTheory.WeilSiegel.HypStep.hypOne_isHermND_and_e0_mem F E σ hσ M J hJ).1

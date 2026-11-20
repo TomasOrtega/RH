@@ -11,6 +11,9 @@ variable {k : Type u} {G : Type v} [CommRing k] [Group G]
 def repSubOne (A : Rep.{w} k G) (σ : G) : A →+ A :=
   (A.ρ σ - 1 : Module.End k A).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repSubOne_apply (A : Rep.{w} k G) (σ : G) (x : A) : repSubOne A σ x = A.ρ σ x - x :=
   rfl
 

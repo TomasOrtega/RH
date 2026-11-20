@@ -12,20 +12,38 @@ section Holo
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
 
+/- English proof (translation)
+Introduce `j` and use `(h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hVU))`.
+-/
 theorem holoOn_mono {U V : Set X} {f : X → ℂ} (h : A.HoloOn U f) (hVU : V ⊆ U) : A.HoloOn V f :=
   fun j => (h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hVU))
 
+/- English proof (translation)
+Introduce `_ _ _` and use `analyticAt_const`.
+-/
 theorem holoOn_const (U : Set X) (c : ℂ) : A.HoloOn U (fun _ => c) := fun _ _ _ => analyticAt_const
 
+/- English proof (translation)
+Introduce `j z hz` and use `(hf j z hz).mul (hg j z hz)`.
+-/
 theorem holoOn_mul {U : Set X} {f g : X → ℂ} (hf : A.HoloOn U f) (hg : A.HoloOn U g) :
     A.HoloOn U (fun y => f y * g y) := fun j z hz => (hf j z hz).mul (hg j z hz)
 
+/- English proof (translation)
+Introduce `j z hz` and use `(hf j z hz).div (hg j z hz) (h0 _ hz.2)`.
+-/
 theorem holoOn_div {U : Set X} {f g : X → ℂ} (hf : A.HoloOn U f) (hg : A.HoloOn U g) (h0 : ∀ y ∈ U, g y ≠ 0) :
     A.HoloOn U (fun y => f y / g y) := fun j z hz => (hf j z hz).div (hg j z hz) (h0 _ hz.2)
 
+/- English proof (translation)
+Introduce `j z hz` and use `(hf j z hz).pow m`.
+-/
 theorem holoOn_pow {U : Set X} {f : X → ℂ} (hf : A.HoloOn U f) (m : ℕ) : A.HoloOn U (fun y => f y ^ m) :=
   fun j z hz => (hf j z hz).pow m
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using holoOn_const A U 1`. Consider the case `insert i s hi ih`. Establish `h1` using `holoOn_mul A (hf i (Finset.mem_insert_self i s)) (ih fun k hk => hf k (Finset.mem_insert_of_mem hk))`. Simplify `h1` using `only [Finset.prod_insert hi]`.
+-/
 theorem holoOn_prod {U : Set X} {ι : Type} (s : Finset ι) {f : ι → X → ℂ} (hf : ∀ i ∈ s, A.HoloOn U (f i)) :
     A.HoloOn U (fun y => ∏ i ∈ s, f i y) := by
   classical
@@ -35,17 +53,29 @@ theorem holoOn_prod {U : Set X} {ι : Type} (s : Finset ι) {f : ι → X → �
     have h1 := holoOn_mul A (hf i (Finset.mem_insert_self i s)) (ih fun k hk => hf k (Finset.mem_insert_of_mem hk))
     simpa only [Finset.prod_insert hi] using h1
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Xgp.c_bm_exists_frames.continuousAt_of_holoOn A hf hx`.
+-/
 theorem holo_continuousAt {U : Set X} {f : X → ℂ} (hf : A.HoloOn U f) {x : X} (hx : x ∈ U) :
     ContinuousAt f x :=
   PositivityTheory.Xgp.c_bm_exists_frames.continuousAt_of_holoOn A hf hx
 
+/- English proof (translation)
+Introduce `_ hx` and use `(holo_continuousAt A hf hx).continuousWithinAt`.
+-/
 theorem holo_continuousOn {U : Set X} {f : X → ℂ} (hf : A.HoloOn U f) : ContinuousOn f U :=
   fun _ hx => (holo_continuousAt A hf hx).continuousWithinAt
 
+/- English proof (translation)
+Introduce `j z hz` and use `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) i).analyticAt _).comp ((hψ j).1 z hz)`.
+-/
 theorem holoOn_coord {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} (hψ : IsCompatChart A ψ) (i : Fin e) :
     A.HoloOn ψ.source (fun y => ψ y i) := fun j z hz =>
   ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) i).analyticAt _).comp ((hψ j).1 z hz)
 
+/- English proof (translation)
+Establish `hD : Dense (Set.pi Set.univ fun _ : Fin e => ({0}ᶜ : Set ℂ))` using `dense_pi Set.univ fun _ _ => dense_compl_singleton 0`. Establish `hopen : IsOpen (ψ '' (ψ.source ∩ O))` using `ψ.isOpen_image_source_inter hO`. Take `⟨t, ⟨y', ⟨hy'ψ, hy'O⟩, rfl⟩, ht⟩` from `hD.inter_open_nonempty _ hopen ⟨ψ y, y, ⟨hyψ, hy⟩, rfl⟩`. Conclude with `⟨y', ⟨hy'O, hy'ψ⟩, fun i => ht i (Set.mem_univ i)⟩`.
+-/
 theorem exists_coords_ne (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) {O : Set X} (hO : IsOpen O) {y : X}
     (hy : y ∈ O) (hyψ : y ∈ ψ.source) : ∃ y' ∈ O ∩ ψ.source, ∀ i, ψ y' i ≠ 0 := by
   have hD : Dense (Set.pi Set.univ fun _ : Fin e => ({0}ᶜ : Set ℂ)) :=
@@ -54,6 +84,9 @@ theorem exists_coords_ne (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) {O : Set
   obtain ⟨t, ⟨y', ⟨hy'ψ, hy'O⟩, rfl⟩, ht⟩ := hD.inter_open_nonempty _ hopen ⟨ψ y, y, ⟨hyψ, hy⟩, rfl⟩
   exact ⟨y', ⟨hy'O, hy'ψ⟩, fun i => ht i (Set.mem_univ i)⟩
 
+/- English proof (translation)
+Introduce `y hy`. Assume the negation of the conclusion as `hne`. Establish `hopen : IsOpen (O ∩ (fun z => f z - g z) ⁻¹' {0}ᶜ)` using `(hf.sub hg).isOpen_inter_preimage hO isOpen_compl_singleton`. Take `⟨y', ⟨⟨hy'O, hy'ne⟩, -⟩, hc⟩` from `exists_coords_ne ψ hopen ⟨hy, sub_ne_zero.2 hne⟩ (hOψ hy)`. Conclude with `hy'ne (sub_eq_zero.2 (h y' hy'O hc))`.
+-/
 theorem eqOn_of_coords_ne {β : Type} [NormedAddCommGroup β] (ψ : OpenPartialHomeomorph X (Fin e → ℂ))
     {O : Set X} (hO : IsOpen O) (hOψ : O ⊆ ψ.source) {f g : X → β} (hf : ContinuousOn f O) (hg : ContinuousOn g O)
     (h : ∀ y ∈ O, (∀ i, ψ y i ≠ 0) → f y = g y) : ∀ y ∈ O, f y = g y := by
@@ -70,6 +103,13 @@ section Forms
 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
+/- English proof (translation)
+Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `h1 : ∏ p, (c p.1 * z p) ^ d p = (∏ k, c k ^ a k) * ∏ p, z p ^ d p`. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Use `congr 1`.
+
+Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ y, c k ^ d ⟨k, y⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hG d hd k]`. Rewrite using `[h1]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_smul_homog {G : MvPolynomial (Σ k, J k) ℂ} {a : K → ℕ} (hG : IsMultiHomog G a) (c : K → ℂ)
     (z : (Σ k, J k) → ℂ) : eval (fun p => c p.1 * z p) G = (∏ k, c k ^ a k) * eval z G := by
   rw [eval_eq', eval_eq', Finset.mul_sum]
@@ -84,6 +124,9 @@ theorem eval_smul_homog {G : MvPolynomial (Σ k, J k) ℂ} {a : K → ℕ} (hG :
   rw [h1]
   ring
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_map, show ∀ w, MvPolynomial.eval w G = eval₂ (RingHom.id ℂ) w G from fun w => rfl, MvPolynomial.eval₂_comp_left, RingHom.comp_id]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules.
+-/
 theorem eval_map_conj (G : MvPolynomial (Σ k, J k) ℂ) (z : (Σ k, J k) → ℂ) :
     eval z (map (starRingEnd ℂ) G) = starRingEnd ℂ (eval (fun p => starRingEnd ℂ (z p)) G) := by
   rw [MvPolynomial.eval_map, show ∀ w, MvPolynomial.eval w G = eval₂ (RingHom.id ℂ) w G from fun w => rfl,
@@ -93,11 +136,19 @@ theorem eval_map_conj (G : MvPolynomial (Σ k, J k) ℂ) (z : (Σ k, J k) → �
   funext p
   simp
 
+/- English proof (translation)
+Introduce `m hm` and use `hG m (support_map_subset _ _ hm)`.
+-/
 theorem isMultiHomog_map_conj {G : MvPolynomial (Σ k, J k) ℂ} {a : K → ℕ} (hG : IsMultiHomog G a) :
     IsMultiHomog (map (starRingEnd ℂ) G) a := fun m hm => hG m (support_map_subset _ _ hm)
 
 noncomputable def nd (a : K → ℕ) (z : (Σ k, J k) → ℂ) : ℝ := ∏ k, (∑ i, ‖z ⟨k, i⟩‖ ^ 2) ^ a k
 
+/- English proof (translation)
+Unfold `nd`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: ∑ i, ‖c k * z ⟨k, i⟩‖ ^ 2 = ‖c k‖ ^ 2 * ∑ i, ‖z ⟨k, i⟩‖ ^ 2`. Simplify using `[norm_mul, mul_pow, Finset.mul_sum]`.
+
+Rewrite using `[this, mul_pow, ← pow_mul]`.
+-/
 theorem nd_smul (a : K → ℕ) (c : K → ℂ) (z : (Σ k, J k) → ℂ) :
     nd a (fun p => c p.1 * z p) = (∏ k, ‖c k‖ ^ (2 * a k)) * nd a z := by
   unfold nd
@@ -107,18 +158,32 @@ theorem nd_smul (a : K → ℕ) (c : K → ℂ) (z : (Σ k, J k) → ℂ) :
     simp [norm_mul, mul_pow, Finset.mul_sum]
   rw [this, mul_pow, ← pow_mul]
 
+/- English proof (translation)
+Simplify using `[nd]`.
+-/
 theorem nd_conj (a : K → ℕ) (z : (Σ k, J k) → ℂ) : nd a (fun p => starRingEnd ℂ (z p)) = nd a z := by
   simp [nd]
 
+/- English proof (translation)
+Use `Finset.prod_pos fun k _ => pow_pos ?_ _` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz k`. Conclude with `Finset.sum_pos' (fun j _ => by positivity) ⟨i, Finset.mem_univ _, by positivity⟩`.
+-/
 theorem nd_pos (a : K → ℕ) {z : (Σ k, J k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : 0 < nd a z := by
   refine Finset.prod_pos fun k _ => pow_pos ?_ _
   obtain ⟨i, hi⟩ := hz k
   exact Finset.sum_pos' (fun j _ => by positivity) ⟨i, Finset.mem_univ _, by positivity⟩
 
+/- English proof (translation)
+The claim follows from `continuous_finsetProd _ fun k _ => (continuous_finsetSum _ fun i _ => (continuous_norm.comp (continuous_apply _)).pow 2).pow _`.
+-/
 theorem continuous_nd (a : K → ℕ) : Continuous (nd (J := J) a) :=
   continuous_finsetProd _ fun k _ =>
     (continuous_finsetSum _ fun i _ => (continuous_norm.comp (continuous_apply _)).pow 2).pow _
 
+/- English proof (translation)
+Rewrite using `[eval_smul_homog hG, nd_smul, norm_mul, mul_pow, norm_prod]`. Establish `h1 : (∏ k, ‖c k ^ a k‖) ^ 2 = ∏ k, ‖c k‖ ^ (2 * a k)`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow, ← pow_mul, mul_comm]`.
+
+Establish `hne : (∏ k, ‖c k‖ ^ (2 * a k)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Rewrite using `[h1, mul_div_mul_left _ _ hne]`.
+-/
 theorem term_smul {G : MvPolynomial (Σ k, J k) ℂ} {a : K → ℕ} (hG : IsMultiHomog G a) {c : K → ℂ}
     (hc : ∀ k, c k ≠ 0) (z : (Σ k, J k) → ℂ) :
     ‖eval (fun p => c p.1 * z p) G‖ ^ 2 / nd a (fun p => c p.1 * z p) = ‖eval z G‖ ^ 2 / nd a z := by

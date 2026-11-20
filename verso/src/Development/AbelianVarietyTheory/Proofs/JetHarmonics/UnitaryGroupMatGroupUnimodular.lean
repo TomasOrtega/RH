@@ -12,6 +12,13 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k r`. Establish `hG : PI.IsMatGroup (GG k r)` using `PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group k r`. Use `⟨hG, fun μG hμ => ?_⟩` and prove the remaining obligations. Establish `hμ' : PI.IsHaarOnM (GG k r) μG` using `hμ`. Use `⟨hμ', ?_⟩` and prove the remaining obligations.
+
+Take `⟨μ, h1, h2, -⟩` from `GlobalTheory.SgInf.exists_unimod_GG (k := k) (r := r)`. Establish `h1' : PI.IsHaarOnM (GG k r) μ` using `h1`. Take `⟨c, -, -, hc⟩` from `(GlobalTheory.T.matGroupHaar_unique_finite_compact_openPos _ (GG k r) μ hG h1').1 μG hμ'`. Introduce `s hs`. Establish `h3 : μ.map (PI.rmulQ s) = μ` using `h2 s hs`.
+
+Rewrite using `[hc, Measure.map_smul, h3]`.
+-/
 theorem unitaryGroup_matGroup_unimodular : ∀ (k r : ℕ), PI.IsMatGroup (GG k r) ∧
     ∀ μG : Measure (Formalism.QuantumDeterminants.Mt k r), PI.BesselPeriodGGP.IsHaarOn (GG k r) μG →
       PI.IsHaarOnM (GG k r) μG ∧ PI.IsRightInvM (GG k r) μG := by

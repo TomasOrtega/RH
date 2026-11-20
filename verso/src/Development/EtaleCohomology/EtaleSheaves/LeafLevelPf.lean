@@ -15,6 +15,11 @@ def LeafFilt : Prop := GlobalTheory.EtC.A1 → ∀ (R : Type) [CommRing R] (F : 
   (∀ p : ℕ, ∀ n : ℤ, n < c - p → Subsingleton (HK R (cone0 R (f.app (op (SimplexCategory.mk p)))) F n)) →
   ∀ n : ℤ, n < c → Subsingleton (HK R (mappingCone ((chains R).map f)) F n)
 
+/- English proof (translation)
+Introduce `hA1 R _ F c E E' f h`. Unfold `LateralTheory.E.t_E6Cut.Conn`. Rewrite using `[hRel R F c]`. Apply `hF hA1 R F c f` to reduce the goal to its premises. Introduce `p n hn`.
+
+Apply `hD R F _ n` to reduce the goal to its premises. Establish `hp` using `h p`. Unfold `LateralTheory.E.t_E6Cut.Conn at hp`. Rewrite `hp` using `[hRel R F (c - p)]`. Conclude with `hp n hn`.
+-/
 theorem LeafLevel_of (hRel : LateralTheory.E.t_E6Cut.LeafRel) (hD : LeafDisc) (hF : LeafFilt) :
     LateralTheory.E.t_E6Cut.LeafLevel := by
   intro hA1 R _ F c E E' f h

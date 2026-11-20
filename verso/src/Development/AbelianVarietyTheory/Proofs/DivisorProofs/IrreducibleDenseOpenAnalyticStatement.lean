@@ -13,6 +13,9 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.preChart_of_open | exact GlobalTheory.GroupBplus.Aff.preChart_of_open | (intros; apply GlobalTheory.GroupBplus.Aff.preChart_of_open <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_free_affine_open : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [IsSeparated G.hom]
     (N : ℕ) (q : PrimeSpectrum R) (r : R), r ∉ q.asIdeal → ∀ (C : Type) [CommRing C] [Algebra R C]
     [Algebra (Localization.Away r) C] [IsScalarTower R (Localization.Away r) C] [Module.Finite (Localization.Away r) C]

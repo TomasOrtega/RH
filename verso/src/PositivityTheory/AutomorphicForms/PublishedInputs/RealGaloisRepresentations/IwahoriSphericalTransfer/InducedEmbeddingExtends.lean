@@ -11,6 +11,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ A O _ _ _ Bw Bw' hK hj τ LL' τ' hτ`. Take `⟨Kw', j', j_E', _, _, _, _, _, _, _, _, _, _, _⟩` from `Bw'`. Simplify using `only at hK hj ⊢`. Substitute `hK` using the available equality. Substitute `hj` using the available equality.
+
+Set `ι : K →+* ↥Bw.Kw.1` to `{ toFun := fun x => ⟨Bw.j (algebraMap K Ω x), j_E' x⟩ map_one' := by ext; simp map_mul' := fun x y => by ext; simp map_zero' := by ext; simp map_add' := fun x y => by ext; simp }`. Use `⟨(LL'.1.val.toRingHom.comp (τ'.toRingHom.comp ι)), τ', ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `hτ x` as an intermediate fact. Simplify using `only [RingHom.coe_comp, Function.comp_apply] at this ⊢`.
+
+Rewrite using `[this]`. Establish `e : (ι (algebraMap F K x)) = ⟨Bw.j (algebraMap F Ω x), Bw.j_E x⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[ι, ← IsScalarTower.algebraMap_apply]`. Simplify using `[e]`.
+
+Introduce `x`. Both sides reduce to the same expression.
+-/
 theorem induced_embedding_extends : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (Bw' : LocBridge l K Ω (Dec (F := K) A) O), Bw'.Kw = Bw.Kw → Bw'.j = Bw.j → ∀ (τ : F →+* Qbar l) (LL' : FinExt l) (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1), IsInduced Bw τ τ' → ∃ (τK : K →+* Qbar l) (τ'' : ↥Bw'.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1), τK.comp (algebraMap F K) = τ ∧ IsInduced Bw' τK τ'' := by
   intro F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ A O _ _ _ Bw Bw' hK hj τ LL' τ' hτ
   obtain ⟨Kw', j', j_E', _, _, _, _, _, _, _, _, _, _, _⟩ := Bw'

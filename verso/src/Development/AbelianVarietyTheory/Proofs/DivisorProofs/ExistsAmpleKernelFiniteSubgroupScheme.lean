@@ -17,6 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.KernelSubgroup
 
+/- English proof (translation)
+Introduce `K _ _ A _ hA`. Establish `hG : GlobalFnsSt` using `GlobalTheory.laws_without_cohomology.1`. Take `⟨H₀, m, s, hH₀, hva, -⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmple K A hA`. Establish `hP : IsProjBy A.hom` using `⟨H₀, hH₀, m, s, hva⟩`. Take `⟨L, hL, hR⟩` from `GlobalTheory.ProjFinite.exists_relAmple_of_isProjBy hP`.
+
+Take `⟨H, j, hj, hf, hH⟩` from `GlobalTheory.KernelRep.exists_finite_closed_kernel hG K A hA L hL hR`. Use `haveI : Mono j.left := inferInstance`. Use `haveI : Mono j := (Over.forget _).mono_of_mono_map this`. Establish `hjK : GlobalTheory.MemKL A L j` using `(hH H j).2 ⟨𝟙 _, Category.id_comp _⟩`. Establish `h1` using `(hH _ (1 : 𝟙_ (Over (Sp K)) ⟶ A)).1 (GlobalTheory.memKL_one hL _)`.
+
+Establish `hm` using `(hH _ ((fst H H ≫ j) * (snd H H ≫ j))).1 (GlobalTheory.UU.InK.mul hL (hjK.comp (fst H H)) (hjK.comp (snd H H)))`. Establish `hn` using `(hH _ j⁻¹).1 (GlobalTheory.UU.InK.inv hL hjK)`. Take `⟨g, hg⟩` from `GlobalTheory.PointQuot.exists_grpObj_of_mono j h1.choose hm.choose hn.choose h1.choose_spec hm.choose_spec hn.choose_spec`. Conclude with `⟨L, H, g, j, hL, hP, GlobalTheory.exists_gen_theta_of_isAbelianScheme K A hA L hL, hg, hj, hf, hH⟩`.
+-/
 theorem exists_finite_subgroup_kernel : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∃ (L : LB A.left) (H : Over (Sp K)) (_ : GrpObj H) (j : H ⟶ A), L.IsLB ∧ IsProjBy A.hom ∧ (∃ t : LB.Gen (Theta A L), t.IsGen) ∧ IsMonHom j ∧ IsClosedImmersion j.left ∧ IsFinite H.hom ∧ ∀ (T : Over (Sp K)) (x : T ⟶ A), GlobalTheory.MemKL A L x ↔ ∃ z : T ⟶ H, z ≫ j = x := by
   intro K _ _ A _ hA
   have hG : GlobalFnsSt := GlobalTheory.laws_without_cohomology.1

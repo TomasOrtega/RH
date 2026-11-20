@@ -12,6 +12,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 
 namespace GlobalTheory.TwistTop
 
+/- English proof (translation)
+Introduce `F _ _ Y M σ` and use `by have e : spMap σ ≫ spMap (algebraMap (𝓞 F) F) = spMap (σ.comp (algebraMap (𝓞 F) F)) := by rw [← Spec.map_comp]; rfl have h₁ (z : CxPts Y.str σ) : (z.1 ≫ M.j) ≫ M.p = spMap (σ.comp (algebraMap (𝓞 F) F)) := by rw [Category.assoc, M.pb.w, ← Category.assoc, z.2, e] have h₂ : Conti …`.
+-/
 theorem exists_homeomorph : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : Model Y) (σ : F →+* ℂ), ∃ Φ : CxPts Y.str σ ≃ₜ CxPts M.p (σ.comp (algebraMap (𝓞 F) F)), ∀ z, (Φ z).1 = z.1 ≫ M.j := fun F _ _ Y M σ => by
   have e : spMap σ ≫ spMap (algebraMap (𝓞 F) F) = spMap (σ.comp (algebraMap (𝓞 F) F)) := by
     rw [← Spec.map_comp]; rfl
@@ -30,6 +33,11 @@ theorem exists_homeomorph : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F)
            continuous_toFun := ((Points.continuous_comp M.j).comp continuous_subtype_val).subtype_mk h₁
            continuous_invFun := h₂.subtype_mk fun y => M.pb.lift_snd _ _ _ }, fun _ => rfl⟩
 
+/- English proof (translation)
+Use `⟨fun σ τ h => IsLocalization.ringHom_ext (S := F) (nonZeroDivisors (𝓞 F)) (j := σ) (k := τ) h, fun τ => ?_⟩` and prove the remaining obligations. Establish `hi : Function.Injective τ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) (eq_bot_iff.2 fun n hn => ?_)` and prove the remaining obligations. Establish `: (n : ℂ) = 0` using `(map_intCast τ n).symm.trans hn`.
+
+Conclude with `Int.cast_eq_zero.1 this`. Conclude with `⟨IsFractionRing.lift (K := F) hi, RingHom.ext fun a => IsFractionRing.lift_algebraMap (K := F) hi a⟩`.
+-/
 theorem bijective_comp_algebraMap (F : Type) [Field F] [NumberField F] :
     Function.Bijective fun σ : F →+* ℂ => σ.comp (algebraMap (𝓞 F) F) := by
   refine ⟨fun σ τ h => IsLocalization.ringHom_ext (S := F) (nonZeroDivisors (𝓞 F)) (j := σ) (k := τ) h, fun τ => ?_⟩
@@ -40,6 +48,9 @@ theorem bijective_comp_algebraMap (F : Type) [Field F] [NumberField F] :
     exact Int.cast_eq_zero.1 this
   exact ⟨IsFractionRing.lift (K := F) hi, RingHom.ext fun a => IsFractionRing.lift_algebraMap (K := F) hi a⟩
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `exists_homeomorph F Y M σ`. Use `CxPts.secondCountableTopology_of_isProjOver (σ.comp (algebraMap (𝓞 F) F)) M.ar.isProjOver` as an intermediate fact. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.analytic_weight_linear_comb _ _ _ _ M.p Y.str _ σ Y.dim M.j Φ hΦ (GlobalTheory.T.generically_smooth_model F Y M _) inferInstance _ _ (L.cInf _)`. Conclude with `h₂.symm.trans (hd F Y σ Δ _ r h _ h₁).2`.
+-/
 theorem chernInt_model (hd : GlobalTheory.Published.ChernDegree) {F : Type} [Field F] [NumberField F] {Y : Var F} (M : Model Y)
     (L : HermLB M.p) {Δ : Y.Dv} {r : (L.B.pull M.j).ι → Y.Fnˣ} (h : Presents Δ (L.B.pull M.j) r) (σ : F →+* ℂ) :
     (L.φ (σ.comp (algebraMap (𝓞 F) F))).chernInt Y.dim Set.univ (fun _ => 1) = (Y.inter (fun _ => Δ) : ℝ) := by
@@ -48,6 +59,9 @@ theorem chernInt_model (hd : GlobalTheory.Published.ChernDegree) {F : Type} [Fie
   obtain ⟨h₁, h₂⟩ := GlobalTheory.T.analytic_weight_linear_comb _ _ _ _ M.p Y.str _ σ Y.dim M.j Φ hΦ (GlobalTheory.T.generically_smooth_model F Y M _) inferInstance _ _ (L.cInf _)
   exact h₂.symm.trans (hd F Y σ Δ _ r h _ h₁).2
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_fiberwise Finset.univ InfinitePlace.mk]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun σ hσ => congrArg c (Finset.mem_filter.1 hσ).2, Finset.sum_const, InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]`.
+-/
 theorem sum_emb {F : Type} [Field F] [NumberField F] (c : InfinitePlace F → ℝ) :
     ∑ σ : F →+* ℂ, c (InfinitePlace.mk σ) = ∑ v : InfinitePlace F, (v.mult : ℝ) * c v := by
   classical
@@ -56,6 +70,21 @@ theorem sum_emb {F : Type} [Field F] [NumberField F] (c : InfinitePlace F → �
   rw [Finset.sum_congr rfl fun σ hσ => congrArg c (Finset.mem_filter.1 hσ).2, Finset.sum_const,
     InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]
 
+/- English proof (translation)
+Introduce `hc hd F _ _ C Y A t ci cf hcf ⟨M, L, k, cf₀, a, ⟨hf, r, hr, hi, hv⟩, ha, ht⟩`. Use `M.ar.isIntegral` as an intermediate fact. Set `E` to `Equiv.ofBijective _ (bijective_comp_algebraMap F)`. Establish `hE (σ : F →+* ℂ) : E.symm (σ.comp (algebraMap (𝓞 F) F)) = σ` using `E.symm_apply_apply σ`. Set `s (τ : 𝓞 F →+* ℂ) : ℝ` to `(k : ℕ) * (A.n : ℕ) * ci (InfinitePlace.mk (E.symm τ))`.
+
+Establish `hs (τ : 𝓞 F →+* ℂ) : s ((starRingEnd ℂ).comp τ) = s τ`. Take `⟨σ, rfl⟩` from `E.surjective τ`. Establish `e : (starRingEnd ℂ).comp (E σ) = E (ComplexEmbedding.conjugate σ)` using `rfl`. Simplify using `only [s, e, Equiv.symm_apply_apply, InfinitePlace.mk_conjugate_eq]`. Use `⟨M, L.shift s hs, k, cf₀ + cf, _, ⟨(hf.union hcf).subset (Function.support_add _ _), r, hr, fun σ y y' i f h₁ h₂ h₃ => ?_, fun v e y yt i h₁ h₂ => ?_⟩, isSelfInter_shift hc.1 hc.2.1 _ _ _ _ M.ar L a s hs ha, ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `hi σ y y' i f h₁ h₂ h₃`. Express the relevant statement in the definitionally equal form `Real.exp (-(2 * (k : ℕ) * (A.n : ℕ) * (A.ci (InfinitePlace.mk σ) + ci (InfinitePlace.mk σ)))) * C.pn Y σ _ (C.mPow Y σ A.D k (A.m σ)) (C.cx Y σ f) y = ‖ratVal (f * (r i : Y.Fn)) y‖ ^ 2 * Real.exp (-((L.φ _).φ (i PUnit.unit) y' + 2 * s _))`. Rewrite using `[neg_add, Real.exp_add, ← mul_assoc, ← e, mul_add, neg_add, Real.exp_add, mul_right_comm]`. Simplify using `only [s, hE, mul_assoc]`. Establish `e` using `hv v e y yt i h₁ h₂`.
+
+Express the relevant statement in the definitionally equal form `((k : ℕ) : ℝ) * (A.lg v _ y - (A.n : ℕ) * cf v) = Real.log (Ext.w _ (valAt y.1 (((eqn A.D (below y.1))⁻¹ ^ (k : ℕ) * r i : Y.Fnˣ) : Y.Fn))) - (k : ℕ) * (A.n : ℕ) * (cf₀ v + cf v)`. Take the linear combination `e`. Establish `e₁ : ∑ᶠ τ, s τ * (L.φ τ).chernInt Y.dim Set.univ (fun _ => 1) = (k : ℕ) * (A.n : ℕ) * (((k : ℕ) : ℝ) ^ Y.dim * (Y.inter (fun _ => A.D) : ℝ)) * ∑ v : InfinitePlace F, (v.mult : ℝ) * ci v`. Rewrite using `[← finsum_comp_equiv E, finsum_eq_sum_of_fintype, ← sum_emb, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Establish `e` using `chernInt_model hd.2 M L hr σ`. Rewrite `e` using `[Var.inter_const_nsmul]`. Move the coercions through the operations in `at e`. Rewrite using `[show (L.φ (E σ)).chernInt Y.dim Set.univ (fun _ => 1) = _ from e]`. Simplify using `only [s, Equiv.symm_apply_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hk : ((k : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast k.ne_zero`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Establish `e₂ : ∑ᶠ v, (cf₀ + cf) v = ∑ᶠ v, cf₀ v + ∑ᶠ v, cf v` using `finsum_add_distrib hf hcf`. Rewrite using `[e₁, e₂, ht, deg_twist, ← add_div]`.
+
+Use `congr 1`. Simplify using `only [Adl.deg, Adl.twist]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isArTop_twist : GlobalTheory.Published.ArCalc → GlobalTheory.Published.ArDegree → ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (t : ℝ) (ci : InfinitePlace F → ℝ) (cf : HeightOneSpectrum (𝓞 F) → ℝ), (Function.support cf).Finite → A.IsArTop t → (A.twist ci cf).IsArTop (t + ((Y.dim : ℝ) + 1) * A.deg * ((∑ v : InfinitePlace F, (v.mult : ℝ) * ci v) + ∑ᶠ v, cf v) / (Module.finrank ℚ F : ℝ)) := by
   intro hc hd F _ _ C Y A t ci cf hcf ⟨M, L, k, cf₀, a, ⟨hf, r, hr, hi, hv⟩, ha, ht⟩
   have := M.ar.isIntegral

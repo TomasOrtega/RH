@@ -12,6 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ t N B _ _ z z'`. Take `⟨e, he, -⟩` from `GlobalTheory.UU.existsUnique_cubWeil t.cub z.2 z'.2`. Use `⟨Units.map ((Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom : Γ(Sp B, ⊤) →* B) e, fun C _ _ ψ => ?_⟩` and prove the remaining obligations. Establish `h` using `he.comp (spOver ψ)`. Establish `k : unitOn (Units.map (ψ : B →* C) (Units.map ((Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom : Γ(Sp B, ⊤) →* B) e)) = Units.map (spOver ψ).left.appTop.hom.toMonoidHom e`.
+
+Apply `Units.ext` to reduce the goal to its premises. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (ψ : B →+* C))`. Establish `n' : (Scheme.ΓSpecIso (CommRingCat.of B)).hom ≫ CommRingCat.ofHom (ψ : B →+* C) ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).inv = (Spec.map (CommRingCat.ofHom (ψ : B →+* C))).appTop`. Rewrite using `[← Category.assoc, ← n, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Conclude with `congrArg (fun q => q.hom e.val) n'`.
+
+Rewrite using `[k]`. Conclude with `h`.
+-/
 theorem exists_unit_cubWeil_torsMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (t : SAB H (Sp R)) (N : ℕ) (B : Type) [CommRing B] [Algebra R B] (z z' : Tors t.G N B), ∃ ζ : Bˣ, ∀ (C : Type) [CommRing C] [Algebra R C] (ψ : B →ₐ[R] C), GlobalTheory.UU.CubWeil t.cub N (torsMap ψ z).1 (torsMap ψ z').1 (unitOn (Units.map (ψ : B →* C) ζ)) := by
   intro E _ _ _ H R _ t N B _ _ z z'
   obtain ⟨e, he, -⟩ := GlobalTheory.UU.existsUnique_cubWeil t.cub z.2 z'.2

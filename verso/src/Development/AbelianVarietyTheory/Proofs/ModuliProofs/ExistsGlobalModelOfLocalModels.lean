@@ -30,6 +30,23 @@ namespace GlobalTheory.GlobalModel
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Use `letI := b.toAlgebra`. Establish `hS' : (S : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hS.ne'`. Establish `hb' : ∀ x, ((b x : RZ H S A) : ℂ) = x` using `hb`. Establish `key : ∀ z ∈ RZ H S A, ∃ (n : ℕ) (a : RZ H 1 A), z * (S : ℂ) ^ n = a`. Introduce `z hz`.
+
+Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | rfl | rfl` into its components or cases. Conclude with `⟨0, ⟨_, Subring.subset_closure (Or.inl rfl)⟩, by simp⟩`. Conclude with `⟨1, 1, by simp [hS']⟩`.
+
+Conclude with `⟨0, ⟨_, Subring.subset_closure (Or.inr (Or.inr rfl))⟩, by simp⟩`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `one => exact ⟨0, 1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n, a, ha⟩` from `hx`.
+
+Take `⟨m, c, hc⟩` from `hy`. Use `⟨n + m, a * (S : RZ H 1 A) ^ m + c * (S : RZ H 1 A) ^ n, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← ha, ← hc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `neg x _ hx`. Take `⟨n, a, ha⟩` from `hx`. Conclude with `⟨n, -a, by push_cast; rw [← ha]; ring⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨n, a, ha⟩` from `hx`.
+
+Take `⟨m, c, hc⟩` from `hy`. Conclude with `⟨n + m, a * c, by push_cast; rw [← ha, ← hc]; ring⟩`. Use `IsLocalization.Away.mk _ ?_ (fun z => ?_) (fun x y h => ⟨0, ?_⟩)` and prove the remaining obligations. Use `IsUnit.of_mul_eq_one ⟨(S : ℂ)⁻¹, Subring.subset_closure (Or.inr (Or.inl rfl))⟩ (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `[hS']`.
+
+Take `⟨n, a, ha⟩` from `key z.1 z.2`. Use `⟨n, a, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast]`. Use `Eq.trans ?_ (ha.trans (hb' a).symm)` and prove the remaining obligations. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `: x = y` using `Subtype.ext ((hb' x).symm.trans ((congrArg Subtype.val h).trans (hb' y)))`. Rewrite using `[this]`.
+-/
 theorem isLocalization_away {S A : ℕ} (hS : 0 < S) (b : RZ H 1 A →+* RZ H S A)
     (hb : IsInc (RZ H 1 A).subtype (RZ H S A).subtype b) :
     @IsLocalization.Away (RZ H 1 A) _ (S : RZ H 1 A) (RZ H S A) _ b.toAlgebra := by
@@ -71,6 +88,13 @@ theorem isLocalization_away {S A : ℕ} (hS : 0 < S) (b : RZ H 1 A →+* RZ H S 
   · have : x = y := Subtype.ext ((hb' x).symm.trans ((congrArg Subtype.val h).trans (hb' y)))
     rw [this]
 
+/- English proof (translation)
+Use `set J := Ideal.span (Set.range fun i => (a i : R))`. Take `⟨g, hg⟩` from `(IsPrincipalIdealRing.principal (J.comap (Int.castRingHom R))).principal`. Establish `hd : ∀ i, g ∣ (a i : ℤ)` using `fun i => by`. Rewrite using `[← Ideal.mem_span_singleton]`. Express the relevant statement in the definitionally equal form `_ ∈ Submodule.span ℤ {g}`.
+
+Rewrite using `[← hg, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Establish `h1 : g.natAbs = 1`. Assume the negation of the conclusion as `hne`. Take `⟨p, hp, hpg⟩` from `Nat.exists_prime_and_dvd hne`.
+
+Take `⟨i, hi⟩` from `h p hp`. Conclude with `hi (hpg.trans (Int.natAbs_dvd_natAbs.mpr (hd i)))`. Establish `hu : IsUnit g` using `Int.isUnit_iff_natAbs_eq.mpr h1`. Establish `hm : g ∈ J.comap (Int.castRingHom R)` using `hg ▸ Submodule.mem_span_singleton_self g`. Conclude with `Ideal.eq_top_of_isUnit_mem _ hm (hu.map _)`.
+-/
 theorem span_natCast_eq_top {R I : Type} [CommRing R] (a : I → ℕ) (h : ∀ p : ℕ, p.Prime → ∃ i, ¬ p ∣ a i) :
     Ideal.span (Set.range fun i => (a i : R)) = ⊤ := by
   set J := Ideal.span (Set.range fun i => (a i : R))
@@ -89,6 +113,11 @@ theorem span_natCast_eq_top {R I : Type} [CommRing R] (a : I → ℕ) (h : ∀ p
   have hm : g ∈ J.comap (Int.castRingHom R) := hg ▸ Submodule.mem_span_singleton_self g
   exact Ideal.eq_top_of_isUnit_mem _ hm (hu.map _)
 
+/- English proof (translation)
+Use `Finite.of_injective (fun x => (⟨x.1.M, ?_⟩ : Set.Iic l.M)) ?_` and prove the remaining obligations. Take `⟨p, -, -, h, -⟩` from `x.2`. Conclude with `h ▸ Nat.div_le_self _ _`. Introduce and unpack `⟨⟨M, _, _, Mb, _, _, _, A, _⟩, p, _, h₁, _, h₃⟩ ⟨⟨M', _, _, Mb', _, _, _, A', _⟩, p', _, h₁', _, h₃'⟩ h`. Take `rfl : M = M'` from `congrArg Subtype.val h`.
+
+Take `rfl : A = A'` from `h₁.trans h₁'.symm`. Take `rfl : Mb = Mb'` from `h₃.trans h₃'.symm`. Both sides reduce to the same expression.
+-/
 theorem finite_parts (l : Level H) : Finite {l₀ : Level H // ∃ p : ℕ, p.Prime ∧ IsPrimeToPart l₀ l p} := by
   refine Finite.of_injective (fun x => (⟨x.1.M, ?_⟩ : Set.Iic l.M)) ?_
   · obtain ⟨p, -, -, h, -⟩ := x.2
@@ -99,6 +128,19 @@ theorem finite_parts (l : Level H) : Finite {l₀ : Level H // ∃ p : ℕ, p.Pr
     obtain rfl : Mb = Mb' := h₃.trans h₃'.symm
     rfl
 
+/- English proof (translation)
+Establish `w₀ : (pullback.fst C''.s (spMap b) ≫ A''.π) ≫ C'.s = (pullback.snd _ _ ≫ spMap e) ≫ spMap b₁`. Rewrite using `[Category.assoc, A''.π_over, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc, ← spMap_comp, ← spMap_comp, he]`. Set `g₀ : pullback C''.s (spMap b) ⟶ pullback C'.s (spMap b₁)` to `pullback.lift _ _ w₀`. Establish `hg₀ : g₀ ≫ pullback.fst _ _ = pullback.fst _ _ ≫ A''.π` using `pullback.lift_fst _ _ _`. Take `⟨_, _, _, _, _, n₁, -⟩` from `sabPull Out.CubePf.cubePull (pullback.fst C''.s (spMap b)) C''.t`.
+
+Take `⟨k₁, hk₁⟩` from `LevelCover.sab_comp n₁ A''.mu rfl`. Take `⟨k₂, hk₂⟩` from `LevelCover.sab_cancel m₁ k₁ g₀ hg₀`. Take `⟨k₃, hk₃⟩` from `LevelCover.sab_comp m₂ A₁.mu rfl`. Take `⟨n₂, hn₂⟩` from `LevelCover.sab_comp k₂ k₃ rfl`. Establish `w₁ : C'.j ≫ C'.s = (c ≫ spMap ω) ≫ spMap b₁`.
+
+Rewrite using `[Cpt.j, Category.assoc, pullback.condition, ← Category.assoc, C'.jQ_over, Category.assoc, ← spMap_comp, hω]`. Set `g₁ : U ⟶ pullback C'.s (spMap b₁)` to `pullback.lift _ _ w₁`. Establish `hg₁ : g₁ ≫ pullback.fst _ _ = C'.j` using `pullback.lift_fst _ _ _`. Use `⟨_, _, n₁, n₂, fun g hg => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `: g ≫ g₀ = r'' ≫ g₁`.
+
+Rewrite using `[← cancel_mono (pullback.fst C'.s (spMap b₁)), Category.assoc, hg₀, ← Category.assoc, hg, A''.j_comm, Category.assoc, hg₁]`. Rewrite using `[← Category.assoc, this, Category.assoc, ← Category.assoc g₁, h₁ g₁ hg₁, A₁.j_comm, Category.assoc]`. Establish `p₁ : IsPullback m₁.φ t₁.G.hom C'.t.G.hom (pullback.fst C'.s (spMap b₁))` using `m₁.cart.1`. Establish `w₂ : C'.m.φ ≫ C'.t.G.hom = (t.G.hom ≫ g₁) ≫ pullback.fst C'.s (spMap b₁)`. Rewrite using `[Category.assoc, hg₁]`.
+
+Conclude with `C'.m.cart.1.w`. Establish `hy₁ : p₁.lift _ _ w₂ ≫ m₁.φ = C'.m.φ` using `p₁.lift_fst _ _ _`. Establish `: Mono m₁.φ` using `(MorphismProperty.monomorphisms _).of_isPullback p₁.flip (inferInstanceAs (Mono (pullback.fst C'.s (spMap b₁))))`. Establish `e₁ : y ≫ k₂.φ = ν''.φ ≫ p₁.lift _ _ w₂`. Rewrite using `[← cancel_mono m₁.φ, Category.assoc, hk₂, hk₁, ← Category.assoc, hy, A''.φ_comm, Category.assoc, hy₁]`.
+
+Rewrite using `[hn₂, hk₃, ← Category.assoc, e₁, Category.assoc, ← Category.assoc _ m₂.φ, h₂ _ hy₁, A₁.φ_comm, Category.assoc]`.
+-/
 theorem exists_map_to_base {U U'' U₀ : Scheme.{0}} {F F'' F₀ O O'' O₀ R V : Type} [Field F] [Field F''] [Field F₀]
     [CommRing O] [CommRing O''] [CommRing O₀] [CommRing R] [CommRing V]
     {c : U ⟶ Sp F} {c'' : U'' ⟶ Sp F''} {c₀ : U₀ ⟶ Sp F₀} {t : SAB H U} {t'' : SAB H U''} {t₀ : SAB H U₀}
@@ -146,12 +188,38 @@ theorem exists_map_to_base {U U'' U₀ : Scheme.{0}} {F F'' F₀ O O'' O₀ R V 
       rw [← cancel_mono m₁.φ, Category.assoc, hk₂, hk₁, ← Category.assoc, hy, A''.φ_comm, Category.assoc, hy₁]
     rw [hn₂, hk₃, ← Category.assoc, e₁, Category.assoc, ← Category.assoc _ m₂.φ, h₂ _ hy₁, A₁.φ_comm, Category.assoc]
 
+/- English proof (translation)
+Use `GlobalTheory.T.cmModelCoefficientSubring_dedekind_compatible_embedding E H l S 0 hS (by simp [h])` as an intermediate fact. Rewrite `this` using `[h]`. Then use the resulting hypothesis.
+-/
 theorem base_ring (l : Level H) (h : l.A = 1) {S : ℕ} (hS : 0 < S) :
     (∃ β : RZ H S 1 →+* KA l, IsInc (RZ H S 1).subtype (KA l).val.toRingHom β) ∧ Algebra.FiniteType ℤ (RZ H S 1) ∧
       ∀ β : RZ H S 1 →+* KA l, IsInc (RZ H S 1).subtype (KA l).val.toRingHom β → IsDedFrac β := by
   have := GlobalTheory.T.cmModelCoefficientSubring_dedekind_compatible_embedding E H l S 0 hS (by simp [h])
   rwa [h] at this
 
+/- English proof (translation)
+Introduce `hExt L₁ L₂ L₃ E _ _ _ H D Xo _ hN S l c hg hA`. Set `P` to `{l₀ : Level H // ∃ p : ℕ, p.Prime ∧ IsPrimeToPart l₀ l p}`. Establish `: Finite P` using `finite_parts l`. Establish `hP : ∀ x : P, x.1.A = 1 ∧ x.1.Dvd l` using `fun x => by`. Take `⟨p, hp, h⟩` from `x.2`.
+
+Conclude with `⟨h.1, ((GlobalTheory.T.primeToPart_level_exists_unique_mono E H p hp).2.1 l x.1 h).1⟩`. Establish `hcop : ∀ (p : ℕ), p.Prime → ∀ l₀ : Level H, IsPrimeToPart l₀ l p → (S.n (S.ch p) * l₀.M).Coprime p` using `fun p hp l₀ h => Nat.Coprime.mul_left ((Nat.coprime_primes (S.aux _).1 hp).mpr (S.ch_ne p)) ((GlobalTheory.T.primeToPart_level_exists_unique_mono E H p hp).2.1 l l₀ h).2.1`. Establish `: Nonempty P`. Take `⟨l₀, h⟩` from `(GlobalTheory.T.primeToPart_level_exists_unique_mono E H 2 Nat.prime_two).1 l (hg 2 Nat.prime_two)`. Conclude with `⟨⟨l₀, 2, Nat.prime_two, h⟩⟩`.
+
+Set `a : Bool × P → ℕ` to `fun i => S.n i.1 * i.2.1.M`. Establish `ha : ∀ i, 0 < a i` using `fun i => Nat.mul_pos (S.aux _).1.pos (lt_of_lt_of_le (by norm_num) i.2.1.three_le)`. Set `B : ∀ i : Bool × P, BaseModel (S.T i.1) i.2.1` to `fun i => S.B i.1 i.2.1 (hP i.2).1`. Use `choose k r ν hr hk hlev hfin _ using fun x : P => GlobalTheory.T.exists_finite_etale_surjective_levelMap E H D Xo hN x.1 l (hP x).2`. Establish `hnorm : Geo.Tor.IsNormalScheme (Xo l).X`.
+
+Use `(Xo l).smooth` as an intermediate fact. Conclude with `(isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ (Xo l).s (SmoothOfRelativeDimension.smooth D.dim _)).2.1`. Set `ω : ∀ i : Bool × P, RZ H (a i) 1 →+* KA l` to `fun i => (k i.2).comp (B i).β`. Establish `hω : ∀ i, IsInc (RZ H (a i) 1).subtype (KA l).val.toRingHom (ω i)` using `fun i x => (hk i.2 _).trans ((B i).β_inc x)`. Establish `hωd : ∀ i, IsDedFrac (ω i)` using `fun i => (base_ring l hA (ha i)).2.2 _ (hω i)`.
+
+Use `choose C hC using fun i : Bool × P => GlobalTheory.T.exists_normal_model_above_finite_cover E H _ _ _ _ _ (B i).β _ _ _ (Xo l).s (Xo l).univ.t (ω i) (B i).C (RingHom.id _) (k i.2) (r i.2) (hr i.2) (ν i.2) ((base_ring i.2.1 (hP i.2).1 (ha i)).2.2 _ (B i).β_inc) (hωd i)`. Use `rfl hnorm (hfin i.2)`. Take `⟨⟨β₀, hβ₀⟩, hft, hd₀⟩` from `base_ring l hA Nat.one_pos`. Use `choose b₁ hb₁ using fun i : Bool × P => (GlobalTheory.T.cmModelCoefficient_inclusions_etale_openImmersion E H 1 (a i) 1 1 0 (ha i) Nat.one_pos (one_dvd _) dvd_rfl).1`. Establish `hωb : ∀ i, (ω i).comp (b₁ i) = β₀` using `fun i => RingHom.ext fun x => Subtype.ext ((hω i _).trans ((hb₁ i x).trans (hβ₀ x).symm))`.
+
+Take `⟨C', hC'⟩` from `GlobalTheory.T.exists_model_dominating_models_on_open_cover hExt E H _ _ _ (Xo l).s (Xo l).univ.t β₀ (Bool × P) (fun i => RZ H (a i) 1) (fun i => (a i : RZ H 1 1)) b₁ ω C (hd₀ _ hβ₀) (fun i => ⟨hωd i, hωb i, isLocalization_away (ha i) _ (hb₁ i)⟩) (span_natCast_eq_top a fun p hp = …`. Take `⟨l₀, h⟩` from `(GlobalTheory.T.primeToPart_level_exists_unique_mono E H p hp).1 l (hg p hp)`. Conclude with `⟨(S.ch p, ⟨l₀, p, hp, h⟩), (Nat.Prime.coprime_iff_not_dvd hp).mp (hcop p hp l₀ h).symm⟩)`. Use `hft (Xo l).univ.proper`. Take `⟨hdO, -, hbO, hV⟩` from `GlobalTheory.T.coefficientField_integers_dedekind_fractionField E H l c`.
+
+Take `⟨b₀, hb₀⟩` from `hbO 1 (one_dvd _)`. Establish `hb₀' : (algebraMap (𝓞 c.F) c.F).comp b₀ = (IntermediateField.inclusion c.le).toRingHom.comp β₀` using `RingHom.ext fun x => Subtype.ext ((hb₀ x).trans ((hβ₀ x).symm.trans (IntermediateField.coe_inclusion c.le (β₀ x)).symm))`. Take `⟨oF, ⟨m0⟩⟩` from `obj_pull E H D l (KA l) (KA l) (baseKA l) (baseKA l) (RingHom.id _) (Xo l).X ((Xo l).XF c) (Xo l).s (pullback.fst _ _ ≫ (Xo l).s) (pullback.fst _ _) rfl rfl (by rw [LevelCover.spMap_id', Category.comp_id]) (Xo l).univ`. Establish `hnormF : Geo.Tor.IsNormalScheme ((Xo l).XF c)`. Use `(Xo l).smooth` as an intermediate fact.
+
+Establish `: Smooth (Xo l).s` using `SmoothOfRelativeDimension.smooth D.dim _`. Conclude with `(isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ (pullback.snd (Xo l).s (spMap (IntermediateField.inclusion c.le).toRingHom)) inferInstance).2.1`. Take `⟨C'', ⟨A''⟩⟩` from `GlobalTheory.T.exists_normal_model_above_finite_cover E H _ _ _ _ _ β₀ ((Xo l).XF c) _ _ (pullback.snd _ _) oF.t (algebraMap (𝓞 c.F) c.F) C' b₀ (IntermediateField.inclusion c.le).toRingHom (pullback.fst _ _) pullback.condition m0.toSABMap (hd₀ _ hβ₀) hdO hb₀' hnormF (by rw [pullb …`. Set `Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)` to `⟨C''.X, C''.s, C''.normal, C''.proj, C''.flat, C''.jQ, C''.jQ_over, C''.jQ_open, C''.jQ_dense, C''.t, oF, m0, C''.m, C''.ab_gen⟩`. Use `⟨Y, GlobalTheory.T.model_finite_over_moduliModel_descends E H D l (Xo l) c _ _ Y _ β₀ C' b₀ A'' (hd₀ _ hβ₀) hdO hb₀', fun p W hp hW b hb => ?_⟩` and prove the remaining obligations.
+
+Take `⟨l₀, h, hR⟩` from `S.raises p W hp hW ⟨l, c, hg p hp⟩`. Set `i : Bool × P` to `(S.ch p, ⟨l₀, p, hp, h⟩)`. Take `⟨hdV, -, hbV⟩` from `hV p W hp hW`. Take `⟨e, he⟩` from `hbV (a i) 1 (hcop p hp l₀ h) Nat.one_pos (hA ▸ c.le (baseKA l).ζ.2)`. Take `⟨f, t₁, m₁, m₂, -, h₁, h₂⟩` from `hC' i`.
+
+Take `⟨A₁⟩` from `hC i`. Use `(((GlobalTheory.T.cmModelCoefficient_inclusions_etale_openImmersion E H 1 (a i) 1 1 0 (ha i) Nat.one_pos (one_dvd _) dvd_rfl).2 _ (hb₁ i)).2 rfl).1` as an intermediate fact. Take `⟨f', τ, n₁, n₂, e₁, e₂⟩` from `exists_map_to_base A'' A₁ (b₁ i) (hωb i) f t₁ m₁ m₂ h₁ h₂ b e (RingHom.ext fun x => Subtype.ext (Subtype.ext ((he _).trans ((hb₁ i x).trans ((hb₀ x).symm.trans (congrArg Subtype.val (hb _)).symm)))))`. Take `⟨ν', hν'⟩` from `LevelCover.sab_comp m0.toSABMap (ν i.2) rfl`. Use `GlobalTheory.T.model_dominated_of_map_to_baseModel L₁ L₂ L₃ E H D Xo _ _ _ l₀ l (B i) c _ _ _ _ Y _ b f' τ n₁ n₂ _ ν' ((IntermediateField.inclusion c.le).toRingHom.comp (k i.2)) hdO hdV (RingHom.ext hb) hR ⟨fun x => ?_, fun x => ?_⟩ (fun x => (IntermediateField.coe_inclusion c.le …` and prove the remaining obligations.
+
+Rewrite using `[hν', ← Category.assoc, LevelCover.sec_pow m0.toSABMap _ _ (m0.eta x), Category.assoc, (hlev i.2).1, Category.assoc]`. Rewrite using `[hν', ← Category.assoc, LevelCover.sec_pow m0.toSABMap _ _ (m0.etaA x), Category.assoc, (hlev i.2).2, Category.assoc]`. Rewrite using `[Category.assoc, hr, ← Category.assoc, pullback.condition, Category.assoc, spMap_comp]`.
+-/
 theorem exists_global_model : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l), 1 ≤ D.p + D.q → ToroidalLevelCompatibility (H := H) (D := D) → ∀ S : System Xo, N6 S.Y := by
   intro hExt L₁ L₂ L₃ E _ _ _ H D Xo _ hN S l c hg hA
   let P := {l₀ : Level H // ∃ p : ℕ, p.Prime ∧ IsPrimeToPart l₀ l p}

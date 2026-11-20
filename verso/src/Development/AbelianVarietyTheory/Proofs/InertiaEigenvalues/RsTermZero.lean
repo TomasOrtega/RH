@@ -18,6 +18,11 @@ def rsTerm (q : ℕ) {n : ℕ} (α β : Fin n → ℂ) (x : ℝ) (v : Fin n → 
       ((q : ℂ) ^ (-(x : ℂ))) ^ (∑ i, (v i).toNat)
   else 0
 
+/- English proof (translation)
+Establish `h : (fun _ : Fin n => (0 : ℕ)) = fun i => ((0 : Fin n → ℤ) i).toNat` using `by funext i; simp`. Establish `hs : schurAt (fun i => ((0 : Fin n → ℤ) i).toNat) α = 1`. Rewrite using `[← h, schurAt, schur_zero]`. Simplify using the standard rewrite rules. Establish `hs' : schurAt (fun i => ((0 : Fin n → ℤ) i).toNat) β = 1`.
+
+Rewrite using `[← h, schurAt, schur_zero]`. Simplify using the standard rewrite rules. Rewrite using `[rsTerm, if_pos ⟨fun i => le_rfl, antitone_const⟩, hs, hs']`. Simplify using the standard rewrite rules.
+-/
 theorem rsTerm_zero (q : ℕ) {n : ℕ} (α β : Fin n → ℂ) (x : ℝ) : rsTerm q α β x 0 = 1 := by
   have h : (fun _ : Fin n => (0 : ℕ)) = fun i => ((0 : Fin n → ℤ) i).toNat := by funext i; simp
   have hs : schurAt (fun i => ((0 : Fin n → ℤ) i).toNat) α = 1 := by

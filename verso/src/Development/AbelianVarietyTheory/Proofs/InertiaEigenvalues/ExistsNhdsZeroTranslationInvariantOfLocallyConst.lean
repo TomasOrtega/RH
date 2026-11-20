@@ -3,6 +3,17 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X _ _ _ f hf`. Take `⟨hlc, hcs⟩` from `hf`. Establish `hK : IsCompact (tsupport f)` using `hcs`. Establish `key : ∀ᶠ u in 𝓝 (0 : X), ∀ y ∈ tsupport f, f (y + u) = f y`. Use `hK.eventually_forall_of_forall_eventually (P := fun u y => f (y + u) = f y) ?_` and prove the remaining obligations.
+
+Introduce `y _`. Establish `hy : ∀ᶠ z in 𝓝 y, f z = f y` using `(IsLocallyConstant.iff_eventually_eq f).1 hlc y`. Establish `hc : Filter.Tendsto (fun p : X × X => p.2 + p.1) (𝓝 ((0 : X), y)) (𝓝 y)`. Establish `hcont : Continuous fun p : X × X => p.2 + p.1` using `continuous_snd.add continuous_fst`. Use `hcont.tendsto ((0 : X), y)` as an intermediate fact.
+
+Simplify `this` using `only [add_zero]`. Establish `h2 : Filter.Tendsto (fun p : X × X => p.2) (𝓝 ((0 : X), y)) (𝓝 y)` using `(continuous_snd.tendsto ((0 : X), y))`. Use `filter_upwards [hc.eventually hy, h2.eventually hy] with p hp1 hp2`. Conclude with `hp1.trans hp2.symm`. Establish `hneg : Filter.Tendsto (fun u : X => -u) (𝓝 0) (𝓝 0)`.
+
+Simplify using `using (continuous_neg.tendsto (0 : X))`. Use `⟨{u | ∀ y ∈ tsupport f, f (y + u) = f y} ∩ (fun u : X => -u) ⁻¹' {u | ∀ y ∈ tsupport f, f (y + u) = f y}, Filter.inter_mem key (hneg key), ?_⟩` and prove the remaining obligations. Introduce and unpack `x u ⟨h1, h2⟩`. Distinguish the cases in `hx : x ∈ tsupport f`. Conclude with `h1 x hx`.
+
+Distinguish the cases in `hxu : x + u ∈ tsupport f`. Use `h2 (x + u) hxu` as an intermediate fact. Simplify using `only [add_neg_cancel_right] at this`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxu]`.
+-/
 theorem isTest_nhds_inv : ∀ (X : Type) [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] (f : X → ℂ),
     IsTest f → ∃ U ∈ 𝓝 (0 : X), ∀ x : X, ∀ u ∈ U, f (x + u) = f x := by
   intro X _ _ _ f hf

@@ -7,6 +7,9 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StepVec.prod_locFn_half | exact GlobalTheory.StepVec.prod_locFn_half | (intros; apply GlobalTheory.StepVec.prod_locFn_half <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.prod_residueFunctions_half_sum_idempotents : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
     (s : Finset (Formalism.L2.DIV.Pl D.host.E)) (es : Formalism.L2.DIV.Pl D.host.E → AE D),
     (∀ PP ∈ s, Formalism.L2.NTheta.IsIdemAt (es PP) PP) →

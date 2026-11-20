@@ -21,6 +21,13 @@ namespace GlobalTheory.SquareGenerated
 section
 variable {X Y : Scheme.{0}} {H : LB X}
 
+/- English proof (translation)
+Establish `v : ∀ (j : Fin 1 → H.ι) (z : Y), z ∈ LB.wchart H (fun _ : Fin 1 => φ) j → gs (𝟙 Y) z (LB.wchart H (fun _ : Fin 1 => φ) j) ((Y.presheaf.map (homOfLE (LB.wchart_le H (fun _ : Fin 1 => φ) j 0)).op).hom ((φ.app _).hom (s.f (j 0)))) = gs (𝟙 Y ≫ φ) z (H.U (j 0)) (s.f (j 0))` using `fun j z hz => (gs_res _ z _ hz _).trans (gs_pull _ φ z _ (LB.wchart_le H (fun _ : Fin 1 => φ) j 0 hz) _)`. Set `s' : LB.Sec (LB.LinComb H (K` to `Fin 1) (fun _ => φ) (fun _ => 1)) := { f := fun j => (Y.presheaf.map (homOfLE (LB.wchart_le H (fun _ : Fin 1 => φ) j 0)).op).hom ((φ.app _).hom (s.f (j 0))) compat := fun j j' => fn_ext fun z hz => by`. Use `((gs_res (𝟙 Y) z _ hz _).trans (v j z hz.1)).trans (Eq.trans ?_ ((gs_mul (𝟙 Y) z _ hz _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 Y) z _ hz _).trans (congrArg Units.val (gm_linComb H _ _ (𝟙 Y) z j j' hz.1 hz.2))) ((gs_res (𝟙 Y) z _ hz _).trans (v j' z hz.2)))).symm)` and prove the remaining obligations. Establish `hm : (𝟙 Y ≫ φ) z ∈ H.U (j 0) ⊓ H.U (j' 0)` using `⟨LB.wchart_le H (fun _ : Fin 1 => φ) j 0 hz.1, LB.wchart_le H (fun _ : Fin 1 => φ) j' 0 hz.2⟩`. Use `(gs_res _ z _ hm _).symm.trans ((congrArg (gs _ z _) (s.compat (j 0) (j' 0))).trans ((gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) ?_ (gs_res _ z _ hm _))))` and prove the remaining obligations.
+
+Rewrite using `[gs_unit _ z _ hm, Fin.prod_univ_one, zpow_one] }`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Use `⟨s', fun J hJ => isUnit_sval s' (𝟙 Y) y hJ (fun _ => k) ?_⟩` and prove the remaining obligations. Establish `hm : y ∈ LB.wchart H (fun _ : Fin 1 => φ) (fun _ => k)` using `Set.mem_iInter.2 fun _ => X.basicOpen_le _ hk`. Use `show y ∈ Y.basicOpen ((Y.presheaf.map (homOfLE (LB.wchart_le H (fun _ : Fin 1 => φ) (fun _ => k) 0)).op).hom ((φ.app _).hom (s.f k)))`.
+
+Establish `e` using `Y.basicOpen_res ((φ.app _).hom (s.f k)) (homOfLE (LB.wchart_le H (fun _ : Fin 1 => φ) (fun _ => k) 0)).op`. Use `e ▸ ⟨hm, ?_⟩` and prove the remaining obligations. Conclude with `(SetLike.ext_iff.1 (Scheme.preimage_basicOpen φ (s.f k)) y).1 hk`.
+-/
 theorem unitAt_of_mem (s : LB.Sec H) (φ : Y ⟶ X) (y : Y) (hy : φ y ∈ Out.nonzeroLocus s) :
     UnitAt H (K := Fin 1) (fun _ => φ) (fun _ => 1) y := by
   have v : ∀ (j : Fin 1 → H.ι) (z : Y), z ∈ LB.wchart H (fun _ : Fin 1 => φ) j →
@@ -52,6 +59,11 @@ theorem unitAt_of_mem (s : LB.Sec H) (φ : Y ⟶ X) (y : Y) (hy : φ y ∈ Out.n
   refine e ▸ ⟨hm, ?_⟩
   exact (SetLike.ext_iff.1 (Scheme.preimage_basicOpen φ (s.f k)) y).1 hk
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h`. Establish `le : ∀ i : H.ι, H.U i ≤ LB.wchart H (fun _ : Fin 1 => 𝟙 X) (fun _ => i)` using `fun i z hz => Set.mem_iInter.2 fun _ => hz`. Set `u : LB.Sec (pw H t)` to `{ f := fun i => (X.presheaf.map (homOfLE (le i)).op).hom (s.f fun _ => i) compat := fun i j => fn_ext fun z hz => by`. Use `((gs_res (𝟙 X) z _ hz _).trans (gs_res (𝟙 X) z (le i) hz.1 _)).trans (Eq.trans ?_ ((gs_mul (𝟙 X) z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 X) z _ hz _) ((gs_res (𝟙 X) z _ hz _).trans (gs_res (𝟙 X) z (le j) hz.2 _)))).symm)` and prove the remaining obligations. Use `(sec_trans s (𝟙 X) z (le i hz.1) (le j hz.2)).trans (congrArg₂ (· * ·) (congrArg Units.val ?_) rfl)` and prove the remaining obligations.
+
+Conclude with `(Fin.prod_univ_one _).trans (map_zpow _ _ _).symm }`. Use `choose I hI using fun χ : X ⟶ X => exists_chart hH (χ y)`. Establish `hm : y ∈ H.U (I (𝟙 X ≫ 𝟙 X))` using `hI (𝟙 X ≫ 𝟙 X)`. Use `⟨u, TopologicalSpace.Opens.mem_iSup.2 ⟨I (𝟙 X ≫ 𝟙 X), (X.mem_basicOpen _ _ hm).2 ?_⟩⟩` and prove the remaining obligations. Conclude with `(congrArg IsUnit ((gs_eq (𝟙 X) y _ hm _).symm.trans (gs_res (𝟙 X) y (le _) hm _))).mpr (hs I hI)`.
+-/
 theorem exists_sec_pw (hH : H.IsLB) (t : ℤ) (y : X)
     (h : UnitAt H (K := Fin 1) (fun _ => 𝟙 X) (fun _ => t) y) :
     ∃ u : LB.Sec (pw H t), y ∈ Out.nonzeroLocus u := by
@@ -74,6 +86,19 @@ theorem exists_sec_pw (hH : H.IsLB) (t : ℤ) (y : X)
 
 end
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hT`. Set `χ : Fin 4 → (Sp O ⟶ A.left)` to `![(a * a⁻¹).left, a.left, (a⁻¹).left, (1 : 𝟙_ (Over (Sp O)) ⟶ A).left]`. Use `choose i hi using fun k => exists_chart hH (χ k (IsLocalRing.closedPoint O))`. Establish `e : ∀ k, (![((toUnit A ≫ a) * (toUnit A ≫ a⁻¹)).left, (toUnit A ≫ a).left, (toUnit A ≫ a⁻¹).left, (1 : A ⟶ A).left] k) = (toUnit A).left ≫ χ k`. Introduce `k`.
+
+Use `fin_cases k`. Use `show _ = (toUnit A ≫ (a * a⁻¹)).left`. Rewrite using `[MonObj.comp_mul]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Use `show _ = (toUnit A ≫ (1 : 𝟙_ (Over (Sp O)) ⟶ A)).left`. Rewrite using `[MonObj.comp_one]`. Both sides reduce to the same expression. Take `⟨u, hu⟩` from `GlobalTheory.AbSquare.exists_gen_square hH t ht (toUnit A ≫ a) (toUnit A ≫ a⁻¹) (𝟙 A) i (fun k z => by`.
+
+Rewrite using `[e k]`. Establish `h : χ k ⁻¹ᵁ H.U (i k) = ⊤` using `(IsLocalRing.closedPoint_mem_iff _).1 (hi k)`. Use `show (toUnit A).left z ∈ χ k ⁻¹ᵁ H.U (i k)`. Rewrite using `[h]`. Use the proof step `trivial)`.
+
+Establish `hu' : UnitAt H _ _ y` using `⟨genSec u hu, fun J hJ => by`. Rewrite using `[sval_genSec u hu _ y hJ]`. Conclude with `Units.isUnit _⟩`. Establish `e1 : (toUnit A ≫ a) * (toUnit A ≫ a⁻¹) * 𝟙 A = 𝟙 A`. Rewrite using `[← MonObj.comp_mul, mul_inv_cancel, MonObj.comp_one, _root_.one_mul]`.
+
+Use `exists_sec_pw hH 2 y (UnitAt.congr hH (formEq_of_add fun U _ hh => ?_) (((unitAt_of_mem s _ y h₁).mul (unitAt_of_mem s _ y h₂)).mul hu'))` and prove the remaining obligations. Simplify using `only [Fintype.sum_sum_type, Fin.sum_univ_succ, e1, Sum.elim_inl, Sum.elim_inr]`. Simplify using the standard rewrite rules. Use `module`.
+-/
 theorem exists_sec_sq {O : Type} [CommRing O] [IsLocalRing O] (A : Over (Sp O)) [GrpObj A] [IsCommMonObj A]
     {H : LB A.left} (hH : H.IsLB) (hT : Triv (Theta A H)) (s : LB.Sec H) (a : 𝟙_ (Over (Sp O)) ⟶ A)
     (y : A.left) (h₁ : ((toUnit A ≫ a) * 𝟙 A).left y ∈ Out.nonzeroLocus s)
@@ -108,6 +133,35 @@ theorem exists_sec_sq {O : Type} [CommRing O] [IsLocalRing O] (A : Over (Sp O)) 
   simp
   module
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ _ A _ _ hA H hH hT s hs`. Take `⟨-, hk, hlift⟩` from `GlobalTheory.T.valuationRing_henselian_and_smooth_points_lift O K`. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact.
+
+Establish `: GeometricallyIntegral A.hom` using `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ inferInstance inferInstance`. Set `t : Sp (IsLocalRing.ResidueField O) ⟶ Sp O` to `spMap (IsLocalRing.residue O)`. Set `T : Over (Sp O)` to `Over.mk t`. Establish `: IsIntegral (T ⊗ A).left` using `GeometricallyIntegral.geometrically_isIntegral t _ _ (IsPullback.of_hasPullback t A.hom).flip`. Set `p : Sp (IsLocalRing.ResidueField O)` to `IsLocalRing.closedPoint (IsLocalRing.ResidueField O)`.
+
+Establish `htp : t p = IsLocalRing.closedPoint O` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue O)`. Establish `up : ∀ x : A.left, A.hom x = IsLocalRing.closedPoint O → ∃ z : (T ⊗ A).left, (snd T A).left z = x`. Introduce `x hx`. Establish `: x ∈ Set.range (pullback.snd t A.hom)`. Rewrite using `[Scheme.Pullback.range_snd]`.
+
+Conclude with `⟨p, htp.trans hx.symm⟩`. Conclude with `this`. Set `W : A.left.Opens` to `⨆ u : LB.Sec (pw H 2), Out.nonzeroLocus u`. Establish `hW : W = ⊤`. Assume the negation of the conclusion as `hne`.
+
+Establish `hZ : ((W : Set A.left)ᶜ).Nonempty`. Rewrite using `[Set.nonempty_compl]`. Conclude with `fun h => hne (SetLike.coe_injective h)`. Establish `hc : IsClosed (A.hom '' (W : Set A.left)ᶜ)` using `A.hom.isClosedMap _ W.isOpen.isClosed_compl`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀, hx₁⟩ : IsLocalRing.closedPoint O ∈ A.hom '' (W : Set A.left)ᶜ := by`.
+
+Take `⟨q, hq⟩` from `hZ.image A.hom`. Conclude with `(IsLocalRing.specializes_closedPoint q).mem_closed hc hq`. Take `⟨z₀, hz₀⟩` from `up x₀ hx₁`. Establish `: LocallyOfFiniteType (X` using `(T ⊗ A).left) (Y := Sp (IsLocalRing.ResidueField O)) (fst T A).left := inferInstanceAs (LocallyOfFiniteType (pullback.fst t A.hom))`. Establish `: JacobsonSpace (T ⊗ A).left` using `LocallyOfFiniteType.jacobsonSpace (X := (T ⊗ A).left) (Y := Sp (IsLocalRing.ResidueField O)) (fst T A).left`.
+
+Take `⟨c, hcZ, hcc⟩` from `nonempty_inter_closedPoints (Z := (((snd T A).left ⁻¹ᵁ W : (T ⊗ A).left.Opens) : Set (T ⊗ A).left)ᶜ) ⟨z₀, by show ¬ (snd T A).left z₀ ∈ W`. Rewrite using `[hz₀]`. Conclude with `hx₀⟩ ((snd T A).left ⁻¹ᵁ W).isOpen.isClosed_compl.isLocallyClosed`. Set `σ` to `pointOfClosedPoint (X := (T ⊗ A).left) (K := IsLocalRing.ResidueField O) (fst T A).left c hcc`. Establish `hσ : σ ≫ (fst T A).left = 𝟙 _` using `pointOfClosedPoint_comp _ c hcc`.
+
+Establish `hσp : σ p = c` using `pointOfClosedPoint_apply _ c hcc p`. Set `σ' : T ⟶ T ⊗ A` to `Over.homMk σ (by`. Rewrite using `[← Over.w (fst T A), ← Category.assoc]`. Conclude with `(congrArg (· ≫ T.hom) hσ).trans (Category.id_comp _))`. Set `x : T ⟶ A` to `σ' ≫ snd T A`.
+
+Establish `hx : x.left p ∉ W` using `by show (snd T A).left (σ p) ∉ W`. Rewrite using `[hσp]`. Conclude with `hcZ`. Take `⟨y₀, hy₀, hy₁⟩` from `hs`. Take `⟨z₁, hz₁⟩` from `up y₀ hy₁`.
+
+Take `⟨a, h₁, h₂⟩` from `GlobalTheory.NoBasePoint.exists_two_points t ((snd T A).left ⁻¹ᵁ Out.nonzeroLocus s) ⟨z₁, by show (snd T A).left z₁ ∈ Out.nonzeroLocus s`. Rewrite using `[hz₁]`. Conclude with `hy₀⟩ x x`. Take `⟨b, hb, hba⟩` from `hlift A.left A.hom inferInstance a.left (Over.w a)`. Set `b' : 𝟙_ (Over (Sp O)) ⟶ A` to `Over.homMk b hb`.
+
+Establish `hb' : toUnit T ≫ b' = a` using `Over.OverMorphism.ext hba`. Establish `key : ∀ (d : 𝟙_ (Over (Sp O)) ⟶ A), (Out.ptSecT A ((toUnit T ≫ d) * x)).left p ∈ (snd T A).left ⁻¹ᵁ Out.nonzeroLocus s → ((toUnit A ≫ d) * 𝟙 A).left (x.left p) ∈ Out.nonzeroLocus s`. Introduce `d hd`. Establish `e : x ≫ ((toUnit A ≫ d) * 𝟙 A) = Out.ptSecT A ((toUnit T ≫ d) * x) ≫ snd T A`. Simplify using `[Out.ptSecT, MonObj.comp_mul]`.
+
+Establish `e' : ((toUnit A ≫ d) * 𝟙 A).left (x.left p) = (snd T A).left ((Out.ptSecT A ((toUnit T ≫ d) * x)).left p)` using `congrArg (fun q => q.left p) e`. Rewrite using `[e']`. Conclude with `hd`. Take `⟨u, hu⟩` from `exists_sec_sq A hH hT s b' (x.left p) (key b' (by rw [hb']; exact h₁ p)) (key b'⁻¹ (by rw [GrpObj.comp_inv, hb']; exact h₂ p))`. Conclude with `hx (TopologicalSpace.Opens.mem_iSup.2 ⟨u, hu⟩)`.
+
+Establish `: CompactSpace A.left` using `QuasiCompact.compactSpace_of_compactSpace A.hom`. Take `⟨F, hF⟩` from `isCompact_univ.elim_finite_subcover (fun u : LB.Sec (pw H 2) => (Out.nonzeroLocus u : Set A.left)) (fun u => (Out.nonzeroLocus u).isOpen) (fun y _ => by`. Establish `: y ∈ W` using `by rw [hW]; trivial`. Conclude with `Set.mem_iUnion.2 (TopologicalSpace.Opens.mem_iSup.1 this))`. Use `⟨F.card, Fin.cons (secZero _) (fun i => (F.equivFin.symm i : LB.Sec (pw H 2))), top_unique fun y _ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu, hy⟩` from `Set.mem_iUnion₂.1 (hF (Set.mem_univ y))`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨(F.equivFin ⟨u, hu⟩).succ, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.cons_succ, Equiv.symm_apply_apply]`. Conclude with `hy`.
+-/
 theorem exists_secs_sq_generate : ∀ (O K : Type) [CommRing O] [IsDomain O] [ValuationRing O] [Field K] [IsAlgClosed K] [Algebra O K] [IsFractionRing O K] (A : Over (Sp O)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ H : LB A.left, H.IsLB → Triv (Theta A H) → ∀ s : LB.Sec H, (∃ x ∈ Out.nonzeroLocus s, A.hom x = IsLocalRing.closedPoint O) → ∃ (m : ℕ) (u : Fin (m + 1) → LB.Sec (pw H 2)), ⨆ i, Out.nonzeroLocus (u i) = ⊤ := by
   intro O K _ _ _ _ _ _ _ A _ _ hA H hH hT s hs
   obtain ⟨-, hk, hlift⟩ := GlobalTheory.T.valuationRing_henselian_and_smooth_points_lift O K

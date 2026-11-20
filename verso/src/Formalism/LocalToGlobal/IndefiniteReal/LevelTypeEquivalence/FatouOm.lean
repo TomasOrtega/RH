@@ -12,6 +12,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {S T : HSp D} {k : ℕ}
 
+/- English proof (translation)
+Establish `hψ` using `hω.std`. Take `⟨Λ, hΛ, hψΛ⟩` from `psi_real ψ hψ`. Take `⟨hM, hPMc, hMP⟩` from `transported_frame hL hPc hLP g h`. Use `set M := (actOAdd g⁻¹ h⁻¹).comp L`. Use `set v : Fin n → (Fin k → ℝ) := fun i => ev (l i)`.
+
+Use `set hj : ℕ → ℝ := fun j => 1 / ((j : ℝ) + 1)`. Establish `hjpos : ∀ j, 0 < hj j` using `fun j => by positivity`. Establish `hjle : ∀ j, hj j ≤ 1` using `fun j => by`. Simplify using `only [hj]; rw [div_le_one (by positivity)]; linarith [(j.cast_nonneg : (0 : ℝ) ≤ j)]`. Use `set Tf : ℕ → WO S T → ℂ := fun j y => md (Gf ψ M f y) n v (hj j) 0`.
+
+Establish `hT : ∀ j, IsThetaFunO ψ S T (Tf j)` using `fun j => md_theta hψ hf hM n v (hj j) 0`. Establish `hom : ∀ j, om (g, h) (Tf j) = fun x => md (Gf ψ L (om (g, h) f) x) n v (hj j) 0` using `fun j => om_md hω hf L hL g h n v (hj j) 0`. Establish `hf' : IsThetaFunO ψ S T (om (g, h) f)` using `hω.om_pres (g, h) f hf`. Establish `hlimL : ∀ x, Tendsto (fun j => om (g, h) (Tf j) x) atTop (𝓝 (dH ψ L l (om (g, h) f) x))`. Introduce `x`.
+
+Establish `e : (fun j => om (g, h) (Tf j) x) = fun j => md (Gf ψ L (om (g, h) f) x) n v (hj j) 0`. Use function extensionality and compare the values at `fun j => congrFun (hom j) x`. Rewrite using `[e]`. Conclude with `md_tendsto_seq (Gf_smooth hΛ hψΛ hL hf' x) v`. Establish `hlimM : ∀ y, Tendsto (fun j => Tf j y) atTop (𝓝 (dH ψ M l f y))` using `fun y => md_tendsto_seq (Gf_smooth hΛ hψΛ hM hf y) v`.
+
+Take `⟨B, hB⟩` from `shifted_bound hψ hf hM hPMc hMP n (n : ℝ) (Nat.cast_nonneg n)`. Establish `hTb : ∀ j y, ‖Tf j y‖ ≤ B`. Introduce `j y`. Use `md_bound n (Gf ψ M f y) (Gf_smooth hΛ hψΛ hM hf y) v (hj j) (hjpos j) 0 B (fun t ht => hB y t (by` as an intermediate fact. Establish `hsum : ∑ i, ‖v i‖ = n` using `by simp [v, norm_ev]`.
+
+Rewrite `ht` using `[sub_zero, hsum]`. Combine the equalities or inequalities in the displayed calculation. Simplify `this` using `[v, norm_ev]`. Establish `hF : ∀ x, Tendsto (fun j => ‖om (g, h) (Tf j) x‖ₑ ^ 2) atTop (𝓝 (‖dH ψ L l (om (g, h) f) x‖ₑ ^ 2))` using `fun x => ((ENNReal.continuous_pow 2).comp continuous_enorm).continuousAt.tendsto.comp (hlimL x)`. Establish `hmeas : ∀ j, Measurable fun x => ‖om (g, h) (Tf j) x‖ₑ ^ 2` using `fun j => (hω.om_pres (g, h) _ (hT j)).cont.enorm.measurable.pow_const 2`.
+
+Establish `step1 : ∫⁻ x in 𝓕, ‖dH ψ L l (om (g, h) f) x‖ₑ ^ 2 ∂μ ≤ liminf (fun j => ∫⁻ x in 𝓕, ‖om (g, h) (Tf j) x‖ₑ ^ 2 ∂μ) atTop`. Combine the equalities or inequalities in the displayed calculation. Establish `step2 : ∀ j, ∫⁻ x in 𝓕, ‖om (g, h) (Tf j) x‖ₑ ^ 2 ∂μ = ∫⁻ x in 𝓕, ‖Tf j x‖ₑ ^ 2 ∂μ` using `fun j => hω.om_unit μ 𝓕 hμ h𝓕 (g, h) (Tf j) (hT j)`. Establish `hfin : μ 𝓕 < ⊤` using `(PHeisFC.finCovol T S).2 μ 𝓕 hμ h𝓕`. Establish `step3 : Tendsto (fun j => ∫⁻ x in 𝓕, ‖Tf j x‖ₑ ^ 2 ∂μ) atTop (𝓝 (∫⁻ x in 𝓕, ‖dH ψ M l f x‖ₑ ^ 2 ∂μ))`.
+
+Use `tendsto_lintegral_of_dominated_convergence (fun _ => ‖(B : ℂ)‖ₑ ^ 2) (fun j => (hT j).cont.enorm.measurable.pow_const 2) (fun j => Eventually.of_forall fun y => ?_) ?_ (Eventually.of_forall fun y => ((ENNReal.continuous_pow 2).comp continuous_enorm).continuousAt.tendsto.comp (hli …` and prove the remaining obligations. Use `show ‖Tf j y‖ₑ ^ 2 ≤ ‖(B : ℂ)‖ₑ ^ 2 gcongr`. Rewrite using `[← ofReal_norm, ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal ((hTb j y).trans (by rw [Complex.norm_real]; exact le_abs_self B))`. Rewrite using `[setLIntegral_const]`.
+
+Conclude with `ENNReal.mul_ne_top (ENNReal.pow_ne_top enorm_ne_top) hfin.ne`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fatou_om {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hω : IsWeilDatumO ψ S T χS χT om)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {L : (Fin k → ℝ) →+ WO S T} {P : WO S T →+ (Fin k → ℝ)}

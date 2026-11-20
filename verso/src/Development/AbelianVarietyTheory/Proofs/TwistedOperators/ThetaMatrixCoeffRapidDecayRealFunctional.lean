@@ -18,6 +18,9 @@ namespace GlobalTheory.ThetaDecay
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `show ∑ b, GlobalTheory.OrientedHeis.formAt V W b (y b) (x b) = _`. Use `Finset.sum_eq_single τ (fun b _ hb => ?_) (by simp)` and prove the remaining obligations. Rewrite using `[hy b hb]`. Simplify using `[GlobalTheory.OrientedHeis.formAt]`.
+-/
 theorem omO_of_single (V W : HSp D) (τ : D.what₂.Tau) (x y : GlobalTheory.FockCompare.RW W V) (hy : ∀ b, b ≠ τ → y b = 0) :
     GlobalTheory.OrientedHeis.omO V W y x = GlobalTheory.OrientedHeis.formAt V W τ (y τ) (x τ) := by
   show ∑ b, GlobalTheory.OrientedHeis.formAt V W b (y b) (x b) = _
@@ -25,6 +28,11 @@ theorem omO_of_single (V W : HSp D) (τ : D.what₂.Tau) (x y : GlobalTheory.Foc
   rw [hy b hb]
   simp [GlobalTheory.OrientedHeis.formAt]
 
+/- English proof (translation)
+Establish `skew : ∀ x y, GlobalTheory.OrientedHeis.omO V W x y = -GlobalTheory.OrientedHeis.omO V W y x` using `fun x y => by`. Establish `e` using `GlobalTheory.OrientedHeis.omO_self (S := V) (T := W) h (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, GlobalTheory.OrientedHeis.omO_self h] at e`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL` using `GlobalTheory.OrientedHeis.isLineAt_lineAt h.inf (m := W.rank) (n := V.rank) τ z`.
+
+Establish `hc : ∀ b, GlobalTheory.FockCompare.piW θ W V (lineAt θ τ z 1) b = compAt θ b (lineAt θ τ z 1)` using `fun b => rfl`. Rewrite using `[skew, omO_of_single V W τ _ _ (fun b hb => by rw [hc, hL.2.2 1 b, if_neg hb]; rfl), hc, hL.2.2 1 τ, if_pos rfl, Complex.ofReal_one, one_smul]`. Conclude with `congrArg Neg.neg (GlobalTheory.OrientedRealForm.formAt_eq V W τ z (compAt θ τ ξ))`.
+-/
 theorem omO_piW_lineAt {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ)
     (V W : HSp D) (ξ : WO V W) (τ : D.what₂.Tau) (z : Matrix (Fin W.rank) (Fin V.rank) ℂ) :
     GlobalTheory.OrientedHeis.omO V W (GlobalTheory.FockCompare.piW θ W V ξ) (GlobalTheory.FockCompare.piW θ W V (lineAt θ τ z 1)) =
@@ -39,6 +47,11 @@ theorem omO_piW_lineAt {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} 
     Complex.ofReal_one, one_smul]
   exact congrArg Neg.neg (GlobalTheory.OrientedRealForm.formAt_eq V W τ z (compAt θ τ ξ))
 
+/- English proof (translation)
+Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `e` using `(GlobalTheory.FockCompare.smooth_iff_sm_and_real_lines D θ σ h W V).2.1 _ (GlobalTheory.OrientedHeis.isRealDir_lineAt (S := V) (T := W) hθ τ z) t`. Rewrite using `[e, GlobalTheory.OrientedHeis.psi_symplOH h hψ, LinearMap.map_smul, smul_eq_mul, omO_piW_lineAt h]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_symplOH_lineAt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {θ : InfFam D}
     (hθ : IsInfFam θ) (V W : HSp D) (ξ : WO V W) (τ : D.what₂.Tau) (z : Matrix (Fin W.rank) (Fin V.rank) ℂ)
     (t : ℝ) :
@@ -52,6 +65,21 @@ theorem psi_symplOH_lineAt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D �
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hA` using `(GlobalTheory.ThetaSquare.thetaFunctions_squareIntegrable_heisenbergUnitary D V W).2 ψ hψ`. Establish `hU` using `hA.2.1`. Establish `hDS` using `((hA.2.2 θ hθ).1 τ z).1 H hH`. Take `⟨l1, l2, l3, -, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D V W`. Establish `skew : ∀ x y, symplOH V W y x = -symplOH V W x y` using `fun x y => by`.
+
+Establish `e` using `l3 (x + y)`. Rewrite `e` using `[l1, l2, l2, l3 x, l3 y]`. Take the linear combination `e`. Use `set a := symplAt V W τ z (compAt θ τ ξ) with ha`. Use `set c : ℂ := -(2 * Real.pi * Complex.I) * (a : ℂ) with hc`.
+
+Use function extensionality and compare the values at `x`. Set `g : ℝ → ℂ` to `fun t => heisO ψ V W ξ (heisO ψ V W (lineAt θ τ z t) H) x`. Establish `hfun : (fun t : ℝ => heisO ψ V W (lineAt θ τ z t) (heisO ψ V W ξ H) x) = fun t : ℝ => Complex.exp (c * (t : ℂ)) * g t`. Use function extensionality and compare the values at `t`. Simplify using `only [g]`.
+
+Rewrite using `[hU.1 (lineAt θ τ z t) ξ H, hU.1 ξ (lineAt θ τ z t) H, add_comm (lineAt θ τ z t) ξ, skew ξ, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, AddChar.map_neg_eq_inv, psi_symplOH_lineAt hψ hθ V W ξ τ z t, ← Complex.exp_neg, ← mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Rewrite using `[hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hg : HasDerivAt g (ψ (symplOH V W x ξ) * dRho (heisO ψ V W) θ τ z H (x + ξ)) 0` using `(hDS (x + ξ)).const_mul _`. Establish `hexp : HasDerivAt (fun t : ℝ => Complex.exp (c * t)) (Complex.exp (c * ((0 : ℝ) : ℂ)) * (c * 1)) 0` using `(((hasDerivAt_id (0 : ℝ)).ofReal_comp).const_mul c).cexp`. Establish `hg0 : g 0 = heisO ψ V W ξ H x`. Simplify using `only [g, map_zero]`. Unfold `heisO`.
+
+Rewrite using `[GlobalTheory.ThetaSquare.symplOH_zero_right, AddChar.map_zero_eq_one, one_mul, add_zero]`. Use `show deriv (fun t : ℝ => heisO ψ V W (lineAt θ τ z t) (heisO ψ V W ξ H) x) 0 = _`. Rewrite using `[hfun]`. Use `(hexp.mul hg).deriv.trans ?_` and prove the remaining obligations. Rewrite using `[hg0]`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.ofReal_zero, mul_zero, Complex.exp_zero]`. Use `show _ = ψ (symplOH V W x ξ) * dRho (heisO ψ V W) θ τ z H (x + ξ) + _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dRho_heisO {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ)
     {V W : HSp D} (τ : D.what₂.Tau) (z : Matrix (Fin W.rank) (Fin V.rank) ℂ) (ξ : WO V W) {H : WO V W → ℂ}
     (hH : IsThetaFunO ψ V W H) :
@@ -97,6 +125,13 @@ theorem dRho_heisO {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
   show _ = ψ (symplOH V W x ξ) * dRho (heisO ψ V W) θ τ z H (x + ξ) + _
   ring
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `G G' hG hG'`. Take `⟨C, hC⟩` from `h0 G G' hG hG'`.
+
+Conclude with `⟨C, fun ξ => by simpa using hC ξ⟩`. Consider the case `succ m ih`. Introduce `G G' hG hG'`. Take `⟨C₁, hC₁⟩` from `ih G (Dop G') hG (hD _ hG')`. Take `⟨C₂, hC₂⟩` from `ih (Dop G) G' (hD _ hG) hG'`.
+
+Use `⟨C₁ + C₂, fun ξ => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pow_bound {X F : Type*} (P : F → Prop) (Dop : F → F) (B : X → F → F → ℂ) (a : X → ℝ)
     (hD : ∀ G, P G → P (Dop G)) (h0 : ∀ G G', P G → P G' → ∃ C : ℝ, ∀ ξ, ‖B ξ G G'‖ ≤ C)
     (h1 : ∀ ξ G G', P G → P G' → |a ξ| * ‖B ξ G G'‖ ≤ ‖B ξ G (Dop G')‖ + ‖B ξ (Dop G) G'‖) :
@@ -118,6 +153,9 @@ theorem pow_bound {X F : Type*} (P : F → Prop) (Dop : F → F) (B : X → F �
       _ = |a ξ| ^ m * ‖B ξ G (Dop G')‖ + |a ξ| ^ m * ‖B ξ (Dop G) G'‖ := by ring
       _ ≤ C₁ + C₂ := add_le_add (hC₁ ξ) (hC₂ ξ)
 
+/- English proof (translation)
+The claim follows from `|symplAt V W τ z (compAt θ τ ξ)| * ‖∫ x in 𝓕, heisO ψ V W ξ G x * star (G' x) ∂ν‖ ≤ ‖∫ x in 𝓕, heisO ψ V W ξ G x * star (dRho (heisO ψ V W) θ τ z G' x) ∂ν‖ + ‖∫ x in 𝓕, heisO ψ V W ξ (dRho (heisO ψ V W) θ τ z G) x * star (G' x) ∂ν‖ := by have hA := (GlobalTheory.ThetaSquare.theta …`.
+-/
 theorem norm_coef_le {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ)
     {V W : HSp D} {ν : Measure (WO V W)} {𝓕 : Set (WO V W)} (hν : ν.IsAddHaarMeasure)
     (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 ν) (τ : D.what₂.Tau) (z : Matrix (Fin W.rank) (Fin V.rank) ℂ)
@@ -162,6 +200,11 @@ theorem norm_coef_le {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
     nlinarith
   exact h4.trans h3
 
+/- English proof (translation)
+Establish `hSI` using `((GlobalTheory.ThetaSquare.thetaFunctions_squareIntegrable_heisenbergUnitary D V W).2 ψ hψ).1`. Take `⟨a, ha⟩` from `(hSI G hG).2.1`. Take `⟨b, hb⟩` from `(hSI G' hG').2.1`. Establish `hfin : ν 𝓕 < ⊤` using `lt_top_iff_ne_top.2 (GlobalTheory.Size.measure_dom hν h𝓕).2`. Use `⟨a * b * (ν 𝓕).toReal, fun ξ => ?_⟩` and prove the remaining obligations.
+
+Use `norm_setIntegral_le_of_norm_le_const hfin fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star, GlobalTheory.ThetaSquare.norm_heisO hψ]`. Conclude with `mul_le_mul (ha _) (hb _) (norm_nonneg _) ((norm_nonneg _).trans (ha 0))`.
+-/
 theorem norm_coef_bdd {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V W : HSp D}
     {ν : Measure (WO V W)} {𝓕 : Set (WO V W)} (hν : ν.IsAddHaarMeasure)
     (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 ν) {G G' : WO V W → ℂ} (hG : IsThetaFunO ψ V W G)
@@ -176,6 +219,9 @@ theorem norm_coef_bdd {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1
   rw [norm_mul, norm_star, GlobalTheory.ThetaSquare.norm_heisO hψ]
   exact mul_le_mul (ha _) (hb _) (norm_nonneg _) ((norm_nonneg _).trans (ha 0))
 
+/- English proof (translation)
+Introduce `D V W ψ hψ ν 𝓕 hν h𝓕 G G' hG hG' θ hθ τ z m`. Establish `hDS` using `(((GlobalTheory.ThetaSquare.thetaFunctions_squareIntegrable_heisenbergUnitary D V W).2 ψ hψ).2.2 θ hθ).1 τ z`. Conclude with `pow_bound (IsThetaFunO ψ V W) (dRho (heisO ψ V W) θ τ z) (fun ξ F F' => ∫ x in 𝓕, heisO ψ V W ξ F x * star (F' x) ∂ν) (fun ξ => symplAt V W τ z (compAt θ τ ξ)) (fun F hF => hDS.2.1 F hF) (fun F F' hF hF' => norm_coef_bdd hψ hν h𝓕 hF hF') (fun ξ F F' hF hF' => norm_coef_le hψ hθ h …`.
+-/
 theorem coef_decay : ∀ (D : D7) (V W : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (ν : Measure (WO V W)) (𝓕 : Set (WO V W)), ν.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V) 𝓕 ν → ∀ G G' : WO V W → ℂ, IsThetaFunO ψ V W G → IsThetaFunO ψ V W G' → ∀ θ : InfFam D, IsInfFam θ → ∀ (τ : D.what₂.Tau) (z : Matrix (Fin W.rank) (Fin V.rank) ℂ) (m : ℕ), ∃ C : ℝ, ∀ ξ : WO V W, |GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt V W τ z (compAt θ τ ξ)| ^ m * ‖∫ x in 𝓕, heisO ψ V W ξ G x * star (G' x) ∂ν‖ ≤ C := by
   intro D V W ψ hψ ν 𝓕 hν h𝓕 G G' hG hG' θ hθ τ z m
   have hDS := (((GlobalTheory.ThetaSquare.thetaFunctions_squareIntegrable_heisenbergUnitary D V W).2 ψ hψ).2.2 θ hθ).1 τ z

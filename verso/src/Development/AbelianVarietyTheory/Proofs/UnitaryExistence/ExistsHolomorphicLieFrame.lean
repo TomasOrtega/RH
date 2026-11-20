@@ -25,6 +25,19 @@ open Filter Topology GlobalTheory.TangentOrigin
 
 namespace GlobalTheory.HolLieFrame
 
+/- English proof (translation)
+Set `M : Submodule ℂ (Module.Dual ℂ (Fin g → ℂ))` to `{ carrier := {l | ∃ L : V → ((Fin g → ℂ) →L[ℂ] ℂ), DifferentiableAt ℂ L b₀ ∧ DifferentiableAt ℂ (fun b => L b (W b)) b₀ ∧ ∀ w, L b₀ w = l w} add_mem' := by`. Introduce and unpack `l l' ⟨L, h1, h2, h3⟩ ⟨L', h1', h2', h3'⟩`. Conclude with `⟨fun b => L b + L' b, h1.add h1', h2.add h2', fun w => by simp [h3, h3']⟩`. Use the proof step `zero_mem' := ⟨fun _ => 0, differentiableAt_const _, by simp, by simp⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `c l ⟨L, h1, h2, h3⟩`. Conclude with `⟨fun b => c • L b, h1.const_smul c, h2.const_smul c, fun w => by simp [h3]⟩ }`. Establish `hM : M = ⊤`. Establish `h0 : M.dualCoannihilator = ⊥`. Use `eq_bot_iff.2 fun w hw => H w fun L h1 h2 => ?_` and prove the remaining obligations.
+
+Conclude with `(Submodule.mem_dualCoannihilator w).1 hw (L b₀).toLinearMap ⟨L, h1, h2, fun _ => rfl⟩`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := M), h0, Submodule.dualAnnihilator_bot]`. Establish `hj : ∀ j : Fin g, LinearMap.proj j ∈ M` using `fun j => hM ▸ Submodule.mem_top`. Use `choose L h1 h2 h3 using hj`. Set `J : V → ((Fin g → ℂ) →L[ℂ] (Fin g → ℂ))` to `fun b => ContinuousLinearMap.pi fun j => L j b`.
+
+Establish `hJ : DifferentiableAt ℂ J b₀` using `(ContinuousLinearMap.piEquivL ℂ (Fin g → ℂ) (fun _ : Fin g => ℂ)).differentiableAt.comp b₀ (differentiableAt_pi.2 h1)`. Establish `hJ0 : IsUnit (J b₀)`. Establish `: J b₀ = 1` using `by ext1 w`. Use function extensionality and compare the values at `j`. Conclude with `h3 j w`.
+
+Rewrite using `[this]`. Conclude with `isUnit_one`. Establish `hW : DifferentiableAt ℂ (fun b => J b (W b)) b₀` using `differentiableAt_pi.2 h2`. Use `((hJ.inverse hJ0).clm_apply hW).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hJ.continuousAt.eventually (Units.isOpen.mem_nhds hJ0)] with b hb`.
+
+Use `congrArg (fun T : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ) => T (W b)) (Ring.inverse_mul_cancel _ hb)` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem differentiableAt_of_forms {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {g : ℕ} (W : V → Fin g → ℂ)
     (b₀ : V) (H : ∀ w : Fin g → ℂ, (∀ L : V → ((Fin g → ℂ) →L[ℂ] ℂ), DifferentiableAt ℂ L b₀ →
       DifferentiableAt ℂ (fun b => L b (W b)) b₀ → L b₀ w = 0) → w = 0) : DifferentiableAt ℂ W b₀ := by
@@ -61,12 +74,28 @@ theorem differentiableAt_of_forms {V : Type} [NormedAddCommGroup V] [NormedSpace
   have := congrArg (fun T : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ) => T (W b)) (Ring.inverse_mul_cancel _ hb)
   exact this.symm
 
+/- English proof (translation)
+Simplify using `only [evalPt, CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply (φ.appLE U V e), Scheme.Hom.appLE_comp_appLE]`.
+-/
 theorem evalPt_appLE {A : Type} [CommRing A] {X Y : Scheme.{0}} (v : Sp A ⟶ X) (φ : X ⟶ Y) (U : Y.Opens)
     (V : X.Opens) (e : V ≤ φ ⁻¹ᵁ U) (f : Γ(Y, U)) (hV : ⊤ ≤ v ⁻¹ᵁ V) (hU : ⊤ ≤ (v ≫ φ) ⁻¹ᵁ U) :
     evalPt v V hV ((φ.appLE U V e).hom f) = evalPt (v ≫ φ) U hU f := by
   simp only [evalPt, CommRingCat.hom_comp, RingHom.comp_apply]
   rw [← CommRingCat.comp_apply (φ.appLE U V e), Scheme.Hom.appLE_comp_appLE]
 
+/- English proof (translation)
+Establish `hY` using `isAffineOpen_top (Sp A)`. Take `⟨s, hsU, hs⟩` from `hY.exists_basicOpen_le (V := ψ ⁻¹ᵁ U) ⟨_, (top_le_preimage_iff_mem _ _).1 ((top_le_preimage_comp _ ψ U).1 h₀)⟩ trivial`. Establish `hloc` using `hY.isLocalization_basicOpen s`. Take `⟨⟨a, _, n, rfl⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers s) ((ψ.appLE U _ hsU).hom f)`. Establish `ha' : (ψ.appLE U _ hsU).hom f * resG _ ((Sp A).basicOpen_le s) (s ^ n) = resG _ ((Sp A).basicOpen_le s) a` using `ha`.
+
+Take `⟨s, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv).2 s`. Take `⟨a, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv).2 a`. Establish `hs₀ : t₀ s ≠ 0`. Use `(top_le_preimage_basicOpen_iff _ _ _).1 ((top_le_preimage_iff_mem (spMap t₀) _).2 hs)` as an intermediate fact. Rewrite `this` using `[valAt'_eq_evalPt _ _ le_rfl, evalPt_spMap]`. Then use the resulting hypothesis.
+
+Use `⟨s ^ (n + 1), a * s, by rw [map_pow]; exact pow_ne_zero _ hs₀, fun C _ t ht => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (t s)`. Rewrite `ht` using `[map_pow]`. Conclude with `(isUnit_pow_iff n.succ_ne_zero).1 ht`. Establish `hD : ⊤ ≤ spMap t ⁻¹ᵁ (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv s)`.
+
+Rewrite `hu` using `[← evalPt_spMap t s]`. Establish `hu'` using `hu.map (Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom`. Simplify using `only [evalPt, CommRingCat.hom_comp, RingHom.comp_apply, Iso.hom_inv_id_apply] at hu'`. Use `Scheme.basicOpen_appLE (spMap t) ⊤ ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of A)).inv s)` as an intermediate fact. Rewrite `this` using `[(Sp C).basicOpen_of_isUnit hu', top_inf_eq]`.
+
+Conclude with `this.le`. Establish `h : ⊤ ≤ (spMap t ≫ ψ) ⁻¹ᵁ U` using `fun p hp => hsU (hD hp)`. Use `⟨h, ?_⟩` and prove the remaining obligations. Use `congrArg (evalPt (spMap t) _ hD) ha'` as an intermediate fact. Rewrite `this` using `[map_mul, evalPt_appLE _ _ _ _ _ _ _ h, evalPt_res _ _ le_rfl, evalPt_res _ _ le_rfl, map_pow, evalPt_spMap, evalPt_spMap]`.
+
+Rewrite using `[map_pow, pow_succ, ← _root_.mul_assoc, this, map_mul]`.
+-/
 theorem exists_fraction {A : Type} [CommRing A] {X : Scheme.{0}} (ψ : Sp A ⟶ X) (U : X.Opens) (f : Γ(X, U))
     (t₀ : A →+* ℂ) (h₀ : ⊤ ≤ (spMap t₀ ≫ ψ) ⁻¹ᵁ U) :
     ∃ r a : A, t₀ r ≠ 0 ∧ ∀ (C : Type) [CommRing C] (t : A →+* C), IsUnit (t r) →
@@ -101,6 +130,15 @@ theorem exists_fraction {A : Type} [CommRing A] {X : Scheme.{0}} (ψ : Sp A ⟶ 
     evalPt_spMap] at this
   rw [map_pow, pow_succ, ← _root_.mul_assoc, this, map_mul]
 
+/- English proof (translation)
+Establish `h₁ : ⊤ ≤ (spMap (fstC.comp (Chart.dualMapR (ev b₀))) ≫ ψ) ⁻¹ᵁ U`. Use `(top_le_preimage_iff _ U).1 h₀` as an intermediate fact. Rewrite `this` using `[← Category.assoc, ← Spec.map_comp]`. Then use the resulting hypothesis. Take `⟨r, a, hr, H⟩` from `exists_fraction ψ U f _ h₁`. Establish `hf : ∀ b (x : DualNumber R), (Chart.dualMapR (ev b) x).fst = ev b x.fst` using `fun b x => by simp [Chart.dualMapR]`.
+
+Establish `hs : ∀ b (x : DualNumber R), (Chart.dualMapR (ev b) x).snd = ev b x.snd` using `fun b x => by simp [Chart.dualMapR]`. Establish `hr' : ev b₀ r.fst ≠ 0` using `(hf b₀ r) ▸ hr`. Use `⟨fun b => (ev b a.snd - ev b a.fst * (ev b r.fst)⁻¹ * ev b r.snd) * (ev b r.fst)⁻¹, ((hev a.snd).sub (((hev a.fst).mul ((hev r.fst).inv hr')).mul (hev r.snd))).mul ((hev r.fst).inv hr'), ?_⟩` and prove the remaining obligations. Use `filter_upwards [(hev r.fst).continuousAt.eventually_ne hr'] with b hb`. Take `⟨h, e⟩` from `H _ (Chart.dualMapR (ev b)) (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (by rw [hf]; exact hb.isUnit))`.
+
+Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg TrivSqZeroExt.fst e`. Establish `e2` using `congrArg TrivSqZeroExt.snd e`. Rewrite `e1` using `[TrivSqZeroExt.fst_mul, hf, hf]`. Rewrite `e2` using `[DualNumber.snd_mul, hf, hs, hs]`.
+
+Rewrite using `[← e1, ← e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_hol_snd {V R : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CommRing R] {X : Scheme.{0}}
     (ψ : Sp (DualNumber R) ⟶ X) (ev : V → (R →+* ℂ)) (b₀ : V) (hev : ∀ c, DifferentiableAt ℂ (fun b => ev b c) b₀)
     (U : X.Opens) (f : Γ(X, U)) (h₀ : ⊤ ≤ (spMap (Chart.dualMapR (ev b₀)) ≫ ψ) ⁻¹ᵁ U) :
@@ -126,6 +164,11 @@ theorem exists_hol_snd {V R : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hle : ⊤ ≤ j ⁻¹ᵁ (j ''ᵁ ⊤)` using `(j.preimage_image_eq ⊤).ge`. Establish `h₀ : ⊤ ≤ y b₀ ⁻¹ᵁ (j ''ᵁ ⊤)`. Rewrite using `[h b₀ hb]`. Conclude with `fun p _ => hle (Set.mem_univ _)`. Use `(LocalLift.hol_differentiableAt hy hb h₀ ((j.appIso ⊤).inv ((Scheme.ΓSpecIso (CommRingCat.of R)).inv c))).congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [LocalLift.hol_eventually_mem hy hb h₀] with b hb'`. Rewrite using `[h b hb'.1, ← valAt'_appLE _ j _ ⊤ hle _ le_rfl, valAt'_eq_evalPt _ _ le_rfl, ← evalPt_spMap (ev b) c, ← CommRingCat.comp_apply (j.appIso ⊤).inv, Scheme.Hom.appIso_inv_appLE]`. Simplify using the standard rewrite rules.
+-/
 theorem differentiableAt_ev {V R : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CommRing R] {X : Scheme.{0}}
     {B : Set V} {y : V → (Sp ℂ ⟶ X)} (hy : IsHolTo B y) (j : Sp R ⟶ X) [IsOpenImmersion j] (ev : V → (R →+* ℂ))
     (h : ∀ b ∈ B, y b = spMap (ev b) ≫ j) {b₀ : V} (hb : b₀ ∈ B) (c : R) :
@@ -141,6 +184,9 @@ theorem differentiableAt_ev {V R : Type} [NormedAddCommGroup V] [NormedSpace ℂ
     ← CommRingCat.comp_apply (j.appIso ⊤).inv, Scheme.Hom.appIso_inv_appLE]
   simp
 
+/- English proof (translation)
+Establish `h1` using `SCV.analyticOnNhd_of_differentiableOn (he U f).1 (he U f).2 (b₀, 0) ⟨⟨hb, trivial⟩, h₀⟩`. Establish `h2` using `ContDiffAt.fderiv (𝕜 := ℂ) (f := fun b z => valAt' (e b z) U f) (g := fun _ => 0) (x₀ := b₀) (m := 1) (n := 2) h1.contDiffAt contDiffAt_const le_rfl`. Conclude with `h2.differentiableAt one_ne_zero`.
+-/
 theorem differentiableAt_fderiv {m g : ℕ} {X : Scheme.{0}} {B : Set (Fin m → ℂ)}
     {e : (Fin m → ℂ) → (Fin g → ℂ) → (Sp ℂ ⟶ X)}
     (he : IsHolTo (B ×ˢ Set.univ) (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => e bz.1 bz.2)) {b₀ : Fin m → ℂ} (hb : b₀ ∈ B)
@@ -157,27 +203,57 @@ open GlobalTheory.GrpTangent
 
 variable {G : Over (Sp ℂ)} [GrpObj G] {X : Scheme.{0}} {ψ : G.left ⟶ X} {g : ℕ} {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)}
 
+/- English proof (translation)
+Rewrite `hv`, `hw`, the goal using `[isTangent_iff]`. Rewrite using `[comp_mul, hv, hw, _root_.mul_one]`.
+-/
 theorem isTangent_mul {v w : epsR ℂ ⟶ G} (hv : IsTangent v) (hw : IsTangent w) : IsTangent (v * w) := by
   rw [isTangent_iff] at hv hw ⊢
   rw [comp_mul, hv, hw, _root_.mul_one]
 
+/- English proof (translation)
+Rewrite using `[isTangent_iff, comp_one]`.
+-/
 theorem isTangent_one : IsTangent (1 : epsR ℂ ⟶ G) := by
   rw [isTangent_iff, comp_one]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem evalPt_congr {A : Type} [CommRing A] {x y : Sp A ⟶ X} (h : x = y) (U : X.Opens) (hx : ⊤ ≤ x ⁻¹ᵁ U)
     (hy : ⊤ ≤ y ⁻¹ᵁ U) : evalPt x U hx = evalPt y U hy := by
   subst h; rfl
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ ψ) hv`.
+-/
 theorem tangent_base {v : epsR ℂ ⟶ G} (hv : IsTangent v) : spMap fstC ≫ v.left ≫ ψ = η[G].left ≫ ψ := by
   rw [← Category.assoc]
   exact congrArg (· ≫ ψ) hv
 
+/- English proof (translation)
+Use `(top_le_preimage_iff _ U).2 ?_` and prove the remaining obligations. Rewrite using `[tangent_base hw, ← tangent_base hv]`. Conclude with `(top_le_preimage_iff _ U).1 h`.
+-/
 theorem tangent_le {v w : epsR ℂ ⟶ G} (hv : IsTangent v) (hw : IsTangent w) {U : X.Opens}
     (h : ⊤ ≤ (v.left ≫ ψ) ⁻¹ᵁ U) : ⊤ ≤ (w.left ≫ ψ) ⁻¹ᵁ U := by
   refine (top_le_preimage_iff _ U).2 ?_
   rw [tangent_base hw, ← tangent_base hv]
   exact (top_le_preimage_iff _ U).1 h
 
+/- English proof (translation)
+Set `i₁` to `LinearMap.inl ℂ ℂ ℂ`. Set `i₂` to `LinearMap.inr ℂ ℂ ℂ`. Set `p` to `(sqZeroMap i₁ ≫ v) * (sqZeroMap i₂ ≫ w)`. Establish `hp : ∀ l : ℂ × ℂ →ₗ[ℂ] ℂ, sqZeroMap l ≫ p = (epsScale (l (1, 0)) ≫ v) * (epsScale (l (0, 1)) ≫ w)`. Introduce `l`.
+
+Simplify using `only [p, comp_mul, ← Category.assoc, sqZeroMap_comp_eq]`. Both sides reduce to the same expression. Establish `e₁ : sqZeroMap (LinearMap.fst ℂ ℂ ℂ) ≫ p = v`. Rewrite using `[hp]`. Simplify using `[epsScale_one, epsScale_zero_comp hw]`.
+
+Establish `e₂ : sqZeroMap (LinearMap.snd ℂ ℂ ℂ) ≫ p = w`. Rewrite using `[hp]`. Simplify using `[epsScale_one, epsScale_zero_comp hv]`. Establish `e₃ : sqZeroMap (LinearMap.fst ℂ ℂ ℂ + LinearMap.snd ℂ ℂ ℂ) ≫ p = v * w`. Rewrite using `[hp]`.
+
+Simplify using `[epsScale_one]`. Establish `hs : Function.Surjective (spMap (TrivSqZeroExt.map (LinearMap.fst ℂ ℂ ℂ)).toRingHom)`. Apply the tactic sequence `refine (PrimeSpectrum.isHomeomorph_comap (TrivSqZeroExt.map (LinearMap.fst ℂ ℂ ℂ)).toRingHom (fun x => ⟨1, one_pos, TrivSqZeroExt.map i₁ x, by ext <;> simp [i₁]⟩) fun d hd => ?_).surjective`. Establish `h : d.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hd`. Apply the tactic sequence `exact ⟨2, by ext1 <;> simp [pow_two, h]⟩`.
+
+Establish `hU : ⊤ ≤ (p.left ≫ ψ) ⁻¹ᵁ U`. Introduce `q _`. Take `⟨q, rfl⟩` from `hs q`. Rewrite `h₁` using `[← e₁]`. Conclude with `h₁ (Set.mem_univ q)`.
+
+Establish `key : ∀ (l : ℂ × ℂ →ₗ[ℂ] ℂ) (x : epsR ℂ ⟶ G) (hx : ⊤ ≤ (x.left ≫ ψ) ⁻¹ᵁ U), sqZeroMap l ≫ p = x → (evalPt (R` using `DualNumber ℂ) (x.left ≫ ψ) U hx f).snd = l (evalPt (R := TrivSqZeroExt ℂ (ℂ × ℂ)) (p.left ≫ ψ) U hU f).snd := by`. Introduce and unpack `l _ hx rfl`. Use `evalPt_spMap_comp (TrivSqZeroExt.map l).toRingHom (p.left ≫ ψ) U hU hx f` as an intermediate fact. Conclude with `(congrArg TrivSqZeroExt.snd this).trans (TrivSqZeroExt.snd_map _ _)`. Rewrite using `[key _ _ _ e₁, key _ _ _ e₂, key _ _ _ e₃]`.
+
+Both sides reduce to the same expression.
+-/
 theorem snd_evalPt_mul {v w : epsR ℂ ⟶ G} (hv : IsTangent v) (hw : IsTangent w) (U : X.Opens) (f : Γ(X, U))
     (h : ⊤ ≤ ((v * w).left ≫ ψ) ⁻¹ᵁ U) (h₁ : ⊤ ≤ (v.left ≫ ψ) ⁻¹ᵁ U) (h₂ : ⊤ ≤ (w.left ≫ ψ) ⁻¹ᵁ U) :
     (evalPt (R := DualNumber ℂ) ((v * w).left ≫ ψ) U h f).snd =
@@ -214,6 +290,9 @@ theorem snd_evalPt_mul {v w : epsR ℂ ⟶ G} (hv : IsTangent v) (hw : IsTangent
   rw [key _ _ _ e₁, key _ _ _ e₂, key _ _ _ e₃]
   rfl
 
+/- English proof (translation)
+Establish `hm` using `isTangent_mul hv hw`. Use `⟨(tangent_base hm).trans ((tangent_base hv).symm.trans ha.1), fun U h f => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← ha.2 U (tangent_le hm hv h) f, ← hb.2 U (tangent_le hm hw h) f]`. Conclude with `snd_evalPt_mul hv hw U f h _ _`.
+-/
 theorem isDerivAt0_mul {v w : epsR ℂ ⟶ G} (hv : IsTangent v) (hw : IsTangent w) {a b : Fin g → ℂ}
     (ha : IsDerivAt0 e a (v.left ≫ ψ)) (hb : IsDerivAt0 e b (w.left ≫ ψ)) :
     IsDerivAt0 e (a + b) ((v * w).left ≫ ψ) := by

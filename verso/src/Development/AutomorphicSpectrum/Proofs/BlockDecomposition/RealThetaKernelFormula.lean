@@ -14,19 +14,33 @@ namespace GlobalTheory.CompanionTheory.RealTh.GForm
 
 def pol (n : ℤ) (u : ℂ) : ℂ := if 0 ≤ n then conj u ^ n.natAbs else u ^ n.natAbs
 
+/- English proof (translation)
+Unfold `pol`. Use `split_ifs`. Rewrite using `[map_mul, mul_pow]`. Rewrite using `[mul_pow]`.
+-/
 theorem pol_mul (n : ℤ) (x y : ℂ) : pol n (x * y) = pol n x * pol n y := by
   unfold pol
   split_ifs
   · rw [map_mul, mul_pow]
   · rw [mul_pow]
 
+/- English proof (translation)
+Unfold `pol`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem pol_ofReal (n : ℤ) (r : ℝ) : pol n (r : ℂ) = (r : ℂ) ^ n.natAbs := by
   unfold pol
   split_ifs <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiInf_eq (n : ℤ) (z : ℂ) :
     PhiInf n z = pol n z * Complex.exp (-2 * Real.pi * ((Complex.normSq z : ℝ) : ℂ)) := rfl
 
+/- English proof (translation)
+Establish `hc' : (c : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hc`. Rewrite using `[gE, ← Complex.exp_add, ← Complex.exp_add, Complex.mul_conj, Complex.add_conj, gA]`. Use `congr 1`. Simplify using `only [map_mul, Complex.normSq_ofReal]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exp_mul_exp_eq_exp_mul_gE (a d c r ρ : ℝ) (hc : c ≠ 0) (v : ℂ) :
     Complex.exp (2 * Real.pi * Complex.I *
         (((a * ρ ^ 2 + d * Complex.normSq v - 2 * (ρ * v.re)) / c : ℝ) : ℂ)) *
@@ -41,11 +55,29 @@ theorem exp_mul_exp_eq_exp_mul_gE (a d c r ρ : ℝ) (hc : c ≠ 0) (v : ℂ) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h` using `((rotation ω).measurePreserving).integral_comp (rotation ω).toHomeomorph.measurableEmbedding F`. Simplify `h.symm` using `[rotation_apply]`.
+-/
 theorem int_rotate (ω : Circle) (F : ℂ → ℂ) : ∫ u, F u = ∫ v, F ((ω : ℂ) * v) := by
   have h := ((rotation ω).measurePreserving).integral_comp
     (rotation ω).toHomeomorph.measurableEmbedding F
   simpa [rotation_apply] using h.symm
 
+/- English proof (translation)
+Establish `hωω : conj (ω : ℂ) * ω = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Circle.normSq_coe]`. Simplify using the standard rewrite rules. Establish `hs : Complex.normSq ((ρ : ℂ) * ω) = ρ ^ 2`. Rewrite using `[Complex.normSq_mul, Complex.normSq_ofReal, Circle.normSq_coe]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e : ∀ v : ℂ, Complex.exp (2 * Real.pi * Complex.I * (((a * Complex.normSq ((ρ : ℂ) * ω) + d * Complex.normSq (((ω : ℂ) * v)) - 2 * (conj ((ρ : ℂ) * ω) * ((ω : ℂ) * v)).re) / c : ℝ) : ℂ)) * PhiInf n (((ω : ℂ) * v) * r) = Complex.exp (2 * Real.pi * Complex.I * ((a : ℂ) * (ρ : ℂ) ^ …`. Introduce `v`. Establish `h` using `exp_mul_exp_eq_exp_mul_gE a d c r ρ hc v`. Establish `h1 : Complex.normSq (((ω : ℂ) * v)) = Complex.normSq v`.
+
+Rewrite using `[Complex.normSq_mul, Circle.normSq_coe, one_mul]`. Establish `h2 : conj ((ρ : ℂ) * ω) * ((ω : ℂ) * v) = (ρ : ℂ) * v`. Rewrite using `[map_mul, Complex.conj_ofReal]`. Take the linear combination `((ρ : ℂ) * v) * hωω`. Establish `h3 : ((ρ : ℂ) * v).re = ρ * v.re` using `by simp`.
+
+Establish `h4 : Complex.normSq (((ω : ℂ) * v) * r) = Complex.normSq (v * r)`. Rewrite using `[Complex.normSq_mul, h1, Complex.normSq_mul]`. Rewrite using `[hs, h1, h2, h3, phiInf_eq, h4, pol_mul, pol_mul, pol_ofReal]`. Generalize the expression as in `Complex.exp (2 * Real.pi * Complex.I * (((a * ρ ^ 2 + d * Complex.normSq v - 2 * (ρ * v.re)) / c : ℝ) : ℂ)) = E₁ at h ⊢`. Generalize the expression as in `Complex.exp (-2 * Real.pi * ((Complex.normSq (v * r) : ℝ) : ℂ)) = E₂ at h ⊢`.
+
+Take the linear combination `((r : ℂ) ^ n.natAbs * pol n ω * pol n v) * h`. Rewrite using `[volC, integral_smul_measure, int_rotate ω]`. Simplify using `only [e]`. Rewrite using `[integral_const_mul]`. Establish `hint : ∫ u : ℂ, pol n u * gE (gA c d r) (Complex.I * ((-(2 * Real.pi * ρ) / c : ℝ) : ℂ)) u = gJ (gA c d r) (-(2 * Real.pi * ρ) / c) n.natAbs`.
+
+Unfold `pol`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `gJ_conj _ _ _`. Rewrite using `[hint]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem int_rot (n : ℤ) (a d c r ρ : ℝ) (hc : c ≠ 0) (ω : Circle) :
     ∫ u, Complex.exp (2 * Real.pi * Complex.I *
         (((a * Complex.normSq ((ρ : ℂ) * ω) + d * Complex.normSq u -
@@ -93,6 +125,21 @@ theorem int_rot (n : ℤ) (a d c r ρ : ℝ) (hc : c ≠ 0) (ω : Circle) :
   rw [hint]
   simp
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `had : a * d = 1` using `by linarith`. Establish `ha : a ≠ 0` using `left_ne_zero_of_mul_eq_one had`. Establish `hd : d ≠ 0` using `right_ne_zero_of_mul_eq_one had`. Establish `haC : (a : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr ha`.
+
+Establish `hdC : (d : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hd`. Establish `hadC : (a : ℂ) * d = 1` using `by exact_mod_cast had`. Establish `hdi : (d : ℂ) = (a : ℂ)⁻¹` using `eq_inv_of_mul_eq_one_right hadC`. Simplify using `only [rWR, if_true, Complex.ofReal_zero, zero_mul, mul_zero, add_zero]`. Establish `hsg : sgR a * ((|a| : ℝ) : ℂ) = a` using `sgR_mul_abs a ha`.
+
+Rewrite using `[mul_assoc (Complex.exp _) (sgR a), hsg]`. Establish `e1 : (d : ℂ) ^ (-((n.natAbs + 1 : ℕ) : ℤ)) = (a : ℂ) ^ (n.natAbs + 1)`. Rewrite using `[hdi, _root_.zpow_neg, _root_.inv_zpow, inv_inv, zpow_natCast]`. Rewrite using `[e1]`. Establish `hphi : PhiInf n ((a : ℂ) * z * (r : ℂ)) = (a : ℂ) ^ n.natAbs * (r : ℂ) ^ n.natAbs * pol n z * Complex.exp (-2 * Real.pi * (((a * r) ^ 2 * Complex.normSq z : ℝ) : ℂ))`.
+
+Establish `h : Complex.normSq ((a : ℂ) * z * (r : ℂ)) = (a * r) ^ 2 * Complex.normSq z`. Simplify using `only [Complex.normSq_mul, Complex.normSq_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : (a : ℂ) * z * (r : ℂ) = (a : ℂ) * (r : ℂ) * z` using `by ring`. Rewrite using `[phiInf_eq, h, h', pol_mul, pol_mul, pol_ofReal, pol_ofReal]`.
+
+Rewrite using `[hphi]`. Establish `e2 : Complex.exp (2 * Real.pi * Complex.I * (((a * b * Complex.normSq z : ℝ) : ℂ))) * Complex.exp (-2 * Real.pi * (((a * r) ^ 2 * Complex.normSq z : ℝ) : ℂ)) = Complex.exp (2 * Real.pi * Complex.I * (((b : ℂ) + Complex.I * ((a : ℂ) * (r : ℂ) ^ 2)) / d) * ((Complex.normSq z : ℝ) : …`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Rewrite using `[hdi]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← e2]`. Generalize the expression as in `Complex.exp (2 * Real.pi * Complex.I * (((a * b * Complex.normSq z : ℝ) : ℂ))) = E₁`. Generalize the expression as in `Complex.exp (-2 * Real.pi * (((a * r) ^ 2 * Complex.normSq z : ℝ) : ℂ)) = E₂`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gform_zero (n : ℤ) (a b c d r : ℝ) (hc : c = 0) (hdet : a * d - b * c = 1) (z : ℂ) :
     rWR a b c d (fun y => PhiInf n (y * r)) z =
       (r : ℂ) ^ n.natAbs * ((d : ℂ) + Complex.I * ((c : ℂ) * (r : ℂ) ^ 2)) ^ (-((n.natAbs + 1 : ℕ) : ℤ)) *
@@ -139,6 +186,29 @@ theorem gform_zero (n : ℤ) (a b c d r : ℝ) (hc : c = 0) (hdet : a * d - b * 
   generalize Complex.exp (-2 * Real.pi * (((a * r) ^ 2 * Complex.normSq z : ℝ) : ℂ)) = E₂
   ring
 
+/- English proof (translation)
+Establish `hcC : (c : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hc`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr Real.pi_ne_zero`. Establish `hAre` using `gA_re c d r hr`. Establish `hA0 : gA c d r ≠ 0` using `fun h0 => by simp [h0] at hAre`. Use `set w : ℂ := (d : ℂ) + Complex.I * ((c : ℂ) * (r : ℂ) ^ 2) with hw`.
+
+Establish `hAw : gA c d r = -(2 * Real.pi * Complex.I * w) / c`. Rewrite using `[gA, hw]`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hw0 : w ≠ 0`. Introduce `h0`. Rewrite `hA0` using `[hAw, h0]`. Simplify using `at hA0`.
+
+Establish `hdetC : (a : ℂ) * d - b * c = 1` using `by exact_mod_cast hdet`. Establish `h1 : (Real.pi : ℂ) / gA c d r = Complex.I * c / (2 * w)`. Rewrite using `[hAw]`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+
+Rewrite using `[Complex.I_sq]`. Establish `h2 : Complex.I * ((-(2 * Real.pi * ρ) / c : ℝ) : ℂ) / gA c d r = (ρ : ℂ) / w`. Rewrite using `[hAw]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h3 : (Complex.I * ((-(2 * Real.pi * ρ) / c : ℝ) : ℂ)) ^ 2 / gA c d r = -(2 * Real.pi * Complex.I * (ρ : ℂ) ^ 2) / (c * w)`. Rewrite using `[sq, mul_div_assoc, h2]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h4 : Complex.exp (2 * Real.pi * Complex.I * ((a : ℂ) * (ρ : ℂ) ^ 2 / c)) * Complex.exp (-(2 * Real.pi * Complex.I * (ρ : ℂ) ^ 2) / (c * w)) = Complex.exp (2 * Real.pi * Complex.I * (((b : ℂ) + Complex.I * ((a : ℂ) * (r : ℂ) ^ 2)) / w) * (ρ : ℂ) ^ 2)`.
+
+Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Establish `e : (a : ℂ) * w - 1 = c * ((b : ℂ) + Complex.I * ((a : ℂ) * (r : ℂ) ^ 2))`. Rewrite using `[hw]`. Take the linear combination `hdetC`.
+
+Establish `e' : ((b : ℂ) + Complex.I * ((a : ℂ) * (r : ℂ) ^ 2)) / w = ((a : ℂ) * w - 1) / (c * w)`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e']`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hgJ` using `gJ_eq (gA c d r) hAre (-(2 * Real.pi * ρ) / c) n.natAbs`. Rewrite `hgJ` using `[h1, h2, h3]`. Simplify using `only [rWR, if_neg hc]`. Rewrite using `[int_rot n a d c r ρ hc ω, hgJ, ← h4, _root_.zpow_neg, zpow_natCast, mul_assoc Complex.I (sgR (-c)), sgR_neg_mul c hc]`.
+
+Generalize the expression as in `Complex.exp (2 * Real.pi * Complex.I * ((a : ℂ) * (ρ : ℂ) ^ 2 / c)) = e₁`. Generalize the expression as in `Complex.exp (-(2 * Real.pi * Complex.I * (ρ : ℂ) ^ 2) / (c * w)) = e₂`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Complex.I_sq]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gform_ne_polar (n : ℤ) (a b c d r ρ : ℝ) (hr : 0 < r) (hc : c ≠ 0)
     (hdet : a * d - b * c = 1) (ω : Circle) :
     rWR a b c d (fun y => PhiInf n (y * r)) ((ρ : ℂ) * ω) =
@@ -203,6 +273,13 @@ theorem gform_ne_polar (n : ℤ) (a b c d r ρ : ℝ) (hr : 0 < r) (hc : c ≠ 0
   rw [Complex.I_sq]
   ring
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ = _ * _ * pol n z * _`. Distinguish the cases in `hc : c = 0`. Conclude with `gform_zero n a b c d r hc hdet z`. Establish `hz : z = ((‖z‖ : ℝ) : ℂ) * (Circle.exp (Complex.arg z) : ℂ)`. Rewrite using `[Circle.coe_exp, Complex.norm_mul_exp_arg_mul_I]`.
+
+Establish `hs : ((Complex.normSq z : ℝ) : ℂ) = ((‖z‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hp : pol n z = ((‖z‖ : ℝ) : ℂ) ^ n.natAbs * pol n (Circle.exp (Complex.arg z) : ℂ)` using `by conv_lhs => rw [hz, pol_mul, pol_ofReal]`.
+
+Rewrite using `[hs, hp]`. Use `conv_lhs => rw [hz]`. Conclude with `gform_ne_polar n a b c d r ‖z‖ hr hc hdet _`.
+-/
 theorem gform (n : ℤ) (a b c d r : ℝ) (hr : 0 < r) (hdet : a * d - b * c = 1) (z : ℂ) :
     rWR a b c d (fun y => PhiInf n (y * r)) z =
       (r : ℂ) ^ n.natAbs * ((d : ℂ) + Complex.I * ((c : ℂ) * (r : ℂ) ^ 2)) ^ (-((n.natAbs + 1 : ℕ) : ℤ)) *

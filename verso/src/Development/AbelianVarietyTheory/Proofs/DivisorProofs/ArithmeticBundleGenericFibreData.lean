@@ -25,16 +25,27 @@ section Matrices
 
 variable {R K : Type} [CommRing R] [Field K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite `hS` using `[Matrix.det_of_upperTriangular (M := S) fun a b hab => hψ ((h hab).trans (map_zero _).symm)]`. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun i => S i i) (Finset.mem_univ i)) hS`.
+-/
 theorem isUnit_diag {ψ : R →+* K} (hψ : Function.Injective ψ) {S : Matrix (Fin n) (Fin n) R} (hS : IsUnit S.det)
     (h : (S.map ψ).BlockTriangular id) (i : Fin n) : IsUnit (S i i) := by
   rw [Matrix.det_of_upperTriangular (M := S) fun a b hab => hψ ((h hab).trans (map_zero _).symm)] at hS
   exact isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun i => S i i) (Finset.mem_univ i)) hS
 
+/- English proof (translation)
+The claim follows from `Finset.sum_eq_single (s := Finset.univ) (f := fun a => A i a * B a i) i (fun a _ ha => ha.lt_or_gt.elim (fun h => by rw [hA h, zero_mul]) fun h => by rw [hB h, mul_zero]) (by simp)`.
+-/
 theorem diag_mul {A B : Matrix (Fin n) (Fin n) K} (hA : A.BlockTriangular id) (hB : B.BlockTriangular id) (i : Fin n) :
     (A * B) i i = A i i * B i i :=
   Finset.sum_eq_single (s := Finset.univ) (f := fun a => A i a * B a i) i
     (fun a _ ha => ha.lt_or_gt.elim (fun h => by rw [hA h, zero_mul]) fun h => by rw [hB h, mul_zero]) (by simp)
 
+/- English proof (translation)
+Establish `hu : IsUnit T.det`. Rewrite using `[Matrix.det_of_upperTriangular hT]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun i _ => hd i).isUnit`. Use `Matrix.invertibleOfIsUnitDet T hu` as an intermediate fact. Establish `hi : T⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hT`.
+
+Establish `: S = N * T⁻¹` using `by rw [← e, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Rewrite using `[this]`. Conclude with `hN.mul hi`.
+-/
 theorem tri_of_mul {S T N : Matrix (Fin n) (Fin n) K} (hT : T.BlockTriangular id) (hd : ∀ i, T i i ≠ 0)
     (hN : N.BlockTriangular id) (e : S * T = N) : S.BlockTriangular id := by
   have hu : IsUnit T.det := by
@@ -52,6 +63,15 @@ section FlagFrame
 
 open GlobalTheory.Twist (resM resM_resM app_resM)
 
+/- English proof (translation)
+Establish `key (l : Fin (N + 1)) : ∃ s : Fin l → Γ(fl.F l, W), VB.IsFrame s ∧ ∀ j, (fl.ι l).app W (s j) = (fl.ι (Fin.castLE l.is_le j).succ).app W (t (Fin.castLE l.is_le j))`. Proceed by induction on `l using Fin.induction with`. Consider the case `zero`. Establish `z` using `VB.isVB_zero_iff.1 (fl.isVB 0)`. Use `⟨_, (VB.isFrame_freeFrame X (Fin 0)).map_iso ((VB.isVB_zero_iff.1 (VB.isVB_freeModule_fin X 0)).iso z).hom |>.res le_top, fun j => j.elim0⟩` and prove the remaining obligations.
+
+Consider the case `succ i ih`. Take `⟨s, hs, es⟩` from `ih`. Establish `h` using `(VBExt.isFrame_sumElim (S := .mk (fl.step i) (Limits.cokernel.π _) (Limits.cokernel.condition _)) { exact := ShortComplex.exact_cokernel _ } (t := fun _ : Fin 1 => t i) hs (ht i)).comp_equiv finSumFinEquiv.symm`. Use `⟨_, h, fun j => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (m := i) (n := 1) (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, finSumFinEquiv_symm_apply_castAdd, Sum.elim_inl]`. Use `Eq.trans ?_ (es j)` and prove the remaining obligations. Rewrite using `[← fl.step_ι i]`. Both sides reduce to the same expression. Take `rfl : j = 0` from `Subsingleton.elim _ _`.
+
+Conclude with `congrArg (fun z => (fl.ι i.succ).app W (Sum.elim (fun j => (fl.step i).app W (s j)) (fun _ => t i) z)) (finSumFinEquiv_symm_apply_natAdd (m := i) (n := 1) 0)`. Take `⟨s, hs, es⟩` from `key (Fin.last N)`. Use `hs.map_iso (fl.ι (Fin.last N))` as an intermediate fact. Rewrite `this` using `[funext es]`. Conclude with `this`.
+-/
 theorem isFrame_of_lifts {X : Scheme.{0}} {M : X.Modules} {N : ℕ} (fl : Vert.Flag M N) {W : X.Opens}
     (t : ∀ k : Fin N, Γ(fl.F k.succ, W)) (ht : ∀ k, VB.IsFrame fun _ : Fin 1 => (fl.π k).app W (t k)) :
     VB.IsFrame fun k => (fl.ι k.succ).app W (t k) := by
@@ -81,6 +101,13 @@ theorem isFrame_of_lifts {X : Scheme.{0}} {M : X.Modules} {N : ℕ} (fl : Vert.F
   rw [funext es] at this
   exact this
 
+/- English proof (translation)
+Use `choose W hW hyW t ht using fun k => VBExt.exists_lifts (fl.π k) (c k).e (hy k)`. Establish `hV (k : Fin N) : U ⊓ Finset.univ.inf W ≤ W k` using `inf_le_right.trans (Finset.inf_le (Finset.mem_univ k))`. Establish `e (k : Fin N) : (fl.π k).app _ (resM _ (hV k) (t k 0)) = resM _ ((hV k).trans (hW k)) ((c k).e 0)`. Rewrite using `[app_resM, ht, resM_resM]`. Use `⟨U ⊓ Finset.univ.inf W, inf_le_left, fun k => (hV k).trans (hW k), fun k => resM _ (hV k) (t k 0), ⟨hU, by` and prove the remaining obligations.
+
+Rewrite using `[TopologicalSpace.Opens.coe_finset_inf]`. Simplify using `using hyW⟩, e, isFrame_of_lifts fl _ fun k => ?_⟩`. Use `(c k).isFrame.res ((hV k).trans (hW k))` as an intermediate fact. Rewrite using `[e]`. Use `this using 3 with i` and compare the differences between its conclusion and the goal.
+
+Conclude with `congrArg _ (Subsingleton.elim _ _)`.
+-/
 theorem exists_lifts_isFrame {X : Scheme.{0}} {M : X.Modules} {N : ℕ} (fl : Vert.Flag M N)
     (c : ∀ k, Chart (fl.gr k) 1) {y : X} (hy : ∀ k, y ∈ (c k).U) {U : X.Opens} (hU : y ∈ U) :
     ∃ (W : X.Opens) (_ : W ≤ U) (hW : ∀ k, W ≤ (c k).U) (t : ∀ k : Fin N, Γ(fl.F k.succ, W)), y ∈ W ∧
@@ -111,6 +138,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {β : Oz →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
   {R K : Type} [CommRing R] [Field K]
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨⟨Function.update f.v τ u, fun τ' i => ?_, fun τ' i => ?_, fun τ' => ?_⟩, Function.update_self τ u f.v⟩ <;>`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `(hu.1 i).1`.
+
+Rewrite using `[Function.update_of_ne h]`. Conclude with `f.tan τ' i`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `(hu.1 i).2`.
+
+Rewrite using `[Function.update_of_ne h]`. Conclude with `f.eig τ' i`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `fun w h1 h2 => hu.2 w ⟨h1, h2⟩`.
+
+Rewrite using `[Function.update_of_ne h]`. Conclude with `f.basis τ'`.
+-/
 theorem exists_frame_of_basis {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigFrame Z φ x) {τ : E →+* ℂ}
     {u : Fin (Dw.mult τ) → (Sp (DualNumber R) ⟶ Z.t.G.left)} (hu : IsEigBasis Z φ x τ u) :
     ∃ g : EigFrame Z φ x, g.v τ = u := by
@@ -123,6 +159,9 @@ theorem exists_frame_of_basis {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigFram
   · subst h; rw [Function.update_self]; exact fun w h1 h2 => hu.2 w ⟨h1, h2⟩
   · rw [Function.update_of_ne h]; exact f.basis τ'
 
+/- English proof (translation)
+Take `⟨p, hp, e⟩` from `h`. Take `⟨p', hp', e'⟩` from `h'`. Establish `hpp : p = p'` using `funext fun i => Over.OverMorphism.ext (by rw [hp i, hp' i])`. Rewrite `e` using `[hpp]`. Conclude with `e.symm.trans e'`.
+-/
 theorem comb_unique {X : Scheme.{0}} {t : SAB H X} {x : Sp R ⟶ X} {m : ℕ} {v : Fin m → (Sp (DualNumber R) ⟶ t.G.left)}
     {a : Fin m → R} {w w' : Sp (DualNumber R) ⟶ t.G.left} (h : IsCombAtG t x v a w) (h' : IsCombAtG t x v a w') :
     w = w' := by
@@ -132,6 +171,11 @@ theorem comb_unique {X : Scheme.{0}} {t : SAB H X} {x : Sp R ⟶ X} {m : ℕ} {v
   rw [hpp] at e
   exact e.symm.trans e'
 
+/- English proof (translation)
+Establish `h1 (g : EigFrame Z φ x) (a : Fin (Dw.mult τ) → R) : IsCombAtG Z.t x (g.v τ) a (tv (∑ i, a i • g.vec τ i)).left` using `(LieMet.isComb_iff (g.vec τ) a (∑ i, a i • g.vec τ i)).2 rfl`. Establish `h2 : ∑ i, a i • g.vec τ i = ∑ i, b i • k.vec τ i` using `tan_ext ((comb_unique (h1 g a) ha).trans (comb_unique hb (h1 k b)))`. Establish `e (g : EigFrame Z φ x) (a : Fin (Dw.mult τ) → R) : ∑ i, a i • g.vec τ i = ∑ d, (f.co g τ).mulVec a d • f.vec τ d`. Simplify using `only [f.vec_eq g τ, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul, mul_comm]`. Conclude with `Finset.sum_comm`.
+
+Rewrite `h2` using `[e g a, e k b]`. Conclude with `funext (Fintype.linearIndependent_iffₛ.1 (f.linearIndependent_vec τ) _ _ h2)`.
+-/
 theorem co_mulVec {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f g k : EigFrame Z φ x) (τ : E →+* ℂ)
     {a b : Fin (Dw.mult τ) → R} {w : Sp (DualNumber R) ⟶ Z.t.G.left} (ha : IsCombAtG Z.t x (g.v τ) a w)
     (hb : IsCombAtG Z.t x (k.v τ) b w) : (f.co g τ).mulVec a = (f.co k τ).mulVec b := by
@@ -154,6 +198,15 @@ variable {ψ : R →+* K} (hψ : Function.Injective ψ) {φ : c.F →+* R} {x : 
 
 include hψ hf hu hA
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨g, rfl⟩` from `exists_frame_of_basis f hu`. Take `⟨f', hf'⟩` from `f.exists_isMap ψ hf.2.1 hf.1`. Take `⟨g', hg'⟩` from `g.exists_isMap ψ hf.2.1 hf.1`. Use `choose w cf h1 h2 h3 h4 using h`.
+
+Take `⟨T1, T2⟩` from `hf.co τ hf'`. Establish `hC : (Matrix.of fun a i => cf i a).BlockTriangular id` using `fun a i h => h4 i a h`. Establish `hT : (f'.co v τ).BlockTriangular id` using `fun a i h => T1 a i h`. Establish `e : (f.co g τ * A).map ψ = f'.co v τ * Matrix.of fun a i => cf i a`. Rewrite using `[Matrix.map_mul, ← hf'.co τ hg' hf.1]`.
+
+Use extensionality with `a i`. Rewrite `h1` using `[← funext (hg' τ)]`. Conclude with `congrFun (co_mulVec f' g' v τ (h1 i) (h2 i)) a`. Use `⟨_, isUnit_diag hψ (S := f.co g τ * A) (by rw [Matrix.det_mul]; exact (f.isUnit_det_co g τ).mul hA) (e ▸ hT.mul hC) i, ?_⟩` and prove the remaining obligations. Use `(congrFun (congrFun e i) i).trans ((diag_mul hT hC i).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[T2]`. Conclude with `congrArg _ (h3 i)`.
+-/
 theorem unit_of_tri
     (h : ∀ i, ∃ (w : Sp (DualNumber K) ⟶ Z.t.G.left) (cf : Fin (Dw.mult τ) → K),
       IsCombAtG Z.t x' (fun b => spMap (dualMap ψ) ≫ u b) (fun b => ψ (A b i)) w ∧ IsCombAtG Z.t x' (v.v τ) cf w ∧
@@ -178,6 +231,17 @@ theorem unit_of_tri
   rw [T2]
   exact congrArg _ (h3 i)
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨g, rfl⟩` from `exists_frame_of_basis f hu`. Take `⟨f', hf'⟩` from `f.exists_isMap ψ hf.2.1 hf.1`. Take `⟨g', hg'⟩` from `g.exists_isMap ψ hf.2.1 hf.1`. Take `⟨T1, T2⟩` from `hf.co τ hf'`.
+
+Establish `hT : (f'.co v τ).BlockTriangular id` using `fun a i h => T1 a i h`. Rewrite `h` using `[← funext (hg' τ)]`. Set `A' : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R` to `A.transpose.submatrix Fin.revPerm id`. Establish `hA' : IsUnit A'.det`. Rewrite using `[Matrix.det_permute, Matrix.det_transpose]`.
+
+Conclude with `((Equiv.Perm.sign _).isUnit.map (Int.castRingHom R)).mul hA`. Establish `e : (A' * g.co f τ).map ψ * f'.co v τ = A'.map ψ * g'.co v τ`. Rewrite using `[Matrix.map_mul, ← hg'.co τ hf' hf.1, Matrix.mul_assoc, EigFrame.co_mul]`. Establish `hN : (A'.map ψ * g'.co v τ).BlockTriangular id` using `fun a k hk => (h a.rev k _ (g'.co_spec v τ k)).1 (by have : (k : ℕ) < a := hk; have := a.2; rw [Fin.val_rev]; omega)`. Establish `hS` using `tri_of_mul hT (fun i => T2 i ▸ Units.ne_zero _) hN e`.
+
+Use `⟨_, isUnit_diag hψ (S := A' * g.co f τ) (by rw [Matrix.det_mul]; exact hA'.mul (g.isUnit_det_co f τ)) hS i.rev, ?_⟩` and prove the remaining obligations. Establish `e2` using `congrFun (congrFun e i.rev) i.rev`. Rewrite `e2` using `[diag_mul hS hT, T2]`. Use `e2.trans ?_` and prove the remaining obligations. Establish `e3` using `(h i i.rev _ (g'.co_spec v τ i.rev)).2 (by have := i.2; rw [Fin.val_rev]; omega)`.
+
+Use `Eq.trans ?_ e3` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, A', Matrix.map_apply, Matrix.submatrix_apply, Fin.revPerm_apply, Fin.rev_rev, Matrix.transpose_apply, id]`.
+-/
 theorem unit_of_tri_dual
     (h : ∀ (i : Fin m) (k : Fin (Dw.mult τ)) (d : Fin m → K),
       IsCombAtG Z.t x' (fun b => spMap (dualMap ψ) ≫ u b) d (v.v τ k) →
@@ -219,14 +283,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]
   {β : Oz →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F}
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_trans {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+The claim follows from `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes x)`.
+-/
 theorem spMap_fromSpecStalk (G : Scheme.{0}) [IsIntegral G] (x : G) :
     spMap (algebraMap (G.presheaf.stalk x) G.functionField) ≫ G.fromSpecStalk x = G.fromSpecStalk (genericPoint G) :=
   Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes x)
 
+/- English proof (translation)
+Use `EigLoc.spMap_inj ((cancel_mono (Y.fromSpecStalk (p x))).1 ?_)` and prove the remaining obligations. Establish `h1 : spMap (p.stalkMap x).hom ≫ Y.fromSpecStalk (p x) = G.fromSpecStalk x ≫ p` using `Scheme.SpecMap_stalkMap_fromSpecStalk p`. Rewrite using `[spMap_trans, spMap_trans, Category.assoc, Category.assoc, h1, ← Category.assoc, spMap_fromSpecStalk, spMap_fromSpecStalk, φs]`.
+-/
 theorem comp_stalkMap {G Y : Scheme.{0}} [IsIntegral G] [IsIntegral Y] (p : G ⟶ Y) (φ : Y.functionField →+* G.functionField)
     (φs : G.fromSpecStalk (genericPoint G) ≫ p = spMap φ ≫ Y.fromSpecStalk (genericPoint Y)) (x : G) :
     (algebraMap (G.presheaf.stalk x) G.functionField).comp (p.stalkMap x).hom =
@@ -237,6 +310,17 @@ theorem comp_stalkMap {G Y : Scheme.{0}} [IsIntegral G] [IsIntegral Y] (p : G �
   rw [spMap_trans, spMap_trans, Category.assoc, Category.assoc, h1, ← Category.assoc,
     spMap_fromSpecStalk, spMap_fromSpecStalk, φs]
 
+/- English proof (translation)
+Take `⟨φy, fy, t, h1, h2⟩` from `C.gr_spec (p x)`. Establish `hs` using `comp_stalkMap p φ φs x`. Establish `h0 : spMap (p.stalkMap x).hom ≫ stalkPt C.Y (p x) = G.fromSpecStalk x ≫ p` using `Scheme.SpecMap_stalkMap_fromSpecStalk p`. Take `⟨ψ₀, hψ₀⟩ : ∃ ψ₀ : F →+* G.presheaf.stalk x, G.fromSpecStalk x ≫ p ≫ C.Y.str = spMap ψ₀` from `⟨(Spec.preimage (G.fromSpecStalk x ≫ p ≫ C.Y.str)).hom, (Spec.map_preimage _).symm⟩`. Establish `hg : genericPt C.Y ≫ C.Y.str = spMap (algebraMap F C.Y.Fn)` using `(GlobalTheory.FlagBundle.ratOf C.Y).pt_s`.
+
+Establish `e1 : (algebraMap (G.presheaf.stalk x) G.functionField).comp ψ₀ = φ.comp (algebraMap F C.Y.Fn)`. Use `EigLoc.spMap_inj ?_` and prove the remaining obligations. Rewrite using `[spMap_trans, spMap_trans, ← hψ₀, ← hg, ← Category.assoc, spMap_fromSpecStalk, ← Category.assoc, φs, Category.assoc]`. Both sides reduce to the same expression. Establish `e2 : φ.comp (constF e C.Y) = (algebraMap (G.presheaf.stalk x) G.functionField).comp (ψ₀.comp e.symm.toRingHom)`.
+
+Rewrite using `[← RingHom.comp_assoc, e1]`. Both sides reduce to the same expression. Establish `e3 : ψ₀.comp e.symm.toRingHom = (p.stalkMap x).hom.comp φy` using `RingHom.ext fun a => IsFractionRing.injective (G.presheaf.stalk x) G.functionField ((RingHom.congr_fun e2 a).symm.trans ((congrArg φ (RingHom.congr_fun h1.2.1 a)).trans (RingHom.congr_fun hs (φy a)).symm))`. Establish `hK : xK = spMap φ ≫ genericPt C.Y ≫ C.π ≫ genι Z`. Rewrite using `[hxK, ← Category.assoc, φs, Category.assoc]`.
+
+Both sides reduce to the same expression. Take `⟨f, hf⟩` from `fy.exists_isMap (p.stalkMap x).hom e3 (x' := xR) (by rw [hxR, ← Category.assoc (spMap _), h0, Category.assoc])`. Take `⟨v, hv⟩` from `C.f0.exists_isMap φ rfl hK`. Use `⟨ψ₀, f, v, t, hψ₀, hv, ⟨by rw [hxK, hxR, ← Category.assoc (spMap _), spMap_fromSpecStalk], e2, fun τ i => ?_⟩, h2⟩` and prove the remaining obligations. Take `⟨cf, c1, c2, c3⟩` from `h1.2.2 τ i`.
+
+Use `⟨fun k => φ (cf k), congrArg φ c1, fun k hk => (congrArg φ (c2 k hk)).trans (map_zero _), ?_⟩` and prove the remaining obligations. Use `GlobalTheory.GradedPieces.comb_map φ hK.symm c3` as an intermediate fact. Simplify using `only [GlobalTheory.GradedPieces.dual_comp] at this`. Simplify using `only [hv τ, hf τ, GlobalTheory.GradedPieces.dual_comp, hs]`. Conclude with `this`.
+-/
 theorem exists_frame (C : FlagCpt Z e) {G : Scheme.{0}} [IsIntegral G] (p : G ⟶ C.Y.X) (φ : C.Y.Fn →+* G.functionField)
     (φs : G.fromSpecStalk (genericPoint G) ≫ p = spMap φ ≫ C.Y.X.fromSpecStalk (genericPoint C.Y.X)) (x : G)
     {xR : Sp (G.presheaf.stalk x) ⟶ Z.X} (hxR : xR = G.fromSpecStalk x ≫ p ≫ C.π ≫ genι Z)
@@ -278,6 +362,43 @@ theorem exists_frame (C : FlagCpt Z e) {G : Scheme.{0}} [IsIntegral G] (p : G �
 
 end Stalk
 
+/- English proof (translation)
+Introduce `D O hO B hB R hR c Bs _ q arq nBs E h H Bg jB πB u Gm hL Y₀ _ π₀ fl₀ hfb ar₀ n₀ G _ j πG pb _ _ φ φs jG r hc a i hr ch x hx t ht`. Take `⟨-, -, -, frB, -⟩` from `hL`. Take `⟨c1, c2, c3⟩` from `hc`. Establish `hqc` using `(h a).isVB.isQuasicoherent`. Take `⟨cc, hci, hcc⟩ : ∃ cc : ∀ k, (((fl₀ a).root k).pull j).ι, cc i = ch ∧ ∀ k, j x ∈ (cc k PUnit.unit).U` from `by choose U e hU he using fun k => (fl₀ a).isVB_gr k (j x)`.
+
+Set `c₀ : ∀ k, (((fl₀ a).root k).pull j).ι` to `fun k _ => ⟨U k, e k, he k⟩`. Use `⟨Function.update c₀ i ch, Function.update_self _ _ _, fun k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `LB.pull_U_le j ch hx`. Rewrite using `[Function.update_of_ne hk]`. Conclude with `hU k`. Substitute `hci` using the available equality. Take `⟨V, f, hV, hf⟩` from `(h a).isVB (π₀ (j x))`.
+
+Take `⟨W, hWV, hW, s, hxW, hs, hfr⟩` from `exists_lifts_isFrame (fl₀ a) (fun k => cc k PUnit.unit) hcc (U := π₀ ⁻¹ᵁ V) hV`. Set `ψ` to `algebraMap (G.presheaf.stalk x) G.functionField`. Establish `hψ : Function.Injective ψ` using `IsFractionRing.injective _ _`. Establish `hg : FlagCov.genPt G = spMap ψ ≫ G.fromSpecStalk x` using `(spMap_fromSpecStalk G x).symm`. Establish `hst {U : G.Opens} (hU : x ∈ U) : ⊤ ≤ G.fromSpecStalk x ⁻¹ᵁ U` using `fun w _ => by`.
+
+Establish `: G.fromSpecStalk x w ∈ Set.range (G.fromSpecStalk x)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open (x := G.fromSpecStalk x w) this U.isOpen hU`. Establish `hRW : ⊤ ≤ (G.fromSpecStalk x ≫ j) ⁻¹ᵁ W` using `hst (U := j ⁻¹ᵁ W) hxW`. Establish `hRV : ⊤ ≤ ((G.fromSpecStalk x ≫ jG) ≫ jB) ⁻¹ᵁ V`.
+
+Rewrite using `[Category.assoc, c1]`. Conclude with `hst (U := (j ≫ π₀) ⁻¹ᵁ V) hV`. Establish `hKW : ⊤ ≤ (FlagCov.genPt G ≫ j) ⁻¹ᵁ W`. Rewrite using `[hg, Category.assoc]`. Conclude with `fun w _ => hRW (x := spMap ψ w) trivial`.
+
+Establish `hKV' : ⊤ ≤ ((spMap ψ ≫ G.fromSpecStalk x ≫ jG) ≫ jB) ⁻¹ᵁ V`. Rewrite using `[Category.assoc]`. Conclude with `fun w _ => hRV (x := spMap ψ w) trivial`. Establish `hgj : FlagCov.genPt G ≫ jG = spMap ψ ≫ G.fromSpecStalk x ≫ jG` using `by rw [hg, Category.assoc]`. Establish `hKV : ⊤ ≤ ((FlagCov.genPt G ≫ jG) ≫ jB) ⁻¹ᵁ V` using `hgj ▸ hKV'`.
+
+Take `⟨ψ₀, fR, v, tY, e1, e2, e3, e4⟩` from `exists_frame (O.Φ.C c) πG φ φs x (xR := (G.fromSpecStalk x ≫ jG) ≫ πB ≫ genι O.s.T.Z) (by rw [Category.assoc, ← Category.assoc jG, c2, Category.assoc]) (xK := FlagCov.genPt G ≫ jG ≫ πB ≫ genι O.s.T.Z) (by rw [← Category.assoc jG, c2, Category.assoc]; rfl)`. Establish `hu` using `(frB a).1 V f hf _ (G.fromSpecStalk x ≫ jG) hRV ψ₀ (by`. Use `Eq.trans ?_ e1` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans (congrArg _ ((Category.assoc _ _ _).symm.trans ?_))` and prove the remaining obligations. Rewrite using `[c2]`.
+
+Conclude with `(Category.assoc _ _ _).trans (congrArg _ (O.Φ.C c).π_str))`. Establish `hu' : u a V f hf G.functionField (FlagCov.genPt G ≫ jG) hKV = fun b => spMap (dualMap ψ) ≫ u a V f hf _ (G.fromSpecStalk x ≫ jG) hRV b`. Establish `key : ∀ (y : Sp G.functionField ⟶ Bg) (hy : ⊤ ≤ (y ≫ jB) ⁻¹ᵁ V), y = spMap ψ ≫ G.fromSpecStalk x ≫ jG → u a V f hf G.functionField y hy = fun b => spMap (dualMap ψ) ≫ u a V f hf _ (G.fromSpecStalk x ≫ jG) hRV b`. Introduce and unpack `y hy rfl`. Conclude with `funext ((frB a).2.2 V f hf _ _ ψ _ hRV hy)`.
+
+Conclude with `key _ _ hgj`. Set `A₀` to `((hf.pullback π₀).basis hWV).toMatrix fun k => ((fl₀ a).ι k.succ).app W (s k)`. Establish `hA₀ : IsUnit A₀.det`. Use `((hf.pullback π₀).detUnit hfr hWV le_rfl).isUnit` as an intermediate fact. Simplify `this` using `only [IsFrame.val_detUnit, Twist.resM_self, Module.Basis.det_apply]`.
+
+Set `A` to `A₀.map (TangentOrigin.evalPt (G.fromSpecStalk x ≫ j) W hRW)`. Establish `hA : IsUnit A.det`. Use `hA₀.map (TangentOrigin.evalPt (G.fromSpecStalk x ≫ j) W hRW)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Establish `hev (k) : (fun b => TangentOrigin.evalPt (FlagCov.genPt G ≫ j) W hKW (((hf.pullback π₀).basis hWV).repr (((fl₀ a).ι k.succ).app W (s k)) b)) = fun b => ψ (A b k)`.
+
+Establish `key : ∀ (y : Sp G.functionField ⟶ Y₀) (hy : ⊤ ≤ y ⁻¹ᵁ W), y = spMap ψ ≫ G.fromSpecStalk x ≫ j → ∀ z, TangentOrigin.evalPt y W hy z = ψ (TangentOrigin.evalPt (G.fromSpecStalk x ≫ j) W hRW z)`. Introduce and unpack `y hy rfl z`. Conclude with `TangentOrigin.evalPt_spMap_comp ψ _ W hRW hy z`. Conclude with `funext fun b => key _ _ (by rw [hg, Category.assoc]) _`. Establish `hsec (k)` using `c3 a k hr (cc k) V f hf W (hW k) hWV (s k) (hs k) hKW hKV`.
+
+Establish `hv : (fun k => spMap (dualMap φ) ≫ (O.Φ.C c).f0.v (embB D a) k) = v.v (embB D a)` using `(funext (e2 _)).symm`. Take `⟨b, hb, eb⟩` from `(e4 _ _).iff_unitAt.1 ht`. Establish `hb' : UnitAt x (φ (t : (O.var c).Fn) / φ (tY (embB D a) (Fin.cast hr (cond a.2 i i.rev))))` using `⟨_, hb.map (πG.stalkMap x).hom, (RingHom.congr_fun (comp_stalkMap πG φ φs x) b).trans ((congrArg φ eb).trans (map_div₀ φ _ _))⟩`. Establish `ht0 : φ (t : (O.var c).Fn) ≠ 0` using `(map_ne_zero φ).2 t.ne_zero`. Establish `ht1 (τ k) : φ (tY τ k : (O.var c).Fn) ≠ 0` using `(map_ne_zero φ).2 (tY τ k).ne_zero`.
+
+Establish `hr0 : (r a i (cc i) : G.functionField) ≠ 0` using `Units.ne_zero _`. Take `⟨τ, _ | _⟩` from `a`. Take `⟨d, hd, ed⟩` from `unit_of_tri_dual hψ e3 hr hu hA (fun k => r _ k (cc k)) (fun k k' d hd => by`. Use `hsec k k' d (by rw [hu', hv]; exact hd)` as an intermediate fact. Simplify `this) i` using `only [fun b => congrFun (hev k) b]`.
+
+Establish `h1 : UnitAt x (ψ d)` using `⟨d, hd, rfl⟩`. Use `hb'.mul h1.inv using 1` and compare the differences between its conclusion and the goal. Establish `ed' : ψ d * φ (tY (embB D (τ, false)) (Fin.cast hr i.rev)) = (r (τ, false) i (cc i) : G.functionField)⁻¹` using `ed.trans (Units.val_inv_eq_inv_val _)`. Simplify using `only [cond_false, zpow_one]`. Rewrite using `[div_eq_mul_inv, mul_assoc, ← mul_inv, mul_comm _ (ψ d), ed', inv_inv]`.
+
+Take `⟨d, hd, ed⟩` from `unit_of_tri hψ e3 hr hu hA (fun k => r _ k (cc k)) (fun k => by`. Use `hsec k` as an intermediate fact. Simplify using `only [cond_true] at this`. Rewrite `this` using `[hu', hv, hev]`. Conclude with `this) i`.
+
+Establish `h1 : UnitAt x (ψ d)` using `⟨d, hd, rfl⟩`. Use `hb'.inv.mul h1.inv using 1` and compare the differences between its conclusion and the goal. Establish `ed' : ψ d = φ (tY (embB D (τ, true)) (Fin.cast hr i)) * (r (τ, true) i (cc i) : G.functionField)⁻¹` using `ed.trans (congrArg _ (Units.val_inv_eq_inv_val _))`. Use `ht1 (embB D (τ, true)) (Fin.cast hr i)` as an intermediate fact. Simplify using `only [cond_true, zpow_neg, zpow_one]`.
+
+Rewrite using `[ed']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem unitAt_frameSec : ∀ (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)
     (Bs : Scheme.{0}) [IsIntegral Bs] (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (arq : IsArithVar q (dimGr D.what₂.Tau O.N O.j))
     (nBs : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Bs) (E : D.what₂.Tau × Bool → Bs.Modules)

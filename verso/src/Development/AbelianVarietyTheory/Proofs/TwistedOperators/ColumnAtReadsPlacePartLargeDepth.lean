@@ -15,6 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.ColAtPart
 
+/- English proof (translation)
+Unfold `Big`. Use `⟨0, fun _ _ _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Use `intros`. Use `beta_reduce`. Introduce `t w eL e' hL he u`.
+
+Establish `hw` using `(GlobalTheory.FunObj.Comparison₂.cpt_idemSum hL).2.1 w.1 (Finset.mem_singleton_self _)`. Establish `h1` using `congrArg (fun a => cpt w.1 (toEAf _ a)) he`. Simplify using `only [map_mul, hw, mul_one] at h1`. Use function extensionality and compare the values at `j`. Simplify using `only [GridChoice.colAt]`.
+
+Use `split_ifs with hj`. Use `congr 1`. Use `congr 1`. Use `congr 1`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, RingHom.comp_apply, map_mul, h1, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem colAt_smul_of_mul_idem : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (w : locPl ch.G t) (eL e' : AE D), IsIdemSum eL {w.1} → e' * eL = eL → ∀ u : ∀ j : Fin D.R.m, WO (ch.G.V (.top j)) (ch.G.V (.top (j + 1))), ch.S.colAt t w.1 (fun j => e' • u j) = ch.S.colAt t w.1 u := by
   unfold Big
   refine ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩

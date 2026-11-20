@@ -11,6 +11,11 @@ namespace GlobalTheory.CechDR
 open FormExt FormExtJ
 attribute [local instance] GlobalTheory.Cris.opModule GlobalTheory.Cris.isCentralScalar_kaehler GlobalTheory.Cris.isScalarTower_kaehler
 
+/- English proof (translation)
+Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s'`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s') G H hcov`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s') G H hcov hdir`. Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s') G H hcov hdir`. Establish `hs1` using `_root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s' G hcov`.
+
+Establish `hg1` using `_root_.GlobalTheory.CechDR.FormExt.glue_one_forms s' G hcov hdir`. Establish `hs2` using `_root_.GlobalTheory.CechDR.twoForm_sep_of_basis s' G hcov`. Establish `b1 : Function.Bijective (CoefMap.restrict (OAff s') G).pull1` using `⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩`. Establish `bg` using `_root_.GlobalTheory.restrict_glob1_bijective _ _ hs1 hg1`. Conclude with `⟨_root_.GlobalTheory.CechDR.pullHyp1_restrict_injective _ _ b1.1 (_root_.GlobalTheory.compat_family_extend _ _ hs hg) bg.1, _root_.GlobalTheory.CechDR.pullHyp1_restrict_surjective _ _ b1.2 (_root_.GlobalTheory.cocycle_one_forms_coboundary_of_restrict _ _ hs1 hg1) bg.2 hs2⟩`.
+-/
 theorem restrict_bijective_one_of_basis {R' : Type} [CommRing R'] {X' : Scheme.{0}} (s' : X' ⟶ Sp R')
     {C' : Type} [Category.{0} C'] [Quiver.IsThin C'] (G : C' ⥤ AffOp X')
     (hcov : ∀ T : AffOp X', ∃ (n : ℕ) (b : Fin n → (OAff s').obj T),
@@ -36,6 +41,21 @@ theorem restrict_bijective_one_of_basis {R' : Type} [CommRing R'] {X' : Scheme.{
   exact ⟨_root_.GlobalTheory.CechDR.pullHyp1_restrict_injective _ _ b1.1 (_root_.GlobalTheory.compat_family_extend _ _ hs hg) bg.1,
     _root_.GlobalTheory.CechDR.pullHyp1_restrict_surjective _ _ b1.2 (_root_.GlobalTheory.cocycle_one_forms_coboundary_of_restrict _ _ hs1 hg1) bg.2 hs2⟩
 
+/- English proof (translation)
+Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s'`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s') G H hcov`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s') G H hcov hdir`. Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s') G H hcov hdir`. Establish `hv2` using `GlobalTheory.T.twoCocycle_coboundary_of_basisFunctor (OAff s') G H hcov hdir`.
+
+Establish `hs1` using `_root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s' G hcov`. Establish `hg1` using `_root_.GlobalTheory.CechDR.FormExt.glue_one_forms s' G hcov hdir`. Establish `hs2` using `_root_.GlobalTheory.CechDR.twoForm_sep_of_basis s' G hcov`. Establish `b1 : Function.Bijective (CoefMap.restrict (OAff s') G).pull1` using `⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩`. Establish `bg` using `_root_.GlobalTheory.restrict_glob1_bijective _ _ hs1 hg1`.
+
+Establish `unitE : ∀ {S S' : AffOp X'} (u : S ⟶ S') (b : (OAff s').obj S), IsUnit (mp (omExt (OAff s')) u (TrivSqZeroExt.inl b)) → IsUnit (mp (OAff s') u b)` using `fun u b h ↦ ((isUnit_mp_omExt_iff (OAff s') u _).1 h)`. Establish `HE` using `hasLoc_omExt (OAff s') H`. Establish `hcovE : ∀ T : AffOp X', ∃ (n : ℕ) (b : Fin n → (omExt (OAff s')).obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp X') (u : T ⟶ S), IsUnit (mp (omExt (OAff s')) u (b i)) → ∃ (t : C') (v : T ⟶ G.obj t) (w : G.obj t ⟶ S), v ≫ w = u` using `fun T ↦ by`. Take `⟨n, b, hb, h⟩` from `hcov T`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), span_inl_eq_top (OAff s') hb, fun i S u hu ↦ h i S u (unitE u _ hu)⟩`.
+
+Establish `hdirE : ∀ (t₁ t₂ : C') (S : AffOp X'), (G.obj t₁ ⟶ S) → (G.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (omExt (OAff s')).obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : AffOp X') (u : S ⟶ S'), IsUnit (mp (omExt (OAff s')) u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ ⟶ t …` using `fun t₁ t₂ S a₁ a₂ ↦ by`. Take `⟨n, b, hb, h⟩` from `hdir t₁ t₂ S a₁ a₂`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), span_inl_eq_top (OAff s') hb, fun i S' u hu ↦ h i S' u (unitE u _ hu)⟩`. Establish `hsE` using `_root_.GlobalTheory.sep_of_factoring_cover (omExt (OAff s')) G HE hcovE`. Establish `hgE` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (omExt (OAff s')) G HE hcovE hdirE`.
+
+Establish `hvE` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (omExt (OAff s')) G HE hcovE hdirE`. Establish `hcovJ : ∀ j : ℕ, ∀ T : AffOp X', ∃ (n : ℕ) (b : Fin n → (omjExt (OAff s') j).obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp X') (u : T ⟶ S), IsUnit (mp (omjExt (OAff s') j) u (b i)) → ∃ (t : C') (v : T ⟶ G.obj t) (w : G.obj t ⟶ S), v ≫ w = u` using `fun j T ↦ by`. Take `⟨n, b, hb, h⟩` from `hcov T`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), span_inlJ_eq_top (OAff s') j hb, fun i S u hu ↦ h i S u ((isUnit_mp_omjExt_iff (OAff s') j u _).1 hu)⟩`. Establish `hdirJ : ∀ j : ℕ, ∀ (t₁ t₂ : C') (S : AffOp X'), (G.obj t₁ ⟶ S) → (G.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (omjExt (OAff s') j).obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : AffOp X') (u : S ⟶ S'), IsUnit (mp (omjExt (OAff s') j) u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ N …` using `fun j t₁ t₂ S a₁ a₂ ↦ by`.
+
+Take `⟨n, b, hb, h⟩` from `hdir t₁ t₂ S a₁ a₂`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), span_inlJ_eq_top (OAff s') j hb, fun i S' u hu ↦ h i S' u ((isUnit_mp_omjExt_iff (OAff s') j u _).1 hu)⟩`. Establish `hsJ` using `fun j ↦ _root_.GlobalTheory.sep_of_factoring_cover (omjExt (OAff s') j) G (GlobalTheory.T.hasLocalisationAtElements_trivSqZeroExtForms (OAff s') j H) (hcovJ j)`. Establish `hgJ` using `fun j ↦ _root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (omjExt (OAff s') j) G (GlobalTheory.T.hasLocalisationAtElements_trivSqZeroExtForms (OAff s') j H) (hcovJ j) (hdirJ j)`. Establish `hs3 : ∀ (T : AffOp X') (x : Om R' ((OAff s').obj T) 3), (∀ t (u : T ⟶ G.obj t), pOm (OAff s') 3 u x = 0) → x = 0`.
+
+Introduce `T x hx`. Establish `h0 : (TrivSqZeroExt.inr x : (omjExt (OAff s') 3).obj T) = 0` using `hsJ 3 T _ fun t u ↦ (mp_omjExt_inr (OAff s') 3 u x).trans (by rw [hx t u]; exact TrivSqZeroExt.inr_zero _)`. Simplify using `using congrArg TrivSqZeroExt.snd h0`. Conclude with `⟨GlobalTheory.T.comma_first_order_cocycle_lift _ _ (GlobalTheory.T.comma_descent_injective _ _ hs hg hv) b1.2 (_root_.GlobalTheory.cocycle_one_forms_coboundary_of_restrict _ _ hs1 hg1) bg.2 hs2, GlobalTheory.T.comma_second_order_cocycle_lift _ _ (GlobalTheory.T.comma_descent_rest …`.
+-/
 theorem restrict_bijective_two_of_basis {R' : Type} [CommRing R'] {X' : Scheme.{0}} (s' : X' ⟶ Sp R')
     {C' : Type} [Category.{0} C'] [Quiver.IsThin C'] (G : C' ⥤ AffOp X')
     (hcov : ∀ T : AffOp X', ∃ (n : ℕ) (b : Fin n → (OAff s').obj T),
@@ -128,12 +148,21 @@ abbrev Triple (ψ : X'' ⟶ X') (φ : X' ⟶ X) : Type :=
 
 variable {ψ : X'' ⟶ X'} {φ : X' ⟶ X}
 
+/- English proof (translation)
+The claim follows from `(Prod.le_def.1 (Subtype.coe_le_coe.2 h)).1`.
+-/
 theorem Triple.le_one {p q : Triple ψ φ} (h : p ≤ q) : p.1.1 ≤ q.1.1 :=
   (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).1
 
+/- English proof (translation)
+The claim follows from `(Prod.le_def.1 (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2).1`.
+-/
 theorem Triple.le_two {p q : Triple ψ φ} (h : p ≤ q) : p.1.2.1 ≤ q.1.2.1 :=
   (Prod.le_def.1 (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2).1
 
+/- English proof (translation)
+The claim follows from `(Prod.le_def.1 (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2).2`.
+-/
 theorem Triple.le_three {p q : Triple ψ φ} (h : p ≤ q) : p.1.2.2 ≤ q.1.2.2 :=
   (Prod.le_def.1 (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2).2
 
@@ -144,6 +173,9 @@ def Triple.p23 (q : Triple ψ φ) : Pair φ := ⟨(q.1.2.1, q.1.2.2), q.2.2⟩
 def Triple.p13 (q : Triple ψ φ) : Pair (ψ ≫ φ) :=
   ⟨(q.1.1, q.1.2.2), fun _ hx ↦ q.2.2 (q.2.1 hx)⟩
 
+/- English proof (translation)
+The claim follows from `fun _ _ h ↦ Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨Triple.le_one h, Triple.le_three h⟩)`.
+-/
 theorem Triple.pairFirstThirdComp_monotone : Monotone (Triple.p13 (ψ := ψ) (φ := φ)) := fun _ _ h ↦
   Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨Triple.le_one h, Triple.le_three h⟩)
 
@@ -183,6 +215,21 @@ def cechTriplePullbackSecond {s' : X' ⟶ Sp R'} {s'' : X'' ⟶ Sp R''} {τ : R'
 
 variable (ψ φ)
 
+/- English proof (translation)
+Introduce `T`. Establish `hT : IsAffineOpen T.unop.1` using `T.unop.2`. Set `G : Set Γ(X'', T.unop.1)` to `{f | ∃ (V' : X'.affineOpens) (V : X.affineOpens), V'.1 ≤ φ ⁻¹ᵁ V.1 ∧ X''.basicOpen f ≤ ψ ⁻¹ᵁ V'.1}`. Establish `hG : Ideal.span G = ⊤`. Rewrite using `[← hT.self_le_iSup_basicOpen_iff]`.
+
+Introduce `x hx`. Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (x := φ.base (ψ.base x)) (U := (⊤ : X.Opens)) trivial`. Take `⟨V', hV', hxV', hV'V⟩` from `exists_isAffineOpen_mem_and_subset (x := ψ.base x) (U := φ ⁻¹ᵁ V) hxV`. Take `⟨f, hf, hxf⟩` from `hT.exists_basicOpen_le (V := ψ ⁻¹ᵁ V') ⟨x, hxV'⟩ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, ⟨⟨V', hV'⟩, ⟨V, hV⟩, fun y hy ↦ hV'V hy, hf⟩⟩, hxf⟩`.
+
+Take `⟨F, hFG, hF⟩` from `(Ideal.span_eq_top_iff_finite G).1 hG`. Use `⟨F.card, fun i ↦ (F.equivFin.symm i).1, ?_, ?_⟩` and prove the remaining obligations. Establish `hR : Set.range (fun i : Fin F.card ↦ (F.equivFin.symm i).1) = (F : Set Γ(X'', T.unop.1))`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, rfl⟩`. Conclude with `(F.equivFin.symm i).2`. Introduce `hf; exact ⟨F.equivFin ⟨f, hf⟩, by simp⟩`. Conclude with `hR ▸ hF`. Introduce `i S u hu`.
+
+Take `⟨V', V, hV'V, hV⟩` from `hFG (F.equivFin.symm i).2`. Use `set f : Γ(X'', T.unop.1) := (F.equivFin.symm i).1`. Establish `hW : IsAffineOpen (X''.basicOpen f)` using `hT.basicOpen f`. Establish `hWT : X''.basicOpen f ≤ T.unop.1` using `X''.basicOpen_le f`. Set `t : Triple ψ φ` to `⟨(⟨_, hW⟩, V', V), hV, hV'V⟩`.
+
+Establish `hSW : S.unop.1 ≤ X''.basicOpen f`. Establish `h1 : X''.basicOpen (X''.presheaf.map (homOfLE (leOfHom u.unop)).op f) = S.unop.1` using `X''.basicOpen_of_isUnit hu`. Rewrite `h1` using `[Scheme.basicOpen_res]`. Rewrite using `[← h1]`. Conclude with `inf_le_right`.
+
+Use `⟨Opposite.op t, (homOfLE (show (⟨_, hW⟩ : X''.affineOpens) ≤ T.unop from hWT)).op, (homOfLE (show S.unop ≤ (⟨_, hW⟩ : X''.affineOpens) from hSW)).op, ?_⟩` and prove the remaining obligations. Conclude with `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`.
+-/
 theorem triple_cover_affine (s'' : X'' ⟶ Sp R'') : ∀ T : AffOp X'', ∃ (n : ℕ) (b : Fin n → (OAff s'').obj T),
     Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp X'') (u : T ⟶ S),
       IsUnit (mp (OAff s'') u (b i)) →
@@ -226,6 +273,21 @@ theorem triple_cover_affine (s'' : X'' ⟶ Sp R'') : ∀ T : AffOp X'', ∃ (n :
       (homOfLE (show S.unop ≤ (⟨_, hW⟩ : X''.affineOpens) from hSW)).op, ?_⟩
     exact Quiver.Hom.unop_inj (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Introduce `t₁ t₂ S h₁ h₂`. Establish `hS₁ : S.unop.1 ≤ t₁.unop.1.1.1` using `leOfHom h₁.unop`. Establish `hS₂ : S.unop.1 ≤ t₂.unop.1.1.1` using `leOfHom h₂.unop`. Set `B : Set Γ(X'', S.unop.1)` to `{g | ∃ (W' : X'.affineOpens) (W : X.affineOpens), W.1 ≤ t₁.unop.1.2.2.1 ∧ W.1 ≤ t₂.unop.1.2.2.1 ∧ W'.1 ≤ t₁.unop.1.2.1.1 ∧ W'.1 ≤ t₂.unop.1.2.1.1 ∧ W'.1 ≤ φ ⁻¹ᵁ W.1 ∧ X''.basicOpen g ≤ ψ ⁻¹ᵁ W'.1}`. Establish `hB : Ideal.span B = ⊤`.
+
+Use `(S.unop.2.self_le_iSup_basicOpen_iff).1 fun x hx ↦ ?_` and prove the remaining obligations. Establish `hy₁ : ψ.base x ∈ t₁.unop.1.2.1.1` using `t₁.unop.2.1 (hS₁ hx)`. Establish `hy₂ : ψ.base x ∈ t₂.unop.1.2.1.1` using `t₂.unop.2.1 (hS₂ hx)`. Establish `hz₁ : φ.base (ψ.base x) ∈ t₁.unop.1.2.2.1` using `t₁.unop.2.2 hy₁`. Establish `hz₂ : φ.base (ψ.base x) ∈ t₂.unop.1.2.2.1` using `t₂.unop.2.2 hy₂`.
+
+Take `⟨W, hW, hzW, hWV⟩` from `exists_isAffineOpen_mem_and_subset (x := φ.base (ψ.base x)) (U := t₁.unop.1.2.2.1 ⊓ t₂.unop.1.2.2.1) ⟨hz₁, hz₂⟩`. Take `⟨W', hW', hyW', hW'V⟩` from `exists_isAffineOpen_mem_and_subset (x := ψ.base x) (U := t₁.unop.1.2.1.1 ⊓ t₂.unop.1.2.1.1 ⊓ φ ⁻¹ᵁ W) ⟨⟨hy₁, hy₂⟩, hzW⟩`. Take `⟨f, hf, hxf⟩` from `S.unop.2.exists_basicOpen_le (V := S.unop.1 ⊓ ψ ⁻¹ᵁ W') ⟨x, hx, hyW'⟩ hx`. Establish `hfB : f ∈ B` using `⟨⟨W', hW'⟩, ⟨W, hW⟩, fun y hy ↦ (hWV hy).1, fun y hy ↦ (hWV hy).2, fun y hy ↦ (hW'V hy).1.1, fun y hy ↦ (hW'V hy).1.2, fun y hy ↦ (hW'V hy).2, hf.trans inf_le_right⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, hfB⟩, hxf⟩`.
+
+Take `⟨s0, hs0, hspan⟩` from `(Ideal.span_eq_top_iff_finite B).1 hB`. Use `⟨s0.card, fun i ↦ (s0.equivFin.symm i).1, ?_, fun i S' u hu ↦ ?_⟩` and prove the remaining obligations. Establish `hsp : Ideal.span (Set.range fun i ↦ ((s0.equivFin.symm i).1 : Γ(X'', S.unop.1))) = ⊤`. Rewrite using `[eq_top_iff, ← hspan]`. Conclude with `Ideal.span_mono fun x hx ↦ ⟨s0.equivFin ⟨x, hx⟩, by simp⟩`.
+
+Conclude with `hsp`. Establish `hbB : (s0.equivFin.symm i).1 ∈ B` using `hs0 (s0.equivFin.symm i).2`. Take `⟨W', W, hW₁, hW₂, hW'₁, hW'₂, hW'W, hg⟩` from `hbB`. Use `set g : Γ(X'', S.unop.1) := (s0.equivFin.symm i).1`. Express the relevant statement in the definitionally equal form `IsUnit (X''.presheaf.map (homOfLE (show S'.unop.1 ≤ S.unop.1 from leOfHom u.unop)).op g) at hu`.
+
+Establish `hS' : S'.unop.1 ≤ X''.basicOpen g`. Use `Scheme.basicOpen_of_isUnit X'' hu` as an intermediate fact. Rewrite `this` using `[Scheme.basicOpen_res]`. Rewrite using `[← this]`. Conclude with `inf_le_right`.
+
+Set `t₃ : Triple ψ φ` to `⟨(⟨X''.basicOpen g, S.unop.2.basicOpen g⟩, W', W), hg, hW'W⟩`. Use `⟨Opposite.op t₃, ⟨(homOfLE ?_).op⟩, ⟨(homOfLE ?_).op⟩, ⟨(homOfLE ?_).op⟩⟩` and prove the remaining obligations. Conclude with `⟨(X''.basicOpen_le g).trans hS₁, hW'₁, hW₁⟩`. Conclude with `⟨(X''.basicOpen_le g).trans hS₂, hW'₂, hW₂⟩`. Conclude with `hS'`.
+-/
 theorem exists_triple_below_two (s'' : X'' ⟶ Sp R'') : ∀ (t₁ t₂ : (Triple ψ φ)ᵒᵖ) (S : AffOp X''),
     ((cechTripleProjFirstThird ψ φ ⋙ pairFst (ψ ≫ φ)).obj t₁ ⟶ S) → ((cechTripleProjFirstThird ψ φ ⋙ pairFst (ψ ≫ φ)).obj t₂ ⟶ S) →
       ∃ (n : ℕ) (b : Fin n → (OAff s'').obj S), Ideal.span (Set.range b) = ⊤ ∧
@@ -274,18 +336,27 @@ theorem exists_triple_below_two (s'' : X'' ⟶ Sp R'') : ∀ (t₁ t₂ : (Tripl
     · exact ⟨(X''.basicOpen_le g).trans hS₂, hW'₂, hW₂⟩
     · exact hS'
 
+/- English proof (translation)
+Rewrite using `[← pullHyp1_comp]`. Conclude with `pullHyp1_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) c`.
+-/
 theorem cechTripleRestrictComposite_pairRes_first (s'' : X'' ⟶ Sp R'') (c : HH1 s'') :
     pullHyp1 (cechTripleRestrictComposite ψ φ s'') (pullHyp1 (pairRes (ψ ≫ φ) s'') c) =
       pullHyp1 (CoefMap.restrict (OAff s'') (cechTripleProjFirstThird ψ φ ⋙ pairFst (ψ ≫ φ))) c := by
   rw [← pullHyp1_comp]
   exact pullHyp1_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) c
 
+/- English proof (translation)
+Rewrite using `[← pullHyp2_comp]`. Conclude with `pullHyp2_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) c`.
+-/
 theorem cechTripleRestrictComposite_pairRes_second (s'' : X'' ⟶ Sp R'') (c : HH2 s'') :
     pullHyp2 (cechTripleRestrictComposite ψ φ s'') (pullHyp2 (pairRes (ψ ≫ φ) s'') c) =
       pullHyp2 (CoefMap.restrict (OAff s'') (cechTripleProjFirstThird ψ φ ⋙ pairFst (ψ ≫ φ))) c := by
   rw [← pullHyp2_comp]
   exact pullHyp2_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) c
 
+/- English proof (translation)
+Introduce `x y e`. Take `⟨x0, rfl⟩` from `(pairRes_bijective (ψ ≫ φ) s'').2.2.2 x`. Take `⟨y0, rfl⟩` from `(pairRes_bijective (ψ ≫ φ) s'').2.2.2 y`. Rewrite `e` using `[cechTripleRestrictComposite_pairRes_first, cechTripleRestrictComposite_pairRes_first]`. Rewrite using `[(restrict_bijective_one_of_basis s'' _ (triple_cover_affine ψ φ s'') (exists_triple_below_two ψ φ s'')).1 e]`.
+-/
 theorem cechTripleRestrictComposite_injective_first (s'' : X'' ⟶ Sp R'') : Function.Injective (pullHyp1 (cechTripleRestrictComposite ψ φ s'')) := by
   intro x y e
   obtain ⟨x0, rfl⟩ := (pairRes_bijective (ψ ≫ φ) s'').2.2.2 x
@@ -294,6 +365,9 @@ theorem cechTripleRestrictComposite_injective_first (s'' : X'' ⟶ Sp R'') : Fun
   rw [(restrict_bijective_one_of_basis s'' _ (triple_cover_affine ψ φ s'')
     (exists_triple_below_two ψ φ s'')).1 e]
 
+/- English proof (translation)
+Introduce `x y e`. Take `⟨x0, rfl⟩` from `(pairRes_bijective_two (ψ ≫ φ) s'').2 x`. Take `⟨y0, rfl⟩` from `(pairRes_bijective_two (ψ ≫ φ) s'').2 y`. Rewrite `e` using `[cechTripleRestrictComposite_pairRes_second, cechTripleRestrictComposite_pairRes_second]`. Rewrite using `[(restrict_bijective_two_of_basis s'' _ (triple_cover_affine ψ φ s'') (exists_triple_below_two ψ φ s'')).1 e]`.
+-/
 theorem cechTripleRestrictComposite_injective_second (s'' : X'' ⟶ Sp R'') : Function.Injective (pullHyp2 (cechTripleRestrictComposite ψ φ s'')) := by
   intro x y e
   obtain ⟨x0, rfl⟩ := (pairRes_bijective_two (ψ ≫ φ) s'').2 x
@@ -310,6 +384,9 @@ variable {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {X X' X'' :
   {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {s'' : X'' ⟶ Sp R''} {σ : R →+* R'} {τ : R' →+* R''}
   {φ : X' ⟶ X} {ψ : X'' ⟶ X'}
 
+/- English proof (translation)
+Rewrite using `[← pullHyp1_comp, ← pullHyp1_comp]`. Conclude with `pullHyp1_eq_of_natTrans ((pairPull h'').comp (cechTripleRestrictComposite ψ φ s'')) ((pairPull h).comp (cechTriplePullbackSecond h')) { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]`. Conclude with `congrArg (fun q ↦ q.hom b) (Scheme.Hom.appLE_comp_appLE ψ φ U.unop.1.2.2.1 U.unop.1.2.1.1 U.unop.1.1.1 U.unop.2.2 U.unop.2.1)) a`.
+-/
 theorem tri_pull_pull1 (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) (a : HH1 s) :
     pullHyp1 (cechTripleRestrictComposite ψ φ s'') (pullHyp1 (pairPull h'') a) =
@@ -321,6 +398,9 @@ theorem tri_pull_pull1 (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' �
       exact congrArg (fun q ↦ q.hom b) (Scheme.Hom.appLE_comp_appLE ψ φ U.unop.1.2.2.1 U.unop.1.2.1.1
         U.unop.1.1.1 U.unop.2.2 U.unop.2.1)) a
 
+/- English proof (translation)
+Rewrite using `[← pullHyp2_comp, ← pullHyp2_comp]`. Conclude with `pullHyp2_eq_of_natTrans ((pairPull h'').comp (cechTripleRestrictComposite ψ φ s'')) ((pairPull h).comp (cechTriplePullbackSecond h')) { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]`. Conclude with `congrArg (fun q ↦ q.hom b) (Scheme.Hom.appLE_comp_appLE ψ φ U.unop.1.2.2.1 U.unop.1.2.1.1 U.unop.1.1.1 U.unop.2.2 U.unop.2.1)) a`.
+-/
 theorem tri_pull_pull2 (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) (a : HH2 s) :
     pullHyp2 (cechTripleRestrictComposite ψ φ s'') (pullHyp2 (pairPull h'') a) =
@@ -332,30 +412,47 @@ theorem tri_pull_pull2 (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' �
       exact congrArg (fun q ↦ q.hom b) (Scheme.Hom.appLE_comp_appLE ψ φ U.unop.1.2.2.1 U.unop.1.2.1.1
         U.unop.1.1.1 U.unop.2.2 U.unop.2.1)) a
 
+/- English proof (translation)
+Rewrite using `[← pullHyp1_comp, ← pullHyp1_comp]`. Conclude with `pullHyp1_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) a`.
+-/
 theorem tri_res_pull1 (h' : ψ ≫ s' = s'' ≫ spMap τ) (a : HH1 s') :
     pullHyp1 (cechTriplePullbackSecond (φ := φ) h') (pullHyp1 (pairRes φ s') a) =
       pullHyp1 (cechTripleRestrictFirst ψ φ s'') (pullHyp1 (pairPull h') a) := by
   rw [← pullHyp1_comp, ← pullHyp1_comp]
   exact pullHyp1_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) a
 
+/- English proof (translation)
+Rewrite using `[← pullHyp2_comp, ← pullHyp2_comp]`. Conclude with `pullHyp2_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) a`.
+-/
 theorem tri_res_pull2 (h' : ψ ≫ s' = s'' ≫ spMap τ) (a : HH2 s') :
     pullHyp2 (cechTriplePullbackSecond (φ := φ) h') (pullHyp2 (pairRes φ s') a) =
       pullHyp2 (cechTripleRestrictFirst ψ φ s'') (pullHyp2 (pairPull h') a) := by
   rw [← pullHyp2_comp, ← pullHyp2_comp]
   exact pullHyp2_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) a
 
+/- English proof (translation)
+Rewrite using `[← pullHyp1_comp, ← pullHyp1_comp]`. Conclude with `pullHyp1_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) a`.
+-/
 theorem cechTriple_restrict_restrict_first (a : HH1 s'') :
     pullHyp1 (cechTripleRestrictFirst ψ φ s'') (pullHyp1 (pairRes ψ s'') a) =
       pullHyp1 (cechTripleRestrictComposite ψ φ s'') (pullHyp1 (pairRes (ψ ≫ φ) s'') a) := by
   rw [← pullHyp1_comp, ← pullHyp1_comp]
   exact pullHyp1_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) a
 
+/- English proof (translation)
+Rewrite using `[← pullHyp2_comp, ← pullHyp2_comp]`. Conclude with `pullHyp2_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) a`.
+-/
 theorem cechTriple_restrict_restrict_second (a : HH2 s'') :
     pullHyp2 (cechTripleRestrictFirst ψ φ s'') (pullHyp2 (pairRes ψ s'') a) =
       pullHyp2 (cechTripleRestrictComposite ψ φ s'') (pullHyp2 (pairRes (ψ ≫ φ) s'') a) := by
   rw [← pullHyp2_comp, ← pullHyp2_comp]
   exact pullHyp2_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) a
 
+/- English proof (translation)
+Use `⟨fun a a' a'' p p' ↦ cechTripleRestrictComposite_injective_first ψ φ s'' ?_, fun a a' a'' p p' ↦ cechTripleRestrictComposite_injective_second ψ φ s'' ?_⟩` and prove the remaining obligations. Establish `p0 : pullHyp1 (pairPull h) a = pullHyp1 (pairRes φ s') a'` using `p`. Establish `p1 : pullHyp1 (pairPull h') a' = pullHyp1 (pairRes ψ s'') a''` using `p'`. Rewrite using `[tri_pull_pull1 h h' h'', p0, tri_res_pull1, p1, cechTriple_restrict_restrict_first]`. Establish `p0 : pullHyp2 (pairPull h) a = pullHyp2 (pairRes φ s') a'` using `p`.
+
+Establish `p1 : pullHyp2 (pairPull h') a' = pullHyp2 (pairRes ψ s'') a''` using `p'`. Rewrite using `[tri_pull_pull2 h h' h'', p0, tri_res_pull2, p1, cechTriple_restrict_restrict_second]`.
+-/
 theorem isPull_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) :
     (∀ a a' a'', IsPull1 h a a' → IsPull1 h' a' a'' → IsPull1 h'' a a'') ∧

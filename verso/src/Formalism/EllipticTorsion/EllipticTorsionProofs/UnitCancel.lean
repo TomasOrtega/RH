@@ -9,6 +9,11 @@ namespace Formalism.ELL
 
 open Formalism.G
 
+/- English proof (translation)
+Introduce `p _ K _ _ _ _ σ G b hb h`. Take `⟨u, rfl⟩` from `hb`. Use `Formalism.ELL.N_padic_integer_smul p K σ _ h ((u⁻¹ : (ℤ_[p])ˣ) : ℤ_[p])` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_smul, ← map_mul, ← PadicInt.coe_mul, ← Units.val_mul, inv_mul_cancel]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem unit_cancellation : Formalism.ELL.UnitCancel.{u} := by
   intro p _ K _ _ _ _ σ G b hb h
   obtain ⟨u, rfl⟩ := hb

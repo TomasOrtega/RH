@@ -7,6 +7,17 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.IdealPush
 
+/- English proof (translation)
+Use `le_antisymm (Scheme.IdealSheafData.comap_map_le _ _) ?_` and prove the remaining obligations. Establish `key : ∀ (U : S.affineOpens) (B : Z.affineOpens) (hB : B.1 ≤ ρ ⁻¹ᵁ U.1) (t : Γ(Z, ρ ⁻¹ᵁ U.1)), (∀ (A : Z.affineOpens) (hA : A.1 ≤ ρ ⁻¹ᵁ U.1), resG Z hA t ∈ I.ideal A) → resG Z hB t ∈ ((I.map ρ).comap ρ).ideal B`. Introduce `U B hB t ht`. Take `⟨h, rfl⟩` from `hsurj U t`. Establish `hh : h ∈ (I.map ρ).ideal U`.
+
+Rewrite using `[Scheme.IdealSheafData.map, Scheme.Hom.ker_apply, RingHom.mem_ker, Scheme.Hom.comp_app]`. Express the relevant statement in the definitionally equal form `(I.subschemeι.app (ρ ⁻¹ᵁ U.1)).hom ((ρ.app U.1).hom h) = 0`. Conclude with `(GlobalTheory.Cartier.app_subschemeι_eq_zero_iff I _).2 ht`. Conclude with `GlobalTheory.ProjBlowup.appLE_mem_ideal_comap (I.map ρ) ρ U B hB hh`. Rewrite using `[Scheme.IdealSheafData.le_def]`.
+
+Introduce `A a ha`. Use `GlobalTheory.ProjBlowup.mem_ideal_of_locally _ A a fun y hy => ?_` and prove the remaining obligations. Take `⟨U, B, hB, T, hyB, hT, hspan⟩` from `hloc y`. Take `⟨_, ⟨B', hB', rfl⟩, hyB', hB'le⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ A.1 ⊓ B.1 from ⟨hy, hyB⟩) (A.1 ⊓ B.1).isOpen`. Establish `e1 : B' ≤ A.1` using `fun x hx => (hB'le hx).1`.
+
+Establish `e2 : (⟨B', hB'⟩ : Z.affineOpens) ≤ B` using `fun x hx => (hB'le hx).2`. Use `⟨⟨B', hB'⟩, e1, hyB', ?_⟩` and prove the remaining obligations. Establish `hIB : I.ideal B ≤ ((I.map ρ).comap ρ).ideal B`. Rewrite using `[hspan, Ideal.span_le]`. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+
+Conclude with `key U B hB t (hT t ht)`. Establish `h1 : resG Z e1 a ∈ I.ideal ⟨B', hB'⟩` using `I.ideal_le_comap_ideal (U := ⟨B', hB'⟩) (V := A) e1 ha`. Rewrite `h1` using `[← I.map_ideal e2]`. Use `(Ideal.map_le_iff_le_comap.2 ?_) h1` and prove the remaining obligations. Conclude with `hIB.trans (((I.map ρ).comap ρ).ideal_le_comap_ideal e2)`.
+-/
 theorem comap_map_eq_of_locally_generated {Z S : Scheme.{0}} (ρ : Z ⟶ S) [QuasiCompact ρ]
     (I : Z.IdealSheafData)
     (hsurj : ∀ U : S.affineOpens, Function.Surjective (ρ.app U.1).hom)

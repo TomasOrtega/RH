@@ -12,18 +12,32 @@ noncomputable def evalPair {d : ℕ} (z : (Fin d → ℂ) × ℂ) :
     Polynomial (MvPolynomial (Fin d) ℂ) →+* ℂ :=
   Polynomial.eval₂RingHom (MvPolynomial.eval z.1) z.2
 
+/- English proof (translation)
+Simplify using `[evalPair, Polynomial.eval_map]`.
+-/
 theorem evalPair_eq {d : ℕ} (z : (Fin d → ℂ) × ℂ) (r : Polynomial (MvPolynomial (Fin d) ℂ)) :
     evalPair z r = (r.map (MvPolynomial.eval z.1)).eval z.2 := by
   simp [evalPair, Polynomial.eval_map]
 
+/- English proof (translation)
+Simplify using `[evalPair]`.
+-/
 @[simp] theorem evalPair_C {d : ℕ} (z : (Fin d → ℂ) × ℂ) (s : MvPolynomial (Fin d) ℂ) :
     evalPair z (Polynomial.C s) = MvPolynomial.eval z.1 s := by
   simp [evalPair]
 
+/- English proof (translation)
+Simplify using `[evalPair]`.
+-/
 @[simp] theorem evalPair_X {d : ℕ} (z : (Fin d → ℂ) × ℂ) :
     evalPair z Polynomial.X = z.2 := by
   simp [evalPair]
 
+/- English proof (translation)
+Proceed by induction on `r using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `hp.add hq`. Consider the case `monomial n s`. Simplify using `only [← Polynomial.C_mul_X_pow_eq_monomial, map_mul, map_pow, evalPair_C, evalPair_X]`.
+
+Conclude with `((MvPolynomial.continuous_eval s).comp continuous_fst).mul (continuous_snd.pow n)`.
+-/
 theorem continuous_evalPair {d : ℕ} (r : Polynomial (MvPolynomial (Fin d) ℂ)) :
     Continuous fun z : (Fin d → ℂ) × ℂ => evalPair z r := by
   induction r using Polynomial.induction_on' with
@@ -32,6 +46,35 @@ theorem continuous_evalPair {d : ℕ} (r : Polynomial (MvPolynomial (Fin d) ℂ)
     simp only [← Polynomial.C_mul_X_pow_eq_monomial, map_mul, map_pow, evalPair_C, evalPair_X]
     exact ((MvPolynomial.continuous_eval s).comp continuous_fst).mul (continuous_snd.pow n)
 
+/- English proof (translation)
+Use `set E : Polynomial (MvPolynomial (Fin d) ℂ) →+* A := Polynomial.eval₂RingHom j.toRingHom a with hE`. Establish `hEr : ∀ b, E (r b) = j q * b` using `fun b => (hr b).symm`. Establish `hEC : ∀ s, E (Polynomial.C s) = j s` using `fun s => by simp [hE]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨φ, rfl, hφ⟩`. Set `z : (Fin d → ℂ) × ℂ` to `(fun i => φ (j (MvPolynomial.X i)), φ a)`. Establish `h1 : ∀ s, φ (j s) = MvPolynomial.eval z.1 s`. Introduce `s`. Proceed by induction on `s using MvPolynomial.induction_on with`.
+
+Consider the case `C c`. Establish `: (MvPolynomial.C c : MvPolynomial (Fin d) ℂ) = algebraMap ℂ _ c` using `rfl`. Rewrite using `[MvPolynomial.eval_C, this, AlgHom.commutes, AlgHom.commutes]`. Both sides reduce to the same expression. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+
+Consider the case `mul_X s i hs => simp only [map_mul, hs, MvPolynomial.eval_X, z]`. Establish `h2 : ∀ s, φ (E s) = evalPair z s`. Introduce `s`. Proceed by induction on `s using Polynomial.induction_on' with`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+
+Consider the case `monomial n s`. Establish `hX : E Polynomial.X = a` using `by simp [hE]`. Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial, map_mul, map_mul, map_mul, map_pow, map_pow, map_pow, evalPair_C, evalPair_X, hEC, h1, hX]`. Establish `hne : MvPolynomial.eval z.1 (q * q') ≠ 0` using `by rwa [← h1]`. Establish `hq : MvPolynomial.eval z.1 q ≠ 0`.
+
+Rewrite `hne` using `[map_mul]`. Conclude with `left_ne_zero_of_mul hne`. Use `⟨z, ⟨hne, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: E p = 0` using `(hp p).2 dvd_rfl`. Rewrite using `[← evalPair_eq, ← h2, this, map_zero]`.
+
+Use function extensionality and compare the values at `b`. Simplify using `only`. Rewrite using `[← h2, hEr, map_mul, h1]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨z, ⟨hne, hz⟩, rfl⟩`.
+
+Establish `hq : MvPolynomial.eval z.1 q ≠ 0`. Rewrite `hne` using `[map_mul]`. Conclude with `left_ne_zero_of_mul hne`. Rewrite `hz` using `[← evalPair_eq]`. Establish `key : ∀ s t, E s = E t → evalPair z s = evalPair z t`.
+
+Introduce `s t hst`. Establish `h0 : E (s - t) = 0` using `by rw [map_sub, hst, sub_self]`. Take `⟨u, hu⟩` from `(hp (s - t)).1 h0`. Rewrite using `[← sub_eq_zero, ← map_sub, hu, map_mul, hz, zero_mul]`. Establish `hj : ∀ s, evalPair z (r (j s)) / MvPolynomial.eval z.1 q = MvPolynomial.eval z.1 s`.
+
+Introduce `s`. Rewrite using `[key (r (j s)) (Polynomial.C (q * s)) (by rw [hEr, hEC, map_mul]), evalPair_C, map_mul]`. Clear the denominators using the available nonvanishing facts. Set `φ : A →ₐ[ℂ] ℂ` to `{ toFun := fun b => evalPair z (r b) / MvPolynomial.eval z.1 q map_one' := by simpa using hj 1 map_zero' := by simpa using hj 0 map_mul' := by`. Introduce `b c`.
+
+Use `key (r (b * c) * Polynomial.C q) (r b * r c) (by simp only [map_mul, hEr, hEC]; ring)` as an intermediate fact. Simplify using `only [map_mul, evalPair_C] at this`. Clear the denominators using the available nonvanishing facts. Conclude with `this`. Use the proof step `map_add' := by`.
+
+Introduce `b c`. Use `key (r (b + c)) (r b + r c) (by simp only [map_add, hEr]; ring)` as an intermediate fact. Rewrite using `[this, map_add, add_div]`. Use the proof step `commutes' := by`. Introduce `c`.
+
+Use `hj (algebraMap ℂ _ c)` as an intermediate fact. Rewrite `this` using `[AlgHom.commutes]`. Rewrite using `[this]`. Simplify using `}`. Use `⟨φ, rfl, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[hj]`. Conclude with `hne`.
+-/
 theorem points_eq_image_hypersurface {A : Type} [CommRing A] [Algebra ℂ A] {d : ℕ}
     (j : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A) (a : A) (p : Polynomial (MvPolynomial (Fin d) ℂ))
     (q q' : MvPolynomial (Fin d) ℂ)
@@ -115,6 +158,19 @@ theorem points_eq_image_hypersurface {A : Type} [CommRing A] [Algebra ℂ A] {d 
     rw [hj]
     exact hne
 
+/- English proof (translation)
+Introduce `H1 H2 A _ _ _ _ f hf`. Take `⟨d, j, a, p, q, -, hinj, hfin, hmon, hirr, hp, hq, hspan, hr⟩` from `H1 A`. Use `choose r hr using hr`. Choose the witnesses or unpack the hypotheses as in `⟨q', hq', f', hf'⟩ : ∃ q' : MvPolynomial (Fin d) ℂ, q' ≠ 0 ∧ f ∣ j q' := by`. Use `letI : Algebra (MvPolynomial (Fin d) ℂ) A := j.toRingHom.toAlgebra`.
+
+Use `haveI : Module.Finite (MvPolynomial (Fin d) ℂ) A := hfin`. Establish `hint : IsIntegral (MvPolynomial (Fin d) ℂ) f` using `Algebra.IsIntegral.isIntegral f`. Conclude with `hint.isAlgebraic.exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hf)`. Establish `hmul : j q * f' * f = j (q * q')` using `by rw [map_mul, hf']; ring`. Establish `hqq : q * q' ≠ 0` using `mul_ne_zero hq hq'`.
+
+Use `⟨j q * f', ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `hmul` using `[h0, zero_mul]`. Conclude with `hqq (hinj (by rw [← hmul, map_zero]))`. Rewrite using `[hmul, points_eq_image_hypersurface j a p q q' hp r hr]`.
+
+Use `(H2 d p (q * q') hmon hirr hqq ?_).image _ ?_` and prove the remaining obligations. Introduce `x y hx hy hd`. Take `⟨u, v, huv⟩` from `Ideal.mem_span_pair.1 hspan`. Establish `h` using `congrArg (evalPair (x, y)) huv`. Rewrite `hd` using `[Polynomial.derivative_map]`.
+
+Simplify using `only [map_add, map_mul, evalPair_C] at h`. Rewrite `h` using `[evalPair_eq _ p, evalPair_eq _ p.derivative, hy, hd, mul_zero, mul_zero, add_zero]`. Rewrite `hx` using `[map_mul, ← h, zero_mul]`. Conclude with `hx rfl`. Use `continuousOn_pi.2 fun b => ContinuousOn.div (continuous_evalPair _).continuousOn ((MvPolynomial.continuous_eval q).comp continuous_fst).continuousOn ?_` and prove the remaining obligations.
+
+Introduce `z hz`. Use `hz.1` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `left_ne_zero_of_mul this`.
+-/
 theorem exists_isConnected_principalOpen :
     (∀ (A : Type) [CommRing A] [IsDomain A] [Algebra ℂ A] [Algebra.FiniteType ℂ A], ∃ (d : ℕ) (j : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A) (a : A) (p : Polynomial (MvPolynomial (Fin d) ℂ)) (q : MvPolynomial (Fin d) ℂ), ringKrullDim A = d ∧ Function.Injective j ∧ j.toRingHom.Finite ∧ p.Monic ∧ Irreducible p ∧ (∀ r : Polynomial (MvPolynomial (Fin d) ℂ), r.eval₂ j.toRingHom a = 0 ↔ p ∣ r) ∧ q ≠ 0 ∧ Polynomial.C q ∈ Ideal.span {p, p.derivative} ∧ ∀ b : A, ∃ r : Polynomial (MvPolynomial (Fin d) ℂ), j q * b = r.eval₂ j.toRingHom a) → (∀ (d : ℕ) (p : Polynomial (MvPolynomial (Fin d) ℂ)) (q : MvPolynomial (Fin d) ℂ), p.Monic → Irreducible p → q ≠ 0 → (∀ x y, MvPolynomial.eval x q ≠ 0 → (p.map (MvPolynomial.eval x)).eval y = 0 → (p.map (MvPolynomial.eval x)).derivative.eval y ≠ 0) → IsConnected {z : (Fin d → ℂ) × ℂ | MvPolynomial.eval z.1 q ≠ 0 ∧ (p.map (MvPolynomial.eval z.1)).eval z.2 = 0}) → (∀ (A : Type) [CommRing A] [IsDomain A] [Algebra ℂ A] [Algebra.FiniteType ℂ A] (f : A), f ≠ 0 → ∃ h : A, h ≠ 0 ∧ IsConnected {x : A → ℂ | ∃ φ : A →ₐ[ℂ] ℂ, ⇑φ = x ∧ x (h * f) ≠ 0}) := by
   intro H1 H2 A _ _ _ _ f hf

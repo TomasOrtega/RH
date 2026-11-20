@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.N
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.SelfTwistEigenvalues.IwasawaVal
 open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th UpperTheory.V.Th.Nm GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hA (show id j < id i from h), zero_mul]`. Rewrite using `[hB (show id i < id j from h), mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem ordInt_diag {K : Type} [Field K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K}
     (hA : A.BlockTriangular id) (hB : B.BlockTriangular id) (i : Fin n) : (A * B) i i = A i i * B i i := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i]
@@ -11,6 +16,11 @@ private theorem ordInt_diag {K : Type} [Field K] {n : ℕ} {A B : Matrix (Fin n)
     · rw [hB (show id i < id j from h), mul_zero]
   · simp
 
+/- English proof (translation)
+Establish `hi : ((b⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).BlockTriangular id`. Rewrite using `[Matrix.coe_units_inv]`. Use `letI := b.invertible`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb`. Use `⟨(hb.mul hM).mul hi, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `ordInt_diag hb hi i`. Rewrite `h1` using `[Units.mul_inv, Matrix.one_apply_eq]`. Rewrite using `[ordInt_diag (hb.mul hM) hi, ordInt_diag hb hM, mul_right_comm, ← h1, one_mul]`.
+-/
 private theorem ordInt_conj {K : Type} [Field K] {n : ℕ} (b : GL (Fin n) K) {M : Matrix (Fin n) (Fin n) K}
     (hb : (b : Matrix (Fin n) (Fin n) K).BlockTriangular id) (hM : M.BlockTriangular id) :
     ((b : Matrix (Fin n) (Fin n) K) * M * ((b⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)).BlockTriangular id ∧
@@ -42,6 +52,15 @@ private def ordInt_V (l : ℕ) [Fact l.Prime] : ValuationSubring (Qbar l) where
       rw [norm_inv]
       exact inv_le_one_of_one_le₀ h
 
+/- English proof (translation)
+Introduce `l _ n F ρ v ψ z w Y h`. Take `⟨k, hk⟩` from `UpperTheory.V.Pr.T.iwasawaVal (ordInt_V l) n (w : Matrix (Fin n) (Fin n) (Qbar l))`. Set `k' : GL (Fin n) (Qbar l)` to `GeneralLinearGroup.map (ordInt_V l).subtype k`. Establish `hb : ((k' * w : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)).BlockTriangular id` using `hk`. Use `⟨k'⁻¹, fun i j => ?_, fun i j => ?_, fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `: k'⁻¹ = GeneralLinearGroup.map (ordInt_V l).subtype k⁻¹` using `(map_inv _ _).symm`. Rewrite using `[this]`. Conclude with `((k⁻¹ : GL (Fin n) (ordInt_V l)) i j).2`. Rewrite using `[inv_inv]`. Conclude with `(k i j).2`.
+
+Take `⟨h1, h2, h3, h4⟩` from `h g`. Establish `e : ∀ M : Matrix (Fin n) (Fin n) (Qbar l), ((k'⁻¹⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) * M * (k'⁻¹ : GL (Fin n) (Qbar l)) = ((k' * w : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) * (((w⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) …`. Introduce `M`. Rewrite using `[inv_inv, _root_.mul_inv_rev, Units.val_mul, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc, Units.mul_inv_cancel_left]`.
+
+Establish `c1` using `ordInt_conj (k' * w) hb (M := ((w⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) * (ρ (F.φ v g) : Matrix (Fin n) (Fin n) (Qbar l)) * (w : Matrix (Fin n) (Fin n) (Qbar l))) (fun i j hij => h1 i j hij)`. Establish `c2` using `ordInt_conj (k' * w) hb (fun i j hij => h3 i j hij)`. Rewrite `c1`, `c2` using `[← e]`. Use `⟨fun i j hij => c1.1 hij, fun i => (c1.2 i).trans (h2 i), fun i j hij => c2.1 hij, fun hg i => (c2.2 i).trans (h4 hg i)⟩` and prove the remaining obligations.
+-/
 theorem UpperTheory.V.Th.Nm.ordInt :
     ∀ {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) (ρ : F.G₀ →* GL (Fin n) (Qbar l)) (v : F.Vl) (ψ : Fin n → F.Gv v →* (Qbar l)ˣ) (z : F.G₀ → Matrix (Fin n) (Fin n) (Qbar l)) (w : GL (Fin n) (Qbar l)) (Y : Matrix (Fin n) (Fin n) (Qbar l)), OrdAt F ρ v ψ z w Y → ∃ w' : GL (Fin n) (Qbar l), IntM (w' : Matrix (Fin n) (Fin n) (Qbar l)) ∧ IntM ((w'⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) ∧ OrdAt F ρ v ψ z w' Y := by
   intro l _ n F ρ v ψ z w Y h

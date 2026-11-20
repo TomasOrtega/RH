@@ -19,6 +19,9 @@ namespace GlobalTheory.UMin.SecExtend
 
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.left}
 
+/- English proof (translation)
+Establish `e : (Over.homMk (𝟙 _) (by simp) : Over.mk x ⟶ Over.mk x) = 𝟙 _` using `Over.OverMorphism.ext rfl`. Use `ThetaRuleCompare.sec_ext fun j => fn_ext fun y hy => ?_` and prove the remaining obligations. Use `(ThetaRuleCompare.gs_pullS _ t (𝟙 _) y j hy).trans ?_` and prove the remaining obligations. Rewrite using `[e, MonoidalCategory.id_whiskerRight, Over.id_left, Category.id_comp]`.
+-/
 theorem pullS_homMk_id {F : Type} [CommRing F] {x : Sp F ⟶ S} (t : SecAt G L x) :
     VVRank.pullS G _ (Over.homMk (𝟙 _) (by simp) : Over.mk x ⟶ Over.mk x) t = t := by
   have e : (Over.homMk (𝟙 _) (by simp) : Over.mk x ⟶ Over.mk x) = 𝟙 _ := Over.OverMorphism.ext rfl
@@ -26,6 +29,9 @@ theorem pullS_homMk_id {F : Type} [CommRing F] {x : Sp F ⟶ S} (t : SecAt G L x
   refine (ThetaRuleCompare.gs_pullS _ t (𝟙 _) y j hy).trans ?_
   rw [e, MonoidalCategory.id_whiskerRight, Over.id_left, Category.id_comp]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[pullS_homMk_id]`. Conclude with `ThetaRuleCompare.sec_ext fun j => congrFun (congrArg Subtype.val E) j`.
+-/
 theorem eq_pullS_of_cast {F : Type} [CommRing F] {x₁ x₂ : Sp F ⟶ S} (h : x₁ = x₂)
     (t : SecAt G L x₁) (u : SecAt G L x₂) (E : SecM.ofSec G u = SecM.ofSec G (h ▸ t)) :
     u = VVRank.pullS G _ (Over.homMk (𝟙 _) (by simp [h]) : Over.mk x₂ ⟶ Over.mk x₁) t := by
@@ -33,11 +39,29 @@ theorem eq_pullS_of_cast {F : Type} [CommRing F] {x₁ x₂ : Sp F ⟶ S} (h : x
   rw [pullS_homMk_id]
   exact ThetaRuleCompare.sec_ext fun j => congrFun (congrArg Subtype.val E) j
 
+/- English proof (translation)
+The claim follows from `(gs_res (𝟙 Z) z h hz ((g.app U).hom b)).trans ((gs_pull (𝟙 Z) g z U (h hz) b).trans (by rw [Category.id_comp]))`.
+-/
 theorem gs_appLE {Z Y : Scheme.{0}} (g : Z ⟶ Y) (U : Y.Opens) (O : Z.Opens) (h : O ≤ g ⁻¹ᵁ U) (b : Γ(Y, U))
     (z : Z) (hz : z ∈ O) : gs (𝟙 Z) z O ((g.appLE U O h).hom b) = gs g z U b :=
   (gs_res (𝟙 Z) z h hz ((g.app U).hom b)).trans
     ((gs_pull (𝟙 Z) g z U (h hz) b).trans (by rw [Category.id_comp]))
 
+/- English proof (translation)
+Introduce `S G _ L hL hG R _ _ _ _ _ χ θ H`. Take `⟨hLN, hN, hPre, hInj⟩` from `GlobalTheory.T.semiAbelian_baseChange_normal_domain_generic_fibre S G hG R χ`. Set `hK : Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⟶ Over.mk χ` to `Over.homMk (spMap (algebraMap R (FractionRing R))) rfl`. Set `fK : ∀ j, Γ((Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⊗ G).left, (hK ▷ G).left ⁻¹ᵁ (LPow G L ((1 : ℕ) : ℤ) (Over.mk χ)).U j)` to `fun j => ((Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⊗ G).left.presheaf.map (homOfLE (ThetaRuleCompare.chart_ge hK j)).op).hom (θ.f j)`. Establish `ext : ∀ j, ∃ s : Γ((Over.mk χ ⊗ G).left, (LPow G L ((1 : ℕ) : ℤ) (Over.mk χ)).U j), ((hK ▷ G).left.app _).hom s = fK j` using `fun j => GenericExtend.exists_app_eq (hK ▷ G).left hInj _ (fK j) (GlobalTheory.T.extendsAt_of_codim_le_one_over_completeDVRs S G hG R χ _ (fK j) (by`.
+
+Introduce `V _ _ _ hV φ φK h hφ`. Take `⟨σV, E⟩` from `H V hV φ φK h hφ`. Set `hφR : Over.mk (spMap φ ≫ χ) ⟶ Over.mk χ` to `Over.homMk (spMap φ) rfl`. Set `hVV : Over.mk (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ) ⟶ Over.mk (spMap φ ≫ χ)` to `Over.homMk (spMap (algebraMap V (FractionRing V))) rfl`. Set `B : Over.mk (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ) ⟶ Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ)` to `Over.homMk (spMap φK) h`.
+
+Establish `E'` using `eq_pullS_of_cast G h _ _ E`. Establish `E'' : VVRank.pullS G _ hVV σV = VVRank.pullS G _ B θ`. Use `E'.trans ((ThetaRuleCompare.pullS_comp _ _ θ).trans ?_)` and prove the remaining obligations. Use `congr 1`. Use `⟨((Over.mk (spMap φ ≫ χ) ⊗ G).left.presheaf.map (homOfLE (ThetaRuleCompare.chart_ge hφR j)).op).hom (σV.f j), fun O h₁ h₂ => fn_ext fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hx₁` using `h₁ hx`. Establish `hx₂` using `h₂ hx`. Establish `hxc : x ∈ (LPow G L ((1 : ℕ) : ℤ) (Over.mk (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ))).U j` using `ThetaRuleCompare.chart_ge (a := ((1 : ℕ) : ℤ)) hVV j (ThetaRuleCompare.chart_ge (a := ((1 : ℕ) : ℤ)) hφR j hx₁)`. Rewrite using `[gs_appLE _ _ _ _ _ x hx, gs_appLE _ _ _ _ _ x hx, gs_res _ x _ hx₁, gs_res _ x _ hx₂]`. Establish `a₁` using `ThetaRuleCompare.gs_pullS hVV σV (𝟙 _) x j hxc`.
+
+Establish `a₂` using `ThetaRuleCompare.gs_pullS B θ (𝟙 _) x j hxc`. Rewrite `a₁`, `a₂` using `[Category.id_comp]`. Rewrite using `[← a₁, ← a₂, E'']))`. Use `choose s hs using ext`. Establish `hv : ∀ j (w : (Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⊗ G).left), (hK ▷ G).left w ∈ (LPow G L ((1 : ℕ) : ℤ) (Over.mk χ)).U j → gs (𝟙 _ ≫ (hK ▷ G).left) w _ (s j) = gs (𝟙 _) w _ (θ.f j)` using `fun j w hw => (gs_pull (𝟙 _) _ w _ hw _).symm.trans ((congrArg (gs (𝟙 _) w _) (hs j)).trans (gs_res (𝟙 _) w (ThetaRuleCompare.chart_ge hK j) hw _))`.
+
+Use `⟨⟨s, fun j j' => hInj _ (fn_ext fun w hw => ?_)⟩, congrArg (SecM.ofSec G) (ThetaRuleCompare.sec_ext fun j => fn_ext fun w hw => ?_)⟩` and prove the remaining obligations. Establish `hw' : (𝟙 _ ≫ (hK ▷ G).left) w ∈ (LPow G L ((1 : ℕ) : ℤ) (Over.mk χ)).U j ⊓ (LPow G L ((1 : ℕ) : ℤ) (Over.mk χ)).U j'` using `hw`. Use `(gs_pull (𝟙 _) _ w _ hw' _).trans (Eq.trans ?_ (gs_pull (𝟙 _) _ w _ hw' _).symm)` and prove the remaining obligations. Use `((gs_res _ w _ hw' _).trans ((hv j w hw'.1).trans (sec_trans (L := L) (φ := fun _ : Fin 1 => (snd (Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ)) G).left) (ε := fun _ => ((1 : ℕ) : ℤ)) θ (𝟙 _) w (ThetaRuleCompare.chart_ge (a := ((1 : ℕ) : ℤ)) hK j hw'.1) (ThetaRuleCompare.c …` and prove the remaining obligations. Use `(gs_mul _ w _ hw' _ _).trans (congrArg₂ (· * ·) ((gs_unit _ w _ hw' _).trans (congrArg Units.val ((gm_linComb L _ _ _ w j j' hw'.1 hw'.2).trans ?_))) ((gs_res _ w _ hw' _).trans (hv j' w hw'.2)))` and prove the remaining obligations.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, VVRank.whisker_snd_left]`. Conclude with `(ThetaRuleCompare.gs_pullS hK _ _ w j hw).trans (hv j w (chart_le_res G L (hK ▷ G) (whiskerRight_snd _ _) _ j hw))`.
+-/
 theorem exists_sec_of_extends : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left), L.IsLB → IsSemiAbelian G → ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (χ : Sp R ⟶ S) (θ : SecAt G L (spMap (algebraMap R (FractionRing R)) ≫ χ)), (∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (φ : R →+* V) (φK : FractionRing R →+* FractionRing V) (h : spMap φK ≫ spMap (algebraMap R (FractionRing R)) ≫ χ = spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ), φK.comp (algebraMap R (FractionRing R)) = (algebraMap V (FractionRing V)).comp φ → ∃ σ : SecAt G L (spMap φ ≫ χ), SecM.ofSec G (SecAt.pull G L σ (algebraMap V (FractionRing V))) = SecM.ofSec G (h ▸ SecAt.pull G L θ φK)) → ∃ σ : SecAt G L χ, SecM.ofSec G (SecAt.pull G L σ (algebraMap R (FractionRing R))) = SecM.ofSec G θ := by
   intro S G _ L hL hG R _ _ _ _ _ χ θ H
   obtain ⟨hLN, hN, hPre, hInj⟩ := GlobalTheory.T.semiAbelian_baseChange_normal_domain_generic_fibre S G hG R χ

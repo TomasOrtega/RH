@@ -16,6 +16,15 @@ namespace IdeleNorm
 
 variable {K : Type*} [Field K] [NumberField K] (L : Type*) [Field L] [NumberField L] [Algebra K L]
 
+/- English proof (translation)
+Set `V : ∀ v : HeightOneSpectrum (𝓞 K), Set (v.adicCompletion K)ˣ` to `fun v ↦ ((finiteLocalNorm L v).range : Set (v.adicCompletion K)ˣ) ∩ ((Submonoid.ofClass (v.adicCompletionIntegers K)).units : Set (v.adicCompletion K)ˣ)`. Establish `hV : ∀ᶠ v in cofinite, V v = ((Submonoid.ofClass (v.adicCompletionIntegers K)).units : Set (v.adicCompletion K)ˣ)` using `by filter_upwards [eventually_map_integerUnitsOver_eq (K := K) L] with v hv`. Use `Set.inter_eq_right.2 ?_` and prove the remaining obligations. Introduce `u hu`. Establish `hu' : u ∈ (integerUnitsOver L v).map (finiteLocalNorm L v)`.
+
+Rewrite using `[hv]`. Conclude with `hu`. Take `⟨y, -, rfl⟩` from `hu'`. Conclude with `⟨y, rfl⟩`. Establish `hopen` using `(IdeleGroup.isTopologicalBasis K).isOpen ⟨fun w ↦ ((infiniteLocalNorm L w).range : Set (w.Completion)ˣ), V, fun w ↦ isOpen_range_infiniteLocalNorm w, fun v ↦ (isOpen_range_finiteLocalNorm v).inter (isOpen_units_adicCompletionIntegers K v), hV, rfl⟩`.
+
+Use `mem_of_superset (hopen.mem_nhds ⟨fun w ↦ ?_, fun v ↦ ⟨?_, ?_⟩⟩) ?_` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `one_mem _`. Rewrite using `[map_one]`. Conclude with `one_mem (finiteLocalNorm L v).range`.
+
+Rewrite using `[map_one]`. Conclude with `one_mem (Submonoid.ofClass (v.adicCompletionIntegers K)).units`. Introduce and unpack `x ⟨hinf, hfin⟩`. Conclude with `mem_range_ideleNorm_of_forall x (fun v ↦ (hfin v).1) hinf`.
+-/
 theorem range_ideleNorm_mem_nhds_one :
     ((ideleNorm K L).range : Set (IdeleGroup K)) ∈ 𝓝 1 := by
   classical
@@ -49,6 +58,9 @@ theorem range_ideleNorm_mem_nhds_one :
 
 end IdeleNorm
 
+/- English proof (translation)
+Rewrite using `[← MonoidHom.ker_eq_bot_iff, Abelianization.ker_of, commutator_eq_bot]`.
+-/
 theorem Abelianization.of_injective_of_isMulCommutative {G : Type*} [Group G] [IsMulCommutative G] :
     Function.Injective (Abelianization.of : G →* Abelianization G) := by
   rw [← MonoidHom.ker_eq_bot_iff, Abelianization.ker_of, commutator_eq_bot]
@@ -62,6 +74,15 @@ section Main
 variable (K L : FiniteSubfield) [hKL : Fact (K ≤ L)]
   [(L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal] [IsMulCommutative (L.1 ≃ₐ[K.1] L.1)]
 
+/- English proof (translation)
+Use `set f : IdeleGroup K.1 →* Abelianization (L.1 ≃ₐ[K.1] L.1) := (abstractSymbol K L).comp (IdeleClassGroup.mk K.1) with hf`. Use `set g : IdeleGroup K.1 →* Abelianization (L.1 ≃ₐ[K.1] L.1) := Abelianization.of.comp (ideleSymbol K.1 L.1) with hg`. Establish `hle : localEmbeddingSubgroup K.1 ≤ f.eqLocus g` using `sup_le (iSup_le fun v ↦ by`. Introduce and unpack `_ ⟨a, rfl⟩`. Express the relevant statement in the definitionally equal form `abstractSymbol K L (IdeleClassGroup.mk K.1 (finiteEmbedding v a)) = Abelianization.of (ideleSymbol K.1 L.1 (finiteEmbedding v a))`.
+
+Rewrite using `[abstractSymbol_mk_finiteEmbedding, ideleSymbol_finiteEmbedding])`. Use the proof step `(iSup_le fun w ↦ by`. Introduce and unpack `_ ⟨a, rfl⟩`. Express the relevant statement in the definitionally equal form `abstractSymbol K L (IdeleClassGroup.mk K.1 (infiniteEmbedding w a)) = Abelianization.of (ideleSymbol K.1 L.1 (infiniteEmbedding w a))`. Rewrite using `[abstractSymbol_mk_infiniteEmbedding, ideleSymbol_infiniteEmbedding])`.
+
+Establish `hfN : ∀ y : IdeleGroup L.1, f (ideleNorm K.1 L.1 y) = 1` using `fun y ↦ abstractSymbol_ideleClassNorm_eq_one K L (IdeleClassGroup.mk L.1 y)`. Establish `hgN : ∀ y : IdeleGroup L.1, g (ideleNorm K.1 L.1 y) = 1` using `fun y ↦ by`. Express the relevant statement in the definitionally equal form `Abelianization.of (ideleSymbol K.1 L.1 (ideleNorm K.1 L.1 y)) = 1`. Rewrite using `[ideleSymbol_ideleNorm, map_one]`. Take `⟨h, hh, ⟨y, hy⟩⟩` from `exists_mem_localEmbeddingSubgroup_inv_mul_mem (IdeleNorm.range_ideleNorm_mem_nhds_one L.1) x`.
+
+Establish `hx : x = h * ideleNorm K.1 L.1 y` using `by rw [hy, mul_inv_cancel_left]`. Express the relevant statement in the definitionally equal form `f x = g x`. Rewrite using `[hx, map_mul, map_mul, hfN, hgN, (hle hh : f h = g h)]`.
+-/
 theorem abstractSymbol_mk (x : IdeleGroup K.1) :
     abstractSymbol K L (IdeleClassGroup.mk K.1 x) = Abelianization.of (ideleSymbol K.1 L.1 x) := by
   set f : IdeleGroup K.1 →* Abelianization (L.1 ≃ₐ[K.1] L.1) :=
@@ -90,15 +111,24 @@ theorem abstractSymbol_mk (x : IdeleGroup K.1) :
   change f x = g x
   rw [hx, map_mul, map_mul, hfN, hgN, (hle hh : f h = g h)]
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext (abstractSymbol_mk K L)`.
+-/
 theorem abstractSymbol_comp_mk :
     (abstractSymbol K L).comp (IdeleClassGroup.mk K.1) =
       Abelianization.of.comp (ideleSymbol K.1 L.1) :=
   MonoidHom.ext (abstractSymbol_mk K L)
 
+/- English proof (translation)
+Apply `Abelianization.of_injective_of_isMulCommutative` to reduce the goal to its premises. Rewrite using `[← abstractSymbol_mk, IdeleClassGroup.mk_diagonal, map_one, map_one]`.
+-/
 theorem ideleSymbol_diagonal (a : K.1ˣ) : ideleSymbol K.1 L.1 (diagonal K.1 a) = 1 := by
   apply Abelianization.of_injective_of_isMulCommutative
   rw [← abstractSymbol_mk, IdeleClassGroup.mk_diagonal, map_one, map_one]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `ideleSymbol_diagonal K L a`.
+-/
 theorem range_diagonal_le_ker_ideleSymbol :
     (diagonal K.1).range ≤ (ideleSymbol K.1 L.1).ker := by
   rintro _ ⟨a, rfl⟩
@@ -107,22 +137,41 @@ theorem range_diagonal_le_ker_ideleSymbol :
 abbrev classSymbol : IdeleClassGroup K.1 →* (L.1 ≃ₐ[K.1] L.1) :=
   CyclotomicSymbol.ideleClassSymbol L.1 (range_diagonal_le_ker_ideleSymbol K L)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classSymbol_mk (x : IdeleGroup K.1) :
     classSymbol K L (IdeleClassGroup.mk K.1 x) = ideleSymbol K.1 L.1 x :=
   rfl
 
+/- English proof (translation)
+Use `MonoidHom.ext fun c ↦ ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K.1 c`. Conclude with `abstractSymbol_mk K L x`.
+-/
 theorem abstractSymbol_eq_classSymbol :
     abstractSymbol K L = Abelianization.of.comp (classSymbol K L) := by
   refine MonoidHom.ext fun c ↦ ?_
   obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective K.1 c
   exact abstractSymbol_mk K L x
 
+/- English proof (translation)
+The claim follows from `CyclotomicSymbol.continuous_ideleClassSymbol _`.
+-/
 theorem continuous_classSymbol : Continuous (classSymbol K L) :=
   CyclotomicSymbol.continuous_ideleClassSymbol _
 
+/- English proof (translation)
+The claim follows from `CyclotomicSymbol.ideleClassSymbol_surjective _`.
+-/
 theorem classSymbol_surjective : Function.Surjective (classSymbol K L) :=
   CyclotomicSymbol.ideleClassSymbol_surjective _
 
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[MonoidHom.mem_ker, abstractSymbol_apply]`. Establish `hinj : Function.Injective (Abelianization.map (quotientGaloisEquiv K L).toMonoidHom)` using `fun a b hab ↦ (quotientGaloisEquiv K L).abelianizationCongr.injective hab`. Rewrite using `[← map_one (Abelianization.map (quotientGaloisEquiv K L).toMonoidHom), hinj.eq_iff, ← map_one (reciprocityEquiv K L).symm, (reciprocityEquiv K L).symm.injective.eq_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (fixedEquiv K c) : GroundTheory.LocalField.Abstract.tateZero IdeleClassLimit (K.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) L.openSubgroup) = 1 at h`. Rewrite `h` using `[QuotientGroup.eq_one_iff]`. Take `⟨b, hb⟩` from `h`. Take `⟨d, rfl⟩` from `(fixedEquiv L).surjective b`.
+
+Use `⟨d, (fixedEquiv K).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_fixedEquiv hKL.out d]`. Conclude with `hb`. Introduce and unpack `⟨d, rfl⟩`. Conclude with `normClass_ideleClassNorm K L d`.
+-/
 theorem ker_abstractSymbol :
     (abstractSymbol K L).ker = (FiniteSubfield.ideleClassNorm hKL.out).range := by
   ext c
@@ -144,6 +193,9 @@ theorem ker_abstractSymbol :
   · rintro ⟨d, rfl⟩
     exact normClass_ideleClassNorm K L d
 
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[← ker_abstractSymbol K L, MonoidHom.mem_ker, MonoidHom.mem_ker, abstractSymbol_eq_classSymbol K L, MonoidHom.comp_apply, ← map_one Abelianization.of, Abelianization.of_injective_of_isMulCommutative.eq_iff]`.
+-/
 theorem ker_classSymbol :
     (classSymbol K L).ker = (FiniteSubfield.ideleClassNorm hKL.out).range := by
   ext c
@@ -156,10 +208,20 @@ def classSymbolEquiv :
   (QuotientGroup.quotientMulEquivOfEq (ker_classSymbol K L).symm).trans
     (QuotientGroup.quotientKerEquivOfSurjective _ (classSymbol_surjective K L))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classSymbolEquiv_mk (x : IdeleGroup K.1) :
     classSymbolEquiv K L (QuotientGroup.mk (IdeleClassGroup.mk K.1 x)) = ideleSymbol K.1 L.1 x :=
   rfl
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx ↦ ?_) (sup_le (range_diagonal_le_ker_ideleSymbol K L) (range_ideleNorm_le_ker_ideleSymbol L.1))` and prove the remaining obligations. Establish `hc : IdeleClassGroup.mk K.1 x ∈ (classSymbol K L).ker` using `hx`. Rewrite `hc` using `[ker_classSymbol]`. Take `⟨c, hc⟩` from `hc`. Take `⟨y, rfl⟩` from `IdeleClassGroup.mk_surjective L.1 c`.
+
+Establish `hy : IdeleClassGroup.mk K.1 (ideleNorm K.1 L.1 y) = IdeleClassGroup.mk K.1 x` using `hc`. Establish `hd : (ideleNorm K.1 L.1 y)⁻¹ * x ∈ (diagonal K.1).range`. Rewrite using `[← IdeleClassGroup.ker_mk, MonoidHom.mem_ker, map_mul, map_inv, hy, inv_mul_cancel]`. Establish `hx : x = ideleNorm K.1 L.1 y * ((ideleNorm K.1 L.1 y)⁻¹ * x)`. Rewrite using `[mul_inv_cancel_left]`.
+
+Rewrite using `[hx]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_right ⟨y, rfl⟩) (Subgroup.mem_sup_left hd)`.
+-/
 theorem ker_ideleSymbol :
     (ideleSymbol K.1 L.1).ker = (diagonal K.1).range ⊔ (ideleNorm K.1 L.1).range := by
   refine le_antisymm (fun x hx ↦ ?_)

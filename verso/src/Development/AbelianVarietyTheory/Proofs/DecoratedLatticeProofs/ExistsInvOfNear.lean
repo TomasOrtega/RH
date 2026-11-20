@@ -21,9 +21,15 @@ def MLe (A : Matrix (Fin a) (Fin b) L) (γ : Γ) : Prop := ∀ i j, v (A i j) �
 
 variable {v}
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).trans hγ`.
+-/
 theorem MLe.mono {A : Matrix (Fin a) (Fin b) L} {γ δ : Γ} (h : MLe v A γ) (hγ : γ ≤ δ) : MLe v A δ :=
   fun i j => (h i j).trans hγ
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] refine Valuation.map_sum_le _ fun t _ => ?_ rw [map_mul] exact mul_le_mul' (h i t) (h' t j)`.
+-/
 theorem MLe.mul {A : Matrix (Fin a) (Fin b) L} {B : Matrix (Fin b) (Fin c) L} {γ δ : Γ} (h : MLe v A γ) (h' : MLe v B δ) :
     MLe v (A * B) (γ * δ) := fun i j => by
   rw [Matrix.mul_apply]
@@ -31,20 +37,39 @@ theorem MLe.mul {A : Matrix (Fin a) (Fin b) L} {B : Matrix (Fin b) (Fin c) L} {�
   rw [map_mul]
   exact mul_le_mul' (h i t) (h' t j)
 
+/- English proof (translation)
+Introduce `i j` and use `Valuation.map_add_le _ (h i j) (h' i j)`.
+-/
 theorem MLe.add {A B : Matrix (Fin a) (Fin b) L} {γ : Γ} (h : MLe v A γ) (h' : MLe v B γ) : MLe v (A + B) γ :=
   fun i j => Valuation.map_add_le _ (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `Valuation.map_sub_le _ (h i j) (h' i j)`.
+-/
 theorem MLe.sub {A B : Matrix (Fin a) (Fin b) L} {γ : Γ} (h : MLe v A γ) (h' : MLe v B γ) : MLe v (A - B) γ :=
   fun i j => Valuation.map_sub_le _ (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.one_apply] split_ifs <;> simp`.
+-/
 theorem mle_one : MLe v (1 : Matrix (Fin a) (Fin a) L) 1 := fun i j => by
   rw [Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(Set.finite_range fun p : Fin a × Fin b => v (A p.1 p.2)).bddAbove`. Conclude with `⟨max 1 m, le_max_left _ _, fun i j => (hm ⟨(i, j), rfl⟩).trans (le_max_right _ _)⟩`.
+-/
 theorem exists_mle (A : Matrix (Fin a) (Fin b) L) : ∃ m : Γ, 1 ≤ m ∧ MLe v A m := by
   obtain ⟨m, hm⟩ := (Set.finite_range fun p : Fin a × Fin b => v (A p.1 p.2)).bddAbove
   exact ⟨max 1 m, le_max_left _ _, fun i j => (hm ⟨(i, j), rfl⟩).trans (le_max_right _ _)⟩
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨p, -, hp⟩` from `Finset.exists_max_image Finset.univ (fun p : Fin a × Fin b => v (Z p.1 p.2)) ⟨(i, j), Finset.mem_univ _⟩`. Establish `hZ : MLe v Z (v (Z p.1 p.2))` using `fun r s => hp (r, s) (Finset.mem_univ _)`. Use `(hZ i j).trans ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+
+Rewrite `hlt` using `[not_le]`. Establish `h0 : 0 < v (Z p.1 p.2)` using `lt_of_le_of_lt zero_le' hlt`. Establish `h1 : v ((D * Z) p.1 p.2) < v (Z p.1 p.2)` using `((hD.mul hZ) p.1 p.2).trans_lt (mul_lt_of_lt_one_left h0 hδ)`. Establish `h2` using `Valuation.map_add_lt v ((hW p.1 p.2).trans_lt hlt) h1`. Rewrite `h2` using `[← Matrix.add_apply, ← e]`.
+
+Conclude with `lt_irrefl _ h2`.
+-/
 theorem mle_of_fix {Z W : Matrix (Fin a) (Fin b) L} {D : Matrix (Fin a) (Fin a) L} {γ δ : Γ} (hδ : δ < 1) (hD : MLe v D δ)
     (hW : MLe v W γ) (e : Z = W + D * Z) : MLe v Z γ := by
   intro i j
@@ -59,6 +84,15 @@ theorem mle_of_fix {Z W : Matrix (Fin a) (Fin b) L} {D : Matrix (Fin a) (Fin a) 
   rw [← Matrix.add_apply, ← e] at h2
   exact lt_irrefl _ h2
 
+/- English proof (translation)
+Establish `hA' : MLe v (1 - A) δ` using `fun i j => by`. Rewrite using `[← neg_sub, Matrix.neg_apply, Valuation.map_neg]`. Conclude with `hA i j`. Establish `hu : IsUnit A`. Rewrite using `[← Matrix.mulVec_injective_iff_isUnit, ← Matrix.coe_mulVecLin, injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Establish `hx' : A *ᵥ x = 0` using `hx`. Establish `h` using `mle_of_fix (Z := Matrix.of fun i (_ : Fin 1) => x i) (W := 0) (γ := 0) hδ hA' (fun i j => by simp) (by`. Use extensionality with `i j`. Use `congrFun hx' i` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at this`. Simplify using `[Matrix.sub_mul, Matrix.mul_apply, this])`. Use function extensionality and compare the values at `i`. Simplify using `using h i 0`. Take `⟨u, rfl⟩` from `hu`.
+
+Use `⟨(u⁻¹ : (Matrix (Fin a) (Fin a) L)ˣ), u.mul_inv, u.inv_mul, mle_of_fix hδ hA' hA' ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, u.mul_inv]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_inv_of_near {A : Matrix (Fin a) (Fin a) L} {δ : Γ} (hδ : δ < 1) (hA : MLe v (A - 1) δ) :
     ∃ B : Matrix (Fin a) (Fin a) L, A * B = 1 ∧ B * A = 1 ∧ MLe v (B - 1) δ := by
   have hA' : MLe v (1 - A) δ := fun i j => by
@@ -80,10 +114,16 @@ theorem exists_inv_of_near {A : Matrix (Fin a) (Fin a) L} {δ : Γ} (hδ : δ < 
   rw [Matrix.mul_sub, Matrix.sub_mul, u.mul_inv]
   simp
 
+/- English proof (translation)
+Use `(hA.mono hδ).add mle_one` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem MLe.of_near {A : Matrix (Fin a) (Fin a) L} {δ : Γ} (hδ : δ ≤ 1) (hA : MLe v (A - 1) δ) : MLe v A 1 := by
   have := (hA.mono hδ).add mle_one
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Establish `e : A * B - 1 = A * (B - 1) + (A - 1)` using `by noncomm_ring`. Rewrite using `[e]`. Use `(hA.of_near hδ).mul hB` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `this.add hA`.
+-/
 theorem MLe.near_mul {A B : Matrix (Fin a) (Fin a) L} {δ : Γ} (hδ : δ ≤ 1) (hA : MLe v (A - 1) δ) (hB : MLe v (B - 1) δ) :
     MLe v (A * B - 1) δ := by
   have e : A * B - 1 = A * (B - 1) + (A - 1) := by noncomm_ring
@@ -100,6 +140,13 @@ open Formalism.L2.Col
 
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) {a b : ℕ}
 
+/- English proof (translation)
+Establish `h : ∀ z : P.adicCompletion E, ∃ r : E, Valued.v (algebraMap E (P.adicCompletion E) r - z) ≤ δ` using `fun z => by`. Take `⟨t, ht⟩` from `P.valuation_surjective E δ`. Establish `ht' : Valued.v (algebraMap E (P.adicCompletion E) t) = δ` using `(GlobalTheory.Mem.Col2.valued_algebraMap P t).trans ht`. Establish `h0 : algebraMap E (P.adicCompletion E) t ≠ 0` using `fun h => hδ (by rw [← ht', h, map_zero])`. Establish `ho : IsOpen {y : P.adicCompletion E | y - z / algebraMap E _ t ∈ (Valued.integer (P.adicCompletion E) : Set _)}` using `(Valued.isOpen_integer (P.adicCompletion E)).preimage (continuous_sub_right _)`.
+
+Take `⟨r, hr⟩` from `(P.denseRange_algebraMap E).exists_mem_open ho ⟨z / algebraMap E _ t, by simp⟩`. Establish `hr' : Valued.v (algebraMap E (P.adicCompletion E) r - z / algebraMap E _ t) ≤ 1` using `hr`. Use `⟨t * r, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap E (P.adicCompletion E) (t * r) - z = algebraMap E (P.adicCompletion E) t * (algebraMap E (P.adicCompletion E) r - z / algebraMap E _ t)`. Rewrite using `[map_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_mul, ht']`. Conclude with `mul_le_of_le_one_right' hr'`. Use `choose f hf using h`. Conclude with `⟨Matrix.of fun i j => f (U i j), fun i j => hf _⟩`.
+-/
 theorem exists_approx (U : Matrix (Fin a) (Fin b) (P.adicCompletion E)) {δ : WithZero (Multiplicative ℤ)} (hδ : δ ≠ 0) :
     ∃ u : Matrix (Fin a) (Fin b) E, MLe Valued.v (u.map (algebraMap E (P.adicCompletion E)) - U) δ := by
   have h : ∀ z : P.adicCompletion E, ∃ r : E, Valued.v (algebraMap E (P.adicCompletion E) r - z) ≤ δ := fun z => by
@@ -129,14 +176,43 @@ open Formalism.L2.Col
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {a b : ℕ}
 
 omit [StarRing E] in
+/- English proof (translation)
+The claim follows from `forall₂_congr fun i j => by rw [Matrix.map_apply, GlobalTheory.Mem.Col2.valued_algebraMap]`.
+-/
 theorem mle_map_iff {A : Matrix (Fin a) (Fin b) E} {γ : WithZero (Multiplicative ℤ)} :
     MLe Valued.v (A.map (algebraMap E (P.adicCompletion E))) γ ↔ MLe (P.valuation E) A γ :=
   forall₂_congr fun i j => by rw [Matrix.map_apply, GlobalTheory.Mem.Col2.valued_algebraMap]
 
+/- English proof (translation)
+Rewrite using `[qth_intAt_iff, map_mul, map_inv₀]`. Conclude with `inv_mul_le_one_of_le₀ h zero_le'`.
+-/
 theorem intAt_inv_mul {c z : E} (hc : c ≠ 0) (h : P.valuation E z ≤ P.valuation E c) : IntAt P (c⁻¹ * z) := by
   rw [qth_intAt_iff, map_mul, map_inv₀]
   exact inv_mul_le_one_of_le₀ h zero_le'
 
+/- English proof (translation)
+Use `set ι := algebraMap E (P.adicCompletion E) with hι`. Use `set X := LinearMap.toMatrix' x with hX`. Use `set X' := LinearMap.toMatrix' x' with hX'`. Take `⟨m, hm1, hm⟩` from `exists_mle (v := Valued.v) (X.map ι)`. Take `⟨m', hm1', hm'⟩` from `exists_mle (v := Valued.v) (X'.map ι)`.
+
+Establish `m0 : m ≠ 0` using `(zero_lt_one.trans_le hm1).ne'`. Establish `m0' : m' ≠ 0` using `(zero_lt_one.trans_le hm1').ne'`. Establish `vc : P.valuation E c ≠ 0` using `(Valuation.ne_zero_iff _).2 hc0`. Establish `vd : P.valuation E d ≠ 0` using `(Valuation.ne_zero_iff _).2 hd0`. Take `⟨u, hu⟩` from `exists_approx P U (δ := min (P.valuation E c) (m⁻¹ * P.valuation E d)) (lt_min (zero_lt_iff.2 vc) (zero_lt_iff.2 (mul_ne_zero (inv_ne_zero m0) vd))).ne'`.
+
+Take `⟨u', hu'⟩` from `exists_approx P U' (δ := min (P.valuation E c) (P.valuation E d * m'⁻¹)) (lt_min (zero_lt_iff.2 vc) (zero_lt_iff.2 (mul_ne_zero vd (inv_ne_zero m0')))).ne'`. Establish `near : ∀ {n : ℕ} {w : Matrix (Fin n) (Fin n) E} {V : Matrix (Fin n) (Fin n) (P.adicCompletion E)}, MLe Valued.v (V - 1) (P.valuation E c) → MLe Valued.v (w.map ι - V) (P.valuation E c) → MLe (P.valuation E) (w - 1) (P.valuation E c)` using `fun {n w V} h1 h2 => by`. Rewrite using `[← mle_map_iff, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Use `h2.add h1` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+
+Establish `n1` using `near hU (hu.mono (min_le_left _ _))`. Establish `n2` using `near hU' (hu'.mono (min_le_left _ _))`. Take `⟨t, ht1, ht2, -⟩` from `exists_inv_of_near hc n1`. Take `⟨t', ht1', ht2', ht'⟩` from `exists_inv_of_near hc n2`. Establish `hW : MLe (P.valuation E) (u' * X' - X * u) (P.valuation E d)`.
+
+Rewrite using `[← mle_map_iff, Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.map_mul]`. Establish `e : u'.map ι * X'.map ι - X.map ι * u.map ι = (U' * X'.map ι - X.map ι * U) + (u'.map ι - U') * X'.map ι - X.map ι * (u.map ι - U)`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Use `(h.add ?_).sub ?_` and prove the remaining obligations. Use `(hu'.mono (min_le_right _ _)).mul hm'` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right₀ m0']`. Then use the resulting hypothesis. Use `hm.mul (hu.mono (min_le_right _ _))` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left₀ m0]`. Then use the resulting hypothesis.
+
+Establish `hZ : MLe (P.valuation E) (t' * (u' * X' - X * u)) (P.valuation E d)`. Use `(ht'.of_near hc.le).mul hW` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `hk : ∀ {n : ℕ} {w s : Matrix (Fin n) (Fin n) E} (h1 : w * s = 1) (h2 : s * w = 1), MLe (P.valuation E) (w - 1) (P.valuation E c) → ∀ j l, IntAt P (c⁻¹ * (Matrix.toLin'OfInv h2 h1 (Pi.single j (1 : E)) l - (Pi.single j (1 : E) : Sp E n) l))` using `fun {n w s} h1 h2 hw j l => by`. Use `intAt_inv_mul hc0 ?_` and prove the remaining obligations.
+
+Use `hw l j using 2` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.one_apply, Pi.single_apply]`. Establish `e : x' = inFr (Matrix.toLin'OfInv ht2 ht1) (Matrix.toLin'OfInv ht2' ht1') x + Matrix.toLin' (t' * (u' * X' - X * u))`. Apply `LinearMap.toMatrix'.injective` to reduce the goal to its premises. Establish `e1 : LinearMap.toMatrix' (inFr (Matrix.toLin'OfInv ht2 ht1) (Matrix.toLin'OfInv ht2' ht1') x) = t' * (X * u)`.
+
+Unfold `inFr`. Rewrite using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_comp]`. Use `congr 2`. Conclude with `LinearMap.toMatrix'_toLin' _`. Conclude with `LinearMap.toMatrix'_toLin' _`.
+
+Rewrite using `[map_add, e1, LinearMap.toMatrix'_toLin', Matrix.mul_sub, ← Matrix.mul_assoc t' u', ht2', Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Use `(congrArg Ξ e).trans ((hinv _ _ fun s l => intAt_inv_mul hd0 ?_).trans (hcong _ _ (hk ht1 ht2 n1) (hk ht1' ht2' n2) x))` and prove the remaining obligations. Establish `e2 : Matrix.toLin' (t' * (u' * X' - X * u)) (Pi.single s 1) l = (t' * (u' * X' - X * u)) l s`. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_single_one, Matrix.col_apply]`.
+
+Rewrite using `[e2]`. Conclude with `hZ l s`.
+-/
 theorem eq_of_near {K : Type} (Ξ : HomE E a b → K) {c d : E} (hc0 : c ≠ 0) (hc : P.valuation E c < 1) (hd0 : d ≠ 0)
     (hcong : ∀ (k : Sp E a ≃ₗ[E] Sp E a) (k' : Sp E b ≃ₗ[E] Sp E b),
       (∀ s l, IntAt P (c⁻¹ * (k (Pi.single s (1 : E)) l - (Pi.single s (1 : E) : Sp E a) l))) →
@@ -216,14 +292,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
 omit [StarRing E] in
+/- English proof (translation)
+Establish `h` using `(P.valuation_lt_one_iff_mem (K := E) ((qOf P : ℕ) : 𝓞 E)).2 (Ideal.absNorm_mem _)`. Simplify using `using h`.
+-/
 theorem val_qOf_lt_one (P : HeightOneSpectrum (𝓞 E)) : P.valuation E ((qOf P : ℕ) : E) < 1 := by
   have h := (P.valuation_lt_one_iff_mem (K := E) ((qOf P : ℕ) : 𝓞 E)).2 (Ideal.absNorm_mem _)
   simpa using h
 
 omit [StarRing E] in
+/- English proof (translation)
+The claim follows from `Nat.pos_of_ne_zero fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`.
+-/
 theorem qOf_pos (P : HeightOneSpectrum (𝓞 E)) : 0 < qOf P :=
   Nat.pos_of_ne_zero fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)
 
+/- English proof (translation)
+Introduce `r s`. Use `AdT.FrameMove.le_exp_neg_one_of_lt_one' ?_` and prove the remaining obligations. Use `AdT.FrameMove.val_sub_lt_of_liftFr h w r s using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Matrix.sub_apply, Matrix.mul_apply]`. Unfold `GlobalTheory.Mem.Col2.pullV`.
+
+Rewrite using `[Matrix.mulVec, dotProduct, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, adAt_inclE]`. Simplify using the standard rewrite rules.
+-/
 theorem mle_frame {g : GL (Fin a) (AfE F E)} {p : DecoF E a ST SG Q} (h : IsPtOf hc g p) (w : SG) :
     MLe Valued.v ((g⁻¹ : GL (Fin a) (AfE F E)).1.map (adAt F w.1) *
       (LinearMap.toMatrix' (p.deco.1.liftFr w).toLinearMap).map (algebraMap E (w.1.adicCompletion E)) - 1) (WithZero.exp (-((1 : ℕ) : ℤ))) := by
@@ -239,11 +326,41 @@ theorem mle_frame {g : GL (Fin a) (AfE F E)} {p : DecoF E a ST SG Q} (h : IsPtOf
   simp
 
 omit [NumberField E] [StarRing E] in
+/- English proof (translation)
+Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_comp]`. Conclude with `congrArg _ (LinearMap.ext fun z => f'.apply_symm_apply _)`.
+-/
 theorem frame_mul_inFr (f : Sp E a ≃ₗ[E] Sp E a) (f' : Sp E b ≃ₗ[E] Sp E b) (x : HomE E a b) :
     LinearMap.toMatrix' f'.toLinearMap * LinearMap.toMatrix' (inFr f f' x) = LinearMap.toMatrix' x * LinearMap.toMatrix' f.toLinearMap := by
   rw [← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_comp]
   exact congrArg _ (LinearMap.ext fun z => f'.apply_symm_apply _)
 
+/- English proof (translation)
+Establish `h1 : (WithZero.exp (-((1 : ℕ) : ℤ)) : WithZero (Multiplicative ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hA` using `mle_frame hp w`. Establish `hA'` using `mle_frame hp' w`.
+
+Establish `hC` using `mle_frame hq w`. Establish `hC'` using `mle_frame hq' w`. Take `⟨Ai, e1, -, hAi⟩` from `exists_inv_of_near h1 hA`. Take `⟨Ai', -, e2, hAi'⟩` from `exists_inv_of_near h1 hA'`. Use `set ι := algebraMap E (w.1.adicCompletion E) with hι`.
+
+Use `set φ := adAt F w.1 with hφ`. Establish `hinv : ∀ {n : ℕ} (g : GL (Fin n) (AfE F E)), g.1.map φ * (g⁻¹ : GL (Fin n) (AfE F E)).1.map φ = 1` using `fun g => by`. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨m, hm1, hm⟩` from `exists_mle (v := Valued.v) (k.1.map φ)`. Take `⟨m', hm1', hm'⟩` from `exists_mle (v := Valued.v) ((k'⁻¹ : GL (Fin b) (AfE F E)).1.map φ)`.
+
+Establish `m0 : m ≠ 0` using `(zero_lt_one.trans_le hm1).ne'`. Establish `m0' : m' ≠ 0` using `(zero_lt_one.trans_le hm1').ne'`. Establish `vd : w.1.valuation E d ≠ 0` using `(Valuation.ne_zero_iff _).2 hd`. Take `⟨n, hn⟩` from `exists_pow_lt₀ (val_qOf_lt_one w.1) (Units.mk0 (m'⁻¹ * w.1.valuation E d * m⁻¹) (mul_ne_zero (mul_ne_zero (inv_ne_zero m0') vd) (inv_ne_zero m0)))`. Use `⟨qOf w.1 ^ n, pow_pos (qOf_pos _) n, fun M₀ hM x x₀ hx => ⟨_, _, hAi.near_mul h1.le hC, hAi'.near_mul h1.le hC', ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hM₀ : Valued.v ((M₀ : ℕ) : w.1.adicCompletion E) ≤ m'⁻¹ * w.1.valuation E d * m⁻¹`. Take `⟨c, rfl⟩` from `hM`. Rewrite using `[← map_natCast ι, valued_algebraMap, Nat.cast_mul, map_mul, Nat.cast_pow, map_pow]`. Use `(mul_le_of_le_one_right' ?_).trans hn.le` and prove the remaining obligations. Simplify using `using w.1.valuation_le_one (K := E) (c : 𝓞 E)`.
+
+Establish `hin : ∀ z : HomE E a b, ((LinearMap.toMatrix' z).map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin b) (Fin a) (AfE F E)).map φ = (LinearMap.toMatrix' z).map ι := fun z => Matrix.ext fun i j => adAt_inclE F w.1 _`. Establish `hZ : MLe Valued.v ((y'⁻¹ : GL (Fin b) (AfE F E)).1.map φ * (LinearMap.toMatrix' x).map ι * y.1.map φ - (LinearMap.toMatrix' x₀).map ι) (m'⁻¹ * w.1.valuation E d * m⁻¹)` using `fun r s => by`. Rewrite using `[← hin, ← hin, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_sub _ (map_sub _)]`. Conclude with `(hx r s).trans hM₀`. Establish `f1` using `congrArg (fun A => Matrix.map A ι) (frame_mul_inFr (q.deco.1.liftFr w) (q'.deco.1.liftFr w) x)`.
+
+Establish `f2` using `congrArg (fun A => Matrix.map A ι) (frame_mul_inFr (p.deco.1.liftFr w) (p'.deco.1.liftFr w) x₀)`. Simplify using `only [Matrix.map_mul] at f1 f2`. Establish `i1` using `hinv (y * k)`. Establish `i2` using `hinv k`. Rewrite `i1` using `[Units.val_mul, Matrix.map_mul]`.
+
+Establish `i3 : ((y' * k')⁻¹ : GL (Fin b) (AfE F E)).1.map φ = (k'⁻¹ : GL (Fin b) (AfE F E)).1.map φ * (y'⁻¹ : GL (Fin b) (AfE F E)).1.map φ`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.map_mul]`. Rewrite using `[i3]`. Establish `key` using `(((hAi'.of_near h1.le).mul hm').mul hZ).mul (hm.mul (hC.of_near h1.le))`. Rewrite `key` using `[one_mul, mul_one, mul_assoc m'⁻¹, mul_inv_cancel_left₀ m0', inv_mul_cancel_right₀ m0]`.
+
+Use `key using 1` and compare the differences between its conclusion and the goal. Generalize the expression as in `(LinearMap.toMatrix' (inFr (q.deco.1.liftFr w) (q'.deco.1.liftFr w) x)).map ι = Xq at *`. Generalize the expression as in `(LinearMap.toMatrix' (inFr (p.deco.1.liftFr w) (p'.deco.1.liftFr w) x₀)).map ι = Xp at *`. Generalize the expression as in `(LinearMap.toMatrix' (q.deco.1.liftFr w).toLinearMap).map ι = Fq at *`. Generalize the expression as in `(LinearMap.toMatrix' (q'.deco.1.liftFr w).toLinearMap).map ι = Fq' at *`.
+
+Generalize the expression as in `(LinearMap.toMatrix' (p.deco.1.liftFr w).toLinearMap).map ι = Fp at *`. Generalize the expression as in `(LinearMap.toMatrix' (p'.deco.1.liftFr w).toLinearMap).map ι = Fp' at *`. Generalize the expression as in `(LinearMap.toMatrix' x).map ι = X at *`. Generalize the expression as in `(LinearMap.toMatrix' x₀).map ι = X₀ at *`. Generalize the expression as in `((y * k)⁻¹ : GL (Fin a) (AfE F E)).1.map φ = G at *`.
+
+Generalize the expression as in `(k⁻¹ : GL (Fin a) (AfE F E)).1.map φ = Ki at *`. Generalize the expression as in `(k'⁻¹ : GL (Fin b) (AfE F E)).1.map φ = Ki' at *`. Generalize the expression as in `(y'⁻¹ : GL (Fin b) (AfE F E)).1.map φ = Yi' at *`. Generalize the expression as in `k.1.map φ = Km at *`. Generalize the expression as in `y.1.map φ = Ym at *`.
+
+Establish `g1 : Fq = Ym * (Km * (G * Fq))` using `by rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, i1, Matrix.one_mul]`. Establish `g2 : Fp * Ai = Km`. Rewrite using `[← Matrix.one_mul (Fp * Ai), ← i2, Matrix.mul_assoc, ← Matrix.mul_assoc Ki, e1, Matrix.mul_one]`. Establish `g3 : Xp = Ai' * (Ki' * (X₀ * Fp))` using `by rw [← f2, ← Matrix.mul_assoc Ki', ← Matrix.mul_assoc, e2, Matrix.one_mul]`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul]`.
+
+Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[f1, ← g1]`. Rewrite using `[g3, ← g2]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem exists_modulus {k y : GL (Fin a) (AfE F E)} {k' y' : GL (Fin b) (AfE F E)} {p q : DecoF E a ST SG Q} {p' q' : DecoF E b ST SG Q}
     (hp : IsPtOf hc k p) (hp' : IsPtOf hc k' p') (hq : IsPtOf hc (y * k) q) (hq' : IsPtOf hc (y' * k') q') (w : SG) {d : E} (hd : d ≠ 0) :
     ∃ M : ℕ, 0 < M ∧ ∀ M₀ : ℕ, M ∣ M₀ → ∀ x x₀ : HomE E a b,
@@ -332,6 +449,9 @@ section Chain
 
 open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col
 
+/- English proof (translation)
+Take `⟨r, hr, hrk, hc⟩` from `GlobalTheory.LevOne.cong_mem_level_chr_one Ch sel mu cst L G m2 hX hPr hCh hsel hL i hi.le al P k hk`. Take `⟨r', hr', hrk', hc'⟩` from `GlobalTheory.LevOne.cong_mem_level_chr_one Ch sel mu cst L G m2 hX hPr hCh hsel hL (i + 1) hi be P k' hk'`. Establish `h` using `GlobalTheory.UnfoldTwoSided.xiAt_two_sided Ch sel mu cst L G m2 hX hPr hCh hsel hL i hi al be P r r' k k' hr hr' hrk hrk' x`. Rewrite `h` using `[hc, hc', GlobalTheory.AwayMat.muAt_det_congr_one Ch sel mu cst L G m2 hX hPr hsel hL i P _ k hk, GlobalTheory.AwayMat.muAt_det_congr_one Ch sel mu cst L G m2 hX hPr hsel hL i P _ k' hk']`. Simplify `h` using `only [one_mul]`.
+-/
 theorem xiAt_inFr {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
     {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
     (hX : X.AbelianUnramifiedExtensionConditions) (hPr : Pr.Ok) (hCh : Ch.Ok) (hsel : IsSel X sel) (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < m2) (al : L.β i) (be : L.β (i + 1))
@@ -347,6 +467,11 @@ theorem xiAt_inFr {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
     GlobalTheory.AwayMat.muAt_det_congr_one Ch sel mu cst L G m2 hX hPr hsel hL i P _ k' hk'] at h
   simpa only [one_mul] using h
 
+/- English proof (translation)
+Establish `h1 : ¬ P.valuation E ((qOf P : ℕ) : E) ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h1 => h.2 <| by`. Rewrite using `[← P.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.valuation_of_algebraMap (K := E)]`. Simplify using `using h1`. Establish `h0 : P.valuation E ((qOf P : ℕ) : E) ≠ 0` using `fun h0 => h1 (h0 ▸ zero_le')`. Rewrite `h1`, the goal using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exp_le_val_qOf {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} (h : GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P) :
     WithZero.exp (-((1 : ℕ) : ℤ)) ≤ P.valuation E ((qOf P : ℕ) : E) := by
   have h1 : ¬ P.valuation E ((qOf P : ℕ) : E) ≤ WithZero.exp (-((2 : ℕ) : ℤ)) := fun h1 => h.2 <| by
@@ -367,6 +492,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Transport.Entry
 
+/- English proof (translation)
+Introduce `B X I hI l u i hm al be P p q p' q' k y k' y' hp _ hp' _ hq hq'`. Establish `hX` using `(GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws B).1`. Establish `hL` using `hI.idx_ok I.mu0`. Establish `hP : P.1 ∈ (B.primes X).vGs` using `(Finset.mem_union.1 P.2).resolve_right fun h => by`. Establish `h' : P.1 ∈ I.Q I.mu0` using `h`.
+
+Rewrite `h'` using `[I.twistPrimes_reference_tuple_eq_empty]`. Conclude with `Finset.notMem_empty _ h'`. Establish `hq0 : ((Formalism.L2.Col.qOf P.1 : ℕ) : B.fields.E) ≠ 0` using `Nat.cast_ne_zero.2 (qOf_pos P.1).ne'`. Take `⟨M, hM, H⟩` from `exists_modulus hp hp' hq hq' ⟨P.1, hP⟩ (pow_ne_zero (I.cst I.mu0).B hq0)`. Use `⟨M, hM, fun M₀ hM₀ x x₀ hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨U, U', hU, hU', h⟩` from `H M₀ hM₀ x x₀ hx`. Establish `hu` using `exp_le_val_qOf (GlobalTheory.UnfoldTwoSided.degOne_bad hX.ok l.pr hI.sel_ok P)`. Unfold `Formalism.L2.Col.frsF`. Simplify using `only [dif_pos hP]`. Use `(eq_of_near (P := P.1) _ hq0 (val_qOf_lt_one P.1) (pow_ne_zero (I.cst I.mu0).B hq0) (fun κ κ' hκ hκ' z => ?_) (hL.xiInv i (by omega) al be P) _ _ U U' (hU.mono hu) (hU'.mono hu) h).symm` and prove the remaining obligations.
+
+Use `xiAt_inFr hX l.pr hI.ch_ok hI.sel_ok hL (by omega) al be P κ κ' ?_ ?_ z` and prove the remaining obligations. Rewrite using `[hL.depthG P hP, pow_one]`. Conclude with `hκ`. Rewrite using `[hL.depthG P hP, pow_one]`. Conclude with `hκ'`.
+-/
 theorem entry_transport : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (u : B.Word) (i : ℕ) (hm : i + 2 < B.R.m) (al : (I.idx I.mu0).β i) (be : (I.idx I.mu0).β (i + 1)) (P : Formalism.L2.Col.rowSG (B.primes X) I.sel (I.tup I.mu0))
     (p q : PtAt B.R I.sel (I.tup I.mu0) (I.cst I.mu0) u (i)) (p' q' : PtAt B.R I.sel (I.tup I.mu0) (I.cst I.mu0) u (i + 1))
     (k y : TC.GA B (B.R.N (i))) (k' y' : TC.GA B (B.R.N (i + 1))),

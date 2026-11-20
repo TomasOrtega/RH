@@ -12,6 +12,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.UPel.HT
 
+/- English proof (translation)
+Introduce `p _ D R _ _ b N hN hNp F hq`. Establish `hlft : LocallyOfFiniteType F.s`. Take `⟨M, i, hi, hqc, hi'⟩` from `hq`. Use `isProper_str R M` as an intermediate fact. Rewrite using `[← hi']`.
+
+Use `infer_instance`. Establish `hsm : Smooth F.s`. Use `GlobalTheory.T.smooth_of_artinian_squareZero_lifting_noetherian_base R F.X F.s hlft ?_` and prove the remaining obligations. Introduce `C C₀ _ _ _ _ π hπ hker t x₀ hx`. Take `⟨β, rfl⟩ : ∃ β : R →+* C, t = spMap β` from `⟨(Spec.preimage t).hom, by simp [spMap]⟩`.
+
+Establish `hcomp : spMap π ≫ spMap β = spMap (π.comp β)`. Simplify using `[spMap, ← Spec.map_comp]`. Establish `hs₀ : x₀ ≫ F.s = spMap (π.comp β)` using `by rw [hx, hcomp]`. Take `⟨o₀, ⟨m₀⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObjectPullback p D R b N _ _ F.s _ F.univ x₀ hs₀`. Take `⟨o', ⟨m'⟩⟩` from `GlobalTheory.T.harrisTaylor_formally_smooth_squareZero_lift p D R b N hN hNp C C₀ π β hπ (by rw [← hker, pow_two]) o₀`.
+
+Take `⟨x, ⟨hxs, ⟨mx⟩⟩, -⟩` from `F.rep (Sp C) (spMap β) o'`. Take `⟨mc⟩` from `GlobalTheory.T.harrisTaylorObjectPullback_comp p D R b N _ _ _ _ _ _ o₀ o' F.univ (spMap π) x m' mx`. Use `⟨x, ?_, hxs⟩` and prove the remaining obligations. Conclude with `(F.rep (Sp C₀) (spMap (π.comp β)) o₀).unique ⟨by rw [Category.assoc, hxs, hcomp], ⟨mc⟩⟩ ⟨hs₀, ⟨m₀⟩⟩`. Conclude with `GlobalTheory.T.smoothOfRelativeDimension_of_universal_firstOrder_tangent R F.X F.s _ hsm (GlobalTheory.T.exists_universal_tangent_harrisTaylor_representingFamily p D R b N hN hNp F hq hsm)`.
+-/
 theorem RepFam.smoothOfRelativeDimension : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] [IsNoetherianRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ F : RepFam b N, IsQProjOver F.s → SmoothOfRelativeDimension (D.a * (D.n - 1)) F.s := by
   intro p _ D R _ _ b N hN hNp F hq
   have hlft : LocallyOfFiniteType F.s := by

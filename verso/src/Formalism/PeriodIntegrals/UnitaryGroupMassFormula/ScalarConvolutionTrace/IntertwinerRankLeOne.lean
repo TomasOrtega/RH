@@ -15,14 +15,27 @@ open Formalism.L2.SG.GGMirabolic
 
 variable {F : Type} [Field F] [Fintype F] {k : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, mul_assoc (sgn k * x), sgn_mul_self, mul_one]`.
+-/
 theorem pi_sgn_mul (π : Representation ℂ (GL (Fin k) F) V) (x : GL (Fin k) F) (v : V) :
     π (sgn k) (π x v) = π (sgn k * x * sgn k) (π (sgn k) v) := by
   rw [← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, mul_assoc (sgn k * x),
     sgn_mul_self, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, sgn_mul_self, map_one, Module.End.one_apply]`.
+-/
 theorem pi_sgn_sgn (π : Representation ℂ (GL (Fin k) F) V) (v : V) : π (sgn k) (π (sgn k) v) = v := by
   rw [← Module.End.mul_apply, ← map_mul, sgn_mul_self, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Establish `hterm : ∀ x : GL (Fin k) F, psiNat ψ₀ x * ℓ (π (sgn k) (π x v)) = (if IsUni k x then (1 : ℂ) else 0) * ℓ (π (sgn k) v)`. Introduce `x`. Rewrite using `[pi_sgn_mul]`. Distinguish the cases in `hx : IsUni k x`. Rewrite using `[hℓ _ (isUni_sgn_conj hx), ← mul_assoc, if_pos hx]`.
+
+Unfold `psiNat`. Rewrite using `[if_pos hx, mul_comm (psiU ψ₀ x), psiU_sgn_conj]`. Unfold `psiNat`. Rewrite using `[if_neg hx, if_neg hx, zero_mul, zero_mul]`. Unfold `projQ`.
+
+Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum, smul_eq_mul]`. Repeatedly rewrite using `[hterm]`. Rewrite using `[← Finset.sum_mul, sum_boole_uni, ← mul_assoc, inv_mul_cancel₀ (cardU_ne_zero F k), one_mul]`.
+-/
 theorem whit_sgn_projQ (ψ₀ : AddChar F ℂ) (π : Representation ℂ (GL (Fin k) F) V) (ℓ : Module.Dual ℂ V)
     (hℓ : IsWhit ψ₀ π ℓ) (v : V) : ℓ (π (sgn k) (projQ ψ₀ π v)) = ℓ (π (sgn k) v) := by
   have hterm : ∀ x : GL (Fin k) F, psiNat ψ₀ x * ℓ (π (sgn k) (π x v)) =
@@ -39,6 +52,9 @@ theorem whit_sgn_projQ (ψ₀ : AddChar F ℂ) (π : Representation ℂ (GL (Fin
   simp_rw [hterm]
   rw [← Finset.sum_mul, sum_boole_uni, ← mul_assoc, inv_mul_cancel₀ (cardU_ne_zero F k), one_mul]
 
+/- English proof (translation)
+Introduce `u hu v`. Establish `hq` using `LinearMap.congr_fun (projQ_comp_pi ψ₀ π (isUni_sgn_conj hu)) (π (sgn k) v)`. Simplify using `only [LinearMap.comp_apply] at hq ⊢`. Rewrite using `[pi_sgn_mul, hq, LinearMap.smul_apply, map_smul, smul_eq_mul, inv_eq_of_mul_eq_one_right (psiU_sgn_conj ψ₀ u)]`.
+-/
 theorem isWhit_of_dual (ψ₀ : AddChar F ℂ) (π : Representation ℂ (GL (Fin k) F) V) (f : Module.Dual ℂ V) :
     IsWhit ψ₀ π (f ∘ₗ (projQ ψ₀ π ∘ₗ π (sgn k))) := by
   intro u hu v
@@ -47,6 +63,17 @@ theorem isWhit_of_dual (ψ₀ : AddChar F ℂ) (π : Representation ℂ (GL (Fin
   rw [pi_sgn_mul, hq, LinearMap.smul_apply, map_smul, smul_eq_mul,
     inv_eq_of_mul_eq_one_right (psiU_sgn_conj ψ₀ u)]
 
+/- English proof (translation)
+Introduce `F _ _ k ψ₀ V _ _ π`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ℓ, hne, hw⟩ hQ`. Apply `hne` to reduce the goal to its premises. Use extensionality with `v`.
+
+Use `whit_sgn_projQ ψ₀ π ℓ hw (π (sgn k) v)` as an intermediate fact. Rewrite `this` using `[hQ, LinearMap.zero_apply, map_zero, map_zero, pi_sgn_sgn]`. Rewrite using `[← this, LinearMap.zero_apply]`. Introduce `hQ`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, projQ ψ₀ π v ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hQ (LinearMap.ext h)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual ℂ V, f (projQ ψ₀ π v) ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hv ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 h)`. Use `⟨f ∘ₗ (projQ ψ₀ π ∘ₗ π (sgn k)), ?_, isWhit_of_dual ψ₀ π f⟩` and prove the remaining obligations. Introduce `h0`. Apply `hf` to reduce the goal to its premises.
+
+Use `LinearMap.congr_fun h0 (π (sgn k) v)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, pi_sgn_sgn] at this`. Conclude with `this`.
+-/
 theorem generic_iff_criterion : GenericIff := by
   intro F _ _ k ψ₀ V _ _ π
   constructor
@@ -72,6 +99,15 @@ theorem generic_iff_criterion : GenericIff := by
     simp only [LinearMap.comp_apply, LinearMap.zero_apply, pi_sgn_sgn] at this
     exact this
 
+/- English proof (translation)
+Introduce `hm F _ _ k ψ₀ hψ V _ _ _ π hirr`. Use `set T : V →ₗ[ℂ] V := projQ ψ₀ π ∘ₗ π (sgn k) with hTdef`. Establish `hsurj : LinearMap.range (π (sgn k)) = ⊤` using `LinearMap.range_eq_top.2 fun v => ⟨π (sgn k) v, pi_sgn_sgn π v⟩`. Establish `hrT : LinearMap.range T = LinearMap.range (projQ ψ₀ π)` using `LinearMap.range_comp_of_range_eq_top _ hsurj`. Rewrite using `[← hrT, ← LinearMap.finrank_range_dualMap_eq_finrank_range T]`.
+
+Distinguish the cases in `h : ∃ ℓ₁ ∈ LinearMap.range T.dualMap, ℓ₁ ≠ 0`. Take `⟨ℓ₁, ⟨f₁, rfl⟩, hne⟩` from `h`. Establish `hle : LinearMap.range T.dualMap ≤ Submodule.span ℂ {T.dualMap f₁}`. Introduce and unpack `_ ⟨f₂, rfl⟩`. Take `⟨c, hc⟩` from `hm F k ψ₀ hψ V π hirr _ _ (isWhit_of_dual ψ₀ π f₁) (isWhit_of_dual ψ₀ π f₂) hne`.
+
+Rewrite using `[Submodule.mem_span_singleton]`. Conclude with `⟨c, hc.symm⟩`. Conclude with `(Submodule.finrank_mono hle).trans (finrank_span_singleton hne).le`. Use `push_neg at h`. Rewrite using `[(Submodule.eq_bot_iff _).2 h, finrank_bot]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem intertwiner_rank_le_one : RankLeOne := by
   intro hm F _ _ k ψ₀ hψ V _ _ _ π hirr
   set T : V →ₗ[ℂ] V := projQ ψ₀ π ∘ₗ π (sgn k) with hTdef

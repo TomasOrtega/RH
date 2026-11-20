@@ -9,6 +9,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory.LKGeo
 
+/- English proof (translation)
+Use `set b := Module.finBasis ℚ V`. Set `g : C →ₗ[ℚ] (Fin (Module.finrank ℚ V) × Fin (Module.finrank ℚ V) → ℚ)` to `LinearMap.pi (fun ij => (b.coord ij.2).comp ((LinearMap.applyₗ (b ij.1)).comp rep.toLinearMap))`. Establish `hg : Function.Injective g`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`.
+
+Apply `hrep` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `b.ext (fun i => b.ext_elem (fun j => ?_))` and prove the remaining obligations. Use `congrFun hx (i, j)` as an intermediate fact. Simplify `this` using `[g]`.
+
+Establish `hlg : Function.Injective (LinearMap.lTensor R g)` using `Module.Flat.lTensor_preserves_injective_linearMap g hg`. Establish `key : ∀ (y : R ⊗[ℚ] C) (i j : Fin (Module.finrank ℚ V)), TensorProduct.piScalarRight ℚ R R _ (LinearMap.lTensor R g y) (i, j) = TensorProduct.rid ℚ R (LinearMap.lTensor R (b.coord j) (actOn rep R y ((1 : R) ⊗ₜ b i)))`. Introduce `y i j`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul r x`. Establish `h1 : actOn rep R (r ⊗ₜ x) ((1 : R) ⊗ₜ b i) = r ⊗ₜ (rep x (b i))`. Simplify using `only [actOn, Algebra.TensorProduct.lift_tmul, Module.End.mul_apply]`. Express the relevant statement in the definitionally equal form `r • ((rep x).baseChange R ((1 : R) ⊗ₜ b i)) = _`. Rewrite using `[LinearMap.baseChange_tmul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+
+Rewrite using `[h1]`. Simplify using `[g, Algebra.smul_def]`. Consider the case `add y z hy hz => simp only [map_add, Pi.add_apply, LinearMap.add_apply, hy, hz]`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`.
+
+Apply `hlg` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `(TensorProduct.piScalarRight ℚ R R _).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `ij`.
+
+Rewrite using `[key, hy]`. Simplify using the standard rewrite rules.
+-/
 theorem baseChangeAlgebraRepresentationAction_injective {C V : Type} [Ring C] [Algebra ℚ C] [AddCommGroup V] [Module ℚ V] [Module.Finite ℚ V]
     (rep : C →ₐ[ℚ] Module.End ℚ V) (hrep : Function.Injective rep) (R : Type) [CommRing R] [Algebra ℚ R] :
     Function.Injective (actOn rep R) := by
@@ -50,6 +65,9 @@ theorem baseChangeAlgebraRepresentationAction_injective {C V : Type} [Ring C] [A
   rw [key, hy]
   simp
 
+/- English proof (translation)
+Introduce `p _ D G L`. Use `haveI := D.finLa`. Conclude with `baseChangeAlgebraRepresentationAction_injective L.rep L.rep_inj (AfP p)`.
+-/
 theorem actOn_rep_afP_injective : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : Link D G),
     Function.Injective (actOn L.rep (AfP p)) := by
   intro p _ D G L

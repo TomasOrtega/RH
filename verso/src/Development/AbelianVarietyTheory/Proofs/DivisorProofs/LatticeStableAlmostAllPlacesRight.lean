@@ -12,6 +12,13 @@ namespace GlobalTheory.AdelMatLatRight
 open NumberField IsDedekindDomain in
 open Matrix in
 
+/- English proof (translation)
+Introduce `γ hγ`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV at hγ ⊢`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hai, x, hx, y, hy, rfl⟩` from `hz`.
+
+Use `AddSubgroup.subset_closure ⟨a, ha, hai, y, hy, x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[transpose_smul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, vecMulVec_apply, mul_comm]`.
+
+Consider the case `zero => simpa using zero_mem _`. Consider the case `add u v _ _ hu hv => simpa [transpose_add] using add_mem hu hv`. Consider the case `neg u _ hu => simpa [transpose_neg] using neg_mem hu`.
+-/
 theorem _root_.GlobalTheory.AdelMatLatRight.transpose_mem_latAtV {F E : Type} [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     (X : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (Y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)
@@ -31,6 +38,9 @@ theorem _root_.GlobalTheory.AdelMatLatRight.transpose_mem_latAtV {F E : Type} [F
   | add u v _ _ hu hv => simpa [transpose_add] using add_mem hu hv
   | neg u _ hu => simpa [transpose_neg] using neg_mem hu
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n d X Y hY N`. Use `(GlobalTheory.AdelMatLat.almost_all_stable F E d n Y X hY N).subset fun w hw h => hw fun γ hγ => ?_` and prove the remaining obligations. Establish `h1` using `transpose_mem_latAtV Y X w _ (h _ (transpose_mem_latAtV X Y w γ hγ))`. Rewrite `h1` using `[Matrix.transpose_mul, Matrix.transpose_transpose]`. Then use the resulting hypothesis.
+-/
 theorem almost_all_stable_right : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ)
     (X : Spc F E n) (Y : Spc F E d), Y.L.IsLattice E → ∀ N : Matrix (Fin d) (Fin d) (AE F E),
     Set.Finite {w : Pl F | ¬ ∀ γ ∈ latAtV X Y w, γ * Matrix.transpose N ∈ latAtV X Y w} := by

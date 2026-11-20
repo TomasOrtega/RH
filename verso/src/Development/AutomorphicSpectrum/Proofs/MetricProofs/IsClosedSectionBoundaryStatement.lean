@@ -6,5 +6,8 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.CWeight.isClosed_bdry_of_isSection | exact GlobalTheory.CompanionTheory.Ar.PB.CWeight.isClosed_bdry_of_isSection | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.CWeight.isClosed_bdry_of_isSection <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isClosed_section_boundary : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ), IsSection A L s → IsClosed (bdry s) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.CWeight.isClosed_bdry_of_isSection | exact GlobalTheory.CompanionTheory.Ar.PB.CWeight.isClosed_bdry_of_isSection | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.CWeight.isClosed_bdry_of_isSection <;> assumption)

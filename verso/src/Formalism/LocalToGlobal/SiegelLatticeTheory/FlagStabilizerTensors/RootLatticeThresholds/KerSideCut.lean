@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 section Chain
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => first | rfl | simp [Formalism.ThetaLiftIndependence.chainOpM]`. Consider the case `succ m ih`. Simplify using `only [Formalism.ThetaLiftIndependence.chainOpM, ih]`. Use function extensionality and compare the values at `t`.
+
+Simplify using `[Formalism.ThetaLiftIndependence.kerOpM, Finset.sum_add_distrib, smul_add, map_add]`.
+-/
 theorem chainOpM_add' {Rg : Type} [CommSemiring Rg] {ι : ℕ → Type} [∀ j, Fintype (ι j)]
     {M : ℕ → Type} [∀ j, AddCommMonoid (M j)] [∀ j, Module Rg (M j)]
     (w : ∀ j, ι j → Rg) (Km : ∀ j, ι j → ι (j + 1) → (M j →ₗ[Rg] M (j + 1))) (m : ℕ) (f g : ι 0 → M 0) :
@@ -25,6 +30,11 @@ theorem chainOpM_add' {Rg : Type} [CommSemiring Rg] {ι : ℕ → Type} [∀ j, 
     funext t
     simp [Formalism.ThetaLiftIndependence.kerOpM, Finset.sum_add_distrib, smul_add, map_add]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => first | rfl | simp [Formalism.ThetaLiftIndependence.chainOpM]`. Consider the case `succ m ih`. Simplify using `only [Formalism.ThetaLiftIndependence.chainOpM, ih]`. Use function extensionality and compare the values at `t`.
+
+Simplify using `[Formalism.ThetaLiftIndependence.kerOpM, Finset.smul_sum, map_smul, smul_smul, mul_comm]`.
+-/
 theorem chainOpM_smul' {Rg : Type} [CommSemiring Rg] {ι : ℕ → Type} [∀ j, Fintype (ι j)]
     {M : ℕ → Type} [∀ j, AddCommMonoid (M j)] [∀ j, Module Rg (M j)]
     (w : ∀ j, ι j → Rg) (Km : ∀ j, ι j → ι (j + 1) → (M j →ₗ[Rg] M (j + 1))) (m : ℕ) (c : Rg) (f : ι 0 → M 0) :
@@ -46,6 +56,9 @@ def perColL (D : D7) (u : D.what₂.Word) : D.what₂.Mu u →ₗ[ℂ] D.what₂
   ((D.mem u).P.period ∘ₗ (D.mem u).P.lowerMap ∘ₗ (D.mem u).P.evz ∘ₗ colL (D.mem u).C ∘ₗ
     (D.mem u).A.Mram.subtype ∘ₗ (D.eMu u).toLinearMap).compl₂ (D.eMt u).symm.toLinearMap
 
+/- English proof (translation)
+Rewrite using `[D.perCol_base_eq_PtilCol]`. Simplify using `only [perColL, LinearMap.compl₂_apply, LinearMap.comp_apply, PeriodMap.PtilCol, PeriodMap.Ptil]`. Both sides reduce to the same expression.
+-/
 theorem perColL_apply (D : D7) (u : D.what₂.Word) (φ : D.what₂.Mu u) (F : D.what₂.Amb D.what₂.mu0) :
     perColL D u φ F = D.what₂.perCol u D.what₂.mu0 φ F := by
   rw [D.perCol_base_eq_PtilCol]

@@ -16,6 +16,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPotentialPosit
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory GlobalTheory.ShFam GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.FlagPoly
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PshTrans.isPsh_of_levi_algChart | exact GlobalTheory.PshTrans.isPsh_of_levi_algChart | (intros; apply GlobalTheory.PshTrans.isPsh_of_levi_algChart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.potential_smooth_bound_kappa : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y),
     Y.dim = e → ∀ (a : Fin (M.n + 1)) {ι : Type} [Fintype ι] {Δ : ι → Y.Dv}
     (m : ∀ i σ, (cxSt F).Met Y σ (Δ i)), (∀ i, Y.mSmooth (I.ε a) (Δ i) (m i (I.ε a))) →

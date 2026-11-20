@@ -9,6 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Introduce `K _ A B f hd hs`. Establish `dB : SmoothOfRelativeDimension A.dim B.X.hom` using `hd ▸ B.smooth`. Conclude with `GlobalTheory.OntoFinite.isFinite_of_surjective A.ab B.ab A.smooth dB f.hom`.
+-/
 theorem isFinite_of_surjective_of_dim_eq : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), A.dim = B.dim → Surjective f.hom.left → IsFinite f.hom.left := by
   intro K _ A B f hd hs
   have dB : SmoothOfRelativeDimension A.dim B.X.hom := hd ▸ B.smooth

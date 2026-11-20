@@ -13,6 +13,15 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 
 namespace GlobalTheory.LogResExist
 
+/- English proof (translation)
+Introduce `hP k _ _ X _ p n hp hdim η m G hη Z hZ`. Take `⟨Y₀, hY₀, s₀, hs₀, hsm, hproj, hbij⟩` from `GlobalTheory.T.exists_smooth_projective_birational_model hP k X p n hp hdim`. Set `Z₀ : Closeds Y₀` to `⟨s₀.base ⁻¹' (Z : Set X), Z.isClosed.preimage s₀.base.hom.continuous⟩`. Establish `hZ₀ : Z₀ ≠ ⊤`. Introduce `h`.
+
+Apply `hZ` to reduce the goal to its premises. Establish `hsub : Set.range s₀.base ⊆ (Z : Set X)`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `: y ∈ (Z₀ : Set Y₀)` using `by rw [h]; trivial`. Conclude with `this`.
+
+Establish `hcl : closure (Set.range s₀.base) ⊆ (Z : Set X)` using `closure_minimal hsub Z.isClosed`. Rewrite `hcl` using `[s₀.denseRange.closure_range]`. Use extensionality with `x`. Simplify using `only [Closeds.coe_top, Set.mem_univ, iff_true]`. Conclude with `hcl trivial`.
+
+Take `⟨-, A, hA⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hproj`. Take `⟨Y, hY, t, ht, K, B, hres, hB, -⟩` from `GlobalTheory.T.exists_embedded_resolution hP k X p n η m G hη Y₀ s₀ hsm hproj hbij Z₀ hZ₀ A hA`. Use `haveI := ht`. Conclude with `⟨Y, hY, t ≫ s₀, inferInstance, K, B, hres, fun y hy => hB y (by simpa [Z₀] using hy)⟩`.
+-/
 theorem exists_logRes : GlobalTheory.Published.Principalisation → ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (η : RatForms p n) (m : ℕ) (G : CartierDiv X), η ≠ 0 → ∀ Z : Closeds X, Z ≠ ⊤ → ∃ (Y : Scheme.{0}) (_ : IsIntegral Y) (s : Y ⟶ X) (_ : IsDominant s) (K : CartierDiv Y) (B : Closeds Y), IsLogRes p n η m G s K B ∧ ∀ y, s y ∈ Z → y ∈ B := by
   intro hP k _ _ X _ p n hp hdim η m G hη Z hZ
   obtain ⟨Y₀, hY₀, s₀, hs₀, hsm, hproj, hbij⟩ := GlobalTheory.T.exists_smooth_projective_birational_model hP k X p n hp hdim

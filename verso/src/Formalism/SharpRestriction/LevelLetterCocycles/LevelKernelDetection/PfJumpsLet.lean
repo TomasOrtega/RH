@@ -16,10 +16,16 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {O : Type} [CommRing O] [Algebra O LL] [TopologicalSpace LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
 
+/- English proof (translation)
+Introduce `τ i hτ` and use `hJ i τ hτ`.
+-/
 theorem jumpsLet_of_previous_form {T : LocLat G Qp LL O} {M h : ZMod n → ℕ}
     (hJ : Formalism.MainNotions.LiftingTheory.JumpsLet W T M h) : Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T M h :=
   fun τ i hτ => hJ i τ hτ
 
+/- English proof (translation)
+Introduce `T hT`. Take `⟨M, h, hJ⟩` from `jumpsBdd_holds (W := W) hDR hK T hT`. Conclude with `⟨M, h, jumpsLet_of_previous_form hJ⟩`.
+-/
 theorem jumps_bounded_crystalline [Fintype (K →ₐ[Qp] LL)] (hDR : Formalism.MainNotions.TruncatedSeriesCountingBounds.DdREqDcris PD LL)
     (hK : Function.Bijective (algebraMap K₀ K)) :
     ∀ T : LocLat G Qp LL O, CrysLat PD T → ∃ M h : ZMod n → ℕ, Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T M h := by

@@ -13,6 +13,13 @@ namespace GlobalTheory.LevGeo
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D j H Dw l Xo c U dict h σ hσ k γ hγ hc`. Establish `hr : 0 < D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hM : 3 ≤ l.M` using `l.three_le`. Take `⟨γ', hγ', u, n, hn, hu, he⟩` from `GlobalTheory.unf_group_contains_congruence_upto_rootsOfUnity _ _ _ _ _ _ σ _ (Formalism.L2.PjFree.Unf.ofPj (U σ)) (h.unf σ hσ) h.levA hr k γ hγ hc`. Take `⟨Kf, th, hrk, hK, hth, hD, hunit⟩` from `h.dictU σ hσ`. Establish `hmu : MuUnit (D.sp.W j) (dict σ) (fun _ => (1 : ℂ))` using `⟨fun _ _ => (mul_one 1).symm, fun _ => norm_one, fun _ _ => rfl, hunit⟩`.
+
+Establish `h1` using `GlobalTheory.PrincCore.root_eq_one (D.sp.W j) hrk hr (U σ).X (dict σ) (fun _ => (1 : ℂ)) Kf th hth hD hmu _ hM hK k γ γ' hγ' hc u n hn hu he`. Rewrite `he` using `[h1, one_smul]`. Conclude with `Units.ext he ▸ hγ'`.
+-/
 theorem hasPrinc_laws : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ σ, GoodEmb c σ → GlobalTheory.FrameNorm.HasPrinc (Formalism.L2.PjFree.Unf.ofPj (U σ)) l.M := by
   intro D j H Dw l Xo c U dict h σ hσ k γ hγ hc
   have hr : 0 < D.R.r := by

@@ -12,6 +12,17 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK Fr
 open GlobalTheory.Doubling (absE)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n n₁ Y Y₁ H i₀ i₁ r s hB hY hH`. Take `⟨ε, A', h⟩` from `isFr hB hY hH`. Establish `G` using `PositivityTheory.ThKEnd.Grp.unipGood hB.cm (hY.imp (·.herm) (·.skew)) (det_ne hY) ⟨hH.rank, hH.xx, hH.yy, hH.xy, hH.orth, hH.gram, (h.isUnit_det (det_ne hY).isUnit).ne_zero⟩`. Use `⟨G.ex, G.cov, G.closed, G.right, ?_, fun u hu => ⟨(mem_unip.1 hu).1, ?_⟩, ?_⟩` and prove the remaining obligations. Use `choose m h1 h2 using exists_levi hB.cm h`.
+
+Set `lev : (AE F E)ˣ × UA σ Y₁.J →* UA σ Y.J` to `MonoidHom.mk' (fun z => m z.1 z.2) fun a b => levi_uniq h (h1 _ _) (levi_mul (h1 _ _) (h1 _ _))`. Establish `hc : Continuous (cA σ : AE F E → AE F E)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `c1 : Continuous fun z => mat (lev z)`. Establish `e : (fun z => mat (lev z)) = fun z => _` using `funext fun z => h2 z.1 z.2`. Rewrite using `[e]`.
+
+Use `(continuous_const.matrix_mul (continuous_matrix fun i j => ?_)).matrix_mul continuous_const` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `(PositivityTheory.ThKEnd.Grp.continuous_mat.comp continuous_snd).matrix_elem i j`. Conclude with `continuous_const`. Conclude with `continuous_const`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j exacts [Units.continuous_val.comp continuous_fst, continuous_const, continuous_const, hc.comp (Units.continuous_coe_inv.comp continuous_fst)]`. Use `⟨lev, Continuous.subtype_mk (f := fun z => (lev z).1) (Units.continuous_iff.2 ⟨c1, ?_⟩) _, h1, fun t g p hp => levi_uniq h hp (h1 t g)⟩` and prove the remaining obligations. Establish `e : (fun z => mat (lev z)⁻¹) = (fun z => mat (lev z)) ∘ fun z => z⁻¹` using `funext fun z => by simp`. Conclude with `(e ▸ c1.comp continuous_inv : Continuous fun z => mat (lev z)⁻¹)`. Conclude with `h.ad.fix_y (PositivityTheory.ThKG.Tow.Levi.cA_cA hB.cm) u.2 (mem_unip.1 hu).1`.
+
+Take `⟨t, ht⟩ : ∃ t, absE F E t = ((4 : ℝ≥0) ^ Fintype.card (InfinitePlace F))⁻¹` from `⟨_, GlobalTheory.Eis.Conv.absE_halfE F E σ hB.cm⟩`. Use `⟨t⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, ht, inv_inv, NNReal.coe_pow]`. Conclude with `one_lt_pow₀ (by norm_num) Fintype.card_ne_zero`.
+-/
 theorem unipEx_of : UnipEx := by
   intro F E _ _ _ _ _ σ B n n₁ Y Y₁ H i₀ i₁ r s hB hY hH
   obtain ⟨ε, A', h⟩ := isFr hB hY hH

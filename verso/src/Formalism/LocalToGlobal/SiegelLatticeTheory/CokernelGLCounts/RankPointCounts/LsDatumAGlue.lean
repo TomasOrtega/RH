@@ -67,6 +67,15 @@ def ClaimR (M : Model F E) (r n : ℕ) : Prop :=
       (H.Respects t₁ ⟨Λ₂, f₂, f₂', t₁.T, t₁.T'⟩ φ φ' ↔
         GamCond H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ φ φ' θ)
 
+/- English proof (translation)
+Introduce `V _ _ H hn t₁ f₂ f₂' φ φ' hyp`. Take `⟨e, he⟩` from `hG V H hn t₁ f₂ f₂' φ φ' hyp`. Establish `hR'` using `hR V H hn t₁ f₂ f₂' φ φ' hyp`. Establish `thc : ∀ Λ₂ : Submodule M.L.O V, H.IsGeneric ⟨Λ₂, f₂, f₂', t₁.T, t₁.T'⟩ → H.Respects t₁ ⟨Λ₂, f₂, f₂', t₁.T, t₁.T'⟩ φ φ' → ThCond H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ Λ₂ φ φ'`. Introduce `Λ₂ hg hr n₁ n₂ hc`.
+
+Take `⟨h₁, h₂, c₁, c₂⟩` from `hc`. Conclude with `thCorr_holds M r V H t₁ ⟨Λ₂, f₂, f₂', t₁.T, t₁.T'⟩ φ φ' hyp.1 hg hr n₁ h₁ n₂ h₂ c₁ c₂`. Establish `heq : ∀ y, ∀ m₁ m₂, y.1 (ddMk H t₁ m₁) = ddMk H _ m₂ ↔ GlueRel H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ (e.symm y).1 φ φ' m₁ m₂`. Introduce `y m₁ m₂`. Use `he (e.symm y) m₁ m₂` as an intermediate fact.
+
+Rewrite `this` using `[e.apply_symm_apply]`. Then use the resulting hypothesis. Use `Nat.card_congr { toFun := fun Λ => ⟨(e ⟨Λ.1, Λ.2.1, thc Λ.1 Λ.2.1 Λ.2.2⟩).1, (e ⟨Λ.1, Λ.2.1, thc Λ.1 Λ.2.1 Λ.2.2⟩).2.1, (e ⟨Λ.1, Λ.2.1, thc Λ.1 Λ.2.1 Λ.2.2⟩).2.2.1, (e ⟨Λ.1, Λ.2.1, thc Λ.1 Λ.2.1 Λ.2.2⟩).2.2.2, ((hR' Λ.1 Λ.2.1 (thc Λ.1 Λ.2.1 Λ.2.2) _ (he ⟨Λ.1, Λ.2.1, thc Λ.1 Λ.2.1 …` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subtype.coe_eta, Equiv.symm_apply_apply]`. Use `right_inv := fun θ => by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subtype.coe_eta, Equiv.apply_symm_apply] }`.
+-/
 theorem latSide_of (M : Model F E) (r n : ℕ) (hG : Glue M r n) (hR : ClaimR M r n) : LatSide M r n := by
   intro V _ _ H hn t₁ f₂ f₂' φ φ' hyp
   obtain ⟨e, he⟩ := hG V H hn t₁ f₂ f₂' φ φ' hyp

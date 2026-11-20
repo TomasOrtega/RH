@@ -25,9 +25,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def adB (b : Module.Basis (Fin N) F (Matrix (Fin nT) (Fin nS) E)) : Module.Basis (Fin N) (AF F) (WOF F E nS nT) :=
   (b.baseChange (AF F)).map (matBC (AF F))
 
+/- English proof (translation)
+Rewrite using `[adB, Module.Basis.map_apply, Module.Basis.baseChange_apply, matBC_one]`. Both sides reduce to the same expression.
+-/
 theorem adB_apply (b : Module.Basis (Fin N) F (Matrix (Fin nT) (Fin nS) E)) (i : Fin N) : adB b i = ratWF (b i) := by
   rw [adB, Module.Basis.map_apply, Module.Basis.baseChange_apply, matBC_one]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `e : (ratWF x : WOF F E nS nT) = matBC (AF F) ((1 : AF F) ⊗ₜ[F] x)` using `(matBC_one (AF F) x).symm`. Rewrite using `[Module.Basis.equivFun_apply, adB, Module.Basis.map_repr, LinearEquiv.trans_apply, e, LinearEquiv.symm_apply_apply, Module.Basis.baseChange_repr_tmul, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem adB_rat (b : Module.Basis (Fin N) F (Matrix (Fin nT) (Fin nS) E)) (x : Matrix (Fin nT) (Fin nS) E) :
     (adB b).equivFun (ratWF x) = GlobalTheory.SWQ.rat (b.equivFun x) := by
   funext i
@@ -36,22 +42,34 @@ theorem adB_rat (b : Module.Basis (Fin N) F (Matrix (Fin nT) (Fin nS) E)) (x : M
     Module.Basis.baseChange_repr_tmul, Algebra.smul_def, mul_one]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨p, rfl⟩` from `finSumFinEquiv.surjective i`. Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]`. Apply the tactic sequence `rcases p with p | p <;> simp [Matrix.one_apply, apply_ite φ]`.
+-/
 theorem aC_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (n : ℕ) : (aC R n).map φ = aC S n := by
   ext i j
   obtain ⟨p, rfl⟩ := finSumFinEquiv.surjective i
   simp only [Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]
   rcases p with p | p <;> simp [Matrix.one_apply, apply_ite φ]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨p, rfl⟩` from `finSumFinEquiv.surjective i`. Simplify using `only [dCdE, Matrix.mul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]`. Apply the tactic sequence `rcases p with p | p <;> simp [Matrix.one_apply]`.
+-/
 theorem dCdE_eq (J : Matrix (Fin nT) (Fin nT) E) : dCdE J = aC E nT * ((1 / 2 : E) • J⁻¹) := by
   ext i j
   obtain ⟨p, rfl⟩ := finSumFinEquiv.surjective i
   simp only [dCdE, Matrix.mul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]
   rcases p with p | p <;> simp [Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[dCd, dCdE_eq, Matrix.map_mul, aC_map]`.
+-/
 theorem dCd_eq (J : Matrix (Fin nT) (Fin nT) E) :
     dCd F J = aC (AF F ⊗[F] E) nT * ((1 / 2 : E) • J⁻¹).map (incAF F E) := by
   rw [dCd, dCdE_eq, Matrix.map_mul, aC_map]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨p, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨r, rfl⟩` from `finSumFinEquiv.surjective j`. Simplify using `only [GlobalTheory.WeilSchrodinger.DblTargetF.dblG, dbl, Matrix.map_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases p with p | p <;> rcases r with r | r <;> simp`.
+-/
 theorem dbl_map (J : Matrix (Fin nT) (Fin nT) E) : (GlobalTheory.WeilSchrodinger.DblTargetF.dblG J).map (incAF F E) =
     (dbl (J.map (incAF F E))).submatrix finSumFinEquiv.symm finSumFinEquiv.symm := by
   ext i j
@@ -61,6 +79,9 @@ theorem dbl_map (J : Matrix (Fin nT) (Fin nT) E) : (GlobalTheory.WeilSchrodinger
     Matrix.submatrix_apply, Equiv.symm_apply_apply]
   rcases p with p | p <;> rcases r with r | r <;> simp
 
+/- English proof (translation)
+Rewrite using `[hOF_eq_trace, Matrix.map_mul, dC_map, Matrix.transpose_mul, dbl_map, Matrix.mul_assoc _ (dC _ nT)ᵀ, C_D]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (aC _ nT)ᵀ, A_C]`. Simplify using the standard rewrite rules.
+-/
 theorem h_CC (JS : Matrix (Fin nS) (Fin nS) E) (J : Matrix (Fin nT) (Fin nT) E) (u u' : WOF F E nS nT) :
     hOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG J) (dC (AF F ⊗[F] E) nT * u) (dC (AF F ⊗[F] E) nT * u') = 0 := by
   rw [hOF_eq_trace, Matrix.map_mul, dC_map, Matrix.transpose_mul, dbl_map, Matrix.mul_assoc _ (dC _ nT)ᵀ, C_D]
@@ -68,6 +89,9 @@ theorem h_CC (JS : Matrix (Fin nS) (Fin nS) E) (J : Matrix (Fin nT) (Fin nT) E) 
   rw [← Matrix.mul_assoc (aC _ nT)ᵀ, A_C]
   simp
 
+/- English proof (translation)
+Rewrite using `[hOF_eq_trace, Matrix.map_mul, aC_map, Matrix.transpose_mul, dbl_map, Matrix.mul_assoc _ (aC _ nT)ᵀ, A_D]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (dC _ nT)ᵀ, C_A]`. Simplify using the standard rewrite rules.
+-/
 theorem h_AA (JS : Matrix (Fin nS) (Fin nS) E) (J : Matrix (Fin nT) (Fin nT) E) (u u' : WOF F E nS nT) :
     hOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG J) (aC (AF F ⊗[F] E) nT * u) (aC (AF F ⊗[F] E) nT * u') = 0 := by
   rw [hOF_eq_trace, Matrix.map_mul, aC_map, Matrix.transpose_mul, dbl_map, Matrix.mul_assoc _ (aC _ nT)ᵀ, A_D]
@@ -75,11 +99,19 @@ theorem h_AA (JS : Matrix (Fin nS) (Fin nS) E) (J : Matrix (Fin nT) (Fin nT) E) 
   rw [← Matrix.mul_assoc (dC _ nT)ᵀ, C_A]
   simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, diagCols, Matrix.transpose_fromRows, Matrix.fromCols_mul_fromRows]`. Simplify using `[two_smul]`.
+-/
 theorem C_C {R : Type} [CommRing R] {n : ℕ} : (dC R n)ᵀ * dC R n = (2 : R) • 1 := by
   rw [Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, diagCols, Matrix.transpose_fromRows,
     Matrix.fromCols_mul_fromRows]
   simp [two_smul]
 
+/- English proof (translation)
+Use `⟨(1 / 2 : E) • (dC E nT)ᵀ, J * (aC E nT)ᵀ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, C_C, smul_smul]`. Evaluate the numerical expressions. Rewrite using `[dCdE_eq, ← Matrix.mul_assoc, Matrix.smul_mul, C_A]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Matrix.mul_assoc, A_C, Matrix.mul_zero]`. Rewrite using `[← C_D]`. Conclude with `dC_dual J hJ`. Rewrite using `[dCdE_eq, Matrix.mul_assoc, ← Matrix.mul_assoc _ J, Matrix.smul_mul, Matrix.nonsing_inv_mul _ (Ne.isUnit hJ), Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_smul, ← smul_add, CC_add, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem proj_facts (J : Matrix (Fin nT) (Fin nT) E) (hJ : J.det ≠ 0) :
     ∃ U V : Matrix (Fin nT) (Fin (nT + nT)) E, U * dC E nT = 1 ∧ U * dCdE J = 0 ∧ V * dC E nT = 0 ∧ V * dCdE J = 1 ∧
       dC E nT * U + dCdE J * V = 1 := by
@@ -92,10 +124,26 @@ theorem proj_facts (J : Matrix (Fin nT) (Fin nT) E) (hJ : J.det ≠ 0) :
       Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_smul, ← smul_add, CC_add, smul_smul]
     norm_num
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul.symm`.
+-/
 theorem rat_mul {a b c : ℕ} (M : Matrix (Fin a) (Fin b) E) (x : Matrix (Fin b) (Fin c) E) :
     (M.map (incAF F E) * (ratWF x : WOF F E c b) : Matrix (Fin a) (Fin c) (AF F ⊗[F] E)) = ratWF (M * x) :=
   Matrix.map_mul.symm
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hinv` using `GlobalTheory.SplitDetCharF.sig_invol hB.cm`. Establish `eB : (-1 : AF F ⊗[F] E) • incM F (-(ξ₀ • JS⁻¹)) = incM F (ξ₀ • JS⁻¹)`. Use function extensionality and compare the values at `i j`. Simplify using `[incM]`.
+
+Establish `hbij` using `bijective_sympBil σ hinv (JA := (1 : Matrix (Fin nT) (Fin nT) E)ᵀ) (JB := -(ξ₀ • JS⁻¹)) (by simp) (by`. Rewrite using `[← neg_smul, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 hξ)) (Matrix.isUnit_nonsing_inv_det _ (Ne.isUnit hS.2)).ne_zero)`. Set `b` to `Module.finBasis F (Matrix (Fin nT) (Fin nS) E)`. Set `b'` to `b.dualBasis.map (LinearEquiv.ofBijective _ hbij).symm`.
+
+Establish `hb : ∀ i j, symp σ (-1) (1 : Matrix (Fin nT) (Fin nT) E)ᵀ (-(ξ₀ • JS⁻¹)) (b' i) (b j) = if j = i then 1 else 0` using `fun i j => by`. Establish `h1` using `(LinearEquiv.ofBijective _ hbij).apply_symm_apply (b.dualBasis i)`. Establish `h2` using `LinearMap.congr_fun h1 (b j)`. Rewrite `h2` using `[Module.Basis.dualBasis_apply_self]`. Conclude with `h2`.
+
+Set `P : LinearMap.BilinForm (AF F) (WOF F E nS nT)` to `sympBil (cA σ) (-1) (incM F (1 : Matrix (Fin nT) (Fin nT) E)ᵀ) (incM F (-(ξ₀ • JS⁻¹)))`. Establish `hP : ∀ v u, P v u = (adB b').equivFun v ⬝ᵥ (adB b).equivFun u` using `fun v u => by`. Establish `h0 : ∀ i j, P (adB b' i) (adB b j) = if j = i then 1 else 0` using `fun i j => by`. Rewrite using `[adB_apply, adB_apply]`. Use `(symp_map (AF F) σ _ _ (b' i) (b j)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hb]`. Apply the tactic sequence `split_ifs <;> simp`. Use `conv_lhs => rw [← (adB b').sum_repr v, ← (adB b).sum_repr u]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, h0, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, dotProduct, Module.Basis.equivFun_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+
+Use `⟨_, (adB b').equivFun, (adB b).equivFun, b'.equivFun, b.equivFun, fun v u => ?_, adB_rat b', adB_rat b⟩` and prove the remaining obligations. Rewrite using `[← hP]`. Use `Eq.trans ?_ (GlobalTheory.TransportF.symplOF_eq_symp (JT := 1) rfl eB v u)` and prove the remaining obligations. Unfold `symplOF`. Rewrite using `[hOF_dual JS JT hT.2, hOF_eq_trace, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`.
+-/
 theorem pairing {B : Base F E} (hB : B.IsGood σ) {JS : Matrix (Fin nS) (Fin nS) E}
     {JT : Matrix (Fin nT) (Fin nT) E} (hS : IsHermND σ JS) (hT : IsHermND σ JT) {ξ₀ : E} (hξ : ξ₀ ≠ 0) :
     ∃ (N : ℕ) (α β : WOF F E nS nT ≃ₗ[AF F] (Fin N → AF F)) (a b : Matrix (Fin nT) (Fin nS) E ≃ₗ[F] (Fin N → F)),
@@ -137,6 +185,13 @@ theorem pairing {B : Base F E} (hB : B.IsGood σ) {JS : Matrix (Fin nS) (Fin nS)
   unfold symplOF
   rw [hOF_dual JS JT hT.2, hOF_eq_trace, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨U, V, p1, p2, p3, p4, p5⟩` from `proj_facts JT hT.2`. Establish `m` using `fun {a b : ℕ} {X Y : Matrix (Fin a) (Fin b) E} (h : X = Y) => congrArg (fun M : Matrix (Fin a) (Fin b) E => M.map (incAF F E)) h`. Establish `q1` using `m p1`. Establish `q2` using `m p2`. Establish `q3` using `m p3`.
+
+Establish `q4` using `m p4`. Establish `q5` using `m p5`. Simplify using `only [Matrix.map_mul, dC_map, Matrix.map_add _ (map_add (incAF F E)), Matrix.map_one _ (map_zero (incAF F E)) (map_one (incAF F E)), Matrix.map_zero _ (map_zero (incAF F E))] at q1 q2 q3 q4 q5`. Rewrite `q2`, `q4`, `q5` using `[show (dCdE JT).map (incAF F E) = dCd F JT from rfl]`. Set `d : WOF F E nS (nT + nT) ≃ₗ[AF F] WOF F E nS nT × WOF F E nS nT` to `{ toFun := fun w => (V.map (incAF F E) * w, U.map (incAF F E) * w) invFun := fun p => dC (AF F ⊗[F] E) nT * p.2 + dCd F JT * p.1 map_add' := fun x y => Prod.ext (Matrix.mul_add _ _ _) (Matrix.mul_add _ _ _) map_smul' := fun a x => Prod.ext (Matrix.mul_smul _ _ _) (Matrix.mul_smul …`.
+
+Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[← Matrix.add_mul, q5, Matrix.one_mul]`. Use `right_inv := fun p => by`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, q1, q2, q3, q4, Matrix.one_mul, Matrix.zero_mul, add_zero, zero_add] }`. Conclude with `⟨d, U, V, fun _ => rfl, fun _ => rfl⟩`.
+-/
 theorem split (JT : Matrix (Fin nT) (Fin nT) E) (hT : IsHermND σ JT) :
     ∃ (d : WOF F E nS (nT + nT) ≃ₗ[AF F] WOF F E nS nT × WOF F E nS nT) (U V : Matrix (Fin nT) (Fin (nT + nT)) E),
       (∀ w, d w = (V.map (incAF F E) * w, U.map (incAF F E) * w)) ∧
@@ -164,11 +219,17 @@ theorem split (JT : Matrix (Fin nT) (Fin nT) E) (hT : IsHermND σ JT) :
         simp only [Matrix.mul_add, ← Matrix.mul_assoc, q1, q2, q3, q4, Matrix.one_mul, Matrix.zero_mul, add_zero, zero_add] }
   exact ⟨d, U, V, fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Establish `i0 : IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Use `IsModuleTopology.toContinuousAdd (AF F) (AF F ⊗[F] E)` as an intermediate fact. Conclude with `inferInstanceAs (IsModuleTopology (AF F) (Fin c → Fin a → AF F ⊗[F] E))`.
+-/
 theorem modTop (a c : ℕ) : IsModuleTopology (AF F) (WOF F E a c) := by
   have i0 : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   have := IsModuleTopology.toContinuousAdd (AF F) (AF F ⊗[F] E)
   exact inferInstanceAs (IsModuleTopology (AF F) (Fin c → Fin a → AF F ⊗[F] E))
 
+/- English proof (translation)
+Use `IsModuleTopology.toContinuousAdd (AF F) M` as an intermediate fact. Use `IsModuleTopology.toContinuousAdd (AF F) M'` as an intermediate fact. Use `IsModuleTopology.toContinuousSMul (AF F) M` as an intermediate fact. Use `IsModuleTopology.toContinuousSMul (AF F) M'` as an intermediate fact. Conclude with `⟨IsModuleTopology.continuous_of_linearMap e.toLinearMap, IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap⟩`.
+-/
 theorem cont2 {M M' : Type} [AddCommGroup M] [AddCommGroup M'] [Module (AF F) M] [Module (AF F) M'] [TopologicalSpace M]
     [TopologicalSpace M'] (h : IsModuleTopology (AF F) M) (h' : IsModuleTopology (AF F) M') (e : M ≃ₗ[AF F] M') :
     Continuous e ∧ Continuous e.symm := by
@@ -178,6 +239,19 @@ theorem cont2 {M M' : Type} [AddCommGroup M] [AddCommGroup M'] [Module (AF F) M]
   have := IsModuleTopology.toContinuousSMul (AF F) M'
   exact ⟨IsModuleTopology.continuous_of_linearMap e.toLinearMap, IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap⟩
 
+/- English proof (translation)
+Establish `hinv` using `GlobalTheory.SplitDetCharF.sig_invol hB.cm`. Take `⟨N, α, β, a, b, hP, ha, hb⟩` from `pairing hB hS hT hξ`. Take `⟨d, U, V, hd, hd'⟩` from `split (nS := nS) JT hT`. Take `⟨e, he0⟩ : ∃ e : WOF F E nS (nT + nT) ≃ₗ[AF F] VA F N, ∀ w, e w = (α (d w).1, β (d w).2)` from `⟨d.trans (α.prodCongr β), fun _ => rfl⟩`. Establish `he : ∀ u v, e (dC (AF F ⊗[F] E) nT * u + dCd F JT * v) = (α v, β u)` using `fun u v => by`.
+
+Rewrite using `[he0, ← hd' (v, u), d.apply_symm_apply]`. Establish `j1 : IsModuleTopology (AF F) (Fin N → AF F)` using `inferInstance`. Establish `j2 : IsModuleTopology (AF F) (VA F N)` using `inferInstance`. Establish `c1` using `cont2 (modTop _ _) j2 e`. Establish `c2` using `cont2 (modTop _ _) j1 α`.
+
+Establish `c3` using `cont2 (modTop _ _) j1 β`. Use `⟨N, α, β, e, he, fun w w' => ?_, fun x => ?_, fun y z => ?_, c1.1, c1.2, c2.1, c2.2, c3.1, c3.2, fun x => ⟨_, hb x⟩, fun y => ⟨b.symm y, by rw [hb, LinearEquiv.apply_symm_apply]⟩⟩` and prove the remaining obligations. Take `⟨⟨v, u⟩, rfl⟩` from `d.symm.surjective w`. Take `⟨⟨v', u'⟩, rfl⟩` from `d.symm.surjective w'`. Establish `s1 : symplOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ (dC (AF F ⊗[F] E) nT * u) (dC (AF F ⊗[F] E) nT * u') = 0` using `by rw [symplOF, h_CC, mul_zero, map_zero]`.
+
+Establish `s2 : symplOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ (dCd F JT * v) (dCd F JT * v') = 0`. Rewrite using `[symplOF, dCd_eq, Matrix.mul_assoc, Matrix.mul_assoc, h_AA, mul_zero, map_zero]`. Establish `s3` using `GlobalTheory.T.adelicSymplecticTraceForm_alternating_swap F E σ hinv _ _ JS _ hS (GlobalTheory.WeilSchrodinger.DblTargetF.isHermND_dblG hT) ξ₀ hσ (dCd F JT * v') (dC (AF F ⊗[F] E) nT * u)`. Rewrite using `[hd', hd', he, he, GlobalTheory.ThetaSchurF.symplOF_add_left, GlobalTheory.ThetaSchurF.symplOF_add_right, GlobalTheory.ThetaSchurF.symplOF_add_right, s1, s2, s3, hP, hP, symV]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨a (V * x), b (U * x), ?_⟩` and prove the remaining obligations. Rewrite using `[he0, hd, rat_mul, rat_mul, ha, hb]`. Use `⟨dC E nT * b.symm z + dCdE JT * a.symm y, ?_⟩` and prove the remaining obligations. Establish `: (ratWF (dC E nT * b.symm z + dCdE JT * a.symm y) : WOF F E nS (nT + nT)) = dC (AF F ⊗[F] E) nT * (ratWF (b.symm z) : WOF F E nS nT) + dCd F JT * (ratWF (a.symm y) : WOF F E nS nT)`. Rewrite using `[← dC_map (incAF F E), dCd, rat_mul, rat_mul]`.
+
+Conclude with `Matrix.map_add _ (map_add _) _ _`. Rewrite using `[this, he, ha, hb, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem coords {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E}
     {JT : Matrix (Fin nT) (Fin nT) E} (hS : IsHermND σ JS) (hT : IsHermND σ JT) {ξ₀ : E} (hξ : ξ₀ ≠ 0)
     (hσ : σ ξ₀ = -ξ₀) :

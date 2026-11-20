@@ -9,6 +9,27 @@ import Development.AutomorphicArithmetic.DedekindLFunctions.LandauTheorems.ChCor
 open UpperTheory.Comparison₂ Deduction.CH Formalism Formalism.HC Formalism.D5 Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.ThickSetMeanBounds Formalism.LFunctionChainParameters.LErr
   Formalism.LFunctionChainParameters.LChain Formalism.LFunctionChainParameters.LHost
 
+/- English proof (translation)
+Introduce `Λ eD eL K cHH eK C eps heps`. Establish `ho : (0 : ℝ) ≤ Λ.o` using `Nat.cast_nonneg _`. Establish `hc : |(3 * (Λ.o : ℝ) + 1)⁻¹| ≤ 1`. Rewrite using `[abs_of_nonneg (by positivity)]`. Conclude with `inv_le_one_of_one_le₀ (by linarith)`.
+
+Take `⟨x₁, hx₁⟩` from `Deduction.ch_core (max (eD + eL) 0 + 3) eps C (koOf Λ) (3 * (Λ.o : ℝ) + 1)⁻¹ (4 * (Λ.o : ℝ)) (by positivity) heps hc`. Take `⟨x₂, hx₂⟩` from `large_x_eventually eps K cHH eK heps`. Take `⟨x₃, hx₃⟩` from `Filter.eventually_atTop.1 ((tendsto_rpow_atTop heps).eventually_ge_atTop (1 + 4 * (Λ.o : ℝ)))`. Use `⟨max x₁ (max x₂ x₃), fun x hx φ H TT hE hCore => ?_⟩` and prove the remaining obligations. Establish `g1 : x₁ ≤ x` using `le_trans (le_max_left _ _) hx`.
+
+Establish `g2 : x₂ ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `g3 : x₃ ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Take `⟨U0, i0, tr, W, i4, i5, Top, i6, m, f, Dd, Cc, Xpp, ell, N, T2, a, w, eT, eP, η, X', θ, hell, hxx, hε, heD, heL, hcHH, hcov, hId, hLed, hWin, hBN, hSz, hThin, hCost, hRest, hT2⟩` from `hCore`. Substitute `hxx hε` using the available equality. Establish `hLX` using `hx₂ _ g2`.
+
+Establish `hWin'` using `hWin`. Take `⟨⟨w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, w24, w25, w26, w27, wC⟩, wEta⟩` from `hWin'`. Take `⟨c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17⟩` from `wC`. Establish `hLX' : LargeX Dd.x Dd.ε K Cc.cHH eK`. Use `⟨hLX.1, le_trans ?_ hLX.2⟩` and prove the remaining obligations.
+
+Unfold `KBig`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (by linarith) (by positivity)) (by linarith)`. Establish `hb : 0 < Dd.b` using `by linarith`. Establish `hx0 : 0 < Dd.x` using `by linarith`. Establish `hk : 0 < Dd.k` using `by linarith`.
+
+Establish `ha : 0 ≤ Dd.a` using `le_trans (by positivity) w5`. Establish `hE0 : 0 ≤ eD + eL` using `by linarith`. Rewrite `hx₁` using `[max_eq_left hE0]`. Establish `hBr : 0 ≤ errorBracketSizeWindows Dd.x Dd.ε (Fintype.card φ.A) TT.card T2.card m Dd.b Dd.k Dd.a`. Unfold `errorBracketSizeWindows`.
+
+Check the signs of the components of the expression. Establish `hExp : Dd.x ^ (CErr Cc * Dd.ε) ≤ Dd.x ^ ((eD + eL + 3) * Dd.ε)`. Use `Real.rpow_le_rpow_of_exponent_le w1 (mul_le_mul_of_nonneg_right ?_ w2.le)` and prove the remaining obligations. Unfold `CErr`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hmain` using `hx₁ _ g1 φ.A m (arith H.toHostRaw) _ ell N TT T2 a w Dd.b Dd.b' Dd.k Dd.a η X' θ φ.A0 (keptA Λ H.toHostRaw) (hostFactsS φ H) hb ha hk w7 w8 hSz hThin hCost hRest hT2 (charsA Λ φ H TT _ _ C ell hx0 hE hell) (fun u hu => by`. Take `⟨v, rfl⟩` from `hcov u hu`. Conclude with `le_trans (Deduction.ch_top Dd tr Cc Xpp eK K _ ell N TT T2 a w eT eP hId hLed hWin hBN hLX' v) (mul_le_mul_of_nonneg_right hExp hBr))`. Rewrite `hmain` using `[gmA_eq Λ φ H TT _ _ C ell hE hell]`. Establish `hs` using `sigA_le Λ φ H TT _ _ C ell hx0 hE hell`.
+
+Establish `h1 : Dd.x ^ ((1 : ℝ) / 2 + Dd.ε) ≤ Dd.x ^ ((1 : ℝ) / 2 + (eD + eL + 3 + 3) * Dd.ε)` using `Real.rpow_le_rpow_of_exponent_le w1 (by nlinarith)`. Establish `h2 : Dd.x ^ ((1 : ℝ) / 2 + (eD + eL + 7) * Dd.ε) = Dd.x ^ Dd.ε * Dd.x ^ ((1 : ℝ) / 2 + (eD + eL + 3 + 3) * Dd.ε)`. Rewrite using `[← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3` using `mul_le_mul_of_nonneg_right (hx₃ _ g3) (Real.rpow_nonneg hx0.le ((1 : ℝ) / 2 + (eD + eL + 3 + 3) * Dd.ε))`. Establish `h4` using `mul_le_mul_of_nonneg_left h1 (show 0 ≤ 4 * (Λ.o : ℝ) by positivity)`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.Comparison₂.core_gm :
     ∀ (Λ : Level) (eD eL K cHH eK C eps : ℝ), 0 < eps → ∃ x1 : ℝ, ∀ x ≥ x1, ∀ (φ : Frame) (H : HostAx φ) (TT : Finset φ.A),
       EAtH Λ H.toHostRaw TT x eps C → CoreAtH H.toHostRaw TT eD eL K cHH eK eps x →

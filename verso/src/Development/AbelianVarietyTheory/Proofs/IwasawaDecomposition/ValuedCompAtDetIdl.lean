@@ -13,6 +13,9 @@ section General
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Unfold `ordF`. Rewrite using `[neg_neg, WithZero.exp_log (by simp)]`.
+-/
 theorem valuation_eq_exp (w : HeightOneSpectrum (𝓞 E)) (k : Eˣ) :
     w.valuation E (k : E) = WithZero.exp (-ordF w k) := by
   unfold ordF
@@ -20,6 +23,11 @@ theorem valuation_eq_exp (w : HeightOneSpectrum (𝓞 E)) (k : Eˣ) :
 
 variable [StarRing E] {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Establish `h` using `CharValCompare.val_dual (P := w) ⟨p.deco.2.lat, p.deco.2.uni⟩ (isFr_ptFr p w) (isFr_ptFr p (conjPrime₂ w))`. Rewrite `h` using `[map_mul, valuation_star, CharValCompare.conjP_conjP]`. Rewrite using `[ordSub_detSub_eq p.deco.2.lat (isFr_ptFr p w), ordSub_detSub_eq p.deco.2.lat (isFr_ptFr p (conjPrime₂ w))]`. Establish `h' : w.valuation E ((LinearEquiv.det (ptFr p w) : Eˣ) : E) * (conjPrime₂ w).valuation E ((LinearEquiv.det (ptFr p (conjPrime₂ w)) : Eˣ) : E) = 1` using `h`. Rewrite `h'` using `[valuation_eq_exp, valuation_eq_exp, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_inj]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem ordSub_conjP (p : DecoF E n ST SG Q) (w : HeightOneSpectrum (𝓞 E)) :
     ordSub (conjPrime₂ w) (detSub p.deco.1.N) = -ordSub w (detSub p.deco.1.N) := by
   have h := CharValCompare.val_dual (P := w) ⟨p.deco.2.lat, p.deco.2.uni⟩ (isFr_ptFr p w) (isFr_ptFr p (conjPrime₂ w))
@@ -32,6 +40,11 @@ theorem ordSub_conjP (p : DecoF E n ST SG Q) (w : HeightOneSpectrum (𝓞 E)) :
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[compAt_detIdl SB p.deco.2.lat]`. Use `split_ifs`. Rewrite using `[valued_algebraMap, valuation_eq_exp, ordSub_detSub_eq p.deco.2.lat (isFr_ptFr p w)]`. Simplify using the standard rewrite rules. Rewrite using `[map_pow, valued_algebraMap, valuation_eq_exp, ordF_unif_self, ← WithZero.exp_nsmul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem valued_compAt_detIdl (SB : Finset (HeightOneSpectrum (𝓞 E))) (p : DecoF E n ST SG Q)
     (w : HeightOneSpectrum (𝓞 E)) :
     Valued.v (compAt w (detIdl SB p.deco.1.N (ptFr p))) = WithZero.exp (-(if w ∈ SB then ordSub w (detSub p.deco.1.N)
@@ -43,6 +56,9 @@ theorem valued_compAt_detIdl (SB : Finset (HeightOneSpectrum (𝓞 E))) (p : Dec
   · rw [map_pow, valued_algebraMap, valuation_eq_exp, ordF_unif_self, ← WithZero.exp_nsmul]
     simp
 
+/- English proof (translation)
+Rewrite using `[valued_compAt_detIdl, valued_compAt_detIdl, ← WithZero.exp_add, WithZero.exp_inj, CharValCompare.conjP_conjP, ordSub_conjP]`. Distinguish the cases in `h : w ∈ SB`. Rewrite using `[if_pos h, if_neg (hs w h), if_pos h]`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `rw [if_neg h, if_neg h] split_ifs <;> omega`.
+-/
 theorem valued_compAt_conjP {SB : Finset (HeightOneSpectrum (𝓞 E))} (hs : ∀ P ∈ SB, conjPrime₂ P ∉ SB)
     (p : DecoF E n ST SG Q) (w : HeightOneSpectrum (𝓞 E)) :
     Valued.v (compAt w (detIdl SB p.deco.1.N (ptFr p))) =
@@ -59,6 +75,19 @@ end General
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `R H n ST SG Q SQ h p hL`. Establish `hL'` using `hL.mono h`. Establish `hsub : uSG SG Q ⊆ uSG SG SQ`. Introduce `P`. Simplify using `only [Finset.mem_union]`.
+
+Conclude with `Or.imp_right fun h' => h h'`. Unfold `detPt`. Rewrite using `[toDtQ_mk]`. Use `symm`. Rewrite using `[QuotientGroup.eq, inv_mul_eq_div]`.
+
+Establish `h0 : ∀ w (a : Ideles H.E), compAt w a ≠ 0` using `fun w a => ((Group.isUnit a).map (compAt w)).ne_zero`. Use `mem_KDq_of_conj hL' _ (fun w => ?_) fun P hP => ?_` and prove the remaining obligations. Rewrite using `[map_div, map_div, map_div₀, map_div₀]`. Unfold `ptIdl`. Rewrite using `[valued_compAt_conjP hL.split p w, valued_compAt_conjP hL'.split p w, mul_div_mul_right _ _ WithZero.exp_ne_zero]`.
+
+Establish `e1 : compAt P (ptIdl H SQ p / ptIdl H Q p) = 1`. Rewrite using `[map_div, div_eq_one_iff_eq (h0 _ _)]`. Unfold `ptIdl`. Rewrite using `[compAt_detIdl _ p.deco.2.lat, compAt_detIdl _ p.deco.2.lat, if_pos hP, if_pos (hsub hP)]`. Establish `e2 : compAt (conjPrime₂ P) (ptIdl H SQ p / ptIdl H Q p) = 1`.
+
+Rewrite using `[map_div, div_eq_one_iff_eq (h0 _ _)]`. Unfold `ptIdl`. Rewrite using `[compAt_detIdl _ p.deco.2.lat, compAt_detIdl _ p.deco.2.lat, if_neg (hL.split P (hsub hP)), if_neg (hL'.split P hP), CharValCompare.conjP_conjP, if_pos hP, if_pos (hsub hP)]`. Establish `e3` using `valued_sigR (host_cmData R H) P ((finAf H.F H.E (ptIdl H SQ p / ptIdl H Q p) : AfE H.F H.E) - 1)`. Rewrite `e3` using `[map_sub (adAt _ _), adAt_finAf, e2, map_one (adAt _ _), sub_self, map_zero, Valuation.zero_iff, map_sub (Formalism.UG.sigR _ _), map_one (Formalism.UG.sigR _ _), map_sub (adAt _ _), map_one (adAt _ _), sub_eq_zero]`.
+
+Rewrite using `[e1, e3, div_one, sub_self, map_zero]`. Conclude with `zero_lt_one`.
+-/
 theorem toDtQ_detPt : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (n : ℕ) (ST SG Q SQ : Finset (HeightOneSpectrum (𝓞 H.E)))
     (h : Q ⊆ SQ) (p : DecoF H.E n ST SG Q), LevOk H SG SQ → toDtQ H h (detPt H SQ p) = detPt H Q p := by
   intro R H n ST SG Q SQ h p hL

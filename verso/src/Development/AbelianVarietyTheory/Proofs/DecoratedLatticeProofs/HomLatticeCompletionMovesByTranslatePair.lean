@@ -24,23 +24,37 @@ def finGL (V : HSp D) (g : GA D V) : GL (Fin V.rank) (EAf D) where
     rw [← Matrix.map_mul, ← GlobalTheory.AdelicLatMove.mt_mul, inv_mul_cancel, GlobalTheory.AdelicLatMove.mt_one,
       Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(mt V (g * h)).map (toEAf D) = _`. Rewrite using `[GlobalTheory.AdelicLatMove.mt_mul, Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem finGL_mul (V : HSp D) (g h : GA D V) :
     (finGL V (g * h)).val = (mt V g).map (toEAf D) * (finGL V h).val := by
   change (mt V (g * h)).map (toEAf D) = _
   rw [GlobalTheory.AdelicLatMove.mt_mul, Matrix.map_mul]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `Iff.rfl`.
+-/
 theorem latFr_rfl (V : HSp D) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) :
     GlobalTheory.AdForm.latFr V rfl N = (N : Set (Fin V.rank → D.host.E)) := by
   ext x
   exact Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[GlobalTheory.NormSum.AdLattice.mem_lat, hN x]`. Both sides reduce to the same expression.
+-/
 theorem eq_lat_of_moves (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hN : Moves V rfl g N) : N = GlobalTheory.NormSum.AdLattice.lat (finGL V g) := by
   ext x
   rw [GlobalTheory.NormSum.AdLattice.mem_lat, hN x]
   rfl
 
+/- English proof (translation)
+Introduce `D S T a b hS hT g s h s' N N' N₁ N₁' hN hN' hN₁ hN₁' u`. Substitute `hS hT` using the available equality. Rewrite using `[latFr_rfl, latFr_rfl, latFr_rfl, latFr_rfl]`. Take `rfl` from `eq_lat_of_moves S g N hN`. Take `rfl` from `eq_lat_of_moves T h N' hN'`.
+
+Take `rfl` from `eq_lat_of_moves S (s * g) N₁ hN₁`. Take `rfl` from `eq_lat_of_moves T (s' * h) N₁' hN₁'`. Conclude with `GlobalTheory.AdelicLatMove.mem_latO_iff_exists_actO D S T s s' _ _ _ _ (finGL S g) (finGL S (s * g)) (finGL T h) (finGL T (s' * h)) (GlobalTheory.StdFrames.isFrame_lat _) (GlobalTheory.StdFrames.isFrame_lat _) (GlobalTheory.StdFrames.isFrame_lat _) (GlobalTheory.StdFrames.isFrame …`.
+-/
 theorem latO_move : ∀ (D : D7) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (g s : GA D S) (h s' : GA D T) N N' N₁ N₁', Moves S hS g N → Moves T hT h N' → Moves S hS (s * g) N₁ → Moves T hT (s' * h) N₁' → ∀ u : WO S T, u ∈ (latO S T (latFr S hS N₁) (latFr T hT N₁') fun _ => True) ↔ ∃ u₀ ∈ (latO S T (latFr S hS N) (latFr T hT N') fun _ => True), u = actO S T s s' u₀ := by
   intro D S T a b hS hT g s h s' N N' N₁ N₁' hN hN' hN₁ hN₁' u
   subst hS hT

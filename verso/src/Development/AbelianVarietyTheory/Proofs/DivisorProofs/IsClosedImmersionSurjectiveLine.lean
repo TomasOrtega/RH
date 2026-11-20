@@ -15,6 +15,21 @@ noncomputable section
 
 namespace GlobalTheory.FlagZ.Plane
 
+/- English proof (translation)
+Introduce `k _ X p σ D U hU x hb`. Set `e` to `RingEquiv.ofBijective _ hb`. Establish `he (P) : e.symm (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U) x P) = P` using `e.symm_apply_apply P`. Set `s (v : ReciprocityTheory.L2DbarEstimates.V D) : CxPts p σ` to `ofHom hU ((MvPolynomial.eval₂Hom σ fun a => v a).comp e.symm.toRingHom) fun a => by`. Use `he (MvPolynomial.C a)` as an intermediate fact.
+
+Rewrite `this` using `[MvPolynomial.eval₂Hom_C]`. Conclude with `(congrArg _ this).trans (MvPolynomial.eval₂Hom_C _ _ a)`. Establish `hs (v) : s v ∈ ptsIn p σ U` using `ofHom_mem _ _ _`. Establish `hev (v) (P) : CxPts.ev p σ U (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U) x P) (s v) = MvPolynomial.eval₂Hom σ (fun a => v a) P` using `(ev_ofHom _ _ _ _).trans (congrArg (MvPolynomial.eval₂Hom σ fun a => v a) (he P))`. Establish `hd (a : Γ(X, U)) : DifferentiableOn ℂ (CxPts.ev p σ U a ∘ s) Set.univ`.
+
+Take `⟨P, rfl⟩` from `hb.2 a`. Use `Differentiable.differentiableOn ?_` and prove the remaining obligations. Rewrite using `[show CxPts.ev p σ U (MvPolynomial.eval₂Hom _ x P) ∘ s = fun v : ReciprocityTheory.L2DbarEstimates.V D => MvPolynomial.eval₂Hom σ (fun a => v a) P from funext fun v => hev v P]`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+
+Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p n hp`. Simplify using `only [map_mul, MvPolynomial.eval₂Hom_X']`.
+
+Conclude with `hp.mul (EuclideanSpace.proj (𝕜 := ℂ) n : ReciprocityTheory.L2DbarEstimates.V D →L[ℂ] ℂ).differentiable`. Establish `hh` using `holo_of_affine hU isOpen_univ (fun v _ => hs v) hd`. Use `⟨⟨{ toFun := fun z => WithLp.toLp 2 fun a => CxPts.ev p σ U (x a) z invFun := s source := ptsIn p σ U target := Set.univ map_source' := fun _ _ => trivial map_target' := fun v _ => hs v left_inv' := fun z hz => Subtype.ext (ext_of_valR hU (hs _) hz fun a => ?_) right_inv' := fun …` and prove the remaining obligations. Take `⟨P, rfl⟩` from `hb.2 a`. Use `(hev _ P).trans (Eq.trans ?_ (ev_eq hz _).symm)` and prove the remaining obligations.
+
+Use `RingHom.congr_fun (g := (evHom hz).comp (MvPolynomial.eval₂Hom _ x)) (MvPolynomial.ringHom_ext (fun c => ?_) fun c => ?_) P` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂Hom_C, RingHom.comp_apply, ← ev_eq, MvPolynomial.eval₂Hom_C]`. Conclude with `(ev_algX hz c).symm`. Rewrite using `[MvPolynomial.eval₂Hom_X', RingHom.comp_apply, ← ev_eq, MvPolynomial.eval₂Hom_X']`. Use extensionality with `a`.
+
+Use `hev v (MvPolynomial.X a)` as an intermediate fact. Rewrite `this` using `[MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_X']`. Then use the resulting hypothesis.
+-/
 theorem exists_chart_of_bijective : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (U : X.Opens) (_ : IsAffineOpen U) (x : Fin D → Γ(X, U)), Function.Bijective (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U) x) → ∃ c : AlgChart p σ D, c.e.source = ptsIn p σ U ∧ c.e.target = Set.univ ∧ ∀ y ∈ c.e.source, ∀ a, c.e y a = CxPts.ev p σ U (x a) y := by
   intro k _ X p σ D U hU x hb
   let e := RingEquiv.ofBijective _ hb
@@ -66,6 +81,17 @@ theorem exists_chart_of_bijective : ∀ (k : Type) [CommRing k] (X : Scheme.{0})
     have := hev v (MvPolynomial.X a)
     rwa [MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_X'] at this
 
+/- English proof (translation)
+Establish `hd : Module.finrank ℝ (ReciprocityTheory.L2DbarEstimates.V 1) = 2`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (ReciprocityTheory.L2DbarEstimates.V 1)]`. Simplify using the standard rewrite rules. Establish `hu (v : ReciprocityTheory.L2DbarEstimates.V 1) : ArithHeightModel.u v = 1 + ‖v‖ ^ 2`. Rewrite using `[ArithHeightModel.u, EuclideanSpace.norm_sq_eq, Fin.sum_univ_one, Complex.sq_norm, Complex.normSq_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `: Nontrivial (ReciprocityTheory.L2DbarEstimates.V 1)` using `inferInstance`. Establish `h` using `integral_fun_norm_addHaar (volume : Measure (ReciprocityTheory.L2DbarEstimates.V 1)) (fun r => 1 / Real.pi * ((1 + r ^ 2) ^ 2)⁻¹ * Real.log (1 + r ^ 2))`. Establish `hr : ∫ r in Set.Ioi (0 : ℝ), r * (((1 + r ^ 2) ^ 2)⁻¹ * Real.log (1 + r ^ 2)) = 0 - -(1 / 2 * (Real.log (1 + (0 : ℝ) ^ 2) / (1 + (0 : ℝ) ^ 2) + (1 + (0 : ℝ) ^ 2)⁻¹))`. Use `integral_Ioi_of_hasDerivAt_of_nonneg' (g := fun r => -(1 / 2 * (Real.log (1 + r ^ 2) / (1 + r ^ 2) + (1 + r ^ 2)⁻¹))) (fun r _ => ?_) (fun r hr => mul_nonneg (le_of_lt hr) (mul_nonneg (by positivity) (Real.log_nonneg (le_add_of_nonneg_right (sq_nonneg r))))) ?_` and prove the remaining obligations.
+
+Establish `h0 : (1 + r ^ 2) ≠ 0` using `by positivity`. Establish `h1` using `(hasDerivAt_pow 2 r).const_add 1`. Use `HasDerivAt.congr_deriv (((((h1.log h0).div h1 h0).add (h1.inv h0)).const_mul (1 / 2)).neg) ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `ht : Filter.Tendsto (fun r : ℝ => 1 + r ^ 2) Filter.atTop Filter.atTop` using `Filter.tendsto_atTop_add_const_left _ 1 (Filter.tendsto_pow_atTop two_ne_zero)`. Use `(((Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero.comp ht).add (tendsto_inv_atTop_zero.comp ht)).const_mul (1 / 2)).neg` as an intermediate fact. Simplify using `using this`. Simplify using `only [hu]`.
+
+Rewrite using `[h, hd, Measure.real, AnReadModel.volume_ball_one, ENNReal.toReal_ofReal Real.pi_pos.le]`. Simplify using `only [smul_eq_mul, Nat.reduceSub, pow_one, mul_assoc (1 / Real.pi), mul_left_comm _ (1 / Real.pi), integral_const_mul, hr]`. Use `Real.pi_pos` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+-/
 theorem integral_log_dens : ∫ v : ReciprocityTheory.L2DbarEstimates.V 1, 1 / Real.pi * (ArithHeightModel.u v ^ 2)⁻¹ * Real.log (ArithHeightModel.u v) = 1 := by
   have hd : Module.finrank ℝ (ReciprocityTheory.L2DbarEstimates.V 1) = 2 := by
     rw [← Module.finrank_mul_finrank ℝ ℂ (ReciprocityTheory.L2DbarEstimates.V 1)]; simp
@@ -99,6 +125,11 @@ theorem integral_log_dens : ∫ v : ReciprocityTheory.L2DbarEstimates.V 1, 1 / R
   field_simp
   norm_num
 
+/- English proof (translation)
+Establish `hm` using `(c.e.symm.isOpenEmbedding ht).measurableEmbedding`. Establish `key (ε : ℤˣ) : (φ.chernPart D ε).restrict c.e.source = (volume.withDensity fun v => ENNReal.ofReal ((ε : ℤ) * ρ v)).map c.e.symm`. Use extensionality with `T hT`. Rewrite using `[Measure.restrict_apply hT, Weight.chernPart_apply h ε c (hT.inter c.e.open_source.measurableSet) Set.inter_subset_right, hm.map_apply, withDensity_apply _ (hm.measurable hT), Set.inter_comm, c.e.image_source_inter_eq', ht, Set.univ_inter]`. Simplify using `only [hc]`.
+
+Establish `hi (ε : ℤˣ) : ∫ y in c.e.source, f y ∂φ.chernPart D ε = ∫ v, (ENNReal.ofReal ((ε : ℤ) * ρ v)).toReal • f (c.e.symm v)`. Rewrite using `[key, hm.integral_map, integral_withDensity_eq_integral_toReal_smul (hρ.measurable.const_mul _).ennreal_ofReal (.of_forall fun _ => ENNReal.ofReal_lt_top)]`. Rewrite using `[Weight.chernInt, hi, hi]`. Simplify using `[ENNReal.ofReal_of_nonpos (neg_nonpos.2 (h0 _)), ENNReal.toReal_ofReal (h0 _)]`.
+-/
 theorem chernInt_chart {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ} {B : LB X}
     [SecondCountableTopology (CxPts p σ)] {φ : Weight p σ B} (h : φ.IsCInf) (c : AlgChart p σ D)
     (ht : c.e.target = Set.univ) {ρ : ReciprocityTheory.L2DbarEstimates.V D → ℝ} (hρ : Continuous ρ) (h0 : ∀ v, 0 ≤ ρ v)
@@ -119,6 +150,19 @@ theorem chernInt_chart {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
   rw [Weight.chernInt, hi, hi]
   simp [ENNReal.ofReal_of_nonpos (neg_nonpos.2 (h0 _)), ENNReal.toReal_ofReal (h0 _)]
 
+/- English proof (translation)
+Introduce `k _ σ`. Set `e : MvPolynomial (Fin 1) k ≃ₐ[k] Γ(PSpace k 1, chart k 1 0)` to `(MvPolynomial.renameEquiv k (finSuccAboveEquiv 0)).trans (chartAlgEquiv k 1 0)`. Establish `he : MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (PSpace.str k 1) (chart k 1 0)) (fun a => ratio k 1 0 ((0 : Fin 2).succAbove a)) = (e : MvPolynomial (Fin 1) k →+* _)` using `MvPolynomial.ringHom_ext (fun a => (MvPolynomial.eval₂Hom_C _ _ a).trans (e.commutes a).symm) fun b => (MvPolynomial.eval₂Hom_X' _ _ b).trans ((congrArg (chartAlgEquiv k 1 0) (MvPolynomial.rename_X _ b)).trans (chartAlgEquiv_X k 1 0 (finSuccAboveEquiv 0 b))).symm`. Take `⟨c, hs, ht, hx⟩` from `exists_chart_of_bijective k _ (PSpace.str k 1) σ 1 _ (isAffineOpen_chart k 1 0) (fun a => ratio k 1 0 ((0 : Fin 2).succAbove a)) (by rw [he]; exact e.bijective)`. Establish `hm (v) : c.e.symm v ∈ c.e.source` using `c.e.map_target (ht ▸ trivial)`.
+
+Establish `hr (v) : c.e (c.e.symm v) = v` using `c.e.right_inv (ht ▸ trivial)`. Establish `h1 (v) : CxPts.ev _ σ (chart k 1 0) (ratio k 1 0 0) (c.e.symm v) = 1`. Rewrite using `[ev_eq (hs ▸ hm v), ratio, ratioOn_self, map_one]`. Establish `h2 (v) : CxPts.ev _ σ (chart k 1 0) (ratio k 1 0 1) (c.e.symm v) = v 0` using `(hx _ (hm v) 0).symm.trans (by rw [hr])`. Establish `hφ (v) : (ProjAn.fsO1 k σ 1).φ (0 : Fin 2) (c.e.symm v) = Real.log (ArithHeightModel.u v)`.
+
+Use `(Weight.fsBasis_φ _ _ _ _ _ _ _).trans (congrArg _ ?_)` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `(Fin.sum_univ_two _).trans ((congrArg₂ (fun a b : ℂ => ‖a‖ ^ 2 + ‖b‖ ^ 2) (h1 v) (h2 v)).trans ?_)` and prove the remaining obligations. Simplify using `only [norm_one, one_pow, ArithHeightModel.u, Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hi : (ProjAn.fsO1 k σ 1).IsCInf` using `(hermitianTwistingSheaf k 1).cInf σ`. Establish `hu : Continuous ArithHeightModel.u` using `continuous_iff_continuousAt.2 fun v => (ArithHeightModel.hasFDerivAt_u v).continuousAt`. Use `CxPts.secondCountableTopology_of_isProjOver σ (isProjOver_pspace_str k 1)` as an intermediate fact. Rewrite using `[← hs, chernInt_chart hi c ht (ρ := fun v => 1 / Real.pi * (ArithHeightModel.u v ^ 2)⁻¹) (continuous_const.mul ((hu.pow 2).inv₀ fun v => (pow_pos (ArithHeightModel.u_pos v) 2).ne')) (fun v => by have := Real.pi_pos; positivity) fun v => ?_]`. Establish `hn (v) : (ProjAn.fsO1 k σ 1).nsq (secVal (PSpace.str k 1) σ (ProjSpace.coord k 1 0)) (c.e.symm v) = Real.exp (-Real.log (ArithHeightModel.u v))`.
+
+Use `(Weight.nsq_eq _ (secVal_mem _) (i := (0 : Fin 2)) (hs ▸ hm v)).trans ?_` and prove the remaining obligations. Rewrite using `[hφ]`. Conclude with `(congrArg (fun a : ℂ => ‖a‖ ^ 2 * _) (h1 v)).trans (by simp)`. Simplify using `only [hn, Real.log_exp]`. Rewrite using `[← mul_one (-(1 / 2) : ℝ), ← integral_log_dens, ← integral_const_mul]`.
+
+Conclude with `integral_congr_ae (.of_forall fun v => by ring)`. Rewrite using `[c.chernDens_eq hi (hm v) (i := (0 : Fin 2)) (hs ▸ hm v), Matrix.det_unique]`. Establish `e₁ : c.hess (ProjAn.fsO1 k σ 1) (0 : Fin 2) (c.e.symm v) default default = ((ArithHeightModel.u v ^ 2)⁻¹ : ℝ)` using `(congrArg₂ (fun F w => ReciprocityTheory.L2DbarEstimates.cHess 1 F w 0 0) (funext fun w => congrArg _ (hφ w)) (hr v)).trans (ArithHeightModel.cHess_log v)`. Rewrite using `[e₁, Complex.ofReal_re]`. Simplify using the standard rewrite rules.
+-/
 theorem chernInt_log_coord : ∀ (k : Type) [CommRing k] (σ : k →+* ℂ), (ProjAn.fsO1 k σ 1).chernInt 1 (ptsIn (PSpace.str k 1) σ (chart k 1 0)) (fun y => Real.log ((ProjAn.fsO1 k σ 1).nsq (secVal (PSpace.str k 1) σ (ProjSpace.coord k 1 0)) y) / 2) = -(1 / 2) := by
   intro k _ σ
   let e : MvPolynomial (Fin 1) k ≃ₐ[k] Γ(PSpace k 1, chart k 1 0) :=
@@ -166,6 +210,9 @@ theorem chernInt_log_coord : ∀ (k : Type) [CommRing k] (σ : k →+* ℂ), (Pr
     rw [e₁, Complex.ofReal_re]
     simp
 
+/- English proof (translation)
+The claim follows from `(Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨1, rfl⟩)`.
+-/
 theorem span_infty {A : Type} [CommRing A] : Ideal.span (Set.range (![0, 1] : Fin 2 → A)) = ⊤ :=
   (Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨1, rfl⟩)
 
@@ -176,6 +223,9 @@ instance : IsClosedImmersion infty := by
     rw [toZ_ext (infty ≫ _) (𝟙 _)]; infer_instance
   exact IsClosedImmersion.of_comp infty (PSpace.str ℤ 1)
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `projPt_surjective (Int.castRingHom ((PSpace ℤ n).residueField z)) ⟨(PSpace ℤ n).fromSpecResidueField z, toZ_ext _ _⟩`. Use `⟨_, inferInstance, v.1, v.2, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun f => f.1 (IsLocalRing.closedPoint _)) hv).trans (Scheme.fromSpecResidueField_apply _ _)`.
+-/
 theorem exists_pt_eq {n : ℕ} (z : PSpace ℤ n) : ∃ (K : Type) (_ : Field K) (v : Fin (n + 1) → K)
     (hv : Ideal.span (Set.range v) = ⊤), pt (Int.castRingHom K) v hv (IsLocalRing.closedPoint K) = z := by
   obtain ⟨v, hv⟩ := projPt_surjective (Int.castRingHom ((PSpace ℤ n).residueField z))
@@ -183,6 +233,11 @@ theorem exists_pt_eq {n : ℕ} (z : PSpace ℤ n) : ∃ (K : Type) (_ : Field K)
   refine ⟨_, inferInstance, v.1, v.2, ?_⟩
   exact (congrArg (fun f => f.1 (IsLocalRing.closedPoint _)) hv).trans (Scheme.fromSpecResidueField_apply _ _)
 
+/- English proof (translation)
+Take `⟨K, _, v, hv, rfl⟩` from `exists_pt_eq z`. Establish `h0 : v 0 = 0`. Assume the negation of the conclusion as `h`. Conclude with `hz ((le_pt_preimage_chart_iff _ v hv 0).2 (Ne.isUnit h) (Opens.mem_top _))`. Apply the tactic sequence `have h1 : v 1 ≠ 0 := fun h => span_range_eq_top_iff_ne_zero.1 hv (funext fun a => by fin_cases a <;> assumption)`.
+
+Establish `e : spMap (Int.castRingHom K) ≫ infty = pt (Int.castRingHom K) v hv`. Rewrite using `[infty, spMap_pt]`. Apply the tactic sequence `exact (pt_eq_pt_iff _ _ _).2 ⟨Units.mk0 _ h1, funext fun a => by fin_cases a <;> simp [h0, Units.smul_def]⟩`. Conclude with `⟨_, congrArg (fun f => f (IsLocalRing.closedPoint K)) e⟩`.
+-/
 theorem mem_range_infty {z : PSpace ℤ 1} (hz : z ∉ chart ℤ 1 0) : z ∈ Set.range infty := by
   obtain ⟨K, _, v, hv, rfl⟩ := exists_pt_eq z
   have h0 : v 0 = 0 := by
@@ -194,6 +249,17 @@ theorem mem_range_infty {z : PSpace ℤ 1} (hz : z ∉ chart ℤ 1 0) : z ∈ Se
     exact (pt_eq_pt_iff _ _ _).2 ⟨Units.mk0 _ h1, funext fun a => by fin_cases a <;> simp [h0, Units.smul_def]⟩
   exact ⟨_, congrArg (fun f => f (IsLocalRing.closedPoint K)) e⟩
 
+/- English proof (translation)
+Establish `e : nonzeroLocus (GlobalTheory.secPull (ProjSpace.coord ℤ 1 1) infty) = ⊤`. Rewrite using `[GlobalTheory.nonzeroLocus_secPull, nonzeroLocus_coord]`. Conclude with `top_le_iff.1 ((le_pt_preimage_chart_iff _ _ _ 1).2 isUnit_one)`. Establish `hu : genericPoint (Sp ℤ) ∈ nonzeroLocus (GlobalTheory.secPull (L` using `(hermitianTwistingSheaf ℤ 1).B) (ProjSpace.coord ℤ 1 1) infty) := e.ge trivial`. Rewrite using `[H.point _ infty ArithBase.isArithVar_int.charZero ArithBase.isArithVar_int.dim_eq _ (Cartier.isRatSec_ratOfSec _ hu), HermLB.curveDeg_sec infty _ hu fun σ y => ptsIn_mono e.ge mem_ptsIn_top, finsum_eq_zero_of_forall_eq_zero, finsum_eq_zero_of_forall_eq_zero, sub_zero]`.
+
+Use `fun σ => finsum_eq_zero_of_forall_eq_zero fun y => ?_` and prove the remaining obligations. Establish `hy : PtsOver.map infty rfl _ y = projPt σ ⟨![0, 1], span_infty⟩`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y.1 ≫ infty = pt σ ![0, 1] span_infty`. Rewrite using `[toZ_ext y.1 (spMap σ), infty, spMap_pt]`.
+
+Use `congr 1`. Apply the tactic sequence `exact funext fun a => by fin_cases a <;> simp`. Establish `hm : projPt σ ⟨![0, 1], span_infty⟩ ∈ ptsIn (PSpace.str ℤ 1) σ ((O1 ℤ 1).U (1 : Fin 2))` using `(le_pt_preimage_chart_iff σ _ span_infty 1).2 isUnit_one`. Establish `e₁` using `ProjAn.fubiniStudyWeight_projPoint ℤ σ 1 ⟨![0, 1], span_infty⟩ 1 one_ne_zero`. Establish `e₂` using `valR_pt_ratio σ ![0, 1] span_infty (i := 1) isUnit_one 1`.
+
+Establish `e₃ : (ProjAn.fsO1 ℤ σ 1).nsq (secVal _ σ (ProjSpace.coord ℤ 1 1)) (projPt σ ⟨![0, 1], span_infty⟩) = 1`. Use `(Weight.nsq_eq (ProjAn.fsO1 ℤ σ 1) (secVal_mem _) hm).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (fun (a : ℂ) b => ‖a‖ ^ 2 * Real.exp (-b)) e₂ e₁).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[hy]`.
+
+Conclude with `(congrArg (Real.log · / 2) e₃).trans (by simp)`. Introduce `z`. Use `mul_eq_zero_of_left (Int.cast_eq_zero.2 (by_contra fun hz => ?_)) _` and prove the remaining obligations. Conclude with `Cartier.notMem_supp_divOfSec.2 (e.ge trivial) (Cartier.CartierDiv.mem_supp_of_mult_ne_zero hz)`.
+-/
 theorem height_infty {h : PSpace ℤ 1 → ℝ} (H : (hermitianTwistingSheaf ℤ 1).IsArithHeight h) : h (infty (genericPoint _)) = 0 := by
   have e : nonzeroLocus (GlobalTheory.secPull (ProjSpace.coord ℤ 1 1) infty) = ⊤ := by
     rw [GlobalTheory.nonzeroLocus_secPull, nonzeroLocus_coord]
@@ -224,6 +290,15 @@ theorem height_infty {h : PSpace ℤ 1 → ℝ} (H : (hermitianTwistingSheaf ℤ
     refine mul_eq_zero_of_left (Int.cast_eq_zero.2 (by_contra fun hz => ?_)) _
     exact Cartier.notMem_supp_divOfSec.2 (e.ge trivial) (Cartier.CartierDiv.mem_supp_of_mult_ne_zero hz)
 
+/- English proof (translation)
+Introduce `h H z hz hn`. Use `ProjSpace.isIntegral_of_isDomain ℤ 1` as an intermediate fact. Take `⟨w, rfl⟩` from `mem_range_infty hn`. Establish `h₁ : infty w ≤ infty (genericPoint _)` using `(genericPoint_specializes w).map infty.continuous`. Establish `h₂ : infty (genericPoint _) < genericPoint (PSpace ℤ 1)`.
+
+Use `lt_of_le_not_ge (genericPoint_specializes _) fun e => ?_` and prove the remaining obligations. Establish `h₃ : genericPoint (PSpace ℤ 1) ∈ chart ℤ 1 0` using `Cartier.gen_mem (x := chartι ℤ 1 0 (⊥ : PrimeSpectrum _)) (opensRange_chartι ℤ 1 0 ▸ ⟨_, rfl⟩)`. Establish `h₄ : genericPoint (Sp ℤ) ∈ infty ⁻¹ᵁ chart ℤ 1 0`. Establish `e' : _ = genericPoint (PSpace ℤ 1)` using `(Specializes.antisymm e (genericPoint_specializes _)).eq`. Conclude with `show infty _ ∈ chart ℤ 1 0 from e'.symm ▸ h₃`.
+
+Rewrite `h₄` using `[infty, pt_preimage_chart]`. Conclude with `h₄ (Ideal.zero_mem _)`. Distinguish the cases in `hne : infty (genericPoint _) = infty w`. Conclude with `hne ▸ height_infty H`. Establish `h₃` using `Order.coheight_add_one_le (lt_of_le_not_ge h₁ fun e => hne (Specializes.antisymm h₁ e).eq)`.
+
+Establish `h₄` using `Order.coheight_add_one_le h₂`. Rewrite `h₃` using `[hz]`. Establish `h₅ : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add_left (le_add_self.trans h₄) 1).trans h₃`. Conclude with `absurd h₅ (by decide)`.
+-/
 theorem height_eq_zero_off_chart : ∀ (h : PSpace ℤ 1 → ℝ), (hermitianTwistingSheaf ℤ 1).IsArithHeight h → ∀ z : PSpace ℤ 1, Order.coheight z = 1 → z ∉ chart ℤ 1 0 → h z = 0 := by
   intro h H z hz hn
   have := ProjSpace.isIntegral_of_isDomain ℤ 1
@@ -246,6 +321,13 @@ theorem height_eq_zero_off_chart : ∀ (h : PSpace ℤ 1 → ℝ), (hermitianTwi
   have h₅ : (1 : ℕ∞) + 1 ≤ 1 := (add_le_add_left (le_add_self.trans h₄) 1).trans h₃
   exact absurd h₅ (by decide)
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Use `HermLB.isometric_of_chart (fun _ => PUnit.unit) (fun _ => le_top) (fun x j j' h h' => ?_) fun σ j y hy => ?_` and prove the remaining obligations. Take `rfl : j = j'` from `Subsingleton.elim (α := Fin 1) _ _`. Establish `e` using `(hermitianTwistingSheaf k 0).isLB.g_self j`. Establish `e'` using `gm_res (𝟙 _) x (le_inf le_rfl le_rfl) h ((hermitianTwistingSheaf k 0).B.g j j)`.
+
+Rewrite using `[← e']`. Conclude with `(congrArg _ e).trans ((map_one _).trans (map_one _).symm)`. Take `⟨v, rfl⟩` from `projPt_surjective σ y`. Establish `hu` using `(le_pt_preimage_chart_iff σ v.1 v.2 j).1 hy`. Use `Eq.symm ((ProjAn.fubiniStudyWeight_projPoint k σ 0 v j hu.ne_zero).trans ?_)` and prove the remaining obligations.
+
+Take `rfl : j = (0 : Fin 1)` from `Subsingleton.elim (α := Fin 1) _ _`. Rewrite using `[Fin.sum_univ_one, div_self hu.ne_zero, norm_one, one_pow, Real.log_one]`. Both sides reduce to the same expression.
+-/
 theorem isometric_fubini_study_dim_zero {k : Type} [CommRing k] {n : ℕ} (hn : n = 0) :
     (hermitianTwistingSheaf k n).Isometric (HermLB.triv _) := by
   subst hn
@@ -262,6 +344,17 @@ theorem isometric_fubini_study_dim_zero {k : Type} [CommRing k] {n : ℕ} (hn : 
     rw [Fin.sum_univ_one, div_self hu.ne_zero, norm_one, one_pow, Real.log_one]
     rfl
 
+/- English proof (translation)
+Use `hX.isLocallyNoetherian` as an intermediate fact. Establish `e : nonzeroLocus (GlobalTheory.secPull u (𝟙 X)) = nonzeroLocus u` using `GlobalTheory.nonzeroLocus_secPull _ _`. Establish `key {q : X ⟶ Sp k} (hq : 𝟙 X ≫ p = q) : h (genericPoint X) = -∑ᶠ σ, ((L.pull (𝟙 X) hq).φ σ).chernInt D (ptsIn q σ (nonzeroLocus u)) fun y => Real.log ((L.φ σ).nsq (secVal p σ u) (PtsOver.map (𝟙 X) hq _ y)) / 2`. Substitute `hq` using the available equality. Establish `hu' : genericPoint X ∈ nonzeroLocus (GlobalTheory.secPull u (𝟙 X))` using `e ▸ hu`.
+
+Establish `h₁` using `(H.recursion_sec (𝟙 X) u hu' hX.charZero hD hX.dim_eq).2`. Rewrite `h₁` using `[finsum_eq_zero_of_forall_eq_zero, zero_sub, e]`. Conclude with `h₁`. Introduce `z`. Distinguish the cases in `hz : (Cartier.divOfSec (L.restr (𝟙 X)).isLB _ hu').mult z = 0`.
+
+Rewrite using `[hz, Int.cast_zero, zero_mul]`. Use `mul_eq_zero_of_right _ (h0 z (Cartier.CartierDiv.coheight_eq_one_of_mult_ne_zero hz) fun hm => ?_)` and prove the remaining obligations. Conclude with `Cartier.notMem_supp_divOfSec.2 (e ▸ hm) (Cartier.CartierDiv.mem_supp_of_mult_ne_zero hz)`. Establish `hid {σ : k →+* ℂ} (y : CxPts p σ) : PtsOver.map (𝟙 X) (Category.id_comp p) _ y = y` using `Subtype.ext (Category.comp_id _)`. Establish `hiso : L.Isometric (L.pull (𝟙 X) (Category.id_comp p))`.
+
+Use `HermLB.isometric_of_chart (fun c _ => c) (fun c y hy => Set.mem_iInter.2 fun _ => hy) (fun z c c' hc hc' => ?_) fun σ c y _ => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (gm_pull_g L.B (𝟙 X) (𝟙 X) z (fun _ => c) (fun _ => c') (Set.mem_iInter.2 fun _ => hc) (Set.mem_iInter.2 fun _ => hc')).symm` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Conclude with `((L.φ σ).pull_φ (𝟙 X) (Category.id_comp p) (fun _ => c) y).trans (congrArg _ (hid y))`. Rewrite using `[key (Category.id_comp p)]`.
+
+Simplify using `only [hid, ← hiso.chernInt_eq]`.
+-/
 theorem recursion_self {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
     (hX : IsArithVar p D) (hD : 1 ≤ D) {L : HermLB p} {h : X → ℝ} (H : L.IsArithHeight h) (u : L.B.Sec)
     (hu : genericPoint X ∈ nonzeroLocus u) (h0 : ∀ z, Order.coheight z = 1 → z ∉ nonzeroLocus u → h z = 0) :
@@ -293,6 +386,11 @@ theorem recursion_self {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {
   rw [key (Category.id_comp p)]
   simp only [hid, ← hiso.chernInt_eq]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `⟨h, H, rfl⟩` from `ha`. Establish `e : nonzeroLocus (ProjSpace.coord ℤ 1 0) = chart ℤ 1 0` using `nonzeroLocus_coord ℤ 1 0`. Establish `hg : genericPoint (PSpace ℤ 1) ∈ chart ℤ 1 0` using `Cartier.gen_mem (x := chartι ℤ 1 0 (⊥ : PrimeSpectrum _)) (opensRange_chartι ℤ 1 0 ▸ ⟨_, rfl⟩)`. Rewrite using `[recursion_self (ProjSpace.isArithVar_int 1) le_rfl H (ProjSpace.coord ℤ 1 0) (e ▸ hg) (fun z h₁ h₂ => height_eq_zero_off_chart h H z h₁ (e ▸ h₂)), finsum_eq_single _ (Int.castRingHom ℂ) fun σ h => absurd (RingHom.ext_int _ _) h]`.
+
+Use `neg_eq_iff_eq_neg.2 (Eq.trans ?_ (chernInt_log_coord ℤ (Int.castRingHom ℂ)))` and prove the remaining obligations. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem selfInter_line {n : ℕ} (hn : n = 1) [IsIntegral (PSpace ℤ n)] {a : ℝ} (ha : (hermitianTwistingSheaf ℤ n).IsSelfInter a) :
     a = 1 / 2 := by
   subst hn

@@ -22,12 +22,27 @@ def TemperedBoundGL2 (W : GL (Fin 2) F → ℂ) : Prop :=
     ‖W (dg2 x y * k)‖ ≤ C * (modulus ((x / y : Fˣ) : F) : ℝ) ^ (1 / 2 - ε) ∧
       (W (dg2 x y * k) ≠ 0 → (modulus ((x / y : Fˣ) : F) : ℝ) ≤ B)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨continuous_const, fun _ _ _ => ⟨0, 0, fun _ _ _ _ _ => by simp⟩⟩`.
+-/
 theorem TemperedBoundGL3.zero : TemperedBoundGL3 (0 : GL (Fin 3) F → ℂ) :=
   ⟨continuous_const, fun _ _ _ => ⟨0, 0, fun _ _ _ _ _ => by simp⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨measurable_const, fun _ _ _ => ⟨0, 0, fun _ _ _ _ => by simp⟩⟩`.
+-/
 theorem TemperedBoundGL2.zero : TemperedBoundGL2 (0 : GL (Fin 2) F → ℂ) :=
   ⟨measurable_const, fun _ _ _ => ⟨0, 0, fun _ _ _ _ => by simp⟩⟩
 
+/- English proof (translation)
+Use `⟨h.1.add h'.1, fun ε h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨C, B, hb⟩` from `h.2 ε h0 h1`. Take `⟨C', B', hb'⟩` from `h'.2 ε h0 h1`. Use `⟨C + C', max B B', fun t₁ t₂ t₃ k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Establish `e1` using `(hb t₁ t₂ t₃ k hk).1`.
+
+Establish `e2` using `(hb' t₁ t₂ t₃ k hk).1`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hz : W (dg t₁ t₂ t₃ * k) = 0`. Establish `hz' : W' (dg t₁ t₂ t₃ * k) ≠ 0`. Introduce `h2`.
+
+Apply `hne` to reduce the goal to its premises. Simplify using `[hz, h2]`. Take `⟨a, b⟩` from `(hb' t₁ t₂ t₃ k hk).2 hz'`. Conclude with `⟨a.trans (le_max_right _ _), b.trans (le_max_right _ _)⟩`. Take `⟨a, b⟩` from `(hb t₁ t₂ t₃ k hk).2 hz`.
+
+Conclude with `⟨a.trans (le_max_left _ _), b.trans (le_max_left _ _)⟩`.
+-/
 theorem TemperedBoundGL3.add {W W' : GL (Fin 3) F → ℂ} (h : TemperedBoundGL3 W) (h' : TemperedBoundGL3 W') : TemperedBoundGL3 (W + W') := by
   refine ⟨h.1.add h'.1, fun ε h0 h1 => ?_⟩
   obtain ⟨C, B, hb⟩ := h.2 ε h0 h1
@@ -45,6 +60,13 @@ theorem TemperedBoundGL3.add {W W' : GL (Fin 3) F → ℂ} (h : TemperedBoundGL3
     · obtain ⟨a, b⟩ := (hb t₁ t₂ t₃ k hk).2 hz
       exact ⟨a.trans (le_max_left _ _), b.trans (le_max_left _ _)⟩
 
+/- English proof (translation)
+Use `⟨h.1.add h'.1, fun ε h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨C, B, hb⟩` from `h.2 ε h0 h1`. Take `⟨C', B', hb'⟩` from `h'.2 ε h0 h1`. Use `⟨C + C', max B B', fun x y k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Establish `e1` using `(hb x y k hk).1`.
+
+Establish `e2` using `(hb' x y k hk).1`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hz : W (dg2 x y * k) = 0`. Establish `hz' : W' (dg2 x y * k) ≠ 0`. Introduce `h2`.
+
+Apply `hne` to reduce the goal to its premises. Simplify using `[hz, h2]`. Conclude with `((hb' x y k hk).2 hz').trans (le_max_right _ _)`. Conclude with `((hb x y k hk).2 hz).trans (le_max_left _ _)`.
+-/
 theorem TemperedBoundGL2.add {W W' : GL (Fin 2) F → ℂ} (h : TemperedBoundGL2 W) (h' : TemperedBoundGL2 W') : TemperedBoundGL2 (W + W') := by
   refine ⟨h.1.add h'.1, fun ε h0 h1 => ?_⟩
   obtain ⟨C, B, hb⟩ := h.2 ε h0 h1
@@ -60,6 +82,11 @@ theorem TemperedBoundGL2.add {W W' : GL (Fin 2) F → ℂ} (h : TemperedBoundGL2
       exact ((hb' x y k hk).2 hz').trans (le_max_right _ _)
     · exact ((hb x y k hk).2 hz).trans (le_max_left _ _)
 
+/- English proof (translation)
+Use `⟨h.1.const_smul c, fun ε h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨C, B, hb⟩` from `h.2 ε h0 h1`. Use `⟨‖c‖ * C, B, fun t₁ t₂ t₃ k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb t₁ t₂ t₃ k hk).1 (norm_nonneg _)`.
+
+Use `(hb t₁ t₂ t₃ k hk).2 fun hz => hne ?_` and prove the remaining obligations. Simplify using `[hz]`.
+-/
 theorem TemperedBoundGL3.smul {W : GL (Fin 3) F → ℂ} (c : ℂ) (h : TemperedBoundGL3 W) : TemperedBoundGL3 (c • W) := by
   refine ⟨h.1.const_smul c, fun ε h0 h1 => ?_⟩
   obtain ⟨C, B, hb⟩ := h.2 ε h0 h1
@@ -69,6 +96,11 @@ theorem TemperedBoundGL3.smul {W : GL (Fin 3) F → ℂ} (c : ℂ) (h : Tempered
   · refine (hb t₁ t₂ t₃ k hk).2 fun hz => hne ?_
     simp [hz]
 
+/- English proof (translation)
+Use `⟨h.1.const_smul c, fun ε h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨C, B, hb⟩` from `h.2 ε h0 h1`. Use `⟨‖c‖ * C, B, fun x y k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb x y k hk).1 (norm_nonneg _)`.
+
+Use `(hb x y k hk).2 fun hz => hne ?_` and prove the remaining obligations. Simplify using `[hz]`.
+-/
 theorem TemperedBoundGL2.smul {W : GL (Fin 2) F → ℂ} (c : ℂ) (h : TemperedBoundGL2 W) : TemperedBoundGL2 (c • W) := by
   refine ⟨h.1.const_smul c, fun ε h0 h1 => ?_⟩
   obtain ⟨C, B, hb⟩ := h.2 ε h0 h1
@@ -78,6 +110,9 @@ theorem TemperedBoundGL2.smul {W : GL (Fin 2) F → ℂ} (c : ℂ) (h : Tempered
   · refine (hb x y k hk).2 fun hz => hne ?_
     simp [hz]
 
+/- English proof (translation)
+Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => exact TemperedBoundGL3.zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.smul c`.
+-/
 theorem TemperedBoundGL3.span {S : Set (GL (Fin 3) F → ℂ)} (h : ∀ W ∈ S, TemperedBoundGL3 W) {W : GL (Fin 3) F → ℂ}
     (hW : W ∈ Submodule.span ℂ S) : TemperedBoundGL3 W := by
   induction hW using Submodule.span_induction with
@@ -86,6 +121,9 @@ theorem TemperedBoundGL3.span {S : Set (GL (Fin 3) F → ℂ)} (h : ∀ W ∈ S,
   | add x y _ _ hx hy => exact hx.add hy
   | smul c x _ hx => exact hx.smul c
 
+/- English proof (translation)
+Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => exact TemperedBoundGL2.zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.smul c`.
+-/
 theorem TemperedBoundGL2.span {S : Set (GL (Fin 2) F → ℂ)} (h : ∀ W ∈ S, TemperedBoundGL2 W) {W : GL (Fin 2) F → ℂ}
     (hW : W ∈ Submodule.span ℂ S) : TemperedBoundGL2 W := by
   induction hW using Submodule.span_induction with

@@ -24,6 +24,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LatModel
 
+/- English proof (translation)
+Introduce `E _ _ c`. Establish `hint : ∀ x : orderC c, IsIntegral ℤ (x : E)`. Introduce `x`. Take `⟨a, b, -, h⟩` from `mem_orderC.1 x.2`. Establish `h2 : (x : E) = ((algebraMap (OF E) (𝓞 E) a + b : 𝓞 E) : E)`.
+
+Rewrite using `[h]`. Apply the tactic sequence `first | rfl | (push_cast; rfl)`. Rewrite using `[h2]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Set `f : orderC c →ₗ[ℤ] 𝓞 E` to `{ toFun := fun x => ⟨x, hint x⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+
+Use `Module.Finite.of_injective f ?_` and prove the remaining obligations. Introduce `x y hxy`. Conclude with `Subtype.ext (congrArg (fun z : 𝓞 E => (z : E)) hxy)`.
+-/
 theorem finite_int_orderC : ∀ (E : Type) [Field E] [NumberField E] (c : Ideal (OF E)), Module.Finite ℤ (orderC c) := by
   intro E _ _ c
   have hint : ∀ x : orderC c, IsIntegral ℤ (x : E) := by

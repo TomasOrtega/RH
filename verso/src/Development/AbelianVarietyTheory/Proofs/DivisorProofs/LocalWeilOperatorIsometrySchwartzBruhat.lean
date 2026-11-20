@@ -25,6 +25,11 @@ noncomputable section
 
 namespace GlobalTheory.LocalIsom
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a a' Bs Γ X om om' hTr v x _ φ φ₁ hφ hφ₁ hact μ hμ`. Take `⟨r, K, hrm, hinv, hsch, hK, hKi, hint⟩` from `GlobalTheory.T.exists_periodic_measurable_schwartz_bound (κ := Fin a' × Fin (a + a')) v`. Use `letI mA : MeasurableSpace (Fin a' × Fin (a + a') → AF F) := borel _`. Use `haveI : BorelSpace (Fin a' × Fin (a + a') → AF F) := ⟨rfl⟩`. Establish `hμA : MeasureTheory.Measure.IsAddHaarMeasure (MeasureTheory.Measure.addHaar : MeasureTheory.Measure (Fin a' × Fin (a + a') → AF F))` using `inferInstance`.
+
+Take `⟨C, hC0, hCt, hC⟩` from `GlobalTheory.T.lintegral_normSq_componentTensor_eq_const_mul v r hrm hinv _ hμA μ hμ K hK hKi (hint _ hμA).1 (hint _ hμA).2`. Establish `hU` using `(GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil').unit`. Establish `e` using `hU _ hμA (x, 1) _ (hsch φ hφ)`. Rewrite `e` using `[hact r ⟨hinv, hsch φ hφ⟩, hC φ₁ hφ₁.1.continuous hφ₁.2, hC φ hφ.1.continuous hφ.2]`. Conclude with `(ENNReal.mul_right_inj hC0 hCt).mp e`.
+-/
 theorem lintegral_sq_eq_of_acts : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V Γ.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V' Γ.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ X om om' →

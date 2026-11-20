@@ -16,20 +16,35 @@ variable {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq
 def reGL (e : ι ≃ κ) : GL ι ℂ →* GL κ ℂ :=
   Units.map (Matrix.reindexRingEquiv ℂ e).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_reGL (e : ι ≃ κ) (g : GL ι ℂ) :
     ((reGL e g : GL κ ℂ) : Matrix κ κ ℂ) = reindex e e (g : Matrix ι ι ℂ) := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[coe_reGL, Matrix.reindex_apply]`.
+-/
 theorem reGL_symm_reGL (e : ι ≃ κ) (g : GL ι ℂ) : reGL e.symm (reGL e g) = g := by
   ext i j
   simp [coe_reGL, Matrix.reindex_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[coe_reGL, Matrix.reindex_apply]`.
+-/
 theorem reGL_reGL_symm (e : ι ≃ κ) (g : GL κ ℂ) : reGL e (reGL e.symm g) = g := by
   ext i j
   simp [coe_reGL, Matrix.reindex_apply]
 
+/- English proof (translation)
+The claim follows from `Units.continuous_map (continuous_id.matrix_reindex e e)`.
+-/
 theorem continuous_reGL (e : ι ≃ κ) : Continuous (reGL e) :=
   Units.continuous_map (continuous_id.matrix_reindex e e)
 
+/- English proof (translation)
+Rewrite using `[mem_unitaryGroupMatrix, mem_unitaryGroupMatrix, coe_reGL]`. Establish `: ((reindex e e (g : Matrix ι ι ℂ)).map s)ᵀ * reindex e e H * reindex e e (g : Matrix ι ι ℂ) = reindex e e (((g : Matrix ι ι ℂ).map s)ᵀ * H * (g : Matrix ι ι ℂ))`. Simplify using `only [Matrix.reindex_apply]`. Rewrite using `[← Matrix.submatrix_map, Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`. Rewrite using `[this, (reindex e e).injective.eq_iff]`.
+-/
 theorem reGL_mem_unitary (e : ι ≃ κ) (s : ℂ →+* ℂ) (H : Matrix ι ι ℂ) (g : GL ι ℂ) :
     reGL e g ∈ unitaryGroupMatrix s (reindex e e H) ↔ g ∈ unitaryGroupMatrix s H := by
   rw [mem_unitaryGroupMatrix, mem_unitaryGroupMatrix, coe_reGL]
@@ -43,11 +58,17 @@ theorem reGL_mem_unitary (e : ι ≃ κ) (s : ℂ →+* ℂ) (H : Matrix ι ι �
 variable {F E : Type*} [Field F] [Field E] [Algebra F E] [Algebra.IsQuadraticExtension F E]
 variable {W : Type*} [AddCommGroup W] [Module E W]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gramAt, Automorphic.gram_apply, Basis.reindex_apply, Matrix.reindex_apply]`.
+-/
 theorem gramAt_reindex (h : HermitianForm F E W) (v : Basis ι E W) (e : ι ≃ κ)
     (w : InfinitePlace E) : gramAt h (v.reindex e) w = reindex e e (gramAt h v w) := by
   ext i j
   simp [gramAt, Automorphic.gram_apply, Basis.reindex_apply, Matrix.reindex_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w i`. Simplify using `[vecAt]`.
+-/
 theorem vecAt_reindex (v : Basis ι E W) (e : ι ≃ κ) (x : W) :
     vecAt (v.reindex e) x = fun w => vecAt v x w ∘ e.symm := by
   funext w i
@@ -80,17 +101,26 @@ def archReindexBack (h : HermitianForm F E W) (v : Basis ι E W) (e : ι ≃ κ)
     ext w : 2
     simp
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Conclude with `reGL_symm_reGL e _`.
+-/
 theorem archReindexBack_archReindex (h : HermitianForm F E W) (v : Basis ι E W) (e : ι ≃ κ)
     (g : archUnitary h v) : archReindexBack h v e (archReindex h v e g) = g := by
   apply Subtype.ext
   funext w
   exact reGL_symm_reGL e _
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk (continuous_pi fun w => (continuous_reGL e.symm).comp ((continuous_apply w).comp continuous_subtype_val)) _`.
+-/
 theorem continuous_archReindexBack (h : HermitianForm F E W) (v : Basis ι E W) (e : ι ≃ κ) :
     Continuous (archReindexBack h v e) :=
   Continuous.subtype_mk (continuous_pi fun w =>
     (continuous_reGL e.symm).comp ((continuous_apply w).comp continuous_subtype_val)) _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Rewrite using `[invApply, invApply, ← map_inv]`. Express the relevant statement in the definitionally equal form `(reindex e e _) *ᵥ (y w ∘ e.symm) = _`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv, Function.comp_assoc, Equiv.symm_symm, Equiv.symm_comp_self, Function.comp_id]`.
+-/
 theorem invApply_reindex {h : HermitianForm F E W} {v : Basis ι E W} (e : ι ≃ κ)
     (g : archUnitary h v) (y : InfinitePlace E → ι → ℂ) :
     invApply (archReindex h v e g) (fun w => y w ∘ e.symm) = fun w => invApply g y w ∘ e.symm := by
@@ -111,6 +141,11 @@ def majReindex {h : HermitianForm F E W} {v : Basis ι E W} (e : ι ≃ κ) (M :
     simp only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]
     rw [M.siegel w]
 
+/- English proof (translation)
+Unfold `Majorant.len`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `star (y w ∘ e.symm) ⬝ᵥ (Matrix.reindex e e (M.P w) *ᵥ (y w ∘ e.symm)) = star (y w) ⬝ᵥ (M.P w *ᵥ y w)`.
+
+Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv, Function.comp_assoc, Equiv.symm_symm, Equiv.symm_comp_self, Function.comp_id]`. Simplify using `only [dotProduct, Function.comp_apply, Pi.star_apply]`. Conclude with `Equiv.sum_comp e.symm (fun i => star (y w i) * (M.P w *ᵥ y w) i)`.
+-/
 theorem len_majReindex {h : HermitianForm F E W} {v : Basis ι E W} (e : ι ≃ κ)
     (M : Majorant h v) (y : InfinitePlace E → ι → ℂ) :
     (majReindex e M).len (fun w => y w ∘ e.symm) = M.len y := by
@@ -125,6 +160,9 @@ theorem len_majReindex {h : HermitianForm F E W} {v : Basis ι E W} (e : ι ≃ 
   simp only [dotProduct, Function.comp_apply, Pi.star_apply]
   exact Equiv.sum_comp e.symm (fun i => star (y w i) * (M.P w *ᵥ y w) i)
 
+/- English proof (translation)
+Rewrite using `[vecAt_reindex, invApply_reindex, len_majReindex]`.
+-/
 theorem len_invApply_reindex {h : HermitianForm F E W} {v : Basis ι E W} (e : ι ≃ κ)
     (M : Majorant h v) (g : archUnitary h v) (x : W) :
     (majReindex e M).len (invApply (archReindex h v e g) (vecAt (v.reindex e) x)) =
@@ -133,6 +171,11 @@ theorem len_invApply_reindex {h : HermitianForm F E W} {v : Basis ι E W} (e : �
 
 variable [NumberField F] [IsTotallyReal F] [IsTotallyComplex E]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `reindex e e ((Matrix.GeneralLinearGroup.map w.embedding (unitaryGroupEquivMatrix h v γ : GL ι E) : GL ι ℂ) : Matrix ι ι ℂ) i j = ((Matrix.GeneralLinearGroup.map w.embedding (unitaryGroupEquivMatrix h (v.reindex e) γ : GL κ E) : GL κ ℂ) : Matrix κ κ ℂ) i j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.GeneralLinearGroup.map_apply]`.
+
+Use `congr 1`. Rewrite using `[unitaryGroupEquivMatrix_apply, unitaryGroupEquivMatrix_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, Basis.reindex_apply, Basis.repr_reindex_apply]`.
+-/
 theorem archReindex_archEmbed (h : HermitianForm F E W) (v : Basis ι E W) (e : ι ≃ κ)
     (γ : h.unitaryGroup) : archReindex h v e (archEmbed h v γ) = archEmbed h (v.reindex e) γ := by
   apply Subtype.ext

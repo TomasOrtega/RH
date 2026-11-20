@@ -18,6 +18,9 @@ def HasBoundedSums (φ : GL (Fin n) k → ℂ) : Prop :=
   ∀ S : Finset (GL (Fin n) k ⧸ KO k (Fin n)), (∀ x ∈ KO k (Fin n), ∀ c ∈ S, x • c ∈ S) →
     ‖∑ c ∈ S, φ c.out‖ ≤ S.card
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ _ _ _ => by simp⟩`.
+-/
 theorem isBorelSph_one : IsBorelSph k (n := n) (fun _ => 1) fun _ => 1 :=
   ⟨fun _ _ _ => rfl, fun _ _ _ _ => by simp⟩
 

@@ -19,6 +19,9 @@ end GlobalTheory.Fc.GoodLinked
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.RT GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top.GroupRetwisting
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 namespace GlobalTheory.Fc.GoodLinked
+/- English proof (translation)
+The claim follows from `RowE.row (RowE.of_all fun _ _ β _ _ _ q _ => q.2)`.
+-/
 theorem row_goodRec_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) :
     Row (sAnd (IsGoodE p.s) GoodRec) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (AtAll fun D _ _ (_ : _root_.GlobalTheory.Fc.BundleCondition D _ _) => Formalism.BasicNotions.GoodFTAll D) :=
   RowE.row (RowE.of_all fun _ _ β _ _ _ q _ => q.2)

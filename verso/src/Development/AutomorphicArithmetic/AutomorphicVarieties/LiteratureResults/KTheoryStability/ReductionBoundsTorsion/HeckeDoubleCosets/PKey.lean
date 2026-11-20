@@ -10,6 +10,13 @@ namespace PositivityTheory.KB.AffineStabilizerVanishing
 
 open PositivityTheory.KB
 
+/- English proof (translation)
+Introduce `hCh hEv hAff L _ _ hC k hk π hπ n r hn1 hr1 F hFinv hFcoc z hz`. Use `haveI := (pIndex L (n + r) π hπ).1`. Use `haveI := (pIndex L n π hπ).1`. Establish `hSK` using `pStabK L π hπ.ne_zero n r hn1`. Use `keyGen hT hSK.1 hSK.2 (fun c => pGqStab L π hπ n r hn1 c) k F hFinv hFcoc ?_ z hz` and prove the remaining obligations.
+
+Introduce `c hc H hH w hw`. Establish `hlow : ∃ i : Fin r, ((c⁻¹ : Gm L (n + r)) : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L)) (Fin.natAdd n i) ⟨0, by omega⟩ ∉ Ideal.span {π}`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨c', hc'⟩` from `pLow L π hπ n r hn1 c hne`.
+
+Conclude with `hc c' hc'`. Establish `h` using `pStabVan hCh hEv hAff L hC k hk π hπ n r hn1 hr1 c hlow F hFinv hFcoc H hH w hw`. Simplify `h` using `only [map_mul, mul_assoc]`.
+-/
 theorem pKey (hT : PTransfer) : PKey := by
   intro hCh hEv hAff L _ _ hC k hk π hπ n r hn1 hr1 F hFinv hFcoc z hz
   haveI := (pIndex L (n + r) π hπ).1

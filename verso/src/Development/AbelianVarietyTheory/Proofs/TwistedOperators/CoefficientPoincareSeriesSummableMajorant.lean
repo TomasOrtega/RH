@@ -12,6 +12,19 @@ open Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D θ hθ V Λ hΛ 𝔪 c`. Take `⟨C₀, A, hC⟩` from `GlobalTheory.T.poincareSeries_unitary_absolutelyConvergent_moderateGrowth D θ hθ V Λ hΛ c`. Use `⟨C₀, A, fun u C hu hsupp hle g => ?_⟩` and prove the remaining obligations. Establish `hP : ∀ x : GA D V, 0 < ∏ τ, ((1 + hsn (cmp θ τ x)) ^ (2 * V.rank ^ 2 + 1))⁻¹` using `fun x => Finset.prod_pos fun τ _ => inv_pos.2 (pow_pos (add_pos_of_pos_of_nonneg zero_lt_one (Real.sqrt_nonneg _)) _)`. Establish `hC0 : 0 ≤ C`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `hle 1` as an intermediate fact. Use `hu 1` as an intermediate fact. Use `mul_neg_of_neg_of_pos h (hP 1)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : ∀ s : Finset (GQ V), ∑ γ ∈ s, u (c * (γ : GA D V) * g) ≤ C * C₀ * height V g ^ A`. Introduce `s`. Use `set t := s.filter (fun γ : GQ V => Lev.finE V (c * (γ : GA D V) * g) ∈ congLev D.sp.cm V.gram Λ 𝔪) with ht`. Establish `h1 : ∑ γ ∈ s, u (c * (γ : GA D V) * g) = ∑ γ ∈ t, u (c * (γ : GA D V) * g)`.
+
+Rewrite using `[ht, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `hsupp _ h`.
+
+Establish `h2 : ∑ γ ∈ t, u (c * (γ : GA D V) * g) ≤ C * ∑ γ ∈ t, ∏ τ, ((1 + hsn (cmp θ τ (c * (γ : GA D V) * g))) ^ (2 * V.rank ^ 2 + 1))⁻¹`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun γ _ => hle _`. Establish `h3` using `hC g t (fun γ hγ => congLev_mono le_top (Finset.mem_filter.1 hγ).2)`. Rewrite using `[h1, mul_assoc]`.
+
+Conclude with `h2.trans (mul_le_mul_of_nonneg_left h3 hC0)`. Establish `hsum : Summable (fun γ : GQ V => u (c * (γ : GA D V) * g))` using `summable_of_sum_le (fun γ => hu _) hs`. Conclude with `⟨hsum, hsum.tsum_le_of_sum_le hs⟩`.
+-/
 theorem poincare_sum_bound : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (Λ : Lat V), IsSelfDualC V Λ → ∀ (𝔪 : Ideal (𝓞 D.host.E)) (c : GA D V), ∃ (C₀ : ℝ) (A : ℕ), ∀ (u : GA D V → ℝ) (C : ℝ), (∀ x, 0 ≤ u x) → (∀ x, Lev.finE V x ∉ congLev D.sp.cm V.gram Λ 𝔪 → u x = 0) → (∀ x, u x ≤ C * ∏ τ, ((1 + hsn (cmp θ τ x)) ^ (2 * V.rank ^ 2 + 1))⁻¹) → ∀ g : GA D V, Summable (fun γ : GQ V => u (c * (γ : GA D V) * g)) ∧ ∑' γ : GQ V, u (c * (γ : GA D V) * g) ≤ C * C₀ * height V g ^ A := by
   intro D θ hθ V Λ hΛ 𝔪 c
   obtain ⟨C₀, A, hC⟩ := GlobalTheory.T.poincareSeries_unitary_absolutelyConvergent_moderateGrowth D θ hθ V Λ hΛ c

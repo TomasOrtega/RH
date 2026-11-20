@@ -9,6 +9,39 @@ namespace PositivityTheory.Rg.Rs
 
 open SliceClasses in
 
+/- English proof (translation)
+Introduce `hD hFin E _ _ _ r s hr hs V hV c hc`. Take `⟨φ₀, hφ₀V, F₀, hCT, F, hFspan, hFne, hFeig⟩` from `hc`. Establish `hA₀` using `hV.aut φ₀ hφ₀V`. Take `⟨κ, -, rfl⟩` from `((hD E (r + s)).2.2.2 φ₀ hA₀ r hr (by omega)).2 F₀ hCT`. Take `⟨cs, hcs⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hFspan`.
+
+Take `⟨a, ha⟩ : ∃ a : ℝ → ℂ, a = fun t => cs t * κ` from `⟨_, rfl⟩`. Establish `hFval : ∀ g, F g = ∑ t ∈ cs.support, a t * An.ctn r φ₀.1 (aT E (r + s) r t * g)`. Introduce `g`. Rewrite using `[← hcs, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, ha, mul_assoc]`. Take `⟨T, hT⟩` from `exists_strictHenselian_absolutely_closed_local_ring V hV.aut r cs.support a`. Establish `hTval : ∀ φ ∈ V, ∀ g, (T φ).1 g = ∑ t ∈ cs.support, a t * An.ctn r φ.1 (aT E (r + s) r t * g)`. Introduce `φ hφ g`. Rewrite using `[hT φ hφ, Aop_apply, ctSm_val r (hV.aut φ hφ)]`.
+
+Establish `hequiv : ∀ o, ∀ φ ∈ V, T (act o φ) = act o (T φ)`. Introduce `o φ hφ`. Rewrite using `[hT _ (hV.stable o φ hφ), hT φ hφ, ctSm_act r (hV.aut φ hφ) o (hV.aut _ (hV.stable o φ hφ)), Aop_act]`. Establish `hT₀ : (T φ₀).1 = F` using `funext fun g => (hTval φ₀ hφ₀V g).trans (hFval g).symm`. Set `W : Submodule ℂ (Sm E (r + s))` to `{ carrier := {φ | φ ∈ V ∧ ∀ (t : ℝ) g, (T φ).1 (aT E (r + s) r t * g) = Complex.exp (c * t) * (T φ).1 g} add_mem' := fun {φ ψ} hφ hψ => ⟨V.add_mem hφ.1 hψ.1, fun t g => by`.
+
+Simplify using `only [map_add, Submodule.coe_add, Pi.add_apply, hφ.2 t g, hψ.2 t g, mul_add]⟩`. Use the proof step `zero_mem' := ⟨V.zero_mem, fun t g => by simp⟩`. Use the proof step `smul_mem' := fun b φ hφ => ⟨V.smul_mem b hφ.1, fun t g => by`. Simplify using `only [map_smul, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, hφ.2 t g]`. Use the proof step `ring⟩ }`.
+
+Establish `hWst : IsStable W`. Introduce and unpack `o φ ⟨hφ, he⟩`. Use `⟨hV.stable o φ hφ, fun t g => ?_⟩` and prove the remaining obligations. Establish `e1 : ltS (aT E (r + s) r t) (T φ) = Complex.exp (c * t) • T φ` using `Subtype.ext (funext fun g => he t g)`. Establish `e2` using `congrArg (fun G : Sm E (r + s) => G.1 g) (congrArg (act o) e1)`.
+
+Simplify using `only [← ltS_act, map_smul] at e2`. Rewrite using `[hequiv o φ hφ]`. Conclude with `e2`. Establish `hWV : W = V`. Break down `hV.irred W (fun φ hφ => hφ.1) hWst with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Establish `h0 : φ₀ ∈ W` using `⟨hφ₀V, fun t g => by rw [hT₀]; exact hFeig t g⟩`. Rewrite `h0` using `[h, Submodule.mem_bot]`. Apply `hFne` to reduce the goal to its premises. Rewrite using `[← hT₀, h0, map_zero]`.
+
+Both sides reduce to the same expression. Conclude with `h`. Establish `heig : ∀ φ ∈ V, ∀ (t : ℝ) g, (T φ).1 (aT E (r + s) r t * g) = Complex.exp (c * t) * (T φ).1 g`. Introduce `φ hφ`. Rewrite `hφ` using `[← hWV]`.
+
+Conclude with `hφ.2`. Establish `hsplit : ∀ φ ∈ V, ∀ (t : ℝ) g, (T φ).1 (splitCentre E (r + s) t * g) = (T φ).1 g`. Introduce `φ hφ t g`. Rewrite using `[hTval φ hφ, hTval φ hφ]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Rewrite using `[← mul_assoc, ← GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_comm t (aT E (r + s) r u), mul_assoc, ctn_splitCentre (hV.sqInt φ hφ).1]`. Use `⟨T, ⟨hequiv, ⟨φ₀, hφ₀V, fun h => hFne ?_⟩, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hT₀, h]`. Both sides reduce to the same expression.
+
+Introduce `φ hφ x g`. Rewrite using `[hTval φ hφ, hTval φ hφ]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `aT_mul_unip (r + s) r t x`. Use `congr 1`.
+
+Rewrite using `[← mul_assoc, hy, mul_assoc, ctn_unip (hV.aut φ hφ)]`. Introduce `φ hφ k g m₂`. Take `⟨ψ, hψA, hψ⟩` from `(F_slices V hV T hequiv cs.support a hTval φ hφ k g).1 m₂`. Use `⟨ψ, hψA, hψ, fun t m₁ => ?_, fun r₁ h1 h2 c₁ hc₁ => ⟨φ, hφ, exp_left hD hFin hr hs φ (hV.aut φ hφ) cs.support a (T φ).1 (hTval φ hφ) ψ hψA m₂ _ hψ r₁ h1 h2 c₁ hc₁⟩⟩` and prove the remaining obligations. Establish `e : lev (Ad E) r s (splitCentre E r t * m₁, m₂) = aT E (r + s) r t * lev (Ad E) r s (m₁, m₂)`.
+
+Rewrite using `[show ((splitCentre E r t * m₁, m₂) : GA E r × GA E s) = (splitCentre E r t, 1) * (m₁, m₂) by simp, map_mul, splitCentre_eq_aT, lev_aT_left r s r le_rfl]`. Rewrite using `[hψ, hψ, e, mul_assoc, heig φ hφ]`. Introduce `φ hφ k g m₁`. Take `⟨ψ, hψA, hψ⟩` from `(F_slices V hV T hequiv cs.support a hTval φ hφ k g).2 m₁`. Use `⟨ψ, hψA, hψ, fun t m₂ => ?_, fun r₂ h1 h2 c₂ hc₂ => ⟨φ, hφ, exp_right hD hFin hr hs φ (hV.aut φ hφ) cs.support a (T φ).1 (hTval φ hφ) c (heig φ hφ) ψ hψA m₁ _ hψ r₂ h1 h2 c₂ hc₂⟩⟩` and prove the remaining obligations.
+
+Establish `e : lev (Ad E) r s (m₁, splitCentre E s t * m₂) = splitCentre E (r + s) t * (aT E (r + s) r (-t) * lev (Ad E) r s (m₁, m₂))`. Rewrite using `[show ((m₁, splitCentre E s t * m₂) : GA E r × GA E s) = (1, splitCentre E s t) * (m₁, m₂) by simp, map_mul, splitCentre_eq_aT, lev_aT_right r s s le_rfl, splitCentre_eq_aT, mul_assoc]`. Rewrite using `[hψ, hψ, e, mul_assoc, hsplit φ hφ, mul_assoc, heig φ hφ]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem slice_of : Dict → FinTr → Slice := by
   intro hD hFin E _ _ _ r s hr hs V hV c hc
   obtain ⟨φ₀, hφ₀V, F₀, hCT, F, hFspan, hFne, hFeig⟩ := hc

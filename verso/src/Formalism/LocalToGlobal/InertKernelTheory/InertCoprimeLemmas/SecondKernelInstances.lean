@@ -15,11 +15,23 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
   {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc0 Dx cX}
 variable {p : ℕ} [Fact p.Prime] {X : Sys p} {Y : Pend X} {u : D.what₂.Word} {μ : D.what₂.Tup}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Use extensionality with `z`. Simplify using `[Level.smul]`.
+-/
 theorem smul_one_tup (j : ℕ) (a : X.Lv.comp j) (L0 : (X.Pj j).Tup) : (X.Lv.lev j a).smul 1 L0 = L0 := by
   funext v
   ext z
   simp [Level.smul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a1, L1⟩, m1⟩ ⟨⟨a2, L2⟩, m2⟩ heq`. Establish `hl1` using `Y.Rep_lat j _ m1`. Establish `hl2` using `Y.Rep_lat j _ m2`. Take `⟨rfl, γ, hγ⟩` from `(hiff a1 a2 L1 L2 hl1 hl2).1 heq`.
+
+Take `⟨L0, _, hu⟩` from `Y.Rep_ex j hjm a1 L2 hl2`. Establish `e1 : L1 = L0` using `hu L1 ⟨m1, γ, hγ⟩`. Establish `e2 : L2 = L0` using `hu L2 ⟨m2, 1, (smul_one_tup j a1 L2).symm⟩`. Substitute `e1` using the available equality. Substitute `e2` using the available equality.
+
+Both sides reduce to the same expression. Introduce `x`. Take `⟨a, L0, hL, hx⟩` from `hsurj x`. Take `⟨L1, ⟨hmem, γ, hγ⟩, _⟩` from `Y.Rep_ex j hjm a L0 hL`. Use `⟨⟨(a, L1), hmem⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show cls j a L1 = x`. Rewrite using `[← hx]`. Conclude with `(hiff a a L1 L0 (Y.Rep_lat j _ hmem) hL).2 ⟨rfl, γ, hγ⟩`.
+-/
 theorem clsBij_of (cls : ∀ j, X.Lv.comp j → (X.Pj j).Tup → (D.chTw u μ).cls j) (j : ℕ) (hjm : j ≤ X.mm)
     (hiff : ∀ (a a' : X.Lv.comp j) (L0 L1 : (X.Pj j).Tup), (X.Pj j).IsLatTup L0 → (X.Pj j).IsLatTup L1 →
       (cls j a L0 = cls j a' L1 ↔ a = a' ∧ ∃ γ : (X.Lv.lev j a).Γ, L1 = (X.Lv.lev j a).smul γ L0))
@@ -44,6 +56,11 @@ theorem clsBij_of (cls : ∀ j, X.Lv.comp j → (X.Pj j).Tup → (D.chTw u μ).c
     rw [← hx]
     exact (hiff a a L1 L0 (Y.Rep_lat j _ hmem) hL).2 ⟨rfl, γ, hγ⟩
 
+/- English proof (translation)
+Establish `h1 : X.Lv.Int j ≤ (Submodule.span X.G.Kf (Set.range (cmp j))).restrictScalars X.G.O`. Rewrite using `[← hint]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, _, rfl⟩`. Conclude with `Submodule.subset_span ⟨x, rfl⟩`.
+
+Conclude with `Submodule.span_le.2 fun z hz => h1 hz`.
+-/
 theorem fq_le_span {σ : D.what₂.LL →+* X.G.Kf} (cmp : ∀ j, ((ex.tw.fm u μ).lat j).V →ₛₗ[σ] X.Fm j) (j : ℕ)
     (hint : Submodule.span X.G.O (cmp j '' (((ex.tw.fm u μ).lat j).L : Set ((ex.tw.fm u μ).lat j).V)) = X.Lv.Int j) :
     X.FQ j ≤ Submodule.span X.G.Kf (Set.range (cmp j)) := by
@@ -54,6 +71,13 @@ theorem fq_le_span {σ : D.what₂.LL →+* X.G.Kf} (cmp : ∀ j, ((ex.tw.fm u �
     exact Submodule.subset_span ⟨x, rfl⟩
   exact Submodule.span_le.2 fun z hz => h1 hz
 
+/- English proof (translation)
+Establish `hy : y ∈ Submodule.span D.what₂.LL (((ex.tw.fm u μ).lat j).L : Set ((ex.tw.fm u μ).lat j).V)`. Rewrite using `[((ex.tw.fm u μ).lat_good j).2.2]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Use `Submodule.subset_span ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cmp j z ∈ X.Lv.Int j`. Rewrite using `[← hint]`. Conclude with `Submodule.subset_span (Set.mem_image_of_mem _ hz)`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul a b _ hb => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hb`.
+-/
 theorem cmp_mem_fq {σ : D.what₂.LL →+* X.G.Kf} (cmp : ∀ j, ((ex.tw.fm u μ).lat j).V →ₛₗ[σ] X.Fm j) (j : ℕ)
     (hint : Submodule.span X.G.O (cmp j '' (((ex.tw.fm u μ).lat j).L : Set ((ex.tw.fm u μ).lat j).V)) = X.Lv.Int j)
     (y : ((ex.tw.fm u μ).lat j).V) : cmp j y ∈ X.FQ j := by
@@ -70,6 +94,13 @@ theorem cmp_mem_fq {σ : D.what₂.LL →+* X.G.Kf} (cmp : ∀ j, ((ex.tw.fm u �
   | add a b _ _ ha hb => rw [map_add]; exact add_mem ha hb
   | smul a b _ hb => rw [LinearMap.map_smulₛₗ]; exact Submodule.smul_mem _ _ hb
 
+/- English proof (translation)
+Establish `hs` using `fq_le_span cmp j hint hF`. Use `clear hF`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, rfl⟩` from `hz`.
+
+Take `⟨y, hy⟩` from `hrat x`. Rewrite using `[hCh x y hy]`. Conclude with `cmp_mem_fq cmp (j + 1) hint' y`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul a b _ hb => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hb`.
+-/
 theorem admissible_third_chain {σ : D.what₂.LL →+* X.G.Kf} (cmp : ∀ j, ((ex.tw.fm u μ).lat j).V →ₛₗ[σ] X.Fm j) (j : ℕ)
     (hint : Submodule.span X.G.O (cmp j '' (((ex.tw.fm u μ).lat j).L : Set ((ex.tw.fm u μ).lat j).V)) = X.Lv.Int j)
     (hint' : Submodule.span X.G.O (cmp (j + 1) '' (((ex.tw.fm u μ).lat (j + 1)).L : Set ((ex.tw.fm u μ).lat (j + 1)).V)) =
@@ -90,6 +121,15 @@ theorem admissible_third_chain {σ : D.what₂.LL →+* X.G.Kf} (cmp : ∀ j, ((
   | add a b _ _ ha hb => rw [map_add]; exact add_mem ha hb
   | smul a b _ hb => rw [map_smul]; exact Submodule.smul_mem _ a hb
 
+/- English proof (translation)
+Take `⟨hSh, hSt, hRd, hSer, cK, h1, h2, h3, hDel⟩` from `hT`. Use `⟨cK, h1, h2, h3, ?_⟩` and prove the remaining obligations. Introduce `F hF`. Use `body_of_span Y j cK (Set.range (cmp j)) ?_ F (hspan hF)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩ c' L' hL`.
+
+Take `⟨y, hy⟩` from `hrat x`. Establish `hsum : (D.chTw u μ).K j ((ex.tw.fm u μ).emb j x) = ∑ c : (D.chTw u μ).cls j, (((Nat.card ((D.chTw u μ).stab j c) : ℕ) : ℂ))⁻¹ • entRec t ex.tw u μ j c x`. Establish `hQ` using `sharpQ_qOf (hSh x)`. Use function extensionality and compare the values at `c1 y1`. Rewrite using `[compatible_lift_exists D L hT Gi Gl Kc0 Dx cX ex t u μ j hj _ _ hQ.1 hQ.2 c1 y1]`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, entRec]`. Rewrite using `[hCh x y hy, hRd y c' L' hL, hy, hsum, map_sum]`. Rewrite using `[← Finset.sum_coe_sort (Y.Rep j)]`. Use `symm`. Use `Fintype.sum_bijective _ hbij _ _ fun La => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smulₛₗ, map_inv₀, map_natCast, hSt La.1 La.2, hDel La.1 La.2 x c' L' hL, kernel_of_smul p X Y j La.1 (c', L') _ (hSer La.1 La.2 c' L' hL), mul_smul]`.
+-/
 theorem second_kernel_at_place (t : KerEntTied ex) {σ : D.what₂.LL →+* X.G.Kf} (cls : ∀ j, X.Lv.comp j → (X.Pj j).Tup → (D.chTw u μ).cls j)
     (cmp : ∀ j, ((ex.tw.fm u μ).lat j).V →ₛₗ[σ] X.Fm j) (ι : ℂ →+* Y.Kc)
     (Rd : ∀ j, X.Lv.comp (j + 1) → (X.Pj (j + 1)).Tup →
@@ -120,17 +160,26 @@ theorem second_kernel_at_place (t : KerEntTied ex) {σ : D.what₂.LL →+* X.G.
 
 end Gen
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc0 Dx cX ex u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y j hj`. Conclude with `clsBij_of (X := sysAt Ch std vp unif eO eO_spec dG dG_spec om) KA.cls j (hj.trans_eq KA.fl_m.symm) (fun a a' L0 L1 h0 h1 => KA.cls_iff j hj a a' L0 L1 h0 h1) (KA.cls_surj j hj)`.
+-/
 theorem class_bijection_instance : ClsBijInst := by
   intro D L hT Gi Gl Kc0 Dx cX ex u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y j hj
   exact clsBij_of (X := sysAt Ch std vp unif eO eO_spec dG dG_spec om) KA.cls j (hj.trans_eq KA.fl_m.symm)
     (fun a a' L0 L1 h0 h1 => KA.cls_iff j hj a a' L0 L1 h0 h1) (KA.cls_surj j hj)
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc0 Dx cX ex u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om j hj F hF`. Establish `hjm : j < D.R.m` using `lt_of_lt_of_eq hj KA.fl_m`. Conclude with `admissible_third_chain (X := sysAt Ch std vp unif eO eO_spec dG dG_spec om) KA.cmp j (KA.cmp_int j hjm.le) (KA.cmp_int (j + 1) hjm) (KA.rat j hjm) (fun x y hy => (KA.cmp_K j hjm x y hy).symm) F hF`.
+-/
 theorem admissible_third_instance : Adm3bInst := by
   intro D L hT Gi Gl Kc0 Dx cX ex u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om j hj F hF
   have hjm : j < D.R.m := lt_of_lt_of_eq hj KA.fl_m
   exact admissible_third_chain (X := sysAt Ch std vp unif eO eO_spec dG dG_spec om) KA.cmp j (KA.cmp_int j hjm.le)
     (KA.cmp_int (j + 1) hjm) (KA.rat j hjm) (fun x y hy => (KA.cmp_K j hjm x y hy).symm) F hF
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc0 Dx cX ex t u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr j hj hTs`. Establish `hsp` using `fq_le_span (X := sysAt Ch std vp unif eO eO_spec dG dG_spec om) KA.cmp j (KA.cmp_int j hj.le)`. Establish `hch : ∀ (x : ((ex.tw.fm u μ).lat j).V) (y : ((ex.tw.fm u μ).lat (j + 1)).V), (ex.tw.fm u μ).emb (j + 1) y = (D.chTw u μ).K j ((ex.tw.fm u μ).emb j x) → (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Kz j (KA.cmp j x) = KA.cmp (j + 1) y` using `fun x y hy => (KA.cmp_K j hj x y hy).symm`. Establish `hb : ClsBij (X` using `sysAt Ch std vp unif eO eO_spec dG dG_spec om) (Y := Y) u μ KA.cls j := class_bijection_instance D L hT Gi Gl Kc0 Dx cX ex u μ w h Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y j hj.le`. Conclude with `second_kernel_at_place (X := sysAt Ch std vp unif eO eO_spec dG dG_spec om) (Y := Y) (σ := ex.cmp.embW u w h) t KA.cls KA.cmp ι Rd Sr j hj hsp (KA.rat j hj) hch hb hTs`.
+-/
 theorem second_kernel_chain_instance : SecondKernelSingleLevel := by
   intro D L hT Gi Gl Kc0 Dx cX ex t u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr j hj hTs
   have hsp := fq_le_span (X := sysAt Ch std vp unif eO eO_spec dG dG_spec om) KA.cmp j (KA.cmp_int j hj.le)
@@ -143,6 +192,9 @@ theorem second_kernel_chain_instance : SecondKernelSingleLevel := by
   exact second_kernel_at_place (X := sysAt Ch std vp unif eO eO_spec dG dG_spec om) (Y := Y) (σ := ex.cmp.embW u w h) t KA.cls KA.cmp ι Rd Sr
     j hj hsp (KA.rat j hj) hch hb hTs
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc0 Dx cX ex t u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr hTs j hj`. Conclude with `second_kernel_chain_instance D L hT Gi Gl Kc0 Dx cX ex t u μ w h Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr j (by omega) (hTs j hj)`.
+-/
 theorem second_kernel_entry_instance : SecondKernelEntrywise := by
   intro D L hT Gi Gl Kc0 Dx cX ex t u μ w h _ Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr hTs j hj
   exact second_kernel_chain_instance D L hT Gi Gl Kc0 Dx cX ex t u μ w h Fl Lv Ch KA std vp unif eO eO_spec dG dG_spec om Y ι Rd Sr j

@@ -19,6 +19,9 @@ def fnHom (a : ℂ) (b : Fin n → ℂ) : ℂ :=
   ∑ m ∈ De.support, MvPolynomial.coeff m De *
     (a ^ (De.totalDegree + 1 - ∑ k, m k) * ∏ k, b k ^ m k)
 
+/- English proof (translation)
+Establish `h` using `MvPolynomial.le_totalDegree hm`. Use `first`. Consider the case `(rwa [Finsupp.sum_fintype _ _ (fun _ => rfl)] at h)`. Consider the case `(simpa [Finsupp.degree, Finsupp.sum_fintype] using h)`. Consider the case `(rwa [Finsupp.degree_eq_sum] at h)`.
+-/
 theorem fn_sum_le_totalDegree {m : Fin n →₀ ℕ} (hm : m ∈ De.support) :
     ∑ k, m k ≤ De.totalDegree := by
   have h := MvPolynomial.le_totalDegree hm
@@ -27,6 +30,13 @@ theorem fn_sum_le_totalDegree {m : Fin n →₀ ℕ} (hm : m ∈ De.support) :
     | (simpa [Finsupp.degree, Finsupp.sum_fintype] using h)
     | (rwa [Finsupp.degree_eq_sum] at h)
 
+/- English proof (translation)
+Unfold `fnHom`. Rewrite using `[MvPolynomial.eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hle` using `fn_sum_le_totalDegree De hm`. Establish `hsplit : a ^ (De.totalDegree + 1) = a ^ (De.totalDegree + 1 - ∑ k, m k) * a ^ (∑ k, m k)`.
+
+Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `key : (∏ k, (b k / a) ^ m k) * a ^ (∑ k, m k) = ∏ k, b k ^ m k`. Rewrite using `[← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[div_pow, div_mul_cancel₀ _ (pow_ne_zero _ ha)]`. Rewrite using `[hsplit, ← key]`. The two sides agree by associativity and commutativity.
+-/
 theorem fn_hom_of_ne {a : ℂ} (ha : a ≠ 0) (b : Fin n → ℂ) :
     fnHom De a b = a ^ (De.totalDegree + 1) * MvPolynomial.eval (fun k => b k / a) De := by
   unfold fnHom
@@ -44,12 +54,20 @@ theorem fn_hom_of_ne {a : ℂ} (ha : a ≠ 0) (b : Fin n → ℂ) :
   rw [hsplit, ← key]
   ac_rfl
 
+/- English proof (translation)
+Unfold `fnHom`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `hle` using `fn_sum_le_totalDegree De hm`. Rewrite using `[zero_pow (by omega), zero_mul, mul_zero]`.
+-/
 @[simp] theorem fn_hom_zero (b : Fin n → ℂ) : fnHom De 0 b = 0 := by
   unfold fnHom
   refine Finset.sum_eq_zero fun m hm => ?_
   have hle := fn_sum_le_totalDegree De hm
   rw [zero_pow (by omega), zero_mul, mul_zero]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact DifferentiableOn.finset_prod (fun k _ => h k)`. Consider the case `exact DifferentiableOn.fun_finset_prod (fun k _ => h k)`. Consider the case `(classical`. Proceed by induction on `u using Finset.induction_on with`.
+
+Consider the case `empty => simp [differentiableOn_const]`. Consider the case `insert k u hk ih`. Simplify using `only [Finset.prod_insert hk]`. Conclude with `(h _).mul ih)`.
+-/
 theorem fn_diffOn_prod {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {S : Set E}
     (u : Finset (Fin n)) (f : Fin n → E → ℂ) (h : ∀ k, DifferentiableOn ℂ (f k) S) :
     DifferentiableOn ℂ (fun x => ∏ k ∈ u, f k x) S := by
@@ -63,6 +81,11 @@ theorem fn_diffOn_prod {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {S
          simp only [Finset.prod_insert hk]
          exact (h _).mul ih)
 
+/- English proof (translation)
+Unfold `fnHom`. Establish `hterm : ∀ m ∈ De.support, DifferentiableOn ℂ (fun x => MvPolynomial.coeff m De * (a x ^ (De.totalDegree + 1 - ∑ k, m k) * ∏ k, (fun k => b k x) k ^ m k)) S` using `fun m _ => ((ha.pow _).mul (fn_diffOn_prod Finset.univ (fun k x => b k x ^ m k) (fun k => (hb k).pow _))).const_mul _`. Use `first`. Consider the case `exact DifferentiableOn.fun_sum hterm`. Consider the case `exact DifferentiableOn.sum hterm`.
+
+Consider the case `(have e : (fun x => ∑ m ∈ De.support, MvPolynomial.coeff m De * (a x ^ (De.totalDegree + 1 - ∑ k, m k) * ∏ k, (fun k => b k x) k ^ m k)) = ∑ m ∈ De.support, fun x => MvPolynomial.coeff m De * (a x ^ (De.totalDegree + 1 - ∑ k, m k) * ∏ k, (fun k => b k x) k ^ m k) := by`. Use extensionality with `x`. Simplify using `[Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `DifferentiableOn.sum hterm)`.
+-/
 theorem fn_diffOn_hom {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {S : Set E}
     {a : E → ℂ} {b : Fin n → E → ℂ} (ha : DifferentiableOn ℂ a S)
     (hb : ∀ k, DifferentiableOn ℂ (b k) S) :
@@ -82,6 +105,15 @@ theorem fn_diffOn_hom {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {S 
        rw [e]
        exact DifferentiableOn.sum hterm)
 
+/- English proof (translation)
+Establish `hF : ∀ p : MvPolynomial (Fin n) ℂ, Differentiable ℂ (fun v : V n => MvPolynomial.eval (fun k => v k) p)`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `only [MvPolynomial.eval_C]`.
+
+Conclude with `differentiable_const a`. Use `next p q hp hq =>`. Simplify using `only [map_add]`. Conclude with `hp.add hq`. Use `next p i hp =>`.
+
+Simplify using `only [map_mul, MvPolynomial.eval_X]`. Establish `hi : Differentiable ℂ (fun v : V n => v i)` using `by fun_prop`. Conclude with `hp.mul hi`. Establish `hEq` using `ReciprocityTheory.L2DbarEstimates.C.ident n Set.univ (fun v : V n => MvPolynomial.eval (fun k => v k) De) v0 isOpen_univ convex_univ (hF De).differentiableOn (Set.mem_univ _) h`. Apply `MvPolynomial.funext` to reduce the goal to its premises.
+
+Introduce `x`. Use `hEq (Set.mem_univ (WithLp.toLp 2 x))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem fn_eq_zero_of_eval {v0 : V n}
     (h : ∀ᶠ v in 𝓝 v0, MvPolynomial.eval (fun k => v k) De = 0) : De = 0 := by
   have hF : ∀ p : MvPolynomial (Fin n) ℂ,
@@ -112,6 +144,9 @@ variable {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountabl
   (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ}
   {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ}
 
+/- English proof (translation)
+Take `⟨-, htr⟩ : A.IsSecOn L Set.univ w0` from `hD.isSection_denom`. Establish `hg` using `A.g_ne L (A.pick y) i y (A.mem_pick y) hy`. Rewrite using `[htr (A.pick y) i y trivial (A.mem_pick y) hy]`. Conclude with `⟨fun h1 h2 => h1 (by rw [h2, mul_zero]), fun h1 => mul_ne_zero hg h1⟩`.
+-/
 theorem denominator_ne_zero_pick_iff (hD : A.D0 L w w0 s) {i : ι} {y : Y} (hy : y ∈ (A.chart i).source) :
     w0 (A.pick y) y ≠ 0 ↔ w0 i y ≠ 0 := by
   obtain ⟨-, htr⟩ : A.IsSecOn L Set.univ w0 := hD.isSection_denom
@@ -119,6 +154,11 @@ theorem denominator_ne_zero_pick_iff (hD : A.D0 L w w0 s) {i : ι} {y : Y} (hy :
   rw [htr (A.pick y) i y trivial (A.mem_pick y) hy]
   exact ⟨fun h1 h2 => h1 (by rw [h2, mul_zero]), fun h1 => mul_ne_zero hg h1⟩
 
+/- English proof (translation)
+Take `⟨-, htr0⟩ : A.IsSecOn L Set.univ w0` from `hD.isSection_denom`. Establish `hg` using `A.g_ne L (A.pick y) i y (A.mem_pick y) hy`. Unfold `zmap`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Take `⟨-, htrk⟩ : A.IsSecOn L Set.univ (s k)` from `hD.sec_s k`. Rewrite using `[htrk (A.pick y) i y trivial (A.mem_pick y) hy, htr0 (A.pick y) i y trivial (A.mem_pick y) hy, mul_div_mul_left _ _ hg]`.
+-/
 theorem fn_zmap_eq (hD : A.D0 L w w0 s) {i : ι} {y : Y} (hy : y ∈ (A.chart i).source) :
     A.zmap w0 s y = WithLp.toLp 2 (fun k => s k i y / w0 i y) := by
   obtain ⟨-, htr0⟩ : A.IsSecOn L Set.univ w0 := hD.isSection_denom
@@ -130,6 +170,15 @@ theorem fn_zmap_eq (hD : A.D0 L w w0 s) {i : ι} {y : Y} (hy : y ∈ (A.chart i)
   rw [htrk (A.pick y) i y trivial (A.mem_pick y) hy, htr0 (A.pick y) i y trivial (A.mem_pick y) hy,
     mul_div_mul_left _ _ hg]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : w0 i y = 0`. Rewrite using `[h0, fn_hom_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Take `⟨h1, -⟩` from `hm`.
+
+Conclude with `absurd ((denominator_ne_zero_pick_iff A hD hy).1 h1) (by simp [h0])`. Introduce `h`. Conclude with `absurd rfl h`. Rewrite using `[fn_hom_of_ne De h0]`. Establish `hz` using `fn_zmap_eq A hD hy`.
+
+Simplify using `only [Mset, Set.mem_setOf_eq, hz]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩`. Conclude with `mul_ne_zero (pow_ne_zero _ h0) (by simpa using h2)`. Introduce `h2`.
+
+Conclude with `⟨(denominator_ne_zero_pick_iff A hD hy).2 h0, by simpa using right_ne_zero_of_mul h2⟩`.
+-/
 theorem fn_mem_Mset_iff (hD : A.D0 L w w0 s) {i : ι} {y : Y} (hy : y ∈ (A.chart i).source) :
     y ∈ A.Mset w0 s De ↔ fnHom De (w0 i y) (fun k => s k i y) ≠ 0 := by
   by_cases h0 : w0 i y = 0
@@ -153,6 +202,11 @@ def fnG (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (De : MvPolynom
     (v : V n) : ℂ :=
   fnHom De (w0 i ((A.chart i).symm v)) (fun k => s k i ((A.chart i).symm v))
 
+/- English proof (translation)
+Take `⟨h0, -⟩ : A.IsSecOn L Set.univ w0` from `hD.isSection_denom`. Establish `hw : DifferentiableOn ℂ (fun v => w0 i ((A.chart i).symm v)) (A.chart i).target`. Use `h0 i` as an intermediate fact. Rewrite `this` using `[Set.preimage_univ, Set.inter_univ]`. Then use the resulting hypothesis. Establish `hs : ∀ k, DifferentiableOn ℂ (fun v => s k i ((A.chart i).symm v)) (A.chart i).target`.
+
+Introduce `k`. Take `⟨hk, -⟩ : A.IsSecOn L Set.univ (s k)` from `hD.sec_s k`. Use `hk i` as an intermediate fact. Rewrite `this` using `[Set.preimage_univ, Set.inter_univ]`. Then use the resulting hypothesis. Conclude with `fn_diffOn_hom De hw hs`.
+-/
 theorem fn_diffG (hD : A.D0 L w w0 s) (i : ι) :
     DifferentiableOn ℂ (fnG A w0 s De i) (A.chart i).target := by
   obtain ⟨h0, -⟩ : A.IsSecOn L Set.univ w0 := hD.isSection_denom
@@ -166,9 +220,37 @@ theorem fn_diffG (hD : A.D0 L w w0 s) (i : ι) :
     rwa [Set.preimage_univ, Set.inter_univ] at this
   exact fn_diffOn_hom De hw hs
 
+/- English proof (translation)
+The claim follows from `(fn_mem_Mset_iff A hD ((A.chart i).map_target hv)).symm`.
+-/
 theorem fn_G_ne_iff (hD : A.D0 L w w0 s) {i : ι} {v : V n} (hv : v ∈ (A.chart i).target) :
     fnG A w0 s De i v ≠ 0 ↔ (A.chart i).symm v ∈ A.Mset w0 s De := (fn_mem_Mset_iff A hD ((A.chart i).map_target hv)).symm
 
+/- English proof (translation)
+Introduce `H`. Apply `hF.De_ne` to reduce the goal to its premises. Use `set i := A.pick P with hi`. Establish `hPs : P ∈ (A.chart i).source` using `A.mem_pick P`. Use `set c := A.chart i P with hc`.
+
+Establish `hct : c ∈ (A.chart i).target` using `(A.chart i).map_source hPs`. Establish `hsymm : (A.chart i).symm c = P` using `(A.chart i).left_inv hPs`. Take `⟨h0, -⟩ : A.IsSecOn L Set.univ w0` from `hD.isSection_denom`. Establish `hw : DifferentiableOn ℂ (fun v => w0 i ((A.chart i).symm v)) (A.chart i).target`. Use `h0 i` as an intermediate fact.
+
+Rewrite `this` using `[Set.preimage_univ, Set.inter_univ]`. Then use the resulting hypothesis. Establish `hs : ∀ k, DifferentiableOn ℂ (fun v => s k i ((A.chart i).symm v)) (A.chart i).target`. Introduce `k`. Take `⟨hk, -⟩ : A.IsSecOn L Set.univ (s k)` from `hD.sec_s k`. Use `hk i` as an intermediate fact.
+
+Rewrite `this` using `[Set.preimage_univ, Set.inter_univ]`. Then use the resulting hypothesis. Establish `hw0P : w0 i P ≠ 0` using `hD.w0_ne P hP`. Set `U` to `(A.chart i).target ∩ (fun v => w0 i ((A.chart i).symm v)) ⁻¹' {0}ᶜ`. Establish `hUo : IsOpen U` using `hw.continuousOn.isOpen_inter_preimage (A.chart i).open_target isOpen_compl_singleton`. Establish `hcU : c ∈ U` using `⟨hct, by show w0 i ((A.chart i).symm c) ≠ 0`.
+
+Rewrite using `[hsymm]`. Conclude with `hw0P⟩`. Establish `hcd : ContDiffOn ℂ ∞ (A.zLoc w0 s i) U`. Rewrite using `[contDiffOn_piLp]`. Introduce `k`.
+
+Establish `hk : DifferentiableOn ℂ (fun v => s k i ((A.chart i).symm v) / w0 i ((A.chart i).symm v)) U`. Establish `hne : ∀ v ∈ U, w0 i ((A.chart i).symm v) ≠ 0` using `fun v hv => hv.2`. Introduce `v hv`. Establish `h1 : DifferentiableWithinAt ℂ (fun v => s k i ((A.chart i).symm v)) U v` using `((hs k).mono Set.inter_subset_left) v hv`. Establish `h2 : DifferentiableWithinAt ℂ (fun v => w0 i ((A.chart i).symm v)) U v` using `(hw.mono Set.inter_subset_left) v hv`.
+
+Establish `h3 : DifferentiableWithinAt ℂ (fun v => s k i ((A.chart i).symm v) * (w0 i ((A.chart i).symm v))⁻¹) U v` using `h1.mul (h2.inv (hne v hv))`. Simplify `h3` using `only [div_eq_mul_inv]`. Conclude with `contDiffOn_of_differentiableOn n _ U hUo hk`. Establish `hcda : ContDiffAt ℂ ∞ (A.zLoc w0 s i) c` using `hcd.contDiffAt (hUo.mem_nhds hcU)`. Establish `hstr : HasStrictFDerivAt (A.zLoc w0 s i) (fderiv ℂ (A.zLoc w0 s i) c) c` using `by first`.
+
+Consider the case `exact hcda.hasStrictFDerivAt (by simp)`. Consider the case `exact hcda.hasStrictFDerivAt (by norm_num)`. Consider the case `exact hcda.hasStrictFDerivAt (by exact_mod_cast le_top)`. Establish `hdet : LinearMap.det (fderiv ℂ (A.zLoc w0 s i) c : V n →ₗ[ℂ] V n) ≠ 0` using `hD.coord P hP`. Set `e : V n ≃L[ℂ] V n` to `(LinearMap.equivOfDetNeZero (fderiv ℂ (A.zLoc w0 s i) c : V n →ₗ[ℂ] V n) hdet).toContinuousLinearEquiv`.
+
+Establish `hstrict : HasStrictFDerivAt (A.zLoc w0 s i) (e : V n →L[ℂ] V n) c` using `hstr.congr_fderiv (by ext v; rfl)`. Establish `H2 : ∀ᶠ v in 𝓝 c, (A.chart i).symm v ∉ A.Mset w0 s De`. Establish `hm` using `(A.chart i).symm_map_nhds_eq hPs`. Rewrite `H` using `[← hm]`. Conclude with `H`.
+
+Establish `H3 : ∀ᶠ v in 𝓝 c, MvPolynomial.eval (fun k => (A.zLoc w0 s i v) k) De = 0` using `by filter_upwards [H2, hUo.mem_nhds hcU] with v hv hvU`. Establish `hvs : (A.chart i).symm v ∈ (A.chart i).source` using `(A.chart i).map_target hvU.1`. Establish `hw0v : w0 i ((A.chart i).symm v) ≠ 0` using `hvU.2`. Establish `h1` using `(fn_mem_Mset_iff A hD hvs).not.mp hv`. Rewrite `h1` using `[not_not, fn_hom_of_ne De hw0v]`.
+
+Establish `h2` using `(mul_eq_zero.mp h1).resolve_left (pow_ne_zero _ hw0v)`. Simplify `h2` using `[WeightedAtlas.zLoc]`. Establish `H4 : ∀ᶠ z in 𝓝 (A.zLoc w0 s i c), MvPolynomial.eval (fun k => z k) De = 0`. Rewrite using `[← hstrict.map_nhds_eq_of_equiv]`. Conclude with `H3`.
+
+Conclude with `fn_eq_zero_of_eval De H4`.
+-/
 theorem fn_not_ev (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) {P : Y} (hP : P ∈ A.zeroSet s) :
     ¬ ∀ᶠ y in 𝓝 P, y ∉ A.Mset w0 s De := by
   intro H
@@ -236,6 +318,19 @@ theorem fn_not_ev (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) {P : Y} (hP : P ∈
     exact H3
   exact fn_eq_zero_of_eval De H4
 
+/- English proof (translation)
+Establish `key : interior (A.Mset w0 s De)ᶜ = ∅`. Establish `hWc : IsClosed (interior (A.Mset w0 s De)ᶜ)`. Rewrite using `[← closure_subset_iff_isClosed]`. Introduce `y hy`. Establish `hys : y ∈ (A.chart (A.pick y)).source` using `A.mem_pick y`.
+
+Establish `hv : A.chart (A.pick y) y ∈ (A.chart (A.pick y)).target` using `(A.chart _).map_source hys`. Take `⟨r, hr, hB⟩` from `Metric.isOpen_iff.1 (A.chart (A.pick y)).open_target _ hv`. Establish `hNo : IsOpen ((A.chart (A.pick y)).source ∩ A.chart (A.pick y) ⁻¹' Metric.ball (A.chart (A.pick y) y) r)` using `(A.chart _).continuousOn.isOpen_inter_preimage (A.chart _).open_source Metric.isOpen_ball`. Establish `hyN : y ∈ (A.chart (A.pick y)).source ∩ A.chart (A.pick y) ⁻¹' Metric.ball (A.chart (A.pick y) y) r` using `⟨hys, Metric.mem_ball_self hr⟩`. Take `⟨y', hy'N, hy'W⟩` from `mem_closure_iff.1 hy _ hNo hyN`.
+
+Establish `hv'B` using `hy'N.2`. Establish `hev : fnG A w0 s De (A.pick y) =ᶠ[𝓝 (A.chart (A.pick y) y')] 0`. Establish `ht` using `((A.chart (A.pick y)).continuousAt_symm (hB hv'B)).tendsto`. Rewrite `ht` using `[(A.chart _).left_inv hy'N.1]`. Establish `h1` using `ht.eventually (isOpen_interior.mem_nhds hy'W)`.
+
+Use `filter_upwards [h1, (A.chart _).open_target.mem_nhds (hB hv'B)] with v hv1 hv2`. Use `(fn_G_ne_iff A hD (De := De) hv2).not.2 (interior_subset hv1)` as an intermediate fact. Simplify using `using this`. Establish `hz` using `C.ident n _ _ _ Metric.isOpen_ball (convex_ball _ _) ((fn_diffG A hD (De := De) (A.pick y)).mono hB) hv'B hev`. Use `mem_interior_iff_mem_nhds.2 (Filter.mem_of_superset (hNo.mem_nhds hyN) fun x hx => ?_)` and prove the remaining obligations.
+
+Establish `h2` using `hz hx.2`. Use `(fn_G_ne_iff A hD (De := De) ((A.chart _).map_source hx.1)).not.1 (by simpa using h2)` as an intermediate fact. Rewrite `this` using `[(A.chart _).left_inv hx.1]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hne`. Take `⟨y, hy⟩` from `nonempty_iff_ne_empty.2 hne`.
+
+Take `⟨P, hP, hPc⟩` from `hD.meets y`. Establish `hPW` using `(IsClopen.connectedComponent_subset ⟨hWc, isOpen_interior⟩ hy) hPc`. Conclude with `fn_not_ev A hD hF hP (mem_interior_iff_mem_nhds.1 hPW)`. Use `interior_eq_empty_iff_dense_compl.1 key` as an intermediate fact. Rewrite `this` using `[compl_compl]`. Then use the resulting hypothesis.
+-/
 theorem fn_dense (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) : Dense (A.Mset w0 s De) := by
   have key : interior (A.Mset w0 s De)ᶜ = ∅ := by
     have hWc : IsClosed (interior (A.Mset w0 s De)ᶜ) := by

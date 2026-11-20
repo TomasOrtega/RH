@@ -19,6 +19,11 @@ open Filter Topology GlobalTheory.Specialise GlobalTheory.AmpleSpan GlobalTheory
 variable {X Y : Scheme.{0}} {f : X ⟶ Y} {H : LB X} {I : Type} {t : I → LB.Sec H}
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {x : V → (Sp ℂ ⟶ X)} {cf : I → V → ℂ}
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `h'.exists_isUnit ht.1`. Establish `hρ : IsUnit ρ` using `isUnit_of_mul_isUnit_left (e m ▸ hm)`. Establish `h₁` using `h.mul_unit hρ`. Establish `e' : (fun l => c l * ρ) = c'` using `funext fun l => by rw [e, mul_comm]`. Rewrite `h₁` using `[e']`.
+
+Conclude with `h₁.ext ht hf h' hm`.
+-/
 theorem eq_of_proportional (ht : EmbedsBy f t) {p p' : Sp ℂ ⟶ X} (hf : p ≫ f = p' ≫ f) {c c' : I → ℂ}
     (h : HasCoords p t c) (h' : HasCoords p' t c') {ρ : ℂ} (e : ∀ i, c' i = ρ * c i) : p = p' := by
   obtain ⟨m, hm⟩ := h'.exists_isUnit ht.1
@@ -28,6 +33,17 @@ theorem eq_of_proportional (ht : EmbedsBy f t) {p p' : Sp ℂ ⟶ X} (hf : p ≫
   rw [e'] at h₁
   exact h₁.ext ht hf h' hm
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(hc z).exists_isUnit ht.1`. Take `⟨hD, ρ, hρ, hsurj⟩` from `ht.2 m`. Establish `hne : ∀ᶠ v in 𝓝 z, cf m v ≠ 0` using `(hd m).continuousAt.eventually_ne hm.ne_zero`. Establish `hev : ∀ᶠ v in 𝓝 z, ⊤ ≤ x v ⁻¹ᵁ Out.nonzeroLocus (t m)` using `hne.mono fun v hv => (hc v).le_nonzeroLocus hv.isUnit`. Use `holAt_of_affine hD hev.self_of_nhds hev fun g => ?_` and prove the remaining obligations.
+
+Take `⟨q, rfl⟩` from `hsurj g`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a`. Use `(differentiableAt_const (valR y ⊤ a)).congr_of_eventuallyEq (hev.mono fun v hv => ?_)` and prove the remaining obligations. Simplify using `only [MvPolynomial.eval₂Hom_C, valAt'_eq_valR]`.
+
+Conclude with `(HolHom.valR_appLE (x v) f ⊤ _ le_top a hv).trans (by rw [hy])`. Consider the case `add p q hp hq`. Use `(hp.add hq).congr_of_eventuallyEq (hev.mono fun v hv => ?_)` and prove the remaining obligations. Simplify using `only [valAt'_eq_valR, HolHom.valR_eq _ _ hv, map_add, Pi.add_apply]`. Consider the case `mul_X p l hp`.
+
+Use `(hp.mul ((hd l).fun_mul ((hd m).fun_inv hm.ne_zero))).congr_of_eventuallyEq ((hev.and hne).mono fun v hv => ?_)` and prove the remaining obligations. Establish `e` using `(hc v).valR_ratio hv.1 (hρ l)`. Establish `e' : valR (x v) _ (ρ l) = cf l v * (cf m v)⁻¹`. Rewrite using `[← e, mul_inv_cancel_right₀ hv.2]`. Simplify using `only [valAt'_eq_valR, map_mul, MvPolynomial.eval₂Hom_X', Pi.mul_apply]`.
+
+Rewrite using `[← e']`. Simplify using `only [HolHom.valR_eq _ _ hv.1, map_mul]`.
+-/
 theorem holAt_of_coords (ht : EmbedsBy f t) {y : Sp ℂ ⟶ Y} (hy : ∀ v, x v ≫ f = y)
     (hc : ∀ v, HasCoords (x v) t fun i => cf i v) {z : V} (hd : ∀ i, DifferentiableAt ℂ (cf i) z) : HolAt x z := by
   obtain ⟨m, hm⟩ := (hc z).exists_isUnit ht.1
@@ -55,6 +71,13 @@ theorem holAt_of_coords (ht : EmbedsBy f t) {y : Sp ℂ ⟶ Y} (hy : ∀ v, x v 
     rw [← e']
     simp only [HolHom.valR_eq _ _ hv.1, map_mul]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(hc z).exists_isUnit hcov`. Use `choose ρ hρ using fun l => exists_isRatio (t l) (t m)`. Establish `hz` using `(hc z).le_nonzeroLocus hm`. Establish `hν'` using `(le_preimage_dual_iff hν.1 _).2 hz`. Establish `hu : IsUnit (TrivSqZeroExt.inl (cf m z) + TrivSqZeroExt.inr (fderiv ℂ (cf m) z w) : DualNumber ℂ)` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (by simpa using hm)`.
+
+Establish `h₁` using `(hasCoords_ratio hν' hρ).mul_unit hu`. Use `h₁ using 2 with l` and compare the differences between its conclusion and the goal. Establish `hev : cf l =ᶠ[𝓝 z] fun v => valAt' (x v) _ (ρ l) * cf m v` using `(hx _ hz).1.mono fun v hv => ((hc v).valR_ratio hv (hρ l)).symm`. Establish `h0` using `hev.self_of_nhds`. Use `beta_reduce at h0`.
+
+Rewrite using `[hev.fderiv_eq, h0, fderiv_fun_mul ((hx _ hz).2 _) (hd m)]`. Use `ext`. Simplify using `[fst_valR hν.1 hz]`. Simplify using `[fst_valR hν.1 hz, hν.2 _ hz, mul_comm]`.
+-/
 theorem hasCoords_deriv (hcov : ⨆ l, Out.nonzeroLocus (t l) = ⊤) (hc : ∀ v, HasCoords (x v) t fun i => cf i v)
     {z w : V} (hx : HolAt x z) (hd : ∀ i, DifferentiableAt ℂ (cf i) z) {ν : Sp (DualNumber ℂ) ⟶ X}
     (hν : IsDerivAt x z w ν) :
@@ -76,6 +99,11 @@ theorem hasCoords_deriv (hcov : ⨆ l, Out.nonzeroLocus (t l) = ⊤) (hc : ∀ v
   · simp [fst_valR hν.1 hz]
   · simp [fst_valR hν.1 hz, hν.2 _ hz, mul_comm]
 
+/- English proof (translation)
+Establish `hx` using `holAt_of_coords ht hy hc hd`. Take `⟨ν', hν'⟩` from `hx.exists_isDerivAt w`. Establish `h1` using `hν'.comp f`. Establish `h2 : (fun v => x v ≫ f) = fun _ => y` using `funext hy`. Establish `h3 : ν' ≫ f = constVec y` using `(h2 ▸ h1).unique (isDerivAt_const y z w)`.
+
+Rewrite using `[hν.ext_of_isLocalRing ht (hb.trans h3.symm) (hasCoords_deriv ht.1 hc hx hd hν')]`. Conclude with `hν'`.
+-/
 theorem isDerivAt_of_coords (ht : EmbedsBy f t) {y : Sp ℂ ⟶ Y} (hy : ∀ v, x v ≫ f = y)
     (hc : ∀ v, HasCoords (x v) t fun i => cf i v) {z w : V} (hd : ∀ i, DifferentiableAt ℂ (cf i) z)
     {ν : Sp (DualNumber ℂ) ⟶ X} (hb : ν ≫ f = constVec y)
@@ -89,6 +117,9 @@ theorem isDerivAt_of_coords (ht : EmbedsBy f t) {y : Sp ℂ ⟶ Y} (hy : ∀ v, 
   rw [hν.ext_of_isLocalRing ht (hb.trans h3.symm) (hasCoords_deriv ht.1 hc hx hd hν')]
   exact hν'
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `Points.exists_le_preimage_of_iSup_eq_top (p ≫ (G.hom ⁻¹ᵁ U).ι) hL.cover`. Conclude with `⟨fun _ => j, fun s hs => Set.mem_iInter.2 fun _ => hj hs, h j hj⟩`.
+-/
 theorem hasCoords_powOver {S : Scheme.{0}} {G : Over S} {L : LB G.left} (hL : L.IsLB) {U : S.Opens} {N : ℕ}
     {b : I → LB.Sec (Out.powOver G L U N)} {A : Type} [CommRing A] [IsLocalRing A]
     {p : Sp A ⟶ (G.hom ⁻¹ᵁ U).toScheme} {c : I → A}
@@ -103,6 +134,11 @@ namespace GlobalTheory
 
 open Specialise HolHom CoordFamily in
 
+/- English proof (translation)
+Introduce `S G _ L U N n b y V _ _ x cf hL _ hb hy hc`. Establish `hc' : ∀ v, HasCoords (x v) b fun i => cf i v` using `fun v => hasCoords_powOver hL fun j hj => by`. Take `⟨u, hu, e⟩` from `hc v j hj`. Conclude with `⟨Units.mk0 u hu, e⟩`. Establish `hi : (G.hom ∣_ U) ≫ U.ι = (G.hom ⁻¹ᵁ U).ι ≫ G.hom` using `morphismRestrict_ι _ _`.
+
+Establish `hy' : ∀ v, x v ≫ (G.hom ∣_ U) = x 0 ≫ (G.hom ∣_ U)` using `fun v => by`. Rewrite using `[← cancel_mono U.ι, Category.assoc, Category.assoc, hi, hy, hy]`. Use `⟨fun v v' ρ e => (eq_of_proportional hb ((hy' v).trans (hy' v').symm) (hc' v) (hc' v') e).symm, fun hd => ⟨isHolTo_of_holAt isOpen_univ fun z _ => (holAt_of_coords hb hy' hc' fun i => hd i z).comp _, fun z₀ ν hν hνc W f => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `isDerivAt_of_coords (w := z₀) hb hy' hc' (fun i => hd i 0) (ν := ν) (by rw [← cancel_mono U.ι, Category.assoc, Category.assoc, Category.assoc, hi, hν, hy]) (hasCoords_powOver hL hνc)`. Conclude with `⟨h.1, fun hW => (h.comp (G.hom ⁻¹ᵁ U).ι).2 W hW f⟩`.
+-/
 theorem coords_determine_family : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left) (U : S.Opens) (N n : ℕ) (b : Fin n → LB.Sec (Out.powOver G L U N)) (y : Sp ℂ ⟶ S) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (x : V → (Sp ℂ ⟶ (G.hom ⁻¹ᵁ U).toScheme)) (cf : Fin n → V → ℂ), L.IsLB → IsAffineOpen U → AmpleSpan.EmbedsBy (G.hom ∣_ U) b → (∀ v, x v ≫ (G.hom ⁻¹ᵁ U).ι ≫ G.hom = y) → (∀ v j, ⊤ ≤ (x v ≫ (G.hom ⁻¹ᵁ U).ι) ⁻¹ᵁ L.U j → ∃ u : ℂ, u ≠ 0 ∧ ∀ i, valR (x v) ((Out.powOver G L U N).U (fun _ => j)) ((b i).f (fun _ => j)) = cf i v * u) → (∀ v v' (ρ : ℂ), (∀ i, cf i v' = ρ * cf i v) → x v' = x v) ∧ ((∀ i, Differentiable ℂ (cf i)) → IsHolTo Set.univ (fun v => x v ≫ (G.hom ⁻¹ᵁ U).ι) ∧ ∀ (z₀ : V) (ν : Sp (DualNumber ℂ) ⟶ (G.hom ⁻¹ᵁ U).toScheme), ν ≫ (G.hom ⁻¹ᵁ U).ι ≫ G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y → (∀ j, ⊤ ≤ (ν ≫ (G.hom ⁻¹ᵁ U).ι) ⁻¹ᵁ L.U j → ∃ u : (DualNumber ℂ)ˣ, ∀ i, valR ν ((Out.powOver G L U N).U (fun _ => j)) ((b i).f (fun _ => j)) = (TrivSqZeroExt.inl (cf i 0) + TrivSqZeroExt.inr (fderiv ℂ (cf i) 0 z₀)) * (u : DualNumber ℂ)) → ∀ (W : G.left.Opens) (f : Γ(G.left, W)), spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ ν = x 0 ∧ (⊤ ≤ (x 0 ≫ (G.hom ⁻¹ᵁ U).ι) ⁻¹ᵁ W → TrivSqZeroExt.snd (valR (ν ≫ (G.hom ⁻¹ᵁ U).ι) W f) = fderiv ℂ (fun v => valAt' (x v ≫ (G.hom ⁻¹ᵁ U).ι) W f) 0 z₀)) := by
   intro S G _ L U N n b y V _ _ x cf hL _ hb hy hc
   have hc' : ∀ v, HasCoords (x v) b fun i => cf i v := fun v => hasCoords_powOver hL fun j hj => by

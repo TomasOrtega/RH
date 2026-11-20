@@ -13,6 +13,37 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.SqTop GlobalTh
 
 namespace GlobalTheory.SqTop
 
+/- English proof (translation)
+Introduce `hFE hS hFD`. Use `set c : ℝ := max 0 (Real.log ‖riemannZeta (3 / 2)‖) with hc`. Take `⟨CF1, hB⟩` from `GlobalTheory.T.gridSizes_log_bound c`. Take `⟨CF2, hF⟩` from `hFD`. Use `⟨max CF1 CF2, fun ε CF hCF => ?_⟩` and prove the remaining obligations.
+
+Take `⟨C1, x1, hB⟩` from `hB ε CF (le_of_max_le_left hCF)`. Take `⟨C2, x2, hF⟩` from `hF ε CF (le_of_max_le_right hCF)`. Use `⟨max C1 C2, max x1 x2, fun C hC D large₂ he hx hR T Lc μ hL G => ?_⟩` and prove the remaining obligations. Establish `hb` using `hB C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) hR T Lc μ hL G`. Take `⟨hCM, hAb, hFd, hBase, -⟩` from `hF C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hR T Lc μ hL G`.
+
+Introduce `i j s hs1 hs2 π χ Λ hχ hΛ`. Use `set κ := kap D (⟨1, CF, large₂.sc.b⟩ : Consts).cGap i j s with hκ`. Use `set n : ℕ := Module.finrank ℚ D.host.E with hn`. Establish `key : c * (n : ℝ) + Real.log |((discr D.host.E : ℤ) : ℝ)| + 2 * Real.log (levQ G.pl) + ∑ τ, Real.log (1 + ((κ τ : ℝ) + s)) ≤ bTH D C large₂.sc.x large₂.sc.b` using `hb i j s hs1 hs2`. Establish `hc0 : 0 ≤ c` using `le_max_left _ _`.
+
+Establish `hcz : Real.log ‖riemannZeta (3 / 2)‖ ≤ c` using `le_max_right _ _`. Establish `hd0 : 0 ≤ Real.log |((discr D.host.E : ℤ) : ℝ)|` using `Real.log_nonneg (by`. Use `Int.one_le_abs (NumberField.discr_ne_zero D.host.E)` as an intermediate fact. Conclude with `this)` after adjusting the coercions. Establish `hq0 : 0 ≤ Real.log (levQ G.pl : ℝ)` using `Real.log_natCast_nonneg _`.
+
+Establish `hk0 : 0 ≤ ∑ τ, Real.log (1 + ((κ τ : ℝ) + s))` using `Finset.sum_nonneg fun τ _ => Real.log_nonneg (by have : (0:ℝ) ≤ κ τ := Nat.cast_nonneg _; have : (0:ℝ) ≤ s := Nat.cast_nonneg _; linarith)`. Establish `hn0 : (0 : ℝ) ≤ c * n` using `mul_nonneg hc0 (Nat.cast_nonneg _)`. Distinguish the cases in `h0 : Λ s = 0`. Rewrite using `[h0, norm_zero, Real.log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hpos : 0 < ‖Λ s‖` using `norm_pos_iff.2 h0`. Establish `hz : 0 < ‖riemannZeta (3 / 2)‖` using `norm_pos_iff.2 (riemannZeta_ne_zero_of_one_lt_re (by norm_num))`. Break down `(by omega : s = 1 ∨ 2 ≤ s) with rfl | h2` into its components or cases. Take `⟨a, ha, haN⟩` from `GlobalTheory.T.exists_cmValueCharacter_conductorExponents D G 1 _ χ hχ`. Establish `hA` using `GlobalTheory.T.norm_completedHeckeL_CM_one_le_phragmenLindelof D.host.E D.what₂.Tau (cmPhi D) hFE hS hFd.2.2.2.2.2.2.1 χ (fun τ => ((κ (π τ) : ℕ) : ℤ) + ((1 : ℕ) : ℤ)) a Λ hχ.1 hχ.2.1 hχ.2.2.1 (fun τ => by positivity) ha hΛ`.
+
+Simplify using `only [Nat.cast_one] at hpos h0 ⊢`. Use `set N : ℕ := (discr D.host.E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k with hN`. Use `set P : ℝ := ∏ τ, (1 + ((((κ (π τ) : ℕ) : ℤ) + ((1 : ℕ) : ℤ) : ℤ) : ℝ)) with hP`. Establish `hP0 : 0 < P` using `Finset.prod_pos fun τ _ => by push_cast; positivity`. Establish `hN0 : (0 : ℝ) < N`.
+
+Assume the negation of the conclusion as `hc'`. Establish `: (N : ℝ) = 0` using `le_antisymm (not_lt.1 hc') (Nat.cast_nonneg _)`. Rewrite `hA` using `[this, mul_zero, zero_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNle : (N : ℝ) ≤ |((discr D.host.E : ℤ) : ℝ)| * (levQ G.pl : ℝ) ^ 2`.
+
+Rewrite using `[hN, Nat.cast_mul, Nat.cast_natAbs, Int.cast_abs]`. Use `mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)` and prove the remaining obligations. Conclude with `haN` after adjusting the coercions. Establish `hQ0 : (0 : ℝ) < levQ G.pl`. Assume the negation of the conclusion as `hc'`.
+
+Establish `: (levQ G.pl : ℝ) = 0` using `le_antisymm (not_lt.1 hc') (Nat.cast_nonneg _)`. Rewrite `hNle` using `[this, zero_pow two_ne_zero, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD0 : (0 : ℝ) < |((discr D.host.E : ℤ) : ℝ)|`. Use `Int.one_le_abs (NumberField.discr_ne_zero D.host.E)` as an intermediate fact.
+
+Establish `: (1 : ℝ) ≤ |((discr D.host.E : ℤ) : ℝ)|` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : Real.log ‖Λ 1‖ ≤ Real.log (‖riemannZeta (3 / 2)‖ ^ n) + Real.log N + Real.log P`. Rewrite using `[← Real.log_mul (by positivity) hN0.ne', ← Real.log_mul (by positivity) hP0.ne']`. Conclude with `Real.log_le_log hpos hA`.
+
+Establish `h2 : Real.log N ≤ Real.log |((discr D.host.E : ℤ) : ℝ)| + 2 * Real.log (levQ G.pl)`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : Real.log P = ∑ τ, Real.log (1 + ((κ τ : ℝ) + ((1 : ℕ) : ℝ)))`. Rewrite using `[hP, Real.log_prod (fun τ _ => by push_cast; positivity)]`. Rewrite using `[← Equiv.sum_comp π (fun τ => Real.log (1 + ((κ τ : ℝ) + ((1 : ℕ) : ℝ))))]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `push_cast`. Put the polynomial expressions in normal form. Establish `h4 : Real.log (‖riemannZeta (3 / 2)‖ ^ n) ≤ c * n`. Rewrite using `[Real.log_pow]`.
+
+Use polynomial arithmetic with `[(Nat.cast_nonneg n : (0:ℝ) ≤ n)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `GlobalTheory.T.norm_heckeLFunction_le_zeta_three_halves_pow D.host.E χ Λ s hχ.1 hΛ (by`. Simplify using `only [Complex.natCast_re]; have : (2 : ℝ) ≤ s := by exact_mod_cast h2`. Use the proof step `linarith)`.
+
+Establish `h4 : Real.log ‖Λ s‖ ≤ c * n`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lBound_of : GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.CompletedLBoundedInStrips → FieldDat → LBound := by
   intro hFE hS hFD
   set c : ℝ := max 0 (Real.log ‖riemannZeta (3 / 2)‖) with hc

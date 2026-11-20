@@ -6,6 +6,11 @@ open Finset Polynomial
 
 namespace Formalism.InvariantFactorPaths.ColumnFamilies
 
+/- English proof (translation)
+Establish `h : (Matrix.of fun i j => (p j).eval (v i)) = Matrix.vandermonde v * Matrix.of fun (i j : Fin n) => (p j).coeff i`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.of_apply, Polynomial.eval_eq_sum_range' (lt_of_le_of_lt (hdeg j) j.2), ← Fin.sum_univ_eq_sum_range (fun k => (p j).coeff k * v i ^ k)]`. Use `sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.vandermonde_apply, mul_comm]`.
+
+Rewrite using `[h, Matrix.det_mul, Matrix.det_of_isUpperTriangular (Matrix.matrixOfPolynomials_blockTriangular p hdeg)]`. Both sides reduce to the same expression.
+-/
 lemma qk_det_eval {R : Type*} [CommRing R] {n : ℕ} (v : Fin n → R) (p : Fin n → R[X])
     (hdeg : ∀ i, (p i).natDegree ≤ i) :
     (Matrix.of fun i j => (p j).eval (v i)).det = (Matrix.vandermonde v).det * ∏ i, (p i).coeff i := by
@@ -19,6 +24,17 @@ lemma qk_det_eval {R : Type*} [CommRing R] {n : ℕ} (v : Fin n → R) (p : Fin 
   rw [h, Matrix.det_mul, Matrix.det_of_isUpperTriangular (Matrix.matrixOfPolynomials_blockTriangular p hdeg)]
   rfl
 
+/- English proof (translation)
+Establish `h` using `qk_det_eval v (fun j : Fin n => (X : R[X]) ^ (j : ℕ) + C x * (X - C 1) ^ (j : ℕ)) (by`. Introduce `i`. Use `(natDegree_add_le _ _).trans (max_le (natDegree_X_pow_le _) ?_)` and prove the remaining obligations. Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Use `natDegree_pow_le.trans ?_` and prove the remaining obligations.
+
+Use `natDegree_X_sub_C_le (1 : R)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hc : ∀ i : Fin n, ((X : R[X]) ^ (i : ℕ) + C x * (X - C 1) ^ (i : ℕ)).coeff i = 1 + x`. Introduce `i`. Rewrite using `[coeff_add, coeff_X_pow_self, coeff_C_mul]`.
+
+Use `(monic_X_sub_C (1 : R)).pow (i : ℕ)` as an intermediate fact. Establish `h2 : ((X - C (1 : R)) ^ (i : ℕ)).coeff i = 1` using `by nontriviality R`. Establish `h3 : ((X - C (1 : R)) ^ (i : ℕ)).natDegree = (i : ℕ)`. Rewrite using `[(monic_X_sub_C (1 : R)).natDegree_pow, natDegree_X_sub_C, mul_one]`. Establish `h4` using `this.coeff_natDegree`.
+
+Rewrite `h4` using `[h3]`. Then use the resulting hypothesis. Rewrite using `[h2, mul_one]`. Simplify using `only [hc, prod_const, card_univ, Fintype.card_fin] at h`. Rewrite using `[← h]`. Use `congr 1`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 lemma qk_det_shift {R : Type*} [CommRing R] {n : ℕ} (v : Fin n → R) (x : R) :
     (Matrix.of fun (i j : Fin n) => v i ^ (j : ℕ) + x * (v i - 1) ^ (j : ℕ)).det =
       (Matrix.vandermonde v).det * (1 + x) ^ n := by
@@ -47,6 +63,15 @@ lemma qk_det_shift {R : Type*} [CommRing R] {n : ℕ} (v : Fin n → R) (x : R) 
   ext i j
   simp
 
+/- English proof (translation)
+Establish `hV : ∀ u : Fin n → R, (Matrix.vandermonde u).det = Matrix.detRowAlternating (fun (i j : Fin n) => u i ^ (j : ℕ))` using `fun u => rfl`. Establish `h0 : (Matrix.of fun (i j : Fin n) => v i ^ (j : ℕ) + x * w i ^ (j : ℕ)).det = Matrix.detRowAlternating ((fun (i : Fin n) => x • fun (j : Fin n) => w i ^ (j : ℕ)) + fun (i j : Fin n) => v i ^ (j : ℕ))` using `by show Matrix.detRowAlternating _ = _`. Use `congr 1`. Use function extensionality and compare the values at `i j`. Simplify using `[add_comm]`.
+
+Rewrite using `[h0, AlternatingMap.map_add_univ]`. Use `sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `h2 : s.piecewise (fun (i : Fin n) => x • fun (j : Fin n) => w i ^ (j : ℕ)) (fun (i j : Fin n) => v i ^ (j : ℕ)) = s.piecewise (fun i => (fun _ => x) i • (fun (i j : Fin n) => (s.piecewise w v) i ^ (j : ℕ)) i) (fun (i j : Fin n) => (s.piecewise w v) i ^ (j : ℕ))`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ s`.
+
+Simplify using `only [piecewise_eq_of_mem _ _ _ hi]`. Simplify using `only [piecewise_eq_of_notMem _ _ _ hi]`. Rewrite using `[h2, hV]`. Establish `h3` using `(Matrix.detRowAlternating (n := Fin n) (R := R)).toMultilinearMap.map_piecewise_smul (fun _ => x) (fun (i j : Fin n) => (s.piecewise w v) i ^ (j : ℕ)) s`. Use `Eq.trans h3 ?_` and prove the remaining obligations.
+
+Rewrite using `[prod_const, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 lemma qk_det_expand {R : Type*} [CommRing R] {n : ℕ} (v w : Fin n → R) (x : R) :
     (Matrix.of fun (i j : Fin n) => v i ^ (j : ℕ) + x * w i ^ (j : ℕ)).det =
       ∑ s : Finset (Fin n), x ^ s.card * (Matrix.vandermonde (s.piecewise w v)).det := by
@@ -77,10 +102,24 @@ lemma qk_det_expand {R : Type*} [CommRing R] {n : ℕ} (v w : Fin n → R) (x : 
 
 def qk_D {n : ℕ} (v : Fin n → ℝ) : ℝ := ∏ i : Fin n, ∏ j ∈ Ioi i, (v j - v i)
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_vandermonde, qk_D]`. Simplify using `only [map_prod, map_sub]`.
+-/
 lemma qk_det_C {n : ℕ} (v : Fin n → ℝ) : (Matrix.vandermonde fun i => (C (v i) : ℝ[X])).det = C (qk_D v) := by
   rw [Matrix.det_vandermonde, qk_D]
   simp only [map_prod, map_sub]
 
+/- English proof (translation)
+Establish `h1` using `qk_det_expand (fun i => (C (v i) : ℝ[X])) (fun i => (C (v i) : ℝ[X]) - 1) X`. Rewrite `h1` using `[qk_det_shift, qk_det_C]`. Establish `h2 : ∀ s : Finset (Fin n), (Matrix.vandermonde (s.piecewise (fun i => (C (v i) : ℝ[X]) - 1) (fun i => (C (v i) : ℝ[X])))).det = C (qk_D (s.piecewise (fun i => v i - 1) v))`. Introduce `s`. Rewrite using `[← qk_det_C]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : i ∈ s <;> simp [hi]`. Simplify using `only [h2] at h1`. Establish `h3` using `congrArg (fun q : ℝ[X] => q.coeff b) h1`.
+
+Simplify using `only [finsetSum_coeff] at h3`. Rewrite `h3` using `[coeff_C_mul, coeff_one_add_X_pow, mul_comm]`. Rewrite using `[h3, ← sum_filter_add_sum_filter_not univ (fun s : Finset (Fin n) => s.card = b)]`. Establish `h4 : ∑ s ∈ univ.filter (fun s : Finset (Fin n) => ¬ s.card = b), ((X : ℝ[X]) ^ s.card * C (qk_D (s.piecewise (fun i => v i - 1) v))).coeff b = 0`. Use `sum_eq_zero fun s hs => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, coeff_C_mul_X_pow, if_neg (fun h => (mem_filter.1 hs).2 h.symm)]`. Rewrite using `[h4, add_zero]`. Establish `h5 : powersetCard b (univ : Finset (Fin n)) = univ.filter (fun s : Finset (Fin n) => s.card = b)`. Use extensionality with `s`. Simplify using `[mem_powersetCard]`.
+
+Rewrite using `[h5]`. Use `sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, coeff_C_mul_X_pow, if_pos (mem_filter.1 hs).2.symm]`.
+-/
 theorem qk_D_shift {n : ℕ} (v : Fin n → ℝ) (b : ℕ) :
     ∑ s ∈ powersetCard b (univ : Finset (Fin n)), qk_D (s.piecewise (fun i => v i - 1) v) =
       (n.choose b : ℝ) * qk_D v := by

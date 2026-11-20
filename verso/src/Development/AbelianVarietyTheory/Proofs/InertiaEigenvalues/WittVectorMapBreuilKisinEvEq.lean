@@ -10,6 +10,15 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l _ K bk O _ _ _ _ ψ ψ' h0 hc h s`. Establish `hval : ∀ y : Fq l bk.a, ψ (Fq.val l bk.a y) = ψ' (Fq.val l bk.a y)` using `fun y => by`. Use `h (C (WittVector.teichmuller l y))` as an intermediate fact. Rewrite `this` using `[bk.ev_C, wA_teich, WittVector.teichmuller_coeff_zero]`. Then use the resulting hypothesis. Establish `hflat : ψ bk.flat = ψ' bk.flat`.
+
+Use `h X` as an intermediate fact. Rewrite `this` using `[bk.ev_X, WittVector.teichmuller_coeff_zero]`. Then use the resulting hypothesis. Establish `hX : ((WittVector.map ψ).comp bk.ev) X = WittVector.teichmuller l (ψ bk.flat)`. Rewrite using `[RingHom.comp_apply, bk.ev_X, WittVector.map_teichmuller]`. Establish `hcomp` using `(GlobalTheory.T.wittVector_teichmuller_isAdicComplete_of_perfect l O (ψ bk.flat) h0 hc).1`.
+
+Use `RingHom.congr_fun (ringHom_ext_of_sep ((WittVector.map ψ).comp bk.ev) ((WittVector.map ψ').comp bk.ev) (fun w => ?_) ?_ fun x hx => ?_) s` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, bk.ev_C]`. Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Simplify using `only [wA, AlgHom.coe_mk, WittVector.map_coeff]`. Conclude with `hval _`.
+
+Rewrite using `[hX, RingHom.comp_apply, bk.ev_X, WittVector.map_teichmuller, hflat]`. Rewrite `hx` using `[hX]`. Use `IsHausdorff.haus' (I := Ideal.span {WittVector.teichmuller l (ψ bk.flat)}) x fun n => ?_` and prove the remaining obligations. Simplify using `only [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Conclude with `Ideal.mem_span_singleton.2 (hx n)`.
+-/
 theorem wmap_ev_eq : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (O : Type) [CommRing O] [IsDomain O]
     [CharP O l] [PerfectRing O l] (ψ ψ' : OCb l →+* O), ψ bk.flat ≠ 0 →
     IsAdicComplete (Ideal.span {ψ bk.flat}) O →

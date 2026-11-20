@@ -5,5 +5,8 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim GlobalTheory.TestLat
 open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.SumSize GlobalTheory.KerConjMean
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KerConjMean.ratRowAt_big | exact GlobalTheory.KerConjMean.ratRowAt_big | (intros; apply GlobalTheory.KerConjMean.ratRowAt_big <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.oppositeKernelsRationalRowMap_largeConstants : BigC fun _ ch _ _ => RatRowAt ch := by
   first | exact @GlobalTheory.KerConjMean.ratRowAt_big | exact GlobalTheory.KerConjMean.ratRowAt_big | (intros; apply GlobalTheory.KerConjMean.ratRowAt_big <;> assumption)

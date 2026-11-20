@@ -6,6 +6,19 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AutomorphicFiniteTr
 open scoped TensorProduct NNReal Matrix ComplexConjugate
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM n J hJ r X Y hW S K hK ψ hψ C hC hCK`. Establish `hfin : ∀ y : GAd σ J, ofFin σ J (projFin σ J y) ∈ finPts σ J` using `fun y => (range_ofFin σ J).le ⟨_, rfl⟩`. Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : GlobalTheory.StdPar.IsCuspOn σ J X Y S K (fun g => ψ (g * ofFin σ J (projFin σ J y)))` using `⟨GlobalTheory.StdPar.isAutOn_mul_finPts hCM hJ hW hK hψ.1 _ (hfin y), fun S' hS' μ 𝓕 h1 h2 h3 g => by`. Use `hψ.2 S' hS' μ 𝓕 h1 h2 h3 (g * ofFin σ J (projFin σ J y))` as an intermediate fact.
+
+Simplify `this⟩` using `only [mul_assoc, Pi.zero_apply]`. Establish `hk` using `hCK y hy`. Establish `h2` using `GlobalTheory.StdPar.RealConj.isCuspOn_realConj (K₁ := K) (K₂ := K) hCM (hK hk) (fun k => ⟨fun h => mul_mem (mul_mem hk h) (inv_mem hk), fun h => by`. Use `mul_mem (mul_mem (inv_mem hk) h) hk` as an intermediate fact. Simplify `this⟩) h1` using `[mul_assoc]`.
+
+Simplify `h2` using `only [mul_assoc, ofInf_projInf_mul_ofFin_projFin]`. Take `⟨U, hU, hUψ⟩` from `hψ.1.level`. Use `hψ.1.kfin` as an intermediate fact. Set `V : GAd σ J → Set (GAd σ J)` to `fun x => {y | ofFin σ J (projFin σ J (x⁻¹ * y)) ∈ U}`. Establish `hV : ∀ x ∈ (C : Set (GAd σ J)), V x ∈ 𝓝 x` using `fun x _ => by`.
+
+Use `IsOpen.mem_nhds (hU.preimage ((continuous_ofFin σ J).comp ((continuous_projFin σ J).comp (continuous_const.mul continuous_id)))) ?_` and prove the remaining obligations. Use `show ofFin σ J (projFin σ J (x⁻¹ * x)) ∈ U`. Simplify using `[one_mem]`. Take `⟨t, htC, ht⟩` from `hC.elim_nhds_subcover V hV`. Use `Submodule.finiteDimensional_of_le (S₂ := t.sup fun x => (Submodule.span ℂ (Set.range fun k : K => fun g => ψ (g * k))).map (LinearMap.funLeft ℂ ℂ (fun y : GAd σ J => y * x))) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨x, hx, hyx⟩` from `Set.mem_iUnion₂.1 (ht hy)`. Establish `hu : x⁻¹ * y ∈ C` using `mul_mem (inv_mem (htC x hx)) hy`. Use `(Finset.le_sup (f := fun x => (Submodule.span ℂ (Set.range fun k : K => fun g => ψ (g * k))).map (LinearMap.funLeft ℂ ℂ (fun y : GAd σ J => y * x))) hx) ?_` and prove the remaining obligations. Use `⟨fun g => ψ (g * ofInf σ J (projInf σ J (x⁻¹ * y))), Submodule.subset_span ⟨⟨_, hCK _ hu⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [LinearMap.funLeft_apply, Function.comp]`. Rewrite using `[← hUψ _ hyx (hfin _) (g * x * ofInf σ J (projInf σ J (x⁻¹ * y))), mul_assoc (g * x), ofInf_projInf_mul_ofFin_projFin]`. Simplify using `[mul_assoc]`.
+-/
 theorem GlobalTheory.StdPar.isCuspOn_transl_compact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
       ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), GlobalTheory.SiegelSet.IsWittFrame σ J X Y → ∀ (S : Finset (Fin r)) (K : Subgroup (GAd σ J)), K ≤ infPts σ J →

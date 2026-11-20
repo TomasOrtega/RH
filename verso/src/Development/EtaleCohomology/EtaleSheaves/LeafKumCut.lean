@@ -14,6 +14,9 @@ def LeafKumSeq : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing 
   ∃ (a : Additive (Bˣ ⧸ (powMonoidHom q : Bˣ →* Bˣ).range) →+ Ht q (sp B) 1 1)
     (b : Ht q (sp B) 1 1 →+ H ℤ (sp B) Gm 1), Function.Exact a b
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic q k) (ne_of_gt (Polynomial.degree_cyclotomic_pos q k (NeZero.pos q)))`. Use `⟨⟨ζ, hq, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hζ`.
+-/
 theorem prim_of_isAlgClosed (q : ℕ) [NeZero q] (k : Type) [Field k] [IsAlgClosed k] (hq : IsUnit (q : k)) :
     Nonempty (Prim q k) := by
   obtain ⟨ζ, hζ⟩ := IsAlgClosed.exists_root (Polynomial.cyclotomic q k)
@@ -22,6 +25,13 @@ theorem prim_of_isAlgClosed (q : ℕ) [NeZero q] (k : Type) [Field k] [IsAlgClos
   rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]
   exact hζ
 
+/- English proof (translation)
+Establish `hK : Finite b.ker`. Establish `: (b.ker : Set M) = Set.range a` using `by ext x; exact h x`. Establish `hf : (Set.range a).Finite` using `Set.finite_range a`. Rewrite `hf` using `[← this]`. Conclude with `hf.to_subtype`.
+
+Establish `hQ : Finite (M ⧸ b.ker)` using `Finite.of_equiv _ (QuotientAddGroup.quotientKerEquivRange b).symm.toEquiv`. Establish `hc` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup b.ker`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hc]`. Establish `: Nonempty (M ⧸ b.ker)` using `⟨0⟩`.
+
+Conclude with `Nat.mul_ne_zero (Nat.card_pos).ne' (Nat.card_pos).ne'`.
+-/
 theorem finite_of_exact {A M N : Type*} [AddCommGroup A] [AddCommGroup M] [AddCommGroup N] [Finite A]
     (a : A →+ M) (b : M →+ N) (h : Function.Exact a b) (hb : Finite b.range) : Finite M := by
   have hK : Finite b.ker := by
@@ -36,6 +46,15 @@ theorem finite_of_exact {A M N : Type*} [AddCommGroup A] [AddCommGroup M] [AddCo
   have : Nonempty (M ⧸ b.ker) := ⟨0⟩
   exact Nat.mul_ne_zero (Nat.card_pos).ne' (Nat.card_pos).ne'
 
+/- English proof (translation)
+Introduce `hy q _ k B _ _ _ _ hq hU hP i`. Establish `hqB : IsUnit (q : B)` using `by simpa using hq.map (algebraMap k B)`. Take `⟨ζ⟩` from `prim_of_isAlgClosed q k hq`. Take `⟨e⟩` from `hT hy q B ⟨ζ.map (algebraMap k B)⟩ 1 i 1`. Take `⟨a, b, hab⟩` from `hS hy q B hqB`.
+
+Take `⟨E⟩` from `hG hy B`. Establish `hr : Finite b.range`. Use `Finite.of_injective (β := {c : CommRing.Pic B // c ^ q = 1}) (fun y => ⟨Additive.toMul (E y.1), ?_⟩) ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `y.2`. Establish `h0 : q • x = 0`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod q), ZMod.natCast_self, zero_smul]`. Establish `: q • E y.1 = 0` using `by rw [← hx, ← map_nsmul, ← map_nsmul, h0, map_zero, map_zero]`. Rewrite using `[← toMul_nsmul, this, toMul_zero]`. Introduce `y z h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `E.injective` to reduce the goal to its premises. Apply `Additive.toMul.injective` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h`. Establish `: Finite (Ht q (sp B) 1 1)` using `finite_of_exact a b hab hr`. Conclude with `Finite.of_equiv _ e.symm.toEquiv`.
+-/
 theorem goal_of (hT : LeafTwist) (hG : EtaleFirstCohomologyMultiplicativeGroupPicard) (hS : LeafKumSeq) : LeafKum := by
   intro hy q _ k B _ _ _ _ hq hU hP i
   have hqB : IsUnit (q : B) := by simpa using hq.map (algebraMap k B)

@@ -6,6 +6,13 @@ open MvPolynomial TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ A _ _ n t het j`. Set `B` to `MvPolynomial (Fin n) (ZMod p)`. Use `letI : Algebra B A := (MvPolynomial.aeval (R := ZMod p) t).toRingHom.toAlgebra`. Establish `: Algebra.Etale B A` using `het`. Set `I : Ideal B` to `Ideal.span (X '' ({j} : Set (Fin n)))`.
+
+Establish `hQ : IsRegularRing (B ⧸ I)` using `IsRegularRing.of_ringEquiv (quotientSpanXEquiv (ZMod p) ({j} : Set (Fin n))).symm.toRingEquiv`. Establish `: IsRegularRing (TensorProduct B (B ⧸ I) A)` using `isRegularRing_of_etale (B ⧸ I) _`. Establish `hI : I.map (algebraMap B A) = Ideal.span {t j}`. Simplify using `only [I, Set.image_singleton, Ideal.map_span, Set.image_singleton]`. Use `congr 2`.
+
+Use `show MvPolynomial.aeval t (X j) = t j`. Simplify using the standard rewrite rules. Establish `e` using `(Algebra.TensorProduct.quotIdealMapEquivTensorQuot A I).toRingEquiv.trans (Algebra.TensorProduct.comm B A (B ⧸ I)).toRingEquiv`. Rewrite `e` using `[hI]`. Conclude with `IsRegularRing.of_ringEquiv e.symm`.
+-/
 theorem isRegularRing_quotient_etaleCoordinate : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A]
     [Algebra (ZMod p) A] {n : ℕ} (t : Fin n → A), (MvPolynomial.aeval (R := ZMod p) t).toRingHom.Etale →
     ∀ j : Fin n, IsRegularRing (A ⧸ Ideal.span {t j}) := by

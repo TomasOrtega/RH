@@ -12,6 +12,15 @@ open Module
 
 open scoped Matrix
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Use `haveI : FaithfulSMul K L := (faithfulSMul_iff_algebraMap_injective K L).2 φ.injective`. Rewrite using `[Matrix.rank_eq_finrank_span_cols, Matrix.rank_eq_finrank_span_cols]`. Take `⟨b, hbs, hspan, hli⟩` from `exists_linearIndependent K (Set.range A.col)`. Establish `hbfin : b.Finite` using `(Set.finite_range _).subset hbs`.
+
+Use `haveI := hbfin.fintype`. Establish `h1 : finrank K (Submodule.span K (Set.range A.col)) = Fintype.card b`. Rewrite using `[← hspan, finrank_span_set_eq_card hli, Set.toFinset_card]`. Establish `hli' : LinearIndependent L (fun i : b => algebraMap K L ∘ (i : m → K))` using `linearIndependent_algebraMap_comp_iff.2 hli`. Establish `hsub : Set.range (fun i : b => algebraMap K L ∘ (i : m → K)) ⊆ Set.range (A.map φ).col`.
+
+Introduce and unpack `_ ⟨⟨x, hx⟩, rfl⟩`. Take `⟨j, rfl⟩` from `hbs hx`. Use `⟨j, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.col_apply, Matrix.map_apply, RingHom.algebraMap_toAlgebra]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rank_le_rank_map {K L : Type*} [Field K] [Field L] (φ : K →+* L) {m n : Type*} [Fintype m] [Fintype n]
     (A : Matrix m n K) : A.rank ≤ (A.map φ).rank := by
   letI := φ.toAlgebra
@@ -35,6 +44,23 @@ theorem rank_le_rank_map {K L : Type*} [Field K] [Field L] (φ : K →+* L) {m n
         (finrank_span_eq_card hli').symm
     _ ≤ _ := Submodule.finrank_mono (Submodule.span_mono hsub)
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Use `haveI : FaithfulSMul K L := (faithfulSMul_iff_algebraMap_injective K L).2 φ.injective`. Use `set S := LinearMap.ker A.mulVecLin`. Set `bS` to `Module.finBasis K S`. Set `w : Fin (finrank K S) → n → L` to `fun i => algebraMap K L ∘ ((bS i : S) : n → K)`.
+
+Establish `hli0 : LinearIndependent K (fun i => ((bS i : S) : n → K))` using `bS.linearIndependent.map' S.subtype (Submodule.ker_subtype S)`. Establish `hw : LinearIndependent L w` using `linearIndependent_algebraMap_comp_iff.2 hli0`. Establish `hmap : ∀ x : n → K, (A.map φ) *ᵥ (φ ∘ x) = φ ∘ (A *ᵥ x)`. Introduce `x`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum]`. Establish `hT : Submodule.span L (Set.range w) ≤ LinearMap.ker (A.map φ).mulVecLin`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hx : A *ᵥ ((bS i : S) : n → K) = 0` using `(bS i).2`.
+
+Use `show (A.map φ) *ᵥ w i = 0`. Establish `: w i = φ ∘ ((bS i : S) : n → K)`. Use function extensionality and compare the values at `k`. Simplify using `[w, RingHom.algebraMap_toAlgebra]`. Rewrite using `[this, hmap, hx]`.
+
+Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Establish `hdim : finrank L (LinearMap.ker (A.map φ).mulVecLin) ≤ finrank L (Submodule.span L (Set.range w))`. Rewrite using `[finrank_span_eq_card hw, Fintype.card_fin]`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker A.mulVecLin`.
+
+Establish `h2` using `LinearMap.finrank_range_add_finrank_ker (A.map φ).mulVecLin`. Establish `h3` using `rank_le_rank_map φ A`. Unfold `Matrix.rank at h3`. Rewrite `h1`, `h2` using `[Module.finrank_fintype_fun_eq_card]`. Establish `hS : finrank K S = finrank K (LinearMap.ker A.mulVecLin)` using `rfl`.
+
+Rewrite using `[hS]`. Use linear arithmetic over natural numbers and integers. Establish `heq` using `Submodule.eq_of_le_of_finrank_le hT hdim`. Establish `hz' : z ∈ LinearMap.ker (A.map φ).mulVecLin` using `hz`. Rewrite `hz'` using `[← heq]`.
+
+Use `Submodule.span_mono ?_ hz'` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨((bS i : S) : n → K), (bS i).2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `[w, RingHom.algebraMap_toAlgebra]`.
+-/
 theorem ker_map_le_span {K L : Type*} [Field K] [Field L] (φ : K →+* L) {m n : Type*} [Fintype m] [Fintype n]
     (A : Matrix m n K) (z : n → L) (hz : (A.map φ) *ᵥ z = 0) :
     z ∈ Submodule.span L ((fun x : n → K => φ ∘ x) '' {x | A *ᵥ x = 0}) := by
@@ -86,29 +112,50 @@ variable {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSe
 
 open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting
 
+/- English proof (translation)
+Unfold `hJ Formalism.REAL.Jm`. Simplify using `only [Matrix.mulVec_diagonal, dotProduct, star_sum, star_mul', star_star, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`.
+-/
 theorem hJ_swap' {n : ℕ} (ε : Fin n → Bool) (x y : Fin n → ℂ) : hJ ε y x = star (hJ ε x y) := by
   unfold hJ Formalism.REAL.Jm
   simp only [Matrix.mulVec_diagonal, dotProduct, star_sum, star_mul', star_star, Pi.star_apply]
   refine Finset.sum_congr rfl fun i _ => ?_
   split_ifs <;> simp [mul_comm]
 
+/- English proof (translation)
+Unfold `hJ`. Rewrite using `[Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem hJ_add_right {n : ℕ} (ε : Fin n → Bool) (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   unfold hJ; rw [Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Unfold `hJ`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem hJ_smul_right {n : ℕ} (ε : Fin n → Bool) (x y : Fin n → ℂ) (c : ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   unfold hJ; rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Unfold `hJ`. Simplify using the standard rewrite rules.
+-/
 theorem hJ_zero_right {n : ℕ} (ε : Fin n → Bool) (x : Fin n → ℂ) : hJ ε x 0 = 0 := by
   unfold hJ; simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.L2.SG.RealObj.wCoord, hJ_add_right]`.
+-/
 theorem wCoord_add {n k : ℕ} (ε : Fin n → Bool) (wb : Fin k → Fin n → ℂ) (y y' : Fin n → ℂ) :
     Formalism.L2.SG.RealObj.wCoord ε wb (y + y') = Formalism.L2.SG.RealObj.wCoord ε wb y + Formalism.L2.SG.RealObj.wCoord ε wb y' := by
   funext i; simp [Formalism.L2.SG.RealObj.wCoord, hJ_add_right]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.L2.SG.RealObj.wCoord, hJ_smul_right]`.
+-/
 theorem wCoord_smul {n k : ℕ} (ε : Fin n → Bool) (wb : Fin k → Fin n → ℂ) (c : ℂ) (y : Fin n → ℂ) :
     Formalism.L2.SG.RealObj.wCoord ε wb (c • y) = c • Formalism.L2.SG.RealObj.wCoord ε wb y := by
   funext i; simp [Formalism.L2.SG.RealObj.wCoord, hJ_smul_right]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.L2.SG.RealObj.wCoord, hJ_zero_right]`.
+-/
 theorem wCoord_zero {n k : ℕ} (ε : Fin n → Bool) (wb : Fin k → Fin n → ℂ) :
     Formalism.L2.SG.RealObj.wCoord ε wb 0 = 0 := by
   funext i; simp [Formalism.L2.SG.RealObj.wCoord, hJ_zero_right]
@@ -116,6 +163,11 @@ theorem wCoord_zero {n k : ℕ} (ε : Fin n → Bool) (wb : Fin k → Fin n → 
 def famE (w : D.what₂.Word) : Fin (D.R.rS + 1) → Fin X.B.I.n → X.B.I.E :=
   Fin.snoc (α := fun _ => Fin X.B.I.n → X.B.I.E) X.eR (X.zR w)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Unfold `Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc Formalism.L2.SG.RealObj.fam famE`. Simplify using `only [Complex.ofReal_one, one_pow, inv_one, one_smul]`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify using `only [Fin.snoc_last]`.
+
+Simplify using `only [Fin.snoc_castSucc]`.
+-/
 theorem frm_one (w : D.what₂.Word) (v : NumberField.InfinitePlace X.B.I.F) :
     Formalism.L2.SG.RealObj.frm X w 1 v = fun a => rv X.B.I v (famE X w a) := by
   funext a
@@ -128,25 +180,47 @@ theorem frm_one (w : D.what₂.Word) (v : NumberField.InfinitePlace X.B.I.F) :
 def WperpE (w : D.what₂.Word) : Submodule X.B.I.E (Fin X.B.I.n → X.B.I.E) :=
   Submodule.span X.B.I.E (Set.range X.eR ∪ Set.range X.fR ∪ {X.zR w})
 
+/- English proof (translation)
+The claim follows from `map_add (Formalism.L2.SG.Pf.Level.rvHom X v) x y`.
+-/
 theorem rv_add' (v : NumberField.InfinitePlace X.B.I.F) (x y : Fin X.B.I.n → X.B.I.E) :
     rv X.B.I v (x + y) = rv X.B.I v x + rv X.B.I v y :=
   map_add (Formalism.L2.SG.Pf.Level.rvHom X v) x y
 
+/- English proof (translation)
+The claim follows from `map_sub (Formalism.L2.SG.Pf.Level.rvHom X v) x y`.
+-/
 theorem rv_sub' (v : NumberField.InfinitePlace X.B.I.F) (x y : Fin X.B.I.n → X.B.I.E) :
     rv X.B.I v (x - y) = rv X.B.I v x - rv X.B.I v y :=
   map_sub (Formalism.L2.SG.Pf.Level.rvHom X v) x y
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.Level.rv_smul X v c x`.
+-/
 theorem rv_smul'' (v : NumberField.InfinitePlace X.B.I.F) (c : X.B.I.E) (x : Fin X.B.I.n → X.B.I.E) :
     rv X.B.I v (c • x) = X.B.I.φ v c • rv X.B.I v x :=
   Formalism.L2.SG.Pf.Level.rv_smul X v c x
 
+/- English proof (translation)
+The claim follows from `map_sum (Formalism.L2.SG.Pf.Level.rvHom X v) x s`.
+-/
 theorem rv_sum' {ι : Type*} (s : Finset ι) (v : NumberField.InfinitePlace X.B.I.F) (x : ι → Fin X.B.I.n → X.B.I.E) :
     rv X.B.I v (∑ i ∈ s, x i) = ∑ i ∈ s, rv X.B.I v (x i) :=
   map_sum (Formalism.L2.SG.Pf.Level.rvHom X v) x s
 
+/- English proof (translation)
+The claim follows from `map_zero (Formalism.L2.SG.Pf.Level.rvHom X v)`.
+-/
 theorem rv_zero' (v : NumberField.InfinitePlace X.B.I.F) : rv X.B.I v 0 = 0 :=
   map_zero (Formalism.L2.SG.Pf.Level.rvHom X v)
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Use function extensionality and compare the values at `i`. Use `show hJ (X.B.I.ε v) (X.wfr w v i) (rv X.B.I v y) = 0`. Rewrite using `[hJ_swap']`.
+
+Establish `hp` using `X.wfr_perp w v i`. Break down `hy with (⟨c, rfl⟩ | ⟨c, rfl⟩) | hz` into its components or cases. Rewrite using `[show hJ (X.B.I.ε v) (rv X.B.I v (X.eR c)) (X.wfr w v i) = 0 from (hp.1 c).1, star_zero]`. Rewrite using `[show hJ (X.B.I.ε v) (rv X.B.I v (X.fR c)) (X.wfr w v i) = 0 from (hp.1 c).2, star_zero]`. Rewrite `hz` using `[Set.mem_singleton_iff]`.
+
+Substitute `hz` using the available equality. Rewrite using `[show hJ (X.B.I.ε v) (rv X.B.I v (X.zR w)) (X.wfr w v i) = 0 from hp.2, star_zero]`. Consider the case `zero => rw [rv_zero', wCoord_zero]`. Consider the case `add x y _ _ hx hy => rw [rv_add', wCoord_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [rv_smul'', wCoord_smul, hx, smul_zero]`.
+-/
 theorem wCoord_perp (w : D.what₂.Word) (v : NumberField.InfinitePlace X.B.I.F) (x : Fin X.B.I.n → X.B.I.E)
     (hx : x ∈ WperpE X w) : Formalism.L2.SG.RealObj.wCoord (X.B.I.ε v) (X.wfr w v) (rv X.B.I v x) = 0 := by
   induction hx using Submodule.span_induction with
@@ -165,6 +239,9 @@ theorem wCoord_perp (w : D.what₂.Word) (v : NumberField.InfinitePlace X.B.I.F)
   | add x y _ _ hx hy => rw [rv_add', wCoord_add, hx, hy, add_zero]
   | smul c x _ hx => rw [rv_smul'', wCoord_smul, hx, smul_zero]
 
+/- English proof (translation)
+Establish `h0` using `wCoord_perp X w v _ h`. Rewrite using `[rv_sub', show rv X.B.I v x - rv X.B.I v y = rv X.B.I v x + (-1 : ℂ) • rv X.B.I v y by`. Rewrite `h0` using `[neg_one_smul, sub_eq_add_neg], wCoord_add, wCoord_smul, neg_one_smul, ← sub_eq_add_neg, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem wCoord_eq_of_perp (w : D.what₂.Word) (v : NumberField.InfinitePlace X.B.I.F) (x y : Fin X.B.I.n → X.B.I.E)
     (h : x - y ∈ WperpE X w) :
     Formalism.L2.SG.RealObj.wCoord (X.B.I.ε v) (X.wfr w v) (rv X.B.I v x) =
@@ -206,6 +283,9 @@ variable (u u' : D.what₂.Word) (v : NumberField.InfinitePlace X.B.I.F)
 abbrev rl (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ :=
   (X.B.I.P v)⁻¹ * M.map (X.B.I.φ v) * X.B.I.P v
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[frm_one, frm_one]`. Simplify using `only [Formalism.L2.SG.RealObj.Zhat, Matrix.map_apply, ZE]`. Rewrite using `[Formalism.L2.SG.Pf.Level.rv_mulVec, Formalism.L2.SG.Pf.Level.hJ_rv]`.
+-/
 theorem zhat_rat (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     Formalism.L2.SG.RealObj.Zhat (X.B.I.ε v) (Formalism.L2.SG.RealObj.frm X u 1 v) (Formalism.L2.SG.RealObj.frm X u' 1 v) (rl X v M) =
       (ZE X u u' M).map (X.B.I.φ v) := by
@@ -214,16 +294,25 @@ theorem zhat_rat (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
   simp only [Formalism.L2.SG.RealObj.Zhat, Matrix.map_apply, ZE]
   rw [Formalism.L2.SG.Pf.Level.rv_mulVec, Formalism.L2.SG.Pf.Level.hJ_rv]
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.RealObj.Dl`. Rewrite using `[dif_pos le_rfl, RingHom.map_det]`. Use `congr 1`.
+-/
 theorem dl_rat (Z : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) X.B.I.E) :
     Formalism.L2.SG.RealObj.Dl (Z.map (X.B.I.φ v)) (D.R.rS + 1) = X.B.I.φ v Z.det := by
   unfold Formalism.L2.SG.RealObj.Dl
   rw [dif_pos le_rfl, RingHom.map_det]
   congr 1
 
+/- English proof (translation)
+The claim follows from `(RingHom.map_adjugate (X.B.I.φ v) Z).symm`.
+-/
 theorem adj_rat (Z : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) X.B.I.E) :
     (Z.map (X.B.I.φ v)).adjugate = Z.adjugate.map (X.B.I.φ v) :=
   (RingHom.map_adjugate (X.B.I.φ v) Z).symm
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.RealObj.xPr xPrE`. Rewrite using `[adj_rat, frm_one, rv_sum']`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[rv_smul'', Formalism.L2.SG.Pf.Level.rv_mulVec, Matrix.map_apply]`.
+-/
 theorem xPr_rat (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     Formalism.L2.SG.RealObj.xPr ((ZE X u u' M).map (X.B.I.φ v)) (rl X v M) (Formalism.L2.SG.RealObj.frm X u' 1 v) =
       rv X.B.I v (xPrE X u u' M) := by
@@ -232,6 +321,9 @@ theorem xPr_rat (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
   refine Finset.sum_congr rfl fun b _ => ?_
   rw [rv_smul'', Formalism.L2.SG.Pf.Level.rv_mulVec, Matrix.map_apply]
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.RealObj.xUn xUnE`. Rewrite using `[adj_rat, frm_one, rv_sum']`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[rv_smul'', Matrix.map_apply, Formalism.L2.SG.Pf.Level.phi_star]`.
+-/
 theorem xUn_rat (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     Formalism.L2.SG.RealObj.xUn ((ZE X u u' M).map (X.B.I.φ v)) (Formalism.L2.SG.RealObj.frm X u 1 v) =
       rv X.B.I v (xUnE X u u' M) := by
@@ -240,17 +332,26 @@ theorem xUn_rat (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [rv_smul'', Matrix.map_apply, Formalism.L2.SG.Pf.Level.phi_star]
 
+/- English proof (translation)
+Rewrite using `[rv_smul'', wCoord_smul]`.
+-/
 theorem wCoord_rvsmul {k : ℕ} (wb : Fin k → Fin X.B.I.n → ℂ) (c : X.B.I.E) (x : Fin X.B.I.n → X.B.I.E) :
     X.B.I.φ v c • Formalism.L2.SG.RealObj.wCoord (X.B.I.ε v) wb (rv X.B.I v x) =
       Formalism.L2.SG.RealObj.wCoord (X.B.I.ε v) wb (rv X.B.I v (c • x)) := by
   rw [rv_smul'', wCoord_smul]
 
+/- English proof (translation)
+Unfold `ClassFrameUnitaryProducts.nrm1 nu1E`. Rewrite using `[zhat_rat, dl_rat, xPr_rat, ← map_inv₀, wCoord_rvsmul]`.
+-/
 theorem firstNormal_rational (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     ClassFrameUnitaryProducts.nrm1 (X.B.I.ε v) (Formalism.L2.SG.RealObj.frm X u 1 v) (Formalism.L2.SG.RealObj.frm X u' 1 v) (rl X v M)
         (X.wfr u v) = Formalism.L2.SG.RealObj.wCoord (X.B.I.ε v) (X.wfr u v) (rv X.B.I v (nu1E X u u' M)) := by
   unfold ClassFrameUnitaryProducts.nrm1 nu1E
   rw [zhat_rat, dl_rat, xPr_rat, ← map_inv₀, wCoord_rvsmul]
 
+/- English proof (translation)
+Unfold `ClassFrameUnitaryProducts.nrm2 nu2E`. Rewrite using `[zhat_rat, dl_rat, xUn_rat, Formalism.L2.SG.Pf.Level.rv_mulVec, ← Formalism.L2.SG.Pf.Level.phi_star, ← map_inv₀, wCoord_rvsmul]`.
+-/
 theorem secondNormal_rational (M Mi : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     ClassFrameUnitaryProducts.nrm2 (X.B.I.ε v) (Formalism.L2.SG.RealObj.frm X u 1 v) (Formalism.L2.SG.RealObj.frm X u' 1 v) (rl X v M)
         (rl X v Mi) (X.wfr u' v) = Formalism.L2.SG.RealObj.wCoord (X.B.I.ε v) (X.wfr u' v) (rv X.B.I v (nu2E X u u' M Mi)) := by
@@ -277,11 +378,19 @@ def ratM (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ 
     GL (Fin X.B.I.n) X.B.I.E :=
   s.rep.2.1.choose
 
+/- English proof (translation)
+The claim follows from `s.rep.2.1.choose_spec.2.1 v`.
+-/
 theorem uMat_ratM (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
     (v : NumberField.InfinitePlace X.B.I.F) :
     uMat (s.pt.1 v) = rl X v ((ratM X Y u u' s : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :=
   s.rep.2.1.choose_spec.2.1 v
 
+/- English proof (translation)
+Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `h1 : uMat ((s.pt.1 v)⁻¹) * uMat (s.pt.1 v) = 1` using `Formalism.L2.SG.RealObj.InfCut.uMat_inv_mul' _`. Establish `e : ((((ratM X Y u u' s)⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v)) * (((ratM X Y u u' s : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v)) = 1`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : rl X v (((ratM X Y u u' s)⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) * uMat (s.pt.1 v) = 1`.
+
+Rewrite using `[uMat_ratM]`. Simplify using `only [rl, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hPu, ← Matrix.mul_assoc (Matrix.map _ _), e, Matrix.one_mul, Matrix.nonsing_inv_mul _ hPu]`. Establish `h3 : uMat (s.pt.1 v) * uMat ((s.pt.1 v)⁻¹) = 1` using `mul_eq_one_comm.1 h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uMat_inv_ratM (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
     (v : NumberField.InfinitePlace X.B.I.F) :
     uMat ((s.pt.1 v)⁻¹) =
@@ -331,6 +440,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
   (κ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Formalism.L2.SG.Pf.Level.sum_single X x]`. Rewrite using `[← Formalism.L2.SG.Pf.Level.hEl_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Formalism.L2.SG.Pf.Level.hEl_apply, smul_eq_mul, mul_comm]`.
+-/
 theorem classFrameOO2_hE_expand (a x : Fin X.B.I.n → X.B.I.E) :
     Formalism.L2.SG.Pf.Level.hE X a x = ∑ j, Formalism.L2.SG.Pf.Level.hE X a (Pi.single j 1) * x j := by
   conv_lhs => rw [← Formalism.L2.SG.Pf.Level.sum_single X x]
@@ -338,6 +450,9 @@ theorem classFrameOO2_hE_expand (a x : Fin X.B.I.n → X.B.I.E) :
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_smul, Formalism.L2.SG.Pf.Level.hEl_apply, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hJ_zero_right]`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, hJ_add_right, ih]`.
+-/
 theorem classFrameOO2_hJ_sum {n : ℕ} (ε : Fin n → Bool) (x : Fin n → ℂ) {ι : Type*} (s : Finset ι) (f : ι → Fin n → ℂ) :
     hJ ε x (∑ i ∈ s, f i) = ∑ i ∈ s, hJ ε x (f i) := by
   classical
@@ -345,6 +460,15 @@ theorem classFrameOO2_hJ_sum {n : ℕ} (ε : Fin n → Bool) (x : Fin n → ℂ)
   | empty => simp [hJ_zero_right]
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, hJ_add_right, ih]
 
+/- English proof (translation)
+Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hs1 : ∀ j, rv X.B.I v (Pi.single j 1) = (X.B.I.P v)⁻¹ *ᵥ Pi.single j 1`. Introduce `j`. Unfold `rv`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+
+Establish `hy : y = ∑ j, (X.B.I.P v *ᵥ y) j • rv X.B.I v (Pi.single j 1)`. Simplify using `only [hs1, ← Matrix.mulVec_smul, ← Matrix.mulVec_sum]`. Rewrite using `[Formalism.L2.SG.Pf.Level.sum_single X, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hPu, Matrix.one_mulVec]`. Use `conv_lhs => rw [hy]`. Rewrite using `[classFrameOO2_hJ_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ_smul_right, Formalism.L2.SG.Pf.Level.hJ_rv, mul_comm]`.
+-/
 theorem classFrameOO2_hJ_expand (v : NumberField.InfinitePlace X.B.I.F) (a : Fin X.B.I.n → X.B.I.E) (y : Fin X.B.I.n → ℂ) :
     hJ (X.B.I.ε v) (rv X.B.I v a) y =
       ∑ j, X.B.I.φ v (Formalism.L2.SG.Pf.Level.hE X a (Pi.single j 1)) * (X.B.I.P v *ᵥ y) j := by
@@ -365,6 +489,39 @@ theorem classFrameOO2_hJ_expand (v : NumberField.InfinitePlace X.B.I.F) (a : Fin
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [hJ_smul_right, Formalism.L2.SG.Pf.Level.hJ_rv, mul_comm]
 
+/- English proof (translation)
+Introduce `R ρ s₁ s₂ h₁ h₂ v`. Take `⟨ha, hb, hc⟩` from `hR R ρ s₁ s₂ h₁ h₂`. Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Rewrite using `[uMat_ratM X Y u u' s₁.1 v, uMat_ratM X Y u u' s₂.1 v, uMat_inv_ratM X Y u u' s₁.1 v, uMat_inv_ratM X Y u u' s₂.1 v]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[firstNormal_rational, firstNormal_rational]`. Conclude with `wCoord_eq_of_perp X u v _ _ ha`. Rewrite using `[secondNormal_rational, secondNormal_rational]`. Conclude with `wCoord_eq_of_perp X u' v _ _ hb`. Introduce `y₂ hy₂a hy₂b set M₁ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E := ((ratM X Y u u' s₁.1 : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) with hM₁ set M₂ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E := ((ratM X Y u u' s₂.1 : GL (Fin X.B.I.n) X.B.I.E) : Ma …`.
+
+Set `wv : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1) → Fin X.B.I.n → X.B.I.E` to `Sum.elim (famE X u) (fun b => M₂ *ᵥ famE X u' b)`. Set `A : Matrix (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (Fin X.B.I.n) X.B.I.E` to `fun i j => Formalism.L2.SG.Pf.Level.hE X (wv i) (Pi.single j 1)`. Establish `hA : ∀ x i, (A *ᵥ x) i = Formalism.L2.SG.Pf.Level.hE X (wv i) x`. Introduce `x i`. Rewrite using `[classFrameOO2_hE_expand X (wv i) x]`.
+
+Both sides reduce to the same expression. Establish `hAc : (A.map (X.B.I.φ v)) *ᵥ (X.B.I.P v *ᵥ y₂) = 0`. Use function extensionality and compare the values at `i`. Establish `h0 : hJ (X.B.I.ε v) (rv X.B.I v (wv i)) y₂ = 0`. Break down `i with a | b` into its components or cases.
+
+Use `hy₂a a` as an intermediate fact. Rewrite `this` using `[frm_one]`. Conclude with `this`. Use `hy₂b b` as an intermediate fact. Rewrite `this` using `[frm_one, Formalism.L2.SG.Pf.Level.rv_mulVec]`.
+
+Conclude with `this`. Rewrite `h0` using `[classFrameOO2_hJ_expand]`. Simplify `h0` using `[Matrix.mulVec, dotProduct, Matrix.map_apply]`. Establish `hspan` using `ClassFrameOO2Aux.ker_map_le_span (X.B.I.φ v) A _ hAc`. Establish `key : ∀ z ∈ Submodule.span ℂ ((fun x : Fin X.B.I.n → X.B.I.E => X.B.I.φ v ∘ x) '' {x | A *ᵥ x = 0}), ∃ y₁ : Fin X.B.I.n → ℂ, (∀ a, hJ (X.B.I.ε v) (Formalism.L2.SG.RealObj.frm X u 1 v a) y₁ = 0) ∧ (∀ b, hJ (X.B.I.ε v) (rl X v M₁ *ᵥ Formalism.L2.SG.RealObj.frm X u' 1 v b) y₁ = 0) ∧ …`.
+
+Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Establish `hx0 : A *ᵥ x = 0` using `hx`.
+
+Establish `hxU : orthogonalComplementRational X u u' M₂ x`. Use `⟨fun a => ?_, fun b => ?_⟩` and prove the remaining obligations. Use `congrFun hx0 (Sum.inl a)` as an intermediate fact. Rewrite `this` using `[hA]`. Conclude with `this`.
+
+Use `congrFun hx0 (Sum.inr b)` as an intermediate fact. Rewrite `this` using `[hA]`. Conclude with `this`. Take `⟨x₁, hx₁, hd1, hd2⟩` from `hc x hxU`. Establish `hrv : (X.B.I.P v)⁻¹ *ᵥ (X.B.I.φ v ∘ x) = rv X.B.I v x` using `rfl`.
+
+Use `⟨rv X.B.I v x₁, fun a => ?_, fun b => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[frm_one, Formalism.L2.SG.Pf.Level.hJ_rv, hx₁.1 a, map_zero]`. Rewrite using `[frm_one, Formalism.L2.SG.Pf.Level.rv_mulVec, Formalism.L2.SG.Pf.Level.hJ_rv, hx₁.2 b, map_zero]`. Rewrite using `[hrv]`. Conclude with `wCoord_eq_of_perp X u v _ _ hd1`.
+
+Rewrite using `[hrv, Formalism.L2.SG.Pf.Level.rv_mulVec, Formalism.L2.SG.Pf.Level.rv_mulVec]`. Conclude with `wCoord_eq_of_perp X u' v _ _ hd2`. Consider the case `zero`. Use `⟨0, fun a => hJ_zero_right _ _, fun b => hJ_zero_right _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_zero]`.
+
+Rewrite using `[Matrix.mulVec_zero, Matrix.mulVec_zero, Matrix.mulVec_zero]`. Consider the case `add z z' _ _ hz hz'`. Take `⟨y, ya, yb, yc, yd⟩` from `hz`. Take `⟨y', ya', yb', yc', yd'⟩` from `hz'`. Use `⟨y + y', fun a => ?_, fun b => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hJ_add_right, ya a, ya' a, add_zero]`. Rewrite using `[hJ_add_right, yb b, yb' b, add_zero]`. Rewrite using `[Matrix.mulVec_add, wCoord_add, wCoord_add, yc, yc']`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_add, wCoord_add, wCoord_add, yd, yd']`. Consider the case `smul c z _ hz`.
+
+Take `⟨y, ya, yb, yc, yd⟩` from `hz`. Use `⟨c • y, fun a => ?_, fun b => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ_smul_right, ya a, mul_zero]`. Rewrite using `[hJ_smul_right, yb b, mul_zero]`. Rewrite using `[Matrix.mulVec_smul, wCoord_smul, wCoord_smul, yc]`.
+
+Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_smul, wCoord_smul, wCoord_smul, yd]`. Establish `hy2 : (X.B.I.P v)⁻¹ *ᵥ (X.B.I.P v *ᵥ y₂) = y₂`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hPu, Matrix.one_mulVec]`. Take `⟨y₁, k1, k2, k3, k4⟩` from `key _ hspan`. Rewrite `k3`, `k4` using `[hy2]`.
+
+Conclude with `⟨y₁, k1, k2, k3, k4⟩`.
+-/
 theorem scalarAgreeC_of_rat (hR : ScalarAgreeRatC X Y u u' κ) : ScalarAgreeC X Y u u' κ := by
   intro R ρ s₁ s₂ h₁ h₂ v
   obtain ⟨ha, hb, hc⟩ := hR R ρ s₁ s₂ h₁ h₂

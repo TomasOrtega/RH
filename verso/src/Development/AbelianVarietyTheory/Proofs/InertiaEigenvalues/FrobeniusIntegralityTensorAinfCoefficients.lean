@@ -22,11 +22,17 @@ def regRep (W : Type) [CommRing W] [Algebra R W] : O ⊗[R] W →ₐ[R] Matrix I
 
 variable {W W' : Type} [CommRing W] [Algebra R W] [CommRing W'] [Algebra R W']
 
+/- English proof (translation)
+Use `erw [Algebra.TensorProduct.lift_tmul]`. Simplify using `[Algebra.smul_def, Matrix.algebraMap_eq_diagonal, Matrix.mul_diagonal, mul_comm]`.
+-/
 theorem regRep_tmul (o : O) (w : W) (i j : I) :
     regRep b W (o ⊗ₜ w) i j = Algebra.leftMulMatrix b o i j • w := by
   erw [Algebra.TensorProduct.lift_tmul]
   simp [Algebra.smul_def, Matrix.algebraMap_eq_diagonal, Matrix.mul_diagonal, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o w`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, regRep_tmul, regRep_tmul, map_smul]`. Consider the case `add x y hx hy => simp [map_add, Matrix.add_apply, hx, hy]`.
+-/
 theorem regRep_map (f : W →ₐ[R] W') (z : O ⊗[R] W) (i j : I) :
     regRep b W' (Algebra.TensorProduct.map (AlgHom.id O O) f z) i j = f (regRep b W z i j) := by
   induction z using TensorProduct.induction_on with
@@ -35,10 +41,18 @@ theorem regRep_map (f : W →ₐ[R] W') (z : O ⊗[R] W) (i j : I) :
     rw [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, regRep_tmul, regRep_tmul, map_smul]
   | add x y hx hy => simp [map_add, Matrix.add_apply, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[regRep_tmul, Algebra.leftMulMatrix_eq_repr_mul]`.
+-/
 private theorem regRep_tmul' (o : O) (w : W) (i j : I) :
     regRep b W (o ⊗ₜ w) i j = b.repr (o * b j) i • w := by
   rw [regRep_tmul, Algebra.leftMulMatrix_eq_repr_mul]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o w`. Repeatedly rewrite using `[regRep_tmul', ← TensorProduct.smul_tmul]`. Rewrite using `[Finset.sum_comm]`.
+
+Repeatedly rewrite using `[← Finset.smul_sum, ← TensorProduct.sum_tmul, b.sum_repr, TensorProduct.smul_tmul', ← TensorProduct.sum_tmul]`. Use `congr 1`. Repeatedly rewrite using `[← mul_smul_comm, ← Finset.mul_sum, b.sum_repr, mul_one]`. Consider the case `add x y hx hy => conv_lhs => rw [hx, hy]`. Simplify using `[map_add, Matrix.add_apply, TensorProduct.tmul_add, smul_add, Finset.sum_add_distrib]`.
+-/
 theorem eq_sum_regRep (z : O ⊗[R] W) :
     z = ∑ i, ∑ j, b.repr 1 j • (b i ⊗ₜ[R] regRep b W z i j) := by
   induction z using TensorProduct.induction_on with
@@ -54,6 +68,9 @@ theorem eq_sum_regRep (z : O ⊗[R] W) :
     conv_lhs => rw [hx, hy]
     simp [map_add, Matrix.add_apply, TensorProduct.tmul_add, smul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use `choose g hg using h`. Use `⟨∑ i, ∑ j, b.repr 1 j • (b i ⊗ₜ[R] g i j), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [eq_sum_regRep b z]`. Repeatedly rewrite using `[TensorProduct.smul_tmul', map_sum, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hg]`.
+-/
 theorem mem_range_of_regRep (f : W →ₐ[R] W') (z : O ⊗[R] W')
     (h : ∀ i j, regRep b W' z i j ∈ Set.range f) :
     z ∈ Set.range (Algebra.TensorProduct.map (AlgHom.id O O) f) := by
@@ -65,16 +82,25 @@ theorem mem_range_of_regRep (f : W →ₐ[R] W') (z : O ⊗[R] W')
 def blow {p q : Type} (Z : Matrix p q (O ⊗[R] W)) : Matrix (p × I) (q × I) W :=
   Matrix.of fun x y => regRep b W (Z x.1 y.1) x.2 y.2
 
+/- English proof (translation)
+Use extensionality with `x y`. Simplify using `[blow, regRep_map]`.
+-/
 theorem blow_map {p q : Type} (f : W →ₐ[R] W') (Z : Matrix p q (O ⊗[R] W)) :
     blow b (Z.map (Algebra.TensorProduct.map (AlgHom.id O O) f)) = (blow b Z).map f := by
   ext x y
   simp [blow, regRep_map]
 
+/- English proof (translation)
+Use extensionality with `x y`. Simplify using `[blow, map_add]`.
+-/
 theorem blow_add {p q : Type} (Z Z' : Matrix p q (O ⊗[R] W)) :
     blow b (Z + Z') = blow b Z + blow b Z' := by
   ext x y
   simp [blow, map_add]
 
+/- English proof (translation)
+Use extensionality with `x y`. Simplify using `[blow, Matrix.mul_apply, map_sum, Matrix.sum_apply, Fintype.sum_prod_type]`.
+-/
 theorem blow_mul {p q r : Type} [Fintype q] (Z : Matrix p q (O ⊗[R] W))
     (Z' : Matrix q r (O ⊗[R] W)) : blow b (Z * Z') = blow b Z * blow b Z' := by
   ext x y
@@ -82,6 +108,11 @@ theorem blow_mul {p q r : Type} [Fintype q] (Z : Matrix p q (O ⊗[R] W))
 
 omit b [Fintype I] [DecidableEq I] in
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Use `Module.subsingleton R (O ⊗[R] W')` as an intermediate fact. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Set `c` to `Module.Free.chooseBasis R O`. Establish `key` using `congrArg (blow c) h`.
+
+Rewrite `key` using `[blow_map, blow_add, blow_mul, blow_mul, blow_map, blow_map, blow_map]`. Apply `mem_range_of_regRep c f (Z x y)` to reduce the goal to its premises. Introduce `i j`. Conclude with `H _ _ (blow c Z) (blow c S) (blow c S') (blow c Y) key (x, i) (y, j)`.
+-/
 theorem integrality_baseChange [Module.Free R O] [Module.Finite R O] (f : W →ₐ[R] W')
     (φ : W' →ₐ[R] W')
     (H : ∀ (p q : Type) [Fintype p] [Fintype q] (Z : Matrix p q W') (S : Matrix p p W)
@@ -105,6 +136,11 @@ theorem integrality_baseChange [Module.Free R O] [Module.Finite R O] (f : W →�
   intro i j
   exact H _ _ (blow c Z) (blow c S) (blow c S') (blow c Y) key (x, i) (y, j)
 
+/- English proof (translation)
+Take `⟨K, hK⟩` from `LL`. Use `delta OL`. Establish `: Module.IsTorsionFree ℤ_[l] K`. Rewrite using `[Module.isTorsionFree_iff_algebraMap_injective]`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] K]`.
+
+Conclude with `(algebraMap ℚ_[l] K).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`. Conclude with `IsIntegralClosure.module_free ℤ_[l] ℚ_[l] K _`.
+-/
 private theorem module_free_zpadic_OL (l : ℕ) [Fact l.Prime] (LL : FinExt l) :
     Module.Free ℤ_[l] ↥(OL LL) := by
   obtain ⟨K, hK⟩ := LL
@@ -115,6 +151,9 @@ private theorem module_free_zpadic_OL (l : ℕ) [Fact l.Prime] (LL : FinExt l) :
     exact (algebraMap ℚ_[l] K).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])
   exact IsIntegralClosure.module_free ℤ_[l] ℚ_[l] K _
 
+/- English proof (translation)
+Take `⟨K, hK⟩` from `LL`. Use `delta OL`. Conclude with `IsIntegralClosure.finite ℤ_[l] ℚ_[l] K _`.
+-/
 private theorem module_finite_zpadic_OL (l : ℕ) [Fact l.Prime] (LL : FinExt l) :
     Module.Finite ℤ_[l] ↥(OL LL) := by
   obtain ⟨K, hK⟩ := LL
@@ -123,6 +162,9 @@ private theorem module_finite_zpadic_OL (l : ℕ) [Fact l.Prime] (LL : FinExt l)
 
 end Generic
 
+/- English proof (translation)
+Introduce `l _ LL p q _ _ Z S S' Y h a b`. Unfold `RW RA inclR φRW at *`. Use `module_free_zpadic_OL l LL` as an intermediate fact. Use `module_finite_zpadic_OL l LL` as an intermediate fact. Conclude with `integrality_baseChange (R := ℤ_[l]) (O := OL LL) (inclWA l) (frobW l) (fun p q _ _ Z S S' Y h => GlobalTheory.T.frobeniusIntegrality_wittTilt_ainf l p q Z S S' Y h) p q Z S S' Y h a b`.
+-/
 theorem frobenius_integrality_coeff : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (p q : Type) [Fintype p] [Fintype q] (Z : Matrix p q (RW LL)) (S : Matrix p p (RA LL)) (S' : Matrix q q (RA LL)) (Y : Matrix p q (RA LL)), Z.map (φRW LL) = S.map (inclR LL) * Z * S'.map (inclR LL) + Y.map (inclR LL) → ∀ a b, Z a b ∈ Set.range (inclR LL) := by
   intro l _ LL p q _ _ Z S S' Y h a b
   unfold RW RA inclR φRW at *

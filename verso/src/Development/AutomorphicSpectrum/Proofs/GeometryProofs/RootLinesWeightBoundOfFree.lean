@@ -32,6 +32,15 @@ def zpLocSubring (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [hp : Fact p.Pri
     rintro x ⟨a, b, hb, rfl⟩
     exact ⟨-a, b, hb, by push_cast; ring⟩
 
+/- English proof (translation)
+Introduce `hF E _ _ _ H _ D l Xo c O _ β Y S M 𝔐 Fl e p hpS hfree hroot mu hmu`. Break down `Nat.eq_zero_or_pos (D.p + D.q) with h0 | hpos` into its components or cases. Introduce `W _`. Unfold `Top.RootModel.curveDeg`. Use `le_of_eq (Finset.sum_eq_zero fun j _ => ?_).symm` and prove the remaining obligations.
+
+Consider the cases of `j with`. Consider the case `none => simp [Top.RootModel.coef]`. Consider the case `some r => exact absurd r.2.2 (by omega)`. Use `haveI : Fact p.Prime := ⟨𝔐.S_prime p hpS⟩ haveI : CharZero M.Ω := (RingHom.charZero_iff 𝔐.cst.injective).1 inferInstance`. Set `o` to `zpLocSubring M.Ω p`.
+
+Use `letI : Algebra o M.Ω := o.subtype.toAlgebra`. Establish `ho : ∀ x : M.Ω, x ∈ (algebraMap o M.Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : M.Ω) / (b : M.Ω)`. Introduce `x`. Express the relevant statement in the definitionally equal form `x ∈ o.subtype.range ↔ _`. Rewrite using `[Subring.range_subtype]`.
+
+Both sides reduce to the same expression. Establish `h1` using `trivFlagMod_rootLines_model hF E H D l Xo c O β Y S M.Ω M.K M.ι M.y 𝔐 p hpS hpos o ho Fl M.xdeg e hfree hroot`. Establish `hR` using `𝔐.R_ge p hpS`. Establish `h2 : ∀ τ, Num.TrivFlagMod o (p : o) M.y (D.p + D.q) (fun i => M.xdeg (τ, i))` using `fun τ => trivFlagMod_of_dvd o M.Ω M.K M.ι M.y _ _ _ _ (dvd_pow_self (p : o) (by omega)) (h1 τ)`. Conclude with `trivflag_nef_fibre (CMType H) (D.p + D.q) M p o ho h2 mu hmu`.
+-/
 theorem rootModel_nefAt_of_hodgeCpt : FarguesHodgeTate → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [Fintype (CMType H)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (M : Top.RootModel (CMType H) (D.p + D.q)) (𝔐 : HodgeCpt Y S M.y) (Fl : 𝔐.Flag) (e : CMType H × Fin (D.p + D.q) → M.Ω) (p : ℕ), p ∈ S → HTFree 𝔐 p → Fl.RootLines M.xdeg e → ∀ mu : Top.Wt (CMType H) (D.p + D.q), Top.Dominant mu → M.NefAt p mu 0 := by
   intro hF E _ _ _ H _ D l Xo c O _ β Y S M 𝔐 Fl e p hpS hfree hroot mu hmu
   rcases Nat.eq_zero_or_pos (D.p + D.q) with h0 | hpos

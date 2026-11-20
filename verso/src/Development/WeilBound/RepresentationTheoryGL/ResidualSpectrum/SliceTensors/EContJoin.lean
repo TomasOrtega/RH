@@ -13,6 +13,23 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm
 
 namespace PositivityTheory.Rg.Rs.SliceClasses
 
+/- English proof (translation)
+Use `set W := Submodule.span ℂ (Set.range fun t => L t f₀) with hWdef`. Establish `hf₀ : f₀ ∈ W`. Establish `h0 : L 0 f₀ ∈ W` using `Submodule.subset_span ⟨0, rfl⟩`. Rewrite `h0` using `[hL0]`. Then use the resulting hypothesis. Establish `hW : ∀ t, ∀ w ∈ W, L t w ∈ W`.
+
+Introduce `t w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, rfl⟩` from `hx`. Rewrite using `[hLL]`.
+
+Conclude with `Submodule.subset_span ⟨u + t, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `W.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `W.add_mem hx hy`.
+
+Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `W.smul_mem a hx`. Establish `hL : ∀ s t, ∀ w ∈ W, L s (L t w) = L t (L s w)` using `fun s t w _ => by rw [hLL, hLL, add_comm]`. Establish `hB0 : B 0 = 0`. Use `hsmul 0 0 W.zero_mem` as an intermediate fact.
+
+Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Establish `key : ∀ x ∈ Submodule.span ℂ (Set.range fun t => L' t (B f₀)), ∃ w ∈ W, B w = x`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨t, rfl⟩` from `hx`. Use `⟨Complex.exp (-(d * t)) • L t f₀, W.smul_mem _ (Submodule.subset_span ⟨t, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[hsmul _ _ (Submodule.subset_span ⟨t, rfl⟩), hB t f₀ hf₀, smul_smul, ← Complex.exp_add, neg_add_cancel, Complex.exp_zero, one_smul]`. Consider the case `zero => exact ⟨0, W.zero_mem, hB0⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨v, hv, rfl⟩` from `hx`. Take `⟨w, hw, rfl⟩` from `hy`. Conclude with `⟨v + w, W.add_mem hv hw, hadd v hv w hw⟩`. Consider the case `smul a x _ hx`. Take `⟨v, hv, rfl⟩` from `hx`.
+
+Conclude with `⟨a • v, W.smul_mem a hv, hsmul a v hv⟩`. Take `⟨w₀, hw₀, hBw₀⟩` from `key F' hF'`. Conclude with `eig_lift W L hL hW L' B hadd hsmul c d hB w₀ hw₀ (hBw₀ ▸ hne) (hBw₀ ▸ heig)`.
+-/
 theorem E_lift {X Y : Type*} (L : ℝ → (X → ℂ) →ₗ[ℂ] (X → ℂ)) (L' : ℝ → (Y → ℂ) →ₗ[ℂ] (Y → ℂ))
     (hL0 : ∀ f, L 0 f = f) (hLL : ∀ s t f, L s (L t f) = L (t + s) f) (f₀ : X → ℂ)
     [FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun t => L t f₀))] (B : (X → ℂ) → (Y → ℂ))
@@ -68,20 +85,34 @@ def E_vol (E : Type) [Field E] [NumberField E] (N r : ℕ) : ℂ :=
   (((unipMeasure E N r).real (unipFundamentalDomain E N r) : ℝ) : ℂ)
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Use `JDict.vol_pos E N r` as an intermediate fact. Unfold `E_vol`. Conclude with `this.ne'` after adjusting the coercions.
+-/
 theorem E_vol_ne (N r : ℕ) : E_vol E N r ≠ 0 := by
   have := JDict.vol_pos E N r
   unfold E_vol
   exact_mod_cast this.ne'
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem E_ctn_eq {N : ℕ} (r : ℕ) (u : GA E N → ℂ) (g : GA E N) :
     An.ctn r u g = (E_vol E N r)⁻¹ * constantTerm r u g := rfl
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Rewrite using `[E_ctn_eq, ← mul_assoc, mul_inv_cancel₀ (E_vol_ne N r), one_mul]`.
+-/
 theorem E_ct_eq {N : ℕ} (r : ℕ) (u : GA E N → ℂ) (g : GA E N) :
     constantTerm r u g = E_vol E N r * An.ctn r u g := by
   rw [E_ctn_eq, ← mul_assoc, mul_inv_cancel₀ (E_vol_ne N r), one_mul]
 
+/- English proof (translation)
+Establish `: BorelSpace (BlockIx N r → Ad E)` using `⟨JDict.pi_eq_borel E N r⟩`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.ConstNotCusp.exists_compact_ratN E N r`. Establish `hfin : unipMeasure E N r (unipFundamentalDomain E N r) ≠ ⊤`. Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := E) (n := N) (r := r)`. Conclude with `((measure_mono hDC).trans_lt hC.measure_lt_top).ne`.
+
+Establish `h` using `GlobalTheory.CompanionTheory.CuspL2.continuous_constTerm (unipMeasure E N r) hfin hK hcov hc hl`. Use `continuous_const.mul ?_` and prove the remaining obligations. Use `h using 2 with g` and compare the differences between its conclusion and the goal. Simplify using `only [constantTerm, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]`.
+-/
 theorem E_cont_ctn {N : ℕ} (r : ℕ) {u : GA E N → ℂ} (hc : Continuous u)
     (hl : ∀ γ g, u (ratGL E N γ * g) = u g) : Continuous (An.ctn r u) := by
   have : BorelSpace (BlockIx N r → Ad E) := ⟨JDict.pi_eq_borel E N r⟩
@@ -94,6 +125,11 @@ theorem E_cont_ctn {N : ℕ} (r : ℕ) {u : GA E N → ℂ} (hc : Continuous u)
   convert h using 2 with g
   simp only [constantTerm, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]
 
+/- English proof (translation)
+Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, rfl⟩` from `hx`. Conclude with `hf.comp (continuous_const.mul continuous_id)`.
+
+Consider the case `zero => exact continuous_const`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul a x _ hx => exact continuous_const.smul hx`.
+-/
 theorem E_cont_span {N : ℕ} (r : ℕ) {f : GA E N → ℂ} (hf : Continuous f) :
     ∀ w ∈ Submodule.span ℂ (Set.range fun t : ℝ => fun g => f (aT E N r t * g)), Continuous w := by
   intro w hw
@@ -110,6 +146,11 @@ def E_B {N : ℕ} {Y ι : Type*} [Fintype ι] (P : (ι → Ad E) → GA E N) (Q 
   κ * ∑ t ∈ τs, a t * ∫ b, f (P b * Q t m) ∂(Measure.pi fun _ : ι => boxMeasure E)
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify using `only [E_B, Pi.add_apply]`. Rewrite using `[← mul_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Establish `hi : ∀ u : GA E N → ℂ, Continuous u → Integrable (fun b => u (P b * Q t m)) (Measure.pi fun _ : ι => boxMeasure E)` using `fun u hu => integrable_box (hu.comp (hP.mul continuous_const))`. Rewrite using `[← mul_add, ← integral_add (hi f hf) (hi g hg)]`.
+-/
 theorem E_B_add {N : ℕ} {Y ι : Type*} [Fintype ι] {P : (ι → Ad E) → GA E N} (hP : Continuous P) (Q : ℝ → Y → GA E N)
     (κ : ℂ) (τs : Finset ℝ) (a : ℝ → ℂ) {f g : GA E N → ℂ} (hf : Continuous f) (hg : Continuous g) :
     E_B P Q κ τs a (f + g) = E_B P Q κ τs a f + E_B P Q κ τs a g := by
@@ -124,6 +165,9 @@ theorem E_B_add {N : ℕ} {Y ι : Type*} [Fintype ι] {P : (ι → Ad E) → GA 
   rw [← mul_add, ← integral_add (hi f hf) (hi g hg)]
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify using `only [E_B, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem E_B_smul {N : ℕ} {Y ι : Type*} [Fintype ι] (P : (ι → Ad E) → GA E N) (Q : ℝ → Y → GA E N)
     (κ : ℂ) (τs : Finset ℝ) (a : ℝ → ℂ) (c : ℂ) (f : GA E N → ℂ) :
     E_B P Q κ τs a (c • f) = c • E_B P Q κ τs a f := by
@@ -134,6 +178,11 @@ theorem E_B_smul {N : ℕ} {Y ι : Type*} [Fintype ι] (P : (ι → Ad E) → GA
   ring
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Use `continuous_parGL.comp (continuous_pi fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : IsTop q x`. Simplify using `only [joinPos, dif_pos hx]`. Conclude with `continuous_const`. Simplify using `only [joinPos, dif_neg hx]`.
+
+Conclude with `continuous_apply _`.
+-/
 theorem E_cont_join {n : ℕ} {S : Finset ℕ} (q : ℕ) :
     Continuous fun b : {x : PPos n S // ¬ IsTop q x} → Ad E => (parGL (joinPos (r := q) 0 b) : GA E n) := by
   refine continuous_parGL.comp (continuous_pi fun x => ?_)
@@ -143,6 +192,9 @@ theorem E_cont_join {n : ℕ} {S : Finset ℕ} (q : ℕ) :
   · simp only [joinPos, dif_neg hx]
     exact continuous_apply _
 
+/- English proof (translation)
+Take `⟨s, hs, h1, h2⟩` from `x.2`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs`. Establish `hx' : ¬ ((x.1.1 : ℕ) < q ∧ q ≤ (x.1.2 : ℕ))` using `hx`. Apply the tactic sequence `rcases hs with rfl | rfl <;> omega`.
+-/
 theorem E_pos_top {N p q : ℕ} (hpq : p < q) (x : PPos N {p, q}) (hx : ¬ IsTop q x) :
     (x.1.1 : ℕ) < p ∧ p ≤ (x.1.2 : ℕ) ∧ (x.1.2 : ℕ) < q := by
   obtain ⟨s, hs, h1, h2⟩ := x.2
@@ -150,6 +202,9 @@ theorem E_pos_top {N p q : ℕ} (hpq : p < q) (x : PPos N {p, q}) (hx : ¬ IsTop
   have hx' : ¬ ((x.1.1 : ℕ) < q ∧ q ≤ (x.1.2 : ℕ)) := hx
   rcases hs with rfl | rfl <;> omega
 
+/- English proof (translation)
+Take `⟨s, hs, h1, h2⟩` from `x.2`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs`. Establish `hx' : ¬ ((x.1.1 : ℕ) < p ∧ p ≤ (x.1.2 : ℕ))` using `hx`. Apply the tactic sequence `rcases hs with rfl | rfl <;> omega`.
+-/
 theorem E_pos_bot {N p q : ℕ} (hpq : p < q) (x : PPos N {p, q}) (hx : ¬ IsTop p x) :
     p ≤ (x.1.1 : ℕ) ∧ (x.1.1 : ℕ) < q ∧ q ≤ (x.1.2 : ℕ) := by
   obtain ⟨s, hs, h1, h2⟩ := x.2
@@ -157,6 +212,13 @@ theorem E_pos_bot {N p q : ℕ} (hpq : p < q) (x : PPos N {p, q}) (hx : ¬ IsTop
   have hx' : ¬ ((x.1.1 : ℕ) < p ∧ p ≤ (x.1.2 : ℕ)) := hx
   rcases hs with rfl | rfl <;> omega
 
+/- English proof (translation)
+Establish `hd` using `(hD E N).2.2.2 φ hφ r h0 h1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F₀, hct, F, hF, hne, heig⟩`. Take `⟨κ, -, rfl⟩` from `hd.2 F₀ hct`. Use `⟨F, Submodule.span_le.2 ?_ hF, hne, heig⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨t, rfl⟩`. Establish `e : (fun g => κ * An.ctn r φ.1 (aT E N r t * g)) = κ • fun g => An.ctn r φ.1 (aT E N r t * g)` using `rfl`. Simplify using `only [e]`. Conclude with `Submodule.smul_mem _ κ (Submodule.subset_span ⟨t, rfl⟩)`. Introduce and unpack `⟨F, hF, hne, heig⟩`.
+
+Conclude with `⟨An.ctn r φ.1, hd.1, F, hF, hne, heig⟩`.
+-/
 theorem E_exp_iff (hD : Dict) {N r : ℕ} (φ : Sm E N) (hφ : IsAutForm φ) (h0 : 0 < r) (h1 : r < N) (c : ℂ) :
     c ∈ Exp r φ.1 ↔ ∃ F ∈ Submodule.span ℂ (Set.range fun t : ℝ => fun g => An.ctn r φ.1 (aT E N r t * g)),
       F ≠ 0 ∧ ∀ (t : ℝ) g, F (aT E N r t * g) = Complex.exp (c * t) * F g := by

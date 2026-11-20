@@ -20,15 +20,52 @@ open scoped CategoryTheory.Obj
 noncomputable section
 namespace GlobalTheory.EndLoc.HomFixProper
 
+/- English proof (translation)
+The claim follows from `h ▸ GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hL f)`.
+-/
 theorem lbIso_pull_eq {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {f g : Y ⟶ X} (h : f = g) :
     LBIso (L.pull f) (L.pull g) := h ▸ GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hL f)
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullPull L f) (chartPullPull L' f) h`.
+-/
 theorem lbIso_pull_pull {X Y : Scheme.{0}} {L L' : LB X} (h : LBIso L L') (f : Y ⟶ X) :
     LBIso (L.pull f) (L'.pull f) :=
   LBIso.chartPull (chartPullPull L f) (chartPullPull L' f) h
 
 macro "lbt" : tactic => `(tactic| (repeat (first | assumption | apply pull_isLB)))
 
+/- English proof (translation)
+Introduce `S _ A B _ _ _ _ L M R hA hB hL hM _ _ hqc hsep hlft`. Establish `hex : ValuativeCriterion.Existence R.π`. Use `GlobalTheory.T.valuativeExistence_of_dvr_lifts_locallyNoetherian R.π hlft hqc hsep fun V _ _ _ x y hxy => ?_` and prove the remaining obligations. Use `haveI := R.hom`. Set `AV` to `(Over.pullback y).obj A`.
+
+Set `ψA : AV.left ⟶ A.left` to `pullback.fst A.hom y`. Establish `hVA : IsGrpPullback AV A y ψA` using `isGrpPullback_pullback A y`. Establish `hAV : IsAbelianScheme AV` using `GlobalTheory.isAbelianScheme_pullback_obj y A hA`. Set `BV` to `(Over.pullback y).obj B`. Set `ψB : BV.left ⟶ B.left` to `pullback.fst B.hom y`.
+
+Establish `hVB : IsGrpPullback BV B y ψB` using `isGrpPullback_pullback B y`. Establish `hBV : IsAbelianScheme BV` using `GlobalTheory.isAbelianScheme_pullback_obj y B hB`. Set `AK` to `(Over.pullback x).obj R.AH`. Set `pA : AK.left ⟶ R.AH.left` to `pullback.fst R.AH.hom x`. Establish `hK1A : IsGrpPullback AK R.AH x pA` using `isGrpPullback_pullback R.AH x`.
+
+Establish `hKA : IsGrpPullback AK A (x ≫ R.π) (pA ≫ R.φA)` using `hK1A.comp R.pbA`. Establish `hKA' : IsGrpPullback AK A (Out.jK V ≫ y) (pA ≫ R.φA)` using `hKA.congr hxy rfl`. Set `BK` to `(Over.pullback x).obj R.BH`. Set `pB : BK.left ⟶ R.BH.left` to `pullback.fst R.BH.hom x`. Establish `hK1B : IsGrpPullback BK R.BH x pB` using `isGrpPullback_pullback R.BH x`.
+
+Establish `hKB : IsGrpPullback BK B (x ≫ R.π) (pB ≫ R.φB)` using `hK1B.comp R.pbB`. Establish `hKB' : IsGrpPullback BK B (Out.jK V ≫ y) (pB ≫ R.φB)` using `hKB.congr hxy rfl`. Set `κA : AK.left ⟶ AV.left` to `hVA.1.lift (pA ≫ R.φA) (AK.hom ≫ Out.jK V) ((Category.assoc _ _ _).symm.trans (hKA'.1.w.trans (Category.assoc _ _ _).symm))`. Establish `hκA1 : κA ≫ ψA = pA ≫ R.φA` using `hVA.1.lift_fst _ _ _`. Establish `hκA2 : κA ≫ AV.hom = AK.hom ≫ Out.jK V` using `hVA.1.lift_snd _ _ _`.
+
+Establish `hκA : IsGrpPullback AK AV (Out.jK V) κA` using `IsGrpPullback.cancel hVA (hKA'.congr rfl hκA1.symm) hκA2`. Set `κB : BK.left ⟶ BV.left` to `hVB.1.lift (pB ≫ R.φB) (BK.hom ≫ Out.jK V) ((Category.assoc _ _ _).symm.trans (hKB'.1.w.trans (Category.assoc _ _ _).symm))`. Establish `hκB1 : κB ≫ ψB = pB ≫ R.φB` using `hVB.1.lift_fst _ _ _`. Establish `hκB2 : κB ≫ BV.hom = BK.hom ≫ Out.jK V` using `hVB.1.lift_snd _ _ _`. Establish `hκB : IsGrpPullback BK BV (Out.jK V) κB` using `IsGrpPullback.cancel hVB (hKB'.congr rfl hκB1.symm) hκB2`.
+
+Set `ΦK : AK ⟶ BK` to `(Over.pullback x).map R.Φ`. Establish `hΦK : IsMonHom ΦK` using `inferInstance`. Establish `hΦK1 : ΦK.left ≫ pB = pA ≫ R.Φ.left` using `pullback.lift_fst _ _ _`. Take `⟨ΦV, hΦV, hΦV1, -⟩` from `GlobalTheory.abelianScheme_hom_extends_dedekind_of_isGrpPullback GlobalTheory.homExtension_semiAbelian_dvr V (FractionRing V) AV BV AK BK κA κB hAV hBV hκA hκB ΦK hΦK`. Establish `iso : LBIso (L.pull ψA) ((M.pull ψB).pull ΦV.left)`.
+
+Establish `hS` using `GlobalTheory.isSemiAbelian_of_isAbelianScheme AV hAV`. Use `GlobalTheory.Poinc.Eq8.StalkPow.lbIso_of_generic_fibre V AV hS _ _ (pull_isLB hL _) (pull_isLB (pull_isLB hM _) _) ?_` and prove the remaining obligations. Establish `P` using `hκA.1`. Establish `e : pullback.fst AV.hom (Out.jK V) = P.isoPullback.inv ≫ κA` using `by simp`. Rewrite using `[e]`.
+
+Use `set u := P.isoPullback.inv`. Establish `i0` using `lbIso_pull_pull R.iso (u ≫ pA)`. Establish `hm` using `pull_isLB hM R.φB`. Establish `eqM : ((u ≫ pA) ≫ R.Φ.left) ≫ R.φB = ((u ≫ κA) ≫ ΦV.left) ≫ ψB`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hΦK1]`. Simplify using `only [Category.assoc]`. Use `_ = u ≫ ΦK.left ≫ κB ≫ ψB := by rw [hκB1]; simp only [Category.assoc]`. Use `_ = ((u ≫ κA) ≫ ΦV.left) ≫ ψB := by`. Rewrite using `[← Category.assoc ΦK.left, hΦV1]`.
+
+Simplify using `only [Category.assoc]`. Use `LBIso.trans (B := L.pull ((u ≫ κA) ≫ ψA)) (by lbt) (by lbt) (by lbt) (GlobalTheory.OriginCohom.lbIso_pull_pull_comp hL _ _) ?_` and prove the remaining obligations. Use `LBIso.trans (B := L.pull ((u ≫ pA) ≫ R.φA)) (by lbt) (by lbt) (by lbt) (lbIso_pull_eq hL (by simp only [Category.assoc, hκA1])) ?_` and prove the remaining obligations. Use `LBIso.trans (B := (L.pull R.φA).pull (u ≫ pA)) (by lbt) (by lbt) (by lbt) (LBIso.symm (GlobalTheory.OriginCohom.lbIso_pull_pull_comp hL _ _)) ?_` and prove the remaining obligations. Use `LBIso.trans (B := ((M.pull R.φB).pull R.Φ.left).pull (u ≫ pA)) (by lbt) (by lbt) (by lbt) i0 ?_` and prove the remaining obligations.
+
+Use `LBIso.trans (B := (M.pull R.φB).pull ((u ≫ pA) ≫ R.Φ.left)) (by lbt) (by lbt) (by lbt) (GlobalTheory.OriginCohom.lbIso_pull_pull_comp hm _ _) ?_` and prove the remaining obligations. Use `LBIso.trans (B := M.pull (((u ≫ pA) ≫ R.Φ.left) ≫ R.φB)) (by lbt) (by lbt) (by lbt) (GlobalTheory.OriginCohom.lbIso_pull_pull_comp hM _ _) ?_` and prove the remaining obligations. Use `LBIso.trans (B := M.pull (((u ≫ κA) ≫ ΦV.left) ≫ ψB)) (by lbt) (by lbt) (by lbt) (lbIso_pull_eq hM eqM) ?_` and prove the remaining obligations. Use `LBIso.symm (LBIso.trans (B := (M.pull ψB).pull ((u ≫ κA) ≫ ΦV.left)) (by lbt) (by lbt) (by lbt) (GlobalTheory.OriginCohom.lbIso_pull_pull_comp (pull_isLB hM _) _ _) ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.OriginCohom.lbIso_pull_pull_comp hM _ _`.
+
+Take `⟨g, ⟨hg, χA, χB, hχA, hχB, hχA1, hχB1, hχΦ⟩, -⟩` from `R.rep (Sp V) y AV BV ψA ψB ΦV hVA hVB hΦV iso`. Establish `isoK : LBIso (L.pull (pA ≫ R.φA)) ((M.pull (pB ≫ R.φB)).pull ΦK.left)`. Establish `hm` using `pull_isLB hM R.φB`. Use `LBIso.trans (B := (L.pull R.φA).pull pA) (by lbt) (by lbt) (by lbt) (LBIso.symm (GlobalTheory.OriginCohom.lbIso_pull_pull_comp hL _ _)) ?_` and prove the remaining obligations. Use `LBIso.trans (B := ((M.pull R.φB).pull R.Φ.left).pull pA) (by lbt) (by lbt) (by lbt) (lbIso_pull_pull R.iso pA) ?_` and prove the remaining obligations.
+
+Use `LBIso.trans (B := (M.pull R.φB).pull (pA ≫ R.Φ.left)) (by lbt) (by lbt) (by lbt) (GlobalTheory.OriginCohom.lbIso_pull_pull_comp hm _ _) ?_` and prove the remaining obligations. Use `LBIso.trans (B := M.pull ((pA ≫ R.Φ.left) ≫ R.φB)) (by lbt) (by lbt) (by lbt) (GlobalTheory.OriginCohom.lbIso_pull_pull_comp hM _ _) ?_` and prove the remaining obligations. Use `LBIso.trans (B := M.pull (ΦK.left ≫ pB ≫ R.φB)) (by lbt) (by lbt) (by lbt) (lbIso_pull_eq hM (by rw [← Category.assoc, hΦK1])) ?_` and prove the remaining obligations. Conclude with `LBIso.symm (GlobalTheory.OriginCohom.lbIso_pull_pull_comp hM _ _)`. Take `⟨g0, -, huniq⟩` from `R.rep (Sp (FractionRing V)) (x ≫ R.π) AK BK (pA ≫ R.φA) (pB ≫ R.φB) ΦK hKA hKB hΦK isoK`.
+
+Establish `e1 : x = g0` using `huniq x ⟨rfl, pA, pB, hK1A, hK1B, rfl, rfl, hΦK1⟩`. Establish `e2 : Out.jK V ≫ g = g0` using `huniq _ ⟨by rw [Category.assoc, hg, hxy], κA ≫ χA, κB ≫ χB, hκA.comp hχA, hκB.comp hχB, by rw [Category.assoc, hχA1, hκA1], by rw [Category.assoc, hχB1, hκB1], by rw [← Category.assoc, hΦV1, Category.assoc, hχΦ, Category.assoc]⟩`. Conclude with `⟨g, e2.trans e1.symm, hg⟩`. Use `haveI : UniversallyClosed R.π := UniversallyClosed.of_valuativeCriterion R.π hex`. Conclude with `IsProper.mk`.
+-/
 theorem isProper_of_finiteType : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left) (R : HomFixRep A B L M), IsAbelianScheme A → IsAbelianScheme B → L.IsLB → M.IsLB → Out.Rigidified A L → Out.Rigidified B M → QuasiCompact R.π → IsSeparated R.π → LocallyOfFiniteType R.π → IsProper R.π := by
   intro S _ A B _ _ _ _ L M R hA hB hL hM _ _ hqc hsep hlft
   have hex : ValuativeCriterion.Existence R.π := by

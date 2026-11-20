@@ -7,6 +7,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan.Mark
 
+/- English proof (translation)
+Rewrite using `[← hv c hc]`. Unfold `InvFun.evalZ`. Use `congr 1`. Use function extensionality and compare the values at `a b`. Use `LinearMap.congr_fun₂ h a b` as an intermediate fact.
+
+Simplify `this` using `[LinearMap.sum_apply]`.
+-/
 theorem evalZ_eq_sum_of_toReal_eq_addcone {O : Type} [CommRing O] (ψ : InvFun O) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {m : ℕ} {v : Fin m → LinearMap.BilinForm ℤ X} (hv : ψ.LinearOn v)
     {β : LinearMap.BilinForm ℤ X} {c : Fin m → ℝ} (hc : ∀ i, 0 ≤ c i)
@@ -18,6 +23,11 @@ theorem evalZ_eq_sum_of_toReal_eq_addcone {O : Type} [CommRing O] (ψ : InvFun O
   have := LinearMap.congr_fun₂ h a b
   simpa [LinearMap.sum_apply] using this
 
+/- English proof (translation)
+Take `⟨a, ha, hβ⟩` from `hβ`. Take `⟨b, hb, hx⟩` from `hx`. Establish `hs : toReal (β + x) = ∑ i, (a i + b i) • toReal (v i)`. Establish `: toReal (β + x) = toReal β + toReal x` using `LinearMap.ext₂ fun s t => by simp`. Rewrite using `[this, hβ, hx, ← Finset.sum_add_distrib]`.
+
+Simplify using `only [add_smul]`. Rewrite using `[evalZ_eq_sum_of_toReal_eq_addcone ψ hv (fun i => add_nonneg (ha i) (hb i)) hs, evalZ_eq_sum_of_toReal_eq_addcone ψ hv ha hβ, evalZ_eq_sum_of_toReal_eq_addcone ψ hv hb hx, ← Finset.sum_add_distrib]`. Simplify using `only [add_mul]`.
+-/
 theorem evalZ_add_of_linearOn_inRCone (O : Type) [CommRing O] (ψ : InvFun O) (X : Type) [AddCommGroup X] [Module O X]
     [Module.Finite O X] (m : ℕ) (v : Fin m → LinearMap.BilinForm ℤ X) (hv : ψ.LinearOn v)
     (β x : LinearMap.BilinForm ℤ X) (hβ : InRCone v β) (hx : InRCone v x) :

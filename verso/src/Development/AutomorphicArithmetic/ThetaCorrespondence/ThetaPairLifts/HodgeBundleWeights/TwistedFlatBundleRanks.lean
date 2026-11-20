@@ -24,6 +24,27 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 end Gen
 end GlobalTheory.TwistRank
 namespace GlobalTheory.TwistRank
+/- English proof (translation)
+Introduce `hP D T hL j hp hq hE hj Y e o hY c₁ hF`. Establish `hU` using `hY.unf`. Establish `hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `by omega`. Establish `hK : Nonempty (GlobalTheory.ShFam.KeySec Y.d.Xo₂ Y.d.c₂)`. Take `⟨σ, hσ⟩ : ∃ σ, GoodEmb Y.d.c₂ σ` from `⟨Y.d.c₂.F.val.toRingHom, rfl⟩`.
+
+Take `⟨-, -, -, -, -, g, ee, F, -⟩` from `hY.unf σ hσ`. Conclude with `GlobalTheory.KeyCover.nonempty_keySec_of_family _ _ _ _ _ _ σ hσ ee F hpq hY.geo`. Establish `part1 : ∀ (la : AllWt.Weight (T.Q.Dw j)) (w : Psi T.Q.H → ℤ) Z, Y.rkC (la + GlobalTheory.FlatLine.parWt (T.Q.Dw j) w) Z = Y.rkC la Z`. Introduce `la w Z`. Take `⟨t⟩` from `exists_twSec_par hK hU hpq hF Z w`.
+
+Use `show ((AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) (la + GlobalTheory.FlatLine.parWt (T.Q.Dw j) w) 0) : ℕ) : ℝ) = ((AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) la 0) : ℕ) : ℝ)`. Rewrite using `[GlobalTheory.FlatLine.wtOf_add', rankOn_twist t _ (AllWt.even_wtOf _ _)]`. Use `⟨part1, ?_⟩` and prove the remaining obligations. Introduce `a n kc s _hdom hn hgood`. Establish `hR` using `GlobalTheory.T.supLattice_rank_eq_sum_component_ranks D T.Q.H (T.Q.Dw j) _ Y.d.Xo₂ Y.d.c₂ _ Y.U (xiR D) (fun _ => D.sp.W j) Y.dict (shiftG (T.Q.Dw j) a n s) hU hgood`.
+
+Use `haveI : Finite (Comp Y.d.Xo₂ Y.d.c₂) := GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum.finite_comp`. Use `letI := Fintype.ofFinite (Comp Y.d.Xo₂ Y.d.c₂)`. Use `show ((AllWt.rankW Y.U (shiftG (T.Q.Dw j) a n s) : ℕ) : ℝ) = _`. Rewrite using `[hR]`. Simplify using `only [finsum_eq_sum_of_fintype, Nat.cast_sum]`.
+
+Use `Finset.sum_congr rfl fun Z _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hn`. Establish `hn2 : n / 2 = m` using `by omega`. Use `set L := laOf (T.Q.Dw j) a n + s • hodgeWt (T.Q.Dw j) with hLdef`. Establish `h1 : AllWt.rankOn Y.U Z (shiftG (T.Q.Dw j) a n s) = AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) L (m : ℤ))`.
+
+Use `rankOn_congr hU Z ?_` and prove the remaining obligations. Rewrite using `[hLdef, ← add_zero (m : ℤ), AllWt.wtOf_add, shiftG, GlobalTheory.FlatTw.exZ_add_eq, GlobalTheory.FlatTw.exZ_add_eq]`. Use `congr 1`. Use `AllWt.exOf_weightOf (Dw := T.Q.Dw j) (fun x => (a x : ℤ)) ((n / 2 : ℕ) : ℤ)` as an intermediate fact. Rewrite `this` using `[AllWt.exOf]`.
+
+Rewrite `*` using `[laOf, hn2]`. Rewrite using `[this, wtZ]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `h2 : AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) L (m : ℤ)) = AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) L 0)`.
+
+Establish `he : wtOf (T.Q.Dw j) L (m : ℤ) = wtOf (T.Q.Dw j) L 0 + wtOf (T.Q.Dw j) 0 (m : ℤ)`. Rewrite using `[← AllWt.wtOf_add, add_zero, zero_add]`. Take `⟨t1⟩` from `_root_.GlobalTheory.T.exists_twisted_section_with_deep_root hP D T hL j hp hq hE hj Y e o hY c₁ hF Z`. Take `⟨t, -⟩` from `GlobalTheory.FlatTw.TwSec.exists_pow t1 m`. Rewrite using `[he]`.
+
+Conclude with `rankOn_twist (t.copy (wtOf_zero_nat (Dw := T.Q.Dw j) m).symm) _ (AllWt.even_wtOf _ _)`. Establish `h3 : L = (uWt (T.Q.Dw j) a n kc + s • hodgeWt (T.Q.Dw j)) + GlobalTheory.FlatLine.parWt (T.Q.Dw j) (anchor (T.Q.Dw j) a n kc)`. Rewrite using `[hLdef, ← uWt_add_anchor (T.Q.Dw j) a n kc]`. Normalize the expressions using the abelian group laws. Establish `h4` using `part1 (uWt (T.Q.Dw j) a n kc + s • hodgeWt (T.Q.Dw j)) (anchor (T.Q.Dw j) a n kc) Z`.
+
+Rewrite `h4` using `[← h3]`. Rewrite using `[h1, h2]`. Conclude with `h4`.
+-/
 theorem flat_twist_rank_eq : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → (∀ (la : AllWt.Weight (T.Q.Dw j)) (w : Psi T.Q.H → ℤ) Z, Y.rkC (la + GlobalTheory.FlatLine.parWt (T.Q.Dw j) w) Z = Y.rkC la Z) ∧ ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n kc : ℕ) (s : ℤ), Dom a n → Even n → Y.GoodAt (shiftG (T.Q.Dw j) a n s) → (Y.rk (shiftG (T.Q.Dw j) a n s) : ℝ) = ∑ᶠ Z, Y.rkC (uWt (T.Q.Dw j) a n kc + s • hodgeWt (T.Q.Dw j)) Z := by
   intro hP D T hL j hp hq hE hj Y e o hY c₁ hF
   have hU := hY.unf
@@ -91,6 +112,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.TwistRank.flat_twist_rank_eq | exact _root_.GlobalTheory.TwistRank.flat_twist_rank_eq | (intros; apply _root_.GlobalTheory.TwistRank.flat_twist_rank_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twisted_flat_bundle_ranks : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → (∀ (la : AllWt.Weight (T.Q.Dw j)) (w : Psi T.Q.H → ℤ) Z, Y.rkC (la + GlobalTheory.FlatLine.parWt (T.Q.Dw j) w) Z = Y.rkC la Z) ∧ ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n kc : ℕ) (s : ℤ), Dom a n → Even n → Y.GoodAt (shiftG (T.Q.Dw j) a n s) → (Y.rk (shiftG (T.Q.Dw j) a n s) : ℝ) = ∑ᶠ Z, Y.rkC (uWt (T.Q.Dw j) a n kc + s • hodgeWt (T.Q.Dw j)) Z := by
   first | exact @_root_.GlobalTheory.TwistRank.flat_twist_rank_eq | exact _root_.GlobalTheory.TwistRank.flat_twist_rank_eq | (intros; apply _root_.GlobalTheory.TwistRank.flat_twist_rank_eq <;> assumption)
 end

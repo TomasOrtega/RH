@@ -13,6 +13,39 @@ set_option autoImplicit false
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv G hG`. Take `⟨d, x, hcou, hres, hspan, hl⟩` from `GlobalTheory.T.exists_compatible_pDivGroup_level_coordinates p C v O hv G`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Establish `hpm : (p : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 (Fact.out : ¬IsUnit (p : O))`.
+
+Establish `hmem : ∀ n i, ¬IsUnit (x n i)`. Introduce `n i hu`. Establish `h1` using `hu.map (Bialgebra.counitAlgHom O (G.A n))`. Rewrite `h1` using `[Bialgebra.counitAlgHom_apply, hcou n i]`. Conclude with `not_isUnit_zero h1`.
+
+Establish `hnil : ∀ n i, ∃ N : ℕ, (p : G.A n) ∣ x n i ^ N` using `fun n i => by haveI := hG n`. Conclude with `GlobalTheory.T.maximalIdeal_pow_natCast_dvd_finite_integers_algebra p hp0 C v O hv (G.A n) (x n i) ((IsLocalRing.mem_maximalIdeal _).2 (hmem n i))`. Establish `hex : ∀ n, ∃ E : MvPowerSeries (Fin d) O →ₐ[O] G.A n, IsEval p (x n) E` using `fun n => by haveI := GlobalTheory.T.isAdicComplete_span_natCast_finite_projective_algebra p O (G.A n)`. Conclude with `((GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O (G.A n) (Fin d) (x n) (hnil n)).1).exists`. Use `choose ev hev using hex`.
+
+Establish `hpoly : ∀ n (P : MvPolynomial (Fin d) O), ev n (P : MvPowerSeries (Fin d) O) = MvPolynomial.aeval (x n) P`. Introduce `n P`. Establish `h : (ev n).comp (MvPolynomial.coeToMvPowerSeries.algHom O) = MvPolynomial.aeval (x n)` using `MvPolynomial.algHom_ext fun i => by`. Simplify using `[MvPolynomial.coeToMvPowerSeries.algHom_apply, (hev n).1 i]`. Conclude with `DFunLike.congr_fun h P`.
+
+Use `⟨d, x, ev, hnil, hev, hres, hcou, fun n => ?_, fun m N => ?_⟩` and prove the remaining obligations. Use `haveI := hG n`. Introduce `a`. Take `⟨P, hP⟩` from `GlobalTheory.T.aeval_surjective_of_cotangent_span_top O (G.A n) (p : O) hpm (Bialgebra.counitAlgHom O (G.A n)) d (x n) (fun i => by rw [Bialgebra.counitAlgHom_apply]; exact hcou n i) (fun i => by simpa [map_natCast] using hnil n i) (hspan n) a`. Conclude with `⟨P, (hpoly n P).trans hP⟩`.
+
+Take `⟨K, hK0, hK⟩` from `GlobalTheory.T.coeff_annihilated_of_aeval_mem_ker_pow d N`. Take `⟨e, u, hu, hKu⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hK0.ne' p (Fact.out : p.Prime).ne_one`. Use `⟨m + e, fun f hf α hα => ?_⟩` and prove the remaining obligations. Take `⟨P, hPdeg, hPco, hPmem⟩` from `GlobalTheory.T.exists_truncation_congr_of_padicContinuousEval_eq_zero p O (G.A (m + e)) d (x (m + e)) (ev (m + e)) (hev _) (m + e) N f hf`. Take `⟨l, hlx⟩` from `hl (m + e)`.
+
+Set `I : Ideal O` to `Ideal.span {(p : O) ^ (m + e)}`. Set `l' : Fin d → (G.A (m + e) →ₗ[O] O ⧸ I)` to `fun i => l i ∘ₗ AugCot.d (Bialgebra.counitAlgHom O (G.A (m + e)))`. Take `⟨D, hD⟩` from `GlobalTheory.T.exists_invariant_derivations_quotient_bialgebra O (G.A (m + e)) I d l' (fun i a b => by`. Simplify using `only [l', LinearMap.comp_apply, AugCot.d_mul, map_add, map_smul, Bialgebra.counitAlgHom_apply])`. Set `φ : G.A (m + e) →ₐ[O] (O ⧸ I) ⊗[O] G.A (m + e)` to `Algebra.TensorProduct.includeRight`.
+
+Establish `hy0 : ∀ j, Bialgebra.counitAlgHom (O ⧸ I) ((O ⧸ I) ⊗[O] G.A (m + e)) (φ (x (m + e) j)) = 0`. Introduce `j`. Simplify using `[φ, Algebra.TensorProduct.includeRight_apply, TensorProduct.counit_tmul, hcou]`. Establish `hDy : ∀ i j, Bialgebra.counitAlgHom (O ⧸ I) ((O ⧸ I) ⊗[O] G.A (m + e)) (D i (φ (x (m + e) j))) = if i = j then 1 else 0` using `fun i j => (hD i _).trans (hlx i j)`. Establish `hdeg : ∀ β : Fin d →₀ ℕ, N ≤ β.degree → MvPolynomial.coeff β (MvPolynomial.map (algebraMap O (O ⧸ I)) P) = 0` using `fun β hβ => by`.
+
+Rewrite using `[MvPolynomial.coeff_map, hPdeg β hβ, map_zero]`. Establish `hmemB : MvPolynomial.aeval (fun j => φ (x (m + e) j)) (MvPolynomial.map (algebraMap O (O ⧸ I)) P) ∈ RingHom.ker (Bialgebra.counitAlgHom (O ⧸ I) ((O ⧸ I) ⊗[O] G.A (m + e))) ^ N`. Rewrite using `[MvPolynomial.aeval_map_algebraMap, ← MvPolynomial.comp_aeval, AlgHom.comp_apply]`. Use `(Ideal.map_le_iff_le_comap.1 ?_) hPmem` and prove the remaining obligations. Rewrite using `[Ideal.map_sup, Ideal.map_pow, Ideal.map_span, Ideal.map_span]`.
+
+Use `sup_le (Ideal.pow_right_mono ?_ N) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Conclude with `hy0 j`. Rewrite using `[Ideal.span_le, Set.image_singleton, Set.singleton_subset_iff]`.
+
+Establish `h0 : φ ((p : G.A (m + e)) ^ (m + e)) = 0`. Rewrite using `[map_pow, map_natCast]`. Establish `h1 : ((p : (O ⧸ I) ⊗[O] G.A (m + e))) ^ (m + e) = algebraMap (O ⧸ I) _ (Ideal.Quotient.mk I ((p : O) ^ (m + e)))`. Rewrite using `[map_pow, map_pow, map_natCast, map_natCast]`. Rewrite using `[h1, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _), map_zero]`.
+
+Rewrite using `[SetLike.mem_coe, h0]`. Conclude with `zero_mem _`. Establish `key` using `hK (O ⧸ I) ((O ⧸ I) ⊗[O] G.A (m + e)) _ _ D hy0 hDy _ hdeg hmemB α`. Rewrite `key` using `[MvPolynomial.coeff_map, ← map_natCast (algebraMap O (O ⧸ I)), ← map_mul, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Rewrite using `[← hPco α hα]`.
+
+Establish `hpO : (p : O) ≠ 0`. Introduce `h`. Establish `h2` using `congrArg (algebraMap O C) h`. Rewrite `h2` using `[map_natCast, map_zero]`. Conclude with `hp0 (by exact_mod_cast h2)`.
+
+Establish `hunit : IsUnit (u : O)`. Assume the negation of the conclusion as `hnu`. Establish `hcop : IsCoprime (u : ℤ) (p : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd (Fact.out : p.Prime)).2 hu)))`. Take `⟨a, b, hab⟩` from `hcop.map (Int.castRingHom O)`. Establish `h3 : a * Int.castRingHom O u + b * Int.castRingHom O p ∈ IsLocalRing.maximalIdeal O`.
+
+Use `add_mem (Ideal.mul_mem_left _ _ ?_) (Ideal.mul_mem_left _ _ ?_)` and prove the remaining obligations. Simplify using `using (IsLocalRing.mem_maximalIdeal _).2 hnu`. Simplify using `using hpm`. Rewrite `h3` using `[hab]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h3)`.
+
+Rewrite `key` using `[hKu, Nat.cast_mul, Nat.cast_pow, pow_add, mul_assoc, mul_comm ((p : O) ^ m)]`. Establish `key2` using `(mul_dvd_mul_iff_left (pow_ne_zero e hpO)).1 key`. Conclude with `(hunit.dvd_mul_left).1 key2`.
+-/
 theorem GlobalTheory.PDivGroup.exists_coords_of_isConn : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ G : PDivGroup p O, IsConn G → ∃ (d : ℕ) (x : ∀ n, Fin d → G.A n) (ev : ∀ n, MvPowerSeries (Fin d) O →ₐ[O] G.A n), (∀ n i, ∃ N : ℕ, (p : G.A n) ∣ x n i ^ N) ∧ (∀ n, IsEval p (x n) (ev n)) ∧ (∀ n i, G.res n (x (n + 1) i) = x n i) ∧ (∀ n i, Coalgebra.counit (R := O) (x n i) = 0) ∧ (∀ n, Function.Surjective (ev n)) ∧ ∀ m N : ℕ, ∃ n, ∀ f, ev n f = 0 → ∀ α : Fin d →₀ ℕ, α.degree < N → (p : O) ^ m ∣ coeff α f := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv G hG
   obtain ⟨d, x, hcou, hres, hspan, hl⟩ := GlobalTheory.T.exists_compatible_pDivGroup_level_coordinates p C v O hv G

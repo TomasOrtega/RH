@@ -18,11 +18,19 @@ def normalize : ℂˣ →* ℂˣ where
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Rewrite using `[InfinitePlace.Completion.algebraMap_apply]`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe w _`.
+-/
 theorem extensionEmbedding_algebraMap (w : InfinitePlace L) (k : L) :
     InfinitePlace.Completion.extensionEmbedding w (algebraMap L w.Completion k) = w.embedding k := by
   rw [InfinitePlace.Completion.algebraMap_apply]
   exact InfinitePlace.Completion.extensionEmbedding_coe w _
 
+/- English proof (translation)
+Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Use `⟨InfinitePlace.Completion.extensionEmbedding _, (InfinitePlace.Completion.isometry_extensionEmbedding _).continuous, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[extensionEmbedding_algebraMap, h]`. Use `⟨(starRingEnd ℂ).comp (InfinitePlace.Completion.extensionEmbedding _), Complex.continuous_conj.comp (InfinitePlace.Completion.isometry_extensionEmbedding _).continuous, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, extensionEmbedding_algebraMap, h, ComplexEmbedding.conjugate_coe_eq]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_ext (φ : L →+* ℂ) : ∃ ι : (InfinitePlace.mk φ).Completion →+* ℂ,
     Continuous ι ∧ ∀ k : L, ι (algebraMap L _ k) = φ k := by
   rcases InfinitePlace.embedding_mk_eq φ with h | h

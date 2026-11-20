@@ -5,6 +5,11 @@ open scoped Topology
 
 namespace GlobalTheory.MatDeriv
 
+/- English proof (translation)
+Establish `heq : (fun w' => H w' a b) =ᶠ[𝓝 w] (fun w' => Complex.conjCLE (H w' b a))` using `by filter_upwards [hH] with w' hw'`. Simplify using `[← hw'.apply a b]`. Rewrite using `[heq.fderiv_eq]`. Establish `h2` using `(Complex.conjCLE.toContinuousLinearMap.hasFDerivAt (x := H w b a)).comp w hd.hasFDerivAt`. Rewrite using `[show (fun w' => Complex.conjCLE (H w' b a)) = (Complex.conjCLE.toContinuousLinearMap ∘ fun w' => H w' b a) from rfl, h2.fderiv]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fderiv_entry_conj {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ}
     (H : E → Matrix (Fin m) (Fin m) ℂ) (w : E)
     (hH : ∀ᶠ w' in 𝓝 w, (H w').IsHermitian) (a b : Fin m)
@@ -18,6 +23,11 @@ theorem fderiv_entry_conj {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] 
   rw [show (fun w' => Complex.conjCLE (H w' b a)) = (Complex.conjCLE.toContinuousLinearMap ∘ fun w' => H w' b a) from rfl, h2.fderiv]
   simp
 
+/- English proof (translation)
+Introduce `E _ _ m H w hH hd ξ`. Use extensionality with `a b`. Establish `h1` using `fderiv_entry_conj H w hH b a (hd a b) ξ`. Establish `h2` using `fderiv_entry_conj H w hH b a (hd a b) (Complex.I • ξ)`. Simplify using `only [wirt, dMat, Matrix.add_apply, Matrix.conjTranspose_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.of_apply, smul_eq_mul, star_mul', star_sub]`.
+
+Rewrite using `[h1, h2]`. Simplify using `only [Complex.star_def, map_mul, map_sub, Complex.conj_conj, Complex.conj_I, map_div₀, map_one, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dMat_eq_wirt_add_conjTranspose_wirt : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ} (H : E → Matrix (Fin m) (Fin m) ℂ) (w : E), (∀ᶠ w' in 𝓝 w, (H w').IsHermitian) → (∀ a b, DifferentiableAt ℝ (fun w' => H w' a b) w) → ∀ ξ : E, dMat H w ξ = wirt H w ξ + (wirt H w ξ)ᴴ := by
   intro E _ _ m H w hH hd ξ
   ext a b

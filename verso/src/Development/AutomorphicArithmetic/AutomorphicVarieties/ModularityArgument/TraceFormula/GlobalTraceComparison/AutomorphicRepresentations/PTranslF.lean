@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain Matrix
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT GlobalTheory.LFun
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.G8
 
+/- English proof (translation)
+Establish `hc` using `Subgroup.mem_center_iff.mp h t`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem conj_of_central {G : Type} [Group G] (a b : G) (h : a⁻¹ * b ∈ Subgroup.center G) (t : G) :
     b * t * b⁻¹ = a * t * a⁻¹ := by
   have hc := Subgroup.mem_center_iff.mp h t
@@ -17,6 +20,13 @@ private theorem conj_of_central {G : Type} [Group G] (a b : G) (h : a⁻¹ * b �
     _ = a * (t * (a⁻¹ * b)) * (a⁻¹ * b)⁻¹ * a⁻¹ := by rw [hc]
     _ = a * t * a⁻¹ := by group
 
+/- English proof (translation)
+Introduce `E _ _ _ n u hu`. Establish `hz : (ratF E n u)⁻¹ * PhiU n (Af E) ∈ Subgroup.center (GL (Fin n) (Af E))`. Establish `h` using `GeneralLinearGroup.map_center_le (algebraMap E (Af E)) (translad_central E n u hu)`. Rewrite `h` using `[Subgroup.mem_comap, map_mul, map_inv, translad_map_PhiU]`. Conclude with `h`.
+
+Establish `hc` using `conj_of_central (ratF E n u) (PhiU n (Af E)) hz`. Use `⟨fun g => ?_, ?_, PhiU n (Af E), ?_, fun g => (hc g).symm⟩` and prove the remaining obligations. Rewrite using `[← hc, Tw.thetaF_eq]`. Conclude with `thetaGL_eq n (Af E) _ g`. Rewrite using `[← GlobalTheory.EulerTw.Comm.thF_ratF, hu.1, hu.2, one_mul, map_inv]`.
+
+Use `Subgroup.mem_iInf.mpr fun w => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, translad_map_PhiU]`. Conclude with `GlobalTheory.ThetaSatake.phiU_mem _ n`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.translF_pf :
     TranslF := by
   intro E _ _ _ n u hu

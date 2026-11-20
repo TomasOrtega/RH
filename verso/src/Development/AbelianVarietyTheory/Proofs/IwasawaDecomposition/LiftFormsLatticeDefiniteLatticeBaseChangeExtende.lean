@@ -31,15 +31,24 @@ open Formalism.IndefR.Cx
 
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Conclude with `RingHom.map_mulVec φ θ x k`.
+-/
 theorem map_mulVec_fun (φ : K →+* K') {m n : ℕ} (θ : Matrix (Fin m) (Fin n) K) (x : Fin n → K) :
     (fun k => φ ((θ *ᵥ x) k)) = θ.map φ *ᵥ fun k => φ (x k) := by
   funext k; exact RingHom.map_mulVec φ θ x k
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `[cpt]`. Simplify using `[cpt, Pi.single_apply, h]`.
+-/
 theorem cpt_single (σ : K' →+* ℂ) {n : ℕ} (k : Fin n) : cpt σ (Pi.single k (1 : K')) = Pi.single k 1 := by
   funext i; by_cases h : i = k
   · subst h; simp [cpt]
   · simp [cpt, Pi.single_apply, h]
 
+/- English proof (translation)
+Establish `h : ∃ b : K', σ b = σ a` using `⟨a, rfl⟩`. Unfold `kOf`. Rewrite using `[dif_pos h]`. Conclude with `σ.injective h.choose_spec`.
+-/
 theorem kOf_apply (σ : K' →+* ℂ) (a : K') : kOf σ (σ a) = a := by
   classical
   have h : ∃ b : K', σ b = σ a := ⟨a, rfl⟩
@@ -47,6 +56,31 @@ theorem kOf_apply (σ : K' →+* ℂ) (a : K') : kOf σ (σ a) = a := by
   rw [dif_pos h]
   exact σ.injective h.choose_spec
 
+/- English proof (translation)
+Use `set eN := LinearEquiv.ofBijective (Matrix.mulVecLin N) hN with heN`. Establish `hNe : ∀ v, eN v = N *ᵥ v` using `fun v => rfl`. Establish `hb : ∀ x : Fin dZ → K, t0' (cpt σ' (N *ᵥ fun k => φ (x k))) = w0' (cpt σ' (G *ᵥ (θ.map φ *ᵥ fun k => φ (x k))))`. Introduce `x`. Rewrite using `[← map_mulVec_fun φ θ x]`.
+
+Conclude with `eq_of_heq ((hNc x).trans ((heq_of_eq (hR x)).symm.trans (hG (θ *ᵥ x)).symm))`. Establish `hL : ((t0'.comp (cptL σ' dZ')).comp N.mulVecLin : (Fin dZ → K') →ₛₗ[σ'] W') = (w0'.comp (cptL σ' dW')).comp (G.mulVecLin.comp (θ.map φ).mulVecLin)`. Use `(Pi.basisFun K' (Fin dZ)).ext fun i => ?_` and prove the remaining obligations. Establish `hs : (Pi.basisFun K' (Fin dZ)) i = fun k => φ ((Pi.single i (1 : K) : Fin dZ → K) k)`. Rewrite using `[Pi.basisFun_apply]`.
+
+Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+
+Rewrite using `[hs]`. Simplify `hb (Pi.single i 1)` using `[cptL, Matrix.mulVecLin_apply]`. Establish `hθ : ∀ u : Fin dZ' → K', kMat σ' (relMat w0' t0') *ᵥ u = G *ᵥ (θ.map φ *ᵥ eN.symm u)`. Establish `hk : ∀ k : Fin dZ', ∀ i, kMat σ' (relMat w0' t0') i k = (G *ᵥ (θ.map φ *ᵥ eN.symm (Pi.single k 1))) i`. Introduce `k i`.
+
+Use `set v := G *ᵥ (θ.map φ *ᵥ eN.symm (Pi.single k 1)) with hv`. Establish `hw : w0' (cpt σ' v) = t0' (Pi.single k 1)`. Establish `h1` using `congrArg (fun f => f (eN.symm (Pi.single k 1))) hL`. Simplify using `only [LinearMap.comp_apply, cptL, LinearMap.coe_mk, AddHom.coe_mk, Matrix.mulVecLin_apply] at h1`. Establish `h2 : N *ᵥ eN.symm (Pi.single k 1) = Pi.single k 1`.
+
+Rewrite using `[← hNe]`. Conclude with `eN.apply_symm_apply (Pi.single k 1)`. Rewrite `h1` using `[h2, cpt_single]`. Conclude with `h1.symm`. Establish `hex : ∃ y, w0' y = t0' (Pi.single k 1)` using `⟨_, hw⟩`.
+
+Establish `hsol : solve w0' (t0' (Pi.single k 1)) = cpt σ' v`. Apply `hI` to reduce the goal to its premises. Unfold `solve`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec.trans hw.symm`.
+
+Use `show kOf σ' (solve w0' (t0' (Pi.single k 1)) i) = v i`. Rewrite using `[hsol]`. Conclude with `kOf_apply σ' (v i)`. Establish `hlin : (kMat σ' (relMat w0' t0')).mulVecLin = G.mulVecLin.comp ((θ.map φ).mulVecLin.comp eN.symm.toLinearMap)`. Use `(Pi.basisFun K' (Fin dZ')).ext fun k => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.basisFun_apply]`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVecLin_apply, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← hk k i, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+
+Introduce `u`. Conclude with `congrArg (fun f => f u) hlin`. Unfold `Formalism.DivisionValues.matLat`. Rewrite using `[Submodule.map_span, Submodule.map_coe, Set.image_image, Set.image_image]`. Use `congr 1`.
+
+Use `Set.image_congr fun x _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply]`. Rewrite using `[hθ, map_mulVec_fun φ θ x]`. Use `congr 2`. Rewrite using `[← hNe]`.
+
+Conclude with `eN.symm_apply_apply (fun k => φ (x k))`.
+-/
 theorem matLat_relMat_of_heq (φ : K →+* K') (σ : K →+* ℂ) (σ' : K' →+* ℂ)
     {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] {dW dW' dZ dZ' : ℕ}
     (w0 : (Fin dW → ℂ) →ₗ[ℂ] W) (t0 : (Fin dZ → ℂ) →ₗ[ℂ] W) (w0' : (Fin dW' → ℂ) →ₗ[ℂ] W')
@@ -123,6 +157,11 @@ end Key
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `StepW.trans (StepW.and (StepW.and (GlobalTheory.T.extendedData_liftFormsLattice_baseLevel_baseChange_alt h1 h2 h3 h4 h5 h6 h7) (GlobalTheory.T.definiteLiftLattice_baseChange_extendedData h1 h2 h3 h4 h5 h6 h7)) (StepW.and (GlobalTheory.T.baseLevelLiftMatrix_solves_relation_extende …` and prove the remaining obligations. Introduce `K B' f' T' w' _ _ H B f T w hE hf hPin hpx Z hX Wt z hG hGA hFi hHL Z' hX' hG' hGA' hV z' hFi' hExt j j' hj φ hφ`. Take `⟨G, hGb, hM, hGc⟩` from `H.1.1 B f T w hE hf hPin hpx Z hX Wt z hG hGA hFi hHL Z' hX' hG' hGA' hV z' hFi' hExt j j' hj φ hφ`. Take `⟨N, hNb, hTl, hNc⟩` from `H.1.2 B f T w hE hf hPin hpx Z hX Wt z hG hGA hFi hHL Z' hX' hG' hGA' hV z' hFi' hExt j j' hj φ hφ`.
+
+Establish `hR` using `H.2.1 B f T w hE hf hPin hpx Z hX Wt z hG hGA hFi hHL Z' hX' hG' hGA' hV z' hFi' hExt j j' hj φ hφ`. Establish `hI` using `H.2.2 B f T w hE hf hPin hpx Z hX Wt z hG hGA hFi hHL Z' hX' hG' hGA' hV z' hFi' hExt j j' hj φ hφ`. Use `⟨G, hGb, hM, ?_⟩` and prove the remaining obligations. Rewrite using `[hTl]`. Conclude with `matLat_relMat_of_heq φ _ _ _ _ _ _ _ G N hNb hGc hNc hR hI _`.
+-/
 theorem liftFormsLattice_definiteLattice_baseChange_extended_alt : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

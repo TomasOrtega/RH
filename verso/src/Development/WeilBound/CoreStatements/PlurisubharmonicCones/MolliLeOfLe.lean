@@ -11,6 +11,13 @@ noncomputable section
 
 namespace LevelTowerAlt.Comparison₂
 
+/- English proof (translation)
+Take `⟨-, hi⟩` from `ReciprocityTheory.AnForm.A.phiC hU hφ (isCompact_closedBall z t) hz`. Rewrite using `[ReciprocityTheory.AnForm.A.molli_eq_C ρ ht (subset_refl _)]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_mono (ReciprocityTheory.AnForm.A.integrable_kC ρ ht hi z) ((ReciprocityTheory.AnForm.A.integrable_scaled ρ ht).mul_const _) fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : ρ.scaled t y = 0`.
+
+Simplify using `[hy]`. Use `mul_le_mul_of_nonneg_left ?_ (ReciprocityTheory.AnForm.A.scaled_nonneg ρ ht y)` and prove the remaining obligations. Establish `hmem` using `ReciprocityTheory.AnForm.A.mem_ball_sub ρ ht hy z`. Rewrite using `[indicator_of_mem hmem]`. Conclude with `hc _ hmem`.
+
+Use `_ = c := by rw [integral_mul_const, ReciprocityTheory.AnForm.A.integral_scaled ρ ht, one_mul]`.
+-/
 theorem molli_le_of_le {D : ℕ} (ρ : Mollifier D) {U : Set (Fin D → ℂ)} {φ : (Fin D → ℂ) → ℝ}
     (hU : IsOpen U) (hφ : ReciprocityTheory.AnForm.A.IsPsh U φ) {t c : ℝ} (ht : 0 < t) {z : Fin D → ℂ}
     (hz : closedBall z t ⊆ U) (hc : ∀ y ∈ closedBall z t, φ y ≤ c) : molli ρ t φ z ≤ c := by
@@ -29,6 +36,13 @@ theorem molli_le_of_le {D : ℕ} (ρ : Mollifier D) {U : Set (Fin D → ℂ)} {�
 
 variable {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X}
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `R.cover x`. Establish `hs` using `R.toPotentialCharts.mid_subset_source k (R.inner_subset_mid k hk)`. Establish `hne` using `ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.nebot_diff (S := R.S k) (R.chart k).open_target ((R.chart k).map_source hs)`. Establish `ht : Tendsto (R.chart k).symm (𝓝[(R.chart k).target \ coordDiv (R.S k)] (R.chart k x)) (𝓝[R.Yo] x)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `((R.chart k).continuousAt_symm ((R.chart k).map_source hs)).tendsto` as an intermediate fact. Rewrite `this` using `[(R.chart k).left_inv hs]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with y hy`. Rewrite using `[R.mem_Yo k _ ((R.chart k).map_target hy.1), (R.chart k).right_inv hy.1]`.
+
+Conclude with `hy.2`. Conclude with `ht.neBot`.
+-/
 theorem neBot_Yo (R : RegChartData A) (x : X) : (𝓝[R.Yo] x).NeBot := by
   obtain ⟨k, hk⟩ := R.cover x
   have hs := R.toPotentialCharts.mid_subset_source k (R.inner_subset_mid k hk)
@@ -43,6 +57,27 @@ theorem neBot_Yo (R : RegChartData A) (x : X) : (𝓝[R.Yo] x).NeBot := by
       exact hy.2
   exact ht.neBot
 
+/- English proof (translation)
+Take `⟨δ, B, hδ, hT⟩` from `TruncPsh.proof X D A R`. Take `⟨U, hU, -, hUb, hUp⟩` from `hT j`. Use `set L := R.chart j '' (K' ∩ closure (R.mid j)) with hL`. Establish `hsub : K' ∩ closure (R.mid j) ⊆ (R.chart j).source` using `fun x hx => R.closure_mid j hx.2`. Establish `hLc : IsCompact L` using `(hK'.inter_right isClosed_closure).image_of_continuousOn ((R.chart j).continuousOn.mono hsub)`.
+
+Use `set O := (R.chart j).target ∩ (R.chart j).symm ⁻¹' V with hO`. Establish `hOo : IsOpen O` using `(R.chart j).isOpen_inter_preimage_symm hV`. Establish `hLO : L ⊆ O`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨(R.chart j).map_source (hsub hx), ?_⟩` and prove the remaining obligations.
+
+Use `show (R.chart j).symm _ ∈ V`. Rewrite using `[(R.chart j).left_inv (hsub hx)]`. Conclude with `hK'V hx.1`. Set `F : (Fin D → ℂ) → ℝ` to `fun y => R.q j y + g ((R.chart j).symm y)`. Establish `hF : ContinuousOn F O` using `((R.q_smooth j).continuousOn.mono inter_subset_left).add (hg.comp ((R.chart j).continuousOn_symm.mono inter_subset_left) fun y hy => hy.2)`.
+
+Take `⟨η, hη, hηO⟩` from `hLc.exists_cthickening_subset_open hOo hLO`. Take `⟨d, hd, hdF⟩` from `Metric.uniformContinuousOn_iff.1 ((hLc.cthickening (r := η)).uniformContinuousOn_of_continuous (hF.mono hηO)) ε hε`. Take `⟨M, hM⟩` from `hLc.exists_bound_of_continuousOn (hF.mono hLO)`. Establish `hsm : ∀ {a : ℝ}, 0 < a → ∀ᶠ t in 𝓝[>] (0 : ℝ), t < a` using `fun ha => eventually_nhdsWithin_of_eventually_nhds (eventually_lt_nhds ha)`. Use `filter_upwards [self_mem_nhdsWithin, hsm hδ, hsm (half_pos hη), hsm (half_pos hd), hK.eventually_ge_atTop M] with t ht t1 t2 t3 t4 x hx hxm`.
+
+Establish `ht0 : (0 : ℝ) < t` using `ht`. Establish `hxL : R.chart j x ∈ L` using `⟨x, ⟨hx, subset_closure hxm⟩, rfl⟩`. Establish `hxs` using `hsub ⟨hx, subset_closure hxm⟩`. Establish `hFx : F (R.chart j x) = R.q j (R.chart j x) + g x` using `by simp only [F, (R.chart j).left_inv hxs]`. Establish `h1 : molli ρ t (R.trunc (Kt t) j) (R.chart j x) ≤ F (R.chart j x) + ε`.
+
+Use `molli_le_of_le ρ hU (hUp _).1 ht0 ((closedBall_subset_closedBall t1.le).trans (hUb x hxm)) fun y hy => ?_` and prove the remaining obligations. Establish `hyx : dist y (R.chart j x) ≤ t` using `hy`. Establish `hyO : y ∈ O` using `hηO (mem_cthickening_of_dist_le y _ _ _ hxL (by linarith))`. Use `TruncTransfer.limsupExt_max_le (R.chart j).open_target (R.S j) (R.u j) _ _ t hyO.1 ht0 fun y' hy' hy't hy'S => ?_` and prove the remaining obligations. Establish `h2 : dist y' (R.chart j x) < 2 * t`.
+
+Use `dist_triangle y' y (R.chart j x)` as an intermediate fact. Establish `h3 : dist y' y < t` using `hy'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy'c : y' ∈ cthickening η L` using `mem_cthickening_of_dist_le y' _ _ _ hxL (by linarith)`. Establish `h4` using `hdF y' hy'c _ (self_subset_cthickening L hxL) (by linarith)`.
+
+Establish `h5 : R.u j y' = F y'` using `by show R.q j y' + R.ph _ = R.q j y' + g _`. Rewrite using `[hph _ ⟨(hηO hy'c).2, by`. Rewrite using `[R.mem_Yo j _ ((R.chart j).map_target hy't), (R.chart j).right_inv hy't]`. Conclude with `hy'S⟩]`. Rewrite `h4` using `[Real.dist_eq]`.
+
+Establish `h6` using `hM _ hxL`. Rewrite `h6` using `[Real.norm_eq_abs]`. Use `max_le ?_ ?_` and prove the remaining obligations. Rewrite using `[h5]`. Combine the linear relations using `[(abs_lt.1 h4).2]`.
+
+Combine the linear relations using `[(abs_le.1 h6).1]`. Use `show molli ρ t (R.trunc (Kt t) j) (R.chart j x) - R.q j (R.chart j x) ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem phReg_le [CompactSpace X] [T2Space X] (R : RegChartData A) (ρ : Mollifier D) (Kt : ℝ → ℝ)
     (hK : Tendsto Kt (𝓝[>] 0) atTop) {V K' : Set X} {g : X → ℝ} (hV : IsOpen V) (hg : ContinuousOn g V)
     (hph : ∀ x ∈ V ∩ R.Yo, g x = R.ph x) (hK'V : K' ⊆ V) (hK' : IsCompact K') (j : Fin R.N) {ε : ℝ} (hε : 0 < ε) :
@@ -101,6 +136,23 @@ theorem phReg_le [CompactSpace X] [T2Space X] (R : RegChartData A) (ρ : Mollifi
   show molli ρ t (R.trunc (Kt t) j) (R.chart j x) - R.q j (R.chart j x) ≤ _
   linarith
 
+/- English proof (translation)
+Introduce `K _ J _ P n M Xo B S V g hS hV hg hph`. Take `⟨C₀, t₀, ht₀, hb⟩` from `ChartMollifiedBounds.proof TruncPsh.proof M.Xc n M.atlas S.R S.ρ`. Establish `h3 : ∀ t x, S.regWeight t x = S.R.glue (fun j x => S.R.phReg S.ρ (S.K t) t j x + 4 * S.e1 t * S.η j x) (S.e1 t) x` using `fun _ _ => rfl`. Establish `hup : ∀ t, 0 < t → ∀ x c, (∀ j, x ∈ S.R.mid j → S.R.phReg S.ρ (S.K t) t j x ≤ c) → S.regWeight t x ≤ c + S.e1 t`. Introduce `t ht0 x c h`.
+
+Establish `hε0 : 0 ≤ S.e1 t` using `ht0.le.trans (S.e1_ge t ht0)`. Rewrite using `[h3]`. Use `LogLogRegularisation.glue_le S.R.toPotentialCharts _ hε0 fun j hj => ?_` and prove the remaining obligations. Establish `h2` using `mul_nonpos_of_nonneg_of_nonpos (by positivity : (0 : ℝ) ≤ 4 * S.e1 t) (S.cutoff.bounds j x hj).2`. Use `h j hj` as an intermediate fact.
+
+Use `show S.R.phReg S.ρ (S.K t) t j x + 4 * S.e1 t * S.η j x ≤ c`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ∀ᶠ t in 𝓝[>] (0 : ℝ), (∀ x, S.regWeight t x ≤ C₀ + 1) ∧ ∀ x ∈ V, g x ≤ S.regWeight t x` using `by filter_upwards [S.eventually_chartLevi hS, self_mem_nhdsWithin, eventually_nhdsWithin_of_eventually_nhds (eventually_lt_nhds ht₀), hS.K_tendsto.eventually_ge_atTop 0, hS.e1_tendsto_zero.eventually (eventually_le_nhds one_pos)] with t hsm ht htt hK he`. Establish `ht0 : (0 : ℝ) < t` using `ht`. Establish `hε0 : 0 ≤ S.e1 t` using `ht0.le.trans (S.e1_ge t ht0)`.
+
+Use `⟨fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `hup t ht0 x C₀ fun j hj => ((hb t ht0 htt).2 (S.K t) hK j x hj).2.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow : ∀ x ∈ S.R.Yo, S.R.ph x ≤ S.regWeight t x`. Introduce `x hx`.
+
+Take `⟨k, hk⟩` from `S.R.cover x`. Establish `hkm` using `S.R.inner_subset_mid k hk`. Establish `a1` using `((hb t ht0 htt).2 (S.K t) hK k x hkm).2.2 hx`. Establish `a2` using `LogLogRegularisation.le_glue S.R.toPotentialCharts (fun j x => S.R.phReg S.ρ (S.K t) t j x + 4 * S.e1 t * S.η j x) hε0 hkm`. Simplify using `only [S.cutoff.eq_zero k x hk, mul_zero, add_zero] at a2`.
+
+Rewrite using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `neBot_Yo S.R x` as an intermediate fact. Establish `c1 : Tendsto g (𝓝[S.R.Yo] x) (𝓝 (g x))` using `(hg.continuousAt (hV.mem_nhds hx)).tendsto.mono_left nhdsWithin_le_nhds`. Establish `c2 : Tendsto (S.regWeight t) (𝓝[S.R.Yo] x) (𝓝 (S.regWeight t x))` using `((GlobalTheory.CompanionTheory.Ar.Cmp.OneModel.continuous_of_smooth M.atlas hsm.1).tendsto x).mono_left nhdsWithin_le_nhds`.
+
+Use `le_of_tendsto_of_tendsto c1 c2 ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (hV.mem_nhds hx)] with y hy hyV`. Rewrite using `[hph y ⟨hyV, hy⟩]`. Conclude with `hlow y hy`. Use `⟨⟨C₀ + 1, h1⟩, fun K' hK'V hK' => Metric.tendstoUniformlyOn_iff.2 fun ε hε => ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [h1, self_mem_nhdsWithin, hS.e1_tendsto_zero.eventually (eventually_lt_nhds (half_pos hε)), eventually_all.2 fun j => phReg_le S.R S.ρ S.K hS.K_tendsto hV hg hph hK'V hK' j (half_pos hε)] with t a1 ht a2 a3 x hx`. Establish `a4` using `hup t ht x (g x + ε / 2) fun j hj => a3 j x hx hj`. Establish `a5` using `a1.2 x (hK'V hx)`. Rewrite using `[Real.dist_eq, abs_lt]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem regUnif : RegUnif := by
   intro K _ J _ P n M Xo B S V g hS hV hg hph
   obtain ⟨C₀, t₀, ht₀, hb⟩ := ChartMollifiedBounds.proof TruncPsh.proof M.Xc n M.atlas S.R S.ρ

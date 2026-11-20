@@ -15,6 +15,11 @@ namespace PositivityTheory.Rg.Bc.ArchbcB.B.M4
 
 namespace SymmetricIndexCases
 
+/- English proof (translation)
+Establish `hc : ∀ j k : Fin n, j.val = k.val → x j = x k` using `fun j k h => congrArg x (Fin.ext h)`. Establish `hi` using `i.isLt`. Unfold `wexp lOf`. Use `split_ifs with h h'`. Apply the tactic sequence `congr 1 <;> apply hc <;> simp [Fin.val_rev] <;> omega`.
+
+Rewrite using `[neg_sub]`. Apply the tactic sequence `congr 1 <;> apply hc <;> simp [Fin.val_rev] <;> omega`. Rewrite using `[hc i.rev i (by simp [Fin.val_rev]; omega), sub_self]`.
+-/
 theorem wexp_lOf {n : ℕ} (x : Fin n → ℤ) (i : Fin n) : wexp n (lOf x) i = x i - x i.rev := by
   have hc : ∀ j k : Fin n, j.val = k.val → x j = x k := fun j k h => congrArg x (Fin.ext h)
   have hi := i.isLt
@@ -25,10 +30,16 @@ theorem wexp_lOf {n : ℕ} (x : Fin n → ℤ) (i : Fin n) : wexp n (lOf x) i = 
     congr 1 <;> apply hc <;> simp [Fin.val_rev] <;> omega
   · rw [hc i.rev i (by simp [Fin.val_rev]; omega), sub_self]
 
+/- English proof (translation)
+Rewrite using `[wexp_lOf, wexp_lOf, Fin.rev_rev]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wexp_rev {n : ℕ} (x : Fin n → ℤ) (i : Fin n) : wexp n (lOf x) i.rev = -wexp n (lOf x) i := by
   rw [wexp_lOf, wexp_lOf, Fin.rev_rev]
   ring
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[wexp_lOf, wexp_lOf]`. Establish `h1` using `hx hij`. Establish `h2 : x i.rev < x j.rev` using `hx (Fin.rev_lt_rev.mpr hij)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wexp_strictAnti {n : ℕ} (x : Fin n → ℤ) (hx : StrictAnti x) : StrictAnti (wexp n (lOf x)) := by
   intro i j hij
   rw [wexp_lOf, wexp_lOf]
@@ -36,6 +47,9 @@ theorem wexp_strictAnti {n : ℕ} (x : Fin n → ℤ) (hx : StrictAnti x) : Stri
   have h2 : x i.rev < x j.rev := hx (Fin.rev_lt_rev.mpr hij)
   linarith
 
+/- English proof (translation)
+Establish `key` using `Finset.orderEmbOfFin_unique h (f := fun j => (S.orderEmbOfFin h j.rev).rev) (fun j => hS _ (Finset.orderEmbOfFin_mem S h _)) (fun j k hjk => Fin.rev_lt_rev.mpr ((S.orderEmbOfFin h).strictMono (Fin.rev_lt_rev.mpr hjk)))`. Use `congrFun key j.rev` as an intermediate fact. Simplify using `only [Fin.rev_rev] at this`. Conclude with `this.symm`.
+-/
 theorem emb_rev {n m : ℕ} (S : Finset (Fin n)) (hS : ∀ i, i ∈ S → i.rev ∈ S) (h : S.card = m) (j : Fin m) :
     S.orderEmbOfFin h j.rev = (S.orderEmbOfFin h j).rev := by
   have key := Finset.orderEmbOfFin_unique h (f := fun j => (S.orderEmbOfFin h j.rev).rev)
@@ -45,16 +59,29 @@ theorem emb_rev {n m : ℕ} (S : Finset (Fin n)) (hS : ∀ i, i ∈ S → i.rev 
   simp only [Fin.rev_rev] at this
   exact this.symm
 
+/- English proof (translation)
+Simplify using `only [nv, restr]`. Rewrite using `[wexp_lOf, emb_rev S hS h j]`.
+-/
 theorem nv_restr {n m : ℕ} (x : Fin n → ℤ) (S : Finset (Fin n)) (hS : ∀ i, i ∈ S → i.rev ∈ S) (h : S.card = m)
     (j : Fin m) : nv (restr x S h) j = wexp n (lOf x) (S.orderEmbOfFin h j) := by
   simp only [nv, restr]
   rw [wexp_lOf, emb_rev S hS h j]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_coe_sort S f]`. Conclude with `Fintype.prod_equiv (S.orderIsoOfFin h).toEquiv _ _ (fun j => by simp [Finset.coe_orderIsoOfFin_apply])`.
+-/
 theorem prod_emb {n m : ℕ} {M : Type*} [CommMonoid M] (S : Finset (Fin n)) (h : S.card = m) (f : Fin n → M) :
     ∏ j : Fin m, f (S.orderEmbOfFin h j) = ∏ i ∈ S, f i := by
   rw [← Finset.prod_coe_sort S f]
   exact Fintype.prod_equiv (S.orderIsoOfFin h).toEquiv _ _ (fun j => by simp [Finset.coe_orderIsoOfFin_apply])
 
+/- English proof (translation)
+Establish `hlt` using `i.isLt`. Simplify using `only [symIdx, Finset.mem_filter, Finset.mem_univ, true_and, Fin.val_rev] at hi ⊢`. Break down `hi with ⟨h, hs⟩ | ⟨h, hs⟩ | ⟨hm, ho, he⟩` into its components or cases. Use `right`. Use `left`.
+
+Use `⟨by omega, ?_⟩` and prove the remaining obligations. Use `hs using 2` and compare the differences between its conclusion and the goal. Use linear arithmetic over natural numbers and integers. Use `left`. Use `⟨by omega, ?_⟩` and prove the remaining obligations.
+
+Use `hs using 2` and compare the differences between its conclusion and the goal. Use linear arithmetic over natural numbers and integers. Use `right`. Use `right`. Conclude with `⟨hm, ho, by omega⟩`.
+-/
 theorem symIdx_rev (n : ℕ) (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 2))) (i : Fin n)
     (hi : i ∈ symIdx n mid s) : i.rev ∈ symIdx n mid s := by
   have hlt := i.isLt
@@ -71,6 +98,9 @@ theorem symIdx_rev (n : ℕ) (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 
   · right; right
     exact ⟨hm, ho, by omega⟩
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [symIdx, Finset.mem_filter, Finset.mem_univ, true_and, hm]`.
+-/
 theorem symIdx_congr (n : ℕ) (mid mid' : Prop) [Decidable mid] [Decidable mid'] (hm : mid ↔ mid')
     (s : Finset (Fin (n / 2))) : symIdx n mid s = symIdx n mid' s := by
   ext i
@@ -87,10 +117,41 @@ def emb2 (n : ℕ) : Fin (n / 2) ↪ Fin n :=
     simp only at h1
     omega)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem block_embedding_first_val (n : ℕ) (k : Fin (n / 2)) : (emb1 n k).val = k.val := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem block_embedding_second_val (n : ℕ) (k : Fin (n / 2)) : (emb2 n k).val = n - 1 - k.val := rfl
 
+/- English proof (translation)
+Set `ι₁` to `emb1 n`. Set `ι₂` to `emb2 n`. Establish `hsplit : symIdx n mid s = (s.map ι₁ ∪ s.map ι₂) ∪ Finset.univ.filter (fun i : Fin n => mid ∧ n % 2 = 1 ∧ i.val = n / 2)`. Use extensionality with `i`. Establish `hlt` using `i.isLt`.
+
+Simplify using `only [symIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨h, hs⟩ | ⟨h, hs⟩ | hm)`. Conclude with `Or.inl (Or.inl ⟨_, hs, Fin.ext rfl⟩)`. Use `Or.inl (Or.inr ⟨_, hs, Fin.ext ?_⟩)` and prove the remaining obligations.
+
+Simplify using `only [ι₂, block_embedding_second_val]`. Use linear arithmetic over natural numbers and integers. Conclude with `Or.inr hm`. Introduce and unpack `((⟨k, hs, rfl⟩ | ⟨k, hs, rfl⟩) | hm)`. Conclude with `Or.inl ⟨k.isLt, hs⟩`.
+
+Establish `hk` using `k.isLt`. Use `Or.inr (Or.inl ⟨?_, ?_⟩)` and prove the remaining obligations. Simplify using `only [ι₂, block_embedding_second_val]`. Use linear arithmetic over natural numbers and integers. Use `hs using 1` and compare the differences between its conclusion and the goal.
+
+Use `ext`. Simplify using `only [ι₂, block_embedding_second_val]`. Use linear arithmetic over natural numbers and integers. Conclude with `Or.inr (Or.inr hm)`. Establish `hd1 : Disjoint (s.map ι₁) (s.map ι₂)`.
+
+Rewrite using `[Finset.disjoint_left]`. Introduce `i h1 h2`. Simplify using `only [Finset.mem_map] at h1 h2`. Take `⟨k, -, rfl⟩` from `h1`. Take `⟨k', -, hk'⟩` from `h2`.
+
+Use `k.isLt` as an intermediate fact. Use `k'.isLt` as an intermediate fact. Establish `h3` using `congrArg Fin.val hk'`. Simplify using `only [ι₁, ι₂, block_embedding_first_val, block_embedding_second_val] at h3`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hd2 : Disjoint (s.map ι₁ ∪ s.map ι₂) (Finset.univ.filter (fun i : Fin n => mid ∧ n % 2 = 1 ∧ i.val = n / 2))`. Rewrite using `[Finset.disjoint_left]`. Introduce `i h1 h2`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at h2`. Simplify using `only [Finset.mem_union, Finset.mem_map] at h1`.
+
+Break down `h1 with ⟨k, -, rfl⟩ | ⟨k, -, rfl⟩` into its components or cases. Use `k.isLt` as an intermediate fact. Simplify using `only [ι₁, block_embedding_first_val] at h2`. Use linear arithmetic over natural numbers and integers. Use `k.isLt` as an intermediate fact.
+
+Simplify using `only [ι₂, block_embedding_second_val] at h2`. Use linear arithmetic over natural numbers and integers. Establish `hM : (Finset.univ.filter (fun i : Fin n => mid ∧ n % 2 = 1 ∧ i.val = n / 2)).card = if mid ∧ n % 2 = 1 then 1 else 0` using `by split_ifs with hc`. Rewrite using `[Finset.card_eq_one]`. Use `⟨⟨n / 2, by omega⟩, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff]`. Conclude with `⟨fun h => h.2.2, fun h => ⟨hc.1, hc.2, h⟩⟩`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `i _ h`.
+
+Conclude with `hc ⟨h.1, h.2.1⟩`. Rewrite using `[hsplit, Finset.card_union_of_disjoint hd2, Finset.card_union_of_disjoint hd1, Finset.card_map, Finset.card_map, hM]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_symIdx (n : ℕ) (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 2))) :
     (symIdx n mid s).card = 2 * s.card + (if mid ∧ n % 2 = 1 then 1 else 0) := by
   let ι₁ := emb1 n
@@ -157,6 +218,15 @@ theorem card_symIdx (n : ℕ) (mid : Prop) [Decidable mid] (s : Finset (Fin (n /
     Finset.card_map, hM]
   ring
 
+/- English proof (translation)
+Use extensionality with `i`. Establish `hlt` using `i.isLt`. Simplify using `only [symIdx, Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_compl, iff_true]`. Distinguish the cases in `h1 : i.val < n / 2`. Distinguish the cases in `hs : (⟨i.val, h1⟩ : Fin (n / 2)) ∈ s`.
+
+Conclude with `Or.inl (Or.inl ⟨h1, hs⟩)`. Conclude with `Or.inr (Or.inl ⟨h1, hs⟩)`. Distinguish the cases in `h2 : n - 1 - i.val < n / 2`. Distinguish the cases in `hs : (⟨n - 1 - i.val, h2⟩ : Fin (n / 2)) ∈ s`. Conclude with `Or.inl (Or.inr (Or.inl ⟨h2, hs⟩))`.
+
+Conclude with `Or.inr (Or.inr (Or.inl ⟨h2, hs⟩))`. Establish `ho : n % 2 = 1` using `by omega`. Establish `hm : i.val = n / 2` using `by omega`. Distinguish the cases in `hp1 : a % 2 = 1`. Conclude with `Or.inl (Or.inr (Or.inr ⟨hp1, ho, hm⟩))`.
+
+Conclude with `Or.inr (Or.inr (Or.inr ⟨by omega, ho, hm⟩))`.
+-/
 theorem symIdx_union (n a : ℕ) (ha : a ≤ n) (s : Finset (Fin (n / 2))) (hp : a % 2 + (n - a) % 2 = n % 2) :
     symIdx n (a % 2 = 1) s ∪ symIdx n ((n - a) % 2 = 1) sᶜ = Finset.univ := by
   ext i
@@ -179,10 +249,24 @@ theorem symIdx_union (n a : ℕ) (ha : a ≤ n) (s : Finset (Fin (n / 2))) (hp :
 def half {n : ℕ} (T : Finset (Fin n)) : Finset (Fin (n / 2)) :=
   Finset.univ.filter fun k => (⟨k.val, by omega⟩ : Fin n) ∈ T
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[half]`.
+-/
 theorem half_compl {n : ℕ} (T : Finset (Fin n)) : half Tᶜ = (half T)ᶜ := by
   ext k
   simp [half]
 
+/- English proof (translation)
+Use extensionality with `i`. Establish `hlt` using `i.isLt`. Simplify using `only [symIdx, half, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `hi`.
+
+Distinguish the cases in `h1 : i.val < n / 2`. Conclude with `Or.inl ⟨h1, by simpa using hi⟩`. Distinguish the cases in `h2 : n - 1 - i.val < n / 2`. Use `Or.inr (Or.inl ⟨h2, ?_⟩)` and prove the remaining obligations. Use `hT i hi using 1` and compare the differences between its conclusion and the goal.
+
+Use `ext`. Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Conclude with `Or.inr (Or.inr ⟨⟨i, hi, by omega, by omega⟩, by omega, by omega⟩)`. Introduce and unpack `(⟨h, hs⟩ | ⟨h, hs⟩ | ⟨⟨j, hj, hj1, -⟩, -, he⟩)`.
+
+Simplify using `using hs`. Use `hT _ hs` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[Fin.val_rev]`.
+
+Use linear arithmetic over natural numbers and integers. Use `hj using 1` and compare the differences between its conclusion and the goal. Use `ext`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_symIdx_half {n : ℕ} (T : Finset (Fin n)) (hT : ∀ i, i ∈ T → i.rev ∈ T) :
     T = symIdx n (∃ j ∈ T, j.val = n / 2 ∧ n % 2 = 1) (half T) := by
   ext i
@@ -212,12 +296,22 @@ theorem eq_symIdx_half {n : ℕ} (T : Finset (Fin n)) (hT : ∀ i, i ∈ T → i
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun j => u (S.orderEmbOfFin h j), by rw [hQ, prod_emb S h (fun i => X - C (u i))], fun j => by rw [nv_restr x S hS h j]; exact hu _ (Finset.orderEmbOfFin_mem S h j)⟩`.
+-/
 theorem hasVals_of_prod {w : Pl E} {n m : ℕ} (x : Fin n → ℤ) (S : Finset (Fin n)) (hS : ∀ i, i ∈ S → i.rev ∈ S)
     (h : S.card = m) (u : Fin n → w.adicCompletion E) (hu : ∀ i ∈ S, u i ≠ 0 ∧ ordL (u i) = wexp n (lOf x) i)
     (Q : (w.adicCompletion E)[X]) (hQ : Q = ∏ i ∈ S, (X - C (u i))) : HasVals Q (nv (restr x S h)) :=
   ⟨fun j => u (S.orderEmbOfFin h j), by rw [hQ, prod_emb S h (fun i => X - C (u i))],
     fun j => by rw [nv_restr x S hS h j]; exact hu _ (Finset.orderEmbOfFin_mem S h j)⟩
 
+/- English proof (translation)
+Take `⟨v, hQ, hv⟩` from `hv`. Use `⟨fun i => if hi : i ∈ S then v ((S.orderIsoOfFin h).symm ⟨i, hi⟩) else 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, ← prod_emb S h]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hm` using `Finset.orderEmbOfFin_mem S h j`.
+
+Establish `hk : (S.orderIsoOfFin h).symm ⟨S.orderEmbOfFin h j, hm⟩ = j` using `(S.orderIsoOfFin h).symm_apply_eq.mpr (Subtype.ext (Finset.coe_orderIsoOfFin_apply S h j).symm)`. Simplify using `only [dif_pos hm, hk]`. Introduce `i hi`. Simplify using `only [dif_pos hi]`. Establish `hk : S.orderEmbOfFin h ((S.orderIsoOfFin h).symm ⟨i, hi⟩) = i`.
+
+Rewrite using `[← Finset.coe_orderIsoOfFin_apply, OrderIso.apply_symm_apply]`. Use `⟨(hv _).1, ?_⟩` and prove the remaining obligations. Rewrite using `[(hv _).2, nv_restr x S hS h, hk]`.
+-/
 theorem prod_of_hasVals {w : Pl E} {n m : ℕ} (x : Fin n → ℤ) (S : Finset (Fin n)) (hS : ∀ i, i ∈ S → i.rev ∈ S)
     (h : S.card = m) (Q : (w.adicCompletion E)[X]) (hv : HasVals Q (nv (restr x S h))) :
     ∃ u : Fin n → w.adicCompletion E, Q = ∏ i ∈ S, (X - C (u i)) ∧
@@ -237,6 +331,13 @@ theorem prod_of_hasVals {w : Pl E} {n m : ℕ} (x : Fin n → ℤ) (S : Finset (
     refine ⟨(hv _).1, ?_⟩
     rw [(hv _).2, nv_restr x S hS h, hk]
 
+/- English proof (translation)
+Establish `hc' : C (cj w (Q.coeff 0)) * Q = (Q.map (cj w)).reverse` using `hc.resolve_left hw`. Establish `hQ0 : Q ≠ 0` using `hm.ne_zero`. Rewrite `hr`, the goal using `[mem_roots hQ0]`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `h0 (by rw [coeff_zero_eq_eval_zero]; exact hr)`. Establish `hcr : cj w r ≠ 0` using `(_root_.map_ne_zero _).mpr hr0`. Set `_ : Invertible (cj w r)` to `invertibleOfNonzero hcr`. Establish `h1 : eval₂ (RingHom.id _) (⅟(cj w r)) (Q.map (cj w)).reverse = 0`. Rewrite using `[eval₂_reverse_eq_zero_iff, eval₂_map, RingHom.id_comp, eval₂_at_apply, hr.eq_zero, map_zero]`.
+
+Establish `h2 : eval (cj w r)⁻¹ (C (cj w (Q.coeff 0)) * Q) = 0`. Rewrite using `[hc', ← invOf_eq_inv]`. Conclude with `h1`. Rewrite `h2` using `[eval_mul, eval_C]`. Conclude with `(mul_eq_zero.mp h2).resolve_left ((_root_.map_ne_zero _).mpr h0)`.
+-/
 theorem csr_root {w : Pl E} (hw : ¬ IsSplitAt w) {Q : (w.adicCompletion E)[X]} (hm : Q.Monic) (hc : IsCsr w Q)
     (h0 : Q.coeff 0 ≠ 0) {r : w.adicCompletion E} (hr : r ∈ Q.roots) : (cj w r)⁻¹ ∈ Q.roots := by
   have hc' : C (cj w (Q.coeff 0)) * Q = (Q.map (cj w)).reverse := hc.resolve_left hw
@@ -261,6 +362,19 @@ open SymmetricIndexCases
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨_, _, hpar, h₁, h₂, hv₁, hv₂⟩` from `hA`. Take `⟨u₁, hQ₁, hu₁⟩` from `prod_of_hasVals x _ (symIdx_rev n _ s) h₁ Q₁ hv₁`. Take `⟨u₂, hQ₂, hu₂⟩` from `prod_of_hasVals x _ (symIdx_rev n _ sᶜ) h₂ Q₂ hv₂`. Establish `hU` using `symIdx_union n a ha s hpar`. Use `set S₁ := symIdx n (a % 2 = 1) s with hS₁`.
+
+Use `set S₂ := symIdx n ((n - a) % 2 = 1) sᶜ with hS₂`. Establish `hD : Disjoint S₁ S₂`. Establish `hc` using `Finset.card_union_add_card_inter S₁ S₂`. Rewrite `hc` using `[hU, h₁, h₂, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[Finset.disjoint_iff_inter_eq_empty, ← Finset.card_eq_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨fun i => if i ∈ S₁ then u₁ i else u₂ i, ?_, ?_⟩` and prove the remaining obligations. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQ₁, hQ₂]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i hi => by simp only [if_pos hi]`. Conclude with `Finset.prod_congr rfl fun i hi => by simp only [if_neg (Finset.disjoint_right.mp hD hi)]`. Introduce `i`. Distinguish the cases in `hi : i ∈ S₁`.
+
+Simplify using `only [if_pos hi]`. Conclude with `hu₁ i hi`. Establish `hi2 : i ∈ S₂`. Use `Finset.mem_univ i` as an intermediate fact. Rewrite `this` using `[← hU, Finset.mem_union]`.
+
+Conclude with `this.resolve_left hi`. Simplify using `only [if_neg hi]`. Conclude with `hu₂ i hi2`.
+-/
 theorem combine_caseA_pf (w : Pl E) (hw : ¬ IsSplitAt w) (n a : ℕ) (ha : a ≤ n) (x : Fin n → ℤ) (hx : StrictAnti x)
     (Q₁ Q₂ : (w.adicCompletion E)[X]) (s : Finset (Fin (n / 2))) (hA : CaseA w n a x Q₁ Q₂ s) :
     HasVals (Q₁ * Q₂) (wexp n (lOf x)) := by
@@ -297,6 +411,59 @@ theorem combine_caseA_pf (w : Pl E) (hw : ¬ IsSplitAt w) (n a : ℕ) (ha : a �
       simp only [if_neg hi]
       exact hu₂ i hi2
 
+/- English proof (translation)
+Take `⟨u, hP, hu⟩` from `hv`. Establish `hanti` using `wexp_strictAnti x hx`. Establish `hinj : Function.Injective u` using `fun i j h => hanti.injective (by rw [← (hu i).2, ← (hu j).2, h])`. Establish `hne : Q₁ * Q₂ ≠ 0` using `(hm₁.mul hm₂).ne_zero`. Establish `hroots : (Q₁ * Q₂).roots = Finset.univ.val.map u`.
+
+Establish `e : (Finset.univ.val.map fun i => X - C (u i)) = (Finset.univ.val.map u).map (fun r => X - C r)`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[hP, Finset.prod_eq_multiset_prod, e, roots_multiset_prod_X_sub_C]`. Establish `hr : Q₁.roots + Q₂.roots = Finset.univ.val.map u` using `by rw [← roots_mul hne, hroots]`.
+
+Establish `hnd : (Q₁.roots + Q₂.roots).Nodup`. Rewrite using `[hr]`. Conclude with `Multiset.Nodup.map hinj Finset.univ.nodup`. Establish `hcard : Multiset.card Q₁.roots + Multiset.card Q₂.roots = n`. Rewrite using `[← Multiset.card_add, hr, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin]`.
+
+Establish `hc1 : Multiset.card Q₁.roots = a`. Use `card_roots' Q₁` as an intermediate fact. Use `card_roots' Q₂` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hc2 : Multiset.card Q₂.roots = n - a` using `by omega`.
+
+Establish `hQ₁` using `prod_multiset_X_sub_C_of_monic_of_roots_card_eq hm₁ (by rw [hc1, hd₁])`. Establish `hQ₂` using `prod_multiset_X_sub_C_of_monic_of_roots_card_eq hm₂ (by rw [hc2, hd₂])`. Use `set T : Finset (Fin n) := Finset.univ.filter (fun i => u i ∈ Q₁.roots) with hT`. Establish `hmemT : ∀ i, i ∈ T ↔ u i ∈ Q₁.roots` using `fun i => by simp [hT]`. Establish `hcount : ∀ r, ¬ (r ∈ Q₁.roots ∧ r ∈ Q₂.roots)`.
+
+Introduce and unpack `r ⟨h1, h2⟩`. Establish `h3` using `Multiset.nodup_iff_count_le_one.mp hnd r`. Rewrite `h3` using `[Multiset.count_add]`. Use `Multiset.count_pos.mpr h1` as an intermediate fact. Use `Multiset.count_pos.mpr h2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hmemU : ∀ i, u i ∈ Q₁.roots ∨ u i ∈ Q₂.roots` using `fun i => by`. Rewrite using `[← Multiset.mem_add, hr]`. Conclude with `Multiset.mem_map_of_mem u (Finset.mem_univ_val i)`. Establish `hR₁ : Q₁.roots = T.val.map u`.
+
+Rewrite using `[Multiset.Nodup.ext (Multiset.nodup_of_le (Multiset.le_add_right _ _) hnd) (Multiset.Nodup.map hinj T.nodup)]`. Introduce `r`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `: r ∈ Finset.univ.val.map u` using `hr ▸ Multiset.mem_add.mpr (Or.inl h1)`.
+
+Take `⟨i, -, rfl⟩` from `Multiset.mem_map.mp this`. Conclude with `Multiset.mem_map_of_mem u ((hmemT i).mpr h1)`. Introduce `h`. Take `⟨i, hi, rfl⟩` from `Multiset.mem_map.mp h`. Conclude with `(hmemT i).mp hi`.
+
+Establish `hR₂ : Q₂.roots = Tᶜ.val.map u`. Rewrite using `[Multiset.Nodup.ext (Multiset.nodup_of_le (Multiset.le_add_left _ _) hnd) (Multiset.Nodup.map hinj Tᶜ.nodup)]`. Introduce `r`. Prove the components needed by the constructor for the conclusion. Introduce `h2`.
+
+Establish `: r ∈ Finset.univ.val.map u` using `hr ▸ Multiset.mem_add.mpr (Or.inr h2)`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.mp this`. Use `Multiset.mem_map_of_mem u (Finset.mem_compl.mpr fun hi => hcount (u i) ⟨(hmemT i).mp hi, h2⟩)` and prove the remaining obligations. Introduce `h`. Take `⟨i, hi, rfl⟩` from `Multiset.mem_map.mp h`.
+
+Establish `hi' : i ∉ T` using `Finset.mem_compl.mp hi`. Conclude with `(hmemU i).resolve_left fun h1 => hi' ((hmemT i).mpr h1)`. Establish `hTcard : T.card = a` using `by rw [← hc1, hR₁, Multiset.card_map, Finset.card_val]`. Establish `hTccard : Tᶜ.card = n - a` using `by rw [← hc2, hR₂, Multiset.card_map, Finset.card_val]`. Establish `hQ₁T : Q₁ = ∏ i ∈ T, (X - C (u i))`.
+
+Rewrite using `[Finset.prod_eq_multiset_prod]`. Use `conv_lhs => rw [← hQ₁]`. Rewrite using `[hR₁, Multiset.map_map]`. Both sides reduce to the same expression. Establish `hQ₂T : Q₂ = ∏ i ∈ Tᶜ, (X - C (u i))`.
+
+Rewrite using `[Finset.prod_eq_multiset_prod]`. Use `conv_lhs => rw [← hQ₂]`. Rewrite using `[hR₂, Multiset.map_map]`. Both sides reduce to the same expression. Establish `h0₁ : Q₁.coeff 0 ≠ 0`.
+
+Rewrite using `[coeff_zero_eq_eval_zero]`. Introduce `h`. Establish `h0 : (0 : w.adicCompletion E) ∈ Q₁.roots` using `(mem_roots hm₁.ne_zero).mpr h`. Rewrite `h0` using `[hR₁]`. Take `⟨i, -, hi⟩` from `Multiset.mem_map.mp h0`.
+
+Conclude with `(hu i).1 hi`. Establish `hsym : ∀ i, i ∈ T → i.rev ∈ T`. Introduce `i hi`. Establish `hy` using `csr_root hw hm₁ hc₁ h0₁ ((hmemT i).mp hi)`. Rewrite `hy` using `[hR₁]`.
+
+Take `⟨k, hk, hku⟩` from `Multiset.mem_map.mp hy`. Establish `hkr : k = i.rev`. Apply `hanti.injective` to reduce the goal to its premises. Rewrite using `[← (hu k).2, hku, GlobalTheory.WeylCell.U21TorusFactor.ordL_inv, GlobalTheory.WeylCell.U21TorusFactor.ordL_map (GlobalTheory.T.localConjugation_involutive_valuation_preserving E w).2, (hu i).2, wexp_rev]`. Rewrite using `[← hkr]`.
+
+Conclude with `hk`. Establish `hsymc : ∀ i, i ∈ Tᶜ → i.rev ∈ Tᶜ` using `fun i hi => by`. Rewrite `hi`, the goal using `[Finset.mem_compl]`. Conclude with `fun h => hi (by simpa using hsym _ h)`. Establish `eT` using `eq_symIdx_half T hsym`.
+
+Establish `eTc` using `eq_symIdx_half Tᶜ hsymc`. Establish `cT` using `card_symIdx n (∃ j ∈ T, j.val = n / 2 ∧ n % 2 = 1) (half T)`. Establish `cTc` using `card_symIdx n (∃ j ∈ Tᶜ, j.val = n / 2 ∧ n % 2 = 1) (half Tᶜ)`. Rewrite `cT` using `[← eT, hTcard]`. Rewrite `cTc` using `[← eTc, hTccard, half_compl]`.
+
+Establish `hcs : (half T).card + (half T)ᶜ.card = n / 2`. Rewrite using `[Finset.card_compl, Fintype.card_fin]`. Use `Finset.card_le_univ (half T)` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hex : ¬ ((∃ j ∈ T, j.val = n / 2 ∧ n % 2 = 1) ∧ (∃ j ∈ Tᶜ, j.val = n / 2 ∧ n % 2 = 1))`. Introduce and unpack `⟨⟨j, hj, hj1, -⟩, ⟨j', hj', hj1', -⟩⟩`. Establish `: j = j'` using `Fin.ext (hj1.trans hj1'.symm)`. Conclude with `(Finset.mem_compl.mp hj') (this ▸ hj)`. Establish `hcases : (a % 2 = 1 ↔ ∃ j ∈ T, j.val = n / 2 ∧ n % 2 = 1) ∧ ((n - a) % 2 = 1 ↔ ∃ j ∈ Tᶜ, j.val = n / 2 ∧ n % 2 = 1) ∧ (half T).card = a / 2 ∧ (half T)ᶜ.card = (n - a) / 2 ∧ a % 2 + (n - a) % 2 = n % 2`.
+
+Apply the tactic sequence `by_cases hp1 : ∃ j ∈ T, j.val = n / 2 ∧ n % 2 = 1 <;> by_cases hp2 : ∃ j ∈ Tᶜ, j.val = n / 2 ∧ n % 2 = 1`. Conclude with `absurd ⟨hp1, hp2⟩ hex`. Establish `ho : n % 2 = 1` using `by obtain ⟨_, _, _, ho⟩ := hp1; exact ho`. Rewrite `cT` using `[if_pos ⟨hp1, ho⟩]`. Rewrite `cTc` using `[if_neg fun h => hp2 h.1]`.
+
+Conclude with `⟨iff_of_true (by omega) hp1, iff_of_false (by omega) hp2, by omega, by omega, by omega⟩`. Establish `ho : n % 2 = 1` using `by obtain ⟨_, _, _, ho⟩ := hp2; exact ho`. Rewrite `cT` using `[if_neg fun h => hp1 h.1]`. Rewrite `cTc` using `[if_pos ⟨hp2, ho⟩]`. Conclude with `⟨iff_of_false (by omega) hp1, iff_of_true (by omega) hp2, by omega, by omega, by omega⟩`.
+
+Rewrite `cT` using `[if_neg fun h => hp1 h.1]`. Rewrite `cTc` using `[if_neg fun h => hp2 h.1]`. Conclude with `⟨iff_of_false (by omega) hp1, iff_of_false (by omega) hp2, by omega, by omega, by omega⟩`. Take `⟨hm1, hm2, hsc1, hsc2, hpar⟩` from `hcases`. Establish `hS₁ : symIdx n (a % 2 = 1) (half T) = T`.
+
+Rewrite using `[symIdx_congr n _ _ hm1]`. Conclude with `eT.symm`. Establish `hS₂ : symIdx n ((n - a) % 2 = 1) (half T)ᶜ = Tᶜ`. Rewrite using `[← half_compl, symIdx_congr n _ _ hm2]`. Conclude with `eTc.symm`.
+
+Use `⟨half T, hsc1, hsc2, hpar, by rw [hS₁]; exact hTcard, by rw [hS₂]; exact hTccard, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hasVals_of_prod x _ (symIdx_rev n _ _) _ u (fun i _ => hu i) Q₁ (by rw [hS₁]; exact hQ₁T)`. Conclude with `hasVals_of_prod x _ (symIdx_rev n _ _) _ u (fun i _ => hu i) Q₂ (by rw [hS₂]; exact hQ₂T)`.
+-/
 theorem split_caseA_pf (w : Pl E) (hw : ¬ IsSplitAt w) (n a : ℕ) (ha : a ≤ n) (x : Fin n → ℤ) (hx : StrictAnti x)
     (Q₁ Q₂ : (w.adicCompletion E)[X]) (hm₁ : Q₁.Monic) (hm₂ : Q₂.Monic) (hd₁ : Q₁.natDegree = a)
     (hd₂ : Q₂.natDegree = n - a) (hc₁ : IsCsr w Q₁) (hc₂ : IsCsr w Q₂) (hv : HasVals (Q₁ * Q₂) (wexp n (lOf x))) :

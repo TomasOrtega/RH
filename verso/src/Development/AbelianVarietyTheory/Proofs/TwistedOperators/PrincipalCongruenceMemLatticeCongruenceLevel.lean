@@ -13,12 +13,24 @@ namespace GlobalTheory.CongLevelInst
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Use `show x ∈ Submodule.span _ _ ↔ x ∈ Submodule.span _ _`. Rewrite using `[Set.image_eq_range]`. Both sides reduce to the same expression.
+-/
 theorem mem_hatL_iff (Λ : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E ⊗[F] Formalism.MainNotions.S.Af F) :
     x ∈ Formalism.L2.Herm.hatL (F := F) Λ ↔ x ∈ Formalism.MainNotions.S.lamAf (F := F) Λ := by
   show x ∈ Submodule.span _ _ ↔ x ∈ Submodule.span _ _
   rw [Set.image_eq_range]
   rfl
 
+/- English proof (translation)
+Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS at hz ⊢`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨((g : ℕ) : 𝓞 E) • l, Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hl, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h1 : ((g : ℕ) : 𝓞 E) • l i = (g : E) * l i`. Rewrite using `[Algebra.smul_def]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h1, map_mul, map_natCast]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul a y _ hy`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ a hy`.
+-/
 theorem natCast_smul_mem_hatL (Λ : Submodule (𝓞 E) (Fin n → E)) (g : ℕ)
     (z : Fin n → E ⊗[F] Formalism.MainNotions.S.Af F) (hz : z ∈ Formalism.L2.Herm.hatL (F := F) Λ) :
     ((g : E ⊗[F] Formalism.MainNotions.S.Af F)) • z ∈ Formalism.L2.Herm.hatL (F := F) (Ideal.span {((g : ℕ) : 𝓞 E)} • Λ) := by
@@ -39,6 +51,11 @@ theorem natCast_smul_mem_hatL (Λ : Submodule (𝓞 E) (Fin n → E)) (g : ℕ)
     rw [smul_comm]
     exact Submodule.smul_mem _ a hy
 
+/- English proof (translation)
+Use `⟨hU, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[mem_hatL_iff, mem_hatL_iff]`. Conclude with `hs x`. Introduce `x hx`.
+
+Take `⟨z, hz, e⟩` from `hd x ((mem_hatL_iff Λ x).1 hx)`. Establish `e2 : (k : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.MainNotions.S.Af F)) *ᵥ x - x = (g : E ⊗[F] Formalism.MainNotions.S.Af F) • z`. Rewrite using `[← e, Matrix.sub_mulVec, Matrix.one_mulVec]`. Rewrite using `[e2]`. Conclude with `natCast_smul_mem_hatL Λ g z ((mem_hatL_iff Λ z).2 hz)`.
+-/
 theorem mem_congLev (hc : Formalism.BasicNotions.CMData F E) (J : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E)) (g : ℕ)
     (k : GL (Fin n) (E ⊗[F] Formalism.MainNotions.S.Af F)) (hU : k ∈ Formalism.UG.UPts hc.sig J (Formalism.MainNotions.S.Af F))
     (hs : k ∈ Formalism.UG.stabGL (Formalism.MainNotions.S.lamAf (F := F) Λ))
@@ -62,6 +79,9 @@ namespace GlobalTheory.CongLevelInst
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D V fr g _ k hk`. Rewrite using `[Formalism.IndefR.Eqv.brg_mem_levA]`. Conclude with `⟨rfl, mem_congLev D.sp.cm V.gram fr.Λ g k.1 k.2 hk.1 hk.2⟩`.
+-/
 theorem kg_mem_levA : ∀ (D : D7) (V : HSp D) (fr : Formalism.IndefR.Eqv.UI.Frames D V) (g : ℕ), 1 ≤ g → ∀ k ∈ (Formalism.IndefR.Eqv.UI.instV fr).Kg g, Formalism.IndefR.Eqv.UI.brg fr (1, k) ∈ Formalism.IndefR.Lev.levA V (congLev D.sp.cm V.gram fr.Λ (Ideal.span {((g : ℕ) : 𝓞 D.host.E)})) := by
   intro D V fr g _ k hk
   rw [Formalism.IndefR.Eqv.brg_mem_levA]

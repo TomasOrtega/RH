@@ -15,6 +15,19 @@ open scoped GlobalTheory.AffinePoints
 
 namespace GlobalTheory.IrrAn
 
+/- English proof (translation)
+Introduce `d Y _ A C _ _ _ _ d' ι hch hι hana`. Establish `hpc : PreconnectedSpace (C →ₐ[ℂ] ℂ)` using `GlobalTheory.RootConst.preconnectedSpace_algHom C`. Use `⟨isPreconnected_range hι.continuous, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨φ, rfl⟩ W hW hxW`. Take `⟨e, he, hφ⟩` from `hch φ`.
+
+Establish `hopen : IsOpen (e.target ∩ e.symm ⁻¹' (ι ⁻¹' W))` using `e.continuousOn_symm.isOpen_inter_preimage e.open_target (hW.preimage hι.continuous)`. Establish `hmem : e φ ∈ e.target ∩ e.symm ⁻¹' (ι ⁻¹' W)` using `⟨e.map_source hφ, by simpa [e.left_inv hφ] using hxW⟩`. Take `⟨r, hr, hB⟩` from `Metric.isOpen_iff.1 hopen (e φ) hmem`. Use `set B := Metric.ball (e φ) r with hBdef`. Establish `hBt : B ⊆ e.target` using `fun z hz => (hB hz).1`.
+
+Establish `hBo : IsOpen (e.symm '' B)` using `e.symm.isOpen_image_of_subset_source Metric.isOpen_ball (by simpa using hBt)`. Take `⟨N', hN'o, hN'⟩` from `hι.isInducing.isOpen_iff.1 hBo`. Use `⟨N' ∩ W, hN'o.inter hW, ⟨?_, hxW⟩, Set.inter_subset_right, ?_⟩` and prove the remaining obligations. Use `show φ ∈ ι ⁻¹' N'`. Rewrite using `[hN']`.
+
+Conclude with `⟨e φ, Metric.mem_ball_self hr, e.left_inv hφ⟩`. Introduce and unpack `g hg x' ⟨⟨ψ, rfl⟩, hψN, -⟩ hev y ⟨⟨χ, rfl⟩, hχN, -⟩`. Establish `hψ : ψ ∈ e.symm '' B` using `by rw [← hN']; exact hψN`. Establish `hχ : χ ∈ e.symm '' B` using `by rw [← hN']; exact hχN`. Take `⟨b, hb, rfl⟩` from `hψ`.
+
+Take `⟨b', hb', rfl⟩` from `hχ`. Establish `han : AnalyticOnNhd ℂ (g ∘ ι ∘ e.symm) B` using `fun z hz => hana W g hW hg e he z (hB hz)`. Establish `hca : ContinuousAt (ι ∘ e.symm) b` using `hι.continuous.continuousAt.comp (e.continuousAt_symm (hBt hb))`. Establish `hz : (g ∘ ι ∘ e.symm) =ᶠ[𝓝 b] 0` using `by filter_upwards [hca.eventually hev] with z hz`. Conclude with `hz ⟨_, rfl⟩`.
+
+Use `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball (e φ) r).isPreconnected hb hz hb'` as an intermediate fact. Simplify using `using this`.
+-/
 theorem preconnected_locIdent_range_of_algebraicCharts : ∀ (d : ℕ) (Y : Type) [TopologicalSpace Y] (A : FinHolAtlas d Y) (C : Type) [CommRing C] [IsDomain C] [Algebra ℂ C] [Algebra.FiniteType ℂ C] (d' : ℕ) (ι : (C →ₐ[ℂ] ℂ) → Y), GlobalTheory.AffinePoints.HasAlgebraicCharts ℂ C d' → Topology.IsEmbedding ι → (∀ (O : Set Y) (g : Y → ℂ), IsOpen O → A.HoloOn O g → ∀ e : OpenPartialHomeomorph (C →ₐ[ℂ] ℂ) (Fin d' → ℂ), GlobalTheory.AffinePoints.IsAlgebraicChart e → AnalyticOnNhd ℂ (g ∘ ι ∘ e.symm) (e.target ∩ e.symm ⁻¹' (ι ⁻¹' O))) → IsPreconnected (Set.range ι) ∧ GlobalTheory.IrrAn.LocIdent A (Set.range ι) := by
   intro d Y _ A C _ _ _ _ d' ι hch hι hana
   have hpc : PreconnectedSpace (C →ₐ[ℂ] ℂ) := GlobalTheory.RootConst.preconnectedSpace_algHom C

@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LineStabClosed.isClosed_lineStab_unip | exact GlobalTheory.LineStabClosed.isClosed_lineStab_unip | (intros; apply GlobalTheory.LineStabClosed.isClosed_lineStab_unip <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.line_stabilizer_closed : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n n₁ : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) (ι : Matrix (Fin n) (Fin n₁) E), x ≠ 0 →
     IsClosed (GlobalTheory.IwLine.lineStab σ J x : Set (UA σ J)) ∧

@@ -11,11 +11,17 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 section Gen
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.PowerMembership.goal1 .. | (apply Bl.PowerMembership.goal1 <;> assumption) | (intros; apply Bl.PowerMembership.goal1 <;> assumption) | (apply @Bl.PowerMembership.goal1 <;> assumption) | (intros; apply @Bl.PowerMembership.goal1 <;> assumption) | (apply @Bl.PowerMe …`.
+-/
 theorem aeval_mem_of_stable {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     (S : Submodule R M) (f : Module.End R M) (hf : ∀ v ∈ S, f v ∈ S) (P : Polynomial R) {v : M}
     (hv : v ∈ S) : Polynomial.aeval f P v ∈ S := by
   first | exact Bl.PowerMembership.goal1 .. | (apply Bl.PowerMembership.goal1 <;> assumption) | (intros; apply Bl.PowerMembership.goal1 <;> assumption) | (apply @Bl.PowerMembership.goal1 <;> assumption) | (intros; apply @Bl.PowerMembership.goal1 <;> assumption) | (apply @Bl.PowerMembership.goal1 <;> first | assumption | infer_instance) | exact @Bl.PowerMembership.goal1 R M ‹_› ‹_› ‹_› S f hf P v hv | exact @Bl.PowerMembership.goal1 R M ‹_› ‹_› ‹_› S f hf P v | exact @Bl.PowerMembership.goal1 R M ‹_› ‹_› ‹_› S f hf P | exact @Bl.PowerMembership.goal1 R M ‹_› ‹_› ‹_› S f hf | exact @Bl.PowerMembership.goal1 R M ‹_› ‹_› ‹_› S f | exact @Bl.PowerMembership.goal1 R M ‹_› ‹_› ‹_› S | exact @Bl.PowerMembership.goal1 R M ‹_› ‹_› ‹_› | exact @Bl.PowerMembership.goal1 R M ‹_› ‹_› | exact @Bl.PowerMembership.goal1 R M ‹_› | exact @Bl.PowerMembership.goal1 R M | exact @Bl.PowerMembership.goal1 R
 
+/- English proof (translation)
+Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, LinearMap.add_apply, LinearMap.add_apply, hp, hq, map_add]`. Consider the case `monomial k a`. Rewrite using `[Polynomial.aeval_monomial, Module.End.mul_apply, Module.End.mul_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, map_smul, ← Module.End.mul_apply, ← pow_succ, pow_succ', Module.End.mul_apply]`.
+-/
 theorem aeval_comm {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] (f : Module.End R M)
     (P : Polynomial R) (v : M) : Polynomial.aeval f P (f v) = f (Polynomial.aeval f P v) := by
   induction P using Polynomial.induction_on' with
@@ -25,6 +31,11 @@ theorem aeval_comm {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] (f :
       Module.algebraMap_end_apply, map_smul, ← Module.End.mul_apply, ← pow_succ, pow_succ',
       Module.End.mul_apply]
 
+/- English proof (translation)
+Introduce `i hi`. Establish `e : g = p⁻¹ * (p * g)`. Rewrite using `[← mul_assoc, PowerSeries.inv_mul_cancel _ hp, one_mul]`. Rewrite using `[e, PowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun q hq => ?_` and prove the remaining obligations.
+
+Rewrite `hq` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[h q.2 (by omega), mul_zero]`.
+-/
 theorem ps_coeff_cancel {LL : Type*} [Field LL] (p g : PowerSeries LL)
     (hp : PowerSeries.constantCoeff p ≠ 0) (N : ℕ) (h : ∀ i < N, PowerSeries.coeff i (p * g) = 0) :
     ∀ i < N, PowerSeries.coeff i g = 0 := by
@@ -51,6 +62,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable (T : LocLat G Qp LL O) (π' : LetA O n) (c : ZMod n)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules. Use `_ = ∑ i, (TensorProduct.equivFinsuppOfBasisRight bL z i) ⊗ₜ bL i := by`. Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_symm_apply, Finsupp.sum_fintype _ _ (fun i => by simp)]`.
+-/
 theorem tensor_eq_sum {r : ℕ} (bL : Basis (Fin r) O (LcQ W T π' c)) (z : LA W T π' c) :
     z = ∑ i, (TensorProduct.equivFinsuppOfBasisRight bL z i) ⊗ₜ bL i := by
   calc z = (TensorProduct.equivFinsuppOfBasisRight bL).symm (TensorProduct.equivFinsuppOfBasisRight bL z) := by
@@ -58,6 +72,11 @@ theorem tensor_eq_sum {r : ℕ} (bL : Basis (Fin r) O (LcQ W T π' c)) (z : LA W
     _ = ∑ i, (TensorProduct.equivFinsuppOfBasisRight bL z i) ⊗ₜ bL i := by
         rw [TensorProduct.equivFinsuppOfBasisRight_symm_apply, Finsupp.sum_fintype _ _ (fun i => by simp)]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, Finsupp.add_apply, hx, hy, map_add, Finsupp.add_apply, map_add]`. Consider the case `tmul e l`. Rewrite using `[ModelFPf.γLA_tmul, TensorProduct.equivFinsuppOfBasisRight_apply_tmul, TensorProduct.equivFinsuppOfBasisRight_apply_tmul, Finsupp.mapRange_apply, Finsupp.mapRange_apply]`.
+
+Conclude with `((W.γE W.gamK).toLinearMap.map_smul _ _).symm`.
+-/
 theorem coord_γLA {r : ℕ} (bL : Basis (Fin r) O (LcQ W T π' c)) (z : LA W T π' c) (i : Fin r) :
     TensorProduct.equivFinsuppOfBasisRight bL (γLA W T π' c z) i =
       W.γE W.gamK (TensorProduct.equivFinsuppOfBasisRight bL z i) := by
@@ -69,6 +88,9 @@ theorem coord_γLA {r : ℕ} (bL : Basis (Fin r) O (LcQ W T π' c)) (z : LA W T 
       TensorProduct.equivFinsuppOfBasisRight_apply_tmul, Finsupp.mapRange_apply, Finsupp.mapRange_apply]
     exact ((W.γE W.gamK).toLinearMap.map_smul _ _).symm
 
+/- English proof (translation)
+Rewrite using `[map_sub, Finsupp.sub_apply]`.
+-/
 theorem coord_sub {r : ℕ} (bL : Basis (Fin r) O (LcQ W T π' c)) (z z' : LA W T π' c) (i : Fin r) :
     TensorProduct.equivFinsuppOfBasisRight bL (z - z') i =
       TensorProduct.equivFinsuppOfBasisRight bL z i - TensorProduct.equivFinsuppOfBasisRight bL z' i := by
@@ -76,12 +98,18 @@ theorem coord_sub {r : ℕ} (bL : Basis (Fin r) O (LcQ W T π' c)) (z z' : LA W 
 
 variable {W T π' c}
 
+/- English proof (translation)
+Establish `h` using `hvsmul 0 0 (Submodule.zero_mem _)`. Rewrite `h` using `[zero_smul, map_zero, zero_smul]`. Conclude with `h`.
+-/
 theorem valAt_zero (ζ : LL) (hvsmul : ∀ (a : O) x, x ∈ NcS W T (c - 1) →
       valAt W T c ζ (a • x) = algebraMap O LL a • valAt W T c ζ x) : valAt W T c ζ 0 = 0 := by
   have h := hvsmul 0 0 (Submodule.zero_mem _)
   rw [zero_smul, map_zero, zero_smul] at h
   exact h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, valAt_zero ζ hvsmul]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hvadd _ _ (Submodule.smul_mem _ _ (hy a)) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hy i)), hvsmul _ _ (hy a), ih]`.
+-/
 theorem valAt_sum (ζ : LL)
     (hvadd : ∀ x y, x ∈ NcS W T (c - 1) → y ∈ NcS W T (c - 1) →
       valAt W T c ζ (x + y) = valAt W T c ζ x + valAt W T c ζ y)
@@ -97,6 +125,11 @@ theorem valAt_sum (ζ : LL)
       hvadd _ _ (Submodule.smul_mem _ _ (hy a)) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hy i)),
       hvsmul _ _ (hy a), ih]
 
+/- English proof (translation)
+Establish `e : (⟨∑ i ∈ s, co i • y i, h⟩ : ↥(NcS W T (c - 1))) = ∑ i ∈ s, co i • ⟨y i, hy i⟩`. Use `ext`. Simplify using the standard rewrite rules. Unfold `mkL`. Rewrite using `[e, show Submodule.Quotient.mk (∑ i ∈ s, co i • (⟨y i, hy i⟩ : ↥(NcS W T (c - 1)))) = ∑ i ∈ s, Submodule.Quotient.mk (p := (PiNS W T π' 1).comap (NcS W T (c - 1)).subtype) (co i • (⟨y i, hy i⟩ : ↥(NcS W T (c - 1)))) from map_sum (Submodule.mkQ _) _ _]`.
+
+Simplify using `only [Submodule.Quotient.mk_smul]`.
+-/
 theorem mkL_sum {ι : Type*} (s : Finset ι) (co : ι → O) (y : ι → W.DD T)
     (hy : ∀ i, y i ∈ NcS W T (c - 1)) (h : ∑ i ∈ s, co i • y i ∈ NcS W T (c - 1)) :
     mkL W T π' c (∑ i ∈ s, co i • y i) h = ∑ i ∈ s, co i • mkL W T π' c (y i) (hy i) := by
@@ -125,6 +158,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable {W} {T : LocLat G Qp LL O} {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} {π' Eπ : LetA O n} {h' : ℕ}
   {c : ZMod n}
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[pow_one]`. Conclude with `hA π' hπΔ y hy`.
+-/
 theorem piNL_le (hπΔ : π' ∈ W.AΔ)
     (hA : ∀ a ∈ W.AΔ, ∀ x ∈ NL W T Pt π' Eπ h' c, smulLA W T π' c a x ∈ NL W T Pt π' Eπ h' c) :
     piNL W T Pt π' Eπ h' c 1 ≤ NL W T Pt π' Eπ h' c := by
@@ -132,6 +168,9 @@ theorem piNL_le (hπΔ : π' ∈ W.AΔ)
   rw [pow_one]
   exact hA π' hπΔ y hy
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨smulLA W T π' c uπ (γLA W T π' c y), hA uπ huπ _ (hγ y hy), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, ModelFPf.γLA_smulLA, ModelFPf.smulLA_smulLA, hγπ]`.
+-/
 theorem piNL_γ (hγ : ∀ x ∈ NL W T Pt π' Eπ h' c, γLA W T π' c x ∈ NL W T Pt π' Eπ h' c)
     (hA : ∀ a ∈ W.AΔ, ∀ x ∈ NL W T Pt π' Eπ h' c, smulLA W T π' c a x ∈ NL W T Pt π' Eπ h' c)
     {uπ : LetA O n} (huπ : uπ ∈ W.AΔ) (hγπ : W.γA W.gamK π' = π' * uπ) {x : LA W T π' c}

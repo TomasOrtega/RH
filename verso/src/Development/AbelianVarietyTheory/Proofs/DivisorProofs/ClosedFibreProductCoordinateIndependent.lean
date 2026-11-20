@@ -12,10 +12,28 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Simplify using `[spMap, ← Spec.map_comp]`.
+-/
 theorem specMap_contravariant_comp_ringHom {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp [spMap, ← Spec.map_comp]
 
+/- English proof (translation)
+Introduce `R _ _ _ M G' _ E N fU l hl1 hl2 hsurj Ω _ κ s s' a b c c' x y x' y' hs hs' ha hb hc ha' hb' hc'`. Take `⟨Ω₁, _, io₁, ca, cb, hca, hcb, hcc⟩` from `GlobalTheory.T.closedFibre_embedding_mul_image_eq_of_field_point R M G' E N fU l hl1 hl2 Ω κ s a b c x y hs ha hb hc`. Take `⟨Ω₂, _, io₂, ca', cb', hca', hcb', hcc'⟩` from `GlobalTheory.T.closedFibre_embedding_mul_image_eq_of_field_point R M G' E N fU l hl1 hl2 Ω κ s' a b c' x' y' hs' ha' hb' hc'`. Take `⟨Ω₃, _, j₁, j₂, hj⟩` from `GlobalTheory.T.exists_common_field_extension' Ω Ω₁ Ω₂ io₁ io₂`. Establish `: Mono E.j` using `by haveI := E.imm; infer_instance`.
+
+Set `g₁ : Over.mk (spMap ((j₁.comp io₁).comp κ)) ⟶ Over.mk (spMap (io₁.comp κ))` to `Over.homMk (spMap j₁) (by simp only [Over.mk_hom, specMap_contravariant_comp_ringHom])`. Set `g₂ : Over.mk (spMap ((j₁.comp io₁).comp κ)) ⟶ Over.mk (spMap (io₂.comp κ))` to `Over.homMk (spMap j₂) (by simp only [Over.mk_hom, specMap_contravariant_comp_ringHom, hj])`. Establish `hg₁ : g₁.left = spMap j₁` using `rfl`. Establish `hg₂ : g₂.left = spMap j₂` using `rfl`. Establish `e₁ : spMap j₁ ≫ spMap io₁ = spMap (j₁.comp io₁)` using `specMap_contravariant_comp_ringHom _ _`.
+
+Establish `e₂ : spMap j₂ ≫ spMap io₂ = spMap (j₁.comp io₁)` using `by rw [specMap_contravariant_comp_ringHom, hj]`. Establish `hA : g₁ ≫ ca = g₂ ≫ ca'` using `by ext1`. Rewrite using `[← cancel_mono E.j]`. Simplify using `only [Over.comp_left, Over.homMk_left, Category.assoc, hca, hca']`. Rewrite using `[hg₁, hg₂, reassoc_of% e₁, reassoc_of% e₂]`.
+
+Establish `hB : g₁ ≫ cb = g₂ ≫ cb'` using `by ext1`. Rewrite using `[← cancel_mono E.j]`. Simplify using `only [Over.comp_left, Over.homMk_left, Category.assoc, hcb, hcb']`. Rewrite using `[hg₁, hg₂, reassoc_of% e₁, reassoc_of% e₂]`. Establish `hC : g₁ ≫ (ca * cb) = g₂ ≫ (ca' * cb')`.
+
+Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, hA, hB]`. Establish `hfU : spMap (j₁.comp io₁) ≫ c ≫ fU = spMap (j₁.comp io₁) ≫ c' ≫ fU`. Use `congrArg (fun g => g.left ≫ E.j) hC` as an intermediate fact. Simplify using `only [Over.comp_left, Over.homMk_left, Category.assoc, hcc, hcc'] at this`. Rewrite `this` using `[hg₁, hg₂, reassoc_of% e₁, reassoc_of% e₂]`.
+
+Conclude with `this`. Establish `hlies : ∀ (t : Sp Ω ⟶ M.S) (d : Sp Ω ⟶ N.U.left) (z : Sp Ω ⟶ G'.left), t ≫ M.π = spMap (κ.comp (residue R)) → N.Pt t d z → d ≫ N.U.hom = spMap (κ.comp (residue R))`. Introduce and unpack `t d z ht ⟨x₀, h₁, h₂, -⟩`. Rewrite using `[← h₁, Category.assoc, pullback.condition, ← Category.assoc, h₂, ht]`. Establish `hco : ∀ d : Sp Ω ⟶ N.U.left, d ≫ N.U.hom = spMap (κ.comp (residue R)) → (spMap (j₁.comp io₁) ≫ d) ≫ N.U.hom = spMap (((j₁.comp io₁).comp κ).comp (residue R))`.
+
+Introduce `d hd`. Rewrite using `[Category.assoc, hd, specMap_contravariant_comp_ringHom]`. Establish `key` using `GlobalTheory.T.closedFibre_fieldPoints_injective_projective_map R M G' E N fU l hl1 hl2 hsurj Ω₃ ((j₁.comp io₁).comp κ) (spMap (j₁.comp io₁) ≫ c) (spMap (j₁.comp io₁) ≫ c') (hco c (hlies s c _ hs hc)) (hco c' (hlies s' c' _ hs' hc')) (by simpa only [Category.assoc] using hfU)`. Conclude with `GlobalTheory.T.spMap_field_ext_cancel Ω Ω₃ (j₁.comp io₁) N.U.left c c' key`.
+-/
 theorem Near.closed_product_unique : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (M : Modif R) (G' : Over M.S) [GrpObj G'] (E : Emb M.π G') (N : Near M.π G') (fU : N.U.left ⟶ PSpace R E.N) (l : pullback N.U.hom M.π ⟶ E.H.toScheme), l ≫ E.H.ι = N.u → l ≫ E.f = pullback.fst _ _ ≫ fU → Surjective M.π → ∀ (Ω : Type) [Field Ω] (κ : ResidueField R →+* Ω) (s s' : Sp Ω ⟶ M.S) (a b c c' : Sp Ω ⟶ N.U.left) (x y : Over.mk s ⟶ G') (x' y' : Over.mk s' ⟶ G'), s ≫ M.π = spMap (κ.comp (residue R)) → s' ≫ M.π = spMap (κ.comp (residue R)) → N.Pt s a x.left → N.Pt s b y.left → N.Pt s c (x * y).left → N.Pt s' a x'.left → N.Pt s' b y'.left → N.Pt s' c' (x' * y').left → c = c' := by
   intro R _ _ _ M G' _ E N fU l hl1 hl2 hsurj Ω _ κ s s' a b c c' x y x' y' hs hs' ha hb hc ha' hb' hc'
   obtain ⟨Ω₁, _, io₁, ca, cb, hca, hcb, hcc⟩ := GlobalTheory.T.closedFibre_embedding_mul_image_eq_of_field_point R M G' E N fU l hl1 hl2 Ω κ s a b c x y hs ha hb hc

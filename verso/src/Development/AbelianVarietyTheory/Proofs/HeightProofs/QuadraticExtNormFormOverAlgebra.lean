@@ -5,6 +5,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.QuadNormBase
 
+/- English proof (translation)
+Establish `e0 : (x • B 0 + y • B 1) * B 0 = x • B 0 + y • B 1` using `by rw [h0, mul_one]`. Establish `e1 : (x • B 0 + y • B 1) * B 1 = (y * d) • B 0 + x • B 1`. Rewrite using `[add_mul, smul_mul_assoc, smul_mul_assoc, h1, smul_smul, add_comm]`. Use `congr 1`. Rewrite using `[h0, one_mul]`.
+
+Rewrite using `[Algebra.norm_eq_matrix_det B, Matrix.det_fin_two]`. Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul, e0, e1]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_of_basis {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
     (B : Module.Basis (Fin 2) R A) (d : R) (h0 : B 0 = 1) (h1 : B 1 * B 1 = d • B 0) (x y : R) :
     Algebra.norm R (x • B 0 + y • B 1) = x ^ 2 - d * y ^ 2 := by
@@ -18,6 +23,23 @@ theorem norm_of_basis {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
   simp
   ring
 
+/- English proof (translation)
+Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap F E).injective`. Take `⟨x0, hx0⟩` from `hne`. Establish `hsm : ∀ (c : F) (e : E), σ (c • e) = c • σ e` using `fun c e => by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, AlgHom.commutes]`. Use `set θ : E := x0 - σ x0 with hθ`.
+
+Establish `hθ0 : θ ≠ 0` using `sub_ne_zero.2 hx0.symm`. Establish `hσθ : σ θ = -θ` using `by rw [hθ, map_sub, hσ]; ring`. Establish `hli : LinearIndependent F ![(1 : E), θ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+
+Establish `h2` using `congrArg σ hst`. Rewrite `h2` using `[map_add, hsm, hsm, map_one, hσθ, map_zero, smul_neg]`. Establish `h3 : (2 : E) * (t • θ) = 0` using `by linear_combination hst - h2`. Establish `h4 : t • θ = 0` using `by simpa only [mul_eq_zero, two_ne_zero, false_or] using h3`. Establish `ht : t = 0` using `(smul_eq_zero.1 h4).resolve_right hθ0`.
+
+Substitute `ht` using the available equality. Conclude with `⟨by simpa using hst, rfl⟩`. Set `b : Module.Basis (Fin 2) F E` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hr])`. Establish `hb0 : b 0 = 1` using `by simp [b]`. Establish `hb1 : b 1 = θ` using `by simp [b]`.
+
+Establish `hrep` using `b.sum_repr (θ * θ)`. Rewrite `hrep` using `[Fin.sum_univ_two, hb0, hb1]`. Use `set s := b.repr (θ * θ) 0`. Use `set t := b.repr (θ * θ) 1`. Establish `h2` using `congrArg σ hrep`.
+
+Rewrite `h2` using `[map_add, hsm, hsm, map_one, map_mul, hσθ, smul_neg]`. Establish `h3 : (2 : E) * (t • θ) = 0` using `by linear_combination hrep - h2`. Establish `h4 : t • θ = 0` using `by simpa only [mul_eq_zero, two_ne_zero, false_or] using h3`. Establish `hsq : θ * θ = algebraMap F E s`. Rewrite using `[← hrep, h4, add_zero, Algebra.algebraMap_eq_smul_one]`.
+
+Use `⟨s, b, ?_, hb0, by rw [hb1, hσθ], by rw [hb1, hsq]⟩` and prove the remaining obligations. Introduce and unpack `⟨r, hr⟩`. Rewrite `hsq` using `[hr, map_mul, mul_self_eq_mul_self_iff]`. Establish `hfix : σ θ = θ`. Break down `hsq with h | h` into its components or cases.
+
+Rewrite using `[h, AlgHom.commutes]`. Rewrite using `[h, map_neg, AlgHom.commutes]`. Establish `h5 : (2 : E) * θ = 0` using `by linear_combination hσθ - hfix`. Conclude with `hθ0 (by simpa only [mul_eq_zero, two_ne_zero, false_or] using h5)`.
+-/
 theorem exists_basis (F E : Type) [Field F] [CharZero F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (hr : Module.finrank F E = 2) (hσ : ∀ x, σ (σ x) = x) (hne : ∃ x, σ x ≠ x) :
     ∃ (δ : F) (b : Module.Basis (Fin 2) F E), ¬ IsSquare δ ∧ b 0 = 1 ∧ σ (b 1) = - b 1 ∧
@@ -63,6 +85,17 @@ theorem exists_basis (F E : Type) [Field F] [CharZero F] [Field E] [Algebra F E]
   have h5 : (2 : E) * θ = 0 := by linear_combination hσθ - hfix
   exact hθ0 (by simpa only [mul_eq_zero, two_ne_zero, false_or] using h5)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ σ hr hσ hne`. Take `⟨δ, b, hδ, hb0, hb1, hsq⟩` from `exists_basis F E σ hr hσ hne`. Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations. Introduce `R _ _`. Set `B` to `Algebra.TensorProduct.basis R b`.
+
+Establish `hB : ∀ i, B i = 1 ⊗ₜ[F] b i` using `fun i => Algebra.TensorProduct.basis_apply b i`. Establish `h0 : B 0 = 1` using `by rw [hB, hb0]; rfl`. Establish `h1 : B 1 * B 1 = algebraMap F R δ • B 0`. Rewrite using `[hB, hB, Algebra.TensorProduct.tmul_mul_tmul, hsq, hb0, Algebra.algebraMap_eq_smul_one (A := E), TensorProduct.tmul_smul, one_mul, algebraMap_smul]`. Establish `hs : ∀ (r : R) (e : E), sigR R σ (r ⊗ₜ[F] e) = r ⊗ₜ[F] σ e` using `fun r e => rfl`.
+
+Establish `key : ∀ x y : R, (x • B 0 + y • B 1) * sigR R σ (x • B 0 + y • B 1) = algebraMap R (R ⊗[F] E) (x ^ 2 - algebraMap F R δ * y ^ 2)`. Introduce `x y`. Establish `e : sigR R σ (x • B 0 + y • B 1) = x • B 0 - y • B 1`. Rewrite using `[map_add, hB, hB, TensorProduct.smul_tmul', TensorProduct.smul_tmul', hs, hs, hb1, hb0, map_one, TensorProduct.tmul_neg, sub_eq_add_neg]`. Rewrite using `[e]`.
+
+Rewrite `h1`, the goal using `[h0]`. Generalize the expression as in `algebraMap F R δ = d at h1 ⊢`. Simplify using `only [Algebra.smul_def, mul_one, map_sub, map_mul, map_pow] at h1 ⊢`. Take the linear combination `(-(algebraMap R (R ⊗[F] E) y) ^ 2) * h1`. Use `⟨fun z => ?_, fun x y => ⟨_, key x y⟩⟩` and prove the remaining obligations.
+
+Establish `hz` using `B.sum_repr z`. Rewrite `hz` using `[Fin.sum_univ_two]`. Use `⟨B.repr z 0, B.repr z 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_of_basis B _ h0 h1, hz]`. Rewrite using `[← key, hz]`.
+-/
 theorem norm_form : ∀ (F E : Type) [Field F] [CharZero F] [Field E] [Algebra F E] (σ : E →ₐ[F] E), Module.finrank F E = 2 → (∀ x, σ (σ x) = x) → (∃ x, σ x ≠ x) → ∃ δ : F, ¬ IsSquare δ ∧ ∀ (R : Type) [CommRing R] [Algebra F R], (∀ z : R ⊗[F] E, ∃ x y : R, Algebra.norm R z = x ^ 2 - algebraMap F R δ * y ^ 2 ∧ z * sigR R σ z = algebraMap R (R ⊗[F] E) (x ^ 2 - algebraMap F R δ * y ^ 2)) ∧ ∀ x y : R, ∃ z : R ⊗[F] E, z * sigR R σ z = algebraMap R (R ⊗[F] E) (x ^ 2 - algebraMap F R δ * y ^ 2) := by
   intro F E _ _ _ _ σ hr hσ hne
   obtain ⟨δ, b, hδ, hb0, hb1, hsq⟩ := exists_basis F E σ hr hσ hne

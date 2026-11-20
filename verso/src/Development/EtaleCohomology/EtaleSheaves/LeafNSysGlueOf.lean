@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.NeighbourhoodSystemGluing
 open LateralTheory.E.LeafSHSysPf
 
+/- English proof (translation)
+Establish `h1` using `c.w (IsFiltered.leftToMax j j')`. Establish `h2` using `c.w (IsFiltered.rightToMax j j')`. Rewrite using `[← h1, ← h2, ← Category.assoc, ← Category.assoc, hu, hu]`.
+-/
 theorem cocone_u_eq {R : CommRingCat.{0}} {J : Type} [SmallCategory J] [IsFiltered J]
     (D : J ⥤ CommRingCat.{0}) (u : ∀ j, R ⟶ D.obj j) (hu : ∀ {j j' : J} (g : j ⟶ j'), u j ≫ D.map g = u j')
     (c : Cocone D) (j j' : J) : u j ≫ c.ι.app j = u j' ≫ c.ι.app j' := by
@@ -13,6 +16,21 @@ theorem cocone_u_eq {R : CommRingCat.{0}} {J : Type} [SmallCategory J] [IsFilter
   have h2 := c.w (IsFiltered.rightToMax j j')
   rw [← h1, ← h2, ← Category.assoc, ← Category.assoc, hu, hu]
 
+/- English proof (translation)
+Introduce `_ B U x`. Set `𝒰` to `U.left.affineOpenCover`. Set `R` to `𝒰.X (𝒰.idx x)`. Set `ι : Spec R ⟶ U.left` to `𝒰.f (𝒰.idx x)`. Take `⟨y, hy⟩` from `𝒰.covers x`.
+
+Take `⟨J, _, _, D, u, hu, het, hq, c, ⟨hc⟩, hcof⟩` from `hR R y`. Establish `hE : ∀ j, Etale (Spec.map (u j) ≫ ι ≫ U.hom)` using `fun j => by`. Establish `: Etale (Spec.map (u j))` using `HasRingHomProperty.Spec_iff.2 (het j)`. Establish `: Etale U.hom` using `U.prop`. Use `infer_instance`.
+
+Set `V : J → B.Etale` to `fun j => MorphismProperty.Over.mk ⊤ (Spec.map (u j) ≫ ι ≫ U.hom) (hE j)`. Set `a : ∀ j, V j ⟶ U` to `fun j => MorphismProperty.Over.homMk (Spec.map (u j) ≫ ι) (by show (Spec.map (u j) ≫ ι) ≫ U.hom = Spec.map (u j) ≫ ι ≫ U.hom; rw [Category.assoc]) trivial`. Set `tr : ∀ {j j' : J} (_ : j ⟶ j'), V j' ⟶ V j` to `fun {j j'} g => MorphismProperty.Over.homMk (Spec.map (D.map g)) (by show Spec.map (D.map g) ≫ Spec.map (u j) ≫ ι ≫ U.hom = Spec.map (u j') ≫ ι ≫ U.hom; rw [← Spec.map_comp_assoc, hu]) trivial`. Set `j0 : J` to `(IsFiltered.nonempty (C := J)).some`. Conclude with `⟨{ J := J D := D V := V a := a e := fun j => Iso.refl _ tr := tr tr_a := fun g => by`.
+
+Apply `MorphismProperty.Over.Hom.ext` to reduce the goal to its premises. Use `show Spec.map (D.map g) ≫ Spec.map _ ≫ ι = Spec.map _ ≫ ι`. Rewrite using `[← Spec.map_comp_assoc, hu]`. Use `tr_spec := fun g => by show 𝟙 _ ≫ Spec.map (D.map g) ≫ 𝟙 _ = _`. Simplify using the standard rewrite rules.
+
+Use `hx := fun j => by`. Take `⟨q, hq⟩` from `hq j`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Use `show ι (Spec.map (u j) q) = ι y`.
+
+Use `congr 1`. Use `c := c`. Use `hc := hc`. Use `cof := hcof`. Use `t := Spec.map (c.ι.app j0) ≫ Spec.map (u j0) ≫ ι`.
+
+Use `ht := fun j => by show _ = Spec.map (c.ι.app j) ≫ 𝟙 _ ≫ Spec.map (u j) ≫ ι`. Rewrite using `[Category.id_comp, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, cocone_u_eq D u hu c j0 j] }⟩`.
+-/
 theorem LeafNSysGlue_of (hR : LeafRingSys) : LeafNSysGlue := by
   intro _ B U x
   let 𝒰 := U.left.affineOpenCover

@@ -15,6 +15,13 @@ open scoped GlobalTheory.MixModel
 variable {D : D7} {V V' : HSp D} {ι : V'.V →ₗ[D.host.E] V.V} {m : ℕ}
   {X : Matrix (Fin V.rank) (Fin m) D.host.E} {T : Finset (Fin m)}
 
+/- English proof (translation)
+Establish `hle : colSpan D.host.F X (upTo T) ≤ LinearMap.ker (adMat D.host.F (prM V V' ι)).mulVecLin`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Establish `h0 : prM V V' ι *ᵥ (fun j => X j i) = 0` using `prM_mulVec_eq_zero (h i hi)`. Express the relevant statement in the definitionally equal form `(adMat D.host.F (prM V V' ι)) *ᵥ ((adMat D.host.F X)ᵀ i) = 0`.
+
+Establish `h1 : (adMat D.host.F X)ᵀ i = fun j => inclR (F` using `D.host.F) (AF D.host.F) (X j i) := rfl`. Rewrite using `[h1]`. Use function extensionality and compare the values at `k`. Establish `h2` using `congrArg (inclR (F := D.host.F) (AF D.host.F)) (congrFun h0 k)`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.zero_apply, map_zero] at h2`.
+
+Simplify `h2` using `[Matrix.mulVec, dotProduct]`. Conclude with `hle hz`.
+-/
 theorem prM_kills_colSpan
     (h : ∀ i ∈ upTo T, ∀ v' : V'.V, V.hT (V.frame.equivFun.symm fun j => X j i) (ι v') = 0)
     {z : Fin V.rank → AF D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ colSpan D.host.F X (upTo T)) :
@@ -32,6 +39,15 @@ theorem prM_kills_colSpan
     simpa [Matrix.mulVec, dotProduct] using h2
   exact hle hz
 
+/- English proof (translation)
+Establish `h0 : ∀ i ∈ upTo T, ∀ l, (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram * frameMat V V' ι) i l = 0`. Introduce `i hi l`. Establish `h2` using `h i hi (V'.frame l)`. Rewrite `h2` using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord]`. Simplify using `only [repr_symm] at h2`.
+
+Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Eq.trans (Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_) h2` and prove the remaining obligations. Simplify using `only [Formalism.UG.cT, frameMat, LinearMap.toMatrix_apply, Matrix.transpose_apply, Matrix.map_apply]`. Both sides reduce to the same expression.
+
+Simplify using `only [colPerp, Submodule.mem_iInf]`. Introduce `i hi`. Simplify using `only [LinearMap.mem_ker, LinearMap.comp_apply, Matrix.mulVecLin_apply, LinearMap.proj_apply]`. Rewrite using `[Matrix.mulVec_mulVec]`. Establish `e : adMat D.host.F (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram) * adMat D.host.F (frameMat V V' ι) = adMat D.host.F (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram * frameMat V V' ι)` using `Matrix.map_mul.symm`.
+
+Rewrite using `[e]`. Simplify using `[Matrix.mulVec, dotProduct, h0 i hi]`.
+-/
 theorem frameMat_mem_colPerp
     (h : ∀ i ∈ upTo T, ∀ v' : V'.V, V.hT (V.frame.equivFun.symm fun j => X j i) (ι v') = 0)
     (y : Fin V'.rank → AF D.host.F ⊗[D.host.F] D.host.E) :
@@ -55,6 +71,11 @@ theorem frameMat_mem_colPerp
   rw [e]
   simp [Matrix.mulVec, dotProduct, h0 i hi]
 
+/- English proof (translation)
+Establish `hPI : adMat D.host.F (prM V V' ι) ⬝ adMat D.host.F (frameMat V V' ι) = 1`. Rewrite using `[← Matrix.map_mul, prM_mul_frameMat hι]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations. Establish `h1` using `ha.2.2 (adMat D.host.F (frameMat V V' ι) *ᵥ Pi.single j 1) (frameMat_mem_colPerp h _)`.
+
+Establish `h2` using `prM_kills_colSpan h h1`. Rewrite `h2` using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec (Pi.single j 1) (adMat D.host.F (prM V V' ι)) (adMat D.host.F (frameMat V V' ι)), hPI, Matrix.one_mulVec, sub_eq_zero]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Rewrite using `[Matrix.one_mulVec]`. Conclude with `h2`.
+-/
 theorem prM_unip_frameMat (hι : HSpace.IsIsomEmb V' V ι)
     (h : ∀ i ∈ upTo T, ∀ v' : V'.V, V.hT (V.frame.equivFun.symm fun j => X j i) (ι v') = 0)
     {a : GA D V} (ha : a ∈ unip D.sp.cm.sig V.gram X T) :
@@ -71,6 +92,9 @@ theorem prM_unip_frameMat (hι : HSpace.IsIsomEmb V' V ι)
   rw [Matrix.one_mulVec]
   exact h2
 
+/- English proof (translation)
+Establish `hv : v = (v * (s u)⁻¹) * s u` using `by group`. Establish `h1 : (matHom V v).1 = (matHom V (v * (s u)⁻¹)).1 * (matHom V (s u)).1` using `by conv_lhs => rw [hv]`. Conclude with `congrArg Units.val (map_mul (matHom V) _ _)`. Establish `h2 : (matHom V (s u)).1 ⬝ adMat D.host.F (frameMat V V' ι) = adMat D.host.F (frameMat V V' ι) ⬝ (matHom V' u).1` using `(hs u).1`. Rewrite using `[h1, Matrix.mul_assoc, Matrix.mul_assoc, h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, prM_unip_frameMat hι h hvu, Matrix.one_mul]`.
+-/
 theorem mt_eq_of_mem (hι : HSpace.IsIsomEmb V' V ι)
     (h : ∀ i ∈ upTo T, ∀ v' : V'.V, V.hT (V.frame.equivFun.symm fun j => X j i) (ι v') = 0)
     {s : GA D V' →* GA D V} (hs : ∀ h, EmbRel V V' ι (s h) h) {v : GA D V} {u : GA D V'}
@@ -84,6 +108,17 @@ theorem mt_eq_of_mem (hι : HSpace.IsIsomEmb V' V ι)
   rw [h1, Matrix.mul_assoc, Matrix.mul_assoc, h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
     prM_unip_frameMat hι h hvu, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `D V m X Y hW T V' ι hι hr s hs N N₁ hN hcov`. Establish `h : ∀ i ∈ upTo T, ∀ v' : V'.V, V.hT (V.frame.equivFun.symm fun j => X j i) (ι v') = 0` using `fun i hi v' => ((hr (ι v')).1 ⟨v', rfl⟩ i hi).1`. Establish `uniq : ∀ (v : GA D V) (u u' : GA D V'), v * (s u)⁻¹ ∈ unip D.sp.cm.sig V.gram X T → v * (s u')⁻¹ ∈ unip D.sp.cm.sig V.gram X T → u = u'` using `fun v u u' h1 h2 => GlobalTheory.MixModel.mt_injective V' ((mt_eq_of_mem hι h hs h1).trans (mt_eq_of_mem hι h hs h2).symm)`. Use `choose f hf1 hf2 using hcov`. Set `π : N →* N₁` to `MonoidHom.mk' (fun v => ⟨f v.1 v.2, hf1 v.1 v.2⟩) fun a b => by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `uniq (a.1 * b.1) _ _ (hf2 _ (a * b).2) ?_` and prove the remaining obligations. Establish `e : a.1 * b.1 * (s (f a.1 a.2 * f b.1 b.2))⁻¹ = (a.1 * (b.1 * (s (f b.1 b.2))⁻¹) * a.1⁻¹) * (a.1 * (s (f a.1 a.2))⁻¹)`. Rewrite using `[map_mul]`. Use `group`.
+
+Express the relevant statement in the definitionally equal form `a.1 * b.1 * (s (f a.1 a.2 * f b.1 b.2))⁻¹ ∈ unip D.sp.cm.sig V.gram X T`. Rewrite using `[e]`. Conclude with `mul_mem (hN a.1 a.2 _ (hf2 _ b.2)) (hf2 _ a.2)`. Establish `hmat : ∀ v : N, (matHom V' (π v : GA D V')).1 = adMat D.host.F (prM V V' ι) ⬝ (matHom V (v : GA D V)).1 ⬝ adMat D.host.F (frameMat V V' ι)` using `fun v => mt_eq_of_mem hι h hs (hf2 v.1 v.2)`. Use `⟨π, ?_, fun v u => ⟨fun e => e ▸ hf2 v.1 v.2, fun e => Subtype.ext (uniq v.1 _ _ (hf2 v.1 v.2) e)⟩, ?_⟩` and prove the remaining obligations.
+
+Use `Continuous.subtype_mk (GlobalTheory.MixModel.continuous_of_mt V' ?_) _ haveI := (ring_facts (F := D.host.F) (E := D.host.E)).1` and prove the remaining obligations. Establish `hm : Continuous fun v : N => (matHom V (v : GA D V)).1` using `(GlobalTheory.MixModel.continuous_mt V).comp continuous_subtype_val`. Conclude with `((continuous_const.matrix_mul hm).matrix_mul continuous_const).congr fun v => (hmat v).symm`. Introduce `v hv`. Use `(GlobalTheory.MixModel.mem_GQ_iff V' _).2 ?_` and prove the remaining obligations.
+
+Use `(congrArg (· ∈ GlobalTheory.MixModel.ratMx D V'.rank V'.rank) (hmat v)).mpr ?_` and prove the remaining obligations. Conclude with `GlobalTheory.MixModel.ratMx_mul (GlobalTheory.MixModel.ratMx_mul (GlobalTheory.MixModel.rat_mem _) ((GlobalTheory.MixModel.mem_GQ_iff V _).1 hv)) (GlobalTheory.MixModel.rat_mem _)`.
+-/
 theorem exists_proj : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (T : Finset (Fin m)) (V' : HSp D) (ι : V'.V →ₗ[D.host.E] V.V), HSpace.IsIsomEmb V' V ι → (∀ v : V.V, v ∈ LinearMap.range ι ↔ ∀ i ∈ GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.upTo T, V.hT (V.frame.equivFun.symm fun j => X j i) v = 0 ∧ V.hT (V.frame.equivFun.symm fun j => Y j i) v = 0) → ∀ s : GA D V' →* GA D V, (∀ h, EmbRel V V' ι (s h) h) → ∀ (N : Subgroup (GA D V)) (N₁ : Subgroup (GA D V')), (∀ p ∈ N, ∀ a ∈ unip D.sp.cm.sig V.gram X T, p * a * p⁻¹ ∈ unip D.sp.cm.sig V.gram X T) → (∀ v ∈ N, ∃ u ∈ N₁, v * (s u)⁻¹ ∈ unip D.sp.cm.sig V.gram X T) → ∃ π : N →* N₁, Continuous π ∧ (∀ (v : N) (u : N₁), π v = u ↔ (v : GA D V) * (s u)⁻¹ ∈ unip D.sp.cm.sig V.gram X T) ∧ ∀ v : N, (v : GA D V) ∈ GQ V → (π v : GA D V') ∈ GQ V' := by
   intro D V m X Y hW T V' ι hι hr s hs N N₁ hN hcov
   have h : ∀ i ∈ upTo T, ∀ v' : V'.V, V.hT (V.frame.equivFun.symm fun j => X j i) (ι v') = 0 :=

@@ -7,6 +7,19 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `q B O _ _ _ hq hO n i y hy`. Take `⟨J, _, _, D, ι, ⟨hc⟩, het⟩` from `GlobalTheory.T.exists_filtered_colimit_of_etale_of_indEt B O hO`. Establish `hc' : IsColimit ((Under.forget (CommRingCat.of B)).mapCocone (Cocone.mk _ ι))` using `isColimitOfPreserves (Under.forget _) hc`. Take `⟨j⟩` from `IsFiltered.nonempty (C := J)`. Establish `hqj : IsUnit ((q : ((D ⋙ Under.forget _).obj j)))`.
+
+Use `hq.map (D.obj j).hom.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this`. Establish `hyj : pull _ (spMap ((Under.forget _).mapCocone (Cocone.mk _ ι) |>.ι.app j).hom) _ _ (pull _ (spMap (D.obj j).hom.hom) _ _ y) = 0` using `by erw [← pull_comp]`. Establish `hw : (D.obj j).hom ≫ (ι.app j).right = CommRingCat.ofHom (algebraMap B O)`.
+
+Simplify using `using Under.w (ι.app j)`. Establish `: spMap ((Under.forget _).mapCocone (Cocone.mk _ ι) |>.ι.app j).hom ≫ spMap (D.obj j).hom.hom = spMap (algebraMap B O)`. Simplify using `only [spMap, ← Functor.map_comp, ← Spec.map_comp]`. Apply the tactic sequence `congr 2 <;> simpa using hw`. Use `erw [this]`.
+
+Conclude with `hy`. Take `⟨k, f, hk⟩` from `(GlobalTheory.T.etaleCohomology_twisted_filtered_colimit_continuity q (D ⋙ Under.forget _) _ hc' n i).2 j _ hqj hyj`. Use `erw [← pull_comp] at hk`. Establish `hwk : (D.obj j).hom ≫ (D.map f).right = (D.obj k).hom` using `by simpa using Under.w (D.map f)`. Use `letI : Algebra B (D.obj k).right := (D.obj k).hom.hom.toAlgebra`.
+
+Use `⟨(D.obj k).right, inferInstance, this, het k, ⟨(ι.app k).right.hom, fun b => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hw : (D.obj k).hom ≫ (ι.app k).right = CommRingCat.ofHom (algebraMap B O)`. Simplify using `using Under.w (ι.app k)`. Conclude with `congrArg (fun g => g.hom b) hw`. Establish `: spMap ((D ⋙ Under.forget _).map f).hom ≫ spMap (D.obj j).hom.hom = spMap (algebraMap B (D.obj k).right)`.
+
+Simplify using `only [spMap, ← Functor.map_comp, ← Spec.map_comp]`. Apply the tactic sequence `congr 2 <;> simpa using hwk`. Use `erw [this] at hk`. Conclude with `hk`.
+-/
 theorem exists_etale_kill_of_indEt : ∀ (q : ℕ) (B O : Type) [CommRing B] [CommRing O] [Algebra B O], IsUnit (q : B) → IndEt B O → ∀ (n i : ℤ) (y : Ht q (sp B) n i), pull _ (spMap (algebraMap B O)) _ _ y = 0 → ∃ (D : Type) (_ : CommRing D) (_ : Algebra B D) (_ : Algebra.Etale B D) (_ : D →ₐ[B] O), pull _ (spMap (algebraMap B D)) _ _ y = 0 := by
   intro q B O _ _ _ hq hO n i y hy
   obtain ⟨J, _, _, D, ι, ⟨hc⟩, het⟩ := GlobalTheory.T.exists_filtered_colimit_of_etale_of_indEt B O hO

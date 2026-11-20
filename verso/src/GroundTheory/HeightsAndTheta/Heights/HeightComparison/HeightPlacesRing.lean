@@ -15,14 +15,23 @@ def placesRing {L : Type*} [Field L] [NumberField L] (S : Set (FinitePlace L)) :
     rw [map_mul]
     exact mul_le_one₀ (hx w hw) (apply_nonneg w _) (hy w hw)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_placesRing {L : Type*} [Field L] [NumberField L] (S : Set (FinitePlace L)) (x : L) :
     x ∈ placesRing S ↔ ∀ w ∈ S, w x ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `fun w _ ↦ by rw [← FinitePlace.norm_embedding_eq] exact FinitePlace.norm_le_one _ _ x`.
+-/
 example {L : Type*} [Field L] [NumberField L] (S : Set (FinitePlace L)) (x : 𝓞 L) :
     algebraMap (𝓞 L) L x ∈ placesRing S := fun w _ ↦ by
   rw [← FinitePlace.norm_embedding_eq]
   exact FinitePlace.norm_le_one _ _ x
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun _ _ w hw ↦ absurd hw (Set.notMem_empty w)`.
+-/
 example : placesRing (∅ : Set (FinitePlace ℚ)) = ⊤ :=
   eq_top_iff.2 fun _ _ w hw ↦ absurd hw (Set.notMem_empty w)
 

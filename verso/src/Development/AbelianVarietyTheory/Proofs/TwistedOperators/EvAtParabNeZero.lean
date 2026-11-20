@@ -65,12 +65,23 @@ def evAt (t : ℕ) (σ : Representation ℂ (GL (Fin r) k) V) (χW χV : kˣ →
 
 variable {σ : Representation ℂ (GL (Fin r) k) V} {χW χV : kˣ →* ℂˣ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evAt_apply (g : GL (Fin (r + t)) k) (f : LiftSp t σ χW χV) :
     evAt t σ χW χV g f = TensorProduct.rid ℂ V (f.1.1 g) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evAt_lift (g x : GL (Fin (r + t)) k) (f : LiftSp t σ χW χV) :
     evAt t σ χW χV g (liftRep t σ χW χV x f) = evAt t σ χW χV (g * x) f := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `hg` using `h g`. Rewrite `hg` using `[evAt_apply]`.
+
+Conclude with `(LinearEquiv.map_eq_zero_iff _).mp hg`.
+-/
 theorem eq_zero_of_evAt (f : LiftSp t σ χW χV) (h : ∀ g, evAt t σ χW χV g f = 0) : f = 0 := by
   apply Subtype.ext
   apply Subtype.ext
@@ -79,6 +90,11 @@ theorem eq_zero_of_evAt (f : LiftSp t σ χW χV) (h : ∀ g, evAt t σ χW χV 
   rw [evAt_apply] at hg
   exact (LinearEquiv.map_eq_zero_iff _).mp hg
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c`. Simplify using `only [extTensor_tmul, twist_apply, detRep, ofChar_apply, TensorProduct.rid_tmul, map_smul, Units.val_mul, mul_smul]`. Simplify using `only [smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`.
+-/
 private theorem rid_extTensor_twist_detRep_eq_smul (g : GL (Fin r) k × GL (Fin t) k) (x : V ⊗[ℂ] ℂ) :
     TensorProduct.rid ℂ V (extTensor (twist σ (detChar (Fin r) (χW * χV⁻¹))) (detRep (Fin t) χW) g x) =
       ((detChar (Fin r) (χW * χV⁻¹) g.1 * detChar (Fin t) χW g.2 : ℂˣ) : ℂ) •
@@ -93,6 +109,9 @@ private theorem rid_extTensor_twist_detRep_eq_smul (g : GL (Fin r) k × GL (Fin 
     ring
   | add x y hx hy => simp only [map_add, hx, hy, smul_add]
 
+/- English proof (translation)
+Rewrite using `[evAt_apply, evAt_apply, parInd_law, map_smul]`. Use `erw [rid_extTensor_twist_detRep_eq_smul]`. Rewrite using `[← mul_smul, mul_assoc, Units.val_mul (deltaHalf k _ _)]`. Both sides reduce to the same expression.
+-/
 theorem evAt_parab (p : parab k (part r t)) (g : GL (Fin (r + t)) k) (f : LiftSp t σ χW χV) :
     evAt t σ χW χV (p * g) f =
       ((deltaHalf k (Two (Fin r) (Fin t)) (leviProj k (part r t) p) *
@@ -104,12 +123,18 @@ theorem evAt_parab (p : parab k (part r t)) (g : GL (Fin (r + t)) k) (f : LiftSp
   rw [← mul_smul, mul_assoc, Units.val_mul (deltaHalf k _ _)]
   rfl
 
+/- English proof (translation)
+Introduce `hg`. Apply `h` to reduce the goal to its premises. Rewrite using `[evAt_parab, hg, map_zero, smul_zero]`.
+-/
 theorem evAt_parab_ne_zero (p : parab k (part r t)) (g : GL (Fin (r + t)) k) (f : LiftSp t σ χW χV)
     (h : evAt t σ χW χV (p * g) f ≠ 0) : evAt t σ χW χV g f ≠ 0 := by
   intro hg
   apply h
   rw [evAt_parab, hg, map_zero, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[show incl k n a = Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) a from rfl, Matrix.GeneralLinearGroup.map_det]`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Conclude with `(Valuation.integer.integers _).one_of_isUnit (Units.isUnit _)`.
+-/
 private theorem valuation_det_incl_eq_one {n : ℕ} (a : GL (Fin n) 𝒪[k]) :
     valuation k ((Matrix.GeneralLinearGroup.det (incl k n a) : kˣ) : k) = 1 := by
   rw [show incl k n a = Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) a from rfl,
@@ -117,11 +142,27 @@ private theorem valuation_det_incl_eq_one {n : ℕ} (a : GL (Fin n) 𝒪[k]) :
   simp only [Units.coe_map, MonoidHom.coe_coe]
   exact (Valuation.integer.integers _).one_of_isUnit (Units.isUnit _)
 
+/- English proof (translation)
+Rewrite using `[detChar_apply]`. Conclude with `h _ (valuation_det_incl_eq_one a)`.
+-/
 theorem detChar_incl {n : ℕ} {χ : kˣ →* ℂˣ} (h : IsUnram χ) (a : GL (Fin n) 𝒪[k]) :
     detChar (Fin n) χ (incl k n a) = 1 := by
   rw [detChar_apply]
   exact h _ (valuation_det_incl_eq_one a)
 
+/- English proof (translation)
+Establish `hp : p ∈ parab k (part r t)`. Rewrite using `[mem_parab_two]`. Introduce `j i`. Conclude with `hc j i`. Establish `h1` using `evAt_parab (σ := σ) (χW := χW) (χV := χV) ⟨p, hp⟩ g f`.
+
+Establish `hL0 : leviProj k (part r t) ⟨p, hp⟩ false = incl k r a`. Apply `Matrix.GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[leviProj_apply]`. Conclude with `ha i j`.
+
+Establish `hL1 : leviProj k (part r t) ⟨p, hp⟩ true = incl k t d`. Apply `Matrix.GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[leviProj_apply]`. Conclude with `hd i j`.
+
+Establish `hδ : deltaHalf k (Two (Fin r) (Fin t)) (leviProj k (part r t) ⟨p, hp⟩) = 1`. Rewrite using `[deltaHalf_apply]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `x _`. Apply `isUnram_absPow` to reduce the goal to its premises.
+
+Consider the cases of `x`. Rewrite using `[hL0]`. Conclude with `valuation_det_incl_eq_one a`. Rewrite using `[hL1]`. Conclude with `valuation_det_incl_eq_one d`.
+
+Rewrite using `[show p * g = ((⟨p, hp⟩ : parab k (part r t)) : GL (Fin (r + t)) k) * g from rfl, h1, hδ, hL0, hL1, detChar_incl hu a]`. Simplify using `only [one_mul]`.
+-/
 theorem evAt_parab_int (hu : IsUnram (χW * χV⁻¹)) (p : GL (Fin (r + t)) k) (a : GL (Fin r) 𝒪[k])
     (d : GL (Fin t) 𝒪[k])
     (ha : ∀ i j, p.val (Fin.castAdd t i) (Fin.castAdd t j) = (incl k r a).val i j)
@@ -162,33 +203,59 @@ theorem evAt_parab_int (hu : IsUnram (χW * χV⁻¹)) (p : GL (Fin (r + t)) k) 
 def diagO (a : GL (Fin r) 𝒪[k]) (d : GL (Fin t) 𝒪[k]) : GL (Fin (r + t)) 𝒪[k] :=
   emb₂ 𝒪[k] (stdSum (rfl : r + t = r + t)) (a, d)
 
+/- English proof (translation)
+Simplify using `[diagO, val_emb₂, stdSum, Matrix.reindex_apply]`.
+-/
 theorem diagO_ul (a : GL (Fin r) 𝒪[k]) (d : GL (Fin t) 𝒪[k]) (i j : Fin r) :
     (diagO a d).val (Fin.castAdd t i) (Fin.castAdd t j) = a.val i j := by
   simp [diagO, val_emb₂, stdSum, Matrix.reindex_apply]
 
+/- English proof (translation)
+Simplify using `[diagO, val_emb₂, stdSum, Matrix.reindex_apply]`.
+-/
 theorem diagO_lr (a : GL (Fin r) 𝒪[k]) (d : GL (Fin t) 𝒪[k]) (i j : Fin t) :
     (diagO a d).val (Fin.natAdd r i) (Fin.natAdd r j) = d.val i j := by
   simp [diagO, val_emb₂, stdSum, Matrix.reindex_apply]
 
+/- English proof (translation)
+Simplify using `[diagO, val_emb₂, stdSum, Matrix.reindex_apply]`.
+-/
 theorem diagO_ll (a : GL (Fin r) 𝒪[k]) (d : GL (Fin t) 𝒪[k]) (i : Fin t) (j : Fin r) :
     (diagO a d).val (Fin.natAdd r i) (Fin.castAdd t j) = 0 := by
   simp [diagO, val_emb₂, stdSum, Matrix.reindex_apply]
 
+/- English proof (translation)
+Simplify using `[diagO, val_emb₂, stdSum, Matrix.reindex_apply]`.
+-/
 theorem diagO_ur (a : GL (Fin r) 𝒪[k]) (d : GL (Fin t) 𝒪[k]) (i : Fin r) (j : Fin t) :
     (diagO a d).val (Fin.castAdd t i) (Fin.natAdd r j) = 0 := by
   simp [diagO, val_emb₂, stdSum, Matrix.reindex_apply]
 
+/- English proof (translation)
+Use `⟨diagO_ul a d, diagO_lr a d, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[diagO_ll]`. Conclude with `Ideal.zero_mem _`.
+-/
 theorem hasBlocks_diagO (a : GL (Fin r) 𝒪[k]) (d : GL (Fin t) 𝒪[k]) : HasBlocks (diagO a d) a d := by
   refine ⟨diagO_ul a d, diagO_lr a d, fun i j => ?_⟩
   rw [diagO_ll]
   exact Ideal.zero_mem _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_val {n : ℕ} (a : GL (Fin n) 𝒪[k]) (i j : Fin n) :
     (incl k n a).val i j = (a.val i j : k) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem red_val {n : ℕ} (a : GL (Fin n) 𝒪[k]) (i j : Fin n) :
     (red k n a).val i j = IsLocalRing.residue 𝒪[k] (a.val i j) := rfl
 
+/- English proof (translation)
+Apply `Matrix.GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[incl_val]`. Simplify using `only [diagO, diagOne, MonoidHom.comp_apply, MonoidHom.inl_apply, val_emb₂, Matrix.reindex_apply, Matrix.submatrix_apply]`. Generalize the expression as in `(stdSum (rfl : r + t = r + t)).symm i = x`.
+
+Generalize the expression as in `(stdSum (rfl : r + t = r + t)).symm j = y`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y <;> simp [incl_val, Matrix.one_apply, apply_ite]`.
+-/
 theorem incl_diagO_one (a : GL (Fin r) 𝒪[k]) : incl k (r + t) (diagO a 1) = diagOne k r t a := by
   apply Matrix.GeneralLinearGroup.ext
   intro i j
@@ -199,6 +266,13 @@ theorem incl_diagO_one (a : GL (Fin r) 𝒪[k]) : incl k (r + t) (diagO a 1) = d
   generalize (stdSum (rfl : r + t = r + t)).symm j = y
   rcases x with x | x <;> rcases y with y | y <;> simp [incl_val, Matrix.one_apply, apply_ite]
 
+/- English proof (translation)
+Introduce `g`. Set `M : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => Function.surjInv (IsLocalRing.residue_surjective (R := 𝒪[k])) (g.val i j)`. Establish `hM : M.map (IsLocalRing.residue 𝒪[k]) = g.val`. Use extensionality with `i j`. Conclude with `Function.surjInv_eq (IsLocalRing.residue_surjective (R := 𝒪[k])) _`.
+
+Establish `hdet : IsUnit M.det`. Apply `IsUnit.of_map (IsLocalRing.residue 𝒪[k])` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hM]`. Conclude with `Matrix.isUnits_det_units g`. Use `⟨((Matrix.isUnit_iff_isUnit_det M).mpr hdet).unit, ?_⟩` and prove the remaining obligations.
+
+Apply `Matrix.GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[red_val]`. Conclude with `Function.surjInv_eq (IsLocalRing.residue_surjective (R := 𝒪[k])) _`.
+-/
 theorem red_surjective (n : ℕ) : Function.Surjective (red k n) := by
   intro g
   let M : Matrix (Fin n) (Fin n) 𝒪[k] := fun i j =>
@@ -216,6 +290,11 @@ theorem red_surjective (n : ℕ) : Function.Surjective (red k n) := by
   rw [red_val]
   exact Function.surjInv_eq (IsLocalRing.residue_surjective (R := 𝒪[k])) _
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Parabolic.mem_fixed]`. Prove the components needed by the constructor for the conclusion. Introduce `hv a ha`. Conclude with `hv _ ⟨a, ha, rfl⟩`. Introduce and unpack `h _ ⟨a, ha, rfl⟩`.
+
+Conclude with `h a ha`.
+-/
 theorem mem_fixed_KOne {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V} {v : V} :
     v ∈ fixed π (KOne k (Fin n)) ↔ ∀ a : GL (Fin n) 𝒪[k], red k n a = 1 → π (incl k n a) v = v := by
   rw [GlobalTheory.Parabolic.mem_fixed]
@@ -225,6 +304,11 @@ theorem mem_fixed_KOne {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V} {v :
   · rintro h _ ⟨a, ha, rfl⟩
     exact h a ha
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Parabolic.mem_fixed]`. Prove the components needed by the constructor for the conclusion. Introduce `hv a`. Conclude with `hv _ ⟨a, rfl⟩`. Introduce and unpack `h _ ⟨a, rfl⟩`.
+
+Conclude with `h a`.
+-/
 theorem mem_fixed_KO {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V} {v : V} :
     v ∈ fixed π (KO k (Fin n)) ↔ ∀ a : GL (Fin n) 𝒪[k], π (incl k n a) v = v := by
   rw [GlobalTheory.Parabolic.mem_fixed]
@@ -238,6 +322,9 @@ def Nice (r t : ℕ) (w : Equiv.Perm (Fin (r + t))) (S : Finset (Fin r)) : Prop 
   (∀ i, i ∉ S → w (Fin.castAdd t i) = Fin.castAdd t i) ∧
   (∀ i ∈ S, r ≤ (w (Fin.castAdd t i) : ℕ) ∧ r ≤ (w.symm (Fin.castAdd t i) : ℕ)) ∧ (S = ∅ → w = 1)
 
+/- English proof (translation)
+Use `⟨fun i _ => rfl, fun i hi => ?_, fun _ => rfl⟩` and prove the remaining obligations. Simplify using `at hi`.
+-/
 theorem nice_one : Nice r t 1 ∅ := by
   refine ⟨fun i _ => rfl, fun i hi => ?_, fun _ => rfl⟩
   simp at hi

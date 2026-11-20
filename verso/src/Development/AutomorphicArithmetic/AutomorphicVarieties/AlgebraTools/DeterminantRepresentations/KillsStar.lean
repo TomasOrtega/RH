@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 
 open Polynomial Matrix UpperTheory.V UpperTheory.V.W
 
+/- English proof (translation)
+Introduce `l _ F O _ _ R _ _ n D hP y hy B _ _ h`. Use `letI : Algebra O B := ((algebraMap R B).comp (algebraMap O R)).toAlgebra`. Use `haveI : IsScalarTower O R B := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Take `⟨-, -, -, -, -, snat⟩` from `AlgebraTools.Det.starApi F O R n`. Take `⟨bmul, b1, badd, -, binv, -⟩` from `AlgebraTools.Det.starApi F O B n`.
+
+Establish `hm : MonoidAlgebra.mapRingHom F.G₀ (algebraMap R B) (F.star O R n y) = F.star O B n (MonoidAlgebra.mapRingHom F.G₀ (algebraMap R B) y)` using `(snat B (IsScalarTower.toAlgHom O R B) y).symm`. Rewrite using `[hm]`. Establish `key : 1 + h * F.star O B n (MonoidAlgebra.mapRingHom F.G₀ (algebraMap R B) y) = F.star O B n (1 + MonoidAlgebra.mapRingHom F.G₀ (algebraMap R B) y * F.star O B n h)`. Rewrite using `[badd, bmul, b1, binv]`. Rewrite using `[key, hP B, (AlgebraTools.Det.gcomm D).1 B]`.
+
+Conclude with `hy B (F.star O B n h)`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.killsStar :
     ∀ {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O] (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (D : GDet n R F.G₀), F.IsPolar O D → ∀ y, D.Kills y → D.Kills (F.star O R n y) := by
   intro l _ F O _ _ R _ _ n D hP y hy B _ _ h

@@ -7,6 +7,9 @@ open GlobalTheory.KCoh Polynomial
 
 namespace GlobalTheory.K4
 
+/- English proof (translation)
+Establish `e : g θ = g' θ` using `h θ`. Unfold `GlobalTheory.NeedB.kum`. Rewrite using `[e]`.
+-/
 theorem kum_congr_base {K₁ K₂ Ω : Type*} [Field K₁] [Field K₂] [Field Ω] [Algebra K₁ Ω] [Algebra K₂ Ω] {N : ℕ}
     (ζ θ : Ω) (g : Ω ≃ₐ[K₁] Ω) (g' : Ω ≃ₐ[K₂] Ω) (h : ∀ x, g x = g' x) :
     GlobalTheory.NeedB.kum (N := N) ζ θ g = GlobalTheory.NeedB.kum (N := N) ζ θ g' := by
@@ -14,6 +17,11 @@ theorem kum_congr_base {K₁ K₂ Ω : Type*} [Field K₁] [Field K₂] [Field �
   unfold GlobalTheory.NeedB.kum
   rw [e]
 
+/- English proof (translation)
+Establish `h1 : B.valuation x ≤ 1` using `(B.valuation_le_one_iff x).2 hx`. Establish `h2 : B.valuation x⁻¹ ≤ 1` using `(B.valuation_le_one_iff _).2 hx'`. Establish `h3 : B.valuation x * B.valuation x⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ h0, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem valuation_eq_one_of_mem_inv_mem {Ω : Type*} [Field Ω] (B : ValuationSubring Ω) {x : Ω} (hx : x ∈ B)
     (hx' : x⁻¹ ∈ B) (h0 : x ≠ 0) : B.valuation x = 1 := by
   have h1 : B.valuation x ≤ 1 := (B.valuation_le_one_iff x).2 hx
@@ -25,6 +33,11 @@ theorem valuation_eq_one_of_mem_inv_mem {Ω : Type*} [Field Ω] (B : ValuationSu
     _ ≤ B.valuation x * 1 := by gcongr
     _ = B.valuation x := mul_one _
 
+/- English proof (translation)
+Take `⟨p, hpm, hp⟩` from `hx`. Set `φ : R →+* B` to `(algebraMap R Ω).codRestrict B hB`. Establish `hcomp : (algebraMap B Ω).comp φ = algebraMap R Ω`. Use extensionality with `r`. Both sides reduce to the same expression.
+
+Establish `hB' : IsIntegral B x` using `⟨p.map φ, hpm.map φ, by rw [Polynomial.eval₂_map, hcomp]; exact hp⟩`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := B) (K := Ω)).1 hB'`. Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem mem_of_isIntegral_of_le {R Ω : Type*} [CommRing R] [Field Ω] [Algebra R Ω] (B : ValuationSubring Ω)
     (hB : ∀ p : R, algebraMap R Ω p ∈ B) {x : Ω} (hx : IsIntegral R x) : x ∈ B := by
   obtain ⟨p, hpm, hp⟩ := hx
@@ -37,6 +50,49 @@ theorem mem_of_isIntegral_of_le {R Ω : Type*} [CommRing R] [Field Ω] [Algebra 
   rw [← hy]
   exact y.2
 
+/- English proof (translation)
+Introduce `hA k F Ω _ _ _ _ _ _ _ _ _ _ _ _ _ N _ ζ hζ U hU α β hα0 hβ0 hαi hαi' hβi hβi' hUfix`. Take `⟨-, ⟨e, he, hec, -⟩, -, -, -⟩` from `GlobalTheory.T.fixingSubgroupOfIntermediateField_properties F (RatFunc k) Ω`. Set `U' : Subgroup (Ω ≃ₐ[RatFunc k] Ω)` to `U.comap ((GlobalTheory.K4.geo F (RatFunc k) Ω).subtype.comp e.toMonoidHom)`. Establish `hU'mem : ∀ g, g ∈ U' ↔ ((e g : GlobalTheory.K4.geo F (RatFunc k) Ω) : Ω ≃ₐ[F] Ω) ∈ U` using `fun g => Iff.rfl`. Establish `hU'open : IsOpen (U' : Set (Ω ≃ₐ[RatFunc k] Ω))` using `(continuous_subtype_val.comp hec).isOpen_preimage _ hU`.
+
+Set `K' : IntermediateField (RatFunc k) Ω` to `IntermediateField.fixedField U'`. Establish `hfixle : U' ≤ K'.fixingSubgroup` using `(IntermediateField.le_iff_le U' K').1 le_rfl`. Use `haveI : FiniteDimensional (RatFunc k) K' := (InfiniteGalois.isOpen_iff_finite K').1 (Subgroup.isOpen_mono hfixle hU'open)`. Use `haveI : IsScalarTower F K' Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower k[X] K' Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Use `haveI : IsAlgClosure K' Ω := ⟨IsAlgClosure.isAlgClosed (RatFunc k), Algebra.IsAlgebraic.tower_top (K := RatFunc k) K'⟩`. Take `⟨-, ⟨e', he', -, hesc'⟩, -, -, -⟩` from `GlobalTheory.T.fixingSubgroupOfIntermediateField_properties F K' Ω`. Establish `hφ : ∀ g (hg : g ∈ GlobalTheory.K4.geo F K' Ω) x, (e'.symm ⟨g, hg⟩) x = g x`. Introduce `g hg x`. Use `he' (e'.symm ⟨g, hg⟩) x` as an intermediate fact.
+
+Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Conclude with `this.symm`. Establish `hsub : ∀ g, g ∈ GlobalTheory.K4.geo F (RatFunc k) Ω ⊓ U → g ∈ GlobalTheory.K4.geo F K' Ω`. Introduce `g hg`. Rewrite `hg` using `[Subgroup.mem_inf]`.
+
+Rewrite using `[GlobalTheory.K4.TopW.mem_geo]`. Introduce `x`. Establish `h1 : e.symm ⟨g, hg.1⟩ ∈ U'`. Rewrite using `[hU'mem, MulEquiv.apply_symm_apply]`. Conclude with `hg.2`.
+
+Establish `h2` using `(IntermediateField.mem_fixedField_iff U' (x : Ω)).1 x.2 _ h1`. Establish `h3 : (e.symm ⟨g, hg.1⟩) (x : Ω) = g x`. Use `he (e.symm ⟨g, hg.1⟩) (x : Ω)` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+
+Rewrite using `[IntermediateField.algebraMap_apply, ← h3]`. Conclude with `h2`. Establish `hfixK' : ∀ z : Ω, (∀ g ∈ U, g z = z) → z ∈ K'`. Introduce `z hz`. Use `(IntermediateField.mem_fixedField_iff U' z).2 fun f hf => ?_` and prove the remaining obligations.
+
+Use `hz _ ((hU'mem f).1 hf)` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `this`. Establish `hαK : α ^ N ∈ K'` using `hfixK' _ fun g hg => (hUfix g hg).1`. Establish `hβK : β ^ N ∈ K'` using `hfixK' _ fun g hg => (hUfix g hg).2`.
+
+Establish `hint : ∀ {θ : Ω} (hθ : θ ^ N ∈ K'), IsIntegral k[X] θ → IsIntegral k[X] θ⁻¹ → (⟨θ ^ N, hθ⟩ : K') ∈ FunctionField.ringOfIntegers k K' ∧ (⟨θ ^ N, hθ⟩ : K')⁻¹ ∈ FunctionField.ringOfIntegers k K'`. Introduce `θ hθ h1 h2`. Prove the components needed by the constructor for the conclusion. Use `(mem_integralClosure_iff _ _).2 ?_` and prove the remaining obligations. Use `(isIntegral_algebraMap_iff (algebraMap K' Ω).injective).1 ?_` and prove the remaining obligations.
+
+Conclude with `h1.pow N`. Use `(mem_integralClosure_iff _ _).2 ?_` and prove the remaining obligations. Use `(isIntegral_algebraMap_iff (algebraMap K' Ω).injective).1 ?_` and prove the remaining obligations. Rewrite using `[map_inv₀, IntermediateField.algebraMap_apply, ← inv_pow]`. Conclude with `h2.pow N`.
+
+Establish `hne : ∀ {θ : Ω} (hθ : θ ^ N ∈ K'), θ ≠ 0 → (⟨θ ^ N, hθ⟩ : K') ≠ 0`. Introduce `θ hθ h0 h`. Conclude with `pow_ne_zero N h0 (congrArg Subtype.val h)`. Take `⟨-, -, -, -, η, hηlc, hηco, hηin⟩` from `hA k K' Ω N ζ (Nat.pos_of_ne_zero (NeZero.ne N)) hζ ⟨α ^ N, hαK⟩ ⟨β ^ N, hβK⟩ α β (hne hαK hα0) (hne hβK hβ0) (hint hαK hαi hαi').1 (hint hαK hαi hαi').2 (hint hβK hβi hβi').1 (hint hβK hβi hβi').2 rfl rfl`. Take `⟨η₀, hη₀⟩ : ∃ η₀ : (Ω ≃ₐ[F] Ω) → ZMod N, ∀ g (hg : g ∈ GlobalTheory.K4.geo F K' Ω), η₀ g = η (e'.symm ⟨g, hg⟩)` from `⟨fun g => if hg : g ∈ GlobalTheory.K4.geo F K' Ω then η (e'.symm ⟨g, hg⟩) else 0, fun g hg => dif_pos hg⟩`.
+
+Use `⟨η₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun g : ↥(GlobalTheory.K4.geo F (RatFunc k) Ω ⊓ U) => η₀ g) = η ∘ e'.symm ∘ (fun g : ↥(GlobalTheory.K4.geo F (RatFunc k) Ω ⊓ U) => (⟨g.1, hsub _ g.2⟩ : GlobalTheory.K4.geo F K' Ω))`. Use function extensionality and compare the values at `g`. Conclude with `hη₀ _ _`. Rewrite using `[hfun]`.
+
+Conclude with `hηlc.comp_continuous (hesc'.comp (continuous_subtype_val.subtype_mk _))`. Introduce `g hg h hh`. Establish `hgh` using `mul_mem hg hh`. Rewrite using `[hη₀ _ (hsub _ hg), hη₀ _ (hsub _ hh), hη₀ _ (hsub _ hgh), kum_congr_base ζ α g (e'.symm ⟨g, hsub _ hg⟩) (fun x => (hφ _ _ x).symm), kum_congr_base ζ β h (e'.symm ⟨h, hsub _ hh⟩) (fun x => (hφ _ _ x).symm)]`. Establish `hm : e'.symm ⟨g * h, hsub _ hgh⟩ = e'.symm ⟨g, hsub _ hg⟩ * e'.symm ⟨h, hsub _ hh⟩`.
+
+Rewrite using `[← map_mul]`. Both sides reduce to the same expression. Rewrite using `[hm]`. Conclude with `hηco _ _`. Introduce `r hr B hB hinert`.
+
+Establish `hmemB : ∀ {x : Ω}, IsIntegral k[X] x → x ∈ B` using `fun hx => mem_of_isIntegral_of_le B hB hx`. Establish `hNk : (N : k) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne N)`. Establish `hk : (N : k[X]) * C ((N : k)⁻¹) = 1`. Rewrite using `[← map_natCast C N, ← C_mul, mul_inv_cancel₀ hNk, C_1]`. Establish `h1 : (N : Ω) * algebraMap k[X] Ω (C ((N : k)⁻¹)) = 1`.
+
+Rewrite using `[← map_natCast (algebraMap k[X] Ω) N, ← map_mul, hk, map_one]`. Establish `hNΩ : (N : Ω) ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Establish `hvN : B.valuation (N : Ω) = 1`. Use `valuation_eq_one_of_mem_inv_mem B ?_ ?_ hNΩ` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap k[X] Ω) N]`.
+
+Conclude with `hB _`. Rewrite using `[← eq_inv_of_mul_eq_one_right h1]`. Conclude with `hB _`. Establish `hroot : ∀ θ : Ω, θ ≠ 0 → IsIntegral k[X] θ → IsIntegral k[X] θ⁻¹ → r (θ ^ N) = θ ^ N → r θ = θ`. Introduce `θ h0 hi hi' hfix`.
+
+Use `GlobalTheory.T.inert_apply_eq_of_pow_fixed_of_valuation_one F Ω B r N 1 θ (Nat.pos_of_ne_zero (NeZero.ne N)) hvN hinert (map_one r) one_ne_zero hfix ?_` and prove the remaining obligations. Rewrite using `[one_pow, div_one]`. Use `valuation_eq_one_of_mem_inv_mem B (hmemB (hi.pow N)) ?_ (pow_ne_zero N h0)` and prove the remaining obligations. Rewrite using `[← inv_pow]`. Conclude with `hmemB (hi'.pow N)`.
+
+Rewrite `hr` using `[Subgroup.mem_inf]`. Use `⟨?_, hroot α hα0 hαi hαi' (hUfix r hr.2).1, hroot β hβ0 hβi hβi' (hUfix r hr.2).2⟩` and prove the remaining obligations. Establish `hr' : r ∈ GlobalTheory.K4.geo F (RatFunc k) Ω ⊓ U` using `Subgroup.mem_inf.2 hr`. Rewrite using `[hη₀ _ (hsub _ hr')]`. Use `hηin B ?_ _ ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Use `hmemB ?_` and prove the remaining obligations. Conclude with `((mem_integralClosure_iff _ _).1 hx).algebraMap`. Introduce `x hx`. Rewrite using `[hφ]`.
+
+Conclude with `hinert x hx`.
+-/
 theorem thmA_on_open_geo : GlobalTheory.NeedB.ThmA → ∀ (k F Ω : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Field Ω] [Algebra F (RatFunc k)] [Algebra (RatFunc k) Ω] [Algebra F Ω] [IsScalarTower F (RatFunc k) Ω] [Algebra k[X] Ω] [IsScalarTower k[X] (RatFunc k) Ω] [IsAlgClosure (RatFunc k) Ω] [Algebra.IsAlgebraic F Ω] (N : ℕ) [NeZero N] (ζ : Ω), IsPrimitiveRoot ζ N → ∀ (U : Subgroup (Ω ≃ₐ[F] Ω)), IsOpen (U : Set (Ω ≃ₐ[F] Ω)) → ∀ α β : Ω, α ≠ 0 → β ≠ 0 → IsIntegral k[X] α → IsIntegral k[X] α⁻¹ → IsIntegral k[X] β → IsIntegral k[X] β⁻¹ →
  (∀ g ∈ U, g (α ^ N) = α ^ N ∧ g (β ^ N) = β ^ N) →
  ∃ η₀ : (Ω ≃ₐ[F] Ω) → ZMod N, IsLocallyConstant (fun g : ↥(GlobalTheory.K4.geo F (RatFunc k) Ω ⊓ U) => η₀ g) ∧

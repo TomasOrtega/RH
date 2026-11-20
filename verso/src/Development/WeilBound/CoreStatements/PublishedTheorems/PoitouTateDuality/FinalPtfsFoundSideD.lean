@@ -12,6 +12,11 @@ attribute [local instance 2000] Rep.hV2
 
 set_option maxSynthPendingDepth 1
 
+/- English proof (translation)
+Establish `hd0 : (inhomogeneousCochains.d A 2).hom (fun s => e (f s)) = 0`. Use `(d_comp_homF rho A e he 2 f).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Conclude with `(congrArg e (hdn s)).trans (map_zero e)`. Take `⟨x, hx⟩` from `exists_coc A 2 _ hlc hd0`.
+
+Conclude with `⟨x, fun s => congrFun hx s⟩`.
+-/
 theorem exists_cocycle_of_dn {k G : Type} [CommRing k] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (A : Rep.{0} k G) [IsDiscreteRep A] {R M : Type} [CommRing R]
     [AddCommGroup M] [Module R M] (rho : Representation R G M) (e : M →+ A.V)
@@ -36,6 +41,15 @@ variable {Kf : FiniteSubfield} [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicC
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Set `e : ZMod (l ^ r) →+ (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S (l ^ r))).V` to `rvF S u`. Establish `hlc : IsLocallyConstant fun s : Fin 2 → (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1) ≃ₐ[(v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1)) => e (κ (ev (s 0)) * χ (ev (s 1)))`. Establish `h0` using `(kummer_ev_isLocallyConstant hev hζ hy0 κ hκ).comp_continuous (continuous_apply (A := fun _ : Fin 2 => (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1) ≃ₐ[(v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf. …`. Establish `h1` using `hχlc.comp_continuous (continuous_apply (A := fun _ : Fin 2 => (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1) ≃ₐ[(v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1))) 1)`. Conclude with `h0.comp₂ h1 (fun a b => e (a * b))`.
+
+Set `rhoV : Representation (ZMod (l ^ r)) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1) ≃ₐ[(v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1)) (ZMod (l ^ r))` to `(muLoc Kf.1 l r A).comp ev.toMonoidHom`. Establish `hrho : ∀ σ m, rhoV σ m = ((cycMod Kf.1 (AlgebraicClosure ℚ) l r ((ev σ : Dec (F` using `Kf.1) A) : G Kf.1 (AlgebraicClosure ℚ)) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * m := fun σ m => rfl`. Establish `heq : ∀ σ m, e (rhoV σ m) = (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S (l ^ r))).ρ σ (e m)` using `fun σ m => (congrArg (rvF S u) (hrho σ m)).trans (rvF_act hev hζ u hu σ m)`. Establish `hdn : ∀ s, dn rhoV 2 (fun t => κ (ev (t 0)) * χ (ev (t 1))) s = 0`. Introduce `s`.
+
+Use `(dn_two rhoV (fun p => κ (ev p.1) * χ (ev p.2)) s).trans ?_` and prove the remaining obligations. Establish `hκev : ∀ a b, κ (ev (a * b)) = κ (ev a) + ((cycMod Kf.1 (AlgebraicClosure ℚ) l r ((ev a : Dec (F` using `Kf.1) A) : G Kf.1 (AlgebraicClosure ℚ)) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * κ (ev b) := fun a b => by`. Rewrite using `[map_mul]`. Conclude with `kummer_coc hζ hy0 κ hκ _ _`. Simplify using `only [hrho, hκev, hχadd]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `haveI : IsDiscreteRep (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S (l ^ r))) := isDiscreteRep_res_gsRoots S ιs (l ^ r) v`. Conclude with `exists_cocycle_of_dn (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S (l ^ r))) rhoV e heq _ hlc hdn`.
+-/
 theorem exists_root_of_unity_preimage
     (hev : ∀ σ x, ιs v (((ev σ : Dec (F := Kf.1) A) : G Kf.1 (AlgebraicClosure ℚ)) x) = σ (ιs v x))
     {ζ : AlgebraicClosure ℚ} (hζ : IsPrimitiveRoot ζ (l ^ r))

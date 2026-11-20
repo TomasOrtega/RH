@@ -16,6 +16,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Pr
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun i => ?_) (summable_geometric_of_lt_one (norm_nonneg y) hy)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_left (by positivity) (hφ _)`.
+-/
 theorem summable_norm_term {R : Type} [CommRing R] (φ : R →+* ℂ_[l]) (hφ : ∀ r, ‖φ r‖ ≤ 1) {y : ℂ_[l]}
     (hy : ‖y‖ < 1) (G : PowerSeries R) : Summable fun i => ‖φ (PowerSeries.coeff i G) * y ^ i‖ := by
   refine Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun i => ?_)
@@ -23,6 +26,11 @@ theorem summable_norm_term {R : Type} [CommRing R] (φ : R →+* ℂ_[l]) (hφ :
   rw [norm_mul, norm_pow]
   exact mul_le_of_le_one_left (by positivity) (hφ _)
 
+/- English proof (translation)
+Rewrite using `[tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm (summable_norm_term φ hφ hy G) (summable_norm_term φ hφ hy G')]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mul, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Use `replace hp : p.1 + p.2 = n := by simpa using hp`.
+
+Rewrite using `[← hp, map_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tsum_mul_term {R : Type} [CommRing R] (φ : R →+* ℂ_[l]) (hφ : ∀ r, ‖φ r‖ ≤ 1) {y : ℂ_[l]}
     (hy : ‖y‖ < 1) (G G' : PowerSeries R) :
     ∑' i, φ (PowerSeries.coeff i (G * G')) * y ^ i =
@@ -36,6 +44,9 @@ theorem tsum_mul_term {R : Type} [CommRing R] (φ : R →+* ℂ_[l]) (hφ : ∀ 
   rw [← hp, map_mul, pow_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[Polynomial.eval₂_eq_sum_range, tsum_eq_sum (s := Finset.range (P.natDegree + 1))]`. Simplify using `only [Polynomial.coeff_coe]`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range, not_lt]`. Rewrite using `[Polynomial.coeff_coe, Polynomial.coeff_eq_zero_of_natDegree_lt hi, map_zero, zero_mul]`.
+-/
 theorem tsum_coe_term {R : Type} [CommRing R] (φ : R →+* ℂ_[l]) (y : ℂ_[l]) (P : Polynomial R) :
     ∑' i, φ (PowerSeries.coeff i (P : PowerSeries R)) * y ^ i = P.eval₂ φ y := by
   rw [Polynomial.eval₂_eq_sum_range, tsum_eq_sum (s := Finset.range (P.natDegree + 1))]
@@ -47,9 +58,21 @@ theorem tsum_coe_term {R : Type} [CommRing R] (φ : R →+* ℂ_[l]) (y : ℂ_[l
 def intToC (L : FinExt l) : ↥(OL L) →+* ℂ_[l] :=
   (algebraMap (Om l) ℂ_[l]).comp (L.1.val.toRingHom.comp (OL L).val.toRingHom)
 
+/- English proof (translation)
+The claim follows from `(PadicComplex.norm_extends l _).trans_le (norm_le_one_of_mem_OL L x)`.
+-/
 theorem norm_intToC (L : FinExt l) (x : ↥(OL L)) : ‖intToC L x‖ ≤ 1 :=
   (PadicComplex.norm_extends l _).trans_le (norm_le_one_of_mem_OL L x)
 
+/- English proof (translation)
+Use `haveI := Formalism.MainNotions.N.Pv.LocalLengthBound.OLC.complete_max L`. Establish `hG : G.map (IsLocalRing.residue ↥(OL L)) ≠ 0` using `fun h0 => by`. Use `congrArg (PowerSeries.coeff k) h0` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_map, map_zero, IsLocalRing.residue_eq_zero_iff]`. Conclude with `this hk`.
+
+Take `⟨P, U, H⟩` from `PowerSeries.exists_isWeierstrassFactorization hG`. Take `⟨V, hV⟩` from `H.isUnit.exists_right_inv`. Establish `e : (P : PowerSeries ↥(OL L)) = G * V` using `by rw [H.eq_mul, mul_assoc, hV, mul_one]`. Establish `h1` using `tsum_coe_term (intToC L) y P`. Rewrite `h1` using `[e, tsum_mul_term _ (norm_intToC L) hy, h.tsum_eq, zero_mul]`.
+
+Establish `hint : IsIntegral (Om l) y`. Use `⟨P.map (L.1.val.toRingHom.comp (OL L).val.toRingHom), H.isDistinguishedAt.monic.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `h1.symm`. Take `⟨z, hz⟩` from `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := Om l) (K := ↥(integralClosure (Om l) ℂ_[l]))).2 ⟨y, hint⟩`.
+
+Conclude with `⟨z, congrArg Subtype.val hz⟩`.
+-/
 theorem mem_range_of_hasSum_zero (L : FinExt l) (G : PowerSeries ↥(OL L)) (k : ℕ)
     (hk : IsUnit (PowerSeries.coeff k G)) {y : ℂ_[l]} (hy : ‖y‖ < 1)
     (h : HasSum (fun i => intToC L (PowerSeries.coeff i G) * y ^ i) 0) :
@@ -81,6 +104,11 @@ open GroundTheory.LocalField.FormalGroup
 variable {A B : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [Finite (IsLocalRing.ResidueField A)]
   [CommRing B] [IsDomain B] [IsDiscreteValuationRing B] [Finite (IsLocalRing.ResidueField B)]
 
+/- English proof (translation)
+Use `⟨?_, ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, hf.constantCoeff_eq_zero, map_zero]`. Rewrite using `[PowerSeries.coeff_map, hf.coeff_one]`. Both sides reduce to the same expression. Establish `h` using `map_dvd (e : A →+* B) (hf.dvd_coeff_sub n)`.
+
+Rewrite `h` using `[← PowerSeries.coeff_map, map_sub, map_pow, PowerSeries.map_X, Nat.card_congr (IsLocalRing.ResidueField.mapEquiv e).toEquiv]`. Conclude with `h`.
+-/
 theorem isLubinTateSeries_map (e : A ≃+* B) {π : A} {f : PowerSeries A} (hf : IsLubinTateSeries π f) :
     IsLubinTateSeries (e π) (PowerSeries.map (e : A →+* B) f) := by
   refine ⟨?_, ?_, fun n => ?_⟩
@@ -92,6 +120,11 @@ theorem isLubinTateSeries_map (e : A ≃+* B) {π : A} {f : PowerSeries A} (hf :
       Nat.card_congr (IsLocalRing.ResidueField.mapEquiv e).toEquiv] at h
     exact h
 
+/- English proof (translation)
+Use `eq_lubinTateHom_toPowerSeries hπ' hf' hf' _ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, (lubinTateHom hπ hf hf a).constantCoeff_eq_zero, map_zero]`. Rewrite using `[PowerSeries.coeff_map, coeff_one_lubinTateHom]`. Both sides reduce to the same expression. Establish `h` using `congrArg (PowerSeries.map (e : A →+* B)) (subst_lubinTateHom hπ hf hf a)`.
+
+Establish `h1` using `PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero' (lubinTateHom hπ hf hf a).constantCoeff_eq_zero) (h := (e : A →+* B)) f`. Establish `h2` using `PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero' hf.constantCoeff_eq_zero) (h := (e : A →+* B)) (lubinTateHom hπ hf hf a).toPowerSeries`. Substitute `hff` using the available equality. Conclude with `h1.symm.trans (h.trans h2)`.
+-/
 theorem map_lubinTateHom (e : A ≃+* B) {π : A} (hπ : Irreducible π) {f : PowerSeries A}
     (hf : IsLubinTateSeries π f) {π' : B} (hπ' : Irreducible π') {f' : PowerSeries B}
     (hf' : IsLubinTateSeries π' f') (hff : PowerSeries.map (e : A →+* B) f = f') (a : A) :
@@ -118,6 +151,11 @@ variable {l : ℕ} [Fact l.Prime]
   {M : Type} [Field M] [ValuativeRel M] [TopologicalSpace M] [IsValuativeTopology M]
   [Algebra K M] [ValuativeExtension K M] [Algebra.IsAlgebraic K M]
 
+/- English proof (translation)
+Establish `h` using `(hasSum_psEval' (f : MvPowerSeries Unit 𝒪[K]) (fun _ => x) fun _ => hx).map θ.toAddMonoidHom hθ`. Rewrite `h` using `[← (Finsupp.uniqueEquiv (M := ℕ) ()).symm.hasSum_iff]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[psTerm, PowerSeries.coeff, Finsupp.uniqueEquiv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hasSum_map_psEval (θ : M →+* ℂ_[l]) (hθ : Continuous θ) (f : PowerSeries 𝒪[K]) {x : M}
     (hx : valuation M x < 1) :
     HasSum (fun i => θ (algebraMap K M ((PowerSeries.coeff i f : 𝒪[K]) : K)) * θ x ^ i)
@@ -129,6 +167,11 @@ theorem hasSum_map_psEval (θ : M →+* ℂ_[l]) (hθ : Continuous θ) (f : Powe
     simp [psTerm, PowerSeries.coeff, Finsupp.uniqueEquiv]
   · rfl
 
+/- English proof (translation)
+Rewrite using `[mem_lubinTateTorsion]`. Proceed by induction on `n with`. Consider the case `zero => rw [h0, smul_zero]`. Consider the case `succ n ih`. Establish `e : π • x (n + 1) = x n`.
+
+Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[lubinTate_uniformizer_smul_val]`. Conclude with `θ.injective ((hasSum_map_psEval θ hθ f (x (n + 1)).valuation_lt_one).unique (hS n))`. Rewrite using `[pow_succ, mul_smul, e, ih]`.
+-/
 theorem mem_torsion_of_hasSum (θ : M →+* ℂ_[l]) (hθ : Continuous θ) {π : 𝒪[K]} (hπ : Irreducible π)
     {f : PowerSeries 𝒪[K]} (hf : IsLubinTateSeries π f) (x : ℕ → IdealPoint M (lubinTateFormalGroup hπ hf))
     (hS : ∀ n, HasSum (fun i => θ (algebraMap K M ((PowerSeries.coeff i f : 𝒪[K]) : K)) * θ (x (n + 1)).val ^ i)
@@ -151,6 +194,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Pr
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `norm_lt_one_of_compat K hπ (fun n => ?_) h0 n` and prove the remaining obligations. Use `pow_sub_mem_of_hasSum _ _ (PowerSeries.map (intToOC K) F) (fun i => ?_) _ _ ?_` and prove the remaining obligations. Establish `h` using `hF.dvd_coeff_sub i`. Rewrite `h` using `[card_res]`. Use `map_dvd (intToOC K) h` as an intermediate fact.
+
+Rewrite `this` using `[← PowerSeries.coeff_map, map_sub, map_pow, PowerSeries.map_X]`. Conclude with `Ideal.mem_span_singleton.2 this`. Simplify `hS n` using `only [PowerSeries.coeff_map]`.
+-/
 theorem norm_lt_one (K : FinExt l) {π : ↥(OL K)} (hπ : Irreducible π) {F : PowerSeries ↥(OL K)}
     (hF : IsLubinTateSeries π F) {v : ℕ → OC l}
     (hS : ∀ n, HasSum (fun i => ((intToOC K (PowerSeries.coeff i F) * v (n + 1) ^ i : OC l) : ℂ_[l])) (v n : ℂ_[l]))
@@ -164,6 +212,23 @@ theorem norm_lt_one (K : FinExt l) {π : ↥(OL K)} (hπ : Irreducible π) {F : 
     exact Ideal.mem_span_singleton.2 this
   · simpa only [PowerSeries.coeff_map] using hS n
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by rw [h0]; rfl⟩`. Consider the case `succ n ih`. Take `⟨z, hz⟩` from `ih`. Establish `hz1 : ‖z‖ < 1`.
+
+Rewrite using `[← PadicComplex.norm_extends l z, hz]`. Conclude with `norm_lt_one K hπ hF hS h0 n`. Use `haveI := K.2`. Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] {z}) := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral z)`. Set `L : FinExt l` to `⟨K.1 ⊔ IntermediateField.adjoin ℚ_[l] {z}, inferInstance⟩`.
+
+Establish `hKL : K.1 ≤ L.1` using `le_sup_left`. Establish `hzL : z ∈ L.1` using `(le_sup_right : _ ≤ L.1) (IntermediateField.mem_adjoin_simple_self _ z)`. Set `r : ↥(OL K) →+* ↥(OL L)` to `((IntermediateField.inclusion hKL).toRingHom.comp (OL K).val.toRingHom).codRestrict (OL L) fun x => (mem_OL L _).2 ((mem_OL K _).1 x.2)`. Set `z' : ↥(OL L)` to `⟨⟨z, hzL⟩, (mem_OL L _).2 hz1.le⟩`. Establish `hq : 1 < Nat.card (IsLocalRing.ResidueField ↥(OL K))` using `Finite.one_lt_card`.
+
+Use `mem_range_of_hasSum_zero L (PowerSeries.map r F - PowerSeries.C z') (Nat.card (IsLocalRing.ResidueField ↥(OL K))) ?_ (norm_lt_one K hπ hF hS h0 (n + 1)) ?_` and prove the remaining obligations. Rewrite using `[map_sub, PowerSeries.coeff_map, PowerSeries.coeff_C, if_neg (by omega), sub_zero]`. Use `IsUnit.map r ?_` and prove the remaining obligations. Establish `h` using `hF.dvd_coeff_sub (Nat.card (IsLocalRing.ResidueField ↥(OL K)))`. Rewrite `h` using `[map_sub, PowerSeries.coeff_X_pow, if_pos rfl]`.
+
+Assume the negation of the conclusion as `hu`. Establish `h1 : PowerSeries.coeff (Nat.card (IsLocalRing.ResidueField ↥(OL K))) F - 1 ∈ IsLocalRing.maximalIdeal ↥(OL K)`. Take `⟨c, hc⟩` from `h`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ hπ.not_isUnit`.
+
+Establish `h2` using `Ideal.sub_mem _ ((IsLocalRing.mem_maximalIdeal _).2 hu) h1`. Rewrite `h2` using `[sub_sub_cancel]`. Conclude with `h2 isUnit_one`. Establish `h` using `(hS n).sub (hasSum_ite_eq 0 (v n : ℂ_[l]))`. Rewrite `h` using `[sub_self]`.
+
+Use `(congrArg (HasSum · 0) (funext fun i => ?_)).mpr h` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, PowerSeries.coeff_map, PowerSeries.coeff_C, sub_mul]`. Use `congr 1`. Use `split_ifs with hi`. Rewrite using `[hi, pow_zero, mul_one, ← hz]`.
+
+Both sides reduce to the same expression. Rewrite using `[map_zero, zero_mul]`.
+-/
 theorem exists_coe_eq (K : FinExt l) {π : ↥(OL K)} (hπ : Irreducible π) {F : PowerSeries ↥(OL K)}
     (hF : IsLubinTateSeries π F) {v : ℕ → OC l}
     (hS : ∀ n, HasSum (fun i => ((intToOC K (PowerSeries.coeff i F) * v (n + 1) ^ i : OC l) : ℂ_[l])) (v n : ℂ_[l]))
@@ -221,6 +286,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 variable {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime] {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Establish `h` using `(hj.tendsto 0).comp (Valued.tendsto_zero_pow_of_v_lt_one hx)`. Rewrite `h` using `[map_zero]`. Use `tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 (h.congr fun n => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem norm_lt_one_of_v (j : w.adicCompletion E →+* Om l) (hj : Continuous j) {x : w.adicCompletion E}
     (hx : Valued.v x < 1) : ‖j x‖ < 1 := by
   have h := (hj.tendsto 0).comp (Valued.tendsto_zero_pow_of_v_lt_one hx)
@@ -228,6 +296,21 @@ theorem norm_lt_one_of_v (j : w.adicCompletion E →+* Om l) (hj : Continuous j)
   refine tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 (h.congr fun n => ?_)
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hx`. Rewrite `hx` using `[not_le]`. Establish `hx0 : x ≠ 0` using `fun h0 => by simp [h0] at hx`.
+
+Establish `h1 : Valued.v x⁻¹ < 1` using `by rw [map_inv₀]; exact inv_lt_one_of_one_lt₀ hx`. Establish `h2` using `norm_lt_one_of_v j hj h1`. Rewrite `h2` using `[map_inv₀, norm_inv, inv_lt_one₀ (norm_pos_iff.2 ((map_ne_zero j).2 hx0))]`. Conclude with `h2.not_ge h`. Introduce `h`.
+
+Assume the negation of the conclusion as `hx`. Rewrite `hx` using `[not_le]`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp0, hp⟩ : ∃ p : w.adicCompletion E, p ≠ 0 ∧ Valued.v p < 1 := by`. Take `⟨p, hp⟩` from `w.valuation_exists_uniformizer E`. Establish `hv : Valued.v (algebraMap E (w.adicCompletion E) p) = WithZero.exp (-1 : ℤ)`.
+
+Rewrite using `[← hp]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w p`. Use `⟨algebraMap E _ p, fun h0 => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[h0, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`.
+
+Rewrite using `[hv, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hp1 : 0 < ‖j p‖` using `norm_pos_iff.2 ((map_ne_zero j).2 hp0)`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt ‖j p‖⁻¹ hx`. Establish `h2 : Valued.v (x ^ n * p) < 1`.
+
+Rewrite using `[map_mul, map_pow]`. Conclude with `(mul_le_of_le_one_left' (pow_le_one' h n)).trans_lt hp`. Establish `h3` using `norm_lt_one_of_v j hj h2`. Rewrite `h3` using `[map_mul, map_pow, norm_mul, norm_pow]`. Rewrite `hn` using `[inv_lt_iff_one_lt_mul₀ hp1]`.
+
+Conclude with `hn.not_gt h3`.
+-/
 theorem norm_le_one_iff (j : w.adicCompletion E →+* Om l) (hj : Continuous j) (x : w.adicCompletion E) :
     ‖j x‖ ≤ 1 ↔ Valued.v x ≤ 1 := by
   constructor
@@ -259,6 +342,15 @@ theorem norm_le_one_iff (j : w.adicCompletion E →+* Om l) (hj : Continuous j) 
     rw [inv_lt_iff_one_lt_mul₀ hp1] at hn
     exact hn.not_gt h3
 
+/- English proof (translation)
+Establish `h1 : IsCompact (w.adicCompletionIntegers E : Set (w.adicCompletion E))` using `isCompact_iff_compactSpace.2 (Formalism.MainNotions.Gaps.LevGap.compact_Ov w)`. Establish `h2` using `(h1.image hj).isClosed`. Use `isClosed_of_closure_subset fun y hy => ?_` and prove the remaining obligations. Take `⟨_, ⟨x, rfl⟩, hx⟩` from `Metric.mem_closure_iff.1 hy 1 one_pos`. Establish `h3 : y - j x ∈ j '' (w.adicCompletionIntegers E : Set (w.adicCompletion E))`.
+
+Use `h2.closure_subset (Metric.mem_closure_iff.2 fun ε hε => ?_)` and prove the remaining obligations. Take `⟨_, ⟨x', rfl⟩, hx'⟩` from `Metric.mem_closure_iff.1 hy (min ε 1) (lt_min hε one_pos)`. Use `⟨_, ⟨x' - x, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Valued.v (x' - x) ≤ 1`. Rewrite using `[← norm_le_one_iff j hj, map_sub, ← dist_eq_norm]`.
+
+Use `(IsUltrametricDist.dist_triangle_max _ y _).trans (max_le ?_ hx.le)` and prove the remaining obligations. Rewrite using `[dist_comm]`. Conclude with `(hx'.trans_le (min_le_right _ _)).le`. Rewrite using `[map_sub, dist_sub_right]`. Conclude with `hx'.trans_le (min_le_left _ _)`.
+
+Take `⟨x', -, hx'⟩` from `h3`. Conclude with `⟨x' + x, by rw [map_add, hx', sub_add_cancel]⟩`.
+-/
 theorem isClosed_range (j : w.adicCompletion E →+* Om l) (hj : Continuous j) : IsClosed (Set.range j) := by
   have h1 : IsCompact (w.adicCompletionIntegers E : Set (w.adicCompletion E)) :=
     isCompact_iff_compactSpace.2 (Formalism.MainNotions.Gaps.LevGap.compact_Ov w)
@@ -282,6 +374,11 @@ theorem isClosed_range (j : w.adicCompletion E →+* Om l) (hj : Continuous j) :
 variable {Ω : Type} [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
 
+/- English proof (translation)
+Use `haveI := Bw.Kw.2`. Establish `hcl : IsClosed (Bw.Kw.1 : Set (Om l))` using `Bw.Kw.1.toSubalgebra.toSubmodule.closed_of_finiteDimensional`. Establish `hmem : ∀ x, j x ∈ Bw.Kw.1` using `fun x => (HeightOneSpectrum.denseRange_algebraMap E w).induction_on (p := fun x => j x ∈ Bw.Kw.1) x (hcl.preimage hj) fun y => by rw [hjE]; exact Bw.j_E y`. Use `⟨RingEquiv.ofBijective (j.codRestrict Bw.Kw.1 hmem) ⟨RingHom.injective _, fun y => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : (y : Om l) ∈ Set.range j := by`.
+
+Use `closure_minimal ?_ (isClosed_range j hj) (Bw.j_dense y.2)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨_, hjE x⟩`. Conclude with `⟨x, Subtype.ext hx⟩`.
+-/
 theorem exists_ringEquiv_Kw (Bw : LocBridge l E Ω Gw O) (j : w.adicCompletion E →+* Om l) (hj : Continuous j)
     (hjE : ∀ x : E, j (algebraMap E _ x) = Bw.j (algebraMap E Ω x)) :
     ∃ k : w.adicCompletion E ≃+* ↥Bw.Kw.1, ∀ x, ((k x : ↥Bw.Kw.1) : Om l) = j x := by
@@ -297,12 +394,20 @@ theorem exists_ringEquiv_Kw (Bw : LocBridge l E Ω Gw O) (j : w.adicCompletion E
     exact ⟨_, hjE x⟩
   exact ⟨x, Subtype.ext hx⟩
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation _) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one`.
+-/
 theorem mem_integer_iff (x : w.adicCompletion E) : x ∈ 𝒪[w.adicCompletion E] ↔ Valued.v x ≤ 1 := by
   haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
   exact (ValuativeRel.isEquiv (ValuativeRel.valuation _)
     (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one
 
+/- English proof (translation)
+Establish `H : ∀ x, k x ∈ OL K ↔ x ∈ 𝒪[w.adicCompletion E]` using `fun x => by`. Rewrite using `[mem_OL, hk, norm_le_one_iff j hj, mem_integer_iff]`. Use `⟨RingEquiv.ofBijective (((k : w.adicCompletion E →+* ↥K.1).comp (𝒪[w.adicCompletion E]).subtype).codRestrict (OL K) fun x => (H x).2 x.2) ⟨fun x y h => ?_, fun y => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `Subtype.ext (k.injective (congrArg Subtype.val h))`. Use `⟨⟨k.symm y, (H _).1 ?_⟩, Subtype.ext (k.apply_symm_apply _)⟩` and prove the remaining obligations.
+
+Rewrite using `[k.apply_symm_apply]`. Conclude with `y.2`.
+-/
 theorem exists_ringEquiv_OL {K : FinExt l} (j : w.adicCompletion E →+* Om l) (hj : Continuous j)
     (k : w.adicCompletion E ≃+* ↥K.1) (hk : ∀ x, ((k x : ↥K.1) : Om l) = j x) :
     ∃ e : 𝒪[w.adicCompletion E] ≃+* ↥(OL K), ∀ x, ((e x : ↥(OL K)) : ↥K.1) = k x := by
@@ -327,6 +432,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 variable {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime] {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Rewrite using `[← (ValuativeRel.isEquiv (ValuativeRel.valuation _) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one]`. Conclude with `Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers _)`.
+-/
 theorem isUnit_integer_iff (x : 𝒪[w.adicCompletion E]) : IsUnit x ↔ Valued.v (x : w.adicCompletion E) = 1 := by
   haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
@@ -334,6 +442,19 @@ theorem isUnit_integer_iff (x : 𝒪[w.adicCompletion E]) : IsUnit x ↔ Valued.
     (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one]
   exact Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers _)
 
+/- English proof (translation)
+Establish `hlt : WithZero.exp (-1 : ℤ) < 1` using `by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; norm_num`. Establish `key : ∀ y : 𝒪[w.adicCompletion E], Valued.v (y : w.adicCompletion E) = WithZero.exp (-1 : ℤ) → Irreducible y`. Introduce `y hy`. Use `⟨fun hu => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[isUnit_integer_iff, hy]`.
+
+Conclude with `hlt.ne hu`. Rewrite using `[isUnit_integer_iff, isUnit_integer_iff]`. Establish `ha` using `(mem_integer_iff _).1 a.2`. Establish `hb` using `(mem_integer_iff _).1 b.2`. Rewrite `hy` using `[hab, Subring.coe_mul, map_mul]`.
+
+Generalize the expression as in `Valued.v (a : w.adicCompletion E) = s at *`. Generalize the expression as in `Valued.v (b : w.adicCompletion E) = t at *`. Establish `hs : s ≠ 0` using `fun h0 => by rw [h0, zero_mul] at hy; exact WithZero.exp_ne_zero hy.symm`. Establish `ht : t ≠ 0` using `fun h0 => by rw [h0, mul_zero] at hy; exact WithZero.exp_ne_zero hy.symm`. Take `⟨m, rfl⟩ : ∃ m, s = WithZero.exp m` from `⟨_, (WithZero.exp_log hs).symm⟩`.
+
+Take `⟨m', rfl⟩ : ∃ m, t = WithZero.exp m` from `⟨_, (WithZero.exp_log ht).symm⟩`. Rewrite `hy` using `[← WithZero.exp_add, WithZero.exp_inj]`. Rewrite `ha`, `hb` using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_inj, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨fun hx => ?_, key x⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `w.valuation_exists_uniformizer E`. Establish `hv : Valued.v (algebraMap E (w.adicCompletion E) p) = WithZero.exp (-1 : ℤ)`. Rewrite using `[← hp]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w p`.
+
+Set `p' : 𝒪[w.adicCompletion E]` to `⟨algebraMap E _ p, (mem_integer_iff _).2 (hv.trans_lt hlt).le⟩`. Take `⟨u, hu⟩` from `IsDiscreteValuationRing.associated_of_irreducible _ (key p' hv) hx`. Rewrite using `[← hu, Subring.coe_mul, map_mul, (isUnit_integer_iff _).1 u.isUnit, mul_one]`. Conclude with `hv`.
+-/
 theorem irreducible_iff (x : 𝒪[w.adicCompletion E]) :
     Irreducible x ↔ Valued.v (x : w.adicCompletion E) = WithZero.exp (-1 : ℤ) := by
   have hlt : WithZero.exp (-1 : ℤ) < 1 := by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; norm_num
@@ -369,6 +490,13 @@ theorem irreducible_iff (x : 𝒪[w.adicCompletion E]) :
 variable {Ω : Type} [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω}
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
 
+/- English proof (translation)
+Set `s : ↥(w.adicCompletionIntegers E) ≃+* 𝒪[w.adicCompletion E]` to `RingEquiv.subringCongr (s := (w.adicCompletionIntegers E).toSubring) (t := 𝒪[w.adicCompletion E]) (Subring.ext fun x => (mem_integer_iff x).symm)`. Establish `h1 : IsIntegral (w.adicCompletionIntegers E) y ↔ IsIntegral ↥(OL K) (θ y)` using `⟨fun h => h.map_of_comp_eq (s.trans e).toRingHom θ.toRingHom (RingHom.ext fun x => (hθ (s x)).symm), fun h => by`. Establish `h2` using `h.map_of_comp_eq (s.trans e).symm.toRingHom θ.symm.toRingHom (RingHom.ext fun x => by`. Apply `θ.injective` to reduce the goal to its premises. Use `show θ (algebraMap (w.adicCompletion E) (Kbar w) (e.symm x : 𝒪[w.adicCompletion E])) = θ (θ.symm _)`.
+
+Rewrite using `[hθ, e.apply_symm_apply, θ.apply_symm_apply]`. Use the proof step `rfl)`. Conclude with `θ.symm_apply_apply y ▸ h2⟩`. Use `haveI : IsScalarTower ℤ_[l] ↥(OL K) (Om l) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Rewrite using `[h1, ← isIntegral_iff_norm_le]`.
+
+Conclude with `⟨fun h => isIntegral_trans _ h, fun h => h.tower_top⟩`.
+-/
 theorem isIntegral_iff {K : FinExt l} (θ : Kbar w ≃+* Om l) (e : 𝒪[w.adicCompletion E] ≃+* ↥(OL K))
     (hθ : ∀ x : 𝒪[w.adicCompletion E], θ (algebraMap (w.adicCompletion E) (Kbar w) x) = ((e x : ↥K.1) : Om l))
     (y : Kbar w) : IsIntegral (w.adicCompletionIntegers E) y ↔ ‖θ y‖ ≤ 1 := by
@@ -390,6 +518,37 @@ theorem isIntegral_iff {K : FinExt l} (θ : Kbar w ≃+* Om l) (e : 𝒪[w.adicC
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `haveI : IsAlgClosure ↥Bw.Kw.1 (Om l) := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ_[l]) _⟩`. Set `θ : Kbar w ≃+* Om l` to `IsAlgClosure.equivOfEquiv (Kbar w) (Om l) k`. Establish `hθ : ∀ x, θ (algebraMap (w.adicCompletion E) (Kbar w) x) = ((k x : ↥Bw.Kw.1) : Om l)` using `fun x => IsAlgClosure.equivOfEquiv_algebraMap (Kbar w) (Om l) k x`. Establish `hθe : ∀ x : 𝒪[w.adicCompletion E], θ (algebraMap (w.adicCompletion E) (Kbar w) x) = ((e x : ↥Bw.Kw.1) : Om l)` using `fun x => by rw [hθ, he]`. Use `clear_value θ`.
+
+Set `ι : Ω →ₐ[E] Kbar w` to `{ (θ.symm : Om l →+* Kbar w).comp Bw.j with commutes' := fun x => by`. Apply `θ.injective` to reduce the goal to its premises. Use `show θ (θ.symm (Bw.j _)) = _`. Rewrite using `[θ.apply_symm_apply, IsScalarTower.algebraMap_apply E (w.adicCompletion E) (Kbar w), hθ, hkE] }`. Establish `hθι : ∀ z, θ (ι z) = Bw.j z` using `fun z => θ.apply_symm_apply _`.
+
+Establish `hι : IsLocEmb A w ι` using `fun z => by rw [isIntegral_iff θ e hθe, hθι]; exact hB z`. Set `τ : GalLoc w` to `{ (θ.trans (g : GQ l).toRingEquiv).trans θ.symm with commutes' := fun x => by`. Apply `θ.injective` to reduce the goal to its premises. Use `show θ (θ.symm ((g : GQ l) (θ _))) = _`. Rewrite using `[θ.apply_symm_apply, hθ]`.
+
+Conclude with `g.2 (k x) }`. Establish `hθτ : ∀ y, θ (τ y) = (g : GQ l) (θ y)` using `fun y => θ.apply_symm_apply _`. Establish `hτ : Lifts ι τ (Bw.e.symm g : G E Ω)` using `fun z => by`. Apply `θ.injective` to reduce the goal to its premises. Rewrite using `[hθτ, hθι, hθι, ← Bw.e_comm, MulEquiv.apply_symm_apply]`.
+
+Use `letI : NormedField (Kbar w) := NormedField.induced (Kbar w) (Om l) (θ : Kbar w →+* Om l) θ.injective`. Establish `hn : ∀ y : Kbar w, ‖y‖ = ‖θ y‖` using `fun _ => rfl`. Use `haveI : IsUltrametricDist (Kbar w) := IsUltrametricDist.isUltrametricDist_of_isNonarchimedean_norm fun x y => by`. Simplify using `only [hn, map_add]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+
+Use `letI : ValuativeRel (Kbar w) := ValuativeRel.ofValuation (NormedField.valuation (K := Kbar w))`. Use `haveI hcomp : (NormedField.valuation (K := Kbar w)).Compatible := Valuation.Compatible.ofValuation _`. Use `haveI : IsValuativeTopology (Kbar w) := IsValuativeTopology.of_mem_nhds_zero_iff_vle (NormedField.valuation (K := Kbar w)) (fun {s} => (NormedField.toValued (K := Kbar w)).is_topological_valuation s)`. Establish `hle : ∀ x : w.adicCompletion E, ‖θ (algebraMap (w.adicCompletion E) (Kbar w) x)‖ ≤ 1 ↔ Valued.v x ≤ 1`. Introduce `x`.
+
+Rewrite using `[hθ, ← mem_OL, ← mem_integer_iff]`. Use `⟨fun hx => ?_, fun hx => ?_⟩` and prove the remaining obligations. Use `(e.symm ⟨k x, hx⟩).2` as an intermediate fact. Rewrite `this` using `[k.injective ((he _).symm.trans (congrArg Subtype.val (e.apply_symm_apply _)))]`. Then use the resulting hypothesis. Rewrite using `[← he ⟨x, hx⟩]`.
+
+Conclude with `(e _).2`. Use `haveI : ValuativeExtension (w.adicCompletion E) (Kbar w) := ⟨fun x y => by show ‖θ (algebraMap _ _ x)‖₊ ≤ ‖θ (algebraMap _ _ y)‖₊ ↔ Valued.v x ≤ Valued.v y`. Rewrite using `[← NNReal.coe_le_coe, coe_nnnorm, coe_nnnorm]`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`.
+
+Establish `h1` using `hle (x / y)`. Rewrite `h1` using `[map_div₀, map_div₀, norm_div, map_div₀, div_le_one (norm_pos_iff.2 (by simpa using hy)), div_le_one₀ (zero_lt_iff.2 (by simpa using hy))]`. Conclude with `h1⟩`. Establish `hlt : ∀ y : Kbar w, ‖θ y‖ < 1 → valuation (Kbar w) y < 1` using `fun y hy => (ValuativeRel.isEquiv (ValuativeRel.valuation _) (NormedField.valuation (K := Kbar w))).lt_one_iff_lt_one.2 hy`. Set `θC : Kbar w →+* ℂ_[l]` to `(algebraMap (Om l) ℂ_[l]).comp (θ : Kbar w →+* Om l)`.
+
+Establish `hθC : Continuous θC` using `(AddMonoidHomClass.isometry_of_norm θC fun y => PadicComplex.norm_extends l _).continuous`. Establish `hπ' : Irreducible (e.symm π)` using `(MulEquiv.irreducible_iff e.symm).2 hπ`. Establish `hf` using `isLubinTateSeries_map e.symm hF`. Establish `hff : PowerSeries.map (e : 𝒪[w.adicCompletion E] →+* ↥(OL Bw.Kw)) (PowerSeries.map (e.symm : ↥(OL Bw.Kw) →+* 𝒪[w.adicCompletion E]) F) = F`. Use extensionality with `i`.
+
+Simplify using the standard rewrite rules. Generalize the expression as in `PowerSeries.map (e.symm : ↥(OL Bw.Kw) →+* 𝒪[w.adicCompletion E]) F = f at hf hff`. Establish `hterm : ∀ (G : PowerSeries 𝒪[w.adicCompletion E]) (y : Kbar w) (s : OC l), θC y = s → (fun i => θC (algebraMap (w.adicCompletion E) (Kbar w) ((PowerSeries.coeff i G : 𝒪[w.adicCompletion E]) : w.adicCompletion E)) * θC y ^ i) = fun i => ((intToOC Bw.Kw (PowerSeries.coeff i (PowerS …`. Introduce `G y s hs`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[hs, PowerSeries.coeff_map]`. Use `push_cast`. Use `congr 1`. Conclude with `congrArg (algebraMap (Om l) ℂ_[l]) (hθe _)`. Use `choose z hz using exists_coe_eq Bw.Kw hπ hF hS h0`.
+
+Establish `hz1 : ∀ m, ‖θ (θ.symm (z m))‖ < 1` using `fun m => by`. Rewrite using `[θ.apply_symm_apply, ← PadicComplex.norm_extends l, hz]`. Conclude with `norm_lt_one Bw.Kw hπ hF hS h0 m`. Set `x : ℕ → IdealPoint (Kbar w) (lubinTateFormalGroup hπ' hf)` to `fun m => IdealPoint.mk _ (hlt _ (hz1 m))`. Establish `hx : ∀ m, θC (x m).val = v m` using `fun m => (congrArg (algebraMap (Om l) ℂ_[l]) (θ.apply_symm_apply (z m))).trans (hz m)`.
+
+Establish `hx0 : x 0 = 0` using `IdealPoint.ext (θC.injective (by rw [hx, h0, IdealPoint.val_zero, map_zero]; rfl))`. Establish `htor` using `mem_torsion_of_hasSum θC hθC hπ' hf x (fun m => by rw [hterm f _ _ (hx (m + 1)), hff, hx]; exact hS m) hx0 n`. Establish `hact` using `congrArg IdealPoint.val (GlobalTheory.LTRecip.lubinTate_action E Ω A w h a ha ι hι hπ' hf c hc hcW (Bw.e.symm g) τ hτ (e.symm u) hu n (x n) htor)`. Rewrite `hact` using `[lubinTateGalPointMap_val, lubinTate_smul_val]`. Establish `hsum` using `hasSum_map_psEval θC hθC (lubinTateHom hπ' hf hf (e.symm u)).toPowerSeries (x n).valuation_lt_one`.
+
+Rewrite `hsum` using `[hterm _ _ _ (hx n), map_lubinTateHom e hπ' hf hπ hF hff, e.apply_symm_apply, ← hact]`. Establish `hval : θC (τ (x n).val) = ((Per.σO (g : GQ l) (v n) : OC l) : ℂ_[l])`. Rewrite using `[GlobalTheory.RingIface.sigO_coe, ← hx]`. Conclude with `(congrArg (algebraMap (Om l) ℂ_[l]) (hθτ _)).trans (GlobalTheory.RingBasics.σC_coe _ _).symm`. Rewrite `hsum` using `[hval]`. Then use the resulting hypothesis.
+-/
 theorem hasSum_σO (h : IsPlaceOver A w) (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hB : GlobalTheory.Pst.Induces Bw)
     (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a)
     (k : w.adicCompletion E ≃+* ↥Bw.Kw.1)
@@ -516,6 +675,21 @@ open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.Prism Globa
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ w A h O _ _ _ Bw hB a ha`. Use `⟨?_, fun j hj hjE => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `GlobalTheory.PY.LTInh.exists_emb Bw h hB (AlgHom.id ℚ_[l] ↥Bw.Kw.1)`. Conclude with `⟨j.1, j.2, hj⟩`. Take `⟨k, hk⟩` from `exists_ringEquiv_Kw Bw j hj hjE`.
+
+Take `⟨e, he⟩` from `exists_ringEquiv_OL j hj k hk`. Establish `hje : ∀ y : ↥(OL Bw.Kw), j (e.symm y : w.adicCompletion E) = ((y : ↥Bw.Kw.1) : Om l)` using `fun y => by`. Rewrite using `[← hk, ← he, e.apply_symm_apply]`. Establish `hunif : ∀ (π : ↥(OL Bw.Kw)), Irreducible π → Valued.v (e.symm π : w.adicCompletion E) = WithZero.exp (-1 : ℤ)` using `fun π hπ => (irreducible_iff _).1 ((MulEquiv.irreducible_iff e.symm).2 hπ)`. Use `⟨fun π hπ => ?_, fun π' hπ' => ?_, fun π hπ π' hππ => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : (e.symm π : w.adicCompletion E) ≠ 0` using `fun h0 => by`. Use `hunif π hπ` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `WithZero.exp_ne_zero this.symm`. Conclude with `⟨Units.mk0 _ h0, hunif π hπ, hje π⟩`.
+
+Establish `hv : Valued.v (π' : w.adicCompletion E) = WithZero.exp (-1 : ℤ)` using `hπ'`. Set `p : 𝒪[w.adicCompletion E]` to `⟨π', (mem_integer_iff _).2 (by`. Rewrite using `[hv, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use the proof step `norm_num)⟩`. Use `⟨e p, (MulEquiv.irreducible_iff e).2 ((irreducible_iff p).2 hv), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he, hk]`. Establish `hπe : (e.symm π : w.adicCompletion E) = π'` using `j.injective ((hje π).trans hππ.symm)`. Establish `hπ' : IsUnifAt w π'` using `by show Valued.v (π' : w.adicCompletion E) = _`. Rewrite using `[← hπe]`. Conclude with `hunif π hπ`.
+
+Take `⟨c₀, hc₀, hc₀W, hc₀u, huniq⟩` from `GlobalTheory.LTExt.exists_lubinTate_char E Ω w A h a ha π' hπ'`. Use `⟨⟨c₀, hc₀, hc₀W⟩, fun c hc hcW g => ⟨?_, fun u hu F hF v hS h0 n => ?_⟩⟩` and prove the remaining obligations. Take `rfl` from `huniq c hc hcW`. Establish `hv : Valued.v ((c (Bw.e.symm g) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1` using `hc₀u _`. Set `p : 𝒪[w.adicCompletion E]` to `⟨_, (mem_integer_iff _).2 hv.le⟩`.
+
+Use `⟨e p, ((isUnit_integer_iff p).2 hv).map e, ?_⟩` and prove the remaining obligations. Rewrite using `[he, hk]`. Use `hasSum_σO h Bw hB a ha k (fun x => by rw [hk, hjE]) e he hπ c hc (fun σ => ?_) hF hS h0 g u (j.injective ((hje u).trans hu)) n` and prove the remaining obligations. Rewrite using `[hcW, hπe, Units.val_mul, Units.val_zpow_eq_zpow_val]`.
+-/
 theorem main : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (l : ℕ) [Fact l.Prime] (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w)
     (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O),

@@ -16,11 +16,17 @@ def gm (f : P ⟶ X.left) (z : P) (V : X.left.Opens) (hz : z ∈ f ⁻¹ᵁ V) :
     Γ(X.left, V) →+* P.presheaf.stalk z :=
   (P.presheaf.germ (f ⁻¹ᵁ V) z hz).hom.comp (f.app V).hom
 
+/- English proof (translation)
+The claim follows from `TopCat.Presheaf.germ_res_apply P.presheaf (homOfLE h) z hz _`.
+-/
 theorem germ_appLE (f : P ⟶ X.left) (z : P) (V : X.left.Opens) (W : P.Opens) (h : W ≤ f ⁻¹ᵁ V)
     (hz : z ∈ W) (u : Γ(X.left, V)) :
     (P.presheaf.germ W z hz).hom ((f.appLE V W h).hom u) = gm f z V (h hz) u :=
   TopCat.Presheaf.germ_res_apply P.presheaf (homOfLE h) z hz _
 
+/- English proof (translation)
+Rewrite using `[← germ_appLE f z V' _ le_rfl hz, ← germ_appLE f z V (f ⁻¹ᵁ V') (fun _ hx => h hx) hz]`. Use `congr 1`. Conclude with `congrArg (fun φ => φ.hom u) (f.map_appLE le_rfl (homOfLE h).op)`.
+-/
 theorem gm_res (f : P ⟶ X.left) (z : P) (V V' : X.left.Opens) (h : V' ≤ V) (hz : z ∈ f ⁻¹ᵁ V')
     (u : Γ(X.left, V)) :
     gm f z V' hz ((X.left.presheaf.map (homOfLE h).op).hom u) = gm f z V (h hz) u := by
@@ -48,6 +54,9 @@ def gmDual (D : VF X) (f : P ⟶ X.left) (z : P) (V : X.left.Opens) (hz : z ∈ 
     show gm f z V hz (D.D V (a + b)) = gm f z V hz (D.D V a) + gm f z V hz (D.D V b)
     rw [map_add, map_add])
 
+/- English proof (translation)
+The claim follows from `TrivSqZeroExt.ext (gm_res f z V V' h hz u) (by show gm f z V' hz (D.D V' _) = gm f z V (h hz) (D.D V u) rw [D.res, gm_res])`.
+-/
 theorem gmDual_res (D : VF X) (f : P ⟶ X.left) (z : P) (V V' : X.left.Opens) (h : V' ≤ V)
     (hz : z ∈ f ⁻¹ᵁ V') (u : Γ(X.left, V)) :
     gmDual D f z V' hz ((X.left.presheaf.map (homOfLE h).op).hom u) = gmDual D f z V (h hz) u :=
@@ -55,6 +64,13 @@ theorem gmDual_res (D : VF X) (f : P ⟶ X.left) (z : P) (V V' : X.left.Opens) (
     show gm f z V' hz (D.D V' _) = gm f z V (h hz) (D.D V u)
     rw [D.res, gm_res])
 
+/- English proof (translation)
+Take `⟨r, hr, hzr⟩` from `hV₀.exists_basicOpen_le (V := V) ⟨f z, hz⟩ hz₀`. Establish `hzr' : z ∈ f ⁻¹ᵁ X.left.basicOpen r` using `hzr`. Use `hV₀.isLocalization_basicOpen r` as an intermediate fact. Establish `e : Φ.comp (gm f z _ hzr') = gmDual D f z _ hzr'`. Apply `IsLocalization.ringHom_ext (Submonoid.powers r)` to reduce the goal to its premises.
+
+Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Establish `h1` using `gm_res f z V₀ _ (X.left.basicOpen_le r) hzr' a`. Establish `h2` using `gmDual_res D f z V₀ _ (X.left.basicOpen_le r) hzr' a`. Conclude with `((congrArg Φ h1).trans (H a)).trans h2.symm`. Rewrite using `[← gm_res f z V _ hr hzr', ← gmDual_res D f z V _ hr hzr']`.
+
+Conclude with `RingHom.congr_fun e _`.
+-/
 theorem extend (D : VF X) (f : P ⟶ X.left) (z : P)
     (Φ : P.presheaf.stalk z →+* DualNumber (P.presheaf.stalk z)) (V₀ : X.left.Opens)
     (hV₀ : IsAffineOpen V₀) (hz₀ : z ∈ f ⁻¹ᵁ V₀)
@@ -73,6 +89,13 @@ theorem extend (D : VF X) (f : P ⟶ X.left) (z : P)
   rw [← gm_res f z V _ hr hzr', ← gmDual_res D f z V _ hr hzr']
   exact RingHom.congr_fun e _
 
+/- English proof (translation)
+Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Use `show gm f z V hz _ = (P.presheaf.germ ⊤ z trivial).hom _`. Rewrite using `[← germ_appLE f z V _ le_rfl hz, ← TopCat.Presheaf.germ_res_apply P.presheaf (homOfLE (le_top : f ⁻¹ᵁ V ≤ ⊤)) z hz]`. Use `congr 1`. Establish `e1` using `Scheme.Hom.appLE_comp_appLE f X.hom ⊤ V (f ⁻¹ᵁ V) le_top le_rfl`.
+
+Establish `e2` using `(f ≫ X.hom).appLE_map (U := ⊤) (V := ⊤) le_top (homOfLE (le_top : f ⁻¹ᵁ V ≤ ⊤)).op`. Conclude with `congrArg (fun φ => φ.hom c) (e1.trans e2.symm)`. Use `show gm f z V hz (D.D V _) = 0`. Establish `e : (X.hom.appLE ⊤ V le_top).hom c = cstK X V ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom c)` using `by show _ = (X.hom.appLE ⊤ V le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom _)`. Use `congr 1`.
+
+Conclude with `(congrArg (fun φ => φ.hom c) (Scheme.ΓSpecIso (CommRingCat.of K)).hom_inv_id).symm`. Rewrite using `[e, D.const, map_zero]`.
+-/
 theorem gmDual_const (D : VF X) (f : P ⟶ X.left) (z : P) (V : X.left.Opens) (hz : z ∈ f ⁻¹ᵁ V)
     (c : Γ(Sp K, ⊤)) :
     gmDual D f z V hz ((X.hom.appLE ⊤ V le_top).hom c) =
@@ -93,6 +116,23 @@ theorem gmDual_const (D : VF X) (f : P ⟶ X.left) (z : P) (V : X.left.Opens) (h
       exact (congrArg (fun φ => φ.hom c) (Scheme.ΓSpecIso (CommRingCat.of K)).hom_inv_id).symm
     rw [e, D.const, map_zero]
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hzU, -⟩` from `X.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (p z)) isOpen_univ`. Take `⟨_, ⟨W, hW, rfl⟩, hzW, -⟩` from `Y.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (q z)) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Establish `hW : IsAffineOpen W` using `hW`. Establish `hzU : z ∈ p ⁻¹ᵁ U` using `hzU`.
+
+Establish `hzW : z ∈ q ⁻¹ᵁ W` using `hzW`. Establish `hO : IsAffineOpen (p ⁻¹ᵁ U ⊓ q ⁻¹ᵁ W)`. Establish `: IsAffine _` using `isAffineOpen_top (Sp K)`. Establish `: IsAffine _` using `hU`. Establish `: IsAffine _` using `hW`.
+
+Conclude with `.of_isIso (Scheme.Hom.isPullback_resLE H (US := ⊤) (UT := W) (UX := U) le_top le_top rfl).isoPullback.hom`. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := W) (UX := U) le_top le_top rfl).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) hW hU)`. Establish `hz : z ∈ p ⁻¹ᵁ U ⊓ q ⁻¹ᵁ W` using `⟨hzU, hzW⟩`. Establish `w : X.hom.appLE ⊤ U le_top ≫ CommRingCat.ofHom (gmDual D p z U hzU) = Y.hom.appLE ⊤ W le_top ≫ CommRingCat.ofHom (gmDual E q z W hzW)`. Use `CommRingCat.hom_ext (RingHom.ext fun c => ?_)` and prove the remaining obligations.
+
+Use `(gmDual_const D p z U hzU c).trans (Eq.trans ?_ (gmDual_const E q z W hzW c).symm)` and prove the remaining obligations. Simplify using `only [H.w]`. Set `φ` to `po.desc _ _ w`. Establish `h1 : ∀ u, φ.hom ((p.appLE U _ inf_le_left).hom u) = gmDual D p z U hzU u` using `fun u => congrArg (fun φ => φ.hom u) (po.inl_desc _ _ w)`. Establish `h2 : ∀ u, φ.hom ((q.appLE W _ inf_le_right).hom u) = gmDual E q z W hzW u` using `fun u => congrArg (fun φ => φ.hom u) (po.inr_desc _ _ w)`.
+
+Establish `hf : φ ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom (P.presheaf.stalk z) (P.presheaf.stalk z) (P.presheaf.stalk z)).toRingHom = P.presheaf.germ _ z hz`. Use `po.hom_ext (CommRingCat.hom_ext (RingHom.ext fun u => ?_)) (CommRingCat.hom_ext (RingHom.ext fun u => ?_))` and prove the remaining obligations. Conclude with `(congrArg TrivSqZeroExt.fst (h1 u)).trans (germ_appLE p z U _ inf_le_left hz u).symm`. Conclude with `(congrArg TrivSqZeroExt.fst (h2 u)).trans (germ_appLE q z W _ inf_le_right hz u).symm`. Establish `hf' : ∀ b, (φ.hom b).fst = (P.presheaf.germ _ z hz).hom b` using `fun b => congrArg (fun φ => φ.hom b) hf`.
+
+Use `letI := P.presheaf.algebra_section_stalk (⟨z, hz⟩ : (p ⁻¹ᵁ U ⊓ q ⁻¹ᵁ W : P.Opens))`. Establish `loc` using `hO.isLocalization_stalk ⟨z, hz⟩`. Establish `hu : ∀ s : (hO.primeIdealOf ⟨z, hz⟩).asIdeal.primeCompl, IsUnit (φ.hom s)` using `fun s => by`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, hf']`. Conclude with `IsLocalization.map_units (P.presheaf.stalk z) s`.
+
+Set `Φ : P.presheaf.stalk z →+* DualNumber (P.presheaf.stalk z)` to `IsLocalization.lift hu`. Establish `hΦ : ∀ b, Φ ((P.presheaf.germ _ z hz).hom b) = φ.hom b` using `fun b => IsLocalization.lift_eq hu b`. Use `⟨Φ, fun a => ?_, extend D p z Φ U hU hzU fun u => ?_, extend E q z Φ W hW hzW fun u => ?_⟩` and prove the remaining obligations. Establish `: (TrivSqZeroExt.fstHom (P.presheaf.stalk z) (P.presheaf.stalk z) (P.presheaf.stalk z)).toRingHom.comp Φ = RingHom.id _`. Apply `IsLocalization.ringHom_ext (hO.primeIdealOf ⟨z, hz⟩).asIdeal.primeCompl` to reduce the goal to its premises.
+
+Use `RingHom.ext fun b => ?_` and prove the remaining obligations. Conclude with `(congrArg TrivSqZeroExt.fst (hΦ b)).trans (hf' b)`. Conclude with `congrArg (fun f => f a) this`. Rewrite using `[← germ_appLE p z U _ inf_le_left hz, hΦ, h1]`. Rewrite using `[← germ_appLE q z W _ inf_le_right hz, hΦ, h2]`.
+-/
 theorem exists_dual {Y : Over (Sp K)} (p : P ⟶ X.left) (q : P ⟶ Y.left)
     (H : IsPullback p q X.hom Y.hom) (D : VF X) (E : VF Y) (z : P) :
     ∃ Φ : P.presheaf.stalk z →+* DualNumber (P.presheaf.stalk z), (∀ a, (Φ a).fst = a) ∧
@@ -156,6 +196,11 @@ end GlobalTheory.SS.StalkDer
 namespace GlobalTheory.SS
 open StalkDer in
 
+/- English proof (translation)
+Introduce `K _ P X Y p q H D z`. Take `⟨Φ, h0, h1, h2⟩` from `exists_dual p q H D (VF.zero Y) z`. Use `⟨⟨⟨fun x => (Φ x).snd, by simp⟩, fun a b => by simp⟩, fun a b => ?_, fun V W h hz u => ?_, fun V W h hz u => ?_⟩` and prove the remaining obligations. Use `show (Φ (a * b)).snd = a * (Φ b).snd + b * (Φ a).snd`. Rewrite using `[map_mul, DualNumber.snd_mul, h0, h0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[germ_appLE, germ_appLE]`. Conclude with `congrArg TrivSqZeroExt.snd (h1 V (h hz) u)`. Rewrite using `[germ_appLE]`. Conclude with `(congrArg TrivSqZeroExt.snd (h2 V (h hz) u)).trans (map_zero (gm q z V (h hz)))`.
+-/
 theorem exists_stalk_derivation_of_isPullback : ∀ (K : Type) [Field K] (P X Y : Over (Sp K)) (p : P.left ⟶ X.left) (q : P.left ⟶ Y.left), IsPullback p q X.hom Y.hom → ∀ (D : VF X) (z : P.left), ∃ δ : P.left.presheaf.stalk z →+ P.left.presheaf.stalk z, (∀ a b, δ (a * b) = a * δ b + b * δ a) ∧ (∀ (V : X.left.Opens) (W : P.left.Opens) (h : W ≤ p ⁻¹ᵁ V) (hz : z ∈ W) (u : Γ(X.left, V)), δ ((P.left.presheaf.germ W z hz).hom ((p.appLE V W h).hom u)) = (P.left.presheaf.germ W z hz).hom ((p.appLE V W h).hom (D.D V u))) ∧ ∀ (V : Y.left.Opens) (W : P.left.Opens) (h : W ≤ q ⁻¹ᵁ V) (hz : z ∈ W) (u : Γ(Y.left, V)), δ ((P.left.presheaf.germ W z hz).hom ((q.appLE V W h).hom u)) = 0 := by
   intro K _ P X Y p q H D z
   obtain ⟨Φ, h0, h1, h2⟩ := exists_dual p q H D (VF.zero Y) z

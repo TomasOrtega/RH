@@ -15,6 +15,11 @@ namespace GlobalTheory.FlatAdd
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w₀`. Establish `h1` using `d.integrableOn_mixS hψ hμ hf x w₀`. Establish `h2` using `d.integrableOn_mixS hψ hμ hg x w₀`. Simplify using `only [HypDec.integrandS_eq] at h1 h2`. Simplify using `only [HypDec.mixS, Pi.add_apply, HypDec.integrandS_eq]`.
+
+Rewrite using `[← integral_add h1 h2]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixS_add {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
     (T : HSp D) {μ : Measure (Mx D T.rank ρ)} {𝓕 : Set (Mx D T.rank ρ)} (hμ : IsCovolOne (ratMx D T.rank ρ) μ 𝓕)
     {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) (x : Mx D T.rank ρ) :
@@ -27,6 +32,11 @@ theorem mixS_add {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {S S₀ 
   rw [← integral_add h1 h2]
   congr 1; funext a; ring
 
+/- English proof (translation)
+Establish `cY : Continuous (d.extY T)` using `continuous_id.matrix_mul continuous_const`. Establish `c0 : Continuous (d.ext0 T)` using `continuous_id.matrix_mul continuous_const`. Use `GlobalTheory.MixCont.continuous_covolOne_integral hμ (fun (w : WO S₀ T) a => heisO ψ S T (d.extY T a) (heisO ψ S T (d.extX T x) (heisO ψ S T (d.ext0 T w) f)) 0) ?_ (fun w γ hγ a => d.integrandS_periodic hf x w γ hγ a)` and prove the remaining obligations. Establish `e : Function.uncurry (fun (w : WO S₀ T) a => heisO ψ S T (d.extY T a) (heisO ψ S T (d.extX T x) (heisO ψ S T (d.ext0 T w) f)) 0) = fun z => ψ (symplOH S T (d.extY T z.2) (d.extX T x)) * f (d.extY T z.2 + d.extX T x + d.ext0 T z.1)`. Use function extensionality and compare the values at `z`.
+
+Conclude with `d.integrandS_eq _ _ _ _`. Rewrite using `[e]`. Conclude with `(hψ.comp (GlobalTheory.OrientedHeis.continuous_symplOH (cY.comp continuous_snd) continuous_const)).mul (hf.cont.comp (((cY.comp continuous_snd).add continuous_const).add (c0.comp continuous_fst)))`.
+-/
 theorem continuous_mixS {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
     (T : HSp D) {μ : Measure (Mx D T.rank ρ)} {𝓕 : Set (Mx D T.rank ρ)} (hμ : IsCovolOne (ratMx D T.rank ρ) μ 𝓕)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (x : Mx D T.rank ρ) : Continuous (d.mixS T ψ μ 𝓕 f x) := by
@@ -43,6 +53,9 @@ theorem continuous_mixS {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {
   exact (hψ.comp (GlobalTheory.OrientedHeis.continuous_symplOH (cY.comp continuous_snd) continuous_const)).mul
     (hf.cont.comp (((cY.comp continuous_snd).add continuous_const).add (c0.comp continuous_fst)))
 
+/- English proof (translation)
+Use `covolOne_integrableOn hμ _ ?_ (GlobalTheory.MixCont.integrandT_periodic_of_quasi d hq y w₀)` and prove the remaining obligations. Establish `cX : Continuous (d.incX S)` using `continuous_const.matrix_mul continuous_id`. Simplify using `only [HypDec.integrandT_eq]`. Conclude with `(hψ.comp (GlobalTheory.OrientedHeis.continuous_symplOH cX continuous_const)).mul (hc.comp ((cX.add continuous_const).add continuous_const))`.
+-/
 theorem integrableOn_mixT_of_quasi {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {T T₀ : HSp D} {ρ : ℕ}
     (d : HypDec T T₀ ρ) (S : HSp D) {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.rank)}
     (hμ : IsCovolOne (ratMx D ρ S.rank) μ 𝓕) {f : WO S T → ℂ} (hc : Continuous f)
@@ -55,6 +68,11 @@ theorem integrableOn_mixT_of_quasi {ψ : AddChar (AF D.host.F) ℂ} (hψ : Conti
   exact (hψ.comp (GlobalTheory.OrientedHeis.continuous_symplOH cX continuous_const)).mul
     (hc.comp ((cX.add continuous_const).add continuous_const))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w₀`. Establish `h1` using `integrableOn_mixT_of_quasi hψ dW V₀ vT.covol (continuous_mixS hψ dV W vS.covol hf x) (fun δ w => GlobalTheory.MixModel.Check.mixS_quasi dV vS.μ vS.𝓕 hf x δ w) y w₀`. Establish `h2` using `integrableOn_mixT_of_quasi hψ dW V₀ vT.covol (continuous_mixS hψ dV W vS.covol hg x) (fun δ w => GlobalTheory.MixModel.Check.mixS_quasi dV vS.μ vS.𝓕 hg x δ w) y w₀`. Simplify using `only [HypDec.integrandT_eq] at h1 h2`. Simplify using `only [evalAt, mixS_add hψ dV W vS.covol hf hg x, HypDec.mixT, Pi.add_apply, HypDec.integrandT_eq]`.
+
+Rewrite using `[← integral_add h1 h2]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evalAt_add {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {V V₀ W W₀ : HSp D} {ρ σ : ℕ}
     (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (vS : VolM D W.rank ρ) (vT : VolM D σ V₀.rank)
     {f g : WO V W → ℂ} (hf : IsThetaFunO ψ V W f) (hg : IsThetaFunO ψ V W g) (x : Mx D W.rank ρ)
@@ -71,6 +89,13 @@ theorem evalAt_add {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {V V�
   rw [← integral_add h1 h2]
   congr 1; funext a; ring
 
+/- English proof (translation)
+Introduce `D hF ψ hψ σ J B st f g hf hg`. Use `⟨?_, fun a => GlobalTheory.HandHom.flatFB_smul st a f⟩` and prove the remaining obligations. Establish `hif` using `(hF ψ hψ J.W J.W₀ B.V B.V₀ (σ + 1) σ J.d B.d st.vS st.vT st.vU (GlobalTheory.Unf.FlatTheta.lastQ B) (GlobalTheory.Unf.FlatTheta.lastQ_indep B) 0 f hf).1`. Establish `hig` using `(hF ψ hψ J.W J.W₀ B.V B.V₀ (σ + 1) σ J.d B.d st.vS st.vT st.vU (GlobalTheory.Unf.FlatTheta.lastQ B) (GlobalTheory.Unf.FlatTheta.lastQ_indep B) 0 g hg).1`. Rewrite `hif`, `hig` using `[GlobalTheory.Unf.FlatTheta.rat_lastQ]`.
+
+Use function extensionality and compare the values at `w`. Simplify using `only [flatFB, flatLast, flatAt, Pi.add_apply]`. Rewrite using `[← integral_add (hif w) (hig w)]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [flatFun, evalAt_add hψ.1.1 J.d B.d st.vS st.vT hf hg, Pi.add_apply, mul_add]`.
+-/
 theorem flatFB_add_smul : ∀ (D : D7), FlatLaw D → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (st : StepFB ψ J B) (f g : WO J.W B.V → ℂ),
     IsThetaFunO ψ J.W B.V f → IsThetaFunO ψ J.W B.V g →

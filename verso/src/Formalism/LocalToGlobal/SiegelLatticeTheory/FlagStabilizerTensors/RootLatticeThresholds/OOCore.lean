@@ -23,6 +23,11 @@ def OOP (w : Point D.host.E (D.R.rS + 1)) : X.Vpi u' →L[ℂ] X.Vpi u :=
   haveI := FiniteDimensional.complete ℂ (X.Vpi u)
   OO (ν (Formalism.L2.SG.RealObj.gamW X u u' w)) Set.univ (X.Wu u) (X.Wu u') (Formalism.L2.SG.RealObj.gamW X u u' w)
 
+/- English proof (translation)
+Establish `hex : ∃ w' : Point D.host.E (D.R.rS + 1), toPts w' = toPts w ∧ ∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w' g` using `⟨w, rfl, hw⟩`. Unfold `J2of`. Rewrite using `[dif_pos hex]`. Establish `hc : hex.choose = w` using `toPts_injective hex.choose_spec.1`. Rewrite using `[hc, Formalism.L2.SG.PackageTie.norm_hsEmb_sq]`.
+
+Unfold `Jw OOP`. Rewrite using `[Formalism.L2.SG.Pf.LTL.hsNormSq_smul]`.
+-/
 theorem joint_amplitude_eq_normSq (w : Point D.host.E (D.R.rS + 1)) (hw : ∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w g) :
     J2of Y u u' ν (toPts w) =
       Complex.normSq ((Formalism.L2.SG.TermOp.scl (Y.FN u) (Y.FN u') (X := X) (u := u) (u' := u') * X.volK2 : ℝ) : ℂ) *

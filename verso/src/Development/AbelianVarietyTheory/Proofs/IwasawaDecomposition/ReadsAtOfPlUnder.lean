@@ -7,6 +7,19 @@ namespace GlobalTheory.HeightCounting.Up
 
 open GlobalTheory.Mem.Top.TwChar (plUnder incl embLL_incl mem_plUnder)
 
+/- English proof (translation)
+Introduce `x'`. Establish `hx : X'.B.embLL ((x' : ↥X'.toD7.LL0) : X'.toD7.what₂.LL) ∈ X'.B.embLL '' (X'.B.LL0 : Set X'.B.LL)` using `⟨_, (x' : ↥X'.toD7.LL0).2, rfl⟩`. Rewrite `hx` using `[h.2.2.1]`. Take `⟨y, hy, hye⟩` from `hx`. Establish `hint' : IsIntegral ℤ (X.B.embLL y)`.
+
+Rewrite using `[hye]`. Conclude with `(RingOfIntegers.isIntegral_coe x').map ((X'.toD7.what₂.embLL.comp (algebraMap ↥X'.toD7.LL0 X'.toD7.what₂.LL)).toIntAlgHom)`. Establish `hint : IsIntegral ℤ (⟨y, hy⟩ : ↥X.toD7.LL0)`. Use `(isIntegral_algHom_iff ((X.toD7.what₂.embLL.comp (algebraMap ↥X.toD7.LL0 X.toD7.what₂.LL)).toIntAlgHom) ?_).1 (by exact hint')` and prove the remaining obligations. Conclude with `X.toD7.what₂.embLL.injective.comp (algebraMap ↥X.toD7.LL0 X.toD7.what₂.LL).injective`.
+
+Set `x : 𝓞 ↥X.toD7.LL0` to `⟨⟨y, hy⟩, hint⟩`. Establish `e : X.toD7.what₂.embLL ((x : ↥X.toD7.LL0) : X.toD7.what₂.LL) = X'.toD7.what₂.embLL ((x' : ↥X'.toD7.LL0) : X'.toD7.what₂.LL)` using `hye`. Take `⟨h1, h2⟩` from `hc.emb i i' hi x x' e`. Establish `hside : HEq (sideEmb i b (x : ↥X.toD7.LL0)) (sideEmb i' b (x' : ↥X'.toD7.LL0))`. Consider the cases of `b`.
+
+Simplify `h2` using `[sideEmb]`. Simplify `h1` using `[sideEmb]`. Establish `hleft` using `((same_basic hc.exp.gal hc.exp.set hc.exp.frm).2.2.2.2 i i' hi).2.2 _ _ hside`. Establish `hmap : RingOfIntegers.mapRingHom (incl h) (algebraMap (𝓞 ↥X.toD7.LL0) (𝓞 X.toD7.what₂.LL) x) = algebraMap (𝓞 ↥X'.toD7.LL0) (𝓞 X'.toD7.what₂.LL) x'`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Apply `X'.B.embLL.injective` to reduce the goal to its premises. Conclude with `(embLL_incl h ((x : ↥X.toD7.LL0) : X.toD7.what₂.LL)).trans e`. Establish `hright : 0 < X.toD7.what₂.places.val (plUnder h v') ((x : ↥X.toD7.LL0) : X.toD7.what₂.LL) ↔ 0 < X'.toD7.what₂.places.val v' ((x' : ↥X'.toD7.LL0) : X'.toD7.what₂.LL)`. Use `(TwistChoice.val_pos_iff_mem X.toD7 (plUnder h v') x).trans (Iff.trans ?_ (TwistChoice.val_pos_iff_mem X'.toD7 v' x').symm)` and prove the remaining obligations. Establish `hm` using `mem_plUnder h v' (algebraMap (𝓞 ↥X.toD7.LL0) (𝓞 X.toD7.what₂.LL) x)`.
+
+Rewrite `hm` using `[hmap]`. Conclude with `hm`. Conclude with `hleft.symm.trans ((hr x).trans hright)`.
+-/
 theorem readsAt_of_plUnder (X X' : Stages) (h : Enl X.B X'.B) (hc : Carried X.toD7 X'.toD7) (v' : X'.B.places.Pl)
     (i : X.toD7.ntw.Tw) (i' : X'.toD7.ntw.Tw) (b : Bool) (hi : HEq i i')
     (hr : ReadsAt (D := X.toD7) i b (plUnder h v')) : ReadsAt (D := X'.toD7) i' b v' := by

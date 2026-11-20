@@ -19,6 +19,11 @@ variable {R : Type} [CommRing R]
 
 universe u v
 
+/- English proof (translation)
+Set `e : (∀ _ : Unit, R ⊗[R] M) ≃+ M` to `(AddEquiv.piUnique (fun _ : Unit => R ⊗[R] M)).trans (TensorProduct.lid R M).toAddEquiv`. Establish `he : ∀ n x, e (Pi.single () (n ⊗ₜ x)) = n • x` using `fun n x => by simp [e]`. Use `⟨e.trans (AddEquiv.ofBijective f.toAddMonoidHom hf), fun _ n x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (e _) = _`. Rewrite using `[he, map_smul]`.
+
+Conclude with `(hg n x).symm`.
+-/
 theorem tens_of_bij {M : Type u} {M' : Type v} [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
     (f : M →ₗ[R] M') (hf : Function.Bijective f) (g : R → M → M') (hg : ∀ n x, g n x = n • f x) :
     Tens R (N := fun _ : Unit => R) (M := fun _ => M) (M' := M') (fun _ n x => g n x) := by
@@ -30,6 +35,13 @@ theorem tens_of_bij {M : Type u} {M' : Type v} [AddCommGroup M] [Module R M] [Ad
   rw [he, map_smul]
   exact (hg n x).symm
 
+/- English proof (translation)
+Take `⟨G, hG⟩` from `h`. Set `e : (∀ _ : Unit, R ⊗[R] M) ≃+ M` to `(AddEquiv.piUnique (fun _ : Unit => R ⊗[R] M)).trans (TensorProduct.lid R M).toAddEquiv`. Establish `he : ∀ n x, e (Pi.single () (n ⊗ₜ x)) = n • x` using `fun n x => by simp [e]`. Establish `h3 : ∀ x, e.symm x = Pi.single () ((1 : R) ⊗ₜ x)` using `fun x => by`. Use `(AddEquiv.symm_apply_eq e).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[he, one_smul]`. Establish `e2 : g 1 = e.symm.trans G` using `funext fun x => by`. Express the relevant statement in the definitionally equal form `_ = G (e.symm x)`. Rewrite using `[h3, hG]`. Rewrite using `[e2]`.
+
+Conclude with `(e.symm.trans G).bijective`.
+-/
 theorem bij_of_tens {M : Type u} {M' : Type v} [AddCommGroup M] [Module R M] [AddCommGroup M']
     (g : R → M → M') (h : Tens R (N := fun _ : Unit => R) (M := fun _ => M) (M' := M') (fun _ n x => g n x)) :
     Function.Bijective (g 1) := by
@@ -50,9 +62,17 @@ end T
 section Loc
 variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {X : Scheme.{0}}
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨fun _ _ => trivial, fun _ => trivial⟩`.
+-/
 theorem crit_top {C : Type 1} [Category.{0} C] {Φ : PDF R C} (Q : Poly Φ) (r : ℤ) :
     Q.Crit (fun _ => IdF.top Φ.A) r := fun _ _ => ⟨fun _ _ => trivial, fun _ => trivial⟩
 
+/- English proof (translation)
+Use `⟨fun x y hxy => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `e : Ideal.Quotient.mk ((IdF.bot A).S T) (show A.obj T from x) = Ideal.Quotient.mk _ (show A.obj T from y)` using `congrArg Subtype.val hxy`. Conclude with `sub_eq_zero.1 (Ideal.Quotient.eq.1 e)`. Take `⟨y, hy⟩` from `y`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+
+Conclude with `⟨z, rfl⟩`.
+-/
 theorem topBot_bij {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R} (T : C) :
     Function.Bijective ((toSq (IdF.top A) (IdF.bot A) (fun _ => rfl)).τ T) := by
   refine ⟨fun x y hxy => ?_, fun y => ?_⟩
@@ -63,6 +83,27 @@ theorem topBot_bij {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R} (T
     obtain ⟨z, rfl⟩ := Ideal.Quotient.mk_surjective y
     exact ⟨z, rfl⟩
 
+/- English proof (translation)
+Take `⟨c', hF, -⟩` from `GlobalTheory.CompanionTheory.FlatChartP.exists_flat_chart γ p hp hn q κ c`. Establish `hg` using `GlobalTheory.CompanionTheory.ChartMaps.good c'`. Establish `hQa : ∀ T, St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ {V} T → InU V T := by`. Introduce and unpack `T ⟨-, W, rfl, hW⟩`. Conclude with `hW`.
+
+Establish `hQf : ∀ T, St (γ` using `γ) (p := p) (q := q) (κ := κ) FlatT {V} T → InU V T := by`. Introduce and unpack `T ⟨-, W, rfl, hW⟩`. Conclude with `hW`. Establish `hDa : St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ {V} c'.D := ⟨trivial, V, rfl, c'.inV⟩`. Establish `hDf : St (γ` using `γ) (p := p) (q := q) (κ := κ) FlatT {V} c'.D := ⟨hF, V, rfl, c'.inV⟩`.
+
+Take `⟨PA, hPA⟩` from `poly_all γ p hp q κ ⊤ (Or.inl rfl) {V}`. Take `⟨PF, hPF⟩` from `poly_all γ p hp q κ FlatT (Or.inr rfl) {V}`. Set `E` to `c'.frame hg _ hQa hDa`. Set `E'` to `c'.frame hg _ hQf hDf`. Set `e : E.D ⟶ (incl h).G.obj E'.D` to `ObjectProperty.homMk (𝟙 c'.D)`.
+
+Establish `he : (incl h).Fr E E' e`. Introduce `i T s s'`. Both sides reduce to the same expression. Establish `key` using `loc_bc (R := R) (R' := R) (m := incl h) PA PF E E' e he (fun _ => Function.injective_id) (ι := Unit) (fun _ => R) (fun _ => LinearMap.id) (fun _ _ => IdF.top _) (fun _ _ => IdF.bot _) (fun _ => IdF.top _) (fun _ => IdF.bot _) 0 (fun _ => ⟨fun _ _ _ _ => trivial, fun r _ => crit_t …`. Establish `h0 : x = 0` using `hx`.
+
+Rewrite using `[h0, map_zero, mul_zero]`. Conclude with `Ideal.zero_mem _)`. Use the proof step `(fun r' _ _ => by`. Use `tens_of_bij (R := R) LinearMap.id Function.bijective_id _ (fun n x => ?_)` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use the proof step `rfl) j`. Establish `b1` using `bij_of_tens _ key`. Set `Ma` to `toSq (IdF.top (sP (St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ {V})).A) (IdF.bot _) (fun _ => rfl)`. Set `Mf` to `toSq (IdF.top (sP (St (γ := γ) (p := p) (q := q) (κ := κ) FlatT {V})).A) (IdF.bot _) (fun _ => rfl)`.
+
+Establish `ta : Function.Bijective (Ma.pull j)` using `idM_bij Ma.τ Ma.nat (fun T => topBot_bij _) j`. Establish `tf : Function.Bijective (Mf.pull j)` using `idM_bij Mf.τ Mf.nat (fun T => topBot_bij _) j`. Use `(Function.Bijective.of_comp_iff' tf _).1 ?_` and prove the remaining obligations. Establish `b2` using `b1.comp ta`. Use `b2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Set `sc` to `(incl h).sqC (1 : R) (a := IdF.top _) (b := IdF.bot _) (a' := IdF.top _) (b' := IdF.bot _) (fun _ _ _ => trivial) (fun T x hx => by`. Establish `h0 : x = 0` using `hx`. Rewrite using `[h0, map_zero, mul_zero]`. Conclude with `Ideal.zero_mem _)`.
+
+Use `((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) (incl h).o Mf j x).1).symm.trans (Eq.trans ?_ ((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) Ma sc j x).1))` and prove the remaining obligations. Use `CrystallineSemistableComparison.P.prism (σ := RingHom.id R) (CH.Mor.comp (σ'' := RingHom.id R) (incl h).o Mf) (CH.Mor.comp (σ'' := RingHom.id R) Ma sc) (𝟙 _) (fun T y => ?_) j x` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations. Conclude with `congrArg (Ideal.Quotient.mk _) (by`. Rewrite using `[map_one]`.
+
+Conclude with `one_mul _)`.
+-/
 theorem local_bij (γ : DividedPowers I) (p : ℕ) (hp : p ≠ 0) (hn : IsNilpotent (p : R)) (q : X ⟶ Spec (CommRingCat.of O))
     (κ : O →+* R ⧸ I) {V : X.Opens} {d : ℕ} (c : Coord q V d)
     (h : St (γ := γ) (p := p) (q := q) (κ := κ) FlatT {V} ≤ St ⊤ {V}) (j : ℕ) :
@@ -126,11 +167,27 @@ section Glue
 variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {X : Scheme.{0}}
   {γ : DividedPowers I} {p : ℕ} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
+/- English proof (translation)
+Introduce `_ hT` and use `⟨trivial, hT.2⟩`.
+-/
 theorem st_le (𝒱 : Set X.Opens) : St (γ := γ) (p := p) (q := q) (κ := κ) FlatT 𝒱 ≤ St ⊤ 𝒱 :=
   fun _ hT => ⟨trivial, hT.2⟩
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `cover_bij (incl (st_le (γ := γ) (p := p) (q := q) (κ := κ) (Set.range U.U))).o (fun α T => InU (U.U α) T.obj) (fun α T => InU (U.U α) T.obj) (fun α T T' φ hT => Site.inU_hom φ.hom hT) (fun α T T' φ hT => Site.inU_hom φ.hom hT) (fun T => ?_) (fun T => ?_) (fun α T hT => hT) (fun S …` and prove the remaining obligations. Take `⟨-, V, ⟨α, rfl⟩, hV⟩` from `T.property`. Conclude with `⟨α, hV⟩`. Take `⟨-, V, ⟨α, rfl⟩, hV⟩` from `T.property`. Conclude with `⟨α, hV⟩`.
+
+Establish `h₁L : ∀ T, St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ {⨅ α ∈ S, U.U α} T → ∃ hp : St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ (Set.range U.U) T, capS (fun α (T : (St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ (Set.range U.U)).FullSubcategory) => InU (U.U α) T.obj) S ⟨T, hp⟩ := fun T hT => ⟨((st_inf _ U S hS T …`. Establish `h₁O : ∀ T, St (γ` using `γ) (p := p) (q := q) (κ := κ) FlatT {⨅ α ∈ S, U.U α} T → ∃ hp : St (γ := γ) (p := p) (q := q) (κ := κ) FlatT (Set.range U.U) T, capS (fun α (T : (St (γ := γ) (p := p) (q := q) (κ := κ) FlatT (Set.range U.U)).FullSubcategory) => InU (U.U α) T.obj) S ⟨T, hp⟩ := fun T hT => ⟨((st_in …`. Establish `aL` using `nestAdj h₁L (fun T => (st_inf _ U S hS T.obj.obj).2 ⟨T.obj.property, T.property⟩)`. Establish `aO` using `nestAdj h₁O (fun T => (st_inf _ U S hS T.obj.obj).2 ⟨T.obj.property, T.property⟩)`. Set `rL : CH.Mor ((capS (fun α (T : (St (γ` to `γ) (p := p) (q := q) (κ := κ) ⊤ (Set.range U.U)).FullSubcategory) => InU (U.U α) T.obj) S).ι ⋙ CH.modF (sP (St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ (Set.range U.U))).A) (CH.modF (sP (St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ {⨅ α ∈ S, U.U α})).A) (RingHom.id R) := CH.Mor.restrict …`.
+
+Set `rO : CH.Mor ((capS (fun α (T : (St (γ` to `γ) (p := p) (q := q) (κ := κ) FlatT (Set.range U.U)).FullSubcategory) => InU (U.U α) T.obj) S).ι ⋙ CH.modF (sP (St (γ := γ) (p := p) (q := q) (κ := κ) FlatT (Set.range U.U))).A) (CH.modF (sP (St (γ := γ) (p := p) (q := q) (κ := κ) FlatT {⨅ α ∈ S, U.U α})).A) (RingHom.id R) := CH. …`. Establish `bL : Function.Bijective (rL.pull j)` using `CrystallineSemistableComparison.P.adj _ _ _ aL j`. Establish `bO : Function.Bijective (rO.pull j)` using `CrystallineSemistableComparison.P.adj _ _ _ aO j`. Take `⟨α, hα⟩` from `id hS`. Take `⟨c', -⟩` from `GlobalTheory.T.coordinates_restrict_affine_open (U.c α) (iInf₂_le α hα : (⨅ α ∈ S, U.U α) ≤ U.U α) (U.inter S ⟨α, hα⟩)`.
+
+Establish `hloc` using `local_bij γ p hp hn q κ c' (st_le _) j`. Use `(Function.Bijective.of_comp_iff' bO _).1 ?_` and prove the remaining obligations. Establish `e : ∀ x, rO.pull j ((morU (incl (st_le (γ` using `γ) (p := p) (q := q) (κ := κ) (Set.range U.U))).o (U := capS (fun α T => InU (U.U α) T.obj) S) (U' := capS (fun α T => InU (U.U α) T.obj) S) fun T hT α hα => hT α hα).pull j x) = (incl (st_le (γ := γ) (p := p) (q := q) (κ := κ) {⨅ α ∈ S, U.U α})).o.pull j (rL.pull j x) := by`. Introduce `x`. Use `((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) _ rO j x).1).symm.trans (Eq.trans ?_ ((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) rL _ j x).1))` and prove the remaining obligations.
+
+Use `CrystallineSemistableComparison.P.prism (σ := RingHom.id R) _ _ (𝟙 _) (fun T y => ?_) j x` and prove the remaining obligations. Both sides reduce to the same expression. Establish `e2` using `funext e`. Use `(show Function.Bijective (fun x => rO.pull j ((morU (incl (st_le (γ := γ) (p := p) (q := q) (κ := κ) (Set.range U.U))).o (U := capS (fun α T => InU (U.U α) T.obj) S) (U' := capS (fun α T => InU (U.U α) T.obj) S) fun T hT α hα => hT α hα).pull j x)) from ?_)` and prove the remaining obligations. Rewrite using `[e2]`.
+
+Conclude with `hloc.comp bL`.
+-/
 theorem glue (hp : p ≠ 0) (hn : IsNilpotent (p : R)) (U : Cov q) (j : ℕ) :
     Function.Bijective ((incl (st_le (γ := γ) (p := p) (q := q) (κ := κ) (Set.range U.U))).o.pull j) := by
   refine cover_bij (incl (st_le (γ := γ) (p := p) (q := q) (κ := κ) (Set.range U.U))).o
@@ -187,10 +244,22 @@ section Top
 variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {X : Scheme.{0}}
   {γ : DividedPowers I} {p : ℕ} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T`. Conclude with `propext ⟨fun h => h.1, fun h => ⟨h, ⊤, rfl, inU_top T⟩⟩`.
+-/
 theorem st_top_eq (Q : ObjectProperty (Thick (nlFun γ p X q κ))) : St Q {⊤} = Q := by
   funext T
   exact propext ⟨fun h => h.1, fun h => ⟨h, ⊤, rfl, inU_top T⟩⟩
 
+/- English proof (translation)
+Establish `hUs : sSup (Set.range U.U) = ⊤`. Rewrite using `[sSup_range]`. Conclude with `U.cover`. Establish `hc : ∀ W ∈ ({⊤} : Set X.Opens), W ≤ sSup (Set.range U.U)` using `fun W _ => by`. Rewrite using `[hUs]`.
+
+Conclude with `le_top`. Establish `hfa : St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ (Set.range U.U) ≤ St ⊤ {⊤} := fun T hT => ⟨hT.1, ⊤, rfl, inU_top T⟩`. Establish `hff : St (γ` using `γ) (p := p) (q := q) (κ := κ) FlatT (Set.range U.U) ≤ St FlatT {⊤} := fun T hT => ⟨hT.1, ⊤, rfl, inU_top T⟩`. Establish `za` using `(zar (γ := γ) (p := p) (q := q) (κ := κ) ⊤ (Or.inr ⟨hp, Or.inl rfl⟩) (Set.range U.U) {⊤} hfa hc j).2.2`. Establish `zf` using `(zar (γ := γ) (p := p) (q := q) (κ := κ) FlatT (Or.inr ⟨hp, Or.inr rfl⟩) (Set.range U.U) {⊤} hff hc j).2.2`.
+
+Establish `g` using `glue (γ := γ) (κ := κ) hp hn U j`. Use `(Function.Bijective.of_comp_iff' zf _).1 ?_` and prove the remaining obligations. Establish `e : ⇑((incl hff).o.pull j) ∘ ⇑((incl (st_le (γ` using `γ) (p := p) (q := q) (κ := κ) {⊤})).o.pull j) = ⇑((incl (st_le (γ := γ) (p := p) (q := q) (κ := κ) (Set.range U.U))).o.pull j) ∘ ⇑((incl hfa).o.pull j) := by`. Use function extensionality and compare the values at `x`. Take `⟨a, ha, rfl⟩` from `CrystallineSemistableComparison.CechClassBoundaries.clsSurj x`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `g.comp za`.
+-/
 theorem all_flat (hp : p ≠ 0) (hn : IsNilpotent (p : R)) (U : Cov q) (j : ℕ) :
     Function.Bijective ((incl (st_le (γ := γ) (p := p) (q := q) (κ := κ) {⊤})).o.pull j) := by
   have hUs : sSup (Set.range U.U) = ⊤ := by
@@ -225,16 +294,29 @@ def scM (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) (m : ℕ)
   τ T := { toFun := fun x => x, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }
   nat _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `idM_bij (scM q ρ m Q).τ (scM q ρ m Q).nat (fun _ => Function.bijective_id) j`.
+-/
 theorem scM_bij (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) (m : ℕ)
     (Q : ObjectProperty (Thick (Wc.L l (B.schFn q) ρ m))) (j : ℕ) : Function.Bijective ((scM q ρ m Q).pull j) :=
   idM_bij (scM q ρ m Q).τ (scM q ρ m Q).nat (fun _ => Function.bijective_id) j
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨m, by rw [← map_natCast (Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ m})), ← map_pow, Ideal.Quotient.eq_zero_iff_mem] exact Ideal.mem_span_singleton_self _⟩`.
+-/
 theorem nil_l (k : Type) [Field k] [CharP k l] [PerfectRing k l] (m : ℕ) : IsNilpotent ((l : ℕ) : Wc.Wm l k m) := ⟨m, by
   rw [← map_natCast (Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ m})), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]
   exact Ideal.mem_span_singleton_self _⟩
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hp : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `ho` using `all_flat (γ := Wc.pd l k m) (κ := (Wc.res l k m).comp ρ) hp (nil_l k m) U j`. Establish `key : Function.Bijective ((CH.Mor.restrict (Wc.OM l (B.schFn q) ρ m) (St (γ` using `Wc.pd l k m) (p := l) (q := q) (κ := (Wc.res l k m).comp ρ) FlatT {⊤}).ι).pull j) := by`. Establish `r1 : Function.Bijective ((CH.Mor.restrict (Wc.OM l (B.schFn q) ρ m) (St (γ` using `Wc.pd l k m) (p := l) (q := q) (κ := (Wc.res l k m).comp ρ) ⊤ {⊤}).ι).pull j) := CrystallineSemistableComparison.P.mapH_bij _ (GlobalTheory.CompanionTheory.CosieveBC.restrict_bij _ (fun T => ⟨trivial, ⊤, rfl, inU_top T⟩)) j`. Establish `c1` using `scM_bij q ρ m (St (γ := Wc.pd l k m) (p := l) (q := q) (κ := (Wc.res l k m).comp ρ) ⊤ {⊤}) j`.
+
+Establish `c2` using `scM_bij q ρ m (St (γ := Wc.pd l k m) (p := l) (q := q) (κ := (Wc.res l k m).comp ρ) FlatT {⊤}) j`. Use `(Function.Bijective.of_comp_iff' c2 _).1 ?_` and prove the remaining obligations. Establish `e : ⇑((scM q ρ m (St (γ` using `Wc.pd l k m) (p := l) (q := q) (κ := (Wc.res l k m).comp ρ) FlatT {⊤})).pull j) ∘ ⇑((CH.Mor.restrict (Wc.OM l (B.schFn q) ρ m) (St (γ := Wc.pd l k m) (p := l) (q := q) (κ := (Wc.res l k m).comp ρ) FlatT {⊤}).ι).pull j) = ⇑((incl (st_le (γ := Wc.pd l k m) (p := l) (q := q) (κ := ( …`. Use function extensionality and compare the values at `x`. Take `⟨a, ha, rfl⟩` from `CrystallineSemistableComparison.CechClassBoundaries.clsSurj x`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `ho.comp (c1.comp r1)`. Establish `e2` using `st_top_eq (γ := Wc.pd l k m) (p := l) (q := q) (κ := (Wc.res l k m).comp ρ) FlatT`. Conclude with `(congrArg (fun Q : ObjectProperty (Thick (Wc.L l (B.schFn q) ρ m)) => Function.Bijective ((CH.Mor.restrict (Wc.OM l (B.schFn q) ρ m) Q.ι).pull j)) e2).mp key`.
+-/
 theorem resF_bij (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) (U : Cov q) (m j : ℕ) :
     Function.Bijective (resF l (B.schFn q) ρ m j) := by
   have hp : l ≠ 0 := (Fact.out : l.Prime).ne_zero
@@ -265,6 +347,9 @@ theorem resF_bij (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) (U : Cov q
 
 end Main
 
+/- English proof (translation)
+Introduce `l _ K r M hM m j`. Use `haveI : IsProper M.p := GlobalTheory.CommonModel.isProper_of_isProjOver hM.1.1`. Take `⟨U⟩` from `(cov_ex M.p).1 hM.2`. Conclude with `resF_bij M.p r.ρ U m j`.
+-/
 theorem flat_restriction : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (M : Model l K),
     M.Sm → ∀ m j, Function.Bijective (resF l (B.schFn M.p) r.ρ m j) := by
   intro l _ K r M hM m j

@@ -12,22 +12,34 @@ variable {W Qq F : Type} [CommRing W] [Field Qq] [Algebra W Qq] [Field F] [Algeb
 
 def gUp (p : ℕ) (g : Matrix (Fin n) (Fin n) Qq) : Matrix (Fin n) (Fin n) Qq := ((p : Qq))⁻¹ • g
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap W Qq) p]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective W Qq)).mpr h.ne`.
+-/
 theorem pQ_ne {p : ℕ} (h : Res (p : W) F) : (p : Qq) ≠ 0 := by
   rw [← map_natCast (algebraMap W Qq) p]
   exact (map_ne_zero_iff _ (IsFractionRing.injective W Qq)).mpr h.ne
 
+/- English proof (translation)
+Unfold `gUp`. Rewrite using `[psi_smul_mat, ← algebraMap_smul Qq (p : W), map_natCast, smul_smul, mul_inv_cancel₀ (pQ_ne (Qq := Qq) h), one_smul]`.
+-/
 theorem smul_psi_gUp {p : ℕ} (h : Res (p : W) F) (g : Matrix (Fin n) (Fin n) Qq) (w : Fin n → W) :
     (p : W) • psi (gUp p g) w = psi g w := by
   unfold gUp
   rw [psi_smul_mat, ← algebraMap_smul Qq (p : W), map_natCast, smul_smul,
     mul_inv_cancel₀ (pQ_ne (Qq := Qq) h), one_smul]
 
+/- English proof (translation)
+Unfold `gUp`. Rewrite using `[Matrix.det_smul]`. Conclude with `((isUnit_iff_ne_zero.mpr (inv_ne_zero (pQ_ne (Qq := Qq) h))).pow _).mul hg`.
+-/
 theorem gUp_det {p : ℕ} (h : Res (p : W) F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) :
     IsUnit (gUp p g).det := by
   unfold gUp
   rw [Matrix.det_smul]
   exact ((isUnit_iff_ne_zero.mpr (inv_ne_zero (pQ_ne (Qq := Qq) h))).pow _).mul hg
 
+/- English proof (translation)
+Introduce `a b hab`. Rewrite `hab` using `[psi_apply, psi_apply]`. Establish `hinj : Function.Injective g.mulVec` using `Matrix.mulVec_injective_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det g).mpr hg)`. Use function extensionality and compare the values at `c`. Conclude with `IsFractionRing.injective W Qq (congrFun (hinj hab) c)`.
+-/
 private theorem psi_injective_of_isUnit_det (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) :
     Function.Injective (psi (W := W) g) := by
   intro a b hab
@@ -37,6 +49,11 @@ private theorem psi_injective_of_isUnit_det (g : Matrix (Fin n) (Fin n) Qq) (hg 
   funext c
   exact IsFractionRing.injective W Qq (congrFun (hinj hab) c)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hm`. Take `⟨y, hy⟩` from `(mem_colSpan (W := W) g _).1 hm`. Use `(red_eq_zero h w).2 ⟨y, psi_injective_of_isUnit_det g hg ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_psi_gUp h g w, hy, ← psi_apply]`.
+
+Introduce `h0`. Take `⟨w', rfl⟩` from `(red_eq_zero h w).1 h0`. Rewrite using `[map_smul, smul_psi_gUp h]`. Conclude with `(mem_colSpan (W := W) g _).2 ⟨w', psi_apply g w'⟩`.
+-/
 theorem psi_gUp_mem {p : ℕ} (h : Res (p : W) F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det)
     (w : Fin n → W) : psi (gUp p g) w ∈ colSpan W g ↔ red F n w = 0 := by
   constructor
@@ -49,6 +66,17 @@ theorem psi_gUp_mem {p : ℕ} (h : Res (p : W) F) (g : Matrix (Fin n) (Fin n) Qq
     rw [map_smul, smul_psi_gUp h]
     exact (mem_colSpan (W := W) g _).2 ⟨w', psi_apply g w'⟩
 
+/- English proof (translation)
+Set `M : Submodule W (Fin n → W)` to `Submodule.comap (red F n) (U.restrictScalars W)`. Establish `inj : Function.Injective (psi (W` using `W) (gUp p g)) := psi_injective_of_isUnit_det _ (gUp_det h g hg)`. Set `e : M ≃ₗ[W] M.map (psi (gUp p g))` to `Submodule.equivMapOfInjective _ inj M`. Set `f : M →ₗ[W] U.restrictScalars W` to `(red F n).restrict (fun x hx => hx)`. Establish `hf : Function.Surjective f`.
+
+Introduce and unpack `⟨u, hu⟩`. Use `choose w hw using fun c => h.surj (u c)`. Establish `hred : red F n w = u` using `funext fun c => by rw [red_apply, hw]`. Use `⟨⟨w, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show red F n w ∈ U`.
+
+Rewrite using `[hred]`. Conclude with `hu`. Conclude with `Subtype.ext hred`. Establish `hQ : (LinearMap.ker f).map (e : M →ₗ[W] M.map (psi (gUp p g))) = Submodule.comap (M.map (psi (gUp p g))).subtype (colSpan W g)`. Use extensionality with `z`.
+
+Take `⟨m, rfl⟩` from `e.surjective z`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply, LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply]`. Establish `he : ((e m : M.map (psi (gUp p g))) : Fin n → Qq) = psi (gUp p g) (m : Fin n → W)` using `rfl`. Rewrite using `[he, psi_gUp_mem h g hg]`. Conclude with `Subtype.ext_iff`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_up {p : ℕ} (h : Res (p : W) F) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det)
     (U : Submodule F (Fin n → F)) :
     Nat.card (↥(LatOf (W := W) (gUp p g) U) ⧸ Submodule.comap (LatOf (W := W) (gUp p g) U).subtype (colSpan W g)) =
@@ -83,6 +111,17 @@ theorem card_up {p : ℕ} (h : Res (p : W) F) (g : Matrix (Fin n) (Fin n) Qq) (h
     _ = Nat.card U := rfl
     _ = Nat.card F ^ Module.finrank F U := Module.natCard_eq_pow_finrank
 
+/- English proof (translation)
+Establish `hle : colSpan W g ≤ LatOf (W` using `W) (gUp p g) U := by`. Introduce `y hy`. Take `⟨w, rfl⟩` from `(mem_colSpan (W := W) g y).1 hy`. Rewrite using `[← psi_apply, ← smul_psi_gUp h g w, ← map_smul]`. Use `(psi_mem_LatOf (gUp p g) (gUp_det h g hg) U _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[(red_eq_zero h _).2 ⟨w, rfl⟩]`. Conclude with `U.zero_mem`. Establish `hsm : ∀ x ∈ LatOf (W` using `W) (gUp p g) U, (p : W) • x ∈ colSpan W g := by`. Introduce `x hx`. Take `⟨w, -, rfl⟩` from `Submodule.mem_map.1 hx`.
+
+Rewrite using `[smul_psi_gUp h g w]`. Conclude with `(mem_colSpan (W := W) g _).2 ⟨w, psi_apply g w⟩`. Establish `hcard : Nat.card (↥(LatOf (W` using `W) (gUp p g) U) ⧸ Submodule.comap (LatOf (W := W) (gUp p g) U).subtype (colSpan W g)) = (p ^ n') ^ Module.finrank F U := by`. Rewrite using `[card_up h g hg U, hq]`. Unfold `IsEdge`.
+
+Simplify using `only`. Rewrite using `[hcard, pow_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, -, -, hc⟩`. Conclude with `Nat.pow_right_injective hq1 hc`.
+
+Introduce `hk`. Conclude with `⟨⟨g, hg, rfl⟩, LatOf_lattice h (gUp p g) (gUp_det h g hg) U, hle, hsm, by rw [hk]⟩`.
+-/
 theorem edge_up_iff (p n' k : ℕ) (h : Res (p : W) F) (hq : Nat.card F = p ^ n') (hq1 : 2 ≤ p ^ n')
     (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) (U : Submodule F (Fin n → F)) :
     IsEdge p n' k ⟨colSpan W g, LatOf (W := W) (gUp p g) U⟩ ↔ Module.finrank F U = k := by
@@ -111,6 +150,19 @@ theorem edge_up_iff (p n' k : ℕ) (h : Res (p : W) F) (hq : Nat.card F = p ^ n'
   · intro hk
     exact ⟨⟨g, hg, rfl⟩, LatOf_lattice h (gUp p g) (gUp_det h g hg) U, hle, hsm, by rw [hk]⟩
 
+/- English proof (translation)
+Establish `hgu` using `gUp_det h g hg`. Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (fun U => ⟨LatOf (W := W) (gUp p g) U.1, (edge_up_iff p n' k h hq hq1 g hg U.1).2 U.2.2, (hP U.1).2 U.2.1⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨U, hU⟩ ⟨U', hU'⟩ he`. Conclude with `Subtype.ext (LatOf_inj h (gUp p g) hgu (congrArg Subtype.val he))`.
+
+Introduce and unpack `⟨A1, hE, hPd⟩`. Establish `hE'` using `hE`. Unfold `IsEdge at hE'`. Simplify using `only at hE'`. Take `⟨-, -, hle, hsm, -⟩` from `hE'`.
+
+Establish `h1 : A1 ≤ colSpan W (gUp p g)`. Introduce `x hx`. Take `⟨w, hw⟩` from `(mem_colSpan (W := W) g _).1 (hsm x hx)`. Use `(mem_colSpan (W := W) (gUp p g) x).2 ⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← psi_apply]`.
+
+Establish `hpx : (p : W) • x = (p : W) • psi (gUp p g) w`. Rewrite using `[hw, smul_psi_gUp h g w, psi_apply]`. Rewrite `hpx` using `[← algebraMap_smul Qq (p : W) x, ← algebraMap_smul Qq (p : W), map_natCast]`. Conclude with `smul_right_injective (Fin n → Qq) (pQ_ne h) hpx`. Establish `h2 : ∀ y ∈ colSpan W (gUp p g), (p : W) • y ∈ A1`.
+
+Introduce `y hy`. Take `⟨w, rfl⟩` from `(mem_colSpan (W := W) (gUp p g) y).1 hy`. Rewrite using `[← psi_apply, smul_psi_gUp h g w]`. Conclude with `hle ((mem_colSpan (W := W) g _).2 ⟨w, psi_apply g w⟩)`. Take `⟨U, rfl⟩` from `LatOf_surj h (gUp p g) hgu A1 h1 h2`.
+
+Conclude with `⟨⟨U, (hP U).1 hPd, (edge_up_iff p n' k h hq hq1 g hg U).1 hE⟩, rfl⟩`.
+-/
 theorem up_card (p n' k : ℕ) (h : Res (p : W) F) (hq : Nat.card F = p ^ n') (hq1 : 2 ≤ p ^ n')
     (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) (Pd : Submodule W (Fin n → Qq) → Prop)
     (Pu : Submodule F (Fin n → F) → Prop) (hP : ∀ U, Pd (LatOf (W := W) (gUp p g) U) ↔ Pu U) :
@@ -144,10 +196,52 @@ theorem up_card (p n' k : ℕ) (h : Res (p : W) F) (hq : Nat.card F = p ^ n') (h
     obtain ⟨U, rfl⟩ := LatOf_surj h (gUp p g) hgu A1 h1 h2
     exact ⟨⟨U, (hP U).1 hPd, (edge_up_iff p n' k h hq hq1 g hg U).1 hE⟩, rfl⟩
 
+/- English proof (translation)
+Unfold `IsEdge at h`. Conclude with `h.2.2.1`.
+-/
 private theorem isEdge_src_le_tgt {k p n' r : ℕ} {e : Edge W Qq k} (h : IsEdge p n' r e) : e.src ≤ e.tgt := by
   unfold IsEdge at h
   exact h.2.2.1
 
+/- English proof (translation)
+Establish `hp0 : (p : Qq) ≠ 0` using `pQ_ne h`. Use `haveI hFfin : Finite F := by`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hq]`. Use `pow_ne_zero _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Conclude with `h.ne Nat.cast_zero`. Establish `hq1 : 2 ≤ p ^ n'`. Rewrite using `[← hq]`. Conclude with `Finite.one_lt_card`.
+
+Use `letI : Fintype F := Fintype.ofFinite F`. Establish `hcardF : Fintype.card F = p ^ n'` using `by rw [← Nat.card_eq_fintype_card, hq]`. Distinguish the cases in `hx : ∀ y ∈ colSpan W gA, x.mulVec y ∈ colSpan W gB`. Use `swap`. Use `push_neg at hx`.
+
+Take `⟨y0, hy0, hxy0⟩` from `hx`. Establish `hL : Nat.card {B1 : Submodule W (Fin (N + g) → Qq) // IsEdge p n' i ⟨B1, colSpan W gB⟩ ∧ ∀ y ∈ colSpan W gA, x.mulVec y ∈ B1} = 0` using `Nat.card_eq_zero.2 (Or.inl ⟨fun ⟨B1, hE, hB1⟩ => hxy0 (isEdge_src_le_tgt hE (hB1 y0 hy0))⟩)`. Rewrite using `[hL]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `l _`. Rewrite using `[Nat.card_eq_zero.2 (Or.inl ⟨fun ⟨A1, hE, hA1⟩ => hxy0 (hA1 _ (isEdge_src_le_tgt hE hy0))⟩), mul_zero]`. Establish `injB` using `psi_injective_of_isUnit_det (W := W) gB hgB`. Establish `memA : ∀ w, psi gA w ∈ colSpan W gA` using `fun w => (mem_colSpan (W := W) gA _).2 ⟨w, psi_apply gA w⟩`. Establish `hex : ∀ w : Fin N → W, ∃ v : Fin (N + g) → W, psi gB v = x.mulVec (psi gA w)`.
+
+Introduce `w`. Take `⟨v, hv⟩` from `(mem_colSpan (W := W) gB _).1 (hx _ (memA w))`. Conclude with `⟨v, by rw [hv, psi_apply]⟩`. Use `choose T hT using hex`. Set `Tl : (Fin N → W) →ₗ[W] (Fin (N + g) → W)` to `{ toFun := T map_add' := fun a b => injB (by rw [map_add, hT, hT, hT, map_add, Matrix.mulVec_add]) map_smul' := fun c a => injB (by`.
+
+Rewrite using `[RingHom.id_apply, map_smul, hT, hT, map_smul, Matrix.mulVec_smul]) }`. Set `Mf : Matrix (Fin (N + g)) (Fin N) F` to `Matrix.of fun r c => algebraMap W F (T (fun j => if c = j then 1 else 0) r)`. Set `f : (Fin N → F) →ₗ[F] (Fin (N + g) → F)` to `Matrix.mulVecLin Mf`. Establish `key : ∀ w, red F (N + g) (Tl w) = f (red F N w)`. Introduce `w`.
+
+Use function extensionality and compare the values at `r`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ Tl w]`. Simplify using `only [red_apply, f, Mf, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Establish `redSurj : ∀ (m : ℕ) (u : Fin m → F), ∃ w : Fin m → W, red F m w = u`.
+
+Introduce `m u`. Use `choose w hw using fun c => h.surj (u c)`. Conclude with `⟨w, funext fun c => by rw [red_apply, hw]⟩`. Establish `hL : ∀ w : Fin N → W, x.mulVec (psi (gUp p gA) w) ∈ colSpan W gB ↔ f (red F N w) = 0`. Introduce `w`.
+
+Establish `e1 : (p : W) • x.mulVec (psi (gUp p gA) w) = psi gB (T w)`. Rewrite using `[hT, ← smul_psi_gUp h gA w, Matrix.mulVec_smul]`. Rewrite using `[← key]`. Use `show _ ↔ red F (N + g) (T w) = 0`. Rewrite using `[red_eq_zero h]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hm`. Take `⟨v, hv⟩` from `(mem_colSpan (W := W) gB _).1 hm`. Use `⟨v, injB ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← e1, hv, psi_apply]`.
+
+Introduce and unpack `⟨v, hv⟩`. Use `(mem_colSpan (W := W) gB _).2 ⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[← psi_apply]`. Rewrite `e1` using `[hv, map_smul, ← algebraMap_smul Qq (p : W) (x.mulVec _), ← algebraMap_smul Qq (p : W), map_natCast]`. Conclude with `smul_right_injective (Fin (N + g) → Qq) hp0 e1`.
+
+Establish `hPd : ∀ U : Submodule F (Fin (N + g) → F), (∀ y ∈ colSpan W gA, x.mulVec y ∈ LatOf (W` using `W) gB U) ↔ LinearMap.range f ≤ U := by`. Introduce `U`. Prove the components needed by the constructor for the conclusion. Introduce `H v hv`. Take `⟨u, rfl⟩` from `LinearMap.mem_range.1 hv`.
+
+Take `⟨w, rfl⟩` from `redSurj N u`. Establish `hm` using `H _ (memA w)`. Rewrite `hm` using `[← hT, psi_mem_LatOf gB hgB U]`. Express the relevant statement in the definitionally equal form `red F (N + g) (Tl w) ∈ U at hm`. Rewrite `hm` using `[key]`. Then use the resulting hypothesis.
+
+Introduce `H y hy`. Take `⟨w, rfl⟩` from `(mem_colSpan (W := W) gA y).1 hy`. Rewrite using `[← psi_apply, ← hT, psi_mem_LatOf gB hgB U]`. Express the relevant statement in the definitionally equal form `red F (N + g) (Tl w) ∈ U`. Rewrite using `[key]`.
+
+Conclude with `H (LinearMap.mem_range_self f _)`. Establish `hPu : ∀ U : Submodule F (Fin N → F), (∀ y ∈ LatOf (W` using `W) (gUp p gA) U, x.mulVec y ∈ colSpan W gB) ↔ U ≤ LinearMap.ker f := by`. Introduce `U`. Prove the components needed by the constructor for the conclusion. Introduce `H u hu`.
+
+Take `⟨w, rfl⟩` from `redSurj N u`. Conclude with `LinearMap.mem_ker.2 ((hL w).1 (H _ ((psi_mem_LatOf (gUp p gA) (gUp_det h gA hgA) U w).2 hu)))`. Introduce `H y hy`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hy`. Conclude with `(hL w).2 (LinearMap.mem_ker.1 (H hw))`.
+
+Establish `hdown : Nat.card {B1 : Submodule W (Fin (N + g) → Qq) // IsEdge p n' i ⟨B1, colSpan W gB⟩ ∧ ∀ y ∈ colSpan W gA, x.mulVec y ∈ B1} = Nat.card {U : Submodule F (Fin (N + g) → F) // LinearMap.range f ≤ U ∧ Module.finrank F U + i = N + g}` using `down_card p n' i h hq hq1 gB hgB (fun B1 => ∀ y ∈ colSpan W gA, x.mulVec y ∈ B1) (fun U => LinearMap.range f ≤ U) hPd`. Establish `hup : ∀ l, Nat.card {A1 : Submodule W (Fin N → Qq) // IsEdge p n' (i - l) ⟨colSpan W gA, A1⟩ ∧ ∀ y ∈ A1, x.mulVec y ∈ colSpan W gB} = Formalism.G0.countBelow (LinearMap.ker f) (i - l)` using `fun l => up_card p n' (i - l) h hq hq1 gA hgA (fun A1 => ∀ y ∈ A1, x.mulVec y ∈ colSpan W gB) (fun U => U ≤ LinearMap.ker f) hPu`. Rewrite using `[hdown]`. Simplify using `only [hup]`. Establish `hT2` using `Formalism.G0.countAboveRangeCodimFormula f N g i (Module.finrank_fin_fun F) (Module.finrank_fin_fun F)`.
+
+Rewrite `hT2` using `[hcardF]`. Conclude with `hT2` after adjusting the coercions.
+-/
 theorem core (p n' : ℕ) (h : Res (p : W) F) (hq : Nat.card F = p ^ n') (N g i : ℕ)
     (gA : Matrix (Fin N) (Fin N) Qq) (hgA : IsUnit gA.det) (gB : Matrix (Fin (N + g)) (Fin (N + g)) Qq)
     (hgB : IsUnit gB.det) (x : Matrix (Fin (N + g)) (Fin N) Qq) :
@@ -273,6 +367,13 @@ namespace Formalism.MainNotions.FormalGroupSystem.Pf
 
 open Formalism.MainNotions.G
 
+/- English proof (translation)
+Introduce `p n' W Qq _ _ _ _ _ hfr hirr hcard N N' g i hN A B hA hB x`. Substitute `hN` using the available equality. Take `⟨gA, hgA, rfl⟩` from `hA`. Take `⟨gB, hgB, rfl⟩` from `hB`. Use `haveI := hfr`.
+
+Use `haveI : (Ideal.span {(p : W)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hirr`. Use `letI : Field (W ⧸ Ideal.span {(p : W)}) := Ideal.Quotient.field _`. Establish `hres : Cnt.Res (p : W) (W ⧸ Ideal.span {(p : W)})` using `{ surj := by rw [Ideal.Quotient.algebraMap_eq]; exact Ideal.Quotient.mk_surjective ker := fun w => by`. Rewrite using `[Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Use `ne := hirr.ne_zero }`.
+
+Conclude with `Cnt.core p n' hres hcard N g i gA hgA gB hgB x`.
+-/
 theorem countLoc : CountLoc := by
   intro p n' W Qq _ _ _ _ _ hfr hirr hcard N N' g i hN A B hA hB x
   subst hN

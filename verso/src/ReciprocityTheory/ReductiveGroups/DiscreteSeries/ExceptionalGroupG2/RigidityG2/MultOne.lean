@@ -18,6 +18,13 @@ open Finset Matrix
 namespace ReciprocityTheory.ChartRestriction.DS.G2
 variable {n : ℕ}
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v'`. Establish `h0 : ∀ y ∈ closGen E V, inner ℂ (j' v') y = 0`. Introduce `y hy`. Establish `hcl : IsClosed {y : H | inner ℂ (j' v') y = 0}` using `isClosed_eq (continuous_const.inner continuous_id) continuous_const`.
+
+Establish `hsub : ((genSub E V).map D.subtype : Set H) ⊆ {y | inner ℂ (j' v') y = 0}`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `rigid_orth_genSub hgap hσ hD hV hc hVK j' hj horth v' y hy`. Establish `hy' : y ∈ closure ((genSub E V).map D.subtype : Set H)`. Rewrite using `[← Submodule.topologicalClosure_coe]` and apply the resulting hypothesis.
+
+Conclude with `closure_minimal hsub hcl hy'`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `inner_self_eq_zero.1 (h0 _ (hrange v'))`.
+-/
 theorem rigid_multOne {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {ε : Fin n → Bool} {lam : Fin n → ℝ} (hgap : StdGap ε lam)
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ)

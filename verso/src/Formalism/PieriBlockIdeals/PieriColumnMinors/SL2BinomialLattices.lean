@@ -14,14 +14,27 @@ open Formalism.GradedWeylDivisibility Formalism.RankGapBounds.JumpSetsAlt Formal
 
 universe u v u' v'
 
+/- English proof (translation)
+The claim follows from `Finset.sup_le fun _ _ => Nat.factorization_choose_le_log`.
+-/
 theorem maxVal_le_log_alt (l n : ℕ) : Formalism.RankGapBounds.JumpSetsAlt.maxVal l n ≤ Nat.log l n :=
   Finset.sup_le fun _ _ => Nat.factorization_choose_le_log
 
+/- English proof (translation)
+Introduce `R O _ _ _ _ M _ _ N`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap N.subtype N.injective_subtype`.
+-/
 theorem flat_baseChange_injective : FlatBaseChangeInj := by
   intro R O _ _ _ _ M _ _ N
   rw [LinearMap.baseChange_eq_ltensor]
   exact Module.Flat.lTensor_preserves_injective_linearMap N.subtype N.injective_subtype
 
+/- English proof (translation)
+Introduce `l y`. Distinguish the cases in `h0 : Nat.log l y = 0`. Rewrite using `[h0]`. Simplify using `using Real.log_natCast_nonneg y`. Choose the witnesses or unpack the hypotheses as in `⟨hl, hy⟩ : 1 < l ∧ l ≤ y := by`.
+
+Assume the negation of the conclusion as `hcon`. Apply `h0` to reduce the goal to its premises. Rewrite using `[Nat.log_eq_zero_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : l ^ Nat.log l y ≤ y` using `Nat.pow_log_le_self l (by omega)`.
+
+Establish `h2 : ((l : ℝ)) ^ Nat.log l y ≤ (y : ℝ)` using `by exact_mod_cast h1`. Establish `h3 : (0 : ℝ) < (l : ℝ) ^ Nat.log l y` using `by positivity`. Establish `h4` using `Real.log_le_log h3 h2`. Rewrite `h4` using `[Real.log_pow]`. Then use the resulting hypothesis.
+-/
 theorem log_le_log_bound : LgLog := by
   intro l y
   by_cases h0 : Nat.log l y = 0
@@ -38,6 +51,13 @@ theorem log_le_log_bound : LgLog := by
     have h4 := Real.log_le_log h3 h2
     rwa [Real.log_pow] at h4
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← smul_eq_mul]`. Apply `Finset.sum_le_card_nsmul` to reduce the goal to its premises. Introduce `p hp`. Use `h p hp` as an intermediate fact.
+
+Conclude with `(maxVal_le_log_alt l _).trans (Nat.log_mono_right (by omega))`. Introduce `hM`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p hp`. Apply `Formalism.CohomologicalDescent.max_val_eq_zero_of_lt` to reduce the goal to its premises.
+
+Use `h p hp` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_maxVal_le_card_mul_log {N : ℕ} (U : Fin N → ℤ) (l M : ℕ) (hl : 0 < l) (s : Finset (Fin N × Fin N))
     (h : ∀ p ∈ s, U p.1 - U p.2 ≤ (M : ℤ)) :
     ∑ p ∈ s, Formalism.RankGapBounds.JumpSetsAlt.maxVal l (U p.1 - U p.2 - 1).toNat ≤ s.card * Nat.log l M ∧
@@ -55,6 +75,13 @@ theorem sum_maxVal_le_card_mul_log {N : ℕ} (U : Fin N → ℤ) (l M : ℕ) (hl
     have := h p hp
     omega
 
+/- English proof (translation)
+Establish `h1 : (posPairs N).card = ∑ b : Fin N, (Finset.Iio b).card`. Unfold `posPairs`. Rewrite using `[Finset.card_filter, Fintype.sum_prod_type, Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`.
+
+Rewrite using `[← Finset.card_filter]`. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[h1]`.
+
+Simplify using `only [Fin.card_Iio]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) N, Finset.sum_range_id, Nat.choose_two_right]`.
+-/
 theorem card_posPairs (N : ℕ) : (posPairs N).card = N.choose 2 := by
   have h1 : (posPairs N).card = ∑ b : Fin N, (Finset.Iio b).card := by
     unfold posPairs
@@ -69,6 +96,11 @@ theorem card_posPairs (N : ℕ) : (posPairs N).card = N.choose 2 := by
   simp only [Fin.card_Iio]
   rw [Fin.sum_univ_eq_sum_range (fun i => i) N, Finset.sum_range_id, Nat.choose_two_right]
 
+/- English proof (translation)
+Introduce `l N h U lo hl hU hr`. Establish `h1` using `sum_maxVal_le_card_mul_log U l h hl.pos (posPairs N) (by`. Introduce `p _`. Establish `h2` using `hr p.1`. Establish `h3` using `hr p.2`.
+
+Use the proof step `omega)`. Rewrite `h1` using `[card_posPairs]`. Conclude with `h1`.
+-/
 theorem raising_exponent_interval : EExpInterval := by
   intro l N h U lo hl hU hr
   have h1 := sum_maxVal_le_card_mul_log U l h hl.pos (posPairs N) (by
@@ -79,6 +111,9 @@ theorem raising_exponent_interval : EExpInterval := by
   rw [card_posPairs] at h1
   exact h1
 
+/- English proof (translation)
+Establish `h1 : (ex : ℝ) ≤ (c : ℝ) * (Nat.log l y : ℝ)` using `by exact_mod_cast h`. Establish `h2 : 0 ≤ Real.log l` using `Real.log_natCast_nonneg l`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nat_le_mul_log_real (ex c l y : ℕ) (h : ex ≤ c * Nat.log l y) :
     (ex : ℝ) * Real.log l ≤ (c : ℝ) * Real.log y := by
   have h1 : (ex : ℝ) ≤ (c : ℝ) * (Nat.log l y : ℝ) := by exact_mod_cast h
@@ -88,6 +123,9 @@ theorem nat_le_mul_log_real (ex c l y : ℕ) (h : ex ≤ c * Nat.log l y) :
     _ = (c : ℝ) * ((Nat.log l y : ℝ) * Real.log l) := by ring
     _ ≤ (c : ℝ) * Real.log y := mul_le_mul_of_nonneg_left (log_le_log_bound l y) (Nat.cast_nonneg c)
 
+/- English proof (translation)
+Establish `hlt : ∀ p ∈ posPairs N, p.1.val < p.2.val` using `fun p hp => (Finset.mem_filter.1 hp).2`. Establish `hR : (posPairs N).filter (fun p => ¬ p.2.val < k ∧ k ≤ p.1.val) = (posPairs N).filter (fun p => k ≤ p.1.val)` using `Finset.filter_congr fun p hp => by have := hlt p hp; omega`. Establish `hC : (posPairs N).filter (fun p => ¬ p.2.val < k ∧ ¬ k ≤ p.1.val) = (posPairs N).filter (fun p => p.1.val < k ∧ k ≤ p.2.val)` using `Finset.filter_congr fun p hp => by have := hlt p hp; omega`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (posPairs N) (fun p => p.2.val < k), ← Finset.sum_filter_add_sum_filter_not ((posPairs N).filter (fun p => ¬ p.2.val < k)) (fun p => k ≤ p.1.val), Finset.filter_filter, Finset.filter_filter, hR, hC, add_assoc]`.
+-/
 theorem sum_posPairs_split {N : ℕ} (k : ℕ) (g : Fin N × Fin N → ℕ) :
     ∑ p ∈ posPairs N, g p = ∑ p ∈ (posPairs N).filter (fun p => p.2.val < k), g p +
       ∑ p ∈ (posPairs N).filter (fun p => k ≤ p.1.val), g p +
@@ -103,6 +141,9 @@ theorem sum_posPairs_split {N : ℕ} (k : ℕ) (g : Fin N × Fin N → ℕ) :
     ← Finset.sum_filter_add_sum_filter_not ((posPairs N).filter (fun p => ¬ p.2.val < k))
       (fun p => k ≤ p.1.val), Finset.filter_filter, Finset.filter_filter, hR, hC, add_assoc]
 
+/- English proof (translation)
+Introduce `N k l U`. Conclude with `sum_posPairs_split k _`.
+-/
 theorem raising_split_three : ESplit3 := by
   intro N k l U
   exact sum_posPairs_split k _
@@ -115,6 +156,11 @@ def embedFinLast (N k : ℕ) : Fin (N - k) ↪ Fin N :=
     simp only at this
     exact Fin.ext (by omega)⟩
 
+/- English proof (translation)
+Use extensionality with `⟨a, b⟩`. Simplify using `only [posPairs, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hab, hb⟩`. Establish `hab' : a.val < b.val` using `hab`.
+
+Conclude with `⟨(⟨a.val, by omega⟩, ⟨b.val, hb⟩), hab, rfl⟩`. Introduce and unpack `⟨⟨a', b'⟩, hab, h2⟩`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj h2`. Conclude with `⟨hab, b'.isLt⟩`.
+-/
 theorem posPairs_filter_lt {N k : ℕ} (hk : k ≤ N) :
     (posPairs N).filter (fun p => p.2.val < k) =
       (posPairs k).map ((embedFinFirst hk).prodMap (embedFinFirst hk)) := by
@@ -128,6 +174,17 @@ theorem posPairs_filter_lt {N k : ℕ} (hk : k ≤ N) :
     obtain ⟨rfl, rfl⟩ := Prod.mk.inj h2
     exact ⟨hab, b'.isLt⟩
 
+/- English proof (translation)
+Use extensionality with `⟨a, b⟩`. Simplify using `only [posPairs, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hab, ha⟩`. Establish `hab' : a.val < b.val` using `hab`.
+
+Establish `ha2` using `a.isLt`. Establish `hb2` using `b.isLt`. Use `⟨(⟨a.val - k, by omega⟩, ⟨b.val - k, by omega⟩), ?_, ?_⟩` and prove the remaining obligations. Use `show a.val - k < b.val - k`. Use linear arithmetic over natural numbers and integers.
+
+Apply `Prod.ext` to reduce the goal to its premises. Apply `Fin.ext show k + (a.val - k) = a.val` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Apply `Fin.ext show k + (b.val - k) = b.val` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+
+Introduce and unpack `⟨⟨a', b'⟩, hab, h2⟩`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj h2`. Establish `hab' : a'.val < b'.val` using `hab`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show k + a'.val < k + b'.val`.
+
+Use linear arithmetic over natural numbers and integers. Use `show k ≤ k + a'.val`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem posPairs_filter_ge {N k : ℕ} (hk : k ≤ N) :
     (posPairs N).filter (fun p => k ≤ p.1.val) =
       (posPairs (N - k)).map ((embedFinLast N k).prodMap (embedFinLast N k)) := by
@@ -157,6 +214,15 @@ theorem posPairs_filter_ge {N k : ℕ} (hk : k ≤ N) :
     · show k ≤ k + a'.val
       omega
 
+/- English proof (translation)
+Use extensionality with `⟨a, b⟩`. Simplify using `only [posPairs, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map, Finset.mem_product]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, ha, hb⟩`. Establish `hb2` using `b.isLt`.
+
+Use `⟨⟨⟨a.val, ha⟩, rfl⟩, ⟨⟨b.val - k, by omega⟩, ?_⟩⟩` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Use `show k + (b.val - k) = b.val`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨⟨a', rfl⟩, ⟨b', rfl⟩⟩`.
+
+Use `a'.isLt` as an intermediate fact. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show a'.val < k + b'.val`. Use linear arithmetic over natural numbers and integers. Conclude with `a'.isLt`.
+
+Use `show k ≤ k + b'.val`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem posPairs_filter_cross {N k : ℕ} (hk : k ≤ N) :
     (posPairs N).filter (fun p => p.1.val < k ∧ k ≤ p.2.val) =
       ((Finset.univ : Finset (Fin k)).map (embedFinFirst hk)) ×ˢ
@@ -180,6 +246,13 @@ theorem posPairs_filter_cross {N k : ℕ} (hk : k ≤ N) :
     · show k ≤ k + b'.val
       omega
 
+/- English proof (translation)
+Introduce `N k hk`. Establish `h1 : ((posPairs N).filter (fun p => p.2.val < k)).card = k.choose 2`. Rewrite using `[posPairs_filter_lt hk, Finset.card_map, card_posPairs]`. Establish `h2 : ((posPairs N).filter (fun p => k ≤ p.1.val)).card = (N - k).choose 2`. Rewrite using `[posPairs_filter_ge hk, Finset.card_map, card_posPairs]`.
+
+Establish `h3 : ((posPairs N).filter (fun p => p.1.val < k ∧ k ≤ p.2.val)).card = k * (N - k)`. Rewrite using `[posPairs_filter_cross hk, Finset.card_product, Finset.card_map, Finset.card_map, Finset.card_univ, Finset.card_univ, Fintype.card_fin, Fintype.card_fin]`. Use `⟨?_, h1, h2, h3⟩` and prove the remaining obligations. Establish `h4` using `sum_posPairs_split (N := N) k (fun _ => 1)`. Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one] at h4`.
+
+Rewrite `h4` using `[card_posPairs, h1, h2, h3]`. Conclude with `h4.symm`.
+-/
 theorem choose_split_alt : ChooseSplit := by
   intro N k hk
   have h1 : ((posPairs N).filter (fun p => p.2.val < k)).card = k.choose 2 := by
@@ -195,6 +268,19 @@ theorem choose_split_alt : ChooseSplit := by
   rw [card_posPairs, h1, h2, h3] at h4
   exact h4.symm
 
+/- English proof (translation)
+Introduce `l N k h S eta xm lo U hl sh`. Take `⟨-, c1, c2, c3⟩` from `choose_split_alt N k sh.k_le`. Establish `hlt : ∀ p ∈ posPairs N, p.1.val < p.2.val` using `fun p hp => (Finset.mem_filter.1 hp).2`. Establish `b1` using `sum_maxVal_le_card_mul_log U l S hl.pos ((posPairs N).filter (fun p => p.2.val < k)) (by`. Introduce `p hp`.
+
+Rewrite `hp` using `[Finset.mem_filter]`. Establish `h0` using `hlt p hp.1`. Establish `h1` using `sh.cloudIn p.1 (by omega)`. Establish `h2` using `sh.cloudIn p.2 hp.2`. Use the proof step `omega)`.
+
+Establish `b2` using `sum_maxVal_le_card_mul_log U l eta hl.pos ((posPairs N).filter (fun p => k ≤ p.1.val)) (by`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter]`. Establish `h0` using `hlt p hp.1`. Establish `h1` using `sh.restIn p.1 hp.2`.
+
+Establish `h2` using `sh.restIn p.2 (by omega)`. Use the proof step `omega)`. Establish `b3` using `sum_maxVal_le_card_mul_log U l h hl.pos ((posPairs N).filter (fun p => p.1.val < k ∧ k ≤ p.2.val)) (by`. Introduce `p _`. Establish `h1` using `sh.inRange p.1`.
+
+Establish `h2` using `sh.inRange p.2`. Use the proof step `omega)`. Rewrite `b1` using `[c1]`. Rewrite `b2` using `[c2]`. Rewrite `b3` using `[c3]`.
+
+Conclude with `⟨b1.1, b1.2, b2.1, b2.2, b3.1, Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega))⟩`.
+-/
 theorem three_bounds : ThreeBounds := by
   intro l N k h S eta xm lo U hl sh
   obtain ⟨-, c1, c2, c3⟩ := choose_split_alt N k sh.k_le
@@ -224,6 +310,9 @@ theorem three_bounds : ThreeBounds := by
   rw [c3] at b3
   exact ⟨b1.1, b1.2, b2.1, b2.2, b3.1, Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega))⟩
 
+/- English proof (translation)
+Distinguish the cases in `h0 : a = 0`. Rewrite using `[h0]`. Simplify using `using hb`. Conclude with `Real.log_le_log (by exact_mod_cast Nat.pos_of_ne_zero h0) hab`.
+-/
 theorem real_log_mono_of_le (a : ℕ) (b : ℝ) (hab : (a : ℝ) ≤ b) (hb : 0 ≤ Real.log b) :
     Real.log a ≤ Real.log b := by
   by_cases h0 : a = 0
@@ -231,11 +320,29 @@ theorem real_log_mono_of_le (a : ℕ) (b : ℝ) (hab : (a : ℝ) ≤ b) (hb : 0 
     simpa using hb
   · exact Real.log_le_log (by exact_mod_cast Nat.pos_of_ne_zero h0) hab
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_choose_two]`. Establish `: (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem choose_two_le_sq (N : ℕ) : (N.choose 2 : ℝ) ≤ (N : ℝ) ^ 2 := by
   rw [Nat.cast_choose_two]
   have : (0 : ℝ) ≤ N := Nat.cast_nonneg N
   nlinarith
 
+/- English proof (translation)
+Introduce `l N k h S eta ex m t xm lo U hl sh hex heta hmt`. Take `⟨b1, -, -, b2, b3, -⟩` from `three_bounds l N k h S eta xm lo U hl sh`. Establish `h0` using `raising_split_three N k l U`. Rewrite `h0` using `[b2 heta]`. Prove the components needed by the constructor for the conclusion.
+
+Establish `e1` using `nat_le_mul_log_real _ _ _ _ b1`. Establish `e3` using `nat_le_mul_log_real _ _ _ _ b3`. Establish `hex' : (ex : ℝ) ≤ (eCl U k l : ℝ) + (eCross U k l : ℝ)`. Establish `: ex ≤ eCl U k l + eCross U k l` using `by omega`. Conclude with `this` after adjusting the coercions.
+
+Establish `hl0 : 0 ≤ Real.log l` using `Real.log_natCast_nonneg l`. Move the coercions through the operations in `at e3`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hex' hl0]`. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hh0 : (0 : ℝ) ≤ h` using `Nat.cast_nonneg h`.
+
+Establish `hS0 : (0 : ℝ) ≤ S` using `Nat.cast_nonneg S`. Establish `l1 : 0 ≤ Real.log (3 * (h : ℝ))`. Use `Real.log_natCast_nonneg (3 * h)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+
+Establish `l2 : 0 ≤ Real.log ((S : ℝ) + k)`. Use `Real.log_natCast_nonneg (S + k)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `a1 : Real.log h ≤ Real.log (3 * (h : ℝ))` using `real_log_mono_of_le h _ (by linarith) l1`.
+
+Establish `a2 : Real.log S ≤ Real.log ((S : ℝ) + k)` using `real_log_mono_of_le S _ (by linarith) l2`. Establish `a3 : ((N - k : ℕ) : ℝ) ≤ (m : ℝ) + t` using `by exact_mod_cast hmt`. Establish `a4 : (k : ℝ) * ((N - k : ℕ) : ℝ) ≤ (k : ℝ) * ((m : ℝ) + t)` using `mul_le_mul_of_nonneg_left a3 hk0`. Establish `a5` using `mul_le_mul a4 a1 (Real.log_natCast_nonneg h) (by positivity)`. Establish `a6` using `mul_le_mul (choose_two_le_sq k) a2 (Real.log_natCast_nonneg S) (by positivity)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem size_large : SizeLarge := by
   intro l N k h S eta ex m t xm lo U hl sh hex heta hmt
   obtain ⟨b1, -, -, b2, b3, -⟩ := three_bounds l N k h S eta xm lo U hl sh
@@ -270,6 +377,15 @@ theorem size_large : SizeLarge := by
     have a6 := mul_le_mul (choose_two_le_sq k) a2 (Real.log_natCast_nonneg S) (by positivity)
     linarith
 
+/- English proof (translation)
+Unfold `Formalism.RankGapBounds.JumpSetsAlt.maxVal`. Apply `Finset.sup_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Establish `hlog : Nat.log 13 n < 2`.
+
+Break down `Nat.eq_zero_or_pos n with rfl | hpos` into its components or cases. Simplify using the standard rewrite rules. Conclude with `Nat.log_lt_of_lt_pow hpos.ne' (by norm_num; exact hn)`. Rewrite using `[Nat.factorization_choose (by norm_num : Nat.Prime 13) hi' hlog]`. Establish `h12 : Finset.Ico 1 2 = {1}` using `by decide`.
+
+Rewrite using `[h12, Finset.filter_singleton]`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd (by simpa using h1) h2`. Conclude with `absurd (by simpa using h2) h1`.
+
+Both sides reduce to the same expression.
+-/
 theorem maxVal_thirteen_eq_sup (n : ℕ) (hn : n < 169) :
     Formalism.RankGapBounds.JumpSetsAlt.maxVal 13 n =
       (Finset.range (n + 1)).sup fun i => if 13 ≤ i % 13 + (n - i) % 13 then 1 else 0 := by
@@ -290,6 +406,11 @@ theorem maxVal_thirteen_eq_sup (n : ℕ) (hn : n < 169) :
   · exact absurd (by simpa using h2) h1
   · rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Unfold `eExp`. Establish `h : ∀ p ∈ posPairs 24, Formalism.RankGapBounds.JumpSetsAlt.maxVal 13 (((46 : ℤ) - 2 * (p.1.val : ℤ)) - ((46 : ℤ) - 2 * (p.2.val : ℤ)) - 1).toNat = _` using `fun p _ => maxVal_thirteen_eq_sup _ (by`. Establish `h1` using `p.1.isLt`. Establish `h2` using `p.2.isLt`.
+
+Use the proof step `omega)`. Rewrite using `[Finset.sum_congr rfl h]`. Use `decide +kernel`. Evaluate the numerical expressions.
+-/
 theorem witness_thirteen : ExponentBoundCounterexample := by
   constructor
   · unfold eExp
@@ -303,11 +424,21 @@ theorem witness_thirteen : ExponentBoundCounterexample := by
     decide +kernel
   · norm_num
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.algebraTensorAlgEquiv_tmul R O a f`.
+-/
 theorem polyBC_tmul (R O : Type) [CommRing R] [CommRing O] [Algebra R O] (r n : ℕ) (a : O)
     (f : MvPolynomial (Fin r × Fin n) R) :
     polyBC R O r n (a ⊗ₜ[R] f) = a • map (algebraMap R O) f :=
   MvPolynomial.algebraTensorAlgEquiv_tmul R O a f
 
+/- English proof (translation)
+Rewrite using `[Submodule.baseChange_eq_span, Submodule.map_span]`. Use `congr 1`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨f, hf, rfl⟩, rfl⟩`.
+
+Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `h` using `polyBC_tmul R O r n 1 f`. Rewrite `h` using `[one_smul]`. Conclude with `h.symm`. Introduce and unpack `⟨f, hf, rfl⟩`.
+
+Use `⟨_, ⟨f, hf, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `polyBC_tmul R O r n 1 f`. Rewrite `h` using `[one_smul]`. Conclude with `h`.
+-/
 theorem map_baseChange_polyBC_eq_span (R O : Type) [CommRing R] [CommRing O] [Algebra R O] (r n : ℕ)
     (q : Submodule R (MvPolynomial (Fin r × Fin n) R)) :
     (q.baseChange O).map (polyBC R O r n).toLinearMap =
@@ -327,11 +458,21 @@ theorem map_baseChange_polyBC_eq_span (R O : Type) [CommRing R] [CommRing O] [Al
     rw [one_smul] at h
     exact h
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, map_C, ← MvPolynomial.smul_eq_C_mul]`.
+-/
 theorem map_algebraMap_smul_alt (R O : Type) [CommRing R] [CommRing O] [Algebra R O] {σ : Type} (a : R)
     (f : MvPolynomial σ R) :
     map (algebraMap R O) (a • f) = algebraMap R O a • map (algebraMap R O) f := by
   rw [MvPolynomial.smul_eq_C_mul, map_mul, map_C, ← MvPolynomial.smul_eq_C_mul]
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨w, rfl⟩` from `hg`. Simplify using `only`. Rewrite using `[← lclosedeq_applyWord_map, lclosedeq_hw_map]`.
+
+Conclude with `la_word_mem O hn ν w`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+
+Rewrite using `[map_algebraMap_smul_alt]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem map_mem_weyl_alt (R O : Type) [CommRing R] [CommRing O] [Algebra R O] {r n : ℕ} (hn : n ≤ r)
     (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) R) (hf : f ∈ weyl R r n hn ν) :
     map (algebraMap R O) f ∈ weyl O r n hn ν := by
@@ -347,6 +488,17 @@ theorem map_mem_weyl_alt (R O : Type) [CommRing R] [CommRing O] [Algebra R O] {r
     rw [map_algebraMap_smul_alt]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Introduce `R O _ _ _ r n hn ν`. Prove the components needed by the constructor for the conclusion. Rewrite using `[map_baseChange_polyBC_eq_span]`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.span_le.2` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `map_mem_weyl_alt R O hn ν f hf`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨w, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨applyWord R w (hw R hn ν), la_word_mem R hn ν w, ?_⟩` and prove the remaining obligations. Rewrite using `[← lclosedeq_applyWord_map, lclosedeq_hw_map]`. Introduce `_`. Rewrite using `[map_baseChange_polyBC_eq_span]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `dualWeylMap R O (algebraMap R O) r n ν f hf`. Rewrite using `[standardMonomialSpanDomain O r n ν]`. Apply `Submodule.span_le.2` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨K, sz, hsz, I, hshape, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨bideterminant R sz hsz I, hshape ▸ bidetMem R r n K sz hsz I, ldlat_map_bidet _ sz hsz I⟩`.
+-/
 theorem lattice_tensor : LatticeTensor := by
   intro R O _ _ _ r n hn ν
   constructor
@@ -372,6 +524,19 @@ theorem lattice_tensor : LatticeTensor := by
       apply Submodule.subset_span
       exact ⟨bideterminant R sz hsz I, hshape ▸ bidetMem R r n K sz hsz I, ldlat_map_bidet _ sz hsz I⟩
 
+/- English proof (translation)
+Introduce `R O _ _ _ _ _ r n hn ν t e`. Take `⟨hW, hD⟩` from `lattice_tensor R O r n hn ν`. Establish `hD` using `hD inferInstance`. Rewrite `hD` using `[map_baseChange_polyBC_eq_span]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x hx`. Rewrite `hx` using `[← hD]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨f, hf, rfl⟩` from `hg`.
+
+Rewrite using `[← map_pow, ← map_algebraMap_smul_alt]`. Conclude with `map_mem_weyl_alt R O hn ν _ (h f hf)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce `h set p : Submodule R (MvPolynomial (Fin r × Fin n) R) := (dualWeyl R r n ν).map (LinearMap.lsmul R _ (t ^ e)) with hp`. Establish `h1 : p.baseChange O ≤ (weyl R r n hn ν).baseChange O`. Rewrite using `[← Submodule.map_le_map_iff_of_injective (polyBC R O r n).injective, hW, map_baseChange_polyBC_eq_span]`.
+
+Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨f, hf, rfl⟩, rfl⟩`. Establish `h2` using `h _ (dualWeylMap R O (algebraMap R O) r n ν f hf)`. Rewrite `h2` using `[← map_pow, ← map_algebraMap_smul_alt]`. Conclude with `h2`.
+
+Establish `h3 : p ≤ weyl R r n hn ν` using `Submodule.baseChange_le_iff.1 h1`. Introduce `x hx`. Conclude with `h3 ⟨x, hx, rfl⟩`.
+-/
 theorem lattice_baseChange_alt : LatticeBaseChange := by
   intro R O _ _ _ _ _ r n hn ν t e
   obtain ⟨hW, hD⟩ := lattice_tensor R O r n hn ν

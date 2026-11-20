@@ -11,6 +11,9 @@ open Formalism.REAL Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr
 
 namespace GlobalTheory.WigSh
 
+/- English proof (translation)
+Use `⟨(WithLp.linearEquiv 2 ℂ (Fin (n + 1) → V)).symm.toLinearMap ∘ₗ (LinearMap.pi fun b => ∑ c, E c b ∘ₗ LinearMap.proj c) ∘ₗ (WithLp.linearEquiv 2 ℂ (Fin (n + 1) → V)).toLinearMap, ?_⟩` and prove the remaining obligations. Introduce `y b`. Simplify using `[LinearMap.sum_apply]`.
+-/
 theorem exists_splitCasimir_std (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (n : ℕ)
     (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) :
     ∃ Om : Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V)), ∀ y b, Om y b = ∑ c, E c b (y c) := by
@@ -20,6 +23,15 @@ theorem exists_splitCasimir_std (V : Type) [NormedAddCommGroup V] [InnerProductS
   intro y b
   simp [LinearMap.sum_apply]
 
+/- English proof (translation)
+Introduce `V _ _ _ n E Et β L l hyp hadj hEt hL`. Take `⟨Om, hOm⟩` from `exists_splitCasimir_std V n E`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.splitCasimir_eigenspace_irreducible_standard_alt V n E Et Om β L l hyp hadj hEt hOm`. Establish `h4` using `GlobalTheory.T.starProjection_splitCasimir_raising_last V n E Et Om β L l hyp hadj hEt hOm`. Use `⟨_, h1, ?_, h2, h3, h4⟩` and prove the remaining obligations.
+
+Introduce `hbot`. Establish `hbox : Box L (fun j : Fin n => L j.castSucc)` using `fun j => ⟨hyp.anti (Fin.castSucc_lt_succ), le_rfl⟩`. Establish `hne` using `(Formalism.FourierDecayAlt.P.branching_decomposition V n E β L hyp).1 _ hbox`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `h5` using `h4 _ v hv`.
+
+Establish `hw` using `(wigner_extreme_ne_zero n L l hyp.anti).1 hL`. Establish `hmem` using `Submodule.starProjection_apply_mem (Module.End.eigenspace Om (β + L l + 0)) (PiLp.single 2 (Fin.last n) v)`. Establish `hz : (Module.End.eigenspace Om (β + L l + 0)).starProjection (PiLp.single 2 (Fin.last n) v) = 0` using `(Submodule.eq_bot_iff _).1 hbot _ hmem`. Rewrite `h5` using `[hz]`. Establish `h6 : ((wP L (fun j : Fin n => L j.castSucc) l : ℝ) : ℂ) • v = 0`.
+
+Rewrite using `[← h5]`. Both sides reduce to the same expression. Break down `smul_eq_zero.1 h6 with h | h` into its components or cases. Conclude with `hw (by exact_mod_cast h)`. Conclude with `hv0 h`.
+-/
 theorem pieri_step_raise : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (Et : Fin (n + 1) → Fin (n + 1) → Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) (β : ℂ) (L : Fin (n + 1) → ℤ) (l : Fin (n + 1)), Hyp E β L → (∀ a b x y, inner ℂ (E a b x) y = inner ℂ x (E b a y)) → (∀ a b y c, Et a b y c = E a b (y c) + if c = a then y b else 0) → (∀ j, L j ≠ L l + 1) → ∃ S : Submodule ℂ (PiLp 2 (fun _ : Fin (n + 1) => V)), Stab Et S ∧ S ≠ ⊥ ∧ (∀ S' : Submodule ℂ (PiLp 2 (fun _ : Fin (n + 1) => V)), S' ≤ S → Stab Et S' → S' = ⊥ ∨ S' = S) ∧ S ≤ CapSp Et (shf β (Function.update L l (L l + 1))) ∧ ∀ (M : Fin n → ℤ) (v : V), v ∈ CapSp (subA E) (shf β M) → S.starProjection (PiLp.single 2 (Fin.last n) v) (Fin.last n) = (GlobalTheory.WigSh.wP L M l : ℂ) • v := by
   intro V _ _ _ n E Et β L l hyp hadj hEt hL
   obtain ⟨Om, hOm⟩ := exists_splitCasimir_std V n E

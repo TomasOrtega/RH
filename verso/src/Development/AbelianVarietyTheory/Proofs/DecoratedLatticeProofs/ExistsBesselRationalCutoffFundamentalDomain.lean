@@ -13,6 +13,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.Mi.Fold
 
+/- English proof (translation)
+Introduce `D X u Fs hFs`. Establish `hR` using `Formalism.L2.SG.Pf.foldReady_holds X.B.I`. Use `haveI : BorelSpace X.B.I.GA := hR.2.2.2.1`. Use `haveI : SecondCountableTopology X.B.I.GA := hR.2.1`. Use `haveI : DiscreteTopology (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) := hR.2.2.2.2`.
+
+Use `haveI : DiscreteTopology (Srat X u) := Formalism.L2.SG.Pf.srat_discrete X u`. Use `haveI : Countable (Srat X u) := Formalism.L2.SG.Pf.countable_of_discrete _`. Take `⟨_, hleft, _⟩` from `Formalism.L2.SG.EvalTOntoExt.instances X`. Take `⟨F', hF'm, h1, h2⟩` from `Formalism.L2.SG.Pf.exists_strictFund (Srat X u)`. Establish `hF'` using `Formalism.L2.SG.Pf.isFund_of_strict (Srat X u) hF'm h1 h2 (X.B.I.muA X.B.μf)`.
+
+Use `⟨F'.indicator 1, measurable_one.indicator hF'm, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨s, hs, hsx⟩` from `h1 x`. Rewrite using `[tsum_eq_single (⟨s, hs⟩ : Srat X u)]`. Simplify using `[Set.indicator_of_mem hsx]`.
+
+Introduce `t ht`. Establish `hne : ((t : X.B.I.GA) * x) ∉ F'`. Introduce `htx`. Apply `ht` to reduce the goal to its premises. Use `h2 _ hsx ((t : X.B.I.GA) * s⁻¹) ((Srat X u).mul_mem t.2 ((Srat X u).inv_mem hs)) (by simpa [mul_assoc] using htx)` as an intermediate fact.
+
+Conclude with `Subtype.ext (by simpa [mul_inv_eq_one] using this)`. Simplify using `[Set.indicator_of_notMem hne]`. Introduce `F hFm hFinv`. Rewrite using `[hFs.setLIntegral_eq hF' F (fun g x => by simpa [Subgroup.smul_def, smul_eq_mul] using hFinv g g.2 x)]`. Rewrite using `[← lintegral_indicator hF'm]`.
+
+Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hx : x ∈ F' <;> simp [Set.indicator, hx]`.
+-/
 theorem exists_cutoff_srat : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word) (Fs : Set X.B.I.GA), IsFundamentalDomain (Srat X u) Fs (X.B.I.muA X.B.μf) → ∃ β : X.B.I.GA → ENNReal, Measurable β ∧ (∀ x, ∑' σ : Srat X u, β ((σ : X.B.I.GA) * x) = 1) ∧ ∀ F : X.B.I.GA → ENNReal, Measurable F → (∀ γ ∈ Srat X u, ∀ x, F (γ * x) = F x) → ∫⁻ x in Fs, F x ∂(X.B.I.muA X.B.μf) = ∫⁻ x, β x * F x ∂(X.B.I.muA X.B.μf) := by
   intro D X u Fs hFs
   have hR := Formalism.L2.SG.Pf.foldReady_holds X.B.I

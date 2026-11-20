@@ -16,6 +16,15 @@ open GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.C
 
 namespace GlobalTheory.ChernDegreeBaseChange
 
+/- English proof (translation)
+Establish `H` using `IsPullback.of_hasPullback Y.str (spMap ρ)`. Generalize the expression as in `Limits.pullback.fst Y.str (spMap ρ) = r at H`. Generalize the expression as in `Limits.pullback.snd Y.str (spMap ρ) = q at H`. Establish `hs : SmoothOfRelativeDimension Y.dim q`. Use `smoothOfRelativeDimension_isStableUnderBaseChange Y.dim` as an intermediate fact.
+
+Use the proof step `MorphismProperty.of_isPullback H Y.smooth_str`. Establish `hg : GeometricallyIntegral q` using `MorphismProperty.of_isPullback (P := @GeometricallyIntegral) H Y.geometricallyIntegral_str`. Establish `hc : GeometricallyConnected q` using `⟨fun _ _ y _ fst snd h =>`. Use `GeometricallyIntegral.geometrically_isIntegral (f := q) y fst snd h` as an intermediate fact. Use the proof step `inferInstance⟩`.
+
+Take `⟨Y', e, hd, he⟩` from `Var.exists_iso q Y.dim (ProjSpace.isProjOver_of_isPullback_spMap ρ H Y.isProjOver)`. Use `⟨Y', e.inv ≫ r, hd, ?_⟩` and prove the remaining obligations. Use `H.of_iso e (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `using he.symm`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem exists_baseChange {F E : Type} [Field F] [Field E] (ρ : F →+* E) (Y : Var F) :
     ∃ (Y' : Var E) (r : Y'.X ⟶ Y.X), Y'.dim = Y.dim ∧ IsPullback r Y'.str Y.str (spMap ρ) := by
   have H := IsPullback.of_hasPullback Y.str (spMap ρ)
@@ -38,6 +47,17 @@ theorem exists_baseChange {F E : Type} [Field F] [Field E] (ρ : F →+* E) (Y :
   · simp
   · simp
 
+/- English proof (translation)
+Introduce `F _ Y σ Δ L r hr φ hφ`. Take `⟨Y', π, hd, H⟩` from `exists_baseChange σ Y`. Use `CxPts.compactSpace (RingHom.id ℂ) Y'.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ Y.isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ Y.isProjOver` as an intermediate fact.
+
+Use `CxPts.secondCountableTopology_of_isProjOver (RingHom.id ℂ) Y'.isProjOver` as an intermediate fact. Take `⟨m, hm, hb⟩ : ∃ m : CxPts Y'.str (RingHom.id ℂ) → CxPts Y.str σ, (∀ z, (m z).1 = z.1 ≫ π) ∧ Function.Bijective m` from `⟨bcMap H.w (RingHom.id ℂ), fun _ => rfl, bijective_bcMap H _⟩`. Set `Φ : CxPts Y'.str (RingHom.id ℂ) ≃ₜ CxPts Y.str σ` to `Continuous.homeoOfEquivCompactToT2 (f := Equiv.ofBijective m hb) (continuous_of_comp hm)`. Establish `hΦ : ∀ z, (Φ z).1 = z.1 ≫ π` using `hm`. Establish `hL'` using `LB.isLB_pull hr.isLB π`.
+
+Take `⟨s, hs⟩` from `exists_isRatSec hL'`. Establish `hp` using `presents_divOfRatSec hL' hs`. Take `⟨h₁, h₂⟩` from `h Y' _ _ s hp (ChernTransfer.pullW hΦ φ) (ChernTransfer.isCInf_pullW hΦ hφ)`. Establish `hi : Y'.inter (fun _ => divOfRatSec hL' hs) = Y.inter fun _ => Δ`. Use `letI := σ.toAlgebra`.
+
+Rewrite using `[Var.inter_eq_of_toPic_eq (fun _ => hL') (fun _ => hp.toPic_eq), Var.inter_eq_of_toPic_eq (fun _ => hr.isLB) (fun _ => hr.toPic_eq), hd]`. Conclude with `FieldChangeInter.interNum_pull (f := Y.str) (f' := Y'.str) H (L := fun _ => L) fun _ => hr.isLB`. Establish `hsm : SmoothOfRelativeDimension Y.dim Y'.str` using `hd ▸ Y'.smooth_str`. Establish `e (ε)` using `ChernTransfer.chernPart_pullW hΦ (AnRead.all _ _ Y.dim) (AnRead.all _ _ Y.dim) hφ ε`. Rewrite `h₂` using `[hi]`.
+
+Rewrite `h₁`, `h₂` using `[hd]`. Simplify using `only [Weight.ChernIntegrableOn, Weight.chernInt, integrableOn_univ, Measure.restrict_univ, e, integral_map_equiv, integrable_map_equiv] at h₁ h₂ ⊢`. Conclude with `⟨h₁, h₂⟩`.
+-/
 theorem chernDegree_of_complex (h : GlobalTheory.Published.ChernDegreeComplex) : GlobalTheory.Published.ChernDegree := by
   intro F _ Y σ Δ L r hr φ hφ
   obtain ⟨Y', π, hd, H⟩ := exists_baseChange σ Y

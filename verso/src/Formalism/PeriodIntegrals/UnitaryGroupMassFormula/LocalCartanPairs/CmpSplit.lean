@@ -3,6 +3,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalCartanPairs.SplOff
 
 namespace PI.SqPair.LCP
 
+/- English proof (translation)
+The claim follows from `split_of split_off_hyperbolic`.
+-/
 theorem pair_split' : Split := split_of split_off_hyperbolic
 
 end PI.SqPair.LCP

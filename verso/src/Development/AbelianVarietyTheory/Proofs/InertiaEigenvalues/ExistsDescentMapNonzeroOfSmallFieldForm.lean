@@ -10,6 +10,39 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D S j hK i b x hx`. Take `⟨n, v, hvK, hliK, hspK, hliL, hspL⟩` from `hK`. Set `bL : Module.Basis (Fin n) D.what₂.LL (S.WL j)` to `Module.Basis.mk hliL (by rw [hspL])`. Set `bK0 : Module.Basis (Fin n) S.Ks (Submodule.span S.Ks (Set.range v))` to `Module.Basis.span hliK`. Set `bK : Module.Basis (Fin n) S.Ks (FmK S j)` to `bK0.map (LinearEquiv.ofEq _ _ hspK)`.
+
+Set `ι : FmK S j →ₗ[S.Ks] S.WL j` to `(S.A j).WK.subtype`. Establish `hbK : ∀ r, ι (bK r) = v r`. Introduce `r`. Use `show ((bK0 r : Submodule.span S.Ks (Set.range v)) : S.WL j) = v r`. Conclude with `congrArg Subtype.val (Module.Basis.span_apply hliK r)`.
+
+Establish `hbL : ∀ r, bL r = v r` using `by intro r; simp [bL]`. Set `bF : Module.Basis (Fin n) (KB S i b) (Fm S i j b)` to `Algebra.TensorProduct.basis (KB S i b) bK`. Choose the witnesses or unpack the hypotheses as in `⟨r0, ha⟩ : ∃ r0, bL.repr x r0 ≠ 0 := by`. Assume the negation of the conclusion as `h; push_neg at h; exact hx (bL.ext_elem fun r => by simpa using h r)`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : Module.Dual ↥D.LL0 D.what₂.LL, g (bL.repr x r0) ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `ha ((Module.forall_dual_apply_eq_zero_iff _ _).1 h)`. Set `f : D.what₂.LL →ₗ[↥D.LL0] ↥D.LL0` to `(g (bL.repr x r0))⁻¹ • g`. Establish `hfa : f (bL.repr x r0) = 1` using `by simp [f, hg]`.
+
+Establish `hfc : ∀ (c : ↥D.LL0) (y : D.what₂.LL), f ((c : D.what₂.LL) * y) = c * f y`. Introduce `c y`. Rewrite using `[show (c : D.what₂.LL) * y = c • y from (Algebra.smul_def c y).symm, map_smul, smul_eq_mul]`. Set `φ : (Fin n → D.what₂.LL) →+ (Fin n → KB S i b)` to `AddMonoidHom.compLeft ((readLL0 S i b).toAddMonoidHom.comp f.toAddMonoidHom) (Fin n)`. Set `Φ : S.WL j →+ Fm S i j b` to `(bF.equivFun.symm.toLinearMap.toAddMonoidHom).comp (φ.comp bL.equivFun.toLinearMap.toAddMonoidHom)`.
+
+Establish `hΦ : ∀ w, bF.equivFun (Φ w) = fun r => readLL0 S i b (f (bL.repr w r))`. Introduce `w`. Use `show bF.equivFun (bF.equivFun.symm (φ (bL.equivFun w))) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Use `⟨Φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `congrFun (hΦ x) r0` as an intermediate fact. Rewrite `this` using `[h0, map_zero, hfa, map_one]`. Conclude with `zero_ne_one this`.
+
+Introduce `c w`. Apply `bF.equivFun.injective` to reduce the goal to its premises. Rewrite using `[hΦ, bF.equivFun.map_smul, hΦ, bL.repr.map_smul]`. Use function extensionality and compare the values at `r`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_smul, Finsupp.smul_apply]`.
+
+Rewrite using `[hfc, map_mul]`. Introduce `T hT w`. Set `T' : Module.End S.Ks (FmK S j)` to `(T.restrictScalars S.Ks).restrict (p := (S.A j).WK) (q := (S.A j).WK) hT`. Set `t` to `LinearMap.toMatrix bK bK T'`. Establish `hTm : LinearMap.toMatrix bL bL T = t.map (algebraMap S.Ks D.what₂.LL)`.
+
+Use extensionality with `r q`. Simplify using `only [t, LinearMap.toMatrix_apply, Matrix.map_apply]`. Establish `e1 : T (bL q) = ι (T' (bK q))`. Rewrite using `[hbL, ← hbK]`. Both sides reduce to the same expression.
+
+Establish `e2 : T (bL q) = ∑ s, (algebraMap S.Ks D.what₂.LL (bK.repr (T' (bK q)) s)) • bL s`. Rewrite using `[e1]`. Use `conv_lhs => rw [← bK.sum_repr (T' (bK q))]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, hbK, hbL, algebraMap_smul]`. Rewrite using `[e2, Module.Basis.repr_sum_self]`. Apply `bF.equivFun.injective` to reduce the goal to its premises. Establish `hbc : Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j) T' = LinearMap.baseChange (KB S i b) T'` using `rfl`. Express the relevant statement in the definitionally equal form `bF.equivFun (Φ (T w)) = bF.equivFun (Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j) T' (Φ w))`.
+
+Rewrite using `[hbc]`. Establish `hMF : LinearMap.toMatrix bF bF (LinearMap.baseChange (KB S i b) T') = t.map (algebraMap S.Ks (KB S i b))` using `LinearMap.toMatrix_baseChange _ _ _ _`. Establish `hL : ∀ r, bL.repr (T w) r = ∑ q, algebraMap S.Ks D.what₂.LL (t r q) * bL.repr w q`. Introduce `r`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr bL bL T w, hTm]`.
+
+Both sides reduce to the same expression. Establish `hKB : ∀ r, bF.equivFun (LinearMap.baseChange (KB S i b) T' (Φ w)) r = ∑ q, algebraMap S.Ks (KB S i b) (t r q) * bF.equivFun (Φ w) q`. Introduce `r`. Establish `h1` using `congrFun (LinearMap.toMatrix_mulVec_repr bF bF (LinearMap.baseChange (KB S i b) T') (Φ w)) r`. Rewrite `h1` using `[hMF]`.
+
+Conclude with `h1.symm`. Use function extensionality and compare the values at `r`. Rewrite using `[hΦ, hKB, hΦ]`. Simplify using `only []`. Rewrite using `[hL, map_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← S.kKs_spec, hfc, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_desc_of_isKsForm : ∀ (D : D7) (S : RatDat D.ntw) (j : ℕ), (S.A j).IsKsForm → ∀ (i : D.ntw.Tw) (b : Bool) (x : S.WL j), x ≠ 0 →
     ∃ Φ : S.WL j →+ Fm S i j b, Φ x ≠ 0 ∧
       (∀ (c : ↥D.LL0) (w : S.WL j), Φ (((c : ↥D.LL0) : D.what₂.LL) • w) = readLL0 S i b c • Φ w) ∧

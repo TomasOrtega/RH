@@ -13,6 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.Hodge.FirstCohomologyUpperBounds
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace k V`. Establish `hemb : ∀ e : Fin (g + 1) ↪ Module.Basis.ofVectorSpaceIndex k V, False` using `fun e => h _ (b.linearIndependent.comp e e.injective)`. Use `haveI : Finite (Module.Basis.ofVectorSpaceIndex k V) := by`. Assume the negation of the conclusion as `hinf`. Rewrite `hinf` using `[not_finite_iff_infinite]`.
+
+Conclude with `hemb (Fin.valEmbedding.trans (Infinite.natEmbedding _))`. Use `haveI hfin : Module.Finite k V := Module.Finite.of_basis b`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_eq_nat_card_basis b]`. Assume the negation of the conclusion as `hlt`.
+
+Rewrite `hlt` using `[not_le]`. Conclude with `hemb ((Fin.castLEEmb (Nat.succ_le_of_lt hlt)).trans (Finite.equivFin _).symm.toEmbedding)`.
+-/
 theorem finite_and_finrank_le {k V : Type} [Field k] [AddCommGroup V] [Module k V] (g : ℕ)
     (h : ∀ x : Fin (g + 1) → V, ¬ LinearIndependent k x) :
     Module.Finite k V ∧ Module.finrank k V ≤ g := by
@@ -31,6 +38,13 @@ theorem finite_and_finrank_le {k V : Type} [Field k] [AddCommGroup V] [Module k 
   rw [not_le] at hlt
   exact hemb ((Fin.castLEEmb (Nat.succ_le_of_lt hlt)).trans (Finite.equivFin _).symm.toEmbedding)
 
+/- English proof (translation)
+Introduce `hD hL hS hV hH hHL k _ A _ g hA hsm`. Use `haveI : AlgebraicGeometry.IsProper A.hom := ReciprocityTheory.ChartRestriction.G.Semi.IsAbelianScheme.proper (self := hA)`. Use `haveI : CompactSpace A.left := AlgebraicGeometry.QuasiCompact.compactSpace_of_compactSpace A.hom`. Take `⟨P, _, _, ⟨S⟩⟩` from `GlobalTheory.CompanionTheory.Hodge.WedgeField.exists_finite_sys A.hom`. Establish `hfield : IsField k` using `Field.toIsField k`.
+
+Establish `hq : MainStatements.Hodge.AllQIso (MainStatements.Hodge.resSys A.hom S)` using `hD k A.left A.hom inferInstance P S`. Take `⟨hb1, -, hst⟩` from `hL k _ _ _ _ (MainStatements.Hodge.resSys A.hom S) hq`. Establish `hstein : MainStatements.Hodge.Stein (MainStatements.Hodge.OSys A.hom S)` using `hst.mp (hS k A g hA hsm)`. Establish `hexact` using `hV k A g hA hsm hfield P S`. Establish `hhopf : MainStatements.Hodge.Hopf (MainStatements.Hodge.OSys A.hom S) True`.
+
+Establish `h` using `hH k A g hA hsm P S`. Rewrite `h` using `[eq_true hfield]`. Then use the resulting hypothesis. Establish `hno` using `hHL k P (MainStatements.Hodge.OSys A.hom S) g hfield hstein hexact hhopf`. Use `finite_and_finrank_le g (fun x hx => ?_)` and prove the remaining obligations. Conclude with `hno (⇑(MainStatements.Hodge.resSys A.hom S).pull1 ∘ x) (hx.map' (MainStatements.Hodge.resSys A.hom S).pull1 (LinearMap.ker_eq_bot.mpr hb1.1))`.
+-/
 theorem h1Le : DescentSt → LowSt → SteinSt → VanSt → HopfSt → HopfLeSt → PositivityTheory.ObstructionTrivialLocus.H1StructureDimLe := by
   intro hD hL hS hV hH hHL k _ A _ g hA hsm
   haveI : AlgebraicGeometry.IsProper A.hom := ReciprocityTheory.ChartRestriction.G.Semi.IsAbelianScheme.proper (self := hA)

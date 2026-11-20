@@ -25,6 +25,9 @@ variable (D : D7) (sc : Scale) (Ce : ℝ)
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+The claim follows from `ptOne_rec (hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL) T u hU w hg B (frRat_C D sc Ce Lc I ψ hd H0 hL B hB u w hg) (hypT_C D sc Ce Lc I ψ hd H0 hL u w hg)`.
+-/
 theorem ptOne_C (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (T : ∀ u : D.what₂.Word, Forms0 (recC D sc Ce Lc I ψ hd) u)
     (B : GL (Fin D.R.k) D.host.E)
@@ -40,6 +43,9 @@ theorem ptOne_C (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : �
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+The claim follows from `ex_rec (D := recC D sc Ce Lc I ψ hd) (X := hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL) T (gatTiesC D sc Ce Lc I ψ hd) (cmpInC D sc Ce Lc I ψ hd H0 hL B hBs hB) u w hg (ptOne_C D sc Ce Lc I ψ hd H0 hL T B hB u hU w hg) h1 h2`.
+-/
 theorem ex_C (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (T : ∀ u : D.what₂.Word, Forms0 (recC D sc Ce Lc I ψ hd) u)
     (B : GL (Fin D.R.k) D.host.E) (hBs : Cmp.StdB (recC D sc Ce Lc I ψ hd) B)
@@ -60,6 +66,9 @@ theorem ex_C (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ 
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+The claim follows from `ex_C D sc Ce Lc I ψ hd H0 hL T B hBs hB u hU w hg (evRatRep_rec (D := recC D sc Ce Lc I ψ hd) (X := hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL) T (gatTiesC D sc Ce Lc I ψ hd) u w hg B h1) h2`.
+-/
 theorem ex_C_blk (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (T : ∀ u : D.what₂.Word, Forms0 (recC D sc Ce Lc I ψ hd) u)
     (B : GL (Fin D.R.k) D.host.E) (hBs : Cmp.StdB (recC D sc Ce Lc I ψ hd) B)

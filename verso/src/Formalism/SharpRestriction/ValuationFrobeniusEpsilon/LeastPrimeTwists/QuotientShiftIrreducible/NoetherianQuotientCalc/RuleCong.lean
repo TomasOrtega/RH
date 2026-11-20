@@ -8,6 +8,9 @@ namespace Cong
 
 variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `hx : (s - s') • x = 0` using `Module.mem_annihilator.1 h x`. Rewrite `hx` using `[sub_smul, sub_eq_zero]`. Conclude with `hx`.
+-/
 theorem lsmul_eq (F : GMod B R k) {s s' : R} (h : s - s' ∈ F.Ann) :
     LinearMap.lsmul R F.M s = LinearMap.lsmul R F.M s' := by
   ext x
@@ -15,15 +18,24 @@ theorem lsmul_eq (F : GMod B R k) {s s' : R} (h : s - s' ∈ F.Ann) :
   rw [sub_smul, sub_eq_zero] at hx
   exact hx
 
+/- English proof (translation)
+Unfold `GMod.quot`. Rewrite using `[lsmul_eq F h]`.
+-/
 theorem quot_eq (F : GMod B R k) {s s' : R} (h : s - s' ∈ F.Ann) : F.quot s = F.quot s' := by
   unfold GMod.quot
   rw [lsmul_eq F h]
 
+/- English proof (translation)
+Unfold `GMod.ann`. Rewrite using `[lsmul_eq F h]`.
+-/
 theorem ann_eq (F : GMod B R k) {s s' : R} (d : Deg k) (h : s - s' ∈ F.Ann) :
     F.ann s d = F.ann s' d := by
   unfold GMod.ann
   rw [lsmul_eq F h]
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite `*` using `[GMod.Ann, Module.mem_annihilator]`. Introduce `y`. Take `⟨x, rfl⟩` from `(LinearMap.range (LinearMap.lsmul R F.M s)).mkQ_surjective y`. Conclude with `(map_smul (LinearMap.range (LinearMap.lsmul R F.M s)).mkQ a x).symm.trans ((congrArg _ (ha x)).trans (map_zero _))`.
+-/
 theorem ann_le_quot (F : GMod B R k) (s : R) : F.Ann ≤ (F.quot s).Ann := by
   intro a ha
   rw [GMod.Ann, Module.mem_annihilator] at *
@@ -32,12 +44,24 @@ theorem ann_le_quot (F : GMod B R k) (s : R) : F.Ann ≤ (F.quot s).Ann := by
   exact (map_smul (LinearMap.range (LinearMap.lsmul R F.M s)).mkQ a x).symm.trans
     ((congrArg _ (ha x)).trans (map_zero _))
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite `*` using `[GMod.Ann, Module.mem_annihilator]`. Introduce `x`. Conclude with `Subtype.ext (ha x.1)`.
+-/
 theorem ann_le_ann (F : GMod B R k) (s : R) (d : Deg k) : F.Ann ≤ (F.ann s d).Ann := by
   intro a ha
   rw [GMod.Ann, Module.mem_annihilator] at *
   intro x
   exact Subtype.ext (ha x.1)
 
+/- English proof (translation)
+Proceed by induction on `ts generalizing ts' with`. Consider the case `nil`. Introduce `F h m`. Consider the cases of `h`. Both sides reduce to the same expression.
+
+Consider the case `cons p ts ih`. Introduce `F h m`. Consider the cases of `h with`. Consider the case `@cons _ q _ ts'' hpq hrest`. Take `⟨d, s⟩` from `p`.
+
+Take `⟨d', s'⟩` from `q`. Take `⟨hd, hs⟩` from `hpq`. Establish `hd' : d = d'` using `hd`. Substitute `hd'` using the available equality. Establish `hs' : s - s' ∈ F.Ann` using `hs`.
+
+Use `show chi ts (F.quot s) m - chi ts (F.ann s d) m = chi ts'' (F.quot s') m - chi ts'' (F.ann s' d) m`. Rewrite using `[← quot_eq F hs', ← ann_eq F d hs', ih (F.quot s) (hrest.imp fun _ _ h => ⟨h.1, ann_le_quot F s h.2⟩) m, ih (F.ann s d) (hrest.imp fun _ _ h => ⟨h.1, ann_le_ann F s d h.2⟩) m]`.
+-/
 theorem chi_cong {ts ts' : List (Deg k × R)} : ∀ (F : GMod B R k),
     List.Forall₂ (fun p q => p.1 = q.1 ∧ p.2 - q.2 ∈ F.Ann) ts ts' →
       ∀ m, chi ts F m = chi ts' F m := by

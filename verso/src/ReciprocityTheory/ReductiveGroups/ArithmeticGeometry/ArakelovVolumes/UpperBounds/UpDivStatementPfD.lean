@@ -12,6 +12,9 @@ open scoped ENNReal
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `h' : ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re` using `hx`. Introduce `h0`. Use `(h' τ).2 i` as an intermediate fact. Rewrite `this` using `[h0, Complex.zero_re, mul_zero]`. Conclude with `lt_irrefl _ this`.
+-/
 private lemma dmin_ne_zero_of_mem_dom (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ)
     (i : Fin (r + 1)) : dmin X.Gm x τ i ≠ 0 := by
   have h' : ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re := hx
@@ -20,15 +23,28 @@ private lemma dmin_ne_zero_of_mem_dom (X : Data E r) {x : Frame X.Ψ r} (hx : x 
   rw [h0, Complex.zero_re, mul_zero] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+The claim follows from `norm_pos_iff.mpr (div_ne_zero (dmin_ne_zero_of_mem_dom X hx τ _) (dmin_ne_zero_of_mem_dom X hx τ _))`.
+-/
 private lemma norm_dmin_succ_div_castSucc_pos_of_mem_dom (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin r) :
     0 < ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ :=
   norm_pos_iff.mpr (div_ne_zero (dmin_ne_zero_of_mem_dom X hx τ _) (dmin_ne_zero_of_mem_dom X hx τ _))
 
+/- English proof (translation)
+Unfold `Data.nfac`. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_dmin_succ_div_castSucc_pos_of_mem_dom X hx τ i) _`.
+-/
 private lemma nfac_pos_of_mem_dom' (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r) :
     0 < X.nfac la x := by
   unfold Data.nfac
   exact Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_dmin_succ_div_castSucc_pos_of_mem_dom X hx τ i) _
 
+/- English proof (translation)
+Establish `hq` using `norm_dmin_succ_div_castSucc_pos_of_mem_dom X hx`. Establish `hmul : X.nfac (la + la') x = X.nfac la x * X.nfac la' x`. Unfold `Data.nfac`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_add (hq τ i)]`. Use `congr 1`. Simplify using `only [Pi.add_apply, Int.cast_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `phla`. Rewrite using `[hmul, Real.log_mul (nfac_pos_of_mem_dom' X hx la).ne' (nfac_pos_of_mem_dom' X hx la').ne']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phla_add (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la la' : Wt X.Ψ r) :
     phla X (la + la') x = phla X la x + phla X la' x := by
   have hq := norm_dmin_succ_div_castSucc_pos_of_mem_dom X hx
@@ -46,6 +62,13 @@ theorem phla_add (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la la' : 
   rw [hmul, Real.log_mul (nfac_pos_of_mem_dom' X hx la).ne' (nfac_pos_of_mem_dom' X hx la').ne']
   ring
 
+/- English proof (translation)
+Establish `hq` using `norm_dmin_succ_div_castSucc_pos_of_mem_dom X hx`. Establish `hpow : X.nfac (k • la) x = X.nfac la x ^ k`. Unfold `Data.nfac`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (hq τ i).le]`. Use `congr 1`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, Int.cast_mul, Int.cast_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `phla`. Rewrite using `[hpow, Real.log_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phla_nsmul (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (k : ℕ) (la : Wt X.Ψ r) :
     phla X (k • la) x = k * phla X la x := by
   have hq := norm_dmin_succ_div_castSucc_pos_of_mem_dom X hx
@@ -63,12 +86,18 @@ theorem phla_nsmul (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (k : ℕ
   rw [hpow, Real.log_pow]
   ring
 
+/- English proof (translation)
+Unfold `phla`. Rewrite using `[show -(-2 * Real.log (X.nfac la x)) = Real.log (X.nfac la x ^ 2) by rw [Real.log_pow]; push_cast; ring, Real.exp_log (pow_pos (nfac_pos_of_mem_dom' X hx la) 2)]`.
+-/
 theorem nfac_sq (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r) :
     X.nfac la x ^ 2 = Real.exp (-phla X la x) := by
   unfold phla
   rw [show -(-2 * Real.log (X.nfac la x)) = Real.log (X.nfac la x ^ 2) by rw [Real.log_pow]; push_cast; ring,
     Real.exp_log (pow_pos (nfac_pos_of_mem_dom' X hx la) 2)]
 
+/- English proof (translation)
+Establish `h : X.pnorm la P x = ‖P x‖ * X.nfac la x` using `rfl`. Rewrite using `[h, mul_pow, nfac_sq X hx la]`.
+-/
 theorem pnorm_sq (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r)
     (P : Frame X.Ψ r → ℂ) : X.pnorm la P x ^ 2 = ‖P x‖ ^ 2 * Real.exp (-phla X la x) := by
   have h : X.pnorm la P x = ‖P x‖ * X.nfac la x := rfl
@@ -84,6 +113,9 @@ noncomputable def ph0 (z : V (nd X)) : ℝ :=
   phla X Xa.Fp (cpt X x0 z) - Real.log (densF X x0 z) + 1 / 2 * Real.log (Sw X Xa x0 z) -
     bb * rhF X x0 z
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `Xa.w_nz _ hz`. Unfold `Sw`. Conclude with `lt_of_lt_of_le (pow_pos (norm_pos_iff.mpr hk) 2) (Finset.single_le_sum (f := fun j => ‖Xa.w j (cpt X x0 z)‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ k))`.
+-/
 theorem Sw_pos {z : V (nd X)} (hz : z ∈ OmF X x0) : 0 < Sw X Xa x0 z := by
   obtain ⟨k, hk⟩ := Xa.w_nz _ hz
   unfold Sw
@@ -91,6 +123,9 @@ theorem Sw_pos {z : V (nd X)} (hz : z ∈ OmF X x0) : 0 < Sw X Xa x0 z := by
     (Finset.single_le_sum (f := fun j => ‖Xa.w j (cpt X x0 z)‖ ^ 2) (fun j _ => by positivity)
       (Finset.mem_univ k))
 
+/- English proof (translation)
+Establish `hx : cpt X x0 z ∈ X.dom` using `hz`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[pnorm_sq X hx]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sumL_eq {z : V (nd X)} (hz : z ∈ OmF X x0) {N : ℕ} (P : Fin N → Frame X.Ψ r → ℂ) :
     ∑ k, X.pnorm Xa.L (P k) (cpt X x0 z) ^ 2 =
       Real.exp (-phla X Xa.L (cpt X x0 z)) * ∑ k, ‖P k (cpt X x0 z)‖ ^ 2 := by
@@ -100,6 +135,13 @@ theorem sumL_eq {z : V (nd X)} (hz : z ∈ OmF X x0) {N : ℕ} (P : Fin N → Fr
   rw [pnorm_sq X hx]
   ring
 
+/- English proof (translation)
+Establish `e1 : Real.exp (-B) * Ss / (Real.exp (-B) * Sw) = Ss / Sw` using `mul_div_mul_left _ _ (Real.exp_pos _).ne'`. Establish `h1 : Real.exp (-(A + T * B)) * Real.exp (-B * -T) = Real.exp (-A)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : Sw ^ (-T) / Sw ^ (-(T - 1 / 2)) = Real.exp (-(1 / 2 * Real.log Sw))`. Rewrite using `[Real.rpow_def_of_pos hSw, Real.rpow_def_of_pos hSw, ← Real.exp_sub]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : Real.exp (-(A - Real.log D + 1 / 2 * Real.log Sw - b)) = Real.exp (-A) * D * Real.exp (-(1 / 2 * Real.log Sw)) * Real.exp b`.
+
+Rewrite using `[show -(A - Real.log D + 1 / 2 * Real.log Sw - b) = -A + Real.log D + -(1 / 2 * Real.log Sw) + b by ring, Real.exp_add, Real.exp_add, Real.exp_add, Real.exp_log hD]`. Establish `h4 : f / Real.exp (-b) = f * Real.exp b` using `by rw [Real.exp_neg, div_inv_eq_mul]`. Rewrite using `[e1, Real.mul_rpow (Real.exp_pos _).le hSw.le, Real.div_rpow hSs.le hSw.le, ← Real.exp_mul, h4, h3]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma mul_div_exp_mul_rpow_neg_eq_mul_rpow_mul_exp {D f A B T Ss Sw b : ℝ} (hD : 0 < D) (hSs : 0 < Ss) (hSw : 0 < Sw) :
     D * (f / Real.exp (-b) * (Real.exp (-(A + T * B)) * (Real.exp (-B) * Sw) ^ (-T) *
       (Real.exp (-B) * Ss / (Real.exp (-B) * Sw)) ^ (-(T - 1 / 2)))) =
@@ -125,6 +167,15 @@ private lemma mul_div_exp_mul_rpow_neg_eq_mul_rpow_mul_exp {D f A B T Ss Sw b : 
         (Sw ^ (-T) / Sw ^ (-(T - 1 / 2))) := by ring
     _ = _ := by rw [h1, h2]; ring
 
+/- English proof (translation)
+Establish `hx : cpt X x0 z ∈ X.dom` using `hz`. Establish `hSw` using `Sw_pos X Xa x0 hz`. Establish `hW` using `sumL_eq X Xa x0 hz Xa.w`. Establish `hS` using `sumL_eq X Xa x0 hz Fl.s`. Establish `hd : 0 < densF X x0 z`.
+
+Unfold `densF`. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => zpow_pos (norm_pos_iff.mpr (dmin_ne_zero_of_mem_dom X hx τ _)) _`. Unfold `Sw at hSw`. Unfold `Ss at hs`. Rewrite using `[WSk, if_pos hx, phla_add X hx, phla_nsmul X hx, hW, hS]`.
+
+Unfold `kaF`. Rewrite using `[ENNReal.ofReal_rpow_of_pos (mul_pos (Real.exp_pos _) hSw), ENNReal.ofReal_rpow_of_pos (div_pos (mul_pos (Real.exp_pos _) hs) (mul_pos (Real.exp_pos _) hSw))]`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul hd.le]`. Use `congr 1`. Unfold `ph0 Ss Sw`.
+
+Rewrite using `[neg_mul]`. Conclude with `mul_div_exp_mul_rpow_neg_eq_mul_rpow_mul_exp hd hs hSw`.
+-/
 theorem wSk_eq {z : V (nd X)} (hz : z ∈ OmF X x0) (hs : 0 < Ss X Xa Fl x0 z) (F : V (nd X) → ℂ) :
     ENNReal.ofReal (densF X x0 z) * (ENNReal.ofReal (‖F z‖ ^ 2 / kaF X x0 bb z) * WSk X Xa Fl (cpt X x0 z)) =
       ENNReal.ofReal (‖F z‖ ^ 2 * Ss X Xa Fl x0 z ^ (-((Xa.T : ℝ) - 1 / 2)) * Real.exp (-ph0 X Xa x0 bb z)) := by
@@ -149,6 +200,19 @@ theorem wSk_eq {z : V (nd X)} (hz : z ∈ OmF X x0) (hs : 0 < Ss X Xa Fl x0 z) (
   rw [neg_mul]
   exact mul_div_exp_mul_rpow_neg_eq_mul_rpow_mul_exp hd hs hSw
 
+/- English proof (translation)
+Establish `hE` using `Real.exp_pos (-B)`. Establish `hCs0 : 0 ≤ Cs` using `le_trans (mul_nonneg hE.le hSs.le) hCs`. Establish `hCw0 : 0 ≤ Cw` using `le_trans (mul_nonneg hE.le hSw.le) hCw`. Establish `hs' : Real.exp (-B) ≤ Cs / Ss` using `(le_div_iff₀ hSs).mpr hCs`. Establish `hw' : Real.exp (-B) ≤ Cw / Sw` using `(le_div_iff₀ hSw).mpr hCw`.
+
+Establish `hsplit : Real.exp (-(n * B)) = Real.exp (-B) ^ (n - 1 / 2) * Real.exp (-B) ^ (1 / 2 : ℝ)`. Rewrite using `[← Real.rpow_add hE, ← Real.exp_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hk1 : Real.exp (-B) ^ (n - 1 / 2) ≤ Cs ^ (n - 1 / 2) * Ss ^ (-(n - 1 / 2))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow hCs0 hSs.le, Real.rpow_neg hSs.le, div_eq_mul_inv]`. Establish `hk2 : Real.exp (-B) ^ (1 / 2 : ℝ) ≤ Cw ^ (1 / 2 : ℝ) * Real.exp (-(1 / 2 * Real.log Sw))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow hCw0 hSw.le, div_eq_mul_inv, ← Real.rpow_neg hSw.le, Real.rpow_def_of_pos hSw]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : Real.exp (-(A - Real.log D + 1 / 2 * Real.log Sw - b)) = Real.exp (-A) * D * Real.exp (-(1 / 2 * Real.log Sw)) * Real.exp b`. Rewrite using `[show -(A - Real.log D + 1 / 2 * Real.log Sw - b) = -A + Real.log D + -(1 / 2 * Real.log Sw) + b by ring, Real.exp_add, Real.exp_add, Real.exp_add, Real.exp_log hD]`. Establish `h4 : f / Real.exp (-b) = f * Real.exp b` using `by rw [Real.exp_neg, div_inv_eq_mul]`.
+
+Establish `h5 : Real.exp (-(A + n * B)) = Real.exp (-A) * Real.exp (-(n * B))`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, h4, h5, hsplit]`.
+
+Establish `hprod` using `mul_le_mul hk1 hk2 (by positivity) (mul_nonneg (Real.rpow_nonneg hCs0 _) (Real.rpow_nonneg hSs.le _))`. Establish `hc : 0 ≤ D * f * Real.exp b * Real.exp (-A)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma mul_div_exp_le_pow_mul_rpow_of_exp_neg_mul_le {D f A B n Ss Sw b Cs Cw : ℝ} (hD : 0 < D) (hSs : 0 < Ss) (hSw : 0 < Sw)
     (hn : 1 / 2 ≤ n) (hCs : Real.exp (-B) * Ss ≤ Cs) (hCw : Real.exp (-B) * Sw ≤ Cw) (hf : 0 ≤ f) :
     D * (f / Real.exp (-b) * Real.exp (-(A + n * B))) ≤
@@ -197,6 +261,15 @@ private lemma mul_div_exp_le_pow_mul_rpow_of_exp_neg_mul_le {D f A B n Ss Sw b C
           (Cw ^ (1 / 2 : ℝ) * Real.exp (-(1 / 2 * Real.log Sw)))) := mul_le_mul_of_nonneg_left hprod hc
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `hx : cpt X x0 z ∈ X.dom` using `hz`. Establish `hSw` using `Sw_pos X Xa x0 hz`. Establish `hd : 0 < densF X x0 z`. Unfold `densF`. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => zpow_pos (norm_pos_iff.mpr (dmin_ne_zero_of_mem_dom X hx τ _)) _`.
+
+Rewrite `hCs` using `[sumL_eq X Xa x0 hz Fl.s]`. Rewrite `hCw` using `[sumL_eq X Xa x0 hz Xa.w]`. Unfold `Sw at hSw`. Unfold `Ss at hs`. Establish `hCs0 : 0 < Cs` using `lt_of_lt_of_le (mul_pos (Real.exp_pos _) hs) hCs`.
+
+Establish `hCw0 : 0 < Cw` using `lt_of_lt_of_le (mul_pos (Real.exp_pos _) hSw) hCw`. Rewrite using `[weightFunctionOnFrames, phla_add X hx, phla_nsmul X hx]`. Unfold `kaF`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul hd.le, ← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+
+Unfold `ph0 Ss Sw`. Rewrite using `[neg_mul]`. Conclude with `mul_div_exp_le_pow_mul_rpow_of_exp_neg_mul_le hd hs hSw hn hCs hCw (sq_nonneg _)`.
+-/
 theorem weightedDensity_bound {z : V (nd X)} (hz : z ∈ OmF X x0) (hs : 0 < Ss X Xa Fl x0 z) (H : V (nd X) → ℂ)
     {Cs Cw : ℝ} (hCs : ∑ k, X.pnorm Xa.L (Fl.s k) (cpt X x0 z) ^ 2 ≤ Cs)
     (hCw : ∑ k, X.pnorm Xa.L (Xa.w k) (cpt X x0 z) ^ 2 ≤ Cw) (hn : (1 / 2 : ℝ) ≤ (nd X : ℝ)) :

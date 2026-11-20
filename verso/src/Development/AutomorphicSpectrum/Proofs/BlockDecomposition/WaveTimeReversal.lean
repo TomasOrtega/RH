@@ -11,6 +11,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.WaveSpd
 
+/- English proof (translation)
+Introduce `n E u hu`. Take `⟨h1, h2, h3, h4⟩` from `hu`. Use `⟨?_, fun t => h2 (-t), ?_, ?_⟩` and prove the remaining obligations. Establish `hm : Set.MapsTo (fun p : ℝ × Mat n => (-p.1, p.2)) (Set.univ ×ˢ GLs n) (Set.univ ×ˢ GLs n)` using `fun p hp => ⟨Set.mem_univ _, hp.2⟩`. Establish `hc : ContDiffOn ℝ ∞ (fun p : ℝ × Mat n => (-p.1, p.2)) (Set.univ ×ˢ GLs n)` using `(contDiff_fst.neg.prodMk contDiff_snd).contDiffOn`.
+
+Conclude with `h1.comp hc hm`. Introduce `t g hg`. Use `iteratedDeriv_comp_neg (𝕜 := ℝ) 2 (fun s => u s g) t` as an intermediate fact. Rewrite using `[this, h3 (-t) g hg]`. Simplify using the standard rewrite rules.
+
+Introduce `g hg`. Use `deriv_comp_neg (𝕜 := ℝ) (fun s => u s g) 0` as an intermediate fact. Rewrite using `[this]`. Simplify using `using h4 g hg`.
+-/
 theorem isWave_time_refl : ∀ {n : ℕ} (E : KMod n) (u : ℝ → Mat n → E.V), IsWave E u → IsWave E fun s => u (-s) := by
   intro n E u hu
   obtain ⟨h1, h2, h3, h4⟩ := hu

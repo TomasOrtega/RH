@@ -14,6 +14,9 @@ namespace RegConeLimit
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `|fsLogReg h u ε (h.pointOf y)| ≤ |fsLog h u (h.pointOf y)| + Real.log (h.norm u ^ 2 + 1) / 2 := by set a := ‖∑ j, u j * h.pointOf y j‖ with ha_def set r := ‖y‖ with hr_def have ha : 0 < a := norm_pos_iff.mpr hs have hCS : a ≤ h.norm u * r := norm_sum_mul_pointOf_le h u y have hN …`.
+-/
 theorem abs_fsLogReg_pointOf_le (h : HermNorm n) (u : Fin n → ℂ) (y : EuclideanSpace ℂ (Fin n))
     {ε : ℝ} (hε0 : 0 < ε) (hε1 : ε ≤ 1) (hs : ∑ j, u j * h.pointOf y j ≠ 0) :
     |fsLogReg h u ε (h.pointOf y)| ≤
@@ -58,6 +61,13 @@ theorem abs_fsLogReg_pointOf_le (h : HermNorm n) (u : Fin n → ℂ) (y : Euclid
   · have := abs_nonneg (fsLog h u (h.pointOf y))
     linarith
 
+/- English proof (translation)
+Establish `: (fun y : EuclideanSpace ℂ (Fin n) => fsLogReg h u ε (h.pointOf y)) = fun y => Real.log ((‖∑ j, u j * h.pointOf y j‖ ^ 2 + ε * ‖y‖ ^ 2) / ‖y‖ ^ 2) / 2`. Use function extensionality and compare the values at `y`. Rewrite using `[fsLogReg, dualNorm_pointOf]`. Rewrite using `[this]`. Establish `hp : Continuous fun y : EuclideanSpace ℂ (Fin n) => h.pointOf y`.
+
+Unfold `HermNorm.pointOf`. Use `fun_prop`. Establish `hs : Continuous fun y : EuclideanSpace ℂ (Fin n) => ‖∑ j, u j * h.pointOf y j‖` using `(continuous_finsetSum _ fun j _ => continuous_const.mul ((continuous_apply j).comp hp)).norm`. Use `(Real.measurable_log.comp (Measurable.div ?_ ?_)).div_const 2` and prove the remaining obligations. Conclude with `((hs.pow 2).add (continuous_const.mul (continuous_norm.pow 2))).measurable`.
+
+Conclude with `(continuous_norm.pow 2).measurable`.
+-/
 theorem measurable_fsLogReg_pointOf (h : HermNorm n) (u : Fin n → ℂ) (ε : ℝ) :
     Measurable fun y : EuclideanSpace ℂ (Fin n) => fsLogReg h u ε (h.pointOf y) := by
   have : (fun y : EuclideanSpace ℂ (Fin n) => fsLogReg h u ε (h.pointOf y)) = fun y =>
@@ -77,6 +87,21 @@ end RegConeLimit
 
 open RegConeLimit in
 
+/- English proof (translation)
+Introduce `n e h J u hJ ⟨f, hf⟩ hu`. Use `set μ : Measure (EuclideanSpace ℂ (Fin n)) := Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ) with hμ`. Establish `: IsFiniteMeasure (μ.restrict (coneBall h J))` using `isFiniteMeasure_restrict.mpr (hFin n e h J f hJ hf).ne`. Use `set K := Real.log (h.norm u ^ 2 + 1) / 2`. Establish `hS : MeasurableSet {y : EuclideanSpace ℂ (Fin n) | ∑ j, u j * h.pointOf y j = 0}`.
+
+Establish `hp : Continuous fun y : EuclideanSpace ℂ (Fin n) => h.pointOf y`. Unfold `HermNorm.pointOf`. Use `fun_prop`. Conclude with `(isClosed_eq (continuous_finsetSum _ fun j _ => continuous_const.mul ((continuous_apply j).comp hp)) continuous_const).measurableSet`. Establish `hae : ∀ᵐ y ∂(μ.restrict (coneBall h J)), ∑ j, u j * h.pointOf y j ≠ 0`.
+
+Establish `h0 : μ.restrict (coneBall h J) {y | ∑ j, u j * h.pointOf y j = 0} = 0`. Rewrite using `[Measure.restrict_apply hS, inter_comm]`. Conclude with `hNull n e h J f u hJ hf hu`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp h0] with y hy`. Conclude with `hy`.
+
+Establish `hlim : Tendsto (fun ε => ∫ y in coneBall h J, fsLogReg h u ε (h.pointOf y) ∂μ) (𝓝[>] 0) (𝓝 (∫ y in coneBall h J, fsLog h u (h.pointOf y) ∂μ))`. Use `tendsto_integral_filter_of_dominated_convergence (fun y => |fsLog h u (h.pointOf y)| + K) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun ε => (measurable_fsLogReg_pointOf h u ε).aestronglyMeasurable`. Use `filter_upwards [Ioo_mem_nhdsGT (zero_lt_one' ℝ)] with ε hε filter_upwards [hae] with y hy`. Rewrite using `[Real.norm_eq_abs]`.
+
+Conclude with `abs_fsLogReg_pointOf_le h u y hε.1 hε.2.le hy`. Conclude with `(hInt n e h J f u hJ hf hu).abs.add (integrable_const K)`. Use `filter_upwards [hae] with y hy`. Establish `hy0 : 0 < h.dualNorm (h.pointOf y)`. Rewrite using `[dualNorm_pointOf]`.
+
+Break down `(norm_nonneg y).eq_or_lt with h0 | h0` into its components or cases. Use `norm_sum_mul_pointOf_le h u y` as an intermediate fact. Rewrite `this` using `[← h0, mul_zero]`. Conclude with `absurd (norm_le_zero_iff.mp this) hy`. Conclude with `h0`.
+
+Conclude with `(fsLogReg_tendsto h u (h.pointOf y) hy0 hy).mono_left nhdsWithin_le_nhds`. Conclude with `hlim.div_const _`.
+-/
 theorem RegConeLimit.proof (hFin : ConeBallFinite.Statement) (hInt : ConeFsLogIntegrable.Statement)
     (hNull : ConeHyperplaneNull.Statement) : RegConeLimit.Statement := by
   intro n e h J u hJ ⟨f, hf⟩ hu

@@ -8,6 +8,47 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut GlobalTheory.UseLoc Module TensorProduct GlobalTheory.UseLoc.Cases UpperTheory.KN
 
+/- English proof (translation)
+Set `ψ : ↥Y →+ Q` to `AddMonoidHom.mk' (fun y => θ (φ0 y)) (fun u v => by rw [map_add, hθa])`. Establish `hψ : ∀ (c : O) (y : ↥Y), ψ (c • y) = f c • ψ y` using `fun c y => by`. Express the relevant statement in the definitionally equal form `θ (φ0 (c • y)) = f c • θ (φ0 y)`. Rewrite using `[map_smul, hθs]`. Establish `heq : ∀ g (y : ↥Y), ψ ⟨_, hst g y.1 y.2⟩ = actQ g (ψ y)` using `fun g y => by`.
+
+Express the relevant statement in the definitionally equal form `θ (φ0 ⟨_, hst g y.1 y.2⟩) = actQ g (θ (φ0 y))`. Rewrite using `[hφ0, hθe]`. Set `ι : (Fin a → Fin n → FractionRing O) → (Fin a → Fin n → LL)` to `fun y j m => fK (y j m)`. Establish `hι : ι = fun y j m => fK (y j m)` using `rfl`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : ↥(Submodule.span O' (ι '' (Y : Set _))) →ₗ[O'] Q, ∀ y : ↥Y, φ ⟨ι y.1, Submodule.subset_span ⟨y.1, y.2, rfl⟩⟩ = ψ y := by`.
+
+Establish `H` using `UpperTheory.KN.exists_linearMap_span_baseChange_of_semilinear f fK Y ψ hinj hf hY hψ`. Conclude with `H`. Establish `hact : ∀ g y, actN LL (fun j => N (x j)) g (ι y) = ι (fun j => (A g j).mulVec (y j))`. Introduce `g y`. Use function extensionality and compare the values at `j`.
+
+Conclude with `hA g j (y j)`. Establish `hadd : ∀ g u v, actN LL (fun j => N (x j)) g (u + v) = actN LL (fun j => N (x j)) g u + actN LL (fun j => N (x j)) g v`. Introduce `g u v`. Use function extensionality and compare the values at `j`. Simplify using `[actN, Matrix.mulVec_add]`.
+
+Establish `hsmul : ∀ g (c : O') u, actN LL (fun j => N (x j)) g (c • u) = c • actN LL (fun j => N (x j)) g u`. Introduce `g c u`. Use function extensionality and compare the values at `j`. Simplify using `[actN, Matrix.mulVec_smul]`. Establish `hzero : ∀ g, actN LL (fun j => N (x j)) g 0 = 0`.
+
+Introduce `g`. Use function extensionality and compare the values at `j`. Simplify using `[actN]`. Establish `hst' : ∀ g, ∀ y ∈ Submodule.span O' (ι '' (Y : Set _)), actN LL (fun j => N (x j)) g y ∈ Submodule.span O' (ι '' (Y : Set _))`. Introduce `g u hu`.
+
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨y, hy, rfl⟩` from `hu`. Rewrite using `[hact]`. Conclude with `Submodule.subset_span ⟨_, hst g y hy, rfl⟩`.
+
+Consider the case `zero => rw [hzero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add u v _ _ hu hv => rw [hadd]`. Conclude with `Submodule.add_mem _ hu hv`. Consider the case `smul c u _ hu => rw [hsmul]`.
+
+Conclude with `Submodule.smul_mem _ c hu`. Establish `hEE : ∀ g, actN LL (fun j => N (x j)) g (ι E) - ι E = ι (fun j => (A g j).mulVec (E j) - E j)`. Introduce `g`. Rewrite using `[hact]`. Use function extensionality and compare the values at `j m`.
+
+Simplify using `[hι]`. Establish `hE' : ∀ g, actN LL (fun j => N (x j)) g (ι E) - ι E ∈ Submodule.span O' (ι '' (Y : Set _))`. Introduce `g`. Rewrite using `[hEE]`. Conclude with `Submodule.subset_span ⟨_, hE g, rfl⟩`.
+
+Establish `hfg : (Submodule.span O' (ι '' (Y : Set _))).FG`. Take `⟨S, hS, hSY⟩` from `Submodule.fg_def.1 hY`. Use `Submodule.fg_def.2 ⟨ι '' S, hS.image _, le_antisymm (Submodule.span_mono (Set.image_mono ?_)) ?_⟩` and prove the remaining obligations. Rewrite using `[← hSY]`. Conclude with `Submodule.subset_span`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite `hy` using `[← hSY]`. Express the relevant statement in the definitionally equal form `ι y ∈ Submodule.span O' (ι '' S)`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem u hu => exact Submodule.subset_span ⟨u, hu, rfl⟩`. Consider the case `zero`. Establish `: ι 0 = 0` using `by funext j m; simp [hι]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add u v _ _ hu hv`. Establish `: ι (u + v) = ι u + ι v` using `by funext j m; simp [hι]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hu hv`. Consider the case `smul c u _ hu`.
+
+Establish `: ι (c • u) = f c • ι u`. Use function extensionality and compare the values at `j m`. Express the relevant statement in the definitionally equal form `fK (c • u j m) = f c • fK (u j m)`. Simplify using `only [Algebra.smul_def, map_mul, hf]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hu`. Use `⟨a, x, ι E, _, hfg, hst', hE', φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Set `L : (Fin a → Fin n → LL) →ₗ[O'] (Fin a → Fin n → LL)` to `{ toFun := actN LL (fun j => N (x j)) g, map_add' := hadd g, map_smul' := hsmul g }`. Establish `key : φ ∘ₗ L.restrict (hst' g) = actQ g ∘ₗ φ`.
+
+Rewrite using `[Submodule.linearMap_eq_iff_of_eq_span _ _ rfl]`. Introduce and unpack `⟨_, y, hy, rfl⟩`. Establish `h1` using `hφ ⟨y, hy⟩`. Establish `h2` using `hφ ⟨_, hst g y hy⟩`. Establish `h3` using `heq g ⟨y, hy⟩`.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, h1, ← h3, ← h2]`. Use `congr 1`. Conclude with `Subtype.ext (hact g y)`. Introduce `y`. Conclude with `LinearMap.congr_fun key y`.
+
+Introduce `g`. Establish `h2` using `hφ ⟨_, hE g⟩`. Express the relevant statement in the definitionally equal form `ψ ⟨_, hE g⟩ = _`. Rewrite using `[← h2]`. Use `congr 1`.
+
+Conclude with `Subtype.ext (hEE g).symm`.
+-/
 private theorem cutPres_gen {G O O' LL Q X : Type} [Group G] [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     [CommRing O'] [Field LL] [Algebra O' LL] [AddCommGroup Q] [Module O' Q] (f : O →+* O')
     (fK : FractionRing O →+* LL) {a n : ℕ} (N : X → (G →* Matrix (Fin n) (Fin n) O'))
@@ -117,6 +158,9 @@ private theorem cutPres_gen {G O O' LL Q X : Type} [Group G] [CommRing O] [IsDom
     congr 1
     exact Subtype.ext (hEE g).symm
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.Pass.LocDirect.loc_mulVec i w hw M g v`. Use function extensionality and compare the values at `m`. Rewrite using `[RingHom.comp_apply, ← congrFun h m, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 private theorem cutPres_mulVec {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ}
     (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw) (v : Fin k → KK D.nd i) :
@@ -129,6 +173,9 @@ private theorem cutPres_mulVec {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (�
   rw [RingHom.comp_apply, ← congrFun h m, RingHom.map_mulVec]
   rfl
 
+/- English proof (translation)
+Rewrite using `[RingHom.comp_apply, Br.toLLK_alg]`. Both sides reduce to the same expression.
+-/
 private theorem cutPres_alg {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (c : D.nd.O i) :
     ((IntermediateField.inclusion C.le).toRingHom.comp (Br.toLLK (D.nbr i w hw))) (algebraMap (D.nd.O i) (KK D.nd i) c) =
@@ -136,6 +183,9 @@ private theorem cutPres_alg {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞
   rw [RingHom.comp_apply, Br.toLLK_alg]
   rfl
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `h : (fun m => ((IntermediateField.inclusion C.le).toRingHom.comp (Br.toLLK (D.nbr i w hw))) (c • u m)) = ((incO C.le).comp (D.nbr i w hw).eO.toRingHom) c • (fun m => ((IntermediateField.inclusion C.le).toRingHom.comp (Br.toLLK (D.nbr i w hw))) (u m))`. Use function extensionality and compare the values at `m`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, Algebra.smul_def, map_mul, cutPres_alg]`. Conclude with `congrArg (Submodule.Quotient.mk (p := stdG ↥(OL C.LL) ↥C.LL.1 k)) h`.
+-/
 private theorem cutPres_smul {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ} (c : D.nd.O i)
     (q : KOG (D.nd.O i) k) :
@@ -149,6 +199,9 @@ private theorem cutPres_smul {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (�
     rw [Pi.smul_apply, Algebra.smul_def, Algebra.smul_def, map_mul, cutPres_alg]
   exact congrArg (Submodule.Quotient.mk (p := stdG ↥(OL C.LL) ↥C.LL.1 k)) h
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `congrArg (Submodule.Quotient.mk (p := stdG ↥(OL C.LL) ↥C.LL.1 k)) (cutPres_mulVec C M g u).symm`.
+-/
 private theorem cutPres_act {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ}
     (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw) (q : KOG (D.nd.O i) k) :
@@ -157,12 +210,18 @@ private theorem cutPres_act {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞
   obtain ⟨u, rfl⟩ := Submodule.Quotient.mk_surjective _ q
   exact congrArg (Submodule.Quotient.mk (p := stdG ↥(OL C.LL) ↥C.LL.1 k)) (cutPres_mulVec C M g u).symm
 
+/- English proof (translation)
+The claim follows from `(congrArg (liftQ C.le k) ((Br.phi (D.nbr i w hw) k).map_add p q)).trans ((liftQ C.le k).map_add _ _)`.
+-/
 private theorem cutPres_add {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ} (p q : KOG (D.nd.O i) k) :
     liftQ C.le k (Br.phi (D.nbr i w hw) k (p + q)) =
       liftQ C.le k (Br.phi (D.nbr i w hw) k p) + liftQ C.le k (Br.phi (D.nbr i w hw) k q) :=
   (congrArg (liftQ C.le k) ((Br.phi (D.nbr i w hw) k).map_add p q)).trans ((liftQ C.le k).map_add _ _)
 
+/- English proof (translation)
+Introduce `D i r w hw C k M z hz`. Take `⟨a, x, -, E, Y, hY, hst, hE, φ, hφ, rfl⟩` from `hz`. Establish `H` using `cutPres_gen (Q := (Fin k → ↥C.LL.1) ⧸ stdG ↥(OL C.LL) ↥C.LL.1 k) ((incO C.le).comp (D.nbr i w hw).eO.toRingHom) ((IntermediateField.inclusion C.le).toRingHom.comp (Br.toLLK (D.nbr i w hw))) (fun x => locOC C (rTwO D.nd i r x)) (fun g => actD (latC C (locOC C M)) g) x (fun g j => …`. Conclude with `H`.
+-/
 theorem _root_.UpperTheory.KN.hasPres_cutCocycle_localCoefficient :
     ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
       (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)), ∀ z ∈ cutCoc i w hw r Set.univ M,

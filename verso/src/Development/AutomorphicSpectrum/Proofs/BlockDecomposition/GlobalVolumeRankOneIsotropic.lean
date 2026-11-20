@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.FreeFact
 
+/- English proof (translation)
+Set `g : GL (Fin M) (R ⊗[F] E)` to `HA.mat R σ J h`. Set `e : (Fin M → R ⊗[F] E) ≃ₗ[R ⊗[F] E] (Fin M → R ⊗[F] E)` to `Matrix.toLin'OfInv (M := ((g⁻¹ : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E))) (M' := (g : Matrix (Fin M) (Fin M) (R ⊗[F] E))) (by simp) (by simp)`. Establish `he : actW R σ J h X = e.toLinearMap ∘ X`. Use function extensionality and compare the values at `a`. Simplify using `[e, g, actW, actTup, Matrix.toLin'OfInv]`.
+
+Rewrite using `[he]`. Conclude with `hX.map' e.toLinearMap (LinearEquiv.ker e)`.
+-/
 theorem free_act {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (h : HA R σ J)
     (X : Fin n → Fin M → R ⊗[F] E) (hX : LinearIndependent (R ⊗[F] E) X) :
@@ -29,6 +34,9 @@ theorem free_act {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [Comm
   rw [he]
   exact hX.map' e.toLinearMap (LinearEquiv.ker e)
 
+/- English proof (translation)
+Take `⟨φ, hc, hcs, hs, h0, -, h1⟩` from `GlobalTheory.CompanionTheory.SW.FibreFam.exists_bump hK hU hKU`. Establish `hi` using `(h.2.2 φ hc hcs hs).1 b (Set.mem_univ b)`. Use `lt_of_le_of_lt (GlobalTheory.CompanionTheory.SW.FibreFam.le_lintegral_bump _ hK h0 h1) ?_` and prove the remaining obligations. Conclude with `hi.lintegral_lt_top`.
+-/
 theorem fib_compact_lt_top {V X Y : Type} [TopologicalSpace V] [LocallyCompactSpace V] [T2Space V]
     [MeasurableSpace V] [BorelSpace V] [TopologicalSpace X] [MeasurableSpace X] {μ : Measure V}
     {f : V → Y} {ι : X → Y} {U : Set V} {ν : Measure X} {fib : X → Measure V}
@@ -39,6 +47,17 @@ theorem fib_compact_lt_top {V X Y : Type} [TopologicalSpace V] [LocallyCompactSp
   refine lt_of_le_of_lt (GlobalTheory.CompanionTheory.SW.FibreFam.le_lintegral_bump _ hK h0 h1) ?_
   exact hi.lintegral_lt_top
 
+/- English proof (translation)
+Take `⟨tr, lc, sc, t2, art, red, -⟩` from `id hR`. Use `haveI := tr`. Use `haveI := lc`. Use `haveI := sc`. Use `haveI := t2`.
+
+Take `⟨tK1, tK2, tK3, tK4, -, -, -, tK8, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Use `haveI := tK1`. Use `haveI := tK2`. Use `haveI := tK3`. Use `haveI := tK4`.
+
+Use `haveI : BorelSpace (Fin 1 → Fin M → R ⊗[F] E) := tK8 1 M`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hσ R d b lam hlam`. Use `haveI := hW 1 M`. Use `haveI := hH 1`. Establish `hU` using `GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen.isOpen_free F E σ hσ R hR 1 M`.
+
+Establish `hz : (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (F` using `F) R) = 0 := by`. Use extensionality with `a c`. Simplify using the standard rewrite rules. Use `⟨fun K hK hKU => fib_compact_lt_top hm hU _ hK hKU, fun h => GlobalTheory.T.local_gram_fibration_disintegration F E σ hσ M J hJ R hR 1 _ _ m (hW 1 M) (hH 1) hm h _, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hm.1 (hermOf R σ 0 h₀)`.
+
+Introduce and unpack `⟨X, hX, hXf⟩`. Conclude with `GlobalTheory.T.rank_one_fibre_measure_local F E σ hσ M J hJ R hR _ _ m (hW 1 M) (hH 1) hm X hXf (hX.trans hz) _`. Introduce and unpack `X ⟨hX, hXf⟩ Y ⟨hY, hYf⟩`. Conclude with `GlobalTheory.T.isotropic_free_vectors_same_gram F E σ hσ M J hJ R hR X Y hXf hYf (hX.trans hz) (hY.trans hz)`.
+-/
 theorem local_pack_free {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : IsHermND σ J) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
@@ -86,6 +105,41 @@ theorem local_pack_free {F E : Type} [Field F] [NumberField F] [Field E] [Number
   · rintro X ⟨hX, hXf⟩ Y ⟨hY, hYf⟩
     exact GlobalTheory.T.isotropic_free_vectors_same_gram F E σ hσ M J hJ R hR X Y hXf hYf (hX.trans hz) (hY.trans hz)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ hM h₀ d b laminf lam hinf hlam minf hminf m hm I hIl hIinv hIT S`. Take `⟨⟨lcA, scA, t2A⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Establish `hRI` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hσ.1`. Establish `hRv` using `GlobalTheory.T.completion_is_local_ring F`. Take `⟨trI, lcI, scI, t2I, -⟩` from `id hRI`.
+
+Use `haveI : ∀ v, IsTopologicalRing (Fv F v) := fun v => (hRv v).1`. Use `haveI : ∀ v, LocallyCompactSpace (Fv F v) := fun v => (hRv v).2.1`. Use `haveI : ∀ v, SecondCountableTopology (Fv F v) := fun v => (hRv v).2.2.1`. Use `haveI : ∀ v, T2Space (Fv F v) := fun v => (hRv v).2.2.2.1`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`.
+
+Use `haveI : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩`. Establish `kA` using `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (AF F)`. Establish `kI` using `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)`. Establish `kV` using `fun v => GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Fv F v)`. Use `haveI := kA.1`.
+
+Use `haveI := kA.2.1`. Use `haveI := kA.2.2.1`. Use `haveI := kA.2.2.2.1`. Use `haveI := kA.2.2.2.2.2.2.2.1 1 M`. Use `haveI := kI.1`.
+
+Use `haveI := kI.2.1`. Use `haveI := kI.2.2.1`. Use `haveI := kI.2.2.2.1`. Use `haveI := kI.2.2.2.2.2.2.2.1 1 M`. Use `haveI : ∀ v, IsTopologicalRing (Fv F v ⊗[F] E) := fun v => (kV v).1`.
+
+Use `haveI : ∀ v, LocallyCompactSpace (Fv F v ⊗[F] E) := fun v => (kV v).2.1`. Use `haveI : ∀ v, SecondCountableTopology (Fv F v ⊗[F] E) := fun v => (kV v).2.2.1`. Use `haveI : ∀ v, T2Space (Fv F v ⊗[F] E) := fun v => (kV v).2.2.2.1`. Use `haveI : ∀ v, BorelSpace (Fin 1 → Fin M → Fv F v ⊗[F] E) := fun v => (kV v).2.2.2.2.2.2.2.1 1 M`. Establish `uA` using `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (AF F)`.
+
+Establish `uI` using `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (Ainf F)`. Establish `uV` using `fun v => GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (Fv F v)`. Use `haveI := uI.1`. Use `haveI := uI.2.1`. Use `haveI := uI.2.2.1`.
+
+Use `haveI := uI.2.2.2.1`. Use `haveI : ∀ v, IsTopologicalGroup (HA (Fv F v) σ J) := fun v => (uV v).1`. Use `haveI : ∀ v, LocallyCompactSpace (HA (Fv F v) σ J) := fun v => (uV v).2.1`. Use `haveI : ∀ v, SecondCountableTopology (HA (Fv F v) σ J) := fun v => (uV v).2.2.1`. Use `haveI : ∀ v, T2Space (HA (Fv F v) σ J) := fun v => (uV v).2.2.2.1`.
+
+Establish `LI` using `local_pack_free σ hσ J hJ (Ainf F) hRI h₀ b laminf hinf.1 minf hminf`. Establish `LV` using `fun v => local_pack_free σ hσ J hJ (Fv F v) (hRv v) h₀ b (lam v) (hlam v).1 (m v) (hm v)`. Take `⟨cI, cF, cV, hlat, hint, -, -, -, -⟩` from `GlobalTheory.T.adelic_tuple_projections F E σ hσ d b 1 M`. Establish `hprc : Continuous (FactS.pr S : (Fin 1 → Fin M → AF F ⊗[F] E) → _)` using `cI.prodMk (continuous_pi fun v => (cV v.1).comp cF)`. Establish `hprm : Measurable (FactS.pr S : (Fin 1 → Fin M → AF F ⊗[F] E) → _)` using `hprc.measurable`.
+
+Establish `hintm : MeasurableSet (intOff b S : Set (Fin 1 → Fin M → AF F ⊗[F] E))` using `(hint S).measurableSet`. Establish `actC : ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] , (Continuous fun p : HA R σ J × (Fin 1 → Fin M → R ⊗[F] E) => actW R σ J p.1 p.2) → ∀ h : HA R σ J, Continuous (actW R σ J h : (Fin 1 → Fin M → R ⊗[F] E) → _)` using `fun R _ _ _ hc h => hc.comp (Continuous.prodMk_right h)`. Establish `cAI` using `(uI.2.2.2.2.2 1).1`. Establish `cAV` using `fun v => ((uV v).2.2.2.2.2 1).1`. Establish `cAA` using `(uA.2.2.2.2.2 1).1`.
+
+Use `set P := (I.restrict (intOff b S)).map (FactS.pr S) with hPdef`. Use `haveI hPc : IsFiniteMeasureOnCompacts P := ⟨fun K hK => by`. Rewrite using `[hPdef, Measure.map_apply hprm hK.isClosed.measurableSet, Measure.restrict_apply (hprm hK.isClosed.measurableSet)]`. Conclude with `FactS.preimage_lt_top σ hσ b S I K hK⟩`. Establish `hPinv : ∀ (g₀ : HA (Ainf F) σ J) (g : ∀ v : S, HA (Fv F v.1) σ J), P.map (fun x => (actW (Ainf F) σ J g₀ x.1, fun v => actW (Fv F v.1) σ J (g v) (x.2 v))) = P`.
+
+Introduce `g₀ g`. Use `FactS.push_inv σ hσ J hJ b S I hIinv (fun v X => ((uV v).2.2.2.2.2 1).2.1 X) hprm (fun h => (actC _ cAA h).measurable) hintm g₀ g ?_` and prove the remaining obligations. Use `Continuous.measurable (Continuous.prodMk ((actC _ cAI g₀).comp continuous_fst) (continuous_pi fun v => ?_))` and prove the remaining obligations. Conclude with `(actC _ (cAV v.1) (g v)).comp ((continuous_apply v).comp continuous_snd)`. Establish `hZ₀ : IsClosed {Y : Fin 1 → Fin M → Ainf F ⊗[F] E | gramR (Ainf F) σ J Y = (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (Ainf F))}` using `isClosed_eq (kI.2.2.2.2.2.2.2.2.2 1 M J) continuous_const`.
+
+Establish `hZ : ∀ v : S, IsClosed {Y : Fin 1 → Fin M → Fv F v.1 ⊗[F] E | gramR (Fv F v.1) σ J Y = (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (Fv F v.1))}` using `fun v => isClosed_eq ((kV v.1).2.2.2.2.2.2.2.2.2 1 M J) continuous_const`. Establish `hU₀` using `GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen.isOpen_free F E σ hσ (Ainf F) hRI 1 M`. Establish `hU : ∀ v : S, IsOpen {Y : Fin 1 → Fin M → Fv F v.1 ⊗[F] E | LinearIndependent (Fv F v.1 ⊗[F] E) Y}` using `fun v => GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen.isOpen_free F E σ hσ (Fv F v.1) (hRv v.1) 1 M`. Establish `hPZ : P (({Y : Fin 1 → Fin M → Ainf F ⊗[F] E | gramR (Ainf F) σ J Y = (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (Ainf F))} ∩ {Y | LinearIndependent (Ainf F ⊗[F] E) Y}) ×ˢ Set.univ.pi fun v : S => {Y : Fin 1 → Fin M → Fv F v.1 ⊗[F] E | gramR (Fv F v.1) σ J Y = (0 : Matrix (Fin 1) …`. Establish `hms : MeasurableSet (({Y : Fin 1 → Fin M → Ainf F ⊗[F] E | gramR (Ainf F) σ J Y = (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (Ainf F))} ∩ {Y | LinearIndependent (Ainf F ⊗[F] E) Y}) ×ˢ Set.univ.pi fun v : S => {Y : Fin 1 → Fin M → Fv F v.1 ⊗[F] E | gramR (Fv F v.1) σ J Y = (0 : Mat …` using `(hZ₀.measurableSet.inter hU₀.measurableSet).prod (MeasurableSet.univ_pi fun v => (hZ v).measurableSet.inter (hU v).measurableSet)`.
+
+Rewrite using `[hPdef, Measure.map_apply hprm hms.compl]`. Use `le_antisymm (le_trans (Measure.restrict_apply_le _ _) ?_) bot_le` and prove the remaining obligations. Use `le_trans (measure_mono ?_) hIT.le` and prove the remaining obligations. Introduce and unpack `X hX ⟨hXg, hXi, hXv⟩`. Apply `hX` to reduce the goal to its premises.
+
+Establish `hg` using `((GlobalTheory.T.gram_matrix_local_global F E σ hσ M J hJ 1 X 0).1.mp hXg)`. Conclude with `⟨⟨hg.1, hXi⟩, fun v _ => ⟨hg.2 v.1, hXv v.1⟩⟩`. Take `⟨c, hc⟩` from `GlobalTheory.T.restricted_product_haar_measure (ι := S) (G := fun v : S => HA (Fv F v.1) σ J) (W := fun v : S => Fin 1 → Fin M → Fv F v.1 ⊗[F] E) (actW (Ainf F) σ J) (fun v => actW (Fv F v.1) σ J) cAI (uI.2.2.2.2.2 1).2.1 (uI.2.2.2.2.2 1).2.2.1 (fun v => cAV v.1) (fun v => ((uV v …`. Use `⟨c, fun φinf φ hφinf hφ => ?_⟩` and prove the remaining obligations. Establish `h` using `hc φinf (fun v => φ v.1) hφinf (fun v => hφ v.1)`.
+
+Establish `hΦ : Measurable fun x : (Fin 1 → Fin M → Ainf F ⊗[F] E) × ∀ v : S, Fin 1 → Fin M → Fv F v.1 ⊗[F] E => φinf x.1 * ∏ v : S, φ v.1 (x.2 v)` using `(hφinf.comp measurable_fst).mul (Finset.measurable_prod _ fun v _ => (hφ v.1).comp ((measurable_pi_apply v).comp measurable_snd))`. Rewrite `h` using `[hPdef, lintegral_map hΦ hprm, Finset.prod_coe_sort S fun v => ∫⁻ X, φ v X ∂(m v (hermOf (Fv F v) σ 0 h₀))]`. Rewrite using `[← h]`. Unfold `pureL`. Rewrite using `[lintegral_indicator hintm]`.
+
+Use `lintegral_congr fun X => ?_` and prove the remaining obligations. Simplify using `only [FactS.pr]`. Rewrite using `[Finset.prod_coe_sort S fun v => φ v (projV v (projFin X))]`.
+-/
 theorem fact_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (h₀ : ∀ a b : Fin 1, σ ((0 : Matrix (Fin 1) (Fin 1) E) b a) = (0 : Matrix (Fin 1) (Fin 1) E) a b), ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf laminf → (∀ v, IsStdV v (lam v)) → ∀ (minf : HermR (Ainf F) σ 1 → Measure (Fin 1 → Fin M → Ainf F ⊗[F] E)), IsGramFibFree (Ainf F) σ J 1 (coordW (Ainf F) b laminf 1 M) (coordHerm (Ainf F) σ b laminf 1) minf → ∀ (m : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin M → Fv F v ⊗[F] E)), (∀ v, IsGramFibFree (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 M) (coordHerm (Fv F v) σ b (lam v) 1) (m v)) → ∀ I : Measure (Fin 1 → Fin M → AF F ⊗[F] E), IsLocallyFiniteMeasure I → (∀ h : HA (AF F) σ J, I.map (actW (AF F) σ J h) = I) → I {X : Fin 1 → Fin M → AF F ⊗[F] E | gramR (AF F) σ J X = (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (AF F)) ∧ LinearIndependent (Ainf F ⊗[F] E) (projInf X) ∧ ∀ v, LinearIndependent (Fv F v ⊗[F] E) (projV v (projFin X))}ᶜ = 0 → ∀ S : Finset (HeightOneSpectrum (𝓞 F)), ∃ c : ℝ≥0, ∀ (φinf : (Fin 1 → Fin M → Ainf F ⊗[F] E) → ℝ≥0∞) (φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin 1 → Fin M → Fv F v ⊗[F] E) → ℝ≥0∞), Measurable φinf → (∀ v, Measurable (φ v)) → ∫⁻ X, pureL b S φinf φ X ∂I = (c : ℝ≥0∞) * ((∫⁻ X, φinf X ∂(minf (hermOf (Ainf F) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀))) * ∏ v ∈ S, ∫⁻ X, φ v X ∂(m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀))) := by
   intro F E _ _ _ _ _ σ hσ M J hJ hM h₀ d b laminf lam hinf hlam minf hminf m hm I hIl hIinv hIT S
   classical

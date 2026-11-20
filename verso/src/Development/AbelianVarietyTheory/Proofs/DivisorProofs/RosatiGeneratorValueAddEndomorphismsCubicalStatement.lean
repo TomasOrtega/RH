@@ -10,6 +10,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RosAddPair.ros_val_padd | exact GlobalTheory.RosAddPair.ros_val_padd | (intros; apply GlobalTheory.RosAddPair.ros_val_padd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rosatiGenerator_value_add_endomorphisms_cubical : ∀ {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {Lr : RigLB A} (cu : CubicalStr A Lr), GlobalFnsSt →
     IsAbelianScheme A →
     ∀ (f₁ g₁ f₂ g₂ f g : A ⟶ A) [IsMonHom f₁] [IsMonHom g₁] [IsMonHom f₂] [IsMonHom g₂], f = padd A f₁ f₂ → g = padd A g₁ g₂ →

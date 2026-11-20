@@ -1,11 +1,23 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.NewformCoefficients.CuspCritAlt
 
 open UpperTheory.V.Sd in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Matrix.vecMul ![0, 1] (g : Matrix (Fin 2) (Fin 2) R) = ![0, 1] ↔ _`. Simplify using `[funext_iff, Fin.forall_fin_two, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+-/
 private theorem mem_mirab_iff {R : Type} [CommRing R] (g : GL (Fin 2) R) : g ∈ mirab R ↔ g 1 0 = 0 ∧ g 1 1 = 1 := by
   change Matrix.vecMul ![0, 1] (g : Matrix (Fin 2) (Fin 2) R) = ![0, 1] ↔ _
   simp [funext_iff, Fin.forall_fin_two, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 open NumberField GlobalTheory.CuspRep UpperTheory.V.Af UpperTheory.V.Sd in
+/- English proof (translation)
+Introduce `M g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Establish `e0 : Ideal.Quotient.mk (Ideal.span {(M : ↥(Ohat ℚ))}) (k 1 0) = 0` using `((mem_mirab_iff _).1 hk).1`. Establish `e1 : Ideal.Quotient.mk (Ideal.span {(M : ↥(Ohat ℚ))}) (k 1 1) = Ideal.Quotient.mk _ 1` using `((mem_mirab_iff _).1 hk).2`.
+
+Use `⟨fun a b => (k a b).2, fun a b => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `((k⁻¹ : GL (Fin 2) ↥(Ohat ℚ)) a b).2`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 e0)`. Conclude with `⟨y, y.2, congrArg Subtype.val hy⟩`.
+
+Take `⟨y, hy⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 e1)`. Conclude with `⟨y, y.2, congrArg Subtype.val hy⟩`. Introduce and unpack `⟨ha, hb, ⟨y, hy, e⟩, ⟨z, hz, e'⟩⟩`. Establish `inj : Function.Injective (RingHom.mapMatrix (m` using `Fin 2) (Ohat ℚ).subtype) := fun x y h => Matrix.ext fun a b => Subtype.ext (congrFun (congrFun h a) b)`. Set `k : GL (Fin 2) ↥(Ohat ℚ)` to `⟨Matrix.of fun a b => ⟨g a b, ha a b⟩, Matrix.of fun a b => ⟨(g⁻¹ : GL (Fin 2) (Af ℚ)) a b, hb a b⟩, inj (by rw [map_mul, map_one]; exact g.mul_inv), inj (by rw [map_mul, map_one]; exact g.inv_mul)⟩`.
+
+Establish `e0 : Ideal.Quotient.mk (Ideal.span {(M : ↥(Ohat ℚ))}) (k 1 0) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton.2 ⟨⟨y, hy⟩, Subtype.ext e⟩)`. Establish `e1 : Ideal.Quotient.mk (Ideal.span {(M : ↥(Ohat ℚ))}) (k 1 1) = Ideal.Quotient.mk _ 1` using `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 ⟨⟨z, hz⟩, Subtype.ext e'⟩)`. Conclude with `⟨k, (mem_mirab_iff _).2 ⟨e0, e1⟩, Units.ext rfl⟩`.
+-/
 theorem UpperTheory.V.Af.Nf.memK :
     UpperTheory.V.Af.Nf.MemK := by
   intro M g

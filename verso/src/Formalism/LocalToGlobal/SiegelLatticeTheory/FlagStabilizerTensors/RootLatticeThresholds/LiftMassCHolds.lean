@@ -8,6 +8,9 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full
 
 namespace Formalism.L2.SG.Pf.FibreCounting
 
+/- English proof (translation)
+The claim follows from `liftMassC_of (Formalism.L2.SG.Closed.NeatKu_holds X u' Y.hK)`.
+-/
 theorem LiftMassC_holds {D : D7} (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) :
     Formalism.L2.SG.Pf.RowForm.LiftMassC X Y u u' :=
   liftMassC_of (Formalism.L2.SG.Closed.NeatKu_holds X u' Y.hK)

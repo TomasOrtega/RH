@@ -14,26 +14,47 @@ variable {n : ℕ}
 
 abbrev ren (r : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := g.submatrix r r
 
+/- English proof (translation)
+The claim follows from `(Matrix.submatrix_mul_equiv g h r r r).symm`.
+-/
 lemma ren_mul (r : Equiv.Perm (Fin n)) (g h : Matrix (Fin n) (Fin n) ℂ) : ren r (g * h) = ren r g * ren r h :=
   (Matrix.submatrix_mul_equiv g h r r r).symm
 
+/- English proof (translation)
+The claim follows from `Matrix.submatrix_one_equiv r`.
+-/
 lemma ren_one (r : Equiv.Perm (Fin n)) : ren r (1 : Matrix (Fin n) (Fin n) ℂ) = 1 :=
   Matrix.submatrix_one_equiv r
 
+/- English proof (translation)
+The claim follows from `Matrix.conjTranspose_submatrix g r r`.
+-/
 lemma ren_ct (r : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) : (ren r g)ᴴ = ren r gᴴ :=
   Matrix.conjTranspose_submatrix g r r
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[ren]`.
+-/
 lemma ren_ren_symm (r : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) : ren r (ren r.symm g) = g := by
   ext i j; simp [ren]
 
+/- English proof (translation)
+Unfold `Jm`. Rewrite using `[ren, Matrix.submatrix_diagonal_equiv]`. Both sides reduce to the same expression.
+-/
 lemma ren_Jm (ε : Fin n → Bool) (r : Equiv.Perm (Fin n)) : Jm (ε ∘ r) = ren r (Jm ε) := by
   unfold Jm
   rw [ren, Matrix.submatrix_diagonal_equiv]
   rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.submatrix_diagonal_equiv d r`.
+-/
 lemma ren_diag (r : Equiv.Perm (Fin n)) (d : Fin n → ℂ) : ren r (diagonal d) = diagonal (d ∘ r) :=
   Matrix.submatrix_diagonal_equiv d r
 
+/- English proof (translation)
+Take `⟨hu, hc⟩` from `hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`. Rewrite using `[ren_ct, ← ren_mul, hu, ren_one]`. Rewrite using `[ren_Jm, ← ren_mul, ← ren_mul, hc]`.
+-/
 lemma mem_K {ε : Fin n → Bool} (r : Equiv.Perm (Fin n)) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     ren r g ∈ Kset (ε ∘ r) := by
   obtain ⟨hu, hc⟩ := hg
@@ -42,12 +63,20 @@ lemma mem_K {ε : Fin n → Bool} (r : Equiv.Perm (Fin n)) {g : Matrix (Fin n) (
     rw [ren_ct, ← ren_mul, hu, ren_one]
   · rw [ren_Jm, ← ren_mul, ← ren_mul, hc]
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Use `show (ren r g)ᴴ * Jm (ε ∘ r) * ren r g = Jm (ε ∘ r)`. Rewrite using `[ren_ct, ren_Jm, ← ren_mul, ← ren_mul, hg']`.
+-/
 lemma mem_UJ {ε : Fin n → Bool} (r : Equiv.Perm (Fin n)) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     ren r g ∈ UJset (ε ∘ r) := by
   have hg' : gᴴ * Jm ε * g = Jm ε := hg
   show (ren r g)ᴴ * Jm (ε ∘ r) * ren r g = Jm (ε ∘ r)
   rw [ren_ct, ren_Jm, ← ren_mul, ← ren_mul, hg']
 
+/- English proof (translation)
+Establish `h' : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`. Use `show (ren r X)ᴴ * Jm (ε ∘ r) + Jm (ε ∘ r) * ren r X = 0`. Rewrite using `[ren_ct, ren_Jm, ← ren_mul, ← ren_mul]`. Establish `: ren r (Xᴴ * Jm ε) + ren r (Jm ε * X) = ren r (Xᴴ * Jm ε + Jm ε * X)`. Use extensionality with `i j`.
+
+Simplify using `[ren]`. Rewrite using `[this, h']`. Use extensionality with `i j`. Simplify using `[ren]`.
+-/
 lemma mem_inG {ε : Fin n → Bool} (r : Equiv.Perm (Fin n)) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
     inG (ε ∘ r) (ren r X) := by
   have h' : Xᴴ * Jm ε + Jm ε * X = 0 := hX
@@ -58,10 +87,16 @@ lemma mem_inG {ε : Fin n → Bool} (r : Equiv.Perm (Fin n)) {X : Matrix (Fin n)
   rw [this, h']
   ext i j; simp [ren]
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `(continuous_apply_apply (r i) (r j))`.
+-/
 lemma continuous_ren (r : Equiv.Perm (Fin n)) : Continuous (ren r) := by
   refine continuous_matrix fun i j => ?_
   exact (continuous_apply_apply (r i) (r j))
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.UnitaryExp.map_exp_matrix (Matrix.reindexAlgEquiv ℂ ℂ r.symm) ((continuous_ren r).congr (fun M => by ext i j; simp [ren])) X`. Conclude with `h.symm`.
+-/
 lemma exp_ren (r : Equiv.Perm (Fin n)) (X : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp (ren r X) = ren r (NormedSpace.exp X) := by
   have h := GlobalTheory.CompanionTheory.UnitaryExp.map_exp_matrix (Matrix.reindexAlgEquiv ℂ ℂ r.symm)
@@ -70,6 +105,11 @@ lemma exp_ren (r : Equiv.Perm (Fin n)) (X : Matrix (Fin n) (Fin n) ℂ) :
 
 def Ord (ε : Fin n → Bool) (r : Equiv.Perm (Fin n)) : Prop := ∀ a b, a < b → ε a = ε b → r a < r b
 
+/- English proof (translation)
+Introduce `a b hab he`. Assume the negation of the conclusion as `hlt`. Break down `(not_lt.1 hlt).lt_or_eq with h1 | h1` into its components or cases. Use `h _ _ h1 (by subst hε; simp [he])` as an intermediate fact. Simplify using `at this`.
+
+Conclude with `absurd hab (not_lt.2 this.le)`. Use `r.symm.injective h1` as an intermediate fact. Conclude with `absurd hab (by simp [this])`.
+-/
 lemma Ord.symm {ε ε₁ : Fin n → Bool} {r : Equiv.Perm (Fin n)} (hε : ε₁ = ε ∘ r) (h : Ord ε₁ r) : Ord ε r.symm := by
   intro a b hab he
   by_contra hlt
@@ -85,11 +125,20 @@ section Rep
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ε ε₁ : Fin n → Bool} {r : Equiv.Perm (Fin n)} {τ τ' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Substitute `hε` using the available equality. Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 lemma hε_symm (hε : ε₁ = ε ∘ r) : ε = ε₁ ∘ r.symm := by subst hε; ext a; simp
 
+/- English proof (translation)
+Introduce `g` and use `by rw [hτ, ren_ren_symm]`.
+-/
 lemma hτ_symm (hτ : ∀ g, τ' g = τ (ren r g)) : ∀ g, τ g = τ' (ren r.symm g) := fun g => by
   rw [hτ, ren_ren_symm]
 
+/- English proof (translation)
+Substitute `hε` using the available equality. Introduce `g hg v hv`. Rewrite using `[hτ]`. Conclude with `h _ (mem_K r hg) v hv`.
+-/
 lemma stab_ren (hε : ε₁ = ε ∘ r) (hτ : ∀ g, τ' g = τ (ren r g)) {S : Submodule ℂ H}
     (h : IsKStableOn ε₁ τ S) : IsKStableOn ε τ' S := by
   subst hε
@@ -97,11 +146,19 @@ lemma stab_ren (hε : ε₁ = ε ∘ r) (hτ : ∀ g, τ' g = τ (ren r g)) {S :
   rw [hτ]
   exact h _ (mem_K r hg) v hv
 
+/- English proof (translation)
+Take `⟨S, h1, h2, h3⟩` from `h`. Conclude with `⟨S, h1, h2, stab_ren hε hτ h3⟩`.
+-/
 lemma kfin_ren (hε : ε₁ = ε ∘ r) (hτ : ∀ g, τ' g = τ (ren r g)) {v : H}
     (h : IsKFin ε₁ τ v) : IsKFin ε τ' v := by
   obtain ⟨S, h1, h2, h3⟩ := h
   exact ⟨S, h1, h2, stab_ren hε hτ h3⟩
 
+/- English proof (translation)
+Substitute `hε` using the available equality. Introduce `θ hθ`. Establish `hm` using `mem_K r hθ`. Rewrite `hm` using `[ren_diag]`. Establish `h1` using `h (θ ∘ r) hm`.
+
+Rewrite using `[hτ, ren_diag]`. Establish `e : (∑ a, (μ ∘ r.symm) a * θ a) = ∑ a, μ a * (θ ∘ r) a` using `(Fintype.sum_equiv r _ _ (fun a => by simp)).symm`. Rewrite using `[e]`. Conclude with `h1`.
+-/
 lemma wt_ren (hε : ε₁ = ε ∘ r) (hτ : ∀ g, τ' g = τ (ren r g)) {μ : Fin n → ℝ} {v : H}
     (h : IsWtOn (Kset ε₁) τ μ v) : IsWtOn (Kset ε) τ' (μ ∘ r.symm) v := by
   subst hε
@@ -115,6 +172,13 @@ lemma wt_ren (hε : ε₁ = ε ∘ r) (hτ : ∀ g, τ' g = τ (ren r g)) {μ : 
   rw [e]
   exact h1
 
+/- English proof (translation)
+Establish `hb : (x = r b) ↔ (r.symm x = b)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`.
+
+Simplify using the standard rewrite rules. Establish `ha : (x = r a) ↔ (r.symm x = a)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Simplify using `only [root, Pi.sub_apply, Pi.single_apply, hb, ha]`.
+-/
 lemma root_ren (r : Equiv.Perm (Fin n)) (a b x : Fin n) :
     root (r a) (r b) x = root a b (r.symm x) := by
   have hb : (x = r b) ↔ (r.symm x = b) := by
@@ -127,6 +191,13 @@ lemma root_ren (r : Equiv.Perm (Fin n)) (a b x : Fin n) :
     · rintro rfl; simp
   simp only [root, Pi.sub_apply, Pi.single_apply, hb, ha]
 
+/- English proof (translation)
+Substitute `hε` using the available equality. Take `⟨c, hc, he⟩` from `h`. Use `⟨fun a b => c (r.symm a) (r.symm b), fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hc _ _ hab`. Use `ho _ _ h1 h2` as an intermediate fact.
+
+Simplify using `at this h2`. Conclude with `⟨this, h2⟩`. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun he (r.symm x)`. Simplify using `only [Pi.sub_apply, Function.comp, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at hx ⊢`.
+
+Rewrite using `[hx]`. Use `(Fintype.sum_equiv r _ _ (fun a => ?_))` and prove the remaining obligations. Use `(Fintype.sum_equiv r _ _ (fun b => ?_))` and prove the remaining obligations. Rewrite using `[root_ren]`. Simplify using the standard rewrite rules.
+-/
 lemma cdom_ren (hε : ε₁ = ε ∘ r) (ho : Ord ε₁ r) {μ Λ : Fin n → ℝ} (h : CDom ε₁ μ Λ) :
     CDom ε (μ ∘ r.symm) (Λ ∘ r.symm) := by
   subst hε
@@ -145,6 +216,11 @@ lemma cdom_ren (hε : ε₁ = ε ∘ r) (ho : Ord ε₁ r) {μ Λ : Fin n → �
     rw [root_ren]
     simp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, ⟨v, hv, hne, hw⟩, h5⟩` from `h`. Use `⟨h1, stab_ren hε hτ h2, fun S' hS' hst => h3 S' hS' (stab_ren (hε_symm hε) (hτ_symm hτ) hst), ⟨v, hv, hne, wt_ren hε hτ hw⟩, fun μ w hw1 hw2 hw3 => ?_⟩` and prove the remaining obligations. Establish `h6` using `h5 _ w hw1 hw2 (wt_ren (hε_symm hε) (hτ_symm hτ) hw3)`. Establish `h7` using `cdom_ren hε ho h6`. Use `h7 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 lemma kType_ren (hε : ε₁ = ε ∘ r) (ho : Ord ε₁ r) (hτ : ∀ g, τ' g = τ (ren r g)) {Λ : Fin n → ℝ}
     {S : Submodule ℂ H} (h : IsKTypeOf ε₁ τ Λ S) : IsKTypeOf ε τ' (Λ ∘ r.symm) S := by
   obtain ⟨h1, h2, h3, ⟨v, hv, hne, hw⟩, h5⟩ := h
@@ -159,12 +235,20 @@ open Formalism.REAL (GlRel IsUnitary KHighest IsWeight sgn)
 open CompanionTheory.D.LK (IsKMod LocFin)
 open CompanionTheory.D.DSIC (KStab)
 
+/- English proof (translation)
+Use `⟨fun a => h.1 _, fun a b hab he => h.2 _ _ (Ord.symm hε ho _ _ hab he) ?_⟩` and prove the remaining obligations. Substitute `hε` using the available equality. Simplify using `using he`.
+-/
 lemma kHighest_fwd {V : Type} [AddCommGroup V] [Module ℂ V] (hε : ε₁ = ε ∘ r) (ho : Ord ε₁ r)
     {E : Fin n → Fin n → Module.End ℂ V} {μ : Fin n → ℝ} {x : V} (h : KHighest ε₁ E μ x) :
     KHighest ε (fun a b => E (r.symm a) (r.symm b)) (μ ∘ r.symm) x := by
   refine ⟨fun a => h.1 _, fun a b hab he => h.2 _ _ (Ord.symm hε ho _ _ hab he) ?_⟩
   subst hε; simpa using he
 
+/- English proof (translation)
+Substitute `hε` using the available equality. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Use `h.1 (r a)` as an intermediate fact. Simplify using `using this`. Use `h.2 _ _ (ho _ _ hab he) he` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 lemma kHighest_bwd {V : Type} [AddCommGroup V] [Module ℂ V] (hε : ε₁ = ε ∘ r) (ho : Ord ε₁ r)
     {E : Fin n → Fin n → Module.End ℂ V} {μ : Fin n → ℝ} {x : V}
     (h : KHighest ε (fun a b => E (r.symm a) (r.symm b)) μ x) : KHighest ε₁ E (μ ∘ r) x := by
@@ -175,6 +259,23 @@ lemma kHighest_bwd {V : Type} [AddCommGroup V] [Module ℂ V] (hε : ε₁ = ε 
   · have := h.2 _ _ (ho _ _ hab he) he
     simpa using this
 
+/- English proof (translation)
+Establish `hcomp : ∀ a b, ε₁ (r.symm a) = ε₁ (r.symm b) ↔ ε a = ε b` using `fun a b => by subst hε; simp`. Use `⟨fun v => ?_, fun X hX v => ?_, fun a b c d => ?_, fun a b x y => ?_, fun x => ?_, fun μ T hT => ?_, fun μ x hx hh => ?_⟩` and prove the remaining obligations. Rewrite using `[hK.mem]`. Conclude with `⟨kfin_ren hε hτ, kfin_ren (hε_symm hε) (hτ_symm hτ)⟩`. Substitute `hε` using the available equality.
+
+Establish `h` using `hK.real (ren r X) (mem_inG r hX) v`. Establish `e1 : (fun t : ℝ => τ' (NormedSpace.exp ((t : ℂ) • X)) (v : H)) = fun t : ℝ => τ (NormedSpace.exp ((t : ℂ) • ren r X)) (v : H)`. Use function extensionality and compare the values at `t`. Rewrite using `[hτ, ← exp_ren]`. Use `congr 3`.
+
+Establish `e2 : (∑ a, ∑ b, X a b • ((E (r.symm a) (r.symm b) v : D) : H)) = ∑ a, ∑ b, (ren r X) a b • ((E a b v : D) : H)`. Use `(Fintype.sum_equiv r.symm _ _ (fun a => ?_))` and prove the remaining obligations. Use `(Fintype.sum_equiv r.symm _ _ (fun b => ?_))` and prove the remaining obligations. Simplify using `[ren]`. Rewrite using `[e1, e2]`.
+
+Conclude with `h`. Use `hK.gl (r.symm a) (r.symm b) (r.symm c) (r.symm d)` as an intermediate fact. Simplify using `using this`. Use `hK.unit (r.symm a) (r.symm b) x y` as an intermediate fact. Establish `e : sgn ε₁ (r.symm a) (r.symm b) = sgn ε a b`.
+
+Unfold `sgn`. Simplify using `only [hcomp]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Take `⟨S, h1, h2, h3⟩` from `hK.locFin x`. Use `⟨S, h1, fun a b he v hv => h2 _ _ ((hcomp a b).2 he) v hv, h3⟩` and prove the remaining obligations.
+
+Establish `hT'` using `kType_ren (hε_symm hε) (Ord.symm hε ho) (hτ_symm hτ) hT`. Take `⟨v, hv, hvT, hvh⟩` from `hK.hw _ T hT'`. Use `⟨v, hv, hvT, ?_⟩` and prove the remaining obligations. Use `kHighest_fwd hε ho hvh` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `a`. Simplify using the standard rewrite rules. Take `⟨T, hT⟩` from `hK.ty _ x hx (kHighest_bwd hε ho hh)`. Use `⟨T, ?_⟩` and prove the remaining obligations. Use `kType_ren hε ho hτ hT` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 lemma kMod_ren (hε : ε₁ = ε ∘ r) (ho : Ord ε₁ r) (hτ : ∀ g, τ' g = τ (ren r g)) {D : Submodule ℂ H}
     {E : Fin n → Fin n → Module.End ℂ D} (hK : IsKMod ε₁ τ D E) :
     IsKMod ε τ' D (fun a b => E (r.symm a) (r.symm b)) := by
@@ -230,14 +331,27 @@ variable {n : ℕ}
 def unitsRen (r : Equiv.Perm (Fin n)) : (Matrix (Fin n) (Fin n) ℂ)ˣ ≃* (Matrix (Fin n) (Fin n) ℂ)ˣ :=
   Units.mapEquiv (Matrix.reindexAlgEquiv ℂ ℂ r.symm).toMulEquiv
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[unitsRen, ren]`.
+-/
 lemma unitsRen_val (r : Equiv.Perm (Fin n)) (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) :
     ((unitsRen r g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = ren r g := by
   ext i j; simp [unitsRen, ren]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[unitsRen, ren]`.
+-/
 lemma unitsRen_symm_val (r : Equiv.Perm (Fin n)) (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) :
     (((unitsRen r).symm g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = ren r.symm g := by
   ext i j; simp [unitsRen, ren]
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: (Units.val ∘ unitsRen r) = ren r ∘ Units.val`. Use function extensionality and compare the values at `g`. Conclude with `unitsRen_val r g`. Rewrite using `[this]`.
+
+Conclude with `(continuous_ren r).comp Units.continuous_val`. Establish `: (fun g => (((unitsRen r g)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) = fun g : (Matrix (Fin n) (Fin n) ℂ)ˣ => ren r ((g⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv, unitsRen_val]`. Rewrite using `[this]`.
+
+Conclude with `(continuous_ren r).comp (Units.continuous_val.comp continuous_inv)`.
+-/
 lemma continuous_unitsRen (r : Equiv.Perm (Fin n)) : Continuous (unitsRen r) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · have : (Units.val ∘ unitsRen r) = ren r ∘ Units.val := by
@@ -250,6 +364,11 @@ lemma continuous_unitsRen (r : Equiv.Perm (Fin n)) : Continuous (unitsRen r) := 
     rw [this]
     exact (continuous_ren r).comp (Units.continuous_val.comp continuous_inv)
 
+/- English proof (translation)
+Establish `: ((unitsRen r).symm : _ → _) = unitsRen r.symm`. Use function extensionality and compare the values at `g`. Use `ext1`. Rewrite using `[unitsRen_symm_val, unitsRen_val]`. Rewrite using `[this]`.
+
+Conclude with `continuous_unitsRen r.symm`.
+-/
 lemma continuous_unitsRen_symm (r : Equiv.Perm (Fin n)) : Continuous (unitsRen r).symm := by
   have : ((unitsRen r).symm : _ → _) = unitsRen r.symm := by
     funext g; ext1; rw [unitsRen_symm_val, unitsRen_val]
@@ -272,12 +391,23 @@ def ujRen (ε : Fin n → Bool) (r : Equiv.Perm (Fin n)) : Formalism.REAL.UJ ε 
   right_inv g := by simp
   map_mul' g h := by ext1; simp
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk ((continuous_unitsRen r).comp continuous_subtype_val) _`.
+-/
 lemma continuous_ujRen (ε : Fin n → Bool) (r : Equiv.Perm (Fin n)) : Continuous (ujRen ε r) :=
   Continuous.subtype_mk ((continuous_unitsRen r).comp continuous_subtype_val) _
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk ((continuous_unitsRen_symm r).comp continuous_subtype_val) _`.
+-/
 lemma continuous_ujRen_symm (ε : Fin n → Bool) (r : Equiv.Perm (Fin n)) : Continuous (ujRen ε r).symm :=
   Continuous.subtype_mk ((continuous_unitsRen_symm r).comp continuous_subtype_val) _
 
+/- English proof (translation)
+Set `e` to `ujRen ε r`. Establish `he` using `continuous_ujRen ε r`. Establish `hes` using `continuous_ujRen_symm ε r`. Set `hm : Formalism.REAL.UJ ε ≃ₜ Formalism.REAL.UJ (ε ∘ r)` to `⟨e.toEquiv, he, hes⟩`. Use `haveI hH : (Measure.map e (Formalism.REAL.muG ε)).IsHaarMeasure := MulEquiv.isHaarMeasure_map (Formalism.REAL.muG ε) e he hes`.
+
+Establish `hs` using `Measure.isMulLeftInvariant_eq_smul (Measure.map e (Formalism.REAL.muG ε)) (Formalism.REAL.muG (ε ∘ r))`. Establish `h1 : MemLp f 2 (Measure.map e (Formalism.REAL.muG ε))`. Rewrite using `[hs, ENNReal.smul_def]`. Conclude with `h.smul_measure ENNReal.coe_ne_top`. Conclude with `(hm.measurableEmbedding.memLp_map_measure_iff).1 h1`.
+-/
 lemma memLp_ren (ε : Fin n → Bool) (r : Equiv.Perm (Fin n)) {f : Formalism.REAL.UJ (ε ∘ r) → ℂ}
     (h : MemLp f 2 (Formalism.REAL.muG (ε ∘ r))) : MemLp (f ∘ ujRen ε r) 2 (Formalism.REAL.muG ε) := by
   let e := ujRen ε r
@@ -296,6 +426,19 @@ section Rep
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ε ε₁ : Fin n → Bool} {r : Equiv.Perm (Fin n)} {τ τ' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Substitute `hε` using the available equality. Take `⟨hc, hn, ⟨⟨h1, hm⟩, hi, hcont⟩, hirr, hsq⟩` from `h`. Establish `memU : ∀ {g}, g ∈ Formalism.MainNotions.S.UJset ε → ren r g ∈ Formalism.MainNotions.S.UJset (ε ∘ r)` using `fun {g} hg => mem_UJ r (show g ∈ PI.UpqRep.UJset ε from hg)`. Establish `memU' : ∀ {g}, g ∈ Formalism.MainNotions.S.UJset (ε ∘ r) → ren r.symm g ∈ Formalism.MainNotions.S.UJset ε` using `fun {g} hg => by`. Establish `h` using `mem_UJ r.symm (show g ∈ PI.UpqRep.UJset (ε ∘ r) from hg)`.
+
+Establish `e : (ε ∘ r) ∘ r.symm = ε` using `by ext a; simp`. Rewrite `h` using `[e]`. Conclude with `h`. Use `⟨hc, hn, ⟨⟨?_, fun a ha b hb => ?_⟩, fun g hg v => ?_, fun v => ?_⟩, fun S hS hst => ?_, fun v w => ?_⟩` and prove the remaining obligations. Rewrite using `[hτ, ren_one, h1]`.
+
+Rewrite using `[hτ, hτ, hτ, ren_mul, hm _ (memU ha) _ (memU hb)]`. Rewrite using `[hτ]`. Conclude with `hi _ (memU hg) v`. Establish `: (fun g => τ' g v) = fun g => τ (ren r g) v` using `by funext g; rw [hτ]`. Rewrite using `[this]`.
+
+Conclude with `(hcont v).comp (continuous_ren r).continuousOn (fun g hg => memU hg)`. Use `hirr S hS fun g hg v hv => ?_` and prove the remaining obligations. Use `hst (ren r.symm g) (memU' hg) v hv` as an intermediate fact. Rewrite `this` using `[hτ, ren_ren_symm]`. Then use the resulting hypothesis. Establish `h2` using `memLp_ren ε r (hsq v w)`.
+
+Establish `: Formalism.MainNotions.S.coefOn (ε` using `ε) τ' v w = Formalism.MainNotions.S.coefOn (ε := ε ∘ r) τ v w ∘ ujRen ε r := by`. Use function extensionality and compare the values at `g`. Use `show ⟪w, τ' _ v⟫_ℂ = ⟪w, τ _ v⟫_ℂ`. Rewrite using `[hτ]`. Use `congr 3`.
+
+Rewrite using `[this]`. Conclude with `h2`.
+-/
 lemma sqIrr_ren (hε : ε₁ = ε ∘ r) (hτ : ∀ g, τ' g = τ (ren r g)) (h : GlobalTheory.Dec.IsSqIntIrr ε₁ τ) :
     GlobalTheory.Dec.IsSqIntIrr ε τ' := by
   subst hε
@@ -331,6 +474,15 @@ end Rep
 open Formalism.REAL (KHighest)
 open CompanionTheory.D.LK (IsKMod)
 
+/- English proof (translation)
+Introduce `n ε s mu hl hord`. Take `⟨H, i1, i2, σ0, hds⟩` from `CompanionTheory.RgDs.B.dsExists n (ε ∘ s) mu hl`. Establish `hC : CompleteSpace H` using `hds.1`. Use `⟨H, i1, i2, hC, fun g => σ0 (ren s g), ?_, fun D E hK => ?_⟩` and prove the remaining obligations. Conclude with `sqIrr_ren rfl (fun g => rfl) ⟨hds.1, hds.2.1, hds.2.2.1, hds.2.2.2.1, hds.2.2.2.2.1⟩`.
+
+Establish `hε' : ε = (ε ∘ s) ∘ s.symm` using `by ext a; simp`. Establish `ho : Ord ε s.symm` using `Ord.symm (ε₁ := ε ∘ s) (r := s) rfl hord`. Establish `hK' : IsKMod (ε ∘ s) σ0 D (fun a b => E (s a) (s b))` using `kMod_ren (ε₁ := ε) (ε := ε ∘ s) (r := s.symm) (τ := fun g => σ0 (ren s g)) (τ' := σ0) hε' ho (fun g => by show σ0 g = σ0 (ren s (ren s.symm g)); rw [ren_ren_symm]) hK`. Use `⟨⟨hl, hord, fun μ x hx hh => ?_, ?_⟩, fun ν x hx hh => ?_⟩` and prove the remaining obligations. Take `⟨T, hT⟩` from `hK'.ty μ x hx hh`.
+
+Conclude with `hds.2.2.2.2.2.2 μ T hT`. Take `⟨S, hS⟩` from `hds.2.2.2.2.2.1`. Take `⟨v, hv, -, hvh⟩` from `hK'.hw _ S hS`. Conclude with `⟨v, hv, hvh⟩`. Take `⟨T, hT⟩` from `hK'.ty ν x hx hh`.
+
+Conclude with `CompanionTheory.RgDs.B.kTypesAbove n (ε ∘ s) mu H σ0 hl hds ν T hT`.
+-/
 theorem dsOfArr : CompanionTheory.RgExh.Fin.DSOfArr := by
   intro n ε s mu hl hord
   obtain ⟨H, i1, i2, σ0, hds⟩ := CompanionTheory.RgDs.B.dsExists n (ε ∘ s) mu hl

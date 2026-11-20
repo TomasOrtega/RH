@@ -12,10 +12,16 @@ open scoped BigOperators
 def trBound {l : ℕ} [Fact l.Prime] {a m : ℕ} (t : Fin m → Finset (Matrix (Fin a) (Fin a) (Om l))) : ℝ :=
   ∑ k, ∑ x ∈ t k, ‖x.trace‖
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+-/
 theorem trBound_nonneg {l : ℕ} [Fact l.Prime] {a m : ℕ} (t : Fin m → Finset (Matrix (Fin a) (Fin a) (Om l))) :
     0 ≤ trBound t :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
+/- English proof (translation)
+Unfold `trBound`. Use `le_trans ?_ (Finset.single_le_sum (f := fun k => ∑ x ∈ t k, ‖x.trace‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ k))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun x => ‖x.trace‖) (fun _ _ => norm_nonneg _) hx`.
+-/
 theorem le_trBound {l : ℕ} [Fact l.Prime] {a m : ℕ} (t : Fin m → Finset (Matrix (Fin a) (Fin a) (Om l)))
     (k : Fin m) {x : Matrix (Fin a) (Fin a) (Om l)} (hx : x ∈ t k) : ‖x.trace‖ ≤ trBound t := by
   unfold trBound
@@ -23,6 +29,15 @@ theorem le_trBound {l : ℕ} [Fact l.Prime] {a m : ℕ} (t : Fin m → Finset (M
     (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ k))
   exact Finset.single_le_sum (f := fun x => ‖x.trace‖) (fun _ _ => norm_nonneg _) hx
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ ((l : ℝ)⁻¹) ^ M * trBound t` using `mul_nonneg (pow_nonneg (inv_nonneg.2 (Nat.cast_nonneg _)) _) (trBound_nonneg t)`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj⟩` from `Set.mem_iUnion.1 hx`. Take `⟨z, hz, rfl⟩` from `hj`.
+
+Simplify using `only`. Distinguish the cases in `hjk : k = j`. Substitute `hjk` using the available equality. Rewrite using `[Pi.single_eq_same, Matrix.trace_smul, smul_eq_mul, norm_mul, norm_pow, norm_l]`. Conclude with `mul_le_mul_of_nonneg_left (le_trBound t k hz) (pow_nonneg (inv_nonneg.2 (Nat.cast_nonneg _)) _)`.
+
+Rewrite using `[Pi.single_eq_of_ne hjk, Matrix.trace_zero, norm_zero]`. Conclude with `h0`. Consider the case `zero => simpa using h0`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Pi.add_apply, Matrix.trace_add]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `smul c x _ hx`. Rewrite using `[Pi.smul_apply, Matrix.trace_smul, ← zOm_smul, smul_eq_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (norm_zOm_le c)).trans hx`.
+-/
 theorem norm_trace_latL {l : ℕ} [Fact l.Prime] {a m : ℕ} (t : Fin m → Finset (Matrix (Fin a) (Fin a) (Om l)))
     (M : ℕ) (y : Fin m → Matrix (Fin a) (Fin a) (Om l)) (hy : y ∈ latL t M) (k : Fin m) :
     ‖(y k).trace‖ ≤ ((l : ℝ)⁻¹) ^ M * trBound t := by
@@ -50,6 +65,21 @@ end GlobalTheory.TraceConjugationCover
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ Γ _ a r m ρs t c N n cs hnN hr`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl0 : (0 : ℝ) < l` using `zero_lt_one.trans hl1`. Use `set C : ℝ := TraceConjugationCover.trBound t * ∑ k, ‖cs k‖ with hC`. Establish `hC0 : 0 ≤ C` using `mul_nonneg (TraceConjugationCover.trBound_nonneg t) (Finset.sum_nonneg fun _ _ => norm_nonneg _)`.
+
+Take `⟨K, hK⟩` from `pow_unbounded_of_one_lt C hl1`. Use `⟨n + K, fun M hM F y hy => ?_⟩` and prove the remaining obligations. Establish `hinv : ((l : ℝ)⁻¹) ^ n = ((l : ℝ) ^ n)⁻¹` using `inv_pow _ _`. Establish `hle1 : (l : ℝ)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ hl1.le`. Establish `hinv0 : (0 : ℝ) ≤ (l : ℝ)⁻¹` using `inv_nonneg.2 hl0.le`.
+
+Establish `hsplit : (F.sum fun h c => zOm l c • ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))).trace - ∑ k, cs k * (((F.sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs g) + y) k).trace = (F.sum fun h c => zOm l c * (trc r h - ∑ k, cs k * trc (ρs k) h)) - ∑ k …`. Simplify using `only [Finsupp.sum, Pi.add_apply, Finset.sum_apply, Matrix.trace_add, Matrix.trace_sum, Pi.smul_apply, Matrix.trace_smul, smul_eq_mul, TraceConjugationCover.tup, trc, mul_add, Finset.sum_add_distrib, mul_sub, Finset.mul_sum]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_comm (s := (Finset.univ : Finset (Fin m)))]`. Simplify using `only [mul_left_comm (cs _)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsplit]`. Establish `h1 : ‖F.sum fun h c => zOm l c * (trc r h - ∑ k, cs k * trc (ρs k) h)‖ ≤ ((l : ℝ) ^ n)⁻¹`. Rewrite using `[← hinv]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pow_nonneg hinv0 _) fun h _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Use `(mul_le_of_le_one_left (norm_nonneg _) (TraceConjugationCover.norm_zOm_le _)).trans ((hr h).trans ?_)` and prove the remaining obligations. Conclude with `pow_le_pow_of_le_one hinv0 hle1 (by omega)`. Establish `h2 : ‖∑ k, cs k * (y k).trace‖ ≤ ((l : ℝ) ^ n)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (TraceConjugationCover.norm_trace_latL t M y hy k) (norm_nonneg _)`. Use `_ = ((l : ℝ)⁻¹) ^ M * C := by rw [hC, ← Finset.sum_mul]; ring`. Use `_ ≤ ((l : ℝ)⁻¹) ^ (n + K) * (l : ℝ) ^ K := mul_le_mul (pow_le_pow_of_le_one hinv0 hle1 hM) hK.le hC0 (pow_nonneg hinv0 _)`. Use `_ = ((l : ℝ) ^ n)⁻¹ := by`.
+
+Rewrite using `[pow_add, inv_pow, inv_pow, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hl0.ne'), mul_one]`. Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]` and apply the resulting hypothesis.
+-/
 theorem trace_estimate_latL : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (a : ℕ) (r : Γ →* GL (Fin a) (Om l)) (m : ℕ) (ρs : Fin m → (Γ →* GL (Fin a) (Om l))) (t : Fin m → Finset (Matrix (Fin a) (Fin a) (Om l))) (c N n : ℕ) (cs : Fin m → Om l), n ≤ N → (∀ g, ‖trc r g - ∑ k, cs k * trc (ρs k) g‖ ≤ ((l : ℝ)⁻¹) ^ (N + c)) → ∃ M₁ : ℕ, ∀ M, M₁ ≤ M → ∀ (F : Γ →₀ ℤ_[l]) (y : Fin m → Matrix (Fin a) (Fin a) (Om l)), y ∈ GlobalTheory.TraceConjugationCover.latL t M → ‖(F.sum fun h c => zOm l c • ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))).trace - ∑ k, cs k * (((F.sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs g) + y) k).trace‖ ≤ ((l : ℝ) ^ n)⁻¹ := by
   intro l _ Γ _ a r m ρs t c N n cs hnN hr
   have hl1 : (1 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).one_lt

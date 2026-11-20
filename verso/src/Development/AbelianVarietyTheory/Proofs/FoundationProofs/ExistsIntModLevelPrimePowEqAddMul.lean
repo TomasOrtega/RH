@@ -9,6 +9,17 @@ namespace GlobalTheory.EisCongGen
 variable {K : Type} [Field K] [CharZero K]
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hN0 : (N : K) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hm : (m : K) + 2 ≠ 0` using `by exact_mod_cast (show m + 2 ≠ 0 by omega)`. Use `⟨∑ i ∈ range (m + 1), ((p : K) * ((bernoulli (i + 2) : ℚ) : K)) * (b : K) ^ (m - i) * ((m + 1).choose (i + 1) : ℕ) * (((p : K) ^ (n + 1)) ^ i / ((i : K) + 2)) * (N : K) ^ (i + 1), sum_mem fun i _ => mul_mem (mul_mem (mul_mem (mul_mem (prime_mul_bernoulli_mem i) (pow_mem (intCast_ …` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.bernoulli, Polynomial.eval_finsetSum]`. Simplify using `only [Polynomial.eval_monomial]`. Use `push_cast`. Rewrite using `[sum_div, mul_sum, sum_range_succ', sum_range_succ', mul_sum]`. Establish `: ∀ i ∈ range (m + 1), ((N : K) * (p : K) ^ (n + 1)) ^ (m + 1) * (((bernoulli (i + 1 + 1) : ℚ) : K) * ((m + 2).choose (i + 1 + 1) : ℕ) * ((b : K) / ((N : K) * (p : K) ^ (n + 1))) ^ (m + 2 - (i + 1 + 1)) / ((m : K) + 2)) = (p : K) ^ n * (((p : K) * ((bernoulli (i + 2) : ℚ) : K)) * …`.
+
+Introduce `i hi`. Take `⟨l, rfl⟩ : ∃ l, m = i + l` from `⟨m - i, by have := mem_range.1 hi; omega⟩`. Establish `hi2 : (i : K) + 2 ≠ 0` using `by exact_mod_cast (show i + 2 ≠ 0 by omega)`. Rewrite using `[show i + l + 2 - (i + 1 + 1) = l by omega, show i + l - i = l by omega, show i + 1 + 1 = i + 2 by omega, choose_cast, div_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sum_congr rfl this]`. Generalize the expression as in `(∑ i ∈ range (m + 1), _ : K) = S`. Simplify using `[div_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma bernoulli_expansion_lvl (hp2 : p ≠ 2) (n m N : ℕ) (hN : 0 < N) (b : ℤ) :
     ∃ y ∈ pInt p K, ((N : K) * (p : K) ^ (n + 1)) ^ (m + 1) *
         (((Polynomial.bernoulli (m + 2)).eval ((b : ℚ) / ((N : ℚ) * (p : ℚ) ^ (n + 1))) / ((m + 2 : ℕ) : ℚ) : ℚ) : K) =
@@ -44,9 +55,25 @@ lemma bernoulli_expansion_lvl (hp2 : p ≠ 2) (n m N : ℕ) (hN : 0 < N) (b : �
   field_simp
   ring
 
+/- English proof (translation)
+The claim follows from `pow_mem (inv_nat_mem hpN) k`.
+-/
 lemma inv_pow_nat_mem {N : ℕ} (hpN : ¬ p ∣ N) (k : ℕ) : ((N : K)⁻¹) ^ k ∈ pInt p K :=
   pow_mem (inv_nat_mem hpN) k
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hN0 : (N : K) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hm : (m : K) + 2 ≠ 0` using `by exact_mod_cast (show m + 2 ≠ 0 by omega)`. Use `set b : ℤ := a % ((N * p ^ (n + 1) : ℕ) : ℤ) with hbdef`.
+
+Establish `hbK : (b : K) = (N : K) * x + s * (p : K) ^ (n + 1)` using `by rw [hb]; push_cast; ring`. Establish `f : frc (N * p ^ (n + 1)) a = (b : ℚ) / ((N : ℚ) * (p : ℚ) ^ (n + 1))`. Unfold `frc`. Rewrite using `[← hbdef]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨y1, hy1, E1⟩` from `bernoulli_expansion_lvl (K := K) hp2 n m N hN b`. Take `⟨y3, hy3, E3⟩` from `binom_second (K := K) hp2 n m (N * x) s`. Take `⟨y4, E4⟩` from `binom_first (K := K) ((p : ℤ) ^ (n + 1)) (m + 1) (N * x) s`. Move the coercions through the operations in `at E3 E4`.
+
+Rewrite `E3`, `E4` using `[← hbK]`. Establish `h2 : (2 : K)⁻¹ ∈ pInt p K`. Simplify using `using inv_nat_mem (K := K) (p := p) (m := 2) fun h => hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 h)`. Use `⟨-(((N : K)⁻¹) ^ (m + 1) * (p * y3 * (N : K)⁻¹ - p * y4 * 2⁻¹ + y1)), neg_mem (mul_mem (inv_pow_nat_mem hpN _) (add_mem (sub_mem (mul_mem (mul_mem (natCast_mem _ _) hy3) (inv_nat_mem hpN)) (mul_mem (mul_mem (natCast_mem _ _) (intCast_mem _ _)) h2)) hy1)), ?_⟩` and prove the remaining obligations. Simplify using `only [const0, if_neg (show m + 2 ≠ 1 by omega), f]`.
+
+Establish `hZ` using `(eq_div_iff (pow_ne_zero (m + 1) (mul_ne_zero hN0 (pow_ne_zero (n + 1) hp0)))).2 ((mul_comm _ _).trans E1)`. Rewrite using `[hZ, E3, E4]`. Rewrite using `[pow_mul]`. Establish `hQ : (p : K) ^ n ≠ 0` using `pow_ne_zero _ hp0`. Simplify using `only [pow_succ (p : K) n]`.
+
+Generalize the expression as in `(p : K) ^ n = Q at hQ ⊢`. Rewrite using `[inv_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma const_j (hp2 : p ≠ 2) {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (n m : ℕ) (ζ : K) (a a₂ x s : ℤ)
     (hb : a % ((N * p ^ (n + 1) : ℕ) : ℤ) = N * x + s * (p : ℤ) ^ (n + 1)) :
     ∃ y ∈ pInt p K, (p : K) ^ ((n + 1) * (m + 1)) * const0 (m + 2) (N * p ^ (n + 1)) ζ a a₂ =
@@ -83,6 +110,11 @@ lemma const_j (hp2 : p ≠ 2) {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (n m : �
   ring
 
 omit [Fact p.Prime] in
+/- English proof (translation)
+Establish `h1 : a % ((N * p ^ (n + 1) : ℕ) : ℤ) ≡ a [ZMOD (N : ℤ) * (p : ℤ) ^ (n + 1)]`. Use `Int.mod_modEq a ((N * p ^ (n + 1) : ℕ) : ℤ)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Establish `h2` using `(h1.of_mul_left _).trans h`.
+
+Take `⟨s, hs⟩` from `h2.symm.dvd`. Conclude with `⟨s, by linear_combination hs⟩`.
+-/
 lemma exists_intMod_levelPrimePow_eq_add_mul {N : ℕ} (n : ℕ) (a x : ℤ) (h : a ≡ N * x [ZMOD (p : ℤ) ^ (n + 1)]) :
     ∃ s : ℤ, a % ((N * p ^ (n + 1) : ℕ) : ℤ) = N * x + s * (p : ℤ) ^ (n + 1) := by
   have h1 : a % ((N * p ^ (n + 1) : ℕ) : ℤ) ≡ a [ZMOD (N : ℤ) * (p : ℤ) ^ (n + 1)] := by
@@ -93,6 +125,11 @@ lemma exists_intMod_levelPrimePow_eq_add_mul {N : ℕ} (n : ℕ) (a x : ℤ) (h 
   obtain ⟨s, hs⟩ := h2.symm.dvd
   exact ⟨s, by linear_combination hs⟩
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Introduce `hd1`. Establish `hd2 : (p : ℤ) ^ (n + 1) ∣ N * α` using `(Int.ModEq.dvd ha).elim fun t ht => by`. Use `⟨t + a / (p : ℤ) ^ (n + 1), ?_⟩` and prove the remaining obligations. Use `Int.ediv_mul_cancel hd1` as an intermediate fact.
+
+Take the linear combination `ht - this`. Establish `hcop : IsCoprime ((p : ℤ) ^ (n + 1)) (N : ℤ)` using `IsCoprime.pow_left ((Nat.prime_iff_prime_int.1 hp).irreducible.coprime_iff_not_dvd.2 (fun h => hpN (Int.natCast_dvd_natCast.1 h)))`. Use `hcop.dvd_of_dvd_mul_left hd2` as an intermediate fact. Conclude with `absurd (Int.le_of_dvd h0 this) (not_le.2 h1)`.
+-/
 lemma not_dvd_of_congr {N : ℕ} (hpN : ¬ p ∣ N) (n : ℕ) {a α : ℤ} (h0 : 0 < α) (h1 : α < (p : ℤ) ^ (n + 1))
     (ha : a ≡ N * α [ZMOD (p : ℤ) ^ (n + 1)]) : ¬ ((p : ℤ) ^ (n + 1) ∣ a) := by
   have hp : p.Prime := Fact.out
@@ -107,14 +144,41 @@ lemma not_dvd_of_congr {N : ℕ} (hpN : ¬ p ∣ N) (n : ℕ) {a α : ℤ} (h0 :
   have := hcop.dvd_of_dvd_mul_left hd2
   exact absurd (Int.le_of_dvd h0 this) (not_le.2 h1)
 
+/- English proof (translation)
+Introduce `hd` and use `h (dvd_trans (by push_cast; exact dvd_mul_left _ _) hd)`.
+-/
 lemma not_dvd_lvl {N : ℕ} (n : ℕ) {a : ℤ} (h : ¬ ((p : ℤ) ^ (n + 1) ∣ a)) :
     ¬ (((N * p ^ (n + 1) : ℕ) : ℤ) ∣ a) := fun hd => h (dvd_trans (by push_cast; exact dvd_mul_left _ _) hd)
 
+/- English proof (translation)
+Introduce `hd` and use `h <| IsCoprime.dvd_of_dvd_mul_left (IsCoprime.pow_left ((Nat.prime_iff_prime_int.1 (Fact.out : p.Prime)).irreducible.coprime_iff_not_dvd.2 hc)) hd`.
+-/
 lemma not_dvd_mul {n : ℕ} {c a : ℤ} (hc : ¬ (p : ℤ) ∣ c) (h : ¬ ((p : ℤ) ^ (n + 1) ∣ a)) :
     ¬ ((p : ℤ) ^ (n + 1) ∣ c * a) := fun hd => h <|
   IsCoprime.dvd_of_dvd_mul_left (IsCoprime.pow_left
     ((Nat.prime_iff_prime_int.1 (Fact.out : p.Prime)).irreducible.coprime_iff_not_dvd.2 hc)) hd
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hN0 : (N : K) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hm : (m : K) + 2 ≠ 0` using `by exact_mod_cast (show m + 2 ≠ 0 by omega)`. Establish `hc0 : (c : K) ≠ 0`.
+
+Establish `: c ≠ 0` using `by rintro rfl; exact hc (dvd_zero _)`. Conclude with `this` after adjusting the coercions. Establish `hca : c * a₁ ≡ N * (c * α) [ZMOD (p : ℤ) ^ (n + 1)]`. Use `ha.mul_left c` as an intermediate fact. Rewrite `this` using `[mul_left_comm]`. Then use the resulting hypothesis.
+
+Take `⟨s₁, hs₁⟩` from `exists_intMod_levelPrimePow_eq_add_mul n a₁ α ha`. Take `⟨s₂, hs₂⟩` from `exists_intMod_levelPrimePow_eq_add_mul n (c * a₁) (c * α) hca`. Take `⟨y1, hy1, E1⟩` from `const_j (K := K) hp2 hN hpN n m ζ a₁ a₂ α s₁ hs₁`. Take `⟨y2, hy2, E2⟩` from `const_j (K := K) hp2 hN hpN n m ζ (c * a₁) (c * a₂) (c * α) s₂ hs₂`. Establish `hz : (c : K) ^ ((2 : ℤ) - ((m + 2 : ℕ) : ℤ)) = ((c : K) ^ m)⁻¹`.
+
+Rewrite using `[show (2 : ℤ) - ((m + 2 : ℕ) : ℤ) = -(m : ℤ) by push_cast; ring, zpow_neg, zpow_natCast]`. Establish `hS : (p : K) ^ ((n + 1) * (m + 1)) * smF c (m + 2) (N * p ^ (n + 1)) ζ a₁ a₂ 0 = (c : K) ^ 2 * ((p : K) ^ ((n + 1) * (m + 1)) * const0 (m + 2) (N * p ^ (n + 1)) ζ a₁ a₂) - ((c : K) ^ m)⁻¹ * ((p : K) ^ ((n + 1) * (m + 1)) * const0 (m + 2) (N * p ^ (n + 1)) ζ (c * a₁) (c * a₂))`. Simplify using `only [smF, eisF, ↓reduceIte, hz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hci : ((c : K) ^ m)⁻¹ ∈ pInt p K` using `by rw [← inv_pow]; exact pow_mem (inv_int_mem hc) m`.
+
+Use `⟨-((c : K) ^ 2 * y1 - ((c : K) ^ m)⁻¹ * y2), neg_mem (sub_mem (mul_mem (pow_mem (intCast_mem _ _) _) hy1) (mul_mem hci hy2)), ?_⟩` and prove the remaining obligations. Rewrite using `[hS, E1, E2]`. Break down `h0.eq_or_lt with h | h` into its components or cases. Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `d0` using `not_dvd_of_congr hpN n h h1 ha`. Establish `d1` using `not_dvd_lvl (N := N) n d0`. Establish `d2` using `not_dvd_lvl (N := N) n (not_dvd_mul hc d0)`. Establish `f1 : frc (N * p ^ (n + 1)) a₁ = ((N * α + s₁ * (p : ℤ) ^ (n + 1) : ℤ) : ℚ) / ((N : ℚ) * (p : ℚ) ^ (n + 1))`.
+
+Unfold `frc`. Rewrite using `[hs₁]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `f2 : frc (N * p ^ (n + 1)) (c * a₁) = ((N * (c * α) + s₂ * (p : ℤ) ^ (n + 1) : ℤ) : ℚ) / ((N : ℚ) * (p : ℚ) ^ (n + 1))`.
+
+Unfold `frc`. Rewrite using `[hs₂]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [smF, eisF, ↓reduceIte, const0, if_neg d1, if_neg d2, f1, f2]`.
+
+Use `push_cast`. Establish `hQ : (p : K) ^ n ≠ 0` using `pow_ne_zero _ hp0`. Simplify using `only [pow_succ (p : K) n]`. Generalize the expression as in `(p : K) ^ n = Q at hQ ⊢`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma const_congr_gen (hp2 : p ≠ 2) {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (n m : ℕ) (ζ : K) {c : ℤ}
     (hc : ¬ (p : ℤ) ∣ c) {α a₁ : ℤ} (a₂ : ℤ) (h0 : 0 ≤ α) (h1 : α < (p : ℤ) ^ (n + 1))
     (ha : a₁ ≡ N * α [ZMOD (p : ℤ) ^ (n + 1)]) :
@@ -161,6 +225,15 @@ lemma const_congr_gen (hp2 : p ≠ 2) {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) 
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h' : A ≡ N * a [ZMOD (p : ℤ) ^ n]`. Establish `: A ≡ a₁ [ZMOD (N : ℤ) * (p : ℤ) ^ n]` using `by push_cast at h; exact h`. Conclude with `(this.of_mul_left _).trans ha`. Take `⟨t, ht⟩` from `h'.symm.dvd`. Take `⟨y, hy⟩` from `binom_first (K := K) ((p : ℤ) ^ n) k (N * a) t`.
+
+Establish `hN' : (N : K) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `⟨(y : K) * ((N : K) ^ k)⁻¹, mul_mem (intCast_mem _ _) (by rw [← inv_pow]; exact pow_mem (inv_nat_mem hpN) k), ?_⟩` and prove the remaining obligations. Establish `hA : (A : K) = N * a + t * (p : K) ^ n`. Use `congrArg (Int.cast : ℤ → K) ht` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Take the linear combination `this`. Move the coercions through the operations in `at hy ⊢`. Rewrite using `[hA, div_pow, hy, pow_mul]`. Establish `hQ : (p : K) ^ n ≠ 0` using `pow_ne_zero _ hp0`. Generalize the expression as in `(p : K) ^ n = Q at hQ ⊢`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma term_congr_gen (hp0 : (p : K) ≠ 0) {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (n k : ℕ) {A a₁ a : ℤ}
     (h : A ≡ a₁ [ZMOD ((N * p ^ n : ℕ) : ℤ)]) (ha : a₁ ≡ N * a [ZMOD (p : ℤ) ^ n]) :
     ∃ y ∈ pInt p K, (p : K) ^ (n * k) * ((A : K) / ((N * p ^ n : ℕ) : K)) ^ k = (a : K) ^ k + (p : K) ^ n * y := by
@@ -182,6 +255,15 @@ lemma term_congr_gen (hp0 : (p : K) ≠ 0) {N : ℕ} (hN : 0 < N) (hpN : ¬ p �
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hM : 0 < N * p ^ n` using `Nat.mul_pos hN (pow_pos hp.pos n)`. Establish `key : ∀ (A e : ℤ), ∃ y ∈ pInt p K, (a : K) ^ k * (if A ≡ a₁ [ZMOD ((N * p ^ n : ℕ) : ℤ)] then ζ ^ e else 0) - (p : K) ^ (n * k) * (if A ≡ a₁ [ZMOD ((N * p ^ n : ℕ) : ℤ)] then ((A : K) / ((N * p ^ n : ℕ) : K)) ^ k * ζ ^ e else 0) = (p : K) ^ n * y`. Introduce `A e`.
+
+Use `split_ifs with h`. Take `⟨y, hy, hE⟩` from `term_congr_gen hp0 hN hpN n k h ha`. Use `⟨-(y * ζ ^ e), neg_mem (mul_mem hy (root_zpow_mem hM hζ e)), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hE]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `⟨0, zero_mem _, by simp⟩`. Use `choose y hy hE using key`. Use `⟨∑ d ∈ r.divisors, (y ((r / d : ℕ) : ℤ) (a₂ * d) - y (-((r / d : ℕ) : ℤ)) (-(a₂ * d))), sum_mem fun d _ => sub_mem (hy _ _) (hy _ _), ?_⟩` and prove the remaining obligations. Unfold `coefPos`. Rewrite using `[mul_sum, mul_sum, mul_sum, ← sum_sub_distrib]`.
+
+Use `sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[mul_sub ((p : K) ^ n), ← hE, ← hE]`. Simplify using `only [Nat.sub_self, pow_zero, one_mul, Nat.add_sub_cancel, Int.cast_neg, Int.cast_natCast, neg_div]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma coefPos_congr_gen {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (n k : ℕ) {ζ : K}
     (hζ : IsPrimitiveRoot ζ (N * p ^ n)) (a a₁ a₂ : ℤ) (ha : a₁ ≡ N * a [ZMOD (p : ℤ) ^ n]) (r : ℕ) :
     ∃ y ∈ pInt p K, (a : K) ^ k * coefPos 1 (N * p ^ n) ζ a₁ a₂ r -
@@ -209,6 +291,21 @@ lemma coefPos_congr_gen {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (n k : ℕ) {�
   simp only [Nat.sub_self, pow_zero, one_mul, Nat.add_sub_cancel, Int.cast_neg, Int.cast_natCast, neg_div]
   ring
 
+/- English proof (translation)
+Introduce `p _ N n j K _ _ ζ hp2 hζ hN hpN hj hn c hc α a₁ a₂ h0 h1 ha r`. Establish `hp : p.Prime` using `Fact.out`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Take `⟨m, rfl⟩ : ∃ m, j = m + 2` from `⟨j - 2, by omega⟩`. Choose the witnesses or unpack the hypotheses as in `⟨n, rfl⟩ : ∃ n', n = n' + 1 := by`.
+
+Break down `n with _ | n` into its components or cases. It suffices to derive a contradiction. Use `hp.two_le` as an intermediate fact. Rewrite `hn` using `[pow_zero]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Conclude with `⟨n, rfl⟩`. Rewrite using `[show m + 2 - 1 = m + 1 from rfl, Nat.add_sub_cancel]`. It suffices to establish `H : ∃ y ∈ pInt p K, (α : K) ^ (m + 1) * smF c 1 (N * p ^ (n + 1)) ζ a₁ a₂ r - (p : K) ^ ((n + 1) * (m + 1)) * smF c (m + 2) (N * p ^ (n + 1)) ζ a₁ a₂ r = (p : K) ^ n * y by`. Take `⟨y, ⟨D, hD, hy⟩, E⟩` from `H`. Use `⟨D, hD, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[E, mul_left_comm, mul_div_cancel_left₀ _ (pow_ne_zero _ hp0)]`. Conclude with `hy`. Break down `eq_or_ne r 0 with rfl | hr` into its components or cases. Conclude with `const_congr_gen hp2 hN hpN n m ζ hc a₂ h0 h1 ha`. Establish `hc0 : (c : K) ≠ 0`.
+
+Establish `: c ≠ 0` using `by rintro rfl; exact hc (dvd_zero _)`. Conclude with `this` after adjusting the coercions. Establish `hca : c * a₁ ≡ N * (c * α) [ZMOD (p : ℤ) ^ (n + 1)]`. Use `ha.mul_left c` as an intermediate fact. Rewrite `this` using `[mul_left_comm]`. Then use the resulting hypothesis.
+
+Take `⟨y1, hy1, E1⟩` from `coefPos_congr_gen hN hpN (n + 1) (m + 1) hζ α a₁ a₂ ha r`. Take `⟨y2, hy2, E2⟩` from `coefPos_congr_gen hN hpN (n + 1) (m + 1) hζ (c * α) (c * a₁) (c * a₂) hca r`. Establish `hz : (c : K) ^ ((2 : ℤ) - ((m + 2 : ℕ) : ℤ)) = ((c : K)⁻¹) ^ m`. Rewrite using `[show (2 : ℤ) - ((m + 2 : ℕ) : ℤ) = -(m : ℤ) by push_cast; ring, zpow_neg, zpow_natCast, inv_pow]`. Establish `hz1 : (c : K) ^ ((2 : ℤ) - ((1 : ℕ) : ℤ)) = c` using `by norm_num`.
+
+Use `⟨p * ((c : K) ^ 2 * y1 - ((c : K)⁻¹) ^ m * y2), mul_mem (natCast_mem _ _) (sub_mem (mul_mem (pow_mem (intCast_mem _ _) _) hy1) (mul_mem (pow_mem (inv_int_mem hc) m) hy2)), ?_⟩` and prove the remaining obligations. Simplify using `only [smF, eisF, if_neg hr, hz, hz1]`. Establish `hcm : ((c : K)⁻¹) ^ m * ((c * α : ℤ) : K) ^ (m + 1) = c * (α : K) ^ (m + 1)` using `by push_cast; rw [inv_pow]; field_simp; ring`. Take the linear combination `(c : K) ^ 2 * E1 - ((c : K)⁻¹) ^ m * E2 + coefPos 1 (N * p ^ (n + 1)) ζ (c * a₁) (c * a₂) r * hcm`.
+-/
 theorem smF_congr_gen : ∀ (p : ℕ) [Fact p.Prime] (N n j : ℕ) (K : Type) [Field K] [CharZero K] (ζ : K), p ≠ 2 → IsPrimitiveRoot ζ (N * p ^ n) → 0 < N → ¬ p ∣ N → 2 ≤ j → j ^ 2 * p ≤ p ^ n → ∀ (c : ℤ), ¬ (p : ℤ) ∣ c → ∀ (α a₁ a₂ : ℤ), 0 ≤ α → α < (p : ℤ) ^ n → a₁ ≡ N * α [ZMOD (p : ℤ) ^ n] → ∀ r : ℕ, ∃ D : ℕ, ¬ p ∣ D ∧ IsIntegral ℤ ((D : K) * ((α : K) ^ (j - 1) * smF c 1 (N * p ^ n) ζ a₁ a₂ r - (p : K) ^ (n * (j - 1)) * smF c j (N * p ^ n) ζ a₁ a₂ r) / (p : K) ^ (n - 1)) := by
   intro p _ N n j K _ _ ζ hp2 hζ hN hpN hj hn c hc α a₁ a₂ h0 h1 ha r
   have hp : p.Prime := Fact.out

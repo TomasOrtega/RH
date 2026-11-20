@@ -17,6 +17,9 @@ variable {E F W : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace
   [NormedAddCommGroup F] [NormedSpace ℂ F] [NormedSpace ℝ F] [IsScalarTower ℝ ℂ F]
   [NormedAddCommGroup W] [NormedSpace ℝ W]
 
+/- English proof (translation)
+Establish `hd : ContDiffOn ℝ ∞ (fderiv ℝ f) s` using `hf.fderiv_of_isOpen hs (by simp)`. Establish `hc : ContDiffOn ℝ ∞ (fun x => fderiv ℝ f (p x)) t` using `hd.comp hp hps`. Simplify using `only [GlobalTheory.del_apply]`. Conclude with `((hc.clm_apply hv).sub ((hc.clm_apply (hv.const_smul Complex.I)).const_smul Complex.I)).const_smul _`.
+-/
 theorem contDiffOn_del_apply {f : E → F} {s : Set E} (hs : IsOpen s) (hf : ContDiffOn ℝ ∞ f s) {p v : W → E} {t : Set W}
     (hp : ContDiffOn ℝ ∞ p t) (hv : ContDiffOn ℝ ∞ v t) (hps : Set.MapsTo p t s) :
     ContDiffOn ℝ ∞ (fun x => GlobalTheory.del f (p x) (v x)) t := by
@@ -31,11 +34,19 @@ section Matrix
 
 variable {W ι : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => hM _ _)`.
+-/
 theorem contDiffOn_det {M : W → Matrix ι ι ℂ} {t : Set W} (hM : ∀ k l, ContDiffOn ℝ ∞ (fun x => M x k l) t) :
     ContDiffOn ℝ ∞ (fun x => (M x).det) t := by
   simp only [Matrix.det_apply']
   exact ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => hM _ _)
 
+/- English proof (translation)
+Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply]`. Use `((contDiffOn_det hM).inv fun x hx => (hu x hx).ne_zero).mul (contDiffOn_det fun i j => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.updateRow_apply]`. Use `split_ifs`. Conclude with `contDiffOn_const`.
+
+Conclude with `hM _ _`.
+-/
 theorem contDiffOn_inv_apply {M : W → Matrix ι ι ℂ} {t : Set W} (hM : ∀ k l, ContDiffOn ℝ ∞ (fun x => M x k l) t)
     (hu : ∀ x ∈ t, IsUnit (M x).det) (k l : ι) : ContDiffOn ℝ ∞ (fun x => (M x)⁻¹ k l) t := by
   simp only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply]
@@ -49,6 +60,11 @@ end Matrix
 
 variable {d : ℕ} {U : Set (V d)} {b : V d → Matrix (Fin d) (Fin d) ℂ}
 
+/- English proof (translation)
+Establish `hfst : Set.MapsTo (Prod.fst : V d × V d → V d) (U ×ˢ (Set.univ : Set (V d))) U` using `fun q hq => hq.1`. Establish `hinv : ∀ k l, ContDiffOn ℝ ∞ (fun q : V d × V d => (b q.1)⁻¹ k l) (U ×ˢ (Set.univ : Set (V d)))` using `fun k l => contDiffOn_inv_apply (fun i j => (hb i j).comp contDiffOn_fst hfst) (fun q hq => hu _ hq.1) k l`. Establish `hdel : ∀ k l, ContDiffOn ℝ ∞ (fun q : V d × V d => GlobalTheory.del (fun v => b v k l) q.1 q.2) (U ×ˢ (Set.univ : Set (V d)))` using `fun k l => contDiffOn_del_apply hU (hb k l) contDiffOn_fst contDiffOn_snd hfst`. Establish `hξ : ∀ k, ContDiffOn ℝ ∞ (fun q : V d × V d => q.2.ofLp k) (U ×ˢ (Set.univ : Set (V d)))` using `fun k => ((EuclideanSpace.proj k : V d →L[ℂ] ℂ).restrictScalars ℝ).contDiff.comp_contDiffOn contDiffOn_snd`. Rewrite using `[← (PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin d => ℂ)).comp_contDiffOn_iff]`.
+
+Use `contDiffOn_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_def, PiLp.continuousLinearEquiv_apply, christoffel, WithLp.ofLp_toLp, Matrix.vecMul, dotProduct, Matrix.of_apply]`. Conclude with `ContDiffOn.sum fun j _ => (ContDiffOn.sum fun k _ => (hξ k).mul (hdel k j)).mul (hinv j i)`.
+-/
 theorem contDiffOn_chris (hU : IsOpen U) (hb : ∀ k l, ContDiffOn ℝ ∞ (fun v => b v k l) U)
     (hu : ∀ v ∈ U, IsUnit (b v).det) :
     ContDiffOn ℝ ∞ (fun q : V d × V d => christoffel b q.1 q.2) (U ×ˢ (Set.univ : Set (V d))) := by
@@ -65,6 +81,9 @@ theorem contDiffOn_chris (hU : IsOpen U) (hb : ∀ k l, ContDiffOn ℝ ∞ (fun 
   simp only [Function.comp_def, PiLp.continuousLinearEquiv_apply, christoffel, WithLp.ofLp_toLp, Matrix.vecMul, dotProduct, Matrix.of_apply]
   exact ContDiffOn.sum fun j _ => (ContDiffOn.sum fun k _ => (hξ k).mul (hdel k j)).mul (hinv j i)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact contDiffOn_fst`. Consider the case `succ n ih`. Rewrite using `[show jet b (n + 1) = fun q => GlobalTheory.del (jet b n) (id q) (q.2, -christoffel b q.1 q.2) from funext (jet_succ b n)]`. Conclude with `contDiffOn_del_apply (hU.prod isOpen_univ) ih contDiffOn_id (contDiffOn_snd.prodMk (contDiffOn_chris hU hb hu).neg) (Set.mapsTo_id _)`.
+-/
 theorem contDiffOn_jet (d : ℕ) (U : Set (ReciprocityTheory.L2DbarEstimates.V d)) (b : ReciprocityTheory.L2DbarEstimates.V d → Matrix (Fin d) (Fin d) ℂ)
     (hU : IsOpen U) (hb : ∀ k l, ContDiffOn ℝ ∞ (fun v => b v k l) U) (hu : ∀ v ∈ U, IsUnit (b v).det) (n : ℕ) :
     ContDiffOn ℝ ∞ (GlobalTheory.ChernReg.jet b n) (U ×ˢ (Set.univ : Set (ReciprocityTheory.L2DbarEstimates.V d))) := by

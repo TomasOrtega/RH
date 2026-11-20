@@ -14,33 +14,63 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.AnResToAnalyticRes.proof NonvanishingDense.full`.
+-/
 theorem AnResToAnalyticRes.full : GroundTheory.Heights₂.Heights.HilbertSamuel.AnResToAnalyticRes.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.AnResToAnalyticRes.proof NonvanishingDense.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageChi.proof`.
+-/
 theorem BlockImageChi.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageChi.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageChi.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResChiBounds.proof ResolutionSupBound.full`.
+-/
 theorem ResChiBounds.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResChiBounds.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResChiBounds.proof ResolutionSupBound.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjectionBounds.proof ResChiBounds.full`.
+-/
 theorem ProjectionBounds.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ProjectionBounds.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ProjectionBounds.proof ResChiBounds.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.PullFSExtension.proof ProjFrameBasePtFree.full`.
+-/
 theorem PullFSExtension.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PullFSExtension.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PullFSExtension.proof ProjFrameBasePtFree.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFSMass.proof`.
+-/
 theorem ProjFSMass.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFSMass.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFSMass.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RealGramComparison.proof ResolutionSupBound.full ProjectionBounds.full PullFSExtension.full`.
+-/
 theorem RealGramComparison.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RealGramComparison.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RealGramComparison.proof ResolutionSupBound.full ProjectionBounds.full PullFSExtension.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.MonomialDegree.proof`.
+-/
 theorem MonomialDegree.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MonomialDegree.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.MonomialDegree.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResChiIndex.proof`.
+-/
 theorem ResChiIndex.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResChiIndex.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResChiIndex.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseMonoBasis.proof`.
+-/
 theorem VeroneseMonoBasis.full : GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseMonoBasis.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseMonoBasis.proof
 

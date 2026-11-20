@@ -1,5 +1,8 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.GammaLaurentFactors.PairGOps
 
+/- English proof (translation)
+Use `⟨fun h0 => hP ((Polynomial.comp_C_mul_X_eq_zero_iff (mem_nonZeroDivisors_of_ne_zero hr)).mp h0), fun z => ?_⟩` and prove the remaining obligations. Use `Polynomial.rootMultiplicity_comp_C_mul_X_add_C P r 0 z (isUnit_iff_ne_zero.mpr hr)` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem comp_C_mul_X_ne_zero_and_rootMultiplicity {P : Polynomial ℂ} (hP : P ≠ 0) {r : ℂ} (hr : r ≠ 0) :
     P.comp (Polynomial.C r * Polynomial.X) ≠ 0 ∧
       ∀ z, (P.comp (Polynomial.C r * Polynomial.X)).rootMultiplicity z = P.rootMultiplicity (r * z) := by
@@ -9,6 +12,61 @@ private theorem comp_C_mul_X_ne_zero_and_rootMultiplicity {P : Polynomial ℂ} (
   simpa using this
 
 open Polynomial in
+/- English proof (translation)
+Introduce `q hq P P' c hP hP' h`. Establish `hqpos : (0 : ℝ) < q` using `by linarith`. Establish `hq0 : (q : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hqpos.ne'`. Establish `hqi : ((q : ℂ))⁻¹ ≠ 0` using `inv_ne_zero hq0`. Establish `hc : c = 1`.
+
+Establish `h0` using `congrArg (Polynomial.eval 0) h`. Simplify using `[Polynomial.eval_comp, hP, hP'] at h0`. Use `first`. Consider the case `exact h0.symm`. Consider the case `exact h0`.
+
+Substitute `hc` using the available equality. Establish `hPne : P ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hP`. Establish `hP'ne : P' ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hP'`. Take `⟨hA, mA⟩` from `comp_C_mul_X_ne_zero_and_rootMultiplicity hPne hqi`. Take `⟨hB, mB⟩` from `comp_C_mul_X_ne_zero_and_rootMultiplicity hPne hq0`. Take `⟨hA', mA'⟩` from `comp_C_mul_X_ne_zero_and_rootMultiplicity hP'ne hqi`.
+
+Take `⟨hB', mB'⟩` from `comp_C_mul_X_ne_zero_and_rootMultiplicity hP'ne hq0`. Rewrite `h` using `[map_one, one_mul]`. Establish `key : ∀ z : ℂ, P.rootMultiplicity ((q : ℂ)⁻¹ * z) + P.rootMultiplicity ((q : ℂ) * z) + (P'.rootMultiplicity z + P'.rootMultiplicity z) = P'.rootMultiplicity ((q : ℂ)⁻¹ * z) + P'.rootMultiplicity ((q : ℂ) * z) + (P.rootMultiplicity z + P.rootMultiplicity z)`. Introduce `z`. Establish `hz` using `congrArg (Polynomial.rootMultiplicity z) h`.
+
+Rewrite `hz` using `[Polynomial.rootMultiplicity_mul (mul_ne_zero (mul_ne_zero hA hB) (pow_ne_zero 2 hP'ne)), Polynomial.rootMultiplicity_mul (mul_ne_zero (mul_ne_zero hA' hB') (pow_ne_zero 2 hPne)), Polynomial.rootMultiplicity_mul (mul_ne_zero hA hB), Polynomial.rootMultiplicity_mul (mul_ne_zero hA …`. Use linear arithmetic over natural numbers and integers. Take `⟨d, hd⟩ : ∃ d : ℂ → ℤ, ∀ z, d z = (P.rootMultiplicity z : ℤ) - P'.rootMultiplicity z` from `⟨_, fun z => rfl⟩`. Establish `rel : ∀ z, d ((q : ℂ)⁻¹ * z) + d ((q : ℂ) * z) = 2 * d z`. Introduce `z`.
+
+Use `key z` as an intermediate fact. Simplify using `only [hd]`. Use linear arithmetic over natural numbers and integers. Establish `p0 : P.rootMultiplicity 0 = 0` using `Polynomial.rootMultiplicity_eq_zero (by`. Introduce `hr`.
+
+Use `hr.eq_zero` as an intermediate fact. Simplify using `[hP] at this)`. Establish `p0' : P'.rootMultiplicity 0 = 0` using `Polynomial.rootMultiplicity_eq_zero (by`. Introduce `hr`. Use `hr.eq_zero` as an intermediate fact.
+
+Simplify using `[hP'] at this)`. Establish `d0 : d 0 = 0` using `by simp [hd, p0, p0']`. Establish `supp : ∀ z, d z ≠ 0 → z ∈ (P * P').roots.toFinset`. Introduce `z hz`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots (mul_ne_zero hPne hP'ne)]`.
+
+Express the relevant statement in the definitionally equal form `Polynomial.eval z (P * P') = 0`. Rewrite using `[Polynomial.eval_mul]`. Assume the negation of the conclusion as `hne`. Apply `hz` to reduce the goal to its premises. Establish `r1 : P.rootMultiplicity z = 0` using `Polynomial.rootMultiplicity_eq_zero (by`.
+
+Introduce `hr`. Conclude with `hne (by rw [hr.eq_zero, zero_mul]))`. Establish `r2 : P'.rootMultiplicity z = 0` using `Polynomial.rootMultiplicity_eq_zero (by`. Introduce `hr`. Conclude with `hne (by rw [hr.eq_zero, mul_zero]))`.
+
+Simplify using `[hd, r1, r2]`. Establish `hdz : ∀ z, d z = 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨z1, hz1⟩` from `hne`.
+
+Use `set S := (P * P').roots.toFinset.filter (fun z => d z ≠ 0) with hS`. Establish `hSne : S.Nonempty` using `⟨z1, Finset.mem_filter.mpr ⟨supp z1 hz1, hz1⟩⟩`. Take `⟨z0, hz0S, hmax⟩` from `S.exists_max_image (fun z => ‖z‖) hSne`. Establish `hz0 : d z0 ≠ 0` using `(Finset.mem_filter.mp hz0S).2`. Establish `hz00 : z0 ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hz0 d0`. Establish `hnz0 : 0 < ‖z0‖` using `norm_pos_iff.mpr hz00`. Establish `hnorm : ∀ k : ℕ, ‖(q : ℂ)⁻¹ ^ k * z0‖ = q⁻¹ ^ k * ‖z0‖`. Introduce `k`.
+
+Rewrite using `[norm_mul, norm_pow, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hqpos]`. Establish `hup : d ((q : ℂ) * z0) = 0`. Assume the negation of the conclusion as `hne2`. Establish `hm` using `hmax _ (Finset.mem_filter.mpr ⟨supp _ hne2, hne2⟩)`. Rewrite `hm` using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hqpos]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `step : ∀ k : ℕ, d ((q : ℂ)⁻¹ ^ k * z0) = (k + 1) * d z0 ∧ d ((q : ℂ)⁻¹ ^ (k + 1) * z0) = (k + 2) * d z0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Establish `r0` using `rel z0`. Rewrite `r0` using `[hup]`. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Simplify using `only [zero_add, pow_one, Nat.cast_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Consider the case `succ k ih`. Use `⟨by rw [ih.2]; push_cast; ring, ?_⟩` and prove the remaining obligations. Establish `r1` using `rel ((q : ℂ)⁻¹ ^ (k + 1) * z0)`. Establish `e1 : (q : ℂ)⁻¹ * ((q : ℂ)⁻¹ ^ (k + 1) * z0) = (q : ℂ)⁻¹ ^ (k + 1 + 1) * z0` using `by ring`. Establish `e2 : (q : ℂ) * ((q : ℂ)⁻¹ ^ (k + 1) * z0) = (q : ℂ)⁻¹ ^ k * z0`.
+
+Rewrite using `[pow_succ]`. Take the linear combination `((q : ℂ)⁻¹ ^ k * z0) * mul_inv_cancel₀ hq0`. Rewrite `r1` using `[e1, e2, ih.1, ih.2]`. Use `push_cast`. Take the linear combination `r1`.
+
+Establish `hmem : ∀ k : ℕ, (q : ℂ)⁻¹ ^ k * z0 ∈ (S : Set ℂ)`. Introduce `k`. Establish `hk : d ((q : ℂ)⁻¹ ^ k * z0) ≠ 0`. Rewrite using `[(step k).1]`. Conclude with `mul_ne_zero (by positivity) hz0`.
+
+Conclude with `Finset.mem_coe.mpr (Finset.mem_filter.mpr ⟨supp _ hk, hk⟩)`. Establish `hinj : Function.Injective (fun k : ℕ => (q : ℂ)⁻¹ ^ k * z0)`. Introduce `a b hab`. Establish `hn` using `congrArg norm hab`. Simplify using `only [hnorm] at hn`.
+
+Establish `hab'` using `mul_right_cancel₀ hnz0.ne' hn`. Use `pow_right_injective₀ (inv_pos.mpr hqpos) ?_ hab'` and prove the remaining obligations. Introduce `h1`. Simplify using `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `Set.infinite_of_injective_forall_mem hinj hmem S.finite_toSet`. Establish `hm : ∀ z, P.rootMultiplicity z = P'.rootMultiplicity z`. Introduce `z`. Use `hdz z` as an intermediate fact. Rewrite `this` using `[hd]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hroots : P.roots = P'.roots`. Use extensionality with `z`. Rewrite using `[Polynomial.count_roots, Polynomial.count_roots, hm]`. Establish `e1` using `Polynomial.C_leadingCoeff_mul_prod_multiset_X_sub_C (p := P) IsAlgClosed.card_roots_eq_natDegree`.
+
+Establish `e2` using `Polynomial.C_leadingCoeff_mul_prod_multiset_X_sub_C (p := P') IsAlgClosed.card_roots_eq_natDegree`. Rewrite `e1` using `[hroots]`. Establish `v1` using `congrArg (Polynomial.eval 0) e1`. Establish `v2` using `congrArg (Polynomial.eval 0) e2`. Rewrite `v1` using `[Polynomial.eval_mul, Polynomial.eval_C, hP]`.
+
+Rewrite `v2` using `[Polynomial.eval_mul, Polynomial.eval_C, hP']`. Establish `hlc : P.leadingCoeff = P'.leadingCoeff`. Establish `hne : Polynomial.eval 0 (Multiset.map (fun a => Polynomial.X - Polynomial.C a) P'.roots).prod ≠ 0`. Introduce `h0`. Rewrite `v2` using `[h0, mul_zero]`.
+
+Conclude with `zero_ne_one v2`. Conclude with `mul_right_cancel₀ hne (v1.trans v2.symm)`. Rewrite `e1` using `[hlc]`. Conclude with `e1.symm.trans e2`.
+-/
 theorem UpperTheory.V.Z.Gam.secDiff :
     UpperTheory.V.Z.Gam.SecDiff := by
   classical

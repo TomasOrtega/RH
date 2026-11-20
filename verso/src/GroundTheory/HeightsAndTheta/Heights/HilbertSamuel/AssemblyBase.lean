@@ -234,702 +234,1401 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.NoetherProjection.proof`.
+-/
 theorem NoetherProjection.full : GroundTheory.Heights₂.Heights.HilbertSamuel.NoetherProjection.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.NoetherProjection.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RootsLiftToZeros.proof`.
+-/
 theorem RootsLiftToZeros.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RootsLiftToZeros.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RootsLiftToZeros.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.FiniteSeparatingModel.proof NoetherProjection.full RootsLiftToZeros.full`.
+-/
 theorem FiniteSeparatingModel.full : GroundTheory.Heights₂.Heights.HilbertSamuel.FiniteSeparatingModel.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.FiniteSeparatingModel.proof NoetherProjection.full RootsLiftToZeros.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RootsNear.proof`.
+-/
 theorem RootsNear.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RootsNear.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RootsNear.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RootsBounded.proof`.
+-/
 theorem RootsBounded.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RootsBounded.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RootsBounded.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.PolyNonvanishDense.proof`.
+-/
 theorem PolyNonvanishDense.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PolyNonvanishDense.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PolyNonvanishDense.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RatPrimeDense.proof FiniteSeparatingModel.full RootsNear.full RootsBounded.full PolyNonvanishDense.full`.
+-/
 theorem RatPrimeDense.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RatPrimeDense.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RatPrimeDense.proof FiniteSeparatingModel.full RootsNear.full RootsBounded.full PolyNonvanishDense.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.NonvanishingDense.proof RatPrimeDense.full`.
+-/
 theorem NonvanishingDense.full : GroundTheory.Heights₂.Heights.HilbertSamuel.NonvanishingDense.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.NonvanishingDense.proof RatPrimeDense.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.AnResNullForm.proof NonvanishingDense.full`.
+-/
 theorem AnResNullForm.full : GroundTheory.Heights₂.Heights.HilbertSamuel.AnResNullForm.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.AnResNullForm.proof NonvanishingDense.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanDensChartSum.proof`.
+-/
 theorem BergmanDensChartSum.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanDensChartSum.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanDensChartSum.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanDensIntegrable.proof`.
+-/
 theorem BergmanDensIntegrable.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanDensIntegrable.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanDensIntegrable.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanIntegrable.proof`.
+-/
 theorem BergmanIntegrable.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanIntegrable.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanIntegrable.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BetaSum.proof`.
+-/
 theorem BetaSum.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BetaSum.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BetaSum.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BirationalCoordinates.proof`.
+-/
 theorem BirationalCoordinates.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BirationalCoordinates.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BirationalCoordinates.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BirationalModelExists.proof`.
+-/
 theorem BirationalModelExists.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BirationalModelExists.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BirationalModelExists.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.HilbFnValueSpan.proof`.
+-/
 theorem HilbFnValueSpan.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HilbFnValueSpan.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.HilbFnValueSpan.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockBirationalHilbert.proof HilbFnValueSpan.full`.
+-/
 theorem BlockBirationalHilbert.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockBirationalHilbert.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockBirationalHilbert.proof HilbFnValueSpan.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockChiCovolume.proof`.
+-/
 theorem BlockChiCovolume.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockChiCovolume.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockChiCovolume.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockGraphFibreRatio.proof`.
+-/
 theorem BlockGraphFibreRatio.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockGraphFibreRatio.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockGraphFibreRatio.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockGraphImage.proof`.
+-/
 theorem BlockGraphImage.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockGraphImage.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockGraphImage.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageArith.proof`.
+-/
 theorem BlockImageArith.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageArith.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageArith.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.EventualPolynomial.proof`.
+-/
 theorem EventualPolynomial.full : GroundTheory.Heights₂.Heights.HilbertSamuel.EventualPolynomial.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.EventualPolynomial.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedHilbertPolynomial.proof EventualPolynomial.full`.
+-/
 theorem MultigradedHilbertPolynomial.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedHilbertPolynomial.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedHilbertPolynomial.proof EventualPolynomial.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GenericFibreVar.proof`.
+-/
 theorem GenericFibreVar.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenericFibreVar.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GenericFibreVar.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.FieldNumbers.HilbEventuallyPoly.full`.
+-/
 theorem Closed.FieldNumbers.HilbEventuallyPoly : GroundTheory.Heights₂.Heights.FieldNumbers.HilbEventuallyPoly.Statement :=
   GroundTheory.Heights₂.Heights.FieldNumbers.HilbEventuallyPoly.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GenFibreHomog.proof`.
+-/
 theorem GenFibreHomog.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenFibreHomog.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GenFibreHomog.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageHilb.proof`.
+-/
 theorem BlockImageHilb.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageHilb.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageHilb.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.PolySandwich.proof`.
+-/
 theorem PolySandwich.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PolySandwich.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PolySandwich.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageGenDeg.proof MultigradedHilbertPolynomial.full GenericFibreVar.full Closed.FieldNumbers.HilbEventuallyPoly GenFibreHomog.full BlockImageHilb.full BlockBirationalHilbert.full PolySandwich.full`.
+-/
 theorem BlockImageGenDeg.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageGenDeg.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageGenDeg.proof MultigradedHilbertPolynomial.full GenericFibreVar.full Closed.FieldNumbers.HilbEventuallyPoly GenFibreHomog.full BlockImageHilb.full BlockBirationalHilbert.full PolySandwich.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageMetrics.proof`.
+-/
 theorem BlockImageMetrics.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageMetrics.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockImageMetrics.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.PolydiscSubmean.proof`.
+-/
 theorem PolydiscSubmean.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PolydiscSubmean.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PolydiscSubmean.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ChartTaylorCover.proof`.
+-/
 theorem ChartTaylorCover.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ChartTaylorCover.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ChartTaylorCover.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.UniformBergmanBound.proof PolydiscSubmean.full ChartTaylorCover.full`.
+-/
 theorem UniformBergmanBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.UniformBergmanBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.UniformBergmanBound.proof PolydiscSubmean.full ChartTaylorCover.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SupNormAgainstL2.proof UniformBergmanBound.full`.
+-/
 theorem SupNormAgainstL2.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SupNormAgainstL2.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SupNormAgainstL2.proof UniformBergmanBound.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionPullback.proof`.
+-/
 theorem ResolutionPullback.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionPullback.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionPullback.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SupBoundBlock.proof SupNormAgainstL2.full ResolutionPullback.full NonvanishingDense.full`.
+-/
 theorem SupBoundBlock.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SupBoundBlock.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SupBoundBlock.proof SupNormAgainstL2.full ResolutionPullback.full NonvanishingDense.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockMeasureChange.proof SupBoundBlock.full`.
+-/
 theorem BlockMeasureChange.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockMeasureChange.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockMeasureChange.proof SupBoundBlock.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionFormsIndependent.proof NonvanishingDense.full`.
+-/
 theorem BlockResolutionFormsIndependent.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionFormsIndependent.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionFormsIndependent.proof NonvanishingDense.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionInterpIntegral.proof`.
+-/
 theorem BlockResolutionInterpIntegral.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionInterpIntegral.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionInterpIntegral.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.proof BergmanDensChartSum.full`.
+-/
 theorem BlockResolutionMetricPair.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.proof BergmanDensChartSum.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Swarm.RankOfSections.closed`.
+-/
 theorem RankOfSections.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RankOfSections.Statement :=
   GroundTheory.Heights₂.Heights.Swarm.RankOfSections.closed
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GenericFibre.proof`.
+-/
 theorem GenericFibre.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenericFibre.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GenericFibre.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SectionsRank.proof`.
+-/
 theorem SectionsRank.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionsRank.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionsRank.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockSectionsRank.proof RankOfSections.full GenericFibre.full SectionsRank.full BlockImageArith.full BlockImageGenDeg.full`.
+-/
 theorem BlockSectionsRank.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockSectionsRank.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockSectionsRank.proof RankOfSections.full GenericFibre.full SectionsRank.full BlockImageArith.full BlockImageGenDeg.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ComplexTaylorTwo.proof`.
+-/
 theorem ComplexTaylorTwo.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ComplexTaylorTwo.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ComplexTaylorTwo.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ChartBergmanBound.proof PolydiscSubmean.full ComplexTaylorTwo.full`.
+-/
 theorem ChartBergmanBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ChartBergmanBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ChartBergmanBound.proof PolydiscSubmean.full ComplexTaylorTwo.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ChartConstantsDetermined.proof`.
+-/
 theorem ChartConstantsDetermined.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ChartConstantsDetermined.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ChartConstantsDetermined.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ChartDenominator.proof`.
+-/
 theorem ChartDenominator.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ChartDenominator.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ChartDenominator.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ChartSupBound.proof`.
+-/
 theorem ChartSupBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ChartSupBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ChartSupBound.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GramChiDerivative.proof`.
+-/
 theorem GramChiDerivative.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GramChiDerivative.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GramChiDerivative.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.MetricChange.proof GramChiDerivative.full BergmanIntegrable.full BergmanDensIntegrable.full UniformBergmanBound.full BergmanL1Convergence.full`.
+-/
 theorem MetricChange.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MetricChange.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.MetricChange.proof GramChiDerivative.full BergmanIntegrable.full BergmanDensIntegrable.full UniformBergmanBound.full BergmanL1Convergence.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionImageSup.proof ChartSupBound.full`.
+-/
 theorem ResolutionImageSup.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionImageSup.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionImageSup.proof ChartSupBound.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionSupBound.proof ResolutionImageSup.full NonvanishingDense.full`.
+-/
 theorem ResolutionSupBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionSupBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionSupBound.proof ResolutionImageSup.full NonvanishingDense.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameBasePtFree.proof`.
+-/
 theorem ProjFrameBasePtFree.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameBasePtFree.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameBasePtFree.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionMetricPair.proof BergmanDensChartSum.full`.
+-/
 theorem ResolutionMetricPair.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionMetricPair.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionMetricPair.proof BergmanDensChartSum.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionFormsIndependent.proof NonvanishingDense.full`.
+-/
 theorem ResolutionFormsIndependent.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionFormsIndependent.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionFormsIndependent.proof NonvanishingDense.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ConjIntNum.proof`.
+-/
 theorem ConjIntNum.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ConjIntNum.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ConjIntNum.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantShift.proof`.
+-/
 theorem ConstantShift.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantShift.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantShift.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantsDescend.proof`.
+-/
 theorem ConstantsDescend.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantsDescend.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantsDescend.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantsRegular.proof ConstantsDescend.full ChartConstantsDetermined.full`.
+-/
 theorem ConstantsRegular.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantsRegular.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantsRegular.proof ConstantsDescend.full ChartConstantsDetermined.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.CoordArithOfFnField.proof`.
+-/
 theorem CoordArithOfFnField.full : GroundTheory.Heights₂.Heights.HilbertSamuel.CoordArithOfFnField.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.CoordArithOfFnField.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.CovolumeLeGram.proof`.
+-/
 theorem CovolumeLeGram.full : GroundTheory.Heights₂.Heights.HilbertSamuel.CovolumeLeGram.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.CovolumeLeGram.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.CurvePointsFinite.proof`.
+-/
 theorem CurvePointsFinite.full : GroundTheory.Heights₂.Heights.HilbertSamuel.CurvePointsFinite.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.CurvePointsFinite.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionInterpIntegral.proof`.
+-/
 theorem ResolutionInterpIntegral.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionInterpIntegral.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionInterpIntegral.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.DegLTGrowth.proof`.
+-/
 theorem DegLTGrowth.full : GroundTheory.Heights₂.Heights.HilbertSamuel.DegLTGrowth.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.DegLTGrowth.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.DegreePositive.proof`.
+-/
 theorem DegreePositive.full : GroundTheory.Heights₂.Heights.HilbertSamuel.DegreePositive.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.DegreePositive.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.DoubleComplexVanish.proof`.
+-/
 theorem DoubleComplexVanish.full : GroundTheory.Heights₂.Heights.HilbertSamuel.DoubleComplexVanish.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.DoubleComplexVanish.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingWeight.proof`.
+-/
 theorem EmbeddingWeight.full : GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingWeight.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingWeight.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.EventualPolyLine.proof`.
+-/
 theorem EventualPolyLine.full : GroundTheory.Heights₂.Heights.HilbertSamuel.EventualPolyLine.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.EventualPolyLine.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.FibreRelLift.proof`.
+-/
 theorem FibreRelLift.full : GroundTheory.Heights₂.Heights.HilbertSamuel.FibreRelLift.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.FibreRelLift.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.FiltrationHilbSum.proof`.
+-/
 theorem FiltrationHilbSum.full : GroundTheory.Heights₂.Heights.HilbertSamuel.FiltrationHilbSum.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.FiltrationHilbSum.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.G1.proof`.
+-/
 theorem G1.full : GroundTheory.Heights₂.Heights.HilbertSamuel.G1.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.G1.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SecEq.proof`.
+-/
 theorem SecEq.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SecEq.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SecEq.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.Conductor.proof SecEq.full`.
+-/
 theorem Closed.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cond : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.CondStatement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.Conductor.proof SecEq.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Targets.RelSectionsLarge.full`.
+-/
 theorem RelSectionsLarge.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RelSectionsLarge.Statement :=
   GroundTheory.Heights₂.Heights.Targets.RelSectionsLarge.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Targets.SuccessiveMinimaSpan.of_leaves Closed.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cond RelSectionsLarge.full`.
+-/
 theorem SuccessiveMinimaSpan.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SuccessiveMinimaSpan.Statement :=
   GroundTheory.Heights₂.Heights.Targets.SuccessiveMinimaSpan.of_leaves Closed.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cond RelSectionsLarge.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SegrePrime.proof`.
+-/
 theorem SegrePrime.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SegrePrime.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SegrePrime.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SegreHilb.proof`.
+-/
 theorem SegreHilb.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SegreHilb.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SegreHilb.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SegreDimGe.proof`.
+-/
 theorem SegreDimGe.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SegreDimGe.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SegreDimGe.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.MultiDegreePositive.proof SegrePrime.full SegreHilb.full SegreDimGe.full`.
+-/
 theorem MultiDegreePositive.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MultiDegreePositive.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.MultiDegreePositive.proof SegrePrime.full SegreHilb.full SegreDimGe.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegAmple.proof GenericFibreVar.full MultiDegreePositive.full`.
+-/
 theorem GenDegAmple.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegAmple.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegAmple.proof GenericFibreVar.full MultiDegreePositive.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegMatAct.proof`.
+-/
 theorem GenDegMatAct.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegMatAct.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegMatAct.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GenOnFibres.proof`.
+-/
 theorem GenOnFibres.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenOnFibres.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GenOnFibres.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedOne.proof`.
+-/
 theorem GeneratedOne.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedOne.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedOne.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedRestrict.proof`.
+-/
 theorem GeneratedRestrict.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedRestrict.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedRestrict.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedEffectiveSection.proof`.
+-/
 theorem GeneratedEffectiveSection.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedEffectiveSection.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedEffectiveSection.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedProductNonneg.proof GeneratedRestrict.full GeneratedEffectiveSection.full`.
+-/
 theorem GeneratedProductNonneg.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedProductNonneg.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedProductNonneg.proof GeneratedRestrict.full GeneratedEffectiveSection.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedMixedNonneg.proof GeneratedProductNonneg.full`.
+-/
 theorem GeneratedMixedNonneg.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedMixedNonneg.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedMixedNonneg.proof GeneratedProductNonneg.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegTwist.proof GenOnFibres.full GenericFibreVar.full GeneratedOne.full GeneratedMixedNonneg.full`.
+-/
 theorem GenDegTwist.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegTwist.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegTwist.proof GenOnFibres.full GenericFibreVar.full GeneratedOne.full GeneratedMixedNonneg.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.QuotPartGraded.proof`.
+-/
 theorem QuotPartGraded.full : GroundTheory.Heights₂.Heights.HilbertSamuel.QuotPartGraded.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.QuotPartGraded.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GenerationOfH1GenAmple.proof QuotPartGraded.full`.
+-/
 theorem GenerationOfH1GenAmple.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenerationOfH1GenAmple.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GenerationOfH1GenAmple.proof QuotPartGraded.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GenTwistGenerated.proof`.
+-/
 theorem GenTwistGenerated.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenTwistGenerated.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GenTwistGenerated.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedNonzeroSection.proof`.
+-/
 theorem GeneratedNonzeroSection.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedNonzeroSection.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedNonzeroSection.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedPow.proof`.
+-/
 theorem GeneratedPow.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedPow.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedPow.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GradedSubquot.proof`.
+-/
 theorem GradedSubquot.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GradedSubquot.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GradedSubquot.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GramContraction.proof`.
+-/
 theorem GramContraction.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GramContraction.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GramContraction.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GraphIsometric.proof`.
+-/
 theorem GraphIsometric.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GraphIsometric.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GraphIsometric.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GraphIsometricForms.proof`.
+-/
 theorem GraphIsometricForms.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GraphIsometricForms.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GraphIsometricForms.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.GridSum.proof`.
+-/
 theorem GridSum.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GridSum.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GridSum.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.Had.proof`.
+-/
 theorem Had.full : GroundTheory.Heights₂.Heights.HilbertSamuel.Had.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.Had.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.Halving.proof`.
+-/
 theorem Halving.full : GroundTheory.Heights₂.Heights.HilbertSamuel.Halving.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.Halving.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertDimZero.proof`.
+-/
 theorem HilbertDimZero.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertDimZero.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertDimZero.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.IntersectionRecursion.proof`.
+-/
 theorem IntersectionRecursion.full : GroundTheory.Heights₂.Heights.HilbertSamuel.IntersectionRecursion.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.IntersectionRecursion.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertIncrement.proof IntersectionRecursion.full`.
+-/
 theorem HilbertIncrement.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertIncrement.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertIncrement.proof IntersectionRecursion.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedFiltration.proof`.
+-/
 theorem MultigradedFiltration.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedFiltration.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedFiltration.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ModulesFromPrimes.proof MultigradedFiltration.full FiltrationHilbSum.full DegLTGrowth.full`.
+-/
 theorem ModulesFromPrimes.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ModulesFromPrimes.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ModulesFromPrimes.proof MultigradedFiltration.full FiltrationHilbSum.full DegLTGrowth.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.HilbertPositive.hilbertPrime`.
+-/
 theorem HilbertPrime.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertPrime.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.HilbertPositive.hilbertPrime
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertModule.proof ModulesFromPrimes.full HilbertPrime.full`.
+-/
 theorem HilbertModule.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertModule.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertModule.proof ModulesFromPrimes.full HilbertPrime.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.HyperplaneRegularSection.proof`.
+-/
 theorem HyperplaneRegularSection.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HyperplaneRegularSection.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.HyperplaneRegularSection.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.IntNumComponents.proof`.
+-/
 theorem IntNumComponents.full : GroundTheory.Heights₂.Heights.HilbertSamuel.IntNumComponents.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.IntNumComponents.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralAgainstPositive.proof`.
+-/
 theorem IntegralAgainstPositive.full : GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralAgainstPositive.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralAgainstPositive.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralOfBergman.proof`.
+-/
 theorem IntegralOfBergman.full : GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralOfBergman.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralOfBergman.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.L1Convergence.proof`.
+-/
 theorem L1Convergence.full : GroundTheory.Heights₂.Heights.HilbertSamuel.L1Convergence.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.L1Convergence.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.L2GramLattice.proof`.
+-/
 theorem L2GramLattice.full : GroundTheory.Heights₂.Heights.HilbertSamuel.L2GramLattice.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.L2GramLattice.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.LatticeCount.proof`.
+-/
 theorem LatticeCount.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LatticeCount.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.LatticeCount.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.proof GeneratedNonzeroSection.full`.
+-/
 theorem LiftBirationalAmple.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.proof GeneratedNonzeroSection.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.LiftSpread.proof`.
+-/
 theorem LiftSpread.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LiftSpread.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.LiftSpread.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.LocalBergmanBound.proof ChartBergmanBound.full`.
+-/
 theorem LocalBergmanBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LocalBergmanBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.LocalBergmanBound.proof ChartBergmanBound.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.LocalRep.proof`.
+-/
 theorem LocalRep.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LocalRep.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.LocalRep.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.LogDetDerivative.proof`.
+-/
 theorem LogDetDerivative.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LogDetDerivative.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.LogDetDerivative.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.MetricTransportSmooth.proof`.
+-/
 theorem MetricTransportSmooth.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MetricTransportSmooth.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.MetricTransportSmooth.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.MinkowskiCount.proof`.
+-/
 theorem MinkowskiCount.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MinkowskiCount.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.MinkowskiCount.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.HilbertPositive.mixedNumber`.
+-/
 theorem MixedNumberPolynomial.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MixedNumberPolynomial.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.HilbertPositive.mixedNumber
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.PolyNonnegAtZero.proof`.
+-/
 theorem PolyNonnegAtZero.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PolyNonnegAtZero.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PolyNonnegAtZero.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.MixedTopAlgebra.proof PolyNonnegAtZero.full`.
+-/
 theorem MixedTopAlgebra.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MixedTopAlgebra.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.MixedTopAlgebra.proof PolyNonnegAtZero.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.NefOnGenericOfSemipos.proof`.
+-/
 theorem NefOnGenericOfSemipos.full : GroundTheory.Heights₂.Heights.HilbertSamuel.NefOnGenericOfSemipos.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.NefOnGenericOfSemipos.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsFinite.proof Closed.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cond`.
+-/
 theorem NmSectionsFinite.full : GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsFinite.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsFinite.proof Closed.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cond
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsRankBound.proof NmSectionsFinite.full SecMRankBound.full`.
+-/
 theorem NmSectionsRankBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsRankBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsRankBound.proof NmSectionsFinite.full SecMRankBound.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.Packing.proof`.
+-/
 theorem Packing.full : GroundTheory.Heights₂.Heights.HilbertSamuel.Packing.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.Packing.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbMonomial.proof GenDegAmple.full`.
+-/
 theorem PerturbMonomial.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbMonomial.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbMonomial.proof GenDegAmple.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbSemipos.proof`.
+-/
 theorem PerturbSemipos.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbSemipos.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbSemipos.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.PointHeightFS.proof`.
+-/
 theorem PointHeightFS.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PointHeightFS.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PointHeightFS.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Swarm.ProjDegGenDeg.proof`.
+-/
 theorem ProjDegGenDeg.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ProjDegGenDeg.Statement :=
   GroundTheory.Heights₂.Heights.Swarm.ProjDegGenDeg.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameFibrePt.proof`.
+-/
 theorem ProjFrameFibrePt.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameFibrePt.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameFibrePt.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameGenPtRel.proof`.
+-/
 theorem ProjFrameGenPtRel.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameGenPtRel.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameGenPtRel.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameGenPtTransc.proof`.
+-/
 theorem ProjFrameGenPtTransc.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameGenPtTransc.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameGenPtTransc.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.TranscRatioDeg.proof`.
+-/
 theorem TranscRatioDeg.full : GroundTheory.Heights₂.Heights.HilbertSamuel.TranscRatioDeg.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.TranscRatioDeg.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RatioFieldDeg.proof`.
+-/
 theorem RatioFieldDeg.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RatioFieldDeg.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RatioFieldDeg.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameFibreDeg.proof ProjFrameFibrePt.full ProjFrameGenPtRel.full ProjFrameGenPtTransc.full TranscRatioDeg.full RatioFieldDeg.full`.
+-/
 theorem ProjFrameFibreDeg.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameFibreDeg.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameFibreDeg.proof ProjFrameFibrePt.full ProjFrameGenPtRel.full ProjFrameGenPtTransc.full TranscRatioDeg.full RatioFieldDeg.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameImage.proof`.
+-/
 theorem ProjFrameImage.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameImage.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ProjFrameImage.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RatNoetherFrame.proof`.
+-/
 theorem RatNoetherFrame.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RatNoetherFrame.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RatNoetherFrame.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionComplex.proof`.
+-/
 theorem ReductionComplex.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionComplex.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionComplex.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RelChartPoly.proof`.
+-/
 theorem RelChartPoly.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RelChartPoly.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RelChartPoly.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RelLatticeFinite.proof RelSectionsLarge.full`.
+-/
 theorem RelLatticeFinite.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RelLatticeFinite.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RelLatticeFinite.proof RelSectionsLarge.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RelTorsionBound.proof`.
+-/
 theorem RelTorsionBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RelTorsionBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RelTorsionBound.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RelOneStep.proof RelChartPoly.full RelTorsionBound.full`.
+-/
 theorem RelOneStep.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RelOneStep.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RelOneStep.proof RelChartPoly.full RelTorsionBound.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResVolume.proof`.
+-/
 theorem ResVolume.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResVolume.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResVolume.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.RootGridLower.proof`.
+-/
 theorem RootGridLower.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RootGridLower.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RootGridLower.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ScaledFSHProps.proof`.
+-/
 theorem ScaledFSHProps.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ScaledFSHProps.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ScaledFSHProps.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SecCochReduce.proof`.
+-/
 theorem SecCochReduce.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SecCochReduce.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SecCochReduce.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBounded.proof`.
+-/
 theorem SectionBounded.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBounded.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBounded.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBoundedMul.proof`.
+-/
 theorem SectionBoundedMul.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBoundedMul.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBoundedMul.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SectionOrderAtPoint.proof`.
+-/
 theorem SectionOrderAtPoint.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionOrderAtPoint.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionOrderAtPoint.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SectionPointValue.proof`.
+-/
 theorem SectionPointValue.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionPointValue.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionPointValue.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SectionProduct.proof`.
+-/
 theorem SectionProduct.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionProduct.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionProduct.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SpanStepLocal.proof RelLatticeFinite.full`.
+-/
 theorem SpanStepLocal.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SpanStepLocal.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SpanStepLocal.proof RelLatticeFinite.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SpanStepHomog.proof SpanStepLocal.full`.
+-/
 theorem SpanStepHomog.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SpanStepHomog.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SpanStepHomog.proof SpanStepLocal.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SerreGraded.proof`.
+-/
 theorem SerreGraded.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SerreGraded.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SerreGraded.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSpanStep.proof SpanStepHomog.full SerreGraded.full`.
+-/
 theorem SectionSpanStep.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSpanStep.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSpanStep.proof SpanStepHomog.full SerreGraded.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSupBound.proof`.
+-/
 theorem SectionSupBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSupBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSupBound.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SectionsDimZero.proof`.
+-/
 theorem SectionsDimZero.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionsDimZero.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionsDimZero.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SemiampleNef.proof`.
+-/
 theorem SemiampleNef.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SemiampleNef.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SemiampleNef.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SemiposTwist.proof`.
+-/
 theorem SemiposTwist.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SemiposTwist.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SemiposTwist.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ShiftDegreePolynomial.proof MixedNumberPolynomial.full`.
+-/
 theorem ShiftDegreePolynomial.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ShiftDegreePolynomial.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ShiftDegreePolynomial.proof MixedNumberPolynomial.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ShiftIntersectionPolynomial.proof`.
+-/
 theorem ShiftIntersectionPolynomial.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ShiftIntersectionPolynomial.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ShiftIntersectionPolynomial.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SmallBallVolume.proof`.
+-/
 theorem SmallBallVolume.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SmallBallVolume.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SmallBallVolume.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SmallGenTwist.proof`.
+-/
 theorem SmallGenTwist.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SmallGenTwist.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SmallGenTwist.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SmallSectionPointHeight.proof SectionOrderAtPoint.full`.
+-/
 theorem SmallSectionPointHeight.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SmallSectionPointHeight.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SmallSectionPointHeight.proof SectionOrderAtPoint.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SpanningExtension.proof`.
+-/
 theorem SpanningExtension.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SpanningExtension.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SpanningExtension.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Targets.SublatticeDegree.full`.
+-/
 theorem SublatticeDegree.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SublatticeDegree.Statement :=
   GroundTheory.Heights₂.Heights.Targets.SublatticeDegree.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SublatticeExtension.proof`.
+-/
 theorem SublatticeExtension.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SublatticeExtension.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SublatticeExtension.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.SupBoundCount.proof`.
+-/
 theorem SupBoundCount.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SupBoundCount.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SupBoundCount.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.TopConstantTwist.proof`.
+-/
 theorem TopConstantTwist.full : GroundTheory.Heights₂.Heights.HilbertSamuel.TopConstantTwist.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.TopConstantTwist.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockFnField.proof`.
+-/
 theorem TwoBlockFnField.full : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockFnField.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockFnField.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockHorizDiv.proof`.
+-/
 theorem TwoBlockHorizDiv.full : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockHorizDiv.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockHorizDiv.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockCoeffCycle.proof CoordArithOfFnField.full TwoBlockFnField.full TwoBlockHorizDiv.full`.
+-/
 theorem TwoBlockCoeffCycle.full : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockCoeffCycle.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockCoeffCycle.proof CoordArithOfFnField.full TwoBlockFnField.full TwoBlockHorizDiv.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockCycleExpand.proof`.
+-/
 theorem TwoBlockCycleExpand.full : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockCycleExpand.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockCycleExpand.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockStepBound.proof RankOfSections.full`.
+-/
 theorem TwoBlockStepBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockStepBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockStepBound.proof RankOfSections.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.UnitApprox.proof`.
+-/
 theorem UnitApprox.full : GroundTheory.Heights₂.Heights.HilbertSamuel.UnitApprox.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.UnitApprox.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseArith.proof`.
+-/
 theorem VeroneseArith.full : GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseArith.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseArith.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseGenDeg.proof`.
+-/
 theorem VeroneseGenDeg.full : GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseGenDeg.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseGenDeg.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseGraphImage.proof`.
+-/
 theorem VeroneseGraphImage.full : GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseGraphImage.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseGraphImage.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseResolution.proof`.
+-/
 theorem VeroneseResolution.full : GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseResolution.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseResolution.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseSemipos.proof`.
+-/
 theorem VeroneseSemipos.full : GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseSemipos.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseSemipos.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ZCombExpand.proof`.
+-/
 theorem ZCombExpand.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ZCombExpand.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ZCombExpand.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Swarm.ZCombLimit.proof`.
+-/
 theorem ZCombLimit.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ZCombLimit.Statement :=
   GroundTheory.Heights₂.Heights.Swarm.ZCombLimit.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ZeroCocycleSection.proof`.
+-/
 theorem ZeroCocycleSection.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ZeroCocycleSection.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ZeroCocycleSection.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.ZIntPoint.proof`.
+-/
 theorem Closed.IndefiniteRowSideFullHecke.Inter.ZIntPoint : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.ZIntPoint.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.ZIntPoint.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.arithVarZero`.
+-/
 theorem Closed.ReciprocityTheory.ChartRestriction.G.AI.I2.ArithVarZero : ReciprocityTheory.ChartRestriction.G.AI.I2.ArithVarZeroStatement :=
   GroundTheory.Heights₂.Heights.Inter.arithVarZero
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.Geo.fibreFinite`.
+-/
 theorem Closed.ReciprocityTheory.ChartRestriction.G.Geo.FibreFinite : ReciprocityTheory.ChartRestriction.G.Geo.FibreFiniteStatement :=
   ReciprocityTheory.ChartRestriction.G.Geo.fibreFinite
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.regularityPointsSum_holds.proof`.
+-/
 theorem Closed.Inter.regularityPointsSum_holds : GroundTheory.Heights₂.Heights.Inter.regularityPointsSum_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.regularityPointsSum_holds.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.regularityEmbedding_holds.proof`.
+-/
 theorem Closed.Inter.regularityEmbedding_holds : GroundTheory.Heights₂.Heights.Inter.regularityEmbedding_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.regularityEmbedding_holds.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.FieldNumbers.LocalizedQuotientLength.proof`.
+-/
 theorem Closed.FieldNumbers.LocalizedQuotientLength : GroundTheory.Heights₂.Heights.FieldNumbers.LocalizedQuotientLength.Statement :=
   GroundTheory.Heights₂.Heights.FieldNumbers.LocalizedQuotientLength.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.regularityLocalFlat_holds.proof`.
+-/
 theorem Closed.Inter.regularityLocalFlat_holds : GroundTheory.Heights₂.Heights.Inter.regularityLocalFlat_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.regularityLocalFlat_holds.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.regularityDehomogenization_holds.proof Closed.FieldNumbers.LocalizedQuotientLength Closed.Inter.regularityLocalFlat_holds`.
+-/
 theorem Closed.Inter.regularityDehomogenization_holds : GroundTheory.Heights₂.Heights.Inter.regularityDehomogenization_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.regularityDehomogenization_holds.proof Closed.FieldNumbers.LocalizedQuotientLength Closed.Inter.regularityLocalFlat_holds
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.LocRingFrac.proof`.
+-/
 theorem Closed.Inter.LocRingFrac : GroundTheory.Heights₂.Heights.Inter.LocRingFrac.Statement :=
   GroundTheory.Heights₂.Heights.Inter.LocRingFrac.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.LocRingLocal.proof Closed.Inter.LocRingFrac`.
+-/
 theorem Closed.Inter.LocRingLocal : GroundTheory.Heights₂.Heights.Inter.LocRingLocal.Statement :=
   GroundTheory.Heights₂.Heights.Inter.LocRingLocal.proof Closed.Inter.LocRingFrac
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.LocRingNoeth.proof Closed.Inter.LocRingFrac`.
+-/
 theorem Closed.Inter.LocRingNoeth : GroundTheory.Heights₂.Heights.Inter.LocRingNoeth.Statement :=
   GroundTheory.Heights₂.Heights.Inter.LocRingNoeth.proof Closed.Inter.LocRingFrac
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.LocRingPow.proof`.
+-/
 theorem Closed.Inter.LocRingPow : GroundTheory.Heights₂.Heights.Inter.LocRingPow.Statement :=
   GroundTheory.Heights₂.Heights.Inter.LocRingPow.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.regularityLocalDimension_holds.proof Closed.Inter.LocRingFrac Closed.Inter.LocRingLocal Closed.Inter.LocRingNoeth Closed.Inter.LocRingPow`.
+-/
 theorem Closed.Inter.regularityLocalDimension_holds : GroundTheory.Heights₂.Heights.Inter.regularityLocalDimension_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.regularityLocalDimension_holds.proof Closed.Inter.LocRingFrac Closed.Inter.LocRingLocal Closed.Inter.LocRingNoeth Closed.Inter.LocRingPow
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.regularityLocalResidue_holds.proof`.
+-/
 theorem Closed.Inter.regularityLocalResidue_holds : GroundTheory.Heights₂.Heights.Inter.regularityLocalResidue_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.regularityLocalResidue_holds.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.regularityLocalCardinality_holds.proof Closed.Inter.regularityLocalDimension_holds Closed.Inter.regularityLocalResidue_holds`.
+-/
 theorem Closed.Inter.regularityLocalCardinality_holds : GroundTheory.Heights₂.Heights.Inter.regularityLocalCardinality_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.regularityLocalCardinality_holds.proof Closed.Inter.regularityLocalDimension_holds Closed.Inter.regularityLocalResidue_holds
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PtsSumMeasurable.proof`.
+-/
 theorem Closed.PtsSumMeasurable : GroundTheory.Heights₂.Heights.PtsSumMeasurable.Statement :=
   GroundTheory.Heights₂.Heights.PtsSumMeasurable.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.SwapCycles.full`.
+-/
 theorem Closed.Inter.SwapCycles : GroundTheory.Heights₂.Heights.Inter.SwapCycles.Statement :=
   GroundTheory.Heights₂.Heights.Inter.SwapCycles.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.GeoNumCut.full`.
+-/
 theorem Closed.Inter.GeoNumCut : GroundTheory.Heights₂.Heights.Inter.GeoNumCut.Statement :=
   GroundTheory.Heights₂.Heights.Inter.GeoNumCut.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.TorusInvLevi.proof`.
+-/
 theorem Closed.Inter.TorusInvLevi : GroundTheory.Heights₂.Heights.Inter.TorusInvLevi.Statement :=
   GroundTheory.Heights₂.Heights.Inter.TorusInvLevi.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.SemiPosTwist.proof Closed.Inter.TorusInvLevi`.
+-/
 theorem Closed.Inter.SemiPosTwist : GroundTheory.Heights₂.Heights.Inter.SemiPosTwist.Statement :=
   GroundTheory.Heights₂.Heights.Inter.SemiPosTwist.proof Closed.Inter.TorusInvLevi
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SegrePartition.proof`.
+-/
 theorem Closed.SegrePartition : GroundTheory.Heights₂.Heights.SegrePartition.Statement :=
   GroundTheory.Heights₂.Heights.SegrePartition.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SegreChartDim.proof`.
+-/
 theorem Closed.SegreChartDim : GroundTheory.Heights₂.Heights.SegreChartDim.Statement :=
   GroundTheory.Heights₂.Heights.SegreChartDim.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SegreCoordGoodProj.proof`.
+-/
 theorem Closed.SegreCoordGoodProj : GroundTheory.Heights₂.Heights.SegreCoordGoodProj.Statement :=
   GroundTheory.Heights₂.Heights.SegreCoordGoodProj.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full`.
+-/
 theorem Closed.ComplexSets.DiscriminantCover : GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.TubeCollarCompare.proof`.
+-/
 theorem Closed.TubeCollarCompare : GroundTheory.Heights₂.Heights.TubeCollarCompare.Statement :=
   GroundTheory.Heights₂.Heights.TubeCollarCompare.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SheetImageAreaSet.proof`.
+-/
 theorem Closed.SheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement :=
   GroundTheory.Heights₂.Heights.SheetImageAreaSet.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartMassCompare.of_open Closed.SheetImageAreaSet`.
+-/
 theorem Closed.ChartMassCompare : GroundTheory.Heights₂.Heights.ChartMassCompare.Statement :=
   GroundTheory.Heights₂.Heights.ChartMassCompare.of_open Closed.SheetImageAreaSet
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.MassFinite.full`.
+-/
 theorem Closed.MassFinite : GroundTheory.Heights₂.Heights.MassFinite.Statement :=
   GroundTheory.Heights₂.Heights.MassFinite.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.TubeCollarMass.proof Closed.TubeCollarCompare Closed.ChartMassCompare Closed.MassFinite`.
+-/
 theorem Closed.TubeCollarMass : GroundTheory.Heights₂.Heights.TubeCollarMass.Statement :=
   GroundTheory.Heights₂.Heights.TubeCollarMass.proof Closed.TubeCollarCompare Closed.ChartMassCompare Closed.MassFinite
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.TubeDeepWeightMass.proof`.
+-/
 theorem Closed.TubeDeepWeightMass : GroundTheory.Heights₂.Heights.TubeDeepWeightMass.Statement :=
   GroundTheory.Heights₂.Heights.TubeDeepWeightMass.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartMassCompact.of_open Closed.SheetImageAreaSet`.
+-/
 theorem Closed.ChartMassCompact : GroundTheory.Heights₂.Heights.ChartMassCompact.Statement :=
   GroundTheory.Heights₂.Heights.ChartMassCompact.of_open Closed.SheetImageAreaSet
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.CutOffBoundaryBound.of_open Closed.SheetImageAreaSet`.
+-/
 theorem Closed.CutOffBoundaryBound : GroundTheory.Heights₂.Heights.CutOffBoundaryBound.Statement :=
   GroundTheory.Heights₂.Heights.CutOffBoundaryBound.of_open Closed.SheetImageAreaSet
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.SheetHessPSD.proof`.
+-/
 theorem Closed.Inter.SheetHessPSD : GroundTheory.Heights₂.Heights.Inter.SheetHessPSD.Statement :=
   GroundTheory.Heights₂.Heights.Inter.SheetHessPSD.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.RegCurvBound.proof Closed.Inter.TorusInvLevi`.
+-/
 theorem Closed.Inter.RegCurvBound : GroundTheory.Heights₂.Heights.Inter.RegCurvBound.Statement :=
   GroundTheory.Heights₂.Heights.Inter.RegCurvBound.proof Closed.Inter.TorusInvLevi
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.HorizNotMem.proof`.
+-/
 theorem Closed.Inter.HorizNotMem : GroundTheory.Heights₂.Heights.Inter.HorizNotMem.Statement :=
   GroundTheory.Heights₂.Heights.Inter.HorizNotMem.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.RatioAlgDep.proof`.
+-/
 theorem Closed.Inter.RatioAlgDep : GroundTheory.Heights₂.Heights.Inter.RatioAlgDep.Statement :=
   GroundTheory.Heights₂.Heights.Inter.RatioAlgDep.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.pointFormRank_holds.proof Closed.Inter.RatioAlgDep`.
+-/
 theorem Closed.Inter.pointFormRank_holds : GroundTheory.Heights₂.Heights.Inter.pointFormRank_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.pointFormRank_holds.proof Closed.Inter.RatioAlgDep
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.pointFormEuler_holds.proof`.
+-/
 theorem Closed.Inter.pointFormEuler_holds : GroundTheory.Heights₂.Heights.Inter.pointFormEuler_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.pointFormEuler_holds.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.pointForm_holds.proof Closed.Inter.pointFormRank_holds Closed.Inter.pointFormEuler_holds`.
+-/
 theorem Closed.Inter.pointForm_holds : GroundTheory.Heights₂.Heights.Inter.pointForm_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.pointForm_holds.proof Closed.Inter.pointFormRank_holds Closed.Inter.pointFormEuler_holds
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.PFIntZero.proof Closed.Inter.pointFormRank_holds`.
+-/
 theorem Closed.Inter.PFIntZero : GroundTheory.Heights₂.Heights.Inter.PFIntZero.Statement :=
   GroundTheory.Heights₂.Heights.Inter.PFIntZero.proof Closed.Inter.pointFormRank_holds
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Targets.ImageCoord.proof`.
+-/
 theorem Closed.ReciprocityTheory.ChartRestriction.G.AI.I4.ImageCoord : ReciprocityTheory.ChartRestriction.G.AI.I4.ImageCoordStatement :=
   GroundTheory.Heights₂.Heights.Targets.ImageCoord.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.BlockRatioAlg.proof`.
+-/
 theorem Closed.Inter.BlockRatioAlg : GroundTheory.Heights₂.Heights.Inter.BlockRatioAlg.Statement :=
   GroundTheory.Heights₂.Heights.Inter.BlockRatioAlg.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.BlockGenFinite.proof Closed.Inter.BlockRatioAlg`.
+-/
 theorem Closed.Inter.BlockGenFinite : GroundTheory.Heights₂.Heights.Inter.BlockGenFinite.Statement :=
   GroundTheory.Heights₂.Heights.Inter.BlockGenFinite.proof Closed.Inter.BlockRatioAlg
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.FibreIsolFinite.proof`.
+-/
 theorem Closed.Inter.FibreIsolFinite : GroundTheory.Heights₂.Heights.Inter.FibreIsolFinite.Statement :=
   GroundTheory.Heights₂.Heights.Inter.FibreIsolFinite.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.ChartRankAdjoin.proof`.
+-/
 theorem Closed.Inter.ChartRankAdjoin : GroundTheory.Heights₂.Heights.Inter.ChartRankAdjoin.Statement :=
   GroundTheory.Heights₂.Heights.Inter.ChartRankAdjoin.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.pullbackBadImage_holds.proof`.
+-/
 theorem Closed.Inter.pullbackBadImage_holds : GroundTheory.Heights₂.Heights.Inter.pullbackBadImage_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.pullbackBadImage_holds.proof
 

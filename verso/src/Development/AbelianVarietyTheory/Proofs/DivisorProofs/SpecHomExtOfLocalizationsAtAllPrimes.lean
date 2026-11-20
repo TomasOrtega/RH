@@ -7,6 +7,11 @@ namespace GlobalTheory.FlagMod.FieldFlag
 open AlgebraicGeometry CategoryTheory TopologicalSpace Limits NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg GlobalTheory.FlagEmb GlobalTheory.ProjSpace GlobalTheory.FlagMod GlobalTheory.FlagMod.FieldFlag
 open GlobalTheory.FlagMod.LowRank (ECh Proj str)
 
+/- English proof (translation)
+Introduce `S _ W z z' h`. Use `GlobalTheory.hom_ext_of_fromSpecStalk fun x => ?_` and prove the remaining obligations. Set `q : PrimeSpectrum S` to `x`. Establish `e : (Sp S).fromSpecStalk q = Spec.map (Spec.stalkIso (CommRingCat.of S) q).inv ≫ spMap (algebraMap S (Localization.AtPrime q.asIdeal))`. Rewrite using `[Spec.fromSpecStalk_eq, spMap, ← Spec.map_comp]`.
+
+Conclude with `congrArg Spec.map (Spec.algebraMap_stalkIso_inv (R := CommRingCat.of S) (x := q)).symm`. Express the relevant statement in the definitionally equal form `(Sp S).fromSpecStalk q ≫ z = (Sp S).fromSpecStalk q ≫ z'`. Rewrite using `[e, Category.assoc, Category.assoc, h q]`.
+-/
 theorem hom_ext_of_localization_atPrime : ∀ (S : Type) [CommRing S] (W : Scheme.{0}) (z z' : Sp S ⟶ W),
     (∀ q : PrimeSpectrum S, spMap (algebraMap S (Localization.AtPrime q.asIdeal)) ≫ z =
       spMap (algebraMap S (Localization.AtPrime q.asIdeal)) ≫ z') → z = z' := by

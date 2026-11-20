@@ -41,55 +41,94 @@ def D (x : Matrix (Fin n) (Fin n) k) : Fin (d Z) → k := fun j => trace (ee Z j
 def G : Matrix (Fin (d Z)) (Fin (d Z)) k := Matrix.of fun i j => trace (ee Z i * ee Z j)
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[E, ee, Module.Basis.equivFun_symm_apply]`.
+-/
 theorem E_apply (u : Fin (d Z) → k) : E Z u = ∑ j, u j • ee Z j := by
   simp [E, ee, Module.Basis.equivFun_symm_apply]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+The claim follows from `((bas Z).equivFun.symm u).2`.
+-/
 theorem E_mem (u : Fin (d Z) → k) : E Z u ∈ B0 Z := ((bas Z).equivFun.symm u).2
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[E, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem E_add (u u' : Fin (d Z) → k) : E Z (u + u') = E Z u + E Z u' := by
   simp [E, add_smul, Finset.sum_add_distrib]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `only [E, map_smul, Submodule.coe_smul]`.
+-/
 theorem E_smul (c : k) (u : Fin (d Z) → k) : E Z (c • u) = c • E Z u := by
   simp only [E, map_smul, Submodule.coe_smul]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[E]`.
+-/
 theorem E_neg (u : Fin (d Z) → k) : E Z (-u) = -E Z u := by
   simp [E]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Introduce `u u' h` and use `(bas Z).equivFun.symm.injective (Subtype.ext h)`.
+-/
 theorem E_injective : Function.Injective (E Z) := fun u u' h =>
   (bas Z).equivFun.symm.injective (Subtype.ext h)
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(bas Z).equivFun ⟨w, hw⟩, by simp [E]⟩`.
+-/
 theorem exists_E {w : Matrix (Fin n) (Fin n) k} (hw : w ∈ B0 Z) : ∃ u, E Z u = w :=
   ⟨(bas Z).equivFun ⟨w, hw⟩, by simp [E]⟩
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[E_apply, Finset.sum_mul, trace_sum]`. Simplify using `[dotProduct, D, smul_mul_assoc, trace_smul]`.
+-/
 theorem dot_D (u : Fin (d Z) → k) (x : Matrix (Fin n) (Fin n) k) : u ⬝ᵥ D Z x = trace (E Z u * x) := by
   rw [E_apply, Finset.sum_mul, trace_sum]
   simp [dotProduct, D, smul_mul_assoc, trace_smul]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[D, G, E_apply, mulVec, dotProduct, Finset.mul_sum, trace_sum, mul_smul_comm, trace_smul, mul_comm]`.
+-/
 theorem D_E (u : Fin (d Z) → k) : D Z (E Z u) = G Z *ᵥ u := by
   funext i
   simp [D, G, E_apply, mulVec, dotProduct, Finset.mul_sum, trace_sum, mul_smul_comm, trace_smul, mul_comm]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[D, mul_add]`.
+-/
 theorem D_add (x y : Matrix (Fin n) (Fin n) k) : D Z (x + y) = D Z x + D Z y := by
   funext j; simp [D, mul_add]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[D, mul_sub]`.
+-/
 theorem D_sub (x y : Matrix (Fin n) (Fin n) k) : D Z (x - y) = D Z x - D Z y := by
   funext j; simp [D, mul_sub]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[D]`.
+-/
 theorem D_smul (c : k) (x : Matrix (Fin n) (Fin n) k) : D Z (c • x) = c • D Z x := by
   funext j; simp [D]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [G, transpose_apply, of_apply]`. Conclude with `trace_mul_comm _ _`.
+-/
 theorem G_symm : (G Z)ᵀ = G Z := by
   ext i j
   simp only [G, transpose_apply, of_apply]
@@ -97,6 +136,13 @@ theorem G_symm : (G Z)ᵀ = G Z := by
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Take `⟨-, hwq⟩` from `Submodule.mem_inf.mp hw`. Establish `hq : qZ Z w = 0` using `LinearMap.mem_ker.mp hwq`. Establish `hz' : (∑ i, (Module.finBasis k Z).repr ⟨z, hz⟩ i • ((Module.finBasis k Z i : Z) : Matrix (Fin n) (Fin n) k)) = z`. Use `congrArg Subtype.val ((Module.finBasis k Z).sum_repr ⟨z, hz⟩)` as an intermediate fact. Simplify `this` using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul]`.
+
+Rewrite using `[← hz', Finset.sum_mul, trace_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Establish `hi : trace (((Module.finBasis k Z) i : Matrix (Fin n) (Fin n) k) * w) = 0`. Simplify `congrFun hq i` using `[qZ]`.
+
+Rewrite using `[smul_mul_assoc, trace_smul, hi, smul_zero]`.
+-/
 theorem orth {z w : Matrix (Fin n) (Fin n) k} (hz : z ∈ Z) (hw : w ∈ B0 Z) : trace (z * w) = 0 := by
   obtain ⟨-, hwq⟩ := Submodule.mem_inf.mp hw
   have hq : qZ Z w = 0 := LinearMap.mem_ker.mp hwq
@@ -111,6 +157,9 @@ theorem orth {z w : Matrix (Fin n) (Fin n) k} (hz : z ∈ Z) (hw : w ∈ B0 Z) :
   rw [smul_mul_assoc, trace_smul, hi, smul_zero]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [D, Pi.zero_apply]`. Rewrite using `[trace_mul_comm]`. Conclude with `orth Z hz (bas Z j).2`.
+-/
 theorem D_Z {z : Matrix (Fin n) (Fin n) k} (hz : z ∈ Z) : D Z z = 0 := by
   funext j
   simp only [D, Pi.zero_apply]
@@ -118,6 +167,9 @@ theorem D_Z {z : Matrix (Fin n) (Fin n) k} (hz : z ∈ Z) : D Z z = 0 := by
   exact orth Z hz (bas Z j).2
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Introduce `a ha` and use `hZ.1 a ha z hz`.
+-/
 theorem Z_le_Bz (hZ : CR Z) {z : Matrix (Fin n) (Fin n) k} (hz : z ∈ Z) : z ∈ Bz Z :=
   fun a ha => hZ.1 a ha z hz
 
@@ -130,6 +182,9 @@ structure Hyp : Prop where
 variable {Z}
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use `⟨(BzL Z).sub_mem hb (Z_le_Bz Z hZ (h.pi_mem b)), ?_⟩` and prove the remaining obligations. Use `show qL Z (b - piZ Z b) = 0`. Rewrite using `[map_sub]`. Use `show qZ Z b - qZ Z (piZ Z b) = 0`. Rewrite using `[h.q_pi, sub_self]`.
+-/
 theorem sub_pi_mem (hZ : CR Z) (h : Hyp Z) {b : Matrix (Fin n) (Fin n) k} (hb : b ∈ Bz Z) : b - piZ Z b ∈ B0 Z := by
   refine ⟨(BzL Z).sub_mem hb (Z_le_Bz Z hZ (h.pi_mem b)), ?_⟩
   show qL Z (b - piZ Z b) = 0
@@ -138,6 +193,15 @@ theorem sub_pi_mem (hZ : CR Z) (h : Hyp Z) {b : Matrix (Fin n) (Fin n) k} (hb : 
   rw [h.q_pi, sub_self]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Establish `hD : D Z (E Z u) = 0` using `by rw [D_E, hu]`. Establish `hw : E Z u ∈ B0 Z` using `E_mem Z u`. Establish `hwB : E Z u ∈ Bz Z` using `(Submodule.mem_inf.mp hw).1`. Establish `h0 : E Z u = 0`. Apply `h.trB _ hwB` to reduce the goal to its premises.
+
+Introduce `b hb`. Take `⟨v, hv⟩` from `exists_E Z (sub_pi_mem hZ h hb)`. Establish `h1 : trace ((b - piZ Z b) * E Z u) = 0`. Rewrite using `[← hv, ← dot_D, hD, dotProduct_zero]`. Establish `h2 : trace (piZ Z b * E Z u) = 0` using `orth Z (h.pi_mem b) hw`.
+
+Establish `h3 : trace (b * E Z u) = trace ((b - piZ Z b) * E Z u) + trace (piZ Z b * E Z u)`. Rewrite using `[← trace_add, ← add_mul, sub_add_cancel]`. Rewrite using `[h3, h1, h2, add_zero]`. Apply `E_injective Z` to reduce the goal to its premises. Rewrite using `[h0]`.
+
+Simplify using `[E]`.
+-/
 theorem G_inj (hZ : CR Z) (h : Hyp Z) {u : Fin (d Z) → k} (hu : G Z *ᵥ u = 0) : u = 0 := by
   have hD : D Z (E Z u) = 0 := by rw [D_E, hu]
   have hw : E Z u ∈ B0 Z := E_mem Z u
@@ -157,6 +221,9 @@ theorem G_inj (hZ : CR Z) (h : Hyp Z) {u : Fin (d Z) → k} (hu : G Z *ᵥ u = 0
   simp [E]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Introduce `h0`. Take `⟨u, hu0, hu⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Conclude with `hu0 (G_inj hZ h hu)`.
+-/
 theorem G_det (hZ : CR Z) (h : Hyp Z) : (G Z).det ≠ 0 := by
   intro h0
   obtain ⟨u, hu0, hu⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h0
@@ -169,31 +236,52 @@ def Pr (x : Matrix (Fin n) (Fin n) k) : Matrix (Fin n) (Fin n) k := E Z ((G Z)�
 variable {Z}
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[Pr, D_E, mulVec_mulVec, mul_nonsing_inv _ (Ne.isUnit (G_det hZ h)), one_mulVec]`.
+-/
 theorem D_Pr (hZ : CR Z) (h : Hyp Z) (x : Matrix (Fin n) (Fin n) k) : D Z (Pr Z x) = D Z x := by
   rw [Pr, D_E, mulVec_mulVec, mul_nonsing_inv _ (Ne.isUnit (G_det hZ h)), one_mulVec]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[Pr, D_E, mulVec_mulVec, nonsing_inv_mul _ (Ne.isUnit (G_det hZ h)), one_mulVec]`.
+-/
 theorem Pr_E (hZ : CR Z) (h : Hyp Z) (u : Fin (d Z) → k) : Pr Z (E Z u) = E Z u := by
   rw [Pr, D_E, mulVec_mulVec, nonsing_inv_mul _ (Ne.isUnit (G_det hZ h)), one_mulVec]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[D_sub, D_Pr hZ h, sub_self]`.
+-/
 theorem D_sub_Pr (hZ : CR Z) (h : Hyp Z) (x : Matrix (Fin n) (Fin n) k) : D Z (x - Pr Z x) = 0 := by
   rw [D_sub, D_Pr hZ h, sub_self]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[Pr, D_add, mulVec_add, E_add]`.
+-/
 theorem Pr_add (x y : Matrix (Fin n) (Fin n) k) : Pr Z (x + y) = Pr Z x + Pr Z y := by
   simp [Pr, D_add, mulVec_add, E_add]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[Pr, D_smul, mulVec_smul, E_smul]`.
+-/
 theorem Pr_smul (c : k) (x : Matrix (Fin n) (Fin n) k) : Pr Z (c • x) = c • Pr Z x := by
   simp [Pr, D_smul, mulVec_smul, E_smul]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[Pr, hx, E]`.
+-/
 theorem Pr_of_D (hZ : CR Z) (h : Hyp Z) {x : Matrix (Fin n) (Fin n) k} (hx : D Z x = 0) : Pr Z x = 0 := by
   simp [Pr, hx, E]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_E Z (sub_pi_mem hZ h hx)`. Establish `hP : Pr Z x = x - piZ Z x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP, sub_sub_cancel]`.
+-/
 theorem piZ_eq_sub (hZ : CR Z) (h : Hyp Z) {x : Matrix (Fin n) (Fin n) k} (hx : x ∈ Bz Z) :
     piZ Z x = x - Pr Z x := by
   obtain ⟨v, hv⟩ := exists_E Z (sub_pi_mem hZ h hx)

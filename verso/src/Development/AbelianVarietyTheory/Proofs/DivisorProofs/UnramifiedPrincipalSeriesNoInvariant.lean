@@ -13,13 +13,24 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 variable (k) in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `valuation_surjective (uniformizer k)`. Conclude with `⟨Units.mk0 x (by rintro rfl; exact uniformizer_ne_zero (R := k) (by simpa using hx.symm)), hx⟩`.
+-/
 theorem exists_unif : ∃ ϖ : kˣ, valuation k (ϖ : k) = uniformizer k := by
   obtain ⟨x, hx⟩ := valuation_surjective (uniformizer k)
   exact ⟨Units.mk0 x (by rintro rfl; exact uniformizer_ne_zero (R := k) (by simpa using hx.symm)), hx⟩
 
+/- English proof (translation)
+Introduce `x hx` and use `by rw [MonoidHom.mul_apply, h x hx, h' x hx, one_mul]`.
+-/
 theorem isUnram_mul {χ ψ : kˣ →* ℂˣ} (h : IsUnram χ) (h' : IsUnram ψ) : IsUnram (χ * ψ) := fun x hx => by
   rw [MonoidHom.mul_apply, h x hx, h' x hx, one_mul]
 
+/- English proof (translation)
+Establish `h1 : absPow k 1 = absPow k (1 / 2) * absPow k (1 / 2)` using `by rw [← absPow_add]; norm_num`. Establish `h2 : absPow k (-1 / 2) = (absPow k (1 / 2))⁻¹` using `by rw [neg_div, absPow_neg]`. Simplify using `only [bchar, h1, h2, MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_div_eq_div_val]`. Establish `e1 : ((μ₂ t : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `e2 : ((absPow k (1 / 2) d : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`.
+
+Establish `e3 : ((absPow k (1 / 2) t : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem bchar_shift (μ₁ μ₂ : kˣ →* ℂˣ) (a d t : kˣ) :
     bchar μ₁ μ₂ (a * t) (d * t⁻¹) = bchar μ₁ μ₂ a d * ((μ₁ t * absPow k 1 t / μ₂ t : ℂˣ) : ℂ) := by
   have h1 : absPow k 1 = absPow k (1 / 2) * absPow k (1 / 2) := by rw [← absPow_add]; norm_num
@@ -31,6 +42,9 @@ theorem bchar_shift (μ₁ μ₂ : kˣ →* ℂˣ) (a d t : kˣ) :
   have e3 : ((absPow k (1 / 2) t : ℂˣ) : ℂ) ≠ 0 := Units.ne_zero _
   field_simp
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Establish `hy0 : 0 < valuation k (y : k)` using `zero_lt_iff.2 (by simp)`. Establish `hϖ0 : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 (by simp)`. Establish `hu : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Conclude with `lt_mul_of_one_lt_right hy0 ((one_lt_inv₀ hϖ0).2 hu)`.
+-/
 theorem val_lt_val_mul_inv {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (y : kˣ) :
     valuation k (y : k) < valuation k ((y * ϖ⁻¹ : kˣ) : k) := by
   rw [Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀]
@@ -45,6 +59,19 @@ namespace GlobalTheory.PrinTwo.NoFix
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hc : ∀ x : k, coord f x = ev f wE` using `fun x => by`. Rewrite using `[coord, ← ev_act, hf x]`. Take `⟨R, hR⟩` from `hasy k μ₁ μ₂ f`. Take `⟨ϖ, hϖ⟩` from `exists_unif k`. Take `⟨x, hx⟩ : ∃ x : kˣ, x = R * ϖ⁻¹` from `⟨_, rfl⟩`.
+
+Establish `hxR : valuation k (R : k) < valuation k (x : k)` using `hx ▸ val_lt_val_mul_inv hϖ R`. Establish `hx'R : valuation k (R : k) < valuation k ((x * ϖ⁻¹ : kˣ) : k)` using `hxR.trans (val_lt_val_mul_inv hϖ x)`. Establish `h1 : ev f 1 = 0`. Assume the negation of the conclusion as `h0`. Apply `hne` to reduce the goal to its premises.
+
+Establish `e` using `(hR x hxR).symm.trans ((hc x).trans ((hc _).symm.trans (hR _ hx'R)))`. Establish `e2 : bchar μ₁ μ₂ (-(x * ϖ⁻¹)⁻¹) (x * ϖ⁻¹) = bchar μ₁ μ₂ (-x⁻¹) x * ((μ₁ ϖ * absPow k 1 ϖ / μ₂ ϖ : ℂˣ) : ℂ)`. Rewrite using `[← bchar_shift]`. Use `congr 1`. Rewrite using `[mul_inv_rev, inv_inv, neg_mul, mul_comm]`.
+
+Rewrite `e` using `[e2, mul_assoc]`. Establish `e3` using `mul_left_cancel₀ (bchar_ne_zero μ₁ μ₂ _ _) e`. Establish `e4 : ((μ₁ ϖ * absPow k 1 ϖ / μ₂ ϖ : ℂˣ) : ℂ) = 1`. Use `mul_right_cancel₀ h0 (e3.symm.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this`.
+
+Establish `e5 : μ₂ ϖ = (μ₁ * absPow k 1) ϖ`. Rewrite using `[MonoidHom.mul_apply]`. Conclude with `(div_eq_one.1 (Units.ext e4)).symm`. Rewrite using `[eq_unrChar h₂ hϖ, eq_unrChar (isUnram_mul h₁ (isUnram_absPow k 1)) hϖ, e5]`. Use `hinj k μ₁ μ₂ f h1 fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[hc y, ← hc x, hR x hxR, h1, mul_zero]`.
+-/
 theorem eq_zero_of_fixed_of
     (hinj : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (μ₁ μ₂ : kˣ →* ℂˣ) (f : GlobalTheory.PrinTwo.PSp μ₁ μ₂), GlobalTheory.PrinTwo.ev f 1 = 0 → (∀ x : k, GlobalTheory.PrinTwo.coord f x = 0) → f = 0)
     (hasy : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (μ₁ μ₂ : kˣ →* ℂˣ) (f : GlobalTheory.PrinTwo.PSp μ₁ μ₂), ∃ R : kˣ, ∀ x : kˣ, ValuativeRel.valuation k (R : k) < ValuativeRel.valuation k (x : k) → GlobalTheory.PrinTwo.coord f x = GlobalTheory.PrinTwo.bchar μ₁ μ₂ (-x⁻¹) x * GlobalTheory.PrinTwo.ev f 1)
@@ -81,6 +108,9 @@ theorem eq_zero_of_fixed_of
 
 end GlobalTheory.PrinTwo.NoFix
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ h₁ h₂ hne f hf` and use `GlobalTheory.PrinTwo.NoFix.eq_zero_of_fixed_of GlobalTheory.T.principal_series_zero_of_coordinate_zero GlobalTheory.T.principal_series_coordinate_near_infinity h₁ h₂ hne f hf`.
+-/
 theorem GlobalTheory.PrinTwo.NoFix.eq_zero_of_nU_fixed : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (μ₁ μ₂ : kˣ →* ℂˣ), GlobalTheory.SplitWeil.IsUnram μ₁ → GlobalTheory.SplitWeil.IsUnram μ₂ → μ₂ ≠ μ₁ * GlobalTheory.SmGL.absPow k 1 → ∀ f : GlobalTheory.PrinTwo.PSp μ₁ μ₂, (∀ x : k, GlobalTheory.PrinTwo.psRep μ₁ μ₂ (GlobalTheory.PrinTwo.nU x) f = f) → f = 0 :=
   fun _ _ _ _ _ _ _ h₁ h₂ hne f hf =>
     GlobalTheory.PrinTwo.NoFix.eq_zero_of_fixed_of GlobalTheory.T.principal_series_zero_of_coordinate_zero GlobalTheory.T.principal_series_coordinate_near_infinity h₁ h₂ hne f hf

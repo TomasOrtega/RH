@@ -33,9 +33,15 @@ def ParAt {n : ℕ} (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL (Fin n) (Qbar l)
       IsPstAt (Loc.PP l) Bw (r.comp (Dec (F := E) A).subtype) ∧
         Lev.SsCmp (wdAt (Loc.PP l) ι Bw h hj (r.comp (Dec (F := E) A).subtype)) (p A h rc)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem locGlob_iff {n : ℕ} (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL (Fin n) (Qbar l)) (w : HeightOneSpectrum (𝓞 E))
     (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) : LocGlob ι r w σ ↔ ParAt ι r w fun _ _ rc => rc (algNorm σ) := Iff.rfl
 
+/- English proof (translation)
+Introduce `A h rc hrc` and use `e A h rc hrc ▸ H A h rc hrc`.
+-/
 theorem ParAt.congr {n : ℕ} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin n) (Qbar l)} {w : HeightOneSpectrum (𝓞 E)} {p p' : Par Ω w}
     (H : ParAt ι r w p) (e : ∀ A h rc, IsRec h rc → p A h rc = p' A h rc) : ParAt ι r w p' :=
   fun A h rc hrc => e A h rc hrc ▸ H A h rc hrc

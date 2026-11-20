@@ -18,5 +18,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (SplitPro
 open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric datum)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainTw.UpSpanTw.upSpanQ_of | exact GlobalTheory.ChainTw.UpSpanTw.upSpanQ_of | (intros; apply GlobalTheory.ChainTw.UpSpanTw.upSpanQ_of <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twistedChain_thetaLiftUpSpan : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → ∀ D : D7, LevelLawQ D → UpSpanQ D := by
   first | exact @GlobalTheory.ChainTw.UpSpanTw.upSpanQ_of | exact GlobalTheory.ChainTw.UpSpanTw.upSpanQ_of | (intros; apply GlobalTheory.ChainTw.UpSpanTw.upSpanQ_of <;> assumption)

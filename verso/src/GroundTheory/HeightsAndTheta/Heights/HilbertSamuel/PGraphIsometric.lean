@@ -18,6 +18,11 @@ section Divisor
 
 variable {K : Type*} [Fintype K] {κ : K → Type*} [∀ k, Fintype (κ k)]
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨p, hp, r, hr, rfl⟩` from `Submodule.mem_sup.mp hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hr`. Establish `e : u * (p + c * f) = (u * p + c * (u * f - v * g)) + (c * v) * g` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `Submodule.add_mem_sup (P.add_mem (P.mul_mem_left _ hp) (P.mul_mem_left _ huv)) (Ideal.mem_span_singleton'.mpr ⟨c * v, rfl⟩)`.
+-/
 theorem mul_mem_sup_span {P : Ideal (MRing κ)} {f g u v : MRing κ} (huv : u * f - v * g ∈ P) :
     ∀ x ∈ P ⊔ Ideal.span {f}, u * x ∈ P ⊔ Ideal.span {g} := by
   intro x hx
@@ -28,6 +33,11 @@ theorem mul_mem_sup_span {P : Ideal (MRing κ)} {f g u v : MRing κ} (huv : u * 
   exact Submodule.add_mem_sup (P.add_mem (P.mul_mem_left _ hp) (P.mul_mem_left _ huv))
     (Ideal.mem_span_singleton'.mpr ⟨c * v, rfl⟩)
 
+/- English proof (translation)
+Establish `hvu : v * g - u * f ∈ P`. Rewrite using `[← neg_sub]`. Conclude with `P.neg_mem huv`. Establish `hWp : W.IsPrime` using `hf.1.1.1`. Use `⟨⟨GroundTheory.Heights₂.Heights.NumbersDVR.mem_minimalPrimes_of_mul_mem hu hv (mul_mem_sup_span huv) (mul_mem_sup_span hvu) hf.1, hf.2⟩, ?_⟩` and prove the remaining obligations.
+
+Unfold `multAt`. Rewrite using `[dif_pos hWp, dif_pos hWp, GroundTheory.Heights₂.Heights.NumbersDVR.length_localized_eq_of_mul_mem hu hv (mul_mem_sup_span huv) (mul_mem_sup_span hvu)]`.
+-/
 theorem mem_divSupp_and_multAt_eq {P W : Ideal (MRing κ)} {f g u v : MRing κ} (hf : W ∈ divSupp P f)
     (hu : u ∉ W) (hv : v ∉ W) (huv : u * f - v * g ∈ P) :
     W ∈ divSupp P g ∧ multAt (P ⊔ Ideal.span {f}) W = multAt (P ⊔ Ideal.span {g}) W := by
@@ -42,6 +52,11 @@ theorem mem_divSupp_and_multAt_eq {P W : Ideal (MRing κ)} {f g u v : MRing κ} 
     GroundTheory.Heights₂.Heights.NumbersDVR.length_localized_eq_of_mul_mem hu hv (mul_mem_sup_span huv)
       (mul_mem_sup_span hvu)]
 
+/- English proof (translation)
+Use extensionality with `W`. Simplify using `only [divCycle, Finsupp.ofSupportFinite_coe]`. Distinguish the cases in `hf : W ∈ divSupp P f`. Take `⟨u, v, hu, hv, huv⟩` from `h W hf.1.1.1 (le_sup_left.trans hf.1.1.2) hf.2`. Take `⟨hg, e⟩` from `mem_divSupp_and_multAt_eq hf hu hv huv`.
+
+Rewrite using `[if_pos hf, if_pos hg, e]`. Distinguish the cases in `hg : W ∈ divSupp P g`. Take `⟨u, v, hu, hv, huv⟩` from `h W hg.1.1.1 (le_sup_left.trans hg.1.1.2) hg.2`. Conclude with `absurd (mem_divSupp_and_multAt_eq hg hv hu (by rw [← neg_sub]; exact P.neg_mem huv)).1 hf`. Rewrite using `[if_neg hf, if_neg hg]`.
+-/
 theorem divCycle_eq_of_local {P : Ideal (MRing κ)} {f g : MRing κ}
     (h : ∀ W : Ideal (MRing κ), W.IsPrime → P ≤ W → IsRelevant W →
       ∃ u v, u ∉ W ∧ v ∉ W ∧ u * f - v * g ∈ P) :
@@ -63,16 +78,27 @@ section Graph
 
 variable {K : Type} [Fintype K] {ι ι₂ : K → Type} [∀ k, Fintype (ι k)] [∀ k, Fintype (ι₂ k)]
 
+/- English proof (translation)
+Take `⟨k, i⟩` from `p`. Simplify using `[graphMap, inlV]`.
+-/
 theorem graphMap_X_inlV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (p : Σ k, ι k) :
     graphMap P g (X (inlV p)) = C (Ideal.Quotient.mk P (X p)) := by
   obtain ⟨k, i⟩ := p
   simp [graphMap, inlV]
 
+/- English proof (translation)
+Take `⟨k, j⟩` from `q`. Simplify using `[graphMap, inrV]`.
+-/
 theorem graphMap_X_inrV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (q : Σ k, ι₂ k) :
     graphMap P g (X (inrV q)) = C (Ideal.Quotient.mk P (g q)) * X q.1 := by
   obtain ⟨k, j⟩ := q
   simp [graphMap, inrV]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `e : ((graphMap P g).comp (rename (inlV (ι₂` using `ι₂))).toRingHom).comp C = ((C : (MRing ι ⧸ P) →+* MvPolynomial K (MRing ι ⧸ P)).comp (Ideal.Quotient.mk P)).comp C := RingHom.ext_int _ _`. Conclude with `RingHom.congr_fun e a`. Consider the case `add p q hp hq => simp [hp, hq]`.
+
+Consider the case `mul_X p n hp => simp [hp, graphMap_X_inlV]`.
+-/
 theorem graphMap_rename_inlV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (p : MRing ι) :
     graphMap P g (rename inlV p) = C (Ideal.Quotient.mk P p) := by
   induction p using MvPolynomial.induction_on with
@@ -84,6 +110,9 @@ theorem graphMap_rename_inlV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRi
   | add p q hp hq => simp [hp, hq]
   | mul_X p n hp => simp [hp, graphMap_X_inlV]
 
+/- English proof (translation)
+Rewrite using `[graphIdeal, RingHom.mem_ker, map_sub, map_mul, map_mul, graphMap_X_inrV, graphMap_X_inrV, graphMap_rename_inlV, graphMap_rename_inlV]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem minor_mem (P : Ideal (MRing ι)) (A : ∀ k, ι₂ k → ι k → ℤ) (k : K) (j₁ j₂ : ι₂ k) :
     X (inrV ⟨k, j₁⟩) * rename inlV (linForm A ⟨k, j₂⟩) - X (inrV ⟨k, j₂⟩) * rename inlV (linForm A ⟨k, j₁⟩) ∈
       graphIdeal P (linForm A) := by
@@ -97,6 +126,9 @@ def num (A : ∀ k, ι₂ k → ι k → ℤ) (j : ∀ k, ι₂ k) (a : K → �
 def den (A : ∀ k, ι₂ k → ι k → ℤ) (j : ∀ k, ι₂ k) (a : K → ℤ) : MRing (Sum.elim ι ι₂) :=
   ∏ k, X (inrV ⟨k, j k⟩) ^ (a k).toNat * rename inlV (linForm A ⟨k, j k⟩) ^ (-a k).toNat
 
+/- English proof (translation)
+Rewrite using `[← mem_weightedHomogeneousSubmodule]`. Simplify using `only [linForm, map_sum, map_mul, rename_C, rename_X]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_X ℤ _ _))`.
+-/
 theorem wh_lin [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (q : Σ k, ι₂ k) :
     IsWeightedHomogeneous (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight (Sum.elim ι ι₂))
       (rename inlV (linForm A q)) (Pi.single (Sum.inl q.1) 1) := by
@@ -106,6 +138,9 @@ theorem wh_lin [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (q : Σ k, 
   rw [← smul_eq_C_mul]
   exact Submodule.smul_mem _ _ ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_X ℤ _ _))
 
+/- English proof (translation)
+Use `(GroundTheory.Heights₂.Heights.Bridge.isMultiHomog_iff _ _).mp ?_` and prove the remaining obligations. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun k _ => ((wh_lin A ⟨k, j k⟩).pow _).mul ((isWeightedHomogeneous_X ℤ _ _).pow _)`.
+-/
 theorem isMultiHomog_num [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (j : ∀ k, ι₂ k) (a : K → ℤ) :
     IsMultiHomog (num A j a)
       (∑ k, ((a k).toNat • Pi.single (Sum.inl k) 1 + (-a k).toNat • Pi.single (Sum.inr k) 1)) := by
@@ -113,6 +148,9 @@ theorem isMultiHomog_num [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (
   exact IsWeightedHomogeneous.prod _ _ _ fun k _ =>
     ((wh_lin A ⟨k, j k⟩).pow _).mul ((isWeightedHomogeneous_X ℤ _ _).pow _)
 
+/- English proof (translation)
+Use `(GroundTheory.Heights₂.Heights.Bridge.isMultiHomog_iff _ _).mp ?_` and prove the remaining obligations. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun k _ => ((isWeightedHomogeneous_X ℤ _ _).pow _).mul ((wh_lin A ⟨k, j k⟩).pow _)`.
+-/
 theorem isMultiHomog_den [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (j : ∀ k, ι₂ k) (a : K → ℤ) :
     IsMultiHomog (den A j a)
       (∑ k, ((a k).toNat • Pi.single (Sum.inr k) 1 + (-a k).toNat • Pi.single (Sum.inl k) 1)) := by
@@ -120,6 +158,13 @@ theorem isMultiHomog_den [DecidableEq K] (A : ∀ k, ι₂ k → ι k → ℤ) (
   exact IsWeightedHomogeneous.prod _ _ _ fun k _ =>
     ((isWeightedHomogeneous_X ℤ _ _).pow _).mul ((wh_lin A ⟨k, j k⟩).pow _)
 
+/- English proof (translation)
+Use `Ideal.Quotient.isDomain P` as an intermediate fact. Establish `h1 : ∀ k, (C (Ideal.Quotient.mk P (linForm A ⟨k, j k⟩)) : MvPolynomial K (MRing ι ⧸ P)) ≠ 0`. Introduce `k`. Rewrite using `[Ne, MvPolynomial.C_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hj k`.
+
+Establish `h2 : ∀ k, (C (Ideal.Quotient.mk P (linForm A ⟨k, j k⟩)) * X k : MvPolynomial K (MRing ι ⧸ P)) ≠ 0` using `fun k => mul_ne_zero (h1 k) (X_ne_zero _)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[num, graphIdeal, RingHom.mem_ker]`. Simplify using `only [map_prod, map_mul, map_pow, graphMap_rename_inlV, graphMap_X_inrV]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => mul_ne_zero (pow_ne_zero _ (h1 k)) (pow_ne_zero _ (h2 k))`.
+
+Rewrite using `[den, graphIdeal, RingHom.mem_ker]`. Simplify using `only [map_prod, map_mul, map_pow, graphMap_rename_inlV, graphMap_X_inrV]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => mul_ne_zero (pow_ne_zero _ (h2 k)) (pow_ne_zero _ (h1 k))`.
+-/
 theorem num_den_not_mem {P : Ideal (MRing ι)} (hP : P.IsPrime) (A : ∀ k, ι₂ k → ι k → ℤ) {j : ∀ k, ι₂ k}
     (hj : ∀ k, linForm A ⟨k, j k⟩ ∉ P) (a : K → ℤ) :
     num A j a ∉ graphIdeal P (linForm A) ∧ den A j a ∉ graphIdeal P (linForm A) := by
@@ -138,6 +183,25 @@ theorem num_den_not_mem {P : Ideal (MRing ι)} (hP : P.IsPrime) (A : ∀ k, ι�
     simp only [map_prod, map_mul, map_pow, graphMap_rename_inlV, graphMap_X_inrV]
     exact Finset.prod_ne_zero_iff.mpr fun k _ => mul_ne_zero (pow_ne_zero _ (h2 k)) (pow_ne_zero _ (h1 k))
 
+/- English proof (translation)
+Use `hW` as an intermediate fact. Establish `hlin : ∀ k, ∃ j', rename inlV (linForm A ⟨k, j'⟩) ∉ W`. Introduce `k`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+
+Use `choose i hi using fun k' => hrel (Sum.inl k')`. Take `⟨N, hN⟩` from `hBP k i`. Establish `hle : P ⊔ Ideal.span (Set.range fun j' : ι₂ k => linForm A ⟨k, j'⟩) ≤ W.comap (rename (inlV (ι₂` using `ι₂)) : MRing ι →ₐ[ℤ] MRing (Sum.elim ι ι₂)) := by`. Use `sup_le (fun p hp => hΓW ?_) (Ideal.span_le.mpr (Set.range_subset_iff.mpr hall))` and prove the remaining obligations. Rewrite using `[graphIdeal, RingHom.mem_ker, graphMap_rename_inlV, Ideal.Quotient.eq_zero_iff_mem.mpr hp, map_zero]`.
+
+Establish `hmem` using `hle hN`. Rewrite `hmem` using `[Ideal.mem_comap, map_pow, map_prod]`. Take `⟨k', -, hk'⟩` from `Ideal.IsPrime.prod_mem_iff.mp (hW.mem_of_pow_mem N hmem)`. Rewrite `hk'` using `[rename_X]`. Conclude with `hi k' hk'`.
+
+Use `choose j' hj' using hlin`. Establish `hy : ∀ k, X (inrV ⟨k, j' k⟩) ∉ W`. Introduce `k hyk`. Take `⟨j'', hj''⟩` from `hrel (Sum.inr k)`. Establish `hm` using `hΓW (minor_mem P A k j'' (j' k))`.
+
+Establish `hprod : X (inrV ⟨k, j''⟩) * rename inlV (linForm A ⟨k, j' k⟩) ∈ W`. Establish `h` using `W.add_mem hm (W.mul_mem_right (rename inlV (linForm A ⟨k, j''⟩)) hyk)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Break down `hW.mem_or_mem hprod with h | h` into its components or cases. Conclude with `hj'' h`.
+
+Conclude with `hj' k h`. Use `⟨∏ k, X (inrV ⟨k, j' k⟩) ^ (a k).toNat * rename inlV (linForm A ⟨k, j' k⟩) ^ (-a k).toNat, ∏ k, rename inlV (linForm A ⟨k, j' k⟩) ^ (a k).toNat * X (inrV ⟨k, j' k⟩) ^ (-a k).toNat, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp h`. Break down `hW.mem_or_mem hk with h | h` into its components or cases.
+
+Conclude with `hy k (hW.mem_of_pow_mem _ h)`. Conclude with `hj' k (hW.mem_of_pow_mem _ h)`. Introduce `h`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp h`. Break down `hW.mem_or_mem hk with h | h` into its components or cases.
+
+Conclude with `hj' k (hW.mem_of_pow_mem _ h)`. Conclude with `hy k (hW.mem_of_pow_mem _ h)`. Rewrite using `[graphIdeal, RingHom.mem_ker, map_sub, sub_eq_zero]`. Simplify using `only [num, den, map_prod, map_mul, map_pow, graphMap_rename_inlV, graphMap_X_inrV]`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_unit {P : Ideal (MRing ι)} {A : ∀ k, ι₂ k → ι k → ℤ} (hBP : IsBasePtFree P (linForm A))
     (j : ∀ k, ι₂ k) (a : K → ℤ) {W : Ideal (MRing (Sum.elim ι ι₂))} (hW : W.IsPrime)
     (hΓW : graphIdeal P (linForm A) ≤ W) (hrel : IsRelevant W) :
@@ -187,6 +251,9 @@ theorem exists_unit {P : Ideal (MRing ι)} {A : ∀ k, ι₂ k → ι k → ℤ}
     refine Finset.prod_congr rfl fun k _ => ?_
     ring
 
+/- English proof (translation)
+Establish `he : l ^ e = l ^ ((e.toNat : ℤ) - ((-e).toNat : ℤ))` using `by rw [Int.toNat_sub_toNat_neg]`. Rewrite using `[he, zpow_sub₀ hl, zpow_natCast, zpow_natCast, mul_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem norm_factor {l : ℝ} (hl : l ≠ 0) (t : ℝ) (e : ℤ) :
     t ^ e.toNat * (l * t) ^ (-e).toNat * l ^ e = (l * t) ^ e.toNat * t ^ (-e).toNat := by
   have he : l ^ e = l ^ ((e.toNat : ℤ) - ((-e).toNat : ℤ)) := by rw [Int.toNat_sub_toNat_neg]
@@ -195,6 +262,43 @@ theorem norm_factor {l : ℝ} (hl : l ≠ 0) (t : ℝ) (e : ℤ) :
 
 end Graph
 
+/- English proof (translation)
+Introduce `K _ ι ι₂ _ _ P d A B₁ B B₁' B' hP hBP ha hh hpl hpr`. Establish `hPp : P.IsPrime` using `hP.2.1.1`. Use `choose j hj using ChangeOfModel.exists_linForm_not_mem hP hBP`. Take `⟨hf, hg⟩` from `num_den_not_mem hPp A hj B.a`. Use `⟨num A j B.a, den A j B.a, _, _, isMultiHomog_num A j B.a, isMultiHomog_den A j B.a, hf, hg, ?_, divCycle_eq_of_local fun W hW hΓW hrel => exists_unit hBP j B.a hW hΓW hrel, ?_⟩` and prove the remaining obligations.
+
+Introduce `x`. Rewrite using `[hpl.1, hpr.1, ha]`. Break down `x with k | k` into its components or cases. Establish `e1 : pullDeg Sum.inl B.a (Sum.inl k : K ⊕ K) = B.a k` using `Sum.inl_injective.extend_apply _ _ _`. Establish `e2 : pullDeg Sum.inr B.a (Sum.inl k : K ⊕ K) = 0`.
+
+Rewrite using `[pullDeg, Function.extend_apply' _ _ _ (by rintro ⟨_, h⟩; cases h)]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `e1 : pullDeg Sum.inl B.a (Sum.inr k : K ⊕ K) = 0`.
+
+Rewrite using `[pullDeg, Function.extend_apply' _ _ _ (by rintro ⟨_, h⟩; cases h)]`. Both sides reduce to the same expression. Establish `e2 : pullDeg Sum.inr B.a (Sum.inr k : K ⊕ K) = B.a k` using `Sum.inr_injective.extend_apply _ _ _`. Rewrite using `[e1, e2]`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `z hz set x : (Σ k, ι k) → ℂ := fun p => z (inlV p) with hxdef set y : (Σ k, ι₂ k) → ℂ := fun q => z (inrV q) with hydef`. Establish `hev : ∀ p : MRing ι, eval z (map (Int.castRingHom ℂ) (rename (inlV (ι₂` using `ι₂)) p)) = eval x (map (Int.castRingHom ℂ) p) := by`. Introduce `p`. Rewrite using `[map_rename, eval_rename]`.
+
+Both sides reduce to the same expression. Establish `hx : x ∈ mcPts P`. Use `⟨fun k => hz.1 (Sum.inl k), fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[← hev]`. Use `hz.2 _ ?_` and prove the remaining obligations.
+
+Rewrite using `[graphIdeal, RingHom.mem_ker, graphMap_rename_inlV, Ideal.Quotient.eq_zero_iff_mem.mpr hp, map_zero]`. Establish `hlin : ∀ q, eval z (map (Int.castRingHom ℂ) (rename inlV (linForm A q))) = linApply A x q`. Introduce `q`. Rewrite using `[hev]`. Simplify using `[linForm, linApply]`.
+
+Establish `hyev : ∀ q, eval z (map (Int.castRingHom ℂ) (X (inrV q) : MRing (Sum.elim ι ι₂))) = y q`. Introduce `q`. Simplify using `[hydef]`. Establish `hminor : ∀ k (j₁ j₂ : ι₂ k), y ⟨k, j₁⟩ * linApply A x ⟨k, j₂⟩ = y ⟨k, j₂⟩ * linApply A x ⟨k, j₁⟩`. Introduce `k j₁ j₂`.
+
+Establish `h` using `hz.2 _ (minor_mem P A k j₁ j₂)`. Simplify using `only [map_sub, map_mul, hlin, hyev] at h`. Conclude with `sub_eq_zero.mp h`. Establish `hAx : ∀ k, ∃ j', linApply A x ⟨k, j'⟩ ≠ 0`. Introduce `k`.
+
+Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Use `choose i hi using hx.1`. Take `⟨N, hN⟩` from `hBP k i`. Set `φ : MRing ι →+* ℂ` to `(eval x).comp (map (Int.castRingHom ℂ))`.
+
+Establish `hle : P ⊔ Ideal.span (Set.range fun j' : ι₂ k => linForm A ⟨k, j'⟩) ≤ RingHom.ker φ`. Use `sup_le (fun p hp => RingHom.mem_ker.mpr (hx.2 p hp)) (Ideal.span_le.mpr (Set.range_subset_iff.mpr fun j' => ?_))` and prove the remaining obligations. Use `show φ _ = 0`. Simplify `hall j'` using `[φ, linForm, linApply]`. Establish `h0` using `RingHom.mem_ker.mp (hle hN)`.
+
+Establish `hne : φ ((∏ k', (X ⟨k', i k'⟩ : MRing ι)) ^ N) ≠ 0`. Simplify using `only [φ, map_pow, map_prod, RingHom.comp_apply, map_X, eval_X]`. Conclude with `pow_ne_zero _ (Finset.prod_ne_zero_iff.mpr fun k' _ => hi k')`. Conclude with `hne h0`. Use `choose jx hjx using hAx`.
+
+Use `set c : K → ℂ := fun k => y ⟨k, jx k⟩ / linApply A x ⟨k, jx k⟩ with hcdef`. Establish `hyc : ∀ q : Σ k, ι₂ k, y q = c q.1 * linApply A x q`. Introduce and unpack `⟨k, j₁⟩`. Simplify using `only [hcdef]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (hjx k)]`.
+
+Conclude with `hminor k j₁ (jx k)`. Establish `hc : ∀ k, c k ≠ 0`. Introduce `k hck`. Take `⟨j₁, hj₁⟩` from `hz.1 (Sum.inr k)`. Establish `h` using `hyc ⟨k, j₁⟩`.
+
+Rewrite `h` using `[hck, zero_mul]`. Conclude with `hj₁ h`. Establish `hB' : B'.h z = (∏ k, ‖c k‖ ^ B.a k) * B.h (linApply A x)`. Rewrite using `[hpr.2 z, ← B.smul c _ hc]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `q`. Conclude with `hyc q`. Establish `hB₁' : B₁'.h z = B.h (linApply A x)`. Rewrite using `[hpl.2 z]`. Conclude with `hh x hx`.
+
+Rewrite using `[hB', hB₁', num, den]`. Simplify using `only [map_prod, map_mul, map_pow, hlin, hyev, hyc, norm_prod, norm_mul, norm_pow]`. Rewrite using `[← mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Conclude with `norm_factor (norm_ne_zero_iff.mpr (hc k)) _ _`.
+-/
 theorem proof : GraphIsometric.Statement := by
   intro K _ ι ι₂ _ _ P d A B₁ B B₁' B' hP hBP ha hh hpl hpr
   classical

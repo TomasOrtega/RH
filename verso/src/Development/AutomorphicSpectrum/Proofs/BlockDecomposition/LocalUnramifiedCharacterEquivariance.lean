@@ -4,6 +4,11 @@ open scoped ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.LocalChar
 
+/- English proof (translation)
+Introduce `F _ _ _ _ ψ hψ x hx`. Take `⟨hc, h1, h0⟩` from `hψ`. Establish `hb : x ∈ valBall F (addCharConductor ψ)`. Rewrite using `[h0]`. Establish `: x ∈ (valBall F 0 : Set F)`.
+
+Rewrite using `[coe_valBall_zero]`. Conclude with `hx`. Conclude with `this`. Use `isTrivialOn_addCharConductor hc h1 x hb` as an intermediate fact. Simplify using `[this]`.
+-/
 theorem sPsi : Ad3.LU.SPsi := by
   intro F _ _ _ _ ψ hψ x hx
   obtain ⟨hc, h1, h0⟩ := hψ

@@ -14,6 +14,9 @@ variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Polynomial in
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) in
+/- English proof (translation)
+Simplify using `[valuation_of_algebraMap]`.
+-/
 theorem _root_.GlobalTheory.LocalDifferentProduct.valued_coe_algebraMap (x : 𝓞 K) :
     Valued.v ((algebraMap (𝓞 K) (v.adicCompletionIntegers K) x : v.adicCompletionIntegers K) :
       v.adicCompletion K) = v.intValuation x := by
@@ -21,6 +24,13 @@ theorem _root_.GlobalTheory.LocalDifferentProduct.valued_coe_algebraMap (x : �
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Polynomial in
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) in
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, hi, rfl⟩` from `hy`. Rewrite using `[_root_.GlobalTheory.LocalDifferentProduct.valued_coe_algebraMap]`. Conclude with `(intValuation_le_pow_iff_mem v i n).mpr (hIn hi)`.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Use `push_cast`. Conclude with `Valuation.map_add_le _ hy hz`. Consider the case `smul a y _ hy`.
+
+Rewrite using `[smul_eq_mul]`. Use `push_cast`. Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma valued_le_of_mem_map_of_le_pow {I : Ideal (𝓞 K)} {n : ℕ} (hIn : I ≤ v.asIdeal ^ n)
     {x : v.adicCompletionIntegers K} (hx : x ∈ I.map (algebraMap (𝓞 K) (v.adicCompletionIntegers K))) :
     Valued.v (x : v.adicCompletion K) ≤ WithZero.exp (-(n : ℤ)) := by
@@ -43,6 +53,15 @@ private lemma valued_le_of_mem_map_of_le_pow {I : Ideal (𝓞 K)} {n : ℕ} (hIn
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Polynomial in
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) in
+/- English proof (translation)
+Use `set n := (Associates.mk v.asIdeal).count (Associates.mk I).factors`. Take `⟨J, hJ⟩ : v.maxPowDividing I ∣ I` from `Ideal.dvd_iff_le.mpr (by`. Rewrite using `[← Ideal.dvd_iff_le]`. Conclude with `(Associates.mk_le_mk_iff_dvd).mp (by`. Rewrite using `[maxPowDividing, Associates.mk_pow]`.
+
+Conclude with `(Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr hI) v.associates_irreducible).mpr le_rfl))`. Establish `hJv : ¬ J ≤ v.asIdeal`. Introduce `hle`. Establish `h1 : v.asIdeal ^ (n + 1) ∣ I`. Rewrite using `[Ideal.dvd_iff_le, hJ, pow_succ]`.
+
+Conclude with `Ideal.mul_mono_right hle`. Establish `h2` using `(Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr hI) v.associates_irreducible).mp (by`. Rewrite using `[← Associates.mk_pow]`. Conclude with `Associates.mk_le_mk_iff_dvd.mpr h1)`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨s, hsJ, hsv⟩` from `SetLike.not_le_iff_exists.mp hJv`. Use `⟨s, hsv, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul ha hsJ`.
+-/
 private lemma exists_notMem_mul_mem_of_pow_count {I : Ideal (𝓞 K)} (hI : I ≠ 0) :
     ∃ s : 𝓞 K, s ∉ v.asIdeal ∧
       ∀ a ∈ v.asIdeal ^ (Associates.mk v.asIdeal).count (Associates.mk I).factors, a * s ∈ I := by
@@ -70,6 +89,17 @@ private lemma exists_notMem_mul_mem_of_pow_count {I : Ideal (𝓞 K)} (hI : I �
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Polynomial in
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) in
+/- English proof (translation)
+Use `set n := (Associates.mk v.asIdeal).count (Associates.mk I).factors`. Take `⟨s, hsv, hs⟩` from `exists_notMem_mul_mem_of_pow_count v hI`. Take `⟨π, hπ⟩` from `intValuation_exists_uniformizer v`. Establish `hπn : v.intValuation (π ^ n) = WithZero.exp (-(n : ℤ))`. Rewrite using `[map_pow, hπ, ← WithZero.exp_nsmul]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Establish `hs1 : v.intValuation s = 1` using `le_antisymm (v.intValuation_le_one s) (not_lt.mp fun h => hsv ((intValuation_lt_one_iff_mem v s).mp h))`. Establish `hi₀ : π ^ n * s ∈ I` using `hs _ ((intValuation_le_pow_iff_mem v _ n).mp hπn.le)`. Establish `hval : Valued.v ((algebraMap (𝓞 K) (v.adicCompletionIntegers K) (π ^ n * s) : v.adicCompletionIntegers K) : v.adicCompletion K) = WithZero.exp (-(n : ℤ))`.
+
+Rewrite using `[_root_.GlobalTheory.LocalDifferentProduct.valued_coe_algebraMap, map_mul, hπn, hs1, mul_one]`. Use `set i₀ : v.adicCompletion K := ((algebraMap (𝓞 K) (v.adicCompletionIntegers K) (π ^ n * s) : v.adicCompletionIntegers K) : v.adicCompletion K) with hi₀def`. Establish `hne : i₀ ≠ 0`. Introduce `h`. Rewrite `hval` using `[h, map_zero]`.
+
+Conclude with `WithZero.zero_ne_coe hval`. Establish `hz : (y : v.adicCompletion K) / i₀ ∈ v.adicCompletionIntegers K`. Rewrite using `[mem_adicCompletionIntegers, map_div₀, hval]`. Conclude with `div_le_one_of_le₀ hy zero_le'`. Establish `hy' : y = algebraMap (𝓞 K) (v.adicCompletionIntegers K) (π ^ n * s) * ⟨_, hz⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (y : v.adicCompletion K) = i₀ * ((y : v.adicCompletion K) / i₀)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hy']`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hi₀)`.
+-/
 private lemma mem_map_adicCompletionIntegers_of_valued_le {I : Ideal (𝓞 K)} (hI : I ≠ 0) {y : v.adicCompletionIntegers K}
     (hy : Valued.v (y : v.adicCompletion K) ≤
       WithZero.exp (-((Associates.mk v.asIdeal).count (Associates.mk I).factors : ℤ))) :
@@ -105,6 +135,21 @@ private lemma mem_map_adicCompletionIntegers_of_valued_le {I : Ideal (𝓞 K)} (
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Polynomial in
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) in
+/- English proof (translation)
+Take `⟨b, c, hc, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) k`. Establish `hc0 : c ≠ 0` using `nonZeroDivisors.ne_zero hc`. Establish `hspan : Ideal.span {c} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hc0`.
+
+Take `⟨s, hsv, hs⟩` from `exists_notMem_mul_mem_of_pow_count v hspan`. Establish `hcK : algebraMap (𝓞 K) K c ≠ 0`. Simplify using `using hc0`. Establish `hb : b ∈ v.asIdeal ^ (Associates.mk v.asIdeal).count (Associates.mk (Ideal.span {c})).factors`. Rewrite using `[← intValuation_le_pow_iff_mem, ← intValuation_if_neg v hc0]`.
+
+Rewrite `hk` using `[map_div₀, valuation_of_algebraMap, valuation_of_algebraMap]`. Establish `hcv : v.intValuation c ≠ 0`. Rewrite using `[intValuation_if_neg v hc0]`. Conclude with `WithZero.exp_ne_zero`. Conclude with `(div_le_one₀ (zero_lt_iff.mpr hcv)).mp hk`.
+
+Take `⟨a', ha'⟩` from `Ideal.mem_span_singleton'.mp (hs b hb)`. Take `⟨y, i, hi, hyi⟩` from `Ideal.IsMaximal.exists_inv v.isMaximal hsv`. Use `⟨a' * (y * ∑ j ∈ Finset.range n, i ^ j), ?_⟩` and prove the remaining obligations. Establish `hgeom` using `mul_neg_geom_sum i n`. Establish `hk' : algebraMap (𝓞 K) K b / algebraMap (𝓞 K) K c - algebraMap (𝓞 K) K (a' * (y * ∑ j ∈ Finset.range n, i ^ j)) = algebraMap (𝓞 K) K b / algebraMap (𝓞 K) K c * algebraMap (𝓞 K) K (i ^ n)`.
+
+Establish `h1 : algebraMap (𝓞 K) K a' * algebraMap (𝓞 K) K c = algebraMap (𝓞 K) K b * algebraMap (𝓞 K) K s`. Rewrite using `[← map_mul, ← map_mul, ha']`. Establish `h2 : algebraMap (𝓞 K) K y * algebraMap (𝓞 K) K s = 1 - algebraMap (𝓞 K) K i`. Rewrite using `[← map_mul, ← map_one (algebraMap (𝓞 K) K), ← map_sub, ← hyi]`. Put the polynomial expressions in normal form.
+
+Establish `h3` using `congrArg (algebraMap (𝓞 K) K) hgeom`. Simplify using `only [map_mul, map_sub, map_one, map_pow, map_sum] at h3 ⊢`. Establish `key : algebraMap (𝓞 K) K b - algebraMap (𝓞 K) K c * (algebraMap (𝓞 K) K a' * (algebraMap (𝓞 K) K y * ∑ j ∈ Finset.range n, algebraMap (𝓞 K) K i ^ j)) = algebraMap (𝓞 K) K b * algebraMap (𝓞 K) K i ^ n`. Take the linear combination `(-(algebraMap (𝓞 K) K y * ∑ j ∈ Finset.range n, algebraMap (𝓞 K) K i ^ j)) * h1 - (algebraMap (𝓞 K) K b * ∑ j ∈ Finset.range n, algebraMap (𝓞 K) K i ^ j) * h2 - algebraMap (𝓞 K) K b * h3`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `key`. Rewrite using `[hk', map_mul, valuation_of_algebraMap]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma exists_integer_valuation_sub_le_exp_neg (k : K) (hk : v.valuation K k ≤ 1) (n : ℕ) :
     ∃ a : 𝓞 K, v.valuation K (k - algebraMap (𝓞 K) K a) ≤ WithZero.exp (-(n : ℤ)) := by
   obtain ⟨b, c, hc, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 K) k
@@ -155,6 +200,25 @@ private lemma exists_integer_valuation_sub_le_exp_neg (k : K) (hk : v.valuation 
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Polynomial in
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) in
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `intValuation_exists_uniformizer v`. Use `set z : v.adicCompletion K := ((algebraMap (𝓞 K) (v.adicCompletionIntegers K) (π ^ n) : v.adicCompletionIntegers K) : v.adicCompletion K)`. Establish `hvz : Valued.v z = WithZero.exp (-(n : ℤ))`. Rewrite using `[_root_.GlobalTheory.LocalDifferentProduct.valued_coe_algebraMap, map_pow, hπ, ← WithZero.exp_nsmul]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Establish `hz0 : z ≠ 0`. Introduce `h`. Rewrite `hvz` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hvz`.
+
+Establish `hnhds : {y : v.adicCompletion K | Valued.v ((x : v.adicCompletion K) - y) ≤ WithZero.exp (-(n : ℤ))} ∈ nhds (x : v.adicCompletion K)`. Establish `ho` using `Valued.isOpen_closedBall (v.adicCompletion K) ((Valuation.ne_zero_iff Valued.v.restrict).mpr hz0)`. Establish `hc : Continuous fun y : v.adicCompletion K => (x : v.adicCompletion K) - y` using `continuous_const.sub continuous_id`. Use `Filter.mem_of_superset ((ho.preimage hc).mem_nhds ?_) ?_` and prove the remaining obligations. Use `show Valued.v.restrict ((x : v.adicCompletion K) - x) ≤ _`.
+
+Rewrite using `[sub_self, map_zero]`. Conclude with `zero_le'`. Introduce `y hy`. Rewrite using `[Set.mem_setOf_eq, ← hvz]`. Conclude with `(Valuation.restrict_le_iff Valued.v).mp hy`.
+
+Take `⟨_, hz, ⟨k, rfl⟩⟩` from `mem_closure_iff_nhds.mp ((denseRange_algebraMap (K := K) v) (x : v.adicCompletion K)) _ hnhds`. Simplify using `only [Set.mem_setOf_eq] at hz`. Establish `hk1 : v.valuation K k ≤ 1`. Establish `hx1 : Valued.v (x : v.adicCompletion K) ≤ 1` using `x.2`. Establish `hle : WithZero.exp (-(n : ℤ)) ≤ 1`.
+
+Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `Valuation.map_sub_le _ hx1 (hz.trans hle)`. Rewrite `h` using `[sub_sub_cancel]`. Establish `e : algebraMap K (v.adicCompletion K) k = (k : v.adicCompletion K)` using `rfl`.
+
+Rewrite `h` using `[e]`. Simplify using `using h`. Take `⟨a, ha⟩` from `exists_integer_valuation_sub_le_exp_neg v k hk1 n`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e1 : ((algebraMap (𝓞 K) (v.adicCompletionIntegers K) a : v.adicCompletionIntegers K) : v.adicCompletion K) = algebraMap K (v.adicCompletion K) (algebraMap (𝓞 K) K a)` using `rfl`.
+
+Establish `hsplit : (x : v.adicCompletion K) - algebraMap K (v.adicCompletion K) (algebraMap (𝓞 K) K a) = ((x : v.adicCompletion K) - algebraMap K (v.adicCompletion K) k) + algebraMap K (v.adicCompletion K) (k - algebraMap (𝓞 K) K a)`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hsplit]`. Use `Valuation.map_add_le _ hz ?_` and prove the remaining obligations.
+
+Establish `e2 : algebraMap K (v.adicCompletion K) (k - algebraMap (𝓞 K) K a) = ((k - algebraMap (𝓞 K) K a : K) : v.adicCompletion K)` using `rfl`. Rewrite using `[e2, valuedAdicCompletion_eq_valuation']`. Conclude with `ha`.
+-/
 private lemma exists_integer_valued_sub_le_exp_neg (x : v.adicCompletionIntegers K) (n : ℕ) :
     ∃ a : 𝓞 K, Valued.v ((x : v.adicCompletion K) -
       ((algebraMap (𝓞 K) (v.adicCompletionIntegers K) a : v.adicCompletionIntegers K) :
@@ -216,6 +280,21 @@ private lemma exists_integer_valued_sub_le_exp_neg (x : v.adicCompletionIntegers
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Polynomial in
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) in
 
+/- English proof (translation)
+Use `set n := (Associates.mk v.asIdeal).count (Associates.mk I).factors`. Establish `hIn : I ≤ v.asIdeal ^ n`. Rewrite using `[← Ideal.dvd_iff_le]`. Conclude with `(Associates.mk_le_mk_iff_dvd).mp (by`. Rewrite using `[Associates.mk_pow]`.
+
+Conclude with `(Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr hI) v.associates_irreducible).mpr le_rfl)`. Set `f : 𝓞 K →+* v.adicCompletionIntegers K ⧸ I.map (algebraMap (𝓞 K) (v.adicCompletionIntegers K))` to `(Ideal.Quotient.mk _).comp (algebraMap (𝓞 K) (v.adicCompletionIntegers K))`. Establish `hker : RingHom.ker f = v.asIdeal ^ n`. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `valued_le_of_mem_map_of_le_pow v hIn h`. Rewrite `h'` using `[_root_.GlobalTheory.LocalDifferentProduct.valued_coe_algebraMap]`. Conclude with `(intValuation_le_pow_iff_mem v a n).mp h'`.
+
+Introduce `h`. Apply `mem_map_adicCompletionIntegers_of_valued_le v hI` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.LocalDifferentProduct.valued_coe_algebraMap]`. Conclude with `(intValuation_le_pow_iff_mem v a n).mpr h`. Establish `hsurj : Function.Surjective f`.
+
+Introduce `q`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Take `⟨a, ha⟩` from `exists_integer_valued_sub_le_exp_neg v x n`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq]`.
+
+Apply `mem_map_adicCompletionIntegers_of_valued_le v hI` to reduce the goal to its premises. Rewrite `ha` using `[Valuation.map_sub_swap]`. Conclude with `ha` after adjusting the coercions. Express the relevant statement in the definitionally equal form `_ = Ideal.absNorm (v.asIdeal ^ n)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, ← hker]`.
+
+Conclude with `Nat.card_congr (RingHom.quotientKerEquivOfSurjective hsurj).toEquiv.symm`.
+-/
 theorem _root_.GlobalTheory.LocalDifferentProduct.card_quot_map {I : Ideal (𝓞 K)} (hI : I ≠ 0) :
     Nat.card (v.adicCompletionIntegers K ⧸
       I.map (algebraMap (𝓞 K) (v.adicCompletionIntegers K))) =
@@ -259,6 +338,11 @@ end Local
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Polynomial in
 
+/- English proof (translation)
+Establish `hcard : ∀ v : HeightOneSpectrum (𝓞 K), Nat.card (v.adicCompletionIntegers K ⧸ I.map (algebraMap (𝓞 K) (v.adicCompletionIntegers K))) = Ideal.absNorm (v.maxPowDividing I)` using `fun v => _root_.GlobalTheory.LocalDifferentProduct.card_quot_map v hI`. Repeatedly rewrite using `[hcard]`. Establish `hfin : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) => v.maxPowDividing I).Finite` using `Ideal.finite_mulSupport hI`. Use `⟨hfin.subset (Function.mulSupport_comp_subset (map_one _) _), ?_⟩` and prove the remaining obligations. Establish `h` using `MonoidHom.map_finprod (Ideal.absNorm : Ideal (𝓞 K) →*₀ ℕ).toMonoidHom hfin`.
+
+Simplify using `only [MonoidWithZeroHom.toMonoidHom_coe, Ideal.finprod_heightOneSpectrum_factorization hI] at h`. Conclude with `h.symm`.
+-/
 theorem _root_.GlobalTheory.LocalDifferentProduct.finprod_card_quot_map {K : Type} [Field K] [NumberField K] {I : Ideal (𝓞 K)} (hI : I ≠ 0) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) => Nat.card (v.adicCompletionIntegers K ⧸
       I.map (algebraMap (𝓞 K) (v.adicCompletionIntegers K)))).Finite ∧
@@ -284,6 +368,41 @@ end Relative
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Polynomial in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hcm hstar hun`. Establish `hD : differentIdeal ℤ (𝓞 F) ≠ 0` using `differentIdeal_ne_bot`. Establish `h` using `_root_.GlobalTheory.LocalDifferentProduct.finprod_card_quot_map hD`. Establish `h2 : ∏ᶠ v, _root_.GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.normDifferentV F v = Ideal.absNorm (differentIdeal ℤ (𝓞 F))` using `h.2`. Use `⟨h.1, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2, NumberField.absNorm_differentIdeal F (𝓞 F)]`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.absDiscr, Nat.cast_natAbs]`. Establish `hrank : Module.finrank F E = 2` using `hcm.2.2.1`. Establish `hD1 : differentIdeal (𝓞 F) (𝓞 E) = ⊤`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨θ, t, ht, hθt⟩` from `hun.2.2 P hP`. Establish `hσ : σ (algebraMap (𝓞 E) E θ) = algebraMap (𝓞 E) E t` using `by rw [ht, hstar]`. Use `set x : E := algebraMap (𝓞 E) E θ with hx`. Establish `hxσ : x - σ x = algebraMap (𝓞 E) E (θ - t)` using `by rw [hσ, map_sub]`.
+
+Establish `hxσ0 : x - σ x ≠ 0`. Rewrite using `[hxσ]`. Introduce `h`. Apply `hθt` to reduce the goal to its premises. Rewrite using `[(map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)).mp h]`.
+
+Conclude with `P.zero_mem`. Establish `hint : IsIntegral F x` using `Algebra.IsIntegral.isIntegral x`. Establish `hdeg : (minpoly F x).natDegree = 2`. Establish `h1` using `minpoly.natDegree_le (A := F) x`. Rewrite `h1` using `[hrank]`.
+
+Establish `h0` using `minpoly.natDegree_pos hint`. Establish `hne1 : (minpoly F x).natDegree ≠ 1`. Introduce `h`. Take `⟨f, hf⟩` from `minpoly.natDegree_eq_one_iff.mp h`. Apply `hxσ0` to reduce the goal to its premises.
+
+Rewrite using `[← hf, AlgHom.commutes, sub_self]`. Use linear arithmetic over natural numbers and integers. Establish `htopF : IntermediateField.adjoin F {x} = ⊤`. Use `IntermediateField.eq_of_le_of_finrank_eq le_top ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin.finrank hint, hdeg, IntermediateField.finrank_top', hrank]`.
+
+Establish `htop : Algebra.adjoin F {x} = ⊤`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic, htopF, IntermediateField.top_toSubalgebra]`. Establish `hmem` using `aeval_derivative_mem_differentIdeal (𝓞 F) F E θ htop`. Establish `hfac : (minpoly F x).map (algebraMap F E) = (X - C x) * (X - C (σ x))` using `by set q := (minpoly F x).map (algebraMap F E) with hqdef`. Establish `hq : q.IsRoot x`.
+
+Rewrite using `[IsRoot, hqdef, eval_map_algebraMap, minpoly.aeval]`. Establish `hqσ : q.IsRoot (σ x)`. Rewrite using `[IsRoot, hqdef, eval_map_algebraMap, aeval_algHom_apply, minpoly.aeval, map_zero]`. Use `set r := q /ₘ (X - C x) with hrdef`. Establish `hqr : (X - C x) * r = q` using `mul_divByMonic_eq_iff_isRoot.mpr hq`.
+
+Establish `hqmonic : q.Monic` using `(minpoly.monic hint).map _`. Establish `hrmonic : r.Monic` using `Polynomial.Monic.of_mul_monic_left (monic_X_sub_C x) (hqr ▸ hqmonic)`. Establish `hrdeg : r.natDegree = 1`. Rewrite using `[hrdef, natDegree_divByMonic _ (monic_X_sub_C x), natDegree_X_sub_C, hqdef, natDegree_map, hdeg]`. Establish `hr` using `hrmonic.eq_X_add_C hrdeg`.
+
+Establish `hrσ : r.eval (σ x) = 0`. Establish `h` using `hqσ`. Rewrite `h` using `[IsRoot, ← hqr, eval_mul, eval_sub, eval_X, eval_C]`. Conclude with `(mul_eq_zero.mp h).resolve_left (by`. Introduce `h'`.
+
+Apply `hxσ0` to reduce the goal to its premises. Rewrite using `[← neg_sub, h', neg_zero])`. Establish `hc0 : r.coeff 0 = -σ x`. Rewrite `hrσ` using `[hr, eval_add, eval_X, eval_C]`. Take the linear combination `hrσ`.
+
+Rewrite using `[← hqr, hr, hc0, C_neg, ← sub_eq_add_neg]`. Establish `hθint : IsIntegral (𝓞 F) x` using `(Algebra.IsIntegral.isIntegral (R := 𝓞 F) θ).map (IsScalarTower.toAlgHom (𝓞 F) (𝓞 E) E)`. Establish `hmapE : (minpoly (𝓞 F) θ).map (algebraMap (𝓞 F) E) = (X - C x) * (X - C (σ x))`. Rewrite using `[← minpoly.algebraMap_eq (FaithfulSMul.algebraMap_injective (𝓞 E) E) θ, ← hx, IsScalarTower.algebraMap_eq (𝓞 F) F E, ← Polynomial.map_map, ← minpoly.isIntegrallyClosed_eq_field_fractions' F hθint, hfac]`. Establish `hval : algebraMap (𝓞 E) E (aeval θ (derivative (minpoly (𝓞 F) θ))) = x - σ x`.
+
+Rewrite using `[← aeval_algebraMap_apply, ← hx, ← eval_map_algebraMap, ← derivative_map, hmapE]`. Simplify using `[derivative_mul]`. Establish `hder : aeval θ (derivative (minpoly (𝓞 F) θ)) = θ - t` using `FaithfulSMul.algebraMap_injective (𝓞 E) E (by rw [hval, hxσ])`. Conclude with `hθt (hder ▸ hle hmem)`. Establish `hnat : (discr E).natAbs = (discr F).natAbs ^ 2`.
+
+Rewrite using `[NumberField.natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow F (𝓞 F) E (𝓞 E), hD1, Ideal.absNorm_top, one_mul, hrank]`. Establish `hE : |(discr E : ℝ)| = |(discr F : ℝ)| ^ 2`. Establish `h' : ((discr E).natAbs : ℝ) = ((discr F).natAbs : ℝ) ^ 2` using `by exact_mod_cast hnat`. Rewrite `h'` using `[Nat.cast_natAbs, Nat.cast_natAbs, Int.cast_abs, Int.cast_abs]`. Conclude with `h'`.
+
+Establish `hN : (0 : ℝ) < Fintype.card (InfinitePlace E)`. Conclude with `Fintype.card_pos` after adjusting the coercions. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.absDiscr _root_.Formalism.HermitianLatticesTheory.vInv _root_.Formalism.HermitianLatticesTheory.fDeg`. Rewrite using `[hE, mul_div_cancel₀ _ (two_ne_zero' ℝ), ← Real.rpow_natCast _ (Fintype.card (InfinitePlace E)), ← Real.rpow_natCast |(discr F : ℝ)| 2, ← Real.rpow_mul (abs_nonneg _), ← Real.rpow_mul (abs_nonneg _)]`. Establish `hexp : ((2 : ℕ) : ℝ) * (1 / (2 * (Fintype.card (InfinitePlace E) : ℝ))) * (Fintype.card (InfinitePlace E) : ℝ) = 1`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hexp, Real.rpow_one]`.
+-/
 theorem _root_.GlobalTheory.LocalDifferentProduct.prod_normDifferentV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] [StarRing E] (σ : E →ₐ[F] E), _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ → (∀ x : E, star x = σ x) →
     _root_.Formalism.HermitianLatticesTheory.IsCMUnram E → (Function.mulSupport (_root_.GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.normDifferentV F)).Finite ∧

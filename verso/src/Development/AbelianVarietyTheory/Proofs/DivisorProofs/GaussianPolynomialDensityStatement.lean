@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussianPolynomialD
 import Mathlib
 open SchwartzMap
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.gaussian_mul_mem_closure_of_taylor | exact GlobalTheory.gaussian_mul_mem_closure_of_taylor | (intros; apply GlobalTheory.gaussian_mul_mem_closure_of_taylor <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gaussian_polynomial_density : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (Q : V →ₗ[ℝ] V →ₗ[ℝ] ℂ) (c : ℝ), 0 < c → (∀ x, c * ‖x‖ ^ 2 ≤ (Q x x).re) →
     ∀ g : SchwartzMap V ℂ, (∀ x, g x = Complex.exp (-(Q x x))) →

@@ -33,6 +33,57 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl
 open GlobalTheory.CompanionTheory.SW.Core GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Dec
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ n ψ hψ μ hμ Q hQ`. Take `⟨hA1, hA2, hA3, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Use `haveI : LocallyCompactSpace (Af F) := hA1`. Use `haveI : SecondCountableTopology (Af F) := hA2`. Use `haveI : T2Space (Af F) := hA3`.
+
+Take `⟨hT1, hT2, hT3, hT4, -, -, -, hT8, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Af F)`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := hT1`. Use `haveI : SecondCountableTopology (Af F ⊗[F] E) := hT3`. Use `haveI : T2Space (Af F ⊗[F] E) := hT4`. Use `haveI : BorelSpace (Fin n → Fin M → Af F ⊗[F] E) := hT8 n M`.
+
+Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨d, ⟨b⟩⟩ : ∃ d : ℕ, Nonempty (Module.Basis (Fin d) F E)` from `⟨_, ⟨Module.finBasis F E⟩⟩`. Take `⟨N, hN, hNU⟩` from `GlobalTheory.T.lattice_levels_neighbourhood_basis F E σ hCM d b n M _ (invariant_mem_nhds hQ.1 hQ.2)`. Take `⟨hLo, hLc⟩` from `GlobalTheory.T.lattice_level_open_compact F E σ hCM d b n M N hN`. Use `set L := latN b n M N with hL`.
+
+Take `⟨s, hs⟩` from `eq_sum_cosets hQ.2 L hLo (fun x l hl => hNU hl x)`. Take `⟨D, hD, hDc⟩` from `GlobalTheory.T.trace_dual_denominator_bounded F`. Take `⟨t₁, ht₁, htest⟩` from `GlobalTheory.T.rational_character_kernel_scaling F E σ hCM d b ψ hψ N hN D hD hDc`. Take `⟨s₂, hs₂, hrat⟩` from `GlobalTheory.T.rational_tuple_in_lattice_level F E d b M J n N hN`. Establish `hs₂F : ((s₂ : ℕ) : F) ≠ 0` using `Nat.cast_ne_zero.2 hs₂.ne'`.
+
+Use `⟨(∑ a ∈ s, ‖Q a‖) * (μ (L : Set _)).toReal, t₁ * (s₂ : F), mul_ne_zero ht₁ hs₂F, fun c => ?_⟩` and prove the remaining obligations. Use `set t : F := t₁ * (s₂ : F) with ht`. Use `set bc := hermIn (Af F) σ n c with hbc`. Take `⟨hp1, hp2, hp3⟩` from `GlobalTheory.T.phase_continuous_unitary F E σ hCM M J n ψ hψ bc`. Take `⟨hq1, hq2⟩` from `GlobalTheory.T.pairing_biadditive F E σ M J n ψ bc`.
+
+Use `set q := phaseB σ J (psiFin F ψ) bc with hq`. Use `set B := pairB σ J (psiFin F ψ) bc with hB`. Use `set S : Set (Fin n → Fin M → Af F ⊗[F] E) := {y | y ∈ L ∧ ∀ l ∈ L, B l y = 1} with hS`. Establish `hLfin : μ (L : Set _) ≠ ⊤` using `hLc.measure_lt_top.ne`. Establish `hSL : S ⊆ L` using `fun y hy => hy.1`.
+
+Establish `hSfin : μ S ≠ ⊤` using `ne_top_of_le_ne_top hLfin (measure_mono hSL)`. Establish `hbd : ‖starLoc (Af F) σ J (psiFin F ψ) μ Q bc‖ ≤ (∑ a ∈ s, ‖Q a‖) * √((μ (L : Set _)).toReal * (μ S).toReal)`. Establish `hw` using `GlobalTheory.T.gauss_sum_quadratic_character_bound _ μ L hLc hLo q B hp1 hp2 (GlobalTheory.T.phase_cocycle_bimultiplicative F E σ hCM M J hJ n ψ hψ bc) hq1 hq2`. Conclude with `GlobalTheory.T.gauss_sum_finite_average_bound _ μ L hLc hLo q hp1 hp2 _ hw Q s hs`. Establish `hSm : MeasurableSet S`.
+
+Establish `e : S = (L : Set _) ∩ ⋂ l ∈ L, (B l) ⁻¹' {1}`. Use extensionality with `y`. Simplify using `[hS]`. Establish `hcl : IsClosed S`. Rewrite using `[e]`.
+
+Establish `hLcl : IsClosed (L : Set (Fin n → Fin M → Af F ⊗[F] E))` using `hLc.isClosed`. Conclude with `hLcl.inter (isClosed_biInter fun l _ => isClosed_singleton.preimage (hp3 l))`. Conclude with `hcl.measurableSet`. Establish `hdiff : ∀ u ∈ S, ∀ v ∈ S, ∀ l ∈ L, B l (v - u) = 1`. Introduce `u hu v hv l hl`.
+
+Establish `h` using `hq2 l u (v - u)`. Rewrite `h` using `[add_sub_cancel, hv.2 l hl, hu.2 l hl, one_mul]`. Conclude with `h.symm`. Use `set c' : Matrix (Fin n) (Fin n) E := ((t • c).1).map σ with hc'`. Establish `hδ : delta c' = delta (t • c).1` using `GlobalTheory.T.delta_conj_invariant F E σ n _`.
+
+Establish `hδ0 : delta c' ≠ 0` using `GlobalTheory.T.delta_ne_zero' E n c'`. Use `haveI hfin : Finite ((Fin n → 𝓞 E) ⧸ Kc c') := Nat.finite_of_card_ne_zero hδ0`. Use `haveI := Fintype.ofFinite ((Fin n → 𝓞 E) ⧸ Kc c')`. Establish `hcount : ((delta c' ^ M : ℕ) : ℝ≥0∞) * μ S ≤ μ (L : Set _)`. Establish `h` using `GlobalTheory.T.disjoint_translates_volume_bound _ μ L S hSm hSL (Fin M → (Fin n → 𝓞 E) ⧸ Kc c') (fun φ => ratTuple J s₂ fun i => (φ i).out) (fun φ => hrat _) ?_`.
+
+Establish `hc : Fintype.card (Fin M → (Fin n → 𝓞 E) ⧸ Kc c') = delta c' ^ M`. Rewrite using `[Fintype.card_fun, Fintype.card_fin, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Rewrite `h` using `[hc]`. Then use the resulting hypothesis. Introduce `φ φ' u v hu hv huv`.
+
+Use function extensionality and compare the values at `i₀`. Establish `hρ : ratTuple (F` using `F) J s₂ (fun i => (φ i).out - (φ' i).out) = ratTuple J s₂ (fun i => (φ i).out) - ratTuple J s₂ (fun i => (φ' i).out) := by`. Use function extensionality and compare the values at `a j`. Simplify using `only [ratTuple, Pi.sub_apply, map_sub]`. Rewrite using `[show (fun i => algebraMap (𝓞 E) E ((φ i).out a) - algebraMap (𝓞 E) E ((φ' i).out a)) = (fun i => algebraMap (𝓞 E) E ((φ i).out a)) - (fun i => algebraMap (𝓞 E) E ((φ' i).out a)) from rfl, Matrix.mulVec_sub]`.
+
+Simplify using `[mul_sub]`. Establish `hmem : ∀ l ∈ L, B l (ratTuple J s₂ fun i => (φ i).out - (φ' i).out) = 1`. Introduce `l hl`. Establish `: ratTuple (F` using `F) J s₂ (fun i => (φ i).out - (φ' i).out) = v - u := by`. Rewrite using `[hρ, sub_eq_sub_iff_add_eq_add, add_comm v]`.
+
+Conclude with `huv`. Rewrite using `[this]`. Conclude with `hdiff u hu v hv l hl`. Establish `hK : (φ i₀).out - (φ' i₀).out ∈ Kc c'`. Introduce `c₀`.
+
+Establish `hx` using `htest ((s₂ : E) * ∑ a, c.1 a c₀ * algebraMap (𝓞 E) E (((φ i₀).out - (φ' i₀).out) a)) (fun x hx => by`. Establish `h1` using `hmem (fun a i => if a = c₀ ∧ i = i₀ then x else 0) (by`. Introduce `a i`. Distinguish the cases in `h : a = c₀ ∧ i = i₀`. Simplify `hx` using `[h]`.
+
+Simplify using `only [h, if_false]`. Conclude with `(latN b n M N).zero_mem a i)`. Rewrite `h1` using `[hB, hbc, GlobalTheory.T.pairing_on_rational_tuple_formula F E σ M J hJ n (psiFin F ψ) c c₀ i₀ x s₂ _]`. Conclude with `h1)`. Take `⟨o, ho⟩` from `hx`.
+
+Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho]`. Simplify using `only [Matrix.mulVec, dotProduct, hc', Matrix.map_apply, Finset.smul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h3 : σ (c.1 c₀ a) = c.1 a c₀` using `c.2 a c₀`.
+
+Rewrite using `[show σ ((t • c).1 c₀ a) = t • c.1 a c₀ from by show σ (t • c.1 c₀ a) = _`. Rewrite using `[Algebra.smul_def, map_mul, AlgHom.commutes, h3, ← Algebra.smul_def]]`. Simplify using `only [ht, Algebra.smul_def, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : (QuotientAddGroup.mk (φ' i₀).out : (Fin n → 𝓞 E) ⧸ Kc c') = QuotientAddGroup.mk (φ i₀).out` using `QuotientAddGroup.eq.2 (by rw [neg_add_eq_sub]; exact hK)`.
+
+Rewrite `h5` using `[QuotientAddGroup.out_eq', QuotientAddGroup.out_eq']`. Conclude with `h5.symm`. Establish `hδpos : (0 : ℝ) < (delta c' : ℝ)` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero hδ0)`. Establish `hreal : (delta c' : ℝ) ^ M * (μ S).toReal ≤ (μ (L : Set _)).toReal`. Establish `h` using `ENNReal.toReal_mono hLfin hcount`.
+
+Rewrite `h` using `[ENNReal.toReal_mul]`. Simplify using `using h`. Rewrite using `[← hδ]`. Use `set A := (μ (L : Set _)).toReal with hA`. Use `set Sr := (μ S).toReal with hSr`.
+
+Establish `hA0 : 0 ≤ A` using `ENNReal.toReal_nonneg`. Establish `hS0 : 0 ≤ Sr` using `ENNReal.toReal_nonneg`. Use `set w : ℝ := (delta c' : ℝ) ^ (-((M : ℝ) / 2)) with hw`. Establish `hw0 : 0 ≤ w` using `Real.rpow_nonneg hδpos.le _`. Establish `hw2 : w ^ 2 * (delta c' : ℝ) ^ M = 1`.
+
+Rewrite using `[hw, ← Real.rpow_natCast _ 2, ← Real.rpow_mul hδpos.le, ← Real.rpow_natCast _ M, ← Real.rpow_add hδpos]`. Establish `: -((M : ℝ) / 2) * ((2 : ℕ) : ℝ) + (M : ℝ) = 0` using `by push_cast; ring`. Rewrite using `[this, Real.rpow_zero]`. Establish `hsq : √(A * Sr) ≤ A * w`. Use `Real.sqrt_le_iff.2 ⟨mul_nonneg hA0 hw0, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Sr = w ^ 2 * ((delta c' : ℝ) ^ M * Sr)` using `by rw [← mul_assoc, hw2, one_mul]`. Establish `h2 : Sr ≤ w ^ 2 * A`. Rewrite using `[h1]`. Conclude with `mul_le_mul_of_nonneg_left hreal (sq_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
     ∀ (n : ℕ) (ψ : AddChar (AF F) ℂ), IsCharAF F ψ →

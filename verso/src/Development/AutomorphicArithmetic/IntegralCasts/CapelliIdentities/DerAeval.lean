@@ -1,6 +1,17 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.PowMapMemOfPowMulMem
 
+/- English proof (translation)
+Introduce `F _ δ hδ E _ _ hE σ _ _ t P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [MvPolynomial.aeval_C, MvPolynomial.pderiv_C, map_zero, zero_mul, Finset.sum_const_zero]`. Conclude with `hE a`.
+
+Consider the case `add p q hp hq`. Simplify using `only [map_add, add_mul, Finset.sum_add_distrib]`. Rewrite using `[hδ.add, hp, hq]`. Consider the case `mul_X p n hp`. Establish `h : ∀ i : σ, MvPolynomial.aeval t (MvPolynomial.pderiv i (p * MvPolynomial.X n)) * δ (t i) = (if i = n then MvPolynomial.aeval t p * δ (t i) else 0) + t n * (MvPolynomial.aeval t (MvPolynomial.pderiv i p) * δ (t i))`.
+
+Introduce `i`. Rewrite using `[MvPolynomial.pderiv_mul]`. Distinguish the cases in `hi : i = n`. Substitute `hi` using the available equality. Rewrite using `[MvPolynomial.pderiv_X_self, if_pos rfl]`.
+
+Simplify using `only [map_add, map_mul, MvPolynomial.aeval_X, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[MvPolynomial.pderiv_X_of_ne (Ne.symm hi), if_neg hi]`. Simplify using `only [map_mul, MvPolynomial.aeval_X, mul_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl fun i _ => h i, Finset.sum_add_distrib, ← Finset.mul_sum, ← hp, Finset.sum_ite_eq' Finset.univ n, if_pos (Finset.mem_univ n), map_mul, MvPolynomial.aeval_X, hδ.mul]`.
+-/
 theorem UpperTheory.Reformulated.B.Qf29.der_aeval :
     ∀ {F : Type} [inst : Field F] {δ : F → F},
       Formalism.L2.Pj.GenericSectionMinimum.IsDer δ →

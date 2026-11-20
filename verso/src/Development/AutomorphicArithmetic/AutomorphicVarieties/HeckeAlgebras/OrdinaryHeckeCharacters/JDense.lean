@@ -13,6 +13,11 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Rewrite using `[RingHom.mem_ker]`. Use `hsep (f b) fun x hx => hb (x.comp f) (fun y hy => ?_) (hG _ ?_)` and prove the remaining obligations. Rewrite `hy`, the goal using `[RingHom.mem_ker]`. Rewrite using `[AlgHom.comp_apply, hy, map_zero]`. Establish `e : ((x.comp f).comp lam).toRingHom = x.toRingHom.comp (algebraMap A T)` using `RingHom.ext fun y => congrArg x (hf y)`.
+
+Rewrite using `[e]`. Conclude with `hx`.
+-/
 private theorem UpperTheory.V.Hi.dense_arithmetic_points {O A B T E : Type} [CommRing O] [CommRing A] [CommRing B] [CommRing T] [CommRing E]
     [Algebra O A] [Algebra O B] [Algebra O T] [Algebra O E] [Algebra A T] (lam : A →ₐ[O] B) (f : B →ₐ[O] T)
     (hf : ∀ a, f (lam a) = algebraMap A T a) (P : (A →+* E) → Prop) (G : (B →ₐ[O] E) → Prop)

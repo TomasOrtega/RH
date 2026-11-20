@@ -23,6 +23,9 @@ namespace GlobalTheory.SmGL.Stages
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `⟨parIndEquiv _ (compEquiv (.mk (φ.toLinearEquiv.lTensor V) fun g => ?_) _)⟩` and prove the remaining obligations. Use `TensorProduct.ext' fun v w => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.lTensor_tmul, extTensor_tmul]`. Use `congr 1`. Conclude with `φ.toIntertwiningMap.isIntertwining _ _ _ _`.
+-/
 theorem ind₂_equiv_right {a b n V W U : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
     [Fintype n] [DecidableEq n] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup U] [Module ℂ U] (h : a ⊕ b ≃ n) (A : Representation ℂ (GL a k) V)
@@ -34,6 +37,15 @@ theorem ind₂_equiv_right {a b n V W U : Type} [Fintype a] [DecidableEq a] [Fin
   congr 1
   exact φ.toIntertwiningMap.isIntertwining _ _ _ _
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Conclude with `map_zero (piTensor ρ g)`. Consider the case `add x y hx hy => simp only [map_add]; exact (map_add (piTensor ρ g) _ _).trans (by rw [hx, hy]; rfl)`. Consider the case `tmul v w`.
+
+Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `add v v' hv hv' => simp only [TensorProduct.add_tmul, map_add]; exact (map_add (piTensor ρ g) _ _).trans (by rw [hv, hv']; rfl)`. Consider the case `smul_tprod c v`. Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `add w w' hw hw' => simp only [TensorProduct.tmul_add, map_add]; exact (map_add (piTensor ρ g) _ _).trans (by rw [hw, hw']; rfl)`.
+
+Consider the case `smul_tprod c' w`. Establish `key : piTensor ρ g (PiTensorProduct.tmulEquivDep ℂ (fun c => X (toLex c)) (PiTensorProduct.tprod ℂ v ⊗ₜ PiTensorProduct.tprod ℂ w)) = PiTensorProduct.tmulEquivDep ℂ (fun c => X (toLex c)) (PiTensorProduct.tprod ℂ (fun a => ρ (toLex (.inl a)) (g (toLex (.inl a))) (v a)) ⊗ₜ PiTenso …`. Rewrite using `[PiTensorProduct.tmulEquivDep_apply, PiTensorProduct.tmulEquivDep_apply]`. Use `(piTensor_tprod ρ g _).trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> rfl`. Simplify using `only [TensorProduct.smul_tmul', TensorProduct.tmul_smul, map_smul, TensorProduct.map_tmul, piTensor_tprod]`. Rewrite using `[← TensorProduct.smul_tmul', ← TensorProduct.smul_tmul', ← TensorProduct.smul_tmul', ← TensorProduct.smul_tmul', map_smul, map_smul, map_smul, map_smul, ← key]`. Conclude with `(LinearMap.map_smul _ _ _).trans (congrArg _ (LinearMap.map_smul _ _ _))`.
+-/
 theorem piTensor_tmulEquivDep {β₀ β₁ : Type} {Γ X : β₀ ⊕ₗ β₁ → Type} [∀ c, Group (Γ c)]
     [∀ c, AddCommGroup (X c)] [∀ c, Module ℂ (X c)] (ρ : ∀ c, Representation ℂ (Γ c) (X c)) (g : ∀ c, Γ c)
     (x : (⨂[ℂ] i, X (toLex (.inl i))) ⊗[ℂ] (⨂[ℂ] j, X (toLex (.inr j)))) :
@@ -79,6 +91,17 @@ def splitEquiv {s : ℕ} (t : Fin (s + 1) → ℕ) :
     obtain ⟨a, j⟩ := c
     induction a using Fin.cases <;> rfl
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero`. Introduce `d t d' e' X _ _ ρ n _ _ e`. Use `haveI : IsEmpty n := ⟨fun x => (e.symm x).1.elim0⟩`. Use `haveI : IsEmpty (Σₗ a : Fin 0, Fin (t a)) := ⟨fun c => (ofLex c).1.elim0⟩`.
+
+Use `haveI : IsEmpty (Σ c : (Σₗ a : Fin 0, Fin (t a)), Fin (d' (ofLex c).1 (ofLex c).2)) := ⟨fun x => (ofLex x.1).1.elim0⟩`. Set `E : (Σ c : (Σₗ a : Fin 0, Fin (t a)), Fin (d' (ofLex c).1 (ofLex c).2)) ≃ n` to `Equiv.equivOfIsEmpty _ _`. Conclude with `⟨E, GlobalTheory.T.parabolicInductionProduct_equiv_of_no_blocks (k := k) _ _ _ _⟩`. Consider the case `succ s ih`. Introduce `d t d' e' X _ _ ρ n _ _ e`.
+
+Establish `E1` using `multiProd_succ_equiv (k := k) (m := fun a => Fin (d a)) (X := fun a => IndSp (e' a) (piTensor (ρ a))) e fun a => multiProd (e' a) (ρ a)`. Take `⟨E1⟩` from `E1`. Establish `E2` using `ih (fun i => d i.succ) (fun i => t i.succ) (fun i => d' i.succ) (fun i => e' i.succ) (fun i => X i.succ) (fun i => ρ i.succ) _ (Equiv.refl _)`. Take `⟨Er, ⟨E2⟩⟩` from `E2`. Set `mS : Fin (t 0) ⊕ₗ (Σₗ i : Fin s, Fin (t i.succ)) → Type` to `fun c => Fin (d' (ofLex (splitEquiv t c)).1 (ofLex (splitEquiv t c)).2)`.
+
+Set `Es : (Σ c, mS c) ≃ n` to `(Equiv.sumSigmaDistrib fun x => mS (toLex x)).trans ((Equiv.sumCongr (e' 0) Er).trans ((headTail _).trans e))`. Establish `E4` using `GlobalTheory.T.inductionInStages_twoFactors_equiv (k := k) (m := mS) (a := Fin (d 0)) (b := Σ i : Fin s, Fin (d i.succ)) (V := ⨂[ℂ] b, X 0 b) (W := ⨂[ℂ] c : Σₗ i : Fin s, Fin (t i.succ), X (ofLex c).1.succ (ofLex c).2) (U := ⨂[ℂ] c : Fin (t 0) ⊕ₗ (Σₗ i : Fin s, Fin (t i.succ)), X …`. Take `⟨E4⟩` from `E4`. Establish `E2' : (multiProd (Equiv.refl _) fun i : Fin s => multiProd (e' i.succ) (ρ i.succ)).Equiv (parInd (m` using `fun j => mS (toLex (Sum.inr j))) Er (piTensor fun c : Σₗ i : Fin s, Fin (t i.succ) => ρ (ofLex c).1.succ (ofLex c).2)) := E2`. Establish `E3` using `ind₂_equiv_right ((headTail fun i => Fin (d i)).trans e) (parInd (α := Fin (t 0)) (m := fun i => mS (toLex (Sum.inl i))) (e' 0) (piTensor (ρ 0))) E2'`.
+
+Take `⟨E3⟩` from `E3`. Set `Esig : (Σ c : (Σₗ a, Fin (t a)), Fin (d' (ofLex c).1 (ofLex c).2)) ≃ n` to `(Equiv.sigmaCongrLeft (β := fun c : Σₗ a, Fin (t a) => Fin (d' (ofLex c).1 (ofLex c).2)) (splitEquiv t)).symm.trans Es`. Establish `E5` using `GlobalTheory.T.parabolicInductionProduct_block_renaming_equiv (k := k) (splitEquiv t) (GlobalTheory.T.lexSum_splitFirstBlock_strictMono s t) (splitEquiv t).surjective Esig Es (fun c' x => congrArg Es ((Equiv.sigmaCongrLeft (β := fun c : Σₗ a, Fin (t a) => Fin (d' (ofLex c).1 (ofL …`. Take `⟨E5⟩` from `E5`. Conclude with `⟨Esig, ⟨E1.symm.trans (E3.trans (E4.trans E5.symm))⟩⟩`.
+-/
 theorem stages_equiv (s : ℕ) : ∀ (d t : Fin s → ℕ) (d' : ∀ a, Fin (t a) → ℕ)
     (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a))
     (X : ∀ a, Fin (t a) → Type) [∀ a b, AddCommGroup (X a b)] [∀ a b, Module ℂ (X a b)]
@@ -134,6 +157,11 @@ theorem stages_equiv (s : ℕ) : ∀ (d t : Fin s → ℕ) (d' : ∀ a, Fin (t a
     obtain ⟨E5⟩ := E5
     exact ⟨Esig, ⟨E1.symm.trans (E3.trans (E4.trans E5.symm))⟩⟩
 
+/- English proof (translation)
+Establish `hφ` using `stages_equiv (k := k) s d t d' e' X ρ (Fin n) e`. Take `⟨E0, ⟨φ⟩⟩` from `hφ`. Set `F : Fin (∑ a, t a) ≃ Σₗ a, Fin (t a)` to `finSigmaFinEquiv.symm.trans toLex`. Set `E : (Σ c : Fin (∑ a, t a), Fin (d' (finSigmaFinEquiv.symm c).1 (finSigmaFinEquiv.symm c).2)) ≃ Fin n` to `(Equiv.sigmaCongrLeft (β := fun c : Σₗ a, Fin (t a) => Fin (d' (ofLex c).1 (ofLex c).2)) F).trans E0`. Establish `hψ` using `GlobalTheory.T.parabolicInductionProduct_block_renaming_equiv (k := k) F (GlobalTheory.T.finSigmaFinEquiv_symm_strictMono_toLex s t) F.surjective E0 E (fun _ _ => rfl) fun c => ρ (ofLex c).1 (ofLex c).2`.
+
+Take `⟨ψ⟩` from `hψ`. Conclude with `⟨E, .of_injective (φ.trans ψ).toIntertwiningMap (φ.trans ψ).toLinearEquiv.injective⟩`.
+-/
 theorem isSubquotient_multiProd_multiProd (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (s n : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n) (t : Fin s → ℕ)
     (d' : ∀ a, Fin (t a) → ℕ) (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a)) (X : ∀ a, Fin (t a) → Type)

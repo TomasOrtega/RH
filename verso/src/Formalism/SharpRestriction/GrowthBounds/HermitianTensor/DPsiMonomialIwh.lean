@@ -7,11 +7,21 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames Formalism.GradedWeylDivisibility MvPolynomial Formalism.MainNotions.G.LatticeSystems
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[← ldrow_weight_rowW, h hu]`.
+-/
 theorem rowA_of_iwh {K : Type} [CommRing K] {k n : ℕ} {f : MvPolynomial (Fin k × Fin n) K} {μ : Fin k → ℕ}
     (h : IsWeightedHomogeneous (rowW k n) f μ) (a : Fin k) : RowA a f (μ a) := by
   intro u hu
   rw [← ldrow_weight_rowW, h hu]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.single_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `Finset.sum_eq_zero fun p _ => if_neg (Fin.succAbove_ne a' p).symm`.
+
+Take `⟨q, rfl⟩` from `Fin.exists_succAbove_eq h`. Rewrite using `[Finset.sum_eq_single q]`. Rewrite using `[if_pos rfl]`. Introduce `p _ hp`. Conclude with `if_neg fun e => hp (Fin.succAbove_right_injective e).symm`.
+
+Introduce `hq`. Conclude with `absurd (Finset.mem_univ q) hq`.
+-/
 theorem qt_cnt (m : ℕ) (i a' : Fin (m + 1)) :
     (∑ p : Fin m, (Pi.single (i.succAbove p) 1 : Fin (m + 1) → ℕ)) a' = if a' = i then 0 else 1 := by
   classical
@@ -28,6 +38,11 @@ theorem qt_cnt (m : ℕ) (i a' : Fin (m + 1)) :
     · intro hq
       exact absurd (Finset.mem_univ q) hq
 
+/- English proof (translation)
+Establish `e : covY K m i = ((-1 : ℤ) ^ (i : ℕ)) • initMinor K (n` using `m + 1) i.succAbove (Nat.le_succ m) := by`. Rewrite using `[zsmul_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e, ← mem_weightedHomogeneousSubmodule]`.
+
+Conclude with `zsmul_mem ((mem_weightedHomogeneousSubmodule _ _ _ _).2 (ldbasis_initMinor_rowHom K i.succAbove (Nat.le_succ m))) _`.
+-/
 theorem qt_covY_iwh (K : Type) [Field K] (m : ℕ) (i : Fin (m + 1)) :
     IsWeightedHomogeneous (rowW (m + 1) (m + 1)) (covY K m i) (∑ p : Fin m, Pi.single (i.succAbove p) 1) := by
   have e : covY K m i = ((-1 : ℤ) ^ (i : ℕ)) • initMinor K (n := m + 1) i.succAbove (Nat.le_succ m) := by
@@ -37,6 +52,13 @@ theorem qt_covY_iwh (K : Type) [Field K] (m : ℕ) (i : Fin (m + 1)) :
   rw [e, ← mem_weightedHomogeneousSubmodule]
   exact zsmul_mem ((mem_weightedHomogeneousSubmodule _ _ _ _).2 (ldbasis_initMinor_rowHom K i.succAbove (Nat.le_succ m))) _
 
+/- English proof (translation)
+Establish `hx : ∀ i : Fin (m + 1), deltaB K m (PsiXY K m (X (Sum.inl i))) = X (i, 0)`. Introduce `i`. Simplify using `[PsiXY, deltaB]`. Establish `hy : ∀ i : Fin (m + 1), deltaB K m (PsiXY K m (X (Sum.inr i))) = covY K m i`. Introduce `i`.
+
+Simplify using `only [PsiXY, deltaB, aeval_X, Sum.elim_inr, rename_rename]`. Establish `: (Prod.snd ∘ Prod.mk false : Fin (m + 1) × Fin (m + 1) → Fin (m + 1) × Fin (m + 1)) = id` using `rfl`. Rewrite using `[this, rename_id_apply]`. Establish `hC : deltaB K m (PsiXY K m (C c)) = C c`. Simplify using `only [← algebraMap_eq, AlgHom.commutes]`.
+
+Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (by simp), Fintype.prod_sum_type]`. Simplify using `only [map_mul, map_prod, map_pow, hx, hy, hC]`.
+-/
 theorem dPsi_monomial (K : Type) [Field K] (m : ℕ) (v : XY (m + 1) →₀ ℕ) (c : K) :
     deltaB K m (PsiXY K m (monomial v c)) =
       C c * ((∏ i : Fin (m + 1), X (i, (0 : Fin (m + 1))) ^ v (Sum.inl i)) * ∏ i : Fin (m + 1), covY K m i ^ v (Sum.inr i)) := by
@@ -57,6 +79,9 @@ def qtW (m : ℕ) (v : XY (m + 1) →₀ ℕ) : Fin (m + 1) → ℕ :=
   0 + ((∑ i : Fin (m + 1), v (Sum.inl i) • (Pi.single i 1 : Fin (m + 1) → ℕ)) +
     ∑ i : Fin (m + 1), v (Sum.inr i) • ∑ p : Fin m, (Pi.single (i.succAbove p) 1 : Fin (m + 1) → ℕ))
 
+/- English proof (translation)
+Rewrite using `[dPsi_monomial]`. Use `(isWeightedHomogeneous_C _ c).mul (IsWeightedHomogeneous.mul ?_ ?_)` and prove the remaining obligations. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun i _ => (isWeightedHomogeneous_X K (rowW (m + 1) (m + 1)) (i, 0)).pow _`. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun i _ => (qt_covY_iwh K m i).pow _`.
+-/
 theorem dPsi_monomial_iwh (K : Type) [Field K] (m : ℕ) (v : XY (m + 1) →₀ ℕ) (c : K) :
     IsWeightedHomogeneous (rowW (m + 1) (m + 1)) (deltaB K m (PsiXY K m (monomial v c))) (qtW m v) := by
   rw [dPsi_monomial]
@@ -64,6 +89,17 @@ theorem dPsi_monomial_iwh (K : Type) [Field K] (m : ℕ) (v : XY (m + 1) →₀ 
   · exact IsWeightedHomogeneous.prod _ _ _ fun i _ => (isWeightedHomogeneous_X K (rowW (m + 1) (m + 1)) (i, 0)).pow _
   · exact IsWeightedHomogeneous.prod _ _ _ fun i _ => (qt_covY_iwh K m i).pow _
 
+/- English proof (translation)
+Unfold `qtW yDeg`. Simplify using `only [Pi.add_apply, Pi.zero_apply, zero_add, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Establish `h1 : ∑ i : Fin (m + 1), v (Sum.inl i) * (Pi.single i 1 : Fin (m + 1) → ℕ) a' = v (Sum.inl a')`. Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : ∀ i : Fin (m + 1), (∑ p : Fin m, (Pi.single (i.succAbove p) 1 : Fin (m + 1) → ℕ) a') = if a' = i then 0 else 1`. Introduce `i`. Rewrite using `[← Finset.sum_apply]`. Conclude with `qt_cnt m i a'`.
+
+Establish `h3 : v (Sum.inr a') = ∑ i : Fin (m + 1), v (Sum.inr i) * (if a' = i then 1 else 0)`. Simplify using `only [mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Rewrite using `[h1, add_assoc]`.
+
+Use `congr 1`. Simplify using `only [h2]`. Use `conv_lhs => rw [h3]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem qtW_apply (m : ℕ) (v : XY (m + 1) →₀ ℕ) (a' : Fin (m + 1)) :
     qtW m v a' + v (Sum.inr a') = v (Sum.inl a') + yDeg v := by
   classical

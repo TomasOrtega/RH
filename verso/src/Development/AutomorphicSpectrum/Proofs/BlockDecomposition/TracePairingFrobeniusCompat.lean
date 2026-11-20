@@ -5,6 +5,19 @@ open TensorProduct CrystallineSemistableComparison.Pb.Psi
 
 namespace GlobalTheory.CompanionTheory.FrobPairing
 
+/- English proof (translation)
+Establish `hsmul : ∀ (x : K₀) (v : K₀ ⊗[W] L), φD (x • v) = fr x • φD v`. Introduce `x v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x' y`.
+
+Rewrite using `[TensorProduct.smul_tmul', hD, hD, smul_eq_mul, map_mul, TensorProduct.smul_tmul', smul_eq_mul]`. Consider the case `add v₁ v₂ h₁ h₂ => rw [smul_add, map_add, map_add, h₁, h₂, smul_add]`. Establish `hTt : ∀ (g : Module.Dual K₀ (K₀ ⊗[W] L)) (a : A) (y : L), T c k hk g (a ⊗ₜ y) = c a * k (g (1 ⊗ₜ y))` using `fun g a y => rfl`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a y`. Rewrite using `[hT, hTt]`. Repeatedly rewrite using `[hTt, map_mul, hφ, hφk]`. Establish `h1 : (1 : K₀) ⊗ₜ[W] φL y = φD (1 ⊗ₜ y)` using `by rw [hD, map_one]`. Establish `h2 : φD ((1 : K₀) ⊗ₜ[W] y) = ∑ s, fr (b.coord s (1 ⊗ₜ y)) • φD (b s)` using `by conv_lhs => rw [← b.sum_repr ((1 : K₀) ⊗ₜ[W] y)]`.
+
+Rewrite using `[map_sum]`. Repeatedly rewrite using `[hsmul]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add z₁ z₂ h₁ h₂`. Rewrite using `[map_add, map_add, h₁, h₂, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_add, add_mul]`.
+-/
 theorem T_phi_expand {W A C₀ : Type} [CommRing W] [CommRing A] [CommRing C₀] [Algebra W A]
     {K₀ : Type} [Field K₀] [Algebra W K₀] {L : Type 1} [AddCommGroup L] [Module W L]
     (c : A →+* C₀) (k : K₀ →+* C₀) (hk : ∀ w : W, k (algebraMap W K₀ w) = c (algebraMap W A w))

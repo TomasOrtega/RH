@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.In
 open GlobalTheory.Chamber
 open scoped InnerProductSpace ContDiff Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.smooth_extension_of_residues_cancel | exact GlobalTheory.smooth_extension_of_residues_cancel | (intros; apply GlobalTheory.smooth_extension_of_residues_cancel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.residue_sum_hyperplane_zero : ∀ {k : ℕ} {J K : Type} [DecidableEq K] (s : Finset J) (m : J → Finset K) (v : J → K → A0 k) (g : J → A0 k → ℂ),
   (∀ j ∈ s, ContDiff ℝ ∞ (g j)) → (∀ j ∈ s, ∀ a ∈ m j, v j a ≠ 0) →
   (∀ j ∈ s, ∀ a ∈ m j, ∀ a' ∈ m j, a ≠ a' → ∀ r : ℝ, v j a' ≠ r • v j a) →

@@ -25,6 +25,9 @@ noncomputable section
 
 namespace GlobalTheory.IdemLat
 
+/- English proof (translation)
+Establish `h1 : (1 : 𝓞 D.host.E) ∉ P.asIdeal` using `fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Use `not_not.1 fun hn => h1 ((h 1 one_ne_zero).2 hn)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem finPart_idem_mem {D : D7} {P : Pl D.host.E} {e : Formalism.L2.Theta.AE D}
     (h : ∀ x : 𝓞 D.host.E, x ≠ 0 →
       (x ∈ P.asIdeal ↔ finPart D (e * incA D ((x : D.host.E)⁻¹)) ∉ intAE D)) :
@@ -34,6 +37,9 @@ theorem finPart_idem_mem {D : D7} {P : Pl D.host.E} {e : Formalism.L2.Theta.AE D
   have := not_not.1 fun hn => h1 ((h 1 one_ne_zero).2 hn)
   simpa using this
 
+/- English proof (translation)
+Break down `h with ⟨⟨_, h⟩, rfl⟩ | ⟨rfl, _, h⟩` into its components or cases. Establish `he` using `finPart_idem_mem h`. Rewrite using `[RingHom.map_add]`. Conclude with `add_mem he (GlobalTheory.IdemSupport.finPart_cA_mem he)`. Conclude with `finPart_idem_mem h`.
+-/
 theorem finPart_placeIdem_mem {D : D7} {P : Pl D.host.E} {e f : Formalism.L2.Theta.AE D}
     (h : IsPrimeIdem P e f) : finPart D f ∈ intAE D := by
   rcases h with ⟨⟨_, h⟩, rfl⟩ | ⟨rfl, _, h⟩
@@ -42,6 +48,9 @@ theorem finPart_placeIdem_mem {D : D7} {P : Pl D.host.E} {e f : Formalism.L2.The
     exact add_mem he (GlobalTheory.IdemSupport.finPart_cA_mem he)
   · exact finPart_idem_mem h
 
+/- English proof (translation)
+Introduce `D V P e f h y hy`. Conclude with `(GlobalTheory.LatDual.lamHat_selfDual_and_module V).2 _ (finPart_placeIdem_mem h) y hy`.
+-/
 theorem lamHat_idem : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E) (e f : Formalism.L2.Theta.AE D), IsPrimeIdem P e f →
     ∀ y ∈ Formalism.L2.NTheta.LamHat V, finPart D f • y ∈ Formalism.L2.NTheta.LamHat V := by
   intro D V P e f h y hy

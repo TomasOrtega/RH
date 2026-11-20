@@ -8,21 +8,33 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections
 
 open AlgebraicGeometry CategoryTheory Limits Opposite ReciprocityTheory.ChartRestriction.G.TB.ValAt ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem valAt'_eqToHom_lemma {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {U U' : Y.Opens} (h : U = U')
     (f : Γ(Y, U')) : valAt' x U (Y.presheaf.map (eqToHom h).op f) = valAt' x U' f := by
   subst h
   simp
 
+/- English proof (translation)
+Rewrite using `[← valAt'_comp, IsAffineOpen.fromSpec_app_self, CommRingCat.comp_apply]`. Conclude with `valAt'_eqToHom_lemma l hV.fromSpec_preimage_self _`.
+-/
 theorem valAt'_fromSpec {Y : Scheme.{0}} {Vo : Y.Opens} (hV : IsAffineOpen Vo) (l : Sp ℂ ⟶ Spec Γ(Y, Vo))
     (a : Γ(Y, Vo)) : valAt' (l ≫ hV.fromSpec) Vo a = valAt' l ⊤ ((Scheme.ΓSpecIso Γ(Y, Vo)).inv a) := by
   rw [← valAt'_comp, IsAffineOpen.fromSpec_app_self, CommRingCat.comp_apply]
   exact valAt'_eqToHom_lemma l hV.fromSpec_preimage_self _
 
+/- English proof (translation)
+Establish `h : ∀ c : PrimeSpectrum ℂ, c.asIdeal = ⊥` using `fun c => (Ideal.eq_bot_or_top c.asIdeal).resolve_right c.2.ne_top`. Conclude with `PrimeSpectrum.ext (by rw [h a, h b])`.
+-/
 private theorem pt_lemma_2 (a b : PrimeSpectrum ℂ) : a = b := by
   have h : ∀ c : PrimeSpectrum ℂ, c.asIdeal = ⊥ := fun c =>
     (Ideal.eq_bot_or_top c.asIdeal).resolve_right c.2.ne_top
   exact PrimeSpectrum.ext (by rw [h a, h b])
 
+/- English proof (translation)
+Introduce `q' _`. Establish `hq : q' = q` using `pt_lemma_2 q' q`. Rewrite using `[hq]`. Conclude with `h`.
+-/
 private theorem top_le_lemma_3 {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (W : Y.Opens) (q : Sp ℂ)
     (h : x q ∈ W) : ⊤ ≤ x ⁻¹ᵁ W := by
   intro q' _
@@ -30,6 +42,33 @@ private theorem top_le_lemma_3 {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (W : Y.Opens)
   rw [hq]
   exact h
 
+/- English proof (translation)
+Introduce `_ h₁ h₂`. Apply `isHolTo_of_local` to reduce the goal to its premises. Introduce `U f b₀ hb₀ hU`. Set `q : Sp ℂ` to `IsLocalRing.closedPoint ℂ`. Take `⟨W, hW, hxW, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp (Scheme.isBasis_affineOpens X)) (show (e₁ b₀ ≫ p₁) q ∈ (⊤ : X.Opens) from trivial)`.
+
+Establish `hxW₂ : (e₂ b₀ ≫ p₂) q ∈ W` using `by rw [← he b₀]; exact hxW`. Rewrite `hxW`, `hxW₂` using `[Scheme.Hom.comp_apply]`. Take `⟨W₁, hW₁, hx₁, hW₁le⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp (Scheme.isBasis_affineOpens Y₁)) (show e₁ b₀ q ∈ p₁ ⁻¹ᵁ W from hxW)`. Take `⟨W₂, hW₂, hx₂, hW₂le⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp (Scheme.isBasis_affineOpens Y₂)) (show e₂ b₀ q ∈ p₂ ⁻¹ᵁ W from hxW₂)`. Establish `hW' : IsAffineOpen W` using `hW`.
+
+Establish `hW₁' : IsAffineOpen W₁` using `hW₁`. Establish `hW₂' : IsAffineOpen W₂` using `hW₂`. Set `N : Set (Fin n → ℂ)` to `{b ∈ B | ⊤ ≤ e₁ b ⁻¹ᵁ W₁} ∩ {b ∈ B | ⊤ ≤ e₂ b ⁻¹ᵁ W₂}`. Establish `hN : IsOpen N` using `(h₁ W₁ 0).1.inter (h₂ W₂ 0).1`. Establish `hb₀N : b₀ ∈ N` using `⟨⟨hb₀, top_le_lemma_3 _ _ q hx₁⟩, ⟨hb₀, top_le_lemma_3 _ _ q hx₂⟩⟩`.
+
+Establish `hr₁ : ∀ b ∈ N, Set.range (e₁ b) ⊆ Set.range hW₁'.fromSpec`. Introduce `b hb`. Rewrite using `[hW₁'.range_fromSpec]`. Introduce and unpack `_ ⟨q', rfl⟩`. Conclude with `hb.1.2 (show q' ∈ (⊤ : (Sp ℂ).Opens) from trivial)`.
+
+Establish `hr₂ : ∀ b ∈ N, Set.range (e₂ b) ⊆ Set.range hW₂'.fromSpec`. Introduce `b hb`. Rewrite using `[hW₂'.range_fromSpec]`. Introduce and unpack `_ ⟨q', rfl⟩`. Conclude with `hb.2.2 (show q' ∈ (⊤ : (Sp ℂ).Opens) from trivial)`.
+
+Set `l₁ : ∀ b ∈ N, Sp ℂ ⟶ Spec Γ(Y₁, W₁)` to `fun b hb => IsOpenImmersion.lift hW₁'.fromSpec (e₁ b) (hr₁ b hb)`. Set `l₂ : ∀ b ∈ N, Sp ℂ ⟶ Spec Γ(Y₂, W₂)` to `fun b hb => IsOpenImmersion.lift hW₂'.fromSpec (e₂ b) (hr₂ b hb)`. Establish `hl₁ : ∀ b (hb : b ∈ N), l₁ b hb ≫ hW₁'.fromSpec = e₁ b` using `fun b hb => IsOpenImmersion.lift_fac _ _ _`. Establish `hl₂ : ∀ b (hb : b ∈ N), l₂ b hb ≫ hW₂'.fromSpec = e₂ b` using `fun b hb => IsOpenImmersion.lift_fac _ _ _`. Use `letI : Algebra Γ(X, W) Γ(Y₁, W₁) := (p₁.appLE W W₁ hW₁le).hom.toAlgebra`.
+
+Use `letI : Algebra Γ(X, W) Γ(Y₂, W₂) := (p₂.appLE W W₂ hW₂le).hom.toAlgebra`. Establish `c₁ : Spec.map (CommRingCat.ofHom (algebraMap Γ(X, W) Γ(Y₁, W₁))) ≫ hW'.fromSpec = hW₁'.fromSpec ≫ p₁` using `IsAffineOpen.SpecMap_appLE_fromSpec p₁ hW' hW₁' hW₁le`. Establish `c₂ : Spec.map (CommRingCat.ofHom (algebraMap Γ(X, W) Γ(Y₂, W₂))) ≫ hW'.fromSpec = hW₂'.fromSpec ≫ p₂` using `IsAffineOpen.SpecMap_appLE_fromSpec p₂ hW' hW₂' hW₂le`. Establish `hc : ∀ b (hb : b ∈ N), l₁ b hb ≫ Spec.map (CommRingCat.ofHom (algebraMap Γ(X, W) Γ(Y₁, W₁))) = l₂ b hb ≫ Spec.map (CommRingCat.ofHom (algebraMap Γ(X, W) Γ(Y₂, W₂)))`. Introduce `b hb`.
+
+Rewrite using `[← cancel_mono hW'.fromSpec, Category.assoc, Category.assoc, c₁, c₂, ← Category.assoc, ← Category.assoc, hl₁ b hb, hl₂ b hb, he]`. Set `φ` to `pullback.map _ _ p₁ p₂ hW₁'.fromSpec hW₂'.fromSpec hW'.fromSpec c₁ c₂`. Set `wN : ∀ b ∈ N, Sp ℂ ⟶ pullback (Spec.map (CommRingCat.ofHom (algebraMap Γ(X, W) Γ(Y₁, W₁)))) (Spec.map (CommRingCat.ofHom (algebraMap Γ(X, W) Γ(Y₂, W₂))))` to `fun b hb => pullback.lift (l₁ b hb) (l₂ b hb) (hc b hb)`. Set `w` to `fun b => if hb : b ∈ N then wN b hb else wN b₀ hb₀N`. Establish `hw : ∀ b (hb : b ∈ N), w b = wN b hb` using `fun b hb => dif_pos hb`.
+
+Establish `hwφ : ∀ b ∈ N, w b ≫ φ = pullback.lift (e₁ b) (e₂ b) (he b)`. Introduce `b hb`. Rewrite using `[hw b hb]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [φ, wN, Category.assoc, pullback.map, pullback.lift_fst, pullback.lift_fst_assoc]`.
+
+Conclude with `hl₁ b hb`. Simplify using `only [φ, wN, Category.assoc, pullback.map, pullback.lift_snd, pullback.lift_snd_assoc]`. Conclude with `hl₂ b hb`. Establish `hwhol : IsHolTo N w`. Use `isHolTo_pullbackSpec hN w (fun a => ?_) (fun c => ?_)` and prove the remaining obligations.
+
+Use `((h₁ W₁ a).2.mono (fun b hb => hb.1)).congr (fun b hb => ?_)` and prove the remaining obligations. Establish `h` using `valAt'_fromSpec hW₁' (l₁ b hb) a`. Rewrite `h` using `[hl₁ b hb]`. Rewrite using `[hw b hb]`. Simplify using `only [wN, pullback.lift_fst]`.
+
+Conclude with `h.symm`. Use `((h₂ W₂ c).2.mono (fun b hb => hb.2)).congr (fun b hb => ?_)` and prove the remaining obligations. Establish `h` using `valAt'_fromSpec hW₂' (l₂ b hb) c`. Rewrite `h` using `[hl₂ b hb]`. Rewrite using `[hw b hb]`.
+
+Simplify using `only [wN, pullback.lift_snd]`. Conclude with `h.symm`. Take `⟨ho, hdf⟩` from `isHolTo_comp hwhol φ U f`. Use `⟨{b ∈ N | ⊤ ≤ (w b ≫ φ) ⁻¹ᵁ U}, ho.mem_nhds ⟨hb₀N, by show ⊤ ≤ (w b₀ ≫ φ) ⁻¹ᵁ U; rw [hwφ b₀ hb₀N]; exact hU⟩, fun b hb => ⟨hb.1.1.1, by rw [← hwφ b hb.1]; exact hb.2⟩, hdf.congr fun b hb => ?_⟩` and prove the remaining obligations. Simplify using `only [hwφ b hb.1]`.
+-/
 theorem holPair (X Y₁ Y₂ : Scheme.{0}) (p₁ : Y₁ ⟶ X) (p₂ : Y₂ ⟶ X) (n : ℕ) (B : Set (Fin n → ℂ))
     (e₁ : (Fin n → ℂ) → (Sp ℂ ⟶ Y₁)) (e₂ : (Fin n → ℂ) → (Sp ℂ ⟶ Y₂)) (he : ∀ b, e₁ b ≫ p₁ = e₂ b ≫ p₂) :
     IsOpen B → IsHolTo B e₁ → IsHolTo B e₂ → IsHolTo B (fun b => pullback.lift (e₁ b) (e₂ b) (he b)) := by

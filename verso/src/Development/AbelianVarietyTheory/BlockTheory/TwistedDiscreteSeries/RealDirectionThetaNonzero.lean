@@ -70,15 +70,27 @@ def ThetaFactsAt (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) : Prop :=
 def ThetaFacts (D : D7) : Prop :=
   ∀ ψ : AddChar (AF D.host.F) ℂ, IsCharAF D.host.F ψ → ∀ S T : HSp D, ThetaFactsAt ψ S T
 
+/- English proof (translation)
+The claim follows from `h ψ hψ.1 S T`.
+-/
 theorem ThetaFacts.std (h : ThetaFacts D) {ψ : AddChar (AF D.host.F) ℂ} {s : ℤ} (hψ : IsStdChar D ψ s) (S T : HSp D) :
     ThetaFactsAt ψ S T := h ψ hψ.1 S T
 
+/- English proof (translation)
+Simplify using `[symplOH, symplO, hO]`.
+-/
 theorem symplOH_zero_left (S T : HSp D) (y : WO S T) : symplOH S T 0 y = 0 := by
   simp [symplOH, symplO, hO]
 
+/- English proof (translation)
+Simplify using `[symplOH, symplO, hO]`.
+-/
 theorem symplOH_zero_right (S T : HSp D) (x : WO S T) : symplOH S T x 0 = 0 := by
   simp [symplOH, symplO, hO]
 
+/- English proof (translation)
+Simplify using `[heisO, symplOH_zero_left]`.
+-/
 theorem heisO_apply_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ξ : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T ξ f 0 = f ξ := by
   simp [heisO, symplOH_zero_left]

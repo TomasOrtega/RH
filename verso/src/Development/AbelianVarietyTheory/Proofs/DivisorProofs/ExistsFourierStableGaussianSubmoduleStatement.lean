@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFourierStable
 import Mathlib
 open FourierTransform MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_fourier_stable_gaussian_submodule | exact GlobalTheory.exists_fourier_stable_gaussian_submodule | (intros; apply GlobalTheory.exists_fourier_stable_gaussian_submodule <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_fourier_stable_submodule_containing_gaussian : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (N : Submodule ℂ (SchwartzMap E ℂ)) (G : SchwartzMap E ℂ),
     (∀ y, G y = Complex.exp (-((Real.pi * ‖y‖ ^ 2 : ℝ) : ℂ))) → G ∈ N →

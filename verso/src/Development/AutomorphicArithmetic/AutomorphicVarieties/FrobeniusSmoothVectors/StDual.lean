@@ -2,6 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
+/- English proof (translation)
+Introduce `l _ k _ _ _ Γ _ μ ρ g c hc hne`. Use `set a : k := ZMod.castHom (dvd_pow_self l one_ne_zero) k (μ g) with ha`. Rewrite using `[eq_bot_iff]`. Introduce `φ hφ`. Rewrite using `[Submodule.mem_bot]`.
+
+Establish `h : twDual μ ρ g φ = φ` using `hφ g`. Establish `hne' : c - a ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hsmul : ∀ m : k, a * m = ((μ g : ZMod (l ^ 1))) • m`. Introduce `m`. Rewrite using `[ha, ZMod.castHom_apply, ZMod.cast_eq_val, ← nsmul_eq_mul, ← Nat.cast_smul_eq_nsmul (ZMod (l ^ 1)), ZMod.natCast_zmod_val]`.
+
+Establish `hinv : ∀ m : k, ρ g⁻¹ (ρ g m) = m`. Introduce `m`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Set `ψ : k →ₗ[ZMod (l ^ 1)] ZMod (l ^ 1)` to `φ`. Establish `key : ∀ m : k, ψ ((c - a) * m) = 0`.
+
+Introduce `m`. Establish `h1 : (twDual μ ρ g φ) (ρ g m) = φ (ρ g m)` using `by rw [h]`. Rewrite `h1` using `[twDual_apply, hinv, hc]`. Express the relevant statement in the definitionally equal form `(μ g : ZMod (l ^ 1)) * ψ m = ψ (c * m) at h1`. Rewrite using `[sub_mul, map_sub, hsmul, map_smul, ← h1, smul_eq_mul, sub_self]`.
+
+Apply `TDual.ext` to reduce the goal to its premises. Introduce `x`. Establish `hx : x = (c - a) * ((c - a)⁻¹ * x)`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hne', one_mul]`. Express the relevant statement in the definitionally equal form `ψ x = 0`.
+
+Rewrite using `[hx, key]`.
+-/
 theorem UpperTheory.V.Fr.st_dual :
     ∀ (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] [Module (ZMod (l ^ 1)) k] (Γ : Type) [Group Γ] (μ : Γ →* (ZMod (l ^ 1))ˣ) (ρ : Representation (ZMod (l ^ 1)) Γ k) (g : Γ) (c : k), (∀ m, ρ g m = c * m) → c ≠ ZMod.castHom (dvd_pow_self l one_ne_zero) k (μ g) → H0 (twDual μ ρ) = ⊥ := by
   intro l _ k _ _ _ Γ _ μ ρ g c hc hne

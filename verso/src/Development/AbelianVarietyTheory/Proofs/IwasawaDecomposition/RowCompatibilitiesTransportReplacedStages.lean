@@ -24,6 +24,23 @@ namespace GlobalTheory.Mem.R3.Rw.Up
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `K B f T w Z Wt p0 t S' N h t' hs ⟨x⟩`. Establish `hstd : t'.r.z.Std` using `(GlobalTheory.T.standardReading_transport_and_extension_trans).1 B f T w Z (SRe.upL Z S' N h) t.hX Wt t.r.z t'.r.z hs.Xg hs.tr hs.R hs.core x.std`. Take `⟨hX', r', exAt', inGeo', grpAt', grp', mu'', exact', untw', emt0', emt', etaF', rowInt', idx'⟩` from `t'`. Take `⟨z', holds', Y', Z'', tup_ix'⟩` from `r'`. Take `@⟨Xg', tr', core', alg', alg_eq', R', cG', geo', pins', lev', idG', good', mu', le', Ks'⟩` from `z'`.
+
+Establish `hXg` using `hs.Xg`. Establish `htr` using `hs.tr`. Establish `hcore` using `hs.core`. Establish `hR` using `hs.R`. Establish `hcG` using `hs.cG`.
+
+Establish `htup` using `hs.tup`. Establish `hjA` using `hs.jA`. Establish `hjA0` using `hs.jA0`. Establish `heMt` using `hs.eMt`. Use `clear hs`.
+
+Simplify using `only at hXg htr hcore hR hcG htup hjA hjA0 heMt hstd`. Substitute `hXg htr` using the available equality. Establish `hc` using `eq_of_heq hcore`. Substitute `hc` using the available equality. Establish `ha : @Eq _ alg' t.r.z.alg` using `Algebra.algebra_ext _ _ fun r => B.embLL.injective ((alg_eq' r).trans (t.r.z.alg_eq r).symm)`.
+
+Substitute `ha` using the available equality. Establish `hr` using `eq_of_heq hR`. Consider the cases of `hr`. Establish `hg` using `eq_of_heq hcG`. Consider the cases of `hg`.
+
+Consider the cases of `Y' with`. Consider the case `mk tup' tupT' tupT_tup' tupTie' tup0' muAt' hm' hTop' hinj' Ish' Iz' IL' Kc' PY' PW' eFT' ιW' tied' prtE' prtE0' prtWE' xi' isomFin' frameMatch' hF' stdPsi' jA' jA0' eMt' => ?_`. Simplify using `only at htup hjA hjA0 heMt`. Establish `e1` using `eq_of_heq htup`. Consider the cases of `e1`.
+
+Establish `e2` using `eq_of_heq hjA`. Consider the cases of `e2`. Establish `e3` using `eq_of_heq hjA0`. Consider the cases of `e3`. Establish `e4` using `eq_of_heq heMt`.
+
+Consider the cases of `e4`. Conclude with `⟨{ all := { jA := (by with_unfolding_all exact (x.all.jA :)) jA0 := (by with_unfolding_all exact (x.all.jA0 :)) eMt := (by with_unfolding_all exact (x.all.eMt :)) formsA := (by with_unfolding_all exact (x.all.formsA :)) latA := (by with_unfolding_all exact (x.all.latA :)) formsAt …`.
+-/
 theorem rxs_up : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (p0 : BaseLevelRowSide (w.D Z)) (t : RowsT K w Z Wt p0) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (t' : RowsT K w (SRe.upL Z S' N h) Wt (Tr.baseLevelRowSideTransport (Up.refUp Z S' N h) p0)), RowsSame t t' → Nonempty (RXs t) → Nonempty (RXs t') := by
   intro K B f T w Z Wt p0 t S' N h t' hs ⟨x⟩
   have hstd : t'.r.z.Std := (GlobalTheory.T.standardReading_transport_and_extension_trans).1 B f T w Z (SRe.upL Z S' N h) t.hX Wt t.r.z t'.r.z hs.Xg hs.tr hs.R hs.core x.std

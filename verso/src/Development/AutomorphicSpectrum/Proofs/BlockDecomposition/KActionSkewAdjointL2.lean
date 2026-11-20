@@ -19,16 +19,27 @@ def skA (a b : Fin n) : Mat n := (1 / 2 : ℝ) • (Matrix.single a b (1 : ℂ) 
 
 def skB (a b : Fin n) : Mat n := (1 / 2 : ℝ) • (Matrix.single a b Complex.I + Matrix.single b a Complex.I)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [skA, conjTranspose_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.neg_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : a = j <;> by_cases h2 : b = i <;> by_cases h3 : a = i <;> by_cases h4 : b = j <;> simp_all`.
+-/
 theorem skA_skew (a b : Fin n) : (skA a b)ᴴ = -skA a b := by
   ext i j
   simp only [skA, conjTranspose_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.neg_apply, Matrix.single_apply]
   by_cases h1 : a = j <;> by_cases h2 : b = i <;> by_cases h3 : a = i <;> by_cases h4 : b = j <;> simp_all
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [skB, conjTranspose_apply, Matrix.smul_apply, Matrix.add_apply, Matrix.neg_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : a = j <;> by_cases h2 : b = i <;> by_cases h3 : a = i <;> by_cases h4 : b = j <;> simp_all`.
+-/
 theorem skB_skew (a b : Fin n) : (skB a b)ᴴ = -skB a b := by
   ext i j
   simp only [skB, conjTranspose_apply, Matrix.smul_apply, Matrix.add_apply, Matrix.neg_apply, Matrix.single_apply]
   by_cases h1 : a = j <;> by_cases h2 : b = i <;> by_cases h3 : a = i <;> by_cases h4 : b = j <;> simp_all
 
+/- English proof (translation)
+Establish `h1 : (Kf a b h).1 g = (e1 DR a b h).1 g - (f1 DR b a h).1 g`. Simplify using `[Kf, e2, sub_eq_add_neg]`. Rewrite using `[h1, orderedCechToCatCochainsOne_apply_valueAtSubset a b h hg, liftOneFormsToCompatible_apply b a h hg]`. Simplify using `only [Eu, Rd, skA, skB, Pi.smul_apply, Pi.add_apply, if_true, Bool.false_eq_true, if_false, Matrix.mul_smul, mul_sub, mul_add, map_smul, map_sub, map_add, smul_eq_mul, Complex.real_smul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Kf_apply (a b : Fin n) (h : SmF n) {g : Mat n} (hg : g ∈ GLs n) :
     (Kf a b h).1 g = Rd (skA a b) h.1 g - Complex.I * Rd (skB a b) h.1 g := by
   have h1 : (Kf a b h).1 g = (e1 DR a b h).1 g - (f1 DR b a h).1 g := by
@@ -39,9 +50,15 @@ theorem Kf_apply (a b : Fin n) (h : SmF n) {g : Mat n} (hg : g ∈ GLs n) :
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `[Rd]`.
+-/
 theorem Rd_neg (X : Mat n) (f : Mat n → ℂ) (g : Mat n) : Rd (-X) f g = -Rd X f g := by
   simp [Rd]
 
+/- English proof (translation)
+Establish `hA : skA b a = -skA a b`. Simplify using `only [skA, ← smul_neg, neg_sub]`. Establish `hB : skB b a = skB a b`. Simplify using `only [skB, add_comm]`. Rewrite using `[Kf_apply b a h hg, hA, hB, Rd_neg]`.
+-/
 theorem Kf_apply_swap (a b : Fin n) (h : SmF n) {g : Mat n} (hg : g ∈ GLs n) :
     (Kf b a h).1 g = -Rd (skA a b) h.1 g - Complex.I * Rd (skB a b) h.1 g := by
   have hA : skA b a = -skA a b := by
@@ -50,6 +67,11 @@ theorem Kf_apply_swap (a b : Fin n) (h : SmF n) {g : Mat n} (hg : g ∈ GLs n) :
     simp only [skB, add_comm]
   rw [Kf_apply b a h hg, hA, hB, Rd_neg]
 
+/- English proof (translation)
+Establish `dx` using `(GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth hx hg).hasFDerivAt`. Establish `dy` using `(GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth hy hg).hasFDerivAt`. Establish `dc : HasFDerivAt (fun g => conj (x g)) (Complex.conjCLE.toContinuousLinearMap.comp (fderiv ℝ x g)) g` using `Complex.conjCLE.toContinuousLinearMap.hasFDerivAt.comp g dx`. Establish `hm : HasFDerivAt (fun g => conj (x g) * y g) _ g` using `dc.mul dy`. Simplify using `only [Rd]`.
+
+Rewrite using `[hm.fderiv]`. Express the relevant statement in the definitionally equal form `conj (x g) * fderiv ℝ y g (g * X) + y g * conj (fderiv ℝ x g (g * X)) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Rd_conj_mul (X : Mat n) {x y : Mat n → ℂ} (hx : ContDiffOn ℝ ∞ x (GLs n)) (hy : ContDiffOn ℝ ∞ y (GLs n))
     {g : Mat n} (hg : g ∈ GLs n) :
     Rd X (fun g => conj (x g) * y g) g = conj (Rd X x g) * y g + conj (x g) * Rd X y g := by
@@ -63,6 +85,9 @@ theorem Rd_conj_mul (X : Mat n) {x y : Mat n → ℂ} (hx : ContDiffOn ℝ ∞ x
   change conj (x g) * fderiv ℝ y g (g * X) + y g * conj (fderiv ℝ x g (g * X)) = _
   ring
 
+/- English proof (translation)
+The claim follows from `(Complex.conjCLE.toContinuousLinearMap.contDiff.comp_contDiffOn hx).mul hy`.
+-/
 theorem conj_mul_smooth {x y : Mat n → ℂ} (hx : ContDiffOn ℝ ∞ x (GLs n)) (hy : ContDiffOn ℝ ∞ y (GLs n)) :
     ContDiffOn ℝ ∞ (fun g => conj (x g) * y g) (GLs n) :=
   (Complex.conjCLE.toContinuousLinearMap.contDiff.comp_contDiffOn hx).mul hy
@@ -73,10 +98,16 @@ variable [MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ)] [BorelSpace (Matrix
   (κ : Measure (Matrix.unitaryGroup (Fin n) ℂ)) [IsFiniteMeasure κ]
 
 omit [MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ)] [BorelSpace (Matrix.unitaryGroup (Fin n) ℂ)] in
+/- English proof (translation)
+The claim follows from `hf.comp_continuous continuous_subtype_val fun k => unit_mem k`.
+-/
 theorem cont_on_unit {f : Mat n → ℂ} (hf : ContinuousOn f (GLs n)) :
     Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => f k.1 :=
   hf.comp_continuous continuous_subtype_val fun k => unit_mem k
 
+/- English proof (translation)
+The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+-/
 theorem integrable_of_cont {f : Matrix.unitaryGroup (Fin n) ℂ → ℂ} (hf : Continuous f) : Integrable f κ :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
@@ -86,6 +117,17 @@ end GlobalTheory.CompanionTheory.ModelS.KHerm
 
 open GlobalTheory.CompanionTheory.ModelS.KHerm in
 
+/- English proof (translation)
+Introduce `n _ _ κ _ hI a b x y`. Establish `hx` using `x.2.1`. Establish `hy` using `y.2.1`. Establish `i1 : ∀ X : Mat n, Integrable (fun k : Matrix.unitaryGroup (Fin n) ℂ => conj (Rd X x.1 k.1) * y.1 k.1) κ` using `fun X => integrable_of_cont κ ((Complex.continuous_conj.comp (cont_on_unit (GlobalTheory.CompanionTheory.RCalc.Rd_contDiffOn X hx).continuousOn)).mul (cont_on_unit hy.continuousOn))`. Establish `i2 : ∀ X : Mat n, Integrable (fun k : Matrix.unitaryGroup (Fin n) ℂ => conj (x.1 k.1) * Rd X y.1 k.1) κ` using `fun X => integrable_of_cont κ ((Complex.continuous_conj.comp (cont_on_unit hx.continuousOn)).mul (cont_on_unit (GlobalTheory.CompanionTheory.RCalc.Rd_contDiffOn X hy).continuousOn))`.
+
+Establish `key : ∀ X : Mat n, Xᴴ = -X → (∫ k, conj (Rd X x.1 k.1) * y.1 k.1 ∂κ) + ∫ k, conj (x.1 k.1) * Rd X y.1 k.1 ∂κ = 0`. Introduce `X hX`. Rewrite using `[← integral_add (i1 X) (i2 X), ← hI _ (conj_mul_smooth hx hy) X hX]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun k => (Rd_conj_mul X hx hy (unit_mem k)).symm)`. Establish `L : ipK κ (Kf a b x) y = (∫ k, conj (Rd (skA a b) x.1 k.1) * y.1 k.1 ∂κ) + Complex.I * ∫ k, conj (Rd (skB a b) x.1 k.1) * y.1 k.1 ∂κ`.
+
+Rewrite using `[← integral_const_mul, ← integral_add (i1 _) ((i1 _).const_mul _)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [Kf_apply a b x (unit_mem k), map_sub, map_mul, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Establish `R : ipK κ x (Kf b a y) = -((∫ k, conj (x.1 k.1) * Rd (skA a b) y.1 k.1 ∂κ) + Complex.I * ∫ k, conj (x.1 k.1) * Rd (skB a b) y.1 k.1 ∂κ)`.
+
+Rewrite using `[← integral_const_mul, ← integral_add (i2 _) ((i2 _).const_mul _), ← integral_neg]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [Kf_apply_swap a b y (unit_mem k)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[L, R]`.
+
+Take the linear combination `key _ (skA_skew a b) + Complex.I * key _ (skB_skew a b)`.
+-/
 theorem GlobalTheory.CompanionTheory.ModelS.ipK_Kf_transpose : ∀ (n : ℕ) [MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ)] [BorelSpace (Matrix.unitaryGroup (Fin n) ℂ)] (κ : Measure (Matrix.unitaryGroup (Fin n) ℂ)) [IsFiniteMeasure κ], (∀ u : Mat n → ℂ, ContDiffOn ℝ ∞ u (GLs n) → ∀ X : Mat n, Xᴴ = -X → ∫ k : Matrix.unitaryGroup (Fin n) ℂ, Rd X u k.1 ∂κ = 0) → ∀ (a b : Fin n) (x y : GlobalTheory.CompanionTheory.ModelS.SmF n), GlobalTheory.CompanionTheory.ModelS.ipK κ (GlobalTheory.CompanionTheory.ModelS.Kf a b x) y = GlobalTheory.CompanionTheory.ModelS.ipK κ x (GlobalTheory.CompanionTheory.ModelS.Kf b a y) := by
   intro n _ _ κ _ hI a b x y
   have hx := x.2.1

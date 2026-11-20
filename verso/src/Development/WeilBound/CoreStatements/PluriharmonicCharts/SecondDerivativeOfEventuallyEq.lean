@@ -11,6 +11,9 @@ structure J (f : E → ℝ) (z : E) (v : ℝ) (L : E → ℝ) (B : E → E → �
   d1 : ∀ u, fderiv ℝ f z u = L u
   d2 : ∀ u w, fderiv ℝ (fderiv ℝ f) z u w = B u w
 
+/- English proof (translation)
+Establish `h1 : ContDiffAt ℝ 1 (fderiv ℝ f) z` using `hf.fderiv_right (m := 1) (by norm_num)`. Conclude with `(ContinuousLinearMap.apply ℝ ℝ w).hasFDerivAt.comp z (h1.differentiableAt (by norm_num)).hasFDerivAt`.
+-/
 theorem hasD {f : E → ℝ} {z : E} (hf : ContDiffAt ℝ 2 f z) (w : E) :
     HasFDerivAt (fun y => fderiv ℝ f y w)
       ((ContinuousLinearMap.apply ℝ ℝ w).comp (fderiv ℝ (fderiv ℝ f) z)) z := by
@@ -18,24 +21,41 @@ theorem hasD {f : E → ℝ} {z : E} (hf : ContDiffAt ℝ 2 f z) (w : E) :
   exact (ContinuousLinearMap.apply ℝ ℝ w).hasFDerivAt.comp z
     (h1.differentiableAt (by norm_num)).hasFDerivAt
 
+/- English proof (translation)
+The claim follows from `(hf.eventually (by simp)).mono fun y hy => hy.differentiableAt (by norm_num)`.
+-/
 theorem evD {f : E → ℝ} {z : E} (hf : ContDiffAt ℝ 2 f z) :
     ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ f y :=
   (hf.eventually (by simp)).mono fun y hy => hy.differentiableAt (by norm_num)
 
+/- English proof (translation)
+The claim follows from `(hf.differentiableAt (by norm_num)).hasFDerivAt`.
+-/
 theorem hasFDerivAt_of_contDiffAt_two {f : E → ℝ} {z : E} (hf : ContDiffAt ℝ 2 f z) : HasFDerivAt f (fderiv ℝ f z) z :=
   (hf.differentiableAt (by norm_num)).hasFDerivAt
 
+/- English proof (translation)
+Use `(hasD hf w).unique (hk.congr_of_eventuallyEq he)` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression.
+-/
 theorem second_derivative_of_eventually_eq {f : E → ℝ} {z : E} (hf : ContDiffAt ℝ 2 f z) {w : E} {k : E → ℝ} {k' : E →L[ℝ] ℝ}
     (he : (fun y => fderiv ℝ f y w) =ᶠ[𝓝 z] k) (hk : HasFDerivAt k k' z) (u : E) :
     fderiv ℝ (fderiv ℝ f) z u w = k' u := by
   have := (hasD hf w).unique (hk.congr_of_eventuallyEq he)
   rw [← this]; rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.cd, h.val.trans hv, fun u => (h.d1 u).trans (hL u), fun u w => (h.d2 u w).trans (hB u w)⟩`.
+-/
 theorem J.congr {f : E → ℝ} {z : E} {v v' : ℝ} {L L' : E → ℝ} {B B' : E → E → ℝ}
     (h : J f z v L B) (hv : v = v') (hL : ∀ u, L u = L' u) (hB : ∀ u w, B u w = B' u w) :
     J f z v' L' B' :=
   ⟨h.cd, h.val.trans hv, fun u => (h.d1 u).trans (hL u), fun u w => (h.d2 u w).trans (hB u w)⟩
 
+/- English proof (translation)
+Establish `hc : ContDiffAt ℝ 2 (fun y => f y + g y) z` using `hf.cd.add hg.cd`. Use `⟨hc, by rw [hf.val, hg.val], fun u => ?_, fun u w => ?_⟩` and prove the remaining obligations. Use `((hasFDerivAt_of_contDiffAt_two hf.cd).fun_add (hasFDerivAt_of_contDiffAt_two hg.cd)).fderiv` as an intermediate fact. Rewrite using `[this]`. Simplify using `[hf.d1, hg.d1]`.
+
+Establish `he : (fun y => fderiv ℝ (fun y => f y + g y) y w) =ᶠ[𝓝 z] fun y => fderiv ℝ f y w + fderiv ℝ g y w` using `by filter_upwards [evD hf.cd, evD hg.cd] with y h1 h2`. Rewrite using `[(h1.hasFDerivAt.fun_add h2.hasFDerivAt).fderiv]`. Simplify using the standard rewrite rules. Rewrite using `[second_derivative_of_eventually_eq hc he ((hasD hf.cd w).fun_add (hasD hg.cd w))]`. Simplify using `[hf.d2, hg.d2]`.
+-/
 theorem J.add {f g : E → ℝ} {z : E} {v v' : ℝ} {L L' : E → ℝ} {B B' : E → E → ℝ}
     (hf : J f z v L B) (hg : J g z v' L' B') :
     J (fun y => f y + g y) z (v + v') (fun u => L u + L' u) (fun u w => B u w + B' u w) := by
@@ -50,6 +70,13 @@ theorem J.add {f g : E → ℝ} {z : E} {v v' : ℝ} {L L' : E → ℝ} {B B' : 
     rw [second_derivative_of_eventually_eq hc he ((hasD hf.cd w).fun_add (hasD hg.cd w))]
     simp [hf.d2, hg.d2]
 
+/- English proof (translation)
+Establish `hc : ContDiffAt ℝ 2 (fun y => f y * g y) z` using `hf.cd.mul hg.cd`. Use `⟨hc, by rw [hf.val, hg.val], fun u => ?_, fun u w => ?_⟩` and prove the remaining obligations. Use `((hasFDerivAt_of_contDiffAt_two hf.cd).fun_mul (hasFDerivAt_of_contDiffAt_two hg.cd)).fderiv` as an intermediate fact. Rewrite using `[this]`. Simplify using `[hf.d1, hg.d1, hf.val, hg.val]`.
+
+Establish `he : (fun y => fderiv ℝ (fun y => f y * g y) y w) =ᶠ[𝓝 z] fun y => f y * fderiv ℝ g y w + g y * fderiv ℝ f y w` using `by filter_upwards [evD hf.cd, evD hg.cd] with y h1 h2`. Rewrite using `[(h1.hasFDerivAt.fun_mul h2.hasFDerivAt).fderiv]`. Simplify using the standard rewrite rules. Rewrite using `[second_derivative_of_eventually_eq hc he (((hasFDerivAt_of_contDiffAt_two hf.cd).fun_mul (hasD hg.cd w)).fun_add ((hasFDerivAt_of_contDiffAt_two hg.cd).fun_mul (hasD hf.cd w)))]`. Simplify using `[hf.d1, hg.d1, hf.d2, hg.d2, hf.val, hg.val]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem J.mul {f g : E → ℝ} {z : E} {v v' : ℝ} {L L' : E → ℝ} {B B' : E → E → ℝ}
     (hf : J f z v L B) (hg : J g z v' L' B') :
     J (fun y => f y * g y) z (v * v') (fun u => v * L' u + v' * L u)
@@ -67,13 +94,26 @@ theorem J.mul {f g : E → ℝ} {z : E} {v v' : ℝ} {L L' : E → ℝ} {B B' : 
     simp [hf.d1, hg.d1, hf.d2, hg.d2, hf.val, hg.val]
     ring
 
+/- English proof (translation)
+Use `⟨contDiffAt_const, rfl, fun u => by simp, fun u w => by simp⟩` and prove the remaining obligations.
+-/
 theorem J.const (c : ℝ) (z : E) : J (fun _ : E => c) z c (fun _ => 0) (fun _ _ => 0) := by
   refine ⟨contDiffAt_const, rfl, fun u => by simp, fun u w => by simp⟩
 
+/- English proof (translation)
+Establish `h : fderiv ℝ (fun y => T y) = fun _ => T` using `funext fun y => T.fderiv`. Use `⟨T.contDiff.contDiffAt, rfl, fun u => by rw [h], fun u w => by rw [h]; simp⟩` and prove the remaining obligations.
+-/
 theorem J.clm (T : E →L[ℝ] ℝ) (z : E) : J (fun y => T y) z (T z) (fun u => T u) (fun _ _ => 0) := by
   have h : fderiv ℝ (fun y => T y) = fun _ => T := funext fun y => T.fderiv
   refine ⟨T.contDiff.contDiffAt, rfl, fun u => by rw [h], fun u w => by rw [h]; simp⟩
 
+/- English proof (translation)
+Establish `hz : f z ≠ 0` using `by rw [hf.val]; exact hv`. Establish `hc : ContDiffAt ℝ 2 (fun y => Real.log (f y)) z` using `hf.cd.log hz`. Use `⟨hc, by rw [hf.val], fun u => ?_, fun u w => ?_⟩` and prove the remaining obligations. Use `((hasFDerivAt_of_contDiffAt_two hf.cd).log hz).fderiv` as an intermediate fact. Rewrite using `[this]`.
+
+Simplify using `[hf.d1, hf.val]`. Establish `he : (fun y => fderiv ℝ (fun y => Real.log (f y)) y w) =ᶠ[𝓝 z] fun y => (f y)⁻¹ * fderiv ℝ f y w` using `by filter_upwards [evD hf.cd, hf.cd.continuousAt.eventually_ne hz] with y h1 h2`. Rewrite using `[(h1.hasFDerivAt.log h2).fderiv]`. Simplify using the standard rewrite rules. Establish `hi : HasFDerivAt (fun y => (f y)⁻¹) ((-((f z) ^ 2)⁻¹) • fderiv ℝ f z) z` using `(hasDerivAt_inv hz).comp_hasFDerivAt z (hasFDerivAt_of_contDiffAt_two hf.cd)`.
+
+Rewrite using `[second_derivative_of_eventually_eq hc he (hi.fun_mul (hasD hf.cd w))]`. Simplify using `[hf.d1, hf.d2, hf.val]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem J.log {f : E → ℝ} {z : E} {v : ℝ} {L : E → ℝ} {B : E → E → ℝ}
     (hf : J f z v L B) (hv : v ≠ 0) :
     J (fun y => Real.log (f y)) z (Real.log v) (fun u => v⁻¹ * L u)
@@ -93,6 +133,13 @@ theorem J.log {f : E → ℝ} {z : E} {v : ℝ} {L : E → ℝ} {B : E → E →
     simp [hf.d1, hf.d2, hf.val]
     ring
 
+/- English proof (translation)
+Establish `hc : ContDiffAt ℝ 2 (fun y => f (T y)) z` using `hf.cd.comp z T.contDiff.contDiffAt`. Use `⟨hc, hf.val, fun u => ?_, fun u w => ?_⟩` and prove the remaining obligations. Establish `: HasFDerivAt (fun y => f (T y)) _ z` using `(hasFDerivAt_of_contDiffAt_two hf.cd).comp z T.hasFDerivAt`. Rewrite using `[this.fderiv]`. Simplify using `[hf.d1]`.
+
+Establish `he : (fun y => fderiv ℝ (fun y => f (T y)) y w) =ᶠ[𝓝 z] fun y => fderiv ℝ f (T y) (T w)` using `by filter_upwards [T.continuous.continuousAt.eventually (evD hf.cd)] with y h1`. Establish `: HasFDerivAt (fun y => f (T y)) _ y` using `h1.hasFDerivAt.comp y T.hasFDerivAt`. Rewrite using `[this.fderiv]`. Simplify using the standard rewrite rules. Establish `hk : HasFDerivAt (fun y => fderiv ℝ f (T y) (T w)) _ z` using `(hasD hf.cd (T w)).comp z T.hasFDerivAt`.
+
+Rewrite using `[second_derivative_of_eventually_eq hc he hk]`. Simplify using `[hf.d2]`.
+-/
 theorem J.comp {f : F → ℝ} (T : E →L[ℝ] F) {z : E} {v : ℝ} {L : F → ℝ} {B : F → F → ℝ}
     (hf : J f (T z) v L B) :
     J (fun y => f (T y)) z v (fun u => L (T u)) (fun u w => B (T u) (T w)) := by
@@ -110,6 +157,9 @@ theorem J.comp {f : F → ℝ} (T : E →L[ℝ] F) {z : E} {v : ℝ} {L : F → 
     rw [second_derivative_of_eventually_eq hc he hk]
     simp [hf.d2]
 
+/- English proof (translation)
+Use `⟨l.contDiff.contDiffAt.comp z hg, rfl, fun u => ?_, fun u w => rfl⟩` and prove the remaining obligations. Establish `: HasFDerivAt (fun y => l (g y)) _ z` using `l.hasFDerivAt.comp z (hg.differentiableAt (by norm_num)).hasFDerivAt`. Rewrite using `[this.fderiv, h0]`. Simplify using the standard rewrite rules.
+-/
 theorem J.atom {g : E → ℂ} {z : E} (hg : ContDiffAt ℝ 2 g z) (h0 : fderiv ℝ g z = 0)
     (l : ℂ →L[ℝ] ℝ) :
     J (fun y => l (g y)) z (l (g z)) (fun _ => 0)
@@ -119,12 +169,20 @@ theorem J.atom {g : E → ℂ} {z : E} (hg : ContDiffAt ℝ 2 g z) (h0 : fderiv 
     l.hasFDerivAt.comp z (hg.differentiableAt (by norm_num)).hasFDerivAt
   rw [this.fderiv, h0]; simp
 
+/- English proof (translation)
+Use `(J.const (-1 : ℝ) z).mul hf` as an intermediate fact. Simplify using `only [neg_mul, one_mul] at this`. Conclude with `this.congr rfl (fun u => by ring) (fun u w => by ring)`.
+-/
 theorem J.neg {f : E → ℝ} {z : E} {v : ℝ} {L : E → ℝ} {B : E → E → ℝ}
     (hf : J f z v L B) : J (fun y => -f y) z (-v) (fun u => -L u) (fun u w => -B u w) := by
   have := (J.const (-1 : ℝ) z).mul hf
   simp only [neg_mul, one_mul] at this
   exact this.congr rfl (fun u => by ring) (fun u w => by ring)
 
+/- English proof (translation)
+Establish `hh : J (fun y => A00 y + x y * (A01 y + A10 y) + w y * (lowerOffDiagonalCoeff y + -upperOffDiagonalCoeff y) + (x y * x y + w y * w y) * A11 y) z (1 + (x0 ^ 2 + w0 ^ 2)) (fun u => 2 * x0 * Lx u + 2 * w0 * Lw u) (fun u v => a00 u v + x0 * (a01 u v + a10 u v) + w0 * (b10 u v - b01 u …` using `(((h00.add (hx.mul (h01.add h10))).add (hw.mul (k10.add k01.neg))).add (((hx.mul hx).add (hw.mul hw)).mul h11)).congr (by ring) (fun u => by ring) (fun u v => by ring)`. Establish `hD : J (fun y => A00 y * A11 y + -(B00 y * ToralGalois y) + -(A01 y * A10 y) + upperOffDiagonalCoeff y * lowerOffDiagonalCoeff y) z 1 (fun _ => 0) (fun u v => a00 u v + a11 u v)` using `((((h00.mul h11).add (k00.mul k11).neg).add (h01.mul h10).neg).add (k01.mul k10)).congr (by ring) (fun u => by ring) (fun u v => by ring)`. Establish `hpos : (1 + (x0 ^ 2 + w0 ^ 2)) ≠ 0` using `by positivity`. Establish `hJ` using `(hh.log hpos).neg.add ((J.const (1 / 2 : ℝ) z).mul (hD.log one_ne_zero))`. Take `rfl : φ = _` from `funext hφ`.
+
+Use `⟨hJ.cd, fun u v => (hJ.d2 u v).trans ?_⟩` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main_jet {z : E} {x w A00 A01 A10 A11 B00 upperOffDiagonalCoeff lowerOffDiagonalCoeff ToralGalois : E → ℝ} {x0 w0 : ℝ}
     {Lx Lw : E → ℝ} {a00 a01 a10 a11 b00 b01 b10 b11 : E → E → ℝ}
     (hx : J x z x0 Lx (fun _ _ => 0)) (hw : J w z w0 Lw (fun _ _ => 0))

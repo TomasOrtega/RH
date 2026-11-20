@@ -6,6 +6,13 @@ open MvPolynomial Finset GlobalTheory.FlagHook Formalism.DegreeFormula
 
 namespace GlobalTheory.HookKill
 
+/- English proof (translation)
+Unfold `altCoeff`. Rewrite using `[mul_left_comm]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, ← Equiv.sum_comp (Equiv.mulLeft π)⁻¹]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `congr 2`.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem altCoeff_perm {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : ι → Fin N → ℕ)
     (π : ι → Equiv.Perm (Fin N)) (P : MvPolynomial (ι × Fin N) ℝ) :
     altCoeff (fun t => n t ∘ π t) P
@@ -23,6 +30,13 @@ theorem altCoeff_perm {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : �
     funext x
     simp
 
+/- English proof (translation)
+Establish `h` using `altCoeff_perm (Function.update n τ m) (Pi.mulSingle τ π) P`. Establish `h1 : (fun t => Function.update n τ m t ∘ (Pi.mulSingle τ π : ι → Equiv.Perm (Fin N)) t) = Function.update n τ (m ∘ π)`. Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[ht]`. Establish `h2 : (∏ t, ((Equiv.Perm.sign ((Pi.mulSingle τ π : ι → Equiv.Perm (Fin N)) t) : ℤ) : ℝ)) = ((Equiv.Perm.sign π : ℤ) : ℝ)`. Rewrite using `[Finset.prod_eq_single τ]`. Simplify using the standard rewrite rules.
+
+Introduce `t _ ht`. Simplify using `[ht]`. Simplify using the standard rewrite rules. Rewrite `h` using `[h1, h2]`. Conclude with `h`.
+-/
 theorem altCoeff_update_perm {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : ι → Fin N → ℕ)
     (τ : ι) (P : MvPolynomial (ι × Fin N) ℝ) (m : Fin N → ℕ) (π : Equiv.Perm (Fin N)) :
     altCoeff (Function.update n τ (m ∘ π)) P
@@ -43,6 +57,21 @@ theorem altCoeff_update_perm {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
   rw [h1, h2] at h
   exact h
 
+/- English proof (translation)
+Unfold `altCoeff pw`. Establish `: ∀ (c : Fin N) (a b : ℝ), (if k ≤ m c then a * b else 0) = a * if k ≤ m c then b else 0`. Apply the tactic sequence `intro c a b; split_ifs <;> simp`. Simplify using `only [this]`. Rewrite using `[← Finset.mul_sum]`.
+
+Use `congr 1`. Establish `h2 : ∀ (c : Fin N) (f : (ι → Equiv.Perm (Fin N)) → ℝ), (if k ≤ m c then ∑ σ, f σ else 0) = ∑ σ, if k ≤ m c then f σ else 0`. Apply the tactic sequence `intro c f; split_ifs <;> simp`. Simplify using `only [h2, this]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_mul, coeff_sum]`. Use `Eq.trans ?_ (Equiv.sum_comp (σ τ) _)` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[X_pow_eq_monomial, coeff_monomial_mul']`. Establish `h3 : (Finsupp.single (τ, i) k ≤ Finsupp.equivFunOnFinite.symm (fun x : ι × Fin N => Function.update n τ m x.1 (σ x.1 x.2))) ↔ k ≤ m (σ τ i)`. Rewrite using `[Finsupp.single_le_iff]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [h3]`. Use `split_ifs with h`. Rewrite using `[one_mul]`. Use `congr 1`. Use extensionality with `⟨t, j⟩`.
+
+Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `: σ t j ≠ σ t i` using `fun h => hj ((σ t).injective h)`. Simplify using `[hj, this]`. Simplify using `[ht]`. Both sides reduce to the same expression.
+-/
 theorem altCoeff_pw_mul {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : ι → Fin N → ℕ)
     (τ : ι) (k : ℕ) (G : MvPolynomial (ι × Fin N) ℝ) (m : Fin N → ℕ) :
     altCoeff (Function.update n τ m) (pw N τ k * G)
@@ -88,10 +117,18 @@ variable {N : ℕ} (B : (Fin N → ℕ) → ℝ)
   (hB : ∀ (m : Fin N → ℕ) (π : Equiv.Perm (Fin N)), B (m ∘ π) = ((Equiv.Perm.sign π : ℤ) : ℝ) * B m)
 include hB
 
+/- English proof (translation)
+Rewrite using `[hB, Equiv.Perm.sign_swap hab]`. Simplify using the standard rewrite rules.
+-/
 theorem alt_swap (m : Fin N → ℕ) {a b : Fin N} (hab : a ≠ b) :
     B (m ∘ Equiv.swap a b) = - B m := by
   rw [hB, Equiv.Perm.sign_swap hab]; simp
 
+/- English proof (translation)
+Establish `h1` using `alt_swap B hB m hab`. Establish `h2 : m ∘ Equiv.swap a b = m`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp, Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`.
+
+Rewrite using `[h1, h]`. Rewrite using `[h2, h]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem alt_zero (m : Fin N → ℕ) {a b : Fin N} (hab : a ≠ b) (h : m a = m b) : B m = 0 := by
   have h1 := alt_swap B hB m hab
   have h2 : m ∘ Equiv.swap a b = m := by
@@ -104,6 +141,13 @@ theorem alt_zero (m : Fin N → ℕ) {a b : Fin N} (hab : a ≠ b) (h : m a = m 
   rw [h2] at h1
   linarith
 
+/- English proof (translation)
+Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `hc` using `c.2`. Simplify using `only [rho] at h`. Establish `hne : (⟨c + k, by omega⟩ : Fin N) ≠ c`.
+
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Use `alt_zero B hB _ hne ?_` and prove the remaining obligations.
+
+Rewrite using `[Function.update_of_ne hne]`. Simplify using `only [Function.update_self, rho]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+-/
 theorem down_rho (k : ℕ) (hk : 1 ≤ k) :
     (∑ c : Fin N, if k ≤ rho N c then B (Function.update (rho N) c (rho N c - k)) else 0) = 0 := by
   refine Finset.sum_eq_zero fun c _ => ?_
@@ -118,6 +162,23 @@ theorem down_rho (k : ℕ) (hk : 1 ≤ k) :
     omega
   · rfl
 
+/- English proof (translation)
+Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Establish `h1 : ∀ i : Fin (M + 1), B (Function.update (rho (M + 1)) i (rho (M + 1) i + k)) = if (i : ℕ) < k then (-1 : ℝ) ^ (i : ℕ) * B (hookRho (M + 1) k i) else 0`. Introduce `i`. Establish `hi` using `i.2`. Use `split_ifs with h`.
+
+Establish `: Function.update (rho (M + 1)) i (rho (M + 1) i + k) = hookRho (M + 1) k i ∘ Fin.cycleRange i`. Use function extensionality and compare the values at `j`. Establish `hj` using `j.2`. Break down `lt_trichotomy j i with hji | hji | hji` into its components or cases. Establish `h3 : ((Fin.cycleRange i j : Fin (M + 1)) : ℕ) = j + 1` using `Fin.coe_cycleRange_of_lt hji`.
+
+Establish `h4 : (j : ℕ) < i` using `hji`. Rewrite using `[Function.update_of_ne hji.ne]`. Simplify using `only [Function.comp, hookRho, rho, h3]`. Rewrite using `[if_neg (Nat.succ_ne_zero _), if_pos (show (j : ℕ) + 1 ≤ i from h4)]`. Use linear arithmetic over natural numbers and integers.
+
+Substitute `hji` using the available equality. Simplify using `only [Function.comp, hookRho, rho, Fin.cycleRange_self, Function.update_self]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `h4 : (i : ℕ) < j` using `hji`.
+
+Rewrite using `[Function.update_of_ne hji.ne']`. Simplify using `only [Function.comp, hookRho, rho, Fin.cycleRange_of_gt hji]`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[this, hB, Fin.sign_cycleRange]`. Simplify using the standard rewrite rules.
+
+Establish `hne : (⟨i - k, by omega⟩ : Fin (M + 1)) ≠ i`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Use `alt_zero B hB _ hne ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hne]`. Simplify using `only [Function.update_self, rho]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [h1]`.
+
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => if i < k then (-1 : ℝ) ^ i * B (hookRho (M + 1) k i) else 0), ← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `r`. Simplify using `only [mem_range, mem_filter]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem hook_sum (k : ℕ) (hk : 1 ≤ k) (hkN : k ≤ N) :
     ∑ r ∈ range k, (-1 : ℝ) ^ r * B (hookRho N k r)
       = ∑ i : Fin N, B (Function.update (rho N) i (rho N i + k)) := by
@@ -162,6 +223,29 @@ theorem hook_sum (k : ℕ) (hk : 1 ≤ k) (hkN : k ≤ N) :
   simp only [mem_range, mem_filter]
   omega
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `hc` using `c.2`. Distinguish the cases in `h : (c : ℕ) + k' < N`. Establish `hd : (⟨c + k', h⟩ : Fin N) ≠ c`.
+
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hr : rho N c = N - 1 - c` using `rfl`.
+
+Establish `hr' : rho N ⟨c + k', h⟩ = N - 1 - (c + k')` using `rfl`. Rewrite using `[Finset.sum_eq_add c ⟨c + k', h⟩ hd.symm]`. Rewrite using `[Function.update_self, Function.update_of_ne hd.symm, if_pos (by omega), if_pos (by omega), Function.update_idem]`. Use `alt_swap B hB (Function.update (rho N) c (rho N c + k - k')) hd` as an intermediate fact. Establish `h5 : Function.update (rho N) c (rho N c + k - k') ∘ Equiv.swap ⟨c + k', h⟩ c = Function.update (Function.update (rho N) ⟨c + k', h⟩ (rho N ⟨c + k', h⟩ + k)) c (rho N c - k')`.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp, Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`. Substitute `h1` using the available equality. Rewrite using `[Function.update_self, Function.update_of_ne hd, Function.update_self]`.
+
+Use linear arithmetic over natural numbers and integers. Substitute `h2` using the available equality. Rewrite using `[Function.update_self, Function.update_of_ne hd]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne h2, Function.update_of_ne h2, Function.update_of_ne h1]`.
+
+Rewrite `this` using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i _ hi split_ifs with h6`. Use `alt_zero B hB _ hd ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hd, Function.update_of_ne hi.2.symm, Function.update_self, Function.update_of_ne hi.1.symm]`.
+
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hr : rho N c = N - 1 - c` using `rfl`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h6`. Distinguish the cases in `hi : c = i`. Substitute `hi` using the available equality. Rewrite `h6` using `[Function.update_self]`.
+
+Rewrite using `[Function.update_idem, Function.update_self]`. Establish `hd : (⟨c + k' - k, by omega⟩ : Fin N) ≠ c`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`.
+
+Use linear arithmetic over natural numbers and integers. Use `alt_zero B hB _ hd ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hd, Function.update_self]`. Simplify using `only [rho]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `h6` using `[Function.update_of_ne hi]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+-/
 theorem up_down (k k' : ℕ) (hkN : k ≤ N) (hk' : 1 ≤ k') (hne : k' ≠ k) :
     (∑ i : Fin N, ∑ c : Fin N, if k' ≤ Function.update (rho N) i (rho N i + k) c then
       B (Function.update (Function.update (rho N) i (rho N i + k)) c
@@ -221,6 +305,17 @@ theorem up_down (k k' : ℕ) (hkN : k ≤ N) (hk' : 1 ≤ k') (hne : k' ≠ k) :
 
 end Alt
 
+/- English proof (translation)
+Unfold `hookFl`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Distinguish the cases in `hτ : τ'' = τ`. Substitute `hτ` using the available equality. Establish `hkk : k' ≠ k` using `fun h => hne (by rw [h])`.
+
+Establish `h1 : ∀ r, (fun τ' => if τ' = τ'' then hookRho N k r else rho N) = Function.update (fun _ => rho N) τ'' (hookRho N k r)`. Introduce `r`. Use function extensionality and compare the values at `t`. Simplify using `[Function.update_apply]`. Simplify using `only [h1]`.
+
+Rewrite using `[hook_sum (fun m => altCoeff (Function.update (fun _ => rho N) τ'' m) (pw N τ'' k' * G)) (fun m π => altCoeff_update_perm _ _ _ m π) k hk hkN]`. Simplify using `only [altCoeff_pw_mul]`. Conclude with `up_down (fun m => altCoeff (Function.update (fun _ => rho N) τ'' m) G) (fun m π => altCoeff_update_perm _ _ _ m π) k k' hkN hk' hkk`. Use `Finset.sum_eq_zero fun r _ => mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Establish `h1 : (fun τ' => if τ' = τ then hookRho N k r else rho N) = Function.update (fun τ' => if τ' = τ then hookRho N k r else rho N) τ'' (rho N)`.
+
+Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : t = τ''`. Substitute `ht` using the available equality. Simplify using `[hτ]`. Simplify using `[ht]`.
+
+Rewrite using `[h1, altCoeff_pw_mul]`. Conclude with `down_rho (fun m => altCoeff (Function.update (fun τ' => if τ' = τ then hookRho N k r else rho N) τ'' m) G) (fun m π => altCoeff_update_perm _ _ _ m π) k' hk'`.
+-/
 theorem hookFl_pw_mul_eq_zero (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (τ τ'' : ι) (k k' : ℕ)
     (G : MvPolynomial (ι × Fin N) ℝ) (hk : 1 ≤ k) (hkN : k ≤ N) (hk' : 1 ≤ k')
     (hne : (τ'', k') ≠ (τ, k)) : hookFl τ k (pw N τ'' k' * G) = 0 := by

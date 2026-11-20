@@ -27,6 +27,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CMPlaceCurve
 
+/- English proof (translation)
+Take `⟨hy, hn'⟩` from `h`. Establish `ha : IsAlgebraic ℚ y` using `IsAlgebraic.of_pow hn (mem_algebraicClosure_iff.1 hy)`. Establish `hy' : y ∈ algebraicClosure ℚ ℂ` using `mem_algebraicClosure_iff.2 ha`. Use `⟨hy', ?_⟩` and prove the remaining obligations. Rewrite `hn'`, the goal using `[Real.rpow_zero]`.
+
+Establish `e : (⟨y ^ n, hy⟩ : algebraicClosure ℚ ℂ) = (⟨y, hy'⟩ : algebraicClosure ℚ ℂ) ^ n` using `rfl`. Rewrite `hn'` using `[e, map_pow, norm_pow]`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 hn'`.
+-/
 theorem sz_of_pow {l : ℕ} [Fact l.Prime] {lam : algebraicClosure ℚ ℂ →+* ℂ_[l]} {y : ℂ} {n : ℕ} (hn : 0 < n)
     (h : Sz l lam 0 (y ^ n)) : Sz l lam 0 y := by
   obtain ⟨hy, hn'⟩ := h
@@ -38,6 +43,25 @@ theorem sz_of_pow {l : ℕ} [Fact l.Prime] {lam : algebraicClosure ℚ ℂ →+*
   rw [e, map_pow, norm_pow] at hn'
   exact (pow_le_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 hn'
 
+/- English proof (translation)
+Introduce `_ d Λ hd hΛ l _ lam Ω hΩ`. Establish `hJ` using `GlobalTheory.T.j_invariant_integral d Λ hd hΛ`. Take `⟨k₁, R₁, W, hk, hpl, hsub, hΔ, hj⟩` from `GlobalTheory.T.weierstrass_model_good_reduction l lam _ hJ`. Establish `hD : latDisc Λ ≠ 0` using `g₂_cube_sub_g₃_sq_ne_zero Λ`. Establish `hΔ0 : ((W.Δ : R₁) : ℂ) ≠ 0`.
+
+Introduce `h0`. Conclude with `hΔ.ne_zero (Subtype.ext h0)`. Establish `hrel : 1728 * ((W.Δ : R₁) : ℂ) = ((W.c₄ : R₁) : ℂ) ^ 3 - ((W.c₆ : R₁) : ℂ) ^ 2`. Use `congrArg (fun x : R₁ ↦ (x : ℂ)) W.c_relation` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Conclude with `this`. Establish `hΔ' : (((W.c₄ : R₁) : ℂ) / 12) ^ 3 - 27 * (((W.c₆ : R₁) : ℂ) / 216) ^ 2 = ((W.Δ : R₁) : ℂ)`. Take the linear combination `-hrel / 1728`. Establish `e : Λ.g₂ ^ 3 * ((((W.c₄ : R₁) : ℂ) / 12) ^ 3 - 27 * (((W.c₆ : R₁) : ℂ) / 216) ^ 2) = (((W.c₄ : R₁) : ℂ) / 12) ^ 3 * (Λ.g₂ ^ 3 - 27 * Λ.g₃ ^ 2)`. Rewrite using `[hΔ', div_pow, hj]`.
+
+Unfold `latDisc at hD ⊢`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨u, hu, h2, h3⟩` from `exists_scale_of_j_eq hD (by rw [hΔ']; exact hΔ0) e`. Take `⟨c, hc⟩` from `IsAlgClosed.exists_pow_nat_eq u (n := 2) (by norm_num)`.
+
+Establish `hc0 : c ≠ 0` using `by rintro rfl; exact hu (by simpa using hc.symm)`. Establish `h4 : ((W.c₄ : R₁) : ℂ) = 12 * c ^ 4 * Λ.g₂`. Rewrite using `[show c ^ 4 = (c ^ 2) ^ 2 by ring, hc]; linear_combination 12 * h2`. Establish `h6 : ((W.c₆ : R₁) : ℂ) = 216 * c ^ 6 * Λ.g₃`. Rewrite using `[show c ^ 6 = (c ^ 2) ^ 3 by ring, hc]; linear_combination 216 * h3`.
+
+Take `⟨P, A', _, φ', L', uu, v, v', h1, h2', h3', h4', h5, h6', h7, h8⟩` from `GlobalTheory.T.elliptic_curve_abelian_scheme_model R₁ W hΔ Λ c hc0 h4 h6`. Establish `hΩ0 : Ω ≠ 0` using `by rintro rfl; apply hD; rw [← hΩ]; norm_num`. Establish `key : (c * Ω) ^ 12 = ((W.Δ : R₁) : ℂ)`. Rewrite using `[← hΔ', h4, h6, mul_pow, hΩ]`. Unfold `latDisc`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨k₁, R₁, hk, hpl, hsub, P, A', inferInstance, φ', L', uu, v, v', c, h1, h2', h3', h4', h5, h6', h7, h8, hc0, ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hΔ`. Use `sz_of_pow (n := 12) (by norm_num) ?_` and prove the remaining obligations. Establish `e2 : ((c * Ω)⁻¹) ^ 12 = ((w⁻¹ : R₁ˣ) : R₁)`.
+
+Rewrite using `[inv_pow, key, ← hw]`. Use `congrArg (fun x : R₁ ↦ (x : ℂ)) w.mul_inv` as an intermediate fact. Simplify using `only [Subring.coe_mul, Subring.coe_one] at this ⊢`. Conclude with `(eq_inv_of_mul_eq_one_right this).symm`. Rewrite using `[e2]`.
+
+Conclude with `hpl.2.1 _ (w⁻¹ : R₁ˣ).1.2`.
+-/
 theorem exists_curve : GlobalTheory.Published.SerreTateGoodReductionSt →
   ∀ (d : ℕ) (Λ : PeriodPair), d.Prime → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice d Λ →
     ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (Ω : ℂ), Ω ^ 12 = latDisc Λ →

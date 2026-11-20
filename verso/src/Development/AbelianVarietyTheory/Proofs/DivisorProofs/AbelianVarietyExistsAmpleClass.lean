@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV
 
+/- English proof (translation)
+Introduce `K _ A`. Take `⟨L, hL, hamp⟩` from `GlobalTheory.ProjFinite.exists_relAmple_of_isProjBy (GlobalTheory.ProjField.isProjBy_of_isAbelianScheme K A.X A.ab)`. Conclude with `⟨cls L hL, L, hL, hamp, rfl⟩`.
+-/
 theorem exists_isAmpleCls : ∀ (K : Type) [Field K] (A : AbVar K), ∃ c : Pic A.X.left, IsAmpleCls c := by
   intro K _ A
   obtain ⟨L, hL, hamp⟩ := GlobalTheory.ProjFinite.exists_relAmple_of_isProjBy

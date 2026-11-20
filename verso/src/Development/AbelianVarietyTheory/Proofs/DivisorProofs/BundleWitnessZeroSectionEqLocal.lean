@@ -11,6 +11,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hL p`. Apply `GlobalTheory.Fc.EvP.of_all` to reduce the goal to its premises. Introduce `_ K _ q c b w hsc`. Establish `hK : DV.KapDef (q.w.D q.Z)` using `b.R.T.what₂.ka`. Establish `hB : ∀ Zs, HEq ((rpkB b).Zsc Zs).F0 (F0K K.s (q.w.D q.Z))`.
+
+Introduce `Zs`. Apply `heq_of_eq` to reduce the goal to its premises. Use function extensionality and compare the values at `y j`. Rewrite using `[← hsc]`. Conclude with `(forcedContent_eq_closedContent_numericalDatum _ _ _ _ hK y j).symm`.
+
+Take `⟨x, a, ax, y, _⟩` from `w`. Consider the cases of `ax`. Establish `hX` using `y.eq ▸ hB`. Use `letI := a.x.grp`. Use `letI := a.x.fin`.
+
+Establish `hX' : ∀ Zs : DefSub a.x.A3.fam3.amb3, HEq (a.x.F.Zsc Zs).F0 (F0K K.s (q.w.D q.Z))` using `hX`. Simplify using `only`. Use `clear * - hX'`. Take `⟨Dc, Sp, Zsc, lam, err, lam_eq, x', pack, _⟩` from `a`. Simplify using `only at hX' ⊢`.
+
+Take `⟨G, grp, fin, Pl0, I0, T0, A3, core, alg, R, F, cG, _⟩` from `x'`. Simplify using `only at pack hX' ⊢`. Consider the cases of `pack`. Conclude with `hX' _`.
+-/
 theorem GlobalTheory.Mem.Top.Bl.bundle_witness_zero_section_eq : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL), GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (c : ℝ) (b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c) (w : BWit q b), q.O.L.sc = K.s → HEq (w.a.Zsc (zsOf q.x.what₂.r.z.R q.x.what₂.r.z.F)).F0 (F0K K.s (q.w.D q.Z)) := by
   intro hL p
   apply GlobalTheory.Fc.EvP.of_all

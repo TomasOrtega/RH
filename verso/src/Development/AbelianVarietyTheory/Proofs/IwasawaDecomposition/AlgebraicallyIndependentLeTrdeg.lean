@@ -6,6 +6,31 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI : Algebra k K := r.toAlgebra`. Use `letI : Algebra K Ω := ι.toAlgebra`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis k K`. Establish `htr : Cardinal.mk s = Algebra.trdeg k K` using `hs.cardinalMk_eq_trdeg`. Use `set T : Set Ω := σ '' s with hT`.
+
+Establish `hmap : ∀ y ∈ Algebra.adjoin k (Set.range ((↑) : s → K)), σ y ∈ Algebra.adjoin K T`. Introduce `y hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨⟨b, hb⟩, rfl⟩` from `hx`.
+
+Conclude with `Algebra.subset_adjoin ⟨b, hb, rfl⟩`. Consider the case `algebraMap c`. Establish `h1 : σ (algebraMap k K c) = algebraMap K Ω (r c)`. Express the relevant statement in the definitionally equal form `σ (r c) = ι (r c)`. Conclude with `RingHom.congr_fun hr c`.
+
+Rewrite using `[h1]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Subalgebra.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
+
+Conclude with `Subalgebra.mul_mem _ hx hy`. Set `f : Algebra.adjoin k (Set.range ((↑) : s → K)) →+* Algebra.adjoin K T` to `(σ.comp (Algebra.adjoin k (Set.range ((↑) : s → K))).val.toRingHom).codRestrict (Algebra.adjoin K T) (fun y => hmap y.1 y.2)`. Establish `hf : Function.Injective f`. Introduce `a b h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `σ.injective` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h`. Establish `halgS : ∀ x : K, IsAlgebraic (Algebra.adjoin K T) (σ x)`. Introduce `x`. Establish `hx : IsAlgebraic (Algebra.adjoin k (Set.range ((↑) : s → K))) x` using `hs.isAlgebraic.isAlgebraic x`.
+
+Conclude with `hx.ringHom_of_comp_eq f σ hf (by ext y; rfl)`. Establish `halgI : ∀ x : K, IsAlgebraic (Algebra.adjoin K T) (ι x)`. Introduce `x`. Establish `hm : ι x ∈ Algebra.adjoin K T` using `Subalgebra.algebraMap_mem _ x`. Conclude with `isAlgebraic_algebraMap (⟨ι x, hm⟩ : Algebra.adjoin K T)`.
+
+Establish `halg : ∀ j, IsAlgebraic (Algebra.adjoin K T) (e j)`. Introduce `j`. Use `Subfield.closure_induction (p := fun x _ => IsAlgebraic (Algebra.adjoin K T) x) ?_ ?_ ?_ ?_ ?_ ?_ (he j)` and prove the remaining obligations. Introduce and unpack `x (⟨y, rfl⟩ | ⟨y, rfl⟩) exacts [halgI y, halgS y]`. Conclude with `isAlgebraic_one`.
+
+Introduce `x y _ _ hx hy`. Conclude with `hx.add hy`. Introduce `x _ hx`. Conclude with `hx.neg`. Introduce `x _ hx`.
+
+Conclude with `hx.inv`. Introduce `x y _ _ hx hy`. Conclude with `hx.mul hy`. Set `M` to `AlgebraicIndependent.matroid K Ω`. Establish `hI : M.Indep (Set.range e)`.
+
+Rewrite using `[AlgebraicIndependent.matroid_indep_iff]`. Conclude with `hind.to_subtype_range`. Establish `hsub : Set.range e ⊆ M.closure T`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[AlgebraicIndependent.matroid_closure_eq, SetLike.mem_coe, Subalgebra.mem_algebraicClosure]`.
+
+Conclude with `halg j`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_algebraicIndependent_compositum_le_trdeg
     {k K Ω : Type} [Field k] [Field K] [Field Ω] (r : k →+* K) (σ ι : K →+* Ω)
     (hr : σ.comp r = ι.comp r)

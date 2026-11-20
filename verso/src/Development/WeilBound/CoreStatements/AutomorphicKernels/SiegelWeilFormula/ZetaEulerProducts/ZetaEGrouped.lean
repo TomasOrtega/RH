@@ -7,6 +7,15 @@ namespace PositivityTheory.Lord
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hex : ∀ P : HeightOneSpectrum (𝓞 E), ∃ v : HeightOneSpectrum (𝓞 F), P ∈ fib F E v`. Introduce `P`. Use `⟨⟨P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)), inferInstance, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `P.ne_bot (Ideal.eq_bot_of_comap_eq_bot h)`.
+
+Rewrite using `[mem_fib]`. Conclude with `⟨rfl⟩`. Establish `huniq : ∀ (P : HeightOneSpectrum (𝓞 E)) (v w : HeightOneSpectrum (𝓞 F)), P ∈ fib F E v → P ∈ fib F E w → v = w`. Introduce `P v w hv hw`. Rewrite `hv`, `hw` using `[mem_fib]`.
+
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[hv.over, hw.over]`. Use `choose π hπ using hex`. Set `e : (Σ v : HeightOneSpectrum (𝓞 F), {P // P ∈ fib F E v}) ≃ HeightOneSpectrum (𝓞 E)` to `{ toFun := fun x => x.2.1 invFun := fun P => ⟨π P, ⟨P, hπ P⟩⟩ left_inv := by`. Introduce and unpack `⟨v, P, hP⟩`.
+
+Conclude with `Sigma.subtype_ext (huniq P _ _ (hπ P) hP) rfl`. Use `right_inv := fun P => rfl }`. Take `⟨h, -⟩` from `zeta_euler E hs`. Establish `h'` using `(e.hasProd_iff).2 h`. Conclude with `h'.sigma (fun v => Finset.hasProd (fib F E v) _)`.
+-/
 theorem zetaE_grouped {s : ℂ} (hs : 1 < s.re) :
     HasProd (fun v : HeightOneSpectrum (𝓞 F) => ∏ P ∈ fib F E v, (1 - (Ideal.absNorm P.asIdeal : ℂ) ^ (-s)))
       (GroundTheory.Global.continuedDedekindZeta E s)⁻¹ := by

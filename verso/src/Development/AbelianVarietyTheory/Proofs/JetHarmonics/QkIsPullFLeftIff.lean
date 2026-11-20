@@ -19,6 +19,9 @@ section General
 
 variable {X Y Y' Z Z' : Scheme.{0}} {L : LB X}
 
+/- English proof (translation)
+Substitute `h h'` using the available equality. Conclude with `corr_trans hL (corr_symm (corr_pullGen_comp t a l)) (corr_trans hL (corr_pullGen H l) (corr_pullGen_comp t' a' l))`.
+-/
 theorem corr_pull_of_fac (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Y' ⟶ X)} {ε' : K' → ℤ} {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
     {a : Z ⟶ Y} {a' : Z ⟶ Y'} (H : LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ t a) (LB.pullGen L _ _ t' a'))
@@ -28,6 +31,9 @@ theorem corr_pull_of_fac (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K'] {�
   exact corr_trans hL (corr_symm (corr_pullGen_comp t a l))
     (corr_trans hL (corr_pullGen H l) (corr_pullGen_comp t' a' l))
 
+/- English proof (translation)
+Introduce `j j' _ _ _`. Establish `h : ∀ U : Y.Opens, Subsingleton Γ(Y, U)` using `fun U => by`. Take `rfl : U = ⊥` from `by ext x; exact isEmptyElim x`. Use `infer_instance`. Conclude with `Units.ext (Subsingleton.elim _ _)`.
+-/
 theorem corr_of_isEmpty [IsEmpty Y] {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε')) :
     LB.Gen.Corr L _ _ _ _ t t' := by
@@ -37,6 +43,13 @@ theorem corr_of_isEmpty [IsEmpty Y] {K K' : Type} [Fintype K] [Fintype K'] {φ :
     infer_instance
   exact Units.ext (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Take `⟨s⟩` from `t`. Take `⟨s'⟩` from `t'`. Use `congr 1`. Use function extensionality and compare the values at `j`. Establish `e` using `H j j (fun _ _ _ => rfl) (fun _ _ _ => rfl) (fun _ _ _ => rfl)`.
+
+Establish `hle : h ⁻¹ᵁ (LB.wchart L φ j) ≤ LB.wchart L (fun k => h ≫ φ k) j ⊓ LB.wchart L (fun k => h ≫ φ k) j` using `fun _ hy => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k⟩`. Establish `key : ∀ {U : Y.Opens} {A B : Z.Opens} (h₁ : h ⁻¹ᵁ U ≤ A) (h₂ : A ≤ B) (h₃ : B ≤ h ⁻¹ᵁ U) (s : Γ(Y, U)ˣ), ((res h₁ (res h₂ (res h₃ (pullU h U s))) : Γ(Z, h ⁻¹ᵁ U)ˣ) : Γ(Z, h ⁻¹ᵁ U)) = (h.app U).hom s`. Introduce `U A B h₁ h₂ h₃ s`. Express the relevant statement in the definitionally equal form `(h.app U ≫ Z.presheaf.map (homOfLE h₃).op ≫ Z.presheaf.map (homOfLE h₂).op ≫ Z.presheaf.map (homOfLE h₁).op).hom s.1 = (h.app U).hom s.1`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp]`.
+
+Use `erw [Z.presheaf.map_id]`. Rewrite using `[Category.comp_id]`. Use `Units.ext (hinj _ ?_)` and prove the remaining obligations. Conclude with `(key hle _ _ _).symm.trans ((congrArg (fun u => (res hle u).1) e).trans (key hle _ _ _))`.
+-/
 theorem gen_eq_of_pull {φ : PUnit → (Y ⟶ X)} {ε : PUnit → ℤ} (t t' : LB.Gen (LB.LinComb L φ ε)) (h : Z ⟶ Y)
     (hinj : ∀ U : Y.Opens, Function.Injective (h.app U))
     (H : LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ t h) (LB.pullGen L _ _ t' h)) : t = t' := by
@@ -76,6 +89,9 @@ def gtEquiv : GtPt D T ≃ IndefiniteRowSideFullHecke.TorusExtensionPoints.GtPt 
 
 variable {D T}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨gs, a, b, c⟩ => ⟨fun i => gtEquiv D T (gs i), a, b, congrArg (gtEquiv D T) c⟩, fun ⟨gs, a, b, c⟩ => ⟨fun i => (gtEquiv D T).symm (gs i), a, b, congrArg (gtEquiv D T).symm c⟩⟩`.
+-/
 theorem isNsmul_iff (k : ℕ) (g h : GtPt D T) :
     GtPt.IsNsmul k g h ↔ IndefiniteRowSideFullHecke.TorusExtensionPoints.GtPt.IsNsmul k (gtEquiv D T g) (gtEquiv D T h) :=
   ⟨fun ⟨gs, a, b, c⟩ => ⟨fun i => gtEquiv D T (gs i), a, b, congrArg (gtEquiv D T) c⟩,
@@ -89,6 +105,15 @@ section OnOpen
 
 variable {D : DegPre R} {W : (Spec (CommRingCat.of R)).Opens}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H j`. Establish `h : j.left ≫ W.ι = 𝟙 _ ≫ jK R` using `(Over.w j).trans (Category.id_comp _).symm`. Conclude with `corr_trans D.P.isLB (corr_pull_of_fac D.P.isLB H ((isPullback_morphismRestrict (jK R) W).lift _ _ h) ((isPullback_morphismRestrict (jK R) W).lift_fst _ _ _) ((isPullback_morphismRestrict (jK R) W).lift_snd _ _ _)) (corr_pullGen_id _)`. Introduce `H`.
+
+Break down `isEmpty_or_nonempty (jK R ⁻¹ᵁ W).toScheme with h | ⟨⟨y, hy⟩⟩` into its components or cases. Conclude with `corr_of_isEmpty _ _`. Establish `hr : Set.range (jK R) ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, Subsingleton.elim z y]`.
+
+Conclude with `hy`. Establish `hj : IsOpenImmersion.lift W.ι (jK R) hr ≫ W.ι = jK R` using `IsOpenImmersion.lift_fac _ _ _`. Establish `H'` using `corr_trans D.P.isLB (H (Over.homMk (IsOpenImmersion.lift W.ι (jK R) hr) hj)) (corr_symm (corr_pullGen_id _))`. Use `corr_pull_of_fac D.P.isLB H' (jK R ⁻¹ᵁ W).ι ?_ (Category.comp_id _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(jK R ⁻¹ᵁ W).ι ≫ IsOpenImmersion.lift W.ι (jK R) hr = _`.
+
+Rewrite using `[← cancel_mono W.ι, Category.assoc, hj, morphismRestrict_ι]`.
+-/
 theorem psi_eq_iff (χ : D.X)
     (t : LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (toUnit (TW W) ≫ D.c χ).left) (fun _ => -1))) :
     LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ t (jK R ∣_ W))
@@ -122,6 +147,13 @@ def psiEquiv : PsiOn D W ≃ {ψ' : IndefiniteRowSideFullHecke.TorusExtensionPoi
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Establish `hd : IsDominant (jK R)`. Use `⟨?_⟩` and prove the remaining obligations. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap R (FractionRing R))).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))]`. Conclude with `bot_le)`.
+
+Establish `: IsSchemeTheoreticallyDominant (jK R)` using `.of_isDominant _`. Establish `: IsSchemeTheoreticallyDominant (jK R ∣_ W)` using `IsSchemeTheoreticallyDominant.of_isPullback (isPullback_morphismRestrict (jK R) W).flip`. Establish `e : ψ.psi = ψ'.psi` using `funext fun χ => gen_eq_of_pull _ _ (jK R ∣_ W) (Scheme.Hom.app_injective _) (corr_trans D.P.isLB (ψ.psi_eq χ) (corr_symm (ψ'.psi_eq χ)))`. Take `⟨a, _, _⟩` from `ψ`. Take `⟨b, _, _⟩` from `ψ'`.
+
+Take `rfl : a = b` from `e`. Both sides reduce to the same expression.
+-/
 theorem psiOn_unique (ψ ψ' : PsiOn D W) : ψ = ψ' := by
   have hd : IsDominant (jK R) := by
     refine ⟨?_⟩
@@ -138,6 +170,11 @@ theorem psiOn_unique (ψ ψ' : PsiOn D W) : ψ = ψ' := by
   obtain rfl : a = b := e
   rfl
 
+/- English proof (translation)
+Use `and_congr_right' ⟨fun h => ⟨Over.homMk T.hom rfl, ψ.psi, (psiEquiv D W ψ).2, h⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u, ψ', h', h⟩`. Take `rfl : ψ = (psiEquiv D W).symm ⟨ψ', h'⟩` from `psiOn_unique _ _`. Establish `e : u.left = T.hom` using `(cancel_mono W.ι).1 (Over.w u)`. Introduce `χ`.
+
+Use `h χ` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem isIota_iff (ψ : PsiOn D W) {T : Over W.toScheme} (y : D.X) (g : GtPt D (overW W T)) :
     GtPt.IsIotaW ψ y g ↔ IndefiniteRowSideFullHecke.TorusExtensionPoints.GtPt.IsIota W y (gtEquiv D _ g) := by
   refine and_congr_right' ⟨fun h => ⟨Over.homMk T.hom rfl, ψ.psi, (psiEquiv D W ψ).2, h⟩, ?_⟩

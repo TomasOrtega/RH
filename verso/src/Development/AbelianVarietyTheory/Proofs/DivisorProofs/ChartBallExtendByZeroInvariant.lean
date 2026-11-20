@@ -21,6 +21,11 @@ open Classical in
 noncomputable def ext (X : Data E r) (x : Frame X.Ψ r) (R : ℝ) (η : V (nd X) → ℝ) (y : Frame X.Ψ r) : ℝ :=
   if h : InOrbit X x R y then η h.choose else 0
 
+/- English proof (translation)
+Establish `h1 : lact (γ'⁻¹ * γ) (rmul (cpt X x z) b) = rmul (cpt X x z') b'`. Rewrite using `[← IW.lact_lact, h, IW.lact_lact, inv_mul_cancel, IW.lact_one]`. Establish `h2 : lact (γ'⁻¹ * γ) (cpt X x z) = rmul (cpt X x z') (IW.bmul X b' (IW.binv X b))`. Rewrite using `[← IW.rmul_rmul, ← h1, IW.lact_rmul, IW.rmul_binv X _ hb]`. Establish `h3` using `hinj _ (X.Γ.mul_mem (X.Γ.inv_mem hγ') hγ) z z' hz hz' _ (IW.bmul_mem X hb' (IW.binv_mem X hb)) h2`.
+
+Rewrite `h1` using `[h3, IW.lact_one]`. Conclude with `(KU.cpt_inj X ho hb hb' h1).1`.
+-/
 theorem uniq (X : Data E r) {x : Frame X.Ψ r} {R : ℝ} (ho : IsOrth X x)
     (hinj : ∀ γ ∈ X.Γ, ∀ z z' : V (nd X), ‖z‖ ≤ R → ‖z'‖ ≤ R → ∀ b ∈ Bor X.Ψ r,
       lact γ (cpt X x z) = rmul (cpt X x z') b → γ = 1)
@@ -36,6 +41,9 @@ theorem uniq (X : Data E r) {x : Frame X.Ψ r} {R : ℝ} (ho : IsOrth X x)
   rw [h3, IW.lact_one] at h1
   exact (KU.cpt_inj X ho hb hb' h1).1
 
+/- English proof (translation)
+Establish `hP : InOrbit X x R (lact γ (rmul (cpt X x z) b))` using `⟨z, hz, γ, hγ, b, hb, rfl⟩`. Unfold `ext`. Rewrite using `[dif_pos hP]`. Take `⟨hz', γ', hγ', b', hb', he⟩` from `hP.choose_spec`. Rewrite using `[uniq X ho hinj hγ' hγ hb' hb hz' hz he.symm]`.
+-/
 theorem ext_val (X : Data E r) {x : Frame X.Ψ r} {R : ℝ} (ho : IsOrth X x)
     (hinj : ∀ γ ∈ X.Γ, ∀ z z' : V (nd X), ‖z‖ ≤ R → ‖z'‖ ≤ R → ∀ b ∈ Bor X.Ψ r,
       lact γ (cpt X x z) = rmul (cpt X x z') b → γ = 1)
@@ -47,6 +55,9 @@ theorem ext_val (X : Data E r) {x : Frame X.Ψ r} {R : ℝ} (ho : IsOrth X x)
   obtain ⟨hz', γ', hγ', b', hb', he⟩ := hP.choose_spec
   rw [uniq X ho hinj hγ' hγ hb' hb hz' hz he.symm]
 
+/- English proof (translation)
+Unfold `ext`. Rewrite using `[dif_neg hy]`.
+-/
 theorem ext_zero (X : Data E r) {x : Frame X.Ψ r} {R : ℝ} (η : V (nd X) → ℝ) {y : Frame X.Ψ r}
     (hy : ¬ InOrbit X x R y) : ext X x R η y = 0 := by
   unfold ext
@@ -56,6 +67,19 @@ end GlobalTheory.ChartBallExt
 
 open GlobalTheory.ChartBallExt in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X x R ho _ hinj η`. Use `⟨ext X x R η, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ b hb z hz`. Conclude with `ext_val X ho hinj η hγ hb hz`. Introduce `y hy`.
+
+Use `ext_zero X η ?_` and prove the remaining obligations. Introduce and unpack `⟨z, hz, γ, hγ, b, hb, e⟩`. Conclude with `hy ⟨γ, hγ, b, hb, z, hz, e⟩`. Introduce `γ hγ y`. Distinguish the cases in `hy : InOrbit X x R y`.
+
+Take `⟨z, hz, γ0, hγ0, b, hb, rfl⟩` from `hy`. Rewrite using `[IW.lact_lact, ext_val X ho hinj η (X.Γ.mul_mem hγ hγ0) hb hz, ext_val X ho hinj η hγ0 hb hz]`. Establish `hy' : ¬ InOrbit X x R (lact γ y)`. Introduce and unpack `⟨z, hz, γ0, hγ0, b, hb, e⟩`. Use `hy ⟨z, hz, γ⁻¹ * γ0, X.Γ.mul_mem (X.Γ.inv_mem hγ) hγ0, b, hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← IW.lact_lact, ← e, IW.lact_lact, inv_mul_cancel, IW.lact_one]`. Rewrite using `[ext_zero X η hy, ext_zero X η hy']`. Introduce `y b hb`. Distinguish the cases in `hy : InOrbit X x R y`. Take `⟨z, hz, γ0, hγ0, b0, hb0, rfl⟩` from `hy`.
+
+Rewrite using `[← IW.lact_rmul, IW.rmul_rmul, ext_val X ho hinj η hγ0 (IW.bmul_mem X hb0 hb) hz, ext_val X ho hinj η hγ0 hb0 hz]`. Establish `hy' : ¬ InOrbit X x R (rmul y b)`. Introduce and unpack `⟨z, hz, γ0, hγ0, b0, hb0, e⟩`. Use `hy ⟨z, hz, γ0, hγ0, IW.bmul X b0 (IW.binv X b), IW.bmul_mem X hb0 (IW.binv_mem X hb), ?_⟩` and prove the remaining obligations. Rewrite using `[← IW.rmul_rmul, IW.lact_rmul, ← e, IW.rmul_binv X y hb]`.
+
+Rewrite using `[ext_zero X η hy, ext_zero X η hy']`.
+-/
 theorem GlobalTheory.chartBall_extend_by_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x : Frame X.Ψ r) (R : ℝ), IsOrth X x → (∀ z : V (nd X), ‖z‖ ≤ R → z ∈ OmF X x) → (∀ γ ∈ X.Γ, ∀ z z' : V (nd X), ‖z‖ ≤ R → ‖z'‖ ≤ R → ∀ b ∈ Bor X.Ψ r, lact γ (cpt X x z) = rmul (cpt X x z') b → γ = 1) → ∀ η : V (nd X) → ℝ, ∃ ψ : Frame X.Ψ r → ℝ, (∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, ∀ z : V (nd X), ‖z‖ ≤ R → ψ (lact γ (rmul (cpt X x z) b)) = η z) ∧ (∀ y, (¬ ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z : V (nd X), ‖z‖ ≤ R ∧ y = lact γ (rmul (cpt X x z) b)) → ψ y = 0) ∧ (∀ γ ∈ X.Γ, ∀ y, ψ (lact γ y) = ψ y) ∧ (∀ y, ∀ b ∈ Bor X.Ψ r, ψ (rmul y b) = ψ y) := by
   intro E _ _ _ r X x R ho _ hinj η
   refine ⟨ext X x R η, ?_, ?_, ?_, ?_⟩

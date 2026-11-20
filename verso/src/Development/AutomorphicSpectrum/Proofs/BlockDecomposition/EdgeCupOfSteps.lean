@@ -5,6 +5,11 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 
 namespace GlobalTheory.CompanionTheory.EdgeMap
 
+/- English proof (translation)
+Introduce `hCls hTop hA hB`. Unfold `CrystallineSemistableComparison.E.EdgeCup`. Introduce `R _ C _ F₁ F₂ F₃ T₁ T₂ T₃ P μ hT₁ hT₂ i j n hn x y a b hx hy`. Take `⟨z, hz, hzx, rfl⟩` from `hx`. Take `⟨z', hz', hzy, rfl⟩` from `hy`.
+
+Take `⟨hu, hcls⟩` from `hCls R C F₁ F₂ F₃ P i j n hn z z' hz hz'`. Use `⟨P.cupC hn z z', hu, ?_, hcls.symm⟩` and prove the remaining obligations. Establish `hyy` using `hTop R C F₂ T₂ hT₂ j z' hz' j 0 y hzy`. Establish `hb` using `hB R C F₁ F₂ F₃ T₁ T₂ T₃ P μ hT₁ hT₂ i j n hn z z' hz j 0 i (add_zero i) y hzy`. Conclude with `hA R C F₁ F₂ F₃ T₁ T₂ T₃ P μ hT₁ hT₂ i j n z y (P.cupC hn z z') hyy.1 hyy.2 hb i 0 n hn x hzx`.
+-/
 theorem edgeCup_of_steps : CrystallineSemistableComparison.E.CupCls → CrystallineSemistableComparison.E.StTop → CrystallineSemistableComparison.E.StCupA → CrystallineSemistableComparison.E.StCupB → CrystallineSemistableComparison.E.EdgeCup := by
   intro hCls hTop hA hB
   unfold CrystallineSemistableComparison.E.EdgeCup

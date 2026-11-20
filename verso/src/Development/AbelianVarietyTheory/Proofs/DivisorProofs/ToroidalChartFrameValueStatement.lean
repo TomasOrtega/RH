@@ -11,6 +11,9 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LieFilt.bijective_mulVec_of_eigBases | exact GlobalTheory.LieFilt.bijective_mulVec_of_eigBases | (intros; apply GlobalTheory.LieFilt.bijective_mulVec_of_eigBases <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bijective_mulVec_of_isTanMat_of_isEigBasis : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]

@@ -9,6 +9,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatStabTensor.latAt_stab | exact GlobalTheory.LatStabTensor.latAt_stab | (intros; apply GlobalTheory.LatStabTensor.latAt_stab <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lattice_stabilizer_inert_sphere : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s : ℕ), X.IsHerm σ B r s →
     ∀ (m : ℕ) (x y : Fin m → Fin n → E), (∀ i, x i ∈ X.L ∧ y i ∈ X.L) → ∑ i, form σ X.J (x i) (y i) = 1 →

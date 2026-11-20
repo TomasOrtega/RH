@@ -20,6 +20,31 @@ namespace GlobalTheory.UseLocInst
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D HW F i r ρ π hB3 hJa hGood hZ hG2 hG3 hCont hDec hEps h5 hsm hq hd hPosition w hw`. Take `⟨C, hA⟩` from `GlobalTheory.UseLoc.exists_caseA_enl D i w hw hsm hq hd`. Take `⟨lam, hlam⟩` from `GlobalTheory.UseLocUnif.exists_uniformiser (D.nd.l i) C.LL`. Take `⟨ep, hJ⟩` from `hJa`. Establish `hτ : ∀ a : ZMod (finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)), ∃ τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1, tableLineDegreeTwo.Over (embC HW C hA) a τ ∧ ∀ τ' : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1, tableLineDegreeTwo.Over (embC HW C hA) a τ' → τ' = τ` using `fun a => GlobalTheory.UseLoc.extendUnramEmb (D.nd.l i) (D.nbr i w hw).Kw C.LL hA.1 (embC HW C hA a)`.
+
+Use `choose τa _hτa hτu using hτ`. Establish `hJτ` using `fun a => hJ i r hGood w hw C (τa a)`. Use `choose gA ρA _hRead hX hW using hJτ`. Use `haveI := (Br.PD D.loc D.nbr i w hw).finK₀`. Use `haveI : NeZero (finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) := ⟨Module.finrank_pos.ne'⟩`.
+
+Take `⟨h, w', η, typ, U, hS, hU⟩` from `hPosition _ (fun a => decide (AdmissibleParameterJ.TypeU D ep (gA a))) ρA`. Take `⟨θ, hθc, hθcr, hθj⟩` from `(hB3 (D.nd.l i) (D.nbr i w hw).Kw C.LL hA).1 (fun a => (w' a : ℤ))`. Establish `hθj' : ∀ a τ, tableLineDegreeTwo.Over (embC HW C hA) a τ → ∀ b, multV (Br.PD D.loc D.nbr i w hw) (Formalism.WeaklyAdmissibleFiltrations.charRep (tableLineDegreeTwo.charL (LL` using `↥C.LL.1) θ)) τ b = if b = (w' a : ℤ) then 1 else 0 := hθj`. Establish `hθnz : ∀ a τ, tableLineDegreeTwo.Over (embC HW C hA) a τ → multV (Br.PD D.loc D.nbr i w hw) (Formalism.WeaklyAdmissibleFiltrations.charRep (tableLineDegreeTwo.charL (LL` using `↥C.LL.1) θ)) τ (w' a) ≠ 0 := by`. Introduce `a τ hO`.
+
+Rewrite using `[hθj' a τ hO]`. Simplify using the standard rewrite rules. Establish `hWp : ∀ a τ, tableLineDegreeTwo.Over (embC HW C hA) a τ → ∀ b : ℤ, multV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (WpO D.nd i ρ π))) τ b = ((U a).count (b + w' a) : ℤ)`. Introduce `a τ hO b`. Rewrite using `[hτu a τ hO, ((hW a) ρ π hZ hDec b).2.1]`.
+
+Take `⟨h1, h2⟩` from `hU a b`. Distinguish the cases in `hb : ((b : ℤ) : ℚ) ∈ AdmissibleParameterJ.JW D (decide (AdmissibleParameterJ.TypeU D ep (gA a))) (D.nd.j i) (ρA a)`. Rewrite using `[if_pos hb, h1.2 hb]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hb]`.
+
+Establish `: (U a).count (b + w' a) ≠ 1` using `fun e => hb (h1.1 e)`. Use linear arithmetic over natural numbers and integers. Establish `hL6` using `GlobalTheory.UseLoc.crys_Wp_rTw D i r ρ π w hw C hGood hZ hG2 hDec`. Establish `hL4` using `GlobalTheory.UseLoc.TwistCrysW.isCrys_and_multV D i w hw C`. Establish `hL5` using `GlobalTheory.UseLoc.twistM_repV_cont D i w hw C`.
+
+Establish `hWcont : Continuous fun g => WpO D.nd i ρ π g` using `(GlobalTheory.Pass.stepSub_holds D i r ρ hGood π hDec {π} rfl).1.1`. Use `⟨C, hA, lam, hlam, θ, h, w', η, typ, U, ?_, ?_⟩` and prove the remaining obligations. Use `⟨D.R.t_odd.pos, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Br.PD_p]`. Conclude with `hS`.
+
+Conclude with `hL5 _ (WpO D.nd i ρ π) θ hWcont hθc`. Conclude with `(hL4 _ (WpO D.nd i ρ π) θ hL6.1 hθcr).1`. Introduce `a τ hO b`. Establish `e` using `(hL4 _ (WpO D.nd i ρ π) θ hL6.1 hθcr).2 τ (w' a) (hθnz a τ hO) (b - w' a)`. Rewrite `e` using `[sub_add_cancel]`.
+
+Rewrite using `[e, hWp a τ hO, sub_add_cancel]`. Introduce `c hc`. Take `⟨hc1, hc2⟩` from `Finset.mem_Icc.1 hc`. Take `⟨k1, k2, k3⟩` from `GlobalTheory.UseLoc.chiT_cont_isCrys_multV D i r ρ π w hw C θ c hc1 hc2 hG2 hθc hθcr`. Use `⟨GlobalTheory.UseLoc.chiT_cyc D i w hw C θ c hc1 hc2, k1, k2, ?_⟩` and prove the remaining obligations.
+
+Introduce `a τ hO b`. Establish `e` using `k3 τ (b - ((c : ℤ) - 1))`. Rewrite `e` using `[sub_add_cancel b ((c : ℤ) - 1)]`. Rewrite using `[e, hθj' a τ hO]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Introduce `x`. Use `⟨hL5 _ (rTwO D.nd i r x) θ (GlobalTheory.Pass.FamCont.stepCont D i r hGood x).1 hθc, (hL4 _ (rTwO D.nd i r x) θ (hL6.2 x) hθcr).1, ?_, GlobalTheory.UseLoc.InstPoly.charpoly_congr D i r ρ π w hw C θ lam hlam hG3 x⟩` and prove the remaining obligations. Introduce `a τ hO b`. Establish `e` using `(hL4 _ (rTwO D.nd i r x) θ (hL6.2 x) hθcr).2 τ (w' a) (hθnz a τ hO) (b - w' a)`. Rewrite `e` using `[sub_add_cancel]`.
+
+Rewrite using `[e, hτu a τ hO, ((hX a) x (b - w' a)).2.1]`. Establish `e2` using `GlobalTheory.jTil_shift_block (D.nd.l i) _ D.R.t h w' η typ U hS a (AdmissibleParameterJ.JW D (decide (AdmissibleParameterJ.TypeU D ep (gA a))) (D.nd.j i) (ρA a)) (hU a) (b - w' a)`. Rewrite `e2` using `[sub_add_cancel]`. Rewrite using `[← e2]`. Conclude with `if_congr (GlobalTheory.UseLoc.JumpBlock.jumps_iff D _ _ _ _) rfl rfl`.
+-/
 theorem exists_setC : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
     (π : D.nd.X i), tableLineDegreeTwo.adm20 D HW F → AdmissibleParameterJ.ConclusionJa D → GoodR D.nd i r → π ∈ D.nd.Z i → TruncatedSeriesCountingIdentities.admG2 i r ρ π →

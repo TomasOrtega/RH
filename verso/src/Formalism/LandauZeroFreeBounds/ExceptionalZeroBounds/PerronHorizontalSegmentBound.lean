@@ -6,11 +6,17 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Unfold `Fchi`. Rewrite using `[norm_div, norm_mul, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hy]`.
+-/
 theorem norm_perron_integrand_eq {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (y : ℝ) (hy : 0 < y) (w : ℂ) :
     ‖Fchi χ y w‖ = ‖negLD χ w‖ * y ^ w.re / (‖w‖ * ‖w - 1‖) := by
   unfold Fchi
   rw [norm_div, norm_mul, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hy]
 
+/- English proof (translation)
+Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp hB with h | h` into its components or cases. Rewrite using `[Finset.card_eq_zero.mp h]`. Simplify using `using hM`. Take `⟨b, rfl⟩` from `Finset.card_eq_one.mp h`. Simplify using `using hf b (Finset.mem_singleton_self b)`.
+-/
 theorem norm_sum_le_of_card_le_one (B : Finset ℝ) (hB : B.card ≤ 1) (f : ℝ → ℂ) (M : ℝ) (hM : 0 ≤ M)
     (hf : ∀ β ∈ B, ‖f β‖ ≤ M) : ‖∑ β ∈ B, f β‖ ≤ M := by
   rcases Nat.le_one_iff_eq_zero_or_eq_one.mp hB with h | h
@@ -18,6 +24,19 @@ theorem norm_sum_le_of_card_le_one (B : Finset ℝ) (hB : B.card ≤ 1) (f : ℝ
   · obtain ⟨b, rfl⟩ := Finset.card_eq_one.mp h
     simpa using hf b (Finset.mem_singleton_self b)
 
+/- English proof (translation)
+Establish `hL0 : 0 < Real.log y` using `Real.log_pos hy`. Establish `hy0 : 0 < y` using `by linarith`. Use `set L := Real.log y with hL`. Use `set w : ℂ := ((1 + 1 / L : ℝ) : ℂ) + t * I with hw`. Establish `hwre : w.re = 1 + 1 / L` using `by simp [hw]`.
+
+Establish `hwim : w.im = t` using `by simp [hw]`. Establish `ht0 : 0 < |t|` using `lt_of_lt_of_le hT ht`. Rewrite using `[norm_perron_integrand_eq χ y hy0 w, hwre]`. Establish `hN : ‖negLD χ w‖ ≤ L + C₀`. Establish `hpos : 0 < 1 / L` using `by positivity`.
+
+Establish `h1` using `hR w (by rw [hwre]; linarith)`. Rewrite `h1` using `[hwre]`. Simplify `h1` using `[one_div, inv_inv]`. Establish `hpow : y ^ (1 + 1 / L) = Real.exp 1 * y`. Rewrite using `[Real.rpow_def_of_pos hy0, ← hL, mul_add, mul_one, mul_one_div_cancel hL0.ne', Real.exp_add, Real.exp_log hy0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hw1 : |t| ≤ ‖w‖` using `by rw [← hwim]; exact Complex.abs_im_le_norm w`. Establish `hw2 : |t| ≤ ‖w - 1‖`. Establish `h2 : (w - 1).im = t` using `by simp [hwim]`. Rewrite using `[← h2]`.
+
+Conclude with `Complex.abs_im_le_norm _`. Rewrite using `[hpow]`. Establish `htt : t ^ 2 ≤ ‖w‖ * ‖w - 1‖`. Rewrite using `[← sq_abs]`. Use polynomial arithmetic with `[abs_nonneg t]`.
+
+Establish `htt0 : 0 < t ^ 2` using `by rw [← sq_abs]; positivity`. Establish `hNn : 0 ≤ L + C₀` using `le_trans (norm_nonneg _) hN`. Establish `hey : 0 < Real.exp 1 * y` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem perron_right_line_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (C₀ : ℝ)
     (hR : ∀ s : ℂ, 1 < s.re → ‖negLD χ s‖ ≤ 1 / (s.re - 1) + C₀)
     (y T t : ℝ) (hy : 1 < y) (hT : 0 < T) (ht : T ≤ |t|) :
@@ -56,11 +75,17 @@ theorem perron_right_line_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter �
     _ ≤ (L + C₀) * (Real.exp 1 * y) / t ^ 2 :=
         div_le_div_of_nonneg_left (mul_nonneg hNn hey.le) htt0 htt
 
+/- English proof (translation)
+Apply `Real.log_pos` to reduce the goal to its premises. Establish `hq : (1:ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Use polynomial arithmetic with `[abs_nonneg u]`.
+-/
 theorem log_conductor_pos_real (q : ℕ) [NeZero q] (u : ℝ) : 0 < Real.log ((q : ℝ) * (|u| + 2)) := by
   apply Real.log_pos
   have hq : (1:ℝ) ≤ q := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
   nlinarith [abs_nonneg u]
 
+/- English proof (translation)
+Establish `hq : (1:ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Apply `Real.log_le_log` to reduce the goal to its premises. Use polynomial arithmetic with `[abs_nonneg u]`. Conclude with `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`.
+-/
 theorem log_analytic_conductor_mono (q : ℕ) [NeZero q] (u T : ℝ) (hu : |u| ≤ T) :
     Real.log ((q : ℝ) * (|u| + 2)) ≤ Real.log ((q : ℝ) * (T + 2)) := by
   have hq : (1:ℝ) ≤ q := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
@@ -68,6 +93,23 @@ theorem log_analytic_conductor_mono (q : ℕ) [NeZero q] (u T : ℝ) (hu : |u| �
   · nlinarith [abs_nonneg u]
   · exact mul_le_mul_of_nonneg_left (by linarith) (by linarith)
 
+/- English proof (translation)
+Establish `hy0 : 0 < y` using `by linarith`. Establish `hT0 : 0 < T` using `by linarith`. Use `set s : ℂ := (x : ℂ) + (v : ℂ) * I with hs`. Establish `hsre : s.re = x` using `by simp [hs]`. Establish `hsim : s.im = v` using `by simp [hs]`.
+
+Establish `hreg : InRegion (c₁ / 2) q s`. Unfold `InRegion`. Rewrite using `[hsim, hsre, hv]`. Conclude with `le_trans hσ₁ hx1`. Establish `hne : ∀ β ∈ B, s ≠ (β : ℂ)`.
+
+Introduce `β _ h`. Establish `h1` using `congrArg Complex.im h`. Rewrite `h1` using `[hsim, Complex.ofReal_im]`. Rewrite `hv` using `[h1]`. Simplify using `at hv`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ‖∑ β ∈ B, 1 / (s - (β : ℂ))‖ ≤ 1`. Use `norm_sum_le_of_card_le_one B hB (fun β : ℝ => 1 / (s - (β : ℂ))) 1 zero_le_one ?_` and prove the remaining obligations. Introduce `β _`. Rewrite using `[norm_div, norm_one]`.
+
+Establish `h2 : (s - (β : ℂ)).im = v` using `by simp [hsim]`. Establish `h1 : (1:ℝ) ≤ ‖s - (β : ℂ)‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_one (by linarith)]; exact h1`. Establish `hD'` using `hD s hreg hne`.
+
+Rewrite `hD'` using `[hsim, hv]`. Establish `hN : ‖negLD χ s‖ ≤ C * Real.log ((q : ℝ) * (T + 2)) ^ 2 + 1`. Establish `h3` using `norm_sub_le (negLD χ s + ∑ β ∈ B, 1 / (s - (β : ℂ))) (∑ β ∈ B, 1 / (s - (β : ℂ)))`. Rewrite `h3` using `[add_sub_cancel_right]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[norm_perron_integrand_eq χ y hy0 s, hsre]`. Establish `hK : 0 ≤ C * Real.log ((q : ℝ) * (T + 2)) ^ 2 + 1` using `le_trans (norm_nonneg _) hN`. Establish `hyx : y ^ x ≤ y ^ σ₀` using `Real.rpow_le_rpow_of_exponent_le hy hx2`. Establish `hw1 : T ≤ ‖s‖` using `by rw [← hv, ← hsim]; exact Complex.abs_im_le_norm s`. Establish `hw2 : T ≤ ‖s - 1‖`.
+
+Establish `h4 : (s - 1).im = v` using `by simp [hsim]`. Rewrite using `[← hv, ← h4]`. Conclude with `Complex.abs_im_le_norm _`. Establish `hden : T ^ 2 ≤ ‖s‖ * ‖s - 1‖` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem perron_horizontal_segment_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (c₁ C : ℝ)
     (B : Finset ℝ) (hB : B.card ≤ 1)
     (hD : ∀ s : ℂ, InRegion (c₁ / 2) q s → (∀ β ∈ B, s ≠ (β : ℂ)) →
@@ -120,6 +162,27 @@ theorem perron_horizontal_segment_bound {q : ℕ} [NeZero q] (χ : DirichletChar
     _ ≤ (C * Real.log ((q : ℝ) * (T + 2)) ^ 2 + 1) * y ^ σ₀ / T ^ 2 :=
         div_le_div_of_nonneg_left (mul_nonneg hK (Real.rpow_nonneg hy0.le _)) (by positivity) hden
 
+/- English proof (translation)
+Use `set s : ℂ := (σ₁ : ℂ) + (u : ℂ) * I with hs`. Establish `hsre : s.re = σ₁` using `by simp [hs]`. Establish `hsim : s.im = u` using `by simp [hs]`. Establish `hLu` using `log_conductor_pos_real q u`. Establish `hmono` using `log_analytic_conductor_mono q u T hu`.
+
+Establish `hreg : InRegion (c₁ / 2) q s`. Unfold `InRegion`. Rewrite using `[hsim, hsre]`. Use `le_trans ?_ hσ₁` and prove the remaining obligations. Establish `h1 : (c₁ / 2) / Real.log ((q : ℝ) * (T + 2)) ≤ (c₁ / 2) / Real.log ((q : ℝ) * (|u| + 2))` using `div_le_div_of_nonneg_left (by linarith) hLu hmono`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdist : ∀ β ∈ B, δ ≤ ‖s - (β : ℂ)‖`. Introduce `β hβ`. Establish `h1 : (s - (β : ℂ)).re = σ₁ - β` using `by simp [hsre]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hne : ∀ β ∈ B, s ≠ (β : ℂ)`. Introduce `β hβ h`. Establish `h1` using `hdist β hβ`. Rewrite `h1` using `[h, sub_self, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsum : ‖∑ β ∈ B, 1 / (s - (β : ℂ))‖ ≤ 1 / δ`. Use `norm_sum_le_of_card_le_one B hB (fun β : ℝ => 1 / (s - (β : ℂ))) (1 / δ) (by positivity) ?_` and prove the remaining obligations. Introduce `β hβ`. Rewrite using `[norm_div, norm_one]`. Conclude with `one_div_le_one_div_of_le hδ (hdist β hβ)`.
+
+Establish `hD'` using `hD s hreg hne`. Rewrite `hD'` using `[hsim]`. Establish `hlogsq : Real.log ((q : ℝ) * (|u| + 2)) ^ 2 ≤ Real.log ((q : ℝ) * (T + 2)) ^ 2` using `pow_le_pow_left₀ hLu.le hmono 2`. Establish `hN : ‖negLD χ s‖ ≤ C * Real.log ((q : ℝ) * (T + 2)) ^ 2 + 1 / δ`. Establish `h3` using `norm_sub_le (negLD χ s + ∑ β ∈ B, 1 / (s - (β : ℂ))) (∑ β ∈ B, 1 / (s - (β : ℂ)))`.
+
+Rewrite `h3` using `[add_sub_cancel_right]`. Establish `h4 : C * Real.log ((q : ℝ) * (|u| + 2)) ^ 2 ≤ C * Real.log ((q : ℝ) * (T + 2)) ^ 2` using `mul_le_mul_of_nonneg_left hlogsq hC`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK : 0 ≤ C * Real.log ((q : ℝ) * (T + 2)) ^ 2 + 1 / δ` using `le_trans (norm_nonneg _) hN`. Rewrite using `[norm_perron_integrand_eq χ y hy s, hsre]`.
+
+Establish `hw1 : 1 / 2 ≤ ‖s‖`. Combine the equalities or inequalities in the displayed calculation. Establish `hw2 : ε ≤ ‖s - 1‖`. Establish `h5 : (s - 1).re = σ₁ - 1` using `by simp [hsre]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hden : ε / 2 ≤ ‖s‖ * ‖s - 1‖` using `by nlinarith`. Establish `hden0 : 0 < ‖s‖ * ‖s - 1‖` using `by linarith`. Establish `hyp : 0 < y ^ σ₁` using `Real.rpow_pos_of_pos hy _`. Establish `h2 : (2 / ε) * (ε / 2) = 1` using `by field_simp`. Rewrite using `[div_le_iff₀ hden0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc _ (2 / ε), h2, mul_one]`. Use `_ ≤ (C * Real.log ((q : ℝ) * (T + 2)) ^ 2 + 1 / δ) * y ^ σ₁ * (2 / ε) * (‖s‖ * ‖s - 1‖) := mul_le_mul_of_nonneg_left hden (mul_nonneg (mul_nonneg hK hyp.le) (by positivity))`.
+-/
 theorem perron_left_line_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (c₁ C : ℝ)
     (hc₁ : 0 ≤ c₁) (hC : 0 ≤ C) (B : Finset ℝ) (hB : B.card ≤ 1)
     (hD : ∀ s : ℂ, InRegion (c₁ / 2) q s → (∀ β ∈ B, s ≠ (β : ℂ)) →
@@ -190,6 +253,15 @@ theorem perron_left_line_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ
     _ ≤ (C * Real.log ((q : ℝ) * (T + 2)) ^ 2 + 1 / δ) * y ^ σ₁ * (2 / ε) * (‖s‖ * ‖s - 1‖) :=
         mul_le_mul_of_nonneg_left hden (mul_nonneg (mul_nonneg hK hyp.le) (by positivity))
 
+/- English proof (translation)
+Establish `hy0 : 0 < y` using `by linarith`. Establish `hβ1 : β < 1` using `by linarith`. Establish `hnum : ‖(y : ℂ) ^ (β : ℂ)‖ = y ^ β`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hy0]`. Simplify using the standard rewrite rules.
+
+Establish `hden : ‖(β : ℂ) * ((β : ℂ) - 1)‖ = β * (1 - β)`. Rewrite using `[norm_mul, ← Complex.ofReal_one, ← Complex.ofReal_sub, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (by linarith), abs_of_neg (by linarith)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_div, hnum, hden]`. Establish `hyb : y ^ β ≤ y ^ σ₁` using `Real.rpow_le_rpow_of_exponent_le hy hβσ`.
+
+Establish `hd : ε / 2 ≤ β * (1 - β)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hβ (by linarith : (0:ℝ) ≤ 1 - β)]`. Establish `hyp : 0 < y ^ σ₁` using `Real.rpow_pos_of_pos hy0 _`. Establish `h2 : (2 / ε) * (ε / 2) = 1` using `by field_simp`. Rewrite using `[div_le_iff₀ (by linarith)]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem real_zero_residue_term_bound (y β σ₁ ε : ℝ) (hy : 1 ≤ y) (hβ : 1 / 2 ≤ β) (hβσ : β ≤ σ₁) (hε : 0 < ε)
     (hgap : ε ≤ 1 - σ₁) :
     ‖(y : ℂ) ^ (β : ℂ) / ((β : ℂ) * ((β : ℂ) - 1))‖ ≤ y ^ σ₁ * (2 / ε) := by

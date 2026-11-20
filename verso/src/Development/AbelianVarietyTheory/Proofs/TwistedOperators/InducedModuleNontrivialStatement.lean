@@ -10,5 +10,8 @@ open GlobalTheory.Dec (IsHaarSub HasInfChar UEquiv gelfVal)
 open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IndNonzero.indModule_nontrivial | exact GlobalTheory.IndNonzero.indModule_nontrivial | (intros; apply GlobalTheory.IndNonzero.indModule_nontrivial <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.induced_module_nontrivial : ∀ (n : ℕ) (ε : Fin n → Bool) (I : IndModule ε), Nontrivial I.H := by
   first | exact @GlobalTheory.IndNonzero.indModule_nontrivial | exact GlobalTheory.IndNonzero.indModule_nontrivial | (intros; apply GlobalTheory.IndNonzero.indModule_nontrivial <;> assumption)

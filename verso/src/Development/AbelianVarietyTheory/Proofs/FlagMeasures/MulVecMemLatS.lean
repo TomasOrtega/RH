@@ -11,6 +11,17 @@ section General
 
 variable {O K : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span K (L : Set V)` using `by rw [hL]; exact Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨a, ha⟩` from `hy`. Take `⟨b, hb⟩` from `hz`. Use `⟨a * b, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Submonoid.coe_mul, mul_comm, mul_smul]`. Conclude with `L.smul_mem _ ha`. Rewrite using `[Submonoid.coe_mul, mul_smul]`. Conclude with `L.smul_mem _ hb`. Consider the case `smul c y _ hy`.
+
+Take `⟨a, ha⟩` from `hy`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors O) c`. Use `⟨s * a, ?_⟩` and prove the remaining obligations. Establish `key : ((s * a : nonZeroDivisors O) : O) • (IsLocalization.mk' K r s • y) = r • ((a : O) • y)`. Rewrite using `[← algebraMap_smul K ((s * a : nonZeroDivisors O) : O), ← algebraMap_smul K r, ← algebraMap_smul K (a : O) y, smul_smul, smul_smul]`.
+
+Use `congr 1`. Rewrite using `[← IsLocalization.mk'_spec K r s, Submonoid.coe_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `L.smul_mem r ha`.
+-/
 theorem exists_smul_mem {V : Type} [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
     (L : Submodule O V) (hL : Submodule.span K (L : Set V) = ⊤) (x : V) :
     ∃ a : nonZeroDivisors O, (a : O) • x ∈ L := by
@@ -41,6 +52,11 @@ theorem exists_smul_mem {V : Type} [AddCommGroup V] [Module K V] [Module O V] [I
     rw [key]
     exact L.smul_mem r ha
 
+/- English proof (translation)
+Establish `hx : algebraMap O K x ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors x.2`. Rewrite using `[Module.End.isUnit_iff]`. Use `⟨fun m₁ m₂ h => ?_, fun m => ⟨(algebraMap O K x)⁻¹ • m, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Module.algebraMap_end_apply] at h`. Rewrite `h` using `[← algebraMap_smul K (x : O) m₁, ← algebraMap_smul K (x : O) m₂]`.
+
+Conclude with `smul_right_injective M hx h`. Simplify using `only [Module.algebraMap_end_apply]`. Rewrite using `[← algebraMap_smul K (x : O), smul_smul, mul_inv_cancel₀ hx, one_smul]`.
+-/
 private theorem isUnit_end_lemma {M : Type} [AddCommGroup M] [Module K M] [Module O M] [IsScalarTower O K M]
     (x : nonZeroDivisors O) : IsUnit (algebraMap O (Module.End O M) x) := by
   have hx : algebraMap O K x ≠ 0 := IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors x.2
@@ -52,6 +68,9 @@ private theorem isUnit_end_lemma {M : Type} [AddCommGroup M] [Module K M] [Modul
   · simp only [Module.algebraMap_end_apply]
     rw [← algebraMap_smul K (x : O), smul_smul, mul_inv_cancel₀ hx, one_smul]
 
+/- English proof (translation)
+The claim follows from `isUnit_end_lemma (K := K) x surj y := by obtain ⟨a, ha⟩ := exists_smul_mem L hL y exact ⟨(⟨_, ha⟩, a), rfl⟩ exists_of_eq {x₁ x₂} h := ⟨1, by rw [show x₁ = x₂ from Subtype.ext h]⟩`.
+-/
 private theorem isLocalizedModule_lemma_2 {V : Type} [AddCommGroup V] [Module K V] [Module O V]
     [IsScalarTower O K V] (L : Submodule O V) (hL : Submodule.span K (L : Set V) = ⊤) :
     IsLocalizedModule (nonZeroDivisors O) L.subtype where
@@ -61,6 +80,9 @@ private theorem isLocalizedModule_lemma_2 {V : Type} [AddCommGroup V] [Module K 
     exact ⟨(⟨_, ha⟩, a), rfl⟩
   exists_of_eq {x₁ x₂} h := ⟨1, by rw [show x₁ = x₂ from Subtype.ext h]⟩
 
+/- English proof (translation)
+Use `isLocalizedModule_lemma_2 L hL` as an intermediate fact. Use `⟨(IsLocalizedModule.lift (nonZeroDivisors O) L.subtype t (fun x => isUnit_end_lemma (K := K) x)).extendScalarsOfIsLocalization (nonZeroDivisors O) K, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.extendScalarsOfIsLocalization_apply']`. Conclude with `IsLocalizedModule.lift_apply (S := nonZeroDivisors O) (f := L.subtype) t _ x`.
+-/
 theorem exists_extend {V W : Type} [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
     [AddCommGroup W] [Module K W] [Module O W] [IsScalarTower O K W]
     (L : Submodule O V) (hL : Submodule.span K (L : Set V) = ⊤) (t : L →ₗ[O] W) :
@@ -72,6 +94,25 @@ theorem exists_extend {V W : Type} [AddCommGroup V] [Module K V] [Module O V] [I
   rw [LinearMap.extendScalarsOfIsLocalization_apply']
   exact IsLocalizedModule.lift_apply (S := nonZeroDivisors O) (f := L.subtype) t _ x
 
+/- English proof (translation)
+Distinguish the cases in `h0 : ∀ x, ψ x = 0`. Conclude with `⟨LinearMap.id, fun x => h0 x, fun x _ => rfl⟩`. Simplify using `only [not_forall] at h0`. Take `⟨x₀, hx₀⟩` from `h0`. Establish `hfg : (LinearMap.range ψ).FG`.
+
+Rewrite using `[LinearMap.range_eq_map]`. Conclude with `(Module.Finite.fg_top).map ψ`. Set `J : FractionalIdeal (nonZeroDivisors O) K` to `⟨LinearMap.range ψ, FractionalIdeal.isFractional_of_fg (S := nonZeroDivisors O) hfg⟩`. Establish `hJc : ∀ y, y ∈ J ↔ y ∈ LinearMap.range ψ` using `fun y => Iff.rfl`. Establish `hJ : J ≠ 0`.
+
+Introduce `hJ`. Establish `h` using `(hJc (ψ x₀)).2 (LinearMap.mem_range_self ψ x₀)`. Rewrite `h` using `[hJ, FractionalIdeal.mem_zero_iff]`. Conclude with `hx₀ h`. Establish `hint : ∀ b ∈ J⁻¹, ∀ x, ∃ o : O, algebraMap O K o = b * ψ x` using `fun b hb x => (FractionalIdeal.mem_one_iff (S := nonZeroDivisors O)).1 (((FractionalIdeal.mem_inv_iff hJ).1 hb) (ψ x) ((hJc _).2 (LinearMap.mem_range_self ψ x)))`.
+
+Establish `h1 : (1 : K) ∈ (J : Submodule O K) * ((J⁻¹ : FractionalIdeal (nonZeroDivisors O) K) : Submodule O K)`. Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ hJ, FractionalIdeal.mem_coe]`. Conclude with `FractionalIdeal.one_mem_one (S := nonZeroDivisors O)`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg1, hg2⟩ : ∃ g : M →ₗ[O] M, (∀ x, ψ (g x) = 1 * ψ x) ∧ ∀ x, ψ x = 0 → g x = 0 := by`. Use `Submodule.mul_induction_on (C := fun y => ∃ g : M →ₗ[O] M, (∀ x, ψ (g x) = y * ψ x) ∧ ∀ x, ψ x = 0 → g x = 0) h1 ?_ ?_` and prove the remaining obligations.
+
+Introduce `a ha b hb`. Take `⟨l, rfl⟩` from `LinearMap.mem_range.1 ((hJc a).1 (FractionalIdeal.mem_coe.1 ha))`. Establish `hb'` using `hint b (FractionalIdeal.mem_coe.1 hb)`. Set `c : M →ₗ[O] O` to `{ toFun := fun x => (hb' x).choose map_add' := fun x y => by`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises.
+
+Rewrite using `[(hb' (x + y)).choose_spec, map_add (algebraMap O K), (hb' x).choose_spec, (hb' y).choose_spec, map_add ψ, mul_add]`. Use the proof step `map_smul' := fun o x => by`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises. Rewrite using `[(hb' (o • x)).choose_spec, RingHom.id_apply, smul_eq_mul, map_mul, (hb' x).choose_spec, map_smul ψ, Algebra.smul_def]`. Use `ring }`.
+
+Establish `hc : ∀ x, algebraMap O K (c x) = b * ψ x` using `fun x => (hb' x).choose_spec`. Use `⟨c.smulRight l, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smulRight_apply, map_smul ψ, Algebra.smul_def, hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcx : c x = 0` using `IsFractionRing.injective O K (by rw [hc, hx, mul_zero, map_zero])`.
+
+Rewrite using `[LinearMap.smulRight_apply, hcx, zero_smul]`. Introduce and unpack `y z ⟨g, hg1, hg2⟩ ⟨g', hg1', hg2'⟩`. Use `⟨g + g', fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, map_add, hg1, hg1', add_mul]`. Rewrite using `[LinearMap.add_apply, hg2 x hx, hg2' x hx, add_zero]`.
+
+Use `⟨LinearMap.id - g, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, map_sub, hg1, one_mul, LinearMap.id_apply, sub_self]`. Rewrite using `[LinearMap.sub_apply, hg2 x hx, LinearMap.id_apply, sub_zero]`.
+-/
 private theorem retract_lemma_3 [IsDedekindDomain O] {M : Type} [AddCommGroup M] [Module O M] [Module.Finite O M]
     (ψ : M →ₗ[O] K) : ∃ r : M →ₗ[O] M, (∀ x, ψ (r x) = 0) ∧ ∀ x, ψ x = 0 → r x = x := by
   by_cases h0 : ∀ x, ψ x = 0
@@ -132,6 +173,29 @@ section Retr
 
 variable {O K : Type} [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
 
+/- English proof (translation)
+Establish `: Module.Finite K V`. Take `⟨S, hS⟩` from `Module.Finite.iff_fg.1 ‹Module.Finite O L›`. Use `⟨⟨S, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Submodule.span_span_of_tower O K, hS, hL]`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl (LinearMap.range q)`.
+
+Set `pC : V →ₗ[K] C` to `Submodule.projectionOnto C (LinearMap.range q) hC.symm`. Set `b` to `Module.finBasis K C`. Set `φ : Fin (Module.finrank K C) → V →ₗ[K] K` to `fun i => b.coord i ∘ₗ pC`. Establish `hW : ∀ v : V, v ∈ LinearMap.range q ↔ ∀ i, φ i v = 0` using `fun v => by`. Rewrite using `[← Submodule.projectionOnto_apply_eq_zero_iff hC.symm, ← b.forall_coord_eq_zero_iff]`.
+
+Conclude with `Iff.rfl`. Establish `key : ∀ s : Finset (Fin (Module.finrank K C)), ∃ r : L →ₗ[O] L, (∀ x, ∀ i ∈ s, φ i (r x : V) = 0) ∧ ∀ x : L, (∀ i ∈ s, φ i (x : V) = 0) → r x = x`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Conclude with `⟨LinearMap.id, fun x i hi => by simp at hi, fun x _ => rfl⟩`.
+
+Introduce `j s _ ih`. Take `⟨r, hr1, hr2⟩` from `ih`. Take `⟨r', hr'1, hr'2⟩` from `retract_lemma_3 ((((φ j).restrictScalars O) ∘ₗ L.subtype) ∘ₗ r)`. Use `⟨r ∘ₗ r' ∘ₗ r, fun x i hi => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases.
+
+Simplify using `using hr'1 (r x)`. Simplify using `using hr1 (r' (r x)) i hi`. Establish `hrx : r x = x` using `hr2 x fun i hi => hx i (Finset.mem_insert_of_mem hi)`. Establish `hr'x : r' x = x` using `hr'2 x (by simpa [hrx] using hx j (Finset.mem_insert_self j s))`. Simplify using `only [LinearMap.comp_apply, hrx, hr'x]`.
+
+Take `⟨r, hr1, hr2⟩` from `key Finset.univ`. Establish `hrW : ∀ x, (r x : V) ∈ LinearMap.range q` using `fun x => (hW _).2 fun i => hr1 x i (Finset.mem_univ i)`. Establish `hrfix : ∀ x : L, (x : V) ∈ LinearMap.range q → r x = x` using `fun x hx => hr2 x fun i _ => (hW _).1 hx i`. Establish `hex : ∀ x : L, ∃ u, q u = (r x : V)` using `fun x => LinearMap.mem_range.1 (hrW x)`. Set `t : L →ₗ[O] U` to `{ toFun := fun x => (hex x).choose map_add' := fun x y => by`.
+
+Apply `hq` to reduce the goal to its premises. Rewrite using `[(hex (x + y)).choose_spec, map_add q, (hex x).choose_spec, (hex y).choose_spec, map_add r, Submodule.coe_add]`. Use the proof step `map_smul' := fun o x => by`. Apply `hq` to reduce the goal to its premises. Rewrite using `[(hex (o • x)).choose_spec, RingHom.id_apply, LinearMap.map_smul_of_tower q, (hex x).choose_spec, map_smul r, Submodule.coe_smul] }`.
+
+Establish `ht : ∀ x, q (t x) = (r x : V)` using `fun x => (hex x).choose_spec`. Take `⟨T, hT⟩` from `exists_extend L hL t`. Use `⟨T, fun u => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_smul_mem L hL (q u)`. Establish `hmem : ((⟨(a : O) • q u, ha⟩ : L) : V) ∈ LinearMap.range q` using `LinearMap.mem_range.2 ⟨(a : O) • u, LinearMap.map_smul_of_tower q _ u⟩`.
+
+Establish `h1 : t ⟨(a : O) • q u, ha⟩ = (a : O) • u`. Apply `hq` to reduce the goal to its premises. Rewrite using `[ht, hrfix _ hmem, LinearMap.map_smul_of_tower]`. Establish `h2 : (a : O) • T (q u) = (a : O) • u`. Rewrite using `[← LinearMap.map_smul_of_tower, ← h1]`.
+
+Conclude with `hT ⟨(a : O) • q u, ha⟩`. Establish `hne : algebraMap O K a ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors a.2`. Rewrite `h2` using `[← algebraMap_smul K (a : O), ← algebraMap_smul K (a : O) u]`. Conclude with `smul_right_injective U hne h2`. Rewrite using `[show T x = t ⟨x, hx⟩ from hT ⟨x, hx⟩, ht]`.
+
+Conclude with `(r ⟨x, hx⟩).2`.
+-/
 theorem exists_retraction {U V : Type} [AddCommGroup U] [Module K U] [Module O U] [IsScalarTower O K U]
     [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
     (q : U →ₗ[K] V) (hq : Function.Injective q) (L : Submodule O V) [Module.Finite O L]
@@ -200,6 +264,13 @@ theorem exists_retraction {U V : Type} [AddCommGroup U] [Module K U] [Module O U
 
 end Retr
 
+/- English proof (translation)
+Unfold `latS at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨z, hz, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨P *ᵥ z, h z hz, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ i`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [Matrix.mulVec_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+-/
 theorem mulVec_mem_latS {F E : Type} [Field F] [CommRing E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (S : Subring (E ⊗[F] R)) {O : Type} [CommRing O] [Algebra O E] {n k : ℕ}
     (P : Matrix (Fin k) (Fin n) E) (L : Submodule O (Fin n → E)) (M : Submodule O (Fin k → E))
@@ -218,6 +289,23 @@ theorem mulVec_mem_latS {F E : Type} [Field F] [CommRing E] [Algebra F E] (R : T
     rw [Matrix.mulVec_smul]
     exact Submodule.smul_mem _ c hy
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n k Q hQ L hL`. Take `⟨hLf, hLs⟩` from `hL`. Use `hLf` as an intermediate fact. Use `set L' := L.comap (Q.mulVecLin.restrictScalars (𝓞 E)) with hL'`. Establish `hmem : ∀ y, y ∈ L' ↔ Q *ᵥ y ∈ L` using `fun y => Iff.rfl`.
+
+Use `⟨(show Module.Finite (𝓞 E) L' ∧ Submodule.span E (L' : Set (Fin k → E)) = ⊤ from ⟨?_, ?_⟩), ?_⟩` and prove the remaining obligations. Set `f : L' →ₗ[𝓞 E] L` to `((Q.mulVecLin.restrictScalars (𝓞 E)).domRestrict L').codRestrict L (fun y => y.2)`. Use `Module.Finite.of_injective f (fun y₁ y₂ h => ?_)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hQ` to reduce the goal to its premises.
+
+Conclude with `congrArg Subtype.val h`. Use `eq_top_iff.2 (fun y _ => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_smul_mem (K := E) L hLs (Q *ᵥ y)`. Establish `hay : (a : 𝓞 E) • y ∈ L'`. Rewrite using `[hmem, Matrix.mulVec_smul]`.
+
+Conclude with `ha`. Establish `hne : algebraMap (𝓞 E) E a ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors a.2`. Establish `hy : y = (algebraMap (𝓞 E) E a)⁻¹ • ((a : 𝓞 E) • y)`. Rewrite using `[← algebraMap_smul E (a : 𝓞 E) y, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Rewrite using `[hy]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hay)`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `mulVec_mem_latS (F := F) (Ad F) (OAd F E) Q L' L (fun y hy => hy) x hx`.
+
+Introduce `hx`. Take `⟨T, hT1, hT2⟩` from `exists_retraction (O := 𝓞 E) (K := E) Q.mulVecLin hQ L hLs`. Use `set R' := LinearMap.toMatrix' T with hR'`. Establish `hRQ : R' * Q = 1`. Establish `h1 : T ∘ₗ Q.mulVecLin = LinearMap.id` using `LinearMap.ext hT1`.
+
+Establish `h2` using `congrArg LinearMap.toMatrix' h1`. Rewrite `h2` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis. Establish `hR : ∀ y ∈ L, R' *ᵥ y ∈ L'` using `fun y hy => by`. Rewrite using `[hmem, hR', LinearMap.toMatrix'_mulVec]`. Conclude with `hT2 y hy`.
+
+Establish `hx'` using `mulVec_mem_latS (F := F) (Ad F) (OAd F E) R' L L' hR _ hx`. Rewrite `hx'` using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, hRQ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem hat_comap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n k : ℕ) (Q : Matrix (Fin n) (Fin k) E), Function.Injective Q.mulVec → ∀ (L : Submodule (𝓞 E) (Fin n → E)), IsLat L → IsLat (L.comap (Q.mulVecLin.restrictScalars (𝓞 E))) ∧ ∀ x : Fin k → E ⊗[F] Ad F, x ∈ hat F (L.comap (Q.mulVecLin.restrictScalars (𝓞 E))) ↔ (Q.map (inclE (F := F) (Ad F))) *ᵥ x ∈ hat F L := by
   intro F E _ _ _ _ _ n k Q hQ L hL
   obtain ⟨hLf, hLs⟩ := hL

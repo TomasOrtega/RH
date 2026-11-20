@@ -188,6 +188,9 @@ abbrev E (r : ℕ) : Type := (Fin r → ℂ) × ℂ
 
 def Qset (r : ℕ) (TT : ℝ) : Set (E r) := {x | (∀ l, x.1 l ≠ 0) ∧ TT < Complex.normSq x.2}
 
+/- English proof (translation)
+Establish `h1 : IsOpen {x : E r | ∀ l, x.1 l ≠ 0}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun l => isOpen_ne_fun ((continuous_apply l).comp continuous_fst) continuous_const`. Establish `h2 : IsOpen {x : E r | TT < Complex.normSq x.2}` using `isOpen_lt continuous_const (Complex.continuous_normSq.comp continuous_snd)`. Conclude with `h1.inter h2`.
+-/
 theorem Qset_open (r : ℕ) (TT : ℝ) : IsOpen (Qset r TT) := by
   have h1 : IsOpen {x : E r | ∀ l, x.1 l ≠ 0} := by
     simp only [Set.setOf_forall]
@@ -227,6 +230,17 @@ def wirt (v : M.Var r) (f : E r → ℂ) (x : E r) : ℂ :=
   (1 / 2 : ℂ) * (fderiv ℝ f x (dirE v) +
     (if (ofLex v).2 = 0 then -Complex.I else Complex.I) * fderiv ℝ f x (Complex.I • dirE v))
 
+/- English proof (translation)
+Establish `hz : ContDiff ℝ sm (zE v)`. Distinguish the cases in `h : ((ofLex v).1 : ℕ) < r`. Establish `he : zE v = fun x : E r => x.1 ⟨_, h⟩`. Use function extensionality and compare the values at `x`. Simplify using `[zE, h]`.
+
+Rewrite using `[he]`. Conclude with `(contDiff_pi.mp contDiff_id (⟨_, h⟩ : Fin r)).comp contDiff_fst`. Establish `he : zE v = fun x : E r => x.2`. Use function extensionality and compare the values at `x`. Simplify using `[zE, h]`.
+
+Rewrite using `[he]`. Conclude with `contDiff_snd`. Distinguish the cases in `h : (ofLex v).2 = 0`. Establish `he : coordE v = zE v`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[coordE, h]`. Rewrite using `[he]`. Conclude with `hz`. Establish `he : coordE v = Complex.conjCLE ∘ zE v`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[coordE, h]`. Rewrite using `[he]`. Conclude with `Complex.conjCLE.contDiff.comp hz`.
+-/
 theorem coordE_smooth (v : M.Var r) : ContDiff ℝ sm (coordE v) := by
   have hz : ContDiff ℝ sm (zE v) := by
     by_cases h : ((ofLex v).1 : ℕ) < r
@@ -252,6 +266,9 @@ theorem coordE_smooth (v : M.Var r) : ContDiff ℝ sm (coordE v) := by
     rw [he]
     exact Complex.conjCLE.contDiff.comp hz
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ sm (ext f) (Qset r TT)` using `hf`. Establish `hn : sm ≠ 0`. Unfold `sm`. Simplify using the standard rewrite rules. Conclude with `(h1.contDiffAt ((Qset_open r TT).mem_nhds hx)).differentiableAt hn`.
+-/
 theorem ext_smooth_diff {f : Qp r TT → ℂ} (hf : f ∈ smSub r TT) (x : E r) (hx : x ∈ Qset r TT) :
     DifferentiableAt ℝ (ext f) x := by
   have h1 : ContDiffOn ℝ sm (ext f) (Qset r TT) := hf
@@ -260,6 +277,9 @@ theorem ext_smooth_diff {f : Qp r TT → ℂ} (hf : f ∈ smSub r TT) (x : E r) 
     simp
   exact (h1.contDiffAt ((Qset_open r TT).mem_nhds hx)).differentiableAt hn
 
+/- English proof (translation)
+Establish `hf' : ContDiffOn ℝ sm (ext f) (Qset r TT)` using `hf`. Establish `hd : ContDiffOn ℝ sm (fun y => fderiv ℝ (ext f) y) (Qset r TT)` using `((contDiffOn_infty_iff_fderiv_of_isOpen (Qset_open r TT)).mp hf').2`. Establish `h1 : ContDiffOn ℝ sm (fun y => fderiv ℝ (ext f) y (dirE v)) (Qset r TT)` using `hd.clm_apply contDiffOn_const`. Establish `h2 : ContDiffOn ℝ sm (fun y => fderiv ℝ (ext f) y (Complex.I • dirE v)) (Qset r TT)` using `hd.clm_apply contDiffOn_const`. Conclude with `contDiffOn_const.mul (h1.add (contDiffOn_const.mul h2))`.
+-/
 theorem wirt_smooth {f : Qp r TT → ℂ} (hf : f ∈ smSub r TT) (v : M.Var r) :
     ContDiffOn ℝ sm (wirt v (ext f)) (Qset r TT) := by
   have hf' : ContDiffOn ℝ sm (ext f) (Qset r TT) := hf
@@ -339,10 +359,16 @@ def Gq (q : Qp P.r P.TT) : ℝ := (∏ l, Complex.normSq (q.1.1 l)) * (Complex.n
 
 def Wq (q : Qp P.r P.TT) : ℝ := Complex.normSq q.1.2 / (Complex.normSq q.1.2 - P.TT)
 
+/- English proof (translation)
+Establish `hq : (∀ l, q.1.1 l ≠ 0) ∧ P.TT < Complex.normSq q.1.2` using `q.2`. Conclude with `mul_pos (Finset.prod_pos fun l _ => Complex.normSq_pos.mpr (hq.1 l)) (sub_pos.mpr hq.2)`.
+-/
 theorem Gq_pos (q : Qp P.r P.TT) : 0 < Gq P q := by
   have hq : (∀ l, q.1.1 l ≠ 0) ∧ P.TT < Complex.normSq q.1.2 := q.2
   exact mul_pos (Finset.prod_pos fun l _ => Complex.normSq_pos.mpr (hq.1 l)) (sub_pos.mpr hq.2)
 
+/- English proof (translation)
+Apply `Continuous.measurable` to reduce the goal to its premises. Conclude with `(continuous_finset_prod _ fun l _ => Complex.continuous_normSq.comp ((continuous_apply l).comp (continuous_fst.comp continuous_subtype_val))).mul ((Complex.continuous_normSq.comp (continuous_snd.comp continuous_subtype_val)).sub continuous_const)`.
+-/
 theorem Gq_meas : Measurable (Gq P) := by
   apply Continuous.measurable
   exact (continuous_finset_prod _ fun l _ => Complex.continuous_normSq.comp
@@ -440,6 +466,9 @@ def stepQ (w : List ℝ) : LE.Step (baseQ P) where
   a := α + (β - α) / 3 + 2 * (w.length : ℝ) * Lb
   L := Lb
 
+/- English proof (translation)
+Rewrite using `[List.length_ofFn]`.
+-/
 theorem iota_len (N : ℕ) (Y : Fin N → ℝ) : Iota P N = Iota P (List.ofFn Y).length := by
   rw [List.length_ofFn]
 

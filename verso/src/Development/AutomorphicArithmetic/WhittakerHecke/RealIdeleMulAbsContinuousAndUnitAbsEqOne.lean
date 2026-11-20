@@ -9,12 +9,29 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 private noncomputable def cu (y : ℝ) (h : y ≠ 0) : (TR.Rinf ℚ)ˣ :=
   ⟨fun _ => y, fun _ => y⁻¹, funext fun _ => mul_inv_cancel₀ h, funext fun _ => inv_mul_cancel₀ h⟩
 
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 private theorem iy_eq {y : ℝ} (h : y ≠ 0) : iy y = TR.infId ℚ (cu y h) := dif_neg h
 
+/- English proof (translation)
+The claim follows from `le_antisymm ((Valued.toNormedField.norm_le_one_iff (x := x)).2 h.le) ((Valued.toNormedField.one_le_norm_iff (x := x)).2 h.ge)`.
+-/
 private theorem nrm_unit {v : H.P ℚ} {x : H.Kv v} (h : Valued.v x = 1) : ‖x‖ = 1 :=
   le_antisymm ((Valued.toNormedField.norm_le_one_iff (x := x)).2 h.le)
     ((Valued.toNormedField.one_le_norm_iff (x := x)).2 h.ge)
 
+/- English proof (translation)
+Use `⟨fun y y' hy hy' => ?_, fun y hy => ?_, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[iy_eq (mul_ne_zero hy hy'), iy_eq hy, iy_eq hy', ← map_mul]`. Use `congr 1`. Conclude with `Units.ext rfl`. Rewrite using `[iy_eq hy] show (IdeleGroup.ideleModule ℚ (TR.infId ℚ (cu y hy)) : ℝ) = |y|`.
+
+Rewrite using `[GlobalTheory.HenQ.DetSplit.ideleModule_infId]`. Simplify using `[cu]`. Establish `hu : Continuous fun t : ℝ => cu (Real.exp t) (Real.exp_ne_zero t)`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_pi fun _ => Real.continuous_exp`.
+
+Conclude with `continuous_pi fun _ => Real.continuous_exp.inv₀ Real.exp_ne_zero`. Establish `he : (fun t : ℝ => iy (Real.exp t)) = fun t => TR.infId ℚ (cu (Real.exp t) (Real.exp_ne_zero t))`. Use function extensionality and compare the values at `fun t => iy_eq (Real.exp_ne_zero t)`. Rewrite using `[he]`. Conclude with `(TR.continuous_infId ℚ).comp hu`.
+
+Use `show (IdeleGroup.ideleModule ℚ u : ℝ) = 1`. Rewrite using `[IdeleGroup.ideleModule_eq]`. Establish `h1 : ((u : A ℚ)).1 = 1` using `hu.1`. Establish `h2 : ∏ᶠ v : HeightOneSpectrum (𝓞 ℚ), ‖((u : A ℚ)).2 v‖ = 1` using `finprod_eq_one_of_forall_eq_one fun v => nrm_unit (hu.2 v)`. Rewrite using `[h1, h2, mul_one]`.
+
+Conclude with `Finset.prod_eq_one fun w _ => by`. Rewrite using `[show (1 : InfiniteAdeleRing ℚ) w = 1 from rfl, norm_one, one_pow]`.
+-/
 theorem UpperTheory.realIdele_mul_abs_continuous_and_unit_abs_eq_one :
     (∀ y y' : ℝ, y ≠ 0 → y' ≠ 0 → iy (y * y') = iy y * iy y') ∧ (∀ y : ℝ, y ≠ 0 → ab (iy y) = |y|) ∧ Continuous (fun t : ℝ => iy (Real.exp t)) ∧ ∀ u ∈ UU, ab u = 1 := by
   refine ⟨fun y y' hy hy' => ?_, fun y hy => ?_, ?_, fun u hu => ?_⟩

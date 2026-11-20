@@ -21,6 +21,9 @@ noncomputable section
 
 namespace GlobalTheory.Mum.TensRosMove
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_six]`. Use `show g 0 ^ (1 : ℤ) * g 1 ^ (-1 : ℤ) * g 2 ^ (-1 : ℤ) * g 3 ^ (-1 : ℤ) * g 4 ^ (1 : ℤ) * g 5 ^ (1 : ℤ) * u * (g 1 * g 2 * g 3) = u * (g 0 * g 4 * g 5)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rosati_alg {U : Type} [CommGroup U] (g : Fin 6 → U) (u : U) :
     (∏ k, g k ^ rosatiε k) * u * (g 1 * g 2 * g 3) = u * (g 0 * g 4 * g 5) := by
   rw [Fin.prod_univ_six]
@@ -30,6 +33,33 @@ theorem rosati_alg {U : Type} [CommGroup U] (g : Fin 6 → U) (u : U) :
   simp only [ofMul_mul, ofMul_zpow]
   abel
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D D' n W T F _ _ _ N N' ν ν' O _ _ oa x ρ' hR`. Take `⟨u, hu, u₀, hρ⟩` from `hR`. Use `oa.hom x` as an intermediate fact. Use `oa.hom (star x)` as an intermediate fact. Establish `hL₁ : (LB.LinComb D.toPre.P.L (tensφ T.pr) (tensε W)).IsLB` using `LB.isLB_linComb D.toPre.P.isLB _ _`.
+
+Take `⟨u'', hu'', hv⟩` from `GlobalTheory.WtTower.exists_gen_of_iso (LB.isLB_linComb D'.toPre.P.isLB _ rosatiε) (LB.isLB_linComb hL₁ (rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x)) rosatiε) (LB.linCombIso T.w _ rosatiε) (DVR.linCombIso_isGen T.w T.w_gen _ _) u hu`. Use `⟨fun a b => vF u'' (lift (ν'.eA a) (ν'.eA b)).left (GlobalTheory.Mum.TensRos.tensJ T ν), ⟨u'', hu'', ?_, fun _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Use `corr_of_val hL₁ fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[val_pull hJ, val_one]`. Establish `h1 : (η[D'.toPre.P.A] : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D'.toPre.P.A) = 1`.
+
+Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `hz : ∀ k, (𝟙 _ ≫ zero2 D'.toPre.P.A) ≫ rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x) k = (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D'.toPre.P.A).left` using `fun k => by`. Rewrite using `[Category.id_comp, zero2, h1, ← GlobalTheory.RosMove.rosO_left, ← Over.comp_left, GlobalTheory.RosMove.lift_rosO]`. Apply the tactic sequence `fin_cases k <;> simp [MonObj.one_comp]`. Use `choose I hI using fun χ : _ ⟶ D'.toPre.P.A.left => exists_chart D'.toPre.P.isLB (χ y)`.
+
+Establish `hI' : Good D'.toPre.P.L y I` using `hI`. Establish `e₀ : val u (𝟙 _ ≫ zero2 D'.toPre.P.A) y I = 1`. Use `val_corr hI' u₀ (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_pull hI', val_one]`. Then use the resulting hypothesis. Establish `m₁` using `hJ.mem (rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x)) (𝟙 _ ≫ zero2 D'.toPre.P.A)`.
+
+Establish `m₂` using `hI'.mem (rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x)) (𝟙 _ ≫ zero2 D'.toPre.P.A)`. Establish `H` using `hv _ (𝟙 _ ≫ zero2 D'.toPre.P.A) y _ _ m₁ m₂`. Establish `G` using `GlobalTheory.WtTower.gm_linCombIso T.w (rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x)) rosatiε (_, _) (𝟙 _ ≫ zero2 D'.toPre.P.A) y ⟨m₁, m₂⟩`. Use `H.trans (Eq.trans (congrArg₂ (· * ·) G e₀) ?_)` and prove the remaining obligations. Rewrite using `[_root_.mul_one]`.
+
+Establish `key : ∀ Fn : (_ ⟶ D'.toPre.P.A.left) → ((𝟙_ (Over (Spec (CommRingCat.of R)))).left.presheaf.stalk y)ˣ, ∏ a, Fn ((𝟙 _ ≫ zero2 D'.toPre.P.A) ≫ rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x) a) ^ rosatiε a = 1`. Introduce `Fn`. Simplify using `only [hz]`. Simplify using `[Fin.prod_univ_succ, rosatiε]`. Conclude with `key (fun ψ => gm ψ y (((LB.LinComb D.toPre.P.L (tensφ T.pr) (tensε W)).div D'.toPre.P.L).U (J ψ, I ψ)) (T.w.s (J ψ, I ψ)))`.
+
+Introduce `a b`. Set `z : Sp F` to `IsLocalRing.closedPoint F`. Establish `hN : Good D.toPre.P.L z ν.J` using `fun q => ν.good q trivial`. Establish `hJ' : Good D'.toPre.P.L z ν'.J` using `fun q => ν'.good q trivial`. Establish `mT : ∀ y : Sp F ⟶ D'.toPre.P.A.left, y z ∈ (LB.LinComb D.toPre.P.L (tensφ T.pr) (tensε W)).U (GlobalTheory.Mum.TensRos.tensJ T ν y)` using `fun y => Set.mem_iInter.2 fun k => hN (y ≫ tensφ T.pr k)`.
+
+Establish `m₁ : (lift (ν'.eA a) (ν'.eA b)).left z ∈ LB.wchart (LB.LinComb D.toPre.P.L (tensφ T.pr) (tensε W)) (rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x)) (fun k => GlobalTheory.Mum.TensRos.tensJ T ν ((lift (ν'.eA a) (ν'.eA b)).left ≫ rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x) …` using `Set.mem_iInter.2 fun k => mT _`. Establish `m₂` using `hJ'.mem (rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x)) (lift (ν'.eA a) (ν'.eA b)).left`. Establish `H` using `hv _ (lift (ν'.eA a) (ν'.eA b)).left z _ _ m₁ m₂`. Establish `G` using `GlobalTheory.WtTower.gm_linCombIso T.w (rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x)) rosatiε (_, _) (lift (ν'.eA a) (ν'.eA b)).left z ⟨m₁, m₂⟩`. Set `Gp : N'.A → ((Sp F).presheaf.stalk z)ˣ` to `fun p => gm (ν'.eA p).left z (((LB.LinComb D.toPre.P.L (tensφ T.pr) (tensε W)).div D'.toPre.P.L).U (GlobalTheory.Mum.TensRos.tensJ T ν (ν'.eA p).left, ν'.J (ν'.eA p).left)) (T.w.s (GlobalTheory.Mum.TensRos.tensJ T ν (ν'.eA p).left, ν'.J (ν'.eA p).left))`.
+
+Establish `hW : ∀ p, toStk z (wv T ν ν' p) = (Gp p).val` using `fun p => by`. Establish `hm : (ν'.eA p).left z ∈ (((LB.LinComb D.toPre.P.L (tensφ T.pr) (tensε W)).div D'.toPre.P.L).U (GlobalTheory.Mum.TensRos.tensJ T ν (ν'.eA p).left, ν'.J (ν'.eA p).left))` using `⟨mT _, hJ' _⟩`. Conclude with `toStk_valF _ _ z hm _`. Establish `ea : ∀ y c, ν'.eA (GlobalTheory.Relabel.actV ν' oa y c) = ν'.eA c ≫ oa.act y` using `fun y c => ν'.eA.apply_symm_apply _`. Set `pts : Fin 6 → N'.A` to `![GlobalTheory.Relabel.actV ν' oa (star x) a * b, GlobalTheory.Relabel.actV ν' oa (star x) a, b, a * GlobalTheory.Relabel.actV ν' oa x b, a, GlobalTheory.Relabel.actV ν' oa x b]`.
+
+Establish `hp : ∀ k, (lift (ν'.eA a) (ν'.eA b)).left ≫ rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x) k = (ν'.eA (pts k)).left` using `fun k => by`. Rewrite using `[← GlobalTheory.RosMove.rosO_left, ← Over.comp_left, GlobalTheory.RosMove.lift_rosO]`. Apply the tactic sequence `fin_cases k <;> simp [pts, ea]`. Establish `key : ∀ Fn : (Sp F ⟶ D'.toPre.P.A.left) → ((Sp F).presheaf.stalk z)ˣ, ∏ k, Fn ((lift (ν'.eA a) (ν'.eA b)).left ≫ rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x) k) ^ rosatiε k = ∏ k, Fn (ν'.eA (pts k)).left ^ rosatiε k` using `fun Fn => by simp only [hp]`. Establish `G'` using `G.trans (key (fun ψ => gm ψ z (((LB.LinComb D.toPre.P.L (tensφ T.pr) (tensε W)).div D'.toPre.P.L).U (GlobalTheory.Mum.TensRos.tensJ T ν ψ, ν'.J ψ)) (T.w.s (GlobalTheory.Mum.TensRos.tensJ T ν ψ, ν'.J ψ))))`.
+
+Establish `v''` using `toStk_valF _ _ z m₁ (u''.s _)`. Establish `v' : toStk z (ρ' a b) = (gm (lift (ν'.eA a) (ν'.eA b)).left z _ (u.s fun k => ν'.J ((lift (ν'.eA a) (ν'.eA b)).left ≫ rosatiφ D'.toPre.P.A (oa.act (star x)) (oa.act x) k))).val`. Rewrite using `[hρ]`. Conclude with `toStk_valF _ _ z m₂ _`. Establish `HH` using `H.trans (congrArg₂ (· * ·) G' rfl)`.
+
+Apply `(toStk z).injective` to reduce the goal to its premises. Use `show toStk z (vF u'' (lift (ν'.eA a) (ν'.eA b)).left (GlobalTheory.Mum.TensRos.tensJ T ν) * _) = _`. Simplify using `only [map_mul, hW, v']`. Use `erw [v'', HH]`. Simplify using `only [← Units.val_mul]`.
+
+Use `congr 1`. Conclude with `rosati_alg (fun k => Gp (pts k)) _`.
+-/
 theorem rosVT_move : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (O : Type) [CommRing O] [StarRing O] (oa : D'.toPre.P.OAct O) (x : O) (ρ' : N'.A → N'.A → F), GlobalTheory.Relabel.RosV ν' oa x ρ' → ∃ ρ'' : N'.A → N'.A → F, GlobalTheory.Mum.TensRos.RosVT T ν ν' (oa.act (star x)) (oa.act x) ρ'' ∧ ∀ a b, ρ'' a b * (wv T ν ν' (GlobalTheory.Relabel.actV ν' oa (star x) a) * wv T ν ν' b * wv T ν ν' (a * GlobalTheory.Relabel.actV ν' oa x b)) = ρ' a b * (wv T ν ν' (GlobalTheory.Relabel.actV ν' oa (star x) a * b) * wv T ν ν' a * wv T ν ν' (GlobalTheory.Relabel.actV ν' oa x b)) := by
   intro R _ _ _ _ D D' n W T F _ _ _ N N' ν ν' O _ _ oa x ρ' hR
   obtain ⟨u, hu, u₀, hρ⟩ := hR

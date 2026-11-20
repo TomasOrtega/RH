@@ -19,6 +19,9 @@ def omLiftOfMultilinear
       (((LinearMap.llcomp ℂ _ _ _ (TensorProduct.uncurry (RingHom.id ℂ) _ _ ℂ)).comp
         PiTensorProduct.lift.toLinearMap).comp (PiTensorProduct.lift Φ)))
 
+/- English proof (translation)
+Simplify using `only [omLiftOfMultilinear, TensorProduct.lift.tmul, LinearMap.comp_apply, TensorProduct.uncurry_apply, LinearMap.llcomp_apply, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod]`.
+-/
 theorem omLiftOfMultilinear_tprod
     (Φ : MultilinearMap ℂ (fun j : Fin S.m => Pol ι (S.nR j.castSucc) (S.nR j.succ))
       (MultilinearMap ℂ (fun i : Fin S.m => Pol ι (S.nC i.castSucc) (S.nC i.succ))
@@ -29,6 +32,11 @@ theorem omLiftOfMultilinear_tprod
   simp only [omLiftOfMultilinear, TensorProduct.lift.tmul, LinearMap.comp_apply, TensorProduct.uncurry_apply,
     LinearMap.llcomp_apply, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod]
 
+/- English proof (translation)
+Introduce `ι _ _ S P Φ hΦ`. Use `⟨omLiftOfMultilinear P Φ, ?_, omLiftOfMultilinear_tprod P Φ⟩` and prove the remaining obligations. Introduce `g z`. Establish `key : (omLiftOfMultilinear P Φ).comp (omRep P g) = omLiftOfMultilinear P Φ`. Use extensionality with `x y v φ`.
+
+Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, TensorProduct.AlgebraTensorModule.curry_apply, TensorProduct.curry_apply, LinearMap.restrictScalars_apply]`. Rewrite using `[omRep, Representation.tprod_apply, TensorProduct.map_tmul, Representation.tprod_apply, TensorProduct.map_tmul, Representation.tprod_apply, TensorProduct.map_tmul]`. Simplify using `only [piTprod, MonoidHom.comp_apply, PiTensorProduct.mapMonoidHom_apply, PiTensorProduct.map_tprod, Pi.monoidHom_apply, omLiftOfMultilinear_tprod]`. Conclude with `hΦ g x y v φ`. Conclude with `LinearMap.congr_fun key z`.
+-/
 theorem invFun_of_multilinear : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {S : Sizes} (P : ι → Entries S)
     (Φ : MultilinearMap ℂ (fun j : Fin S.m => Pol ι (S.nR j.castSucc) (S.nR j.succ))
       (MultilinearMap ℂ (fun i : Fin S.m => Pol ι (S.nC i.castSucc) (S.nC i.succ))

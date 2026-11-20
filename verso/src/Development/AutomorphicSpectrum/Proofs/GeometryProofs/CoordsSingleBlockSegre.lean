@@ -7,6 +7,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.SncBase.Reindex
 
+/- English proof (translation)
+Establish `he : Function.Surjective (fun c' : Unit → Fin (N + 1) => c' ())` using `fun j => ⟨fun _ => j, rfl⟩`. Establish `hfun : (fun c' : (k : Unit) → (fun _ : Unit => Fin (N + 1)) k => ∏ k, (fun p : (Σ _ : Unit, Fin (N + 1)) => x p.2) ⟨k, c' k⟩) = fun c' : Unit → Fin (N + 1) => x (c' ())`. Use function extensionality and compare the values at `c'`. Simplify using the standard rewrite rules. Rewrite using `[hfun]`.
+
+Establish `hc : ∀ (c : Unit → Fin (N + 1)) p, InChart ξ (fun c' : Unit → Fin (N + 1) => x (c' ())) c p ↔ InChart ξ x (c ()) p` using `fun c p => and_congr Iff.rfl (he.forall (p := fun c' => x c' / x (c ()) ∈ regAt ξ p)).symm`. Use `⟨h.gen, fun p => ?_, fun c h0 => ?_, fun c h0 a => ?_⟩` and prove the remaining obligations. Take `⟨c, hp⟩` from `h.cover p`. Conclude with `⟨fun _ => c, (hc _ p).2 hp⟩`. Take `⟨U, hU, hq⟩` from `h.affine (c ()) h0`.
+
+Conclude with `⟨U, hU, fun q => (hq q).trans (exists_congr fun _ => (hc c _).symm)⟩`. Establish `hr : (Set.range fun j : Unit → Fin (N + 1) => x (j ()) / x (c ())) = Set.range fun j => x j / x (c ())` using `he.range_comp fun j => x j / x (c ())`. Simplify `h.ring (c ()) h0 a` using `only [hc, hr]`.
+-/
 theorem coordTie_one_block (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (N : ℕ)
     (x : Fin (N + 1) → Ω) (h : CoordTie ℤ ξ x) :
     CoordTie ℤ ξ (fun c' : (k : Unit) → (fun _ : Unit => Fin (N + 1)) k =>

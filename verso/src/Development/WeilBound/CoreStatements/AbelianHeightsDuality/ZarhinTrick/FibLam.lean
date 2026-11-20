@@ -19,6 +19,11 @@ namespace PositivityTheory.PrwZar
 
 variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B]
 
+/- English proof (translation)
+Use `haveI : IsCommMonObj A := hA.comm`. Establish `hw : sqToBase (G4 (A ⊗ B)) s = Over.Hom.left (lift (toBase (G4 (A ⊗ B)) s (fst ((Over.pullback s).obj (G4 (A ⊗ B))) ((Over.pullback s).obj (G4 (A ⊗ B))))) (toBase (G4 (A ⊗ B)) s (snd ((Over.pullback s).obj (G4 (A ⊗ B))) ((Over.pullback s).obj (G4 (A ⊗ B))))))` using `rfl`. Rewrite using `[zc, hw, pull_zcPair, lift_fst, lift_snd]`. Establish `hc : cls (zb mu α s P L) (isLB_zb mu α s hD.isLB hL) = cls (L.LinComb (phiL mu s) fun _ => 1) (LB.isLB_linComb hL _ _) + cls (P.LinComb (phiP s) fun ij => α ij.1 ij.2) (LB.isLB_linComb hD.isLB _ _)` using `cls_tens (LB.isLB_linComb hL _ _) (LB.isLB_linComb hD.isLB _ _) (isLB_zb mu α s hD.isLB hL)`. Rewrite using `[hc, cls_linComb hL, cls_linComb hD.isLB]`.
+
+Rewrite using `[lam_eq_lamHom, map_add, map_sum, map_sum]`. Simplify using `only [map_zsmul, one_smul, ← lam_eq_lamHom, Fintype.sum_prod_type]`. Simplify using `only [Fin.sum_univ_four, line_bundle_pairing_zeroth hD l mu s L hL e, line_bundle_pairing_first hD hD' l mu s L hL e, line_bundle_pairing_second hD l mu s L hL e, line_bundle_pairing_third hD hD' l mu s L hL e, lam_phiP hD hD' s, zcPair, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lam_zb (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hD : IsDual A B P)
     (hD' : IsDual B A (swap P)) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu] (α : Matrix (Fin 4) (Fin 4) ℤ)
     (Ω : Type) [Field Ω] [IsAlgClosed Ω] (s : Sp Ω ⟶ S) (L : LB ((Over.pullback s).obj A).left) (hL : L.IsLB)

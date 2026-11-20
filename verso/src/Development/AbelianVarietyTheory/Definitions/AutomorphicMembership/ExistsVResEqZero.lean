@@ -18,6 +18,9 @@ open NModel
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Z : NModel O}
 
+/- English proof (translation)
+Rewrite using `[vDeg_apply, vDeg_apply]`. Use `Finset.sum_congr rfl fun C _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul (picSymPull _), map_mul (picSymPull _), picSymPull_c1Pic, picSymPull_c1Pic, ← vCls_vRes, ← vCls_vRes]`. Conclude with `Check.vDeg_symm _ _ _`.
+-/
 theorem vDeg_symm (d : ℕ) (D D' : Z.VDivZ) (Q : PicSym Z.X) :
     Z.vDeg d D (firstChernPic (Z.vCls D') * Q) = Z.vDeg d D' (firstChernPic (Z.vCls D) * Q) := by
   rw [vDeg_apply, vDeg_apply]
@@ -25,6 +28,13 @@ theorem vDeg_symm (d : ℕ) (D D' : Z.VDivZ) (Q : PicSym Z.X) :
   rw [map_mul (picSymPull _), map_mul (picSymPull _), picSymPull_c1Pic, picSymPull_c1Pic, ← vCls_vRes, ← vCls_vRes]
   exact Check.vDeg_symm _ _ _
 
+/- English proof (translation)
+Proceed by induction on `D using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, add_mul, LinearMap.add_apply, ha, hb]`. Consider the case `tmul a D`. Proceed by induction on `D' using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, add_mul, LinearMap.add_apply, ha, hb]`. Consider the case `tmul b D'`. Establish `h (a : ℚ) (D : Z.VDivZ) : (a ⊗ₜ[ℤ] D : Z.VDivQ) = a • toQ D`. Simplify using `[toQ, TensorProduct.smul_tmul']`.
+
+Simplify using `only [h, map_smul, smul_mul_assoc, LinearMap.smul_apply, cDQ_toQ, capDeg_vp_toQ, vDeg_symm d D D', smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem capDeg_vp_symm (p d : ℕ) (D D' : Z.VDivQ) (Q : PicSym Z.X) :
     Z.capDeg_vp p d D (Z.cDQ D' * Q) = Z.capDeg_vp p d D' (Z.cDQ D * Q) := by
   induction D using TensorProduct.induction_on with
@@ -43,6 +53,9 @@ theorem capDeg_vp_symm (p d : ℕ) (D D' : Z.VDivQ) (Q : PicSym Z.X) :
 
 def compLB (Z : NModel O) : LB Z.X := ⟨Z.Comp, fun C => C.opens, fun _ _ => 1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨top_le_iff.1 fun x _ => Opens.mem_iSup.2 (Z.exists_comp x), fun _ => map_one _, fun _ _ _ => by change res _ 1 * res _ 1 = res _ 1 rw [map_one, map_one, map_one, mul_one]⟩`.
+-/
 theorem isLB_compLB : (compLB Z).IsLB :=
   ⟨top_le_iff.1 fun x _ => Opens.mem_iSup.2 (Z.exists_comp x), fun _ => map_one _, fun _ _ _ => by
     change res _ 1 * res _ 1 = res _ 1
@@ -61,6 +74,13 @@ def compPair (g : Z.Comp → O) (hg : ∀ C, g C ≠ 0) : VPair Z :=
           rw [e]; infer_instance
         exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Rewrite using `[vRes_cls, ← VertDiv.cls_const, ← add_zero (VertDiv.const _ _ _).cls, ← VertDiv.cls_zero]`. Use `VertDiv.IsSum.cls_eq fun i j k => ⟨1, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : k ⟨⟩ = C`. Rewrite using `[VPair.eqn_pull _ (Z.compι_str C) k _ le_rfl (inf_le_inf (preimage_gen (Z.compι_str C)).ge (inf_le_right.trans (LB.pull_U_le _ k)))]`. Express the relevant statement in the definitionally equal form `((Z.compι C).appLE _ _ _).hom (resG _ _ (resG _ _ _)) = resG _ _ 1 * (resG _ _ (resG _ _ _) * resG _ _ 1)`.
+
+Rewrite using `[map_one, map_one, one_mul, mul_one, resG_resG, resG_resG, LB.appLE_resG, ← appTop_const (Z.compι_str C)]`. Conclude with `(congrArg (fun A => ((Z.compι C).appLE ⊤ _ le_top).hom (Z.const (g A))) h).trans rfl`. Establish `e : (Z.comp C).gen ⊓ ((VertDiv.const _ (g C) (hg C)).M.U i ⊓ (VertDiv.zero _).M.U j ⊓ ((compPair g hg).pull (Z.compι_str C)).M.U k) = ⊥` using `eq_bot_iff.2 fun x hx => (h (Subtype.ext (IsNormalScheme.eq_of_mem_irreducibleComponents (k ⟨⟩).2 C.2 (LB.pull_U_le _ k hx.2.2) x.2))).elim`. Establish `: Subsingleton Γ((Z.comp C).X, (Z.comp C).gen ⊓ ((VertDiv.const _ (g C) (hg C)).M.U i ⊓ (VertDiv.zero _).M.U j ⊓ ((compPair g hg).pull (Z.compι_str C)).M.U k))`. Rewrite using `[e]`.
+
+Use `infer_instance`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem vRes_compPair (g : Z.Comp → O) (hg : ∀ C, g C ≠ 0) (C : Z.Comp) :
     Z.vRes C (compPair g hg).cls = (Z.comp C).div (g C) (hg C) := by
   rw [vRes_cls, ← VertDiv.cls_const, ← add_zero (VertDiv.const _ _ _).cls, ← VertDiv.cls_zero]
@@ -79,6 +99,11 @@ theorem vRes_compPair (g : Z.Comp → O) (hg : ∀ C, g C ≠ 0) (C : Z.Comp) :
       rw [e]; infer_instance
     exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hg (A : Z.Comp) : (if A = C then ϖ else 1) ≠ 0` using `by split_ifs; exacts [hϖ.ne_zero, one_ne_zero]`. Use `⟨(compPair _ hg).cls, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[vRes_compPair]`. Conclude with `Check.div_ne_zero _ (by rw [if_pos rfl]; exact hϖ.not_isUnit)`.
+
+Rewrite using `[vRes_compPair]`. Conclude with `Model.div_of_isUnit _ (by rw [if_neg h.symm]; exact isUnit_one) _`.
+-/
 theorem exists_vRes_eq_zero {C C' : Z.Comp} (h : C ≠ C') : ∃ D : Z.VDivZ, Z.vRes C D ≠ 0 ∧ Z.vRes C' D = 0 := by
   classical
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -93,6 +118,9 @@ section Theory
 
 variable (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]
 
+/- English proof (translation)
+The claim follows from `(capDeg_vp_symm p d _ D Q).trans (by rw [show Z.cDQ (Z.toITh p d).divP = 0 from (Z.toITh p d).cD_divP, zero_mul, map_zero])`.
+-/
 theorem capDeg_divP_cD (d : ℕ) (D : (Z.toITh p d).VDiv) (Q : (Z.toITh p d).Ch) :
     (Z.toITh p d).capDeg (Z.toITh p d).divP ((Z.toITh p d).cD D * Q) = 0 :=
   (capDeg_vp_symm p d _ D Q).trans (by
@@ -104,6 +132,9 @@ def smulPair (d : ℕ) (L : FinLB Z.X) : Formalism.BasicNotions.DV.FPair (Z.toIT
 
 variable (O) in
 
+/- English proof (translation)
+Establish `h` using `capDeg_divP_copies O n 0 p`. Establish `e : (copies O n 1).vdiv _ _ (.smul (twistingSheafOnCopies O n 1).isLB p (natCast_ne_zero O p)) = ((copies O n 1).toITh p 1).divP` using `vdiv_smul _ _ _`. Simplify using `only [zero_add, pow_one] at h`. Simplify using `only [Formalism.BasicNotions.DV.ck, Formalism.BasicNotions.DV.Gk, smulPair, Fin.sum_univ_one, Finset.sum_range_succ, Finset.sum_range_zero, e, pow_zero, pow_one, one_mul, mul_one, zero_add, Nat.sub_self, Nat.reduceSub, map_add, h]`. Conclude with `⟨trivial, by ring⟩`.
+-/
 theorem ck_copies (n : ℕ) :
     Formalism.BasicNotions.DV.ck (smulPair (Z := copies O n 1) p 1 (twistingSheafOnCopies O n 1)) 1 (twistingSheafOnCopies O n 1).c1 = n ∧
     Formalism.BasicNotions.DV.ck (smulPair (Z := copies O n 1) p 1 (twistingSheafOnCopies O n 1)) 2 1 = 2 * n := by
@@ -115,6 +146,9 @@ theorem ck_copies (n : ℕ) :
     Finset.sum_range_zero, e, pow_zero, pow_one, one_mul, mul_one, zero_add, Nat.sub_self, Nat.reduceSub, map_add, h]
   exact ⟨trivial, by ring⟩
 
+/- English proof (translation)
+Establish `: IsEmpty Z.Comp` using `⟨fun C => isEmptyElim C.2.1.1.some⟩`. Conclude with `(capDeg_vp_eq_sum p d D Q).trans (by simp)`.
+-/
 theorem capDeg_empty [IsEmpty Z.X] (d : ℕ) (D : (Z.toITh p d).VDiv) (Q : (Z.toITh p d).Ch) :
     (Z.toITh p d).capDeg D Q = 0 := by
   have : IsEmpty Z.Comp := ⟨fun C => isEmptyElim C.2.1.1.some⟩
@@ -128,6 +162,11 @@ def mixed : NModel O :=
 
 variable (O) in
 
+/- English proof (translation)
+Rewrite using `[capDeg_vp_toQ, Model.capDeg_vp_toQ, divP, vDeg_div_of_cover (Z := mixed O) (B := fun i : Fin 2 => Model.projSpace O (i + 1)) (fun i => Sigma.ι (fun i : Fin 2 => (Model.projSpace O (i + 1)).X) i) (fun i => Sigma.ι_desc _ _) (fun x => (sigmaOpenCover _).exists_eq x) (fun i j ⟨x, h …`. Rewrite using `[Finset.sum_eq_single i]`. Both sides reduce to the same expression. Introduce `j hj hji`. Conclude with `absurd (Fin.ext (by simpa using hj)) hji`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem capDeg_mixed (i : Fin 2) (x : PicSym (mixed O).X) :
     ((mixed O).toITh p (i + 1)).capDeg ((mixed O).toITh p (i + 1)).divP x =
       ((Model.projSpace O (i + 1)).toITh p).capDeg ((Model.projSpace O (i + 1)).toITh p).divP
@@ -154,12 +193,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
   (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (M : Mdl Y i₀) (d : ℕ)
 
+/- English proof (translation)
+The claim follows from `haveI := isDiscreteValuationRing_V M.i.c hp hW capDeg_vp_symm (Z := nmodel M) p d D D' Q`.
+-/
 theorem capDeg_ithOf_symm (D D' : (ithOf hp hW M d).VDiv) (Q : (ithOf hp hW M d).Ch) :
     (ithOf hp hW M d).capDeg D ((ithOf hp hW M d).cD D' * Q) =
       (ithOf hp hW M d).capDeg D' ((ithOf hp hW M d).cD D * Q) :=
   haveI := isDiscreteValuationRing_V M.i.c hp hW
   capDeg_vp_symm (Z := nmodel M) p d D D' Q
 
+/- English proof (translation)
+The claim follows from `Fact.mk hp haveI := isDiscreteValuationRing_V M.i.c hp hW (nmodel M).divP p ≠ 0 := fun h => by haveI := Fact.mk hp haveI := isDiscreteValuationRing_V M.i.c hp hW haveI := charP_residueField_of_mem_nonunits M.i.c hp hW obtain ⟨C, -⟩ := (nmodel M).exists_comp (Classical.arbitrary M …`.
+-/
 theorem divisorOfPrime_ne_zero [Nonempty M.X] :
     haveI := Fact.mk hp
     haveI := isDiscreteValuationRing_V M.i.c hp hW

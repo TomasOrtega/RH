@@ -6,6 +6,9 @@ open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Cut
 
 namespace UpperTheory.Gal.Int.Geo.Cut
 
+/- English proof (translation)
+Simplify using `only [crystallineComparison.pts]`. Rewrite using `[show Multiset.map g = Multiset.mapAddMonoidHom g from rfl, map_sum]`. Simplify using `[Multiset.map_nsmul, Multiset.map_map]`.
+-/
 private theorem multiset_map_pts {J P Q : Type} [Fintype J] {I : J → Type} [∀ j, Fintype (I j)] (a : J → ℕ)
     (v : (j : J) → I j → P) (g : P → Q) :
     Multiset.map g (crystallineComparison.pts a v) = crystallineComparison.pts a (fun j i => g (v j i)) := by
@@ -13,6 +16,11 @@ private theorem multiset_map_pts {J P Q : Type} [Fintype J] {I : J → Type} [�
   rw [show Multiset.map g = Multiset.mapAddMonoidHom g from rfl, map_sum]
   simp [Multiset.map_nsmul, Multiset.map_map]
 
+/- English proof (translation)
+Unfold `crystallineComparison.AltId at *`. Apply `Multiset.map_injective hg` to reduce the goal to its premises. Establish `e : ∀ (k : ℕ) (x : P), F^[k] (g x) = g (F'^[k] x)` using `fun k x => ((hc.iterate_right k) x).symm`. Simplify using `only [e] at h`. Rewrite using `[multiset_map_pts, multiset_map_pts]`.
+
+Conclude with `h`.
+-/
 private theorem identity_of_comp_injective_semiconj_image (q n : ℕ) {P Q : Type} (F' : P → P) (F : Q → Q) (g : P → Q)
     (hg : Function.Injective g) (hc : Function.Semiconj g F' F) {I : Fin (n + 1) → Type}
     [∀ j, Fintype (I j)] (v : (j : Fin (n + 1)) → I j → P)
@@ -24,6 +32,11 @@ private theorem identity_of_comp_injective_semiconj_image (q n : ℕ) {P Q : Typ
   rw [multiset_map_pts, multiset_map_pts]
   exact h
 
+/- English proof (translation)
+Establish `key : ∀ y : Y', j y ∈ Y.basicOpen π ↔ y ∈ Y'.basicOpen ((ConcreteCategory.hom (Scheme.Hom.appTop j)) π)`. Introduce `y`. Rewrite using `[← Scheme.preimage_basicOpen_top]`. Both sides reduce to the same expression. Use `⟨fun hx => h.1 ((key x).1 hx), fun x' hx' hsp => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x'', rfl⟩ : x' ∈ Set.range j` from `hsp.mem_open j.isOpenEmbedding.isOpen_range ⟨x, rfl⟩`. Establish `h2 : x'' ⤳ x` using `(j.isOpenEmbedding.toIsInducing.specializes_iff).1 hsp`. Rewrite using `[h.2 x'' (fun hb => hx' ((key x'').2 hb)) h2]`.
+-/
 private theorem genPt_openImmersion_of_genPt_appTop {Y' Y : Scheme} (j : Y' ⟶ Y) [IsOpenImmersion j] (π : Γ(Y, ⊤)) (x : Y')
     (h : crystallineComparison.GenPt ((ConcreteCategory.hom (Scheme.Hom.appTop j)) π) x) : crystallineComparison.GenPt π (j x) := by
   have key : ∀ y : Y', j y ∈ Y.basicOpen π ↔
@@ -36,6 +49,13 @@ private theorem genPt_openImmersion_of_genPt_appTop {Y' Y : Scheme} (j : Y' ⟶ 
   have h2 : x'' ⤳ x := (j.isOpenEmbedding.toIsInducing.specializes_iff).1 hsp
   rw [h.2 x'' (fun hb => hx' ((key x'').2 hb)) h2]
 
+/- English proof (translation)
+Establish `hp : ∀ s, T.p (z s) = j (y' s)` using `fun s => by`. Rewrite using `[← Scheme.Hom.comp_apply, hz, Scheme.Hom.comp_apply]`. Set `η : Spec (CommRingCat.of V)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum V)`. Establish `hη : T.p (z η) ∈ Y.basicOpen (l : Γ(Y, ⊤))`. Rewrite using `[← Scheme.Hom.comp_apply, ← SetLike.mem_coe, ← Set.mem_preimage, ← Scheme.Hom.coe_preimage, Scheme.preimage_basicOpen_top, map_natCast, basicOpen_eq_of_affine', map_natCast]`.
+
+Conclude with `hl`. Establish `hrη : T.r (z η) ∈ Set.range j` using `hr _ (by rw [hp]; exact ⟨_, rfl⟩) hη`. Introduce and unpack `_ ⟨s, rfl⟩`. Establish `hsp : η ⤳ s` using `(PrimeSpectrum.le_iff_specializes (R := V) _ _).1 bot_le`. Establish `hrs : T.r (z s) ∈ Set.range j` using `((hsp.map z.continuous).map T.r.continuous).mem_closed hP.cl hrη`.
+
+Rewrite using `[hR.rng]`. Conclude with `⟨by rw [Set.mem_preimage, hp]; exact ⟨_, rfl⟩, hrs⟩`.
+-/
 private theorem range_subset_range_of_comp_eq_of_ne_zero {l : ℕ} {Y' Y : Scheme} (j : Y' ⟶ Y) (hP : Part j) (T : crystallineComparison.Corr l Y)
     (T' : crystallineComparison.Corr l Y') (i : T'.Z ⟶ T.Z) (hR : Res j T.p T.r i T'.p T'.r)
     (hr : ∀ x : T.Z, T.p x ∈ Set.range j → T.p x ∈ Y.basicOpen (l : Γ(Y, ⊤)) → T.r x ∈ Set.range j)
@@ -57,6 +77,13 @@ private theorem range_subset_range_of_comp_eq_of_ne_zero {l : ℕ} {Y' Y : Schem
   rw [hR.rng]
   exact ⟨by rw [Set.mem_preimage, hp]; exact ⟨_, rfl⟩, hrs⟩
 
+/- English proof (translation)
+Use `haveI := hP.op`. Use `haveI := hR.op`. Prove the components needed by the constructor for the conclusion. Introduce `u v h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `(cancel_mono i).1 (congrArg Subtype.val h)`. Introduce `z`. Establish `hsub` using `range_subset_range_of_comp_eq_of_ne_zero j hP T T' i hR hr V hl y' z.1 z.2`. Use `⟨⟨IsOpenImmersion.lift i z.1 hsub, ?_⟩, Subtype.ext (IsOpenImmersion.lift_fac _ _ _)⟩` and prove the remaining obligations. Apply `(cancel_mono j).1` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hR.es, ← Category.assoc, IsOpenImmersion.lift_fac]`. Conclude with `z.2`.
+-/
 private theorem bijective_sec_comp_of_ne_zero {l : ℕ} {Y' Y : Scheme} (j : Y' ⟶ Y) (hP : Part j) (T : crystallineComparison.Corr l Y)
     (T' : crystallineComparison.Corr l Y') (i : T'.Z ⟶ T.Z) (hR : Res j T.p T.r i T'.p T'.r)
     (hr : ∀ x : T.Z, T.p x ∈ Set.range j → T.p x ∈ Y.basicOpen (l : Γ(Y, ⊤)) → T.r x ∈ Set.range j)
@@ -76,6 +103,15 @@ private theorem bijective_sec_comp_of_ne_zero {l : ℕ} {Y' Y : Scheme} (j : Y' 
     rw [Category.assoc, hR.es, ← Category.assoc, IsOpenImmersion.lift_fac]
     exact z.2
 
+/- English proof (translation)
+Unfold `PtIdCut`. Introduce `l q n Y' Y j π T T' i hP hR hr hT`. Unfold `crystallineComparison.PtId at hT ⊢`. Introduce `V _ _ _ _ hl y' hg φ hφ I _ z' hz'`. Use `haveI := hP.op`.
+
+Set `w : (a : Fin (n + 1)) → I a → (T a).Sec (y' ≫ j)` to `fun a b => ⟨(z' a b).1 ≫ i a, by rw [Category.assoc, ← (hR a).es, ← Category.assoc, (z' a b).2]⟩`. Establish `hw : ∀ a, Function.Bijective (w a)` using `fun a => (bijective_sec_comp_of_ne_zero j hP (T a) (T' a) (i a) (hR a) (hr a) V hl y').comp (hz' a)`. Establish `hg' : crystallineComparison.GenPt π ((y' ≫ j) (IsLocalRing.closedPoint V))`. Establish `h0` using `genPt_openImmersion_of_genPt_appTop j π _ hg`. Use `h0 using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `Scheme.Hom.comp_apply y' j _`. Establish `h` using `hT V hl (y' ≫ j) hg' φ hφ I w hw`. Use `identity_of_comp_injective_semiconj_image q n (crystallineComparison.twist φ Y') (crystallineComparison.twist φ Y) (fun x => x ≫ j) (fun x y hxy => (cancel_mono j).1 hxy) (fun x => by simp [crystallineComparison.twist, Category.assoc]) _ ?_` and prove the remaining obligations. Establish `e : (fun a b => (crystallineComparison.resPt V ≫ (z' a b).1 ≫ (T' a).r) ≫ j) = fun a b => crystallineComparison.resPt V ≫ (w a b).1 ≫ (T a).r`. Use function extensionality and compare the values at `a b`.
+
+Simplify using `only [w, Category.assoc, (hR a).et]`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem ptIdCut : PtIdCut := by
   unfold PtIdCut
   intro l q n Y' Y j π T T' i hP hR hr hT

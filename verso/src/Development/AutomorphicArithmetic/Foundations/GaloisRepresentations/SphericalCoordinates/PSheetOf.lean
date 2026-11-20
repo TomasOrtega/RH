@@ -14,10 +14,20 @@ namespace UpperTheory.Gal.W2
 
 variable {O : Type} [Ring O] {bar : O → O} {g : ℕ} {ρ : O →+* Matrix (Fin g) (Fin g) ℂ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun a => ⟨0, by simp⟩⟩`.
+-/
 private theorem refl_marked {Λ : Type} (N : ℕ) (D : PLat O bar) (t : Λ → D.La) :
     IsMarkedIsom N D D t t (LinearEquiv.refl O D.La) :=
   ⟨fun _ _ => rfl, fun a => ⟨0, by simp⟩⟩
 
+/- English proof (translation)
+Establish `hz : z ∈ Submodule.span ℝ (Set.range P)`. Rewrite using `[hP.2.2.2.1]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨u, rfl⟩` from `hx`. Rewrite using `[← hP.1, ← hw, ← hw, map_smul, hP'.1]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [Matrix.mulVec_add, map_add, hx, hy]`. Consider the case `smul c x _ hx`.
+
+Establish `e : ∀ v : Fin g → ℂ, h (c • v) = c • h v` using `fun v => (h.toLinearMap.restrictScalars ℝ).map_smul c v`. Rewrite using `[Matrix.mulVec_smul, e, e, hx, Matrix.mulVec_smul]`.
+-/
 private theorem commutes_rho {D : PLat O bar} {P P' : D.La →+ (Fin g → ℂ)}
     (hP : IsPeriod D ρ P) (hP' : IsPeriod D ρ P') (w : D.La ≃ₗ[O] D.La)
     (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hw : ∀ x, P' (w x) = h (P x)) (a : O) (z : Fin g → ℂ) :
@@ -35,6 +45,19 @@ private theorem commutes_rho {D : PLat O bar} {P P' : D.La →+ (Fin g → ℂ)}
       (h.toLinearMap.restrictScalars ℝ).map_smul c v
     rw [Matrix.mulVec_smul, e, e, hx, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Introduce `O _ bar g ρ Λ F N Cl U i hN hfull`. Establish `hN0 : 0 < N` using `by omega`. Establish `key : ∀ (P P' : (U.Di i).La →+ (Fin g → ℂ)) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), IsPeriod (U.Di i) ρ P' → (∀ x, P' x = h (P x)) → ∀ (y y' : Sp ℂ ⟶ F.X) (e : (Fin g → ℂ) → (Over.mk y ⟶ F.A)) (e' : (Fin g → ℂ) → (Over.mk y' ⟶ F.A)), y = y' → UnifAt F (RingHom.id ℂ) ρ N (U.Di i) (U. …`. Introduce `P P' h hP' hx y y' e e' hy a b z`. Substitute `hy` using the available equality.
+
+Apply the tactic sequence `have h2 := GlobalTheory.T.uniformisationAt_transport_isometry O bar g ρ ℂ (RingHom.id ℂ) Λ F N (U.Di i) (U.Di i) (U.t i) (U.t i) P P' y e (LinearEquiv.refl O _) h hN0 a (refl_marked N _ _) (fun x => hx x) hP'`. Establish `h3` using `congrFun (GlobalTheory.T.complexUniformisation_exp_unique_full_level_marking O bar g ρ ℂ (RingHom.id ℂ) Λ F N (U.Di i) (U.t i) P' y _ _ hN hfull h2 b) (h z)`. Simplify using `only [LinearEquiv.symm_apply_apply] at h3`. Rewrite using `[← h3]`. Use `⟨{ u := U.u i, ex := U.ex i, ov := fun P hP => (U.unif i P hP).1, exp := fun P hP => (U.unif i P hP).2.2.1, ker := fun P hP => (U.unif i P hP).2.2.2.1, lin := ?_, hol := U.hol i, lift := ?_ }, fun _ => rfl, fun _ _ => rfl⟩` and prove the remaining obligations.
+
+Introduce `P P' h hP hP' hx z`. Establish `e : U.u i P = U.u i P'` using `(U.fibre i P P' hP hP').2 ⟨LinearEquiv.refl O _, h, refl_marked N _ _, fun x => hx x⟩`. Conclude with `key P P' h hP' hx _ _ _ _ e (U.unif i P hP) (U.unif i P' hP') z`. Introduce `m B y hB hy hhol b₀ hb₀ P₀ hP₀ hyb`. Take `⟨B', i', P, hB', hb', hsub, hP, hu⟩` from `U.lift m B y hB hy hhol b₀ hb₀`.
+
+Establish `hPb` using `hP.1 b₀ hb'`. Take `rfl : i' = i` from `U.disj i' i (P b₀) P₀ hPb hP₀ ((hu b₀ hb').trans hyb)`. Take `⟨w, h, hw, hwx⟩` from `(U.fibre i' (P b₀) P₀ hPb hP₀).1 ((hu b₀ hb').trans hyb)`. Establish `hc` using `commutes_rho hPb hP₀ w h hwx`. Set `P' : (Fin _ → ℂ) → ((U.Di i').La →+ (Fin g → ℂ))` to `fun b => (h.toLinearMap.toAddMonoidHom.comp (P b)).comp w.symm.toLinearMap.toAddMonoidHom`.
+
+Establish `ev : ∀ b x, P' b x = h (P b (w.symm x))` using `fun _ _ => rfl`. Establish `hper : ∀ b ∈ B', IsPeriod (U.Di i') ρ (P' b)` using `fun b hb => isPeriod_comp_isometry_symm _ _ w hw.1 _ (GlobalTheory.T.comp_linearEquiv_intertwining O bar _ g ρ ρ (P b) h (hP.1 b hb) hc)`. Use `⟨B', P', hB', hb', hsub, ⟨hper, fun x => ?_⟩, ?_, fun b hb => ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.toContinuousLinearMap h.toLinearMap).differentiable.comp_differentiableOn (hP.2 (w.symm x))`. Use `ext1 x`.
+
+Rewrite using `[ev, ← hwx, LinearEquiv.apply_symm_apply]`. Rewrite using `[← hu b hb]`. Conclude with `((U.fibre i' (P b) (P' b) (hP.1 b hb) (hper b hb)).2 ⟨w, h, hw, fun x => by rw [ev, LinearEquiv.symm_apply_apply]⟩).symm`.
+-/
 theorem sheetOf_of : SheetOf := by
   intro O _ bar g ρ Λ F N Cl U i hN hfull
   have hN0 : 0 < N := by omega

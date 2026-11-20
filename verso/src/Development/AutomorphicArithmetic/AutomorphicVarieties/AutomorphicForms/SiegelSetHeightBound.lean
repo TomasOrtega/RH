@@ -5,11 +5,21 @@ import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspFormsHeight
 open NumberField Matrix GlobalTheory.CuspRep GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V UpperTheory.V.Fb
 open GroundTheory.Global GroundTheory.Global.IdeleGroup
 
+/- English proof (translation)
+Break down `le_or_gt x 1 with h1 | h1` into its components or cases. Conclude with `h1.trans hB`. Conclude with `(le_self_pow₀ h1.le hd).trans h`.
+-/
 private theorem le_of_pow_le' {x B : ℝ} {d : ℕ} (hd : d ≠ 0) (hB : 1 ≤ B) (h : x ^ d ≤ B) : x ≤ B := by
   rcases le_or_gt x 1 with h1 | h1
   · exact h1.trans hB
   · exact (le_self_pow₀ h1.le hd).trans h
 
+/- English proof (translation)
+Establish `hA0 : 0 ≤ A` using `zero_le_one.trans hA`. Prove the components needed by the constructor for the conclusion. Establish `hQ : 0 < ∏ j ∈ Finset.univ.erase i, r j` using `Finset.prod_pos fun j _ => hr j`. Establish `e : r i = (∏ j, r j) * ∏ j ∈ Finset.univ.erase i, (r j)⁻¹`. Rewrite using `[← Finset.mul_prod_erase _ r (Finset.mem_univ i), Finset.prod_inv_distrib, mul_inv_cancel_right₀ hQ.ne']`.
+
+Establish `h3 : ∏ j ∈ Finset.univ.erase i, (r j)⁻¹ ≤ A ^ (m + 1)`. Use `(Finset.prod_le_prod (fun j _ => (inv_pos.2 (hr j)).le) fun j _ => h1 j).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const]`. Conclude with `pow_le_pow_right₀ hA ((Finset.card_le_univ _).trans (by simp))`. Rewrite using `[e]`.
+
+Conclude with `mul_le_mul h2 h3 (Finset.prod_nonneg fun j _ => (inv_pos.2 (hr j)).le) (by linarith)`. Conclude with `(h1 i).trans ((le_self_pow₀ hA (by omega)).trans (le_mul_of_one_le_left (by positivity) hD))`.
+-/
 private theorem two_sided {m : ℕ} {r : Fin (m + 1) → ℝ} {A D : ℝ} (hr : ∀ i, 0 < r i) (hA : 1 ≤ A)
     (hD : 1 ≤ D) (h1 : ∀ i, (r i)⁻¹ ≤ A) (h2 : ∏ i, r i ≤ D) (i : Fin (m + 1)) :
     r i ≤ D * A ^ (m + 1) ∧ (r i)⁻¹ ≤ D * A ^ (m + 1) := by
@@ -29,6 +39,13 @@ private theorem two_sided {m : ℕ} {r : Fin (m + 1) → ℝ} {A D : ℝ} (hr : 
       (le_mul_of_one_le_left (by positivity) hD))
 
 open Reduction in
+/- English proof (translation)
+Take `⟨P, hP, hle⟩` from `exists_adelicNorm_vecMul_le_mul hω`. Use `⟨P, hP, fun b hb r hr => ?_⟩` and prove the remaining obligations. Establish `hu` using `isUnit_apply_self_of_mem_adelicBorel (hωB hb) (Fin.last m)`. Establish `hrow : (Pi.single (Fin.last m) (1 : AdeleRing (𝓞 K) K)) ᵥ* b.val = Pi.single (Fin.last m) (hu.unit : AdeleRing (𝓞 K) K)`. Rewrite using `[single_one_vecMul]`.
+
+Use function extensionality and compare the values at `j`. Break down `(Fin.le_last j).eq_or_lt with rfl | hj` into its components or cases. Simplify using `[Matrix.row]`. Establish `h0 : b.val (Fin.last m) j = 0` using `mem_adelicBorel.1 (hωB hb) hj`. Simplify using `[Matrix.row, Pi.single_eq_of_ne hj.ne, h0]`.
+
+Establish `h1` using `hle b hb _ (hasFiniteContent_single_one (K := K) (Fin.last m))`. Rewrite `h1` using `[hrow, adelicNorm_single_one, mul_one, adelicNorm_single_units]`. Rewrite using `[Reduction.height, Units.val_mul, ← vecMul_vecMul, ratVec_single_one, hrow, coe_diagUnits, single_vecMul_diagonal, ← Units.val_mul, adelicNorm_single_units, map_mul, Positive.val_mul, ideleModule_posIdele]`. Conclude with `mul_le_mul_of_nonneg_right h1 (pow_nonneg (hr _).le _)`.
+-/
 private theorem last_row {K : Type} [Field K] [NumberField K] {m : ℕ}
     {ω : Set (AdelicGLn.AdelicGL K (m + 1))} (hω : IsCompact ω)
     (hωB : ω ⊆ (adelicBorel (K := K) (n := m + 1) : Set (AdelicGLn.AdelicGL K (m + 1)))) :
@@ -53,6 +70,35 @@ private theorem last_row {K : Type} [Field K] [NumberField K] {m : ℕ}
     ideleModule_posIdele]
   exact mul_le_mul_of_nonneg_right h1 (pow_nonneg (hr _).le _)
 
+/- English proof (translation)
+Introduce `K _ _ n ω hω hωB t ht`. Consider the cases of `n with`. Consider the case `zero`. Use `⟨1, 0, fun g γ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[show AdelicGLn.diagonal K 0 γ * g = 1 from Units.ext (Subsingleton.elim _ _), height_one]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ m`. Take `⟨P, hP, hrow⟩` from `last_row hω hωB`. Take `⟨C₁, N₁, hC₁, hvec⟩` from `UpperTheory.adelicNorm_vecMul_ge_of_height K (m + 1)`. Take `⟨C₂, N₂, hC₂, hdet⟩` from `UpperTheory.adelicNorm_det_le_height_pow K (m + 1)`.
+
+Take `⟨M, hM⟩` from `CuspidalSpectrum.exists_height_le_of_isCompact hω`. Take `⟨B₁, B₂, hB₁, -, hB⟩` from `Reduction.exists_pos_bounds hω (f := fun b => (ideleModule K (AdelicGLn.det K (m + 1) b) : ℝ)) (continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det K _))) (fun b _ => (ideleModule K (AdelicGLn.det K _ b)).2)`. Establish `hd : Module.finrank ℚ K ≠ 0` using `Module.finrank_pos.ne'`. Use `set s : ℝ := min t 1 with hs`. Establish `hs0 : 0 < s` using `lt_min ht one_pos`.
+
+Establish `hu : 1 ≤ (s ^ m)⁻¹` using `(one_le_inv₀ (pow_pos hs0 _)).2 (pow_le_one₀ hs0.le (min_le_right _ _))`. Use `set a₁ : ℝ := max 1 (C₁ * P) with ha₁`. Use `set a₂ : ℝ := max 1 (C₂ / B₁) with ha₂`. Establish `ha₁1 : 1 ≤ a₁` using `le_max_left _ _`. Establish `ha₂1 : 1 ≤ a₂` using `le_max_left _ _`.
+
+Use `set e := 2 * Fintype.card (InfinitePlace K) with he`. Use `set c := heightConst K (m + 1) with hc`. Establish `hc0 : 0 ≤ c` using `zero_le_one.trans one_le_heightConst`. Use `⟨c * (c * M * (a₂ * ((s ^ m)⁻¹ * a₁) ^ (m + 1)) ^ e), (N₂ + N₁ * (m + 1)) * e, ?_⟩` and prove the remaining obligations. Introduce and unpack `g γ ⟨b, hb, _, ⟨r, hr, hratio, rfl⟩, k, hk, heq⟩`.
+
+Establish `hH` using `one_le_height g`. Establish `hH1 : 1 ≤ AutomorphicForm.height g ^ N₁` using `one_le_pow₀ hH`. Establish `hH2 : 1 ≤ AutomorphicForm.height g ^ N₂` using `one_le_pow₀ hH`. Establish `hx : (Pi.single (Fin.last m) (1 : K)) ᵥ* γ.val ≠ 0` using `fun h0 => by`. Establish `h1` using `congrArg (fun y => y ᵥ* (γ⁻¹).val) h0`.
+
+Simplify using `only [vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one, zero_vecMul] at h1`. Simplify using `using congrFun h1 (Fin.last m)`. Establish `h1` using `hvec g _ hx`. Rewrite `h1` using `[← Reduction.height_diagonal_mul, heq, Reduction.height_mul_maxCompact _ hk]`. Establish `hA : 1 ≤ a₁ * AutomorphicForm.height g ^ N₁` using `one_le_mul_of_one_le_of_one_le ha₁1 hH1`.
+
+Establish `hD : 1 ≤ a₂ * AutomorphicForm.height g ^ N₂` using `one_le_mul_of_one_le_of_one_le ha₂1 hH2`. Establish `hl : (r (Fin.last m))⁻¹ ≤ a₁ * AutomorphicForm.height g ^ N₁`. Use `le_of_pow_le' hd hA ?_` and prove the remaining obligations. Rewrite using `[inv_pow, inv_le_iff_one_le_mul₀ (pow_pos (hr _) _)]`. Use `h1.trans ((mul_le_mul_of_nonneg_left (hrow b hb r hr) (by positivity)).trans ?_)` and prove the remaining obligations.
+
+Use `pow_pos (hr (Fin.last m)) (Module.finrank ℚ K)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hall : ∀ i, (r i)⁻¹ ≤ (s ^ m)⁻¹ * (a₁ * AutomorphicForm.height g ^ N₁)` using `fun i => by`. Establish `h2` using `Reduction.pow_mul_le_of_chain hs0.le (min_le_right _ _) (min_le_left _ _) hr hratio i`. Use `(inv_anti₀ (mul_pos (pow_pos hs0 _) (hr _)) h2).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_inv]`. Conclude with `mul_le_mul_of_nonneg_left hl (by linarith)`. Establish `hX : ∏ i, r i ≤ a₂ * AutomorphicForm.height g ^ N₂`. Use `le_of_pow_le' hd hD ?_` and prove the remaining obligations. Establish `h2` using `Reduction.det_mul_mul b (Reduction.diagUnits (m + 1) fun i => Reduction.posIdele (K := K) (r i) (hr i)) k`.
+
+Rewrite `h2` using `[← heq, Reduction.ideleModule_det_diagUnits_posIdele r hr, Reduction.mem_normOneGL.1 (Reduction.maxCompact_le_normOneGL hk), mul_one, map_mul, map_mul, Positive.val_mul, Reduction.mem_normOneGL.1 (Reduction.rationalGL_le_normOneGL ⟨γ, rfl⟩), one_mul]`. Establish `hX0 : 0 ≤ (∏ i, r i) ^ Module.finrank ℚ K` using `pow_nonneg (Finset.prod_nonneg fun i _ => (hr i).le) _`. Establish `h3 : B₁ * (∏ i, r i) ^ Module.finrank ℚ K ≤ C₂ * AutomorphicForm.height g ^ N₂` using `(mul_le_mul_of_nonneg_right (hB b hb).1 hX0).trans (h2 ▸ hdet g)`. Use `le_trans ?_ (mul_le_mul_of_nonneg_right (le_max_right 1 (C₂ / B₁)) (by linarith))` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀' hB₁]`.
+
+Conclude with `h3`. Establish `hA'` using `one_le_mul_of_one_le_of_one_le hu hA`. Establish `ha` using `CuspidalSpectrum.height_diagUnits_posIdele_le (K := K) hr (one_le_mul_of_one_le_of_one_le hD (one_le_pow₀ hA')) (two_sided hr hA' hD hall hX)`. Establish `hM0 : 0 ≤ M` using `(height_pos b).le.trans (hM b hb)`. Rewrite using `[heq]`.
+
+Use `(height_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[height_eq_one_of_mem_maxCompact hk, mul_one, mul_assoc c]`. Use `mul_le_mul_of_nonneg_left ((height_mul_le _ _).trans ?_) hc0` and prove the remaining obligations. Use `(mul_le_mul (mul_le_mul_of_nonneg_left (hM b hb) hc0) ha (height_pos _).le (mul_nonneg hc0 hM0)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← he, mul_assoc (c * M), pow_mul (AutomorphicForm.height g), ← mul_pow, pow_add (AutomorphicForm.height g), pow_mul (AutomorphicForm.height g)]`.
+
+Use `congr 2`. Rewrite using `[← mul_assoc ((s ^ m)⁻¹), mul_pow _ (AutomorphicForm.height g ^ N₁)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.siegelSet_height_bound :
     UpperTheory.V.Fb.SiegelHeight := by
   intro K _ _ n ω hω hωB t ht

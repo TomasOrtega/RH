@@ -17,22 +17,34 @@ section Alg
 
 variable {F : Type} [Field F] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, id, Matrix.one_apply, Fin.rev_eq_iff]`.
+-/
 private theorem anti_symm :
     (1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id = (1 : Matrix (Fin n) (Fin n) F).submatrix id Fin.rev := by
   ext i j
   simp only [Matrix.submatrix_apply, id, Matrix.one_apply, Fin.rev_eq_iff]
 
+/- English proof (translation)
+Use `Matrix.submatrix_mul_equiv (1 : Matrix (Fin n) (Fin n) F) A Fin.rev (Equiv.refl (Fin n)) id` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem anti_mul (A : Matrix (Fin n) (Fin n) F) :
     (1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id * A = A.submatrix Fin.rev id := by
   have := Matrix.submatrix_mul_equiv (1 : Matrix (Fin n) (Fin n) F) A Fin.rev (Equiv.refl (Fin n)) id
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[anti_symm]`. Use `Matrix.submatrix_mul_equiv A (1 : Matrix (Fin n) (Fin n) F) id (Equiv.refl (Fin n)) Fin.rev` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem mul_anti (A : Matrix (Fin n) (Fin n) F) :
     A * (1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id = A.submatrix id Fin.rev := by
   rw [anti_symm]
   have := Matrix.submatrix_mul_equiv A (1 : Matrix (Fin n) (Fin n) F) id (Equiv.refl (Fin n)) Fin.rev
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[anti_mul]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`.
+-/
 private theorem anti_sq :
     (1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id * (1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id = 1 := by
   rw [anti_mul]
@@ -44,6 +56,9 @@ variable (F n) in
 private def wl : GL (Fin n) F :=
   ⟨(1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id, (1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id, anti_sq, anti_sq⟩
 
+/- English proof (translation)
+Establish `: ((wl F n * g * (wl F n)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = (1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id * (g : Matrix (Fin n) (Fin n) F) * (1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id` using `rfl`. Rewrite using `[this, anti_mul, mul_anti]`. Both sides reduce to the same expression.
+-/
 private theorem wl_conj (g : GL (Fin n) F) (i j : Fin n) :
     ((wl F n * g * (wl F n)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j =
       (g : Matrix (Fin n) (Fin n) F) i.rev j.rev := by
@@ -55,6 +70,11 @@ private theorem wl_conj (g : GL (Fin n) F) (i j : Fin n) :
 
 variable [ValuativeRel F]
 
+/- English proof (translation)
+Establish `h : ∀ i j, ((1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id) i j ∈ (ValuativeRel.valuation F).integer`. Introduce `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`. Rewrite using `[mem_integralGL_iff]`. Conclude with `⟨h, h⟩`.
+-/
 private theorem wl_mem : wl F n ∈ integralGL F n := by
   have h : ∀ i j, ((1 : Matrix (Fin n) (Fin n) F).submatrix Fin.rev id) i j ∈ (ValuativeRel.valuation F).integer := by
     intro i j
@@ -65,6 +85,11 @@ private theorem wl_mem : wl F n ∈ integralGL F n := by
   rw [mem_integralGL_iff]
   exact ⟨h, h⟩
 
+/- English proof (translation)
+Establish `hi` using `(unipotent F n).inv_mem hu`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[wl_conj, coe_transposeInv, Matrix.transpose_apply]`. Conclude with `hi.1 (Fin.rev_lt_rev.2 hij)`. Express the relevant statement in the definitionally equal form `((wl F n * transposeInv F n u * (wl F n)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i = 1`.
+
+Rewrite using `[wl_conj, coe_transposeInv, Matrix.transpose_apply]`. Conclude with `hi.2 _`.
+-/
 private theorem conj_unip {u : GL (Fin n) F} (hu : u ∈ unipotent F n) :
     wl F n * transposeInv F n u * (wl F n)⁻¹ ∈ unipotent F n := by
   have hi := (unipotent F n).inv_mem hu
@@ -77,6 +102,11 @@ private theorem conj_unip {u : GL (Fin n) F} (hu : u ∈ unipotent F n) :
 
 variable [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[wl_conj, coe_transposeInv, Matrix.transpose_apply, torusPow, ← map_inv, coe_diagGL, coe_torusPow]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Units.val_zpow_eq_zpow_val]`.
+
+Rewrite using `[Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (fun e => h (Fin.rev_injective e).symm)]`.
+-/
 private theorem conj_torus (l : Fin n → ℤ) :
     wl F n * transposeInv F n (torusPow F n l) * (wl F n)⁻¹ = torusPow F n fun i => -l i.rev := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -86,6 +116,11 @@ private theorem conj_torus (l : Fin n → ℤ) :
     simp [Units.val_zpow_eq_zpow_val]
   · rw [Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (fun e => h (Fin.rev_injective e).symm)]
 
+/- English proof (translation)
+Take `⟨u, hu, k, hk, hg⟩` from `exists_eq_mul_torusPow_iwasawaExponent F n g`. Use `set l := iwasawaExponent F n g`. Establish `: wl F n * transposeInv F n g = (wl F n * transposeInv F n u * (wl F n)⁻¹) * (torusPow F n fun i => -l i.rev) * (wl F n * transposeInv F n k)`. Rewrite using `[← conj_torus, hg, map_mul, map_mul]`. Use `group`.
+
+Rewrite using `[this]`. Conclude with `iwasawaExponent_eq F n (conj_unip hu) ((integralGL F n).mul_mem wl_mem (transposeInv_mem_integralGL hk))`.
+-/
 private theorem exponent_conj (g : GL (Fin n) F) :
     iwasawaExponent F n (wl F n * transposeInv F n g) = fun i => -iwasawaExponent F n g i.rev := by
   obtain ⟨u, hu, k, hk, hg⟩ := exists_eq_mul_torusPow_iwasawaExponent F n g
@@ -97,6 +132,9 @@ private theorem exponent_conj (g : GL (Fin n) F) :
   rw [this]
   exact iwasawaExponent_eq F n (conj_unip hu) ((integralGL F n).mul_mem wl_mem (transposeInv_mem_integralGL hk))
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, halfPoint, halfPoint, Units.val_mk0, Units.val_mk0, halfModulus_eq, halfModulus_eq, rhoPair_single, rhoPair_single, ← zpow_neg, Fin.val_rev]`. Use `congr 1`. Use `i.is_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem halfPoint_rev (i : Fin n) : halfPoint F n i.rev = (halfPoint F n i)⁻¹ := by
   refine Units.ext ?_
   rw [Units.val_inv_eq_inv_val, halfPoint, halfPoint, Units.val_mk0, Units.val_mk0, halfModulus_eq, halfModulus_eq,
@@ -105,6 +143,9 @@ private theorem halfPoint_rev (i : Fin n) : halfPoint F n i.rev = (halfPoint F n
   have := i.is_lt
   omega
 
+/- English proof (translation)
+Rewrite using `[monomialChar_apply, monomialChar_apply]`. Use `Fintype.prod_equiv Fin.revPerm _ _ fun i => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Pi.mul_apply, Function.comp_apply, Pi.inv_apply, Fin.revPerm_apply, halfPoint_rev]`. Rewrite using `[← inv_zpow', mul_inv, inv_inv]`.
+-/
 private theorem monomial_conj (l : Fin n → ℤ) (z : Fin n → ℂˣ) :
     monomialChar (fun i => -l i.rev) (((z⁻¹) ∘ (Fin.revPerm : Equiv.Perm (Fin n))) * halfPoint F n) =
       monomialChar l (z * halfPoint F n) := by
@@ -117,6 +158,9 @@ private theorem monomial_conj (l : Fin n → ℤ) (z : Fin n → ℂˣ) :
 variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   {μ : Measure (GL (Fin n) F)} [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Rewrite using `[satakeTransform_apply, evalAt_normalize, evalAt_satake, sphericalCharacter_apply, sphericalEigen]`. Simplify using `only [sphericalFun_unramifiedChar]`.
+-/
 private theorem evalAt_eq_integral (z : Fin n → ℂˣ) (h : SphericalHecke μ (F := F) (n := n)) :
     evalAt z (satakeTransform μ h) =
       ∫ g, (h : HeckeAlgebra μ) g * monomialChar (iwasawaExponent F n g) (z * halfPoint F n) ∂μ := by
@@ -134,9 +178,17 @@ private def flip (h : SphericalHecke μ (F := F) (n := n)) : SphericalHecke μ (
       rw [map_mul (transposeInv F n), map_mul (transposeInv F n)]
       exact this)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem flip_apply (h : SphericalHecke μ (F := F) (n := n)) (g : GL (Fin n) F) :
     (flip h : HeckeAlgebra μ) g = (h : HeckeAlgebra μ) (transposeInv F n g) := rfl
 
+/- English proof (translation)
+Rewrite using `[← evalAt_comp_satakeTransform z⁻¹ Fin.revPerm h, evalAt_eq_integral, evalAt_eq_integral]`. Use `set φ : GL (Fin n) F → ℂ := fun g => (h : HeckeAlgebra μ) g * monomialChar (iwasawaExponent F n g) (((z⁻¹) ∘ (Fin.revPerm : Equiv.Perm (Fin n))) * halfPoint F n) with hφ`. Rewrite using `[← integral_mul_left_eq_self φ (wl F n), ← integral_comp_transposeInv μ fun g => φ (wl F n * g)]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [hφ]`. Rewrite using `[exponent_conj, monomial_conj, flip_apply, (HeckeAlgebraLevel.val_mem _ _ h _ wl_mem _).1]`.
+-/
 private theorem evalAt_flip (z : Fin n → ℂˣ) (h : SphericalHecke μ (F := F) (n := n)) :
     evalAt z (satakeTransform μ (flip h)) = evalAt z⁻¹ (satakeTransform μ h) := by
   rw [← evalAt_comp_satakeTransform z⁻¹ Fin.revPerm h, evalAt_eq_integral, evalAt_eq_integral]
@@ -148,6 +200,11 @@ private theorem evalAt_flip (z : Fin n → ℂˣ) (h : SphericalHecke μ (F := F
   simp only [hφ]
   rw [exponent_conj, monomial_conj, flip_apply, (HeckeAlgebraLevel.val_mem _ _ h _ wl_mem _).1]
 
+/- English proof (translation)
+Establish `hKc` using `isCompact_integralGL F n`. Establish `hKo` using `isOpen_integralGL F n`. Take `⟨v₀, hv₀, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hK`. Establish `hne : (⟨v₀, hv₀⟩ : fixedVectors π (integralGL F n)) ≠ 0` using `fun h => h0 (congrArg Subtype.val h)`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one ℂ hne`.
+
+Use `⟨v₀, hv₀, f ∘ₗ fixedProj π hπ.1 hKc hKo, mem_fixedVectors_dual.2 fun k hk x => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, fixedProj_apply_act hπ.1 hKc hKo hk]`. Establish `: fixedProj π hπ.1 hKc hKo v₀ = ⟨v₀, hv₀⟩` using `Subtype.ext (fixedProj_apply_of_mem hπ.1 hKc hKo hv₀)`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, this, hf]`.
+-/
 private theorem exists_pair {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) F) V}
     (hπ : IsAdmissible π) (hK : fixedVectors π (integralGL F n) ≠ ⊥) :
     ∃ v₀ ∈ fixedVectors π (integralGL F n), ∃ ℓ₀ ∈ fixedVectors (Representation.dual π) (integralGL F n),
@@ -162,6 +219,19 @@ private theorem exists_pair {V : Type} [AddCommGroup V] [Module ℂ V] {π : Rep
   · have : fixedProj π hπ.1 hKc hKo v₀ = ⟨v₀, hv₀⟩ := Subtype.ext (fixedProj_apply_of_mem hπ.1 hKc hKo hv₀)
     simp only [LinearMap.coe_comp, Function.comp_apply, this, hf]
 
+/- English proof (translation)
+Take `⟨v₀, hv₀, ℓ₀, hℓK, hℓ⟩` from `exists_pair hπ hK`. Take `⟨z', hz', hL⟩` from `exists_satakeParameter_contragredient π hπ μ hℓK hℓ`. Establish `hsm : ℓ₀ ∈ smoothVectors (Representation.dual π)` using `mem_smoothVectors_of_mem_fixedVectors (isOpen_integralGL F n) hℓK`. Establish `hfix : (⟨ℓ₀, hsm⟩ : smoothVectors (Representation.dual π)) ∈ fixedVectors (contragredient π) (integralGL F n)` using `mem_fixedVectors_contragredient.2 (mem_fixedVectors_dual.1 hℓK)`. Establish `hbi : ∀ k ∈ integralGL F n, ∀ x, Parabolic.matrixCoeff π v₀ ℓ₀ (k * x) = Parabolic.matrixCoeff π v₀ ℓ₀ x ∧ Parabolic.matrixCoeff π v₀ ℓ₀ (x * k) = Parabolic.matrixCoeff π v₀ ℓ₀ x`.
+
+Introduce `k hk x`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `ℓ₀ (π (k * x) v₀) = ℓ₀ (π x v₀)`. Rewrite using `[map_mul, Module.End.mul_apply, mem_fixedVectors_dual.1 hℓK k hk]`. Express the relevant statement in the definitionally equal form `ℓ₀ (π (x * k) v₀) = ℓ₀ (π x v₀)`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, hv₀ k hk]`. Establish `key : (evalAt z⁻¹).comp (satakeTransform μ (F` using `F) (n := n)) = (evalAt z').comp (satakeTransform μ) := by`. Use `AlgHom.ext fun h => ?_` and prove the remaining obligations. Establish `h1` using `integral_mul_matrixCoeff_of_isSatakeParameter hz' hfix (evalSmooth π v₀) h`. Establish `h2` using `integral_mul_matrixCoeff_of_isSatakeParameter hz hv₀ ℓ₀ (flip h)`.
+
+Establish `hev : evalSmooth π v₀ ⟨ℓ₀, hsm⟩ = 1` using `hℓ`. Rewrite `h1` using `[hev, mul_one]`. Rewrite `h2` using `[hℓ, mul_one, evalAt_flip]`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, ← h1, ← h2, ← integral_comp_transposeInv μ fun g => (h : HeckeAlgebra μ) g * Parabolic.matrixCoeff (contragredient π) ⟨ℓ₀, hsm⟩ (evalSmooth π v₀) g]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[flip_apply, ← matrixCoeff_inv_eq_contragredient, apply_inv_transposeInv hbi]`. Take `⟨σ, rfl⟩` from `(evalAt_comp_satakeTransform_eq_iff _ _).1 key`. Rewrite using `[hL]`. Use `Fintype.prod_equiv σ _ _ fun i => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, Pi.inv_apply, Units.val_inv_eq_inv_val]`.
+-/
 private theorem lfun_contra [NeZero n] {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin n) F) V} [π.IsIrreducible] (hπ : IsAdmissible π)
     (hK : fixedVectors π (integralGL F n) ≠ ⊥) {z : Fin n → ℂˣ} (hz : IsSatakeParameter π μ z) (t : ℂ) :
@@ -202,6 +272,11 @@ end Alg
 
 end UpperTheory.V.Z.Inf.LocalUnramifiedTorus
 
+/- English proof (translation)
+Introduce `K _ _ n hn v V _ _ π hirr hadm hK z hz t`. Use `haveI : NeZero n := ⟨by omega⟩`. Establish `hq : qs (v.adicCompletion K) t = ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-t)`. Rewrite using `[qs, GroundTheory.Global.residueCard_adicCompletion]`. Rewrite using `[← hq]`.
+
+Conclude with `⟨LFunction_eq_prod_of_isSatakeParameter hadm hK _ hz t, LocalUnramifiedTorus.lfun_contra hadm hK hz t⟩`.
+-/
 theorem UpperTheory.V.Z.Inf.locUnr :
     UpperTheory.V.Z.Inf.LocUnr := by
   intro K _ _ n hn v V _ _ π hirr hadm hK z hz t

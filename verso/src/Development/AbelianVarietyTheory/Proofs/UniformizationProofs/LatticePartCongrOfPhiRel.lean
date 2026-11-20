@@ -19,6 +19,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, tr_fst, tr_fst, Category.id_comp]`. Use `show (DegPre.trPt D F m⁻¹ ≫ DegPre.trPt D F m) ≫ DegPre.prB D F = 𝟙 _ ≫ DegPre.prB D F`. Rewrite using `[Category.assoc, tr_pr, MonObj.comp_mul, tr_pr, ← Category.assoc, tr_fst, _root_.mul_assoc, ← MonObj.comp_mul, inv_mul_cancel, MonObj.comp_one, _root_.mul_one, Category.id_comp]`.
+-/
 theorem trPt_inv_comp (m : TF (R := R) F ⟶ D.P.A) : DegPre.trPt D F m⁻¹ ≫ DegPre.trPt D F m = 𝟙 _ := by
   apply CartesianMonoidalCategory.hom_ext
   · rw [Category.assoc, tr_fst, tr_fst, Category.id_comp]
@@ -26,6 +29,11 @@ theorem trPt_inv_comp (m : TF (R := R) F ⟶ D.P.A) : DegPre.trPt D F m⁻¹ ≫
     rw [Category.assoc, tr_pr, MonObj.comp_mul, tr_pr, ← Category.assoc, tr_fst, _root_.mul_assoc,
       ← MonObj.comp_mul, inv_mul_cancel, MonObj.comp_one, _root_.mul_one, Category.id_comp]
 
+/- English proof (translation)
+Introduce `j`. Use `sec_ext_val (s' := SecOps.secZero) D.P.isLB (fun y J hJ => ?_) j` and prove the remaining obligations. Establish `e₁` using `h α _ rfl _ (DegPre.trPt D F p'.g.b⁻¹) y J hJ`. Establish `e₂` using `h' α' _ e _ (DegPre.trPt D F p'.g.b⁻¹) y J hJ`. Rewrite `e₁` using `[UUA.sval_zero_of h0 _ y J (hJ.mem _ _), MulZeroClass.zero_mul]`.
+
+Rewrite `e₂` using `[e₁, trPt_inv_comp, Over.id_left]`. Rewrite using `[UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _)]`. Conclude with `(Units.mul_left_eq_zero _).1 e₂.symm`.
+-/
 theorem zero_of_phiVal {n : ℕ} (p p' : QkPt D F n)
     (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p.g.b) (DegPre.lineε n)))
     (w' : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p'.g.b) (DegPre.lineε n)))
@@ -44,6 +52,11 @@ end GlobalTheory.PhiLattice
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hG hT R _ _ D hB F _ _ n hn p p' w w' hw hw' H`. Take `⟨s, hs⟩` from `FamFree.exists_fam_support (D := D) (F := F) hG hT hB hn 0`. Take `⟨t, h, h'⟩` from `H s`. Rewrite `h` using `[ReciprocityTheory.ChartRestriction.G.DVR.phiRel_iff hG p w hw]`. Rewrite `h'` using `[ReciprocityTheory.ChartRestriction.G.DVR.phiRel_iff hG p' w' hw']`.
+
+Establish `h0 : ¬ ∀ j, (s.s 0).f j = 0` using `(hs 0).2 ⟨0, by rw [smul_zero, add_zero]⟩`. Take `⟨z, hz⟩` from `(hs (p'.y - p.y)).1 fun h1 => h0 (PhiLattice.zero_of_phiVal p p' w w' h h' (by rw [zero_add, sub_add_cancel]) h1)`. Conclude with `⟨z, by rw [zero_add] at hz; rw [hz, add_sub_cancel]⟩`.
+-/
 theorem lattice_part_congr_of_phiRel : GlobalFnsSt → SecTwistSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (n : ℕ), 1 ≤ n → ∀ (p p' : QkPt D F n) (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p.g.b) (DegPre.lineε n))) (w' : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p'.g.b) (DegPre.lineε n))), w.IsGen → w'.IsGen → (∀ s : Fam D F n, ∃ s' : Fam D F n, PhiRel D F n p w s s' ∧ PhiRel D F n p' w' s s') → ∃ z : D.X, p'.y = p.y + n • z := by
   intro hG hT R _ _ D hB F _ _ n hn p p' w w' hw hw' H
   obtain ⟨s, hs⟩ := FamFree.exists_fam_support (D := D) (F := F) hG hT hB hn 0

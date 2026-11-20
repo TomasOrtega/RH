@@ -14,5 +14,8 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.HorComp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AnUnion.exists_subset_of_subset_iUnion | exact GlobalTheory.AnUnion.exists_subset_of_subset_iUnion | (intros; apply GlobalTheory.AnUnion.exists_subset_of_subset_iUnion <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.irreducible_analytic_in_finite_union : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (At : FinHolAtlas d X) (C : Set X) (r : ℕ) (Zs : Fin r → Set X), IsIrreducibleAnalytic At C → (∀ i, At.IsAnalyticSubset (Zs i)) → C ⊆ ⋃ i, Zs i → ∃ i, C ⊆ Zs i := by
   first | exact @GlobalTheory.AnUnion.exists_subset_of_subset_iUnion | exact GlobalTheory.AnUnion.exists_subset_of_subset_iUnion | (intros; apply GlobalTheory.AnUnion.exists_subset_of_subset_iUnion <;> assumption)

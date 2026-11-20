@@ -9,6 +9,11 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Apply `h` to reduce the goal to its premises. Establish `hm'` using `MvPolynomial.mem_support_iff.mp (Finset.mem_coe.mp hm)`. Use `Finset.mem_coe.mpr (MvPolynomial.mem_support_iff.mpr ?_)` and prove the remaining obligations.
+
+Rewrite using `[coeff_smul, smul_eq_mul]`. Conclude with `mul_ne_zero ha hm'`.
+-/
 theorem lam_sat_restrict {O σ : Type} [CommRing O] [IsDomain O] (s : Set (σ →₀ ℕ)) (f : MvPolynomial σ O) (a : O)
     (ha : a ≠ 0) (h : a • f ∈ restrictSupport O s) : f ∈ restrictSupport O s := by
   rw [MvPolynomial.mem_restrictSupport_iff] at h ⊢
@@ -19,6 +24,11 @@ theorem lam_sat_restrict {O σ : Type} [CommRing O] [IsDomain O] (s : Set (σ �
   rw [coeff_smul, smul_eq_mul]
   exact mul_ne_zero ha hm'
 
+/- English proof (translation)
+Establish `hd : C ϖ ∣ P`. Rewrite using `[MvPolynomial.C_dvd_iff_dvd_coeff]`. Introduce `m`. Establish `h1 : IsLocalRing.residue O (coeff m P) = 0`. Rewrite using `[← MvPolynomial.coeff_map, h, coeff_zero]`.
+
+Rewrite `h1` using `[IsLocalRing.residue_eq_zero_iff, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.mem_span_singleton]`. Conclude with `h1`. Take `⟨z, hz⟩` from `hd`. Conclude with `⟨z, by rw [hz, smul_eq_C_mul]⟩`.
+-/
 theorem lam_dvd_of_res {O σ : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
     (hϖ : Irreducible ϖ) (P : MvPolynomial σ O) (h : MvPolynomial.map (IsLocalRing.residue O) P = 0) :
     ∃ z : MvPolynomial σ O, P = ϖ • z := by
@@ -33,6 +43,23 @@ theorem lam_dvd_of_res {O σ : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
   obtain ⟨z, hz⟩ := hd
   exact ⟨z, by rw [hz, smul_eq_C_mul]⟩
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X O _ _ _ Sd hX j b hb`. Establish `: Fact p.Prime` using `⟨hX.prime⟩`. Establish `hNK : segN X.F j + r ≤ K` using `le_trans (Nat.add_le_add_right (hX.card j) r) hX.NsK`. Establish `h12 : NestedTypeBound D` using `hAdm.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hsatX` using `(h12 p O Sd n' r K X.F X.L₁ X.N₁ j (fun _ => (X.m0 K : ℤ)) (X.thc p K j b) (X.oc p K j) hX.valid hNK (fun _ => by positivity)).2.2.1`.
+
+Establish `hsat : ∀ (f : SegRing O r K) (a : O), a ≠ 0 → a • f ∈ X.Mj p K O j b → f ∈ X.Mj p K O j b`. Introduce `f a ha h`. Take `⟨⟨h1, h2⟩, h3⟩` from `h`. Conclude with `⟨⟨hsatX f a ha h1, lam_sat_restrict _ f a ha h2⟩, lam_sat_restrict _ f a ha h3⟩`. Establish `hfin : Module.Finite O (X.Mj p K O j b)` using `restFin p n' r K X O j b hb`.
+
+Establish `hfree : Module.Free O (X.Mj p K O j b)` using `Module.free_of_finite_type_torsion_free'`. Set `bs` to `Module.finBasis O (X.Mj p K O j b)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Use `⟨fun i => (bs i : SegRing O r K), fun i => (bs i).2, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `cb hcb i`. Use `choose c hc using fun i => IsLocalRing.residue_surjective (cb i)`. Establish `h1 : MvPolynomial.map (IsLocalRing.residue O) (∑ i, c i • (bs i : SegRing O r K)) = 0`. Rewrite using `[sel_red_sum, ← hcb]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hc]`.
+
+Take `⟨z, hz⟩` from `lam_dvd_of_res hϖ _ h1`. Establish `hzM : z ∈ X.Mj p K O j b`. Use `hsat z ϖ hϖ.ne_zero ?_` and prove the remaining obligations. Rewrite using `[← hz]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (bs i).2`.
+
+Establish `h2 : ∑ i, c i • bs i = ϖ • (⟨z, hzM⟩ : X.Mj p K O j b)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Conclude with `hz`. Establish `h3` using `congrArg (fun v => bs.repr v i) h2`.
+
+Simplify using `only [Module.Basis.repr_sum_self, map_smul, Finsupp.smul_apply, smul_eq_mul] at h3`. Rewrite using `[← hc i, h3, map_mul]`. Establish `: IsLocalRing.residue O ϖ = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal]`. Conclude with `hϖ.not_isUnit`.
+
+Rewrite using `[this, zero_mul]`.
+-/
 theorem restLamA_of (D : Formalism.BasicNotions.D7) (hAdm : AdmB D) : RestLamA := by
   intro p n' r K _ _ _ X O _ _ _ Sd hX j b hb
   classical

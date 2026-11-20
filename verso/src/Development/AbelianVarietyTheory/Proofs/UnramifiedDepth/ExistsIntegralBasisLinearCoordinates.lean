@@ -5,6 +5,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V K C _ _ _ _ _ _ _ _ R hR s hs`. Use `letI : Algebra V C := ((algebraMap K C).comp (algebraMap V K)).toAlgebra`. Use `haveI : IsScalarTower V K C := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hinj : Function.Injective (algebraMap V C)` using `(algebraMap K C).injective.comp (IsFractionRing.injective V K)`. Use `haveI : FaithfulSMul V C := (faithfulSMul_iff_algebraMap_injective V C).2 hinj`.
+
+Set `M : Submodule V C` to `Submodule.span V (s : Set C)`. Use `haveI : Module.Finite V M := Module.Finite.span_of_finite V s.finite_toSet`. Use `haveI : Module.Free V M := inferInstance`. Establish `hMR : ∀ x ∈ M, x ∈ R`. Introduce `x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `zero => exact R.zero_mem`. Consider the case `add x y _ _ hx hy => exact R.add_mem hx hy`. Consider the case `smul a x _ hx`.
+
+Rewrite using `[Algebra.smul_def]`. Conclude with `R.mul_mem (hR a) hx`. Set `b` to `Module.finBasis V M`. Set `c : Fin (Module.finrank V M) → C` to `fun j => (b j : C)`. Establish `hcV : LinearIndependent V c` using `b.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`.
+
+Establish `hcK : LinearIndependent K c` using `(LinearIndependent.iff_fractionRing V K).1 hcV`. Take `⟨g, hg⟩` from `(Fintype.linearCombination K c).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (by`. Conclude with `hcK.fintypeLinearCombination_injective))`. Use `⟨_, c, fun j => (LinearMap.proj j).comp g, fun j => hMR _ (b j).2, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hxM : x ∈ M` using `Submodule.subset_span hx`. Establish `h1 : x = Fintype.linearCombination K c (fun j => algebraMap V K (b.repr ⟨x, hxM⟩ j))`. Use `congrArg Subtype.val (b.sum_repr ⟨x, hxM⟩)` as an intermediate fact. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul] at this`. Rewrite using `[Fintype.linearCombination_apply]`.
+
+Simplify using `only [algebraMap_smul]`. Conclude with `this.symm`. Establish `h2 : g x = fun j => algebraMap V K (b.repr ⟨x, hxM⟩ j)`. Use `LinearMap.congr_fun hg (fun j => algebraMap V K (b.repr ⟨x, hxM⟩ j))` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, ← h1]`.
+
+Conclude with `this`. Use `⟨fun j => ⟨b.repr ⟨x, hxM⟩ j, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[h2]`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, h2, ← Algebra.smul_def]`. Rewrite `h1` using `[Fintype.linearCombination_apply]`.
+
+Conclude with `h1`.
+-/
 theorem exists_integral_basis_linear_coordinates :
     ∀ (V K C : Type) [CommRing V] [IsDomain V] [IsPrincipalIdealRing V] [Field K] [Algebra V K] [IsFractionRing V K] [Field C] [Algebra K C] (R : Subring C), (∀ x : V, algebraMap K C (algebraMap V K x) ∈ R) → ∀ s : Finset C, (∀ x ∈ s, x ∈ R) → ∃ (r : ℕ) (c : Fin r → C) (φ : Fin r → (C →ₗ[K] K)), (∀ j, c j ∈ R) ∧ ∀ x ∈ s, (∀ j, φ j x ∈ (algebraMap V K).range) ∧ x = ∑ j, algebraMap K C (φ j x) * c j := by
   intro V K C _ _ _ _ _ _ _ _ R hR s hs

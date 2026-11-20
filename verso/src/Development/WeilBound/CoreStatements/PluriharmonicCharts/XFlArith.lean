@@ -13,6 +13,13 @@ namespace PositivityTheory.Xgp.fl_arith
 
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter GroundTheory.Heights₂.Heights.CoordinateConeArithVar FlagArithVar
 
+/- English proof (translation)
+Establish `hhor : IsHorizontal (mCoordIdeal y)` using `horizontal y`. Use `⟨hK, ⟨RingHom.ker_isPrime _, isMultiHomogIdeal y, relevant y _ hc⟩, hhor, ?_⟩` and prove the remaining obligations. Establish `htr` using `ConeTrdeg.full _ ι (ratioField y c) (ratioPtL y c) (birational y _ hc) (fun k ↦ ⟨c k, fun h0 ↦ by`. Establish `h1` using `congrArg Subtype.val h0`. Simplify using `[ratioPtL, ratioPt, hc] at h1⟩)`.
+
+Use the proof step `(by rw [mCoordIdeal_ratioPtL y _ hc]; exact hhor)`. Establish `hL : Algebra.trdeg ℤ (ratioField y c) = ((d : ℕ) : Cardinal)`. Rewrite using `[ratioField, trdeg_int_adjoin]`. Conclude with `hd`. Rewrite `htr` using `[mCoordIdeal_ratioPtL y _ hc, hL]`.
+
+Establish `: (mCoordIdeal y).IsPrime` using `RingHom.ker_isPrime _`. Establish `hA` using `IntDomainDim.full (MRing ι ⧸ mCoordIdeal y) (algebraMap_injective _ hhor)`. Rewrite using `[hA, htr, ← Nat.cast_add, Cardinal.toENat_nat]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem arith_of_trdeg {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω]
     (hK : Nonempty K) (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (d : ℕ)
     (hd : Algebra.trdeg ℤ (Subfield.closure (coneRatios y c)) = (d : Cardinal)) :
@@ -34,6 +41,21 @@ theorem arith_of_trdeg {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
   push_cast
   ring
 
+/- English proof (translation)
+Use `letI : Algebra L' L := (Subfield.inclusion h).toAlgebra`. Use `haveI : IsScalarTower ℤ L' L := IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)`. Use `haveI : FaithfulSMul ℤ L' := (faithfulSMul_iff_algebraMap_injective ℤ L').mpr Int.cast_injective`. Use `haveI : FaithfulSMul L' L := (faithfulSMul_iff_algebraMap_injective L' L).mpr (algebraMap L' L).injective`. Use `haveI : Algebra.Transcendental L' L := by`.
+
+Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨p, hp0, hp⟩`. Establish `h1 : Polynomial.eval₂ L'.subtype t p = 0`. Use `congrArg L.subtype hp` as an intermediate fact. Rewrite `this` using `[Polynomial.aeval_def, Polynomial.hom_eval₂, map_zero]`.
+
+Conclude with `this`. Establish `h2 : ∀ n, (p.map L'.subtype).IsRoot (σ n t)` using `fun n => by`. Use `congrArg (σ n) h1` as an intermediate fact. Rewrite `this` using `[Polynomial.hom_eval₂, map_zero]`. Establish `e : (σ n).comp L'.subtype = L'.subtype` using `RingHom.ext fun x => hσ n x x.2`.
+
+Rewrite `this` using `[e]`. Rewrite using `[Polynomial.IsRoot, Polynomial.eval_map]`. Conclude with `this`. Use `Polynomial.map_ne_zero (f := L'.subtype) hp0 (Polynomial.eq_zero_of_infinite_isRoot _ ?_)` and prove the remaining obligations. Conclude with `Set.infinite_of_injective_forall_mem hinj h2`.
+
+Establish `hadd` using `trdeg_add_eq ℤ L' (A := L)`. Establish `hpos` using `trdeg_pos L' L`. Rewrite `hadd` using `[hD]`. Establish `hfin : Algebra.trdeg ℤ L' < Cardinal.aleph0` using `(le_self_add.trans hadd.le).trans_lt (Cardinal.natCast_lt_aleph0)`. Establish `hfin2 : Algebra.trdeg L' L < Cardinal.aleph0` using `(le_add_self.trans hadd.le).trans_lt (Cardinal.natCast_lt_aleph0)`.
+
+Take `⟨d, hd⟩` from `Cardinal.lt_aleph0.1 hfin`. Take `⟨e, he⟩` from `Cardinal.lt_aleph0.1 hfin2`. Rewrite `hpos` using `[he]`. Rewrite `hadd` using `[hd, he]`. Use `⟨d, ?_, hd⟩` and prove the remaining obligations.
+
+Establish `a1 : d + e = D` using `by exact_mod_cast hadd`. Establish `a2 : 0 < e` using `by exact_mod_cast hpos`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem trdeg_lt {Ω : Type} [Field Ω] [CharZero Ω] (L' L : Subfield Ω) (h : L' ≤ L) (t : Ω) (ht : t ∈ L)
     (σ : ℕ → Ω →+* Ω) (hσ : ∀ n, ∀ x ∈ L', σ n x = x) (hinj : Function.Injective fun n => σ n t) (D : ℕ)
     (hD : Algebra.trdeg ℤ L = (D : Cardinal)) : ∃ d < D, Algebra.trdeg ℤ L' = (d : Cardinal) := by
@@ -82,10 +104,18 @@ def r1 (q₀ : FlBlock Ψ N) : Fin N := ⟨q₀.2 + 1, by have := q₀.2.2; omeg
 def sub (q₀ : FlBlock Ψ N) (c : ℚ) : MvPolynomial (Ψ × Fin N × Fin N) ℚ →ₐ[ℚ] MvPolynomial (Ψ × Fin N × Fin N) ℚ :=
   aeval fun x => X x + if x.1 = q₀.1 ∧ x.2.1 = r0 q₀ then C c * X (x.1, r1 q₀, x.2.2) else 0
 
+/- English proof (translation)
+Introduce `h` and use `by have := congrArg Fin.val h simp [r0, r1] at this`.
+-/
 theorem flag_row_one_ne_zero (q₀ : FlBlock Ψ N) : r1 q₀ ≠ r0 q₀ := fun h => by
   have := congrArg Fin.val h
   simp [r0, r1] at this
 
+/- English proof (translation)
+Establish `: (sub q₀ (-c)).comp (sub q₀ c) = AlgHom.id ℚ _`. Use `MvPolynomial.algHom_ext fun x => ?_` and prove the remaining obligations. Distinguish the cases in `h : x.1 = q₀.1 ∧ x.2.1 = r0 q₀`. Simplify using `[sub, h, flag_row_one_ne_zero]`. Simplify using `[sub, h]`.
+
+Conclude with `congrArg (fun φ => φ p) this`.
+-/
 theorem sub_sub (q₀ : FlBlock Ψ N) (c : ℚ) (p) : sub q₀ (-c) (sub q₀ c p) = p := by
   have : (sub q₀ (-c)).comp (sub q₀ c) = AlgHom.id ℚ _ := by
     refine MvPolynomial.algHom_ext fun x => ?_
@@ -94,6 +124,9 @@ theorem sub_sub (q₀ : FlBlock Ψ N) (c : ℚ) (p) : sub q₀ (-c) (sub q₀ c 
     · simp [sub, h]
   exact congrArg (fun φ => φ p) this
 
+/- English proof (translation)
+The claim follows from `Function.LeftInverse.injective (sub_sub q₀ c)`.
+-/
 theorem sub_inj (q₀ : FlBlock Ψ N) (c : ℚ) : Function.Injective (sub q₀ c) :=
   Function.LeftInverse.injective (sub_sub q₀ c)
 
@@ -101,6 +134,9 @@ def subF (q₀ : FlBlock Ψ N) (c : ℚ) : ΩFl Ψ N →+* ΩFl Ψ N :=
   IsFractionRing.lift (g := (algebraMap _ (ΩFl Ψ N)).comp (sub q₀ c).toRingHom)
     ((IsFractionRing.injective _ _).comp (sub_inj q₀ c))
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap _ _`.
+-/
 theorem subF_alg (q₀ : FlBlock Ψ N) (c : ℚ) (p) :
     subF q₀ c (algebraMap (MvPolynomial (Ψ × Fin N × Fin N) ℚ) _ p) = algebraMap _ _ (sub q₀ c p) :=
   IsFractionRing.lift_algebraMap _ _
@@ -108,6 +144,19 @@ theorem subF_alg (q₀ : FlBlock Ψ N) (c : ℚ) (p) :
 def yP (p : Σ q : FlBlock Ψ N, FlIdx Ψ N q) : MvPolynomial (Ψ × Fin N × Fin N) ℚ :=
   Matrix.det (Matrix.of fun a b : Fin ((p.1.2 : ℕ) + 1) => X (p.1.1, Fin.castLE (step_le p.1.2) a, p.2.1 b))
 
+/- English proof (translation)
+Take `⟨⟨τ, i⟩, A⟩` from `p`. Rewrite using `[yP, AlgHom.map_det]`. Distinguish the cases in `h : τ = q₀.1 ∧ (q₀.2 : ℕ) < i`. Take `⟨h1, h2⟩` from `h`. Set `a0 : Fin ((i : ℕ) + 1)` to `⟨q₀.2, by omega⟩`.
+
+Set `a1 : Fin ((i : ℕ) + 1)` to `⟨q₀.2 + 1, by omega⟩`. Establish `hne : a0 ≠ a1` using `fun e => by have := congrArg Fin.val e; simp [a0, a1] at this`. Use `Eq.trans ?_ (Matrix.det_updateRow_add_smul_self _ hne (C c))` and prove the remaining obligations. Use `congr 1`. Use `ext1 a b`.
+
+Distinguish the cases in `ha : a = a0`. Substitute `ha` using the available equality. Establish `e0 : Fin.castLE (step_le i) a0 = r0 q₀` using `rfl`. Establish `e1 : Fin.castLE (step_le i) a1 = r1 q₀` using `rfl`. Simplify using `[sub, e0, e1, h1]`.
+
+Establish `e0 : Fin.castLE (step_le i) a ≠ r0 q₀` using `fun e => ha (Fin.ext (congrArg (fun x : Fin N => (x : ℕ)) e))`. Simplify using `[sub, e0, Matrix.updateRow_ne ha]`. Use `congr 1 ext1 a b`. Establish `e0 : ¬ (τ = q₀.1 ∧ Fin.castLE (step_le i) a = r0 q₀)`. Introduce and unpack `⟨h1, e⟩`.
+
+Establish `e' : (a : ℕ) = q₀.2` using `congrArg (fun x : Fin N => (x : ℕ)) e`. Establish `h5 : (a : ℕ) < i + 1` using `a.2`. Use `hp (Prod.ext h1 (Fin.ext ?_))` and prove the remaining obligations. Establish `: ¬ (q₀.2 : ℕ) < i` using `fun h2 => h ⟨h1, h2⟩`. Use `show (i : ℕ) = q₀.2`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[sub, e0]`.
+-/
 theorem sub_yP (q₀ : FlBlock Ψ N) (c : ℚ) (p : Σ q : FlBlock Ψ N, FlIdx Ψ N q) (hp : p.1 ≠ q₀) :
     sub q₀ c (yP p) = yP p := by
   obtain ⟨⟨τ, i⟩, A⟩ := p
@@ -149,6 +198,11 @@ def nextIdx (q₀ : FlBlock Ψ N) : FlIdx Ψ N q₀ :=
 
 def ev1 : MvPolynomial (Ψ × Fin N × Fin N) ℚ →+* ℚ := eval fun x => if x.2.1 = x.2.2 then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[yP, AlgHom.map_det, RingHom.map_det, ← Matrix.det_one (n := Fin ((q₀.2 : ℕ) + 1))]`. Use `congr 1`. Use extensionality with `a b`. Establish `h2 : (b : ℕ) < q₀.2 + 1` using `b.2`. Establish `: r1 q₀ ≠ Fin.castLE (step_le q₀.2) b` using `fun e => by`.
+
+Establish `: (q₀.2 : ℕ) + 1 = b` using `congrArg (fun x : Fin N => (x : ℕ)) e`. Use linear arithmetic over natural numbers and integers. Simplify using `[sub, ev1, leadIdx, Matrix.one_apply, apply_ite (eval _), this]`.
+-/
 theorem ev_lead (q₀ : FlBlock Ψ N) (c : ℚ) : ev1 (sub q₀ c (yP ⟨q₀, leadIdx Ψ N q₀⟩)) = 1 := by
   rw [yP, AlgHom.map_det, RingHom.map_det, ← Matrix.det_one (n := Fin ((q₀.2 : ℕ) + 1))]
   congr 1
@@ -159,6 +213,11 @@ theorem ev_lead (q₀ : FlBlock Ψ N) (c : ℚ) : ev1 (sub q₀ c (yP ⟨q₀, l
     omega
   simp [sub, ev1, leadIdx, Matrix.one_apply, apply_ite (eval _), this]
 
+/- English proof (translation)
+Rewrite using `[yP, AlgHom.map_det, RingHom.map_det]`. Establish `: (ev1.mapMatrix ((sub q₀ c).mapMatrix (Matrix.of fun a b : Fin ((q₀.2 : ℕ) + 1) => (X (q₀.1, Fin.castLE (step_le q₀.2) a, (nextIdx q₀).1 b) : MvPolynomial (Ψ × Fin N × Fin N) ℚ)))) = Matrix.diagonal fun a => if a = Fin.last _ then c else 1`. Use extensionality with `a b`. Establish `h1` using `a.2`. Establish `h2` using `b.2`.
+
+Simplify using `only [sub, ev1, nextIdx, RingHom.mapMatrix_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, aeval_X, map_add, eval_X, apply_ite (eval _), map_mul, eval_C, map_zero, true_and, Matrix.diagonal_apply, Fin.ext_iff, r0, r1, Fin.val_castLE, Fin.val_last, apply_ite Fin. …`. Apply the tactic sequence `split_ifs <;> first | omega | simp`. Rewrite using `[this, Matrix.det_diagonal]`. Simplify using the standard rewrite rules.
+-/
 theorem ev_next (q₀ : FlBlock Ψ N) (c : ℚ) : ev1 (sub q₀ c (yP ⟨q₀, nextIdx q₀⟩)) = c := by
   rw [yP, AlgHom.map_det, RingHom.map_det]
   have : (ev1.mapMatrix ((sub q₀ c).mapMatrix (Matrix.of fun a b : Fin ((q₀.2 : ℕ) + 1) =>
@@ -179,6 +238,21 @@ end PositivityTheory.Xgp.fl_arith
 end
 
 open PositivityTheory.Xgp.fl_arith FlagArithVar in
+/- English proof (translation)
+Introduce `Ψ _ _ _ N hN`. Establish `hD : antisymDegree Ψ N = dimFl Ψ N` using `by rw [dimFl, ← Nat.choose_two_right]; rfl`. Rewrite using `[hD]`. Use `⟨FlagArithVar.proof Ψ N hN, fun q₀ hK => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ q, yFl Ψ N ⟨q, leadIdx Ψ N q⟩ ≠ 0` using `fun q => by`.
+
+Rewrite using `[yFl_lead]`. Conclude with `GenLeadMinorNeZero.full ℚ Ψ N q.1 q.2`. Use `set v := (fun p : Σ q : {q : FlBlock Ψ N // q ≠ q₀}, FlIdx Ψ N q.1 => (⟨p.1.1, p.2⟩ : Σ q, FlIdx Ψ N q)) with hv`. Establish `himg : imageZ v (PFl Ψ N) = mCoordIdeal (yFl Ψ N ∘ v)`. Use extensionality with `F`.
+
+Simplify using `only [PFl, imageZ, mCoordIdeal, Ideal.mem_comap, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, GroundTheory.Heights₂.Heights.Targets.ImageCoord.mConeMap_rename (Subtype.val : {q : FlBlock Ψ N // q ≠ q₀} → FlBlock Ψ N) v (fun _ => rfl) (yFl Ψ N) F]`. Conclude with `⟨fun h => rename_injective _ Subtype.val_injective (by rw [h, map_zero]), fun h => by rw [h, map_zero]⟩`. Establish `hL : Algebra.trdeg ℤ (Subfield.closure (coneRatios (yFl Ψ N) (leadIdx Ψ N))) = ((dimFl Ψ N : ℕ) : Cardinal)`. Establish `h` using `trdeg_closure_of_rat _ (FlagRatioTrdeg.full ℚ Ψ N)`. Rewrite using `[coneRatios_eq]`.
+
+Conclude with `h`. Establish `hy : ∀ p, yFl Ψ N p = algebraMap _ _ (yP p)` using `fun _ => rfl`. Take `⟨d, hd, hd'⟩` from `trdeg_lt (Subfield.closure (coneRatios (yFl Ψ N ∘ v) fun q => leadIdx Ψ N q.1)) _ (Subfield.closure_mono (t := coneRatios (yFl Ψ N) (leadIdx Ψ N)) (by rintro _ ⟨p, rfl⟩; exact ⟨v p, rfl⟩)) (yFl Ψ N ⟨q₀, nextIdx q₀⟩ / yFl Ψ N ⟨q₀, leadIdx Ψ N q₀⟩) (Subfield.subset_closure ⟨⟨q₀, ne …`. Use `(Subfield.closure_le (t := (subF q₀ n).eqLocusField (RingHom.id _))).2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Use `show subF q₀ n (yFl Ψ N (v p) / yFl Ψ N (v ⟨p.1, _⟩)) = yFl Ψ N (v p) / yFl Ψ N (v ⟨p.1, _⟩)`. Rewrite using `[map_div₀, hy, hy, subF_alg, subF_alg, sub_yP q₀ _ _ p.1.2, sub_yP q₀ _ _ p.1.2])`. Use the proof step `(fun n m hnm => by`. Establish `hne : ∀ n : ℕ, subF q₀ n (yFl Ψ N ⟨q₀, leadIdx Ψ N q₀⟩) ≠ 0` using `fun n => (map_ne_zero _).2 (hc q₀)`. Simplify using `only [map_div₀] at hnm`.
+
+Rewrite `hnm` using `[div_eq_div_iff (hne n) (hne m)]`. Simplify using `only [hy, subF_alg, ← map_mul] at hnm`. Use `congrArg ev1 (IsFractionRing.injective _ _ hnm)` as an intermediate fact. Simplify using `only [map_mul, ev_lead, ev_next, mul_one] at this`. Conclude with `this) _ hL` after adjusting the coercions.
+
+Use `⟨d + 1, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[himg]`. Conclude with `arith_of_trdeg hK _ (fun q => leadIdx Ψ N q.1) (fun q => hc q.1) d hd'`.
+-/
 theorem PositivityTheory.Xgp.t_fl_arith : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N : ℕ), 2 ≤ N → IsArithVar (PFl Ψ N) (antisymDegree Ψ N + 1) ∧ ∀ q₀ : FlBlock Ψ N, Nonempty {q : FlBlock Ψ N // q ≠ q₀} → ∃ d₀ < antisymDegree Ψ N + 1, IsArithVar (imageZ (fun p : Σ q : {q : FlBlock Ψ N // q ≠ q₀}, FlIdx Ψ N q.1 => (⟨p.1.1, p.2⟩ : Σ q, FlIdx Ψ N q)) (PFl Ψ N)) d₀ := by
   intro Ψ _ _ _ N hN
   have hD : antisymDegree Ψ N = dimFl Ψ N := by rw [dimFl, ← Nat.choose_two_right]; rfl

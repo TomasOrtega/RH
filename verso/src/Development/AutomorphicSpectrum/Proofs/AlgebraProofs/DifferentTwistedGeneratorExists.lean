@@ -11,17 +11,28 @@ namespace GlobalTheory.CompanionTheory.Ar.Fl.RelDiff
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `h` using `congrArg (algebraMap (𝓞 E) E) H.rt_sq`. Rewrite `h` using `[map_pow, map_neg, map_natCast]`. Conclude with `h`.
+-/
 theorem rt_sq_field (H : Host E) : ((H.rt : E)) ^ 2 = -(H.d : E) := by
   have h := congrArg (algebraMap (𝓞 E) E) H.rt_sq
   rw [map_pow, map_neg, map_natCast] at h
   exact h
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `rt_sq_field H`. Rewrite `h1` using `[h, zero_pow two_ne_zero, eq_comm, neg_eq_zero, Nat.cast_eq_zero]`. Conclude with `H.d_prime.ne_zero h1`.
+-/
 theorem rt_ne_zero (H : Host E) : (H.rt : E) ≠ 0 := by
   intro h
   have h1 := rt_sq_field H
   rw [h, zero_pow two_ne_zero, eq_comm, neg_eq_zero, Nat.cast_eq_zero] at h1
   exact H.d_prime.ne_zero h1
 
+/- English proof (translation)
+Establish `hre` using `congrArg Complex.re hz`. Establish `him` using `congrArg Complex.im hz`. Simplify using `only [pow_two, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im, neg_zero] at hre him`. Establish `h0 : z.re = 0`. Break down `mul_eq_zero.mp (show z.re * z.im = 0 by nlinarith) with h | h` into its components or cases.
+
+Conclude with `h`. Rewrite `hre` using `[h]`. Use polynomial arithmetic with `[sq_nonneg z.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+-/
 theorem conj_eq_neg_of_sq {z : ℂ} {d : ℝ} (hd : 0 < d) (hz : z ^ 2 = -(d : ℂ)) :
     starRingEnd ℂ z = -z := by
   have hre := congrArg Complex.re hz
@@ -35,6 +46,11 @@ theorem conj_eq_neg_of_sq {z : ℂ} {d : ℝ} (hd : 0 < d) (hz : z ^ 2 = -(d : �
       nlinarith [sq_nonneg z.re]
   apply Complex.ext <;> simp [h0]
 
+/- English proof (translation)
+Set `φ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Apply `conj_eq_neg_of_sq (d := (H.d : ℝ)) (by exact_mod_cast H.d_prime.pos)` to reduce the goal to its premises. Rewrite using `[← map_pow, rt_sq_field, map_neg, map_natCast]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem conj_rt (H : Host E) : IsCMField.complexConj E (H.rt : E) = -(H.rt : E) := by
   let φ : E →+* ℂ := (IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom
   apply φ.injective
@@ -43,6 +59,11 @@ theorem conj_rt (H : Host E) : IsCMField.complexConj E (H.rt : E) = -(H.rt : E) 
   rw [← map_pow, rt_sq_field, map_neg, map_natCast]
   simp
 
+/- English proof (translation)
+Take `⟨δ₀, -, hδ₀, hconj, hlog⟩` from `GlobalTheory.T.exists_real_different_generator E H.unram ℓ`. Establish `hrt : (H.rt : E) ≠ 0` using `rt_ne_zero H`. Establish `hδ₀E : (δ₀ : E) ≠ 0` using `by exact_mod_cast hδ₀`. Use `⟨(δ₀ : E) / (H.rt : E), div_ne_zero hδ₀E hrt, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_div₀, norm_div, Real.log_div (norm_ne_zero_iff.mpr ((map_ne_zero j).mpr hδ₀E)) (norm_ne_zero_iff.mpr ((map_ne_zero j).mpr hrt)), hlog]`.
+
+Rewrite using `[map_div₀, hconj, conj_rt H, div_neg, map_neg, norm_neg]`.
+-/
 theorem exists_local_generator (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ℓ : Nat.Primes) :
     ∃ δ : E, δ ≠ 0 ∧ ∀ j : E →+* ℂ_[ℓ],
       Real.log ‖j δ‖ = logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖j (H.rt : E)‖ ∧

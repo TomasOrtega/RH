@@ -18,6 +18,9 @@ structure IsAEOrbitSection (G : Type*) {X : Type*} [SMul G X] [MeasurableSpace X
   protected ae_covers : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ D
   protected ae_unique : ∀ᵐ x ∂μ, x ∈ D → ∀ g : G, g • x ∈ D → g • x = x
 
+/- English proof (translation)
+The claim follows from `measurableSet_Ici.nullMeasurableSet ae_covers := Eventually.of_forall fun x => by rcases le_total 0 x with h | h · exact ⟨1, by simpa using h⟩ · exact ⟨-1, by simpa using h⟩ ae_unique := Eventually.of_forall fun x hx g hg => by rcases Int.units_eq_one_or g with rfl | rfl · simp · …`.
+-/
 theorem isAEOrbitSection_sign_Ici : IsAEOrbitSection ℤˣ (Ici (0 : ℝ)) volume where
   nullMeasurableSet := measurableSet_Ici.nullMeasurableSet
   ae_covers := Eventually.of_forall fun x => by
@@ -31,6 +34,9 @@ theorem isAEOrbitSection_sign_Ici : IsAEOrbitSection ℤˣ (Ici (0 : ℝ)) volum
       have : x = 0 := le_antisymm h1 hx
       simp [this]
 
+/- English proof (translation)
+The claim follows from `measurableSet_Ico.nullMeasurableSet ae_covers := Eventually.of_forall fun x => ⟨⟨(-⌊x⌋) • (1 : ℝ), AddSubgroup.zsmul_mem_zmultiples _ _⟩, by have h1 := Int.floor_le x have h2 := Int.lt_floor_add_one x simp only [AddSubgroup.mk_vadd, vadd_eq_add, mem_Ico, zsmul_eq_mul, Int.cast_ne …`.
+-/
 theorem isAEAddOrbitSection_zmultiples_Ico :
     IsAEAddOrbitSection (AddSubgroup.zmultiples (1 : ℝ)) (Ico (0 : ℝ) 1) volume where
   nullMeasurableSet := measurableSet_Ico.nullMeasurableSet
@@ -56,6 +62,23 @@ variable {G X : Type*} [Group G] [MulAction G X]
 
 @[to_additive exists_measurableSet_addOrbitSection_of_discreteOrbits
 ]
+/- English proof (translation)
+Take `⟨b, hbc, -, hb⟩` from `TopologicalSpace.exists_countable_basis X`. Take `⟨B, hB⟩` from `(hbc.insert ∅).exists_eq_range (insert_nonempty _ _)`. Establish `hBo : ∀ n, IsOpen (B n)` using `fun n => by`. Establish `: B n ∈ insert ∅ b` using `hB ▸ mem_range_self n`. Break down `this with h | h` into its components or cases.
+
+Rewrite using `[h]`. Conclude with `isOpen_empty`. Conclude with `hb.isOpen h`. Set `S : ℕ → Set X` to `fun n => B n ∩ ⋂ g : G, (((g • ·) ⁻¹' B n)ᶜ ∪ {x | g • x = x})`. Establish `hSm : ∀ n, MeasurableSet (S n)` using `fun n => (hBo n).measurableSet.inter <| MeasurableSet.iInter fun g => ((measurable_const_smul g) (hBo n).measurableSet).compl.union (hfix g)`.
+
+Establish `hSmem : ∀ n x, x ∈ S n ↔ x ∈ B n ∧ ∀ g : G, g • x ∈ B n → g • x = x` using `fun n x => by`. Simplify using `only [S, mem_inter_iff, mem_iInter, mem_union, mem_compl_iff, mem_preimage, mem_setOf_eq, imp_iff_not_or]`. Establish `hS : ∀ x, ∃ n, x ∈ S n` using `fun x => by`. Take `⟨U, hU, h⟩` from `hdisc x`. Take `⟨t, ht, hxt, htU⟩` from `hb.mem_nhds_iff.1 hU`.
+
+Establish `: t ∈ range B` using `hB ▸ mem_insert_of_mem _ ht`. Take `⟨n, rfl⟩` from `this`. Conclude with `⟨n, (hSmem n x).2 ⟨hxt, fun g hg => h g (htU hg)⟩⟩`. Set `T : ℕ → Set X` to `fun n => ⋃ g : G, (g • ·) ⁻¹' S n`. Establish `hTm : ∀ n, MeasurableSet (T n)` using `fun n => MeasurableSet.iUnion fun g => (measurable_const_smul g) (hSm n)`.
+
+Establish `hTmem : ∀ n x, x ∈ T n ↔ ∃ g : G, g • x ∈ S n` using `fun n x => by simp [T]`. Use `⟨⋃ n, S n \ ⋃ m, ⋃ (_ : m < n), T m, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MeasurableSet.iUnion fun n => (hSm n).diff <| MeasurableSet.iUnion fun m => MeasurableSet.iUnion fun _ => hTm m`. Introduce `x`. Establish `hx : ∃ n, x ∈ T n`.
+
+Take `⟨n, hn⟩` from `hS x`. Conclude with `⟨n, (hTmem n x).2 ⟨1, by simpa using hn⟩⟩`. Take `⟨g, hg⟩` from `(hTmem _ x).1 (Nat.find_spec hx)`. Use `⟨g, mem_iUnion.2 ⟨Nat.find hx, hg, fun h => ?_⟩⟩` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `mem_iUnion₂.1 h`.
+
+Take `⟨k, hk⟩` from `(hTmem _ _).1 h`. Conclude with `Nat.find_min hx hm ((hTmem _ _).2 ⟨k * g, by rwa [mul_smul]⟩)`. Introduce `x hx g hg`. Take `⟨n, hn, hn'⟩` from `mem_iUnion.1 hx`. Take `⟨m, hm, hm'⟩` from `mem_iUnion.1 hg`.
+
+Break down `lt_trichotomy m n with h | rfl | h` into its components or cases. Conclude with `(hn' (mem_iUnion₂.2 ⟨m, h, (hTmem _ _).2 ⟨g, hm⟩⟩)).elim`. Conclude with `((hSmem _ _).1 hn).2 g ((hSmem _ _).1 hm).1`. Conclude with `(hm' (mem_iUnion₂.2 ⟨n, h, (hTmem _ _).2 ⟨g⁻¹, by rwa [inv_smul_smul]⟩⟩)).elim`.
+-/
 theorem exists_measurableSet_orbitSection_of_discreteOrbits [Countable G] [TopologicalSpace X]
     [SecondCountableTopology X] [MeasurableSpace X] [OpensMeasurableSpace X]
     [MeasurableConstSMul G X] (hfix : ∀ g : G, MeasurableSet {x : X | g • x = x})
@@ -115,6 +138,19 @@ variable {G X : Type*} [Group G] [MulAction G X] [MeasurableSpace X] {μ : Measu
 
 @[to_additive measure_le_of_ae_unique_of_ae_covers_add
 ]
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_injective_nat G`. Establish `hq : ∀ g : G, Measure.QuasiMeasurePreserving (g • · : X → X) μ μ` using `fun g => (measurePreserving_smul g μ).quasiMeasurePreserving`. Set `P : G → Set X` to `fun g => (S ∩ (g • ·) ⁻¹' B) \ ⋃ h, ⋃ (_ : e h < e g), (h • ·) ⁻¹' B`. Establish `hPm : ∀ g, NullMeasurableSet (P g) μ` using `fun g => (hS.inter (hB.preimage (hq g))).diff <| NullMeasurableSet.iUnion fun h => NullMeasurableSet.iUnion fun _ => hB.preimage (hq h)`. Set `Q : G → Set X` to `fun g => (g⁻¹ • ·) ⁻¹' P g`.
+
+Establish `hQm : ∀ g, NullMeasurableSet (Q g) μ` using `fun g => (hPm g).preimage (hq _)`. Establish `h1 : S ≤ᵐ[μ] ⋃ g, P g` using `by filter_upwards [hc] with x hx hxS`. Establish `hex : ∃ n, ∃ g : G, e g = n ∧ g • x ∈ B`. Take `⟨g, hg⟩` from `hx hxS`. Conclude with `⟨_, g, rfl, hg⟩`.
+
+Take `⟨g, hg, hgB⟩` from `Nat.find_spec hex`. Use `mem_iUnion.2 ⟨g, ⟨hxS, hgB⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, h⟩` from `mem_iUnion₂.1 h`. Conclude with `Nat.find_min hex (hg ▸ hk) ⟨k, rfl, h⟩`. Establish `h2 : Pairwise (Function.onFun (AEDisjoint μ) Q)`.
+
+Introduce `g h hgh`. Use `(hq g⁻¹).ae hu` as an intermediate fact. Use `measure_mono_null (fun y hy => ?_) this` and prove the remaining obligations. Introduce `hy'`. Take `⟨⟨⟨hg1, hg2⟩, hg3⟩, ⟨hh1, hh2⟩, hh3⟩` from `hy`.
+
+Establish `key : h⁻¹ • y = g⁻¹ • y`. Use `hy' hg1 (h⁻¹ * g) (by simpa [mul_smul] using hh1)` as an intermediate fact. Simplify `this` using `[mul_smul]`. Break down `lt_trichotomy (e g) (e h) with hl | hl | hl` into its components or cases. Conclude with `hh3 (mem_iUnion₂.2 ⟨g, hl, by rw [mem_preimage]; beta_reduce; rw [key]; exact hg2⟩)`.
+
+Conclude with `hgh (he hl)`. Conclude with `hg3 (mem_iUnion₂.2 ⟨h, hl, by rw [mem_preimage]; beta_reduce; rw [← key]; exact hh2⟩)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem measure_le_of_ae_unique_of_ae_covers [Countable G] [MeasurableConstSMul G X]
     [SMulInvariantMeasure G X μ] {S B : Set X} (hS : NullMeasurableSet S μ)
     (hB : NullMeasurableSet B μ) (hu : ∀ᵐ x ∂μ, x ∈ S → ∀ g : G, g • x ∈ S → g • x = x)
@@ -171,17 +207,26 @@ noncomputable def quotMeasure (G : Type*) {X : Type*} [Group G] [MulAction G X] 
     (μ.restrict D).map (Quotient.mk (MulAction.orbitRel G X))
 
 @[to_additive map_restrict_le_addQuotMeasure]
+/- English proof (translation)
+The claim follows from `le_iSup_of_le D (le_iSup_of_le hD (le_iSup_of_le hu le_rfl)) @[to_additive isAEAddOrbitSection_of_forall ]`.
+-/
 theorem map_restrict_le_quotMeasure {D : Set X} (hD : NullMeasurableSet D μ)
     (hu : ∀ᵐ x ∂μ, x ∈ D → ∀ g : G, g • x ∈ D → g • x = x) :
     (μ.restrict D).map (Quotient.mk (MulAction.orbitRel G X)) ≤ quotMeasure G μ :=
   le_iSup_of_le D (le_iSup_of_le hD (le_iSup_of_le hu le_rfl))
 
 @[to_additive isAEAddOrbitSection_of_forall  ]
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hD.nullMeasurableSet, Eventually.of_forall hc, Eventually.of_forall hu⟩ @[to_additive IsAEAddOrbitSection.of_sameOrbits ]`.
+-/
 theorem isAEOrbitSection_of_forall {D : Set X} (hD : MeasurableSet D) (hc : ∀ x, ∃ g : G, g • x ∈ D)
     (hu : ∀ x ∈ D, ∀ g : G, g • x ∈ D → g • x = x) (μ : Measure X) : IsAEOrbitSection G D μ :=
   ⟨hD.nullMeasurableSet, Eventually.of_forall hc, Eventually.of_forall hu⟩
 
 @[to_additive IsAEAddOrbitSection.of_sameOrbits  ]
+/- English proof (translation)
+The claim follows from `hD.nullMeasurableSet ae_covers := by filter_upwards [hD.ae_covers] with x ⟨h, hh⟩ obtain ⟨g, hg⟩ := h₁ h x exact ⟨g, hg ▸ hh⟩ ae_unique := by filter_upwards [hD.ae_unique] with x hx hxD g hg obtain ⟨h, hh⟩ := h₂ g x rw [← hh] at hg ⊢ exact hx hxD h hg @[to_additive isAEAddOrbitSe …`.
+-/
 theorem IsAEOrbitSection.of_sameOrbits {H : Type*} [SMul H X] {D : Set X}
     (hD : IsAEOrbitSection H D μ) (h₁ : ∀ (h : H) (x : X), ∃ g : G, g • x = h • x)
     (h₂ : ∀ (g : G) (x : X), ∃ h : H, h • x = g • x) : IsAEOrbitSection G D μ where
@@ -198,6 +243,9 @@ theorem IsAEOrbitSection.of_sameOrbits {H : Type*} [SMul H X] {D : Set X}
 
 @[to_additive isAEAddOrbitSection_of_isAddFundamentalDomain
 ]
+/- English proof (translation)
+The claim follows from `hD.nullMeasurableSet ae_covers := hD.ae_covers ae_unique := by have : ∀ᵐ x ∂μ, ∀ g : G, x ∈ D → g • x ∈ D → g • x = x := by refine ae_all_iff.2 fun g => ?_ by_cases hg : g = 1 · exact Eventually.of_forall fun x _ _ => by rw [hg, one_smul] · have := hD.aedisjoint (inv_ne_one.2 hg) …`.
+-/
 theorem isAEOrbitSection_of_isFundamentalDomain [Countable G] {D : Set X}
     (hD : IsFundamentalDomain G D μ) : IsAEOrbitSection G D μ where
   nullMeasurableSet := hD.nullMeasurableSet
@@ -217,6 +265,11 @@ theorem isAEOrbitSection_of_isFundamentalDomain [Countable G] {D : Set X}
 
 @[to_additive isAEAddOrbitSection_of_isAddFundamentalDomain_of_surjective
 ]
+/- English proof (translation)
+Establish `: Countable Q` using `hφ.countable`. Use `(isAEOrbitSection_of_isFundamentalDomain hD).of_sameOrbits (fun q x => ?_) fun g x => ⟨φ g, hact g x⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hφ q`. Conclude with `⟨g, (hact g x).symm⟩`. Use the proof step `@[to_additive isAddFundamentalDomain_of_addOrbitSection`.
+
+Use the proof step `]`.
+-/
 theorem isAEOrbitSection_of_isFundamentalDomain_of_surjective [Countable G] {Q : Type*} [Group Q]
     [MulAction Q X] (φ : G →* Q) (hφ : Function.Surjective φ) (hact : ∀ g (x : X), φ g • x = g • x)
     {D : Set X} (hD : IsFundamentalDomain Q D μ) : IsAEOrbitSection G D μ := by
@@ -228,6 +281,9 @@ theorem isAEOrbitSection_of_isFundamentalDomain_of_surjective [Countable G] {Q :
 
 @[to_additive isAddFundamentalDomain_of_addOrbitSection
 ]
+/- English proof (translation)
+The claim follows from `hD ae_covers := hc aedisjoint g h hgh := by refine measure_mono_null (fun y hy => ?_) (hfree (g * h⁻¹) fun e => hgh (mul_inv_eq_one.1 e)) obtain ⟨hg, hh⟩ := hy rw [mem_smul_set_iff_inv_smul_mem] at hg hh have := hu _ hg (h⁻¹ * g) (by simpa [mul_smul] using hh) rw [mul_smul, smul_ …`.
+-/
 theorem isFundamentalDomain_of_orbitSection {D : Set X} (hD : NullMeasurableSet D μ)
     (hc : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ D) (hu : ∀ x ∈ D, ∀ g : G, g • x ∈ D → g • x = x)
     (hfree : ∀ g : G, g ≠ 1 → μ {x | g • x = x} = 0) : IsFundamentalDomain G D μ where
@@ -245,6 +301,11 @@ variable [Countable G] [MeasurableConstSMul G X] [SMulInvariantMeasure G X μ]
 
 @[to_additive IsAEAddOrbitSection.isAddFundamentalDomain
 ]
+/- English proof (translation)
+Use `IsFundamentalDomain.mk'' hD.nullMeasurableSet hD.ae_covers (fun g hg => ?_) fun g => (measurePreserving_smul g μ).quasiMeasurePreserving` and prove the remaining obligations. Establish `h1 : ∀ᵐ x ∂μ, ¬ g⁻¹ • x = x`. Rewrite using `[ae_iff]`. Simplify using `using hfree g⁻¹ (inv_ne_one.2 hg)`. Use `measure_mono_null (fun y hy => ?_) (h1.and hD.ae_unique)` and prove the remaining obligations.
+
+Introduce and unpack `⟨h2, h3⟩`. Conclude with `h2 (h3 hy.2 g⁻¹ (mem_smul_set_iff_inv_smul_mem.1 hy.1))`. Use the proof step `@[to_additive measure_fixed_eq_zero_of_isAddFundamentalDomain`. Use the proof step `]`.
+-/
 theorem IsAEOrbitSection.isFundamentalDomain {D : Set X} (hD : IsAEOrbitSection G D μ)
     (hfree : ∀ g : G, g ≠ 1 → μ {x | g • x = x} = 0) : IsFundamentalDomain G D μ := by
   refine IsFundamentalDomain.mk'' hD.nullMeasurableSet hD.ae_covers (fun g hg => ?_)
@@ -257,6 +318,13 @@ theorem IsAEOrbitSection.isFundamentalDomain {D : Set X} (hD : IsAEOrbitSection 
 
 @[to_additive measure_fixed_eq_zero_of_isAddFundamentalDomain
 ]
+/- English proof (translation)
+Establish `h1 : ∀ᵐ x ∂μ, ∀ k : G, k • x ∈ D → ¬ g • x = x`. Use `ae_all_iff.2 fun k => ?_` and prove the remaining obligations. Establish `hne : k⁻¹ ≠ (k * g)⁻¹` using `fun e => hg (by simpa using inv_injective e)`. Use `measure_mono_null (fun x hx => ?_) (hD.aedisjoint hne)` and prove the remaining obligations. Simplify using `only [mem_compl_iff, mem_setOf_eq, Classical.not_imp, not_not] at hx`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `hx.1`. Rewrite using `[mem_smul_set_iff_inv_smul_mem, inv_inv, mul_smul, hx.2]`. Conclude with `hx.1`.
+
+Use `measure_mono_null (fun x hx => ?_) (h1.and hD.ae_covers)` and prove the remaining obligations. Introduce and unpack `⟨h2, k, hk⟩`. Conclude with `h2 k hk hx`. Use the proof step `@[to_additive map_restrict_le_map_restrict_of_ae_unique_of_ae_covers_add]`.
+-/
 theorem measure_fixed_eq_zero_of_isFundamentalDomain {D : Set X} (hD : IsFundamentalDomain G D μ)
     {g : G} (hg : g ≠ 1) : μ {x | g • x = x} = 0 := by
   have h1 : ∀ᵐ x ∂μ, ∀ k : G, k • x ∈ D → ¬ g • x = x := by
@@ -272,6 +340,13 @@ theorem measure_fixed_eq_zero_of_isFundamentalDomain {D : Set X} (hD : IsFundame
   exact h2 k hk hx
 
 @[to_additive map_restrict_le_map_restrict_of_ae_unique_of_ae_covers_add]
+/- English proof (translation)
+Use `Measure.le_iff.2 fun U hU => ?_` and prove the remaining obligations. Rewrite using `[measure_map_restrict_apply μ S hU, measure_map_restrict_apply μ B hU]`. Establish `hU' : NullMeasurableSet (Quotient.mk (MulAction.orbitRel G X) ⁻¹' U) μ` using `(measurableSet_quotient.1 hU).nullMeasurableSet`. Use `measure_le_of_ae_unique_of_ae_covers (G := G) (hU'.inter hS) (hU'.inter hB) ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hu] with x hx hxS g hg using hx hxS.2 g hg.2`.
+
+Use `filter_upwards [hc] with x ⟨g, hg⟩ hxS`. Use `⟨g, ?_, hg⟩` and prove the remaining obligations. Establish `: Quotient.mk (MulAction.orbitRel G X) (g • x) = Quotient.mk (MulAction.orbitRel G X) x` using `Quotient.sound ⟨g, rfl⟩`. Rewrite using `[mem_preimage, this]`. Conclude with `hxS.1`.
+
+Use the proof step `@[to_additive addQuotMeasure_le_map_restrict`. Use the proof step `]`.
+-/
 theorem map_restrict_le_map_restrict_of_ae_unique_of_ae_covers {S B : Set X}
     (hS : NullMeasurableSet S μ) (hB : NullMeasurableSet B μ)
     (hu : ∀ᵐ x ∂μ, x ∈ S → ∀ g : G, g • x ∈ S → g • x = x) (hc : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ B) :
@@ -292,6 +367,9 @@ theorem map_restrict_le_map_restrict_of_ae_unique_of_ae_covers {S B : Set X}
 
 @[to_additive addQuotMeasure_le_map_restrict
 ]
+/- English proof (translation)
+The claim follows from `iSup_le fun _ => iSup_le fun hS => iSup_le fun hu => map_restrict_le_map_restrict_of_ae_unique_of_ae_covers hS hB hu hc @[to_additive addQuotMeasure_univ_le ]`.
+-/
 theorem quotMeasure_le_map_restrict {B : Set X} (hB : NullMeasurableSet B μ)
     (hc : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ B) :
     quotMeasure G μ ≤ (μ.restrict B).map (Quotient.mk (MulAction.orbitRel G X)) :=
@@ -300,6 +378,9 @@ theorem quotMeasure_le_map_restrict {B : Set X} (hB : NullMeasurableSet B μ)
 
 @[to_additive addQuotMeasure_univ_le
 ]
+/- English proof (translation)
+Use `(quotMeasure_le_map_restrict hB hc univ).trans_eq ?_` and prove the remaining obligations. Rewrite using `[measure_map_restrict_apply μ B MeasurableSet.univ, preimage_univ, univ_inter]`.
+-/
 theorem quotMeasure_univ_le {B : Set X} (hB : NullMeasurableSet B μ)
     (hc : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ B) : quotMeasure G μ univ ≤ μ B := by
   refine (quotMeasure_le_map_restrict hB hc univ).trans_eq ?_
@@ -311,6 +392,9 @@ variable {D D' : Set X}
 
 @[to_additive IsAEAddOrbitSection.addQuotMeasure_eq
 ]
+/- English proof (translation)
+The claim follows from `le_antisymm (quotMeasure_le_map_restrict hD.nullMeasurableSet hD.ae_covers) (map_restrict_le_quotMeasure hD.nullMeasurableSet hD.ae_unique) @[to_additive IsAEAddOrbitSection.map_restrict_eq ]`.
+-/
 theorem quotMeasure_eq (hD : IsAEOrbitSection G D μ) :
     quotMeasure G μ = (μ.restrict D).map (Quotient.mk (MulAction.orbitRel G X)) :=
   le_antisymm (quotMeasure_le_map_restrict hD.nullMeasurableSet hD.ae_covers)
@@ -318,31 +402,49 @@ theorem quotMeasure_eq (hD : IsAEOrbitSection G D μ) :
 
 @[to_additive IsAEAddOrbitSection.map_restrict_eq
 ]
+/- English proof (translation)
+The claim follows from `hD.quotMeasure_eq.symm.trans hD'.quotMeasure_eq @[to_additive IsAEAddOrbitSection.measurePreserving_mk]`.
+-/
 theorem map_restrict_eq (hD : IsAEOrbitSection G D μ) (hD' : IsAEOrbitSection G D' μ) :
     (μ.restrict D).map (Quotient.mk (MulAction.orbitRel G X)) =
       (μ.restrict D').map (Quotient.mk (MulAction.orbitRel G X)) :=
   hD.quotMeasure_eq.symm.trans hD'.quotMeasure_eq
 
 @[to_additive IsAEAddOrbitSection.measurePreserving_mk]
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨measurable_quotient_mk' (s := MulAction.orbitRel G X), hD.quotMeasure_eq.symm⟩ @[to_additive IsAEAddOrbitSection.addQuotMeasure_apply]`.
+-/
 theorem measurePreserving_mk (hD : IsAEOrbitSection G D μ) :
     MeasurePreserving (Quotient.mk (MulAction.orbitRel G X)) (μ.restrict D) (quotMeasure G μ) :=
   ⟨measurable_quotient_mk' (s := MulAction.orbitRel G X), hD.quotMeasure_eq.symm⟩
 
 @[to_additive IsAEAddOrbitSection.addQuotMeasure_apply]
+/- English proof (translation)
+Rewrite using `[hD.quotMeasure_eq, measure_map_restrict_apply μ D hU]`. Use the proof step `@[to_additive IsAEAddOrbitSection.addQuotMeasure_univ]`.
+-/
 theorem quotMeasure_apply (hD : IsAEOrbitSection G D μ)
     {U : Set (Quotient (MulAction.orbitRel G X))} (hU : MeasurableSet U) :
     quotMeasure G μ U = μ (Quotient.mk (MulAction.orbitRel G X) ⁻¹' U ∩ D) := by
   rw [hD.quotMeasure_eq, measure_map_restrict_apply μ D hU]
 
 @[to_additive IsAEAddOrbitSection.addQuotMeasure_univ]
+/- English proof (translation)
+Rewrite using `[hD.quotMeasure_apply MeasurableSet.univ, preimage_univ, univ_inter]`. Use the proof step `@[to_additive IsAEAddOrbitSection.measure_eq]`.
+-/
 theorem quotMeasure_univ (hD : IsAEOrbitSection G D μ) : quotMeasure G μ univ = μ D := by
   rw [hD.quotMeasure_apply MeasurableSet.univ, preimage_univ, univ_inter]
 
 @[to_additive IsAEAddOrbitSection.measure_eq]
+/- English proof (translation)
+The claim follows from `hD.quotMeasure_univ.symm.trans hD'.quotMeasure_univ @[to_additive IsAEAddOrbitSection.lintegral_addQuotMeasure]`.
+-/
 theorem measure_eq (hD : IsAEOrbitSection G D μ) (hD' : IsAEOrbitSection G D' μ) : μ D = μ D' :=
   hD.quotMeasure_univ.symm.trans hD'.quotMeasure_univ
 
 @[to_additive IsAEAddOrbitSection.lintegral_addQuotMeasure]
+/- English proof (translation)
+Rewrite `hf`, the goal using `[hD.quotMeasure_eq]`. Conclude with `lintegral_map' hf hD.measurePreserving_mk.measurable.aemeasurable`. Use the proof step `@[to_additive IsAEAddOrbitSection.integral_addQuotMeasure]`.
+-/
 theorem lintegral_quotMeasure (hD : IsAEOrbitSection G D μ)
     {f : Quotient (MulAction.orbitRel G X) → ℝ≥0∞} (hf : AEMeasurable f (quotMeasure G μ)) :
     ∫⁻ q, f q ∂quotMeasure G μ = ∫⁻ x in D, f (Quotient.mk _ x) ∂μ := by
@@ -350,6 +452,9 @@ theorem lintegral_quotMeasure (hD : IsAEOrbitSection G D μ)
   exact lintegral_map' hf hD.measurePreserving_mk.measurable.aemeasurable
 
 @[to_additive IsAEAddOrbitSection.integral_addQuotMeasure]
+/- English proof (translation)
+Rewrite `hf`, the goal using `[hD.quotMeasure_eq]`. Conclude with `integral_map hD.measurePreserving_mk.measurable.aemeasurable hf`. Use the proof step `@[to_additive IsAEAddOrbitSection.integrable_addQuotMeasure_iff]`.
+-/
 theorem integral_quotMeasure (hD : IsAEOrbitSection G D μ) {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {f : Quotient (MulAction.orbitRel G X) → E}
     (hf : AEStronglyMeasurable f (quotMeasure G μ)) :
@@ -358,6 +463,9 @@ theorem integral_quotMeasure (hD : IsAEOrbitSection G D μ) {E : Type*} [NormedA
   exact integral_map hD.measurePreserving_mk.measurable.aemeasurable hf
 
 @[to_additive IsAEAddOrbitSection.integrable_addQuotMeasure_iff]
+/- English proof (translation)
+The claim follows from `(hD.measurePreserving_mk.integrable_comp hf).symm @[to_additive IsAEAddOrbitSection.addQuotMeasure_apply_eq_zero_iff ]`.
+-/
 theorem integrable_quotMeasure_iff (hD : IsAEOrbitSection G D μ) {E : Type*} [NormedAddCommGroup E]
     {f : Quotient (MulAction.orbitRel G X) → E} (hf : AEStronglyMeasurable f (quotMeasure G μ)) :
     Integrable f (quotMeasure G μ) ↔ IntegrableOn (fun x => f (Quotient.mk _ x)) D μ :=
@@ -365,6 +473,11 @@ theorem integrable_quotMeasure_iff (hD : IsAEOrbitSection G D μ) {E : Type*} [N
 
 @[to_additive IsAEAddOrbitSection.addQuotMeasure_apply_eq_zero_iff
 ]
+/- English proof (translation)
+Rewrite using `[hD.quotMeasure_apply hU]`. Use `⟨fun h => ?_, fun h => measure_mono_null inter_subset_left h⟩` and prove the remaining obligations. Establish `h1 : ∀ᵐ x ∂μ, ∀ g : G, g • x ∉ Quotient.mk (MulAction.orbitRel G X) ⁻¹' U ∩ D` using `ae_all_iff.2 fun g => (measurePreserving_smul g μ).quasiMeasurePreserving.ae (p := fun x => x ∉ Quotient.mk (MulAction.orbitRel G X) ⁻¹' U ∩ D) (measure_eq_zero_iff_ae_notMem.1 h)`. Use `measure_mono_null (fun x hx => ?_) (h1.and hD.ae_covers)` and prove the remaining obligations. Introduce and unpack `⟨h2, g, hg⟩`.
+
+Use `h2 g ⟨?_, hg⟩` and prove the remaining obligations. Establish `: Quotient.mk (MulAction.orbitRel G X) (g • x) = Quotient.mk (MulAction.orbitRel G X) x` using `Quotient.sound ⟨g, rfl⟩`. Rewrite using `[mem_preimage, this]`. Conclude with `hx`. Use the proof step `@[to_additive IsAEAddOrbitSection.addQuotMeasure_eq_zero_iff]`.
+-/
 theorem quotMeasure_apply_eq_zero_iff (hD : IsAEOrbitSection G D μ)
     {U : Set (Quotient (MulAction.orbitRel G X))} (hU : MeasurableSet U) :
     quotMeasure G μ U = 0 ↔ μ (Quotient.mk (MulAction.orbitRel G X) ⁻¹' U) = 0 := by
@@ -383,12 +496,22 @@ theorem quotMeasure_apply_eq_zero_iff (hD : IsAEOrbitSection G D μ)
   exact hx
 
 @[to_additive IsAEAddOrbitSection.addQuotMeasure_eq_zero_iff]
+/- English proof (translation)
+Rewrite using `[← Measure.measure_univ_eq_zero, hD.quotMeasure_apply_eq_zero_iff MeasurableSet.univ, preimage_univ, Measure.measure_univ_eq_zero]`. Use the proof step `@[to_additive IsAEAddOrbitSection.addQuotMeasure_image_le`. Use the proof step `]`.
+-/
 theorem quotMeasure_eq_zero_iff (hD : IsAEOrbitSection G D μ) : quotMeasure G μ = 0 ↔ μ = 0 := by
   rw [← Measure.measure_univ_eq_zero, hD.quotMeasure_apply_eq_zero_iff MeasurableSet.univ,
     preimage_univ, Measure.measure_univ_eq_zero]
 
 @[to_additive IsAEAddOrbitSection.addQuotMeasure_image_le
 ]
+/- English proof (translation)
+Establish `hm : MeasurableSet (Quotient.mk (MulAction.orbitRel G X) '' A)`. Establish `: Quotient.mk (MulAction.orbitRel G X) ⁻¹' Quotient.mk (MulAction.orbitRel G X) '' A = _` using `MulAction.quotient_preimage_image_eq_union_mul A (G := G)`. Rewrite using `[measurableSet_quotient, Quotient.mk''_eq_mk, this]`. Conclude with `MeasurableSet.iUnion fun g => hA.const_smul g`. Use `⟨hm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hD.quotMeasure_apply hm]`. Use `measure_le_of_ae_unique_of_ae_covers (G := G) ((measurableSet_quotient.1 hm).nullMeasurableSet.inter hD.nullMeasurableSet) hA.nullMeasurableSet ?_ (Eventually.of_forall ?_)` and prove the remaining obligations. Use `filter_upwards [hD.ae_unique] with x hx hxS g hg using hx hxS.2 g hg.2`. Introduce and unpack `x ⟨⟨a, ha, hax⟩, -⟩`. Take `⟨g, hg⟩` from `Quotient.exact hax`.
+
+Conclude with `⟨g, (show g • x = a from hg) ▸ ha⟩`. Use the proof step `@[to_additive IsAEAddOrbitSection.sigmaFinite_addQuotMeasure]`.
+-/
 theorem quotMeasure_image_le (hD : IsAEOrbitSection G D μ) {A : Set X} (hA : MeasurableSet A) :
     MeasurableSet (Quotient.mk (MulAction.orbitRel G X) '' A) ∧
       quotMeasure G μ (Quotient.mk (MulAction.orbitRel G X) '' A) ≤ μ A := by
@@ -408,6 +531,9 @@ theorem quotMeasure_image_le (hD : IsAEOrbitSection G D μ) {A : Set X} (hA : Me
     exact ⟨g, (show g • x = a from hg) ▸ ha⟩
 
 @[to_additive IsAEAddOrbitSection.sigmaFinite_addQuotMeasure]
+/- English proof (translation)
+Use `⟨⟨⟨fun n => Quotient.mk (MulAction.orbitRel G X) '' spanningSets μ n, fun _ => trivial, fun n => ?_, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `(hD.quotMeasure_image_le (measurableSet_spanningSets μ n)).2.trans_lt (measure_spanningSets_lt_top μ n)`. Rewrite using `[← image_iUnion, iUnion_spanningSets]`. Conclude with `image_univ_of_surjective Quotient.mk_surjective`.
+-/
 theorem sigmaFinite_quotMeasure (hD : IsAEOrbitSection G D μ) [SigmaFinite μ] :
     SigmaFinite (quotMeasure G μ) := by
   refine ⟨⟨⟨fun n => Quotient.mk (MulAction.orbitRel G X) '' spanningSets μ n, fun _ => trivial,
@@ -421,6 +547,9 @@ end IsAEOrbitSection
 
 @[to_additive addQuotMeasure_eq_of_isAddFundamentalDomain
 ]
+/- English proof (translation)
+The claim follows from `(isAEOrbitSection_of_isFundamentalDomain hD).quotMeasure_eq @[to_additive addQuotMeasure_addQuotientMeasureEqMeasurePreimage]`.
+-/
 theorem quotMeasure_eq_of_isFundamentalDomain {D : Set X} (hD : IsFundamentalDomain G D μ) :
     quotMeasure G μ = (μ.restrict D).map (Quotient.mk (MulAction.orbitRel G X)) :=
   (isAEOrbitSection_of_isFundamentalDomain hD).quotMeasure_eq
@@ -432,6 +561,9 @@ instance quotMeasure_quotientMeasureEqMeasurePreimage :
 
 @[to_additive addQuotMeasure_univ_eq_addCovolume
 ]
+/- English proof (translation)
+Take `⟨D, hD⟩` from `h.ExistsIsFundamentalDomain`. Rewrite using `[(isAEOrbitSection_of_isFundamentalDomain hD).quotMeasure_univ, hD.covolume_eq_volume]`. Use the proof step `@[to_additive lintegral_eq_lintegral_addQuotMeasure_tsum`. Use the proof step `]`.
+-/
 theorem quotMeasure_univ_eq_covolume [h : HasFundamentalDomain G X μ] :
     quotMeasure G μ univ = covolume G X μ := by
   obtain ⟨D, hD⟩ := h.ExistsIsFundamentalDomain
@@ -439,6 +571,11 @@ theorem quotMeasure_univ_eq_covolume [h : HasFundamentalDomain G X μ] :
 
 @[to_additive lintegral_eq_lintegral_addQuotMeasure_tsum
 ]
+/- English proof (translation)
+Take `⟨D, hD⟩` from `h.ExistsIsFundamentalDomain`. Establish `hm : ∀ g : G, Measurable fun x => f (g • x)` using `fun g => hf.comp (measurable_const_smul g)`. Establish `hFm : Measurable F`. Use `measurable_from_quotient.2 ?_` and prove the remaining obligations. Establish `: F ∘ Quotient.mk'' = fun x => ∑' g : G, f (g • x)` using `funext hF`.
+
+Rewrite using `[this]`. Conclude with `Measurable.tsum hm`. Rewrite using `[(isAEOrbitSection_of_isFundamentalDomain hD).lintegral_quotMeasure hFm.aemeasurable, hD.lintegral_eq_tsum'' f, ← lintegral_tsum fun g => (hm g).aemeasurable]`. Simplify using `only [hF]`.
+-/
 theorem lintegral_eq_lintegral_quotMeasure_tsum [h : HasFundamentalDomain G X μ] {f : X → ℝ≥0∞}
     (hf : Measurable f) {F : Quotient (MulAction.orbitRel G X) → ℝ≥0∞}
     (hF : ∀ x, F (Quotient.mk _ x) = ∑' g : G, f (g • x)) :
@@ -464,6 +601,9 @@ variable (G X : Type*) [Group G] [Countable G] [MulAction G X] [TopologicalSpace
 
 @[to_additive exists_measurableSet_addOrbitSection
 ]
+/- English proof (translation)
+Use `exists_measurableSet_orbitSection_of_discreteOrbits (fun g => (isClosed_eq (continuous_const_smul g) continuous_id).measurableSet) fun x => ?_` and prove the remaining obligations. Take `⟨U, hU, h⟩` from `ProperlyDiscontinuousSMul.exists_nhds_image_smul_eq_self G x`. Conclude with `⟨U, hU, fun g hg => h g ⟨g • x, ⟨x, mem_of_mem_nhds hU, rfl⟩, hg⟩⟩`. Use the proof step `@[to_additive exists_isAddFundamentalDomain_of_free`. Use the proof step `]`.
+-/
 theorem exists_measurableSet_orbitSection [ProperlyDiscontinuousSMul G X] :
     ∃ D : Set X, MeasurableSet D ∧ (∀ x, ∃ g : G, g • x ∈ D) ∧
       ∀ x ∈ D, ∀ g : G, g • x ∈ D → g • x = x := by
@@ -474,6 +614,11 @@ theorem exists_measurableSet_orbitSection [ProperlyDiscontinuousSMul G X] :
 
 @[to_additive exists_isAddFundamentalDomain_of_free
 ]
+/- English proof (translation)
+Take `⟨D, hD, hc, hu⟩` from `exists_measurableSet_orbitSection G X`. Establish `h : ∀ x, ∃! g : G, g • x ∈ D` using `fun x => by`. Take `⟨g, hg⟩` from `hc x`. Use `⟨g, hg, fun k hk => ?_⟩` and prove the remaining obligations. Use `hu _ hg (k * g⁻¹) (by simpa [mul_smul] using hk)` as an intermediate fact.
+
+Conclude with `mul_inv_eq_one.1 (hfree _ _ this)`. Conclude with `⟨D, hD, h, fun μ => IsFundamentalDomain.mk' hD.nullMeasurableSet h⟩`.
+-/
 theorem exists_isFundamentalDomain_of_free [ProperlyDiscontinuousSMul G X]
     (hfree : ∀ (g : G) (x : X), g • x = x → g = 1) :
     ∃ D : Set X, MeasurableSet D ∧ (∀ x, ∃! g : G, g • x ∈ D) ∧
@@ -489,6 +634,9 @@ theorem exists_isFundamentalDomain_of_free [ProperlyDiscontinuousSMul G X]
 variable {X}
 
 @[to_additive exists_isAEAddOrbitSection]
+/- English proof (translation)
+Take `⟨D, hD, hc, hu⟩` from `exists_measurableSet_orbitSection G X`. Conclude with `⟨D, hD, isAEOrbitSection_of_forall hD hc hu μ⟩`. Use the proof step `@[to_additive exists_isAddFundamentalDomain_of_ae_free`. Use the proof step `]`.
+-/
 theorem exists_isAEOrbitSection [ProperlyDiscontinuousSMul G X] (μ : Measure X) :
     ∃ D : Set X, MeasurableSet D ∧ IsAEOrbitSection G D μ := by
   obtain ⟨D, hD, hc, hu⟩ := exists_measurableSet_orbitSection G X
@@ -496,6 +644,11 @@ theorem exists_isAEOrbitSection [ProperlyDiscontinuousSMul G X] (μ : Measure X)
 
 @[to_additive exists_isAddFundamentalDomain_of_ae_free
 ]
+/- English proof (translation)
+Take `⟨D, hD, hc, hu⟩` from `exists_measurableSet_orbitSection G X`. Use `⟨D, hD, hc, hu, isFundamentalDomain_of_orbitSection hD.nullMeasurableSet (Eventually.of_forall hc) hu fun g hg => measure_mono_null (fun x hx => ?_) hfree⟩` and prove the remaining obligations. Use `fun h : MulAction.stabilizer G x = ⊥ => hg ?_` and prove the remaining obligations. Establish `: g ∈ MulAction.stabilizer G x` using `hx`. Simplify `this` using `[h]`.
+
+Use the proof step `@[to_additive exists_isAddFundamentalDomain_of_surjective`. Use the proof step `]`.
+-/
 theorem exists_isFundamentalDomain_of_ae_free [ProperlyDiscontinuousSMul G X] (μ : Measure X)
     (hfree : μ {x | MulAction.stabilizer G x ≠ ⊥} = 0) :
     ∃ D : Set X, MeasurableSet D ∧ (∀ x, ∃ g : G, g • x ∈ D) ∧
@@ -509,6 +662,11 @@ theorem exists_isFundamentalDomain_of_ae_free [ProperlyDiscontinuousSMul G X] (�
 
 @[to_additive exists_isAddFundamentalDomain_of_surjective
 ]
+/- English proof (translation)
+Take `⟨D, hD, hc, hu⟩` from `exists_measurableSet_orbitSection G X`. Use `⟨D, hD, hc, hu, isFundamentalDomain_of_orbitSection hD.nullMeasurableSet (Eventually.of_forall fun x => ?_) (fun x hx q hq => ?_) fun q hq => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `hc x`. Conclude with `⟨φ g, by rwa [hact]⟩`. Take `⟨g, rfl⟩` from `hφ q`.
+
+Rewrite `hq`, the goal using `[hact]`. Conclude with `hu x hx g hq`. Take `⟨g, rfl⟩` from `hφ q`. Simplify `hfree g hq` using `only [hact]`.
+-/
 theorem exists_isFundamentalDomain_of_surjective [ProperlyDiscontinuousSMul G X] {Q : Type*}
     [Group Q] [MulAction Q X] (φ : G →* Q) (hφ : Function.Surjective φ)
     (hact : ∀ g (x : X), φ g • x = g • x) (μ : Measure X)
@@ -526,6 +684,11 @@ theorem exists_isFundamentalDomain_of_surjective [ProperlyDiscontinuousSMul G X]
   · obtain ⟨g, rfl⟩ := hφ q
     simpa only [hact] using hfree g hq
 
+/- English proof (translation)
+Use `exists_isFundamentalDomain_of_surjective G (MulAction.toPermHom G X).rangeRestrict (MonoidHom.rangeRestrict_surjective _) (fun _ _ => rfl) μ fun g hg => hfree g ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hg (Subtype.ext (Equiv.ext h))`. Use the proof step `@[to_additive exists_isAddFundamentalDomain_and_addQuotMeasure_eq`.
+
+Use the proof step `]`.
+-/
 theorem exists_isFundamentalDomain_range_toPermHom [ProperlyDiscontinuousSMul G X] (μ : Measure X)
     (hfree : ∀ g : G, (∃ x : X, g • x ≠ x) → μ {x | g • x = x} = 0) :
     ∃ D : Set X, MeasurableSet D ∧ (∀ x, ∃ g : G, g • x ∈ D) ∧
@@ -539,6 +702,9 @@ theorem exists_isFundamentalDomain_range_toPermHom [ProperlyDiscontinuousSMul G 
 
 @[to_additive exists_isAddFundamentalDomain_and_addQuotMeasure_eq
 ]
+/- English proof (translation)
+Take `⟨D, hD, -, -, h⟩` from `exists_isFundamentalDomain_of_ae_free G μ hfree`. Conclude with `⟨⟨D, hD, h⟩, fun D h => (quotMeasure_eq_of_isFundamentalDomain h).symm⟩`. Use the proof step `@[to_additive addQuotMeasure_eq_zero_iff`. Use the proof step `]`.
+-/
 theorem exists_isFundamentalDomain_and_quotMeasure_eq [ProperlyDiscontinuousSMul G X]
     (μ : Measure X) [SMulInvariantMeasure G X μ]
     (hfree : μ {x | MulAction.stabilizer G x ≠ ⊥} = 0) :
@@ -550,6 +716,9 @@ theorem exists_isFundamentalDomain_and_quotMeasure_eq [ProperlyDiscontinuousSMul
 
 @[to_additive addQuotMeasure_eq_zero_iff
 ]
+/- English proof (translation)
+Take `⟨D, -, hD⟩` from `exists_isAEOrbitSection G μ`. Conclude with `hD.quotMeasure_eq_zero_iff`.
+-/
 theorem quotMeasure_eq_zero_iff [ProperlyDiscontinuousSMul G X] (μ : Measure X)
     [SMulInvariantMeasure G X μ] : quotMeasure G μ = 0 ↔ μ = 0 := by
   obtain ⟨D, -, hD⟩ := exists_isAEOrbitSection G μ
@@ -564,11 +733,17 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 @[to_additive countable_of_discrete_addSubgroup
 ]
+/- English proof (translation)
+The claim follows from `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+-/
 theorem countable_of_discrete_subgroup : Countable Γ :=
   TopologicalSpace.separableSpace_iff_countable.1 inferInstance
 
 omit [IsTopologicalGroup G] [SecondCountableTopology G] in
 @[to_additive exists_nhds_zero_inter_addSubgroup]
+/- English proof (translation)
+Establish `h : ({1} : Set Γ) ∈ 𝓝 (1 : Γ)` using `(isOpen_discrete _).mem_nhds rfl`. Rewrite `h` using `[nhds_induced, mem_comap]`. Take `⟨V, hV, h⟩` from `h`. Conclude with `⟨V, hV, fun g hg hgV => congrArg Subtype.val (h (a := ⟨g, hg⟩) hgV)⟩`.
+-/
 theorem exists_nhds_one_inter_subgroup : ∃ V ∈ 𝓝 (1 : G), ∀ g ∈ Γ, g ∈ V → g = 1 := by
   have h : ({1} : Set Γ) ∈ 𝓝 (1 : Γ) := (isOpen_discrete _).mem_nhds rfl
   rw [nhds_induced, mem_comap] at h
@@ -579,6 +754,17 @@ variable [MeasurableSpace G] [BorelSpace G]
 
 @[to_additive exists_isAddFundamentalDomain_addSubgroup
 ]
+/- English proof (translation)
+Use `countable_of_discrete_subgroup Γ` as an intermediate fact. Establish `hfree : ∀ (g : Γ) (x : G), g • x = x → g = 1` using `fun g x h => Subtype.ext (mul_eq_right.1 h)`. Take `⟨V, hV, hV1⟩` from `exists_nhds_one_inter_subgroup Γ`. Take `⟨D, hD, hc, hu⟩` from `exists_measurableSet_orbitSection_of_discreteOrbits (G := Γ) (X := G) (fun g => by`. Distinguish the cases in `hg : g = 1`.
+
+Simplify using `[hg]`. Establish `: {x : G | g • x = x} = ∅` using `eq_empty_of_forall_notMem fun x hx => hg (hfree g x hx)`. Simplify using `[this])`. Use the proof step `(fun x => by`. Use `⟨(· * x⁻¹) ⁻¹' V, (continuous_mul_const _).continuousAt.preimage_mem_nhds (by simpa using hV), fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (g : G) ∈ V`. Establish `: (g : G) * x * x⁻¹ ∈ V` using `hg`. Simplify using `using this`. Establish `: g = 1` using `Subtype.ext (hV1 g g.2 h1)`. Rewrite using `[this, one_smul])`.
+
+Establish `h : ∀ x, ∃! g : Γ, g • x ∈ D` using `fun x => by`. Take `⟨g, hg⟩` from `hc x`. Use `⟨g, hg, fun k hk => ?_⟩` and prove the remaining obligations. Use `hu _ hg (k * g⁻¹) (by rwa [mul_smul, inv_smul_smul])` as an intermediate fact. Conclude with `mul_inv_eq_one.1 (hfree _ _ this)`.
+
+Conclude with `⟨D, hD, h, fun μ => IsFundamentalDomain.mk' hD.nullMeasurableSet h⟩`. Use the proof step `@[to_additive exists_isAddFundamentalDomain_addSubgroup_op`. Use the proof step `]`.
+-/
 theorem exists_isFundamentalDomain_subgroup :
     ∃ D : Set G, MeasurableSet D ∧ (∀ x, ∃! g : Γ, g • x ∈ D) ∧
       ∀ μ : Measure G, IsFundamentalDomain Γ D μ := by
@@ -609,6 +795,13 @@ theorem exists_isFundamentalDomain_subgroup :
 
 @[to_additive exists_isAddFundamentalDomain_addSubgroup_op
 ]
+/- English proof (translation)
+Take `⟨D, hD, h, -⟩` from `exists_isFundamentalDomain_subgroup Γ`. Establish `h' : ∀ x, ∃! g : Γ.op, g • x ∈ D⁻¹` using `fun x => by`. Take `⟨g, hg, hu⟩` from `h x⁻¹`. Use `⟨⟨MulOpposite.op (g : G)⁻¹, inv_mem g.2⟩, ?_, fun k hk => ?_⟩` and prove the remaining obligations. Establish `: (g : G) * x⁻¹ ∈ D` using `hg`.
+
+Express the relevant statement in the definitionally equal form `(x * (g : G)⁻¹)⁻¹ ∈ D`. Rewrite using `[mul_inv_rev, inv_inv]` and apply the resulting hypothesis. Establish `hk' : (x * MulOpposite.unop (k : Gᵐᵒᵖ))⁻¹ ∈ D` using `hk`. Rewrite `hk'` using `[mul_inv_rev]`. Use `hu ⟨(MulOpposite.unop (k : Gᵐᵒᵖ))⁻¹, inv_mem k.2⟩ hk'` as an intermediate fact.
+
+Substitute `this` using the available equality. Use `ext`. Simplify using the standard rewrite rules. Conclude with `⟨D⁻¹, hD.inv, h', fun μ => IsFundamentalDomain.mk' hD.inv.nullMeasurableSet h'⟩`. Use the proof step `@[to_additive hasAddFundamentalDomain_addSubgroup]`.
+-/
 theorem exists_isFundamentalDomain_subgroup_op :
     ∃ D : Set G, MeasurableSet D ∧ (∀ x, ∃! g : Γ.op, g • x ∈ D) ∧
       ∀ μ : Measure G, IsFundamentalDomain Γ.op D μ := by
@@ -628,17 +821,26 @@ theorem exists_isFundamentalDomain_subgroup_op :
   exact ⟨D⁻¹, hD.inv, h', fun μ => IsFundamentalDomain.mk' hD.inv.nullMeasurableSet h'⟩
 
 @[to_additive hasAddFundamentalDomain_addSubgroup]
+/- English proof (translation)
+Take `⟨D, -, -, h⟩` from `exists_isFundamentalDomain_subgroup Γ`. Conclude with `⟨D, h μ⟩`. Use the proof step `@[to_additive hasAddFundamentalDomain_addSubgroup_op]`.
+-/
 theorem hasFundamentalDomain_subgroup (μ : Measure G) : HasFundamentalDomain Γ G μ := by
   obtain ⟨D, -, -, h⟩ := exists_isFundamentalDomain_subgroup Γ
   exact ⟨D, h μ⟩
 
 @[to_additive hasAddFundamentalDomain_addSubgroup_op]
+/- English proof (translation)
+Take `⟨D, -, -, h⟩` from `exists_isFundamentalDomain_subgroup_op Γ`. Conclude with `⟨D, h μ⟩`. Use the proof step `@[to_additive exists_isAddFundamentalDomain_and_addQuotMeasure_eq_addSubgroup`. Use the proof step `]`.
+-/
 theorem hasFundamentalDomain_subgroup_op (μ : Measure G) : HasFundamentalDomain Γ.op G μ := by
   obtain ⟨D, -, -, h⟩ := exists_isFundamentalDomain_subgroup_op Γ
   exact ⟨D, h μ⟩
 
 @[to_additive exists_isAddFundamentalDomain_and_addQuotMeasure_eq_addSubgroup
 ]
+/- English proof (translation)
+Use `countable_of_discrete_subgroup Γ` as an intermediate fact. Take `⟨D, hD, -, h⟩` from `exists_isFundamentalDomain_subgroup Γ`. Conclude with `⟨⟨D, hD, h μ⟩, fun D h => (quotMeasure_eq_of_isFundamentalDomain h).symm⟩`. Use the proof step `@[to_additive exists_isAddFundamentalDomain_and_addQuotMeasure_eq_addSubgroup_op`. Use the proof step `]`.
+-/
 theorem exists_isFundamentalDomain_and_quotMeasure_eq_subgroup (μ : Measure G)
     [μ.IsMulLeftInvariant] :
     (∃ D : Set G, MeasurableSet D ∧ IsFundamentalDomain Γ D μ) ∧
@@ -650,6 +852,9 @@ theorem exists_isFundamentalDomain_and_quotMeasure_eq_subgroup (μ : Measure G)
 
 @[to_additive exists_isAddFundamentalDomain_and_addQuotMeasure_eq_addSubgroup_op
 ]
+/- English proof (translation)
+Use `countable_of_discrete_subgroup Γ` as an intermediate fact. Take `⟨D, hD, -, h⟩` from `exists_isFundamentalDomain_subgroup_op Γ`. Conclude with `⟨⟨D, hD, h μ⟩, fun D h => (quotMeasure_eq_of_isFundamentalDomain h).symm⟩`.
+-/
 theorem exists_isFundamentalDomain_and_quotMeasure_eq_subgroup_op (μ : Measure G)
     [μ.IsMulRightInvariant] :
     (∃ D : Set G, MeasurableSet D ∧ IsFundamentalDomain Γ.op D μ) ∧
@@ -661,6 +866,9 @@ theorem exists_isFundamentalDomain_and_quotMeasure_eq_subgroup_op (μ : Measure 
 
 end DiscreteSubgroup
 
+/- English proof (translation)
+Establish `: IsClosed (Γ : Set G)` using `Subgroup.isClosed_of_discrete`. Establish `: ContinuousSMul G X` using `ProperSMul.toContinuousSMul`. Rewrite using `[properlyDiscontinuousSMul_iff_properSMul]`. Use `infer_instance`.
+-/
 theorem properlyDiscontinuousSMul_of_discrete_of_properSMul {G X : Type*} [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [MulAction G X] [TopologicalSpace X]
     [T2Space X] [LocallyCompactSpace X] [ProperSMul G X] (Γ : Subgroup G) [DiscreteTopology Γ] :
@@ -670,6 +878,9 @@ theorem properlyDiscontinuousSMul_of_discrete_of_properSMul {G X : Type*} [Group
   rw [properlyDiscontinuousSMul_iff_properSMul]
   infer_instance
 
+/- English proof (translation)
+Rewrite using `[isAEAddOrbitSection_zmultiples_Ico.addQuotMeasure_univ]`. Simplify using the standard rewrite rules.
+-/
 theorem addQuotMeasure_zmultiples_one_univ :
     addQuotMeasure (AddSubgroup.zmultiples (1 : ℝ)) (volume : Measure ℝ) univ = 1 := by
   rw [isAEAddOrbitSection_zmultiples_Ico.addQuotMeasure_univ]

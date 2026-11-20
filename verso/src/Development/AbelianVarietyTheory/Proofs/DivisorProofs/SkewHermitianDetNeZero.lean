@@ -10,6 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.SkewGram
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ h` and use `GlobalTheory.ThK.TorusCentre.det_ne_zero_of_isSkew h`.
+-/
 theorem gram_det_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (W : Spc F E n) (r s : ℕ), W.IsSkew σ B r s → W.J.det ≠ 0 :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ h => GlobalTheory.ThK.TorusCentre.det_ne_zero_of_isSkew h
 

@@ -11,16 +11,45 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `W hW hW'` and use `h W hW (hW'.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))`.
+-/
 theorem divSupp_disjoint_of_not_mem {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι)} {u a : MRing ι} (h : ∀ W ∈ divSupp P u, a ∉ W) :
     ∀ W, W ∈ divSupp P u → W ∉ divSupp P a :=
   fun W hW hW' => h W hW (hW'.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hW.1.isPrime, ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isMultiHomogIdeal_of_mem_minimalPrimes hP.2.1 hu hW.1, hW.2⟩`.
+-/
 theorem isMultiProjPrime_of_mem_divSupp {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι)} (hP : IsMultiProjPrime P) {u : MRing ι} {b : K → ℕ} (hu : IsMultiHomog u b)
     {W : Ideal (MRing ι)} (hW : W ∈ divSupp P u) : IsMultiProjPrime W :=
   ⟨hW.1.isPrime, ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isMultiHomogIdeal_of_mem_minimalPrimes hP.2.1 hu hW.1, hW.2⟩
 
+/- English proof (translation)
+Introduce `K _ ι _ I P n L B s t hR hA hP hL hB hs ht`. Take `⟨bs, hbs, hsH, hsP⟩` from `hs`. Take `⟨bt, hbt, htH, htP⟩` from `ht`. Establish `hPm : IsMultiProjPrime P` using `hP.2.1`. Use `set S : Set (Ideal (MRing ι)) := divSupp P s ∪ divSupp P t ∪ {P} with hSdef`.
+
+Establish `hSf : S.Finite` using `((divSupp_finite P s).union (divSupp_finite P t)).union (Set.finite_singleton P)`. Establish `hS' : ∀ W ∈ S, IsMultiProjPrime W`. Introduce and unpack `W ((hW | hW) | hW)`. Conclude with `isMultiProjPrime_of_mem_divSupp hPm hsH hW`. Conclude with `isMultiProjPrime_of_mem_divSupp hPm htH hW`.
+
+Rewrite using `[Set.mem_singleton_iff.mp hW]`. Conclude with `hPm`. Take `⟨d₀, hd₀⟩` from `AvoidRing.exists_form_avoid S hSf hS'`. Use `set M := L (Fin.last n) with hM`. Use `set k : ℕ := ∑ l, (d₀ l + (M.a l).natAbs) with hkdef`.
+
+Establish `hk1 : ∀ l, d₀ l + (M.a l).natAbs ≤ k` using `fun l => Finset.single_le_sum (f := fun l => d₀ l + (M.a l).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`. Use `set b : K → ℕ := fun l => (M.a l + k).toNat with hbdef`. Establish `hb : ∀ l, (b l : ℤ) = M.a l + k` using `fun l => Int.toNat_of_nonneg (by have := hk1 l; omega)`. Establish `hbd : d₀ ≤ b` using `fun l => by`. Establish `h1` using `hk1 l`.
+
+Establish `h2` using `hb l`. Use `show d₀ l ≤ b l`. Use linear arithmetic over natural numbers and integers. Establish `hkd : d₀ ≤ fun _ => k` using `fun l => by`. Use `hk1 l` as an intermediate fact.
+
+Use `show d₀ l ≤ k`. Use linear arithmetic over natural numbers and integers. Take `⟨a1, ha1H, ha1S⟩` from `hd₀ b hbd`. Take `⟨a2, ha2H, ha2S⟩` from `hd₀ _ hkd`. Use `set H : HermLine ι := HermLine.sqMetric (fun _ => k) with hH`.
+
+Establish `hHs : IsSmoothHerm H` using `isSmoothHerm_sqMetric _`. Establish `hMs : IsSmoothHerm M` using `hL _`. Establish `hA1s : IsSmoothHerm (M.tensor H)` using `isSmoothHerm_tensor hMs hHs`. Establish `hL' : ∀ j, IsSmoothHerm (Fin.init L j)` using `fun j => hL _`. Establish `hPS : P ∈ S` using `Or.inr rfl`.
+
+Establish `hsec1 : IsSectionOn P (M.tensor H) a1` using `⟨b, fun l => by rw [hb l]; rfl, ha1H, ha1S P hPS⟩`. Establish `hsec2 : IsSectionOn P H a2` using `⟨fun _ => k, fun l => rfl, ha2H, ha2S P hPS⟩`. Establish `hsecs : IsSectionOn P B s` using `⟨bs, hbs, hsH, hsP⟩`. Establish `hsect : IsSectionOn P B t` using `⟨bt, hbt, htH, htP⟩`. Establish `d1s` using `divSupp_disjoint_of_not_mem fun W hW => ha1S W (Or.inl (Or.inl hW))`.
+
+Establish `d1t` using `divSupp_disjoint_of_not_mem fun W hW => ha1S W (Or.inl (Or.inr hW))`. Establish `d2s` using `divSupp_disjoint_of_not_mem fun W hW => ha2S W (Or.inl (Or.inl hW))`. Establish `d2t` using `divSupp_disjoint_of_not_mem fun W hW => ha2S W (Or.inl (Or.inr hW))`. Establish `e1s` using `h₁ K ι I P n (Fin.init L) B (M.tensor H) s a1 hR hP hL' hB hA1s hsecs hsec1 d1s`. Establish `e1t` using `h₁ K ι I P n (Fin.init L) B (M.tensor H) t a1 hR hP hL' hB hA1s hsect hsec1 d1t`.
+
+Establish `e2s` using `h₁ K ι I P n (Fin.init L) B H s a2 hR hP hL' hB hHs hsecs hsec2 d2s`. Establish `e2t` using `h₁ K ι I P n (Fin.init L) B H t a2 hR hP hL' hB hHs hsect hsec2 d2t`. Establish `fs` using `h₂ K ι I P n (Fin.init L) M H B s hA hP hL' hMs hHs hB hsecs`. Establish `ft` using `h₂ K ι I P n (Fin.init L) M H B t hA hP hL' hMs hHs hB hsect`. Establish `hLeq : L = Fin.snoc (Fin.init L) M` using `(Fin.snoc_init_self L).symm`.
+
+Rewrite using `[hLeq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem WellDefined.proof (h₁ : Swap.Statement) (h₂ : RPositionAdd.Statement) :
     WellDefined.Statement := by
   intro K _ ι _ I P n L B s t hR hA hP hL hB hs ht

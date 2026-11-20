@@ -6,6 +6,11 @@ noncomputable section
 
 namespace Formalism.NG
 
+/- English proof (translation)
+Introduce `k A V _ _ _ _ _ _ _ _ hS hsc f`. Use `hS` as an intermediate fact. Set `F : Module.End (Module.End A V) V` to `{ toFun := f map_add' := f.map_add map_smul' := fun φ v => by`. Take `⟨c, hc⟩` from `hsc φ`. Simplify using `only [Module.End.smul_def, hc, RingHom.id_apply, f.map_smul] }`.
+
+Take `⟨a, ha⟩` from `jacobson_density F (Finset.univ.image (Module.finBasis k V))`. Use `⟨a, (Module.finBasis k V).ext fun i => ?_⟩` and prove the remaining obligations. Use `ha (Module.finBasis k V i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))` as an intermediate fact. Simplify `this.symm` using `[F]`.
+-/
 theorem burnside : StatBurnside := by
   intro k A V _ _ _ _ _ _ _ _ hS hsc f
   classical
@@ -21,6 +26,13 @@ theorem burnside : StatBurnside := by
   have := ha (Module.finBasis k V i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))
   simpa [F] using this.symm
 
+/- English proof (translation)
+Introduce `O A L _ _ _ _ _ _ _ _ φ hφ`. Establish `hle : (⊤ : Submodule O (Module.End O L)) ≤ LinearMap.range φ.toLinearMap ⊔ IsLocalRing.maximalIdeal O • ⊤`. Introduce `f _`. Take `⟨a, ha⟩` from `hφ f`. Establish `hf : f = φ a + (f - φ a)` using `by abel`.
+
+Rewrite using `[hf]`. Conclude with `Submodule.add_mem_sup (LinearMap.mem_range.mpr ⟨a, rfl⟩) ha`. Establish `htop` using `Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge hle`. Introduce `f`. Take `⟨a, ha⟩` from `LinearMap.mem_range.mp (htop Submodule.mem_top)`.
+
+Conclude with `⟨a, ha⟩`.
+-/
 theorem ontoLattice : StatOntoLattice := by
   intro O A L _ _ _ _ _ _ _ _ φ hφ
   have hle : (⊤ : Submodule O (Module.End O L)) ≤
@@ -40,6 +52,9 @@ section RankMod
 
 variable {O : Type*} [CommRing O] {r : Type} [Fintype r] [DecidableEq r]
 
+/- English proof (translation)
+Establish `hproj : Module.Projective O p` using `Module.Projective.of_split p.subtype (Submodule.linearProjOfIsCompl p q h) (LinearMap.ext fun x => Submodule.linearProjOfIsCompl_apply_left h x)`. Establish `hfin : Module.Finite O p` using `Module.Finite.of_surjective (Submodule.linearProjOfIsCompl p q h) (fun x => ⟨x, Submodule.linearProjOfIsCompl_apply_left h x⟩)`. Conclude with `⟨Module.free_of_flat_of_isLocalRing, hfin⟩`.
+-/
 private theorem free_of_isCompl [IsLocalRing O] (p q : Submodule O (r → O)) (h : IsCompl p q) :
     Module.Free O p ∧ Module.Finite O p := by
   have hproj : Module.Projective O p :=
@@ -49,6 +64,23 @@ private theorem free_of_isCompl [IsLocalRing O] (p q : Submodule O (r → O)) (h
     Module.Finite.of_surjective (Submodule.linearProjOfIsCompl p q h) (fun x => ⟨x, Submodule.linearProjOfIsCompl_apply_left h x⟩)
   exact ⟨Module.free_of_flat_of_isLocalRing, hfin⟩
 
+/- English proof (translation)
+Set `f : (r → O) →ₗ[O] (r → O)` to `Matrix.toLin' e`. Establish `hf : f * f = f` using `by show (Matrix.toLin' e).comp (Matrix.toLin' e) = Matrix.toLin' e`. Rewrite using `[← Matrix.toLin'_mul, he.eq]`. Establish `hc : IsCompl (LinearMap.range f) (LinearMap.ker f)` using `LinearMap.IsIdempotentElem.isCompl hf`. Take `⟨hpF, hpFin⟩` from `free_of_isCompl _ _ hc`.
+
+Take `⟨hqF, hqFin⟩` from `free_of_isCompl _ _ hc.symm`. Set `bp` to `Module.Free.chooseBasis O (LinearMap.range f)`. Set `bq` to `Module.Free.chooseBasis O (LinearMap.ker f)`. Set `b0` to `(bp.prod bq).map (Submodule.prodEquivOfIsCompl _ _ hc)`. Set `σ` to `b0.indexEquiv (Pi.basisFun O r)`.
+
+Set `b` to `b0.reindex σ`. Establish `hfb : ∀ j, f (b j) = (if (σ.symm j).isLeft then (1 : O) else 0) • b j`. Introduce `j`. Rewrite using `[Basis.reindex_apply]`. Break down `σ.symm j with k | k` into its components or cases.
+
+Establish `hk : (b0 (Sum.inl k) : r → O) = (bp k : r → O)`. Simplify using `[b0, Basis.map_apply, Basis.prod_apply]`. Simplify using `only [Sum.isLeft_inl, if_true, one_smul, hk]`. Take `⟨y, hy⟩` from `(bp k).2`. Rewrite using `[← hy]`.
+
+Use `show (f * f) y = f y`. Rewrite using `[hf]`. Establish `hk : (b0 (Sum.inr k) : r → O) = (bq k : r → O)`. Simplify using `[b0, Basis.map_apply, Basis.prod_apply]`. Simplify using `only [Sum.isLeft_inr, Bool.false_eq_true, if_false, zero_smul, hk]`.
+
+Conclude with `LinearMap.mem_ker.mp (bq k).2`. Establish `hdiag : LinearMap.toMatrix b b f = Matrix.diagonal fun i => if (σ.symm i).isLeft then (1 : O) else 0`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.diagonal_apply, hfb, map_smul, Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Apply the tactic sequence `refine ⟨(Pi.basisFun O r).toMatrix b, b.toMatrix (Pi.basisFun O r), fun i => if (σ.symm i).isLeft then (1 : O) else 0, fun j => by by_cases h : (σ.symm j).isLeft <;> simp [h], Basis.toMatrix_mul_toMatrix_flip _ _, Basis.toMatrix_mul_toMatrix_flip _ _, ?_⟩`. Rewrite using `[← hdiag, basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix, LinearMap.toMatrix_eq_toMatrix']`.
+
+Conclude with `(LinearMap.toMatrix'_toLin' e).symm`.
+-/
 private theorem idem_normal_form [IsLocalRing O] (e : Matrix r r O) (he : IsIdempotentElem e) :
     ∃ (P Q : Matrix r r O) (d : r → O), (∀ j, d j = 0 ∨ d j = 1) ∧ P * Q = 1 ∧ Q * P = 1 ∧
       e = P * Matrix.diagonal d * Q := by
@@ -98,6 +130,15 @@ private theorem idem_normal_form [IsLocalRing O] (e : Matrix r r O) (he : IsIdem
     LinearMap.toMatrix_eq_toMatrix']
   exact (LinearMap.toMatrix'_toLin' e).symm
 
+/- English proof (translation)
+Establish `hm1 : P.map f * Q.map f = 1`. Rewrite using `[← Matrix.map_mul, hPQ]`. Conclude with `Matrix.map_one _ (map_zero f) (map_one f)`. Establish `hm2 : Q.map f * P.map f = 1`. Rewrite using `[← Matrix.map_mul, hQP]`.
+
+Conclude with `Matrix.map_one _ (map_zero f) (map_one f)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.rank_mul_eq_left_of_isUnit_det _ _ (Matrix.isUnit_det_of_right_inverse hm2), Matrix.rank_mul_eq_right_of_isUnit_det _ _ (Matrix.isUnit_det_of_right_inverse hm1), Matrix.diagonal_map (map_zero f), Matrix.rank_diagonal, Nat.card_eq_fintype_ca …`. Apply `Fintype.card_congr` to reduce the goal to its premises. Apply `Equiv.subtypeEquivRight` to reduce the goal to its premises. Introduce `j`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `hd j with h0 | h1` into its components or cases. Conclude with `(h (by rw [h0, map_zero])).elim`. Conclude with `h1`.
+
+Introduce `h1`. Rewrite using `[h1, map_one]`. Conclude with `one_ne_zero`.
+-/
 private theorem rank_map_conj {F : Type*} [Field F] (f : O →+* F) (P Q : Matrix r r O) (d : r → O)
     (hd : ∀ j, d j = 0 ∨ d j = 1) (hPQ : P * Q = 1) (hQP : Q * P = 1) :
     ((P * Matrix.diagonal d * Q).map f).rank = Nat.card {j // d j = 1} := by
@@ -126,6 +167,9 @@ private theorem rank_map_conj {F : Type*} [Field F] (f : O →+* F) (P Q : Matri
 
 end RankMod
 
+/- English proof (translation)
+Introduce `O _ _ _ r _ _ e he`. Take `⟨P, Q, d, hd, hPQ, hQP, rfl⟩` from `idem_normal_form e he`. Rewrite using `[rank_map_conj _ P Q d hd hPQ hQP, rank_map_conj _ P Q d hd hPQ hQP]`.
+-/
 theorem rankMod : StatRankMod := by
   intro O _ _ _ r _ _ e he
   obtain ⟨P, Q, d, hd, hPQ, hQP, rfl⟩ := idem_normal_form e he

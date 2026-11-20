@@ -25,6 +25,9 @@ noncomputable section
 
 namespace GlobalTheory.PlaneCompl
 
+/- English proof (translation)
+Simplify using `only [Module.Basis.equivFun_symm_apply, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Formalism.BasicNotions.HSpace.gram, starRingEnd_apply]`. Simplify using `only [Finset.mul_sum, RingHom.id_apply]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_sum {D : D7} (S : HSp D) (a b : Fin S.rank → D.host.E) :
     ∑ i, ∑ j, star (a i) * S.gram i j * b j = S.hT (S.frame.equivFun.symm a) (S.frame.equivFun.symm b) := by
   simp only [Module.Basis.equivFun_symm_apply, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ,
@@ -34,6 +37,51 @@ theorem gram_sum {D : D7} (S : HSp D) (a b : Fin S.rank → D.host.E) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `D S Λ x y s hΛ hxx hyy hxy hsplit`. Establish `hyx : S.hT y x = 1` using `by rw [← S.herm.eq x y, hxy, map_one]`. Set `W : Submodule D.host.E S.V` to `LinearMap.ker (LinearMap.pi fun j : Fin 2 => S.hT (![x, y] j))`. Establish `hW : ∀ w, w ∈ W ↔ S.hT x w = 0 ∧ S.hT y w = 0`. Introduce `w`.
+
+Simplify using `only [W, LinearMap.mem_ker, funext_iff, LinearMap.pi_apply, Fin.forall_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one, Pi.zero_apply, Matrix.head_cons]`. Establish `hdec : ∀ z, z - S.hT y z • x - S.hT x z • y ∈ W`. Introduce `z`. Rewrite using `[hW]`. Apply the tactic sequence `constructor <;> simp [map_sub, hxx, hyy, hxy, hyx]`.
+
+Establish `hind : LinearIndependent D.host.E ![x, y]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `a b hab`. Establish `h1` using `congrArg (S.hT x) hab`. Establish `h2` using `congrArg (S.hT y) hab`.
+
+Simplify using `[hxx, hyy, hxy, hyx] at h1 h2`. Conclude with `⟨h2, h1⟩`. Establish `hrk : 2 + Module.finrank D.host.E W = S.rank`. Use `GlobalTheory.WittLow.finrank_orth S.herm S.nondeg ![x, y] hind` as an intermediate fact. Rewrite `this` using `[S.rank_eq]`.
+
+Conclude with `this`. Establish `hrad : ∀ v : W, (∀ w : W, S.hT w v = 0) → v = 0`. Introduce `v hv`. Establish `hv'` using `(hW v).1 v.2`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `S.nondeg.2 (v : S.V)` to reduce the goal to its premises. Introduce `z`. Establish `e : z = S.hT y z • x + (z - S.hT y z • x - S.hT x z • y) + S.hT x z • y` using `by abel`. Establish `h0` using `hv ⟨_, hdec z⟩`. Rewrite using `[e, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, LinearMap.smul_apply, LinearMap.smul_apply, hv'.1, hv'.2, h0]`.
+
+Simplify using the standard rewrite rules. Set `h' : W →ₗ⋆[D.host.E] W →ₗ[D.host.E] D.host.E` to `S.hT.domRestrict₁₂ W W`. Establish `hs' : h'.IsSymm` using `⟨fun a b => S.herm.eq _ _⟩`. Establish `hnd' : h'.Nondegenerate` using `⟨fun a ha => hrad a fun b => by`. Rewrite using `[← S.herm.eq]`.
+
+Conclude with `(congrArg _ (ha b)).trans (map_zero _), fun a ha => hrad a ha⟩`. Set `Λ' : Submodule (𝓞 D.host.E) S.V` to `Λ.comap ((S.frame.equivFun : S.V →ₗ[D.host.E] (Fin S.rank → D.host.E)).restrictScalars (𝓞 D.host.E))`. Establish `hΛ'm : ∀ z, z ∈ Λ' ↔ GlobalTheory.SqStepK.InLat S Λ z` using `fun z => Iff.rfl`. Establish `hΛ'lat : Submodule.IsLattice D.host.E Λ'` using `GlobalTheory.ColRows.isLattice_comap_equiv S.frame.equivFun Λ hΛ.1`. Establish `hΛ'd : ∀ z, z ∈ Λ' ↔ ∀ w ∈ Λ', ∃ b : 𝓞 D.host.E, (b : D.host.E) = S.hT w z`.
+
+Introduce `z`. Rewrite using `[hΛ'm, GlobalTheory.SqStepK.InLat, hΛ.2]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Take `⟨b, hb⟩` from `h _ hw`.
+
+Conclude with `⟨b, by rw [hb, gram_sum]; simp⟩`. Introduce `h a ha`. Take `⟨b, hb⟩` from `h (S.frame.equivFun.symm a) (by rw [hΛ'm, GlobalTheory.SqStepK.InLat, LinearEquiv.apply_symm_apply]; exact ha)`. Conclude with `⟨b, by rw [hb, gram_sum]; simp⟩`. Set `L0 : Submodule (𝓞 D.host.E) W` to `Λ'.comap (W.subtype.restrictScalars (𝓞 D.host.E))`.
+
+Establish `hL0m : ∀ u : W, u ∈ L0 ↔ (u : S.V) ∈ Λ'` using `fun u => Iff.rfl`. Establish `hL0lat : Submodule.IsLattice D.host.E L0` using `GlobalTheory.isLattice_comap_subtype_ringOfIntegers Λ' hΛ'lat W`. Establish `hwz : ∀ z, z ∈ Λ' → z - S.hT y z • x - S.hT x z • y ∈ Λ'`. Introduce `z hz`. Take `⟨hs1, hr1⟩` from `hsplit z ((hΛ'm z).1 hz)`.
+
+Rewrite using `[hΛ'm, GlobalTheory.SqStepK.InLat, map_sub, map_sub]`. Conclude with `Λ.sub_mem (Λ.sub_mem hz hs1) hr1`. Establish `hL0d : ∀ u : W, u ∈ L0 ↔ ∀ u' ∈ L0, ∃ b : 𝓞 D.host.E, (b : D.host.E) = S.hT u' u`. Introduce `u`. Establish `hu` using `(hW u).1 u.2`.
+
+Rewrite using `[hL0m, hΛ'd]`. Prove the components needed by the constructor for the conclusion. Introduce `h u' hu'`. Conclude with `h _ hu'`. Introduce `h z hz`.
+
+Take `⟨b, hb⟩` from `h ⟨_, hdec z⟩ (hwz z hz)`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Simplify using `[map_sub, hu.1, hu.2]`. Establish `hun : Formalism.HermitianLatticesTheory.IsUnimodular h' L0`.
+
+Use extensionality with `v`. Rewrite using `[GlobalTheory.WittLow.mem_dual, hL0d]`. Use `forall₂_congr fun u' _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_one]`. Both sides reduce to the same expression.
+
+Set `S₁ : HSp D` to `{ V := W, hT := h', herm := hs', nondeg := hnd', rank := Module.finrank D.host.E W, rank_eq := rfl, frame := Module.finBasis D.host.E W, sig := s, L0 := L0, standardTuple_isLattice := hL0lat, baseLattice_isUnimodular := hun }`. Set `e₁ : (Fin (Module.finrank D.host.E W) → D.host.E) ≃ₗ[D.host.E] W` to `(Module.finBasis D.host.E W).equivFun.symm`. Set `Λ₁ : Submodule (𝓞 D.host.E) (Fin S₁.rank → D.host.E)` to `L0.comap ((e₁ : (Fin (Module.finrank D.host.E W) → D.host.E) →ₗ[D.host.E] W).restrictScalars (𝓞 D.host.E))`. Establish `hΛ₁m : ∀ v, v ∈ Λ₁ ↔ e₁ v ∈ L0` using `fun v => Iff.rfl`. Establish `hΛ₁lat : Submodule.IsLattice D.host.E Λ₁` using `GlobalTheory.ColRows.isLattice_comap_equiv e₁ L0 hL0lat`.
+
+Establish `hin : ∀ u : W, GlobalTheory.SqStepK.InLat S₁ Λ₁ u ↔ GlobalTheory.SqStepK.InLat S Λ (W.subtype u)`. Introduce `u`. Express the relevant statement in the definitionally equal form `(Module.finBasis D.host.E W).equivFun u ∈ Λ₁ ↔ _`. Rewrite using `[hΛ₁m]`. Express the relevant statement in the definitionally equal form `(Module.finBasis D.host.E W).equivFun.symm ((Module.finBasis D.host.E W).equivFun u) ∈ L0 ↔ _`.
+
+Rewrite using `[LinearEquiv.symm_apply_apply, hL0m, hΛ'm]`. Both sides reduce to the same expression. Use `⟨S₁, Λ₁, W.subtype, ⟨?_, fun _ _ => rfl, hxx, hyy, hyx, fun u => ⟨((hW u).1 u.2).1, ((hW u).1 u.2).2⟩, hin, ?_⟩, ⟨hΛ₁lat, ?_⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.rank = Module.finrank D.host.E W + 2`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `z hz`. Take `⟨hs1, hr1⟩` from `hsplit z hz`. Use `⟨S.hT y z, S.hT x z, ⟨_, hdec z⟩, hs1, hr1, (hin _).2 (hwz z hz), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z = S.hT y z • x + (z - S.hT y z • x - S.hT x z • y) + S.hT x z • y`. Normalize the expressions using the abelian group laws.
+
+Introduce `v`. Simplify using `only [gram_sum]`. Rewrite using `[hΛ₁m, hL0d]`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha`.
+
+Conclude with `h _ ha`. Introduce `h u' hu'`. Use `h (e₁.symm u') (by rw [hΛ₁m, LinearEquiv.apply_symm_apply]; exact hu')` as an intermediate fact. Take `⟨b, hb⟩` from `this`. Use `⟨b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hb]`. Express the relevant statement in the definitionally equal form `S.hT (e₁ (e₁.symm u') : S.V) _ = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_compl : ∀ (D : D7) (S : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (x y : S.V)
     (s : (D.host.E →+* ℂ) → ℕ × ℕ), IsSelfDualC S Λ → S.hT x x = 0 → S.hT y y = 0 → S.hT x y = 1 →
     (∀ z, GlobalTheory.SqStepK.InLat S Λ z → GlobalTheory.SqStepK.InLat S Λ (S.hT y z • x) ∧ GlobalTheory.SqStepK.InLat S Λ (S.hT x z • y)) →

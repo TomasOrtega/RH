@@ -42,6 +42,19 @@ def JacOne : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ 
     ∀ Ω₂ ⊆ Ω, Ω₂ ∈ 𝓝 (TI X u' hT) → ∀ c₀ : ENNReal,
       PolId X u' μinf νinf a Ω₂ (fun T => c₀ * ENNReal.ofReal (J T)) → c₀ = (ENNReal.ofReal (KVal X u'))⁻¹
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP`. Take `⟨Ω, a, hC⟩` from `h1 X u' ψ hT μinf νinf fibInf hP`. Take `⟨J, hJ1, hJc, hJ⟩` from `h3 X u' ψ hT μinf νinf fibInf hP Ω a hC`. Take `⟨Ω₁, hΩ₁, hΩ₁n, c, hc⟩` from `h2 X u' ψ hT μinf νinf fibInf hP Ω a hC`. Take `⟨c₀, Ω₂, hΩ₂, hΩ₂n, hae⟩` from `hJ Ω₁ hΩ₁ hΩ₁n c hc`.
+
+Establish `hK0 : 0 < KVal X u'` using `hK X u' ψ hT μinf νinf fibInf hP`. Establish `hid : PolId X u' μinf νinf a Ω₂ (fun T => c₀ * ENNReal.ofReal (J T))`. Introduce `φ hφ S hS hSm`. Rewrite using `[hc φ hφ S (hS.trans hΩ₂) hSm]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Establish `hae' : ∀ᵐ T ∂(νinf.restrict S), c T = c₀ * ENNReal.ofReal (J T)` using `ae_restrict_of_ae_restrict_of_subset hS hae`. Use `filter_upwards [hae'] with T hT'`. Rewrite using `[hT']`. Establish `hc₀ : c₀ = (ENNReal.ofReal (KVal X u'))⁻¹` using `h4 X u' ψ hT μinf νinf fibInf hP Ω a hC J hJ1 hJc Ω₂ (hΩ₂.trans hΩ₁) hΩ₂n c₀ hid`. Establish `hJpos : {T | 0 < J T} ∈ 𝓝 (TI X u' hT)` using `hJc (Ioi_mem_nhds (by rw [hJ1]; exact one_pos))`.
+
+Use `⟨Ω₂ ∩ {T | 0 < J T}, a, fun T => KVal X u' / J T, inter_mem hΩ₂n hJpos, hC.2.1, hC.2.2.1, by simp [hJ1], ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuousAt_const.div hJc (by rw [hJ1]; exact one_ne_zero)`. Introduce `φ hφ S hS hSm`. Rewrite using `[hid φ hφ S (hS.trans Set.inter_subset_left) hSm]`. Use `setLIntegral_congr_fun hSm ?_` and prove the remaining obligations.
+
+Introduce `T hTS`. Establish `hJT : 0 < J T` using `(hS hTS).2`. Establish `e : (ENNReal.ofReal (KVal X u' / J T))⁻¹ = (ENNReal.ofReal (KVal X u'))⁻¹ * ENNReal.ofReal (J T)`. Rewrite using `[ENNReal.ofReal_div_of_pos hJT, ENNReal.inv_div (Or.inl ENNReal.ofReal_ne_top) (Or.inl (ENNReal.ofReal_pos.2 hJT).ne'), div_eq_mul_inv, mul_comm]`. Simplify using `only`.
+
+Rewrite using `[e, hc₀]`.
+-/
 theorem polarLoc_of (hK : KPos) (h1 : SqChart) (h2 : OrbAll) (h3 : ScaleAll) (h4 : JacOne) : PolarLoc := by
   intro D X u' ψ hT μinf νinf fibInf hP
   obtain ⟨Ω, a, hC⟩ := h1 X u' ψ hT μinf νinf fibInf hP

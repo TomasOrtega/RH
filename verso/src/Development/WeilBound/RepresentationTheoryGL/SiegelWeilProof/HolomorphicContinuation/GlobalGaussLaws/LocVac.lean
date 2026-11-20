@@ -8,6 +8,13 @@ namespace PositivityTheory.Rg.Sw.Glob
 
 open Vac
 
+/- English proof (translation)
+Introduce `m n ε c t p q e hc hpq S C hS h1 hy hcell`. Establish `hα : ((-Complex.I) ^ n) ^ (-(p : ℤ)) * (Complex.I ^ n) ^ (-(q : ℤ)) ≠ 0`. Apply the tactic sequence `apply mul_ne_zero <;> apply zpow_ne_zero <;> apply pow_ne_zero <;> simp`. Establish `key : ∀ g : GR n, (toBlocks₂₁ (mR g)).det ≠ 0 → S g = (C * ((Real.pi : ℂ) ^ n / (c : ℂ) ^ n) ^ (p + q) / (((-Complex.I) ^ n) ^ (-(p : ℤ)) * (Complex.I ^ n) ^ (-(q : ℤ)))) * F0 p q e g`. Introduce `g hg`.
+
+Take `⟨y, h, b, hy0, hb, hh, rfl⟩` from `bigcell g hg`. Rewrite using `[hy y h hy0, hcell h b hb hh, secN_eval ε c t p q hc hpq b hb, vacuum_section_mul_parabolic p q e y h hy0, vacuum_section_big_cell p q e h b hh, mul_zpow, mul_zpow]`. Clear the denominators using the available nonvanishing facts. Establish `hall : ∀ g, S g = (C * ((Real.pi : ℂ) ^ n / (c : ℂ) ^ n) ^ (p + q) / (((-Complex.I) ^ n) ^ (-(p : ℤ)) * (Complex.I ^ n) ^ (-(q : ℤ)))) * F0 p q e g`. Introduce `g`.
+
+Conclude with `congrFun (Continuous.ext_on dense_cell hS (continuous_const.mul (continuous_vacuum_section p q e)) key) g`. Establish `hlam` using `hall 1`. Rewrite `hlam` using `[h1, weight_factor_one, mul_one]`. Introduce `g`. Rewrite using `[hall g, ← hlam, one_mul]`.
+-/
 theorem lIvac : LIvac := by
   intro m n ε c t p q e hc hpq S C hS h1 hy hcell
   have hα : ((-Complex.I) ^ n) ^ (-(p : ℤ)) * (Complex.I ^ n) ^ (-(q : ℤ)) ≠ 0 := by

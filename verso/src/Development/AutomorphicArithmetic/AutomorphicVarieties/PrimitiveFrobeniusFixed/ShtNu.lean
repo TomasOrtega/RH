@@ -6,6 +6,35 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.Stick UpperTheory.V.ML
 open scoped nonZeroDivisors Pointwise
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ O _ _ _ _ _ N₀ m F α hD δ hδ a ha c hc`. Take `⟨⟨hlc, hcoc⟩, hcδ, hac, hunr, -⟩` from `hc`. Establish `hkill : ∀ x ∈ fixMu ℚ Ω F, ∀ w : QO l O, a • w = 0 → (α x : O) • w = w`. Introduce `x hx w hw`. Take `⟨t, ht⟩` from `hD.triv x hx`.
+
+Take `⟨b, hb⟩` from `ha`. Establish `h1 : ((α x : O) - 1) • w = 0`. Rewrite using `[ht, hb, show a * b * t = (b * t) * a by ring, mul_smul, hw, smul_zero]`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`. Then use the resulting hypothesis. Establish `h1 : c 1 = 0`.
+
+Establish `e` using `hcoc 1 1`. Simplify using `only [mul_one, map_one, Units.val_one, one_smul] at e`. Simplify using `using e`. Establish `heqv : ∀ g u, u ∈ fixMu ℚ Ω F → c (g * u * g⁻¹) = (α g : O) • c u`. Introduce `g u hu`.
+
+Establish `e1` using `hcoc (g * u) g⁻¹`. Establish `e2` using `hcoc g u`. Establish `e3` using `hcoc g g⁻¹`. Rewrite `e3` using `[mul_inv_cancel, h1]`. Rewrite using `[e1, e2, map_mul, Units.val_mul, mul_smul, hkill u hu _ (hac _), add_right_comm, ← e3, zero_add]`.
+
+Establish `hF : F ≠ 0`. Rewrite using `[hD.lev]`. Establish `hl : l.Prime` using `Fact.out`. Establish `hN : N₀ ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hl.one_lt.ne' ((Nat.coprime_zero_left _).mp hD.cop)`. Conclude with `mul_ne_zero hN (pow_ne_zero _ hl.ne_zero)`. Take `⟨-, hopen, hcomm, -, -, -, -, -, -, -⟩` from `galBasic Ω F hF`. Use `⟨⟨?_, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu v _`.
+
+Rewrite using `[hcoc, hkill u hu _ (hac _)]`. Conclude with `hlc.comp_continuous continuous_subtype_val`. Conclude with `heqv`. Introduce `u _`. Take `⟨b, hb⟩` from `ha`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul O, Nat.cast_pow, hb, mul_comm, mul_smul, hac, smul_zero]`. Conclude with `hunr`. Introduce `hz`. Use `funext fun g => ?_` and prove the remaining obligations. Establish `hk` using `hcomm g δ`.
+
+Establish `e : g * δ = (g * δ * g⁻¹ * δ⁻¹) * (δ * g)` using `by group`. Establish `e1` using `hcoc g δ`. Rewrite `e1` using `[hcδ, smul_zero, add_zero, e, hcoc _ (δ * g), hz _ hk, zero_add, hkill _ hk _ (hac _), hcoc δ g, hcδ, zero_add]`. Establish `e2 : ((α δ : O) - 1) • c g = 0` using `by rw [sub_smul, one_smul, e1, sub_self]`. Conclude with `(hδ.smul_eq_zero).mp e2`.
+
+Introduce `q A φ hq hq1 hA hφ hcφ A' hA' x hx`. Take `⟨-, -, -, hcopNot, hIne, -, hPows, hconj, hplace, hact⟩` from `placeBasic Ω`. Establish `hcop : q.Coprime F` using `hq1.gcd_eq.trans (Nat.gcd_one_left F)`. Establish `hAF : ¬Over A F` using `hcopNot A q F hcop hA`. Establish `hφF : φ ∈ fixMu ℚ Ω F`.
+
+Introduce `y hy`. Rewrite using `[hPows A q F φ hφ hAF y hy, pow_eq_pow_mod q hy, hq1, ← pow_eq_pow_mod 1 hy, pow_one]`. Set `K : Subgroup (G ℚ Ω)` to `{ carrier := {g | g ∈ fixMu ℚ Ω F ∧ c g = 0} mul_mem' := fun {u v} hu hv => ⟨mul_mem hu.1 hv.1, by rw [hcoc, hu.2, hkill _ hu.1 _ (hac _), hv.2, add_zero]⟩ one_mem' := ⟨one_mem _, h1⟩ inv_mem' := fun {u} hu => by`. Use `⟨inv_mem hu.1, ?_⟩` and prove the remaining obligations. Establish `e` using `hcoc u u⁻¹`.
+
+Rewrite `e` using `[mul_inv_cancel, h1, hu.2, zero_add, hkill _ hu.1 _ (hac _)]`. Conclude with `e.symm }`. Establish `hKo : IsOpen (K : Set (G ℚ Ω))` using `hopen.inter (hlc.isOpen_fiber 0)`. Establish `hIK : Ine A ≤ K` using `fun g hg => ⟨hIne A F hAF hg, hunr A hAF g hg⟩`. Take `⟨v, hv, hnv, -⟩` from `hplace A q hq hA`.
+
+Establish `hfr : IsFrob A (normV v) φ` using `by rw [hnv]; exact hφ`. Establish `hDec : Dec A ≤ K` using `Kum.decGen ℚ Ω A v φ K hv hfr hKo hIK ⟨hφF, hcφ⟩`. Take `⟨g, rfl⟩` from `hconj A A' q hq hA hA'`. Establish `hy` using `hDec (((hact A g).1 x).mp hx)`. Establish `ex : x = g * (g⁻¹ * x * g) * g⁻¹` using `by group`.
+
+Rewrite using `[ex, heqv g _ hy.1, hy.2, smul_zero]`.
+-/
 theorem UpperTheory.V.ML.shtNu :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (N₀ m F : ℕ) (α : G ℚ Ω →* Oˣ), Dat l N₀ m F α → ∀ δ : G ℚ Ω, IsUnit ((α δ : O) - 1) → ∀ a : O, a ∣ (l : O) ^ m → ∀ c ∈ ShT (QO l O) α δ F a,
     IsNu (l ^ m) F F α c ∧ ((∀ u ∈ fixMu ℚ Ω F, c u = 0) → c = 0) ∧

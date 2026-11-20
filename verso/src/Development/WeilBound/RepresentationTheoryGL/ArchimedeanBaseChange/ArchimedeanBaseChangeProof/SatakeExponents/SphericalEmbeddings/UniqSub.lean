@@ -2,6 +2,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.N3.Pus
 
+/- English proof (translation)
+The claim follows from `uniqSub'`.
+-/
 theorem uniqSub (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     UniqSub k := uniqSub'
 

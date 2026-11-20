@@ -20,6 +20,11 @@ namespace GlobalTheory.RowShape
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.mem_singleton_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[mul_comm, ← mul_assoc, inv_mul_cancel₀ hs, one_mul]` and apply the resulting hypothesis. Introduce `h`.
+
+Conclude with `⟨x * s⁻¹, h, by rw [mul_comm, mul_assoc, inv_mul_cancel₀ hs, mul_one]⟩`.
+-/
 theorem mem_spanSingleton_mul_iff {s x : D.host.E} (hs : s ≠ 0) (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) :
     x ∈ FractionalIdeal.spanSingleton _ s * I ↔ x * s⁻¹ ∈ I := by
   rw [FractionalIdeal.mem_singleton_mul]
@@ -29,6 +34,9 @@ theorem mem_spanSingleton_mul_iff {s x : D.host.E} (hs : s ≠ 0) (I : Fractiona
   · intro h
     exact ⟨x * s⁻¹, h, by rw [mul_comm, mul_assoc, inv_mul_cancel₀ hs, mul_one]⟩
 
+/- English proof (translation)
+Unfold `tiltSc`. Use `split_ifs`. Conclude with `inv_ne_zero (pow_ne_zero _ cmHost_imaginaryGenerator_ne_zero)`. Conclude with `star_ne_zero.2 (pow_ne_zero _ cmHost_imaginaryGenerator_ne_zero)`. Conclude with `one_ne_zero`.
+-/
 theorem tiltSc_ne_zero (j : ℕ) (p : Fin (D.R.m - 1 - j)) : tiltSc D j p ≠ 0 := by
   unfold tiltSc
   split_ifs
@@ -36,6 +44,15 @@ theorem tiltSc_ne_zero (j : ℕ) (p : Fin (D.R.m - 1 - j)) : tiltSc D j p ≠ 0 
   · exact star_ne_zero.2 (pow_ne_zero _ cmHost_imaginaryGenerator_ne_zero)
   · exact one_ne_zero
 
+/- English proof (translation)
+Establish `hx : D.host.xi0 ≠ 0` using `cmHost_imaginaryGenerator_ne_zero`. Take `⟨a, ha⟩` from `D.R.m_even`. Establish `hp` using `p.2`. Unfold `tiltSc`. Distinguish the cases in `hj : Odd j`.
+
+Take `⟨b, hb⟩` from `hj`. Establish `hj' : Odd j` using `⟨b, hb⟩`. Rewrite using `[if_pos hj', if_pos hj', Fin.val_rev]`. Distinguish the cases in `h1 : 2 * p.1 < D.R.m - 1 - j`. Rewrite using `[if_pos h1, if_neg (by omega)]`.
+
+Establish `e : D.R.m - 1 - j - 1 - (D.R.m - 1 - j - (p.1 + 1)) = p.1` using `by omega`. Rewrite using `[e, star_star, inv_mul_cancel₀ (pow_ne_zero _ hx)]`. Rewrite using `[if_neg h1, if_pos (by omega)]`. Establish `e : D.R.m - 1 - j - (p.1 + 1) = D.R.m - 1 - j - 1 - p.1` using `by omega`. Rewrite using `[e, star_inv₀, mul_inv_cancel₀ (star_ne_zero.2 (pow_ne_zero _ hx))]`.
+
+Rewrite using `[if_neg hj, if_neg hj, star_one, one_mul]`.
+-/
 theorem tiltSc_mul_star_rev (j : ℕ) (p : Fin (D.R.m - 1 - j)) : tiltSc D j p * star (tiltSc D j p.rev) = 1 := by
   have hx : D.host.xi0 ≠ 0 := cmHost_imaginaryGenerator_ne_zero
   obtain ⟨a, ha⟩ := D.R.m_even
@@ -54,6 +71,11 @@ theorem tiltSc_mul_star_rev (j : ℕ) (p : Fin (D.R.m - 1 - j)) : tiltSc D j p *
       rw [e, star_inv₀, mul_inv_cancel₀ (star_ne_zero.2 (pow_ne_zero _ hx))]
   · rw [if_neg hj, if_neg hj, star_one, one_mul]
 
+/- English proof (translation)
+Take `⟨hA, hconj⟩` from `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).1`. Take `⟨h0, hd⟩` from `GlobalTheory.ChiGrid.stairId_ne_zero_and_mem_rev_iff D _ _ hA hconj (D.R.m - 1 - j) p`. Establish `hs` using `tiltSc_ne_zero (D := D) j p`. Establish `hs'` using `tiltSc_ne_zero (D := D) j p.rev`. Use `⟨mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hs) h0, fun x => ?_⟩` and prove the remaining obligations.
+
+Unfold `rowId`. Rewrite using `[mul_inv, FractionalIdeal.spanSingleton_inv, mem_spanSingleton_mul_iff hs', mem_spanSingleton_mul_iff (inv_ne_zero hs), inv_inv, hd, star_mul', star_inv₀]`. Establish `e : (star (tiltSc D j p.rev))⁻¹ = tiltSc D j p`. Conclude with `inv_eq_of_mul_eq_one_left (tiltSc_mul_star_rev j p)`. Rewrite using `[e]`.
+-/
 theorem rowId_ne_zero_and_dual (j : ℕ) (p : Fin (D.R.m - 1 - j)) :
     rowId D j p ≠ 0 ∧ ∀ x, x ∈ rowId D j p.rev ↔ star x ∈ (rowId D j p)⁻¹ := by
   obtain ⟨hA, hconj⟩ := (GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).1
@@ -70,6 +92,11 @@ theorem rowId_ne_zero_and_dual (j : ℕ) (p : Fin (D.R.m - 1 - j)) :
 
 variable {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Unfold `rowN`. Use `split_ifs with h`. Use `GlobalTheory.ChiGrid.SumDual.isSelfDualC_lat D _ _ _ _ (G.rowDec j h) _ _ (Or.inr rfl) (G.isV (X := .top j) hj (fun _ h' => by cases h')).sd (fun p => (rowId_ne_zero_and_dual j p).1) (fun p x => (rowId_ne_zero_and_dual j p).2 x)` and prove the remaining obligations. Conclude with `(G.isV (X := .grid D.R.m j) ⟨le_rfl, hj⟩ (fun _ h' => by`. Use `D.R.two_le_m` as an intermediate fact.
+
+Use `injection h' with h1`. Use the proof step `omega)).sd`.
+-/
 theorem isSelfDualC_rowN (G : GridData L sc) (j : ℕ) (hj : j ≤ D.R.m) : IsSelfDualC _ (rowN G j) := by
   unfold rowN
   split_ifs with h
@@ -82,6 +109,9 @@ theorem isSelfDualC_rowN (G : GridData L sc) (j : ℕ) (hj : j ≤ D.R.m) : IsSe
 
 end GlobalTheory.RowShape
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ j hj => GlobalTheory.RowShape.isSelfDualC_rowN ch.G j hj⟩⟩`.
+-/
 theorem GlobalTheory.RowShape.big_isSelfDualC_rowN :
     Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ j, j ≤ D.R.m → IsSelfDualC _ (GlobalTheory.RowShape.rowN ch.G j) :=
   ⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ j hj => GlobalTheory.RowShape.isSelfDualC_rowN ch.G j hj⟩⟩

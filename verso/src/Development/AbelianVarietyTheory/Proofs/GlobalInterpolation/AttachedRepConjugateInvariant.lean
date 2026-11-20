@@ -16,27 +16,44 @@ section Gen
 
 variable {F Ω K : Type} [Field F] [Field Ω] [Algebra F Ω] [Field K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω]
 
+/- English proof (translation)
+Use `show (g⁻¹ * g) y = y`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression.
+-/
 theorem inv_apply_apply (g : Formalism.ConjugateSelfDual.G F Ω) (y : Ω) : (g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) (g y) = y := by
   show (g⁻¹ * g) y = y
   rw [inv_mul_cancel]
   rfl
 
+/- English proof (translation)
+Use `show (g * g⁻¹) y = y`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression.
+-/
 theorem apply_inv_apply (g : Formalism.ConjugateSelfDual.G F Ω) (y : Ω) : g ((g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) y) = y := by
   show (g * g⁻¹) y = y
   rw [mul_inv_cancel]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ValuationSubring.valuation_le_one_iff, ValuationSubring.valuation_le_one_iff, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`.
+-/
 theorem val_le_one_smul (A : ValuationSubring Ω) (g : Formalism.ConjugateSelfDual.G F Ω) (y : Ω) :
     (g • A).valuation y ≤ 1 ↔ A.valuation ((g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) y) ≤ 1 := by
   rw [ValuationSubring.valuation_le_one_iff, ValuationSubring.valuation_le_one_iff,
     ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]
 
+/- English proof (translation)
+Rewrite using `[ReciprocityTheory.Gal.valuation_lt_one_iff', ReciprocityTheory.Gal.valuation_lt_one_iff', ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, AlgEquiv.smul_def, map_inv₀, map_eq_zero_iff _ (g⁻¹ : Formalis …`.
+-/
 theorem val_lt_one_smul (A : ValuationSubring Ω) (g : Formalism.ConjugateSelfDual.G F Ω) (y : Ω) :
     (g • A).valuation y < 1 ↔ A.valuation ((g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) y) < 1 := by
   rw [ReciprocityTheory.Gal.valuation_lt_one_iff', ReciprocityTheory.Gal.valuation_lt_one_iff',
     ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem,
     AlgEquiv.smul_def, AlgEquiv.smul_def, map_inv₀, map_eq_zero_iff _ (g⁻¹ : Formalism.ConjugateSelfDual.G F Ω).injective]
 
+/- English proof (translation)
+Use `haveI : IsGalois K Ω := IsAlgClosure.isGalois K Ω`. Establish `h` using `InfiniteGalois.fixedField_fixingSubgroup (⊥ : IntermediateField K Ω)`. Establish `hz' : z ∈ IntermediateField.fixedField (⊥ : IntermediateField K Ω).fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `t _`.
+
+Conclude with `hz t`. Rewrite `hz'` using `[h]`. Conclude with `IntermediateField.mem_bot.1 hz'`.
+-/
 theorem exists_of_fixed [CharZero K] [IsAlgClosure K Ω] (z : Ω) (hz : ∀ t : Formalism.ConjugateSelfDual.G K Ω, t z = z) :
     ∃ y : K, algebraMap K Ω y = z := by
   haveI : IsGalois K Ω := IsAlgClosure.isGalois K Ω
@@ -48,6 +65,13 @@ theorem exists_of_fixed [CharZero K] [IsAlgClosure K Ω] (z : Ω) (hz : ∀ t : 
   rw [h] at hz'
   exact IntermediateField.mem_bot.1 hz'
 
+/- English proof (translation)
+Use `choose f hf using h1`. Use `choose f' hf' using h2`. Establish `hinj` using `(algebraMap K Ω).injective`. Set `φ : K →+* K` to `{ toFun := f map_one' := hinj (by simp [hf]) map_mul' := fun x y => hinj (by simp [hf]) map_zero' := hinj (by simp [hf]) map_add' := fun x y => hinj (by simp [hf]) }`. Set `ψ : K →+* K` to `{ toFun := f' map_one' := hinj (by simp [hf']) map_mul' := fun x y => hinj (by simp [hf']) map_zero' := hinj (by simp [hf']) map_add' := fun x y => hinj (by simp [hf']) }`.
+
+Use `⟨RingEquiv.ofRingHom φ ψ ?_ ?_, fun x => hf x⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `hinj (by show algebraMap K Ω (f (f' x)) = algebraMap K Ω x`. Rewrite using `[hf, hf', apply_inv_apply])`. Use extensionality with `x`.
+
+Conclude with `hinj (by show algebraMap K Ω (f' (f x)) = algebraMap K Ω x`. Rewrite using `[hf', hf, inv_apply_apply])`.
+-/
 theorem exists_ringEquiv (g : Formalism.ConjugateSelfDual.G F Ω)
     (h1 : ∀ x : K, ∃ y : K, algebraMap K Ω y = g (algebraMap K Ω x))
     (h2 : ∀ x : K, ∃ y : K, algebraMap K Ω y = (g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) (algebraMap K Ω x)) :
@@ -79,6 +103,11 @@ theorem exists_ringEquiv (g : Formalism.ConjugateSelfDual.G F Ω)
 
 variable [NumberField K]
 
+/- English proof (translation)
+Establish `hcs : ∀ y, c s y = g (s ((g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) y))` using `fun y => DFunLike.congr_fun (hc s) y`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show (res F Ω K (c s)) • (g • A) = g • A`. Rewrite using `[hc s, mul_smul, mul_smul, inv_smul_smul]`. Use `show g • (s • A) = g • A`.
+
+Rewrite using `[show s • A = A from hs.1]`. Rewrite `hx` using `[val_le_one_smul]`. Rewrite using `[val_lt_one_smul, map_sub, hcs, inv_apply_apply]`. Conclude with `hs.2 _ hx`.
+-/
 theorem ine_conj (g : Formalism.ConjugateSelfDual.G F Ω) (c : Formalism.ConjugateSelfDual.G K Ω →* Formalism.ConjugateSelfDual.G K Ω)
     (hc : ∀ s, res F Ω K (c s) = g * res F Ω K s * g⁻¹)
     (A : ValuationSubring Ω) (s : Formalism.ConjugateSelfDual.G K Ω) (hs : s ∈ ReciprocityTheory.Gal.Ine (F := K) A) :
@@ -93,6 +122,11 @@ theorem ine_conj (g : Formalism.ConjugateSelfDual.G F Ω) (c : Formalism.Conjuga
     rw [val_lt_one_smul, map_sub, hcs, inv_apply_apply]
     exact hs.2 _ hx
 
+/- English proof (translation)
+Establish `hcs : ∀ y, c s y = g (s ((g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) y))` using `fun y => DFunLike.congr_fun (hc s) y`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show (res F Ω K (c s)) • (g • A) = g • A`. Rewrite using `[hc s, mul_smul, mul_smul, inv_smul_smul]`. Use `show g • (s • A) = g • A`.
+
+Rewrite using `[show s • A = A from hs.1]`. Rewrite `hx` using `[val_le_one_smul]`. Rewrite using `[val_lt_one_smul, map_sub, hcs, inv_apply_apply, map_pow]`. Conclude with `hs.2 _ hx`.
+-/
 theorem frob_conj (g : Formalism.ConjugateSelfDual.G F Ω) (c : Formalism.ConjugateSelfDual.G K Ω →* Formalism.ConjugateSelfDual.G K Ω)
     (hc : ∀ s, res F Ω K (c s) = g * res F Ω K s * g⁻¹)
     (A : ValuationSubring Ω) (q : ℕ) (s : Formalism.ConjugateSelfDual.G K Ω) (hs : Formalism.ConjugateSelfDual.IsFrob A q s) :

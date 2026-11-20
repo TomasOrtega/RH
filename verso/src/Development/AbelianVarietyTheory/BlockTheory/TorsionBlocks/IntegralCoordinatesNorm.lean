@@ -81,6 +81,11 @@ def NormAlg : Prop :=
 
 def IntArch : Prop := INT ∧ ARCH
 
+/- English proof (translation)
+Take `⟨C, hC, h⟩` from `h`. Use `⟨C, hC, fun D hD N B L Q hs => ?_⟩` and prove the remaining obligations. Take `⟨S, dl, h1, h2⟩` from `h D (hH D hD) N B L Q hs`. Use `⟨S, dl, h1, fun K _ _ emb ι zA zA' hn hz => h2 K emb ι zA zA' (fun ij => ?_) hz⟩` and prove the remaining obligations. Take `⟨⟨c, hc, r⟩, ⟨c', hc', r'⟩⟩` from `hn ij`.
+
+Conclude with `⟨⟨c, hA D hc, r⟩, ⟨c', hA D hc', r'⟩⟩`.
+-/
 theorem IntUnder.mono {H H' : D7 → Prop} {A A' : ∀ D : D7, Set (Ideal (𝓞 D.host.K))} (hH : ∀ D, H' D → H D)
     (hA : ∀ D, A' D ⊆ A D) (h : IntUnder H A) : IntUnder H' A' := by
   obtain ⟨C, hC, h⟩ := h
@@ -90,6 +95,9 @@ theorem IntUnder.mono {H H' : D7 → Prop} {A A' : ∀ D : D7, Set (Ideal (𝓞 
   obtain ⟨⟨c, hc, r⟩, ⟨c', hc', r'⟩⟩ := hn ij
   exact ⟨⟨c, hA D hc, r⟩, ⟨c', hA D hc', r'⟩⟩
 
+/- English proof (translation)
+Take `⟨C, hC, h⟩` from `h`. Conclude with `⟨C, hC, fun D hD => h D (hH D hD)⟩`.
+-/
 theorem ArchUnder.mono {H H' : D7 → Prop} (hH : ∀ D, H' D → H D) (h : ArchUnder H) : ArchUnder H' := by
   obtain ⟨C, hC, h⟩ := h
   exact ⟨C, hC, fun D hD => h D (hH D hD)⟩

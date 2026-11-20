@@ -13,6 +13,13 @@ open GlobalTheory.MBLow.Cl Matrix
 
 namespace GlobalTheory.MBLow.Cl
 
+/- English proof (translation)
+Introduce `N g' r g bX d σ k hk ζ q hq`. Take `⟨-, hadd, hinj, hsurj, hwp⟩` from `hq`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.degenerationTorsion_eq_periodLattice_mod_level N g' r g bX d σ k hk`. Establish `h5` using `GlobalTheory.T.weilPairing_degenerationTorsion_classical N g' r g bX d σ k hk`. Use `choose M0 N0 hMN using h1`.
+
+Use `⟨fun a => M0 (q a), fun a => N0 (q a), fun a => hMN _, fun a a' => ?_, fun a a' M' N' hM hN => ?_, fun M₁ N₁ => ?_, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `(h4 _ _ _ _ _ _ (h3 _ _ _ _ _ _ (hMN (q a)) (hMN (q a'))) (hMN (q (a + a')))).1 (hadd a a')`. Conclude with `hinj a a' ((h4 _ _ _ _ _ _ (hMN (q a)) (hMN (q a'))).2 ⟨M', N', hM, hN⟩)`. Take `⟨p, hp, -⟩` from `h2 M₁ N₁`. Take `⟨a, ha⟩` from `hsurj p`.
+
+Conclude with `⟨a, (h4 _ _ _ _ _ _ (hMN (q a)) hp).1 ha⟩`. Rewrite using `[← hwp i j]`. Conclude with `(h5 _ _ _ _ _ _ (hMN _) (hMN _)).symm`.
+-/
 theorem exists_integral_labels : AllCD fun {N} {g'} {r} {g} {bX} d σ => ∀ (k : ℕ), 0 < k → ∀ (ζ : ℂˣ) (q : (Fin (2 * g) → ZMod k) → N.QT k), QLevel N g k ζ q → ∃ M Nn : (Fin (2 * g) → ZMod k) → Fin g → ℤ, (∀ a, d.Rep σ k (M a) (Nn a) (q a)) ∧ (∀ a a', ∃ M' N', M (a + a') = M a + M a' + (k : ℤ) • M' ∧ Nn (a + a') = Nn a + Nn a' + (k : ℤ) • N') ∧ (∀ a a' M' N', M a' = M a + (k : ℤ) • M' → Nn a' = Nn a + (k : ℤ) • N' → a = a') ∧ (∀ M₁ N₁, ∃ a M' N', M₁ = M a + (k : ℤ) • M' ∧ N₁ = Nn a + (k : ℤ) • N') ∧ ∀ i j, Complex.exp ((2 * Real.pi * Complex.I : ℂ) * (cv (M (Pi.single i 1)) ⬝ᵥ cv (Nn (Pi.single j 1)) - cv (Nn (Pi.single i 1)) ⬝ᵥ cv (M (Pi.single j 1))) / k) = ((ζ ^ stdSymp g i j : ℂˣ) : ℂ) := by
   intro N g' r g bX d σ k hk ζ q hq
   obtain ⟨-, hadd, hinj, hsurj, hwp⟩ := hq

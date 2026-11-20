@@ -9,10 +9,16 @@ open Complex Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => thetaThreeSec_mem i, thetaThreeFam_linearIndependent, thetaThreeFam_span⟩`.
+-/
 theorem rigSymFormTauI_isBasisOf :
     rigSymFormTauI.IsBasisOf 3 (r := 2) thetaThreeFam :=
   ⟨fun i => thetaThreeSec_mem i, thetaThreeFam_linearIndependent, thetaThreeFam_span⟩
 
+/- English proof (translation)
+Use `⟨rfl, le_rfl, rigSymFormTauI_isBasisOf, le_rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `J _`. Conclude with `⟨0, 0, Submodule.zero_mem _, fun z _ => by simp⟩`. Introduce `J _ z _`. Simplify using `[cechD]`.
+-/
 theorem vanishingCech_hyps :
     rigSymFormTauI.g = 1 ∧ 3 ≤ 3 ∧ rigSymFormTauI.IsBasisOf 3 (r := 2) thetaThreeFam ∧ 1 ≤ 1 ∧
       rigSymFormTauI.IsCocycle 3 1 (0 + 1) thetaThreeFam (fun _ _ => 0) := by
@@ -22,11 +28,23 @@ theorem vanishingCech_hyps :
   · intro J _ z _
     simp [cechD]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[RigSymForm.formSec, thetaThreeFam]`.
+-/
 lemma formSec_X_zero :
     rigSymFormTauI.formSec (r := 2) thetaThreeFam (MvPolynomial.X 0) = thetaThreeSec 0 := by
   funext z
   simp [RigSymForm.formSec, thetaThreeFam]
 
+/- English proof (translation)
+Use `⟨rfl, le_rfl, le_rfl, rigSymFormTauI_isBasisOf, fun _ => MvPolynomial.isHomogeneous_X _ _, ?_⟩` and prove the remaining obligations. Take `⟨W, hW⟩` from `thetaThree_zero_finite`. Use `⟨W.image (fun w => (fun _ => w : Fin 1 → ℂ)), fun z hz => ?_⟩` and prove the remaining obligations. Establish `h0 : thetaThree 0 (z (0 : Fin 1)) = 0`. Use `hz (0 : Fin 1)` as an intermediate fact.
+
+Simplify using `only [formSec_X_zero] at this`. Conclude with `this`. Take `⟨w', hw', m, k, hz0⟩` from `hW (z (0 : Fin 1)) h0`. Use `⟨fun _ => w', Finset.mem_image.mpr ⟨w', hw', rfl⟩, fun _ => k, fun _ => m, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Establish `hi : i = (0 : Fin 1)` using `Subsingleton.elim (α := Fin 1) _ _`. Substitute `hi` using the available equality. Use `show z (0 : Fin 1) = w' + (tauI.τ *ᵥ intVec (fun _ : Fin 1 => k)) 0 + ((m : ℤ) : ℂ)`. Establish `hτ : (tauI.τ *ᵥ intVec (fun _ : Fin 1 => k)) 0 = (k : ℂ) * I`. Simplify using `[tauI, Matrix.mulVec, dotProduct, intVec, mul_comm]`.
+
+Rewrite using `[hz0, hτ]`.
+-/
 theorem exactField_hyps :
     rigSymFormTauI.g = 1 ∧ 3 ≤ 3 ∧ 1 ≤ 1 ∧ rigSymFormTauI.IsBasisOf 3 (r := 2) thetaThreeFam ∧
       (∀ i : Fin rigSymFormTauI.g,

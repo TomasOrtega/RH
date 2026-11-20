@@ -12,6 +12,19 @@ noncomputable section
 
 namespace UpperTheory.GalS
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨σ, hσ, hd⟩` from `P.om_inj k w hw x y hx hy hne`. Take `⟨U, hU, hUx⟩` from `P.om_open k w x hx`. Take `⟨V, hV, hVy⟩` from `P.om_open k w y hy`. Establish `inv : ∀ z, z ≠ 0 → ∀ a ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 w), P.om k w z a * P.om k w z a⁻¹ = 1 := fun z hz a ha => by`.
+
+Rewrite using `[← P.om_mul k w z hz a ha _ (inv_mem ha), mul_inv_cancel, P.om_one k w z hz]`. Set `K : Subgroup (GE D.nd)` to `{ carrier := {s | s ∈ Ine (F := D.host.E) (D.nd.plOm.1 w) ∧ P.om k w x s = P.om k w y s} one_mem' := ⟨one_mem _, by rw [P.om_one k w x hx, P.om_one k w y hy]⟩ mul_mem' := fun {a b} ha hb => ⟨mul_mem ha.1 hb.1, by`. Rewrite using `[P.om_mul k w x hx a ha.1 b hb.1, P.om_mul k w y hy a ha.1 b hb.1, ha.2, hb.2]⟩`. Use the proof step `inv_mem' := fun {a} ha => ⟨inv_mem ha.1, by`. Establish `h1` using `inv x hx a ha.1`.
+
+Establish `h2` using `inv y hy a ha.1`. Rewrite `h1` using `[ha.2]`. Conclude with `mul_left_cancel₀ (left_ne_zero_of_mul_eq_one h2) (h1.trans h2.symm)⟩ }`. Establish `hK : Subgroup.closure (insert γ (wildSet D.nd (D.nd.plOm.1 w))) ≤ K`. Rewrite using `[Subgroup.closure_le]`.
+
+Introduce and unpack `s (rfl | hs)`. Conclude with `⟨hγ.1, e⟩`. Conclude with `⟨GlobalTheory.TameGenPowers.wild_mem_Ine hs, by rw [P.om_wild k w hw x hx s hs, P.om_wild k w hw y hy s hs]⟩`. Establish `hO : IsOpen {s : GE D.nd | σ⁻¹ * s ∈ (U : Set (GE D.nd)) ∩ V}` using `(hU.inter hV).preimage (continuous_mul_left σ⁻¹)`. Take `⟨s, hs1, hs2⟩` from `mem_closure_iff.1 (hγ.2 hσ) _ hO (by simp [U.one_mem, V.one_mem])`.
+
+Establish `hs` using `hK hs2`. Establish `hi : σ⁻¹ * s ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 w) := mul_mem (inv_mem hσ) hs.1`. Establish `e1` using `P.om_mul k w x hx σ hσ _ hi`. Establish `e2` using `P.om_mul k w y hy σ hσ _ hi`. Rewrite `e1` using `[mul_inv_cancel_left, hUx _ hs1.1 hi, mul_one]`.
+
+Rewrite `e2` using `[mul_inv_cancel_left, hVy _ hs1.2 hi, mul_one]`. Conclude with `hd (e1.symm.trans (hs.2.trans e2))`.
+-/
 theorem om_gen_inj {D : D7} (P : PairedCharacterCondition.Pend D) (k : Fin 2) (w : PlE D.host) (hw : w ∈ placesOver D.host.E (D.host.g k))
     {γ : GE D.nd} (hγ : TameGenAt (D.nd.plOm.1 w) γ) {x y : Fb (D.host.g k) (D.host.g_prime k)} (hx : x ≠ 0) (hy : y ≠ 0)
     (e : P.om k w x γ = P.om k w y γ) : x = y := by
@@ -46,6 +59,13 @@ theorem om_gen_inj {D : D7} (P : PairedCharacterCondition.Pend D) (k : Fin 2) (w
   rw [mul_inv_cancel_left, hVy _ hs1.2 hi, mul_one] at e2
   exact hd (e1.symm.trans (hs.2.trans e2))
 
+/- English proof (translation)
+Establish `h1 : P.om k w 1 γ = 1`. Establish `a` using `P.tameInertiaChar_mul_root k w 1 1 one_ne_zero one_ne_zero γ hγ`. Establish `b` using `P.om_mul k w 1 one_ne_zero γ hγ _ (inv_mem hγ)`. Rewrite `b` using `[mul_inv_cancel, P.om_one k w 1 one_ne_zero]`. Rewrite `a` using `[mul_one]`.
+
+Conclude with `mul_left_cancel₀ (left_ne_zero_of_mul_eq_one b.symm) (a.symm.trans (mul_one _).symm)`. Establish `h2 : ∀ m : ℕ, P.om k w (x ^ m) γ = P.om k w x γ ^ m` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, h1]`. Consider the case `succ m ih => rw [pow_succ, pow_succ, P.tameInertiaChar_mul_root k w _ _ (pow_ne_zero _ hx) hx γ hγ, ih]`.
+
+Rewrite using `[← h2, h, h1]`.
+-/
 theorem om_pow {D : D7} (P : PairedCharacterCondition.Pend D) (k : Fin 2) (w : PlE D.host) {γ : GE D.nd}
     (hγ : γ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w)) {x : Fb (D.host.g k) (D.host.g_prime k)} (hx : x ≠ 0) (n : ℕ) (h : x ^ n = 1) :
     P.om k w x γ ^ n = 1 := by
@@ -61,10 +81,20 @@ theorem om_pow {D : D7} (P : PairedCharacterCondition.Pend D) (k : Fin 2) (w : P
     | succ m ih => rw [pow_succ, pow_succ, P.tameInertiaChar_mul_root k w _ _ (pow_ne_zero _ hx) hx γ hγ, ih]
   rw [← h2, h, h1]
 
+/- English proof (translation)
+Unfold `Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[← (IsAlgClosed.splits _).natDegree_eq_card_roots, natDegree_map]`.
+-/
 theorem card_rootsBar {p : ℕ} [Fact p.Prime] (a : (ZMod p)[X]) : Multiset.card (Formalism.CyclotomicNorms.rootsBar a) = a.natDegree := by
   unfold Formalism.CyclotomicNorms.rootsBar
   rw [← (IsAlgClosed.splits _).natDegree_eq_card_roots, natDegree_map]
 
+/- English proof (translation)
+Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Use `⟨fun σ hσ hwild => ?_, hm, fun γ hγ z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[P.inertiaCharpoly_eigenvalues k w hw _ hdeg σ hσ, Multiset.map_congr rfl (fun x hx => by rw [P.om_wild k w hw x (hnz x hx) σ hwild, C_1]), Multiset.map_const', Multiset.prod_replicate, card_rootsBar, hdeg]`. Rewrite using `[P.inertiaCharpoly_eigenvalues k w hw _ hdeg γ hγ.1, thr_split (D.host.g_prime k) hw (D.nd.g_split k) (DiscreteGroups.sglob.DzType.big_of_le_nV D k hle)] at hz set M := Formalism.CyclotomicNorms.rootsBar (D.naut.items₂ k w y) with hM`. Establish `e : (M.map fun x => X - C (P.om k w x γ)).prod = ((M.map fun x => P.om k w x γ).map fun c => X - C c).prod`.
+
+Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite `hz` using `[e, ← count_roots, roots_multiset_prod_X_sub_C]`. Take `⟨x, hx, rfl⟩` from `Multiset.mem_map.1 (Multiset.count_pos.1 (by omega : 0 < Multiset.count z (M.map fun x => P.om k w x γ)))`. Rewrite `hz` using `[Multiset.count_map_eq_count _ _ (fun a ha b hb h => om_gen_inj P k w hw hγ (hnz a ha) (hnz b hb) h) x hx]`.
+
+Rewrite using `[GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) hw]`. Conclude with `om_pow P k w hγ.1 (hnz x hx) _ (hrep x (Multiset.le_count_iff_replicate_le.1 hz))`.
+-/
 theorem nc_of_roots {D : D7} (P : PairedCharacterCondition.Pend D) (k : Fin 2) (w : PlE D.host) (hw : w ∈ placesOver D.host.E (D.host.g k))
     (y : D.naut.LP w) (hm : D.naut.mono0 y) (hdeg : (D.naut.items₂ k w y).natDegree = D.naut.lpDim y)
     (hle : D.naut.lpDim y ≤ D.R.nV)
@@ -89,6 +119,25 @@ theorem nc_of_roots {D : D7} (P : PairedCharacterCondition.Pend D) (k : Fin 2) (
     rw [GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) hw]
     exact om_pow P k w hγ.1 (hnz x hx) _ (hrep x (Multiset.le_count_iff_replicate_le.1 hz))
 
+/- English proof (translation)
+Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨u, hu, hm0, hlab, hconj⟩` from `hDZ i k v PI τ hτ hsq hroot`. Take `⟨Pa, -, -, hr, hs, -⟩` from `h1 i PI`. Establish `hdim : ∀ w, IsSplitPl D.host w → D.naut.lpDim (D.naut.locV i PI w) = D.R.nV` using `fun w h => by`. Rewrite using `[← hs w h, GlobalTheory.InertialTypesCmp.lpDim_isoLoc, hr]`.
+
+Establish `hne : (P.lz k).lab τ ≠ 0` using `((P.lz k).lab_spec τ).1.ne_zero`. Establish `hroot0 : ∀ y ∈ Formalism.CyclotomicNorms.rootsBar ((P.lz k).lab τ * (X - C (u : ZMod (D.host.g k))) ^ D.R.t), y ≠ 0`. Introduce and unpack `y hy rfl`. Unfold `Formalism.CyclotomicNorms.rootsBar at hy`. Establish `h` using `isRoot_of_mem_roots hy`.
+
+Rewrite `h` using `[IsRoot.def, ← coeff_zero_eq_eval_zero, coeff_map, map_eq_zero, mul_coeff_zero, coeff_zero_eq_eval_zero (_ ^ _)]`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `((P.lz k).lab_spec τ).2.2 h`. Simplify using `at h`. Establish `hrep : ∀ x, 2 ≤ (Formalism.CyclotomicNorms.rootsBar ((P.lz k).lab τ * (X - C (u : ZMod (D.host.g k))) ^ D.R.t)).count x → x ^ (D.host.g k - 1) = 1`.
+
+Introduce `x hx`. Unfold `Formalism.CyclotomicNorms.rootsBar at hx`. Establish `hnd` using `nodup_roots ((PerfectField.separable_iff_squarefree.2 hsq).map (f := algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k))))`. Rewrite using `[Polynomial.map_mul, roots_mul (by`. Rewrite using `[← Polynomial.map_mul]`.
+
+Conclude with `Polynomial.map_ne_zero (mul_ne_zero hne ((monic_X_sub_C _).pow _).ne_zero)),`. Use the proof step `Multiset.count_add, Polynomial.map_pow, Polynomial.map_sub, map_X, map_C, roots_pow, roots_X_sub_C] at hx`. Establish `h1` using `Multiset.nodup_iff_count_le_one.1 hnd x`. Establish `h2 : x ∈ D.R.t • ({algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) (u : ZMod (D.host.g k))} : Multiset _)` using `Multiset.count_pos.1 (by omega)`. Rewrite using `[Multiset.mem_singleton.1 (Multiset.mem_of_mem_nsmul h2), ← map_pow, ZMod.pow_card_sub_one_eq_one u.ne_zero, map_one]`.
+
+Break down `hw with rfl | hc` into its components or cases. Use `nc_of_roots P k _ (D.naut.plGw_over k v) _ hm0 ?_ (hdim _ (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v)).le (by rw [hlab]; exact hroot0) (fun x hx => hrep x (Multiset.le_count_iff_replicate_le.2 (by rw [hlab] at hx; exact hx)))` and prove the remaining obligations. Rewrite using `[hdim _ (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v), hlab, ((P.lz k).lab_spec τ).1.natDegree_mul ((monic_X_sub_C _).pow _), ((P.lz k).lab_spec τ).2.1, (monic_X_sub_C _).natDegree_pow, natDegree_X_sub_C, mul_one]`. Both sides reduce to the same expression. Take `⟨hw, hs'⟩` from `GlobalTheory.TypeAbove.conj_over_split D (D.naut.plGw_over k v) (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v) hc`.
+
+Take `⟨hm, hdeg, hroots⟩` from `hconj w hc`. Use `nc_of_roots P k w hw _ hm (hdeg.trans (hdim w hs').symm) (hdim w hs').le ?_ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hroots]`. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hy`.
+
+Conclude with `inv_ne_zero (hroot0 z hz)`. Rewrite `hx` using `[hroots]`. Establish `h2` using `Multiset.le_count_iff_replicate_le.2 (show Multiset.replicate 2 x ≤ _ from hx)`. Rewrite `h2` using `[← inv_inv x, Multiset.count_map_eq_count' _ _ inv_injective]`. Establish `h3` using `hrep _ h2`.
+
+Rewrite `h3` using `[inv_pow, inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem nc_of_label {D : D7} (P : PairedCharacterCondition.Pend D) (hDZ : PairedCharacterCondition.admDZ P) (h1 : SumRepresentations.adm1 D) (i : D.nd.Loc) (k : Fin 2) (v : D.nd.PlG k)
     (PI : D.naut.AV i) (τ : (P.lz k).Irr D.R.r) (hτ : τ ∈ P.kty i PI k v) (hsq : Squarefree ((P.lz k).lab τ))
     (hroot : ∀ u : (ZMod (D.host.g k))ˣ, u = PairedCharacterCondition.chiJ D i k v ∨ u = (PairedCharacterCondition.chiJ D i k v)⁻¹ →

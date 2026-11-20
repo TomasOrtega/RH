@@ -12,6 +12,9 @@ variable {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {n : ℕ}
   {v : HeightOneSpectrum (𝓞 F)} {μv : Measure (Fin n → Fin M → Fv F v ⊗[F] E)} {νv : Measure (HermR (Fv F v) σ n)}
   {Φv : (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ}
 
+/- English proof (translation)
+Unfold `uu jtR`. Rewrite using `[← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `Y`. Rewrite using `[mul_assoc, ← psiV_add, trPair_sub_right, trPair_comm (Fv F v) T.1 b.1, sub_eq_add_neg]`.
+-/
 theorem uu_eq (T b : HermR (Fv F v) σ n) :
     uu σ J ψ v μv Φv T b =
       ∫ Y, Φv Y * psiV F ψ v (trPair (Fv F v) b.1 (gramR (Fv F v) σ J Y - T.1)) ∂μv := by
@@ -20,6 +23,9 @@ theorem uu_eq (T b : HermR (Fv F v) σ n) :
   congr 1; funext Y
   rw [mul_assoc, ← psiV_add, trPair_sub_right, trPair_comm (Fv F v) T.1 b.1, sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[← psiV_add, ← trPair_add_left]`. Both sides reduce to the same expression.
+-/
 theorem psiV_trPair_add_left (ψ : AddChar (AF F) ℂ) (S : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))
     (b b' : HermR (Fv F v) σ n) :
     psiV F ψ v (trPair (Fv F v) (b + b').1 S) = psiV F ψ v (trPair (Fv F v) b.1 S) * psiV F ψ v (trPair (Fv F v) b'.1 S) := by
@@ -32,6 +38,9 @@ def setP (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (ψ : AddChar (AF F
     (Λ : Set (HermR (Fv F v) σ n)) (T : HermR (Fv F v) σ n) : Set (Fin n → Fin M → Fv F v ⊗[F] E) :=
   {Y | ∀ b ∈ Λ, psiV F ψ v (trPair (Fv F v) b.1 (gramR (Fv F v) σ J Y - T.1)) = 1}
 
+/- English proof (translation)
+Establish `: setP σ J ψ v Λ T = ⋂ b ∈ Λ, {Y | psiV F ψ v (trPair (Fv F v) b.1 (gramR (Fv F v) σ J Y - T.1)) = 1}`. Use extensionality with `Y`. Simplify using `[setP]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun b _ => isClosed_eq ((continuous_psiV hψ).comp (continuous_trPair continuous_const ((continuous_gramR' σ J).sub continuous_const))) continuous_const`.
+-/
 theorem isClosed_setP (hψ : IsCharAF F ψ) (Λ : Set (HermR (Fv F v) σ n)) (T : HermR (Fv F v) σ n) :
     IsClosed (setP σ J ψ v Λ T) := by
   have : setP σ J ψ v Λ T = ⋂ b ∈ Λ, {Y | psiV F ψ v (trPair (Fv F v) b.1 (gramR (Fv F v) σ J Y - T.1)) = 1} := by
@@ -40,6 +49,21 @@ theorem isClosed_setP (hψ : IsCharAF F ψ) (Λ : Set (HermR (Fv F v) σ n)) (T 
   exact isClosed_biInter fun b _ => isClosed_eq ((continuous_psiV hψ).comp
     (continuous_trPair continuous_const ((continuous_gramR' σ J).sub continuous_const))) continuous_const
 
+/- English proof (translation)
+Use `h.sdH.1` as an intermediate fact. Use `h.sdW.1` as an intermediate fact. Use `set Λ := ballH v σ n R hR.le with hΛdef`. Establish `hΛc : IsCompact (Λ : Set (HermR (Fv F v) σ n))` using `isCompact_ballH v σ n R hR.le`. Establish `hΛm : MeasurableSet (Λ : Set (HermR (Fv F v) σ n))` using `hΛc.isClosed.measurableSet`.
+
+Establish `hfin : νv (Λ : Set (HermR (Fv F v) σ n)) < ⊤` using `hΛc.measure_lt_top`. Use `haveI : IsFiniteMeasure (νv.restrict (Λ : Set (HermR (Fv F v) σ n))) := isFiniteMeasure_restrict.2 hfin.ne`. Set `f : HermR (Fv F v) σ n → (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ` to `fun b Y => Φv Y * psiV F ψ v (trPair (Fv F v) b.1 (gramR (Fv F v) σ J Y - T.1))`. Establish `hΦc : Continuous Φv` using `h.sb.1.continuous`. Establish `hΦi : Integrable Φv μv` using `hΦc.integrable_of_hasCompactSupport h.sb.2`.
+
+Establish `hψc` using `continuous_psiV (v := v) h.chr`. Establish `hfc : Continuous (Function.uncurry f)` using `(hΦc.comp continuous_snd).mul (hψc.comp (continuous_trPair (continuous_subtype_val.comp continuous_fst) (((continuous_gramR' σ J).comp continuous_snd).sub continuous_const)))`. Establish `hint : Integrable (Function.uncurry f) ((νv.restrict (Λ : Set (HermR (Fv F v) σ n))).prod μv)`. Use `Integrable.mono' ((integrable_const (1 : ℂ)).mul_prod hΦi).norm hfc.aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards with p`.
+
+Simplify using `[f, Function.uncurry, norm_psiV h.chr]`. Establish `hPm : MeasurableSet (setP σ J ψ v (Λ : Set (HermR (Fv F v) σ n)) T)` using `(isClosed_setP h.chr _ T).measurableSet`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `b`.
+
+Conclude with `uu_eq T b`. Use `_ = ∫ Y, ∫ b in (Λ : Set (HermR (Fv F v) σ n)), f b Y ∂νv ∂μv := integral_integral_swap hint`. Use `_ = ∫ Y, ((νv.real (Λ : Set (HermR (Fv F v) σ n)) : ℝ) : ℂ) * (setP σ J ψ v (Λ : Set (HermR (Fv F v) σ n)) T).indicator Φv Y ∂μv := by`. Use `congr 1`. Use function extensionality and compare the values at `Y`.
+
+Simplify using `only [f]`. Rewrite using `[integral_const_mul, setIntegral_char_subgroup νv Λ hΛm (fun b => psiV F ψ v (trPair (Fv F v) b.1 (gramR (Fv F v) σ J Y - T.1))) (fun b b' => psiV_trPair_add_left ψ _ b b')]`. Distinguish the cases in `hP : ∀ b ∈ Λ, psiV F ψ v (trPair (Fv F v) b.1 (gramR (Fv F v) σ J Y - T.1)) = 1`. Rewrite using `[if_pos hP, Set.indicator_of_mem (show Y ∈ setP σ J ψ v (Λ : Set (HermR (Fv F v) σ n)) T from fun b hb => hP b hb)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg hP, Set.indicator_of_notMem (show Y ∉ setP σ J ψ v (Λ : Set (HermR (Fv F v) σ n)) T from fun h' => hP fun b hb => h' b hb)]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ((νv.real (Λ : Set (HermR (Fv F v) σ n)) : ℝ) : ℂ) * ∫ Y in setP σ J ψ v (Λ : Set (HermR (Fv F v) σ n)) T, Φv Y ∂μv := by`. Rewrite using `[integral_const_mul, integral_indicator hPm]`.
+-/
 theorem setIntegral_uu (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) (R : ℝ) (hR : 0 < R) :
     ∫ b in (ballH v σ n R hR.le : Set (HermR (Fv F v) σ n)), uu σ J ψ v μv Φv T b ∂νv =
       ((νv.real (ballH v σ n R hR.le : Set (HermR (Fv F v) σ n)) : ℝ) : ℂ) *
@@ -91,6 +115,9 @@ def perpH (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum 
     Set (HermR (Fv F v) σ n) :=
   {D | ∀ b ∈ Λ, psiV F ψ v (trPair (Fv F v) b.1 D.1) = 1}
 
+/- English proof (translation)
+Establish `: perpH σ ψ v Λ = ⋂ b ∈ Λ, {D : HermR (Fv F v) σ n | psiV F ψ v (trPair (Fv F v) b.1 D.1) = 1}`. Use extensionality with `D`. Simplify using `[perpH]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun b _ => isClosed_eq ((continuous_psiV hψ).comp (continuous_trPair continuous_const continuous_subtype_val)) continuous_const`.
+-/
 theorem isClosed_perpH (hψ : IsCharAF F ψ) (Λ : Set (HermR (Fv F v) σ n)) : IsClosed (perpH σ ψ v Λ) := by
   have : perpH σ ψ v Λ = ⋂ b ∈ Λ, {D : HermR (Fv F v) σ n | psiV F ψ v (trPair (Fv F v) b.1 D.1) = 1} := by
     ext D; simp [perpH]
@@ -98,6 +125,9 @@ theorem isClosed_perpH (hψ : IsCharAF F ψ) (Λ : Set (HermR (Fv F v) σ n)) : 
   exact isClosed_biInter fun b _ => isClosed_eq ((continuous_psiV hψ).comp
     (continuous_trPair continuous_const continuous_subtype_val)) continuous_const
 
+/- English proof (translation)
+Introduce `D hD` and use `hperp R hR D.1 D.2 (fun b hb => hD b hb)`.
+-/
 theorem perpH_subset {C₀ : ℝ} (hC₀ : 0 ≤ C₀)
     (hperp : ∀ R : ℝ, 0 < R → ∀ D : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), D ∈ HermR (Fv F v) σ n →
       (∀ b : HermR (Fv F v) σ n, nM v b.1 ≤ R → psiV F ψ v (trPair (Fv F v) b.1 D) = 1) → nM v D ≤ C₀ / R)
@@ -106,6 +136,9 @@ theorem perpH_subset {C₀ : ℝ} (hC₀ : 0 ≤ C₀)
       (ballH v σ n (C₀ / R) (div_nonneg hC₀ hR.le) : Set (HermR (Fv F v) σ n)) :=
   fun D hD => hperp R hR D.1 D.2 (fun b hb => hD b hb)
 
+/- English proof (translation)
+The claim follows from `(isCompact_ballH v σ n (C₀ / R) (div_nonneg hC₀ hR.le)).of_isClosed_subset (isClosed_perpH hψ _) (perpH_subset hC₀ hperp R hR)`.
+-/
 theorem isCompact_perpH (hψ : IsCharAF F ψ) {C₀ : ℝ} (hC₀ : 0 ≤ C₀)
     (hperp : ∀ R : ℝ, 0 < R → ∀ D : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), D ∈ HermR (Fv F v) σ n →
       (∀ b : HermR (Fv F v) σ n, nM v b.1 ≤ R → psiV F ψ v (trPair (Fv F v) b.1 D) = 1) → nM v D ≤ C₀ / R)
@@ -113,6 +146,27 @@ theorem isCompact_perpH (hψ : IsCharAF F ψ) {C₀ : ℝ} (hC₀ : 0 ≤ C₀)
   (isCompact_ballH v σ n (C₀ / R) (div_nonneg hC₀ hR.le)).of_isClosed_subset (isClosed_perpH hψ _)
     (perpH_subset hC₀ hperp R hR)
 
+/- English proof (translation)
+Use `h.sdH.1` as an intermediate fact. Take `⟨C₀, hC₀, hperp⟩` from `perp_bound v σ h.cm h.chr n`. Use `set Λ := ballH v σ n R hR.le with hΛdef`. Establish `hΛc : IsCompact (Λ : Set (HermR (Fv F v) σ n))` using `isCompact_ballH v σ n R hR.le`. Establish `hΛo : IsOpen (Λ : Set (HermR (Fv F v) σ n))` using `isOpen_ballH v σ n R hR`.
+
+Establish `hΛm : MeasurableSet (Λ : Set (HermR (Fv F v) σ n))` using `hΛc.isClosed.measurableSet`. Establish `hPc : IsCompact (perpH σ ψ v (Λ : Set (HermR (Fv F v) σ n)))` using `isCompact_perpH h.chr hC₀ hperp R hR`. Establish `hPm : MeasurableSet (perpH σ ψ v (Λ : Set (HermR (Fv F v) σ n)))` using `hPc.isClosed.measurableSet`. Set `Φ0 : HermR (Fv F v) σ n → ℂ` to `(Λ : Set (HermR (Fv F v) σ n)).indicator (fun _ => 1)`. Establish `hΦ0c : Continuous Φ0` using `IsClopen.continuous_indicator ⟨hΛc.isClosed, hΛo⟩ continuous_const`.
+
+Establish `hΦ0s : HasCompactSupport Φ0` using `HasCompactSupport.intro hΛc (fun x hx => Set.indicator_of_notMem hx _)`. Establish `hhat : (fun y => ∫ x, Φ0 x * psiV F ψ v (pairHerm (Fv F v) σ n x y) ∂νv) = (perpH σ ψ v (Λ : Set (HermR (Fv F v) σ n))).indicator (fun _ => ((νv.real (Λ : Set (HermR (Fv F v) σ n)) : ℝ) : ℂ))`. Use function extensionality and compare the values at `y`. Establish `e1 : ∫ x, Φ0 x * psiV F ψ v (pairHerm (Fv F v) σ n x y) ∂νv = ∫ x in (Λ : Set (HermR (Fv F v) σ n)), psiV F ψ v (trPair (Fv F v) x.1 y.1) ∂νv`. Rewrite using `[← integral_indicator hΛm]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Φ0]`. Distinguish the cases in `hx : x ∈ (Λ : Set (HermR (Fv F v) σ n))`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx, one_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx, zero_mul]`. Rewrite using `[e1, setIntegral_char_subgroup νv Λ hΛm (fun x => psiV F ψ v (trPair (Fv F v) x.1 y.1)) (fun b b' => psiV_trPair_add_left ψ y.1 b b')]`. Distinguish the cases in `hy : ∀ x ∈ Λ, psiV F ψ v (trPair (Fv F v) x.1 y.1) = 1`. Rewrite using `[if_pos hy, Set.indicator_of_mem (show y ∈ perpH σ ψ v (Λ : Set (HermR (Fv F v) σ n)) from fun b hb => hy b hb)]`.
+
+Rewrite using `[if_neg hy, Set.indicator_of_notMem (show y ∉ perpH σ ψ v (Λ : Set (HermR (Fv F v) σ n)) from fun h' => hy fun b hb => h' b hb)]`. Establish `hint : Integrable (fun y => ∫ x, Φ0 x * psiV F ψ v (pairHerm (Fv F v) σ n x y) ∂νv) νv`. Rewrite using `[hhat]`. Conclude with `(integrable_indicator_iff hPm).2 (integrableOn_const hPc.measure_lt_top.ne)`. Establish `key` using `h.sdH.2 Φ0 hΦ0c hΦ0s hint 0`.
+
+Establish `hhat'` using `congrFun hhat`. Simplify using `only [] at key hhat'`. Simplify using `only [hhat'] at key`. Establish `h0 : ∀ y : HermR (Fv F v) σ n, psiV F ψ v (pairHerm (Fv F v) σ n y 0) = 1`. Introduce `y`.
+
+Use `show psiV F ψ v (trPair (Fv F v) y.1 (0 : HermR (Fv F v) σ n).1) = 1`. Rewrite using `[AddSubgroup.coe_zero, trPair_zero_right, psiV_zero]`. Simplify using `only [h0, mul_one, neg_zero] at key`. Establish `hΦ00 : Φ0 0 = 1`. Simplify using `only [Φ0]`.
+
+Conclude with `Set.indicator_of_mem (show (0 : HermR (Fv F v) σ n) ∈ (Λ : Set (HermR (Fv F v) σ n)) from Λ.zero_mem) _`. Rewrite `key` using `[integral_indicator hPm, setIntegral_const, hΦ00]`. Establish `key' : ((νv.real (perpH σ ψ v (Λ : Set (HermR (Fv F v) σ n))) * νv.real (Λ : Set (HermR (Fv F v) σ n)) : ℝ) : ℂ) = 1`. Rewrite using `[Complex.ofReal_mul]`. Simplify `key` using `[Complex.real_smul]`.
+
+Rewrite using `[mul_comm]`. Conclude with `key'` after adjusting the coercions.
+-/
 theorem vol_mul_vol_perp (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) (R : ℝ) (hR : 0 < R) :
     νv.real (ballH v σ n R hR.le : Set (HermR (Fv F v) σ n)) *
       νv.real (perpH σ ψ v (ballH v σ n R hR.le : Set (HermR (Fv F v) σ n))) = 1 := by
@@ -167,6 +221,11 @@ theorem vol_mul_vol_perp (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) (
   rw [mul_comm]
   exact_mod_cast key'
 
+/- English proof (translation)
+Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol' σ h.cm.2.2.2`. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion. Introduce `hY`. Conclude with `⟨⟨gramR (Fv F v) σ J Y, gramR_mem' (Fv F v) σ hσ J h.herm.1 Y⟩, fun b hb => hY b hb, rfl⟩`.
+
+Introduce and unpack `⟨S, hS, hSY⟩ b hb`. Establish `h1` using `hS b hb`. Use `show psiV F ψ v (trPair (Fv F v) b.1 (gramR (Fv F v) σ J Y - T.1)) = 1`. Rewrite using `[← hSY]`. Conclude with `h1`.
+-/
 theorem setP_eq (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) (Λ : Set (HermR (Fv F v) σ n)) :
     setP σ J ψ v Λ T =
       gramR (Fv F v) σ J ⁻¹' (Subtype.val '' {S : HermR (Fv F v) σ n | S - T ∈ perpH σ ψ v Λ}) := by
@@ -189,6 +248,27 @@ open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureThe
   PositivityTheory.SiegelWeilFormula.SwLocFin.DualA
 open scoped TensorProduct Matrix
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M J n ψ v μv νv lam L₁ L₂ Φv g T h`. Use `h.sdH.1` as an intermediate fact. Take `⟨C₀, hC₀, hperp⟩` from `perp_bound v σ h.cm h.chr n`. Use `set B := {S : HermR (Fv F v) σ n | IsUnit (S : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det} with hBdef`. Establish `hBo : IsOpen B` using `isOpen_unitHerm' σ n`.
+
+Establish `hTB : T ∈ B` using `h.unit`. Establish `hgc : ContinuousAt g T` using `(h.dens.1).continuousAt (hBo.mem_nhds hTB)`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Establish `hU : {S | S ∈ B ∧ g S ∈ Metric.ball (g T) (ε / 2)} ∈ 𝓝 T` using `Filter.inter_mem (hBo.mem_nhds hTB) (hgc.preimage_mem_nhds (Metric.ball_mem_nhds _ (half_pos hε)))`.
+
+Take `⟨r, hr, hsub⟩` from `exists_ballH_sub hU`. Use `⟨max 1 (C₀ / r), fun R hR => ?_⟩` and prove the remaining obligations. Establish `hR1 : 0 < R` using `lt_of_lt_of_le one_pos (le_trans (le_max_left _ _) hR)`. Establish `hCr : C₀ / R ≤ r`. Rewrite using `[div_le_iff₀ hR1]`.
+
+Use `(div_le_iff₀ hr).1 (le_trans (le_max_right _ _) hR)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set Λ := ballH v σ n R hR1.le with hΛdef`. Use `set P := perpH σ ψ v (Λ : Set (HermR (Fv F v) σ n)) with hPdef`. Use `set C := {S : HermR (Fv F v) σ n | S - T ∈ P} with hCdef`.
+
+Establish `hCsub : ∀ S ∈ C, S ∈ B ∧ g S ∈ Metric.ball (g T) (ε / 2)` using `fun S hS => hsub S ((perpH_subset hC₀ hperp R hR1 hS).trans hCr)`. Establish `hPc : IsCompact P` using `isCompact_perpH h.chr hC₀ hperp R hR1`. Establish `hCc : IsCompact C`. Establish `: C = (fun S => S - T) ⁻¹' P` using `rfl`. Rewrite using `[this]`.
+
+Conclude with `(Homeomorph.subRight T).isCompact_preimage.2 hPc`. Establish `hνC : νv.real C = νv.real P`. Establish `: C = (fun S => S + (-T)) ⁻¹' P` using `by ext S; simp [C, sub_eq_add_neg]`. Simplify using `only [Measure.real]`. Rewrite using `[this, measure_preimage_add_right]`.
+
+Establish `hvol : νv.real (Λ : Set (HermR (Fv F v) σ n)) * νv.real P = 1` using `vol_mul_vol_perp h R hR1`. Establish `hdens` using `h.dens.2 C hCc (fun S hS => (hCsub S hS).1)`. Establish `hval : ∫ b in (Λ : Set (HermR (Fv F v) σ n)), uu σ J ψ v μv Φv T b ∂νv = ((νv.real (Λ : Set (HermR (Fv F v) σ n)) : ℝ) : ℂ) * ∫ b in C, g b ∂νv`. Rewrite using `[setIntegral_uu h R hR1, setP_eq h, hdens]`. Establish `hgi : IntegrableOn g C νv` using `(h.dens.1.mono (fun S hS => (hCsub S hS).1)).integrableOn_compact hCc`.
+
+Establish `hci : IntegrableOn (fun _ => g T) C νv` using `integrableOn_const hCc.measure_lt_top.ne`. Establish `hdiff : ((νv.real (Λ : Set (HermR (Fv F v) σ n)) : ℝ) : ℂ) * ∫ b in C, g b ∂νv - g T = ((νv.real (Λ : Set (HermR (Fv F v) σ n)) : ℝ) : ℂ) * ∫ b in C, (g b - g T) ∂νv`. Rewrite using `[integral_sub hgi hci, setIntegral_const, mul_sub, hνC, Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul, hvol, Complex.ofReal_one, one_mul]`. Establish `hbound : ‖∫ b in C, (g b - g T) ∂νv‖ ≤ ε / 2 * νv.real C`. Use `norm_setIntegral_le_of_norm_le_const hCc.measure_lt_top (fun S hS => ?_)` and prove the remaining obligations.
+
+Use `(hCsub S hS).2` as an intermediate fact. Rewrite `this` using `[Metric.mem_ball, dist_eq_norm]`. Conclude with `this.le`. Rewrite using `[dist_eq_norm]`. Use `show ‖∫ b in (Λ : Set (HermR (Fv F v) σ n)), uu σ J ψ v μv Φv T b ∂νv - g T‖ < ε`.
+
+Rewrite using `[hval, hdiff, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg measureReal_nonneg]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dualP : DualP := by
   intro F E _ _ _ _ _ σ M J n ψ v μv νv lam L₁ L₂ Φv g T h
   have := h.sdH.1

@@ -16,20 +16,35 @@ namespace GlobalTheory.InertBigCell
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {v : Pl F} {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gl_iotaW_apply (hw : Formalism.UG.IsInertAt F E v w) (x : w.adicCompletion E) :
     iotaW hw x = GlobalTheory.InertLocField.liftT E v ((InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm x) := rfl
 
+/- English proof (translation)
+Rewrite using `[gl_iotaW_apply, gl_iotaW_apply, gl_iotaW_apply, map_mul, GlobalTheory.InertLocField.liftT_mul]`.
+-/
 theorem gl_iotaW_mul (hw : Formalism.UG.IsInertAt F E v w) (x y : w.adicCompletion E) :
     iotaW hw (x * y) = iotaW hw x * iotaW hw y := by
   rw [gl_iotaW_apply, gl_iotaW_apply, gl_iotaW_apply, map_mul, GlobalTheory.InertLocField.liftT_mul]
 
+/- English proof (translation)
+Introduce `x y hxy` and use `(InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm.injective (GlobalTheory.InertLocField.liftT_injective v hxy)`.
+-/
 theorem gl_iotaW_injective (hw : Formalism.UG.IsInertAt F E v w) : Function.Injective (iotaW hw) := fun x y hxy =>
   (InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm.injective (GlobalTheory.InertLocField.liftT_injective v hxy)
 
+/- English proof (translation)
+Rewrite using `[← Algebra.smul_def, GlobalTheory.InertLocField.liftV_one_smul, gl_iotaW_apply, GlobalTheory.InertLocField.evT_liftT]`.
+-/
 theorem gl_idem_mul_iotaW (hw : Formalism.UG.IsInertAt F E v w) (x : w.adicCompletion E) :
     algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) * iotaW hw x = iotaW hw x := by
   rw [← Algebra.smul_def, GlobalTheory.InertLocField.liftV_one_smul, gl_iotaW_apply, GlobalTheory.InertLocField.evT_liftT]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.InertLocField.liftV_one_smul (E := E) v 1`. Rewrite `h` using `[Algebra.smul_def, mul_one, _root_.map_one (GlobalTheory.InertLocField.evT E v)]`. Rewrite using `[gl_iotaW_apply, _root_.map_one]`. Conclude with `h.symm`.
+-/
 theorem gl_iotaW_one (hw : Formalism.UG.IsInertAt F E v w) :
     iotaW hw 1 = algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) := by
   have h := GlobalTheory.InertLocField.liftV_one_smul (E := E) v 1
@@ -37,10 +52,16 @@ theorem gl_iotaW_one (hw : Formalism.UG.IsInertAt F E v w) :
   rw [gl_iotaW_apply, _root_.map_one]
   exact h.symm
 
+/- English proof (translation)
+Rewrite using `[sub_mul, one_mul, gl_idem_mul_iotaW, sub_self]`.
+-/
 theorem gl_compl_mul_iotaW (hw : Formalism.UG.IsInertAt F E v w) (x : w.adicCompletion E) :
     (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) * iotaW hw x = 0 := by
   rw [sub_mul, one_mul, gl_idem_mul_iotaW, sub_self]
 
+/- English proof (translation)
+Establish `h` using `gl_idem_mul_iotaW hw 1`. Rewrite `h` using `[gl_iotaW_one]`. Rewrite using `[mul_sub, mul_one, sub_mul, one_mul, h, sub_self, sub_zero]`.
+-/
 theorem gl_compl_idem (hw : Formalism.UG.IsInertAt F E v w) :
     (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) * (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) =
       1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) := by
@@ -50,11 +71,17 @@ theorem gl_compl_idem (hw : Formalism.UG.IsInertAt F E v w) :
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, gl_compl_mul_iotaW, Matrix.zero_apply]`.
+-/
 theorem gl_compl_smul_map (hw : Formalism.UG.IsInertAt F E v w) (P : Matrix ι ι (w.adicCompletion E)) :
     (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) • P.map (iotaW hw) = 0 := by
   ext i j
   rw [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, gl_compl_mul_iotaW, Matrix.zero_apply]
 
+/- English proof (translation)
+Use extensionality with `i k`. Rewrite using `[Matrix.mul_apply, Matrix.map_apply, Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.map_apply, gl_iotaW_mul]`.
+-/
 theorem gl_map_mul_map (hw : Formalism.UG.IsInertAt F E v w) (P Q : Matrix ι ι (w.adicCompletion E)) :
     P.map (iotaW hw) * Q.map (iotaW hw) = (P * Q).map (iotaW hw) := by
   ext i k
@@ -62,6 +89,9 @@ theorem gl_map_mul_map (hw : Formalism.UG.IsInertAt F E v w) (P Q : Matrix ι ι
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [Matrix.map_apply, Matrix.map_apply, gl_iotaW_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[gl_iotaW_one, smul_eq_mul, mul_one]`. Rewrite using `[map_zero, smul_zero]`.
+-/
 theorem gl_map_one_eq (hw : Formalism.UG.IsInertAt F E v w) :
     (1 : Matrix ι ι (w.adicCompletion E)).map (iotaW hw) =
       algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) • (1 : Matrix ι ι (AE F E)) := by
@@ -71,11 +101,31 @@ theorem gl_map_one_eq (hw : Formalism.UG.IsInertAt F E v w) :
   · rw [gl_iotaW_one, smul_eq_mul, mul_one]
   · rw [map_zero, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_sub _ (map_sub (iotaW hw)), gl_map_one_eq, glueW, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem gl_glueW_sub_one (hw : Formalism.UG.IsInertAt F E v w) (P : Matrix ι ι (w.adicCompletion E)) :
     glueW hw P - 1 = (P - 1).map (iotaW hw) := by
   rw [Matrix.map_sub _ (map_sub (iotaW hw)), gl_map_one_eq, glueW, sub_smul, one_smul]
   abel
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v w hw ι _ _`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P Q`. Establish `h1 : ∀ B : Matrix ι ι (AE F E), ((1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) • (1 : Matrix ι ι (AE F E))) * B = (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) • B` using `fun B => by`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul]`.
+
+Establish `h2 : ∀ A : Matrix ι ι (AE F E), A * ((1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) • (1 : Matrix ι ι (AE F E))) = (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) • A` using `fun A => by`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one]`. Rewrite using `[glueW, glueW, glueW, add_mul, mul_add, mul_add, h1, h1, h2, smul_smul, gl_compl_idem hw, gl_compl_smul_map, gl_compl_smul_map, gl_map_mul_map, add_zero, zero_add]`. Rewrite using `[glueW, gl_map_one_eq, ← add_smul, sub_add_cancel, one_smul]`. Introduce `P Q hPQ`.
+
+Establish `h : P.map (iotaW hw) = Q.map (iotaW hw)` using `add_left_cancel hPQ`. Conclude with `Matrix.ext fun i j => gl_iotaW_injective hw (congrFun (congrFun h i) j)`. Introduce `P u hu`. Rewrite using `[gl_glueW_sub_one]`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.smul_apply, Matrix.map_apply, Matrix.zero_apply, gl_iotaW_apply]`. Conclude with `GlobalTheory.InertLocField.at_liftT v _ u hu`. Introduce `M hM`. Establish `hent : ∀ i j, ∃ y, GlobalTheory.InertLocField.liftT E v y = (M - 1) i j` using `fun i j => (GlobalTheory.InertLocField.at_iff v _).1 (fun u hu => by`. Use `congrFun (congrFun (hM u hu) i) j` as an intermediate fact.
+
+Rewrite using `[Matrix.smul_apply] at this)` and apply the resulting hypothesis. Use `choose y hy using hent`. Use `⟨1 + Matrix.of fun i j => InertChart.complEquiv hw (under_eq_of_isInertAt hw) (y i j), ?_⟩` and prove the remaining obligations. Establish `hX : (Matrix.of fun i j => InertChart.complEquiv hw (under_eq_of_isInertAt hw) (y i j)).map (iotaW hw) = M - 1`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.map_apply, Matrix.of_apply, gl_iotaW_apply, RingEquiv.symm_apply_apply, hy]`. Establish `h` using `gl_glueW_sub_one hw (1 + Matrix.of fun i j => InertChart.complEquiv hw (under_eq_of_isInertAt hw) (y i j))`. Rewrite `h` using `[add_sub_cancel_left, hX]`. Conclude with `sub_left_inj.mp h`. Introduce `P u`.
+
+Establish `hd : ∀ x : ι → AE F E, ((1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) • (1 : Matrix ι ι (AE F E))) *ᵥ x = (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) • x` using `fun x => by`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`. Use function extensionality and compare the values at `i`. Rewrite using `[glueW, Matrix.add_mulVec, hd, Pi.add_apply, Pi.smul_apply, smul_eq_mul, gl_compl_mul_iotaW, zero_add, Matrix.mulVec, dotProduct, Matrix.mulVec, dotProduct, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, gl_iotaW_mul]`.
+-/
 theorem glueW_props : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {v : Pl F}
     {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w) {ι : Type} [Fintype ι] [DecidableEq ι],
   (∀ P Q : Matrix ι ι (w.adicCompletion E), GlobalTheory.InertBigCell.glueW hw (P * Q) = GlobalTheory.InertBigCell.glueW hw P * GlobalTheory.InertBigCell.glueW hw Q) ∧

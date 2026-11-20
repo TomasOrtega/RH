@@ -57,10 +57,16 @@ def Csp (bar : O → O) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (M₀ : Matrix
 def perC {L : Type} [AddCommGroup L] (P₀ : L →+ (Fin g → ℂ)) (C : Matrix (Fin g) (Fin g) ℂ) : L →+ (Fin g → ℂ) :=
   (GlobalTheory.PeriodCoord.realMap 1 C).toAddMonoidHom.comp P₀
 
+/- English proof (translation)
+Simplify using `[perC, GlobalTheory.PeriodCoord.realMap_apply, Matrix.one_mulVec]`.
+-/
 theorem perC_apply {L : Type} [AddCommGroup L] (P₀ : L →+ (Fin g → ℂ)) (C : Matrix (Fin g) (Fin g) ℂ) (x : L) :
     perC P₀ C x = P₀ x + C *ᵥ star (P₀ x) := by
   simp [perC, GlobalTheory.PeriodCoord.realMap_apply, Matrix.one_mulVec]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[perC_apply]`.
+-/
 theorem perC_zero {L : Type} [AddCommGroup L] (P₀ : L →+ (Fin g → ℂ)) : perC P₀ 0 = P₀ := by
   ext x
   simp [perC_apply]

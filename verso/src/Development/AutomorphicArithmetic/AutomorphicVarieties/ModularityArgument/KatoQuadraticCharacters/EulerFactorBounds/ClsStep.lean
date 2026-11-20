@@ -9,10 +9,28 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 
 
 namespace UpperTheory.V.Z.Kato.Nb.XiAction
 
+/- English proof (translation)
+Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val]`.
+-/
 private theorem vc {M k : ℕ} [NeZero M] (h : k ∣ M) (a : ZMod M) :
     ((a.val : ℕ) : ZMod k) = ZMod.castHom h (ZMod k) a := by
   rw [ZMod.castHom_apply, ZMod.cast_eq_val]
 
+/- English proof (translation)
+Establish `e : ∀ i, m i 0 * (en δ 0 0 : ZMod M) + m i 1 * (en δ 1 0 : ZMod M) = (ν : ZMod M) * m' i 0`. Introduce `i`. Use `congrFun (congrFun h i) 0` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Fin.sum_univ_two, en]`. Establish `hdet : en δ 0 0 * en δ 1 1 - en δ 0 1 * en δ 1 0 = 1`.
+
+Use `δ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `uN : (en δ 0 0 : ZMod N) * (en δ 1 1 : ZMod N) = 1`. Use `congrArg (Int.cast : ℤ → ZMod N) hdet` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Rewrite `this` using `[hδN]`. Simplify using `using this`. Establish `ul : (en δ 0 0 : ZMod l) * (en δ 1 1 : ZMod l) = 1`. Use `congrArg (Int.cast : ℤ → ZMod l) hdet` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Rewrite `this` using `[hδl]`. Simplify using `using this`. Establish `eN : ∀ i, ((m i 0).val : ZMod N) = ((m' i 0).val : ZMod N)`. Introduce `i`. Use `congrArg (ZMod.castHom hN (ZMod N)) (e i)` as an intermediate fact.
+
+Rewrite `this` using `[map_add, map_mul, map_mul, map_mul, map_intCast, map_intCast, hδN, ← vc hN, ← vc hN, ← vc hN, ← vc hN, h1]`. Take the linear combination `(en δ 1 1 : ZMod N) * this - (((m i 0).val : ZMod N) - ((m' i 0).val : ZMod N)) * uN`. Establish `el : ∀ i, ((m i 0).val : ZMod l) * (en δ 0 0 : ZMod l) = ((m' i 0).val : ZMod l)`. Introduce `i`. Use `congrArg (ZMod.castHom hl (ZMod l)) (e i)` as an intermediate fact.
+
+Rewrite `this` using `[map_add, map_mul, map_mul, map_mul, map_intCast, map_intCast, hδl, ← vc hl, ← vc hl, ← vc hl, ← vc hl, h2]`. Take the linear combination `this`. Unfold `Cnd`. Rewrite using `[eN 0, eN 1, ← el 0, ← el 1]`. Use `and_congr Iff.rfl (and_congr Iff.rfl ⟨fun h3 => ?_, fun h3 => ?_⟩)` and prove the remaining obligations.
+
+Take the linear combination `(en δ 0 0 : ZMod l) * h3`. Take the linear combination `(en δ 1 1 : ZMod l) * h3 - ((en g 1 0 : ZMod l) * ((m 0 0).val : ZMod l) - (en g 0 0 : ZMod l) * ((m 1 0).val : ZMod l)) * ul`.
+-/
 private theorem cnd_iff (l N M : ℕ) [NeZero M] (hN : N ∣ M) (hl : l ∣ M) (g δ : SL(2, ℤ))
     (hδN : ((en δ 1 0 : ℤ) : ZMod N) = 0) (hδl : ((en δ 1 0 : ℤ) : ZMod l) = 0) (ν : (ZMod M)ˣ)
     (h1 : ((ν : ZMod M).val : ZMod N) = (en δ 0 0 : ZMod N)) (h2 : ((ν : ZMod M).val : ZMod l) = 1)
@@ -51,6 +69,15 @@ private theorem cnd_iff (l N M : ℕ) [NeZero M] (hN : N ∣ M) (hl : l ∣ M) (
   · linear_combination (en δ 1 1 : ZMod l) * h3 -
       ((en g 1 0 : ZMod l) * ((m 0 0).val : ZMod l) - (en g 0 0 : ZMod l) * ((m 1 0).val : ZMod l)) * ul
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker]`. Establish `e : ∀ j, ((m 0 0).val : ZMod (l ^ n)) * (δ 0 j : ZMod (l ^ n)) + ((m 0 1).val : ZMod (l ^ n)) * (δ 1 j : ZMod (l ^ n)) = ((m' 0 j).val : ZMod (l ^ n))`. Introduce `j`. Establish `h0 : m 0 0 * (δ 0 j : ZMod M) + m 0 1 * (δ 1 j : ZMod M) = ν * m' 0 j`. Use `congrFun (congrFun h 0) j` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply, Fin.sum_univ_two]`. Use `congrArg (ZMod.castHom hl (ZMod (l ^ n))) h0` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, map_mul, map_intCast, map_intCast, ← vc hl, ← vc hl, ← vc hl, ← vc hl, h2, one_mul]`. Conclude with `this`. Establish `ed : (d'.val : ZMod (l ^ n)) = (d.val : ZMod (l ^ n))`.
+
+Rewrite using `[vc hl d', hd, map_mul, map_pow, ← vc hl, ← vc hl, h2, one_pow, one_mul]`. Establish `ev : ∀ i, (mZl l δ *ᵥ u) i = (δ i 0 : ℤ_[l]) * u 0 + (δ i 1 : ℤ_[l]) * u 1`. Introduce `i`. Simplify using `[mZl, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Rewrite using `[ev, ev]`.
+
+Simplify using `only [map_sub, map_mul, map_pow, map_add, map_natCast, map_intCast]`. Rewrite using `[ed, ← e 0, ← e 1, sub_eq_zero]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem wt_dvd (l n M w : ℕ) [Fact l.Prime] [NeZero M] (hl : l ^ n ∣ M) (δ : Matrix (Fin 2) (Fin 2) ℤ)
     (ν : ZMod M) (h2 : (ν.val : ZMod (l ^ n)) = 1) (d d' : ZMod M) (hd : d' = ν ^ 2 * d)
     (m m' : Matrix (Fin 2) (Fin 2) (ZMod M))
@@ -78,6 +105,15 @@ private theorem wt_dvd (l n M w : ℕ) [Fact l.Prime] [NeZero M] (hl : l ^ n ∣
   congr 2
   ring
 
+/- English proof (translation)
+Take `⟨c1, -, -, c4, c5, -⟩` from `sCls Ω ε X l n`. Take `⟨-, -, -, -, a5, -⟩` from `sApi Ω ε X l n`. Take `⟨-, s2, s3, -⟩` from `sSlD Ω ε X N hN`. Establish `r1` using `c5 (X.sl (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv _ _ (c1 (slU X (toGQ !![(N : ℤ), 0; 0, 1]) f))`. Establish `r2` using `c1 (slU X (toGQ !![(N : ℤ), 0; 0, 1]) f')`.
+
+Establish `r3` using `c4 _ _ _ _ r1 r2 (by`. Take `⟨h, hh⟩` from `hf`. Use `⟨slU X (toGQ !![(N : ℤ), 0; 0, 1]) h, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_mul, ← hh]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `s2 _ _ (by rw [δ.det_coe]; exact one_pos) hc (f : X.K)` as an intermediate fact. Rewrite `this` using `[s3 δ']`. Conclude with `this)`. Establish `r4` using `a5 k k' (X.kmap l (X.sl (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (clsK X l n (slD X N (f : X.K)))) hk`. Establish `r5 : AdicCompletion.eval (idl l) (X.Kl l) n (X.kmap l (X.sl (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (clsK X l n (slD X N (f : X.K))) - clsK X l n (slD X N (f' : X.K))) = 0` using `r3`.
+
+Rewrite using `[← sub_add_sub_cancel _ (k' • X.kmap l (X.sl (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (clsK X l n (slD X N (f : X.K)))), map_add, r4, ← smul_sub, map_smul, r5, smul_zero, add_zero]`.
+-/
 private theorem cls_step {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (l : ℕ) [Fact l.Prime] (n N : ℕ) (hN : 0 < N) (δ δ' : SL(2, ℤ))
     (hc : !![(N : ℤ), 0; 0, 1] * (δ : Matrix (Fin 2) (Fin 2) ℤ) = (δ' : Matrix (Fin 2) (Fin 2) ℤ) * !![(N : ℤ), 0; 0, 1])
@@ -105,6 +141,11 @@ private theorem cls_step {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   rw [← sub_add_sub_cancel _ (k' • X.kmap l (X.sl (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (clsK X l n (slD X N (f : X.K)))),
     map_add, r4, ← smul_sub, map_smul, r5, smul_zero, add_zero]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Establish `hdet : en δ 0 0 * en δ 1 1 - en δ 0 1 * en δ 1 0 = 1`. Use `δ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Use `⟨⟨!![en δ 0 0, N * en δ 0 1; c, en δ 1 1], ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_fin_two_of, ← hdet, hc]`. Expand and normalize the polynomial expressions, which then agree. Unfold `en at hc`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, en, hc, mul_comm]`.
+-/
 private theorem conj_ex (N : ℕ) (δ : SL(2, ℤ)) (h : (N : ℤ) ∣ en δ 1 0) : ∃ δ' : SL(2, ℤ),
     !![(N : ℤ), 0; 0, 1] * (δ : Matrix (Fin 2) (Fin 2) ℤ) = (δ' : Matrix (Fin 2) (Fin 2) ℤ) * !![(N : ℤ), 0; 0, 1] := by
   obtain ⟨c, hc⟩ := h
@@ -117,6 +158,13 @@ private theorem conj_ex (N : ℕ) (δ : SL(2, ℤ)) (h : (N : ℤ) ∣ en δ 1 0
     ext i j
     fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, en, hc, mul_comm]
 
+/- English proof (translation)
+Take `⟨d1, -, -, d4⟩` from `sCdFacts N M₀ M hM`. Establish `hN : N ∣ M` using `hM ▸ dvd_mul_right N M₀`. Establish `e1 : ν • m' = !![ν, 0; 0, ν] * m'`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Establish `e2 : x ᵥ* cD N M₀ (!![ν, 0; 0, ν] : Matrix (Fin 2) (Fin 2) (ZMod M)) = (ν.val : ZMod M₀) • x`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [cD, Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]`. Unfold `rt`. Rewrite using `[← d4 _ _ hc, Matrix.vecMul_vecMul, ← d1 _ _ hm ?_, h, e1, d1 _ _ ?_ hm', ← Matrix.vecMul_vecMul, e2]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[vc hN, Matrix.map_apply, eq_intCast, map_intCast]`. Conclude with `hδN`.
+-/
 private theorem cd_row (N M₀ M : ℕ) [NeZero N] [NeZero M₀] [NeZero M] (hM : M = N * M₀) (δ δ' : SL(2, ℤ))
     (hδN : ((en δ 1 0 : ℤ) : ZMod N) = 0)
     (hc : !![(N : ℤ), 0; 0, 1] * (δ : Matrix (Fin 2) (Fin 2) ℤ) = (δ' : Matrix (Fin 2) (Fin 2) ℤ) * !![(N : ℤ), 0; 0, 1])
@@ -139,6 +187,25 @@ private theorem cd_row (N M₀ M : ℕ) [NeZero N] [NeZero M₀] [NeZero M] (hM 
 end UpperTheory.V.Z.Kato.Nb.XiAction
 
 open UpperTheory.V.Z.Kato.Nb.XiAction in
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l _ n N M₀ M w _ _ _ g L x y hxy P a ha δ hδ ν h1 h2 hP u`. Establish `hN : N ∣ M` using `L.eq ▸ dvd_mul_right N M₀`. Establish `hln : l ^ n ∣ M` using `L.eq ▸ L.dl.mul_left N`. Establish `hl1 : l ∣ l ^ n` using `dvd_pow_self l (by have := L.pos; omega)`. Establish `hδN : ((en δ 1 0 : ℤ) : ZMod N) = 0` using `CongruenceSubgroup.Gamma0_mem.1 hδ.1`.
+
+Establish `hδl : ((en δ 1 0 : ℤ) : ZMod l) = 0` using `CongruenceSubgroup.Gamma0_mem.1 hδ.2`. Establish `h2' : ((ν : ZMod M).val : ZMod l) = 1`. Use `congrArg (ZMod.castHom hl1 (ZMod l)) h2` as an intermediate fact. Rewrite `this` using `[map_natCast, map_one]`. Then use the resulting hypothesis. Take `⟨δ', hc⟩` from `conj_ex N δ ((ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 hδN)`.
+
+Set `D : GL (Fin 2) (ZMod M)` to `Matrix.SpecialLinearGroup.toGL (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) δ)`. Set `S : GL (Fin 2) (ZMod M)` to `Matrix.GeneralLinearGroup.scalar (Fin 2) ν`. Set `e : GL (Fin 2) (ZMod M) ≃ GL (Fin 2) (ZMod M)` to `(Equiv.mulRight D).trans (Equiv.mulLeft S⁻¹)`. Establish `he : ∀ m, m * D = S * e m` using `fun m => by simp [e]`. Establish `hrel : ∀ m : GL (Fin 2) (ZMod M), (m : Matrix (Fin 2) (Fin 2) (ZMod M)) * (δ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom (ZMod M)) = (ν : ZMod M) • (e m : Matrix (Fin 2) (Fin 2) (ZMod M))`.
+
+Introduce `m`. Use `congrArg (fun z : GL (Fin 2) (ZMod M) => (z : Matrix (Fin 2) (Fin 2) (ZMod M))) (he m)` as an intermediate fact. Simplify using `only [Units.val_mul] at this`. Rewrite using `[Matrix.smul_eq_diagonal_mul]`. Conclude with `this`.
+
+Establish `hdet : ∀ m, Matrix.GeneralLinearGroup.det m = Matrix.GeneralLinearGroup.det (e m) * ν ^ 2`. Introduce `m`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg Matrix.det (hrel m)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, δ.det_coe, map_one, mul_one]`.
+
+Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply, Units.val_mul, Units.val_pow_eq_pow_val]`. Rewrite using `[this, mul_comm]`. Simplify using the standard rewrite rules. Establish `hcnd` using `fun m : GL (Fin 2) (ZMod M) => cnd_iff l N M hN (hl1.trans hln) g δ hδN hδl ν h1 h2' _ _ (hrel m)`. Use `show AdicCompletion.eval (idl l) (X.Kl l) n (X.kmap l _ (Xi X l n N M₀ M w g x y P a _) - _) = 0`.
+
+Unfold `Xi`. Rewrite using `[map_sum, map_sub, map_sum, map_sum, sub_eq_zero]`. Use `Finset.sum_equiv e (fun m => ?_) (fun m hm => ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[hcnd m, hdet m, hP]`.
+
+Establish `hm1` using `(Finset.mem_filter.1 hm).2.1`. Establish `hm2` using `(hcnd m).1 hm1`. Rewrite using `[← sub_eq_zero, ← map_sub, map_smul]`. Use `cls_step X l n N (NeZero.pos N) δ δ' hc _ _ ?_ _ _ ?_` and prove the remaining obligations. Rewrite using `[← cd_row N M₀ M L.eq δ δ' hδN hc _ _ _ hm1.1 hm2.1 (hrel m), ← cd_row N M₀ M L.eq δ δ' hδN hc _ _ _ hm1.1 hm2.1 (hrel m)]`.
+
+Conclude with `(ha _ _ ((sCdFacts N M₀ M L.eq).2.2.1 m hm1.1 x y hxy)).2 δ'`. Use `wt_dvd l n M w hln _ ν h2 _ _ ?_ _ _ (hrel m) u` and prove the remaining obligations. Rewrite using `[hdet m, ← Units.val_pow_eq_pow_val, ← Units.val_mul]`. Use `congr 1`. Rewrite using `[mul_inv, mul_comm _ (ν ^ 2)⁻¹, mul_inv_cancel_left]`.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.sXiAct :
     UpperTheory.V.Z.Kato.Nb.SXiAct := by
   intro Ω _ _ _ ε X l _ n N M₀ M w _ _ _ g L x y hxy P a ha δ hδ ν h1 h2 hP u

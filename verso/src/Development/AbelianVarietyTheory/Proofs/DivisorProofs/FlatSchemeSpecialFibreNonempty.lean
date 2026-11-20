@@ -7,11 +7,25 @@ open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFul
 
 namespace GlobalTheory.FlatDVRFibre
 
+/- English proof (translation)
+Rewrite using `[← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Conclude with `PrimeSpectrum.mem_basicOpen _ _`.
+-/
 theorem mem_basicOpen_unif_iff {O : Type} [CommRing O] {Z : Scheme.{0}} (f : Z ⟶ Spec (.of O)) (ϖ : O) (z : Z) :
     z ∈ Z.basicOpen (f.appTop.hom ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ)) ↔ ϖ ∉ (f z).asIdeal := by
   rw [← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]
   exact PrimeSpectrum.mem_basicOpen _ _
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ Z _ f hf hne`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_basicOpen_unif_iff]`. Set `e : Spec (.of O)` to `(⊥ : PrimeSpectrum O)`. Establish `hη : e ⤳ f (genericPoint Z)` using `(PrimeSpectrum.le_iff_specializes _ _).mp (bot_le (α := PrimeSpectrum O))`.
+
+Take `⟨x', hx', hx''⟩` from `Flat.generalizingMap f hη`. Establish `hxe : x' = genericPoint Z` using `(hx'.antisymm (genericPoint_specializes x')).eq`. Rewrite using `[← hxe, hx'']`. Express the relevant statement in the definitionally equal form `ϖ ∉ (⊥ : Ideal O)`. Simplify using `using hϖ.ne_zero`.
+
+Take `⟨p⟩` from `hne`. Use `⟨specialι f p, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_basicOpen_unif_iff, not_not]`. Establish `h1 : f (specialι f p) = Spec.map (CommRingCat.ofHom (IsLocalRing.residue O)) (pullback.snd f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O))) p)`. Set `p' : ↑(pullback f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O))))` to `p`.
+
+Express the relevant statement in the definitionally equal form `f (pullback.fst f _ p') = _`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Rewrite using `[h1]`. Use `set q := pullback.snd f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O))) p`. Express the relevant statement in the definitionally equal form `ϖ ∈ Ideal.comap (IsLocalRing.residue O) q.asIdeal`.
+
+Use `haveI := q.isPrime`. Establish `hq : q.asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`. Rewrite using `[hq, ← RingHom.ker_eq_comap_bot, IsLocalRing.ker_residue]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 hϖ.not_isUnit`.
+-/
 theorem genericPoint_mem_and_exists_not_mem :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O) (hϖ : Irreducible ϖ) (Z : Scheme.{0}) [IsIntegral Z] (f : Z ⟶ Spec (.of O)), Flat f → Nonempty (specialFibre f) →
   genericPoint Z ∈ Z.basicOpen (f.appTop.hom ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ)) ∧ ∃ z : Z, z ∉ Z.basicOpen (f.appTop.hom ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ)) := by

@@ -2,6 +2,9 @@ import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.Em
 
 namespace PositivityTheory.RgHe.FrameF
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.RgHe.FrameA.frame`.
+-/
 theorem frame : PositivityTheory.RgHe.Frame := PositivityTheory.RgHe.FrameA.frame
 
 end PositivityTheory.RgHe.FrameF

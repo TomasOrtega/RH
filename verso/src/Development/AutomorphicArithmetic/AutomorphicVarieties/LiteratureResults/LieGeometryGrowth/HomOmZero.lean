@@ -13,11 +13,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af GlobalTheory.UnitaryBC UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor
 
+/- English proof (translation)
+The claim follows from `isOpen_iff_mem_nhds.2 fun p hp => by obtain ⟨τ, -, h⟩ := UpperTheory.V.Lit.Dr.locSec E a p hp exact h.mono fun x hx => ⟨τ x, hx⟩`.
+-/
 private theorem cone_open (E : Type) [Field E] [NumberField E] (a : ℕ) : IsOpen (cone E a) :=
   isOpen_iff_mem_nhds.2 fun p hp => by
     obtain ⟨τ, -, h⟩ := UpperTheory.V.Lit.Dr.locSec E a p hp
     exact h.mono fun x hx => ⟨τ x, hx⟩
 
+/- English proof (translation)
+Establish `e : (fun s => hom (W s) ((0 : G.Om (q + 1)).1 s)) = fun _ _ => 0`. Use function extensionality and compare the values at `s p`. Establish `: (fun t => hk (W s) t ((0 : G.Om (q + 1)).1 s) p) = fun _ => 0`. Use function extensionality and compare the values at `t`. Use extensionality with `v`.
+
+Simplify using `[hk_apply]`. Rewrite using `[hom, this, intervalIntegral.integral_zero]`. Rewrite using `[homOm, e]`. Use `Subtype.ext (funext fun s => funext fun p => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ G.Y`.
+
+Rewrite using `[toOm_apply G (fun _ => contDiffOn_const) s hp]`. Both sides reduce to the same expression. Rewrite using `[((toOm G _).2 s).2 p hp]`. Both sides reduce to the same expression.
+-/
 private theorem homOm_zero {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] {d : ℕ}
     (G : UpperTheory.V.Lit.Dr.Geo Γ V S d) (W : S → V → V) (q : ℕ) : homOm G W (0 : G.Om (q + 1)) = 0 := by
   have e : (fun s => hom (W s) ((0 : G.Om (q + 1)).1 s)) = fun _ _ => 0 := by
@@ -35,6 +45,9 @@ private theorem homOm_zero {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [No
   · rw [((toOm G _).2 s).2 p hp]
     rfl
 
+/- English proof (translation)
+Establish `hH` using `omHom _ _ _ _ G W hF`. Establish `e` using `hH.2.2.2 q (G.dOm q w)`. Rewrite `e` using `[hH.2.1, homOm_zero, add_zero, sub_eq_iff_eq_add]`. Rewrite using `[map_sub, hH.1, e, add_sub_cancel_left]`.
+-/
 private theorem d_step {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {d : ℕ}
     (G : UpperTheory.V.Lit.Dr.Geo Γ V S d) (W : S → V → V) (hF : IsFlow G W) (q : ℕ) (w : G.Om q) :
     G.dOm q (pbOm G W w - homOm G W (G.dOm q w)) = G.dOm q w := by
@@ -43,12 +56,24 @@ private theorem d_step {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [Normed
   rw [hH.2.1, homOm_zero, add_zero, sub_eq_iff_eq_add] at e
   rw [map_sub, hH.1, e, add_sub_cancel_left]
 
+/- English proof (translation)
+Introduce `g x X` and use `by rw [AlternatingMap.sub_apply, map_sub, Pi.sub_apply, Matrix.mulVec_sub, ← h g x X, ← h' g x X] rfl`.
+-/
 private theorem corr_sub {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (ho : IsOpen (cone E a))
     (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a) {q : ℕ} {α β : Co Ξ q} {w w' : (geo ho U Ξ).Om q}
     (h : Corr U Ξ α w.1) (h' : Corr U Ξ β w'.1) : Corr U Ξ (α - β) (w - w').1 := fun g x X => by
   rw [AlternatingMap.sub_apply, map_sub, Pi.sub_apply, Matrix.mulVec_sub, ← h g x X, ← h' g x X]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ a U Ξ Y C hY q`. Establish `ho` using `cone_open E a`. Take `⟨W, hW⟩` from `fieldDef E a U Y C hY`. Establish `hF` using `(fieldFlow E a ho U Ξ Y C hY W hW).1`. Take `⟨B₁, hB₁, h₁⟩` from `pbBd E a ho U Ξ Y C hY W hW q`.
+
+Take `⟨B₂, hB₂, h₂⟩` from `homBd E a ho U Ξ Y C hY W hW q`. Use `⟨B₁ + B₂, add_nonneg hB₁ hB₂, fun η hη => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hg⟩` from `(levGood E a ho U Ξ q).1 η hη`. Establish `hO` using `omGood _ _ _ _ _ W hF q`. Take `⟨gP, gD⟩` from `hO.1 w hg`.
+
+Establish `gH` using `hO.2.2 _ gD`. Take `⟨α, cα, lα⟩` from `(levGood E a ho U Ξ q).2 _ gP`. Take `⟨β, cβ, lβ⟩` from `(levGood E a ho U Ξ q).2 _ gH`. Establish `cd` using `UpperTheory.V.Lit.Dr.corrD E a ho U Ξ q η w hw`. Use `⟨α - β, (levD E a U Ξ q α lα).2 β lβ, ?_, fun g M M' hM hM' H H' => ?_⟩` and prove the remaining obligations.
+
+Establish `c` using `UpperTheory.V.Lit.Dr.corrD E a ho U Ξ q _ _ (corr_sub ho U Ξ cα cβ)`. Rewrite `c` using `[d_step _ W hF]`. Conclude with `(UpperTheory.V.Lit.Dr.corrUniq E a ho U Ξ (q + 1)).1 _ _ _ c cd`. Use `((h₁ η α w hη hw cα g M hM H).sub (h₂ _ β _ (levD E a U Ξ q η hη).1 cd cβ g M' hM' H')).mono ?_` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg hB₁ hM', mul_nonneg hB₂ hM]`.
+-/
 theorem UpperTheory.V.Lit.Geo.oneStep :
     OneStep := by
   intro E _ _ _ a U Ξ Y C hY q

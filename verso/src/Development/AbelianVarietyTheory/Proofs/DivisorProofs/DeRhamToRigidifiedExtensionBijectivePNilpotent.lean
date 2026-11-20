@@ -26,6 +26,19 @@ set_option autoImplicit false
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `hH p _ R _ hnil A _ g hA hg G t L hL`. Take `⟨N, hN⟩` from `hnil`. Take `⟨hF, hHo, -⟩` from `GlobalTheory.abelianDeRham_free_hodge_baseChange hH`. Take `⟨hAll, -⟩` from `hF R A g hA hg`. Take `⟨hLie, hCompl, hFfin, hFproj, -⟩` from `hHo R A g hA hg`.
+
+Establish `hO : Function.Surjective (toH1O (A.hom ≫ 𝟙 _))` using `GlobalTheory.PtExt.toH1O_surjective_of_abelian hH R A g hA hg`. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_hodgeFiltration_to_pDivOmega_linearMap p R N hN A hA G t`. Use `haveI : Module.Finite R (Cot R (G.A N)) := .of_surjective _ (AugCot.d_surjective _)`. Use `haveI : Module.Finite R G.omega := .equiv (LinearEquiv.ofBijective _ (PDivGroup.omegaLevel_bijective_of_pow_eq_zero p R N hN G N le_rfl)).symm`. Use `haveI : Module.Projective R (PrimitiveSubmodule A) := hFproj`.
+
+Establish `hψs : Function.Surjective ψ` using `GlobalTheory.surjective_of_range_sup_smul_top_eq_top R _ G.omega ψ (GlobalTheory.T.primitive_hodge_to_omega_span_mod_maximal hH p R N hN A g hA hg G t ψ hψ)`. Establish `hψi : Function.Injective ψ`. Use `GlobalTheory.injective_of_dualMap_surjective_of_projective R _ G.omega ψ fun l => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `GlobalTheory.T.exists_lie_comp_hodgeToOmega_eq_linearForm p R N hN A hA hLie hCompl G t ψ hψ l`. Conclude with `⟨x, LinearMap.ext fun c => hx c⟩`.
+
+Establish `hLF : ∀ c : PrimitiveSubmodule A, L c.1 = G.rigOfOmega (ψ c)` using `fun c => GlobalTheory.PtExt.isCan_unique R A p G t c.1 hA _ _ (hL c.1) (hψ c)`. Use `⟨(injective_iff_map_eq_zero L).2 fun c hc => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hcF : c ∈ PrimitiveSubmodule A` using `GlobalTheory.T.mem_primitiveSubmodule_of_isCan_of_rigToExt_eq_zero p R N hN A hA G t c (L c) (hL c) (by rw [hc, map_zero])`. Establish `h1 : G.rigOfOmega (ψ ⟨c, hcF⟩) = 0` using `by rw [← hLF ⟨c, hcF⟩]; exact hc`. Establish `h2 : ψ ⟨c, hcF⟩ = 0` using `PDivGroup.rigOfOmega_injective_of_pow p R N hN G (by rw [h1, map_zero])`.
+
+Establish `h3 : (⟨c, hcF⟩ : PrimitiveSubmodule A) = 0` using `hψi (by rw [h2, map_zero])`. Conclude with `congrArg Subtype.val h3`. Take `⟨c, x', hcx', hx'⟩` from `GlobalTheory.T.exists_deRham_class_of_rigidified_extension p R N hN A hA hAll hO G t x`. Establish `hx'L : x' = L c` using `GlobalTheory.PtExt.isCan_unique R A p G t c hA _ _ hcx' (hL c)`. Establish `hd : G.rigToExt (x - L c) = 0` using `by rw [map_sub, ← hx'L, hx', sub_self]`.
+
+Take `⟨w, hw⟩` from `(G.exact_rigOfOmega_rigToExt (x - L c)).1 hd`. Take `⟨c₁, rfl⟩` from `hψs w`. Use `⟨c + c₁.1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hLF c₁, hw, add_sub_cancel]`.
+-/
 theorem bijective_of_isCan_of_isNilpotent_of_hodgeDeRham : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R], IsNilpotent (p : R) → ∀ (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (G : PDivGroup p R) (t : G.TorsionTower A) (L : primDR A →ₗ[R] G.RigExt), (∀ c, IsCan t c (L c)) → Function.Bijective L := by
   intro hH p _ R _ hnil A _ g hA hg G t L hL
   obtain ⟨N, hN⟩ := hnil

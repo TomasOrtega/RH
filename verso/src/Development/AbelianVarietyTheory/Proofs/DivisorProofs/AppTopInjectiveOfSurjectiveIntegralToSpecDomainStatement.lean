@@ -8,5 +8,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.appTop_injective_of_surjective_toSpec_domain | exact GlobalTheory.appTop_injective_of_surjective_toSpec_domain | (intros; apply GlobalTheory.appTop_injective_of_surjective_toSpec_domain <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.appTop_injective_of_surjective_integral_toSpecDomain : ∀ (R : Type) [CommRing R] [IsDomain R] (S : Scheme.{0}) (π : S ⟶ Sp R), Surjective π → IsIntegral S → Function.Injective π.appTop.hom := by
   first | exact @GlobalTheory.appTop_injective_of_surjective_toSpec_domain | exact GlobalTheory.appTop_injective_of_surjective_toSpec_domain | (intros; apply GlobalTheory.appTop_injective_of_surjective_toSpec_domain <;> assumption)

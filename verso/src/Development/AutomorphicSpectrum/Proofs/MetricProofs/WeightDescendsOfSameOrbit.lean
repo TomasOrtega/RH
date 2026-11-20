@@ -11,6 +11,17 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.FA
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on`. Name the introduced variables `r`. Introduce `a`. Establish `h1 : φ (MvPolynomial.C r) = MvPolynomial.C (MvPolynomial.C r)`. Simplify `φ.commutes r` using `[MvPolynomial.algebraMap_apply]`.
+
+Rewrite using `[h1, MvPolynomial.coeff_C]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[h1, MvPolynomial.C_apply]`. Simplify using the standard rewrite rules.
+
+Name the introduced variables `f1 f2 hf hg`. Introduce `a`. Simplify using `only [map_add, MvPolynomial.coeff_add, hf, hg]`. Name the introduced variables `f n hf`. Introduce `a`.
+
+Rewrite using `[map_mul φ f (MvPolynomial.X n), hφ, mul_left_comm, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_mul_X']`. Use `split_ifs with h`. Establish `he : Finsupp.single (s n) 1 ≤ a`. Rewrite using `[Finsupp.single_le_iff]`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp h)`.
+
+Establish `hX : (MvPolynomial.X (s n) : MvPolynomial K (MvPolynomial σ ℤ)) = MvPolynomial.monomial (Finsupp.single (s n) 1) 1` using `rfl`. Rewrite using `[map_mul, hφ, hf, mul_assoc, hX, MvPolynomial.monomial_mul, MvPolynomial.C_mul_monomial, one_mul, add_tsub_cancel_of_le he]`. Simplify using the standard rewrite rules.
+-/
 private theorem grading_map_coeff_eq_monomial {K σ : Type} (s : σ → K)
     (φ : MvPolynomial σ ℤ →ₐ[ℤ] MvPolynomial K (MvPolynomial σ ℤ))
     (hφ : ∀ q, φ (MvPolynomial.X q) = MvPolynomial.C (MvPolynomial.X q) * MvPolynomial.X (s q))
@@ -44,6 +55,23 @@ private theorem grading_map_coeff_eq_monomial {K σ : Type} (s : σ → K)
         one_mul, add_tsub_cancel_of_le he]
     · simp
 
+/- English proof (translation)
+Set `φ : MvPolynomial ((k : K) × ι k) ℤ →ₐ[ℤ] MvPolynomial K (MvPolynomial ((k : K) × ι k) ℤ)` to `MvPolynomial.aeval (fun q => MvPolynomial.C (MvPolynomial.X q) * MvPolynomial.X q.1)`. Establish `hφ : ∀ q, φ (MvPolynomial.X q) = MvPolynomial.C (MvPolynomial.X q) * MvPolynomial.X q.1` using `fun q => MvPolynomial.aeval_X _ _`. Establish `hA : ∀ g, mConeMap y g = MvPolynomial.map (MvPolynomial.aeval (R` using `ℤ) y).toRingHom (φ g) := by`. Introduce `g`. Establish `key : (mConeMap y : MvPolynomial _ ℤ →ₐ[ℤ] MvPolynomial K Φ) = ((MvPolynomial.map (MvPolynomial.aeval (R` using `ℤ) y).toRingHom).toIntAlgHom).comp φ := by`.
+
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `q`. Use `show mConeMap y (MvPolynomial.X q) = MvPolynomial.map (MvPolynomial.aeval (R := ℤ) y).toRingHom (φ (MvPolynomial.X q))`. Rewrite using `[hφ]`. Simplify using `[mConeMap]`.
+
+Rewrite using `[key]`. Both sides reduce to the same expression. Establish `hf' : mConeMap y f = 0` using `RingHom.mem_ker.mp hf`. Establish `hcomp : ∀ a, (φ f).coeff a ∈ mCoordIdeal y`. Introduce `a`.
+
+Establish `h1 : (MvPolynomial.aeval (R` using `ℤ) y).toRingHom ((φ f).coeff a) = 0 := by`. Use `congrArg (MvPolynomial.coeff a) (hA f)` as an intermediate fact. Rewrite `this` using `[hf', MvPolynomial.coeff_zero, MvPolynomial.coeff_map]`. Conclude with `this.symm`. Use `show (φ f).coeff a ∈ RingHom.ker (mConeMap y)`.
+
+Rewrite using `[RingHom.mem_ker, hA, grading_map_coeff_eq_monomial Sigma.fst φ hφ f a, MvPolynomial.map_monomial, h1, map_zero]`. Establish `hB : MvPolynomial.eval (fun r : (Σ k, ι k) => c r.1 * z r) (MvPolynomial.map (Int.castRingHom ℂ) f) = MvPolynomial.eval c (MvPolynomial.map (MvPolynomial.aeval (R` using `ℤ) z).toRingHom (φ f)) := by`. Rewrite using `[MvPolynomial.eval_map, ← algebraMap_int_eq, ← MvPolynomial.aeval_def]`. Establish `key : (MvPolynomial.aeval (R` using `ℤ) (fun r : (Σ k, ι k) => c r.1 * z r)) = ((MvPolynomial.eval c).toIntAlgHom).comp (((MvPolynomial.map (MvPolynomial.aeval (R := ℤ) z).toRingHom).toIntAlgHom).comp φ) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `q`. Use `show MvPolynomial.aeval (R := ℤ) (fun r : (Σ k, ι k) => c r.1 * z r) (MvPolynomial.X q) = MvPolynomial.eval c (MvPolynomial.map (MvPolynomial.aeval (R := ℤ) z).toRingHom (φ (MvPolynomial.X q)))`. Rewrite using `[hφ]`. Simplify using `[mul_comm]`. Rewrite using `[key]`.
+
+Both sides reduce to the same expression. Rewrite using `[hB]`. Establish `hzero : MvPolynomial.map (MvPolynomial.aeval (R` using `ℤ) z).toRingHom (φ f) = 0 := by`. Use extensionality with `a`. Rewrite using `[MvPolynomial.coeff_map, MvPolynomial.coeff_zero]`.
+
+Use `hz _ (hcomp a)` as an intermediate fact. Rewrite `this` using `[MvPolynomial.eval_map, ← algebraMap_int_eq, ← MvPolynomial.aeval_def]`. Then use the resulting hypothesis. Rewrite using `[hzero, map_zero]`.
+-/
 private theorem smul_mem_lemma_2 {K : Type} {ι : K → Type} {Φ : Type} [Field Φ]
     (y : (Σ k, ι k) → Φ) (z : (Σ k, ι k) → ℂ)
     (hz : ∀ f ∈ mCoordIdeal y, MvPolynomial.eval z (MvPolynomial.map (Int.castRingHom ℂ) f) = 0)
@@ -99,6 +127,21 @@ private theorem smul_mem_lemma_2 {K : Type} {ι : K → Type} {Φ : Type} [Field
     rwa [MvPolynomial.eval_map, ← algebraMap_int_eq, ← MvPolynomial.aeval_def] at this
   rw [hzero, map_zero]
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ N j M p e e' R Rp h A B ph W hab horb hW x hx`. Take `⟨c, hc0, hceq⟩` from `horb x`. Establish `hwmem : R.lift x x ∈ mcPts (mCoordIdeal y)` using `R.mem x x (R.mem_U x)`. Set `c' : K → ℂ` to `fun k => if hk : ((∀ p' : Ψ × Fin N, M.blk p' ≠ Option.some k) ∨ M.blk p = Option.some k) then c ⟨k, hk⟩ else 1`. Establish `hc'0 : ∀ k, c' k ≠ 0`.
+
+Introduce `k`. Distinguish the cases in `hk : ((∀ p' : Ψ × Fin N, M.blk p' ≠ Option.some k) ∨ M.blk p = Option.some k)`. Simplify using `only [c', dif_pos hk]`. Conclude with `hc0 _`. Simplify using `only [c', dif_neg hk]`.
+
+Conclude with `one_ne_zero`. Set `z : (Σ k, ι k) → ℂ` to `fun r => c' r.1 * R.lift x x r`. Establish `hzstep : z ∘ stepV M p = Rp.lift (h x) (h x)`. Rewrite using `[hceq]`. Use function extensionality and compare the values at `q`.
+
+Establish `hq : (∀ p' : Ψ × Fin N, M.blk p' ≠ Option.some q.1.1) ∨ M.blk p = Option.some q.1.1` using `q.1.2`. Use `show c' q.1.1 * R.lift x x ⟨q.1.1, q.2⟩ = c q.1 * R.lift x x ⟨q.1.1, q.2⟩`. Use `congr 1`. Simplify using `only [c', dif_pos hq]`. Establish `hzmem : z ∈ mcPts (mCoordIdeal y)`.
+
+Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hwmem.1 k`. Conclude with `⟨i, mul_ne_zero (hc'0 k) hi⟩`. Conclude with `smul_mem_lemma_2 y (R.lift x x) hwmem.2 c' f hf`. Establish `key` using `hW (h x) hx z hzmem hzstep`.
+
+Establish `hAz : A.h z = (∏ k, ‖c' k‖ ^ A.a k) * A.h (R.lift x x)` using `A.smul c' _ hc'0`. Establish `hBz : B.h z = (∏ k, ‖c' k‖ ^ A.a k) * B.h (R.lift x x)`. Rewrite using `[hab]`. Conclude with `B.smul c' _ hc'0`. Establish `hP : (∏ k, ‖c' k‖ ^ A.a k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc'0 k)))`.
+
+Establish `hApos` using `A.pos _ hwmem.1`. Establish `hBpos` using `B.pos _ hwmem.1`. Rewrite `key` using `[hAz, hBz, Real.log_mul hP hApos.ne', Real.log_mul hP hBpos.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem weight_descends_of_sameOrbit : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ]
     (y : (Σ k, ι k) → Φ) (Ψ : Type) (N j : ℕ) (M : FlagModel y Ψ N j) (p : Ψ × Fin N) (e e' : ℕ)
     (R : AnLogRes (mCoordIdeal y) ⊤ e) (Rp : AnLogRes (mCoordIdeal (y ∘ stepV M p)) ⊤ e') (h : R.X → Rp.X)

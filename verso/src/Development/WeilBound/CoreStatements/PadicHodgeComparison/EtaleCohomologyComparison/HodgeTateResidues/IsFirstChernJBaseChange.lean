@@ -23,6 +23,9 @@ def incG (S : SubF F) (G : C ⥤ D) : CH.Mor (G ⋙ S.fn) (G ⋙ F) (RingHom.id 
   τ T := (S.S (G.obj T)).subtype
   nat _ _ := rfl
 
+/- English proof (translation)
+Rewrite `h` using `[(incG S G).d_pullC]`. Use function extensionality and compare the values at `s`. Conclude with `Subtype.ext (congrFun h s)`.
+-/
 theorem sub_d (S : SubF F) (G : C ⥤ D) (n : ℕ) (z : Cn (G ⋙ S.fn) n) (w : Cn (G ⋙ S.fn) (n + 1))
     (h : d _ n ((incG S G).pullC n z) = (incG S G).pullC (n + 1) w) : d _ n z = w := by
   rw [(incG S G).d_pullC] at h
@@ -34,6 +37,9 @@ def sub (F : D ⥤ ModuleCat.{0} R) {P Q : ObjectProperty D} (h : Q ≤ P) : CH.
   τ _ := LinearMap.id
   nat _ _ := rfl
 
+/- English proof (translation)
+Use `CrystallineChernClass.mapH_bijective _ (fun n => ⟨fun f g e => ?_, fun g => ?_⟩) j` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Conclude with `congrFun e (P.lift t fun i => hP _)`. Conclude with `⟨fun t => g (P.lift t fun i => hP _), rfl⟩`.
+-/
 theorem res_all (F : D ⥤ ModuleCat.{0} R) (P : ObjectProperty D) (hP : ∀ T, P T) (j : ℕ) :
     Function.Bijective ((CH.Mor.restrict F P.ι).pull j) := by
   refine CrystallineChernClass.mapH_bijective _ (fun n => ⟨fun f g e => ?_, fun g => ?_⟩) j
@@ -41,6 +47,13 @@ theorem res_all (F : D ⥤ ModuleCat.{0} R) (P : ObjectProperty D) (hP : ∀ T, 
     exact congrFun e (P.lift t fun i => hP _)
   · exact ⟨fun t => g (P.lift t fun i => hP _), rfl⟩
 
+/- English proof (translation)
+Establish `s3 : Function.Bijective ((sub F h).pull j)`. Establish `e : (sub F h1).pull j ∘ (sub F h).pull j = (sub F h2).pull j` using `funext fun x => by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression. Use `(Function.Bijective.of_comp_iff' s1 _).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `s2`. Establish `e : (sub F h).pull j ∘ (CH.Mor.restrict F P.ι).pull j = (CH.Mor.restrict F Q.ι).pull j` using `funext fun x => by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+
+Rewrite using `[← e]`. Conclude with `s3.comp (res_all F _ hP j)`.
+-/
 theorem bij_three (F : D ⥤ ModuleCat.{0} R) {P Q S : ObjectProperty D} (h : Q ≤ P) (h1 : S ≤ Q) (h2 : S ≤ P) (j : ℕ)
     (s1 : Function.Bijective ((sub F h1).pull j)) (s2 : Function.Bijective ((sub F h2).pull j)) (hP : ∀ T, P T) :
     Function.Bijective ((CH.Mor.restrict F Q.ι).pull j) := by
@@ -62,6 +75,9 @@ end Gen
 section Th
 variable {b : Base} {L : b.Fun} {Λ : Type} [CommRing Λ] (c : Λ →+* b.R)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Ideal.span {algebraMap b.R ((sP Q).A.obj T) 0} = ⊥`. Rewrite using `[map_zero, Ideal.span_singleton_eq_bot]`.
+-/
 theorem span_zero (Q : ObjectProperty (Thick L)) (T : Q.FullSubcategory) : (IdF.span (sP Q).A (0 : b.R)).S T = ⊥ := by
   change Ideal.span {algebraMap b.R ((sP Q).A.obj T) 0} = ⊥
   rw [map_zero, Ideal.span_singleton_eq_bot]
@@ -75,6 +91,11 @@ def toJ (Q : ObjectProperty (Thick L)) :
            map_smul' := fun _ _ => rfl }
   nat _ _ := rfl
 
+/- English proof (translation)
+Use `⟨fun x y e => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `Ideal.Quotient.eq.1 (congrArg Subtype.val e)`. Express the relevant statement in the definitionally equal form `_ ∈ (⊥ : Ideal _) ⊔ (IdF.span (sP Q).A (0 : b.R)).S T at h`. Rewrite `h` using `[span_zero, sup_bot_eq, Ideal.mem_bot, sub_eq_zero]`. Conclude with `Subtype.ext h`.
+
+Take `⟨y, hy, rfl⟩` from `sq_surj _ _ y`. Establish `hy'` using `hy`. Express the relevant statement in the definitionally equal form `_ ∈ (sFil Q 1).S T ⊔ (IdF.span (sP Q).A (0 : b.R)).S T at hy'`. Rewrite `hy'` using `[span_zero, sup_bot_eq]`. Conclude with `⟨⟨y, hy'⟩, rfl⟩`.
+-/
 theorem toJ_τ (Q : ObjectProperty (Thick L)) (T : Q.FullSubcategory) : Function.Bijective ((toJ c Q).τ T) := by
   refine ⟨fun x y e => ?_, fun y => ?_⟩
   · have h := Ideal.Quotient.eq.1 (congrArg Subtype.val e)
@@ -87,6 +108,11 @@ theorem toJ_τ (Q : ObjectProperty (Thick L)) (T : Q.FullSubcategory) : Function
     rw [span_zero, sup_bot_eq] at hy'
     exact ⟨⟨y, hy'⟩, rfl⟩
 
+/- English proof (translation)
+Use `CrystallineChernClass.mapH_bijective _ (fun n => ⟨fun f g e => ?_, fun g => ?_⟩) n` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Use `congrFun e s` as an intermediate fact. Conclude with `(toJ_τ c Q (s.obj (Fin.last n))).1 this`. Use `choose f hf using fun s : ComposableArrows Q.FullSubcategory n => (toJ_τ c Q (s.obj (Fin.last n))).2 (g s)`.
+
+Conclude with `⟨f, funext hf⟩`.
+-/
 theorem toJ_bij (Q : ObjectProperty (Thick L)) (n : ℕ) : Function.Bijective ((toJ c Q).pull n) := by
   refine CrystallineChernClass.mapH_bijective _ (fun n => ⟨fun f g e => ?_, fun g => ?_⟩) n
   · funext s
@@ -95,6 +121,11 @@ theorem toJ_bij (Q : ObjectProperty (Thick L)) (n : ℕ) : Function.Bijective ((
   · choose f hf using fun s : ComposableArrows Q.FullSubcategory n => (toJ_τ c Q (s.obj (Fin.last n))).2 (g s)
     exact ⟨f, funext hf⟩
 
+/- English proof (translation)
+Establish `e : (toJ c Q).pull j ∘ (sub (B.pdS L c 1).fn h).pull j = ((incl h).sq (incl_std h (some 1) 0) (incl_std h none 0)).pull j ∘ (toJ c P).pull j` using `funext fun x => by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression. Use `(Function.Bijective.of_comp_iff' (toJ_bij c Q j) _).1 ?_` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `hb.comp (toJ_bij c P j)`.
+-/
 theorem sub_bij {P Q : ObjectProperty (Thick L)} (h : Q ≤ P) (j : ℕ)
     (hb : Function.Bijective (((incl h).sq (incl_std h (some 1) 0) (incl_std h none 0)).pull j)) :
     Function.Bijective ((sub (B.pdS L c 1).fn h).pull j) := by
@@ -108,6 +139,11 @@ theorem sub_bij {P Q : ObjectProperty (Thick L)} (h : Q ≤ P) (j : ℕ)
 
 end Th
 
+/- English proof (translation)
+Establish `hU : Used (⊤ : ObjectProperty (Thick (nlFun γ p X q κ)))` using `Or.inr ⟨hp, Or.inl rfl⟩`. Establish `h1 : St ⊤ (𝒱D D) ≤ CrystallineChernClass.Lifts (γ` using `γ) (p := p) (q := q) (κ := κ) D := CrystallineChernClass.st_le_lifts D`. Establish `h1' : CrystallineChernClass.Lifts (γ` using `γ) (p := p) (q := q) (κ := κ) D ≤ St ⊤ {sSup (𝒱D D)} := fun T _ => ⟨trivial, _, rfl, by rw [hD]; exact CrystallineChernClass.inU_top T⟩`. Establish `b1` using `(zar2 ⊤ hU (𝒱D D) (CrystallineChernClass.Lifts D) h1 h1' (fun T T' φ h _ => CrystallineChernClass.lifts_map D φ h) j).2.1 (some 1) none 0 0`. Establish `h2 : St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ (𝒱D D) ≤ St ⊤ {⊤} := fun T _ => ⟨trivial, ⊤, rfl, CrystallineChernClass.inU_top T⟩`.
+
+Establish `b2` using `(zar ⊤ hU (𝒱D D) {⊤} h2 (by rintro W rfl; rw [hD]) j).2.1 (some 1) none 0 0`. Establish `h3 : CrystallineChernClass.Lifts (γ` using `γ) (p := p) (q := q) (κ := κ) D ≤ St ⊤ {⊤} := fun T _ => ⟨trivial, ⊤, rfl, CrystallineChernClass.inU_top T⟩`. Establish `hall : ∀ T, St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ {⊤} T := fun T => ⟨trivial, ⊤, rfl, CrystallineChernClass.inU_top T⟩`. Conclude with `bij_three _ h3 h1 h2 j (sub_bij (b := nlBase R I γ p) c h1 j b1) (sub_bij (b := nlBase R I γ p) c h2 j b2) hall`.
+-/
 theorem res_bij {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (hp : p ≠ 0) (D : E.LineData X) (hD : sSup (𝒱D D) = ⊤)
     {Λ : Type} [CommRing Λ] (c : Λ →+* R) (j : ℕ) :
@@ -123,6 +159,9 @@ theorem res_bij {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : Divid
   have hall : ∀ T, St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ {⊤} T := fun T => ⟨trivial, ⊤, rfl, CrystallineChernClass.inU_top T⟩
   exact bij_three _ h3 h1 h2 j (sub_bij (b := nlBase R I γ p) c h1 j b1) (sub_bij (b := nlBase R I γ p) c h2 j b2) hall
 
+/- English proof (translation)
+The claim follows from `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨[(k + 1, v - 1)], by simpa using hv, by simp, by simp⟩)`.
+-/
 theorem dlog_mem {A : Type} [CommRing A] {J : Ideal A} (δ : DividedPowers J) (N : ℕ) {v : A} (hv : v - 1 ∈ J) :
     B.dlog δ N v ∈ pdP δ 1 :=
   Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _
@@ -135,6 +174,9 @@ variable {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.o
 section
 variable {C : Type 1} [Category.{0} C] {G : C ⥤ Thick ((B.schFn q).cr b ht κ)}
 
+/- English proof (translation)
+Establish `hfg : s.map' 0 2 = s.map' 0 1 ≫ s.map' 1 2` using `s.map'_comp 0 1 2`. Use `CocCls.red_Rf Lf (s.map' 0 1) (s.map' 1 2)` as an intermediate fact. Rewrite `this` using `[← hfg]`. Conclude with `CocCls.sub_one_mem this`.
+-/
 theorem r_mem (Lf : B.CLift G D) (s : ComposableArrows C 2) : (Lf.r s).val - 1 ∈ (G.obj (s.obj (Fin.last 2))).J := by
   have hfg : s.map' 0 2 = s.map' 0 1 ≫ s.map' 1 2 := s.map'_comp 0 1 2
   have := CocCls.red_Rf Lf (s.map' 0 1) (s.map' 1 2)
@@ -147,9 +189,15 @@ def cocJ (Lf : B.CLift G D) : Cn (G ⋙ (B.pdS _ c 1).fn) 2 :=
 variable (hN : ∀ T k, N ≤ k → ∀ x ∈ (G.obj T).J, (k.factorial : (G.obj T).B) * (G.obj T).δ.dpow (k + 1) x = 0)
 include hN
 
+/- English proof (translation)
+The claim follows from `sub_d _ G 2 _ _ ((CocCls.closed Lf c N hN).trans (map_zero _).symm)`.
+-/
 theorem cocJ_closed (Lf : B.CLift G D) : d _ 2 (cocJ c N Lf) = 0 :=
   sub_d _ G 2 _ _ ((CocCls.closed Lf c N hN).trans (map_zero _).symm)
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `CocCls.exists_v Lf Lf'`. Set `y : Cn (G ⋙ (B.pdS _ c 1).fn) 1` to `fun s => ⟨CocCls.yc Lf Lf' v c N s, mem_pdS.2 (dlog_mem _ N (CocCls.sub_one_mem (CocCls.red_Ef hv (s.map' 0 1))))⟩`. Conclude with `((CrystallineSemistableComparison.P.cls_surj _ 2).2.2.1 _ _ hz hz').2 ⟨y, sub_d _ G 1 y _ (CocCls.d_yc hv c N hN)⟩`.
+-/
 theorem cocJ_cls (Lf Lf' : B.CLift G D) (hz hz') : (cx _).cls (cocJ c N Lf) hz = (cx _).cls (cocJ c N Lf') hz' := by
   obtain ⟨v, hv⟩ := CocCls.exists_v Lf Lf'
   let y : Cn (G ⋙ (B.pdS _ c 1).fn) 1 := fun s => ⟨CocCls.yc Lf Lf' v c N s,
@@ -166,6 +214,17 @@ def IsFirstChernClassDividedPower (x : H (B.pdS ((B.schFn q).cr b ht κ) c 1).fn
       (∀ s, (show (B.pdS _ c 1).S _ from z s).1 = Lf.coc c N s) ∧
       (cx _).cls z hz = (Mor.restrict (B.pdS _ c 1).fn G).pull 2 x
 
+/- English proof (translation)
+Take `⟨Λ₀⟩` from `clift_ex Q.ι D (fun T => (hQ _).1 T.property)`. Establish `hz₀` using `cocJ_closed c N (G := Q.ι) (fun T k hk x _ => by`. Express the relevant statement in the definitionally equal form `((k.factorial : ℕ) : (T.obj).B) * _ = 0`. Rewrite using `[hN _ k hk, zero_mul]) Λ₀`. Take `⟨x, hx⟩` from `hbij.2 ((CH.cx _).cls _ hz₀)`.
+
+Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Introduce `C _ G Λ₁`. Establish `hG : ∀ T, Q (G.obj T)` using `fun T => (hQ _).2 ⟨Λ₁.p T, Λ₁.hp T⟩`. Establish `hN' : ∀ T k, N ≤ k → ∀ x ∈ (G.obj T).J, (k.factorial : (G.obj T).B) * (G.obj T).δ.dpow (k + 1) x = 0` using `fun T k hk x _ => by rw [hN _ k hk, zero_mul]`. Set `Λ' : B.CLift G D` to `CrystallineChernClass.precomp Λ₀ (Q.lift G hG)`.
+
+Use `⟨cocJ c N Λ₁, cocJ_closed c N hN' Λ₁, fun _ => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[cocJ_cls c N hN' Λ₁ Λ' _ (cocJ_closed c N hN' Λ')]`. Establish `e1 : (CH.Mor.restrict (B.pdS ((B.schFn q).cr b ht κ) c 1).fn G).pull 2 x = (CH.Mor.restrict (Q.ι ⋙ (B.pdS ((B.schFn q).cr b ht κ) c 1).fn) (Q.lift G hG)).pull 2 ((CH.Mor.restrict (B.pdS ((B.schFn q).cr b ht κ) c 1).fn Q.ι).pull 2 x)`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, hx]`. Both sides reduce to the same expression. Introduce `y hy`. Apply `hbij.1` to reduce the goal to its premises. Take `⟨z, h1, h2, h3⟩` from `hy _ Q.ι Λ₀`.
+
+Take `rfl : z = cocJ c N Λ₀` from `funext fun s => Subtype.ext (h2 s)`. Rewrite using `[hx, ← h3]`.
+-/
 theorem exu_core (D : E.LineData X) (Q : ObjectProperty (Thick ((B.schFn q).cr b ht κ)))
     (hQ : ∀ T, Q T ↔ ∃ a : Spec (CommRingCat.of (T.B ⧸ T.J)) ⟶ D.Y, a ≫ D.f = B.thPt T)
     (hbij : Function.Bijective ((CH.Mor.restrict (B.pdS ((B.schFn q).cr b ht κ) c 1).fn Q.ι).pull 2))
@@ -199,6 +258,11 @@ theorem exu_core (D : E.LineData X) (Q : ObjectProperty (Thick ((B.schFn q).cr b
 
 end Core
 
+/- English proof (translation)
+Establish `hf : ∀ (T : Thick ((B.schFn q).cr (nlBase R I γ p) rfl κ)) (k : ℕ), N ≤ k → (k.factorial : T.B) = 0` using `fun T k hk => by`. Take `⟨m, hm⟩` from `Nat.factorial_dvd_factorial hk`. Establish `h0 : (k.factorial : R) = 0` using `by rw [hm, Nat.cast_mul, hN, zero_mul]`. Use `congrArg T.i h0` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis.
+
+Establish `hb` using `res_bij (γ := γ) (q := q) (κ := κ) hp D hD c 2`. Set `Q : ObjectProperty (Thick ((B.schFn q).cr (nlBase R I γ p) rfl κ))` to `CrystallineChernClass.Lifts (γ := γ) (p := p) (q := q) (κ := κ) D`. Establish `hQ : ∀ T, Q T ↔ ∃ a : Spec (CommRingCat.of (T.B ⧸ T.J)) ⟶ D.Y, a ≫ D.f = B.thPt T` using `fun T => Iff.rfl`. Establish `hb' : Function.Bijective ((CH.Mor.restrict (B.pdS ((B.schFn q).cr (nlBase R I γ p) rfl κ) c 1).fn Q.ι).pull 2)` using `hb`. Conclude with `exu_core (q := q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) c N D Q hQ hb' hf`.
+-/
 theorem exu {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPowers I) (p : ℕ) (hp : p ≠ 0) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* R ⧸ I) (D : E.LineData X) (hD : sSup (𝒱D D) = ⊤) {Λ : Type} [CommRing Λ]
     (c : Λ →+* R) (N : ℕ) (hN : (N.factorial : R) = 0) :
@@ -215,6 +279,15 @@ theorem exu {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPo
   exact exu_core (q := q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) c N D Q hQ hb' hf
 
 open B in
+/- English proof (translation)
+Introduce `C _ G Lf`. Set `mm` to `pdOm (c := c) (c' := c') (crMor (F := schFn q) (F' := schFn q) (b := b) (b' := b') (ht := ht) (ht' := ht') σ hp hI (basePt (schFn q) τ hτ) hs) (RingHom.id Λ) hc 1`. Set `G' : C ⥤ Thick ((schFn q).cr b ht κ)` to `G ⋙ mm.G`. Set `Lf' : CLift G' D` to `{ p := Lf.p, hp := Lf.hp, w := Lf.w, hw := Lf.hw }`. Take `⟨z, hz', hv, hcl⟩` from `hy C G' Lf'`.
+
+Set `m4 : CH.Mor (G' ⋙ (pdS _ c 1).fn) (G ⋙ (pdS _ c' 1).fn) (RingHom.id _)` to `{ G := 𝟭 C, τ := fun T => mm.τ (G.obj T), nat := fun φ x => mm.nat (G.map φ) x }`. Establish `hz : CH.d _ 2 (m4.pullC 2 z) = 0` using `by rw [m4.d_pullC, hz', map_zero]`. Use `⟨m4.pullC 2 z, hz, fun s => (hv s).trans ?_, ?_⟩` and prove the remaining obligations. Use `FirstChernClassFactorial.dlog_eq_of_factorial (G.obj (s.obj (Fin.last 2))).δ hN (fun j hj => ?_) _` and prove the remaining obligations. Use `congrArg (G.obj (s.obj (Fin.last 2))).i (hf j hj)` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `this`. Establish `h1 : (CH.Mor.restrict (pdS _ c' 1).fn G).pull 2 (mm.pull 2 y) = m4.pull 2 ((CH.Mor.restrict (pdS _ c 1).fn G').pull 2 y)`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Both sides reduce to the same expression.
+
+Use `Eq.trans ?_ h1.symm` and prove the remaining obligations. Rewrite using `[← hcl]`. Both sides reduce to the same expression.
+-/
 theorem isFirstChernJ_base_change {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {b b' : Base}
     {ht : b.t = 1} {ht' : b'.t = 1} {κ : O →+* b.R ⧸ b.I} {κ' : O →+* b'.R ⧸ b'.I}
     (σ : b.R →+* b'.R) (hp : b.p = b'.p) (hI : IsDPMorphism b.γ b'.γ σ) (τ : b.R ⧸ b.I →+* b'.R ⧸ b'.I)

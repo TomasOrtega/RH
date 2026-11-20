@@ -28,6 +28,9 @@ def CBCr : Prop :=
       ∀ (π : Cusp K n) (P : Cusp M n), (∀ σ : M ≃ₐ[K] M, P.ConjIso σ.toRingEquiv) → WeakBC π.sat P.sat →
         ∀ π₁ : Cusp K n, WeakBC π₁.sat P.sat → ∃ η : HChar K, (η = 1 ∨ IsNormChar M η) ∧ (π.twist η).Iso π₁
 
+/- English proof (translation)
+Introduce `K M _ _ _ _ _ _ hp hK n hn`. Take `⟨a, b, c⟩` from `h K M hp hK n hn`. Use `⟨fun π _ => (a π).imp_right fun ⟨P, h1, h2, _⟩ => ⟨P, h1, h2⟩, fun P _ hP => ?_, fun π P h1 h2 => (c π P h1 h2).2⟩` and prove the remaining obligations. Take `⟨π, h1, h2, _⟩` from `b P hP`. Conclude with `⟨π, h1, h2⟩`.
+-/
 theorem cbcr_of_cbcc (h : CBCc) : CBCr := by
   intro K M _ _ _ _ _ _ hp hK n hn
   obtain ⟨a, b, c⟩ := h K M hp hK n hn

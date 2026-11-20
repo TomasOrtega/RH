@@ -5,6 +5,23 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.Div
 
+/- English proof (translation)
+Introduce `p _ G β y₁ y₂ y₀ c₁ c₂ w r h1 h2 hs hw hr H`. Establish `shm : ∀ a b : G.C, sh G (a * b) = sh G b * sh G a`. Introduce `a b`. Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`. Establish `shc : sh G ((c₂⁻¹ : G.Cˣ) : G.C) * sh G (c₂ : G.C) = 1`.
+
+Rewrite using `[← shm, Units.mul_inv]`. Simplify using `[sh]`. Establish `hR : algebraMap ℚ G.C r⁻¹ * algebraMap ℚ G.C r = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hr.ne', map_one]`. Use `set ru : ℚˣ := Units.mk0 r hr.ne' with hru`.
+
+Establish `HX : (w : G.C) * (((c₁⁻¹ : G.Cˣ) : G.C) * β * sh G ((c₁⁻¹ : G.Cˣ) : G.C) * ((β⁻¹ : G.Cˣ) : G.C)) * ((β : G.C) * sh G (w : G.C) * ((β⁻¹ : G.Cˣ) : G.C)) = algebraMap ℚ G.C r⁻¹ * (((c₂⁻¹ : G.Cˣ) : G.C) * β * sh G ((c₂⁻¹ : G.Cˣ) : G.C) * ((β⁻¹ : G.Cˣ) : G.C))`. Rewrite using `[H, ← mul_assoc (algebraMap ℚ G.C r⁻¹), hR, one_mul]`. Establish `mem : ((c₂ * w * c₁⁻¹, ru⁻¹) : G.Cˣ × ℚˣ) ∈ grp G β`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((c₂ * w * c₁⁻¹ : G.Cˣ) : G.C) * β * sh G ((c₂ * w * c₁⁻¹ : G.Cˣ) : G.C) = algebraMap ℚ G.C ((ru⁻¹ : ℚˣ) : ℚ) * β`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, hru, Units.val_mk0]`. Simplify using `only [Units.val_mul, shm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Use `_ = algebraMap ℚ G.C r⁻¹ * ((c₂ : G.C) * ((c₂⁻¹ : G.Cˣ) : G.C) * β * (sh G ((c₂⁻¹ : G.Cˣ) : G.C) * sh G (c₂ : G.C))) := by`.
+
+Rewrite using `[HX, Algebra.left_comm]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Use `_ = _ := by rw [shc, Units.mul_inv, one_mul, mul_one]`. Express the relevant statement in the definitionally equal form `0 < ((ru⁻¹ : ℚˣ) : ℚ)`. Rewrite using `[Units.val_inv_eq_inv_val, hru, Units.val_mk0]`.
+
+Conclude with `inv_pos.2 hr`. Use `⟨⟨_, mem⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : (y₁ : G.Cˣ × ℚˣ).1 = c₁ * y₀ * c₁⁻¹` using `Units.ext (by rw [h1]; simp)`. Establish `e2 : (y₂ : G.Cˣ × ℚˣ).1 = c₂ * y₀ * c₂⁻¹` using `Units.ext (by rw [h2]; simp)`. Establish `hwu : w * y₀ = y₀ * w` using `Units.ext (by simpa using hw.eq)`.
+
+Establish `hwu' : ∀ x : G.Cˣ, w * (y₀ * x) = y₀ * (w * x)` using `fun x => by rw [← mul_assoc, hwu, mul_assoc]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Use `show (y₂ : G.Cˣ × ℚˣ).1 = (c₂ * w * c₁⁻¹) * (y₁ : G.Cˣ × ℚˣ).1 * (c₂ * w * c₁⁻¹)⁻¹`. Rewrite using `[e1, e2]`.
+
+Simplify using `only [_root_.mul_inv_rev, inv_inv, mul_assoc, inv_mul_cancel_left, hwu', mul_inv_cancel_left]`. Use `show (y₂ : G.Cˣ × ℚˣ).2 = ru⁻¹ * (y₁ : G.Cˣ × ℚˣ).2 * ru⁻¹⁻¹`. Rewrite using `[hs, mul_comm ru⁻¹, mul_assoc, mul_inv_cancel, mul_one]`.
+-/
 theorem conj_of_twist : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ) (y₁ y₂ : grp G β) (y₀ c₁ c₂ w : G.Cˣ) (r : ℚ),
     (((y₁ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = c₁ * y₀ * ((c₁⁻¹ : G.Cˣ) : G.C) →
     (((y₂ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = c₂ * y₀ * ((c₂⁻¹ : G.Cˣ) : G.C) →

@@ -18,6 +18,9 @@ section Pt
 
 variable {I : AutInst}
 
+/- English proof (translation)
+Use `show (Algebra.TensorProduct.map I.cm.sig (AlgHom.id I.F (Af I.F))) (x ⊗ₜ[I.F] (1 : Af I.F)) = star x ⊗ₜ[I.F] (1 : Af I.F)`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+-/
 theorem sigR_inclE (x : I.E) :
     Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.inclE (F := I.F) (Af I.F) x) =
       Formalism.UG.inclE (F := I.F) (Af I.F) (star x) := by
@@ -25,6 +28,9 @@ theorem sigR_inclE (x : I.E) :
   rw [Algebra.TensorProduct.map_tmul]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, transpose_apply, map_apply, conjTranspose_apply]`. Conclude with `sigR_inclE (M j i)`.
+-/
 theorem cT_map (M : Matrix (Fin I.n) (Fin I.n) I.E) :
     Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) (M.map (Formalism.UG.inclE (F := I.F) (Af I.F))) =
       Mᴴ.map (Formalism.UG.inclE (F := I.F) (Af I.F)) := by
@@ -40,6 +46,9 @@ def ptF (h : GL (Fin I.n) I.E) (hh : (h : Matrix (Fin I.n) (Fin I.n) I.E)ᴴ * I
         I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))
     rw [cT_map, ← Matrix.map_mul, ← Matrix.map_mul, hh]⟩
 
+/- English proof (translation)
+Introduce `a` and use `by rw [I.cm.cmUnram.2.1 (I.φ v) a] rfl`.
+-/
 theorem semiconj_phi (v : InfinitePlace I.F) : Function.Semiconj (I.φ v) star star := fun a => by
   rw [I.cm.cmUnram.2.1 (I.φ v) a]
   rfl

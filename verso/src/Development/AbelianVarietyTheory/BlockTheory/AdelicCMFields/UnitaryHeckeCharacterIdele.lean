@@ -20,6 +20,9 @@ variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] in
+/- English proof (translation)
+Use `haveI := h.totallyReal`. Use `haveI := h.totallyComplex`. Use `haveI := h.quadratic`. Conclude with `IsCMField.ofCMExtension F E`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsCMExtension.isCMField [h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsCMExtension F E] : IsCMField E := by
   haveI := h.totallyReal
   haveI := h.totallyComplex
@@ -47,6 +50,9 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] in
 
+/- English proof (translation)
+Use `haveI := _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsCMExtension.isCMField F E`. Conclude with `(IsCMField.isConj_complexConj E φ).eq x`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.embedding_conj [_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsCMExtension F E] (φ : E →+* ℂ) (x : E) :
     φ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj F E x) = starRingEnd ℂ (φ (x)) := by
   haveI := _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsCMExtension.isCMField F E
@@ -55,11 +61,17 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] in
+/- English proof (translation)
+Use `haveI := _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsCMExtension.isCMField F E`. Conclude with `IsCMField.complexConj_apply_apply E x`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj_conj [_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsCMExtension F E] (x : E) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj F E (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj F E x) = x := by
   haveI := _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsCMExtension.isCMField F E
   exact IsCMField.complexConj_apply_apply E x
 
+/- English proof (translation)
+Use `haveI := IsCMExtension.isCMField F E`. Introduce `h`. Apply `IsCMField.complexConj_ne_one E` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h x`.
+-/
 theorem conj_ne_one [IsCMExtension F E] : conj F E ≠ 1 := by
   haveI := IsCMExtension.isCMField F E
   intro h
@@ -95,6 +107,9 @@ def finiteCompletionMap (w : HeightOneSpectrum (𝓞 L)) :
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
+/- English proof (translation)
+The claim follows from `(adicCompletion.uniformEquiv L w).symm.uniformContinuous.continuous.comp (UniformSpace.Completion.continuous_map.comp (adicCompletion.uniformEquiv K (w.under (𝓞 K))).uniformContinuous.continuous)`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_finiteCompletionMap (w : HeightOneSpectrum (𝓞 L)) :
     Continuous (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap K L w) :=
   (adicCompletion.uniformEquiv L w).symm.uniformContinuous.continuous.comp
@@ -104,6 +119,9 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe]`. Use `erw [show (adicCompletion.equiv K (w.under (𝓞 K))) (algebraMap K _ x) = ((WithVal.equiv ((w.under (𝓞 K)).valuation K)).symm x : ((w.under (𝓞 K)).valuation K).Completion) from rfl]`. Use `erw [UniformSpace.Completion.mapRingHom_apply, UniformSpace.Completion.map_coe (uniformContinuous_algebraMap_liesOver K L (w.under (𝓞 K)) w)]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap_coe (w : HeightOneSpectrum (𝓞 L)) (x : K) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap K L w (algebraMap K _ x) =
       algebraMap L (w.adicCompletion L) (algebraMap K L x) := by
@@ -119,6 +137,13 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
+/- English proof (translation)
+Introduce `x hx`. Establish `hS : IsClosed ((_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap K L w) ⁻¹' (w.adicCompletionIntegers L : Set (w.adicCompletion L)))` using `(Valued.isClopen_integer (w.adicCompletion L)).isClosed.preimage (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_finiteCompletionMap K L w)`. Establish `hopen : IsOpen (((w.under (𝓞 K)).adicCompletionIntegers K : Set ((w.under (𝓞 K)).adicCompletion K)))` using `(Valued.isClopen_integer ((w.under (𝓞 K)).adicCompletion K)).isOpen`. Establish `hd` using `Dense.open_subset_closure_inter (denseRange_algebraMap K (w.under (𝓞 K))) hopen hx`. Use `closure_minimal ?_ hS hd` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨hy, k, rfl⟩`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, mem_adicCompletionIntegers] at hy ⊢`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap_coe]`. Establish `h1 : Valued.v (algebraMap K ((w.under (𝓞 K)).adicCompletion K) k) = (w.under (𝓞 K)).valuation K k` using `valuedAdicCompletion_eq_valuation' _ k`. Establish `h2 : Valued.v (algebraMap L (w.adicCompletion L) (algebraMap K L k)) = w.valuation L (algebraMap K L k)` using `valuedAdicCompletion_eq_valuation' _ _`.
+
+Rewrite `hy` using `[h1]`. Rewrite using `[h2, ← valuation_liesOver L (w.under (𝓞 K)) w]`. Conclude with `pow_le_one' hy _`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap_mapsTo (w : HeightOneSpectrum (𝓞 L)) :
     Set.MapsTo (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap K L w)
       ((w.under (𝓞 K)).adicCompletionIntegers K : Set _) (w.adicCompletionIntegers L : Set _) := by
@@ -146,6 +171,11 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
+/- English proof (translation)
+Introduce `s hs`. Rewrite `hs` using `[mem_cofinite]`. Rewrite using `[mem_map, mem_cofinite]`. Rewrite using `[← Set.preimage_compl]`. Use `hs.preimage' fun v _ => ?_` and prove the remaining obligations.
+
+Use `((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 L)).preimage (fun a _ b _ h => HeightOneSpectrum.ext h)).subset ?_` and prove the remaining obligations. Introduce and unpack `w rfl`. Conclude with `⟨w.isPrime, ⟨rfl⟩⟩`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under :
     Tendsto (fun w : HeightOneSpectrum (𝓞 L) => w.under (𝓞 K)) cofinite cofinite := by
   intro s hs
@@ -176,6 +206,9 @@ def adeleMap : AdeleRing (𝓞 K) K →+* AdeleRing (𝓞 L) L :=
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Conclude with `LiesOver.completionMap_coe _`. Use extensionality with `w : 1`. Conclude with `_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap_coe K L w x`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap_algebraMap (x : K) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap K L (algebraMap K _ x) =
       algebraMap L (AdeleRing (𝓞 L) L) (algebraMap K L x) := by
@@ -188,6 +221,9 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
+/- English proof (translation)
+The claim follows from `(continuous_pi fun w => LiesOver.continuous_completionMap.comp (continuous_apply _)).prodMap (RestrictedProduct.mapAlong_continuous _ _ _ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under K L) _ (Eventually.of_forall (_root_.GlobalTheory.Ind …`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_adeleMap : Continuous (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap K L) :=
   (continuous_pi fun w => LiesOver.continuous_completionMap.comp (continuous_apply _)).prodMap
     (RestrictedProduct.mapAlong_continuous _ _ _
@@ -200,12 +236,18 @@ def ideleMap : Idele K →* Idele L := Units.map (adeleMap K L).toMonoidHom
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_adeleMap K L)`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_ideleMap : Continuous (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap K L) :=
   Continuous.units_map _ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_adeleMap K L)
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
+/- English proof (translation)
+The claim follows from `Units.ext (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap_algebraMap K L x)`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap_principalIdele (x : Kˣ) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap K L (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.principalIdele K x) =
       _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.principalIdele L (Units.map (algebraMap K L).toMonoidHom x) :=
@@ -219,6 +261,9 @@ def ideleConj (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
+/- English proof (translation)
+The claim follows from `@_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap_principalIdele E E _ _ _ _ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj F E).toRingEquiv.toRingHom.toAlgebra x`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleConj_principalIdele (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] [_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsCMExtension F E] (x : Eˣ) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleConj F E (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.principalIdele E x) =
@@ -227,6 +272,9 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
   @_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap_principalIdele E E _ _ _ _
     (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj F E).toRingEquiv.toRingHom.toAlgebra x
 
+/- English proof (translation)
+The claim follows from `haveI : IsCyclotomicExtension {4} ℚ (CyclotomicField 4 ℚ) := CyclotomicField.isCyclotomicExtension 4 ℚ haveI : IsCMField (CyclotomicField 4 ℚ) := IsCyclotomicExtension.Rat.isCMField _ (S := {4}) ⟨4, rfl, by norm_num⟩ inferInstance`.
+-/
 example : IsCMExtension (maximalRealSubfield (CyclotomicField 4 ℚ)) (CyclotomicField 4 ℚ) :=
   haveI : IsCyclotomicExtension {4} ℚ (CyclotomicField 4 ℚ) :=
     CyclotomicField.isCyclotomicExtension 4 ℚ
@@ -297,6 +345,11 @@ def IsUniformiser (P : HeightOneSpectrum (𝓞 E)) (ϖ : (P.adicCompletion E)ˣ)
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `P.valuation_exists_uniformizer E`. Establish `hv : Valued.v (algebraMap E (P.adicCompletion E) π) = WithZero.exp (-1 : ℤ)` using `(valuedAdicCompletion_eq_valuation' P π).trans hπ`. Establish `hne : algebraMap E (P.adicCompletion E) π ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero hv.symm`. Conclude with `⟨Units.mk0 _ hne, hv⟩`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.exists_isUniformiser (P : HeightOneSpectrum (𝓞 E)) :
     ∃ ϖ, _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsUniformiser P ϖ := by
   obtain ⟨π, hπ⟩ := P.valuation_exists_uniformizer E
@@ -318,6 +371,11 @@ def valueAt (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) : ℂ :=
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Establish `hc` using `(_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.exists_isUniformiser P).choose_spec`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.valueAt, if_pos h]`. Generalize the expression as in `(_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.exists_isUniformiser P).choose = ϖ₀ at hc ⊢`. Establish `hu : Valued.v ((ϖ₀ * ϖ⁻¹ : (P.adicCompletion E)ˣ) : P.adicCompletion E) = 1`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hc, hϖ, mul_inv_cancel₀ WithZero.exp_ne_zero]`.
+
+Establish `e : ϖ₀ = (ϖ₀ * ϖ⁻¹) * ϖ` using `by group`. Rewrite using `[e, map_mul, h _ hu, one_mul]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.valueAt_eq (χ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar E)
     {P : HeightOneSpectrum (𝓞 E)} (h : χ.IsUnramifiedAt P)
     {ϖ : (P.adicCompletion E)ˣ} (hϖ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsUniformiser P ϖ) :
@@ -334,10 +392,16 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.valueAt, h]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.valueAt_of_ramified (χ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar E) {P : HeightOneSpectrum (𝓞 E)}
     (h : ¬ χ.IsUnramifiedAt P) : χ.valueAt P = 0 := by
   simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.valueAt, h]
 
+/- English proof (translation)
+Unfold `valueAt`. Use `split_ifs`. Conclude with `(Circle.norm_coe _).le`. Simplify using the standard rewrite rules.
+-/
 theorem norm_valueAt_le (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) :
     ‖χ.valueAt P‖ ≤ 1 := by
   unfold valueAt
@@ -351,11 +415,17 @@ def eulerFactor (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) (s : 
 def finiteL (χ : UnitaryHeckeChar E) (s : {s : ℂ // 1 < s.re}) : ℂ :=
   ∏' P : HeightOneSpectrum (𝓞 E), χ.eulerFactor P s
 
+/- English proof (translation)
+Establish `h : (trivial E).IsUnramifiedAt P` using `fun _ _ => rfl`. Rewrite using `[valueAt, if_pos h]`. Both sides reduce to the same expression.
+-/
 example (P : HeightOneSpectrum (𝓞 E)) : (trivial E).valueAt P = 1 := by
   have h : (trivial E).IsUnramifiedAt P := fun _ _ => rfl
   rw [valueAt, if_pos h]
   rfl
 
+/- English proof (translation)
+Establish `h` using `NumberField.HeightOneSpectrum.one_lt_absNorm P`. Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos (by omega), Complex.neg_re]`. Conclude with `mul_le_of_le_one_left (by positivity) (χ.norm_valueAt_le P)`.
+-/
 theorem norm_term_le (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) (s : ℂ) :
     ‖χ.valueAt P * (Ideal.absNorm P.asIdeal : ℂ) ^ (-s)‖ ≤
       (Ideal.absNorm P.asIdeal : ℝ) ^ (-s.re) := by
@@ -363,6 +433,11 @@ theorem norm_term_le (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) 
   rw [norm_mul, Complex.norm_natCast_cpow_of_pos (by omega), Complex.neg_re]
   exact mul_le_of_le_one_left (by positivity) (χ.norm_valueAt_le P)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `χ.norm_term_le P s`. Rewrite `h1` using `[← sub_eq_zero.mp h, norm_one]`. Establish `h2 : (1 : ℝ) < Ideal.absNorm P.asIdeal`. Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm P` after adjusting the coercions.
+
+Conclude with `absurd (Real.rpow_lt_one_of_one_lt_of_neg h2 (neg_neg_of_pos hs)) (not_lt.mpr h1)`.
+-/
 theorem one_sub_ne_zero (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) {s : ℂ}
     (hs : 0 < s.re) : 1 - χ.valueAt P * (Ideal.absNorm P.asIdeal : ℂ) ^ (-s) ≠ 0 := by
   intro h
@@ -375,6 +450,21 @@ theorem one_sub_ne_zero (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Establish `hprime : ∀ P : HeightOneSpectrum (𝓞 E), (Ideal.absNorm (P.asIdeal.under ℤ)).Prime` using `fun P => by haveI : NeZero P.asIdeal := ⟨P.ne_bot⟩`. Conclude with `Nat.absNorm_under_prime P.asIdeal`. Set `pr : HeightOneSpectrum (𝓞 E) → Nat.Primes` to `fun P => ⟨_, hprime P⟩`. Establish `hle : ∀ P : HeightOneSpectrum (𝓞 E), (Ideal.absNorm P.asIdeal : ℝ) ^ (-σ) ≤ ((pr P : ℕ) : ℝ) ^ (-σ)`. Introduce `P`.
+
+Establish `h1 : Ideal.absNorm (P.asIdeal.under ℤ) ^ P.asIdeal.inertiaDeg ℤ = Ideal.absNorm P.asIdeal` using `Ideal.absNorm_pow_inertiaDeg (P.asIdeal.under ℤ) P.asIdeal`. Establish `h2 : (pr P : ℕ) ≤ Ideal.absNorm P.asIdeal` using `h1 ▸ Nat.le_self_pow (Ideal.inertiaDeg_pos P.asIdeal ℤ).ne' _`. Conclude with `Real.rpow_le_rpow_of_nonpos (by exact_mod_cast (hprime P).pos) (by exact_mod_cast h2) (by linarith)`. Establish `hcard : ∀ (m : Nat.Primes) (u : Finset (HeightOneSpectrum (𝓞 E))), (u.filter (fun P => pr P = m)).card ≤ Module.finrank ℚ E`. Introduce `m u`.
+
+Establish `hunder : ∀ P, pr P = m → P.asIdeal.under ℤ = Ideal.span {((m : ℕ) : ℤ)}` using `fun P hP => by`. Rewrite using `[← hP]`. Conclude with `(Int.ideal_span_absNorm_eq_self _).symm`. Establish `hq0 : Ideal.span {((m : ℕ) : ℤ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `m.prop.ne_zero` after adjusting the coercions. Use `haveI hmax : (Ideal.span {((m : ℕ) : ℤ)}).IsMaximal := (Ideal.span_singleton_prime (by exact_mod_cast m.prop.ne_zero)).mpr (Nat.prime_iff_prime_int.mp m.prop) |>.isMaximal hq0`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.card_le_card fun I hI => ?_` and prove the remaining obligations. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.mp hI`.
+
+Rewrite using `[← Finset.mem_coe, IsDedekindDomain.coe_primesOverFinset hq0]`. Conclude with `⟨P.isPrime, ⟨(hunder P (Finset.mem_filter.mp hP).2).symm⟩⟩`. Use `_ ≤ Module.finrank ℚ E := Ideal.card_primesOverFinset_le_finrank (𝓞 E) ℚ E hq0`. Establish `hsP : Summable fun m : Nat.Primes => ((m : ℕ) : ℝ) ^ (-σ)` using `Nat.Primes.summable_rpow.mpr (by linarith)`. Use `summable_of_sum_le (c := Module.finrank ℚ E * ∑' m : Nat.Primes, ((m : ℕ) : ℝ) ^ (-σ)) (fun P => by positivity) fun u => ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun P hP => by rw [(Finset.mem_filter.mp hP).2], Finset.sum_const, nsmul_eq_mul]`. Use `gcongr`. Conclude with `hcard m u` after adjusting the coercions.
+
+Use `_ = Module.finrank ℚ E * ∑ m ∈ u.image pr, ((m : ℕ) : ℝ) ^ (-σ) := by rw [Finset.mul_sum]`. Use `_ ≤ Module.finrank ℚ E * ∑' m : Nat.Primes, ((m : ℕ) : ℝ) ^ (-σ) := by gcongr`. Conclude with `hsP.sum_le_tsum _ fun _ _ => by positivity`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.summable_absNorm_rpow {σ : ℝ} (hσ : 1 < σ) :
     Summable fun P : HeightOneSpectrum (𝓞 E) => (Ideal.absNorm P.asIdeal : ℝ) ^ (-σ) := by
   classical
@@ -432,6 +522,11 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
         gcongr
         exact hsP.sum_le_tsum _ fun _ _ => by positivity
 
+/- English proof (translation)
+Establish `h1 : Summable fun P : HeightOneSpectrum (𝓞 E) => χ.valueAt P * (Ideal.absNorm P.asIdeal : ℂ) ^ (-s)` using `Summable.of_norm_bounded (summable_absNorm_rpow hs) fun P => χ.norm_term_le P s`. Establish `h2` using `h1.clog_one_sub.neg.hasSum.cexp.multipliable`. Use `h2.congr fun P => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[Complex.exp_neg, Complex.exp_log (χ.one_sub_ne_zero P (by linarith))]`.
+
+Both sides reduce to the same expression.
+-/
 theorem multipliable_eulerFactor (χ : UnitaryHeckeChar E) {s : ℂ} (hs : 1 < s.re) :
     Multipliable fun P => χ.eulerFactor P s := by
   have h1 : Summable fun P : HeightOneSpectrum (𝓞 E) =>
@@ -443,6 +538,9 @@ theorem multipliable_eulerFactor (χ : UnitaryHeckeChar E) {s : ℂ} (hs : 1 < s
   rw [Complex.exp_neg, Complex.exp_log (χ.one_sub_ne_zero P (by linarith))]
   rfl
 
+/- English proof (translation)
+The claim follows from `(χ.multipliable_eulerFactor s.2).hasProd`.
+-/
 theorem hasProd_eulerFactor (χ : UnitaryHeckeChar E) (s : {s : ℂ // 1 < s.re}) :
     HasProd (fun P => χ.eulerFactor P s) (χ.finiteL s) :=
   (χ.multipliable_eulerFactor s.2).hasProd
@@ -452,6 +550,9 @@ end UnitaryHeckeChar
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Rewrite using `[FinitePlace.norm_def, h]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.norm_eq_one_of_valued {P : HeightOneSpectrum (𝓞 E)}
     {x : P.adicCompletion E} (h : Valued.v x = 1) : ‖x‖ = 1 := by
   rw [FinitePlace.norm_def, h]
@@ -460,6 +561,11 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Establish `hev` using `x.val.2.2.and x.inv.2.2`. Rewrite `hev` using `[Filter.eventually_cofinite]`. Use `hev.subset fun v hv ⟨ha, hb⟩ => hv ?_` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, mem_adicCompletionIntegers] at ha hb`. Establish `hab : x.val.2 v * x.inv.2 v = 1` using `congrArg (fun y : AdeleRing (𝓞 E) E => y.2 v) x.val_inv`.
+
+Establish `hv1 : Valued.v (x.val.2 v) * Valued.v (x.inv.2 v) = 1` using `by rw [← map_mul, hab, map_one]`. Use `_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.norm_eq_one_of_valued (le_antisymm ha ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finite_mulSupport (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.Idele E) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 E) => ‖x.val.2 v‖).Finite := by
   have hev := x.val.2.2.and x.inv.2.2
@@ -493,6 +599,9 @@ def ideleNorm : Idele E →* ℝ := infiniteIdeleNorm * finiteIdeleNorm
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Introduce `h`. Establish `hx` using `map_mul _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm x x⁻¹`. Rewrite `hx` using `[mul_inv_cancel, map_one, h, zero_mul]`. Conclude with `one_ne_zero hx`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm_ne_zero (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.Idele E) : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm x ≠ 0 := by
   intro h
   have hx := map_mul _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm x x⁻¹
@@ -502,6 +611,11 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Establish `hinf : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteIdeleNorm (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.principalIdele E x) = ∏ w : InfinitePlace E, w (x : E) ^ w.mult` using `Finset.prod_congr rfl fun v _ => by`. Use `congr 1`. Conclude with `InfinitePlace.Completion.norm_coe v ((WithAbs.equiv v.1).symm (x : E))`. Establish `hfin : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteIdeleNorm (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.principalIdele E x) = ∏ᶠ w : FinitePlace E, w (x : E)`. Use `(finprod_congr fun P => ?_).trans (finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm (f := fun w : FinitePlace E => w (x : E)))` and prove the remaining obligations.
+
+Use `show ‖FinitePlace.embedding P (x : E)‖ = _`. Rewrite using `[← FinitePlace.mk_apply]`. Both sides reduce to the same expression. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm, MonoidHom.mul_apply, hinf, hfin, prod_abs_eq_one x.ne_zero]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm_principalIdele (x : Eˣ) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.principalIdele E x) = 1 := by
   have hinf : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteIdeleNorm (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.principalIdele E x) =
@@ -518,6 +632,15 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
     rfl
   rw [_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm, MonoidHom.mul_apply, hinf, hfin, prod_abs_eq_one x.ne_zero]
 
+/- English proof (translation)
+Establish `hO : IsOpen {a : FiniteAdeleRing (𝓞 E) E | ∀ v, a v ∈ v.adicCompletionIntegers E}` using `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 E) => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) fun _ => Valued.isOpen_valuationSubring _`. Establish `h1 : Continuous fun x : Idele E => x.val.2` using `continuous_snd.comp Units.continuous_val`. Establish `h2 : Continuous fun x : Idele E => (x⁻¹).val.2` using `h1.comp continuous_inv`. Establish `key : ∀ y : Idele E, (∀ v, y.val.2 v ∈ v.adicCompletionIntegers E) → (∀ v, (y⁻¹).val.2 v ∈ v.adicCompletionIntegers E) → finiteIdeleNorm y = 1`. Introduce `y hy hy'`.
+
+Use `finprod_eq_one_of_forall_eq_one fun v => norm_eq_one_of_valued ?_` and prove the remaining obligations. Establish `e : y.val.2 v * (y⁻¹).val.2 v = 1` using `congrArg (fun a : AdeleRing (𝓞 E) E => a.2 v) y.mul_inv`. Establish `e'` using `congrArg Valued.v e`. Rewrite `e'` using `[map_mul, map_one]`. Conclude with `eq_one_of_one_le_mul_left (hy v) (hy' v) e'.ge`.
+
+Use `continuous_iff_continuousAt.mpr fun x => ?_` and prove the remaining obligations. Establish `hc : Continuous fun y : Idele E => x⁻¹ * y` using `continuous_const.mul continuous_id`. Establish `hU` using `(hO.preimage (h1.comp hc)).inter (hO.preimage (h2.comp hc))`. Use `(continuousAt_const (y := finiteIdeleNorm x)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds (x := x) ⟨fun v => by`.
+
+Simplify using `only [Function.comp_apply, inv_mul_cancel]; exact one_mem _, fun v => by`. Simplify using `only [Function.comp_apply, inv_mul_cancel, inv_one]`. Conclude with `one_mem _⟩] with y hy`. Use `key _ hy.1 hy.2` as an intermediate fact. Rewrite using `[← mul_one (finiteIdeleNorm x), ← this, ← map_mul, mul_inv_cancel_left]`.
+-/
 theorem continuous_finiteIdeleNorm : Continuous (finiteIdeleNorm (E := E)) := by
   have hO : IsOpen {a : FiniteAdeleRing (𝓞 E) E | ∀ v, a v ∈ v.adicCompletionIntegers E} :=
     RestrictedProduct.isOpen_forall_mem
@@ -547,6 +670,15 @@ theorem continuous_finiteIdeleNorm : Continuous (finiteIdeleNorm (E := E)) := by
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Establish `hinf : Continuous (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteIdeleNorm (E` using `E)) := by show Continuous fun x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.Idele E => ∏ v : InfinitePlace E, ‖x.val.1 v‖ ^ v.mult`. Conclude with `continuous_finset_prod _ fun v _ => (((continuous_apply v).comp (continuous_fst.comp (Units.continuous_val (M := AdeleRing (𝓞 E) E)))).norm).pow _`. Establish `hfin : Continuous (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteIdeleNorm (E` using `E)) := by`. Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Establish `hW : IsOpen {a : FiniteAdeleRing (𝓞 E) E | ∀ P : HeightOneSpectrum (𝓞 E), True → a P ∈ (P.adicCompletionIntegers E : Set _)}` using `RestrictedProduct.isOpen_forall_imp_mem fun P => (Valued.isClopen_integer (P.adicCompletion E)).isOpen`.
+
+Establish `hV` using `((hW.preimage (continuous_snd.comp (Units.continuous_val (M := AdeleRing (𝓞 E) E)))).inter (hW.preimage (continuous_snd.comp (Units.continuous_coe_inv (M := AdeleRing (𝓞 E) E))))).mem_nhds (x := (1 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.Idele …`. Use `tendsto_nhds_of_eventually_eq ?_` and prove the remaining obligations. Use `filter_upwards [hV] with x hx`. Rewrite using `[map_one]`. Use `finprod_eq_one_of_forall_eq_one fun P => ?_` and prove the remaining obligations.
+
+Establish `ha` using `hx.1 P trivial`. Establish `hb` using `hx.2 P trivial`. Simplify using `only [SetLike.mem_coe, mem_adicCompletionIntegers] at ha hb`. Establish `hab : x.val.2 P * x.inv.2 P = 1` using `congrArg (fun y : AdeleRing (𝓞 E) E => y.2 P) x.val_inv`. Establish `hv1 : Valued.v (x.val.2 P) * Valued.v (x.inv.2 P) = 1` using `by rw [← map_mul, hab, map_one]`.
+
+Use `_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.norm_eq_one_of_valued (le_antisymm ha ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `show Continuous fun x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.Idele E => _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteIdeleNorm x * _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.f …`. Conclude with `hinf.mul hfin`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_ideleNorm : Continuous (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm (E := E)) := by
   have hinf : Continuous (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteIdeleNorm (E := E)) := by
     show Continuous fun x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.Idele E => ∏ v : InfinitePlace E, ‖x.val.1 v‖ ^ v.mult
@@ -595,6 +727,11 @@ def normPow (t : ℝ) : UnitaryHeckeChar E where
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Establish `hinf : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteIdeleNorm (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.localIdele P u) = 1` using `Finset.prod_eq_one fun v _ => by`. Rewrite using `[show (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.localIdele P u).val.1 v = 1 from rfl, norm_one, one_pow]`. Establish `hfin : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteIdeleNorm (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.localIdele P u) = ‖(u : P.adicCompletion E)‖` using `by show ∏ᶠ v : HeightOneSpectrum (𝓞 E), ‖(_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.localIdele P u).val.2 v‖ = _`. Rewrite using `[finprod_eq_single _ P]`. Conclude with `congrArg norm (RestrictedProduct.mulSingle_eq_same _ _ _)`.
+
+Introduce `v hv`. Rewrite using `[show (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.localIdele P u).val.2 v = 1 from RestrictedProduct.mulSingle_eq_of_ne _ _ hv, norm_one]`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm, MonoidHom.mul_apply, hinf, hfin, one_mul]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.ideleNorm_localIdele (P : HeightOneSpectrum (𝓞 E))
     (u : (P.adicCompletion E)ˣ) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.localIdele P u) = ‖(u : P.adicCompletion E)‖ := by
@@ -615,6 +752,9 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
 
+/- English proof (translation)
+Introduce `u hu`. Use `show Circle.exp (t * Real.log (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.localIdele P u))) = 1`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.ideleNorm_localIdele, _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.norm_eq_one_of_valued hu, Real.log_one, mul_zero, Circle.exp_zero]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.normPow_isUnramifiedAt (t : ℝ) (P : HeightOneSpectrum (𝓞 E)) :
     (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.normPow E t).IsUnramifiedAt P := by
   intro u hu
@@ -625,6 +765,9 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Rewrite using `[FinitePlace.norm_def, hϖ, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`. Simplify using `only [show ∀ hx, Multiplicative.toAdd (WithZero.unzero (x := WithZero.exp (-1 : ℤ)) hx) = -1 from fun _ => rfl]`. Simplify using the standard rewrite rules.
+-/
 private theorem norm_uniformiser_eq_absNorm_inv {P : HeightOneSpectrum (𝓞 E)}
     {ϖ : (P.adicCompletion E)ˣ} (hϖ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsUniformiser P ϖ) :
     ‖(ϖ : P.adicCompletion E)‖ = (Ideal.absNorm P.asIdeal : ℝ)⁻¹ := by
@@ -637,6 +780,9 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
 variable {E : Type} [Field E] [NumberField E] in
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.exists_isUniformiser P`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.valueAt_eq _ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.normPow_isUnramifiedAt t P) hϖ]`. Use `show ((Circle.exp (t * Real.log (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.localIdele P ϖ))) : ℂ)) = _`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.ideleNorm_localIdele, norm_uniformiser_eq_absNorm_inv hϖ, Real.log_inv, mul_neg, Circle.coe_exp]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.normPow_valueAt (t : ℝ) (P : HeightOneSpectrum (𝓞 E)) :
     (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.normPow E t).valueAt P =
       Complex.exp ((-(t * Real.log (Ideal.absNorm P.asIdeal)) : ℝ) * Complex.I) := by
@@ -646,6 +792,9 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
   rw [_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.ideleNorm_localIdele, norm_uniformiser_eq_absNorm_inv hϖ,
     Real.log_inv, mul_neg, Circle.coe_exp]
 
+/- English proof (translation)
+Establish `h : (1 : ℝ) < Ideal.absNorm P.asIdeal`. Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm P` after adjusting the coercions. Use `⟨-(Real.pi / Real.log (Ideal.absNorm P.asIdeal)), ?_⟩` and prove the remaining obligations. Rewrite using `[normPow_valueAt, neg_mul, neg_neg, div_mul_cancel₀ _ (Real.log_pos h).ne', Complex.exp_pi_mul_I]`.
+-/
 theorem exists_normPow_valueAt_eq_neg_one (P : HeightOneSpectrum (𝓞 E)) :
     ∃ t : ℝ, (normPow E t).valueAt P = -1 := by
   have h : (1 : ℝ) < Ideal.absNorm P.asIdeal := by

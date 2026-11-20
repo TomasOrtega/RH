@@ -6,12 +6,24 @@ open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Desc Polynomial Filter Topolo
 
 namespace GlobalTheory.RhoProd
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H g`. Rewrite using `[hh]`. Conclude with `hP g h h.2`.
+-/
 theorem out_iff {G : Type} [Group G] (H : Subgroup G) (P : G → Prop)
     (hP : ∀ g h, h ∈ H → (P (g * h) ↔ P g)) (g : G) :
     P (Quotient.out (QuotientGroup.mk g : G ⧸ H)) ↔ P g := by
   obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul H g
   rw [hh]; exact hP g h h.2
 
+/- English proof (translation)
+Set `E : G ⧸ H ≃ (G₁ ⧸ H₁) × (G₂ ⧸ H₂)` to `(Quotient.congr e.toEquiv (by`. Introduce `a b`. Use `show QuotientGroup.leftRel H a b ↔ (QuotientGroup.leftRel H₁).prod (QuotientGroup.leftRel H₂) (e a) (e b)`. Rewrite using `[Setoid.prod_apply, QuotientGroup.leftRel_apply, QuotientGroup.leftRel_apply, QuotientGroup.leftRel_apply, he]`. Simplify using `[map_mul, map_inv])).trans (Setoid.prodQuotientEquiv _ _).symm`.
+
+Establish `hE : ∀ g : G, E (QuotientGroup.mk g) = (QuotientGroup.mk (e g).1, QuotientGroup.mk (e g).2)`. Introduce `g`. Both sides reduce to the same expression. Establish `hPi : ∀ g h, h ∈ H → (P (g * h) ↔ P g)`. Introduce `g h hh`.
+
+Rewrite using `[hP, hP, map_mul, Prod.fst_mul, Prod.snd_mul]`. Conclude with `and_congr (h₁ _ _ ((he h).1 hh).1) (h₂ _ _ ((he h).1 hh).2)`. Rewrite using `[← Nat.card_prod]`. Use `Nat.card_congr ((E.subtypeEquiv ?_).trans (Equiv.subtypeProdEquivProd))` and prove the remaining obligations. Introduce `k`.
+
+Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective k`. Rewrite using `[hE, out_iff H₁ P₁ h₁, out_iff H₂ P₂ h₂, ← hP]`. Conclude with `out_iff H P hPi g`.
+-/
 theorem card_prod {G G₁ G₂ : Type} [Group G] [Group G₁] [Group G₂]
     (H : Subgroup G) (H₁ : Subgroup G₁) (H₂ : Subgroup G₂) (e : G ≃* G₁ × G₂)
     (he : ∀ g, g ∈ H ↔ (e g).1 ∈ H₁ ∧ (e g).2 ∈ H₂)
@@ -55,6 +67,13 @@ def torusEquiv (B₁ B₂ : InvAlg K) : (B₁.prod B₂).T ≃* B₁.T × B₂.T
   map_mul' a b := by
     ext <;> rfl
 
+/- English proof (translation)
+Rewrite `hh` using `[Subgroup.mem_subgroupOf]`. Take `⟨hi, hi'⟩` from `hh`. Establish `e1 : ((((g * h : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w : B.A) = ((((h : B.T) : B.Aˣ)⁻¹ : B.Aˣ) : B.A) * ((((g : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w)`. Simplify using `[mul_inv_rev, Units.val_mul, mul_assoc]`. Establish `e2 : ((((g : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w : B.A) = (((h : B.T) : B.Aˣ) : B.A) * ((((g * h : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w)`.
+
+Rewrite using `[e1, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Rewrite using `[e2]`. Conclude with `hi.mul H`.
+
+Introduce `H`. Rewrite using `[e1]`. Conclude with `hi'.mul H`.
+-/
 theorem inv_mul_int (B : InvAlg K) (w : B.A) (g h : B.T)
     (hh : h ∈ (intUnits K.O B.A).subgroupOf B.T) :
     IsIntegral K.O ((((g * h : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w : B.A) ↔
@@ -71,6 +90,13 @@ theorem inv_mul_int (B : InvAlg K) (w : B.A) (g h : B.T)
   · intro H; rw [e2]; exact hi.mul H
   · intro H; rw [e1]; exact hi'.mul H
 
+/- English proof (translation)
+Introduce `K B₁ B₂ w₁ w₂`. Unfold `InvAlg.rho`. Use `card_prod ((intUnits K.O (B₁.prod B₂).A).subgroupOf (B₁.prod B₂).T) _ _ (torusEquiv B₁ B₂) ?_ (fun g : (B₁.prod B₂).T => IsIntegral K.O ((((g : (B₁.prod B₂).Aˣ)⁻¹ : (B₁.prod B₂).Aˣ) * (show (B₁.prod B₂).A from (w₁, w₂)) : (B₁.prod B₂).A))) (fun g : B₁.T => IsIntegral K.O ((((g : …` and prove the remaining obligations. Introduce `g`. Simplify using `only [Subgroup.mem_subgroupOf]`.
+
+Use `show (IsIntegral K.O (show B₁.A × B₂.A from ((g : (B₁.prod B₂).Aˣ) : (B₁.prod B₂).A)) ∧ IsIntegral K.O (show B₁.A × B₂.A from (((g : (B₁.prod B₂).Aˣ)⁻¹ : (B₁.prod B₂).Aˣ) : (B₁.prod B₂).A))) ↔ _`. Rewrite using `[IsIntegral.pair_iff, IsIntegral.pair_iff]`. Conclude with `⟨fun ⟨⟨a, b⟩, ⟨c, d⟩⟩ => ⟨⟨a, c⟩, ⟨b, d⟩⟩, fun ⟨⟨a, c⟩, ⟨b, d⟩⟩ => ⟨⟨a, b⟩, ⟨c, d⟩⟩⟩`. Introduce `g show IsIntegral K.O (show B₁.A × B₂.A from ((((g : (B₁.prod B₂).Aˣ)⁻¹ : (B₁.prod B₂).Aˣ) : (B₁.prod B₂).A) * (show (B₁.prod B₂).A from (w₁, w₂)))) ↔ _`. Rewrite using `[IsIntegral.pair_iff]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem rho_prod : ∀ (K : UQ) (B₁ B₂ : InvAlg K) (w₁ : B₁.A) (w₂ : B₂.A),
     (B₁.prod B₂).rho ((w₁, w₂) : B₁.A × B₂.A) = B₁.rho w₁ * B₂.rho w₂ := by
   intro K B₁ B₂ w₁ w₂

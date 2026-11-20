@@ -15,6 +15,9 @@ def mono {s m : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommGroup X
 def lin {s l : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommGroup X] (a : Fin l × Fin s → X)
     (β : LinearMap.BilinForm ℤ X) : ℤ := ∑ i, qW W β fun u => a (i, u)
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `QWDom.qW_ge s W hW`. Establish `h2 : (0 : ℝ) ≤ ((∑ u, β (y u) (y u) : ℤ) : ℝ)`. Conclude with `Finset.sum_nonneg fun u _ => hβ _` after adjusting the coercions. Conclude with `(mul_nonneg hc0.le h2).trans (hc X β hs hβ y)` after adjusting the coercions.
+-/
 theorem qW_nonneg {s : ℕ} {W : Matrix (Fin s) (Fin s) ℤ} (hW : PosW W) {X : Type} [AddCommGroup X]
     {β : LinearMap.BilinForm ℤ X} (hs : ∀ a b, β a b = β b a) (hβ : ∀ y, 0 ≤ β y y) (y : Fin s → X) : 0 ≤ qW W β y := by
   obtain ⟨c, hc0, hc⟩ := QWDom.qW_ge s W hW
@@ -22,18 +25,32 @@ theorem qW_nonneg {s : ℕ} {W : Matrix (Fin s) (Fin s) ℤ} (hW : PosW W) {X : 
     exact_mod_cast Finset.sum_nonneg fun u _ => hβ _
   exact_mod_cast (mul_nonneg hc0.le h2).trans (hc X β hs hβ y)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => qW_nonneg hW hs hβ _`.
+-/
 theorem lin_nonneg {s l : ℕ} {W : Matrix (Fin s) (Fin s) ℤ} (hW : PosW W) {X : Type} [AddCommGroup X]
     {β : LinearMap.BilinForm ℤ X} (hs : ∀ a b, β a b = β b a) (hβ : ∀ y, 0 ≤ β y y) (a : Fin l × Fin s → X) :
     0 ≤ lin W a β :=
   Finset.sum_nonneg fun _ _ => qW_nonneg hW hs hβ _
 
+/- English proof (translation)
+Simplify using `[mono, qW]`.
+-/
 example {V : Type} [CommRing V] (t : V) :
     mono !![1] (fun _ : Fin 1 => t) (fun _ => LinearMap.mul ℤ ℤ) (fun _ => (2 : ℤ)) = t ^ 4 := by
   simp [mono, qW]
 
+/- English proof (translation)
+Simplify using `[lin, qW, Fin.sum_univ_two]`.
+-/
 example : lin (l := 2) !![1] (fun p => ![(1 : ℤ), 2] p.1) (LinearMap.mul ℤ ℤ) = 5 := by
   simp [lin, qW, Fin.sum_univ_two]
 
+/- English proof (translation)
+Unfold `PosW`. Establish `: ((!![1] + (!![1] : Matrix (Fin 1) (Fin 1) ℤ).transpose).map (Int.cast : ℤ → ℝ)) = Matrix.diagonal fun _ => 2`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.posDef_diagonal_iff]`. Introduce `_`. Evaluate the numerical expressions.
+-/
 example : PosW !![1] := by
   unfold PosW
   have : ((!![1] + (!![1] : Matrix (Fin 1) (Fin 1) ℤ).transpose).map (Int.cast : ℤ → ℝ)) = Matrix.diagonal fun _ => 2 := by
@@ -103,14 +120,25 @@ namespace VSys
 variable {O : Type} [CommRing O] {bar : O → O} {q s : ℕ} {W : Matrix (Fin s) (Fin s) ℤ} {N₁ : ℕ} {A : Type} [CommRing A]
   [IsLocalRing A] (Φ : VSys bar q W N₁ A)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Poinc.qW_nonneg Φ.posW (Φ.bal y i).1 (Φ.nonneg y i) μ`.
+-/
 theorem qW_nonneg (y : Φ.Y) (i : Fin (Φ.m y)) (μ : Fin s → Φ.X y) : 0 ≤ qW W (Φ.δ y i) μ :=
   GlobalTheory.Poinc.qW_nonneg Φ.posW (Φ.bal y i).1 (Φ.nonneg y i) μ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Poinc.lin_nonneg Φ.posW (Φ.bal y i).1 (Φ.nonneg y i) a`.
+-/
 theorem lin_nonneg (y : Φ.Y) (i : Fin (Φ.m y)) {l : ℕ} (a : Fin l × Fin s → Φ.X y) : 0 ≤ lin W a (Φ.δ y i) :=
   GlobalTheory.Poinc.lin_nonneg Φ.posW (Φ.bal y i).1 (Φ.nonneg y i) a
 
 def monoT (y : Φ.Y) {l : ℕ} (a : Fin l × Fin s → Φ.X y) : Φ.V y := ∏ i, mono W (Φ.t y) (Φ.δ y) fun v => a (i, v)
 
+/- English proof (translation)
+Simplify using `only [monoT, mono]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Use `congr 1`.
+
+Apply `Int.natCast_inj.1` to reduce the goal to its premises. Rewrite using `[Int.toNat_of_nonneg (Φ.lin_nonneg y j a), lin, Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg (Φ.qW_nonneg y j _)`.
+-/
 theorem monoT_eq (y : Φ.Y) {l : ℕ} (a : Fin l × Fin s → Φ.X y) :
     Φ.monoT y a = ∏ j, Φ.t y j ^ (lin W a (Φ.δ y j)).toNat := by
   simp only [monoT, mono]
@@ -130,12 +158,18 @@ def OrdGe (φ : InvFun O) (d e : ℕ) (f : A) : Prop :=
 
 variable {Φ} in
 
+/- English proof (translation)
+Use `h y hP hm i` as an intermediate fact. Rewrite `this` using `[← hb, Nat.ceil_natCast]`. Then use the resulting hypothesis.
+-/
 theorem OrdGe.mem {φ : InvFun O} {d e : ℕ} {f : A} (h : Φ.OrdGe φ d e f) (y : Φ.Y) (hP : IsPrincipalIdealRing (Φ.V y))
     (hm : Φ.m y = 1) (i : Fin (Φ.m y)) (b : ℕ) (hb : (b : ℝ) = d * φ.evalZ (Φ.δ y i)) :
     Φ.ev y f ∈ Ideal.span {Φ.t y i ^ b} ⊔ ((maximalIdeal A).map (Φ.ev y)) ^ e := by
   have := h y hP hm i
   rwa [← hb, Nat.ceil_natCast] at this
 
+/- English proof (translation)
+Introduce `y hP hm i` and use `h y hP hm i _ fun _ hn => Nat.ceil_le.2 hn`.
+-/
 theorem ordGe_of_forall {φ : InvFun O} {d e : ℕ} {f : A}
     (h : ∀ y, IsPrincipalIdealRing (Φ.V y) → Φ.m y = 1 → ∀ (i : Fin (Φ.m y)) (b : ℕ),
       (∀ n : ℕ, d * φ.evalZ (Φ.δ y i) ≤ n → b ≤ n) →

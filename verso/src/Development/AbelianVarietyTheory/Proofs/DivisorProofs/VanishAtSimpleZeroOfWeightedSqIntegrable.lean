@@ -11,6 +11,45 @@ namespace GlobalTheory
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n hn1 p O Z lam hO hpO hZ hZ0 hdet hlam u hu hint`. Establish `hn : 0 < n` using `hn1`. Assume the negation of the conclusion as `hne`. Establish `hOn : O ∈ 𝓝 p` using `hO.mem_nhds hpO`. Establish `htr : Tendsto (fun z : V n => z + p) (𝓝 0) (𝓝 p)`.
+
+Use `(continuous_add_right p).tendsto (0 : V n)` as an intermediate fact. Simplify using `using this`. Use `set a := ‖u p‖ with ha`. Establish `ha0 : 0 < a` using `norm_pos_iff.mpr hne`. Establish `ev1 : ∀ᶠ z in 𝓝 (0 : V n), a / 2 < ‖u (z + p)‖`.
+
+Establish `hc : Tendsto (fun v => ‖u v‖) (𝓝 p) (𝓝 a)` using `((hu.continuousAt hOn).norm)`. Conclude with `htr.eventually (hc.eventually (Ioi_mem_nhds (by linarith)))`. Establish `ev4 : ∀ᶠ z in 𝓝 (0 : V n), lam p - 1 < lam (z + p)`. Establish `hc : Tendsto lam (𝓝 p) (𝓝 (lam p))` using `hlam.continuousAt hOn`. Conclude with `htr.eventually (hc.eventually (Ioi_mem_nhds (by linarith)))`.
+
+Establish `ev5 : ∀ᶠ z in 𝓝 (0 : V n), z + p ∈ O` using `htr.eventually hOn`. Use `set σ : V n → V n := fun z => Z (z + p) with hσ`. Establish `hσ0 : σ 0 = 0` using `by simp [hσ, hZ0]`. Establish `hσd : fderiv ℂ σ 0 = fderiv ℂ Z p`. Rewrite using `[hσ, fderiv_comp_add_right]`.
+
+Simplify using the standard rewrite rules. Take `⟨c, hc, ev2⟩` from `ReciprocityTheory.ChartRestriction.G.AR.Up.VanishPf.lower_of_det hn hσ0 (hσd ▸ hdet)`. Establish `hdiff : DifferentiableAt ℂ σ 0`. Establish `h1 : DifferentiableAt ℂ Z (0 + p)` using `by simpa using hZ.differentiableAt hOn`. Conclude with `h1.comp (0 : V n) ((differentiableAt_id).add_const p)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨C, ev3⟩ : ∃ C : ℝ, ∀ᶠ z in 𝓝 (0 : V n), ‖σ z‖ ≤ C * ‖z‖ := by`. Establish `h` using `hdiff.hasFDerivAt.isBigO_sub`. Simplify using `only [hσ0, sub_zero] at h`. Take `⟨C, hC⟩` from `h.bound`. Conclude with `⟨C, hC⟩`.
+
+Take `⟨δ0, hδ0, hall⟩` from `Metric.eventually_nhds_iff.mp (ev1.and (ev2.and (ev3.and (ev4.and ev5))))`. Use `set Eb : ℝ := Real.exp (1 - lam p) with hEb`. Use `set B : ℝ := C ^ 2 * Eb + 1 with hB`. Establish `hB0 : 0 < B` using `by positivity`. Use `set K : ℝ := (a / 2) ^ 2 * B ^ (-(n : ℝ)) with hK`.
+
+Establish `hK0 : 0 < K` using `by positivity`. Establish `hp : -(n : ℝ) ≤ 0` using `by have : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg _; linarith`. Use `set F : V n → ℝ≥0∞ := fun v => ENNReal.ofReal (‖u v‖ ^ 2 * Real.exp (-((n : ℝ) * Real.log (‖Z v‖ ^ 2 * Real.exp (-lam v))))) with hF`. Establish `hpt : ∀ z ∈ ball (0 : V n) δ0, z ≠ 0 → ENNReal.ofReal K * ENNReal.ofReal (‖z‖ ^ (-2 * (n : ℝ))) ≤ F (z + p)`. Introduce `z hz hz0`.
+
+Take `⟨h1, h2, h3, h4, -⟩` from `hall (by simpa using hz)`. Establish `hzpos : 0 < ‖z‖` using `norm_pos_iff.mpr hz0`. Use `set X := ‖Z (z + p)‖ ^ 2 * Real.exp (-lam (z + p)) with hX`. Establish `hZpos : 0 < ‖Z (z + p)‖` using `lt_of_lt_of_le (by positivity) h2`. Establish `hXpos : 0 < X` using `by positivity`.
+
+Establish `hexle : Real.exp (-lam (z + p)) ≤ Eb` using `Real.exp_le_exp.mpr (by linarith)`. Establish `hXle : X ≤ B * ‖z‖ ^ 2`. Establish `hZle : ‖Z (z + p)‖ ^ 2 ≤ C ^ 2 * ‖z‖ ^ 2`. Establish `h0 : 0 ≤ C * ‖z‖` using `le_trans (norm_nonneg _) h3`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hw : Real.exp (-((n : ℝ) * Real.log X)) = X ^ (-(n : ℝ))`. Rewrite using `[Real.rpow_def_of_pos hXpos]`. Put the polynomial expressions in normal form. Use `show ENNReal.ofReal K * ENNReal.ofReal (‖z‖ ^ (-2 * (n : ℝ))) ≤ ENNReal.ofReal (‖u (z + p)‖ ^ 2 * Real.exp (-((n : ℝ) * Real.log X)))`.
+
+Rewrite using `[hw, ← ENNReal.ofReal_mul hK0.le]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hSp : (B * ‖z‖ ^ 2) ^ (-(n : ℝ)) ≤ X ^ (-(n : ℝ))` using `Real.rpow_le_rpow_of_nonpos hXpos hXle hp`. Establish `hexp : (B * ‖z‖ ^ 2) ^ (-(n : ℝ)) = B ^ (-(n : ℝ)) * ‖z‖ ^ (-2 * (n : ℝ))`. Rewrite using `[Real.mul_rpow hB0.le (by positivity), ← Real.rpow_two, ← Real.rpow_mul (norm_nonneg _)]`.
+
+Put the polynomial expressions in normal form. Establish `hu2 : (a / 2) ^ 2 ≤ ‖u (z + p)‖ ^ 2` using `pow_le_pow_left₀ (by positivity) h1.le 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hne0 : ∀ᵐ z ∂(volume : Measure (V n)), z ≠ 0`. Establish `: Nonempty (Fin n)` using `⟨⟨0, hn⟩⟩`.
+
+Conclude with `measure_eq_zero_iff_ae_notMem.mp (measure_singleton 0)`. Establish `hsubO : ∀ z ∈ ball (0 : V n) δ0, z + p ∈ O` using `fun z hz => (hall (by simpa using hz)).2.2.2.2`. Establish `htrans : ∫⁻ z in ball (0 : V n) δ0, F (z + p) ≤ ∫⁻ v in O, F v`. Establish `hind : ∀ z : V n, (ball p δ0).indicator F (z + p) = (ball (0 : V n) δ0).indicator (fun z => F (z + p)) z`. Introduce `z`.
+
+Establish `hm : z + p ∈ ball p δ0 ↔ z ∈ ball (0 : V n) δ0`. Simplify using `[mem_ball, dist_eq_norm]`. Distinguish the cases in `hz : z ∈ ball (0 : V n) δ0`. Rewrite using `[Set.indicator_of_mem (hm.mpr hz), Set.indicator_of_mem hz]`. Rewrite using `[Set.indicator_of_notMem (fun h => hz (hm.mp h)), Set.indicator_of_notMem hz]`.
+
+Establish `e1 : ∫⁻ z in ball (0 : V n) δ0, F (z + p) = ∫⁻ v in ball p δ0, F v`. Rewrite using `[← lintegral_indicator measurableSet_ball, ← lintegral_indicator measurableSet_ball]`. Repeatedly rewrite using `[← hind]`. Conclude with `lintegral_add_right_eq_self (μ := volume) ((ball p δ0).indicator F) p`. Establish `hsb : ball p δ0 ⊆ O`.
+
+Introduce `v hv`. Establish `h1 : v - p ∈ ball (0 : V n) δ0` using `by simpa [mem_ball, dist_eq_norm] using hv`. Simplify using `using hsubO (v - p) h1`. Rewrite using `[e1]`. Conclude with `lintegral_mono_set hsb`.
+
+Establish `hlow : ENNReal.ofReal K * ∫⁻ z in ball (0 : V n) δ0, ENNReal.ofReal (‖z‖ ^ (-2 * (n : ℝ))) ≤ ∫⁻ v in O, F v`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `le_trans ?_ htrans` and prove the remaining obligations. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_ball, ae_restrict_of_ae hne0] with z hz hz0`.
+
+Conclude with `hpt z hz hz0`. Rewrite `hlow` using `[ReciprocityTheory.ChartRestriction.G.AR.Up.VanishPf.crit_div hn hδ0, ENNReal.mul_top (ENNReal.ofReal_pos.mpr hK0).ne']`. Conclude with `absurd (lt_of_le_of_lt hlow hint) (lt_irrefl _)`.
+-/
 theorem vanish_at_simple_zero_of_weighted_sq_integrable :
     ∀ (n : ℕ), 1 ≤ n → ∀ (p : V n) (O : Set (V n)) (Z : V n → V n) (lam : V n → ℝ), IsOpen O → p ∈ O →
       DifferentiableOn ℂ Z O → Z p = 0 → (fderiv ℂ Z p).det ≠ 0 → ContinuousOn lam O →

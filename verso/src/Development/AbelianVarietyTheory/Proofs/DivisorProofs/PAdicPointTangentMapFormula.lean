@@ -17,6 +17,15 @@ open GlobalTheory.ShFam.Descent
 
 namespace GlobalTheory.DetHT.BridgeBasis
 
+/- English proof (translation)
+Introduce `hB E _ _ _ H Dw l Xo c Z p _ _ yy yb`. Use `letI := H.starRing`. Introduce `Q π ψ hP n xx u u' g hu hx hg a w hw`. Use `haveI : IsProper Z.s := projProper _ _ _ Z.proj`. Use `haveI : IsNoetherianRing (𝓞 c.F) := Algebra.FiniteType.isNoetherianRing ℤ (𝓞 c.F)`.
+
+Use `haveI : IsLocallyNoetherian Z.X := LocallyOfFiniteType.isLocallyNoetherian Z.s`. Use `haveI : Z.X.IsSeparated := ⟨by rw [← terminal.comp_from Z.s]; infer_instance⟩`. Establish `hc : IsCombAtG Z.t (yy ≫ Z.j) u (g.transpose.mulVec a) w` using `GlobalTheory.TangentLinear.isCombAtG_mulVec u hu u' g.transpose a w (fun i => by simpa [Matrix.transpose_apply] using hg i) hw`. Rewrite `hc` using `[← hP.1]`. Establish `key` using `hB E H Z.X Z.t p Q yb π hP.2.1 n xx u hx (g.transpose.mulVec a) w hc`.
+
+Rewrite `key` using `[hP.1]`. Rewrite using `[key]`. Establish `hs : ∑ j, (g.transpose.mulVec a) j • Q.bLie (xx j) = ∑ i, a i • ∑ j, g i j • Q.bLie (xx j)`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [_root_.mul_comm]`. Rewrite using `[hs]`.
+-/
 theorem mem_latHT_iff_changeBasis : BridgeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F))
     (p : ℕ) [Fact p.Prime] [Algebra c.F ℂ_[p]] (yy : Sp ℂ_[p] ⟶ Xo.XF c) (yb : Sp 𝓞_ℂ_[p] ⟶ Z.X),

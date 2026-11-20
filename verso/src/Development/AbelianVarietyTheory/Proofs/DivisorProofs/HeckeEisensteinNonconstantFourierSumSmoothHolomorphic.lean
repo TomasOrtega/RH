@@ -15,6 +15,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Hec
 
 namespace GlobalTheory.HeckeTwo
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔞 𝔟`. Use `GlobalTheory.T.heckeWeightTwo_isGood_of_tsum F _ (fun p σ z => fTerm σ z (p : Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) × NZ (𝔞 : FractionalIdeal (𝓞 F)⁰ F)).1.out.1 p.2.1) _ (fun p σ hσ => GlobalTheory.T.contDiffOn_heckeEisensteinFourierTerm F _ _ p.1.out.2.2 σ hσ) (fun p …` and prove the remaining obligations. Introduce `σ hσ z hz`. Take `⟨u, hu, hb⟩` from `GlobalTheory.T.heckeWeightTwo_term_iteratedFDeriv_summable_bound F 𝔞 𝔟 {σ} isCompact_singleton (by simpa using hσ) {z} isCompact_singleton (by simpa using hz) 0`. Establish `hs : Summable (fun p : Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) × NZ (𝔞 : FractionalIdeal (𝓞 F)⁰ F) => fTerm σ z p.1.out.1 p.2.1)`.
+
+Use `Summable.of_norm_bounded hu fun p => ?_` and prove the remaining obligations. Use `hb p σ rfl z rfl` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`. Then use the resulting hypothesis. Unfold `bOne`. Conclude with `(hs.tsum_prod' fun c => hs.prod_factor c).symm`.
+-/
 theorem bOne_isGood : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F),
     GlobalTheory.HeckeTwo.IsGood (GlobalTheory.HeckeTwo.bOne 𝔞 𝔟) := by
   intro F _ _ _ 𝔞 𝔟

@@ -15,6 +15,21 @@ section Val2
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] [IsTopologicalRing E]
 
+/- English proof (translation)
+Establish `hψ : ∀ x ∈ M.R, M.psiR x = 1` using `fun r hr => by`. Simplify using `using (Formalism.MainNotions.LocalModelPeriodLattices.selfDual_of_core M hOK 1).2 M.R.one_mem r hr`. Establish `hLo : Formalism.DoubleCosetMeasures.IsLowUni (rI a l * rI a (Loc.uLow xy.1))` using `Formalism.DoubleCosetMeasures.isLowUni_mul E (lowUni_rI a (lowUni_of M hl)) (lowUni_rI a (uLow_lowUni xy.1))`. Establish `hUp : Formalism.DoubleCosetMeasures.IsUpUni (rI a (Loc.uUp a xy.2) * rI a ρ)` using `Formalism.DoubleCosetMeasures.isUpUni_mul E (upUni_rI a (uUp_upUni a xy.2)) (upUni_rI a (upUni_of M hρ))`. Establish `hv : Formalism.DoubleCosetMeasures.IsLowUni (rI a (Loc.uLow xy'.1))` using `lowUni_rI a (uLow_lowUni xy'.1)`.
+
+Establish `hu : Formalism.DoubleCosetMeasures.IsUpUni (rI a (Loc.uUp a xy'.2))` using `upUni_rI a (uUp_upUni a xy'.2)`. Establish `hvPu : rI a (Loc.uLow xy'.1) * Formalism.DoubleCosetMeasures.pt (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 * rI a (Loc.uUp a xy'.2) = (rI a l * rI a (Loc.uLow xy.1)) * Formalism.DoubleCosetMeasures.pt (Formalism …`. Establish `h` using `congrArg (rI a) hq`. Unfold `zAt at h`. Simplify using `only [rI_mul, rI_mat] at h`.
+
+Rewrite using `[h]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hLd : IsUnit (rI a l * rI a (Loc.uLow xy.1)).det` using `by rw [Formalism.DoubleCosetMeasures.isLowUni_det E hLo]; exact isUnit_one`. Establish `hUd : IsUnit (rI a (Loc.uUp a xy.2) * rI a ρ).det` using `by rw [Formalism.DoubleCosetMeasures.isUpUni_det E hUp]; exact isUnit_one`. Establish `hfix : ((rI a l * rI a (Loc.uLow xy.1))⁻¹ * rI a (Loc.uLow xy'.1)) * Formalism.DoubleCosetMeasures.pt (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 * (rI a (Loc.uUp a xy'.2) * (rI a (Loc.uUp a xy.2) * rI a ρ)⁻¹) = …`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ((rI a l * rI a (Loc.uLow xy.1))⁻¹ * (rI a l * rI a (Loc.uLow xy.1))) * Formalism.DoubleCosetMeasures.pt (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 * ((rI a (Loc.uUp a xy.2) * rI a ρ) * (rI a (Loc.uUp a xy.2 …`. Rewrite using `[hvPu]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [Matrix.nonsing_inv_mul _ hLd, Matrix.mul_nonsing_inv _ hUd, Matrix.one_mul, Matrix.mul_one]`. Establish `h0` using `Formalism.DoubleCosetMeasures.Final.phaseWellDef E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 _ _ (Formalism.DoubleCosetMeasures.isLowUni_mul E (Formalism.DoubleCosetMeasures.isLowUni_inv E hLo) hv) (Formalism.D …`. Establish `sa` using `Formalism.DoubleCosetMeasures.Final.simpleAdd E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum`. Rewrite `h0` using `[(sa _ _).1 (Formalism.DoubleCosetMeasures.isLowUni_inv E hLo) hv, (sa _ _).2 hu (Formalism.DoubleCosetMeasures.isUpUni_inv E hUp)]`. Establish `hLi` using `(sa (rI a l * rI a (Loc.uLow xy.1))⁻¹ (rI a l * rI a (Loc.uLow xy.1))).1 (Formalism.DoubleCosetMeasures.isLowUni_inv E hLo) hLo`.
+
+Rewrite `hLi` using `[Matrix.nonsing_inv_mul _ hLd, sLow_one]`. Establish `hUi` using `(sa (rI a (Loc.uUp a xy.2) * rI a ρ) (rI a (Loc.uUp a xy.2) * rI a ρ)⁻¹).2 hUp (Formalism.DoubleCosetMeasures.isUpUni_inv E hUp)`. Rewrite `hUi` using `[Matrix.mul_nonsing_inv _ hUd, sUp_one]`. Rewrite `hLi` using `[(sa _ _).1 (lowUni_rI a (lowUni_of M hl)) (lowUni_rI a (uLow_lowUni xy.1))]`. Rewrite `hUi` using `[(sa _ _).2 (upUni_rI a (uUp_upUni a xy.2)) (upUni_rI a (upUni_of M hρ))]`.
+
+Establish `hph : Formalism.DoubleCosetMeasures.sLow (rI a (Loc.uLow xy'.1)) + Formalism.DoubleCosetMeasures.sUp (rI a (Loc.uUp a xy'.2)) = Formalism.DoubleCosetMeasures.sLow (rI a l) + Formalism.DoubleCosetMeasures.sUp (rI a ρ) + (Formalism.DoubleCosetMeasures.sLow (rI a (Loc.uLow xy.1)) + …`. Take the linear combination `h0 + hLi + hUi`. Establish `h1 : Formalism.DoubleCosetMeasures.sLow (rI a l) + Formalism.DoubleCosetMeasures.sUp (rI a ρ) ∈ M.R` using `add_mem (by rw [sLow_rI]; exact sLow_mem M.R _ hl.2.2) (by rw [sUp_rI]; exact sUp_mem M.R _ hρ.2.2)`. Rewrite using `[Formalism.MainNotions.LocalOrbitGerms.Cls.simpleLow_eq, Formalism.MainNotions.LocalOrbitGerms.Cls.simpleUp_eq, Formalism.MainNotions.LocalOrbitGerms.Cls.simpleLow_eq, Formalism.MainNotions.LocalOrbitGerms.Cls.simpleUp_eq, ← sLow_rI a (Loc.uLow xy'.1), ← sUp_rI a (Loc.uUp a xy'.2 …`.
+-/
 theorem local_phase_orbit_eq (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1))
     (xy xy' : (Loc.IL (m + 1) → E) × (Loc.IN a → E))
     (l ρ : Matrix (Fin (m + 1)) (Fin (m + 1)) E) (hl : Formalism.MainNotions.S.TieN.IntLow M l) (hρ : Formalism.MainNotions.S.TieN.IntUp M ρ)
@@ -84,6 +99,17 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
   Formalism.L2.SG.LsDatumB Formalism.L2.SG.Pf.LocOrbSumPf
 open Classical ValuativeRel
 
+/- English proof (translation)
+Introduce `T T' p w Y Y' hOK hY hO hO' hmem`. Take `⟨w₀, hw₀, xy0, hxy0⟩` from `hO`. Take `⟨l, ρ, hl, hρ, hY'⟩` from `hmem`. Establish `hmat : w₀.mat = modMat δ T T' p w + shM δ T T' p w` using `modShift_holds δ T T' p w w₀ hw₀`. Unfold `phL`.
+
+Rewrite using `[hw₀]`. Apply the tactic sequence `try dsimp only`. Distinguish the cases in `h' : ∃ xy : (Loc.IL (D.R.rS + 1) → (D.s.atP p).Ep) × (Loc.IN w₀ → (D.s.atP p).Ep), Y' = Loc.uLow xy.1 * modMat δ T T' p w * Loc.uUp w₀ xy.2`. Distinguish the cases in `h : ∃ xy : (Loc.IL (D.R.rS + 1) → (D.s.atP p).Ep) × (Loc.IN w₀ → (D.s.atP p).Ep), Y = Loc.uLow xy.1 * modMat δ T T' p w * Loc.uUp w₀ xy.2`. Rewrite using `[dif_pos h', dif_pos h]`.
+
+Use `congr 1`. Establish `e1` using `zAt_eq hmat h.choose`. Establish `e2` using `zAt_eq hmat h'.choose`. Rewrite `e1` using `[← h.choose_spec]`. Rewrite `e2` using `[← h'.choose_spec]`.
+
+Establish `hq : zAt w₀ h'.choose = l * zAt w₀ h.choose * ρ`. Rewrite using `[e1, e2, hY', mul_add, add_mul, mul_shM l ρ (last_of_low l hl.1 hl.2.1) (last_of_up ρ hρ.1 hρ.2.1)]`. Use `haveI := Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK (M p) hOK`. Conclude with `LocOrbCut.local_phase_orbit_eq (M p) hOK w₀ h.choose h'.choose l ρ hl hρ hq`. Conclude with `absurd ⟨xy0, hxy0⟩ h`.
+
+Take `⟨w₁, hw₁, xy, hxy⟩` from `hO'`. Rewrite `hw₁` using `[hw₀]`. Consider the cases of `hw₁`. Conclude with `absurd ⟨xy, hxy⟩ h'`.
+-/
 theorem phase_class_holds {D : Formalism.BasicNotions.D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (δ : ∀ p : PlF D, (D.s.atP p).Fp) : PhCls M δ := by
   intro T T' p w Y Y' hOK hY hO hO' hmem

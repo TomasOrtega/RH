@@ -14,6 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.SquareAgree.LieDat
+/- English proof (translation)
+Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hO hT τ Y γ hγ hL Φ Φ' hDer T m f f₁ φ hf hact hD Φ'D hΦ'D`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hT.base.std`. Establish `hM : Γ.M'.IsGood ψ` using `hO.psi ▸ hT.geo.hM'`. Establish `hW : Γ.M'.IsWeil ψ Xc.α (Xc.α / Xc.β) om'` using `hO.psi ▸ hT.weil'`. Establish `hev : ∀ i, (∀ v, φ i v ∈ GlobalTheory.WeilM.SB _) ∧ ∀ᶠ v in Filter.cofinite, φ i v = Γ.M'.vac v` using `fun i => ⟨(hf i).2.1, Filter.eventually_cofinite.2 ((T.finite_toSet).subset fun v hv => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hv ((hf i).2.2 v h))⟩`. Establish `hval : ∀ (t : ℝ) u, GlobalTheory.WeilM.thetaSum D.host.F (Γ.M'.co.rho ψ u (om' (1, γ (Multiplicative.ofAdd t)) (∑ i, pure (f i) (φ i)))) = ωB (1, oneP θ X τ Y t) Φ (cB u)`. Introduce `t u`. Establish `h` using `(hO.weilB _ Φ hD 1 (oneP θ X τ Y t)).2 u`.
+
+Rewrite `h` using `[GlobalTheory.LocWeilAct.conjU_one', ← hγ t]`. Then use the resulting hypothesis. Establish `hnew : IsDatum Γ.M' ψ cB (∑ i, pure (f₁ i) (φ i)) Φ'`. Use `⟨Submodule.sum_mem _ fun i _ => GlobalTheory.TensUniq.pure_mem_schA (f₁ i) (φ i) (hev i).1 (((hev i).2.and hM.std).mono fun v hv => hv.1.trans hv.2), fun u => ?_⟩` and prove the remaining obligations. Establish `h1` using `_root_.GlobalTheory.T.theta_sum_differentiable_along_line hP Γ.M' ψ Xc.α (Xc.α / Xc.β) om' hT.base.cm hstd hM hW γ hL m f f₁ φ hev hact u`. Establish `h2 : HasDerivAt (fun t : ℝ => GlobalTheory.WeilM.thetaSum D.host.F (Γ.M'.co.rho ψ u (om' (1, γ (Multiplicative.ofAdd t)) (∑ i, pure (f i) (φ i))))) (Φ' (cB u)) 0`.
+
+Simplify using `only [hval]`. Conclude with `hDer (cB u)`. Conclude with `h1.unique h2`. Conclude with `GlobalTheory.T.schwartzDatum_eq_of_thetaFunction_eq Γ.M' ψ hstd cB Φ'D _ Φ' hΦ'D hnew`.
+-/
 theorem isDatum_derivative_second_factor_eq_sum_pure : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -66,6 +75,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.LieDat.isDatum_derivative_second_factor_eq_sum_pure | exact _root_.GlobalTheory.SquareAgree.LieDat.isDatum_derivative_second_factor_eq_sum_pure | (intros; apply _root_.GlobalTheory.SquareAgree.LieDat.isDatum_derivative_second_factor_ …`.
+-/
 theorem _root_.GlobalTheory.T.twist_polarization_datum_derivative_second : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

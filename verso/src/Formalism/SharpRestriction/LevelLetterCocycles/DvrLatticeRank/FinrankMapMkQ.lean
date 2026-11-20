@@ -8,6 +8,11 @@ open Module
 
 variable {LL X : Type*} [Field LL] [AddCommGroup X] [Module LL X]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Oth.mkQ ∘ₗ S.subtype)`. Introduce `x y hxy`. Establish `hxy' : Oth.mkQ (x : X) = Oth.mkQ (y : X)` using `hxy`. Simplify using `only [Submodule.mkQ_apply] at hxy'`. Rewrite `hxy'` using `[Submodule.Quotient.eq]`.
+
+Establish `h0 : (x : X) - y = 0` using `(Submodule.disjoint_def.mp h) _ (sub_mem x.2 y.2) hxy'`. Conclude with `Subtype.ext (sub_eq_zero.mp h0)`. Establish `hr : LinearMap.range (Oth.mkQ ∘ₗ S.subtype) = S.map Oth.mkQ`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finrank_map_mkQ (Oth S : Submodule LL X) (h : Disjoint S Oth) :
     finrank LL ↥(S.map Oth.mkQ) = finrank LL ↥S := by
   have hinj : Function.Injective (Oth.mkQ ∘ₗ S.subtype) := by
@@ -23,6 +28,33 @@ theorem finrank_map_mkQ (Oth S : Submodule LL X) (h : Disjoint S Oth) :
         = finrank LL ↥(LinearMap.range (Oth.mkQ ∘ₗ S.subtype)) := by rw [hr]
     _ = finrank LL ↥S := ((LinearEquiv.ofInjective _ hinj).finrank_eq).symm
 
+/- English proof (translation)
+Establish `hsupmap : ∀ P : Submodule LL X, (P ⊔ Oth).map Oth.mkQ = P.map Oth.mkQ`. Introduce `P`. Use `first`. Consider the case `rw [Submodule.map_sup, Submodule.mkQ_map_self, sup_bot_eq]`. Consider the case `simp [Submodule.map_sup]`.
+
+Establish `hmap : D.map Oth.mkQ ≤ I.map Oth.mkQ`. Combine the equalities or inequalities in the displayed calculation. Use `haveI hfin : FiniteDimensional LL ↥(I.map Oth.mkQ) := by first`. Consider the case `infer_instance`. Consider the case `exact Module.Finite.map I Oth.mkQ`.
+
+Establish `hDmap : finrank LL ↥(D.map Oth.mkQ) = finrank LL ↥D` using `finrank_map_mkQ Oth D hDO`. Establish `hIle : finrank LL ↥(I.map Oth.mkQ) ≤ finrank LL ↥I` using `by first`. Consider the case `exact Submodule.finrank_map_le _ _`. Consider the case `apply Submodule.finrank_map_le`. Establish `hle2 : finrank LL ↥(D.map Oth.mkQ) ≤ finrank LL ↥(I.map Oth.mkQ)` using `by first`.
+
+Consider the case `exact Submodule.finrank_le_finrank_of_le hmap`. Consider the case `exact LinearMap.finrank_le_finrank_of_injective (Submodule.inclusion_injective hmap)`. Establish `hIeq : finrank LL ↥(I.map Oth.mkQ) = finrank LL ↥I` using `by omega`. Establish `hrI : LinearMap.range (Oth.mkQ ∘ₗ I.subtype) = I.map Oth.mkQ`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`.
+
+Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker (Oth.mkQ ∘ₗ I.subtype)`. Establish `hr' : finrank LL ↥(LinearMap.range (Oth.mkQ ∘ₗ I.subtype)) = finrank LL ↥I`. Rewrite using `[hrI]`. Conclude with `hIeq`. Establish `hk : finrank LL ↥(LinearMap.ker (Oth.mkQ ∘ₗ I.subtype)) = 0` using `by omega`.
+
+Establish `hkb : LinearMap.ker (Oth.mkQ ∘ₗ I.subtype) = ⊥` using `by first`. Consider the case `exact Submodule.finrank_eq_zero.mp hk`. Consider the case `exact (Submodule.finrank_eq_zero (S := LinearMap.ker (Oth.mkQ ∘ₗ I.subtype))).mp hk`. Consider the case `(haveI := Module.finrank_zero_iff.mp hk; exact Submodule.eq_bot_of_subsingleton)`. Establish `hinj : Function.Injective (Oth.mkQ ∘ₗ I.subtype)` using `LinearMap.ker_eq_bot.mp hkb`.
+
+Establish `hdisj : Disjoint I Oth`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxI hxO`. Establish `h1 : (Oth.mkQ ∘ₗ I.subtype) ⟨x, hxI⟩ = (Oth.mkQ ∘ₗ I.subtype) 0`. Rewrite using `[map_zero]`.
+
+Use `show Oth.mkQ x = 0`. Use `first`. Consider the case `(rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]; exact hxO)`. Consider the case `simp [hxO]`. Establish `h2` using `hinj h1`.
+
+Use `first`. Consider the case `exact congrArg Subtype.val h2`. Consider the case `simpa using congrArg Subtype.val h2`. Use `⟨hdisj, fun F hF => ?_⟩` and prove the remaining obligations. Establish `hFO : Disjoint F Oth` using `hDO.mono_left hF`.
+
+Establish `hJO : Disjoint (I ⊓ (F ⊔ Oth)) Oth` using `hdisj.mono_left inf_le_left`. Establish `heq : (I ⊓ (F ⊔ Oth)).map Oth.mkQ = F.map Oth.mkQ`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Introduce `y hy`.
+
+Take `⟨f, hfF, rfl⟩` from `Submodule.mem_map.mp hy`. Establish `hfD : Oth.mkQ f ∈ I.map Oth.mkQ` using `hmap (Submodule.mem_map.mpr ⟨f, hF hfF, rfl⟩)`. Take `⟨i, hiI, hif⟩` from `Submodule.mem_map.mp hfD`. Establish `hsub : i - f ∈ Oth`. Simplify using `only [Submodule.mkQ_apply] at hif`.
+
+Conclude with `(Submodule.Quotient.eq Oth).mp hif`. Establish `h3 : f + (i - f) ∈ F ⊔ Oth` using `Submodule.add_mem_sup hfF hsub`. Establish `hi : i ∈ F ⊔ Oth` using `by first`. Consider the case `simpa using h3`. Consider the case `(rw [add_sub_cancel] at h3; exact h3)`.
+
+Conclude with `Submodule.mem_map.mpr ⟨i, Submodule.mem_inf.mpr ⟨hiI, hi⟩, hif⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem match_fil (I D Oth : Submodule LL X) [FiniteDimensional LL ↥I] [FiniteDimensional LL ↥D]
     (hDO : Disjoint D Oth) (hdim : finrank LL ↥I = finrank LL ↥D) (hDI : D ≤ I ⊔ Oth) :
     Disjoint I Oth ∧ ∀ F : Submodule LL X, F ≤ D → finrank LL ↥(I ⊓ (F ⊔ Oth)) = finrank LL ↥F := by

@@ -35,6 +35,29 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer lastPai
 
 namespace GlobalTheory.FinPl
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ ι p n n' n'' _ _ _ _ _ _ q ψ σ B J B' s₁ s₂ l vL Λ P a b a' sh sd₂ Φ₁ Φ₂ hΦ₁ hΦ₂`. Establish `tameP : ∀ v, P v → Tame D v` using `fun v hv => (sh.good v hv).tame`. Use `⟨?_, fun h₁ hh₁ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.vacuum_fixed_by_levelPair_at_selfDualPlaces D ψ J.W B'.V s₂.χV s₂.χW s₂.om s₂.weil Λ.L₁ Λ.L₂ P (fun v hv => ⟨(sh.good v hv).sdW, sd₂, tameP v hv, (sh.unr v hv).2.1, (sh.unr v hv).2.2⟩) Φ₂ hΦ₂`. Introduce `h₂ hh₂`.
+
+Conclude with `GlobalTheory.T.secondFlatMap_vacuum_translate_isVacuum D ψ σ J B' s₂ Λ.L₁ Λ.M₁ Λ.L₂ Λ.M₂ P (fun v hv => ⟨sh.adapt v hv, (sh.unr v hv).2⟩) Φ₂ hΦ₂ h₁ hh₁ h₂ hh₂`. Introduce `g hg φ hφ h₂ hne`. Establish `key` using `GlobalTheory.T.placewise_to_adelicDecomposition_forall D B'.V Λ.L₂ P sd₂ (besGrp B'.d B'.o) h₂ ?_`. Conclude with `key`. Introduce `v hv`.
+
+Take `⟨hv', hhv, h', hh', rfl⟩` from `GlobalTheory.T.unitaryAdelic_eq_componentAtPlace_mul_offPlace D B'.V h₂ v`. Use `⟨hv', hhv, h', hh', rfl, ?_⟩` and prove the remaining obligations. Establish `gd` using `sh.good v hv`. Establish `ad` using `sh.adapt v hv`. Establish `sdL₁ : IsSelfDualC J.W Λ.L₁` using `gd.sdW`.
+
+Establish `hΦ₂v : Vac ψ J.W B'.V Λ.L₁ Λ.L₂ (· = v) Φ₂` using `((GlobalTheory.T.latticeVacuum_iff_placewise D ψ J.W B'.V s₂.χV s₂.χW s₂.om s₂.weil Λ.L₁ Λ.L₂ sdL₁ sd₂ P tameP Φ₂).1.mp hΦ₂).2 v hv`. Use `set f := s₂.om (h₁, h') Φ₂ with hfdef`. Establish `hf : Vac ψ J.W B'.V Λ.L₁ Λ.L₂ (· = v) f` using `(GlobalTheory.T.latticeVacuum_iff_placewise D ψ J.W B'.V s₂.χV s₂.χW s₂.om s₂.weil Λ.L₁ Λ.L₂ sdL₁ sd₂ (· = v) (fun w hw => hw ▸ gd.tame) Φ₂).2.1 hΦ₂v h₁ (GlobalTheory.T.unitaryAdelicTrivialAtPlacesSubgroup_antitone D J.W P (· = v) (fun w hw => hw ▸ hv) hh₁) h' hh'`. Use `set Ξ₁ := flatBF s₁ (s₁.om (g, h₁) Φ₁) with hΞ₁def`. Establish `hΞ₁P : Vac ψ B.V₀ J.W₀ Λ.M₀ Λ.M₁ P Ξ₁` using `((GlobalTheory.T.besselToJacobiFirstStepFlatMapSupport_all D ψ (σ + 1) B J s₁ Λ.L₀ Λ.M₀ Λ.L₁ Λ.M₁ P (fun w hw => sh.good w hw) (fun w hw => (sh.unr w hw).1) sdL₁ Φ₁ hΦ₁).2 g hg).2 h₁ hh₁`.
+
+Establish `hΞ₁ : Vac ψ B.V₀ J.W₀ Λ.M₀ Λ.M₁ (· = v) Ξ₁` using `((GlobalTheory.T.latticeVacuum_iff_placewise D ψ B.V₀ J.W₀ s₁.χV s₁.χW s₁.om₀ s₁.weil₀ Λ.M₀ Λ.M₁ gd.sdV₀ gd.sdW₀ P tameP Ξ₁).1.mp hΞ₁P).2 v hv`. Establish `hom : s₂.om (h₁, hv' * h') Φ₂ = s₂.om (1, hv') f`. Rewrite using `[hfdef, show ((h₁, hv' * h') : GA D J.W × GA D B'.V) = (1, hv') * (h₁, h') by simp, map_mul]`. Both sides reduce to the same expression. Establish `hand_eq : Chain.hand s₁ s₂ l vL Φ₁ Φ₂ φ g h₁ (hv' * h') = hand0 s₁ s₂ l vL φ Ξ₁ (flatFB s₂ (s₂.om (1, hv') f))`.
+
+Simplify using `only [Chain.hand, hand0, hom, hΞ₁def]`. Rewrite `hne` using `[hand_eq]`. Establish `hne' : flatFB s₂ (s₂.om (1, hv') f) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite using `[h0, show (0 : WO J.W₀ B'.V₀ → ℂ) = (0 : ℂ) • (0 : WO J.W₀ B'.V₀ → ℂ) by simp, GlobalTheory.T.besselDoubleStep_linear_in_secondDatum, zero_smul]`. Take `⟨nn, hnF, hnv, γ, hγ, κ, hκ, hdec, hγp⟩` from `(GlobalTheory.T.jacobiToBesselFlatMapSupport_proof D ψ σ J B' s₂ Λ.L₁ Λ.M₁ Λ.L₂ Λ.M₂ v ad (sh.unr v hv).2 (flatFB s₂) ((GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D ψ (· = v)).2 σ J B' s₂) ((GlobalTheory.T.flatMaps_heisenbergTranslation_law D ψ (· = v)).2 σ J B' s₂) f hf …`. Distinguish the cases in `hgl : ∃ i, v = (p i).v`. Take `⟨i, rfl⟩` from `hgl`. Break down `GlobalTheory.T.threeOrbits_gluedCore_atPlace D k (p i) n'' q σ B' Λ.M₂ (a'.α i) (a'.α₀ i) (a'.P i) ad.sdW₀ (sh.gl' i) γ hγ hγp with ⟨a₀, ha₀, κ₀, hκ₀, rfl⟩ | ⟨Λ₀, hΛ₀, hmov⟩` into its components or cases.
+
+Take `⟨r, hr, hrv, κ', hκ', heq⟩` from `GlobalTheory.T.besselUnfolding_orbit_mem_parabolic_mul_stabiliser D σ B' Λ.L₂ Λ.M₂ (p i).v ad.monoW nn hnF hnv a₀ ha₀ κ₀ hκ₀ κ hκ`. Conclude with `⟨r, hr, hrv, κ', hκ', hdec.trans heq⟩`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Take `⟨M, sdM, hMov, hvacM⟩` from `GlobalTheory.T.secondFlatMap_moved_core_lattice_vacuum D ψ σ J B' s₂ Λ.L₁ Λ.M₁ Λ.L₂ Λ.M₂ (p i).v ad (sh.unr _ hv).2 f hf γ hγ`.
+
+Establish `hlat : (a'.α₀ i).IsLat M (lastKer Λ₀) ∨ (a'.α₀ i).IsLat M (lastPair q Λ₀).lat`. Break down `hmov with h | h` into its components or cases. Conclude with `Or.inl (GlobalTheory.T.splitPlaceFrameLattice_of_movedLattice D k (p i) B'.V₀ (n'' ⊕ Fin 1) (a'.α₀ i) γ Λ.M₂ M _ hMov h)`. Conclude with `Or.inr (GlobalTheory.T.splitPlaceFrameLattice_of_movedLattice D k (p i) B'.V₀ (n'' ⊕ Fin 1) (a'.α₀ i) γ Λ.M₂ M _ hMov h)`. Take `⟨φf, hφf, hφP⟩` from `hφ.2 i`.
+
+Establish `hz` using `GlobalTheory.T.gluedPlace_doubleStep_vanish_targetCoreLattice D k (p i) n n' n'' q ψ σ B J B' s₁ s₂ l vL s₂.weil.std (sh.unr _ hv).1 (sh.unr _ hv).2 Λ.M₀ Λ.M₁ M (a.α i) (a.α₀ i) (b.β i) (a'.α i) (a'.α₀ i) (a.P i) (b.Q i) Λ₀ gd.sdV₀ gd.sdW₀ sdM (sh.gl i) (sh.mid i) (sh.gl' i).sum …`. Rewrite `hz` using `[hφP]`. Rewrite using `[hdec, GlobalTheory.T.secondFlatMap_unipotent_stabilizer_translate_scalar D ψ σ J B' s₂ Λ.L₁ Λ.L₂ (p i).v sdL₁ sd₂ gd.tame (sh.unr _ hv).2 f hf nn hnF hnv _ κ hκ, GlobalTheory.T.besselDoubleStep_linear_in_secondDatum, hz, smul_zero]`. Take `⟨a₀, ha₀, κ₀, hκ₀, rfl⟩` from `GlobalTheory.T.unitNormVectors_one_orbit_selfDualLattice_split D σ B' Λ.M₂ v gd.tame ad.sdW₀ (sh.split v hv fun i h => hgl ⟨i, h⟩) γ hγ hγp`. Take `⟨r, hr, hrv, κ', hκ', heq⟩` from `GlobalTheory.T.besselUnfolding_orbit_mem_parabolic_mul_stabiliser D σ B' Λ.L₂ Λ.M₂ v ad.monoW nn hnF hnv a₀ ha₀ κ₀ hκ₀ κ hκ`.
+
+Conclude with `⟨r, hr, hrv, κ', hκ', hdec.trans heq⟩`.
+-/
 theorem suppSecond_holds : ∀ D : D7, SuppSecond D := by
   intro D k _ _ _ _ ι p n n' n'' _ _ _ _ _ _ q ψ σ B J B' s₁ s₂ l vL Λ P a b a' sh sd₂ Φ₁ Φ₂ hΦ₁ hΦ₂
   have tameP : ∀ v, P v → Tame D v := fun v hv => (sh.good v hv).tame

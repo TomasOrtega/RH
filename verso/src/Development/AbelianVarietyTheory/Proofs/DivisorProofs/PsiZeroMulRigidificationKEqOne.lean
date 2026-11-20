@@ -14,6 +14,13 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.Poinc.Sep.Frames Glob
 
 namespace GlobalTheory.Poinc.Sep.PsiZero
 
+/- English proof (translation)
+Introduce `V _ _ D hB Z r z J hJ`. Set `T : Over (Spec (CommRingCat.of V))` to `Over.mk (r ≫ (TK V).hom)`. Set `ρ : T ⟶ TK V` to `Over.homMk r rfl`. Establish `hcub : val (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (D.pt3 0 0 0)) r z J = 1`. Establish `e` using `val_cub D.cub ρ hJ (toUnit (TK V) ≫ D.c 0) (toUnit (TK V) ≫ D.c 0) (toUnit (TK V) ≫ D.c 0)`.
+
+Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Poinc.ThetaOne.c_zero, MonObj.comp_one, MonObj.comp_one]`. Conclude with `(isCub_cubV D.cub hJ).face 1 1`. Establish `hc` using `(val_mul hJ _ _ r).symm.trans ((val_corr hJ (hB 0 0 0) r).trans (val_mul hJ _ _ r))`. Rewrite `hc` using `[hcub, _root_.mul_one, congrArg (fun w => val (D.tau w 0) r z J) (add_zero (0 : D.X))]`.
+
+Establish `ht : val (D.tau 0 0) r z J = 1` using `(mul_eq_left.1 hc.symm)`. Unfold `DegPre.tau at ht`. Rewrite `ht` using `[val_mul hJ, val_mul hJ, val_mul hJ, val_inv, val_inv, congrArg (fun w => val (D.psi w) r z J) (add_zero (0 : D.X)), mul_inv_cancel, _root_.one_mul]`. Rewrite `ht` using `[← mul_inv, inv_eq_one]`. Conclude with `ht`.
+-/
 theorem psi_zero_mul_rigK : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V), D.TauBimult →
     ∀ (Z : Scheme.{0}) (r : Z ⟶ (TK V).left) (z : Z) J, Good D.P.L z J →
       val (D.psi 0) r z J * val D.rigK r z J = 1 := by

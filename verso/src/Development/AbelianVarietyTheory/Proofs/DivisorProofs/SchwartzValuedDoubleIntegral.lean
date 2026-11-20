@@ -12,6 +12,13 @@ open Classical
 
 namespace GlobalTheory.SchwInt
 
+/- English proof (translation)
+Introduce `V _ _ α β _ _ _ _ _ _ _ _ μa μb _ _ _ _ g hg C hC h0 S hS l`. Establish `h0' : ∀ p ∉ C, Function.uncurry g p = 0` using `fun p hp => h0 p hp`. Establish `hev : ∀ y, S y = ∫ p, Function.uncurry g p y ∂(μa.prod μb)`. Introduce `y`. Rewrite using `[hS y, integral_prod]`.
+
+Both sides reduce to the same expression. Conclude with `integrable_of_zero_outside _ (continuous_apply hg y) hC (fun p hp => by simp [h0' p hp])`. Establish `hSn : ∀ (n : ℕ) (x : V), iteratedFDeriv ℝ n S x = ∫ p, iteratedFDeriv ℝ n ⇑(Function.uncurry g p : SchwartzMap V ℂ) x ∂(μa.prod μb)`. Introduce `n x`. Establish `hfun : (⇑S) = fun y => ∫ p, (Function.uncurry g p : SchwartzMap V ℂ) y ∂(μa.prod μb)` using `funext hev`.
+
+Rewrite using `[hfun]`. Conclude with `GlobalTheory.T.iteratedFDeriv_integral_schwartz (μa.prod μb) _ hg C hC h0' n x`. Rewrite using `[GlobalTheory.T.schwartz_integral_eq_of_derivs (μa.prod μb) _ hg C hC h0' S hSn l, integral_prod]`. Both sides reduce to the same expression. Conclude with `integrable_of_zero_outside _ (l.continuous.comp hg) hC (fun p hp => by simp [h0' p hp])`.
+-/
 theorem clm_iterated_integral : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     {α β : Type} [TopologicalSpace α] [MeasurableSpace α] [BorelSpace α] [SecondCountableTopology α]
     [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β] [SecondCountableTopology β]

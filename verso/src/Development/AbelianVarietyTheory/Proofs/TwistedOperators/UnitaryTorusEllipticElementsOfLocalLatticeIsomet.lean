@@ -9,6 +9,21 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ r n n' P J J' L L' v j hj`. Take `⟨a, ha, -, hja⟩` from `hj`. Establish `iso : ∀ (x : Fv F v ⊗[F] Fld P) (φ : (Fv F v ⊗[F] Fld P) ≃ₗ[Fv F v ⊗[F] E] (Fin n → Fv F v ⊗[F] E)), IsIsom P (Fv F v) J x φ → IsIsom P (Fv F v) J' x (φ.trans a)`. Introduce `x φ h y y'`. Establish `e` using `ha (φ y) (φ y')`.
+
+Simplify using `only [GlobalTheory.AdelicU.hLin, hR] at e`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, e]`. Conclude with `h y y'`. Establish `iso' : ∀ (x : Fv F v ⊗[F] Fld P) (φ : (Fv F v ⊗[F] Fld P) ≃ₗ[Fv F v ⊗[F] E] (Fin n' → Fv F v ⊗[F] E)), IsIsom P (Fv F v) J' x φ → IsIsom P (Fv F v) J x (φ.trans a.symm)`. Introduce `x φ h y y'`.
+
+Establish `e` using `ha (a.symm (φ y)) (a.symm (φ y'))`. Simplify using `only [GlobalTheory.AdelicU.hLin, hR, LinearEquiv.apply_symm_apply] at e`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, ← e]`. Conclude with `h y y'`. Establish `tor : ∀ (x : Fv F v ⊗[F] Fld P) (φ : (Fv F v ⊗[F] Fld P) ≃ₗ[Fv F v ⊗[F] E] (Fin n → Fv F v ⊗[F] E)) (h : IsIsom P (Fv F v) J x φ) (t : Tor P (Fv F v)), torEmb (iso x φ h) t = j (torEmb h t)`.
+
+Introduce `x φ h t`. Apply `GlobalTheory.AdelicU.matHom_injective (Fv F v) σ J'` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `key : ∀ w, (GlobalTheory.AdelicU.matHom _ σ J' (torEmb (iso x φ h) t)).1 *ᵥ w = (GlobalTheory.AdelicU.matHom _ σ J' (j (torEmb h t))).1 *ᵥ w`. Introduce `w`.
+
+Take `⟨y, rfl⟩` from `(φ.trans a).surjective w`. Rewrite using `[LinearEquiv.trans_apply, hja]`. Express the relevant statement in the definitionally equal form `mulMat (φ.trans a) (torUnit t).1 *ᵥ (φ.trans a) y = a (mulMat φ (torUnit t).1 *ᵥ φ y)`. Rewrite using `[mulMat_mulVec, mulMat_mulVec]`. Both sides reduce to the same expression.
+
+Conclude with `Matrix.ext_of_mulVec_single fun i => key _`. Use `⟨?_, fun x φ h => ⟨φ.trans a, iso _ φ h, tor _ φ h _, tor _ φ h⟩⟩` and prove the remaining obligations. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, φ, e, h⟩`.
+
+Conclude with `⟨x, φ.trans a.symm, e, iso' _ φ h⟩`. Introduce and unpack `⟨x, φ, e, h⟩`. Conclude with `⟨x, φ.trans a, e, iso _ φ h⟩`.
+-/
 theorem trEll_latticeConj_move : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (r n n' : ℕ) (P : PPol σ r) (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin n') (Fin n') E) (L : Submodule (𝓞 E) (Fin n → E)) (L' : Submodule (𝓞 E) (Fin n' → E)) (v : HeightOneSpectrum (𝓞 F)) (j : GLoc σ J v ≃ₜ* GLoc σ J' v), IsLatticeConj L L' j → XSet P (Fv F v) J' = XSet P (Fv F v) J ∧ ∀ (x : plusUnits P (Fv F v)) (φ : ((Fv F v) ⊗[F] Fld P) ≃ₗ[(Fv F v) ⊗[F] E] (Fin n → (Fv F v) ⊗[F] E)) (h : IsIsom P (Fv F v) J x.1.1 φ), ∃ (φ' : (Fv F v ⊗[F] Fld P) ≃ₗ[Fv F v ⊗[F] E] (Fin n' → Fv F v ⊗[F] E)) (h' : IsIsom P (Fv F v) J' x.1.1 φ'), gam h' = j (gam h) ∧ ∀ t, torEmb h' t = j (torEmb h t) := by
   intro F E _ _ _ _ _ σ _ r n n' P J J' L L' v j hj
   obtain ⟨a, ha, -, hja⟩ := hj

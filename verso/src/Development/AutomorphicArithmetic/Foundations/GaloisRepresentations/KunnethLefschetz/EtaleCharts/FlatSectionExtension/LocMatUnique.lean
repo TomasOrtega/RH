@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `h1 : (f ≫ i).appLE N ⊤ h = Z.presheaf.map (homOfLE hle).op ≫ (f ≫ i).appLE N'' ⊤ (by simpa using h'')`. Rewrite using `[Scheme.Hom.map_appLE]`. Rewrite using `[h1, Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+-/
 private theorem appLE_factor {A W Z : Scheme.{0}} (f : A ⟶ W) (i : W ⟶ Z) (c : A ⟶ Z) (hc : c = f ≫ i)
     {N N'' : Z.Opens} (hle : N'' ≤ N)
     (h : ⊤ ≤ c ⁻¹ᵁ N) (h'' : ⊤ ≤ f ⁻¹ᵁ (i ⁻¹ᵁ N'')) (g : Γ(Z, N)) :
@@ -16,6 +19,11 @@ private theorem appLE_factor {A W Z : Scheme.{0}} (f : A ⟶ W) (i : W ⟶ Z) (c
   rw [h1, Scheme.Hom.comp_appLE]
   rfl
 
+/- English proof (translation)
+Introduce `m`. Establish `e : ∀ (γ : B.ι) (hγ : N ≤ B.V γ) (l : Fin d), tN B γ (hle.trans hγ) l = (Z.presheaf.map (homOfLE hle).op).hom (tN B γ hγ l)`. Introduce `γ hγ l`. Simplify using `only [tN, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[e β h₂ m, hG m, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, e α h₁ l]`. Both sides reduce to the same expression.
+-/
 private theorem res_isTr {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z}
     {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) (α β : B.ι) {N N'' : Z.Opens} (hle : N'' ≤ N)
     (h₁ : N ≤ B.V α) (h₂ : N ≤ B.V β) (G : Matrix (Fin d) (Fin d) Γ(Z, N)) (hG : IsTr B α β h₁ h₂ G) :
@@ -31,6 +39,15 @@ private theorem res_isTr {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶
   rw [map_mul, e α h₁ l]
   rfl
 
+/- English proof (translation)
+Establish `e : V.homOfLE hA ≫ U.ι = A.ι` using `Scheme.homOfLE_ι _ _`. Establish `h1 : A.ι.appTop.hom s = (V.homOfLE hA).appTop.hom (U.ι.appTop.hom s)`. Rewrite using `[← e, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Rewrite using `[h1, hs]`.
+
+Establish `cg : ∀ (f g : (A : Scheme.{0}) ⟶ Z) (_ : f = g) (h : ⊤ ≤ f ⁻¹ᵁ N) (h' : ⊤ ≤ g ⁻¹ᵁ N), f.appLE N ⊤ h = g.appLE N ⊤ h'`. Introduce and unpack `f _ rfl _ _`. Both sides reduce to the same expression. Establish `h3 : (V.homOfLE hA).appTop = (V.homOfLE hA).appLE ⊤ ⊤ (le_of_eq rfl)`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+
+Both sides reduce to the same expression. Establish `h2 : (A.ι ≫ p ≫ i).appLE N ⊤ hA' = (U.ι ≫ p ≫ i).appLE N ⊤ hU ≫ (V.homOfLE hA).appTop`. Rewrite using `[h3]`. Conclude with `(cg _ _ (by rw [← e, Category.assoc]) _ _).trans (Scheme.Hom.appLE_comp_appLE (V.homOfLE hA) (U.ι ≫ p ≫ i) N ⊤ ⊤ hU (le_of_eq rfl)).symm`. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem pull_eq {V W Z : Scheme.{0}} (i : W ⟶ Z) (p : V ⟶ W) {U A : V.Opens} (hA : A ≤ U) {N : Z.Opens}
     (hU : ⊤ ≤ (U.ι ≫ p ≫ i) ⁻¹ᵁ N) (hA' : ⊤ ≤ (A.ι ≫ p ≫ i) ⁻¹ᵁ N) (s : Γ(V, ⊤)) (g : Γ(Z, N))
     (hs : U.ι.appTop.hom s = ((U.ι ≫ p ≫ i).appLE N ⊤ hU).hom g) :
@@ -55,6 +72,9 @@ private theorem pull_eq {V W Z : Scheme.{0}} (i : W ⟶ Z) (p : V ⟶ W) {U A : 
   rw [h2]
   rfl
 
+/- English proof (translation)
+Establish `: (U.ι ≫ p ≫ i) y = (p ≫ i) y.1`. Rewrite using `[Scheme.Hom.comp_apply]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+-/
 private theorem pt_mem {V W Z : Scheme.{0}} (i : W ⟶ Z) (p : V ⟶ W) (U : V.Opens) {N : Z.Opens}
     (y : (U : Scheme.{0})) : (U.ι ≫ p ≫ i) y ∈ N ↔ (p ≫ i) y.1 ∈ N := by
   have : (U.ι ≫ p ≫ i) y = (p ≫ i) y.1 := by
@@ -62,6 +82,19 @@ private theorem pt_mem {V W Z : Scheme.{0}} (i : W ⟶ Z) (p : V ⟶ W) (U : V.O
     rfl
   rw [this]
 
+/- English proof (translation)
+Introduce `K _ W Z Y q i π D d B α β V p M M' hM hM'`. Use extensionality with `m l`. Use `sectionExt _ _ fun x => ?_` and prove the remaining obligations. Take `⟨U, N, hx, hN, h₁, h₂, hU, G, hG, hMG⟩` from `hM x`. Take `⟨U', N', hx', hN', h₁', h₂', hU', G', hG', hMG'⟩` from `hM' x`.
+
+Establish `hzN : (p ≫ i) x ∈ N` using `(pt_mem i p U ⟨x, hx⟩).1 (hU (show (⟨x, hx⟩ : (U : Scheme.{0})) ∈ (⊤ : (U : Scheme.{0}).Opens) from trivial))`. Establish `hzN' : (p ≫ i) x ∈ N'` using `(pt_mem i p U' ⟨x, hx'⟩).1 (hU' (show (⟨x, hx'⟩ : (U' : Scheme.{0})) ∈ (⊤ : (U' : Scheme.{0}).Opens) from trivial))`. Take `⟨N'', hN'', hz, hsub⟩` from `exists_isAffineOpen_mem_and_subset (U := N ⊓ N') (x := (p ≫ i) x) ⟨hzN, hzN'⟩`. Establish `hle : N'' ≤ N` using `fun _ h => (hsub h).1`. Establish `hle' : N'' ≤ N'` using `fun _ h => (hsub h).2`.
+
+Set `A : V.Opens` to `U ⊓ U' ⊓ (p ≫ i) ⁻¹ᵁ N''`. Establish `hAU : A ≤ U` using `fun _ h => h.1.1`. Establish `hAU' : A ≤ U'` using `fun _ h => h.1.2`. Establish `hxA : x ∈ A` using `⟨⟨hx, hx'⟩, hz⟩`. Establish `hAz : ∀ y : (A : Scheme.{0}), (A.ι ≫ p ≫ i) y ∈ N''` using `fun y => (pt_mem i p A y).2 y.2.2`.
+
+Establish `hAN'' : ⊤ ≤ (A.ι ≫ p) ⁻¹ᵁ (i ⁻¹ᵁ N'')`. Introduce `y _`. Use `hAz y` as an intermediate fact. Rewrite `this` using `[← Category.assoc, Scheme.Hom.comp_apply]`. Conclude with `this`.
+
+Establish `hAN : ⊤ ≤ (A.ι ≫ p ≫ i) ⁻¹ᵁ N` using `fun y _ => hle (hAz y)`. Establish `hAN' : ⊤ ≤ (A.ι ≫ p ≫ i) ⁻¹ᵁ N'` using `fun y _ => hle' (hAz y)`. Use `⟨A, hxA, ?_⟩` and prove the remaining obligations. Establish `e1` using `pull_eq i p hAU hU hAN (M m l) (G m l) (congrFun (congrFun hMG m) l)`. Establish `e2` using `pull_eq i p hAU' hU' hAN' (M' m l) (G' m l) (congrFun (congrFun hMG' m) l)`.
+
+Establish `t` using `trUnique B α β hN'' (hle.trans h₁) (hle.trans h₂) (G.map (Z.presheaf.map (homOfLE hle).op).hom) (G'.map (Z.presheaf.map (homOfLE hle').op).hom) (res_isTr B α β hle h₁ h₂ G hG) (res_isTr B α β hle' h₁' h₂' G' hG') m l`. Rewrite using `[e1, e2, appLE_factor (A.ι ≫ p) i _ (Category.assoc _ _ _).symm hle hAN hAN'', appLE_factor (A.ι ≫ p) i _ (Category.assoc _ _ _).symm hle' hAN' hAN'']`. Conclude with `congrArg _ t`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.locMatUnique :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) (α β : B.ι) {V : Scheme.{0}} (p : V ⟶ W) (M M' : Matrix (Fin d) (Fin d) Γ(V, ⊤)), LocMat B α β p M → LocMat B α β p M' → M = M' := by
   intro K _ W Z Y q i π D d B α β V p M M' hM hM'

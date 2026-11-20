@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PairStep.exists_pos_kltAt_add_smul | exact GlobalTheory.PairStep.exists_pos_kltAt_add_smul | (intros; apply GlobalTheory.PairStep.exists_pos_kltAt_add_smul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_pos_klt_add_smul_effective_divisor : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Δ : X → ℚ) (m : ℕ) (G : CartierDiv X) (B : X → ℚ), 0 < m → IsLogCanonicalMultiple p n Δ m G → (∀ y, KltAt p n Δ y) → IsQCart B → ∃ c : ℚ, 0 < c ∧ ∀ y, KltAt p n (Δ + c • B) y := by
   first | exact @GlobalTheory.PairStep.exists_pos_kltAt_add_smul | exact GlobalTheory.PairStep.exists_pos_kltAt_add_smul | (intros; apply GlobalTheory.PairStep.exists_pos_kltAt_add_smul <;> assumption)

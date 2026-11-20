@@ -21,6 +21,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.UnfoldLoss
 
+/- English proof (translation)
+Establish `hn : ∀ n : ℕ, valuation k (n : k) ≤ 1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Rewrite using `[Nat.cast_succ]`. Conclude with `(valuation k).map_add_le ih (by simp)`. Establish `hc : ∀ y : k, valuation k y ≤ valuation k (c : k) → ψ y = 1` using `(h c).2 le_rfl`. Establish `hc0 : valuation k (c : k) ≠ 0` using `by simp`. Use `set γ : (ValueGroupWithZero k)ˣ := Units.mk0 _ hc0 with hγ`.
+
+Take `⟨t, -, ht⟩` from `(IsNonarchimedeanLocalField.isCompact_closedBall k (valuation k a)).elim_nhds_subcover (fun x => {z | valuation k (z - x) < γ}) (fun x _ => by`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Conclude with `⟨γ, subset_rfl⟩)`. Establish `hmem : ∀ n : ℕ, ∃ x : t, valuation k ((n : k) * a - x) < γ`. Introduce `n`.
+
+Establish `: (n : k) * a ∈ {x | valuation k x ≤ valuation k a}`. Simplify using `only [Set.mem_ofPred_eq, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨x, hx⟩` from `Set.mem_iUnion₂.mp (ht this)`. Conclude with `⟨⟨x, hx.1⟩, hx.2⟩`.
+
+Use `choose f hf using hmem`. Take `⟨n, m, hnm, hfnm⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Establish `hdiff : valuation k ((n : k) * a - (m : k) * a) ≤ valuation k (c : k)`. Establish `h1` using `hf n`. Establish `h2` using `hf m`.
+
+Rewrite `h1` using `[hfnm]`. Establish `: (n : k) * a - (m : k) * a = ((n : k) * a - (f m : k)) - ((m : k) * a - (f m : k))` using `by ring`. Rewrite using `[this]`. Use `le_of_lt ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hpow : ψ a ^ n = ψ a ^ m`. Use `hc _ hdiff` as an intermediate fact. Rewrite `this` using `[AddChar.map_sub_eq_div, div_eq_one, ← nsmul_eq_mul, ← nsmul_eq_mul, AddChar.map_nsmul_eq_pow, AddChar.map_nsmul_eq_pow]`. Conclude with `this`. Rewrite using `[isOfFinOrder_iff_pow_eq_one]`.
+
+Break down `Nat.lt_or_gt_of_ne hnm with hlt | hlt` into its components or cases. Use `⟨m - n, Nat.sub_pos_of_lt hlt, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_sub _ hlt.le, ← hpow, mul_inv_cancel]`. Use `⟨n - m, Nat.sub_pos_of_lt hlt, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_sub _ hlt.le, hpow, mul_inv_cancel]`.
+-/
 theorem isOfFinOrder_of_hasConductor {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ψ : AddChar k Circle} {c : kˣ} (h : HasConductor ψ c) (a : k) : IsOfFinOrder (ψ a) := by
   have hn : ∀ n : ℕ, valuation k (n : k) ≤ 1 := by
@@ -73,6 +90,13 @@ theorem isOfFinOrder_of_hasConductor {k : Type} [Field k] [ValuativeRel k] [Topo
   · refine ⟨n - m, Nat.sub_pos_of_lt hlt, ?_⟩
     rw [pow_sub _ hlt.le, hpow, mul_inv_cancel]
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F CF b hS hIs _ hF t Φ β hβ P X Y e hd hm w`. Take `⟨y, hy⟩` from `hF.phases t Φ β hβ P X Y e hd hm`. Establish `hcond : HasConductor (psiAt ch.W P.1) 1` using `GlobalTheory.FunObj.Good.hasConductor_psiAt ch.W (GlobalTheory.FunObj.Good.badInt_notMem hS.core.lev (GlobalTheory.FlipIntegrand.pde_ne_q_of_setting hS) (hIs.guard t) P.2)`. Take `⟨n, hn, hpow⟩` from `isOfFinOrder_iff_pow_eq_one.mp (isOfFinOrder_of_hasConductor hcond (-phase X e))`. Establish `hneg : ((psiAt ch.W P.1 (-phase X e) : Circle) : ℂ) = D.what₂.embLL y⁻¹`.
+
+Rewrite using `[AddChar.map_neg_eq_inv, Circle.coe_inv, map_inv₀, hy]`. Use `⟨y⁻¹, hneg.symm, Or.inr ?_⟩` and prove the remaining obligations. Establish `hroot : y⁻¹ ^ n = 1`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[map_pow, ← hneg, ← Circle.coe_pow, hpow, Circle.coe_one, map_one]`.
+
+Establish `h0 : (n : ℤ) * Formalism.DivisionValues.vw w y⁻¹ = 0`. Unfold `Formalism.DivisionValues.vw`. Rewrite using `[← FractionalIdeal.count_pow, FractionalIdeal.spanSingleton_pow, hroot, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`. Establish `hv : Formalism.DivisionValues.vw w y⁻¹ = 0` using `(mul_eq_zero.mp h0).resolve_left (by exact_mod_cast hn.ne')`. Simplify using `[hv]`.
+-/
 theorem lossLe_psi_neg_phase : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A) (CF b : ℝ),
     HidaSetting large₂ R F → ch.Is → ch.AtScale CF b → ch.FieldOK → ∀ (t : T) (Φ : ch.G.Datum), ∀ β ∈ ch.S.supp t Φ, ∀ (P : locPl ch.G t), ∀ X Y (e : Vars (locGrid ch.G t P)),

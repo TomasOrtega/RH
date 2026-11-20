@@ -11,17 +11,28 @@ namespace GlobalTheory.PotOsc
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
 
+/- English proof (translation)
+Unfold `locDens`. Simplify using `only [h]`.
+-/
 theorem locDens_congr_phi {Φ Ψ : Fin e → LocPot X} (h : ∀ i, (Φ i).φ = (Ψ i).φ) (j : Fin A.n)
     (y : Fin e → ℂ) : locDens A Φ j y = locDens A Ψ j y := by
   unfold locDens
   simp only [h]
 
+/- English proof (translation)
+Introduce `x j y hy w`. Use `hP x j y (by rw [hU x]; exact hy) w` as an intermediate fact. Rewrite `this` using `[hφ x]`. Then use the resulting hypothesis.
+-/
 theorem isPsh_congr {P Q : LocPot X} (hP : IsPsh A P) (hU : ∀ x, P.U x = Q.U x)
     (hφ : ∀ x, P.φ x = Q.φ x) : IsPsh A Q := by
   intro x j y hy w
   have := hP x j y (by rw [hU x]; exact hy) w
   rwa [hφ x] at this
 
+/- English proof (translation)
+Unfold `locDens maDens`. Establish `h : (fun i => hessC (fun y' => ((Ψ i).rsmul c).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) = fun i => ((c : ℂ) • (1 : Matrix (Fin e) (Fin e) ℂ)) * hessC (fun y' => (Ψ i).φ ((A.chart j).symm y) ((A.chart j).symm y')) y * 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul]`. Conclude with `hessC_const_mul' c _ y`.
+
+Simplify using `only [h]`. Rewrite using `[ReciprocityTheory.AnForm.A.mdisc_mul_mul, Matrix.det_smul, Matrix.det_one, Fintype.card_fin]`. Simplify using `only [mul_one]`. Rewrite using `[← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locDens_rsmul_all (Ψ : Fin e → LocPot X) (c : ℝ) (j : Fin A.n) (y : Fin e → ℂ) :
     locDens A (fun i => (Ψ i).rsmul c) j y = c ^ e * locDens A Ψ j y := by
   unfold locDens maDens
@@ -37,6 +48,11 @@ theorem locDens_rsmul_all (Ψ : Fin e → LocPot X) (c : ℝ) (j : Fin A.n) (y :
   rw [← Complex.ofReal_pow, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover x`. Establish `hy` using `(A.chart j).map_source hj`. Establish `h1 : ContinuousAt (u ∘ (A.chart j).symm) (A.chart j x)` using `((hu j).continuousOn.continuousAt (((A.chart j).isOpen_inter_preimage_symm isOpen_univ).mem_nhds ⟨hy, Set.mem_univ _⟩))`. Establish `h3 : ContinuousAt ((u ∘ (A.chart j).symm) ∘ (A.chart j)) x` using `h1.comp ((A.chart j).continuousAt hj)`.
+
+Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with z hz`. Simplify using `[(A.chart j).left_inv hz]`.
+-/
 theorem smooth_continuous {u : X → ℝ} (hu : A.Smooth u) : Continuous u := by
   refine continuous_iff_continuousAt.2 fun x => ?_
   obtain ⟨j, hj⟩ := A.cover x
@@ -54,6 +70,31 @@ end GlobalTheory.PotOsc
 
 open GlobalTheory.PotOsc in
 
+/- English proof (translation)
+Introduce `e X _ _ _ A Om w u M hM hO hOp hw hw0 hwp hu`. Establish `hM0 : 0 < M` using `by linarith`. Use `set v : Fin e → X → ℝ := fun i x => u i x / M with hv`. Use `set Φ : Fin e → LocPot X := fun i => Om + LocPot.ofFun (u i) with hΦ`. Use `set Ψ : Fin e → LocPot X := fun i => Om + LocPot.ofFun (v i) with hΨ`.
+
+Use `set Θ : Fin e → LocPot X := fun _ => Om.rsmul (M - 1) with hΘ`. Establish `hΦ1 : ∀ i, IsPotential A (Φ i)` using `fun i => isPotentialAdd A _ _ hO (isPotential_ofFun A _ (hu i).1)`. Establish `hΦ2 : ∀ i, IsPsh A (Φ i)` using `fun i => (hu i).2.2`. Establish `hvs : ∀ i, A.Smooth (v i)` using `fun i j => (hu i).1 j |>.div_const M`. Establish `hΨ1 : ∀ i, IsPotential A (Ψ i)` using `fun i => isPotentialAdd A _ _ hO (isPotential_ofFun A _ (hvs i))`.
+
+Establish `hΘ1 : ∀ i, IsPotential A (Θ i)` using `fun _ => isPotentialRsmul A _ Om hO`. Establish `hΘ2 : ∀ i, IsPsh A (Θ i)` using `fun _ => isPshRsmul A _ Om (by linarith) hO hOp`. Establish `hΨ2 : ∀ i, IsPsh A (Ψ i)`. Introduce `i`. Establish `h1 : IsPsh A ((Φ i).rsmul (1 / M))` using `isPshRsmul A _ _ (by positivity) (hΦ1 i) (hΦ2 i)`.
+
+Establish `h2 : IsPsh A (Om.rsmul (1 - 1 / M))` using `isPshRsmul A _ Om (by rw [sub_nonneg, div_le_one hM0]; exact hM) hO hOp`. Establish `h3` using `isPshAdd A _ _ (isPotentialRsmul A _ _ (hΦ1 i)) (isPotentialRsmul A _ Om hO) h1 h2`. Use `isPsh_congr h3 (fun x => ?_) (fun x => ?_)` and prove the remaining obligations. Use `show (Om.U x ∩ Set.univ) ∩ Om.U x = Om.U x ∩ Set.univ`. Simplify using the standard rewrite rules.
+
+Use function extensionality and compare the values at `z show 1 / M * (Om.φ x z + u i z) + (1 - 1 / M) * Om.φ x z = Om.φ x z + u i z / M`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hvb : ∀ i, A.Smooth (v i) ∧ (∀ x, -1 ≤ v i x ∧ v i x ≤ 0) ∧ IsPsh A (Om + LocPot.ofFun (v i))`. Introduce `i`.
+
+Use `⟨hvs i, fun x => ⟨?_, ?_⟩, hΨ2 i⟩` and prove the remaining obligations. Use `show -1 ≤ u i x / M`. Rewrite using `[le_div_iff₀ hM0]`. Combine the linear relations using `[((hu i).2.1 x).1]`. Use `show u i x / M ≤ 0`.
+
+Conclude with `div_nonpos_of_nonpos_of_nonneg ((hu i).2.1 x).2 hM0.le`. Establish `hcl` using `GlobalTheory.T.mixed_integral_bound_unit_potentials e X A Om w v hO hOp hw hw0 hwp hvb`. Establish `hpt : ∀ j, ∀ y ∈ (A.chart j).target, locDens A Φ j y ≤ M ^ e * locDens A Ψ j y`. Introduce `j y hy`. Establish `h1` using `locDens_le_add A Φ Θ hΦ1 hΦ2 hΘ1 hΘ2 j hy`.
+
+Establish `h2 : locDens A (fun i => Φ i + Θ i) j y = locDens A (fun i => (Ψ i).rsmul M) j y`. Use `locDens_congr_phi (fun i => ?_) j y` and prove the remaining obligations. Use function extensionality and compare the values at `x z`. Use `show (Om.φ x z + u i z) + (M - 1) * Om.φ x z = M * (Om.φ x z + u i z / M)`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2, locDens_rsmul_all]`. Conclude with `h1`. Establish `hgc : Continuous fun x => -w x` using `(smooth_continuous hw).neg`. Establish `hgΦ` using `mIntegrableCont A Φ hΦ1 _ hgc`.
+
+Establish `hgΨ` using `mIntegrableCont A Ψ hΨ1 _ hgc`. Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Establish `hcmp : mInt A Φ (fun x => -w x) ≤ M ^ e * mInt A Ψ (fun x => -w x)`. Rewrite using `[mInt_eq_integralWith A _ hne, mInt_eq_integralWith A _ hne]`. Unfold `integralWith`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `setIntegral_mono_on (integrableOn_weight A hne.some Φ _ hgΦ j) ((integrableOn_weight A hne.some Ψ _ hgΨ j).const_mul _) (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Establish `ha : 0 ≤ hne.some.χ j ((A.chart j).symm y) * -w ((A.chart j).symm y)` using `mul_nonneg (hne.some.nonneg j _) (neg_nonneg.2 (hw0 _))`.
+
+Use `mul_le_mul_of_nonneg_left (hpt j y hy) ha` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.PotOsc.mInt_le_pow_mul : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X]
     [T2Space X] (A : FinHolAtlas e X) (Om : LocPot X) (w : X → ℝ) (u : Fin e → X → ℝ) (M : ℝ),
     1 ≤ M → IsPotential A Om → IsPsh A Om → A.Smooth w → (∀ x, w x ≤ 0) →

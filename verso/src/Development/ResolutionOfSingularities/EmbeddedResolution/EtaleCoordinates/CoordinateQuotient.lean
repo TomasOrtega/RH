@@ -14,11 +14,17 @@ noncomputable def etaleChartCoordIdeal (k : Type u) [Field k] (m : ℕ) (S : Typ
     [Algebra (CoordPolynomialRing k m) S] (J : Finset (Fin m)) : Ideal S :=
   Ideal.span (etaleChartCoord k m S '' (J : Set (Fin m)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem etaleChartCoordIdeal_eq_span_image (k : Type u) [Field k] (m : ℕ) (S : Type u) [CommRing S]
     [Algebra (CoordPolynomialRing k m) S] (J : Finset (Fin m)) :
     etaleChartCoordIdeal k m S J = Ideal.span (etaleChartCoord k m S '' (J : Set (Fin m))) :=
   rfl
 
+/- English proof (translation)
+Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨j, hj, rfl⟩`. Conclude with `hI j (Finset.mem_coe.mp hj)`.
+-/
 theorem etaleChartCoordIdeal_le (k : Type u) [Field k] (m : ℕ) (S : Type u) [CommRing S]
     [Algebra (CoordPolynomialRing k m) S] (J : Finset (Fin m)) (I : Ideal S)
     (hI : ∀ j ∈ J, etaleChartCoord k m S j ∈ I) : etaleChartCoordIdeal k m S J ≤ I := by
@@ -26,6 +32,9 @@ theorem etaleChartCoordIdeal_le (k : Type u) [Field k] (m : ℕ) (S : Type u) [C
   rintro x ⟨j, hj, rfl⟩
   exact hI j (Finset.mem_coe.mp hj)
 
+/- English proof (translation)
+Rewrite using `[etaleChartCoordIdeal_eq_span_image, mvPolynomialCoordIdeal_eq_span, Ideal.map_span, Set.image_image]`. Both sides reduce to the same expression.
+-/
 theorem map_mvPolynomialCoordIdeal_eq_etaleChartCoordIdeal (k : Type u) [Field k] (m : ℕ) (S : Type u)
     [CommRing S] [Algebra (CoordPolynomialRing k m) S] (J : Finset (Fin m)) :
     Ideal.map (algebraMap (CoordPolynomialRing k m) S) (mvPolynomialCoordIdeal k m J) =
@@ -40,6 +49,9 @@ theorem map_mvPolynomialCoordIdeal_eq_etaleChartCoordIdeal (k : Type u) [Field k
     (((Ideal.Quotient.mk (etaleChartCoordIdeal k m S J)).comp
       (algebraMap (CoordPolynomialRing k m) S)).comp (renameCompl k m J).toRingHom)
 
+/- English proof (translation)
+Establish `hiff : (algebraMap (CoordPolynomialRing k m) S).toAlgebra = (inferInstance : Algebra (CoordPolynomialRing k m) S)` using `Algebra.algebra_ext _ _ fun r => rfl`. Use `show @Algebra.Etale _ _ _ _ (algebraMap (CoordPolynomialRing k m) S).toAlgebra`. Rewrite using `[hiff]`. Use `infer_instance`.
+-/
 private theorem etale_algebraMap_coordPolynomialRing (k : Type u) [Field k] (m : ℕ) (S : Type u) [CommRing S]
     [Algebra (CoordPolynomialRing k m) S] [Algebra.Etale (CoordPolynomialRing k m) S] :
     (algebraMap (CoordPolynomialRing k m) S).Etale := by
@@ -50,6 +62,15 @@ private theorem etale_algebraMap_coordPolynomialRing (k : Type u) [Field k] (m :
   rw [hiff]
   infer_instance
 
+/- English proof (translation)
+Establish `hIq : etaleChartCoordIdeal k m S J ≤ q` using `etaleChartCoordIdeal_le k m S J q hJ`. Establish `hq' : (Ideal.map (Ideal.Quotient.mk (etaleChartCoordIdeal k m S J)) q).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hIq)`. Set `algQuotient : Algebra (CoordPolynomialRing k (m - J.card)) (S ⧸ etaleChartCoordIdeal k m S J)` to `algebraQuotientCoordIdeal k m S J`. Establish `: Algebra.Etale (CoordPolynomialRing k (m - J.card)) (S ⧸ etaleChartCoordIdeal k m S J)` using `etale_quotientMk_comp_renameCompl k m J (algebraMap (CoordPolynomialRing k m) S) (etale_algebraMap_coordPolynomialRing k m S) (etaleChartCoordIdeal k m S J) (map_mvPolynomialCoordIdeal_eq_etaleChartCoordIdeal k m S J).symm`. Establish `h2 : Submonoid.map (Ideal.Quotient.mk (etaleChartCoordIdeal k m S J)) q.primeCompl = (Ideal.map (Ideal.Quotient.mk (etaleChartCoordIdeal k m S J)) q).primeCompl`.
+
+Use extensionality with `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hba⟩ hcon`. Use `hb ((Ideal.mem_quotient_iff_mem hIq).mp ?_)` and prove the remaining obligations.
+
+Rewrite using `[hba]`. Conclude with `hcon`. Introduce `ha`. Conclude with `⟨a, fun hq => ha ((Ideal.mem_quotient_iff_mem hIq).mpr hq), rfl⟩`. Establish `hloc : IsLocalization (Submonoid.map (Ideal.Quotient.mk (etaleChartCoordIdeal k m S J)) q.primeCompl) (A ⧸ Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S J))` using `inferInstanceAs (IsLocalization (Algebra.algebraMapSubmonoid (S ⧸ etaleChartCoordIdeal k m S J) q.primeCompl) (A ⧸ Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S J)))`.
+
+Establish `: IsLocalization (Ideal.map (Ideal.Quotient.mk (etaleChartCoordIdeal k m S J)) q).primeCompl (A ⧸ Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S J))` using `h2 ▸ hloc`. Conclude with `isRegularLocalRing_of_isLocalization_etale k (m - J.card) (S ⧸ etaleChartCoordIdeal k m S J) (Ideal.map (Ideal.Quotient.mk (etaleChartCoordIdeal k m S J)) q) (A ⧸ Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S J))`.
+-/
 theorem isRegularLocalRing_quotient_map_etaleChartCoordIdeal (k : Type u) [Field k] (m : ℕ)
     (S : Type u) [CommRing S] [Algebra (CoordPolynomialRing k m) S]
     [Algebra.Etale (CoordPolynomialRing k m) S] (q : Ideal S) [q.IsPrime] (A : Type u) [CommRing A]
@@ -92,6 +113,29 @@ theorem isRegularLocalRing_quotient_map_etaleChartCoordIdeal (k : Type u) [Field
     (Ideal.map (Ideal.Quotient.mk (etaleChartCoordIdeal k m S J)) q)
     (A ⧸ Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S J))
 
+/- English proof (translation)
+Set `algebraKS : Algebra k S` to `((algebraMap (CoordPolynomialRing k m) S).comp (algebraMap k (CoordPolynomialRing k m))).toAlgebra`. Establish `: IsScalarTower k (CoordPolynomialRing k m) S` using `IsScalarTower.of_algebraMap_eq' rfl`. Set `algebraKA : Algebra k A` to `((algebraMap S A).comp (algebraMap k S)).toAlgebra`. Establish `: IsScalarTower k S A` using `IsScalarTower.of_algebraMap_eq' rfl`. Set `D : Derivation k S S` to `EtaleCoordinates.partialDeriv k (ULift.{u} (Fin m)) S (ULift.up.{u} j)`.
+
+Set `DA : Derivation k A A` to `D.mapToLocalization q.primeCompl`. Establish `hderivAlgebraMap : ∀ s : S, DA (algebraMap S A s) = algebraMap S A (D s)` using `Derivation.mapToLocalization_algebraMap D q.primeCompl`. Establish `hDx : D (etaleChartCoord k m S j) = 1` using `EtaleCoordinates.partialDeriv_coord_self k (ULift.{u} (Fin m)) S (ULift.up.{u} j)`. Establish `hDne : ∀ i : Fin m, i ≠ j → D (etaleChartCoord k m S i) = 0`. Introduce `i hne`.
+
+Establish `hup : (ULift.up.{u} j) ≠ ULift.up.{u} i` using `fun h => hne (congrArg ULift.down h).symm`. Conclude with `EtaleCoordinates.partialDeriv_coord_of_ne k (ULift.{u} (Fin m)) S (ULift.up.{u} j) (ULift.up.{u} i) hup`. Establish `hmapeq : Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S J') = Ideal.span ((fun i : Fin m => algebraMap S A (etaleChartCoord k m S i)) '' (J' : Set (Fin m)))`. Rewrite using `[etaleChartCoordIdeal_eq_span_image, Ideal.map_span, Set.image_image]`. Establish `hspan_le : Ideal.span ((fun i : Fin m => algebraMap S A (etaleChartCoord k m S i)) '' (J' : Set (Fin m))) ≤ IsLocalRing.maximalIdeal A`.
+
+Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨i, hi, rfl⟩`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff A q (etaleChartCoord k m S i) inferInstance).mpr (hJ' i (Finset.mem_coe.mp hi))`. Introduce `hmem`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hmem`.
+
+Establish `hsq : IsLocalRing.maximalIdeal A ^ 2 = IsLocalRing.maximalIdeal A * IsLocalRing.maximalIdeal A` using `sq _`. Rewrite `ha` using `[hsq]`. Establish `hDa : DA a ∈ IsLocalRing.maximalIdeal A`. Use `Submodule.mul_induction_on ha ?_ ?_` and prove the remaining obligations. Introduce `p hp r hr`.
+
+Rewrite using `[DA.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `add_mem (Ideal.mul_mem_right _ _ hp) (Ideal.mul_mem_right _ _ hr)`. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+
+Rewrite `hb` using `[hmapeq]`. Establish `hDb : DA b ∈ IsLocalRing.maximalIdeal A`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ hb` and prove the remaining obligations. Introduce and unpack `z ⟨i, hi, rfl⟩`. Rewrite using `[hderivAlgebraMap, hDne i (by rintro rfl; exact hj (Finset.mem_coe.mp hi)), map_zero]`.
+
+Conclude with `zero_mem _`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `x y hx hy px py`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem px py`. Introduce `c x hx px`. Establish `hxm : x ∈ IsLocalRing.maximalIdeal A` using `hspan_le hx`. Rewrite using `[smul_eq_mul, DA.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ px) (Ideal.mul_mem_right _ _ hxm)`.
+
+Establish `hone : DA (algebraMap S A (etaleChartCoord k m S j)) = 1`. Rewrite using `[hderivAlgebraMap, hDx, map_one]`. Rewrite `hone` using `[← hab, map_add]`. Establish `h1 : (1 : A) ∈ IsLocalRing.maximalIdeal A`. Rewrite using `[← hone]`.
+
+Conclude with `add_mem hDa hDb`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal A).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+-/
 private theorem algebraMap_etaleChartCoord_notMem_maximalIdeal_sq_sup (k : Type u) [Field k] (m : ℕ) (S : Type u) [CommRing S]
     [Algebra (CoordPolynomialRing k m) S] [Algebra.Etale (CoordPolynomialRing k m) S]
     (q : Ideal S) [q.IsPrime] (A : Type u) [CommRing A] [Algebra S A]
@@ -163,6 +207,27 @@ private theorem algebraMap_etaleChartCoord_notMem_maximalIdeal_sq_sup (k : Type 
     exact add_mem hDa hDb
   exact (IsLocalRing.maximalIdeal.isMaximal A).ne_top ((Ideal.eq_top_iff_one _).mpr h1)
 
+/- English proof (translation)
+Establish `: IsRegularLocalRing A` using `isRegularLocalRing_of_isLocalization_etale k m S q A`. Use `revert hJ`. Proceed by induction on `J using Finset.induction_on with`. Consider the case `empty`. Introduce `_`.
+
+Establish `h0 : Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S (∅ : Finset (Fin m))) = ⊥`. Rewrite using `[etaleChartCoordIdeal_eq_span_image]`. Simplify using the standard rewrite rules. Establish `hker : (⊥ : Ideal A) = RingHom.ker (RingHom.id A)`. Use extensionality with `a`.
+
+Simplify using `[RingHom.mem_ker]`. Establish `e : (A ⧸ (⊥ : Ideal A)) ≃+* A` using `(Ideal.quotEquivOfEq hker).trans (RingHom.quotientKerEquivOfSurjective (show Function.Surjective (RingHom.id A) from fun a => ⟨a, rfl⟩))`. Rewrite using `[h0, ringKrullDim_eq_of_ringEquiv e]`. Simplify using the standard rewrite rules. Consider the case `@insert j J' hjJ ih`.
+
+Introduce `hJ`. Establish `hJ' : ∀ i ∈ J', etaleChartCoord k m S i ∈ q` using `fun i hi => hJ i (Finset.mem_insert_of_mem hi)`. Establish `hjq : etaleChartCoord k m S j ∈ q` using `hJ j (Finset.mem_insert_self _ _)`. Use `set I' := Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S J') with hI'`. Establish `hR : IsRegularLocalRing (A ⧸ I')` using `isRegularLocalRing_quotient_map_etaleChartCoordIdeal k m S q A J' hJ'`.
+
+Use `set y : A := algebraMap S A (etaleChartCoord k m S j) with hy`. Establish `hins : Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S (insert j J')) = I' ⊔ Ideal.span {y}`. Rewrite using `[hI', hy, etaleChartCoordIdeal_eq_span_image, etaleChartCoordIdeal_eq_span_image, Finset.coe_insert, Set.image_insert_eq, Ideal.span_insert, Ideal.map_sup, Ideal.map_span, Ideal.map_span, Set.image_singleton]`. Conclude with `sup_comm _ _`. Establish `hspan : Ideal.map (Ideal.Quotient.mk I') (Ideal.span {y}) = Ideal.span {Ideal.Quotient.mk I' y}`.
+
+Rewrite using `[Ideal.map_span, Set.image_singleton]`. Establish `e` using `(Ideal.quotEquivOfEq hspan.symm).trans (DoubleQuot.quotQuotEquivQuotSup I' (Ideal.span {y}))`. Establish `hdim1 : ringKrullDim (A ⧸ Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S (insert j J'))) = ringKrullDim ((A ⧸ I') ⧸ Ideal.span {Ideal.Quotient.mk I' y})`. Rewrite using `[hins]`. Conclude with `(ringKrullDim_eq_of_ringEquiv e).symm`.
+
+Establish `hmaxR : IsLocalRing.maximalIdeal (A ⧸ I') = Ideal.map (Ideal.Quotient.mk I') (IsLocalRing.maximalIdeal A)` using `(IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk I') Ideal.Quotient.mk_surjective).symm`. Establish `hy1 : Ideal.Quotient.mk I' y ∈ IsLocalRing.maximalIdeal (A ⧸ I')`. Rewrite using `[hmaxR, hy]`. Conclude with `Ideal.mem_map_of_mem _ ((IsLocalization.AtPrime.to_map_mem_maximal_iff A q (etaleChartCoord k m S j) inferInstance).mpr hjq)`. Establish `hy2 : Ideal.Quotient.mk I' y ∉ IsLocalRing.maximalIdeal (A ⧸ I') ^ 2`.
+
+Rewrite using `[hmaxR, ← Ideal.map_pow]`. Introduce `hcon`. Establish `hcon2 : y ∈ Ideal.comap (Ideal.Quotient.mk I') (Ideal.map (Ideal.Quotient.mk I') (IsLocalRing.maximalIdeal A ^ 2))` using `hcon`. Rewrite `hcon2` using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Rewrite `hcon2` using `[hy, hI']`.
+
+Conclude with `algebraMap_etaleChartCoord_notMem_maximalIdeal_sq_sup k m S q A J' hJ' j hjJ hcon2`. Establish `hstep` using `IsRegularLocalRing.ringKrullDim_quotient_span_singleton_add_one hy1 hy2`. Rewrite using `[hdim1, Finset.card_insert_of_notMem hjJ]`. Establish `hcard : (((J'.card + 1 : ℕ)) : WithBot ℕ∞) = 1 + (J'.card : WithBot ℕ∞)`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hcard, ← add_assoc, hstep]`. Conclude with `ih hJ'`.
+-/
 theorem ringKrullDim_quotient_map_etaleChartCoordIdeal_add_card (k : Type u) [Field k] (m : ℕ)
     (S : Type u) [CommRing S] [Algebra (CoordPolynomialRing k m) S]
     [Algebra.Etale (CoordPolynomialRing k m) S] (q : Ideal S) [q.IsPrime] (A : Type u) [CommRing A]
@@ -240,6 +305,23 @@ theorem ringKrullDim_quotient_map_etaleChartCoordIdeal_add_card (k : Type u) [Fi
       rw [hcard, ← add_assoc, hstep]
       exact ih hJ'
 
+/- English proof (translation)
+Establish `: IsLocalRing Q` using `inferInstance`. Establish `: IsNoetherianRing Q` using `inferInstance`. Establish `: Module.Finite (IsLocalRing.ResidueField Q) (IsLocalRing.CotangentSpace Q)` using `inferInstance`. Establish `hsurjres : Function.Surjective (algebraMap Q (IsLocalRing.ResidueField Q))`. Introduce `x`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨y, rfl⟩`. Use `set b := Module.finBasis (IsLocalRing.ResidueField Q) (IsLocalRing.CotangentSpace Q) with hb`. Establish `hsurj : Function.Surjective (IsLocalRing.maximalIdeal Q).toCotangent` using `Ideal.toCotangent_surjective _`. Use `choose w hw using fun i => hsurj (b i)`.
+
+Establish `hspanQ : Submodule.span Q (Set.range b) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ Submodule.span (IsLocalRing.ResidueField Q) (Set.range b)`. Rewrite using `[b.span_eq]`.
+
+Discharge the goal by the elementary cases of `trivial`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce `y hy`. Conclude with `Submodule.subset_span hy`. Conclude with `zero_mem _`.
+
+Introduce `y z _ _ hy hz`. Conclude with `add_mem hy hz`. Introduce `c y _ hy`. Take `⟨c', rfl⟩` from `hsurjres c`. Rewrite using `[algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hy`. Establish `himg : ⇑(IsLocalRing.maximalIdeal Q).toCotangent '' (Set.range w) = Set.range b`. Rewrite using `[← Set.range_comp]`. Conclude with `congrArg Set.range (funext hw)`. Establish `hMtop : Submodule.span Q (Set.range w) = ⊤`.
+
+Use `IsLocalRing.CotangentSpace.map_eq_top_iff.mp ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_span, himg]`. Conclude with `hspanQ`. Use `⟨Module.finrank (IsLocalRing.ResidueField Q) (IsLocalRing.CotangentSpace Q), fun i => ((w i : Q)), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Submodule.map (IsLocalRing.maximalIdeal Q).subtype (Submodule.span Q (Set.range w)) = Ideal.span (Set.range fun i => ((w i : Q)))`.
+
+Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[← h1, hMtop, Submodule.map_subtype_top]`. Conclude with `(IsRegularLocalRing.iff_finrank_cotangentSpace Q).mp ‹_›`.
+-/
 private theorem exists_span_eq_maximalIdeal_card_eq_ringKrullDim (Q : Type u) [CommRing Q] [IsRegularLocalRing Q] :
     ∃ (n : ℕ) (z : Fin n → Q), Ideal.span (Set.range z) = IsLocalRing.maximalIdeal Q ∧
       (n : WithBot ℕ∞) = ringKrullDim Q := by
@@ -288,6 +370,39 @@ private theorem exists_span_eq_maximalIdeal_card_eq_ringKrullDim (Q : Type u) [C
     rw [← h1, hMtop, Submodule.map_subtype_top]
   · exact (IsRegularLocalRing.iff_finrank_cotangentSpace Q).mp ‹_›
 
+/- English proof (translation)
+Use `set I := Ideal.map (algebraMap S A) (etaleChartCoordIdeal k m S J₀) with hIdef`. Establish `hreg : IsRegularLocalRing (A ⧸ I)` using `isRegularLocalRing_quotient_map_etaleChartCoordIdeal k m S q A J₀ hJ₀`. Establish `: IsLocalRing (A ⧸ I)` using `inferInstance`. Take `⟨n, z, hzspan, hzdim⟩` from `exists_span_eq_maximalIdeal_card_eq_ringKrullDim (A ⧸ I)`. Establish `hIle : I ≤ IsLocalRing.maximalIdeal A`.
+
+Rewrite using `[hIdef]`. Use `Ideal.map_le_iff_le_comap.mpr ?_` and prove the remaining obligations. Introduce `s hs`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff A q s inferInstance).mpr (etaleChartCoordIdeal_le k m S J₀ q hJ₀ hs)`. Establish `hmaxQ : IsLocalRing.maximalIdeal (A ⧸ I) = Ideal.map (Ideal.Quotient.mk I) (IsLocalRing.maximalIdeal A)` using `(IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective).symm`.
+
+Use `choose a ha using fun i : Fin n => Ideal.Quotient.mk_surjective (z i)`. Establish `hamem : ∀ i, a i ∈ IsLocalRing.maximalIdeal A`. Introduce `i`. Use `(Ideal.mem_quotient_iff_mem hIle).mp ?_` and prove the remaining obligations. Rewrite using `[← hmaxQ, ha i, ← hzspan]`.
+
+Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Use `choose rt hrt using fun i : Fin n => IsLocalization.surj (M := q.primeCompl) (a i)`. Establish `hsq : ∀ i : Fin n, (rt i).1 ∈ q`. Introduce `i`. Use `(IsLocalization.AtPrime.to_map_mem_maximal_iff A q (rt i).1 inferInstance).mp ?_` and prove the remaining obligations.
+
+Rewrite using `[← hrt i]`. Conclude with `Ideal.mul_mem_right _ _ (hamem i)`. Use `⟨J₀.card + n, Fin.append (fun i : Fin J₀.card => etaleChartCoord k m S ((J₀.equivFin.symm i : {x // x ∈ J₀}) : Fin m)) (fun i : Fin n => (rt i).1), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations.
+
+Rewrite using `[Fin.append_left]`. Conclude with `hJ₀ _ (J₀.equivFin.symm i).2`. Rewrite using `[Fin.append_right]`. Conclude with `hsq i`. Introduce `j hj`.
+
+Use `⟨Fin.castAdd n (J₀.equivFin ⟨j, hj⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.append_left, Equiv.symm_apply_apply]`. Establish `hxq : ∀ i : Fin (J₀.card + n), Fin.append (fun i : Fin J₀.card => etaleChartCoord k m S ((J₀.equivFin.symm i : {x // x ∈ J₀}) : Fin m)) (fun i : Fin n => (rt i).1) i ∈ q`. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations.
+
+Rewrite using `[Fin.append_left]`. Conclude with `hJ₀ _ (J₀.equivFin.symm i).2`. Rewrite using `[Fin.append_right]`. Conclude with `hsq i`. Establish `hTle : Ideal.span (Set.range fun i => algebraMap S A (Fin.append (fun i : Fin J₀.card => etaleChartCoord k m S ((J₀.equivFin.symm i : {x // x ∈ J₀}) : Fin m)) (fun i : Fin n => (rt i).1) i)) ≤ IsLocalRing.maximalIdeal A`.
+
+Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff A q _ inferInstance).mpr (hxq i)`. Establish `hIT : I ≤ Ideal.span (Set.range fun i => algebraMap S A (Fin.append (fun i : Fin J₀.card => etaleChartCoord k m S ((J₀.equivFin.symm i : {x // x ∈ J₀}) : Fin m)) (fun i : Fin n => (rt i).1) i))`. Rewrite using `[hIdef, etaleChartCoordIdeal_eq_span_image, Ideal.map_span, Set.image_image]`.
+
+Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Use `Ideal.subset_span ⟨Fin.castAdd n (J₀.equivFin ⟨j, Finset.mem_coe.mp hj⟩), ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap S A) ?_` and prove the remaining obligations. Rewrite using `[Fin.append_left, Equiv.symm_apply_apply]`.
+
+Use `le_antisymm hTle ?_` and prove the remaining obligations. Introduce `y hy`. Use `(Ideal.mem_quotient_iff_mem hIT).mp ?_` and prove the remaining obligations. Establish `hz : ∀ i : Fin n, z i ∈ Ideal.map (Ideal.Quotient.mk I) (Ideal.span (Set.range fun i => algebraMap S A (Fin.append (fun i : Fin J₀.card => etaleChartCoord k m S ((J₀.equivFin.symm i : {x // x ∈ J₀}) : Fin m)) (fun i : Fin n => (rt i).1) i)))`. Introduce `i`.
+
+Establish `hunit : IsUnit (Ideal.Quotient.mk I (algebraMap S A ((rt i).2 : S)))` using `(IsLocalization.map_units A ((rt i).2)).map (Ideal.Quotient.mk I)`. Take `⟨v, hv⟩` from `isUnit_iff_exists_inv.mp hunit`. Establish `hmem : Ideal.Quotient.mk I (algebraMap S A ((rt i).1)) ∈ Ideal.map (Ideal.Quotient.mk I) (Ideal.span (Set.range fun i => algebraMap S A (Fin.append (fun i : Fin J₀.card => etaleChartCoord k m S ((J₀.equivFin.symm i : {x // x ∈ J₀}) : Fin m)) (fun i : Fin n => (rt i).1) i)))`. Use `Ideal.mem_map_of_mem _ (Ideal.subset_span ⟨Fin.natAdd J₀.card i, ?_⟩)` and prove the remaining obligations. Conclude with `congrArg (algebraMap S A) (Fin.append_right _ _ i)`.
+
+Establish `heq : Ideal.Quotient.mk I (algebraMap S A ((rt i).1)) = z i * Ideal.Quotient.mk I (algebraMap S A ((rt i).2 : S))`. Rewrite using `[← hrt i, map_mul, ha i]`. Establish `hzi : z i = Ideal.Quotient.mk I (algebraMap S A ((rt i).1)) * v`. Rewrite using `[heq, mul_assoc, hv, mul_one]`. Rewrite using `[hzi]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hmem`. Establish `hmq : IsLocalRing.maximalIdeal (A ⧸ I) ≤ Ideal.map (Ideal.Quotient.mk I) (Ideal.span (Set.range fun i => algebraMap S A (Fin.append (fun i : Fin J₀.card => etaleChartCoord k m S ((J₀.equivFin.symm i : {x // x ∈ J₀}) : Fin m)) (fun i : Fin n => (rt i).1) i)))`. Rewrite using `[← hzspan]`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `hz i`. Use `hmq ?_` and prove the remaining obligations. Rewrite using `[hmaxQ]`. Conclude with `Ideal.mem_map_of_mem _ hy`. Establish `h2` using `ringKrullDim_quotient_map_etaleChartCoordIdeal_add_card k m S q A J₀ hJ₀`.
+
+Rewrite `h2` using `[← hIdef]`. Rewrite using `[← h2, ← hzdim, Nat.cast_add]`. Conclude with `add_comm _ _`.
+-/
 theorem exists_regularSystemOfParameters_containing_etaleChartCoords (k : Type u) [Field k] (m : ℕ)
     (S : Type u) [CommRing S] [Algebra (CoordPolynomialRing k m) S]
     [Algebra.Etale (CoordPolynomialRing k m) S] (q : Ideal S) [q.IsPrime] (A : Type u) [CommRing A]

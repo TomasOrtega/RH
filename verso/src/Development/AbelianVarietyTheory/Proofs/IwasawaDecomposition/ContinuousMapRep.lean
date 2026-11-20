@@ -6,6 +6,9 @@ namespace GlobalTheory.HeightCounting.PhtExt
 
 variable {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut}
 
+/- English proof (translation)
+Establish `: (fun g => ((mapRep f ρ g : GL (Fin a) B) : Matrix (Fin a) (Fin a) B)) = fun g => ((ρ g : GL (Fin a) A) : Matrix (Fin a) (Fin a) A).map f`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hρ.matrix_map hf`.
+-/
 theorem continuous_mapRep {Γ : Type} [Group Γ] [TopologicalSpace Γ] {A B : Type} [CommRing A] [CommRing B]
     [TopologicalSpace A] [TopologicalSpace B] {a : ℕ} (f : A →+* B) (hf : Continuous f) (ρ : Γ →* GL (Fin a) A)
     (hρ : Continuous fun g => ((ρ g : GL (Fin a) A) : Matrix (Fin a) (Fin a) A)) :
@@ -43,6 +46,9 @@ noncomputable def ext (Wd₀ : WDSide D T) : WDSide D T :=
         obtain ⟨c1, c2, c3, c4⟩ := h2 LL' hLL' m ρ hρ
         exact ⟨c1, (and_iff_right (continuous_mapRep _ hf ρ hρ)).trans c2, c3, c4⟩ }
 
+/- English proof (translation)
+Introduce `hP D fr T Wd₀`. Conclude with `⟨ext Wd₀, ⟨fun l _ ι a r τ w _ hw hd => (hP D fr T Wd₀).card l ι a r τ w hd.1 hw hd.2⟩⟩`.
+-/
 theorem exists_phtOn_all : PhtCmp → ∀ (D : D7) (fr : OmFrame D) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), WDSide D T →
     ∃ Wd : WDSide D T, PhtOn Wd fr fun _ _ _ _ => True := by
   intro hP D fr T Wd₀

@@ -18,6 +18,25 @@ private def evAt {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (�
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Introduce `hB hE hG E _ _ _ n ι _ s`. Take `⟨hl, hmul, -⟩` from `hB E n s.pos`. Take `⟨W, hWV, hWf, hW⟩` from `hG E n ι s`. Establish `sep : ∀ ψ : s.π.V, (∀ x : {x : H E n 0 // ldet x = 0}, evAt s.π x.1 ψ = 0) → ψ = 0`. Introduce `ψ h`.
+
+Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Establish `hy : ldet (ac E n (-ldet ((g, 1) : H E n 0)) * ((g, 1) : H E n 0)) = 0`. Rewrite using `[hmul, hl]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `h ⟨_, hy⟩`.
+
+Establish `h1` using `s.fix.1 ψ.1 ψ.2 (-ldet ((g, 1) : H E n 0) / (n * Module.finrank ℚ E)) g`. Conclude with `h1.symm.trans h0`. Use `haveI : FiniteDimensional ℂ W := hWf`. Take `⟨d, xs, ws, hw, hrep⟩` from `hE {x : H E n 0 // ldet x = 0} s.π.V (fun x => evAt s.π x.1) sep (LinearMap.range (Submodule.inclusion hWV)) inferInstance`. Use `⟨{ B := Fin d, w := fun b => (ws b).1, x := fun b => (xs b).1, mem := fun b => (ws b).2, zero := fun b => (xs b).2 }, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ v : Hs (ι` using `ι) s.D, IsPiVec s.D s.π v → ∀ (x : H E n 0) (i : ι), inner ℂ (s.k₁ x i) v = ∑ b, (ws b).1.1 x.1 * inner ℂ (s.k₁ (ac E n (ldet x) * (xs b).1) i) v := by`. Introduce `v hv x i`. Take `⟨ψ, hψ, hval⟩` from `hW v hv i (ldet x)`. Establish `hb : ∀ b, inner ℂ (s.k₁ (ac E n (ldet x) * (xs b).1) i) v = ψ.1 (xs b).1.1`. Introduce `b`.
+
+Rewrite using `[hval _ (by rw [hmul, hl, (xs b).2, add_zero])]`. Conclude with `s.fix.1 ψ (hWV hψ) _ _`. Establish `hr` using `congrArg (evAt s.π x) (hrep ⟨ψ, hWV hψ⟩ ⟨⟨ψ, hψ⟩, rfl⟩)`. Rewrite `hr` using `[map_sum]`. Rewrite using `[hval x rfl]`.
+
+Use `hr.trans (Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, hb b, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Introduce `v hv x i`. Set `L : Hs (ι` to `ι) s.D →L[ℂ] ℂ := innerSL ℂ (s.k₁ x i) - ∑ b, (ws b).1.1 x.1 • innerSL ℂ (s.k₁ (ac E n (ldet x) * (xs b).1) i)`.
+
+Establish `hL : ∀ f, L f = inner ℂ (s.k₁ x i) f - ∑ b, (ws b).1.1 x.1 * inner ℂ (s.k₁ (ac E n (ldet x) * (xs b).1) i) f`. Introduce `f`. Simplify using `[L, ContinuousLinearMap.sum_apply]`. Establish `hle : Submodule.span ℂ {f | IsPiVec s.D s.π f} ≤ LinearMap.ker (L : Hs (ι` using `ι) s.D →ₗ[ℂ] ℂ) := Submodule.span_le.2 fun f hf => by`. Use `key f hf x i` as an intermediate fact.
+
+Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, ContinuousLinearMap.coe_coe]`. Rewrite using `[hL, this, sub_self]`. Establish `hv' : v ∈ closure ((Submodule.span ℂ {f | IsPiVec s.D s.π f} : Submodule ℂ (Hs (ι` using `ι) s.D)) : Set (Hs (ι := ι) s.D)) := hv`. Establish `h0 : L v = 0` using `closure_minimal (t := {f | L f = 0}) (fun f hf => LinearMap.mem_ker.1 (hle hf)) (isClosed_eq L.continuous continuous_const) hv'`. Rewrite `h0` using `[hL]`.
+
+Conclude with `sub_eq_zero.1 h0`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.finFac_pf :
     Basic → EvalBasis → FinGen → FinFac := by
   intro hB hE hG E _ _ _ n ι _ s

@@ -12,6 +12,15 @@ abbrev rtA (I : Formalism.MainNotions.S.AutInst) : Type := I.E ⊗[I.F] FiniteAd
 
 abbrev rtι (I : Formalism.MainNotions.S.AutInst) : I.E →+* rtA I := inclE (F := I.F) (FiniteAdeleRing (𝓞 I.F) I.F)
 
+/- English proof (translation)
+Use `haveI : Nonempty (HeightOneSpectrum (𝓞 I.F)) := by`. Take `⟨p, hp0, hp⟩` from `Ring.not_isField_iff_exists_prime.mp (RingOfIntegers.not_isField I.F)`. Conclude with `⟨⟨p, hp, hp0⟩⟩`. Use `haveI : Nontrivial (FiniteAdeleRing (𝓞 I.F) I.F) := by`. Take `⟨v⟩` from `‹Nonempty (HeightOneSpectrum (𝓞 I.F))›`.
+
+Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun x : FiniteAdeleRing (𝓞 I.F) I.F => x v) h`. Use `first`. Consider the case `exact zero_ne_one (α := v.adicCompletion I.F) h2`. Consider the case `exact zero_ne_one (α := v.adicCompletion I.F) (by simpa using h2)`.
+
+Use `first`. Consider the case `(have h1 : ⇑(rtι I) = (LinearMap.lTensor I.E (Algebra.linearMap I.F (FiniteAdeleRing (𝓞 I.F) I.F))) ∘ (TensorProduct.rid I.F I.E).symm := by`. Use function extensionality and compare the values at `a`. Simplify using `[rtι, inclE]`. Rewrite using `[h1]`.
+
+Conclude with `(Module.Flat.lTensor_preserves_injective_linearMap _ (algebraMap I.F _).injective).comp (TensorProduct.rid I.F I.E).symm.injective)`. Consider the case `exact Algebra.TensorProduct.includeLeft_injective (R := I.F) (S := I.F) (algebraMap I.F _).injective`.
+-/
 theorem rt_inj (I : Formalism.MainNotions.S.AutInst) : Function.Injective (rtι I) := by
   haveI : Nonempty (HeightOneSpectrum (𝓞 I.F)) := by
     obtain ⟨p, hp0, hp⟩ := Ring.not_isField_iff_exists_prime.mp (RingOfIntegers.not_isField I.F)
@@ -33,23 +42,35 @@ theorem rt_inj (I : Formalism.MainNotions.S.AutInst) : Function.Injective (rtι 
        (TensorProduct.rid I.F I.E).symm.injective)
   | exact Algebra.TensorProduct.includeLeft_injective (R := I.F) (S := I.F) (algebraMap I.F _).injective
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `rt_inj I (congrFun (congrFun h i) j)`.
+-/
 theorem rt_map_inj (I : Formalism.MainNotions.S.AutInst) {p q : Type} (M N : Matrix p q I.E)
     (h : M.map (rtι I) = N.map (rtι I)) : M = N := by
   ext i j
   exact rt_inj I (congrFun (congrFun h i) j)
 
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map I.cm.sig (AlgHom.id I.F _) (e ⊗ₜ 1) = (starRingEnd I.E e) ⊗ₜ 1`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+-/
 theorem rt_sig (I : Formalism.MainNotions.S.AutInst) (e : I.E) :
     sigR I.cm.sig (FiniteAdeleRing (𝓞 I.F) I.F) (rtι I e) = rtι I (starRingEnd I.E e) := by
   show Algebra.TensorProduct.map I.cm.sig (AlgHom.id I.F _) (e ⊗ₜ 1) = (starRingEnd I.E e) ⊗ₜ 1
   rw [Algebra.TensorProduct.map_tmul]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cT, Matrix.map_apply, Matrix.transpose_apply, rt_sig]`.
+-/
 theorem rt_cT_map (I : Formalism.MainNotions.S.AutInst) {p q : Type} (M : Matrix p q I.E) :
     cT (sigR I.cm.sig (FiniteAdeleRing (𝓞 I.F) I.F)) (M.map (rtι I)) =
       (cT (starRingEnd I.E) M).map (rtι I) := by
   ext i j
   simp only [cT, Matrix.map_apply, Matrix.transpose_apply, rt_sig]
 
+/- English proof (translation)
+Rewrite `h` using `[rt_cT_map, ← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `rt_map_inj I _ _ h`.
+-/
 theorem rt_unitary_of (I : Formalism.MainNotions.S.AutInst) {k : Type} [Fintype k] (M J : Matrix k k I.E)
     (h : cT (sigR I.cm.sig (FiniteAdeleRing (𝓞 I.F) I.F)) (M.map (rtι I)) * J.map (rtι I) *
       M.map (rtι I) = J.map (rtι I)) :
@@ -57,6 +78,9 @@ theorem rt_unitary_of (I : Formalism.MainNotions.S.AutInst) {k : Type} [Fintype 
   rw [rt_cT_map, ← Matrix.map_mul, ← Matrix.map_mul] at h
   exact rt_map_inj I _ _ h
 
+/- English proof (translation)
+Introduce `h0`. Use `haveI : Nontrivial (rtA I) := nontrivial_of_ne _ _ (by simpa using (rt_inj I).ne (one_ne_zero (α := I.E)))`. Establish `h1 : IsUnit ((u : Matrix k k (rtA I)).det)` using `(Matrix.isUnit_iff_isUnit_det _).mp u.isUnit`. Rewrite `h1` using `[hu, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Conclude with `not_isUnit_zero h1`.
+-/
 theorem rt_det_ne (I : Formalism.MainNotions.S.AutInst) {k : Type} [Fintype k] [DecidableEq k]
     (M : Matrix k k I.E) (u : GL k (rtA I)) (hu : (u : Matrix k k (rtA I)) = M.map (rtι I)) :
     M.det ≠ 0 := by
@@ -67,11 +91,17 @@ theorem rt_det_ne (I : Formalism.MainNotions.S.AutInst) {k : Type} [Fintype k] [
   rw [hu, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero] at h1
   exact not_isUnit_zero h1
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `exact RingHom.ext fun e => rfl`.
+-/
 theorem rt_sig_eq (I : Formalism.MainNotions.S.AutInst) : (I.cm.sig : I.E →+* I.E) = starRingEnd I.E := by
   first
   | rfl
   | exact RingHom.ext fun e => rfl
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P Pi, h1, Matrix.one_mul]`.
+-/
 theorem rt_conj_mul {k : Type} [Fintype k] [DecidableEq k] (P Pi A B : Matrix k k ℂ) (h1 : P * Pi = 1) :
     (Pi * A * P) * (Pi * B * P) = Pi * (A * B) * P := by
   simp only [Matrix.mul_assoc]
@@ -120,11 +150,47 @@ def rtReal (I : Formalism.MainNotions.S.AutInst) (γ : GL (Fin I.n) I.E) (hγ : 
     simp only [← Matrix.mul_assoc]
     rw [hu]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rt_uMat (I : Formalism.MainNotions.S.AutInst) (γ : GL (Fin I.n) I.E) (hγ : γ ∈ UJ (starRingEnd I.E) I.J)
     (v : InfinitePlace I.F) :
     Formalism.MainNotions.S.uMat (rtReal I γ hγ v) =
       (I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v := rfl
 
+/- English proof (translation)
+Introduce `I S fr Φ hΦ`. Establish `hBiB : fr.Bi.map (rtι I) * fr.B.map (rtι I) = 1`. Rewrite using `[← Matrix.map_mul, fr.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Use extensionality with `y`. Rewrite using `[Subgroup.mem_map, Subgroup.mem_subgroupOf]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Take `⟨γ, rfl⟩` from `MonoidHom.mem_range.1 hh`. Take `⟨γ0, hγ0, -, hfin⟩` from `(Subgroup.mem_inf.1 γ.2).1`. Use `set z := Φ.toMonoidHom (iotaFS I S γ) with hz`.
+
+Establish `h1` using `hΦ z`. Rewrite `h1` using `[hz, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`. Establish `h2 : I.fmat ((iotaFS I S γ : HfinS I S) : I.Gf) = (γ0 : Matrix (Fin I.n) (Fin I.n) I.E).map (rtι I)` using `hfin`. Use `set yM : Matrix (Fin fr.k) (Fin fr.k) (rtA I) := ((z : GL (Fin fr.k) (rtA I)) : Matrix (Fin fr.k) (Fin fr.k) (rtA I)) with hyM`. Use `set M := fr.Bi * (γ0 : Matrix (Fin I.n) (Fin I.n) I.E) * fr.B with hMdef`.
+
+Establish `hM : M.map (rtι I) = Matrix.fromBlocks (1 : Matrix (Fin fr.m) (Fin fr.m) (rtA I)) 0 0 yM`. Rewrite using `[hMdef, Matrix.map_mul, Matrix.map_mul, ← h2, h1]`. Unfold `psiMat`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hBiB, Matrix.mul_one, ← Matrix.mul_assoc, hBiB, Matrix.one_mul]`.
+
+Both sides reduce to the same expression. Establish `hYm : M.toBlocks₂₂.map (rtι I) = yM`. Use `congrArg Matrix.toBlocks₂₂ hM` as an intermediate fact. Rewrite `this` using `[Matrix.toBlocks_fromBlocks₂₂]`. Rewrite using `[← this]`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hdet : M.toBlocks₂₂.det ≠ 0` using `rt_det_ne I _ (z : GL (Fin fr.k) (rtA I)) hYm.symm`. Use `Subgroup.mem_map.2 ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet, ?_, ?_⟩` and prove the remaining obligations. Use `show cT (I.cm.sig : I.E →+* I.E) M.toBlocks₂₂ * fr.J' * M.toBlocks₂₂ = fr.J'`.
+
+Rewrite using `[rt_sig_eq]`. Apply `rt_unitary_of` to reduce the goal to its premises. Rewrite using `[hYm]`. Conclude with `z.2`. Use extensionality with `i j`.
+
+Express the relevant statement in the definitionally equal form `(M.toBlocks₂₂.map (rtι I)) i j = yM i j`. Rewrite using `[hYm]`. Introduce `hy`. Take `⟨γ', hγ', hyγ⟩` from `Subgroup.mem_map.1 hy`. Use `set g := Φ.symm y with hg`.
+
+Establish `h1` using `hΦ y`. Establish `hyv : ((y : GL (Fin fr.k) (rtA I)) : Matrix (Fin fr.k) (Fin fr.k) (rtA I)) = (γ' : Matrix (Fin fr.k) (Fin fr.k) I.E).map (rtι I)`. Rewrite using `[← hyγ]`. Both sides reduce to the same expression. Use `set γ0m := fr.B * Matrix.fromBlocks (1 : Matrix (Fin fr.m) (Fin fr.m) I.E) 0 0 (γ' : Matrix (Fin fr.k) (Fin fr.k) I.E) * fr.Bi with hγ0m`.
+
+Establish `hγ0 : γ0m.map (rtι I) = I.fmat (g : I.Gf)`. Rewrite using `[h1, hyv, hγ0m]`. Unfold `psiMat`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.fromBlocks_map, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _)]`. Establish `hdet : γ0m.det ≠ 0` using `rt_det_ne I _ ((g : I.Gf) : GL (Fin I.n) (rtA I)) hγ0.symm`.
+
+Use `set γ0 := Matrix.GeneralLinearGroup.mkOfDetNeZero γ0m hdet with hγ0def`. Establish `hγv : (γ0 : Matrix (Fin I.n) (Fin I.n) I.E) = γ0m` using `rfl`. Establish `hU : γ0 ∈ UJ (starRingEnd I.E) I.J` using `by show cT (starRingEnd I.E) (γ0 : Matrix (Fin I.n) (Fin I.n) I.E) * I.J * (γ0 : Matrix (Fin I.n) (Fin I.n) I.E) = I.J`. Rewrite using `[hγv]`. Apply `rt_unitary_of` to reduce the goal to its premises.
+
+Rewrite using `[hγ0]`. Conclude with `(g : I.Gf).2`. Establish `hfix : ∀ s ∈ S, γ0m *ᵥ s = s`. Introduce `s hs`. Use `g.2 s hs` as an intermediate fact.
+
+Rewrite `this` using `[← hγ0]`. Use function extensionality and compare the values at `i`. Apply `rt_inj I` to reduce the goal to its premises. Conclude with `(RingHom.map_mulVec (rtι I) γ0m s i).trans (congrFun this i)`. Set `x : I.GA` to `(fun v => rtReal I γ0 hU v, (g : I.Gf))`.
+
+Establish `hx : x ∈ GamS I S`. Use `Subgroup.mem_inf.2 ⟨⟨γ0, hU, fun v => rfl, ?_⟩, Subgroup.mem_prod.2 ⟨?_, g.2⟩⟩` and prove the remaining obligations. Use `show I.fmat (g : I.Gf) = _`. Rewrite using `[hγv, hγ0]`. Introduce `v s hs show Formalism.MainNotions.S.uMat (rtReal I γ0 hU v) *ᵥ rv I v s = rv I v s`.
+
+Rewrite using `[rt_uMat, rv, Matrix.mulVec_mulVec, show (I.P v)⁻¹ * (γ0 : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v * (I.P v)⁻¹ = (I.P v)⁻¹ * (γ0 : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) by`. Rewrite using `[Matrix.mul_assoc, Formalism.MainNotions.LeviCoordinates.rrg_P_mul_inv, Matrix.mul_one],`. Use the proof step `← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Establish `e` using `RingHom.map_mulVec (I.φ v) (γ0 : Matrix (Fin I.n) (Fin I.n) I.E) s i`. Rewrite `e` using `[hγv, hfix s hs]`. Rewrite using `[hγv]`. Conclude with `e.symm`. Conclude with `⟨g, MonoidHom.mem_range.2 ⟨⟨x, hx⟩, Subtype.ext rfl⟩, by simp [hg]⟩`.
+-/
 theorem frameRat : FrameRat := by
   intro I S fr Φ hΦ
   have hBiB : fr.Bi.map (rtι I) * fr.B.map (rtι I) = 1 := by

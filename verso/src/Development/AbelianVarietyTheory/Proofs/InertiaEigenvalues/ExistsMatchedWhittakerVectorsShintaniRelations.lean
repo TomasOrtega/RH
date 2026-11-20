@@ -29,6 +29,9 @@ open scoped ENNReal ComplexConjugate ContDiff
 open Matrix
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.KappaCut.exists_kappa`. Consider the case `exact GlobalTheory.KappaCut.exists_kappa`. Consider the case `(intros; apply GlobalTheory.KappaCut.exists_kappa <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.Tx.exists_unipotentInvariant_compactlySupported_weight : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (x₀ : GA E (m + 1)),
     ∃ κ : GA E (m + 1) → ℝ, Continuous κ ∧ (∀ h, 0 ≤ κ h) ∧ (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ h, κ (u * h) = κ h) ∧
       (∃ C : Set (GA E (m + 1)), IsCompact C ∧ ∀ h, κ h ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), u⁻¹ * h ∈ C) ∧
@@ -47,6 +50,9 @@ open scoped ENNReal ComplexConjugate ContDiff
 open Matrix
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.JSW.WhitSmooth.whit_contDiffOn) | (exact GlobalTheory.JSW.WhitSmooth.whit_contDiffOn) | (intros; apply GlobalTheory.JSW.WhitSmooth.whit_contDiffOn <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.Tx.contDiffOn_chart_globalWhittakerCoefficient : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a),
     IsAutForm φ → ∀ g, ContDiffOn ℝ ∞ (chart (GlobalTheory.JSW.whit φ.1) g) (invSet E a) := by
   first | (exact @GlobalTheory.JSW.WhitSmooth.whit_contDiffOn) | (exact GlobalTheory.JSW.WhitSmooth.whit_contDiffOn) | (intros; apply GlobalTheory.JSW.WhitSmooth.whit_contDiffOn  <;> assumption)
@@ -60,6 +66,9 @@ namespace GlobalTheory.JSW.MatchedVec
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.2 fun _ hS => hS.1 φ hφ`.
+-/
 theorem mem_mspanR_of_mem (π : CuspSub E a) {φ : Sm E a} (hφ : φ ∈ π.V) : φ.1 ∈ GlobalTheory.JSW.mspanR π :=
   Submodule.mem_sInf.2 fun _ hS => hS.1 φ hφ
 
@@ -76,11 +85,17 @@ def stab (φ : Sm E a) : Subgroup (GL (Fin a) (Af E)) where
     conv_lhs => rw [← hx]
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨stab φ, hφ.level, fun u hu g => congrArg (fun ψ : Sm E a => ψ.1 g) (show finRep E a u φ = φ from hu)⟩`.
+-/
 theorem exists_level (φ : Sm E a) (hφ : IsAutForm φ) :
     ∃ U : Subgroup (GL (Fin a) (Af E)), IsOpen (U : Set (GL (Fin a) (Af E))) ∧
       ∀ u ∈ U, ∀ g, φ.1 (g * finGL E a u) = φ.1 g :=
   ⟨stab φ, hφ.level, fun u hu g => congrArg (fun ψ : Sm E a => ψ.1 g) (show finRep E a u φ = φ from hu)⟩
 
+/- English proof (translation)
+Unfold `chart`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem chart_mul (f f' : GA E a → ℂ) (g : GA E a) (x : Lie E a) :
     chart (fun h => f h * f' h) g x = chart f g x * chart f' g x := by
   unfold chart
@@ -90,6 +105,35 @@ end GlobalTheory.JSW.MatchedVec
 
 open GlobalTheory.JSW.MatchedVec in
 
+/- English proof (translation)
+Introduce `E _ _ _ m r S hcond π π' hπu hπ'u α β hα hβ`. Take `⟨φ', hφ'V, hφ'K, x₀, hx₀S, hx₀⟩` from `GlobalTheory.T.exists_spherical_cuspForm_whittaker_ne_zero E m S hcond π' β hβ`. Take `⟨φ₀, hφ₀V, hφ₀K, x₁, hx₁S, hx₁⟩` from `GlobalTheory.T.exists_spherical_cuspForm_whittaker_ne_zero E (m + r + 1) S hcond π α hα`. Take `⟨κ, hκc, hκ0, hκN, ⟨C, hC, hκC⟩, ⟨Uκ, hUκo, hUκ⟩, hκsm, hκx₀⟩` from `GlobalTheory.Tx.exists_unipotentInvariant_compactlySupported_weight E m x₀`. Establish `haut' : IsAutForm φ'` using `(π'.cusp φ' hφ'V).1`.
+
+Take `⟨U', hU'o, hU'⟩` from `exists_level φ' haut'`. Establish `hWN : ∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, GlobalTheory.JSW.whit φ'.1 (u * g) = GlobalTheory.JSW.psiN u * GlobalTheory.JSW.whit φ'.1 g` using `fun u hu g => GlobalTheory.JSW.WhitModel.whit_mul haut'.continuous (fun γ g => haut'.left γ g) hu g`. Establish `hWU : ∀ u ∈ U', ∀ g, GlobalTheory.JSW.whit φ'.1 (g * finGL E (m + 1) u) = GlobalTheory.JSW.whit φ'.1 g`. Introduce `u hu g`. Rewrite using `[← GlobalTheory.JSW.KirSemi.whit_rt]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Conclude with `hU' u hu y`. Establish `hWsm` using `GlobalTheory.Tx.contDiffOn_chart_globalWhittakerCoefficient E (m + 1) φ' haut'`. Use `set βf : GA E (m + 1) → ℂ := fun h => (κ h : ℂ) * GlobalTheory.JSW.whit φ'.1 h with hβf`.
+
+Establish `hβN : ∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, βf (u * g) = GlobalTheory.JSW.psiN u * βf g`. Introduce `u hu g`. Simplify using `only [hβf, hκN u hu g, hWN u hu g]`. Expand and normalize the polynomial expressions, which then agree. Establish `hβC : ∃ C : Set (GA E (m + 1)), IsCompact C ∧ ∀ h ∈ GlobalTheory.JSW.supS E (m + 1) S, βf h ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), u⁻¹ * h ∈ C`.
+
+Use `⟨C, hC, fun h _ hne => hκC h ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `[hβf, h0]`. Establish `hβU : ∃ U : Subgroup (GL (Fin (m + 1)) (Af E)), IsOpen (U : Set (GL (Fin (m + 1)) (Af E))) ∧ ∀ u ∈ U, ∀ g, βf (g * finGL E (m + 1) u) = βf g`.
+
+Use `⟨Uκ ⊓ U', hUκo.inter hU'o, fun u hu g => ?_⟩` and prove the remaining obligations. Simplify using `only [hβf, hUκ u hu.1 g, hWU u hu.2 g]`. Establish `hβsm : ∀ g, ContDiffOn ℝ ∞ (chart βf g) (invSet E (m + 1))`. Introduce `g`. Establish `e : chart βf g = fun x => chart (fun h => (κ h : ℂ)) g x * chart (GlobalTheory.JSW.whit φ'.1) g x`.
+
+Use function extensionality and compare the values at `fun x => chart_mul _ _ g x`. Rewrite using `[e]`. Conclude with `(hκsm g).mul (hWsm g)`. Take `⟨b, hbN, hbC, hbU, hbsm, hbblk⟩` from `GlobalTheory.T.exists_whittaker_bump_extension_schur_complement E m r S βf hβN hβC hβU hβsm`. Take `⟨F, hFspan, hFb, hFU, hFinv, hFeig⟩` from `GlobalTheory.T.kirillov_semilocal_smooth_bump E (m + r + 1) S b hbN hbC hbU hbsm π φ₀ hφ₀V ⟨x₁, hx₁S, hx₁⟩`.
+
+Use `⟨F, φ'.1, κ, hFspan, mem_mspanR_of_mem π' hφ'V, hFU, ?_, ⟨U', hU'o, hU'⟩, ?_, ?_, ?_, ?_, hκc, hκ0, hκN, ⟨C, hC, fun h _ hne => hκC h hne⟩, ⟨Uκ, hUκo, hUκ⟩, ⟨x₀, hx₀S, hκx₀, hx₀⟩⟩` and prove the remaining obligations. Introduce `w hw k hk g`. Use `hFinv _ (pInf_finGL _) ?_ ?_ g` and prove the remaining obligations. Introduce `w' hw'`. Establish `hne : w' ≠ w` using `fun h => hw (h ▸ hw')`.
+
+Rewrite using `[GlobalTheory.JSW.BumpShintani.map_comp_eq, pFin_finGL]`. Conclude with `pLoc_locGL_of_ne hne _`. Introduce `g'`. Conclude with `congrArg (fun ψ : Sm E (m + r + 1 + 1) => ψ.1 g') (hφ₀K w hw k hk)`. Introduce `w hw k hk g`.
+
+Conclude with `congrArg (fun ψ : Sm E (m + 1) => ψ.1 g) (hφ'K w hw k hk)`. Introduce `ϖ hϖ l hl h hh`. Conclude with `GlobalTheory.T.whittaker_mul_torus_iterated_factorisation E (m + 1) S hcond π' β hβ φ' hφ'V hφ'K ϖ hϖ l hl h hh`. Introduce `ϖ hϖ l hl h hh set l' : HeightOneSpectrum (𝓞 E) →₀ (Fin (m + r + 1 + 1) → ℕ) := l.mapRange GlobalTheory.RSnmUnf.padNat GlobalTheory.RSnmUnf.padNat_zero with hl'`. Establish `hsupp : l'.support = l.support`.
+
+Use extensionality with `w`. Simplify using `only [hl', Finsupp.mem_support_iff, Finsupp.mapRange_apply, ne_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h1 h2`. Apply `h1` to reduce the goal to its premises.
+
+Rewrite using `[h2, GlobalTheory.RSnmUnf.padNat_zero]`. Introduce `h1 h2`. Apply `h1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun h2 ⟨i, by omega⟩` as an intermediate fact.
+
+Simplify `this` using `[GlobalTheory.RSnmUnf.padNat, i.2]`. Establish `hl's : ∀ w ∈ l'.support, w ∉ S` using `fun w hw => hl w (hsupp ▸ hw)`. Establish `hC` using `GlobalTheory.T.whittaker_mul_torus_iterated_factorisation E (m + r + 1 + 1) S hcond π α hα φ₀ hφ₀V hφ₀K ϖ hϖ l' hl's`. Establish `hS : ∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) (GlobalTheory.JSW.tl ϖ l') = 1` using `fun w hw => GlobalTheory.JSW.BumpShintani.loc_tl ϖ l' w (fun h => hl's w h hw)`. Establish `hmir` using `GlobalTheory.T.blockGL_supported_mem_mirabolic_supported E m r S h hh`.
+
+Rewrite using `[map_mul, GlobalTheory.T.blockEmbeddingGL_torus_element_zero_padded E m r ϖ l, hFeig _ _ (GlobalTheory.JSW.BumpShintani.pInf_tl ϖ l') hS hC _ hmir.1, hsupp]`. Both sides reduce to the same expression. Introduce `h hh clear hβsm hβU hβC hβN hWsm hWU hWN hFeig hFinv`. Conclude with `(hFb _ (GlobalTheory.T.blockGL_supported_mem_mirabolic_supported E m r S h hh)).trans (hbblk h hh)`.
+-/
 theorem GlobalTheory.JSW.MatchedVec.matched_vectors : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))),
     (∀ w ∉ S, ∀ x : w.adicCompletion E, (∀ y ∈ Ov E w, GlobalTheory.JSW.psiLoc w (x * y) = 1) ↔ x ∈ Ov E w) →
     ∀ (π : CuspSub E (m + r + 1 + 1)) (π' : CuspSub E (m + 1)), π.IsUnitary → π'.IsUnitary →

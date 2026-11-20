@@ -14,6 +14,11 @@ variable {N : ℕ}
 
 def cOmega (N : ℕ) : ℝ := 1 / (2 ^ (N * (N - 1) / 2) * volU N)
 
+/- English proof (translation)
+Establish `hv : 0 < volU N`. Unfold `volU`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i _`. Establish `hf : (0 : ℝ) < (i.factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos i`.
+
+Establish `hp : (0 : ℝ) < Real.pi ^ (i + 1)` using `pow_pos Real.pi_pos _`. Conclude with `div_pos (mul_pos two_pos hp) hf`. Unfold `cOmega`. Conclude with `div_pos one_pos (mul_pos (pow_pos two_pos _) hv)`.
+-/
 theorem cOmega_pos (N : ℕ) : 0 < cOmega N := by
   have hv : 0 < volU N := by
     unfold volU
@@ -25,10 +30,16 @@ theorem cOmega_pos (N : ℕ) : 0 < cOmega N := by
   unfold cOmega
   exact div_pos one_pos (mul_pos (pow_pos two_pos _) hv)
 
+/- English proof (translation)
+The claim follows from `PolarCoordinateComparison.omegaDensity_main μ`.
+-/
 theorem omegaDensity_haarProb (μ : Measure (Formalism.BasicNotions.UpqT N 0)) [μ.IsHaarMeasure] [IsProbabilityMeasure μ] :
     Formalism.BasicNotions.OmegaDensity μ (ENNReal.ofReal (cOmega N)) :=
   PolarCoordinateComparison.omegaDensity_main μ
 
+/- English proof (translation)
+Use `haveI := cd.haar N 0`. Use `haveI := cd.prob N`. Conclude with `omegaDensity_haarProb (cd.cd N 0)`.
+-/
 theorem omegaDensity_cd (cd : Formalism.BasicNotions.CDHaar) (N : ℕ) :
     Formalism.BasicNotions.OmegaDensity (cd.cd N 0) (ENNReal.ofReal (cOmega N)) := by
   haveI := cd.haar N 0

@@ -13,5 +13,8 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StepLevelP.io_levChi | exact GlobalTheory.StepLevelP.io_levChi | (intros; apply GlobalTheory.StepLevelP.io_levChi <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chain_projection_level_character : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ t j, j + 1 < D.R.m → ∀ F : (pk W).CC t (j + 1), F.1 ∈ CP (pk W) (lvP W) t (j + 1) → ∀ κ ∈ levS (Yc D j) ((pk W).βY j) ((pk W).datYt t j (lvP W)), ∀ φ x g, ((pk W).ioY t j F).1 ((pk W).ItY j φ x) (g * κ) = levChi (Yc D j) ((pk W).βY j) ((pk W).datYt t j (lvP W)) κ * ((pk W).ioY t j F).1 ((pk W).ItY j φ x) g := by
   first | exact @GlobalTheory.StepLevelP.io_levChi | exact GlobalTheory.StepLevelP.io_levChi | (intros; apply GlobalTheory.StepLevelP.io_levChi <;> assumption)

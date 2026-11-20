@@ -26,6 +26,9 @@ def unitsInvariantLimit (a : K.1ˣ) : (unitsLimitRep K).ρ.invariants :=
     exact (IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 _ (a : K.1).2⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsInvariantLimit (a : K.1ˣ) :
     ((Additive.toMul (unitsInvariantLimit K a : Additive ℚ̄ˣ) : ℚ̄ˣ) : ℚ̄) = algebraMap K.1 ℚ̄ (a : K.1) :=
   rfl
@@ -38,6 +41,9 @@ section General
 variable (Kv : Type) {Ωv : Type} [Field Kv] [Field Ωv] [Algebra K.1 Kv] [Algebra Kv Ωv] [Algebra K.1 Ωv]
   [IsScalarTower K.1 Kv Ωv] [Algebra.IsIntegral Kv Ωv] [IsGalois Kv Ωv] (ι : ℚ̄ →ₐ[K.1] Ωv)
 
+/- English proof (translation)
+Use `cohomologyMapAlong_cupCharClassProf _ _ _ χ _ _ ?_` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap Kv Ωv (algebraMap K.1 Kv (a : K.1)) = ι (algebraMap K.1 ℚ̄ (a : K.1))`. Rewrite using `[← IsScalarTower.algebraMap_apply, AlgHom.commutes]`.
+-/
 theorem unitsLocalRes_globalCupClass (χ : Additive K.1.fixingSubgroup →ₜ+ QZ) (a : K.1ˣ) :
     (unitsLocalRes Kv ι 2).hom (globalCupClass χ a) =
       galCupClass Kv Ωv (contCharComp χ (globalDecomp Kv ι) (continuous_globalDecomp Kv ι))
@@ -52,6 +58,9 @@ end General
 
 variable (ι : LocalEmbeddings K)
 
+/- English proof (translation)
+Rewrite using `[brauerLocal_apply_inr, unitsLocalRes_globalCupClass]`. Conclude with `brauerInvZOfIsSepClosure_galCupClass _ _ g hg`.
+-/
 theorem placeInv_brauerLocal_globalCupClass_inr (v : HeightOneSpectrum (𝓞 K.1))
     (χ : Additive K.1.fixingSubgroup →ₜ+ QZ) (a : K.1ˣ)
     (g : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1))
@@ -66,6 +75,9 @@ theorem placeInv_brauerLocal_globalCupClass_inr (v : HeightOneSpectrum (𝓞 K.1
   rw [brauerLocal_apply_inr, unitsLocalRes_globalCupClass]
   exact brauerInvZOfIsSepClosure_galCupClass _ _ g hg
 
+/- English proof (translation)
+Rewrite using `[brauerLocal_apply_inl, unitsLocalRes_globalCupClass]`. Conclude with `quadraticInv_galCupClass _ _ (infAlgClosure_finrank_le_two v) (infAlgClosure_mul_mem_range_norm v) _ _ g hg`.
+-/
 theorem placeInv_brauerLocal_globalCupClass_inl (v : InfinitePlace K.1)
     (χ : Additive K.1.fixingSubgroup →ₜ+ QZ) (a : K.1ˣ) (g : Gal(AlgebraicClosure v.Completion/v.Completion))
     (hg : g = 1 ↔ algebraMap K.1 v.Completion (a : K.1) ∈

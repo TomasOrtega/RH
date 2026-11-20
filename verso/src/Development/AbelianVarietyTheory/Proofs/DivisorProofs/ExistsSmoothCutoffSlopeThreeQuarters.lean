@@ -9,6 +9,17 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨χ, hχ⟩ : ∃ χ : ℝ → ℝ, ReciprocityTheory.L2DbarEstimates.I.IsCutoff χ` from `⟨_, ReciprocityTheory.L2DbarEstimates.I.SmoothCutoff.isCutoff_chi⟩`. Take `⟨hs, h1, h0, hb, hd⟩` from `hχ`. Use `set a : ℝ → ℝ := fun x => (x + T + 1) / 4 + 1 / 2 with ha`. Establish `haS : ContDiff ℝ ∞ a`. Simplify using `only [ha]`.
+
+Use `fun_prop`. Establish `hda : ∀ x, HasDerivAt a (1 / 4) x`. Introduce `x`. Use `(((hasDerivAt_id x).add_const T).add_const 1).div_const 4` as an intermediate fact. Simplify `this.add_const (1 / 2)` using `[ha]`.
+
+Use `⟨χ ∘ a, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hs.comp haS`. Introduce `x hx`. Conclude with `h1 _ (by simp only [ha]; linarith)`. Introduce `x hx`.
+
+Conclude with `h0 _ (by simp only [ha]; linarith)`. Introduce `x`. Conclude with `hb _`. Introduce `x`. Establish `hχd : DifferentiableAt ℝ χ (a x)` using `(hs.differentiable (by simp)) _`.
+
+Establish `hD : HasDerivAt (χ ∘ a) (deriv χ (a x) * (1 / 4)) x` using `hχd.hasDerivAt.comp x (hda x)`. Rewrite using `[hD.deriv, abs_mul]`. Use `hd (a x)` as an intermediate fact. Rewrite using `[abs_of_pos (by norm_num : (0 : ℝ) < 1 / 4)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_isCut (T : ℝ) : ∃ θ : ℝ → ℝ, IsCut T θ := by
   obtain ⟨χ, hχ⟩ : ∃ χ : ℝ → ℝ, ReciprocityTheory.L2DbarEstimates.I.IsCutoff χ :=
     ⟨_, ReciprocityTheory.L2DbarEstimates.I.SmoothCutoff.isCutoff_chi⟩
@@ -38,6 +49,9 @@ theorem exists_isCut (T : ℝ) : ∃ θ : ℝ → ℝ, IsCut T θ := by
     rw [abs_of_pos (by norm_num : (0 : ℝ) < 1 / 4)]
     linarith
 
+/- English proof (translation)
+The claim follows from `exists_isCut`.
+-/
 theorem exists_isCut₂ : ∀ T : ℝ, ∃ θ : ℝ → ℝ, IsCut T θ := exists_isCut
 
 end GlobalTheory

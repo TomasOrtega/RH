@@ -6,6 +6,11 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf.T
 
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas
 
+/- English proof (translation)
+Use `Set.Finite.of_injOn (f := fun I (c : colRange mu) => I c.1) (t := Set.univ) (fun _ _ => Set.mem_univ _) ?_ Set.finite_univ` and prove the remaining obligations. Introduce `I hI I' hI' h`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c ∈ colRange mu`. Conclude with `congrFun h ⟨c, hc⟩`.
+
+Rewrite using `[hI.1 c hc, hI'.1 c hc]`.
+-/
 theorem finite_St {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ) : ({I | IsSt mu I} : Set (ℤ → Finset (Fin n))).Finite := by
   classical
   refine Set.Finite.of_injOn (f := fun I (c : colRange mu) => I c.1) (t := Set.univ) (fun _ _ => Set.mem_univ _) ?_
@@ -16,6 +21,11 @@ theorem finite_St {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ) : ({I | IsSt 
   · exact congrFun h ⟨c, hc⟩
   · rw [hI.1 c hc, hI'.1 c hc]
 
+/- English proof (translation)
+Establish `h1` using `h3 n N mu hd`. Establish `h2` using `h3 n 0 (fun _ => pEnd mu) hd`. Establish `h4 : ((Nat.card {I : ℤ → Finset (Fin n) // IsSt mu I} : ℕ) : ℚ) = ((stCount n (pEnd mu) : ℕ) : ℚ)`. Rewrite using `[h1]`. Unfold `stCount`.
+
+Rewrite using `[h2]`. Both sides reduce to the same expression. Rewrite using `[← Nat.card_coe_set_eq]`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem wt_eq (D : Formalism.BasicNotions.D7) (h3 : admB3 D) {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ) (hd : Dominant (pEnd mu)) :
     ({I | IsSt mu I} : Set (ℤ → Finset (Fin n))).ncard = stCount n (pEnd mu) := by
   have h1 := h3 n N mu hd
@@ -25,6 +35,13 @@ theorem wt_eq (D : Formalism.BasicNotions.D7) (h3 : admB3 D) {N n : ℕ} (mu : F
   rw [← Nat.card_coe_set_eq]
   exact_mod_cast h4
 
+/- English proof (translation)
+Establish `h2` using `h3 n 0 (fun _ => (0 : Fin n → ℤ)) (fun _ _ _ => le_rfl)`. Establish `h4 : ((stCount n (0 : Fin n → ℤ) : ℕ) : ℚ) = 1`. Unfold `stCount`. Rewrite using `[h2]`. Use `Finset.prod_eq_one fun i _ => Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with hij`. Establish `: ((j : ℕ) : ℚ) - ((i : ℕ) : ℚ) ≠ 0`. Establish `h5 : ((i : ℕ) : ℚ) < ((j : ℕ) : ℚ)` using `by exact_mod_cast hij`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [pEnd, Pi.zero_apply, Int.cast_zero, sub_zero, zero_add]`.
+
+Conclude with `div_self this`. Both sides reduce to the same expression. Conclude with `h4` after adjusting the coercions.
+-/
 theorem stCount_zero (D : Formalism.BasicNotions.D7) (h3 : admB3 D) (n : ℕ) : stCount n (0 : Fin n → ℤ) = 1 := by
   have h2 := h3 n 0 (fun _ => (0 : Fin n → ℤ)) (fun _ _ _ => le_rfl)
   have h4 : ((stCount n (0 : Fin n → ℤ) : ℕ) : ℚ) = 1 := by
@@ -40,11 +57,17 @@ theorem stCount_zero (D : Formalism.BasicNotions.D7) (h3 : admB3 D) (n : ℕ) : 
     · rfl
   exact_mod_cast h4
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem stCount_cast {n n' : ℕ} (h : n = n') (la : Fin n' → ℤ) :
     stCount n (fun l => la (Fin.cast h l)) = stCount n' la := by
   subst h; rfl
 
 open Classical in
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Conclude with `(h5 m ν b hd).1`.
+-/
 theorem pieri_vec (D : Formalism.BasicNotions.D7) (h5 : GenericProjectionCriterion D) (n : ℕ) (hn : 0 < n) (ν : Fin n → ℤ) (b : ℕ) (hd : Dominant ν) :
     stCount n ν * Nat.choose (b + n - 1) (n - 1) =
       ∑ μ ∈ (Fintype.piFinset fun i : Fin n => Finset.Icc (ν i) (ν i + b)).filter (fun μ => HStrip ν μ b),
@@ -53,6 +76,9 @@ theorem pieri_vec (D : Formalism.BasicNotions.D7) (h5 : GenericProjectionCriteri
   exact (h5 m ν b hd).1
 
 open Classical in
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Conclude with `(h5 m ν b hd).2`.
+-/
 theorem pieri_cov (D : Formalism.BasicNotions.D7) (h5 : GenericProjectionCriterion D) (n : ℕ) (hn : 0 < n) (ν : Fin n → ℤ) (b : ℕ) (hd : Dominant ν) :
     stCount n ν * Nat.choose (b + n - 1) (n - 1) =
       ∑ μ ∈ (Fintype.piFinset fun i : Fin n => Finset.Icc (ν i - b) (ν i)).filter (fun μ => HStrip μ ν b),
@@ -73,6 +99,15 @@ def VP (LL : Letters (Fin N)) (n0 : ℕ) (B : Fin N → ℕ) (s : ℕ) (μ : Fin
 section
 variable {n0 : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} {od : Fin N → Fin N} {bb : Fin N → ℝ} {a La : ℝ} {p : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨dd, hP⟩`. Take `⟨P, rfl⟩` from `hP.path`. Use `⟨P.zero, fun t _ => P.dom t, fun i _ => ⟨fun hi => ?_, fun hi => ⟨⟨dd i, ?_⟩, fun m hm => hP.head i m hi hm⟩⟩⟩` and prove the remaining obligations. Use `P.step i` as an intermediate fact.
+
+Rewrite `this` using `[hP.degs i hi]`. Then use the resulting hypothesis. Conclude with `step_vec P i (H.vec_true_of_late i (by omega))`. Introduce and unpack `⟨h0, hd, hs⟩`. Establish `hex : ∀ i : Fin N, ∃ d : ℕ, (i.val < n0 → d = B i) ∧ if LL.vec i then HStrip (μ i.castSucc) (μ i.succ) d else HStrip (μ i.succ) (μ i.castSucc) d`. Introduce `i`.
+
+Distinguish the cases in `hi : i.val < n0`. Conclude with `⟨B i, fun _ => rfl, (hs i i.2).1 hi⟩`. Take `⟨d, hd'⟩` from `((hs i i.2).2 (by omega)).1`. Use `⟨d, fun h => absurd h hi, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos (H.vec_true_of_late i (by omega))]`.
+
+Conclude with `hd'`. Use `choose dd hdd using hex`. Conclude with `⟨dd, ⟨⟨μ, h0, fun t => hd t (by have := t.2; omega), fun i => (hdd i).2⟩, rfl⟩, fun i hi => (hdd i).1 hi, fun i m hi hm => ((hs i i.2).2 hi).2 m hm⟩`.
+-/
 theorem sp_iff (H : HypT N n0 r K LL B od bb a La p) (μ : Fin (N + 1) → Fin (r + K) → ℤ) :
     μ ∈ SP (r := r) (K := K) LL n0 B ↔ VP LL n0 B N μ := by
   classical
@@ -97,6 +132,19 @@ theorem sp_iff (H : HypT N n0 r K LL B od bb a La p) (μ : Fin (N + 1) → Fin (
     exact ⟨dd, ⟨⟨μ, h0, fun t => hd t (by have := t.2; omega), fun i => (hdd i).2⟩, rfl⟩, fun i hi => (hdd i).1 hi,
       fun i m hi hm => ((hs i i.2).2 hi).2 m hm⟩
 
+/- English proof (translation)
+Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `ht _ _ m`. Establish `h0 : (⟨0, ht⟩ : Fin (N + 1)) = 0` using `rfl`.
+
+Rewrite using `[h0, h.1]`. Simplify using the standard rewrite rules. Consider the case `succ t ih`. Introduce `ht hts htn m`. Establish `htN : t < N` using `by omega`.
+
+Establish `ih'` using `ih (by omega) (by omega) (by omega) m`. Establish `hst` using `(h.2.2 ⟨t, htN⟩ (by simp only; omega)).1 (by simp only; omega)`. Establish `hd : dplus LL B (t + 1) = dplus LL B t + if LL.vec ⟨t, htN⟩ = true then B ⟨t, htN⟩ else 0` using `dsum_succ (fun l => LL.vec l = true) B t htN`. Rewrite using `[hd]`. Consider the cases of `hv : LL.vec ⟨t, htN⟩ with`.
+
+Consider the case `true`. Rewrite `hst` using `[if_pos hv]`. Establish `h' : μ ⟨t + 1, ht⟩ m ≤ μ ⟨t, by omega⟩ m + (B ⟨t, htN⟩ : ℤ)` using `strip_le_add hst m`. Simplify using `only [if_true]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `false`. Rewrite `hst` using `[if_neg (by simp [hv])]`. Establish `h' : μ ⟨t + 1, ht⟩ m ≤ μ ⟨t, by omega⟩ m` using `hst.1 m`. Simplify using the standard rewrite rules.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vp_le_dplus {s : ℕ} {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ) :
     ∀ (t : ℕ) (ht : t < N + 1), t ≤ s → t ≤ n0 → ∀ m, μ ⟨t, ht⟩ m ≤ (dplus LL B t : ℤ) := by
   intro t
@@ -126,6 +174,11 @@ theorem vp_le_dplus {s : ℕ} {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP
       simp
       linarith
 
+/- English proof (translation)
+Unfold `dplus beA`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l.val < t ∧ LL.vec l = true`. Rewrite using `[if_pos hl, if_pos (by omega)]`. Rewrite using `[if_neg hl]`.
+
+Conclude with `Nat.zero_le _`.
+-/
 theorem dplus_le_beA' (t : ℕ) (ht : t ≤ n0) : dplus LL B t ≤ beA n0 B := by
   unfold dplus beA
   refine Finset.sum_le_sum fun l _ => ?_
@@ -133,6 +186,17 @@ theorem dplus_le_beA' (t : ℕ) (ht : t ≤ n0) : dplus LL B t ≤ beA n0 B := b
   · rw [if_pos hl, if_pos (by omega)]
   · rw [if_neg hl]; exact Nat.zero_le _
 
+/- English proof (translation)
+Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `ht _ m`. Establish `h0 : (⟨0, ht⟩ : Fin (N + 1)) = 0` using `rfl`.
+
+Rewrite using `[h0, h.1]`. Simplify using the standard rewrite rules. Consider the case `succ t ih`. Introduce `ht hts m`. Distinguish the cases in `htn : t + 1 ≤ n0`.
+
+Use `le_trans (vp_le_dplus h (t + 1) ht hts htn m) ?_` and prove the remaining obligations. Conclude with `dplus_le_beA' (t + 1) htn` after adjusting the coercions. Establish `htN : t < N` using `by omega`. Take `⟨⟨d, hst⟩, hhead⟩` from `(h.2.2 ⟨t, htN⟩ (by simp only; omega)).2 (by simp only; omega)`. Distinguish the cases in `hm : m.val = 0`.
+
+Conclude with `le_of_eq (hhead m (by omega))`. Establish `hm1 : (m.val - 1) + 1 < r + K` using `by have := m.2; omega`. Establish `h2` using `hst.2.1 ⟨m.val - 1, by have := m.2; omega⟩ hm1`. Establish `hme : (⟨(m.val - 1) + 1, hm1⟩ : Fin (r + K)) = m` using `Fin.ext (by simp only; omega)`. Rewrite `h2` using `[hme]`.
+
+Conclude with `le_trans h2 (ih (by omega) (by omega) _)`.
+-/
 theorem vp_le {s : ℕ} {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ) :
     ∀ (t : ℕ) (ht : t < N + 1), t ≤ s → ∀ m, μ ⟨t, ht⟩ m ≤ (beA n0 B : ℤ) := by
   intro t
@@ -156,10 +220,16 @@ theorem vp_le {s : ℕ} {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0
         rw [hme] at h2
         exact le_trans h2 (ih (by omega) (by omega) _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun t ht => h.2.1 t (by omega), fun i hi => h.2.2 i (by omega)⟩`.
+-/
 theorem vp_mono {s s' : ℕ} (hss : s' ≤ s) {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ) :
     VP LL n0 B s' μ :=
   ⟨h.1, fun t ht => h.2.1 t (by omega), fun i hi => h.2.2 i (by omega)⟩
 
+/- English proof (translation)
+Use `⟨by rw [he 0 (by simp)]; exact h.1, fun t ht => by rw [he t ht]; exact h.2.1 t ht, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[he i.castSucc (by simp; omega), he i.succ (by simp; omega)]`. Conclude with `h.2.2 i hi`.
+-/
 theorem vp_congr {s : ℕ} {μ μ' : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ)
     (he : ∀ t : Fin (N + 1), t.val ≤ s → μ' t = μ t) : VP LL n0 B s μ' := by
   refine ⟨by rw [he 0 (by simp)]; exact h.1, fun t ht => by rw [he t ht]; exact h.2.1 t ht, fun i hi => ?_⟩
@@ -168,6 +238,17 @@ theorem vp_congr {s : ℕ} {μ μ' : Fin (N + 1) → Fin (r + K) → ℤ} (h : V
 
 open Classical in
 
+/- English proof (translation)
+Establish `hne : ∀ t : Fin (N + 1), t.val ≤ s → t ≠ (⟨s, hs⟩ : Fin N).succ`. Introduce `t ht he`. Rewrite `ht` using `[he]`. Simplify using `at ht`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Function.update_of_ne (hne 0 (by simp))]; exact h.1`. Introduce `t ht`. Distinguish the cases in `he : t = (⟨s, hs⟩ : Fin N).succ`. Rewrite using `[he, Function.update_self]`. Conclude with `hd`.
+
+Rewrite using `[Function.update_of_ne he]`. Use `h.2.1 t ?_` and prove the remaining obligations. Establish `: t.val ≠ s + 1` using `fun hv => he (Fin.ext (by simpa using hv))`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`.
+
+Distinguish the cases in `he : i.val = s`. Establish `hi' : i = ⟨s, hs⟩` using `Fin.ext he`. Substitute `hi'` using the available equality. Rewrite using `[Function.update_self, Function.update_of_ne (hne _ (by simp))]`. Conclude with `hst`.
+
+Rewrite using `[Function.update_of_ne (hne _ (by simp; omega)), Function.update_of_ne (hne _ (by simp; omega))]`. Conclude with `h.2.2 i (by omega)`.
+-/
 theorem vp_update {s : ℕ} (hs : s < N) {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ)
     (la' : Fin (r + K) → ℤ) (hd : Dominant la')
     (hst : StepOK LL n0 B ⟨s, hs⟩ (μ (⟨s, hs⟩ : Fin N).castSucc) la') :

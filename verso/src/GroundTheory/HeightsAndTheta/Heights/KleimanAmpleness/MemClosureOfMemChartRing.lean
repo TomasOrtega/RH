@@ -22,6 +22,11 @@ section Points
 
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {N : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← TranslateEq.chartRing.equiv S x hi]`. Unfold `chartRingOver ReciprocityTheory.ChartRestriction.G.Geo.chartRing`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨⟨⟩, a⟩, rfl⟩`. Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨⟨(), a⟩, rfl⟩`.
+-/
 theorem chartRingOver_oneBlock (x : Fin (N + 1) → Ω) (c : Unit → Fin (N + 1)) (hi : x (c ()) ≠ 0) :
     chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) c = Kleiman.chartRing S x (Kleiman.singleChart hi) := by
   rw [← TranslateEq.chartRing.equiv S x hi]

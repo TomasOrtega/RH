@@ -10,5 +10,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC GlobalTheory.CompanionTheory.IwaAd PositivityTheory.PfSWUS GlobalTheory.CompanionTheory.SiegelND GlobalTheory.CompanionTheory.MM
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.AbsProd.absA_eq_prod | exact GlobalTheory.CompanionTheory.AbsProd.absA_eq_prod | (intros; apply GlobalTheory.CompanionTheory.AbsProd.absA_eq_prod <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.absValue_adelic_product_formula : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ x : (AE D)ˣ, absA D x = (∏ τ, ‖θ τ (infPart D x.1)‖₊ ^ 2) * ∏ᶠ v, absEv D.host.F D.host.E v (unitFin D.host.F D.host.E v x) := by
   first | exact @GlobalTheory.CompanionTheory.AbsProd.absA_eq_prod | exact GlobalTheory.CompanionTheory.AbsProd.absA_eq_prod | (intros; apply GlobalTheory.CompanionTheory.AbsProd.absA_eq_prod <;> assumption)

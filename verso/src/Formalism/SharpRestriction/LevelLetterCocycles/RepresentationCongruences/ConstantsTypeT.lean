@@ -22,6 +22,9 @@ variable [FiniteDimensional Qp LL]
 variable (W : LocWach PD LL O v n) (A : ArcP n) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (c : ZMod n) {d : ℕ} (b : Fin d → W.DD T₂) (sol : Fin d → ℕ → Fin d → LL) (k₀ : Fin d)
 
+/- English proof (translation)
+Establish `hR` using `NTB.ringData_of_crystalline (hcase := hcase) (hP9 := hP9) (T := T₂) (hT := And.left hW₂)`. Establish `hΔ` using `NTB.isUnit_prime_sub_one (W := W) (hl := hl) (hOv := hOv) (hinj := hinj)`. Establish `hfnn` using `NTB.nn_of (hcase := hcase) (hP9 := hP9) (hinj := hinj) (hR := hR) (A := A) (c := c) (hthick := hthick) (f := f) (hf := hf) (hdown := hdown)`. Conclude with `NTB.ntype_core (hcase := hcase) (hl := hl) (hP9 := hP9) (A := A) (hA := hA) (c := c) (hc := hc) (F := F) (hArc := hArc) (hNN := hNN) (hW₁ := hW₁) (hW₂ := hW₂) (hΔ := hΔ) (rr := rr) (hrr := hrr c hc) (b := b) (sol := sol) (k₀ := k₀) (hb := hb) (hk₀ := hk₀) (f := f) (hfnn := hfnn)`.
+-/
 theorem N_typeT [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (hA : A.OK) (hc : c ∈ A.cuts)
     (hthick : ∀ s < A.len c, (A.ty (c - (s : ZMod n))).thick) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hl : 5 ≤ PD.p)
     (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
@@ -45,6 +48,15 @@ theorem N_typeT [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLoca
     (hc := hc) (F := F) (hArc := hArc) (hNN := hNN) (hW₁ := hW₁) (hW₂ := hW₂) (hΔ := hΔ) (rr := rr)
     (hrr := hrr c hc) (b := b) (sol := sol) (k₀ := k₀) (hb := hb) (hk₀ := hk₀) (f := f) (hfnn := hfnn)
 
+/- English proof (translation)
+Use `NTB.letter_const (A := A) (F := F) (c := c) (b := b) (sol := sol) (k₀ := k₀) (hb := hb) (x := x) (h := ?_)` and prove the remaining obligations. Use `TC.C_typeT_of (hA := hA) (hc := hc) (hthick := hthick) (hcase := hcase) (hl := hl) (hP9 := hP9) (hSec := hSec) (hGL := hGL) (hFL := hFL) (hArc := hArc) (hW₁ := hW₁) (hW₂ := hW₂) (hb := hb) (Si := ∅) (hSi := by simp) (b₁ := b₁) (sol₁ := sol₁) (hb₁ := hb₁) (c₁ := c₁) (s₀ := rr) (hl …` and prove the remaining obligations. Rewrite using `[Finset.prod_empty]`. Unfold `InFr`. Use `⟨algebraMap O (LetA O n) x, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using `[IsScalarTower.algebraMap_apply O (LetA O n) W.EE]`. Introduce `s _ bs _`. Use `⟨0, x, ?_⟩` and prove the remaining obligations. Unfold `InFr`.
+
+Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[lE]`. Introduce `s _ _ bs _`. Use `⟨0, x, ?_⟩` and prove the remaining obligations.
+
+Unfold `InFr`. Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[lE]`.
+-/
 theorem constants_typeT (hA : A.OK) (hc : c ∈ A.cuts)
     (hthick : ∀ s < A.len c, (A.ty (c - (s : ZMod n))).thick) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hl : 5 ≤ PD.p)
     (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)

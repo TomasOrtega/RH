@@ -8,6 +8,23 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.IwConst
 
+/- English proof (translation)
+Introduce `n ε a j W hW d E hcut hskew ν hν hinv ρ η hρ hρ8 hη`. Use `set S := maxK ε ∩ flagM ε W with hS`. Take `⟨t, ht, hsq⟩` from `GlobalTheory.T.iwasawa_slab_squeezed_between_balls n ε S d E hcut ρ η hρ hρ8 hη`. Take `⟨r0, hr0, hnear⟩` from `GlobalTheory.T.iwasawa_near_one_compact_near_levi_intersection n ε a j W hW t ht`. Establish `hmem : Set.Iio (min t r0) ∈ nhds (0 : ℝ)` using `Iio_mem_nhds (lt_min ht hr0)`.
+
+Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds hmem] with r hr hr' u hu m hm k hk hball`. Establish `hrpos : (0 : ℝ) < r` using `hr`. Establish `hrlt : r < min t r0` using `hr'`. Establish `hrt : r < t` using `lt_of_lt_of_le hrlt (min_le_left _ _)`. Establish `hrr0 : r < r0` using `lt_of_lt_of_le hrlt (min_le_right _ _)`.
+
+Establish `hb : nrm (uMat (u * m * k) - 1) ≤ r` using `hball`. Take `⟨l0, hl0S, hl0⟩` from `hnear u hu m hm k hk (le_trans hb hrr0.le)`. Take `⟨l1, hl1S, hcrd, hmin⟩` from `GlobalTheory.T.exists_nearest_point_coset_orthogonal_lieAlgebra n ε S d E hcut (fun x hx => hx.1) hskew k hk`. Establish `hnrm : nrm (uMat (l1 * k) - 1) < t` using `lt_of_le_of_lt (hmin l0 hl0S) hl0`. Establish `key` using `fun l (hl : l ∈ S) => hsq r hrpos hrt (l1 * k) hnrm hcrd l hl`.
+
+Establish `hA : ν {l | l * k ∈ slab ε E ρ r} = ν {l | l * (l1 * k) ∈ slab ε E ρ r}`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `l`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, mul_assoc]`.
+
+Rewrite using `[hA]`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Apply `measure_mono` to reduce the goal to its premises. Introduce `l hl`.
+
+Distinguish the cases in `h : l ∈ S`. Conclude with `Or.inl ⟨hl, h⟩`. Conclude with `Or.inr h`. Use `_ ≤ ν (hsBall ε (r / (1 + η)) ∩ S) + ν Sᶜ := measure_union_le _ _`. Use `_ = ν (hsBall ε (r / (1 + η)) ∩ S) := by rw [hν, add_zero]`.
+
+Use `_ ≤ ν {l | l * (l1 * k) ∈ slab ε E ρ r} := measure_mono (fun l hl => (key l hl.2).1 hl.1)`. Combine the equalities or inequalities in the displayed calculation. Apply `measure_mono` to reduce the goal to its premises. Introduce `l hl`. Distinguish the cases in `h : l ∈ S`.
+
+Conclude with `Or.inl ⟨hl, h⟩`. Conclude with `Or.inr h`. Use `_ ≤ ν ({l | l * (l1 * k) ∈ slab ε E ρ r} ∩ S) + ν Sᶜ := measure_union_le _ _`. Use `_ = ν ({l | l * (l1 * k) ∈ slab ε E ρ r} ∩ S) := by rw [hν, add_zero]`. Use `_ ≤ ν (hsBall ε ((1 + η) * r)) := measure_mono (fun l hl => (key l hl.2).2 hl.1)`.
+-/
 theorem slab_measure_squeeze : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∀ (d : ℕ) (E : Fin d → Matrix (Fin n) (Fin n) ℂ), IsCut ε (maxK ε ∩ flagM ε W) E → (∀ i, (E i)ᴴ = -E i) → ∀ ν : Measure (Formalism.REAL.UJ ε), ν (maxK ε ∩ flagM ε W)ᶜ = 0 → (∀ l ∈ maxK ε ∩ flagM ε W, ν.map (fun g => g * l) = ν) → ∀ ρ η : ℝ, 0 < ρ → ρ ≤ 1 / 8 → 0 < η → ∀ᶠ r in (nhdsWithin (0 : ℝ) (Set.Ioi 0)), ∀ u ∈ flagN ε W, ∀ m ∈ flagM ε W, ∀ k ∈ maxK ε, u * m * k ∈ hsBall ε r → ν (hsBall ε (r / (1 + η))) ≤ ν {l | l * k ∈ slab ε E ρ r} ∧ ν {l | l * k ∈ slab ε E ρ r} ≤ ν (hsBall ε ((1 + η) * r)) := by
   intro n ε a j W hW d E hcut hskew ν hν hinv ρ η hρ hρ8 hη
   set S := maxK ε ∩ flagM ε W with hS

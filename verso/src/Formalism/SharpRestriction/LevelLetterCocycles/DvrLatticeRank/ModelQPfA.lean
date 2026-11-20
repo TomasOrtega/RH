@@ -20,9 +20,15 @@ def smulE (π' : LetA O n) (c : ZMod n) (e : W.EE) : LA W T π' c →ₗ[O] LA W
 
 variable {W T}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smulLA_eq (π' : LetA O n) (c : ZMod n) (a : LetA O n) :
     smulLA W T π' c a = smulE W T π' c (algebraMap (LetA O n) W.EE a) := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul y l => simp [smulE, mul_assoc]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+-/
 theorem smulE_mul (π' : LetA O n) (c : ZMod n) (e f : W.EE) (x : LA W T π' c) :
     smulE W T π' c (e * f) x = smulE W T π' c e (smulE W T π' c f x) := by
   induction x using TensorProduct.induction_on with
@@ -30,34 +36,91 @@ theorem smulE_mul (π' : LetA O n) (c : ZMod n) (e f : W.EE) (x : LA W T π' c) 
   | tmul y l => simp [smulE, mul_assoc]
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul y l => simp [smulE]`. Consider the case `add x y hx hy => rw [map_add, hx, hy]`.
+-/
 theorem smulE_one (π' : LetA O n) (c : ZMod n) (x : LA W T π' c) : smulE W T π' c 1 x = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul y l => simp [smulE]
   | add x y hx hy => rw [map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[← smulE_mul, ← smulE_mul, mul_comm]`.
+-/
 theorem smulE_comm (π' : LetA O n) (c : ZMod n) (e f : W.EE) (x : LA W T π' c) :
     smulE W T π' c e (smulE W T π' c f x) = smulE W T π' c f (smulE W T π' c e x) := by
   rw [← smulE_mul, ← smulE_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← smulE_mul, Units.mul_inv, smulE_one]`.
+-/
 theorem smulE_unit (π' : LetA O n) (c : ZMod n) (u : W.EEˣ) (x : LA W T π' c) :
     smulE W T π' c (u : W.EE) (smulE W T π' c ((u⁻¹ : W.EEˣ) : W.EE) x) = x := by
   rw [← smulE_mul, Units.mul_inv, smulE_one]
 
+/- English proof (translation)
+Rewrite using `[← smulE_mul, Units.inv_mul, smulE_one]`.
+-/
 theorem smulE_unit' (π' : LetA O n) (c : ZMod n) (u : W.EEˣ) (x : LA W T π' c) :
     smulE W T π' c ((u⁻¹ : W.EEˣ) : W.EE) (smulE W T π' c (u : W.EE) x) = x := by
   rw [← smulE_mul, Units.inv_mul, smulE_one]
 
+/- English proof (translation)
+Simplify using `[toLA]`.
+-/
 theorem toLA_tmul (π' : LetA O n) (c : ZMod n) (S : Submodule O (LcQ W T π' c)) (a : ↥W.AΔ) (l : ↥S) :
     toLA W T π' c S (a ⊗ₜ l) = algebraMap (LetA O n) W.EE ((letE c : LetA O n) * a) ⊗ₜ (l : LcQ W T π' c) := by
   simp [toLA]
 
+/- English proof (translation)
+Simplify using `[smulE]`.
+-/
 theorem smulE_tmul (π' : LetA O n) (c : ZMod n) (e f : W.EE) (l : LcQ W T π' c) :
     smulE W T π' c e (f ⊗ₜ l) = (e * f) ⊗ₜ l := by
   simp [smulE]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `haveI := hLfin`. Take `⟨m, gL, hgL⟩` from `Module.Finite.exists_fin (R := O) (M := LcQ W T π' c)`. Use `set u : W.EEˣ := hEu.unit with hu`. Use `set Ei : W.EE := ((u⁻¹ ^ h' : W.EEˣ) : W.EE) with hEi`. Establish `hEpow : (algebraMap (LetA O n) W.EE (Eπ ^ h')) = ((u ^ h' : W.EEˣ) : W.EE)`.
+
+Rewrite using `[map_pow, Units.val_pow_eq_pow_val, hu, hEu.unit_spec]`. Establish `hEinv : ∀ z, smulLA W T π' c (Eπ ^ h') (smulE W T π' c Ei z) = z`. Introduce `z`. Rewrite using `[smulLA_eq, hEpow, hEi, inv_pow, smulE_unit]`. Establish `hEinv' : ∀ z, smulE W T π' c Ei (smulLA W T π' c (Eπ ^ h') z) = z`.
+
+Introduce `z`. Rewrite using `[smulLA_eq, hEpow, hEi, inv_pow, smulE_unit']`. Set `gens : Fin D × Fin m → LA W T π' c` to `fun p => toLA W T π' c ⊤ (S p.1 ⊗ₜ (⟨gL p.2, trivial⟩ : ↥(⊤ : Submodule O (LcQ W T π' c))))`. Set `Sp : Submodule O (LA W T π' c)` to `Submodule.span O (Set.range gens)`. Set `Rm : Submodule O (LA W T π' c)` to `(LinearMap.range (toLA W T π' c ⊤)).map (smulLA W T π' c (π' * Eπ ^ (2 * h')))`.
+
+Establish `key : ∀ τ, toLA W T π' c ⊤ τ ∈ Sp ⊔ Rm`. Introduce `τ`. Proceed by induction on `τ using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `tmul a l`. Take `⟨co, s, hs⟩` from `hdiv a`. Rewrite using `[toLA_tmul, hs]`.
+
+Rewrite using `[map_add, TensorProduct.add_tmul]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Use `Submodule.mem_sup_left ?_` and prove the remaining obligations. Establish `hl : (l : LcQ W T π' c) ∈ Submodule.span O (Set.range gL)` using `by rw [hgL]; trivial`. Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hl`.
+
+Rewrite using `[← ho, Finset.mul_sum, map_sum, TensorProduct.tmul_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.sum_tmul]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun r hr => ?_)` and prove the remaining obligations. Establish `e1 : algebraMap (LetA O n) W.EE ((letE c : LetA O n) * (algebraMap O (LetA O n) (co r) * (S r : LetA O n))) = co r • algebraMap (LetA O n) W.EE ((letE c : LetA O n) * (S r : LetA O n))`.
+
+Rewrite using `[Algebra.smul_def, IsScalarTower.algebraMap_apply O (LetA O n) W.EE, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← TensorProduct.smul_tmul']`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(r, j), ?_⟩)` and prove the remaining obligations.
+
+Simplify using `only [gens, toLA_tmul]`. Use `Submodule.mem_sup_right ⟨toLA W T π' c ⊤ (s ⊗ₜ l), LinearMap.mem_range_self _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[toLA_tmul, smulLA_eq, smulE_tmul, ← map_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `mkQ` to `(Submodule.mkQ ((piNL W T Pt π' Eπ h' c 1).comap (LamLA W T π' Eπ h' c ⊤).subtype))`. Establish `hmem : ∀ p, smulE W T π' c Ei (gens p) ∈ LamLA W T π' Eπ h' c ⊤`. Introduce `p`. Use `show smulLA W T π' c (Eπ ^ h') (smulE W T π' c Ei (gens p)) ∈ LinearMap.range (toLA W T π' c ⊤)`. Rewrite using `[hEinv]`.
+
+Conclude with `LinearMap.mem_range_self _ _`. Use `⟨⟨Finset.univ.image fun p => mkQ ⟨_, hmem p⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `q -`. Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.mkQ_surjective _ q`.
+
+Establish `hx0` using `hx`. Take `⟨τ, hτ⟩` from `hx`. Establish `hk` using `key τ`. Rewrite `hk` using `[hτ]`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 hk`.
+
+Take `⟨cf, hcf⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hy`. Establish `hyL1 : smulE W T π' c Ei y ∈ LamLA W T π' Eπ h' c ⊤`. Rewrite using `[← hcf, map_sum]`. Conclude with `Submodule.sum_mem _ fun p _ => by rw [map_smul]; exact Submodule.smul_mem _ _ (hmem p)`. Establish `hyeq : (⟨_, hyL1⟩ : ↥(LamLA W T π' Eπ h' c ⊤)) = ∑ p, cf p • ⟨_, hmem p⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Rewrite using `[← hcf, map_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => map_smul _ _ _`.
+
+Establish `hyL2 : mkQ ⟨_, hyL1⟩ ∈ Submodule.span O ((Finset.univ.image fun p => mkQ ⟨_, hmem p⟩ : Finset _) : Set (QL W T Pt π' Eπ h' c))`. Rewrite using `[hyeq, map_sum]`. Conclude with `Submodule.sum_mem _ fun p _ => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image.2 ⟨p, Finset.mem_univ _, rfl⟩)))`.
+
+Establish `hxe : x = smulE W T π' c Ei y + smulE W T π' c Ei z`. Rewrite using `[← map_add, hyz, hEinv']`. Establish `hsc : Ei * algebraMap (LetA O n) W.EE (π' * Eπ ^ (2 * h')) = algebraMap (LetA O n) W.EE (π' ^ 1) * algebraMap (LetA O n) W.EE (Eπ ^ h')`. Establish `hvv : (((u ^ h')⁻¹ : W.EEˣ) : W.EE) * ((u ^ h' : W.EEˣ) : W.EE) = 1` using `Units.inv_mul _`. Rewrite using `[pow_one, map_mul, show 2 * h' = h' + h' by ring, pow_add, map_mul, hEpow, hEi, inv_pow]`.
+
+Take the linear combination `(algebraMap (LetA O n) W.EE π' * ((u ^ h' : W.EEˣ) : W.EE)) * hvv`. Establish `hzN : smulE W T π' c Ei z ∈ piNL W T Pt π' Eπ h' c 1`. Take `⟨z₀, hz₀, rfl⟩` from `hz`. Use `⟨smulLA W T π' c (Eπ ^ h') z₀, h4 ⟨z₀, hz₀, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [smulLA_eq]`.
+
+Rewrite using `[← smulE_mul, ← smulE_mul, hsc]`. Establish `hzL : smulE W T π' c Ei z ∈ LamLA W T π' Eπ h' c ⊤`. Establish `h` using `sub_mem hx0 hyL1`. Rewrite `h` using `[hxe, add_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hsplit : (⟨x, hx0⟩ : ↥(LamLA W T π' Eπ h' c ⊤)) = ⟨_, hyL1⟩ + ⟨_, hzL⟩` using `Subtype.ext (by rw [Submodule.coe_add]; exact hxe)`.
+
+Establish `hz0 : mkQ ⟨_, hzL⟩ = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hzN`. Use `show mkQ ⟨x, hx0⟩ ∈ _`. Rewrite using `[hsplit, map_add, hz0, add_zero]`. Conclude with `hyL2`.
+-/
 theorem finite_of (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n)
     (hEu : IsUnit (algebraMap (LetA O n) W.EE Eπ))
     (h4 : (LinearMap.range (toLA W T π' c ⊤)).map (smulLA W T π' c (Eπ ^ h')) ≤ NL W T Pt π' Eπ h' c)
@@ -172,6 +235,19 @@ theorem finite_of (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ :
   rw [hsplit, map_add, hz0, add_zero]
   exact hyL2
 
+/- English proof (translation)
+Introduce `a q ha haq`. Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.mkQ_surjective _ q`. Rewrite `haq` using `[← map_smul]`. Establish `hax` using `(Submodule.Quotient.mk_eq_zero _).1 haq`. Take `⟨y, hyN, hyx⟩` from `hax`.
+
+Use `replace hyx : smulLA W T π' c (π' ^ 1) y = a • x := hyx`. Use `set pu : W.EEˣ := hπu.unit with hpu`. Establish `hpuv : algebraMap (LetA O n) W.EE π' = (pu : W.EE)` using `hπu.unit_spec.symm`. Use `set z : LA W T π' c := smulE W T π' c ((pu⁻¹ : W.EEˣ) : W.EE) x with hzdef`. Establish `hzx : smulLA W T π' c π' z = x` using `by rw [smulLA_eq, hpuv, hzdef, smulE_unit]`.
+
+Establish `hyz : a • z = y`. Establish `e1 : y = smulE W T π' c ((pu⁻¹ : W.EEˣ) : W.EE) (smulLA W T π' c (π' ^ 1) y)`. Rewrite using `[pow_one, smulLA_eq, hpuv, smulE_unit']`. Rewrite using `[e1, hyx, map_smul]`. Establish `hzL : z ∈ LamLA W T π' Eπ h' c ⊤` using `by show smulLA W T π' c (Eπ ^ h') z ∈ LinearMap.range (toLA W T π' c ⊤)`.
+
+Use `hsat a ha _ ?_ ?_` and prove the remaining obligations. Rewrite using `[smulLA_eq, smulLA_eq, smulE_comm, ← smulLA_eq, ← smulLA_eq, hzx]`. Conclude with `hx`. Rewrite using `[← map_smul, hyz]`. Conclude with `h1 hyN`.
+
+Establish `hzN : z ∈ NL W T Pt π' Eπ h' c`. Take `⟨k, b, hk⟩` from `hℓ a ha`. Use `h5 z hzL k ?_` and prove the remaining obligations. Rewrite using `[hk, mul_smul, hyz]`. Conclude with `Submodule.smul_mem _ _ hyN`.
+
+Use `(Submodule.Quotient.mk_eq_zero _).2 ⟨z, hzN, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, hzx]`. Both sides reduce to the same expression.
+-/
 theorem tf_of (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n)
     (hπu : IsUnit (algebraMap (LetA O n) W.EE π'))
     (h1 : NL W T Pt π' Eπ h' c ≤ LamLA W T π' Eπ h' c ⊤)
@@ -211,6 +287,17 @@ theorem tf_of (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : Let
   rw [pow_one, hzx]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩`. Proceed by induction on `τ using TensorProduct.induction_on with`. Consider the case `zero => intro i; exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y hx hy`.
+
+Introduce `i`. Take `⟨g, hg, e⟩` from `hx i`. Take `⟨g', hg', e'⟩` from `hy i`. Use `⟨g + g', add_mem hg hg', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, Finsupp.add_apply, e, e', mul_add, map_add]`.
+
+Consider the case `tmul a l`. Introduce `i`. Use `⟨algebraMap O (LetA O n) (bL.repr l i) * a, mul_mem (Subalgebra.algebraMap_mem _ _) a.2, ?_⟩` and prove the remaining obligations. Rewrite using `[toLA_tmul, TensorProduct.equivFinsuppOfBasisRight_apply_tmul, Finsupp.mapRange_apply, Algebra.smul_def, IsScalarTower.algebraMap_apply O (LetA O n) W.EE, ← map_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `h choose g hg e using h`. Establish `hz : z = (TensorProduct.equivFinsuppOfBasisRight bL).symm (TensorProduct.equivFinsuppOfBasisRight bL z)` using `by simp`. Rewrite using `[hz, TensorProduct.equivFinsuppOfBasisRight_symm_apply, Finsupp.sum_fintype _ _ (fun i => by simp)]`. Use `Submodule.sum_mem _ fun i _ => ⟨(⟨g i, hg i⟩ : ↥W.AΔ) ⊗ₜ (⟨bL i, trivial⟩ : ↥(⊤ : Submodule O (LcQ W T π' c))), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[toLA_tmul, e i]`.
+-/
 theorem range_iff {ι : Type} [Fintype ι] [DecidableEq ι] (π' : LetA O n) (c : ZMod n) (bL : Basis ι O (LcQ W T π' c))
     (z : LA W T π' c) :
     z ∈ LinearMap.range (toLA W T π' c ⊤) ↔
@@ -241,6 +328,9 @@ theorem range_iff {ι : Type} [Fintype ι] [DecidableEq ι] (π' : LetA O n) (c 
     refine Submodule.sum_mem _ fun i _ => ⟨(⟨g i, hg i⟩ : ↥W.AΔ) ⊗ₜ (⟨bL i, trivial⟩ : ↥(⊤ : Submodule O (LcQ W T π' c))), ?_⟩
     rw [toLA_tmul, e i]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, Finsupp.add_apply, hx, hy, map_add, Finsupp.add_apply, mul_add]`. Consider the case `tmul m l`. Rewrite using `[smulE_tmul, TensorProduct.equivFinsuppOfBasisRight_apply_tmul, TensorProduct.equivFinsuppOfBasisRight_apply_tmul, Finsupp.mapRange_apply, Finsupp.mapRange_apply, mul_smul_comm]`.
+-/
 theorem coord_smulE {ι : Type} [Fintype ι] [DecidableEq ι] (π' : LetA O n) (c : ZMod n) (bL : Basis ι O (LcQ W T π' c))
     (e : W.EE) (z : LA W T π' c) (i : ι) :
     TensorProduct.equivFinsuppOfBasisRight bL (smulE W T π' c e z) i =
@@ -252,6 +342,11 @@ theorem coord_smulE {ι : Type} [Fintype ι] [DecidableEq ι] (π' : LetA O n) (
     rw [smulE_tmul, TensorProduct.equivFinsuppOfBasisRight_apply_tmul, TensorProduct.equivFinsuppOfBasisRight_apply_tmul,
       Finsupp.mapRange_apply, Finsupp.mapRange_apply, mul_smul_comm]
 
+/- English proof (translation)
+Introduce `a ha z h1 h2`. Rewrite `h1`, `h2`, the goal using `[range_iff π' c bL]`. Introduce `i`. Use `hlet a ha _ ?_ ?_` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `h1 i`.
+
+Conclude with `⟨g, hg, by rw [← e, smulLA_eq, coord_smulE]⟩`. Take `⟨g, hg, e⟩` from `h2 i`. Conclude with `⟨g, hg, by rw [← e, map_smul, Finsupp.smul_apply]⟩`.
+-/
 theorem sat_of {ι : Type} [Fintype ι] [DecidableEq ι] (π' : LetA O n) (c : ZMod n) (bL : Basis ι O (LcQ W T π' c))
     (hlet : ∀ a : O, a ≠ 0 → ∀ u : W.EE,
       (∃ g ∈ W.AΔ, algebraMap (LetA O n) W.EE π' * u = algebraMap (LetA O n) W.EE ((letE c : LetA O n) * g)) →

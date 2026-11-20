@@ -11,10 +11,20 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `((genericPoint_spec Y).mem_open_set_iff W.isOpen).mpr ⟨y, trivial, hy⟩`.
+-/
 theorem genericPoint_mem_of_mem_opens (Y : Scheme.{0}) [IsIntegral Y] (W : Y.Opens) {y : Y}
     (hy : y ∈ W) : genericPoint Y ∈ W :=
   ((genericPoint_spec Y).mem_open_set_iff W.isOpen).mpr ⟨y, trivial, hy⟩
 
+/- English proof (translation)
+Introduce `Y _ D W₁ W₂ hH f hf`. Take `⟨ρ, hreg, hsurj, hres⟩` from `GlobalTheory.T.exists_rationalFunction_maps_of_cartierTwistSections Y D`. Distinguish the cases in `g1 : genericPoint Y ∈ W₁`. Distinguish the cases in `g2 : genericPoint Y ∈ W₂`. Establish `g12 : genericPoint Y ∈ W₁ ⊓ W₂` using `⟨g1, g2⟩`.
+
+Take `⟨t, ht⟩` from `hsurj (W₁ ⊓ W₂) f g12 hf`. Take `⟨a, b, hab⟩` from `GlobalTheory.T.mayer_vietoris_sections_split Y _ W₁ W₂ hH t`. Use `⟨ρ W₁ a, ρ W₂ b, ?_, fun y hy => hreg W₁ a y hy, fun y hy => hreg W₂ b y hy⟩` and prove the remaining obligations. Rewrite using `[← ht, hab, map_sub, hres W₂ (W₁ ⊓ W₂) inf_le_right b g12, hres W₁ (W₁ ⊓ W₂) inf_le_left a g12]`. Use `⟨ρ W₁ 0, f, by simp, fun y hy => hreg W₁ 0 y hy, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Conclude with `absurd (genericPoint_mem_of_mem_opens Y W₂ hy) g2`. Use `⟨-f, ρ W₂ 0, by simp, fun y hy => ?_, fun y hy => hreg W₂ 0 y hy⟩` and prove the remaining obligations. Conclude with `absurd (genericPoint_mem_of_mem_opens Y W₁ hy) g1`.
+-/
 theorem ratsec_split_of_H1 : ∀ (Y : Scheme.{0}) [IsIntegral Y] (D : CartierDiv Y) (W₁ W₂ : Y.Opens),
     Subsingleton (cohOn (twist (GlobalTheory.structureModule Y) (toLB D)) (W₁ ⊔ W₂) 1) →
     ∀ f : Y.functionField, (∀ y ∈ W₁ ⊓ W₂, D.RegularAt y f) →

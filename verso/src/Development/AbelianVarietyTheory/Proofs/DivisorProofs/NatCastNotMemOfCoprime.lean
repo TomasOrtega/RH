@@ -4,6 +4,11 @@ universe u_1
 
 namespace GlobalTheory.CoprimeNatNotMem
 
+/- English proof (translation)
+Introduce `hn`. Choose the witnesses or unpack the hypotheses as in `⟨u, v, huv⟩ : IsCoprime (p : Rg) (n : Rg) := by`. Establish `hz : IsCoprime (p : ℤ) (n : ℤ)` using `Nat.isCoprime_iff_coprime.mpr h`. Simplify using `using hz.map (Int.castRingHom Rg)`. Apply `hP` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.eq_top_iff_one, ← huv]`. Conclude with `P.add_mem (P.mul_mem_left u hp) (P.mul_mem_left v hn)`.
+-/
 theorem natCast_not_mem_of_coprime {Rg : Type u_1} [CommRing Rg] {P : Ideal Rg} (hP : P ≠ ⊤)
     {p n : ℕ} (h : Nat.Coprime p n) (hp : (p : Rg) ∈ P) : (n : Rg) ∉ P := by
   intro hn

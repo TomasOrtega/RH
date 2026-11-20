@@ -18,6 +18,9 @@ section Pi
 variable {R : Type} [CommRing R] {J : Type} [Finite J] {M : J → Type} [∀ i, AddCommGroup (M i)]
   [∀ i, Module R (M i)] {N : Type} [AddCommGroup N] [Module R N]
 
+/- English proof (translation)
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m n => simp`. Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]`.
+-/
 theorem piLeft_apply_eq [Fintype J] [DecidableEq J] (u : (∀ i, M i) ⊗[R] N) (i : J) :
     TensorProduct.piLeft R N M u i = (LinearMap.proj i : (∀ i, M i) →ₗ[R] M i).rTensor N u := by
   induction u using TensorProduct.induction_on with
@@ -25,6 +28,9 @@ theorem piLeft_apply_eq [Fintype J] [DecidableEq J] (u : (∀ i, M i) ⊗[R] N) 
   | tmul m n => simp
   | add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]
 
+/- English proof (translation)
+Use `Fintype.ofFinite J` as an intermediate fact. Apply `(TensorProduct.piLeft R N M).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[piLeft_apply_eq, h, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem pi_rTensor_eq_zero (w : (∀ i, M i) ⊗[R] N)
     (h : ∀ i, (LinearMap.proj i : (∀ i, M i) →ₗ[R] M i).rTensor N w = 0) : w = 0 := by
   classical
@@ -34,6 +40,9 @@ theorem pi_rTensor_eq_zero (w : (∀ i, M i) ⊗[R] N)
   rw [piLeft_apply_eq, h, map_zero]
   rfl
 
+/- English proof (translation)
+Use `Fintype.ofFinite J` as an intermediate fact. Use `⟨(TensorProduct.piLeft R N M).symm g, fun i ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← piLeft_apply_eq, LinearEquiv.apply_symm_apply]`.
+-/
 theorem pi_rTensor_exists (g : ∀ i, M i ⊗[R] N) :
     ∃ u : (∀ i, M i) ⊗[R] N, ∀ i, (LinearMap.proj i : (∀ i, M i) →ₗ[R] M i).rTensor N u = g i := by
   classical
@@ -43,6 +52,17 @@ theorem pi_rTensor_exists (g : ∀ i, M i ⊗[R] N) :
 
 end Pi
 
+/- English proof (translation)
+Use `haveI : ∀ T T' : C, Finite (T ⟶ T') := fun T T' ↦ by haveI : Subsingleton (T ⟶ T') := inferInstance`. Conclude with `Finite.of_subsingleton`. Set `κ : Z1 F →ₗ[R] ∀ x : (Σ T : C, Σ T' : C, (T ⟶ T')), F.obj x.2.1` to `LinearMap.pi fun x ↦ evZ F x.2.2`. Establish `hκ : Function.Injective κ` using `fun a b hab ↦ Subtype.ext (by`. Use function extensionality and compare the values at `T T' φ`.
+
+Conclude with `congrFun hab ⟨T, T', φ⟩)`. Set `δ : C0 F →ₗ[R] Z1 F` to `(d0 F).codRestrict (Z1 F) (commAlgFunctorCoboundaryZero_mem_cocyclesOne F)`. Take `⟨u, hu⟩` from `pi_rTensor_exists (R := R) (M := fun T : C ↦ F.obj T) (N := N) g`. Establish `hδ : ∀ {T T' : C} (φ : T ⟶ T'), evZ F φ ∘ₗ δ = (LinearMap.proj T' : C0 F →ₗ[R] F.obj T') - (mp F φ).toLinearMap ∘ₗ (LinearMap.proj T : C0 F →ₗ[R] F.obj T)` using `fun φ ↦ by`. Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations.
+
+Both sides reduce to the same expression. Establish `key : t = δ.rTensor N u`. Apply `Module.Flat.rTensor_preserves_injective_linearMap κ hκ` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero, ← map_sub]`. Apply `pi_rTensor_eq_zero` to reduce the goal to its premises.
+
+Introduce and unpack `⟨T, T', φ⟩`. Rewrite using `[← LinearMap.rTensor_comp_apply]`. Establish `e : (LinearMap.proj (⟨T, T', φ⟩ : Σ T : C, Σ T' : C, (T ⟶ T')) : (∀ x : (Σ T : C, Σ T' : C, (T ⟶ T')), F.obj x.2.1) →ₗ[R] F.obj T') ∘ₗ κ = evZ F φ` using `rfl`. Rewrite using `[e, map_sub, h, ← LinearMap.rTensor_comp_apply, hδ, LinearMap.rTensor_sub, LinearMap.sub_apply, LinearMap.rTensor_comp_apply, hu, hu, sub_self]`. Establish `hz : H1.mk F ∘ₗ δ = 0`.
+
+Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations. Conclude with `(H1.mk_eq_zero (F := F) (f := δ c)).2 ⟨c, rfl⟩`. Rewrite using `[key, ← LinearMap.rTensor_comp_apply, hz, LinearMap.rTensor_zero, LinearMap.zero_apply]`.
+-/
 theorem class_eq_zero_of_coboundary (R : Type) [CommRing R] (C : Type) [Category.{0} C] [Finite C] [Quiver.IsThin C]
     (F : C ⥤ CommAlgCat.{0} R) (N : Type) [AddCommGroup N] [Module R N] [Module.Flat R N] (t : Z1 F ⊗[R] N)
     (g : ∀ T : C, F.obj T ⊗[R] N)

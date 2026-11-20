@@ -10,6 +10,9 @@ open MeasureTheory ReciprocityTheory.AnForm.A
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `t ht`. Simplify using `only`. Rewrite using `[det_fderiv_real_eq_normSq τ t (hτ.differentiableAt (hΩ.mem_nhds ht)), abs_of_nonneg (Complex.normSq_nonneg _)]`.
+-/
 theorem abs_det_fderiv_real_mul_eq_normSq {d : ℕ} {Ω : Set (Fin d → ℂ)} {τ : (Fin d → ℂ) → Fin d → ℂ}
     (hΩ : IsOpen Ω) (hτ : DifferentiableOn ℂ τ Ω) (H : (Fin d → ℂ) → ℝ) :
     Set.EqOn (fun t => |(fderiv ℝ τ t).det| * H t) (fun t => Complex.normSq (jacC τ t).det * H t) Ω := by
@@ -18,6 +21,9 @@ theorem abs_det_fderiv_real_mul_eq_normSq {d : ℕ} {Ω : Set (Fin d → ℂ)} {
   rw [det_fderiv_real_eq_normSq τ t (hτ.differentiableAt (hΩ.mem_nhds ht)),
     abs_of_nonneg (Complex.normSq_nonneg _)]
 
+/- English proof (translation)
+Introduce `d Ω τ H hΩ hτ hfin hint`. Establish `heq` using `abs_det_fderiv_real_mul_eq_normSq hΩ hτ H`. Establish `hint' : IntegrableOn (fun t => |(fderiv ℝ τ t).det| * H t) Ω` using `(integrableOn_congr_fun heq hΩ.measurableSet).2 hint`. Take `⟨h1, h2⟩` from `h (Fin d → ℂ) volume Ω τ H hΩ (hτ.restrictScalars ℝ) hfin hint'`. Conclude with `⟨h1, h2.trans (setIntegral_congr_fun hΩ.measurableSet heq)⟩`.
+-/
 theorem HolomorphicFibreSumInt.proof (h : WeightedAreaFormula.Statement) :
     HolomorphicFibreSumInt.Statement := by
   intro d Ω τ H hΩ hτ hfin hint

@@ -5,6 +5,19 @@ open Matrix Topology
 
 namespace GlobalTheory.CompanionTheory.AnnihOpen
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ n A hA`. Set `H : AddSubgroup (Fin n → k)` to `{ carrier := {ξ | ∀ a ∈ A, ψ (ξ ⬝ᵥ a) = 1} zero_mem' := by`. Introduce `a _`. Simplify using the standard rewrite rules. Use the proof step `add_mem' := by`.
+
+Introduce `x y hx hy a ha`. Rewrite using `[add_dotProduct, AddChar.map_add_eq_mul, hx a ha, hy a ha, one_mul]`. Use the proof step `neg_mem' := by`. Introduce `x hx a ha`. Rewrite using `[neg_dotProduct, AddChar.map_neg_eq_inv, hx a ha, inv_one] }`.
+
+Establish `hdot : Continuous fun p : (Fin n → k) × (Fin n → k) => p.1 ⬝ᵥ p.2` using `continuous_fst.dotProduct continuous_snd`. Establish `hcoe : Continuous fun z : Circle => (z : ℂ)` using `continuous_iff_le_induced.mpr fun U a ↦ a`. Establish `hcont : Continuous fun p : (Fin n → k) × (Fin n → k) => ‖((ψ (p.1 ⬝ᵥ p.2) : Circle) : ℂ) - 1‖` using `((hcoe.comp (hψ.comp hdot)).sub continuous_const).norm`. Establish `hU : IsOpen {p : (Fin n → k) × (Fin n → k) | ‖((ψ (p.1 ⬝ᵥ p.2) : Circle) : ℂ) - 1‖ < 1}` using `isOpen_lt hcont continuous_const`. Establish `hsub : ({0} : Set (Fin n → k)) ×ˢ (A : Set (Fin n → k)) ⊆ {p : (Fin n → k) × (Fin n → k) | ‖((ψ (p.1 ⬝ᵥ p.2) : Circle) : ℂ) - 1‖ < 1}`.
+
+Introduce and unpack `⟨x, a⟩ ⟨hx, -⟩`. Establish `hx0 : x = 0` using `hx`. Substitute `hx0` using the available equality. Simplify using the standard rewrite rules. Take `⟨V, W, hV, -, h0V, hAW, hVW⟩` from `generalized_tube_lemma isCompact_singleton hA hU hsub`.
+
+Establish `hmem : (H : Set (Fin n → k)) ∈ 𝓝 (0 : Fin n → k)`. Use `Filter.mem_of_superset (hV.mem_nhds (h0V rfl)) ?_` and prove the remaining obligations. Introduce `ξ hξ a ha`. Apply `GlobalTheory.CharDualMat.circle_eq_one_of_pow_near` to reduce the goal to its premises. Introduce `m`.
+
+Establish `hma : m • a ∈ (A : Set (Fin n → k))` using `SetLike.mem_coe.mpr (A.nsmul_mem ha m)`. Establish `h1` using `hVW (Set.mk_mem_prod hξ (hAW hma))`. Rewrite `h1` using `[Set.mem_setOf_eq, dotProduct_smul, AddChar.map_nsmul_eq_pow, Circle.coe_pow]`. Conclude with `h1`. Conclude with `AddSubgroup.isOpen_of_mem_nhds H hmem`.
+-/
 theorem isOpen_annihilator_of_isCompact :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       (ψ : AddChar k Circle), Continuous ψ → ∀ (n : ℕ) (A : AddSubgroup (Fin n → k)),

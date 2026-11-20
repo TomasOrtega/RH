@@ -36,6 +36,13 @@ section Level
 
 variable {A A' D : Type} [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype D] [DecidableEq D]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨((mem_KO_iff g).1 hg).1, SplitFlip.valuation_gdet_of_mem_KO hg⟩`. Introduce and unpack `⟨hM, hd⟩`. Set `N : Matrix D D 𝒪[k]` to `fun i j => ⟨M i j, hM i j⟩`.
+
+Establish `e : (algebraMap 𝒪[k] k).mapMatrix N = M` using `rfl`. Establish `hu : IsUnit N.det`. Use `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.2 ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, e, hd]`. Take `⟨u, hu'⟩` from `(Matrix.isUnit_iff_isUnit_det N).2 hu`.
+
+Use `⟨_, ⟨u, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap 𝒪[k] k).mapMatrix u.val = M`. Rewrite using `[hu', e]`.
+-/
 theorem mem_image_KO {M : Matrix D D k} :
     M ∈ Units.val '' (KO k D : Set (GL D k)) ↔ (∀ i j, M i j ∈ 𝒪[k]) ∧ valuation k M.det = 1 := by
   constructor
@@ -52,6 +59,9 @@ theorem mem_image_KO {M : Matrix D D k} :
     change (algebraMap 𝒪[k] k).mapMatrix u.val = M
     rw [hu', e]
 
+/- English proof (translation)
+Rewrite using `[← mem_image_KO]`. Conclude with `⟨fun h => ⟨g, h, rfl⟩, fun ⟨u, hu, e⟩ => Units.ext e ▸ hu⟩`.
+-/
 theorem mem_KO_iff_det {g : GL D k} : g ∈ KO k D ↔ (∀ i j, g.val i j ∈ 𝒪[k]) ∧ valuation k g.val.det = 1 := by
   rw [← mem_image_KO]
   exact ⟨fun h => ⟨g, h, rfl⟩, fun ⟨u, hu, e⟩ => Units.ext e ▸ hu⟩
@@ -60,6 +70,9 @@ def blockDiag (s : kˣ) (σ : A ⊕ A' ≃ D) : GL D k := SplitFlip.diagGL fun i
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype A] [DecidableEq A] [Fintype A']
   [DecidableEq A'] in
+/- English proof (translation)
+Establish `: ((blockDiag s σ)⁻¹).val = diagonal fun i => (((Sum.elim (fun _ => 1) (fun _ => s) (σ.symm i) : kˣ)⁻¹ : kˣ) : k)` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, this]`. Simplify using `only [blockDiag, SplitFlip.diagGL_val, mul_diagonal, diagonal_mul, Equiv.symm_apply_apply]`.
+-/
 theorem conj_blockDiag (s : kˣ) (σ : A ⊕ A' ≃ D) (h : GL D k) (i j : A ⊕ A') :
     ((blockDiag s σ)⁻¹ * h * blockDiag s σ).val (σ i) (σ j) =
       ((Sum.elim (fun _ => 1) (fun _ => s) i : kˣ)⁻¹ : kˣ) * h.val (σ i) (σ j) *
@@ -71,6 +84,17 @@ theorem conj_blockDiag (s : kˣ) (σ : A ⊕ A' ≃ D) (h : GL D k) (i j : A ⊕
 
 omit [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] in
 
+/- English proof (translation)
+Establish `key : ∀ x : k, ((s⁻¹ : kˣ) : k) * x ∈ 𝒪[k] ↔ x ∈ cball s` using `fun x => by`. Rewrite using `[cball_eq_smul, Set.mem_smul_set_iff_inv_smul_mem]`. Both sides reduce to the same expression. Establish `hi` using `((mem_KO_iff h).1 hh).1`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H i j`. Use `((mem_KO_iff _).1 H).1 (σ (.inr i)) (σ (.inl j))` as an intermediate fact. Rewrite `this` using `[conj_blockDiag]`. Conclude with `(key _).1 (by simpa using this)`. Introduce `H`.
+
+Use `mem_KO_iff_det.2 ⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `σ.surjective i`. Take `⟨j, rfl⟩` from `σ.surjective j`. Rewrite using `[conj_blockDiag]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Simplify using `using hi _ _`. Simplify using `using mul_mem (hi _ _) hs`. Simplify using `using (key _).2 (H i j)`. Establish `: ((s⁻¹ : kˣ) : k) * h.val (σ (.inr i)) (σ (.inr j)) * s = h.val (σ (.inr i)) (σ (.inr j))`. Rewrite using `[mul_right_comm, Units.inv_mul, one_mul]`.
+
+Simplify `hi _ _` using `only [Sum.elim_inr, this]`. Rewrite using `[Units.val_mul, Units.val_mul, det_mul, det_mul, mul_right_comm, ← det_mul, Units.inv_mul, det_one, one_mul]`. Conclude with `(mem_KO_iff_det.1 hh).2`.
+-/
 theorem conj_mem_KO_iff {s : kˣ} (hs : (s : k) ∈ 𝒪[k]) (σ : A ⊕ A' ≃ D) {h : GL D k} (hh : h ∈ KO k D) :
     (blockDiag s σ)⁻¹ * h * blockDiag s σ ∈ KO k D ↔ ∀ i j, h.val (σ (.inr i)) (σ (.inl j)) ∈ cball s := by
   have key : ∀ x : k, ((s⁻¹ : kˣ) : k) * x ∈ 𝒪[k] ↔ x ∈ cball s := fun x => by
@@ -130,6 +154,9 @@ variable (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c : ℕ) (σ : Fin n ⊕ Fin n' ≃ D
 
 omit [Fintype D] [DecidableEq D] in
 
+/- English proof (translation)
+Establish `e : (Xᵀ.submatrix σ id).toRows₁ = u.valᵀ` using `by ext i j; exact h₁ j i`. Establish `h : StdSupp ϖ c (Xᵀ.submatrix σ id)` using `⟨fun i j => by rw [e]; exact (mem_KO_iff_det.1 hu).1 j i, by rw [e, det_transpose]; exact (mem_KO_iff_det.1 hu).2, fun i j => h₂ j i⟩`. Rewrite using `[colDatum, stdDatum, dif_pos h]`. Use `congr 3`. Conclude with `Units.ext (by simp [e])`.
+-/
 theorem colDatum_eq {X : Matrix (Fin n) D k} {u : GL (Fin n) k} (hu : u ∈ KO k (Fin n))
     (h₁ : ∀ i j, X i (σ (.inl j)) = u.val i j) (h₂ : ∀ i j, X i (σ (.inr j)) ∈ cball (ϖ ^ c)) :
     colDatum ν ϖ c σ X = (((ν (GeneralLinearGroup.det u))⁻¹ : ℂˣ) : ℂ) := by
@@ -185,6 +212,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 end Place
 
+/- English proof (translation)
+Rewrite using `[colDatum_eq ν ϖ c _ (one_mem _) (fun i j => rfl) fun i j => by simp [cball]]`. Simplify using the standard rewrite rules.
+-/
 example {n n' : ℕ} (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c : ℕ) :
     colDatum ν ϖ c (Equiv.refl (Fin n ⊕ Fin n')) (fromCols 1 0) = 1 := by
   rw [colDatum_eq ν ϖ c _ (one_mem _) (fun i j => rfl) fun i j => by simp [cball]]

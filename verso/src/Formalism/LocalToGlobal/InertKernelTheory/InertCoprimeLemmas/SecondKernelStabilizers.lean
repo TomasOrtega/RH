@@ -43,6 +43,9 @@ def StabilizerEqualityAtAnyLevel : Prop :=
     (Y : Pend (sysAt Ch std vp unif eO eO_spec dG dG_spec om)),
     ∀ j, j ≤ D.R.m → TieStabAt (Y := Y) u μ (CmpJ.kerAtMu_any K H hS Gt Ch hCh).cls j
 
+/- English proof (translation)
+Introduce `D c Tw u μ w h _ Fl Lv K I H hS Gt Ch hCh std vp unif eO eO_spec dG dG_spec om Y hU hS0 j hj`. Conclude with `stabilizer_all_instances D Tw c u μ w h Fl Lv Ch (CmpJ.kerAtMu_any K H hS Gt Ch hCh) std vp unif eO eO_spec dG dG_spec om Y hU hS0 K.stab_eq j hj`.
+-/
 theorem stabilizer_any_level : TieStabAny := by
   intro D c Tw u μ w h _ Fl Lv K I H hS Gt Ch hCh std vp unif eO eO_spec dG dG_spec om Y hU hS0 j hj
   exact stabilizer_all_instances D Tw c u μ w h Fl Lv Ch (CmpJ.kerAtMu_any K H hS Gt Ch hCh) std vp unif eO eO_spec dG dG_spec om Y

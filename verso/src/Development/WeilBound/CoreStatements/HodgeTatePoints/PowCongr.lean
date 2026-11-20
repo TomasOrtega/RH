@@ -8,6 +8,17 @@ open scoped Matrix
 
 namespace PositivityTheory.HtPt.Rd
 
+/- English proof (translation)
+Introduce `p hp C _ v x y z hx hy h`. Establish `hp1 : v (p : C) ≤ 1`. Conclude with `natCast_mem v.integer p`. Establish `hz : v z ≤ 1`. Establish `e : z = (z - x - y) + x + y` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `v.map_add_le (v.map_add_le (h.trans hp1) hx) hy`. Set `X : v.integer` to `⟨x, hx⟩`. Set `Y : v.integer` to `⟨y, hy⟩`. Set `Z : v.integer` to `⟨z, hz⟩`.
+
+Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp.out X Y`. Take `⟨s, hs⟩` from `sub_dvd_pow_sub_pow Z (X + Y) p`. Establish `hr'` using `congrArg v.integer.subtype hr`. Establish `hs'` using `congrArg v.integer.subtype hs`. Simplify using `only [map_add, map_mul, map_pow, map_sub, map_natCast, Subring.subtype_apply, X, Y, Z] at hr' hs'`.
+
+Establish `e : z ^ p - x ^ p - y ^ p = (z - x - y) * (s : C) + (p : C) * (x * y * (r : C))`. Take the linear combination `hr' + hs'`. Rewrite using `[e]`. Use `v.map_add_le ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `(mul_le_of_le_one_right' s.2).trans h`. Rewrite using `[map_mul]`. Use `mul_le_of_le_one_right' ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_le_one' (mul_le_one' hx hy) r.2`.
+-/
 theorem powadd : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] (v : Valuation C NNReal) (x y z : C), v x ≤ 1 → v y ≤ 1 → v (z - x - y) ≤ v (p : C) → v (z ^ p - x ^ p - y ^ p) ≤ v (p : C) := by
   intro p hp C _ v x y z hx hy h
   have hp1 : v (p : C) ≤ 1 := by
@@ -40,6 +51,13 @@ section
 
 variable {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
 
+/- English proof (translation)
+Establish `h0 : (p : C) ≠ 0` using `Nat.cast_ne_zero.2 hp`. Rewrite using `[pInt, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Rewrite using `[Algebra.smul_def, map_mul]`.
+
+Conclude with `mul_le_of_le_one_left' (hv.map_le_one r)`. Introduce `h`. Establish `h1 : v (x / p) ≤ 1`. Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ h zero_le`.
+
+Take `⟨r, hr⟩` from `hv.exists_of_le_one h1`. Conclude with `⟨r, by rw [Algebra.smul_def, hr, div_mul_cancel₀ _ h0]⟩`.
+-/
 theorem mem_pInt [CharZero C] (hv : v.Integers R) {p : ℕ} (hp : p ≠ 0) (x : C) :
     x ∈ pInt (C := C) R p ↔ v x ≤ v (p : C) := by
   have h0 : (p : C) ≠ 0 := Nat.cast_ne_zero.2 hp
@@ -55,12 +73,18 @@ theorem mem_pInt [CharZero C] (hv : v.Integers R) {p : ℕ} (hp : p ≠ 0) (x : 
     obtain ⟨r, hr⟩ := hv.exists_of_le_one h1
     exact ⟨r, by rw [Algebra.smul_def, hr, div_mul_cancel₀ _ h0]⟩
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `AA.le_int hg x`. Rewrite using `[← hr]`. Conclude with `hv.map_le_one r`.
+-/
 theorem val_le_one (hv : v.Integers R) {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
     (AA : HopfOrder (C := C) R N) {g : N → C} (hg : g ∈ AA.carrier) (x : N) : v (g x) ≤ 1 := by
   obtain ⟨r, hr⟩ := AA.le_int hg x
   rw [← hr]
   exact hv.map_le_one r
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `AA.one_mem`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `AA.mul_mem _ _ ih hg`.
+-/
 theorem pow_mem {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
     (AA : HopfOrder (C := C) R N) {g : N → C} (hg : g ∈ AA.carrier) (k : ℕ) :
     g ^ k ∈ AA.carrier := by
@@ -68,6 +92,9 @@ theorem pow_mem {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
   | zero => rw [pow_zero]; exact AA.one_mem
   | succ k ih => rw [pow_succ]; exact AA.mul_mem _ _ ih hg
 
+/- English proof (translation)
+Use `powadd p C v x 0 z hx (by simp) (by simpa using h)` as an intermediate fact. Simplify `this` using `[zero_pow hp.out.ne_zero]`.
+-/
 theorem pow_congr (p : ℕ) [hp : Fact p.Prime] {x z : C} (hx : v x ≤ 1)
     (h : v (z - x) ≤ v (p : C)) : v (z ^ p - x ^ p) ≤ v (p : C) := by
   have := powadd p C v x 0 z hx (by simp) (by simpa using h)
@@ -75,6 +102,15 @@ theorem pow_congr (p : ℕ) [hp : Fact p.Prime] {x z : C} (hx : v x ≤ 1)
 
 end
 
+/- English proof (translation)
+Introduce `p hp C _ _ _ v R _ _ hv hp1 F _ _ _ _ f hF N _ _ _ _ AA hst K t τ c hc`. Take `⟨g, ⟨hg, hadd⟩, h1, h2, h3⟩` from `hc`. Establish `hp0` using `hp.out.ne_zero`. Establish `hb` using `val_le_one hv AA hg`. Use `⟨g ^ p, ⟨pow_mem AA hg p, fun x y => ?_⟩, fun a x => ?_, fun k hk => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_pInt hv hp0]`. Conclude with `powadd p C v _ _ _ (hb x) (hb y) ((mem_pInt hv hp0 _).1 (hadd x y))`. Rewrite using `[mem_pInt hv hp0, MulChar.pow_apply' _ hp0, map_pow, Pi.pow_apply, Pi.pow_apply, ← mul_pow]`. Use `pow_congr p ?_ ((mem_pInt hv hp0 _).1 (h1 a x))` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `mul_le_one' (hv.map_le_one _) (hb x)`. Rewrite using `[mem_pInt hv hp0]`. Use `pow_congr (v := v) p (x := 0) (z := g k) (by simp) (by simpa using (mem_pInt hv hp0 _).1 (h2 k hk))` as an intermediate fact. Simplify `this` using `[zero_pow hp0]`. Rewrite using `[mem_pInt hv hp0, map_pow, Pi.pow_apply]`.
+
+Conclude with `pow_congr p (hv.map_le_one _) ((mem_pInt hv hp0 _).1 h3)`.
+-/
 theorem a_pow : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ (K : Submodule F N) (t : N) (τ : MulChar F R) (c : R), c ∈ idealD p AA.carrier K t τ → c ^ p ∈ idealD p AA.carrier K t (τ ^ p) := by
   intro p hp C _ _ _ v R _ _ hv hp1 F _ _ _ _ f hF N _ _ _ _ AA hst K t τ c hc
   obtain ⟨g, ⟨hg, hadd⟩, h1, h2, h3⟩ := hc

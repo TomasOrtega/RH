@@ -9,6 +9,13 @@ open scoped ENNReal
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hq : ∀ t ∈ S, ∃ q : ℚ, t < q ∧ ∀ u ∈ S, ¬ (t < u ∧ u < q)`. Introduce `t ht`. Take `⟨y, hy, hyS⟩` from `h t ht`. Take `⟨q, hq1, hq2⟩` from `exists_rat_btwn hy`. Conclude with `⟨q, hq1, fun u hu h' => hyS u hu ⟨h'.1, h'.2.trans hq2⟩⟩`.
+
+Use `choose! f hf1 hf2 using hq`. Use `Set.MapsTo.countable_of_injOn (f := f) (Set.mapsTo_univ f S) ?_ Set.countable_univ` and prove the remaining obligations. Introduce `a ha b hb hab`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h1 | h1` into its components or cases.
+
+Conclude with `hf2 a ha b hb ⟨h1, by rw [hab]; exact hf1 b hb⟩`. Conclude with `hf2 b hb a ha ⟨h1, by rw [← hab]; exact hf1 a ha⟩`.
+-/
 private theorem countable_of_forall_exists_gap_above (S : Set ℝ) (h : ∀ t ∈ S, ∃ y, t < y ∧ ∀ u ∈ S, ¬ (t < u ∧ u < y)) :
     S.Countable := by
   classical
@@ -25,6 +32,55 @@ private theorem countable_of_forall_exists_gap_above (S : Set ℝ) (h : ∀ t �
   · exact hf2 a ha b hb ⟨h1, by rw [hab]; exact hf1 b hb⟩
   · exact hf2 b hb a ha ⟨h1, by rw [← hab]; exact hf1 a ha⟩
 
+/- English proof (translation)
+Establish `hR : 0 < R` using `hR'.trans hRR`. Establish `hcs : ∀ (u : ℝ) (w : V n), ((u : ℂ) • w) = u • w` using `fun u w => by first`. Consider the case `exact Complex.coe_smul u w`. Consider the case `exact (RCLike.real_smul_eq_coe_smul (K := ℂ) u w).symm`. Establish `hmaps : ∀ t : ℝ, ∀ x : V n, t ∈ Ioo (0:ℝ) 1 → x ∈ ball z0 R → z0 + t • (x - z0) ∈ ball z0 R`.
+
+Introduce `t x ht hx`. Rewrite `hx`, the goal using `[Metric.mem_ball, dist_eq_norm]`. Rewrite using `[add_sub_cancel_left, norm_smul, Real.norm_eq_abs, abs_of_pos ht.1]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 ht.2.le) (norm_nonneg (x - z0))]`. Establish `hO1 : IsOpen (Ioo (0:ℝ) 1 ×ˢ ball z0 R)` using `isOpen_Ioo.prod isOpen_ball`.
+
+Establish `hFc : ContinuousOn (fun p : ℝ × V n => g (z0 + p.1 • (p.2 - z0))) (Ioo (0:ℝ) 1 ×ˢ ball z0 R)` using `hg.continuousOn.comp (f := fun p : ℝ × V n => z0 + p.1 • (p.2 - z0)) (Continuous.continuousOn (by fun_prop)) (fun p hp => hball (hmaps p.1 p.2 hp.1 hp.2))`. Establish `hOpen` using `hFc.isOpen_inter_preimage hO1 (isOpen_compl_singleton (x := (0:ℂ)))`. Take `⟨A, hAdef⟩ : ∃ A : Set (ℝ × V n), A = (Ioo (0:ℝ) 1 ×ˢ ball z0 R) \ ((Ioo (0:ℝ) 1 ×ˢ ball z0 R) ∩ (fun p : ℝ × V n => g (z0 + p.1 • (p.2 - z0))) ⁻¹' {(0:ℂ)}ᶜ)` from `⟨_, rfl⟩`. Establish `hA : MeasurableSet A`. Rewrite using `[hAdef]`.
+
+Conclude with `hO1.measurableSet.diff hOpen.measurableSet`. Establish `memA : ∀ t x, (t, x) ∈ A ↔ t ∈ Ioo (0:ℝ) 1 ∧ x ∈ ball z0 R ∧ g (z0 + t • (x - z0)) = 0`. Introduce `t x`. Rewrite using `[hAdef]`. Simplify using `only [Set.mem_diff, Set.mem_inter_iff, Set.mem_prod, Set.mem_preimage, Set.mem_compl_iff, Set.mem_singleton_iff]`.
+
+The claim follows by propositional logic. Establish `hslice : ∀ x : V n, volume ((fun t : ℝ => (t, x)) ⁻¹' A) = 0`. Introduce `x`. Distinguish the cases in `hx : x ∈ ball z0 R`. Use `set v := x - z0 with hv`.
+
+Establish `hvR : ‖v‖ < R`. Rewrite using `[hv, ← dist_eq_norm]`. Conclude with `hx`. Establish `hmpos : 0 < max ‖v‖ (R / 2)` using `lt_max_of_lt_right (by linarith)`. Establish `hmR : max ‖v‖ (R / 2) < R` using `max_lt hvR (by linarith)`.
+
+Use `set ρ := R / max ‖v‖ (R / 2) with hρ`. Establish `hρ1 : 1 < ρ` using `(one_lt_div hmpos).mpr hmR`. Establish `hDmaps : ∀ s ∈ ball (0:ℂ) ρ, z0 + s • v ∈ U`. Introduce `s hs`. Apply `hball` to reduce the goal to its premises.
+
+Rewrite using `[Metric.mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul]`. Rewrite `hs` using `[Metric.mem_ball, dist_zero_right]`. Combine the equalities or inequalities in the displayed calculation. Establish `hφd : DifferentiableOn ℂ (fun s : ℂ => g (z0 + s • v)) (ball (0:ℂ) ρ)` using `hg.comp (f := fun s : ℂ => z0 + s • v) (Differentiable.differentiableOn (by fun_prop)) hDmaps`. Establish `hφa` using `hφd.analyticOnNhd isOpen_ball`.
+
+Establish `h0D : (0:ℂ) ∈ ball (0:ℂ) ρ` using `Metric.mem_ball_self (by linarith)`. Establish `hφ0 : g (z0 + (0:ℂ) • v) ≠ 0`. Rewrite using `[zero_smul, add_zero]`. Conclude with `hz0`. Establish `hpre : IsPreconnected (ball (0:ℂ) ρ)` using `(convex_ball (0:ℂ) ρ).isPreconnected`.
+
+Establish `hiso : ∀ t : ℝ, t ∈ Ioo (0:ℝ) 1 → ∃ ε > 0, ∀ u : ℝ, t < u → u < t + ε → g (z0 + u • v) ≠ 0`. Introduce `t ht`. Establish `htD : (t:ℂ) ∈ ball (0:ℂ) ρ`. Rewrite using `[Metric.mem_ball, dist_zero_right, Complex.norm_real, Real.norm_eq_abs, abs_of_pos ht.1]`. Combine the linear relations using `[ht.2]`.
+
+Establish `hev : ∀ᶠ s in 𝓝[≠] (t:ℂ), g (z0 + s • v) ≠ 0`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Filter.not_eventually]`. Simplify using `only [not_not] at hne`. Establish `h5` using `hφa.eqOn_zero_of_preconnected_of_frequently_eq_zero hpre htD hne h0D`.
+
+Conclude with `hφ0 h5`. Take `⟨ε, hε, hεp⟩` from `Metric.eventually_nhds_iff.mp (eventually_nhdsWithin_iff.mp hev)`. Use `⟨ε, hε, fun u hu1 hu2 => ?_⟩` and prove the remaining obligations. Establish `h6` using `hεp (y := (u:ℂ)) ?_ ?_`. Rewrite `h6` using `[hcs]`. Then use the resulting hypothesis.
+
+Rewrite using `[dist_eq_norm, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `fun h => (ne_of_gt hu1) (Complex.ofReal_injective h)`. Establish `hcount : Set.Countable {t : ℝ | t ∈ Ioo (0:ℝ) 1 ∧ g (z0 + t • v) = 0}`. Use `countable_of_forall_exists_gap_above _ fun t ht => ?_` and prove the remaining obligations.
+
+Take `⟨ε, hε, hεp⟩` from `hiso t ht.1`. Conclude with `⟨t + ε, by linarith, fun u hu h' => hεp u h'.1 h'.2 hu.2⟩`. Establish `hsub : (fun t : ℝ => (t, x)) ⁻¹' A ⊆ {t : ℝ | t ∈ Ioo (0:ℝ) 1 ∧ g (z0 + t • v) = 0}`. Introduce `t ht`. Establish `h7` using `(memA t x).mp ht`.
+
+Conclude with `⟨h7.1, h7.2.2⟩`. Conclude with `measure_mono_null hsub (hcount.measure_zero _)`. Establish `h8 : (fun t : ℝ => (t, x)) ⁻¹' A = ∅` using `Set.subset_empty_iff.mp (fun t ht => (hx ((memA t x).mp ht).2.1).elim)`. Rewrite using `[h8, measure_empty]`. Establish `hprod : (volume.prod volume : Measure (ℝ × V n)) A = 0`.
+
+Rewrite using `[Measure.prod_apply_symm hA]`. Simplify using `only [hslice, lintegral_zero]`. Rewrite `hprod` using `[Measure.prod_apply hA]`. Establish `hlow : ∀ t ∈ Ioo (R' / R) 1, volume (ball z0 R' ∩ {z | g z = 0}) ≤ volume (Prod.mk t ⁻¹' A)`. Introduce `t ht`.
+
+Establish `ht0 : 0 < t` using `lt_trans (div_pos hR' hR) ht.1`. Establish `htR : R' < t * R` using `(div_lt_iff₀ hR).mp ht.1`. Establish `hsub : (fun x : V n => x - z0) ⁻¹' ((fun y : V n => t • y) ⁻¹' ((fun w : V n => z0 + w) ⁻¹' (ball z0 R' ∩ {z | g z = 0}))) ⊆ Prod.mk t ⁻¹' A`. Introduce `x hx`. Simplify using `only [Set.mem_preimage] at hx`.
+
+Rewrite using `[Set.mem_preimage, memA]`. Use `⟨⟨ht0, ht.2⟩, ?_, hx.2⟩` and prove the remaining obligations. Establish `h1` using `hx.1`. Rewrite `h1` using `[Metric.mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, Real.norm_eq_abs, abs_of_pos ht0]`. Rewrite using `[Metric.mem_ball, dist_eq_norm]`.
+
+Conclude with `lt_of_mul_lt_mul_left (h1.trans htR) ht0.le`. Establish `hti : 1 ≤ t⁻¹`. Establish `h2` using `mul_inv_cancel₀ ht0.ne'`. Use polynomial arithmetic with `[mul_pos (inv_pos.mpr ht0) (sub_pos.mpr ht.2)]`. Establish `hmeas : volume (ball z0 R' ∩ {z | g z = 0}) ≤ volume ((fun x : V n => x - z0) ⁻¹' ((fun y : V n => t • y) ⁻¹' ((fun w : V n => z0 + w) ⁻¹' (ball z0 R' ∩ {z | g z = 0}))))`.
+
+Rewrite using `[show (fun x : V n => x - z0) = (fun x => x + -z0) from funext fun x => sub_eq_add_neg x z0, measure_preimage_add_right, Set.preimage_smul₀ ht0.ne', Measure.addHaar_smul, measure_preimage_add]`. Use `le_mul_of_one_le_left (by positivity) ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_one]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[abs_of_pos (pow_pos (inv_pos.mpr ht0) _)]`.
+
+Use `first`. Consider the case `exact one_le_pow₀ hti`. Consider the case `exact one_le_pow_of_one_le' hti _`. Conclude with `hmeas.trans (measure_mono hsub)`. Establish `hind : ∀ t, (Ioo (R' / R) 1).indicator (fun _ => volume (ball z0 R' ∩ {z | g z = 0})) t ≤ volume (Prod.mk t ⁻¹' A)`.
+
+Introduce `t`. Distinguish the cases in `ht : t ∈ Ioo (R' / R) 1`. Rewrite using `[Set.indicator_apply, if_pos ht]`. Conclude with `hlow t ht`. Rewrite using `[Set.indicator_apply, if_neg ht]`.
+
+Check the signs of the components of the expression. Establish `hle : ∫⁻ t, (Ioo (R' / R) 1).indicator (fun _ => volume (ball z0 R' ∩ {z | g z = 0})) t ≤ ∫⁻ t, volume (Prod.mk t ⁻¹' A)` using `lintegral_mono hind`. Rewrite `hle` using `[lintegral_indicator_const measurableSet_Ioo, Real.volume_Ioo, hprod]`. Establish `hpos : ENNReal.ofReal (1 - R' / R) ≠ 0`. Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le, sub_pos, div_lt_one hR]`.
+
+Conclude with `hRR`. Conclude with `(mul_eq_zero.mp (le_zero_iff.mp hle)).resolve_right hpos`.
+-/
 private theorem volume_ball_inter_zeroSet_eq_zero_of_ne_zero {U : Set (V n)} {g : V n → ℂ} (hg : DifferentiableOn ℂ g U) {z0 : V n}
     {R R' : ℝ} (hR' : 0 < R') (hRR : R' < R) (hball : ball z0 R ⊆ U) (hz0 : g z0 ≠ 0) :
     volume (ball z0 R' ∩ {z | g z = 0}) = 0 := by
@@ -168,6 +224,33 @@ private theorem volume_ball_inter_zeroSet_eq_zero_of_ne_zero {U : Set (V n)} {g 
     exact hRR
   exact (mul_eq_zero.mp (le_zero_iff.mp hle)).resolve_right hpos
 
+/- English proof (translation)
+Establish `hWopen : IsOpen {z : V n | ∀ᶠ y in 𝓝 z, g y = 0}` using `isOpen_setOf_eventually_nhds`. Establish `hclosed : ∀ z ∈ U, z ∈ closure {z : V n | ∀ᶠ y in 𝓝 z, g y = 0} → ∀ᶠ y in 𝓝 z, g y = 0`. Introduce `z hz hzc`. Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.mp hU z hz`. Assume the negation of the conclusion as `hne`.
+
+Establish `hex : ∃ z0 ∈ ball z (r / 4), g z0 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (Metric.eventually_nhds_iff_ball.mpr ⟨r / 4, by linarith, h⟩)`. Take `⟨z0, hz0, hgz0⟩` from `hex`.
+
+Rewrite `hz0` using `[Metric.mem_ball]`. Establish `hball : ball z0 (3 * r / 4) ⊆ U`. Introduce `y hy`. Apply `hrU` to reduce the goal to its premises. Rewrite `hy`, the goal using `[Metric.mem_ball]`.
+
+Combine the linear relations using `[dist_triangle y z0 z]`. Establish `hnull` using `volume_ball_inter_zeroSet_eq_zero_of_ne_zero hg (R := 3 * r / 4) (R' := 5 * r / 8) (by linarith) (by linarith) hball hgz0`. Take `⟨w, hwW, hwz⟩` from `Metric.mem_closure_iff.mp hzc (r / 4) (by linarith)`. Take `⟨δ, hδ, hδw⟩` from `Metric.eventually_nhds_iff_ball.mp hwW`. Establish `hsub : ball w (min δ (r / 8)) ⊆ ball z0 (5 * r / 8) ∩ {z | g z = 0}`.
+
+Introduce `y hy`. Rewrite `hy` using `[Metric.mem_ball]`. Establish `hy1 : dist y w < δ` using `lt_of_lt_of_le hy (min_le_left _ _)`. Establish `hy2 : dist y w < r / 8` using `lt_of_lt_of_le hy (min_le_right _ _)`. Use `⟨?_, hδw y hy1⟩` and prove the remaining obligations.
+
+Rewrite using `[Metric.mem_ball]`. Combine the linear relations using `[dist_triangle y w z, dist_triangle y z z0, dist_comm z0 z, dist_comm z w]`. Conclude with `(Metric.measure_ball_pos volume w (lt_min hδ (by linarith))).ne' (measure_mono_null hsub hnull)`. Establish `hWempty : ∀ z ∈ U, ¬ ∀ᶠ y in 𝓝 z, g y = 0`. Establish `hdisj : Disjoint {z : V n | ∀ᶠ y in 𝓝 z, g y = 0} (closure {z : V n | ∀ᶠ y in 𝓝 z, g y = 0})ᶜ` using `Set.disjoint_left.mpr fun a ha hb => hb (subset_closure ha)`.
+
+Establish `hcover : U ⊆ {z : V n | ∀ᶠ y in 𝓝 z, g y = 0} ∪ (closure {z : V n | ∀ᶠ y in 𝓝 z, g y = 0})ᶜ`. Introduce `z hz`. Distinguish the cases in `hc : z ∈ closure {z : V n | ∀ᶠ y in 𝓝 z, g y = 0}`. Conclude with `Or.inl (hclosed z hz hc)`. Conclude with `Or.inr hc`.
+
+Break down `hUc.subset_or_subset hWopen isClosed_closure.isOpen_compl hdisj hcover with h | h` into its components or cases. Take `⟨z1, hz1U, hz1⟩` from `hg0`. Conclude with `absurd (Filter.Eventually.self_of_nhds (h hz1U)) hz1`. Introduce `z hz hev`. Conclude with `h hz (subset_closure hev)`.
+
+Apply `measure_null_of_locally_null` to reduce the goal to its premises. Introduce `z hz`. Take `⟨hzU, hgz⟩` from `hz`. Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.mp hU z hzU`. Establish `hex : ∃ z0 ∈ ball z (r / 4), g z0 ≠ 0`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hWempty z hzU (Metric.eventually_nhds_iff_ball.mpr ⟨r / 4, by linarith, h⟩)`. Take `⟨z0, hz0, hgz0⟩` from `hex`. Rewrite `hz0` using `[Metric.mem_ball]`.
+
+Establish `hball : ball z0 (3 * r / 4) ⊆ U`. Introduce `y hy`. Apply `hrU` to reduce the goal to its premises. Rewrite `hy`, the goal using `[Metric.mem_ball]`. Combine the linear relations using `[dist_triangle y z0 z]`.
+
+Establish `hnull` using `volume_ball_inter_zeroSet_eq_zero_of_ne_zero hg (R := 3 * r / 4) (R' := r / 2) (by linarith) (by linarith) hball hgz0`. Use `⟨(U ∩ {z | g z = 0}) ∩ ball z0 (r / 2), inter_mem_nhdsWithin _ (isOpen_ball.mem_nhds ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_comm]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `measure_mono_null ?_ hnull` and prove the remaining obligations.
+
+Introduce `y hy`. Conclude with `⟨hy.2, hy.1.2⟩`.
+-/
 theorem zero_null {U : Set (V n)} (hU : IsOpen U) (hUc : IsPreconnected U) {g : V n → ℂ}
     (hg : DifferentiableOn ℂ g U) (hg0 : ∃ z ∈ U, g z ≠ 0) :
     volume (U ∩ {z | g z = 0}) = 0 := by
@@ -236,6 +319,13 @@ theorem zero_null {U : Set (V n)} (hU : IsOpen U) (hUc : IsPreconnected U) {g : 
     intro y hy
     exact ⟨hy.2, hy.1.2⟩
 
+/- English proof (translation)
+Introduce `z hz`. Assume the negation of the conclusion as `hfz`. Establish `hnull` using `zero_null hU hUc hg hg0`. Establish `hev : ∀ᶠ y in 𝓝 z, y ∈ U ∧ f y ≠ 0` using `Filter.Eventually.and (hU.mem_nhds hz : ∀ᶠ y in 𝓝 z, y ∈ U) ((hf.continuousAt (hU.mem_nhds hz)).eventually_ne hfz)`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hev`.
+
+Establish `hsub : ball z ε ⊆ U ∩ {y | g y = 0}` using `fun y hy => by`. Take `⟨hyU, hfy⟩` from `hball y hy`. Use `⟨hyU, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hgy`. Conclude with `hfy (h0 y hyU hgy)`.
+
+Conclude with `(Metric.measure_ball_pos volume z hε).ne' (measure_mono_null hsub hnull)`.
+-/
 theorem eq_across {U : Set (V n)} (hU : IsOpen U) (hUc : IsPreconnected U) {g : V n → ℂ}
     (hg : DifferentiableOn ℂ g U) (hg0 : ∃ z ∈ U, g z ≠ 0) {f : V n → ℂ} (hf : ContinuousOn f U)
     (h0 : ∀ z ∈ U, g z ≠ 0 → f z = 0) : ∀ z ∈ U, f z = 0 := by
@@ -253,6 +343,21 @@ theorem eq_across {U : Set (V n)} (hU : IsOpen U) (hUc : IsPreconnected U) {g : 
     exact hfy (h0 y hyU hgy)
   exact (Metric.measure_ball_pos volume z hε).ne' (measure_mono_null hsub hnull)
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨ε, hε, hεU⟩` from `Metric.isOpen_iff.1 hU z hz`. Establish `hK : closedBall z (ε / 2) ⊆ U` using `(closedBall_subset_ball (by linarith)).trans hεU`. Take `⟨c, hc, hcω⟩` from `hω _ hK (isCompact_closedBall z (ε / 2))`. Use `⟨ε / 2, by linarith, ball_subset_closedBall.trans hK, ?_⟩` and prove the remaining obligations.
+
+Establish `hS : ball z (ε / 2) \ {y | g y = 0} = ball z (ε / 2) ∩ U'`. Use extensionality with `y`. Simplify using `only [mem_diff, mem_inter_iff, mem_setOf_eq, hU']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hgy⟩`.
+
+Conclude with `⟨hy, hK (ball_subset_closedBall hy), hgy⟩`. Introduce and unpack `⟨hy, -, hgy⟩`. Conclude with `⟨hy, hgy⟩`. Rewrite using `[hS]`. Establish `hSo : IsOpen (ball z (ε / 2) ∩ U')` using `isOpen_ball.inter hU'o`.
+
+Establish `hSU : ball z (ε / 2) ∩ U' ⊆ U'` using `inter_subset_right`. Establish `hcont : ContinuousOn (fun y => ‖H y‖ ^ 2) (ball z (ε / 2) ∩ U')` using `((hH.mono hSU).norm).pow 2`. Establish `hmeas : AEMeasurable (fun y => ENNReal.ofReal (‖H y‖ ^ 2)) (volume.restrict (ball z (ε / 2) ∩ U'))` using `(ENNReal.continuous_ofReal.comp_continuousOn hcont).aemeasurable hSo.measurableSet`. Establish `hbound : ∫⁻ y in ball z (ε / 2) ∩ U', ENNReal.ofReal (‖H y‖ ^ 2) ≠ ⊤`. Use `ne_of_lt (lt_of_le_of_lt ?_ (ENNReal.mul_lt_top (ENNReal.ofReal_lt_top : ENNReal.ofReal c⁻¹ < ⊤) hI))` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' hSo.measurableSet fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (inv_nonneg.2 hc.le)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hcy : c ≤ ω y` using `hcω y ⟨ball_subset_closedBall hy.1, hy.2⟩`.
+
+Establish `h1 : 1 ≤ c⁻¹ * ω y`. Rewrite using `[inv_mul_eq_div, one_le_div hc]`. Conclude with `hcy`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg ‖H y‖) (sub_nonneg.2 h1)]`. Use `_ = ENNReal.ofReal c⁻¹ * ∫⁻ y in ball z (ε / 2) ∩ U', ENNReal.ofReal (‖H y‖ ^ 2 * ω y) := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`.
+
+Use `_ ≤ ENNReal.ofReal c⁻¹ * ∫⁻ y in U', ENNReal.ofReal (‖H y‖ ^ 2 * ω y) := by gcongr`. Use `(integrable_toReal_of_lintegral_ne_top hmeas hbound).congr (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Conclude with `ENNReal.toReal_ofReal (sq_nonneg _)`.
+-/
 theorem loc_int {U U' : Set (V n)} (hU : IsOpen U) (hU'o : IsOpen U') {g : V n → ℂ}
     (hU' : ∀ y, y ∈ U' ↔ y ∈ U ∧ g y ≠ 0) {H : V n → ℂ} (hH : ContinuousOn H U')
     {ω : V n → ℝ} (hω : ∀ K ⊆ U, IsCompact K → ∃ c > 0, ∀ y ∈ K ∩ U', c ≤ ω y)

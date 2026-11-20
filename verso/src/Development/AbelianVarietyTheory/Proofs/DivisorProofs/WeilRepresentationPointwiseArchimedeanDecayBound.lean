@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.ArchDecay
 
+/- English proof (translation)
+Introduce `x z hz`. Establish `hev : ∀ a b : AF F, evI F (a + b) = evI F a + evI F b` using `fun a b => map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`. Establish `hmul : ∀ a b : AF F, evI F (a * b) = evI F a * evI F b` using `fun a b => map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`. Establish `ha : arch F (x + z) = arch F x`. Use function extensionality and compare the values at `i`.
+
+Take `⟨a, ha0, -, hza⟩` from `hz i`. Use `show evI F (x i + z i) = evI F (x i)`. Rewrite using `[hev, hza, hmul, ha0, mul_zero, add_zero]`. Unfold `mM`. Rewrite using `[ha, h x z hz]`.
+-/
 theorem per_mM {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {m : ℕ} {f : (κ → AF F) → ℂ}
     (h : Per F m f) (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) : Per F m (mM F l f) := by
   intro x z hz
@@ -32,6 +37,11 @@ theorem per_mM {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {m 
   unfold mM
   rw [ha, h x z hz]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[List.replicate_succ, word_cons]`. Use `show ‖(l (arch F x) : ℂ) * word F (List.replicate N (Sum.inr l)) f x‖ = _`.
+
+Rewrite using `[norm_mul, ih, Complex.norm_real, Real.norm_eq_abs, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_word_rep {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) (f : (κ → AF F) → ℂ) (x : κ → AF F) (N : ℕ) :
     ‖word F (List.replicate N (Sum.inr l)) f x‖ = |l (arch F x)| ^ N * ‖f x‖ := by
@@ -43,6 +53,33 @@ theorem norm_word_rep {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype 
     rw [norm_mul, ih, Complex.norm_real, Real.norm_eq_abs, pow_succ]
     ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ N`. Use `letI : MeasurableSpace (Fin n × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩`. Set `μ : Measure (Fin n × Fin d → AF F)` to `Measure.addHaar`. Establish `hμ : μ.IsAddHaarMeasure` using `inferInstance`.
+
+Take `⟨K, l, C0, hl, hpoly⟩` from `GlobalTheory.T.one_add_norm_pow_le_sum_linearForm_pow F (Fin n × Fin d) N`. Take `⟨P, Cs, c, hsob⟩` from `GlobalTheory.T.sobolev_bound_periodic_schwartz F (Fin n × Fin d) μ hμ`. Take `⟨C1, k1, hfin⟩` from `GlobalTheory.T.weilRep_finite_periodicity_polynomial_height F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Take `⟨C2, k2, hL2⟩` from `GlobalTheory.T.word_action_square_integrable_bound F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ μ hμ (P + N)`. Use `set A : ℝ := max (max Cs 0 * max C1 1 ^ c * max C2 0) 1 with hA`.
+
+Establish `hA1 : 1 ≤ A` using `le_max_right _ _`. Use `⟨max C0 0 * (K + 1) * A, k1 * c + k2, fun g h x => ?_⟩` and prove the remaining obligations. Use `set H : ℝ := (ht g : ℝ) * ht h with hH`. Establish `hH1 : 1 ≤ H` using `one_le_mul_of_one_le_of_one_le (by exact_mod_cast one_le_heightGL F g.1) (by exact_mod_cast one_le_heightGL F h.1)`. Take `⟨m, hm0, hmC, hper⟩` from `hfin g h`.
+
+Establish `key : ∀ w : List (Op F (Fin n × Fin d)), w.length ≤ N → (∀ o ∈ w, ∃ l', o = Sum.inr l' ∧ ‖l'‖ ≤ 1) → ‖word F w (om (g, h) Φ) x‖ ≤ A * H ^ (k1 * c + k2)`. Introduce `w hw hwo`. Establish `hS : word F w (om (g, h) Φ) ∈ schA F (Fin n × Fin d) ∧ Per F m (word F w (om (g, h) Φ))` using `by clear hw`. Proceed by induction on `w with`. Consider the case `nil => exact ⟨(hP.weil.isUSplitting).pres _ _ hΦ, hper⟩`.
+
+Consider the case `cons o w ih`. Take `⟨l', rfl, -⟩` from `hwo o List.mem_cons_self`. Take `⟨i1, i2⟩` from `ih fun o' ho' => hwo o' (List.mem_cons_of_mem _ ho')`. Conclude with `⟨GlobalTheory.T.archimedeanDecayOperatorApply_mem_adelicSchwartz F _ (Sum.inr l') _ i1, per_mM i2 l'⟩`. Establish `hH0 : 0 ≤ H` using `le_trans zero_le_one hH1`.
+
+Establish `hb : 0 ≤ max C2 0 * H ^ k2` using `mul_nonneg (le_max_right _ _) (pow_nonneg hH0 _)`. Establish `hw' : ∀ v : List (Fin n × Fin d → mixedEmbedding.mixedSpace F), v.length ≤ P → (∀ u ∈ v, ‖u‖ ≤ 1) → ∫⁻ y, ‖wordD F v (word F w (om (g, h) Φ)) y‖ₑ ^ 2 ∂μ ≤ ENNReal.ofReal (max C2 0 * H ^ k2)`. Introduce `v hv hv1`. Establish `hlen : (v.map Sum.inl ++ w).length ≤ P + N`. Rewrite using `[List.length_append, List.length_map]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hsz : ∀ o ∈ v.map Sum.inl ++ w, size F o ≤ 1`. Introduce `o ho`. Break down `List.mem_append.1 ho with ho | ho` into its components or cases. Take `⟨u, hu, rfl⟩` from `List.mem_map.1 ho`.
+
+Conclude with `hv1 u hu`. Take `⟨l', rfl, hl'⟩` from `hwo o ho`. Conclude with `hl'`. Establish `h3` using `hL2 g h (v.map Sum.inl ++ w) hlen hsz`. Rewrite `h3` using `[word_append]`.
+
+Conclude with `h3.trans (ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg hH0 _)))`. Establish `h2` using `hsob m hm0 _ hS.1 hS.2 (max C2 0 * H ^ k2) hb hw' x`. Establish `hm' : (m : ℝ) ^ c ≤ (max C1 1 * H ^ k1) ^ c` using `pow_le_pow_left₀ (Nat.cast_nonneg _) (hmC.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg hH0 _))) c`. Establish `e1 : ‖word F w (om (g, h) Φ) x‖ ^ 2 ≤ A * H ^ (k1 * c + k2)`. Use `h2.trans ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← pow_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ A * H ^ (k1 * c + k2) := mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg hH0 _)`. Establish `hT : 1 ≤ A * H ^ (k1 * c + k2)` using `one_le_mul_of_one_le_of_one_le hA1 (one_le_pow₀ hH1)`.
+
+Use polynomial arithmetic with `[norm_nonneg (word F w (om (g, h) Φ) x)]`. Establish `hx` using `hpoly (arch F x)`. Establish `k0 : ‖om (g, h) Φ x‖ ≤ A * H ^ (k1 * c + k2)`. Simplify using `using key [] (by simp) (by simp)`. Establish `kj : ∀ j, |l j (arch F x)| ^ N * ‖om (g, h) Φ x‖ ≤ A * H ^ (k1 * c + k2)` using `fun j => by`.
+
+Establish `h4` using `key (List.replicate N (Sum.inr (l j))) (by simp) (fun o ho => ⟨l j, List.eq_of_mem_replicate ho, hl j⟩)`. Rewrite `h4` using `[norm_word_rep]`. Then use the resulting hypothesis. Use `show ‖om (g, h) Φ x‖ * (1 + ‖arch F x‖) ^ N ≤ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ max C0 0 * (A * H ^ (k1 * c + k2) + ∑ _j : Fin K, A * H ^ (k1 * c + k2)) := mul_le_mul_of_nonneg_left (add_le_add k0 (Finset.sum_le_sum fun j _ => kj j)) (le_max_right _ _)`. Use `_ = max C0 0 * (K + 1) * A * H ^ (k1 * c + k2) := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem om_bound_arch : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∀ N : ℕ, ∃ (C : ℝ) (k : ℕ), ∀ g h (x : Fin n × Fin d → AF F),
     ‖om (g, h) Φ x‖ * (1 + ‖fun i => evI F (x i)‖) ^ N ≤ C * ((ht g : ℝ) * ht h) ^ k := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ N

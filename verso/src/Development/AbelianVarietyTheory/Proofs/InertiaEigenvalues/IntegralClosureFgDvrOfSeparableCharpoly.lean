@@ -6,6 +6,17 @@ open GlobalTheory.UnitLemma Polynomial Module
 
 namespace GlobalTheory.IntClosureSep
 
+/- English proof (translation)
+Set `b` to `Module.finBasis E A`. Use `set M := Algebra.leftMulMatrix b g with hM`. Establish `hQ : (LinearMap.mulLeft E g).charpoly = M.charpoly`. Rewrite using `[← LinearMap.charpoly_toMatrix (LinearMap.mulLeft E g) b]`. Both sides reduce to the same expression.
+
+Use `set M' := M.map (algebraMap E L) with hM'`. Establish `h1 : Module.End.HasEigenvalue (Matrix.toLin' M') α`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin', Matrix.charpoly_map, ← hQ]`. Conclude with `hα`. Take `⟨v, hv⟩` from `h1.exists_hasEigenvector`.
+
+Establish `h2 : aeval M (minpoly E g) = 0`. Rewrite using `[hM, Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `h3 : aeval M' ((minpoly E g).map (algebraMap E L)) = 0`. Rewrite using `[aeval_map_algebraMap]`. Establish `: M' = (Algebra.ofId E L).mapMatrix M` using `rfl`.
+
+Rewrite using `[this, Polynomial.aeval_algHom_apply, h2, map_zero]`. Establish `h4` using `Module.End.aeval_apply_of_hasEigenvector (p := (minpoly E g).map (algebraMap E L)) hv`. Establish `h5 : aeval (Matrix.toLin' M') ((minpoly E g).map (algebraMap E L)) = 0`. Establish `: Matrix.toLin' M' = Matrix.toLinAlgEquiv' M'` using `rfl`. Rewrite using `[this, Polynomial.aeval_algEquiv, AlgHom.comp_apply, h3, map_zero]`.
+
+Rewrite `h4` using `[h5, LinearMap.zero_apply]`. Conclude with `(smul_eq_zero.mp h4.symm).resolve_right hv.2`.
+-/
 theorem isRoot_minpoly_of_isRoot_charpoly {E A L : Type} [Field E] [CommRing A] [Algebra E A]
     [Module.Finite E A] [Field L] [Algebra E L] (g : A) {α : L}
     (hα : ((LinearMap.mulLeft E g).charpoly.map (algebraMap E L)).IsRoot α) :
@@ -34,6 +45,35 @@ theorem isRoot_minpoly_of_isRoot_charpoly {E A L : Type} [Field E] [CommRing A] 
   rw [h5, LinearMap.zero_apply] at h4
   exact (smul_eq_zero.mp h4.symm).resolve_right hv.2
 
+/- English proof (translation)
+Introduce `O E A _ _ _ _ _ _ _ _ _ _ _ g hsep`. Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Rewrite using `[Subsingleton.elim (Subalgebra.toSubmodule (integralClosure O A)) ⊥]`. Conclude with `Submodule.fg_bot`. Set `L` to `AlgebraicClosure E`.
+
+Use `set Q := (LinearMap.mulLeft E g).charpoly with hQ`. Use `set n := finrank E A with hn`. Establish `hQdeg : Q.natDegree = n` using `LinearMap.charpoly_natDegree _`. Use `set R := (Q.map (algebraMap E L)).roots with hR`. Establish `hRnodup : R.Nodup` using `nodup_roots (hsep.map)`.
+
+Establish `hRcard : Multiset.card R = n`. Rewrite using `[hR, IsAlgClosed.card_roots_eq_natDegree, natDegree_map, hQdeg]`. Use `set m := minpoly E g with hm`. Establish `hsub : ∀ α ∈ R, aeval α m = 0` using `fun α hα => by`. Use `isRoot_minpoly_of_isRoot_charpoly g (isRoot_of_mem_roots hα)` as an intermediate fact.
+
+Rewrite `this` using `[IsRoot, eval_map_algebraMap]`. Then use the resulting hypothesis. Establish `hm_ne : m ≠ 0` using `minpoly.ne_zero (Algebra.IsIntegral.isIntegral g)`. Establish `hdeg_ge : n ≤ m.natDegree`. Establish `hle : R ≤ (m.map (algebraMap E L)).roots` using `(Multiset.le_iff_subset hRnodup).mpr fun α hα => by`. Rewrite using `[mem_roots (Polynomial.map_ne_zero hm_ne), IsRoot, eval_map_algebraMap]`.
+
+Conclude with `hsub α hα`. Combine the equalities or inequalities in the displayed calculation. Establish `hdeg_le : m.natDegree ≤ n`. Simplify using `using (linearIndependent_pow (K := E) g).fintype_card_le_finrank`. Establish `hdeg : m.natDegree = n` using `le_antisymm hdeg_le hdeg_ge`.
+
+Use `haveI : Nonempty (Fin m.natDegree) := ⟨⟨0, by rw [hdeg, hn]; exact Module.finrank_pos⟩⟩`. Set `pb : PowerBasis E A` to `{ gen := g, dim := m.natDegree basis := basisOfLinearIndependentOfCardEqFinrank (linearIndependent_pow g) (by simp [hdeg, m, n]) basis_eq_pow := fun i => by rw [coe_basisOfLinearIndependentOfCardEqFinrank] }`. Set `ι : Type` to `↥R.toFinset`. Establish `hcard : Fintype.card ι = n`. Rewrite using `[Fintype.card_coe, Multiset.toFinset_card_of_nodup hRnodup, hRcard]`.
+
+Set `P : ι → (A →ₐ[E] L)` to `fun α => pb.lift α.1 (hsub α.1 (Multiset.mem_toFinset.mp α.2))`. Establish `hP : Function.Injective P` using `fun a b h => Subtype.ext (by`. Establish `h' : (P a) pb.gen = (P b) pb.gen` using `congrArg (fun f : A →ₐ[E] L => f pb.gen) h`. Simplify `h')` using `only [P, PowerBasis.lift_gen]`. Set `b0 : Basis ι E A` to `(Module.finBasisOfFinrankEq E A hcard.symm).reindex (Fintype.equivFin ι).symm`.
+
+Establish `hex : ∀ i, ∃ c : nonZeroDivisors O, IsIntegral O ((c : O) • b0 i)` using `fun i => IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors O) (b0 i) (Algebra.IsIntegral.isIntegral (R := E) (b0 i))`. Use `choose c hc using hex`. Set `e : Basis ι E A` to `b0.isUnitSMul (w := fun i => algebraMap O E (c i)) (fun i => (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (c i).2).isUnit)`. Establish `he : ∀ i, e i = (c i : O) • b0 i` using `fun i => by`. Simplify using `[e, Basis.isUnitSMul_apply, algebraMap_smul]`.
+
+Establish `he_int : ∀ i, IsIntegral O (e i)` using `fun i => (he i) ▸ hc i`. Establish `hdisc : Algebra.discr E e ≠ 0` using `fun h => GlobalTheory.algebraMap_discr_basis_ne_zero e hP (by rw [h, map_zero])`. Establish `hnd : (Algebra.traceForm E A).Nondegenerate`. Establish `hT : LinearMap.BilinForm.toMatrix e (Algebra.traceForm E A) = Algebra.traceMatrix E e`. Use extensionality with `i j`.
+
+Rewrite using `[Algebra.traceForm_toMatrix, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`. Rewrite using `[LinearMap.BilinForm.nondegenerate_iff_det_ne_zero e, hT]`. Conclude with `hdisc`. Establish `htr : ∀ x : A, IsIntegral O x → ∃ r : O, algebraMap O E r = Algebra.trace E A x`. Introduce `x hx`.
+
+Establish `h1 : IsIntegral O (algebraMap E L (Algebra.trace E A x))`. Rewrite using `[GlobalTheory.algebraMap_trace_eq_sum_algHom_of_card hcard hP x]`. Use `IsIntegral.sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `hx.map ((P j).restrictScalars O)`. Establish `h2 : IsIntegral O (Algebra.trace E A x)` using `(isIntegral_algHom_iff ((Algebra.ofId E L).restrictScalars O) (algebraMap E L).injective).mp h1`.
+
+Conclude with `IsIntegrallyClosed.isIntegral_iff.mp h2`. Use `set d := (Algebra.traceForm E A).dualBasis hnd e`. Establish `hle : Subalgebra.toSubmodule (integralClosure O A) ≤ Submodule.span O (Set.range d)`. Introduce `x hx`. Establish `hx' : IsIntegral O x` using `hx`.
+
+Rewrite using `[← d.sum_repr x]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]`. Take `⟨r, hr⟩` from `htr _ (hx'.mul (he_int i))`. Rewrite using `[← hr, algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `Submodule.FG.of_le (Submodule.fg_span (Set.finite_range d)) hle`.
+-/
 theorem integralClosure_fg_of_separable_charpoly : ∀ (O E A : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field E] [Algebra O E] [IsFractionRing O E] [CommRing A] [Algebra O A] [Algebra E A] [IsScalarTower O E A] [Module.Finite E A] (g : A), (LinearMap.mulLeft E g).charpoly.Separable → (Subalgebra.toSubmodule (integralClosure O A)).FG := by
   intro O E A _ _ _ _ _ _ _ _ _ _ _ g hsep
   classical

@@ -18,6 +18,17 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 namespace GlobalTheory.CuspNonvanishing
 
+/- English proof (translation)
+Introduce `hP hG E _ _ _ H Dw l Xo c TF Z hF M ω la g z hz hg`. Establish `hs : FlagTan.kap Dw + (la - FlagTan.kap Dw) = la` using `by abel`. Use `set C := ((common₀ TF.X Z).pull M.σ).canChart M.K.isLB hs`. Take `⟨m, hm⟩` from `(M.bijective_pullOff (isLB_L₀ TF.X Z la)).2 ((C.mulEquiv ω.unit).symm (H0.restr le_top g))`. Establish `hm' : C.mul ω.ω (M.pullOff m) = H0.restr le_top g`.
+
+Rewrite using `[hm, ← ProdChart.mulEquiv_apply C ω.unit, LinearEquiv.apply_symm_apply]`. Take `⟨s, hsv, hsr⟩` from `(GlobalTheory.T.canonical_ideal_weight_section hP hG E H Dw l Xo c TF Z hF M ω (la - FlagTan.kap Dw) la hs m).2 ⟨g, hm'.symm⟩`. Use `⟨s, hsv, ?_⟩` and prove the remaining obligations. Take `⟨t, ha, hb, hc⟩` from `C.cover z`. Establish `e` using `C.germ_mul ω.ω (M.pullOff m) t z hz ha hb hc`.
+
+Rewrite `e` using `[hm', H0.germ_restr]`. Establish `hu : IsUnit (H0.germ (C.c t) z (memTop z) hc g)`. Rewrite using `[← ger_toSec]`. Conclude with `(isUnit_ger_iff _ hc).2 hg`. Rewrite `hu` using `[e]`.
+
+Establish `hu2` using `isUnit_of_mul_isUnit_right hu`. Establish `e2` using `H0.germ_pull M.σ M.off_eq.le (C.b t) z hz hb m`. Express the relevant statement in the definitionally equal form `IsUnit (H0.germ (C.b t) z hz hb (H0.pull M.σ M.off_eq.le m)) at hu2`. Rewrite `hu2` using `[e2]`. Establish `hu3` using `(isUnit_map_iff (M.σ.stalkMap z).hom _).1 hu2`.
+
+Rewrite `hu3` using `[← hsr]`. Use `erw [H0.germ_restr] at hu3`. Rewrite `hu3` using `[← ger_toSec]`. Conclude with `(isUnit_ger_iff _ _).1 hu3`.
+-/
 theorem exists_vanBd_nonzero : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ (M : Modif (str₀ TF.X Z) (U₀ TF.X Z) (dimFlag Dw)) (ω : CanId M) (la : AllWt.Weight Dw) (g : H0 M.str (tens M.K.bundle ((L₀ TF.X Z (la - FlagTan.kap Dw)).pull M.σ)) ⊤) (z : M.X), z ∈ M.off → z ∈ nonzeroLocus (toSec g) → ∃ s ∈ vanBd TF.X Z la, M.σ z ∈ nonzeroLocus (toSec s) := by
   intro hP hG E _ _ _ H Dw l Xo c TF Z hF M ω la g z hz hg
   have hs : FlagTan.kap Dw + (la - FlagTan.kap Dw) = la := by abel

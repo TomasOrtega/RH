@@ -16,6 +16,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwistGood
 
+/- English proof (translation)
+Introduce `P hP P' hPP`. Establish `: IsCMField D.host.E` using `D.host.isCMField_hostE`. Establish `hst : ∀ x : D.host.E, IsCMField.complexConj D.host.E x = D.host.conj x` using `bridge_star_holds D.R D.host`. Take `⟨⟨j, hj⟩, -⟩` from `X.cc_cm`. Establish `hκ : ∀ x, D.host.conj (D.host.conj x) = x` using `fun x => by`.
+
+Rewrite using `[← hst, ← hst, IsCMField.complexConj_apply_apply]`. Establish `hc : ∀ x, X.cc (algebraMap D.host.E N.Om x) = algebraMap D.host.E N.Om (D.host.conj x)` using `fun x => by`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, ← hst]`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E (j.comp (algebraMap D.host.E N.Om)) x).symm`.
+
+Establish `hs : ∀ x, X.cc.symm (algebraMap D.host.E N.Om x) = algebraMap D.host.E N.Om (D.host.conj x)` using `fun x => by`. Rewrite using `[RingEquiv.symm_apply_eq, hc, hκ]`. Establish `hpl : IsPlaceOver (N.plOm.1 P) P` using `N.plOm.2 P`. Take `⟨σ, hσ, hne⟩` from `(hR P _ hpl).2 hP`. Take `⟨σ', h1, h2⟩` from `GlobalTheory.AntiRam.exists_conj_mem_Ine X.cc (fun x => D.host.conj x) hc hκ _ σ hσ`.
+
+Use `(hR P' _ (fun y => ?_)).1 ⟨σ', h2, ?_⟩` and prove the remaining obligations. Establish `hint : IsIntegral ℤ (D.host.conj (y : D.host.E))`. Rewrite using `[← hst]`. Conclude with `(RingOfIntegers.isIntegral_coe y).map ((IsCMField.complexConj D.host.E).toRingEquiv.toRingHom.toIntAlgHom)`. Rewrite using `[GlobalTheory.AntiRam.valuation_comap_lt_one, hs, ← hPP ⟨_, hint⟩ y (hκ _).symm]`.
+
+Conclude with `hpl ⟨_, hint⟩`. Rewrite using `[hA σ σ' h1]`. Conclude with `inv_ne_one.2 hne`.
+-/
 theorem ramExactly_conj {D : D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D.host D.what₂ D.LL0 N) {M : Type} [CommGroup M]
     (ψ : G D.host.E N.Om →* M) (Q : Set (Pl D.host.E)) (hA : AntiHom X.cc ψ) (hR : RamExactly ψ Q) :
     ∀ P ∈ Q, ∀ P' : Pl D.host.E, IsConjPl D.host P P' → P' ∈ Q := by
@@ -44,6 +55,25 @@ theorem ramExactly_conj {D : D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D
   · rw [hA σ σ' h1]
     exact inv_ne_one.2 hne
 
+/- English proof (translation)
+Introduce `D N X ρ hρ i j b k Q ψ hψ`. Take `⟨hsplit, hdisj, hopen, hanti, hzk, hram, -⟩` from `hψ`. Establish `hadm : (ρ.B i j b).admitted (half (ρ.ch i) Q)` using `GlobalTheory.T.chosenPlaces_admissible_goodSetup D N X ρ hρ i j b Q hsplit hdisj`. Set `g : (X.Ok i k)ˣ →* Circle` to `unitPart.comp (Units.map (ρ.eOk i b k).toMonoidHom)`. Establish `hkey : charOf ρ.rc (ρ.eOk i b k) ψ = ρ.rc.pull (g.comp ψ)`.
+
+Rewrite using `[Recip.pull_comp _ hopen]`. Both sides reduce to the same expression. Establish `hz : X.zk i k ^ (X.l i ^ k) = 1` using `Units.ext (by simpa using (X.zk_prim i k).pow_eq_one)`. Establish `hpow : ∀ σ, ψ σ ^ (X.l i ^ k) = 1`. Introduce `σ`.
+
+Take `⟨m, hm⟩` from `hzk σ`. Rewrite using `[← hm, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hz, one_zpow]`. Use `⟨?_, hadm, ?_⟩` and prove the remaining obligations. Use `show (⟨half (ρ.ch i) Q, charOf ρ.rc (ρ.eOk i b k) ψ, resOf (charOf ρ.rc (ρ.eOk i b k) ψ)⟩ : Twist D Circle).Good`. Rewrite using `[hkey]`.
+
+Use `GlobalTheory.T.artinPullback_isGoodTwist_of_anticyclotomic_tame D N X ρ.rc hρ.rc Circle (g.comp ψ) (X.l i) (X.lPrime i).out (fun σ => ⟨k, by rw [MonoidHom.comp_apply, ← map_pow, hpow, map_one]⟩) ?_ ?_ _ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Subgroup.isOpen_mono (H₁ := ψ.ker) (fun x hx => by`. Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.comp_apply, hx, map_one]) hopen`. Introduce `x x' hx show g (ψ x') = (g (ψ x))⁻¹`.
+
+Rewrite using `[hanti x x' hx, map_inv]`. Take `⟨P, -, h2, h3⟩` from `hadm.1.split`. Conclude with `h3.mono (Finset.subset_union_right.trans h2)`. Introduce `P hP hl`. Conclude with `Finset.disjoint_left.1 hdisj (mem_half.1 hP).1 (X.twistExcludedPlaces_contains_residueChar i (show P ∈ placesOver D.host.E (X.l i) from hl))`.
+
+Introduce `v hv hnc B hB σ hσ`. Establish `hvQ : v ∉ Q`. Introduce `hvQ`. Distinguish the cases in `hc : v ∈ ρ.ch i`. Conclude with `hv (mem_half.2 ⟨hvQ, hc⟩)`.
+
+Take `⟨v', hv'⟩` from `GlobalTheory.TwistDet.exists_isConjPl v`. Establish `hv'Q : v' ∈ Q` using `ramExactly_conj X ψ _ hanti hram v hvQ v' hv'`. Establish `hne` using `ne_of_split (hsplit v hvQ) hv'`. Establish `hv'c : v' ∈ ρ.ch i`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hc (((hρ.ch i).pair v v' hv' hne).2 h)`. Conclude with `hnc v' (mem_half.2 ⟨hv'Q, hv'c⟩) (GlobalTheory.TwistDet.isConjPl_symm hv')`. Establish `h1 : ψ σ = 1`. Assume the negation of the conclusion as `h`. Conclude with `hvQ ((hram v B hB).1 ⟨σ, hσ, h⟩)`.
+
+Rewrite using `[MonoidHom.comp_apply, h1, map_one]`. Introduce `x`. Take `⟨σ, hσ⟩` from `ρ.rc.exists_sym x`. Conclude with `⟨ψ σ, charOf_eq ρ.rc (ρ.eOk i b k) hopen hσ (pow_ne_zero _ (X.lPrime i).out.ne_zero) (hpow σ)⟩`.
+-/
 theorem tw_good : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (ρ : Setup X), ρ.Good → ∀ (i : X.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ) (Q : Finset (Pl D.host.E)) (ψ : G D.host.E N.Om →* (X.Ok i k)ˣ), Formalism.MainNotions.IntegralHeckeForms.TwOK i k Q ψ → (ρ.tw i b k Q ψ).Good ∧ (ρ.B i j b).admitted (ρ.tw i b k Q ψ).Q ∧ ∀ x, ∃ u : (X.Ok i k)ˣ, (((ρ.tw i b k Q ψ).chi x : Circle) : ℂ) = ρ.eOk i b k u := by
   intro D N X ρ hρ i j b k Q ψ hψ
   classical

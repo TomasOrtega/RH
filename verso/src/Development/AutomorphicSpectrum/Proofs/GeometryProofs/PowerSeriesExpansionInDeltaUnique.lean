@@ -13,28 +13,59 @@ section Sheaf
 
 variable {Y Z : Scheme.{0}} (π : Y ⟶ Z) {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun q => q.hom a) (π.naturality (homOfLE h).op)).symm`.
+-/
 theorem app_res {U V : Z.Opens} (h : U ≤ V) (a : Γ(Z, V)) :
     (Y.presheaf.map (homOfLE (π.preimage_mono h)).op).hom ((π.app V).hom a) =
       (π.app U).hom ((Z.presheaf.map (homOfLE h).op).hom a) :=
   (congrArg (fun q => q.hom a) (π.naturality (homOfLE h).op)).symm
 
+/- English proof (translation)
+Use `Z.presheaf.map_comp (homOfLE h').op (homOfLE h).op` as an intermediate fact. Conclude with `(congrArg (fun q => q.hom a) this).symm`.
+-/
 theorem res_res {U V W : Z.Opens} (h : U ≤ V) (h' : V ≤ W) (a : Γ(Z, W)) :
     (Z.presheaf.map (homOfLE h).op).hom ((Z.presheaf.map (homOfLE h').op).hom a) =
       (Z.presheaf.map (homOfLE (h.trans h')).op).hom a := by
   have := Z.presheaf.map_comp (homOfLE h').op (homOfLE h).op
   exact (congrArg (fun q => q.hom a) this).symm
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨V, hV, hxV, hVU⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Z.isBasis_affineOpens hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨V, hV, hVU⟩, hxV⟩`.
+-/
 theorem le_iSup_aff (U : Z.Opens) : U ≤ ⨆ V : {V : Z.Opens // IsAffineOpen V ∧ V ≤ U}, V.1 := by
   intro x hx
   obtain ⟨V, hV, hxV, hVU⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.1 Z.isBasis_affineOpens hx
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨V, hV, hVU⟩, hxV⟩
 
+/- English proof (translation)
+The claim follows from `TopCat.Sheaf.eq_of_locally_eq' Z.sheaf (fun V : {V : Z.Opens // IsAffineOpen V ∧ V ≤ U} => V.1) U (fun V => homOfLE V.2.2) (le_iSup_aff U) s t (fun V => h V.1 V.2.1 V.2.2)`.
+-/
 theorem ext_aff {U : Z.Opens} (s t : Γ(Z, U))
     (h : ∀ V : Z.Opens, IsAffineOpen V → ∀ hV : V ≤ U,
       (Z.presheaf.map (homOfLE hV).op).hom s = (Z.presheaf.map (homOfLE hV).op).hom t) : s = t :=
   TopCat.Sheaf.eq_of_locally_eq' Z.sheaf (fun V : {V : Z.Opens // IsAffineOpen V ∧ V ≤ U} => V.1) U
     (fun V => homOfLE V.2.2) (le_iSup_aff U) s t (fun V => h V.1 V.2.1 V.2.2)
 
+/- English proof (translation)
+Establish `res : ∀ (U V : Z.Opens) (h : U ≤ V) (g : Γ(Y, π ⁻¹ᵁ V)) (c : Fin n → Γ(Z, V)), g = ∑ i, (π.app V).hom (c i) * e V i → (Y.presheaf.map (homOfLE (π.preimage_mono h)).op).hom g = ∑ i, (π.app U).hom ((Z.presheaf.map (homOfLE h).op).hom (c i)) * e U i`. Introduce `U V h g c hg`. Rewrite using `[hg, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, app_res π h, he U V h]`.
+
+Establish `uniq : ∀ (V : Z.Opens) (g : Γ(Y, π ⁻¹ᵁ V)) (c c' : Fin n → Γ(Z, V)), g = ∑ i, (π.app V).hom (c i) * e V i → g = ∑ i, (π.app V).hom (c' i) * e V i → c = c'`. Introduce `V g c c' h h'`. Use function extensionality and compare the values at `i`. Use `ext_aff _ _ fun U hU hUV => ?_` and prove the remaining obligations. Conclude with `congrFun ((haff U hU _).unique (res U V hUV g c h) (res U V hUV g c' h')) i`.
+
+Set `Ix` to `{V : Z.Opens // IsAffineOpen V ∧ V ≤ W}`. Establish `ex : ∀ a : Ix, ∃ c : Fin n → Γ(Z, a.1), (Y.presheaf.map (homOfLE (π.preimage_mono a.2.2)).op).hom f = ∑ i, (π.app a.1).hom (c i) * e a.1 i` using `fun a => (haff a.1 a.2.1 _).exists`. Use `choose cf hcf using ex`. Establish `compat : ∀ (a b : Ix) (j : Fin n) (U : Z.Opens), IsAffineOpen U → ∀ (ha : U ≤ a.1) (hb : U ≤ b.1), (Z.presheaf.map (homOfLE ha).op).hom (cf a j) = (Z.presheaf.map (homOfLE hb).op).hom (cf b j)`. Introduce `a b j U hU ha hb`.
+
+Establish `h1` using `res U a.1 ha _ _ (hcf a)`. Establish `h2` using `res U b.1 hb _ _ (hcf b)`. Rewrite `h1`, `h2` using `[res_res]`. Conclude with `congrFun ((haff U hU _).unique h1 h2) j`. Establish `glue : ∀ j : Fin n, ∃ s : Γ(Z, W), ∀ a : Ix, (Z.presheaf.map (homOfLE a.2.2).op).hom s = cf a j`.
+
+Introduce `j`. Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' Z.sheaf (fun a : Ix => a.1) W (fun a => homOfLE a.2.2) (le_iSup_aff W) (fun a => cf a j) (by`. Introduce `a b`. Use `ext_aff _ _ fun U hU hUV => ?_` and prove the remaining obligations. Establish `ha : U ≤ a.1` using `hUV.trans inf_le_left`.
+
+Establish `hb : U ≤ b.1` using `hUV.trans inf_le_right`. Use `(res_res hUV inf_le_left _).trans (Eq.trans ?_ (res_res hUV inf_le_right _).symm)` and prove the remaining obligations. Conclude with `compat a b j U hU ha hb)`. Conclude with `⟨s, hs⟩`. Use `choose s hs using glue`.
+
+Use `⟨s, ?_, fun c hc => ?_⟩` and prove the remaining obligations. Use `TopCat.Sheaf.eq_of_locally_eq' Y.sheaf (fun a : Ix => π ⁻¹ᵁ a.1) (π ⁻¹ᵁ W) (fun a => homOfLE (π.preimage_mono a.2.2)) ?_ _ _ fun a => ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 (le_iSup_aff W hy)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨a, ha⟩`.
+
+Use `(hcf a).trans (Eq.trans ?_ (res a.1 W a.2.2 _ s rfl).symm)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hs i a]`. Conclude with `uniq W f c s hc (by`. Use `TopCat.Sheaf.eq_of_locally_eq' Y.sheaf (fun a : Ix => π ⁻¹ᵁ a.1) (π ⁻¹ᵁ W) (fun a => homOfLE (π.preimage_mono a.2.2)) ?_ _ _ fun a => ?_` and prove the remaining obligations. Introduce `y hy`.
+
+Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 (le_iSup_aff W hy)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨a, ha⟩`. Use `(hcf a).trans (Eq.trans ?_ (res a.1 W a.2.2 _ s rfl).symm)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hs i a])`.
+-/
 theorem sections_of_affine (e : ∀ U : Z.Opens, Fin n → Γ(Y, π ⁻¹ᵁ U))
     (he : ∀ (U V : Z.Opens) (h : U ≤ V) (i : Fin n),
       (Y.presheaf.map (homOfLE (π.preimage_mono h)).op).hom (e V i) = e U i)
@@ -102,6 +133,15 @@ end Sheaf
 section Basis
 
 open Polynomial in
+/- English proof (translation)
+Set `φ : MvPolynomial Unit k ≃ₐ[k] k[X]` to `MvPolynomial.pUnitAlgEquiv k`. Establish `hX : φ (MvPolynomial.X ()) = X` using `by simp [φ]`. Establish `hI : Ideal.span {(X : k[X]) ^ (m + 1)} = (orig k Unit ^ (m + 1)).map (φ : MvPolynomial Unit k →+* k[X])`. Rewrite using `[Ideal.map_pow, orig, Ideal.map_span, ← Ideal.span_singleton_pow]`. Use `congr 2`.
+
+Use extensionality with `p`. Simplify using `[hX]`. Conclude with `eq_comm`. Set `E : Jet k Unit m ≃ₐ[k] AdjoinRoot ((X : k[X]) ^ (m + 1))` to `Ideal.quotientEquivAlg _ _ φ hI`. Set `pb` to `AdjoinRoot.powerBasis' (monic_X_pow (R := k) (m + 1))`.
+
+Establish `hd : pb.dim = m + 1` using `by simp [pb]`. Use `⟨(pb.basis.map E.symm.toLinearEquiv).reindex (finCongr hd), fun i => ?_⟩` and prove the remaining obligations. Establish `hE : E (Ideal.Quotient.mk _ (MvPolynomial.X ())) = AdjoinRoot.root _`. Establish `h : E (Ideal.Quotient.mk _ (MvPolynomial.X ())) = Ideal.Quotient.mk _ (φ (MvPolynomial.X ()))` using `rfl`. Rewrite using `[h, hX]`.
+
+Both sides reduce to the same expression. Simplify using `[pb]`. Rewrite using `[← hE, AlgEquiv.symm_apply_apply]`.
+-/
 theorem jet_basis (k : Type) [Field k] (m : ℕ) :
     ∃ b : Module.Basis (Fin (m + 1)) k (Jet k Unit m),
       ∀ i : Fin (m + 1), b i = (Ideal.Quotient.mk (orig k Unit ^ (m + 1)) (MvPolynomial.X ())) ^ (i : ℕ) := by
@@ -132,6 +172,21 @@ variable {k A J : Type} [CommRing k] [CommRing A] [CommRing J] [Algebra k A] [Al
   {I : Type} [Fintype I] (b : Module.Basis I k J)
 
 open TensorProduct in
+/- English proof (translation)
+Set `e : Y ≅ Sp (A ⊗[k] J)` to `sq.isoPullback ≪≫ pullbackSpecIso k A J`. Establish `ep : e.hom ≫ spMap (Algebra.TensorProduct.includeLeftRingHom) = p`. Simplify using `[e]`. Establish `eq' : e.hom ≫ spMap ((Algebra.TensorProduct.includeRight : J →ₐ[k] A ⊗[k] J) : J →+* A ⊗[k] J) = q`. Simplify using `[e]`.
+
+Set `Φ : A ⊗[k] J →+* Γ(Y, ⊤)` to `e.hom.appTop.hom.comp (toΓ _)`. Use `haveI : IsIso e.hom.appTop := inferInstanceAs (IsIso (e.hom.app ⊤))`. Establish `hΦ : Function.Bijective Φ` using `(ConcreteCategory.bijective_of_isIso e.hom.appTop).comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (A ⊗[k] J))).inv)`. Establish `hl : ∀ a, p.appTop.hom (toΓ A a) = Φ (a ⊗ₜ 1)`. Introduce `a`.
+
+Rewrite using `[← ep, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, spMap_toΓ]`. Both sides reduce to the same expression. Establish `hr : ∀ j, q.appTop.hom (toΓ J j) = Φ (1 ⊗ₜ j)`. Introduce `a`. Rewrite using `[← eq', Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, spMap_toΓ]`.
+
+Both sides reduce to the same expression. Set `B` to `Algebra.TensorProduct.basis A b`. Establish `key : ∀ c : I → A, ∑ i, p.appTop.hom (toΓ A (c i)) * q.appTop.hom (toΓ J (b i)) = Φ (∑ i, c i • B i)`. Introduce `c`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hl, hr, ← map_mul, Algebra.TensorProduct.basis_apply]`. Simplify using `[B, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`. Take `⟨w, rfl⟩` from `hΦ.2 f`. Use `⟨fun i => B.repr w i, ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+
+Use `show Φ w = ∑ i, p.appTop.hom (toΓ A (B.repr w i)) * q.appTop.hom (toΓ J (b i))`. Rewrite using `[key, B.sum_repr]`. Establish `hc' : Φ w = _` using `hc`. Rewrite `hc'` using `[key]`. Establish `h` using `hΦ.1 hc'`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[h]`. Conclude with `(congrFun (B.repr_sum_self c) i).symm`.
+-/
 theorem spec_case {Y : Scheme.{0}} (p : Y ⟶ Sp A) (q : Y ⟶ Sp J)
     (sq : IsPullback p q (spMap (algebraMap k A)) (spMap (algebraMap k J))) (f : Γ(Y, ⊤)) :
     ∃! c : I → A, f = ∑ i, p.appTop.hom (toΓ A (c i)) * q.appTop.hom (toΓ J (b i)) := by
@@ -179,6 +234,17 @@ section AffineBase
 variable {k J : Type} [CommRing k] [CommRing J] [Algebra k J]
   {I : Type} [Fintype I] (b : Module.Basis I k J)
 
+/- English proof (translation)
+Set `A : Type` to `Γ(U, ⊤)`. Set `g : k →+* A` to `(Spec.preimage (U.isoSpec.inv ≫ u)).hom`. Use `letI : Algebra k A := g.toAlgebra`. Establish `hg : spMap (algebraMap k A) = U.isoSpec.inv ≫ u` using `Spec.map_preimage _`. Establish `sq' : IsPullback (p ≫ U.isoSpec.hom) q (spMap (algebraMap k A)) (spMap (algebraMap k J))`.
+
+Rewrite using `[hg]`. Conclude with `IsPullback.of_iso sq (Iso.refl _) U.isoSpec (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simp)`. Set `ψ : A →+* Γ(U, ⊤)` to `U.isoSpec.hom.appTop.hom.comp (toΓ A)`. Use `haveI : IsIso U.isoSpec.hom.appTop := inferInstanceAs (IsIso (U.isoSpec.hom.app ⊤))`. Establish `hψ : Function.Bijective ψ` using `(ConcreteCategory.bijective_of_isIso U.isoSpec.hom.appTop).comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv)`.
+
+Establish `hp : ∀ a : A, (p ≫ U.isoSpec.hom).appTop.hom (toΓ A a) = p.appTop.hom (ψ a)`. Introduce `a`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`. Both sides reduce to the same expression. Take `⟨c, hc, hu⟩` from `spec_case b _ q sq' f`.
+
+Use `⟨fun i => ψ (c i), ?_, fun c' hc' => ?_⟩` and prove the remaining obligations. Use `Eq.trans hc (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hp]`. Use `choose d hd using fun i => hψ.2 (c' i)`. Establish `: d = c` using `hu d (by`.
+
+Use `Eq.trans hc' (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hp, hd])`. Use function extensionality and compare the values at `i`. Rewrite using `[← hd i, this]`.
+-/
 theorem affine_case {U Y : Scheme.{0}} [IsAffine U] (p : Y ⟶ U) (q : Y ⟶ Sp J) (u : U ⟶ Sp k)
     (sq : IsPullback p q u (spMap (algebraMap k J))) (f : Γ(Y, ⊤)) :
     ∃! c : I → Γ(U, ⊤), f = ∑ i, p.appTop.hom (c i) * q.appTop.hom (toΓ J (b i)) := by
@@ -214,6 +280,9 @@ end AffineBase
 
 section Restrict
 
+/- English proof (translation)
+Establish `h : V.ι.appTop ≫ V.topIso.hom = Y.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op` using `(Y.presheaf.map_comp (homOfLE (x := V.ι ''ᵁ ⊤) le_top).op (eqToHom V.ι_image_top.symm).op).symm.trans (congrArg _ (Subsingleton.elim _ _))`. Conclude with `congrArg (fun q => q.hom s) h`.
+-/
 theorem top_res {Y : Scheme.{0}} (V : Y.Opens) (s : Γ(Y, ⊤)) :
     V.topIso.hom.hom (V.ι.appTop.hom s) = (Y.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op).hom s := by
   have h : V.ι.appTop ≫ V.topIso.hom = Y.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op :=
@@ -221,6 +290,11 @@ theorem top_res {Y : Scheme.{0}} (V : Y.Opens) (s : Γ(Y, ⊤)) :
       (congrArg _ (Subsingleton.elim _ _))
   exact congrArg (fun q => q.hom s) h
 
+/- English proof (translation)
+Establish `h0 : (f.app (U.ι ''ᵁ ⊤) ≫ Y.presheaf.map (eqToHom (image_morphismRestrict_preimage f U ⊤)).op) ≫ Y.presheaf.map (eqToHom (f ⁻¹ᵁ U).ι_image_top.symm).op = Z.presheaf.map (eqToHom U.ι_image_top.symm).op ≫ f.app U`. Rewrite using `[f.naturality (eqToHom U.ι_image_top.symm).op, Category.assoc]`. Conclude with `congrArg (f.app _ ≫ ·) ((Y.presheaf.map_comp (eqToHom (image_morphismRestrict_preimage f U ⊤)).op (eqToHom (f ⁻¹ᵁ U).ι_image_top.symm).op).symm.trans (congrArg _ (Subsingleton.elim _ _)))`. Establish `h : (f ∣_ U).appTop ≫ (f ⁻¹ᵁ U).topIso.hom = U.topIso.hom ≫ f.app U`. Rewrite using `[morphismRestrict_appTop]`.
+
+Conclude with `h0`. Conclude with `congrArg (fun q => q.hom a) h`.
+-/
 theorem restrict_appTop {Y Z : Scheme.{0}} (f : Y ⟶ Z) (U : Z.Opens) (a : Γ(U.toScheme, ⊤)) :
     (f ⁻¹ᵁ U).topIso.hom.hom ((f ∣_ U).appTop.hom a) = (f.app U).hom (U.topIso.hom.hom a) := by
   have h0 : (f.app (U.ι ''ᵁ ⊤) ≫ Y.presheaf.map (eqToHom (image_morphismRestrict_preimage f U ⊤)).op) ≫
@@ -240,6 +314,9 @@ section Main
 
 variable {X0 : Scheme.{0}} (G : Over X0) {k : Type} [Field k] (x : Sp k ⟶ X0) (m : ℕ)
 
+/- English proof (translation)
+Use `IsPullback.of_right (h₁₂ := pullback.fst G.hom x) (v₁₃ := G.hom) (h₂₂ := x) ?_ (prZ_snd G x m) (IsPullback.of_hasPullback G.hom x)` and prove the remaining obligations. Rewrite using `[prZ_fst]`. Conclude with `(IsPullback.of_hasPullback (Tm x m).hom G.hom).flip`.
+-/
 theorem prZ_isPullback : IsPullback (prZ G x m) (fst (Tm x m) G).left (pullback.snd G.hom x)
     (spMap (algebraMap k (Jet k Unit m))) := by
   refine IsPullback.of_right (h₁₂ := pullback.fst G.hom x) (v₁₃ := G.hom) (h₂₂ := x) ?_ (prZ_snd G x m)
@@ -247,6 +324,19 @@ theorem prZ_isPullback : IsPullback (prZ G x m) (fst (Tm x m) G).left (pullback.
   rw [prZ_fst]
   exact (IsPullback.of_hasPullback (Tm x m).hom G.hom).flip
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `jet_basis k m`. Use `haveI : IsAffine U.toScheme := hU`. Establish `sq` using `(isPullback_morphismRestrict (prZ G x m) U).paste_vert (prZ_isPullback G x m)`. Establish `letterRowOperator : ∀ y, (prZ G x m ⁻¹ᵁ U).topIso.hom.hom ((prZ G x m ⁻¹ᵁ U).topIso.inv.hom y) = y` using `fun y => congrArg (fun q => q.hom y) (prZ G x m ⁻¹ᵁ U).topIso.inv_hom_id`. Establish `TV2 : ∀ y, (prZ G x m ⁻¹ᵁ U).topIso.inv.hom ((prZ G x m ⁻¹ᵁ U).topIso.hom.hom y) = y` using `fun y => congrArg (fun q => q.hom y) (prZ G x m ⁻¹ᵁ U).topIso.hom_inv_id`.
+
+Establish `TU1 : ∀ y, U.topIso.hom.hom (U.topIso.inv.hom y) = y` using `fun y => congrArg (fun q => q.hom y) U.topIso.inv_hom_id`. Establish `fm : ∀ i : Fin (m + 1), (prZ G x m ⁻¹ᵁ U).topIso.hom.hom (((prZ G x m ⁻¹ᵁ U).ι ≫ (fst (Tm x m) G).left).appTop.hom (toΓ _ (b i))) = dltOn G x m _ ^ (i : ℕ)`. Introduce `i`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, hb, map_pow, map_pow, map_pow, map_pow, top_res]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ c : Fin (m + 1) → Γ(U.toScheme, ⊤), (prZ G x m ⁻¹ᵁ U).topIso.hom.hom (∑ i, ((prZ G x m) ∣_ U).appTop.hom (c i) * ((prZ G x m ⁻¹ᵁ U).ι ≫ (fst (Tm x m) G).left).appTop.hom (toΓ _ (b i))) = ∑ i, ((prZ G x m).app U).hom (U.topIso.hom.hom (c i)) * dltOn G x m _ ^ (i : ℕ)`. Introduce `c`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, restrict_appTop, fm]`.
+
+Take `⟨c, hc, hu⟩` from `affine_case b _ _ _ sq ((prZ G x m ⁻¹ᵁ U).topIso.inv.hom f)`. Use `⟨fun i => U.topIso.hom.hom (c i), ?_, fun c' hc' => ?_⟩` and prove the remaining obligations. Use `congrArg (prZ G x m ⁻¹ᵁ U).topIso.hom.hom hc` as an intermediate fact. Rewrite `this` using `[letterRowOperator, key]`. Conclude with `this`.
+
+Establish `h : (fun i => U.topIso.inv.hom (c' i)) = c` using `hu _ (by`. Establish `h2` using `key fun i => U.topIso.inv.hom (c' i)`. Simplify using `only [TU1] at h2`. Rewrite `h2` using `[← hc']`. Conclude with `(congrArg _ h2.symm).trans (TV2 _))`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← h, TU1]`.
+-/
 theorem prZ_affine (U : (pullback G.hom x).Opens) (hU : IsAffineOpen U) (f : Γ(Ym G x m, prZ G x m ⁻¹ᵁ U)) :
     ∃! c : Fin (m + 1) → Γ(pullback G.hom x, U),
       f = ∑ i, ((prZ G x m).app U).hom (c i) * dltOn G x m _ ^ (i : ℕ) := by
@@ -287,6 +377,9 @@ theorem prZ_affine (U : (pullback G.hom x).Opens) (hU : IsAffineOpen U) (f : Γ(
     funext i
     rw [← h, TU1]
 
+/- English proof (translation)
+Introduce `X0 G k _ x m W f`. Use `sections_of_affine (prZ G x m) (fun U i => dltOn G x m _ ^ (i : ℕ)) ?_ (fun U hU f => prZ_affine G x m U hU f) W f` and prove the remaining obligations. Introduce `U V h i`. Rewrite using `[map_pow, dltOn, res_res]`. Both sides reduce to the same expression.
+-/
 theorem sections_thick : ∀ (X0 : Scheme.{0}) (G : Over X0) (k : Type) [Field k] (x : Sp k ⟶ X0) (m : ℕ)
     (W : (pullback G.hom x).Opens) (f : Γ(Ym G x m, prZ G x m ⁻¹ᵁ W)),
     ∃! c : Fin (m + 1) → Γ(pullback G.hom x, W),

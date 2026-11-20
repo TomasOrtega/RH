@@ -25,6 +25,9 @@ open GlobalTheory.OrbitSep
 
 namespace GlobalTheory.QuotDescent
 
+/- English proof (translation)
+Establish `e : Spec.map (CommRingCat.ofHom (functionFieldMap (a ≫ b))) ≫ genericFieldPoint Z = Spec.map (CommRingCat.ofHom ((functionFieldMap a).comp (functionFieldMap b))) ≫ genericFieldPoint Z`. Rewrite using `[specMap_functionFieldMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, specMap_functionFieldMap, ← Category.assoc, ← Category.assoc, specMap_functionFieldMap]`. Use `haveI : Mono (genericFieldPoint Z) := inferInstanceAs (Mono (Z.fromSpecStalk _))`. Use `Spec.map_injective ((cancel_mono _).mp e)` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+-/
 theorem functionFieldMap_comp {X Y Z : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsIntegral Z]
     (a : X ⟶ Y) (b : Y ⟶ Z) [IsDominant a] [IsDominant b] [IsDominant (a ≫ b)] :
     functionFieldMap (a ≫ b) = (functionFieldMap a).comp (functionFieldMap b) := by
@@ -37,6 +40,13 @@ theorem functionFieldMap_comp {X Y Z : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
   have := Spec.map_injective ((cancel_mono _).mp e)
   exact congrArg CommRingCat.Hom.hom this
 
+/- English proof (translation)
+Introduce `X _ Γ _ ρ γ δ u`. Use `haveI : IsIso (ρ γ).hom := Iso.isIso_hom (ρ γ)`. Use `haveI : IsIso (ρ δ).hom := Iso.isIso_hom (ρ δ)`. Use `haveI : IsIso (ρ (γ * δ)).hom := Iso.isIso_hom (ρ (γ * δ))`. Establish `hc : (ρ (γ * δ)).hom = (ρ δ).hom ≫ (ρ γ).hom`.
+
+Rewrite using `[map_mul, Aut.Aut_mul_def]`. Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `functionFieldMap (ρ (γ * δ)).hom (u : X.functionField) = functionFieldMap (ρ δ).hom (functionFieldMap (ρ γ).hom (u : X.functionField))`. Establish `key : ∀ (f : X ⟶ X) (_ : IsDominant f), f = (ρ δ).hom ≫ (ρ γ).hom → functionFieldMap f (u : X.functionField) = functionFieldMap (ρ δ).hom (functionFieldMap (ρ γ).hom (u : X.functionField))`.
+
+Introduce and unpack `f _ rfl`. Rewrite using `[functionFieldMap_comp]`. Both sides reduce to the same expression. Conclude with `key _ inferInstance hc`.
+-/
 theorem fnAct_mul : ∀ (X : Scheme.{0}) [IsIntegral X] (Γ : Type) [Group Γ] (ρ : Γ →* Aut X) (γ δ : Γ)
     (u : X.functionFieldˣ), fnAct ρ (γ * δ) u = fnAct ρ δ (fnAct ρ γ u) := by
   intro X _ Γ _ ρ γ δ u
@@ -56,6 +66,35 @@ theorem fnAct_mul : ∀ (X : Scheme.{0}) [IsIntegral X] (Γ : Type) [Group Γ] (
     rfl
   exact key _ inferInstance hc
 
+/- English proof (translation)
+Introduce `F _ _ X W _ q sW Γ _ _ ρ L hL _ hq hR`. Take `⟨D, c, hcls, hcoc, heq, hin⟩` from `hR`. Use `haveI : IsIntegral W := hq.isIntegral`. Use `haveI : Surjective q := hq.surjective`. Use `haveI : CharZero X.functionField := charZero_of_injective_ringHom (toFunctionField (q ≫ sW)).injective`.
+
+Set `σ : Γ → X.functionField →+* X.functionField` to `fun γ => haveI : IsIso (ρ γ).hom := Iso.isIso_hom (ρ γ)`. Use `functionFieldMap (ρ γ).hom`. Establish `hσu : ∀ γ (u : X.functionFieldˣ), ((fnAct ρ γ u : X.functionFieldˣ) : X.functionField) = σ γ u` using `fun _ _ => rfl`. Establish `hσ : ∀ γ δ a, σ (γ * δ) a = σ δ (σ γ a)`. Introduce `γ δ a`.
+
+Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Use `congrArg Units.val (fnAct_mul X Γ ρ γ δ (Units.mk0 a ha))` as an intermediate fact. Rewrite `this` using `[hσu, hσu, hσu]`. Then use the resulting hypothesis. Establish `hcoc' : ∀ γ δ, (c (γ * δ) : X.functionField) = σ δ (c γ) * c δ` using `fun γ δ => by`.
+
+Rewrite using `[hcoc, Units.val_mul, hσu]`. Establish `htriv : ∀ γ, (∀ a, σ γ a = a) → c γ = 1`. Introduce `γ hγ`. Establish `hη : (ρ γ).hom (genericPoint X) = genericPoint X` using `by haveI : IsIso (ρ γ).hom := Iso.isIso_hom (ρ γ)`. Establish `h1` using `(genericPoint_spec X).image (ρ γ).hom.continuous`.
+
+Establish `hs : Function.Surjective (ρ γ).hom.base` using `(ρ γ).hom.surjective`. Simplify using `only [Set.top_eq_univ, Set.image_univ, hs.range_eq, closure_univ] at h1`. Conclude with `h1.eq (genericPoint_spec X)`. Establish `hfix` using `GlobalTheory.T.fromSpecResidueField_comp_aut_eq_of_fixes X Γ ρ γ _ hη (fun u _ => by rw [hσu, hγ, sub_self]; exact zeroAt_zero _)`. Establish `h0` using `hin γ _ 1 hfix (D.isEqn_genericPoint 1)`.
+
+Establish `h1 : ((fnAct ρ γ 1 * (c γ)⁻¹ * 1⁻¹ : X.functionFieldˣ) : X.functionField) - 1 = 0`. Assume the negation of the conclusion as `hne`. Conclude with `(zeroAt_iff.1 h0).2 (unitAt_genericPoint hne)`. Rewrite `h1` using `[map_one, one_mul, inv_one, mul_one, sub_eq_zero, ← Units.val_one, Units.val_inj, inv_eq_one]`. Conclude with `h1`.
+
+Take `⟨f, hf⟩` from `GlobalTheory.T.hilbert90_finite_rightAction_charZero_field _ Γ σ hσ c hcoc' htriv`. Establish `hfu : ∀ γ, fnAct ρ γ f = c γ * f` using `fun γ => Units.ext (by rw [hσu, Units.val_mul]; exact hf γ)`. Use `set D' := D - CartierDiv.principal f with hD'`. Establish `hD : D' + CartierDiv.principal f = D` using `sub_add_cancel _ _`. Establish `hinv' : ∀ γ x g, D'.IsEqn ((ρ γ).hom x) g → D'.IsEqn x (fnAct ρ γ g)`.
+
+Introduce `γ x g h`. Establish `h1` using `heq γ x (g * f) (by rw [← hD]; exact h.add (CartierDiv.isEqn_principal f _))`. Establish `h2` using `h1.sub (CartierDiv.isEqn_principal f x)`. Establish `e : fnAct ρ γ g = fnAct ρ γ (g * f) * (c γ)⁻¹ / f`. Rewrite using `[map_mul, hfu]`.
+
+Simplify using `[div_eq_mul_inv, mul_comm, mul_assoc, mul_left_comm]`. Rewrite using `[e]`. Conclude with `h2`. Establish `hin' : ∀ γ x g, X.fromSpecResidueField x ≫ (ρ γ).hom = X.fromSpecResidueField x → D'.IsEqn x g → ZeroAt x (((fnAct ρ γ g * g⁻¹ : X.functionFieldˣ) : X.functionField) - 1)`. Introduce `γ x g hx h`.
+
+Establish `h1` using `hin γ x (g * f) hx (by rw [← hD]; exact h.add (CartierDiv.isEqn_principal f x))`. Establish `e : fnAct ρ γ g * g⁻¹ = fnAct ρ γ (g * f) * (c γ)⁻¹ * (g * f)⁻¹`. Rewrite using `[map_mul, hfu]`. Simplify using `[mul_inv_rev, mul_comm, mul_assoc, mul_left_comm]`. Rewrite using `[e]`.
+
+Conclude with `h1`. Establish `hloc` using `GlobalTheory.T.exists_invariant_localEquation_cartier_finiteQuotient F X W (q ≫ sW) Γ ρ q hq D' hinv' hin'`. Establish `key : ∀ y : W, ∃ b : W.functionFieldˣ, ∀ x, q x = y → D'.IsEqn x (Units.map (functionFieldMap q).toMonoidHom b)`. Introduce `y`. Take `⟨x, rfl⟩` from `q.surjective y`.
+
+Take `⟨g, hg, hgx⟩` from `hloc x`. Take `⟨b, hb⟩` from `GlobalTheory.T.exists_functionFieldMap_eq_of_groupInvariant X W Γ ρ q hq g hg`. Use `⟨b, fun x' hx' => ?_⟩` and prove the remaining obligations. Take `⟨γ, rfl⟩` from `(hq.apply_eq_iff x x').1 hx'.symm`. Rewrite using `[hb]`.
+
+Establish `hp : (ρ γ⁻¹).hom ((ρ γ).hom x) = x`. Rewrite using `[map_inv]`. Conclude with `Scheme.inv_hom_apply _ _`. Use `hinv' γ⁻¹ ((ρ γ).hom x) g (by rw [hp]; exact hgx)` as an intermediate fact. Rewrite `this` using `[hg]`. Then use the resulting hypothesis.
+
+Take `⟨E, hE⟩` from `GlobalTheory.T.exists_cartierDivisor_group_quotient_descent X W Γ ρ q hq D' key`. Use `⟨toLB E, isLB_toLB E, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.cechPicardPullback_cartierDivisorBundle_eq X W q D' E hE]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem descent : ∀ (F : Type) [Field F] [NumberField F] (X W : Scheme.{0}) [IsIntegral X] (q : X ⟶ W) (sW : W ⟶ Sp F) (Γ : Type) [Group Γ] [Finite Γ] (ρ : Γ →* Aut X) (L : LB X) (hL : L.IsLB), IsProjOver (q ≫ sW) → IsAffineQuotient ρ q → RatLin ρ L hL → ∃ (N : LB W) (hN : N.IsLB), CechPic.pull q (cls N hN) = cls L hL := by
   intro F _ _ X W _ q sW Γ _ _ ρ L hL _ hq hR
   obtain ⟨D, c, hcls, hcoc, heq, hin⟩ := hR

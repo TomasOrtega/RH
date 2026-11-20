@@ -10,6 +10,21 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `F _ n k P Q hP hQ hne hle q hqQ`. Assume the negation of the conclusion as `hqP`. Use `hP.isPrime` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : (MvPolynomial (Fin n) F ⧸ P) →ₐ[F] AlgebraicClosure F, φ (Ideal.Quotient.mk P q) ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Conclude with `hqP (Ideal.Quotient.eq_zero_iff_mem.mp (FGNullstellensatz.proof F (MvPolynomial (Fin n) F ⧸ P) (Ideal.Quotient.mk P q) h))`. Set `x : Fin n → AlgebraicClosure F` to `fun j => φ (Ideal.Quotient.mk P (X j))`. Establish `hev : ∀ g, aeval x g = φ (Ideal.Quotient.mk P g)`. Introduce `g`.
+
+Establish `h : (aeval x : MvPolynomial (Fin n) F →ₐ[F] AlgebraicClosure F) = φ.comp (Ideal.Quotient.mkₐ F P)`. Use extensionality with `j`. Simplify using `[x]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+
+Establish `hxq : aeval x q ≠ 0` using `by rw [hev]; exact hφ`. Establish `hx0 : x ≠ 0`. Introduce `h0`. Apply `hxq` to reduce the goal to its premises. Establish `hc : constantCoeff q = 0`.
+
+Assume the negation of the conclusion as `hc`. Establish `hmem` using `hQ.isHomog q hqQ 0`. Rewrite `hmem` using `[homogeneousComponent_zero, ← constantCoeff_eq]`. Conclude with `hQ.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem ((Ne.isUnit hc).map C))`. Rewrite using `[h0, aeval_zero, hc, map_zero]`.
+
+Take `⟨u, hux, huQ⟩` from `hT F n k Q hQ (hD F n k Q hQ hne) x hx0 ⟨q, hqQ, hxq⟩`. Apply `huQ` to reduce the goal to its premises. Use `hZ F n k Q hQ.isHomog (AlgebraicClosure F) u fun g hg => ?_` and prove the remaining obligations. Establish `hgP` using `hle hg`. Simplify using `only [incIdeal, Submodule.mem_iInf, RingHom.mem_ker] at hgP`.
+
+Use `hgP u ⟨x, hx0, fun g' hg' => ?_, hux⟩` and prove the remaining obligations. Rewrite using `[hev, Ideal.Quotient.eq_zero_iff_mem.mpr hg', map_zero]`.
+-/
 theorem IncIdealSeparate.proof (hZ : IncidenceZeroLocus.Statement) (hT : FormsThroughPoint.Statement)
     (hD : IncIdealNeBotDim.Statement) : IncIdealSeparate.Statement := by
   intro F _ n k P Q hP hQ hne hle q hqQ

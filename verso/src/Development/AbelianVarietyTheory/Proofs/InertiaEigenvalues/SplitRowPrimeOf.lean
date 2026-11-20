@@ -8,6 +8,11 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.HubX.SplitDecl
 
+/- English proof (translation)
+Establish `hp` using `(D.nd.lPrime i).out`. Establish `h5 : 5 ≤ D.nd.l i`. Establish `h2` using `hp.two_le`. Establish `h3 : D.nd.l i ≠ 3` using `fun e => hr.1 (Or.inr e)`. Establish `h2' : D.nd.l i ≠ 2` using `fun e => hr.1 (Or.inl (e ▸ D.host.toHostRaw.two_mem_small))`.
+
+Establish `h4 : D.nd.l i ≠ 4` using `fun e => by rw [e] at hp; norm_num at hp`. Use linear arithmetic over natural numbers and integers. Use `⟨hp, h5, fun e => hr.2.1 (Or.inl e), fun e => hr.2.1 (Or.inr e), fun k e => hg ?_, hs⟩` and prove the remaining obligations. Rewrite using `[e]`. Apply the tactic sequence `fin_cases k <;> simp [TwistedPlaces.gset]`.
+-/
 theorem splitRowPrime_of {D : D7} {L : SizeData₂ D} {X : KillingConditions.HubData D} (i : D.nd.Loc)
     (hg : D.nd.l i ∉ TwistedPlaces.gset D) (hr : KillingConditions.RangeAD L X.exc (D.nd.l i)) (hs : TwistedPlaces.SplitK D (D.nd.l i)) :
     GlobalTheory.IndefiniteRowSideFullHecke.SplitPlaceTypes.SplitRowPrime D.host (D.nd.l i) := by
@@ -22,6 +27,9 @@ theorem splitRowPrime_of {D : D7} {L : SizeData₂ D} {X : KillingConditions.Hub
   rw [e]
   fin_cases k <;> simp [TwistedPlaces.gset]
 
+/- English proof (translation)
+Introduce `D L HW R X h hJ i _ hg hr hs`. Establish `hsp` using `splitRowPrime_of (L := L) (X := X) i hg hr hs`. Use `⟨GlobalTheory.HubX.Check.decl h hJ i hg hr hs ((GlobalTheory.T.exists_splitPlacesDeclaration_splitRowPrime D i hJ.choose hsp).1), ?_⟩` and prove the remaining obligations. Introduce `v hv`. Conclude with `(GlobalTheory.SplitPlaces.placesSplit D.host (D.nd.l i) hsp v hv).1`.
+-/
 theorem main : ∀ (D : D7) (L : SizeData₂ D) (HW : HWOf D.loc) (R : KillingConditions.RowK) (X : KillingConditions.HubData D),
     GlobalTheory.HubX.Canon L HW R X → ∀ (hJ : AdmissibleParameterJ.ConclusionJa D) (i : D.nd.Loc), TwistedPlaces.TwLoc D i → D.nd.l i ∉ TwistedPlaces.gset D →
     KillingConditions.RangeAD L X.exc (D.nd.l i) → TwistedPlaces.SplitK D (D.nd.l i) →

@@ -10,6 +10,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.
 
 namespace GlobalTheory.LieRead.StepLetters
 
+/- English proof (translation)
+Rewrite `h`, `h'` using `[List.getElem?_eq_some_iff]`. Take `⟨hk, rfl⟩` from `h`. Take `⟨hk', e⟩` from `h'`. Conclude with `((hL.getElem_inj_iff).1 e).symm`.
+-/
 theorem idx_uniq {α : Type} {L : List α} (hL : L.Nodup) {k k' : ℕ} {x : α} (h : L[k]? = some x)
     (h' : L[k']? = some x) : k = k' := by
   rw [List.getElem?_eq_some_iff] at h h'
@@ -19,6 +22,11 @@ theorem idx_uniq {α : Type} {L : List α} (hL : L.Nodup) {k k' : ℕ} {x : α} 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Take `⟨τ', m⟩` from `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ dsimp only at h1 h2`. Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+
+Introduce `h`. Consider the cases of `h`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem letter_iff {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} (x : Letter Dw) (τ : E →+* ℂ) (j : ℕ) (hj : j < Dw.mult τ) :
     (x.1 = τ ∧ (x.2 : ℕ) = j) ↔ x = ⟨τ, ⟨j, hj⟩⟩ := by
   obtain ⟨τ', m⟩ := x
@@ -35,6 +43,29 @@ end GlobalTheory.LieRead.StepLetters
 
 open GlobalTheory.LieRead.StepLetters in
 open Classical in
+/- English proof (translation)
+Introduce `D O K _ _ F hg τ i hi`. Use `set L := letters O.S.Dw with hLdef`. Establish `hnd : L.Nodup` using `GlobalTheory.Proof.LetterConjugation.nodup_letters _`. Set `pos : ∀ m : ℕ, m < O.S.Dw.mult τ → Fin F.P₀.g` to `fun m hm => ⟨L.idxOf (⟨τ, ⟨m, hm⟩⟩ : Letter O.S.Dw), by`. Rewrite using `[hg]`.
+
+Conclude with `List.idxOf_lt_length_of_mem (GlobalTheory.Proof.LetterConjugation.mem_letters _ _)⟩`. Establish `hpos : ∀ m (hm : m < O.S.Dw.mult τ), L[((pos m hm : Fin F.P₀.g) : ℕ)]? = some ⟨τ, ⟨m, hm⟩⟩` using `fun m hm => List.getElem?_idxOf (GlobalTheory.Proof.LetterConjugation.mem_letters _ _)`. Establish `hcond : ∀ (p' : Fin F.P₀.g) (m : ℕ) (hm : m < O.S.Dw.mult τ), (∃ x : Letter O.S.Dw, x.1 = τ ∧ (x.2 : ℕ) = m ∧ L[(p' : ℕ)]? = some x) ↔ p' = pos m hm`. Introduce `p' m hm`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, h1, h2, h3⟩`. Rewrite `h3` using `[(letter_iff x τ m hm).1 ⟨h1, h2⟩]`. Conclude with `Fin.ext (idx_uniq hnd h3 (hpos m hm))`. Introduce and unpack `rfl`. Conclude with `⟨_, rfl, rfl, hpos m hm⟩`.
+
+Establish `hlt : ∀ j : Fin (i + 1), (j : ℕ) < O.S.Dw.mult τ` using `fun j => lt_of_lt_of_le j.2 hi`. Set `p : Fin (i + 1) → Fin F.P₀.g` to `fun j => pos j (hlt j)`. Establish `hvec : ∀ j : Fin (i + 1), stepVec O F τ j = Pi.single (p j) 1`. Introduce `j`. Use function extensionality and compare the values at `p'`.
+
+Rewrite using `[stepVec, Pi.single_apply]`. Conclude with `if_congr (hcond p' j (hlt j)) rfl rfl`. Establish `hset : ∀ k (hk : k ≤ i + 1), {v : Fin F.P₀.g → K | ∃ (i' : Fin F.P₀.g) (x : Letter O.S.Dw), x.1 = τ ∧ (x.2 : ℕ) < k ∧ L[(i' : ℕ)]? = some x ∧ v = Pi.single i' 1} = Set.range fun j : Fin k => (Pi.single (p (Fin.castLE hk j)) 1 : Fin F.P₀.g → K)`. Introduce `k hk`. Use extensionality with `v`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i', x, h1, h2, h3, rfl⟩`. Use `⟨⟨x.2, h2⟩, ?_⟩` and prove the remaining obligations. Establish `: i' = p (Fin.castLE hk ⟨x.2, h2⟩)` using `(hcond i' x.2 _).1 ⟨x, h1, rfl, h3⟩`.
+
+Rewrite using `[this]`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨_, _, rfl, j.2, hpos _ _, rfl⟩`. Use `⟨p, ?_, hvec, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+
+Establish `h1` using `hpos a (hlt a)`. Establish `h2` using `hpos b (hlt b)`. Express the relevant statement in the definitionally equal form `(pos a (hlt a)) = pos b (hlt b) at hab`. Rewrite `h1` using `[hab]`. Rewrite `h2` using `[h1]`.
+
+Use `Option.some_injective _ h2` as an intermediate fact. Conclude with `Fin.ext (congrArg (fun x : Letter O.S.Dw => (x.2 : ℕ)) this)`. Introduce `v`. Rewrite using `[stepCoef, LinearMap.sum_apply]`. Use `hvec (Fin.last i)` as an intermediate fact.
+
+Simplify using `only [Fin.val_last] at this`. Simplify using `only [LinearMap.smul_apply, LinearMap.proj_apply, this, smul_eq_mul, Pi.single_apply]`. Simplify using the standard rewrite rules. Rewrite using `[stepLat, hset (i + 1) le_rfl]`. Both sides reduce to the same expression.
+
+Rewrite using `[stepLat, hset i (Nat.le_succ i)]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.LieRead.stepVec_letters : ∀ (D : D7) (O : Setup D) (K : Type) [Field K] [NumberField K] (F : SemiFib K), F.P₀.g = (letters O.S.Dw).length → ∀ (τ : D.host.E →+* ℂ) (i : ℕ), i < O.S.Dw.mult τ → ∃ p : Fin (i + 1) → Fin F.P₀.g, Function.Injective p ∧ (∀ j : Fin (i + 1), stepVec O F τ j = Pi.single (p j) 1) ∧ (∀ v, stepCoef O F τ i v = v (p (Fin.last i))) ∧ stepLat O F τ (i + 1) = F.lieLat ⊓ (Submodule.span K (Set.range fun j => (Pi.single (p j) 1 : Fin F.P₀.g → K))).restrictScalars (𝓞 K) ∧ stepLat O F τ i = F.lieLat ⊓ (Submodule.span K (Set.range fun j : Fin i => (Pi.single (p j.castSucc) 1 : Fin F.P₀.g → K))).restrictScalars (𝓞 K) := by
   intro D O K _ _ F hg τ i hi
   set L := letters O.S.Dw with hLdef

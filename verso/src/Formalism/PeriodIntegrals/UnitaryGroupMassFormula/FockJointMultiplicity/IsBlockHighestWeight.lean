@@ -8,17 +8,33 @@ namespace PI.FJMS
 
 open PI.FJM PI.FJMP
 
+/- English proof (translation)
+The claim follows from `h.mp hb`.
+-/
 theorem pos_of_sign {x : ℚ} {b : Bool} (hb : b = true) (h : b = true ↔ 0 < x) : 0 < x := h.mp hb
 
+/- English proof (translation)
+Break down `lt_or_gt_of_ne h0 with hlt | hgt` into its components or cases. Conclude with `hlt`. Conclude with `absurd (h.mpr hgt) (by rw [hb]; decide)`.
+-/
 theorem neg_of_sign {x : ℚ} {b : Bool} (hb : b = false) (h0 : x ≠ 0) (h : b = true ↔ 0 < x) : x < 0 := by
   rcases lt_or_gt_of_ne h0 with hlt | hgt
   · exact hlt
   · exact absurd (h.mpr hgt) (by rw [hb]; decide)
 
+/- English proof (translation)
+The claim follows from `segJ_of leftDiagonalActionFormula rightDiagonalActionFormula leftOffDiagonalActionFormula rightOffDiagonalActionFormula p q r s μ μ' P hM`.
+-/
 theorem segs_of {p q r s : ℕ} {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {P : Pol p q r s}
     (hM : MinHyp p q r s μ μ' P) : SegFacts p q r s μ μ' :=
   segJ_of leftDiagonalActionFormula rightDiagonalActionFormula leftOffDiagonalActionFormula rightOffDiagonalActionFormula p q r s μ μ' P hM
 
+/- English proof (translation)
+Introduce `p q r s μ μ' P hM`. Take `⟨sL1p, -, -, -, sL2p, -, -, -⟩` from `segs_of hM`. Apply the tactic sequence `refine blkHyp_pos hM (fun i => (Sum.inl (Fin.castLE (nP_le_nW _) i) : Ix p q)) (fun k => (Sum.inl (Fin.castLE (nP_le_nW _) k) : Ix r s)) (Sum.inl_injective.comp (Fin.castLE_injective _)) (Sum.inl_injective.comp (Fin.castLE_injective _)) (fun a b h => by simp only [posC, Fin.lt_de …`. Consider the cases of `c with`. Consider the case `inl c`.
+
+Take `⟨x, hx⟩` from `idxP (rightWeightFirst p q r s μ') sL2p c h2`. Conclude with `⟨x, by simp only [hx]⟩`. Consider the case `inr c => simp [linePos] at h1`. Consider the cases of `a with`. Consider the case `inl a`.
+
+Take `⟨x, hx⟩` from `idxP (leftWeightFirst p q r s μ) sL1p a h2`. Conclude with `⟨x, by simp only [hx]⟩`. Consider the case `inr a => simp [linePos] at h1`.
+-/
 theorem hypothesis_first_cover : HypA := by
   intro p q r s μ μ' P hM
   obtain ⟨sL1p, -, -, -, sL2p, -, -, -⟩ := segs_of hM
@@ -42,6 +58,13 @@ theorem hypothesis_first_cover : HypA := by
       exact ⟨x, by simp only [hx]⟩
     | inr a => simp [linePos] at h1
 
+/- English proof (translation)
+Introduce `p q r s μ μ' P hM`. Take `⟨-, -, sR1p, -, -, -, sR2p, -⟩` from `segs_of hM`. Apply the tactic sequence `refine blkHyp_pos hM (fun i => (Sum.inr (Fin.castLE (nP_le_nW _) i) : Ix p q)) (fun k => (Sum.inr (Fin.castLE (nP_le_nW _) k) : Ix r s)) (Sum.inr_injective.comp (Fin.castLE_injective _)) (Sum.inr_injective.comp (Fin.castLE_injective _)) (fun a b h => by simp only [posC, Fin.lt_de …`. Consider the cases of `c with`. Consider the case `inl c => simp [linePos] at h1`.
+
+Consider the case `inr c`. Take `⟨x, hx⟩` from `idxP (rightWeightSecond p q r s μ') sR2p c h2`. Conclude with `⟨x, by simp only [hx]⟩`. Consider the cases of `a with`. Consider the case `inl a => simp [linePos] at h1`.
+
+Consider the case `inr a`. Take `⟨x, hx⟩` from `idxP (leftWeightSecond p q r s μ) sR1p a h2`. Conclude with `⟨x, by simp only [hx]⟩`.
+-/
 theorem hypothesis_third_cover : HypC := by
   intro p q r s μ μ' P hM
   obtain ⟨-, -, sR1p, -, -, -, sR2p, -⟩ := segs_of hM
@@ -65,6 +88,17 @@ theorem hypothesis_third_cover : HypC := by
       obtain ⟨x, hx⟩ := idxP (leftWeightSecond p q r s μ) sR1p a h2
       exact ⟨x, by simp only [hx]⟩
 
+/- English proof (translation)
+Introduce `p q r s μ μ' P hM`. Take `⟨-, sL1n, -, -, -, -, -, sR2n⟩` from `segs_of hM`. Apply the tactic sequence `refine blkHyp_neg hM (fun i => (Sum.inl (Fin.rev (Fin.castLE (nN_le _) i)) : Ix p q)) (fun k => (Sum.inr (Fin.rev (Fin.castLE (nN_le _) k)) : Ix r s)) (Sum.inl_injective.comp (Fin.rev_injective.comp (Fin.castLE_injective _))) (Sum.inr_injective.comp (Fin.rev_injective.comp (Fin.c …`. Establish `h' : a.val < b.val` using `h`. Use `b.isLt` as an intermediate fact.
+
+Use `nN_le (leftWeightFirst p q r s μ)` as an intermediate fact. Simplify using `only [posC, Fin.lt_def, Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Establish `h' : c.val < d.val` using `h`. Use `d.isLt` as an intermediate fact.
+
+Use `nN_le (rightWeightSecond p q r s μ')` as an intermediate fact. Simplify using `only [posC, Fin.lt_def, Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Consider the cases of `c with`. Consider the case `inl c => simp [linePos] at h1`.
+
+Consider the case `inr c`. Take `⟨x, hx⟩` from `idxN (rightWeightSecond p q r s μ') sR2n c h2`. Conclude with `⟨x, by simp only [hx]⟩`. Consider the cases of `a with`. Consider the case `inl a`.
+
+Take `⟨x, hx⟩` from `idxN (leftWeightFirst p q r s μ) sL1n a h2`. Conclude with `⟨x, by simp only [hx]⟩`. Consider the case `inr a => simp [linePos] at h1`.
+-/
 theorem hypothesis_second_cover : HypB := by
   intro p q r s μ μ' P hM
   obtain ⟨-, sL1n, -, -, -, -, -, sR2n⟩ := segs_of hM
@@ -98,6 +132,17 @@ theorem hypothesis_second_cover : HypB := by
       exact ⟨x, by simp only [hx]⟩
     | inr a => simp [linePos] at h1
 
+/- English proof (translation)
+Introduce `p q r s μ μ' P hM`. Take `⟨-, -, -, sR1n, -, sL2n, -, -⟩` from `segs_of hM`. Apply the tactic sequence `refine blkHyp_neg hM (fun i => (Sum.inr (Fin.rev (Fin.castLE (nN_le _) i)) : Ix p q)) (fun k => (Sum.inl (Fin.rev (Fin.castLE (nN_le _) k)) : Ix r s)) (Sum.inr_injective.comp (Fin.rev_injective.comp (Fin.castLE_injective _))) (Sum.inl_injective.comp (Fin.rev_injective.comp (Fin.c …`. Establish `h' : a.val < b.val` using `h`. Use `b.isLt` as an intermediate fact.
+
+Use `nN_le (leftWeightSecond p q r s μ)` as an intermediate fact. Simplify using `only [posC, Fin.lt_def, Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Establish `h' : c.val < d.val` using `h`. Use `d.isLt` as an intermediate fact.
+
+Use `nN_le (rightWeightFirst p q r s μ')` as an intermediate fact. Simplify using `only [posC, Fin.lt_def, Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Consider the cases of `c with`. Consider the case `inl c`.
+
+Take `⟨x, hx⟩` from `idxN (rightWeightFirst p q r s μ') sL2n c h2`. Conclude with `⟨x, by simp only [hx]⟩`. Consider the case `inr c => simp [linePos] at h1`. Consider the cases of `a with`. Consider the case `inl a => simp [linePos] at h1`.
+
+Consider the case `inr a`. Take `⟨x, hx⟩` from `idxN (leftWeightSecond p q r s μ) sR1n a h2`. Conclude with `⟨x, by simp only [hx]⟩`.
+-/
 theorem hypothesis_fourth_cover : HypD := by
   intro p q r s μ μ' P hM
   obtain ⟨-, -, -, sR1n, -, sL2n, -, -⟩ := segs_of hM
@@ -131,6 +176,15 @@ theorem hypothesis_fourth_cover : HypD := by
       obtain ⟨x, hx⟩ := idxN (leftWeightSecond p q r s μ) sR1n a h2
       exact ⟨x, by simp only [hx]⟩
 
+/- English proof (translation)
+Introduce `p q r s μ μ' P hM e he l hl`. Take `⟨sL1p, sL1n, sR1p, sR1n, sL2p, sL2n, sR2p, sR2n⟩` from `segs_of hM`. Take `⟨h1, h2, h3, h4⟩` from `pure_of hM he hl`. Break down `l with ⟨a | a, c | c⟩` into its components or cases. Take `⟨x, hx⟩` from `idxP (leftWeightFirst p q r s μ) sL1p a (pos_of_sign rfl h3)`.
+
+Take `⟨y, hy⟩` from `idxP (rightWeightFirst p q r s μ') sL2p c (pos_of_sign rfl h4)`. Conclude with `Or.inl (Or.inl (Or.inl ⟨(x, y), by simp only [ιA, hx, hy]⟩))`. Take `⟨x, hx⟩` from `idxN (leftWeightFirst p q r s μ) sL1n a (neg_of_sign rfl h1 h3)`. Take `⟨y, hy⟩` from `idxN (rightWeightSecond p q r s μ') sR2n c (neg_of_sign rfl h2 h4)`. Conclude with `Or.inl (Or.inl (Or.inr ⟨(x, y), by simp only [ιB, hx, hy]⟩))`.
+
+Take `⟨x, hx⟩` from `idxN (leftWeightSecond p q r s μ) sR1n a (neg_of_sign rfl h1 h3)`. Take `⟨y, hy⟩` from `idxN (rightWeightFirst p q r s μ') sL2n c (neg_of_sign rfl h2 h4)`. Conclude with `Or.inr ⟨(x, y), by simp only [ιD, hx, hy]⟩`. Take `⟨x, hx⟩` from `idxP (leftWeightSecond p q r s μ) sR1p a (pos_of_sign rfl h3)`. Take `⟨y, hy⟩` from `idxP (rightWeightSecond p q r s μ') sR2p c (pos_of_sign rfl h4)`.
+
+Conclude with `Or.inl (Or.inr ⟨(x, y), by simp only [ιC, hx, hy]⟩)`.
+-/
 theorem cover_by_blocks : CoverJ := by
   intro p q r s μ μ' P hM e he l hl
   obtain ⟨sL1p, sL1n, sR1p, sR1n, sL2p, sL2n, sR2p, sR2n⟩ := segs_of hM
@@ -149,6 +203,9 @@ theorem cover_by_blocks : CoverJ := by
     obtain ⟨y, hy⟩ := idxP (rightWeightSecond p q r s μ') sR2p c (pos_of_sign rfl h4)
     exact Or.inl (Or.inr ⟨(x, y), by simp only [ιC, hx, hy]⟩)
 
+/- English proof (translation)
+Take `⟨e0, he0⟩` from `exists_mem_support hM.2.1`. Use `⟨fun a => ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[← monomialLeftWeight_eq_weight_sub leftDiagonalActionFormula (mem_leftHighestWeight_of_isMinimalJointVector hM) e0 he0 a, Int.floor_intCast]`. Rewrite using `[← monomialRightWeight_eq_weight_sub rightDiagonalActionFormula (mem_rightHighestWeight_of_isMinimalJointVector hM) e0 he0 c, Int.floor_intCast]`.
+-/
 theorem intFacts_of {p q r s : ℕ} {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {P : Pol p q r s}
     (hM : MinHyp p q r s μ μ' P) : IntFacts p q r s μ μ' := by
   obtain ⟨e0, he0⟩ := exists_mem_support hM.2.1

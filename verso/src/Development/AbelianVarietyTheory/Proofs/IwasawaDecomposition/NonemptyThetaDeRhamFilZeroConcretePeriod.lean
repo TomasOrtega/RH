@@ -22,18 +22,27 @@ open Classical in
 def thetaExt (x : Per.BdR l) : ℂ_[l] :=
   if h : ∃ y : Per.BdRp l, algebraMap (Per.BdRp l) (Per.BdR l) y = x then Per.θD l h.choose else 0
 
+/- English proof (translation)
+Establish `h : ∃ z : Per.BdRp l, algebraMap (Per.BdRp l) (Per.BdR l) z = algebraMap (Per.BdRp l) (Per.BdR l) y` using `⟨y, rfl⟩`. Rewrite using `[thetaExt, dif_pos h, (BdRField.bdR_isField l).2.1 h.choose_spec]`.
+-/
 theorem thetaExt_alg (y : Per.BdRp l) :
     thetaExt (algebraMap (Per.BdRp l) (Per.BdR l) y) = Per.θD l y := by
   have h : ∃ z : Per.BdRp l, algebraMap (Per.BdRp l) (Per.BdR l) z =
       algebraMap (Per.BdRp l) (Per.BdR l) y := ⟨y, rfl⟩
   rw [thetaExt, dif_pos h, (BdRField.bdR_isField l).2.1 h.choose_spec]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `FilLaws.exists_isEps l`. Take `⟨y, hy⟩` from `(mem_FilD_iff_xi_pow l e he 0 x).1 hx`. Conclude with `⟨y, by simpa using hy⟩`.
+-/
 theorem exists_of_mem_FilD_zero {x : Per.BdR l} (hx : x ∈ Per.FilD l 0) :
     ∃ y : Per.BdRp l, x = algebraMap (Per.BdRp l) (Per.BdR l) y := by
   obtain ⟨e, he⟩ := FilLaws.exists_isEps l
   obtain ⟨y, hy⟩ := (mem_FilD_iff_xi_pow l e he 0 x).1 hx
   exact ⟨y, by simpa using hy⟩
 
+/- English proof (translation)
+Establish `h1 : Continuous (AI.actC g)` using `(AddMonoidHomClass.isometry_of_norm (AI.actC g) (AI.actC_norm g)).continuous`. Establish `h2 : Continuous (Per.σC g)` using `(AddMonoidHomClass.isometry_of_norm (Per.σC g) (GlobalTheory.RingBasics.norm_σC g)).continuous`. Proceed by induction on `c using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_eq h1 h2`. Consider the case `ih a => exact (AI.actC_ext g a).trans (GlobalTheory.RingBasics.σC_coe g a).symm`.
+-/
 theorem actC_eq {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (c : ℂ_[l]) :
     AI.actC g c = Per.σC g c := by
   have h1 : Continuous (AI.actC g) :=
@@ -44,6 +53,9 @@ theorem actC_eq {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (c : ℂ_[l]) :
   | hp => exact isClosed_eq h1 h2
   | ih a => exact (AI.actC_ext g a).trans (GlobalTheory.RingBasics.σC_coe g a).symm
 
+/- English proof (translation)
+Rewrite `h` using `[← PreTilt.mk_untilt_eq_coeff_zero, Ideal.Quotient.eq]`. Establish `h1` using `(GlobalTheory.RingBasics.mem_span_pow_OC 1 (x.untilt - y)).1 (by rwa [pow_one])`. Rewrite `h1` using `[pow_one]`. Conclude with `h1`.
+-/
 theorem norm_untilt_sub (x : Per.Fl l) (y : Per.OC l)
     (h : PreTilt.coeff 0 x = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : Per.OC l)}) y) :
     ‖((x.untilt : Per.OC l) : ℂ_[l]) - (y : ℂ_[l])‖ ≤ ‖(l : ℂ_[l])‖ := by
@@ -52,6 +64,19 @@ theorem norm_untilt_sub (x : Per.Fl l) (y : Per.OC l)
   rw [pow_one] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `l _ P AI T`. Establish `hex : ∀ x ∈ (P.PD (MainNotions.LocalSituation.botExt l)).Fil 0, ∃ y : Per.BdRp l, T.eD x = algebraMap (Per.BdRp l) (Per.BdR l) y` using `fun x hx => exists_of_mem_FilD_zero ((T.fil _ _ _).1 hx)`. Establish `hU` using `TiedUnif.tied_uniformiser l P AI T`. Use `⟨{ θ := fun x => thetaExt (T.eD x) θ_one := ?_ θ_add := fun x hx y hy => ?_ θ_mul := fun x hx y hy => ?_ θ_onto := fun c => ?_ θ_ker := fun x hx => ?_ θ_act := fun g x hx => ?_ θ_Om := fun x => ?_ θ_int := fun a => ?_ θ_teich := fun x y h => ?_ fil_succ_iff_mul_t := hU.2.2 _ t_μ …` and prove the remaining obligations. Rewrite using `[map_one, ← map_one (algebraMap (Per.BdRp l) (Per.BdR l)), thetaExt_alg, map_one]`.
+
+Take `⟨u, hu⟩` from `hex x hx`. Take `⟨v, hv⟩` from `hex y hy`. Rewrite using `[map_add, hu, hv, ← map_add, thetaExt_alg, thetaExt_alg, thetaExt_alg, map_add]`. Take `⟨u, hu⟩` from `hex x hx`. Take `⟨v, hv⟩` from `hex y hy`.
+
+Rewrite using `[map_mul, hu, hv, ← map_mul, thetaExt_alg, thetaExt_alg, thetaExt_alg, map_mul]`. Take `⟨y, rfl⟩` from `(thetaD_props l).1 c`. Use `⟨T.eD.symm (algebraMap (Per.BdRp l) (Per.BdR l) y), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[T.fil, RingEquiv.apply_symm_apply]`. Conclude with `TiedUnif.alg_mem_FilD_zero y`.
+
+Rewrite using `[RingEquiv.apply_symm_apply, thetaExt_alg]`. Take `⟨u, hu⟩` from `hex x hx`. Rewrite using `[T.fil, hu, thetaExt_alg, (thetaD_props l).2.1]`. Conclude with `((filD_laws l).2.2.2.2.2.2 1 u).symm`. Take `⟨u, hu⟩` from `hex x hx`.
+
+Rewrite using `[T.actD, hu, (ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.1, thetaExt_alg, thetaExt_alg, (thetaD_props l).2.2.2.2, actC_eq]`. Take `⟨y, hy, hθ⟩` from `T.om x`. Rewrite using `[hy, thetaExt_alg, hθ]`. Rewrite using `[TiedUnif.eD_ιA T, thetaExt_alg, (thetaD_props l).2.2.2.1]`. Conclude with `(GlobalTheory.RingBasics.mem_OC _).1 (Per.θ l a).2`.
+
+Rewrite using `[TiedUnif.eD_ιA T, thetaExt_alg, (thetaD_props l).2.2.2.1, WittVector.fontaineTheta_teichmuller]`. Conclude with `norm_untilt_sub x y h`.
+-/
 theorem nonempty_thetaL : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied l P AI → Nonempty (Formalism.MainNotions.LocalSituation.ThetaL P AI) := by
   intro l _ P AI T

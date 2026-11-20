@@ -4,6 +4,19 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨π, hπP, hπ⟩` from `Ideal.IsPrime.exists_mem_prime_of_ne_bot (q x).isPrime hne`. Use `⟨π, hπ, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hQP`. Establish `hQle : Ideal.span {π} ≤ (q x).asIdeal` using `(Ideal.span_singleton_le_iff_mem _).2 hπP`. Establish `hQprime : (Ideal.span {π}).IsPrime` using `(Ideal.span_singleton_prime hπ.ne_zero).2 hπ`.
+
+Set `Q : PrimeSpectrum R` to `⟨_, hQprime⟩`. Establish `hQsp : Q ⤳ q x` using `(PrimeSpectrum.le_iff_specializes Q (q x)).1 hQle`. Take `⟨x', hx'x, hqx'⟩` from `hq hQsp`. Set `B : PrimeSpectrum R` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hBQ : B ⤳ Q` using `(PrimeSpectrum.le_iff_specializes B Q).1 bot_le`.
+
+Take `⟨x'', hx''x', hqx''⟩` from `hq (hqx' ▸ hBQ)`. Establish `h1 : x < x'`. Use `lt_of_le_not_ge hx'x ?_` and prove the remaining obligations. Introduce `h`. Establish `h' : q x ⤳ q x'` using `h.map q.continuous`.
+
+Rewrite `h'` using `[hqx']`. Conclude with `hQP (le_antisymm ((PrimeSpectrum.le_iff_specializes (q x) Q).2 h') hQle)`. Establish `h2 : x' < x''`. Use `lt_of_le_not_ge hx''x' ?_` and prove the remaining obligations. Introduce `h`.
+
+Establish `h' : q x' ⤳ q x''` using `h.map q.continuous`. Rewrite `h'` using `[hqx', hqx'']`. Establish `hle : Ideal.span {π} ≤ ⊥` using `(PrimeSpectrum.le_iff_specializes Q B).2 h'`. Conclude with `hπ.ne_zero (Ideal.span_singleton_eq_bot.1 (le_bot_iff.1 hle))`. Establish `c1` using `Order.coheight_add_one_le h1`.
+
+Establish `c2` using `Order.coheight_add_one_le h2`. Establish `: (2 : ℕ∞) ≤ Order.coheight x`. Combine the equalities or inequalities in the displayed calculation. Use `this.trans hx` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+-/
 theorem exists_prime_eq_span_of_coheight_le_one (R : Type) [CommRing R] [IsDomain R]
     [UniqueFactorizationMonoid R] (X : Scheme.{0}) (q : X ⟶ Sp R) (hq : GeneralizingMap q)
     (x : X) (hx : Order.coheight x ≤ 1) (hne : (q x).asIdeal ≠ ⊥) :

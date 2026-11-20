@@ -7,11 +7,19 @@ namespace GlobalTheory.BadCount.Inh
 
 variable {A : Type} [CommRing A] {n : ℕ}
 
+/- English proof (translation)
+Introduce `a b`. Use `⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Conclude with `Matrix.one_apply_eq a`.
+-/
 theorem isUniUp_one : IsUniUp (1 : Matrix (Fin n) (Fin n) A) := by
   intro a b
   refine ⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => ?_⟩
   subst h; exact Matrix.one_apply_eq a
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Introduce `c _ hca`. Break down `lt_or_gt_of_ne hca with h | h` into its components or cases. Rewrite using `[hM a c h, zero_mul]`. Rewrite using `[hN c a h, mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+-/
 theorem diag_mul_of_tri {M N : Matrix (Fin n) (Fin n) A} (hM : ∀ a c : Fin n, c < a → M a c = 0)
     (hN : ∀ a c : Fin n, c < a → N a c = 0) (a : Fin n) : (M * N) a a = M a a * N a a := by
   rw [Matrix.mul_apply, Finset.sum_eq_single a]
@@ -21,6 +29,11 @@ theorem diag_mul_of_tri {M N : Matrix (Fin n) (Fin n) A} (hM : ∀ a c : Fin n, 
     · rw [hN c a h, mul_zero]
   · intro h; exact absurd (Finset.mem_univ a) h
 
+/- English proof (translation)
+Introduce `a b`. Prove the components needed by the constructor for the conclusion. Introduce `hba`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+
+Break down `lt_or_ge c a with h | h` into its components or cases. Rewrite using `[(hM a c).1 h, zero_mul]`. Rewrite using `[(hN c b).1 (lt_of_lt_of_le hba h), mul_zero]`. Introduce and unpack `rfl`. Rewrite using `[diag_mul_of_tri (fun a c h => (hM a c).1 h) (fun a c h => (hN a c).1 h), (hM a a).2 rfl, (hN a a).2 rfl, one_mul]`.
+-/
 theorem isUniUp_mul {M N : Matrix (Fin n) (Fin n) A} (hM : IsUniUp M) (hN : IsUniUp N) : IsUniUp (M * N) := by
   intro a b
   constructor
@@ -33,6 +46,13 @@ theorem isUniUp_mul {M N : Matrix (Fin n) (Fin n) A} (hM : IsUniUp M) (hN : IsUn
   · rintro rfl
     rw [diag_mul_of_tri (fun a c h => (hM a c).1 h) (fun a c h => (hN a c).1 h), (hM a a).2 rfl, (hN a a).2 rfl, one_mul]
 
+/- English proof (translation)
+Establish `hb : Matrix.BlockTriangular (u : Matrix (Fin n) (Fin n) A) id` using `fun i j h => (hu i j).1 h`. Establish `hinv : Matrix.BlockTriangular ((u⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) id`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb`. Introduce `a b`.
+
+Use `⟨fun h => hinv h, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `h1 : (((u⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) * (u : Matrix (Fin n) (Fin n) A)) a a = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply_eq]`. Rewrite `h1` using `[diag_mul_of_tri (fun a c h => hinv h) (fun a c h => hb h), (hu a a).2 rfl, mul_one]`.
+
+Conclude with `h1`.
+-/
 theorem isUniUp_inv (u : GL (Fin n) A) (hu : IsUniUp (u : Matrix (Fin n) (Fin n) A)) :
     IsUniUp ((u⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) := by
   have hb : Matrix.BlockTriangular (u : Matrix (Fin n) (Fin n) A) id := fun i j h => (hu i j).1 h
@@ -53,11 +73,21 @@ def uniUpGL : Subgroup (GL (Fin n) A) where
   one_mem' := by rw [Set.mem_setOf_eq, Units.val_one]; exact isUniUp_one
   inv_mem' := fun {u} hu => isUniUp_inv u hu
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_uniUpGL (u : GL (Fin n) A) : u ∈ (uniUpGL : Subgroup (GL (Fin n) A)) ↔ IsUniUp (u : Matrix (Fin n) (Fin n) A) :=
   Iff.rfl
 
 def sd (M : Matrix (Fin n) (Fin n) A) : A := ∑ i ∈ Finset.range (n - 1), entN M i (i + 1)
 
+/- English proof (translation)
+Establish `h0 : i < n` using `by omega`. Simplify using `only [entN, dif_pos (And.intro h0 hi)]`. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add (⟨i, h0⟩ : Fin n) ⟨i + 1, hi⟩]`. Rewrite using `[(hM _ _).2 rfl, (hN _ _).2 rfl, one_mul, mul_one, add_comm]`. Simplify using `[Fin.ext_iff]`.
+
+Introduce and unpack `c ⟨h1, h2⟩`. Establish `h1' : c.val ≠ i` using `fun h => h1 (Fin.ext h)`. Establish `h2' : c.val ≠ i + 1` using `fun h => h2 (Fin.ext h)`. Break down `Nat.lt_or_gt_of_ne h1' with h | h` into its components or cases. Rewrite using `[(hM ⟨i, h0⟩ c).1 (by change c.val < i; omega), zero_mul]`.
+
+Rewrite using `[(hN c ⟨i + 1, hi⟩).1 (by change i + 1 < c.val; omega), mul_zero]`.
+-/
 theorem entN_mul_super {M N : Matrix (Fin n) (Fin n) A} (hM : IsUniUp M) (hN : IsUniUp N) {i : ℕ} (hi : i + 1 < n) :
     entN (M * N) i (i + 1) = entN M i (i + 1) + entN N i (i + 1) := by
   have h0 : i < n := by omega
@@ -72,12 +102,20 @@ theorem entN_mul_super {M N : Matrix (Fin n) (Fin n) A} (hM : IsUniUp M) (hN : I
     · rw [(hM ⟨i, h0⟩ c).1 (by change c.val < i; omega), zero_mul]
     · rw [(hN c ⟨i + 1, hi⟩).1 (by change i + 1 < c.val; omega), mul_zero]
 
+/- English proof (translation)
+Unfold `sd`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i hi => entN_mul_super hM hN ?_` and prove the remaining obligations. Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sd_mul {M N : Matrix (Fin n) (Fin n) A} (hM : IsUniUp M) (hN : IsUniUp N) : sd (M * N) = sd M + sd N := by
   unfold sd
   rw [← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun i hi => entN_mul_super hM hN ?_
   have := Finset.mem_range.1 hi; omega
 
+/- English proof (translation)
+Unfold `sd`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Unfold `entN`. Use `split_ifs with h`. Conclude with `Matrix.one_apply_ne (fun e => by simpa using congrArg Fin.val e)`.
+
+Both sides reduce to the same expression.
+-/
 theorem sd_one : sd (1 : Matrix (Fin n) (Fin n) A) = 0 := by
   unfold sd
   refine Finset.sum_eq_zero fun i _ => ?_
@@ -90,6 +128,9 @@ variable (D : D7)
 
 def whitP : Subgroup (G0g D.nd) := Subgroup.pi Set.univ fun _ => uniUpGL
 
+/- English proof (translation)
+Rewrite using `[whitP, Subgroup.mem_pi]`. Simplify using `only [Set.mem_univ, true_implies, mem_uniUpGL]`.
+-/
 theorem mem_whitP (g : G0g D.nd) :
     g ∈ whitP D ↔ ∀ kv, IsUniUp (g kv : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) := by
   rw [whitP, Subgroup.mem_pi]
@@ -108,15 +149,24 @@ def whitChar (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g 
 
 def halfH (k : Fin 2) : Subgroup (G0g D.nd) := Subgroup.pi {kv | kv.1 ≠ k} fun _ => uniUpGL
 
+/- English proof (translation)
+Introduce `g`. Rewrite using `[halfH, Subgroup.mem_pi]`. Simplify using `only [Set.mem_setOf_eq, mem_uniUpGL]`.
+-/
 theorem isHalf_halfH (k : Fin 2) : IsHalf D k (halfH D k) := by
   intro g
   rw [halfH, Subgroup.mem_pi]
   simp only [Set.mem_setOf_eq, mem_uniUpGL]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hψ, mem_whitP D, fun _ => rfl⟩`.
+-/
 theorem isWhit_whitP (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ) (hψ : ∀ kv, ψ kv ≠ 1) :
     IsWhit D (whitP D) (whitChar D ψ).toHomUnits ψ :=
   ⟨hψ, mem_whitP D, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `D ψ hψ` and use `⟨⟨whitP D, _, isWhit_whitP D ψ hψ⟩, fun k => ⟨halfH D k, isHalf_halfH D k⟩⟩`.
+-/
 theorem exists_whit_half : ∀ (D : D7) (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ),
     (∀ kv, ψ kv ≠ 1) → (∃ (P : Subgroup (G0g D.nd)) (lam : P →* ℂˣ), IsWhit D P lam ψ) ∧ ∀ k, ∃ H, IsHalf D k H :=
   fun D ψ hψ => ⟨⟨whitP D, _, isWhit_whitP D ψ hψ⟩, fun k => ⟨halfH D k, isHalf_halfH D k⟩⟩

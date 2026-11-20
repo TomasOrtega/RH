@@ -18,12 +18,21 @@ def rd (K : Type) {F : Type} [Field K] [Field F] [Algebra F K] (𝔭 : Ideal (�
     (𝓞 K ⧸ extP K 𝔭 ^ k) →+* (𝓞 K ⧸ extP K 𝔭 ^ (k - j)) :=
   Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.sub_le k j))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rd_mk (𝔭 : Ideal (𝓞 F)) (k j : ℕ) (a : 𝓞 K) :
     rd K 𝔭 k j (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ a := rfl
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.factor_surjective _`.
+-/
 theorem rd_surjective (𝔭 : Ideal (𝓞 F)) (k j : ℕ) : Function.Surjective (rd K 𝔭 k j) :=
   Ideal.Quotient.factor_surjective _
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Use `show rd K 𝔭 k j (NormLifting.conjQ _ _ (Ideal.Quotient.mk _ a)) = NormLifting.conjQ _ _ (rd K 𝔭 k j (Ideal.Quotient.mk _ a))`. Rewrite using `[rd_mk, NormLifting.conjQ_mk, NormLifting.conjQ_mk, rd_mk]`.
+-/
 theorem rd_star [Fact (IsFixF K F)] (𝔭 : Ideal (𝓞 F)) (k j : ℕ) (a : 𝓞 K ⧸ extP K 𝔭 ^ k) :
     rd K 𝔭 k j (star a) = star (rd K 𝔭 k j a) := by
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a
@@ -31,6 +40,23 @@ theorem rd_star [Fact (IsFixF K F)] (𝔭 : Ideal (𝓞 F)) (k j : ℕ) (a : �
     NormLifting.conjQ _ _ (rd K 𝔭 k j (Ideal.Quotient.mk _ a))
   rw [rd_mk, NormLifting.conjQ_mk, NormLifting.conjQ_mk, rd_mk]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨J, hJ⟩ : 𝔭 ^ vF 𝔭 c ∣ Ideal.span {c}` from `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr (localValuationFiltration.mem_pow_vF h𝔭 hc))`. Establish `hJp : ¬ J ≤ 𝔭`. Introduce `hle`.
+
+Apply `localValuationFiltration.notMem_pow_vF h𝔭 hc` to reduce the goal to its premises. Establish `hle' : Ideal.span {c} ≤ 𝔭 ^ (vF 𝔭 c + 1)`. Rewrite using `[hJ, pow_succ]`. Conclude with `Ideal.mul_mono_right hle`. Conclude with `hle' (Ideal.mem_span_singleton_self c)`.
+
+Establish `hcop : IsCoprime 𝔭 J`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`. Conclude with `hJp (le_sup_right.trans (h𝔭.eq_of_le hne le_sup_left).symm.le)`. Establish `hcopK : IsCoprime (extP K 𝔭) (J.map ι)`.
+
+Rewrite `hcop`, the goal using `[Ideal.isCoprime_iff_sup_eq]`. Use `show 𝔭.map ι ⊔ J.map ι = ⊤`. Rewrite using `[← Ideal.map_sup, hcop, Ideal.map_top]`. Establish `hinj : Function.Injective ι` using `FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 K)`. Establish `h𝔭0 : 𝔭 ≠ ⊥`.
+
+Introduce `h0`. Use `reductionMapsOfForms.absNorm_pos h𝔭` as an intermediate fact. Rewrite `this` using `[h0, Ideal.absNorm_bot]`. Conclude with `lt_irrefl _ this`. Establish `hP0 : extP K 𝔭 ≠ ⊥` using `by show 𝔭.map ι ≠ ⊥`.
+
+Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective hinj]` and apply the resulting hypothesis. Establish `hsc : Ideal.span {ι c} = (Ideal.span {c}).map ι`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Establish `hspan : Ideal.span {ι c * x} = extP K 𝔭 ^ vF 𝔭 c * (J.map ι * Ideal.span {x})`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, hsc, hJ, Ideal.map_mul, Ideal.map_pow, mul_assoc]`.
+
+Both sides reduce to the same expression. Establish `hle : extP K 𝔭 ^ k ∣ Ideal.span {ι c * x}` using `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr h)`. Rewrite `hle` using `[hspan, show k = vF 𝔭 c + (k - vF 𝔭 c) by omega, pow_add]`. Establish `h2` using `(mul_dvd_mul_iff_left (pow_ne_zero _ hP0)).mp hle`. Establish `h3` using `(hcopK.pow_left (m := k - vF 𝔭 c)).dvd_of_dvd_mul_left h2`.
+
+Conclude with `(Ideal.span_singleton_le_iff_mem _).mp (Ideal.dvd_iff_le.mp h3)`. Introduce `h`. Establish `h'` using `Ideal.mul_mem_mul (localizedQuotients.ι_mem_pow (K := K) (localValuationFiltration.mem_pow_vF h𝔭 hc)) h`. Rewrite `h'` using `[← pow_add, show vF 𝔭 c + (k - vF 𝔭 c) = k by omega]`. Then use the resulting hypothesis.
+-/
 private theorem iota_mul_mem_extP_pow_iff_mem_pow_sub_vF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {c : 𝓞 F} (hc : c ≠ 0)
     {k : ℕ} (hk : vF 𝔭 c ≤ k) (x : 𝓞 K) :
     ι c * x ∈ extP K 𝔭 ^ k ↔ x ∈ extP K 𝔭 ^ (k - vF 𝔭 c) := by
@@ -78,6 +104,9 @@ private theorem iota_mul_mem_extP_pow_iff_mem_pow_sub_vF {𝔭 : Ideal (𝓞 F)}
     have h' := Ideal.mul_mem_mul (localizedQuotients.ι_mem_pow (K := K) (localValuationFiltration.mem_pow_vF h𝔭 hc)) h
     rwa [← pow_add, show vF 𝔭 c + (k - vF 𝔭 c) = k by omega] at h'
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Rewrite using `[← map_mul, rd_mk, Ideal.Quotient.eq_zero_iff_mem, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `iota_mul_mem_extP_pow_iff_mem_pow_sub_vF h𝔭 hc hk x`.
+-/
 theorem mul_eq_zero_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {c : 𝓞 F} (hc : c ≠ 0) {k : ℕ}
     (hk : vF 𝔭 c ≤ k) (z : 𝓞 K ⧸ extP K 𝔭 ^ k) :
     Ideal.Quotient.mk (extP K 𝔭 ^ k) (ι c) * z = 0 ↔ rd K 𝔭 k (vF 𝔭 c) z = 0 := by
@@ -85,12 +114,20 @@ theorem mul_eq_zero_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {c : �
   rw [← map_mul, rd_mk, Ideal.Quotient.eq_zero_iff_mem, Ideal.Quotient.eq_zero_iff_mem]
   exact iota_mul_mem_extP_pow_iff_mem_pow_sub_vF h𝔭 hc hk x
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← mul_sub, mul_eq_zero_iff h𝔭 hc hk, map_sub, sub_eq_zero]`.
+-/
 theorem mul_eq_mul_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {c : 𝓞 F} (hc : c ≠ 0) {k : ℕ}
     (hk : vF 𝔭 c ≤ k) (x y : 𝓞 K ⧸ extP K 𝔭 ^ k) :
     Ideal.Quotient.mk (extP K 𝔭 ^ k) (ι c) * x = Ideal.Quotient.mk (extP K 𝔭 ^ k) (ι c) * y ↔
       rd K 𝔭 k (vF 𝔭 c) x = rd K 𝔭 k (vF 𝔭 c) y := by
   rw [← sub_eq_zero, ← mul_sub, mul_eq_zero_iff h𝔭 hc hk, map_sub, sub_eq_zero]
 
+/- English proof (translation)
+Establish `h1` using `Submodule.card_eq_card_quotient_mul_card (RingHom.ker (rd K 𝔭 k j))`. Rewrite `h1` using `[Nat.card_congr (RingHom.quotientKerEquivOfSurjective (rd_surjective 𝔭 k j)).toEquiv, idealPowerSpanBounds.absNorm_extP_pow hK hF h𝔭, idealPowerSpanBounds.absNorm_extP_pow hK hF h𝔭]`. Establish `hpos : 0 < Ideal.absNorm 𝔭 ^ (2 * (k - j))` using `pow_pos (reductionMapsOfForms.absNorm_pos h𝔭) _`. Establish `h2 : Ideal.absNorm 𝔭 ^ (2 * k) = Ideal.absNorm 𝔭 ^ (2 * j) * Ideal.absNorm 𝔭 ^ (2 * (k - j))`. Rewrite using `[← pow_add]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[h2]`. Conclude with `(Nat.eq_of_mul_eq_mul_right hpos (by rw [← h1])).symm`.
+-/
 theorem card_ker_rd (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {k j : ℕ} (hjk : j ≤ k) :
     Nat.card (RingHom.ker (rd K 𝔭 k j)) = Ideal.absNorm 𝔭 ^ (2 * j) := by
@@ -105,6 +142,9 @@ theorem card_ker_rd (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
 
 variable {κ : Type} [Fintype κ] [DecidableEq κ] [Fact (IsFixF K F)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show Ideal.Quotient.mk _ (ι c * H i j) = Ideal.Quotient.mk _ (ι c) * Ideal.Quotient.mk _ (H i j)`. Conclude with `map_mul _ _ _`.
+-/
 theorem map_smul_mk (𝔭 : Ideal (𝓞 F)) (k : ℕ) (c : 𝓞 F) (H : Matrix κ κ (𝓞 K)) :
     (ι c • H).map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) =
       Ideal.Quotient.mk (extP K 𝔭 ^ k) (ι c) • H.map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) := by
@@ -113,6 +153,15 @@ theorem map_smul_mk (𝔭 : Ideal (𝓞 F)) (k : ℕ) (c : 𝓞 F) (H : Matrix �
     Ideal.Quotient.mk _ (ι c) * Ideal.Quotient.mk _ (H i j)
   exact map_mul _ _ _
 
+/- English proof (translation)
+Establish `hs : ∀ b, f (Function.surjInv hf b) = b` using `Function.surjInv_eq hf`. Rewrite using `[← Nat.card_prod]`. Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `{ toFun := fun a => (⟨f a.1, a.2⟩, ⟨a.1 - Function.surjInv hf (f a.1), by`. Rewrite using `[AddMonoidHom.mem_ker, map_sub, hs, sub_self]⟩)`.
+
+Use `invFun := fun p => ⟨Function.surjInv hf p.1.1 + p.2.1, by`. Rewrite using `[map_add, hs, AddMonoidHom.mem_ker.mp p.2.2, add_zero]`. Conclude with `p.1.2⟩`. Use `left_inv := fun a => Subtype.ext (by show Function.surjInv hf (f a.1) + (a.1 - Function.surjInv hf (f a.1)) = a.1 abel)`. Use `right_inv := fun p => by`.
+
+Establish `e : f (Function.surjInv hf p.1.1 + p.2.1) = p.1.1`. Rewrite using `[map_add, hs, AddMonoidHom.mem_ker.mp p.2.2, add_zero]`. Use `Prod.ext (Subtype.ext e) (Subtype.ext ?_)` and prove the remaining obligations. Use `show Function.surjInv hf p.1.1 + p.2.1 - Function.surjInv hf (f (Function.surjInv hf p.1.1 + p.2.1)) = p.2.1`. Rewrite using `[e]`.
+
+Use `abel }`.
+-/
 private theorem card_subtype_comp_eq_card_mul_card_ker_of_surjective {A B : Type} [AddCommGroup A] [AddCommGroup B] (f : A →+ B)
     (hf : Function.Surjective f) (T : B → Prop) :
     Nat.card {a : A // T (f a)} = Nat.card {b : B // T b} * Nat.card (AddMonoidHom.ker f) := by
@@ -134,6 +183,11 @@ private theorem card_subtype_comp_eq_card_mul_card_ker_of_surjective {A B : Type
         show Function.surjInv hf p.1.1 + p.2.1 - Function.surjInv hf (f (Function.surjInv hf p.1.1 + p.2.1)) = p.2.1
         rw [e]; abel }
 
+/- English proof (translation)
+Establish `e : AddMonoidHom.ker (R.toAddMonoidHom.mapMatrix : Matrix κ κ A →+ Matrix κ κ B) ≃ (κ → κ → RingHom.ker R)` using `{ toFun := fun X i j => ⟨X.1 i j, by`. Establish `h` using `congrFun (congrFun (AddMonoidHom.mem_ker.mp X.2) i) j`. Conclude with `(RingHom.mem_ker).mpr h⟩`. Use `invFun := fun g => ⟨Matrix.of fun i j => (g i j).1, by`. Rewrite using `[AddMonoidHom.mem_ker]`.
+
+Use extensionality with `i j`. Conclude with `(RingHom.mem_ker).mp (g i j).2⟩`. Use `left_inv := fun X => rfl`. Use `right_inv := fun g => rfl }`. Rewrite using `[Nat.card_congr e, Nat.card_fun, Nat.card_fun, Nat.card_eq_fintype_card (α := κ), ← pow_mul, sq]`.
+-/
 private theorem card_ker_mapMatrix_eq_card_ker_pow_sq {A B : Type} [Ring A] [Ring B] (R : A →+* B) :
     Nat.card (AddMonoidHom.ker (R.toAddMonoidHom.mapMatrix : Matrix κ κ A →+ Matrix κ κ B)) =
       Nat.card (RingHom.ker R) ^ (Fintype.card κ ^ 2) := by
@@ -150,6 +204,11 @@ private theorem card_ker_mapMatrix_eq_card_ker_pow_sq {A B : Type} [Ring A] [Rin
       right_inv := fun g => rfl }
   rw [Nat.card_congr e, Nat.card_fun, Nat.card_fun, Nat.card_eq_fintype_card (α := κ), ← pow_mul, sq]
 
+/- English proof (translation)
+Establish `e : AddMonoidHom.ker (AddMonoidHom.compLeft R.toAddMonoidHom κ) ≃ (κ → RingHom.ker R)` using `{ toFun := fun x i => ⟨x.1 i, by`. Establish `h` using `congrFun (AddMonoidHom.mem_ker.mp x.2) i`. Conclude with `(RingHom.mem_ker).mpr h⟩`. Use `invFun := fun g => ⟨fun i => (g i).1, by`. Rewrite using `[AddMonoidHom.mem_ker]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.mem_ker).mp (g i).2⟩`. Use `left_inv := fun x => rfl`. Use `right_inv := fun g => rfl }`. Rewrite using `[Nat.card_congr e, Nat.card_fun, Nat.card_eq_fintype_card (α := κ)]`.
+-/
 private theorem card_ker_compLeft_eq_card_ker_pow {A B : Type} [Ring A] [Ring B] (R : A →+* B) :
     Nat.card (AddMonoidHom.ker (AddMonoidHom.compLeft R.toAddMonoidHom κ)) =
       Nat.card (RingHom.ker R) ^ Fintype.card κ := by
@@ -165,6 +224,15 @@ private theorem card_ker_compLeft_eq_card_ker_pow {A B : Type} [Ring A] [Ring B]
       right_inv := fun g => rfl }
   rw [Nat.card_congr e, Nat.card_fun, Nat.card_eq_fintype_card (α := κ)]
 
+/- English proof (translation)
+Establish `hHR : (H.map (Ideal.Quotient.mk (extP K 𝔭 ^ k))).map (rd K 𝔭 k (vF 𝔭 c)) = H.map (Ideal.Quotient.mk (extP K 𝔭 ^ (k - vF 𝔭 c)))`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression. Establish `key : ∀ X : Matrix κ κ (𝓞 K ⧸ extP K 𝔭 ^ k), (Xᴴ * (ι c • H).map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) * X = (ι c • H).map (Ideal.Quotient.mk (extP K 𝔭 ^ k))) ↔ (X.map (rd K 𝔭 k (vF 𝔭 c)))ᴴ * H.map (Ideal.Quotient.mk (extP K 𝔭 ^ (k - vF 𝔭 c))) * X.map (rd K 𝔭 k (vF 𝔭 c)) = H.map (Id …`. Introduce `X`.
+
+Establish `hR : (X.map (rd K 𝔭 k (vF 𝔭 c)))ᴴ * H.map (Ideal.Quotient.mk (extP K 𝔭 ^ (k - vF 𝔭 c))) * X.map (rd K 𝔭 k (vF 𝔭 c)) = (Xᴴ * H.map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) * X).map (rd K 𝔭 k (vF 𝔭 c))`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← hHR, Matrix.conjTranspose_map _ (fun a => rd_star 𝔭 k (vF 𝔭 c) a)]`. Rewrite using `[map_smul_mk, Matrix.mul_smul, Matrix.smul_mul, hR, ← hHR, ← Matrix.ext_iff, ← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply]`.
+
+Conclude with `mul_eq_mul_iff h𝔭 hc hk _ _`. Establish `hsurj : Function.Surjective ((rd K 𝔭 k (vF 𝔭 c)).toAddMonoidHom.mapMatrix : Matrix κ κ (𝓞 K ⧸ extP K 𝔭 ^ k) →+ Matrix κ κ (𝓞 K ⧸ extP K 𝔭 ^ (k - vF 𝔭 c)))`. Introduce `Y`. Use `⟨Y.map (Function.surjInv (rd_surjective 𝔭 k (vF 𝔭 c))), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Conclude with `Function.surjInv_eq (rd_surjective 𝔭 k (vF 𝔭 c)) (Y i j)`. Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight key)]`. Use `(card_subtype_comp_eq_card_mul_card_ker_of_surjective _ hsurj (fun Y => Yᴴ * H.map (Ideal.Quotient.mk (extP K 𝔭 ^ (k - vF 𝔭 c))) * Y = H.map (Ideal.Quotient.mk (extP K 𝔭 ^ (k - vF 𝔭 c))))).trans ?_` and prove the remaining obligations. Rewrite using `[card_ker_mapMatrix_eq_card_ker_pow_sq, card_ker_rd hK Fact.out h𝔭 hk, ← pow_mul, mul_comm]`.
+-/
 theorem akM_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {c : 𝓞 F}
     (hc : c ≠ 0) {k : ℕ} (hk : vF 𝔭 c ≤ k) (H : Matrix κ κ (𝓞 K)) :
     Nat.card {X : Matrix κ κ (𝓞 K ⧸ extP K 𝔭 ^ k) //
@@ -206,6 +274,13 @@ theorem akM_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Id
       H.map (Ideal.Quotient.mk (extP K 𝔭 ^ (k - vF 𝔭 c))))).trans ?_
   rw [card_ker_mapMatrix_eq_card_ker_pow_sq, card_ker_rd hK Fact.out h𝔭 hk, ← pow_mul, mul_comm]
 
+/- English proof (translation)
+Establish `key : ∀ x : κ → 𝓞 K ⧸ extP K 𝔭 ^ k, (star x ⬝ᵥ ((ι c • H).map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) *ᵥ x) = Ideal.Quotient.mk _ (ι (c * n))) ↔ star (fun i => rd K 𝔭 k (vF 𝔭 c) (x i)) ⬝ᵥ (H.map (Ideal.Quotient.mk (extP K 𝔭 ^ (k - vF 𝔭 c))) *ᵥ fun i => rd K 𝔭 k (vF 𝔭 c) (x i)) = Ideal …`. Introduce `x`. Establish `e : rd K 𝔭 k (vF 𝔭 c) (star x ⬝ᵥ (H.map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) *ᵥ x)) = star (fun i => rd K 𝔭 k (vF 𝔭 c) (x i)) ⬝ᵥ (H.map (Ideal.Quotient.mk (extP K 𝔭 ^ (k - vF 𝔭 c))) *ᵥ fun i => rd K 𝔭 k (vF 𝔭 c) (x i))`. Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, Pi.star_apply, rd_star, Matrix.map_apply, rd_mk]`. Rewrite using `[map_smul_mk, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, map_mul, map_mul, mul_eq_mul_iff h𝔭 hc hk, e, rd_mk]`.
+
+Establish `hsurj : Function.Surjective (AddMonoidHom.compLeft (rd K 𝔭 k (vF 𝔭 c)).toAddMonoidHom κ)`. Introduce `y`. Use `⟨fun i => Function.surjInv (rd_surjective 𝔭 k (vF 𝔭 c)) (y i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `Function.surjInv_eq (rd_surjective 𝔭 k (vF 𝔭 c)) (y i)`.
+
+Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight key)]`. Use `(card_subtype_comp_eq_card_mul_card_ker_of_surjective _ hsurj (fun y => star y ⬝ᵥ (H.map (Ideal.Quotient.mk (extP K 𝔭 ^ (k - vF 𝔭 c))) *ᵥ y) = Ideal.Quotient.mk _ (ι n))).trans ?_` and prove the remaining obligations. Rewrite using `[card_ker_compLeft_eq_card_ker_pow, card_ker_rd hK Fact.out h𝔭 hk, ← pow_mul, mul_comm]`.
+-/
 theorem nkM_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {c : 𝓞 F}
     (hc : c ≠ 0) (n : 𝓞 F) {k : ℕ} (hk : vF 𝔭 c ≤ k) (H : Matrix κ κ (𝓞 K)) :
     Nat.card {x : κ → 𝓞 K ⧸ extP K 𝔭 ^ k //

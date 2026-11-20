@@ -19,6 +19,11 @@ namespace PositivityTheory.SiegelWeilFormula.Act.C4
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d)
 namespace Bq
+/- English proof (translation)
+Introduce `r c h`. Break down `h with h | h | h | h` into its components or cases. Conclude with `(L.j_out g r (by simp [h]) c).1`. Conclude with `(L.j_out g r (by simp [h]) c).1`. Conclude with `(L.j_out g c (by simp [h]) r).2`.
+
+Conclude with `(L.j_out g c (by simp [h]) r).2`.
+-/
 theorem pad_j_k (g : G2 σ L.Y) : Pad (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame d.b (L.j g)) := by
   intro r c h
   rcases h with h | h | h | h
@@ -28,6 +33,17 @@ theorem pad_j_k (g : G2 σ L.Y) : Pad (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame
   · exact (L.j_out g c (by simp [h]) r).2
 def bp_k (β : Matrix (Fin d.n) (Fin d.n) (AE F E)) : Matrix (Fin d.n) (Fin d.n) (AE F E) :=
   Matrix.of fun i k => if i = L.i₀ ∨ k = L.i₀ then 0 else β i k
+/- English proof (translation)
+Use `Matrix.ext fun r c => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases r with i | i <;> rcases c with k | k`. Use `all_goals`. Distinguish the cases in `hi : i = L.i₀`. Use `first`.
+
+Consider the case `rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_out_row_k L _ (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.not_inl_k L i hi)]`. Consider the case `rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_out_row_k L _ (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.not_inr_k L i hi)]`. Substitute `hi` using the available equality. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k, Matrix.one_apply]`. Distinguish the cases in `hk : k = L.i₀`.
+
+Use `first`. Consider the case `rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_out_col_k L _ _ (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.not_inl_k L k hk)]`. Consider the case `rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_out_col_k L _ _ (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.not_inr_k L k hk)]`. Substitute `hk` using the available equality. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k, Matrix.one_apply, hi]`.
+
+Take `⟨a, rfl⟩` from `(L.rng i).1 hi`. Take `⟨a', rfl⟩` from `(L.rng k).1 hk`. Use `first`. Consider the case `exact (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_emS_k L _ (Sum.inl a) (Sum.inl a')).trans (by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k, Matrix.one_apply, L.inj.eq_iff, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k])`. Consider the case `exact (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_emS_k L _ (Sum.inl a) (Sum.inr a')).trans (by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k, Matrix.one_apply, L.inj.eq_iff, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k])`.
+
+Consider the case `exact (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_emS_k L _ (Sum.inr a) (Sum.inl a')).trans (by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k, Matrix.one_apply, L.inj.eq_iff, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k])`. Consider the case `exact (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_emS_k L _ (Sum.inr a) (Sum.inr a')).trans (by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k, Matrix.one_apply, L.inj.eq_iff, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k])`.
+-/
 theorem padM_n_k (β : Matrix (Fin d.n) (Fin d.n) (AE F E)) :
     _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_k L (Matrix.fromBlocks 1 (-(β.submatrix L.em L.em)) 0 1) = Matrix.fromBlocks 1 (-(_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k L β)) 0 1 := by
   refine Matrix.ext fun r c => ?_
@@ -52,6 +68,11 @@ theorem padM_n_k (β : Matrix (Fin d.n) (Fin d.n) (AE F E)) :
           | exact (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_emS_k L _ (Sum.inl a) (Sum.inr a')).trans (by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k, Matrix.one_apply, L.inj.eq_iff, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k])
           | exact (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_emS_k L _ (Sum.inr a) (Sum.inl a')).trans (by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k, Matrix.one_apply, L.inj.eq_iff, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k])
           | exact (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_emS_k L _ (Sum.inr a) (Sum.inr a')).trans (by simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k, Matrix.one_apply, L.inj.eq_iff, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k])
+/- English proof (translation)
+Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart, Matrix.sum_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨h1, h2⟩`. Break down `h with h | h` into its components or cases.
+
+Conclude with `h h1.symm`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L j (h2.trans h)`.
+-/
 theorem unipotentEntry_eq_zero (u : Fin L.n → AE F E) (a k : Fin d.n) (h : a ≠ L.i₀ ∨ k = L.i₀) : _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u a k = 0 := by
   simp only [_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart, Matrix.sum_apply]
   refine Finset.sum_eq_zero fun j _ => ?_
@@ -60,6 +81,21 @@ theorem unipotentEntry_eq_zero (u : Fin L.n → AE F E) (a k : Fin d.n) (h : a �
   rcases h with h | h
   · exact h h1.symm
   · exact _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L j (h2.trans h)
+/- English proof (translation)
+Use `set A := 1 + _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u with hA`. Use `set D := ((1 - _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u)ᵀ).map (cA σ) with hD`. Establish `e : Matrix.fromBlocks 1 β 0 1 * _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF_k L u * Matrix.fromBlocks 1 (-(_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k L β)) 0 1 = Matrix.fromBlocks A (-(A * _root_.PositivityTheory.SiegelWeilForm …`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF_k, Matrix.fromBlocks_multiply, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, hA, hD]`. Use `congr 1`.
+
+Normalize the expressions using the abelian group laws. Establish `hA1 : ∀ a k, a ≠ L.i₀ ∨ k = L.i₀ → (A - 1) a k = 0` using `fun a k h => by`. Rewrite using `[hA, add_sub_cancel_left, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.unipotentEntry_eq_zero L u a k h]`. Establish `hD1 : ∀ a k, k ≠ L.i₀ → D a k = (1 : Matrix _ _ (AE F E)) a k` using `fun a k hk => by`. Simplify using `only [hD, Matrix.map_apply, Matrix.transpose_apply, Matrix.sub_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.unipotentEntry_eq_zero L u k a (Or.inl hk), sub_zero]`.
+
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h : k = a`. Substitute `h` using the available equality. Simplify using `[map_one]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), map_zero]`.
+
+Rewrite using `[e]`. Use `Bq.NQ.of_blocks (fun a => hA1 a L.i₀ (Or.inr rfl)) (fun a k ha => hA1 a k (Or.inl ha)) (fun a k ha hk => ?_) (fun a k hk => by rw [Matrix.sub_apply, hD1 a k hk, sub_self])` and prove the remaining obligations. Establish `h1 : (A * _root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k L β) a k = β a k`. Rewrite using `[Matrix.mul_apply]`. Establish `: ∀ m, A a m * _root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k L β m k = if m = a then β a k else 0` using `fun m => by`.
+
+Establish `hAm : A a m = (1 : Matrix _ _ (AE F E)) a m`. Use `hA1 a m (Or.inl ha)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[hAm, Matrix.one_apply]`. Distinguish the cases in `hm : a = m`.
+
+Substitute `hm` using the available equality. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k, ha, hk]`. Simplify using `[hm, Ne.symm hm]`. Simplify using `only [this, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `h2 : (β * D) a k = β a k`.
+
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hD1 _ k hk, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Matrix.add_apply, Matrix.neg_apply, h1, h2, neg_add_cancel]`.
+-/
 theorem nq_q_k (β : Matrix (Fin d.n) (Fin d.n) (AE F E)) (u : Fin L.n → AE F E) :
     NQ (Sum.inl L.i₀) (Sum.inr L.i₀)
       (Matrix.fromBlocks 1 β 0 1 * _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF_k L u * Matrix.fromBlocks 1 (-(_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k L β)) 0 1) := by
@@ -96,6 +132,13 @@ theorem nq_q_k (β : Matrix (Fin d.n) (Fin d.n) (AE F E)) (u : Fin L.n → AE F 
     rw [Matrix.mul_apply]
     simp only [hD1 _ k hk, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   rw [Matrix.add_apply, Matrix.neg_apply, h1, h2, neg_add_cancel]
+/- English proof (translation)
+Take `⟨-, t₀, ht₀⟩` from `d.ok.frame`. Use `set M := inFrame d.b p`. Use `set T0 := incM F t₀.1`. Use `set T0i := incM F (t₀⁻¹).1`. Establish `e1 : T0 * T0i = 1`.
+
+Simplify using `only [T0, T0i, incM, ← Matrix.map_mul]`. Rewrite using `[show t₀.1 * (t₀⁻¹).1 = 1 from t₀.mul_inv]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hdet : (T0 * M.toBlocks₁₁ * T0i).det = 1`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, h.upper_block_det_one, mul_one, ← Matrix.det_mul, e1, Matrix.det_one]`.
+
+Establish `hu : IsUnit (T0 * M.toBlocks₁₁ * T0i)` using `(Matrix.isUnit_iff_isUnit_det _).2 (by rw [hdet]; exact isUnit_one)`. Use `⟨hu.unit, (kunf.isPar_frame ht₀ p hu.unit).2 ⟨h.projected_block_lower_sum, rfl⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, hdet]`.
+-/
 theorem isPar_of_nq_k {p : d.G} (h : NQ (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame d.b p)) :
     ∃ t, IsPar p t ∧ Matrix.GeneralLinearGroup.det t = 1 := by
   obtain ⟨-, t₀, ht₀⟩ := d.ok.frame
@@ -113,6 +156,15 @@ theorem isPar_of_nq_k {p : d.G} (h : NQ (Sum.inl L.i₀) (Sum.inr L.i₀) (inFra
   ext
   simp [Matrix.GeneralLinearGroup.val_det_apply, hdet]
 end Bq
+/- English proof (translation)
+Use `set q : d.G := nb β * uM u * L.j (nb' (-_root_.PositivityTheory.SiegelWeilFormula.Act.C4.prj_k L β)) with hq`. Use `set p : d.G := L.j h * q * L.j h⁻¹ with hp`. Establish `hinv : L.j (nb' (-_root_.PositivityTheory.SiegelWeilFormula.Act.C4.prj_k L β)) = (L.j (nb' (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.prj_k L β)))⁻¹`. Rewrite using `[kunf.nb_neg hnb', map_inv]`. Establish `hid : L.j h * (nb β * (uM u * x)) = p * (L.j (h * nb' (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.prj_k L β)) * x)`.
+
+Simplify using `only [hp, hq, hinv, map_mul, map_inv, mul_assoc, inv_mul_cancel_left]`. Establish `hQ : inFrame d.b q = Matrix.fromBlocks 1 β.1 0 1 * _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF_k L u * Matrix.fromBlocks 1 (-(_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.bp_k L β.1)) 0 1`. Rewrite using `[hq, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hnb β, _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.inFrame_uM_k L hU u, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.inFrame_j_k, hnb' (-_ …`. Both sides reduce to the same expression. Establish `hJJ : inFrame d.b (L.j h) * inFrame d.b (L.j h⁻¹) = 1`.
+
+Rewrite using `[← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, ← map_mul, mul_inv_cancel, map_one, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`. Establish `hnq : Bq.NQ (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame d.b p)`. Rewrite using `[hp, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hQ]`. Conclude with `Bq.NQ.conj (by simp) (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.pad_j_k L h) (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.pad_j_k L h⁻¹) hJJ (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.nq_q_k L β.1 u)`. Take `⟨t, ht, hdt⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.isPar_of_nq_k L hnq`.
+
+Conclude with `⟨p, t, ht, hdt, hid⟩`.
+-/
 theorem key_id_pf_k {nb : nA σ d.Y d.b → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} (hnb : IsNMap d.b nb)
     (hnb' : IsNMap L.b nb') {uM : (Fin L.n → AE F E) → d.G} {ν : Measure (Fin L.n → AE F E)}
     {𝓤 : Set (Fin L.n → AE F E)} (hU : L.UData uM ν 𝓤) (h : G2 σ L.Y) (β : nA σ d.Y d.b) (u : Fin L.n → AE F E)

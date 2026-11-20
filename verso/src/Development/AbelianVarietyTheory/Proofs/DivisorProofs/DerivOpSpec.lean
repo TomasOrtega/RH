@@ -40,10 +40,16 @@ def derivOp (hex : ∀ Φ ∈ D, ∃ Φ₁ ∈ D, ∀ x, HasDerivAt (fun t => T 
 
 variable {D T}
 
+/- English proof (translation)
+The claim follows from `(hex Φ.1 Φ.2).choose_spec.2 x`.
+-/
 theorem derivOp_spec (hex : ∀ Φ ∈ D, ∃ Φ₁ ∈ D, ∀ x, HasDerivAt (fun t => T t Φ x) (Φ₁ x) 0) (Φ : D) (x : α) :
     HasDerivAt (fun t => T t Φ.1 x) (((derivOp D T hex Φ : D) : α → ℂ) x) 0 :=
   (hex Φ.1 Φ.2).choose_spec.2 x
 
+/- English proof (translation)
+The claim follows from `funext fun x => (derivOp_spec hex Φ x).unique (h x)`.
+-/
 theorem derivOp_eq (hex : ∀ Φ ∈ D, ∃ Φ₁ ∈ D, ∀ x, HasDerivAt (fun t => T t Φ x) (Φ₁ x) 0) (Φ : D) (Ψ : α → ℂ)
     (h : ∀ x, HasDerivAt (fun t => T t Φ.1 x) (Ψ x) 0) : ((derivOp D T hex Φ : D) : α → ℂ) = Ψ :=
   funext fun x => (derivOp_spec hex Φ x).unique (h x)
@@ -94,6 +100,9 @@ def quotSub (Nr : Submodule (Algebra.adjoin ℂ s) M) (T : Submodule ℂ (M ⧸ 
       rw [this]; exact T.add_mem (h x hq) (h' x hq)
     | mul A A' _ _ h h' => exact h _ (h' x hq)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_quotSub (Nr : Submodule (Algebra.adjoin ℂ s) M) (T : Submodule ℂ (M ⧸ Nr))
     (hT : ∀ A ∈ s, ∀ x : M, Nr.mkQ x ∈ T → Nr.mkQ (A x) ∈ T) (q : M ⧸ Nr) : q ∈ quotSub s Nr T hT ↔ q ∈ T :=
   Iff.rfl
@@ -127,6 +136,9 @@ def Good (M : Model σ Y W) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → 
 abbrev Alg (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W) : Type :=
   Algebra.adjoin ℂ (ops B om (PolData B M))
 
+/- English proof (translation)
+Introduce and unpack `A (⟨γ, hγ, hex, rfl⟩ | ⟨k, hk, hk', rfl⟩) x hx`. Conclude with `hN.lie γ hγ x.1 hx _ (derivOp _ _ hex x).2 (derivOp_spec hex x)`. Conclude with `hN.cpt k hk x.1 hx`.
+-/
 theorem nr_stable (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W) (N : Submodule ℂ (Fn F n d))
     (hN : GlobalTheory.ThetaFac.WStable B om (PolData B M) N) :
     ∀ A ∈ ops B om (PolData B M), ∀ x ∈ N.comap (PolData B M).subtype, A x ∈ N.comap (PolData B M).subtype := by
@@ -172,12 +184,18 @@ def iota (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W) (N : Submodule ℂ 
     apply Subtype.ext
     exact (map_smul (GlobalTheory.ThetaFacInf.pureL φ) c f.1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iota_apply (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W) (N : Submodule ℂ (Fn F n d))
     (hN : GlobalTheory.ThetaFac.WStable B om (PolData B M) N) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) (hφ : Good M φ)
     (f : M.Pol B.ψ B.emb) :
     iota B M om N hN φ hφ f = (Nr B M om N hN).mkQ ⟨pure f.1 φ, Submodule.subset_span ⟨f.1, f.2, φ, hφ.1, hφ.2, rfl⟩⟩ :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[iota_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+-/
 theorem iota_eq_zero (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W) (N : Submodule ℂ (Fn F n d))
     (hN : GlobalTheory.ThetaFac.WStable B om (PolData B M) N) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) (hφ : Good M φ)
     (f : M.Pol B.ψ B.emb) : iota B M om N hN φ hφ f = 0 ↔ pure f.1 φ ∈ N := by

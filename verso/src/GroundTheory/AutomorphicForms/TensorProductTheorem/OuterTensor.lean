@@ -14,6 +14,11 @@ open scoped TensorProduct
 variable {M₁ M₂ : Type*} [Monoid M₁] [Monoid M₂] {V₁ V₂ : Type*} [AddCommGroup V₁] [Module ℂ V₁]
   [AddCommGroup V₂] [Module ℂ V₂]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Take `⟨a, b, hab⟩` from `h.toNontrivial.exists_pair_ne`. Apply `hab` to reduce the goal to its premises. Use extensionality with `x`.
+
+Rewrite using `[Subsingleton.elim x 0]`. Conclude with `⟨fun _ => b.toSubmodule.zero_mem, fun _ => a.toSubmodule.zero_mem⟩`.
+-/
 theorem nontrivial_of_irreducible {ρ : Representation ℂ M₁ V₁} (h : ρ.IsIrreducible) :
     Nontrivial V₁ := by
   by_contra hV
@@ -34,11 +39,25 @@ def outerTensor (ρ₁ : Representation ℂ M₁ V₁) (ρ₂ : Representation �
     simp only [Prod.fst_mul, Prod.snd_mul, map_mul]
     exact TensorProduct.map_mul _ _ _ _
 
+/- English proof (translation)
+The claim follows from `TensorProduct.map_tmul _ _ _ _`.
+-/
 theorem outerTensor_tmul (ρ₁ : Representation ℂ M₁ V₁) (ρ₂ : Representation ℂ M₂ V₂)
     (p : M₁ × M₂) (a : V₁) (b : V₂) :
     outerTensor ρ₁ ρ₂ p (a ⊗ₜ b) = ρ₁ p.1 a ⊗ₜ ρ₂ p.2 b :=
   TensorProduct.map_tmul _ _ _ _
 
+/- English proof (translation)
+Use `set R := MonoidAlgebra ℂ M₂`. Establish `hsimple : IsSimpleModule R ρ₂.asModule` using `(Representation.irreducible_iff_isSimpleModule_asModule ρ₂).1 hirr`. Use `set E := ρ₂.asModuleEquiv`. Establish `hsc : ∀ φ : Module.End R ρ₂.asModule, ∃ c : ℂ, ∀ x, E (φ x) = c • E x`. Introduce `φ`.
+
+Set `T : End ℂ V₂` to `{ toFun := fun v => E (φ (E.symm v)) map_add' := fun a b => by simp map_smul' := fun c v => by`. Rewrite using `[RingHom.id_apply, Representation.asModuleEquiv_symm_map_smul, map_smul, Representation.asModuleEquiv_map_smul, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply] }`. Take `⟨c, hc⟩` from `hschur T fun m => by`. Use extensionality with `v`. Simplify using `only [Module.End.mul_apply, T, LinearMap.coe_mk, AddHom.coe_mk]`.
+
+Rewrite using `[Representation.asModuleEquiv_symm_map_rho, map_smul, Representation.asModuleEquiv_map_smul, MonoidAlgebra.of_apply, Representation.asAlgebraHom_single_one]`. Use `⟨c, fun x => ?_⟩` and prove the remaining obligations. Use `congrArg (fun F : End ℂ V₂ => F (E x)) hc` as an intermediate fact. Simplify `this` using `[T]`. Set `f : Module.End (Module.End R ρ₂.asModule) ρ₂.asModule` to `{ toFun := fun x => E.symm (A (E x)) map_add' := fun a b => by simp map_smul' := fun φ x => by`.
+
+Take `⟨c, hc⟩` from `hsc φ`. Use `show E.symm (A (E (φ x))) = φ (E.symm (A (E x)))`. Apply `E.injective` to reduce the goal to its premises. Rewrite using `[hc, hc, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, map_smul] }`. Take `⟨r, hr⟩` from `jacobson_density f (s.image E.symm)`.
+
+Use `⟨r, fun v hv => ?_⟩` and prove the remaining obligations. Use `hr (E.symm v) (Finset.mem_image_of_mem _ hv)` as an intermediate fact. Establish `h2` using `congrArg E this`. Simplify using `only [f, LinearMap.coe_mk, AddHom.coe_mk, LinearEquiv.apply_symm_apply] at h2`. Rewrite using `[h2, Representation.asModuleEquiv_map_smul, LinearEquiv.apply_symm_apply]`.
+-/
 theorem exists_asAlgebraHom_eq {ρ₂ : Representation ℂ M₂ V₂} (hirr : ρ₂.IsIrreducible)
     (hschur : ∀ T : End ℂ V₂, (∀ m, T * ρ₂ m = ρ₂ m * T) → ∃ c : ℂ, T = c • 1)
     (A : End ℂ V₂) (s : Finset V₂) :
@@ -82,6 +101,47 @@ theorem exists_asAlgebraHom_eq {ρ₂ : Representation ℂ M₂ V₂} (hirr : ρ
   simp only [f, LinearMap.coe_mk, AddHom.coe_mk, LinearEquiv.apply_symm_apply] at h2
   rw [h2, Representation.asModuleEquiv_map_smul, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use `haveI := hirr₁`. Use `haveI := hirr₂`. Use `set ρ := outerTensor ρ₁ ρ₂`. Establish `hnt₁` using `nontrivial_of_irreducible hirr₁`. Establish `hnt₂` using `nontrivial_of_irreducible hirr₂`.
+
+Set `b` to `Basis.ofVectorSpace ℂ V₂`. Use `set F := TensorProduct.equivFinsuppOfBasisRight (M := V₁) b`. Establish `key : ∀ Y : Subrepresentation ρ, Y ≠ ⊥ → ∀ a b', a ⊗ₜ[ℂ] b' ∈ Y.toSubmodule`. Introduce `Y hY`. Establish `hY' : Y.toSubmodule ≠ ⊥` using `fun h => hY (Subrepresentation.toSubmodule_injective h)`.
+
+Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hY'`. Establish `hfy : F y ≠ 0` using `fun h => hy0 (F.injective (h.trans (map_zero F).symm))`. Take `⟨j₀, hj₀⟩` from `Finsupp.ne_iff.1 hfy`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply] at hj₀`. Set `A : End ℂ V₂` to `b.constr ℂ fun j => if j = j₀ then b j₀ else 0`.
+
+Take `⟨r, hr⟩` from `exists_asAlgebraHom_eq hirr₂ hschur A ((F y).support.image b)`. Establish `hstab : ∀ r' : MonoidAlgebra ℂ M₂, ∀ z ∈ Y.toSubmodule, TensorProduct.map LinearMap.id (ρ₂.asAlgebraHom r') z ∈ Y.toSubmodule`. Introduce `r' z hz`. Proceed by induction on `r' using MonoidAlgebra.induction_on with`. Consider the case `of m`.
+
+Use `Y.apply_mem_toSubmodule (1, m) hz` as an intermediate fact. Rewrite using `[MonoidAlgebra.of_apply, Representation.asAlgebraHom_single_one]`. Establish `h1 : ρ (1, m) = TensorProduct.map LinearMap.id (ρ₂ m)` using `by show TensorProduct.map (ρ₁ 1) (ρ₂ m) = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[← h1]`. Conclude with `this`. Consider the case `add f g hf hg`. Rewrite using `[map_add, TensorProduct.map_add_right, LinearMap.add_apply]`. Conclude with `Y.toSubmodule.add_mem hf hg`.
+
+Consider the case `smul c f hf`. Rewrite using `[map_smul, TensorProduct.map_smul_right, LinearMap.smul_apply]`. Conclude with `Y.toSubmodule.smul_mem c hf`. Establish `hy' : y = (F y).sum fun j a => a ⊗ₜ[ℂ] b j` using `by conv_lhs => rw [← F.symm_apply_apply y]`. Conclude with `TensorProduct.equivFinsuppOfBasisRight_symm_apply b (F y)`.
+
+Establish `hpure : F y j₀ ⊗ₜ[ℂ] b j₀ ∈ Y.toSubmodule`. Use `hstab r y hy` as an intermediate fact. Rewrite `this` using `[hy', map_finsuppSum]`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finsupp.sum, Finset.sum_eq_single j₀]`.
+
+Rewrite using `[TensorProduct.map_tmul, LinearMap.id_apply, hr _ (Finset.mem_image_of_mem _ (Finsupp.mem_support_iff.2 hj₀))]`. Simplify using `[A]`. Introduce `j hj hjj`. Rewrite using `[TensorProduct.map_tmul, LinearMap.id_apply, hr _ (Finset.mem_image_of_mem _ hj)]`. Simplify using `[A, hjj]`.
+
+Introduce `h`. Conclude with `absurd (Finsupp.mem_support_iff.2 hj₀) h`. Introduce `a b'`. Establish `h1 : ∀ a' ∈ Submodule.span ℂ (range fun m => ρ₁ m (F y j₀)), a' ⊗ₜ[ℂ] b j₀ ∈ Y.toSubmodule`. Introduce `a' ha'`.
+
+Proceed by induction on `ha' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, rfl⟩` from `hx`. Use `Y.apply_mem_toSubmodule (m, 1) hpure` as an intermediate fact. Simplify `this` using `[ρ, outerTensor_tmul]`.
+
+Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [TensorProduct.add_tmul]`. Conclude with `Y.toSubmodule.add_mem hx hz`. Consider the case `smul c x _ hx => rw [← TensorProduct.smul_tmul']`. Conclude with `Y.toSubmodule.smul_mem c hx`.
+
+Establish `ha` using `h1 a (mem_span_mOrbit (ρ := ρ₁) hj₀ a)`. Establish `h2 : ∀ b'' ∈ Submodule.span ℂ (range fun m => ρ₂ m (b j₀)), a ⊗ₜ[ℂ] b'' ∈ Y.toSubmodule`. Introduce `b'' hb''`. Proceed by induction on `hb'' using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨m, rfl⟩` from `hx`. Use `Y.apply_mem_toSubmodule (1, m) ha` as an intermediate fact. Simplify `this` using `[ρ, outerTensor_tmul]`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [TensorProduct.tmul_add]`.
+
+Conclude with `Y.toSubmodule.add_mem hx hz`. Consider the case `smul c x _ hx => rw [TensorProduct.tmul_smul]`. Conclude with `Y.toSubmodule.smul_mem c hx`. Conclude with `h2 b' (mem_span_mOrbit (ρ := ρ₂) (b.ne_zero j₀) b')`. Establish `hbt : (⊥ : Subrepresentation ρ) ≠ ⊤`.
+
+Introduce `h`. Take `⟨a, ha⟩` from `exists_ne (0 : V₁)`. Take `⟨v₂, hv₂⟩` from `exists_ne (0 : V₂)`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, b.repr v₂ j ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Conclude with `hv₂ (b.repr.injective (Finsupp.ext fun j => by simp [hcon j]))`. Establish `: a ⊗ₜ[ℂ] v₂ ∈ (⊥ : Subrepresentation ρ).toSubmodule` using `by rw [h]; trivial`. Establish `h0 : a ⊗ₜ[ℂ] v₂ = 0` using `this`. Use `congrArg (fun z => F z j) h0` as an intermediate fact.
+
+Simplify using `only [F, TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply, map_zero, Finsupp.coe_zero, Pi.zero_apply] at this`. Conclude with `(smul_ne_zero hj ha) this`. Use `{ exists_pair_ne := ⟨⊥, ⊤, hbt⟩, eq_bot_or_eq_top := fun Y => ?_ }` and prove the remaining obligations. Distinguish the cases in `hY : Y = ⊥`. Conclude with `Or.inl hY`.
+
+Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Use `TensorProduct.span_tmul_eq_top ℂ V₁ V₂` as an intermediate fact. Establish `hz : z ∈ Submodule.span ℂ {t | ∃ a b', a ⊗ₜ[ℂ] b' = t}` using `by rw [this]; trivial`.
+
+Use `Submodule.span_le.2 ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b', rfl⟩`. Conclude with `key Y hY a b'`.
+-/
 theorem isIrreducible_outerTensor {ρ₁ : Representation ℂ M₁ V₁} {ρ₂ : Representation ℂ M₂ V₂}
     (hirr₁ : ρ₁.IsIrreducible) (hirr₂ : ρ₂.IsIrreducible)
     (hschur : ∀ T : End ℂ V₂, (∀ m, T * ρ₂ m = ρ₂ m * T) → ∃ c : ℂ, T = c • 1) :

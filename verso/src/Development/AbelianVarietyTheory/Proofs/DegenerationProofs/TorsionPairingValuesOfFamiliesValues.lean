@@ -17,15 +17,26 @@ namespace GlobalTheory.WeilValues
 section Val
 variable {F : Type} [Field F] {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Introduce `z _` and use `Good.mem (L := L) (z := z) (J := J) (fun ψ => hJ ψ trivial) φ r`.
+-/
 theorem top_le_chart {J : (Sp F ⟶ X) → L.ι} (hJ : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) (φ : K → (Y ⟶ X))
     (r : Sp F ⟶ Y) : ⊤ ≤ r ⁻¹ᵁ LB.wchart L φ (fun k => J (r ≫ φ k)) := fun z _ =>
   Good.mem (L := L) (z := z) (J := J) (fun ψ => hJ ψ trivial) φ r
 
+/- English proof (translation)
+Use `fun h => ?_` and prove the remaining obligations. Conclude with `(((Units.isUnit _).map _).map _).ne_zero ((dif_pos (top_le_chart hJ φ r)).symm.trans h)`.
+-/
 theorem vF_ne_zero {J : (Sp F ⟶ X) → L.ι} (hJ : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) : vF t r J ≠ 0 := by
   refine fun h => ?_
   exact (((Units.isUnit _).map _).map _).ne_zero ((dif_pos (top_le_chart hJ φ r)).symm.trans h)
 
+/- English proof (translation)
+Rewrite using `[valF, valF, dif_pos hU, dif_pos hU, map_mul, map_mul]`. Use `congr 1`. Establish `e : (r.appLE U ⊤ hU).hom (resTop U (π.appTop.hom (fnOf z))) = (r ≫ π).appTop.hom (fnOf z)`. Simplify using `only [resTop]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.map_appLE, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`.
+
+Conclude with `congrArg (fun g : Γ(Y, ⊤) ⟶ Γ(Sp F, ⊤) => g.hom (π.appTop.hom (fnOf z))) (Scheme.Hom.appLE_eq_app r (U := ⊤))`. Rewrite using `[e, h]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of F)).inv_hom_id_apply z`.
+-/
 theorem valF_const_mul (r : Sp F ⟶ Y) (π : Y ⟶ Sp F) (h : r ≫ π = 𝟙 _) (U : Y.Opens) (hU : ⊤ ≤ r ⁻¹ᵁ U) (z : F)
     (a : Γ(Y, U)) : valF r U (resTop U (π.appTop.hom (fnOf z)) * a) = z * valF r U a := by
   rw [valF, valF, dif_pos hU, dif_pos hU, map_mul, map_mul]
@@ -42,6 +53,11 @@ end Val
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
   {N : NumD F}
 
+/- English proof (translation)
+Introduce `α x`. Establish `e : (lift (𝟙 (TF (R` using `R) F)) (ν.eA x)).left ≫ (fst (TF (R := R) F) D.P.A).left = 𝟙 _ := by`. Rewrite using `[← Over.comp_left, lift_fst, Over.id_left]`. Use `Eq.trans ?_ (valF_const_mul _ _ e _ (top_le_chart ν.good _ _) z _).symm` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, _root_.mul_assoc, h α x]`.
+
+Both sides reduce to the same expression.
+-/
 theorem famV_smul (ν : NumOf D F N) {k : ℕ} {s : Fam D F k} {f : N.X → N.A → F} (h : ν.FamV s f) (z : F) :
     ν.FamV (z • s) (z • f) := by
   intro α x
@@ -51,12 +67,18 @@ theorem famV_smul (ν : NumOf D F N) {k : ℕ} {s : Fam D F k} {f : N.X → N.A 
   rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, _root_.mul_assoc, h α x]
   rfl
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `DVR.exists_phi GlobalTheory.globalFns_holds p w hw hB s`. Conclude with `⟨t, (DVR.phiRel_iff GlobalTheory.globalFns_holds p w hw s t).2 ht⟩`.
+-/
 theorem exists_phiRel (hB : D.TauBimult) {k : ℕ} (p : QkPt D F k)
     (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p.g.b) (DegPre.lineε k))) (hw : w.IsGen) (s : Fam D F k) :
     ∃ t, PhiRel D F k p w s t := by
   obtain ⟨t, ht⟩ := DVR.exists_phi GlobalTheory.globalFns_holds p w hw hB s
   exact ⟨t, (DVR.phiRel_iff GlobalTheory.globalFns_holds p w hw s t).2 ht⟩
 
+/- English proof (translation)
+Introduce `h`. Use `hf (funext fun α => funext fun x => ?_)` and prove the remaining obligations. Use `congrFun (congrFun h (α + q.1.1.toAdd)) (x * q.1.2.b⁻¹)` as an intermediate fact. Simplify using `only [NumD.phi, add_sub_cancel_right, inv_mul_cancel_right, Pi.zero_apply, Units.mul_right_eq_zero] at this`. Conclude with `this`.
+-/
 theorem phi_ne_zero {k : ℕ} (q : N.QT k) (w : Fˣ) {f : N.X → N.A → F} (hf : f ≠ 0) : N.phi q w f ≠ 0 := by
   intro h
   refine hf (funext fun α => funext fun x => ?_)
@@ -64,6 +86,23 @@ theorem phi_ne_zero {k : ℕ} (q : N.QT k) (w : Fˣ) {f : N.X → N.A → F} (hf
   simp only [NumD.phi, add_sub_cancel_right, inv_mul_cancel_right, Pi.zero_apply, Units.mul_right_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Introduce `_ hF R _ _ D hE hB F _ _ _ N ν k hk p p' q q' z hq hq'`. Take `⟨h1, h2, -, ⟨s₀, f₀, hs₀, hf₀⟩, -, h6⟩` from `hF R D hE hB F N ν k hk`. Establish `key : ∀ w w', w.IsGen → w'.IsGen → ∀ s s₁ s₂ s₃ s₄ : Fam D F k, PhiRel D F k p' w' s s₁ → PhiRel D F k p w s₁ s₂ → PhiRel D F k p w s s₃ → PhiRel D F k p' w' s₃ s₄ → ∀ f, ν.FamV s f → ∃ f₄, ν.FamV s₄ f₄ ∧ ν.FamV s₂ ((N.wp q q' : F) • f₄) ∧ (f ≠ 0 → f₄ ≠ 0)`. Introduce `w w' hw hw' s s₁ s₂ s₃ s₄ r₁ r₂ r₃ r₄ f hf`. Take `⟨f₁, a₁, -⟩` from `h1 s₁`.
+
+Take `⟨f₂, a₂, -⟩` from `h1 s₂`. Take `⟨f₃, a₃, -⟩` from `h1 s₃`. Take `⟨f₄, a₄, -⟩` from `h1 s₄`. Set `u : Fˣ` to `Units.mk0 _ (vF_ne_zero ν.good w (𝟙 (Sp F)))`. Set `u' : Fˣ` to `Units.mk0 _ (vF_ne_zero ν.good w' (𝟙 (Sp F)))`.
+
+Establish `e₁` using `(h6 p' q' w' u' s s₁ f f₁ hq' hw' rfl hf a₁).1 r₁`. Establish `e₂` using `(h6 p q w u s₁ s₂ f₁ f₂ hq hw rfl a₁ a₂).1 r₂`. Establish `e₃` using `(h6 p q w u s s₃ f f₃ hq hw rfl hf a₃).1 r₃`. Establish `e₄` using `(h6 p' q' w' u' s₃ s₄ f₃ f₄ hq' hw' rfl a₃ a₄).1 r₄`. Use `⟨f₄, a₄, ?_, fun h => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e₄, e₃, ← (GlobalTheory.Ex.PhiOp.phi_main F N k q q' u u' f).2.2.1, ← e₁, ← e₂]`. Conclude with `a₂`. Rewrite using `[e₄, e₃]`. Conclude with `phi_ne_zero _ _ (phi_ne_zero _ _ h)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H`. Take `⟨w, hw⟩` from `DVR.exists_gen_of_local (V := F) D.P.L D.P.isLB (DegPre.lineφ D F p.g.b) (DegPre.lineε k)`. Take `⟨w', hw'⟩` from `DVR.exists_gen_of_local (V := F) D.P.L D.P.isLB (DegPre.lineφ D F p'.g.b) (DegPre.lineε k)`. Take `⟨s₁, r₁⟩` from `exists_phiRel hB p' w' hw' s₀`. Take `⟨s₂, r₂⟩` from `exists_phiRel hB p w hw s₁`.
+
+Take `⟨s₃, r₃⟩` from `exists_phiRel hB p w hw s₀`. Take `⟨s₄, r₄⟩` from `exists_phiRel hB p' w' hw' s₃`. Take `⟨f₄, a₄, a₂, hne⟩` from `key w w' hw hw' s₀ s₁ s₂ s₃ s₄ r₁ r₂ r₃ r₄ f₀ hs₀`. Establish `e` using `(DVR.isSmul_iff z s₄ s₂).1 (H w w' hw hw' s₀ s₁ s₂ s₃ s₄ r₁ r₂ r₃ r₄)`. Establish `b` using `famV_smul ν a₄ z`.
+
+Rewrite `b` using `[← e]`. Conclude with `smul_left_injective F (hne hf₀) ((h1 s₂).unique b a₂)`. Introduce and unpack `rfl w w' hw hw' s s₁ s₂ s₃ s₄ r₁ r₂ r₃ r₄`. Take `⟨f, hf, -⟩` from `h1 s`. Take `⟨f₄, a₄, a₂, -⟩` from `key w w' hw hw' s s₁ s₂ s₃ s₄ r₁ r₂ r₃ r₄ f hf`.
+
+Conclude with `(DVR.isSmul_iff _ s₄ s₂).2 (h2 _ _ _ a₂ (famV_smul ν a₄ _))`.
+-/
 theorem weil_eq_values : BrGtSt → BrFamSt → BrWpSt := by
   intro _ hF R _ _ D hE hB F _ _ _ N ν k hk p p' q q' z hq hq'
   obtain ⟨h1, h2, -, ⟨s₀, f₀, hs₀, hf₀⟩, -, h6⟩ := hF R D hE hB F N ν k hk

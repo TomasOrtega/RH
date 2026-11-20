@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.CoordsOrigin.OriginCoordinatesAdd
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by rcases IsLocalRing.isUnit_or_isUnit_one_sub_self x.fst with h | h · exact Or.inl ((TrivSqZeroExt.isUnit_iff_isUnit_fst).2 h) · exact Or.inr ((TrivSqZeroExt.isUnit_iff_isUnit_fst).2 (by simpa using h))`.
+-/
 theorem isLocalRing_tsz (S M : Type) [CommRing S] [IsLocalRing S] [AddCommGroup M] [Module S M] [Module Sᵐᵒᵖ M]
     [IsCentralScalar S M] : IsLocalRing (TrivSqZeroExt S M) :=
   IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by
@@ -22,6 +25,9 @@ theorem isLocalRing_tsz (S M : Type) [CommRing S] [IsLocalRing S] [AddCommGroup 
     · exact Or.inl ((TrivSqZeroExt.isUnit_iff_isUnit_fst).2 h)
     · exact Or.inr ((TrivSqZeroExt.isUnit_iff_isUnit_fst).2 (by simpa using h))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a ha => (TrivSqZeroExt.isUnit_iff_isUnit_fst).2 (by simpa using (TrivSqZeroExt.isUnit_iff_isUnit_fst).1 ha)⟩`.
+-/
 theorem isLocalHom_map {S M N : Type} [CommRing S] [AddCommGroup M] [Module S M] [AddCommGroup N] [Module S N]
     [Module Sᵐᵒᵖ M] [IsCentralScalar S M] [Module Sᵐᵒᵖ N] [IsCentralScalar S N] (L : M →ₗ[S] N) :
     IsLocalHom ((TrivSqZeroExt.map L : TrivSqZeroExt S M →ₐ[S] TrivSqZeroExt S N) : TrivSqZeroExt S M →+* TrivSqZeroExt S N) :=
@@ -35,6 +41,13 @@ def valAt {A : Type} [CommRing A] [IsLocalRing A] (x : Sp A ⟶ X) (p : X) (h : 
   ((X.presheaf.stalkCongr (Inseparable.of_eq h.symm)).hom ≫
     Scheme.stalkClosedPointTo (R := CommRingCat.of A) x).hom
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Set `ψ : X.presheaf.stalk (x (IsLocalRing.closedPoint A)) ⟶ CommRingCat.of B` to `Scheme.stalkClosedPointTo (R := CommRingCat.of A) x ≫ CommRingCat.ofHom g`. Establish `hψl : IsLocalHom ψ.hom` using `by show IsLocalHom (g.comp (Scheme.stalkClosedPointTo (R := CommRingCat.of A) x).hom) infer_instance`. Establish `e1 : Spec.map ψ ≫ X.fromSpecStalk _ = spMap g ≫ x`. Simplify using `only [ψ, Spec.map_comp, Category.assoc]`.
+
+Rewrite using `[Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Establish `e2` using `congrArg (SpecToEquivOfLocalRing X (CommRingCat.of B)) e1`. Establish `e3 : (SpecToEquivOfLocalRing X (CommRingCat.of B)) (Spec.map ψ ≫ X.fromSpecStalk _) = ⟨_, ψ, hψl⟩` using `(SpecToEquivOfLocalRing X (CommRingCat.of B)).apply_symm_apply ⟨_, ψ, hψl⟩`. Rewrite `e2` using `[e3]`. Take `⟨h1, h2⟩` from `SpecToEquivOfLocalRing_eq_iff.1 e2.symm`.
+
+Simplify using `only [SpecToEquivOfLocalRing, Equiv.coe_fn_mk] at h2`. Establish `h2' : Scheme.stalkClosedPointTo (R` using `CommRingCat.of B) (spMap g ≫ x) = (X.presheaf.stalkCongr (Inseparable.of_eq hy.symm)).inv ≫ ψ := h2`. Simplify using `only [valAt, h2', Iso.hom_inv_id_assoc]`. Simplify using `only [TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp, ψ]`. Both sides reduce to the same expression.
+-/
 theorem valAt_comp {A B : Type} [CommRing A] [IsLocalRing A] [CommRing B] [IsLocalRing B] (g : A →+* B)
     [IsLocalHom g] (x : Sp A ⟶ X) (p : X) (hx : x (IsLocalRing.closedPoint A) = p)
     (hy : (spMap g ≫ x) (IsLocalRing.closedPoint B) = p) (f : X.presheaf.stalk p) :
@@ -60,6 +73,9 @@ theorem valAt_comp {A B : Type} [CommRing A] [IsLocalRing A] [CommRing B] [IsLoc
   simp only [TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp, ψ]
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem valAt_congr {A : Type} [CommRing A] [IsLocalRing A] {x x' : Sp A ⟶ X} (e : x = x') (p : X)
     (h : x (IsLocalRing.closedPoint A) = p) (h' : x' (IsLocalRing.closedPoint A) = p) :
     valAt x p h = valAt x' p h' := by
@@ -71,6 +87,23 @@ namespace GlobalTheory.CoordsOrigin
 
 open GlobalTheory.CoordsOrigin.OriginCoordinatesAdd
 
+/- English proof (translation)
+Introduce `R _ _ G _ _ u v f`. Use `haveI : IsLocalRing (TrivSqZeroExt R (R × R)) := isLocalRing_tsz R (R × R)`. Set `P : overAt (𝟙 (Sp R)) (TrivSqZeroExt R (R × R)) ⟶ G` to `(homAt (𝟙 (Sp R)) (tm (LinearMap.inl R R R)) ≫ tv u) * (homAt (𝟙 (Sp R)) (tm (LinearMap.inr R R R)) ≫ tv v)`. Establish `hz : (0 : R →ₗ[R] R) = (0 : R) • (LinearMap.id : R →ₗ[R] R)` using `by simp`. Establish `hid : ∀ w : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ G, homAt (𝟙 (Sp R)) (tm (LinearMap.id : R →ₗ[R] R)) ≫ w = w`.
+
+Introduce `w`. Simplify using `only [tm]`. Rewrite using `[TrivSqZeroExt.map_id, homAt_id, Category.id_comp]`. Establish `hfst : homAt (𝟙 (Sp R)) (tm (LinearMap.fst R R R)) ≫ P = tv u`. Simplify using `only [P]`.
+
+Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, hz]`. Express the relevant statement in the definitionally equal form `_ * smT (𝟙 (Sp R)) 0 (tv v) = _`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem, _root_.mul_one, hid]`. Establish `hsnd : homAt (𝟙 (Sp R)) (tm (LinearMap.snd R R R)) ≫ P = tv v`. Simplify using `only [P]`.
+
+Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, hz]`. Express the relevant statement in the definitionally equal form `smT (𝟙 (Sp R)) 0 (tv u) * _ = _`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem, _root_.one_mul, hid]`. Establish `hsum : homAt (𝟙 (Sp R)) (tm (LinearMap.coprod (LinearMap.id : R →ₗ[R] R) LinearMap.id)) ≫ P = tv (u + v)`. Simplify using `only [P]`.
+
+Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.coprod_inl, LinearMap.coprod_inr, hid, hid, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_add]`. Establish `hP : P.left (IsLocalRing.closedPoint (TrivSqZeroExt R (R × R))) = origin G`. Establish `e : spMap ((tm (LinearMap.fst R R R) : TrivSqZeroExt R (R × R) →ₐ[R] DualNumber R) : TrivSqZeroExt R (R × R) →+* DualNumber R) ≫ P.left = (tv u).left` using `congrArg (fun q => q.left) hfst`. Use `haveI := isLocalHom_map (LinearMap.fst R R R)`. Establish `e0 : spMap ((tm (LinearMap.fst R R R) : TrivSqZeroExt R (R × R) →ₐ[R] DualNumber R) : TrivSqZeroExt R (R × R) →+* DualNumber R) (IsLocalRing.closedPoint (DualNumber R)) = IsLocalRing.closedPoint (TrivSqZeroExt R (R × R))` using `Spec_closedPoint (f := CommRingCat.ofHom _)`.
+
+Rewrite using `[← e0, ← tv_closedPoint G u, ← e]`. Both sides reduce to the same expression. Establish `key : ∀ (L : R × R →ₗ[R] R) (w : TanM (𝟙 (Sp R)) G), homAt (𝟙 (Sp R)) (tm L) ≫ P = tv w → tanDer G w f = L (valAt P.left (origin G) hP f).snd`. Introduce `L w hw`. Use `haveI := isLocalHom_map L`.
+
+Establish `e : (tv w).left = spMap ((tm L : TrivSqZeroExt R (R × R) →ₐ[R] DualNumber R) : TrivSqZeroExt R (R × R) →+* DualNumber R) ≫ P.left` using `(congrArg (fun q => q.left) hw).symm`. Establish `hy : (spMap ((tm L : TrivSqZeroExt R (R × R) →ₐ[R] DualNumber R) : TrivSqZeroExt R (R × R) →+* DualNumber R) ≫ P.left) (IsLocalRing.closedPoint (DualNumber R)) = origin G` using `e ▸ tv_closedPoint G w`. Rewrite using `[tanDer_eq]`. Express the relevant statement in the definitionally equal form `(valAt (tv w).left (origin G) (tv_closedPoint G w) f).snd = _`. Rewrite using `[valAt_congr e (origin G) _ hy, valAt_comp _ P.left (origin G) hP hy]`.
+
+Simplify using `[tm]`. Rewrite using `[key _ _ hsum, key _ _ hfst, key _ _ hsnd]`. Simplify using the standard rewrite rules.
+-/
 theorem tanDer_add : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (u v : TanM (𝟙 (Sp R)) G) (f : G.left.presheaf.stalk (origin G)),
     tanDer G (u + v) f = tanDer G u f + tanDer G v f := by

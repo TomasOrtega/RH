@@ -11,6 +11,13 @@ namespace PDiv
 
 open Coalgebra Bialgebra
 
+/- English proof (translation)
+Set `D : CartierDual O A →ₗ[O] O ⧸ Ideal.span {a}` to `(Ideal.Quotient.mkₐ O (Ideal.span {a})).toLinearMap ∘ₗ CartierDual.evalAt O A b`. Establish `hcomul : comul b = b ⊗ₜ 1 + 1 ⊗ₜ b + a • z`. Rewrite using `[← h, cobOne_apply]`. Normalize the expressions using the abelian group laws. Establish `hD : ∀ φ ψ : CartierDual O A, D (φ * ψ) = counitAlgHom O (CartierDual O A) φ • D ψ + counitAlgHom O (CartierDual O A) ψ • D φ`.
+
+Introduce `φ ψ`. Establish `e : (φ * ψ) b = φ b * ψ 1 + φ 1 * ψ b + a * CartierDual.pair O A A (φ ⊗ₜ ψ) z`. Rewrite using `[CartierDual.mul_apply, hcomul, map_add, map_add, map_smul]`. Simplify using the standard rewrite rules. Establish `ha : Ideal.Quotient.mk (Ideal.span {a}) a = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`.
+
+Simplify using `only [D, LinearMap.comp_apply, CartierDual.evalAt_apply, AlgHom.toLinearMap_apply, Ideal.Quotient.mkₐ_eq_mk, e, map_add, map_mul, ha, zero_mul, add_zero, Algebra.smul_def, Ideal.Quotient.algebraMap_eq]`. Rewrite using `[show counitAlgHom O (CartierDual O A) φ = φ 1 from rfl, show counitAlgHom O (CartierDual O A) ψ = ψ 1 from rfl]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨AugCot.lift _ D hD, fun φ => AugCot.lift_d _ D hD φ⟩`.
+-/
 theorem exists_tangent_of_cobOne_eq_smul (O A : Type) [CommRing O] [CommRing A] [Bialgebra O A]
     [Module.Finite O A] [Module.Projective O A] [Coalgebra.IsCocomm O A] (a : O) (b : A)
     (z : A ⊗[O] A) (h : cobOne O A b = a • z) :

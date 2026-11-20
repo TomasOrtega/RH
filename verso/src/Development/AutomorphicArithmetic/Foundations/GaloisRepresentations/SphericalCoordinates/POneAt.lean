@@ -7,6 +7,9 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hd`. Introduce `v hv`. Take `⟨w, hw, hv'⟩` from `h v hv`. Conclude with `⟨k • w, (LaHat D).nsmul_mem hw k, by rw [hv', smul_smul]⟩`.
+-/
 private theorem congOne_of_dvd {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) {N N' : ℕ}
     (hd : N ∣ N') {g : G.GAf} (h : L.CongOne N' g) : L.CongOne N g := by
   obtain ⟨k, rfl⟩ := hd
@@ -14,6 +17,9 @@ private theorem congOne_of_dvd {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGro
   obtain ⟨w, hw, hv'⟩ := h v hv
   exact ⟨k • w, (LaHat D).nsmul_mem hw k, by rw [hv', smul_smul]⟩
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hd`. Take `⟨h1, h2⟩` from `h`. Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `h2 a`. Conclude with `⟨k • w, (LaHat D).nsmul_mem hw k, by rw [e, smul_smul]⟩`.
+-/
 private theorem coordA_of_dvd {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G)
     {x : (AfP p ⊗[ℚ] G.C)ˣ} {N N' : ℕ} (hd : N ∣ N') {D' : PLat D.O D.inv} {t : D.La → D'.La}
     {j : D'.La →+ VQ D} {h₁ : G.GAf} (h : IsCoordA L x N' D' t j h₁) : IsCoordA L x N D' t j h₁ := by
@@ -23,6 +29,15 @@ private theorem coordA_of_dvd {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGrou
   obtain ⟨w, hw, e⟩ := h2 a
   exact ⟨k • w, (LaHat D).nsmul_mem hw k, by rw [e, smul_smul]⟩
 
+/- English proof (translation)
+Introduce `hk li p _ D G L gb N N' h hlev X X' c₁ hX hL hX' hL' ρ hF B PD D' t hcls j a hpl hco hloc P x e hU`. Take `⟨h3, hcop, h3', hcop', hdvd, -⟩` from `hlev`. Establish `lev1 : LevOk L N N' 1` using `⟨h3, hcop, h3', hcop', hdvd, fun u hu => by`. Establish `hm : u ∈ L.KN N` using `⟨congOne_of_dvd L hdvd hu.1, congOne_of_dvd L hdvd hu.2⟩`. Simplify using `using hm⟩`.
+
+Take `⟨D'', t'', P'', e'', inc, j'', hcls'', hU'', hPinc, he'', -, hj'', hpl'', hco'', hloc''⟩` from `hk p D G L gb N N' 1 lev1 X X' c₁ hX hL hX' hL' ρ hF D' t P x e hU B j a.1 (PD.lat a.2) hpl hco hloc`. Establish `hco₁ : IsCoordA L (trivX B) N D'' t'' j'' a.1` using `by simpa using hco''`. Establish `hpos : 0 < N` using `by omega`. Take `⟨w, hmk, hw⟩` from `(li p D G L B PD N hpos hcop D' t D'' t'' j j'' a a N' N t t'' hcls hcls'' hpl hpl'' (coordA_of_dvd L hdvd hco) hco₁ hloc hloc'' 1).1 ⟨by simp, by simp⟩`. Establish `hw1 : ∀ u, j (w u) = j'' u` using `fun u => by`.
+
+Rewrite using `[hw u]`. Simplify using `[actY]`. Establish `hinc : ∀ u, w (inc u) = u` using `fun u => hpl.1 (by rw [hw1, hj''])`. Establish `hP : ∀ u'', P (w u'') = P'' u''` using `fun u'' => by`. Establish `e1 : inc (w u'') = u''` using `w.injective (hinc _)`.
+
+Rewrite using `[← hPinc, e1]`. Apply the tactic sequence `refine ⟨_, GlobalTheory.T.uniformisationAt_transport_isometry D.O D.inv D.g ρ ℂ (RingHom.id ℂ) D.La (gfam X.univ hX hL) N D'' D' t'' t P'' P (x ≫ c₁.q) e'' w (LinearEquiv.refl ℂ _) hpos hU'' hmk (fun u => hP u) hU.2.1, fun z => ?_⟩`. Simplify using `using he'' z`.
+-/
 theorem UpperTheory.Gal.W2.oneAt_of :
     UpperTheory.Gal.W2.HeckeCoord → UpperTheory.Gal.W2.LatIso → UpperTheory.Gal.W2.OneAt := by
   intro hk li p _ D G L gb N N' h hlev X X' c₁ hX hL hX' hL' ρ hF B PD D' t hcls j a hpl hco hloc P x e hU

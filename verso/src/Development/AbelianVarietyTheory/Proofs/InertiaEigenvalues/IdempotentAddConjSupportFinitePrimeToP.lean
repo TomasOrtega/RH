@@ -26,6 +26,15 @@ open GlobalTheory.StdAtPrime
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D ι hid hcj p e P he hp`. Take `⟨ev, hev⟩ : ∃ ev : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), AE D →+* Q.adicCompletion D.host.E, ∀ Q z, ev Q z = ι (finPart D z) Q` from `⟨fun Q => ((GlobalTheory.CharLocProd.evalAt Q).comp ι.toRingHom).comp (finPart D), fun _ _ => rfl⟩`. Simplify using `only [← hev] at hid hcj ⊢`. Take `⟨⟨es, hes, hsum⟩, horth⟩` from `he`. Establish `e2 : ∀ Q, Q ∉ P → ev Q e = 0` using `fun Q hQ => by`.
+
+Rewrite using `[hsum, map_sum]`. Conclude with `Finset.sum_eq_zero fun Q' h' => (hid _ _ (hes Q' h')).2.2 Q fun hh => hQ (hh ▸ h')`. Use `⟨↑P ∪ GlobalTheory.IdemSupport.cP '' ↑P, P.finite_toSet.union (P.finite_toSet.image _), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `Q (hQ | ⟨Q', hQ', rfl⟩)`. Conclude with `hp Q hQ`.
+
+Rewrite using `[GlobalTheory.IdemSupport.mem_cP, map_natCast]`. Conclude with `hp Q' hQ'`. Introduce `Q hQ`. Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_image, not_or, not_exists, not_and] at hQ`. Establish `h1 : Q ∉ P` using `hQ.1`.
+
+Establish `h2 : GlobalTheory.IdemSupport.cP Q ∉ P` using `fun h => hQ.2 _ h (GlobalTheory.ClassScalarValue.cP_cP Q)`. Establish `a` using `hcj e (GlobalTheory.IdemSupport.cP Q)`. Rewrite `a` using `[e2 _ h2, map_zero, GlobalTheory.ClassScalarValue.cP_cP, map_eq_zero]`. Rewrite using `[map_add, e2 Q h1, a, add_zero]`.
+-/
 theorem idemSum_add_conj_support_finite : ∀ (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E), (∀ (e : AE D) (P : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt e P → infPart D e = 0 ∧ ι (finPart D e) P = 1 ∧ ∀ P' : HeightOneSpectrum (𝓞 D.host.E), P' ≠ P → ι (finPart D e) P' = 0) → (∀ (z : AE D) (Q : HeightOneSpectrum (𝓞 D.host.E)), Valued.v (ι (finPart D (cA D z)) (GlobalTheory.IdemSupport.cP Q)) = Valued.v (ι (finPart D z) Q)) → ∀ (p : ℕ) (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e P → (∀ PP ∈ P, (p : 𝓞 D.host.E) ∉ PP.asIdeal) → ∃ S : Set (HeightOneSpectrum (𝓞 D.host.E)), S.Finite ∧ (∀ Q ∈ S, (p : 𝓞 D.host.E) ∉ Q.asIdeal) ∧ ∀ Q ∉ S, ι (finPart D (e + cA D e)) Q = 0 := by
   intro D ι hid hcj p e P he hp
   classical

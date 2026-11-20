@@ -7,6 +7,35 @@ noncomputable section
 
 namespace Formalism.RepresentationBoundsCohomology.N2
 
+/- English proof (translation)
+Introduce `ℓ _ hℓ A _ _ G n _ D _ _ _ _ Λ Mi hi s H hgen hM hh hgen2 hind hKH hs`. Establish `hsH : ∀ i, s i ≤ H` using `fun i => (hs i).2 H (hKH i)`. Establish `hℓ3 : 3 ≤ ℓ`. Establish `h2` using `(Fact.out : ℓ.Prime).two_le`. Use linear arithmetic over natural numbers and integers.
+
+Establish `part1 : ∀ i, s (i - 1) ≤ Mi i + hi i + cW ℓ H + 2 + (s i + (ℓ - 2)) / (ℓ - 1)`. Introduce `i`. Set `S : PhiStep ℓ A D D` to `{ φA := Λ.φA, π := G.X, q := Λ.q, w := Λ.w, φπ := Λ.φπ, hq := Λ.hq, φ := Λ.φ i, φ_smul := Λ.φ_smul i, P := (Λ.pair (i - 1)).N, P' := (Λ.pair (i - 1)).N', R := (Λ.pair i).N, R' := (Λ.pair i).N' }`. Establish `hc` using `second_descent_free_part_holds ℓ A D D S (Λ.pair (i - 1)).le hgen2 (by omega) (hind i)`. Establish `he : ∀ a j : ℕ, ((s i : ℝ) - j) * ℓ / ((ℓ : ℝ) - 1) ^ 2 + cW ℓ H ≤ a → ∀ r ∈ S.R, ((ℓ : A) ^ a * S.π ^ j) • r ∈ S.R'` using `fun a j ha => unconditional_first_statement ℓ hℓ A G D (Λ.pair i) (s i) H a j hgen (hsH i) (hs i).1 ha`.
+
+Establish `key` using `second_descent_statement_holds ℓ hℓ A D D S (Mi i) (hi i) (s i) H (hM i) (hh i) hc (hs i).1 he`. Conclude with `(hs (i - 1)).2 (Mi i + hi i + cW ℓ H + 2 + (s i + (ℓ - 2)) / (ℓ - 1)) key`. Establish `part2 : ∀ (i : ZMod n) (m : ℕ), (s i : ℝ) ≤ (∑ a ∈ Finset.range m, (((Mi (i + ((a + 1 : ℕ) : ZMod n)) + hi (i + ((a + 1 : ℕ) : ZMod n)) : ℕ) : ℝ) + cW ℓ H + 3) / ((ℓ : ℝ) - 1) ^ a) + (s (i + (m : ZMod n)) : ℝ) / ((ℓ : ℝ) - 1) ^ m`. Introduce `i m`. Establish `hℓR : (1 : ℝ) < ℓ` using `by exact_mod_cast (by omega : 1 < ℓ)`.
+
+Use `residue_finite_holds n (ℓ : ℝ) (cW ℓ H : ℝ) (fun k => (s k : ℝ)) (fun k => ((Mi k + hi k : ℕ) : ℝ)) hℓR ?_ i m` and prove the remaining obligations. Introduce `k`. Establish `h1` using `part1 k`. Establish `hℓ1 : (0 : ℝ) < (ℓ : ℝ) - 1` using `by linarith`. Establish `hdiv : (((s k + (ℓ - 2)) / (ℓ - 1) : ℕ) : ℝ) ≤ (s k : ℝ) / ((ℓ : ℝ) - 1) + 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Move the coercions through the operations in `[Nat.cast_sub (show 2 ≤ ℓ by omega), Nat.cast_sub (show 1 ≤ ℓ by omega)]`. Apply the tactic sequence `try ring`. Use `_ ≤ (s k : ℝ) / ((ℓ : ℝ) - 1) + 1 := by`. Rewrite using `[add_div]`.
+
+Establish `: ((ℓ : ℝ) - 2) / ((ℓ : ℝ) - 1) ≤ 1` using `by rw [div_le_one hℓ1]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1R : (s (k - 1) : ℝ) ≤ ((Mi k + hi k + cW ℓ H + 2 + (s k + (ℓ - 2)) / (ℓ - 1) : ℕ) : ℝ)` using `by exact_mod_cast h1`. Rewrite `h1R` using `[Nat.cast_add, Nat.cast_add, Nat.cast_add, Nat.cast_add]`. Use `show (s (k - 1) : ℝ) ≤ ((Mi k + hi k : ℕ) : ℝ) + (cW ℓ H : ℝ) + 3 + (s k : ℝ) / ((ℓ : ℝ) - 1)`.
+
+Rewrite using `[Nat.cast_add]`. Evaluate the numerical expressions using `at h1R ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `part3 : ∀ i, (Λ.pair i).Kills ((ℓ : A) ^ cost ℓ 0 (s i)) ∧ (cost ℓ 0 (s i) : ℝ) < (s i : ℝ) * ℓ / ((ℓ : ℝ) - 1) ^ 2 + cW ℓ H`. Introduce `i`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `cost_bound_kills_obstruction ℓ hℓ A G D (Λ.pair i) (s i) 0 hgen (Nat.zero_le _) (hs i).1`. Simplify using `using h`. Establish `h` using `cost_bound ℓ hℓ 0 (s i) H (Nat.zero_le _) (hsH i)`. Establish `hc : 1 + Real.logb ℓ ((H : ℝ) + 1) ≤ (cW ℓ H : ℝ)` using `Nat.le_ceil _`.
+
+Simplify using `only [Nat.cast_zero, sub_zero] at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `part4 : ∀ (i : ZMod n) (j : ℕ) (Gw : ℝ), 0 ≤ Gw → (∀ k : ℕ, 1 ≤ k → k ≤ j → ((Mi (i + (k : ZMod n)) + hi (i + (k : ZMod n)) : ℕ) : ℝ) ≤ 2 * Gw) → (s i : ℝ) ≤ (2 * Gw + cW ℓ H + 3) * ((ℓ : ℝ) - 1) / ((ℓ : ℝ) - 2) + (H : ℝ) / ((ℓ : ℝ) - 1) ^ j`. Introduce `i j Gw hGw hb`. Establish `h2` using `part2 i j`.
+
+Establish `hℓ3R : (3 : ℝ) ≤ ℓ` using `by exact_mod_cast hℓ3`. Establish `hL : (1 : ℝ) < (ℓ : ℝ) - 1` using `by linarith`. Establish `hLpos : (0 : ℝ) < (ℓ : ℝ) - 1` using `by linarith`. Establish `hK0 : (0 : ℝ) ≤ 2 * Gw + cW ℓ H + 3` using `by positivity`. Use `set K : ℝ := 2 * Gw + cW ℓ H + 3 with hK`.
+
+Establish `hsum : (∑ a ∈ Finset.range j, (((Mi (i + ((a + 1 : ℕ) : ZMod n)) + hi (i + ((a + 1 : ℕ) : ZMod n)) : ℕ) : ℝ) + cW ℓ H + 3) / ((ℓ : ℝ) - 1) ^ a) ≤ ∑ a ∈ Finset.range j, K / ((ℓ : ℝ) - 1) ^ a`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a ha`. Establish `ha' : a < j` using `Finset.mem_range.mp ha`. Establish `hak` using `hb (a + 1) (by omega) (by omega)`.
+
+Apply `div_le_div_of_nonneg_right _ (pow_pos hLpos a).le` to reduce the goal to its premises. Rewrite using `[hK]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgeom` using `geom_id K ((ℓ : ℝ) - 1) hL j`. Establish `htail : 0 ≤ K * ((ℓ : ℝ) - 1) / (((ℓ : ℝ) - 1 - 1) * ((ℓ : ℝ) - 1) ^ j)`.
+
+Apply `div_nonneg (mul_nonneg hK0 hLpos.le)` to reduce the goal to its premises. Conclude with `mul_nonneg (by linarith) (pow_pos hLpos j).le`. Establish `hsH' : (s (i + (j : ZMod n)) : ℝ) / ((ℓ : ℝ) - 1) ^ j ≤ (H : ℝ) / ((ℓ : ℝ) - 1) ^ j` using `div_le_div_of_nonneg_right (by exact_mod_cast hsH _) (pow_pos hLpos j).le`. Establish `heq : K * ((ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1 - 1) = K * ((ℓ : ℝ) - 1) / ((ℓ : ℝ) - 2)`. Rewrite using `[show (ℓ : ℝ) - 1 - 1 = (ℓ : ℝ) - 2 by ring]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨part1, part2, part3, part4⟩`.
+-/
 theorem unit_lemma_prime_case_holds : StatWPrime := by
   intro ℓ _ hℓ A _ _ G n _ D _ _ _ _ Λ Mi hi s H hgen hM hh hgen2 hind hKH hs
   have hsH : ∀ i, s i ≤ H := fun i => (hs i).2 H (hKH i)

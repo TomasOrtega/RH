@@ -13,6 +13,11 @@ open Formalism.HermitianLattices.Ext.L3 Formalism.HermitianLattices.Ext.L3.HU Fo
 variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F]
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Use `⟨fun t => if t = p then α else 0, fun t => ?_, fun s => ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `hα`. Conclude with `S.zero_mem`. Rewrite using `[Fintype.sum_eq_single p]`.
+
+Simplify using the standard rewrite rules. Introduce `t ht`. Simplify using `[ht]`.
+-/
 theorem exists_one {ι : Type} [Fintype ι] [DecidableEq ι] {S : Subring K} {p : ι} {α : K}
     (hα : α ∈ S) (g : ι → ι → K) :
     ∃ κ : ι → K, (∀ t, κ t ∈ S) ∧ ∀ s, ∑ t, κ t * g s t = α * g s p := by
@@ -26,6 +31,11 @@ theorem exists_one {ι : Type} [Fintype ι] [DecidableEq ι] {S : Subring K} {p 
     · intro t ht
       simp [ht]
 
+/- English proof (translation)
+Use `⟨fun t => if t = p then α else if t = q then β else 0, fun t => ?_, fun s => ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs exacts [hα, hβ, S.zero_mem]`. Rewrite using `[Fintype.sum_eq_add p q hpq]`. Simplify using `[hpq.symm]`. Introduce and unpack `t ⟨h1, h2⟩`.
+
+Simplify using `[h1, h2]`.
+-/
 theorem exists_two {ι : Type} [Fintype ι] [DecidableEq ι] {S : Subring K} {p q : ι} (hpq : p ≠ q)
     {α β : K} (hα : α ∈ S) (hβ : β ∈ S) (g : ι → ι → K) :
     ∃ κ : ι → K, (∀ t, κ t ∈ S) ∧ ∀ s, ∑ t, κ t * g s t = α * g s p + β * g s q := by
@@ -38,6 +48,15 @@ theorem exists_two {ι : Type} [Fintype ι] [DecidableEq ι] {S : Subring K} {p 
     · rintro t ⟨h1, h2⟩
       simp [h1, h2]
 
+/- English proof (translation)
+Use `choose κ hκS hκ using hinv`. Introduce `x hx`. Establish `hX : ∀ u, h (G u) x ∈ SP K 𝔭` using `fun u => by`. Rewrite using `[mem_SP_iff_locF]`. Conclude with `hx (G u) (LocF.le_locF 𝔭 _ (Submodule.subset_span ⟨u, rfl⟩))`.
+
+Establish `hyx : ∀ s, h (G s) (x - ∑ t, (∑ u, κ u t * h (G u) x) • G t) = 0`. Introduce `s`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [form_smul_right]`. Establish `e : ∀ t, (∑ u, κ u t * h (G u) x) * h (G s) (G t) = ∑ u, h (G u) x * (κ u t * h (G s) (G t))` using `fun t => by`.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun u _ => by ring`. Rewrite using `[Finset.sum_congr rfl fun t _ => e t, Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, hκ]`. Simplify using the standard rewrite rules.
+
+Establish `hxy` using `eq_zero_of_orth hs hnd G hG hyx`. Rewrite `hxy` using `[sub_eq_zero]`. Rewrite using `[hxy]`. Use `Submodule.sum_mem _ fun t _ => smul_mem_locF_of_SP ?_ (Submodule.subset_span ⟨t, rfl⟩)` and prove the remaining obligations. Conclude with `(SP K 𝔭).sum_mem fun u _ => (SP K 𝔭).mul_mem (hκS u t) (hX u)`.
+-/
 theorem dualF_le_of_inv {ι : Type} [Fintype ι] [DecidableEq ι] {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) (hnd : Nondeg h) {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (G : ι → V)
     (hG : Submodule.span K (Set.range G) = ⊤)

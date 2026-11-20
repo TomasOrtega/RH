@@ -20,6 +20,9 @@ def clPull (hU : U ≤ galOf F K Ω) (R M : Type) [CommRing R] [AddCommGroup M] 
     (ClassGroup (𝓞 K) → M) →ₗ[R] (U → M) :=
   LinearMap.funLeft R M (artU K hU)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem clPull_apply (hU : U ≤ galOf F K Ω) (R M : Type) [CommRing R] [AddCommGroup M] [Module R M]
     (θ : ClassGroup (𝓞 K) → M) (u : U) : clPull K hU R M θ u = θ (artCl K Ω (toGal K hU u)) := rfl
 

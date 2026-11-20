@@ -8,6 +8,17 @@ open scoped Classical
 
 namespace DiscreteGroups.sglob.DzLc
 
+/- English proof (translation)
+Take `⟨E, hE⟩ : ∃ E : Module.End ℂ τ, E = ∑ u : U, τ.ρ (u : G)` from `⟨_, rfl⟩`. Rewrite using `[← hE]`. Establish `hinv : ∀ v : U, τ.ρ (v : G) * E = E`. Introduce `v`. Rewrite using `[hE, Finset.mul_sum]`.
+
+Use `Fintype.sum_equiv (Equiv.mulLeft v) _ _ fun u => ?_` and prove the remaining obligations. Simplify using `[map_mul]`. Establish `hsq : E * E = (Fintype.card U : ℂ) • E`. Combine the equalities or inequalities in the displayed calculation. Establish `htE : LinearMap.trace ℂ τ E = 0`.
+
+Rewrite using `[hE, map_sum]`. Conclude with `h`. Establish `hc : (Fintype.card U : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Take `⟨P, hP⟩ : ∃ P : Module.End ℂ τ, P = (Fintype.card U : ℂ)⁻¹ • E` from `⟨_, rfl⟩`. Establish `hPP : P * P = P`.
+
+Rewrite using `[hP, smul_mul_assoc, mul_smul_comm, hsq, smul_smul, smul_smul, mul_assoc, inv_mul_cancel₀ hc, mul_one]`. Establish `hproj : LinearMap.IsProj (LinearMap.range P) P` using `⟨fun x => LinearMap.mem_range_self P x, fun x hx => by`. Take `⟨y, rfl⟩` from `hx`. Conclude with `congrArg (fun f : Module.End ℂ τ => f y) hPP⟩`. Establish `htP : LinearMap.trace ℂ τ P = 0`.
+
+Rewrite using `[hP, map_smul, htE, smul_zero]`. Rewrite `htP` using `[hproj.trace, Nat.cast_eq_zero, Submodule.finrank_eq_zero, LinearMap.range_eq_bot]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_rho_eq_zero {G : Type} [Group G] [Fintype G] (τ : FDRep ℂ G) (U : Subgroup G) {_ : Fintype U}
     (h : ∑ u : U, τ.character (u : G) = 0) : ∑ u : U, τ.ρ (u : G) = 0 := by
   obtain ⟨E, hE⟩ : ∃ E : Module.End ℂ τ, E = ∑ u : U, τ.ρ (u : G) := ⟨_, rfl⟩
@@ -40,6 +51,9 @@ theorem sum_rho_eq_zero {G : Type} [Group G] [Fintype G] (τ : FDRep ℂ G) (U :
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Unfold `res`. Rewrite using `[← Finset.sum_filter, Finset.sum_subtype (p := fun x => x ∈ GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a)) _ (fun x => by rw [GlobalTheory.SerSys.TameGen.mem_unipRadical_iff ha]; simp) χ]`.
+-/
 theorem res_eq {n a : ℕ} (ha : a < n) (χ : Gn g n → ℂ) :
     res a (n - a) χ 1 1 = ((g : ℂ) ^ (a * (n - a)))⁻¹ *
       ∑ u : GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a), χ (u : Gn g n) := by
@@ -47,6 +61,11 @@ theorem res_eq {n a : ℕ} (ha : a < n) (χ : Gn g n → ℂ) :
   rw [← Finset.sum_filter, Finset.sum_subtype (p := fun x => x ∈ GlobalTheory.FiniteGL.unipRadical (ZMod g)
     (GlobalTheory.FiniteGL.twoBlocks n a)) _ (fun x => by rw [GlobalTheory.SerSys.TameGen.mem_unipRadical_iff ha]; simp) χ]
 
+/- English proof (translation)
+Use `sum_rho_eq_zero τ _ ?_` and prove the remaining obligations. Establish `hres` using `hτ.2.2 a h0 ha`. Rewrite `hres` using `[res_eq ha]`. Use `(mul_eq_zero.1 hres).resolve_left ?_` and prove the remaining obligations. Establish `: (g : ℂ) ≠ 0` using `by exact_mod_cast (Fact.out : g.Prime).ne_zero`.
+
+Conclude with `inv_ne_zero (pow_ne_zero _ this)`.
+-/
 theorem sum_unip_eq_zero {n a : ℕ} (τ : FDRep ℂ (Gn g n)) (hτ : IsCusp τ.character) (h0 : 0 < a) (ha : a < n) :
     ∑ u : GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a), τ.ρ (u : Gn g n) = 0 := by
   refine sum_rho_eq_zero τ _ ?_

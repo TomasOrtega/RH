@@ -15,6 +15,9 @@ variable {s κ : ℕ} (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t
 def upZero : GL (Fin κ ⊕ Fin (s + 1)) k ≃* GL (XIx (Fin κ) t 0 ⊕ Fin (s + 1)) k :=
   (reGL (ixZero (Fin κ ⊕ Fin (s + 1)) t)).trans (typeFrame S.ϖ (stdOrd (Fin κ) t 0 (s + 1) (Nat.zero_add _))).conj
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem upZero_apply (x : GL (Fin κ ⊕ Fin (s + 1)) k) : upZero S t x =
     (S.T t).bas 0 (s + 1) (Nat.zero_add _) *
       reGL (stdOrd (Fin κ) t 0 (s + 1) (Nat.zero_add _)) (reGL (ixZero (Fin κ ⊕ Fin (s + 1)) t) x) *
@@ -24,6 +27,11 @@ open ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 variable {s κ : ℕ} (S : _root_.GlobalTheory.SymChain.SymData k s κ) (t : Type) [Fintype t] [DecidableEq t] in
 
+/- English proof (translation)
+Use `show _ ∈ (_root_.GlobalTheory.StepData.Level.map _ _).J ↔ _`. Rewrite using `[_root_.GlobalTheory.StepData.Level.mem_map, _root_.GlobalTheory.LevZeroGen.upZero, MulEquiv.trans_apply]`. Use `erw [MulEquiv.symm_apply_apply]`. Rewrite using `[_root_.GlobalTheory.StepData.TypeDatum.iter_zero]`. Unfold `_root_.GlobalTheory.StepData.TypeDatum.reindex`.
+
+Use `show _ ∈ (_root_.GlobalTheory.StepData.Level.map _ _).J ↔ _`. Rewrite using `[_root_.GlobalTheory.StepData.Level.mem_map, MulEquiv.symm_apply_apply]`.
+-/
 theorem _root_.GlobalTheory.LevZeroGen.upZero_mem_lev (x : GL (Fin κ ⊕ Fin (s + 1)) k) :
     _root_.GlobalTheory.LevZeroGen.upZero S t x ∈
         ((S.T t).lev 0 (s + 1)

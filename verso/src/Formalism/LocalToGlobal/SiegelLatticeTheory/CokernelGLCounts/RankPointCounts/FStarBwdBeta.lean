@@ -67,9 +67,19 @@ def BetaCore : Prop :=
 
 variable {u u' F0 what₂}
 
+/- English proof (translation)
+Introduce `hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg _` and use `h hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg`.
+-/
 theorem bwdBeta'_of (h : BwdBeta Zd u u' F0 what₂) : BwdBeta' Zd u u' F0 what₂ :=
   fun hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg _ => h hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg
 
+/- English proof (translation)
+Introduce `hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg hT`. Take `⟨x, hx, hmk, hG⟩` from `hR hC γ Z hZ`. Establish `hPD : PD D γ.lam (lf D F0) u' (repF γ)` using `hx ▸ x.2`. Establish `hG' : Gval (lf D F0) (repF γ) ≠ 0` using `hx ▸ hG`. Take `⟨β, hP, hle, hsc⟩` from `hB hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg hT hPD hG'`.
+
+Establish `hrow` using `hC.2.1.1 γ.lam γ.mem`. Establish `hfix` using `hrow.2.1`. Use `⟨x, hmk, hG, β, hx ▸ hP, ?_, hx ▸ hsc⟩` and prove the remaining obligations. Rewrite using `[hx]`. Use `(Formalism.L2.SG.NGCut.CorankRelation.s0_eq_one_iff_Th_eq_Hp D.R.k (Corank.finrank_VS D) γ.lam hfix.1 (lf D F0) (repF γ) _ β hfix.2.2.1 hPD.1 hG').2 ?_` and prove the remaining obligations.
+
+Conclude with `le_antisymm (PI.PairCorankPos.W.Th_le_Hp _ _ _ _ _) hle`.
+-/
 theorem bwdBeta'_of_core (hR : RepG u u' F0 what₂) (hB : BetaCore Zd u u' F0 what₂) : BwdBeta' Zd u u' F0 what₂ := by
   intro hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg hT
   obtain ⟨x, hx, hmk, hG⟩ := hR hC γ Z hZ
@@ -84,6 +94,11 @@ theorem bwdBeta'_of_core (hR : RepG u u' F0 what₂) (hB : BetaCore Zd u u' F0 w
     hfix.2.2.1 hPD.1 hG').2 ?_
   exact le_antisymm (PI.PairCorankPos.W.Th_le_Hp _ _ _ _ _) hle
 
+/- English proof (translation)
+Introduce `hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg`. Establish `hT` using `h2 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ ⟨n, hn, himg⟩`. Take `⟨hT1, hA, hG, hO⟩` from `hT`. Establish `hE` using `mem_EZ_of hn γ.lam Λ₂ (gmap_eq_of_image himg) (liftF F'₂) Z hT1 hA hG hO hS.1`. Take `⟨x, hx, hGx, β, hP, hs0, hsc⟩` from `h4 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg ⟨hT1, hA, hG, hO⟩`.
+
+Establish `hPD : PD D γ.lam (lf D F0) u' (mapL n (isom_of_N0F hn) (liftF F'₂))` using `⟨hE.1.1, hE.1.2.1, hE.2.2.2.1⟩`. Set `pr : Corank.Pair D u u' F0 what₂` to `⟨γ.lam, γ.mem, x, ⟨_, hPD⟩, hGx, hE.1.2.2, β, hP⟩`. Use `⟨⟨γ.lam, γ.mem, TermDef.mk _ _ _ ⟨_, hPD⟩⟩, ⟨pr, ?_, rfl, hs0, hsc⟩, hPD, rfl⟩` and prove the remaining obligations. Conclude with `congrArg (fun c => (⟨γ.lam, γ.mem, c⟩ : TermDef.Term D u u' F0 what₂)) hx`.
+-/
 theorem bwdPair_of'' (h2 : BwdTerm' Zd u u' F0 what₂) (h4 : BwdBeta' Zd u u' F0 what₂) : BwdPair Zd u u' F0 what₂ := by
   intro hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg
   have hT := h2 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ ⟨n, hn, himg⟩
@@ -96,6 +111,9 @@ theorem bwdPair_of'' (h2 : BwdTerm' Zd u u' F0 what₂) (h4 : BwdBeta' Zd u u' F
   refine ⟨⟨γ.lam, γ.mem, TermDef.mk _ _ _ ⟨_, hPD⟩⟩, ⟨pr, ?_, rfl, hs0, hsc⟩, hPD, rfl⟩
   exact congrArg (fun c => (⟨γ.lam, γ.mem, c⟩ : TermDef.Term D u u' F0 what₂)) hx
 
+/- English proof (translation)
+Introduce `γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂`. Take `⟨n, hn, himg⟩` from `h1 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂`. Take `⟨hT, hA, hG, hO⟩` from `h2 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ ⟨n, hn, himg⟩`. Use `⟨mapL n (isom_of_N0F hn) (liftF F'₂), ⟨?_, bwdPair_of'' Zd h2 h4 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg⟩, n, hn, ⟨fun a => rfl, rfl⟩, himg⟩` and prove the remaining obligations. Conclude with `mem_EZ_of hn γ.lam Λ₂ (gmap_eq_of_image himg) (liftF F'₂) Z hT hA hG hO hS.1`.
+-/
 theorem bwdC_of''' (hC : CtxP u u' F0 what₂) (h1 : BwdN Zd u u' F0 what₂) (h2 : BwdTerm' Zd u u' F0 what₂)
     (h4 : BwdBeta' Zd u u' F0 what₂) : BwdC Zd u u' F0 what₂ := by
   intro γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂

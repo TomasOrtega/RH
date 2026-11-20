@@ -4,6 +4,15 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hmul : K * K⁻¹ = 1` using `mul_inv_cancel₀ hK`. Establish `key : ∀ s ∈ K * K⁻¹, ∃ w : V, B w v = s ∧ ∀ t ∈ K, t • w ∈ L`. Introduce `s hs`. Use `FractionalIdeal.mul_induction_on hs ?_ ?_` and prove the remaining obligations. Introduce `k hk k' hk'`.
+
+Take `⟨z, hz, rfl⟩` from `(hKL k).1 hk`. Use `⟨k' • z, by simp [mul_comm], fun t ht => ?_⟩` and prove the remaining obligations. Establish `h1 : t * k' ∈ K * K⁻¹` using `FractionalIdeal.mul_mem_mul ht hk'`. Rewrite `h1` using `[hmul, FractionalIdeal.mem_one_iff]`. Take `⟨r, hr⟩` from `h1`.
+
+Rewrite using `[smul_smul, ← hr]`. Conclude with `hLsmul r z hz`. Introduce and unpack `x y ⟨w, hw, hw'⟩ ⟨u, hu, hu'⟩`. Use `⟨w + u, by simp [hw, hu], fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+
+Conclude with `hLadd _ (hw' t ht) _ (hu' t ht)`. Use `key 1 ?_` and prove the remaining obligations. Rewrite using `[hmul]`. Conclude with `FractionalIdeal.one_mem_one _`.
+-/
 theorem exists_section_of_fractionalIdeal_values {F V : Type} [Field F] [NumberField F]
     [AddCommGroup V] [Module F V] (B : LinearMap.BilinForm F V) (L : Set V) (hL0 : (0 : V) ∈ L)
     (hLadd : ∀ x ∈ L, ∀ x' ∈ L, x + x' ∈ L)

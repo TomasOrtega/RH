@@ -30,6 +30,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.GenOnModel
 
+/- English proof (translation)
+Take `⟨hi, -, hx⟩` from `hβ`. Establish `hdom : IsDomain O` using `hi.isDomain β`. Use `letI : Algebra O K := β.toAlgebra`. Use `haveI : FaithfulSMul O K := (faithfulSMul_iff_algebraMap_injective O K).2 hi`. Establish `hloc : IsLocalization (nonZeroDivisors O) K`.
+
+Use `IsFractionRing.of_field O K fun z => ?_` and prove the remaining obligations. Take `⟨a, b, hb, e⟩` from `hx z`. Conclude with `⟨a, b, by`. Express the relevant statement in the definitionally equal form `z = β a / β b`. Rewrite using `[← e]`.
+
+Use the proof step `field_simp⟩`. Establish `h : IsPreimmersion (spMap β)` using `IsPreimmersion.of_isLocalization (R := O) (S := K) (nonZeroDivisors O)`. Use `infer_instance`.
+-/
 theorem isPreimmersion_fst {O K : Type} [CommRing O] [Field K] (β : O →+* K) {X : Scheme.{0}} (s : X ⟶ Sp O)
     (hβ : Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : K, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) :
     IsPreimmersion (pullback.fst s (spMap β)) := by
@@ -46,9 +53,15 @@ theorem isPreimmersion_fst {O K : Type} [CommRing O] [Field K] (β : O →+* K) 
   have h : IsPreimmersion (spMap β) := IsPreimmersion.of_isLocalization (R := O) (S := K) (nonZeroDivisors O)
   infer_instance
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem genPt_comp {X X' : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Sp Ω ⟶ X) (π : X ⟶ X') :
     genPt (ξ ≫ π) = π (genPt ξ) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem centre_comp {X X' : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRing R] (z : Sp R ⟶ X) (π : X ⟶ X') :
     centre (z ≫ π) = π (centre z) := rfl
 
@@ -58,6 +71,69 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 open GenOnModel
 
+/- English proof (translation)
+Introduce `hRes hGaga E _ _ _ H D l Xo c O _ β Y U Z τ σ Φ b₁ b₂ hβ hpq hτ hσ hgeom hΦ hi₁ hs₁ hi₂ hs₂`. Establish `hξ : IsCptGen (Z.ξ₀ ≫ Y.j)` using `Z.gen`. Take `⟨hA, hB, -, -⟩` from `GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c O β Y U Z τ hβ hτ`. Establish `hη : (⟨genPt (Z.ξ₀ ≫ Y.j), specializes_rfl⟩ : Cpt (Z.ξ₀ ≫ Y.j)) ∈ Z.genFib` using `⟨Y.jQ (genPt Z.ξ₀), rfl⟩`. Take `⟨W₁, hW₁, hf₁⟩` from `GlobalTheory.T.frame_near_generic_point _ _ _ _ (Z.eig τ) Z.genFib D.p _ b₁ hξ hη hA hi₁ hs₁`.
+
+Take `⟨W₂, hW₂, hf₂⟩` from `GlobalTheory.T.frame_near_generic_point _ _ _ _ (Z.eig (ComplexEmbedding.conjugate τ)) Z.genFib D.q _ b₂ hξ hη hB hi₂ hs₂`. Take `⟨hwA, ha⟩` from `GlobalTheory.T.wedge_lattice_generator _ _ _ _ (Z.eig τ) D.p b₁ _ (hf₁ _ hη hW₁)`. Take `⟨hwB, hb⟩` from `GlobalTheory.T.wedge_lattice_generator _ _ _ _ (Z.eig (ComplexEmbedding.conjugate τ)) D.q b₂ _ (hf₂ _ hη hW₂)`. Establish `hcoef : IsCoeffAt (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q (exteriorPower.ιMulti Z.Ω D.p b₁) (exteriorPower.ιMulti Z.Ω D.q b₂) ⟨genPt (Z.ξ₀ ≫ Y.j), specializes_rfl⟩ 1` using `⟨1, 1, one_ne_zero, one_ne_zero, by rw [one_smul]; exact hwA, by rw [one_smul]; exact hwB, by simp⟩`. Take `⟨hLvb, hLgen, hLfr⟩` from `GlobalTheory.T.wedge_line_lattice_vector_bundle _ _ _ _ (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q _ _ Z.genFib _ _ hA hB ha hb ⟨_, hη, 1, hcoef⟩`.
+
+Establish `hW₀gen : ∀ x ∈ Z.genFib, x.1 ∈ W₁ ⊓ W₂ → (lineLat (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q (exteriorPower.ιMulti Z.Ω D.p b₁) (exteriorPower.ιMulti Z.Ω D.q b₂)).IsGenAt x 1` using `fun x hx hxW => by`. Use `hLfr x hx b₁ b₂ 1 1 (hf₁ x hx hxW.1) (hf₂ x hx hxW.2) (by rw [one_smul]) (by rw [one_smul])` as an intermediate fact. Simplify using `using this`. Establish `hpre : IsPreimmersion (pullback.fst Y.s (spMap β))` using `isPreimmersion_fst β Y.s hβ`. Take `⟨hnoeth, X', f, d, W', jW, hiso, hjW, hfP, hsP, hsm, hsnc⟩` from `GlobalTheory.T.exists_resolution_generic_fibre hRes E H D l Xo c O β Y hβ`.
+
+Establish `hjQo : IsOpenImmersion Y.jQ` using `Y.jQ_open`. Establish `hmono : Mono Y.j`. Unfold `Model.j`. Use `infer_instance`. Establish `hsurj` using `GlobalTheory.T.stalk_surjective_open_immersion _ _ _ _ (pullback.fst Y.s (spMap β)) f W' jW Y.jQ hpre hjQo hiso hjW`.
+
+Take `⟨π, hπ⟩ : ∃ π, π = f ≫ pullback.fst Y.s (spMap β)` from `⟨_, rfl⟩`. Take `⟨s', hs'⟩ : ∃ s', s' = f ≫ pullback.snd Y.s (spMap β)` from `⟨_, rfl⟩`. Rewrite `hsurj` using `[← hπ]`. Rewrite `hsP`, `hsm`, `hsnc` using `[← hs']`. Establish `hιf : inv jW ≫ W'.ι ≫ f = Y.jQ` using `by rw [← hjW, IsIso.inv_hom_id_assoc]`.
+
+Establish `hιf' : ∀ {Z' : Scheme.{0}} (t : pullback Y.s (spMap β) ⟶ Z'), inv jW ≫ W'.ι ≫ f ≫ t = Y.jQ ≫ t`. Introduce `Z' t`. Rewrite using `[← hιf]`. Simplify using `only [Category.assoc]`. Establish `hιπ : inv jW ≫ W'.ι ≫ π = Y.j` using `by rw [hπ, hιf']; rfl`.
+
+Establish `hιs : inv jW ≫ W'.ι ≫ s' = pullback.snd _ _` using `by rw [hs', hιf', Y.jQ_over]`. Take `⟨ξ', hξ'⟩ : ∃ ξ', ξ' = Z.ξ₀ ≫ inv jW ≫ W'.ι` from `⟨_, rfl⟩`. Establish `h1 : ξ' ≫ f = Z.ξ₀ ≫ Y.jQ` using `by simp only [hξ', Category.assoc, hιf]`. Establish `h2 : ξ' ≫ π = Z.ξ₀ ≫ Y.j` using `by simp only [hξ', Category.assoc, hιπ]`. Establish `h3 : ξ' ≫ s' = spMap Z.inc`.
+
+Simplify using `only [hξ', Category.assoc, hιs]`. Conclude with `Z.over_inc`. Establish `hgW' : genPt ξ' ∈ W'`. Rewrite using `[hξ', ← Category.assoc, genPt_comp]`. Conclude with `(genPt (Z.ξ₀ ≫ inv jW)).2`.
+
+Establish `hsm' : Smooth s'` using `SmoothOfRelativeDimension.smooth d s'`. Establish `hξg : IsCptGen ξ'` using `GlobalTheory.T.generic_of_smooth_surjective c.F _ _ _ _ ξ' π s' hsm' h2 hξ (hsurj _ hgW')`. Establish `hdom : Dominates ξ' (Z.ξ₀ ≫ Y.j) π (RingHom.id Z.Ω)`. Unfold `Dominates`. Rewrite using `[h2]`.
+
+Simplify using the standard rewrite rules. Take `⟨L, hLd⟩ : ∃ L, L = lineLat (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q (exteriorPower.ιMulti Z.Ω D.p b₁) (exteriorPower.ιMulti Z.Ω D.q b₂)` from `⟨_, rfl⟩`. Rewrite `hLvb`, `hLgen`, `hW₀gen` using `[← hLd]`. Establish `hcpt : ∀ p' : Cpt ξ', ∃ h : genPt (Z.ξ₀ ≫ Y.j) ⤳ π p'.1, (⟨π p'.1, h⟩ : Cpt _) ∈ Z.genFib` using `fun p' => by`. Take `⟨h, -, -⟩` from `pull_reg_and_gen _ _ _ _ _ ξ' π (RingHom.id _) hdom p'`.
+
+Conclude with `⟨h, ⟨f p'.1, by subst hπ; rfl⟩⟩`. Establish `hL'vb : (L.pull ξ' π (AddMonoidHom.id _)).IsVB 1 ⊤`. Introduce `p' _`. Take `⟨h, hT⟩` from `hcpt p'`. Take `⟨N, hN, bb, hbb, hfr⟩` from `hLvb _ hT`.
+
+Use `⟨π ⁻¹ᵁ N, hN, bb, hbb, fun q' _ hq' => ?_⟩` and prove the remaining obligations. Take `⟨h', hT'⟩` from `hcpt q'`. Establish `hfr'` using `hfr _ hT' hq'`. Conclude with `GlobalTheory.T.lattice_basis_pullback_dominant _ _ (Z.ξ₀ ≫ Y.j) _ _ ξ' π (RingHom.id _) Z.Ω Z.Ω (AddMonoidHom.id _) hdom (fun a e => rfl) L 1 bb q' h' hfr'.1 hfr'`. Take `⟨W, hWd⟩ : ∃ W : X'.Opens, W = (π ⁻¹ᵁ (W₁ ⊓ W₂)) ⊓ W'` from `⟨_, rfl⟩`.
+
+Establish `hWW' : W ≤ W'` using `by rw [hWd]; exact inf_le_right`. Establish `hgW : genPt ξ' ∈ W`. Rewrite using `[hWd]`. Use `⟨?_, hgW'⟩` and prove the remaining obligations. Use `show π (genPt ξ') ∈ W₁ ⊓ W₂`.
+
+Rewrite using `[← genPt_comp, h2]`. Conclude with `⟨hW₁, hW₂⟩`. Establish `hgenW : ∀ p : Cpt ξ', p.1 ∈ W → (L.pull ξ' π (AddMonoidHom.id _)).IsGenAt p 1` using `fun p hp => by`. Take `⟨h, hr, hg⟩` from `pull_reg_and_gen _ _ _ _ _ ξ' π (RingHom.id _) hdom p`. Establish `hpW : π p.1 ∈ W₁ ⊓ W₂` using `by rw [hWd] at hp; exact hp.1`.
+
+Take `⟨h', hT⟩` from `hcpt p`. Conclude with `hg L 1 (hW₀gen _ hT hpW)`. Take `⟨Q, hQ⟩ : ∃ Q : ∀ y : Sp ℂ ⟶ Xo.XF c, Vecs y D.p → Vecs y D.q → Prop, ∀ y v w, Q y v w ↔ (IsFramed Set.univ τ σ y v w ∧ ((∀ i, ∃ v', Z.M.ValAt (y ≫ Y.j) (b₁ i) v' ∧ SameVec Y y (v i) v') ∧ ∀ j, ∃ w', Z.M.ValAt (y ≫ Y.j) (b₂ j) w' ∧ SameVec Y y (w j) w'))` from `⟨_, fun _ _ _ => Iff.rfl⟩`. Establish `hex : ∀ y : Sp ℂ ⟶ Xo.XF c, ∃ r : ℂ, (∃ v w, Q y v w) → ∃ v w, Q y v w ∧ r = Φ y v w` using `fun y => by`. Distinguish the cases in `h : ∃ v w, Q y v w`.
+
+Take `⟨v, w, hq⟩` from `h`. Conclude with `⟨Φ y v w, fun _ => ⟨v, w, hq, rfl⟩⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose Φ₀ hΦ₀ using hex`. Establish `hexF : ∀ y' : Sp ℂ ⟶ X', ∃ r : ℂ, ∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ Y.j = y' ≫ π → r = Φ₀ y` using `fun y' => by`.
+
+Distinguish the cases in `h : ∃ y : Sp ℂ ⟶ Xo.XF c, y ≫ Y.j = y' ≫ π`. Take `⟨y, hy⟩` from `h`. Use `⟨Φ₀ y, fun y₂ h₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[(cancel_mono Y.j).1 (hy.trans h₂.symm)]`. Conclude with `⟨0, fun y hy => absurd ⟨y, hy⟩ h⟩`.
+
+Use `choose F hF using hexF`. Establish `H1 : ∀ (y' : Sp ℂ ⟶ X') (y : Sp ℂ ⟶ Xo.XF c), y' ≫ s' = spMap σ → ⊤ ≤ y' ⁻¹ᵁ W → genPt ξ' ⤳ centre y' → y ≫ Y.j = y' ≫ π → y ≫ pullback.snd _ _ = spMap σ → ∃ (v : Vecs y D.p) (w : Vecs y D.q), IsFramed Set.univ τ σ y v w ∧ ((∀ i, ∃ v', Z.M.ValAt (y ≫ Y.j) (b₁ i) v' ∧ SameVec Y y …`. Introduce `y' y _ hW hsp hy hys`. Establish `hc : centre (y ≫ Y.j) = π (centre y')` using `by rw [hy]; rfl`. Establish `h₀ : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)`.
+
+Rewrite using `[hc, ← h2, genPt_comp]`. Conclude with `hsp.map π.continuous`. Establish `hT : (⟨_, h₀⟩ : Cpt (Z.ξ₀ ≫ Y.j)) ∈ Z.genFib` using `⟨Y.jQ (y (IsLocalRing.closedPoint ℂ)), rfl⟩`. Establish `hcW : centre y' ∈ W` using `hW (show IsLocalRing.closedPoint ℂ ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Establish `hxW : centre (y ≫ Y.j) ∈ W₁ ⊓ W₂`.
+
+Rewrite using `[hc]`. Rewrite `hcW` using `[hWd]`. Conclude with `hcW.1`. Take `⟨v, w, hf, hv, hw⟩` from `GlobalTheory.T.point_frame_specialization E H D l Xo c O β Y U Z τ σ b₁ b₂ y h₀ hβ hτ hσ hys (hf₁ _ hT hxW.1) (hf₂ _ hT hxW.2)`. Take `⟨v₂, w₂, hq, hr⟩` from `hΦ₀ y ⟨v, w, (hQ y v w).2 ⟨hf, hv, hw⟩⟩`.
+
+Take `⟨q1, q2⟩` from `(hQ y v₂ w₂).1 hq`. Conclude with `⟨v₂, w₂, q1, q2, by rw [hF y' y hy, hr]⟩`. Establish `hπs : π ≫ Y.s = s' ≫ spMap β`. Rewrite using `[hπ, hs', Category.assoc, Category.assoc, pullback.condition]`. Establish `hj1 : jW ≫ Y.j = W'.ι ≫ π`.
+
+Rewrite using `[hπ]`. Use `show jW ≫ Y.jQ ≫ pullback.fst _ _ = _`. Rewrite using `[← Category.assoc, hjW, Category.assoc]`. Establish `hj2 : jW ≫ pullback.snd _ _ = W'.ι ≫ s'`. Rewrite using `[hs', ← Y.jQ_over, ← Category.assoc, hjW, Category.assoc]`.
+
+Use `letI : Algebra c.F Z.Ω := Z.inc.toAlgebra`. Establish `hconst : ConstClosed c.F Z.Ω` using `fun a ha => by`. Take `⟨p, hp0, hp⟩` from `ha`. Take `⟨x, rfl⟩` from `hgeom a ⟨p, hp0, by rwa [Polynomial.aeval_def] at hp⟩`. Conclude with `⟨x, 1, one_ne_zero, by simp; rfl⟩`.
+
+Substitute `hLd` using the available equality. Establish `hext` using `GlobalTheory.T.eigen_frame_function_compare E H D l Xo c O β Y U Z τ σ Φ b₁ b₂ X' π s' d ξ' W' W jW F hβ hpq hτ hσ hΦ hi₁ hs₁ hi₂ hs₂ hπs hsm hsnc h2 hξg hj1 hj2 hWW' H1 hgenW`. Take `⟨f₀, κ, hκ, hgen, hval⟩` from `GlobalTheory.T.gaga_line_generator_embedding hGaga c.F σ X' s' Z.Ω ξ' _ W F hsP hsm' h3 hξg hconst hL'vb hgW hgenW hext`. Establish `hnorm : NormalCpt (Z.ξ₀ ≫ Y.j)` using `GlobalTheory.CompanionTheory.Ar.XR.normalCpt_of_isCptGen hξ Y.normal`. Establish `hall` using `GlobalTheory.T.proper_pullback_line_bundle _ _ _ _ (Z.ξ₀ ≫ Y.j) (Z.ξ₀ ≫ Y.jQ) ξ' (pullback.fst Y.s (spMap β)) f _ Z.genFib f₀ hpre hfP hnoeth (by simp [Model.j]) h1 hξ hnorm (fun x => Iff.rfl) hLvb (by rw [← hπ]; exact hgen)`.
+
+Establish `hf0 : f₀ ≠ 0` using `(hall _ hη).1`. Use `⟨f₀, κ, Y.j ⁻¹ᵁ (W₁ ⊓ W₂), hκ, ⟨hW₁, hW₂⟩, ⟨smul_ne_zero hf0 ha, hb, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨-, α, β', hα, hβ', hwa, hwb, e⟩` from `(hLgen x hx f₀).1 (hall x hx)`. Use `⟨α / f₀, β', div_ne_zero hα hf0, hβ', ?_, hwb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, div_mul_cancel₀ _ hf0]`. Conclude with `hwa`. Rewrite using `[_root_.one_mul, ← e]`. Clear the denominators using the available nonvanishing facts. Introduce `y hys hyW hyU`.
+
+Take `⟨y', hy'⟩ : ∃ y', y' = y ≫ inv jW ≫ W'.ι` from `⟨_, rfl⟩`. Establish `e1 : y' ≫ π = y ≫ Y.j` using `by simp only [hy', Category.assoc, hιπ]`. Establish `e2 : y' ≫ s' = spMap σ` using `by simp only [hy', Category.assoc, hιs]; exact hys`. Establish `hpt : ∀ pt, y' pt ∈ W` using `fun pt => by`. Establish `hp : y pt ∈ Y.j ⁻¹ᵁ (W₁ ⊓ W₂)` using `hyW (show pt ∈ (⊤ : (Sp ℂ).Opens) from trivial)`.
+
+Rewrite using `[hWd]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show π (y' pt) ∈ W₁ ⊓ W₂`. Establish `: π (y' pt) = Y.j (y pt)`. Rewrite using `[← Scheme.Hom.comp_apply, e1, Scheme.Hom.comp_apply]`.
+
+Rewrite using `[this]`. Conclude with `hp`. Rewrite using `[hy']`. Conclude with `((y ≫ inv jW) pt).2`. Establish `hyW' : ⊤ ≤ y' ⁻¹ᵁ W` using `fun pt _ => hpt pt`.
+
+Establish `hsp : genPt ξ' ⤳ centre y'`. Rewrite using `[hξ', hy']`. Conclude with `((Z.closure _).1 (hyU ⟨IsLocalRing.closedPoint ℂ, rfl⟩)).map (inv jW ≫ W'.ι).continuous`. Take `⟨v, w, hf, hv, hFe⟩` from `H1 y' y e2 hyW' hsp e1.symm hys`. Use `⟨v, w, ⟨hf.1, hyU, hf.2.2.1, hf.2.2.2⟩, hv, ?_⟩` and prove the remaining obligations.
+
+Establish `hv'` using `hval y' e2 hyW' hsp`. Establish `hs` using `hsurj (centre y') (hWW' (hpt _))`. Establish `h` using `GlobalTheory.T.value_along_stalk_surjection _ _ _ _ _ ξ' π y' f₀ _ h2 hs hv'`. Rewrite `h` using `[e1, hFe]`. Conclude with `h`.
+-/
 theorem exists_gen_of_unitAn : Geo.ResK.ResKStatement → GagaSections → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ) (σ : c.F →+* ℂ) (Φ : CFn Xo c) (b₁ : Fin D.p → Z.V) (b₂ : Fin D.q → Z.V), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → 1 ≤ D.p + D.q → τ (H.rt : E) = H.rt0 → σ (tauIn c τ H.rt) = H.rt0 → Z.IsGeom → IsUnitAn τ σ Φ → LinearIndependent Z.Ω b₁ → Submodule.span Z.Ω (Set.range b₁) = eigSp Z.ρ (Z.inc.comp (tauIn c τ)) → LinearIndependent Z.Ω b₂ → Submodule.span Z.Ω (Set.range b₂) = eigSp Z.ρ (Z.inc.comp (tauIn c (ComplexEmbedding.conjugate τ))) → ∃ (f : Z.Ω) (κ : ℂ) (W : (Xo.XF c).Opens), κ ≠ 0 ∧ genPt Z.ξ₀ ∈ W ∧ IsLineGenOn (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q (f • exteriorPower.ιMulti Z.Ω D.p b₁) (exteriorPower.ιMulti Z.Ω D.q b₂) Z.genFib ∧ ∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap σ → ⊤ ≤ y ⁻¹ᵁ W → Set.range y ⊆ U → ∃ (v : Vecs y D.p) (w : Vecs y D.q), IsFramed U τ σ y v w ∧ ((∀ i, ∃ v', Z.M.ValAt (y ≫ Y.j) (b₁ i) v' ∧ SameVec Y y (v i) v') ∧ ∀ j, ∃ w', Z.M.ValAt (y ≫ Y.j) (b₂ j) w' ∧ SameVec Y y (w j) w') ∧ ValAt (Z.ξ₀ ≫ Y.j) (y ≫ Y.j) f (κ * Φ y v w) := by
   intro hRes hGaga E _ _ _ H D l Xo c O _ β Y U Z τ σ Φ b₁ b₂ hβ hpq hτ hσ hgeom hΦ hi₁ hs₁ hi₂ hs₂
   classical

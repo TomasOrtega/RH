@@ -13,6 +13,9 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
+/- English proof (translation)
+Rewrite using `[upO, Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨F, -, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨F, rfl⟩`.
+-/
 theorem upO_Msup_le {X : PJ D B P j} (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (ka : WeightFamilies.Wt D j) :
     upO X la N (X.Msup ka) ≤ (Vw X la N ka).restrictScalars (Op X la N) := by
   rw [upO, Submodule.span_le]
@@ -25,6 +28,15 @@ section
 variable {X : PJ D B P j} {wL wF : WeightFamilies.Wt D j} {T : ℕ} (G : GlobalFamilyData X (addL wF wL T) wL wF)
   (la : HeightOneSpectrum (𝓞 B.KO))
 
+/- English proof (translation)
+Establish `hle : X.emb (addL wF wL T) (MggO B CRm T c j (addL wF wL T)) ≤ X.Msup (addL wF wL T)` using `T0.emb_mono X _ inf_le_left`. Establish `h1 : jW X la G.N (addL wF wL T) x ∈ Submodule.span (Op X la G.N) (jW X la G.N (addL wF wL T) '' (MggW X la (addL wF wL T) CRm T c : Set ↥(T0.WL X (addL wF wL T) la)))` using `Submodule.subset_span ⟨x, hx, rfl⟩`. Unfold `MggW at h1`. Rewrite `h1` using `[span_jW_inW X la G.N _ _ hle]`. Establish `h2 : Submodule.span (Op X la G.N) {f : ↥(Vw X la G.N (addL wF wL T)) | ∃ F ∈ X.emb (addL wF wL T) (MggO B CRm T c j (addL wF wL T)), (f : Rp X la G.N) = emb X la G.N F} ≤ (NovK G la).restrictScalars (Op X la G.N)`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨_, ⟨F, hF, rfl⟩, hf⟩`. Use `show f ∈ NovK G la`. Rewrite using `[NovK_eq, ZK, ← Submodule.span_union, mem_span_subtype_iff (R := Kp X la G.N) (Vw X la G.N (addL wF wL T))]`. Establish `h3 : (f : Rp X la G.N) ∈ Submodule.span (Kp X la G.N) ((fun F => emb X la G.N (X.inc (addL wF wL T) F)) '' (WeightFamilies.MggK B CRm T c j (addL wF wL T) : Set (B.Cusp j (addL wF wL T))))` using `Submodule.subset_span ⟨F, hF.2, hf.symm⟩`.
+
+Use `Submodule.span_mono ?_ (hCM h3)` and prove the remaining obligations. Introduce and unpack `v (⟨al, i, hal', rfl⟩ | ⟨k, rfl⟩)`. Establish `hle' : ∑ i, al i ≤ T` using `le_trans hal'.le (Nat.sub_le _ _)`. Establish `hm` using `upO_Msup_le la G.N (addL wF wL T) (upO_mono la G.N hΘM (upO_mono la G.N (le_sup_of_le_left le_sup_left) (secPow_mul_mem_upO la G.w hw al hle' (A := X.emb wF (X.Thc S.sF wF)) ⟨G.th' i, hth' i, rfl⟩)))`. Conclude with `⟨⟨_, hm⟩, Or.inl ⟨al, i, hal', rfl⟩, rfl⟩`.
+
+Establish `h` using `secPow_mul_mem_upO la G.w hw (G.alz k) (n := a0 D j T) (hal k).le (A := X.emb (X.wF0 wL wF) (X.Thc S.s0 (X.wF0 wL wF))) ⟨G.th0 k, hth0 k, rfl⟩`. Rewrite `h` using `[hal k, Nat.sub_self, pow_zero, mul_one]`. Establish `hm` using `upO_Msup_le la G.N (addL wF wL T) (upO_mono la G.N hΘM (upO_mono la G.N (le_sup_of_le_left le_sup_right) h))`. Conclude with `⟨⟨_, hm⟩, Or.inr ⟨k, rfl⟩, rfl⟩`. Conclude with `h2 h1`.
+-/
 theorem jW_MggW_mem (S : Scal B) (CRm c : ℝ)
     (hΘM : X.Theta S (addL wF wL T) wL wF T ≤ X.Msup (addL wF wL T))
     (hw : ∀ k, G.w k ∈ X.WWc S.sW wL) (hth' : ∀ i, G.th' i ∈ X.Thc S.sF wF)
@@ -67,6 +79,15 @@ theorem jW_MggW_mem (S : Scal B) (CRm c : ℝ)
       exact ⟨⟨_, hm⟩, Or.inr ⟨k, rfl⟩, rfl⟩
   exact h2 h1
 
+/- English proof (translation)
+Establish `hLat` using `inLat_of X S (addL wF wL T) wL wF T la hM hΘM hspK`. Establish `: FiniteDimensional (X.Kl la) ↥(T0.WL X (addL wF wL T) la)` using `T0.finDim_of_isLat _ hLat.1`. Establish `hN1` using `generators_le_thetaSpan G la S hΘM hw hth'`. Establish `hZ1` using `zeroGenerators_le_thetaSpan G la S hΘM hw hth0 hal`. Establish `hTM` using `thetaSpan_le_integralForms G la S hΘM`.
+
+Establish `hZlen` using `len_Zm_le G la hM.fg hDT hwM hth0M hal hzc hdet`. Establish `hqne` using `quot_len_ne_top la (addL wF wL T) CRm T c G.th hM hsp`. Establish `hLP' : Module.length (Op X la G.N) (↥(Q.AAp T (Q.mm S T e)) ⧸ (Q.AA T).comap (Q.AAp T (Q.mm S T e)).subtype) ≤ ((Nat.choose (T - 1) (WeightFamilies.dimY D j) * ∑ ζ, (max 0 ⌈(ep (unifO X la G.N) ζ : ℝ) * ((T : ℝ) * Q.nu S ζ - (e : ℝ))⌉).toNat * fdeg ζ : ℕ) : ℕ∞)`. Rewrite `hLP` using `[finsum_eq_sum_of_fintype]`. Conclude with `hLP`.
+
+Establish `hthΘ : ∀ i, toW X la (addL wF wL T) (G.th i) ∈ T0.ThW X S (addL wF wL T) wL wF T la` using `fun i => by show X.bc la (X.inc (addL wF wL T) (G.th i)) ∈ X.loc la (X.Theta S (addL wF wL T) wL wF T)`. Conclude with `Submodule.subset_span ⟨X.inc (addL wF wL T) (G.th i), (show X.emb _ (X.Thc S.sK (addL wF wL T)) ≤ X.Theta S (addL wF wL T) wL wF T from le_sup_right) ⟨_, hthK i, rfl⟩, rfl⟩`. Establish `key` using `levelsQDesc (PtsG G la) (ep (unifO X la G.N)) fdeg (Q.nu S) v νs cp T (Nat.choose (T - 1) (WeightFamilies.dimY D j)) Q.Ila.toNat (fun ζ => one_le_ep_of_curve Q hC ζ) hT1 hcp hv hν (X.Ol la) (Op X la G.N) (X.Kl la) (Kp X la G.N) ↥(T0.WL X (addL wF wL T) la) ↥(Vw X la G.N (addL wF …`. Establish `hZn : ((Module.length (Op X la G.N) (↥(Zm G la) ⧸ (Zl G la).comap (Zm G la).subtype)).toNat : ℝ) ≤ (Formalism.MainNotions.Gaps.SizeBoundsAlt.gaussC (B.Mlat j (addL wF wL T)) G.zc la : ℝ)`. Conclude with `ENat.toNat_le_of_le_natCast hZlen` after adjusting the coercions.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem localIdx (Q : LocalPointData G la) (S : Scal B) (CRm c : ℝ) (e : ℕ) (νs cp : ℝ) (v : PtsG G la → ℝ) [Fintype (PtsG G la)]
     (hM : Submodule.IsLattice B.KO (B.Mlat j (addL wF wL T)))
     (hΘM : X.Theta S (addL wF wL T) wL wF T ≤ X.Msup (addL wF wL T))
@@ -146,6 +167,11 @@ theorem localIdx (Q : LocalPointData G la) (S : Scal B) (CRm c : ℝ) (e : ℕ) 
 
 end
 
+/- English proof (translation)
+Substitute `hka` using the available equality. Use `(finite_pts_of_curve Q hC).1` as an intermediate fact. Use `letI := Fintype.ofFinite (PtsG G la)`. Use `qlen_of_idx X S _ wL wF T la (inLat_of X S _ wL wF T la hM hΘM hspK) hΘM e (rLa Q CRm T c) (fun U => ?_) V' hV'` and prove the remaining obligations. Establish `h` using `localIdx G la Q S CRm c e νs (max 0 c) (vEt Q) hM hΘM hspK hT1 hDT hw hwM hth' hth'M hth0 hth0M hal hzc hdet hthK hsp hB hC hTie hCM (le_max_left _ _) hv hν he hLB hLP U`.
+
+Rewrite `h` using `[levels_eq Q T c]`. Unfold `rLa`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem localBound {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} {T : ℕ} (G : GlobalFamilyData X ka wL wF)
     (la : HeightOneSpectrum (𝓞 B.KO)) (Q : LocalPointData G la) (S : Scal B) (CRm c : ℝ) (e : ℕ) (νs : ℝ)
     (hka : ka = addL wF wL T)

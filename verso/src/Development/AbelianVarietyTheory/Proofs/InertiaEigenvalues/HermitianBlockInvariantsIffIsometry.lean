@@ -12,6 +12,11 @@ namespace GlobalTheory.EtIsom
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
   (A : Et F E) {r : ℕ} {τ : A.K} {p : Fin r → F}
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Distinguish the cases in `hn : n < r`. Conclude with `h0 n hn`.
+
+Take `⟨m, rfl⟩ : ∃ m, n = m + r` from `⟨n - r, by omega⟩`. Rewrite using `[hu, hw]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ih _ (by have := i.2; omega)]`.
+-/
 theorem rec_eq {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (q : Fin r → R)
     (u w : ℕ → M) (hu : ∀ m, u (m + r) = -∑ i, q i • u (m + i))
     (hw : ∀ m, w (m + r) = -∑ i, q i • w (m + i)) (h0 : ∀ n < r, u n = w n) : ∀ n, u n = w n := by
@@ -26,6 +31,11 @@ theorem rec_eq {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (q : Fin 
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [ih _ (by have := i.2; omega)]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun t => τ ^ m * t) hG.2.2`. Simplify using `only [mul_add, Finset.mul_sum, mul_zero, Algebra.smul_def] at h`. Rewrite using `[eq_neg_iff_add_eq_zero, ← h, pow_add]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_rec (hG : A.IsGen τ p) (m : ℕ) :
     τ ^ (m + r) = -∑ i, algebraMap F A.K (p i) * τ ^ (m + (i : ℕ)) := by
   have h := congrArg (fun t => τ ^ m * t) hG.2.2
@@ -38,18 +48,30 @@ theorem pow_rec (hG : A.IsGen τ p) (m : ℕ) :
 def bK (hG : A.IsGen τ p) : Module.Basis (Fin r) F A.K :=
   basisOfLinearIndependentOfCardEqFinrank' _ hG.1 (by rw [Fintype.card_fin, hG.2.1])
 
+/- English proof (translation)
+Simplify using `[bK, coe_basisOfLinearIndependentOfCardEqFinrank']`.
+-/
 theorem bK_apply (hG : A.IsGen τ p) (i : Fin r) : bK A hG i = τ ^ (i : ℕ) := by
   simp [bK, coe_basisOfLinearIndependentOfCardEqFinrank']
 
 def bL (hG : A.IsGen τ p) : Module.Basis (Fin r) E A.L := A.push.out.basis (bK A hG)
 
+/- English proof (translation)
+Rewrite using `[bL, IsBaseChange.basis_apply, bK_apply]`. Both sides reduce to the same expression.
+-/
 theorem bL_apply (hG : A.IsGen τ p) (i : Fin r) : bL A hG i = algebraMap A.K A.L (τ ^ (i : ℕ)) := by
   rw [bL, IsBaseChange.basis_apply, bK_apply]; rfl
 
+/- English proof (translation)
+The claim follows from `A.push.out.basis_repr_comp_apply (bK A hG) v i`.
+-/
 theorem bL_repr (hG : A.IsGen τ p) (v : A.K) (i : Fin r) :
     (bL A hG).repr (algebraMap A.K A.L v) i = algebraMap F E ((bK A hG).repr v i) :=
   A.push.out.basis_repr_comp_apply (bK A hG) v i
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (bL A hG), Algebra.trace_eq_matrix_trace (bK A hG), Matrix.trace, Matrix.trace, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul]`. Rewrite using `[bL_apply, ← map_mul, bL_repr, bK_apply]`.
+-/
 theorem trace_map (hG : A.IsGen τ p) (c : A.K) :
     Algebra.trace E A.L (algebraMap A.K A.L c) = algebraMap F E (Algebra.trace F A.K c) := by
   rw [Algebra.trace_eq_matrix_trace (bL A hG), Algebra.trace_eq_matrix_trace (bK A hG), Matrix.trace,
@@ -65,6 +87,9 @@ namespace GlobalTheory.EtIsom
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
   (A : Et F E) {r : ℕ} {τ : A.K} {p : Fin r → F}
 
+/- English proof (translation)
+Establish `h` using `Matrix.aeval_self_charpoly M`. Rewrite `h` using `[M.charpoly_monic.as_sum, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Simplify `h` using `[Finset.sum_range, Algebra.smul_def]`.
+-/
 theorem cayley (M : Matrix (Fin r) (Fin r) E) : M ^ r + ∑ i : Fin r, M.charpoly.coeff i • M ^ (i : ℕ) = 0 := by
   have h := Matrix.aeval_self_charpoly M
   rw [M.charpoly_monic.as_sum, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin] at h
@@ -73,10 +98,16 @@ theorem cayley (M : Matrix (Fin r) (Fin r) E) : M ^ r + ∑ i : Fin r, M.charpol
 def mat (j : A.L ≃ₗ[E] (Fin r → E)) : Matrix (Fin r) (Fin r) E :=
   LinearMap.toMatrix' (j.toLinearMap ∘ₗ LinearMap.mulLeft E (algebraMap A.K A.L τ) ∘ₗ j.symm.toLinearMap)
 
+/- English proof (translation)
+Simplify using `[mat, LinearMap.toMatrix'_mulVec]`.
+-/
 theorem mat_mulVec (j : A.L ≃ₗ[E] (Fin r → E)) (z : A.L) :
     mat A (τ := τ) j *ᵥ j z = j (algebraMap A.K A.L τ * z) := by
   simp [mat, LinearMap.toMatrix'_mulVec]
 
+/- English proof (translation)
+Proceed by induction on `n generalizing z with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, mat_mulVec, ih, pow_succ, RingHom.map_mul, mul_assoc]`.
+-/
 theorem mat_pow_mulVec (j : A.L ≃ₗ[E] (Fin r → E)) (n : ℕ) (z : A.L) :
     mat A (τ := τ) j ^ n *ᵥ j z = j (algebraMap A.K A.L (τ ^ n) * z) := by
   induction n generalizing z with
@@ -91,6 +122,9 @@ namespace GlobalTheory.EtIsom
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
   (A : Et F E) {r : ℕ} {τ : A.K} {p : Fin r → F}
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `j.surjective u`. Take `⟨z', rfl⟩` from `j.surjective v`. Rewrite using `[mat_mulVec, mat_mulVec, hj, hj, star_mul', A.star_K]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mat_herm_form {x : A.K} {j : A.L ≃ₗ[E] (Fin r → E)} (hj : A.IsIsom x j) (u v : Fin r → E) :
     star (mat A (τ := τ) j *ᵥ u) ⬝ᵥ v = star u ⬝ᵥ (mat A (τ := τ) j *ᵥ v) := by
   obtain ⟨z, rfl⟩ := j.surjective u
@@ -99,6 +133,9 @@ theorem mat_herm_form {x : A.K} {j : A.L ≃ₗ[E] (Fin r → E)} (hj : A.IsIsom
   congr 1
   ring
 
+/- English proof (translation)
+Use extensionality with `k i`. Establish `h` using `mat_herm_form A (τ := τ) hj (Pi.single k 1) (Pi.single i 1)`. Simplify using `[Matrix.mulVec_single, dotProduct_single, single_dotProduct] at h`. Simplify `h` using `[Matrix.star_apply, Matrix.conjTranspose_apply]`.
+-/
 theorem mat_selfAdjoint {x : A.K} {j : A.L ≃ₗ[E] (Fin r → E)} (hj : A.IsIsom x j) :
     IsSelfAdjoint (mat A (τ := τ) j) := by
   ext k i
@@ -106,6 +143,15 @@ theorem mat_selfAdjoint {x : A.K} {j : A.L ≃ₗ[E] (Fin r → E)} (hj : A.IsIs
   simp [Matrix.mulVec_single, dotProduct_single, single_dotProduct] at h
   simpa [Matrix.star_apply, Matrix.conjTranspose_apply] using h
 
+/- English proof (translation)
+Use `set M := mat A (τ := τ) j with hM`. Establish `h1 : j (algebraMap A.K A.L (τ ^ r)) + ∑ k : Fin r, M.charpoly.coeff k • j (bL A hG k) = 0`. Use `congrArg (fun N => N *ᵥ j 1) (cayley M)` as an intermediate fact. Simplify using `only [Matrix.add_mulVec, Matrix.sum_mulVec, Matrix.smul_mulVec, Matrix.zero_mulVec, hM, mat_pow_mulVec, mul_one] at this`. Simplify `this` using `only [bL_apply]`.
+
+Establish `h2 : algebraMap A.K A.L (τ ^ r) = -∑ k : Fin r, algebraMap F E (p k) • bL A hG k`. Use `congrArg (algebraMap A.K A.L) (pow_rec A hG 0)` as an intermediate fact. Simplify using `only [zero_add, map_neg, map_sum, map_mul] at this`. Rewrite using `[this]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[bL_apply, Algebra.smul_def, ← IsScalarTower.algebraMap_apply F A.K A.L, ← IsScalarTower.algebraMap_apply F E A.L]`. Rewrite `h1` using `[h2, map_neg, map_sum]`. Establish `h3 : j (∑ k : Fin r, (M.charpoly.coeff k - algebraMap F E (p k)) • bL A hG k) = 0`. Rewrite using `[← h1, Finset.sum_congr rfl (fun k _ => sub_smul _ _ _), Finset.sum_sub_distrib, map_sub, map_sum, map_sum]`.
+
+Simplify using `only [map_smul]`. Normalize the expressions using the abelian group laws. Rewrite `h3` using `[LinearEquiv.map_eq_zero_iff]`. Establish `h4` using `Fintype.linearIndependent_iff.mp (bL A hG).linearIndependent _ h3 i`. Conclude with `sub_eq_zero.mp h4`.
+-/
 theorem mat_charpoly (hG : A.IsGen τ p) {j : A.L ≃ₗ[E] (Fin r → E)} (i : Fin r) :
     (mat A (τ := τ) j).charpoly.coeff i = algebraMap F E (p i) := by
   set M := mat A (τ := τ) j with hM
@@ -138,6 +184,11 @@ namespace GlobalTheory.EtIsom
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
   [Unram F E] (A : Et F E) {r : ℕ} {τ : A.K} {p : Fin r → F}
 
+/- English proof (translation)
+Use `⟨⟨mat A (τ := τ) j, mat_selfAdjoint A hj⟩, fun z => (mat_mulVec A j z).symm, fun y => ?_⟩` and prove the remaining obligations. Unfold `HasInv GlobalTheory.JR.inv Hn.toGl Inv.map Et.invK`. Use `Prod.ext (funext fun i => ?_) (Prod.ext (funext fun i => ?_) rfl)` and prove the remaining obligations. Conclude with `mat_charpoly A hG i`. Use `show star (j y) ⬝ᵥ (mat A (τ := τ) j ^ (i : ℕ) *ᵥ j y) = algebraMap F E (Algebra.trace F A.K (τ ^ (i : ℕ) * (x * A.NL y)))`.
+
+Rewrite using `[mat_pow_mulVec, hj, ← trace_map A hG]`. Use `congr 1`. Rewrite using `[map_mul, map_mul, (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).1 y]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isom_to_herm (hG : A.IsGen τ p) (lam : F) (x : A.K) (j : A.L ≃ₗ[E] (Fin r → E)) (hj : A.IsIsom x j) :
     ∃ Ax : selfAdjoint (Matrix (Fin r) (Fin r) E), (∀ z, j (algebraMap A.K A.L τ * z) = Ax.1 *ᵥ j z) ∧
       ∀ y, HasInv ((Ax, j y, lam) : Hn r F E) (A.invK τ p lam (x * A.NL y)) := by
@@ -159,12 +210,18 @@ namespace GlobalTheory.EtIsom
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
   (A : Et F E) {r : ℕ} {τ : A.K} {p : Fin r → F}
 
+/- English proof (translation)
+Unfold `HasInv GlobalTheory.JR.inv Hn.toGl Inv.map Et.invK at hX`. Conclude with `⟨fun i => congrFun (congrArg Prod.fst hX) i, fun i => congrFun (congrArg (fun t => t.2.1) hX) i⟩`.
+-/
 theorem hasInv_parts {lam : F} {a : A.K} {X : Hn r F E} (hX : HasInv X (A.invK τ p lam a)) :
     (∀ i : Fin r, X.1.1.charpoly.coeff i = algebraMap F E (p i)) ∧
       ∀ i : Fin r, star X.2.1 ⬝ᵥ (X.1.1 ^ (i : ℕ) *ᵥ X.2.1) = algebraMap F E (Algebra.trace F A.K (τ ^ (i : ℕ) * a)) := by
   unfold HasInv GlobalTheory.JR.inv Hn.toGl Inv.map Et.invK at hX
   exact ⟨fun i => congrFun (congrArg Prod.fst hX) i, fun i => congrFun (congrArg (fun t => t.2.1) hX) i⟩
 
+/- English proof (translation)
+Establish `h1` using `congrArg (fun N => (M ^ m * N) *ᵥ v) h`. Simplify using `only [mul_add, Finset.mul_sum, mul_smul_comm, ← pow_add, Matrix.add_mulVec, Matrix.sum_mulVec, Matrix.smul_mulVec, mul_zero, Matrix.zero_mulVec] at h1`. Conclude with `eq_neg_of_add_eq_zero_left h1`.
+-/
 theorem mat_rec (M : Matrix (Fin r) (Fin r) E) (q : Fin r → E) (h : M ^ r + ∑ i : Fin r, q i • M ^ (i : ℕ) = 0)
     (v : Fin r → E) (m : ℕ) : M ^ (m + r) *ᵥ v = -∑ i, q i • (M ^ (m + (i : ℕ)) *ᵥ v) := by
   have h1 := congrArg (fun N => (M ^ m * N) *ᵥ v) h
@@ -172,16 +229,28 @@ theorem mat_rec (M : Matrix (Fin r) (Fin r) E) (q : Fin r → E) (h : M ^ r + �
     Matrix.smul_mulVec, mul_zero, Matrix.zero_mulVec] at h1
   exact eq_neg_of_add_eq_zero_left h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[star_mul']`.
+-/
 theorem star_smul_vec (c : E) (v : Fin r → E) : star (c • v) = star c • star v := by
   funext i; simp [star_mul']
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, Algebra.smul_def, star_mul', A.star_E]`.
+-/
 theorem star_smul_L (c : E) (z : A.L) : star (c • z) = star c • star z := by
   rw [Algebra.smul_def, Algebra.smul_def, star_mul', A.star_E]
 
+/- English proof (translation)
+Rewrite using `[Matrix.star_mulVec, Matrix.conjTranspose_pow, hM, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, pow_add]`.
+-/
 theorem herm_gram (M : Matrix (Fin r) (Fin r) E) (hM : M.conjTranspose = M) (b : Fin r → E) (i k : ℕ) :
     star (M ^ i *ᵥ b) ⬝ᵥ (M ^ k *ᵥ b) = star b ⬝ᵥ (M ^ (i + k) *ᵥ b) := by
   rw [Matrix.star_mulVec, Matrix.conjTranspose_pow, hM, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, pow_add]
 
+/- English proof (translation)
+Rewrite using `[pow_rec A hG, neg_mul, Finset.sum_mul, map_neg, map_sum, map_neg, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← Algebra.smul_def, map_smul, smul_eq_mul, map_mul, smul_eq_mul]`.
+-/
 theorem trace_rec (hG : A.IsGen τ p) (a : A.K) (m : ℕ) :
     algebraMap F E (Algebra.trace F A.K (τ ^ (m + r) * a)) =
       -∑ i, algebraMap F E (p i) • algebraMap F E (Algebra.trace F A.K (τ ^ (m + (i : ℕ)) * a)) := by
@@ -197,9 +266,15 @@ namespace GlobalTheory.EtIsom
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
   (A : Et F E) {r : ℕ} {τ : A.K} {p : Fin r → F}
 
+/- English proof (translation)
+Rewrite using `[bL_apply, A.star_K]`.
+-/
 theorem star_bL (hG : A.IsGen τ p) (i : Fin r) : star (bL A hG i) = bL A hG i := by
   rw [bL_apply, A.star_K]
 
+/- English proof (translation)
+Rewrite using `[← (bL A hG).sum_repr w, ← (bL A hG).sum_repr w']`. Simplify using `only [map_sum, map_smul, star_sum, star_smul_vec, star_smul_L, hφb, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, Finset.mul_sum, Finset.sum_mul, smul_mul_assoc, mul_smul_comm, smul_eq_mul, herm_gram M hM, hmom, star_bL]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[bL_apply, bL_apply, ← map_mul, ← map_mul, trace_map A hG, pow_add]`. Put the polynomial expressions in normal form.
+-/
 theorem form_eq (hG : A.IsGen τ p) (a : A.K) (M : Matrix (Fin r) (Fin r) E) (hM : M.conjTranspose = M)
     (b : Fin r → E) (hmom : ∀ n : ℕ, star b ⬝ᵥ (M ^ n *ᵥ b) = algebraMap F E (Algebra.trace F A.K (τ ^ n * a)))
     (φ : A.L →ₗ[E] (Fin r → E)) (hφb : ∀ i, φ (bL A hG i) = M ^ (i : ℕ) *ᵥ b) (w w' : A.L) :
@@ -219,12 +294,18 @@ namespace GlobalTheory.EtIsom
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
   [Unram F E] (A : Et F E) {r : ℕ} {τ : A.K} {p : Fin r → F}
 
+/- English proof (translation)
+Establish `h` using `cayley X.1.1`. Simplify using `only [(hasInv_parts A hX).1] at h`. Conclude with `h`.
+-/
 theorem cayley_hasInv {lam : F} {a : A.K} {X : Hn r F E} (hX : HasInv X (A.invK τ p lam a)) :
     X.1.1 ^ r + ∑ i : Fin r, algebraMap F E (p i) • X.1.1 ^ (i : ℕ) = 0 := by
   have h := cayley X.1.1
   simp only [(hasInv_parts A hX).1] at h
   exact h
 
+/- English proof (translation)
+Use `rec_eq (fun i => algebraMap F E (p i)) (fun n => star X.2.1 ⬝ᵥ (X.1.1 ^ n *ᵥ X.2.1)) (fun n => algebraMap F E (Algebra.trace F A.K (τ ^ n * a))) (fun m => ?_) (trace_rec A hG a) (fun n hn => (hasInv_parts A hX).2 ⟨n, hn⟩) n` and prove the remaining obligations. Rewrite using `[mat_rec _ _ (cayley_hasInv A hX), dotProduct_neg, dotProduct_sum]`. Simplify using `only [dotProduct_smul, smul_eq_mul]`.
+-/
 theorem mom_all (hG : A.IsGen τ p) {lam : F} {a : A.K} {X : Hn r F E} (hX : HasInv X (A.invK τ p lam a)) (n : ℕ) :
     star X.2.1 ⬝ᵥ (X.1.1 ^ n *ᵥ X.2.1) = algebraMap F E (Algebra.trace F A.K (τ ^ n * a)) := by
   refine rec_eq (fun i => algebraMap F E (p i)) (fun n => star X.2.1 ⬝ᵥ (X.1.1 ^ n *ᵥ X.2.1))
@@ -233,6 +314,15 @@ theorem mom_all (hG : A.IsGen τ p) {lam : F} {a : A.K} {X : Hn r F E} (hX : Has
   rw [mat_rec _ _ (cayley_hasInv A hX), dotProduct_neg, dotProduct_sum]
   simp only [dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hinj` using `(GlobalTheory.T.jacquetRallis_invK_regular_iff_isUnit F E A r τ p 0 hG).1.1`. Rewrite using `[← isUnit_iff_ne_zero, ← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]`. Establish `key : ∀ e : Fin r → F, (Matrix.of fun i k : Fin r => Algebra.trace F A.K (τ ^ ((i : ℕ) + (k : ℕ)) * a)) *ᵥ e = (fun i : Fin r => Algebra.trace F A.K (τ ^ (i : ℕ) * (a * ∑ k, e k • τ ^ (k : ℕ))))`. Introduce `e`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, mul_smul_comm, map_smul, smul_eq_mul, pow_add, mul_comm]`. Put the polynomial expressions in normal form. Introduce `e e' h`.
+
+Rewrite `h` using `[key, key]`. Establish `h1` using `ha.mul_left_cancel (hinj h)`. Establish `h2` using `Fintype.linearIndependent_iff.mp hG.1 (e - e') (by`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h1, sub_self])`. Use function extensionality and compare the values at `i`.
+
+Conclude with `sub_eq_zero.mp (h2 i)`.
+-/
 theorem detH (hG : A.IsGen τ p) {a : A.K} (ha : IsUnit a) :
     (Matrix.of fun i k : Fin r => Algebra.trace F A.K (τ ^ ((i : ℕ) + (k : ℕ)) * a)).det ≠ 0 := by
   have hinj := (GlobalTheory.T.jacquetRallis_invK_regular_iff_isUnit F E A r τ p 0 hG).1.1
@@ -253,6 +343,13 @@ theorem detH (hG : A.IsGen τ p) {a : A.K} (ha : IsUnit a) :
   funext i
   exact sub_eq_zero.mp (h2 i)
 
+/- English proof (translation)
+Establish `hAh : X.1.1.conjTranspose = X.1.1` using `by rw [← Matrix.star_eq_conjTranspose]; exact X.1.2`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hdet : ((algebraMap F E).mapMatrix (Matrix.of fun i k : Fin r => Algebra.trace F A.K (τ ^ ((i : ℕ) + (k : ℕ)) * a))).det ≠ 0`. Rewrite using `[← RingHom.map_det]`.
+
+Conclude with `(map_ne_zero _).mpr (detH A hG ha)`. Establish `h0 : (algebraMap F E).mapMatrix (Matrix.of fun i k : Fin r => Algebra.trace F A.K (τ ^ ((i : ℕ) + (k : ℕ)) * a)) *ᵥ g = 0`. Use function extensionality and compare the values at `k`. Use `congrArg (fun v => star (X.1.1 ^ (k : ℕ) *ᵥ X.2.1) ⬝ᵥ v) hg` as an intermediate fact. Simplify using `only [dotProduct_sum, dotProduct_smul, herm_gram _ hAh, mom_all A hG hX, dotProduct_zero, smul_eq_mul] at this`.
+
+Simplify `this` using `[Matrix.mulVec, dotProduct, mul_comm]`. Conclude with `congrFun (Matrix.eq_zero_of_mulVec_eq_zero hdet h0)`.
+-/
 theorem vec_li (hG : A.IsGen τ p) {lam : F} {a : A.K} (ha : IsUnit a) {X : Hn r F E}
     (hX : HasInv X (A.invK τ p lam a)) : LinearIndependent E (fun i : Fin r => X.1.1 ^ (i : ℕ) *ᵥ X.2.1) := by
   have hAh : X.1.1.conjTranspose = X.1.1 := by rw [← Matrix.star_eq_conjTranspose]; exact X.1.2
@@ -278,6 +375,23 @@ namespace GlobalTheory.EtIsom
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
   [Unram F E] (A : Et F E) {r : ℕ} {τ : A.K} {p : Fin r → F}
 
+/- English proof (translation)
+Establish `hAh : X.1.1.conjTranspose = X.1.1` using `by rw [← Matrix.star_eq_conjTranspose]; exact X.1.2`. Set `bv : Module.Basis (Fin r) E (Fin r → E)` to `basisOfLinearIndependentOfCardEqFinrank' _ (vec_li A hG ha hX) (by simp)`. Establish `hbv : ∀ i, bv i = X.1.1 ^ (i : ℕ) *ᵥ X.2.1` using `fun i => by`. Simplify using `[bv, coe_basisOfLinearIndependentOfCardEqFinrank']`. Set `φ : A.L ≃ₗ[E] (Fin r → E)` to `(bL A hG).equiv bv (Equiv.refl _)`.
+
+Establish `hφb : ∀ i, φ (bL A hG i) = X.1.1 ^ (i : ℕ) *ᵥ X.2.1` using `fun i => by`. Simplify using `[φ, Module.Basis.equiv_apply, hbv]`. Establish `hφ : ∀ n : ℕ, φ (algebraMap A.K A.L (τ ^ n)) = X.1.1 ^ n *ᵥ X.2.1`. Use `rec_eq (fun i => algebraMap F E (p i)) (fun n => φ (algebraMap A.K A.L (τ ^ n))) (fun n => X.1.1 ^ n *ᵥ X.2.1) (fun m => ?_) (mat_rec _ _ (cayley_hasInv A hX) _) (fun n hn => ?_)` and prove the remaining obligations. Use `show φ (algebraMap A.K A.L (τ ^ (m + r))) = -∑ i, algebraMap F E (p i) • φ (algebraMap A.K A.L (τ ^ (m + (i : ℕ))))`.
+
+Rewrite using `[pow_rec A hG, map_neg, map_sum, map_neg, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← IsScalarTower.algebraMap_apply F A.K A.L, IsScalarTower.algebraMap_apply F E A.L, ← Algebra.smul_def, map_smul]`. Use `hφb ⟨n, hn⟩` as an intermediate fact.
+
+Rewrite `this` using `[bL_apply]`. Then use the resulting hypothesis. Establish `hτ : ∀ w, φ (algebraMap A.K A.L τ * w) = X.1.1 *ᵥ φ w`. Establish `h : (φ.toLinearMap ∘ₗ LinearMap.mulLeft E (algebraMap A.K A.L τ)) = (Matrix.toLin' X.1.1) ∘ₗ φ.toLinearMap`. Use `(bL A hG).ext fun i => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearEquiv.coe_coe, Matrix.toLin'_apply, bL_apply]`.
+
+Rewrite using `[← map_mul, ← pow_succ', hφ, hφ, Matrix.mulVec_mulVec, pow_succ']`. Introduce `w`. Conclude with `LinearMap.congr_fun h w`. Set `u` to `hy.unit`. Establish `h1 : y * ((u⁻¹ : A.Lˣ) : A.L) = 1` using `hy.mul_val_inv`.
+
+Establish `h2 : star y * star ((u⁻¹ : A.Lˣ) : A.L) = 1` using `by rw [← star_mul', h1, star_one]`. Set `mE : A.L ≃ₗ[E] A.L` to `LinearEquiv.ofLinear (LinearMap.mulRight E ((u⁻¹ : A.Lˣ) : A.L)) (LinearMap.mulRight E (u : A.L)) (by ext z; simp [mul_assoc]) (by ext z; simp [mul_assoc])`. Establish `hj : ∀ z, (mE.trans φ) z = φ (z * ((u⁻¹ : A.Lˣ) : A.L))` using `fun z => rfl`. Use `⟨mE.trans φ, fun z z' => ?_, fun z => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hj, hj]`.
+
+Use `(form_eq A hG a X.1.1 hAh X.2.1 (mom_all A hG hX) φ.toLinearMap hφb _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hxa, map_mul, (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).1 y, star_mul']`. Take the linear combination `(algebraMap A.K A.L x * star z * z') * (star y * star ((u⁻¹ : A.Lˣ) : A.L)) * h1 + (algebraMap A.K A.L x * star z * z') * h2`. Rewrite using `[hj, hj, mul_assoc, hτ]`.
+
+Rewrite using `[hj, h1, ← map_one (algebraMap A.K A.L), ← pow_zero τ, hφ, pow_zero, Matrix.one_mulVec]`.
+-/
 theorem herm_to_isom (hG : A.IsGen τ p) {lam : F} {a : A.K} (ha : IsUnit a) {X : Hn r F E}
     (hX : HasInv X (A.invK τ p lam a)) (x : A.K) (y : A.L) (hy : IsUnit y) (hxa : a = x * A.NL y) :
     ∃ j : A.L ≃ₗ[E] (Fin r → E), A.IsIsom x j ∧ (∀ z, j (algebraMap A.K A.L τ * z) = X.1.1 *ᵥ j z) ∧
@@ -329,6 +443,9 @@ theorem herm_to_isom (hG : A.IsGen τ p) {lam : F} {a : A.K} (ha : IsUnit a) {X 
 
 end GlobalTheory.EtIsom
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A r τ p lam hG`. Conclude with `⟨fun a X ha hX x y hy hxa => GlobalTheory.EtIsom.herm_to_isom A hG ha hX x y hy hxa, fun x j hj => GlobalTheory.EtIsom.isom_to_herm A hG lam x j hj⟩`.
+-/
 theorem GlobalTheory.EtIsom.herm_iff_isom : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (r : ℕ) (τ : A.K) (p : Fin r → F) (lam : F), A.IsGen τ p → (∀ (a : A.K) (X : Hn r F E), IsUnit a → HasInv X (A.invK τ p lam a) → ∀ (x : A.K) (y : A.L), IsUnit y → a = x * A.NL y → ∃ j : A.L ≃ₗ[E] (Fin r → E), A.IsIsom x j ∧ (∀ z, j (algebraMap A.K A.L τ * z) = X.1.1 *ᵥ j z) ∧ j y = X.2.1) ∧ ∀ (x : A.K) (j : A.L ≃ₗ[E] (Fin r → E)), A.IsIsom x j → ∃ Ax : selfAdjoint (Matrix (Fin r) (Fin r) E), (∀ z, j (algebraMap A.K A.L τ * z) = Ax.1 *ᵥ j z) ∧ ∀ y, HasInv ((Ax, j y, lam) : Hn r F E) (A.invK τ p lam (x * A.NL y)) := by
   intro F E _ _ _ _ _ A r τ p lam hG
   exact ⟨fun a X ha hX x y hy hxa => GlobalTheory.EtIsom.herm_to_isom A hG ha hX x y hy hxa,

@@ -21,6 +21,11 @@ noncomputable section
 
 namespace GlobalTheory.HeckeLevelFree
 
+/- English proof (translation)
+Introduce `hvq`. Take `⟨x, hx, hy⟩` from `hQ v hv`. Establish `hx' : x ∈ (HeightOneSpectrum.under (𝓞 D.host.F) Q).asIdeal` using `hvq ▸ hx`. Establish `hmem : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x ∈ Q.asIdeal` using `hx'`. Use `hy (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) ?_ hmem` and prove the remaining obligations.
+
+Both sides reduce to the same expression.
+-/
 theorem ne_under_of_offS {D : D7} {SF : Finset (HeightOneSpectrum (𝓞 D.host.F))} {Q : HeightOneSpectrum (𝓞 D.host.E)}
     (hQ : OffS D SF Q) {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∈ SF) :
     v ≠ HeightOneSpectrum.under (𝓞 D.host.F) Q := by
@@ -31,6 +36,13 @@ theorem ne_under_of_offS {D : D7} {SF : Finset (HeightOneSpectrum (𝓞 D.host.F
   refine hy (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) ?_ hmem
   rfl
 
+/- English proof (translation)
+Establish `hproj : ∀ v ∈ SF, GlobalTheory.FinZeta.projV V v g = 1` using `fun v hv => (GlobalTheory.SuppLocal.suppF_local D V Q e f g hef hg).2 v (ne_under_of_offS hQ hv)`. Use function extensionality and compare the values at `PP`. Take `⟨v, hv, hPv⟩` from `hPg PP.1 PP.2`. Establish `hu : HeightOneSpectrum.under (𝓞 D.host.F) PP.1 ∈ SF`. Establish `: HeightOneSpectrum.under (𝓞 D.host.F) PP.1 = v` using `HeightOneSpectrum.ext hPv`.
+
+Rewrite using `[this]`. Conclude with `hv`. Establish `hr` using `GlobalTheory.FinZeta.LevelOff.redFn_eq_one_of_proj β SF hS hproj hu`. Use `show upperLeftBlock L.hr (redFn β PP.1 (finE V g)) = 1`. Rewrite using `[hr]`.
+
+Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`.
+-/
 theorem rTup_eq_one {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     {SF : Finset (HeightOneSpectrum (𝓞 D.host.F))}
     (hPg : ∀ PP ∈ L.Pg, ∃ v ∈ SF, PP.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal)
@@ -47,6 +59,11 @@ theorem rTup_eq_one {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Formalism.IndefR
   show upperLeftBlock L.hr (redFn β PP.1 (finE V g)) = 1
   rw [hr]; exact blockDiagonalExtendByOnePrimeField_one _ _
 
+/- English proof (translation)
+Take `⟨hG, hl⟩` from `hJ`. Establish `hpar : finE V g ∈ parLev D.sp.cm V.gram β (withP L P)` using `(mem_lev.1 hl).1`. Establish `hS : finE V g ∈ St β` using `parLev_St hpar`. Establish `h1 : rTup β L (finE V g) = 1` using `rTup_eq_one β L hPg hQ hef hg hS`. Use `⟨⟨hG, mem_lev.2 ⟨hpar, ?_⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show rTup β L (finE V g) ∈ P'.H`. Rewrite using `[h1]`. Conclude with `Subgroup.one_mem _`. Unfold `levChi`. Rewrite using `[levFn_withP, levFn_withP, h1, blockDiagonalExtendByOnePrimeField_one, blockDiagonalExtendByOnePrimeField_one]`.
+-/
 theorem mem_and_chi {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (P P' : LevelP L.Pg L.r ℂ) {SF : Finset (HeightOneSpectrum (𝓞 D.host.F))}
     (hPg : ∀ PP ∈ L.Pg, ∃ v ∈ SF, PP.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal)
@@ -63,6 +80,13 @@ theorem mem_and_chi {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Formalism.IndefR
   · unfold levChi
     rw [levFn_withP, levFn_withP, h1, blockDiagonalExtendByOnePrimeField_one, blockDiagonalExtendByOnePrimeField_one]
 
+/- English proof (translation)
+Introduce and unpack `⟨e, f, ϖ, α, hQ, hef, h1, h2, h3, hK, hχ, h4, h5, h6, hR⟩`. Establish `key` using `fun g (hg : SuppF V f g) (hJ : g ∈ levS V β (withP L P)) => mem_and_chi β L P P' hPg hQ hef hg hJ`. Establish `key'` using `fun g (hg : SuppF V f g) (hJ : g ∈ levS V β (withP L P')) => mem_and_chi β L P' P hPg hQ hef hg hJ`. Establish `hset : {k | k ∈ levS V β (withP L P) ∧ SuppF V f k} = {k | k ∈ levS V β (withP L P') ∧ SuppF V f k}`. Use extensionality with `k`.
+
+Conclude with `⟨fun ⟨a, b⟩ => ⟨(key k b a).1, b⟩, fun ⟨a, b⟩ => ⟨(key' k b a).1, b⟩⟩`. Use `⟨e, f, ϖ, α, hQ, hef, h1, h2, h3, fun g hg => ?_, fun g hJ hg => ?_, h4, h5, h6, hset ▸ hR⟩` and prove the remaining obligations. Conclude with `⟨fun h => (hK g hg).1 ((key' g hg h).1), fun h => (key g hg ((hK g hg).2 h)).1⟩`. Establish `hJ0` using `(key' g hg hJ).1`. Rewrite using `[← (key g hg hJ0).2]`.
+
+Conclude with `hχ g hJ0 hg`.
+-/
 theorem isHeckeOpFull_imp {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (P P' : LevelP L.Pg L.r ℂ) (SF : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (hPg : ∀ PP ∈ L.Pg, ∃ v ∈ SF, PP.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal)
@@ -81,6 +105,9 @@ theorem isHeckeOpFull_imp {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Formalism.
     rw [← (key g hg hJ0).2]
     exact hχ g hJ0 hg
 
+/- English proof (translation)
+Introduce `D V β L P P' SF hPg Q d Rp`. Conclude with `⟨isHeckeOpFull_imp β L P P' SF hPg Q d Rp, isHeckeOpFull_imp β L P' P SF hPg Q d Rp⟩`.
+-/
 theorem isHeckeOpFull_withP_iff : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (P P' : LevelP L.Pg L.r ℂ) (SF : Finset (HeightOneSpectrum (𝓞 D.host.F))), (∀ PP ∈ L.Pg, ∃ v ∈ SF, PP.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal) → ∀ (Q : HeightOneSpectrum (𝓞 D.host.E)) (d : List ℤ) (Rp : Finset (GA D V)), Hecke₂ V (levS V β (withP L P)) (levChi V β (withP L P)) SF Q d Rp ↔ Hecke₂ V (levS V β (withP L P')) (levChi V β (withP L P')) SF Q d Rp := by
   intro D V β L P P' SF hPg Q d Rp
   exact ⟨isHeckeOpFull_imp β L P P' SF hPg Q d Rp, isHeckeOpFull_imp β L P' P SF hPg Q d Rp⟩

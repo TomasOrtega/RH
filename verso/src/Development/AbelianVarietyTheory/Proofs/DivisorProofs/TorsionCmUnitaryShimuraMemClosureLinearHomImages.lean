@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.FlatCM.TorsGen
 
+/- English proof (translation)
+Introduce `E _ _ _ H K _ _ σ A B G hG m hm hker`. Establish `hGm` using `hG.isMonHom`. Take `⟨_, hfl, hsu⟩` from `GlobalTheory.PairKernel.mulA_finite_flat_surjective _ A.pol m hm`. Establish `hc : IsCommMonObj A.t.G` using `A.ab.comm`. Establish `hcB : IsCommMonObj B.t.G` using `B.ab.comm`.
+
+Establish `hall` using `GlobalTheory.T.hom_kills_torsion_of_complexPoints_oneEmbedding E H K σ A B G hGm m hm hker`. Take `⟨F, hF⟩` from `GlobalTheory.DivisibleHom.exists_factor (A := A.t.G) m G hall`. Establish `hFm : IsMonHom (ReciprocityTheory.ChartRestriction.G.Out.mulA A.t.G m ≫ F)` using `hF ▸ hGm`. Establish `: IsMonHom F` using `GlobalTheory.DivisibleHom.isMonHom_of_factor m F`. Use `⟨F, ⟨this, fun c => ?_⟩, by rw [← hF, GlobalTheory.DivisibleHom.mulA_comp]⟩` and prove the remaining obligations.
+
+Use `A.t.act.hom c` as an intermediate fact. Use `B.t.act.hom c` as an intermediate fact. Apply `GlobalTheory.DivisibleHom.cancel_of_flat_surjective (ReciprocityTheory.ChartRestriction.G.Out.mulA A.t.G m)` to reduce the goal to its premises. Rewrite using `[← Category.assoc, GlobalTheory.DivisibleHom.mulA_comp, ← GlobalTheory.DivisibleHom.comp_mulA, Category.assoc, hF, hG.comm, ← Category.assoc, hF]`.
+-/
 theorem exists_linear_pow_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (A B : GlobalTheory.CM.PAT H (Sp (𝓞 K))) (G : A.t.G ⟶ B.t.G),
     GlobalTheory.Serre.IsLinearHom A.t.act B.t.act G → ∀ m : ℕ, 0 < m →
@@ -36,6 +43,11 @@ theorem exists_linear_pow_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   rw [← Category.assoc, GlobalTheory.DivisibleHom.mulA_comp, ← GlobalTheory.DivisibleHom.comp_mulA, Category.assoc, hF, hG.comm,
     ← Category.assoc, hF]
 
+/- English proof (translation)
+Introduce `E _ _ _ H hH K _ _ ρ σ₁ p X n hn y hy`. Use `Submonoid.closure_mono ?_ (GlobalTheory.T.cm_torsion_mem_closure_generators E H hH K ρ σ₁ p X n hn y hy)` and prove the remaining obligations. Introduce and unpack `w ⟨m, x, z, hm, hx, hG, rfl⟩`. Take `⟨F, hF, hFm⟩` from `exists_linear_pow_eq E H K σ₁ (X.A true) X.B _ (GlobalTheory.FlatCM.HomLat.isLinearHom_prod X z) m hm hG`. Use `hF.isMonHom` as an intermediate fact.
+
+Use `⟨x ^ m, F, ?_, hF, ⟨m, hm, z, hFm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, hx]`. Rewrite using `[← hFm, MonObj.comp_pow, MonObj.pow_comp]`.
+-/
 theorem gen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),
     GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p : ℕ)
     (X : GlobalTheory.CM.CMObj H K ρ σ₁ p 0) (n : ℕ), 0 < n →

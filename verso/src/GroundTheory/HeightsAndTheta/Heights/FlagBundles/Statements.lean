@@ -282,23 +282,41 @@ def PolarisationDegreeD.Statement : Prop :=
 
 def exampleFamily : LowerPairs 2 → ℤ := fun _ => 5
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [unipotentMatrix, exampleFamily]`.
+-/
 theorem unipotentMatrix_exampleFamily : unipotentMatrix exampleFamily = !![1, 5; 0, 1] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [unipotentMatrix, exampleFamily]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by norm_num, by decide, rfl⟩`.
+-/
 theorem example_unipotent_hyps :
     (1 : ℕ) ≤ 2 ∧ (0 : Fin 2) < 1 ∧ ({1} : Finset (Fin 2)).card = 1 :=
   ⟨by norm_num, by decide, rfl⟩
 
+/- English proof (translation)
+Simplify using `[gKernel]`.
+-/
 theorem gKernel_one : gKernel ℤ 1 = X 0 * X 1 - X 1 ^ 2 := by
   simp [gKernel]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem norm_single_zero : ‖EuclideanSpace.single (0 : Fin 2) (1 : ℂ)‖ = 1 := by
   simp
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem norm_single_one : ‖EuclideanSpace.single (1 : Fin 2) (1 : ℂ)‖ = 1 := by
   simp
 
+/- English proof (translation)
+Establish `hne : EuclideanSpace.single (0 : Fin 2) (1 : ℂ) ≠ 0`. Rewrite using `[← norm_ne_zero_iff, norm_single_zero]`. Conclude with `one_ne_zero`. Conclude with `⟨finrank_euclideanSpace_fin, finrank_span_singleton hne, Submodule.mem_span_singleton_self _, hne⟩`.
+-/
 theorem example_lineQuotientDeterminant_hyps :
     Module.finrank ℂ (EuclideanSpace ℂ (Fin 2)) = 2 ∧
     Module.finrank ℂ (ℂ ∙ EuclideanSpace.single (0 : Fin 2) (1 : ℂ)) = 1 ∧
@@ -309,8 +327,14 @@ theorem example_lineQuotientDeterminant_hyps :
   exact ⟨finrank_euclideanSpace_fin, finrank_span_singleton hne,
     Submodule.mem_span_singleton_self _, hne⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+-/
 theorem example_diagonal_hyps : IsDomain ℤ ∧ IsNoetherianRing ℤ := ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Use `⟨norm_single_zero, norm_single_one, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_span_singleton]`. Introduce and unpack `⟨a, ha⟩`. Establish `h` using `congrArg (fun v : EuclideanSpace ℂ (Fin 2) => v 0) ha`. Simplify using `at h`.
+-/
 theorem example_sectionNormLog_hyps :
     ‖EuclideanSpace.single (0 : Fin 2) (1 : ℂ)‖ = 1 ∧ ‖EuclideanSpace.single (1 : Fin 2) (1 : ℂ)‖ = 1 ∧
     EuclideanSpace.single (0 : Fin 2) (1 : ℂ) ∉ ℂ ∙ EuclideanSpace.single (1 : Fin 2) (1 : ℂ) := by
@@ -324,10 +348,18 @@ abbrev SqZeroRing := MvPolynomial (Fin 2) ℚ ⧸ (Ideal.span {X 0 ^ 2, X 1 ^ 2}
 
 def sqZeroGen (r : Fin 2) : SqZeroRing := Ideal.Quotient.mk _ (X r)
 
+/- English proof (translation)
+Rewrite using `[sqZeroGen, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Apply the tactic sequence `exact Ideal.subset_span (by fin_cases r <;> simp)`.
+-/
 theorem sqZeroGen_sq (r : Fin 2) : sqZeroGen r ^ 2 = 0 := by
   rw [sqZeroGen, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]
   exact Ideal.subset_span (by fin_cases r <;> simp)
 
+/- English proof (translation)
+Establish `h0 : (volume : Measure E3).toSphere Set.univ ≠ 0`. Rewrite using `[Measure.toSphere_apply_univ]`. Use `mul_ne_zero ?_ (Metric.measure_ball_pos volume (0 : E3) one_pos).ne'` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h1 : (volume : Measure E3).toSphere Set.univ ≠ ⊤`.
+
+Rewrite using `[Measure.toSphere_apply_univ]`. Conclude with `ENNReal.mul_ne_top (by simp) measure_ball_lt_top.ne`. Rewrite using `[sphereMeasure, Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.inv_mul_cancel h0 h1`.
+-/
 theorem sphereMeasure_univ : sphereMeasure Set.univ = 1 := by
   have h0 : (volume : Measure E3).toSphere Set.univ ≠ 0 := by
     rw [Measure.toSphere_apply_univ]
@@ -339,13 +371,22 @@ theorem sphereMeasure_univ : sphereMeasure Set.univ = 1 := by
   rw [sphereMeasure, Measure.smul_apply, smul_eq_mul]
   exact ENNReal.inv_mul_cancel h0 h1
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem example_sphereHeightUniform_hyp : ‖EuclideanSpace.single (2 : Fin 3) (1 : ℝ)‖ = 1 := by
   simp
 
+/- English proof (translation)
+Use `⟨le_rfl, ⟨by norm_num, by norm_num⟩, ⟨by norm_num, by norm_num⟩, by norm_num⟩` and prove the remaining obligations.
+-/
 theorem example_fibre_hyps :
     1 ≤ 1 ∧ (0 : ℝ) ∈ Set.Icc (-1 : ℝ) 1 ∧ (1 / 2 : ℝ) ∈ Set.Icc (-1 : ℝ) 1 ∧ (0 : ℝ) ≠ 1 / 2 := by
   refine ⟨le_rfl, ⟨by norm_num, by norm_num⟩, ⟨by norm_num, by norm_num⟩, by norm_num⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨contDiff_norm_sq ℝ, by simp⟩`.
+-/
 theorem example_curveForm_hyps : ContDiff ℝ 2 (fun z : ℂ => ‖z‖ ^ 2) ∧ ‖(0 : ℂ)‖ < 1 :=
   ⟨contDiff_norm_sq ℝ, by simp⟩
 
@@ -371,6 +412,21 @@ def exampleForm : (Fin 2 → ℂ) →ₗ⋆[ℂ] (Fin 2 → ℂ) →ₗ[ℂ] ℂ
     (fun x y y' => by simp [mul_add, Finset.sum_add_distrib])
     (fun c x y => by simp; ring)
 
+/- English proof (translation)
+Use `⟨?_, fun i => finrank_span_singleton ((Pi.basisFun ℂ (Fin 2)).ne_zero i), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top (Pi.basisFun ℂ (Fin 2)).linearIndependent.iSupIndep_span_singleton ?_ show ⨆ i, ℂ ∙ Pi.basisFun ℂ (Fin 2) i = ⊤` and prove the remaining obligations. Rewrite using `[← Submodule.span_range_eq_iSup, Module.Basis.span_eq]`. Apply the tactic sequence `intro i j h fin_cases i <;> fin_cases j`. Both sides reduce to the same expression.
+
+Use `DFunLike.congr_fun h (Circle.exp Real.pi)` as an intermediate fact. Establish `h2` using `congrArg (fun z : Circle => (z : ℂ)) this`. Simplify using `[exampleChar, Circle.coe_exp] at h2`. Evaluate the numerical expressions using `at h2`. Use `DFunLike.congr_fun h (Circle.exp Real.pi)` as an intermediate fact.
+
+Establish `h2` using `congrArg (fun z : Circle => (z : ℂ)) this`. Simplify using `[exampleChar, Circle.coe_exp] at h2`. Evaluate the numerical expressions using `at h2`. Both sides reduce to the same expression. Introduce `i v hv t`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hv`. Use extensionality with `j`. Simplify using `[exampleRep, Pi.single_apply]`. Use `split_ifs with hj`. Substitute `hj` using the available equality.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Introduce `x y`. Simplify using `[exampleForm, mul_comm]`. Introduce `t x y`.
+
+Establish `hc : ∀ z : Circle, conj (z : ℂ) * z = 1` using `fun z => by`. Rewrite using `[Complex.conj_mul', Circle.norm_coe]`. Simplify using the standard rewrite rules. Simplify using `only [exampleForm, exampleRep, LinearMap.mk₂'ₛₗ_apply, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.toLin'_apply, Matrix.mulVec_diagonal, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Take the linear combination `(conj (x i) * y i) * hc (exampleChar i t)`.
+-/
 theorem example_torusInvariantDiagonal_hyps :
     DirectSum.IsInternal exampleLine ∧ (∀ i, Module.finrank ℂ (exampleLine i) = 1) ∧
     Function.Injective exampleChar ∧
@@ -411,6 +467,9 @@ theorem example_torusInvariantDiagonal_hyps :
     refine Finset.sum_congr rfl fun i _ => ?_
     linear_combination (conj (x i) * y i) * hc (exampleChar i t)
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem example_polarisation_hyp :
     ∀ c : Fin 2 → ℚ, MvPolynomial.lcoeff ℚ (Finsupp.single 0 2) ((∑ i, C (c i) * X i) ^ 2) =
       MvPolynomial.lcoeff ℚ (Finsupp.single 0 2) ((∑ i, C (c i) * X i) ^ 2) := fun _ => rfl

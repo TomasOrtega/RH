@@ -16,6 +16,11 @@ namespace GlobalTheory.GoodMetric.ChernSpan
 
 variable {ι : Type} [Fintype ι] {m : ι → ℕ}
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, Matrix.charpolyRev]`. Use `haveI : IsEmpty (Fin (ρ.nsum 0).M) := inferInstanceAs (IsEmpty (Fin 0))`. Conclude with `Matrix.det_isEmpty`.
+
+Consider the case `succ k ih`. Rewrite using `[pow_succ, ← ih, ← GlobalTheory.T.charpolyRev_neg_finSumBlockDiagonalMatrix]`. Conclude with `congrArg (fun L => Matrix.charpolyRev (-L)) (GlobalTheory.T.polynomialMatrixFamilyRep_lie_directSum (ρ.nsum k) ρ A)`.
+-/
 theorem charpolyRev_neg_lie_nsum (ρ : PolyRep m) (k : ℕ) {S : Type} [CommRing S] (A : Mat m S) :
     Matrix.charpolyRev (-((ρ.nsum k).lie A)) = (Matrix.charpolyRev (-(ρ.lie A))) ^ k := by
   induction k with
@@ -27,10 +32,20 @@ theorem charpolyRev_neg_lie_nsum (ρ : PolyRep m) (k : ℕ) {S : Type} [CommRing
     rw [pow_succ, ← ih, ← GlobalTheory.T.charpolyRev_neg_finSumBlockDiagonalMatrix]
     exact congrArg (fun L => Matrix.charpolyRev (-L)) (GlobalTheory.T.polynomialMatrixFamilyRep_lie_directSum (ρ.nsum k) ρ A)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨ρ, rfl⟩`.
+-/
 theorem chern_mem_reach (n : ℕ) (S : Type) [CommRing S] [Algebra ℝ S] (ρ : PolyRep m) :
     (fun A : Mat m S => (Matrix.charpolyRev (-(ρ.lie A))).coeff n) ∈ Reach m n S :=
   Submodule.subset_span ⟨ρ, rfl⟩
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `h` using `(Reach m 0 S).smul_mem (ρ.M : ℝ) (chern_mem_reach 0 S ρ)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `A`. Establish `h0 : (Matrix.charpolyRev (-(ρ.lie A))).coeff 0 = 1`.
+
+Rewrite using `[Polynomial.coeff_zero_eq_eval_zero, Matrix.eval_charpolyRev]`. Simplify using `[PolyRep.ptr, h0, Algebra.smul_def]`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_trace_pow_eq_sum_smul_coeff_charpolyRev n hn`. Establish `h` using `(Reach m n S).sum_mem (t := Finset.range (n + 1)) (fun k _ => (Reach m n S).smul_mem (c k) (chern_mem_reach n S (ρ.nsum k)))`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `A`. Rewrite using `[Finset.sum_apply, PolyRep.ptr, ← hc]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, charpolyRev_neg_lie_nsum]`.
+-/
 theorem ptr_mem_reach (n : ℕ) (S : Type) [CommRing S] [Algebra ℝ S] (ρ : PolyRep m) :
     (fun A : Mat m S => ρ.ptr n A) ∈ Reach m n S := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -49,6 +64,9 @@ theorem ptr_mem_reach (n : ℕ) (S : Type) [CommRing S] [Algebra ℝ S] (ρ : Po
     refine Finset.sum_congr rfl fun k _ => ?_
     rw [Pi.smul_apply, charpolyRev_neg_lie_nsum]
 
+/- English proof (translation)
+Simplify using `only [PolyRep.ptr]`. Rewrite using `[← GlobalTheory.T.trace_pow_finProdKronecker_add_binomial]`. Conclude with `congrArg (fun L => (L ^ N).trace) (GlobalTheory.T.polynomialMatrixFamilyRep_lie_tensorProduct ρ σ A)`.
+-/
 theorem ptr_tensor (ρ σ : PolyRep m) (N : ℕ) {S : Type} [CommRing S] (A : Mat m S) :
     (ρ.tensor σ).ptr N A =
       ∑ a ∈ Finset.range (N + 1), (N.choose a : S) * ρ.ptr a A * σ.ptr (N - a) A := by
@@ -56,6 +74,23 @@ theorem ptr_tensor (ρ σ : PolyRep m) (N : ℕ) {S : Type} [CommRing S] (A : Ma
   rw [← GlobalTheory.T.trace_pow_finProdKronecker_add_binomial]
   exact congrArg (fun L => (L ^ N).trace) (GlobalTheory.T.polynomialMatrixFamilyRep_lie_tensorProduct ρ σ A)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ r hr ρ`. Establish `hr' : r = n` using `by simpa using hr`. Substitute `hr'` using the available equality.
+
+Simplify `ptr_mem_reach r S ρ` using `[trProd]`. Consider the case `cons x l ih`. Take `⟨τ, i⟩` from `x`. Introduce `hl r hr ρ`. Establish `hi : 1 ≤ i` using `hl (τ, i) (by simp)`.
+
+Establish `hr' : (r + i) + (l.map Prod.snd).sum = n`. Simplify using `only [List.map_cons, List.sum_cons] at hr`. Use linear arithmetic over natural numbers and integers. Take `⟨J, _, σ, c, hσ⟩` from `GlobalTheory.T.exists_polyRep_combination_pure_power_trace m n S τ i hi`. Establish `ih'` using `ih (fun x hx => hl x (List.mem_cons_of_mem _ hx)) (r + i) hr'`.
+
+Establish `h` using `(Reach m n S).smul_mem (((r + i).choose r : ℝ)⁻¹) ((Reach m n S).sum_mem (t := Finset.univ) (fun j _ => (Reach m n S).smul_mem (c j) (ih' (ρ.tensor (σ j)))))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `A`. Establish `hne : (((r + i).choose r : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.choose_pos (Nat.le_add_right r i)).ne'`. Establish `key : ∑ j, c j • (ρ.tensor (σ j)).ptr (r + i) A = (((r + i).choose r : ℕ) : ℝ) • (ρ.ptr r A * ((A τ) ^ i).trace)`.
+
+Simplify using `only [ptr_tensor, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `e : ∀ a ∈ Finset.range (r + i + 1), ∑ j, c j • ((((r + i).choose a : ℕ) : S) * ρ.ptr a A * (σ j).ptr (r + i - a) A) = (((r + i).choose a : ℕ) : S) * ρ.ptr a A * (if r + i - a = i then ((A τ) ^ i).trace else 0)`. Introduce `a _`. Rewrite using `[← hσ A (r + i - a) (by omega), Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => (mul_smul_comm _ _ _).symm`. Rewrite using `[Finset.sum_congr rfl e, Finset.sum_eq_single r]`. Rewrite using `[if_pos (by omega), Algebra.smul_def, map_natCast, mul_assoc]`. Introduce `a ha har`. Rewrite `ha` using `[Finset.mem_range]`.
+
+Rewrite using `[if_neg (by omega), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (by omega)) h`. Simplify using `only [Pi.smul_apply, Finset.sum_apply]`. Establish `e2 : ∑ j, c j • ((ρ.tensor (σ j)).ptr (r + i) A * trProd l A) = (∑ j, c j • (ρ.tensor (σ j)).ptr (r + i) A) * trProd l A`.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => (smul_mul_assoc _ _ _).symm`. Rewrite using `[e2, key, smul_mul_assoc, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Simplify using `only [trProd, List.map_cons, List.prod_cons, mul_assoc]`.
+-/
 theorem ptr_mul_trProd_mem_reach (n : ℕ) (S : Type) [CommRing S] [Algebra ℝ S] (l : List (ι × ℕ)) :
     (∀ x ∈ l, 1 ≤ x.2) → ∀ r : ℕ, r + (l.map Prod.snd).sum = n → ∀ ρ : PolyRep m,
       (fun A : Mat m S => ρ.ptr r A * trProd l A) ∈ Reach m n S := by
@@ -107,6 +142,11 @@ theorem ptr_mul_trProd_mem_reach (n : ℕ) (S : Type) [CommRing S] [Algebra ℝ 
     rw [e2, key, smul_mul_assoc, smul_smul, inv_mul_cancel₀ hne, one_smul]
     simp only [trProd, List.map_cons, List.prod_cons, mul_assoc]
 
+/- English proof (translation)
+Establish `h` using `ptr_mul_trProd_mem_reach n S l hl 0 (by simpa using hs) (PolyRep.triv m)`. Use `h using 2 with A` and compare the differences between its conclusion and the goal. Establish `: (PolyRep.triv m).ptr 0 A = 1`. Rewrite using `[PolyRep.ptr, pow_zero, Matrix.trace_one, Fintype.card_fin]`. Conclude with `Nat.cast_one`.
+
+Rewrite using `[this, one_mul]`.
+-/
 theorem trProd_mem_reach {ι : Type} [Fintype ι] (m : ι → ℕ) (n : ℕ) (S : Type) [CommRing S] [Algebra ℝ S]
     (l : List (ι × ℕ)) (hl : ∀ x ∈ l, 1 ≤ x.2) (hs : (l.map Prod.snd).sum = n) :
     (fun A : Mat m S => trProd l A) ∈ Reach m n S := by

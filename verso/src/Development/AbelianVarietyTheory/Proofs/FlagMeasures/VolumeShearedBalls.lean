@@ -6,6 +6,11 @@ noncomputable section
 
 namespace GlobalTheory.IwConst.Shear
 
+/- English proof (translation)
+Set `e : κ ≃ Fin d` to `Fintype.equivFinOfCardEq h`. Establish `h1` using `(LinearIsometryEquiv.piLpCongrLeft 2 ℝ ℝ e).measurePreserving`. Establish `h2` using `PiLp.volume_preserving_toLp κ`. Establish `h3` using `(h1.comp h2).measure_preimage (s := Metric.closedBall (0 : EuclideanSpace ℝ (Fin d)) 1) measurableSet_closedBall.nullMeasurableSet`. Unfold `ballVol`.
+
+Rewrite using `[← Measure.addHaar_unitClosedBall_eq_addHaar_unitBall, ← h3]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Function.comp_apply, mem_closedBall_zero_iff, LinearIsometryEquiv.norm_map, EuclideanSpace.norm_eq, Real.norm_eq_abs, sq_abs, Real.sqrt_le_one]`.
+-/
 theorem vol_ball_type (κ : Type) [Fintype κ] (d : ℕ) (h : Fintype.card κ = d) :
     volume {x : κ → ℝ | ∑ i, x i ^ 2 ≤ 1} = ballVol d := by
   classical
@@ -21,6 +26,11 @@ theorem vol_ball_type (κ : Type) [Fintype κ] (d : ℕ) (h : Fintype.card κ = 
   simp only [Set.mem_setOf_eq, Set.mem_preimage, Function.comp_apply, mem_closedBall_zero_iff,
     LinearIsometryEquiv.norm_map, EuclideanSpace.norm_eq, Real.norm_eq_abs, sq_abs, Real.sqrt_le_one]
 
+/- English proof (translation)
+Rewrite using `[← vol_ball_type ((Fin a ⊕ Fin b) ⊕ Fin a) (2 * a + b) (by simp; ring)]`. Establish `h1` using `volume_measurePreserving_sumPiEquivProdPi (fun _ : (Fin a ⊕ Fin b) ⊕ Fin a => ℝ)`. Establish `h2` using `volume_measurePreserving_sumPiEquivProdPi (fun _ : Fin a ⊕ Fin b => ℝ)`. Establish `h3` using `(h2.prod (MeasurePreserving.id (volume : Measure (Fin a → ℝ)))).comp h1`. Establish `hm : MeasurableSet {p : ((Fin a → ℝ) × (Fin b → ℝ)) × (Fin a → ℝ) | ∑ i, p.1.1 i ^ 2 + ∑ i, p.1.2 i ^ 2 + ∑ i, p.2 i ^ 2 ≤ 1}` using `measurableSet_le (by fun_prop) measurable_const`.
+
+Establish `h4` using `h3.measure_preimage hm.nullMeasurableSet`. Rewrite using `[Measure.volume_eq_prod, ← h4]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[Fintype.sum_sum_type, MeasurableEquiv.sumPiEquivProdPi]`.
+-/
 theorem vol_ball_three (a b : ℕ) :
     volume {p : ((Fin a → ℝ) × (Fin b → ℝ)) × (Fin a → ℝ) |
       ∑ i, p.1.1 i ^ 2 + ∑ i, p.1.2 i ^ 2 + ∑ i, p.2 i ^ 2 ≤ 1} = ballVol (2 * a + b) := by
@@ -37,6 +47,13 @@ theorem vol_ball_three (a b : ℕ) :
   ext x
   simp [Fintype.sum_sum_type, MeasurableEquiv.sumPiEquivProdPi]
 
+/- English proof (translation)
+Establish `h2 : (0 : ℝ) < Real.sqrt 2` using `Real.sqrt_pos.2 two_pos`. Establish `h` using `Measure.addHaar_preimage_smul (volume : Measure (Fin a → ℝ)) (r := (Real.sqrt 2)⁻¹) (inv_ne_zero h2.ne') {w : Fin a → ℝ | q + ∑ i, w i ^ 2 ≤ 1}`. Establish `e1 : |(((Real.sqrt 2)⁻¹) ^ Module.finrank ℝ (Fin a → ℝ))⁻¹| = (2 : ℝ) ^ ((a : ℝ) / 2)`. Rewrite using `[Module.finrank_fin_fun, inv_pow, inv_inv, abs_of_pos (pow_pos h2 _), Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e1]`. Rewrite using `[← h]`. Use `congr 1`. Use extensionality with `w`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Pi.smul_apply, smul_eq_mul, mul_pow, inv_pow, Real.sq_sqrt (show (0 : ℝ) ≤ 2 by norm_num)]`. Simplify using `only [div_eq_inv_mul]`.
+-/
 theorem vol_scale (a : ℕ) (q : ℝ) :
     volume {w : Fin a → ℝ | q + ∑ i, w i ^ 2 / 2 ≤ 1} =
       ENNReal.ofReal ((2 : ℝ) ^ ((a : ℝ) / 2)) * volume {w : Fin a → ℝ | q + ∑ i, w i ^ 2 ≤ 1} := by
@@ -55,6 +72,11 @@ theorem vol_scale (a : ℕ) (q : ℝ) :
     Real.sq_sqrt (show (0 : ℝ) ≤ 2 by norm_num)]
   simp only [div_eq_inv_mul]
 
+/- English proof (translation)
+Rewrite using `[← vol_ball_three]`. Establish `hm : MeasurableSet {p : ((Fin a → ℝ) × (Fin b → ℝ)) × (Fin a → ℝ) | ∑ i, p.1.1 i ^ 2 + ∑ i, p.1.2 i ^ 2 + ∑ i, p.2 i ^ 2 ≤ 1}` using `measurableSet_le (by fun_prop) measurable_const`. Establish `hm' : MeasurableSet {p : ((Fin a → ℝ) × (Fin b → ℝ)) × (Fin a → ℝ) | ∑ i, p.1.1 i ^ 2 + ∑ i, p.1.2 i ^ 2 + ∑ i, p.2 i ^ 2 / 2 ≤ 1}` using `measurableSet_le (by fun_prop) measurable_const`. Rewrite using `[Measure.volume_eq_prod, Measure.prod_apply hm, Measure.prod_apply hm', ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Conclude with `vol_scale a (∑ i, x.1 i ^ 2 + ∑ i, x.2 i ^ 2)`.
+-/
 theorem vol_ell_three (a b : ℕ) :
     volume {p : ((Fin a → ℝ) × (Fin b → ℝ)) × (Fin a → ℝ) |
       ∑ i, p.1.1 i ^ 2 + ∑ i, p.1.2 i ^ 2 + ∑ i, p.2 i ^ 2 / 2 ≤ 1} =
@@ -71,6 +93,9 @@ theorem vol_ell_three (a b : ℕ) :
   refine lintegral_congr fun x => ?_
   exact vol_scale a (∑ i, x.1 i ^ 2 + ∑ i, x.2 i ^ 2)
 
+/- English proof (translation)
+Establish `hm : MeasurableSet {p : G × Z | (p.1 + f p.2, p.2) ∈ s}` using `(show Measurable fun p : G × Z => (p.1 + f p.2, p.2) by fun_prop) hs`. Rewrite using `[Measure.prod_apply_symm hm, Measure.prod_apply_symm hs]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Conclude with `measure_preimage_add_right μ (f z) ((fun x => (x, z)) ⁻¹' s)`.
+-/
 theorem vol_shear {G Z : Type} [MeasurableSpace G] [AddCommGroup G] [MeasurableAdd₂ G] [MeasurableSpace Z]
     (μ : Measure G) [μ.IsAddRightInvariant] [SFinite μ] (ν : Measure Z) [SFinite ν] (f : Z → G)
     (hf : Measurable f) (s : Set (G × Z)) (hs : MeasurableSet s) :
@@ -81,6 +106,13 @@ theorem vol_shear {G Z : Type} [MeasurableSpace G] [AddCommGroup G] [MeasurableA
   refine lintegral_congr fun z => ?_
   exact measure_preimage_add_right μ (f z) ((fun x => (x, z)) ⁻¹' s)
 
+/- English proof (translation)
+Establish `hι : Continuous ι` using `ι.continuous_of_finiteDimensional`. Establish `hS : MeasurableSet {v : (Fin a → ℝ) × (Fin b → ℝ) × ((Fin a → ℝ) × (Fin c → ℝ)) | ∑ i, (v.1 i + v.2.2.1 i / Real.sqrt 2) ^ 2 + ∑ i, (v.2.1 i + ι v.2.2.2 i) ^ 2 + ∑ i, v.2.2.1 i ^ 2 / 2 ≤ 1 ∧ ∑ i, v.2.2.2 i ^ 2 ≤ 1}`. Rewrite using `[Set.setOf_and]`. Conclude with `((isClosed_le (by fun_prop) continuous_const).inter (isClosed_le (by fun_prop) continuous_const)).measurableSet`. Establish `hs : MeasurableSet {v : ((Fin a → ℝ) × (Fin b → ℝ)) × ((Fin a → ℝ) × (Fin c → ℝ)) | ∑ i, v.1.1 i ^ 2 + ∑ i, v.1.2 i ^ 2 + ∑ i, v.2.1 i ^ 2 / 2 ≤ 1 ∧ ∑ i, v.2.2 i ^ 2 ≤ 1}`.
+
+Rewrite using `[Set.setOf_and]`. Conclude with `((isClosed_le (by fun_prop) continuous_const).inter (isClosed_le (by fun_prop) continuous_const)).measurableSet`. Establish `h1` using `(volume_preserving_prodAssoc (α₁ := Fin a → ℝ) (β₁ := Fin b → ℝ) (γ₁ := (Fin a → ℝ) × (Fin c → ℝ))).measure_preimage hS.nullMeasurableSet`. Establish `h2` using `vol_shear ((volume : Measure (Fin a → ℝ)).prod (volume : Measure (Fin b → ℝ))) (volume : Measure ((Fin a → ℝ) × (Fin c → ℝ))) (fun z => ((fun i => z.1 i / Real.sqrt 2), ι z.2)) (Continuous.measurable (by fun_prop)) _ hs`. Establish `h3` using `(volume_preserving_prodAssoc (α₁ := (Fin a → ℝ) × (Fin b → ℝ)) (β₁ := Fin a → ℝ) (γ₁ := Fin c → ℝ)).measure_preimage hs.nullMeasurableSet`.
+
+Rewrite using `[← h1]`. Use `(h2.trans h3.symm).trans ?_` and prove the remaining obligations. Rewrite using `[← vol_ell_three, ← vol_ball_type (Fin c) c (Fintype.card_fin c), ← Measure.prod_prod]`. Both sides reduce to the same expression.
+-/
 theorem volume_sheared_balls (a b c : ℕ) (ι : (Fin c → ℝ) →ₗ[ℝ] (Fin b → ℝ)) :
     volume {v : (Fin a → ℝ) × (Fin b → ℝ) × ((Fin a → ℝ) × (Fin c → ℝ)) |
       ∑ i, (v.1 i + v.2.2.1 i / Real.sqrt 2) ^ 2 + ∑ i, (v.2.1 i + ι v.2.2.2 i) ^ 2 +

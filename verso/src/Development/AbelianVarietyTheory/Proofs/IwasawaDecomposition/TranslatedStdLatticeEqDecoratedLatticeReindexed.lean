@@ -14,6 +14,25 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.Mem.R3.LiftLatStd
 
+/- English proof (translation)
+Introduce `X i Λ hΛ SG eG hx x`. Establish `hΛ'` using `hΛ`. Take `⟨c, hfr, -⟩` from `hΛ'`. Rewrite using `[GlobalTheory.HLatMove.hLat_eq_span hΛ, Formalism.L2.Col.decoPt_mk]`. Unfold `Formalism.L2.Col.decoOf`.
+
+Rewrite using `[dif_pos (Formalism.L2.Col.decorated_lattice_exists _ _ _ _ _ x.2)]`. Use `set h := eG x with hh`. Use `set g := Formalism.UG.bc (swapAE X.toD7) (h : GL (Fin (Vc X.toD7 i).rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.toD7.host.F ⊗[X.toD7.host.F] X.toD7.host.E)) with hg`. Establish `hxg : (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)) = LiftBrg.castGL (LiftBrg.rkEq X i).symm g` using `(hx x).symm`. Establish `hL : ∀ y : Fin (Vc X.toD7 i).rank → X.toD7.host.E, (h.1⁻¹).1 *ᵥ (fun j => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.toD7.host.F) ⊗ₜ[X.toD7.host.F] y j) ∈ GlobalTheory.AdLat.hat X.toD7.host.F (Λ : Set (Fin (Vc X.toD7 i).rank → X.toD7.host.E)) ↔ ∀ j, ((g⁻¹ …`.
+
+Introduce `y`. Establish `e : ((g⁻¹).1 *ᵥ (fun k => Formalism.L2.Col.iA X.toD7.host.F X.toD7.host.E (y k))) = fun j => Algebra.TensorProduct.comm X.toD7.host.F _ X.toD7.host.E (((h.1⁻¹).1 *ᵥ (fun k => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.toD7.host.F) ⊗ₜ[X.toD7.host.F] y k)) …`. Rewrite using `[hg, ← map_inv]`. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `_ = swapAE X.toD7 _`.
+
+Rewrite using `[RingHom.map_mulVec (swapAE X.toD7)]`. Both sides reduce to the same expression. Establish `e1` using `hfr ((g⁻¹).1 *ᵥ (fun k => Formalism.L2.Col.iA X.toD7.host.F X.toD7.host.E (y k)))`. Rewrite `e1` using `[inv_one, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[← e1, e]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `GlobalTheory.PrincInLevel.swap_mem_hatL Λ _ hz`. Introduce `hz`. Use `GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ _ hz` as an intermediate fact.
+
+Simplify `this` using `only [AlgEquiv.symm_apply_apply]`. Establish `hR : ∀ y : Fin (Vc X.toD7 i).rank → X.toD7.host.E, y ∈ (Formalism.UG.CS.globLat (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)) (Formalism.L2.Col.stdLat X.toD7.host.E X.B.R.nV)).map (LinearEquiv.funCongrLeft (𝓞 X.toD7.host.E) X.toD7.host.E (finCongr (LiftBrg.rkEq X i)).symm).toLinearMap ↔ …`. Introduce `y`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.funCongrLeft_symm, Formalism.L2.Col.mem_globLat]`. Unfold `Formalism.L2.Col.pullV`.
+
+Rewrite using `[hxg, ← map_inv]`. Simplify using `only [LiftBrg.castGL, Units.coe_mapEquiv, Equiv.symm_symm, LinearEquiv.funCongrLeft_apply]`. Simplify using `only [LinearMap.funLeft_apply]`. Establish `e2 : ∀ (M : Matrix (Fin (Vc X.toD7 i).rank) (Fin (Vc X.toD7 i).rank) (Lev.EAf X.toD7)), ((Matrix.reindexAlgEquiv (Lev.EAf X.toD7) (Lev.EAf X.toD7) (finCongr (LiftBrg.rkEq X i).symm)).toRingEquiv.toMulEquiv M) *ᵥ (fun a => Formalism.L2.Col.iA X.toD7.host.F X.toD7.host.E (y (finCon …`. Introduce `M`.
+
+Express the relevant statement in the definitionally equal form `Matrix.reindexAlgEquiv (Lev.EAf X.toD7) (Lev.EAf X.toD7) (finCongr (LiftBrg.rkEq X i).symm) M *ᵥ _ = _`. Rewrite using `[Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv]`. Use function extensionality and compare the values at `a`. Simplify using `[Function.comp_def]`. Rewrite using `[e2]`.
+
+Conclude with `⟨fun H j => by simpa using H ((finCongr (LiftBrg.rkEq X i)).symm j), fun H a => H _⟩`. Use `le_antisymm (Submodule.span_le.2 fun y hy => (hR y).2 ((hL y).1 hy)) fun y hy => Submodule.subset_span ((hL y).2 ((hR y).1 hy))` and prove the remaining obligations.
+-/
 theorem hLat_eq_decoPt_N : ∀ (X : Stages) (i : Fin X.toD7.R.m) (Λ : Submodule (𝓞 X.toD7.host.E) (Fin (Vc X.toD7 i).rank → X.toD7.host.E)),
     IsSDFrame (Vc X.toD7 i) 1 Λ 1 → ∀ (SG : Finset (Pl X.toD7.host.E))
     (eG : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV ≃* Bridge.Gf (Vc X.toD7 i)),

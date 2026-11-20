@@ -10,6 +10,9 @@ open GlobalTheory.RoadU
 
 namespace GlobalTheory.Row9
 
+/- English proof (translation)
+Introduce `hI hR` and use `GlobalTheory.RoadU.coreAll_of_core hI (GlobalTheory.RoadW.core_of_rowStarCore hR)`.
+-/
 theorem coreAll_of_rowStarCore : Inputs → GlobalTheory.RoadW.RowStarCore → CoreAll :=
   fun hI hR => GlobalTheory.RoadU.coreAll_of_core hI (GlobalTheory.RoadW.core_of_rowStarCore hR)
 

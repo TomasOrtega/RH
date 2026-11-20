@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerEleme
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
+/- English proof (translation)
+Unfold `jv`. Establish `hdiv : (M : ℤ) ∣ (a : ℤ) * ((yCl a b).val : ℤ) - (b.val : ℤ)`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Simplify using `only [Int.cast_sub, Int.cast_mul, Int.cast_natCast, ZMod.natCast_zmod_val]`. Unfold `yCl`.
+
+Rewrite using `[← mul_assoc, ZMod.coe_mul_inv_eq_one a ha, one_mul, sub_self]`. Conclude with `Int.mul_ediv_cancel' hdiv`.
+-/
 private theorem jv_eq (M a : ℕ) [NeZero M] (ha : a.Coprime M) (b : ZMod M) :
     (M : ℤ) * jv M a b = (a : ℤ) * ((yCl a b).val : ℤ) - (b.val : ℤ) := by
   unfold jv
@@ -14,6 +19,21 @@ private theorem jv_eq (M a : ℕ) [NeZero M] (ha : a.Coprime M) (b : ZMod M) :
     rw [← mul_assoc, ZMod.coe_mul_inv_eq_one a ha, one_mul, sub_self]
   exact Int.mul_ediv_cancel' hdiv
 
+/- English proof (translation)
+Introduce `M _ K _ _ _ a ha hcop c`. Use `haveI : IsGalois ℚ K := IsCyclotomicExtension.isGalois {M} ℚ K`. Establish `hterm : ∀ b : (ZMod M)ˣ, Eone M a b • Stick.clRep K (Stick.sg M K b)⁻¹ c = Additive.ofMul ((clMap ((Stick.sg M K) b)⁻¹.toRingEquiv (Additive.toMul c)) ^ (Eone M a b))`. Introduce `b`. Both sides reduce to the same expression.
+
+Rewrite using `[Finset.sum_congr rfl (fun b _ => hterm b), ← ofMul_prod]`. Use `show Additive.ofMul _ = Additive.ofMul 1`. Use `congr 1`. Establish `hnorm : ∏ b : (ZMod M)ˣ, clMap ((Stick.sg M K) b)⁻¹.toRingEquiv (Additive.toMul c) = 1`. Rewrite using `[← Stk.prod_galois_classGroup_map_eq_one K (Additive.toMul c)]`.
+
+Conclude with `Fintype.prod_equiv ((Stick.sg M K).toEquiv.trans (Equiv.inv _)) _ _ (fun b => rfl)`. Set `u : (ZMod M)ˣ` to `ZMod.unitOfCoprime a hcop`. Set `β : (ZMod M)ˣ → ℤ` to `fun s => (if s = u⁻¹ then (a : ℤ) else 0) - (if s = 1 then 1 else 0)`. Establish `hβ : ∀ t : (ZMod M)ˣ, (M : ℤ) * jv M a (t : ZMod M) = ∑ s, β s * (((s : ZMod M) * (t : ZMod M)).val : ℤ)`. Introduce `t`.
+
+Rewrite using `[jv_eq M a hcop t]`. Establish `hy : yCl a (t : ZMod M) = ((u⁻¹ : (ZMod M)ˣ) : ZMod M) * t`. Unfold `yCl`. Rewrite using `[← ZMod.inv_coe_unit]`. Both sides reduce to the same expression.
+
+Simplify using `only [β, sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, one_mul, Units.val_one]`. Rewrite using `[hy]`. Establish `hj` using `(Stick.coef M K (Additive.toMul c)).2 β (fun t => jv M a (t : ZMod M)) hβ`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl (fun b _ => ?_)` and prove the remaining obligations.
+
+Unfold `Eone`. Rewrite using `[zpow_sub]`. Use `_ = (∏ b : (ZMod M)ˣ, clMap ((Stick.sg M K) b)⁻¹.toRingEquiv (Additive.toMul c)) ^ (((a : ℤ) - 1) / 2) * (∏ b : (ZMod M)ˣ, clMap ((Stick.sg M K) b)⁻¹.toRingEquiv (Additive.toMul c) ^ jv M a (b : ZMod M))⁻¹ := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_inv_distrib, Finset.prod_zpow]`. Use `_ = 1 := by`.
+
+Rewrite using `[hnorm, hj, one_zpow, inv_one, one_mul]`.
+-/
 theorem UpperTheory.V.Odd.clKill :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (a : ℕ), Odd a → a.Coprime M → ∀ c : Additive (ClassGroup (𝓞 K)), ∑ b : (ZMod M)ˣ, Eone M a b • Stick.clRep K (Stick.sg M K b)⁻¹ c = 0 := by
   intro M _ K _ _ _ a ha hcop c

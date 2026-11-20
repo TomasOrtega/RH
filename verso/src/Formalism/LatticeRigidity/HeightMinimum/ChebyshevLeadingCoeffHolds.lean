@@ -5,6 +5,31 @@ namespace Formalism.SA.P
 
 open Finset Real Polynomial Polynomial.Chebyshev
 
+/- English proof (translation)
+Establish `hnpos : (0:ℝ) < n` using `by exact_mod_cast hn`. Establish `hik' : (i:ℝ) < k` using `by exact_mod_cast hik`. Establish `hkn : (k:ℝ) ≤ n` using `by exact_mod_cast hk`. Establish `hi0 : (0:ℝ) ≤ i` using `Nat.cast_nonneg i`. Establish `hpi` using `Real.pi_pos`.
+
+Use `set S := ((i:ℝ) + k) * π / (2 * n) with hS`. Use `set D := ((k:ℝ) - i) * π / (2 * n) with hD`. Establish `hcos : node n i - node n k = 2 * sin S * sin D`. Unfold `node`. Rewrite using `[Real.cos_sub_cos]`.
+
+Establish `h1 : ((i:ℝ) * π / n + (k:ℝ) * π / n) / 2 = S`. Rewrite using `[hS]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Establish `h2 : ((i:ℝ) * π / n - (k:ℝ) * π / n) / 2 = -D`.
+
+Rewrite using `[hD]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Rewrite using `[h1, h2, Real.sin_neg]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2n : (0:ℝ) < 2 * n` using `by positivity`. Establish `hD0 : 0 ≤ D` using `div_nonneg (mul_nonneg (by linarith) hpi.le) h2n.le`. Establish `hDle : D ≤ π / 2`. Rewrite using `[hD, div_le_iff₀ h2n]`. Establish `: (k:ℝ) - i ≤ n` using `by linarith`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right this hpi.le]`. Establish `hq : 0 ≤ ((k:ℝ) - i) / n` using `div_nonneg (by linarith) hnpos.le`. Establish `hsinD : ((k:ℝ) - i) / n ≤ sin D`. Use `Real.mul_le_sin hD0 hDle` as an intermediate fact. Apply the tactic sequence `have e : 2 / π * D = ((k:ℝ) - i) / n := by rw [hD]; field_simp; try ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsinS : ((k:ℝ) - i) / n ≤ sin S`. Establish `hS0 : 0 ≤ S` using `div_nonneg (mul_nonneg (by linarith) hpi.le) h2n.le`. Distinguish the cases in `hS2 : S ≤ π / 2`. Use `Real.mul_le_sin hS0 hS2` as an intermediate fact.
+
+Apply the tactic sequence `have e : 2 / π * S = ((i:ℝ) + k) / n := by rw [hS]; field_simp; try ring`. Establish `: ((k:ℝ) - i) / n ≤ ((i:ℝ) + k) / n`. Apply `div_le_div_of_nonneg_right _ hnpos.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `push Not at hS2`. Establish `hSle : S ≤ π`. Rewrite using `[hS, div_le_iff₀ h2n]`. Establish `: (i:ℝ) + k ≤ 2 * n` using `by linarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right this hpi.le]`.
+
+Establish `h0' : 0 ≤ π - S` using `by linarith`. Establish `h1' : π - S ≤ π / 2` using `by linarith`. Use `Real.mul_le_sin h0' h1'` as an intermediate fact. Rewrite `this` using `[Real.sin_pi_sub]`. Apply the tactic sequence `have e : 2 / π * (π - S) = (2 * (n:ℝ) - i - k) / n := by rw [hS]; field_simp; try ring`.
+
+Establish `: ((k:ℝ) - i) / n ≤ (2 * (n:ℝ) - i - k) / n`. Apply `div_le_div_of_nonneg_right _ hnpos.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hcos]`.
+
+Establish `e : 2 * ((k:ℝ) - i) ^ 2 / (n:ℝ) ^ 2 = 2 * (((k:ℝ) - i) / n) * (((k:ℝ) - i) / n)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Use `mul_le_mul hsinS hsinD hq (hq.trans hsinS)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma node_sub_node_ge {n i k : ℕ} (hn : 1 ≤ n) (hik : i < k) (hk : k ≤ n) :
     2 * ((k:ℝ) - i) ^ 2 / (n:ℝ) ^ 2 ≤ node n i - node n k := by
   have hnpos : (0:ℝ) < n := by exact_mod_cast hn

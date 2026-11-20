@@ -13,6 +13,15 @@ open CSym
 
 namespace C2
 
+/- English proof (translation)
+Use `push_cast`. Rewrite using `[gauss_zpow Q hQ g l, eF_smul]`. Break down `le_or_gt l g with h | h` into its components or cases. Generalize the expression as in `eF (beFam (Q : K) g) l = E`. Establish `key : (Q : K) ^ (-((i : ℤ) * ((N : ℤ) + g - i))) * (Q : K) ^ (i * N) * (((Q : K) ^ 2) ^ ((i - l) * (g - l)) * (Q : K) ^ ((l : ℤ) * ((g : ℤ) - l))) = (Q : K) ^ (-(((i - l : ℕ) : ℤ) * ((N : ℤ) - (i - l : ℕ)))) * (Q : K) ^ ((i - l) * (N + g))`.
+
+Rewrite using `[← pow_mul, ← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hQ, ← zpow_add₀ hQ, ← zpow_add₀ hQ, ← zpow_add₀ hQ]`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub h, Nat.cast_sub hl]`. Expand and normalize the polynomial expressions, which then agree. Establish `hX : (Q : K) ^ ((i - l) * (N + g)) * ((Q : K) ^ ((i - l) * (N + g)))⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero _ hQ)`.
+
+Establish `hB : (a / b) ^ i * b ^ l = a ^ i * (b ^ (i - l))⁻¹`. Establish `e : b ^ i = b ^ (i - l) * b ^ l` using `by rw [← pow_add]; congr 1; omega`. Rewrite using `[div_pow, e]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_inv]`.
+
+Take the linear combination `(a ^ i * E * (b ^ (i - l))⁻¹ * ((Q : K) ^ ((i - l) * (N + g)))⁻¹) * key + (a ^ i * E * (b ^ (i - l))⁻¹ * (Q : K) ^ (-(((i - l : ℕ) : ℤ) * ((N : ℤ) - (i - l : ℕ))))) * hX - (E * (Q : K) ^ (-(((i - l : ℕ) : ℤ) * ((N : ℤ) - (i - l : ℕ))))) * hB`. Rewrite using `[eF_of_card_lt _ _ (by simpa using h)]`. Simplify using the standard rewrite rules.
+-/
 lemma scal {K : Type} [Field K] (Q N g i l : ℕ) (hQ : (Q : K) ≠ 0) (hl : l ≤ i) (a b : K)
     (hb : b ≠ 0) :
     (Q : K) ^ (-((i : ℤ) * ((N : ℤ) + g - i))) *

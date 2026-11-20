@@ -12,6 +12,29 @@ namespace PositivityTheory.Rg.Rs.C3.Rap
 
 open PositivityTheory.RSHS.LS PositivityTheory.Rg.Rs.C3.Fl
 
+/- English proof (translation)
+Introduce `E _ _ _ N c n h π w X _ _ ρ F hF`. Choose the witnesses or unpack the hypotheses as in `⟨v0, hv0⟩ : ∃ v, F.1 v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hF (LinearMap.ext hc)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g0, hg0⟩ : ∃ g, (F.1 v0).1 g ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hv0 (Subtype.ext (funext hc))`. Take `⟨u, hu, m0, k, x, rfl⟩` from `exists_iwasawa_left h g0`.
+
+Set `xw` to `Matrix.GeneralLinearGroup.map (pLoc E w) x`. Set `xo` to `x * (locGL E N w xw)⁻¹`. Establish `hxo : Matrix.GeneralLinearGroup.map (pLoc E w) xo = 1`. Simplify using `only [xo, map_mul, map_inv, pLoc_locGL]`. Conclude with `mul_inv_cancel _`.
+
+Establish `hx : x = xo * locGL E N w xw` using `by simp [xo]`. Set `Lf : X → ((∀ i, GA E (n i)) → ℂ)` to `fun v m => (F.1 v).1 (leviEmb (Ad E) (stdBlocks n h) m * (infGL E N (Unitary.toUnits k) * finGL E N xo))`. Set `L : X →ₗ[ℂ] ((∀ i, GA E (n i)) → ℂ)` to `{ toFun := Lf map_add' := fun v v' => by`. Use function extensionality and compare the values at `m`. Simplify using `only [Lf, map_add]`.
+
+Both sides reduce to the same expression. Use the proof step `map_smul' := fun z v => by`. Use function extensionality and compare the values at `m`. Simplify using `only [Lf, map_smul]`. Use `rfl }`.
+
+Use `⟨L, fun v => (F.2.1 v).2.2.2 k xo, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hg0` to reduce the goal to its premises. Establish `h1` using `congrFun (LinearMap.congr_fun h0 (ρ xw v0)) m0`. Express the relevant statement in the definitionally equal form `(F.1 (ρ xw v0)).1 _ = 0 at h1`.
+
+Rewrite `h1` using `[F.2.2 xw v0]`. Express the relevant statement in the definitionally equal form `(F.1 v0).1 (_ * finGL E N (locGL E N w xw)) = 0 at h1`. Establish `hfx : finGL E N x = finGL E N xo * finGL E N (locGL E N w xw)` using `by rw [← map_mul, ← hx]`. Rewrite using `[(F.2.1 v0).1 u hu, hfx]`. Simplify `h1` using `only [mul_assoc]`.
+
+Introduce `p v`. Use function extensionality and compare the values at `m`. Take `⟨up, hup, hp⟩` from `exists_levi_mul_unip (w.adicCompletion E) (stdBlocks n h) p`. Express the relevant statement in the definitionally equal form `(F.1 (ρ p v)).1 _ = (F.1 v).1 _`. Rewrite using `[F.2.2 p v]`.
+
+Express the relevant statement in the definitionally equal form `(F.1 v).1 (_ * finGL E N (locGL E N w (p : GL (Fin N) (w.adicCompletion E)))) = _`. Set `M' : ∀ i, GA E (n i)` to `fun i => finGL E (n i) (locGL E (n i) w (leviProj (w.adicCompletion E) (stdBlocks n h) p i))`. Establish `hq : finGL E N (locGL E N w p) = leviEmb (Ad E) (stdBlocks n h) M' * finGL E N (locGL E N w up)`. Rewrite using `[hp, map_mul, map_mul]`. Use `congr 1`.
+
+Conclude with `iota_leviEmb h _`. Establish `hu' : finGL E N (locGL E N w up) ∈ unipRad (Ad E) (stdBlocks n h)` using `iota_mem_unipRad h hup`. Establish `hcomm : infGL E N (Unitary.toUnits k) * finGL E N xo * finGL E N (locGL E N w p) = finGL E N (locGL E N w p) * (infGL E N (Unitary.toUnits k) * finGL E N xo)`. Rewrite using `[mul_assoc, ← map_mul (finGL E N) xo, ← locGL_commute w xo _ hxo, map_mul, ← mul_assoc, infGL_comm, mul_assoc]`. Establish `key : ∀ a b c' d : GA E N, a * (b * c' * d) = (a * b * c' * (a * b)⁻¹) * (a * b * d)`.
+
+Use `intros`. Use `group`. Establish `hconj` using `(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer (Ad E) (stdBlocks n h) (m * M')) _).1 hu'`. Rewrite using `[mul_assoc, hcomm, hq, key, ← map_mul, (F.2.1 v).1 _ hconj]`. Both sides reduce to the same expression.
+-/
 theorem restrictAtPoint_holds : RestrictAtPoint := by
   intro E _ _ _ N c n h π w X _ _ ρ F hF
   obtain ⟨v0, hv0⟩ : ∃ v, F.1 v ≠ 0 := by

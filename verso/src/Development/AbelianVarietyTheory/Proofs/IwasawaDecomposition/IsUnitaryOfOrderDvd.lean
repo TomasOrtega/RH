@@ -16,6 +16,9 @@ open Formalism.L2.Host Formalism.L2.Herm
 
 variable {D : D7}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ show (crd V).symm (crd V y) ∈ V.L0`. Rewrite using `[LinearEquiv.symm_apply_apply]` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨_, h, (crd V).apply_symm_apply x⟩`.
+-/
 theorem mem_crdLat (V : HSp D) (x : Fin V.rank → D.host.E) : x ∈ crdLat V V.L0 ↔ (crd V).symm x ∈ V.L0 := by
   constructor
   · rintro ⟨y, hy, rfl⟩
@@ -24,6 +27,9 @@ theorem mem_crdLat (V : HSp D) (x : Fin V.rank → D.host.E) : x ∈ crdLat V V.
   · intro h
     exact ⟨_, h, (crd V).apply_symm_apply x⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, mem_crdLat]`. Use `show V.frame.equivFun.symm x ∈ V.L0 ↔ _`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem coe_crdLat (V : HSp D) : (crdLat V V.L0 : Set (Fin V.rank → D.host.E)) = L0c D V := by
   ext x
   rw [SetLike.mem_coe, mem_crdLat]
@@ -31,6 +37,15 @@ theorem coe_crdLat (V : HSp D) : (crdLat V V.L0 : Set (Fin V.rank → D.host.E))
   rw [Module.Basis.equivFun_symm_apply]
   rfl
 
+/- English proof (translation)
+Unfold `dualL`. Use `conv_rhs => rw [← Submodule.span_eq (crdLat V V.L0)]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, mem_crdLat]`.
+
+Use `conv_rhs => rw [← V.baseLattice_isUnimodular]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Use `h (crd V y) ⟨y, hy, rfl⟩` as an intermediate fact.
+
+Rewrite using `[hT_crd D.sp.cm, LinearEquiv.apply_symm_apply]`. Conclude with `this`. Introduce and unpack `h _ ⟨y, hy, rfl⟩`. Use `h y hy` as an intermediate fact. Rewrite `this` using `[hT_crd D.sp.cm, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `this`.
+-/
 theorem dualL_crdLat (V : HSp D) : dualL D.sp.cm V (crdLat V V.L0) = crdLat V V.L0 := by
   unfold dualL
   conv_rhs => rw [← Submodule.span_eq (crdLat V V.L0)]
@@ -50,6 +65,9 @@ theorem dualL_crdLat (V : HSp D) : dualL D.sp.cm V (crdLat V V.L0) = crdLat V V.
     rw [hT_crd D.sp.cm, LinearEquiv.apply_symm_apply] at this
     exact this
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[one_pow]`. Rewrite using `[pow_zero]` and apply the resulting hypothesis.
+-/
 theorem isSDFrame_of_one {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (h : IsSDFrame V β Λ 1) (N : ℕ) : IsSDFrame V β Λ N := by
   obtain ⟨c, hc⟩ := h
@@ -57,6 +75,11 @@ theorem isSDFrame_of_one {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
   rw [one_pow] at hc
   rwa [pow_zero]
 
+/- English proof (translation)
+Introduce `x`. Establish `h1 : (χ.1 x) ^ n = 1`. Establish `: (χ ^ n).1 x = 1` using `by rw [h]; rfl`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+
+Establish `h2 : ‖((χ.1 x : ℂˣ) : ℂ)‖ ^ n = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2`.
+-/
 theorem isUnitary_of_orderDvd {L : Type} [Field L] [NumberField L] {χ : HChar L} {n : ℕ} (hn : 0 < n) (h : χ.OrderDvd n) :
     χ.IsUnitary := by
   intro x
@@ -67,6 +90,17 @@ theorem isUnitary_of_orderDvd {L : Type} [Field L] [NumberField L] {χ : HChar L
     rw [← norm_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2
 
+/- English proof (translation)
+Use `choose m hm using fun j : Fin D.R.m => GlobalTheory.T.exists_cmAdeleUnitCharacter_reading_heckeChar D (C.mu0 j) (C.isMu0 j).unitary`. Take `⟨η, hη⟩` from `GlobalTheory.T.exists_cmAdeleUnitCharacter_reading_heckeChar D C.eta C.isEta.unitary`. Use `choose x hx using fun t => GlobalTheory.T.exists_cmAdeleUnitCharacter_reading_heckeChar D (ξ t) (by obtain ⟨n, hn, h⟩ := hfin t; exact isUnitary_of_orderDvd hn h)`. Use `choose r hr using fun (j : Fin D.R.m) PP => GlobalTheory.exists_isRes_of_tameAt D (C.mu0 j) PP ((C.isMu0 j).tame PP)`. Use `choose s hs using fun t PP => GlobalTheory.exists_isRes_of_tameAt D (ξ t) PP (htame t PP)`.
+
+Use `choose β hβ using fun V : HSp D => GlobalTheory.T.exists_selfDual_adelic_frame_level_one D V (crdLat V V.L0) (coe_crdLat V) (dualL_crdLat V)`. Use `⟨{ C := C, xiH := ξ mu0 := fun j => if h : j - 1 < D.R.m then m ⟨j - 1, h⟩ else 1 eta := η, xi := x Pg := Finset.univ.biUnion fun k => aboveF (L := D.host.E) D.host.K (C.P.pb k) Q := Q chi := fun j PP => if h : j - 1 < D.R.m then (r ⟨j - 1, h⟩ PP)⁻¹ else 1 xiR := s ΛY := fun _ => …` and prove the remaining obligations. Conclude with `{ mu0 := fun j => by`. Establish `h : (j : ℕ) + 1 - 1 < D.R.m` using `j.2`. Simplify using `only [dif_pos h]`.
+
+Conclude with `hm j`. Use `eta := hη, xi := hx, xi_inj := hinj, xi_base := hbase, xi_fin := hfin, xi_triv := htriv, xi_tame := htame`. Use `Pg := fun PP => by`. Simplify using `only [Finset.mem_biUnion, Finset.mem_univ, true_and, aboveF, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+
+Use `Q_pl := hpl, Q_off := hoff, Q_de := hde, Q_ram := hram`. Use `chi := fun j PP _ => by`. Establish `h : (j : ℕ) + 1 - 1 < D.R.m` using `j.2`. Simplify using `only [dif_pos h, inv_inv]`. Conclude with `hr j PP`.
+
+Use `xiR := fun t PP _ => hs t PP`. Use `βY := fun j _ => isSDFrame_of_one (hβ _) _`. Use `βX := hβ _, βV := fun _ => hβ _, βW := fun _ => hβ _ }`.
+-/
 theorem exists_levCh (D : D7) (C : CharFrame D) (T : Type) (μ0 : T) (ξ : T → HChar D.host.E)
     (Q : T → Finset (Pl D.host.E)) (hinj : Function.Injective ξ) (hbase : ξ μ0 = 1)
     (hfin : ∀ t, ∃ n : ℕ, 0 < n ∧ (ξ t).OrderDvd n) (htriv : ∀ t, (ξ t).TrivOn D.host.F)
@@ -112,6 +146,9 @@ theorem exists_levCh (D : D7) (C : CharFrame D) (T : Type) (μ0 : T) (ξ : T →
       βY := fun j _ => isSDFrame_of_one (hβ _) _
       βX := hβ _, βV := fun _ => hβ _, βW := fun _ => hβ _ }
 
+/- English proof (translation)
+Introduce `D C`. Take `⟨L, h1, -, -, -, h2⟩` from `exists_levCh D C Unit () (fun _ => 1) (fun _ => ∅) (fun _ _ _ => rfl) rfl (fun _ => ⟨1, one_pos, one_pow 1⟩) (fun _ => (isPsi_one (H := D.host) 2).triv) (fun _ _ _ _ _ => rfl) (fun _ _ h => absurd h (Finset.notMem_empty _)) (fun _ _ h => absurd h (Finset.notMem_empty _)) (fun _ _ …`. Conclude with `⟨L, h1, h2⟩`.
+-/
 theorem exists_levCh_unit : ∀ (D : D7) (C : Formalism.L2.Host.CharFrame D), ∃ L : LevCh D Unit, L.C = C ∧ L.Is () := by
   intro D C
   obtain ⟨L, h1, -, -, -, h2⟩ := exists_levCh D C Unit () (fun _ => 1) (fun _ => ∅) (fun _ _ _ => rfl) rfl

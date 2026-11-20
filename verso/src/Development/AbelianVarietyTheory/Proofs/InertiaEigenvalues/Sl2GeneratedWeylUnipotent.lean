@@ -3,6 +3,13 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.JR.SLGen
 
+/- English proof (translation)
+Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Establish `hK : IsCompact (Metric.ball (0 : F) 1)` using `(isCompact_closedBall (0 : F) 1).of_isClosed_subset (IsUltrametricDist.isClosed_ball 0 1) Metric.ball_subset_closedBall`. Take `⟨ϖ, hϖ, hmax⟩` from `hK.exists_isMaxOn ⟨0, by simp⟩ continuous_norm.continuousOn`. Establish `hϖ1 : ‖ϖ‖ < 1` using `by simpa using hϖ`. Establish `hle : ∀ y : F, ‖y‖ < 1 → ‖y‖ ≤ ‖ϖ‖` using `fun y hy => hmax (by simpa using hy)`.
+
+Take `⟨x, hx0, hx1⟩` from `NormedField.exists_norm_lt_one F`. Use `⟨ϖ, ?_, hϖ1, hle⟩` and prove the remaining obligations. Introduce `h`. Use `hle x hx1` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_unif (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [LocallyCompactSpace F] :
     ∃ ϖ : F, ϖ ≠ 0 ∧ ‖ϖ‖ < 1 ∧ ∀ y : F, ‖y‖ < 1 → ‖y‖ ≤ ‖ϖ‖ := by
   haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F
@@ -21,14 +28,26 @@ theorem exists_unif (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F]
 
 variable {F : Type} [Field F]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nS_coe (z : F) : ((nS z : SpecialLinearGroup (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![1, z; 0, 1] := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wS_coe : ((wS F : SpecialLinearGroup (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![0, 1; -1, 0] := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.SpecialLinearGroup.coe_inv, wS_coe, Matrix.adjugate_fin_two]`. Simplify using the standard rewrite rules.
+-/
 theorem wS_inv_coe :
     (((wS F)⁻¹ : SpecialLinearGroup (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![0, -1; 1, 0] := by
   rw [Matrix.SpecialLinearGroup.coe_inv, wS_coe, Matrix.adjugate_fin_two]; simp
 
+/- English proof (translation)
+Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, nS_coe, wS_coe, wS_inv_coe]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hϖ] <;> field_simp <;> ring`.
+-/
 theorem diag_coe {ϖ : F} (hϖ : ϖ ≠ 0) :
     ((nS ϖ * ((wS F)⁻¹ * nS ϖ⁻¹ * wS F) * nS ϖ * (wS F)⁻¹ : SpecialLinearGroup (Fin 2) F) :
       Matrix (Fin 2) (Fin 2) F) = !![ϖ, 0; 0, ϖ⁻¹] := by
@@ -36,6 +55,9 @@ theorem diag_coe {ϖ : F} (hϖ : ϖ ≠ 0) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hϖ] <;> field_simp <;> ring
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, inv_mul_eq_iff_eq_mul]`. Use extensionality with `i j`. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, diag_coe hϖ, nS_coe]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring`.
+-/
 theorem conj_step {ϖ : F} (hϖ : ϖ ≠ 0) (t : F) :
     (nS ϖ * ((wS F)⁻¹ * nS ϖ⁻¹ * wS F) * nS ϖ * (wS F)⁻¹)⁻¹ * nS t *
       (nS ϖ * ((wS F)⁻¹ * nS ϖ⁻¹ * wS F) * nS ϖ * (wS F)⁻¹) = nS (ϖ⁻¹ ^ 2 * t) := by
@@ -44,6 +66,11 @@ theorem conj_step {ϖ : F} (hϖ : ϖ ≠ 0) (t : F) :
   simp only [Matrix.SpecialLinearGroup.coe_mul, diag_coe hϖ, nS_coe]
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring
 
+/- English proof (translation)
+Establish `hdet` using `g.2`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Use extensionality with `i j`. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, nS_coe, wS_coe, wS_inv_coe]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> first | ring1 | linear_combination -hdet | linear_combination -2 * hdet | linear_combination hdet |`.
+
+Take the linear combination `2 * hdet`.
+-/
 theorem decomp (g : SpecialLinearGroup (Fin 2) F) (hc : (g : Matrix (Fin 2) (Fin 2) F) 1 0 ≠ 0) :
     g = nS (((g : Matrix (Fin 2) (Fin 2) F) 0 0 - 1) / (g : Matrix (Fin 2) (Fin 2) F) 1 0) *
       ((wS F)⁻¹ * nS (-(g : Matrix (Fin 2) (Fin 2) F) 1 0) * wS F) *
@@ -56,6 +83,17 @@ theorem decomp (g : SpecialLinearGroup (Fin 2) F) (hc : (g : Matrix (Fin 2) (Fin
     first | ring1 | linear_combination -hdet | linear_combination -2 * hdet | linear_combination hdet |
       linear_combination 2 * hdet
 
+/- English proof (translation)
+Establish `hl : ∀ c : F, (wS F)⁻¹ * nS (-c) * wS F ∈ H` using `fun c => H.mul_mem (H.mul_mem (H.inv_mem hw) (hn _)) hw`. Establish `key : ∀ g : SpecialLinearGroup (Fin 2) F, (g : Matrix (Fin 2) (Fin 2) F) 1 0 ≠ 0 → g ∈ H`. Introduce `g hc`. Rewrite using `[decomp g hc]`. Conclude with `H.mul_mem (H.mul_mem (hn _) (hl _)) (hn _)`.
+
+Rewrite using `[eq_top_iff]`. Introduce `g _`. Distinguish the cases in `hc : (g : Matrix (Fin 2) (Fin 2) F) 1 0 = 0`. Establish `hdet` using `g.2`. Rewrite `hdet` using `[Matrix.det_fin_two, hc]`.
+
+Establish `ha : (g : Matrix (Fin 2) (Fin 2) F) 0 0 ≠ 0`. Introduce `h`. Rewrite `hdet` using `[h]`. Simplify using `at hdet`. Use `set L1 : SpecialLinearGroup (Fin 2) F := (wS F)⁻¹ * nS (-(1 : F)) * wS F`.
+
+Establish `h1 : L1 * g ∈ H`. Apply `key` to reduce the goal to its premises. Simplify using `only [L1, Matrix.SpecialLinearGroup.coe_mul, nS_coe, wS_coe, wS_inv_coe]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, hc, ha]`. Establish `: g = L1⁻¹ * (L1 * g)` using `by group`.
+
+Rewrite using `[this]`. Conclude with `H.mul_mem (H.inv_mem (hl 1)) h1`. Conclude with `key g hc`.
+-/
 theorem eq_top_of (H : Subgroup (SpecialLinearGroup (Fin 2) F)) (hw : wS F ∈ H) (hn : ∀ t, nS t ∈ H) :
     H = ⊤ := by
   have hl : ∀ c : F, (wS F)⁻¹ * nS (-c) * wS F ∈ H := fun c =>
@@ -85,6 +123,23 @@ end GlobalTheory.JR.SLGen
 
 open GlobalTheory.JR.SLGen in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ hU`. Use `haveI : IsUltrametricDist F := hU.ultraF`. Use `haveI : LocallyCompactSpace F := hU.lcF`. Use `set H := Subgroup.closure ({wS F} ∪ {g | ∃ t : F, (∀ y : F, ‖y‖ < 1 → ‖t * y‖ ≤ 1) ∧ g = nS t})`. Take `⟨ϖ, hϖ0, hϖ1, hmax⟩` from `exists_unif F`.
+
+Establish `hw : wS F ∈ H` using `Subgroup.subset_closure (Or.inl rfl)`. Establish `hS : ∀ t : F, (∀ y : F, ‖y‖ < 1 → ‖t * y‖ ≤ 1) → nS t ∈ H` using `fun t ht => Subgroup.subset_closure (Or.inr ⟨t, ht, rfl⟩)`. Establish `hball : ∀ t : F, ‖t‖ ≤ 1 → nS t ∈ H` using `fun t ht => hS t fun y hy => by`. Rewrite using `[norm_mul]`. Use polynomial arithmetic with `[norm_nonneg t, norm_nonneg y]`.
+
+Establish `hinv : nS ϖ⁻¹ ∈ H` using `hS _ fun y hy => by`. Establish `hp : 0 < ‖ϖ‖` using `norm_pos_iff.2 hϖ0`. Rewrite using `[norm_mul, norm_inv, inv_mul_le_iff₀ hp, mul_one]`. Conclude with `hmax y hy`. Establish `hD : nS ϖ * ((wS F)⁻¹ * nS ϖ⁻¹ * wS F) * nS ϖ * (wS F)⁻¹ ∈ H` using `H.mul_mem (H.mul_mem (H.mul_mem (hball _ hϖ1.le) (H.mul_mem (H.mul_mem (H.inv_mem hw) hinv) hw)) (hball _ hϖ1.le)) (H.inv_mem hw)`.
+
+Establish `hstep : ∀ t, nS t ∈ H → nS (ϖ⁻¹ ^ 2 * t) ∈ H` using `fun t ht => by`. Rewrite using `[← conj_step hϖ0 t]`. Conclude with `H.mul_mem (H.mul_mem (H.inv_mem hD) ht) hD`. Establish `hpow : ∀ k : ℕ, ∀ t, nS t ∈ H → nS ((ϖ⁻¹ ^ 2) ^ k * t) ∈ H`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => intro t ht`. Simplify using `using ht`. Consider the case `succ k ih => intro t ht`. Rewrite using `[pow_succ', mul_assoc]`.
+
+Conclude with `hstep _ (ih t ht)`. Establish `hall : ∀ x : F, nS x ∈ H`. Introduce `x`. Establish `hq : ‖ϖ ^ 2‖ < 1` using `by rw [norm_pow]; nlinarith [norm_nonneg ϖ]`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (show (0 : ℝ) < 1 / (‖x‖ + 1) by positivity) hq`.
+
+Establish `h1 : ‖(ϖ ^ 2) ^ k * x‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow]`. Rewrite `hk` using `[lt_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[norm_nonneg x, pow_nonneg (norm_nonneg (ϖ ^ 2)) k]`. Establish `e : x = (ϖ⁻¹ ^ 2) ^ k * ((ϖ ^ 2) ^ k * x)`.
+
+Rewrite using `[← mul_assoc, ← mul_pow, inv_pow, inv_mul_cancel₀ (pow_ne_zero _ hϖ0), one_pow, one_mul]`. Rewrite using `[e]`. Conclude with `hpow k _ (hball _ h1)`. Conclude with `eq_top_of H hw hall`.
+-/
 theorem GlobalTheory.JR.sl2_closure_weyl_unipotent_eq_top :
     ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
       [Unram F E], Subgroup.closure ({wS F} ∪ {g | ∃ t : F, (∀ y : F, ‖y‖ < 1 → ‖t * y‖ ≤ 1) ∧ g = nS t}) = ⊤ := by

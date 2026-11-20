@@ -6,6 +6,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨W, hW, rfl⟩` from `hf.isOpen_iff.1 hU`. Take `⟨V, hVc, hVo, h1, h2⟩` from `PrespectralSpace.exists_isCompact_and_isOpen_between (hc.image hf.continuous) hW (Set.image_preimage_subset _ _)`. Conclude with `⟨V, hVo, hVc, Set.Subset.antisymm (Set.preimage_mono h2) (Set.image_subset_iff.1 h1)⟩`.
+-/
 theorem exists_isCompact_open_preimage_eq_of_isInducing {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     [PrespectralSpace Y] {f : X → Y} (hf : Topology.IsInducing f) {U : Set X} (hU : IsOpen U) (hc : IsCompact U) :
     ∃ V : Set Y, IsOpen V ∧ IsCompact V ∧ f ⁻¹' V = U := by
@@ -14,6 +17,9 @@ theorem exists_isCompact_open_preimage_eq_of_isInducing {X Y : Type*} [Topologic
     (hc.image hf.continuous) hW (Set.image_preimage_subset _ _)
   exact ⟨V, hVo, hVc, Set.Subset.antisymm (Set.preimage_mono h2) (Set.image_subset_iff.1 h1)⟩
 
+/- English proof (translation)
+Introduce `R _ q T π U' hU'`. Establish `h₀ : IsPreimmersion (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))` using `IsPreimmersion.of_isLocalization q.asIdeal.primeCompl`. Establish `: IsPreimmersion (pullback.fst π (spMap (algebraMap R (Localization.AtPrime q.asIdeal))))` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip h₀`. Take `⟨V, hVo, hVc, h⟩` from `exists_isCompact_open_preimage_eq_of_isInducing (pullback.fst π (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))).isEmbedding.isInducing U'.isOpen hU'`. Conclude with `⟨⟨V, hVo⟩, hVc, TopologicalSpace.Opens.ext h⟩`.
+-/
 theorem exists_isCompact_open_preimage_eq_baseChange_atPrime : ∀ (R : Type) [CommRing R] (q : PrimeSpectrum R) (T : Scheme.{0}) (π : T ⟶ Sp R) (U' : (pullback π (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))).Opens), IsCompact (U' : Set (pullback π (spMap (algebraMap R (Localization.AtPrime q.asIdeal))) : Scheme.{0})) → ∃ U₀ : T.Opens, IsCompact (U₀ : Set T) ∧ pullback.fst π (spMap (algebraMap R (Localization.AtPrime q.asIdeal))) ⁻¹ᵁ U₀ = U' := by
   intro R _ q T π U' hU'
   have h₀ : IsPreimmersion (spMap (algebraMap R (Localization.AtPrime q.asIdeal))) :=

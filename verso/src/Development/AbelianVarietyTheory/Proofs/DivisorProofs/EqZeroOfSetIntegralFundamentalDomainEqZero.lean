@@ -5,6 +5,15 @@ open scoped Real ContDiff
 
 namespace GlobalTheory.TorsionForm.FlatAcyc
 
+/- English proof (translation)
+Introduce `g M D hM hD hF q hq h0 hper hint hz`. Take `⟨hdisc, _⟩` from `hM`. Use `haveI : Countable M := inferInstance`. Use `haveI : Countable M.toAddSubgroup := this`. Establish `h1 : q =ᵐ[volume.restrict D] 0` using `(setIntegral_eq_zero_iff_of_nonneg_ae (Filter.Eventually.of_forall h0) hint).1 hz`.
+
+Establish `h2 : volume ({x | q x ≠ 0} ∩ D) = 0`. Rewrite using `[← Measure.restrict_apply' hD]`. Conclude with `h1`. Establish `h3 : volume {x | q x ≠ 0} = 0`. Use `hF.measure_zero_of_invariant _ (fun l => ?_) h2` and prove the remaining obligations.
+
+Use extensionality with `x`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Use `hper _ (M.neg_mem l.2) x` as an intermediate fact. Use `show q ((-(l : Fl g)) + x) ≠ 0 ↔ q x ≠ 0`. Rewrite using `[add_comm, this]`.
+
+Establish `h4 : q =ᵐ[volume] fun _ => 0` using `h3`. Use `(hq.ae_eq_iff_eq volume continuous_const).1 h4` as an intermediate fact. Conclude with `fun x => congrFun this x`.
+-/
 theorem eq_zero_of_setIntegral_fundamentalDomain_eq_zero :
     ∀ {g : ℕ} (M : Submodule ℤ (Fl g)) (D : Set (Fl g)), IsLat M → MeasurableSet D →
       IsAddFundamentalDomain M.toAddSubgroup D volume → ∀ q : Fl g → ℝ, Continuous q →

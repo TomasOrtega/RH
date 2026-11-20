@@ -12,11 +12,20 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.G.GLWeightTheory Formalism.MainNotions.G.Joints
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => (h1.1 x).trans (h2.1 x), h1.2.trans h2.2⟩`.
+-/
 theorem dominance_trans {n : ℕ} {a b c : Fin n → ℤ} (h1 : DomLE a b) (h2 : DomLE b c) : DomLE a c :=
   ⟨fun x => (h1.1 x).trans (h2.1 x), h1.2.trans h2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => le_rfl, rfl⟩`.
+-/
 theorem dominance_refl {n : ℕ} (a : Fin n → ℤ) : DomLE a a := ⟨fun _ => le_rfl, rfl⟩
 
+/- English proof (translation)
+Establish `g1` using `(dominanceOrder_iff a b).1 h1`. Establish `g2` using `(dominanceOrder_iff b a).1 h2`. Conclude with `Formalism.InvariantFactorPaths.GelfandTsetlinBases.A3ev.domLe_eq g2 (Finset.sum_le_sum fun j _ => g1.2 j)`.
+-/
 theorem dominance_antisymm {n : ℕ} {a b : Fin n → ℤ} (h1 : DomLE a b) (h2 : DomLE b a) : a = b := by
   have g1 := (dominanceOrder_iff a b).1 h1
   have g2 := (dominanceOrder_iff b a).1 h2
@@ -30,11 +39,17 @@ section
 variable (D : Formalism.BasicNotions.D7) {F : Type} [Field F] [CharZero F] {N n : ℕ} (LL : Letters (Fin N)) (B : Fin N → ℕ)
 
 include D in
+/- English proof (translation)
+The claim follows from `isoDecomp (glOps F n LL S) D (weight_condition_from_integral_form D) (isGLRep_glOps F (Fin N) LL n S)`.
+-/
 theorem exists_isotypic_decomposition (S : Set (Fin N)) :
     ∃ e : (Fin n → ℤ) → Module.End F (MvPolynomial (Fin N × Fin n) F), DecSys (isoSub (glOps F n LL S)) e :=
   isoDecomp (glOps F n LL S) D (weight_condition_from_integral_form D) (isGLRep_glOps F (Fin N) LL n S)
 
 include D in
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Conclude with `absurd (fun x _ _ => x.elim0) h`. Establish `: NeZero n` using `⟨by omega⟩`. Conclude with `Formalism.MainNotions.G.PolBridge.isoSub_eq_bot D (weight_condition_from_integral_form D) LL S a h`.
+-/
 theorem isotypic_eq_bot_of_not_dominant (S : Set (Fin N)) (a : Fin n → ℤ) (h : ¬ Dominant a) : isoSub (glOps F n LL S) a = ⊥ := by
   rcases Nat.eq_zero_or_pos n with h0 | h0
   · subst h0
@@ -42,6 +57,9 @@ theorem isotypic_eq_bot_of_not_dominant (S : Set (Fin N)) (a : Fin n → ℤ) (h
   · have : NeZero n := ⟨by omega⟩
     exact Formalism.MainNotions.G.PolBridge.isoSub_eq_bot D (weight_condition_from_integral_form D) LL S a h
 
+/- English proof (translation)
+Establish `h` using `sys.comm_of_preserve (polProj F B) (fun nu => isoSub_map_of_comm (glOps F n LL S) (polProj F B) (fun a b x => polProj_glAct B LL S a b x) nu) mu G`. Rewrite `h` using `[polProj_of_mem B G hG]`. Rewrite using `[← h]`. Conclude with `polProj_mem B _`.
+-/
 theorem isotypic_projector_stable (S : Set (Fin N)) {e : (Fin n → ℤ) → Module.End F (MvPolynomial (Fin N × Fin n) F)}
     (sys : DecSys (isoSub (glOps F n LL S)) e) (mu : Fin n → ℤ) (G : MvPolynomial (Fin N × Fin n) F)
     (hG : G ∈ Pol F n B) : e mu G ∈ Pol F n B := by
@@ -94,6 +112,21 @@ def jointDecompositionData (h13 : TypeDecompositionsCommute D) (hN2 : LowerSetTy
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ N n LL B lam`. Use `standardPath_index_finite N n LL B` as an intermediate fact. Establish `key` using `hDim F _ (Fin (N + 1)) (fun _ => Fin n → ℤ) (WI n N LL B) (jointDecompositionData D LL B h13 hN2) lam`. Establish `key' : Module.finrank F ↥(Pol F n B ⊓ (⨅ i : Fin (N + 1), isoSub (glOps F n LL {l | l.val < i.val}) (lam i))) = Nat.card {x : WI n N LL B // (fun i => x.1.1.mu i) = lam}` using `key`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨P, rfl⟩`. Rewrite using `[key']`. Use `Nat.card_congr ⟨fun x => ⟨x.1.1.2, by have := x.1.2; rw [show x.1.1.1.mu = P.mu from x.2] at this; exact this⟩, fun I => ⟨⟨(P, I.1), I.2⟩, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨⟨Q, I⟩, hI⟩, hQ⟩`. Establish `: Q = P` using `Formalism.MainNotions.LemmaBAlt.positive_path_ext hQ`.
+
+Substitute `this` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨I, hI⟩`. Both sides reduce to the same expression. Introduce `hno`.
+
+Establish `h0 : Nat.card {x : WI n N LL B // (fun i => x.1.1.mu i) = lam} = 0`. Establish `: IsEmpty {x : WI n N LL B // (fun i => x.1.1.mu i) = lam}` using `⟨fun x => hno ⟨x.1.1.1, x.2⟩⟩`. Conclude with `Nat.card_of_isEmpty`. Rewrite `key'` using `[h0]`. Establish `: FiniteDimensional F ↥(Pol F n B)`.
+
+Rewrite using `[← (standardPath_basis_any_ring F N n LL B).2]`. Establish `: {G | ∃ P : PPath n N LL B, ∃ I : ℤ → Finset (Fin n), IsSt P.mu I ∧ G = Psi F P.mu I} = Set.range (fun x : WI n N LL B => Psi F x.1.1.mu x.1.2)`. Use extensionality with `G`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, I, hI, rfl⟩`.
+
+Conclude with `⟨⟨(P, I), hI⟩, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x.1.1, x.1.2, x.2, rfl⟩`. Rewrite using `[this]`. Conclude with `FiniteDimensional.span_of_finite F (Set.finite_range _)`.
+
+Establish `: FiniteDimensional F ↥(Pol F n B ⊓ (⨅ i : Fin (N + 1), isoSub (glOps F n LL {l | l.val < i.val}) (lam i)))` using `Submodule.finiteDimensional_of_le inf_le_left`. Conclude with `Submodule.finrank_eq_zero.1 key'`.
+-/
 theorem joint_components_paths_of_joint_dimension (D : Formalism.BasicNotions.D7) (h13 : TypeDecompositionsCommute D) (hN2 : LowerSetTypesSpan) (hDim : RestJointDim) : JointComponentsPaths D := by
   intro F _ _ N n LL B lam
   have := standardPath_index_finite N n LL B

@@ -6,6 +6,19 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants Filter Topology Mea
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p φ F γ _hγ hG`. Distinguish the cases in `hc : ((φ (TBB.Gp p γ) : ℝ) : ℂ) = 0`. Rewrite using `[hc, zero_smul]`. Unfold `KB.Pl.V D.vecV`. Use `split_ifs with h1 h2`.
+
+Establish `hae : ∀ᵐ q ∂p.T.base.μSS, D.orbIntegrand p.T.base h2.choose (fun g => ((φ (Gf P.k P.r p.T.base.z p.T.base.z' g) : ℝ) : ℂ) • F g) q = (1 : ℂ) • D.orbIntegrand p.T.base h2.choose (fun _ => (0 : Wq →L[ℂ] Wp)) q` using `by filter_upwards [TBBx2.ae_inSS p.T.base] with q hq`. Establish `hGq : Gf P.k P.r p.T.base.z p.T.base.z' (B.sgs q h2.choose) = TBB.Gp p γ`. Rewrite using `[TBBx2.Gf_sgs _ q hq, TBBx2.Gf_of_Zhat _ _ _ _ h2.choose_spec.2.1]`. Both sides reduce to the same expression. Unfold `D.orbIntegrand B.rho`.
+
+Simplify using `[hGq, hc]`. Rewrite using `[TBBx4.orbJ_smul_ae _ _ _ _ _ _ one_ne_zero hae, one_smul]`. Establish `h0` using `TBBx4.orbJ_smul_ae p.T.base h2.choose (D.muR p.T.base h2.choose (h1.1.2 ▸ D.ptPerm γ)) (fun _ => (0 : Wq →L[ℂ] Wp)) (fun _ => (0 : Wq →L[ℂ] Wp)) (2 : ℂ) two_ne_zero (ae_of_all _ fun q => by unfold D.orbIntegrand B.rho; simp)`. Rewrite `h0` using `[two_smul]`. Simplify using `using h0`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Unfold `KB.Pl.V D.vecV split_ifs with h1 h2`. Apply `TBBx4.orbJ_smul_ae _ _ _ _ _ _ hc filter_upwards [TBBx2.ae_inSS p.T.base] with q hq` to reduce the goal to its premises. Establish `hGq : Gf P.k P.r p.T.base.z p.T.base.z' (B.sgs q h2.choose) = TBB.Gp p γ`.
+
+Rewrite using `[TBBx2.Gf_sgs _ q hq, TBBx2.Gf_of_Zhat _ _ _ _ h2.choose_spec.2.1]`. Both sides reduce to the same expression. Unfold `D.orbIntegrand B.rho`. Simplify using `only [hGq, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Rewrite using `[smul_comm]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem vector_multiplication_holds : NFVMul := by
   intro Wp Wq _ _ _ _ _ _ P p φ F γ _hγ hG
   by_cases hc : ((φ (TBB.Gp p γ) : ℝ) : ℂ) = 0

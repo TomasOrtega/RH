@@ -5,11 +5,17 @@ open MvPolynomial Formalism.DegreeFormula Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Simplify using `only [linRoot, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_neg, neg_add, mul_assoc]`.
+-/
 theorem linRoot_add_smul {ι : Type} [Fintype ι] {N : ℕ} (u w : ι → Fin N → ℝ) (t : ℝ) :
     linRoot (u + t • w) = linRoot u + C t * linRoot w := by
   simp only [linRoot, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, add_mul,
     Finset.sum_add_distrib, Finset.mul_sum, mul_neg, neg_add, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[linRoot_add_smul, add_comm, add_pow]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_pow, ← map_pow, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem linRoot_add_smul_pow {ι : Type} [Fintype ι] {N : ℕ} (u w : ι → Fin N → ℝ) (t : ℝ)
     (d : ℕ) :
     linRoot (u + t • w) ^ d = ∑ k ∈ Finset.range (d + 1),
@@ -19,6 +25,19 @@ theorem linRoot_add_smul_pow {ι : Type} [Fintype ι] {N : ℕ} (u w : ι → Fi
   rw [MvPolynomial.smul_eq_C_mul, mul_pow, ← map_pow, map_mul, map_natCast]
   ring
 
+/- English proof (translation)
+Take `⟨u₀, hu₀⟩` from `hne`. Set `T : Submodule ℝ (MvPolynomial (ι × Fin N) ℝ)` to `{ carrier := {P | Tendsto (fun a => Λ a P) l (𝓝 0)} add_mem' := fun {P Q} hP hQ => by`. Simplify `hP.add hQ` using `only [Set.mem_setOf_eq, map_add, add_zero]`. Use the proof step `zero_mem' := by simpa only [Set.mem_setOf_eq, map_zero] using tendsto_const_nhds`. Use the proof step `smul_mem' := fun c P hP => by`.
+
+Simplify `hP.const_mul c }` using `only [Set.mem_setOf_eq, map_smul, smul_eq_mul, mul_zero]`. Use `show linRoot v ^ d ∈ T`. Assume the negation of the conclusion as `hv`. Take `⟨φ, hφv, hφT⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hv inferInstance`. Establish `hφ : ∀ P ∈ T, φ P = 0` using `fun P hP => (Submodule.mem_bot ℝ).mp (hφT ▸ Submodule.mem_map_of_mem hP)`.
+
+Use `set w := v - u₀ with hw`. Set `q : Polynomial ℝ` to `∑ k ∈ Finset.range (d + 1), Polynomial.monomial k ((d.choose k : ℝ) * φ (linRoot w ^ k * linRoot u₀ ^ (d - k)))`. Establish `hq : ∀ t : ℝ, q.eval t = φ (linRoot (u₀ + t • w) ^ d)`. Introduce `t`. Rewrite using `[linRoot_add_smul_pow, map_sum]`.
+
+Simplify using `only [q, Polynomial.eval_finset_sum, Polynomial.eval_monomial, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hopen : {t : ℝ | u₀ + t • w ∈ U} ∈ 𝓝 (0 : ℝ)` using `(hU.preimage (by fun_prop)).mem_nhds (by simpa using hu₀)`. Establish `hq0 : q = 0`.
+
+Use `Polynomial.eq_zero_of_infinite_isRoot q ((infinite_of_mem_nhds (0 : ℝ) hopen).mono ?_)` and prove the remaining obligations. Introduce `t ht`. Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot.def, hq]`. Conclude with `hφ _ (hlim _ ht)`. Apply `hφv` to reduce the goal to its premises.
+
+Establish `h1` using `hq 1`. Rewrite `h1` using `[hq0, one_smul, hw, add_sub_cancel, Polynomial.eval_zero]`. Conclude with `h1.symm`.
+-/
 theorem tendsto_zero_linRoot_pow_of_isOpen {α : Type} (l : Filter α) {ι : Type} [Fintype ι]
     {N : ℕ} (Λ : α → MvPolynomial (ι × Fin N) ℝ →ₗ[ℝ] ℝ) (d : ℕ) (U : Set (ι → Fin N → ℝ))
     (hU : IsOpen U) (hne : U.Nonempty)

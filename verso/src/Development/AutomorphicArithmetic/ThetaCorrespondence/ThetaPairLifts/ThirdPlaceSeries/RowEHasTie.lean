@@ -43,6 +43,9 @@ open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalis
 open GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fc.TieOfLink
+/- English proof (translation)
+Establish `key : ∀ z : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S, z = _root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput y → ∃ Rr : _root_.Formalism.IndefR.IndefiniteRealisationRecursion z.B.Q, PsiPPTie D z.P.P0 z.P.ψ0 z.P.Ps z.P.ψs z.P.I.eG ∧ _root_.Formalism.IndefR.IndefiniteR …`. Introduce and unpack `z rfl`. Conclude with `⟨_root_.GlobalTheory.Mem.R3.realisationRecursionOfInput r, hpsi, h3, hp⟩`. Take `⟨Rr, h⟩` from `key _ e`. Conclude with `⟨⟨Rr, h⟩⟩`.
+-/
 theorem tie_of_rpk_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition D O c) {x : TwIn O.ex} (y : _root_.GlobalTheory.Mem.R3.RealInAlt x b.R b.S) (r : _root_.GlobalTheory.Mem.R3.RecursiveInput y)
     (e : _root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b = _root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput y)
     (hpsi : PsiPPTie D (divisionPairOfAdelicFormsFaceColumnsData x).P0 (divisionPairOfAdelicFormsFaceColumnsData x).ψ0 (divisionPairOfAdelicFormsFaceColumnsData x).Ps (divisionPairOfAdelicFormsFaceColumnsData x).ψs (divisionPairOfAdelicFormsFaceColumnsData x).I.eG)
@@ -55,6 +58,11 @@ theorem tie_of_rpk_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheory.F
   obtain ⟨Rr, h⟩ := key _ e
   exact ⟨⟨Rr, h⟩⟩
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx}
+/- English proof (translation)
+Establish `hI` using `_root_.GlobalTheory.T.recursion_local_row_condition_alt _ _ _ _ _ _ _ _ q.O.ex w.x b.R b.S w.y.y w.y.r`. Establish `h3 : _root_.Formalism.IndefR.IndefiniteRealisationNormalisationDegreeThree (_root_.GlobalTheory.Mem.R3.realisationOfInput w.y.y)`. Take `⟨x, a, ax, y⟩` from `w`. Consider the cases of `ax`. Conclude with `_root_.GlobalTheory.Mem.R3.realPins3_realTOf_alt _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ q.x.what₂ a b.R b.S y.y hF0`.
+
+Conclude with `_root_.GlobalTheory.Fc.TieOfLink.tie_of_rpk_alt b w.y.y w.y.r w.y.eq hI.2.2 h3 ⟨hp, hI.1 hp hloc⟩`.
+-/
 theorem nonempty_tie_of_wit (q : WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b)
     (hF0 : HEq (w.a.Zsc (zsOf q.x.what₂.r.z.R q.x.what₂.r.z.F)).F0 (F0K K.s (q.w.D q.Z)))
     (hp : _root_.Formalism.IndefR.IndefiniteRealisationNormalisation (_root_.GlobalTheory.Mem.R3.realisationOfInput w.y.y))
@@ -68,6 +76,13 @@ theorem nonempty_tie_of_wit (q : WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.F
     cases ax
     exact _root_.GlobalTheory.Mem.R3.realPins3_realTOf_alt _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ q.x.what₂ a b.R b.S y.y hF0
   exact _root_.GlobalTheory.Fc.TieOfLink.tie_of_rpk_alt b w.y.y w.y.r w.y.eq hI.2.2 h3 ⟨hp, hI.1 hp hloc⟩
+/- English proof (translation)
+Establish `hH` using `EvP.of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev`. Use `((((((_root_.GlobalTheory.T.bWit_zsc_F0_heq_F0K_local_of_sc_eq hL p).and (_root_.GlobalTheory.T.bWit_C_eq_cf_of_sc_eq hL p)).and (_root_.GlobalTheory.T.bWit_Pg_eq_image_plMap_of_sc_eq hL p)).and (_root_.GlobalTheory.T.theta_level_conjugate_character_alt hL p)).and (_root_.GlobalT …` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨h0, hc⟩, hg⟩, ht⟩, hl'⟩, hh⟩` from `h`. Take `⟨q, b', ⟨w⟩, e⟩` from `hl`. Establish `eO : (⟨β.D, β.O⟩ : Σ D : D7, Obj D) = ⟨q.w.D q.Z, q.O⟩` using `congrArg (fun s => (⟨s.1, s.2.1⟩ : Σ D : D7, Obj D)) e`.
+
+Establish `hsc : q.O.L.sc = K.s`. Use `congrArg (fun s : Σ D : D7, Obj D => s.2.L.sc) eO` as an intermediate fact. Conclude with `this.symm.trans β.sc`. Establish `hfd` using `(hh (q.w.st q.Z) q.x.isOver).2.2.1`. Establish `hp : _root_.Formalism.IndefR.IndefiniteRealisationNormalisation (_root_.GlobalTheory.Mem.R3.realisationOfInput w.y.y)` using `_root_.GlobalTheory.Mem.R3.realPins_realTOf_alt _ _ _ _ _ _ _ _ q.O.ex w.x b'.R b'.S w.y.y (hc q c b' w hsc) hfd (hg q c b' w hsc) (ht q c b' w hsc).1 (ht q c b' w hsc).2.1 (ht q c b' w hsc).2.2`.
+
+Establish `h' : _root_.GlobalTheory.Fc.HasCompatibility _ _ c b'` using `_root_.GlobalTheory.Fc.TieOfLink.nonempty_tie_of_wit q b' w (h0 q c b' w hsc) hp (hl' q c b' w hsc)`. Establish `tr : ∀ s : Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Fc.BundleCondition D O c, s = ⟨q.w.D q.Z, q.O, b'⟩ → _root_.GlobalTheory.Fc.HasCompatibility s.1 s.2.1 c s.2.2`. Introduce and unpack `s rfl`. Conclude with `h'`. Conclude with `tr _ e`.
+-/
 theorem hasTie_of_linked {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) (Q : V4.Slot) :
     RowE Q (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) fun _ => _root_.GlobalTheory.Fc.HasCompatibility := by
   have hH := EvP.of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev

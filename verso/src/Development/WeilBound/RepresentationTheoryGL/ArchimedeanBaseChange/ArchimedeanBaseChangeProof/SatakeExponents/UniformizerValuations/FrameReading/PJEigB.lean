@@ -19,10 +19,16 @@ section Gen
 
 variable {Γ V W : Type} [Group Γ] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+The claim follows from `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap g v`.
+-/
 theorem eqv_apply {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (φ : ρ.Equiv σ) (g : Γ) (v : V) :
     φ.toLinearEquiv (ρ g v) = σ g (φ.toLinearEquiv v) :=
   Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap g v
 
+/- English proof (translation)
+Introduce `hv`. Rewrite `hv`, the goal using `[mem_fixed_iff']`. Introduce `k hk`. Rewrite using `[← eqv_apply, hv k hk]`.
+-/
 theorem fixed_eqv {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (φ : ρ.Equiv σ) (K : Subgroup Γ) (v : V) :
     v ∈ GlobalTheory.PRep.fixed ρ K → φ.toLinearEquiv v ∈ GlobalTheory.PRep.fixed σ K := by
   intro hv
@@ -30,6 +36,11 @@ theorem fixed_eqv {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} 
   intro k hk
   rw [← eqv_apply, hv k hk]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Submodule.mem_map_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `fixed_eqv φ K _ h` as an intermediate fact.
+
+Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `h`. Use `fixed_eqv φ.symm K _ h` as an intermediate fact. Conclude with `this`.
+-/
 theorem map_fixed_eqv {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (φ : ρ.Equiv σ) (K : Subgroup Γ) :
     (GlobalTheory.PRep.fixed ρ K).map (φ.toLinearEquiv : V →ₗ[ℂ] W) = GlobalTheory.PRep.fixed σ K := by
   ext x
@@ -42,10 +53,16 @@ theorem map_fixed_eqv {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ
     have := fixed_eqv φ.symm K _ h
     exact this
 
+/- English proof (translation)
+The claim follows from `(LinearEquiv.ofSubmodules φ.toLinearEquiv _ _ (map_fixed_eqv φ K)).finrank_eq`.
+-/
 theorem finrank_fixed_eqv {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (φ : ρ.Equiv σ) (K : Subgroup Γ) :
     Module.finrank ℂ (GlobalTheory.PRep.fixed ρ K) = Module.finrank ℂ (GlobalTheory.PRep.fixed σ K) :=
   (LinearEquiv.ofSubmodules φ.toLinearEquiv _ _ (map_fixed_eqv φ K)).finrank_eq
 
+/- English proof (translation)
+Unfold `hkG`. Rewrite using `[hsum_eq ρ K f hfin.coe_toFinset.ge, hsum_eq σ K f hfin.coe_toFinset.ge, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, eqv_apply]`.
+-/
 theorem hkG_eqv {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (φ : ρ.Equiv σ) (K : Subgroup Γ) (f : Γ → ℂ)
     (hfin : (Function.support fun q : Γ ⧸ K => f q.out).Finite) (v : V) :
     φ.toLinearEquiv (hkG ρ K f v) = hkG σ K f (φ.toLinearEquiv v) := by
@@ -65,6 +82,9 @@ def JE (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) {V : Type} [AddCommGroup V] [Mod
   ∃ v ∈ GlobalTheory.PRep.fixed ρ (I2 a b w), v ≠ 0 ∧
     ∀ x y, Gap x → Gap y → hkG ρ (I2 a b w) (dc2 w ϖ x y) v = ev2 w ξa ξb x y • v
 
+/- English proof (translation)
+Introduce and unpack `⟨v, hv, hne, hev⟩`. Use `⟨φ.toLinearEquiv v, fixed_eqv φ _ v hv, fun h0 => hne (φ.toLinearEquiv.map_eq_zero_iff.1 h0), fun x y hx hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hkG_eqv φ _ _ (pair_double_coset_finite_support w ϖ x y), hev x y hx hy, map_smul]`.
+-/
 theorem je_eqv (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ (GLw a w × GLw b w) V}
     {σ : Representation ℂ (GLw a w × GLw b w) W} (φ : ρ.Equiv σ) (ξa : Fin a → ℂˣ) (ξb : Fin b → ℂˣ) :
@@ -74,41 +94,70 @@ theorem je_eqv (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) {V W : Type} [AddCommGro
     fun x y hx hy => ?_⟩
   rw [← hkG_eqv φ _ _ (pair_double_coset_finite_support w ϖ x y), hev x y hx hy, map_smul]
 
+/- English proof (translation)
+Unfold `dl`. Rewrite using `[← zpow_add₀ (qh_ne w)]`. Use `congr 1`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem dl_add {N : ℕ} (w : Pl E) (x x' : Fin N → ℤ) : dl w (x + x') = dl w x * dl w x' := by
   unfold dl
   rw [← zpow_add₀ (qh_ne w)]
   congr 1
   simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `pw`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, _root_.zpow_add, Units.val_mul]`.
+-/
 theorem pw_add {N : ℕ} (ξ : Fin N → ℂˣ) (x x' : Fin N → ℤ) : pw ξ (x + x') = pw ξ x * pw ξ x' := by
   unfold pw
   rw [← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [Pi.add_apply, _root_.zpow_add, Units.val_mul]
 
+/- English proof (translation)
+Unfold `ev2`. Rewrite using `[dl_add, dl_add, pw_add, pw_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_eigenvalue_add (w : Pl E) (ξa : Fin a → ℂˣ) (ξb : Fin b → ℂˣ) (x x' : Fin a → ℤ) (y y' : Fin b → ℤ) :
     ev2 w ξa ξb (x + x') (y + y') = ev2 w ξa ξb x y * ev2 w ξa ξb x' y' := by
   unfold ev2
   rw [dl_add, dl_add, pw_add, pw_add]
   ring
 
+/- English proof (translation)
+The claim follows from `zpow_ne_zero _ (qh_ne w)`.
+-/
 theorem dl_ne {N : ℕ} (w : Pl E) (x : Fin N → ℤ) : dl w x ≠ 0 := zpow_ne_zero _ (qh_ne w)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _`.
+-/
 theorem pw_ne {N : ℕ} (ξ : Fin N → ℂˣ) (x : Fin N → ℤ) : pw ξ x ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero (mul_ne_zero (dl_ne w x) (pw_ne ξa x)) (mul_ne_zero (dl_ne w y) (pw_ne ξb y))`.
+-/
 theorem pair_eigenvalue_ne_zero (w : Pl E) (ξa : Fin a → ℂˣ) (ξb : Fin b → ℂˣ) (x : Fin a → ℤ) (y : Fin b → ℤ) :
     ev2 w ξa ξb x y ≠ 0 :=
   mul_ne_zero (mul_ne_zero (dl_ne w x) (pw_ne ξa x)) (mul_ne_zero (dl_ne w y) (pw_ne ξb y))
 
+/- English proof (translation)
+Unfold `dl`. Simplify using the standard rewrite rules.
+-/
 theorem dl_zero {N : ℕ} (w : Pl E) : dl w (0 : Fin N → ℤ) = 1 := by
   unfold dl
   simp
 
+/- English proof (translation)
+Unfold `pw`. Simplify using the standard rewrite rules.
+-/
 theorem pw_zero {N : ℕ} (ξ : Fin N → ℂˣ) : pw ξ 0 = 1 := by
   unfold pw
   simp
 
+/- English proof (translation)
+Unfold `pw`. Rewrite using `[Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[hj]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem pw_single {N : ℕ} (ξ : Fin N → ℂˣ) (i : Fin N) : pw ξ (Pi.single i 1) = ξ i := by
   unfold pw
   rw [Finset.prod_eq_single i]
@@ -120,12 +169,18 @@ theorem pw_single {N : ℕ} (ξ : Fin N → ℂˣ) (i : Fin N) : pw ξ (Pi.singl
 
 def x0 (N : ℕ) : Fin N → ℤ := fun i => -(2 * ((i : ℕ) : ℤ))
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `: (i : ℕ) < j` using `hij`. Simplify using `only [x0]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem gap_base (N : ℕ) : Gap (x0 N) := by
   intro i j hij
   have : (i : ℕ) < j := hij
   simp only [x0]
   omega
 
+/- English proof (translation)
+Introduce `i' j' h`. Establish `h' : (i' : ℕ) < j'` using `h`. Simplify using `only [Pi.add_apply, x0, Pi.single_apply]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> subst_vars <;> omega`.
+-/
 theorem gap_base_add_single {N : ℕ} (i : Fin N) : Gap (x0 N + Pi.single i 1) := by
   intro i' j' h
   have h' : (i' : ℕ) < j' := h
@@ -137,6 +192,19 @@ def probe (w : Pl E) (p : (Fin a → ℂˣ) × (Fin b → ℂˣ)) : Option (Fin 
   | some (Sum.inl i) => ev2 w p.1 p.2 (x0 a + Pi.single i 1) (x0 b)
   | some (Sum.inr j) => ev2 w p.1 p.2 (x0 a) (x0 b + Pi.single j 1)
 
+/- English proof (translation)
+Introduce `p p' h`. Establish `h0` using `congrFun h none`. Simplify using `only [probe] at h0`. Establish `ha : ∀ i, ev2 w p.1 p.2 (Pi.single i 1) 0 = ev2 w p'.1 p'.2 (Pi.single i 1) 0`. Introduce `i`.
+
+Establish `hi` using `congrFun h (some (Sum.inl i))`. Simplify using `only [probe] at hi`. Establish `e1` using `pair_eigenvalue_add w p.1 p.2 (x0 a) (Pi.single i 1) (x0 b) 0`. Establish `e2` using `pair_eigenvalue_add w p'.1 p'.2 (x0 a) (Pi.single i 1) (x0 b) 0`. Rewrite `e1`, `e2` using `[add_zero]`.
+
+Rewrite `hi` using `[e1, e2, h0]`. Conclude with `mul_left_cancel₀ (pair_eigenvalue_ne_zero w _ _ _ _) hi`. Establish `hb : ∀ j, ev2 w p.1 p.2 0 (Pi.single j 1) = ev2 w p'.1 p'.2 0 (Pi.single j 1)`. Introduce `j`. Establish `hj` using `congrFun h (some (Sum.inr j))`.
+
+Simplify using `only [probe] at hj`. Establish `e1` using `pair_eigenvalue_add w p.1 p.2 (x0 a) 0 (x0 b) (Pi.single j 1)`. Establish `e2` using `pair_eigenvalue_add w p'.1 p'.2 (x0 a) 0 (x0 b) (Pi.single j 1)`. Rewrite `e1`, `e2` using `[add_zero]`. Rewrite `hj` using `[e1, e2, h0]`.
+
+Conclude with `mul_left_cancel₀ (pair_eigenvalue_ne_zero w _ _ _ _) hj`. Use `Prod.ext (funext fun i => Units.ext ?_) (funext fun j => Units.ext ?_)` and prove the remaining obligations. Use `ha i` as an intermediate fact. Simplify using `only [ev2, dl_zero, pw_zero, pw_single, mul_one] at this`. Conclude with `mul_left_cancel₀ (dl_ne w _) this`.
+
+Use `hb j` as an intermediate fact. Simplify using `only [ev2, dl_zero, pw_zero, pw_single, one_mul] at this`. Conclude with `mul_left_cancel₀ (dl_ne w _) this`.
+-/
 theorem probe_inj (w : Pl E) : Function.Injective (probe (a := a) (b := b) w) := by
   intro p p' h
   have h0 := congrFun h none
@@ -167,6 +235,19 @@ theorem probe_inj (w : Pl E) : Function.Injective (probe (a := a) (b := b) w) :=
     simp only [ev2, dl_zero, pw_zero, pw_single, one_mul] at this
     exact mul_left_cancel₀ (dl_ne w _) this
 
+/- English proof (translation)
+Introduce the local definition `pt : Option (Fin a ⊕ Fin b) → (Fin a → ℤ) × (Fin b → ℤ)`. Consider the case `none => (x0 a, x0 b)`. Consider the case `some (Sum.inl i) => (x0 a + Pi.single i 1, x0 b)`. Consider the case `some (Sum.inr j) => (x0 a, x0 b + Pi.single j 1)`. Establish `hpt : ∀ (o : Option (Fin a ⊕ Fin b)) (p : (Fin a → ℂˣ) × (Fin b → ℂˣ)), probe w p o = ev2 w p.1 p.2 (pt o).1 (pt o).2`.
+
+Introduce `o p`. Apply the tactic sequence `rcases o with _ | i | j <;> rfl`. Establish `hgap : ∀ o, Gap (pt o).1 ∧ Gap (pt o).2`. Introduce `o`. Break down `o with _ | i | j` into its components or cases.
+
+Conclude with `⟨gap_base a, gap_base b⟩`. Conclude with `⟨gap_base_add_single i, gap_base b⟩`. Conclude with `⟨gap_base a, gap_base_add_single j⟩`. Set `T : Option (Fin a ⊕ Fin b) → Module.End ℂ (GlobalTheory.PRep.fixed ρ (I2 a b w))` to `fun o => hkW ρ (I2 a b w) (dc2 w ϖ (pt o).1 (pt o).2) (pair_double_coset_finite_support w ϖ _ _) (pair_double_coset_bi_invariant w ϖ _ _)`. Use `Set.Finite.of_finite_image (f := probe w) ?_ (probe_inj w).injOn` and prove the remaining obligations.
+
+Use `(Set.Finite.pi (t := fun o => {μ | (T o).HasEigenvalue μ}) fun o => Module.End.finite_hasEigenvalue (T o)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, ⟨v, hv, hne, hev⟩, rfl⟩ o _`. Use `show (T o).HasEigenvalue (probe w p o)`. Rewrite using `[hpt o p]`. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := ⟨v, hv⟩) ⟨Module.End.mem_eigenspace_iff.2 ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul]`. Use `show ((hkW ρ (I2 a b w) _ _ _ ⟨v, hv⟩ : GlobalTheory.PRep.fixed ρ (I2 a b w)) : V) = _`. Rewrite using `[hkW_apply]`. Conclude with `hev _ _ (hgap o).1 (hgap o).2`.
+
+Introduce `h0`. Conclude with `hne (congrArg Subtype.val h0)`.
+-/
 theorem je_finite (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GLw a w × GLw b w) V) [FiniteDimensional ℂ (GlobalTheory.PRep.fixed ρ (I2 a b w))] :
     {p : (Fin a → ℂˣ) × (Fin b → ℂˣ) | JE w ϖ ρ p.1 p.2}.Finite := by
@@ -207,6 +288,9 @@ section Cls
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
+/- English proof (translation)
+Establish `hIa` using `GlobalTheory.T.iwahori_double_coset_finite E w a`. Establish `hIb` using `GlobalTheory.T.iwahori_double_coset_finite E w b`. Conclude with `GlobalTheory.T.finiteDimensional_fixed_tensor _ _ _ _ (lp Pa w) (lp Pb w) (iwGL a w) (iwGL b w) ((GlobalTheory.T.admissible_parabolic_induction (w.adicCompletion E) _ Pa.h (fun i => Pa.σ i w)).2 _ (hIa 1).2.1 (hIa 1).2.2.1) ((GlobalTheory.T.admissible_parabolic_induction (w.adicC …`.
+-/
 theorem fd_pair (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) :
     FiniteDimensional ℂ (GlobalTheory.PRep.fixed (pairAt Pa Pb w) (I2 a b w)) := by
   have hIa := GlobalTheory.T.iwahori_double_coset_finite E w a
@@ -218,10 +302,16 @@ theorem fd_pair (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) :
 def key {n : ℕ} (P₀ : Pre E n) (w : Pl E) (P : Pre E n) : Fin P₀.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E) :=
   if h : P₀.c = P.c then fun j => P.cls (Fin.cast h j) w else fun j => P₀.cls j w
 
+/- English proof (translation)
+Take `⟨e, -, -⟩` from `hP`. Simplify using `using Fintype.card_congr e`.
+-/
 theorem c_eq {n : ℕ} {P₀ P : Pre E n} (hP : PreEquiv P₀ P) : P₀.c = P.c := by
   obtain ⟨e, -, -⟩ := hP
   simpa using Fintype.card_congr e
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨GlobalTheory.SmGL.stdBlocks P.N P.h, ⟨GlobalTheory.LocGL.multiProdEquiv _ fun i => GlobalTheory.LocGL.IrrGL.equivOf (P.σ i w).ρ (P.σ i w).smooth (P.σ i w).irred⟩⟩`.
+-/
 theorem lp_equiv_cast {n : ℕ} (P : Pre E n) (w : Pl E) {c₀ : ℕ} (h : c₀ = P.c) :
     ∃ e : (Σ j : Fin c₀, Fin (P.cls (Fin.cast h j) w).1) ≃ Fin n,
       Nonempty ((lp P w).Equiv (GlobalTheory.SmGL.multiProd e fun j => (P.cls (Fin.cast h j) w).rep)) := by
@@ -229,6 +319,9 @@ theorem lp_equiv_cast {n : ℕ} (P : Pre E n) (w : Pl E) {c₀ : ℕ} (h : c₀ 
   exact ⟨GlobalTheory.SmGL.stdBlocks P.N P.h, ⟨GlobalTheory.LocGL.multiProdEquiv _ fun i =>
     GlobalTheory.LocGL.IrrGL.equivOf (P.σ i w).ρ (P.σ i w).smooth (P.σ i w).irred⟩⟩
 
+/- English proof (translation)
+Establish `hc` using `c_eq hP`. Take `⟨e, he, -⟩` from `hP`. Introduce `j _`. Simplify using `only [key, dif_pos hc]`. Conclude with `⟨e.symm (Fin.cast hc j), by show P₀.cls _ w = _; rw [he, Equiv.apply_symm_apply]⟩`.
+-/
 theorem key_mem {n : ℕ} (P₀ P : Pre E n) (w : Pl E) (hP : PreEquiv P₀ P) :
     key P₀ w P ∈ Set.univ.pi (fun _ => Set.range fun i => P₀.cls i w) := by
   have hc := c_eq hP
@@ -237,6 +330,9 @@ theorem key_mem {n : ℕ} (P₀ P : Pre E n) (w : Pl E) (hP : PreEquiv P₀ P) :
   simp only [key, dif_pos hc]
   exact ⟨e.symm (Fin.cast hc j), by show P₀.cls _ w = _; rw [he, Equiv.apply_symm_apply]⟩
 
+/- English proof (translation)
+Simplify using `only [key, dif_pos hP, dif_pos hQ] at hk`. Take `⟨e1, ⟨φ1⟩⟩` from `lp_equiv_cast P w hP`. Take `⟨e2, ⟨φ2⟩⟩` from `lp_equiv_cast Q w hQ`. Take `⟨ψ⟩` from `GlobalTheory.CompanionTheory.SegReorder.famCongr (f := fun j => P.cls (Fin.cast hP j) w) (g := fun j => Q.cls (Fin.cast hQ j) w) (fun j => congrFun hk j) e1 e2`. Conclude with `⟨(φ1.trans ψ).trans φ2.symm⟩`.
+-/
 theorem key_eqv {n : ℕ} (P₀ P Q : Pre E n) (w : Pl E) (hP : P₀.c = P.c) (hQ : P₀.c = Q.c)
     (hk : key P₀ w P = key P₀ w Q) : Nonempty ((lp P w).Equiv (lp Q w)) := by
   simp only [key, dif_pos hP, dif_pos hQ] at hk
@@ -262,6 +358,9 @@ def MS (Pa : Pre E a) (Pb : Pre E b) (w : Pl E)
     (κ : (Fin Pa.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E)) × (Fin Pb.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E))) : ℕ :=
   if h : ∃ p, Good Pa Pb w κ p then fr w h.choose else 0
 
+/- English proof (translation)
+Unfold `ZS`. Use `split_ifs with h`. Use `fd_pair h.choose.1 h.choose.2 w` as an intermediate fact. Conclude with `je_finite w ϖ (pairAt h.choose.1 h.choose.2 w)`. Conclude with `Set.finite_empty`.
+-/
 theorem zs_finite (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ)
     (κ : (Fin Pa.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E)) × (Fin Pb.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E))) :
     (ZS Pa Pb w ϖ κ).Finite := by
@@ -271,10 +370,16 @@ theorem zs_finite (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) (ϖ : (w.adicCompleti
     exact je_finite w ϖ (pairAt h.choose.1 h.choose.2 w)
   · exact Set.finite_empty
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.SmGL.RowOneCell.extTensorEquiv φa φb⟩`.
+-/
 theorem pair_eqv (Pa Qa : Pre E a) (Pb Qb : Pre E b) (w : Pl E) (φa : (lp Pa w).Equiv (lp Qa w))
     (φb : (lp Pb w).Equiv (lp Qb w)) : Nonempty ((pairAt Pa Pb w).Equiv (pairAt Qa Qb w)) :=
   ⟨GlobalTheory.SmGL.RowOneCell.extTensorEquiv φa φb⟩
 
+/- English proof (translation)
+Establish `ea : Nonempty ((lp Pa' w).Equiv (lp Qa w))` using `key_eqv Pa Pa' Qa w (c_eq ha) (c_eq hqa) hka.symm`. Establish `eb : Nonempty ((lp Pb' w).Equiv (lp Qb w))` using `key_eqv Pb Pb' Qb w (c_eq hb) (c_eq hqb) hkb.symm`. Establish `e : Nonempty ((pairAt Pa' Pb' w).Equiv (pairAt Qa Qb w))` using `pair_eqv Pa' Qa Pb' Qb w ea.some eb.some`. Conclude with `⟨finrank_fixed_eqv e.some _, fun ξa ξb hJ => je_eqv w ϖ e.some ξa ξb hJ⟩`.
+-/
 theorem step (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (Pa' Qa : Pre E a) (Pb' Qb : Pre E b)
     (ha : PreEquiv Pa Pa') (hb : PreEquiv Pb Pb') (hqa : PreEquiv Pa Qa) (hqb : PreEquiv Pb Qb)
     (hka : key Pa w Qa = key Pa w Pa') (hkb : key Pb w Qb = key Pb w Pb') :
@@ -285,6 +390,9 @@ theorem step (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) (ϖ : (w.adicCompletion E)
   have e : Nonempty ((pairAt Pa' Pb' w).Equiv (pairAt Qa Qb w)) := pair_eqv Pa' Qa Pb' Qb w ea.some eb.some
   exact ⟨finrank_fixed_eqv e.some _, fun ξa ξb hJ => je_eqv w ϖ e.some ξa ξb hJ⟩
 
+/- English proof (translation)
+Unfold `ZS`. Rewrite using `[dif_pos h]`. Conclude with `hJ`.
+-/
 theorem mem_zs (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ)
     (κ : (Fin Pa.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E)) × (Fin Pb.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E)))
     (h : ∃ p, Good Pa Pb w κ p) (ξ : (Fin a → ℂˣ) × (Fin b → ℂˣ)) (hJ : JEig h.choose.1 h.choose.2 w ϖ ξ.1 ξ.2) :
@@ -293,11 +401,19 @@ theorem mem_zs (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) (ϖ : (w.adicCompletion 
   rw [dif_pos h]
   exact hJ
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem ms_eq (Pa : Pre E a) (Pb : Pre E b) (w : Pl E)
     (κ : (Fin Pa.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E)) × (Fin Pb.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E)))
     (h : ∃ p, Good Pa Pb w κ p) : MS Pa Pb w κ = fr w h.choose :=
   dif_pos h
 
+/- English proof (translation)
+Set `KS : Set ((Fin Pa.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E)) × (Fin Pb.c → GlobalTheory.LocGL.IrrGL (w.adicCompletion E)))` to `(Set.univ.pi fun _ => Set.range fun i => Pa.cls i w) ×ˢ (Set.univ.pi fun _ => Set.range fun i => Pb.cls i w)`. Establish `hKS : KS.Finite` using `(Set.Finite.pi fun _ => Set.finite_range _).prod (Set.Finite.pi fun _ => Set.finite_range _)`. Use `⟨⋃ κ ∈ KS, ZS Pa Pb w ϖ κ, ∑ κ ∈ hKS.toFinset, MS Pa Pb w κ, hKS.biUnion fun κ _ => zs_finite Pa Pb w ϖ κ, fun Pa' Pb' ha hb => ?_⟩` and prove the remaining obligations. Establish `hκS : (key Pa w Pa', key Pb w Pb') ∈ KS` using `⟨key_mem Pa Pa' w ha, key_mem Pb Pb' w hb⟩`. Establish `h : ∃ p, Good Pa Pb w (key Pa w Pa', key Pb w Pb') p` using `⟨(Pa', Pb'), ha, hb, rfl, rfl⟩`.
+
+Establish `hG : Good Pa Pb w (key Pa w Pa', key Pb w Pb') h.choose` using `h.choose_spec`. Establish `hs` using `step Pa Pb w ϖ Pa' h.choose.1 Pb' h.choose.2 ha hb hG.1 hG.2.1 hG.2.2.1 hG.2.2.2`. Conclude with `⟨show fr w (Pa', Pb') ≤ _ from (hs.1.trans (ms_eq Pa Pb w _ h).symm).trans_le (Finset.single_le_sum (f := MS Pa Pb w) (fun _ _ => Nat.zero_le _) (hKS.mem_toFinset.2 hκS)), fun ξa ξb hJ => Set.mem_biUnion hκS (mem_zs Pa Pb w ϖ _ h (ξa, ξb) (hs.2 ξa ξb hJ))⟩`.
+-/
 theorem jEigFin_at (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) :
     ∃ (Z : Set ((Fin a → ℂˣ) × (Fin b → ℂˣ))) (m : ℕ), Z.Finite ∧ ∀ (Pa' : Pre E a) (Pb' : Pre E b),
       PreEquiv Pa Pa' → PreEquiv Pb Pb' →
@@ -319,6 +435,9 @@ theorem jEigFin_at (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) (ϖ : (w.adicComplet
 
 end Cls
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ Pa Pb w ϖ _` and use `jEigFin_at Pa Pb w ϖ`.
+-/
 theorem jEigFin : JEigFin := fun _ _ _ _ _ _ Pa Pb w ϖ _ => jEigFin_at Pa Pb w ϖ
 
 end PositivityTheory.Rg.BcB.F.Tail.JB

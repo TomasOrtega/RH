@@ -4,6 +4,17 @@ open AlgebraicGeometry CategoryTheory Limits
 
 namespace GlobalTheory.LocM.Lift
 
+/- English proof (translation)
+Take `⟨V, hle⟩` from `(LocalSubring.range (locToFrac P)).exists_le_valuationSubring`. Take `⟨h1, h2⟩` from `hle`. Establish `hV : ∀ x, locToFrac P x ∈ V` using `fun x => h1 ⟨x, rfl⟩`. Set `g : Localization.AtPrime P →+* V` to `(locToFrac P).codRestrict V hV`. Establish `hg : IsLocalHom g`.
+
+Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `hr : IsLocalHom (locToFrac P).rangeRestrict` using `.of_surjective _ (locToFrac P).rangeRestrict_surjective`. Use `hr.1 x (h2.1 ⟨locToFrac P x, x, rfl⟩ ?_)` and prove the remaining obligations. Take `⟨⟨y, hy⟩, e⟩` from `isUnit_iff_exists_inv.mp hx`. Conclude with `isUnit_iff_exists_inv.mpr ⟨⟨y, hy⟩, Subtype.ext congr(($e).1)⟩`.
+
+Use `⟨V, g.comp (algebraMap R (Localization.AtPrime P)), ?_, fun r hr => ?_, fun r hr => ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Conclude with `locToFrac_algebraMap P r`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+
+Use `(isUnit_map_iff g _).mp hu` as an intermediate fact. Establish `hm : algebraMap R (Localization.AtPrime P) r ∈ IsLocalRing.maximalIdeal _`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.mem_map_of_mem _ hr`. Conclude with `hm this`.
+
+Conclude with `(IsLocalization.map_units (Localization.AtPrime P) (⟨r, hr⟩ : P.primeCompl)).map g`.
+-/
 theorem exists_valuationSubring_centre (R : Type) [CommRing R] [IsDomain R] (P : Ideal R)
     [P.IsPrime] :
     ∃ (V : ValuationSubring (FractionRing R)) (ι : R →+* V),

@@ -15,9 +15,15 @@ open GlobalTheory.CompanionTheory.SaGen
 variable {F E K : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [Field K] [Algebra F K]
   [TopologicalSpace K]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iB_tmul (P : PlaceMap F K) (x : K) (e : E) :
     iB (E := E) P (x ⊗ₜ[F] e) = P.inj x ⊗ₜ[F] e := rfl
 
+/- English proof (translation)
+Use `set B := Algebra.TensorProduct.basis K (Module.finBasis F E)`. Use `conv_lhs => rw [← B.sum_repr y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [B, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, iB_tmul]`.
+-/
 theorem iB_eq_sum [FiniteDimensional F E] (P : PlaceMap F K) (y : K ⊗[F] E) :
     iB (E := E) P y = ∑ k, P.inj ((Algebra.TensorProduct.basis K (Module.finBasis F E)).repr y k) •
       ((1 : AF F) ⊗ₜ[F] (Module.finBasis F E) k) := by
@@ -27,6 +33,11 @@ theorem iB_eq_sum [FiniteDimensional F E] (P : PlaceMap F K) (y : K ⊗[F] E) :
   refine Finset.sum_congr rfl fun k _ => ?_
   simp only [B, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, iB_tmul]
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology K (K ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) (AF F ⊗[F] E)`. Use `haveI : ContinuousSMul (AF F) (AF F ⊗[F] E) := IsModuleTopology.toContinuousSMul (AF F) (AF F ⊗[F] E)`. Establish `hc : ∀ k, Continuous fun y : K ⊗[F] E => (Algebra.TensorProduct.basis K (Module.finBasis F E)).repr y k` using `fun k => IsModuleTopology.continuous_of_linearMap ((Algebra.TensorProduct.basis K (Module.finBasis F E)).coord k)`.
+
+Establish `h : (iB (E` using `E) P : K ⊗[F] E → AF F ⊗[F] E) = fun y => ∑ k, P.inj ((Algebra.TensorProduct.basis K (Module.finBasis F E)).repr y k) • ((1 : AF F) ⊗ₜ[F] (Module.finBasis F E) k) := funext (iB_eq_sum P)`. Rewrite using `[h]`. Conclude with `continuous_finset_sum _ fun k _ => Continuous.smul (f := fun y => P.inj ((Algebra.TensorProduct.basis K (Module.finBasis F E)).repr y k)) (g := fun _ => (1 : AF F) ⊗ₜ[F] (Module.finBasis F E) k) (P.cont_inj.comp (hc k)) continuous_const`.
+-/
 theorem continuous_iB [FiniteDimensional F E] [IsTopologicalRing K] (P : PlaceMap F K) :
     Continuous (iB (E := E) P) := by
   haveI : IsModuleTopology K (K ⊗[F] E) := ⟨rfl⟩
@@ -46,5 +57,8 @@ theorem continuous_iB [FiniteDimensional F E] [IsTopologicalRing K] (P : PlaceMa
 
 end GlobalTheory.CompanionTheory.SaGen.ExtZero
 
+/- English proof (translation)
+Introduce `P` and use `GlobalTheory.CompanionTheory.SaGen.ExtZero.continuous_iB P`.
+-/
 theorem GlobalTheory.CompanionTheory.SaGen.ExtZero.continuous_iB_place : ∀ {F E K : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E] [Field K] [Algebra F K] [TopologicalSpace K] [IsTopologicalRing K] (P : GlobalTheory.CompanionTheory.SaGen.PlaceMap F K), Continuous (GlobalTheory.CompanionTheory.SaGen.iB (E := E) P) :=
   fun P => GlobalTheory.CompanionTheory.SaGen.ExtZero.continuous_iB P

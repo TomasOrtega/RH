@@ -22,11 +22,17 @@ def homToSubrep (A : Rep.{u} k G) (W : Submodule k A) (hW : ∀ g, W ≤ W.comap
     Subtype.ext (Rep.hom_comm_apply f g b)⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem homToSubrep_hom_apply (A : Rep.{u} k G) (W : Submodule k A)
     (hW : ∀ g, W ≤ W.comap (A.ρ g)) {B : Rep.{u} k G} (f : B ⟶ A) (hf : ∀ b, f.hom b ∈ W)
     (b : B) : ((homToSubrep A W hW f hf).hom b : A) = f.hom b :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem homToSubrep_comp_subtype (A : Rep.{u} k G) (W : Submodule k A)
     (hW : ∀ g, W ≤ W.comap (A.ρ g)) {B : Rep.{u} k G} (f : B ⟶ A) (hf : ∀ b, f.hom b ∈ W) :
     homToSubrep A W hW f hf ≫ Rep.subtype A W hW = f :=
@@ -59,19 +65,31 @@ def toSIdele (a : ↥(sIdelesSubmodule K L S)) :
   ⟨a.1.toMul, mem_sIdelesSubmodule.1 a.2⟩
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toSIdele_add (a b : ↥(sIdelesSubmodule K L S)) : toSIdele S (a + b) = toSIdele S a * toSIdele S b :=
   rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toSIdele_zero : toSIdele (L := L) S 0 = 1 :=
   rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toSIdele_ρ (σ : Gal(L/K)) (a : ↥(sIdelesSubmodule K L S)) :
     toSIdele S ((sIdeleRep K L S).ρ σ a) = σ • toSIdele S a :=
   rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b h => Subtype.ext (by have := congrArg (fun x : sIdeles (placesAbove L (S : Set (HeightOneSpectrum (𝓞 K)))) => Additive.ofMul (x : IdeleGroup L)) h exact this), fun x => ⟨⟨Additive.ofMul (x : IdeleGroup L), mem_sIdelesSubmodule.2 x.2⟩, rfl⟩⟩`.
+-/
 theorem toSIdele_bijective : Function.Bijective (toSIdele (L := L) S) :=
   ⟨fun a b h => Subtype.ext (by
       have := congrArg (fun x : sIdeles (placesAbove L (S : Set (HeightOneSpectrum (𝓞 K)))) =>
@@ -102,6 +120,9 @@ noncomputable def sIntegerProj (v : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ
       rw [h]
       rfl⟩
 
+/- English proof (translation)
+The claim follows from `integerUnitsAboveIncl_sIdelesIntegerPart _ (toSIdele S a) v`.
+-/
 theorem integerUnitsAboveIncl_sIntegerProj (v : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ)
     (a : ↥(sIdelesSubmodule K L S)) :
     integerUnitsAboveIncl v.1 (fun w => ((sIntegerProj S v).hom a w).toMul) =
@@ -114,11 +135,17 @@ noncomputable def sProj : ∀ i : SIndex K S, sIdeleRep K L S ⟶ sComp L S i
   | .inr (.inr v) => sIntegerProj S v
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `standardOpenSubgroup_le_sIdeles _ hx`.
+-/
 theorem mem_sIdeles_of_mem_standardOpenSubgroup {x : IdeleGroup L}
     (hx : x ∈ standardOpenSubgroup L) : x ∈ sIdeles (placesAbove L (S : Set (HeightOneSpectrum (𝓞 K)))) :=
   standardOpenSubgroup_le_sIdeles _ hx
 
 omit [NumberField K] in
+/- English proof (translation)
+Use `(mem_standardOpenSubgroup L).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[← map_inv, coe_infiniteEmbedAbove_snd, coe_infiniteEmbedAbove_snd]`. Conclude with `⟨(w.adicCompletionIntegers L).one_mem, (w.adicCompletionIntegers L).one_mem⟩`.
+-/
 theorem infiniteEmbedAbove_mem_standardOpenSubgroup (v : InfinitePlace K)
     (y : (w : v.placesOver L) → (w.1.Completion)ˣ) :
     infiniteEmbedAbove v y ∈ standardOpenSubgroup L := by
@@ -126,6 +153,9 @@ theorem infiniteEmbedAbove_mem_standardOpenSubgroup (v : InfinitePlace K)
   rw [← map_inv, coe_infiniteEmbedAbove_snd, coe_infiniteEmbedAbove_snd]
   exact ⟨(w.adicCompletionIntegers L).one_mem, (w.adicCompletionIntegers L).one_mem⟩
 
+/- English proof (translation)
+Introduce `w hw`. Establish `h : ¬ w.asIdeal.LiesOver v.1.asIdeal` using `fun h => hw (by rw [mem_placesAbove, (below_eq_iff w v.1).2 h]; exact v.2)`. Rewrite using `[ord_eq_zero_iff, ← map_inv, coe_finiteEmbedAbove_snd_of_not v.1 _ h, coe_finiteEmbedAbove_snd_of_not v.1 _ h]`. Conclude with `⟨(w.adicCompletionIntegers L).one_mem, (w.adicCompletionIntegers L).one_mem⟩`.
+-/
 theorem finiteEmbedAbove_mem_sIdeles (v : (S : Set (HeightOneSpectrum (𝓞 K))))
     (y : (w : PlacesOver L v.1) → (w.1.adicCompletion L)ˣ) :
     finiteEmbedAbove v.1 y ∈ sIdeles (placesAbove L (S : Set (HeightOneSpectrum (𝓞 K)))) := by
@@ -174,18 +204,30 @@ noncomputable def sEmb : ∀ i : SIndex K S, sComp L S i ⟶ sIdeleRep K L S
   | .inr (.inl v) => sEmbFin S v
   | .inr (.inr v) => sEmbInt S v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sEmbInf_comp_subtype (v : InfinitePlace K) :
     sEmbInf (L := L) S v ≫ Rep.subtype _ _ _ = infiniteEmbedAboveRep v :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sEmbFin_comp_subtype (v : (S : Set (HeightOneSpectrum (𝓞 K)))) :
     sEmbFin (L := L) S v ≫ Rep.subtype _ _ _ = finiteEmbedAboveRep v.1 :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subtype_comp_infiniteProjAboveRep (v : InfinitePlace K) :
     Rep.subtype _ _ _ ≫ infiniteProjAboveRep v = sProj (L := L) S (.inl v) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subtype_comp_finiteProjAboveRep (v : (S : Set (HeightOneSpectrum (𝓞 K)))) :
     Rep.subtype _ _ _ ≫ finiteProjAboveRep v.1 = sProj (L := L) S (.inr (.inl v)) :=
   rfl
@@ -196,6 +238,11 @@ def productToFamily (p : SIdelesProduct L (S : Set (HeightOneSpectrum (𝓞 K)))
   | .inr (.inl v) => fun w => Additive.ofMul (p.2.1 v w)
   | .inr (.inr v) => fun w => Additive.ofMul (p.2.2 v w)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `p q h`. Use `Prod.ext (funext fun v => funext fun w => ?_) (Prod.ext (funext fun v => funext fun w => ?_) (funext fun v => funext fun w => ?_))` and prove the remaining obligations. Conclude with `congrArg Additive.toMul (congrFun (congrFun h (.inl v)) w)`. Conclude with `congrArg Additive.toMul (congrFun (congrFun h (.inr (.inl v))) w)`.
+
+Conclude with `congrArg Additive.toMul (congrFun (congrFun h (.inr (.inr v))) w)`. Introduce `F`. Use `⟨(fun v w => (F (.inl v) w).toMul, fun v w => (F (.inr (.inl v)) w).toMul, fun v w => (F (.inr (.inr v)) w).toMul), funext fun i => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases i with v | v | v <;> rfl`.
+-/
 theorem productToFamily_bijective : Function.Bijective (productToFamily (L := L) S) := by
   constructor
   · intro p q h
@@ -209,10 +256,16 @@ theorem productToFamily_bijective : Function.Bijective (productToFamily (L := L)
       fun v w => (F (.inr (.inr v)) w).toMul), funext fun i => ?_⟩
     rcases i with v | v | v <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases i with v | v | v <;> rfl`.
+-/
 theorem sProj_eq_productToFamily (a : ↥(sIdelesSubmodule K L S)) (i : SIndex K S) :
     (sProj S i).hom a = productToFamily S (sIdelesToProduct _ (toSIdele S a)) i := by
   rcases i with v | v | v <;> rfl
 
+/- English proof (translation)
+Establish `e : (fun (a : ↥(sIdelesSubmodule K L S)) (i : SIndex K S) => (sProj S i).hom a) = productToFamily (L` using `L) S ∘ sIdelesToProduct _ ∘ toSIdele (L := L) S :=`. Use function extensionality and compare the values at `fun a => funext fun i => sProj_eq_productToFamily S a i`. Establish `hb` using `(productToFamily_bijective (L := L) S).comp ((sIdelesEquivProduct _ (S.finite_toSet)).bijective.comp (toSIdele_bijective (L := L) S))`. Rewrite `hb` using `[show ⇑(sIdelesEquivProduct (L := L) ((S : Set (HeightOneSpectrum (𝓞 K)))) S.finite_toSet) = sIdelesToProduct _ from rfl, ← e]`. Conclude with `hb`.
+-/
 theorem sProj_bijective :
     Function.Bijective fun (a : sIdeleRep K L S) (i : SIndex K S) => (sProj S i).hom a := by
   have e : (fun (a : ↥(sIdelesSubmodule K L S)) (i : SIndex K S) => (sProj S i).hom a) =
@@ -255,10 +308,18 @@ instance mono_integerInclRep (v : HeightOneSpectrum (𝓞 K)) : Mono (integerInc
   funext w
   exact congrArg Additive.ofMul (congrFun this w)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem integerEmbedAboveRep_eq (v : HeightOneSpectrum (𝓞 K)) :
     integerEmbedAboveRep (L := L) v = integerInclRep v ≫ finiteEmbedAboveRep v :=
   rfl
 
+/- English proof (translation)
+Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `a`. Use function extensionality and compare the values at `w`.
+
+Conclude with `congrArg (fun f => Additive.ofMul (f w)) (integerUnitsAboveIncl_sIntegerProj S v a)`.
+-/
 theorem sIntegerProj_comp_integerInclRep (v : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ) :
     sIntegerProj (L := L) S v ≫ integerInclRep v.1 =
       Rep.subtype _ _ _ ≫ finiteProjAboveRep v.1 := by
@@ -269,32 +330,50 @@ theorem sIntegerProj_comp_integerInclRep (v : ↥(S : Set (HeightOneSpectrum (�
   funext w
   exact congrArg (fun f => Additive.ofMul (f w)) (integerUnitsAboveIncl_sIntegerProj S v a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sEmbInt_comp_subtype (v : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ) :
     sEmbInt (L := L) S v ≫ Rep.subtype _ _ _ = integerInclRep v.1 ≫ finiteEmbedAboveRep v.1 :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (integerInclRep v), hf, Limits.zero_comp]`.
+-/
 theorem eq_zero_of_comp_integerInclRep {v : HeightOneSpectrum (𝓞 K)} {X : Rep ℤ Gal(L/K)}
     (f : X ⟶ Rep.of (integerUnitsAboveRep L v)) (hf : f ≫ integerInclRep v = 0) : f = 0 := by
   rw [← cancel_mono (integerInclRep v), hf, Limits.zero_comp]
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (integerInclRep v.1), Category.assoc, sIntegerProj_comp_integerInclRep, ← Category.assoc, sEmbInt_comp_subtype, Category.assoc, finiteEmbedAboveRep_comp_finiteProjAboveRep, Category.comp_id, Category.id_comp]`.
+-/
 theorem sEmbInt_comp_sIntegerProj (v : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ) :
     sEmbInt (L := L) S v ≫ sIntegerProj S v = 𝟙 _ := by
   rw [← cancel_mono (integerInclRep v.1), Category.assoc, sIntegerProj_comp_integerInclRep,
     ← Category.assoc, sEmbInt_comp_subtype, Category.assoc,
     finiteEmbedAboveRep_comp_finiteProjAboveRep, Category.comp_id, Category.id_comp]
 
+/- English proof (translation)
+Use `eq_zero_of_comp_integerInclRep _ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, sIntegerProj_comp_integerInclRep, ← Category.assoc, sEmbInf_comp_subtype]`. Conclude with `infiniteEmbedAboveRep_comp_finiteProjAboveRep v v'.1`.
+-/
 theorem sEmbInf_comp_sIntegerProj (v : InfinitePlace K)
     (v' : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ) : sEmbInf (L := L) S v ≫ sIntegerProj S v' = 0 := by
   refine eq_zero_of_comp_integerInclRep _ ?_
   rw [Category.assoc, sIntegerProj_comp_integerInclRep, ← Category.assoc, sEmbInf_comp_subtype]
   exact infiniteEmbedAboveRep_comp_finiteProjAboveRep v v'.1
 
+/- English proof (translation)
+Use `eq_zero_of_comp_integerInclRep _ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, sIntegerProj_comp_integerInclRep, ← Category.assoc, sEmbFin_comp_subtype]`. Conclude with `finiteEmbedAboveRep_comp_finiteProjAboveRep_of_ne fun (e : v'.1 = v.1) => v'.2 (e ▸ v.2)`.
+-/
 theorem sEmbFin_comp_sIntegerProj (v : (S : Set (HeightOneSpectrum (𝓞 K))))
     (v' : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ) : sEmbFin (L := L) S v ≫ sIntegerProj S v' = 0 := by
   refine eq_zero_of_comp_integerInclRep _ ?_
   rw [Category.assoc, sIntegerProj_comp_integerInclRep, ← Category.assoc, sEmbFin_comp_subtype]
   exact finiteEmbedAboveRep_comp_finiteProjAboveRep_of_ne fun (e : v'.1 = v.1) => v'.2 (e ▸ v.2)
 
+/- English proof (translation)
+Use `eq_zero_of_comp_integerInclRep _ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, sIntegerProj_comp_integerInclRep, ← Category.assoc, sEmbInt_comp_subtype, Category.assoc, finiteEmbedAboveRep_comp_finiteProjAboveRep_of_ne (fun e => h (Subtype.ext e.symm)), Limits.comp_zero]`.
+-/
 theorem sEmbInt_comp_sIntegerProj_of_ne {v v' : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ}
     (h : v ≠ v') : sEmbInt (L := L) S v ≫ sIntegerProj S v' = 0 := by
   refine eq_zero_of_comp_integerInclRep _ ?_
@@ -302,11 +381,17 @@ theorem sEmbInt_comp_sIntegerProj_of_ne {v v' : ↥(S : Set (HeightOneSpectrum (
     Category.assoc, finiteEmbedAboveRep_comp_finiteProjAboveRep_of_ne
       (fun e => h (Subtype.ext e.symm)), Limits.comp_zero]
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, sEmbInt_comp_subtype, Category.assoc, finiteEmbedAboveRep_comp_infiniteProjAboveRep, Limits.comp_zero]`.
+-/
 theorem sEmbInt_comp_infinite (v : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ) (v' : InfinitePlace K) :
     sEmbInt (L := L) S v ≫ Rep.subtype _ _ _ ≫ infiniteProjAboveRep v' = 0 := by
   rw [← Category.assoc, sEmbInt_comp_subtype, Category.assoc,
     finiteEmbedAboveRep_comp_infiniteProjAboveRep, Limits.comp_zero]
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, sEmbInt_comp_subtype, Category.assoc, finiteEmbedAboveRep_comp_finiteProjAboveRep_of_ne (fun (e : v'.1 = v.1) => v.2 (e ▸ v'.2)), Limits.comp_zero]`.
+-/
 theorem sEmbInt_comp_finite (v : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ)
     (v' : (S : Set (HeightOneSpectrum (𝓞 K)))) :
     sEmbInt (L := L) S v ≫ Rep.subtype _ _ _ ≫ finiteProjAboveRep v'.1 = 0 := by
@@ -314,12 +399,20 @@ theorem sEmbInt_comp_finite (v : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ)
     finiteEmbedAboveRep_comp_finiteProjAboveRep_of_ne (fun (e : v'.1 = v.1) => v.2 (e ▸ v'.2)),
     Limits.comp_zero]
 
+/- English proof (translation)
+Break down `i with v | v | v` into its components or cases. Conclude with `infiniteEmbedAboveRep_comp_infiniteProjAboveRep v`. Conclude with `finiteEmbedAboveRep_comp_finiteProjAboveRep v.1`. Conclude with `sEmbInt_comp_sIntegerProj S v`.
+-/
 theorem sEmb_comp_sProj (i : SIndex K S) : sEmb (L := L) S i ≫ sProj S i = 𝟙 _ := by
   rcases i with v | v | v
   · exact infiniteEmbedAboveRep_comp_infiniteProjAboveRep v
   · exact finiteEmbedAboveRep_comp_finiteProjAboveRep v.1
   · exact sEmbInt_comp_sIntegerProj S v
 
+/- English proof (translation)
+Apply the tactic sequence `rcases i with v | v | v <;> rcases j with v' | v' | v'`. Conclude with `infiniteEmbedAboveRep_comp_infiniteProjAboveRep_of_ne fun e => h (by rw [e])`. Conclude with `infiniteEmbedAboveRep_comp_finiteProjAboveRep v v'.1`. Conclude with `sEmbInf_comp_sIntegerProj S v v'`. Conclude with `finiteEmbedAboveRep_comp_infiniteProjAboveRep v' v.1`.
+
+Conclude with `finiteEmbedAboveRep_comp_finiteProjAboveRep_of_ne fun e => h (by rw [Subtype.ext e])`. Conclude with `sEmbFin_comp_sIntegerProj S v v'`. Conclude with `sEmbInt_comp_infinite S v v'`. Conclude with `sEmbInt_comp_finite S v v'`. Conclude with `sEmbInt_comp_sIntegerProj_of_ne S fun e => h (by rw [e])`.
+-/
 theorem sEmb_comp_sProj_of_ne (i j : SIndex K S) (h : i ≠ j) :
     sEmb (L := L) S i ≫ sProj S j = 0 := by
   rcases i with v | v | v <;> rcases j with v' | v' | v'

@@ -13,21 +13,38 @@ section Gen
 
 variable {O K : Type} [CommRing O] [Field K] [Algebra O K] {a b : K}
 
+/- English proof (translation)
+The claim follows from `h.map_of_comp_eq (RingHom.id O) (starRingEnd (QuadraticAlgebra K a b)) (by ext r <;> simp [IsScalarTower.algebraMap_apply O K (QuadraticAlgebra K a b), starRingEnd_apply])`.
+-/
 private theorem int_star {x : QuadraticAlgebra K a b} (h : IsIntegral O x) : IsIntegral O (star x) :=
   h.map_of_comp_eq (RingHom.id O) (starRingEnd (QuadraticAlgebra K a b)) (by
     ext r <;> simp [IsScalarTower.algebraMap_apply O K (QuadraticAlgebra K a b), starRingEnd_apply])
 
+/- English proof (translation)
+The claim follows from `isIntegral_algHom_iff (IsScalarTower.toAlgHom O K (QuadraticAlgebra K a b)) (algebraMap K (QuadraticAlgebra K a b)).injective`.
+-/
 private theorem int_alg {r : K} : IsIntegral O (algebraMap K (QuadraticAlgebra K a b) r) ↔ IsIntegral O r :=
   isIntegral_algHom_iff (IsScalarTower.toAlgHom O K (QuadraticAlgebra K a b)) (algebraMap K (QuadraticAlgebra K a b)).injective
 
+/- English proof (translation)
+Rewrite using `[← int_alg (a := a) (b := b), QuadraticAlgebra.algebraMap_trace_eq_add_star]`. Conclude with `h.add (int_star h)`.
+-/
 private theorem int_trace {x : QuadraticAlgebra K a b} (h : IsIntegral O x) : IsIntegral O (QuadraticAlgebra.trace x) := by
   rw [← int_alg (a := a) (b := b), QuadraticAlgebra.algebraMap_trace_eq_add_star]
   exact h.add (int_star h)
 
+/- English proof (translation)
+Rewrite using `[← int_alg (a := a) (b := b), QuadraticAlgebra.algebraMap_norm_eq_mul_star]`. Conclude with `h.mul (int_star h)`.
+-/
 private theorem int_norm {x : QuadraticAlgebra K a b} (h : IsIntegral O x) : IsIntegral O (QuadraticAlgebra.norm x) := by
   rw [← int_alg (a := a) (b := b), QuadraticAlgebra.algebraMap_norm_eq_mul_star]
   exact h.mul (int_star h)
 
+/- English proof (translation)
+Set `t : integralClosure O (QuadraticAlgebra K a b)` to `⟨_, int_alg.2 ht⟩`. Set `n : integralClosure O (QuadraticAlgebra K a b)` to `⟨_, int_alg.2 hn⟩`. Establish `h : IsIntegral (integralClosure O (QuadraticAlgebra K a b)) x`. Use `⟨X ^ 2 - C t * X + C n, by monicity!, ?_⟩` and prove the remaining obligations. Use `QuadraticAlgebra.sq_sub_trace_smul_add_norm_eq_zero x` as an intermediate fact.
+
+Rewrite `this` using `[Algebra.smul_def]`. Simplify `this` using `[t, n]`. Conclude with `isIntegral_trans x h`.
+-/
 private theorem int_of {x : QuadraticAlgebra K a b} (ht : IsIntegral O (QuadraticAlgebra.trace x))
     (hn : IsIntegral O (QuadraticAlgebra.norm x)) : IsIntegral O x := by
   let t : integralClosure O (QuadraticAlgebra K a b) := ⟨_, int_alg.2 ht⟩
@@ -39,6 +56,9 @@ private theorem int_of {x : QuadraticAlgebra K a b} (ht : IsIntegral O (Quadrati
     simpa [t, n] using this
   exact isIntegral_trans x h
 
+/- English proof (translation)
+Establish `h : IsAlgebraic O x` using `(IsFractionRing.isAlgebraic_iff O K _).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨y, hy, hi⟩` from `h.exists_integral_multiple`. Use `⟨algebraMap O K y, by simpa using hy, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_smul]` and apply the resulting hypothesis.
+-/
 private theorem ex_mult [IsDomain O] [IsFractionRing O K] (x : QuadraticAlgebra K a b) :
     ∃ c : K, c ≠ 0 ∧ IsIntegral O (c • x) := by
   have h : IsAlgebraic O x := (IsFractionRing.isAlgebraic_iff O K _).2 (Algebra.IsAlgebraic.isAlgebraic x)
@@ -46,18 +66,30 @@ private theorem ex_mult [IsDomain O] [IsFractionRing O K] (x : QuadraticAlgebra 
   refine ⟨algebraMap O K y, by simpa using hy, ?_⟩
   rwa [algebraMap_smul]
 
+/- English proof (translation)
+The claim follows from `(map_isIntegral_int f h).tower_top`.
+-/
 private theorem int_map {A B : Type} [CommRing A] [CommRing B] [Algebra O B] (f : A →+* B) {x : A} (h : IsIntegral ℤ x) :
     IsIntegral O (f x) :=
   (map_isIntegral_int f h).tower_top
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp <;> ring`.
+-/
 private theorem id1 (x : QuadraticAlgebra K a b) (d n p q : K) : x * ⟨d * n * p, d * n * q⟩ =
     d • x * (algebraMap _ _ (n * p) + algebraMap _ _ q * (⟨0, n⟩ : QuadraticAlgebra K a b)) := by
   ext <;> simp <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp <;> field_simp`.
+-/
 private theorem id2 (x : QuadraticAlgebra K a b) {d n : K} (k l : K) (hd : d ≠ 0) (hn : n ≠ 0) :
     x - ⟨d * n * k, d * n * l⟩ = ⟨d * (n * (x.re / (d * n) - k)), d * (n * (x.im / (d * n) - l))⟩ := by
   ext <;> simp <;> field_simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.mul (int_star h'), h'.mul (by rw [inv_inv]; exact int_star h)⟩`.
+-/
 private theorem cint_of {τ : K} {u : (Etau K τ)ˣ} (h : IsIntegral O (u : Etau K τ))
     (h' : IsIntegral O ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ)) : u ∈ Cint O τ :=
   ⟨h.mul (int_star h'), h'.mul (by rw [inv_inv]; exact int_star h)⟩
@@ -67,9 +99,17 @@ private def quoH (τ : K) : (Etau K τ)ˣ →* Etau K τ where
   map_one' := by simp [quo]
   map_mul' a b := by simp only [quo, _root_.mul_inv_rev, Units.val_mul, star_mul]; ring
 
+/- English proof (translation)
+Rewrite using `[quo, map_mul, QuadraticAlgebra.norm_star, ← map_mul, Units.mul_inv, map_one]`.
+-/
 private theorem norm_quo {τ : K} (z : (Etau K τ)ˣ) : QuadraticAlgebra.norm (quo z) = 1 := by
   rw [quo, map_mul, QuadraticAlgebra.norm_star, ← map_mul, Units.mul_inv, map_one]
 
+/- English proof (translation)
+Establish `h1 : (z : Etau K τ) = star (z : Etau K τ)`. Use `congrArg (· * star (z : Etau K τ)) h` as an intermediate fact. Simplify `this` using `only [quo, mul_assoc, ← star_mul, Units.mul_inv, star_one, mul_one, one_mul]`. Establish `h2 : (z : Etau K τ).im = 0`. Use `congrArg QuadraticAlgebra.im h1` as an intermediate fact.
+
+Rewrite `this` using `[QuadraticAlgebra.im_star]`. Take the linear combination `this / 2`. Apply the tactic sequence `have h3 : (z : Etau K τ).re ≠ 0 := fun h0 => z.ne_zero (by ext <;> simp [h0, h2])`. Apply the tactic sequence `exact ⟨Units.mk0 _ h3, Units.ext (by ext <;> simp [h2])⟩`.
+-/
 private theorem scal_of [CharZero K] {τ : K} {z : (Etau K τ)ˣ} (h : quo z = 1) : z ∈ scalE τ := by
   have h1 : (z : Etau K τ) = star (z : Etau K τ) := by
     have := congrArg (· * star (z : Etau K τ)) h
@@ -81,6 +121,9 @@ private theorem scal_of [CharZero K] {τ : K} {z : (Etau K τ)ˣ} (h : quo z = 1
   have h3 : (z : Etau K τ).re ≠ 0 := fun h0 => z.ne_zero (by ext <;> simp [h0, h2])
   exact ⟨Units.mk0 _ h3, Units.ext (by ext <;> simp [h2])⟩
 
+/- English proof (translation)
+Establish `h1 : z' = Units.map (emap f τ : Etau K τ →* Etau K' (f τ)) z` using `Units.ext h`. Apply the tactic sequence `have h2 : ∀ x, emap f τ (star x) = star (emap f τ x) := fun x => by ext <;> simp [emap]`. Rewrite using `[quo, quo, map_mul, h2, h1, ← map_inv]`. Both sides reduce to the same expression.
+-/
 private theorem map_quo {K' : Type} [Field K'] (f : K →+* K') {τ : K} (z : (Etau K τ)ˣ) (z' : (Etau K' (f τ))ˣ)
     (h : (z' : Etau K' (f τ)) = emap f τ z) : quo z' = emap f τ (quo z) := by
   have h1 : z' = Units.map (emap f τ : Etau K τ →* Etau K' (f τ)) z := Units.ext h
@@ -88,6 +131,11 @@ private theorem map_quo {K' : Type} [Field K'] (f : K →+* K') {τ : K} (z : (E
   rw [quo, quo, map_mul, h2, h1, ← map_inv]
   rfl
 
+/- English proof (translation)
+Use `haveI := hS.to_subtype`. Set `c : B ⧸ A.subgroupOf B → S` to `fun q => ⟨f q.out, hB _ q.out.2⟩`. Establish `hc : Function.Injective c` using `fun p q h => by`. Establish `h' : f p.out = f q.out` using `congrArg Subtype.val h`. Rewrite using `[← p.out_eq', ← q.out_eq', QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
+
+Apply `hA` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, ← h', ← map_mul, inv_mul_cancel, map_one]`. Use `haveI := Finite.of_injective c hc`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 private theorem relIndex_of_fin {G M : Type} [Group G] [Monoid M] (f : G →* M) (A B : Subgroup G) (S : Set M) (hS : S.Finite)
     (hB : ∀ z ∈ B, f z ∈ S) (hA : ∀ z, f z = 1 → z ∈ A) : A.relIndex B ≠ 0 := by
   haveI := hS.to_subtype
@@ -102,6 +150,19 @@ private theorem relIndex_of_fin {G M : Type} [Group G] [Monoid M] (f : G →* M)
 
 end Gen
 
+/- English proof (translation)
+Set `L : G → Submodule (𝓞 E) E` to `fun x => { carrier := {a | P x a} zero_mem' := h0 x add_mem' := fun {a b} ha hb => hadd x a b ha hb smul_mem' := fun r a ha => hmul x r a r.isIntegral_coe ha }`. Establish `hL : ∀ x, IsFractional (𝓞 E)⁰ (L x)` using `fun x => by`. Take `⟨d, hd, hi, h⟩` from `hfr x`. Use `⟨⟨d, hi⟩, mem_nonZeroDivisors_of_ne_zero fun h' => hd (congrArg Subtype.val h'), fun a ha => ⟨⟨_, h a ha⟩, rfl⟩⟩` and prove the remaining obligations. Set `J : G → FractionalIdeal (𝓞 E)⁰ E` to `fun x => ⟨L x, hL x⟩`.
+
+Establish `hL0 : ∀ x, J x ≠ 0` using `fun x h => by`. Take `⟨a, ha, hp⟩` from `hne x`. Establish `: a ∈ J x` using `hp`. Rewrite `this` using `[h]`. Conclude with `ha ((FractionalIdeal.mem_zero_iff _).1 this)`.
+
+Use `haveI : Finite ((FractionalIdeal (𝓞 E)⁰ E)ˣ ⧸ (toPrincipalIdeal (𝓞 E) E).range) := Finite.of_equiv _ (ClassGroup.equiv (R := 𝓞 E) E).toEquiv`. Set `c : G ⧸ H → (FractionalIdeal (𝓞 E)⁰ E)ˣ ⧸ (toPrincipalIdeal (𝓞 E) E).range` to `fun q => QuotientGroup.mk (Units.mk0 _ (hL0 q.out))`. Establish `hc : Function.Injective c` using `fun p q h => by`. Take `⟨e, he⟩` from `QuotientGroup.eq.1 h`. Rewrite `he` using `[eq_inv_mul_iff_mul_eq]`.
+
+Establish `he'` using `congrArg Units.val he`. Simplify using `only [Units.val_mul, Units.val_mk0, coe_toPrincipalIdeal] at he'`. Rewrite using `[← p.out_eq', ← q.out_eq', QuotientGroup.eq]`. Use `hinj _ _ e fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a * e ∈ J q.out ↔ a ∈ J p.out`.
+
+Rewrite using `[← he', mul_comm (J p.out), FractionalIdeal.mem_singleton_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Rewrite `h` using `[mul_comm]`. Rewrite using `[mul_left_cancel₀ e.ne_zero h]` and apply the resulting hypothesis.
+
+Conclude with `fun h => ⟨a, h, mul_comm _ _⟩`. Use `haveI : Finite (G ⧸ H) := Finite.of_injective c hc`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 private theorem index_of_classes (E : Type) [Field E] [NumberField E] {G : Type} [Group G] (H : Subgroup G) (P : G → E → Prop)
     (h0 : ∀ x, P x 0) (hadd : ∀ x a b, P x a → P x b → P x (a + b))
     (hmul : ∀ x r a, IsIntegral ℤ r → P x a → P x (r * a))
@@ -147,13 +208,22 @@ section Glo
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Conclude with `y.2`.
+-/
 private theorem mem_of_int {v : Pl F} {k : Kv v} (h : IsIntegral (Ov v) k) : k ∈ v.adicCompletionIntegers F := by
   obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.1 h
   exact y.2
 
+/- English proof (translation)
+The claim follows from `isIntegral_algebraMap (x := (⟨k, h⟩ : Ov v))`.
+-/
 private theorem int_of_mem {v : Pl F} {k : Kv v} (h : k ∈ v.adicCompletionIntegers F) : IsIntegral (Ov v) k :=
   isIntegral_algebraMap (x := (⟨k, h⟩ : Ov v))
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) F t fun v => by`. Rewrite using `[← GroundTheory.Global.coe_mem_adicCompletionIntegers_iff]`. Use `mem_of_int (h v)` as an intermediate fact. Simplify `this` using `[HeightOneSpectrum.algebraMap_adicCompletion]`. Conclude with `y.isIntegral_coe`.
+-/
 private theorem glob_int {t : F} (h : ∀ v : Pl F, IsIntegral (Ov v) (cv v t)) : IsIntegral ℤ t := by
   obtain ⟨y, rfl⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) F t fun v => by
     rw [← GroundTheory.Global.coe_mem_adicCompletionIntegers_iff]
@@ -161,14 +231,23 @@ private theorem glob_int {t : F} (h : ∀ v : Pl F, IsIntegral (Ov v) (cv v t)) 
     simpa [HeightOneSpectrum.algebraMap_adicCompletion] using this
   exact y.isIntegral_coe
 
+/- English proof (translation)
+The claim follows from `int_map (cv v) h`.
+-/
 private theorem loc_int {t : F} (h : IsIntegral ℤ t) (v : Pl F) : IsIntegral (Ov v) (cv v t) :=
   int_map (cv v) h
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `GroundTheory.Global.exists_sub_mem_integralFiniteAdeles (R := 𝓞 F) (K := F) ⟨a, h⟩`. Conclude with `⟨k, fun v => int_of_mem (hk v)⟩`.
+-/
 private theorem approx (a : ∀ v : Pl F, Kv v) (h : ∀ᶠ v in Filter.cofinite, a v ∈ v.adicCompletionIntegers F) :
     ∃ k : F, ∀ v, IsIntegral (Ov v) (a v - cv v k) := by
   obtain ⟨k, hk⟩ := GroundTheory.Global.exists_sub_mem_integralFiniteAdeles (R := 𝓞 F) (K := F) ⟨a, h⟩
   exact ⟨k, fun v => int_of_mem (hk v)⟩
 
+/- English proof (translation)
+Establish `h : IsAlgebraic ℤ k` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ _).2 (Algebra.IsAlgebraic.isAlgebraic k)`. Take `⟨y, hy, hi⟩` from `h.exists_integral_multiple`. Use `⟨y, by simpa using hy, isIntegral_algebraMap (x := y), by simpa using hi⟩` and prove the remaining obligations.
+-/
 private theorem den (k : F) : ∃ d : F, d ≠ 0 ∧ IsIntegral ℤ d ∧ IsIntegral ℤ (d * k) := by
   have h : IsAlgebraic ℤ k := (IsFractionRing.isAlgebraic_iff ℤ ℚ _).2 (Algebra.IsAlgebraic.isAlgebraic k)
   obtain ⟨y, hy, hi⟩ := h.exists_integral_multiple
@@ -176,9 +255,15 @@ private theorem den (k : F) : ∃ d : F, d ≠ 0 ∧ IsIntegral ℤ d ∧ IsInte
 
 variable {τ : F}
 
+/- English proof (translation)
+The claim follows from `int_map (emap (cv v) τ) h`.
+-/
 private theorem loc_intE {e : Etau F τ} (h : IsIntegral ℤ e) (v : Pl F) : IsIntegral (Ov v) (emap (cv v) τ e) :=
   int_map (emap (cv v) τ) h
 
+/- English proof (translation)
+Use `int_of (glob_int fun v => ?_) (glob_int fun v => ?_)` and prove the remaining obligations. Use `int_trace (h v) using 1` and compare the differences between its conclusion and the goal. Simplify using `[QuadraticAlgebra.trace_def, emap, map_ofNat]`. Use `int_norm (h v) using 1` and compare the differences between its conclusion and the goal. Simplify using `[QuadraticAlgebra.norm_def, emap]`.
+-/
 private theorem glob_intE {e : Etau F τ} (h : ∀ v : Pl F, IsIntegral (Ov v) (emap (cv v) τ e)) : IsIntegral ℤ e := by
   refine int_of (glob_int fun v => ?_) (glob_int fun v => ?_)
   · convert int_trace (h v) using 1
@@ -186,6 +271,13 @@ private theorem glob_intE {e : Etau F τ} (h : ∀ v : Pl F, IsIntegral (Ov v) (
   · convert int_norm (h v) using 1
     simp [QuadraticAlgebra.norm_def, emap]
 
+/- English proof (translation)
+Establish `h1 : ∀ v : Pl F, ∃ c : Kv v, c ≠ 0 ∧ IsIntegral (Ov v) (c • x v) ∧ (IsIntegral (Ov v) (x v) → c = 1)` using `fun v => by`. Distinguish the cases in `hv : IsIntegral (Ov v) (x v)`. Conclude with `⟨1, one_ne_zero, by rwa [one_smul], fun _ => rfl⟩`. Take `⟨c, hc, hi⟩` from `ex_mult (O := Ov v) (x v)`. Conclude with `⟨c, hc, hi, fun h => absurd h hv⟩`.
+
+Use `choose c hc0 hci hc1 using h1`. Take `⟨k, hk⟩` from `approx (fun v => (c v)⁻¹) (h.mono fun v hv => by rw [hc1 v hv, inv_one]; exact one_mem _)`. Take `⟨d, hd, hdi, hdk⟩` from `den k`. Use `⟨d, hd, hdi, fun v => ?_⟩` and prove the remaining obligations. Establish `h2 : IsIntegral (Ov v) (cv v d * (c v)⁻¹)`.
+
+Use `((loc_int hdi v).mul (hk v)).add (loc_int hdk v)` as an intermediate fact. Rewrite `this` using `[map_mul, ← mul_add, sub_add_cancel]`. Then use the resulting hypothesis. Use `(int_alg.2 h2).mul (hci v)` as an intermediate fact. Rewrite `this` using `[← Algebra.smul_def, smul_smul, mul_assoc, inv_mul_cancel₀ (hc0 v), mul_one]`. Then use the resulting hypothesis.
+-/
 private theorem denE (x : ∀ v : Pl F, Etau (Kv v) (cv v τ)) (h : ∀ᶠ v in Filter.cofinite, IsIntegral (Ov v) (x v)) :
     ∃ d : F, d ≠ 0 ∧ IsIntegral ℤ d ∧ ∀ v, IsIntegral (Ov v) (cv v d • x v) := by
   have h1 : ∀ v : Pl F, ∃ c : Kv v, c ≠ 0 ∧ IsIntegral (Ov v) (c • x v) ∧ (IsIntegral (Ov v) (x v) → c = 1) := fun v => by
@@ -203,6 +295,13 @@ private theorem denE (x : ∀ v : Pl F, Etau (Kv v) (cv v τ)) (h : ∀ᶠ v in 
   have := (int_alg.2 h2).mul (hci v)
   rwa [← Algebra.smul_def, smul_smul, mul_assoc, inv_mul_cancel₀ (hc0 v), mul_one] at this
 
+/- English proof (translation)
+Take `⟨d, hd, hdi, hx⟩` from `denE x h`. Take `⟨n, hn, hni, hnt⟩` from `den τ`. Use `⟨d * n, mul_ne_zero hd hn, hdi.mul hni, fun v p q hp hq => ?_⟩` and prove the remaining obligations. Establish `hw : IsIntegral (Ov v) (⟨0, cv v n⟩ : Etau (Kv v) (cv v τ))`. Use `int_of ?_ ?_` and prove the remaining obligations.
+
+Use `loc_int hnt v` as an intermediate fact. Rewrite `this` using `[map_mul, mul_comm]`. Simplify `this` using `[QuadraticAlgebra.trace_def]`. Simplify `(loc_int hni v).mul (loc_int hni v)` using `[QuadraticAlgebra.norm_def]`. Use `(hx v).mul ((int_alg.2 ((loc_int hni v).mul hp)).add ((int_alg.2 hq).mul hw))` as an intermediate fact.
+
+Rewrite using `[map_mul, id1]` and apply the resulting hypothesis.
+-/
 private theorem den2 (x : ∀ v : Pl F, Etau (Kv v) (cv v τ)) (h : ∀ᶠ v in Filter.cofinite, IsIntegral (Ov v) (x v)) :
     ∃ d : F, d ≠ 0 ∧ IsIntegral ℤ d ∧ ∀ v (p q : Kv v), IsIntegral (Ov v) p → IsIntegral (Ov v) q →
       IsIntegral (Ov v) (x v * ⟨cv v d * p, cv v d * q⟩) := by
@@ -218,6 +317,19 @@ private theorem den2 (x : ∀ v : Pl F, Etau (Kv v) (cv v τ)) (h : ∀ᶠ v in 
   have := (hx v).mul ((int_alg.2 ((loc_int hni v).mul hp)).add ((int_alg.2 hq).mul hw))
   rwa [map_mul, id1]
 
+/- English proof (translation)
+Take `⟨d, hd, hdi, hd'⟩` from `den2 xi hxi`. Take `⟨n, hn, hni, hn'⟩` from `den2 yi hyi`. Set `b : ∀ w : Pl F, Etau (Kv w) (cv w τ)` to `Pi.single v (x v)`. Establish `hb : ∀ᶠ w in Filter.cofinite, b w = 0` using `(Filter.eventually_cofinite_ne v).mono fun w hw => Pi.single_eq_of_ne hw _`. Take `⟨k, hk⟩` from `approx (fun w => (b w).re / cv w (d * n)) (hb.mono fun w hw => by simp [hw])`.
+
+Take `⟨l, hl⟩` from `approx (fun w => (b w).im / cv w (d * n)) (hb.mono fun w hw => by simp [hw])`. Set `e : Etau F τ` to `⟨d * n * k, d * n * l⟩`. Establish `hd0 : ∀ w : Pl F, cv w d ≠ 0` using `fun w => (_root_.map_ne_zero _).2 hd`. Establish `hn0 : ∀ w : Pl F, cv w n ≠ 0` using `fun w => (_root_.map_ne_zero _).2 hn`. Establish `e1 : ∀ w, b w - emap (cv w) τ e = ⟨cv w d * (cv w n * ((b w).re / cv w (d * n) - cv w k)), cv w d * (cv w n * ((b w).im / cv w (d * n) - cv w l))⟩` using `fun w => by`.
+
+Rewrite using `[map_mul, ← id2 _ _ _ (hd0 w) (hn0 w), ← map_mul, ← map_mul, ← map_mul]`. Both sides reduce to the same expression. Establish `e2 : ∀ w, b w - emap (cv w) τ e = ⟨cv w n * (cv w d * ((b w).re / cv w (d * n) - cv w k)), cv w n * (cv w d * ((b w).im / cv w (d * n) - cv w l))⟩` using `fun w => by`. Rewrite using `[e1, mul_left_comm (cv w d), mul_left_comm (cv w d)]`. Establish `h1 : ∀ w, IsIntegral (Ov w) (xi w * emap (cv w) τ e)` using `fun w => by`.
+
+Establish `h2` using `hd' w _ _ ((loc_int hni w).mul (hk w)) ((loc_int hni w).mul (hl w))`. Rewrite `h2` using `[← e1]`. Establish `h3 : IsIntegral (Ov w) (xi w * b w)`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[show b w = x w from Pi.single_eq_same _ _, hx]`. Conclude with `isIntegral_one`. Rewrite using `[show b w = 0 from Pi.single_eq_of_ne hw _, mul_zero]`. Conclude with `isIntegral_zero`. Use `h3.sub h2` as an intermediate fact.
+
+Rewrite `this` using `[← mul_sub, sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h2` using `hn' v _ _ ((loc_int hdi v).mul (hk v)) ((loc_int hdi v).mul (hl v))`. Rewrite `h2` using `[← e2]`. Use `h2.add (h e h1 v)` as an intermediate fact. Rewrite `this` using `[← mul_add, sub_add_cancel, show b v = x v from Pi.single_eq_same _ _]`. Then use the resulting hypothesis.
+-/
 private theorem recover (x xi yi : ∀ v : Pl F, Etau (Kv v) (cv v τ)) (hx : ∀ v, xi v * x v = 1)
     (hxi : ∀ᶠ v in Filter.cofinite, IsIntegral (Ov v) (xi v)) (hyi : ∀ᶠ v in Filter.cofinite, IsIntegral (Ov v) (yi v))
     (h : ∀ e : Etau F τ, (∀ v, IsIntegral (Ov v) (xi v * emap (cv v) τ e)) → ∀ v, IsIntegral (Ov v) (yi v * emap (cv v) τ e))
@@ -257,12 +369,32 @@ private theorem recover (x xi yi : ∀ v : Pl F, Etau (Kv v) (cv v τ)) (hx : �
   have := h2.add (h e h1 v)
   rwa [← mul_add, sub_add_cancel, show b v = x v from Pi.single_eq_same _ _] at this
 
+/- English proof (translation)
+The claim follows from `Filter.Eventually.mono x.2 fun v hv => by obtain ⟨u, hu⟩ := hv rw [← hu] exact (u : integralClosure (Ov v) (Etau (Kv v) (cv v τ))).2`.
+-/
 private theorem ta_int (x : TA τ) : ∀ᶠ v in Filter.cofinite, IsIntegral (Ov v) (x.1 v : Etau (Kv v) (cv v τ)) :=
   Filter.Eventually.mono x.2 fun v hv => by
     obtain ⟨u, hu⟩ := hv
     rw [← hu]
     exact (u : integralClosure (Ov v) (Etau (Kv v) (cv v τ))).2
 
+/- English proof (translation)
+Establish `hD : τ ^ 2 - 4 ≠ 0` using `fun h => by`. Take `⟨σ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Use `hτ (IsTotallyReal.complexEmbedding_isReal σ).embedding` as an intermediate fact. Simplify using `[h] at this`. Establish `key : ∀ u : Etau F τ, QuadraticAlgebra.norm u = 1 → QuadraticAlgebra.trace u ^ 2 - 4 = (τ ^ 2 - 4) * u.im ^ 2` using `fun u hu => by`.
+
+Rewrite `hu` using `[QuadraticAlgebra.norm_def]`. Rewrite using `[QuadraticAlgebra.trace_def]`. Take the linear combination `4 * hu`. Establish `h1` using `Embeddings.finite_of_norm_le F ℂ 2`. Use `Set.Finite.of_finite_fibers (fun u : Etau F τ => QuadraticAlgebra.trace u) (h1.subset ?_) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u, ⟨hi, hu⟩, rfl⟩`. Use `⟨int_trace hi, fun σ => ?_⟩` and prove the remaining obligations. Set `ρ` to `(IsTotallyReal.complexEmbedding_isReal σ).embedding`. Establish `h2` using `congrArg ρ (key u hu)`. Establish `h3` using `hτ ρ`.
+
+Rewrite `h2` using `[map_mul, map_pow, map_sub, map_pow, map_ofNat]`. Rewrite using `[← (IsTotallyReal.complexEmbedding_isReal σ).coe_embedding_apply, Complex.norm_real, Real.norm_eq_abs]`. Use `abs_le_of_sq_le_sq' (by nlinarith [sq_nonneg (ρ u.im)]) (by norm_num) |> abs_le.2` and prove the remaining obligations. Introduce and unpack `_ ⟨u, ⟨-, hu⟩, rfl⟩`. Use `(Set.toFinite {u, star u}).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `w ⟨⟨-, hw⟩, ht⟩`. Establish `ht : QuadraticAlgebra.trace w = QuadraticAlgebra.trace u` using `ht`. Establish `h2 : w.im ^ 2 = u.im ^ 2` using `mul_left_cancel₀ hD (by rw [← key w hw, ← key u hu, ht])`. Rewrite `ht` using `[QuadraticAlgebra.trace_def, QuadraticAlgebra.trace_def]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h2 with h | h` into its components or cases.
+
+Use `left`. Use `ext`. Rewrite `ht` using `[h]`. Take the linear combination `ht / 2`. Conclude with `h`.
+
+Use `right`. Express the relevant statement in the definitionally equal form `w = star u`. Use `ext`. Rewrite `ht` using `[h]`. Rewrite using `[QuadraticAlgebra.re_star]`.
+
+Take the linear combination `ht / 2`. Conclude with `h`.
+-/
 private theorem fin_quo [IsTotallyReal F] (hτ : IsCM τ) :
     {u : Etau F τ | IsIntegral ℤ u ∧ QuadraticAlgebra.norm u = 1}.Finite := by
   have hD : τ ^ 2 - 4 ≠ 0 := fun h => by
@@ -300,17 +432,44 @@ private theorem fin_quo [IsTotallyReal F] (hτ : IsCM τ) :
       · rw [h] at ht; rw [QuadraticAlgebra.re_star]; linear_combination ht / 2
       · exact h
 
+/- English proof (translation)
+Rewrite using `[RPG.box, Subgroup.mem_iInf]`. Both sides reduce to the same expression.
+-/
 private theorem mem_box {x : TA τ} :
     x ∈ ((rpg _ _).box fun v => Cint (Ov v) (cv v τ) : Subgroup (TA τ)) ↔ ∀ v, x.1 v ∈ Cint (Ov v) (cv v τ) := by
   rw [RPG.box, Subgroup.mem_iInf]
   rfl
 
+/- English proof (translation)
+Use `relIndex_of_fin (quoH τ) _ _ _ (fin_quo hτ) (fun z hz => ⟨glob_intE fun v => ?_, norm_quo z⟩) fun z => scal_of` and prove the remaining obligations. Use `(mem_box.1 (Subgroup.mem_comap.1 hz) v).1` as an intermediate fact. Rewrite `this` using `[map_quo (cv v) z _ (hφ z v)]`. Then use the resulting hypothesis.
+-/
 private theorem part2 [IsTotallyReal F] (hτ : IsCM τ) (φ : (Etau F τ)ˣ →* TA τ) (hφ : IsDiagT τ φ) :
     (scalE τ).relIndex (((rpg _ _).box fun v => Cint (Ov v) (cv v τ)).comap φ) ≠ 0 := by
   refine relIndex_of_fin (quoH τ) _ _ _ (fin_quo hτ) (fun z hz => ⟨glob_intE fun v => ?_, norm_quo z⟩) fun z => scal_of
   have := (mem_box.1 (Subgroup.mem_comap.1 hz) v).1
   rwa [map_quo (cv v) z _ (hφ z v)] at this
 
+/- English proof (translation)
+Use `haveI : Fact (∀ r : F, r ^ 2 ≠ -1 + τ * r) := ⟨fun r h => by`. Take `⟨σ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Establish `h1` using `hτ (IsTotallyReal.complexEmbedding_isReal σ).embedding`. Rewrite `h1` using `[show τ ^ 2 - 4 = (2 * r - τ) ^ 2 by linear_combination (-4) * h, map_pow]`. Conclude with `absurd h1 (not_lt.2 (sq_nonneg _))⟩`.
+
+Use `haveI : NumberField (Etau F τ) := NumberField.of_module_finite F _`. Establish `hsm : ∀ (v : Pl F) (d : F) (y : Etau (Kv v) (cv v τ)), emap (cv v) τ (algebraMap F _ d) * y = cv v d • y` using `fun v d y => by`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hI : ∀ d : F, IsIntegral ℤ d → IsIntegral ℤ (algebraMap F (Etau F τ) d)` using `fun d => map_isIntegral_int _`.
+
+Use `index_of_classes (Etau F τ) _ (fun (x : TA τ) a => ∀ v, IsIntegral (Ov v) (((x⁻¹).1 v : Etau (Kv v) (cv v τ)) * emap (cv v) τ a)) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x v`. Rewrite using `[map_zero, mul_zero]`. Conclude with `isIntegral_zero`. Introduce `x a b ha hb v`.
+
+Rewrite using `[map_add, mul_add]`. Conclude with `(ha v).add (hb v)`. Introduce `x r a hr ha v`. Rewrite using `[map_mul, mul_left_comm]`. Conclude with `(loc_intE hr v).mul (ha v)`.
+
+Introduce `x`. Take `⟨d, hd, hdi, h⟩` from `denE _ (ta_int x)`. Use `⟨algebraMap F _ d, (_root_.map_ne_zero _).2 hd, hI d hdi, fun a ha => glob_intE fun v => ?_⟩` and prove the remaining obligations. Use `(h v).mul (ha v)` as an intermediate fact. Rewrite `this` using `[smul_mul_assoc, show (x⁻¹).1 v = (x.1 v)⁻¹ from rfl, Units.mul_inv_cancel_left, ← hsm, ← map_mul]`. Then use the resulting hypothesis.
+
+Introduce `x`. Take `⟨d, hd, hdi, h⟩` from `denE _ (ta_int x⁻¹)`. Use `⟨algebraMap F _ d, (_root_.map_ne_zero _).2 hd, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, hsm]`. Conclude with `h v`.
+
+Introduce `x y e h`. Establish `h1` using `recover (fun v => (x.1 v : Etau (Kv v) (cv v τ))) (fun v => (x⁻¹).1 v) (fun v => (y⁻¹ * φ e).1 v) (fun v => Units.inv_mul _) (ta_int _) (ta_int _) fun a ha v => by`. Use `(h a).2 ha v` as an intermediate fact. Rewrite `this` using `[map_mul, ← hφ, mul_comm (emap _ _ a), ← mul_assoc]`. Then use the resulting hypothesis. Establish `h2` using `recover (fun v => ((y⁻¹ * φ e)⁻¹.1 v : Etau (Kv v) (cv v τ))) (fun v => (y⁻¹ * φ e).1 v) (fun v => (x⁻¹).1 v) (fun v => Units.mul_inv _) (ta_int _) (ta_int _) fun a ha => (h a).1 fun v => by`.
+
+Rewrite using `[map_mul, ← hφ, mul_comm (emap _ _ a), ← mul_assoc]`. Conclude with `ha v`. Establish `h3 : x⁻¹ * (y⁻¹ * φ e)⁻¹ ∈ ((rpg _ _).box fun v => Cint (Ov v) (cv v τ) : Subgroup (TA τ))` using `mem_box.2 fun v => cint_of (h2 v) (by`. Use `h1 v` as an intermediate fact. Rewrite using `[show (x⁻¹ * (y⁻¹ * φ e)⁻¹).1 v = (x.1 v)⁻¹ * ((y⁻¹ * φ e).1 v)⁻¹ from rfl, _root_.mul_inv_rev, inv_inv, inv_inv]`.
+
+Conclude with `this)`. Establish `h4 : x⁻¹ * y = φ e * (x⁻¹ * (y⁻¹ * φ e)⁻¹)` using `Subtype.ext (funext fun v => by`. Express the relevant statement in the definitionally equal form `(x.1 v)⁻¹ * y.1 v = (φ e).1 v * ((x.1 v)⁻¹ * ((y.1 v)⁻¹ * (φ e).1 v)⁻¹)`. Rewrite using `[_root_.mul_inv_rev, inv_inv, mul_left_comm, mul_inv_cancel_left])`. Rewrite using `[h4]`.
+
+Conclude with `Subgroup.mul_mem_sup ⟨e, rfl⟩ h3`.
+-/
 private theorem part1 [IsTotallyReal F] (hτ : IsCM τ) (φ : (Etau F τ)ˣ →* TA τ) (hφ : IsDiagT τ φ) :
     (φ.range ⊔ (rpg _ _).box fun v => Cint (Ov v) (cv v τ)).index ≠ 0 := by
   haveI : Fact (∀ r : F, r ^ 2 ≠ -1 + τ * r) := ⟨fun r h => by
@@ -368,6 +527,9 @@ end Glo
 
 end UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ hτ φ hφ` and use `⟨part1 hτ φ hφ, part2 hτ φ hφ⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.massFin :
     UpperTheory.V.Z.Sym.Glob.MassFin :=
   fun _ _ _ _ _ hτ φ hφ => ⟨part1 hτ φ hφ, part2 hτ φ hφ⟩

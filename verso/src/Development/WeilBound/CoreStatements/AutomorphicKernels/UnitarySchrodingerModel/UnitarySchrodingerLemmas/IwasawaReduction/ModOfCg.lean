@@ -20,6 +20,13 @@ namespace GlobalTheory.CompanionTheory.IwaRedHand
 
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC
 
+/- English proof (translation)
+Introduce `D n lam hlam a f`. Establish `h` using `GlobalTheory.T.hermitian_measure_conjugation D n lam hlam a (fun c => f c.1)`. Establish `hr0 : 0 < absA D (Matrix.GeneralLinearGroup.det a)` using `pos_iff_ne_zero.2 (GlobalTheory.ResAniso.ResProp.absAU_ne_zero _)`. Establish `e : ∫ c, f (a.1 * c.1 * adj a.1) ∂lam = npow (absA D (Matrix.GeneralLinearGroup.det a)) (-(n : ℂ)) * ∫ b, f b.1 ∂lam` using `h`. Establish `key : ((absA D (Matrix.GeneralLinearGroup.det a) : ℝ) : ℂ) ^ n * npow (absA D (Matrix.GeneralLinearGroup.det a)) (-(n : ℂ)) = 1`.
+
+Establish `hne : ((absA D (Matrix.GeneralLinearGroup.det a) : ℝ) : ℂ) ≠ 0`. Conclude with `hr0.ne'` after adjusting the coercions. Unfold `npow`. Rewrite using `[← Complex.cpow_natCast, ← Complex.cpow_add _ _ hne]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, ← mul_assoc, key, one_mul]`.
+-/
 theorem mod_of_cg : ∀ (D : D7) (n : ℕ) (lam : Measure (PositivityTheory.GramSchwartzFunctions.BC.hermA D n)), lam.IsAddHaarMeasure → ∀ (a : GL (Fin n) (AE D)) (f : Mx D n n → ℂ), ∫ b, f b.1 ∂lam = ((GlobalTheory.Doubling.absA D (Matrix.GeneralLinearGroup.det a) : ℝ) : ℂ) ^ n * ∫ c, f (a.1 * c.1 * GlobalTheory.MixModel.adj a.1) ∂lam := by
   intro D n lam hlam a f
   have h := GlobalTheory.T.hermitian_measure_conjugation D n lam hlam a (fun c => f c.1)

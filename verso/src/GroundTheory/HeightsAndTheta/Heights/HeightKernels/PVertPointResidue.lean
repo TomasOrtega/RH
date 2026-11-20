@@ -15,6 +15,11 @@ namespace VerticalPointResidue
 
 variable {T : Type} [Fintype T]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `isWeightedHomogeneous_of_isMultiHomog h ()`. Introduce `h m hm k`. Consider the cases of `k`.
+
+Conclude with `(weight_blockWeight (ι := fun _ : Unit => T) () m).symm.trans (h (mem_support_iff.mp hm))`.
+-/
 theorem isMultiHomog_iff {g : MRing (fun _ : Unit => T)} {n : ℕ} :
     IsMultiHomog g (fun _ => n) ↔
       IsWeightedHomogeneous (blockWeight (ι := fun _ : Unit => T) ()) g n := by
@@ -26,6 +31,9 @@ theorem isMultiHomog_iff {g : MRing (fun _ : Unit => T)} {n : ℕ} :
     exact (weight_blockWeight (ι := fun _ : Unit => T) () m).symm.trans (h (mem_support_iff.mp hm))
 
 omit [Fintype T] in
+/- English proof (translation)
+Establish `h` using `isWeightedHomogeneous_X ℤ (blockWeight (ι := fun _ : Unit => T) ()) i`. Establish `e : blockWeight (ι` using `fun _ : Unit => T) () i = 1 := by simp [blockWeight]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem isWH_X' (i : Σ _ : Unit, T) :
     IsWeightedHomogeneous (blockWeight (ι := fun _ : Unit => T) ())
       (X i : MRing (fun _ : Unit => T)) 1 := by
@@ -34,12 +42,18 @@ theorem isWH_X' (i : Σ _ : Unit, T) :
   rwa [e] at h
 
 omit [Fintype T] in
+/- English proof (translation)
+The claim follows from `isWH_X' ⟨(), c⟩`.
+-/
 theorem isWH_X (c : T) :
     IsWeightedHomogeneous (blockWeight (ι := fun _ : Unit => T) ())
       (X ⟨(), c⟩ : MRing (fun _ : Unit => T)) 1 :=
   isWH_X' ⟨(), c⟩
 
 omit [Fintype T] in
+/- English proof (translation)
+Establish `h` using `(isWH_X c).pow n`. Simplify using `using h`.
+-/
 theorem isWH_X_pow (c : T) (n : ℕ) :
     IsWeightedHomogeneous (blockWeight (ι := fun _ : Unit => T) ())
       (X ⟨(), c⟩ ^ n : MRing (fun _ : Unit => T)) n := by
@@ -47,6 +61,9 @@ theorem isWH_X_pow (c : T) (n : ℕ) :
   simpa using h
 
 omit [Fintype T] in
+/- English proof (translation)
+Establish `h` using `sub_mem ((mem_weightedHomogeneousSubmodule ℤ _ n f).mpr hf) ((mem_weightedHomogeneousSubmodule ℤ _ n g).mpr hg)`. Conclude with `(mem_weightedHomogeneousSubmodule ℤ _ n _).mp h`.
+-/
 theorem isWH_sub {f g : MRing (fun _ : Unit => T)} {n : ℕ}
     (hf : IsWeightedHomogeneous (blockWeight (ι := fun _ : Unit => T) ()) f n)
     (hg : IsWeightedHomogeneous (blockWeight (ι := fun _ : Unit => T) ()) g n) :
@@ -55,6 +72,13 @@ theorem isWH_sub {f g : MRing (fun _ : Unit => T)} {n : ℕ}
     ((mem_weightedHomogeneousSubmodule ℤ _ n g).mpr hg)
   exact (mem_weightedHomogeneousSubmodule ℤ _ n _).mp h
 
+/- English proof (translation)
+Repeatedly rewrite using `[isMultiHomog_iff]`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨0, C a, isWeightedHomogeneous_C _ _, rfl⟩`. Consider the case `add p q hp hq`. Take `⟨n₁, G₁, h₁, e₁⟩` from `hp`.
+
+Take `⟨n₂, G₂, h₂, e₂⟩` from `hq`. Use `⟨n₁ + n₂, G₁ * X ⟨(), c⟩ ^ n₂ + G₂ * X ⟨(), c⟩ ^ n₁, ?_, ?_⟩` and prove the remaining obligations. Use `(h₁.mul (isWH_X_pow c n₂)).add ?_` and prove the remaining obligations. Rewrite using `[add_comm n₁]`. Conclude with `h₂.mul (isWH_X_pow c n₁)`.
+
+Simplify using `only [map_add, map_mul, map_pow, hχ, one_pow, mul_one, e₁, e₂]`. Consider the case `mul_X p i hp`. Take `⟨n, G, h, e⟩` from `hp`. Use `⟨n + 1, G * X i, h.mul (isWH_X' i), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, e]`.
+-/
 theorem exists_homog {S : Type*} [CommRing S] (χ : MRing (fun _ : Unit => T) →+* S) (c : T)
     (hχ : χ (X ⟨(), c⟩) = 1) (f : MRing (fun _ : Unit => T)) :
     ∃ (n : ℕ) (G : MRing (fun _ : Unit => T)), IsMultiHomog G (fun _ => n) ∧ χ G = χ f := by
@@ -74,6 +98,15 @@ theorem exists_homog {S : Type*} [CommRing S] (χ : MRing (fun _ : Unit => T) �
     refine ⟨n + 1, G * X i, h.mul (isWH_X' i), ?_⟩
     rw [map_mul, map_mul, e]
 
+/- English proof (translation)
+Take `⟨Sg, hSg, rfl⟩` from `hW`. Repeatedly rewrite using `[isMultiHomog_iff]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha⟩` from `hSg x hx`.
+
+Conclude with `⟨a (), x, Ideal.subset_span hx, isWeightedHomogeneous_of_isMultiHomog ha (), rfl⟩`. Consider the case `zero => exact ⟨0, 0, zero_mem _, fun d hd => absurd rfl hd, rfl⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨n₁, G₁, hG₁, h₁, e₁⟩` from `hx`. Take `⟨n₂, G₂, hG₂, h₂, e₂⟩` from `hz`.
+
+Use `⟨n₁ + n₂, G₁ * X ⟨(), c⟩ ^ n₂ + G₂ * X ⟨(), c⟩ ^ n₁, add_mem (Ideal.mul_mem_right _ _ hG₁) (Ideal.mul_mem_right _ _ hG₂), ?_, ?_⟩` and prove the remaining obligations. Use `(h₁.mul (isWH_X_pow c n₂)).add ?_` and prove the remaining obligations. Rewrite using `[add_comm n₁]`. Conclude with `h₂.mul (isWH_X_pow c n₁)`. Simplify using `only [map_add, map_mul, map_pow, hχ, one_pow, mul_one, e₁, e₂]`.
+
+Consider the case `smul a x _ hx`. Take `⟨n, G, hG, h, e⟩` from `hx`. Take `⟨m, A, hA, eA⟩` from `exists_homog χ c hχ a`. Use `⟨m + n, A * G, Ideal.mul_mem_left _ _ hG, (isMultiHomog_iff.mp hA).mul h, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, map_mul, eA, e]`.
+-/
 theorem exists_homog_mem {S : Type*} [CommRing S] (χ : MRing (fun _ : Unit => T) →+* S) (c : T)
     (hχ : χ (X ⟨(), c⟩) = 1) {W : Ideal (MRing (fun _ : Unit => T))} (hW : IsMultiHomogIdeal W)
     {f : MRing (fun _ : Unit => T)} (hf : f ∈ W) :
@@ -100,6 +133,13 @@ theorem exists_homog_mem {S : Type*} [CommRing S] (χ : MRing (fun _ : Unit => T
     refine ⟨m + n, A * G, Ideal.mul_mem_left _ _ hG, (isMultiHomog_iff.mp hA).mul h, ?_⟩
     rw [smul_eq_mul, map_mul, map_mul, eA, e]
 
+/- English proof (translation)
+Rewrite using `[aeval_def, aeval_def, eval₂_eq, eval₂_eq, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hmd : ∑ i, m ⟨(), i⟩ = n` using `hG m hm ()`. Rewrite using `[mul_assoc]`. Use `congr 1`.
+
+Rewrite using `[Finset.prod_subset (Finset.subset_univ m.support) (fun p _ hp => by`. Rewrite using `[Finsupp.notMem_support_iff.mp hp, pow_zero]),`. Use the proof step `Finset.prod_subset (Finset.subset_univ m.support) (fun p _ hp => by`. Rewrite using `[Finsupp.notMem_support_iff.mp hp, pow_zero])]`. Establish `hden : ∏ p : (Σ _ : Unit, T), y ⟨(), c⟩ ^ m p = y ⟨(), c⟩ ^ n`.
+
+Rewrite using `[Finset.prod_pow_eq_pow_sum, Fintype.sum_sigma, Fintype.sum_unique]`. Rewrite using `[← hmd]`. Repeatedly rewrite using `[div_pow]`. Rewrite using `[Finset.prod_div_distrib, hden, div_eq_mul_inv]`.
+-/
 theorem aeval_div {K' : Type} [Field K'] (y : (Σ _ : Unit, T) → K') (c : T)
     (G : MRing (fun _ : Unit => T)) (n : ℕ) (hG : IsMultiHomog G (fun _ => n)) :
     aeval (fun p => y p / y ⟨(), c⟩) G = aeval y G * (y ⟨(), c⟩ ^ n)⁻¹ := by
@@ -123,6 +163,87 @@ end VerticalPointResidue
 
 open VerticalPointResidue in
 
+/- English proof (translation)
+Introduce `T _ K' _ _ y s hP hs hsP W hW`. Establish `hP'` using `hP`. Take `⟨-, ⟨hPp, hPh, -⟩, -, hPdim⟩` from `hP'`. Take `⟨hWmin, hWrel⟩` from `hW`. Establish `hWp : W.IsPrime` using `hWmin.1.1`.
+
+Use `hWp` as an intermediate fact. Use `hPp` as an intermediate fact. Establish `hPW : mCoordIdeal y ≤ W` using `le_sup_left.trans hWmin.1.2`. Establish `hWmh : IsMultiHomogIdeal W` using `isMultiHomogIdeal_of_mem_minimalPrimes hPh hs hWmin`. Establish `hdim : ringKrullDim (MRing (fun _ : Unit => T) ⧸ W) = ((0 + Fintype.card Unit : ℕ) : WithBot ℕ∞)`.
+
+Establish `h1` using `dim_quot_minimal_add_one (mCoordIdeal y) W s hsP hWmin`. Rewrite `h1` using `[hPdim]`. Conclude with `withBot_eq_of_add_one (by rw [h1, show 1 + Fintype.card Unit = 0 + Fintype.card Unit + 1 by omega])`. Establish `hvert : ¬ IsHorizontal W` using `IndefiniteRowSideFullHecke.HeightsSet.CurveDivVertical.full Unit (fun _ => T) _ s _ hP hs hsP W ⟨hWmin, hWrel⟩`. Establish `: Fact (charOf W).Prime` using `⟨charOf_prime hWp hvert⟩`.
+
+Establish `hp : (C ((charOf W : ℕ) : ℤ) : MRing (fun _ : Unit => T)) ∈ W`. Establish `hgen` using `Submodule.IsPrincipal.generator_mem (W.comap (C : ℤ →+* MRing (fun _ : Unit => T)))`. Establish `: ((charOf W : ℕ) : ℤ) ∈ W.comap (C : ℤ →+* MRing (fun _ : Unit => T))`. Unfold `charOf`. Rewrite using `[Int.natCast_natAbs]`.
+
+Apply the tactic sequence `rcases abs_choice (Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing (fun _ : Unit => T)))) with h | h <;> rw [h]`. Conclude with `hgen`. Conclude with `neg_mem hgen`. Conclude with `Ideal.mem_comap.mp this`. Establish `hcW : ∀ k, (X ⟨k, (hWrel k).choose⟩ : MRing (fun _ : Unit => T)) ∉ W` using `fun k => (hWrel k).choose_spec`.
+
+Use `set J := W ⊔ Ideal.span (Set.range fun k => (X ⟨k, (hWrel k).choose⟩ : MRing (fun _ : Unit => T)) - 1) with hJ`. Establish `hgeo : ∀ b, geoNum 0 W b = ((Module.length ℤ (MRing (fun _ : Unit => T) ⧸ J)).toNat : ℤ)`. Introduce `b`. Rewrite using `[geoNum, dif_pos hWrel]`. Take `⟨hF, hFin, hcard⟩` from `Inter.regularityLocalResidue_holds.chart_field_card hWmh hcW hdim (charOf W) hp`.
+
+Use `letI : Field (MRing (fun _ : Unit => T) ⧸ J) := hF.toField`. Use `set c : T := (hWrel ()).choose with hc`. Establish `hXc : (X ⟨(), c⟩ : MRing (fun _ : Unit => T)) ∉ W` using `hcW ()`. Establish `hXc1 : (X ⟨(), c⟩ : MRing (fun _ : Unit => T)) - 1 ∈ J` using `Ideal.mem_sup_right (Ideal.subset_span ⟨(), rfl⟩)`. Establish `hyc : y ⟨(), c⟩ ≠ 0`.
+
+Introduce `h0`. Use `hXc (hPW (LowerBoundFree.mem_mCoordIdeal_of_aeval_eq_zero y (isMultiHomog_iff.mpr (isWH_X c)) ?_))` and prove the remaining obligations. Rewrite using `[aeval_X, h0]`. Set `φ : MRing (fun _ : Unit => T) →+* K'` to `(aeval fun p => y p / y ⟨(), c⟩).toRingHom`. Establish `hφX : ∀ p, φ (X p) = y p / y ⟨(), c⟩` using `fun p => aeval_X _ _`.
+
+Establish `hφc : φ (X ⟨(), c⟩) = 1` using `by rw [hφX, div_self hyc]`. Establish `hφform : ∀ G n, IsMultiHomog G (fun _ => n) → φ G = aeval y G * (y ⟨(), c⟩ ^ n)⁻¹` using `fun G n hG => aeval_div y c G n hG`. Establish `hspan : ∀ z ∈ Ideal.span (Set.range fun k => (X ⟨k, (hWrel k).choose⟩ : MRing (fun _ : Unit => T)) - 1), φ z = 0`. Introduce `z hz`. Use `(Ideal.span_le (I := RingHom.ker φ)).mpr ?_ hz` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨⟨⟩, rfl⟩`. Use `show (X ⟨(), c⟩ : MRing (fun _ : Unit => T)) - 1 ∈ RingHom.ker φ`. Rewrite using `[RingHom.mem_ker, map_sub, map_one, hφc, sub_self]`. Establish `hker : RingHom.ker φ ≤ J`. Introduce `f hf`.
+
+Rewrite `hf` using `[RingHom.mem_ker]`. Establish `hχ : Ideal.Quotient.mk (Ideal.span {(X ⟨(), c⟩ : MRing (fun _ : Unit => T)) - 1}) (X ⟨(), c⟩) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`. Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨n, G, hG, hGf⟩` from `exists_homog _ c hχ f`.
+
+Establish `hd : G - f ∈ Ideal.span {(X ⟨(), c⟩ : MRing (fun _ : Unit => T)) - 1}` using `Ideal.Quotient.eq.mp hGf`. Establish `hd' : G - f ∈ J` using `(Ideal.span_singleton_le_iff_mem _).mpr hXc1 hd`. Establish `hφd : G - f ∈ RingHom.ker φ` using `(Ideal.span_singleton_le_iff_mem _).mpr (by rw [RingHom.mem_ker, map_sub, map_one, hφc, sub_self]) hd`. Establish `hG0 : aeval y G = 0`. Rewrite `hφd` using `[RingHom.mem_ker, map_sub, hf, sub_zero, hφform G n hG]`.
+
+Conclude with `(mul_eq_zero.mp hφd).resolve_right (inv_ne_zero (pow_ne_zero _ hyc))`. Establish `hGJ : G ∈ J` using `Ideal.mem_sup_left (hPW (LowerBoundFree.mem_mCoordIdeal_of_aeval_eq_zero y hG hG0))`. Simplify using `using sub_mem hGJ hd'`. Establish `hB : ∀ b : curveRing y, ∃ f, φ f = b`. Introduce `b`.
+
+Establish `hb` using `mem_curveRing.mp b.2 (fun _ => c) (fun _ => hyc)`. Rewrite `hb` using `[chartRingZ, Algebra.adjoin_range_eq_range_aeval]`. Take `⟨f, hf⟩` from `(AlgHom.mem_range _).mp hb`. Conclude with `⟨f, hf⟩`. Establish `hBr : ∀ b : curveRing y, (curveRing y).subtype b ∈ φ.range` using `fun b => hB b`.
+
+Set `e` to `RingHom.quotientKerEquivRange φ`. Set `ψ : φ.range →+* (MRing (fun _ : Unit => T) ⧸ J)` to `(Ideal.Quotient.factor hker).comp e.symm.toRingHom`. Establish `hψ : ∀ f (h : φ f ∈ φ.range), ψ ⟨φ f, h⟩ = Ideal.Quotient.mk J f`. Introduce `f h`. Establish `h' : e.symm ⟨φ f, h⟩ = Ideal.Quotient.mk (RingHom.ker φ) f`.
+
+Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show Ideal.Quotient.factor hker (e.symm ⟨φ f, h⟩) = _`. Rewrite using `[h', Ideal.Quotient.factor_mk]`. Set `incl : curveRing y →+* φ.range` to `(curveRing y).subtype.codRestrict φ.range hBr`.
+
+Set `Θ : curveRing y →+* (MRing (fun _ : Unit => T) ⧸ J)` to `ψ.comp incl`. Establish `hΘ : ∀ (b : curveRing y) f, φ f = b → Θ b = Ideal.Quotient.mk J f`. Introduce `b f hf`. Establish `h' : incl b = ⟨φ f, RingHom.mem_range_self φ f⟩` using `Subtype.ext hf.symm`. Use `show ψ (incl b) = _`.
+
+Rewrite using `[h']`. Conclude with `hψ f _`. Establish `hΘmul : ∀ (b₁ b₂ : curveRing y) g, (b₁ : K') * φ g = b₂ → Θ b₁ * Ideal.Quotient.mk J g = Θ b₂`. Introduce `b₁ b₂ g h`. Take `⟨f, hf⟩` from `hB b₁`.
+
+Rewrite using `[hΘ b₁ f hf, hΘ b₂ (f * g) (by rw [map_mul, hf, h]), map_mul]`. Establish `: Finite (MRing (fun _ : Unit => T) ⧸ J)` using `hFin`. Establish `hFF : IsField Θ.range` using `Finite.isDomain_to_isField _`. Establish `hmax : (RingHom.ker Θ).IsMaximal` using `Ideal.Quotient.maximal_of_isField _ (MulEquiv.isField hFF (RingHom.quotientKerEquivRange Θ).toMulEquiv)`. Take `⟨-, -, hchart⟩` from `hC T K' y hP`.
+
+Take `⟨t, hyt, hrat⟩` from `hchart (RingHom.ker Θ) hmax`. Establish `hgen : ∀ u : T, Ideal.Quotient.mk J (X ⟨(), u⟩) ∈ Θ.range`. Introduce `u`. Take `⟨ac, bc, hbc, hc'⟩` from `hrat c`. Take `⟨au, bu, hbu, hu'⟩` from `hrat u`.
+
+Establish `hac : Θ ac ≠ 0`. Introduce `h0`. Apply `hbc` to reduce the goal to its premises. Rewrite using `[RingHom.mem_ker, ← hΘmul ac bc (X ⟨(), t⟩) ?_, h0, zero_mul]`. Rewrite using `[hφX, ← hc']`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hbu' : Θ bu ≠ 0` using `fun h0 => hbu (RingHom.mem_ker.mpr h0)`. Establish `key : Θ (bu * ac) * Ideal.Quotient.mk J (X ⟨(), u⟩) = Θ (au * bc)`. Use `hΘmul _ _ _ ?_` and prove the remaining obligations. Use `push_cast`.
+
+Rewrite using `[hφX, ← hu', ← hc']`. Clear the denominators using the available nonvanishing facts. Establish `hx : Θ (bu * ac) ≠ 0`. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hbu' hac`.
+
+Take `⟨w, hw⟩` from `hFF.mul_inv_cancel (a := ⟨Θ (bu * ac), bu * ac, rfl⟩) (fun h => hx (congrArg Subtype.val h))`. Establish `hw' : Θ (bu * ac) * (w : MRing (fun _ : Unit => T) ⧸ J) = 1` using `congrArg Subtype.val hw`. Establish `h2 : Ideal.Quotient.mk J (X ⟨(), u⟩) = Θ (au * bc) * w`. Rewrite using `[← key, mul_comm (Θ (bu * ac)), mul_assoc, hw', mul_one]`. Rewrite using `[h2]`.
+
+Conclude with `mul_mem ⟨au * bc, rfl⟩ w.2`. Establish `hsurj : Function.Surjective Θ`. Introduce `z`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective z`. It suffices to establish `h : Ideal.Quotient.mk J f ∈ Θ.range from h`.
+
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[show Ideal.Quotient.mk J (C a) = (a : MRing (fun _ : Unit => T) ⧸ J) from eq_intCast ((Ideal.Quotient.mk J).comp C) a]`. Conclude with `intCast_mem _ a`. Consider the case `add p q hp hq`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp`. Take `⟨⟨⟩, u⟩` from `i`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_mem hp (hgen u)`. Establish `hkerΘ : RingHom.ker Θ = curvePtIdeal y W`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `b hb`. Rewrite `hb` using `[RingHom.mem_ker]`.
+
+Take `⟨f, hf⟩` from `hB b`. Rewrite `hb` using `[hΘ b f hf, Ideal.Quotient.eq_zero_iff_mem]`. Take `⟨w, hw, z, hz, rfl⟩` from `Submodule.mem_sup.mp hb`. Take `⟨n, G, hGW, hG, hφG⟩` from `exists_homog_mem φ c hφc hWmh hw`. Establish `h1 : (b : K') = aeval y G * (y ⟨(), c⟩ ^ n)⁻¹`.
+
+Rewrite using `[← hφform G n hG, hφG, ← hf, map_add, hspan z hz, add_zero]`. Establish `hXn : IsMultiHomog (X ⟨(), c⟩ ^ n : MRing (fun _ : Unit => T)) (fun _ => n)` using `isMultiHomog_iff.mpr (isWH_X_pow c n)`. Establish `hXnW : (X ⟨(), c⟩ ^ n : MRing (fun _ : Unit => T)) ∉ W` using `fun h => hXc (hWp.mem_of_pow_mem n h)`. Establish `hval : (b : K') * aeval y (X ⟨(), c⟩ ^ n : MRing (fun _ : Unit => T)) = aeval y G`. Rewrite using `[h1, map_pow, aeval_X, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hyc), mul_one]`.
+
+Establish `hmemS : ∃ (d : Unit → ℕ) (g h : MRing (fun _ : Unit => T)), IsMultiHomog g d ∧ IsMultiHomog h d ∧ g ∈ W ∧ h ∉ W ∧ (b : K') * aeval y h = aeval y g`. Use `by`. Use `⟨fun _ => n, G, X ⟨(), c⟩ ^ n, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hG`. Conclude with `hXn`.
+
+Conclude with `hGW`. Conclude with `hXnW`. Conclude with `hval`. Conclude with `Ideal.subset_span hmemS`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `b ⟨d, g, h, hg, hh, hgW, hhW, hbgh⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Establish `hd : d = fun _ => d ()` using `funext fun k => by cases k; rfl`. Rewrite `hg`, `hh` using `[hd]`. Take `⟨f, hf⟩` from `hB b`.
+
+Establish `hid : (b : K') * φ h = φ g`. Rewrite using `[hφform h _ hh, hφform g _ hg, ← mul_assoc, hbgh]`. Rewrite using `[hΘ b f hf]`. Establish `h1 : Ideal.Quotient.mk J f * Ideal.Quotient.mk J h = 0`. Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `h3 : f * h - g ∈ J` using `hker (by rw [RingHom.mem_ker, map_sub, map_mul, hf, hid, sub_self])`. Simplify using `using add_mem h3 (Ideal.mem_sup_left hgW : g ∈ J)`. Establish `h2 : Ideal.Quotient.mk J h ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `hJh`.
+
+Take `⟨w, hw, z, hz, hwz⟩` from `Submodule.mem_sup.mp hJh`. Take `⟨n', G, hGW, hG, hφG⟩` from `exists_homog_mem φ c hφc hWmh hw`. Establish `e1 : φ G = φ h` using `by rw [hφG, ← hwz, map_add, hspan z hz, add_zero]`. Establish `hmem : G * X ⟨(), c⟩ ^ d () - h * X ⟨(), c⟩ ^ n' ∈ mCoordIdeal y`. Use `LowerBoundFree.mem_mCoordIdeal_of_aeval_eq_zero y (d := fun _ => n' + d ()) ?_ ?_` and prove the remaining obligations.
+
+Use `isMultiHomog_iff.mpr (isWH_sub ((isMultiHomog_iff.mp hG).mul (isWH_X_pow c _)) ?_)` and prove the remaining obligations. Rewrite using `[add_comm n']`. Conclude with `(isMultiHomog_iff.mp hh).mul (isWH_X_pow c _)`. Rewrite `e1` using `[hφform G n' hG, hφform h _ hh]`. Rewrite using `[map_sub, map_mul, map_mul, map_pow, map_pow, aeval_X, sub_eq_zero]`.
+
+Clear denominators, using `at e1` for the nonvanishing conditions. Take the linear combination `e1`. Establish `h4 : h * X ⟨(), c⟩ ^ n' ∈ W`. Establish `h5` using `sub_mem (Ideal.mul_mem_right (X ⟨(), c⟩ ^ d ()) W hGW) (hPW hmem)`. Simplify using `using h5`.
+
+Break down `hWp.mem_or_mem h4 with h3 | h3` into its components or cases. Conclude with `hhW h3`. Conclude with `hXc (hWp.mem_of_pow_mem _ h3)`. Conclude with `(mul_eq_zero.mp h1).resolve_right h2`. Set `eq : (curveRing y ⧸ curvePtIdeal y W) ≃+* (MRing (fun _ : Unit => T) ⧸ J)` to `(Ideal.quotEquivOfEq hkerΘ.symm).trans (RingHom.quotientKerEquivOfSurjective hsurj)`.
+
+Rewrite using `[Nat.card_congr eq.toEquiv, hcard, hgeo]`. Use `push_cast`. Rewrite using `[Real.log_pow]`.
+-/
 theorem VertPointResidue.proof (hC : CurveCharts.Statement) : VertPointResidue.Statement := by
   intro T _ K' _ _ y s hP hs hsP W hW
   classical

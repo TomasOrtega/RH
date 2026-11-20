@@ -15,6 +15,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
 
+/- English proof (translation)
+Establish `hf : ∀ a, t.f a ∈ H.Xp t.f ⊔ H.Xp t.f'` using `fun a => Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)`. Establish `hf' : ∀ a, t.f' a ∈ H.Xp t.f ⊔ H.Xp t.f'` using `fun a => Submodule.mem_sup_right (Submodule.subset_span ⟨a, rfl⟩)`. Unfold `HermSp.MMfam`. Break down `M.split with _ | g` into its components or cases. Break down `i with a | a` into its components or cases.
+
+Conclude with `hf a`. Conclude with `hf' a`. Break down `i with a | a` into its components or cases. Conclude with `hf a`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (hf' a) (hf a))`.
+-/
 theorem MMfam_mem_sup (t : Term V M r) (i : Fin (r + 1) ⊕ Fin (r + 1)) :
     H.MMfam t i ∈ H.Xp t.f ⊔ H.Xp t.f' := by
   have hf : ∀ a, t.f a ∈ H.Xp t.f ⊔ H.Xp t.f' := fun a =>
@@ -30,12 +35,18 @@ theorem MMfam_mem_sup (t : Term V M r) (i : Fin (r + 1) ⊕ Fin (r + 1)) :
     · exact hf a
     · exact Submodule.smul_mem _ _ (Submodule.sub_mem _ (hf' a) (hf a))
 
+/- English proof (translation)
+Establish `hle : Submodule.span E (Set.range (H.MMfam t)) ≤ H.Xp t.f ⊔ H.Xp t.f'` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact MMfam_mem_sup H t i)`. Conclude with `hw m (hle hm)`.
+-/
 theorem hermitian_W0_span_zero (t : Term V M r) {w m : V} (hw : w ∈ H.W0 t.f t.f')
     (hm : m ∈ Submodule.span E (Set.range (H.MMfam t))) : H.h w m = 0 := by
   have hle : Submodule.span E (Set.range (H.MMfam t)) ≤ H.Xp t.f ⊔ H.Xp t.f' :=
     Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact MMfam_mem_sup H t i)
   exact hw m (hle hm)
 
+/- English proof (translation)
+Rewrite using `[H.h_herm, hermitian_W0_span_zero H t hw hm, map_zero]`.
+-/
 theorem hermitian_span_W0_zero (t : Term V M r) {w m : V} (hw : w ∈ H.W0 t.f t.f')
     (hm : m ∈ Submodule.span E (Set.range (H.MMfam t))) : H.h m w = 0 := by
   rw [H.h_herm, hermitian_W0_span_zero H t hw hm, map_zero]
@@ -88,6 +99,9 @@ def psiSharp (t₁ t₂ : Term V M r) (ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] �
     show ((ψ ⟨(ψ.symm ⟨y.1, y.2.1⟩ : V), _⟩ : ↥(H.W0 t₂.f t₂.f')) : V) = y.1
     rw [Subtype.coe_eta, ψ.apply_symm_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiSharp_val (t₁ t₂ : Term V M r) (ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] ↥(H.W0 t₂.f t₂.f'))
     (hψ : ∀ x y, H.h (ψ x) (ψ y) = H.h x y) (N₁ N₂ : Submodule M.L.O V)
     (hN₁ : N₁ ≤ (H.W0 t₁.f t₁.f').restrictScalars M.L.O) (hN₂ : N₂ ≤ (H.W0 t₂.f t₂.f').restrictScalars M.L.O)
@@ -112,6 +126,9 @@ def psiTilde (t₁ t₂ : Term V M r) (ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] �
       rw [hN (ψ.symm ⟨y.1, y.2.1⟩), ψ.apply_symm_apply]
       exact hy)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiTilde_mk (t₁ t₂ : Term V M r) (ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] ↥(H.W0 t₂.f t₂.f'))
     (hψ : ∀ x y, H.h (ψ x) (ψ y) = H.h x y) (N₁ N₂ : Submodule M.L.O V)
     (hN₁ : N₁ ≤ (H.W0 t₁.f t₁.f').restrictScalars M.L.O) (hN₂ : N₂ ≤ (H.W0 t₂.f t₂.f').restrictScalars M.L.O)

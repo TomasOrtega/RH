@@ -9,6 +9,11 @@ namespace Formalism.L2.G
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
 
+/- English proof (translation)
+Introduce `hp`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.mpr h`. Establish `h1 : ((a * p + b * g : ℤ) : 𝓞 F) ∈ v.asIdeal`. Use `push_cast`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hp) (v.asIdeal.mul_mem_left _ hg)`.
+
+Rewrite `h1` using `[hab, Int.cast_one]`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+-/
 theorem not_mem_of_coprime {p g : ℕ} (h : Nat.Coprime p g) (v : HeightOneSpectrum (𝓞 F))
     (hg : ((g : ℕ) : 𝓞 F) ∈ v.asIdeal) : ((p : ℕ) : 𝓞 F) ∉ v.asIdeal := by
   intro hp
@@ -59,6 +64,11 @@ def LevAtG.lamGlob {Z : Type} [CommGroup Z] (X : LevAtG σE J gp splitG Lb Uloc 
       (χ i v ((mem_placesOver F (gp i) (hg i) v).1 hv)))
     Up (fun v hv => hUp i v ((mem_placesOver F (gp i) (hg i) v).1 hv))
 
+/- English proof (translation)
+Unfold `LevAtG.lamGlob`. Rewrite using `[MonoidHom.finset_prod_apply]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Unfold `prodChar`. Rewrite using `[MonoidHom.finset_prod_apply]`.
+
+Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem LevAtG.lamGlob_apply {Z : Type} [CommGroup Z] (X : LevAtG σE J gp splitG Lb Uloc k m t j) (hg : ∀ i, gp i ≠ 0)
     (ψ0 : ∀ (i : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp i : 𝓞 F) ∈ v.asIdeal → AddChar (resV F v) Z)
     (χ : ∀ (i : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp i : 𝓞 F) ∈ v.asIdeal → ℕ → (resV F v)ˣ →* Z)

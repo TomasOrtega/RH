@@ -6,6 +6,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris ReciprocityTheory.Cha
 
 namespace GlobalTheory.CompanionTheory.ConeWchMem
 
+/- English proof (translation)
+Introduce `D N i h j` and use `GlobalTheory.CompanionTheory.ConeChart.preimage_chart_mem D N i h j`.
+-/
 theorem main : ∀ {K : Type} [Field K] {X : Scheme.{0}} (D : E.LineData X) (N : ℕ) (i : X ⟶ PSpace K N),
     IsTautologicalLineAt D N i → ∀ j, wch i j ∈ 𝒱D D :=
   fun D N i h j => GlobalTheory.CompanionTheory.ConeChart.preimage_chart_mem D N i h j

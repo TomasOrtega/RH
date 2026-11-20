@@ -6,6 +6,21 @@ namespace PositivityTheory.ThKEst.UMGS
 
 open Filter Topology Function
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `Φ D _ _ t`. Simplify using `using hasFDerivAt_of_subsingleton (𝕜 := ℝ) Φ t`. Consider the case `succ k ih`.
+
+Introduce `Φ D hc hd t`. Establish `hcons : Continuous fun v : ℝ × (Fin k → ℝ) => (Fin.cons v.1 v.2 : Fin (k + 1) → ℝ)`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using continuous_fst`.
+
+Simplify using `only [Fin.cons_succ]`. Conclude with `(continuous_apply j).comp continuous_snd`. Establish `key` using `hasStrictFDerivAt_uncurry_coprod (𝕜 := ℝ) (u := (t 0, Fin.tail t)) (f := fun (s : ℝ) (u : Fin k → ℝ) => Φ (Fin.cons s u)) (f₁ := fun s u => (ContinuousLinearMap.id ℝ ℝ).smulRight (D 0 (Fin.cons s u))) (f₂ := fun s u => ∑ i, (ContinuousLinearMap.proj i : (Fin k → ℝ) →L[ℝ] ℝ).smulR …`. Establish `h` using `hd 0 (Fin.cons v.1 v.2)`. Simplify using `only [Fin.update_cons_zero, Fin.cons_zero] at h`.
+
+Establish `h0 : HasDerivAt (fun s => Φ (Fin.cons (v.1 + s) v.2)) (D 0 (Fin.cons v.1 v.2)) (v.1 - v.1)`. Simplify using `using h`. Establish `h1` using `h0.comp_sub_const v.1 v.1`. Simplify using `only [add_sub_cancel] at h1`. Conclude with `h1.hasFDerivAt)`.
+
+Use the proof step `(Eventually.of_forall fun v => ih (fun u => Φ (Fin.cons v.1 u)) (fun i u => D i.succ (Fin.cons v.1 u)) (fun i => (hc i.succ).comp (hcons.comp (continuous_const.prodMk continuous_id))) (fun i u => by`. Establish `h` using `hd i.succ (Fin.cons v.1 u)`. Simplify `h) v.2)` using `only [Fin.cons_update, Fin.cons_succ]`. Use the proof step `(((ContinuousLinearMap.smulRightL ℝ ℝ V (ContinuousLinearMap.id ℝ ℝ)).continuous.comp ((hc 0).comp hcons)).continuousAt)`. Use the proof step `((continuous_finsetSum Finset.univ fun i _ => (ContinuousLinearMap.smulRightL ℝ (Fin k → ℝ) V (ContinuousLinearMap.proj i)).continuous.comp ((hc i.succ).comp hcons)).continuousAt)`.
+
+Set `e : (Fin (k + 1) → ℝ) →L[ℝ] ℝ × (Fin k → ℝ)` to `(ContinuousLinearMap.proj 0).prod (ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (Fin.succ i))`. Establish `h2` using `HasFDerivAt.comp (f := e) t key.hasFDerivAt e.hasFDerivAt`. Establish `h3 : (↿fun (s : ℝ) (u : Fin k → ℝ) => Φ (Fin.cons s u)) ∘ e = Φ`. Use function extensionality and compare the values at `x`. Conclude with `congrArg Φ (Fin.cons_self_tail x)`.
+
+Rewrite `h2` using `[h3]`. Use `h2.congr_fderiv ?_` and prove the remaining obligations. Use `ext1 x`. Simplify using `[e, HasUncurry.uncurry, Fin.sum_univ_succ, Fin.cons_self_tail]`.
+-/
 theorem hasFDerivAt_of_partials {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (k : ℕ) :
     ∀ (Φ : (Fin k → ℝ) → V) (D : Fin k → (Fin k → ℝ) → V), (∀ i, Continuous (D i)) →
       (∀ i t, HasDerivAt (fun s => Φ (update t i (t i + s))) (D i t) 0) →
@@ -62,17 +77,28 @@ def pr {k : ℕ} (γ : Fin k → (Multiplicative ℝ →* G)) (t : Fin k → ℝ
   (List.ofFn fun i => γ i (Multiplicative.ofAdd (t i))).prod
 
 omit [TopologicalSpace G] [ContinuousMul G] in
+/- English proof (translation)
+Simplify using `[pr, List.ofFn_succ]`.
+-/
 theorem pr_succ {k : ℕ} (γ : Fin (k + 1) → (Multiplicative ℝ →* G)) (t : Fin (k + 1) → ℝ) :
     pr γ t = γ 0 (Multiplicative.ofAdd (t 0)) * pr (fun i => γ i.succ) (fun i => t i.succ) := by
   simp [pr, List.ofFn_succ]
 
 omit [TopologicalSpace G] [ContinuousMul G] in
+/- English proof (translation)
+Simplify using `[pr]`.
+-/
 theorem pr_zero (γ : Fin 0 → (Multiplicative ℝ →* G)) (t : Fin 0 → ℝ) : pr γ t = 1 := by
   simp [pr]
 
 def Gn (m : ι → G →* A) (γ : Multiplicative ℝ →* G) (Y : ι → A) : Prop :=
   ∀ w (t : ℝ), m w (γ (Multiplicative.ofAdd t)) = NormedSpace.exp (t • Y w)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro γ _`. Conclude with `continuous_const.congr fun t => (pr_zero γ t).symm`. Consider the case `succ k ih`. Introduce `γ hγ`.
+
+Use `Continuous.congr ?_ fun t => (pr_succ γ t).symm` and prove the remaining obligations. Conclude with `((hγ 0).comp (continuous_ofAdd.comp (continuous_apply 0))).mul ((ih _ fun i => hγ i.succ).comp (continuous_pi fun i => continuous_apply _))`.
+-/
 theorem continuous_pr (k : ℕ) : ∀ γ : Fin k → (Multiplicative ℝ →* G), (∀ i, Continuous (γ i)) → Continuous (pr γ) := by
   induction k with
   | zero => intro γ _; exact continuous_const.congr fun t => (pr_zero γ t).symm
@@ -82,15 +108,26 @@ theorem continuous_pr (k : ℕ) : ∀ γ : Fin k → (Multiplicative ℝ →* G)
     exact ((hγ 0).comp (continuous_ofAdd.comp (continuous_apply 0))).mul
       ((ih _ fun i => hγ i.succ).comp (continuous_pi fun i => continuous_apply _))
 
+/- English proof (translation)
+Establish `h : ContDiff ℝ n (NormedSpace.exp : A → A)` using `contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt`. Conclude with `h.comp (contDiff_id.smul contDiff_const)`.
+-/
 theorem contDiff_exp_smul (Y : A) (n : WithTop ℕ∞) : ContDiff ℝ n fun t : ℝ => NormedSpace.exp (t • Y) := by
   have h : ContDiff ℝ n (NormedSpace.exp : A → A) :=
     contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt
   exact h.comp (contDiff_id.smul contDiff_const)
 
+/- English proof (translation)
+The claim follows from `contDiff_pi.2 fun i => contDiff_apply ℝ ℝ i.succ`.
+-/
 theorem contDiff_tail (k : ℕ) (n : WithTop ℕ∞) : ContDiff ℝ n fun (t : Fin (k + 1) → ℝ) (i : Fin k) => t i.succ :=
   contDiff_pi.2 fun i => contDiff_apply ℝ ℝ i.succ
 
 omit [TopologicalSpace G] [ContinuousMul G] [Fintype ι] in
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro γ _`. Simplify using `only [pr_zero]`. Conclude with `⟨contDiff_const, contDiff_const⟩`. Consider the case `succ k ih`.
+
+Introduce `γ hγ`. Take `⟨h1, h2⟩` from `ih (fun i => γ i.succ) fun i => hγ i.succ`. Take `⟨Y, hY⟩` from `hγ 0`. Simplify using `only [pr_succ, mul_inv_rev, map_mul, ← map_inv, ← ofAdd_neg, hY w]`. Conclude with `⟨((contDiff_exp_smul (Y w) n).comp (contDiff_apply ℝ ℝ 0)).mul (h1.comp (contDiff_tail k n)), (h2.comp (contDiff_tail k n)).mul ((contDiff_exp_smul (Y w) n).comp (contDiff_apply ℝ ℝ 0).neg)⟩`.
+-/
 theorem contDiff_pr (m : ι → G →* A) (n : WithTop ℕ∞) (w : ι) (k : ℕ) : ∀ γ : Fin k → (Multiplicative ℝ →* G),
     (∀ i, ∃ Y, Gn m (γ i) Y) → ContDiff ℝ n (fun t => m w (pr γ t)) ∧ ContDiff ℝ n (fun t => m w (pr γ t)⁻¹) := by
   induction k with
@@ -106,10 +143,18 @@ theorem contDiff_pr (m : ι → G →* A) (n : WithTop ℕ∞) (w : ι) (k : ℕ
 def cj (x : G) (γ : Multiplicative ℝ →* G) : Multiplicative ℝ →* G := (MulAut.conj x⁻¹).toMonoidHom.comp γ
 
 omit [TopologicalSpace G] [ContinuousMul G] in
+/- English proof (translation)
+Simplify using `[cj]`.
+-/
 theorem cj_apply (x : G) (γ : Multiplicative ℝ →* G) (s : Multiplicative ℝ) : cj x γ s = x⁻¹ * γ s * x := by
   simp [cj]
 
 omit [TopologicalSpace G] [ContinuousMul G] [Fintype ι] in
+/- English proof (translation)
+Introduce `w t`. Set `: NormedAlgebra ℚ A` to `NormedAlgebra.restrictScalars ℚ ℝ A`. Set `u : Aˣ` to `Units.map (m w) (toUnits x⁻¹)`. Establish `h1 : (u : A) = m w x⁻¹` using `rfl`. Establish `h2 : ((u⁻¹ : Aˣ) : A) = m w x` using `by simp [u]`.
+
+Use `NormedSpace.exp_units_conj u (t • Y w)` as an intermediate fact. Rewrite `this` using `[h1, h2]`. Rewrite using `[cj_apply, map_mul, map_mul, h w t, ← this, mul_smul_comm, smul_mul_assoc]`.
+-/
 theorem Gn.cj {m : ι → G →* A} {γ : Multiplicative ℝ →* G} {Y : ι → A} (h : Gn m γ Y) (x : G) :
     Gn m (cj x γ) fun w => m w x⁻¹ * Y w * m w x := by
   intro w t
@@ -122,6 +167,17 @@ theorem Gn.cj {m : ι → G →* A} {γ : Multiplicative ℝ →* G} {Y : ι →
   rw [cj_apply, map_mul, map_mul, h w t, ← this, mul_smul_comm, smul_mul_assoc]
 
 omit [TopologicalSpace G] [ContinuousMul G] in
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro γ _ i`. Conclude with `i.elim0`. Consider the case `succ k ih`. Introduce `γ hγ i`.
+
+Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Take `⟨Y, hY⟩` from `hg _ (hγ 0)`. Use `⟨fun t w => m w (pr (fun i => γ i.succ) fun i => t i.succ)⁻¹ * Y w * m w (pr (fun i => γ i.succ) fun i => t i.succ), contDiff_pi.2 fun w => ?_, fun t => ⟨_, hcj _ (hγ 0) _, hY.cj _, fun s => ?_⟩⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `contDiff_pr m n w k (fun i => γ i.succ) fun i => hg _ (hγ i.succ)`. Conclude with `((h2.comp (contDiff_tail k n)).mul contDiff_const).mul (h1.comp (contDiff_tail k n))`.
+
+Simplify using `only [pr_succ, cj_apply, update_self, ne_eq, Fin.succ_ne_zero, not_false_eq_true, update_of_ne, ofAdd_add, map_mul] group`. Take `⟨Z, hZ, h⟩` from `ih (fun i => γ i.succ) (fun i => hγ i.succ) j`. Use `⟨fun t => Z fun i => t i.succ, hZ.comp (contDiff_tail k n), fun t => ?_⟩` and prove the remaining obligations. Take `⟨γ', h1, h2, h3⟩` from `h fun i => t i.succ`. Use `⟨γ', h1, h2, fun s => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (fun i : Fin k => update t j.succ (t j.succ + s) i.succ) = update (fun i : Fin k => t i.succ) j (t j.succ + s)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hi]`. Rewrite using `[pr_succ, pr_succ, e, h3, update_of_ne (Fin.succ_ne_zero j).symm, mul_assoc]`.
+-/
 theorem exists_partial (m : ι → G →* A) (L : Set (Multiplicative ℝ →* G)) (hcj : ∀ γ ∈ L, ∀ x, cj x γ ∈ L)
     (hg : ∀ γ ∈ L, ∃ Y, Gn m γ Y) (n : WithTop ℕ∞) (k : ℕ) : ∀ γ : Fin k → (Multiplicative ℝ →* G), (∀ i, γ i ∈ L) →
     ∀ i, ∃ Z : (Fin k → ℝ) → ι → A, ContDiff ℝ n Z ∧ ∀ t, ∃ γ' ∈ L, Gn m γ' (Z t) ∧
@@ -152,6 +208,13 @@ theorem exists_partial (m : ι → G →* A) (L : Set (Multiplicative ℝ →* G
         · simp [hi]
       rw [pr_succ, pr_succ, e, h3, update_of_ne (Fin.succ_ne_zero j).symm, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf`. Conclude with `contDiff_zero.2 ((hS f hf).1.comp (continuous_const.mul (continuous_pr k γ fun i => hc _ (hγ i))))`. Consider the case `succ n ih`.
+
+Introduce `f hf`. Use `choose f' hf'S hf' using fun j => (hS f hf).2 _ (hβ j)`. Use `choose Z hZ hZ' using exists_partial m L hcj hg n k γ hγ`. Establish `hD : ∀ i, ContDiff ℝ n fun t => ∑ j, (c j (Z i t) : ℂ) * f' j (g * pr γ t)` using `fun i => ContDiff.sum fun j _ => (Complex.ofRealCLM.contDiff.comp ((LinearMap.toContinuousLinearMap (c j)).contDiff.comp (hZ i))).mul (ih _ (hf'S j))`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_hasFDerivAt]`.
+
+Use `⟨_, ?_, hasFDerivAt_of_partials k _ _ (fun i => (hD i).continuous) fun i t => ?_⟩` and prove the remaining obligations. Conclude with `ContDiff.sum fun i _ => (ContinuousLinearMap.smulRightL ℝ (Fin k → ℝ) ℂ (ContinuousLinearMap.proj i)).contDiff.comp (hD i)`. Take `⟨γ', h1, h2, h3⟩` from `hZ' i t`. Simplify using `only [h3, ← mul_assoc]`. Conclude with `hl f f' (fun j => ⟨(hS _ (hf'S j)).1, hf' j⟩) γ' h1 _ h2 _`.
+-/
 theorem contDiff_comp_pr [FiniteDimensional ℝ A] (m : ι → G →* A) (L : Set (Multiplicative ℝ →* G))
     (hc : ∀ γ ∈ L, Continuous γ) (hcj : ∀ γ ∈ L, ∀ x, cj x γ ∈ L) (hg : ∀ γ ∈ L, ∃ Y, Gn m γ Y)
     {r : ℕ} (β : Fin r → (Multiplicative ℝ →* G)) (c : Fin r → (ι → A) →ₗ[ℝ] ℝ) (hβ : ∀ j, β j ∈ L)

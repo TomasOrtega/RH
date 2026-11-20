@@ -12,6 +12,29 @@ noncomputable section
 
 namespace GlobalTheory.CompHS.FlatDiag
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c σ τ t`. Use `set e := exOf Dw (flatWt Dw τ) 0 with he_def`. Establish `hne : τ.1 ≠ conjEmb τ.1` using `fun h => conj_not_mem τ (h ▸ τ.2)`. Establish `hE : ∀ (ρ : E →+* ℂ) (i : Fin (Dw.mult ρ)), e (some ⟨ρ, i⟩) = if ρ = τ.1 then -1 else if ρ = conjEmb τ.1 then 1 else 0`. Introduce `ρ i`.
+
+Take `⟨n, hi⟩` from `i`. Simplify using `only [he_def, exOf, exZ, wtOf, flatWt, parWt, Datum.mult] at hi ⊢`. Distinguish the cases in `h : ρ (H.rt : E) = H.rt0`. Rewrite `hi` using `[if_pos h]`. Rewrite using `[dif_pos h, dif_pos hi]`.
+
+Establish `h2 : ρ ≠ conjEmb τ.1` using `fun e => conj_not_mem τ (e ▸ h)`. Distinguish the cases in `h1 : ρ = τ.1`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Establish `h3 : (⟨ρ, h⟩ : Psi H) ≠ τ` using `fun e => h1 (congrArg Subtype.val e)`.
+
+Simplify using `[h1, h2, h3]`. Rewrite `hi` using `[if_neg h]`. Rewrite using `[dif_neg h]`. Establish `h1 : ρ ≠ τ.1` using `fun e => h (e ▸ τ.2)`. Distinguish the cases in `h' : conjEmb ρ (H.rt : E) = H.rt0`.
+
+Rewrite using `[dif_pos h', dif_pos hi]`. Distinguish the cases in `h2 : ρ = conjEmb τ.1`. Establish `h3 : (⟨conjEmb ρ, h'⟩ : Psi H) = τ` using `Subtype.ext (show conjEmb ρ = τ.1 by rw [h2, conjEmb_conjEmb])`. Rewrite using `[if_pos h3, if_neg h1, if_pos h2]`. Evaluate the numerical expressions.
+
+Establish `h3 : (⟨conjEmb ρ, h'⟩ : Psi H) ≠ τ` using `fun e => h2 (by`. Rewrite using `[← congrArg Subtype.val e, conjEmb_conjEmb])`. Rewrite using `[if_neg h3, if_neg h1, if_neg h2]`. Evaluate the numerical expressions. Rewrite using `[dif_neg h']`.
+
+Establish `h2 : ρ ≠ conjEmb τ.1` using `fun e => h' (by rw [e, conjEmb_conjEmb]; exact τ.2)`. Simplify using `[h1, h2]`. Establish `e0 : e none = 0` using `by simp [he_def, exOf, exZ, wtOf_snd]`. Set `f : (CAt σ)ˣ →* ℂˣ` to `Units.map (MonoidHom.id ℂ)`. Establish `hf : ∀ u : (CAt σ)ˣ, ((f u : ℂˣ) : ℂ) = toC (u : CAt σ)` using `fun _ => rfl`.
+
+Establish `e₁ : GlobalTheory.CompHS.diagChar e t = ((∏ ix, f (t ix) ^ e ix : ℂˣ) : ℂ)`. Establish `: (∏ ix, f (t ix) ^ e ix) = f (∏ ix, t ix ^ e ix)` using `by simp only [map_prod, map_zpow]`. Rewrite using `[this, hf]`. Both sides reduce to the same expression. Set `g : (E →+* ℂ) → ℝ` to `fun ρ => ∏ i : Fin (Dw.mult ρ), ‖toC ((t (some ⟨ρ, i⟩) : CAt σ))‖ ^ e (some ⟨ρ, i⟩)`.
+
+Establish `e₂ : ‖GlobalTheory.CompHS.diagChar e t‖ = ∏ ρ, g ρ`. Rewrite using `[e₁, Units.coe_prod, norm_prod, Fintype.prod_option, e0, zpow_zero, Units.val_one, norm_one, one_mul, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun ρ _ => Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, norm_zpow, hf]`. Establish `e₃ : ∏ ρ, g ρ = g τ.1 * g (conjEmb τ.1)`.
+
+Rewrite using `[← Finset.prod_pair hne]`. Use `(Finset.prod_subset (Finset.subset_univ _) fun ρ _ hρ => ?_).symm` and prove the remaining obligations. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hρ`. Conclude with `Finset.prod_eq_one fun i _ => by rw [hE, if_neg hρ.1, if_neg hρ.2, zpow_zero]`. Establish `gτ : g τ.1 = (∏ i : Fin (Dw.mult τ.1), ‖toC ((t (some ⟨τ.1, i⟩) : CAt σ))‖)⁻¹`.
+
+Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [hE, if_pos rfl, zpow_neg_one]`. Establish `gc : g (conjEmb τ.1) = ∏ j : Fin (Dw.mult (conjEmb τ.1)), ‖toC ((t (some ⟨conjEmb τ.1, j⟩) : CAt σ))‖` using `Finset.prod_congr rfl fun i _ => by rw [hE, if_neg hne.symm, if_pos rfl, zpow_one]`. Rewrite using `[e₂, e₃, gτ, gc, div_eq_mul_inv, mul_comm]`.
+-/
 theorem norm_diagChar_flatWt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (c : Coeff l) (σ : c.F →+* ℂ) (τ : Psi H) (t : Ix Dw → (CAt σ)ˣ), ‖GlobalTheory.CompHS.diagChar (exOf Dw (flatWt Dw τ) 0) t‖ = (∏ j : Fin (Dw.mult (conjEmb τ.1)), ‖toC ((t (some ⟨conjEmb τ.1, j⟩) : CAt σ))‖) / ∏ i : Fin (Dw.mult τ.1), ‖toC ((t (some ⟨τ.1, i⟩) : CAt σ))‖ := by
   classical
   intro E _ _ _ H Dw l c σ τ t

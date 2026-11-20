@@ -26,6 +26,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : ℕ}
 
 open PositivityTheory.Rg.Tf.Loc (twConj)
 
+/- English proof (translation)
+Use `set c := GeneralLinearGroup.map (pFin E) x`. Establish `h1 : GeneralLinearGroup.map (pLoc E w) (gFin (twConj (thetaA E n) x (ratGL E n d)) * (ratF E n u)⁻¹) = GeneralLinearGroup.map (pLoc E w) (c⁻¹ * ratF E n (d * u⁻¹) * thF E n c)`. Rewrite using `[← adeleqof_cpt translAd_holds hu d x w, cpt, adeleqof_map_cW]`. Use `congr 1`. Rewrite using `[map_mul, map_inv, adeleqof_pFin_ratGL]`.
+
+Both sides reduce to the same expression. Use `set r := ratF E n (d * u⁻¹) with hr0`. Use `set s := ratF E n (thE E n (d * u⁻¹)) with hs0`. Establish `hr : thF E n r = s`. Rewrite using `[hr0, hs0]`.
+
+Rewrite using `[GlobalTheory.EulerTw.Comm.thF_ratF]`. Establish `h2 : (c⁻¹ * r * thF E n c) * thF E n (c⁻¹ * r * thF E n c) = c⁻¹ * ratF E n (nrm d) * c`. Rewrite using `[← poleq_norm E n u hu d, map_mul (ratF E n), ← hr0, ← hs0, map_mul, map_mul, map_inv, GlobalTheory.EulerTw.Comm.thF_thF, hr]`. Use `group`. Establish `h3 : nrmL n w (GeneralLinearGroup.map (pLoc E w) (c⁻¹ * r * thF E n c)) = GeneralLinearGroup.map (pLoc E w) (c⁻¹ * ratF E n (nrm d) * c)`.
+
+Establish `hz : ∀ g, thetaGL n (cj w) (GeneralLinearGroup.map (pLoc E w) g) = GeneralLinearGroup.map (pLoc E w) (thF E n g)`. Introduce `g`. Rewrite using `[GlobalTheory.CompanionTheory.SuppFinTw.map_thF_of_not_split hw, thL, if_neg hw]`. Rewrite using `[nrmL, if_neg hw, hz, ← map_mul, h2]`. Rewrite using `[h1, h3, map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`.
+
+Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+-/
 theorem nrmL_charpoly {w : Pl E} (hw : ¬ IsSplitAt w) {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E)
     (x : GA E n) :
     (nrmL n w (GeneralLinearGroup.map (pLoc E w) (gFin (twConj (thetaA E n) x (ratGL E n d)) * (ratF E n u)⁻¹))).val.charpoly
@@ -56,11 +67,21 @@ theorem nrmL_charpoly {w : Pl E} (hw : ¬ IsSplitAt w) {u : GL (Fin n) E} (hu : 
   rw [← Matrix.charpoly_map]
   rfl
 
+/- English proof (translation)
+Use `show y.val.det ≠ 0`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp y.isUnit).ne_zero`.
+-/
 theorem val_mem {m : ℕ} (y : GL (Fin m) ℂ) : y.val ∈ GLs m := by
   show y.val.det ≠ 0
   exact ((Matrix.isUnit_iff_isUnit_det _).mp y.isUnit).ne_zero
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
+/- English proof (translation)
+Take `⟨l, c, w, g, ks, hks, hk, -⟩` from `hM`. Use `set F : GL (Fin m) ℂ → (M.V →L[ℂ] M.V) := fun y => ∑ i, c i • ks i y.val with hFdef`. Establish `hkF : ∀ y : GL (Fin m) ℂ, k y.val = F y` using `fun y => hk _ (val_mem y)`. Establish `hF : Continuous F` using `continuous_finsetSum _ fun i _ => (((hks i).2.1.continuousOn).comp_continuous Units.continuous_val fun y => val_mem y).const_smul (c i)`. Set `L : (M.V →L[ℂ] M.V) →ₗ[ℂ] ℂ` to `(LinearMap.trace ℂ M.V).comp (ContinuousLinearMap.coeLM ℂ)`.
+
+Establish `hphi : phiOf M Tθ k = fun y => L (F y * Tθ)`. Use function extensionality and compare the values at `y`. Rewrite using `[← hkF]`. Both sides reduce to the same expression. Rewrite using `[hphi]`.
+
+Conclude with `L.continuous_of_finiteDimensional.comp (hF.mul continuous_const)`.
+-/
 theorem phiOf_cont {m : ℕ} [MeasurableSpace (G m)] {μ : Measure (G m)} {M : KMod m} (Tθ : M.V →L[ℂ] M.V)
     {k : Mat m → (M.V →L[ℂ] M.V)} {val} {T : ℝ} (hM : IsMult μ M k val T) : Continuous (phiOf M Tθ k) := by
   obtain ⟨l, c, w, g, ks, hks, hk, -⟩ := hM
@@ -76,6 +97,9 @@ theorem phiOf_cont {m : ℕ} [MeasurableSpace (G m)] {μ : Measure (G m)} {M : K
   rw [hphi]
   exact L.continuous_of_finiteDimensional.comp (hF.mul continuous_const)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hy` to reduce the goal to its premises. Rewrite using `[phiOf, hk _ (val_mem y) h, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem phiOf_lg {m : ℕ} {M : KMod m} (Tθ : M.V →L[ℂ] M.V) {k : Mat m → (M.V →L[ℂ] M.V)} (c T : ℝ)
     (hk : ∀ y ∈ GLs m, c * (1 + T) < lg y → k y = 0) (y : G m) (hy : phiOf M Tθ k y ≠ 0) : lg y.val ≤ c * (1 + T) := by
   by_contra h
@@ -87,6 +111,13 @@ theorem phiOf_lg {m : ℕ} {M : KMod m} (Tθ : M.V →L[ℂ] M.V) {k : Mat m →
 end Reg
 
 open PositivityTheory.Rg.Tf.Loc (twConj) in
+/- English proof (translation)
+Introduce `E _ _ _ a b S u₁ u₂ hu₁ hu₂ φ₁ φ₂ h₁ h₂ hw`. Take `⟨w, hwS, hns, hreg⟩` from `hw`. Use `⟨fun d x h₂' hne => ?_, fun d x h₁' hne => ?_⟩` and prove the remaining obligations. Establish `hf` using `(GlobalTheory.CompanionTheory.SuppFinTw.factors_ne h₁ h₂ _ hne w hwS).1`. Establish `hs1` using `Polynomial.Separable.of_mul_left (hreg _ hf)`.
+
+Express the relevant statement in the definitionally equal form `(nrmL a w (GeneralLinearGroup.map (pLoc E w) (gFin (twConj (thetaA E a) x (ratGL E a d)) * (ratF E a u₁)⁻¹))).val.charpoly.Separable at hs1`. Rewrite `hs1` using `[Reg.nrmL_charpoly hns hu₁]`. Conclude with `(Polynomial.separable_map _).1 hs1`. Establish `hf` using `(GlobalTheory.CompanionTheory.SuppFinTw.factors_ne h₁ h₂ _ hne w hwS).1`. Establish `hs1` using `Polynomial.Separable.of_mul_right (hreg _ hf)`.
+
+Express the relevant statement in the definitionally equal form `(nrmL b w (GeneralLinearGroup.map (pLoc E w) (gFin (twConj (thetaA E b) x (ratGL E b d)) * (ratF E b u₂)⁻¹))).val.charpoly.Separable at hs1`. Rewrite `hs1` using `[Reg.nrmL_charpoly hns hu₂]`. Conclude with `(Polynomial.separable_map _).1 hs1`.
+-/
 theorem regOf : RegOf := by
   intro E _ _ _ a b S u₁ u₂ hu₁ hu₂ φ₁ φ₂ h₁ h₂ hw
   obtain ⟨w, hwS, hns, hreg⟩ := hw
@@ -104,6 +135,29 @@ theorem regOf : RegOf := by
     rw [Reg.nrmL_charpoly hns hu₂] at hs1
     exact (Polynomial.separable_map _).1 hs1
 
+/- English proof (translation)
+Introduce `E _ _ _ B`. Use `B.ha` as an intermediate fact. Use `B.hb` as an intermediate fact. Establish `: BorelSpace (G B.a)` using `⟨rfl⟩`. Establish `: BorelSpace (G B.b)` using `⟨rfl⟩`.
+
+Take `⟨ca, hca⟩` from `hk B.a`. Take `⟨cb, hcb⟩` from `hk B.b`. Use `set c₀ : ℝ := max 0 (max ca cb) with hc₀`. Establish `hc₀0 : 0 ≤ c₀` using `le_max_left _ _`. Use `⟨2 * Fintype.card (InfinitePlace E) * c₀, by positivity, ?_⟩` and prove the remaining obligations.
+
+Introduce `κ _ S P e hS hPS hne u₁ u₂ hu₁ hu₂ Ta Tb N t L hVC ht hL hψ hreg`. Use `set γ : Hf E B.a B.b := (ratF E B.a u₁, ratF E B.b u₂) with hγ`. Take `⟨hTr, hFm⟩` from `h2 E κ S P B e hPS hne L N hL`. Take `⟨-, hFC⟩` from `h1 E B S hS`. Take `⟨hcs, ⟨U, hUo, hU⟩, -⟩` from `hFC (L.tr P N) L.t hTr hL.2`.
+
+Use `set Ψ : Hf E B.a B.b → ℂ := fun h => B.vol⁻¹ * finFn S (L.tr P N) L.t (h * γ⁻¹) with hΨ`. Establish `hΨeq : ∀ h, ∑ x, ∑ y, t.ψ x y h * tenN P B e N y x = Ψ h`. Introduce `h`. Rewrite using `[hψ]`. Conclude with `hFm (h * γ⁻¹)`.
+
+Establish `hT1 : 0 ≤ 1 + t.T` using `by linarith [ht.T]`. Establish `hR0 : 0 ≤ c₀ * (1 + t.T)` using `mul_nonneg hc₀0 hT1`. Establish `hfa : ∀ v, Continuous (phiOf (B.Ma v) (Ta v) (t.ka v)) ∧ VeryCusp (phiOf (B.Ma v) (Ta v) (t.ka v)) ∧ ∀ y, phiOf (B.Ma v) (Ta v) (t.ka v) y ≠ 0 → lg y.val ≤ c₀ * (1 + t.T)` using `fun v => ⟨Reg.phiOf_cont _ (ht.ka v), hVC.1 v _ _ _ (ht.ka v), fun y hy => (Reg.phiOf_lg _ ca t.T ((hca B.μa (B.Ma v)).2 _ _ t.T ht.T (ht.ka v)) y hy).trans (mul_le_mul_of_nonneg_right ((le_max_left ca cb).trans (le_max_right _ _)) hT1)⟩`. Establish `hfb : ∀ v, Continuous (phiOf (B.Mb v) (Tb v) (t.kb v)) ∧ VeryCusp (phiOf (B.Mb v) (Tb v) (t.kb v)) ∧ ∀ y, phiOf (B.Mb v) (Tb v) (t.kb v) y ≠ 0 → lg y.val ≤ c₀ * (1 + t.T)` using `fun v => ⟨Reg.phiOf_cont _ (ht.kb v), hVC.2 v _ _ _ (ht.kb v), fun y hy => (Reg.phiOf_lg _ cb t.T ((hcb B.μb (B.Mb v)).2 _ _ t.T ht.T (ht.kb v)) y hy).trans (mul_le_mul_of_nonneg_right ((le_max_right ca cb).trans (le_max_right _ _)) hT1)⟩`. Establish `hsz : ∀ h, Ψ h ≠ 0 → logSize (finGL E B.a h.1) ≤ t.r ∧ logSize (finGL E B.b h.2) ≤ t.r`.
+
+Introduce `h hh`. Rewrite `hh` using `[← hΨeq]`. Take `⟨x, -, hx⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hh`. Take `⟨y, -, hy⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hx`. Conclude with `ht.size x y h (left_ne_zero_of_mul hy)`.
+
+Establish `hfin : ∀ g, Ψ g ≠ 0 → finFn S (L.tr P N) L.t (g * γ⁻¹) ≠ 0` using `fun g hg => right_ne_zero_of_mul hg`. Take `⟨hr₁, hr₂⟩` from `h0 E B.a B.b S u₁ u₂ hu₁ hu₂ (L.tr P N) L.t hTr hL.2 hreg`. Use `set U' : Subgroup (Hf E B.a B.b) := U ⊓ U.comap (MulAut.conj γ).toMonoidHom with hU'`. Establish `hU'o : IsOpen (U' : Set (Hf E B.a B.b))`. Rewrite using `[hU', Subgroup.coe_inf, Subgroup.coe_comap]`.
+
+Conclude with `hUo.inter (hUo.preimage (by show Continuous fun x : Hf E B.a B.b => γ * x * γ⁻¹ fun_prop))`. Establish `hΨU : ∀ u ∈ U', ∀ h, Ψ (u * h) = Ψ h ∧ Ψ (h * u) = Ψ h`. Introduce `u hu h`. Establish `hc : γ * u * γ⁻¹ ∈ U` using `hu.2`. Establish `e : h * u * γ⁻¹ = h * γ⁻¹ * (γ * u * γ⁻¹)` using `by group`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show B.vol⁻¹ * finFn S (L.tr P N) L.t (u * h * γ⁻¹) = B.vol⁻¹ * finFn S (L.tr P N) L.t (h * γ⁻¹)`. Rewrite using `[mul_assoc u h, (hU u hu.1 _).1]`. Use `show B.vol⁻¹ * finFn S (L.tr P N) L.t (h * u * γ⁻¹) = B.vol⁻¹ * finFn S (L.tr P N) L.t (h * γ⁻¹)`. Rewrite using `[e, (hU _ hc _).2]`.
+
+Establish `hcsΨ : HasCompactSupport Ψ` using `(hcs.comp_homeomorph (Homeomorph.mulRight γ⁻¹)).mul_left (f := fun _ => B.vol⁻¹)`. Establish `key` using `PositivityTheory.Rg.BcB.CG.test2J E B.a B.b (fun v => phiOf (B.Ma v) (Ta v) (t.ka v)) (fun v => phiOf (B.Mb v) (Tb v) (t.kb v)) Ψ (c₀ * (1 + t.T)) t.r U' hR0 hfa hfb hcsΨ hU'o hΨU hsz (fun d x h₂ hne => hr₁ d x h₂ (hfin _ hne)) (fun d x h₁ hne => hr₂ d x h₁ (hfin _ hne))`. Establish `hfun : trM t.Φ (opM Ta Tb (tenN P B e N)) = fun g => (∏ v, phiOf (B.Ma v) (Ta v) (t.ka v) (gInf v g.1)) * (∏ v, phiOf (B.Mb v) (Tb v) (t.kb v) (gInf v g.2)) * Ψ (hFin g)`. Use function extensionality and compare the values at `g`. Rewrite using `[PT.Φ, PositivityTheory.Rg.BcB.CG.tensTr, hΨeq]`.
+
+Rewrite using `[hfun]`. Conclude with `PositivityTheory.Rg.BcB.CG.isTest2J_mono key (le_of_eq (by ring))`.
+-/
 theorem pTTest (h0 : RegOf) (h1 : FinConv) (h2 : FmTr) (hk : KerEx) : PTTest := by
   intro E _ _ _ B
   have := B.ha

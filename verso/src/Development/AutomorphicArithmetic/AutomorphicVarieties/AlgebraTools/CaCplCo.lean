@@ -5,6 +5,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Introduce `R₀ R _ _ _ p₀ p O B _ _ _ _ _ _ _ _ _ _ hO hB hp hsurj`. Establish `hRB : ∀ r : R, algebraMap R B r ∈ maximalIdeal B ↔ r ∈ p`. Introduce `r`. Rewrite using `[← hB.comap_eq, Ideal.mem_comap]`. Establish `h0B : ∀ c : R₀, algebraMap R₀ B c ∈ maximalIdeal B ↔ c ∈ p₀`.
+
+Introduce `c`. Rewrite using `[IsScalarTower.algebraMap_apply R₀ R B, hRB, ← hp, Ideal.mem_comap]`. Establish `hmO : Ideal.map (algebraMap O B) (maximalIdeal O) ≤ maximalIdeal B`. Establish `hm` using `IsCplAt.map_pow_eq R₀ p₀ O hO 1`. Rewrite `hm` using `[pow_one, pow_one]`.
+
+Rewrite using `[← hm, Ideal.map_map, ← IsScalarTower.algebraMap_eq R₀ O B, Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Conclude with `(h0B c).2 hc`. Establish `hloc : IsLocalHom (algebraMap O B)`. Use `⟨fun o ho => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hn`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 (hmO (Ideal.mem_map_of_mem _ ((IsLocalRing.mem_maximalIdeal _).2 hn))) ho`. Establish `e : ∀ c : R₀, algebraMap O B (algebraMap R₀ O c) = algebraMap R B (algebraMap R₀ R c)`. Introduce `c`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+
+Establish `hres : ∀ x : B, ∃ o : O, x - algebraMap O B o ∈ maximalIdeal B`. Introduce `x`. Take `⟨a, s, hs, hx⟩` from `hB.dense 1 x`. Rewrite `hx` using `[pow_one]`. Take `⟨s₀, hs₀⟩` from `hsurj s`.
+
+Take `⟨a₀, ha₀⟩` from `hsurj a`. Establish `h1 : algebraMap R B s - algebraMap O B (algebraMap R₀ O s₀) ∈ maximalIdeal B`. Rewrite using `[e, ← map_sub]`. Conclude with `(hRB _).2 hs₀`. Establish `h2 : algebraMap R B a - algebraMap O B (algebraMap R₀ O a₀) ∈ maximalIdeal B`.
+
+Rewrite using `[e, ← map_sub]`. Conclude with `(hRB _).2 ha₀`. Establish `hsu : IsUnit (algebraMap O B (algebraMap R₀ O s₀))`. Assume the negation of the conclusion as `hn`. Establish `hm : algebraMap O B (algebraMap R₀ O s₀) ∈ maximalIdeal B` using `(IsLocalRing.mem_maximalIdeal _).2 hn`.
+
+Establish `hsum` using `Ideal.add_mem _ h1 hm`. Rewrite `hsum` using `[sub_add_cancel]`. Conclude with `hs ((hRB s).1 hsum)`. Take `⟨u, hu⟩` from `hloc.map_nonunit _ hsu`. Use `⟨↑u⁻¹ * algebraMap R₀ O a₀, ?_⟩` and prove the remaining obligations.
+
+Establish `key : algebraMap O B (algebraMap R₀ O s₀) * x - algebraMap O B (algebraMap R₀ O a₀) ∈ maximalIdeal B`. Establish `hid : algebraMap O B (algebraMap R₀ O s₀) * x - algebraMap O B (algebraMap R₀ O a₀) = (algebraMap R B s * x - algebraMap R B a) - (algebraMap R B s - algebraMap O B (algebraMap R₀ O s₀)) * x + (algebraMap R B a - algebraMap O B (algebraMap R₀ O a₀))` using `by ring`. Rewrite using `[hid]`. Conclude with `Ideal.add_mem _ (Ideal.sub_mem _ hx (Ideal.mul_mem_right _ _ h1)) h2`. Establish `hinv : algebraMap O B ↑u⁻¹ * algebraMap O B ↑u = 1`.
+
+Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hid2 : x - algebraMap O B (↑u⁻¹ * algebraMap R₀ O a₀) = algebraMap O B ↑u⁻¹ * (algebraMap O B (algebraMap R₀ O s₀) * x - algebraMap O B (algebraMap R₀ O a₀))`. Rewrite using `[← hu, map_mul]`. Take the linear combination `(-x) * hinv`. Rewrite using `[hid2]`.
+
+Conclude with `Ideal.mul_mem_left _ _ key`. Use `haveI := hB.noeth`. Conclude with `UpperTheory.V.Alg.IsCO.mk hB.complete hloc hres`.
+-/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.isCO :
     ∀ (R₀ R : Type) [CommRing R₀] [CommRing R] [Algebra R₀ R] (p₀ : Ideal R₀) (p : Ideal R)
       (O B : Type) [CommRing O] [IsLocalRing O] [CommRing B] [IsLocalRing B] [Algebra R₀ O] [Algebra R B]

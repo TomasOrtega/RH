@@ -19,6 +19,13 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
+/- English proof (translation)
+Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i', hi'⟩` from `hz.1 (κ k)`. Take `⟨p, hp⟩` from `hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `h2 : p.1 = k` using `hv.1 (by rw [← hv.2.2.1 p, hp])`. Take `⟨pk, pi⟩` from `p`.
+
+Simplify using `only at h2`. Substitute `h2` using the available equality. Conclude with `⟨pi, show z' (v ⟨pk, pi⟩) ≠ 0 by rw [hp]; exact hi'⟩`. Establish `h` using `hz.2 _ (Ideal.mem_comap.mp hf)`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_rename, eval_rename] at h`.
+
+Conclude with `h`.
+-/
 theorem comp_mem_mcPts {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {P' : Ideal (MRing ι')} {z' : (Σ k', ι' k') → ℂ} (hz : z' ∈ mcPts P') :
     (fun p => z' (v p)) ∈ mcPts (imageZ v P') := by
@@ -34,6 +41,15 @@ theorem comp_mem_mcPts {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (h
     simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_rename, eval_rename] at h
     exact h
 
+/- English proof (translation)
+Take `⟨k0⟩` from `hP.1`. Set `c : K → ℂ` to `Function.update (fun _ => (1 : ℂ)) k0 (Ψ (segre (pullPt R v x)) 0)⁻¹`. Establish `hc : ∀ k, c k ≠ 0`. Introduce `k`. Distinguish the cases in `hk : k = k0`.
+
+Substitute `hk` using the available equality. Simplify using `[c, h0]`. Simplify using `[c, Function.update_of_ne hk]`. Establish `hpc : ∏ k, c k = (Ψ (segre (pullPt R v x)) 0)⁻¹`. Simplify using `[c, Finset.prod_update_of_mem (Finset.mem_univ k0)]`.
+
+Use `⟨fun p => c p.1 * pullPt R v x p, mcPts_smul hP.2.1.2.1 c hc (comp_mem_mcPts hv (R.mem x x (R.mem_U x))), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[segre_smul, hpc]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `[pullW, h0]`. Simplify using `only [pullW, map_smul, Pi.smul_apply, smul_eq_mul, Fin.cons_succ, pullQ]`. Rewrite using `[div_eq_inv_mul]`.
+-/
 theorem pullW_mem_fibre {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {P' J' : Ideal (MRing ι')} {n : ℕ} (hP : IsArithVar (imageZ v P') (n + 1)) (R : AnLogRes P' J' n)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) {x : R.X}
@@ -61,6 +77,25 @@ end IntersectionWithSection
 
 open IntersectionWithSection in
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v P' n G J L L' A A' s hv hP' hP hJ hL hLL' hA hAA' hs`. Establish `hA'` using `ArithmeticIntersectionIntegral.isSmoothHerm_pull hv hA hAA'`. Establish `hL' : ∀ j, IsSmoothHerm (L' j)` using `fun j => ArithmeticIntersectionIntegral.isSmoothHerm_pull hv (hL j) (hLL' j)`. Establish `hs' : IsSectionOn P' A' (rename v s)`. Take `⟨a, hAa, hsa, hsP⟩` from `hs`.
+
+Use `⟨Function.extend κ a 0, fun k' => ?_, ArithmeticIntersectionIntegral.isMultiHomog_rename hv hsa, fun h => hsP (Ideal.mem_comap.mpr h)⟩` and prove the remaining obligations. Rewrite using `[hAA'.1, pullDeg]`. Distinguish the cases in `h : ∃ k, κ k = k'`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[hv.1.extend_apply, hv.1.extend_apply, hAa k]`.
+
+Rewrite using `[Function.extend_apply' _ _ _ h, Function.extend_apply' _ _ _ h]`. Simplify using the standard rewrite rules. Take `⟨J', ⟨R⟩⟩` from `exists_anLogRes hE hP'`. Take `⟨Ψ, hΨ⟩` from `goodProjExists K ι (imageZ v P') n hP`. Take `⟨hnull, hfin⟩` from `hPush K ι K' ι' κ v P' J' n R Ψ hv hP' hP hΨ`.
+
+Rewrite using `[ptsIntegral_eq_mInt' hE resBridge R hP' hL' hA' hs', ptsIntegral_eq_at hE resBridge hP hΨ hL hA hs, pushForward_null R.A _ (fun j => potOf_isPotential R (L' j) (hL' j)) (pullQ R v Ψ) (pullBad R v Ψ) hnull (fun x hx j hj => by`. Assume the negation of the conclusion as `h`. Conclude with `hx (Or.inr ⟨j, hj, h⟩)) hfin _ (brIntegrable R L' A' (rename v s) hP' hL' hA' hs'),`. Use the proof step `ptsIntegralAt, ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hCount K ι K' ι' κ v P' J' n G J R Ψ hv hP' hP hJ hΨ, hDens K ι K' ι' κ v P' J' n R Ψ L L' A A' s hv hP' hP hΨ hL hLL' hA hAA' hs] with y hc hd`. Establish `hSf` using `hfin y`. Establish `hFf` using `fibreFinite K ι (imageZ v P') n Ψ hP hΨ y`. Establish `hmaps : ∀ x ∈ hSf.toFinset, pullW R v Ψ x ∈ hFf.toFinset`. Introduce `x hx`.
+
+Rewrite `hx`, the goal using `[Set.Finite.mem_toFinset]`. Establish `h0 : Ψ (segre (pullPt R v x)) 0 ≠ 0` using `fun h => hx.2 (Or.inl (Or.inr h))`. Establish `hw` using `pullW_mem_fibre hv hP R Ψ h0`. Rewrite `hw` using `[show pullQ R v Ψ x = y from hx.1]`. Then use the resulting hypothesis. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hSf, finsum_mem_eq_finite_toFinset_sum _ hFf, Finset.mul_sum]`.
+
+Use `(Finset.sum_congr rfl fun x hx => hd x ((Set.Finite.mem_toFinset hSf).mp hx)).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_fiberwise_of_maps_to' hmaps]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `congr 1`.
+
+Establish `hset : ({x | pullQ R v Ψ x = y ∧ pullW R v Ψ x = w} \ pullBad R v Ψ) = ↑(hSf.toFinset.filter fun x => pullW R v Ψ x = w)`. Use extensionality with `x`. Simplify using `only [Finset.coe_filter, Set.Finite.mem_toFinset, Set.mem_sdiff, Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_singleton_iff]`. The claim follows by propositional logic. Establish `hcw` using `hc w ((Set.Finite.mem_toFinset hFf).mp hw)`.
+
+Rewrite `hcw` using `[hset, Set.ncard_coe_finset]`. Conclude with `hcw` after adjusting the coercions.
+-/
 theorem IntersectionWithSection.proof (hE : ResExistsStatement) (hPush : pullbackPushforward_holds.Statement)
     (hCount : PullbackDegreeCount.Statement) (hDens : pullbackDensity_holds.Statement) : IntersectionWithSection.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' n G J L L' A A' s hv hP' hP hJ hL hLL' hA hAA' hs

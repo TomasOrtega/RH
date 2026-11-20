@@ -14,6 +14,9 @@ section Gram
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E)
 
+/- English proof (translation)
+Unfold `TF`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Apply the tactic sequence `by_cases h' : a = Fin.last r <;> simp [h']`. Simplify using `[Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]`.
+-/
 theorem tF_herm (r : ℕ) (T : F) (a b : Fin (r + 1)) :
     σ (TF r (algebraMap F E T) b a) = TF r (algebraMap F E T) a b := by
   unfold TF
@@ -27,6 +30,11 @@ def gramTwo {r : ℕ} (T T' : F) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
   Matrix.reindex finSumFinEquiv finSumFinEquiv
     (Matrix.fromBlocks (TF r (algebraMap F E T)) Z (cT (σ : E →+* E) Z) (TF r (algebraMap F E T')))
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `finSumFinEquiv.surjective a`. Take `⟨b, rfl⟩` from `finSumFinEquiv.surjective b`. Simplify using `only [gramTwo, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Conclude with `tF_herm σ r T a b`.
+
+Conclude with `hσ _`. Both sides reduce to the same expression. Conclude with `tF_herm σ r T' a b`.
+-/
 theorem gramTwo_herm (hσ : ∀ x, σ (σ x) = x) {r : ℕ} (T T' : F)
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (a b : Fin ((r + 1) + (r + 1))) :
     σ (gramTwo σ T T' Z b a) = gramTwo σ T T' Z a b := by
@@ -53,6 +61,9 @@ def IsGramFibre [TopologicalSpace R] {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a
 
 end Gram
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem invol_of_cm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -250,6 +261,9 @@ def MassFormula : Prop :=
                 (μf (stabK σ J Λ)).toReal) *
               GlobalTheory.SgGlob.normInf (G Z) ^ (k - 1) * ∏' v, dens Z v))
 
+/- English proof (translation)
+Simplify using `only [gramTwo, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, Matrix.fromBlocks_apply₁₂]`.
+-/
 example {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {r : ℕ} (T T' : F)
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (a b : Fin (r + 1)) :
     gramTwo σ T T' Z (Fin.castAdd (r + 1) a) (Fin.natAdd (r + 1) b) = Z a b := by

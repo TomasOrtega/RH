@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CMFieldExponential
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Two
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `A`. Take `⟨L, hF, hN, h, -⟩` from `UpperTheory.V.exists_numberField_isAbField_finrank_eq_deg A`. Conclude with `⟨L, hF, hN, h⟩`.
+-/
 theorem UpperTheory.V.Two.abExists :
     ∀ A : AbF, ∃ (L : Type) (_ : Field L) (_ : NumberField L), IsAbField A L := by
   intro A

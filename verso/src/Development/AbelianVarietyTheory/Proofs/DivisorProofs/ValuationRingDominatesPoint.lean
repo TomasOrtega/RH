@@ -7,6 +7,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ShFam.Cell
 
+/- English proof (translation)
+Establish `hunit : ∀ y : t'.asIdeal.primeCompl, IsUnit (Cell.geoHom t (y : P))`. Introduce `y`. Use `isUnit_iff_ne_zero.mpr ?_` and prove the remaining obligations. Introduce `h0`. Establish `hy : (y : P) ∈ RingHom.ker (Cell.geoHom t)` using `h0`.
+
+Rewrite `hy` using `[Cell.ker_geoHom]`. Conclude with `y.2 (htt hy)`. Set `f : Localization.AtPrime t'.asIdeal →+* Cell.GeoF t` to `IsLocalization.lift (M := t'.asIdeal.primeCompl) hunit`. Take `⟨V, hV, hloc⟩` from `IsLocalRing.exists_factor_valuationRing f`. Set `g : Localization.AtPrime t'.asIdeal →+* V` to `f.codRestrict V.toSubring hV`.
+
+Use `haveI : IsLocalHom g := hloc`. Set `χ : P →+* V` to `g.comp (algebraMap P (Localization.AtPrime t'.asIdeal))`. Use `⟨V, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, χ, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x show f (algebraMap P (Localization.AtPrime t'.asIdeal) x) = Cell.geoHom t x`. Conclude with `IsLocalization.lift_eq _ x`.
+
+Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Use `show ¬ IsUnit (g (algebraMap P (Localization.AtPrime t'.asIdeal) x)) ↔ _`. Rewrite using `[isUnit_map_iff g, IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime t'.asIdeal) t'.asIdeal x]`. Simplify using `[Ideal.primeCompl]`.
+-/
 theorem exists_valuationRing_dominating_geo {P : Type} [CommRing P] (t t' : PrimeSpectrum P) (htt : t ≤ t') :
     ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : ValuationRing R) (_ : Algebra R (Cell.GeoF t))
       (_ : IsFractionRing R (Cell.GeoF t)) (χR : P →+* R),

@@ -3,6 +3,9 @@ open Matrix
 
 namespace GlobalTheory.CompanionTheory.RelIndex
 
+/- English proof (translation)
+Introduce `X _ _ _ A H hA hH _`. Use `haveI : CompactSpace A := isCompact_iff_compactSpace.mp hA`. Establish `hopen : IsOpen ((H.addSubgroupOf A : AddSubgroup A) : Set A)` using `hH.preimage continuous_subtype_val`. Use `haveI : Finite (A ⧸ H.addSubgroupOf A) := AddSubgroup.quotient_finite_of_isOpen _ hopen`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero_of_isCompact_of_isOpen :
     ∀ {X : Type} [TopologicalSpace X] [AddCommGroup X] [IsTopologicalAddGroup X] (A H : AddSubgroup X), IsCompact (A : Set X) → IsOpen (H : Set X) → H ≤ A → H.relIndex A ≠ 0 := by
   intro X _ _ _ A H hA hH _

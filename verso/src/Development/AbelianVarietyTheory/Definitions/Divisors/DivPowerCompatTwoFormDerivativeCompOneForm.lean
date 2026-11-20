@@ -23,6 +23,13 @@ variable (R : Type) [CommRing R] {B : Type} [CommRing B] [Algebra R B] {J : Idea
 def rel : Ideal (DR R B) :=
   Ideal.span {x | ∃ n : ℕ, ∃ a ∈ J, x = ι1 (D R B (δ.dpow (n + 1) a) - δ.dpow n a • D R B a)}
 
+/- English proof (translation)
+Establish `key : ι1 (D R B (δ.dpow n a)) * ι1 (D R B a) ∈ rel R δ`. Break down `n with _ | m` into its components or cases. Rewrite using `[δ.dpow_zero ha, Derivation.map_one_eq_zero, map_zero, zero_mul]`. Conclude with `Ideal.zero_mem _`. Establish `hg : ι1 (D R B (δ.dpow (m + 1) a) - δ.dpow m a • D R B a) ∈ rel R δ` using `Ideal.subset_span ⟨m, a, ha, rfl⟩`.
+
+Establish `e : ι1 (D R B (δ.dpow (m + 1) a)) = ι1 (D R B (δ.dpow (m + 1) a) - δ.dpow m a • D R B a) + δ.dpow m a • ι1 (D R B a)`. Rewrite using `[map_sub, map_smul, sub_add_cancel]`. Rewrite using `[e, add_mul, smul_mul_assoc, ExteriorAlgebra.ι_sq_zero, smul_zero, add_zero, ι_mul_ι_swap, ← neg_mul]`. Conclude with `Ideal.mul_mem_left _ _ hg`. Rewrite using `[map_sub, map_sub, map_smul, dDR_D, dDR_smul, dDR_D, smul_zero, add_zero, zero_sub]`.
+
+Conclude with `neg_mem key`.
+-/
 private theorem dDR_dpow_succ_sub_smul_mem_rel (n : ℕ) {a : B} (ha : a ∈ J) :
     dDR R B (ι1 (D R B (δ.dpow (n + 1) a) - δ.dpow n a • D R B a)) ∈ rel R δ := by
   have key : ι1 (D R B (δ.dpow n a)) * ι1 (D R B a) ∈ rel R δ := by
@@ -40,6 +47,13 @@ private theorem dDR_dpow_succ_sub_smul_mem_rel (n : ℕ) {a : B} (ha : a ∈ J) 
   rw [map_sub, map_sub, map_smul, dDR_D, dDR_smul, dDR_D, smul_zero, add_zero, zero_sub]
   exact neg_mem key
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun y _ ↦ dDR R B y ∈ rel R δ) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `y ⟨n, a, ha, rfl⟩`. Conclude with `dDR_dpow_succ_sub_smul_mem_rel R δ n ha`. Rewrite using `[map_zero]`. Conclude with `Ideal.zero_mem _`.
+
+Introduce `y z _ _ hy hz`. Rewrite using `[map_add]`. Conclude with `Ideal.add_mem _ hy hz`. Introduce `c y hy' hy`. Rewrite using `[smul_eq_mul, dDR_mul]`.
+
+Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hy) (Ideal.mul_mem_left _ _ hy')`.
+-/
 theorem dDR_mem_rel {x : DR R B} (hx : x ∈ rel R δ) : dDR R B x ∈ rel R δ := by
   refine Submodule.span_induction (p := fun y _ ↦ dDR R B y ∈ rel R δ) ?_ ?_ ?_ ?_ hx
   · rintro y ⟨n, a, ha, rfl⟩
@@ -72,6 +86,13 @@ variable {R δ} {R' B' : Type} [CommRing R'] [CommRing B'] [Algebra R' B'] {J' :
 
 include hd in
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun y _ ↦ h.mDR y ∈ rel R' δ') ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `y ⟨n, a, ha, rfl⟩`. Establish `ha' : α a ∈ J'` using `hd.ideal_comp (Ideal.mem_map_of_mem α ha)`. Use `Ideal.subset_span ⟨n, α a, ha', ?_⟩` and prove the remaining obligations. Rewrite using `[SemiHom.mDR_ι, map_sub, SemiHom.m1_D, SemiHom.oneFormMap_smul_semilinear, SemiHom.m1_D, hd.dpow_comp a ha, hd.dpow_comp a ha]`.
+
+Rewrite using `[map_zero]`. Conclude with `Ideal.zero_mem _`. Introduce `y z _ _ hy hz`. Rewrite using `[map_add]`. Conclude with `Ideal.add_mem _ hy hz`.
+
+Introduce `c y _ hy`. Rewrite using `[smul_eq_mul, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ hy`.
+-/
 theorem mDR_mem_rel {x : DR R B} (hx : x ∈ rel R δ) : h.mDR x ∈ rel R' δ' := by
   refine Submodule.span_induction (p := fun y _ ↦ h.mDR y ∈ rel R' δ') ?_ ?_ ?_ ?_ hx
   · rintro y ⟨n, a, ha, rfl⟩
@@ -95,39 +116,75 @@ def km1 : K1 R δ →+ K1 R' δ' := qmap _ _ h.m1.toAddMonoidHom fun x hx ↦ by
 
 def km (j : ℕ) : K R δ j →+ K R' δ' j := qmap _ _ (h.mOm j).toAddMonoidHom fun _ hx ↦ mDR_mem_rel h hd hx
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divPowerCompatOneFormMap_mk (x : Ω[B⁄R]) : km1 h hd (Submodule.Quotient.mk x) = Submodule.Quotient.mk (h.m1 x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem km_mk (j : ℕ) (x : Om R B j) : km h hd j (Submodule.Quotient.mk x) = Submodule.Quotient.mk (h.mOm j x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divPowerCompatFunctionDifferential_apply (b : B) : kd0 R δ b = Submodule.Quotient.mk (D R B b) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divPowerCompatOneFormDerivative_mk (x : Ω[B⁄R]) : kd1 R δ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (dOne R B x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divPowerCompatTwoFormDerivative_mk (x : Om R B 2) : kd2 R δ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (dTwo R B x) := rfl
 
+/- English proof (translation)
+Rewrite using `[divPowerCompatFunctionDifferential_apply, divPowerCompatFunctionDifferential_apply, divPowerCompatOneFormMap_mk, SemiHom.m1_D]`.
+-/
 theorem divPowerCompatOneFormMap_functionDifferential (x : B) : km1 h hd (kd0 R δ x) = kd0 R' δ' (α x) := by
   rw [divPowerCompatFunctionDifferential_apply, divPowerCompatFunctionDifferential_apply, divPowerCompatOneFormMap_mk, SemiHom.m1_D]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[divPowerCompatOneFormDerivative_mk, km_mk, divPowerCompatOneFormMap_mk, divPowerCompatOneFormDerivative_mk, SemiHom.mOm_dOne]`.
+-/
 theorem divPowerCompatFormMap_oneFormDerivative (x : K1 R δ) : km h hd 2 (kd1 R δ x) = kd1 R' δ' (km1 h hd x) := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rw [divPowerCompatOneFormDerivative_mk, km_mk, divPowerCompatOneFormMap_mk, divPowerCompatOneFormDerivative_mk, SemiHom.mOm_dOne]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[divPowerCompatTwoFormDerivative_mk, km_mk, km_mk, divPowerCompatTwoFormDerivative_mk, SemiHom.mOm_dTwo]`.
+-/
 theorem divPowerCompatFormMap_twoFormDerivative (x : K R δ 2) : km h hd 3 (kd2 R δ x) = kd2 R' δ' (km h hd 2 x) := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rw [divPowerCompatTwoFormDerivative_mk, km_mk, km_mk, divPowerCompatTwoFormDerivative_mk, SemiHom.mOm_dTwo]
 
+/- English proof (translation)
+Rewrite using `[divPowerCompatFunctionDifferential_apply, divPowerCompatOneFormDerivative_mk, dOne_D, Submodule.Quotient.mk_zero]`.
+-/
 theorem divPowerCompatOneFormDerivative_comp_differential (x : B) : kd1 R δ (kd0 R δ x) = 0 := by
   rw [divPowerCompatFunctionDifferential_apply, divPowerCompatOneFormDerivative_mk, dOne_D, Submodule.Quotient.mk_zero]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[divPowerCompatOneFormDerivative_mk, divPowerCompatTwoFormDerivative_mk, dTwo_dOne, Submodule.Quotient.mk_zero]`.
+-/
 theorem divPowerCompatTwoFormDerivative_comp_oneForm (x : K1 R δ) : kd2 R δ (kd1 R δ x) = 0 := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rw [divPowerCompatOneFormDerivative_mk, divPowerCompatTwoFormDerivative_mk, dTwo_dOne, Submodule.Quotient.mk_zero]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[divPowerCompatOneFormMap_mk, h.oneFormMap_eq_self_of_id e]`.
+-/
 theorem divPowerCompatOneFormMap_id {τ : R →+* R} {β : B →+* B} (h : SemiHom τ β) (hd : IsDPMorphism δ δ β) (e : ∀ b, β b = b)
     (x : K1 R δ) : km1 h hd x = x := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rw [divPowerCompatOneFormMap_mk, h.oneFormMap_eq_self_of_id e]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[km_mk, h.mOm_id e]`.
+-/
 theorem km_id {τ : R →+* R} {β : B →+* B} (h : SemiHom τ β) (hd : IsDPMorphism δ δ β) (e : ∀ b, β b = b)
     (j : ℕ) (x : K R δ j) : km h hd j x = x := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -139,10 +196,16 @@ variable {R'' B'' : Type} [CommRing R''] [CommRing B''] [Algebra R'' B''] {J'' :
   {δ'' : DividedPowers J''} {τ : R' →+* R''} {β : B' →+* B''} {ρ : R →+* R''} {γ : B →+* B''}
   (h' : SemiHom τ β) (hd' : IsDPMorphism δ' δ'' β) (h'' : SemiHom ρ γ) (hd'' : IsDPMorphism δ δ'' γ)
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[divPowerCompatOneFormMap_mk, divPowerCompatOneFormMap_mk, divPowerCompatOneFormMap_mk, h.oneFormMap_comp_oneFormMap h' h'' e]`.
+-/
 theorem divPowerCompatOneFormMap_comp (e : ∀ b, β (α b) = γ b) (x : K1 R δ) : km1 h' hd' (km1 h hd x) = km1 h'' hd'' x := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rw [divPowerCompatOneFormMap_mk, divPowerCompatOneFormMap_mk, divPowerCompatOneFormMap_mk, h.oneFormMap_comp_oneFormMap h' h'' e]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[km_mk, km_mk, km_mk, h.mOm_mOm h' h'' e]`.
+-/
 theorem km_km (e : ∀ b, β (α b) = γ b) (j : ℕ) (x : K R δ j) : km h' hd' j (km h hd j x) = km h'' hd'' j x := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rw [km_mk, km_mk, km_mk, h.mOm_mOm h' h'' e]
@@ -195,8 +258,14 @@ section Mor
 variable {κ : DividedPowers I} {t : X ⟶ Sp R} {κ' : DividedPowers I'} {t' : X' ⟶ Sp R'} {σ : R →+* R'} {φ : X' ⟶ X}
   (m : IsMor κ t κ' t' σ φ)
 
+/- English proof (translation)
+The claim follows from `fun r b ↦ (Algebra.smul_def (A := T.B) (σ r) b).symm`.
+-/
 theorem morSemi (T : Thick κ' t') : SemiHom (B := (m.obj T).B) (B' := T.B) σ (RingHom.id T.B) := fun r b ↦ (Algebra.smul_def (A := T.B) (σ r) b).symm
 
+/- English proof (translation)
+The claim follows from `(DPMorphism.id T.δ).isDPMorphism`.
+-/
 theorem morDP (T : Thick κ' t') : IsDPMorphism (m.obj T).δ T.δ (RingHom.id T.B) := (DPMorphism.id T.δ).isDPMorphism
 
 def morMap : CxMap (KK κ t) (KK κ' t') where
@@ -284,10 +353,16 @@ section Sections
 variable (D : Data) (δ : ∀ U : D.X.affineOpens, DividedPowers (D.I.map (algebraMap D.R (Sec D.s U.1))))
   (hn : ∀ U, IsNilDP (δ U)) (hd : ∀ U, IsDPMorphism D.κ (δ U) (algebraMap D.R (Sec D.s U.1)))
 
+/- English proof (translation)
+Take `⟨s₀, hp, ht⟩` from `D.red`. Rewrite using `[ht, hp.w]`.
+-/
 theorem t_eq : D.t = D.i ≫ D.s := by
   obtain ⟨s₀, hp, ht⟩ := D.red
   rw [ht, hp.w]
 
+/- English proof (translation)
+Take `⟨s₀, hp, -⟩` from `D.red`. Use `haveI : IsClosedImmersion (spMap (Ideal.Quotient.mk D.I)) := IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Conclude with `Limits.PullbackCone.mono_fst_of_is_pullback_of_mono hp.isLimit`.
+-/
 theorem mono_i : Mono D.i := by
   obtain ⟨s₀, hp, -⟩ := D.red
   haveI : IsClosedImmersion (spMap (Ideal.Quotient.mk D.I)) :=
@@ -299,8 +374,14 @@ def pt (U : D.X.affineOpens) : Sp (Sec D.s U.1 ⧸ D.I.map (algebraMap D.R (Sec 
     (spMap (Ideal.quotientMap _ (algebraMap D.R (Sec D.s U.1)) Ideal.le_comap_map)) (by
       rw [Category.assoc, affPt_w, ← Cris.spMap_comp, ← Cris.spMap_comp]; rfl)
 
+/- English proof (translation)
+The claim follows from `IsPullback.lift_fst _ _ _ _`.
+-/
 theorem pt_i (U : D.X.affineOpens) : pt D U ≫ D.i = spMap (Ideal.Quotient.mk _) ≫ affPt D.s U := IsPullback.lift_fst _ _ _ _
 
+/- English proof (translation)
+Use extensionality with `r`. Conclude with `AlgHom.commutes _ r`.
+-/
 private theorem sec_res_comp_algebraMap {U V : D.X.affineOpens} (h : V.1 ≤ U.1) :
     (Sec.res D.s h : Sec D.s U.1 →+* Sec D.s V.1).comp (algebraMap D.R (Sec D.s U.1)) =
       algebraMap D.R (Sec D.s V.1) := by
@@ -320,18 +401,31 @@ def thick (U : D.X.affineOpens) : Thick D.κ D.t where
   x := pt D U
   w := by rw [t_eq, ← Category.assoc, pt_i, Category.assoc, affPt_w, ← Cris.spMap_comp]
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_map, sec_res_comp_algebraMap]`.
+-/
 theorem res_le {U V : D.X.affineOpens} (h : V.1 ≤ U.1) : D.I.map (algebraMap D.R (Sec D.s U.1)) ≤
     (D.I.map (algebraMap D.R (Sec D.s V.1))).comap (Sec.res D.s h : Sec D.s U.1 →+* Sec D.s V.1) := by
   rw [← Ideal.map_le_iff_le_comap, Ideal.map_map, sec_res_comp_algebraMap]
 
 include hd in
 
+/- English proof (translation)
+Use `IsDPMorphism.of_comp D.κ (δ U) (δ V) (algebraMap D.R (Sec D.s U.1)) _ rfl (hd U) ?_` and prove the remaining obligations. Rewrite using `[sec_res_comp_algebraMap]`. Conclude with `hd V`.
+-/
 theorem res_dp {U V : D.X.affineOpens} (h : V.1 ≤ U.1) :
     IsDPMorphism (δ U) (δ V) (Sec.res D.s h : Sec D.s U.1 →+* Sec D.s V.1) := by
   refine IsDPMorphism.of_comp D.κ (δ U) (δ V) (algebraMap D.R (Sec D.s U.1)) _ rfl (hd U) ?_
   rw [sec_res_comp_algebraMap]
   exact hd V
 
+/- English proof (translation)
+Establish `hP` using `D.red.choose_spec.1`. Use `hP.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pt_i, pt_i, ← Category.assoc, ← Cris.spMap_comp, Ideal.quotientMap_comp_mk, Cris.spMap_comp, Category.assoc]`. Use `congr 1`. Conclude with `U.2.map_fromSpec V.2 (homOfLE h).op`.
+
+Simplify using `only [Category.assoc, pt, IsPullback.lift_snd]`. Rewrite using `[← Cris.spMap_comp]`. Use `congr 1`. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun r ↦ ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, Ideal.quotientMap_mk]`.
+
+Conclude with `congrArg _ (RingHom.congr_fun (sec_res_comp_algebraMap D h) r)`.
+-/
 theorem res_pt {U V : D.X.affineOpens} (h : V.1 ≤ U.1) :
     spMap (Ideal.quotientMap _ (Sec.res D.s h : Sec D.s U.1 →+* Sec D.s V.1) (res_le D h)) ≫ pt D U = pt D V := by
   have hP := D.red.choose_spec.1
@@ -371,6 +465,9 @@ def _root_.GlobalTheory.PDForm.Lift.ofDP : Lift D where
 
 end Sections
 
+/- English proof (translation)
+Simplify using `[← Ideal.map_pow, h]`.
+-/
 theorem map_sq {R A : Type} [CommRing R] [CommRing A] {I : Ideal R} (h : I ^ 2 = 0) (f : R →+* A) :
     I.map f ^ 2 = 0 := by
   simp [← Ideal.map_pow, h]
@@ -381,6 +478,9 @@ def Lift.ofSq (D : Data) (h : D.I ^ 2 = 0) (hκ : D.κ = divided₂ h) : Lift D 
   Lift.ofDP D (fun _ ↦ divided₂ (Inhab.map_sq h _)) (fun _ ↦ isDPNilpotent_squareZero _)
     fun _ ↦ hκ ▸ isDPMorphism_sqDP h _ _ fun _ ha ↦ Ideal.mem_map_of_mem _ ha
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_singleton_pow, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Evaluate the decidable proposition.
+-/
 theorem Inhab.span_two_sq : Ideal.span {(2 : ZMod 4)} ^ 2 = 0 := by
   rw [Ideal.span_singleton_pow, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
   decide
@@ -391,6 +491,13 @@ def Inhab.wholeLine : AffOp Data.lineModFour.X := Opposite.op ⟨⊤, isAffineOp
 
 open Polynomial in
 
+/- English proof (translation)
+Establish `h2 : algebraMap Data.lineModFour.R (Sec Data.lineModFour.s Inhab.wholeLine.unop.1) 2 ≠ 0`. Introduce `h0`. Rewrite `h0` using `[map_ofNat]`. Establish `h1 : (Scheme.ΓSpecIso (CommRingCat.of (Polynomial (ZMod 4)))).hom.hom 2 = (Scheme.ΓSpecIso (CommRingCat.of (Polynomial (ZMod 4)))).hom.hom 0` using `congrArg _ h0`. Rewrite `h1` using `[map_ofNat, map_zero]`.
+
+Establish `h3 : (2 : Polynomial (ZMod 4)) ≠ 0`. Rewrite using `[← map_ofNat Polynomial.C 2, Ne, Polynomial.C_eq_zero]`. Evaluate the decidable proposition. Conclude with `h3 h1`. Establish `hJ : (Lift.lineModFour.L.obj Inhab.wholeLine).J = Ideal.span {algebraMap Data.lineModFour.R (Sec Data.lineModFour.s Inhab.wholeLine.unop.1) 2}` using `by show Ideal.map (algebraMap Data.lineModFour.R _) Data.lineModFour.I = _`.
+
+Rewrite using `[show Data.lineModFour.I = Ideal.span {(2 : Data.lineModFour.R)} from rfl, Ideal.map_span, Set.image_singleton]`. Establish `h4 : algebraMap Data.lineModFour.R (Sec Data.lineModFour.s Inhab.wholeLine.unop.1) 2 * algebraMap Data.lineModFour.R (Sec Data.lineModFour.s Inhab.wholeLine.unop.1) 2 = 0`. Rewrite using `[← map_mul, show (2 : Data.lineModFour.R) * 2 = 0 from (by decide : (2 : ZMod 4) * 2 = 0), map_zero]`. Rewrite using `[hJ]`. Conclude with `⟨fun hb ↦ h2 (Ideal.span_singleton_eq_bot.mp hb), fun ht ↦ h2 ((Ideal.span_singleton_eq_top.mp ht).mul_left_eq_zero.mp h4)⟩`.
+-/
 theorem Lift.lineModFour_ideal : (Lift.lineModFour.L.obj Inhab.wholeLine).J ≠ ⊥ ∧
     (Lift.lineModFour.L.obj Inhab.wholeLine).J ≠ ⊤ := by
   have h2 : algebraMap Data.lineModFour.R (Sec Data.lineModFour.s Inhab.wholeLine.unop.1) 2 ≠ 0 := by
@@ -424,6 +531,9 @@ def Lift.toE : AffOp D.X ⥤ EE D.κ D.t D.i where
   map_id U := ObjectProperty.hom_ext _ (Subtype.ext (Λ.L.map_id U))
   map_comp a b := ObjectProperty.hom_ext _ (Subtype.ext (Λ.L.map_comp a b))
 
+/- English proof (translation)
+The claim follows from `fun r b ↦ map_smul (Λ.e U) r b`.
+-/
 theorem Lift.semi (U : AffOp D.X) : SemiHom (RingHom.id D.R) (Λ.e U : Sec D.s U.unop.1 →+* (Λ.L.obj U).B) := fun r b ↦ map_smul (Λ.e U) r b
 
 def Lift.Res1 (k : ((KK D.κ D.t).res Λ.L).T1) (w : Tot1 (OAff D.s)) : Prop :=
@@ -447,15 +557,29 @@ def eeLineModFour : EE Data.lineModFour.κ Data.lineModFour.t Data.lineModFour.i
 
 def Pr.lineModFour : Pr Data.lineModFour.κ Data.lineModFour.t Data.lineModFour.i := eeLineModFour.obj
 
+/- English proof (translation)
+The claim follows from `Lift.lineModFour_ideal`.
+-/
 theorem Pr.lineModFour_ideal : Pr.lineModFour.T.J ≠ ⊥ ∧ Pr.lineModFour.T.J ≠ ⊤ := Lift.lineModFour_ideal
 
+/- English proof (translation)
+The claim follows from `isLev_sqDP (Inhab.map_sq Inhab.span_two_sq _)`.
+-/
 theorem levE_eeLineModFour : LevE _ _ _ 2 eeLineModFour := isLev_sqDP (Inhab.map_sq Inhab.span_two_sq _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, fun i ↦ i.elim, fun _ _ a _ _ ↦ ⟨a, ⟨Category.id_comp a, fun i ↦ i.elim⟩, fun g hg ↦ (Category.id_comp g).symm.trans hg.1⟩⟩`.
+-/
 theorem Inhab.isFree_id {R : Type} [CommRing R] {I : Ideal R} {X : Scheme.{0}} {κ : DividedPowers I} {t : X ⟶ Sp R}
     {n : ℕ} {T : Thick κ t} (h : IsLev T.δ n) : IsFree n (𝟙 T) (Empty.elim : Empty → T.B) :=
   ⟨h, fun i ↦ i.elim, fun _ _ a _ _ ↦ ⟨a, ⟨Category.id_comp a, fun i ↦ i.elim⟩,
     fun g hg ↦ (Category.id_comp g).symm.trans hg.1⟩⟩
 
+/- English proof (translation)
+Unfold `rel`. Use `Ideal.span_eq_bot.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨n, a, ha, rfl⟩`. Rewrite `ha` using `[Ideal.mem_bot]`. Substitute `ha` using the available equality.
+
+Simplify using `[(dp0 B).dpow_eval_zero n.succ_ne_zero]`.
+-/
 theorem Inhab.rel_bot (R B : Type) [CommRing R] [CommRing B] [Algebra R B] : rel R (dp0 B) = ⊥ := by
   unfold rel
   refine Ideal.span_eq_bot.mpr ?_
@@ -464,6 +588,13 @@ theorem Inhab.rel_bot (R B : Type) [CommRing R] [CommRing B] [Algebra R B] : rel
   subst ha
   simp [(dp0 B).dpow_eval_zero n.succ_ne_zero]
 
+/- English proof (translation)
+Introduce `hbot`. Establish `hε : (TrivSqZeroExt.inr 1 : (SqExt.dual (ZMod 2)).C) ∈ RingHom.ker ((SqExt.dual (ZMod 2)).π : (SqExt.dual (ZMod 2)).C →+* (SqExt.dual (ZMod 2)).B)`. Rewrite using `[RingHom.mem_ker]`. Both sides reduce to the same expression. Establish `hg : ι1 (D (ZMod 2) (SqExt.dual (ZMod 2)).C ((divided₂ (SqExt.dual (ZMod 2)).sq).dpow (1 + 1) (TrivSqZeroExt.inr 1)) - (divided₂ (SqExt.dual (ZMod 2)).sq).dpow 1 (TrivSqZeroExt.inr 1) • D (ZMod 2) (SqExt.dual (ZMod 2)).C (TrivSqZeroExt.inr 1)) ∈ rel (ZMod 2) (divided₂ (SqExt.dual …` using `Ideal.subset_span ⟨1, _, hε, rfl⟩`.
+
+Rewrite `hg` using `[hbot, Ideal.mem_bot, squareZeroDividedPowers_dpow _ (le_refl (1 + 1)), (divided₂ _).dpow_one hε, map_zero, zero_sub, map_neg, neg_eq_zero, ExteriorAlgebra.ι_eq_zero_iff]`. Establish `h2 : ∀ u v : ZMod 2, u * v + u * v = 0` using `by decide`. Apply the tactic sequence `let d : Derivation (ZMod 2) (SqExt.dual (ZMod 2)).C (SqExt.dual (ZMod 2)).C := Derivation.mk' { toFun := fun x ↦ TrivSqZeroExt.inl x.snd map_add' := fun x y ↦ by ext <;> simp map_smul' := fun r x ↦ by ext <;> simp } (fun a b ↦ by ext <;> simp [h2, mul_comm])`. Establish `h3` using `congrArg d.liftKaehlerDifferential hg`. Rewrite `h3` using `[map_smul, Derivation.liftKaehlerDifferential_comp_D, map_zero]`.
+
+Establish `h4` using `congrArg TrivSqZeroExt.snd h3`. Simplify using `[d] at h4`.
+-/
 theorem Inhab.rel_dual_ne_bot : rel (ZMod 2) (divided₂ (SqExt.dual (ZMod 2)).sq) ≠ ⊥ := by
   intro hbot
   have hε : (TrivSqZeroExt.inr 1 : (SqExt.dual (ZMod 2)).C) ∈

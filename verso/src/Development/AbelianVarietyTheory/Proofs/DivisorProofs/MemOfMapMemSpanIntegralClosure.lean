@@ -5,6 +5,17 @@ open scoped nonZeroDivisors
 namespace GlobalTheory
 namespace LatticeDescent
 
+/- English proof (translation)
+Use `haveI : IsLocalizedModule A⁰ P.subtype := by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[Module.End.isUnit_iff]`. Establish `ha0 : algebraMap A K (a : A) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors a.2`.
+
+Establish `e : ⇑(algebraMap A (Module.End A (Fin n → K)) a) = fun v => algebraMap A K (a : A) • v`. Use function extensionality and compare the values at `v`. Conclude with `(algebraMap_smul K (a : A) v).symm`. Rewrite using `[e]`. Conclude with `MulAction.bijective (Units.mk0 _ ha0)`.
+
+Introduce `y`. Establish `hy : y ∈ Submodule.span K (P : Set (Fin n → K))` using `hP ▸ Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span A⁰ K _ y hy`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨(⟨_, ht⟩, t), rfl⟩`.
+
+Introduce `x y hxy`. Conclude with `⟨1, by rw [Subtype.ext hxy]⟩`. Set `g : P →ₗ[A] K` to `Algebra.linearMap A K ∘ₗ ψ`. Establish `hu : ∀ a : A⁰, IsUnit (algebraMap A (Module.End A K) a)` using `fun a => IsLocalizedModule.map_units (S := A⁰) (Algebra.linearMap A K) a`. Use `⟨(IsLocalizedModule.lift A⁰ P.subtype g hu).extendScalarsOfIsLocalization A⁰ K, fun x => ?_⟩` and prove the remaining obligations.
+
+Conclude with `IsLocalizedModule.lift_apply A⁰ P.subtype g hu x`.
+-/
 theorem exists_extend_functional {A K : Type} [CommRing A] [IsDomain A] [Field K] [Algebra A K]
     [IsFractionRing A K] {n : ℕ} (P : Submodule A (Fin n → K))
     (hP : Submodule.span K (P : Set (Fin n → K)) = ⊤) (ψ : P →ₗ[A] A) :
@@ -35,6 +46,33 @@ theorem exists_extend_functional {A K : Type} [CommRing A] [IsDomain A] [Field K
     fun x => ?_⟩
   exact IsLocalizedModule.lift_apply A⁰ P.subtype g hu x
 
+/- English proof (translation)
+Introduce `A K L _ _ _ _ _ _ _ _ _ _ n P hfin hproj hspan v hv`. Take `⟨m, π, hπ⟩` from `Module.Finite.exists_fin' A P`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Establish `hs' : ∀ x, π (s x) = x` using `fun x => LinearMap.congr_fun hs x`. Set `p : Fin m → P` to `fun j => π (fun k => if j = k then 1 else 0)`.
+
+Establish `hdecomp : ∀ x : P, x = ∑ j, s x j • p j`. Introduce `x`. Use `conv_lhs => rw [← hs' x]`. Conclude with `LinearMap.pi_apply_eq_sum_univ π (s x)`. Establish `hF : ∀ j : Fin m, ∃ φ : (Fin n → K) →ₗ[K] K, ∀ x : P, φ x = algebraMap A K (s x j)` using `fun j => exists_extend_functional P hspan ((LinearMap.proj j) ∘ₗ s)`.
+
+Use `choose F hFx using hF`. Establish `hid : (∑ j, (F j).smulRight ((p j : P) : Fin n → K)) = LinearMap.id`. Apply `LinearMap.ext_on hspan` to reduce the goal to its premises. Introduce `x hx`. Establish `hx'` using `hdecomp ⟨x, hx⟩`.
+
+Simplify using `only [Finset.sum_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.id_apply]`. Use `conv_rhs => rw [show x = ((⟨x, hx⟩ : P) : Fin n → K) from rfl, hx']`. Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hFx j ⟨x, hx⟩, Submodule.coe_smul, algebraMap_smul]`.
+
+Establish `hvsum : v = ∑ j, F j v • ((p j : P) : Fin n → K)`. Use `LinearMap.congr_fun hid v` as an intermediate fact. Simplify `this.symm` using `[Finset.sum_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]`. Use `set ι : (Fin n → K) → (Fin n → L) := fun w i => algebraMap K L (w i) with hι`. Establish `hint : ∀ j, IsIntegral A (F j v)`.
+
+Introduce `j`. Set `g : (Fin n → L) → L` to `fun w => ∑ i, w i * algebraMap K L (F j (Pi.single i 1))`. Establish `hg : ∀ u : Fin n → K, g (ι u) = algebraMap K L (F j u)`. Introduce `u`. Establish `hu` using `LinearMap.pi_apply_eq_sum_univ (F j) u`.
+
+Rewrite using `[hu, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : (fun k => if i = k then (1 : K) else 0) = Pi.single i 1`. Use extensionality with `k`. Simplify using `[Pi.single_apply, eq_comm]`.
+
+Rewrite using `[smul_eq_mul, map_mul, e]`. Establish `key : ∀ w ∈ Submodule.span (integralClosure A L) (ι '' (P : Set (Fin n → K))), IsIntegral A (g w)`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨u, hu, rfl⟩` from `hx`. Rewrite using `[hg u, hFx j ⟨u, hu⟩, ← IsScalarTower.algebraMap_apply]`. Conclude with `isIntegral_algebraMap`. Consider the case `zero => simpa [g] using (isIntegral_zero : IsIntegral A (0 : L))`. Consider the case `add x y _ _ hx hy`.
+
+Establish `: g (x + y) = g x + g y`. Simplify using `only [g, Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Rewrite using `[this]`. Conclude with `hx.add hy`. Consider the case `smul b x _ hx`.
+
+Establish `: g (b • x) = (b : L) * g x`. Simplify using `only [g, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Subalgebra.smul_def, smul_eq_mul, mul_assoc]`. Rewrite using `[this]`.
+
+Conclude with `b.2.mul hx`. Use `key _ hv` as an intermediate fact. Rewrite `this` using `[hg v, isIntegral_algebraMap_iff (algebraMap K L).injective]`. Conclude with `this`. Use `choose y hy using fun j => IsIntegrallyClosed.isIntegral_iff.1 (hint j)`.
+
+Rewrite using `[hvsum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hy j, algebraMap_smul]`. Conclude with `P.smul_mem _ (p j).2`.
+-/
 theorem mem_of_map_mem_span_integralClosure :
     ∀ (A K L : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Field K] [Algebra A K]
       [IsFractionRing A K] [Field L] [Algebra K L] [Algebra A L] [IsScalarTower A K L] (n : ℕ)

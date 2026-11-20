@@ -4,6 +4,35 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `hTan hCount hPi hFib hChart hDet O _ bar g ρ D X s A _ S d hs k Z sZ c₁ c₂ h₁ h₂ P₀ M₀ hP hM co hco ga H hga T hT L hL hlat hinj hdT hdΘ`. Establish `hrange : Submodule.span ℝ ((P₀.range : AddSubgroup (Fin g → ℂ)) : Set (Fin g → ℂ)) = ⊤`. Rewrite using `[AddMonoidHom.coe_range]`. Conclude with `hP.2.2.2.1`. Take `⟨hdisc, hspan⟩` from `hPi g k P₀.range hP.2.2.1 hrange`.
+
+Use `set Λk : AddSubgroup (Fin k → Fin g → ℂ) := AddSubgroup.pi (Set.univ : Set (Fin k)) (fun _ => P₀.range) with hΛk`. Establish `memΛ : ∀ z : Fin k → Fin g → ℂ, z ∈ Λk ↔ ∀ j, z j ∈ P₀.range`. Introduce `z`. Simplify using `[hΛk, AddSubgroup.mem_pi]`. Take `⟨Fz, hFz1, hFz2, hFzc⟩` from `hCount (Fin k → Fin g → ℂ) Λk hdisc hspan (fibMap H L) (fun z hz => (memΛ _).2 (hlat z ((memΛ z).1 hz))) hdΘ`.
+
+Take `⟨hf1, hf2, hf3, hf4, hf5⟩` from `hFib O bar g ρ D X s A S k P₀ hP`. Establish `e0 : H * 0 * (H.map star)⁻¹ = 0` using `by rw [Matrix.mul_zero, Matrix.zero_mul]`. Establish `key : ∀ z, S.pt k P₀ z ≫ c₂ = S.pt k P₀ (fibMap H L z) ≫ c₁`. Introduce `z`. Establish `h` using `hChart O bar g ρ D X s A S k Z c₁ c₂ P₀ M₀ hP hM ga H hga L hL 0 (by rw [perC_zero]; exact hP) (by rw [e0, perC_zero]; exact hP) z`.
+
+Rewrite `h` using `[e0, perC_zero]`. Conclude with `h`. Establish `fixIff : ∀ z, S.pt k P₀ z ≫ c₁ = S.pt k P₀ z ≫ c₂ ↔ fibMap H L z - z ∈ Λk`. Introduce `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h' : S.pt k P₀ z = S.pt k P₀ (fibMap H L z)` using `hinj _ _ (h.trans (key z))`. Conclude with `(memΛ _).2 ((hf4 _ _).1 h'.symm)`. Introduce `h`. Establish `h'` using `(hf4 (fibMap H L z) z).2 ((memΛ _).1 h)`.
+
+Rewrite using `[key z, h']`. Set `mk : (Fin k → Fin g → ℂ) → CxPts ((GlobalTheory.KS.pow A k).hom ≫ s) (RingHom.id ℂ)` to `fun z => ⟨S.pt k P₀ z, by rw [← Category.assoc, hf1 z]; exact S.ov P₀ hP⟩`. Establish `mkInj : Set.InjOn mk Fz`. Introduce `z hz z' hz' h`. Establish `h1 : S.pt k P₀ z = S.pt k P₀ z'` using `congrArg Subtype.val h`.
+
+Establish `h2 : z - z' ∈ Λk` using `(memΛ _).2 ((hf4 z z').1 h1)`. Take `⟨w, _, hw⟩` from `hFz2 z (hFz1 z hz)`. Establish `a` using `hw z ⟨hz, by rw [sub_self]; exact zero_mem _⟩`. Establish `b` using `hw z' ⟨hz', h2⟩`. Conclude with `a.trans b.symm`.
+
+Use `⟨Fz.image mk, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+
+Conclude with `⟨hf1 z, (fixIff z).2 (hFz1 z hz)⟩`. Introduce and unpack `⟨ho, hfx⟩`. Take `⟨z, hz⟩` from `hf3 y.1 ho`. Establish `hz1 : fibMap H L z - z ∈ Λk` using `(fixIff z).1 (by rw [← hz]; exact hfx)`. Take `⟨z', ⟨hz'F, hz'⟩, _⟩` from `hFz2 z hz1`.
+
+Use `⟨z', hz'F, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show S.pt k P₀ z' = y.1`. Rewrite using `[hz]`. Conclude with `((hf4 z z').2 ((memΛ _).1 hz')).symm`. Introduce `At hAt`.
+
+Establish `hdet : ∀ y ∈ Fz.image mk, ∀ t : ℂ, (1 - t • At y).det = LinearMap.det (1 - t • T) * LinearMap.det (1 - t • fibMap H L)`. Introduce `y hy t`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.1 hy`. Establish `hcp` using `hTan O bar g ρ D X s A S d hs k Z sZ c₁ c₂ h₁ h₂ P₀ M₀ hP hM co hco ga H hga T hT L hL z ((memΛ _).1 (hFz1 z hz)) (mk z) rfl (At (mk z)) (hAt _ hy)`. Conclude with `hDet _ _ T (fibMap H L) _ _ hcp t`.
+
+Establish `hdet1 : ∀ y ∈ Fz.image mk, (1 - At y).det = LinearMap.det (1 - T) * LinearMap.det (1 - fibMap H L)`. Introduce `y hy`. Establish `h` using `hdet y hy 1`. Simplify `h` using `only [one_smul]`. Use `⟨fun y hy => by rw [hdet1 y hy]; exact mul_ne_zero hdT hdΘ, fun t => ?_⟩` and prove the remaining obligations.
+
+Establish `hterm : ∀ y ∈ Fz.image mk, lefTerm (At y) t = LinearMap.det (1 - t • T) * LinearMap.det (1 - t • fibMap H L) / (LinearMap.det (1 - T) * LinearMap.det (1 - fibMap H L))`. Introduce `y hy`. Unfold `lefTerm`. Rewrite using `[hdet y hy t, hdet1 y hy]`. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_const, Finset.card_image_of_injOn mkInj, nsmul_eq_mul, hFzc]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem UpperTheory.Gal.W2.locSum_of :
     UpperTheory.Gal.W2.LocTan → UpperTheory.Gal.W2.TorusCount → UpperTheory.Gal.W2.PiLattice → UpperTheory.Gal.W2.PtFibre → UpperTheory.Gal.W2.CorrChart → UpperTheory.Gal.W2.DetOfCharpoly → UpperTheory.Gal.W2.LocSum := by
   intro hTan hCount hPi hFib hChart hDet O _ bar g ρ D X s A _ S d hs k Z sZ c₁ c₂ h₁ h₂ P₀ M₀ hP hM co hco ga H hga T hT L hL hlat hinj hdT hdΘ

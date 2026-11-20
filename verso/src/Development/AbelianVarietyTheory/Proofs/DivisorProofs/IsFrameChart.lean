@@ -25,6 +25,9 @@ namespace GlobalTheory.HodgeFrameGen
 variable {S' T : Scheme.{0}} {G : Over S'} [GrpObj G] {H : Over T} [GrpObj H] {x : T ⟶ S'}
   {ψ : H.left ⟶ G.left} [QuasiSeparated G.hom] {g : ℕ}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.BadPt.Fibre.frame_pb x (j PUnit.unit).isFrame _).map_iso (omegaBase h)`.
+-/
 theorem isFrame_chart (h : IsGrpPullback H G x ψ) (j : PUnit → (hodge G g).ι) :
     IsFrame fun i => (omegaBase h).app (LB.wchart (hodge G g) (fun _ => x) j)
       (pullbackSections x (omega G) (LB.wchart_le (hodge G g) (fun _ => x) j PUnit.unit) ((j PUnit.unit).e i)) :=

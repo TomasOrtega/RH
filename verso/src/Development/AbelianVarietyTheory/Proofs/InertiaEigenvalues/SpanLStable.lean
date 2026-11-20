@@ -19,6 +19,11 @@ def spanL {a : ℕ} (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd 
     Submodule (Br.LL D.nbr i w hw) (Fin a → Fin D.R.nV → Br.LL D.nbr i w hw) :=
   Submodule.span _ (vecL i w hw '' (Y : Set (Fin a → Fin D.R.nV → KK D.nd i)))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[RingHom.map_mulVec]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[Br.loc, Br.locM, Br.locO, mapM, Br.iota, Br.toLLK_alg]`.
+
+Both sides reduce to the same expression.
+-/
 theorem loc_mulVec {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw)
     (v : Fin k → KK D.nd i) :
     (Br.loc D.nbr i w hw M g).mulVec (fun j => Br.toLLK (D.nbr i w hw) (v j)) =
@@ -32,6 +37,9 @@ theorem loc_mulVec {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)
 
 variable (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (Xs : Set (D.nd.X i))
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.JumpDual.loc_cont D i w hw _ (GlobalTheory.T.twisted_dual_families_continuous D i r hr x).1).matrix_mulVec continuous_const`.
+-/
 theorem contTw (hr : GoodR D.nd i r) (x : ↥Xs) (v : Fin D.R.nV → Br.LL D.nbr i w hw) :
     Continuous fun g => (Br.loc D.nbr i w hw (rTwO D.nd i r x) g).mulVec v :=
   (GlobalTheory.JumpDual.loc_cont D i w hw _ (GlobalTheory.T.twisted_dual_families_continuous D i r hr x).1).matrix_mulVec continuous_const
@@ -44,12 +52,20 @@ def actK {a : ℕ} (x : Fin a → ↥Xs) (γ : GE D.nd) (v : Fin a → Fin D.R.n
     Fin a → Fin D.R.nV → KK D.nd i :=
   fun b => (mapM (toK D.nd i) (rTwO D.nd i r (x b)) γ).mulVec (v b)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Conclude with `loc_mulVec i w hw _ g (v b)`.
+-/
 theorem sumG_vecL (hr : GoodR D.nd i r) {a : ℕ} (x : Fin a → ↥Xs) (g : Br.G D.nbr i w hw)
     (v : Fin a → Fin D.R.nV → KK D.nd i) :
     (sumG i w hw r Xs hr x).ρ g (vecL i w hw v) = vecL i w hw (actK i r Xs x (gl i w hw g) v) := by
   funext b
   exact loc_mulVec i w hw _ g (v b)
 
+/- English proof (translation)
+Introduce `g u hu`. Establish `h : spanL i w hw Y ≤ (spanL i w hw Y).comap ((sumG i w hw r Xs hr x).ρ g)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show (sumG i w hw r Xs hr x).ρ g (vecL i w hw y) ∈ spanL i w hw Y`.
+
+Rewrite using `[sumG_vecL]`. Conclude with `Submodule.subset_span ⟨_, hst _ y hy, rfl⟩`. Conclude with `h hu`.
+-/
 theorem spanL_stable (hr : GoodR D.nd i r) {a : ℕ} (x : Fin a → ↥Xs)
     (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i))
     (hst : ∀ γ : GE D.nd, ∀ y ∈ Y, actK i r Xs x γ y ∈ Y) :

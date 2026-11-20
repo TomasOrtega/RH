@@ -10,6 +10,9 @@ universe w
 
 namespace GlobalTheory.CompanionTheory.OmGlob
 
+/- English proof (translation)
+Introduce `_ _ φ h` and use `Site.inU_hom φ.hom h`.
+-/
 theorem vk_cosieve {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (U : Cov q) (a : ℕ) (α : U.ι) :
     Cosieve (Vk q U a α) :=
   fun _ _ φ h => Site.inU_hom φ.hom h

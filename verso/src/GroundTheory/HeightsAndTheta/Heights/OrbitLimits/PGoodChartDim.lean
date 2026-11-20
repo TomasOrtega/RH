@@ -24,6 +24,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 def segreCone (P : Ideal (MRing ι)) {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) : Set (Fin m → ℂ) :=
   {x | ∃ z ∈ mcPts P, x = fun a => segre z (σ a)}
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨z, hz, rfl⟩ a ha`. Take `⟨z', hz', hseg⟩` from `GoodChartZeroSet.exists_segre_smul P hP.2.1.2.1 hz ha (fun h => absurd hP.1 (not_nonempty_iff.2 h))`. Conclude with `⟨z', hz', funext fun b => by simp [hseg]⟩`.
+-/
 theorem segreCone_smul {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d) {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) :
     ∀ c ∈ segreCone P σ, ∀ a : ℂ, a ≠ 0 → a • c ∈ segreCone P σ := by
   rintro _ ⟨z, hz, rfl⟩ a ha
@@ -37,6 +40,11 @@ def psiCoeffs {m e : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (Ψ : (((k : K) �
     Fin m → ℂ :=
   fun a => Ψ (fun i' => if σ a = i' then (1 : ℂ) else 0) 0
 
+/- English proof (translation)
+Establish `hl : ∀ z : (Σ k, ι k) → ℂ, eval (fun a => segre z (σ a)) (linForm (psiCoeffs σ Ψ)) = Ψ (segre z) 0` using `fun z => by`. Rewrite using `[show linForm (psiCoeffs σ Ψ) = GoodChartZeroSet.linForm σ Ψ from rfl, GoodChartZeroSet.eval_linForm]`. Simplify using the standard rewrite rules. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, hz, h1, rfl⟩`. Conclude with `⟨⟨z, hz, rfl⟩, (hl z).trans h1⟩`. Introduce and unpack `⟨⟨z, hz, rfl⟩, h1⟩`. Conclude with `⟨z, hz, (hl z).symm.trans h1, rfl⟩`.
+-/
 theorem projChartSet_eq (P : Ideal (MRing ι)) {m e : ℕ} (σ : Fin m ≃ ((k : K) → ι k))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) :
     projChartSet P σ Ψ = {x | x ∈ segreCone P σ ∧ eval x (linForm (psiCoeffs σ Ψ)) = 1} := by
@@ -51,12 +59,20 @@ theorem projChartSet_eq (P : Ideal (MRing ι)) {m e : ℕ} (σ : Fin m ≃ ((k :
   · rintro ⟨⟨z, hz, rfl⟩, h1⟩
     exact ⟨z, hz, (hl z).symm.trans h1, rfl⟩
 
+/- English proof (translation)
+Simplify using `[linForm, Pi.single_apply]`.
+-/
 theorem linForm_single' {m : ℕ} (a : Fin m) : linForm (Pi.single a (1 : ℂ)) = X a := by
   classical
   simp [linForm, Pi.single_apply]
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [segreChartSet, segreCone, Set.mem_ofPred_eq, linForm_single', eval_X]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, h1, rfl⟩`. Conclude with `⟨⟨z, hz, rfl⟩, h1⟩`.
+
+Introduce and unpack `⟨⟨z, hz, rfl⟩, h1⟩`. Conclude with `⟨z, hz, h1, rfl⟩`.
+-/
 theorem segreChartSet_eq (P : Ideal (MRing ι)) {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (a : Fin m) :
     segreChartSet P σ (σ a) = {x | x ∈ segreCone P σ ∧ eval x (linForm (Pi.single a (1 : ℂ))) = 1} := by
   ext x
@@ -67,6 +83,11 @@ theorem segreChartSet_eq (P : Ideal (MRing ι)) {m : ℕ} (σ : Fin m ≃ ((k : 
   · rintro ⟨⟨z, hz, rfl⟩, h1⟩
     exact ⟨z, hz, h1, rfl⟩
 
+/- English proof (translation)
+Introduce `h`. Establish `h0` using `hV _ h 0`. Rewrite `h0` using `[homogeneousComponent_zero]`. Establish `hc : coeff 0 (linForm t - 1) = -1`. Simplify using `[linForm, coeff_sum, coeff_C_mul, coeff_X]`.
+
+Rewrite `h0` using `[hc]`. Conclude with `hne (Ideal.eq_top_of_isUnit_mem _ h0 (by simp))`.
+-/
 theorem linForm_sub_one_not_mem {m : ℕ} {V : Ideal (MvPolynomial (Fin m) ℂ)} (hV : IsHomogIdeal V) (hne : V ≠ ⊤)
     (t : Fin m → ℂ) : linForm t - 1 ∉ V := by
   intro h
@@ -77,12 +98,18 @@ theorem linForm_sub_one_not_mem {m : ℕ} {V : Ideal (MvPolynomial (Fin m) ℂ)}
   rw [hc] at h0
   exact hne (Ideal.eq_top_of_isUnit_mem _ h0 (by simp))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Conclude with `h (Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (hall a))`.
+-/
 theorem exists_X_not_mem {m : ℕ} {W : Ideal (MvPolynomial (Fin m) ℂ)} {t : Fin m → ℂ} (h : linForm t ∉ W) :
     ∃ a, X a ∉ W := by
   by_contra hall
   push Not at hall
   exact h (Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (hall a))
 
+/- English proof (translation)
+Introduce `f hf`. Rewrite using `[← sum_homogeneousComponent f]`. Conclude with `Ideal.sum_mem _ fun d _ => ChartDehomog.proof ℂ m W t _ d hW hWh ht (homogeneousComponent_isHomogeneous d f) (hle (hV f hf d))`.
+-/
 theorem le_of_homog_le_sup {m : ℕ} {V W : Ideal (MvPolynomial (Fin m) ℂ)} {t : Fin m → ℂ} (hV : IsHomogIdeal V)
     (hW : W.IsPrime) (hWh : IsHomogIdeal W) (ht : linForm t ∉ W) (hle : V ≤ W ⊔ Ideal.span {linForm t - 1}) :
     V ≤ W := by
@@ -91,6 +118,13 @@ theorem le_of_homog_le_sup {m : ℕ} {V W : Ideal (MvPolynomial (Fin m) ℂ)} {t
   exact Ideal.sum_mem _ fun d _ => ChartDehomog.proof ℂ m W t _ d hW hWh ht
     (homogeneousComponent_isHomogeneous d f) (hle (hV f hf d))
 
+/- English proof (translation)
+Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot`. Rewrite `h` using `[WithBot.bot_add, ← Nat.cast_succ]`. Conclude with `absurd h (WithBot.bot_ne_natCast _)`. Consider the case `coe x`.
+
+Proceed by induction on `x using ENat.recTopCoe with`. Consider the case `top`. Establish `h' : ((⊤ + 1 : ℕ∞) : WithBot ℕ∞) = ((e + 1 : ℕ∞) : WithBot ℕ∞)` using `by exact_mod_cast h`. Rewrite `h'` using `[WithBot.coe_inj, top_add]`. Conclude with `absurd h' (by exact_mod_cast (ENat.top_ne_natCast (e + 1)))`.
+
+Consider the case `coe x`. Establish `h' : ((x + 1 : ℕ) : WithBot ℕ∞) = ((e + 1 : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast h`. Establish `h'' : x + 1 = e + 1` using `by exact_mod_cast h'`. Conclude with `(show x = e by omega)` after adjusting the coercions.
+-/
 theorem eq_of_add_one_eq {x : WithBot ℕ∞} {e : ℕ} (h : x + 1 = (e : WithBot ℕ∞) + 1) : x = e := by
   induction x using WithBot.recBotCoe with
   | bot =>
@@ -111,6 +145,27 @@ end GoodChartDim
 
 open GoodChartDim
 
+/- English proof (translation)
+Introduce `K _ ι _ P e m σ Ψ hP J hJ`. Establish `hC` using `segreCone_smul hP σ`. Use `set t := psiCoeffs σ Ψ`. Establish `hS : projChartSet P σ Ψ = {x | x ∈ segreCone P σ ∧ eval x (linForm t) = 1}` using `projChartSet_eq P σ Ψ`. Establish `hJp : J.IsPrime` using `hJ.1.1`.
+
+Establish `hIJ : projChartIdeal P σ Ψ ≤ J` using `hJ.1.2`. Use `set H := vanishingIdeal ℂ (segreCone P σ)`. Establish `hH : IsHomogIdeal H` using `h₁ m _ hC`. Establish `hHI : H ≤ projChartIdeal P σ Ψ`. Rewrite using `[projChartIdeal, hS]`.
+
+Conclude with `vanishingIdeal_anti_mono fun x hx => hx.1`. Establish `hℓ1 : linForm t - 1 ∈ projChartIdeal P σ Ψ`. Rewrite using `[projChartIdeal, hS, mem_vanishingIdeal_iff]`. Introduce `x hx`. Simplify using `[hx.2]`.
+
+Take `⟨W, hW, hℓW, hWJ, hWcore⟩` from `ChartHomogenise.proof ℂ m J t hJp (hIJ hℓ1)`. Establish `hHW : H ≤ W` using `hWcore H hH (hHI.trans hIJ)`. Take `⟨a, ha⟩` from `exists_X_not_mem hℓW`. Use `set u : Fin m → ℂ := Pi.single a 1`. Establish `huW : linForm u ∉ W` using `by rw [linForm_single']; exact ha`.
+
+Establish `hT : segreChartSet P σ (σ a) = {x | x ∈ segreCone P σ ∧ eval x (linForm u) = 1}` using `segreChartSet_eq P σ a`. Use `h₃ ℂ m W u hW huW` as an intermediate fact. Establish `hTJ' : segreChartIdeal P σ (σ a) ≤ W ⊔ Ideal.span {linForm u - 1}`. Rewrite using `[segreChartIdeal, hT]`. Conclude with `h₂ m _ u W hC hHW`.
+
+Take `⟨Q₀, hQ₀, hQ₀J'⟩` from `Ideal.exists_minimalPrimes_le hTJ'`. Establish `hdimQ₀` using `SegreChartDim.proof K ι P e m σ (σ a) hP Q₀ (mem_segreChartComponents.2 hQ₀)`. Establish `hu1 : linForm u - 1 ∈ segreChartIdeal P σ (σ a)`. Rewrite using `[segreChartIdeal, hT, mem_vanishingIdeal_iff]`. Introduce `x hx`.
+
+Simplify using `[hx.2]`. Establish `hHT : H ≤ segreChartIdeal P σ (σ a)`. Rewrite using `[segreChartIdeal, hT]`. Conclude with `vanishingIdeal_anti_mono fun x hx => hx.1`. Take `⟨V, hV, huV, hVQ₀, hVcore⟩` from `ChartHomogenise.proof ℂ m Q₀ u hQ₀.1.1 (hQ₀.1.2 hu1)`.
+
+Establish `hHV : H ≤ V` using `hVcore H hH (hHT.trans hQ₀.1.2)`. Establish `hVW : V ≤ W` using `le_of_homog_le_sup hV.isHomog hW.isPrime hW.isHomog huW ((le_sup_left.trans hVQ₀.le).trans hQ₀J')`. Establish `hIV : projChartIdeal P σ Ψ ≤ V ⊔ Ideal.span {linForm t - 1}`. Rewrite using `[projChartIdeal, hS]`. Conclude with `h₂ m _ t V hC hHV`.
+
+Establish `hVJ : V ⊔ Ideal.span {linForm t - 1} ≤ J` using `sup_le (hVW.trans (le_sup_left.trans hWJ.le)) ((Ideal.span_singleton_le_iff_mem _).2 (hIJ hℓ1))`. Establish `hJmin : J ∈ (V ⊔ Ideal.span {linForm t - 1}).minimalPrimes` using `⟨⟨hJp, hVJ⟩, fun Z hZ hZJ => hJ.2 ⟨hZ.1, hIV.trans hZ.2⟩ hZJ⟩`. Establish `hQ₀min : Q₀ ∈ (V ⊔ Ideal.span {linForm u - 1}).minimalPrimes`. Use `hQ₀.1.1` as an intermediate fact. Rewrite using `[hVQ₀, Ideal.minimalPrimes_eq_subsingleton_self]`.
+
+Both sides reduce to the same expression. Establish `d₁` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.dimPIT ℂ (Fin m) V J (linForm t - 1) hV.isPrime (linForm_sub_one_not_mem hV.isHomog hV.isPrime.ne_top t) hJmin`. Establish `d₂` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.dimPIT ℂ (Fin m) V Q₀ (linForm u - 1) hV.isPrime (linForm_sub_one_not_mem hV.isHomog hV.isPrime.ne_top u) hQ₀min`. Rewrite `d₁` using `[← d₂, hdimQ₀]`. Conclude with `eq_of_add_one_eq d₁`.
+-/
 theorem GoodChartDim.proof (h₁ : ConeVanishingHomog.Statement) (h₂ : ConeSliceIdeal.Statement)
     (h₃ : ChartDehomogPrime.Statement) : GoodChartDim.Statement := by
   classical

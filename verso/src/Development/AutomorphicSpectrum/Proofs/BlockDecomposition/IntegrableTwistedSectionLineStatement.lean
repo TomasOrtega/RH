@@ -11,5 +11,8 @@ open Ad3 Ad3.K Ad3.K.QuadraticBaseChangeGL3
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WS.inner_integrable | exact GlobalTheory.CompanionTheory.WS.inner_integrable | (intros; apply GlobalTheory.CompanionTheory.WS.inner_integrable <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integrable_twisted_section_line : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (χ : AddChar F Circle), IsStd χ → ∀ Ψ : F × F → ℂ, GlobalTheory.CompanionTheory.WS.IsSB Ψ → ∀ u : Fˣ, Integrable (fun y : F => Ψ ((u : F), (u : F) * y) * (χ (-y) : ℂ)) (selfDualMeasure χ) := by
   first | exact @GlobalTheory.CompanionTheory.WS.inner_integrable | exact GlobalTheory.CompanionTheory.WS.inner_integrable | (intros; apply GlobalTheory.CompanionTheory.WS.inner_integrable <;> assumption)

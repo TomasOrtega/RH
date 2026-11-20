@@ -17,11 +17,19 @@ open MeasureTheory Topology Matrix GroundTheory.Automorphic
 
 namespace GlobalTheory.CuspStab.LieGrowth
 
+/- English proof (translation)
+Introduce `X` and use `⟨(fun i j => ((0, fun w => X i j w.1) : mixedEmbedding.mixedSpace E) : Matrix (Fin a) (Fin a) (mixedEmbedding.mixedSpace E)), rfl⟩`.
+-/
 private theorem mMap_surjective (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) :
     Function.Surjective (GlobalTheory.CompanionTheory.ArchSmooth.mMap E a) := fun X =>
   ⟨(fun i j => ((0, fun w => X i j w.1) : mixedEmbedding.mixedSpace E) :
     Matrix (Fin a) (Fin a) (mixedEmbedding.mixedSpace E)), rfl⟩
 
+/- English proof (translation)
+Take `⟨D, hD, hDc, h⟩` from `GlobalTheory.CompanionTheory.HCRep.uJ_eq_conv E a φ (GlobalTheory.CompanionTheory.ArchSmooth.sm_mem_archSmooth E a φ) hφ ν 1 (fun _ => j)`. Use `⟨D, hD, hDc, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← h g, CuspidalSpectrum.uAction_uJ_succ]`. Establish `e` using `GlobalTheory.CompanionTheory.HCRep.smL_liB (E := E) (a := a) (CuspidalSpectrum.lieOf (CuspidalSpectrum.archBasis E a j)) φ`. Establish `e2` using `congrArg (fun ψ : AutomorphicForm.archSmooth E a => ψ.1 g) e`.
+
+Establish `e0 : ∀ ψ : AutomorphicForm.archSmooth E a, AutomorphicForm.uAction (CuspidalSpectrum.uJ (K` using `E) (n := a) 0 (Fin.tail fun _ => j)) ψ = ψ := fun ψ => by`. Rewrite using `[CuspidalSpectrum.uJ, map_one]`. Both sides reduce to the same expression. Rewrite using `[e0]`. Conclude with `e2`.
+-/
 private theorem exists_kernel_basis (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     [MeasurableSpace (AutomorphicForm.archGroup E a)] [BorelSpace (AutomorphicForm.archGroup E a)]
     (ν : Measure (AutomorphicForm.archGroup E a)) [ν.IsHaarMeasure] (φ : Sm E a) (hφ : IsAutForm φ)
@@ -42,6 +50,11 @@ private theorem exists_kernel_basis (E : Type) [Field E] [NumberField E] [IsTota
   rw [e0]
   exact e2
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `HasCompactSupport.zero`. Consider the case `insert j s hj ih`.
+
+Simplify using `only [Finset.sum_insert hj]`. Conclude with `((h j).mul_left (f := fun _ => c j)).add ih`.
+-/
 private theorem hasCompactSupport_sum {G ι : Type*} [TopologicalSpace G] (s : Finset ι) (c : ι → ℂ) (D : ι → G → ℂ)
     (h : ∀ j, HasCompactSupport (D j)) : HasCompactSupport fun y => ∑ j ∈ s, c j * D j y := by
   classical
@@ -53,6 +66,15 @@ private theorem hasCompactSupport_sum {G ι : Type*} [TopologicalSpace G] (s : F
     simp only [Finset.sum_insert hj]
     exact ((h j).mul_left (f := fun _ => c j)).add ih
 
+/- English proof (translation)
+Introduce `E _ _ _ a _ _ ν _ φ hφ X`. Take `⟨Y, rfl⟩` from `mMap_surjective E a X`. Use `choose D hD hDc hconv using exists_kernel_basis E a ν φ hφ`. Use `set b := CuspidalSpectrum.archBasis E a with hb`. Use `set c : Fin (CuspidalSpectrum.archDim E a) → ℂ := fun j => ((b.repr Y j : ℝ) : ℂ) with hc`.
+
+Use `⟨fun y => ∑ j, c j * D j y, continuous_finsetSum _ fun j _ => continuous_const.mul (hD j), hasCompactSupport_sum _ c D hDc, fun g => ?_⟩` and prove the remaining obligations. Establish `hf : Continuous fun y => φ.1 (g * AutomorphicForm.infEmb E a y)` using `IsExpLieAlgebra.continuous_of_isSmoothFun (GlobalTheory.CompanionTheory.ArchSmooth.sm_mem_archSmooth E a φ g)`. Establish `hint : ∀ j, Integrable (fun y => φ.1 (g * AutomorphicForm.infEmb E a y) * D j y) ν` using `fun j => (hf.mul (hD j)).integrable_of_hasCompactSupport ((hDc j).mul_left)`. Establish `hY : (lie E a (GlobalTheory.CompanionTheory.ArchSmooth.mMap E a Y) φ).1 g = ∑ j, c j * (lie E a (GlobalTheory.CompanionTheory.ArchSmooth.mMap E a (b j)) φ).1 g` using `by conv_lhs => rw [← b.sum_repr Y]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul_of_tower, Finset.sum_apply, Pi.smul_apply, Complex.real_smul, hc]`.
+
+Rewrite using `[hY]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[integral_finsetSum _ fun j _ => ?_]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hconv j g, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Conclude with `((hint j).const_mul (c j)).congr (Filter.Eventually.of_forall fun y => by ring)`.
+-/
 private theorem lie_eq_conv : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) [MeasurableSpace (AutomorphicForm.archGroup E a)] [BorelSpace (AutomorphicForm.archGroup E a)] (ν : Measure (AutomorphicForm.archGroup E a)) [ν.IsHaarMeasure] (φ : Sm E a), IsAutForm φ → ∀ X : Lie E a, ∃ D : AutomorphicForm.archGroup E a → ℂ, Continuous D ∧ HasCompactSupport D ∧ ∀ g : GA E a, (lie E a X φ).1 g = ∫ y, φ.1 (g * AutomorphicForm.infEmb E a y) * D y ∂ν := by
   intro E _ _ _ a _ _ ν _ φ hφ X
   obtain ⟨Y, rfl⟩ := mMap_surjective E a X
@@ -99,14 +121,27 @@ private def lmulLin : Lie E a →ₗ[ℝ] (Lie E a →L[ℝ] Lie E a) where
   map_smul' c x := ContinuousLinearMap.ext fun z =>
     Matrix.smul_mul c (Matrix.of x) (Matrix.of z)
 
+/- English proof (translation)
+The claim follows from `(rmulLin (E := E) (a := a)).continuous_of_finiteDimensional`.
+-/
 private theorem continuous_rmul : Continuous (rmul : Lie E a → (Lie E a →L[ℝ] Lie E a)) :=
   (rmulLin (E := E) (a := a)).continuous_of_finiteDimensional
 
+/- English proof (translation)
+The claim follows from `(lmulLin (E := E) (a := a)).continuous_of_finiteDimensional`.
+-/
 private theorem continuous_lmul : Continuous (lmul : Lie E a → (Lie E a →L[ℝ] Lie E a)) :=
   (lmulLin (E := E) (a := a)).continuous_of_finiteDimensional
 
 private def bnd (c : GL (Fin a) (Cinf E)) : ℝ := 1 + ‖rmul (toL c.val)‖ + ‖lmul (toL (c⁻¹).val)‖
 
+/- English proof (translation)
+Establish `h1 : toL (y * c).val = rmul (toL c.val) (toL y.val)` using `rfl`. Establish `h2 : toL ((y * c)⁻¹).val = lmul (toL (c⁻¹).val) (toL (y⁻¹).val)`. Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression. Establish `e1` using `(rmul (toL c.val)).le_opNorm (toL y.val)`.
+
+Establish `e2` using `(lmul (toL (c⁻¹).val)).le_opNorm (toL (y⁻¹).val)`. Establish `n1` using `norm_nonneg (toL y.val)`. Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `n3` using `norm_nonneg (rmul (toL c.val))`. Establish `n4` using `norm_nonneg (lmul (toL (c⁻¹).val))`.
+
+Unfold `height bnd`. Rewrite using `[h1, h2]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem height_mul_le_bnd (c y : GL (Fin a) (Cinf E)) : height (y * c) ≤ bnd c * height y := by
   have h1 : toL (y * c).val = rmul (toL c.val) (toL y.val) := rfl
   have h2 : toL ((y * c)⁻¹).val = lmul (toL (c⁻¹).val) (toL (y⁻¹).val) := by
@@ -121,9 +156,17 @@ private theorem height_mul_le_bnd (c y : GL (Fin a) (Cinf E)) : height (y * c) �
   rw [h1, h2]
   nlinarith
 
+/- English proof (translation)
+Simplify using `only [toGL, map_inv]`.
+-/
 private theorem toGL_inv (u : AutomorphicForm.archGroup E a) : toGL E a u⁻¹ = (toGL E a u)⁻¹ := by
   simp only [toGL, map_inv]
 
+/- English proof (translation)
+Establish `hm : Continuous (mMap E a)` using `(mMap E a).continuous_of_finiteDimensional`. Establish `hv : Continuous fun u : AutomorphicForm.archGroup E a => ((u : (AutomorphicForm.ArchMatrix E a)ˣ) : AutomorphicForm.ArchMatrix E a)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `h1 : Continuous fun u : AutomorphicForm.archGroup E a => toL (toGL E a u).val`. Repeatedly rewrite using `[toL_toGL]`. Conclude with `hm.comp hv`.
+
+Establish `h2 : Continuous fun u : AutomorphicForm.archGroup E a => toL ((toGL E a u)⁻¹).val`. Repeatedly rewrite using `[← toGL_inv, toL_toGL]`. Conclude with `hm.comp (hv.comp continuous_inv)`. Unfold `bnd`. Conclude with `(continuous_const.add (continuous_rmul.comp h1).norm).add (continuous_lmul.comp h2).norm`.
+-/
 private theorem continuous_bnd : Continuous fun u : AutomorphicForm.archGroup E a => bnd (toGL E a u) := by
   have hm : Continuous (mMap E a) := (mMap E a).continuous_of_finiteDimensional
   have hv : Continuous fun u : AutomorphicForm.archGroup E a =>
@@ -138,6 +181,19 @@ private theorem continuous_bnd : Continuous fun u : AutomorphicForm.archGroup E 
   unfold bnd
   exact (continuous_const.add (continuous_rmul.comp h1).norm).add (continuous_lmul.comp h2).norm
 
+/- English proof (translation)
+Introduce `E _ _ _ a _ _ ν _ φ ψ hgrow D hD hDc hψ g`. Take `⟨C, N, hC⟩` from `hgrow g`. Establish `hpos : ∀ y : GL (Fin a) (Cinf E), 0 ≤ height y` using `fun y => by`. Combine the linear relations using `[one_le_height y]`. Establish `C0 : 0 ≤ C`.
+
+Establish `h1` using `(norm_nonneg _).trans (hC 1)`. Establish `hp : 0 < height (1 : GL (Fin a) (Cinf E)) ^ N` using `pow_pos (by linarith [one_le_height (1 : GL (Fin a) (Cinf E))]) N`. Conclude with `nonneg_of_mul_nonneg_left h1 hp`. Take `⟨B, hB⟩` from `IsCompact.exists_bound_of_continuousOn (f := fun u : AutomorphicForm.archGroup E a => bnd (toGL E a u)) hDc continuous_bnd.continuousOn`. Establish `hint : Integrable (fun u => ‖D u‖) ν` using `(hD.integrable_of_hasCompactSupport hDc).norm`.
+
+Use `⟨C * B ^ N * ∫ u, ‖D u‖ ∂ν, N, fun y => ?_⟩` and prove the remaining obligations. Establish `pt : ∀ u, ‖φ (g * infGL E a y * AutomorphicForm.infEmb E a u) * D u‖ ≤ (C * (B * height y) ^ N) * ‖D u‖` using `fun u => by`. Distinguish the cases in `hu : u ∈ tsupport D`. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Establish `e : g * infGL E a y * AutomorphicForm.infEmb E a u = g * infGL E a (y * toGL E a u)`. Rewrite using `[infEmb_eq, mul_assoc, map_mul]`. Rewrite using `[e]`. Use `(hC _).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (hpos _) ?_ N) C0)` and prove the remaining obligations. Conclude with `(height_mul_le_bnd _ y).trans (mul_le_mul_of_nonneg_right ((le_abs_self _).trans (hB u hu)) (hpos y))`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport hu]`. Simplify using the standard rewrite rules. Establish `key` using `norm_integral_le_of_norm_le (hint.const_mul (C * (B * height y) ^ N)) (Filter.Eventually.of_forall pt)`. Rewrite using `[hψ]`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[integral_const_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem growth_conv : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) [MeasurableSpace (AutomorphicForm.archGroup E a)] [BorelSpace (AutomorphicForm.archGroup E a)] (ν : Measure (AutomorphicForm.archGroup E a)) [ν.IsHaarMeasure] (φ ψ : GA E a → ℂ), (∀ g, ∃ (C : ℝ) (N : ℕ), ∀ y, ‖φ (g * infGL E a y)‖ ≤ C * height y ^ N) → ∀ D : AutomorphicForm.archGroup E a → ℂ, Continuous D → HasCompactSupport D → (∀ g, ψ g = ∫ y, φ (g * AutomorphicForm.infEmb E a y) * D y ∂ν) → ∀ g : GA E a, ∃ (C : ℝ) (N : ℕ), ∀ y, ‖ψ (g * infGL E a y)‖ ≤ C * height y ^ N := by
   intro E _ _ _ a _ _ ν _ φ ψ hgrow D hD hDc hψ g
   obtain ⟨C, N, hC⟩ := hgrow g
@@ -171,6 +227,9 @@ private theorem growth_conv : ∀ (E : Type) [Field E] [NumberField E] [IsTotall
   rw [integral_const_mul, mul_pow]
   ring
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (AutomorphicForm.archGroup E a) := borel _`. Use `haveI : BorelSpace (AutomorphicForm.archGroup E a) := ⟨rfl⟩`. Take `⟨D, hD, hDc, hrep⟩` from `lie_eq_conv E a (Measure.haar : Measure (AutomorphicForm.archGroup E a)) φ hφ X`. Conclude with `growth_conv E a _ φ.1 _ hφ.growth D hD hDc hrep g`.
+-/
 private theorem lie_growth (X : Lie E a) (φ : Sm E a) (hφ : IsAutForm φ) (g : GA E a) :
     ∃ (C : ℝ) (N : ℕ), ∀ y, ‖(lie E a X φ).1 (g * infGL E a y)‖ ≤ C * height y ^ N := by
   letI : MeasurableSpace (AutomorphicForm.archGroup E a) := borel _
@@ -186,6 +245,9 @@ namespace GlobalTheory.CuspStab
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)).map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨z φ, Submodule.subset_span ⟨z, hz, rfl⟩, (LinearMap.congr_fun (hT z hz) φ).symm⟩`.
+-/
 theorem zfin_of_comm (T : Module.End ℂ (Sm E a)) (hT : ∀ z ∈ Zalg E a, z * T = T * z) {φ : Sm E a}
     (h : FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a))) :
     FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z (T φ)) '' Zalg E a)) := by
@@ -194,6 +256,13 @@ theorem zfin_of_comm (T : Module.End ℂ (Sm E a)) (hT : ∀ z ∈ Zalg E a, z *
   rintro _ ⟨z, hz, rfl⟩
   exact ⟨z φ, Submodule.subset_span ⟨z, hz, rfl⟩, (LinearMap.congr_fun (hT z hz) φ).symm⟩
 
+/- English proof (translation)
+Set `S` to `Subalgebra.centralizer ℂ ({finRep E a k} : Set (Module.End ℂ (Sm E a)))`. Establish `hL : ∀ X, lie E a X ∈ S` using `fun X T hT => by`. Rewrite using `[Set.mem_singleton_iff.1 hT]`. Conclude with `(lie_rt_fin X k).symm`. Establish `hE : ∀ τ i j, Eop (a` using `a) τ i j ∈ S := fun τ i j => S.smul_mem (S.sub_mem (hL _) (S.smul_mem (hL _) _)) _`.
+
+Establish `hS : Zalg E a ≤ S`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨m, rfl⟩` from `List.mem_ofFn.1 hx`.
+
+Use `S.add_mem ?_ (hE _ _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`. Conclude with `(hS hz (finRep E a k) rfl).symm`.
+-/
 theorem zalg_comm_fin (k : GL (Fin a) (Af E)) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     z * finRep E a k = finRep E a k * z := by
   let S := Subalgebra.centralizer ℂ ({finRep E a k} : Set (Module.End ℂ (Sm E a)))
@@ -212,16 +281,29 @@ theorem zalg_comm_fin (k : GL (Fin a) (Af E)) {z : Module.End ℂ (Sm E a)} (hz 
     · exact S.zero_mem
   exact (hS hz (finRep E a k) rfl).symm
 
+/- English proof (translation)
+The claim follows from `isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (h.mem_nhds (by simp)) fun k hk => hle k hk)`.
+-/
 theorem level_of_le {φ ψ : Sm E a} (h : IsOpen {k | finRep E a k φ = φ})
     (hle : ∀ k, finRep E a k φ = φ → finRep E a k ψ = ψ) : IsOpen {k | finRep E a k ψ = ψ} :=
   isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (h.mem_nhds (by simp)) fun k hk => hle k hk)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) * rt E a (infGL E a (Unitary.toUnits c)) = rt E a (infGL E a (Unitary.toUnits c)) * rt E a (finGL E a k)`. Rewrite using `[← map_mul, ← map_mul, infGL_comm]`.
+-/
 theorem fin_cpt_comm (k : GL (Fin a) (Af E)) (c : Kinf E a) :
     finRep E a k * cptRep E a c = cptRep E a c * finRep E a k := by
   change rt E a (finGL E a k) * rt E a (infGL E a (Unitary.toUnits c)) =
     rt E a (infGL E a (Unitary.toUnits c)) * rt E a (finGL E a k)
   rw [← map_mul, ← map_mul, infGL_comm]
 
+/- English proof (translation)
+Use `⟨1 + ‖rmul (toL c.val)‖ + ‖lmul (toL (c⁻¹).val)‖, by linarith [norm_nonneg (rmul (toL c.val)), norm_nonneg (lmul (toL (c⁻¹).val))], fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : toL (y * c).val = rmul (toL c.val) (toL y.val)` using `rfl`. Establish `h2 : toL ((y * c)⁻¹).val = lmul (toL (c⁻¹).val) (toL (y⁻¹).val)`. Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression.
+
+Establish `e1` using `(rmul (toL c.val)).le_opNorm (toL y.val)`. Establish `e2` using `(lmul (toL (c⁻¹).val)).le_opNorm (toL (y⁻¹).val)`. Establish `n1` using `norm_nonneg (toL y.val)`. Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `n3` using `norm_nonneg (rmul (toL c.val))`.
+
+Establish `n4` using `norm_nonneg (lmul (toL (c⁻¹).val))`. Unfold `height`. Rewrite using `[h1, h2]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem height_mul_le (c : GL (Fin a) (Cinf E)) : ∃ B : ℝ, 1 ≤ B ∧ ∀ y, height (y * c) ≤ B * height y := by
   refine ⟨1 + ‖rmul (toL c.val)‖ + ‖lmul (toL (c⁻¹).val)‖, by linarith [norm_nonneg (rmul (toL c.val)), norm_nonneg (lmul (toL (c⁻¹).val))], fun y => ?_⟩
   have h1 : toL (y * c).val = rmul (toL c.val) (toL y.val) := rfl
@@ -237,6 +319,11 @@ theorem height_mul_le (c : GL (Fin a) (Cinf E)) : ∃ B : ℝ, 1 ≤ B ∧ ∀ y
   rw [h1, h2]
   nlinarith
 
+/- English proof (translation)
+Take `⟨C, N, hC⟩` from `h`. Take `⟨B, hB, hB'⟩` from `height_mul_le c`. Establish `C0 : 0 ≤ C`. Use `(norm_nonneg _).trans (hC 1)` as an intermediate fact. Establish `hp : 0 < height (1 : GL (Fin a) (Cinf E)) ^ N` using `pow_pos (by linarith [one_le_height (1 : GL (Fin a) (Cinf E))]) N`.
+
+Conclude with `nonneg_of_mul_nonneg_left this hp`. Use `⟨C * B ^ N, N, fun y => (hC _).trans ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [one_le_height (y * c)]) (hB' y) N) C0`.
+-/
 theorem growth_mul {f : GL (Fin a) (Cinf E) → ℂ} (c : GL (Fin a) (Cinf E))
     (h : ∃ (C : ℝ) (N : ℕ), ∀ y, ‖f y‖ ≤ C * height y ^ N) :
     ∃ (C : ℝ) (N : ℕ), ∀ y, ‖f (y * c)‖ ≤ C * height y ^ N := by

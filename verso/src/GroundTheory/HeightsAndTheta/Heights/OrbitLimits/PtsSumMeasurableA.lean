@@ -10,6 +10,11 @@ open MeasureTheory Metric Filter Topology ReciprocityTheory.ChartRestriction.G.G
 
 namespace PtsSumMeasurable
 
+/- English proof (translation)
+Use `set M : ((Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) → Matrix (Fin D) (Fin D) ℂ := fun H i j => ((H (Pi.single i 1) (Pi.single j 1) + H (Complex.I • Pi.single i 1) (Complex.I • Pi.single j 1) : ℝ) + Complex.I * ((H (Pi.single i 1) (Complex.I • Pi.single j 1) - H (Complex.I • Pi.single …`. Establish `hM : Continuous M` using `continuous_pi fun i => continuous_pi fun j => by`. Simplify using `only [hMdef]`. Use `fun_prop`. Establish `hdisc : Continuous fun B : Fin D → Matrix (Fin D) (Fin D) ℂ => (mixedDisc B).re`.
+
+Unfold `mixedDisc`. Conclude with `Complex.continuous_re.comp (continuous_const.mul (continuous_finsetSum _ fun S _ => continuous_const.mul (Continuous.matrix_det (continuous_finsetSum _ fun k _ => continuous_apply k))))`. Establish `heq : maDensity φ = fun z => (D.factorial : ℝ) * (2 / Real.pi) ^ D * (mixedDisc fun k => M (fderiv ℝ (fderiv ℝ (φ k)) z)).re` using `rfl`. Rewrite using `[heq]`. Conclude with `measurable_const.mul ((hdisc.comp (continuous_pi fun k => hM.comp (continuous_apply k))).measurable.comp (measurable_pi_lambda _ fun k => measurable_fderiv ℝ _))`.
+-/
 theorem measurable_maDensity {D : ℕ} (φ : Fin D → (Fin D → ℂ) → ℝ) :
     Measurable (maDensity φ) := by
   set M : ((Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) → Matrix (Fin D) (Fin D) ℂ := fun H i j =>
@@ -33,6 +38,29 @@ theorem measurable_maDensity {D : ℕ} (φ : Fin D → (Fin D → ℂ) → ℝ) 
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {e : ℕ}
 
+/- English proof (translation)
+Take `⟨D, hDc, hDd⟩` from `TopologicalSpace.exists_countable_dense (Fin e → ℂ)`. Establish `hρ : ∀ n : ℕ, (0 : ℝ) < 1 / (n + 1)` using `fun n => by positivity`. Set `Bl : D × ℕ → Set (Fin e → ℂ)` to `fun p => ball (p.1 : Fin e → ℂ) (1 / (p.2 + 1))`. Establish `: Countable D` using `hDc.to_subtype`. Establish `: ∀ p : D × ℕ, Countable (secSet P Ψ (Bl p))` using `fun p => (secSet_finite osgood hfin (p.1 : Fin e → ℂ) (hρ p.2)).countable.to_subtype`.
+
+Set `T` to `Σ p : D × ℕ, secSet P Ψ (Bl p)`. Set `Lift : T → ((Fin e → ℂ) → (Σ k, ι k) → ℂ) → Prop` to `fun t γ => ∀ y ∈ Bl t.1, DifferentiableAt ℂ γ y ∧ γ y ∈ mcPts P ∧ segre (γ y) = (t.2 : (Fin e → ℂ) → ((k : K) → ι k) → ℂ) y`. Set `Bo : Option T → Set (Fin e → ℂ)` to `fun o => o.elim ∅ fun t => if ∃ γ, Lift t γ then Bl t.1 else ∅`. Set `γo : Option T → (Fin e → ℂ) → (Σ k, ι k) → ℂ` to `fun o => o.elim (fun _ _ => 0) fun t => if h : ∃ γ, Lift t γ then h.choose else fun _ _ => 0`. Take `⟨f, hf⟩` from `exists_surjective_nat (Option T)`.
+
+Establish `hBsome : ∀ t : T, Bo (some t) = if ∃ γ, Lift t γ then Bl t.1 else ∅` using `fun t => rfl`. Establish `hγsome : ∀ t : T, (h : ∃ γ, Lift t γ) → γo (some t) = h.choose` using `fun t h => by show (if h : ∃ γ, Lift t γ then h.choose else fun _ _ => 0) = _`. Rewrite using `[dif_pos h]`. Establish `hBo : ∀ o, IsOpen (Bo o)`. Introduce and unpack `(_ | t)`.
+
+Conclude with `isOpen_empty`. Rewrite using `[hBsome] split_ifs`. Conclude with `isOpen_ball`. Conclude with `isOpen_empty`. Establish `hlift : ∀ o, ∀ y ∈ Bo o, DifferentiableAt ℂ (γo o) y ∧ γo o y ∈ mcPts P ∧ Ψ (segre (γo o y)) = Fin.cons 1 y`.
+
+Introduce and unpack `(_ | t) y hy`. Conclude with `absurd hy (Set.notMem_empty y)`. Rewrite `hy`, `with`, `h` using `[hBsome] at hy split_ifs`. Rewrite using `[hγsome t h]`. Take `⟨h1, h2, h3⟩` from `h.choose_spec y hy`.
+
+Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Take `⟨-, -, hfib⟩` from `t.2.2`. Take `⟨z, -, -, hΨ⟩` from `hfib y hy`. Rewrite using `[h3, hΨ]`. Conclude with `absurd hy (Set.notMem_empty y)`.
+
+Use `⟨fun m => Bo (f m), fun m => γo (f m), fun m => hBo (f m), fun m => hlift (f m), fun y w γ' hγ' => ?_⟩` and prove the remaining obligations. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.mp hγ'.2`. Take `⟨n, hn⟩` from `exists_nat_one_div_lt (half_pos hε)`. Take `⟨d, hdy, hdD⟩` from `Metric.dense_iff.mp hDd y _ (hρ n)`. Set `p : D × ℕ` to `(⟨d, hdD⟩, n)`.
+
+Establish `hyB : y ∈ Bl p` using `by show y ∈ ball d (1 / ((n : ℝ) + 1))`. Rewrite using `[mem_ball, dist_comm]`. Conclude with `hdy`. Establish `hBsub : Bl p ⊆ ball y ε`. Introduce `y' hy'`.
+
+Establish `hy'' : dist y' d < 1 / ((n : ℝ) + 1)` using `hy'`. Rewrite `hdy`, the goal using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation. Establish `hG` using `mem_secSet_of_sheet (P := P) (Ψ := Ψ) (B := Bl p) (γ := γ') fun y' hy' => hball y' (hBsub hy')`. Set `t : T` to `⟨p, _, hG⟩`.
+
+Establish `hL : ∃ γ, Lift t γ` using `⟨γ', fun y' hy' => ⟨(hball y' (hBsub hy')).1, (hball y' (hBsub hy')).2.1, by simp only [t]; rw [Set.indicator_of_mem hy']⟩⟩`. Take `⟨m, hm⟩` from `hf (some t)`. Use `⟨m, ?_, ?_⟩` and prove the remaining obligations. Use `show y ∈ Bo (f m)`. Rewrite using `[hm, hBsome, if_pos hL]`.
+
+Conclude with `hyB`. Use `show segre (γo (f m) y) = w`. Rewrite using `[hm, hγsome t hL, (hL.choose_spec y hyB).2.2]`. Simplify using `only [t]`. Rewrite using `[Set.indicator_of_mem hyB, hγ'.1]`.
+-/
 theorem exists_lift_family {P : Ideal (MRing ι)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hfin : ∀ y, (fibre P Ψ y).Finite) :
     ∃ (B : ℕ → Set (Fin e → ℂ)) (γ : ℕ → (Fin e → ℂ) → (Σ k, ι k) → ℂ),

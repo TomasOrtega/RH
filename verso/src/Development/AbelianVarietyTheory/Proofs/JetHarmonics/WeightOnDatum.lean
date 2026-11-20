@@ -19,6 +19,27 @@ open GlobalTheory.PtTie
 
 namespace GlobalTheory.WeightOnDatum
 
+/- English proof (translation)
+Introduce `D T hP j hj w`. Take `⟨hDF, -, hPsi, hN, hwt⟩` from `GlobalTheory.WeightExponents.weight_exponents D T.Q hP j hj w`. Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨hp, hq, -⟩` from `hP.2.2.2 j hj`. Establish `hm2` using `D.R.two_le_m`. Establish `hk5` using `D.R.m_add_three_le_k`. Establish `hj1` using `hj.1`.
+
+Establish `hj2` using `hj.2`. Establish `hr : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r`. Rewrite using `[hp, hq]`. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hf : 1 ≤ D.R.f`. Unfold `Ranks.f Ranks.n`. Conclude with `Nat.succ_le_of_lt (by positivity)`. Establish `hp0 : 0 < (D.R.sigW j).1`. Simplify using `only [Ranks.sigW]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hlast : w.LastPos → ∀ t, 1 ≤ w.aP t ⟨(D.R.sigW j).1 - 1, by omega⟩` using `fun hw t => hw t _ (by show (D.R.sigW j).1 - 1 + 1 = _; omega)`. Use `⟨hDF, ?_, fun hw => ⟨?_, ?_⟩, fun τ => ?_, ?_, hf, by omega, hfr⟩` and prove the remaining obligations. Introduce `τ i i' h`. Conclude with `(dom_wtA w).1 τ h`.
+
+Introduce `τ hτ _`. Take `⟨t, rfl⟩` from `(hPsi τ).1 hτ`. Establish `hmult : (T.Q.Dw j).mult (DV.tauEmb D t) = (D.R.sigW j).1`. Unfold `Datum.mult`. Establish `hτ' : (DV.tauEmb D t) (T.Q.H.rt : D.host.E) = T.Q.H.rt0` using `hτ`.
+
+Rewrite using `[if_pos hτ', hp]`. Rewrite using `[hmult, (hwt t _).1]`. Unfold `ext0`. Rewrite using `[dif_pos (by omega)]`. Conclude with `hlast hw t`.
+
+Establish `ht : Nonempty D.what₂.Tau`. Distinguish the cases in `h : InPsi T.Q.H D.host.φ₀`. Take `⟨t, -⟩` from `(hPsi _).1 h`. Conclude with `⟨t⟩`. Take `⟨t, -⟩` from `(hN _).1 h`.
+
+Conclude with `⟨t⟩`. Take `⟨t⟩` from `ht`. Unfold `WeightAlgebra.DF WeightAlgebra.degP`. Use `le_trans ?_ (Finset.single_le_sum (f := fun τ => (∑ i, w.aP τ i) + ∑ i, w.aM τ i) (fun _ _ => Nat.zero_le _) (Finset.mem_univ t))` and prove the remaining obligations. Use `le_trans ?_ (Nat.le_add_right _ _)` and prove the remaining obligations.
+
+Conclude with `le_trans (hlast hw t) (Finset.single_le_sum (f := fun i => w.aP t i) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _))`. Apply the tactic sequence `rw [← hr, Datum.mult] split_ifs <;> omega`. Use `card_Lt1_le_finrank_mul.trans ?_` and prove the remaining obligations. Rewrite using `[hfr, hr]`.
+-/
 theorem weight_on_datum : ∀ (D : D7) (T : Core D), T.Q.Pins → ∀ (j : ℕ), InR D j → ∀ w : WeightFamilies.Wt D j, Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) = WeightAlgebra.DF w ∧ DomW (T.Q.Dw j) (wtA w) ∧ (w.LastPos → Formalism.L2.Pj.LastPos (T.Q.Dw j) (wtA w) ∧ 1 ≤ WeightAlgebra.DF w) ∧ (∀ τ, (T.Q.Dw j).mult τ ≤ D.R.r) ∧ Fintype.card (Lt1 (T.Q.Dw j)) ≤ 2 * D.R.f * D.R.r ∧ 1 ≤ D.R.f ∧ 1 ≤ D.R.r ∧ Module.finrank ℚ D.host.E = 2 * D.R.f := by
   intro D T hP j hj w
   obtain ⟨hDF, -, hPsi, hN, hwt⟩ := GlobalTheory.WeightExponents.weight_exponents D T.Q hP j hj w

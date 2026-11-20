@@ -15,6 +15,13 @@ namespace SDf
 
 variable (d : SD σ)
 
+/- English proof (translation)
+Take `⟨-, ⟨ε, w₀, hw₀, -⟩, -⟩` from `hA F E σ d`. Establish `he : eInf F • inFrame d.b x = eInf F • (1 : Matrix _ _ (AE F E))` using `(cw_one_iff d _).1 hx`. Take `⟨x₁, x₂, x₃, x₄, t, c, b, a, a', hxe, h1, h2, h3, h4, ht, hc, hb, -, ha'⟩` from `hD F E σ d ε w₀ hw₀ (eInf F) eInf_mul_self x he`. Take `⟨AW, BW, hW⟩` from `stepW d hT hA ε w₀ hw₀`. Establish `hW3` using `step_comp d (step_comp d hW hW) hW`.
+
+Establish `h4' : w₀ * (w₀ * w₀ * w₀) = 1` using `by simpa only [mul_assoc] using RD.w_four_pf hw₀`. Take `⟨BC, hC⟩` from `step_conj d hT hW hW3 (stepN d hT x₂ c h2 hc) h4'`. Establish `hinv : w₀⁻¹ = w₀ * w₀ * w₀` using `(eq_inv_of_mul_eq_one_left (RD.w_four_pf hw₀)).symm`. Take `⟨BM, hM⟩` from `stepM d hT x₃ a a' h3 ha'`. Establish `hall` using `step_comp d (step_comp d (step_comp d (stepN d hT x₁ t h1 ht) hC) hM) (stepN d hT x₄ b h4 hb)`.
+
+Rewrite using `[hxe, hinv]`. Conclude with `⟨_, hall⟩`.
+-/
 theorem step_of_triv (hT : TAll) (hA : AuxiliaryPrimeFunction) (hD : AdDecomp) (x : d.G) (hx : ∀ w, d.cw w (inFrame d.b x) = 1) :
     ∃ B, StepF d x id B := by
   obtain ⟨-, ⟨ε, w₀, hw₀, -⟩, -⟩ := hA F E σ d
@@ -35,6 +42,11 @@ end SDf
 
 variable (F) in
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F)` to `⟨1, 2, zero_lt_one, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left Complex.ofReal_zero`. Establish `h2 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => ((b x : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Use `⟨h1.toSchwartzMap h2, 0, ?_⟩` and prove the remaining obligations. Use `show ((b 0 : ℝ) : ℂ) ≠ 0`.
+
+Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_schwartz_ne {κ : Type} [Fintype κ] :
     ∃ (φ : 𝓢(κ → mixedEmbedding.mixedSpace F, ℂ)) (v : κ → mixedEmbedding.mixedSpace F), φ v ≠ 0 := by
   let b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F) := ⟨1, 2, zero_lt_one, one_lt_two⟩
@@ -45,6 +57,13 @@ theorem exists_schwartz_ne {κ : Type} [Fintype κ] :
   rw [b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]
   simp
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Establish `e : (fun y : κ → Af F => pureA F (⇑f) g (fun k => pairA F (a k) (y k))) = (f fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F) (a i)) • g`. Use function extensionality and compare the values at `y`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hg`. Consider the case `zero => exact (SB (κ → Af F)).zero_mem`. Consider the case `add x y _ _ hx hy => exact (SB (κ → Af F)).add_mem hx hy`.
+
+Consider the case `smul r x _ hx => exact (SB (κ → Af F)).smul_mem r hx`.
+-/
 theorem slice_mem {κ : Type} [Fintype κ] (Φ : (κ → AF F) → ℂ) (hΦ : Φ ∈ schA F κ) (a : κ → Ainf F) :
     (fun y : κ → Af F => Φ (fun k => pairA F (a k) (y k))) ∈ SB (κ → Af F) := by
   induction hΦ using Submodule.span_induction with
@@ -63,6 +82,37 @@ theorem slice_mem {κ : Type} [Fintype κ] (Φ : (κ → AF F) → ℂ) (hΦ : �
 namespace SDf
 variable (d : SD σ)
 
+/- English proof (translation)
+Introduce `g hg`. Use `set G : Mx F E d.m d.n → ℂ := fun X => g (fcrd d X) with hGdef`. Establish `hG : InvInf d G` using `fcrd_invInf d g`. Establish `hBG` using `(hB.2 G hG).1`. Use `set g₁ : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ := fun y => B G (d.cmb fun k => pairA F 0 (y k)) with hg₁`.
+
+Establish `hfc : ∀ y, fcrd d (d.cmb fun k => pairA F 0 (y k)) = y` using `fun y => by`. Use function extensionality and compare the values at `k`. Simplify using `only [fcrd, KFock.crd_cmb]`. Both sides reduce to the same expression. Establish `hBg : ∀ X, B G X = g₁ (fcrd d X)` using `fun X => invInf_fcrd d hBG X`.
+
+Distinguish the cases in `hg0 : g = 0`. Use `⟨0, (SB _).zero_mem, fun f hf Φ hΦ hTΦ => ?_⟩` and prove the remaining obligations. Establish `hΦ0 : Φ = 0` using `d.T_inj hT Φ hΦ (by rw [hTΦ, hg0]; funext X; simp)`. Substitute `hΦ0` using the available equality. Rewrite using `[map_zero, d.T_zero]`.
+
+Use function extensionality and compare the values at `X`. Simplify using the standard rewrite rules. Use `⟨g₁, ?_, fun f hf Φ hΦ hTΦ => ?_⟩` and prove the remaining obligations. Use `swap`. Establish `e` using `(hB.2 G hG).2 f hf Φ hΦ hTΦ`.
+
+Rewrite using `[e]`. Use function extensionality and compare the values at `X`. Simplify using `only [id]`. Rewrite using `[hBg X]`. Both sides reduce to the same expression.
+
+Take `⟨φ, v₀, hv₀⟩` from `exists_schwartz_ne (κ := Fin d.m × Fin d.n × Fin 2) F`. Use `set f₀ : Mx F E d.m d.n → ℂ := fun X => φ fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (d.crd X k).1 with hf₀d`. Establish `hf₀ : InvFin d f₀`. Introduce `X Z hZ`. Establish `hZ'` using `(cw_zero_iff d Z).1 hZ`.
+
+Use `show (φ fun k => _) = φ fun k => _`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `: (d.crd Z k).1 = 0`. Rewrite using `[← eInf_fst_mul (d.crd Z k), ← crd_smul, hZ']`.
+
+Simplify using `[SD.crd]`. Rewrite using `[crd_add]`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F ((d.crd X k).1 + (d.crd Z k).1) = _`. Rewrite using `[this, add_zero]`. Establish `hmem : (fun X => f₀ X * G X) ∈ d.schM` using `by show (fun c => f₀ (d.cmb c) * G (d.cmb c)) ∈ schA F (Fin d.m × Fin d.n × Fin 2)`.
+
+Establish `e : (fun c => f₀ (d.cmb c) * G (d.cmb c)) = pureA F (⇑φ) g`. Use function extensionality and compare the values at `c`. Use `show (φ fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (d.crd (d.cmb c) k).1) * g (fun k => (d.crd (d.cmb c) k).2) = _`. Rewrite using `[KFock.crd_cmb]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨φ, g, hg, rfl⟩`. Take `⟨Φ₀, hΦ₀, hTΦ₀⟩` from `(hT.1 F E σ d).2.1 _ hmem`. Establish `e` using `(hB.2 G hG).2 f₀ hf₀ Φ₀ hΦ₀ hTΦ₀`. Establish `hm` using `(hT.1 F E σ d).1 _ (d.om_sch x Φ₀ hΦ₀)`.
+
+Rewrite `hm` using `[e]`. Establish `hs` using `slice_mem _ hm (fun k => (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (v₀ k))`. Establish `e2 : (fun y : Fin d.m × Fin d.n × Fin 2 → Af F => (fun X => id f₀ X * B G X) (d.cmb fun k => pairA F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (v₀ k)) (y k))) = φ v₀ • g₁`. Use function extensionality and compare the values at `y`. Simplify using `only [id, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[hBg]`. Establish `h1 : fcrd d (d.cmb fun k => pairA F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (v₀ k)) (y k)) = y`. Use function extensionality and compare the values at `k`. Simplify using `only [fcrd, KFock.crd_cmb]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1]`. Use `congr 1`. Use `show (φ fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (d.crd (d.cmb _) k).1) = _`. Rewrite using `[KFock.crd_cmb]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (v₀ k)`. Establish `hs' : φ v₀ • g₁ ∈ SB (Fin d.m × Fin d.n × Fin 2 → Af F)`. Rewrite using `[← e2]`. Conclude with `hs`.
+
+Use `(SB (Fin d.m × Fin d.n × Fin 2 → Af F)).smul_mem (φ v₀)⁻¹ hs'` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hv₀, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem finAct_step (hT : TAll) (x : d.G) {B : (Mx F E d.m d.n → ℂ) → Mx F E d.m d.n → ℂ} (hB : StepF d x id B) :
     ∀ g ∈ SB (Fin d.m × Fin d.n × Fin 2 → Af F), ∃ g' ∈ SB (Fin d.m × Fin d.n × Fin 2 → Af F),
       ∀ f : Mx F E d.m d.n → ℂ, (∀ X Z, (∀ w, d.cw w Z = 0) → f (X + Z) = f X) → ∀ Φ ∈ d.sch,
@@ -147,6 +197,9 @@ theorem finAct_step (hT : TAll) (x : d.G) {B : (Mx F E d.m d.n → ℂ) → Mx F
 
 end SDf
 
+/- English proof (translation)
+Introduce `hT hA hD F E _ _ _ _ _ σ d x hx`. Take `⟨B, hB⟩` from `SDf.step_of_triv d hT hA hD x hx`. Conclude with `SDf.finAct_step d hT x hB`.
+-/
 theorem finAct_of : TAll → AuxiliaryPrimeFunction → AdDecomp → FinAct := by
   intro hT hA hD F E _ _ _ _ _ σ d x hx
   obtain ⟨B, hB⟩ := SDf.step_of_triv d hT hA hD x hx

@@ -104,11 +104,21 @@ def UnitEquivJ (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →
 
 end Diagonal
 
+/- English proof (translation)
+Unfold `Tz Formalism.QuantumDeterminants.herm negVec bvec`. Rewrite using `[Matrix.mulVec_single_one, ← Pi.single_star, star_one, single_one_dotProduct]`. Simplify using `[Formalism.QuantumDeterminants.Hpk, wI]`.
+-/
 lemma Tz_negVec (k r : ℕ) : Tz k r (negVec k r) = 1 := by
   unfold Tz Formalism.QuantumDeterminants.herm negVec bvec
   rw [Matrix.mulVec_single_one, ← Pi.single_star, star_one, single_one_dotProduct]
   simp [Formalism.QuantumDeterminants.Hpk, wI]
 
+/- English proof (translation)
+Use `⟨?_, by rw [Tz_negVec]; exact one_pos, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Unfold `negVec bvec`. Apply `Pi.single_eq_of_ne` to reduce the goal to its premises. Introduce `h`.
+
+Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[wI] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[Formalism.QuantumDeterminants.UH]`. Introduce `a`.
+
+Simplify using the standard rewrite rules. Simplify using `[Tz_negVec]`.
+-/
 lemma isFrameFor_negVec (k r : ℕ) :
     inWb k r (negVec k r) ∧ 0 < Tz k r (negVec k r) ∧ IsFrameFor k r (negVec k r) 1 := by
   refine ⟨?_, by rw [Tz_negVec]; exact one_pos, ?_, ?_, ?_⟩
@@ -123,6 +133,21 @@ lemma isFrameFor_negVec (k r : ℕ) :
   · intro a; simp
   · simp [Tz_negVec]
 
+/- English proof (translation)
+Establish `hlow : PI.UpqRep.lowK (PI.UpqRep.allPos k) (PI.UpqRep.rhoC (PI.UpqRep.allPos k)) = 0`. Use function extensionality and compare the values at `a`. Simplify using `[PI.UpqRep.lowK, PI.UpqRep.rhoN, PI.UpqRep.allPos]`. Use `⟨inferInstance, inferInstance, ⟨⟨rfl, fun _ _ _ _ => rfl⟩, fun _ _ _ => rfl, fun _ => continuousOn_const⟩, inferInstance, fun _ _ _ _ => trivial, fun S _ _ => eq_bot_or_eq_top S, ⟨1, trivial, one_ne_zero, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `θ _`.
+
+Simplify using `[hlow]`. Introduce `μ v _ hv hw`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Establish `hμ : μ = 0`. Use function extensionality and compare the values at `a`.
+
+Assume the negation of the conclusion as `ha`. Establish `ha' : μ a ≠ 0` using `ha`. Establish `hmem : Matrix.diagonal (fun b => Complex.exp ((((Pi.single a (Real.pi / μ a) : Fin k → ℝ) b : ℝ) : ℂ) * Complex.I)) ∈ PI.UpqRep.Kset (PI.UpqRep.allPos k)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`. Evaluate the numerical expressions. Simplify using `[PI.UpqRep.Jm, PI.UpqRep.allPos]`.
+
+Establish `h` using `hw _ hmem`. Establish `hs : ∑ b, μ b * (Pi.single a (Real.pi / μ a) : Fin k → ℝ) b = Real.pi`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+
+Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hs, Complex.exp_pi_mul_I]`. Apply `hv` to reduce the goal to its premises.
+
+Establish `h2 : v = -v` using `by simpa using h`. Take the linear combination `h2 / 2`. Simplify using `[hlow, hμ]`.
+-/
 lemma isHCTypeU_trivial (k : ℕ) :
     IsHCTypeU k (PI.UpqRep.rhoC (PI.UpqRep.allPos k))
       (fun _ => (1 : ℂ →L[ℂ] ℂ)) := by
@@ -164,6 +189,9 @@ lemma isHCTypeU_trivial (k : ℕ) :
       linear_combination h2 / 2
     simp [hlow, hμ]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `isFrameFor_negVec 1 r`. Use `⟨h1, h2, ⟨Subsingleton.strictAnti _, fun a => ⟨0, ?_⟩⟩, 1, h3, isHCTypeU_trivial 1⟩` and prove the remaining obligations. Take `rfl : a = 0` from `Subsingleton.elim _ _`. Simplify using `[PI.UpqRep.rhoC]`.
+-/
 example (r : ℕ) : IsHCTypeW 1 r (negVec 1 r) (PI.UpqRep.rhoC (PI.UpqRep.allPos 1))
     (fun _ => (1 : ℂ →L[ℂ] ℂ)) := by
   obtain ⟨h1, h2, h3⟩ := isFrameFor_negVec 1 r

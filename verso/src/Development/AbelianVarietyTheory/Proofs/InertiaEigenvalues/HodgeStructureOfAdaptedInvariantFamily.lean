@@ -15,6 +15,17 @@ namespace GlobalTheory.BKLim.AdaptedHodge
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `he` using `core_isEps l C`. Take `⟨-, hinj, -, -⟩` from `BdRField.bdR_isField l`. Establish `h1 : xi C.ε ∈ Ideal.span {ξ}` using `by rw [hξ, C.ker_theta]; exact Ideal.mem_span_singleton_self _`. Establish `h2 : ξ ∈ Ideal.span {xi C.ε}` using `by rw [← C.ker_theta, ← hξ]; exact Ideal.mem_span_singleton_self _`. Take `⟨a0, ha0⟩` from `Ideal.mem_span_singleton'.1 h1`.
+
+Take `⟨b0, hb0⟩` from `Ideal.mem_span_singleton'.1 h2`. Establish `hX` using `TiedUnif.isUnit_xi he`. Establish `key : aDp l a0 * aDp l b0 * aDp l (xi C.ε) = aDp l (xi C.ε)`. Rewrite using `[← map_mul, ← map_mul, mul_assoc, hb0, ha0]`. Establish `hab : aDp l a0 * aDp l b0 = 1`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_one]`. Apply `hX.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[one_mul, ← map_mul, key]`. Establish `hα : IsUnit (aDp l a0)` using `IsUnit.of_mul_eq_one _ hab`.
+
+Establish `hXe : algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (xi C.ε)) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l a0) * algebraMap (Per.BdRp l) (Per.BdR l) (aDp l ξ)`. Rewrite using `[← map_mul, ← map_mul, ha0]`. Establish `hu : IsUnit (algebraMap (Per.BdRp l) (Per.BdR l) (aDp l ξ))` using `isUnit_of_mul_isUnit_right (hXe ▸ hX)`. Use `⟨hu.unit, hu.unit_spec, fun a x hx => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `(TiedUnif.mem_FilD_iff he a x).1 hx`.
+
+Establish `hEq : hX.unit = hu.unit * Units.map (algebraMap (Per.BdRp l) (Per.BdR l) : Per.BdRp l →* Per.BdR l) hα.unit` using `Units.ext (by simp [hXe, mul_comm])`. Use `⟨((hα.unit ^ a : (Per.BdRp l)ˣ) : Per.BdRp l) * w, ?_⟩` and prove the remaining obligations. Rewrite using `[hEq, mul_zpow, ← map_zpow, Units.val_mul, map_mul, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem xi_unit_fil (C : Core l) (ξ : Ainf l) (hξ : Ideal.span {ξ} = RingHom.ker (Per.θ l)) :
     ∃ u : (Per.BdR l)ˣ, (u : Per.BdR l) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l ξ) ∧
       ∀ (a : ℤ) (x : Per.BdR l), x ∈ Per.FilD l a →
@@ -51,6 +62,31 @@ end GlobalTheory.BKLim.AdaptedHodge
 
 namespace GlobalTheory.BKLim
 
+/- English proof (translation)
+Introduce `l _ K P AI T C hfit ξ hξ d ρ x h hinv hfil hspan`. Take `⟨u, hu, hF⟩` from `AdaptedHodge.xi_unit_fil C ξ hξ`. Take `⟨-, hinj, -, -⟩` from `BdRField.bdR_isField l`. Establish `hV : ∀ j i, ∃ w : Per.BdRp l, T.eD (x j i) = ((u ^ h j : (Per.BdR l)ˣ) : Per.BdR l) * algebraMap (Per.BdRp l) (Per.BdR l) w` using `fun j i => hF _ _ ((T.fil K _ _).1 (hfil j i))`. Use `choose w hw using hV`.
+
+Establish `h0 : ∀ i (k : Fin d), (Pi.single i (1 : P.R.BdR) : Fin d → P.R.BdR) k ∈ (P.PD K).Fil 0`. Introduce `i k`. Rewrite using `[T.fil]`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+
+Rewrite using `[Pi.single_eq_same, map_one, ← map_one (algebraMap (Per.BdRp l) (Per.BdR l))]`. Conclude with `TiedUnif.alg_mem_FilD_zero 1`. Rewrite using `[Pi.single_eq_of_ne hk, map_zero]`. Conclude with `zero_mem _`. Use `choose c hc hsum using fun i => hspan (Pi.single i 1) (h0 i)`.
+
+Establish `hW : ∀ i j, ∃ w' : Per.BdRp l, T.eD (c i j) = ((u ^ (-h j) : (Per.BdR l)ˣ) : Per.BdR l) * algebraMap (Per.BdRp l) (Per.BdR l) w'` using `fun i j => hF _ _ ((T.fil K _ _).1 (hc i j))`. Use `choose w' hw' using hW`. Establish `hq : ∀ j, 0 ≤ h j + ((∑ j, (h j).natAbs : ℕ) : ℤ)`. Introduce `j`. Establish `h1 : (h j).natAbs ≤ ∑ j, (h j).natAbs` using `Finset.single_le_sum (f := fun j => (h j).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hcan : ∀ j, ((u ^ (-h j) : (Per.BdR l)ˣ) : Per.BdR l) * ((u ^ h j : (Per.BdR l)ˣ) : Per.BdR l) = 1`. Introduce `j`. Rewrite using `[← Units.val_mul, ← _root_.zpow_add, neg_add_cancel, zpow_zero, Units.val_one]`. Establish `hVW : (Matrix.of fun i j => w j i) * (Matrix.of fun j i => w' i j) = 1`.
+
+Use extensionality with `k i`. Apply `hinj` to reduce the goal to its premises. Establish `e1` using `congrArg (fun y : Fin d → P.R.BdR => T.eD (y k)) (hsum i)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul] at e1`. Rewrite using `[Matrix.mul_apply, map_sum]`.
+
+Simplify using `only [Matrix.of_apply, map_mul]`. Establish `e2 : ∀ j, T.eD (c i j) * T.eD (x j k) = algebraMap (Per.BdRp l) (Per.BdR l) (w j k) * algebraMap (Per.BdRp l) (Per.BdR l) (w' i j)`. Introduce `j`. Rewrite using `[hw, hw']`. Take the linear combination `(algebraMap (Per.BdRp l) (Per.BdR l) (w j k) * algebraMap (Per.BdRp l) (Per.BdR l) (w' i j)) * hcan j`.
+
+Simplify using `only [e2] at e1`. Rewrite using `[← e1, Matrix.one_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hz : ∀ z : ℤ_[l], T.eD (algebraMap ℚ_[l] P.R.BdR (z : ℚ_[l])) = ((algebraMap (Per.BdRp l) (Per.BdR l)).comp C.o) (zOm l z)`. Introduce `z`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR, hfit.o]`. Both sides reduce to the same expression. Use `⟨{ V := Matrix.of fun i j => w j i unit := ⟨⟨_, _, hVW, _root_.mul_eq_one_comm.mp hVW⟩, rfl⟩ p := fun j => (h j + ((∑ j, (h j).natAbs : ℕ) : ℤ)).toNat q := ∑ j, (h j).natAbs Q := Matrix.of fun i j => T.eD (x j i) Q_eq := ?_ inv := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `i j`. Simplify using `only [Matrix.of_apply]`.
+
+Rewrite using `[hw, map_mul, map_pow, ← hu, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← mul_assoc, ← Units.val_mul, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_add, Int.toNat_of_nonneg (hq j), add_comm]`. Introduce `g _`. Use extensionality with `i j`. Establish `e1` using `congrArg (fun y : Fin d → P.R.BdR => T.eD (y i)) (hinv j g)`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, T.actD, hz] at e1`.
+
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Conclude with `e1`. Introduce `i`. Simplify using `only`.
+
+Rewrite using `[Int.toNat_of_nonneg (hq i)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hodge_of_adapted : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (C : Core l), Fits T C → ∀ (ξ : Ainf l), Ideal.span {ξ} = RingHom.ker (Per.θ l) → ∀ (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (x : Fin d → Fin d → P.R.BdR) (h : Fin d → ℤ), (∀ j (g : ↥(GK K)), (ρ g).val.map (fun z : ℤ_[l] => algebraMap ℚ_[l] P.R.BdR (z : ℚ_[l])) *ᵥ (fun i => P.actQdR (g : GQ l) (x j i)) = x j) → (∀ j i, x j i ∈ (P.PD K).Fil (h j)) → (∀ y : Fin d → P.R.BdR, (∀ i, y i ∈ (P.PD K).Fil 0) → ∃ c : Fin d → P.R.BdR, (∀ j, c j ∈ (P.PD K).Fil (-h j)) ∧ y = ∑ j, c j • x j) → ∃ H : Hodge C ξ (fun g => (ρ g).val.map (zOm l)) K, ∀ i, (H.p i : ℤ) - H.q = h i := by
   intro l _ K P AI T C hfit ξ hξ d ρ x h hinv hfil hspan
   obtain ⟨u, hu, hF⟩ := AdaptedHodge.xi_unit_fil C ξ hξ

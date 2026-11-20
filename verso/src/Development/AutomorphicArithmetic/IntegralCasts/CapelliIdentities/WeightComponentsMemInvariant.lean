@@ -5,6 +5,9 @@ import Mathlib
     fun (n : ℕ) (K : Type u_2) (V : Type u_3) [Field K] [AddCommGroup V] [_root_.Module K V] ↦
       Fin n → Fin n → Module.End K V
 
+/- English proof (translation)
+Introduce `K V _ _ _`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Qf7.aux2.{u_1, u_2} :
     ∀ {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V],
       SMulCommClass K K V := by
@@ -22,6 +25,9 @@ noncomputable def UpperTheory.Reformulated.B.Qf7.weightSp.{u_2, u_3} :
         (E : UpperTheory.Reformulated.B.Qf7.GLOps n K V) (mu : Fin n → ℤ) ↦
       ⨅ (a : Fin n), LinearMap.ker (E a a - (↑(mu a) : K) • (1 : Module.End K V))
 
+/- English proof (translation)
+Unfold `UpperTheory.Reformulated.B.Qf7.weightSp at hx`. Establish `h` using `(Submodule.mem_iInf _).1 hx a`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `h`.
+-/
 private theorem UpperTheory.Reformulated.B.Qf7.apply_of_mem_weightSp {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V]
     [_root_.Module K V] {E : UpperTheory.Reformulated.B.Qf7.GLOps n K V} {mu : Fin n → ℤ} {x : V}
     (hx : x ∈ UpperTheory.Reformulated.B.Qf7.weightSp E mu) (a : Fin n) : E a a x = (mu a : K) • x := by
@@ -31,6 +37,17 @@ private theorem UpperTheory.Reformulated.B.Qf7.apply_of_mem_weightSp {n : ℕ} {
     sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Introduce `n K V _ _ _ _ E W hW s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro f _ _ mu hmu`. Simplify using `at hmu`. Consider the case `insert nu t hnu ih`.
+
+Introduce `f hf hsum`. Establish `ht : ∀ mu ∈ t, f mu ∈ W`. Introduce `mu hmu`. Establish `hne : mu ≠ nu` using `fun h => hnu (h ▸ hmu)`. Take `⟨a, ha⟩` from `Function.ne_iff.1 hne`.
+
+Establish `h1 : E a a (∑ l ∈ insert nu t, f l) - (nu a : K) • (∑ l ∈ insert nu t, f l) ∈ W` using `W.sub_mem (hW a _ hsum) (W.smul_mem _ hsum)`. Establish `h2 : E a a (∑ l ∈ insert nu t, f l) - (nu a : K) • (∑ l ∈ insert nu t, f l) = ∑ l ∈ insert nu t, ((l a : K) - (nu a : K)) • f l`. Rewrite using `[map_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.Reformulated.B.Qf7.apply_of_mem_weightSp (hf l hl) a, sub_smul]`.
+
+Rewrite `h1` using `[h2, Finset.sum_insert hnu, sub_self, zero_smul, zero_add]`. Establish `h3` using `ih (fun l => ((l a : K) - (nu a : K)) • f l) (fun l hl => Submodule.smul_mem _ _ (hf l (Finset.mem_insert_of_mem hl))) h1 mu hmu`. Establish `hc : ((mu a : K) - (nu a : K)) ≠ 0` using `sub_ne_zero.2 (fun h => ha (Int.cast_injective h))`. Conclude with `(W.smul_mem_iff hc).1 h3`. Introduce `mu hmu`.
+
+Break down `Finset.mem_insert.1 hmu with rfl | hmu` into its components or cases. Rewrite `hsum` using `[Finset.sum_insert hnu]`. Conclude with `(W.add_mem_iff_left (W.sum_mem ht)).1 hsum`. Conclude with `ht mu hmu`.
+-/
 theorem UpperTheory.Reformulated.B.Qf7.weight_components_mem_invariant.{u_1, u_2} :
     ∀ {n : ℕ} {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V]
       [CharZero K] (E : UpperTheory.Reformulated.B.Qf7.GLOps n K V) (W : Submodule K V),

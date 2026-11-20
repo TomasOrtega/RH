@@ -15,11 +15,17 @@ namespace GlobalTheory.GreenRegularCharactersInertiaEigenvalues
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Use `degree_pos_of_irreducible h.2.1` as an intermediate fact. Rewrite using `[← h.2.2.2]`. Conclude with `natDegree_pos_iff_degree_pos.mpr this`.
+-/
 theorem isPrimeLab_pos {e : ℕ} {P : (ZMod g)[X]} (h : IsPrimeLab e P) : 0 < e := by
   have := degree_pos_of_irreducible h.2.1
   rw [← h.2.2.2]
   exact natDegree_pos_iff_degree_pos.mpr this
 
+/- English proof (translation)
+Take `⟨c, hc1, hc2⟩` from `GlobalTheory.T.monicIrreducible_inject_regularCharacterOrbits g e he K hK`. Use `⟨fun P => τ (c P), fun P hP => ⟨h1 _ (hc1 P hP), c P, hc1 P hP, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `P P' hP hP' h`. Conclude with `hc2 P P' hP hP' ((h2 _ _ (hc1 P hP) (hc1 P' hP')).mp h)`.
+-/
 theorem family (g : ℕ) [Fact g.Prime] (e : ℕ) (he : 0 < e) (K : Type) [Field K] [Algebra (ZMod g) K]
     (hK : Module.finrank (ZMod g) K = e) (τ : (Kˣ →* ℂˣ) → Gn g e → ℂ)
     (h1 : ∀ θ, IsRegularChar g e θ → IsCusp (τ θ))
@@ -32,6 +38,11 @@ theorem family (g : ℕ) [Fact g.Prime] (e : ℕ) (he : 0 < e) (K : Type) [Field
   intro P P' hP hP' h
   exact hc2 P P' hP hP' ((h2 _ _ (hc1 P hP) (hc1 P' hP')).mp h)
 
+/- English proof (translation)
+Introduce `P hP`. Establish `hirr` using `UniqueFactorizationMonoid.irreducible_of_normalized_factor P hP`. Establish `hmon : P.Monic`. Rewrite using `[← UniqueFactorizationMonoid.normalize_normalized_factor P hP]`. Conclude with `monic_normalize hirr.ne_zero`.
+
+Use `⟨hmon, hirr, ?_, rfl⟩` and prove the remaining obligations. Introduce `hc`. Establish `: (X : (ZMod g)[X]) ∣ f` using `(X_dvd_iff.mpr hc).trans (UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hP)`. Conclude with `h0 (X_dvd_iff.mp this)`.
+-/
 theorem factor_lab {f : (ZMod g)[X]} (h0 : f.coeff 0 ≠ 0) :
     ∀ P ∈ UniqueFactorizationMonoid.normalizedFactors f, IsPrimeLab P.natDegree P := by
   intro P hP
@@ -45,6 +56,9 @@ theorem factor_lab {f : (ZMod g)[X]} (h0 : f.coeff 0 ≠ 0) :
     (X_dvd_iff.mpr hc).trans (UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hP)
   exact h0 (X_dvd_iff.mp this)
 
+/- English proof (translation)
+Establish `hm : ((UniqueFactorizationMonoid.normalizedFactors f).prod).Monic`. Use `monic_multiset_prod_of_monic (UniqueFactorizationMonoid.normalizedFactors f) id (fun P hP => (factor_lab h0 P hP).1)` as an intermediate fact. Simplify using `using this`. Conclude with `eq_of_monic_of_associated hm hf (UniqueFactorizationMonoid.prod_normalizedFactors hf.ne_zero)`.
+-/
 theorem prod_factors {f : (ZMod g)[X]} (hf : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     (UniqueFactorizationMonoid.normalizedFactors f).prod = f := by
   have hm : ((UniqueFactorizationMonoid.normalizedFactors f).prod).Monic := by
@@ -53,6 +67,37 @@ theorem prod_factors {f : (ZMod g)[X]} (hf : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     simpa using this
   exact eq_of_monic_of_associated hm hf (UniqueFactorizationMonoid.prod_normalizedFactors hf.ne_zero)
 
+/- English proof (translation)
+Set `s : Set (ZMod g)[X]` to `{P | IsPrimeLab P.natDegree P}`. Set `φ : (ZMod g)[X] → Pc g` to `fun P => ⟨P.natDegree, Lf P.natDegree P⟩`. Establish `hinj : Set.InjOn φ s`. Introduce `P hP P' hP' h`. Establish `h1 : P.natDegree = P'.natDegree` using `congrArg Sigma.fst h`.
+
+Establish `h2 : (⟨P'.natDegree, Lf P'.natDegree P'⟩ : Pc g) = ⟨P.natDegree, Lf P.natDegree P'⟩` using `by rw [h1]`. Establish `h3 : Lf P.natDegree P = Lf P.natDegree P'` using `sigma_mk_injective (h.trans h2)`. Establish `hP'' : IsPrimeLab P.natDegree P'` using `by rw [h1]; exact hP'`. Conclude with `hi _ P P' hP hP'' h3`. Set `ψ : Pc g → (ZMod g)[X]` to `Function.invFunOn φ s`.
+
+Establish `hleft : ∀ P ∈ s, ψ (φ P) = P` using `fun P hP => hinj.leftInvOn_invFunOn hP`. Set `T : Set (ZMod g)[X]` to `{f | f.Monic ∧ f.natDegree = d ∧ f.coeff 0 ≠ 0}`. Take `⟨hcard, hfin⟩` from `GlobalTheory.T.ncard_monic_natDegree_coeff_zero_ne_zero g d hd`. Set `F : (ZMod g)[X] → Multiset (Pc g)` to `fun f => (UniqueFactorizationMonoid.normalizedFactors f).map φ`. Establish `hback : ∀ f ∈ T, (F f).map ψ = UniqueFactorizationMonoid.normalizedFactors f`.
+
+Introduce `f hf`. Simplify using `only [F, Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_id (UniqueFactorizationMonoid.normalizedFactors f)]`. Conclude with `Multiset.map_congr rfl (fun P hP => hleft P (factor_lab hf.2.2 P hP))`. Establish `hFinj : Set.InjOn F T`.
+
+Introduce `f hf f' hf' h`. Use `congrArg (fun M => (M.map ψ).prod) h` as an intermediate fact. Simplify using `only [hback f hf, hback f' hf'] at this`. Rewrite `this` using `[prod_factors hf.1 hf.2.2, prod_factors hf'.1 hf'.2.2]`. Then use the resulting hypothesis. Establish `hnot : ({⟨d, χ⟩} : Multiset (Pc g)) ∉ hfin.toFinset.image F`.
+
+Introduce `hmem`. Take `⟨f, hf, hfe⟩` from `Finset.mem_image.mp hmem`. Rewrite `hf` using `[Set.Finite.mem_toFinset]`. Establish `hnf` using `hback f hf`. Rewrite `hnf` using `[hfe, Multiset.map_singleton]`.
+
+Establish `hPmem : ψ ⟨d, χ⟩ ∈ UniqueFactorizationMonoid.normalizedFactors f`. Rewrite using `[← hnf]`. Conclude with `Multiset.mem_singleton_self _`. Establish `hPl` using `factor_lab hf.2.2 _ hPmem`. Establish `hφ : φ (ψ ⟨d, χ⟩) = ⟨d, χ⟩`.
+
+Use `hfe` as an intermediate fact. Simplify using `only [F] at this`. Rewrite `this` using `[← hnf, Multiset.map_singleton, Multiset.singleton_inj]`. Conclude with `this`. Use `set P := ψ ⟨d, χ⟩ with hPdef`.
+
+Establish `hdeg : P.natDegree = d` using `congrArg Sigma.fst hφ`. Establish `h2 : (⟨d, Lf d P⟩ : Pc g) = ⟨P.natDegree, Lf P.natDegree P⟩` using `by rw [hdeg]`. Establish `h3 : Lf d P = χ` using `sigma_mk_injective (h2.trans hφ)`. Establish `hPl' : IsPrimeLab d P` using `by rw [← hdeg]; exact hPl`. Conclude with `hne P hPl' h3`.
+
+Set `S : Finset (Multiset (Pc g))` to `insert {⟨d, χ⟩} (hfin.toFinset.image F)`. Establish `hS : ∀ M ∈ S, (M.map fun p => p.1).sum = d ∧ ∀ p ∈ M, IsCusp p.2`. Introduce `M hM`. Break down `Finset.mem_insert.mp hM with rfl | hM` into its components or cases. Use `⟨by simp, ?_⟩` and prove the remaining obligations.
+
+Introduce `p hp`. Rewrite `hp` using `[Multiset.mem_singleton]`. Substitute `hp` using the available equality. Conclude with `hχ`. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.mp hM`.
+
+Rewrite `hf` using `[Set.Finite.mem_toFinset]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [F, Multiset.map_map]`. Establish `hdeg` using `natDegree_multiset_prod_of_monic (UniqueFactorizationMonoid.normalizedFactors f) (fun P hP => (factor_lab hf.2.2 P hP).1)`. Rewrite `hdeg` using `[prod_factors hf.1 hf.2.2, hf.2.1]`.
+
+Rewrite using `[hdeg]`. Both sides reduce to the same expression. Introduce `p hp`. Take `⟨P, hP, rfl⟩` from `Multiset.mem_map.mp hp`. Conclude with `hc _ P (factor_lab hf.2.2 P hP)`.
+
+Establish `hle` using `GlobalTheory.T.card_cuspidal_multisets_total_degree_le g d hd S hS`. Establish `hcardS : S.card = g ^ d - g ^ (d - 1) + 1`. Rewrite using `[Finset.card_insert_of_notMem hnot, Finset.card_image_of_injOn, ← hcard, Set.ncard_eq_toFinset_card T hfin]`. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `hFinj`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem count (d : ℕ) (hd : 0 < d) (Lf : ∀ e, (ZMod g)[X] → Gn g e → ℂ)
     (hc : ∀ e P, IsPrimeLab e P → IsCusp (Lf e P))
     (hi : ∀ e P P', IsPrimeLab e P → IsPrimeLab e P' → Lf e P = Lf e P' → P = P')
@@ -134,6 +179,19 @@ end GlobalTheory.GreenRegularCharactersInertiaEigenvalues
 
 open GlobalTheory.GreenRegularCharactersInertiaEigenvalues in
 
+/- English proof (translation)
+Introduce `g _ d hd K _ _ hK`. Take `⟨τ, hτ1, hτ2⟩` from `GlobalTheory.T.exists_cuspidalCharacter_of_regularCharacter_GLn g d hd K hK`. Use `⟨τ, hτ1, hτ2, ?_⟩` and prove the remaining obligations. Establish `hex : ∀ e, ∃ L : (ZMod g)[X] → Gn g e → ℂ, (∀ P, IsPrimeLab e P → IsCusp (L P)) ∧ (∀ P P', IsPrimeLab e P → IsPrimeLab e P' → L P = L P' → P = P') ∧ (∀ _ : e = d, ∀ P, IsPrimeLab e P → ∃ θ, IsRegularChar g d θ ∧ (⟨e, L P⟩ : Pc g) = ⟨d, τ θ⟩)`. Introduce `e`.
+
+Distinguish the cases in `hed : e = d`. Substitute `hed` using the available equality. Take `⟨L, hL1, hL2⟩` from `family g e hd K hK τ (fun θ hθ => (hτ1 θ hθ).1) hτ2`. Use `⟨L, fun P hP => (hL1 P hP).1, hL2, fun _ P hP => ?_⟩` and prove the remaining obligations. Take `⟨θ, hθ, he⟩` from `(hL1 P hP).2`.
+
+Conclude with `⟨θ, hθ, by rw [he]⟩`. Distinguish the cases in `he0 : e = 0`. Use `⟨fun _ _ => 0, fun P hP => absurd (isPrimeLab_pos hP) (by omega), fun P _ hP _ _ => absurd (isPrimeLab_pos hP) (by omega), fun h => absurd h hed⟩` and prove the remaining obligations. Establish `hpos : 0 < e` using `Nat.pos_of_ne_zero he0`. Take `⟨τ', hτ'1, hτ'2⟩` from `GlobalTheory.T.exists_cuspidalCharacter_of_regularCharacter_GLn g e hpos (GaloisField g e) (GaloisField.finrank g he0)`.
+
+Take `⟨L, hL1, hL2⟩` from `family g e hpos (GaloisField g e) (GaloisField.finrank g he0) τ' (fun θ hθ => (hτ'1 θ hθ).1) hτ'2`. Conclude with `⟨L, fun P hP => (hL1 P hP).1, hL2, fun h => absurd h hed⟩`. Use `choose Lf hc hi hdd using hex`. Introduce `χ hχ`. Assume the negation of the conclusion as `hno`.
+
+Use `push_neg at hno`. Use `count d hd Lf hc hi χ hχ ?_` and prove the remaining obligations. Introduce `P hP heq`. Take `⟨θ, hθ, hs⟩` from `hdd d rfl P hP`. Establish `: Lf d P = τ θ` using `sigma_mk_injective hs`.
+
+Conclude with `hno θ hθ (heq ▸ this)`.
+-/
 theorem GlobalTheory.greenRegularCharacters_holds : GreenRegularCharacters := by
   intro g _ d hd K _ _ hK
   obtain ⟨τ, hτ1, hτ2⟩ := GlobalTheory.T.exists_cuspidalCharacter_of_regularCharacter_GLn g d hd K hK

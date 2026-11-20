@@ -22,14 +22,26 @@ open Classical in
 
 def cls (x : Sm E N) : L2 (latticeGL E N) μ := if hx : x ∈ W then toL2ₗ μ W h ⟨x, hx⟩ else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos hx`.
+-/
 theorem cls_mk {x : Sm E N} (hx : x ∈ W) : cls h x = toL2ₗ μ W h ⟨x, hx⟩ := dif_pos hx
 
+/- English proof (translation)
+Rewrite using `[cls_mk h (W.add_mem hx hy), cls_mk h hx, cls_mk h hy, ← map_add]`. Both sides reduce to the same expression.
+-/
 theorem cls_add {x y : Sm E N} (hx : x ∈ W) (hy : y ∈ W) : cls h (x + y) = cls h x + cls h y := by
   rw [cls_mk h (W.add_mem hx hy), cls_mk h hx, cls_mk h hy, ← map_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[cls_mk h (W.smul_mem c hx), cls_mk h hx, ← map_smul]`. Both sides reduce to the same expression.
+-/
 theorem cls_smul (c : ℂ) {x : Sm E N} (hx : x ∈ W) : cls h (c • x) = c • cls h x := by
   rw [cls_mk h (W.smul_mem c hx), cls_mk h hx, ← map_smul]; rfl
 
+/- English proof (translation)
+Rewrite using `[cls_mk h (W.sub_mem hx hy), cls_mk h hx, cls_mk h hy, ← map_sub]`. Both sides reduce to the same expression.
+-/
 theorem cls_sub {x y : Sm E N} (hx : x ∈ W) (hy : y ∈ W) : cls h (x - y) = cls h x - cls h y := by
   rw [cls_mk h (W.sub_mem hx hy), cls_mk h hx, cls_mk h hy, ← map_sub]; rfl
 

@@ -2,6 +2,37 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open IsLocalRing UpperTheory.V UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Take `⟨hmul, -, hadd, -, hone, hmap, -⟩` from `grp A`. Establish `mz : ∀ M M' : M4 A, M.map f = 0 → M'.map f = 0 → M * M' = 0`. Introduce `M M' h h'`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`.
+
+Conclude with `Finset.sum_eq_zero fun k _ => hsq _ _ (congrFun (congrFun h i) k) (congrFun (congrFun h' k) j)`. Use `set D : M4 A := Matrix.diagonal fun i => X i i with hD`. Use `set E : M4 A := X - D with hE`. Establish `hXE : X = D + E` using `by rw [hE]; abel`. Establish `Eii : ∀ i, E i i = 0` using `fun i => by simp [hE, hD]`.
+
+Establish `Eij : ∀ i j, i ≠ j → E i j = X i j` using `fun i j h => by simp [hE, hD, Matrix.diagonal_apply_ne _ h]`. Establish `Ef : E.map f = 0`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using `[Eii]`. Simplify using `[Eij i j h, hd i j h]`. Establish `aEf : (adj E).map f = 0`. Rewrite using `[← hmap, Ef]`. Use extensionality with `i j`.
+
+Simplify using `[adj_apply]`. Establish `aD : adj D = Matrix.diagonal fun i => X i.rev i.rev`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, hD, Matrix.diagonal_apply]`. Establish `key : adj D * D + (adj D * E + adj E * D) = ν • (1 : M4 A)`.
+
+Establish `h : adj (D + E) * (D + E) = ν • (1 : M4 A)` using `by rw [← hXE]; exact hX`. Rewrite `h` using `[hadd, add_mul, mul_add, mul_add, mz _ _ aEf Ef]`. Rewrite using `[← h]`. Normalize the expressions using the abelian group laws. Establish `k1 : ∀ i, X i.rev i.rev * X i i = ν` using `fun i => by`.
+
+Establish `h` using `congrFun (congrFun key i) i`. Rewrite `h` using `[aD, hD]`. Simplify `h` using `[Matrix.diagonal_mul_diagonal, adj_apply, Eii]`. Establish `k2 : ∀ i j, i ≠ j → X i.rev i.rev * E i j + adj E i j * X j j = 0` using `fun i j hij => by`. Establish `h` using `congrFun (congrFun key i) j`.
+
+Rewrite `h` using `[aD, hD]`. Simplify `h` using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`. Use `set N : M4 A := Matrix.of fun i j => -(E i j * Ring.inverse (X i i - X j j)) with hN`. Establish `Nf : N.map f = 0`. Use extensionality with `i j`.
+
+Establish `h : f (E i j) = 0` using `congrFun (congrFun Ef i) j`. Simplify using `[hN, h]`. Establish `N1 : ∀ i j, i ≠ j → N i j * (X i i - X j j) = -E i j` using `fun i j h => by`. Rewrite using `[hN, Matrix.of_apply, neg_mul, mul_assoc, Ring.inverse_mul_cancel _ (hu i j h), mul_one]`. Establish `aN : adj N = -N`.
+
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[adj_apply, hN, Eii]`. Establish `h' : j.rev ≠ i.rev` using `fun e => h (Fin.rev_injective e).symm`.
+
+Establish `uj : IsUnit (X j j)` using `isUnit_of_mul_isUnit_right (by rw [k1 j]; exact hν)`. Establish `e1` using `N1 i j h`. Establish `e2 : adj N i j * (X j.rev j.rev - X i.rev i.rev) = -adj E i j`. Rewrite using `[adj_apply, adj_apply, smul_mul_assoc, N1 _ _ h', smul_neg]`. Use `((hu _ _ h').mul uj).mul_left_inj.mp ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.neg_apply]`. Take the linear combination `X j j * e2 - k2 i j h + X i.rev i.rev * e1 + N i j * k1 j - N i j * k1 i`. Establish `au : adj (1 + N) = 1 - N` using `by rw [hadd, hone, aN, sub_eq_add_neg]`. Use `⟨1 + N, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsGSp`.
+
+Rewrite using `[au, one_smul, sub_mul, mul_add N, mz _ _ Nf Nf]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.map_add _ (map_add f), Nf, add_zero, Matrix.map_one _ (map_zero f) (map_one f)]`. Establish `NDf : (N * D).map f = 0` using `by rw [Matrix.map_mul, Nf, zero_mul]`. Establish `e : adj (1 + N) * X * (1 + N) = D + (E + D * N - N * D)`.
+
+Establish `: (1 - N) * (D + E) * (1 + N) = D + (E + D * N - N * D) + (E * N - N * D * N - N * E - N * E * N)` using `by noncomm_ring`. Rewrite using `[au]`. Use `conv_lhs => rw [hXE]`. Rewrite using `[this, mz _ _ Ef Nf, mz _ _ NDf Nf, mz _ _ Nf Ef]`. Simplify using the standard rewrite rules.
+
+Introduce `i j h`. Rewrite using `[e, hD]`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.diagonal_apply_ne _ h]`. Take the linear combination `N1 i j h`.
+-/
 private theorem UpperTheory.V.Ws.X1.exists_symplectic_diagonalizing_lift {A R : Type} [CommRing A] [CommRing R] (f : A →+* R)
     (hsq : ∀ a b, f a = 0 → f b = 0 → a * b = 0) (ν : A) (X : M4 A) (hν : IsUnit ν) (hX : IsGSp ν X)
     (hd : ∀ i j, i ≠ j → f (X i j) = 0) (hu : ∀ i j, i ≠ j → IsUnit (X i i - X j j)) :
@@ -78,6 +109,9 @@ private theorem UpperTheory.V.Ws.X1.exists_symplectic_diagonalizing_lift {A R : 
       Matrix.diagonal_apply_ne _ h]
     linear_combination N1 i j h
 
+/- English proof (translation)
+Introduce `Λ _ _ _ _ A R _ _ _ _ _ _ p _ hk ν X hν hX hd hu`. Establish `hle : RingHom.ker p ≤ maximalIdeal A` using `le_maximalIdeal (RingHom.ker_ne_top p)`. Use `UpperTheory.V.Ws.X1.exists_symplectic_diagonalizing_lift (p : A →+* R) (fun a b ha hb => ?_) ν X hν hX (fun i j h => hd h) hu` and prove the remaining obligations. Establish `h : a * b ∈ maximalIdeal A * RingHom.ker p` using `Ideal.mul_mem_mul (hle ha) hb`. Rewrite `h` using `[hk]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.V.Ws.X1.diagLift :
     ∀ {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] {A R : Type} [CommRing A] [Algebra Λ A] [IsCO Λ A] [CommRing R] [Algebra Λ R] [IsCO Λ R] (p : A →ₐ[Λ] R), Function.Surjective p → maximalIdeal A * RingHom.ker p = ⊥ → ∀ (ν : A) (X : M4 A), IsUnit ν → IsGSp ν X → (X.map p).IsDiag → (∀ i j, i ≠ j → IsUnit (X i i - X j j)) → ∃ u : M4 A, IsGSp 1 u ∧ u.map p = 1 ∧ (adj u * X * u).IsDiag := by
   intro Λ _ _ _ _ A R _ _ _ _ _ _ p _ hk ν X hν hX hd hu

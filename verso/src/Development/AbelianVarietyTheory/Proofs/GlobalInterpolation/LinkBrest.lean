@@ -4,6 +4,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.JoinSIS
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory Formalism.MainNotions.RT Formalism.L2.Top3 Formalism.L2.Top4
 
+/- English proof (translation)
+Introduce `𝒜 sel selS selP selDH selC selB hRB hPA hDivG hDcPtG rRows tie` and use `Formalism.L2.DIV.RestAll.bRest_all 𝒜 2 sel selS selP selDH selC selB hRB hPA hDivG hDcPtG rRows tie`.
+-/
 theorem GlobalTheory.Top.link_brest : ∀ (𝒜 : FamClass)
     (sel : Formalism.L2.TSel 𝒜)
     (selS : SelS 𝒜 sel)

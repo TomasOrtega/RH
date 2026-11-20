@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.USep.EvG.AtPoint
 
+/- English proof (translation)
+Distinguish the cases in `h : f (r z) ∈ U`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, gm_val f (r z) U h, gm_val (r ≫ f) z U h]`. Conclude with `Scheme.Hom.germ_stalkMap_apply r (f ⁻¹ᵁ U) z h _`. Establish `h' : (r ≫ f) z ∉ U` using `h`.
+
+Rewrite using `[gm, dif_neg h, gm, dif_neg h']`. Simplify using the standard rewrite rules.
+-/
 theorem gm_stalkMap {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (f : Y ⟶ X) (z : Z) (U : X.Opens) (a : Γ(X, U)ˣ) :
     Units.map (r.stalkMap z).hom.toMonoidHom (gm f (r z) U a) = gm (r ≫ f) z U a := by
   by_cases h : f (r z) ∈ U
@@ -28,6 +33,9 @@ theorem gm_stalkMap {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (f : Y ⟶ X) (z : Z) (U 
     rw [gm, dif_neg h, gm, dif_neg h']
     simp
 
+/- English proof (translation)
+Rewrite using `[val_of t (r ≫ g) z J (fun k => J (r ≫ g ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `gm_stalkMap r g z _ _`.
+-/
 theorem val_stalkMap {X Y Y' Z : Scheme.{0}} {L : LB X} {Ix : Type} [Fintype Ix] {φ : Ix → (Y ⟶ X)} {ε : Ix → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (g : Y' ⟶ Y) (r : Z ⟶ Y') (z : Z) (J : (Z ⟶ X) → L.ι) :
     Units.map (r.stalkMap z).hom.toMonoidHom (val t g (r z) (fun ψ => J (r ≫ ψ))) = val t (r ≫ g) z J := by
@@ -37,6 +45,13 @@ theorem val_stalkMap {X Y Y' Z : Scheme.{0}} {L : LB X} {Ix : Type} [Fintype Ix]
 end GlobalTheory.USep.EvG.AtPoint
 
 open GlobalTheory.USep.EvG.AtPoint in
+/- English proof (translation)
+Introduce `V₁ _ _ _ _ _ D τ₀ W₀ _ ib B₀ _ M₀ c₀ τ₁ β w hFB K _ _ ev k₀ _ hk z J J₀ hJ hJ₀ a b`. Take `⟨-, -, -, -, -, -, hlast⟩` from `hFB`. Establish `hJ' : Good D.P.L ((spMap ev) z) (fun ψ => J (spMap ev ≫ ψ))` using `fun ψ => hJ (spMap ev ≫ ψ)`. Establish `hJ₀' : Good M₀ ((spMap ev) z) (fun ψ => J₀ (spMap ev ≫ ψ))` using `fun ψ => hJ₀ (spMap ev ≫ ψ)`. Establish `E` using `congrArg (Units.map ((spMap ev).stalkMap z).hom.toMonoidHom) (hlast a b ((spMap ev) z) _ _ hJ' hJ₀')`.
+
+Simplify using `only [map_mul, map_inv, val_stalkMap, gm_stalkMap, Category.comp_id] at E`. Establish `hg : ∀ x : D.X, gm (spMap ev ≫ UChart.cpt D x) z (((M₀.pull β).div D.P.L).U (fun _ => J₀ (spMap ev ≫ UChart.cpt D x ≫ β), J (spMap ev ≫ UChart.cpt D x))) (w.s (fun _ => J₀ (spMap ev ≫ UChart.cpt D x ≫ β), J (spMap ev ≫ UChart.cpt D x))) = GlobalTheory.USep.EvG.gwx w z J J₀ (spMap …`. Introduce `x`. Use `show _ = gw w _ z _ _`. Rewrite using `[Category.assoc]`.
+
+Both sides reduce to the same expression. Rewrite `E` using `[hg (a + b), hg a, hg b, hg 0, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]`. Take `⟨c, hc, hv⟩` from `GlobalTheory.Poinc.Sep.val_spMap_mem k₀ (τ₁ a b) (ev.comp ib) hk z hJ₀`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[E, Units.val_mul, hv]`.
+-/
 theorem GlobalTheory.USep.EvG.fromBase_tau_val : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) →
     ∀ (D : DegPre V₁) (τ₀ : GlobalTheory.UChart.Gens D) (W₀ : Type) [CommRing W₀] (ib : W₀ →+* V₁) (B₀ : Over (Sp W₀)) [GrpObj B₀]
       (M₀ : LB B₀.left) (c₀ : D.X → (Sp W₀ ⟶ B₀.left))

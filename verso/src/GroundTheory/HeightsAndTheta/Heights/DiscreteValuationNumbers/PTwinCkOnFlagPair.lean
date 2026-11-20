@@ -21,12 +21,18 @@ open IndefiniteRowSideFullHecke.NumbersDVR.Bundles (ptIdx ptCoord)
 
 namespace ChernClassOnFlagPair
 
+/- English proof (translation)
+Conclude with `Classical.epsilon_spec (p := fun I : IFamily F κ => IsFieldIntersection I) ⟨_, IntNumIsFieldIntersection.full F K κ⟩`.
+-/
 theorem fieldNum_spec (F : Type) [Field F] {K : Type} [Fintype K] (κ : K → Type) [∀ k, Fintype (κ k)] :
     IsFieldIntersection (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fieldNum F κ) := by
   classical
   exact Classical.epsilon_spec (p := fun I : IFamily F κ => IsFieldIntersection I)
     ⟨_, IntNumIsFieldIntersection.full F K κ⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Proceed by induction on `l using Fin.addCases with`. Consider the case `left i => simp`. Consider the case `right j => simp`.
+-/
 theorem append_pullDeg {K K' : Type} {a b : ℕ} (u : Fin a → K → ℤ) (v : Fin b → K → ℤ) :
     Fin.append (fun i => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K' := K') (u i))
         (fun j => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K' := K') (v j)) =
@@ -36,6 +42,11 @@ theorem append_pullDeg {K K' : Type} {a b : ℕ} (u : Fin a → K → ℤ) (v : 
   | left i => simp
   | right j => simp
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Establish `h1 : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (1 : MRing ι O) 0`. Simplify using `using IndefiniteRowSideFullHecke.NumbersDVR.Bundles.isMultiHomog_C O (ι := ι) (1 : O)`. Use `⟨⟨0, 0, h1, h1, by simp⟩, ?_, ?_, fun Q hQ _ _ => ⟨1, 1, ⟨0, h1⟩, ⟨0, h1⟩, ?_, ?_, by simp⟩⟩` and prove the remaining obligations. Conclude with `fun h => hP.ne_top ((Ideal.eq_top_iff_one P).mpr h)`.
+
+Conclude with `fun h => hP.ne_top ((Ideal.eq_top_iff_one P).mpr h)`. Conclude with `fun h => hQ.1.ne_top ((Ideal.eq_top_iff_one Q).mpr h)`. Conclude with `fun h => hQ.1.ne_top ((Ideal.eq_top_iff_one Q).mpr h)`.
+-/
 theorem isVertDiv_one {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {K : Type}
     [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι O)} (hP : P.IsPrime)
     (b : K → ℤ) (hb : b = 0) : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsVertDiv O P b 1 1 := by
@@ -48,11 +59,17 @@ theorem isVertDiv_one {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   · exact fun h => hQ.1.ne_top ((Ideal.eq_top_iff_one Q).mpr h)
   · exact fun h => hQ.1.ne_top ((Ideal.eq_top_iff_one Q).mpr h)
 
+/- English proof (translation)
+Simplify using `[classList, Finsupp.card_toMultiset, Finsupp.sum]`. Both sides reduce to the same expression.
+-/
 theorem length_classList {K σ : Type*} (cls : σ → K → ℤ) (μ : σ →₀ ℕ) :
     (classList cls μ).length = μ.degree := by
   simp [classList, Finsupp.card_toMultiset, Finsupp.sum]
   rfl
 
+/- English proof (translation)
+The claim follows from `h flag' := h sameFlag i j hij := by rw [Module.Basis.repr_self, Finsupp.single_apply, if_neg hij.ne] vertical i := by rw [sub_self] exact isVerticalDivisor_one ϖ _ generic i := by simp [Module.Basis.repr_self]`.
+-/
 theorem isFlagPair_self {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
     {Ω : Type} [Field Ω] [Algebra O Ω] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     {y : (Σ k, ι k) → Ω} [(pointIdeal O y).IsPrime] {N : ℕ} {E : Type} [AddCommGroup E] [Module Ω E]
@@ -71,6 +88,27 @@ end ChernClassOnFlagPair
 
 open ChernClassOnFlagPair in
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hK hW N E _ _ B B' hBB' w w' x x' f g hfp`. Establish `hW2 : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal O y) d` using `(BundleExamples.isModelOver_iff O _ d).mpr ⟨hK, hW⟩`. Establish `hprime : (pointIdeal O y).IsPrime` using `hW2.2.1.1`. Use `⟨fun k hk1 hk2 Gs hGs q L Q hQ => ?_, fun c G hsym hG hc q L Q hQ a ha => ?_⟩` and prove the remaining obligations. Take `⟨EB, E'B, φ, hm, hb, hp, hp', hd, hd', hf, hg⟩` from `h1 O ϖ hϖ Ω K ι y d hW N E B B' hBB' w w' x x' f g hfp`.
+
+Set `F₀ : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.FlagModel O y d N B B'` to `{ K' := Unit, ι' := ptIdx, z := ptCoord, model := hm, birat := hb, EB := EB, E'B := E'B, pull := hp, pull' := hp', flag := φ }`. Establish `hne : Nonempty (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.FlagModel O y d N B B')` using `⟨F₀⟩`. Establish `hv : F₀.value O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fieldNum (IsLocalRing.ResidueField O) (Sum.elim ι ptIdx)) (psum (Fin N) ℤ k) L L (fun _ => 1) (fun _ => 1) Q = IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pairNum O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fie …` using `Ω)))) d (Fin.append (fun i => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K' := Unit) (x i)) fun l => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K' := Unit) (L l)) (Fin.append (fun i => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K' := Unit) (x' …`. Rewrite using `[hd, hd', hf, hg]`. Establish `hW' : ∀ H : MvPolynomial (Fin (N + q)) ℤ, IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pairNum O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fieldNum (IsLocalRing.ResidueField O) (Sum.elim ι ptIdx)) (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal O (IndefiniteRowSideFu …` using `Ω)))) d (Fin.append (fun i => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K' := Unit) (x i)) fun l => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K' := Unit) (L l)) (Fin.append (fun i => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K' := Unit) (x' …`.
+
+Introduce `H`. Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pairNum`. Simplify using `only [append_pullDeg]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Proceed by induction on `l using Fin.addCases with`.
+
+Consider the case `left i`. Simplify using `only [Fin.append_left]`. Conclude with `(h2 O ϖ hϖ Ω K ι y d hW _ _ _).1 _ _ _ (hfp.vertical i)`. Consider the case `right j`. Simplify using `only [Fin.append_right, IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ratCyc, sub_self, IndefiniteRowSideFullHecke.NumbersDVR.Bundles.vEval, Finsupp.sum_zero_index]`.
+
+Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ck`. Rewrite using `[dif_pos hne]`. Set `_` to `(Classical.choice hne).finK`. Set `_` to `(Classical.choice hne).finι`. Use `(h3 O Ω K ι y d N E B B' hW2 ((BundleExamples.sameGeneric_iff hϖ y B B').mpr hBB') (Classical.choice hne) F₀ _ _ (fieldNum_spec _ _) (fieldNum_spec _ _) (psum (Fin N) ℤ k) (psum_isSymmetric _ _ k) q L L (fun _ => 1) (fun _ => 1) (fun l => isVertDiv_one hprime _ (sub_self _)) k Q …` and prove the remaining obligations.
+
+Use `hv.trans ((hW' _).trans ((h5 O K ι (pointIdeal O y) d N x x' f g k (psum (Fin N) ℤ k) (isHomogeneous_psum N k) hk2 q L Q hQ).trans ?_))` and prove the remaining obligations. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hlen : (classList L μ).length + k = d + 1`. Establish `h` using `hQ (mem_support_iff.mp hμ)`. Rewrite using `[length_classList, Finsupp.degree_eq_weight_one]`.
+
+Establish `: Finsupp.weight (fun _ => 1) μ = Finsupp.weight 1 μ` using `rfl`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h7 O ϖ hϖ K ι (pointIdeal O y) d hW N x x' f g hfp.vertical k (psum (Fin N) ℤ k) (isHomogeneous_psum N k) _ Gs (h8 N k _ (isHomogeneous_psum N k)) hGs (classList L μ) hlen]`. Establish `hsame : SameGenericFibre ϖ B B` using `fun c _ => ⟨fun v hv => ⟨0, by simpa using hv⟩, fun v hv => ⟨0, by simpa using hv⟩⟩`. Take `⟨EB, E'B, φ, hm, hb, hp, hp', hd, -, -, -⟩` from `h1 O ϖ hϖ Ω K ι y d hW N E B B hsame w w x x _ _ (isFlagPair_self hfp.flag)`.
+
+Set `F₀ : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.FlagModel O y d N B B` to `{ K' := Unit, ι' := ptIdx, z := ptCoord, model := hm, birat := hb, EB := EB, E'B := E'B, pull := hp, pull' := hp', flag := φ }`. Establish `hne : Nonempty (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.FlagModel O y d N B B)` using `⟨F₀⟩`. Establish `hv : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.vEval O (fun W => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.polyNum (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fieldNum (IsLocalRing.ResidueField O) (Sum.elim ι F₀.ι')) W d (Fin.append F₀.flag.deg fun l => IndefiniteRowSi …` using `F₀.K') (L l)) (rename (Fin.castAdd q) G * rename (Fin.natAdd N) Q)) (Finsupp.mapRange (fun n : ℕ => (n : ℤ)) Nat.cast_zero (ReciprocityTheory.ChartRestriction.G.Geo.divCycle (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.jo …`. Rewrite using `[hd, append_pullDeg]`. Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.rootNum`.
+
+Rewrite using `[dif_pos hne]`. Set `_` to `(Classical.choice hne).finK`. Set `_` to `(Classical.choice hne).finι`. Use `(h4 O Ω K ι y d N E B B hW2 ((BundleExamples.sameGeneric_iff hϖ y B B).mpr hsame) (Classical.choice hne) F₀ _ _ (fieldNum_spec _ _) (fieldNum_spec _ _) c G hsym hG hc q L Q hQ a ha).trans ?_` and prove the remaining obligations. Use `hv.trans (((h2 O ϖ hϖ Ω K ι y d hW _ _ _).2 a ha).trans ?_)` and prove the remaining obligations.
+
+Conclude with `h6 O K ι (pointIdeal O y) d N x c G hG hc q L Q hQ a`.
+-/
 theorem ChernClassOnFlagPair.proof (h1 : JoinPointFlagModel.Statement)
     (h2 : JoinPointNumbers.Statement) (h3 : FlagModelValueIndependence.Statement)
     (h4 : FlagModelRootIndependence.Statement) (h5 : plainPolynomialPairNumber.Statement)

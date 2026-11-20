@@ -3,6 +3,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SplitDensity.CardFibreC
 
 namespace PI.DensSplitW
 
+/- English proof (translation)
+Introduce `K V U _ _ _ _ _ _ _ φ hφ k g`. Conclude with `FibreCount.fiber_card φ hφ g`.
+-/
 theorem fiberCard_holds : FiberCard := by
   intro K V U _ _ _ _ _ _ _ φ hφ k g
   exact FibreCount.fiber_card φ hφ g

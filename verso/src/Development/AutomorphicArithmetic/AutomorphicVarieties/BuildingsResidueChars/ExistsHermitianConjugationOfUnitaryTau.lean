@@ -8,6 +8,9 @@ variable {L A : Type} [CommRing L] [Ring A] [Algebra L A]
 
 private def Psi (t : L) (n e : A) (z : Etau L t) : A := z.re • e + z.im • (n * e)
 
+/- English proof (translation)
+Establish `h1 : e * (n * e) = n * e` using `by rw [← mul_assoc, ← hc, mul_assoc, hee]`. Establish `h2 : n * e * e = n * e` using `by rw [mul_assoc, hee]`. Establish `h3 : n * e * (n * e) = t • (n * e) - e` using `by rw [mul_assoc, h1, hn]`. Simplify using `only [Psi, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, add_mul, mul_add, smul_mul_smul_comm, hee, h1, h2, h3]`. Use `module`.
+-/
 private theorem Psi_mul {t : L} {n e : A} (hee : e * e = e) (hc : n * e = e * n)
     (hn : n * (n * e) = t • (n * e) - e) (z z' : Etau L t) :
     Psi t n e (z * z') = Psi t n e z * Psi t n e z' := by
@@ -24,6 +27,17 @@ section Core
 
 variable {L : Type} [CommRing L] [StarRing L]
 
+/- English proof (translation)
+Use `set P := M * M - t • M + 1 with hP`. Establish `hMP : M * P = P`. Rewrite `hCH` using `[sub_mul, one_mul, sub_eq_zero]`. Conclude with `hCH`. Establish `hMP2 : M * (M * P) = P` using `by rw [hMP, hMP]`.
+
+Establish `hPM : P * M = P`. Establish `h : P * M = M * P`. Simplify using `only [hP, add_mul, sub_mul, mul_add, mul_sub, smul_mul_assoc, mul_smul_comm, mul_one, one_mul, mul_assoc]`. Rewrite using `[h, hMP]`. Establish `hPP : P * P = (2 - t) • P` using `by nth_rewrite 1 [hP]`.
+
+Simplify using `only [add_mul, sub_mul, smul_mul_assoc, one_mul, mul_assoc, hMP2, hMP]`. Use `module`. Establish `key : (c * (2 - t)) • P = P` using `by rw [hc, one_smul]`. Establish `hcc : c * c * (2 - t) = c` using `by rw [mul_assoc, hc, mul_one]`. Substitute `hE` using the available equality.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, smul_mul_smul_comm, hPP, smul_smul, hcc]`. Normalize the expressions using the abelian group laws. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, mul_smul_comm, smul_mul_assoc, hMP, hPM]`. Simplify using `only [mul_sub, mul_one, mul_smul_comm, hMP, smul_sub]`.
+
+Take the linear combination `(norm := module) hP - key`. Simplify using `only [sub_sub_cancel, mul_smul_comm, hMP]`.
+-/
 private theorem core_lemma {R A : Type} [CommRing R] [Ring A] [Algebra R A] {t c : R} {M E : A}
     (hc : c * (2 - t) = 1) (hCH : (M - 1) * (M * M - t • M + 1) = 0)
     (hE : E = 1 - c • (M * M - t • M + 1)) :
@@ -53,6 +67,11 @@ private theorem core_lemma {R A : Type} [CommRing R] [Ring A] [Algebra R A] {t c
     linear_combination (norm := module) hP - key
   · simp only [sub_sub_cancel, mul_smul_comm, hMP]
 
+/- English proof (translation)
+Establish `hEME : E * (M * E) = M * E` using `by rw [hc, ← mul_assoc, hee]`. Establish `hMEE : M * E * E = M * E` using `by rw [mul_assoc, hee]`. Establish `h0 : (1 - E) * Psi t M E z' = 0`. Simplify using `only [Psi, mul_add, mul_smul_comm, sub_mul, one_mul, hee, hEME, sub_self, smul_zero, add_zero]`. Establish `h1 : Psi t M E z * (1 - E) = 0`.
+
+Simplify using `only [Psi, add_mul, smul_mul_assoc, mul_sub, mul_one, hee, hMEE, sub_self, smul_zero, add_zero]`. Establish `h2 : (1 - E) * (1 - E) = 1 - E`. Simplify using `only [mul_sub, sub_mul, one_mul, mul_one, hee, sub_self, sub_zero]`. Rewrite using `[add_mul, mul_add, mul_add, Psi_mul hee hc hn, h0, h1, h2, add_zero, zero_add]`.
+-/
 private theorem H_affine_combination_eq_of_quadratic_relation {R A : Type} [CommRing R] [Ring A] [Algebra R A] {t : R} {M E : A}
     (hee : E * E = E) (hc : M * E = E * M) (hn : M * (M * E) = t • (M * E) - E)
     (z z' : Etau R t) :
@@ -69,6 +88,9 @@ private theorem H_affine_combination_eq_of_quadratic_relation {R A : Type} [Comm
     simp only [mul_sub, sub_mul, one_mul, mul_one, hee, sub_self, sub_zero]
   rw [add_mul, mul_add, mul_add, Psi_mul hee hc hn, h0, h1, h2, add_zero, zero_add]
 
+/- English proof (translation)
+Simplify using `only [Psi, mul_add, mul_smul_comm, hM1, hn, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.omega]`. Use `module`.
+-/
 private theorem sgn_eigen_perp_span_spec {R A : Type} [CommRing R] [Ring A] [Algebra R A] {t : R} {M E : A}
     (hn : M * (M * E) = t • (M * E) - E) (hM1 : M * (1 - E) = 1 - E) (z : Etau R t) :
     M * ((1 - E) + Psi t M E z) = (1 - E) + Psi t M E (QuadraticAlgebra.omega * z) := by
@@ -76,10 +98,18 @@ private theorem sgn_eigen_perp_span_spec {R A : Type} [CommRing R] [Ring A] [Alg
     QuadraticAlgebra.im_mul, QuadraticAlgebra.omega]
   module
 
+/- English proof (translation)
+Simplify using `[Psi, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+-/
 private theorem one_sub_add_psi_one_eq_one {R A : Type} [CommRing R] [Ring A] [Algebra R A] {t : R} {M E : A} :
     (1 - E) + Psi t M E (1 : Etau R t) = 1 := by
   simp [Psi, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
+/- English proof (translation)
+Establish `h2 : X * (M₁ * M₁) = M₂ * M₂ * X` using `by rw [← mul_assoc, h, mul_assoc, h, mul_assoc]`. Establish `hXP : X * (M₁ * M₁ - t • M₁ + 1) = (M₂ * M₂ - t • M₂ + 1) * X`. Simplify using `only [mul_add, mul_sub, add_mul, sub_mul, mul_smul_comm, smul_mul_assoc, h2, h, one_mul, mul_one]`. Establish `hXE : X * E₁ = E₂ * X`. Substitute `hE₁ hE₂` using the available equality.
+
+Simplify using `only [mul_sub, sub_mul, mul_one, one_mul, mul_smul_comm, smul_mul_assoc, hXP]`. Establish `hXME : X * (M₁ * E₁) = M₂ * E₂ * X`. Rewrite using `[← mul_assoc, h, mul_assoc, hXE, mul_assoc]`. Simplify using `only [Psi, mul_add, add_mul, mul_sub, sub_mul, mul_one, one_mul, mul_smul_comm, smul_mul_assoc, hXE, hXME]`.
+-/
 private theorem mul_one_sub_add_psi_eq_of_conj {R A : Type} [CommRing R] [Ring A] [Algebra R A] {t c : R}
     {X M₁ M₂ E₁ E₂ : A} (h : X * M₁ = M₂ * X)
     (hE₁ : E₁ = 1 - c • (M₁ * M₁ - t • M₁ + 1)) (hE₂ : E₂ = 1 - c • (M₂ * M₂ - t • M₂ + 1))
@@ -97,39 +127,81 @@ private theorem mul_one_sub_add_psi_eq_of_conj {R A : Type} [CommRing R] [Ring A
   simp only [Psi, mul_add, add_mul, mul_sub, sub_mul, mul_one, one_mul, mul_smul_comm,
     smul_mul_assoc, hXE, hXME]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, star_sum, star_mul']`.
+-/
 private theorem lintegral_mul_wt_eq_lintegral_mul_wt_conj (X Y : Matrix (Fin 3) (Fin 3) L) :
     (X * Y).map star = X.map star * Y.map star := by
   ext i j
   simp [Matrix.mul_apply, star_sum, star_mul']
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private theorem sub_map_star_fin_three (X Y : Matrix (Fin 3) (Fin 3) L) :
     (X - Y).map star = X.map star - Y.map star := by
   ext i j
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private theorem add_map_star_fin_three (X Y : Matrix (Fin 3) (Fin 3) L) :
     (X + Y).map star = X.map star + Y.map star := by
   ext i j
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[star_mul']`.
+-/
 private theorem smul_map_star_fin_three (a : L) (X : Matrix (Fin 3) (Fin 3) L) :
     (a • X).map star = star a • X.map star := by
   ext i j
   simp [star_mul']
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 private theorem one_map_star_fin_three : (1 : Matrix (Fin 3) (Fin 3) L).map star = 1 := by
   ext i j
   rw [Matrix.map_apply]
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private theorem zero_map_star_fin_three : (0 : Matrix (Fin 3) (Fin 3) L).map star = 0 := by
   ext i j
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private theorem map_star_map_star_fin_three (X : Matrix (Fin 3) (Fin 3) L) : (X.map star).map star = X := by
   ext i j
   simp
 
+/- English proof (translation)
+Take `⟨E, hE⟩ : ∃ E : Matrix (Fin 3) (Fin 3) L, E = 1 - c • (N * N - t • N + 1)` from `⟨_, rfl⟩`. Take `⟨Eb, hEb⟩ : ∃ E : Matrix (Fin 3) (Fin 3) L, E = 1 - c • (N.map star * N.map star - t • N.map star + 1)` from `⟨_, rfl⟩`. Establish `hNb : N.map star = D.map star * D` using `by rw [hN, lintegral_mul_wt_eq_lintegral_mul_wt_conj, map_star_map_star_fin_three]`. Establish `hN' : D * D.map star = N` using `hN.symm`. Establish `hCHb : (N.map star - 1) * (N.map star * N.map star - t • N.map star + 1) = 0`.
+
+Establish `h` using `congrArg (fun X => X.map star) hCH`. Simplify using `only [lintegral_mul_wt_eq_lintegral_mul_wt_conj, sub_map_star_fin_three, add_map_star_fin_three, smul_map_star_fin_three, one_map_star_fin_three, zero_map_star_fin_three, ht] at h`. Conclude with `h`. Take `⟨hee, hc1, hn, hM1⟩` from `core_lemma hc hCH hE`. Take `⟨heeb, hcb, hnb, hM1b⟩` from `core_lemma hc hCHb hEb`.
+
+Establish `hEstar : Eb.map star = E`. Rewrite using `[hEb, hE]`. Simplify using `only [lintegral_mul_wt_eq_lintegral_mul_wt_conj, sub_map_star_fin_three, add_map_star_fin_three, smul_map_star_fin_three, one_map_star_fin_three, map_star_map_star_fin_three, hc', ht]`. Establish `hFstar : ((1 - Eb) + Psi t (N.map star) Eb u).map star = (1 - E) + Psi t N E ⟨star u.re, star u.im⟩`. Simplify using `only [Psi, lintegral_mul_wt_eq_lintegral_mul_wt_conj, sub_map_star_fin_three, add_map_star_fin_three, smul_map_star_fin_three, one_map_star_fin_three, map_star_map_star_fin_three, hEstar]`.
+
+Establish `hDNb : D * N.map star = N * D` using `by rw [hNb, ← mul_assoc, hN']`. Establish `hDbN : D.map star * N = N.map star * D.map star` using `by rw [hNb, mul_assoc, hN']`. Establish `hu' : QuadraticAlgebra.omega * (u * (⟨star u.re, star u.im⟩ : Etau L t)) = 1`. Rewrite using `[← hu]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨D * ((1 - Eb) + Psi t (N.map star) Eb u), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h5` using `mul_one_sub_add_psi_eq_of_conj hDbN hE hEb u`. Rewrite using `[lintegral_mul_wt_eq_lintegral_mul_wt_conj, hFstar]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc D, hN', mul_assoc]`.
+
+Use `_ = 1 := by rw [H_affine_combination_eq_of_quadratic_relation hee hc1 hn, sgn_eigen_perp_span_spec hn hM1, hu', one_sub_add_psi_one_eq_one]`. Establish `h5b` using `mul_one_sub_add_psi_eq_of_conj (X := N.map star) rfl hEb hEb u`. Combine the equalities or inequalities in the displayed calculation. Introduce `w hw`. Establish `h5d` using `mul_one_sub_add_psi_eq_of_conj hDNb hEb hE u`.
+
+Establish `key : D *ᵥ star w = ((1 - E) + Psi t N E d) *ᵥ w` using `by conv_rhs => rw [← hw]`. Rewrite using `[Matrix.mulVec_mulVec, h5d, ← mul_assoc, H_affine_combination_eq_of_quadratic_relation hee hc1 hn, hdu, one_sub_add_psi_one_eq_one, one_mul]`. Use `⟨fun hNw => ?_, fun hNw => ?_⟩` and prove the remaining obligations. Establish `hEw : E *ᵥ w = 0`. Rewrite using `[hE]`.
+
+Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, hNw]`. Rewrite using `[show w - t • w + w = (2 - t) • w by module, smul_smul, hc, one_smul, sub_self]`. Rewrite using `[key]`. Simplify using `only [Psi, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, hEw, Matrix.mulVec_zero, smul_zero, sub_zero, add_zero]`. Establish `hEw : E *ᵥ w = w`.
+
+Rewrite using `[hE]`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, hNw]`. Use `module`. Rewrite using `[key]`. Simplify using `only [Psi, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, hEw]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 private theorem core (t c : L) (ht : star t = t) (hc' : star c = c) (hc : c * (2 - t) = 1)
     (d u : Etau L t) (hdu : d * u = 1)
     (hu : u * (⟨star u.re, star u.im⟩ : Etau L t) * QuadraticAlgebra.omega = 1)
@@ -203,6 +275,23 @@ private theorem core (t c : L) (ht : star t = t) (hc' : star c = c) (hc : c * (2
 
 end Core
 
+/- English proof (translation)
+Introduce `K _ _ Δ τ hτ d hd δ hδ N hN`. Establish `hstar : ∀ x : K, star (algebraMap K (Lsq K Δ) x) = algebraMap K (Lsq K Δ) x`. Introduce `x`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.algebraMap_re, QuadraticAlgebra.algebraMap_im]`. Establish `h2 : (2 : K) - τ ≠ 0`.
+
+Introduce `h`. Apply `hτ` to reduce the goal to its premises. Establish `: τ = 2` using `by linear_combination -h`. Rewrite using `[this]`. Evaluate the numerical expressions.
+
+Establish `hc : algebraMap K (Lsq K Δ) (2 - τ)⁻¹ * (2 - algebraMap K (Lsq K Δ) τ) = 1`. Rewrite using `[← map_ofNat (algebraMap K (Lsq K Δ)) 2, ← map_sub, ← map_mul, inv_mul_cancel₀ h2, map_one]`. Take `⟨v, hv⟩ : ∃ v : EL Δ τ, v = ⟨algebraMap K (Lsq K Δ) τ, -1⟩` from `⟨_, rfl⟩`. Establish `hωv : (QuadraticAlgebra.omega : EL Δ τ) * v = 1`. Rewrite using `[hv]`.
+
+Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.omega, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> ring`. Establish `hofE : ofE Δ (QuadraticAlgebra.omega : Etau K τ) = QuadraticAlgebra.omega`. Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.omega]`. Take `⟨u, hu⟩ : ∃ u : EL Δ τ, u = sigL d * v` from `⟨_, rfl⟩`. Establish `hdu : d * u = 1` using `by rw [hu, ← mul_assoc, hd, hofE, hωv]`.
+
+Establish `hus : (⟨star u.re, star u.im⟩ : EL Δ τ) = d * v`. Rewrite using `[hu, hv]`. Apply the tactic sequence `ext <;> simp [sigL, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, star_mul', hstar] <;> ring`. Establish `huu : u * (⟨star u.re, star u.im⟩ : EL Δ τ) * QuadraticAlgebra.omega = 1`. Rewrite using `[hus]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hN' : N = (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).map star`. Rewrite using `[hN]`. Both sides reduce to the same expression. Establish `hCH : (N - 1) * (N * N - algebraMap K (Lsq K Δ) τ • N + 1) = 0`.
+
+Establish `h` using `Matrix.aeval_self_charpoly N`. Establish `hcp : N.charpoly = (Polynomial.X - 1) * (Polynomial.X ^ 2 - Polynomial.C (algebraMap K (Lsq K Δ) τ) * Polynomial.X + 1)`. Rewrite using `[hN]`. Conclude with `hδ`. Rewrite `h` using `[hcp]`.
+
+Simplify using `only [map_mul, map_sub, map_add, map_one, map_pow, Polynomial.aeval_X, Polynomial.aeval_C] at h`. Rewrite using `[Algebra.smul_def, ← sq]`. Conclude with `h`. Conclude with `core (algebraMap K (Lsq K Δ) τ) (algebraMap K (Lsq K Δ) (2 - τ)⁻¹) (hstar τ) (hstar _) hc d u hdu huu (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) N hN' hCH`.
+-/
 theorem UpperTheory.exists_hermitian_conjugation_of_unitary_tau :
     ∀ (K : Type) [Field K] [CharZero K] (Δ τ : K), τ ^ 2 - 4 ≠ 0 → ∀ d : EL Δ τ, d * sigL d = ofE Δ (QuadraticAlgebra.omega : Etau K τ) →
         ∀ δ : U3 Δ, HasTau δ τ → ∀ N : Matrix (Fin 3) (Fin 3) (Lsq K Δ), N = ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) →

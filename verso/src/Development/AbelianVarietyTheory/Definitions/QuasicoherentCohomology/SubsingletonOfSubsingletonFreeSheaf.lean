@@ -25,10 +25,16 @@ def freeSheafHomEquiv (U : C) (F : Sheaf J AddCommGrpCat.{v}) :
     (((AddCommGrpCat.adj.whiskerRight Cᵒᵖ).homEquiv (yoneda.obj U) F.obj).trans yonedaEquiv)
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma freeSheafHomEquiv_comp (U : C) {F G : Sheaf J AddCommGrpCat.{v}}
     (φ : (freeSheaf J).obj U ⟶ F) (f : F ⟶ G) :
     freeSheafHomEquiv U G (φ ≫ f) = f.hom.app (op U) (freeSheafHomEquiv U F φ) := rfl
 
+/- English proof (translation)
+Establish `h₁` using `ConcreteCategory.congr_hom (NatTrans.congr_app (toSheafify_naturality J (Functor.whiskerRight (yoneda.map i) AddCommGrpCat.free.{v})) (op V)) (FreeAbelianGroup.of (𝟙 V))`. Establish `h₂` using `ConcreteCategory.congr_hom ((toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free.{v})).naturality i.op) (FreeAbelianGroup.of (𝟙 U))`. Use `h₁.symm.trans (Eq.trans ?_ h₂)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free.{v})).app (op V) (FreeAbelianGroup.of (𝟙 V ≫ i)) = (toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free.{v})).app (op V) (FreeAbelianGroup.of (i ≫ 𝟙 U))`. Rewrite using `[Category.id_comp, Category.comp_id]`.
+-/
 lemma freeSheaf_map_tautSection {U V : C} (i : V ⟶ U) :
     ((freeSheaf J).map i).hom.app (op V) (tautSection J V) =
       ((freeSheaf J).obj U).obj.map i.op (tautSection J U) := by
@@ -45,6 +51,9 @@ lemma freeSheaf_map_tautSection {U V : C} (i : V ⟶ U) :
       (FreeAbelianGroup.of (i ≫ 𝟙 U))
   rw [Category.id_comp, Category.comp_id]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `φ.hom.app (op V) (((freeSheaf J).map i).hom.app (op V) (tautSection J V)) = _`. Rewrite using `[freeSheaf_map_tautSection]`. Conclude with `ConcreteCategory.congr_hom (φ.hom.naturality i.op) _`.
+-/
 lemma freeSheafHomEquiv_map_comp {U V : C} (i : V ⟶ U) {F : Sheaf J AddCommGrpCat.{v}}
     (φ : (freeSheaf J).obj U ⟶ F) :
     freeSheafHomEquiv V F ((freeSheaf J).map i ≫ φ) =
@@ -84,10 +93,16 @@ abbrev res (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) {U V : C} (i : V ⟶ U) :
     F.H' n U ⟶ F.H' n V :=
   (F.cohomologyPresheaf n).map i.op
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma extEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (n : ℕ) (U : C)
     (x : F.H' n U) :
     extEquiv G n U (map f n U x) = (extEquiv F n U x).comp (Ext.mk₀ f) (add_zero n) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma extEquiv_res (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) {U V : C} (i : V ⟶ U)
     (x : F.H' n U) :
     extEquiv F n V (res F n i x) =
@@ -106,12 +121,20 @@ instance cohomologyPresheafFunctor_additive (n : ℕ) :
 def zeroEquiv (F : Sheaf J AddCommGrpCat.{v}) (U : C) : F.H' 0 U ≃+ F.obj.obj (op U) :=
   (extEquiv F 0 U).trans (Ext.addEquiv₀.trans (freeSheafHomEquiv U F))
 
+/- English proof (translation)
+Simplify using `only [zeroEquiv, AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`. Use `congr 1`. Conclude with `Ext.addEquiv₀.apply_symm_apply φ`.
+-/
 lemma zeroEquiv_mk₀ (F : Sheaf J AddCommGrpCat.{v}) (U : C) (φ : (freeSheaf J).obj U ⟶ F) :
     zeroEquiv F U ((extEquiv F 0 U).symm (Ext.mk₀ φ)) = freeSheafHomEquiv U F φ := by
   simp only [zeroEquiv, AddEquiv.trans_apply, AddEquiv.apply_symm_apply]
   congr 1
   exact Ext.addEquiv₀.apply_symm_apply φ
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(extEquiv F 0 U).symm.surjective x`. Take `⟨φ, rfl⟩` from `(Ext.mk₀_bijective _ _).surjective y`. Rewrite using `[zeroEquiv_mk₀, ← freeSheafHomEquiv_comp, ← zeroEquiv_mk₀]`. Use `congr 1`. Apply `(extEquiv G 0 U).injective` to reduce the goal to its premises.
+
+Rewrite using `[extEquiv_map, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, Ext.mk₀_comp_mk₀]`.
+-/
 lemma zeroEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (U : C) (x : F.H' 0 U) :
     zeroEquiv G U (map f 0 U x) = f.hom.app (op U) (zeroEquiv F U x) := by
   obtain ⟨y, rfl⟩ := (extEquiv F 0 U).symm.surjective x
@@ -121,6 +144,11 @@ lemma zeroEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (U : C) (x :
   apply (extEquiv G 0 U).injective
   rw [extEquiv_map, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, Ext.mk₀_comp_mk₀]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(extEquiv F 0 U).symm.surjective x`. Take `⟨φ, rfl⟩` from `(Ext.mk₀_bijective _ _).surjective y`. Rewrite using `[zeroEquiv_mk₀, ← freeSheafHomEquiv_map_comp, ← zeroEquiv_mk₀]`. Use `congr 1`. Apply `(extEquiv F 0 V).injective` to reduce the goal to its premises.
+
+Rewrite using `[extEquiv_res, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, Ext.mk₀_comp_mk₀]`.
+-/
 lemma zeroEquiv_res (F : Sheaf J AddCommGrpCat.{v}) {U V : C} (i : V ⟶ U) (x : F.H' 0 U) :
     zeroEquiv F V (res F 0 i x) = F.obj.map i.op (zeroEquiv F U x) := by
   obtain ⟨y, rfl⟩ := (extEquiv F 0 U).symm.surjective x
@@ -135,11 +163,17 @@ def terminalEquiv (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) {T : C} (hT : IsTerm
   (extEquiv F n T).trans
     (((extFunctor n).mapIso (freeSheafIsoConst (J := J) hT).symm.op).app F).addCommGroupIsoToAddEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma terminalEquiv_apply (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) {T : C} (hT : IsTerminal T)
     (x : F.H' n T) :
     terminalEquiv F n hT x =
       (Ext.mk₀ (freeSheafIsoConst hT).inv).comp (extEquiv F n T x) (zero_add n) := rfl
 
+/- English proof (translation)
+Rewrite using `[terminalEquiv_apply, terminalEquiv_apply, extEquiv_map, Sheaf.H.map_apply]`. Use `symm`. Apply `Ext.comp_assoc` to reduce the goal to its premises. Apply the tactic sequence `all_goals omega`.
+-/
 lemma terminalEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (n : ℕ) {T : C}
     (hT : IsTerminal T) (x : F.H' n T) :
     terminalEquiv G n hT (map f n T x) = Sheaf.H.map f n (terminalEquiv F n hT x) := by
@@ -148,6 +182,11 @@ lemma terminalEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (n : ℕ
   apply Ext.comp_assoc
   all_goals omega
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(extEquiv F 0 T).symm.surjective x`. Take `⟨φ, rfl⟩` from `(Ext.mk₀_bijective _ _).surjective y`. Rewrite using `[zeroEquiv_mk₀, terminalEquiv_apply, AddEquiv.apply_symm_apply, Ext.mk₀_comp_mk₀]`. Take `⟨ψ, rfl⟩ : ∃ ψ, (freeSheafIsoConst hT).hom ≫ ψ = φ` from `⟨(freeSheafIsoConst hT).inv ≫ φ, by simp⟩`. Rewrite using `[Iso.inv_hom_id_assoc, freeSheafHomEquiv_comp]`.
+
+Establish `h : (Ext.addEquiv₀ (Ext.mk₀.{w} ψ)) = ψ` using `Ext.addEquiv₀.apply_symm_apply ψ`. Simplify using `only [Sheaf.H.equiv₀, AddEquiv.trans_apply, h]`. Establish `h₁` using `ConcreteCategory.congr_hom (NatTrans.congr_app (toSheafify_naturality J (freePresheafIsoConst hT).hom) (op T)) (FreeAbelianGroup.of (𝟙 T))`. Conclude with `congrArg (ψ.hom.app (op T)) h₁`.
+-/
 lemma equiv₀_terminalEquiv (F : Sheaf J AddCommGrpCat.{v}) {T : C} (hT : IsTerminal T)
     (x : F.H' 0 T) :
     Sheaf.H.equiv₀ F hT (terminalEquiv F 0 hT x) = zeroEquiv F T x := by
@@ -169,6 +208,9 @@ instance subsingleton_of_injective (F : Sheaf J AddCommGrpCat.{v}) [Injective F]
   subsingleton_of_forall_eq 0 fun _ ↦
     (extEquiv F (n + 1) U).injective ((Ext.eq_zero_of_injective _).trans (map_zero _).symm)
 
+/- English proof (translation)
+Establish `h : 𝟙 ((freeSheaf J).obj U) = 0` using `(freeSheafHomEquiv U _).injective (Subsingleton.elim _ _)`. Use `subsingleton_of_forall_eq 0 fun x ↦ (extEquiv F n U).injective ?_` and prove the remaining obligations. Rewrite using `[← Ext.mk₀_id_comp (extEquiv F n U x), h, Ext.mk₀_zero, Ext.zero_comp, map_zero]`.
+-/
 lemma subsingleton_of_subsingleton_freeSheaf (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) (U : C)
     [Subsingleton (((freeSheaf J).obj U).obj.obj (op U))] : Subsingleton (F.H' n U) := by
   have h : 𝟙 ((freeSheaf J).obj U) = 0 :=

@@ -21,6 +21,23 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [
   {H : HermSp M V} {r k : ℕ} {P : LocNG.FPair H r} {S : Frames M.L r k}
 
 open scoped Pointwise ENNReal Classical in
+/- English proof (translation)
+Take `⟨hBA, hcover, huniq⟩` from `hB`. Establish `key : ∀ Λ : X, ∃ g ∈ St, Quotient.out (Quotient.mk (MulAction.orbitRel St X) Λ) = g • Λ` using `fun Λ => by`. Take `⟨⟨g, hg⟩, hgx⟩` from `Quotient.mk_out (s := MulAction.orbitRel St X) Λ`. Conclude with `⟨g, hg, hgx.symm⟩`. Set `toFun : {t // t ∈ B ∧ p t} → ↥{o : MulAction.orbitRel.Quotient St X | term (Quotient.out o) ∧ Q (Quotient.out o)}` to `fun t => ⟨Quotient.mk _ (ℓ t.1), by`.
+
+Take `⟨g, hg, he⟩` from `key (ℓ t.1)`. Establish `h1` using `hterm _ (hBA t.2.1)`. Use `show term (Quotient.out (Quotient.mk (MulAction.orbitRel St X) (ℓ t.1))) ∧ Q (Quotient.out (Quotient.mk (MulAction.orbitRel St X) (ℓ t.1)))`. Rewrite using `[he]`. Conclude with `⟨hinv _ h1 g hg, hQ _ h1 g hg ((hpQ _ (hBA t.2.1)).1 t.2.2)⟩⟩`.
+
+Establish `hbij : Function.Bijective toFun`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩ ⟨t', ht'⟩ heq`. Establish `h2 : Quotient.mk (MulAction.orbitRel St X) (ℓ t) = Quotient.mk _ (ℓ t')` using `congrArg Subtype.val heq`. Take `⟨⟨g, hg⟩, hgx⟩` from `Quotient.exact h2`.
+
+Establish `: rel t' t` using `(hrel t' t).2 ⟨g, hg, hgx.symm⟩`. Conclude with `Subtype.ext (huniq _ ht'.1 _ ht.1 this).symm`. Introduce and unpack `⟨o, ho⟩`. Take `⟨t0, ht0A, ht0⟩` from `hsurj _ ho.1`. Take `⟨y, hyB, hy⟩` from `hcover t0 ht0A`.
+
+Take `⟨g, hg, hgy⟩` from `(hrel y t0).1 hy`. Establish `hyA` using `hBA hyB`. Establish `hQy : Q (ℓ y)`. Use `hQ (ℓ t0) (hterm _ ht0A) g⁻¹ (inv_mem hg) (by rw [ht0]; exact ho.2)` as an intermediate fact. Rewrite `this` using `[hgy, inv_smul_smul]`. Then use the resulting hypothesis.
+
+Use `⟨⟨y, hyB, (hpQ y hyA).2 hQy⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show Quotient.mk _ (ℓ y) = o`. Rewrite using `[← Quotient.out_eq o, ← ht0, hgy]`. Conclude with `Quotient.sound ⟨⟨g⁻¹, inv_mem hg⟩, inv_smul_smul g _⟩`. Set `e` to `Equiv.ofBijective toFun hbij`.
+
+Establish `hR : (∑' o : MulAction.orbitRel.Quotient St X, if term (Quotient.out o) ∧ Q (Quotient.out o) then f (Quotient.out o) else 0) = ∑' o : ↥{o : MulAction.orbitRel.Quotient St X | term (Quotient.out o) ∧ Q (Quotient.out o)}, f (Quotient.out o.1)`. Use `Eq.trans ?_ (tsum_subtype _ (fun o => f (Quotient.out o))).symm` and prove the remaining obligations. Use `tsum_congr fun o => ?_` and prove the remaining obligations. Simplify using `only [Set.indicator_apply, Set.mem_setOf_eq]`. Rewrite using `[hR, ← e.tsum_eq]`.
+
+Use `tsum_congr fun t => ?_` and prove the remaining obligations. Use `show val t.1 = f (Quotient.out (Quotient.mk _ (ℓ t.1)))`. Take `⟨g, hg, he⟩` from `key (ℓ t.1)`. Rewrite using `[he, hf _ (hterm _ (hBA t.2.1)) g hg, hval _ (hBA t.2.1)]`.
+-/
 private lemma tsum_transversal_eq_tsum_orbits_lemma {T X G R : Type*} [Group G] [MulAction G X]
     [AddCommMonoid R] [TopologicalSpace R] (St : Subgroup G)
     (rel : T → T → Prop) (A B : Set T) (hB : _root_.Formalism.MainNotions.S.LocNG.IsTransv rel A B) (ℓ : T → X) (term : X → Prop)
@@ -89,6 +106,17 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [
   [TopologicalSpace E] [MeasurableSpace E] {M : _root_.Formalism.MainNotions.S.Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
   {H : _root_.Formalism.MainNotions.S.Loc.HermSp M V} {r k : ℕ} {P : _root_.Formalism.MainNotions.S.LocNG.FPair H r} {S : _root_.GlobalTheory.HL.Frames M.L r k} in
 
+/- English proof (translation)
+Use `haveI := hM.loc`. Use `haveI := hM.char0`. Take `⟨-, -, hbij, hlatg, -, hmu⟩` from `_root_.GlobalTheory.HL.CoordMass.transport M hM H r k P S c`. Take `⟨-, -, -, hSt, -⟩` from `_root_.GlobalTheory.HL.CoordUnip.transport M hM H r k P S c`. Take `⟨hcorr, hex, -⟩` from `_root_.GlobalTheory.HL.CoordTermWt.terms_correspond M hM H r k P S c`.
+
+Establish `hB` using `R.hRT d`. Establish `hrel : ∀ t t', _root_.Formalism.MainNotions.S.LocNG.TRel P t t' ↔ ∃ g ∈ S.St, c.lat t'.abelian₂ = g • c.lat t.abelian₂`. Introduce `t t'`. Unfold `_root_.Formalism.MainNotions.S.LocNG.TRel`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨s, hs, he⟩`. Conclude with `⟨c.grp s, (hSt s).1 hs, by rw [he, hlatg]⟩`. Introduce and unpack `⟨g, hg, he⟩`. Use `⟨c.grp.symm g, (hSt _).2 (by simpa using hg), hbij.1 ?_⟩` and prove the remaining obligations. Rewrite using `[hlatg, MulEquiv.apply_symm_apply, he]`.
+
+Establish `hterm_inv : ∀ Λ, S.IsTerm (c.dat d) Λ → ∀ g ∈ S.St, S.IsTerm (c.dat d) (g • Λ)` using `fun Λ h g hg => (_root_.GlobalTheory.FrameAct.stabiliser_acts_on_terms M.L r k S _ Λ h g hg).1`. Establish `hom_inv : ∀ Λ, S.IsTerm (c.dat d) Λ → ∀ g ∈ S.St, S.om (c.dat d) (g • Λ) = S.om (c.dat d) Λ` using `fun Λ h g hg => (_root_.GlobalTheory.FrameAct.stabiliser_acts_on_terms M.L r k S _ Λ h g hg).2.1`. Establish `hmu_inv : ∀ Λ, S.IsTerm (c.dat d) Λ → ∀ g ∈ S.St, S.mu (g • Λ) = S.mu Λ` using `fun Λ h g hg => ((_root_.GlobalTheory.HL.volSt M.L r k S).1 Λ (_root_.GlobalTheory.HL.TermBasic.term_basic M.L r k S _ Λ h).1.1).2.2 g hg`. Prove the components needed by the constructor for the conclusion. Unfold `_root_.Formalism.MainNotions.S.LocNG.amp _root_.GlobalTheory.HL.Frames.amp`.
+
+Conclude with `tsum_transversal_eq_tsum_orbits_lemma S.St (_root_.Formalism.MainNotions.S.LocNG.TRel P) _ _ hB (fun t => c.lat t.abelian₂) (S.IsTerm (c.dat d)) p Q (fun t ht => (hcorr d t ht).1) (fun Λ h => hex d Λ h) hrel hterm_inv hpQ hQ (fun Λ => (S.mu Λ : ℂ) * S.om (c.dat d) Λ) (fun Λ h g h …`. Unfold `_root_.GlobalTheory.HL.Frames.mass`. Conclude with `tsum_transversal_eq_tsum_orbits_lemma S.St (_root_.Formalism.MainNotions.S.LocNG.TRel P) _ _ hB (fun t => c.lat t.abelian₂) (S.IsTerm (c.dat d)) p Q (fun t ht => (hcorr d t ht).1) (fun Λ h => hex d Λ h) hrel hterm_inv hpQ hQ (fun Λ => ENNReal.ofReal (S.mu Λ)) (fun Λ h g hg => by …`.
+-/
 theorem _root_.GlobalTheory.HL.CoordAmp.sums_eq (hM : M.OK) (c : _root_.GlobalTheory.HL.Coord P S)
     (R : _root_.Formalism.MainNotions.S.LocNG.Reps P) (d : _root_.Formalism.MainNotions.S.LocNG.Datum P)
     (p : _root_.Formalism.MainNotions.S.Loc.Term V M r → Prop) (Q : Submodule M.L.O S.V → Prop)
@@ -151,6 +179,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [
   [TopologicalSpace E] [MeasurableSpace E] {M : _root_.Formalism.MainNotions.S.Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
   {H : _root_.Formalism.MainNotions.S.Loc.HermSp M V} {r k : ℕ} {P : _root_.Formalism.MainNotions.S.LocNG.FPair H r} {S : _root_.GlobalTheory.HL.Frames M.L r k} in
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c R d`. Use `haveI := hM.loc`. Use `haveI := hM.char0`. Take `⟨hcorr, -, -⟩` from `_root_.GlobalTheory.HL.CoordTermWt.terms_correspond M hM H r k P S c`. Establish `hBB : ∀ Λ, S.IsTerm (c.dat d) Λ → ∀ h ∈ S.St, (S.BBzero (c.dat d) (h • Λ) ↔ S.BBzero (c.dat d) Λ)` using `fun Λ hΛ h hh => (_root_.GlobalTheory.FrameAct.stabiliser_acts_on_terms M.L r k S _ Λ hΛ h hh).2.2.2.2.2.2.2.1`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(_root_.GlobalTheory.HL.CoordAmp.sums_eq hM c R d _ _ (fun t ht => (hcorr d t ht).2.2) (fun Λ hΛ h hh hq => by rwa [hBB Λ hΛ h hh])).1`. Conclude with `(_root_.GlobalTheory.HL.CoordAmp.sums_eq hM c R d _ _ (fun t ht => by rw [(hcorr d t ht).2.2, not_not]) (fun Λ hΛ h hh hq => (hBB Λ hΛ h hh).2 hq)).1`. Conclude with `(_root_.GlobalTheory.HL.CoordAmp.sums_eq hM c R d (fun _ => True) (fun _ => True) (fun _ _ => Iff.rfl) (fun _ _ _ _ _ => trivial)).1`. Rewrite using `[← (_root_.GlobalTheory.HL.CoordAmp.sums_eq hM c R d (fun _ => True) (fun _ => True) (fun _ _ => Iff.rfl) (fun _ _ _ _ _ => trivial)).2]`.
+
+Conclude with `((Equiv.subtypeEquivRight (fun t => by simp)).tsum_eq (fun t => ENNReal.ofReal (_root_.Formalism.MainNotions.S.LocNG.mu P t.1))).symm`.
+-/
 theorem _root_.GlobalTheory.HL.CoordAmp.amp_mass_eq : ∀ {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     (M : _root_.Formalism.MainNotions.S.Loc.Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : _root_.Formalism.MainNotions.S.Loc.HermSp M V) (r k : ℕ)

@@ -23,9 +23,15 @@ variable {X Y Z T : Scheme.{0}}
 
 abbrev quot (r : ℕ) (a : Γ(X, ⊤)) : X.Modules := cokernel (smulHom (freeModule X (Fin r)) a)
 
+/- English proof (translation)
+The claim follows from `(cancel_epi (cokernel.π _)).1 (by rw [comp_zero, ← smulHom_comp, cokernel.condition])`.
+-/
 theorem smulHom_quot (r : ℕ) (a : Γ(X, ⊤)) : smulHom (quot r a) a = 0 :=
   (cancel_epi (cokernel.π _)).1 (by rw [comp_zero, ← smulHom_comp, cokernel.condition])
 
+/- English proof (translation)
+Establish `e : (Scheme.Modules.pullback f).obj (freeModule X (Fin r)) ≅ freeModule Y (Fin r)` using `((VB.isFrame_freeFrame X (Fin r)).pullback f).iso (VB.isFrame_freeFrame Y (Fin r))`. Substitute `hb` using the available equality. Conclude with `⟨PreservesCokernel.iso (Scheme.Modules.pullback f) _ ≪≫ cokernel.mapIso _ _ e e (by rw [VB.pullback_map_smulHom]; exact smulHom_comp e.hom _)⟩`.
+-/
 theorem nonempty_pullback_quot (f : Y ⟶ X) (r : ℕ) (a : Γ(X, ⊤)) (b : Γ(Y, ⊤)) (hb : f.appTop a = b) :
     Nonempty ((Scheme.Modules.pullback f).obj (quot r a) ≅ quot r b) := by
   have e : (Scheme.Modules.pullback f).obj (freeModule X (Fin r)) ≅ freeModule Y (Fin r) :=
@@ -34,6 +40,9 @@ theorem nonempty_pullback_quot (f : Y ⟶ X) (r : ℕ) (a : Γ(X, ⊤)) (b : Γ(
   exact ⟨PreservesCokernel.iso (Scheme.Modules.pullback f) _ ≪≫
     cokernel.mapIso _ _ e e (by rw [VB.pullback_map_smulHom]; exact smulHom_comp e.hom _)⟩
 
+/- English proof (translation)
+Rewrite using `[← IsOpenImmersion.lift_fac j f h]`. Conclude with `⟨((Scheme.Modules.pullbackComp _ j).app G).symm ≪≫ (Scheme.Modules.pullback _).mapIso e ≪≫ (Scheme.Modules.pullbackComp _ j).app G'⟩`.
+-/
 theorem nonempty_pullback_of_range (j : Y ⟶ X) [IsOpenImmersion j] (f : T ⟶ X) (h : Set.range f ⊆ Set.range j)
     {G G' : X.Modules} (e : (Scheme.Modules.pullback j).obj G ≅ (Scheme.Modules.pullback j).obj G') :
     Nonempty ((Scheme.Modules.pullback f).obj G ≅ (Scheme.Modules.pullback f).obj G') := by
@@ -41,6 +50,11 @@ theorem nonempty_pullback_of_range (j : Y ⟶ X) [IsOpenImmersion j] (f : T ⟶ 
   exact ⟨((Scheme.Modules.pullbackComp _ j).app G).symm ≪≫ (Scheme.Modules.pullback _).mapIso e ≪≫
     (Scheme.Modules.pullbackComp _ j).app G'⟩
 
+/- English proof (translation)
+Use `Scheme.Modules.Hom.isIso_iff_isIso_app.2 fun V => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsIso (G.presheaf.map (homOfLE (j.image_preimage_le (i ⁻¹ᵁ (U.ι ''ᵁ V)))).op)`. Establish `hV : j ''ᵁ (j ⁻¹ᵁ (i ⁻¹ᵁ (U.ι ''ᵁ V))) = i ⁻¹ᵁ (U.ι ''ᵁ V)`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf]`. Conclude with `inf_eq_right.2 ((i.preimage_mono (U.ι_image_le V)).trans h)`.
+
+Establish `: homOfLE (j.image_preimage_le (i ⁻¹ᵁ (U.ι ''ᵁ V))) = eqToHom hV` using `rfl`. Rewrite using `[this]`. Use `infer_instance`.
+-/
 theorem isIso_restrict_pushforward_unit (i : Z ⟶ X) (j : Y ⟶ Z) [IsOpenImmersion j] (U : X.Opens)
     (h : i ⁻¹ᵁ U ≤ j.opensRange) (G : Z.Modules) :
     IsIso ((Scheme.Modules.restrictFunctor U.ι).map ((Scheme.Modules.pushforward i).map
@@ -54,6 +68,9 @@ theorem isIso_restrict_pushforward_unit (i : Z ⟶ X) (j : Y ⟶ Z) [IsOpenImmer
   rw [this]
   infer_instance
 
+/- English proof (translation)
+Establish `h₁` using `isIso_restrict_pushforward_unit i j U h G`. Establish `h₂` using `isIso_restrict_pushforward_unit i j U h G'`. Establish `e' : G.restrict j ≅ G'.restrict j` using `(Scheme.Modules.restrictFunctorIsoPullback j).app G ≪≫ e ≪≫ ((Scheme.Modules.restrictFunctorIsoPullback j).app G').symm`. Conclude with `⟨((Scheme.Modules.restrictFunctorIsoPullback U.ι).app _).symm ≪≫ @asIso _ _ _ _ _ h₁ ≪≫ (Scheme.Modules.restrictFunctor U.ι).mapIso ((Scheme.Modules.pushforward i).mapIso ((Scheme.Modules.pushforward j).mapIso e')) ≪≫ (@asIso _ _ _ _ _ h₂).symm ≪≫ (Scheme.Modules.restrictFunctorI …`.
+-/
 theorem nonempty_pullback_pushforward (i : Z ⟶ X) (j : Y ⟶ Z) [IsOpenImmersion j] (U : X.Opens)
     (h : i ⁻¹ᵁ U ≤ j.opensRange) {G G' : Z.Modules}
     (e : (Scheme.Modules.pullback j).obj G ≅ (Scheme.Modules.pullback j).obj G') :
@@ -70,6 +87,11 @@ theorem nonempty_pullback_pushforward (i : Z ⟶ X) (j : Y ⟶ Z) [IsOpenImmersi
 
 abbrev idl (a : Γ(X, ⊤)) : X.IdealSheafData := Scheme.IdealSheafData.ofIdealTop (Ideal.span {a})
 
+/- English proof (translation)
+Use `⟨@asIso _ _ _ _ ((Scheme.Modules.pullbackPushforwardAdjunction (idl a).subschemeι).unit.app F) ?_⟩` and prove the remaining obligations. Use `(QCoh.isIso_iff_forall_affine (M := F) (N := (Scheme.Modules.pushforward (idl a).subschemeι).obj ((Scheme.Modules.pullback (idl a).subschemeι).obj F)) _).2 fun U hU => ?_` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `surjective_and_ker_unit_subschemeι (idl a) F ⟨U, hU⟩`. Use `⟨(LinearMap.ker_eq_bot (f := QCoh.appLinear _ U)).1 (h₂.trans ?_), h₁⟩` and prove the remaining obligations. Use `Submodule.le_annihilator_iff.1 (le_trans ?_ Submodule.annihilator_top.ge)` and prove the remaining obligations.
+
+Simplify using `only [idl, Scheme.IdealSheafData.ofIdealTop_ideal, Ideal.map_span, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe]`. Rewrite using `[Module.mem_annihilator]`. Introduce `m`. Use `congrArg (fun φ => φ.app U m) hF` as an intermediate fact. Simplify using `using this`.
+-/
 theorem nonempty_iso_pushforward (a : Γ(X, ⊤)) (F : X.Modules) [F.IsQuasicoherent] (hF : smulHom F a = 0) :
     Nonempty (F ≅ (Scheme.Modules.pushforward (idl a).subschemeι).obj
       ((Scheme.Modules.pullback (idl a).subschemeι).obj F)) := by
@@ -86,6 +108,13 @@ theorem nonempty_iso_pushforward (a : Γ(X, ⊤)) (F : X.Modules) [F.IsQuasicohe
   have := congrArg (fun φ => φ.app U m) hF
   simpa using this
 
+/- English proof (translation)
+Use `set I := idl a`. Use `I.subscheme.sheaf.eq_of_locally_eq' (fun U : X.affineOpens => I.subschemeι ⁻¹ᵁ U.1) ⊤ (fun _ => homOfLE le_top) ?_ _ 0 fun U => ?_` and prove the remaining obligations. Introduce `z _`. Establish `hz : I.subschemeι z ∈ (⨆ U : X.affineOpens, (U : X.Opens))`. Rewrite using `[iSup_affineOpens_eq_top]`.
+
+Discharge the goal by the elementary cases of `trivial`. Take `⟨U, hU⟩` from `Opens.mem_iSup.1 hz`. Conclude with `Opens.mem_iSup.2 ⟨U, hU⟩`. Establish `h0 : (I.subschemeι.app U.1).hom ((X.presheaf.map (homOfLE (le_top : U.1 ≤ ⊤)).op).hom a) = 0`. Rewrite using `[← RingHom.mem_ker, I.ker_subschemeι_app U]`.
+
+Simplify using `only [I, idl, Scheme.IdealSheafData.ofIdealTop_ideal]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self a)`. Express the relevant statement in the definitionally equal form `(I.subscheme.presheaf.map _).hom _ = (I.subscheme.presheaf.map _).hom 0`. Rewrite using `[map_zero, ← h0]`. Conclude with `(congrArg (fun φ => φ.hom a) (I.subschemeι.naturality (homOfLE (le_top : U.1 ≤ ⊤)).op)).symm`.
+-/
 theorem appTop_idl (a : Γ(X, ⊤)) : (idl a).subschemeι.appTop a = 0 := by
   set I := idl a
   refine I.subscheme.sheaf.eq_of_locally_eq' (fun U : X.affineOpens => I.subschemeι ⁻¹ᵁ U.1) ⊤
@@ -103,6 +132,13 @@ theorem appTop_idl (a : Γ(X, ⊤)) : (idl a).subschemeι.appTop a = 0 := by
     rw [map_zero, ← h0]
     exact (congrArg (fun φ => φ.hom a) (I.subschemeι.naturality (homOfLE (le_top : U.1 ≤ ⊤)).op)).symm
 
+/- English proof (translation)
+Use `choose U hx hU using h`. Establish `hR (x : X) : (Scheme.Modules.restrictFunctor (U x).ι).map φ = 0`. Set `e` to `Scheme.Modules.restrictFunctorIsoPullback (U x).ι`. Rewrite using `[← cancel_mono (e.hom.app G), e.hom.naturality, hU, comp_zero, zero_comp]`. Use `Scheme.Modules.hom_ext _ _ fun W => ?_` and prove the remaining obligations.
+
+Use extensionality with `s`. Use `Twist.sec_ext_of_cover (fun x : W => (U x).ι ''ᵁ ((U x).ι ⁻¹ᵁ W)) (fun x => Scheme.Hom.image_preimage_le _ _) (fun x hW => Opens.mem_iSup.2 ⟨⟨x, hW⟩, ?_⟩) fun x => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `⟨hx x, hW⟩`. Rewrite using `[← Twist.app_resM, ← Twist.app_resM]`.
+
+Conclude with `congrArg (fun ψ => ψ.app ((U x).ι ⁻¹ᵁ W) (Twist.resM F (Scheme.Hom.image_preimage_le _ _) s)) (hR x)`.
+-/
 theorem eq_zero_of_locally {F G : X.Modules} (φ : F ⟶ G)
     (h : ∀ x : X, ∃ U : X.Opens, x ∈ U ∧ (Scheme.Modules.pullback U.ι).map φ = 0) : φ = 0 := by
   choose U hx hU using h
@@ -120,6 +156,9 @@ theorem eq_zero_of_locally {F G : X.Modules} (φ : F ⟶ G)
 
 variable {g : Γ(X, ⊤)} {F : X.Modules}
 
+/- English proof (translation)
+Use `eq_zero_of_locally _ fun x => ?_` and prove the remaining obligations. Take `⟨U, r, hx, ⟨e⟩⟩` from `h x`. Use `⟨U, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[VB.pullback_map_smulHom, ← cancel_mono e.hom, smulHom_comp, ← VB.pullback_map_smulHom, smulHom_quot, Functor.map_zero, comp_zero, zero_comp]`.
+-/
 theorem smulHom_eq_zero (h : LocFreeMod g F) : smulHom F g = 0 := by
   refine eq_zero_of_locally _ fun x => ?_
   obtain ⟨U, r, hx, ⟨e⟩⟩ := h x
@@ -127,15 +166,28 @@ theorem smulHom_eq_zero (h : LocFreeMod g F) : smulHom F g = 0 := by
   rw [VB.pullback_map_smulHom, ← cancel_mono e.hom, smulHom_comp, ← VB.pullback_map_smulHom, smulHom_quot,
     Functor.map_zero, comp_zero, zero_comp]
 
+/- English proof (translation)
+Use `choose U r hx e using h`. Use `IsFiniteQC.of_restrict (fun x => (U x).ι) (fun x => ⟨x, by simpa using hx x⟩) fun x => ?_` and prove the remaining obligations. Conclude with `IsFiniteQC.of_iso ((Scheme.Modules.restrictFunctorIsoPullback (U x).ι).app F ≪≫ (e x).some).symm`.
+-/
 theorem isFiniteQC (h : LocFreeMod g F) : IsFiniteQC F := by
   choose U r hx e using h
   refine IsFiniteQC.of_restrict (fun x => (U x).ι) (fun x => ⟨x, by simpa using hx x⟩) fun x => ?_
   exact IsFiniteQC.of_iso ((Scheme.Modules.restrictFunctorIsoPullback (U x).ι).app F ≪≫ (e x).some).symm
 
+/- English proof (translation)
+Introduce `x` and use `have ⟨U, r, hx, ⟨e'⟩⟩ := h x ⟨U, r, hx, ⟨(Scheme.Modules.pullback U.ι).mapIso e.symm ≪≫ e'⟩⟩`.
+-/
 theorem of_iso (h : LocFreeMod g F) {F' : X.Modules} (e : F ≅ F') : LocFreeMod g F' := fun x =>
   have ⟨U, r, hx, ⟨e'⟩⟩ := h x
   ⟨U, r, hx, ⟨(Scheme.Modules.pullback U.ι).mapIso e.symm ≪≫ e'⟩⟩
 
+/- English proof (translation)
+Use `hF.isQuasicoherent` as an intermediate fact. Establish `hs : ∑ _ : Unit, i ≫ q = 𝟙 G` using `by simpa using hiq`. Establish `: G.IsQuasicoherent` using `QCoh.isQuasicoherent_of_sum_eq_id (A := fun _ : Unit => F) (fun _ => i) (fun _ => q) hs`. Take `⟨U, e, hU, hx, -, he⟩` from `hF.exists_affine (V := ⊤) (x := x) trivial`. Use `Module.Free.of_basis (he.basis le_rfl)` as an intermediate fact.
+
+Use `Module.Finite.of_basis (he.basis le_rfl)` as an intermediate fact. Establish `hc : QCoh.appLinear q U ∘ₗ QCoh.appLinear i U = LinearMap.id` using `LinearMap.ext fun s => by`. Simplify using `using QCoh.sum_app_app (A := fun _ : Unit => F) (fun _ => i) (fun _ => q) hs s`. Establish `: Module.Projective Γ(X, U) Γ(G, U)` using `.of_split _ _ hc`. Establish `: Module.Finite Γ(X, U) Γ(G, U)` using `.of_surjective (QCoh.appLinear q U) fun s => ⟨_, LinearMap.congr_fun hc s⟩`.
+
+Conclude with `VB.Summand.exists_frame_of_projective (G := G) hU ⟨x, hx⟩`.
+-/
 theorem exists_frame_of_retract {G : X.Modules} (i : G ⟶ F) (q : F ⟶ G) (hiq : i ≫ q = 𝟙 G) {r : ℕ}
     (hF : VB.IsVB F r) (x : X) : ∃ (V : X.Opens) (n : ℕ) (e : Fin n → Γ(G, V)), x ∈ V ∧ VB.IsFrame e := by
   have := hF.isQuasicoherent
@@ -152,6 +204,23 @@ theorem exists_frame_of_retract {G : X.Modules} (i : G ⟶ F) (q : F ⟶ G) (hiq
     .of_surjective (QCoh.appLinear q U) fun s => ⟨_, LinearMap.congr_fun hc s⟩
   exact VB.Summand.exists_frame_of_projective (G := G) hU ⟨x, hx⟩
 
+/- English proof (translation)
+Use `(isFiniteQC h).isQuasicoherent` as an intermediate fact. Establish `hs : ∑ _ : Unit, i ≫ q = 𝟙 F₁` using `by simpa using hiq`. Establish `: F₁.IsQuasicoherent` using `isQuasicoherent_of_sum_eq_id (A := fun _ : Unit => F) (fun _ => i) (fun _ => q) hs`. Establish `hk : smulHom F₁ g = 0`. Rewrite using `[← Category.comp_id (smulHom F₁ g), ← hiq, ← Category.assoc, smulHom_comp, smulHom_eq_zero h, comp_zero, zero_comp]`.
+
+Take `⟨e₁⟩` from `nonempty_iso_pushforward g F₁ hk`. Set `ι` to `(idl g).subschemeι`. Establish `key (x : X) (U : X.Opens) (r : ℕ) (hx : x ∈ U) (T : Scheme.{0}) (j : T ⟶ (idl g).subscheme) [IsOpenImmersion j] (hj : ι ⁻¹ᵁ U ≤ j.opensRange) (e : (Scheme.Modules.pullback j).obj ((Scheme.Modules.pullback ι).obj F₁) ≅ (Scheme.Modules.pullback j).obj ((Scheme.Modules.pullback ι).o …`. Take `⟨e₂⟩` from `nonempty_iso_pushforward g (quot r g) (smulHom_quot r g)`. Take `⟨e₃⟩` from `nonempty_pullback_pushforward ι j U hj e`.
+
+Conclude with `⟨U, r, hx, ⟨(Scheme.Modules.pullback U.ι).mapIso e₁ ≪≫ e₃ ≪≫ ((Scheme.Modules.pullback U.ι).mapIso e₂).symm⟩⟩`. Establish `hfree {T : Scheme.{0}} (j : T ⟶ (idl g).subscheme) (r : ℕ) : Nonempty ((Scheme.Modules.pullback (j ≫ ι)).obj (quot r g) ≅ freeModule T (Fin r))`. Take `⟨e⟩` from `nonempty_pullback_quot (j ≫ ι) r g 0 (by`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, appTop_idl, map_zero])`. Conclude with `⟨e ≪≫ cokernelIsoOfEq (smulHom_zero _) ≪≫ cokernelZeroIsoTarget⟩`.
+
+Introduce `x`. Distinguish the cases in `hx : x ∈ Set.range ι`. Take `⟨z, rfl⟩` from `hx`. Take `⟨U, r, hU, ⟨e⟩⟩` from `h (ι z)`. Set `j` to `(ι ⁻¹ᵁ U).ι`.
+
+Take `⟨e₂⟩` from `nonempty_pullback_of_range U.ι (j ≫ ι) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `y.2) e`. Take `⟨e₃⟩` from `hfree j r`.
+
+Establish `hV` using `(VB.isVB_freeModule_fin _ r).of_iso (e₂ ≪≫ e₃).symm`. Take `⟨V, n, s, hzV, hs⟩` from `exists_frame_of_retract ((Scheme.Modules.pullback (j ≫ ι)).map i) ((Scheme.Modules.pullback (j ≫ ι)).map q) (by rw [← Functor.map_comp, hiq, CategoryTheory.Functor.map_id]) hV ⟨z, hU⟩`. Establish `e₄` using `hs.restrictIso ((VB.isFrame_freeFrame _ (Fin n)).res le_top) V.ι V.opensRange_ι.le`. Take `⟨e₅⟩` from `hfree j n`. Take `⟨W, hW, hWe⟩` from `ι.isClosedEmbedding.isInducing.isOpen_iff.1 (V.ι ≫ j).opensRange.isOpen`.
+
+Use `key _ ⟨W, hW⟩ n ?_ _ (V.ι ≫ j) hWe.le ?_` and prove the remaining obligations. Establish `: z ∈ ι ⁻¹' W`. Rewrite using `[hWe]`. Conclude with `⟨⟨⟨z, hU⟩, hzV⟩, rfl⟩`. Conclude with `this`.
+
+Establish `c (G : X.Modules) : (Scheme.Modules.pullback (V.ι ≫ j)).obj ((Scheme.Modules.pullback ι).obj G) ≅ ((Scheme.Modules.pullback (j ≫ ι)).obj G).restrict V.ι` using `((Scheme.Modules.pullbackComp V.ι j).app _).symm ≪≫ (Scheme.Modules.pullback V.ι).mapIso ((Scheme.Modules.pullbackComp j ι).app G) ≪≫ ((Scheme.Modules.restrictFunctorIsoPullback V.ι).app _).symm`. Conclude with `c F₁ ≪≫ e₄ ≪≫ (Scheme.Modules.restrictFunctor V.ι).mapIso e₅.symm ≪≫ (c _).symm`. Establish `hz (G : (⊥ : (idl g).subscheme.Opens).toScheme.Modules) : IsZero G` using `support_eq_empty_iff.1 (Set.eq_empty_of_forall_notMem fun y _ => y.2)`. Use `key x ⟨(Set.range ι)ᶜ, ι.isClosedEmbedding.isClosed_range.isOpen_compl⟩ 0 hx _ (⊥ : (idl g).subscheme.Opens).ι (fun y hy => (hy ⟨y, rfl⟩).elim) ((hz _).iso (hz _))` and prove the remaining obligations.
+-/
 theorem of_retract (h : LocFreeMod g F) {F₁ : X.Modules} (i : F₁ ⟶ F) (q : F ⟶ F₁) (hiq : i ≫ q = 𝟙 F₁) :
     LocFreeMod g F₁ := by
   have := (isFiniteQC h).isQuasicoherent
@@ -218,6 +287,15 @@ section Model
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
   {B : GlobalTheory.Vert.Model O} {g : Γ(B.X, ⊤)} {F : B.X.Modules}
 
+/- English proof (translation)
+Take `⟨hp, ⟨e'⟩⟩` from `hF`. Introduce `x`. Take `⟨U, r, hx, ⟨e⟩⟩` from `h x`. Use `⟨U, r, hx, ?_⟩` and prove the remaining obligations. Set `ι` to `(fibI p B).subschemeι`.
+
+Set `φ` to `GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out hp ≫ ι`. Set `j` to `(ι ⁻¹ᵁ U).ι`. Establish `hCp : smulHom (quot r (g ^ p)) (p : Γ(B.X, ⊤)) = 0`. Rewrite using `[← hc, smulHom_mul, smulHom_quot, comp_zero]`. Establish `hI` using `FrobQuot.isIso_unit_fibI p B (quot r (g ^ p)) hCp`.
+
+Take `⟨e₁⟩` from `nonempty_pullback_quot φ r g ((ι.appTop g) ^ p) (FrobQuot.appTop_absFrob_comp p B hp g)`. Take `⟨e₂⟩` from `nonempty_pullback_quot ι r (g ^ p) ((ι.appTop g) ^ p) (map_pow _ _ _)`. Take `⟨e₃⟩` from `nonempty_pullback_of_range U.ι (j ≫ φ) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Conclude with `y.2) e`. Take `⟨e₄⟩` from `nonempty_pullback_pushforward ι j U (ι ⁻¹ᵁ U).opensRange_ι.ge ((Scheme.Modules.pullbackComp j φ).app F ≪≫ e₃ ≪≫ ((Scheme.Modules.pullbackComp j φ).app _).symm ≪≫ (Scheme.Modules.pullback j).mapIso (e₁ ≪≫ e₂.symm))`. Conclude with `⟨(Scheme.Modules.pullback U.ι).mapIso e' ≪≫ e₄ ≪≫ ((Scheme.Modules.pullback U.ι).mapIso (@asIso _ _ _ _ _ hI)).symm⟩`.
+-/
 theorem of_isFrob (h : LocFreeMod g F) {c : Γ(B.X, ⊤)} (hc : g ^ p * c = (p : Γ(B.X, ⊤))) {F' : B.X.Modules}
     (hF : IsFrob p F F') : LocFreeMod (g ^ p) F' := by
   obtain ⟨hp, ⟨e'⟩⟩ := hF
@@ -242,6 +320,21 @@ theorem of_isFrob (h : LocFreeMod g F) {c : Γ(B.X, ⊤)} (hc : g ^ p * c = (p :
   exact ⟨(Scheme.Modules.pullback U.ι).mapIso e' ≪≫ e₄ ≪≫
     ((Scheme.Modules.pullback U.ι).mapIso (@asIso _ _ _ _ _ hI)).symm⟩
 
+/- English proof (translation)
+Use `isFiniteQC h` as an intermediate fact. Take `⟨L, hL⟩` from `B.exists_isAmpleLB`. Take `⟨k, E, φ, hE, hφ⟩` from `FrobFilt.ExtPres.exists_epi_of_isAmpleLB hL F`. Use `hE.isFiniteQC` as an intermediate fact. Establish `hmono (r : ℕ) : Mono (smulHom (freeModule B.X (Fin r)) g)`.
+
+Establish `: Mono (smulHom (freeModule B.X (Fin r)) (B.const a))` using `FrobFilt.ExtPres.mono_ψ ⟨r, _, _, VB.isVB_freeModule_fin _ r, VB.isVB_freeModule_fin _ r, _, Vert.Model.isIso_genRes_map_smulHom _ ha⟩`. Rewrite `this` using `[← hc, mul_comm, smulHom_mul]`. Conclude with `mono_of_mono _ (smulHom _ c)`. Establish `hK : VB.IsVB (kernel φ) k`. Introduce `x`.
+
+Take `⟨U, r, hx, ⟨e⟩⟩` from `h x`. Use `hmono r` as an intermediate fact. Set `R` to `Scheme.Modules.pullback U.ι`. Establish `: Mono (R.map (smulHom (freeModule B.X (Fin r)) g))` using `mono_pullback_map _ _`. Set `e' : R.obj F ≅ cokernel (R.map (smulHom (freeModule B.X (Fin r)) g))` to `e ≪≫ PreservesCokernel.iso R _`.
+
+Establish `h₁` using `FrobFilt.ExtPres.isVB_kernel _ (R.map φ ≫ e'.hom) (hE.pullback U.ι) ((VB.isVB_freeModule_fin _ r).pullback U.ι) ((VB.isVB_freeModule_fin _ r).pullback U.ι)`. Set `S` to `ShortComplex.mk (kernel.ι φ) φ (kernel.condition φ)`. Establish `: Epi S.g` using `hφ`. Establish `hS` using `(exact_map_pullback U.ι (ShortComplex.exact_kernel φ)).1`. Establish `: Mono (S.map R).f` using `mono_pullback_map _ (kernel.ι φ)`.
+
+Establish `e₁ : kernel (R.map φ) ≅ R.obj (kernel φ)` using `IsLimit.conePointUniqueUpToIso (limit.isLimit _) hS.fIsKernel`. Establish `h₂` using `h₁.of_iso (kernelCompMono (R.map φ) e'.hom ≪≫ e₁ ≪≫ ((Scheme.Modules.restrictFunctorIsoPullback U.ι).app _).symm)`. Take `⟨V, s, hV, hs⟩` from `h₂ ⟨x, hx⟩`. Conclude with `⟨U.ι ''ᵁ V, s, ⟨⟨x, hx⟩, hV, rfl⟩, (VB.isFrame_restrict_iff U.ι s).1 hs⟩`. Establish `e' : cokernel (kernel.ι φ) ≅ F` using `IsColimit.coconePointUniqueUpToIso (colimit.isColimit _) (Abelian.epiIsCokernelOfKernel _ (kernelIsKernel φ))`.
+
+Establish `hz : IsZero (B.genRes.obj F)`. Use `Vert.Model.isIso_genRes_map_smulHom F ha` as an intermediate fact. Rewrite `this` using `[← hc, smulHom_mul, smulHom_eq_zero h, comp_zero, Functor.map_zero]`. Conclude with `IsZero.of_mono_zero _ (B.genRes.obj F)`. Establish `hm : Mono (B.genRes.map (kernel.ι φ))` using `mono_pullback_map _ _`.
+
+Establish `he : Epi (B.genRes.map (kernel.ι φ))` using `Preadditive.epi_of_isZero_cokernel _ ((hz.of_iso (B.genRes.mapIso e')).of_iso (PreservesCokernel.iso B.genRes (kernel.ι φ)).symm)`. Conclude with `⟨⟨k, E, kernel φ, hE, hK, kernel.ι φ, isIso_of_mono_of_epi _⟩, ⟨e'⟩⟩`.
+-/
 theorem exists_pres (h : LocFreeMod g F) {c : Γ(B.X, ⊤)} {a : O} (ha : a ≠ 0) (hc : g * c = B.const a) :
     ∃ P : Pres B, Nonempty (P.mod ≅ F) := by
   have := isFiniteQC h
@@ -286,6 +379,9 @@ theorem exists_pres (h : LocFreeMod g F) {c : Γ(B.X, ⊤)} {a : O} (ha : a ≠ 
 
 end Model
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B g F h`. Use `⟨fun ⟨c, hc⟩ => ⟨smulHom_eq_zero h, ?_⟩, fun ⟨c, hc⟩ F' hF => of_isFrob p h hc hF, fun _ F₁ i q hiq => of_retract h i q hiq⟩` and prove the remaining obligations. Conclude with `exists_pres h (a := (p : O)) (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) (hc.trans (map_natCast _ _).symm)`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O) (g : Γ(B.X, ⊤)) (F : B.X.Modules), LocFreeMod g F → ((∃ c : Γ(B.X, ⊤), g * c = (p : Γ(B.X, ⊤))) → Kills g F ∧ ∃ P : Pres B, Nonempty (P.mod ≅ F)) ∧ ((∃ c : Γ(B.X, ⊤), g ^ p * c = (p : Γ(B.X, ⊤))) → ∀ F' : B.X.Modules, IsFrob p F F' → LocFreeMod (g ^ p) F') ∧ ((∃ c : Γ(B.X, ⊤), g * c = (p : Γ(B.X, ⊤))) → ∀ (F₁ : B.X.Modules) (i : F₁ ⟶ F) (q : F ⟶ F₁), i ≫ q = 𝟙 F₁ → LocFreeMod g F₁) := by
   intro O _ _ _ p _ _ _ B g F h
   refine ⟨fun ⟨c, hc⟩ => ⟨smulHom_eq_zero h, ?_⟩, fun ⟨c, hc⟩ F' hF => of_isFrob p h hc hF,

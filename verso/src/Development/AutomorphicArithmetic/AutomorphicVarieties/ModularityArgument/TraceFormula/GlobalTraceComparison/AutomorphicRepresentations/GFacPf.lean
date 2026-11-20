@@ -14,6 +14,11 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 
 attribute [local instance] borelH
 
+/- English proof (translation)
+Introduce `hF hD E _ _ _ n ι _ s`. Take `⟨p, hp⟩` from `hF E n ι s`. Use `⟨p, fun m x y => ?_⟩` and prove the remaining obligations. Establish `hd` using `hD E n ι s m`. Rewrite using `[hd x y]`.
+
+Simplify using `only [hd (ac E n (ldet x) * p.x _) y, Gk, ContinuousLinearMap.comp_apply]`. Establish `hmem : ∀ i, (piSp s.D s.π ι).starProjection (m.Uπ (s.k₂ y i)) ∈ piSp s.D s.π ι` using `fun i => Submodule.starProjection_apply_mem _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => (Finset.mul_sum _ _ _).symm`.
+-/
 theorem gFac_pf : FinFac → DropP → GFac := by
   intro hF hD E _ _ _ n ι _ s
   obtain ⟨p, hp⟩ := hF E n ι s

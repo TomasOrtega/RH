@@ -4,6 +4,21 @@ open TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set k := IsLocalRing.ResidueField Λ`. Set `V` to `k ⊗[Λ] A`. Set `d` to `Module.finrank k V`. Set `b : Module.Basis (Fin d) k V` to `Module.finBasis k V`. Establish `hsurj : Function.Surjective (TensorProduct.mk Λ k A 1)` using `TensorProduct.mk_surjective Λ A k Ideal.Quotient.mk_surjective`.
+
+Use `choose f hf using fun i => hsurj (b i)`. Establish `hspan : Submodule.span Λ (Set.range f) = ⊤` using `IsLocalRing.span_eq_top_of_tmul_eq_basis f b (fun i => hf i)`. Set `Φ : (V →ₗ[k] k) → (A →ₗ[Λ] k)` to `fun g => (g.restrictScalars Λ).comp (TensorProduct.mk Λ k A 1)`. Establish `hΦ : Function.Injective Φ`. Introduce `g₁ g₂ h`.
+
+Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `x y`. Establish `h'` using `LinearMap.congr_fun h y`. Simplify using `only [Φ, LinearMap.comp_apply, LinearMap.restrictScalars_apply, TensorProduct.mk_apply] at h'`. Establish `e : x ⊗ₜ[Λ] y = x • ((1 : k) ⊗ₜ[Λ] y)`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, map_smul]`. Conclude with `congrArg (x • ·) h'`. Establish `: Finite (A →ₗ[Λ] k)`. Use `Finite.of_injective (fun g : A →ₗ[Λ] k => fun i => g (f i)) ?_` and prove the remaining obligations.
+
+Introduce `g₁ g₂ h`. Conclude with `LinearMap.ext_on_range hspan (fun i => congr_fun h i)`. Establish `hcard : Nat.card (V →ₗ[k] k) = Nat.card k ^ d`. Rewrite using `[← Nat.card_congr (b.constr k).toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin d), Fintype.card_fin]`. Establish `hle : Nat.card k ^ d ≤ Nat.card k ^ a`.
+
+Rewrite using `[← hcard]`. Conclude with `(Nat.card_le_card_of_injective Φ hΦ).trans h`. Establish `hk : 1 < Nat.card k` using `Finite.one_lt_card_iff_nontrivial.mpr inferInstance`. Establish `hda : d ≤ a` using `(Nat.pow_le_pow_iff_right hk).mp hle`. Use `⟨fun i => if hi : (i : ℕ) < d then f ⟨i, hi⟩ else 0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff, ← hspan]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨⟨i, i.2.trans_le hda⟩, by simp⟩`.
+-/
 theorem exists_span_eq_top_of_card_hom_residueField_le
     (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [Finite (IsLocalRing.ResidueField Λ)]
     (A : Type) [AddCommGroup A] [Module Λ A] [Module.Finite Λ A] (a : ℕ)

@@ -10,6 +10,9 @@ namespace GlobalTheory.CompanionTheory.CharacterBiduality
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hcl : IsClopen (A : Set (Fin n → k))` using `⟨AddSubgroup.isClosed_of_isOpen A hAo, hAo⟩`. Conclude with `⟨(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) hcl).isLocallyConstant, HasCompactSupport.intro hAc fun x hx => Set.indicator_of_notMem hx _⟩`.
+-/
 theorem indicator_mem_SB {n : ℕ} (A : AddSubgroup (Fin n → k))
     (hAc : IsCompact (A : Set (Fin n → k))) (hAo : IsOpen (A : Set (Fin n → k))) :
     (A : Set (Fin n → k)).indicator (fun _ => (1 : ℂ)) ∈ SB (Fin n → k) := by
@@ -17,6 +20,25 @@ theorem indicator_mem_SB {n : ℕ} (A : AddSubgroup (Fin n → k))
   exact ⟨(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) hcl).isLocallyConstant,
     HasCompactSupport.intro hAc fun x hx => Set.indicator_of_notMem hx _⟩
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `set g : (Fin n → k) → ℂ := (A : Set (Fin n → k)).indicator (fun _ => (1 : ℂ)) with hgdef`. Establish `hg : g ∈ SB (Fin n → k)` using `indicator_mem_SB A hAc hAo`. Establish `hc : Continuous fun z : Fin n → k => (ψ (z ⬝ᵥ y) : ℂ)` using `continuous_subtype_val.comp (hψ.comp (continuous_id.dotProduct continuous_const))`.
+
+Establish `hi1 : Integrable (fun z => g z * (ψ (z ⬝ᵥ y) : ℂ)) μ` using `(hg.1.continuous.mul hc).integrable_of_hasCompactSupport hg.2.mul_right`. Establish `hgx : HasCompactSupport fun z => g (z + x)` using `hg.2.comp_homeomorph (Homeomorph.addRight x)`. Establish `hi2 : Integrable (fun z => g (z + x) * (ψ (z ⬝ᵥ y) : ℂ)) μ` using `((hg.1.continuous.comp (continuous_id.add continuous_const)).mul hc).integrable_of_hasCompactSupport hgx.mul_right`. Establish `e1 : ∫ z, g (z + x) * (ψ (z ⬝ᵥ y) : ℂ) ∂μ = (ψ (-(x ⬝ᵥ y)) : ℂ) * ∫ z, g z * (ψ (z ⬝ᵥ y) : ℂ) ∂μ`. Establish `h` using `integral_add_right_eq_self (μ := μ) (fun w => g w * (ψ ((w - x) ⬝ᵥ y) : ℂ)) x`.
+
+Simplify using `only [add_sub_cancel_right] at h`. Rewrite using `[h, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Establish `hwx : (w - x) ⬝ᵥ y = w ⬝ᵥ y + -(x ⬝ᵥ y)` using `by rw [sub_dotProduct, sub_eq_add_neg]`. Use `beta_reduce`.
+
+Rewrite using `[hwx, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [sub_mul]`. Rewrite using `[integral_sub hi1 hi2, e1]`. Distinguish the cases in `hy : ∀ a ∈ A, ψ (y ⬝ᵥ a) = 1`.
+
+Establish `h1 : ψ (x ⬝ᵥ y) = 1` using `by rw [dotProduct_comm]; exact hx y hy`. Establish `h2 : ψ (-(x ⬝ᵥ y)) = 1` using `by rw [AddChar.map_neg_eq_inv, h1, inv_one]`. Simplify using `[h2]`. Use `push Not at hy`. Take `⟨a, haA, hne⟩` from `hy`.
+
+Establish `h0 : ∫ z, g z * (ψ (z ⬝ᵥ y) : ℂ) ∂μ = 0`. Establish `h` using `integral_add_right_eq_self (μ := μ) (fun w => g w * (ψ (w ⬝ᵥ y) : ℂ)) a`. Establish `h3 : ∫ z, g (z + a) * (ψ ((z + a) ⬝ᵥ y) : ℂ) ∂μ = (ψ (y ⬝ᵥ a) : ℂ) * ∫ z, g z * (ψ (z ⬝ᵥ y) : ℂ) ∂μ`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+
+Establish `hga : g (w + a) = g w`. Distinguish the cases in `hw : w ∈ A`. Simplify using `[hgdef, Set.indicator, hw, A.add_mem hw haA]`. Establish `: w + a ∉ A` using `fun h => hw (by simpa using A.sub_mem h haA)`. Simplify using `[hgdef, Set.indicator, hw, this]`.
+
+Simplify using `only [hga, add_dotProduct, AddChar.map_add_eq_mul, Circle.coe_mul, dotProduct_comm a y]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[h3]`. Establish `h4 : (1 - (ψ (y ⬝ᵥ a) : ℂ)) * ∫ z, g z * (ψ (z ⬝ᵥ y) : ℂ) ∂μ = 0`. Rewrite using `[sub_mul, one_mul, h, sub_self]`.
+
+Use `(mul_eq_zero.1 h4).resolve_left fun h5 => hne (Circle.ext ?_)` and prove the remaining obligations. Simplify using `using (sub_eq_zero.1 h5).symm`. Simplify using `[h0]`.
+-/
 theorem fourier_sub_translate_eq_zero [MeasurableSpace k] [BorelSpace k] {n : ℕ}
     (ψ : AddChar k Circle) (hψ : Continuous ψ) (μ : Measure (Fin n → k)) [μ.IsAddHaarMeasure]
     (A : AddSubgroup (Fin n → k)) (hAc : IsCompact (A : Set (Fin n → k)))
@@ -74,6 +96,19 @@ theorem fourier_sub_translate_eq_zero [MeasurableSpace k] [BorelSpace k] {n : �
       simpa using (sub_eq_zero.1 h5).symm
     simp [h0]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ h1 n A hAc hAo x hxA`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨c, hc⟩` from `exists_hasConductor_of_continuous ψ hψ h1`. Use `letI : MeasurableSpace k := borel k`.
+
+Use `haveI : BorelSpace k := ⟨rfl⟩`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Set `μ : Measure (Fin n → k)` to `Measure.addHaar`. Use `set g : (Fin n → k) → ℂ := (A : Set (Fin n → k)).indicator (fun _ => (1 : ℂ)) with hgdef`.
+
+Establish `hg : g ∈ SB (Fin n → k)` using `indicator_mem_SB A hAc hAo`. Establish `hgx : (fun z => g (z + x)) ∈ SB (Fin n → k)` using `⟨hg.1.comp_continuous (continuous_id.add continuous_const), hg.2.comp_homeomorph (Homeomorph.addRight x)⟩`. Establish `hf : (fun z => g z - g (z + x)) ∈ SB (Fin n → k)` using `(SB (Fin n → k)).sub_mem hg hgx`. Take `⟨s, hs⟩` from `fourier_inversion_pi μ hc hf`. Establish `hz : ∀ y : Fin n → k, ∫ z, (g z - g (z + x)) * (ψ (z ⬝ᵥ y) : ℂ) ∂μ = 0` using `fourier_sub_translate_eq_zero ψ hψ μ A hAc hAo x hcon`.
+
+Simplify using `only [hz, integral_zero] at hs`. Establish `hpos : ∀ r : kˣ, 0 < μ.real (box (Fin n) r)` using `fun r => by`. Establish `h1 : (0 : Fin n → k) ∈ box (Fin n) r` using `fun i _ => by simp [cball]`. Establish `h2 : 0 < μ (box (Fin n) r)` using `(isOpen_box r).measure_pos μ ⟨0, h1⟩`. Conclude with `ENNReal.toReal_pos h2.ne' (isCompact_box r).measure_lt_top.ne`.
+
+Establish `hne : ((μ.real (box (Fin n) s) * μ.real (box (Fin n) (c * s⁻¹)) : ℝ) : ℂ) ≠ 0`. Conclude with `(mul_pos (hpos s) (hpos _)).ne'` after adjusting the coercions. Establish `h0 : g 0 - g (0 + x) = 0` using `(mul_eq_zero.mp hs.symm).resolve_left hne`. Establish `hg0 : g 0 = 1` using `Set.indicator_of_mem (SetLike.mem_coe.2 A.zero_mem) _`. Establish `hgx0 : g (0 + x) = 0`.
+
+Rewrite using `[zero_add]`. Conclude with `Set.indicator_of_notMem (fun h => hxA h) _`. Rewrite `h0` using `[hg0, hgx0]`. Simplify using `at h0`.
+-/
 theorem exists_annihilator_ne : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 →
     ∀ (n : ℕ) (A : AddSubgroup (Fin n → k)), IsCompact (A : Set (Fin n → k)) →

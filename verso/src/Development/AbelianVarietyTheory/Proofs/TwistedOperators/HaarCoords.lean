@@ -16,6 +16,25 @@ set_option synthInstance.maxHeartbeats 200000
 
 namespace GlobalTheory.HaarCoords
 
+/- English proof (translation)
+Introduce `D S S₀ ρ d`. Take `⟨iU1, iU2, iU3⟩` from `GlobalTheory.UnitU.topology D ρ`. Take `⟨-, familyMassSecondLine, iM3, iM4, -⟩` from `lattice_Mx D ρ S₀.rank`. Take `⟨-, indexCSecond, iC3, iC4, -⟩` from `lattice_Mx D ρ ρ`. Take `⟨iN1, iN2, iN3, -⟩` from `GlobalTheory.Mem.TrueRecord.top_NFlag S (isIsoSub_e d)`.
+
+Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D ρ S₀.rank) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Establish `hcl : IsClosed ((skewA D ρ : Set (Mx D ρ ρ)))` using `isClosed_eq continuous_adj continuous_neg`. Use `haveI : LocallyCompactSpace (skewA D ρ) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+
+Use `haveI : SecondCountableTopology (skewA D ρ) := hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Use `haveI : T2Space (skewA D ρ) := inferInstance`. Set `μ : Measure (UX D ρ)` to `Measure.haar`. Set `lB : Measure (Mx D ρ S₀.rank)` to `Measure.addHaar`. Set `lC : Measure (skewA D ρ)` to `Measure.addHaar`.
+
+Take `⟨e, he⟩` from `GlobalTheory.MixPer.flagCoord_homeo D S S₀ ρ d`. Establish `hΦ : (fun p : UX D ρ × (Mx D ρ S₀.rank × skewA D ρ) => d.levi p.1.1 * (d.nB p.2.1 * d.nC p.2.2)) = Subtype.val ∘ e` using `funext fun p => (he p).symm`. Establish `hem : Measurable e` using `e.continuous.measurable`. Use `⟨μ, lB, lC, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ]`.
+
+Conclude with `(continuous_subtype_val.comp e.continuous).measurable`. Use `⟨(μ.prod (lB.prod lC)).map e, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := Measure.IsFiniteMeasureOnCompacts.map (μ.prod (lB.prod lC)) e haveI : ((μ.prod (lB.prod lC)).map e).IsOpenPosMeasure := e.continuous.isOpenPosMeasure_map e.surjective`. It suffices to establish `h : ((μ.prod (lB.prod lC)).map e).IsMulLeftInvariant from ⟨⟩`. Use `⟨fun g => ?_⟩` and prove the remaining obligations.
+
+Take `⟨p₀, hp₀⟩` from `e.surjective g`. Establish `hg : (g : GA D S) = d.levi p₀.1.1 * (d.nB p₀.2.1 * d.nC p₀.2.2)` using `by rw [← hp₀, he]`. Take `⟨⟨u', hu'⟩, b', c'⟩` from `p₀`. Take `⟨Tb, hTb, hTb'⟩` from `GlobalTheory.HaarCoords.transl_nB_preserves D S S₀ ρ d μ lB lC inferInstance inferInstance inferInstance inferInstance inferInstance inferInstance b'`. Take `⟨Tc, hTc, hTc'⟩` from `GlobalTheory.HaarCoords.transl_nC D S S₀ ρ d μ lB lC inferInstance inferInstance inferInstance inferInstance inferInstance inferInstance c'`.
+
+Set `Ta : UX D ρ × (Mx D ρ S₀.rank × skewA D ρ) → UX D ρ × (Mx D ρ S₀.rank × skewA D ρ)` to `Prod.map (fun u => ⟨u', hu'⟩ * u) id`. Establish `hTa : MeasurePreserving Ta (μ.prod (lB.prod lC)) (μ.prod (lB.prod lC))` using `(measurePreserving_mul_left μ _).prod (MeasurePreserving.id _)`. Establish `hT` using `hTa.comp (hTb.comp hTc)`. Establish `key : (fun x => g * x) ∘ e = e ∘ (Ta ∘ Tb ∘ Tc)`. Use function extensionality and compare the values at `p`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `h3 : ∀ q, d.levi (Ta q).1.1 * (d.nB (Ta q).2.1 * d.nC (Ta q).2.2) = d.levi u' * (d.levi q.1.1 * (d.nB q.2.1 * d.nC q.2.2))` using `fun q => by`. Simplify using `only [Ta, Prod.map_fst, Prod.map_snd, id, Subgroup.coe_mul, map_mul, mul_assoc]`. Simplify using `only [Function.comp_apply, Subgroup.coe_mul, he]`. Rewrite using `[h3, hTb', hTc', hg]`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[Measure.map_map (measurable_const_mul g) hem, key, ← Measure.map_map hem hT.measurable, hT.map_eq]`. Rewrite using `[Measure.map_map continuous_subtype_val.measurable hem, hΦ]`.
+-/
 theorem haar_coords : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), ∃ (μ : Measure (UX D ρ)) (lB : Measure (Mx D ρ S₀.rank)) (lC : Measure (skewA D ρ)), μ.IsHaarMeasure ∧ lB.IsAddHaarMeasure ∧ lC.IsAddHaarMeasure ∧ SFinite μ ∧ SFinite lB ∧ SFinite lC ∧ Measurable (fun p : UX D ρ × (Mx D ρ S₀.rank × skewA D ρ) => d.levi p.1.1 * (d.nB p.2.1 * d.nC p.2.2)) ∧ ∃ ν₀ : Measure (flagN d), ν₀.IsHaarMeasure ∧ ν₀.map Subtype.val = (μ.prod (lB.prod lC)).map (fun p : UX D ρ × (Mx D ρ S₀.rank × skewA D ρ) => d.levi p.1.1 * (d.nB p.2.1 * d.nC p.2.2)) := by
   intro D S S₀ ρ d
   obtain ⟨iU1, iU2, iU3⟩ := GlobalTheory.UnitU.topology D ρ

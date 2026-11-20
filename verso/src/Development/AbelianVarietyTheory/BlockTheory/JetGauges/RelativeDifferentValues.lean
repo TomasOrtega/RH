@@ -62,27 +62,47 @@ def HostRelativeValues : Prop :=
 
 def DifferentExponents : Prop := DiscrFormula ∧ HostValues
 
+/- English proof (translation)
+The claim follows from `FiniteMultiplicity.of_prime_left P.prime hI`.
+-/
 theorem finite_of_ne_bot {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
     {I : Ideal (𝓞 E)} (hI : I ≠ ⊥) : FiniteMultiplicity P.asIdeal I :=
   FiniteMultiplicity.of_prime_left P.prime hI
 
+/- English proof (translation)
+The claim follows from `finite_of_ne_bot P differentIdeal_ne_bot`.
+-/
 theorem finite_different {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) :
     FiniteMultiplicity P.asIdeal (differentIdeal ℤ (𝓞 E)) :=
   finite_of_ne_bot P differentIdeal_ne_bot
 
+/- English proof (translation)
+The claim follows from `finite_of_ne_bot P (by simpa using hp.ne_zero)`.
+-/
 theorem finite_span {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
     {p : ℕ} (hp : p.Prime) : FiniteMultiplicity P.asIdeal (Ideal.span {(p : 𝓞 E)}) :=
   finite_of_ne_bot P (by simpa using hp.ne_zero)
 
+/- English proof (translation)
+The claim follows from `multiplicity_pos_of_dvd (Ideal.dvd_span_singleton.mpr h)`.
+-/
 theorem multiplicity_span_pos {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
     {p : ℕ} (h : (p : 𝓞 E) ∈ P.asIdeal) :
     0 < multiplicity P.asIdeal (Ideal.span {(p : 𝓞 E)}) :=
   multiplicity_pos_of_dvd (Ideal.dvd_span_singleton.mpr h)
 
+/- English proof (translation)
+The claim follows from `div_self (by exact_mod_cast (multiplicity_span_pos P h).ne')`.
+-/
 theorem idealVal_vp_self {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
     {p : ℕ} (h : (p : 𝓞 E) ∈ P.asIdeal) : idealVal_vp p P (Ideal.span {(p : 𝓞 E)}) = 1 :=
   div_self (by exact_mod_cast (multiplicity_span_pos P h).ne')
 
+/- English proof (translation)
+Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Establish `: (Complex.I * (Real.sqrt m : ℂ)) ^ 2 = algebraMap ℚ ℂ (-(m : ℚ))`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg m)]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `isIntegral_algebraMap`.
+-/
 theorem isIntegral_I_mul_sqrt (m : ℕ) : IsIntegral ℚ (Complex.I * (Real.sqrt m : ℂ)) := by
   refine IsIntegral.of_pow (n := 2) (by norm_num) ?_
   have : (Complex.I * (Real.sqrt m : ℂ)) ^ 2 = algebraMap ℚ ℂ (-(m : ℚ)) := by
@@ -104,9 +124,15 @@ instance (e q₁ d : ℕ) : NumberField (hostField e q₁ d) where
     · exact isIntegral_I_mul_sqrt _
     · exact isIntegral_I_mul_sqrt _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨RingEquiv.refl _⟩`.
+-/
 theorem isHostField_hostField (e q₁ d : ℕ) : IsHostField (hostField e q₁ d) e q₁ d :=
   ⟨RingEquiv.refl _⟩
 
+/- English proof (translation)
+Use `⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, ?_⟩` and prove the remaining obligations. Evaluate the numerical expressions.
+-/
 theorem hostNumbers_example : HostNumbers 2 11 7 := by
   refine ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, ?_⟩
   norm_num

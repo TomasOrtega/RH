@@ -10,6 +10,9 @@ namespace GlobalTheory.BigOn.Exp.SerBase
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 
+/- English proof (translation)
+Introduce `hmem`. Rewrite `hmem` using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Establish `hdvd : Formalism.EigenvalueLevelCeiling.plc v ∣ q` using `(ringChar.spec (𝓞 K ⧸ v.asIdeal) q).1 hmem`. Conclude with `hne ((Nat.prime_dvd_prime_iff_eq (Formalism.L2.DIV.plc_prime' v) hq).1 hdvd).symm`.
+-/
 theorem natPrime_notMem {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) {q : ℕ} (hq : q.Prime)
     (hne : q ≠ Formalism.EigenvalueLevelCeiling.plc v) : (q : 𝓞 K) ∉ v.asIdeal := by
   intro hmem
@@ -17,6 +20,9 @@ theorem natPrime_notMem {K : Type} [Field K] [NumberField K] (v : HeightOneSpect
   have hdvd : Formalism.EigenvalueLevelCeiling.plc v ∣ q := (ringChar.spec (𝓞 K ⧸ v.asIdeal) q).1 hmem
   exact hne ((Nat.prime_dvd_prime_iff_eq (Formalism.L2.DIV.plc_prime' v) hq).1 hdvd).symm
 
+/- English proof (translation)
+Unfold `ownAt`. Use `split_ifs with h`. Conclude with `⟨D.host.pde'_prime, fun e => D.host.pde_ne (h.symm.trans e.symm)⟩`. Conclude with `⟨D.host.pde_prime, fun e => h e.symm⟩`.
+-/
 theorem ownAt_prime_ne (D : D7) (w : D.what₂.places.Pl) :
     (ownAt D (D.plEq w)).Prime ∧ ownAt D (D.plEq w) ≠ Formalism.EigenvalueLevelCeiling.plc (D.plEq w) := by
   unfold ownAt
@@ -24,6 +30,17 @@ theorem ownAt_prime_ne (D : D7) (w : D.what₂.places.Pl) :
   · exact ⟨D.host.pde'_prime, fun e => D.host.pde_ne (h.symm.trans e.symm)⟩
   · exact ⟨D.host.pde_prime, fun e => h e.symm⟩
 
+/- English proof (translation)
+Introduce `D c w`. Take `⟨hq, hne⟩` from `ownAt_prime_ne D w`. Use `set q := ownAt D (D.plEq w) with hqdef`. Establish `hnot` using `natPrime_notMem (D.plEq w) hq hne`. Establish `hv : (D.plEq w).valuation D.what₂.LL (q : D.what₂.LL) = 1`.
+
+Use `((D.plEq w).valuation_eq_one_iff_notMem (K := D.what₂.LL)).2 hnot` as an intermediate fact. Simplify using `using this`. Establish `hq0 : (q : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 hq.ne_zero`. Establish `hnn : (0 : WithTop ℤ) ≤ D.what₂.places.val w (q : D.what₂.LL)⁻¹` using `(D.val_nonneg_iff w _).2 (by rw [map_inv₀, hv, inv_one])`. Take `⟨y, hy⟩` from `(c.embW_w w _).1 hnn`.
+
+Rewrite `hy` using `[map_inv₀, map_natCast]`. Establish `hqF : ((q : ℕ) : FractionRing (c.Oe w)) ≠ 0`. Use `(map_ne_zero (c.embW w)).2 hq0` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h1 : algebraMap (c.Oe w) (FractionRing (c.Oe w)) (y * (q : c.Oe w)) = 1`.
+
+Rewrite using `[map_mul, hy, map_natCast]`. Conclude with `inv_mul_cancel₀ hqF`. Establish `h2 : y * (q : c.Oe w) = 1`. Apply `IsFractionRing.injective (c.Oe w) (FractionRing (c.Oe w))` to reduce the goal to its premises. Rewrite using `[h1, map_one]`.
+
+Conclude with `(Units.mkOfMulEqOne (q : c.Oe w) y (by rw [mul_comm]; exact h2)).isUnit`.
+-/
 theorem ownUnit : OwnUnit := by
   intro D c w
   obtain ⟨hq, hne⟩ := ownAt_prime_ne D w

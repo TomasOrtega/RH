@@ -8,6 +8,9 @@ open PositivityTheory.Rg.BcB.Desc
 
 namespace DiscreteGroups.T1.G
 
+/- English proof (translation)
+Introduce `hE hS hV hI` and use `growth_of_ellipticFormula hE hS domOne kerSplit (hU hV hI) (hT hV hI)`.
+-/
 theorem rGrowthPiJ_of (hU : PiVecEx → PiInv → UncutHalf) (hT : PiVecEx → PiInv → CutTail2) : RGrowthPiJ :=
   fun hE hS hV hI => growth_of_ellipticFormula hE hS domOne kerSplit (hU hV hI) (hT hV hI)
 

@@ -9,6 +9,17 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Pp
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
+/- English proof (translation)
+Introduce `F _ _ _ π f hf C hC`. Take `⟨ω, hω, hc⟩` from `UpperTheory.ConvolutionTheory.R2.cen F π`. Take `⟨φ, rfl⟩` from `Fb.mem_range_ofCusp.2 (π.cusp f hf)`. Take `⟨B₀, hB₀⟩` from `CuspidalSpectrum.exists_norm_le_of_mem_cuspForms φ.2`. Set `u : GL (Fin 2) (A F) → (A F)ˣ` to `fun k => posIdeleHom F (rpowHom ((((2 : ℕ) : ℝ) * Module.finrank ℚ F))⁻¹ (detModule F 2 k))`.
+
+Establish `hu : Continuous u` using `continuous_posIdeleHom.comp ((continuous_rpowHom _).comp continuous_detModule)`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn (Units.continuous_val.comp (hω.comp hu)).continuousOn`. Establish `key : ∀ g : G1 F, ∀ k ∈ C, ‖φ.1 (gl g * k)‖ ≤ M * B₀` using `fun g k hk => by`. Establish `e : Matrix.GeneralLinearGroup.scalar (Fin 2) (u k) = centralSection F 2 (detModule F 2 k)` using `Units.ext rfl`. Establish `h1 : detModule F 2 (gl g) = 1`.
+
+Establish `: AdelicGLn.det F 2 (gl g) = 1` using `Units.ext g.2`. Rewrite using `[detModule, MonoidHom.comp_apply, this, map_one]`. Establish `h2 : (centralSection F 2 (detModule F 2 k))⁻¹ * (gl g * k) ∈ normOneGL F 2`. Rewrite using `[mem_normOneGL_iff_detModule, map_mul, map_mul, map_inv, h1, detModule_centralSection two_pos, one_mul, inv_mul_cancel]`. Establish `h3` using `hc _ hf (u k) ((centralSection F 2 (detModule F 2 k))⁻¹ * (gl g * k))`.
+
+Rewrite `h3` using `[e, mul_inv_cancel_left]`. Rewrite using `[show φ.1 (gl g * k) = _ from h3, norm_mul]`. Conclude with `mul_le_mul (hM k hk) (hB₀ _ h2) (norm_nonneg _) ((norm_nonneg _).trans (hM k hk))`. Use `⟨M * B₀, fun g k hk => ⟨key g k hk, norm_Wf_le fun b => ?_⟩⟩` and prove the remaining obligations. Use `key (nU b * g) k hk` as an intermediate fact.
+
+Rewrite `this` using `[show gl (nU b * g) = gl (nU b) * gl g from map_mul _ _ _, mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Pp.bdd :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], UpperTheory.ConvolutionTheory.R2.Pp.Bdd F := by
   intro F _ _ _ π f hf C hC

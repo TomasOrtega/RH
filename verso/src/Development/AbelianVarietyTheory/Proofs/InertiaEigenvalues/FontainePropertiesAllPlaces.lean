@@ -7,6 +7,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.FontaineAdmissible
 
+/- English proof (translation)
+Introduce `D l _ K LL`. Conclude with `GlobalTheory.FontaineAll.fontaineAt_all D l K LL`.
+-/
 theorem fontaineProperties_all_places : ∀ D : D7, Formalism.MainNotions.PairedCharacterCondition.FontaineAtPlacesOverL (D := D) := by
   intro D l _ K LL
   exact GlobalTheory.FontaineAll.fontaineAt_all D l K LL

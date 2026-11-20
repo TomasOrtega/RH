@@ -19,6 +19,9 @@ def DetTie.Pinned (Hh : Formalism.L2.Herm.HermTied D) (Y : DetTie S) : Prop :=
       Matrix.GeneralLinearGroup.det (x : GL (Fin (D.R.N i)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) →
     Y.dt x = Hh.dt y
 
+/- English proof (translation)
+The claim follows from `(h x y hy).trans (h' x y hy).symm`.
+-/
 theorem DetTie.Pinned.eq {Hh : Formalism.L2.Herm.HermTied D} {Y Y' : DetTie S} (h : Y.Pinned Hh) (h' : Y'.Pinned Hh)
     (x : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm)
     (hy : Matrix.GeneralLinearGroup.det (y : GL (Fin 1) (D.host.E ⊗[D.host.F] Formalism.L2.Herm.Af D.host.F)) =

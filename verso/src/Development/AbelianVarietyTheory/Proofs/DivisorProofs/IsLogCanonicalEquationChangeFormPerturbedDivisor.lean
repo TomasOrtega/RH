@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Introduce `X _ _ p _ n hn Δ D η η' x m mD l gG fD g a F A δ t hη' hηF hm hmD hg hD hA`. Establish `hm0 : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `set gG' : X.functionFieldˣ := gG * F ^ (-(m : ℤ)) with hgG'`. Establish `hord (E : DivOver p) : (E.ord gG' : ℚ) = E.ord gG - m * E.ord F`. Rewrite using `[hgG', E.ord_mul, divOver_ord_zpow]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : IsLogEqn p Δ η' x m gG'`. Introduce `z hz E hE`. Establish `e` using `hg z hz E hE`.
+
+Rewrite `e` using `[hηF, E.formOrd_smul hn hη' F]`. Rewrite using `[hord, ← e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hd1 (E : DivOver p) : discrep E η' m gG' = E.formOrd η' + E.ord F - E.ord gG / m`.
+
+Rewrite using `[discrep, hord]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨m₁, g₁, hm₁, h2, hd2⟩` from `isLogEqn_add_smul X p n Δ D η' x m mD gG' fD (1 - δ) hm hmD h1 hD`. Establish `hB : (CartierDiv.principal g + l • A).IsEqn x (g * a ^ l)` using `(CartierDiv.isEqn_principal g x).add (hA.nsmul l)`.
+
+Take `⟨V, hxV, hV⟩` from `hB.exists_nhds`. Establish `hD' : ∀ z, z ⤳ x → ∀ E : DivOver p, E.IsAt z → qWeil (CartierDiv.principal g + l • A) 1 z = (E.ord (g * a ^ l) : ℚ) / (1 : ℕ)`. Introduce `z hz E hE`. Rewrite using `[qWeil, (hV z (hz.mem_open V.isOpen hxV)).mult_eq, ← hE.ord_eq]`. Take `⟨m₂, g₂, hm₂, h3, hd3⟩` from `isLogEqn_add_smul X p n (Δ + (1 - δ) • D) (qWeil (CartierDiv.principal g + l • A) 1) η' x m₁ 1 g₁ (g * a ^ l) t hm₁ Nat.one_pos h2 hD'`.
+
+Use `⟨m₂, g₂, hm₂, h3, fun E => ?_⟩` and prove the remaining obligations. Rewrite using `[hd3, hd2, hd1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isLogEqn_changeForm_add : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (n : ℕ),
     topologicalKrullDim X = n → ∀ (Δ D : X → ℚ) (η η' : RatForms p n) (x : X) (m mD l : ℕ)
     (gG fD g a F : X.functionFieldˣ) (A : CartierDiv X) (δ t : ℚ), η' ≠ 0 → η = (F : X.functionField) • η' →

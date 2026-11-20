@@ -20,8 +20,14 @@ def intVec (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (a : 
   add_mem' := fun ha hb i => (Formalism.UG.intL L).add_mem (ha i) (hb i)
   neg_mem' := fun ha i => (Formalism.UG.intL L).neg_mem (ha i)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intMat {a b : ℕ} (u : Matrix (Fin a) (Fin b) L) : u ∈ intMat L a b ↔ ∀ i j, u i j ∈ Formalism.UG.intL L := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intVec {a : ℕ} (u : Fin a → L) : u ∈ intVec L a ↔ ∀ i, u i ∈ Formalism.UG.intL L := Iff.rfl
 
 def latIdx {a b : ℕ} (x : Matrix (Fin a) (Fin b) L) : ℕ :=

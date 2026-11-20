@@ -6,6 +6,11 @@ open NumberField MeasureTheory Col
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hmp` using `volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : α ⊕ β => ℝ)`. Rewrite using `[← hmp.setLIntegral_comp_preimage_emb (MeasurableEquiv.sumPiEquivProdPi (fun _ : α ⊕ β => ℝ)).symm.measurableEmbedding]`. Establish `hpre : (MeasurableEquiv.sumPiEquivProdPi (fun _ : α ⊕ β => ℝ)).symm ⁻¹' cubeIco (α ⊕ β) = cubeIco α ×ˢ cubeIco β`. Use extensionality with `⟨t, y⟩`. Simplify using `[cubeIco, MeasurableEquiv.coe_sumPiEquivProdPi_symm, Sum.forall]`.
+
+Rewrite using `[hpre, Measure.volume_eq_prod, ← Measure.prod_restrict, lintegral_prod_symm]`. Both sides reduce to the same expression. Conclude with `(hf.comp (MeasurableEquiv.sumPiEquivProdPi _).symm.measurable).aemeasurable`.
+-/
 theorem cube_split {α β : Type} [Fintype α] [Fintype β] (f : (α ⊕ β → ℝ) → ENNReal)
     (hf : Measurable f) :
     ∫⁻ x in cubeIco (α ⊕ β), f x =
@@ -31,9 +36,15 @@ def What (hI : IsSplit P I) (hP : Ext.PackingCount) (a : Fin (Module.finrank ℝ
     (r : Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ) : Vsp X.dim :=
   ∑ j, a j • cp hI j + ∑ l, r l • cpp hI hP l
 
+/- English proof (translation)
+Simplify using `only [uc, z, Hf_rsmul_l, Complex.im_ofReal_mul, Finset.smul_sum, mul_smul]`.
+-/
 theorem uc_rsmul (c : ℝ) (v : Vsp X.dim) : uc (IR I) (c • v) = c • uc (IR I) v := by
   simp only [uc, z, Hf_rsmul_l, Complex.im_ofReal_mul, Finset.smul_sum, mul_smul]
 
+/- English proof (translation)
+Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simpa using uc_rsmul (I := I) (0 : ℝ) (0 : Vsp X.dim)`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, uc_add, ih]`.
+-/
 theorem uc_sum {ι : Type} (F : Finset ι) (f : ι → Vsp X.dim) :
     uc (IR I) (∑ i ∈ F, f i) = ∑ i ∈ F, uc (IR I) (f i) := by
   classical
@@ -41,11 +52,17 @@ theorem uc_sum {ι : Type} (F : Finset ι) (f : ι → Vsp X.dim) :
   | empty => simpa using uc_rsmul (I := I) (0 : ℝ) (0 : Vsp X.dim)
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, uc_add, ih]
 
+/- English proof (translation)
+Establish `h0 : ∀ l, uc (IR I) (cpp hI hP l) = 0` using `fun l => uc_Ip (cpp_mem hI hP l)`. Simplify using `only [What, uc_add, uc_sum, uc_rsmul, h0, smul_zero, Finset.sum_const_zero, add_zero]`.
+-/
 theorem uc_What (hI : IsSplit P I) (hP : Ext.PackingCount) (a r) :
     uc (IR I) (What hI hP a r) = ∑ j, a j • uc (IR I) (cp hI j) := by
   have h0 : ∀ l, uc (IR I) (cpp hI hP l) = 0 := fun l => uc_Ip (cpp_mem hI hP l)
   simp only [What, uc_add, uc_sum, uc_rsmul, h0, smul_zero, Finset.sum_const_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[What, map_add]`. Use `congr 1`. Rewrite using `[Module.Basis.equivFun_symm_apply, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.map_smul_of_tower, cpp_wmap]`.
+-/
 theorem wmap_What (hI : IsSplit P I) (hP : Ext.PackingCount) (a r) :
     wmap (IR I) (What hI hP a r) = wmap (IR I) (∑ j, a j • cp hI j) + (bB hI hP).equivFun.symm r := by
   rw [What, map_add]

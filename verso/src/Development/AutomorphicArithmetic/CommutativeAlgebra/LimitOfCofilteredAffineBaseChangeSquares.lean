@@ -2,6 +2,13 @@ import Mathlib
 
 open CategoryTheory Limits AlgebraicGeometry
 
+/- English proof (translation)
+Take `⟨Us, hsub, hfin, rfl⟩` from `(isBasis_preimage_isAffineOpen D c hc).exists_finite_of_isCompact hW`. Use `clear hW`. Proceed by induction on `Us, hfin using Set.Finite.induction_on with`. Consider the case `empty => exact ⟨i0, 𝟙 i0, ⊥, by simp, by simp⟩`. Consider the case `@insert U s hUs hs ih`.
+
+Take `⟨i, V, hV, rfl⟩` from `hsub (Set.mem_insert _ _)`. Take `⟨j, fj, V', hV', e⟩` from `ih (fun x hx => hsub (Set.mem_insert_of_mem _ hx))`. Use `⟨IsCofiltered.min i j, IsCofiltered.minToRight i j ≫ fj, D.map (IsCofiltered.minToLeft i j) ⁻¹ᵁ V ⊔ D.map (IsCofiltered.minToRight i j) ⁻¹ᵁ V', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[TopologicalSpace.Opens.coe_sup]`. Conclude with `(QuasiCompact.isCompact_preimage _ V.2 hV.isCompact).union (QuasiCompact.isCompact_preimage _ V'.2 hV')`.
+
+Rewrite using `[sSup_insert, ← e, Scheme.Hom.preimage_sup, ← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, c.w, c.w]`.
+-/
 private theorem exists_isCompact_preimage_eq_of_isLimit_of_isAffineHom {I : Type} [SmallCategory I] [IsCofiltered I] (D : I ⥤ Scheme.{0})
     [∀ {i j : I} (f : i ⟶ j), IsAffineHom (D.map f)] (c : Cone D) (hc : IsLimit c) (i0 : I)
     (W : c.pt.Opens) (hW : IsCompact (W : Set c.pt)) :
@@ -23,6 +30,13 @@ private theorem exists_isCompact_preimage_eq_of_isLimit_of_isAffineHom {I : Type
     · rw [sSup_insert, ← e, Scheme.Hom.preimage_sup, ← Scheme.Hom.comp_preimage,
         ← Scheme.Hom.comp_preimage, c.w, c.w]
 
+/- English proof (translation)
+Introduce `I _ _ B DZ DY _ α pZ pY hα hZ hY cZ hcZ cY hcY hZc _ hYc _ i0 m _ hm`. Establish `hZa : ∀ {i j : I} (f : i ⟶ j), IsAffineHom (DZ.map f)` using `fun f => MorphismProperty.of_isPullback (P := @IsAffineHom) (hZ f).flip inferInstance`. Establish `hYa : ∀ {i j : I} (f : i ⟶ j), IsAffineHom (DY.map f)` using `fun f => MorphismProperty.of_isPullback (P := @IsAffineHom) (hY f).flip inferInstance`. Use `haveI := Scheme.compactSpace_of_isLimit DZ cZ hcZ`. Establish `hW : IsCompact (m.opensRange : Set cY.pt)`.
+
+Rewrite using `[Scheme.Hom.coe_opensRange]`. Conclude with `isCompact_range m.continuous`. Take `⟨j, fj, V, hV, e⟩` from `exists_isCompact_preimage_eq_of_isLimit_of_isAffineHom DY cY hcY i0 m.opensRange hW`. Establish `htop : cZ.π.app j ⁻¹ᵁ (α.app j ⁻¹ᵁ V) = ⊤`. Rewrite using `[← Scheme.Hom.comp_preimage, hm, Scheme.Hom.comp_preimage, e]`.
+
+Conclude with `Scheme.Hom.preimage_opensRange m`. Take `⟨k, fkj, hk⟩` from `exists_map_eq_top DZ cZ hcZ (α.app j ⁻¹ᵁ V) htop`. Use `⟨k, fkj ≫ fj, DY.map fkj ⁻¹ᵁ V, QuasiCompact.isCompact_preimage _ V.2 hV, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_preimage, ← α.naturality, Scheme.Hom.comp_preimage, hk]`. Rewrite using `[← Scheme.Hom.comp_preimage, cY.w, e]`.
+-/
 theorem UpperTheory.limit_of_cofiltered_affine_base_change_squares :
     ∀ (I : Type) [SmallCategory I] [IsCofiltered I] (B DZ DY : I ⥤ Scheme.{0})
         [∀ {i j : I} (f : i ⟶ j), IsAffineHom (B.map f)]

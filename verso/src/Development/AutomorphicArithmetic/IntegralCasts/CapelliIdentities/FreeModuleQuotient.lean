@@ -1,5 +1,36 @@
 import Mathlib
 
+/- English proof (translation)
+Set `φ : M →+ (Fin c → S ⧸ K)` to `{ toFun := fun x i => Ideal.Quotient.factor hIK (e x i) map_zero' := by funext i; simp map_add' := by intro x y; funext i; simp }`. Establish `hφ : ∀ x i, φ x i = Ideal.Quotient.factor hIK (e x i)` using `fun _ _ => rfl`. Establish `hsm : ∀ (a : S) (x : M), φ (s a • x) = a • φ x`. Introduce `a x`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.smul_apply, hφ, hφ, he, Pi.smul_apply]`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (e x i)`. Rewrite using `[← hy]`. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective φ`.
+
+Introduce `y`. Use `choose t ht using fun i => Ideal.Quotient.mk_surjective (y i)`. Use `⟨e.symm (fun i => Ideal.Quotient.mk I (t i)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[hφ, e.apply_symm_apply, Ideal.Quotient.factor_mk, ht]`.
+
+Establish `h1 : ∀ r ∈ Ideal.map s K, ∀ x : M, φ (r • x) = 0`. Introduce `r hr`. Use `Submodule.span_induction (p := fun r _ => ∀ x : M, φ (r • x) = 0) ?_ ?_ ?_ ?_ hr` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩ x`. Rewrite using `[hsm]`.
+
+Use function extensionality and compare the values at `i`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (φ x i)`. Rewrite using `[Pi.smul_apply, ← hy]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (K.mul_mem_right y hk)`. Introduce `x`.
+
+Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb x`. Rewrite using `[add_smul, map_add, ha, hb, add_zero]`. Introduce `a b _ hb x`. Rewrite using `[smul_eq_mul, mul_comm, mul_smul, hb]`.
+
+Establish `hker : ∀ x : M, x ∈ (Ideal.map s K • ⊤ : Submodule R M) ↔ φ x = 0`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on (p := fun x => φ x = 0) hx ?_ ?_` and prove the remaining obligations.
+
+Introduce `r hr n _`. Conclude with `h1 r hr n`. Introduce `a b ha hb`. Rewrite using `[map_add, ha, hb, add_zero]`. Introduce `hx choose t ht using fun i => Ideal.Quotient.mk_surjective (e x i)`.
+
+Establish `htK : ∀ i, t i ∈ K`. Introduce `i`. Use `congrFun hx i` as an intermediate fact. Rewrite `this` using `[hφ, ← ht, Ideal.Quotient.factor_mk]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`.
+
+Establish `hxe : x = ∑ i, s (t i) • e.symm (Pi.single i 1)`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [he, e.apply_symm_apply]`. Rewrite using `[← Finset.univ_sum_single (e x)]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Pi.single_smul, ← ht, ← Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression. Rewrite using `[hxe]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (Ideal.mem_map_of_mem s (htK i)) Submodule.mem_top`.
+
+Set `ψ : (M ⧸ (Ideal.map s K • ⊤ : Submodule R M)) →+ (Fin c → S ⧸ K)` to `QuotientAddGroup.lift (Ideal.map s K • ⊤ : Submodule R M).toAddSubgroup φ (fun x hx => (hker x).1 hx)`. Establish `hψ : ∀ x : M, ψ (Submodule.Quotient.mk x) = φ x` using `fun _ => rfl`. Establish `hbij : Function.Bijective ψ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[hψ]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((hker y).2 hx)`. Introduce `y`.
+
+Take `⟨x, rfl⟩` from `hsurj y`. Conclude with `⟨Submodule.Quotient.mk x, hψ x⟩`. Use `⟨AddEquiv.ofBijective ψ hbij, fun a x => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← Submodule.Quotient.mk_smul]`.
+
+Conclude with `hsm a y`.
+-/
 private theorem UpperTheory.Reformulated.B.FreeModuleQuotient.aux {R S M : Type} [CommRing R] [CommRing S] [AddCommGroup M]
     [Module R M] (s : S →+* R) (I K : Ideal S) (hIK : I ≤ K) (c : ℕ)
     (e : M ≃+ (Fin c → S ⧸ I)) (he : ∀ (z : S) (x : M), e (s z • x) = z • e x) :
@@ -82,6 +113,9 @@ private theorem UpperTheory.Reformulated.B.FreeModuleQuotient.aux {R S M : Type}
   rw [← Submodule.Quotient.mk_smul]
   exact hsm a y
 
+/- English proof (translation)
+Introduce `R S M _ _ _ _ s I K hIK c e he`. Conclude with `UpperTheory.Reformulated.B.FreeModuleQuotient.aux s I K hIK c e he`.
+-/
 theorem UpperTheory.Reformulated.B.FreeModuleQuotient.freeN_quot :
     ∀ {R S M : Type} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : AddCommGroup M]
       [inst_3 :

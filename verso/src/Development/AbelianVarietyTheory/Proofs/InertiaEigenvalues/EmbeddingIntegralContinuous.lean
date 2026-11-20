@@ -3,6 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 open Polynomial in
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `hx` using `[hp.as_sum]`. Simplify using `only [eval_add, eval_pow, eval_X, eval_finset_sum, eval_mul, eval_C] at hx`. Use `set n := p.natDegree`.
+
+Establish `hxn : x ^ n = -∑ i ∈ Finset.range n, p.coeff i * x ^ i` using `eq_neg_of_add_eq_zero_left hx`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Rewrite `hxn` using `[hn]`. Simplify using `at hxn`. Establish `hle : ‖x ^ n‖ ≤ ‖x‖ ^ (n - 1)`.
+
+Rewrite using `[hxn, norm_neg]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Establish `hi' : i ≤ n - 1`. Use `Finset.mem_range.mp hi` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Conclude with `hc i`. Conclude with `h.le`. Use `_ = ‖x‖ ^ (n - 1) := one_mul _`.
+
+Rewrite `hle` using `[norm_pow]`. Establish `hlt : ‖x‖ ^ (n - 1) < ‖x‖ ^ n` using `pow_lt_pow_right₀ h (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma norm_le_one_of_monic_root_lemma {K : Type*} [NormedField K] [IsUltrametricDist K]
     {p : K[X]} (hp : p.Monic) (hc : ∀ i, ‖p.coeff i‖ ≤ 1) {x : K} (hx : p.eval x = 0) :
     ‖x‖ ≤ 1 := by
@@ -33,6 +44,33 @@ private lemma norm_le_one_of_monic_root_lemma {K : Type*} [NormedField K] [IsUlt
 
 open Polynomial in
 
+/- English proof (translation)
+Use `set g : ℤ_[l] →+* PadicAlgCl l := (algebraMap ℚ_[l] (PadicAlgCl l)).comp PadicInt.Coe.ringHom`. Establish `hg : ι.comp (algebraMap ℤ_[l] O) = g`. Use extensionality with `z`. Conclude with `hι z`. Establish `h1 : ∀ a, ‖ι a‖ ≤ 1`.
+
+Introduce `a`. Take `⟨p, hpm, hpa⟩` from `Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a`. Establish `hroot : (p.map g).eval (ι a) = 0`. Rewrite using `[eval_map, ← hg, ← hom_eval₂]`. Rewrite using `[hpa, map_zero]`.
+
+Use `norm_le_one_of_monic_root_lemma (hpm.map g) (fun i => ?_) hroot` and prove the remaining obligations. Rewrite using `[coeff_map]`. Express the relevant statement in the definitionally equal form `‖algebraMap ℚ_[l] (PadicAlgCl l) ((p.coeff i : ℤ_[l]) : ℚ_[l])‖ ≤ 1`. Rewrite using `[PadicAlgCl.norm_extends]`. Conclude with `PadicInt.norm_le_one _`.
+
+Establish `hunit : ∀ u : Oˣ, ‖ι u‖ = 1`. Introduce `u`. Establish `hprod : ‖ι u‖ * ‖ι ↑u⁻¹‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]`. Establish `ha` using `h1 u`.
+
+Establish `hb` using `h1 ↑u⁻¹`. Establish `ha0` using `norm_nonneg (ι u)`. Establish `hb0` using `norm_nonneg (ι ↑u⁻¹)`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Establish `hmax` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ`. Establish `hϖlt : ‖ι ϖ‖ < 1`. Use `lt_of_le_of_ne (h1 ϖ) fun heq => ?_` and prove the remaining obligations. Use `set x := algebraMap ℤ_[l] O (l : ℤ_[l])`. Establish `hx : ‖ι x‖ = ‖(l : ℚ_[l])‖`.
+
+Rewrite using `[hι, PadicAlgCl.norm_extends]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hlt : ‖ι x‖ < 1` using `hx ▸ Padic.norm_p_lt_one`. Establish `hx0 : x ≠ 0`.
+
+Introduce `h0`. Rewrite `hx` using `[h0, map_zero, norm_zero]`. Establish `: (0 : ℝ) < ‖(l : ℚ_[l])‖`. Rewrite using `[Padic.norm_p]`. Establish `: (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`.
+
+Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨n, u, hxu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Rewrite `hlt` using `[hxu, map_mul, norm_mul, map_pow, norm_pow, heq, one_pow, mul_one, hunit]`. Conclude with `lt_irrefl _ hlt`.
+
+Establish `hpow : ∀ n : ℕ, ∀ a ∈ IsLocalRing.maximalIdeal O ^ n, ‖ι a‖ ≤ ‖ι ϖ‖ ^ n`. Introduce `n a ha`. Rewrite `ha` using `[hmax, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨b, rfl⟩` from `ha`. Rewrite using `[map_mul, norm_mul, map_pow, norm_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨h1, fun a ha => ?_, ?_⟩` and prove the remaining obligations. Use `hpow 1 a (by rwa [pow_one])` as an intermediate fact. Rewrite `this` using `[pow_one]`. Conclude with `this.trans_lt hϖlt`.
+
+Use `continuous_of_continuousAt_zero ι ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hϖlt`. Establish `hopen` using `(isAdic_iff.mp hO).1 n`.
+
+Use `filter_upwards [hopen.mem_nhds (Ideal.zero_mem _)] with a ha`. Rewrite using `[dist_zero_right]`. Conclude with `(hpow n a ha).trans_lt hn`.
+-/
 theorem _root_.GlobalTheory.padicAlgCl_embedding_bounded_continuous (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]
     [TopologicalSpace O] [IsTopologicalRing O] (hO : IsAdic (IsLocalRing.maximalIdeal O))

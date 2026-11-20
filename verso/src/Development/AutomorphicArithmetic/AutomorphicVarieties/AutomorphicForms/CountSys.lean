@@ -5,6 +5,19 @@ noncomputable section
 
 namespace UpperTheory.V.Af
 
+/- English proof (translation)
+Establish `key : ∀ T : Finset Y, (↑T : Set Y) ⊆ f '' Sig → T.card ≤ N`. Introduce `T hT`. Establish `hpre : ∀ y : T, ∃ a, a ∈ Sig ∧ f a = y.1` using `fun y => hT y.2`. Use `choose g hgS hgf using hpre`. Establish `hinj : Function.Injective g`.
+
+Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hgf x, ← hgf y, hxy]`. Establish `hS` using `hcard (Finset.univ.image g) ?_ ?_`. Rewrite `hS` using `[Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_coe]`. Then use the resulting hypothesis.
+
+Introduce `a ha`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.mp ha`. Conclude with `hgS y`. Introduce `a ha b hb hab`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.mp ha`.
+
+Take `⟨y, -, rfl⟩` from `Finset.mem_image.mp hb`. Establish `hxy` using `hiso _ (hgS x) _ (hgS y) hab`. Rewrite `hxy` using `[hgf x, hgf y]`. Rewrite using `[Subtype.ext hxy]`. Establish `hfin : (f '' Sig).Finite`.
+
+Assume the negation of the conclusion as `hinf`. Take `⟨t, ht, htc⟩` from `Set.Infinite.exists_subset_card_eq hinf (N + 1)`. Use `key t ht` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨hfin.to_subtype, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card _ hfin]`. Conclude with `key _ (by simp)`.
+-/
 theorem finite_image_of_card_le {P Y : Type} (Sig : Set P) (Iso : P → P → Prop) (f : P → Y)
     (hiso : ∀ a ∈ Sig, ∀ b ∈ Sig, Iso a b → f a = f b) (N : ℕ)
     (hcard : ∀ S : Finset P, (∀ a ∈ S, a ∈ Sig) → (∀ a ∈ S, ∀ b ∈ S, Iso a b → a = b) → S.card ≤ N) :
@@ -38,6 +51,19 @@ theorem finite_image_of_card_le {P Y : Type} (Sig : Set P) (Iso : P → P → Pr
   rw [Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card _ hfin]
   exact key _ (by simp)
 
+/- English proof (translation)
+Take `⟨hfin, hN⟩` from `finite_image_of_card_le Sig Iso sys hiso N hcard`. Use `⟨⟨↥(sys '' Sig), hfin, fun s => (s.1 w).map (·⁻¹), ?_, ?_, ?_, ?_, ?_⟩, hN, fun a => ⟨sys a, a, a.2, rfl⟩, fun a b h => congrArg Subtype.val h, fun a => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, a, ha, rfl⟩`. Simplify using `using hn a ha`. Introduce `σ`.
+
+Establish `hmem : ∀ s : ↥(sys '' Sig), (fun v => (s.1 v).map σ) ∈ sys '' Sig`. Introduce and unpack `⟨_, a, ha, rfl⟩`. Take `⟨b, hb, h⟩` from `hconj σ a ha`. Conclude with `⟨b, hb, funext h⟩`. Set `F : ↥(sys '' Sig) → ↥(sys '' Sig)` to `fun s => ⟨_, hmem s⟩`.
+
+Establish `hF : Function.Injective F`. Introduce `s s' h`. Use `Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Conclude with `Multiset.map_injective σ.injective (congrFun (congrArg Subtype.val h) v)`. Use `⟨Equiv.ofBijective F (Finite.injective_iff_bijective.1 hF), fun s => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[F, Multiset.map_map]`. Introduce and unpack `⟨_, a, ha, rfl⟩ b hb`. Take `⟨c, hc, rfl⟩` from `Multiset.mem_map.1 hb`. Rewrite using `[norm_inv, hpure a ha c hc, ← Real.rpow_neg (Nat.cast_nonneg q)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `k hk ⟨_, a, ha, rfl⟩ b hb`. Take `⟨c, hc, rfl⟩` from `Multiset.mem_map.1 hb`. Conclude with `(hint a ha c hc).1 k hk`. Introduce and unpack `k hk ⟨_, a, ha, rfl⟩ b hb`.
+
+Take `⟨c, hc, rfl⟩` from `Multiset.mem_map.1 hb`. Rewrite using `[inv_inv]`. Conclude with `(hint a ha c hc).2 k hk`. Simplify using `[Multiset.map_map]`.
+-/
 theorem exists_eigData {P W : Type} (Sig : Set P) (Iso : P → P → Prop) (sys : P → W → Multiset ℂ)
     (hiso : ∀ a ∈ Sig, ∀ b ∈ Sig, Iso a b → sys a = sys b) (N : ℕ)
     (hcard : ∀ S : Finset P, (∀ a ∈ S, a ∈ Sig) → (∀ a ∈ S, ∀ b ∈ S, Iso a b → a = b) → S.card ≤ N)
@@ -80,6 +106,13 @@ theorem exists_eigData {P W : Type} (Sig : Set P) (Iso : P → P → Prop) (sys 
 
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Introduce `hMw`. Establish `hcop : Nat.Coprime p M` using `(Nat.Prime.coprime_iff_not_dvd hp).mpr hM`. Establish `h` using `Nat.gcd_eq_gcd_ab p M`. Rewrite `h` using `[Nat.Coprime.gcd_eq_one hcop]`. Establish `h1 : (1 : 𝓞 F) = (p : 𝓞 F) * (Nat.gcdA p M : 𝓞 F) + (M : 𝓞 F) * (Nat.gcdB p M : 𝓞 F)`.
+
+Establish `h'` using `congrArg (Int.cast : ℤ → 𝓞 F) h`. Move the coercions through the operations in `at h'`. Conclude with `h'`. Establish `hone : (1 : 𝓞 F) ∈ w.asIdeal`. Rewrite using `[h1]`.
+
+Conclude with `w.asIdeal.add_mem (Ideal.mul_mem_right _ _ hw) (Ideal.mul_mem_right _ _ hMw)`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr hone)`.
+-/
 theorem natCast_notMem_of_not_dvd {F : Type} [Field F] [NumberField F] {p M : ℕ} (hp : p.Prime)
     {w : HeightOneSpectrum (𝓞 F)} (hw : (p : 𝓞 F) ∈ w.asIdeal) (hM : ¬ p ∣ M) : (M : 𝓞 F) ∉ w.asIdeal := by
   intro hMw
@@ -97,6 +130,11 @@ theorem natCast_notMem_of_not_dvd {F : Type} [Field F] [NumberField F] {p M : �
 
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Rewrite using `[Filter.eventually_cofinite]`. Establish `hM' : (M : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.mpr hM`. Establish `hI : Ideal.span {(M : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hM'`.
+
+Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq, not_not] at hw ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hw`.
+-/
 theorem eventually_natCast_notMem {F : Type} [Field F] [NumberField F] {M : ℕ} (hM : M ≠ 0) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 F) in Filter.cofinite, (M : 𝓞 F) ∉ w.asIdeal := by
   rw [Filter.eventually_cofinite]

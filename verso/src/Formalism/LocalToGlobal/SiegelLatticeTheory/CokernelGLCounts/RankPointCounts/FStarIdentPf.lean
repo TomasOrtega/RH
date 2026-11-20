@@ -17,6 +17,21 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
 
+/- English proof (translation)
+Use `⟨⟨?_, ?_, ?_, ?_, ?_, hrat⟩, ?_⟩` and prove the remaining obligations. Introduce `x y x₂ y₂ hx hy`. Conclude with `h_eq_of_sub_mem H _ hX0 x.2 y.2 ((mk_eq_iff H _ x x₂).1 hx) ((mk_eq_iff H _ y y₂).1 hy)`. Introduce `x y x₂ y₂ hx hy`. Establish `hx' : e x - x₂ ∈ H.X f₂` using `(mk_eq_iff H _ _ x₂).1 hx`.
+
+Establish `hy' : e y - y₂ ∈ H.X f₂` using `(mk_eq_iff H _ _ y₂).1 hy`. Rewrite using `[h_eq_of_sub_mem H _ hX2 (perp_map H e hiso _ _ h21 x.2) (perp_map H e hiso _ _ h21 y.2) hx' hy', hiso]`. Introduce `w hw`. Take `⟨w₂, hw₂, h1, h2⟩` from `hW0 w hw`. Use `⟨w₂, hw₂, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x x₂ hx hx₂`. Apply `smul_mk_eq H` to reduce the goal to its premises. Rewrite using `[one_smul, one_smul, hx, hx₂]`. Conclude with `h1`. Introduce `x x₂ hx hx₂`.
+
+Apply `smul_mk_eq H` to reduce the goal to its premises. Use `show (1 : E) • e x - (1 : E) • (x₂ : V) ∈ H.X f₂`. Rewrite using `[one_smul, one_smul, hx, hx₂]`. Conclude with `h2`. Introduce `x x₂ hx hx₂`.
+
+Apply `smul_mk_eq H` to reduce the goal to its premises. Rewrite using `[hx, hx₂]`. Conclude with `homp`. Introduce `x x₂ hx hx₂`. Apply `smul_mk_eq H` to reduce the goal to its premises.
+
+Use `show M.L.cj (H.Dl f₀ f₂ (r + 1)) • e x - M.L.cj (H.Dl f₀ f₁ (r + 1)) • (x₂ : V) ∈ H.X f₂`. Rewrite using `[hx, hx₂]`. Conclude with `hom`. Introduce `x x₂ hx hx₂`. Apply `smul_mk_eq H` to reduce the goal to its premises.
+
+Use `show (1 : E) • e x - (1 : E) • (x₂ : V) ∈ H.X f₂`. Rewrite using `[one_smul, one_smul, hx, hx₂]`. Conclude with `hz`.
+-/
 theorem ident_generic {r : ℕ} (Lam₁ Lam₂ : Submodule M.L.O V) (f₀ f₁ f₂ : Fin (r + 1) → V) (T T' : F)
     (e : V ≃ₗ[E] V) (hiso : ∀ v w, H.h (e v) (e w) = H.h v w)
     (h12 : ∀ x ∈ H.X f₁, e x ∈ H.X f₂) (h21 : ∀ y ∈ H.X f₂, e.symm y ∈ H.X f₁)
@@ -70,6 +85,9 @@ section Concrete
 
 variable {D : D7} (Zd : LocDat D) (p : PlF D)
 
+/- English proof (translation)
+Rewrite using `[map_sub, baseChange_smul₂, baseChange_smul₂, smul_sub, smul_smul, smul_smul, smul_smul, smul_smul]`. Apply the tactic sequence `congr 2 <;> ring`.
+-/
 theorem omp_combine' (f g1 g2 : Fin (D.R.rS + 1) → (VS D).V) (P K : (D.s.atP p).Ep) :
     (P * (D.s.atP p).ιE (GDl f g2 (D.R.rS + 1))) • (K • baseChange₂ D p (Gom' f g1)) -
       (P * (D.s.atP p).ιE (GDl f g1 (D.R.rS + 1))) • (K • baseChange₂ D p (Gom' f g2)) =
@@ -77,6 +95,9 @@ theorem omp_combine' (f g1 g2 : Fin (D.R.rS + 1) → (VS D).V) (P K : (D.s.atP p
   rw [map_sub, baseChange_smul₂, baseChange_smul₂, smul_sub, smul_smul, smul_smul, smul_smul, smul_smul]
   congr 2 <;> ring
 
+/- English proof (translation)
+Rewrite using `[map_sub, baseChange_smul₂, baseChange_smul₂, smul_sub, smul_smul, smul_smul, smul_smul, smul_smul, map_mul, map_mul, cj_iota (Zd.hcj p), cj_iota (Zd.hcj p)]`. Apply the tactic sequence `congr 2 <;> ring`.
+-/
 theorem om_combine' (f g1 g2 : Fin (D.R.rS + 1) → (VS D).V) (β : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (P K : (D.s.atP p).Ep) :
     (Zd.M p).L.cj (P * (D.s.atP p).ιE (GDl f g2 (D.R.rS + 1))) • (K • baseChange₂ D p (β (Gom f g1))) -
@@ -87,6 +108,13 @@ theorem om_combine' (f g1 g2 : Fin (D.R.rS + 1) → (VS D).V) (β : (VS D).V ≃
     cj_iota (Zd.hcj p), cj_iota (Zd.hcj p)]
   congr 2 <;> ring
 
+/- English proof (translation)
+Establish `hk : ∀ k, ∑ i, w i * (D.s.atP p).ιE ((VS D).hT (u k) ((VS D).frame i)) = 0`. Introduce `k`. Establish `e` using `hw k`. Use `conv_lhs at e => rw [vp_eq_sum p w]`. Rewrite `e` using `[h_sum_left]`.
+
+Rewrite using `[← e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hermitian_base_change_smul Zd p]`. Both sides reduce to the same expression. Use `conv_lhs => rw [vp_eq_sum p w]`.
+
+Rewrite using `[map_sum]`. Simplify using `only [map_smul, betaP_bc, hform, map_add, baseChangeAt_sum, smul_add, Finset.sum_add_distrib, Finset.smul_sum, smul_smul]`. Rewrite using `[← vp_eq_sum p w, Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, hk, zero_smul, Finset.sum_const_zero, add_zero]`.
+-/
 theorem betaP_fix {ι : Type} [Fintype ι] (g : (VS D).V ≃ₗ[D.host.E] (VS D).V) (u y : ι → (VS D).V)
     (hform : ∀ v, g v = v + ∑ k, (VS D).hT (u k) v • y k) (w : Vp D p)
     (hw : ∀ k, (locH Zd p).h w (baseChange₂ D p (u k)) = 0) : betaP p g w = w := by
@@ -106,10 +134,16 @@ theorem betaP_fix {ι : Type} [Fintype ι] (g : (VS D).V ≃ₗ[D.host.E] (VS D)
   rw [← vp_eq_sum p w, Finset.sum_comm]
   simp only [← Finset.sum_smul, hk, zero_smul, Finset.sum_const_zero, add_zero]
 
+/- English proof (translation)
+Unfold `GDl leadMinorE`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem gdl_eq (f g : Fin (D.R.rS + 1) → (VS D).V) (l : ℕ) : GDl f g l = leadMinorE (starZh f g) l := by
   unfold GDl leadMinorE
   split_ifs <;> rfl
 
+/- English proof (translation)
+Establish `: (fun a : Fin D.R.rS => F.fvec a.castSucc) = F.e` using `funext fun a => by simp [FlagG.fvec]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem xspan_eq {T : D.host.E} (F : FlagG (VS D) D.R.rS T) :
     Submodule.span D.host.E (Set.range fun a : Fin D.R.rS => F.fvec a.castSucc) = F.X := by
   have : (fun a : Fin D.R.rS => F.fvec a.castSucc) = F.e := funext fun a => by simp [FlagG.fvec]
@@ -143,6 +177,13 @@ def StarFrameU : Prop :=
 
 variable {u u' F0 what₂}
 
+/- English proof (translation)
+Introduce `γ Z hC`. Take `⟨hZ, hZ₁, hx⟩` from `starMinors_holds u u' F0 what₂ γ Z hC`. Take `⟨h1, h2⟩` from `star_frame_orthogonal γ`. Take `⟨F₂, hZh, hom, hsp⟩` from `FsLA.frame_la F0 (starFrame γ) h1 h2 Z hZ hZ₁ hx`. Use `⟨⟨F₂, F₂.z⟩, hZh, ⟨?_, ?_⟩, fun b => hsp b⟩` and prove the remaining obligations.
+
+Establish `e : starZh (frame (lf D F0)) (frame (⟨F₂, F₂.z⟩ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))) = Z` using `hZh`. Rewrite using `[e, FsLA.leadMinorE_full, FsLA.leadMinorE_full]`. Conclude with `hx`. Establish `e : starZh (frame (lf D F0)) (frame (⟨F₂, F₂.z⟩ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))) = Z` using `hZh`. Rewrite using `[FsLA.leadMinorE_full, FsLA.leadMinorE_full, e]`.
+
+Conclude with `hom`.
+-/
 theorem starFrameU_holds : StarFrameU u u' F0 what₂ := by
   intro γ Z hC
   obtain ⟨hZ, hZ₁, hx⟩ := starMinors_holds u u' F0 what₂ γ Z hC

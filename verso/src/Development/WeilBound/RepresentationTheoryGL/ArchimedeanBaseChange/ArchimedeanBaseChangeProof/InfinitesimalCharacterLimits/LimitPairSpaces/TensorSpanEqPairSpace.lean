@@ -29,6 +29,15 @@ def _root_.PositivityTheory.Rg.BcB.SpectralAccumulation.Tr.addTw : {N : ℕ} →
 abbrev Cint (E : Type) [Field E] [NumberField E] (n : ℕ) : Subgroup (GL (Fin n) (Af E)) :=
   GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n
 
+/- English proof (translation)
+Take `⟨b, hb, k, hy⟩` from `GlobalTheory.IwasawaAdelic.exists_upper_mul_unitary_inf E (r + s) (Matrix.GeneralLinearGroup.map (pInf E) x)`. Establish `hb' : (((b⁻¹ : GL (Fin (r + s)) (Cinf E))) : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)).BlockTriangular id`. Use `letI : Invertible (b : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)) := Units.invertible b`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb`.
+
+Take `⟨xi, mi, hbi⟩` from `IwaFin.exists_unip_mul_lev r s b (fun i j hi hj => hb (show j < i from Fin.lt_def.2 (lt_of_lt_of_le hj hi))) (fun i j hi hj => hb' (show j < i from Fin.lt_def.2 (lt_of_lt_of_le hj hi)))`. Take `⟨xf, mf, c, hc, hf⟩` from `IwaFin.exists_unip_lev_integral E r s (Matrix.GeneralLinearGroup.map (pFin E) x)`. Establish `e1 : ∀ p, pInf E (sInf E (xi p) + sFin E (xf p)) = xi p` using `fun p => by`. Rewrite using `[map_add, show pInf E (sInf E (xi p)) = xi p from (infEq E).symm_apply_apply _, show pInf E (sFin E (xf p)) = 0 from map_zero (infEq E).symm, add_zero]`. Establish `e2 : ∀ p, pFin E (sInf E (xi p) + sFin E (xf p)) = xf p` using `fun p => by`.
+
+Rewrite using `[map_add, show pFin E (sInf E (xi p)) = 0 from rfl, show pFin E (sFin E (xf p)) = xf p from rfl, zero_add]`. Use `⟨(fun p => sInf E (xi p) + sFin E (xf p), (infGL E r mi.1 * finGL E r mf.1, infGL E s mi.2 * finGL E s mf.2), k, c), hc, ga_ext ?_ ?_⟩` and prove the remaining obligations. Simplify using `only [InducedTensorMap.cf, map_mul, IwaAd.map_unip, IwaAd.map_lev, e1, pInf_infGL, pInf_finGL, mul_one, one_mul]`. Rewrite using `[hy, hbi]`. Simplify using `only [InducedTensorMap.cf, map_mul, IwaAd.map_unip, IwaAd.map_lev, e2, pFin_infGL, pFin_finGL, mul_one, one_mul]`.
+
+Rewrite using `[hf]`.
+-/
 theorem exists_decI {r s : ℕ} (x : GA E (r + s)) :
     ∃ q : (BlockIx (r + s) r → Ad E) × (GA E r × GA E s) × Kinf E (r + s) × GL (Fin (r + s)) (Af E),
       q.2.2.2 ∈ Cint E (r + s) ∧ x = unip q.1 * lev (Ad E) r s q.2.1 * InducedTensorMap.cf (r + s) q.2.2.1 q.2.2.2 := by
@@ -58,12 +67,21 @@ def mult : {N : ℕ} → Tr E N → (ℕ → ℂ) → GA E N → ℂ
   | _, .leaf _ _, γ => GlobalTheory.CompanionTheory.LimV.absFn _ (γ 0)
   | _, @Tr.node _ _ _ _ _ _ t₁ t₂, γ => GlobalTheory.CompanionTheory.LimV.nodeFn (mult t₁ γ) (mult t₂ fun i => γ (i + t₁.twists.length))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem typeB_iff {N : ℕ} (K : Subgroup (GL (Fin N) (Af E))) (W : Submodule ℂ (Kinf E N → ℂ)) (φ : Sm E N) :
     TypeB K W φ ↔ TypF K W φ.1 := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensor_span_eq_pair_space {a b : ℕ} (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule ℂ (Sm E b)) :
     pairSpace U₁ U₂ = tens2 U₁ U₂ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mult_leaf {N : ℕ} (V : Submodule ℂ (Sm E N)) (z : ℂ) (γ : ℕ → ℂ) (x : GA E N) :
     mult (Tr.leaf V z) γ x = ((chiDet _ (Model.absC E (γ 0)) x : ℂˣ) : ℂ) := rfl
 

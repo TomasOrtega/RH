@@ -17,6 +17,9 @@ variable {p : ℕ} [hp : Fact p.Prime]
 local notation "𝓣" => teichLift ℂ_[p] p
 local notation "𝔽" => frob ℂ_[p] p
 
+/- English proof (translation)
+The claim follows from `| [], _, _ => by simp | x :: l, hd, hp' => by rw [List.pairwise_cons] at hp' rw [List.map_cons, List.prod_cons] have hc : IsCoprime (f x) (l.map f).prod := by clear hd induction l with | nil => simp [isCoprime_one_right] | cons y l ih => rw [List.map_cons, List.prod_cons] exact ( …`.
+-/
 theorem list_prod_dvd_of_pairwise {α A : Type*} [CommRing A] (f : α → A) {w : A} :
     ∀ l : List α, (∀ x ∈ l, f x ∣ w) → l.Pairwise (fun x y => IsCoprime (f x) (f y)) →
       (l.map f).prod ∣ w
@@ -40,30 +43,51 @@ abbrev radBig : Set.Ioo (0 : ℝ) 1 := radTwo p
 def radSmall : Set.Ioc (0 : ℝ) (radBig (p := p)) :=
   ⟨(p : ℝ)⁻¹, inv_pos.2 (Nat.cast_pos.2 hp.out.pos), inv_p_lt_radTwo.le⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_radSmall : ((radSmall (p := p) : Set.Ioc (0 : ℝ) _) : ℝ) = (p : ℝ)⁻¹ := rfl
 
 def radMid : Set.Ioo (0 : ℝ) 1 :=
   ⟨((p : ℝ)⁻¹ + rhoMid p) / 2, by have := WAEval.inv_p_pos (p := p); have := (rhoMid p).2.1; positivity,
     by have := (rhoMid p).2.2; have := inv_p_lt_rhoMid (p := p); linarith⟩
 
+/- English proof (translation)
+Use `show (p : ℝ)⁻¹ < ((p : ℝ)⁻¹ + rhoMid p) / 2`. Use `inv_p_lt_rhoMid (p := p)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem inv_p_lt_radMid : (p : ℝ)⁻¹ < radMid (p := p) := by
   show (p : ℝ)⁻¹ < ((p : ℝ)⁻¹ + rhoMid p) / 2; have := inv_p_lt_rhoMid (p := p); linarith
 
+/- English proof (translation)
+Use `show ((p : ℝ)⁻¹ + rhoMid p) / 2 < rhoMid p`. Use `inv_p_lt_rhoMid (p := p)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem radMid_lt_rhoMid : (radMid (p := p) : ℝ) < rhoMid p := by
   show ((p : ℝ)⁻¹ + rhoMid p) / 2 < rhoMid p; have := inv_p_lt_rhoMid (p := p); linarith
 
 abbrev radRho : Set.Ioo (0 : ℝ) 1 := (𝔽).rootRadius (radMid (p := p))
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((𝔽).powRadius_rootRadius (radMid (p := p)))`.
+-/
 theorem coe_inRad_radRho : ((inRad p (radRho (p := p)) : Set.Ioc (0 : ℝ) _) : ℝ) = radMid (p := p) :=
   congrArg Subtype.val ((𝔽).powRadius_rootRadius (radMid (p := p)))
 
+/- English proof (translation)
+Rewrite using `[coe_inRad_radRho]`. Conclude with `inv_p_lt_radMid.le`.
+-/
 theorem inv_p_le_inRad : (p : ℝ)⁻¹ ≤ ((inRad p (radRho (p := p)) : Set.Ioc (0 : ℝ) _) : ℝ) := by
   rw [coe_inRad_radRho]; exact inv_p_lt_radMid.le
 
+/- English proof (translation)
+Rewrite using `[coe_inRad_radRho, coe_radSmall]`. Conclude with `inv_p_lt_radMid`.
+-/
 theorem radSmall_lt_inRad :
     ((radSmall (p := p) : Set.Ioc (0 : ℝ) _) : ℝ) < ((inRad p (radRho (p := p)) : Set.Ioc (0 : ℝ) _) : ℝ) := by
   rw [coe_inRad_radRho, coe_radSmall]; exact inv_p_lt_radMid
 
+/- English proof (translation)
+Use `show (((𝔽).rootRadius (radMid (p := p)) : Set.Ioo (0 : ℝ) 1) : ℝ) < (((𝔽).rootRadius (rhoMid p) : Set.Ioo (0 : ℝ) 1) : ℝ)`. Rewrite using `[rootRadius_coe, rootRadius_coe]`. Conclude with `Real.rpow_lt_rpow (radMid (p := p)).2.1.le radMid_lt_rhoMid (inv_pos.2 (Nat.cast_pos.2 hp.out.pos))`.
+-/
 theorem radRho_lt_radBig : ((radRho (p := p) : Set.Ioo (0 : ℝ) 1) : ℝ) < (radBig (p := p) : ℝ) := by
   show (((𝔽).rootRadius (radMid (p := p)) : Set.Ioo (0 : ℝ) 1) : ℝ) < (((𝔽).rootRadius (rhoMid p) :
     Set.Ioo (0 : ℝ) 1) : ℝ)
@@ -114,6 +138,9 @@ section Main
 variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
   (hζ : PreTilt.untilt ((_root_.frobeniusEquiv (PreTilt (normInteger ℂ_[p]) p) p).symm ε) ≠ 1)
 
+/- English proof (translation)
+The claim follows from `le_of_eq rfl`.
+-/
 theorem hσSmall : (p : ℝ)⁻¹ ≤ ((radSmall (p := p) : Set.Ioc (0 : ℝ) _) : ℝ) := le_of_eq rfl
 
 def denSet (a b : BCrisPlus ℂ_[p] p) : Set (BCrisPlus ℂ_[p] p) := {β | ∃ γ, β * a = γ * b}
@@ -126,6 +153,9 @@ variable {a b : BCrisPlus ℂ_[p] p}
     algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) (kummerC hε hζ σ : ℚ_[p]) * periodTPlus hε * σ • b * b)
 
 include hrel in
+/- English proof (translation)
+Use `isDomain_bCrisPlus (p := p)` as an intermediate fact. Take `⟨γ, hγ⟩` from `hβ`. Establish `hσb : σ • b ≠ 0` using `fun h => hb (MulAction.injective σ (show σ • b = σ • (0 : BCrisPlus ℂ_[p] p) by`. Rewrite using `[h, smul_zero]))`. Conclude with `⟨_, galois_mem_den (MulSemiringAction.toRingHom _ _ σ) hσb (hrel σ) hγ⟩`.
+-/
 theorem smul_mem_denSet (hb : b ≠ 0) (σ : Gal(PadicAlgCl p/K)) {β : BCrisPlus ℂ_[p] p}
     (hβ : β ∈ denSet a b) : σ • β ∈ denSet a b := by
   have := isDomain_bCrisPlus (p := p)
@@ -135,6 +165,11 @@ theorem smul_mem_denSet (hb : b ≠ 0) (σ : Gal(PadicAlgCl p/K)) {β : BCrisPlu
   exact ⟨_, galois_mem_den (MulSemiringAction.toRingHom _ _ σ) hσb (hrel σ) hγ⟩
 
 include hrel in
+/- English proof (translation)
+Introduce `β hβ`. Establish `h1` using `hP _ (smul_mem_denSet hε hζ hrel hb σ⁻¹ hβ)`. Establish `h2` using `map_dvd (galIso σ).annMap h1`. Rewrite `h2` using `[annMap_ξAnn, annMap_bcrisToAnn]`. Establish `e : galPlus σ (σ⁻¹ • β) = β` using `smul_inv_smul σ β`.
+
+Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem isDenPt_galPt (hb : b ≠ 0) {P : (𝓣).Pt} (hP : IsDenPt a b P) (σ : Gal(PadicAlgCl p/K)) :
     IsDenPt a b (galPt σ P) := by
   intro β hβ
@@ -144,6 +179,9 @@ theorem isDenPt_galPt (hb : b ≠ 0) {P : (𝓣).Pt} (hP : IsDenPt a b P) (σ : 
   have e : galPlus σ (σ⁻¹ • β) = β := smul_inv_smul σ β
   rwa [e] at h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hr.1.le, hr.2.le⟩`.
+-/
 theorem ptRadBig (P : (𝓣).Pt) (hr : (p : ℝ)⁻¹ < (𝓣).ptRad P.1 ∧ (𝓣).ptRad P.1 < radTwo p) :
     (𝓣).ptRad P.1 ∈ Set.Icc ((radSmall (p := p) : Set.Ioc (0 : ℝ) _) : ℝ) (radBig (p := p)) :=
   ⟨hr.1.le, hr.2.le⟩
@@ -151,6 +189,33 @@ theorem ptRadBig (P : (𝓣).Pt) (hr : (p : ℝ)⁻¹ < (𝓣).ptRad P.1 ∧ (�
 set_option maxHeartbeats 3200000 in
 include hrel in
 
+/- English proof (translation)
+Use `isDomain_bCrisPlus (p := p)` as an intermediate fact. Use `set w := bcrisToAnn (ρ0 := radBig (p := p)) hσSmall b with hwdef`. Establish `hw : ∀ r, 0 < (𝓣).annNorm _ _ r w` using `annNorm_bcrisToAnn_pos hσSmall hb`. Use `set rr : AnnRad (radBig (p := p)) radSmall := ⟨(𝓣).ptRad P.1, ptRadBig P hr⟩`. Establish `hab : ((annIn (radBig (p` using `p)) radSmall : AnnRad _ _) : ℝ) < rr := hr.1`.
+
+Establish `hcd : (rr : ℝ) < (annOut (radBig (p` using `p)) radSmall : AnnRad _ _) := hr.2`. Establish `hbI : b ∈ denSet a b` using `⟨a, mul_comm b a⟩`. Establish `key : ∀ (n : ℕ) (g : Fin n → Gal(PadicAlgCl p/K)), (∀ i j, i ≠ j → (g j)⁻¹ * g i ∉ ptStab (K` using `K) P.1) → ((List.finRange n).map fun i => galPt (g i) P).length ≤ ((List.finRange n).map fun i => galPt (g i) P).length ∧ (((List.finRange n).map fun i => galPt (g i) P).length : ℝ) ≤ (Real.log ((𝓣).annNorm _ _ (annOut _ _) w) - Real.log ((𝓣).annNorm _ _ rr w)) / (Real.log (annOu …`. Introduce `n g hg`. Use `⟨le_rfl, (𝓣).length_le_of_prod_dvd w hw _ rr rr _ hab le_rfl hcd _ ?_ ?_⟩` and prove the remaining obligations.
+
+Introduce `Q hQ`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hQ`. Rewrite using `[ptRad_galPt]`. Conclude with `⟨le_rfl, le_rfl⟩`. Rewrite using `[List.map_map]`.
+
+Use `list_prod_dvd_of_pairwise _ _ (fun i _ => isDenPt_galPt hε hζ hrel hb hP (g i) b hbI) ?_` and prove the remaining obligations. Use `(List.nodup_finRange n).pairwise_of_forall_ne fun i _ j _ hij => ?_` and prove the remaining obligations. Use `set Qi := galPt (g i) P`. Use `set Qj := galPt (g j) P`. Establish `hri : (𝓣).ptRad Qi.1 ∈ Set.Icc ((radSmall (p` using `p) : Set.Ioc (0 : ℝ) _) : ℝ) (radBig (p := p)) := by`.
+
+Rewrite using `[ptRad_galPt]`. Conclude with `ptRadBig P hr`. Establish `hne : (𝓣).annEval Qi.2 hri ((𝓣).ξAnn (ρ0` using `radBig (p := p)) (σ0 := radSmall) Qj.1) ≠ 0 := by`. Use `annEval_ξAnn_ne_zero hri (by rw [ptRad_galPt, ptRad_galPt]) ?_` and prove the remaining obligations. Introduce and unpack `⟨u, hu, hQ⟩`.
+
+Use `hg j i (Ne.symm hij) ⟨⟨(galIso (g i)⁻¹).ψ u, galIso_mem_int _ u.2⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨w', hw'⟩` from `hu.exists_right_inv`. Use `isUnit_iff_exists_inv.2 ⟨⟨(galIso (g i)⁻¹).ψ w', galIso_mem_int _ w'.2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `congrArg (fun x : (𝓣).int => (galIso (g i)⁻¹).ψ (x : WC p)) hw'` as an intermediate fact. Simplify using `only [Subring.coe_mul, map_mul, Subring.coe_one, map_one] at this`.
+
+Simplify using `using this`. Establish `h1` using `congrArg (fun x : (𝓣).int => (galIso (g i)⁻¹).ψ (x : WC p)) hQ`. Simplify using `only [Subring.coe_mul, map_mul] at h1`. Use `show (galIso ((g i)⁻¹ * g j)).ψ (P.1 : WC p) = _`. Rewrite using `[galIso_mul, TeichLift.TeichIso.comp_ψ]`.
+
+Establish `e1 : (galIso (g i)⁻¹).ψ ((galIso (g i)).ψ (P.1 : WC p)) = P.1`. Rewrite using `[← TeichLift.TeichIso.comp_ψ, ← galIso_mul, inv_mul_cancel, galIso_one]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(galIso (g i)⁻¹).ψ ((galIso (g j)).ψ (P.1 : WC p)) = (galIso (g i)⁻¹).ψ (u : WC p) * (galIso (g i)⁻¹).ψ ((galIso (g i)).ψ (P.1 : WC p)) at h1`. Rewrite using `[h1, e1]`.
+
+Take `⟨α, β, hαβ⟩` from `(𝓣).exists_bezout_ann Qi.2 hri hne`. Conclude with `⟨α, β, hαβ⟩`. Establish `hfin : Finite (Gal(PadicAlgCl p/K) ⧸ ptStab (K` using `K) P.1) := by`. Assume the negation of the conclusion as `hinf`. Establish `: Infinite (Gal(PadicAlgCl p/K) ⧸ ptStab (K` using `K) P.1) := not_finite_iff_infinite.1 hinf`.
+
+Use `set e := Infinite.natEmbedding (Gal(PadicAlgCl p/K) ⧸ ptStab (K := K) P.1)`. Use `set Bd := (Real.log ((𝓣).annNorm _ _ (annOut _ _) w) - Real.log ((𝓣).annNorm _ _ rr w)) / (Real.log (annOut (radBig (p := p)) radSmall : AnnRad _ _) - Real.log rr) - (Real.log ((𝓣).annNorm _ _ rr w) - Real.log ((𝓣).annNorm _ _ (annIn _ _) w)) / (Real.log rr - Real.log (annIn (rad …`. Use `set n := ⌈Bd⌉₊ + 1`. Use `set g : Fin n → Gal(PadicAlgCl p/K) := fun i => Quotient.out (e i)`. Establish `hg : ∀ i j, i ≠ j → (g j)⁻¹ * g i ∉ ptStab (K` using `K) P.1 := by`.
+
+Introduce `i j hij hmem`. Establish `h1 : (QuotientGroup.mk (g j) : Gal(PadicAlgCl p/K) ⧸ ptStab (K` using `K) P.1) = QuotientGroup.mk (g i) := QuotientGroup.eq.2 hmem`. Establish `h2 : e j = e i`. Establish `hj : (QuotientGroup.mk (g j) : Gal(PadicAlgCl p/K) ⧸ ptStab (K` using `K) P.1) = e j := Quotient.out_eq (e j)`. Establish `hi : (QuotientGroup.mk (g i) : Gal(PadicAlgCl p/K) ⧸ ptStab (K` using `K) P.1) = e i := Quotient.out_eq (e i)`.
+
+Rewrite using `[← hj, ← hi, h1]`. Conclude with `hij (Fin.ext (e.injective h2).symm)`. Establish `hk` using `(key n g hg).2`. Rewrite `hk` using `[List.length_map, List.length_finRange]`. Establish `: (n : ℝ) > Bd`.
+
+Use `Nat.le_ceil Bd` as an intermediate fact. Move the coercions through the operations in `[n]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+-/
 theorem finiteIndex_ptStab (hb : b ≠ 0) {P : (𝓣).Pt} (hP : IsDenPt a b P)
     (hr : (p : ℝ)⁻¹ < (𝓣).ptRad P.1 ∧ (𝓣).ptRad P.1 < radTwo p) :
     (ptStab (K := K) P.1).FiniteIndex := by
@@ -235,6 +300,9 @@ theorem finiteIndex_ptStab (hb : b ≠ 0) {P : (𝓣).Pt} (hP : IsDenPt a b P)
 set_option maxHeartbeats 3200000 in
 include hrel in
 
+/- English proof (translation)
+Use `finiteIndex_ptStab hε hζ hrel hb hP hr` as an intermediate fact. Establish `h0` using `ptEval_tTilde_eq_zero_of_fixed hε hζ (ptStab (K := K) P.1) P.2 hr.1.le hr.2.le (fun σ hσ => hσ) (radBig (p := p)) hr.2 (tTildeExt p ε _) (ofRad_tTildeExt hε hζ _)`. Rewrite `h0` using `[← (𝓣).annEval_toAnn P.2 (ptRadBig P hr)]`. Take `⟨y, hy⟩` from `((𝓣).annEval_eq_zero_iff P.2 (ptRadBig P hr) _).1 h0`. Conclude with `⟨y, hy⟩`.
+-/
 theorem dvd_tTilde_of_isDenPt [FiniteDimensional ℚ_[p] K] (hb : b ≠ 0) {P : (𝓣).Pt}
     (hP : IsDenPt a b P) (hr : (p : ℝ)⁻¹ < (𝓣).ptRad P.1 ∧ (𝓣).ptRad P.1 < radTwo p) :
     (𝓣).ξAnn (ρ0 := radBig (p := p)) (σ0 := radSmall) P.1 ∣
@@ -257,11 +325,17 @@ def denIdealS (a b : BCrisPlus ℂ_[p] p) : Ideal (AnnS (p := p)) :=
   Ideal.span ((fun β => resS (bcrisToAnn hσSmall β)) '' denSet a b)
 
 include hε hζ in
+/- English proof (translation)
+Rewrite using `[resS, (𝓣).annRes_toAnn, res_tTildeExt hε hζ]`.
+-/
 theorem resS_tTilde :
     resS ((𝓣).toAnn (radBig (p := p)) radSmall (tTildeExt p ε (radBig (p := p)))) =
       (𝓣).toAnn (radRho (p := p)) (inRad p (radRho (p := p))) (tTildeExt p ε (radRho (p := p))) := by
   rw [resS, (𝓣).annRes_toAnn, res_tTildeExt hε hζ]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(show (p : ℝ)⁻¹ < _ from (coe_radSmall (p := p)) ▸ radSmall_lt_inRad).trans_le h.1, h.2.trans_lt radRho_lt_radBig⟩`.
+-/
 theorem ptRad_bounds {P : (𝓣).Pt}
     (h : ((inRad p (radRho (p := p)) : Set.Ioc (0 : ℝ) _) : ℝ) ≤ (𝓣).ptRad P.1 ∧
       (𝓣).ptRad P.1 ≤ (radRho (p := p) : ℝ)) :
@@ -272,6 +346,9 @@ theorem ptRad_bounds {P : (𝓣).Pt}
 set_option maxHeartbeats 3200000 in
 include hrel in
 
+/- English proof (translation)
+The claim follows from `| [], _ => ⟨0, 1, by simp⟩ | P :: l, hl => by obtain ⟨m, c, hmc⟩ := exists_pow_mem_span hb l fun Q hQ => hl Q (List.mem_cons_of_mem _ hQ) have hrP := ptRad_bounds (hl P List.mem_cons_self) set t' := (𝓣).toAnn (radRho (p := p)) (inRad p (radRho (p := p))) (tTildeExt p ε (radRho (p …`.
+-/
 theorem exists_pow_mem_span [FiniteDimensional ℚ_[p] K] (hb : b ≠ 0) :
     ∀ l : List (𝓣).Pt, (∀ P ∈ l, ((inRad p (radRho (p := p)) : Set.Ioc (0 : ℝ) _) : ℝ) ≤ (𝓣).ptRad P.1 ∧
       (𝓣).ptRad P.1 ≤ (radRho (p := p) : ℝ)) →
@@ -313,6 +390,19 @@ theorem exists_pow_mem_span [FiniteDimensional ℚ_[p] K] (hb : b ≠ 0) :
 set_option maxHeartbeats 3200000 in
 include hrel in
 
+/- English proof (translation)
+Use `isDomain_bCrisPlus (p := p)` as an intermediate fact. Use `set w := bcrisToAnn (ρ0 := radBig (p := p)) hσSmall b with hwdef`. Establish `hw : ∀ r, 0 < (𝓣).annNorm _ _ r w` using `annNorm_bcrisToAnn_pos hσSmall hb`. Take `⟨l, u, hl, hu, hfac⟩` from `(𝓣).exists_factor_ann w hw (ρ1 := radRho (p := p)) (σ1 := inRad p (radRho (p := p))) radRho_lt_radBig radSmall_lt_inRad`. Take `⟨m, c, hmc⟩` from `exists_pow_mem_span hε hζ hrel hb l hl`.
+
+Use `set J := denIdealS (p := p) a b`. Establish `hbI : b ∈ denSet a b` using `⟨a, mul_comm b a⟩`. Establish `hwJ : resS w ∈ J` using `Ideal.subset_span ⟨b, hbI, rfl⟩`. Establish `hprod : (l.map fun P => (𝓣).ξAnn P.1).prod ∈ J`. Establish `e : (l.map fun P => (𝓣).ξAnn P.1).prod = resS w * ((hu.unit⁻¹ : (AnnS (p` using `p))ˣ) : AnnS (p := p)) := by`.
+
+Rewrite using `[resS, hfac, mul_assoc, IsUnit.mul_val_inv, mul_one]`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ hwJ`. Use `set t' := (𝓣).toAnn (radRho (p := p)) (inRad p (radRho (p := p))) (tTildeExt p ε (radRho (p := p)))`. Establish `htJ : t' ^ m ∈ J`.
+
+Use `add_mem hmc (Ideal.mul_mem_left J c hprod)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hY : ∃ Y, Y * resS (bcrisToAnn hσSmall b) = t' ^ m * resS (bcrisToAnn hσSmall a)`. Use `Submodule.span_induction (p := fun x _ => ∃ Y, Y * resS (bcrisToAnn hσSmall b) = x * resS (bcrisToAnn hσSmall a)) ?_ ?_ ?_ ?_ htJ` and prove the remaining obligations. Introduce and unpack `x ⟨β, ⟨γ, hγ⟩, rfl⟩`.
+
+Conclude with `⟨resS (bcrisToAnn hσSmall γ), by rw [← map_mul, ← map_mul, ← map_mul, ← map_mul, hγ]⟩`. Conclude with `⟨0, by rw [zero_mul, zero_mul]⟩`. Introduce and unpack `x y - - ⟨Y₁, h₁⟩ ⟨Y₂, h₂⟩`. Conclude with `⟨Y₁ + Y₂, by rw [add_mul, h₁, h₂, add_mul]⟩`. Introduce and unpack `c' x - ⟨Y, h⟩`.
+
+Conclude with `⟨c' * Y, by rw [mul_assoc, h, smul_eq_mul, mul_assoc]⟩`. Take `⟨Y, hY⟩` from `hY`. Rewrite `hY` using `[resS, annRes_bcrisToAnn, annRes_bcrisToAnn]`. Conclude with `false_of_mul_eq_tTilde_pow hε hζ (radRho (p := p)) inv_p_le_inRad radRho_lt_radBig.le hb hφ hrel hY`.
+-/
 theorem false_of_frac [FiniteDimensional ℚ_[p] K] (hb : b ≠ 0)
     (hφ : phiPlus ℂ_[p] p a * b = (p : BCrisPlus ℂ_[p] p) * a * phiPlus ℂ_[p] p b) : False := by
   have := isDomain_bCrisPlus (p := p)

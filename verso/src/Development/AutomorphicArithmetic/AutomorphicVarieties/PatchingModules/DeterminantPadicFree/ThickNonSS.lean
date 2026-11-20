@@ -1,6 +1,13 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DeterminantPadicFree.FrameWith
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ F O _ _ _ n r B q h`. Establish `he : augmentationIdealKernel B.u = (B.GroupAlgebraKernelIdeal : Set (MonoidAlgebra B.B F.G₀))`. Establish `: B.u.D.chBar (pairGens B.u) = B.GroupAlgebraKernelIdeal`. Unfold `UniversalOrdinaryDeterminantRing.GroupAlgebraKernelIdeal UniversalOrdinaryDeterminantRing.E0gens GDet.chBar pairGens`. Rewrite using `[Set.union_assoc]`.
+
+Unfold `augmentationIdealKernel`. Rewrite using `[this]`. Both sides reduce to the same expression. Use `⟨B.kap q, inferInstance, B.toKap q, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Unfold `UniversalOrdinaryDeterminantRing.toKap`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, map_eq_zero, Ideal.algebraMap_residueField_eq_zero]`. Rewrite using `[RingHom.comp_id, he]`. Conclude with `h.2`.
+-/
 theorem UpperTheory.V.Pa.Det.thickNonSS :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ} {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) (q : PrimeSpectrum B.B), B.IsThick q → NonSS (augmentationIdealKernel B.u) (RingHom.id B.B) q.asIdeal := by
   intro l _ F O _ _ _ n r B q h

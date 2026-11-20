@@ -77,9 +77,15 @@ def PartsRow (R : RealDat D A Ks) (F : Face D A) (E : EigIdx D X) : Prop :=
       IndexTie R E sys → RowTie R F E sys jE → LiftTie R F E sys jW →
         ∃ piOf : E.Pi → A.fam.base.Ix, (∀ c, IsLabel R (sys c) (piOf c)) ∧ PartsOf R E jE jW piOf
 
+/- English proof (translation)
+Simplify using `[dualLab, List.map_reverse, List.map_map]`.
+-/
 theorem dualLab_dualLab (d : List ℤ) : dualLab (dualLab d) = d := by
   simp [dualLab, List.map_reverse, List.map_map]
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : dualLab (splitLab 3 1) = [1, 0, 0] := by decide
 
 end GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem

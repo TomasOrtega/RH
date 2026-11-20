@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.PowerNearOneNorm
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℚ_[p] x` using `Algebra.IsIntegral.isIntegral x`. Set `V : Submodule ℚ_[p] (PadicAlgCl p)` to `Subalgebra.toSubmodule (Algebra.adjoin ℚ_[p] {x})`. Establish `: FiniteDimensional ℚ_[p] V` using `Module.Finite.iff_fg.mpr hint.fg_adjoin_singleton`. Establish `: ProperSpace V` using `FiniteDimensional.proper ℚ_[p] V`. Establish `hmem : ∀ n : ℕ, x ^ n ∈ V` using `fun n => Subalgebra.pow_mem _ (Algebra.self_mem_adjoin_singleton ℚ_[p] x) n`.
+
+Set `s : ℕ → V` to `fun n => ⟨x ^ n, hmem n⟩`. Establish `hs : ∀ n, s n ∈ Metric.closedBall (0 : V) 1`. Introduce `n`. Simplify using `[s, norm_pow, hx]`. Take `⟨a, -, φ, hφ, hlim⟩` from `(isCompact_closedBall (0 : V) 1).tendsto_subseq hs`.
+
+Take `⟨N, hN⟩` from `Metric.cauchySeq_iff'.1 hlim.cauchySeq 1 one_pos`. Establish `h1` using `hN (N + 1) (Nat.le_succ N)`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_lt (hφ (Nat.lt_succ_self N))`. Use `⟨d + 1, d.succ_pos, ?_⟩` and prove the remaining obligations. Establish `e : x ^ φ (N + 1) - x ^ φ N = x ^ φ N * (x ^ (d + 1) - 1)`.
+
+Rewrite using `[hd]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1' : ‖x ^ φ (N + 1) - x ^ φ N‖ < 1` using `by simpa [s, dist_eq_norm] using h1`. Rewrite `h1'` using `[e, norm_mul, norm_pow, hx, one_pow, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem exists_pow_sub_one_norm_lt_one {p : ℕ} [hp : Fact (Nat.Prime p)] (x : PadicAlgCl p)
     (hx : ‖x‖ = (1 : ℝ)) : ∃ n : ℕ, 0 < n ∧ ‖x ^ n - (1 : PadicAlgCl p)‖ < (1 : ℝ) := by
   have hint : IsIntegral ℚ_[p] x := Algebra.IsIntegral.isIntegral x

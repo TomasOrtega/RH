@@ -33,14 +33,25 @@ def mapFun (H : Subgroup G) {σ : Representation ℂ H W} {σ' : Representation 
     rw [h0, map_zero]
   ⟨⟨⟨fun g => L (f.1.1.1 g), hind⟩, hsm⟩, hc⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapFun_apply (H : Subgroup G) {σ : Representation ℂ H W} {σ' : Representation ℂ H W'}
     (L : W ≃ₗ[ℂ] W') (hL : ∀ (h : H) (w : W), L (σ h w) = σ' h (L w))
     (f : cIndSpace H σ) (g : G) : (mapFun H L hL f).1.1.1 g = L (f.1.1.1 g) := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Subtype.ext (Subtype.ext (funext h)))`.
+-/
 theorem ext_fun {H : Subgroup G} {σ : Representation ℂ H W} {f f' : cIndSpace H σ}
     (h : ∀ g, f.1.1.1 g = f'.1.1.1 g) : f = f' :=
   Subtype.ext (Subtype.ext (Subtype.ext (funext h)))
 
+/- English proof (translation)
+Introduce `G W W' _ _ _ _ _ _ _ H σ σ' e`. Set `L : W ≃ₗ[ℂ] W'` to `e.toLinearEquiv`. Establish `hL : ∀ (h : H) (w : W), L (σ h w) = σ' h (L w)` using `fun h w => LinearMap.congr_fun (e.isIntertwining' h) w`. Establish `hL' : ∀ (h : H) (w : W'), L.symm (σ' h w) = σ h (L.symm w)` using `fun h w => by`. Apply `L.injective` to reduce the goal to its premises.
+
+Rewrite using `[L.apply_symm_apply, hL, L.apply_symm_apply]`. Set `T : cIndSpace H σ ≃ₗ[ℂ] cIndSpace H σ'` to `{ toFun := mapFun H L hL map_add' := fun f f' => ext_fun fun g => map_add L (f.1.1.1 g) (f'.1.1.1 g) map_smul' := fun c f => ext_fun fun g => map_smul L c (f.1.1.1 g) invFun := mapFun H L.symm hL' left_inv := fun f => ext_fun fun g => L.symm_apply_apply (f.1.1.1 g) right_inv := f …`. Use `⟨Representation.Equiv.mk T fun x => LinearMap.ext fun f => ext_fun fun g => ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem nonempty_equiv_cInd :
     ∀ {G W W' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup W'] [Module ℂ W'] (H : Subgroup G) (σ : Representation ℂ H W) (σ' : Representation ℂ H W'),

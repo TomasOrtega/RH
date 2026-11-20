@@ -30,6 +30,21 @@ variable {k : Type} [CommRing k] {B Y : Scheme.{0}} [IsIntegral B] [IsIntegral Y
   {π : Y ⟶ B} {w : π ≫ q = p} {E : B.Modules} {h : VMetric q E 2} {H : h.IsCInf} {flB : Vert.Flag E 2}
   {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2} {A : HermLB q}
 
+/- English proof (translation)
+Establish `h₁ : ∀ a b : Fin 5, (X a - X b : MvPolynomial (Fin 5) ℝ).IsHomogeneous 1` using `fun a b => (isHomogeneous_X _ _).sub (isHomogeneous_X _ _)`. Set `A' : HermLB q` to `A.shift (fun _ => 1) fun _ => rfl`. Apply the tactic sequence `have hs := comb_shift (L := fam5 π w H flB fl A) (L' := fam5 π w H flB fl A') 2 (pull_shift A 1 π w) (fun i hi => by fin_cases i <;> first | rfl | exact absurd rfl hi)`. Take `⟨Φ, hΦ⟩` from `((hC.arExists k Y p (d + 1) hp).2 (Fin 5) (fam5 π w H flB fl A)).1`. Take `⟨Φ', hΦ'⟩` from `((hC.arExists k Y p (d + 1) hp).2 (Fin 5) (fam5 π w H flB fl A')).1`.
+
+Take `⟨r, hr, hsupp, -⟩` from `GlobalTheory.T.rank_two_flag_rational_sections k B Y q p d hq hp hreg π w E h H flB fl hfl A`. Establish `key : ∀ K' : MvPolynomial (Fin 5) ℝ, K'.IsHomogeneous d → Ψ ((X 4 - X 0) * ((X 3 - X 0) * pderiv 2 K')) = 0`. Introduce `K' hK'`. Take `⟨s, c, hpol⟩` from `GlobalTheory.IntLinPow.homog_eq_sum_pow_intLin (d + 1) ((X 3 - X 0) * K') (by simpa [add_comm] using (h₁ 3 0).mul hK')`. Establish `e` using `GlobalTheory.T.arithmetic_function_swap_line_family hC k B Y q p d hq hp π w E h H flB fl A Φ hΦ r hr hsupp _ (by simp) s c hpol`.
+
+Establish `e'` using `GlobalTheory.T.arithmetic_function_swap_line_family hC k B Y q p d hq hp π w E h H flB fl A' Φ' hΦ' r hr hsupp _ (by simp) s c hpol`. Establish `e₂` using `arFun_shift hC hp 2 hs hΦ hΦ' hΨ ((X 4 - X 0) * ((X 3 - X 0) * K'))`. Establish `e₃ : ∀ n, (comb (fam5 π w H flB fl A') n).archInt ((fam5 π w H flB fl A' 0).dual.tens (fam5 π w H flB fl A' 4)) (d + 1) hr = (comb (fam5 π w H flB fl A) n).archInt ((fam5 π w H flB fl A 0).dual.tens (fam5 π w H flB fl A 4)) (d + 1) hr` using `fun n => by`. Simplify using `only [HermLB.archInt, (hs n).chernInt_eq, chernInt_shift]`. Both sides reduce to the same expression.
+
+Simplify using `only [e₃] at e'`. Rewrite `e₂` using `[e, e', left_eq_add]`. Use `e₂ using 2` and compare the differences between its conclusion and the goal. Simplify using `[Derivation.leibniz, pderiv_X, Pi.single_apply]`. Proceed by induction on `K using MvPolynomial.induction_on' with`.
+
+Consider the case `add K₁ K₂ e₁ e₂ => rw [mul_add, mul_add, map_add, e₁, e₂, add_zero]`. Consider the case `monomial m a`. Distinguish the cases in `hm : m.degree + 1 = d`. Use `key (monomial (m + Finsupp.single 2 1) (a / ((m 2 : ℝ) + 1))) (isHomogeneous_monomial _ (by rw [map_add, Finsupp.degree_single, hm]))` as an intermediate fact. Rewrite `this` using `[pderiv_monomial]`.
+
+Use `this using 5` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Conclude with `hΨ.2 _ (1 + (1 + m.degree)) (by omega) ((h₁ 4 0).mul ((h₁ 3 0).mul (isHomogeneous_monomial _ rfl)))`.
+-/
 theorem geoFun_rel (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d + 1))
     (hreg : ∀ b : B, IsRegularLocalRing (B.presheaf.stalk b))
     (hfl : IsFlagBundle π (fun _ : Unit => E) (fun _ => 2) (fun _ => fl))
@@ -74,6 +89,15 @@ theorem geoFun_rel (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d + 1
         field_simp
     · exact hΨ.2 _ (1 + (1 + m.degree)) (by omega) ((h₁ 4 0).mul ((h₁ 3 0).mul (isHomogeneous_monomial _ rfl)))
 
+/- English proof (translation)
+Establish `hz` using `GlobalTheory.ArInt.Model.eq_zero_of_pow d (Ψ ∘ₗ LinearMap.mulLeft ℝ (-X 0) ∘ₗ (rename (![3, 4, 2] : Fin 3 → Fin 5) : MvPolynomial (Fin 3) ℝ →ₐ[ℝ] _).toLinearMap - ΨB) (fun n => by set LB3 : Fin 3 → HermLB q := ![VMetric.grLB flB 0 H, VMetric.grLB flB 1 H, A]`. Set `T : Fin 2 → Fin 5 → ℤ` to `![Pi.single 0 1, fun i => ∑ j, n j * baseExp j i]`. Establish `hT : ∀ j, (comb (fam5 π w H flB fl A) (T j)).Isometric ((![VMetric.grLB fl 0 (H.pull π w), (comb LB3 n).pull π w] : Fin 2 → HermLB p) j)`. Introduce `j`. Use `fin_cases j`.
+
+Conclude with `isometric_comb_single _ 0`. Conclude with `(isometric_comb_comb _ baseExp n).trans ((isometric_comb_congr isometric_baseExp n).trans (isometric_comb_pull LB3 n π w))`. Establish `e` using `GlobalTheory.T.flag_bundle_regular_base_second hC k B Y q p d hq hp hreg π w E h H ⟨flB⟩ fl hfl (comb LB3 n) _ (isGeoFun_subst hΨ _ T hT)`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply] at e ⊢`. Rewrite using `[hB.1 n, ← e, sub_eq_zero, ← aeval_baseExp, map_pow, aeval_lin]`.
+
+Simplify using `[T, lin_single])`. Use the proof step `(fun P e he hP => by`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply]`. Rewrite using `[hB.2 P e he hP, hΨ.2 _ (1 + e) (by omega) ((isHomogeneous_X _ _).neg.mul hP.rename_isHomogeneous), sub_zero])`. Use `LinearMap.congr_fun hz f` as an intermediate fact.
+
+Simplify `this` using `only [LinearMap.sub_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply, LinearMap.zero_apply, sub_eq_zero]`.
+-/
 theorem geoFun_gysin (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d + 1))
     (hreg : ∀ b : B, IsRegularLocalRing (B.presheaf.stalk b))
     (hfl : IsFlagBundle π (fun _ : Unit => E) (fun _ => 2) (fun _ => fl))
@@ -102,6 +126,11 @@ theorem geoFun_gysin (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d +
   simpa only [LinearMap.sub_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply,
     LinearMap.zero_apply, sub_eq_zero] using this
 
+/- English proof (translation)
+Take `⟨r, hr, hsupp, hnorm⟩` from `GlobalTheory.T.rank_two_flag_rational_sections k B Y q p d hq hp hreg π w E h H flB fl hfl A`. Establish `h₁ : (X 3 - X 0 : MvPolynomial (Fin 5) ℝ).IsHomogeneous 1` using `(isHomogeneous_X _ _).sub (isHomogeneous_X _ _)`. Establish `h₂ : (X 3 + X 4 - 2 * X 0 : MvPolynomial (Fin 5) ℝ).IsHomogeneous 1`. Rewrite using `[two_mul]`. Conclude with `((isHomogeneous_X _ _).add (isHomogeneous_X _ _)).sub ((isHomogeneous_X _ _).add (isHomogeneous_X _ _))`.
+
+Take `⟨s, c, hpol⟩` from `GlobalTheory.IntLinPow.homog_eq_sum_pow_intLin (d + 1) _ (by convert h₁.mul ((h₂.pow (2 * i)).mul (hR.rename_isHomogeneous (f := (![3, 4, 2] : Fin 3 → Fin 5)))) using 1; omega)`. Rewrite using `[GlobalTheory.T.arithmetic_function_swap_line_family hC k B Y q p d hq hp π w E h H flB fl A Φ hΦ r hr hsupp _ (by simp) s c hpol]`. Conclude with `GlobalTheory.T.flag_bundle_regular_base_first hC k B Y q p d hq hp hreg π w E h H flB fl hfl A ΨB hB r hr hnorm i R hi hR s c hpol`.
+-/
 theorem arFun_rel (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d + 1))
     (hreg : ∀ b : B, IsRegularLocalRing (B.presheaf.stalk b))
     (hfl : IsFlagBundle π (fun _ : Unit => E) (fun _ => 2) (fun _ => fl))
@@ -122,6 +151,9 @@ theorem arFun_rel (hC : ArCalc) (hq : IsArithVar q d) (hp : IsArithVar p (d + 1)
 
 end Main
 
+/- English proof (translation)
+Use `(Commute.all ((X 3 + X 4 - 2 * X 0) ^ 2 : MvPolynomial (Fin 5) ℝ) ((X 4 - X 3) ^ 2)).geom_sum₂_mul j` as an intermediate fact. Rewrite using `[pow_mul, pow_mul, ← sub_eq_iff_eq_add', ← this, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[pow_mul, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_expand (j : ℕ) : ((X 3 + X 4 - 2 * X 0) ^ (2 * j) : MvPolynomial (Fin 5) ℝ) = (X 4 - X 3) ^ (2 * j) +
     ∑ i ∈ Finset.range j, 4 * ((X 4 - X 0) * ((X 3 - X 0) *
       ((X 3 + X 4 - 2 * X 0) ^ (2 * i) * (X 4 - X 3) ^ (2 * (j - 1 - i))))) := by
@@ -131,6 +163,29 @@ theorem pow_expand (j : ℕ) : ((X 3 + X 4 - 2 * X 0) ^ (2 * j) : MvPolynomial (
   rw [pow_mul, pow_mul]
   ring
 
+/- English proof (translation)
+Introduce `hC k _ B Y _ _ q p d hq hp hreg π w E h H hflB fl hfl A Φ Ψ hΦ hΨ j P hj hjd hP`. Take `⟨flB⟩` from `hflB`. Take `⟨⟨Φ5, hΦ5⟩, Ψ5, hΨ5⟩` from `(hC.arExists k Y p (d + 1) hp).2 (Fin 5) (fam5 π w H flB fl A)`. Take `⟨ΨB, hB⟩` from `((hC.arExists k B q d hq).2 (Fin 3) ![VMetric.grLB flB 0 H, VMetric.grLB flB 1 H, A]).2`. Establish `eΦ` using `GlobalTheory.ArInt.Model.isArFun_unique hp hΦ (((hC.arIso k Y p (d + 1) hp).2 (Fin 5) _ Φ5 hΦ5).2.2 (Fin 3) _ lineExp isometric_lineExp)`.
+
+Establish `eΨ` using `GlobalTheory.ArInt.Model.isGeoFun_unique hΨ (isGeoFun_subst hΨ5 _ lineExp isometric_lineExp)`. Rewrite `eΦ`, `eΨ` using `[lin_lineExp]`. Use `set M : MvPolynomial (Fin 3) ℝ := aeval (![X 0 + X 1, X 2] : Fin 2 → MvPolynomial (Fin 3) ℝ) P with hM`. Establish `hMh : M.IsHomogeneous (d + 2 - 2 * j)`. Use `hP.aeval (![X 0 + X 1, X 2] : Fin 2 → MvPolynomial (Fin 3) ℝ) (n := 1) fun i => by fin_cases i` as an intermediate fact.
+
+Conclude with `(isHomogeneous_X _ _).add (isHomogeneous_X _ _)`. Conclude with `isHomogeneous_X _ _`. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `eM : aeval (![X 0, X 3 + X 4 - X 0, X 2] : Fin 3 → MvPolynomial (Fin 5) ℝ) M = rename (![3, 4, 2] : Fin 3 → Fin 5) M`. Rewrite using `[hM, ← AlgHom.comp_apply, ← AlgHom.comp_apply]`.
+
+Use `congr 1`. Use extensionality with `i : 1`. Apply the tactic sequence `fin_cases i <;> simp`. Establish `eu : aeval (![X 0, X 3 + X 4 - X 0, X 2] : Fin 3 → MvPolynomial (Fin 5) ℝ) (X 1 - X 0 : MvPolynomial (Fin 3) ℝ) = X 3 + X 4 - 2 * X 0`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `er : ∀ (m : ℕ) (f : MvPolynomial (Fin 3) ℝ), (X 4 - X 3) ^ m * rename (![3, 4, 2] : Fin 3 → Fin 5) f = rename (![3, 4, 2] : Fin 3 → Fin 5) ((X 1 - X 0) ^ m * f)` using `fun m f => by simp`. Establish `h₁ : (X 1 - X 0 : MvPolynomial (Fin 3) ℝ).IsHomogeneous 1` using `(isHomogeneous_X _ _).sub (isHomogeneous_X _ _)`. Establish `four : ∀ f : MvPolynomial (Fin 5) ℝ, 4 * f = (4 : ℝ) • f` using `fun f => by rw [smul_eq_C_mul]; rfl`. Take `⟨l, rfl⟩ : ∃ l, j = l + 1` from `⟨j - 1, by omega⟩`.
+
+Rewrite using `[eΦ, eΨ]`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, map_pow, eM, eu]`. Establish `eL : Φ5 ((X 3 + X 4 - 2 * X 0) ^ (2 * (l + 1)) * rename (![3, 4, 2] : Fin 3 → Fin 5) M) = oddHarm (l + 1) * (2 * ΨB ((X 1 - X 0) ^ (2 * l) * M))`. Rewrite using `[pow_expand, add_mul, map_add, er, arFun_base hC hq hp hΦ5, zero_add, Finset.sum_mul, map_sum, oddHarm, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hi'` using `Finset.mem_range.1 hi`. Use `arFun_rel hC hq hp hreg hfl hΦ5 hB i ((X 1 - X 0) ^ (2 * (l - i)) * M) (by omega) (by convert (h₁.pow (2 * (l - i))).mul hMh using 1; omega)` as an intermediate fact. Rewrite `this` using `[← er, ← mul_assoc ((X 1 - X 0) ^ _), ← pow_add, show 2 * i + 2 * (l - i) = 2 * l by omega]`. Rewrite using `[Nat.add_sub_cancel, mul_assoc, four, map_smul]`. Simplify using `only [mul_assoc] at this ⊢`.
+
+Rewrite using `[this, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `eR : Ψ5 ((X 3 + X 4 - 2 * X 0) ^ (2 * (l + 1) - 1) * rename (![3, 4, 2] : Fin 3 → Fin 5) M) = 2 * ΨB ((X 1 - X 0) ^ (2 * l) * M)`. Establish `e₁` using `geoFun_gysin hC hq hp hreg hfl hΨ5 hB ((X 1 - X 0) ^ (2 * l) * M)`.
+
+Establish `e₂` using `geoFun_base hC hq hp hΨ5 ((X 0 + X 1) * ((X 1 - X 0) ^ (2 * l) * M))`. Establish `e₃` using `geoFun_rel hC hq hp hreg hfl hΨ5 (∑ i ∈ Finset.range l, 4 * ((X 3 + X 4 - 2 * X 0) ^ (2 * i) * (X 4 - X 3) ^ (2 * (l - 1 - i))) * ((X 3 + X 4 - 2 * X 0) * rename (![3, 4, 2] : Fin 3 → Fin 5) M))`. Establish `e₄ : ((X 3 + X 4 - 2 * X 0) ^ (2 * (l + 1) - 1) * rename (![3, 4, 2] : Fin 3 → Fin 5) M : MvPolynomial (Fin 5) ℝ) = -X 0 * rename (![3, 4, 2] : Fin 3 → Fin 5) ((X 1 - X 0) ^ (2 * l) * M) + -X 0 * rename (![3, 4, 2] : Fin 3 → Fin 5) ((X 1 - X 0) ^ (2 * l) * M) + rename (![3, 4, 2] …`. Rewrite using `[show 2 * (l + 1) - 1 = 2 * l + 1 by omega, pow_succ, pow_expand, add_mul, add_mul, Finset.sum_mul, Finset.sum_mul, Finset.mul_sum, Finset.mul_sum]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e₄, map_add, map_add, map_add, e₁, e₂, e₃]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eL, eR]`.
+-/
 theorem arFun_pow_eq_oddHarm_mul : ArCalc → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),
     IsArithVar q d → IsArithVar p (d + 1) → (∀ b : B, IsRegularLocalRing (B.presheaf.stalk b)) →
     ∀ (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf), Nonempty (Vert.Flag E 2) →

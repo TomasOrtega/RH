@@ -5,6 +5,9 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep 
 namespace GlobalTheory
 
 open NumberField IsDedekindDomain Matrix in
+/- English proof (translation)
+Use extensionality with `x`. Simplify `(Module.finBasis ℂ W).sum_repr x` using `[h]`.
+-/
 private theorem sum_smulRight_finBasis_mul_smulRight_eq_one {W : Type} [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ W] (w : W) (ℓ : Module.Dual ℂ W) (h : ℓ w = 1) :
     ∑ i, ℓ.smulRight (Module.finBasis ℂ W i) * ((Module.finBasis ℂ W).coord i).smulRight w = 1 := by
@@ -12,6 +15,11 @@ private theorem sum_smulRight_finBasis_mul_smulRight_eq_one {W : Type} [AddCommG
   simpa [h] using (Module.finBasis ℂ W).sum_repr x
 
 open NumberField IsDedekindDomain Matrix in
+/- English proof (translation)
+Use `by_contra! hzero`. Apply `hy` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← sum_smulRight_finBasis_mul_smulRight_eq_one w ℓ h, map_sum, LinearMap.sum_apply]`. Simplify using `only [map_mul, Module.End.mul_apply]`.
+
+Use `_ = 0 := by simp [hzero]`.
+-/
 private theorem exists_dual_algHom_smulRight_apply_ne_zero {W V : Type} [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ W] [AddCommGroup V] [Module ℂ V] (w : W) (ℓ : Module.Dual ℂ W)
     (h : ℓ w = 1) (Φ : Module.End ℂ W →ₐ[ℂ] Module.End ℂ V) {y : V} (hy : y ≠ 0) :
@@ -26,6 +34,9 @@ private theorem exists_dual_algHom_smulRight_apply_ne_zero {W V : Type} [AddComm
     _ = 0 := by simp [hzero]
 
 open NumberField IsDedekindDomain Matrix in
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[h]`.
+-/
 private theorem smulRight_mul_smulRight_of_apply_eq_one {W : Type} [AddCommGroup W] [Module ℂ W]
     (w : W) (ℓ φ : Module.Dual ℂ W) (h : ℓ w = 1) :
     ℓ.smulRight w * φ.smulRight w = φ.smulRight w := by
@@ -34,6 +45,15 @@ private theorem smulRight_mul_smulRight_of_apply_eq_one {W : Type} [AddCommGroup
 
 open NumberField IsDedekindDomain Matrix in
 
+/- English proof (translation)
+Introduce `ι _ Wv _ _ _ V _ _ Φ w ℓ _ hℓ hcomm`. Establish `key : ∀ s : Finset ι, ∃ y : V, y ≠ 0 ∧ ∀ v ∈ s, Φ v ((ℓ v).smulRight (w v)) y = y`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+
+Take `⟨y, hy⟩` from `exists_ne (0 : V)`. Conclude with `⟨y, hy, by simp⟩`. Consider the case `insert v s hv ih`. Take `⟨y, hy0, hy⟩` from `ih`. Take `⟨φ, hφ⟩` from `exists_dual_algHom_smulRight_apply_ne_zero (w v) (ℓ v) (hℓ v) (Φ v) hy0`.
+
+Use `⟨Φ v (φ.smulRight (w v)) y, hφ, fun u hu => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hu with rfl | hu` into its components or cases. Rewrite using `[← Module.End.mul_apply, ← map_mul, smulRight_mul_smulRight_of_apply_eq_one _ _ _ (hℓ u)]`. Establish `huv : u ≠ v` using `fun h => hv (h ▸ hu)`. Rewrite using `[← Module.End.mul_apply, (hcomm u v huv _ _).eq, Module.End.mul_apply, hy u hu]`.
+
+Take `⟨y, hy0, hy⟩` from `key Finset.univ`. Conclude with `⟨y, hy0, fun v => hy v (Finset.mem_univ v)⟩`.
+-/
 theorem _root_.GlobalTheory.commuting_endAlgebras_common_fixed_vector :
     ∀ (ι : Type) [Fintype ι] (Wv : ι → Type) [∀ v, AddCommGroup (Wv v)] [∀ v, Module ℂ (Wv v)]
       [∀ v, FiniteDimensional ℂ (Wv v)] (V : Type) [AddCommGroup V] [Module ℂ V]

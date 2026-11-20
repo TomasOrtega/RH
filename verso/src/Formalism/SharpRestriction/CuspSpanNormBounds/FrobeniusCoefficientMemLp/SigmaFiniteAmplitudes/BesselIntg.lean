@@ -39,12 +39,21 @@ def InPair (L : LocBessel k r) (p : PairSp k r) : Prop :=
   Matrix.of p.1.1 ∈ UWset k r L.z ∧ Matrix.of p.1.2 ∈ Nset k r ∧ Matrix.of p.2.1 ∈ UWset k r L.z' ∧
     Matrix.of p.2.2 ∈ Nset k r
 
+/- English proof (translation)
+The claim follows from `hh.1`.
+-/
 theorem uh_of_uw {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : h ∈ UH (Hpk k r) := hh.1
 
+/- English proof (translation)
+The claim follows from `hn.1`.
+-/
 theorem uh_of_n {n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hn : n ∈ Nset k r) :
     n ∈ UH (Hpk k r) := hn.1
 
+/- English proof (translation)
+Use extensionality with `η'`. Simplify using `only [Psi, aVec, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, _root_.smul_apply, inner_smul_left, starRingEnd_apply, star_mul', smul_smul, Matrix.mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Psi_eq (L : LocBessel k r) (w0 v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq)
     (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (p : PairSp k r) (x : Mt k r) :
     Psi L w0 v v' ξ ξ' γ p x =
@@ -58,6 +67,31 @@ theorem Psi_eq (L : LocBessel k r) (w0 v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq)
   congr 1
   ring
 
+/- English proof (translation)
+Take `⟨hh, hn, hh', hn'⟩` from `hp`. Establish `hσ : PI.UpqRep.IsDSHpk k r L.ε L.lam L.σ` using `L.hσ`. Establish `hhU` using `uh_of_uw hh`. Establish `hnU` using `uh_of_n hn`. Establish `hh'U` using `uh_of_uw hh'`.
+
+Establish `hn'U` using `uh_of_n hn'`. Establish `hhi` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hhU`. Establish `hni` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hnU`. Establish `hh'i` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hh'U`. Establish `hn'i` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hn'U`.
+
+Use `set A := (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ with hA`. Use `set B := (Matrix.of p.2.1)⁻¹ * (Matrix.of p.2.2)⁻¹ with hB`. Use `set M := (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ * Matrix.of p.2.2 * Matrix.of p.2.1 with hM`. Establish `hAU : A ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hhi hni) hγ`. Establish `hBU : B ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hh'i hn'i`.
+
+Establish `hMU : M ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hAU hn'U) hh'U`. Establish `hMB : M * B = A`. Rewrite using `[hM, hB, hA]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Matrix.of p.2.1) (Matrix.of p.2.1)⁻¹, (Formalism.FourierDecayAlt.P.S3dx6.unit_of_uh hh'U).1, Matrix.one_mul, (Formalism.FourierDecayAlt.P.S3dx6.unit_of_uh hn'U).1, Matrix.mul_one]`.
+
+Set `F : Mt k r → ℂ` to `fun y => ⟪L.σ M⁻¹ v, L.σ (Matrix.of y) w0⟫_ℂ * star ⟪v', L.σ (Matrix.of y) w0⟫_ℂ`. Take `⟨hFi, hFe⟩` from `hSch w0 (L.σ M⁻¹ v) w0 v'`. Establish `hFe' : ∫ y, F y ∂μG = ⟪v, L.σ M v'⟫_ℂ / (d : ℂ)` using `by show ∫ y, ⟪L.σ M⁻¹ v, L.σ (Matrix.of y) w0⟫_ℂ * star ⟪v', L.σ (Matrix.of y) w0⟫_ℂ ∂μG = _`. Rewrite using `[hFe, hw1, one_mul, ← Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.sigma_inner hσ hMU v v']`. Establish `hlm : Measurable (lmulM (k` using `k) (r := r) B) := Formalism.FourierDecayAlt.P.B7.meas_mulM (f := fun _ => ((B : Matrix _ _ ℂ) : Mt k r)) measurable_const measurable_id`.
+
+Establish `hmp : MeasurePreserving (lmulM (k` using `k) (r := r) B) μG μG := ⟨hlm, hμG.2.2.2 B hBU⟩`. Establish `hae : ∀ᵐ x ∂μG, Matrix.of x ∈ UH (Hpk k r)` using `Formalism.MainNotions.S.Pv.AmpDDPf.ae_mem_sk hμG`. Establish `hfeq : ∀ᵐ x ∂μG, ⟪v, L.σ (A * Matrix.of x) w0⟫_ℂ * star ⟪v', L.σ (B * Matrix.of x) w0⟫_ℂ = F (lmulM B x)` using `by filter_upwards [hae] with x hx`. Establish `hBx : B * Matrix.of x ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hBU hx`. Establish `e1 : L.σ (A * Matrix.of x) = (L.σ M).comp (L.σ (B * Matrix.of x))`.
+
+Rewrite using `[← hMB, Matrix.mul_assoc]`. Conclude with `Formalism.FourierDecayAlt.P.TranslationBesselVanishing.sigma_mul hσ hMU hBx`. Use `show _ = ⟪L.σ M⁻¹ v, L.σ (B * Matrix.of x) w0⟫_ℂ * star ⟪v', L.σ (B * Matrix.of x) w0⟫_ℂ`. Rewrite using `[e1, ContinuousLinearMap.comp_apply, Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.sigma_inner hσ hMU]`. Establish `hfi : Integrable (fun x : Mt k r => ⟪v, L.σ (A * Matrix.of x) w0⟫_ℂ * star ⟪v', L.σ (B * Matrix.of x) w0⟫_ℂ) μG`.
+
+Establish `h1 : Integrable (F ∘ lmulM B) μG` using `(hmp.integrable_comp hFi.aestronglyMeasurable).mpr hFi`. Conclude with `h1.congr (hfeq.mono fun x hx => hx.symm)`. Establish `hfint : ∫ x, ⟪v, L.σ (A * Matrix.of x) w0⟫_ℂ * star ⟪v', L.σ (B * Matrix.of x) w0⟫_ℂ ∂μG = ⟪v, L.σ M v'⟫_ℂ / (d : ℂ)`. Rewrite using `[integral_congr_ae hfeq, ← hFe']`. Conclude with `(integral_map hlm.aemeasurable (by rw [hmp.map_eq]; exact hFi.aestronglyMeasurable)).symm.trans (by rw [hmp.map_eq])`.
+
+Use `set c : ℂ := psi k r L.z L.c (Matrix.of p.1.2) * star (psi k r L.z' L.c (Matrix.of p.2.2)) with hc`. Use `set K : L.Wq →L[ℂ] L.Wp := (innerSL ℂ (L.π' (Matrix.of p.2.1) ξ')).smulRight (L.π (Matrix.of p.1.1) ξ) with hK`. Establish `hPsi : (fun x => Psi L w0 v v' ξ ξ' γ p x) = fun x : Mt k r => (c * (⟪v, L.σ (A * Matrix.of x) w0⟫_ℂ * star ⟪v', L.σ (B * Matrix.of x) w0⟫_ℂ)) • K`. Use function extensionality and compare the values at `x`. Rewrite using `[Psi_eq]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hPsi]`. Conclude with `(hfi.const_mul c).smul_const K`. Rewrite using `[hPsi, integral_smul_const, integral_const_mul, hfint]`. Use extensionality with `η'`.
+
+Establish `hpi : ⟪ξ', L.π' (Matrix.of p.2.1)⁻¹ η'⟫_ℂ = ⟪L.π' (Matrix.of p.2.1) ξ', η'⟫_ℂ`. Rewrite using `[Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_inner L.hz'.2 L.hπ' (Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hh').1, Formalism.FourierDecayAlt.P.S3dx6.inv_inv_uh hh'U]`. Simplify using `only [hK, besselIntg, Formalism.MainNotions.S.Pv.AmpDD.coefF, _root_.smul_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, innerSL_apply_apply, ContinuousLinearMap.map_smul, smul_smul, hpi]`. Use `congr 1`. Rewrite using `[← hM]`.
+
+Establish `hd0 : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schur_step (L : LocBessel k r) {μG : Measure (Mt k r)}
     (hμG : PI.BesselPeriodGGP.IsHaarOn (UH (Hpk k r)) μG) {d : ℝ} (hd : 0 < d)
     (hSch : ∀ v w v' w' : L.Hs,

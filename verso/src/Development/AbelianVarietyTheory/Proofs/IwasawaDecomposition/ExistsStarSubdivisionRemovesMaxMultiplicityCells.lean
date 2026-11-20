@@ -10,6 +10,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Introduce `E _ _ _ H q φ lab hDom hφ hφtw hlabtw hsl M n hM hmax hcells`. Take `⟨R, hR⟩` from `hcells`. Take `⟨w, hwtw, hwc, hcov, hdrop⟩` from `GlobalTheory.T.exists_invariant_orbitCentre_marking_polyFan E H q φ lab hDom hφ hφtw hlabtw hsl M hM hmax (R 0)`. Take `⟨ψ', hψ', hψ'tw, hsub, hstar⟩` from `GlobalTheory.T.exists_starSubdivision_invariant_polyhedral_fan E H q φ w hDom hφ hφtw hwtw hwc`. Take `⟨lab', hlab'tw, hsl'⟩` from `GlobalTheory.T.exists_starSubdivision_invariant_labelling E H q φ lab w ψ' hDom hφ hlabtw hsl hwtw hwc hψ' hsub hstar`.
+
+Take `⟨hmax', hc'⟩` from `GlobalTheory.T.starSubdivision_no_new_cell_of_maximal_multiplicity_fan E H q φ lab w ψ' hDom hφ hsl hwc hdrop hψ' hsub hstar M hmax`. Use `⟨ψ', lab', hψ', hψ'tw, hlab'tw, hsl', hsub, hmax', fun k => R k.succ, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hX m δ hδ`. Take `⟨hδφ, hnoc⟩` from `hc' X hX m δ hδ`. Take `⟨k, hk⟩` from `hR X hX m δ hδφ`.
+
+Proceed by induction on `k using Fin.cases with`. Consider the case `zero`. Take `⟨β, hβ, hp, hw1, hin⟩` from `hcov X hX m δ hδφ hk`. Conclude with `absurd hw1 (hnoc β hβ hp hin)`. Consider the case `succ k => exact ⟨k, hk⟩`.
+-/
 theorem exists_star_drop_multCells : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (φ lab : InvFun (𝓞 E)),
     (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) →
     IsPolyFan H.bar q φ → IsTwInv H φ → IsTwInv H lab → SimpLab H.bar q φ lab → ∀ M n : ℕ, 2 ≤ M →

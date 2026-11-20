@@ -17,6 +17,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.PairVac
 
+/- English proof (translation)
+Take `⟨H, hloc, -⟩` from `GlobalTheory.HeckeBridge.exists_hchar F E σ hcm χ hχ`. Use `(GlobalTheory.HeckeSplit.eventually_unrAt H.1 H.2.1).mono fun w hw x hx => ?_` and prove the remaining obligations. Rewrite using `[← hloc w x]`. Conclude with `((GlobalTheory.HeckeSplit.unrAt_iff E H w).1 hw) x hx`.
+-/
 theorem eventually_unrAt_of_isHecke {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (χ : Chr F E) (hχ : IsHecke F E χ) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, UnrAt χ w := by
@@ -25,6 +28,11 @@ theorem eventually_unrAt_of_isHecke {F E : Type} [Field F] [NumberField F] [Fiel
   rw [← hloc w x]
   exact ((GlobalTheory.HeckeSplit.unrAt_iff E H w).1 hw) x hx
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP`. Establish `h` using `eventually_unrAt_of_isHecke σ hP.base.cm χX hP.hX`. Rewrite `h`, the goal using `[Filter.eventually_cofinite]`. Use `(h.image fun w : HeightOneSpectrum (𝓞 E) => w.under (𝓞 F)).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Simplify using `only [Set.mem_setOf_eq, not_forall] at hv`. Take `⟨w, hw, hu⟩` from `hv`. Conclude with `⟨w, hu, hw⟩`.
+-/
 theorem eventually_unrAt_chiX : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

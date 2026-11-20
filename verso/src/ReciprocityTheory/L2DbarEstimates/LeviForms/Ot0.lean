@@ -7,6 +7,73 @@ namespace ReciprocityTheory.L2DbarEstimates.I
 open MeasureTheory Metric Filter Topology
 open scoped ENNReal ContDiff
 
+/- English proof (translation)
+Introduce `X g ph ph2 r j c hn hj hr hg hph hphL hph2 hph2L hbd hfin0 hJ0`. Establish `hfin : (zeroSet n g).Finite` using `hfin0`. Establish `hJ : ∀ p ∈ zeroSet n g, jac n X.z g p ≠ 0` using `fun p hp => hJ0 p hp`. Establish `hz` using `X.isLocalHomeomorph`. Take `⟨Q, hQ⟩ : ∃ Q : ℝ, Q = Real.pi ^ n / (Nat.factorial (n - 1) : ℝ)` from `⟨_, rfl⟩`.
+
+Take `⟨R, hR⟩ : ∃ R : ℝ, R = r ^ (2 * n)` from `⟨_, rfl⟩`. Establish `hQpos : 0 < Q` using `by rw [hQ]; positivity`. Establish `hRpos : 0 < R` using `by rw [hR]; positivity`. Establish `hlog : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Take `⟨Sg, hSg⟩ : ∃ Sg : ℝ, Sg = ∑ p ∈ hfin.toFinset, ‖c p‖ ^ 2 * Real.exp (-ph2 p - (j : ℝ) * ph p)` from `⟨_, rfl⟩`.
+
+Establish `hsum : (∑' x : {x : M // ∀ i, g i x = 0}, ENNReal.ofReal (‖c x‖ ^ 2 * Real.exp (-ph2 x - (j : ℝ) * ph x))) = ENNReal.ofReal Sg`. Rewrite using `[hSg, ENNReal.ofReal_sum_of_nonneg (fun p _ => by positivity), ← Finset.tsum_subtype]`. Conclude with `(Equiv.subtypeEquivRight (fun x => (hfin.mem_toFinset).symm)).tsum_eq (fun y => ENNReal.ofReal (‖c y.1‖ ^ 2 * Real.exp (-ph2 y.1 - (j : ℝ) * ph y.1)))`. Distinguish the cases in `hS0 : Sg = 0`. Establish `hc : ∀ p ∈ zeroSet n g, c p = 0`.
+
+Introduce `p hp`. Rewrite `hS0` using `[hSg]`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg (fun p _ => by positivity)).1 hS0 p (hfin.mem_toFinset.2 hp)`. Establish `h2 : ‖c p‖ ^ 2 = 0`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd h (Real.exp_pos _).ne'`. Simplify using `using h2`. Use `⟨fun _ => 0, fun e _ => differentiableOn_const 0, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hc x hx]`.
+
+Simplify using the standard rewrite rules. Establish `hSpos : 0 < Sg` using `lt_of_le_of_ne (by rw [hSg]; exact Finset.sum_nonneg fun p _ => by positivity) (Ne.symm hS0)`. Establish `hN0 : ∀ p : M, ∃ N : Set M, p ∈ zeroSet n g → IsOpen N ∧ p ∈ N ∧ ∀ τ : ℝ, 0 < τ → ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∫⁻ x in N ∩ shell n g ph r ε, ENNReal.ofReal (‖jac n X.z g x‖ ^ 2 * Real.exp (-ph2 x - ((n : ℝ) + j) * ph x) * ev n g ph r x ^ (-(n : ℝ))) ∂vol n X.z ≤ ENNReal.ofReal ((1 + τ) …`. Introduce `p`. Distinguish the cases in `hp : p ∈ zeroSet n g`.
+
+Take `⟨N, h1, h2, h3⟩` from `hS X.z g ph ph2 r j p hn hz hg hph hph2 hr hp (hJ p hp)`. Rewrite `h3` using `[← hQ, ← hR]`. Conclude with `⟨N, fun _ => ⟨h1, h2, h3⟩⟩`. Conclude with `⟨Set.univ, fun h => absurd h hp⟩`. Use `choose N hN using hN0`.
+
+Take `⟨W, m, hLD, hWN⟩` from `hL X.z g ph r N hz hg hph hr hfin hJ (fun p hp => ⟨(hN p hp).1, (hN p hp).2.1⟩)`. Take `⟨χ, hχ⟩` from `hCut`. Establish `hevm : Measurable (ev n g ph r)` using `(continuous_weightFunction n X.z hz g ph r hg hph).measurable`. Establish `hWm : ∀ p ∈ zeroSet n g, MeasurableSet (W p)` using `fun p hp => (hLD.2 p hp).1.measurableSet`. Establish `E1 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ p ∈ zeroSet n g, ∫⁻ x in N p ∩ shell n g ph r ε, ENNReal.ofReal (‖jac n X.z g x‖ ^ 2 * Real.exp (-ph2 x - ((n : ℝ) + j) * ph x) * ev n g ph r x ^ (-(n : ℝ))) ∂vol n X.z ≤ ENNReal.ofReal ((1 + 1 / 200) * (Q * Real.log 2) * R * Real.exp (-ph2 p - (j : ℝ …` using `(eventually_all_finite hfin).2 (fun p hp => (hN p hp).2.2 (1 / 200) (by norm_num))`.
+
+Establish `E2 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ p ∈ zeroSet n g, ∀ t : ℝ, 0 < t → t ≤ ε → ∫⁻ x in N p ∩ shell n g ph r t, ENNReal.ofReal (‖jac n X.z g x‖ ^ 2 * Real.exp (-ph2 x - ((n : ℝ) + j) * ph x) * ev n g ph r x ^ (-(n : ℝ))) ∂vol n X.z ≤ ENNReal.ofReal ((1 + 1) * (Q * Real.log 2) * R * Real.e …`. Use `(eventually_all_finite hfin).2 (fun p hp => ?_)` and prove the remaining obligations. Take `⟨u, hu, hsub⟩` from `(mem_nhdsGT_iff_exists_Ioo_subset).1 ((hN p hp).2.2 1 one_pos)`. Use `filter_upwards [Ioo_mem_nhdsGT hu] with ε hε t ht htε`. Conclude with `hsub ⟨ht, htε.trans_lt hε.2⟩`.
+
+Establish `E3 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 0 < ε` using `self_mem_nhdsWithin`. Establish `E4 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), ε < 1 / 100` using `(tendsto_id.mono_left nhdsWithin_le_nhds).eventually_lt_const (by norm_num)`. Establish `E5 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 2 * ε ^ 2 < m`. Establish `h : Tendsto (fun ε : ℝ => 2 * ε ^ 2) (𝓝[>] 0) (𝓝 0)`. Establish `hc : Continuous (fun ε : ℝ => 2 * ε ^ 2)` using `by fun_prop`.
+
+Use `(hc.tendsto (0 : ℝ)).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℝ)))` as an intermediate fact. Simplify using `using this`. Conclude with `h.eventually_lt_const hLD.1`. Establish `E6 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), (1 + ε ^ 2) ^ n < 1 + 1 / 200`. Establish `h : Tendsto (fun ε : ℝ => (1 + ε ^ 2) ^ n) (𝓝[>] 0) (𝓝 1)`.
+
+Establish `hc : Continuous (fun ε : ℝ => (1 + ε ^ 2) ^ n)` using `by fun_prop`. Use `(hc.tendsto (0 : ℝ)).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℝ)))` as an intermediate fact. Simplify using `using this`. Conclude with `h.eventually_lt_const (by norm_num)`. Take `⟨ε, hε1, hε2, hε0, hε100, hεm, hεn⟩` from `(E1.and (E2.and (E3.and (E4.and (E5.and E6))))).exists`.
+
+Take `⟨F, hFh, hFS, hFb⟩` from `hF X g ph ph2 r j c W m χ ε hn hg hph hphL hph2 hph2L hr hj hbd hfin hJ hLD hχ hε0 (by linarith) hεm`. Use `⟨F, hFh, fun x hx => hFS x hx, ?_⟩` and prove the remaining obligations. Establish `hG : ∫⁻ x in shell n g ph r ε, ENNReal.ofReal (‖gt n X.z g c W x‖ ^ 2 * Real.exp (-ph2 x - ((n : ℝ) + j) * ph x) * ev n g ph r x ^ (-(n : ℝ))) ∂vol n X.z ≤ ENNReal.ofReal ((1 + 1 / 200) * (Q * Real.log 2) * R * Sg)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_le_sum_setLIntegral _ _ _ (fun p hp => hWm p (hfin.mem_toFinset.1 hp)) _ _ ?_ ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Apply `hx` to reduce the goal to its premises. Rewrite using `[localExtension_eq_zero_off n X.z g c W (fun p hp => hno p (hfin.mem_toFinset.2 hp))]`.
+
+Simplify using the standard rewrite rules. Introduce `p hp x hx`. Rewrite using `[localExtension_eq_mul_jacobian n X.z g ph r c W m hLD hfin (hfin.mem_toFinset.1 hp) hx, ← ENNReal.ofReal_mul (sq_nonneg _)]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`.
+
+Rewrite using `[norm_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ p ∈ hfin.toFinset, ENNReal.ofReal (‖c p‖ ^ 2) * ENNReal.ofReal ((1 + 1 / 200) * (Q * Real.log 2) * R * Real.exp (-ph2 p - (j : ℝ) * ph p)) := by`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `hfin.mem_toFinset.1 hp`.
+
+Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, Measure.restrict_restrict (hWm p hp')]`. Use `gcongr`. Conclude with `(lintegral_mono_set (Set.inter_subset_inter_left _ (hWN p hp'))).trans (hε1 p hp')`. Use `_ = ENNReal.ofReal ((1 + 1 / 200) * (Q * Real.log 2) * R * Sg) := by`. Rewrite using `[hSg, Finset.mul_sum, ENNReal.ofReal_sum_of_nonneg]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (sq_nonneg _)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `p _`.
+
+Check the signs of the components of the expression. Establish `hF0 : otNorm n X.z ph ph2 j (cutExt n X.z g ph r c W χ ε) ≤ ENNReal.ofReal (2 * ((1 + 1) * (Q * Real.log 2) * R) * ε ^ 2 * Sg)`. Unfold `otNorm`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_le_sum_setLIntegral _ _ _ (fun p hp => (hWm p (hfin.mem_toFinset.1 hp)).inter (measurableSet_lt hevm measurable_const)) _ _ ?_ ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `hne : cutExt n X.z g ph r c W χ ε x ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Simplify using `[h0]`.
+
+Unfold `cutExt at hne`. Establish `hχne : χ (ev n g ph r x / ε ^ 2) ≠ 0` using `fun h => hne (by simp [h])`. Establish `hgne : gt n X.z g c W x ≠ 0` using `fun h => hne (by simp [h])`. Establish `hlt : ev n g ph r x < ε ^ 2`. Assume the negation of the conclusion as `hge`.
+
+Use `push_neg at hge`. Conclude with `hχne (hχ.2.2.1 _ ((one_le_div (by positivity)).2 hge))`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Conclude with `hgne (localExtension_eq_zero_off n X.z g c W (fun p hp hxp => hno p (hfin.mem_toFinset.2 hp) ⟨hxp, hlt⟩))`.
+
+Introduce `p hp x hx`. Rewrite using `[← ENNReal.ofReal_mul (sq_nonneg _)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Unfold `cutExt`. Rewrite using `[localExtension_eq_mul_jacobian n X.z g ph r c W m hLD hfin (hfin.mem_toFinset.1 hp) hx.1, norm_mul, norm_mul, Complex.norm_real]`.
+
+Establish `h1 : ‖χ (ev n g ph r x / ε ^ 2)‖ ≤ 1`. Rewrite using `[Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith [(hχ.2.2.2.1 (ev n g ph r x / ε ^ 2)).1, (hχ.2.2.2.1 (ev n g ph r x / ε ^ 2)).2]`. Establish `hE` using `Real.exp_pos (-ph2 x - ((n : ℝ) + j) * ph x)`. Establish `h2 : (‖χ (ev n g ph r x / ε ^ 2)‖ * (‖c p‖ * ‖jac n X.z g x‖)) ^ 2 ≤ (‖c p‖ * ‖jac n X.z g x‖) ^ 2`.
+
+Rewrite using `[mul_pow]`. Conclude with `mul_le_of_le_one_left (sq_nonneg _) (by nlinarith [norm_nonneg (χ (ev n g ph r x / ε ^ 2))])`. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ ∑ p ∈ hfin.toFinset, ENNReal.ofReal (‖c p‖ ^ 2) * ENNReal.ofReal (2 * ((1 + 1) * (Q * Real.log 2) * R * Real.exp (-ph2 p - (j : ℝ) * ph p)) * ε ^ 2) := by`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations.
+
+Establish `hp'` using `hfin.mem_toFinset.1 hp`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `gcongr`. Use `lintegral_dyadic_shell_bound (vol n X.z) (ev n g ph r) hevm (weightFunction_nonneg n g ph r) (W p) (hWm p hp') (fun x => ‖jac n X.z g x‖ ^ 2 * Real.exp (-ph2 x - ((n : ℝ) + j) * ph x)) (fun x => by positivity) n hn ε _ hε0 (by linarith) (by positivity) ?_ ?_` and prove the remaining obligations. Use `measure_mono_null (fun x hx => ?_) (volume_singleton_eq_zero n hn X.z hz p)` and prove the remaining obligations.
+
+Establish `hxS` using `mem_zeroSet_of_weight_nonpos n g ph r hr.ne' x hx.2`. Assume the negation of the conclusion as `hxp`. Conclude with `not_mem_neighborhood_of_ne n g ph r W m hLD hp' hxS hxp hx.1 ((hLD.2 x hxS).2.1)`. Introduce `t ht htε`. Conclude with `(lintegral_mono_set (Set.inter_subset_inter_left _ (hWN p hp'))).trans (hε2 p hp' t ht htε)`.
+
+Use `_ = _ := by`. Rewrite using `[hSg, Finset.mul_sum, ENNReal.ofReal_sum_of_nonneg]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (sq_nonneg _)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `p _`. Check the signs of the components of the expression. Establish `hA0 : 0 ≤ 2 * Real.exp 1 * (1 + ε ^ 2) ^ n * 72` using `by positivity`. Establish `hxG : ENNReal.ofReal (2 * Real.exp 1 * (1 + ε ^ 2) ^ n * 72) * ∫⁻ x in shell n g ph r ε, ENNReal.ofReal (‖gt n X.z g c W x‖ ^ 2 * Real.exp (-ph2 x - ((n : ℝ) + j) * ph x) * ev n g ph r x ^ (-(n : ℝ))) ∂vol n X.z ≤ ENNReal.ofReal (2 * Real.exp 1 * (1 + ε ^ 2) ^ n * 72 * ((1 + 1 / …`.
+
+Rewrite using `[ENNReal.ofReal_mul hA0]`. Use `gcongr`. Establish `hmain` using `sqrt_add_sq_le_weighted _ _ _ _ (by positivity) (by positivity) hxG hF0`. Establish `hε2' : ε ^ 2 ≤ 1 / 10000` using `by nlinarith`. Establish `hcoef : 101 / 100 * (2 * Real.exp 1 * (1 + ε ^ 2) ^ n * 72 * ((1 + 1 / 200) * Real.log 2)) + 101 * (2 * ((1 + 1) * Real.log 2) * ε ^ 2) ≤ 280`.
+
+Establish `he` using `Real.exp_one_lt_d9`. Establish `hl` using `Real.log_two_lt_d9`. Establish `hu0 : 0 ≤ (1 + ε ^ 2) ^ n` using `by positivity`. Establish `h1 : Real.exp 1 * (1 + ε ^ 2) ^ n ≤ 2.7182818286 * (1 + 1 / 200)` using `mul_le_mul he.le hεn.le hu0 (by norm_num)`. Establish `h2 : Real.exp 1 * (1 + ε ^ 2) ^ n * Real.log 2 ≤ 2.7182818286 * (1 + 1 / 200) * 0.6931471808` using `mul_le_mul h1 hl.le hlog.le (by norm_num)`.
+
+Establish `h3 : Real.log 2 * ε ^ 2 ≤ 0.6931471808 * (1 / 10000)` using `mul_le_mul hl.le hε2' (sq_nonneg _) (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hconst : 0 ≤ ohsawaTakegoshiConstant n r` using `by unfold ohsawaTakegoshiConstant; positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+
+Establish `hy : 0 ≤ Q * R * Sg` using `by positivity`. Establish `hot : ohsawaTakegoshiConstant n r = 280 * Q * R` using `by rw [hQ, hR]; unfold ohsawaTakegoshiConstant; ring`. Rewrite using `[hot]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by rw [ENNReal.ofReal_mul hconst, hsum]`.
+-/
 theorem ot0 (n : ℕ) (M : Type u) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [MeasurableSpace M] [BorelSpace M]
     (hF : FixedStatement n M) (hS : ShellStatement n M) (hL : LocalStatement n M)

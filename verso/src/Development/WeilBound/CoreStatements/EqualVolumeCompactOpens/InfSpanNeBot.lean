@@ -54,6 +54,9 @@ def EqVolUnf : Prop :=
       (FF' : Set (V (nd (U.X k')))), IsOrth (U.X k) x → IsOrth (U.X k') x' → IsFundSet (U.X k) x FF →
       IsFundSet (U.X k') x' FF' → muF (U.X k) x FF = muF (U.X k') x' FF'
 
+/- English proof (translation)
+Establish `h1 : m ∈ I * J` using `h ▸ Ideal.mem_span_singleton_self m`. Establish `h2 : m * a ∈ I ⊓ Ideal.span {a}` using `⟨I.mul_mem_right _ (Ideal.mul_le_inf h1).1, Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)⟩`. Introduce `h0`. Rewrite `h2` using `[h0]`. Conclude with `mul_ne_zero hm ha h2`.
+-/
 theorem inf_span_ne_bot {R : Type} [CommRing R] [IsDomain R] {I J : Ideal R} {m a : R} (h : I * J = Ideal.span {m})
     (hm : m ≠ 0) (ha : a ≠ 0) : I ⊓ Ideal.span {a} ≠ ⊥ := by
   have h1 : m ∈ I * J := h ▸ Ideal.mem_span_singleton_self m
@@ -63,6 +66,11 @@ theorem inf_span_ne_bot {R : Type} [CommRing R] [IsDomain R] {I J : Ideal R} {m 
   rw [h0] at h2
   exact mul_ne_zero hm ha h2
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU hr hp hq k k'`. Use `H.unram` as an intermediate fact. Establish `hp0 : ∀ k, (U.X k).p0 = Dw.q` using `fun k => (hU.2.1 k).1`. Establish `hrk : r = Dw.p + Dw.q` using `hU.1`. Establish `hpos : ∀ k, 0 < (U.X k).p0` using `fun k => by rw [hp0]; exact hq`.
+
+Establish `hlt : ∀ k, (U.X k).p0 < r` using `fun k => by rw [hp0]; omega`. Establish `hO : ∀ k, SameOrbits (U.X k) (U.X k).Γ (levOf l (U.X k))` using `fun k => h6 E r _ _ (fun γ hγ => h5 E r _ _ γ (hpos k) (hlt k) (h4 E H Dw l Xo c σ r U hσ hU k γ hγ)) (h3 E H Dw l Xo c σ r U hσ hU k)`. Establish `hΨ : (U.X k).Ψ = (U.X k').Ψ` using `Finset.ext fun τ => ((hU.2.1 k).2 τ).trans ((hU.2.1 k').2 τ).symm`. Establish `hne : levIdeal l ≠ ⊥` using `inf_span_ne_bot l.prod (Nat.cast_ne_zero.2 (by have := l.three_le; omega)) (Nat.cast_ne_zero.2 l.A_pos.ne')`. Conclude with `h0 E r (U.X k) (U.X k') _ _ (levIdeal l) _ _ hΨ ((hp0 k).trans (hp0 k').symm) hr (hpos k) (hlt k) ⟨(U.X k).Λ_fg, (U.X k).Λ_span⟩ ⟨(U.X k').Λ_fg, (U.X k').Λ_span⟩ (U.X k).ξ0_im (U.X k').ξ0_im (fun τ hτ => mul_pos_of_neg_of_neg (h2 E H Dw l Xo c σ r U hσ hU (by omega) k τ hτ) (h2 E …`.
+-/
 theorem eqVolUnf_of (h0 : EqVolTr) (h1 : UnfLat) (h2 : UnfSign) (h3 : UnfLevelIn) (h4 : UnfBlock) (h5 : ScalarOfBlock)
     (h6 : OrbitsOfIncl)
     (h7 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H),

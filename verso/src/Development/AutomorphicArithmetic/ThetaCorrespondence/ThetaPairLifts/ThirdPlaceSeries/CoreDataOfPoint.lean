@@ -39,16 +39,44 @@ end Transport
 section Gen
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : D.what₂.Word}
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.μf, h.μT, h.ρJ, h.ρB, h.κ, h.vol, h.volT⟩`.
+-/
 theorem meas_upd_alt {a : XGeo D} {y : YRat a} {m : YMeas y} {b} (h : GeoMeas (_root_.GlobalTheory.Fam.pk_z W) (mkGeo m b)) (b') : GeoMeas (_root_.GlobalTheory.Fam.pk_z W) (mkGeo m b') :=
   ⟨h.μf, h.μT, h.ρJ, h.ρB, h.κ, h.vol, h.volT⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.b, h.bT, h.gP, h.tP, h.moves, h.movesT, h.Ψ, h.ΨT, h.nz⟩`.
+-/
 theorem vTie_update {f : _root_.GlobalTheory.Fam.FamilyCharacter W u} {v : VCom f.c} (h : _root_.GlobalTheory.Fam.CommutingVectorTie f v) (JG eG eGT dG) :
     _root_.GlobalTheory.Fam.CommutingVectorTie f { v with JG := JG, eG := eG, eGT := eGT, dG := dG } :=
   ⟨h.b, h.bT, h.gP, h.tP, h.moves, h.movesT, h.Ψ, h.ΨT, h.nz⟩
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h.bot.hyp.2.2.2.1.lev.βX`. Conclude with `GlobalTheory.Mem.EasyInputs.selfDualOK D _ _ _ _ hc`.
+-/
 theorem isSelfDualC_lambdaX_of_pkHyp (h : _root_.GlobalTheory.Fam.PackageHypotheses W) : IsSelfDualC D.sp.X' (_root_.GlobalTheory.Fam.pk_z W).ΛX := by
   obtain ⟨c, hc⟩ := h.bot.hyp.2.2.2.1.lev.βX
   exact GlobalTheory.Mem.EasyInputs.selfDualOK D _ _ _ _ hc
 def geometricDatumOfFamily (A : _root_.GlobalTheory.Fam.GeometricFamily W u) : XGeo D := ⟨A.g.x, A.g.vac, A.g.Lz, A.g.oT, A.o.ζ₀, A.g.bT, A.g.LT⟩
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Take `⟨y, Bt, h0, hτ, hlev, had, hfr, -, hz⟩` from `_root_.GlobalTheory.T.line_vector_bessel_existence_alt W u hPk a hline hn`. Take `⟨m, hm₀, hlast⟩` from `_root_.GlobalTheory.T.exists_yMeas_geoMeas_volLast W u hPk a y (fun _ => 1) hx`. Establish `hc₀` using `_root_.GlobalTheory.Fam.commOf_is_of_geoMeas_of_coords_is hD hH W u hPk _ hm₀ hx`. Take `⟨tP, htP⟩` from `exists_places D _ hT0`. Take `⟨gP, hgP⟩ : ∃ s : Finset (GlobalTheory.FinPl.Pl D), ∀ p, p ∈ s ↔ ∃ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, p = PP.under (𝓞 D.host.F)` from `⟨(_root_.GlobalTheory.Fam.pk_z W).Pg.image fun PP => PP.under (𝓞 D.host.F), fun p => by simp only [Finset.mem_image, eq_comm]⟩`.
+
+Establish `hdisj : Disjoint gP tP` using `Finset.disjoint_left.2 fun p h1 h2 => by`. Take `⟨PP, hP, rfl⟩` from `(hgP p).1 h1`. Use `hGT PP hP ?_` and prove the remaining obligations. Establish `h3 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((D.mem u).A.T : ℕ) ∈ PP.asIdeal` using `(htP _).1 h2`. Rewrite `h3` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Establish `hsd : IsSelfDualC D.sp.X' a.LT` using `hLT ▸ _root_.GlobalTheory.GeoExists.isSelfDualC_lambdaX_of_pkHyp hPk`. Set `v₀ : VCom (commOf (_root_.GlobalTheory.Fam.pk_z W) u (mkGeo m fun _ => 1))` to `{ gP := gP, tP := tP, N := fun _ => ⊥, NT := a.LT, b := fun _ => 1, bT := a.bT, Ψ := 0, ΨT := fun _ _ => 0, τ := y.τ, JG := fun _ => ⊥, eG := 0, eGT := fun _ _ => 0, dG := 0, cG := 0, RamAd := fun _ => ∅, Sad := fun _ => id, dT := 0, op := fun _ => ⟨0, Fin.elim0, Fin.elim0⟩ }`. Take `⟨k, _, _, _, _, ι, o, hP, hζ, hR⟩` from `hpre y m _ v₀ hLT htP rfl hτ`. Use `choose l hlX hlT using hloc`. Take `⟨S, hS⟩` from `_root_.GlobalTheory.T.exists_symData_symRead_at_type_places W u hPk hTy a fun PP => l PP.1 (Or.inl PP.2)`.
+
+Take `⟨bas, hb1, hb2⟩ : ∃ bas : ∀ PP h j c, j + c = (l PP h).s + 1 → GL (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin c) (l PP h).k, (∀ PP h, PP ∉ (_root_.GlobalTheory.Fam.pk_z W).Pg → bas PP h = fun _ _ _ => 1) ∧ ∀ PP : (_root_.GlobalTheory.Fam.pk_z W).Pg, bas PP.1 (Or.inl PP.2) = fun j c hc = …` from `⟨fun PP h => if hp : PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg then fun j c hc => ((S ⟨PP, hp⟩).T (Fin D.R.t)).bas j c hc else fun _ _ _ => 1, fun PP h hp => dif_neg hp, fun PP => dif_pos PP.2⟩`. Take `⟨N, b, dT, M, β₀, hsh, hb, hN, hY⟩` from `_root_.GlobalTheory.T.local_component_vector_relation_alt W u hPk a y m _ k ι v₀ o l bas hc₀ hτ hn rfl rfl hζ hsd hgP htP hP (fun n h x hx => horth n h x fun h' => hx ((htP x).2 h')) fun PP h hp j c hc => by rw [hb1 PP h hp]`. Establish `hm` using `_root_.GlobalTheory.GeoExists.meas_upd_alt hm₀ b`. Establish `hc` using `_root_.GlobalTheory.Fam.commOf_is_of_geoMeas_of_coords_is hD hH W u hPk _ hm hx`. Establish `hbT' : a.bT ∈ GfC D.sp.X'` using `hbT ▸ Subgroup.one_mem _`.
+
+Set `v₁ : VCom (commOf (_root_.GlobalTheory.Fam.pk_z W) u (mkGeo m b))` to `{ gP := gP, tP := tP, N := N, NT := a.LT, b := b, bT := a.bT, Ψ := 0, ΨT := fun _ _ => 0, τ := y.τ, JG := fun _ => ⊥, eG := 0, eGT := fun _ _ => 0, dG := 0, cG := 0, RamAd := o.Ram, Sad := fun _ => id, dT := dT, op := fun _ => ⟨0, Fin.elim0, Fin.elim0⟩ }`. Take `⟨Ψ, ΨT, hΨ, hΨT, htie⟩` from `_root_.GlobalTheory.T.local_component_places_characterized_alt W u hPk a y m b v₁ hc rfl rfl hgP hTy (fun j => (hb j).1) hbT' hsd (fun P => by rw [hbT, hLT]; exact moves_one _ _ _) hN rfl rfl htP`. Establish `hYG : ∀ PP : (_root_.GlobalTheory.Fam.pk_z W).Pg, LocY (l PP.1 (Or.inl PP.2)) y N (_root_.GlobalTheory.Fam.pk_z W).βY b fun j c hc => ((S PP).T (Fin D.R.t)).bas j c hc` using `fun PP => hb2 PP ▸ (hY PP.1 (Or.inl PP.2)).some`. Take `⟨JG, eG, eGT, dG, n, G, pl, hG, hat, hrd, hstd⟩` from `_root_.GlobalTheory.LevPin.exists_levelData_alt W u hPk a y m b { v₁ with Ψ := Ψ, ΨT := ΨT } hc rfl rfl hgP hTy _ S hS hYG fun PP => ⟨hlX _ _, hlT _ _⟩`. Set `v : VCom (commOf (_root_.GlobalTheory.Fam.pk_z W) u (mkGeo m b))` to `{ v₁ with Ψ := Ψ, ΨT := ΨT, JG := JG, eG := eG, eGT := eGT, dG := dG }`.
+
+Use `choose Q hQ using fun PP (h : _root_.GlobalTheory.Fam.QAllAlt W PP) => _root_.GlobalTheory.T.local_component_at_split_place_alt W u hPk a y m b v hc rfl rfl PP h (l PP (Or.inr h)) (hb1 PP (Or.inr h) (hQG PP h) ▸ (hY PP (Or.inr h)).some) (hlX _ _) (hlT _ _)`. Establish `hv : v.Is` using `⟨hdisj, fun j hj => (hN j hj).1, hsd, fun j => (hb j).1, hbT', hΨ, hΨT, GlobalTheory.FixLev.fixLev_compact_open D _ v n G hG, hat, fun j => ⟨(hb j).2, fun i => i.elim0⟩, fun j φ hφ => ⟨hφ.1, hφ⟩⟩`. Use `⟨⟨mkGeo m b, jj, k, ι, v, { o with M := M, β₀ := β₀ }, n, G, pl, Q, ⟨Bt, b 0, 1, 1, 1⟩, c₀⟩, ⟨hm, hlast, hx, hv, shape_upd hsh b Ψ ΨT JG eG eGT dG, hG, fun row col => ⟨_root_.GlobalTheory.GeoExists.vTie_update (htie jj row col) JG eG eGT dG, hrd jj row col⟩, ?_, ?_, ?_, ?_, ⟨fun …` and prove the remaining obligations. Use `show _root_.GlobalTheory.Fam.LeadingReadAt W u jj a.bT`. Rewrite using `[hbT]`.
+
+Conclude with `hjj`. Use `show star o.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ o.ζ₀ = _ ∧ ∀ j h, y.τ j h *ᵥ o.ζ₀ = _`. Rewrite using `[hζ]`. Conclude with `⟨hn, fun j h => (hτ j h).2⟩`. Introduce `i`.
+
+Use `⟨(hstd i).1, (hstd i).2.1, (hstd i).2.2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← hζ]`. Introduce `PP h`. Use `⟨(hQ PP h).1, (hQ PP h).2.1, (hQ PP h).2.2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← hζ]`.
+
+Use `show (⟨a.x, a.vac, a.Lz, a.oT, o.ζ₀, a.bT, a.LT⟩ : XGeo D) = a`. Rewrite using `[hζ]`.
+-/
 theorem core_data_of_point (hD : GlobalTheory.Published.DiscreteSeriesCover) (hH : GlobalTheory.Published.HarishChandraModules) (hPk : _root_.GlobalTheory.Fam.PackageHypotheses W)
     (hTy : GlobalTheory.Core.Mi.IsTypePlaces (_root_.GlobalTheory.Fam.pk_z W).Pg) (hT0 : ((D.mem u).A.T : ℕ) ≠ 0)
     (hGT : ∀ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) (hQG : ∀ PP, _root_.GlobalTheory.Fam.QAllAlt W PP → PP ∉ (_root_.GlobalTheory.Fam.pk_z W).Pg)
@@ -130,6 +158,11 @@ theorem core_data_of_point (hD : GlobalTheory.Published.DiscreteSeriesCover) (hH
     rw [hζ]
 end Gen
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `hD hH hS B X I l Z L hT Gi Gl Kc Yd cX ex W hW u`. Take `⟨a, c₀, hx, hpin, hbT, hiA, hLT, hline, hn, hemb, hz, horth, hloc⟩` from `_root_.GlobalTheory.T.all_true_family_geometry_alt hS W hW u`. Take `⟨jj, hjj⟩` from `hW.tq.top1 u`. Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Take `⟨A, hA, rfl, rfl, hfr, hR⟩` from `_root_.GlobalTheory.GeoExists.core_data_of_point (W := W) (u := u) hD hH hW.pk hW.lev.1 (hPr.T_prime u).ne_zero (fun PP hP => Formalism.L2.Col.T_notMem_vGs hPr u ⟨PP, (hW.lev.2.1 PP).1 hP⟩) (fun PP ⟨t, ht⟩ hP => TC.Q_notMem_of_ok hW.tr.ok _ PP ((hW.tq.Q t PP).1 ht) ((hW.lev.2.1 P …`.
+
+Conclude with `⟨A, hA, ⟨hpin, hR, hemb, hz⟩, hiA, hfr⟩`.
+-/
 theorem exists_geoAll_alt : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.StrongApproxSU → ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ u : B.Word, ∃ a : _root_.GlobalTheory.Fam.GeometricFamily W u, a.Is ∧ a.True ∧ (∀ r s, (a.g.oT B.R.m rfl).iA r s = if r.val = s.val then 1 else 0) ∧ GlobalTheory.MiTop.Framed a.d.B := by
   intro hD hH hS B X I l Z L hT Gi Gl Kc Yd cX ex W hW u
   obtain ⟨a, c₀, hx, hpin, hbT, hiA, hLT, hline, hn, hemb, hz, horth, hloc⟩ := _root_.GlobalTheory.T.all_true_family_geometry_alt hS W hW u

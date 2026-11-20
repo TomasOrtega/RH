@@ -53,11 +53,17 @@ def IsRecLit (rc : IrrGL (w.adicCompletion E) → WD h) : Prop :=
   ∃ (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (ε : EpsFamily A),
     IsDeligneEps ε ∧ LawsLit a ha (ε E w h) rc
 
+/- English proof (translation)
+The claim follows from `{ bij := H.bij, dim := H.dim, one := H.one, eps := H.eps, cusp := H.cusp, langlands := H.langlands, twist := H.twist, central := H.central, dual := H.dual }`.
+-/
 theorem Laws.toLit {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A}
     {rc : IrrGL (w.adicCompletion E) → WD h} (H : Laws a ha ε rc) : LawsLit a ha (ε E w h) rc :=
   { bij := H.bij, dim := H.dim, one := H.one, eps := H.eps, cusp := H.cusp, langlands := H.langlands,
     twist := H.twist, central := H.central, dual := H.dual }
 
+/- English proof (translation)
+The claim follows from `let ⟨a, ha, ε, hε, H⟩ := H; ⟨a, ha, ε, hε, H.toLit⟩`.
+-/
 theorem IsRec.toLit {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) : IsRecLit h rc :=
   let ⟨a, ha, ε, hε, H⟩ := H; ⟨a, ha, ε, hε, H.toLit⟩
 
@@ -93,6 +99,9 @@ structure PlaceIso (φ : Ω ≃+* Ω') (j : E →+* E') (i : w.adicCompletion E 
 
 end Transport
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => Iff.rfl, fun _ => rfl, continuous_id, fun _ => rfl⟩`.
+-/
 theorem PlaceIso.refl : PlaceIso A w A w (RingEquiv.refl Ω) (RingHom.id E) (RingEquiv.refl _) :=
   ⟨fun _ => Iff.rfl, fun _ => rfl, continuous_id, fun _ => rfl⟩
 

@@ -4,6 +4,17 @@ open Module
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `E : Xt → Dual ℂ S` to `fun x => (LinearMap.proj x : (Xt → ℂ) →ₗ[ℂ] ℂ).comp S.subtype`. Establish `hE : ∀ x (f : S), E x f = (f : Xt → ℂ) x` using `fun _ _ => rfl`. Use `set W : Submodule ℂ (Dual ℂ S) := Submodule.span ℂ (Set.range E) with hWdef`. Establish `hco : W.dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `f hf`. Rewrite `hf` using `[Submodule.mem_dualCoannihilator]`. Rewrite using `[Submodule.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+
+Use `hf (E x) (Submodule.subset_span ⟨x, rfl⟩)` as an intermediate fact. Simplify `this` using `[hE]`. Establish `hW : W = ⊤`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := W), hco]`. Conclude with `Submodule.dualAnnihilator_bot`.
+
+Establish `hl : l ∈ W` using `by rw [hW]; trivial`. Take `⟨n, c, g, hg⟩` from `Submodule.mem_span_set'.mp hl`. Use `choose x hx using fun i => (g i).2`. Use `⟨n, x, c, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg]`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hx i, hE]`.
+-/
 theorem exists_eval_combination (Xt : Type) (S : Submodule ℂ (Xt → ℂ)) [FiniteDimensional ℂ S]
     (l : S →ₗ[ℂ] ℂ) :
     ∃ (n : ℕ) (x : Fin n → Xt) (c : Fin n → ℂ), ∀ f : S, l f = ∑ i, c i * (f : Xt → ℂ) (x i) := by

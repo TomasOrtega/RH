@@ -17,9 +17,15 @@ def intMuCD_pM (ε : Fin n → Bool) : KG ε × (PCoord ε → ℂ) → (Fin n �
 def intMuCD_P (ε : Fin n → Bool) : Measure (KG ε × (PCoord ε → ℂ)) :=
   (dk ε).prod (volume.withDensity fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intMuCD_muPolarMat_eq (ε : Fin n → Bool) :
     muPolarMat ε = Measure.map (intMuCD_pM ε) (intMuCD_P ε) := rfl
 
+/- English proof (translation)
+Establish `h1` using `he.lintegral_map (μ := Measure.comap e μ) F`. Rewrite `h1` using `[he.map_comap, Measure.restrict_eq_self_of_ae_mem hμ]`. Conclude with `h1.symm`.
+-/
 theorem lintegral_comap_embedding {α : Type*} [MeasurableSpace α] {e : α → (Fin n → Fin n → ℂ)}
     (he : MeasurableEmbedding e) (μ : Measure (Fin n → Fin n → ℂ)) (hμ : ∀ᵐ x ∂μ, x ∈ Set.range e)
     (F : (Fin n → Fin n → ℂ) → ENNReal) :
@@ -28,9 +34,17 @@ theorem lintegral_comap_embedding {α : Type*} [MeasurableSpace α] {e : α → 
   rw [he.map_comap, Measure.restrict_eq_self_of_ae_mem hμ] at h1
   exact h1.symm
 
+/- English proof (translation)
+Conclude with `Continuous.measurable (f := intMuCD_pM ε) (polarM_continuous ε)`.
+-/
 theorem intMuCD_measurable_pM (ε : Fin n → Bool) : Measurable (intMuCD_pM ε) := by
   exact Continuous.measurable (f := intMuCD_pM ε) (polarM_continuous ε)
 
+/- English proof (translation)
+Establish `hpm` using `intMuCD_measurable_pM ε`. Establish `hJ : Measurable (fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z))` using `ENNReal.measurable_ofReal.comp (jac_continuous ε).measurable`. Rewrite using `[intMuCD_muPolarMat_eq, lintegral_map hF hpm, intMuCD_P]`. Use `(lintegral_prod (F ∘ intMuCD_pM ε) (hF.comp hpm).aemeasurable).trans ?_` and prove the remaining obligations. Use `lintegral_congr (fun k => ?_)` and prove the remaining obligations.
+
+Use `(lintegral_withDensity_eq_lintegral_mul _ hJ (hF.comp (hpm.comp measurable_prodMk_left))).trans ?_` and prove the remaining obligations. Use `lintegral_congr (fun z => ?_)` and prove the remaining obligations. Conclude with `mul_comm _ _`.
+-/
 theorem intMuCD_polar_int (ε : Fin n → Bool) (F : (Fin n → Fin n → ℂ) → ENNReal) (hF : Measurable F) :
     ∫⁻ x, F x ∂(muPolarMat ε) =
       ∫⁻ k, ∫⁻ z, F (polarM (k, z)) * ENNReal.ofReal (Jac z) ∂volume ∂(dk ε) := by
@@ -44,6 +58,9 @@ theorem intMuCD_polar_int (ε : Fin n → Bool) (F : (Fin n → Fin n → ℂ) �
   refine lintegral_congr (fun z => ?_)
   exact mul_comm _ _
 
+/- English proof (translation)
+Rewrite using `[intMuCD_muPolarMat_eq]`. Conclude with `(ae_map_iff (p := fun x => x ∈ S) (intMuCD_measurable_pM ε).aemeasurable hS).2 (ae_of_all _ h)`.
+-/
 theorem intMuCD_ae_range (ε : Fin n → Bool) (S : Set (Fin n → Fin n → ℂ)) (hS : MeasurableSet S)
     (h : ∀ kz : KG ε × (PCoord ε → ℂ), intMuCD_pM ε kz ∈ S) : ∀ᵐ x ∂(muPolarMat ε), x ∈ S := by
   rw [intMuCD_muPolarMat_eq]
@@ -53,6 +70,11 @@ def intMuCD_eM (ε : Fin n → Bool) : UJ ε → (Fin n → Fin n → ℂ) := fu
 
 def intMuCD_eU (ε : Fin n → Bool) : Formalism.REAL.UJ ε → (Fin n → Fin n → ℂ) := fun g => Formalism.MainNotions.S.umat g
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Jm_mul_Jm ε`. Consider the case `(rw [Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Apply the tactic sequence `split_ifs <;> norm_num)`.
+-/
 private theorem Jm_mul_self_eq_oneFormalDegree (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   first
   | exact Jm_mul_Jm ε
@@ -61,6 +83,9 @@ private theorem Jm_mul_self_eq_oneFormalDegree (ε : Fin n → Bool) : Jm ε * J
      funext a
      split_ifs <;> norm_num)
 
+/- English proof (translation)
+Establish `hg' : gᴴ * (Jm ε * g) = Jm ε`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `hg`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hg', Jm_mul_self_eq_oneFormalDegree]`.
+-/
 private theorem Jm_mul_conjTranspose_mul_Jm_mul_eq_one_of_inUJ' {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     Jm ε * gᴴ * Jm ε * g = 1 := by
   have hg' : gᴴ * (Jm ε * g) = Jm ε := by
@@ -69,6 +94,11 @@ private theorem Jm_mul_conjTranspose_mul_Jm_mul_eq_one_of_inUJ' {ε : Fin n → 
   simp only [Matrix.mul_assoc]
   rw [hg', Jm_mul_self_eq_oneFormalDegree]
 
+/- English proof (translation)
+Establish `hl` using `Jm_mul_conjTranspose_mul_Jm_mul_eq_one_of_inUJ' hg`. Establish `hr : g * (Jm ε * gᴴ * Jm ε) = 1` using `by first`. Consider the case `exact mul_eq_one_comm.mp hl`. Consider the case `exact Matrix.mul_eq_one_comm.mp hl`. Consider the case `(letI := Matrix.invertibleOfLeftInverse g _ hl`.
+
+Conclude with `mul_invOf_self g)`. Conclude with `⟨⟨⟨g, Jm ε * gᴴ * Jm ε, hr, hl⟩, hg⟩, rfl⟩`.
+-/
 private theorem exists_UJ_toM_eq_of_inUJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     ∃ u : UJ ε, toM u = g := by
   have hl := Jm_mul_conjTranspose_mul_Jm_mul_eq_one_of_inUJ' hg
@@ -80,6 +110,19 @@ private theorem exists_UJ_toM_eq_of_inUJ {ε : Fin n → Bool} {g : Matrix (Fin 
        exact mul_invOf_self g)
   exact ⟨⟨⟨g, Jm ε * gᴴ * Jm ε, hr, hl⟩, hg⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hC : ∀ g : UJ ε, inUJ ε (toM g)` using `fun g => g.2`. Establish `hcont : Continuous (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hJt : Continuous (fun x : Matrix (Fin n) (Fin n) ℂ => Jm ε * xᴴ * Jm ε)` using `(continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const`. Establish `hG : Continuous (fun x : Matrix (Fin n) (Fin n) ℂ => (x, MulOpposite.op (Jm ε * xᴴ * Jm ε)))` using `by first`. Consider the case `exact continuous_id.prodMk (MulOpposite.continuous_op.comp hJt)`.
+
+Consider the case `exact continuous_id.prod_mk (MulOpposite.continuous_op.comp hJt)`. Establish `hcomp : (fun x : Matrix (Fin n) (Fin n) ℂ => (x, MulOpposite.op (Jm ε * xᴴ * Jm ε))) ∘ (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) = Units.embedProduct (Matrix (Fin n) (Fin n) ℂ) ∘ (fun g : UJ ε => (g : (Matrix (Fin n) (Fin n) ℂ)ˣ))`. Use function extensionality and compare the values at `g`. Establish `h1 : (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = Jm ε * (toM g)ᴴ * Jm ε` using `Units.inv_eq_of_mul_eq_one_left (Jm_mul_conjTranspose_mul_Jm_mul_eq_one_of_inUJ' (g := toM g) (hC g))`. Use `show (toM g, MulOpposite.op (Jm ε * (toM g)ᴴ * Jm ε)) = Units.embedProduct _ (g : (Matrix (Fin n) (Fin n) ℂ)ˣ)`.
+
+Rewrite using `[Units.embedProduct_apply, h1]`. Establish `hind : Topology.IsInducing (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))`. Use `Topology.IsInducing.of_comp hcont hG ?_` and prove the remaining obligations. Rewrite using `[hcomp]`. Conclude with `Units.isInducing_embedProduct.comp Topology.IsInducing.subtypeVal`.
+
+Establish `hrange : Set.range (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) = {x | inUJ ε x}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `hC g`.
+
+Introduce `hx`. Conclude with `exists_UJ_toM_eq_of_inUJ hx`. Establish `hclosed : IsClosed (Set.range (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)))`. Rewrite using `[hrange]`. Use `show IsClosed {x : Matrix (Fin n) (Fin n) ℂ | xᴴ * Jm ε * x = Jm ε}`.
+
+Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Establish `hce : Topology.IsClosedEmbedding (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))` using `⟨⟨hind, fun a b h => Subtype.ext (Units.ext h)⟩, hclosed⟩`. Conclude with `hce`.
+-/
 private theorem isClosedEmbedding_intMuCD_eM (ε : Fin n → Bool) :
     Topology.IsClosedEmbedding (intMuCD_eM ε) := by
   have hC : ∀ g : UJ ε, inUJ ε (toM g) := fun g => g.2
@@ -119,6 +162,9 @@ private theorem isClosedEmbedding_intMuCD_eM (ε : Fin n → Bool) :
     ⟨⟨hind, fun a b h => Subtype.ext (Units.ext h)⟩, hclosed⟩
   exact hce
 
+/- English proof (translation)
+Establish `hemb : MeasurableEmbedding (intMuCD_eM ε)` using `(isClosedEmbedding_intMuCD_eM ε).measurableEmbedding`. Establish `hae : ∀ᵐ x ∂(muPolarMat ε), x ∈ Set.range (intMuCD_eM ε)` using `intMuCD_ae_range ε _ hemb.measurableSet_range fun kz => exists_UJ_toM_eq_of_inUJ (polarM_inUJ kz)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_muPolar (ε : Fin n → Bool) (F : (Fin n → Fin n → ℂ) → ENNReal) (hF : Measurable F) :
     ∫⁻ g, F (toM g) ∂(muPolar ε) =
       ∫⁻ k, ∫⁻ z, F (polarM (k, z)) * ENNReal.ofReal (Jac z) ∂volume ∂(dk ε) := by
@@ -130,6 +176,11 @@ theorem lintegral_muPolar (ε : Fin n → Bool) (F : (Fin n → Fin n → ℂ) �
     _ = ∫⁻ x, F x ∂(muPolarMat ε) := lintegral_comap_embedding hemb _ hae F
     _ = _ := intMuCD_polar_int ε F hF
 
+/- English proof (translation)
+Establish `hemb : MeasurableEmbedding (intMuCD_eU ε)` using `by first`. Consider the case `exact (isClosedEmbedding_intMuCD_eM ε).measurableEmbedding`. Consider the case `exact (isClosedEmbedding_intMuCD_eM ε).measurableEmbedding (α := Formalism.REAL.UJ ε)`. Establish `hae : ∀ᵐ x ∂(muPolarMat ε), x ∈ Set.range (intMuCD_eU ε)` using `intMuCD_ae_range ε _ hemb.measurableSet_range fun kz => exists_UJ_toM_eq_of_inUJ (polarM_inUJ kz)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[muCD, lintegral_smul_measure]`. Both sides reduce to the same expression. Use `_ = _ := by rw [lintegral_comap_embedding hemb _ hae F, intMuCD_polar_int ε F hF]`.
+-/
 theorem lintegral_muCD (ε : Fin n → Bool) (F : (Fin n → Fin n → ℂ) → ENNReal) (hF : Measurable F) :
     ∫⁻ g, F (Formalism.MainNotions.S.umat g) ∂(muCD ε) =
       ENNReal.ofReal (cPQ ε) * ∫⁻ k, ∫⁻ z, F (polarM (k, z)) * ENNReal.ofReal (Jac z) ∂volume ∂(dk ε) := by

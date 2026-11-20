@@ -11,6 +11,9 @@ section Gen
 variable {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]
   (S : RowSide D EE)
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `x hx`. Use `hiso x x` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker.mp hx, inner_zero_left]`. Conclude with `inner_self_eq_zero.mp this.symm`.
+-/
 theorem inj_of_iso {μ} (hiso : ∀ x y, inner ℂ (S.iota μ x) (S.iota μ y) = inner ℂ x y) :
     Function.Injective (S.iota μ) := by
   rw [← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]
@@ -19,6 +22,9 @@ theorem inj_of_iso {μ} (hiso : ∀ x y, inner ℂ (S.iota μ x) (S.iota μ y) =
   rw [LinearMap.mem_ker.mp hx, inner_zero_left] at this
   exact inner_self_eq_zero.mp this.symm
 
+/- English proof (translation)
+Establish `hi` using `inj_of_iso S hiso`. Use `⟨fun a b h => Subtype.ext (hi h), fun y => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hs y`. Conclude with `⟨⟨z, by rw [Qsp_top S he hi]; trivial⟩, rfl⟩`.
+-/
 theorem iotaQ_bij {μ} (he : S.eOp μ = LinearMap.id)
     (hiso : ∀ x y, inner ℂ (S.iota μ x) (S.iota μ y) = inner ℂ x y)
     (hs : Function.Surjective (S.iota μ)) : Function.Bijective (S.iotaQ μ) := by
@@ -27,6 +33,11 @@ theorem iotaQ_bij {μ} (he : S.eOp μ = LinearMap.id)
   obtain ⟨z, rfl⟩ := hs y
   exact ⟨⟨z, by rw [Qsp_top S he hi]; trivial⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hi` using `inj_of_iso S hiso`. Use extensionality with `x`. Use `ext_inner_right ℂ fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hs y`. Establish `hz : z ∈ S.Qsp μ` using `by rw [Qsp_top S he hi]; trivial`.
+
+Use `show inner ℂ (S.iota μ (LinearMap.adjoint (S.iotaQ μ) x : S.Amb μ)) (S.iota μ z) = inner ℂ x (S.iota μ z)`. Rewrite using `[hiso]`. Establish `h1 : inner ℂ (LinearMap.adjoint (S.iotaQ μ) x) (⟨z, hz⟩ : S.Qsp μ) = inner ℂ x (S.iotaQ μ ⟨z, hz⟩)` using `LinearMap.adjoint_inner_left _ _ _`. Conclude with `h1`.
+-/
 theorem iotaQ_adj {μ} (he : S.eOp μ = LinearMap.id)
     (hiso : ∀ x y, inner ℂ (S.iota μ x) (S.iota μ y) = inner ℂ x y)
     (hs : Function.Surjective (S.iota μ)) : S.iotaQ μ ∘ₗ LinearMap.adjoint (S.iotaQ μ) = LinearMap.id := by
@@ -41,6 +52,9 @@ theorem iotaQ_adj {μ} (he : S.eOp μ = LinearMap.id)
       inner ℂ x (S.iotaQ μ ⟨z, hz⟩) := LinearMap.adjoint_inner_left _ _ _
   exact h1
 
+/- English proof (translation)
+Use `⟨fun μ => iotaQ_bij S (he μ) (hiso μ) (hs μ), one_pos, fun _ => 1, rfl, fun _ => one_pos, Formalism.BasicNotions.DV.rhoUnit_one D, fun μ σ => ?_⟩` and prove the remaining obligations. Rewrite using `[iotaQ_adj S (he μ) (hiso μ) (hs μ)]`. Simplify using `[hl]`.
+-/
 theorem latticeBound_one {n : ℕ} (b : OrthonormalBasis (Fin n) ℂ EE) (ty : Fin n → D.what₂.FT)
     (he : ∀ μ, S.eOp μ = LinearMap.id)
     (hiso : ∀ μ x y, inner ℂ (S.iota μ x) (S.iota μ y) = inner ℂ x y)
@@ -98,18 +112,32 @@ variable (Lb : Lbl H) (hT2 : ∀ u, T u ≠ 2) (per : ∀ u : W, Bool → FK ((K
 
 local notation "DR" => (hostLevelRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 
+/- English proof (translation)
+The claim follows from `(sharp_iota DR μ).trans (rowsN_iota (hd := hd) μ)`.
+-/
 theorem row_sharp_iota (μ) : (RowSide.sharp DR).iota μ = (LinearMap.id : En d →ₗ[ℂ] En d) :=
   (sharp_iota DR μ).trans (rowsN_iota (hd := hd) μ)
 
+/- English proof (translation)
+The claim follows from `latticeBound_one _ _ _ (fun _ => rfl) (fun μ x y => by rw [row_sharp_iota]; rfl) (fun μ => by rw [row_sharp_iota]; exact Function.surjective_id) (fun _ _ _ => rfl)`.
+-/
 theorem row_l1cSharp : SharpLatticeBound DR 1 :=
   latticeBound_one _ _ _ (fun _ => rfl) (fun μ x y => by rw [row_sharp_iota]; rfl)
     (fun μ => by rw [row_sharp_iota]; exact Function.surjective_id) (fun _ _ _ => rfl)
 
+/- English proof (translation)
+The claim follows from `latticeBound_one _ _ _ (fun _ => rfl) (fun μ x y => by rw [show (levelRecordBaseSide H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft …`.
+-/
 theorem row_l1c0 : (levelRecordBaseSide H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat).L1c0 1 :=
   latticeBound_one _ _ _ (fun _ => rfl) (fun μ x y => by rw [show (levelRecordBaseSide H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat).s.iota μ = _ from stdSide_iota _ _ _ μ]; rfl)
     (fun μ => by rw [show (levelRecordBaseSide H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat).s.iota μ = _ from stdSide_iota _ _ _ μ]; exact Function.surjective_id)
     (fun _ _ _ => rfl)
 
+/- English proof (translation)
+Introduce `j _ _ (π : FT)`. Use `show Module.finrank ℂ (Submodule.span ℂ (eb d0 '' {σ | ft0 σ = π})) = Fintype.card {σ : Fin d0 // ft0 σ = π}`. Establish `h : (eb d0 '' {σ | ft0 σ = π}) = Set.range (fun σ : {σ : Fin d0 // ft0 σ = π} => eb d0 σ)`. Use extensionality with `x`. Simplify using `[Set.mem_image]`.
+
+Rewrite using `[h]`. Conclude with `finrank_span_eq_card (b := fun σ : {σ : Fin d0 // ft0 σ = π} => eb d0 σ) ((eb d0).orthonormal.linearIndependent.comp _ Subtype.val_injective)`.
+-/
 theorem row_isotRank : Rows.IsotRank (DR).what₂ := by
   intro j _ _ (π : FT)
   show Module.finrank ℂ (Submodule.span ℂ (eb d0 '' {σ | ft0 σ = π})) = Fintype.card {σ : Fin d0 // ft0 σ = π}
@@ -119,8 +147,14 @@ theorem row_isotRank : Rows.IsotRank (DR).what₂ := by
   exact finrank_span_eq_card (b := fun σ : {σ : Fin d0 // ft0 σ = π} => eb d0 σ)
     ((eb d0).orthonormal.linearIndependent.comp _ Subtype.val_injective)
 
+/- English proof (translation)
+Introduce `_ _ _ _ x` and use `⟨x, rfl⟩`.
+-/
 theorem row_thetaRat : Idx.ThetaRat (levelRecordDivisor H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat) := fun _ _ _ _ x => ⟨x, rfl⟩
 
+/- English proof (translation)
+Introduce `μ j _ _ (x y : Fin d0 → H.E)` and use `by letI : StarRing H.E := H.cmStar have e : H.φ₀ (∑ i, star (x i) * y i : H.E) = inner ℂ (jB H.φ₀ (eb d0) x) (jB H.φ₀ (eb d0) y) := by rw [inner_jB, map_sum] exact Finset.sum_congr rfl fun i _ => by rw [map_mul, emb_star H H.φ₀] exact ⟨_, e⟩`.
+-/
 theorem row_hermRat : Idx.HermRat DR := fun μ j _ _ (x y : Fin d0 → H.E) => by
   letI : StarRing H.E := H.cmStar
   have e : H.φ₀ (∑ i, star (x i) * y i : H.E) = inner ℂ (jB H.φ₀ (eb d0) x) (jB H.φ₀ (eb d0) y) := by
@@ -128,19 +162,31 @@ theorem row_hermRat : Idx.HermRat DR := fun μ j _ _ (x y : Fin d0 → H.E) => b
     exact Finset.sum_congr rfl fun i _ => by rw [map_mul, emb_star H H.φ₀]
   exact ⟨_, e⟩
 
+/- English proof (translation)
+Use `show Module.finrank K (Submodule.span K ((stdH K n).L : Set (stdH K n).V)) = n`. Rewrite using `[stdH_span, finrank_top]`. Conclude with `Module.finrank_fin_fun K`.
+-/
 theorem stdH_rank (K : Type) [Field K] [NumberField K] [StarRing K] (n : ℕ) : (stdH K n).rank = n := by
   show Module.finrank K (Submodule.span K ((stdH K n).L : Set (stdH K n).V)) = n
   rw [stdH_span, finrank_top]
   exact Module.finrank_fin_fun K
 
+/- English proof (translation)
+The claim follows from `letI : StarRing H.E := H.cmStar stdH_rank H.E d`.
+-/
 theorem row_rrRank : (DR).div.RR.rank = d :=
   letI : StarRing H.E := H.cmStar
   stdH_rank H.E d
 
+/- English proof (translation)
+Introduce `_ _ _` and use `letI : StarRing H.E := H.cmStar stdH_rank H.E d0`.
+-/
 theorem row_mjRank : DV.MjRank DR (levelRecordDivisor H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat) := fun _ _ _ =>
   letI : StarRing H.E := H.cmStar
   stdH_rank H.E d0
 
+/- English proof (translation)
+Use `⟨fun _ => (H.g 0 * H.g 1) ^ (R.f * R.k), hn, h0, fun _ _ _ => rfl, fun π => ?_⟩` and prove the remaining obligations. Establish `e : (((H.g 0 * H.g 1) ^ (R.f * R.k) : ℕ) : ℝ) - ((H.g 0 * H.g 1 : ℕ) : ℝ) ^ (R.f * R.k) = 0` using `by push_cast; ring`. Use `show |(((H.g 0 * H.g 1) ^ (R.f * R.k) : ℕ) : ℝ) - ((H.g 0 * H.g 1 : ℕ) : ℝ) ^ (R.f * R.k)| ≤ _`. Rewrite using `[e, abs_zero]`. Check the signs of the components of the expression.
+-/
 theorem row_lemma3 (C : ℝ) (hC : 0 ≤ C)
     (hn : ∀ π : FT, Fintype.card {σ : Fin d // ft σ = π} =
       (H.g 0 * H.g 1) ^ (R.f * R.k) * Fintype.card {σ : Fin d0 // ft0 σ = π})
@@ -154,6 +200,9 @@ theorem row_lemma3 (C : ℝ) (hC : 0 ≤ C)
 
 omit kb ks in
 
+/- English proof (translation)
+Take `⟨kb, ks, h⟩` from `DV.exists_blocks (hostLevelRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G (fun _ _ _ => 0) (fun _ _ _ => 0) tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat …`. Conclude with `⟨kb, ks, fun j _ _ τ => h j τ⟩`.
+-/
 theorem row_kapDef : ∃ kb ks, DV.KapDef (hostLevelRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat) := by
   obtain ⟨kb, ks, h⟩ := DV.exists_blocks (hostLevelRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G (fun _ _ _ => 0) (fun _ _ _ => 0) tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
   exact ⟨kb, ks, fun j _ _ τ => h j τ⟩

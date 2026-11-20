@@ -7,6 +7,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `R _ X K W hW D _ _ x`. Set `f : Sp D ⟶ X.left` to `x.left`. Set `S : Set D` to `{s | ∃ i, ∀ q : PrimeSpectrum D, q ∈ PrimeSpectrum.basicOpen s → f q ∈ W i}`. Establish `hS : Ideal.span S = ⊤`. Assume the negation of the conclusion as `h'`.
+
+Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ h'`. Set `p : PrimeSpectrum D` to `⟨m, hm.isPrime⟩`. Establish `hp : f p ∈ (⨆ i, W i)` using `by rw [hW]; trivial`. Take `⟨i, hi⟩` from `(TopologicalSpace.Opens.mem_iSup).1 hp`. Take `⟨_, ⟨s, rfl⟩, hs, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := p) (u := f ⁻¹' (W i : Set X.left)) hi ((W i).isOpen.preimage f.continuous)`.
+
+Establish `hsS : s ∈ S` using `⟨i, fun q hq ↦ hsub hq⟩`. Conclude with `hs (hle (Ideal.subset_span hsS))`. Establish `h1 : (1 : D) ∈ Submodule.span D S`. Express the relevant statement in the definitionally equal form `(1 : D) ∈ Ideal.span S`. Rewrite using `[hS]`.
+
+Discharge the goal by the elementary cases of `trivial`. Take `⟨T, hTS, hT⟩` from `Submodule.mem_span_finite_of_mem_span h1`. Use `⟨T.card, fun a ↦ (T.equivFin.symm a : D), ?_, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (fun a ↦ (T.equivFin.symm a : D)) = (T : Set D)`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `(T.equivFin.symm a).2`. Introduce `hy; exact ⟨T.equivFin ⟨y, hy⟩, by simp⟩`. Rewrite using `[hr, Ideal.eq_top_iff_one]`.
+
+Conclude with `hT`. Introduce `a`. Take `⟨i, hi⟩` from `hTS (T.equivFin.symm a).2`. Use `⟨i, fun q _ ↦ ?_⟩` and prove the remaining obligations. Establish `hq : (spMap (algebraMap D (Localization.Away ((T.equivFin.symm a : D)))) q : PrimeSpectrum D) ∈ PrimeSpectrum.basicOpen ((T.equivFin.symm a : D))` using `(PrimeSpectrum.localization_away_comap_range (Localization.Away ((T.equivFin.symm a : D))) _).le ⟨q, rfl⟩`.
+
+Conclude with `hi _ hq`.
+-/
 theorem exists_away_cover_sm : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (K : Type) (W : K → X.left.Opens), ⨆ i, W i = ⊤ → ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt X D), ∃ (n : ℕ) (s : Fin n → D), Ideal.span (Set.range s) = ⊤ ∧ ∀ a, Sm W (spOver (IsScalarTower.toAlgHom R D (Localization.Away (s a))) ≫ x) := by
   intro R _ X K W hW D _ _ x
   let f : Sp D ⟶ X.left := x.left

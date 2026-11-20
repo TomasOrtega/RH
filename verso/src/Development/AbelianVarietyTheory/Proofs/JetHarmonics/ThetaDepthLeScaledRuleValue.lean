@@ -21,6 +21,13 @@ open GlobalTheory.PtTie
 
 namespace GlobalTheory.DepthRule
 
+/- English proof (translation)
+Introduce `D T h j hj w hw s hs la y f hf`. Establish `hc : f ∈ cutR T.C j w`. Rewrite using `[cutR_eq T.C hj]`. Conclude with `h.thCusp j hj _ _ (dom_wtA w) (ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj _ hw) f hf`. Establish `hsK : ((s : 𝓞 T.Q.c.F) : T.Q.c.F) ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.mpr hs`.
+
+Set `F : (recB h.toLawsCore).Cusp j w` to `⟨f, hc⟩`. Establish `hF : F ∈ (recPJ h j hj).thAll w` using `Submodule.subset_span hf`. Establish `hsF : s • F ∈ (recPJ h j hj).WWc s w` using `⟨F, hF, rfl⟩`. Use `(iInf₂_le (s • F) hsF).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[recPJ_vAt_inc h j hj la y w (s • F)]`.
+
+Establish `h1 : (s • F).1 = ((s : 𝓞 T.Q.c.F) : T.Q.c.F) • f` using `rfl`. Rewrite using `[h1]`. Conclude with `vAtV_smul y _ f hsK`.
+-/
 theorem depth_le_scaled_value : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j), w.LastPos → ∀ (s : 𝓞 (recB h.toLawsCore).KO), s ≠ 0 → ∀ (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtA j la), ∀ f ∈ T.th j w, (recPJ h j hj).depth s w la y ≤ (((vLa la ((s : 𝓞 T.Q.c.F) : T.Q.c.F) : ℤ) : ℝ) : EReal) + vAtV y f := by
   intro D T h j hj w hw s hs la y f hf
   have hc : f ∈ cutR T.C j w := by

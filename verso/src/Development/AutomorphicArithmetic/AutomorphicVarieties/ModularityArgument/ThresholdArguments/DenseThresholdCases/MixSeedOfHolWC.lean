@@ -12,6 +12,9 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 namespace UpperTheory.Esk
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.V.Z.Win.Birth.mix_birth_of_prints P (_root_.UpperTheory.Esk.pf_PropMV_sv_alt P h w (_root_.UpperTheory.Esk.pf_HRep_alt P s_HCap))`.
+-/
 theorem mixSeed_of_holWC_alt (w : HolWC) (P : _root_.UpperTheory.V.Af.HypothesesH') (h : UpperTheory.V.Sd.PropMHol) : _root_.UpperTheory.V.Z.Win.Birth.MixSeedP :=
   _root_.UpperTheory.V.Z.Win.Birth.mix_birth_of_prints P (_root_.UpperTheory.Esk.pf_PropMV_sv_alt P h w (_root_.UpperTheory.Esk.pf_HRep_alt P s_HCap))
 end UpperTheory.Esk

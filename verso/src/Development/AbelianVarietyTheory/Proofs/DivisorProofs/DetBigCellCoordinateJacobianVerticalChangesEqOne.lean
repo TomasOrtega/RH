@@ -13,6 +13,15 @@ open scoped Classical
 
 namespace GlobalTheory.LogPole.VertDet
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply, Finset.sum_eq_single 1]`. Simplify using `[hd]`. Introduce `s _ hs`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi, hk⟩ : ∃ i, s i ≠ i ∧ k (s i) ≤ k i := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i, s i ≠ i := by`. Assume the negation of the conclusion as `h0`. Use `push_neg at h0`. Conclude with `hs (Equiv.ext h0)`.
+
+Establish `hlt : ∑ i, k i < ∑ i, k (s i)`. Use `Finset.sum_lt_sum (fun i _ => ?_) ⟨i₀, Finset.mem_univ _, hc i₀ hi₀⟩` and prove the remaining obligations. Distinguish the cases in `e : s i = i`. Rewrite using `[e]`. Conclude with `(hc i e).le`.
+
+Rewrite `hlt` using `[Equiv.sum_comp s k]`. Conclude with `lt_irrefl _ hlt`. Rewrite using `[Finset.prod_eq_zero (f := fun j => A (s j) j) (Finset.mem_univ i) (h _ _ hi hk), smul_zero]`. Introduce `h1`. Conclude with `absurd (Finset.mem_univ _) h1`.
+-/
 theorem det_eq_one_of_key {ι R : Type} [Fintype ι] [DecidableEq ι] [CommRing R] (A : Matrix ι ι R) (k : ι → ℕ)
     (h : ∀ a b, a ≠ b → k a ≤ k b → A a b = 0) (hd : ∀ a, A a a = 1) : A.det = 1 := by
   rw [Matrix.det_apply, Finset.sum_eq_single 1]
@@ -36,6 +45,9 @@ theorem det_eq_one_of_key {ι R : Type} [Fintype ι] [DecidableEq ι] [CommRing 
   · intro h1
     exact absurd (Finset.mem_univ _) h1
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, TrivSqZeroExt.snd_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.FlagTan.unip, TrivSqZeroExt.snd_mul, mul_comm]`.
+-/
 theorem snd_unip_mul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {K : Type} [Field K] (N : GlobalTheory.FlagTan.FIx Dw → K) (σ : E →+* ℂ)
     (M : Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) K) (p q : Fin (Dw.mult σ)) :
@@ -45,6 +57,17 @@ theorem snd_unip_mul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
   refine Finset.sum_congr rfl fun r _ => ?_
   simp [GlobalTheory.FlagTan.unip, TrivSqZeroExt.snd_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw K _ M hM hM1`. Use `det_eq_one_of_key _ (fun a => (a.2.1.2 : ℕ)) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨σ, ⟨p, q⟩, hpq⟩ ⟨τ, ⟨i, j⟩, hij⟩ hne hk`. Rewrite using `[Matrix.of_apply, snd_unip_mul]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `e : (some ⟨σ, p, r⟩ : GlobalTheory.FlagTan.FIx Dw) = GlobalTheory.FlagTan.VIx.toF ⟨τ, ⟨(i, j), hij⟩⟩`. Take `⟨rfl, e'⟩` from `Sigma.mk.inj_iff.1 (Option.some.inj e)`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj (eq_of_heq e')`. Establish `hlt : q < r` using `lt_of_le_of_ne hk (by rintro rfl; exact hne rfl)`. Rewrite using `[hM _ _ _ hlt, mul_zero]`.
+
+Rewrite using `[Pi.single_eq_of_ne e, zero_mul]`. Introduce and unpack `⟨σ, ⟨p, q⟩, hpq⟩`. Rewrite using `[Matrix.of_apply, snd_unip_mul, Finset.sum_eq_single q]`. Rewrite using `[hM1, mul_one]`. Conclude with `Pi.single_eq_same _ _`.
+
+Introduce `r _ hr`. Rewrite using `[Pi.single_eq_of_ne, zero_mul]`. Introduce `e`. Take `⟨-, e'⟩` from `Sigma.mk.inj_iff.1 (Option.some.inj e)`. Conclude with `hr (Prod.mk.inj (eq_of_heq e')).2`.
+
+Introduce `h1`. Conclude with `absurd (Finset.mem_univ _) h1`.
+-/
 theorem det_vert : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (K : Type) [Field K] (M : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) K), (∀ σ i j, j < i → M σ i j = 0) → (∀ σ i, M σ i i = 1) → (Matrix.of fun a b : VIx Dw => ((GlobalTheory.FlagTan.unip K (Pi.single b.toF (1 : K)) a.1 * (M a.1).map (fun r => (TrivSqZeroExt.inl r : DualNumber K))) a.2.1.1 a.2.1.2).snd).det = 1 := by
   intro E _ _ _ H Dw K _ M hM hM1
   refine det_eq_one_of_key _ (fun a => (a.2.1.2 : ℕ)) ?_ ?_

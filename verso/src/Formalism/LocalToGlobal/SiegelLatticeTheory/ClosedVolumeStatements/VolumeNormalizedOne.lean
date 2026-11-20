@@ -14,10 +14,26 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.Family
 
 namespace Formalism.L2.SG.Closed
 
+/- English proof (translation)
+The claim follows from `volume_unipotent_all_cm`.
+-/
 theorem volume_normalized_all : Formalism.L2.SG.Volumes.VolumeUnipotentAllCM := volume_unipotent_all_cm
+/- English proof (translation)
+The claim follows from `level_s_all_split`.
+-/
 theorem LevelSAll_holds : Formalism.L2.SG.Volumes.LevelSAll := level_s_all_split
+/- English proof (translation)
+The claim follows from `volumeUnipotentOne`.
+-/
 theorem volume_normalized_one : Formalism.L2.SG.Volumes.VolumeUnipotentOneFrom := volumeUnipotentOne
 
+/- English proof (translation)
+Establish `hS` using `volume_stabilizer_from_siegel_weil`. Unfold `PI.VolFromSW.VolStabFromSW at hS`. Unfold `PI.VolFromSW.VolumeDegenerateFromSiegelWeil at hS0`. Unfold `Formalism.L2.SG.Volumes.VolumesFromSW`. Unfold `Formalism.MainNotions.UnusedSlot34.ForAllCM at *`.
+
+Use `intros`. Use `beta_reduce`. Introduce `h1 h2`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `apply hS <;> assumption`.
+
+Apply the tactic sequence `apply hS0 <;> assumption`.
+-/
 theorem VolumesFromSW_holds (hS0 : PI.VolFromSW.VolumeDegenerateFromSiegelWeil) : Formalism.L2.SG.Volumes.VolumesFromSW := by
   have hS := volume_stabilizer_from_siegel_weil
   unfold PI.VolFromSW.VolStabFromSW at hS
@@ -31,18 +47,33 @@ theorem VolumesFromSW_holds (hS0 : PI.VolFromSW.VolumeDegenerateFromSiegelWeil) 
   · apply hS <;> assumption
   · apply hS0 <;> assumption
 
+/- English proof (translation)
+Introduce `δ M hA x hx`. Conclude with `local_product_formula D.host.F D.host.E (Formalism.MainNotions.BridgeLemma.szf_finrankFE D) D.conjF D.s.atP M (fun p => (hA p).1) x hx`.
+-/
 theorem NormProd_holds (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.SupportG.NormProd D := by
   intro δ M hA x hx
   exact local_product_formula D.host.F D.host.E (Formalism.MainNotions.BridgeLemma.szf_finrankFE D) D.conjF D.s.atP M
     (fun p => (hA p).1) x hx
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.localSupport_holds D`.
+-/
 theorem SupportLoc_holds (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.SupportG.SupportLoc D := Formalism.L2.SG.Pf.localSupport_holds D
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.SupportG.supportLemma_of_loc (SupportLoc_holds D) (NormProd_holds D)`.
+-/
 theorem SupportLemma_holds (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.SupportG.SupportLemma D :=
   Formalism.L2.SG.SupportG.supportLemma_of_loc (SupportLoc_holds D) (NormProd_holds D)
 
+/- English proof (translation)
+The claim follows from `support_vector_all D`.
+-/
 theorem SupportVec_holds (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.SupportG.SupportVec D := support_vector_all D
 
+/- English proof (translation)
+The claim follows from `diffExists v`.
+-/
 theorem DiffExists_holds {F : Type} [Field F] [NumberField F]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) : Formalism.L2.SG.LocVol.DiffExists v :=
   diffExists v

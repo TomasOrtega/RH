@@ -10,6 +10,27 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.LKMid.Pair
 
+/- English proof (translation)
+Introduce `p _ G P Kf f r K φ hr hf hφ x t hx δ z hn`. Establish `hex : ∃ dz : Gr G r × Gr G r, IsNrm G r P.atP dz.1 dz.2` using `⟨(δ, z), hn⟩`. Unfold `term`. Rewrite using `[dif_pos hex]`. Use `set x₀ := P.trivAf.choose`.
+
+Use `set t₀ := P.trivAf.choose_spec.choose`. Establish `h₀ : Triv G (AfP p) P.β x₀ t₀` using `P.trivAf.choose_spec.choose_spec`. Use `set δ₀ := hex.choose.1`. Use `set z₀ := hex.choose.2`. Establish `hn₀ : IsNrm G r P.atP δ₀ z₀` using `hex.choose_spec`.
+
+Take `⟨_, hreg, hcent⟩` from `GlobalTheory.T.similitudePair_regular_image_at_p p G P`. Take `⟨g, hgx⟩` from `GlobalTheory.T.hermitianTripleTrivializations_differ_by_group_point p G (AfP p) (P.β : G.C) x x₀ t t₀ hx h₀`. Take `⟨g₂, hδ, hcz⟩` from `GlobalTheory.T.twistedConj_of_twistedNormConj_hermitianTriple_regular p G r P.atP δ z δ₀ z₀ hr hreg hn hn₀`. Establish `htw` using `GlobalTheory.T.map_centralizer_regular_twistedCentraliser p G r P.atP δ z hr hreg hn`. Establish `hAf : P.toAf x₀ t₀ h₀ = (MulAut.conj g⁻¹⁻¹).toMonoidHom.comp (P.toAf x t hx)`.
+
+Use extensionality with `y : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Establish `e : x₀ = (g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 * x` using `by rw [hgx, inv_mul_cancel_right]`. Simplify using `only [toAf, MonoidHom.comp_apply, MonoidHom.codRestrict_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv, Subgroup.coe_mul, Subgroup.coe_inv, Prod.fst_mul, Prod.fst_inv, MonoidHom.prodMap, MonoidHom.prod_apply, Subgroup.coe_subtype]`.
+
+Rewrite using `[e]`. Use `group`. Simplify using `only [toAf, MonoidHom.comp_apply, MonoidHom.codRestrict_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv, Subgroup.coe_mul, Subgroup.coe_inv, Prod.snd_mul, Prod.snd_inv, MonoidHom.prodMap, MonoidHom.prod_apply, Subgroup.coe_subtype]`. Rewrite using `[mul_comm, inv_mul_cancel_left]`. Establish `hQr : P.toQr r z₀ = (MulAut.conj g₂⁻¹).toMonoidHom.comp (P.toQr r z)`.
+
+Use extensionality with `y : 1`. Use `hcz (locC G y.1) (hcent y)` as an intermediate fact. Simplify using `only [toQr, MonoidHom.comp_apply, Subgroup.coe_subtype, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`. Rewrite using `[this]`. Establish `hself : P.toAf x₀ t₀ h₀ P.self = g⁻¹⁻¹ * P.toAf x t hx P.self * g⁻¹`.
+
+Rewrite using `[hAf]`. Simplify using `[MulAut.conj_apply]`. Unfold `termAt`. Rewrite using `[hself, hAf, hQr, hδ]`. Use `GlobalTheory.T.kottwitzIsogenyClassPointSum_conj_data _ _ _ _ _ _ _ _ _ _ _ hf hφ ?_ ?_` and prove the remaining obligations.
+
+Introduce `y`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises.
+
+Conclude with `y.2.1`. Conclude with `mul_comm _ _`. Introduce `y`. Establish `hm : P.toQr r z y ∈ GlobalTheory.BCT.twCent (sigG G r) δ`. Rewrite using `[← htw]`.
+
+Conclude with `⟨locC G y.1, hcent y, rfl⟩`. Conclude with `hm`.
+-/
 theorem term_eq_termAt : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (Kf : Subgroup G.GAf) (f : G.GAf → ℂ) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ), 0 < r → (∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g) → (∀ k ∈ K, ∀ g, φ (k⁻¹ * g * sigG G r k) = φ g) → ∀ (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t) (δ z : Gr G r), IsNrm G r P.atP δ z → P.term Kf f r K φ = P.termAt Kf f r K φ x t hx δ z := by
   intro p _ G P Kf f r K φ hr hf hφ x t hx δ z hn
   have hex : ∃ dz : Gr G r × Gr G r, IsNrm G r P.atP dz.1 dz.2 := ⟨(δ, z), hn⟩

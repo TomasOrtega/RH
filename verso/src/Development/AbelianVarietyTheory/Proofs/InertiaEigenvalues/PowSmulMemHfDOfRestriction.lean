@@ -25,6 +25,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [Module O V] [IsScalarTower O LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Simplify using `[actVB]`.
+-/
 theorem corHf_actVB_tmul (g : G) (v : V) (b : B) :
     actVB PD ρ g (v ⊗ₜ[Qp] b) = ρ g v ⊗ₜ[Qp] PD.actB g b := by
   simp [actVB]
@@ -47,6 +50,25 @@ def corHfRepO (O : Type) [CommRing O] [Algebra O LL] [Module O V] [IsScalarTower
 variable [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace V] [IsTopologicalAddGroup V]
   [ContinuousConstSMul LL V]
 
+/- English proof (translation)
+Use `haveI : Fintype (G ⧸ H) := Fintype.ofFinite _`. Take `⟨F, hF, hFc, ⟨x, hx⟩, hY⟩` from `exists_corestriction_cocycle O G V (corHfRepO ρ O) H hH hρ hρ' Z hZ hc`. Take `⟨x', hx'⟩` from `hY L.T L.stable f₀ 0 h₀ (by simpa using hZf)`. Take `⟨X, hX⟩` from `hX`. Establish `hmul : ∀ a b y, actVB PD ρ a (actVB PD ρ b y) = actVB PD ρ (a * b) y`.
+
+Introduce `a b y`. Conclude with `(LinearMap.congr_fun ((corHfRepVB PD ρ).map_mul a b) y).symm`. Establish `h1 : ∀ g (v : V), actVB PD ρ g (v ⊗ₜ[Qp] (1 : B)) = ρ g v ⊗ₜ[Qp] (1 : B)`. Introduce `g v`. Rewrite using `[corHf_actVB_tmul, map_one]`.
+
+Take `⟨y, hy⟩` from `index_smul_cocycle_eq_coboundary LL G (V ⊗[Qp] B) (corHfRepVB PD ρ) H (fun g => F g ⊗ₜ[Qp] (1 : B)) (by`. Introduce `g h`. Express the relevant statement in the definitionally equal form `_ = _ + actVB PD ρ g _`. Rewrite using `[h1, hFc, add_tmul]`. Use the proof step `rfl)`.
+
+Use the proof step `⟨(∑ q : G ⧸ H, actVB PD ρ q.out X) + x ⊗ₜ[Qp] (1 : B), by`. Introduce `h hh`. Express the relevant statement in the definitionally equal form `_ = actVB PD ρ h _ - _`. Rewrite using `[hx h hh, finsum_eq_sum_of_fintype, add_tmul, sum_tmul, map_add, map_sum, h1, sub_tmul]`. Establish `: ∀ q : G ⧸ H, (corHfRepO ρ O q.out (Z (q.out⁻¹ * h * q.out))) ⊗ₜ[Qp] (1 : B) = actVB PD ρ h (actVB PD ρ q.out X) - actVB PD ρ q.out X`.
+
+Introduce `q`. Express the relevant statement in the definitionally equal form `(ρ q.out _) ⊗ₜ[Qp] (1 : B) = _`. Rewrite using `[← h1, hX _ (Subgroup.Normal.conj_mem' ‹H.Normal› h hh q.out), map_sub, hmul, hmul]`. Use `congr 3`. Use `group`.
+
+Rewrite using `[Finset.sum_congr rfl fun q _ => this q, Finset.sum_sub_distrib]`. Express the relevant statement in the definitionally equal form `_ + (ρ h x ⊗ₜ[Qp] (1 : B) - _) = _`. Use the proof step `abel⟩`. Establish `hn : (H.index : LL) ≠ 0` using `Nat.cast_ne_zero.mpr Subgroup.FiniteIndex.index_ne_zero`. Establish `hFf : F ∈ finiteCocycles PD ρ`.
+
+Use `⟨⟨hF, hFc⟩, (H.index : LL)⁻¹ • y, fun g => ?_⟩` and prove the remaining obligations. Use `hy g` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ = actVB PD ρ g y - y at this`. Rewrite using `[map_smul, ← smul_sub, ← this, ← Nat.cast_smul_eq_nsmul LL, inv_smul_smul₀ hn]`. Establish `e : (fun g => H.index • (Submodule.Quotient.mk (f₀ g) : V ⧸ L.T)) = LinearMap.compLeft L.T.mkQ G F - (LinearMap.pi fun g => actD L g - LinearMap.id) (Submodule.Quotient.mk x')`.
+
+Use function extensionality and compare the values at `g`. Use `(Submodule.Quotient.mk_eq_zero L.T).mpr (hx' g)` as an intermediate fact. Express the relevant statement in the definitionally equal form `L.T.mkQ _ = 0 at this`. Rewrite `this` using `[map_sub, map_sub, map_sub, map_nsmul]`. Express the relevant statement in the definitionally equal form `H.index • L.T.mkQ (f₀ g) = L.T.mkQ (F g) - (L.T.mkQ (corHfRepO ρ O g x') - L.T.mkQ x')`.
+
+Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← this]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left ⟨F, hFf, rfl⟩) (Submodule.mem_sup_right ⟨_, rfl⟩)`.
+-/
 theorem index_smul_mem_HfD [CharZero LL] (L : Lattice (O := O) ρ) (hρ : ∀ g, Continuous (ρ g))
     (hρ' : ∀ x, Continuous fun g => ρ g x) (H : Subgroup G) [H.Normal] [H.FiniteIndex]
     (hH : IsOpen (H : Set G)) (Z f₀ : G → V) (hZ : ContinuousOn Z H)
@@ -109,6 +131,15 @@ theorem index_smul_mem_HfD [CharZero LL] (L : Lattice (O := O) ρ) (hρ : ∀ g,
 
 end General
 
+/- English proof (translation)
+Establish `hn' : (n : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr hn`. Establish `: (n : ℤ_[l]) ∣ (l : ℤ_[l]) ^ k`. Take `⟨m, hm⟩ : l ^ padicValNat l n ∣ n` from `pow_padicValNat_dvd`. Establish `hlm : ¬ l ∣ m`. Introduce and unpack `⟨c, rfl⟩`.
+
+Apply `pow_succ_padicValNat_not_dvd (p := l) hn` to reduce the goal to its premises. Conclude with `⟨c, by rw [pow_succ, mul_assoc]; exact hm⟩`. Establish `hu : IsUnit (m : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`. Conclude with `PadicInt.norm_natCast_eq_one_iff.mpr ((Nat.Prime.coprime_iff_not_dvd Fact.out).mpr hlm)`.
+
+Establish `e : (n : ℤ_[l]) = (l : ℤ_[l]) ^ padicValNat l n * m` using `by exact_mod_cast congrArg (Nat.cast : ℕ → ℤ_[l]) hm`. Rewrite using `[e, hu.mul_right_dvd]`. Conclude with `pow_dvd_pow _ hk`. Take `⟨c, hc⟩` from `this`. Use `⟨algebraMap ℤ_[l] O c, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (algebraMap ℤ_[l] O) hc` as an intermediate fact. Simplify using `only [map_pow, map_natCast, map_mul] at this`. Rewrite using `[Nat.cast_pow, this, mul_comm]`.
+-/
 theorem corHf_exists_mul_eq_pow (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (n k : ℕ) (hn : n ≠ 0) (hk : padicValNat l n ≤ k) : ∃ u : O, u * (n : O) = ((l ^ k : ℕ) : O) := by
   have hn' : (n : ℤ_[l]) ≠ 0 := Nat.cast_ne_zero.mpr hn
@@ -130,6 +161,9 @@ theorem corHf_exists_mul_eq_pow (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O]
   simp only [map_pow, map_natCast, map_mul] at this
   rw [Nat.cast_pow, this, mul_comm]
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Use `S.smul_mem u hf using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, ← Nat.cast_smul_eq_nsmul O, ← Nat.cast_smul_eq_nsmul O, smul_smul, hu]`.
+-/
 theorem corHf_nsmul_mem {O G M : Type} [CommRing O] [AddCommGroup M] [Module O M]
     (S : Submodule O (G → M)) (f : G → M) (n m : ℕ) (h : ∃ u : O, u * (n : O) = (m : O))
     (hf : (fun g => n • f g) ∈ S) : (fun g => m • f g) ∈ S := by
@@ -140,6 +174,9 @@ theorem corHf_nsmul_mem {O G M : Type} [CommRing O] [AddCommGroup M] [Module O M
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `l _ P K LL V H _ _ hH Z f₀ hZ hc hX h₀ hZf k hk`. Use `haveI : IsTopologicalAddGroup V.V := IsModuleTopology.topologicalAddGroup ↥LL.1 V.V`. Use `haveI : ContinuousSMul ↥LL.1 V.V := IsModuleTopology.toContinuousSMul ↥LL.1 V.V`. Conclude with `corHf_nsmul_mem _ _ H.index _ (corHf_exists_mul_eq_pow l _ _ k Subgroup.FiniteIndex.index_ne_zero hk) (index_smul_mem_HfD (P.PD K) V.ρ V.L (fun g => IsModuleTopology.continuous_of_linearMap (V.ρ g)) V.cont H hH Z f₀ hZ hc hX h₀ hZf)`.
+-/
 theorem pow_smul_mem_HfD_of_restriction : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (V : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (H : Subgroup ↥(GK K)) [H.Normal] [H.FiniteIndex], IsOpen (H : Set ↥(GK K)) → ∀ (Z f₀ : ↥(GK K) → V.V), ContinuousOn Z H → (∀ g ∈ H, ∀ h ∈ H, Z (g * h) = Z g + V.ρ g (Z h)) → (∃ X : TensorProduct ℚ_[l] V.V P.R.B, ∀ h ∈ H, Z h ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K) V.ρ h X - X) → (∀ g h, f₀ (g * h) - (f₀ g + V.ρ g (f₀ h)) ∈ V.L.T) → (∀ h ∈ H, Z h - f₀ h ∈ V.L.T) → ∀ k : ℕ, padicValNat l H.index ≤ k → (fun g => (l ^ k : ℕ) • (Submodule.Quotient.mk (f₀ g) : V.V ⧸ V.L.T)) ∈ HfD (P.PD K) V.L := by
   intro l _ P K LL V H _ _ hH Z f₀ hZ hc hX h₀ hZf k hk
   haveI : IsTopologicalAddGroup V.V := IsModuleTopology.topologicalAddGroup ↥LL.1 V.V

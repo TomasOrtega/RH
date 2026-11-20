@@ -11,10 +11,16 @@ noncomputable def gridY (P : M.Par) (l N : ℕ) : Finset ℝ := progY (2 - max (
 noncomputable def gridΛ (P : M.Par) (b : ℝ) (N : ℕ) : ℝ :=
   max 1 (Real.sqrt ((4 / 3 : ℝ) ^ N * (b ^ (8 * P.r + 20) / (P.T * P.T'))))
 
+/- English proof (translation)
+Unfold `gridΛ`. Conclude with `le_max_left _ _`.
+-/
 theorem one_le_gridΛ (P : M.Par) (b : ℝ) (N : ℕ) : 1 ≤ gridΛ P b N := by
   unfold gridΛ
   exact le_max_left _ _
 
+/- English proof (translation)
+Unfold `gridΛ`. Establish `hX : 0 ≤ (4 / 3 : ℝ) ^ N * (b ^ (8 * P.r + 20) / (P.T * P.T'))` using `mul_nonneg (pow_nonneg (by norm_num) _) (div_nonneg (pow_nonneg hb _) hTT.le)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gridΛ_sq (P : M.Par) (b : ℝ) (N : ℕ) (hb : 0 ≤ b) (hTT : 0 < P.T * P.T') :
     (4 / 3 : ℝ) ^ N * (b ^ (8 * P.r + 20) / (P.T * P.T')) ≤ gridΛ P b N ^ 2 := by
   unfold gridΛ
@@ -25,6 +31,21 @@ theorem gridΛ_sq (P : M.Par) (b : ℝ) (N : ℕ) (hb : 0 ≤ b) (hTT : 0 < P.T 
     _ ≤ max 1 (Real.sqrt ((4 / 3 : ℝ) ^ N * (b ^ (8 * P.r + 20) / (P.T * P.T')))) ^ 2 :=
       pow_le_pow_left₀ (Real.sqrt_nonneg _) (le_max_right _ _) 2
 
+/- English proof (translation)
+Establish `hb0 : 0 < b` using `by linarith`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hr0 : (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Establish `hm' : (((2 * P.r + 2 : ℕ) : ℝ)) = 2 * (P.r : ℝ) + 2` using `by push_cast; ring`. Use `set m : ℝ := (((2 * P.r + 2 : ℕ) : ℝ)) with hm`.
+
+Establish `hm0 : 0 ≤ m` using `by rw [hm']; linarith`. Establish `hCm : 0 ≤ CT * m` using `mul_nonneg hCT hm0`. Establish `hinv : (P.T * P.T')⁻¹ ≤ b ^ (CT * m)`. Establish `h1 : 0 < b ^ (CT * m)` using `Real.rpow_pos_of_pos hb0 _`. Rewrite `hTT` using `[Real.rpow_neg hb0.le]`.
+
+Conclude with `(inv_le_comm₀ h1 hTT0).mp hTT`. Establish `h43 : (4 / 3 : ℝ) ^ N ≤ b ^ (3 * (P.r + 1))` using `le_trans (pow_le_pow_left₀ (by norm_num) (by linarith) N) (pow_le_pow_right₀ hb1 hN)`. Establish `hpow : b ^ (3 * (P.r + 1)) * b ^ (8 * P.r + 20) ≤ b ^ (12 * m)`. Rewrite using `[← pow_add, ← Real.rpow_natCast]`. Apply `Real.rpow_le_rpow_of_exponent_le hb1` to reduce the goal to its premises.
+
+Rewrite using `[hm']`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX : (4 / 3 : ℝ) ^ N * (b ^ (8 * P.r + 20) / (P.T * P.T')) ≤ b ^ (12 * m) * b ^ (CT * m)`. Rewrite using `[div_eq_mul_inv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hy : (b ^ ((6 + CT) * m)) ^ 2 = b ^ (12 * m) * b ^ (2 * (CT * m))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hb0.le, ← Real.rpow_add hb0]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hX' : (4 / 3 : ℝ) ^ N * (b ^ (8 * P.r + 20) / (P.T * P.T')) ≤ (b ^ ((6 + CT) * m)) ^ 2`. Rewrite using `[hy]`. Use `le_trans hX (mul_le_mul_of_nonneg_left ?_ (Real.rpow_nonneg hb0.le _))` and prove the remaining obligations. Conclude with `Real.rpow_le_rpow_of_exponent_le hb1 (by linarith)`.
+
+Unfold `gridΛ`. Use `max_le (Real.one_le_rpow hb1 (mul_nonneg (by linarith) hm0)) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gridΛ_le (P : M.Par) (b CT : ℝ) (N : ℕ) (hN : N ≤ 3 * (P.r + 1)) (hb : 3 ≤ b) (hCT : 0 ≤ CT)
     (hTT0 : 0 < P.T * P.T') (hTT : b ^ (-(CT * ((2 * P.r + 2 : ℕ) : ℝ))) ≤ P.T * P.T') :
     gridΛ P b N ≤ b ^ ((6 + CT) * ((2 * P.r + 2 : ℕ) : ℝ)) := by
@@ -70,6 +91,11 @@ theorem gridΛ_le (P : M.Par) (b CT : ℝ) (N : ℕ) (hN : N ≤ 3 * (P.r + 1)) 
       ≤ Real.sqrt ((b ^ ((6 + CT) * m)) ^ 2) := Real.sqrt_le_sqrt hX'
     _ = b ^ ((6 + CT) * m) := Real.sqrt_sq (Real.rpow_nonneg hb0.le _)
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.I.OnCut`. Break down `le_total (u l) (u' l) with h | h` into its components or cases. Use `left`. Rewrite `h1` using `[min_eq_left h]`. Rewrite `h2` using `[max_eq_right h]`.
+
+Conclude with `⟨h1, h2⟩`. Use `right`. Rewrite `h1` using `[min_eq_right h]`. Rewrite `h2` using `[max_eq_left h]`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem onCut_of_minmax (u u' : ℕ → ℝ) (l : ℕ) (Y : ℝ) (h1 : min (u l) (u' l) + 2 ≤ -Y)
     (h2 : -Y ≤ max (u l) (u' l) - 2) : I.OnCut u u' l Y := by
   unfold Formalism.FourierDecayAlt.I.OnCut
@@ -88,6 +114,11 @@ section grid
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hlen' : 5 * ((N * (2 * P.r + 1) : ℕ) : ℝ) ≤ max (P.u l) (P.u' l) - min (P.u l) (P.u' l)`. Rewrite using `[max_sub_min_eq_abs, abs_sub_comm]`. Conclude with `hlen`. Take `⟨⟨h1, h2⟩, h3, h4⟩` from `progY_cut (min (P.u l) (P.u' l)) (max (P.u l) (P.u' l)) _ hlen' y hy`.
+
+Conclude with `⟨onCut_of_minmax _ _ _ _ h1 h2, onCut_of_minmax _ _ _ _ h3 h4⟩`.
+-/
 theorem gridY_cut (P : M.Par) (l N : ℕ) (hlen : 5 * ((N * (2 * P.r + 1) : ℕ) : ℝ) ≤ |P.u l - P.u' l|) :
     ∀ y ∈ gridY P l N, I.OnCut P.u P.u' l y ∧ I.OnCut P.u P.u' l (y + 1) := by
   intro y hy
@@ -97,6 +128,23 @@ theorem gridY_cut (P : M.Par) (l N : ℕ) (hlen : 5 * ((N * (2 * P.r + 1) : ℕ)
   obtain ⟨⟨h1, h2⟩, h3, h4⟩ := progY_cut (min (P.u l) (P.u' l)) (max (P.u l) (P.u' l)) _ hlen' y hy
   exact ⟨onCut_of_minmax _ _ _ _ h1 h2, onCut_of_minmax _ _ _ _ h3 h4⟩
 
+/- English proof (translation)
+Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_`. Conclude with `⟨1, by simp, by simp [Formalism.FourierDecayAlt.Wd.qw]⟩`.
+
+Consider the case `cons l L ih`. Introduce `h`. Take `⟨t, ht, heq⟩` from `ih (fun l' hl' => h l' (List.mem_cons_of_mem _ hl'))`. Take `⟨d, hd, hcase⟩` from `h l (by simp)`. Establish `ht0 : 0 ≤ t` using `le_trans (pow_nonneg (by norm_num) _) ht`.
+
+Break down `hcase with ⟨hp, hpt⟩ | ⟨hp, hpt⟩` into its components or cases. Use `⟨t * ((y - (y - d) + 1) / (y - (y - d))), ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have e : (y - (y - d) + 1) / (y - (y - d)) = (d + 1) / d := by congr 1 <;> ring`. Establish `hf : (4 / 5 : ℝ) ≤ (d + 1) / d`. Break down `le_abs.mp hd with h5 | h5` into its components or cases.
+
+Rewrite using `[le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff_of_neg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e, List.length_cons, pow_succ]`.
+
+Conclude with `mul_le_mul ht hf (by norm_num) ht0`. Simplify using `only [Formalism.FourierDecayAlt.Wd.qw, hp, if_true, heq, hpt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨t * ((y - d + 1 - y) / (y - d + 1 - y - 1)), ?_, ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `have e : (y - d + 1 - y) / (y - d + 1 - y - 1) = (1 - d) / (-d) := by congr 1 <;> ring`. Establish `hf : (4 / 5 : ℝ) ≤ (1 - d) / (-d)`. Break down `le_abs.mp hd with h5 | h5` into its components or cases. Rewrite using `[le_div_iff_of_neg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e, List.length_cons, pow_succ]`. Conclude with `mul_le_mul ht hf (by norm_num) ht0`. Simplify using `only [Formalism.FourierDecayAlt.Wd.qw, hp, Bool.false_eq_true, ↓reduceIte, heq, hpt]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_ge_four_fifths_pow_qw_eq_mul_of_far_letters {S : Type} (q : ℂ → ℂ) (y : ℝ) :
     ∀ L : List (Formalism.FourierDecayAlt.Wd.Letter ℂ S),
       (∀ l ∈ L, ∃ d : ℝ, 5 ≤ |d| ∧ ((l.plus = true ∧ l.pt = ((y - d : ℝ) : ℂ)) ∨
@@ -140,6 +188,27 @@ private theorem exists_ge_four_fifths_pow_qw_eq_mul_of_far_letters {S : Type} (q
         push_cast
         ring
 
+/- English proof (translation)
+Establish `hOK : P.OK` using `p.hP.1`. Take `⟨hl1, hl2, hk2⟩` from `p.hl`. Establish `hTT : 0 < P.T * P.T'` using `mul_pos hOK.T_pos hOK.T'_pos`. Establish `hb : 0 ≤ b` using `by linarith [hL.b_ge_three]`. Establish `hc` using `hL.c_pos`.
+
+Establish `hPst : ∀ Y : ℝ, 0 < GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid.Pst P.k P.r lam c Y`. Introduce `Y`. Unfold `GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid.Pst`. Conclude with `Finset.prod_pos (fun s _ => add_pos_of_nonneg_of_pos (abs_nonneg _) hc)`. Establish `hY` using `gridY_cut P p.l0 N hlen`.
+
+Establish `hsep` using `progY_sep (2 - max (P.u p.l0) (P.u' p.l0)) (N * (2 * P.r + 1))`. Introduce `w _ hwlen y hy hlet`. Establish `hlet' : ∀ l ∈ Formalism.FourierDecayAlt.D.positionted w, ∃ d : ℝ, 5 ≤ |d| ∧ ((l.plus = true ∧ l.pt = ((y - d : ℝ) : ℂ)) ∨ (l.plus = false ∧ l.pt = ((y - d + 1 : ℝ) : ℂ)))`. Introduce `l hl`. Unfold `Formalism.FourierDecayAlt.D.positionted at hl`.
+
+Rewrite `hl` using `[List.mem_ofFn]`. Take `⟨a, rfl⟩` from `hl`. Take `⟨y', hy', hne, hcase⟩` from `hlet (w.get a) (by simp [List.get_eq_getElem])`. Use `⟨y - y', hsep y hy y' hy' (Ne.symm hne), ?_⟩` and prove the remaining obligations. Break down `hcase with h | h` into its components or cases.
+
+Use `left`. Use `⟨by show (w.get a).1 = true; rw [h], ?_⟩` and prove the remaining obligations. Simplify using `only [h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `right`. Use `⟨by show (w.get a).1 = false; rw [h], ?_⟩` and prove the remaining obligations. Simplify using `only [h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨t, ht, heq⟩` from `exists_ge_four_fifths_pow_qw_eq_mul_of_far_letters (Formalism.FourierDecayAlt.M.qC P) y _ hlet'`. Establish `hls : (Formalism.FourierDecayAlt.D.positionted w).length = w.length`. Unfold `Formalism.FourierDecayAlt.D.positionted`. Simplify using the standard rewrite rules. Rewrite `ht` using `[hls]`.
+
+Establish `hq` using `nq_onCut_pair P hOK p.l0 hl1 hl2 hk2 lam c g b hL y (hY y hy).1`. Establish `hre : (Formalism.FourierDecayAlt.Wd.qw (Formalism.FourierDecayAlt.M.qC P) (Formalism.FourierDecayAlt.D.positionted w) (y : ℂ)).re = t * (Formalism.FourierDecayAlt.M.qC P (y : ℂ)).re`. Rewrite using `[heq, Complex.re_ofReal_mul]`. Establish `ht0 : 0 < t` using `lt_of_lt_of_le (pow_pos (by norm_num) _) ht`. Use `⟨⟨hPst y, hPst (y + 1), by rw [hre]; exact mul_pos ht0 hq.1⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hre]`. Establish `hsq` using `gridΛ_sq P b N hb hTT`. Establish `h1 : 1 ≤ (4 / 3 : ℝ) ^ N * t`. Combine the equalities or inequalities in the displayed calculation. Establish `hR0 : 0 ≤ b ^ (8 * P.r + 20) / (P.T * P.T') * (Formalism.FourierDecayAlt.M.qC P (y : ℂ)).re` using `mul_nonneg (div_nonneg (pow_nonneg hb _) hTT.le) hq.1.le`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem freeBound_text (p : KB.Pl P Wp Wq) (K N : ℕ) (lam : ℕ → ℝ) (c g b : ℝ) (hL : PairData P p.l0 lam c g b)
     (hlen : 5 * ((N * (2 * P.r + 1) : ℕ) : ℝ) ≤ |P.u p.l0 - P.u' p.l0|) :
     FreeBound p (Pst P.k P.r lam c) (gridY P p.l0 N) (gridΛ P b N) K N := by
@@ -203,6 +272,13 @@ theorem freeBound_text (p : KB.Pl P Wp Wq) (K N : ℕ) (lam : ℕ → ℝ) (c g 
     _ ≤ gridΛ P b N ^ 2 * (t * (Formalism.FourierDecayAlt.M.qC P (y : ℂ)).re) :=
         mul_le_mul_of_nonneg_right hsq (mul_pos ht0 hq.1).le
 
+/- English proof (translation)
+Establish `hY` using `gridY_cut P p.l0 N hlen`. Establish `hsep` using `progY_sep (2 - max (P.u p.l0) (P.u' p.l0)) (N * (2 * P.r + 1))`. Establish `hcard : N - K + K * (2 * P.r + 1) ≤ (gridY P p.l0 N).card`. Unfold `gridY`. Rewrite using `[progY_card]`.
+
+Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hKN`. Rewrite using `[Nat.add_sub_cancel_left]`. Use polynomial arithmetic with `[Nat.zero_le (j * P.r)]`. Establish `hF` using `freeBound_text p K N lam c g b hL hlen`. Establish `hB : 0 ≤ gridΛ P b N` using `le_trans zero_le_one (one_le_gridΛ P b N)`.
+
+Conclude with `⟨waveGrid_of_sep p _ _ _ K N hB hY hsep hcard hF, liftGrid_of_sep p _ _ _ K N hB hY hsep hcard hF⟩`.
+-/
 theorem grids_text (p : KB.Pl P Wp Wq) (K N : ℕ) (hKN : K ≤ N) (lam : ℕ → ℝ) (c g b : ℝ)
     (hL : PairData P p.l0 lam c g b) (hlen : 5 * ((N * (2 * P.r + 1) : ℕ) : ℝ) ≤ |P.u p.l0 - P.u' p.l0|) :
     TBBx5.WaveGrid p (Pst P.k P.r lam c) (gridY P p.l0 N) (gridΛ P b N) K N ∧

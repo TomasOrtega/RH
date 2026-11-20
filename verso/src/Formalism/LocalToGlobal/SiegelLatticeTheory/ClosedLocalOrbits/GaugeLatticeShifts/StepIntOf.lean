@@ -75,12 +75,24 @@ open Formalism.L2.SG.RealObj.StepIntOf
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.TermOp.rk1`. Rewrite using `[ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, mul_comm]`.
+-/
 theorem norm_rank_one_le {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] (v : V) (w : V') :
     ‖Formalism.L2.SG.TermOp.rk1 v w‖ ≤ ‖v‖ * ‖w‖ := by
   unfold Formalism.L2.SG.TermOp.rk1
   rw [ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, mul_comm]
 
+/- English proof (translation)
+Introduce `D X u u' γ hfin`. Unfold `Formalism.L2.SG.TermOp.OOInt`. Rewrite using `[integrableOn_univ]`. Establish `hW : Continuous (X.Wu u)` using `(X.Wu_spec u).2.2.1`. Establish `hW' : Continuous (X.Wu u')` using `(X.Wu_spec u').2.2.1`.
+
+Establish `hW'' : Continuous fun x : X.B.I.Ginf => X.Wu u' (γ⁻¹ * x)` using `hW'.comp (continuous_const.mul continuous_id)`. Establish `hc : Continuous fun x : X.B.I.Ginf => Formalism.L2.SG.TermOp.rk1 (X.Wu u x) (X.Wu u' (γ⁻¹ * x))`. Rewrite using `[continuous_clm_apply]`. Introduce `ξ`. Simplify using `only [Formalism.L2.SG.TermOp.rankOneInnerOperator_apply]`.
+
+Conclude with `(hW''.inner continuous_const).smul hW`. Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`. Use `lt_of_le_of_lt (lintegral_mono fun x => ?_) hfin` and prove the remaining obligations. Simplify using `only []`.
+
+Rewrite using `[← ofReal_norm, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal (norm_rank_one_le _ _)`.
+-/
 theorem stIntOfLint : StIntOfLint := by
   intro D X u u' γ hfin
   unfold Formalism.L2.SG.TermOp.OOInt

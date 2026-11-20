@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.LocRes
 
+/- English proof (translation)
+Introduce `F _ _ v`. Rewrite using `[GroundTheory.Global.natCard_residueField_adicCompletion v, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+-/
 theorem natCard_residueField_eq_normV : ∀ (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)), Nat.card 𝓀[v.adicCompletion F] = normV v := by
   intro F _ _ v

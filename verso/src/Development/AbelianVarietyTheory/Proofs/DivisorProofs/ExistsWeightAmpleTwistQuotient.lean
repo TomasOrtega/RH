@@ -31,6 +31,29 @@ namespace GlobalTheory.RelAmpleComp
 
 open GlobalTheory.FlagMod (FlagCover FlagModel)
 
+/- English proof (translation)
+Introduce `_ _ E _ _ _ H Dw l Xo c TF Z hF`. Use `⟨fun _ k => if (k : ℕ) < Dw.p then ((k : ℕ) : ℤ) - Dw.p else ((k : ℕ) : ℤ) - Dw.p + 1, ?_⟩` and prove the remaining obligations. Introduce `A hA hAmp`. Use `set ρ : AllWt.Weight Dw := fun _ k => if (k : ℕ) < Dw.p then ((k : ℕ) : ℤ) - Dw.p else ((k : ℕ) : ℤ) - Dw.p + 1 with hρ`. Set `e : Ix Dw → ℤ` to `fun ix => ix.elim 0 fun p => (Dw.mult p.1 : ℤ) - ((p.2 : ℕ) : ℤ)`.
+
+Establish `hex : AllWt.exOf Dw ρ 0 = -e`. Use `GlobalTheory.FlagMod.exOf_ext rfl (fun τ i hi => ?_) (fun τ i hi => ?_)` and prove the remaining obligations. Establish `hm` using `GlobalTheory.FlagMod.mult_of_mem (Dw := Dw) τ`. Establish `h2` using `i.2`. Simplify using `only [hρ, e, Pi.neg_apply, Option.elim]`.
+
+Rewrite using `[if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `hm` using `GlobalTheory.FlagMod.mult_conj (Dw := Dw) τ`. Establish `h2` using `i.2`. Simplify using `only [hρ, e, Pi.neg_apply, Option.elim]`.
+
+Rewrite using `[if_neg (by omega)]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `: IsProper TF.Y.s` using `projProper _ _ _ TF.Y.proj`. Establish `: CompactSpace TF.Y.X` using `QuasiCompact.compactSpace_of_compactSpace TF.Y.s`.
+
+Establish `: IsProper TF.X.π` using `TF.X.proper`. Establish `: CompactSpace TF.X.YY` using `QuasiCompact.compactSpace_of_compactSpace TF.X.π`. Establish `: QuasiSeparatedSpace TF.X.YY` using `quasiSeparatedSpace_of_quasiSeparated (TF.X.π ≫ TF.Y.s)`. Take `⟨-, hPj, -⟩` from `GlobalTheory.VarFlag.isVariety₀_flag E H Dw l Xo c TF Z hF`. Establish `: IsProper (str₀ TF.X Z)` using `GlobalTheory.CommonModel.isProper_of_isProjOver hPj`.
+
+Establish `: CompactSpace (Y₀ TF.X Z)` using `QuasiCompact.compactSpace_of_compactSpace (str₀ TF.X Z)`. Establish `hN : (TF.X.F.LL (AllWt.exOf Dw ρ 0)).IsLB` using `TF.X.F.isLB_LL _`. Establish `hM : (TF.X.F.LL e).IsLB` using `TF.X.F.isLB_LL _`. Establish `hsum` using `GlobalTheory.HSApp.cls_common_add (commonLL TF.X) e (AllWt.exOf Dw ρ 0)`. Establish `h0` using `GlobalTheory.HSApp.cls_common_add (commonLL TF.X) (0 : Ix Dw → ℤ) 0`.
+
+Simplify using `only [add_zero] at h0`. Establish `h3 : e + AllWt.exOf Dw ρ 0 = 0` using `by rw [hex]; exact add_neg_cancel e`. Rewrite `hsum` using `[h3]`. Establish `hcls : GlobalTheory.CechPic.cls (TF.X.F.LL e) hM = -GlobalTheory.CechPic.cls (TF.X.F.LL (AllWt.exOf Dw ρ 0)) hN`. Use `eq_neg_of_add_eq_zero_left ?_` and prove the remaining obligations.
+
+Establish `h4 : GlobalTheory.CechPic.cls (TF.X.F.LL 0) ((commonLL TF.X).isLB 0) = 0`. Use `congrArg (· - GlobalTheory.CechPic.cls (TF.X.F.LL 0) ((commonLL TF.X).isLB 0)) h0` as an intermediate fact. Simplify using `using this.symm`. Conclude with `hsum.symm.trans h4`. Take `⟨n₀, hn⟩` from `GlobalTheory.T.isAmple_pullbackPower_div_of_locally_ample TF.X.π A hAmp (TF.X.F.LL (AllWt.exOf Dw ρ 0)) (TF.X.F.LL e) hN hM hcls (fun z => GlobalTheory.T.borelWeil_flagModel_detInverse_isAmple_local TF.flag z)`.
+
+Establish `h` using `(hn n₀ le_rfl).pull_of_isOpenImmersion (inc₀ TF.X Z)`. Establish `hAπ` using `LB.isLB_pull hA TF.X.π`. Establish `hAg` using `LB.isLB_pull hA (inc₀ TF.X Z ≫ TF.X.π)`. Establish `hP1` using `isLB_lbPow hAπ n₀`. Establish `hP2` using `isLB_lbPow hAg n₀`.
+
+Establish `hD1` using `LB.isLB_div hP1 hN`. Establish `hL0 : (L₀ TF.X Z ρ).IsLB` using `LB.isLB_pull hN _`. Establish `hD2` using `LB.isLB_div hP2 hL0`. Use `⟨n₀, IsAmpleLB.of_lbIso h hD2 ((GlobalTheory.CechPic.cls_eq_iff hD2 (LB.isLB_pull hD1 _)).1 ?_)⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_div hP2 hL0, GlobalTheory.CechPic.cls_lbPow hAg, GlobalTheory.CechPic.cls_pull hA _ hAg, GlobalTheory.CechPic.cls_pull hD1 _ _, GlobalTheory.CechPic.cls_div hP1 hN hD1, GlobalTheory.CechPic.cls_lbPow hAπ, GlobalTheory.CechPic.cls_pull hA _ hAπ, GlobalThe …`.
+
+Use `congr 1`.
+-/
 theorem exists_weight_isAmpleLB : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.NefNumerics → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∃ ρ : AllWt.Weight Dw, ∀ A : LB TF.Y.X, A.IsLB → IsAmpleLB A → ∃ n : ℕ, IsAmpleLB (LB.div (lbPow (A.pull (inc₀ TF.X Z ≫ TF.X.π)) n) (L₀ TF.X Z ρ)) := by
   intro _ _ E _ _ _ H Dw l Xo c TF Z hF
   refine ⟨fun _ k => if (k : ℕ) < Dw.p then ((k : ℕ) : ℤ) - Dw.p else ((k : ℕ) : ℤ) - Dw.p + 1, ?_⟩

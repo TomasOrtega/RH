@@ -9,10 +9,20 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨L, hL, rfl⟩` from `GlobalTheory.CechPic.cls_surj c`. Conclude with `(GlobalTheory.CechPic.cls_eq_zero_iff hL).2 (GlobalTheory.LB.exists_isGen_of_isLocalRing hL)`.
+-/
 theorem cechPic_sp_field_eq_zero (K : Type) [Field K] (c : GlobalTheory.CechPic.Pic (Sp K)) : c = 0 := by
   obtain ⟨L, hL, rfl⟩ := GlobalTheory.CechPic.cls_surj c
   exact (GlobalTheory.CechPic.cls_eq_zero_iff hL).2 (GlobalTheory.LB.exists_isGen_of_isLocalRing hL)
 
+/- English proof (translation)
+Introduce `S S' X' B n h q I hh hI hc W K _ g a x0 hg`. Take `⟨D, hD⟩` from `GlobalTheory.EffCartierData.exists_idealSheaf_eq hI`. Establish `kh : (B.nsmul n).KeepsRegular h` using `(B.nsmul n).keepsRegular_of_flat h`. Establish `e1 : ((B.nsmul n).pull h kh).idealSheaf = D.idealSheaf.comap q`. Rewrite using `[GlobalTheory.EffCartierData.idealSheaf_pull, GlobalTheory.EffCartierData.idealSheaf_nsmul, hD, hc]`.
+
+Establish `kq : D.KeepsRegular q` using `(D.keepsRegular_iff_effCartier q).2 (e1 ▸ ((B.nsmul n).pull h kh).effCartier_idealSheaf)`. Establish `e2 : ((B.nsmul n).pull h kh).idealSheaf = (D.pull q kq).idealSheaf`. Rewrite using `[e1, GlobalTheory.EffCartierData.idealSheaf_pull]`. Establish `i1` using `((B.nsmul n).pull h kh).lbIso_of_idealSheaf_eq (D.pull q kq) e2`. Establish `key : GlobalTheory.CechPic.pull h (n • GlobalTheory.CechPic.cls B.lb B.isLB_lb) = GlobalTheory.CechPic.pull q (GlobalTheory.CechPic.cls D.lb D.isLB_lb)`.
+
+Rewrite using `[← GlobalTheory.CechPic.cls_lbPow B.isLB_lb n (B.isLB_lbPow n), ← (GlobalTheory.CechPic.cls_eq_iff (B.nsmul n).isLB_lb (B.isLB_lbPow n)).2 (B.lbIso_nsmul n), ← GlobalTheory.CechPic.cls_pull (B.nsmul n).isLB_lb h (pull_isLB (B.nsmul n).isLB_lb h), ← GlobalTheory.CechPic.cls_pull D …`. Conclude with `(GlobalTheory.CechPic.cls_eq_iff _ _).2 i1`. Rewrite using `[GlobalTheory.CechPic.pull_comp, key, ← GlobalTheory.CechPic.pull_comp, hg, GlobalTheory.CechPic.pull_comp, cechPic_sp_field_eq_zero K (GlobalTheory.CechPic.pull x0 _), map_zero]`.
+-/
 theorem pull_nsmul_cls_eq_zero_of_comap : ∀ {S S' X' : Scheme.{0}} (B : GlobalTheory.EffCartierData S') (n : ℕ) (h : S ⟶ S') (q : S ⟶ X')
     (I : X'.IdealSheafData), IsIso h → FinalTheorems.EffCartier I → I.comap q = (B.idealSheaf ^ n).comap h →
     ∀ (W : Scheme.{0}) (K : Type) [Field K] (g : W ⟶ S) (a : W ⟶ Sp K) (x0 : Sp K ⟶ X'), g ≫ q = a ≫ x0 →

@@ -13,19 +13,31 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {g : ℕ} [Fact g.Prime]
   (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b => ⟨M a b, h a b⟩, by ext a b; rfl⟩`.
+-/
 theorem exists_int_lift {n : ℕ} (M : Matrix (Fin n) (Fin n) ℚ_[g]) (h : ∀ a b, ‖M a b‖ ≤ 1) :
     ∃ A : Matrix (Fin n) (Fin n) ℤ_[g], (algebraMap ℤ_[g] ℚ_[g]).mapMatrix A = M :=
   ⟨fun a b => ⟨M a b, h a b⟩, by ext a b; rfl⟩
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Matrix.ext fun a b => PadicInt.ext (congrFun (congrFun h a) b)`.
+-/
 theorem mapMatrix_int_injective {n : ℕ} :
     Function.Injective ((algebraMap ℤ_[g] ℚ_[g]).mapMatrix : Matrix (Fin n) (Fin n) ℤ_[g] → _) :=
   fun _ _ h => Matrix.ext fun a b => PadicInt.ext (congrFun (congrFun h a) b)
 
 include hi
 
+/- English proof (translation)
+The claim follows from `(Valuation.mem_integer_iff _ _).trans (valuation_le_iff i hi x)`.
+-/
 theorem mem_integer_iff (x : ℚ_[g]) : i x ∈ 𝒪[w.adicCompletion E] ↔ ‖x‖ ≤ 1 :=
   (Valuation.mem_integer_iff _ _).trans (valuation_le_iff i hi x)
 
+/- English proof (translation)
+Rewrite using `[mem_KO]`. Use `⟨fun a b => (mem_integer_iff i hi _).2 (k.val a b).2, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_inv]`. Conclude with `(mem_integer_iff i hi _).2 ((k⁻¹).val a b).2`.
+-/
 theorem map_inc_mem_KO {n : ℕ} (k : GL (Fin n) ℤ_[g]) :
     Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k) ∈ KO (w.adicCompletion E) (Fin n) := by
   rw [mem_KO]
@@ -33,6 +45,13 @@ theorem map_inc_mem_KO {n : ℕ} (k : GL (Fin n) ℤ_[g]) :
   rw [← map_inv, ← map_inv]
   exact (mem_integer_iff i hi _).2 ((k⁻¹).val a b).2
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `mem_KO.1 hm`. Establish `hint : ∀ M : Matrix (Fin n) (Fin n) (w.adicCompletion E), IntM M → ∀ a b, ‖i.symm.toRingHom.mapMatrix M a b‖ ≤ 1`. Introduce `M hM a b`. Rewrite using `[← norm_le_iff i hi]`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]`.
+
+Conclude with `(val_le_iff _).1 ((Valuation.mem_integer_iff _ _).1 (hM a b))`. Take `⟨A, hA⟩` from `exists_int_lift _ (hint _ h1)`. Take `⟨B, hB⟩` from `exists_int_lift _ (hint _ h2)`. Establish `hAB : A * B = 1` using `mapMatrix_int_injective (by rw [map_mul, hA, hB, ← map_mul, Units.mul_inv, map_one, map_one])`. Establish `hBA : B * A = 1` using `mapMatrix_int_injective (by rw [map_mul, hA, hB, ← map_mul, Units.inv_mul, map_one, map_one])`.
+
+Use `⟨⟨A, B, hAB, hBA⟩, Units.ext (Matrix.ext fun a b => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i ((algebraMap ℤ_[g] ℚ_[g]).mapMatrix A a b) = m.val a b`. Rewrite using `[hA]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_of_mem_KO {n : ℕ} {m : GL (Fin n) (w.adicCompletion E)} (hm : m ∈ KO (w.adicCompletion E) (Fin n)) :
     ∃ k : GL (Fin n) ℤ_[g], Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k) = m := by
   obtain ⟨h1, h2⟩ := mem_KO.1 hm
@@ -52,6 +71,11 @@ theorem exists_of_mem_KO {n : ℕ} {m : GL (Fin n) (w.adicCompletion E)} (hm : m
   rw [hA]
   simp
 
+/- English proof (translation)
+Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨k, rfl⟩, rfl⟩`. Conclude with `map_inc_mem_KO i hi k`. Introduce `hm`.
+
+Take `⟨k, rfl⟩` from `exists_of_mem_KO i hi hm`. Conclude with `⟨_, ⟨k, rfl⟩, rfl⟩`.
+-/
 theorem map_inc_range (n : ℕ) :
     (inc g n).range.map (Matrix.GeneralLinearGroup.map i.toRingHom) = KO (w.adicCompletion E) (Fin n) := by
   ext m
@@ -65,10 +89,16 @@ theorem map_inc_range (n : ℕ) :
 def toKO (n : ℕ) : GL (Fin n) ℤ_[g] →* KO (w.adicCompletion E) (Fin n) :=
   ((Matrix.GeneralLinearGroup.map i.toRingHom).comp (inc g n)).codRestrict _ fun k => map_inc_mem_KO i hi k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_toKO (n : ℕ) (k : GL (Fin n) ℤ_[g]) :
     ((toKO i hi n k : KO (w.adicCompletion E) (Fin n)) : GL (Fin n) (w.adicCompletion E)) =
       Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k) := rfl
 
+/- English proof (translation)
+Introduce `k k' h`. Establish `h'` using `congrArg (fun x : KO (w.adicCompletion E) (Fin n) => ((x : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E))) h`. Use `Units.ext (Matrix.ext fun a b => PadicInt.ext (i.injective ?_))` and prove the remaining obligations. Conclude with `congrFun (congrFun h' a) b`.
+-/
 theorem toKO_injective (n : ℕ) : Function.Injective (toKO i hi n) := by
   intro k k' h
   have h' := congrArg (fun x : KO (w.adicCompletion E) (Fin n) =>
@@ -76,6 +106,9 @@ theorem toKO_injective (n : ℕ) : Function.Injective (toKO i hi n) := by
   refine Units.ext (Matrix.ext fun a b => PadicInt.ext (i.injective ?_))
   exact congrFun (congrFun h' a) b
 
+/- English proof (translation)
+Introduce `m`. Take `⟨k, hk⟩` from `exists_of_mem_KO i hi m.2`. Conclude with `⟨k, Subtype.ext hk⟩`.
+-/
 theorem toKO_surjective (n : ℕ) : Function.Surjective (toKO i hi n) := by
   intro m
   obtain ⟨k, hk⟩ := exists_of_mem_KO i hi m.2
@@ -87,13 +120,26 @@ def equivKO (n : ℕ) : GL (Fin n) ℤ_[g] ≃* KO (w.adicCompletion E) (Fin n) 
 def redKO (n : ℕ) : KO (w.adicCompletion E) (Fin n) →* Gn g n :=
   (red g n).comp (equivKO i hi n).symm.toMonoidHom
 
+/- English proof (translation)
+Use `show red g n ((equivKO i hi n).symm (equivKO i hi n k)) = red g n k`. Rewrite using `[MulEquiv.symm_apply_apply]`.
+-/
 theorem redKO_toKO (n : ℕ) (k : GL (Fin n) ℤ_[g]) : redKO i hi n (toKO i hi n k) = red g n k := by
   show red g n ((equivKO i hi n).symm (equivKO i hi n k)) = red g n k
   rw [MulEquiv.symm_apply_apply]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.GLp.Model.red_surjective n).comp (equivKO i hi n).symm.surjective`.
+-/
 theorem redKO_surjective (n : ℕ) : Function.Surjective (redKO i hi n) :=
   (GlobalTheory.GLp.Model.red_surjective n).comp (equivKO i hi n).symm.surjective
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf]`. Take `⟨k, rfl⟩` from `toKO_surjective i hi n m`. Rewrite using `[redKO_toKO, coe_toKO]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hk`. Conclude with `map_mem_KOne i hi k hk`. Introduce `hm`. Take `⟨k', hk', he⟩` from `exists_of_mem_KOne i hi hm`. Establish `: k' = k` using `toKO_injective i hi n (Subtype.ext he)`.
+
+Rewrite using `[← this]`. Conclude with `hk'`.
+-/
 theorem ker_redKO (n : ℕ) :
     (redKO i hi n).ker = (KOne (w.adicCompletion E) (Fin n)).subgroupOf (KO (w.adicCompletion E) (Fin n)) := by
   ext m

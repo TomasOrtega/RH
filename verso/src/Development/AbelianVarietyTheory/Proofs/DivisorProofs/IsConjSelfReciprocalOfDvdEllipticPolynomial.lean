@@ -9,6 +9,35 @@ noncomputable section
 
 namespace GlobalTheory.SelfRecipFactor
 
+/- English proof (translation)
+Introduce `E _ _ _ n P hP Q hQm hQi hQP`. Take `⟨hPm, -, -, hroots⟩` from `hP`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hP0 : P ≠ 0` using `hPm.ne_zero`. Establish `hnorm : ∀ z : ℂ, (Q.map τ).IsRoot z → ‖z‖ = 1`.
+
+Introduce `z hz`. Apply `hroots τ z` to reduce the goal to its premises. Rewrite using `[mem_roots (Polynomial.map_ne_zero hP0)]`. Take `⟨R, rfl⟩` from `hQP`. Establish `hz' : eval z (Q.map τ) = 0` using `hz`.
+
+Simplify using `[IsRoot, Polynomial.map_mul, eval_mul, hz']`. Establish `hQ0 : Q.coeff 0 ≠ 0`. Introduce `h0`. Establish `h : (Q.map τ).IsRoot 0`. Rewrite using `[IsRoot.def, ← coeff_zero_eq_eval_zero, coeff_map, h0, map_zero]`.
+
+Use `hnorm 0 h` as an intermediate fact. Simplify using `at this`. Use `set d := Q.natDegree with hd`. Use `set c : E →+* E := (IsCMField.complexConj E : E →+* E) with hc`. Establish `hτc : τ.comp c = (starRingEnd ℂ).comp τ`.
+
+Use extensionality with `x`. Conclude with `IsCMField.complexEmbedding_complexConj E τ x`. Establish `hcQ0 : c (Q.coeff 0) ≠ 0`. Simplify using `using hQ0`. Use `set S := GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.sharp E d Q with hS`.
+
+Establish `hSdef : S = C (c (Q.coeff 0))⁻¹ * reflect d (Q.map c)` using `rfl`. Establish `hdegc : (Q.map c).natDegree = d` using `natDegree_map c`. Establish `hSm : S.Monic`. Apply `monic_of_natDegree_le_of_coeff_eq_one d` to reduce the goal to its premises. Rewrite using `[hSdef]`.
+
+Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Use `natDegree_reflect_le.trans ?_` and prove the remaining obligations. Rewrite using `[hdegc, max_self]`. Rewrite using `[hSdef, coeff_C_mul, coeff_reflect, revAt_le le_rfl, Nat.sub_self, coeff_map]`. Conclude with `inv_mul_cancel₀ hcQ0`.
+
+Establish `hSdeg : S.natDegree ≤ d`. Rewrite using `[hSdef]`. Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Use `natDegree_reflect_le.trans ?_` and prove the remaining obligations. Rewrite using `[hdegc, max_self]`.
+
+Establish `hdeg : 0 < (Q.map τ).degree`. Rewrite using `[degree_map]`. Conclude with `degree_pos_of_irreducible hQi`. Take `⟨z, hz⟩` from `Complex.exists_root hdeg`. Establish `hz1 : ‖z‖ = 1` using `hnorm z hz`.
+
+Establish `hz0 : z ≠ 0`. Introduce `h`. Rewrite `hz1` using `[h]`. Simplify using `at hz1`. Establish `hzinv : z⁻¹ = (starRingEnd ℂ) z` using `Complex.inv_eq_conj hz1`.
+
+Establish `hQz : eval₂ τ z Q = 0`. Establish `: eval z (Q.map τ) = 0` using `hz`. Rewrite `this` using `[eval_map]`. Then use the resulting hypothesis. Establish `hSz : eval₂ τ z S = 0`. Use `letI : Invertible (z⁻¹) := invertibleOfNonzero (inv_ne_zero hz0)`.
+
+Establish `key` using `eval₂_reflect_mul_pow τ (z⁻¹) d (Q.map c) hdegc.le`. Rewrite `key` using `[invOf_eq_inv, inv_inv, eval₂_map, hτc, hzinv, ← Polynomial.hom_eval₂, hQz, map_zero]`. Establish `hr : eval₂ τ z (reflect d (Q.map c)) = 0`. Break down `mul_eq_zero.1 key with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd h (pow_ne_zero _ ((_root_.map_ne_zero _).2 hz0))`. Rewrite using `[hSdef, eval₂_mul, hr, mul_zero]`. Establish `hdvd : Q ∣ S`. Assume the negation of the conclusion as `h`. Take `⟨a, b, hab⟩` from `(hQi.coprime_iff_not_dvd).2 h`.
+
+Use `congrArg (eval₂ τ z) hab` as an intermediate fact. Rewrite `this` using `[eval₂_add, eval₂_mul, eval₂_mul, hQz, hSz, eval₂_one]`. Simplify using `at this`. Use `⟨hQm, hQi, rfl, hQ0, ?_⟩` and prove the remaining obligations. Conclude with `(eq_of_monic_of_dvd_of_natDegree_le hQm hSm hdvd hSdeg).symm`.
+-/
 theorem isSelfRecip_of_dvd_ell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (P : E[X]),
     P ∈ Ell E n → ∀ Q : E[X], Q.Monic → Irreducible Q → Q ∣ P →
       GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.IsSelfRecip E Q.natDegree Q := by

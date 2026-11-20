@@ -13,16 +13,28 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S PI.AmpRootCommon
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Introduce `q hq`. Conclude with `(Finset.mem_filter.mp hq).2.1`.
+-/
 theorem rootPat_lt (p : Point ℂ (r + 1)) : ∀ q ∈ rootPat p, q.1 < q.2 := by
   intro q hq
   exact (Finset.mem_filter.mp hq).2.1
 
+/- English proof (translation)
+Simplify using `only [rootPat, Finset.mem_filter, Finset.mem_univ, true_and]`.
+-/
 theorem mem_rootPat {p : Point ℂ (r + 1)} {i j : Fin (r + 1)} :
     (i, j) ∈ rootPat p ↔ i < j ∧ blockIdx p.1 i.val = blockIdx p.1 j.val := by
   simp only [rootPat, Finset.mem_filter, Finset.mem_univ, true_and]
 
+/- English proof (translation)
+The claim follows from `p.2.2`.
+-/
 theorem sum_pt (p : Point ℂ (r + 1)) : (p.1.map Prod.snd).sum = r + 1 := p.2.2
 
+/- English proof (translation)
+The claim follows from `| [], i, h => by simp at h | (t, s) :: bs, i, h => by simp only [List.map_cons, List.sum_cons] at h by_cases hi : i < s · have h1 : s - 1 - i < s := by omega simp only [pv, blockIdx, hi, h1, ↓reduceIte] · have ih := blockIdx_pv_eq bs (i - s) (by omega) have h1 : ¬ (s + pv bs (i - …`.
+-/
 private theorem blockIdx_pv_eq : ∀ (bs : List (ℂ × ℕ)) (i : ℕ), i < (bs.map Prod.snd).sum →
     blockIdx bs (pv bs i) = blockIdx bs i
   | [], i, h => by simp at h
@@ -35,6 +47,9 @@ private theorem blockIdx_pv_eq : ∀ (bs : List (ℂ × ℕ)) (i : ℕ), i < (bs
       have h1 : ¬ (s + pv bs (i - s) < s) := by omega
       simp only [pv, blockIdx, hi, h1, ↓reduceIte, Nat.add_sub_cancel_left, ih]
 
+/- English proof (translation)
+The claim follows from `| [], i, j, _, _, h => by simp at h | (t, s) :: bs, i, j, hij, hb, h => by simp only [List.map_cons, List.sum_cons] at h by_cases hj : j < s · have hi : i < s := by omega simp only [pv, hi, hj, ↓reduceIte] omega · by_cases hi : i < s · simp only [blockIdx, hi, hj, ↓reduceIte] at …`.
+-/
 private theorem pv_lt_pv_of_lt_of_blockIdx_eq : ∀ (bs : List (ℂ × ℕ)) (i j : ℕ), i < j → blockIdx bs i = blockIdx bs j →
     j < (bs.map Prod.snd).sum → pv bs j < pv bs i
   | [], i, j, _, _, h => by simp at h
@@ -54,6 +69,13 @@ private theorem pv_lt_pv_of_lt_of_blockIdx_eq : ∀ (bs : List (ℂ × ℕ)) (i 
         simp only [pv, hi, hj, ↓reduceIte]
         omega
 
+/- English proof (translation)
+Take `⟨hlt, hb⟩` from `(mem_rootPat (i := q.1.1) (j := q.1.2)).mp q.2`. Establish `hs : (p.1.map Prod.snd).sum = r + 1` using `p.2.2`. Establish `h1` using `q.1.1.2`. Establish `h2` using `q.1.2.2`. Rewrite using `[mem_rootPat]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show pv p.1 q.1.2.val < pv p.1 q.1.1.val`. Conclude with `pv_lt_pv_of_lt_of_blockIdx_eq p.1 _ _ hlt hb (by omega)`. Use `show blockIdx p.1 (pv p.1 q.1.2.val) = blockIdx p.1 (pv p.1 q.1.1.val)`. Rewrite using `[blockIdx_pv_eq p.1 _ (by omega), blockIdx_pv_eq p.1 _ (by omega)]`.
+
+Conclude with `hb.symm`.
+-/
 theorem tau_mem {p : Point ℂ (r + 1)} (q : rootPat p) : (ptσ p q.1.2, ptσ p q.1.1) ∈ rootPat p := by
   obtain ⟨hlt, hb⟩ := (mem_rootPat (i := q.1.1) (j := q.1.2)).mp q.2
   have hs : (p.1.map Prod.snd).sum = r + 1 := p.2.2
@@ -79,11 +101,17 @@ def tauE (p : Point ℂ (r + 1)) : rootPat p ≃ rootPat p where
 
 def cU (p : Point ℂ (r + 1)) (q : rootPat p) : ℂ := star (ptζ p q.1.2) / star (ptζ p q.1.1)
 
+/- English proof (translation)
+Simplify using `only [ptζ, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem norm_ptζ (p : Point ℂ (r + 1)) (i : Fin (r + 1)) :
     ‖ptζ p i‖ = ‖ptEntry p.1 i.val (pv p.1 i.val)‖ := by
   simp only [ptζ, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]
   rfl
 
+/- English proof (translation)
+The claim follows from `| [], i, _, _, h, _ => by simp at h | (t, s) :: bs, i, j, hb, hi', hj' => by simp only [List.map_cons, List.sum_cons] at hi' hj' by_cases hi : i < s <;> by_cases hj : j < s · have e1 : i + (s - 1 - i) + 1 = s := by omega have e2 : j + (s - 1 - j) + 1 = s := by omega have l1 : s - …`.
+-/
 private theorem ptEntry_pv_eq_of_blockIdx_eq : ∀ (bs : List (ℂ × ℕ)) (i j : ℕ), blockIdx bs i = blockIdx bs j →
     i < (bs.map Prod.snd).sum → j < (bs.map Prod.snd).sum → ptEntry bs i (pv bs i) = ptEntry bs j (pv bs j)
   | [], i, _, _, h, _ => by simp at h
@@ -110,6 +138,11 @@ private theorem ptEntry_pv_eq_of_blockIdx_eq : ∀ (bs : List (ℂ × ℕ)) (i j
       simp only [pv, ptEntry, hi, hj, g1, g2, g3, g4, false_and, and_self, ↓reduceIte,
         Nat.add_sub_cancel_left, ih]
 
+/- English proof (translation)
+Take `⟨_, hb⟩` from `(mem_rootPat (i := q.1.1) (j := q.1.2)).mp q.2`. Establish `hs : (p.1.map Prod.snd).sum = r + 1` using `p.2.2`. Establish `h1` using `q.1.1.2`. Establish `h2` using `q.1.2.2`. Establish `e : ‖ptζ p q.1.2‖ = ‖ptζ p q.1.1‖`.
+
+Rewrite using `[norm_ptζ, norm_ptζ, ptEntry_pv_eq_of_blockIdx_eq p.1 q.1.2.val q.1.1.val hb.symm (by omega) (by omega)]`. Establish `hne : ‖ptζ p q.1.1‖ ≠ 0` using `norm_ne_zero_iff.mpr (ptζ_ne p _)`. Simplify using `only [cU, norm_div, norm_star, e]`. Conclude with `div_self hne`.
+-/
 theorem norm_cU (p : Point ℂ (r + 1)) (q : rootPat p) : ‖cU p q‖ = 1 := by
   obtain ⟨_, hb⟩ := (mem_rootPat (i := q.1.1) (j := q.1.2)).mp q.2
   have hs : (p.1.map Prod.snd).sum = r + 1 := p.2.2
@@ -124,9 +157,19 @@ theorem norm_cU (p : Point ℂ (r + 1)) (q : rootPat p) : ‖cU p q‖ = 1 := by
 def phiR (p : Point ℂ (r + 1)) (v : rootPat p → ℂ) : rootPat p → ℂ :=
   fun q => cU p q * star (invC (rootPat p) v (tauE p q))
 
+/- English proof (translation)
+The claim follows from `phi_mp _ (rootPat_lt p) (tauE p) (cU p) (norm_cU p)`.
+-/
 theorem phiR_mp (p : Point ℂ (r + 1)) : MeasurePreserving (phiR p) volume volume :=
   phi_mp _ (rootPat_lt p) (tauE p) (cU p) (norm_cU p)
 
+/- English proof (translation)
+Establish `hH : (Hpk k r).det ≠ 0`. Introduce `h0`. Establish `h2` using `congrArg Matrix.det (Hpk_mul_self (k := k) (r := r))`. Rewrite `h2` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h2`.
+
+Establish `hdet` using `congrArg Matrix.det (show g₀ᴴ * Hpk k r * g₀ = Hpk k r from hg)`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hu : IsUnit g₀.det` using `isUnit_iff_ne_zero.mpr fun h0 => by`. Rewrite `hdet` using `[h0, mul_zero]`. Conclude with `hH hdet.symm`.
+
+Establish `h1 : g₀⁻¹ * g₀ = 1` using `Matrix.nonsing_inv_mul _ hu`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_back {g₀ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g₀ ∈ UH (Hpk k r))
     (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : g₀⁻¹ * (g₀ * X * g₀⁻¹) * g₀ = X := by
   have hH : (Hpk k r).det ≠ 0 := by
@@ -143,6 +186,9 @@ theorem conj_back {g₀ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ
   calc g₀⁻¹ * (g₀ * X * g₀⁻¹) * g₀ = (g₀⁻¹ * g₀) * X * (g₀⁻¹ * g₀) := by simp only [Matrix.mul_assoc]
     _ = X := by rw [h1, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+The claim follows from `| [], i, j, _, _, h => by simp at h | (t, s) :: bs, i, j, hij, hb, h => by simp only [List.map_cons, List.sum_cons] at h by_cases hj : j < s · have hi : i < s := by omega simp only [blockIdx, hi, hj, ↓reduceIte] at hb exact absurd rfl hb · by_cases hi : i < s · simp only [pv, hi, …`.
+-/
 private theorem pv_lt_pv_of_lt_of_blockIdx_ne : ∀ (bs : List (ℂ × ℕ)) (i j : ℕ), i < j → blockIdx bs i ≠ blockIdx bs j →
     j < (bs.map Prod.snd).sum → pv bs i < pv bs j
   | [], i, j, _, _, h => by simp at h
@@ -163,6 +209,15 @@ private theorem pv_lt_pv_of_lt_of_blockIdx_ne : ∀ (bs : List (ℂ × ℕ)) (i 
         simp only [pv, hi, hj, ↓reduceIte]
         omega
 
+/- English proof (translation)
+Establish `hN : Matrix.of x ∈ Nset k r` using `hx.1`. Establish `ha : g₀ * Matrix.of x * g₀⁻¹ ∈ RStab k r g₀` using `⟨hx.2, by rw [conj_back hg]; exact hx.1⟩`. Establish `hs : (p.1.map Prod.snd).sum = r + 1` using `p.2.2`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, vM]`.
+
+Distinguish the cases in `hm : (i, j) ∈ rootPat p`. Rewrite using `[dif_pos hm]`. Establish `hij : i ≠ j` using `ne_of_lt ((mem_rootPat.mp hm).1)`. Rewrite using `[Matrix.one_apply_ne hij, zero_add]`. Both sides reduce to the same expression.
+
+Rewrite using `[dif_neg hm, add_zero]`. Distinguish the cases in `hji : j ≤ i`. Rewrite using `[flagMat_lower hN i j hji, Matrix.one_apply]`. Establish `hij : i < j` using `not_le.mp hji`. Establish `hb : blockIdx p.1 i.val ≠ blockIdx p.1 j.val` using `fun h => hm (mem_rootPat.mpr ⟨hij, h⟩)`.
+
+Establish `hj2` using `j.2`. Establish `hlt : (ptσ p i).val < (ptσ p j).val` using `pv_lt_pv_of_lt_of_blockIdx_ne p.1 _ _ hij hb (by omega)`. Establish `h0` using `(flag_offblock hz hz' hg hP ha i j hlt).1`. Rewrite `h0` using `[conj_back hg]`. Rewrite using `[h0, Matrix.one_apply_ne (ne_of_lt hij)]`.
+-/
 theorem flag_eq_one_add {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     {g₀ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} {p : Point ℂ (r + 1)}
     (hg : g₀ ∈ UH (Hpk k r)) (hP : ZhatO k r z z' g₀ = ptMat p)
@@ -190,6 +245,15 @@ theorem flag_eq_one_add {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (
       rw [conj_back hg] at h0
       rw [h0, Matrix.one_apply_ne (ne_of_lt hij)]
 
+/- English proof (translation)
+Establish `hF' : flagMat k r z' (Matrix.of x) = 1 + vM (rootPat p) (rootCoords k r z' p x)` using `flag_eq_one_add hz hz' hg hP hx`. Establish `hG : (1 + vM (rootPat p) (rootCoords k r z' p x)) * gInv (vM (rootPat p) (rootCoords k r z' p x)) = 1` using `mul_gInv (sUp_vM (rootPat p) (rootPat_lt p) _)`. Establish `hrel` using `flag_rel_Rset hz hz' hg hx`. Rewrite `hrel` using `[hF']`. Establish `key : (flagMat k r z (g₀ * Matrix.of x * g₀⁻¹))ᴴ * Zhat k r z z' g₀ = Zhat k r z z' g₀ * gInv (vM (rootPat p) (rootCoords k r z' p x))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, hrel]`. Establish `inj : ∀ a b : Fin (r + 1), ptσ p a = ptσ p b ↔ a = b` using `fun a b => ⟨fun h => by simpa only [ptσ_invol] using congrArg (ptσ p) h, fun h => h ▸ rfl⟩`. Use function extensionality and compare the values at `q`.
+
+Establish `e` using `congrFun (congrFun key q.1.2) (ptσ p q.1.1)`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, zhat_pt hP, inj, mul_ite, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte] at e`. Establish `e2` using `congrArg star e`. Simplify using `only [star_mul', star_star] at e2`. Establish `hne : star (ptζ p q.1.1) ≠ 0` using `star_ne_zero.mpr (ptζ_ne p _)`.
+
+Use `show flagMat k r z (g₀ * Matrix.of x * g₀⁻¹) q.1.1 q.1.2 = star (ptζ p q.1.2) / star (ptζ p q.1.1) * star (gInv (vM (rootPat p) (rootCoords k r z' p x)) (ptσ p q.1.2) (ptσ p q.1.1))`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e2`.
+-/
 theorem rootCoords_conj {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     {g₀ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} {p : Point ℂ (r + 1)}
     (hg : g₀ ∈ UH (Hpk k r)) (hP : ZhatO k r z z' g₀ = ptMat p)
@@ -222,12 +286,20 @@ theorem rootCoords_conj {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (
   field_simp
   linear_combination e2
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : Mt k r => fun i j => (a * Matrix.of x * b) i j)` using `((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)`. Conclude with `hc.measurable`.
+-/
 theorem measurable_conjM (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (fun x : Mt k r => fun i j => (a * Matrix.of x * b) i j) := by
   have hc : Continuous (fun x : Mt k r => fun i j => (a * Matrix.of x * b) i j) :=
     ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)
   exact hc.measurable
 
+/- English proof (translation)
+Use `continuous_pi fun q => ?_` and prove the remaining obligations. Simplify using `only [rootCoords, flagMat]`. Distinguish the cases in `hi : q.1.1.val < r`. Simplify using `only [hi, ↓reduceDIte] fun_prop`. Simplify using `only [hi, ↓reduceDIte]`.
+
+Conclude with `continuous_const`.
+-/
 theorem continuous_rootCoords (z : Fin (2 * r + k + 1) → ℂ) (p : Point ℂ (r + 1)) :
     Continuous (rootCoords k r z p) := by
   refine continuous_pi fun q => ?_
@@ -238,9 +310,17 @@ theorem continuous_rootCoords (z : Fin (2 * r + k + 1) → ℂ) (p : Point ℂ (
   · simp only [hi, ↓reduceDIte]
     exact continuous_const
 
+/- English proof (translation)
+The claim follows from `continuous_id`.
+-/
 theorem cont_of : Continuous (fun x : Mt k r => (Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) :=
   continuous_id
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : Mt k r => (Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))` using `cont_of`. Simplify using `only [Nset, UH, Set.mem_setOf_eq, Set.setOf_and, Set.setOf_forall]`. Use `IsClosed.inter ?_ (IsClosed.inter ?_ ?_)` and prove the remaining obligations. Conclude with `isClosed_eq ((hc.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hc) continuous_const`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun _ => isClosed_eq (hc.matrix_elem _ _) continuous_const`.
+
+Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_eq (hc.matrix_elem _ _) continuous_const`.
+-/
 theorem isClosed_N : IsClosed {x : Mt k r | Matrix.of x ∈ Nset k r} := by
   have hc : Continuous (fun x : Mt k r => (Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) :=
     cont_of
@@ -252,6 +332,9 @@ theorem isClosed_N : IsClosed {x : Mt k r | Matrix.of x ∈ Nset k r} := by
   · exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ =>
       isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_eq (hc.matrix_elem _ _) continuous_const
 
+/- English proof (translation)
+Establish `hf : Continuous (fun x : Mt k r => (fun i j => (g⁻¹ * Matrix.of x * g) i j : Mt k r))` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `h2 : IsClosed {x : Mt k r | g⁻¹ * Matrix.of x * g ∈ Nset k r}` using `isClosed_N.preimage hf`. Conclude with `(isClosed_N.inter h2).measurableSet`.
+-/
 theorem measurableSet_RStab (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     MeasurableSet {x : Mt k r | Matrix.of x ∈ RStab k r g} := by
   have hf : Continuous (fun x : Mt k r => (fun i j => (g⁻¹ * Matrix.of x * g) i j : Mt k r)) :=
@@ -259,6 +342,15 @@ theorem measurableSet_RStab (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 
   have h2 : IsClosed {x : Mt k r | g⁻¹ * Matrix.of x * g ∈ Nset k r} := isClosed_N.preimage hf
   exact (isClosed_N.inter h2).measurableSet
 
+/- English proof (translation)
+Introduce `k r L p g₀ μ₀ hrep _ hnull hmap`. Take `⟨hg, hP⟩` from `hrep`. Establish `hz` using `L.hz.1`. Establish `hz'` using `L.hz'.1`. Establish `hf : Measurable (fun x : Mt k r => fun i j => (g₀ * Matrix.of x * g₀⁻¹) i j)` using `measurable_conjM _ _`.
+
+Establish `hae : ∀ᵐ x ∂μ₀, Matrix.of x ∈ Rset k r g₀` using `ae_iff.mpr hnull`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hs : MeasurableSet {x : Mt k r | Matrix.of x ∉ RStab k r g₀}` using `(measurableSet_RStab g₀).compl`. Rewrite using `[Measure.map_apply hf hs]`. Use `measure_mono_null ?_ hnull` and prove the remaining obligations.
+
+Introduce `x hx`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at hx ⊢`. Introduce `hR`. Conclude with `hx ⟨hR.2, (show g₀⁻¹ * (g₀ * Matrix.of x * g₀⁻¹) * g₀ ∈ Nset k r by rw [conj_back hg]; exact hR.1)⟩`. Rewrite using `[Measure.map_map (continuous_rootCoords L.z p).measurable hf]`.
+
+Establish `hcongr : (rootCoords k r L.z p ∘ fun x : Mt k r => fun i j => (g₀ * Matrix.of x * g₀⁻¹) i j) =ᵐ[μ₀] (phiR p ∘ rootCoords k r L.z' p)` using `by filter_upwards [hae] with x hx`. Conclude with `rootCoords_conj hz hz' hg hP hx`. Rewrite using `[Measure.map_congr hcongr, ← Measure.map_map (phiR_mp p).measurable (continuous_rootCoords L.z' p).measurable, hmap, Measure.map_smul, (phiR_mp p).map_eq]`.
+-/
 theorem rootJac : PI.AmpRoot.RootJac := by
   intro k r L p g₀ μ₀ hrep _ hnull hmap
   obtain ⟨hg, hP⟩ := hrep

@@ -9,11 +9,19 @@ open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopolo
 section Cone
 variable {C : Type*} [Category C] [Preadditive C] {K L M : CochainComplex C ℤ} (φ : K ⟶ L) [HomologicalComplex.HasHomotopyCofiber φ]
 
+/- English proof (translation)
+Rewrite using `[mappingCone.δ_descCochain φ α β h n' hn']`. Both sides reduce to the same expression.
+-/
 theorem desc_δ {n m : ℤ} (α : Cochain K M m) (β : Cochain L M n) (h : m + 1 = n) (n' : ℤ) (hn' : n + 1 = n') :
     δ n n' (mappingCone.descCochain φ α β h) =
       mappingCone.descCochain φ (δ m n α + n'.negOnePow • (Cochain.ofHom φ).comp β (zero_add n)) (δ n n' β) hn' := by
   rw [mappingCone.δ_descCochain φ α β h n' hn']; rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `mappingCone.inl_descCochain φ α β h` as an intermediate fact. Rewrite `this` using `[H, Cochain.comp_zero]`. Conclude with `this.symm`. Use `mappingCone.inr_descCochain φ α β h` as an intermediate fact.
+
+Rewrite `this` using `[H, Cochain.comp_zero]`. Conclude with `this.symm`.
+-/
 theorem desc_eq_zero {n m : ℤ} {α : Cochain K M m} {β : Cochain L M n} {h : m + 1 = n}
     (H : mappingCone.descCochain φ α β h = 0) : α = 0 ∧ β = 0 := by
   constructor
@@ -22,8 +30,30 @@ theorem desc_eq_zero {n m : ℤ} {α : Cochain K M m} {β : Cochain L M n} {h : 
   · have := mappingCone.inr_descCochain φ α β h
     rw [H, Cochain.comp_zero] at this; exact this.symm
 
+/- English proof (translation)
+The claim follows from `Int.units_mul_self u`.
+-/
 theorem units_mul_self' (u : ℤˣ) : u * u = 1 := Int.units_mul_self u
 
+/- English proof (translation)
+Use `set a : Cochain K M (n - 1) := (mappingCone.inl φ).comp z.1 (by omega) with ha`. Use `set b : Cochain L M n := (Cochain.ofHom (mappingCone.inr φ)).comp z.1 (zero_add n) with hb`. Establish `hz : z.1 = mappingCone.descCochain φ a b (by omega)`. Rewrite using `[mappingCone.ext_cochain_from_iff φ (n - 1) n (by omega)]`. Simplify using `[ha, hb]`.
+
+Establish `h0` using `Cocycle.δ_eq_zero z (n + 1)`. Rewrite `h0` using `[hz, desc_δ φ a b _ (n + 1) rfl]`. Take `⟨h1, h2⟩` from `desc_eq_zero φ h0`. Establish `hda : δ (n - 1) n a = -((n + 1).negOnePow • (Cochain.ofHom φ).comp b (zero_add n))` using `eq_neg_of_add_eq_zero_left h1`. Set `bc : Cocycle L M n` to `Cocycle.mk b (n + 1) rfl h2`.
+
+Establish `hb0 : CohomologyClass.mk bc = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨-((n + 1).negOnePow • a), ?_⟩` and prove the remaining obligations. Rewrite using `[δ_neg, δ_units_smul, hda, smul_neg, neg_neg, smul_smul, units_mul_self', one_smul]`.
+
+Simplify using `[zcomp, bc]`. Rewrite `hb0` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Take `⟨γ, hγ⟩` from `hb0`. Express the relevant statement in the definitionally equal form `δ (n - 1) n γ = b at hγ`. Use `set a' : Cochain K M (n - 1) := a - n.negOnePow • (Cochain.ofHom φ).comp γ (zero_add _) with ha'`.
+
+Set `w : Cochain (mappingCone φ) M (n - 1)` to `mappingCone.descCochain φ (0 : Cochain K M (n - 1 - 1)) γ (by omega)`. Establish `hw : δ (n - 1) n w = mappingCone.descCochain φ (n.negOnePow • (Cochain.ofHom φ).comp γ (zero_add _)) b (by omega)`. Simplify using `only [w]; rw [desc_δ φ _ γ _ n (by omega), hγ, δ_zero, zero_add]`. Establish `hda' : δ (n - 1) n a' = 0`. Establish `e : mappingCone.descCochain φ a' (0 : Cochain L M n) (by omega) = z.1 - δ (n - 1) n w`.
+
+Rewrite using `[hz, hw, mappingCone.ext_cochain_from_iff φ (n - 1) n (by omega)]`. Simplify using `[ha']`. Establish `e2` using `congrArg (δ n (n + 1)) e`. Rewrite `e2` using `[δ_sub, δ_δ, sub_zero, Cocycle.δ_eq_zero, desc_δ φ _ _ _ (n + 1) rfl]`. Use `(desc_eq_zero φ e2).1` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨x, hx⟩` from `hsurj (n - 1) (Cocycle.mk a' n (by omega) hda')`. Rewrite `hx` using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1 - 1) (by omega)]`. Take `⟨γ', hγ'⟩` from `hx`. Express the relevant statement in the definitionally equal form `δ (n - 1 - 1) (n - 1) γ' = (Cochain.ofHom φ).comp x.1 (zero_add _) - a' at hγ'`.
+
+Establish `hdx` using `Cocycle.δ_eq_zero x n`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨w + n.negOnePow • mappingCone.descCochain φ (0 : Cochain K M (n - 1 - 1)) x.1 (by omega) - mappingCone.descCochain φ γ' (0 : Cochain L M (n - 1)) (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[δ_sub, δ_add, δ_units_smul, hw, desc_δ φ _ _ _ n (by omega), desc_δ φ _ _ _ n (by omega), hγ', hdx]`. Express the relevant statement in the definitionally equal form `_ = z.1`.
+
+Rewrite using `[hz, mappingCone.ext_cochain_from_iff φ (n - 1) n (by omega)]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [mappingCone.inl_descCochain, Cochain.comp_add, Cochain.comp_sub, Cochain.comp_units_smul, δ_zero, zero_add, Cochain.comp_zero, smul_zero, add_zero, smul_smul, units_mul_self', one_smul, ha']`. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
+-/
 theorem cone_zero
     (hinj : ∀ (n : ℤ) (x : Cocycle L M n),
       CohomologyClass.mk (zcomp (Cocycle.ofHom φ) x (zero_add n)) = 0 → CohomologyClass.mk x = 0)
@@ -83,6 +113,15 @@ end Cone
 section Geo
 variable {R : Type} [CommRing R] (F : Shv R)
 
+/- English proof (translation)
+Establish `hinj : ∀ (n : ℤ) (x : Cocycle ((chains R).obj E) (res R F) n), CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map f)) x (zero_add n)) = 0 → CohomologyClass.mk x = 0`. Introduce `n x hx`. Apply `(h n).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map f)) x (zero_add n)) = pull R f F n 0`. Rewrite using `[map_zero]`.
+
+Conclude with `hx`. Establish `hsurj : ∀ (n : ℤ) (y : Cocycle ((chains R).obj U) (res R F) n), ∃ x : Cocycle ((chains R).obj E) (res R F) n, CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map f)) x (zero_add n)) = CohomologyClass.mk y`. Introduce `n y`. Take `⟨c, hc⟩` from `(h n).2 (CohomologyClass.mk y)`. Take `⟨x, rfl⟩` from `c.mk_surjective`.
+
+Conclude with `⟨x, hc⟩`. Use `⟨fun y y' => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `y.mk_surjective`. Take `⟨z', rfl⟩` from `y'.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk z = CohomologyClass.mk z'`.
+
+Rewrite using `[cone_zero _ hinj hsurj n z, cone_zero _ hinj hsurj n z']`.
+-/
 theorem hrel_sub {U E : Spc} (f : U ⟶ E) (h : Eqv R f F) (n : ℤ) : Subsingleton (Hrel R f F n) := by
   have hinj : ∀ (n : ℤ) (x : Cocycle ((chains R).obj E) (res R F) n),
       CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map f)) x (zero_add n)) = 0 → CohomologyClass.mk x = 0 := by
@@ -102,12 +141,22 @@ theorem hrel_sub {U E : Spc} (f : U ⟶ E) (h : Eqv R f F) (n : ℤ) : Subsingle
   change CohomologyClass.mk z = CohomologyClass.mk z'
   rw [cone_zero _ hinj hsurj n z, cone_zero _ hinj hsurj n z']
 
+/- English proof (translation)
+Introduce `n`. Use `Function.bijective_iff_has_inverse.2 ⟨pull R (sch.map (inv f)) F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, ← Functor.map_comp, IsIso.inv_hom_id, CategoryTheory.Functor.map_id, pull_id]`. Rewrite using `[← pull_comp, ← Functor.map_comp, IsIso.hom_inv_id, CategoryTheory.Functor.map_id, pull_id]`.
+-/
 theorem eqv_of_iso {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] : Eqv R (sch.map f) F := by
   intro n
   refine Function.bijective_iff_has_inverse.2 ⟨pull R (sch.map (inv f)) F n, fun x => ?_, fun x => ?_⟩
   · rw [← pull_comp, ← Functor.map_comp, IsIso.inv_hom_id, CategoryTheory.Functor.map_id, pull_id]
   · rw [← pull_comp, ← Functor.map_comp, IsIso.hom_inv_id, CategoryTheory.Functor.map_id, pull_id]
 
+/- English proof (translation)
+Introduce `n`. Establish `key : ∀ y, pull R (sch.map a) F n (pull R (sch.map f) F n y) = pull R (sch.map h) F n (pull R (sch.map c) F n y)`. Introduce `y`. Rewrite using `[← pull_comp, ← pull_comp, ← Functor.map_comp, ← Functor.map_comp, w]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `y y' e`. Apply `(hc n).1` to reduce the goal to its premises. Apply `(hh n).1` to reduce the goal to its premises. Rewrite using `[← key, ← key, e]`. Introduce `x`.
+
+Take `⟨u, hu⟩` from `(hh n).2 (pull R (sch.map a) F n x)`. Take `⟨v, rfl⟩` from `(hc n).2 u`. Use `⟨v, (ha n).1 ?_⟩` and prove the remaining obligations. Rewrite using `[key, hu]`.
+-/
 theorem eqv_of_square {P Q X Y : Scheme.{0}} (a : P ⟶ X) (f : X ⟶ Y) (h : P ⟶ Q) (c : Q ⟶ Y) (w : a ≫ f = h ≫ c)
     (ha : Eqv R (sch.map a) F) (hh : Eqv R (sch.map h) F) (hc : Eqv R (sch.map c) F) : Eqv R (sch.map f) F := by
   intro n
@@ -124,6 +173,15 @@ theorem eqv_of_square {P Q X Y : Scheme.{0}} (a : P ⟶ X) (f : X ⟶ Y) (h : P 
     rw [key, hu]
 end Geo
 
+/- English proof (translation)
+Establish `c1 : pullback.fst pA r ≫ pA ≫ s = (pullback.snd pA r ≫ w) ≫ ι`. Simplify using `only [Category.assoc, hw]`. Conclude with `pullback.condition_assoc s`. Establish `c2 : pullback.lift (pullback.fst pA r) (pullback.snd pA r ≫ w) c1 ≫ pullback.fst (pA ≫ s) ι ≫ pA = pullback.snd pA r ≫ r`. Rewrite using `[← Category.assoc, pullback.lift_fst, pullback.condition]`.
+
+Use `⟨⟨pullback.lift (pullback.lift (pullback.fst pA r) (pullback.snd pA r ≫ w) c1) (pullback.snd pA r) c2, ?_, ?_⟩⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Rewrite using `[← cancel_mono ι]`.
+
+Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, hw]`. Establish `e3 : pullback.fst (pA ≫ s) ι ≫ pA ≫ s = pullback.snd (pA ≫ s) ι ≫ ι` using `pullback.condition`. Establish `e4` using `pullback.condition_assoc (f := pullback.fst (pA ≫ s) ι ≫ pA) (g := r) s`. Simplify using `only [Category.assoc] at e4`. Rewrite using `[← e3]`.
+
+Apply the tactic sequence `first | exact e4 | exact e4.symm`. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`.
+-/
 theorem commGroup_inv_eq_conj_twist_identity {B W S X T : Scheme.{0}} (pA : X ⟶ S) (s : S ⟶ B) (ι : W ⟶ B) [Mono ι] (r : T ⟶ S) (w : T ⟶ W)
     (hw : w ≫ ι = r ≫ s) (hc : (pullback.fst (pullback.fst (pA ≫ s) ι ≫ pA) r ≫ pullback.fst (pA ≫ s) ι) ≫ pA =
       pullback.snd (pullback.fst (pA ≫ s) ι ≫ pA) r ≫ r) :
@@ -155,10 +213,26 @@ theorem commGroup_inv_eq_conj_twist_identity {B W S X T : Scheme.{0}} (pA : X �
     · simp only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc,
           pullback.lift_snd_assoc]
 
+/- English proof (translation)
+The claim follows from `((IsLocalRing.specializes_closedPoint x).antisymm (hx _)).eq`.
+-/
 theorem closed_eq {A : Type} [CommRing A] [IsLocalRing A] (x : Sp A) (hx : ∀ z : Sp A, z ⤳ x) :
     x = IsLocalRing.closedPoint A :=
   ((IsLocalRing.specializes_closedPoint x).antisymm (hx _)).eq
 
+/- English proof (translation)
+Introduce `hH q _ k _ hq i B W Y b ι _ p hp A _ s hA hx m`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hE2, -⟩` from `hH`. Take `⟨hHen, hsep⟩` from `hA`. Use `haveI : IsProper p := hp`. Establish `hqA : IsUnit (q : A)`.
+
+Use `hq.map (Spec.preimage (s ≫ b)).hom` as an intermediate fact. Simplify using `using this`. Take `⟨x, hx1, w0, hw0⟩` from `hx`. Establish `hxc` using `closed_eq x hx1`. Establish `hrpt : (Spec.map (CommRingCat.ofHom (IsLocalRing.residue A))) (IsLocalRing.closedPoint (IsLocalRing.ResidueField A)) = IsLocalRing.closedPoint A` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue A)`.
+
+Use `haveI : Surjective (pullback.fst (Spec.map (CommRingCat.ofHom (IsLocalRing.residue A)) ≫ s) ι) := by`. Prove the components needed by the constructor for the conclusion. Introduce `t`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := Spec.map (CommRingCat.ofHom (IsLocalRing.residue A)) ≫ s) (g := ι) (IsLocalRing.closedPoint (IsLocalRing.ResidueField A)) w0 (by`. Use `congrArg s hrpt` as an intermediate fact.
+
+Rewrite `this` using `[← hxc, ← hw0]`. Conclude with `this)`. Conclude with `⟨z, hz.trans (Subsingleton.elim _ _)⟩`. Use `haveI := isIso_of_isClosedImmersion_of_surjective (pullback.fst (Spec.map (CommRingCat.ofHom (IsLocalRing.residue A)) ≫ s) ι)`. Establish `hw : (inv (pullback.fst (Spec.map (CommRingCat.ofHom (IsLocalRing.residue A)) ≫ s) ι) ≫ pullback.snd _ _) ≫ ι = Spec.map (CommRingCat.ofHom (IsLocalRing.residue A)) ≫ s`.
+
+Rewrite using `[Category.assoc, ← pullback.condition, IsIso.inv_hom_id_assoc]`. Establish `e1` using `hE2 q A ⟨hHen, hsep⟩ hqA (pullback.snd p s) i`. Establish `e2` using `hE2 q A ⟨hHen, hsep⟩ hqA (pullback.fst (pullback.snd p s ≫ s) ι ≫ pullback.snd p s) i`. Establish `hc : (pullback.fst (pullback.fst (pullback.snd p s ≫ s) ι ≫ pullback.snd p s) (Spec.map (CommRingCat.ofHom (IsLocalRing.residue A))) ≫ pullback.fst (pullback.snd p s ≫ s) ι) ≫ pullback.snd p s = pullback.snd (pullback.fst (pullback.snd p s ≫ s) ι ≫ pullback.snd p s) (Spec.map (Co …`. Rewrite using `[Category.assoc, pullback.condition]`.
+
+Use `haveI := commGroup_inv_eq_conj_twist_identity (pullback.snd p s) s ι _ _ hw hc`. Establish `heqv : Eqv (ZMod q) (sch.map (prS p ι s)) (tw q i)` using `eqv_of_square _ _ _ _ _ (pullback.lift_fst _ _ _).symm e2 (eqv_of_iso _ (pullback.lift (pullback.fst (pullback.fst (pullback.snd p s ≫ s) ι ≫ pullback.snd p s) (Spec.map (CommRingCat.ofHom (IsLocalRing.residue A))) ≫ pullback.fst (pullback.snd p s ≫ s) ι) _ hc)) e1`. Conclude with `hrel_sub _ _ heqv m`.
+-/
 theorem LeafVanW_of : LeafVanW := by
   intro hH q _ k _ hq i B W Y b ι _ p hp A _ s hA hx m
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hE2, -⟩ := hH

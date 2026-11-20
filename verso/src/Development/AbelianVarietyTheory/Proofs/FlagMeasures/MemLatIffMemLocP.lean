@@ -14,6 +14,17 @@ namespace GlobalTheory.HL.LocDict
 section Lin
 variable {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
 
+/- English proof (translation)
+Introduce `I g`. Distinguish the cases in `hI : I = ⊥`. Substitute `hI` using the available equality. Use `⟨0, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h0 : x = 0` using `by simpa using hx`.
+
+Substitute `h0` using the available equality. Establish `: (⟨0, hx⟩ : (⊥ : Ideal R)) = 0` using `rfl`. Rewrite using `[this, map_zero, map_zero]`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Establish `ha' : algebraMap R K a ≠ 0`.
+
+Simplify using `using ha0`. Use `⟨LinearMap.toSpanSingleton R K (g ⟨a, ha⟩ / algebraMap R K a), fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : a • g ⟨x, hx⟩ = x • g ⟨a, ha⟩`. Rewrite using `[← map_smul, ← map_smul]`. Use `congr 1`.
+
+Use `ext`. Simplify using `[mul_comm]`. Rewrite `h1` using `[Algebra.smul_def, Algebra.smul_def]`. Rewrite using `[LinearMap.toSpanSingleton_apply, Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[← h1]`.
+-/
 theorem baer_fractionRing : Module.Baer R K := by
   intro I g
   by_cases hI : I = ⊥
@@ -39,12 +50,28 @@ theorem baer_fractionRing : Module.Baer R K := by
 
 variable {V : Type} [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `(baer_fractionRing (R := R) (K := K)).extension_property L.subtype L.injective_subtype φ`. Conclude with `⟨LinearMap.extendScalarsOfIsLocalization (nonZeroDivisors R) K h, fun y => congr($hh y)⟩`.
+-/
 theorem exists_functional (L : Submodule R V) (φ : L →ₗ[R] K) :
     ∃ Φ : V →ₗ[K] K, ∀ y : L, Φ (y : V) = φ y := by
   obtain ⟨h, hh⟩ := (baer_fractionRing (R := R) (K := K)).extension_property L.subtype
     L.injective_subtype φ
   exact ⟨LinearMap.extendScalarsOfIsLocalization (nonZeroDivisors R) K h, fun y => congr($hh y)⟩
 
+/- English proof (translation)
+Use `haveI : Module.Finite R L := Module.Finite.iff_fg.2 hL`. Establish `htors : Submodule.torsion R L = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `y ⟨⟨a, ha⟩, hy⟩`. Establish `hy' : a • y = 0` using `hy`.
+
+Establish `ha0 : algebraMap R K a ≠ 0`. Simplify using `using nonZeroDivisors.ne_zero ha`. Establish `h2 : a • (y : V) = 0` using `congrArg Subtype.val hy'`. Rewrite `h2` using `[← algebraMap_smul K a (y : V)]`. Establish `h3 : (y : V) = 0` using `(smul_eq_zero.1 h2).resolve_left ha0`.
+
+Conclude with `Subtype.ext h3`. Use `haveI : Module.Flat R L := flat_iff_torsion_eq_bot.2 htors`. Use `haveI : Module.FinitePresentation R L := Module.finitePresentation_of_finite R L`. Use `haveI : Module.Projective R L := Module.Flat.projective_of_finitePresentation`. Take `⟨m, g, hg⟩` from `Module.Finite.exists_fin' R L`.
+
+Take `⟨t, ht⟩` from `Module.projective_lifting_property g LinearMap.id hg`. Use `choose Φ hΦ using fun i : Fin m => exists_functional (K := K) L ((Algebra.linearMap R K) ∘ₗ (LinearMap.proj i) ∘ₗ t)`. Use `⟨m, fun i => (g fun j => if i = j then 1 else 0 : L), Φ, fun i => Subtype.property _, fun i y hy => ⟨t ⟨y, hy⟩ i, hΦ i ⟨y, hy⟩⟩, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : g (t ⟨y, hy⟩) = ⟨y, hy⟩` using `congr($ht ⟨y, hy⟩)`. Establish `h2` using `LinearMap.pi_apply_eq_sum_univ g (t ⟨y, hy⟩)`.
+
+Rewrite `h2` using `[h1]`. Establish `h3` using `congrArg Subtype.val h2`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h3`. Use `h3.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Establish `h4` using `hΦ i ⟨y, hy⟩`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, Algebra.linearMap_apply] at h4`. Express the relevant statement in the definitionally equal form `_ = Φ i y • _`. Rewrite using `[h4, algebraMap_smul]`.
+-/
 theorem exists_dual [IsDedekindDomain R] (L : Submodule R V) (hL : L.FG) :
     ∃ (m : ℕ) (b : Fin m → V) (Φ : Fin m → V →ₗ[K] K), (∀ i, b i ∈ L) ∧
       (∀ i, ∀ y ∈ L, ∃ o : R, Φ i y = algebraMap R K o) ∧ ∀ y ∈ L, y = ∑ i, Φ i y • b i := by
@@ -85,6 +112,11 @@ section Places
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E} (A : Places F E sig) {n : ℕ} (p : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Use `⟨Matrix.toLin' ((LinearMap.toMatrix' f).map (A.loc p).ιE), fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.toLin'_apply]`. Simplify using `only [Places.bc]`. Rewrite using `[← LinearMap.toMatrix'_mulVec f x, RingHom.map_mulVec]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_bc_map {m : ℕ} (f : (Fin n → E) →ₗ[E] (Fin m → E)) :
     ∃ g : (Fin n → (A.loc p).Ep) →ₗ[(A.loc p).Ep] (Fin m → (A.loc p).Ep),
       ∀ x, g (A.bc p x) = A.bc p (f x) := by
@@ -95,6 +127,11 @@ theorem exists_bc_map {m : ℕ} (f : (Fin n → E) →ₗ[E] (Fin m → E)) :
   rw [← LinearMap.toMatrix'_mulVec f x, RingHom.map_mulVec]
   rfl
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_bc_map A p f`. Establish `hle : A.lat p Λ ≤ N.comap (g.restrictScalars (A.L p).O)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `g (A.bc p y) ∈ N`.
+
+Rewrite using `[hg]`. Conclude with `h y hy`. Establish `h2 : g (A.bc p x) ∈ N` using `hle hx`. Rewrite `h2` using `[hg]`. Then use the resulting hypothesis.
+-/
 theorem lat_transfer (Λ : Submodule (𝓞 E) (Fin n → E)) {m : ℕ}
     (f : (Fin n → E) →ₗ[E] (Fin m → E)) (N : Submodule (A.L p).O (Fin m → (A.loc p).Ep))
     (h : ∀ y ∈ Λ, A.bc p (f y) ∈ N) {x : Fin n → E} (hx : A.bc p x ∈ A.lat p Λ) :
@@ -109,6 +146,11 @@ theorem lat_transfer (Λ : Submodule (𝓞 E) (Fin n → E)) {m : ℕ}
   have h2 : g (A.bc p x) ∈ N := hle hx
   rwa [hg] at h2
 
+/- English proof (translation)
+Take `⟨t, k, ht, hk⟩` from `PlacesInt.exists_trace_norm A c`. Take `⟨h1, h2⟩` from `(PlacesInt.mem_O_iff A p c t k ht hk).1 hc`. Take `⟨a, d, had⟩` from `p.exists_primeCompl_mul_eq_of_integer t h1`. Take `⟨b, e, hbe⟩` from `p.exists_primeCompl_mul_eq_of_integer k h2`. Establish `e1 : algebraMap (𝓞 F) E a = algebraMap F E t * algebraMap (𝓞 F) E d`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F E, ← had, map_mul, ← IsScalarTower.algebraMap_apply]`. Establish `e2 : algebraMap (𝓞 F) E b = algebraMap F E k * algebraMap (𝓞 F) E e`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F E, ← hbe, map_mul, ← IsScalarTower.algebraMap_apply]`. Establish `hi : IsIntegral (𝓞 F) (algebraMap (𝓞 F) E ((d : 𝓞 F) * e) * c)` using `PlacesInt.isIntegral_of_quad _ (algebraMap (𝓞 F) E ((d : 𝓞 F) * e) * sig c) (a * e) ((d : 𝓞 F) ^ 2 * e * b) (by simp only [map_mul, e1, ht]; ring) (by simp only [map_mul, map_pow, e2, hk]; ring)`. Conclude with `⟨(d : 𝓞 F) * e, fun h => (p.isPrime.mem_or_mem h).elim d.2 e.2, ⟨_, isIntegral_trans (R := ℤ) _ hi⟩, rfl⟩`.
+-/
 theorem exists_den (c : E) (hc : (A.loc p).ιE c ∈ (A.L p).O) :
     ∃ s : 𝓞 F, s ∉ p.asIdeal ∧ ∃ o : 𝓞 E, algebraMap (𝓞 F) E s * c = algebraMap (𝓞 E) E o := by
   obtain ⟨t, k, ht, hk⟩ := PlacesInt.exists_trace_norm A c
@@ -129,6 +171,25 @@ theorem exists_den (c : E) (hc : (A.loc p).ιE c ∈ (A.L p).O) :
   exact ⟨(d : 𝓞 F) * e, fun h => (p.isPrime.mem_or_mem h).elim d.2 e.2,
     ⟨_, isIntegral_trans (R := ℤ) _ hi⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨m, b, Φ, hb, hΦ, hy⟩` from `exists_dual (K := E) Λ hΛ`. Set `Pr : (Fin n → E) →ₗ[E] (Fin n → E)` to `LinearMap.id - ∑ i, (Φ i).smulRight (b i)`. Establish `hPr : ∀ y, Pr y = y - ∑ i, Φ i y • b i` using `fun y => by`. Simplify using `[Pr, LinearMap.sum_apply]`. Establish `hx0 : Pr x = 0`.
+
+Establish `h1` using `lat_transfer A p Λ Pr ⊥ (fun y hy' => by`. Establish `: Pr y = 0` using `by rw [hPr, ← hy y hy', sub_self]`. Establish `h0 : A.bc p (0 : Fin n → E) = 0`. Use function extensionality and compare the values at `i`. Conclude with `map_zero (A.loc p).ιE`.
+
+Rewrite using `[this, h0]`. Conclude with `Submodule.zero_mem _) hx`. Establish `h2 : A.bc p (Pr x) = 0` using `h1`. Use `haveI := PlacesInt.nontrivial_Ep (A.loc p)`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(A.loc p).ιE.injective (by simpa [Places.bc] using congrFun h2 i)`. Establish `hxs : x = ∑ i, Φ i x • b i`. Rewrite `hx0` using `[hPr, sub_eq_zero]`. Conclude with `hx0`. Set `N : Submodule (A.L p).O (Fin m → (A.loc p).Ep)` to `Submodule.pi Set.univ fun _ => (LinearMap.range (Algebra.linearMap (A.L p).O (A.loc p).Ep))`.
+
+Establish `hC` using `lat_transfer A p Λ (LinearMap.pi Φ) N (fun y hy' i _ => by`. Take `⟨o, ho⟩` from `hΦ i y hy'`. Establish `hoO : (A.loc p).ιE (algebraMap (𝓞 E) E o) ∈ (A.L p).O` using `(PlacesInt.integers_local A).1 _ |>.2 ⟨o, rfl⟩ p`. Conclude with `⟨⟨_, hoO⟩, by simp [Places.bc, ho]; rfl⟩) hx`. Establish `hC' : ∀ i, (A.loc p).ιE (Φ i x) ∈ (A.L p).O` using `fun i => by`.
+
+Take `⟨o, ho⟩` from `hC i (Set.mem_univ _)`. Establish `: (A.loc p).ιE (Φ i x) = o` using `ho.symm`. Rewrite using `[this]`. Conclude with `o.2`. Use `choose s hs o ho using fun i => exists_den A p (Φ i x) (hC' i)`.
+
+Use `⟨∏ i, s i, fun h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, -, hi⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := p.isPrime)).1 h`. Conclude with `hs i hi`. Rewrite using `[hxs, Finset.smul_sum]`. Use `Λ.sum_mem fun i _ => ?_` and prove the remaining obligations.
+
+Establish `e : (algebraMap (𝓞 F) (𝓞 E) (∏ j, s j)) • (Φ i x • b i) = (algebraMap (𝓞 F) (𝓞 E) (∏ j ∈ Finset.univ.erase i, s j) * o i) • b i`. Rewrite using `[← algebraMap_smul E (algebraMap (𝓞 F) (𝓞 E) (∏ j, s j)), smul_smul, ← algebraMap_smul E (_ * o i)]`. Use `congr 1`. Rewrite using `[← Finset.mul_prod_erase Finset.univ s (Finset.mem_univ i), map_mul, map_mul, map_mul, ← ho i, ← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E (s i)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `Λ.smul_mem _ (hb i)`.
+-/
 theorem exists_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Λ.FG) (x : Fin n → E)
     (hx : A.bc p x ∈ A.lat p Λ) :
     ∃ s : 𝓞 F, s ∉ p.asIdeal ∧ algebraMap (𝓞 F) (𝓞 E) s • x ∈ Λ := by
@@ -182,6 +243,33 @@ theorem exists_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Λ.FG) (x
 
 include A in
 
+/- English proof (translation)
+Set `I : Ideal (𝓞 E)` to `Λ.comap (LinearMap.toSpanSingleton (𝓞 E) _ x)`. Establish `hI : ∀ s, s ∈ I ↔ s • x ∈ Λ` using `fun s => by simp [I]`. Set `q : Ideal (𝓞 E)` to `Ideal.map (algebraMap (𝓞 F) (𝓞 E)) p.asIdeal`. Use `haveI := p.isMaximal`. Establish `hinj : Function.Injective (algebraMap (𝓞 F) (𝓞 E))` using `FaithfulSMul.algebraMap_injective _ _`.
+
+Establish `hker : RingHom.ker (algebraMap (𝓞 F) (𝓞 E)) = ⊥` using `(RingHom.injective_iff_ker_eq_bot _).1 hinj`. Take `⟨Q0, hQ0m, hQ0⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 E) p.asIdeal (by rw [hker]; exact bot_le)`. Establish `hq : q ≠ ⊤` using `fun h => hQ0m.ne_top (top_le_iff.1 (h ▸ Ideal.map_le_iff_le_comap.2 hQ0.ge))`. Establish `hsup : I ⊔ q = ⊤`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨Q, hQm, hQ⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hqQ : q ≤ Q` using `le_sup_right.trans hQ`. Establish `hp' : p.asIdeal ≤ Q.comap (algebraMap (𝓞 F) (𝓞 E))` using `Ideal.map_le_iff_le_comap.1 hqQ`. Establish `hc : Q.comap (algebraMap (𝓞 F) (𝓞 E)) = p.asIdeal` using `(p.isMaximal.eq_of_le (Ideal.comap_ne_top _ hQm.ne_top) hp').symm`. Establish `hbot : Q ≠ ⊥`.
+
+Introduce and unpack `rfl`. Apply `p.ne_bot` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, ← hc]`. Introduce `z hz`. Establish `: algebraMap (𝓞 F) (𝓞 E) z = 0` using `hz`.
+
+Conclude with `(map_eq_zero_iff _ hinj).1 this`. Take `⟨s, hs, hsx⟩` from `h ⟨Q, hQm.isPrime, hbot⟩ hc`. Conclude with `hs (hQ (Ideal.mem_sup_left ((hI s).2 hsx)))`. Establish `h1 : (1 : 𝓞 E) ∈ I ⊔ q` using `by rw [hsup]; trivial`. Take `⟨s, hs, t, ht, hst⟩` from `Submodule.mem_sup.1 h1`.
+
+Set `σ : 𝓞 E →+* 𝓞 E` to `RingOfIntegers.mapRingHom (sig : E →+* E)`. Establish `hσc : ∀ z : 𝓞 E, ((σ z : 𝓞 E) : E) = sig z` using `fun _ => rfl`. Establish `hσq : ∀ z ∈ q, σ z ∈ q`. Establish `: q ≤ q.comap σ` using `Ideal.map_le_iff_le_comap.2 fun a ha => by`. Establish `e : σ (algebraMap (𝓞 F) (𝓞 E) a) = algebraMap (𝓞 F) (𝓞 E) a`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hσc]`. Express the relevant statement in the definitionally equal form `sig (algebraMap (𝓞 E) E _) = algebraMap (𝓞 E) E _`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E, AlgHom.commutes]`. Express the relevant statement in the definitionally equal form `σ _ ∈ q`.
+
+Rewrite using `[e]`. Conclude with `Ideal.mem_map_of_mem _ ha`. Conclude with `fun z hz => this hz`. Take `⟨-, k, -, hk⟩` from `PlacesInt.exists_trace_norm A (s : E)`. Establish `hint : IsIntegral ℤ k`.
+
+Establish `: IsIntegral ℤ (algebraMap F E k)`. Rewrite using `[hk]`. Conclude with `(s * σ s).isIntegral_coe`. Conclude with `(isIntegral_algebraMap_iff (algebraMap F E).injective).1 this`. Set `a : 𝓞 F` to `⟨k, hint⟩`.
+
+Establish `ha : algebraMap (𝓞 F) (𝓞 E) a = s * σ s`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E _ = algebraMap (𝓞 E) E _`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Conclude with `hk`.
+
+Use `⟨a, fun hap => ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : s * σ s ∈ q` using `ha ▸ Ideal.mem_map_of_mem _ hap`. Establish `hs' : s = 1 - t` using `eq_sub_of_add_eq hst`. Establish `hσs : σ s = 1 - σ t` using `by rw [hs', map_sub, map_one]`. Establish `e : (1 : 𝓞 E) = s * σ s + t + σ t - t * σ t`.
+
+Rewrite using `[hσs, hs']`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (1 : 𝓞 E) ∈ q`. Rewrite using `[e]`. Conclude with `q.sub_mem (q.add_mem (q.add_mem h2 ht) (hσq _ ht)) (q.mul_mem_right _ ht)`.
+
+Conclude with `hq ((Ideal.eq_top_iff_one _).2 h3)`. Rewrite using `[ha]`. Conclude with `(hI _).1 (I.mul_mem_right _ hs)`.
+-/
 theorem exists_base_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E)
     (h : ∀ P : HeightOneSpectrum (𝓞 E), P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = p.asIdeal →
       ∃ s : 𝓞 E, s ∉ P.asIdeal ∧ s • x ∈ Λ) :
@@ -253,6 +341,15 @@ theorem exists_base_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E)) (x : Fin n 
   · rw [ha]
     exact (hI _).1 (I.mul_mem_right _ hs)
 
+/- English proof (translation)
+Establish `hv : p.valuation F (algebraMap (𝓞 F) F a) = 1` using `le_antisymm (p.valuation_le_one a) (not_lt.1 fun hlt => ha ((p.valuation_lt_one_iff_mem (K := F) a).1 hlt))`. Establish `hinv : p.valuation F (algebraMap (𝓞 F) F a)⁻¹ ≤ 1` using `by rw [map_inv₀, hv, inv_one]`. Establish `hO` using `(PlacesInt.mem_int_iff (A.loc p) _).2 hinv`. Establish `ha0 : algebraMap (𝓞 F) F a ≠ 0` using `fun h0 => by`. Rewrite `hv` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hv`. Set `w : (A.L p).O` to `⟨algebraMap (A.loc p).Fp (A.loc p).Ep ((A.loc p).ιF (algebraMap (𝓞 F) F a)⁻¹), ((A.L p).O_def _).2 (by`. Establish `: IsIntegral 𝒪[(A.loc p).Fp] (algebraMap 𝒪[(A.loc p).Fp] (A.loc p).Ep ⟨_, hO⟩)` using `isIntegral_algebraMap`. Conclude with `this)⟩`. Establish `e : A.bc p x = w • A.bc p (algebraMap (𝓞 F) (𝓞 E) a • x)`.
+
+Use function extensionality and compare the values at `i`. Establish `h1 : (A.loc p).ιE (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a)) = algebraMap (A.loc p).Fp (A.loc p).Ep ((A.loc p).ιF (algebraMap (𝓞 F) F a))`. Rewrite using `[← (A.loc p).compat, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Express the relevant statement in the definitionally equal form `(A.loc p).ιE (x i) = algebraMap (A.loc p).Fp (A.loc p).Ep ((A.loc p).ιF (algebraMap (𝓞 F) F a)⁻¹) * (A.loc p).ιE (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a) * x i)`. Rewrite using `[map_mul, h1, ← mul_assoc, ← map_mul, ← map_mul, inv_mul_cancel₀ ha0, map_one, map_one, one_mul]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ w (Submodule.subset_span ⟨_, h, rfl⟩)`.
+-/
 theorem bc_mem_of_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E) (a : 𝓞 F)
     (ha : a ∉ p.asIdeal) (h : algebraMap (𝓞 F) (𝓞 E) a • x ∈ Λ) : A.bc p x ∈ A.lat p Λ := by
   have hv : p.valuation F (algebraMap (𝓞 F) F a) = 1 :=
@@ -284,6 +381,13 @@ theorem bc_mem_of_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E)) (x : Fin n �
 
 end Places
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ sig A n Λ hΛ p x`. Prove the components needed by the constructor for the conclusion. Introduce `hx P hP`. Take `⟨s, hs, hsx⟩` from `exists_smul_mem A p Λ hΛ x hx`. Use `haveI := P.isPrime`.
+
+Use `⟨algebraMap (𝓞 F) (𝓞 E) s, fun h => hs ?_, hsx⟩` and prove the remaining obligations. Rewrite using `[← hP]`. Conclude with `h`. Introduce `h`. Take `⟨a, ha, hax⟩` from `exists_base_smul_mem A p Λ x fun P hP => by haveI := P.isPrime`.
+
+Take `⟨s, hs, hsx⟩` from `h P hP`. Conclude with `⟨s, hs, hsx⟩`. Conclude with `bc_mem_of_smul_mem A p Λ x a ha hax`.
+-/
 theorem mem_lat_iff_mem_locP : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (n : ℕ) (Λ : Submodule (𝓞 E) (Fin n → E)), Λ.FG → ∀ (p : HeightOneSpectrum (𝓞 F)) (x : Fin n → E), (A.bc p x ∈ A.lat p Λ ↔ ∀ P : HeightOneSpectrum (𝓞 E), P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = p.asIdeal → x ∈ (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal Λ)) := by
   intro F E _ _ _ _ _ sig A n Λ hΛ p x
   constructor

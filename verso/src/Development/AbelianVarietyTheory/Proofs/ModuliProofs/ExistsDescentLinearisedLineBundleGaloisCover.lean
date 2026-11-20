@@ -13,6 +13,11 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.LinDescent
 
+/- English proof (translation)
+Establish `hP : MorphismProperty.HasOfPostcompProperty @IsOpenImmersion @Etale` using `MorphismProperty.hasOfPostcompProperty_iff_le_diagonal.mpr fun _ _ f hf => by`. Establish `: Etale f` using `hf`. Conclude with `inferInstanceAs (IsOpenImmersion (pullback.diagonal f))`. Use `MorphismProperty.of_postcomp (W := @IsOpenImmersion) (W' := @Etale) s g inferInstance ?_` and prove the remaining obligations. Rewrite using `[h]`.
+
+Use `infer_instance`.
+-/
 private lemma isOpenImmersion_of_section_of_etale' {X Y : Scheme.{0}} (s : Y ⟶ X) (g : X ⟶ Y)
     [Etale g] (h : s ≫ g = 𝟙 Y) : IsOpenImmersion s := by
   have hP : MorphismProperty.HasOfPostcompProperty @IsOpenImmersion @Etale :=
@@ -23,6 +28,13 @@ private lemma isOpenImmersion_of_section_of_etale' {X Y : Scheme.{0}} (s : Y ⟶
   rw [h]
   infer_instance
 
+/- English proof (translation)
+Set `K` to `AlgebraicClosure ((pullback π π).residueField p)`. Set `q : Spec (CommRingCat.of K) ⟶ pullback π π` to `Spec.map (CommRingCat.ofHom (algebraMap ↑((pullback π π).residueField p) K)) ≫ (pullback π π).fromSpecResidueField p`. Take `⟨a, ha, -⟩` from `h.fibre K (q ≫ pullback.snd π π) (q ≫ pullback.fst π π) (by simp only [Category.assoc, pullback.condition])`. Set `x : ↥(Spec (CommRingCat.of K))` to `show PrimeSpectrum K from IsLocalRing.closedPoint K`. Use `⟨a, (q ≫ pullback.snd π π) x, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (q ≫ pullback.snd π π) ≫ pullback.lift (ρ a) (𝟙 X) (by rw [h.inv a, Category.id_comp]) = q`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pullback.lift_fst]`. Conclude with `ha`. Simplify using `only [Category.assoc, pullback.lift_snd, Category.comp_id]`.
+
+Establish `hq : q x = p`. Establish `hx : q x ∈ Set.range ((pullback π π).fromSpecResidueField p)` using `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Rewrite `hx` using `[Scheme.range_fromSpecResidueField]`. Conclude with `Set.mem_singleton_iff.mp hx`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma exists_mem_range_lift_of_isGaloisCover {X Y : Scheme.{0}} {π : X ⟶ Y} {Ga : Type} [Group Ga]
     {ρ : Ga → (X ⟶ X)} (h : IsGaloisCover Ga ρ π) (p : ↥(pullback π π)) :
     ∃ a, p ∈ Set.range ⇑(pullback.lift (ρ a) (𝟙 X) (by rw [h.inv a, Category.id_comp]) :
@@ -49,6 +61,17 @@ private lemma exists_mem_range_lift_of_isGaloisCover {X Y : Scheme.{0}} {π : X 
     _ = q x := by rw [e]
     _ = p := hq
 
+/- English proof (translation)
+Introduce `Z g₁ g₂ hg z`. Set `φ : Z ⟶ pullback π π` to `pullback.lift g₁ g₂ hg`. Take `⟨c, hc⟩` from `exists_mem_range_lift_of_isGaloisCover h (φ z)`. Set `gr : X ⟶ pullback π π` to `pullback.lift (ρ c) (𝟙 X) (by rw [h.inv c, Category.id_comp])`. Establish `: Etale π` using `h.etale`.
+
+Establish `: IsOpenImmersion gr` using `isOpenImmersion_of_section_of_etale' gr (pullback.snd π π) (pullback.lift_snd _ _ _)`. Set `U : Z.Opens` to `φ ⁻¹ᵁ gr.opensRange`. Establish `hr : Set.range (U.ι ≫ φ) ⊆ Set.range gr`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`.
+
+Conclude with `v.2`. Set `lw` to `IsOpenImmersion.lift gr (U.ι ≫ φ) hr`. Establish `hw : lw ≫ gr = U.ι ≫ φ` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨c, U.toScheme, U.ι, inferInstance, ⟨z, hc⟩, rfl, ?_⟩` and prove the remaining obligations. Establish `h1 : U.ι ≫ g₁ = lw ≫ ρ c`.
+
+Establish `e` using `congrArg (· ≫ pullback.fst π π) hw`. Simplify using `only [Category.assoc, gr, φ, pullback.lift_fst] at e`. Conclude with `e.symm`. Establish `h2 : U.ι ≫ g₂ = lw`. Establish `e` using `congrArg (· ≫ pullback.snd π π) hw`.
+
+Simplify using `only [Category.assoc, gr, φ, pullback.lift_snd, Category.comp_id] at e`. Conclude with `e.symm`. Rewrite using `[h1, h2]`.
+-/
 theorem locTransitive_of_isGaloisCover {X Y : Scheme.{0}} {π : X ⟶ Y} {Ga : Type} [Group Ga]
     {ρ : Ga → (X ⟶ X)} (h : IsGaloisCover Ga ρ π) : LocTransitive ρ π := by
   intro Z g₁ g₂ hg z
@@ -76,6 +99,11 @@ theorem locTransitive_of_isGaloisCover {X Y : Scheme.{0}} {π : X ⟶ Y} {Ga : T
     exact e.symm
   rw [h1, h2]
 
+/- English proof (translation)
+Introduce `X Y π Ga _ ρ L hG hL u hu hc`. Establish `: Finite Ga` using `hG.finite`. Establish `: IsFinite π` using `hG.fin`. Establish `: Etale π` using `hG.etale`. Establish `: Surjective π` using `hG.onto`.
+
+Establish `hfree : ∀ (k : Type) [Field k] [IsAlgClosed k] (r : Sp k ⟶ X), Function.Injective fun c => r ≫ ρ c`. Introduce `k _ _ r a b hab`. Take `⟨d, -, hd⟩` from `hG.fibre k r (r ≫ ρ a) (by rw [Category.assoc, hG.inv])`. Conclude with `(hd a rfl).trans (hd b hab.symm).symm`. Conclude with `exists_descent_of_galois hL hG.one (fun a c => (hG.mul a c).symm) hG.inv (locTransitive_of_isGaloisCover hG) hfree hu hc`.
+-/
 theorem exists_descent_of_isGaloisCover :
     ∀ (X Y : Scheme.{0}) (π : X ⟶ Y) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (L : LB X), IsGaloisCover Ga ρ π → L.IsLB → ∀ u : ∀ a, LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 X, ρ a] ![1, -1]), (∀ a, (u a).IsGen) → (∀ a c, LB.Gen.Corr L _ _ _ _ (u (a * c)) (LB.mulGen L _ _ _ _ (u a) (LB.pullGen L _ _ (u c) (ρ a)))) → ∃ M : LB Y, M.IsLB ∧ LBIso L (M.pull π) := by
   intro X Y π Ga _ ρ L hG hL u hu hc

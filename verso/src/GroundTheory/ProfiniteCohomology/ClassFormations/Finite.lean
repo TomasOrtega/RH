@@ -12,6 +12,11 @@ universe u
 
 namespace QZ
 
+/- English proof (translation)
+Establish `hι : Function.Injective (inv.comp Φ)` using `hinv.comp hΦ`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← addOrderOf_injective (inv.comp Φ) hι e, AddMonoidHom.comp_apply, he, addOrderOf_mk_one_div hn]`. Take `⟨m, hm⟩` from `exists_eq_nsmul_mk_one_div hn (hker x)`. Use `⟨m, hι ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, AddMonoidHom.comp_apply, AddMonoidHom.comp_apply, he, hm, natCast_zsmul]`.
+-/
 theorem cyclic_of_injective {X Y : Type*} [AddCommGroup X] [AddCommGroup Y] (Φ : X →+ Y)
     (hΦ : Function.Injective Φ) (inv : Y →+ QZ) (hinv : Function.Injective inv) {n : ℕ}
     (hn : 0 < n) (hker : ∀ x, n • inv (Φ x) = 0) (e : X) (he : inv (Φ e) = mk (1 / n)) :
@@ -24,6 +29,9 @@ theorem cyclic_of_injective {X Y : Type*} [AddCommGroup X] [AddCommGroup Y] (Φ 
     refine ⟨m, hι ?_⟩
     rw [map_zsmul, AddMonoidHom.comp_apply, AddMonoidHom.comp_apply, he, hm, natCast_zsmul]
 
+/- English proof (translation)
+Rewrite using `[← mk_nsmul, nsmul_eq_mul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem nsmul_mk_one_div_mul {a b : ℕ} (ha : a ≠ 0) : a • mk (1 / (a * b : ℕ)) = mk (1 / b) := by
   rw [← mk_nsmul, nsmul_eq_mul]
   congr 1
@@ -34,6 +42,9 @@ end QZ
 
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+The claim follows from `isCompact_iff_compactSpace.mp (W.isClosed_of_isOpen hW).isCompact`.
+-/
 theorem compactSpace_of_isOpen [CompactSpace G] {W : Subgroup G} (hW : IsOpen (W : Set G)) :
     CompactSpace W :=
   isCompact_iff_compactSpace.mp (W.isClosed_of_isOpen hW).isCompact
@@ -47,6 +58,9 @@ variable [CompactSpace G] [TotallyDisconnectedSpace G]
 omit [CompactSpace G] [TotallyDisconnectedSpace G] [(V.subgroupOf U).Normal] in
 include hVU in
 
+/- English proof (translation)
+The claim follows from `h1.of_iso (asIso (cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe hVU).symm.toMonoidHom (continuous_subgroupOfEquivOfLe_symm hVU) (resSubgroupOfHom hVU A) 1))`.
+-/
 theorem isZero_H1_subgroupOf (h1 : IsZero (cohomology (Rep.res V.subtype A) 1)) :
     IsZero (cohomology (Rep.res (V.subgroupOf U).subtype (Rep.res U.subtype A)) 1) :=
   h1.of_iso (asIso (cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe hVU).symm.toMonoidHom
@@ -54,6 +68,9 @@ theorem isZero_H1_subgroupOf (h1 : IsZero (cohomology (Rep.res V.subtype A) 1)) 
 
 include hU hV hVU in
 
+/- English proof (translation)
+Use `compactSpace_of_isOpen hU` as an intermediate fact. Conclude with `cohomologyInfl_injective (Subgroup.isClosed_of_isOpen _ (isOpen_subgroupOf hV U)) two_ne_zero fun i hi hi2 => by`. Take `rfl : i = 1` from `by omega`. Conclude with `isZero_H1_subgroupOf A hVU h1`.
+-/
 theorem cohomologyInfl_two_injective_of_open (h1 : IsZero (cohomology (Rep.res V.subtype A) 1)) :
     Function.Injective (cohomologyInfl (Rep.res U.subtype A) (V.subgroupOf U) 2).hom := by
   have := compactSpace_of_isOpen hU
@@ -64,6 +81,13 @@ theorem cohomologyInfl_two_injective_of_open (h1 : IsZero (cohomology (Rep.res V
 
 include hU hV in
 
+/- English proof (translation)
+Rewrite using `[cohomologyResLE_apply_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[← ModuleCat.comp_apply, cohomologyInfl_comp_cohomologyRes _ _ 1]`. Both sides reduce to the same expression.
+
+Introduce `hx`. Use `compactSpace_of_isOpen hU` as an intermediate fact. Establish `hx' : x ∈ LinearMap.ker (cohomologyRes (Rep.res U.subtype A) (V.subgroupOf U) 2).hom` using `hx`. Rewrite using `[← range_cohomologyInfl_eq_ker_cohomologyRes (Subgroup.isClosed_of_isOpen _ (isOpen_subgroupOf hV U)) two_ne_zero fun i hi hi2 => by`. Take `rfl : i = 1` from `by omega`.
+
+Conclude with `isZero_H1_subgroupOf A hVU h1] at hx'`. Conclude with `hx'`.
+-/
 theorem mem_range_cohomologyInfl_two_iff (h1 : IsZero (cohomology (Rep.res V.subtype A) 1))
     (x : cohomology (Rep.res U.subtype A) 2) :
     (∃ y, (cohomologyInfl (Rep.res U.subtype A) (V.subgroupOf U) 2).hom y = x) ↔
@@ -84,6 +108,9 @@ theorem mem_range_cohomologyInfl_two_iff (h1 : IsZero (cohomology (Rep.res V.sub
 
 end InfRes
 
+/- English proof (translation)
+Use `Subgroup.quotient_finite_of_isOpen V hV` as an intermediate fact. Use `Subgroup.finiteIndex_of_finite_quotient (H := V)` as an intermediate fact. Use `Subgroup.isFiniteRelIndex_of_finiteIndex (H := V) (K := U)` as an intermediate fact. Conclude with `Subgroup.relIndex_ne_zero`.
+-/
 theorem relIndex_ne_zero_of_isOpen [CompactSpace G] {V : Subgroup G} (hV : IsOpen (V : Set G))
     (U : Subgroup G) : V.relIndex U ≠ 0 := by
   have := Subgroup.quotient_finite_of_isOpen V hV
@@ -110,6 +137,9 @@ variable [CompactSpace G] [TotallyDisconnectedSpace G]
 
 include F
 
+/- English proof (translation)
+The claim follows from `GroundTheory.ProfCoh.mem_range_cohomologyInfl_two_iff C U.isOpen V.isOpen hVU (F.isZero_H1_open_subgroups V) x`.
+-/
 theorem mem_range_cohomologyInfl_two_iff (x : H2Open C U) :
     (∃ y, (cohomologyInfl (Rep.res (U : Subgroup G).subtype C)
         ((V : Subgroup G).subgroupOf U) 2).hom y = x) ↔
@@ -118,6 +148,9 @@ theorem mem_range_cohomologyInfl_two_iff (x : H2Open C U) :
 
 include hVU in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hex`. Establish `hres : (cohomologyResLE C (show (V : Subgroup G) ≤ U from hVU) 2).hom x = 0` using `(F.resLE_eq_zero_iff hVU hVinj x).2 (by rw [hx]; exact QZ.nsmul_mk_one_div _)`. Take `⟨y, hy⟩` from `(F.mem_range_cohomologyInfl_two_iff hVU x).2 hres`. Establish `: Nonempty (H2Quotient C U V)` using `⟨0⟩`. Conclude with `Function.invFun_eq (f := fun y : H2Quotient C U V => F.inv U ((cohomologyInfl (Rep.res (U : Subgroup G).subtype C) ((V : Subgroup G).subgroupOf U) 2).hom y)) ⟨y, by simp only [hy, hx]⟩`.
+-/
 theorem inv_cohomologyInfl_fundamentalClass (hVinj : Function.Injective (F.inv V))
     (hex : ∃ x : H2Open C U, F.inv U x = QZ.mk (1 / ((V : Subgroup G).relIndex U : ℚ))) :
     F.inv U ((cohomologyInfl (Rep.res (U : Subgroup G).subtype C)
@@ -139,6 +172,9 @@ variable (S : Subgroup (U ⧸ (V : Subgroup G).subgroupOf U))
 omit [CompactSpace G] [TotallyDisconnectedSpace G] F in
 include hVU in
 
+/- English proof (translation)
+Rewrite using `[cohomologyInflQuot_eq C (show (V : Subgroup G) ≤ U from hVU) S 1, ModuleCat.hom_comp]`. Use `isIso_cohomologyMapAlong_quotPreimageEquiv C V.isOpen (show (V : Subgroup G) ≤ U from hVU) S 1` as an intermediate fact. Conclude with `(cohomologyInfl_one_injective _ _).comp ((ModuleCat.mono_iff_injective _).1 inferInstance)`.
+-/
 theorem cohomologyInflQuot_one_injective : Function.Injective (cohomologyInflQuot C S 1).hom := by
   rw [cohomologyInflQuot_eq C (show (V : Subgroup G) ≤ U from hVU) S 1, ModuleCat.hom_comp]
   have := isIso_cohomologyMapAlong_quotPreimageEquiv C V.isOpen
@@ -147,6 +183,9 @@ theorem cohomologyInflQuot_one_injective : Function.Injective (cohomologyInflQuo
 
 include hVU in
 
+/- English proof (translation)
+Establish `hVW : (V : Subgroup G) ≤ quotPreimageOpen hVU S` using `le_quotPreimage (show (V : Subgroup G) ≤ U from hVU) S`. Rewrite using `[cohomologyInflQuot_eq C (show (V : Subgroup G) ≤ U from hVU) S 2, ModuleCat.hom_comp]`. Use `isIso_cohomologyMapAlong_quotPreimageEquiv C V.isOpen (show (V : Subgroup G) ≤ U from hVU) S 2` as an intermediate fact. Conclude with `(cohomologyInfl_two_injective_of_open C (quotPreimageOpen hVU S).isOpen V.isOpen hVW (F.isZero_H1_open_subgroups V)).comp ((ModuleCat.mono_iff_injective _).1 inferInstance)`.
+-/
 theorem cohomologyInflQuot_two_injective : Function.Injective (cohomologyInflQuot C S 2).hom := by
   have hVW : (V : Subgroup G) ≤ quotPreimageOpen hVU S :=
     le_quotPreimage (show (V : Subgroup G) ≤ U from hVU) S
@@ -156,6 +195,9 @@ theorem cohomologyInflQuot_two_injective : Function.Injective (cohomologyInflQuo
   exact (cohomologyInfl_two_injective_of_open C (quotPreimageOpen hVU S).isOpen V.isOpen hVW
     (F.isZero_H1_open_subgroups V)).comp ((ModuleCat.mono_iff_injective _).1 inferInstance)
 
+/- English proof (translation)
+Establish `hVW : (V : Subgroup G) ≤ quotPreimageOpen hVU S` using `le_quotPreimage (show (V : Subgroup G) ≤ U from hVU) S`. Use `(GroundTheory.ProfCoh.mem_range_cohomologyInfl_two_iff C (quotPreimageOpen hVU S).isOpen V.isOpen hVW (F.isZero_H1_open_subgroups V) _).1 ?_` and prove the remaining obligations. Rewrite using `[cohomologyInflQuot_eq C (show (V : Subgroup G) ≤ U from hVU) S 2, ModuleCat.hom_comp]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem resLE_cohomologyInflQuot (y) :
     (cohomologyResLE C (le_quotPreimage (show (V : Subgroup G) ≤ U from hVU) S) 2).hom
       ((cohomologyInflQuot C S 2).hom y) = 0 := by
@@ -168,6 +210,9 @@ theorem resLE_cohomologyInflQuot (y) :
 
 omit [CompactSpace G] [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => φ.hom z) (cohomologyRes_comp_cohomologyInflQuot C S 2)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h`. Rewrite using `[h]`. Conclude with `F.inv_res U (quotPreimageOpen hVU S) (quotPreimage_le S) _`.
+-/
 theorem inv_cohomologyInflQuot_cohomologyRes (z : H2Quotient C U V) :
     F.inv (quotPreimageOpen hVU S) ((cohomologyInflQuot C S 2).hom
         ((cohomologyRes ((Rep.res (U : Subgroup G).subtype C).quotientToInvariants
@@ -182,6 +227,9 @@ theorem inv_cohomologyInflQuot_cohomologyRes (z : H2Quotient C U V) :
 
 include hVU in
 
+/- English proof (translation)
+Establish `hVW : V ≤ quotPreimageOpen hVU S` using `le_quotPreimage (show (V : Subgroup G) ≤ U from hVU) S`. Establish `hidx : (V : Subgroup G).relIndex U = (quotPreimageOpen hVU S : Subgroup G).relIndex U * (V : Subgroup G).relIndex (quotPreimageOpen hVU S : Subgroup G)`. Rewrite using `[mul_comm]`. Conclude with `(Subgroup.relIndex_mul_relIndex _ _ _ hVW (quotPreimage_le S)).symm`. Rewrite using `[F.inv_cohomologyInflQuot_cohomologyRes hVU S, F.inv_cohomologyInfl_fundamentalClass hVU hVinj hex, hidx, QZ.nsmul_mk_one_div_mul (relIndex_ne_zero_of_isOpen (quotPreimageOpen hVU S).isOpen _)]`.
+-/
 theorem inv_cohomologyInflQuot_cohomologyRes_fundamentalClass
     (hVinj : Function.Injective (F.inv V))
     (hex : ∃ x : H2Open C U, F.inv U x = QZ.mk (1 / ((V : Subgroup G).relIndex U : ℚ))) :
@@ -202,6 +250,11 @@ theorem inv_cohomologyInflQuot_cohomologyRes_fundamentalClass
 
 include hVU in
 
+/- English proof (translation)
+Establish `hVW : V ≤ quotPreimageOpen hVU S` using `le_quotPreimage (show (V : Subgroup G) ≤ U from hVU) S`. Establish `hcard : (V : Subgroup G).relIndex (quotPreimageOpen hVU S : Subgroup G) = Nat.card S` using `relIndex_quotPreimage S`. Use `QZ.cyclic_of_injective (cohomologyInflQuot C S 2).hom.toAddMonoidHom (F.cohomologyInflQuot_two_injective hVU S) (F.inv (quotPreimageOpen hVU S)) (hinj _) (hcard ▸ Nat.pos_of_ne_zero (relIndex_ne_zero_of_isOpen V.isOpen _)) (fun y => ?_) _ ?_` and prove the remaining obligations. Rewrite using `[← hcard]`. Conclude with `(F.resLE_eq_zero_iff hVW (hinj V) _).1 (F.resLE_cohomologyInflQuot hVU S y)`.
+
+Express the relevant statement in the definitionally equal form `F.inv (quotPreimageOpen hVU S) ((cohomologyInflQuot C S 2).hom _) = _`. Rewrite using `[F.inv_cohomologyInflQuot_cohomologyRes_fundamentalClass hVU S (hinj V) hex, hcard]`.
+-/
 theorem cyclic_cohomologyRes_fundamentalClass (hinj : ∀ W : OpenSubgroup G, Function.Injective (F.inv W))
     (hex : ∃ x : H2Open C U, F.inv U x = QZ.mk (1 / ((V : Subgroup G).relIndex U : ℚ))) :
     addOrderOf ((cohomologyRes ((Rep.res (U : Subgroup G).subtype C).quotientToInvariants
@@ -229,6 +282,9 @@ noncomputable def groupFundamentalClass (U V : OpenSubgroup G)
   (cohomologyToGroupCohomology _ 2).hom (F.fundamentalClass U V)
 
 omit [CompactSpace G] [TotallyDisconnectedSpace G] in
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => ModuleCat.Hom.hom φ (F.fundamentalClass U V)) (cohomologyRes_comp_homologyMap_cochainsComplexι ((Rep.res (U : Subgroup G).subtype C).quotientToInvariants ((V : Subgroup G).subgroupOf U)) S 2)`. Conclude with `h.symm`.
+-/
 theorem groupCohomology_map_groupFundamentalClass
     (S : Subgroup (U ⧸ (V : Subgroup G).subgroupOf U)) :
     (groupCohomology.map S.subtype (𝟙 _) 2).hom (F.groupFundamentalClass U V) =
@@ -243,6 +299,13 @@ theorem groupCohomology_map_groupFundamentalClass
 
 include hVU in
 
+/- English proof (translation)
+Use `discreteTopology_quot (U := (U : Subgroup G)) V.isOpen` as an intermediate fact. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `IsZero.of_iso ?_ (cohomologyIsoGroupCohomology _ 1).symm` and prove the remaining obligations. Establish `: Subsingleton (cohomology (Rep.res (quotPreimage (U : Subgroup G) V S).subtype C) 1)` using `ModuleCat.subsingleton_of_isZero (F.isZero_H1_open_subgroups (quotPreimageOpen hVU S))`. Establish `: Subsingleton (cohomology (Rep.res S.subtype ((Rep.res (U : Subgroup G).subtype C).quotientToInvariants ((V : Subgroup G).subgroupOf U))) 1)` using `(cohomologyInflQuot_one_injective hVU S).subsingleton`.
+
+Conclude with `ModuleCat.isZero_of_subsingleton _`. Establish `hinj' : Function.Injective (cohomologyIsoGroupCohomology (Rep.res S.subtype ((Rep.res (U : Subgroup G).subtype C).quotientToInvariants ((V : Subgroup G).subgroupOf U))) 2).hom.hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Rewrite using `[groupCohomology_map_groupFundamentalClass, ← cohomologyIsoGroupCohomology_hom]`. Conclude with `(addOrderOf_injective (cohomologyIsoGroupCohomology (Rep.res S.subtype ((Rep.res (U : Subgroup G).subtype C).quotientToInvariants ((V : Subgroup G).subgroupOf U))) 2).hom.hom.toAddMonoidHom hinj' _).trans (F.cyclic_cohomologyRes_fundamentalClass hVU S hinj hex).1`. Introduce `y`.
+
+Take `⟨m, hm⟩` from `(F.cyclic_cohomologyRes_fundamentalClass hVU S hinj hex).2 ((cohomologyIsoGroupCohomology _ 2).inv.hom y)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[groupCohomology_map_groupFundamentalClass, ← cohomologyIsoGroupCohomology_hom, ← map_zsmul, ← hm]`. Conclude with `(ModuleCat.hom_inv_apply (cohomologyIsoGroupCohomology _ 2) y).symm`.
+-/
 theorem tate_hypotheses (hinj : ∀ W : OpenSubgroup G, Function.Injective (F.inv W))
     (hex : ∃ x : H2Open C U, F.inv U x = QZ.mk (1 / ((V : Subgroup G).relIndex U : ℚ)))
     (S : Subgroup (U ⧸ (V : Subgroup G).subgroupOf U)) :

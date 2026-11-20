@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WedgeContrSelfApply
 open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.FlatAcyc
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.FlatAcyc.Cross.dbarF_dbarAdjF_add | exact GlobalTheory.TorsionForm.FlatAcyc.Cross.dbarF_dbarAdjF_add | (intros; apply GlobalTheory.TorsionForm.FlatAcyc.Cross.dbarF_dbarAdjF_add <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mixed_dbar_partial_commutation : ∀ {g : ℕ} (G : Matrix (Fin g) (Fin g) ℂ) (ψ : (Fin g → ℂ) → ℂ)
     (f : (Fin g → ℂ) → Ext (0 + 0 + g)) (hf : Differentiable ℝ f) (hψ : Differentiable ℝ ψ)
     (hf01 : ∀ v, Differentiable ℝ (fun z => d01 f z v)) (hf10 : ∀ v, Differentiable ℝ (fun z => d10 f z v))

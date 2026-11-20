@@ -8,6 +8,11 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.EisM
 
+/- English proof (translation)
+Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using `only [trm, zero_pow hj, inv_zero, zero_mul, norm_zero]`. Conclude with `Real.rpow_nonneg le_rfl _`. Establish `h0 : 0 < ‖z‖` using `norm_pos_iff.mpr hz`.
+
+Unfold `trm`. Rewrite using `[norm_mul, norm_inv, norm_pow, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg h0.le _), show -((j : ℝ) + 2 * s) = -(j : ℝ) + -2 * s by ring, Real.rpow_add h0, Real.rpow_neg h0.le, Real.rpow_natCast]`.
+-/
 theorem norm_trm_le (j : ℕ) (s : ℝ) (hj : j ≠ 0) (z : ℂ) : ‖trm j s z‖ ≤ ‖z‖ ^ (-((j : ℝ) + 2 * s)) := by
   by_cases hz : z = 0
   · subst hz
@@ -19,6 +24,13 @@ theorem norm_trm_le (j : ℕ) (s : ℝ) (hj : j ≠ 0) (z : ℂ) : ‖trm j s z�
       show -((j : ℝ) + 2 * s) = -(j : ℝ) + -2 * s by ring, Real.rpow_add h0, Real.rpow_neg h0.le,
       Real.rpow_natCast]
 
+/- English proof (translation)
+Introduce `j L s v Φ τ hj hs hL hΦ hK`. Establish `hk : (2 : ℝ) < j + 2 * s`. Establish `: (2 : ℝ) ≤ j` using `by exact_mod_cast hj`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG : Summable fun x : ℤ × ℤ => ‖trm j s ((x.1 : ℂ) * τ + x.2)‖`.
+
+Establish `h1` using `(EisensteinSeries.summable_one_div_norm_rpow hk).mul_left ((EisensteinSeries.r τ) ^ (-((j : ℝ) + 2 * s)))`. Establish `h2 : Summable (fun x : Fin 2 → ℤ => ‖trm j s ((x 0 : ℂ) * τ + x 1)‖)` using `Summable.of_nonneg_of_le (fun x => norm_nonneg _) (fun x => (norm_trm_le j s (by omega) _).trans (EisensteinSeries.summand_bound τ (by linarith) x)) h1`. Establish `h3` using `((finTwoArrowEquiv ℤ).symm.summable_iff).mpr h2`. Conclude with `h3.congr fun p => by simp`. Take `⟨h1s, h1e⟩` from `GlobalTheory.T.killsTranslates_sum_mul_meanDifference_eq L v Φ _ hL hΦ hK hG`.
+
+Take `⟨_, h2e⟩` from `GlobalTheory.T.killsTranslates_sum_mul_meanDifference_eq L v Φ _ hL hΦ hK h1s`. Use `⟨hG, ?_⟩` and prove the remaining obligations. Unfold `lat`. Rewrite using `[h2e, h1e]`.
+-/
 theorem lat_eq_tsum_of_kills : ∀ (j L : ℕ) (s : ℝ) (v : ℤ × ℤ) (Φ : ℤ × ℤ → ℂ) (τ : ℍ), 2 ≤ j → 0 < s → 0 < L → (∃ C : ℝ, ∀ x, ‖Φ x‖ ≤ C) → Kills L v Φ → (Summable fun x : ℤ × ℤ => ‖trm j s ((x.1 : ℂ) * τ + x.2)‖) ∧ lat j s L v Φ τ = ∑' x : ℤ × ℤ, Φ x * trm j s ((x.1 : ℂ) * τ + x.2) := by
   intro j L s v Φ τ hj hs hL hΦ hK
   have hk : (2 : ℝ) < j + 2 * s := by

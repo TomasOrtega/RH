@@ -16,6 +16,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Conclude with `(isEquiv (valuation (v.adicCompletion F)) (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one`.
+-/
 theorem valuation_eq_one_iff {v : Pl F} (x : Fv F v) :
     valuation (Fv F v) x = 1 ↔ Valued.v x = 1 := by
   have : (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -23,6 +26,13 @@ theorem valuation_eq_one_iff {v : Pl F} (x : Fv F v) :
   exact (isEquiv (valuation (v.adicCompletion F))
     (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Take `⟨a, ha⟩` from `(SplitTie.complMap_bijective t (splitPrime_under t)).2 (y : _)`. Establish `hv : Valued.v a = 1`. Rewrite using `[← SplitTie.valued_complMap t (splitPrime_under t), ha]`.
+
+Conclude with `hy`. Establish `h0 : a ≠ 0` using `by rintro rfl; simp at hv`. Establish `h1` using `h (Units.mk0 a h0) ((valuation_eq_one_iff _).2 hv)`. Rewrite using `[← h1]`. Conclude with `congrArg (locChar χ _) (Units.ext ha.symm)`.
+
+Introduce `h x hx`. Conclude with `h _ (show Valued.v (complMap (splitPrime_under t) (x : Fv F v)) = 1 by`. Rewrite using `[SplitTie.valued_complMap t (splitPrime_under t)]`. Conclude with `(valuation_eq_one_iff _).1 hx)`.
+-/
 theorem isUnram_chrW_iff (χ : Chr F E) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     GlobalTheory.SplitWeil.IsUnram (chrW χ t) ↔ UnrAt χ (splitPrime t) := by
   constructor
@@ -38,6 +48,9 @@ theorem isUnram_chrW_iff (χ : Chr F E) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     exact h _ (show Valued.v (complMap (splitPrime_under t) (x : Fv F v)) = 1 by
       rw [SplitTie.valued_complMap t (splitPrime_under t)]; exact (valuation_eq_one_iff _).1 hx)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ χ hχ v t`. Establish `hc` using `GlobalTheory.ChrWSmooth.continuous_chrW hχ.1 t`. Use `⟨⟨GlobalTheory.RootEx.UniformLattices.isOpen_ker_of_continuous _ hc, GlobalTheory.ChrWSmooth.isUnitaryChar_chrW χ t⟩, ?_, isUnram_chrW_iff χ t⟩` and prove the remaining obligations. Conclude with `GlobalTheory.GaussNonvanish.exists_condLE (GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec _ (Units.continuous_val.comp hc)`.
+-/
 theorem chrW_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (χ : Chr F E),
     IsHecke F E χ →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v), IsSmU (chrW χ t) ∧ (∃ e, GlobalTheory.SplitFlip.CondLE (unifAt v) e (chrW χ t)) ∧

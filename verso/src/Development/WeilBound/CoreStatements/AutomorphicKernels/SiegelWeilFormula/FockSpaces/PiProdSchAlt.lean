@@ -47,6 +47,15 @@ variable (V) in
 
 def PS (α : Type) [Fintype α] : Prop := ∀ S : α → 𝓢(V, ℂ), ∃ T : 𝓢(α → V, ℂ), ∀ y, T y = ∏ w, S w (y w)
 
+/- English proof (translation)
+Use `revert S`. Express the relevant statement in the definitionally equal form `PositivityTheory.SiegelWeilFormula.KFock.PS V W`. Use `Fintype.induction_empty_option (P := fun α (_ : Fintype α) => PositivityTheory.SiegelWeilFormula.KFock.PS V α) ?_ ?_ ?_ W` and prove the remaining obligations. Introduce `α β _ e hα S`. Use `letI : Fintype α := Fintype.ofEquiv β e.symm`.
+
+Take `⟨T, hT⟩` from `hα (fun a => S (e a))`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (PositivityTheory.SiegelWeilFormula.KFock.reidxCLE e) T, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hT]`. Conclude with `Fintype.prod_equiv e _ _ (fun a => rfl)`. Introduce `S`.
+
+Use `⟨PositivityTheory.SiegelWeilFormula.KFock.oneSch, fun y => ?_⟩` and prove the remaining obligations. Use `show (1 : ℂ) = _`. Rewrite using `[Finset.univ_eq_empty, Finset.prod_empty]`. Introduce `α _ hα S`. Take `⟨T₀, hT₀⟩` from `hα (fun a => S (some a))`.
+
+Take `⟨f, hf⟩` from `GlobalTheory.SchwartzHadamard.exists_schwartz_prod (S none) T₀`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (PositivityTheory.SiegelWeilFormula.KFock.optCLE α) f, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hf, Fintype.prod_option]`. Use `show S none (y none) * T₀ (fun a => y (some a)) = _`. Rewrite using `[hT₀]`.
+-/
 theorem piProdSch' (W : Type) [Fintype W] (S : W → 𝓢(V, ℂ)) :
     ∃ T : 𝓢(W → V, ℂ), ∀ y, T y = ∏ w, S w (y w) := by
   revert S

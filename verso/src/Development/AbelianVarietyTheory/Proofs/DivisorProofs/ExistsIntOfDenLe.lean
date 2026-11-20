@@ -15,6 +15,15 @@ namespace GlobalTheory.FinFix
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hN : 0 < D * p ^ k` using `Nat.mul_pos hD (pow_pos hp.pos k)`. Establish `hdvd : q.den ∣ D * p ^ k`. Rewrite using `[← Nat.factorization_le_iff_dvd q.den_nz hN.ne']`. Introduce `ℓ`.
+
+Rewrite using `[Nat.factorization_mul hD.ne' (pow_ne_zero _ hp.ne_zero), Nat.factorization_pow, hp.factorization]`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finsupp.smul_apply, smul_eq_mul]`. Distinguish the cases in `hl : ℓ = p`. Substitute `hl` using the available equality. Simplify using `only [Finsupp.single_eq_same, mul_one]`.
+
+Use `h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `h1 ℓ hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨c, hc⟩` from `hdvd`.
+
+Use `⟨c * q.num, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_int_of_den_le (D k : ℕ) (hD : 0 < D) (q : ℚ)
     (h1 : ∀ ℓ : ℕ, ℓ ≠ p → q.den.factorization ℓ ≤ D.factorization ℓ) (h2 : q.den.factorization p ≤ k) :
     ∃ m : ℤ, ((D * p ^ k : ℕ) : ℚ) * q = m := by
@@ -34,6 +43,11 @@ theorem exists_int_of_den_le (D k : ℕ) (hD : 0 < D) (q : ℚ)
   calc ((q.den * c : ℕ) : ℚ) * q = (c : ℚ) * (q * q.den) := by push_cast; ring
     _ = _ := by rw [Rat.mul_den_eq_num]; push_cast; ring
 
+/- English proof (translation)
+Introduce `y y' hyy`. Establish `hu : (y : G.Cˣ × ℚˣ).1 = (y' : G.Cˣ × ℚˣ).1` using `Units.ext hyy`. Establish `h1 : (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * β * sh G ((y : G.Cˣ × ℚˣ).1 : G.Cˣ) = algebraMap ℚ G.C (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) * β` using `y.2.1`. Establish `h2 : (((y' : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * β * sh G ((y' : G.Cˣ × ℚˣ).1 : G.Cˣ) = algebraMap ℚ G.C (((y' : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) * β` using `y'.2.1`. Rewrite `h1` using `[hu]`.
+
+Establish `h3 : algebraMap ℚ G.C (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) = algebraMap ℚ G.C (((y' : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)`. Use `h1.symm.trans h2` as an intermediate fact. Simplify using `using congrArg (· * ((β⁻¹ : G.Cˣ) : G.C)) this`. Establish `h4 : (y : G.Cˣ × ℚˣ).2 = (y' : G.Cˣ × ℚˣ).2` using `Units.ext ((algebraMap ℚ G.C).injective h3)`. Conclude with `Subtype.ext (Prod.ext hu h4)`.
+-/
 theorem grp_val_injective (G : HTGroup p) (β : G.Cˣ) :
     Function.Injective (fun y : grp G β => (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) := by
   intro y y' hyy
@@ -49,6 +63,29 @@ theorem grp_val_injective (G : HTGroup p) (β : G.Cˣ) :
   have h4 : (y : G.Cˣ × ℚˣ).2 = (y' : G.Cˣ × ℚˣ).2 := Units.ext ((algebraMap ℚ G.C).injective h3)
   exact Subtype.ext (Prod.ext hu h4)
 
+/- English proof (translation)
+Take `⟨D, hD, hAf⟩` from `GlobalTheory.T.formGroup_testFunction_support_bounded_denominators p G β x t hx L f hf h.1`. Take `⟨k, hP⟩` from `GlobalTheory.T.p_adic_denominator_bound p G β K' f' hf' h.2`. Take `⟨K, hK⟩` from `GlobalTheory.T.fixed_vector_squared_bound p G hG v hv β hsym hR z hz`. Use `set N : ℕ := D * p ^ k with hN`. Establish `hNpos : (0 : ℝ) < N`.
+
+Rewrite using `[hN]`. Conclude with `Nat.mul_pos hD (pow_pos (Fact.out : p.Prime).pos k)` after adjusting the coercions. Use `set b := Module.finBasis ℚ G.C with hb`. Use `set S : Finset G.C := Finset.univ.image (fun i => ((N : ℚ)⁻¹) • b i) with hS`. Set `Φ : G.C →+ (InfinitePlace G.F → Fin G.n → Fin G.n → ℂ)` to `AddMonoidHom.mk' (fun c w i l => G.psi w c i l) (by intro a c; funext w i l; simp [map_add])`.
+
+Use `Set.Finite.of_finite_image ?_ ((grp_val_injective G β).injOn)` and prove the remaining obligations. Use `GlobalTheory.T.finite_of_bounded_image_in_finitely_generated_subgroup Φ (fun k e he => GlobalTheory.T.embeddings_real_independent p G k e he) S _ ?_ (Real.sqrt (max K 0 * N)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨-, hne⟩, rfl⟩`. Establish `hf1` using `left_ne_zero_of_mul hne`. Establish `hf2` using `right_ne_zero_of_mul hne`.
+
+Use `show (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) ∈ AddSubgroup.closure (S : Set G.C)`. Rewrite using `[← b.sum_repr (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)]`. Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `exists_int_of_den_le D k hD (b.repr (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) i) (fun ℓ hℓ => (hAf y hf1 ℓ hℓ).1 i) ((hP y hf2).1 i)`. Establish `hN0 : (N : ℚ) ≠ 0`.
+
+Rewrite using `[hN]`. Conclude with `(Nat.mul_pos hD (pow_pos (Fact.out : p.Prime).pos k)).ne'` after adjusting the coercions. Establish `e : b.repr (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) i • b i = m • ((N : ℚ)⁻¹ • b i)`. Rewrite using `[← Int.cast_smul_eq_zsmul ℚ, smul_smul, ← hm, mul_comm, ← mul_assoc, inv_mul_cancel₀ hN0, one_mul]`. Rewrite using `[e]`.
+
+Conclude with `AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (by`. Simplify using `only [hS, Finset.coe_image, Finset.coe_univ, Set.image_univ]`. Conclude with `⟨i, rfl⟩)) m`. Introduce and unpack `_ ⟨y, ⟨hfix, hne⟩, rfl⟩`. Establish `hf1` using `left_ne_zero_of_mul hne`.
+
+Establish `hf2` using `right_ne_zero_of_mul hne`. Establish `hs : (0 : ℚ) < (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)` using `y.2.2`. Take `⟨m, hm⟩` from `exists_int_of_den_le D k hD ((((y : G.Cˣ × ℚˣ).2)⁻¹ : ℚˣ) : ℚ) (fun ℓ hℓ => (hAf y hf1 ℓ hℓ).2) (hP y hf2).2`. Establish `hsN : ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) : ℝ) ≤ N`. Establish `hm' : ((N : ℚ)) * ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ))⁻¹ = m`.
+
+Rewrite using `[← hm, Units.val_inv_eq_inv_val]`. Establish `hmpos : (0 : ℚ) < m`. Rewrite using `[← hm']; exact mul_pos (by exact_mod_cast hNpos) (inv_pos.2 hs)`. Establish `hm1 : (1 : ℚ) ≤ m` using `by exact_mod_cast (show (0 : ℤ) < m by exact_mod_cast hmpos)`. Establish `: (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) ≤ N`.
+
+Establish `h2 : (1 : ℚ) ≤ (N : ℚ) * ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ))⁻¹` using `hm' ▸ hm1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions. Establish `hsR : (0 : ℝ) < ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) : ℝ)` using `by exact_mod_cast hs`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun w => ?_` and prove the remaining obligations.
+
+Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Establish `h1` using `hK y hfix w i j`. Establish `h2 : ‖G.psi w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) i j‖ ^ 2 ≤ max K 0 * N` using `h1.trans ((mul_le_mul_of_nonneg_right (le_max_left K 0) hsR.le).trans (mul_le_mul_of_nonneg_left hsN (le_max_right K 0)))`. Establish `h3` using `Real.abs_le_sqrt h2`.
+
+Rewrite `h3` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
+-/
 theorem finite_fix_core (G : HTGroup p) (hG : G.a = 1) (v : InfinitePlace G.F)
     (hv : sigPosH (G.gram_herm v) = 1) (L : G.Level) (f : G.GAf → ℂ)
     (hf : IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f)

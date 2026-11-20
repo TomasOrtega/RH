@@ -22,6 +22,17 @@ section Reparam
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left}
 
+/- English proof (translation)
+Establish `hg : g = g'` using `by simpa using X.finrank_eq`. Substitute `hg` using the available equality. Use `⟨GlobalTheory.holUnifReparam u X (fun _ => 1) (differentiable_const _) (fun _ => one_ne_zero), fun l => χ ⟨X l, l.2⟩, fun _ => rfl, fun _ => Iff.rfl, ⟨hHf, ?_, fun l => hAH.2.2.1 _, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Establish `h` using `hAH.2.1 (X z) ((LinearEquiv.map_ne_zero_iff X).2 hz)`.
+
+Establish `e` using `hf z z`. Unfold `hermForm at e`. Rewrite using `[e]`. Conclude with `h`. Introduce `l i z hz`.
+
+Establish `h` using `hAH.2.2.2 ⟨X l, l.2⟩ i (X z) hz`. Establish `e1` using `hf z l`. Establish `e2` using `hf l l`. Unfold `hermForm at e1 e2`. Use `show u.fr i (X z) / 1 = χ ⟨X l, l.2⟩ * Complex.exp (Real.pi * (z ⬝ᵥ Hf.mulVec (star (l : Fin g → ℂ))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hf.mulVec (star (l : Fin g → ℂ)))) * (u.fr i (X (z + l)) / 1)`.
+
+Rewrite using `[div_one, div_one, map_add, h, e1, e2]`. Introduce `w v hv U h f`. Rewrite using `[hv U h f]`. Establish `key` using `X.toContinuousLinearEquiv.comp_right_fderiv (f := fun z => valAt' (u.ex z).left U f) (x := 0)`. Establish `h2` using `congrArg (fun T => T w) key`.
+
+Simplify using `only [map_zero] at h2`. Conclude with `h2.symm`.
+-/
 theorem exists_reparam_isAH {g g' : ℕ} (u : HolUnif A L g') (X : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ))
     (Hm : Matrix (Fin g') (Fin g') ℂ) (Hf : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (hAH : u.IsAH Hm χ)
     (hHf : Hf.IsHermitian) (hf : ∀ x y, hermForm Hf x y = hermForm Hm (X x) (X y)) :
@@ -55,6 +66,33 @@ theorem exists_reparam_isAH {g g' : ℕ} (u : HolUnif A L g') (X : (Fin g → �
 
 end Reparam
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ g ty FU i R P h hP hRf hdet hPh A₀ x v hd`. Set `hl : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `h.toLinearEquiv' (h.invertibleOfIsUnitDet hdet)`. Establish `hla : ∀ z, hl z = h *ᵥ z` using `fun z => by show Matrix.toLin' h z = h *ᵥ z`. Conclude with `Matrix.toLin'_apply h z`. Establish `hlP : ∀ a, hl (R.P a) = P a` using `fun a => by rw [hla, hPh]`.
+
+Establish `hlP' : ∀ a, hl.symm (P a) = R.P a` using `fun a => by rw [← hlP, hl.symm_apply_apply]`. Take `⟨Q, ψ, -, hQ, hQL, -⟩` from `GlobalTheory.exists_polAV_pullback_of_isLocalRing E H _ Xo.univ.t Xo.univ.proper Xo.univ.ample Xo.univ.ktriv ℂ (FU.u i P)`. Take `⟨u, H₂, χ, F, hAH, -, d₂, -, hF, hΛ, hE⟩` from `GlobalTheory.familyUnif_fibre_theta GlobalTheory.thetaUnifAV_all GlobalTheory.abelianSchemeLaws_all.1.weil E H D l Xo σ g ty FU i P hP Q ψ hQ hQL`. Take `⟨w, hw⟩` from `hQL`. Establish `hLB : (Xo.univ.t.PP.L.pull ψ).IsLB` using `LB.isLB_pull Xo.univ.t.PP.isLB ψ`.
+
+Set `ub : HolUnif Q.A (Xo.univ.t.PP.L.pull ψ) Q.g` to `GlobalTheory.ArchMetricCompare.carry u Q.isLB hLB hw`. Establish `hAHb : ub.IsAH H₂ χ` using `GlobalTheory.ArchMetricCompare.carry_isAH Q.isLB hLB hw hAH`. Set `T : (Fin g → ℂ) ≃ₗ[ℂ] (Fin Q.g → ℂ)` to `hl.trans F`. Establish `hf : ∀ x y, hermForm R.Hm x y = hermForm H₂ (T x) (T y)` using `fun x y => by`. Establish `key` using `GlobalTheory.KeyFam.SamePeriod.hermForm_eq_of_im H₂ F.toLinearMap R.Hm hl.symm.toLinearMap hP.2.2.2.1 (by`.
+
+Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Establish `h1` using `hE a b`. Establish `h2` using `R.im a b`. Rewrite `h2` using `[hRf]`. Use `show (hermForm H₂ (F (P a)) (F (P b))).im = (hermForm R.Hm (hl.symm (P a)) (hl.symm (P b))).im`.
+
+Rewrite using `[hlP', hlP', h1]`. Conclude with `h2.symm) (hl x) (hl y)`. Use `show _ = hermForm H₂ (F (hl x)) (F (hl y))`. Simplify using `using key.symm`. Take `⟨u', χ', hue, huΛ, huAH, hud⟩` from `exists_reparam_isAH ub T H₂ R.Hm χ hAHb R.herm hf`.
+
+Establish `hex : ∀ q, (u'.ex q).left ≫ ψ = (FU.ex i P (hl q)).left` using `fun q => by`. Rewrite using `[hue]`. Conclude with `hF (hl q)`. Establish `hB : ∀ (a : 𝓞 E) (p : Fin g → ℂ), hl (R.B a p) = fun k => ty k (a : E) * hl p k` using `fun a p => by`. Set `Da : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `{ toFun := fun z k => ty k (a : E) * z k map_add' := fun z z' => by`.
+
+Use extensionality with `k`. Simplify using `[mul_add]`. Use the proof step `map_smul' := fun c z => by`. Use extensionality with `k`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+
+Use `ring }`. Set `N : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `hl.toLinearMap.comp ((R.B a).comp hl.symm.toLinearMap) - Da`. Establish `hN : N.restrictScalars ℝ = 0` using `LinearMap.ext_on hP.2.2.2.1 (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `show hl (R.B a (hl.symm (P y))) - (fun k => ty k (a : E) * P y k) = 0`.
+
+Rewrite using `[hlP', ← R.act, hlP, sub_eq_zero]`. Conclude with `funext (hP.1 a y))`. Establish `h0 : N (hl p) = 0` using `congrArg (fun f => f (hl p)) hN`. Establish `h1 : hl (R.B a (hl.symm (hl p))) - (fun k => ty k (a : E) * hl p k) = 0` using `h0`. Rewrite `h1` using `[hl.symm_apply_apply]`.
+
+Conclude with `sub_eq_zero.1 h1`. Use `⟨Q.A, inferInstance, ψ, u', χ', hQ, huAH, fun a p => ?_, fun y y' hy => ?_, fun p => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hex, hB, FU.ex_lin i P hP a (hl p), Over.comp_left, ← Category.assoc, hex]`. Conclude with `hP.2.1 (by rw [hPh, hPh, hy])`. Rewrite using `[huΛ] show F (hl p) ∈ u.Λ ↔ _`.
+
+Rewrite using `[hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, hl.injective (by rw [hlP, hy])⟩`. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `⟨y, (hlP y).symm⟩`. Establish `hd' : IsDerivAt0 (fun z => (FU.ex i P z).left) (hl (x a)) (v a).left`. Rewrite using `[hla]`. Conclude with `hd a`. Take `⟨t, ⟨h₁, h₂⟩, -⟩` from `d₂ (F (hl (x a)))`.
+
+Use `⟨t, GlobalTheory.VerticalDeriv.isDerivAt0_unique (Flat.PerGram.isDerivAt0_of_fibre ψ u F.toLinearMap hF h₁ h₂) hd', hud (x a) t h₂⟩` and prove the remaining obligations.
+-/
 theorem fibreLatVec_of_period : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo σ ty) (i : Fin FU.n) (R : RiemLat E g (FU.Di i).La) (P : (FU.Di i).La →+ (Fin g → ℂ)) (h : Matrix (Fin g) (Fin g) ℂ), IsPeriod (FU.Di i) ty P → R.form = (FU.Di i).EF → IsUnit h.det → (∀ x, P x = h *ᵥ R.P x) → ∀ (A₀ : Type) (x : A₀ → Fin g → ℂ) (v : A₀ → (epsAt (FU.u i P) ⟶ Xo.univ.t.G)), (∀ a, IsDerivAt0 (fun z => (FU.ex i P z).left) (h *ᵥ x a) (v a).left) → FibreLatVec Xo.univ.t (FU.u i P) R x v := by
   intro E _ _ _ H D l Xo σ g ty FU i R P h hP hRf hdet hPh A₀ x v hd
   let hl : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ) := h.toLinearEquiv' (h.invertibleOfIsUnitDet hdet)

@@ -8,6 +8,13 @@ namespace GlobalTheory
 
 section Holomorphic
 
+/- English proof (translation)
+Establish `hg' : AnalyticOnNhd ℂ g (closedBall 0 |(1 : ℝ)|)` using `by simpa using hg`. Rewrite using `[hg'.circleAverage_log_norm one_ne_zero h0, le_add_iff_nonneg_left]`. Use `finsum_nonneg fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u ∈ closedBall (0 : ℂ) |(1 : ℝ)|`. Use `mul_nonneg (by exact_mod_cast MeromorphicOn.AnalyticOnNhd.divisor_nonneg hg' u) ?_` and prove the remaining obligations.
+
+Break down `eq_or_ne u 0 with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Use `Real.log_nonneg ?_` and prove the remaining obligations. Establish `h1 : ‖u‖ ≤ 1` using `by simpa using hu`. Simplify using `using (one_le_inv₀ (norm_pos_iff.2 h)).2 h1`.
+
+Simplify using `[Function.locallyFinsuppWithin.apply_eq_zero_of_notMem _ hu]`.
+-/
 theorem log_norm_le_circleAverage_log_norm {g : ℂ → ℂ} (hg : AnalyticOnNhd ℂ g (closedBall 0 1))
     (h0 : g 0 ≠ 0) : Real.log ‖g 0‖ ≤ Real.circleAverage (fun z => Real.log ‖g z‖) 0 1 := by
   have hg' : AnalyticOnNhd ℂ g (closedBall 0 |(1 : ℝ)|) := by simpa using hg
@@ -25,9 +32,23 @@ theorem log_norm_le_circleAverage_log_norm {g : ℂ → ℂ} (hg : AnalyticOnNhd
 private noncomputable def logGap (M : ℝ) (y : ℂ) : ℝ≥0∞ :=
   if y = 0 then ∞ else ENNReal.ofReal (Real.log M - Real.log ‖y‖)
 
+/- English proof (translation)
+The claim follows from `Measurable.ite (measurableSet_singleton 0) measurable_const (by fun_prop)`.
+-/
 private theorem measurable_logGap (M : ℝ) : Measurable (logGap M) :=
   Measurable.ite (measurableSet_singleton 0) measurable_const (by fun_prop)
 
+/- English proof (translation)
+Establish `h2 : (0 : ℝ) < 2 * π` using `by positivity`. Establish `hne : ∀ᵐ t ∂(volume.restrict (Ioc 0 (2 * π))), g (circleMap 0 1 t) ≠ 0`. Establish `h1` using `hg.preimage_zero_mem_codiscreteWithin h0 (mem_closedBall_self zero_le_one) (isConnected_closedBall zero_le_one)`. Establish `h3 : g ⁻¹' {0}ᶜ ∈ codiscreteWithin (sphere (0 : ℂ) |(1 : ℝ)|)` using `codiscreteWithin_mono (by simpa using sphere_subset_closedBall) h1`. Conclude with `ae_restrict_le_codiscreteWithin measurableSet_Ioc (codiscreteWithin_mono (subset_univ _) (circleMap_preimage_codiscrete one_ne_zero h3))`.
+
+Establish `hint : IntegrableOn (fun t => Real.log ‖g (circleMap 0 1 t)‖) (Ioc 0 (2 * π))`. Establish `h1 : CircleIntegrable (fun z => Real.log ‖g z‖) 0 1` using `MeromorphicOn.circleIntegrable_log_norm (hg.mono (by simpa using sphere_subset_closedBall)).meromorphicOn`. Conclude with `(intervalIntegrable_iff_integrableOn_Ioc_of_le h2.le).1 h1`. Establish `hc : IntegrableOn (fun _ : ℝ => Real.log M) (Ioc 0 (2 * π))` using `integrableOn_const measure_Ioc_lt_top.ne`. Establish `hJ` using `log_norm_le_circleAverage_log_norm hg h0`.
+
+Rewrite `hJ` using `[Real.circleAverage, intervalIntegral.integral_of_le h2.le, smul_eq_mul, le_inv_mul_iff₀ h2]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hne] with t ht`. Simplify using `[logGap, ht]`.
+
+Use `_ = ENNReal.ofReal (∫ t in Ioc 0 (2 * π), (Real.log M - Real.log ‖g (circleMap 0 1 t)‖)) := by`. Use `(ofReal_integral_eq_lintegral_ofReal (hc.sub hint) ?_).symm` and prove the remaining obligations. Use `filter_upwards [hne] with t ht`. Conclude with `sub_nonneg.2 (Real.log_le_log (norm_pos_iff.2 ht) (hM _ (sphere_subset_closedBall (circleMap_mem_sphere 0 zero_le_one t))))`. Use `_ ≤ _ := by`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[integral_sub hc hint]`. Simplify using `only [integral_const, MeasurableSet.univ, measureReal_restrict_apply, univ_inter, Real.volume_real_Ioc, sub_zero, max_eq_left h2.le, smul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem lintegral_logGap_circle_le {g : ℂ → ℂ} (hg : AnalyticOnNhd ℂ g (closedBall 0 1))
     (h0 : g 0 ≠ 0) {M : ℝ} (hM : ∀ z ∈ closedBall (0 : ℂ) 1, ‖g z‖ ≤ M) :
     ∫⁻ t in Ioc 0 (2 * π), logGap M (g (circleMap 0 1 t)) ≤
@@ -70,6 +91,31 @@ private theorem lintegral_logGap_circle_le {g : ℂ → ℂ} (hg : AnalyticOnNhd
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
   [MeasurableSpace E] [BorelSpace E]
 
+/- English proof (translation)
+Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Establish `h2 : (0 : ℝ) < 2 * π` using `by positivity`. Establish `hn : ∀ t, ‖circleMap 0 1 t‖ = 1` using `fun t => by simp`. Use `set F : E → ℂ := (ball (0 : E) r).piecewise f 0 with hF`. Establish `hFm : Measurable F` using `hf.continuousOn.measurable_piecewise continuousOn_const measurableSet_ball`.
+
+Use `set G : E → ℝ≥0∞ := (ball (0 : E) r).indicator fun z => logGap M (F z) with hG`. Establish `hGm : Measurable G` using `((measurable_logGap M).comp hFm).indicator measurableSet_ball`. Establish `hj : Measurable fun p : ℝ × E => G (circleMap 0 1 p.1 • p.2)`. Use `hGm.comp (Continuous.measurable ?_)` and prove the remaining obligations. Conclude with `((continuous_circleMap 0 1).comp continuous_fst).smul continuous_snd`.
+
+Establish `hA : ∫⁻ t in Ioc 0 (2 * π), ∫⁻ z, G (circleMap 0 1 t • z) ∂μ = (∫⁻ z in ball 0 r, logGap M (F z) ∂μ) * ENNReal.ofReal (2 * π)`. Establish `h4 : ∀ t, ∫⁻ z, G (circleMap 0 1 t • z) ∂μ = ∫⁻ z in ball 0 r, logGap M (F z) ∂μ` using `fun t => by`. Rewrite using `[(measurePreserving_smul_of_norm_eq_one μ (hn t)).lintegral_comp hGm, hG, lintegral_indicator measurableSet_ball]`. Simplify using `[h4]`. Establish `hsm : ∀ z ∈ ball (0 : E) r, ∀ c ∈ closedBall (0 : ℂ) 1, c • z ∈ ball (0 : E) r`.
+
+Introduce `z hz c hc`. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Rewrite `hc` using `[mem_closedBall_zero_iff]`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : ∫⁻ t in Ioc 0 (2 * π), ∫⁻ z, G (circleMap 0 1 t • z) ∂μ < ∞`.
+
+Rewrite using `[lintegral_lintegral_swap hj.aemeasurable]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ ball (0 : E) r`. Establish `h5 : ∀ t, G (circleMap 0 1 t • z) = logGap M (f (circleMap 0 1 t • z))` using `fun t => by`.
+
+Use `hsm z hz _ (mem_closedBall_zero_iff.2 (hn t).le)` as an intermediate fact. Rewrite using `[hG, indicator_of_mem this, hF, piecewise_eq_of_mem _ _ _ this]`. Establish `h6 : AnalyticOnNhd ℂ (fun c : ℂ => f (c • z)) (closedBall 0 1)`. Establish `ho : IsOpen ((fun c : ℂ => c • z) ⁻¹' ball 0 r)` using `isOpen_ball.preimage (by fun_prop)`. Establish `hd : DifferentiableOn ℂ (fun c : ℂ => f (c • z)) ((fun c : ℂ => c • z) ⁻¹' ball 0 r)` using `hf.comp (by fun_prop) (mapsTo_preimage _ _)`.
+
+Conclude with `(hd.analyticOnNhd ho).mono fun c hc => hsm z hz c hc`. Simplify using `only [indicator_of_mem hz, h5]`. Simplify `h0) (fun c hc => hM _ (hsm z hz c hc))` using `using lintegral_logGap_circle_le h6 (by simpa`. Establish `h5 : ∀ t, G (circleMap 0 1 t • z) = 0` using `fun t => by`. Rewrite using `[hG, indicator_of_notMem]`.
+
+Simplify `hz` using `[norm_smul, hn]`. Simplify using `[h5]`. Use `_ < ∞ := by`. Rewrite using `[lintegral_indicator_const measurableSet_ball]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_ball_lt_top`.
+
+Rewrite `hB` using `[hA]`. Establish `hC : ∫⁻ z in ball 0 r, logGap M (F z) ∂μ < ∞` using `(ENNReal.lt_top_of_mul_ne_top_left hB.ne (ENNReal.ofReal_pos.2 h2).ne')`. Establish `hFf : F =ᵐ[μ.restrict (ball 0 r)] f` using `piecewise_ae_eq_restrict measurableSet_ball`. Establish `hne : ∀ᵐ z ∂(μ.restrict (ball 0 r)), f z ≠ 0` using `by filter_upwards [ae_lt_top ((measurable_logGap M).comp hFm) hC.ne, hFf] with z hz hz' h`. Simplify using `[hz', logGap, h] at hz`.
+
+Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `hmeas : AEStronglyMeasurable (fun z => Real.log ‖f z‖) (μ.restrict (ball 0 r))`. Establish `: AEMeasurable f (μ.restrict (ball 0 r))` using `⟨F, hFm, hFf.symm⟩`. Conclude with `(Real.measurable_log.comp_aemeasurable this.norm).aestronglyMeasurable`. Establish `hc : IntegrableOn (fun _ : E => Real.log M) (ball 0 r) μ` using `integrableOn_const measure_ball_lt_top.ne`.
+
+Establish `hsub : IntegrableOn (fun z => Real.log M - Real.log ‖f z‖) (ball 0 r) μ`. Use `⟨aestronglyMeasurable_const.sub hmeas, ?_⟩` and prove the remaining obligations. Use `lt_of_eq_of_lt (lintegral_congr_ae ?_) hC` and prove the remaining obligations. Use `filter_upwards [hne, hFf, ae_restrict_mem measurableSet_ball] with z hz hz' hzb`. Rewrite using `[hz', logGap, if_neg hz, Real.enorm_eq_ofReal]`.
+
+Conclude with `sub_nonneg.2 (Real.log_le_log (norm_pos_iff.2 hz) (hM z hzb))`. Conclude with `(hc.sub hsub).congr (Eventually.of_forall fun z => by simp)`.
+-/
 theorem integrableOn_log_norm_ball_zero (μ : Measure E) [μ.IsAddHaarMeasure] {f : E → ℂ}
     {r M : ℝ} (hf : DifferentiableOn ℂ f (ball 0 r)) (hM : ∀ z ∈ ball (0 : E) r, ‖f z‖ ≤ M)
     (h0 : f 0 ≠ 0) :
@@ -149,6 +195,13 @@ theorem integrableOn_log_norm_ball_zero (μ : Measure E) [μ.IsAddHaarMeasure] {
     exact sub_nonneg.2 (Real.log_le_log (norm_pos_iff.2 hz) (hM z hzb))
   exact (hc.sub hsub).congr (Eventually.of_forall fun z => by simp)
 
+/- English proof (translation)
+Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Establish `hm : MapsTo (fun z : E => z + a) (ball 0 r) (ball a r)` using `fun z hz => by simpa using hz`. Take `⟨h1, h2⟩` from `integrableOn_log_norm_ball_zero μ (f := fun z => f (z + a)) (r := r) (M := M) (hf.comp (by fun_prop) hm) (fun z hz => hM _ (hm hz)) (by simpa using h0)`. Establish `hp : MeasurePreserving (fun z : E => z - a) (μ.restrict (ball a r)) (μ.restrict (ball 0 r))`. Use `(measurePreserving_sub_right μ a).restrict_preimage (s := ball 0 r) measurableSet_ball` as an intermediate fact.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using `[dist_eq_norm]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using hp.quasiMeasurePreserving.ae h1`.
+
+Simplify `hp.integrable_comp_of_integrable h2` using `[Function.comp_def, IntegrableOn]`.
+-/
 theorem integrableOn_log_norm_ball (μ : Measure E) [μ.IsAddHaarMeasure] {f : E → ℂ} {a : E}
     {r M : ℝ} (hf : DifferentiableOn ℂ f (ball a r)) (hM : ∀ z ∈ ball a r, ‖f z‖ ≤ M)
     (h0 : f a ≠ 0) :
@@ -168,6 +221,11 @@ theorem integrableOn_log_norm_ball (μ : Measure E) [μ.IsAddHaarMeasure] {f : E
   · simpa using hp.quasiMeasurePreserving.ae h1
   · simpa [Function.comp_def, IntegrableOn] using hp.integrable_comp_of_integrable h2
 
+/- English proof (translation)
+Establish `hb : ∀ᶠ z in 𝓝 x, ‖f z‖ ≤ ‖f x‖ + 1` using `(hf.self_of_nhds.continuousAt.norm.eventually (gt_mem_nhds (lt_add_one _))).mono fun _ h => h.le`. Take `⟨R, hR, hB⟩` from `Metric.eventually_nhds_iff_ball.1 (hf.and hb)`. Take `⟨a, ha, hax⟩` from `(hx.and_eventually (ball_mem_nhds x (by positivity : 0 < R / 3))).exists`. Establish `h1 : ball a (2 * R / 3) ⊆ ball x R` using `ball_subset_ball' (by linarith)`. Establish `h2 : ball x (R / 3) ⊆ ball a (2 * R / 3)` using `ball_subset_ball' (by rw [dist_comm] at hax; linarith)`.
+
+Take `⟨h3, h4⟩` from `integrableOn_log_norm_ball μ (f := f) (a := a) (r := 2 * R / 3) (fun z hz => (hB z (h1 hz)).1.differentiableWithinAt) (fun z hz => (hB z (h1 hz)).2) ha`. Conclude with `⟨R / 3, by positivity, ae_restrict_of_ae_restrict_of_subset h2 h3, h4.mono_set h2⟩`.
+-/
 theorem exists_integrableOn_log_norm_of_frequently_ne_zero (μ : Measure E) [μ.IsAddHaarMeasure]
     {f : E → ℂ} {x : E} (hf : ∀ᶠ z in 𝓝 x, DifferentiableAt ℂ f z) (hx : ∃ᶠ z in 𝓝 x, f z ≠ 0) :
     ∃ r > 0, (∀ᵐ z ∂(μ.restrict (ball x r)), f z ≠ 0) ∧
@@ -184,6 +242,13 @@ theorem exists_integrableOn_log_norm_of_frequently_ne_zero (μ : Measure E) [μ.
     (fun z hz => (hB z (h1 hz)).1.differentiableWithinAt) (fun z hz => (hB z (h1 hz)).2) ha
   exact ⟨R / 3, by positivity, ae_restrict_of_ae_restrict_of_subset h2 h3, h4.mono_set h2⟩
 
+/- English proof (translation)
+Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Establish `h : ∀ x ∈ U, ∃ r > 0, (∀ᵐ z ∂(μ.restrict (ball x r)), f z ≠ 0) ∧ IntegrableOn (fun z => Real.log ‖f z‖) (ball x r) μ` using `fun x hxU => exists_integrableOn_log_norm_of_frequently_ne_zero μ (hf.eventually_differentiableAt (hU.mem_nhds hxU)) (hx x hxU)`. Use `⟨?_, fun x hxU => ?_⟩` and prove the remaining obligations. Rewrite using `[ae_restrict_iff'₀ hU.measurableSet.nullMeasurableSet, ae_iff]`. Use `measure_null_of_locally_null _ fun x hx' => ?_` and prove the remaining obligations.
+
+Establish `hxU : x ∈ U`. Assume the negation of the conclusion as `hn`. Conclude with `hx' fun h => absurd h hn`. Take `⟨r, hr, h1, -⟩` from `h x hxU`. Rewrite `h1` using `[ae_restrict_iff' measurableSet_ball, ae_iff]`.
+
+Use `⟨_ ∩ ball x r, inter_mem_nhdsWithin _ (ball_mem_nhds x hr), measure_mono_null ?_ h1⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hz, hzb⟩ hz'`. Conclude with `hz fun _ => hz' hzb`. Take `⟨r, hr, -, h2⟩` from `h x hxU`. Conclude with `⟨ball x r, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds x hr), h2⟩`.
+-/
 theorem locallyIntegrableOn_log_norm_of_frequently_ne_zero (μ : Measure E) [μ.IsAddHaarMeasure]
     {f : E → ℂ} {U : Set E} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U)
     (hx : ∀ x ∈ U, ∃ᶠ z in 𝓝 x, f z ≠ 0) :
@@ -207,6 +272,11 @@ theorem locallyIntegrableOn_log_norm_of_frequently_ne_zero (μ : Measure E) [μ.
   · obtain ⟨r, hr, -, h2⟩ := h x hxU
     exact ⟨ball x r, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds x hr), h2⟩
 
+/- English proof (translation)
+Take `⟨r, hr, h1, h2⟩` from `exists_integrableOn_log_norm_of_frequently_ne_zero μ hg hg0`. Take `⟨s, hs, h3, h4⟩` from `exists_integrableOn_log_norm_of_frequently_ne_zero μ hh hh0`. Establish `e1 : ball x (min r s) ⊆ ball x r` using `ball_subset_ball (min_le_left _ _)`. Establish `e2 : ball x (min r s) ⊆ ball x s` using `ball_subset_ball (min_le_right _ _)`. Establish `h5` using `(ae_restrict_of_ae_restrict_of_subset e1 h1).and (ae_restrict_of_ae_restrict_of_subset e2 h3)`.
+
+Use `⟨min r s, lt_min hr hs, h5, ((h2.mono_set e1).sub (h4.mono_set e2)).congr ?_⟩` and prove the remaining obligations. Use `filter_upwards [h5] with z hz`. Simplify using `[Real.log_div, hz.1, hz.2]`.
+-/
 theorem exists_integrableOn_log_norm_div (μ : Measure E) [μ.IsAddHaarMeasure]
     {g h : E → ℂ} {x : E} (hg : ∀ᶠ z in 𝓝 x, DifferentiableAt ℂ g z)
     (hh : ∀ᶠ z in 𝓝 x, DifferentiableAt ℂ h z) (hg0 : ∃ᶠ z in 𝓝 x, g z ≠ 0)

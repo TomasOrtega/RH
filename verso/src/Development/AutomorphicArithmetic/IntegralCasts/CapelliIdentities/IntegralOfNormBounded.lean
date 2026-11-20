@@ -1,6 +1,21 @@
 import Mathlib
 
 open Polynomial in
+/- English proof (translation)
+Take `⟨p, hm, hp⟩` from `ht`. Establish `key : ∀ (q : A[X]) (n : ℕ), q.natDegree ≤ n → y ^ n * aeval t q ∈ B`. Introduce `q n hq`. Rewrite using `[aeval_eq_sum_range' (Nat.lt_succ_of_le hq), Finset.mul_sum]`. Use `Subalgebra.sum_mem _ fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hin : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `e : y ^ n * (q.coeff i • t ^ i) = q.coeff i • y ^ (n - i)`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hin`. Rewrite using `[Nat.add_sub_cancel_left, mul_smul_comm, pow_add]`. Use `congr 1`.
+
+Rewrite using `[mul_comm (y ^ i), mul_assoc, ← mul_pow, mul_comm y t, hty, one_pow, mul_one]`. Rewrite using `[e]`. Conclude with `Subalgebra.smul_mem _ (Subalgebra.pow_mem _ hy _) _`. Establish `h0 : aeval t p = 0` using `hp`. Establish `hd : p.natDegree ≠ 0`.
+
+Introduce `h`. Establish `h1` using `eq_one_of_monic_natDegree_zero hm h`. Simplify using `[h1] at h0`. Take `⟨d, hd'⟩` from `Nat.exists_eq_succ_of_ne_zero hd`. Establish `h2 : aeval t p.eraseLead + t ^ (d + 1) = 0`.
+
+Establish `h3` using `p.eraseLead_add_C_mul_X_pow`. Rewrite `h0` using `[← h3, map_add, map_mul, aeval_C, map_pow, aeval_X, hm.leadingCoeff, map_one, one_mul, hd']`. Conclude with `h0`. Establish `h4 : t = -(y ^ d * aeval t p.eraseLead)`. Establish `h5 : y ^ d * t ^ (d + 1) = t`.
+
+Rewrite using `[pow_succ, ← mul_assoc, ← mul_pow, mul_comm y t, hty, one_pow, one_mul]`. Establish `h6 : aeval t p.eraseLead = -t ^ (d + 1)` using `eq_neg_of_add_eq_zero_left h2`. Rewrite using `[h6, mul_neg, neg_neg, h5]`. Rewrite using `[h4]`. Use `neg_mem (key _ _ ?_)` and prove the remaining obligations.
+
+Use `p.eraseLead_natDegree_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma UpperTheory.Reformulated.B.IntegralOfNormBounded.mem_of_mul_eq_one {A K : Type*} [CommRing A] [Field K] [Algebra A K]
     (B : Subalgebra A K) {t y : K} (hty : t * y = 1) (hy : y ∈ B) (ht : IsIntegral A t) :
     t ∈ B := by
@@ -39,6 +54,13 @@ private lemma UpperTheory.Reformulated.B.IntegralOfNormBounded.mem_of_mul_eq_one
   omega
 
 open Polynomial in
+/- English proof (translation)
+Establish `hzi : IsIntegral ℚ_[l] z` using `Algebra.IsIntegral.isIntegral z`. Establish `hmon` using `minpoly.monic hzi`. Establish `hc` using `(spectralValue_le_one_iff hmon).mp hz`. Establish `hl : minpoly ℚ_[l] z ∈ lifts (algebraMap ℤ_[l] ℚ_[l])`. Rewrite using `[lifts_iff_coeff_lifts]`.
+
+Introduce `n`. Conclude with `⟨⟨_, hc n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_natDegree_eq_and_monic hl hmon`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] K, ← eval₂_map, hq]`.
+
+Conclude with `minpoly.aeval ℚ_[l] z`.
+-/
 private lemma UpperTheory.Reformulated.B.IntegralOfNormBounded.isIntegral_of_norm_le {l : ℕ} [Fact (Nat.Prime l)] {K : Type}
     [Field K] [Algebra ℚ_[l] K] [Module.Finite ℚ_[l] K] [Algebra ℤ_[l] K]
     [IsScalarTower ℤ_[l] ℚ_[l] K] (z : K) (hz : spectralNorm ℚ_[l] K z ≤ 1) :
@@ -55,6 +77,29 @@ private lemma UpperTheory.Reformulated.B.IntegralOfNormBounded.isIntegral_of_nor
   rw [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] K, ← eval₂_map, hq]
   exact minpoly.aeval ℚ_[l] z
 
+/- English proof (translation)
+Introduce `l _ R _ _ _ K _ _ _ _ _ x a ha`. Establish `hA : ∀ t : K, t * x a = 1 → ¬ IsIntegral ℤ_[l] t`. Introduce `t hty ht`. Take `⟨r, hr⟩ : t ∈ x.range` from `UpperTheory.Reformulated.B.IntegralOfNormBounded.mem_of_mul_eq_one x.range hty ⟨a, rfl⟩ ht`. Establish `hr' : x r = t` using `hr`.
+
+Establish `hmem : a * r ∈ IsLocalRing.maximalIdeal R` using `Ideal.mul_mem_right _ _ ha`. Establish `hu : IsUnit (1 - a * r)`. Assume the negation of the conclusion as `hn`. Establish `h1 : 1 - a * r ∈ IsLocalRing.maximalIdeal R` using `hn`. Establish `h2` using `Ideal.add_mem _ h1 hmem`.
+
+Rewrite `h2` using `[sub_add_cancel]`. Conclude with `(Ideal.ne_top_iff_one _).mp (IsLocalRing.maximalIdeal.isMaximal R).ne_top h2`. Establish `h3` using `hu.map x`. Establish `h4 : x (1 - a * r) = 0`. Rewrite using `[map_sub, map_mul, map_one, hr', mul_comm, hty, sub_self]`.
+
+Rewrite `h3` using `[h4]`. Conclude with `not_isUnit_zero h3`. Express the relevant statement in the definitionally equal form `IsIntegral ℤ_[l] (x a) ∧ ∃ (n : ℕ) (b : K), IsIntegral ℤ_[l] b ∧ x a ^ n = (↑l : K) * b`. Generalize the expression as in `x a = y at hA`. Distinguish the cases in `hy : y = 0`.
+
+Substitute `hy` using the available equality. Conclude with `⟨isIntegral_zero, 1, 0, isIntegral_zero, by simp⟩`. Set `f` to `spectralMulAlgNorm ℚ_[l] K`. Establish `hf : ∀ z, f z = spectralNorm ℚ_[l] K z` using `fun _ => rfl`. Establish `hfmul : ∀ u v, f (u * v) = f u * f v` using `fun u v => map_mul f u v`.
+
+Establish `hf1 : f 1 = 1` using `map_one f`. Establish `hfy : f y < 1`. Establish `h1 : ¬ f y⁻¹ ≤ 1` using `fun h => hA y⁻¹ (inv_mul_cancel₀ hy) (UpperTheory.Reformulated.B.IntegralOfNormBounded.isIntegral_of_norm_le _ h)`. Establish `h2 : f y * f y⁻¹ = 1` using `by rw [← hfmul, mul_inv_cancel₀ hy, hf1]`. Establish `h3 : 0 ≤ f y` using `(hf y).symm ▸ spectralNorm_nonneg y`.
+
+Use `push_neg at h1`. Use the polynomial consequences of the given equalities and inequalities. Establish `hfpow : ∀ (n : ℕ) (z : K), f (z ^ n) = f z ^ n`. Introduce `n z`. Proceed by induction on `n with`.
+
+Consider the case `zero => simp [hf1]`. Consider the case `succ n ih => rw [pow_succ, hfmul, ih, pow_succ]`. Establish `hlpos : (0 : ℝ) < (l : ℝ)`. Conclude with `(Fact.out : Nat.Prime l).pos` after adjusting the coercions. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (inv_pos.mpr hlpos) hfy`.
+
+Establish `hlK : (l : K) ≠ 0`. Establish `h1 : (l : K) = algebraMap ℚ_[l] K (l : ℚ_[l])` using `by simp`. Rewrite using `[h1]`. Establish `h2 : (l : ℚ_[l]) ≠ 0`. Conclude with `(Fact.out : Nat.Prime l).ne_zero` after adjusting the coercions.
+
+Conclude with `(map_ne_zero (algebraMap ℚ_[l] K)).mpr h2`. Use `⟨UpperTheory.Reformulated.B.IntegralOfNormBounded.isIntegral_of_norm_le _ hfy.le, n, y ^ n * (l : K)⁻¹, UpperTheory.Reformulated.B.IntegralOfNormBounded.isIntegral_of_norm_le _ ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : f ((l : K)⁻¹) = l`. Establish `h2 : (l : K)⁻¹ = algebraMap ℚ_[l] K ((l : ℚ_[l])⁻¹)` using `by simp`. Rewrite using `[h2, hf, spectralNorm_extends, norm_inv, Padic.norm_p]`.
+
+Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `f (y ^ n * (l : K)⁻¹) ≤ 1`. Rewrite using `[hfmul, hfpow, h1]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+-/
 theorem UpperTheory.Reformulated.B.IntegralOfNormBounded.ptc_field :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {R : Type}
     [inst_1 : CommRing R] [inst_2 : IsLocalRing R] [inst_3 : Algebra ℤ_[l] R] {K : Type} [inst_4 : Field K]

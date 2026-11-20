@@ -20,6 +20,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Introduce `V _ _ _ A G _ _ s`. Establish `hs : Smooth G.hom` using `s.semi.smooth`. Establish `: GeometricallyConnected G.hom` using `s.semi.geomConnected`. Establish `: ConnectedSpace G.left` using `(GroupConn.connectedSpace_group _ G).1`. Take `⟨n, hn⟩` from `exists_dim_of_preconnected G.hom (Classical.arbitrary _)`.
+
+Establish `a` using `A.smoothDim`. Establish `b : SmoothOfRelativeDimension (0 + A.g) ((Over.pullback (jK V)).obj G).hom`. Establish `: IsIso s.gen.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map s.gen.hom))`. Rewrite using `[← Over.w s.gen.hom]`. Use `infer_instance`.
+
+Establish `c : SmoothOfRelativeDimension n ((Over.pullback (jK V)).obj G).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hn`. Establish `h₁ : n = A.g` using `(H1.dim_unique _ c b (eSec _ (Classical.arbitrary (Spec (CommRingCat.of (FractionRing V)))))).trans (zero_add _)`. Conclude with `h₁ ▸ hn`.
+-/
 theorem HidaSetting.smoothDim_model : AllSet fun {_} _ _ _ {A} {G} _ _ _ => SmoothOfRelativeDimension A.g G.hom := by
   intro V _ _ _ A G _ _ s
   have hs : Smooth G.hom := s.semi.smooth
@@ -36,6 +43,11 @@ theorem HidaSetting.smoothDim_model : AllSet fun {_} _ _ _ {A} {G} _ _ _ => Smoo
     (H1.dim_unique _ c b (eSec _ (Classical.arbitrary (Spec (CommRingCat.of (FractionRing V)))))).trans (zero_add _)
   exact h₁ ▸ hn
 
+/- English proof (translation)
+Introduce `V _ _ _ A G _ _ s t g'`. Establish `hG : SmoothOfRelativeDimension A.g G.hom` using `HidaSetting.smoothDim_model V A G s`. Establish `: Nontrivial (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1))` using `Ideal.Quotient.nontrivial_iff.2 (by simpa using (IsLocalRing.maximalIdeal.isMaximal V).ne_top)`. Establish `h₀ : SmoothOfRelativeDimension g' (t.l 0).Q.B.hom → A.g = g' + Module.finrank ℤ s.X` using `fun h => TQ.dim_eq_add_finrank _ s.X _ (t.l 0).Q A.g g' ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hG) h`. Use `⟨h₀, fun a ha => h₀ ?_⟩` and prove the remaining obligations.
+
+Take `⟨h, -⟩` from `a.b_pb 0`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 ha`.
+-/
 theorem Tower.dim_eq_add_finrank : AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (t : Tower s) (g' : ℕ), (SmoothOfRelativeDimension g' (t.l 0).Q.B.hom → A.g = g' + Module.finrank ℤ s.X) ∧ ∀ a : t.Alg, SmoothOfRelativeDimension g' a.B.hom → A.g = g' + Module.finrank ℤ s.X := by
   intro V _ _ _ A G _ _ s t g'
   have hG : SmoothOfRelativeDimension A.g G.hom := HidaSetting.smoothDim_model V A G s

@@ -19,12 +19,18 @@ namespace GlobalTheory.LocLanglands.ExtTwist
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Take `⟨n, b, rfl⟩` from `x.exists_rep`. Simplify using `only [WD.lpTwist_mk]`. Conclude with `WD.sound ⟨LinearEquiv.refl ℂ _, fun σ v => smul_comm (η σ : ℂ) (ξ σ : ℂ) (b.ρ σ v), fun v => rfl⟩`.
+-/
 theorem lpTwist_lpTwist_comm (x : WD h) (ξ η : Weil h →* ℂˣ) (hξ : WeilDeligne.IsSmooth ξ)
     (hη : WeilDeligne.IsSmooth η) : (x.lpTwist ξ hξ).lpTwist η hη = (x.lpTwist η hη).lpTwist ξ hξ := by
   obtain ⟨n, b, rfl⟩ := x.exists_rep
   simp only [WD.lpTwist_mk]
   exact WD.sound ⟨LinearEquiv.refl ℂ _, fun σ v => smul_comm (η σ : ℂ) (ξ σ : ℂ) (b.ρ σ v), fun v => rfl⟩
 
+/- English proof (translation)
+Introduce `z v` and use `by let φ := equivRep (IrrRep.det (Fin 1) χ hχ) obtain ⟨u, rfl⟩ := φ.toLinearEquiv.surjective v have h2 : GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin 1) z) = z := by ext; simp [GeneralLinearGroup.scalar] have h3 : (IrrRep.det (Fin 1) χ hχ).ρ (GeneralLinearGroup.scalar ( …`.
+-/
 theorem hasCentralChar_ofChar {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : HasCentralChar (IrrGL.ofChar χ hχ).rep χ := fun z v => by
   let φ := equivRep (IrrRep.det (Fin 1) χ hχ)

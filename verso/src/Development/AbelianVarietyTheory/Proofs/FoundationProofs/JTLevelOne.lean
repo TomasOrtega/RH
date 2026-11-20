@@ -14,12 +14,23 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.L1.jT_smul γ τ`.
+-/
 theorem jT_invariant (γ : SL(2, ℤ)) (τ : ℍ) : jT (γ • τ) = jT τ :=
   ReciprocityTheory.ChartRestriction.L1.jT_smul γ τ
 
+/- English proof (translation)
+Rewrite using `[jT_invariant, jT, ReciprocityTheory.ChartRestriction.L1.AA, mul_div_cancel₀ _ (ReciprocityTheory.ChartRestriction.L1.DD_ne_zero τ)]`.
+-/
 theorem DD_mul_jT_smul (γ : SL(2, ℤ)) (τ : ℍ) : DD τ * jT (γ • τ) = E₄ τ ^ 3 := by
   rw [jT_invariant, jT, ReciprocityTheory.ChartRestriction.L1.AA, mul_div_cancel₀ _ (ReciprocityTheory.ChartRestriction.L1.DD_ne_zero τ)]
 
+/- English proof (translation)
+Introduce `E`. Use `⟨⟨fun γ _ τ => jT_invariant γ τ, fun γ => ?_⟩, jT_invariant⟩` and prove the remaining obligations. Establish `hE4 : QAll (· ∈ E) 1 ⇑E₄` using `((eis_q 1 one_pos _ (Or.inl rfl)).2.1) E`. Establish `h3 : QAll (· ∈ E) 1 fun τ => E₄ τ ^ 3` using `(QAllSubring.ring_closed E 1 one_pos).2.2.2.2.1 _ 3 hE4`. Establish `hfun : (fun τ => DD τ ^ 1 * jT (γ • τ)) = fun τ => E₄ τ ^ 3`.
+
+Use function extensionality and compare the values at `τ`. Rewrite using `[pow_one, DD_mul_jT_smul]`. Rewrite using `[hfun]`. Conclude with `h3`.
+-/
 theorem jT_level_one : ∀ E : Subring ℂ, Lv E 1 1 jT ∧ ∀ (γ : SL(2, ℤ)) (τ : ℍ), jT (γ • τ) = jT τ := by
   intro E
   refine ⟨⟨fun γ _ τ => jT_invariant γ τ, fun γ => ?_⟩, jT_invariant⟩

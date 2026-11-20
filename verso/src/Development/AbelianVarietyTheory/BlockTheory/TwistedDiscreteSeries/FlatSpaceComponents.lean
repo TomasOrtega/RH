@@ -218,12 +218,18 @@ def AdelicIsometries (D : D7) : Prop :=
   PlIdemSt D ∧ TransportSt D ∧ CorrectionSt D ∧ SplitGlueSt D ∧ ImageSt D ∧ RationalSt D ∧ StdIsomSt D ∧ RecordDecSt D ∧
     GluedSt D ∧ UngluedSt D ∧ LamNSt D ∧ FrameSt D
 
+/- English proof (translation)
+The claim follows from `have hf := h.2.2.2.2.2.2.2.2.2.2.2.1 ⟨fun _ => hf _ _, hf _ _, fun _ => hf _ _, fun _ => hf _ _⟩`.
+-/
 example (h : AdelicIsometries D) :
     (∀ j, ∃ β Λ, IsSDFrame (Yc D j) β Λ (D.host.g 0 * D.host.g 1)) ∧ (∃ β Λ, IsSDFrame D.sp.X' β Λ 1) ∧
       (∀ i, ∃ β Λ, IsSDFrame (Vc D i) β Λ 1) ∧ ∀ i, ∃ β Λ, IsSDFrame (Wc D i) β Λ 1 :=
   have hf := h.2.2.2.2.2.2.2.2.2.2.2.1
   ⟨fun _ => hf _ _, hf _ _, fun _ => hf _ _, fun _ => hf _ _⟩
 
+/- English proof (translation)
+Use `⟨⟨?_, fun a b => by simp⟩, fun a => by simp, fun w _ => by simp⟩` and prove the remaining obligations. Establish `: ((1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)).mulVec) = id` using `by funext a; simp`. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+-/
 example (V : HSp D) (L : Lat V) (S : Finset (Pl D.host.E)) {n : ℕ}
     (be : Pl D.host.E → Matrix (Fin V.rank) (Fin n) (EAf D)) : IsTransport V V L L S be be 1 := by
   refine ⟨⟨?_, fun a b => by simp⟩, fun a => by simp, fun w _ => by simp⟩

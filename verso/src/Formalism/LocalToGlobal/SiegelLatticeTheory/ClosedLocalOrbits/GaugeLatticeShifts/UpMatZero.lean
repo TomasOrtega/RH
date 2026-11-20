@@ -54,11 +54,17 @@ def SSBiInv0 : Prop :=
 def SSLebU : Prop :=
   ∀ (r : ℕ) (b : UC r), MeasurePreserving (fun a : UC r => mulU a b) volume volume
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [upMat, Matrix.of_apply, Pi.zero_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem upMat_zero {r : ℕ} : upMat (0 : UC r) = 1 := by
   ext a b
   simp only [upMat, Matrix.of_apply, Pi.zero_apply, Matrix.one_apply]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [mulU]`. Rewrite using `[upMat_zero, Matrix.mul_one]`. Simplify using `only [upMat, Matrix.of_apply]`. Rewrite using `[if_neg (ne_of_lt p.2), dif_pos p.2]`.
+-/
 theorem mulU_zero {r : ℕ} (y : UC r) : mulU y 0 = y := by
   funext p
   simp only [mulU]

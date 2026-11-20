@@ -14,17 +14,34 @@ attribute [local instance] borelG borelF borelH
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i x`. Simplify using `[convF]`.
+-/
 theorem convF_zero {a b : ℕ} {A κ : Type} [Fintype κ] (ν : Measure (Hf E a b)) (ψ : Matrix κ κ (Hf E a b → ℂ)) :
     convF ν ψ (0 : A × κ → H E a b → ℂ) = 0 := by
   funext i x
   simp [convF]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pw_succ_psi {B : Block E} (t : PT B) (j : ℕ) : (t.pw (j + 1)).ψ = mulF B.ν t.ψ (t.pw j).ψ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pw_zero {B : Block E} (t : PT B) : t.pw 0 = t := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sq_psi {B : Block E} (t : PT B) (k : ℕ) : (t.sq k).ψ = mulF B.ν (t.adj'.pw k).ψ (t.pw k).ψ := rfl
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Both sides reduce to the same expression. Consider the case `succ k ih`.
+
+Introduce `hfin`. Establish `h0 : IsFinM t.ψ` using `hfin 0 (Nat.zero_le _)`. Establish `hk : IsFinM (t.pw k).ψ` using `hfin k (Nat.le_succ k)`. Rewrite using `[pw_succ_psi, (hCM E B A t.ψ (t.pw k).ψ U F h0 hk hU hF).1, ih (fun j hj => hfin j (Nat.le_succ_of_le hj)), Function.iterate_succ_apply' (convF B.ν t.ψ) (k + 1)]`.
+-/
 theorem convF_pw (hCM : Tail.ConvMul) {B : Block E} (t : PT B) {A : Type} (U : Subgroup (Hf E B.a B.b))
     (F : A × B.κ → H E B.a B.b → ℂ) (hU : IsOpen (U : Set (Hf E B.a B.b)))
     (hF : ∀ i, ∀ u ∈ U, ∀ x, F i (x * finH u) = F i x) :
@@ -39,6 +56,11 @@ theorem convF_pw (hCM : Tail.ConvMul) {B : Block E} (t : PT B) {A : Type} (U : S
     rw [pw_succ_psi, (hCM E B A t.ψ (t.pw k).ψ U F h0 hk hU hF).1, ih (fun j hj => hfin j (Nat.le_succ_of_le hj)),
       Function.iterate_succ_apply' (convF B.ν t.ψ) (k + 1)]
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1 : convF B.ν (t.sq k).ψ F = convF B.ν (t.adj'.pw k).ψ (convF B.ν (t.pw k).ψ F)` using `(hCM E B A (t.adj'.pw k).ψ (t.pw k).ψ U F hfinA (hfin k le_rfl) hU hF).1`. Rewrite `h1` using `[convF_pw hCM t U F hU hF k hfin, h0, convF_zero]`. Rewrite `heig` using `[h1]`. Break down `smul_eq_zero.mp heig.symm with h | h` into its components or cases.
+
+Conclude with `hc h`. Conclude with `hF0 h`.
+-/
 theorem betaPow (hCM : Tail.ConvMul) {B : Block E} (t : PT B) (k : ℕ) {A : Type} (U : Subgroup (Hf E B.a B.b))
     (F : A × B.κ → H E B.a B.b → ℂ) (hU : IsOpen (U : Set (Hf E B.a B.b)))
     (hF : ∀ i, ∀ u ∈ U, ∀ x, F i (x * finH u) = F i x)

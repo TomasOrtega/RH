@@ -8,6 +8,11 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ 1 (fun y => fderiv ℝ f y) U` using `hf.fderiv_of_isOpen hU (by norm_num)`. Establish `ha : ContDiffOn ℝ 1 (fun y => fderiv ℝ f y ξ) U` using `h1.clm_apply contDiffOn_const`. Establish `hb : ContDiffOn ℝ 1 (fun y => fderiv ℝ f y (Complex.I • ξ)) U` using `h1.clm_apply contDiffOn_const`. Establish `: (fun x => dbar f x ξ) = fun x => (1 / 2 : ℂ) • (fderiv ℝ f x ξ + Complex.I • fderiv ℝ f x (Complex.I • ξ))`. Use function extensionality and compare the values at `x`.
+
+Conclude with `dbar_apply f x ξ`. Rewrite using `[this]`. Conclude with `(ha.add (hb.const_smul Complex.I)).const_smul _`.
+-/
 theorem contDiffOn_dbar_apply {n : ℕ} {U : Set (V n)} {f : V n → ℂ} (hU : IsOpen U)
     (hf : ContDiffOn ℝ 2 f U) (ξ : V n) : ContDiffOn ℝ 1 (fun x => dbar f x ξ) U := by
   have h1 : ContDiffOn ℝ 1 (fun y => fderiv ℝ f y) U := hf.fderiv_of_isOpen hU (by norm_num)
@@ -20,6 +25,11 @@ theorem contDiffOn_dbar_apply {n : ℕ} {U : Set (V n)} {f : V n → ℂ} (hU : 
   rw [this]
   exact (ha.add (hb.const_smul Complex.I)).const_smul _
 
+/- English proof (translation)
+Introduce `n U K f j hU hK hKU hf hz`. Establish `hgC : ∀ w : Equiv.Perm (Fin n), ContDiffOn ℝ 1 (fun x => f j x * ∏ i ∈ Finset.univ.erase j, dbar (f i) x (coordVec (w i))) U` using `fun w => ((hf j).of_le (by norm_num)).mul (contDiffOn_prod fun i _ => contDiffOn_dbar_apply hU (hf i) _)`. Establish `hg0 : ∀ w : Equiv.Perm (Fin n), ∀ v ∈ U, v ∉ K → (f j v * ∏ i ∈ Finset.univ.erase j, dbar (f i) v (coordVec (w i))) = 0` using `fun w v hv hvK => by rw [hz v hv hvK, zero_mul]`. Establish `hT` using `fun w : Equiv.Perm (Fin n) => GlobalTheory.T.integral_antiholomorphicDeriv_compactSupport_eq_zero U K _ (coordVec (w j)) hU hK hKU (hgC w) (hg0 w)`. Establish `hcongr : ∫ v in U, (Matrix.of fun i b => dbar (f i) v (coordVec b)).det = ∫ v in U, ∑ w : Equiv.Perm (Fin n), ((Equiv.Perm.sign w : ℤ) : ℂ) * dbar (fun x => f j x * ∏ i ∈ Finset.univ.erase j, dbar (f i) x (coordVec (w i))) v (coordVec (w j))` using `setIntegral_congr_fun hU.measurableSet fun v hv => GlobalTheory.T.det_wirtingerAntiholomorphicDeriv_eq_sum f j v fun i => (hf i).contDiffAt (hU.mem_nhds hv)`.
+
+Rewrite using `[hcongr, integral_finsetSum _ fun w _ => (hT w).1.const_mul _]`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, (hT w).2, mul_zero]`.
+-/
 theorem integral_dbarJacobian_eq_zero : ∀ {n : ℕ} (U K : Set (V n)) (f : Fin n → V n → ℂ) (j : Fin n),
     IsOpen U → IsCompact K → K ⊆ U → (∀ i, ContDiffOn ℝ 2 (f i) U) →
     (∀ v ∈ U, v ∉ K → f j v = 0) →

@@ -20,5 +20,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit GlobalTheory.S
 open GlobalTheory.PrincSubring
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KTrivFlatDescent.trivAlong_of_flat_surjective | exact GlobalTheory.KTrivFlatDescent.trivAlong_of_flat_surjective | (intros; apply GlobalTheory.KTrivFlatDescent.trivAlong_of_flat_surjective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.kGroup_trivial_descends_flat_surjective : ∀ {S S' S'' : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G.left) (g : S' ⟶ S) (f : S'' ⟶ S') [Flat f] [Surjective f], L.IsLB → GlobalTheory.KTrivSpread.TrivAlong G L (f ≫ g) → GlobalTheory.KTrivSpread.TrivAlong G L g := by
   first | exact @GlobalTheory.KTrivFlatDescent.trivAlong_of_flat_surjective | exact GlobalTheory.KTrivFlatDescent.trivAlong_of_flat_surjective | (intros; apply GlobalTheory.KTrivFlatDescent.trivAlong_of_flat_surjective <;> assumption)

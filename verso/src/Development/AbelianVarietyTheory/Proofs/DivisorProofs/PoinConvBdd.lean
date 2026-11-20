@@ -23,6 +23,11 @@ def HypS (X : Data E r) (x0 : Frame X.Ψ r) (la : Wt X.Ψ r) (W : Frame X.Ψ r �
     (0 < bb ∧ SumBd X x0 (bb / 2)) ∧ DifferentiableOn ℂ F (OmF X x0) ∧ InAt X x0 W bb F ∧
     IsBEq X la P ∧ ∀ z ∈ OmF X x0, P (cpt X x0 z) = F z
 
+/- English proof (translation)
+Unfold `kaY`. Use `congr 1`. Rewrite using `[GlobalTheory.Up.rhX_eq_sum h0 hy]`. Unfold `rhY`. Simplify using `only [Real.log_pow, i0, gM]`.
+
+Rewrite using `[Finset.sum_sub_distrib]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kaY_eq_exp (X : Data E r) {x0 y : Frame X.Ψ r} (h0 : IsOrth X x0) (hy : y ∈ X.dom) (s : ℝ) :
     kaY X x0 s y = Real.exp (-(s * GlobalTheory.Up.rhX X x0 y)) := by
   unfold kaY
@@ -34,6 +39,9 @@ theorem kaY_eq_exp (X : Data E r) {x0 y : Frame X.Ψ r} (h0 : IsOrth X x0) (hy :
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨C, hC, hb⟩` from `h`. Use `⟨C, hC, fun x hx => le_trans (le_of_eq (tsum_congr fun γ => ?_)) (hb x hx)⟩` and prove the remaining obligations. Rewrite using `[kaY_eq_exp X hx0 (IW.orth_mem_dom X _ (PairUnfoldPf.isOrth_lact X γ.2 hx))]`.
+-/
 theorem kaSum_of (X : Data E r) {x0 : Frame X.Ψ r} (hx0 : IsOrth X x0) {s : ℝ} (h : SumBd X x0 s) :
     ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x, IsOrth X x →
       ∑' γ : X.Γ, ENNReal.ofReal (kaY X x0 s (lact γ.1 x)) ≤ C := by
@@ -54,6 +62,35 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Take `⟨hx0, -, hW, -, ⟨hbbpos, hSB⟩, -, hA, hP, hPF⟩` from `H`. Establish `hbb0 : 0 ≤ bb` using `hbbpos.le`. Take `⟨ρ1, hρ1, hcomp⟩` from `ka_comp X hx0 hbb0`. Establish `e2 : ∀ᶠ w in 𝓝 (0 : V (nd X)), ∀ τ, ∀ i : Fin r, ‖lminor (Gw X w τ) i.castSucc‖ < 2`. Rewrite using `[Filter.eventually_all]`.
+
+Introduce `τ`. Rewrite using `[Filter.eventually_all]`. Introduce `i`. Conclude with `(cont_lminor X τ _).norm.continuousAt.eventually_lt continuousAt_const (by rw [norm_lminor_zero]; norm_num)`. Take `⟨R2, hR2, hR2b⟩` from `Metric.eventually_nhds_iff_ball.1 e2`.
+
+Use `set ρ0 := min (min ρ1 R2) 1 with hρ0`. Establish `hρ0pos : 0 < ρ0` using `lt_min (lt_min hρ1 hR2) one_pos`. Take `⟨C2, hC2, hsum⟩` from `kaSum_of X hx0 hSB`. Use `set K := Real.exp (bb * (3 * X.Ψ.card * Real.log 2)) with hK`. Use `set cd : ℝ := ∏ _τ : X.Ψ, ∏ _i : Fin r, (1 / 4 : ℝ) with hcd`.
+
+Establish `hcd0 : 0 < cd` using `Finset.prod_pos fun _ _ => Finset.prod_pos fun _ _ => by norm_num`. Use `set Nn := ∫⁻ z, ENNReal.ofReal (‖F z‖ ^ 2 / kaF X x0 bb z) * W (cpt X x0 z) ∂muF X x0 with hNn`. Use `set c0 : ℝ≥0∞ := ENNReal.ofReal K * ENNReal.ofReal (1 / cd) * Nn with hc0`. Establish `hc0t : c0 ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top) hA.ne`. Establish `hψm` using `psiF_meas X x0 bb hP hW`.
+
+Establish `hψB` using `psiF_rmul X hx0 bb hP hW`. Use `⟨ρ0, hρ0pos, min_le_right _ _, c0 ^ (1 / 2 : ℝ) * C2, ENNReal.mul_lt_top (ENNReal.rpow_lt_top_of_nonneg (by norm_num) hc0t) hC2, fun x hx hxo => ?_⟩` and prove the remaining obligations. Establish `hI : ∀ γ : X.Γ, ∫⁻ w in Bset X x ρ0, ‖P (lact γ.1 (cpt X x w))‖ₑ ^ 2 * W (lact γ.1 (cpt X x w)) ≤ c0 * ENNReal.ofReal (kaY X x0 bb (lact γ.1 x))`. Introduce `γ`. Use `set x' := lact γ.1 x with hx'`.
+
+Establish `hx'o : IsOrth X x'` using `PairUnfoldPf.isOrth_lact X γ.2 hxo`. Establish `hcptl : ∀ w, lact γ.1 (cpt X x w) = cpt X x' w` using `fun w => (PairUnfoldPf.cpt_lact X γ.1 x w).symm`. Simplify using `only [hcptl]`. Establish `hdom : ∀ w ∈ Bset X x ρ0, cpt X x' w ∈ X.dom` using `fun w hw => by`. Rewrite using `[← hcptl]`.
+
+Conclude with `(PairUnfoldPf.lact_mem_dom_iff X γ.2 _).2 hw.2`. Use `set A := ENNReal.ofReal K * ENNReal.ofReal (kaY X x0 bb x') * ENNReal.ofReal (1 / cd) with hAdef`. Establish `hpt : ∀ w ∈ Bset X x ρ0, ‖P (cpt X x' w)‖ₑ ^ 2 * W (cpt X x' w) ≤ A * (ENNReal.ofReal (densF X x' w) * psiF X x0 bb P W (cpt X x' w))`. Introduce `w hw`. Establish `hyd` using `hdom w hw`.
+
+Establish `hw1 : ‖w‖ < ρ1` using `lt_of_lt_of_le hw.1 ((min_le_left _ _).trans (min_le_left _ _))`. Establish `hw2 : w ∈ Metric.ball (0 : V (nd X)) R2` using `mem_ball_zero_iff.2 (lt_of_lt_of_le hw.1 ((min_le_left _ _).trans (min_le_right _ _)))`. Establish `hka` using `hcomp x' hx'o w hw1`. Establish `hdens : cd ≤ densF X x' w`. Unfold `densF`.
+
+Use `Finset.prod_le_prod (fun _ _ => by positivity) fun τ _ => Finset.prod_le_prod (fun _ _ => by norm_num) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dmin_cpt_orth X hx'o]`. Establish `h0 : 0 < ‖lminor (Gw X w τ) i.castSucc‖`. Rewrite using `[← dmin_cpt_orth X hx'o]`. Conclude with `norm_pos_iff.2 (dmin_ne X hyd τ _)`.
+
+Establish `h2` using `hR2b w hw2 τ i`. Rewrite using `[zpow_neg, zpow_ofNat, show (1 / 4 : ℝ) = ((2 : ℝ) ^ 2)⁻¹ by norm_num]`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_left₀ h0.le h2.le 2)`. Establish `hden : 1 ≤ ENNReal.ofReal (1 / cd) * ENNReal.ofReal (densF X x' w)`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_one]`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[one_div_mul_eq_div, le_div_iff₀ hcd0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkk : ENNReal.ofReal (kaY X x0 bb (cpt X x' w)) ≤ ENNReal.ofReal K * ENNReal.ofReal (kaY X x0 bb x')`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal hka`. Rewrite using `[← psiF_mul X x0 bb P W hyd]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hAdef]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsub : Bset X x ρ0 ⊆ OmF X x'` using `fun w hw => hdom w hw`. Establish `hAt : A ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top) ENNReal.ofReal_ne_top`. Combine the equalities or inequalities in the displayed calculation. Establish `hm : Measurable fun w => psiF X x0 bb P W (cpt X x' w)` using `hψm.comp (cont_cpt' X x').measurable`. Rewrite using `[muF, lintegral_withDensity_eq_lintegral_mul _ (meas_densF' X x') hm]`.
+
+Both sides reduce to the same expression. Use `_ = A * Nn := by`. Rewrite using `[measInv_holds r X x' x0 hx'o hx0 _ hψm hψB, psiF_int X hx0 bb hPF]`. Use `_ = c0 * ENNReal.ofReal (kaY X x0 bb x') := by rw [hAdef, hc0]; ring`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sumBall (X : Data E r) (x0 : Frame X.Ψ r) (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞) (bb : ℝ)
     (F : V (nd X) → ℂ) (P : Frame X.Ψ r → ℂ) (H : HypS X x0 la W bb F P) :
     ∃ ρ0 : ℝ, 0 < ρ0 ∧ ρ0 ≤ 1 ∧ ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x ∈ X.dom, IsOrth X x →
@@ -172,6 +209,19 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Take `⟨ρ0, hρ0, hρ01, CB, hCB, hS'⟩` from `sumBall X x0 la W bb F P H`. Use `set ρ' := min ρ ρ0 with hρ'`. Take `⟨CA, hCA, hA'⟩` from `(subMean_holds (E := E)) r X la ρ' (lt_min hρ hρ0) ((min_le_left _ _).trans hρ1)`. Take `⟨-, -, hW, ⟨c, hc, hcW⟩, -, -, -, hP, -⟩` from `H`. Use `⟨(CA ^ (1 / 2 : ℝ) * CB).toReal, fun x hx hxo => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ENNReal.ofReal_toReal (ENNReal.mul_ne_top (ENNReal.rpow_ne_top_of_nonneg (by norm_num) hCA.ne) hCB.ne)]`. Establish `hsum` using `hS' x hx hxo`. Use `set I : X.Γ → ℝ≥0∞ := fun γ => ∫⁻ w in Bset X x ρ0, ‖P (lact γ.1 (cpt X x w))‖ₑ ^ 2 * W (lact γ.1 (cpt X x w)) with hIdef`. Use `set I' : X.Γ → ℝ≥0∞ := fun γ => ∫⁻ w in Bset X x ρ', ‖P (lact γ.1 (cpt X x w))‖ₑ ^ 2 * W (lact γ.1 (cpt X x w)) with hI'def`. Establish `hII : ∀ γ, I' γ ≤ I γ` using `fun γ => lintegral_mono_set (Bset_mono X x (min_le_right _ _))`.
+
+Establish `hIfin : ∀ γ, I γ ≠ ⊤`. Introduce `γ h`. Establish `h1 : I γ ^ (1 / 2 : ℝ) ≤ CB` using `(ENNReal.le_tsum γ).trans hsum`. Rewrite `h1` using `[h, ENNReal.top_rpow_of_pos (by norm_num)]`. Conclude with `hCB.ne (top_le_iff.1 h1)`.
+
+Establish `hterm : ∀ γ : X.Γ, ‖P (lact γ.1 x)‖ₑ ≤ CA ^ (1 / 2 : ℝ) * supR X la W ρ x * I γ ^ (1 / 2 : ℝ)`. Introduce `γ`. Establish `hPγ : DifferentiableOn ℂ (fun y => P (lact γ.1 y)) X.dom` using `hP.1.comp (differentiable_lact γ.1).differentiableOn fun y hy => lactDom X γ.2 hy`. Establish `h1` using `hA' _ hPγ x hx hxo`. Establish `h2` using `key_int X la W hW hc hcW P hP.1 γ.2 (ne_top_of_le_ne_top (hIfin γ) (hII γ))`.
+
+Establish `h3 : ‖P (lact γ.1 x)‖ₑ ^ 2 ≤ CA * (supR X la W ρ x ^ 2 * I γ)`. Use `h1.trans (mul_le_mul_of_nonneg_left (h2.trans ?_) zero_le)` and prove the remaining obligations. Use `gcongr`. Conclude with `supR_mono X la W (min_le_left _ _) x`. Conclude with `hII γ`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.mul_rpow_of_nonneg _ _ (by norm_num), ENNReal.mul_rpow_of_nonneg _ _ (by norm_num), sq_pow_half, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ballB (X : Data E r) (x0 : Frame X.Ψ r) (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞) (bb : ℝ)
     (F : V (nd X) → ℂ) (P : Frame X.Ψ r → ℂ) (H : HypS X x0 la W bb F P)
     (ρ : ℝ) (hρ : 0 < ρ) (hρ1 : ρ ≤ 1) : ∃ C : ℝ, ∀ x ∈ X.dom, IsOrth X x →
@@ -216,6 +266,25 @@ theorem ballB (X : Data E r) (x0 : Frame X.Ψ r) (la : Wt X.Ψ r) (W : Frame X.�
     _ ≤ CA ^ (1 / 2 : ℝ) * supR X la W ρ x * CB := mul_le_mul_of_nonneg_left hsum zero_le
     _ = CA ^ (1 / 2 : ℝ) * CB * supR X la W ρ x := by ring
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨ρ0, hρ0, hρ01, CB, hCB, hS'⟩` from `sumBall X x0 la W bb F P H`. Take `⟨-, -, hW, ⟨c, hc, hcW⟩, -, -, -, hP, -⟩` from `H`. Use `set b0 := FrameDegreeData.bOf X x with hb0def`. Establish `hb0 : b0 ∈ Bor X.Ψ r` using `FrameDegreeData.bOf_mem X hx`.
+
+Establish `ho : IsOrth X (rmul x b0)` using `FrameDegreeData.ortho_bOf X hx`. Establish `hx1 : rmul x b0 ∈ X.dom` using `rmulDom X hb0 hx`. Take `⟨ε, hε, CA, hCA, hA'⟩` from `(subMeanLoc_of (lu_holds (E := E))) r X la ρ0 hρ0 hρ01 _ hx1 ho`. Establish `hcont : Continuous fun y : Frame X.Ψ r => rmul y b0`. Use `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations.
+
+Simplify using `only [rmul, mat, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Take `⟨ε1, hε1, h1⟩` from `Metric.continuousAt_iff.1 hcont.continuousAt ε hε`. Take `⟨ε2, hε2, h2⟩` from `Metric.isOpen_iff.1 (isOpenDom X) x hx`. Use `set x1 := rmul x b0 with hx1def`.
+
+Use `set I : X.Γ → ℝ≥0∞ := fun γ => ∫⁻ w in Bset X x1 ρ0, ‖P (lact γ.1 (cpt X x1 w))‖ₑ ^ 2 * W (lact γ.1 (cpt X x1 w)) with hIdef`. Use `set K : ℝ≥0∞ := (CA * ENNReal.ofReal (1 / c)) ^ (1 / 2 : ℝ) with hKdef`. Establish `hK : K ≠ ⊤` using `ENNReal.rpow_ne_top_of_nonneg (by norm_num) (ENNReal.mul_ne_top hCA.ne ENNReal.ofReal_ne_top)`. Establish `hsumfin : ∑' γ, K * I γ ^ (1 / 2 : ℝ) ≠ ⊤`. Rewrite using `[ENNReal.tsum_mul_left]`.
+
+Conclude with `ENNReal.mul_ne_top hK (ne_top_of_le_ne_top hCB.ne (hS' _ hx1 ho))`. Use `⟨min ε1 ε2, lt_min hε1 hε2, fun γ => (K * I γ ^ (1 / 2 : ℝ)).toReal / ‖bchar la b0‖, (ENNReal.summable_toReal hsumfin).div_const _, fun γ y hy => ?_⟩` and prove the remaining obligations. Establish `hyd : y ∈ X.dom` using `h2 (Metric.ball_subset_ball (min_le_right _ _) hy)`. Establish `hyb : rmul y b0 ∈ Metric.ball x1 ε` using `h1 (Metric.ball_subset_ball (min_le_left _ _) hy)`. Establish `hA1` using `hA' _ (isBEq_lact X la hP γ.2) _ hyb`.
+
+Establish `hint : ∫⁻ w in Bset X x1 ρ0, ‖P (lact γ.1 (cpt X x1 w))‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (-phla X la (cpt X x1 w))) ≤ ENNReal.ofReal (1 / c) * I γ`. Rewrite using `[hIdef, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `setLIntegral_mono' (isOpen_Bset X _ ρ0).measurableSet fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hW.2.2 γ.1 γ.2 _ hw.2]`. Establish `he : ENNReal.ofReal (Real.exp (-phla X la (cpt X x1 w))) ≤ ENNReal.ofReal (1 / c) * W (cpt X x1 w)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]; congr 1; field_simp`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left (hcW _ hw.2) zero_le`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : ‖P (lact γ.1 (rmul y b0))‖ₑ ≤ K * I γ ^ (1 / 2 : ℝ)`.
+
+Establish `h3 : ‖P (lact γ.1 (rmul y b0))‖ₑ ^ 2 ≤ CA * (ENNReal.ofReal (1 / c) * I γ)` using `hA1.trans (mul_le_mul_of_nonneg_left hint zero_le)`. Combine the equalities or inequalities in the displayed calculation. Establish `heq : P (lact γ.1 (rmul y b0)) = bchar la b0 * P (lact γ.1 y)`. Rewrite using `[lact_rmul', hP.2 _ (lactDom X γ.2 hyd) b0 hb0]`. Establish `hbn : 0 < ‖bchar la b0‖` using `norm_pos_iff.2 (bchar_ne X la hb0)`.
+
+Rewrite using `[le_div_iff₀ hbn, mul_comm, ← norm_mul, ← heq]`. Establish `hfin : K * I γ ^ (1 / 2 : ℝ) ≠ ⊤` using `ne_top_of_le_ne_top hsumfin (ENNReal.le_tsum γ)`. Conclude with `(ENNReal.ofReal_le_iff_le_toReal hfin).1 (by rw [ofReal_norm]; exact hB)`.
+-/
 theorem locD (X : Data E r) (x0 : Frame X.Ψ r) (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞) (bb : ℝ)
     (F : V (nd X) → ℂ) (P : Frame X.Ψ r → ℂ) (H : HypS X x0 la W bb F P) :
     ∀ x ∈ X.dom, ∃ ε > 0, ∃ u : X.Γ → ℝ, Summable u ∧
@@ -283,6 +352,21 @@ end GlobalTheory.PoinSumBound
 
 open ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X x0 hx0 hPD la W bb hW hWl hbb hSB F P hFd hA hP hPF`. Establish `H : GlobalTheory.PoinSumBound.HypS X x0 la W bb F P` using `⟨hx0, hPD, hW, hWl, ⟨hbb, hSB⟩, hFd, hA, hP, hPF⟩`. Take `⟨c, hc, hcW⟩` from `hWl`. Establish `hterm : ∀ (γ : X.Γ) y, ‖(X.χ la γ.1)⁻¹ * P (lact γ.1 y)‖ = ‖P (lact γ.1 y)‖`. Introduce `γ y`.
+
+Rewrite using `[norm_mul, norm_inv, PoinPf.norm_chi X la γ.2, inv_one, one_mul]`. Take `⟨C1, hC1⟩` from `GlobalTheory.PoinSumBound.ballB X x0 la W bb F P H 1 one_pos le_rfl`. Establish `horth : ∀ y ∈ X.dom, IsOrth X y → ‖poin X la P y‖ ≤ max C1 0 * (1 / c) ^ (1 / 2 : ℝ)`. Introduce `y hy hyo`. Establish `h1` using `(PoinPf.enorm_poin_le X la P y).trans ((hC1 y hy hyo).trans (mul_le_mul_of_nonneg_left (PoinPf.supR_le X la W hc hcW 1 y) (zero_le)))`.
+
+Establish `h2 : ENNReal.ofReal C1 * ENNReal.ofReal (1 / c) ^ (1 / 2 : ℝ) ≤ ENNReal.ofReal (max C1 0 * (1 / c) ^ (1 / 2 : ℝ))`. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (by positivity) (by norm_num), ENNReal.ofReal_mul (le_max_right _ _)]`. Use `gcongr`. Conclude with `le_max_left _ _`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 (h1.trans h2)`.
+
+Use `⟨?_, ⟨⟨?_, ?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨ε, hε, u, hu, hub⟩` from `GlobalTheory.PoinSumBound.locD X x0 la W bb F P H x hx`. Conclude with `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun γ => (hterm γ x).le.trans (hub γ x (Metric.mem_ball_self hε))) hu`. Unfold `poin`.
+
+Use `PoinPf.differentiableOn_tsum_loc (PoinPf.isOpenDom X) _ (fun γ => ?_) (fun x hx => ?_)` and prove the remaining obligations. Conclude with `(differentiableOn_const _).mul (hP.1.comp (PoinPf.differentiable_lact γ.1).differentiableOn fun y hy => lactDom X γ.2 hy)`. Take `⟨ε, hε, u, hu, hub⟩` from `GlobalTheory.PoinSumBound.locD X x0 la W bb F P H x hx`. Conclude with `⟨ε, hε, u, hu, fun γ y hy => (hterm γ y).le.trans (hub γ y hy)⟩`. Introduce `x hx b hb`.
+
+Conclude with `poin_rmul X la P hP.2 hx hb`. Introduce `γ hγ x _`. Conclude with `poin_lact X la P hγ x`. Use `⟨max C1 0 * (1 / c) ^ (1 / 2 : ℝ), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hb` using `FrameDegreeData.bOf_mem X hx`.
+
+Establish `ho : IsOrth X (rmul x (FrameDegreeData.bOf X x))` using `FrameDegreeData.ortho_bOf X hx`. Establish `hxb : rmul x (FrameDegreeData.bOf X x) ∈ X.dom` using `rmulDom X hb hx`. Rewrite using `[← FrameDegreeData.pnorm_rmul X la _ (fun y hy b hb => poin_rmul X la P hP.2 hy hb) x hx _ hb, PoinPf.pnorm_orth' X la _ ho]`. Conclude with `horth _ hxb ho`.
+-/
 theorem GlobalTheory.PoinSumBound.poin_conv_bdd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → PropDisc X → ∀ (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞) (bb : ℝ), IsMetricW X la W → WLower X la W → 0 < bb → (∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x, IsOrth X x → ∑' γ : X.Γ, ENNReal.ofReal (Real.exp (-(bb / 2 * GlobalTheory.Up.rhX X x0 (lact γ.1 x)))) ≤ C) → ∀ (F : V (nd X) → ℂ) (P : Frame X.Ψ r → ℂ), DifferentiableOn ℂ F (OmF X x0) → InAt X x0 W bb F → IsBEq X la P → (∀ z ∈ OmF X x0, P (cpt X x0 z) = F z) → (∀ x ∈ X.dom, Summable fun γ : X.Γ => ‖(X.χ la γ.1)⁻¹ * P (lact γ.1 x)‖) ∧ X.IsBddSec la (poin X la P) := by
   intro E _ _ _ r X x0 hx0 hPD la W bb hW hWl hbb hSB F P hFd hA hP hPF
   have H : GlobalTheory.PoinSumBound.HypS X x0 la W bb F P := ⟨hx0, hPD, hW, hWl, ⟨hbb, hSB⟩, hFd, hA, hP, hPF⟩

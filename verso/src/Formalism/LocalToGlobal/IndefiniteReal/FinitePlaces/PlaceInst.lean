@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs, k, hk, hi, hl⟩`. Conclude with `⟨hs, k, hk, fun u hu t => hi u (AddSubgroup.mem_inf.1 hu).1 (AddSubgroup.mem_inf.1 hu).2 t, hl⟩`. Introduce and unpack `⟨hs, k, hk, hi, hl⟩`. Conclude with `⟨hs, k, hk, fun u hu hue t => hi u (AddSubgroup.mem_inf.2 ⟨hu, hue⟩) t, hl⟩`.
+-/
 theorem isSBHalf_iff {e : AE D} {Λ : AddSubgroup (WO S T)} {Φ : WO S T → ℂ} :
     IsSBHalf e Λ Φ ↔ Four.IsSB Λ (halfSub S T e) Φ := by
   constructor
@@ -19,6 +22,15 @@ theorem isSBHalf_iff {e : AE D} {Λ : AddSubgroup (WO S T)} {Φ : WO S T → ℂ
   · rintro ⟨hs, k, hk, hi, hl⟩
     exact ⟨hs, k, hk, fun u hu hue t => hi u (AddSubgroup.mem_inf.2 ⟨hu, hue⟩) t, hl⟩
 
+/- English proof (translation)
+Set `R' : Finset (WO S T)` to `R.filter (· ∈ H)`. Set `f : R' → Four.Qt k H` to `fun r => QuotientAddGroup.mk ⟨r.1, (Finset.mem_filter.1 r.2).2⟩`. Use `Finite.of_surjective f ?_` and prove the remaining obligations. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`.
+
+Consider the case `H u`. Take `⟨r, hr, v, hv, huv⟩` from `hR u u.2`. Establish `hrH : r ∈ H`. Use `H.sub_mem u.2 (H.nsmul_mem hv k)` as an intermediate fact. Rewrite `this` using `[huv, add_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Use `⟨⟨r, Finset.mem_filter.2 ⟨hr, hrH⟩⟩, ?_⟩` and prove the remaining obligations. Apply `QuotientAddGroup.eq.2` to reduce the goal to its premises. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Use `Four.mem_smulSub.2 ⟨v, hv, ?_⟩` and prove the remaining obligations. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg]`.
+
+Rewrite using `[huv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem finite_qt_of {H : AddSubgroup (WO S T)} {k : ℕ} (R : Finset (WO S T))
     (hR : ∀ u ∈ H, ∃ r ∈ R, ∃ v ∈ H, u = r + k • v) : Finite (Four.Qt k H) := by
   classical
@@ -40,6 +52,11 @@ theorem finite_qt_of {H : AddSubgroup (WO S T)} {k : ℕ} (R : Finset (WO S T))
     rw [huv]
     abel
 
+/- English proof (translation)
+Establish `hu : IsUnit (k : AE D)`. Establish `e1 : (k : AE D) = algebraMap D.host.F (AE D) (k : D.host.F)` using `by simp`. Rewrite using `[e1]`. Conclude with `(IsUnit.mk0 _ (Nat.cast_ne_zero.2 hk.ne')).map _`. Use extensionality with `i j`.
+
+Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, nsmul_eq_mul, Matrix.zero_apply]`. Rewrite using `[Matrix.zero_apply]`. Conclude with `(hu.mul_right_eq_zero).1 this`.
+-/
 theorem nsmul_eq_zero_WO {k : ℕ} (hk : 0 < k) {t : WO S T} (h : k • t = 0) : t = 0 := by
   have hu : IsUnit (k : AE D) := by
     have e1 : (k : AE D) = algebraMap D.host.F (AE D) (k : D.host.F) := by simp
@@ -52,6 +69,15 @@ theorem nsmul_eq_zero_WO {k : ℕ} (hk : 0 < k) {t : WO S T} (h : k • t = 0) :
   exact (hu.mul_right_eq_zero).1 this
 
 open Classical in
+/- English proof (translation)
+Establish `mi` using `fun {x : WO S T} {H K : AddSubgroup (WO S T)} (h : x ∈ H ⊓ K) => AddSubgroup.mem_inf.1 h`. Take `⟨Tm, hTe, htr, hmo, hva⟩` from `Four.exists_model (ρ := heisL ψ S T) (χ := fun t y => ψ (symplO S T t y)) (L := Λ) (X := halfSub S T e₁) (Y := halfSub S T (cA D e₁)) (f₀ := f₀) (hX := fun x hx x' hx' => heisL_add_half ψ S T he hx hx') (hY := fun y hy y' hy' => heisL_add_half ψ S T (cA_half_orth he) hy hy') (hXY …`. Take `⟨R, hR⟩` from `hfX k hk`. Conclude with `finite_qt_of S T R fun u hu => by`. Take `⟨r, hr, v, hv, hve, huv⟩` from `hR u (mi hu).1 (mi hu).2`.
+
+Conclude with `⟨r, hr, v, AddSubgroup.mem_inf.2 ⟨hv, hve⟩, huv⟩)`. Use the proof step `(hfinY := fun k hk => by`. Take `⟨R, hR⟩` from `hfY k hk`. Conclude with `finite_qt_of S T R fun u hu => by`. Take `⟨r, hr, v, hv, hve, huv⟩` from `hR u (mi hu).1 (mi hu).2`.
+
+Conclude with `⟨r, hr, v, AddSubgroup.mem_inf.2 ⟨hv, hve⟩, huv⟩)`. Use the proof step `(htf := fun k hk t h => nsmul_eq_zero_WO S T hk h)`. Use the proof step `(hoX := fun x hx => hoX x hx) (hoY := fun y hy => hoY y hy)`. Use the proof step `(hfX := fun u hu => hvX u (mi hu).1 (mi hu).2)`. Use the proof step `(hfY := fun u hu => hvY u (mi hu).1 (mi hu).2)`.
+
+Use `⟨Tm, ⟨fun Φ hΦ x hx => ?_, fun Φ hΦ y hy => ?_, ?_⟩, fun Φ hΦ => hTe Φ ((isSBHalf_iff S T).1 hΦ)⟩` and prove the remaining obligations. Conclude with `htr Φ ((isSBHalf_iff S T).1 hΦ) x hx`. Conclude with `hmo Φ ((isSBHalf_iff S T).1 hΦ) y hy`. Rewrite using `[one_smul]`. Conclude with `hva`.
+-/
 theorem exists_placeModel (e₁ : AE D) (he : e₁ * cA D e₁ = 0) (Λ : AddSubgroup (WO S T)) (f₀ : WO S T → ℂ)
     (hLL : ∀ x ∈ Λ, IsHalf e₁ x → ∀ y ∈ Λ, IsHalf (cA D e₁) y → ψ (symplO S T x y) = 1)
     (hdY : ∀ y, IsHalf (cA D e₁) y → (∀ x ∈ Λ, IsHalf e₁ x → ψ (symplO S T x y) = 1) → y ∈ Λ)

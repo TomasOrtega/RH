@@ -14,6 +14,9 @@ variable (F : Type) [Field F] [NumberField F]
 open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
+/- English proof (translation)
+Rewrite using `[← nsmul_eq_mul]`. Conclude with `nsmul_mem hb N`.
+-/
 private lemma natCast_mul_mem_adicCompletionIntegers (N : ℕ) {b : FiniteAdeleRing (𝓞 F) F}
     {v : HeightOneSpectrum (𝓞 F)} (hb : b v ∈ HeightOneSpectrum.adicCompletionIntegers F v) :
     ((N : FiniteAdeleRing (𝓞 F) F) * b) v ∈ HeightOneSpectrum.adicCompletionIntegers F v := by
@@ -24,6 +27,15 @@ open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
 
+/- English proof (translation)
+Establish `hW : IsOpen {a : FiniteAdeleRing (𝓞 F) F | ∀ v, a v ∈ HeightOneSpectrum.adicCompletionIntegers F v}` using `RestrictedProduct.isOpen_forall_mem fun v => Valued.isOpen_valuationSubring _`. Establish `hopen : ∀ m : ℕ, IsOpen {x : κ → FiniteAdeleRing (𝓞 F) F | ∀ i v, (((m + 1 : ℕ) : FiniteAdeleRing (𝓞 F) F) * x i) v ∈ HeightOneSpectrum.adicCompletionIntegers F v}`. Introduce `m`. Establish `hopen' : IsOpen (⋂ i : κ, (fun x : κ → FiniteAdeleRing (𝓞 F) F => ((m + 1 : ℕ) : FiniteAdeleRing (𝓞 F) F) * x i) ⁻¹' {a : FiniteAdeleRing (𝓞 F) F | ∀ v, a v ∈ HeightOneSpectrum.adicCompletionIntegers F v})` using `isOpen_iInter_of_finite fun i => hW.preimage (continuous_const.mul (continuous_apply i))`. Simplify `hopen'` using `only [Set.preimage_setOf_eq, Set.iInter_setOf]`.
+
+Establish `hcover : K ⊆ ⋃ m : ℕ, {x : κ → FiniteAdeleRing (𝓞 F) F | ∀ i v, (((m + 1 : ℕ) : FiniteAdeleRing (𝓞 F) F) * x i) v ∈ HeightOneSpectrum.adicCompletionIntegers F v}`. Introduce `x _`. Use `choose M hM hMx using fun i => _root_.GlobalTheory.IntegralFinAdele.exists_nat_mul_integral F (x i)`. Use `Set.mem_iUnion.mpr ⟨(∏ i, M i) - 1, fun i v => ?_⟩` and prove the remaining obligations. Establish `hpos : 0 < ∏ i, M i` using `Finset.prod_pos fun i _ => hM i`.
+
+Rewrite using `[Nat.sub_add_cancel hpos]`. Take `⟨e, he⟩` from `Finset.dvd_prod_of_mem M (Finset.mem_univ i)`. Rewrite using `[he, Nat.cast_mul, mul_comm ((M i : ℕ) : FiniteAdeleRing (𝓞 F) F), mul_assoc]`. Conclude with `natCast_mul_mem_adicCompletionIntegers F e (hMx i v)`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover _ hopen hcover`.
+
+Use `⟨∏ m ∈ t, (m + 1), Finset.prod_pos fun m _ => m.succ_pos, fun x hx i v => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hxm⟩` from `Set.mem_iUnion₂.mp (ht hx)`. Take `⟨e, he⟩` from `Finset.dvd_prod_of_mem (fun m : ℕ => m + 1) hm`. Rewrite using `[he, Nat.cast_mul, mul_comm ((((m + 1 : ℕ)) : FiniteAdeleRing (𝓞 F) F)), mul_assoc]`. Conclude with `natCast_mul_mem_adicCompletionIntegers F e (hxm i v)`.
+-/
 theorem _root_.GlobalTheory.WeilM.exists_nat_mul_integral_of_isCompact {κ : Type} [Fintype κ]
     {K : Set (κ → FiniteAdeleRing (𝓞 F) F)}
     (hK : IsCompact K) : ∃ N : ℕ, 0 < N ∧ ∀ x ∈ K, ∀ i v,
@@ -69,6 +81,11 @@ def denomLattice (κ : Type) (N : ℕ) : Submodule ℤ (κ → mixedEmbedding.mi
 open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
+/- English proof (translation)
+Set `ψ : _root_.GlobalTheory.WeilM.denomLattice F κ N → (κ → mixedEmbedding.integerLattice F)` to `fun z i => ⟨(N : ℝ) • (z : κ → mixedEmbedding.mixedSpace F) i, z.2 i⟩`. Establish `hN' : (N : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Use `DiscreteTopology.of_continuous_injective (f := ψ) ?_ ?_` and prove the remaining obligations. Use `continuous_pi fun i => ?_ show Continuous fun z : _root_.GlobalTheory.WeilM.denomLattice F κ N => (⟨(N : ℝ) • (z : κ → mixedEmbedding.mixedSpace F) i, z.2 i⟩ : mixedEmbedding.integerLattice F)` and prove the remaining obligations. Conclude with `Continuous.subtype_mk ((continuous_const (y := (N : ℝ))).smul ((continuous_apply (A := fun _ : κ => mixedEmbedding.mixedSpace F) i).comp continuous_subtype_val)) _`.
+
+Introduce `z w hzw`. Use `Subtype.ext (funext fun i => smul_right_injective _ hN' ?_)` and prove the remaining obligations. Conclude with `congrArg (fun p => ((p i : mixedEmbedding.integerLattice F) : mixedEmbedding.mixedSpace F)) hzw`.
+-/
 theorem _root_.GlobalTheory.WeilM.discreteTopology_denomLattice (κ : Type) [Fintype κ] {N : ℕ} (hN : 0 < N) :
     DiscreteTopology (_root_.GlobalTheory.WeilM.denomLattice F κ N) := by
   let ψ : _root_.GlobalTheory.WeilM.denomLattice F κ N → (κ → mixedEmbedding.integerLattice F) :=
@@ -89,6 +106,11 @@ theorem _root_.GlobalTheory.WeilM.discreteTopology_denomLattice (κ : Type) [Fin
 open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.WeilM.pureA`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Use extensionality with `w`.
+
+Simplify using `[mixedEmbedding.mixedEmbedding_apply_isReal]`. Simplify using `[mixedEmbedding.mixedEmbedding_apply_isComplex]`.
+-/
 theorem _root_.GlobalTheory.WeilM.pureA_algebraMap {κ : Type} (f : (κ → mixedEmbedding.mixedSpace F) → ℂ)
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (ξ : κ → F) :
     _root_.GlobalTheory.WeilM.pureA F f g (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) =
@@ -105,6 +127,13 @@ theorem _root_.GlobalTheory.WeilM.pureA_algebraMap {κ : Type} (f : (κ → mixe
 open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k : ℕ, k = Module.finrank ℤ L + 1` from `⟨_, rfl⟩`. Establish `hr : -(k : ℝ) < -(Module.finrank ℤ L : ℝ)`. Rewrite using `[hk]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `Summable.of_norm_bounded_eventually ((ZLattice.summable_norm_rpow L (-(k : ℝ)) hr).mul_left (SchwartzMap.seminorm ℝ k 0 f)) ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_cofinite_ne 0] with z hz`. Establish `hz' : 0 < ‖z‖` using `norm_pos_iff.mpr hz`. Establish `hle` using `SchwartzMap.le_seminorm ℝ k 0 f (z : E)`. Rewrite `hle` using `[norm_iteratedFDeriv_zero]`.
+
+Rewrite using `[norm_norm, Real.rpow_neg hz'.le, Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (pow_pos hz' k), mul_comm]`. Conclude with `hle`.
+-/
 private lemma summable_norm_schwartz_on_discrete_lattice {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (L : Submodule ℤ E) [DiscreteTopology L]
     (f : SchwartzMap E ℂ) : Summable fun z : L => ‖f z‖ := by
@@ -124,6 +153,9 @@ private lemma summable_norm_schwartz_on_discrete_lattice {E : Type} [NormedAddCo
 open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
+/- English proof (translation)
+Use `HeightOneSpectrum.mem_integers_of_valuation_le_one F x fun v => ?_` and prove the remaining obligations. Establish `hv` using `h v`. Rewrite `hv` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify `hv` using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation]`.
+-/
 private lemma mem_integers_of_forall_integral_finiteAdele (x : F)
     (h : ∀ v : HeightOneSpectrum (𝓞 F), (algebraMap F (FiniteAdeleRing (𝓞 F) F) x) v ∈
       HeightOneSpectrum.adicCompletionIntegers F v) : x ∈ (algebraMap (𝓞 F) F).range := by
@@ -136,6 +168,17 @@ open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
 
+/- English proof (translation)
+Establish `hg' : IsLocallyConstant g ∧ HasCompactSupport g` using `hg`. Take `⟨hloc, hcpt⟩` from `hg'`. Take `⟨B, hB⟩` from `hcpt.exists_bound_of_continuous hloc.continuous`. Take `⟨N, hN, hNK⟩` from `_root_.GlobalTheory.WeilM.exists_nat_mul_integral_of_isCompact F (K := tsupport g) hcpt`. Use `haveI := _root_.GlobalTheory.WeilM.discreteTopology_denomLattice F κ hN`.
+
+Establish `hL : Summable (((_root_.GlobalTheory.WeilM.denomLattice F κ N : Submodule ℤ _) : Set (κ → mixedEmbedding.mixedSpace F)).indicator fun z => ‖f z‖)` using `summable_subtype_iff_indicator.mp (summable_norm_schwartz_on_discrete_lattice (_root_.GlobalTheory.WeilM.denomLattice F κ N) f)`. Establish `hinj : Function.Injective fun ξ : κ → F => fun i => mixedEmbedding F (ξ i)` using `fun ξ η h => funext fun i => mixedEmbedding_injective F (congrFun h i)`. Use `Summable.of_norm_bounded_eventually ((hL.comp_injective hinj).mul_left B) (Filter.Eventually.of_forall fun ξ => ?_)` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.WeilM.pureA_algebraMap, norm_mul, Function.comp_apply]`. Distinguish the cases in `hξ : g (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) = 0`.
+
+Rewrite using `[hξ, norm_zero, mul_zero]`. Conclude with `mul_nonneg ((norm_nonneg _).trans (hB 0)) (Set.indicator_nonneg (fun _ _ => norm_nonneg _) _)`. Establish `hmem : (fun i => mixedEmbedding F (ξ i)) ∈ _root_.GlobalTheory.WeilM.denomLattice F κ N` using `by show ∀ i, (N : ℝ) • mixedEmbedding F (ξ i) ∈ mixedEmbedding.integerLattice F`. Introduce `i`. Establish `hint : ∀ v, (algebraMap F (FiniteAdeleRing (𝓞 F) F) (N * ξ i)) v ∈ HeightOneSpectrum.adicCompletionIntegers F v`.
+
+Introduce `v`. Establish `h` using `hNK _ (subset_tsupport g hξ) i v`. Rewrite `h` using `[show (N : FiniteAdeleRing (𝓞 F) F) * algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i) = algebraMap F (FiniteAdeleRing (𝓞 F) F) (N * ξ i) by simp]`. Then use the resulting hypothesis. Take `⟨y, hy⟩` from `mem_integers_of_forall_integral_finiteAdele F _ hint`. Rewrite using `[Nat.cast_smul_eq_nsmul ℝ, ← map_nsmul, nsmul_eq_mul, ← hy]`.
+
+Conclude with `⟨y, rfl⟩`. Rewrite using `[Set.indicator_of_mem hmem, mul_comm B]`. Conclude with `mul_le_mul_of_nonneg_left (hB _) (norm_nonneg _)`.
+-/
 theorem _root_.GlobalTheory.WeilM.summable_pureA {κ : Type} [Fintype κ]
     (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
@@ -179,6 +222,11 @@ open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.WeilM.schA at hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Conclude with `_root_.GlobalTheory.WeilM.summable_pureA F f hg`.
+
+Consider the case `zero => simpa using (summable_zero : Summable fun _ : κ → F => (0 : ℂ))`. Consider the case `add x y _ _ hx hy => simpa only [Pi.add_apply] using hx.add hy`. Consider the case `smul a x _ hx => simpa only [Pi.smul_apply, smul_eq_mul] using hx.mul_left a`.
+-/
 theorem _root_.GlobalTheory.WeilM.summable_of_mem_schA {κ : Type} [Fintype κ]
     {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ _root_.GlobalTheory.WeilM.schA F κ) :
     Summable fun ξ : κ → F => Φ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) := by
@@ -195,6 +243,9 @@ open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
 
+/- English proof (translation)
+The claim follows from `summable_norm_iff.mpr (_root_.GlobalTheory.WeilM.summable_of_mem_schA F hΦ)`.
+-/
 theorem _root_.GlobalTheory.WeilM.summable_norm_of_mem_schA {κ : Type} [Fintype κ]
     {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ _root_.GlobalTheory.WeilM.schA F κ) :
     Summable fun ξ : κ → F => ‖Φ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i))‖ :=
@@ -203,6 +254,9 @@ theorem _root_.GlobalTheory.WeilM.summable_norm_of_mem_schA {κ : Type} [Fintype
 open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.WeilM.thetaSum`. Conclude with `(_root_.GlobalTheory.WeilM.summable_of_mem_schA F hΦ).hasSum`.
+-/
 theorem _root_.GlobalTheory.WeilM.hasSum_thetaSum {κ : Type} [Fintype κ]
     {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ _root_.GlobalTheory.WeilM.schA F κ) :
     HasSum (fun ξ : κ → F => Φ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)))
@@ -213,6 +267,9 @@ theorem _root_.GlobalTheory.WeilM.hasSum_thetaSum {κ : Type} [Fintype κ]
 open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.WeilM.thetaSum`. Simplify using `only [Pi.add_apply]`. Conclude with `(_root_.GlobalTheory.WeilM.summable_of_mem_schA F hΦ).tsum_add (_root_.GlobalTheory.WeilM.summable_of_mem_schA F hΨ)`.
+-/
 theorem _root_.GlobalTheory.WeilM.thetaSum_add {κ : Type} [Fintype κ]
     {Φ Ψ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ _root_.GlobalTheory.WeilM.schA F κ)
     (hΨ : Ψ ∈ _root_.GlobalTheory.WeilM.schA F κ) :
@@ -226,6 +283,9 @@ theorem _root_.GlobalTheory.WeilM.thetaSum_add {κ : Type} [Fintype κ]
 open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.WeilM.thetaSum`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`.
+-/
 theorem _root_.GlobalTheory.WeilM.thetaSum_smul {κ : Type} (c : ℂ) (Φ : (κ → AdeleRing (𝓞 F) F) → ℂ) :
     _root_.GlobalTheory.WeilM.thetaSum F (c • Φ) = c * _root_.GlobalTheory.WeilM.thetaSum F Φ := by
   unfold _root_.GlobalTheory.WeilM.thetaSum
@@ -237,12 +297,18 @@ def thetaLin (κ : Type) [Fintype κ] : schA F κ →ₗ[ℂ] ℂ where
   map_add' Φ Ψ := thetaSum_add F Φ.2 Ψ.2
   map_smul' c Φ := thetaSum_smul F c Φ.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem thetaLin_apply {κ : Type} [Fintype κ] (Φ : schA F κ) : thetaLin F κ Φ = thetaSum F Φ.1 := rfl
 
 open NumberField IsDedekindDomain in
 open scoped Classical in
 variable (F : Type) [Field F] [NumberField F] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ hΦ => _root_.GlobalTheory.WeilM.summable_of_mem_schA F hΦ, fun _ hΦ => _root_.GlobalTheory.WeilM.summable_norm_of_mem_schA F hΦ, fun _ hΦ _ hΨ => _root_.GlobalTheory.WeilM.thetaSum_add F hΦ hΨ, fun c Φ _ => _root_.GlobalTheory.WeilM.thetaSum_smul F c Φ⟩`.
+-/
 theorem _root_.GlobalTheory.WeilM.thetaSum_summable_linear (κ : Type) [Fintype κ] :
     (∀ Φ ∈ _root_.GlobalTheory.WeilM.schA F κ,
       Summable fun ξ : κ → F => Φ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i))) ∧

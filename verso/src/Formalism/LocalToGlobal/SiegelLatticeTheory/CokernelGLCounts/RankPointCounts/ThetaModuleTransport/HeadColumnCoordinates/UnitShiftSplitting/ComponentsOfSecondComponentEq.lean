@@ -14,6 +14,11 @@ def pdat (g : SplitG M.L) (k : E) (η : M.R) (la : E) (η' : M.R) (la' : E) : (E
   ((g.e.symm (p1 g η, p1 g η'), g.e.symm (p2 g k * p2 g η - p2 g la, p1 g k * p2 g η' - p2 g la')),
     (g.e.symm (p1 g k * p1 g η - p1 g la, p2 g k * p1 g η' - p1 g la'), g.e.symm (p2 g η, p2 g η')))
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `he` using `e_rOf hs (c1 g (Y (Sum.inl b))) (c1 g (Y (Sum.inr b)))`. Establish `hc : (cmp1 hs Y b : M.R) = rOf hs (c1 g (Y (Sum.inl b))) (c1 g (Y (Sum.inr b)))` using `rfl`. Prove the components needed by the constructor for the conclusion. Use `show (g.e (Y (Sum.inl b) : E)).1 = (g.e ((cmp1 hs Y b : M.R) : E)).1`.
+
+Rewrite using `[hc, he]`. Both sides reduce to the same expression. Use `show (g.e (Y (Sum.inl b) : E)).1 + (g.q : F) * (g.e (Y (Sum.inr b) : E)).1 = (g.e ((cmp1 hs Y b : M.R) : E)).2`. Rewrite using `[hc, he]`. Both sides reduce to the same expression.
+-/
 theorem components_of_firstComponent_eq {Y : Ix r → M.L.O} {u : Fin (r + 1) → M.R} (h : cmp1 hs Y = u) (b : Fin (r + 1)) :
     p1 g (Y (Sum.inl b)) = p1 g (u b) ∧
       p1 g (Y (Sum.inl b)) + (g.q : F) * p1 g (Y (Sum.inr b)) = p2 g (u b) := by
@@ -28,6 +33,11 @@ theorem components_of_firstComponent_eq {Y : Ix r → M.L.O} {u : Fin (r + 1) �
     rw [hc, he]
     rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `he` using `e_rOf hs (c2 g (Y (Sum.inl b))) (c2 g (Y (Sum.inr b)))`. Establish `hc : (cmp2 hs Y b : M.R) = rOf hs (c2 g (Y (Sum.inl b))) (c2 g (Y (Sum.inr b)))` using `rfl`. Prove the components needed by the constructor for the conclusion. Use `show (g.e (Y (Sum.inl b) : E)).2 = (g.e ((cmp2 hs Y b : M.R) : E)).1`.
+
+Rewrite using `[hc, he]`. Both sides reduce to the same expression. Use `show (g.e (Y (Sum.inl b) : E)).2 + (g.q : F) * (g.e (Y (Sum.inr b) : E)).2 = (g.e ((cmp2 hs Y b : M.R) : E)).2`. Rewrite using `[hc, he]`. Both sides reduce to the same expression.
+-/
 theorem components_of_secondComponent_eq {Y : Ix r → M.L.O} {u : Fin (r + 1) → M.R} (h : cmp2 hs Y = u) (b : Fin (r + 1)) :
     p2 g (Y (Sum.inl b)) = p1 g (u b) ∧
       p2 g (Y (Sum.inl b)) + (g.q : F) * p2 g (Y (Sum.inr b)) = p2 g (u b) := by
@@ -42,24 +52,39 @@ theorem components_of_secondComponent_eq {Y : Ix r → M.L.O} {u : Fin (r + 1) �
     rw [hc, he]
     rfl
 
+/- English proof (translation)
+Use `show (g.e _).1 = _`. Rewrite using `[e_ueq hs η l b]`.
+-/
 theorem firstProj_unit_vector_eq (η : M.R) (l : Fin (r + 1) → M.R) (b : Fin (r + 1)) :
     p1 g ((((η • (eV r : Fin (r + 1) → M.R) + q2 hs • l) : Fin (r + 1) → M.R) b : M.R) : E) = p1 g η * dl r b := by
   show (g.e _).1 = _
   rw [e_ueq hs η l b]
 
+/- English proof (translation)
+Use `show (g.e _).2 = _`. Rewrite using `[e_ueq hs η l b]`.
+-/
 theorem secondProj_unit_vector_eq (η : M.R) (l : Fin (r + 1) → M.R) (b : Fin (r + 1)) :
     p2 g ((((η • (eV r : Fin (r + 1) → M.R) + q2 hs • l) : Fin (r + 1) → M.R) b : M.R) : E) =
       p2 g η * dl r b + (g.q : F) * p2 g (l b) := by
   show (g.e _).2 = _
   rw [e_ueq hs η l b]
 
+/- English proof (translation)
+Simplify using `[dl]`.
+-/
 theorem dl_last (r : ℕ) : dl (F := F) r (Fin.last r) = 1 := by
   simp [dl]
 
+/- English proof (translation)
+Use `show (g.e (algebraMap F E a)).1 = a`. Rewrite using `[AlgEquiv.commutes]`. Both sides reduce to the same expression.
+-/
 theorem firstProj_algebraMap_split (a : F) : p1 g (algebraMap F E a) = a := by
   show (g.e (algebraMap F E a)).1 = a
   rw [AlgEquiv.commutes]
   rfl
+/- English proof (translation)
+Use `show (g.e (algebraMap F E a)).2 = a`. Rewrite using `[AlgEquiv.commutes]`. Both sides reduce to the same expression.
+-/
 theorem secondProj_algebraMap_split (a : F) : p2 g (algebraMap F E a) = a := by
   show (g.e (algebraMap F E a)).2 = a
   rw [AlgEquiv.commutes]
@@ -73,6 +98,27 @@ variable {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det) (T T'
   (hY : ∀ i, (Y i : E) - Y' i = algebraMap F E (g.q : F) * Y'' i)
 
 include hZh h1 h2 h3 h4 hY in
+/- English proof (translation)
+Establish `hZc : IsUnit (Zh.map M.L.cj).det`. Use `hZh.map (M.L.cj : E →+* E)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Establish `fY` using `components_of_firstComponent_eq hs h1`. Establish `gY` using `components_of_secondComponent_eq hs h2`.
+
+Establish `fZ` using `components_of_firstComponent_eq hs h3`. Establish `gZ` using `components_of_secondComponent_eq hs h4`. Establish `hW1 : ∀ i, p1 g (Y' i) = p1 g (Y i) - (g.q : F) * p1 g (Y'' i)` using `fun i => by`. Use `congrArg (p1 g) (hY i)` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, firstProj_algebraMap_split]`.
+
+Take the linear combination `-this`. Establish `hW2 : ∀ i, p2 g (Y' i) = p2 g (Y i) - (g.q : F) * p2 g (Y'' i)` using `fun i => by`. Use `congrArg (p2 g) (hY i)` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, secondProj_algebraMap_split]`. Take the linear combination `-this`.
+
+Simplify using `only [firstProj_unit_vector_eq hs, secondProj_unit_vector_eq hs] at fY gY`. Simplify using `only [pdat]`. Apply the tactic sequence `refine Prod.ext (Prod.ext ?_ ?_) (Prod.ext ?_ ?_) <;> simp only <;> apply g.e.injective <;>`. Apply the tactic sequence `rw [AlgEquiv.apply_symm_apply] <;> refine Prod.ext ?_ ?_ <;> simp only [← adeleInfiniteComponent_apply, ← adele_ext_components]`. Rewrite using `[(fY _).1, dl, if_pos rfl, mul_one]`.
+
+Rewrite using `[(gY _).1, dl, if_pos rfl, mul_one]`. Rewrite using `[lambdaStar_firstProj hs hZh, lastCoordinate_secondProj hs hZh, corner_inverse_secondProj hs hZh]`. Establish `e : ∀ b, (Zh.map (p2 g))⁻¹ b (Fin.last r) * p1 g ((Y (Sum.inl b) : E) + algebraMap F E (g.q : F) * Y (Sum.inr b)) = (Zh.map (p2 g))⁻¹ b (Fin.last r) * p2 g η * dl r b + -(-(g.q : F) * (Zh.map (p2 g))⁻¹ b (Fin.last r) * p2 g (l b))` using `fun b => by`. Rewrite using `[map_add, map_mul, firstProj_algebraMap_split, (fY b).2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl fun b _ => e b, Finset.sum_add_distrib, Finset.sum_neg_distrib, sum_dl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[lambdaStar_secondProj hs hZh, lastCoordinate_secondProj hs hZc, corner_inverse_firstProj hs hZh, conj_map_secondProj]`. Establish `e : ∀ b, (Zh.map (p1 g))⁻¹ b (Fin.last r) * p2 g ((Y (Sum.inl b) : E) + algebraMap F E (g.q : F) * Y (Sum.inr b)) = (Zh.map (p1 g))⁻¹ b (Fin.last r) * p2 g η' * dl r b + -(-(g.q : F) * (Zh.map (p1 g))⁻¹ b (Fin.last r) * p2 g (l' b))` using `fun b => by`. Rewrite using `[map_add, map_mul, secondProj_algebraMap_split, (gY b).2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun b _ => e b, Finset.sum_add_distrib, Finset.sum_neg_distrib, sum_dl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[lambda_firstProj hs hZh, lastCoordinate_firstProj hs hZh, corner_inverse_firstProj hs hZh]`. Establish `e : ∀ b, (Zh.map (p1 g))⁻¹ (Fin.last r) b * p1 g (Y' (Sum.inl b) : E) = (Zh.map (p1 g))⁻¹ (Fin.last r) b * p1 g η * dl r b + -((g.q : F) * (Zh.map (p1 g))⁻¹ (Fin.last r) b * p1 g (l b))` using `fun b => by`.
+
+Rewrite using `[hW1, (fY b).1, (fZ b).1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun b _ => e b, Finset.sum_add_distrib, Finset.sum_neg_distrib, sum_dl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[lambda_secondProj hs hZh, lastCoordinate_firstProj hs hZc, corner_inverse_secondProj hs hZh, conj_map_firstProj]`.
+
+Establish `e : ∀ b, (Zh.map (p2 g))⁻¹ (Fin.last r) b * p2 g (Y' (Sum.inl b) : E) = (Zh.map (p2 g))⁻¹ (Fin.last r) b * p1 g η' * dl r b + -((g.q : F) * (Zh.map (p2 g))⁻¹ (Fin.last r) b * p1 g (l' b))` using `fun b => by`. Rewrite using `[hW2, (gY b).1, (gZ b).1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun b _ => e b, Finset.sum_add_distrib, Finset.sum_neg_distrib, sum_dl]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[map_add, map_mul, firstProj_algebraMap_split, hW1, hW1]`. Take the linear combination `(fY (Fin.last r)).2 - (g.q : F) * (fZ (Fin.last r)).2 + p2 g η * (dl_last (F := F) r)`. Rewrite using `[map_add, map_mul, secondProj_algebraMap_split, hW2, hW2]`. Take the linear combination `(gY (Fin.last r)).2 - (g.q : F) * (gZ (Fin.last r)).2 + p2 g η' * (dl_last (F := F) r)`.
+-/
 theorem vals :
     (((Y (Sum.inl (Fin.last r)) : E),
         lamStarC (M.L.cj : E →+* E) Zh (fun b => (Y (Sum.inl b) : E) + algebraMap F E (g.q : F) * Y (Sum.inr b))),

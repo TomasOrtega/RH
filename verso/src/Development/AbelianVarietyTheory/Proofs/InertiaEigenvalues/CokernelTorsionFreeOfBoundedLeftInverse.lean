@@ -12,6 +12,31 @@ namespace GlobalTheory.BK.TorsFree
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hx`. Establish `hbdd : BddAbove (Set.range fun n => ‖coeff n x‖)` using `⟨B, by rintro _ ⟨n, rfl⟩; exact hB n⟩`. Use `set S := ⨆ n, ‖coeff n x‖ with hSdef`. Establish `hxS : ∀ n, ‖coeff n x‖ ≤ S` using `fun n => le_ciSup hbdd n`. Establish `hS0 : 0 ≤ S` using `(norm_nonneg _).trans (hxS 0)`.
+
+Use `set d := Nat.find hg1 with hd`. Establish `hgd : ‖coeff d g‖ = 1` using `Nat.find_spec hg1`. Establish `hlt : ∀ i < d, ‖coeff i g‖ < 1` using `fun i hi => lt_of_le_of_ne (hg i) (Nat.find_min hg1 hi)`. Use `set θ : NNReal := (Finset.range d).sup fun i => ‖coeff i g‖₊ with hθdef`. Establish `hθ1 : θ < 1`.
+
+Rewrite using `[hθdef, Finset.sup_lt_iff (by simp)]`. Introduce `i hi`. Use `hlt i (Finset.mem_range.1 hi)` as an intermediate fact. Rewrite using `[← NNReal.coe_lt_coe]`. Simplify using `using this`.
+
+Establish `hθi : ∀ i < d, ‖coeff i g‖ ≤ (θ : ℝ)` using `fun i hi => by`. Establish `: ‖coeff i g‖₊ ≤ θ` using `Finset.le_sup (f := fun i => ‖coeff i g‖₊) (Finset.mem_range.2 hi)`. Conclude with `this` after adjusting the coercions. Establish `hθ0 : (0 : ℝ) ≤ θ` using `θ.2`. Use `set Mx := max 1 ((θ : ℝ) * S) with hMx`.
+
+Establish `hM0 : 0 ≤ Mx` using `le_trans zero_le_one (le_max_left _ _)`. Establish `key : ∀ n, ‖coeff n x‖ ≤ Mx`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+
+Establish `hmem : (d, n) ∈ Finset.HasAntidiagonal.antidiagonal (n + d)`. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Conclude with `add_comm d n`. Establish `hc` using `coeff_mul (n + d) g x`. Rewrite `hc` using `[← Finset.add_sum_erase _ _ hmem]`.
+
+Establish `hrest : ‖∑ p ∈ (Finset.HasAntidiagonal.antidiagonal (n + d)).erase (d, n), coeff p.1 g * coeff p.2 x‖ ≤ Mx`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hM0 fun p hp => ?_` and prove the remaining obligations. Take `⟨hne, hp⟩` from `Finset.mem_erase.1 hp`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[norm_mul]`.
+
+Break down `lt_trichotomy p.1 d with h | h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd (Prod.ext h (by omega)) hne`. Establish `hj : p.2 < n` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `heq : coeff d g * coeff n x = coeff (n + d) (g * x) - ∑ p ∈ (Finset.HasAntidiagonal.antidiagonal (n + d)).erase (d, n), coeff p.1 g * coeff p.2 x`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `: ‖coeff n x‖ = ‖coeff d g * coeff n x‖` using `by rw [norm_mul, hgd, one_mul]`. Rewrite using `[this, heq, sub_eq_add_neg]`.
+
+Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ (by rw [norm_neg]; exact hrest))` and prove the remaining obligations. Conclude with `(hgx _).trans (le_max_left _ _)`. Establish `hSM : S ≤ Mx` using `ciSup_le key`. Establish `hS1 : S ≤ 1`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Establish `h2 : S ≤ θ * S`. Break down `le_total 1 ((θ : ℝ) * S) with h3 | h3` into its components or cases. Rewrite `hSM` using `[hMx, max_eq_right h3]`. Then use the resulting hypothesis. Rewrite `hSM` using `[hMx, max_eq_left h3]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (1 - (θ : ℝ)) * S ≤ 0` using `by linarith`. Establish `h4 : (0 : ℝ) < 1 - θ` using `by have := (NNReal.coe_lt_coe.2 hθ1); simp at this; linarith`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `fun n => (hxS n).trans hS1`.
+-/
 theorem norm_coeff_le_one_of_mul {x g : K⟦X⟧} (hx : ∃ B : ℝ, ∀ n, ‖coeff n x‖ ≤ B)
     (hg : ∀ n, ‖coeff n g‖ ≤ 1) (hg1 : ∃ n, ‖coeff n g‖ = 1) (hgx : ∀ n, ‖coeff n (g * x)‖ ≤ 1) :
     ∀ n, ‖coeff n x‖ ≤ 1 := by
@@ -89,6 +114,25 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   {l e a : ℕ} {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] [Fact l.Prime]
   {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ}
 
+/- English proof (translation)
+Unfold `imM at hfv ⊢`. Take `⟨w, hw, hwv⟩` from `Submodule.mem_map.1 hfv`. Rewrite `hwv` using `[LinearMap.restrictScalars_apply]`. Use `choose Y hYb hY using fun τ => (hl τ).2`. Use `choose Y0 g hY0A hg1 hY0 using hg`.
+
+Establish `hv' : ∀ τ i, v τ i ∈ A O K` using `fun τ => mem_tot.1 hv τ`. Set `x : Vec K a ι` to `fun τ => Y τ *ᵥ v τ`. Establish `hfx : ∀ τ, f • x τ = w τ`. Introduce `τ`. Establish `h1 : f • v τ = F.mat τ *ᵥ w τ` using `by rw [← app_apply, hwv]; rfl`.
+
+Express the relevant statement in the definitionally equal form `f • (Y τ *ᵥ v τ) = w τ`. Rewrite using `[← Matrix.mulVec_smul, h1, Matrix.mulVec_mulVec, hY τ, one_smul, Matrix.one_mulVec]`. Establish `hFx : F.app x = v`. Use function extensionality and compare the values at `τ i`. Establish `h2 : f • F.app x τ = f • v τ`.
+
+Rewrite using `[app_apply, ← Matrix.mulVec_smul, hfx τ, ← app_apply, hwv]`. Both sides reduce to the same expression. Conclude with `mul_left_cancel₀ hf0 (congrFun h2 i)`. Establish `hbx : ∀ τ i, ∃ B : ℝ, ∀ n, ‖coeff n (x τ i)‖ ≤ B`. Introduce `τ i`.
+
+Take `⟨c, hc⟩` from `hYb τ`. Use `⟨max c 0, fun n => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖coeff n (∑ j, Y τ i j * v τ j)‖ ≤ max c 0`. Rewrite using `[map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (le_max_right _ _) fun j _ => ?_` and prove the remaining obligations.
+
+Use `norm_coeff_mul_le (w := fun _ => 1) (fun _ => zero_le_one) (fun _ _ => by simp) (le_max_right c 0) zero_le_one (f := Y τ i j) (g := v τ j) (fun m => by rw [mul_one]; exact (hc i j m).trans (le_max_left _ _)) (fun m => by rw [mul_one]; exact hv' τ j m) n` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one]`. Then use the resulting hypothesis. Establish `hgA : ∀ τ (i : ι), ∀ n, ‖coeff n (g τ)‖ ≤ 1`. Introduce `τ i`. Establish `h5 : g τ = (Y0 τ * F.mat τ) i i` using `by rw [hY0 τ]; simp`.
+
+Rewrite using `[h5]`. Conclude with `Subalgebra.sum_mem _ fun j _ => mul_mem (hY0A τ i j) (F.mem τ j i)`. Establish `hgx : ∀ τ i, ∀ n, ‖coeff n (g τ * x τ i)‖ ≤ 1`. Introduce `τ i`. Establish `h3 : g τ • x τ = Y0 τ *ᵥ v τ` using `by conv_rhs => rw [← hFx]`.
+
+Rewrite using `[app_apply, Matrix.mulVec_mulVec, hY0 τ]`. Use `first`. Consider the case `rw [Matrix.smul_mulVec_assoc, Matrix.one_mulVec]`. Consider the case `rw [Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `h4 : g τ * x τ i = (Y0 τ *ᵥ v τ) i` using `by rw [← h3]; rfl`.
+
+Rewrite using `[h4]`. Conclude with `Subalgebra.sum_mem _ fun j _ => mul_mem (hY0A τ i j) (hv' τ j)`. Establish `hxA : x ∈ P.M` using `mem_tot.2 fun τ i => norm_coeff_le_one_of_mul (hbx τ i) (hgA τ i) (hg1 τ) (hgx τ i)`. Conclude with `Submodule.mem_map.2 ⟨x, hxA, by rw [LinearMap.restrictScalars_apply]; exact hFx⟩`.
+-/
 theorem mem_imM_of_smul_mem (F : Hom P Q)
     (hg : ∀ τ, ∃ (Y : Matrix ι κ K⟦X⟧) (g : K⟦X⟧), (∀ i j, Y i j ∈ A O K) ∧ (∃ n, ‖coeff n g‖ = 1) ∧
       Y * F.mat τ = g • (1 : Matrix ι ι K⟦X⟧))
@@ -145,6 +189,9 @@ theorem mem_imM_of_smul_mem (F : Hom P Q)
 
 end GlobalTheory.BK.Hom
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ _ _ P Q F hg hl v hv f _ hf0 hfv`. Conclude with `F.mem_imM_of_smul_mem hg hl hv hf0 hfv`.
+-/
 theorem GlobalTheory.BK.Hom.coker_torsionFree : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (κ : Type) [Fintype κ] [DecidableEq κ] (P : PhiMod O K l e a ι) (Q : PhiMod O K l e a κ) (F : GlobalTheory.BK.Hom P Q), (∀ τ, ∃ (Y : Matrix ι κ K⟦X⟧) (g : K⟦X⟧), (∀ i j, Y i j ∈ A O K) ∧ (∃ n, ‖coeff n g‖ = 1) ∧ Y * F.mat τ = g • (1 : Matrix ι ι K⟦X⟧)) → (∀ τ, (1 : K⟦X⟧) ∈ F.ldivSet τ) → ∀ v ∈ Q.M, ∀ f ∈ A O K, f ≠ 0 → f • v ∈ F.imM → v ∈ F.imM := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ _ _ P Q F hg hl v hv f _ hf0 hfv
   exact F.mem_imM_of_smul_mem hg hl hv hf0 hfv

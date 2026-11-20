@@ -21,6 +21,11 @@ namespace GlobalTheory.ThetaRegularizationComparison
 
 open GlobalTheory.RegCompare in
 
+/- English proof (translation)
+Use `haveI := hν.1`. Establish `key` using `fun h k => setIntegral_mul_right' M ν 𝓕 hν.2 (fun g => thetaKO ω g h Φ) (fun γ hγ u => hL γ hγ u h) (hΦ h) k`. Establish `hi : ∀ k, Intg ω ν 𝓕 (ω (k, 1) Φ)` using `fun k h => by simpa only [thetaKO_right] using (key h k).1`. Establish `he : ∀ k, thetaInt ω ν 𝓕 (ω (k, 1) Φ) = thetaInt ω ν 𝓕 Φ` using `fun k => by`. Use function extensionality and compare the values at `h`.
+
+Simplify using `only [thetaInt, thetaKO_right]`. Conclude with `(key h k).2`. Rewrite using `[wop_apply, thetaInt_sum _ fun k _ => (hi k).smul _]`. Simplify using `only [thetaInt_smul, he, zdeg, Finsupp.sum, Finset.sum_smul]`.
+-/
 theorem thetaInt_wop_intg {D : D7} {M X : HSp D} {ω : GlobalTheory.Grid.WRep M X} {ν : Measure (GA D M)} {𝓕 : Set (GA D M)}
     (hν : IsHaarFD M ν 𝓕) {Φ : WO M X → ℂ} (hL : ∀ γ ∈ GQ M, ∀ g h, thetaKO ω (γ * g) h Φ = thetaKO ω g h Φ)
     (hΦ : Intg ω ν 𝓕 Φ) (z : GA D M →₀ ℂ) : thetaInt ω ν 𝓕 (wop ω z Φ) = zdeg z • thetaInt ω ν 𝓕 Φ := by
@@ -37,6 +42,15 @@ theorem thetaInt_wop_intg {D : D7} {M X : HSp D} {ω : GlobalTheory.Grid.WRep M 
 
 open GlobalTheory.RegCompare in
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `regularised_comparison hP hK hTA D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hm`. Establish `kill : ∀ Φ ∈ algF ψ θ true A B, p Φ = 0 → thetaInt ωA ν 𝓕 Φ = 0` using `fun Φ hΦ h0 => by`. Take `⟨z', -, -, -, -, hz'⟩` from `hc 0 (Submodule.zero_mem _)`. Establish `h2` using `thetaInt_smul ωB ν₁ 𝓕₁ 0 0`. Rewrite `h2` using `[zero_smul, zero_smul]`.
+
+Rewrite using `[hz' _ hΦ (by rw [h0, map_zero, smul_zero]), map_zero, h2, smul_zero]`. Use `⟨c, hc0, kill, fun Φ hΦ Φ' hΦ' g hg => ?_⟩` and prove the remaining obligations. Take `⟨z, -, hz0, -, hzM, hz⟩` from `hc Φ' hΦ'`. Establish `hI : zdeg z • thetaInt ωA ν 𝓕 Φ = (c * g) • thetaInt ωB ν₁ 𝓕₁ (wop ωB z Φ')`. Distinguish the cases in `h0 : g = 0`.
+
+Rewrite using `[kill Φ hΦ (by rw [hg, h0, zero_smul]), h0, mul_zero, zero_smul, smul_zero]`. Establish `h1` using `hz ((zdeg z * g⁻¹) • Φ) (Submodule.smul_mem _ _ hΦ) (by rw [map_smul, hg, smul_smul, mul_assoc, inv_mul_cancel₀ h0, mul_one])`. Rewrite `h1` using `[thetaInt_smul]`. Rewrite using `[mul_comm c, mul_smul, ← h1, smul_smul, mul_left_comm, mul_inv_cancel₀ h0, mul_one]`. Use `⟨⟨z, hz0, intg_of_modInt hzM, hI⟩, fun hi => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hI` using `[thetaInt_wop_intg hν₁ (GlobalTheory.T.thetaKernel_leftInvariant_rational_unitary D ψ θ hθ W₁ X A₁ B _ _ ωB hm.weilB Φ' hΦ') hi z, smul_comm]`. Conclude with `smul_right_injective _ hz0 hI`.
+-/
 theorem compare_smul (hP : GlobalTheory.FunPr.Hypotheses₂) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree) (hTA : GlobalTheory.SquareSt.ThetaIntegralsAgree)
     {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {W W₁ X : HSp D} {A : Fr W} {A₁ : Fr W₁} {B : Fr X}
     {α β : (AE D)ˣ →* Circle} (hT : IsTriple W W₁ X α β) {ν 𝓕 ν₁ 𝓕₁} (hν : IsHaarFD W ν 𝓕) (hν₁ : IsHaarFD W₁ ν₁ 𝓕₁)
@@ -65,16 +79,27 @@ theorem compare_smul (hP : GlobalTheory.FunPr.Hypotheses₂) (hK : GlobalTheory.
   rw [thetaInt_wop_intg hν₁ (GlobalTheory.T.thetaKernel_leftInvariant_rational_unitary D ψ θ hθ W₁ X A₁ B _ _ ωB hm.weilB Φ' hΦ') hi z, smul_comm] at hI
   exact smul_right_injective _ hz0 hI
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `Module.Projective.exists_dual_eq_one ℂ hx`. Use `congrArg (TensorProduct.lid ℂ Q ∘ LinearMap.rTensor Q l) h` as an intermediate fact. Simplify `this` using `[hl]`.
+-/
 theorem tmul_cancel_left {P Q : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Module ℂ Q] {x : P} (hx : x ≠ 0) {u u' : Q}
     (h : x ⊗ₜ[ℂ] u = x ⊗ₜ[ℂ] u') : u = u' := by
   obtain ⟨l, hl⟩ := Module.Projective.exists_dual_eq_one ℂ hx
   have := congrArg (TensorProduct.lid ℂ Q ∘ LinearMap.rTensor Q l) h
   simpa [hl] using this
 
+/- English proof (translation)
+The claim follows from `tmul_cancel_left hy (by simpa using congrArg (TensorProduct.comm ℂ P Q) h)`.
+-/
 theorem tmul_cancel_right {P Q : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Module ℂ Q] {y : Q} (hy : y ≠ 0) {u u' : P}
     (h : u ⊗ₜ[ℂ] y = u' ⊗ₜ[ℂ] y) : u = u' :=
   tmul_cancel_left hy (by simpa using congrArg (TensorProduct.comm ℂ P Q) h)
 
+/- English proof (translation)
+Take `⟨J, hJ⟩` from `reg_const hK hL W B ρ t i j hst M hM Θ Θ' hΘ g g₁`. Take `⟨z₀, hz₀, ⟨-, hi₀⟩, e₀⟩` from `h₀ M hM Θ Θ' hΘ g g₁`. Rewrite `hc` using `[hJ z hi]`. Rewrite `e₀` using `[hJ z₀ hi₀]`. Establish `e1 : ∫ u in M.fd _, kerBig W Θ g g₁ u ∂M.ν _ = c * J` using `mul_left_cancel₀ hz (by linear_combination hc)`.
+
+Establish `e2 : ∫ u in M.fd _, kerBig W Θ g g₁ u ∂M.ν _ = c₀ * J` using `mul_left_cancel₀ hz₀ (by linear_combination e₀)`. Establish `hJ0 : J ≠ 0` using `fun h => hne (by rw [e1, h, mul_zero])`. Conclude with `mul_right_cancel₀ hJ0 (e2.symm.trans e1)`.
+-/
 theorem eq_of_regConst (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree) {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts}
     {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) {W : G.Weil} {B : Frames G} {ρ : RealMatch W} {t : T} {i j : Fin D.R.m}
     (hst : SquareStanding G t) {M : Vol G} (hM : M.Is t) {Θ Θ'} (hΘ : IsMatched B t ρ i j Θ Θ') {g g₁}
@@ -93,6 +118,63 @@ theorem eq_of_regConst (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorM
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP hK hM`. Establish `hLM` using `GlobalTheory.T.local_matching_of_howe_duality hP.howeDualityReal hP hK hM`. Establish `hTA` using `GlobalTheory.T.theta_integrals_of_minguez hP.minguezThetaGL hP hK hM`. Take `⟨F1, H1⟩` from `GlobalTheory.T.grid_frames_doubling_polynomial_exists hP`. Take `⟨F2, H2⟩` from `GlobalTheory.T.top_grid_stage_polynomial_exists hP hK hM`.
+
+Take `⟨F3, H3⟩` from `GlobalTheory.T.square_tower_stage_finite_factor hP hK hM`. Use `⟨max F1 (max F2 F3), fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, H1⟩` from `H1 ε CF (le_of_max_le_left hCF)`. Take `⟨C2, x2, H2⟩` from `H2 ε CF (le_of_max_le_left (le_of_max_le_right hCF))`. Take `⟨C3, x3, H3⟩` from `H3 ε CF (le_of_max_le_right (le_of_max_le_right hCF))`.
+
+Use `⟨max C1 (max C2 C3), max (max x1 x2) (max x3 ((12 : ℝ) ^ (5 / ε))), fun C hC D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations. Use `replace H1 := H1 C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left (le_of_max_le_left hx)) hR T Lc μ₀ hL G`. Use `replace H2 := H2 C (le_of_max_le_left (le_of_max_le_right hC)) D large₂ he (le_of_max_le_right (le_of_max_le_left hx)) hR T Lc μ₀ hL G`. Use `replace H3 := H3 C (le_of_max_le_right (le_of_max_le_right hC)) D large₂ he (le_of_max_le_left (le_of_max_le_right hx)) hR T Lc μ₀ hL G`. Establish `hst : ∀ t, SquareStanding G t` using `standing hR hR.size.2.1.eleven_le hL G`.
+
+Introduce `W S hψ hN ρ hρ i j X lam hTG hSC hF`. Establish `hbig : Node.InRange D.R.m (.grid (i + 1) (j + 1))` using `⟨i.2, j.2⟩`. Establish `hsm : Node.InRange D.R.m (.grid i j)` using `⟨i.2.le, j.2.le⟩`. Take `⟨A, hA⟩` from `exists_isGridFr W hbig`. Take `⟨A₁, hA₁⟩` from `exists_isGridFr W hsm`.
+
+Take `⟨AV, hV⟩` from `exists_isGridFr W (X := .grid i (j + 1)) ⟨i.2.le, j.2⟩`. Take `⟨AV₁, hV₁⟩` from `exists_isGridFr W (X := .grid (i + 1) j) ⟨i.2, j.2.le⟩`. Take `⟨σ, σ', hσ⟩` from `H1 W i j X hTG hSC A A₁ AV AV₁ hA hA₁ hV hV₁`. Take `⟨κ, hκ, hflip⟩` from `H2 W S hψ hN ρ i j X hTG hSC A A₁ AV AV₁ hA hA₁ hV hV₁`. Use `replace H3 := H3 W i j _ _ _ _ _ X hSC A A₁ (frSum AV AV₁)`.
+
+Establish `hIs` using `hSC.2.2.2.2.2.2.2`. Establish `hrk : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j = rankV D i j % 2` using `congrArg (· % 2) (Nat.add_right_cancel hSC.2.2.2.1)`. Establish `eα : ∀ t, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j = Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2)` using `fun t => by`. Rewrite using `[← hrk]`. Both sides reduce to the same expression.
+
+Establish `eβ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j = G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2)`. Rewrite using `[← hrk]`. Both sides reduce to the same expression. Establish `hD` using `fun t => dict hL W t i j A A₁ AV AV₁ hA hA₁ hV hV₁`. Establish `hT : ∀ t, IsTriple _ _ _ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j)` using `fun t => (hD t).1 (hst t) _ (exists_vol G hL t).choose_spec`.
+
+Use `choose a b ha hb _ using (hT μ₀).gap`. Take `⟨ι, -, hιA⟩` from `GlobalTheory.SquareIdent.realA hL W i j A AV AV₁ hA hV hV₁`. Take `⟨ι', -, hιB⟩` from `GlobalTheory.SquareIdent.realB hL W i j A₁ AV AV₁ hA₁ hV hV₁`. Take `⟨Pr, q, q', hq, hq', H⟩` from `hLM D W.ψ W.θ W.ψ_std W.θ_is _ _ _ A A₁ (frSum AV AV₁) a b`. Take `⟨hlam, PF, pF, pF', J, -, hJ, -, hI, hI', P₀, hP₀, hP₀i⟩` from `hF`.
+
+Take `⟨P₁, hP₁⟩` from `hq (q' (σ' P₀))`. Establish `key : ∀ t, ∃ l m : ℂ, m ≠ 0 ∧ pF (σ.symm P₁) = m • pF' P₀ ∧ (∀ x ∈ ρ.rel i j, q (ι x.1) = l • q' (ι' x.2)) ∧ (∃ x ∈ ρ.rel i j, q (ι x.1) ≠ 0) ∧ ∀ c₀, RegConst W S.B ρ t i j c₀ → c₀ = l * m * κ t * lam t`. Introduce `t`. Take `⟨M, hM', a₀, τ, τ', n, Φ, hn, hfl, g, g₁, hne⟩` from `GlobalTheory.BigNZ.exists_integral_ne_zero hP.strongApproxSU hK hM hL W S.B ρ t i j (hst t)`. Establish `wA : GlobalTheory.Grid.IsWeil W.ψ true _ _ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j / GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j) (X.ω t)` using `by rw [eα, eβ]; exact hIs.weil t`.
+
+Establish `wB : GlobalTheory.Grid.IsWeil W.ψ false _ _ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j / GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j) (X.ω' t)` using `by rw [eα, eβ]; exact hIs.weil' t`. Take `⟨Pi, rf, rl, p, p', hm, hcore⟩` from `GlobalTheory.SquareIdent.core hP.howeDualityReal hP hM hL W i j A A₁ AV AV₁ hA hA₁ hV hV₁ t S.B ρ M (hst t) hM' (hT t) _ _ wA wB`. Take `⟨fτ, fτ', -⟩` from `(hcore 0).choose_spec n Φ τ τ' hn hfl`. Take `⟨Pf, r, r', e, -, -, hp, hp'⟩` from `(H _ _ (hT t) fun τ => ⟨GlobalTheory.SquareRel.hasInfExp_alpha G i j hL μ₀ t τ (ha τ), hb τ⟩).2 _ _ _ _ _ _ _ hm`. Take `⟨ff, ff', hk, hk'⟩` from `hσ t`.
+
+Take `⟨γ, hγ0, hγ⟩` from `H3 t ff ff' Pi rf rl p p' (by rw [← eα, ← eβ]; exact hm) Pr Pf q q' r r' e hq hq' hp hp'`. Establish `hνA : IsHaarFD _ (M.ν _) (M.fd _)` using `(hM'.vtx _ hbig).haar_fund`. Establish `hνB : IsHaarFD _ (M.ν _) (M.fd _)` using `(hM'.vtx _ hsm).haar_fund`. Take `⟨s, hs0, hs⟩` from `exists_haar_smul _ X.m _ hIs.meas.1 hνA.1`. Take `⟨s', hs0', hs'⟩` from `exists_haar_smul _ X.m' _ hIs.meas'.1 hνB.1`.
+
+Establish `hsC : ((s : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hs0`. Establish `hsC' : ((s' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hs0'`. Take `⟨c, hc0, kill, hc⟩` from `compare_smul hP hK hTA W.θ_is (hT t) hνA hνB hm`. Establish `mA : fockF W.ψ W.θ true A (frSum AV AV₁) (X.f t) P₁ ∈ algF W.ψ W.θ true A (frSum AV AV₁)` using `Submodule.subset_span ⟨_, _, ff, rfl⟩`. Establish `mB : fockF W.ψ W.θ false A₁ (frSum AV AV₁) (X.f' t) (σ' P₀) ∈ algF W.ψ W.θ false A₁ (frSum AV AV₁)` using `Submodule.subset_span ⟨_, _, ff', rfl⟩`.
+
+Establish `cA` using `fun h => integral_change _ hIs.meas hνA hs (fun u => thetaKO (X.ω t) u h (fockF W.ψ W.θ true A (frSum AV AV₁) (X.f t) P₁)) fun γ hγ u => GlobalTheory.SquareIdent.thetaKO_left_neg W.θ_is _ _ wA mA γ hγ u h`. Establish `cB` using `fun h => integral_change _ hIs.meas' hνB hs' (fun u => thetaKO (X.ω' t) u h (fockF W.ψ W.θ false A₁ (frSum AV AV₁) (X.f' t) (σ' P₀))) fun γ hγ u => GlobalTheory.T.thetaKernel_leftInvariant_rational_unitary D W.ψ W.θ W.θ_is _ _ _ _ _ _ _ wB _ mB γ hγ u h`. Establish `iB : GlobalTheory.RegCompare.Intg (X.ω' t) (M.ν _) (M.fd _) (fockF W.ψ W.θ false A₁ (frSum AV AV₁) (X.f' t) (σ' P₀))` using `fun h => (cB h).1 (by simpa only [← hk'] using hP₀i t h)`. Establish `eA : thetaInt (X.ω t) (M.ν _) (M.fd _) (fockF W.ψ W.θ true A (frSum AV AV₁) (X.f t) P₁) = J t ((((s : ℝ) : ℂ) * lam t) • pF (σ.symm P₁))`. Rewrite using `[map_smul, mul_smul, ← hI]`.
+
+Use function extensionality and compare the values at `h`. Use `(cA h).2.trans ?_` and prove the remaining obligations. Simplify using `only [_root_.Pi.smul_apply, smul_eq_mul, Tri.I, hk, LinearEquiv.apply_symm_apply]`. Establish `eB : thetaInt (X.ω' t) (M.ν _) (M.fd _) (fockF W.ψ W.θ false A₁ (frSum AV AV₁) (X.f' t) (σ' P₀)) = J t (((s' : ℝ) : ℂ) • pF' P₀)`. Rewrite using `[map_smul, ← hI' t P₀ (hP₀i t)]`.
+
+Use function extensionality and compare the values at `h`. Use `(cB h).2.trans ?_` and prove the remaining obligations. Simplify using `only [_root_.Pi.smul_apply, smul_eq_mul, Tri.I', hk']`. Establish `hne' : p' (fockF W.ψ W.θ false A₁ (frSum AV AV₁) (X.f' t) (σ' P₀)) ≠ 0` using `fun h0 => by`. Establish `h1` using `(hc 0 (Submodule.zero_mem _) _ mB 1 (by rw [h0, map_zero, smul_zero])).2 iB`.
+
+Rewrite `h1` using `[kill 0 (Submodule.zero_mem _) (map_zero _), eB, ← map_smul, ← map_zero (J t)]`. Establish `h2` using `(hJ t h1).symm`. Simplify using `[hc0, hs0', hP₀] at h2`. Establish `hstd : p (fockF W.ψ W.θ true A (frSum AV AV₁) (X.f t) P₁) = γ • p' (fockF W.ψ W.θ false A₁ (frSum AV AV₁) (X.f' t) (σ' P₀))`. Rewrite using `[hp _ ff, hp' _ ff', hP₁, hγ, TensorProduct.tmul_smul, map_smul]`.
+
+Establish `hu : (((s : ℝ) : ℂ) * lam t) • pF (σ.symm P₁) = (c * γ) • ((s' : ℝ) : ℂ) • pF' P₀`. Establish `h1` using `(hc _ mA _ mB γ hstd).2 iB`. Rewrite `h1` using `[eA, eB, ← map_smul (J t)]`. Conclude with `hJ t h1`. Establish `hy : q' (σ' P₀) ≠ 0` using `fun h0 => hne' (by rw [hp' _ ff', h0, TensorProduct.zero_tmul, map_zero])`.
+
+Establish `hfp` using `hflip t M hM' s s' hs hs' Pi rf rl p p' hm n Φ τ τ' hn hfl P₁ (σ' P₀) γ hne' hstd`. Rewrite `hfp` using `[hp _ fτ, hp' _ fτ', hP₁, ← map_smul, ← map_smul, ← TensorProduct.tmul_smul, ← TensorProduct.tmul_smul]`. Establish `hr` using `tmul_cancel_left hy (e.injective hfp)`. Use `set δ : ℂ := ((s : ℝ) : ℂ)⁻¹ * (κ t * ((s' : ℝ) : ℂ) * γ) with hδ`. Establish `hδ0 : δ ≠ 0` using `mul_ne_zero (inv_ne_zero hsC) (mul_ne_zero (mul_ne_zero (hκ t).1 hsC') hγ0)`.
+
+Establish `hr' : r (datumA W τ) = δ • r' (datumB W τ')`. Rewrite using `[hδ, mul_smul, ← hr, smul_smul, inv_mul_cancel₀ hsC, one_smul]`. Take `⟨c₁, hc₁⟩` from `hρ i j A A₁ AV AV₁ hA hA₁ hV hV₁ t _ _ Pi rf rl p p' hm S.B n Φ τ τ' hn hfl`. Take `⟨b', hb'⟩` from `ρ.onto_big i j (toTens a₀)`. Take `⟨b₀, rfl⟩ : ∃ b₀ : PolT G (routeSmall t i j) →₀ ℂ, toTens b₀ = b'` from `toTens_surjective b'`.
+
+Establish `hΘ : IsMatched S.B t ρ i j (tensT W a₀ τ) (tensT W b₀ τ')` using `⟨a₀, b₀, τ, τ', n, Φ, hb', hn, hfl, rfl, rfl⟩`. Take `⟨ξ, hξ⟩` from `(hD t).2 _ _ wA wB`. Take `⟨aA, aB, -, kB, jA, jB⟩` from `hξ S.B ρ _ _ hΘ`. Establish `hp0 : p (datumA W (tensT W a₀ τ)) ≠ 0` using `fun h0 => hne (by rw [jA, kill _ aA h0]; exact mul_zero _)`. Establish `hp1` using `hp0`.
+
+Rewrite `hp1` using `[hιA t S.B ρ n Φ τ τ' hfl, hp _ fτ]`. Establish `hx0 : q (ι (toTens a₀)) ≠ 0` using `fun h0 => hp1 (by rw [h0, TensorProduct.zero_tmul, map_zero])`. Establish `hr0 : r' (datumB W τ') ≠ 0` using `fun h0 => hp1 (by rw [hr', h0, smul_zero, TensorProduct.tmul_zero, map_zero])`. Establish `hm0 : ((s : ℝ) : ℂ) * lam t ≠ 0` using `mul_ne_zero hsC (hlam t)`. Use `⟨δ⁻¹ * c₁, (((s : ℝ) : ℂ) * lam t)⁻¹ * (c * γ * ((s' : ℝ) : ℂ)), mul_ne_zero (inv_ne_zero hm0) (mul_ne_zero (mul_ne_zero hc0 hγ0) hsC'), ?_, ?_, ⟨_, hb', hx0⟩, fun c₀ h₀ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_smul, mul_smul, ← hu, smul_smul, inv_mul_cancel₀ hm0, one_smul]`. Introduce and unpack `⟨x, y⟩ hxy`. Take `⟨x, rfl⟩ : ∃ x₀ : PolT G (routeBig t i j) →₀ ℂ, toTens x₀ = x` from `toTens_surjective x`. Take `⟨y, rfl⟩ : ∃ y₀ : PolT G (routeSmall t i j) →₀ ℂ, toTens y₀ = y` from `toTens_surjective y`. Establish `h1` using `hc₁ x y hxy`.
+
+Rewrite `h1` using `[hιA t S.B ρ n Φ τ τ' hfl, hιB t S.B ρ n Φ τ τ' hfl, hp _ fτ, hp' _ fτ', hr', ← map_smul e, TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Establish `h2` using `tmul_cancel_right hr0 (e.injective h1)`. Use `show q (ι (toTens x)) = (δ⁻¹ * c₁) • q' (ι' (toTens y))`. Rewrite using `[mul_smul, ← h2, smul_smul, inv_mul_cancel₀ hδ0, one_smul]`. Take `⟨z, hz0, hzi, hz⟩` from `(hc _ aA _ aB c₁ (hc₁ a₀ b₀ hb')).1`.
+
+Establish `ez : zact (X.ω' t) z (datumB W (tensT W b₀ τ')) = GlobalTheory.RegCompare.wop (X.ω' t) z (datumB W (tensT W b₀ τ'))` using `(GlobalTheory.RegCompare.wop_apply _ _ _).symm`. Establish `h1 : c₀ = c * c₁`. Use `eq_of_regConst hK hL (hst t) hM' hΘ hne hz0 ?_ ?_ h₀` and prove the remaining obligations. Rewrite using `[funext (kB z g g₁), ez]`. Conclude with `(hzi _).const_mul _`.
+
+Rewrite using `[jA, jB, ez]`. Use `congrFun hz (blk _ _ (g, g₁))` as an intermediate fact. Simplify using `only [_root_.Pi.smul_apply, smul_eq_mul] at this`. Take the linear combination `ξ (g, g₁) * this`. Use `hlam t` as an intermediate fact.
+
+Use `(hκ t).1` as an intermediate fact. Rewrite using `[h1, hδ]`. Clear the denominators using the available nonvanishing facts. Use `choose l m hm0 hm hl hx hc using key`. Establish `em : ∀ t, m t = m μ₀` using `fun t => smul_left_injective ℂ hP₀ ((hm t).symm.trans (hm μ₀))`.
+
+Take `⟨x, hxr, hx0⟩` from `hx μ₀`. Establish `hy0 : q' (ι' x.2) ≠ 0` using `fun h => hx0 (by rw [hl μ₀ x hxr, h, smul_zero])`. Establish `hl0 : l μ₀ ≠ 0` using `fun h => hx0 (by rw [hl μ₀ x hxr, h, zero_smul])`. Establish `el : ∀ t, l t = l μ₀` using `fun t => smul_left_injective ℂ hy0 ((hl t x hxr).symm.trans (hl μ₀ x hxr))`. Use `⟨fun t => l μ₀ * m μ₀ * κ t, fun t => ⟨mul_ne_zero (mul_ne_zero hl0 (hm0 μ₀)) (hκ t).1, ?_⟩, fun t c₀ h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ζ, h1, h2⟩` from `(hκ t).2`. Conclude with `⟨ζ, h1, by dsimp only; rw [h2]; ring⟩`. Rewrite using `[hc t c₀ h, em t, el t]`.
+-/
 theorem regConst_eq : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) → NumbersIn D.what₂.embLL S μ₀ → ∀ (ρ : RealMatch W), ρ.Tied → ∀ (i j : Fin D.R.m) (X : TriG G i j) (lam : T → ℂ),
     TopGrid W i j X → IsStageC W i j (pp D j) (qq D j) X → Factor X W.ψ W.θ lam →

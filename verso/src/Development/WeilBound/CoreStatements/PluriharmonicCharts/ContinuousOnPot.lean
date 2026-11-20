@@ -11,6 +11,9 @@ open MvPolynomial Filter Topology
 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
+/- English proof (translation)
+Unfold `nd`. Use `contDiff_prod fun k _ => ?_` and prove the remaining obligations. Use `(ContDiff.sum fun i _ => ?_).pow _` and prove the remaining obligations. Conclude with `(contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ _)`.
+-/
 theorem contDiff_nd (a : K → ℕ) : ContDiff ℝ ∞ (nd (J := J) a) := by
   unfold nd
   refine contDiff_prod fun k _ => ?_
@@ -19,6 +22,11 @@ theorem contDiff_nd (a : K → ℕ) : ContDiff ℝ ∞ (nd (J := J) a) := by
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
 
+/- English proof (translation)
+Introduce `ch t ht`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Establish `h1 : ∀ j, ContDiffAt ℝ ∞ (fun s => ‖f j ((A.chart ch).symm s)‖ ^ 2) t` using `fun j => (contDiff_norm_sq ℝ).contDiffAt.comp t (((hf j ch t ht).contDiffAt).restrict_scalars ℝ)`. Establish `h2 : ContDiffAt ℝ ∞ (fun s => g ((A.chart ch).symm s)) t` using `contDiffAt_pi.2 fun p => ((hg p ch t ht).contDiffAt).restrict_scalars ℝ`. Establish `h3 : ∀ j, ContDiffAt ℝ ∞ (fun s => nd (a j) (g ((A.chart ch).symm s))) t` using `fun j => (contDiff_nd (a j)).contDiffAt.comp t h2`.
+
+Establish `hsum : ContDiffAt ℝ ∞ (fun s => ∑ j, ‖f j ((A.chart ch).symm s)‖ ^ 2 / nd (a j) (g ((A.chart ch).symm s))) t` using `ContDiffAt.sum fun j _ => (h1 j).div (h3 j) (ne_of_gt (hnd _ ht.2 j))`. Conclude with `contDiffAt_const.sub (contDiffAt_const.mul (hsum.log (ne_of_gt (hpos _ ht.2))))`.
+-/
 theorem smoothOn_pot {V : Set X} {ι' : Type} [Fintype ι'] (f : ι' → X → ℂ) (hf : ∀ j, A.HoloOn V (f j))
     (g : X → (Σ k, J k) → ℂ) (hg : ∀ p, A.HoloOn V (fun y => g y p)) (a : ι' → K → ℕ)
     (hnd : ∀ y ∈ V, ∀ j, 0 < nd (a j) (g y)) (hpos : ∀ y ∈ V, 0 < ∑ j, ‖f j y‖ ^ 2 / nd (a j) (g y)) (c : ℝ) :

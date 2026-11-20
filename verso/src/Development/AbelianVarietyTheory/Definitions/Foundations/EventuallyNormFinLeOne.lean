@@ -17,21 +17,41 @@ variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 def htOf (N : Matrix n n A → ℝ≥0) (g : GL n A) : ℝ≥0 :=
   max 1 (max (N (g : Matrix n n A)) (N ((g⁻¹ : GL n A) : Matrix n n A)))
 
+/- English proof (translation)
+The claim follows from `le_max_left _ _`.
+-/
 theorem one_le_htOf (N : Matrix n n A → ℝ≥0) (g : GL n A) : 1 ≤ htOf N g := le_max_left _ _
 
+/- English proof (translation)
+The claim follows from `le_max_of_le_right (le_max_left _ _)`.
+-/
 theorem le_htOf (N : Matrix n n A → ℝ≥0) (g : GL n A) : N (g : Matrix n n A) ≤ htOf N g := le_max_of_le_right (le_max_left _ _)
 
+/- English proof (translation)
+The claim follows from `le_max_of_le_right (le_max_right _ _)`.
+-/
 theorem inv_le_htOf (N : Matrix n n A → ℝ≥0) (g : GL n A) :
     N ((g⁻¹ : GL n A) : Matrix n n A) ≤ htOf N g := le_max_of_le_right (le_max_right _ _)
 
+/- English proof (translation)
+Simplify using `only [htOf, inv_inv]`. Rewrite using `[max_comm (N _)]`.
+-/
 theorem htOf_inv (N : Matrix n n A → ℝ≥0) (g : GL n A) : htOf N g⁻¹ = htOf N g := by
   simp only [htOf, inv_inv]
   rw [max_comm (N _)]
 
+/- English proof (translation)
+Simplify using `only [htOf, max_eq_left_iff, max_le_iff]`.
+-/
 theorem htOf_eq_one {N : Matrix n n A → ℝ≥0} {g : GL n A} :
     htOf N g = 1 ↔ N (g : Matrix n n A) ≤ 1 ∧ N ((g⁻¹ : GL n A) : Matrix n n A) ≤ 1 := by
   simp only [htOf, max_eq_left_iff, max_le_iff]
 
+/- English proof (translation)
+Use `show max 1 (max (N ((g * h : GL n A) : Matrix n n A)) (N (((g * h)⁻¹ : GL n A) : Matrix n n A))) ≤ _`. Use `max_le (one_le_mul_of_one_le_of_one_le (one_le_htOf N g) (one_le_htOf N h)) (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul]`. Conclude with `(hN _ _).trans (mul_le_mul' (le_htOf N g) (le_htOf N h))`. Rewrite using `[mul_inv_rev, Units.val_mul, mul_comm (htOf N g)]`.
+
+Conclude with `(hN _ _).trans (mul_le_mul' (inv_le_htOf N h) (inv_le_htOf N g))`.
+-/
 theorem htOf_mul_le {N : Matrix n n A → ℝ≥0} (hN : ∀ a b, N (a * b) ≤ N a * N b) (g h : GL n A) :
     htOf N (g * h) ≤ htOf N g * htOf N h := by
   show max 1 (max (N ((g * h : GL n A) : Matrix n n A)) (N (((g * h)⁻¹ : GL n A) : Matrix n n A))) ≤ _
@@ -53,19 +73,36 @@ abbrev FvBar : Type := AlgebraicClosure (Fv F v)
 
 def absBar (x : FvBar F v) : ℝ≥0 := ⟨spectralNorm (Fv F v) (FvBar F v) x, spectralNorm_nonneg x⟩
 
+/- English proof (translation)
+Set `: NontriviallyNormedField (Fv F v)` to `Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))`. Establish `h` using `spectralAlgNorm_mul (K := Fv F v) (L := FvBar F v) x y`. Conclude with `NNReal.eq h`.
+-/
 theorem absBar_mul (x y : FvBar F v) : absBar F v (x * y) = absBar F v x * absBar F v y := by
   let : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))
   have h := spectralAlgNorm_mul (K := Fv F v) (L := FvBar F v) x y
   exact NNReal.eq h
 
+/- English proof (translation)
+Rewrite using `[← NNReal.coe_le_coe, NNReal.coe_max]`. Conclude with `isNonarchimedean_spectralNorm x y`.
+-/
 theorem absBar_add_le (x y : FvBar F v) : absBar F v (x + y) ≤ max (absBar F v x) (absBar F v y) := by
   rw [← NNReal.coe_le_coe, NNReal.coe_max]
   exact isNonarchimedean_spectralNorm x y
 
+/- English proof (translation)
+The claim follows from `NNReal.eq (spectralNorm_extends a)`.
+-/
 theorem absBar_algebraMap (a : Fv F v) : absBar F v (algebraMap (Fv F v) (FvBar F v) a) = ‖a‖₊ := NNReal.eq (spectralNorm_extends a)
 
+/- English proof (translation)
+The claim follows from `NNReal.eq (spectralNorm_neg (Algebra.IsAlgebraic.isAlgebraic x))`.
+-/
 theorem absBar_neg (x : FvBar F v) : absBar F v (-x) = absBar F v x := NNReal.eq (spectralNorm_neg (Algebra.IsAlgebraic.isAlgebraic x))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hx`. Establish `hpos` using `spectralNorm_zero_lt hx (Algebra.IsAlgebraic.isAlgebraic (R := Fv F v) x)`. Rewrite `h` using `[← NNReal.coe_eq_zero]`.
+
+Conclude with `hpos.ne' h`. Introduce and unpack `rfl`. Conclude with `NNReal.eq spectralNorm_zero`.
+-/
 theorem absBar_eq_zero {x : FvBar F v} : absBar F v x = 0 ↔ x = 0 := by
   constructor
   · intro h
@@ -83,6 +120,17 @@ def valBar : Valuation (FvBar F v) ℝ≥0 where
   map_mul' := absBar_mul F v
   map_add_le_max' := absBar_add_le F v
 
+/- English proof (translation)
+Establish `hint : ∀ m : ℤ, absBar F v (m : FvBar F v) ≤ 1` using `fun m => by`. Rewrite using `[← map_intCast (algebraMap (Fv F v) (FvBar F v)), absBar_algebraMap]`. Conclude with `IsUltrametricDist.nnnorm_intCast_le_one _ m`. Establish `hv : ∀ y : FvBar F v, valBar F v y = absBar F v y` using `fun _ => rfl`. Assume the negation of the conclusion as `hlt`.
+
+Use `push Not at hlt`. Establish `hsum` using `hx`. Rewrite `hsum` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, map_one, one_mul]`. Simplify using `only [eq_intCast] at hsum`. Break down `Nat.eq_zero_or_pos p.natDegree with h0 | hpos` into its components or cases.
+
+Rewrite `hsum` using `[h0]`. Simplify using `at hsum`. Establish `hxN : x ^ p.natDegree = -∑ i ∈ Finset.range p.natDegree, ((p.coeff i : ℤ) : FvBar F v) * x ^ i` using `eq_neg_of_add_eq_zero_right hsum`. Establish `key : absBar F v (x ^ p.natDegree) ≤ absBar F v x ^ (p.natDegree - 1)`. Rewrite using `[hxN, ← hv, Valuation.map_neg]`.
+
+Use `Valuation.map_sum_le _ fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul, Valuation.map_pow, hv, hv]`. Establish `hi' : i ≤ p.natDegree - 1` using `Nat.le_pred_of_lt (Finset.mem_range.1 hi)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `key` using `[← hv, Valuation.map_pow, hv]`.
+
+Conclude with `absurd key (not_le.2 (pow_lt_pow_right₀ hlt (Nat.sub_lt hpos one_pos)))`.
+-/
 theorem absBar_le_one_of_monic {x : FvBar F v} (p : Polynomial ℤ) (hp : p.Monic)
     (hx : p.eval₂ (Int.castRingHom _) x = 0) : absBar F v x ≤ 1 := by
   have hint : ∀ m : ℤ, absBar F v (m : FvBar F v) ≤ 1 := fun m => by
@@ -113,44 +161,77 @@ theorem absBar_le_one_of_monic {x : FvBar F v} (p : Polynomial ℤ) (hp : p.Moni
 def finEmb (τ : E →ₐ[F] FvBar F v) : Fv F v ⊗[F] E →ₐ[Fv F v] FvBar F v :=
   Algebra.TensorProduct.lift (Algebra.ofId _ _) τ fun _ _ => Commute.all _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem finEmb_tmul (τ : E →ₐ[F] FvBar F v) (a : Fv F v) (x : E) :
     finEmb F v τ (a ⊗ₜ[F] x) = algebraMap (Fv F v) (FvBar F v) a * τ x := rfl
 
 def absFin (y : Fv F v ⊗[F] E) : ℝ≥0 :=
   Finset.univ.sup fun τ : E →ₐ[F] FvBar F v => absBar F v (finEmb F v τ y)
 
+/- English proof (translation)
+The claim follows from `Finset.le_sup (f := fun τ : E →ₐ[F] FvBar F v => absBar F v (finEmb F v τ y)) (Finset.mem_univ τ)`.
+-/
 theorem le_absFin (τ : E →ₐ[F] FvBar F v) (y : Fv F v ⊗[F] E) : absBar F v (finEmb F v τ y) ≤ absFin F v y := Finset.le_sup (f := fun τ : E →ₐ[F] FvBar F v => absBar F v (finEmb F v τ y)) (Finset.mem_univ τ)
 
+/- English proof (translation)
+Simplify using `[absFin, Finset.sup_le_iff]`.
+-/
 theorem absFin_le_iff {y : Fv F v ⊗[F] E} {c : ℝ≥0} :
     absFin F v y ≤ c ↔ ∀ τ : E →ₐ[F] FvBar F v, absBar F v (finEmb F v τ y) ≤ c := by
   simp [absFin, Finset.sup_le_iff]
 
+/- English proof (translation)
+The claim follows from `(absFin_le_iff F v).2 fun τ => by rw [map_mul, absBar_mul] exact mul_le_mul' (le_absFin F v τ x) (le_absFin F v τ y)`.
+-/
 theorem absFin_mul_le (x y : Fv F v ⊗[F] E) : absFin F v (x * y) ≤ absFin F v x * absFin F v y := (absFin_le_iff F v).2 fun τ => by
   rw [map_mul, absBar_mul]
   exact mul_le_mul' (le_absFin F v τ x) (le_absFin F v τ y)
 
+/- English proof (translation)
+The claim follows from `(absFin_le_iff F v).2 fun τ => by rw [map_add] exact (absBar_add_le F v _ _).trans (max_le_max (le_absFin F v τ x) (le_absFin F v τ y))`.
+-/
 theorem absFin_add_le (x y : Fv F v ⊗[F] E) : absFin F v (x + y) ≤ max (absFin F v x) (absFin F v y) := (absFin_le_iff F v).2 fun τ => by
   rw [map_add]
   exact (absBar_add_le F v _ _).trans (max_le_max (le_absFin F v τ x) (le_absFin F v τ y))
 
+/- English proof (translation)
+The claim follows from `le_antisymm ((absFin_le_iff F v).2 fun τ => by rw [map_zero, (absBar_eq_zero F v).2 rfl]) (zero_le)`.
+-/
 @[simp] theorem absFin_zero : absFin F v (0 : Fv F v ⊗[F] E) = 0 := le_antisymm ((absFin_le_iff F v).2 fun τ => by
   rw [map_zero, (absBar_eq_zero F v).2 rfl]) (zero_le)
 
+/- English proof (translation)
+Simplify using `only [absFin, map_neg, absBar_neg]`.
+-/
 theorem absFin_neg (y : Fv F v ⊗[F] E) : absFin F v (-y) = absFin F v y := by
   simp only [absFin, map_neg, absBar_neg]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (fun z => absFin F v z ≤ c) (fun a b ha hb => (absFin_add_le F v a b).trans (max_le ha hb)) (by rw [absFin_zero]; exact zero_le) h`.
+-/
 theorem absFin_sum_le {ι : Type} (s : Finset ι) (f : ι → Fv F v ⊗[F] E) {c : ℝ≥0}
     (h : ∀ i ∈ s, absFin F v (f i) ≤ c) : absFin F v (∑ i ∈ s, f i) ≤ c := Finset.sum_induction f (fun z => absFin F v z ≤ c)
   (fun a b ha hb => (absFin_add_le F v a b).trans (max_le ha hb)) (by rw [absFin_zero]; exact zero_le) h
 
+/- English proof (translation)
+Establish `: Nonempty (E →ₐ[F] FvBar F v)` using `⟨IsAlgClosed.lift⟩`. Simplify using `only [absFin, finEmb_tmul, map_one, mul_one, absBar_algebraMap]`. Conclude with `Finset.sup_const Finset.univ_nonempty _`.
+-/
 theorem absFin_tmul_one (a : Fv F v) : absFin F v (a ⊗ₜ[F] (1 : E)) = ‖a‖₊ := by
   have : Nonempty (E →ₐ[F] FvBar F v) := ⟨IsAlgClosed.lift⟩
   simp only [absFin, finEmb_tmul, map_one, mul_one, absBar_algebraMap]
   exact Finset.sup_const Finset.univ_nonempty _
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.one_def, absFin_tmul_one, nnnorm_one]`.
+-/
 @[simp] theorem absFin_one : absFin F v (1 : Fv F v ⊗[F] E) = 1 := by
   rw [Algebra.TensorProduct.one_def, absFin_tmul_one, nnnorm_one]
 
+/- English proof (translation)
+The claim follows from `(absFin_le_iff F v).2 fun τ => by have hx2 : IsIntegral ℤ (x : E) := x.2 obtain ⟨p, hp, hpx⟩ := hx2 have h0 := congrArg (τ : E →+* FvBar F v) hpx rw [Polynomial.hom_eval₂, map_zero, RingHom.ext_int ((τ : E →+* FvBar F v).comp _) (Int.castRingHom _)] at h0 rw [finEmb_tmul, absBar_ …`.
+-/
 theorem absFin_tmul_le (a : Fv F v) (x : 𝓞 E) : absFin F v (a ⊗ₜ[F] (x : E)) ≤ ‖a‖₊ := (absFin_le_iff F v).2 fun τ => by
   have hx2 : IsIntegral ℤ (x : E) := x.2
   obtain ⟨p, hp, hpx⟩ := hx2
@@ -162,19 +243,31 @@ theorem absFin_tmul_le (a : Fv F v) (x : 𝓞 E) : absFin F v (a ⊗ₜ[F] (x : 
 def normFin {m n : Type} [Fintype m] [Fintype n] (y : Matrix m n (Fv F v ⊗[F] E)) : ℝ≥0 :=
   Finset.univ.sup fun p : m × n => absFin F v (y p.1 p.2)
 
+/- English proof (translation)
+Simplify using `[normFin, Finset.sup_le_iff]`.
+-/
 theorem normFin_le_iff {m n : Type} [Fintype m] [Fintype n] {y : Matrix m n (Fv F v ⊗[F] E)} {c : ℝ≥0} :
     normFin F v y ≤ c ↔ ∀ i j, absFin F v (y i j) ≤ c := by
   simp [normFin, Finset.sup_le_iff]
 
+/- English proof (translation)
+The claim follows from `(normFin_le_iff F v).1 le_rfl i j`.
+-/
 theorem absFin_le_normFin {m n : Type} [Fintype m] [Fintype n] (y : Matrix m n (Fv F v ⊗[F] E)) (i : m) (j : n) :
     absFin F v (y i j) ≤ normFin F v y := (normFin_le_iff F v).1 le_rfl i j
 
+/- English proof (translation)
+The claim follows from `(normFin_le_iff F v).2 fun i k => by rw [Matrix.mul_apply] exact absFin_sum_le F v _ _ fun j _ => (absFin_mul_le F v _ _).trans (mul_le_mul' (absFin_le_normFin F v x i j) (absFin_le_normFin F v y j k))`.
+-/
 theorem normFin_mul_le {m n p : Type} [Fintype m] [Fintype n] [Fintype p] (x : Matrix m n (Fv F v ⊗[F] E))
     (y : Matrix n p (Fv F v ⊗[F] E)) : normFin F v (x * y) ≤ normFin F v x * normFin F v y := (normFin_le_iff F v).2 fun i k => by
   rw [Matrix.mul_apply]
   exact absFin_sum_le F v _ _ fun j _ => (absFin_mul_le F v _ _).trans
     (mul_le_mul' (absFin_le_normFin F v x i j) (absFin_le_normFin F v y j k))
 
+/- English proof (translation)
+The claim follows from `(normFin_le_iff F v).2 fun i j => by by_cases h : i = j · subst h simp · simp [Matrix.one_apply_ne h]`.
+-/
 theorem normFin_one_le {n : Type} [Fintype n] [DecidableEq n] :
     normFin F v (1 : Matrix n n (Fv F v ⊗[F] E)) ≤ 1 := (normFin_le_iff F v).2 fun i j => by
   by_cases h : i = j
@@ -210,18 +303,27 @@ def infEmb (τ : EmbOver E w) : w.Completion ⊗[F] E →+* ℂ :=
     ({ τ.1 with commutes' := fun a => RingHom.congr_fun τ.2 a } : E →ₐ[F] ℂ)).toRingHom
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem infEmb_tmul (τ : EmbOver E w) (a : w.Completion) (x : E) :
     infEmb τ (a ⊗ₜ[F] x) = InfinitePlace.Completion.extensionEmbedding w a * τ.1 x := rfl
 
 def opNorm {n : Type} [Fintype n] [DecidableEq n] (y : Matrix n n ℂ) : ℝ≥0 :=
   ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) y‖₊
 
+/- English proof (translation)
+Unfold `opNorm`. Rewrite using `[map_mul]`. Conclude with `nnnorm_mul_le _ _`.
+-/
 theorem opNorm_mul_le {n : Type} [Fintype n] [DecidableEq n] (x y : Matrix n n ℂ) :
     opNorm (x * y) ≤ opNorm x * opNorm y := by
   unfold opNorm
   rw [map_mul]
   exact nnnorm_mul_le _ _
 
+/- English proof (translation)
+Unfold `opNorm`. Rewrite using `[map_one]`. Conclude with `ContinuousLinearMap.opNNNorm_le_bound _ 1 fun x => by simp`.
+-/
 theorem opNorm_one_le {n : Type} [Fintype n] [DecidableEq n] : opNorm (1 : Matrix n n ℂ) ≤ 1 := by
   unfold opNorm
   rw [map_one]
@@ -234,20 +336,38 @@ open Classical in
 def normInf {n : Type} [Fintype n] [DecidableEq n] (y : Matrix n n (w.Completion ⊗[F] E)) : ℝ≥0 :=
   Finset.univ.sup fun τ : EmbOver E w => opNorm (y.map (infEmb τ))
 
+/- English proof (translation)
+Simplify using `[normInf, Finset.sup_le_iff]`.
+-/
 theorem normInf_le_iff {n : Type} [Fintype n] [DecidableEq n] {y : Matrix n n (w.Completion ⊗[F] E)} {c : ℝ≥0} :
     normInf F w y ≤ c ↔ ∀ τ : EmbOver E w, opNorm (y.map (infEmb τ)) ≤ c := by
   simp [normInf, Finset.sup_le_iff]
 
+/- English proof (translation)
+The claim follows from `(normInf_le_iff F w).2 fun τ => by rw [Matrix.map_mul] exact (opNorm_mul_le _ _).trans (mul_le_mul' ((normInf_le_iff F w).1 le_rfl τ) ((normInf_le_iff F w).1 le_rfl τ))`.
+-/
 theorem normInf_mul_le {n : Type} [Fintype n] [DecidableEq n] (x y : Matrix n n (w.Completion ⊗[F] E)) :
     normInf F w (x * y) ≤ normInf F w x * normInf F w y := (normInf_le_iff F w).2 fun τ => by
   rw [Matrix.map_mul]
   exact (opNorm_mul_le _ _).trans (mul_le_mul' ((normInf_le_iff F w).1 le_rfl τ) ((normInf_le_iff F w).1 le_rfl τ))
 
+/- English proof (translation)
+The claim follows from `(normInf_le_iff F w).2 fun τ => by rw [Matrix.map_one _ (map_zero _) (map_one _)] exact opNorm_one_le`.
+-/
 theorem normInf_one_le {n : Type} [Fintype n] [DecidableEq n] :
     normInf F w (1 : Matrix n n (w.Completion ⊗[F] E)) ≤ 1 := (normInf_le_iff F w).2 fun τ => by
   rw [Matrix.map_one _ (map_zero _) (map_one _)]
   exact opNorm_one_le
 
+/- English proof (translation)
+Unfold `opNorm`. Use `ContinuousLinearMap.opNNNorm_le_bound _ ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) y‖₊ fun x => ?_` and prove the remaining obligations. Set `xs : EuclideanSpace ℂ n` to `WithLp.toLp 2 fun i => starRingEnd ℂ (x i)`. Establish `hcomp : ∀ i, (Matrix.toEuclideanCLM (n` using `n) (𝕜 := ℂ) (y.map (starRingEnd ℂ)) x) i = starRingEnd ℂ ((Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) y xs) i) := fun i => by`. Simplify using `[xs, Matrix.mulVec, dotProduct, map_sum]`.
+
+Establish `h1 : ‖Matrix.toEuclideanCLM (n` using `n) (𝕜 := ℂ) (y.map (starRingEnd ℂ)) x‖₊ = ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) y xs‖₊ := by`. Rewrite using `[EuclideanSpace.nnnorm_eq, EuclideanSpace.nnnorm_eq]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hcomp i]`.
+
+Use `congr 1`. Conclude with `Subtype.ext (Complex.norm_conj _)`. Establish `h2 : ‖xs‖₊ = ‖x‖₊`. Rewrite using `[EuclideanSpace.nnnorm_eq, EuclideanSpace.nnnorm_eq]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Subtype.ext (Complex.norm_conj _)`. Rewrite using `[h1, ← h2]`. Conclude with `ContinuousLinearMap.le_opNNNorm _ _`.
+-/
 theorem opNorm_map_conj_le {n : Type} [Fintype n] [DecidableEq n] (y : Matrix n n ℂ) :
     opNorm (y.map (starRingEnd ℂ)) ≤ opNorm y := by
   unfold opNorm
@@ -275,6 +395,27 @@ theorem opNorm_map_conj_le {n : Type} [Fintype n] [DecidableEq n] (y : Matrix n 
 
 variable {F w} in
 
+/- English proof (translation)
+Take `⟨hF, hE, h2, hc⟩` from `h`. Establish `hw : w.IsReal` using `hF.isReal w`. Establish `hext : ∀ a : w.Completion, starRingEnd ℂ (InfinitePlace.Completion.extensionEmbedding w a) = InfinitePlace.Completion.extensionEmbedding w a` using `fun a => by`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw]`. Conclude with `Complex.conj_ofReal _`.
+
+Establish `hwe : (starRingEnd ℂ).comp w.embedding = w.embedding` using `(ComplexEmbedding.isReal_iff.1 (InfinitePlace.isReal_iff.1 hw))`. Set `: Algebra F ℂ` to `w.embedding.toAlgebra`. Set `toA : EmbOver E w → (E →ₐ[F] ℂ)` to `fun t => { t.1 with commutes' := fun a => RingHom.congr_fun t.2 a }`. Establish `toA_inj : ∀ s t : EmbOver E w, toA s = toA t → s = t` using `fun s t e => Subtype.ext (RingHom.ext fun x => by simpa [toA] using DFunLike.congr_fun e x)`. Set `ρ : EmbOver E w` to `⟨(starRingEnd ℂ).comp τ.1, by rw [RingHom.comp_assoc, τ.2, hwe]⟩`.
+
+Establish `hρ : ρ ≠ τ`. Introduce `e`. Establish `hr : ComplexEmbedding.IsReal τ.1` using `ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => by`. Use `RingHom.congr_fun (congrArg Subtype.val e) x` as an intermediate fact. Simplify `this)` using `[ComplexEmbedding.conjugate_coe_eq, ρ]`.
+
+Conclude with `(InfinitePlace.isComplex_mk_iff.1 (hE.isComplex (InfinitePlace.mk τ.1))) hr`. Establish `key : τ' = τ ∨ τ' = ρ`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by omega)`.
+
+Establish `hcard : Nat.card (E →ₐ[F] ℂ) ≤ 2`. Rewrite using `[← Field.finSepDegree_eq_of_isAlgClosed F E ℂ, ← h2]`. Conclude with `Field.finSepDegree_le_finrank F E`. Establish `hne0 : Nat.card (E →ₐ[F] ℂ) ≠ 0`. Rewrite using `[← Field.finSepDegree_eq_of_isAlgClosed F E ℂ]`.
+
+Conclude with `NeZero.ne _`. Establish `: Finite (E →ₐ[F] ℂ)` using `Nat.finite_of_card_ne_zero hne0`. Set `` to `Fintype.ofFinite (E →ₐ[F] ℂ)`. Establish `h3 : ({toA τ', toA τ, toA ρ} : Finset (E →ₐ[F] ℂ)).card = 3` using `Finset.card_eq_three.2 ⟨_, _, _, fun e => hne.1 (toA_inj _ _ e), fun e => hne.2 (toA_inj _ _ e), fun e => hρ (toA_inj _ _ e).symm, rfl⟩`. Use `Finset.card_le_univ ({toA τ', toA τ, toA ρ} : Finset (E →ₐ[F] ℂ))` as an intermediate fact.
+
+Rewrite `this` using `[h3, ← Nat.card_eq_fintype_card]`. Use linear arithmetic over natural numbers and integers. Break down `key with e | e` into its components or cases. Use `left`. Rewrite using `[e]`.
+
+Use `right`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a x`. Rewrite using `[e, infEmb_tmul]`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[infEmb_tmul, map_mul, hext]`. Apply the tactic sequence `try rfl`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem infEmb_eq_or_conj {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ τ' : EmbOver E w) :
     infEmb τ' = infEmb τ ∨ infEmb τ' = (starRingEnd ℂ).comp (infEmb τ) := by
   obtain ⟨hF, hE, h2, hc⟩ := h
@@ -332,6 +473,9 @@ theorem infEmb_eq_or_conj {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ τ' : Em
 
 variable {F w} in
 
+/- English proof (translation)
+Use `le_antisymm ((normInf_le_iff F w).2 fun τ' => ?_) ((normInf_le_iff F w).1 le_rfl τ)` and prove the remaining obligations. Break down `infEmb_eq_or_conj h τ τ' with e | e` into its components or cases. Rewrite using `[e]`. Rewrite using `[e, RingHom.coe_comp, ← Matrix.map_map]`. Conclude with `opNorm_map_conj_le _`.
+-/
 theorem normInf_eq_opNorm {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ : EmbOver E w) {n : Type} [Fintype n] [DecidableEq n]
     (y : Matrix n n (w.Completion ⊗[F] E)) : normInf F w y = opNorm (y.map (infEmb τ)) := by
   refine le_antisymm ((normInf_le_iff F w).2 fun τ' => ?_) ((normInf_le_iff F w).1 le_rfl τ)
@@ -360,6 +504,17 @@ variable (E) in
 def compInf (w : InfinitePlace F) : AF F ⊗[F] E →+* w.Completion ⊗[F] E :=
   (Algebra.TensorProduct.map (evInf F w) (AlgHom.id F E)).toRingHom
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact Filter.Eventually.of_forall fun v => by rw [map_zero, absFin_zero]; exact zero_le`. Consider the case `add x y hx hy`. Conclude with `(hx.and hy).mono fun v h => by`. Rewrite using `[map_add]`.
+
+Conclude with `(absFin_add_le F v _ _).trans (max_le h.1 h.2)`. Consider the case `tmul a x`. Establish `hxa : IsAlgebraic ℤ x` using `by first`. Consider the case `exact Algebra.IsAlgebraic.isAlgebraic x`. Consider the case `exact (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)`.
+
+Take `⟨m, hm, hint⟩` from `hxa.exists_integral_multiple`. Establish `hmF : (m : F) ≠ 0` using `Int.cast_ne_zero.2 hm`. Establish `hxe : (m : F)⁻¹ • (m • x) = x`. Rewrite using `[← Int.cast_smul_eq_zsmul F m x, smul_smul, inv_mul_cancel₀ hmF, one_smul]`. Use `(sndA F ((m : F)⁻¹ • a)).2.mono fun v hv => ?_` and prove the remaining obligations.
+
+Establish `e1 : compFin F E v (a ⊗ₜ[F] x) = evFin F v ((m : F)⁻¹ • a) ⊗ₜ[F] (m • x)`. Establish `e0 : compFin F E v (a ⊗ₜ[F] x) = evFin F v a ⊗ₜ[F] x` using `rfl`. Rewrite using `[e0, map_smul, TensorProduct.smul_tmul, hxe]`. Rewrite using `[e1]`. Use `(absFin_tmul_le F v _ (⟨m • x, hint⟩ : 𝓞 E)).trans ?_` and prove the remaining obligations.
+
+Establish `hv' : Valued.v (evFin F v ((m : F)⁻¹ • a)) ≤ 1` using `hv`. Rewrite using `[← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]`. Conclude with `Valued.toNormedField.norm_le_one_iff.2 hv'`.
+-/
 theorem eventually_absFin_le_one (z : AF F ⊗[F] E) :
     ∀ᶠ v in Filter.cofinite, absFin F v (compFin F E v z) ≤ 1 := by
   induction z using TensorProduct.induction_on with
@@ -389,11 +544,17 @@ theorem eventually_absFin_le_one (z : AF F ⊗[F] E) :
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+The claim follows from `(Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => eventually_absFin_le_one F (y i j)).mono fun v hv => (normFin_le_iff F v).2 fun i j => by simpa using hv i j`.
+-/
 theorem eventually_normFin_le_one (y : Matrix n n (AF F ⊗[F] E)) :
     ∀ᶠ v in Filter.cofinite, normFin F v (y.map (compFin F E v)) ≤ 1 := (Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j =>
     eventually_absFin_le_one F (y i j)).mono fun v hv => (normFin_le_iff F v).2 fun i j => by
   simpa using hv i j
 
+/- English proof (translation)
+Establish `h1` using `eventually_normFin_le_one F (E := E) (g : Matrix n n (AF F ⊗[F] E))`. Establish `h2` using `eventually_normFin_le_one F (E := E) ((g⁻¹ : GL n (AF F ⊗[F] E)) : Matrix n n (AF F ⊗[F] E))`. Use `Filter.eventually_cofinite.1 ((h1.and h2).mono fun v hv => ?_)` and prove the remaining obligations. Use `show htOf (normFin F v) _ = 1`. Conclude with `htOf_eq_one.2 ⟨hv.1, hv.2⟩`.
+-/
 theorem finite_mulSupport_htFin (g : GL n (AF F ⊗[F] E)) :
     (Function.mulSupport fun v => htFin F v (bc (compFin F E v) g)).Finite := by
   have h1 := eventually_normFin_le_one F (E := E) (g : Matrix n n (AF F ⊗[F] E))
@@ -405,12 +566,25 @@ theorem finite_mulSupport_htFin (g : GL n (AF F ⊗[F] E)) :
 def heightGL (g : GL n (AF F ⊗[F] E)) : ℝ≥0 :=
   (∏ w, htInf F w (bc (compInf F E w) g)) * ∏ᶠ v, htFin F v (bc (compFin F E v) g)
 
+/- English proof (translation)
+The claim follows from `one_le_mul_of_one_le_of_one_le (Finset.one_le_prod' fun w _ => one_le_htOf _ _) (one_le_finprod' fun v => one_le_htOf _ _)`.
+-/
 theorem one_le_heightGL (g : GL n (AF F ⊗[F] E)) : 1 ≤ heightGL F g := one_le_mul_of_one_le_of_one_le (Finset.one_le_prod' fun w _ => one_le_htOf _ _)
   (one_le_finprod' fun v => one_le_htOf _ _)
 
+/- English proof (translation)
+Simplify using `only [heightGL, htInf, htFin, map_inv, htOf_inv]`.
+-/
 theorem heightGL_inv (g : GL n (AF F ⊗[F] E)) : heightGL F g⁻¹ = heightGL F g := by
   simp only [heightGL, htInf, htFin, map_inv, htOf_inv]
 
+/- English proof (translation)
+Establish `hfin` using `finite_mulSupport_htFin F g`. Establish `hA : ∀ w ∈ (Finset.univ : Finset (InfinitePlace F)), 1 ≤ htInf F w (bc (compInf F E w) g)` using `fun w _ => one_le_htOf _ _`. Establish `hB : ∀ v ∈ hfin.toFinset, 1 ≤ htFin F v (bc (compFin F E v) g)` using `fun v _ => one_le_htOf _ _`. Rewrite using `[heightGL, finprod_eq_prod _ hfin, mul_eq_one_iff_of_one_le (Finset.one_le_prod' hA) (Finset.one_le_prod' hB), Finset.prod_eq_one_iff_of_one_le' hA, Finset.prod_eq_one_iff_of_one_le' hB]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun w => h1 w (Finset.mem_univ _), fun v => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hv`. Conclude with `hv (h2 v (hfin.mem_toFinset.2 hv))`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨fun w _ => h1 w, fun v _ => h2 v⟩`.
+-/
 theorem heightGL_eq_one_iff {g : GL n (AF F ⊗[F] E)} : heightGL F g = 1 ↔
     (∀ w, htInf F w (bc (compInf F E w) g) = 1) ∧ ∀ v, htFin F v (bc (compFin F E v) g) = 1 := by
   have hfin := finite_mulSupport_htFin F g
@@ -427,6 +601,9 @@ theorem heightGL_eq_one_iff {g : GL n (AF F ⊗[F] E)} : heightGL F g = 1 ↔
   · rintro ⟨h1, h2⟩
     exact ⟨fun w _ => h1 w, fun v _ => h2 v⟩
 
+/- English proof (translation)
+Use `(heightGL_eq_one_iff F).2 ⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one] show htOf (normInf F w) 1 = 1`. Conclude with `htOf_eq_one.2 ⟨by rw [Units.val_one]; exact normInf_one_le F w, by rw [inv_one, Units.val_one]; exact normInf_one_le F w⟩`. Rewrite using `[map_one] show htOf (normFin F v) 1 = 1`. Conclude with `htOf_eq_one.2 ⟨by rw [Units.val_one]; exact normFin_one_le F v, by rw [inv_one, Units.val_one]; exact normFin_one_le F v⟩`.
+-/
 @[simp] theorem heightGL_one : heightGL F (1 : GL n (AF F ⊗[F] E)) = 1 := by
   refine (heightGL_eq_one_iff F).2 ⟨fun w => ?_, fun v => ?_⟩
   · rw [map_one]
@@ -438,6 +615,15 @@ theorem heightGL_eq_one_iff {g : GL n (AF F ⊗[F] E)} : heightGL F g = 1 ↔
     exact htOf_eq_one.2 ⟨by rw [Units.val_one]; exact normFin_one_le F v,
       by rw [inv_one, Units.val_one]; exact normFin_one_le F v⟩
 
+/- English proof (translation)
+Establish `hN : ∀ w, htInf F w (bc (compInf F E w) (g * h)) ≤ htInf F w (bc (compInf F E w) g) * htInf F w (bc (compInf F E w) h)` using `fun w => by`. Rewrite using `[map_mul]`. Conclude with `htOf_mul_le (normInf_mul_le F w) _ _`. Establish `hM : ∀ v, htFin F v (bc (compFin F E v) (g * h)) ≤ htFin F v (bc (compFin F E v) g) * htFin F v (bc (compFin F E v) h)` using `fun v => by`. Rewrite using `[map_mul]`.
+
+Conclude with `htOf_mul_le (normFin_mul_le F v) _ _`. Establish `fg` using `finite_mulSupport_htFin F (g * h)`. Establish `fg1` using `finite_mulSupport_htFin F g`. Establish `fh1` using `finite_mulSupport_htFin F h`. Establish `e1 : (∏ w, htInf F w (bc (compInf F E w) (g * h))) ≤ (∏ w, htInf F w (bc (compInf F E w) g)) * ∏ w, htInf F w (bc (compInf F E w) h)`.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod' fun w _ => hN w`. Establish `e2 : (∏ᶠ v, htFin F v (bc (compFin F E v) (g * h))) ≤ (∏ᶠ v, htFin F v (bc (compFin F E v) g)) * ∏ᶠ v, htFin F v (bc (compFin F E v) h)`. Rewrite using `[← finprod_mul_distrib fg1 fh1]`. Conclude with `finprod_le_finprod fg (fun _ => zero_le) ((fg1.union fh1).subset (Function.mulSupport_mul _ _)) hM`.
+
+Unfold `heightGL`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem heightGL_mul_le (g h : GL n (AF F ⊗[F] E)) : heightGL F (g * h) ≤ heightGL F g * heightGL F h := by
   have hN : ∀ w, htInf F w (bc (compInf F E w) (g * h)) ≤
       htInf F w (bc (compInf F E w) g) * htInf F w (bc (compInf F E w) h) := fun w => by
@@ -462,6 +648,11 @@ theorem heightGL_mul_le (g h : GL n (AF F ⊗[F] E)) : heightGL F (g * h) ≤ he
   calc _ ≤ _ := mul_le_mul' e1 e2
     _ = _ := mul_mul_mul_comm _ _ _ _
 
+/- English proof (translation)
+Establish `hk' : heightGL F k⁻¹ = 1` using `(heightGL_inv F k).trans hk`. Prove the components needed by the constructor for the conclusion. Use `le_antisymm ((heightGL_mul_le F g k).trans (by rw [hk, mul_one])) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `le_antisymm ((heightGL_mul_le F k g).trans (by rw [hk, one_mul])) ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem heightGL_mul_of_eq_one {k : GL n (AF F ⊗[F] E)} (hk : heightGL F k = 1) (g : GL n (AF F ⊗[F] E)) :
     heightGL F (g * k) = heightGL F g ∧ heightGL F (k * g) = heightGL F g := by
   have hk' : heightGL F k⁻¹ = 1 := (heightGL_inv F k).trans hk

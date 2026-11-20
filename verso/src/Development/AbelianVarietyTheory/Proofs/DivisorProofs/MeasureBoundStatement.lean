@@ -13,6 +13,11 @@ open Formalism.MainNotions
 
 namespace GlobalTheory.CovTop.MeasRd
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `GlobalTheory.T.one_measure_of_classicalTheorems h`. Use `Closed.imp (Closed.and (GlobalTheory.T.log_ratio_upper_bound h2) (GlobalTheory.T.log_ratio_lower_bound h)) ?_` and prove the remaining obligations. Introduce `_ Fm _ _ hh`. Take `⟨⟨K1, hK1, a, ha⟩, ⟨K2, hK2, b, hb⟩⟩` from `hh`.
+
+Use `⟨(K1 + K2) / 2, by positivity, max a b, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations. Take `⟨hr, hu⟩` from `ha x hx ((le_max_left _ _).trans hle) ι p hp i`. Establish `hl` using `hb x hx ((le_max_right _ _).trans hle) ι p hp i`. Conclude with `measAt_of p i (GlobalTheory.T.exact_at_of_one_measure p hp.1 (h2 _) i) hr hK1 hK2 hu hl`.
+-/
 theorem meas : Hypotheses2 → Meas := by
   intro h
   have h2 := GlobalTheory.T.one_measure_of_classicalTheorems h

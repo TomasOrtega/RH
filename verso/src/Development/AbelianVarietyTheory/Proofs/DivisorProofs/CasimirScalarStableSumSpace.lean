@@ -12,6 +12,25 @@ namespace GlobalTheory.PsCo.PcEF
 
 open GlobalTheory.PsCo.PcEG
 
+/- English proof (translation)
+Introduce `n ε H _ _ σ D E hσ hD c hc L hLf hLK`. Establish `hE : IsGlRep E` using `hD.glRep`. Establish `hLk : IsKStableSub ε E L` using `isKStableSub_of_kStable hσ hD L hLf fun k hk v hv => ⟨sigD hD hk v, hLK k hk v hv, rfl⟩`. Use `set Dop := dOp ε (eT E) cpT + dOp' ε (eT E) cmT with hDop`. Set `Y0 : Submodule ℂ (TensorProduct ℂ D (Fock n))` to `tensFock L ⊓ physicalSubspace ε`.
+
+Establish `hA : ∀ a b, ε a = ε b → ∀ x ∈ Y0, diagE ε (eT E) cpT cmT a b x ∈ Y0` using `fun a b hab x hx => ⟨tensorFock_diagAction_stable ε hLk hab hx.1, (physSub_stable ε E).2.1 a b x hx.2⟩`. Establish `hD2 : ∀ y ∈ Y0, Dop (Dop y) ∈ Y0`. Introduce `y hy`. Establish `h2` using `LinearMap.congr_fun (two_D_sq (eT_isGlRep hE) cpT_cmT_isCAR (eT_commutesCAR E) ε) y`. Rewrite `h2` using `[LinearMap.smul_apply, Module.End.mul_apply]`.
+
+Establish `hcas : casimir (eT (n` using `n) E) y = c • y := by`. Rewrite using `[TRGap.casimir_eT]`. Conclude with `map_eq_smul_of_tensFock (fun v _ => hc v) hy.1`. Establish `hmem : (2 : ℂ) • Dop (Dop y) ∈ Y0`. Rewrite using `[hDop, h2]`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.neg_apply, LinearMap.smul_apply, LinearMap.sum_apply]`. Rewrite using `[hcas]`. Use `Submodule.sub_mem _ (Submodule.add_mem _ (Submodule.neg_mem _ (Submodule.smul_mem _ _ hy)) ?_) (Submodule.smul_mem _ _ (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (hA a a rfl y hy)))` and prove the remaining obligations. Simplify using `only [casimirK, LinearMap.sum_apply, Module.End.mul_apply]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b hb => hA a b (Finset.mem_filter.1 hb).2.symm _ (hA b a (Finset.mem_filter.1 hb).2 y hy)`.
+
+Use `Submodule.smul_mem _ (1 / 2 : ℂ) hmem` as an intermediate fact. Rewrite `this` using `[smul_smul, show (1 / 2 : ℂ) * 2 = 1 by norm_num, one_smul]`. Then use the resulting hypothesis. Establish `hG0 : ∀ z ∈ Y0, gradT z ∈ Y0` using `fun z hz => ⟨tensFock_lTensor_stable _ hz.1, (physSub_stable ε E).2.2.2.2 z hz.2⟩`. Establish `hW0 : ∀ (k : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Kset ε), ∀ y ∈ Y0, wK hD hk y ∈ Y0` using `fun k hk y hy => ⟨wK_tensFock hD hk (fun x hx => hLK k hk x hx) hy.1, wK_physSub hD hk hy.2⟩`. Establish `hfd0 : FiniteDimensional ℂ Y0` using `by haveI := tensorFock_finiteDimensional (n := n) hLf`.
+
+Conclude with `Submodule.finiteDimensional_of_le inf_le_left`. Use `⟨Y0 ⊔ Y0.map Dop, inferInstance, le_sup_left, sup_le inf_le_right ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `dD_physSub E hy.2`. Introduce `y hy`.
+
+Take `⟨y0, hy0, y1, ⟨x, hx, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hy`. Use `show Dop (y0 + Dop x) ∈ _`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_right ⟨y0, hy0, rfl⟩) (Submodule.mem_sup_left (hD2 x hx))`. Introduce `y hy`.
+
+Take `⟨y0, hy0, y1, ⟨x, hx, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[map_add, hDop, gradT_D]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left (hG0 y0 hy0)) (Submodule.mem_sup_right ⟨-gradT x, Submodule.neg_mem _ (hG0 x hx), by rw [map_neg]⟩)`. Introduce `k hk y hy`. Take `⟨y0, hy0, y1, ⟨x, hx, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hy`.
+
+Rewrite using `[map_add, hDop, wK_D hσ hD hk]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left (hW0 k hk y0 hy0)) (Submodule.mem_sup_right ⟨_, hW0 k hk x hx, rfl⟩)`.
+-/
 theorem casimirScalar_stableSumSpace : BuildY := by
   intro n ε H _ _ σ D E hσ hD c hc L hLf hLK
   have hE : IsGlRep E := hD.glRep

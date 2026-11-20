@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.RegAlgCharAlg
 
+/- English proof (translation)
+Establish `h` using `(CG.hasInfChar_ofChar χ τ).twist χ'`. Rewrite `h` using `[CG.twist_ofChar, Multiset.map_singleton]`. Use `h.infChar_eq` as an intermediate fact. Rewrite `this` using `[CG.infChar_ofChar]`. Simplify using `using this`.
+-/
 theorem expo_mul' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (χ χ' : HChar E) (τ : E →+* ℂ) :
     expo (χ * χ') τ = expo χ τ + expo χ' τ := by
   have h := (CG.hasInfChar_ofChar χ τ).twist χ'
@@ -28,12 +31,26 @@ theorem expo_mul' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (χ 
   rw [CG.infChar_ofChar] at this
   simpa using this
 
+/- English proof (translation)
+Use `expo_mul' χ χ⁻¹ τ` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, CG.expo_one]`. Take the linear combination `-this`.
+-/
 theorem expo_inv' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (χ : HChar E) (τ : E →+* ℂ) :
     expo χ⁻¹ τ = -expo χ τ := by
   have := expo_mul' χ χ⁻¹ τ
   rw [mul_inv_cancel, CG.expo_one] at this
   linear_combination -this
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha π χ hreg hpol`. Use `GlobalTheory.T.heckeChar_realSubfield_algebraic_of_comp_norm_integral E χ fun τ => ?_` and prove the remaining obligations. Establish `hcomm : ∀ (τ : E →+* ℂ) (u : ℂ) (o : Op E a), Commute (cap (a` using `a) τ u) (act o) := fun τ u o => by`. Consider the cases of `o with`. Consider the case `fin k => exact commute_cap_finRep τ u k`.
+
+Consider the case `cpt k => exact GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _`. Consider the case `lie X => exact commute_cap_lie τ u X`. Establish `hm : ∀ σ, π.HasInfChar σ ((CG.mk π).infChar σ)` using `fun σ => GlobalTheory.CuspRep.hasInfChar_infChar_of_commute E a hcomm (CG.mk π) σ`. Use `set ψ := GlobalTheory.GalOfCusp.compNorm E χ`. Establish `h1` using `(hm τ).twist ψ⁻¹`.
+
+Establish `key` using `GlobalTheory.T.infChar_conjEmbedding_neg_of_invariant_pairing E a (π.twist ψ⁻¹) π hpol.dual τ _ _ h1 (hm (NumberField.ComplexEmbedding.conjugate τ))`. Take `⟨z, hz⟩ : ∃ z, z ∈ (CG.mk π).infChar τ` from `Multiset.card_pos_iff_exists_mem.1 (by rw [(hm τ).1]; omega)`. Take `⟨n, hn⟩` from `(hreg τ).2 z hz`. Establish `hz' : -(z + expo ψ⁻¹ τ) ∈ (CG.mk π).infChar (NumberField.ComplexEmbedding.conjugate τ)`. Rewrite using `[key, Multiset.map_map]`.
+
+Conclude with `Multiset.mem_map.2 ⟨z, hz, rfl⟩`. Take `⟨n', hn'⟩` from `(hreg _).2 _ hz'`. Use `⟨n + n' + ((a : ℤ) - 1), ?_⟩` and prove the remaining obligations. Rewrite `hn'` using `[expo_inv']`. Use `push_cast`.
+
+Take the linear combination `hn' + hn`.
+-/
 theorem isAlgPos_of_polarizedPair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ), 1 ≤ a →
     ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), (CG.mk π).IsRegAlg → PolarizedPair π χ →
       ∃ n : (maximalRealSubfield E →+* ℂ) → ℤ, IsAlgPos χ n := by

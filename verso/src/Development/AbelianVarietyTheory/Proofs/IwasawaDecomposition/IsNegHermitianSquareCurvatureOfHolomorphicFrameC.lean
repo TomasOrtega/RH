@@ -10,6 +10,9 @@ open scoped ComplexOrder Topology
 
 namespace GlobalTheory.PointFormSign
 
+/- English proof (translation)
+Establish `h : MContDiffAt k (fun y : Fin m → Fin r → ℂ => Matrix.of y) x` using `fun a b => by`. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`. Conclude with `(((mContDiffAt_const 1).sub (h.mul h.conjTranspose)).inv hx).transpose`.
+-/
 theorem mContDiffAt_domGram {m r : ℕ} {k : WithTop ℕ∞} (x : Fin m → Fin r → ℂ)
     (hx : IsUnit (1 - Matrix.of x * (Matrix.of x)ᴴ).det) : MContDiffAt k (domGram m r) x := by
   have h : MContDiffAt k (fun y : Fin m → Fin r → ℂ => Matrix.of y) x := fun a b => by
@@ -17,11 +20,23 @@ theorem mContDiffAt_domGram {m r : ℕ} {k : WithTop ℕ∞} (x : Fin m → Fin 
     fun_prop
   exact (((mContDiffAt_const 1).sub (h.mul h.conjTranspose)).inv hx).transpose
 
+/- English proof (translation)
+Rewrite using `[domGram, det_transpose]`. Conclude with `isUnit_nonsing_inv_det _ hx`.
+-/
 theorem isUnit_det_domGram {m r : ℕ} (x : Fin m → Fin r → ℂ)
     (hx : IsUnit (1 - Matrix.of x * (Matrix.of x)ᴴ).det) : IsUnit (domGram m r x).det := by
   rw [domGram, det_transpose]
   exact isUnit_nonsing_inv_det _ hx
 
+/- English proof (translation)
+Take `⟨S, T, hS, hF⟩` from `hneg`. Establish `hu : IsUnit (1 - Matrix.of (Z v) * (Matrix.of (Z v))ᴴ).det` using `(isUnit_iff_isUnit_det _).1 hpos.isUnit`. Establish `hD2 : MContDiffAt 2 (domGram m r) (Z v)` using `mContDiffAt_domGram _ hu`. Establish `hDu : IsUnit (domGram m r (Z v)).det` using `isUnit_det_domGram _ hu`. Establish `hZ2 : ContDiffAt ℂ 2 Z v` using `(GlobalTheory.SCV.analyticAt_iff_eventually_differentiableAt.2 hZ).contDiffAt`.
+
+Establish `hW2 : MContDiffAt 2 W v` using `fun i j => ((GlobalTheory.SCV.analyticAt_iff_eventually_differentiableAt.2 (hW i j)).contDiffAt (n := 2)).restrict_scalars ℝ`. Establish `hW0 : ∀ᶠ x in 𝓝 v, ∀ η, mdbar W x η = 0` using `by filter_upwards [Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hW i j] with x hx η`. Use extensionality with `a b`. Rewrite using `[mdbar_apply, GlobalTheory.dbar_eq_zero (hx a b)]`. Both sides reduce to the same expression.
+
+Establish `hH2 : MContDiffAt 2 (fun x => domGram m r (Z x)) v` using `fun a b => (hD2 a b).comp v (hZ2.restrict_scalars ℝ)`. Establish `hK2 : MContDiffAt 2 (fun u => (W u)ᵀ * domGram m r (Z u) * (W u)ᴴᵀ) v` using `(hW2.transpose.mul hH2).mul hW2.conjTranspose.transpose`. Establish `hKu : IsUnit ((W v)ᵀ * domGram m r (Z v) * (W v)ᴴᵀ).det`. Simplify using `only [det_mul, det_transpose, det_conjTranspose]`. Conclude with `(hWu.mul hDu).mul hWu.star`.
+
+Use `⟨S * W v, T ∘ₗ (fderiv ℂ Z v).toLinearMap, by rw [det_mul]; exact hS.mul hWu, fun ξ η => ?_⟩` and prove the remaining obligations. Rewrite using `[curv_congr hG, curv_smul (f := fun _ => κ) contDiffAt_const hκ.ne' hK2 hKu, leviForm_const, curv_changeFrame (H := fun x => domGram m r (Z x)) hH2 hDu hW2 hWu hW0, curv_comp_holo hD2 hDu hZ2, hF, Matrix.mul_inv_rev]`. Simplify using `[Matrix.mul_assoc]`.
+-/
 theorem isNegSq_curv_of_changeFrame_comp {n m r : ℕ} (G : V n → Matrix (Fin m) (Fin m) ℂ) (v : V n)
     (W : V n → Matrix (Fin m) (Fin m) ℂ) (Z : V n → (Fin m → Fin r → ℂ)) (κ : ℝ) (hκ : 0 < κ)
     (hG : ∀ᶠ u in 𝓝 v, G u = (κ : ℂ) • ((W u)ᵀ * domGram m r (Z u) * (W u)ᴴᵀ))

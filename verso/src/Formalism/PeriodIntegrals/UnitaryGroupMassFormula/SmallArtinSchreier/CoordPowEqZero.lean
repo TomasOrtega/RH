@@ -6,12 +6,20 @@ section Alg
 
 variable {R : Type*} [CommRing R] {p : ℕ} [Fact p.Prime] [CharP R p]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, ← add_assoc, ← map_pow, Perfection.coeff_pow_p, ih]`.
+-/
 theorem coeff_pow_pow (f : Perfection R p) (m n : ℕ) :
     Perfection.coeff R p (m + n) f ^ p ^ n = Perfection.coeff R p m f := by
   induction n with
   | zero => simp
   | succ n ih => rw [pow_succ', pow_mul, ← add_assoc, ← map_pow, Perfection.coeff_pow_p, ih]
 
+/- English proof (translation)
+Establish `h1` using `coeff_pow_pow f 0 m`. Rewrite `h1` using `[zero_add]`. Take `⟨d, rfl⟩ : ∃ d, n = m + d` from `⟨n - m, by omega⟩`. Rewrite using `[pow_add, pow_mul, h1]`. Establish `hd : d < p ^ d` using `Nat.lt_pow_self (Fact.out : p.Prime).one_lt`.
+
+Conclude with `pow_eq_zero_of_le (by omega) hK`.
+-/
 theorem coord_pow_eq_zero (f : Perfection R p) {K : ℕ}
     (hK : Perfection.coeff R p 0 f ^ K = 0) (m n : ℕ) (hn : m + K ≤ n) :
     Perfection.coeff R p m f ^ p ^ n = 0 := by
@@ -22,11 +30,17 @@ theorem coord_pow_eq_zero (f : Perfection R p) {K : ℕ}
   have hd : d < p ^ d := Nat.lt_pow_self (Fact.out : p.Prime).one_lt
   exact pow_eq_zero_of_le (by omega) hK
 
+/- English proof (translation)
+Rewrite using `[← frobenius_def, map_neg, map_sum]`. Simplify using `only [frobenius_def]`.
+-/
 theorem neg_sum_pow_p (s : Finset ℕ) (g : ℕ → R) :
     (-∑ n ∈ s, g n) ^ p = -∑ n ∈ s, g n ^ p := by
   rw [← frobenius_def, map_neg, map_sum]
   simp only [frobenius_def]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_range_add, Finset.sum_eq_zero (s := Finset.range j) (fun x _ => coord_pow_eq_zero f hK m (m + K + x) (by omega)), add_zero]`.
+-/
 theorem sum_stable (f : Perfection R p) {K : ℕ}
     (hK : Perfection.coeff R p 0 f ^ K = 0) (m j : ℕ) :
     ∑ n ∈ Finset.range (m + K + j), Perfection.coeff R p m f ^ p ^ n
@@ -38,6 +52,9 @@ theorem sum_stable (f : Perfection R p) {K : ℕ}
 noncomputable def sol (f : Perfection R p) (K m : ℕ) : R :=
   -∑ n ∈ Finset.range (m + K), Perfection.coeff R p m f ^ p ^ n
 
+/- English proof (translation)
+Rewrite using `[sol, sol, neg_sum_pow_p, ← sum_stable f hK m 1, show m + 1 + K = m + K + 1 by omega]`. Use `congr 1`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, ← map_pow, Perfection.coeff_pow_p]`.
+-/
 theorem sol_succ_pow (f : Perfection R p) {K : ℕ}
     (hK : Perfection.coeff R p 0 f ^ K = 0) (m : ℕ) :
     sol f K (m + 1) ^ p = sol f K m := by
@@ -50,6 +67,11 @@ noncomputable def solPerf (f : Perfection R p) {K : ℕ}
     (hK : Perfection.coeff R p 0 f ^ K = 0) : Perfection R p :=
   ⟨fun m => sol f K m, fun m => sol_succ_pow f hK m⟩
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[map_sub, map_pow]`. Express the relevant statement in the definitionally equal form `sol f K m ^ p - sol f K m = Perfection.coeff R p m f`. Rewrite using `[sol, neg_sum_pow_p]`. Repeatedly rewrite using `[← pow_mul, ← pow_succ]`.
+
+Establish `e1` using `Finset.sum_range_succ' (fun n => Perfection.coeff R p m f ^ p ^ n) (m + K)`. Establish `e2` using `Finset.sum_range_succ (fun n => Perfection.coeff R p m f ^ p ^ n) (m + K)`. Establish `h0` using `coord_pow_eq_zero f hK m (m + K) le_rfl`. Simplify using `only [pow_zero, pow_one] at e1`. Take the linear combination `e1 - e2 - h0`.
+-/
 theorem solPerf_spec (f : Perfection R p) {K : ℕ}
     (hK : Perfection.coeff R p 0 f ^ K = 0) :
     solPerf f hK ^ p - solPerf f hK = f := by

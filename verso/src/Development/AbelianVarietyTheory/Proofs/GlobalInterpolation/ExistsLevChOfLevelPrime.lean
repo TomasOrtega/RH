@@ -17,6 +17,41 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.EX.OB
 
+/- English proof (translation)
+Introduce `hLP eps cs C he he' hcs hC`. Take `⟨x1, h1⟩` from `hLP eps cs he he' hcs`. Take `⟨x2, h2⟩` from `GlobalTheory.scale_poly_comparison eps 41 1 he one_pos`. Take `⟨x3, h3⟩` from `GlobalTheory.EX.rank_basic_bounds eps he he'`. Use `⟨max (max x1 x2) (max x3 (max 2 ((1 / cs) ^ 4))), ?_⟩` and prove the remaining obligations.
+
+Introduce `cD ch s P q1 a b c du Ds hs hx hOK hdu hDs hwin`. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨hx1, hx2⟩, hx3, hx4, hx5⟩` from `hx`. Take `⟨-, -, hb, -⟩` from `h2 s hs hx2`. Take `⟨-, -, hr, hkr, -, -, hL1, -, -, -, -, -, -, -, -, hm, -⟩` from `h3 s P.R hs hx3 hOK.rank`.
+
+Establish `hx0 : 0 < s.x` using `by linarith`. Establish `hxone : 1 ≤ s.x` using `by linarith`. Establish `hX1 : 1 ≤ s.X'` using `Real.one_le_exp (by positivity)`. Establish `hb0 : 0 < s.b` using `Real.exp_pos _`. Establish `hG : 1 ≤ C.CGam` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 _ (by simp [FC.cMid])`.
+
+Establish `hm2 : (2 : ℝ) ≤ P.R.m` using `by exact_mod_cast P.R.two_le_m`. Establish `hmf : (P.R.m : ℝ) ≤ P.R.f` using `by exact_mod_cast P.R.m_le_f`. Establish `hGam : 1 < GamS C s P.R`. Unfold `GamS`. Rewrite using `[Real.one_lt_exp_iff]`.
+
+Establish `: (0 : ℝ) < P.R.f` using `by linarith`. Establish `: (0 : ℝ) < P.R.m` using `by linarith`. Establish `: 0 < C.CGam` using `by linarith`. Establish `: 0 < s.L` using `by linarith`. Check the signs of the components of the expression.
+
+Establish `hk : (P.R.k : ℝ) ≤ s.x ^ 5`. Establish `: (P.R.k : ℝ) ≤ P.R.r` using `by exact_mod_cast hkr`. Establish `e : s.x ^ (5 : ℝ) = s.x ^ 5` using `by exact_mod_cast Real.rpow_natCast s.x 5`. Conclude with `this.trans (hr.trans_eq e)`. Establish `hb41 : s.x ^ 41 ≤ s.b`.
+
+Establish `e : s.x ^ (41 : ℝ) = s.x ^ 41` using `by exact_mod_cast Real.rpow_natCast s.x 41`. Rewrite `hb` using `[e, Real.rpow_one]`. Conclude with `(le_mul_of_one_le_right (by positivity) hX1).trans hb`. Establish `hk8 : 2 * (P.R.k : ℝ) ^ 8 ≤ s.b`. Establish `h8 : (P.R.k : ℝ) ^ 8 ≤ (s.x ^ 5) ^ 8` using `pow_le_pow_left₀ (by positivity) hk 8`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hg : ∀ i, (P.H.g i : ℝ) ≤ s.b ^ 9` using `fun i => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hcm : 1 ≤ cs * P.R.m`. Establish `a1 : 1 / cs ≤ s.x ^ ((1 : ℝ) / 4)`.
+
+Establish `a0 : ((1 / cs) ^ 4) ^ ((1 : ℝ) / 4) ≤ s.x ^ ((1 : ℝ) / 4)` using `Real.rpow_le_rpow (by positivity) hx5 (by norm_num)`. Establish `e : ((1 / cs) ^ 4) ^ ((1 : ℝ) / 4) = 1 / cs`. Use `Real.pow_rpow_inv_natCast (x := 1 / cs) (n := 4) (by positivity) (by norm_num)` as an intermediate fact. Simplify using `using this`. Rewrite `a0` using `[e]`. Then use the resulting hypothesis.
+
+Establish `a2 : s.x ^ ((1 : ℝ) / 4) ≤ s.x ^ ((1 : ℝ) / 2 - s.eps / 16)` using `Real.rpow_le_rpow_of_exponent_le hxone (by rw [hs]; linarith)`. Establish `a3 : 1 / cs ≤ P.R.m` using `a1.trans (a2.trans hm)`. Rewrite `a3` using `[div_le_iff₀ hcs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hXL : s.X' ≤ Real.exp (cs * P.R.m * s.L)`.
+
+Unfold `Scale.X'`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `a1 : s.x ^ (s.eps / 3) ≤ s.L` using `Real.rpow_le_rpow_of_exponent_le hxone (by rw [hs]; linarith)`. Conclude with `a1.trans (le_mul_of_one_le_left (by linarith) hcm)`. Establish `hp : (P.H.pde : ℝ) < s.X'`.
+
+Break down `hOK.lev _ P.H.pde_level.1 with ⟨i, hi⟩ | h` into its components or cases. Conclude with `absurd hi (P.H.pde_ne_g i).1`. Conclude with `h`. Establish `hp' : (P.H.pde' : ℝ) < s.X'`. Break down `hOK.lev _ P.H.pde_level.2 with ⟨i, hi⟩ | h` into its components or cases.
+
+Conclude with `absurd hi (P.H.pde_ne_g i).2`. Conclude with `h`. Use `GlobalTheory.Mem.LevelChoice.exists_levCh P du Ds _ hdu hDs hGam fun u => ?_` and prove the remaining obligations. Establish `hT0 : 0 < (Ds / du u) ^ ((1 : ℝ) / (P.R.f * P.R.k)) * GamS C s P.R ^ (-(2 : ℝ) / (P.R.f * P.R.k))`. Establish `: (0 : ℝ) < du u` using `by exact_mod_cast hdu u`.
+
+Establish `: 0 < GamS C s P.R` using `by linarith`. Check the signs of the components of the expression. Take `⟨T, hT, hlo, hhi, hN⟩` from `h1 s P.R P.H.condN P.H.d (P.H.g 0) (P.H.g 1) _ hs hx1 hOK.rank hOK.val.modRow (P.H.g_prime 0).one_le (P.H.g_prime 1).one_le (hg 0) (hg 1) hT0 (hwin u)`. Establish `hXT : s.X' ≤ T` using `hXL.trans (((Real.le_log_iff_exp_le hT0).1 (hwin u)).trans hlo)`. Establish `hM : 1 ≤ P.H.QS * P.H.q * P.H.d * (P.H.g 0 * P.H.g 1) ^ 2`.
+
+Establish `hn : 0 < P.H.QS` using `P.H.QS_pos`. Establish `hq : 0 < P.H.q` using `P.H.hyp.1.pos`. Establish `hd : 0 < P.H.d` using `P.H.hyp.2.1.pos`. Establish `h0` using `(P.H.g_prime 0).pos`. Establish `h1` using `(P.H.g_prime 1).pos`.
+
+Conclude with `Nat.succ_le_of_lt (by positivity)`. Take `⟨⟨π, hK, hπ, hc⟩, -⟩` from `GlobalTheory.EX.normOne_host P.R P.H _ T hM hN`. Use `⟨π, T, hT, ?_, ?_, hK, hπ, hc, hlo, hhi⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce and unpack `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_levCh_of_levelPrime : LevelPrime → ∀ (eps cs : ℝ) (C : FC), 0 < eps → eps < 1 / 52 → 0 < cs → Std C → ∃ x0 : ℝ, ∀ (cD ch : ℝ) (s : Scale) (P : PreCh) (q1 : ℕ) (a b : P.R.A → ℤ) (c : P.Word → Fin (P.R.k - 2) → Bool) (du : P.Word → ℕ) (Ds : ℝ), s.eps = eps → x0 ≤ s.x → ChOK s C cD ch P q1 a b c → (∀ u, 0 < du u) → 0 < Ds → (∀ u, cs * P.R.m * s.L ≤ Real.log ((Ds / du u) ^ ((1 : ℝ) / (P.R.f * P.R.k)) * GamS C s P.R ^ (-(2 : ℝ) / (P.R.f * P.R.k)))) → ∃ Lv : LevCh P, Lv.duStar = du ∧ Lv.Dstar = Ds ∧ Lv.GamP = GamS C s P.R := by
   intro hLP eps cs C he he' hcs hC
   obtain ⟨x1, h1⟩ := hLP eps cs he he' hcs

@@ -18,6 +18,11 @@ section Series
 
 variable {LL M : Type} [Field LL] [AddCommGroup M] [Module LL M]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Unfold `conv`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `j hj`.
+
+Simplify using `[PowerSeries.coeff_one, hj]`.
+-/
 theorem conv_one (f : ℤ → M) : conv (1 : PowerSeries LL) f = f := by
   funext k
   unfold conv
@@ -26,6 +31,9 @@ theorem conv_one (f : ℤ → M) : conv (1 : PowerSeries LL) f = f := by
   · intro j hj
     simp [PowerSeries.coeff_one, hj]
 
+/- English proof (translation)
+Unfold `conv`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `j hj`. Rewrite using `[hf _ (by omega), smul_zero]`.
+-/
 theorem conv_zero_coeff (e : PowerSeries LL) (f : ℤ → M) (hf : ∀ k < (0 : ℤ), f k = 0) :
     conv e f 0 = PowerSeries.constantCoeff e • f 0 := by
   unfold conv
@@ -34,16 +42,34 @@ theorem conv_zero_coeff (e : PowerSeries LL) (f : ℤ → M) (hf : ∀ k < (0 : 
   · intro j hj
     rw [hf _ (by omega), smul_zero]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, x, (conv_one _).symm⟩`.
+-/
 theorem mem_latSpan {ι : Type} (ex : ι → ℤ → M) (x : ι) : ex x ∈ latSpan (LL := LL) ex :=
   Submodule.subset_span ⟨1, x, (conv_one _).symm⟩
 
+/- English proof (translation)
+The claim follows from `((h _).1 (mem_latSpan ex x)).2`.
+-/
 theorem neg_eq_zero_of_std {ι : Type} {D : Submodule LL M} {ex : ι → ℤ → M}
     (h : Std D (latSpan (LL := LL) ex)) (x : ι) : ∀ k < (0 : ℤ), ex x k = 0 :=
   ((h _).1 (mem_latSpan ex x)).2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun f h1 h2 => (h f).2 ⟨h1, by simpa using h2⟩⟩`.
+-/
 theorem full_of_std {D : Submodule LL M} {Λ : Submodule LL (ℤ → M)} (h : Std D Λ) : Full D Λ :=
   ⟨0, fun f h1 h2 => (h f).2 ⟨h1, by simpa using h2⟩⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `((h _).1 (mem_latSpan ex x)).1 0`. Introduce `d hd`.
+
+Establish `h1 : (Pi.single (0 : ℤ) d : ℤ → M) ∈ latSpan (LL` using `LL) ex := by`. Use `(h _).2 ⟨fun k => ?_, fun k hk => Pi.single_eq_of_ne hk.ne _⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Simplify using `using hd`.
+
+Rewrite using `[Pi.single_eq_of_ne hk]`. Conclude with `D.zero_mem`. Establish `h2 : latSpan (LL` using `LL) ex ≤ (Submodule.span LL (Set.range fun x => ex x 0)).comap (LinearMap.proj (R := LL) (φ := fun _ : ℤ => M) 0) := by`. Unfold `latSpan`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨e, x, rfl⟩`. Express the relevant statement in the definitionally equal form `conv e (ex x) 0 ∈ Submodule.span LL (Set.range fun x => ex x 0)`. Rewrite using `[conv_zero_coeff e _ (neg_eq_zero_of_std h x)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)`. Simplify using `using h2 h1`.
+-/
 theorem span_const_of_std {ι : Type} {D : Submodule LL M} {ex : ι → ℤ → M}
     (h : Std D (latSpan (LL := LL) ex)) :
     Submodule.span LL (Set.range fun x => ex x 0) = D := by
@@ -67,6 +93,9 @@ theorem span_const_of_std {ι : Type} {D : Submodule LL M} {ex : ι → ℤ → 
       exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)
     simpa using h2 h1
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(h g).1 hg`. Use `⟨fun j => g (j + 1), (h _).2 ⟨fun k => h1 _, fun k hk => ?_⟩, fun j => by simp⟩` and prove the remaining obligations. Break down `(show k + 1 < 0 ∨ k + 1 = 0 by omega) with h3 | h3` into its components or cases. Conclude with `h2 _ h3`. Rewrite using `[h3, h0]`.
+-/
 theorem exists_shift_of_std {D : Submodule LL M} {Λ : Submodule LL (ℤ → M)} (h : Std D Λ)
     (g : ℤ → M) (hg : g ∈ Λ) (h0 : g 0 = 0) : ∃ f ∈ Λ, ∀ j : ℤ, g j = f (j - ((1 : ℕ) : ℤ)) := by
   obtain ⟨h1, h2⟩ := (h g).1 hg
@@ -88,18 +117,34 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by simpa using IsPrimitiveRoot.one⟩`.
+-/
 theorem prim_one (p : ℕ) : ∃ j : ℕ, IsPrimitiveRoot (1 : LL) (p ^ j) :=
   ⟨0, by simpa using IsPrimitiveRoot.one⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[letE, Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem sum_letE [NeZero n] : ∑ i : ZMod n, (letE i : LetA O n) = 1 := by
   funext j
   simp [letE, Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Take `⟨E, hE0, -, hE⟩` from `W.lev_π i 1 (prim_one _)`. Use `congrArg PowerSeries.constantCoeff hE` as an intermediate fact. Simplify `this` using `[hE0]`.
+-/
 theorem const_lev_π (i : ZMod n) : PowerSeries.constantCoeff (W.lev i 1 letπ) = 0 := by
   obtain ⟨E, hE0, -, hE⟩ := W.lev_π i 1 (prim_one _)
   have := congrArg PowerSeries.constantCoeff hE
   simpa [hE0] using this
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : (PowerSeries.X : PowerSeries O) ∣ a i - PowerSeries.C (PowerSeries.constantCoeff (a i)) := by`. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using the standard rewrite rules. Establish `h` using `W.lev_letter i 1 (a - algebraMap O (LetA O n) (PowerSeries.constantCoeff (a i)) - letπ * fun _ => b) (by`. Simplify using `only [Pi.sub_apply, Pi.mul_apply, letπ, Pi.algebraMap_apply]`.
+
+Rewrite using `[← hb]`. Simplify using `[PowerSeries.algebraMap_apply])`. Rewrite `h` using `[map_sub, map_sub, map_mul, AlgHom.commutes]`. Establish `h2` using `congrArg PowerSeries.constantCoeff h`. Rewrite `h2` using `[map_sub, map_sub, map_mul, const_lev_π, zero_mul, sub_zero, map_zero, sub_eq_zero]`.
+
+Rewrite using `[h2]`. Simplify using `[PowerSeries.algebraMap_apply]`.
+-/
 theorem const_lev (i : ZMod n) (a : LetA O n) :
     PowerSeries.constantCoeff (W.lev i 1 a) = algebraMap O LL (PowerSeries.constantCoeff (a i)) := by
   obtain ⟨b, hb⟩ : (PowerSeries.X : PowerSeries O) ∣
@@ -116,10 +161,18 @@ theorem const_lev (i : ZMod n) (a : LetA O n) :
   rw [h2]
   simp [PowerSeries.algebraMap_apply]
 
+/- English proof (translation)
+Rewrite using `[LevPt.Q_eq, map_sum, map_sum]`. Simplify using `[const_lev_π]`.
+-/
 theorem const_lev_Q (i : ZMod n) : PowerSeries.constantCoeff (W.lev i 1 W.Q) = (PD.p : LL) := by
   rw [LevPt.Q_eq, map_sum, map_sum]
   simp [const_lev_π]
 
+/- English proof (translation)
+Establish `h : ∀ i, (PowerSeries.X : PowerSeries O) ∣ a i`. Introduce `i`. Establish `h1` using `ha i`. Rewrite `h1` using `[van, Ideal.mem_comap, Ideal.mem_span_singleton, pow_one, PowerSeries.X_dvd_iff, const_lev]`. Rewrite using `[PowerSeries.X_dvd_iff]`.
+
+Conclude with `hinj (by rw [h1, map_zero])`. Use `choose b hb using h`. Conclude with `⟨b, funext hb⟩`.
+-/
 theorem π_dvd_of_van (hinj : Function.Injective (algebraMap O LL)) (a : LetA O n)
     (ha : ∀ i, a ∈ van W i 1 1) : (letπ : LetA O n) ∣ a := by
   have h : ∀ i, (PowerSeries.X : PowerSeries O) ∣ a i := by
@@ -132,10 +185,30 @@ theorem π_dvd_of_van (hinj : Function.Injective (algebraMap O LL)) (a : LetA O 
   choose b hb using h
   exact ⟨b, funext hb⟩
 
+/- English proof (translation)
+Rewrite using `[← map_sum, ← Finset.sum_smul, sum_letE, one_smul]`.
+-/
 theorem cmp_eq_sum [NeZero n] (T : LocLat G Qp LL O) (x : ↥(W.N T)) :
     W.cmp T x = ∑ i : ZMod n, W.cmp T ((letE i : LetA O n) • x) := by
   rw [← map_sum, ← Finset.sum_smul, sum_letE, one_smul]
 
+/- English proof (translation)
+Establish `hlet : ∀ i : ZMod n, Submodule.span LL (Set.range fun x : ↥(W.N T) => W.cmp T ((letE i : LetA O n) • x)) = DcrisL PD T.ρ (W.emb i)`. Introduce `i`. Simplify using `only [hcmp]`. Conclude with `span_const_of_std (hstd i)`. Use `⟨fun x => ⟨fun hx => ?_, ?_⟩, ?_, hlet, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hx` using `[cmp_eq_sum]`. Establish `h0 : ∀ i, ex i x 0 = 0`. Introduce `i`. Rewrite using `[← hcmp]`. Conclude with `(iSupIndep_iff_finset_sum_eq_zero_imp_eq_zero _).1 hind Finset.univ (fun i => W.cmp T ((letE i : LetA O n) • x)) (fun i _ => W.cmp_letter T i x) hx i (Finset.mem_univ _)`.
+
+Establish `hv : ∀ j, (letπ : LetA O n) ∣ nb.repr x j` using `fun j => π_dvd_of_van W hinj _ fun i => hvan i x (exists_shift_of_std (hstd i) _ (mem_latSpan _ x) (h0 i)) j`. Use `choose b hb using hv`. Use `⟨∑ j, b j • nb j, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `conv_lhs => rw [← nb.sum_repr x]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hb j, mul_smul]`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `W.cmp_π T y`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `W.cmp_mem T x`. Rewrite using `[← hsup, iSup_le_iff]`. Introduce `i`.
+
+Rewrite using `[← hlet i]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce `x m hx`.
+
+Rewrite using `[cmp_eq_sum W T x, cmp_eq_sum, map_sum, Finset.smul_sum, ← Equiv.sum_comp (Equiv.subRight (1 : ZMod n)) (fun i => (PD.p : LL) ^ m • φVB PD (LL := LL) (V := T.V) (W.cmp T ((letE i : LetA O n) • x)))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hcmp, hcmp, Equiv.subRight_apply, hφ, finsum_eq_single _ 0]`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, map_pow, const_lev_Q]`. Simplify using `only [Nat.cast_zero, sub_zero, zpow_zero, one_smul]`.
+
+Introduce `j hj`. Rewrite using `[neg_eq_zero_of_std (hstd (i - 1)) x (0 - (j : ℤ)) (by omega), map_zero, smul_zero, smul_zero]`.
+-/
 theorem cmp_iso_of_expansions [NeZero n] (hinj : Function.Injective (algebraMap O LL))
     (T : LocLat G Qp LL O) (ex : ZMod n → ↥(W.N T) → ℤ → T.V ⊗[Qp] B)
     (hcmp : ∀ i x, W.cmp T ((letE i : LetA O n) • x) = ex i x 0)
@@ -203,6 +276,13 @@ end Generic
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `((D.loc l).PD K).finK₀` as an intermediate fact. Establish `: NeZero (Module.finrank ℚ_[l] ↥(K0 K))` using `⟨Module.finrank_pos.ne'⟩`. Establish `hstd` using `GlobalTheory.T.wach_lattice_eq_std_powerSeries_at_zero D HW F Cm l K s LL h T hT`. Establish `hD` using `GlobalTheory.T.crystallineFrobenius_bijOn_letters_directSum D HW l K s LL h T hT`. Take `⟨nb⟩` from `GlobalTheory.NL.N_basis D HW F l K s LL h T hT`.
+
+Conclude with `cmp_iso_of_expansions ((HW l).W K s LL h) Subtype.val_injective T (fun i => ex (Cm l) h T i 1) (fun i x => ((Cm l).C K s LL h).tie.cmp_eq T hT i x) hstd hD.2.1 hD.2.2.1 nb (fun i y => (((GlobalTheory.T.wachExpansion_basis_divisibility D HW F Cm l K s LL h T hT i 1 (prim_one l) (f …`. Establish `key` using `((Cm l).C K s LL h).tie.levB_φ T hT i 1 (prim_one _) x m hx 0`. Establish `h1 : (1 : ↥LL.1) ^ ((D.loc l).PD K).p = 1` using `one_pow _`. Simplify using `only [h1] at key`. Unfold `ex`.
+
+Conclude with `key)`.
+-/
 theorem cmp_iso (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l)
     (h : Good K s LL) (T : Lt K LL) (hT : IsCrys ((D.loc l).PD K) T.ρ) :

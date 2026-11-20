@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.W
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Pst GlobalTheory.WeilDeligne TensorProduct Module GlobalTheory.Pst.DpstMap
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem tensV_eq_rT {l : ℕ} [Fact l.Prime] (P : LocPrime l) {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module ℚ_[l] V']
@@ -12,6 +15,17 @@ private theorem tensV_eq_rT {l : ℕ} [Fact l.Prime] (P : LocPrime l) {LL : Type
   | tmul v b => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Introduce `l _ P K L V' V V'' _ _ _ _ _ _ _ _ _ _ _ _ ρ' ρ ρ'' f p hf hp hfi hex0`. Establish `hex : Function.Exact (f.restrictScalars ℚ_[l]) (p.restrictScalars ℚ_[l])` using `hex0`. Establish `hexT` using `Module.Flat.rTensor_exact (Bst P) hex`. Establish `hinj : Function.Injective ((f.restrictScalars ℚ_[l]).rTensor (Bst P))` using `Module.Flat.rTensor_preserves_injective_linearMap _ hfi`. Use `⟨fun x y hxy => Subtype.ext (hinj ?_), fun y => ⟨fun hy => ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← tensV_eq_rT, ← tensV_eq_rT]`. Conclude with `congrArg Subtype.val hxy`. Establish `h0 : tensV P p (y : V ⊗[ℚ_[l]] Bst P) = 0` using `congrArg Subtype.val hy`. Rewrite `h0` using `[tensV_eq_rT]`. Take `⟨z, hz⟩` from `(hexT _).mp h0`.
+
+Establish `hz' : tensV P f z = y` using `by rw [tensV_eq_rT]; exact hz`. Take `⟨K', hK'⟩` from `(mem_Dpst P ρ).mp y.2`. Establish `hzD : z ∈ Dpst P ρ'`. Use `(mem_Dpst P ρ').mpr ⟨K', fun g hg => hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← tensV_eq_rT, ← tensV_eq_rT, tensV_stRep P ρ' ρ f hf, hz', hK' g hg]`.
+
+Conclude with `⟨⟨z, hzD⟩, Subtype.ext hz'⟩`. Introduce and unpack `⟨x, rfl⟩`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show tensV P p (tensV P f x.1) = 0`. Rewrite using `[tensV_eq_rT, tensV_eq_rT]`.
+
+Conclude with `(hexT _).mpr ⟨x.1, rfl⟩`.
+-/
 theorem UpperTheory.weilDeligne_dpst_leftExact :
     UpperTheory.V.Af.Wd.DLeft := by
   intro l _ P K L V' V V'' _ _ _ _ _ _ _ _ _ _ _ _ ρ' ρ ρ'' f p hf hp hfi hex0

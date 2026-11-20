@@ -38,6 +38,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `hc : (RingHom.ker s).comap (algebraMap ℤ (𝓞 E)) = ⊥`. Rewrite using `[RingHom.comap_ker]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (RingHom.injective_int _)`. Conclude with `(RingHom.injective_iff_ker_eq_bot s).2 (Ideal.eq_bot_of_comap_eq_bot hc)`.
+-/
 theorem intEmb_injective (s : 𝓞 E →+* ℂ) : Function.Injective s := by
   have hc : (RingHom.ker s).comap (algebraMap ℤ (𝓞 E)) = ⊥ := by
     rw [RingHom.comap_ker]

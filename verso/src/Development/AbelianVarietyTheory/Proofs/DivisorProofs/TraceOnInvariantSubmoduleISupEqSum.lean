@@ -6,6 +6,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.BCT
 
+/- English proof (translation)
+Introduce `V _ _ ι _ M L hind hfin hinv`. Use `haveI := hfin`. Establish `hp : (⨆ i, M i) = ⨆ i ∈ (Finset.univ : Finset ι), M i` using `by simp`. Establish `hs : iSupIndep (fun i : (Finset.univ : Finset ι) ↦ M i)` using `hind.comp Subtype.val_injective`. Establish `hf : ∀ i, Set.MapsTo L (M i) (M i)` using `fun i v hv ↦ hinv i v hv`.
+
+Establish `hsup : ∀ v ∈ (⨆ i, M i), L v ∈ (⨆ i, M i)`. Introduce `v hv`. Use `Submodule.iSup_induction M (motive := fun v ↦ L v ∈ ⨆ i, M i) hv ?_ ?_ ?_` and prove the remaining obligations. Introduce `i x hx`. Conclude with `Submodule.mem_iSup_of_mem i (hinv i x hx)`.
+
+Simplify using the standard rewrite rules. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Establish `key` using `LinearMap.trace_eq_sum_trace_restrict_of_eq_biSup (N := M) Finset.univ hs hf (⨆ i, M i) hp hsup`.
+
+Unfold `trOn`. Rewrite using `[dif_pos hsup, key]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[dif_pos (hinv i)]`.
+-/
 theorem trOn_iSup_eq_sum : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ι : Type) [Fintype ι] (M : ι → Submodule ℂ V)
     (L : V →ₗ[ℂ] V), iSupIndep M → (∀ i, FiniteDimensional ℂ (M i)) → (∀ i, ∀ v ∈ M i, L v ∈ M i) →
     trOn (⨆ i, M i) L = ∑ i, trOn (M i) L := by

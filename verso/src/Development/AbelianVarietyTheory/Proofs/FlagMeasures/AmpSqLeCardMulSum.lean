@@ -10,6 +10,11 @@ namespace GlobalTheory.AmpCS
 
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
+/- English proof (translation)
+Distinguish the cases in `hs : Summable g`. Establish `hfi : ∀ i ∈ s, Summable (f i)` using `fun i hi => Summable.of_norm_bounded (summable_norm_iff.mpr hs) (hdom i hi)`. Establish `hsum : ∑' a, g a = ∑ i ∈ s, ∑' a, f i a`. Repeatedly rewrite using `[hg]`. Conclude with `Summable.tsum_finsetSum hfi`.
+
+Rewrite using `[hsum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tsum_eq_zero_of_not_summable hs, norm_zero]`. Establish `: (0 : ℝ) ≤ s.card * ∑ i ∈ s, ‖∑' a, f i a‖ ^ 2` using `by positivity`. Simplify using `using this`.
+-/
 private lemma norm_tsum_sq_le_card_mul_sum_sq {α ι : Type*} (s : Finset ι) (f : ι → α → ℂ)
     (g : α → ℂ) (hg : ∀ a, g a = ∑ i ∈ s, f i a) (hdom : ∀ i ∈ s, ∀ a, ‖f i a‖ ≤ ‖g a‖) :
     ‖∑' a, g a‖ ^ 2 ≤ s.card * ∑ i ∈ s, ‖∑' a, f i a‖ ^ 2 := by
@@ -30,6 +35,21 @@ private lemma norm_tsum_sq_le_card_mul_sum_sq {α ι : Type*} (s : Finset ι) (f
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S _ ι s P Q hQ hdisj`. Unfold `_root_.GlobalTheory.HL.Frames.ampSq _root_.GlobalTheory.HL.Frames.sumData`. Rewrite using `[← Summable.tsum_finsetSum (fun _ _ => ENNReal.summable), ← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun o => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, ← mul_assoc, mul_comm (s.card : ℝ≥0∞), mul_assoc]`.
+
+Use `gcongr`. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun _ _ => by positivity), ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Unfold `_root_.GlobalTheory.HL.Frames.amp`. Apply `norm_tsum_sq_le_card_mul_sum_sq` to reduce the goal to its premises.
+
+Introduce `a`. Distinguish the cases in `ht : S.IsTerm (Quotient.out o) (Quotient.out a)`. Distinguish the cases in `hq : Q (Quotient.out o) (Quotient.out a)`. Take `⟨i, hi, hPi⟩` from `(hQ _ _ ht).mp hq`. Rewrite using `[if_pos ⟨ht, hq⟩, Finset.sum_eq_single_of_mem i hi, if_pos ⟨ht, hPi⟩]`.
+
+Introduce `j hj hji`. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, hPj⟩`. Conclude with `hji (hdisj _ _ ht j hj i hi hPj hPi)`. Rewrite using `[if_neg (fun h => hq h.2)]`.
+
+Use `(Finset.sum_eq_zero fun i hi => ?_).symm` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, hPi⟩`. Conclude with `hq ((hQ _ _ ht).mpr ⟨i, hi, hPi⟩)`. Rewrite using `[if_neg (fun h => ht h.1)]`.
+
+Use `(Finset.sum_eq_zero fun i _ => ?_).symm` and prove the remaining obligations. Rewrite using `[if_neg (fun h => ht h.1)]`. Introduce `i hi a split_ifs with h1 h2`. Conclude with `le_rfl`. Conclude with `absurd ⟨h1.1, (hQ _ _ h1.1).mpr ⟨i, hi, h1.2⟩⟩ h2`.
+
+Rewrite using `[norm_zero]`. Conclude with `norm_nonneg _`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.AmpCS.ampSq_le_card_mul_sum : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E), ∀ (r k : ℕ) (S : _root_.GlobalTheory.HL.Frames L r k), 1 ≤ k → ∀ {ι : Type} (s : Finset ι) (P : ι → S.Datum → Submodule L.O S.V → Prop) (Q : S.Datum → Submodule L.O S.V → Prop), (∀ d Λ, S.IsTerm d Λ → (Q d Λ ↔ ∃ i ∈ s, P i d Λ)) → (∀ d Λ, S.IsTerm d Λ → ∀ i ∈ s, ∀ i' ∈ s, P i d Λ → P i' d Λ → i = i') → S.ampSq Q ≤ (s.card : ℝ≥0∞) * ∑ i ∈ s, S.ampSq (P i) := by
   intro F _ _ _ _ _ E _ _ _ L r k S _ ι s P Q hQ hdisj
   unfold _root_.GlobalTheory.HL.Frames.ampSq _root_.GlobalTheory.HL.Frames.sumData

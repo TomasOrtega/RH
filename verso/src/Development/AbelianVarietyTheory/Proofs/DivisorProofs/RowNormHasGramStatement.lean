@@ -7,5 +7,8 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTop.GramPt.hasGram_at | exact GlobalTheory.CovTop.GramPt.hasGram_at | (intros; apply GlobalTheory.CovTop.GramPt.hasGram_at <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.row_norm_has_gram : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz), p.Rows → RecTied D L → ∀ i : Fin D.R.m, HasGram (nrmR p.R.toRealDat i) := by
   first | exact @GlobalTheory.CovTop.GramPt.hasGram_at | exact GlobalTheory.CovTop.GramPt.hasGram_at | (intros; apply GlobalTheory.CovTop.GramPt.hasGram_at <;> assumption)

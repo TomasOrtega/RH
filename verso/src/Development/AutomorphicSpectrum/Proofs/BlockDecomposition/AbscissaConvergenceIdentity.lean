@@ -13,12 +13,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.ColumnSplitting.GramAct
 
+/- English proof (translation)
+Establish `hu : adj (mt V g) * (gA V * mt V g) = gA V` using `mt_unitary V g`. Unfold `ip mm`. Rewrite using `[adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA V), ← Matrix.mul_assoc (adj (mt V g)), hu]`.
+-/
 theorem ip_mt {D : D7} {a b : ℕ} (V : HSp D) (g : GA D V) (x : Mx D V.rank a) (y : Mx D V.rank b) :
     ip V (mm (mt V g) x) (mm (mt V g) y) = ip V x y := by
   have hu : adj (mt V g) * (gA V * mt V g) = gA V := mt_unitary V g
   unfold ip mm
   rw [adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA V), ← Matrix.mul_assoc (adj (mt V g)), hu]
 
+/- English proof (translation)
+Introduce `D r t V b₀ g z`. Establish `h12 : ip V (ac V g z).1 (ac V g z).2 = ip V z.1 z.2` using `ip_mt V g z.1 z.2`. Establish `h22 : ip V (ac V g z).2 (ac V g z).2 = ip V z.2 z.2` using `ip_mt V g z.2 z.2`. Establish `hy : yv V b₀ (ac V g z) = yv V b₀ z`. Unfold `yv`.
+
+Rewrite using `[h12]`. Use `⟨ip_mt V g z.1 z.1, hy, ?_⟩` and prove the remaining obligations. Unfold `qv`. Rewrite using `[h22, hy]`.
+-/
 theorem acEq : AcEq := by
   intro D r t V b₀ g z
   have h12 : ip V (ac V g z).1 (ac V g z).2 = ip V z.1 z.2 := ip_mt V g z.1 z.2

@@ -21,12 +21,25 @@ def cOm (n : ℕ) : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ → ℂ) where
   zero_mem' := ⟨contDiffOn_const, fun _ _ => rfl⟩
   smul_mem' := fun c F hF => ⟨hF.1.const_smul c, fun z hz => by simp [hF.2 z hz]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cOm {F : Matrix (Fin n) (Fin n) ℂ → ℂ} :
     F ∈ cOm n ↔ ContDiffOn ℂ ∞ F (OmegaP n) ∧ ∀ z, z ∉ OmegaP n → F z = 0 := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(mem_cOm.1 F.2).1`.
+-/
 theorem cOm_smooth (F : cOm n) : ContDiffOn ℂ ∞ (F : Matrix (Fin n) (Fin n) ℂ → ℂ) (OmegaP n) :=
   (mem_cOm.1 F.2).1
 
+/- English proof (translation)
+Establish `hF` using `cOm_smooth F`. Establish `hs : IsOpen (OmegaP n)` using `isOpen_positiveOmega`. Establish `hd` using `((contDiffOn_infty_iff_fderiv_of_isOpen hs).1 hF).2`. Establish `hg : ContDiff ℂ ∞ (fun z : Matrix (Fin n) (Fin n) ℂ => z * X)`. Establish `h0` using `(LinearMap.toContinuousLinearMap (LinearMap.mulRight ℂ X)).contDiff (n := ∞)`.
+
+Use `first`. Consider the case `exact h0`. Consider the case `simpa using h0`. Consider the case `(convert h0 using 1; funext z; rfl)`. Consider the case `(convert h0 using 1; funext z; simp [LinearMap.mulRight_apply])`.
+
+Use `mem_cOm.2 ⟨?_, fun z hz => Set.indicator_of_notMem hz _⟩` and prove the remaining obligations. Use `(hd.clm_apply hg.contDiffOn).congr fun z hz => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem hz]`. Both sides reduce to the same expression.
+-/
 theorem indicator_rhol_mem (X : Matrix (Fin n) (Fin n) ℂ) (F : cOm n) :
     (OmegaP n).indicator (Rhol X (F : Matrix (Fin n) (Fin n) ℂ → ℂ)) ∈ cOm n := by
   have hF := cOm_smooth F
@@ -73,10 +86,18 @@ def rOm (X : Matrix (Fin n) (Fin n) ℂ) : Module.End ℂ (cOm n) where
       rfl
     · rw [Set.indicator_of_notMem hz, Set.indicator_of_notMem hz, mul_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rOm_apply (X : Matrix (Fin n) (Fin n) ℂ) (F : cOm n) :
     ((rOm X F : cOm n) : Matrix (Fin n) (Fin n) ℂ → ℂ) =
       (OmegaP n).indicator (Rhol X (F : Matrix (Fin n) (Fin n) ℂ → ℂ)) := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun F => Subtype.ext (funext fun z => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, Submodule.coe_sub, Pi.sub_apply, rOm_apply]`. Distinguish the cases in `hz : z ∈ OmegaP n`. Simplify using `only [Set.indicator_of_mem hz]`. Conclude with `rightHol_sub X Y _ z`.
+
+Simplify using `only [Set.indicator_of_notMem hz, sub_zero]`.
+-/
 theorem rOm_sub (X Y : Matrix (Fin n) (Fin n) ℂ) : rOm (n := n) (X - Y) = rOm X - rOm Y := by
   refine LinearMap.ext fun F => Subtype.ext (funext fun z => ?_)
   simp only [LinearMap.sub_apply, Submodule.coe_sub, Pi.sub_apply, rOm_apply]
@@ -85,10 +106,20 @@ theorem rOm_sub (X Y : Matrix (Fin n) (Fin n) ℂ) : rOm (n := n) (X - Y) = rOm 
     exact rightHol_sub X Y _ z
   · simp only [Set.indicator_of_notMem hz, sub_zero]
 
+/- English proof (translation)
+Establish `h` using `rOm_sub (n := n) 0 0`. Rewrite `h` using `[sub_zero, sub_self]`. Then use the resulting hypothesis.
+-/
 theorem rOm_zero : rOm (n := n) 0 = 0 := by
   have h := rOm_sub (n := n) 0 0
   rwa [sub_zero, sub_self] at h
 
+/- English proof (translation)
+Use `LinearMap.ext fun F => Subtype.ext (funext fun z => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, Pi.sub_apply, rOm_apply]`. Distinguish the cases in `hz : z ∈ OmegaP n`. Simplify using `only [Set.indicator_of_mem hz]`. Establish `e1 : ∀ W : Matrix (Fin n) (Fin n) ℂ, Set.EqOn ((OmegaP n).indicator (Rhol W (F : Matrix (Fin n) (Fin n) ℂ → ℂ))) (Rhol W (F : Matrix (Fin n) (Fin n) ℂ → ℂ)) (OmegaP n)` using `fun W w hw => Set.indicator_of_mem hw _`.
+
+Rewrite using `[rightHol_congr_on_omega (e1 Y) hz, rightHol_congr_on_omega (e1 X) hz]`. Establish `hinf` using `(cOm_smooth F).contDiffAt (isOpen_positiveOmega.mem_nhds hz)`. Establish `h2 : ContDiffAt ℂ 2 (F : Matrix (Fin n) (Fin n) ℂ → ℂ) z` using `by first`. Consider the case `exact hinf.of_le (by exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤))`. Consider the case `exact contDiffAt_infty.1 hinf 2`.
+
+Consider the case `exact hinf.of_le (by norm_cast)`. Consider the case `exact hinf.of_le (by simp)`. Conclude with `rightHol_commutator h2 X Y`. Simplify using `only [Set.indicator_of_notMem hz, sub_zero]`.
+-/
 theorem rOm_comm (X Y : Matrix (Fin n) (Fin n) ℂ) :
     rOm X * rOm Y - rOm Y * rOm X = rOm (n := n) (X * Y - Y * X) := by
   refine LinearMap.ext fun F => Subtype.ext (funext fun z => ?_)
@@ -116,6 +147,11 @@ def phiOm (μ : Fin n → ℤ) : cOm n :=
   ⟨(OmegaP n).indicator (PhiP μ), mem_cOm.2 ⟨(contDiffOn_powerDet μ).congr fun _ hz => Set.indicator_of_mem hz _,
     fun _ hz => Set.indicator_of_notMem hz _⟩⟩
 
+/- English proof (translation)
+Use `split_ifs with h`. Substitute `h first` using the available equality. Consider the case `rw [Matrix.single_mul_single_same, mul_one]`. Consider the case `simp`. Use `first`.
+
+Consider the case `rw [Matrix.single_mul_single_of_ne h]`. Consider the case `simp [h]`.
+-/
 private theorem single_one_mul_single_one_eq_ite (i j k l : Fin n) :
     Matrix.single i j (1 : ℂ) * Matrix.single k l 1 = if j = k then Matrix.single i l 1 else 0 := by
   split_ifs with h
@@ -127,6 +163,9 @@ private theorem single_one_mul_single_one_eq_ite (i j k l : Fin n) :
       | rw [Matrix.single_mul_single_of_ne h]
       | simp [h]
 
+/- English proof (translation)
+Introduce `a b c d`. Simplify using `only [eOm]`. Rewrite using `[rOm_comm, rOm_sub, single_one_mul_single_one_eq_ite, single_one_mul_single_one_eq_ite]`. Apply the tactic sequence `split_ifs <;> first | rfl | simp only [rOm_zero, sub_zero, zero_sub]`.
+-/
 theorem isGlRep_eOm : IsGlRep (eOm (n := n)) := by
   intro a b c d
   simp only [eOm]
@@ -135,6 +174,9 @@ theorem isGlRep_eOm : IsGlRep (eOm (n := n)) := by
 
 def mmSub (μ : Fin n → ℤ) : Submodule ℂ (cOm n) := genSub (eOm (n := n)) (Submodule.span ℂ {phiOm μ})
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [mmSub, genSub] at hx ⊢`. Rewrite `hx`, the goal using `[Submodule.mem_sInf]`. Introduce `T hT`. Conclude with `hT.2 a b x (hx T hT)`.
+-/
 theorem mmSub_stable (μ : Fin n → ℤ) (a b : Fin n) : ∀ x ∈ mmSub μ, eOm a b x ∈ mmSub μ := by
   intro x hx
   simp only [mmSub, genSub] at hx ⊢
@@ -142,6 +184,9 @@ theorem mmSub_stable (μ : Fin n → ℤ) (a b : Fin n) : ∀ x ∈ mmSub μ, eO
   intro T hT
   exact hT.2 a b x (hx T hT)
 
+/- English proof (translation)
+Simplify using `only [mmSub, genSub]`. Rewrite using `[Submodule.mem_sInf]`. Introduce `T hT`. Conclude with `hT.1 (Submodule.subset_span (Set.mem_singleton _))`.
+-/
 theorem phiOm_mem (μ : Fin n → ℤ) : phiOm μ ∈ mmSub μ := by
   simp only [mmSub, genSub]
   rw [Submodule.mem_sInf]
@@ -154,6 +199,23 @@ def eMM (μ : Fin n → ℤ) (a b : Fin n) : Module.End ℂ (MMT μ) := (eOm a b
 
 def phiMM (μ : Fin n → ℤ) : MMT μ := ⟨phiOm μ, phiOm_mem μ⟩
 
+/- English proof (translation)
+Establish `hgl : IsGlRep (eMM μ)`. Introduce `a b c d`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun (isGlRep_eOm (n := n) a b c d) (v : cOm n)`. Apply the tactic sequence `split_ifs at h ⊢ <;> simpa [eMM, LinearMap.restrict_coe_apply] using h`.
+
+Use `⟨hgl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`.
+
+Use `show (OmegaP n).indicator (Rhol (Matrix.single a b 1) ((OmegaP n).indicator (PhiP μ))) z = 0`. Distinguish the cases in `hz : z ∈ OmegaP n`. Rewrite using `[Set.indicator_of_mem hz, rightHol_congr_on_omega (fun y hy => Set.indicator_of_mem hy _) hz]`. Conclude with `rightHol_powerDet_lower_eq_zero μ hab hz`. Conclude with `Set.indicator_of_notMem hz _`.
+
+Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Use `show (OmegaP n).indicator (Rhol (Matrix.single a a 1) ((OmegaP n).indicator (PhiP μ))) z = ((lam a + rho n a : ℝ) : ℂ) * (OmegaP n).indicator (PhiP μ) z`.
+
+Distinguish the cases in `hz : z ∈ OmegaP n`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem hz, rightHol_congr_on_omega (fun y hy => Set.indicator_of_mem hy _) hz, rightHol_powerDet_diag μ a hz, ← hμ a]`. Use `norm_cast`. Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem hz, mul_zero]`. Establish `hGS : Submodule.span ℂ {phiMM μ} ≤ genSub (eMM μ) (Submodule.span ℂ {phiMM μ})` using `le_sInf fun T hT => hT.1`.
+
+Establish `hGc : ∀ a b, ∀ v ∈ genSub (eMM μ) (Submodule.span ℂ {phiMM μ}), eMM μ a b v ∈ genSub (eMM μ) (Submodule.span ℂ {phiMM μ})` using `fun a b v hv => Submodule.mem_sInf.2 fun T hT => hT.2 a b v (Submodule.mem_sInf.1 hv T hT)`. Establish `key : mmSub μ ≤ (genSub (eMM μ) (Submodule.span ℂ {phiMM μ})).map (mmSub μ).subtype`. Apply `sInf_le` to reduce the goal to its premises. Use `Set.mem_setOf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`.
+
+Conclude with `Submodule.mem_map.2 ⟨phiMM μ, hGS (Submodule.subset_span (Set.mem_singleton _)), rfl⟩`. Introduce and unpack `a b _ ⟨y, hy, rfl⟩`. Conclude with `Submodule.mem_map.2 ⟨eMM μ a b y, hGc a b y hy, rfl⟩`. Rewrite using `[eq_top_iff]`. Introduce `v _`.
+
+Take `⟨y, hy, hyv⟩` from `Submodule.mem_map.1 (key v.2)`. Rewrite using `[← Subtype.ext hyv]` and apply the resulting hypothesis.
+-/
 theorem k2vM (lam : Fin n → ℝ) (μ : Fin n → ℤ) (hμ : IsMu lam μ) :
     IsGlRep (eMM μ) ∧ (∀ a b, b < a → eMM μ a b (phiMM μ) = 0) ∧
       (∀ a, eMM μ a a (phiMM μ) = ((lam a + rho n a : ℝ) : ℂ) • phiMM μ) ∧

@@ -38,6 +38,9 @@ variable {Xo c}
 variable {C : Type} [Field C] [CharZero C] {V : VF C}
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {Orb : Type} {d : ℕ} [NeZero d]
 
+/- English proof (translation)
+The claim follows from `inferInstance algClosed := Y.algClosed l_odd := Y.l_odd k_unit := Y.k_unit cartH := hCart C V (𝓞 E) _ Y d _ (selfOfLab ha hg o) rank := rankHyp_ofLabS ha hg hr o axes := hAx C V (𝓞 E) _ Y d _ (selfOfLab ha hg o) G0 := hG0 C V (𝓞 E) _ Y d _ (selfOfLab ha hg o) _ CEq := hC C V (𝓞 E …`.
+-/
 theorem hypotheses_of_self_labelling_unramified (hCart : CartSelfSt) (hAx : AxesSelfSt) (hG0 : GermZeroSelfConjugate) (hC : CEqSelfSt) (hR1 : IndependenceBoundSelfConjugate)
     (hR2 : RankMaximalSelfCharts Xo c) (hCH : CharacterHypothesisSelfUnramified Xo c) (hstar : ∀ a : 𝓞 E, star a = H.bar a)
     {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι)

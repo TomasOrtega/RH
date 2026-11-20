@@ -8,6 +8,9 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTheory.ConvolutionTheory.R2.I
 open scoped Classical
 
+/- English proof (translation)
+Establish `hc : IsClosed {A : M2 v | A.det = 1}` using `isClosed_eq (Continuous.matrix_det continuous_id) continuous_const`. Conclude with `hc.isClosedEmbedding_subtypeVal`.
+-/
 private theorem isClosedEmbedding_slVal {F : Type} [Field F] [NumberField F] (v : P F) :
     IsClosedEmbedding (fun m : SL v => (m.1 : M2 v)) := by
   have hc : IsClosed {A : M2 v | A.det = 1} :=
@@ -39,6 +42,21 @@ private noncomputable def trM {F : Type} [Field F] [NumberField F] {v : P F} (g 
       continuous_invFun := continuous_id.matrix_mul continuous_const }
   ⟨fun m => b.1 (e m), b.2.1.comp_continuous e.continuous, b.2.2.comp_homeomorph e⟩
 
+/- English proof (translation)
+Introduce `F _ _ v V _ _ ρ hρ β hinv hψ f a aa haa`. Establish `hsurj : Function.Surjective (resL v)`. Introduce `c`. Take `⟨b, hb⟩` from `UpperTheory.ConvolutionTheory.R2.I.ext F v c`. Conclude with `⟨b, Subtype.ext (funext hb)⟩`.
+
+Take `⟨s, hs⟩` from `(resL v).exists_rightInverse_of_surjective (LinearMap.range_eq_top.mpr hsurj)`. Establish `hs' : ∀ c, resL v (s c) = c` using `fun c => LinearMap.congr_fun hs c`. Establish `hdep : ∀ (h : V) (b : SB (M2 v)), β h (s (resL v b)) = β h b`. Introduce `h b`. Establish `hz : β h (s (resL v b) - b) = 0`.
+
+Use `UpperTheory.ConvolutionTheory.R2.I.loc F v (β h) (fun t a a' ha => hψ h t a a' ha) _ ?_` and prove the remaining obligations. Introduce `m hm`. Establish `h1 : (s (resL v b)).1 m = b.1 m` using `congrArg (fun c : SB (SL v) => c.1 ⟨m, hm⟩) (hs' (resL v b))`. Use `show (s (resL v b)).1 m - b.1 m = 0`. Rewrite using `[h1, sub_self]`.
+
+Rewrite `hz` using `[map_sub, sub_eq_zero]`. Conclude with `hz`. Establish `key` using `UpperTheory.ConvolutionTheory.R2.I.absS F v V ρ hρ (β.compl₂ s) ?_ f (resL v a) (fun x => resL v (aa x)) ?_`. Establish `hfun : (fun x => β (ρ (dd x) f) (aa x)) = fun x => (β.compl₂ s) (ρ (dd x) f) (resL v (aa x))`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[LinearMap.compl₂_apply, hdep]`. Rewrite using `[hfun]`. Conclude with `key`. Introduce `g h c c' hc`. Rewrite using `[LinearMap.compl₂_apply, LinearMap.compl₂_apply]`.
+
+Establish `e : resL v (trM g (s c)) = c'`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Establish `h1 : (s c).1 (m * g).1 = c.1 (m * g)` using `congrArg (fun d : SB (SL v) => d.1 (m * g)) (hs' c)`. Rewrite using `[hc m, ← h1]`.
+
+Both sides reduce to the same expression. Rewrite using `[← e, hdep]`. Conclude with `hinv g h (s c) (trM g (s c)) (fun m => rfl)`. Introduce `x m m' hm show (aa x).1 m.1 = a.1 m'.1`. Rewrite using `[haa, hm]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.absM :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GLv v) V), (∀ f, IsOpen {g | ρ g f = f}) →
       ∀ β : V →ₗ[ℂ] SB (M2 v) →ₗ[ℂ] ℂ,

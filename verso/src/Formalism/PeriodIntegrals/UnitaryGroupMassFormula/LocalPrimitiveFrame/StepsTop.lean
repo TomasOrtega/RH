@@ -47,6 +47,9 @@ def Assemble : Prop :=
     IsPrim v (Λ : Set (Fin n → E))
       (locF v (ratTup (Fv F v) (Fin.snoc e z : Fin (r + 1) → Fin n → E)))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v n r Λ Lb e f z hfg hΛ hli hdis hz hprim`. Take `⟨φ, φz, p1, p2, p3, p4, p5, p6, p7⟩` from `h2 F E n r Λ Lb e f z hfg hΛ hli hdis hz hprim`. Conclude with `h3 F E v n r Λ Lb e f z (h1 F E v) hΛ hz φ φz p1 p2 p3 p4 p5 p6 p7`.
+-/
 theorem Steps_top (h1 : DiffLoc) (h2 : Dual) (h3 : Assemble) : PI.LocFramePrim.Statement := by
   intro F E _ _ _ _ _ v n r Λ Lb e f z hfg hΛ hli hdis hz hprim
   obtain ⟨φ, φz, p1, p2, p3, p4, p5, p6, p7⟩ := h2 F E n r Λ Lb e f z hfg hΛ hli hdis hz hprim

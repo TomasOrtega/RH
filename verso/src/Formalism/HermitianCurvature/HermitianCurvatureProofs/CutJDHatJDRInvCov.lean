@@ -18,6 +18,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Unfold `RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `e1 : ((t : ℂ) • (S⁻¹ * X * S)) = S⁻¹ * ((t : ℂ) • X) * S`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+
+Rewrite using `[e1, Formalism.QuantumDeterminants.ioh_exp_conj S⁻¹ S _ h1 h2]`. Use `show f (x * NormedSpace.exp ((t : ℂ) • X) * S) = f (x * S * (S⁻¹ * NormedSpace.exp ((t : ℂ) • X) * S))`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rdV_right (X S x : Mat k r) (f : Mat k r → E) (h1 : S * S⁻¹ = 1) (h2 : S⁻¹ * S = 1) :
     RdV X (fun y => f (y * S)) x = RdV (S⁻¹ * X * S) f (x * S) := by
   unfold RdV
@@ -32,11 +37,19 @@ theorem rdV_right (X S x : Mat k r) (f : Mat k r → E) (h1 : S * S⁻¹ = 1) (h
       = x * (S * S⁻¹) * NormedSpace.exp ((t : ℂ) • X) * S := by rw [h1, Matrix.mul_one]
     _ = x * S * (S⁻¹ * NormedSpace.exp ((t : ℂ) • X) * S) := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `RdV`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem rdV_left (X A x : Mat k r) (f : Mat k r → E) :
     RdV X (fun y => f (A * y)) x = RdV X f (A * x) := by
   unfold RdV
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun (congrFun (congrFun (EHc_eq_LT (E := E) S hS) a) b) f) (x * S)`. Use `Eq.trans ?_ h` and prove the remaining obligations. Take `⟨h1, h2⟩` from `gv_inv hS`. Use `show RdV (hpart1 (Hpk k r) (Matrix.single a b 1)) (fun y => f (y * S)) x + Complex.I • RdV (hpart2 (Hpk k r) (Matrix.single a b 1)) (fun y => f (y * S)) x = _`. Rewrite using `[rdV_right _ _ _ _ h1 h2, rdV_right _ _ _ _ h1 h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem EZ_right (S : Mat k r) (hS : S ∈ GV k r) (f : Mat k r → E) (a b : Fin (2 * r + k + 1)) (x : Mat k r) :
     EZ (Msg k r a b) (fun y => f (y * S)) x = EZ (Mc S a b) f (x * S) := by
   have h := congrFun (congrFun (congrFun (congrFun (EHc_eq_LT (E := E) S hS) a) b) f) (x * S)
@@ -47,11 +60,17 @@ theorem EZ_right (S : Mat k r) (hS : S ∈ GV k r) (f : Mat k r → E) (a b : Fi
   rw [rdV_right _ _ _ _ h1 h2, rdV_right _ _ _ _ h1 h2]
   rfl
 
+/- English proof (translation)
+Unfold `EZ`. Rewrite using `[rdV_left, rdV_left]`.
+-/
 theorem EZ_left (A : Mat k r) (Z : Mat k r) (f : Mat k r → E) (x : Mat k r) :
     EZ Z (fun y => f (A * y)) x = EZ Z f (A * x) := by
   unfold EZ
   rw [rdV_left, rdV_left]
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | t :: ts => by funext x rw [fold_cons, fold_cons, fold_right S hS f ts, top_apply'', top_apply''] congr 1 exact EZ_right S hS (fold (Mc S) ts f) t.2.1 t.2.2 x`.
+-/
 theorem fold_right (S : Mat k r) (hS : S ∈ GV k r) (f : Mat k r → E) :
     ∀ ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1)),
       fold (Msg k r) ts (fun y => f (y * S)) = fun x => fold (Mc S) ts f (x * S)
@@ -62,6 +81,9 @@ theorem fold_right (S : Mat k r) (hS : S ∈ GV k r) (f : Mat k r → E) :
     congr 1
     exact EZ_right S hS (fold (Mc S) ts f) t.2.1 t.2.2 x
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | t :: ts => by funext x rw [fold_cons, fold_cons, fold_left A M f ts, top_apply'', top_apply''] congr 1 exact EZ_left A (M t.2.1 t.2.2) (fold M ts f) x`.
+-/
 theorem fold_left (A : Mat k r) (M : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Mat k r) (f : Mat k r → E) :
     ∀ ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1)),
       fold M ts (fun y => f (A * y)) = fun x => fold M ts f (A * x)
@@ -72,6 +94,9 @@ theorem fold_left (A : Mat k r) (M : Fin (2 * r + k + 1) → Fin (2 * r + k + 1)
     congr 1
     exact EZ_left A (M t.2.1 t.2.2) (fold M ts f) x
 
+/- English proof (translation)
+Rewrite using `[qm_eq, qm_eq]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Simplify using `only [PP]`. Rewrite using `[fold_left]`.
+-/
 theorem qminor_left {t : ℕ} (A : Mat k r) (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) (f : Mat k r → E)
     (x : Mat k r) :
     qminorOp (Q.EH k r) a b u (fun y => f (A * y)) x = qminorOp (Q.EH k r) a b u f (A * x) := by
@@ -80,6 +105,19 @@ theorem qminor_left {t : ℕ} (A : Mat k r) (a b : Fin t → Fin (2 * r + k + 1)
   simp only [PP]
   rw [fold_left]
 
+/- English proof (translation)
+Use `set P := S⁻¹`. Use `set A : (Fin t → Fin (2 * r + k + 1)) → ℂ := fun c => ∏ j, P (c j) (a j) with hA`. Use `set B : (Fin t → Fin (2 * r + k + 1)) → ℂ := fun d => ∏ j, S (b j) (d j) with hB`. Establish `step : ∀ σ : Equiv.Perm (Fin t), fold (Mc S) (List.ofFn fun j : Fin t => (u - ((j : ℕ) : ℂ), a (σ j), b j)) f (x * S) = ∑ c, ∑ d, (A c * B d) • PP c d u σ f (x * S)`. Introduce `σ`.
+
+Rewrite using `[expandM S hS t _ f (x * S) hx hloc]`. Use `(Fintype.sum_equiv (Equiv.arrowCongr σ.symm (Equiv.refl _)) _ _ (fun c => ?_)).symm` and prove the remaining obligations. Simplify using `only [Equiv.arrowCongr_apply, Equiv.symm_symm, Equiv.coe_refl]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Use `congr 1`.
+
+Simplify using `only [Function.comp_apply, hA, hB]`. Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Conclude with `(Equiv.prod_comp σ (fun j => P (c j) (a j))).symm`. Rewrite using `[qm_eq]`.
+
+Simplify using `only [PP]`. Repeatedly rewrite using `[fold_right S hS f]`. Rewrite using `[show (∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : ℂ) • fold (Mc S) (List.ofFn fun j : Fin t => (u - ((j : ℕ) : ℂ), a (σ j), b j)) f (x * S)) = ∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : ℂ) • ∑ c, ∑ d, (A c * B d) • PP c d u σ f (x * S) from Finset.sum_congr rf …`. Repeatedly rewrite using `[Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[qm_eq, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations.
+
+Conclude with `smul_comm _ _ _`.
+-/
 theorem qminor_right_all (S : Mat k r) (hS : S ∈ GV k r) {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ)
     (f : Mat k r → E) (x : Mat k r) (hx : x * S ∈ GV k r) (hloc : Loc (t : ℕ∞) f (x * S)) :
     qminorOp (Q.EH k r) a b u (fun y => f (y * S)) x =
@@ -128,6 +166,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.CapInv.groupingM (fun i : Fin N => (i : ℕ)) Fin.val_injective F hF hF0 W, Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun C _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : StrictMono C`. Rewrite using `[if_pos h, if_pos (show StrictMono fun l => ((C l : Fin N) : ℕ) from h)]`. Rewrite using `[if_neg h, if_neg (show ¬ StrictMono fun l => ((C l : Fin N) : ℕ) from h)]`.
+-/
 theorem sum_sortM {M : Type*} [AddCommGroup M] [Module ℂ M] {t N : ℕ} (F : (Fin t → Fin N) → M)
     (hF : ∀ (d : Fin t → Fin N) (τ : Equiv.Perm (Fin t)), F (d ∘ τ) = ((Equiv.Perm.sign τ : ℤ) : ℂ) • F d)
     (hF0 : ∀ d : Fin t → Fin N, ¬ Function.Injective d → F d = 0) (W : (Fin t → Fin N) → ℂ) :
@@ -142,6 +183,11 @@ theorem sum_sortM {M : Type*} [AddCommGroup M] [Module ℂ M] {t N : ℕ} (F : (
 
 open Classical in
 
+/- English proof (translation)
+Use `set S := Finset.univ.filter (fun C : Fin t → Fin N => StrictMono C)`. Use `set Y : (Fin t → Fin N) → M := fun c => ∑ d ∈ S, (∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : ℂ) * B (d ∘ σ)) • D c d with hY`. Establish `inner : ∀ c, ∑ d, (A c * B d) • D c d = A c • Y c`. Introduce `c`. Repeatedly rewrite using `[mul_smul]`.
+
+Rewrite using `[← Finset.smul_sum, sum_sortM (D c) (hc c) (hc0 c) B]`. Repeatedly rewrite using `[inner]`. Rewrite using `[sum_sortM Y (fun c τ => by simp only [hY, hr, smul_comm _ (((Equiv.Perm.sign τ : ℤ) : ℂ)), Finset.smul_sum]) (fun c hcn => by simp [hY, hr0 c _ hcn]) A]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Simplify using `only [hY, Finset.smul_sum, smul_smul]`.
+-/
 theorem collapse2 {M : Type*} [AddCommGroup M] [Module ℂ M] {t N : ℕ}
     (D : (Fin t → Fin N) → (Fin t → Fin N) → M) (A B : (Fin t → Fin N) → ℂ)
     (hr : ∀ c d (τ : Equiv.Perm (Fin t)), D (c ∘ τ) d = ((Equiv.Perm.sign τ : ℤ) : ℂ) • D c d)
@@ -166,11 +212,17 @@ theorem collapse2 {M : Type*} [AddCommGroup M] [Module ℂ M] {t N : ℕ}
   refine Finset.sum_congr rfl (fun c _ => ?_)
   simp only [hY, Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply']`. Both sides reduce to the same expression.
+-/
 theorem det_rows {t N : ℕ} (P : Matrix (Fin N) (Fin N) ℂ) (c a : Fin t → Fin N) :
     ∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ j, P ((c ∘ σ) j) (a j) = (P.submatrix c a).det := by
   rw [Matrix.det_apply']
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_transpose, Matrix.det_apply']`. Both sides reduce to the same expression.
+-/
 theorem det_cols {t N : ℕ} (S : Matrix (Fin N) (Fin N) ℂ) (b d : Fin t → Fin N) :
     ∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ j, S (b j) ((d ∘ σ) j) = (S.submatrix b d).det := by
   rw [← Matrix.det_transpose, Matrix.det_apply']
@@ -180,6 +232,9 @@ variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[qminor_right_all S hS a b u f x hx hloc]`. Rewrite using `[collapse2 (fun c d => qminorOp (Q.EH k r) c d u f (x * S)) (fun c => ∏ j, (S⁻¹) (c j) (a j)) (fun d => ∏ j, S (b j) (d j)) (fun c d τ => skewRow c d u f (x * S) τ) (fun c d hc => row_zero c d u f (x * S) hc) (fun c d τ => skewCol c u f (x * S) hx hloc d τ) (fun c d hd => col_zer …`. Use `Finset.sum_congr rfl (fun c _ => Finset.sum_congr rfl (fun d _ => ?_))` and prove the remaining obligations. Rewrite using `[det_rows, det_cols]`.
+-/
 theorem qminor_right (S : Mat k r) (hS : S ∈ GV k r) {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ)
     (f : Mat k r → E) (x : Mat k r) (hx : x * S ∈ GV k r) (hloc : Loc (t : ℕ∞) f (x * S)) :
     qminorOp (Q.EH k r) a b u (fun y => f (y * S)) x =

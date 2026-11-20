@@ -9,6 +9,9 @@ namespace GlobalTheory.IwConst.LiePos
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem J_mul_J : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -16,6 +19,11 @@ theorem J_mul_J : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   funext a
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `J_mul_J`. Establish `hJ' : ∀ Y : Matrix (Fin n) (Fin n) ℂ, Formalism.REAL.Jm ε * (Formalism.REAL.Jm ε * Y) = Y` using `fun Y => by`. Rewrite using `[← mul_assoc, hJ, one_mul]`. Unfold `Formalism.REAL.inG at *`. Rewrite using `[conjTranspose_conjTranspose]`.
+
+Establish `e` using `congrArg (fun M => Formalism.REAL.Jm ε * M * Formalism.REAL.Jm ε) h`. Simplify using `only [mul_add, add_mul, mul_assoc, hJ, hJ', mul_one, mul_zero, zero_mul] at e`. Rewrite using `[add_comm]`. Conclude with `e`.
+-/
 theorem inG_conjTranspose {X : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.REAL.inG ε X) : Formalism.REAL.inG ε Xᴴ := by
   have hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := J_mul_J
   have hJ' : ∀ Y : Matrix (Fin n) (Fin n) ℂ, Formalism.REAL.Jm ε * (Formalism.REAL.Jm ε * Y) = Y := fun Y => by
@@ -27,6 +35,9 @@ theorem inG_conjTranspose {X : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.REAL.i
   rw [add_comm]
   exact e
 
+/- English proof (translation)
+Unfold `Formalism.REAL.inG at *`. Rewrite using `[conjTranspose_sub, sub_mul, mul_sub]`. Rewrite using `[show Xᴴ * Formalism.REAL.Jm ε - Yᴴ * Formalism.REAL.Jm ε + (Formalism.REAL.Jm ε * X - Formalism.REAL.Jm ε * Y) = (Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X) - (Yᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * Y) by abel, h, k, sub_zero]`.
+-/
 theorem inG_sub {X Y : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.REAL.inG ε X) (k : Formalism.REAL.inG ε Y) :
     Formalism.REAL.inG ε (X - Y) := by
   unfold Formalism.REAL.inG at *
@@ -34,6 +45,9 @@ theorem inG_sub {X Y : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.REAL.inG ε X)
   rw [show Xᴴ * Formalism.REAL.Jm ε - Yᴴ * Formalism.REAL.Jm ε + (Formalism.REAL.Jm ε * X - Formalism.REAL.Jm ε * Y) =
       (Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X) - (Yᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * Y) by abel, h, k, sub_zero]
 
+/- English proof (translation)
+Establish `hU : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `g.2`. Establish `h1 : uMat g * (uMat g)ᴴ = 1` using `mul_eq_one_comm.mp hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comm_of_maxK {g : Formalism.REAL.UJ ε} (hg : g ∈ maxK ε) :
     uMat g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * uMat g := by
   have hU : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε := g.2
@@ -42,6 +56,9 @@ theorem comm_of_maxK {g : Formalism.REAL.UJ ε} (hg : g ∈ maxK ε) :
     _ = (uMat g * (uMat g)ᴴ) * Formalism.REAL.Jm ε * uMat g := by simp only [mul_assoc]
     _ = Formalism.REAL.Jm ε * uMat g := by rw [h1, one_mul]
 
+/- English proof (translation)
+Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `J_mul_J`. Establish `h' : Xᴴ * Formalism.REAL.Jm ε = -(X * Formalism.REAL.Jm ε)`. Rewrite using `[hc]`. Conclude with `eq_neg_of_add_eq_zero_left h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem skew_of_comm {X : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.REAL.inG ε X)
     (hc : X * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * X) : Xᴴ = -X := by
   have hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := J_mul_J
@@ -51,6 +68,9 @@ theorem skew_of_comm {X : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.REAL.inG ε
     _ = -(X * Formalism.REAL.Jm ε) * Formalism.REAL.Jm ε := by rw [h']
     _ = -X := by rw [neg_mul, mul_assoc, hJ, mul_one]
 
+/- English proof (translation)
+Establish `hA : ((t : ℂ) • Z)ᴴ = -((t : ℂ) • Z)`. Rewrite using `[conjTranspose_smul, hZ, smul_neg, Complex.star_def, Complex.conj_ofReal]`. Establish `hc : Commute (-((t : ℂ) • Z)) ((t : ℂ) • Z)` using `(Commute.refl _).neg_left`. Rewrite using `[← Matrix.exp_conjTranspose, hA, ← Matrix.exp_add_of_commute _ _ hc, neg_add_cancel, NormedSpace.exp_zero]`.
+-/
 theorem exp_unitary {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : Zᴴ = -Z) (t : ℝ) :
     (NormedSpace.exp ((t : ℂ) • Z))ᴴ * NormedSpace.exp ((t : ℂ) • Z) = 1 := by
   have hA : ((t : ℂ) • Z)ᴴ = -((t : ℂ) • Z) := by
@@ -58,6 +78,11 @@ theorem exp_unitary {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : Zᴴ = -Z) (t : ℝ) 
   have hc : Commute (-((t : ℂ) • Z)) ((t : ℂ) • Z) := (Commute.refl _).neg_left
   rw [← Matrix.exp_conjTranspose, hA, ← Matrix.exp_add_of_commute _ _ hc, neg_add_cancel, NormedSpace.exp_zero]
 
+/- English proof (translation)
+Take `⟨A', -, -, hA', hS'⟩` from `h'`. Establish `hT : E i ∈ A'` using `(GlobalTheory.T.lie_algebra_of_isCutOutByRealMatrixAlgebra n ε S d E h).2.1 A' (fun g hg => by`. Establish `hg' : g ∈ S'` using `hS hg`. Rewrite `hg'` using `[hS']`. Conclude with `hg') i`.
+
+Conclude with `(hA' _).1 ⟨hT, h.inG (Submodule.subset_span ⟨i, rfl⟩)⟩`.
+-/
 theorem mem_span_of_subset {S S' : Set (Formalism.REAL.UJ ε)} {d d' : ℕ} {E : Fin d → Matrix (Fin n) (Fin n) ℂ}
     {E' : Fin d' → Matrix (Fin n) (Fin n) ℂ} (h : IsCut ε S E) (h' : IsCut ε S' E') (hS : S ⊆ S') (i : Fin d) :
     E i ∈ Submodule.span ℝ (Set.range E') := by
@@ -68,6 +93,25 @@ theorem mem_span_of_subset {S S' : Set (Formalism.REAL.UJ ε)} {d d' : ℕ} {E :
     exact hg') i
   exact (hA' _).1 ⟨hT, h.inG (Submodule.subset_span ⟨i, rfl⟩)⟩
 
+/- English proof (translation)
+Introduce `n ε a j W hW dN dM dK dL EN EM EK EL hN hM hK hL`. Take `⟨hlow, hkeep⟩` from `GlobalTheory.T.isotropicFlag_radical_lowers_levi_keeps n ε a j W hW`. Take `⟨htr, hle, hone, -⟩` from `GlobalTheory.T.trace_lowering_mul_keeping_isotropicFlag n ε a j W hW`. Establish `hENlow : ∀ i, EN i ∈ lowers ε W` using `(GlobalTheory.T.lie_algebra_of_isCutOutByRealMatrixAlgebra n ε _ dN EN hN).2.1 (lowers ε W) hlow`. Establish `hEMkeep : ∀ k, EM k ∈ keeps ε W` using `(GlobalTheory.T.lie_algebra_of_isCutOutByRealMatrixAlgebra n ε _ dM EM hM).2.1 (keeps ε W) (fun m hm => sub_mem (hkeep m hm).1 hone)`.
+
+Establish `hEMstar : ∀ k, (EM k)ᴴ ∈ keeps ε W`. Set `T2 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)` to `{ carrier := {Y | Yᴴ ∈ keeps ε W} add_mem' := fun {A B} hA hB => by`. Simplify using `only [Set.mem_ofPred_eq, conjTranspose_add] at *`. Conclude with `add_mem hA hB`. Use the proof step `zero_mem' := by`.
+
+Simplify using `only [Set.mem_ofPred_eq, conjTranspose_zero]`. Conclude with `zero_mem _`. Use the proof step `smul_mem' := fun c Y hY => by`. Simplify using `only [Set.mem_ofPred_eq] at *`. Rewrite using `[conjTranspose_smul, star_trivial]`.
+
+Conclude with `Submodule.smul_mem _ c hY }`. Conclude with `(GlobalTheory.T.lie_algebra_of_isCutOutByRealMatrixAlgebra n ε _ dM EM hM).2.1 T2 (fun m hm => by`. Express the relevant statement in the definitionally equal form `(uMat m - 1)ᴴ ∈ keeps ε W`. Rewrite using `[conjTranspose_sub, conjTranspose_one]`. Conclude with `sub_mem (hkeep m hm).2 hone)`.
+
+Set `TC : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)` to `{ carrier := {Y | Y * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * Y} add_mem' := fun {A B} hA hB => by`. Simplify using `only [Set.mem_ofPred_eq] at *`. Rewrite using `[add_mul, mul_add, hA, hB]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c Y hY => by`.
+
+Simplify using `only [Set.mem_ofPred_eq] at *`. Rewrite using `[smul_mul_assoc, mul_smul_comm, hY] }`. Establish `hEK : ∀ i, EK i ∈ TC` using `(GlobalTheory.T.lie_algebra_of_isCutOutByRealMatrixAlgebra n ε _ dK EK hK).2.1 TC (fun g hg => by`. Express the relevant statement in the definitionally equal form `(uMat g - 1) * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * (uMat g - 1)`. Rewrite using `[sub_mul, mul_sub, one_mul, mul_one, comm_of_maxK hg])`.
+
+Establish `hspan : Submodule.span ℝ (Set.range EK) ≤ TC` using `Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hEK i)`. Establish `hELK : ∀ i, EL i ∈ Submodule.span ℝ (Set.range EK)` using `mem_span_of_subset hL hK Set.inter_subset_left`. Use `⟨fun i k => htr _ (hENlow i) _ (hEMstar k), fun i k => htr _ (hENlow i) _ (hEMkeep k), fun i k => htr _ (hENlow i) _ (hle (hENlow k)), mem_span_of_subset hL hM Set.inter_subset_right, hELK, fun i => skew_of_comm (hK.inG (hELK i)) (hspan (hELK i)), fun i => ?_⟩` and prove the remaining obligations. Establish `hG : Formalism.REAL.inG ε (EN i)` using `hN.inG (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hY : Formalism.REAL.inG ε (EN i - (EN i)ᴴ)` using `inG_sub hG (inG_conjTranspose hG)`.
+
+Establish `hskew : (EN i - (EN i)ᴴ)ᴴ = -(EN i - (EN i)ᴴ)`. Rewrite using `[conjTranspose_sub, conjTranspose_conjTranspose, neg_sub]`. Use `(GlobalTheory.T.lie_algebra_of_isCutOutByRealMatrixAlgebra n ε _ dK EK hK).2.2 _ hY (fun t g hg => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(uMat g)ᴴ * uMat g = 1`. Rewrite using `[hg]`.
+
+Conclude with `exp_unitary hskew t`.
+-/
 theorem lieRel : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∀ (dN dM dK dL : ℕ) (EN : Fin dN → Matrix (Fin n) (Fin n) ℂ) (EM : Fin dM → Matrix (Fin n) (Fin n) ℂ) (EK : Fin dK → Matrix (Fin n) (Fin n) ℂ) (EL : Fin dL → Matrix (Fin n) (Fin n) ℂ), IsCut ε (flagN ε W) EN → IsCut ε (flagM ε W) EM → IsCut ε (maxK ε) EK → IsCut ε (maxK ε ∩ flagM ε W) EL → LieRel EN EM EK EL := by
   intro n ε a j W hW dN dM dK dL EN EM EK EL hN hM hK hL
   obtain ⟨hlow, hkeep⟩ := GlobalTheory.T.isotropicFlag_radical_lowers_levi_keeps n ε a j W hW

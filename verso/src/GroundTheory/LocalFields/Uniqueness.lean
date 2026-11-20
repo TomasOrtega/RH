@@ -13,6 +13,9 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
 
+/- English proof (translation)
+Set `` to `IsTopologicalAddGroup.rightUniformSpace L`. Use `isUniformAddGroup_of_addCommGroup (G := L)` as an intermediate fact. Use `infer_instance`. Use the proof step `@[instance_reducible]`.
+-/
 theorem t2Space_of_isNonarchimedeanLocalField : T2Space L := by
   let := IsTopologicalAddGroup.rightUniformSpace L
   have := isUniformAddGroup_of_addCommGroup (G := L)
@@ -28,9 +31,15 @@ def nontriviallyNormedField : NontriviallyNormedField K :=
         MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }
   Valued.toNontriviallyNormedField K (ValueGroupWithZero K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : (nontriviallyNormedField K).toUniformSpace.toTopologicalSpace = ‹TopologicalSpace K› :=
   rfl
 
+/- English proof (translation)
+Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Conclude with `(inferInstance : CompleteSpace K)`.
+-/
 theorem completeSpace_nontriviallyNormedField :
     @CompleteSpace K (nontriviallyNormedField K).toUniformSpace := by
   let := IsTopologicalAddGroup.rightUniformSpace K
@@ -39,6 +48,9 @@ theorem completeSpace_nontriviallyNormedField :
 
 variable [Algebra K L] [ValuativeExtension K L]
 
+/- English proof (translation)
+Set `` to `nontriviallyNormedField K`. Use `completeSpace_nontriviallyNormedField K` as an intermediate fact. Use `t2Space_of_isNonarchimedeanLocalField L` as an intermediate fact. Conclude with `isModuleTopologyOfFiniteDimensional`.
+-/
 theorem isModuleTopology [FiniteDimensional K L] : IsModuleTopology K L := by
   let := nontriviallyNormedField K
   have := completeSpace_nontriviallyNormedField K
@@ -51,6 +63,9 @@ section Nilpotent
 
 variable {F : Type*} [Field F] [ValuativeRel F]
 
+/- English proof (translation)
+Establish `hx' : 0 < valuation F x`. Rewrite using `[zero_lt_iff]`. Simplify using `using hx`. Rewrite using `[(valuation F).vle_iff_le, map_div₀, div_lt_one₀ hx', not_lt]`.
+-/
 theorem vle_iff_not_valuation_div_lt_one {x : F} (hx : x ≠ 0) (y : F) :
     x ≤ᵥ y ↔ ¬ valuation F (y / x) < 1 := by
   have hx' : 0 < valuation F x := by
@@ -58,6 +73,9 @@ theorem vle_iff_not_valuation_div_lt_one {x : F} (hx : x ≠ 0) (y : F) :
     simpa using hx
   rw [(valuation F).vle_iff_le, map_div₀, div_lt_one₀ hx', not_lt]
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `only [map_zero]`. Conclude with `⟨fun _ ↦ ValuativeRel.zero_vle y, fun _ ↦ ValuativeRel.zero_vle (f y)⟩`. Rewrite using `[vle_iff_not_valuation_div_lt_one hx, vle_iff_not_valuation_div_lt_one ((map_ne_zero f).mpr hx), ← map_div₀, hf]`.
+-/
 theorem vle_map_iff_of_valuation_lt_one_iff {F' : Type*} [Field F'] [ValuativeRel F']
     (f : F →+* F') (hf : ∀ z, valuation F' (f z) < 1 ↔ valuation F z < 1) (x y : F) :
     f x ≤ᵥ f y ↔ x ≤ᵥ y := by
@@ -69,6 +87,13 @@ theorem vle_map_iff_of_valuation_lt_one_iff {F' : Type*} [Field F'] [ValuativeRe
 
 variable [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero F).tendsto_right_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨n, hn⟩` from `(h 1 trivial).exists`. Simplify using `only [Set.mem_ofPred_eq, map_pow, Units.val_one] at hn`.
+
+Assume the negation of the conclusion as `hx`. Conclude with `(one_le_pow₀ (not_lt.mp hx)).not_gt hn`. Introduce `hx γ _`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hx γ`. Use `filter_upwards [eventually_ge_atTop n] with m hm`.
+
+Simplify using `only [map_pow]`. Conclude with `(pow_le_pow_of_le_one zero_le hx.le hm).trans_lt hn`.
+-/
 theorem tendsto_pow_atTop_nhds_zero_iff (x : F) :
     Tendsto (fun n : ℕ ↦ x ^ n) atTop (𝓝 0) ↔ valuation F x < 1 := by
   rw [(IsValuativeTopology.hasBasis_nhds_zero F).tendsto_right_iff]
@@ -95,10 +120,16 @@ variable {K L M : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Field M] [ValuativeRel M] [TopologicalSpace M] [IsNonarchimedeanLocalField M]
   [Algebra K M] [ValuativeExtension K M]
 
+/- English proof (translation)
+Use `isModuleTopology K L` as an intermediate fact. Conclude with `IsModuleTopology.continuous_of_linearMap (R := K) f.toLinearMap`.
+-/
 theorem continuous_algHom (f : L →ₐ[K] M) : Continuous f := by
   have := isModuleTopology K L
   exact IsModuleTopology.continuous_of_linearMap (R := K) f.toLinearMap
 
+/- English proof (translation)
+Set `` to `nontriviallyNormedField K`. Use `completeSpace_nontriviallyNormedField K` as an intermediate fact. Use `t2Space_of_isNonarchimedeanLocalField L` as an intermediate fact. Use `t2Space_of_isNonarchimedeanLocalField M` as an intermediate fact. Conclude with `LinearMap.isClosedEmbedding_of_injective (f := f.toLinearMap) (LinearMap.ker_eq_bot.mpr f.toRingHom.injective)`.
+-/
 theorem isClosedEmbedding_algHom (f : L →ₐ[K] M) : IsClosedEmbedding f := by
   let := nontriviallyNormedField K
   have := completeSpace_nontriviallyNormedField K
@@ -107,24 +138,39 @@ theorem isClosedEmbedding_algHom (f : L →ₐ[K] M) : IsClosedEmbedding f := by
   exact LinearMap.isClosedEmbedding_of_injective (f := f.toLinearMap)
     (LinearMap.ker_eq_bot.mpr f.toRingHom.injective)
 
+/- English proof (translation)
+Rewrite using `[← tendsto_pow_atTop_nhds_zero_iff, ← tendsto_pow_atTop_nhds_zero_iff, (isClosedEmbedding_algHom f).isInducing.tendsto_nhds_iff, ← map_zero f]`. Simplify using `only [Function.comp_def, map_pow]`.
+-/
 theorem valuation_map_lt_one_iff (f : L →ₐ[K] M) (x : L) :
     valuation M (f x) < 1 ↔ valuation L x < 1 := by
   rw [← tendsto_pow_atTop_nhds_zero_iff, ← tendsto_pow_atTop_nhds_zero_iff,
     (isClosedEmbedding_algHom f).isInducing.tendsto_nhds_iff, ← map_zero f]
   simp only [Function.comp_def, map_pow]
 
+/- English proof (translation)
+The claim follows from `vle_map_iff_of_valuation_lt_one_iff f.toRingHom (valuation_map_lt_one_iff f) x y`.
+-/
 theorem vle_map_iff (f : L →ₐ[K] M) (x y : L) : f x ≤ᵥ f y ↔ x ≤ᵥ y :=
   vle_map_iff_of_valuation_lt_one_iff f.toRingHom (valuation_map_lt_one_iff f) x y
 
+/- English proof (translation)
+Rewrite using `[← not_vle, vle_map_iff, not_vle]`.
+-/
 theorem vlt_map_iff (f : L →ₐ[K] M) (x y : L) : f x <ᵥ f y ↔ x <ᵥ y := by
   rw [← not_vle, vle_map_iff, not_vle]
 
+/- English proof (translation)
+The claim follows from `letI := f.toRingHom.toAlgebra ⟨vle_map_iff f⟩`.
+-/
 theorem valuativeExtension_algHom (f : L →ₐ[K] M) :
     letI := f.toRingHom.toAlgebra
     ValuativeExtension L M :=
   letI := f.toRingHom.toAlgebra
   ⟨vle_map_iff f⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨vle_map_iff (IsScalarTower.toAlgHom K L M)⟩`.
+-/
 theorem valuativeExtension_of_isScalarTower [Algebra L M] [IsScalarTower K L M] :
     ValuativeExtension L M :=
   ⟨vle_map_iff (IsScalarTower.toAlgHom K L M)⟩
@@ -137,11 +183,17 @@ variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
   {L : Type*} [Field L] [Algebra K L] [FiniteDimensional K L]
 
+/- English proof (translation)
+The claim follows from `have := isModuleTopology K L eq_moduleTopology K L`.
+-/
 theorem topologicalSpace_eq_moduleTopology [ValuativeRel L] [t : TopologicalSpace L]
     [IsNonarchimedeanLocalField L] [ValuativeExtension K L] : t = moduleTopology K L :=
   have := isModuleTopology K L
   eq_moduleTopology K L
 
+/- English proof (translation)
+The claim follows from `(@topologicalSpace_eq_moduleTopology K _ _ _ _ L _ _ _ v₁ t₁ h₁ e₁).trans (@topologicalSpace_eq_moduleTopology K _ _ _ _ L _ _ _ v₂ t₂ h₂ e₂).symm`.
+-/
 theorem topologicalSpace_unique {v₁ v₂ : ValuativeRel L} {t₁ t₂ : TopologicalSpace L}
     (h₁ : @IsNonarchimedeanLocalField L _ v₁ t₁) (h₂ : @IsNonarchimedeanLocalField L _ v₂ t₂)
     (e₁ : @ValuativeExtension K L _ _ _ v₁ _) (e₂ : @ValuativeExtension K L _ _ _ v₂ _) :
@@ -149,6 +201,11 @@ theorem topologicalSpace_unique {v₁ v₂ : ValuativeRel L} {t₁ t₂ : Topolo
   (@topologicalSpace_eq_moduleTopology K _ _ _ _ L _ _ _ v₁ t₁ h₁ e₁).trans
     (@topologicalSpace_eq_moduleTopology K _ _ _ _ L _ _ _ v₂ t₂ h₂ e₂).symm
 
+/- English proof (translation)
+Establish `ht` using `topologicalSpace_unique K h₁ h₂ e₁ e₂`. Substitute `ht` using the available equality. Establish `hlt (z : L) : @valuation L _ v₂ z < 1 ↔ @valuation L _ v₁ z < 1`. Rewrite using `[← @tendsto_pow_atTop_nhds_zero_iff L _ v₁ t₁ h₁, ← @tendsto_pow_atTop_nhds_zero_iff L _ v₂ t₁ h₂]`. Use extensionality with `x y`.
+
+Conclude with `(@vle_map_iff_of_valuation_lt_one_iff L _ v₁ L _ v₂ (RingHom.id L) hlt x y).symm`.
+-/
 theorem valuativeRel_unique {v₁ v₂ : ValuativeRel L} {t₁ t₂ : TopologicalSpace L}
     (h₁ : @IsNonarchimedeanLocalField L _ v₁ t₁) (h₂ : @IsNonarchimedeanLocalField L _ v₂ t₂)
     (e₁ : @ValuativeExtension K L _ _ _ v₁ _) (e₂ : @ValuativeExtension K L _ _ _ v₂ _) :
@@ -172,18 +229,30 @@ variable {K L M : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Field M] [ValuativeRel M] [TopologicalSpace M] [IsNonarchimedeanLocalField M]
   [Algebra K M] [ValuativeExtension K M]
 
+/- English proof (translation)
+Rewrite using `[← (valuation M).vle_iff_le, ← (valuation L).vle_iff_le, vle_map_iff]`.
+-/
 theorem valuation_map_le_iff (f : L →ₐ[K] M) (x y : L) :
     valuation M (f x) ≤ valuation M (f y) ↔ valuation L x ≤ valuation L y := by
   rw [← (valuation M).vle_iff_le, ← (valuation L).vle_iff_le, vle_map_iff]
 
+/- English proof (translation)
+Rewrite using `[← (valuation M).vlt_iff_lt, ← (valuation L).vlt_iff_lt, vlt_map_iff]`.
+-/
 theorem valuation_map_lt_iff (f : L →ₐ[K] M) (x y : L) :
     valuation M (f x) < valuation M (f y) ↔ valuation L x < valuation L y := by
   rw [← (valuation M).vlt_iff_lt, ← (valuation L).vlt_iff_lt, vlt_map_iff]
 
+/- English proof (translation)
+Rewrite using `[le_antisymm_iff, le_antisymm_iff, valuation_map_le_iff, valuation_map_le_iff]`.
+-/
 theorem valuation_map_eq_iff (f : L →ₐ[K] M) (x y : L) :
     valuation M (f x) = valuation M (f y) ↔ valuation L x = valuation L y := by
   rw [le_antisymm_iff, le_antisymm_iff, valuation_map_le_iff, valuation_map_le_iff]
 
+/- English proof (translation)
+Simplify using `only [Valuation.mem_integer_iff]`. Rewrite using `[← map_one (valuation M), ← map_one f, valuation_map_le_iff, map_one]`.
+-/
 theorem map_mem_integer_iff (f : L →ₐ[K] M) (x : L) : f x ∈ 𝒪[M] ↔ x ∈ 𝒪[L] := by
   simp only [Valuation.mem_integer_iff]
   rw [← map_one (valuation M), ← map_one f, valuation_map_le_iff, map_one]
@@ -193,6 +262,9 @@ def continuousAlgHom (f : L →ₐ[K] M) : L →A[K] M where
   cont := continuous_algHom f
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_continuousAlgHom (f : L →ₐ[K] M) : ⇑(continuousAlgHom f) = f :=
   rfl
 
@@ -205,6 +277,9 @@ def integerAlgHom (f : L →ₐ[K] M) : 𝒪[L] →ₐ[𝒪[K]] 𝒪[M] where
   commutes' r := by ext; simp
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_integerAlgHom_apply (f : L →ₐ[K] M) (x : 𝒪[L]) :
     (integerAlgHom f x : M) = f x :=
   rfl
@@ -222,6 +297,9 @@ def residueAlgHom (f : L →ₐ[K] M) : 𝓀[L] →ₐ[𝓀[K]] 𝓀[M] :=
   IsLocalRing.ResidueField.mapAlgHom' (integerAlgHom f)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem residueAlgHom_residue (f : L →ₐ[K] M) (x : 𝒪[L]) :
     residueAlgHom f (IsLocalRing.residue 𝒪[L] x) =
       IsLocalRing.residue 𝒪[M] (integerAlgHom f x) :=
@@ -229,6 +307,15 @@ theorem residueAlgHom_residue (f : L →ₐ[K] M) (x : 𝒪[L]) :
 
 variable (K L)
 
+/- English proof (translation)
+Establish `key : ∀ (τ : L ≃ₐ[K] L) (y : L), ¬ valuation L (τ y) < valuation L y`. Introduce `τ y h`. Establish `hpow : ∀ m : ℕ, valuation L ((τ ^ (m + 1)) y) < valuation L y`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => simpa using h`. Consider the case `succ m ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply]`. Conclude with `((valuation_map_lt_iff τ.toAlgHom _ _).mpr ih).trans h`. Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero (orderOf_pos τ).ne'`.
+
+Use `hpow m` as an intermediate fact. Rewrite `this` using `[← Nat.succ_eq_add_one, ← hm, pow_orderOf_eq_one, AlgEquiv.one_apply]`. Conclude with `this.false`. Break down `lt_trichotomy (valuation L (σ x)) (valuation L x) with h | h | h` into its components or cases. Conclude with `(key σ x h).elim`.
+
+Conclude with `h`. Use `(key σ.symm (σ x) ?_).elim` and prove the remaining obligations. Simplify using `using h`.
+-/
 theorem valuation_algEquiv_apply (σ : L ≃ₐ[K] L) (x : L) : valuation L (σ x) = valuation L x := by
 
   have key : ∀ (τ : L ≃ₐ[K] L) (y : L), ¬ valuation L (τ y) < valuation L y := by
@@ -250,6 +337,9 @@ theorem valuation_algEquiv_apply (σ : L ≃ₐ[K] L) (x : L) : valuation L (σ 
   · refine (key σ.symm (σ x) ?_).elim
     simpa using h
 
+/- English proof (translation)
+The claim follows from `vle_map_iff σ.toAlgHom x y`.
+-/
 theorem vle_algEquiv_iff (σ : L ≃ₐ[K] L) (x y : L) : σ x ≤ᵥ σ y ↔ x ≤ᵥ y :=
   vle_map_iff σ.toAlgHom x y
 
@@ -259,6 +349,9 @@ def continuousAlgEquiv (σ : L ≃ₐ[K] L) : L ≃A[K] L where
   continuous_invFun := continuous_algHom σ.symm.toAlgHom
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_continuousAlgEquiv (σ : L ≃ₐ[K] L) : ⇑(continuousAlgEquiv K L σ) = σ :=
   rfl
 
@@ -266,6 +359,9 @@ def homeomorph (σ : L ≃ₐ[K] L) : L ≃ₜ L :=
   (continuousAlgEquiv K L σ).toHomeomorph
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_homeomorph (σ : L ≃ₐ[K] L) : ⇑(homeomorph K L σ) = σ :=
   rfl
 
@@ -276,6 +372,9 @@ def integerAlgEquiv : (L ≃ₐ[K] L) →* (𝒪[L] ≃ₐ[𝒪[K]] 𝒪[L]) whe
   map_mul' _ _ := by ext; rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_integerAlgEquiv_apply (σ : L ≃ₐ[K] L) (x : 𝒪[L]) :
     (integerAlgEquiv K L σ x : L) = σ x :=
   rfl
@@ -292,6 +391,9 @@ def residueAlgEquiv : (L ≃ₐ[K] L) →* (𝓀[L] ≃ₐ[𝓀[K]] 𝓀[L]) whe
     simp
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem residueAlgEquiv_residue (σ : L ≃ₐ[K] L) (x : 𝒪[L]) :
     residueAlgEquiv K L σ (IsLocalRing.residue 𝒪[L] x) =
       IsLocalRing.residue 𝒪[L] (integerAlgEquiv K L σ x) :=

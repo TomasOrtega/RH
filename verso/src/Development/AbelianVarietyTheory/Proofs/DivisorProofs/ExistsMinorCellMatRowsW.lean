@@ -37,6 +37,15 @@ def colP (w : ι → Equiv.Perm (Fin N)) (τ : ι) (j : Fin N) :
 def matAt (w : ι → Equiv.Perm (Fin N)) (τ : ι) {σ : ℤ →+* ℂ} (y : CxPts (flStr ι N) σ) : Matrix (Fin N) (Fin N) ℂ :=
   Matrix.of fun i j => CxPts.ev (flStr ι N) σ (cellU w) ((cellMat w τ).1 i j) y
 
+/- English proof (translation)
+Establish `hm (i : Fin l) : ((w τ (subsetEnum (rowsW w τ l) i) : Fin N) : ℕ) < l`. Establish `: subsetEnum (rowsW w τ l) i ∈ (rowsW w τ l).1` using `Finset.orderEmbOfFin_mem _ _ _`. Conclude with `(Finset.mem_filter.1 this).2`. Set `f : Fin l → Fin l` to `fun i => ⟨_, hm i⟩`. Establish `hf : Function.Injective f` using `fun i j h => by`.
+
+Establish `h1 : w τ (subsetEnum (rowsW w τ l) i) = w τ (subsetEnum (rowsW w τ l) j)` using `Fin.ext (congrArg (fun x : Fin l => x.val) h)`. Conclude with `(Finset.orderEmbOfFin _ _).injective ((w τ).injective h1)`. Set `π : Equiv.Perm (Fin l)` to `Equiv.ofBijective f (Finite.injective_iff_bijective.1 hf)`. Set `M : Matrix (Fin l) (Fin l) (R ι N)` to `(lowMat (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd τ).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)`. Establish `h {i j : Fin N} (hij : i ≤ j) : lowMat (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd τ i j = (1 : Matrix _ _ _) i j` using `dif_neg fun ⟨_, _, h₁, h₂⟩ => (h₁.trans_le h₂).not_ge hij`.
+
+Establish `ht : M.BlockTriangular OrderDual.toDual` using `fun i j hij => (h (le_of_lt (show i < j from hij))).trans (Matrix.one_apply_ne (ne_of_lt (show i < j from hij)))`. Establish `hM : M.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular _ ht]`. Simplify using `[M, h le_rfl]`. Use `⟨Equiv.Perm.sign π, ?_⟩` and prove the remaining obligations.
+
+Establish `e : minor (cellGL (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w τ).1 l (rowsW w τ l) = (M.submatrix π id).det` using `rfl`. Rewrite using `[e, Matrix.det_permute, hM, mul_one]`.
+-/
 theorem exists_minor_cellGL_rowsW (w : ι → Equiv.Perm (Fin N)) (τ : ι) (l : Fin (N + 1)) :
     ∃ ε : ℤˣ, minor (cellGL (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w τ).1 l (rowsW w τ l) = ((ε : ℤ) : R ι N) := by
   have hm (i : Fin l) : ((w τ (subsetEnum (rowsW w τ l) i) : Fin N) : ℕ) < l := by
@@ -62,12 +71,20 @@ theorem exists_minor_cellGL_rowsW (w : ι → Equiv.Perm (Fin N)) (τ : ι) (l :
       (M.submatrix π id).det := rfl
   rw [e, Matrix.det_permute, hM, mul_one]
 
+/- English proof (translation)
+Take `⟨ε, h⟩` from `exists_minor_cellGL_rowsW w τ l`. Use `⟨ε, (minor_map (cellHom w) _ l _).trans ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_intCast]`.
+-/
 theorem exists_minor_cellMat_rowsW (w : ι → Equiv.Perm (Fin N)) (τ : ι) (l : Fin (N + 1)) :
     ∃ ε : ℤˣ, minor (cellMat w τ).1 l (rowsW w τ l) = ((ε : ℤ) : Γ(Fl ι N, cellU w)) := by
   obtain ⟨ε, h⟩ := exists_minor_cellGL_rowsW w τ l
   refine ⟨ε, (minor_map (cellHom w) _ l _).trans ?_⟩
   rw [h, map_intCast]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨z, -, rfl⟩`. Use `mem_pull.2 ?_` and prove the remaining obligations. Take `⟨ε, h⟩` from `exists_minor_cellGL_rowsW w a l`. Establish `hu : IsUnit (plVec (cellGL (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w a).1 l (rowsEquiv N l (rowsW w a l)))`. Rewrite using `[plVec_rowsEquiv, h]`.
+
+Conclude with `ε.isUnit.map (Int.castRingHom _)`. Use `(GlobalTheory.Points.le_pt_preimage_chart_iff (Int.castRingHom _) _ (span_plVec _ _) _).2 hu (Set.mem_univ z)` as an intermediate fact. Rewrite `this` using `[← plPt_π Prod.fst Prod.snd (cellGL (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w) (a, l), ← flagPt_plEmb_assoc]`. Conclude with `this`.
+-/
 theorem cellU_le_chart (a : ι) (l : Fin (N + 1)) (w : ι → Equiv.Perm (Fin N)) :
     cellU w ≤ (flDet a l).dual.B.U (frameIdx Prod.fst Prod.snd (a, l) (rowsW w a l)) := by
   rintro _ ⟨z, -, rfl⟩
@@ -81,6 +98,15 @@ theorem cellU_le_chart (a : ι) (l : Fin (N + 1)) (w : ι → Equiv.Perm (Fin N)
     ← flagPt_plEmb_assoc] at this
   exact this
 
+/- English proof (translation)
+Establish `hr : Set.range x ⊆ Set.range (cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w)`. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨y, -, hy⟩` from `h (Set.mem_univ z)`. Conclude with `⟨y, hy⟩`. Take `⟨t, rfl⟩ : ∃ t, t ≫ cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w = x` from `⟨_, IsOpenImmersion.lift_fac _ x hr⟩`.
+
+Take `⟨ψ, rfl⟩` from `Spec.map_surjective t`. Establish `e : (Points.valMap (Spec.map ψ ≫ cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w) (cellU w) h).hom.comp (cellHom w) = ψ.hom`. Establish `e₁ : (Scheme.ΓSpecIso (CommRingCat.of (R ι N))).inv ≫ ((cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w).appIso ⊤).inv ≫ Points.valMap (Spec.map ψ ≫ cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w) (cellU w) h = ψ`. Rewrite using `[Points.valMap, ← Scheme.Hom.appLE_comp_appLE (Spec.map ψ) _ (cellU w) ⊤ ⊤ (by simp [cellU]) le_rfl, Category.assoc]`. Use `erw [Scheme.Hom.appIso_inv_appLE_assoc]`.
+
+Establish `e₂ : (Spec.map ψ).appLE ⊤ ⊤ le_rfl = (Spec.map ψ).appTop` using `(Scheme.Hom.app_eq_appLE _).symm`. Rewrite using `[e₂]`. Simplify using `[← Scheme.ΓSpecIso_inv_naturality_assoc]`. Conclude with `congrArg CommRingCat.Hom.hom e₁`. Use `(spMap_flagPt _ _ ψ.hom _).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem eq_flagPt_of_le {A : Type} [CommRing A] (w : ι → Equiv.Perm (Fin N)) (x : Sp A ⟶ Fl ι N)
     (h : ⊤ ≤ x ⁻¹ᵁ cellU w) :
     x = flagPt Prod.fst Prod.snd fun τ =>

@@ -17,37 +17,64 @@ section Act
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {T : Over S}
 
+/- English proof (translation)
+Rewrite using `[Hom.mul_def, Hom.mul_def, Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map]`.
+-/
 theorem comp_mulMon (f : A ⟶ A) [IsMonHom f] (x y : T ⟶ A) : (x * y) ≫ f = (x ≫ f) * (y ≫ f) := by
   rw [Hom.mul_def, Hom.mul_def, Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map]
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Category.assoc, IsMonHom.one_hom]`.
+-/
 theorem one_compMon (f : A ⟶ A) [IsMonHom f] : (1 : T ⟶ A) ≫ f = 1 := by
   rw [Hom.one_def, Category.assoc, IsMonHom.one_hom]
 
+/- English proof (translation)
+Simplify using `only [padd]`. Rewrite using `[← Category.assoc, comp_lift, Hom.mul_def]`.
+-/
 theorem comp_padd (x : T ⟶ A) (f g : A ⟶ A) : x ≫ padd A f g = (x ≫ f) * (x ≫ g) := by
   simp only [padd]
   rw [← Category.assoc, comp_lift, Hom.mul_def]
 
 variable {O : Type} [Ring O] (ρ : RingAct A O)
 
+/- English proof (translation)
+Rewrite using `[ρ.map_add, comp_padd]`.
+-/
 theorem act_add_apply (x : T ⟶ A) (a b : O) : x ≫ ρ.act (a + b) = (x ≫ ρ.act a) * (x ≫ ρ.act b) := by
   rw [ρ.map_add, comp_padd]
 
+/- English proof (translation)
+Rewrite using `[ρ.map_mul, Category.assoc]`.
+-/
 theorem act_mul_apply (x : T ⟶ A) (a b : O) : x ≫ ρ.act (a * b) = (x ≫ ρ.act b) ≫ ρ.act a := by
   rw [ρ.map_mul, Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[ρ.map_one, Category.comp_id]`.
+-/
 theorem act_one_apply (x : T ⟶ A) : x ≫ ρ.act 1 = x := by
   rw [ρ.map_one, Category.comp_id]
 
+/- English proof (translation)
+Establish `h` using `act_add_apply ρ x 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(_root_.mul_left_cancel (a := x ≫ ρ.act 0) (by rw [_root_.mul_one]; exact h)).symm`.
+-/
 theorem act_zero_apply (x : T ⟶ A) : x ≫ ρ.act 0 = 1 := by
   have h := act_add_apply ρ x 0 0
   rw [add_zero] at h
   exact (_root_.mul_left_cancel (a := x ≫ ρ.act 0) (by rw [_root_.mul_one]; exact h)).symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, act_zero_apply, _root_.pow_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, act_add_apply, ih, act_one_apply, _root_.pow_succ]`.
+-/
 theorem act_nat_apply (x : T ⟶ A) (n : ℕ) : x ≫ ρ.act (n : O) = x ^ n := by
   induction n with
   | zero => rw [Nat.cast_zero, act_zero_apply, _root_.pow_zero]
   | succ n ih => rw [Nat.cast_succ, act_add_apply, ih, act_one_apply, _root_.pow_succ]
 
+/- English proof (translation)
+Rewrite using `[← act_nat_apply ρ x N, ← hab, act_mul_apply, hx]`. Use `haveI := ρ.hom a`. Conclude with `one_compMon (ρ.act a)`.
+-/
 theorem pow_eq_one_of_kill {a b : O} {N : ℕ} (hab : a * b = (N : O)) (x : T ⟶ A) (hx : x ≫ ρ.act b = 1) :
     x ^ N = 1 := by
   rw [← act_nat_apply ρ x N, ← hab, act_mul_apply, hx]
@@ -56,6 +83,9 @@ theorem pow_eq_one_of_kill {a b : O} {N : ℕ} (hab : a * b = (N : O)) (x : T �
 
 end Act
 
+/- English proof (translation)
+Introduce `u v h`. Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `congrArg (fun w : (Γ(Sp K, ⊤))ˣ => (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (w : Γ(Sp K, ⊤))) h`. Simplify `h1` using `[unitOn]`.
+-/
 theorem unitOn_injective {K : Type} [CommRing K] : Function.Injective (unitOn (R := K)) := by
   intro u v h
   apply Units.ext
@@ -68,6 +98,15 @@ section Sep
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Establish `skew : ∀ x y, Dw.EF x y = - Dw.EF y x`. Introduce `x y`. Establish `hxy` using `Dw.alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, Dw.alt] at hxy`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hdiv : ∀ y, (N : ℤ) ∣ Dw.EF d y` using `fun y => by`. Rewrite using `[skew]`. Conclude with `dvd_neg.mpr (h y)`. Set `φ : Dw.La →ₗ[ℤ] ℤ` to `{ toFun := fun y => Dw.EF d y / N map_add' := fun y z => by`. Simplify using `only [map_add]`.
+
+Conclude with `Int.add_ediv_of_dvd_left (hdiv y)`. Use the proof step `map_smul' := fun m y => by`. Simplify using `only [map_smul, smul_eq_mul, RingHom.id_apply]`. Conclude with `Int.mul_ediv_assoc _ (hdiv y) }`. Take `⟨f, hf⟩` from `Dw.unimod.2 φ`.
+
+Use `⟨f, Dw.unimod.1 (LinearMap.ext fun y => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, LinearMap.smul_apply, hf]`. Use `show Dw.EF d y = N • (Dw.EF d y / N)`. Rewrite using `[nsmul_eq_mul, Int.mul_ediv_cancel' (hdiv y)]`.
+-/
 theorem mem_nsmul_of_dvd (Dw : Datum H) (N : ℕ) (d : Dw.La)
     (h : ∀ b, (N : ℤ) ∣ Dw.EF b d) : ∃ f : Dw.La, d = N • f := by
   have skew : ∀ x y, Dw.EF x y = - Dw.EF y x := by
@@ -92,6 +131,21 @@ theorem mem_nsmul_of_dvd (Dw : Datum H) (N : ℕ) (d : Dw.La)
   show Dw.EF d y = N • (Dw.EF d y / N)
   rw [nsmul_eq_mul, Int.mul_ediv_cancel' (hdiv y)]
 
+/- English proof (translation)
+Set `_` to `H.starRing`. Introduce `oA Dw I N hN β u u' hβ huu x x' hx hx' hne`. Establish `hN0 : 0 < N` using `hN`. Establish `hlin : ∀ (c : 𝓞 E) b, I.ev N (c • b) = I.ev N b ≫ oA.act c` using `fun c b => I.lin N c b`. Take `⟨a, rfl⟩` from `(I.onto N hN0 x).1 (pow_eq_one_of_kill oA.toRingAct hβ x hx)`.
+
+Take `⟨a', rfl⟩` from `(I.onto N hN0 x').1 (pow_eq_one_of_kill oA.toRingAct hβ x' hx')`. Take `⟨e, he⟩` from `(I.ker N hN0 (star β • a)).1 (by rw [hlin]; exact hx)`. Take `⟨e', he'⟩` from `(I.ker N hN0 (star β • a')).1 (by rw [hlin]; exact hx')`. Establish `hdN : ∀ f : Dw.La, a - a' ≠ N • f`. Introduce `f hf`.
+
+Apply `hne` to reduce the goal to its premises. Establish `: a = a' + N • f` using `by rw [← hf]; abel`. Rewrite using `[this, I.add, (I.ker N hN0 _).2 ⟨f, rfl⟩, _root_.mul_one]`. Choose the witnesses or unpack the hypotheses as in `⟨b0, hb0⟩ : ∃ b0 : Dw.La, ¬ ((N : ℤ) ∣ Dw.EF b0 (a - a')) := by`. Assume the negation of the conclusion as `hcon`.
+
+Simplify using `only [not_exists, not_not] at hcon`. Take `⟨f, hf⟩` from `mem_nsmul_of_dvd Dw N (a - a') hcon`. Conclude with `hdN f hf`. Establish `h1 : Dw.EF b0 (a - a') = Dw.EF ((u * β) • b0) (a - a') + Dw.EF ((u' * star β) • b0) (a - a')`. Rewrite using `[← LinearMap.add_apply, ← map_add, ← add_smul, huu, one_smul]`.
+
+Establish `h2 : (N : ℤ) ∣ Dw.EF ((u * β) • b0) (a - a')`. Establish `hd' : H.bar (u * β) • (a - a') = N • (H.bar u • (e - e'))`. Rewrite using `[map_mul, mul_smul, smul_sub]`. Express the relevant statement in the definitionally equal form `H.bar u • (star β • a - star β • a') = _`. Rewrite using `[he, he', ← smul_sub]`.
+
+Conclude with `smul_comm _ _ _`. Rewrite using `[Dw.adj, hd', map_nsmul, nsmul_eq_mul]`. Conclude with `Dvd.intro _ rfl`. Establish `hb : ¬ (N : ℤ) ∣ Dw.EF ((u' * star β) • b0) (a - a')` using `fun h => hb0 (by rw [h1]; exact dvd_add h2 h)`. Use `⟨I.ev N ((u' * star β) • b0), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hlin, smul_smul, show β * (u' * star β) = (N : 𝓞 E) * u' by rw [← hβ]; ring, mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `(I.ker N hN0 _).2 ⟨_, rfl⟩`. Use `⟨unitOn (I.ζ N ^ Dw.EF ((u' * star β) • b0) a), unitOn (I.ζ N ^ Dw.EF ((u' * star β) • b0) a'), I.isom N hN0 _ _, I.isom N hN0 _ _, fun hc => hb ?_⟩` and prove the remaining obligations. Establish `hc'` using `unitOn_injective hc`. Rewrite using `[← (I.ζ_prim N hN0).zpow_eq_one_iff_dvd, map_sub, zpow_sub, hc', _root_.mul_inv_cancel]`.
+-/
 theorem sep_core (A : PolAV (Sp (FractionRing R))) : letI := H.starRing
     ∀ (oA : A.OAct (𝓞 E)) (Dw : Datum H) (_I : TateIso Dw F (TFK (R := R) F ⟶ A.A) (fun a g => g ≫ oA.act a)
         (fun n g g' c => WeilIs A.A A.L n g g' (unitOn c))) (N : ℕ), 1 ≤ N →
@@ -140,6 +194,9 @@ theorem sep_core (A : PolAV (Sp (FractionRing R))) : letI := H.starRing
 
 end Sep
 
+/- English proof (translation)
+Introduce `E _ _ _ H V _ _ _ t P _ α N hN hαN hu _ F _ _ _ Dw I x x' hx hx' hne`. Take `⟨u, u', hu⟩` from `hu`. Conclude with `sep_core (H := H) (R := V) (F := F) P.A P.oA Dw I N hN α u u' hαN hu x x' hx hx' hne`.
+-/
 theorem alphaPair_holds : AlphaPairStatement := by
   intro E _ _ _ H V _ _ _ t P _ α N hN hαN hu _ F _ _ _ Dw I x x' hx hx' hne
   obtain ⟨u, u', hu⟩ := hu

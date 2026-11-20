@@ -31,6 +31,9 @@ def invSub (a : A) (M : Submodule A D) : Submodule A D where
     rw [smul_comm]
     exact M.smul_mem _ hk
 
+/- English proof (translation)
+Introduce and unpack `x ⟨k, hk⟩`. Take `⟨j, hj⟩` from `h hk`. Conclude with `⟨j + k, by rwa [pow_add, mul_smul]⟩`.
+-/
 theorem invSub_le {a : A} {M M' : Submodule A D} (h : M ≤ invSub a M') :
     invSub a M ≤ invSub a M' := by
   rintro x ⟨k, hk⟩

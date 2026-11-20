@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.UnramEmb
 
+/- English proof (translation)
+Use `span_prime_isMaximal p hp.out` as an intermediate fact. Take `⟨P, hP, hPo⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) (Ideal.span {(p : ℤ)})`. Establish `hpP : (p : 𝓞 E) ∈ P` using `mem_of_liesOver p P`. Establish `hp0 : (p : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Set `Q : HeightOneSpectrum (𝓞 E)` to `⟨P, hP.isPrime, fun e => hp0 (by rwa [e, Ideal.mem_bot] at hpP)⟩`.
+
+Establish `: Algebra.IsUnramifiedAt ℤ Q.asIdeal` using `(not_dvd_discr_iff_forall_liesOver E (𝓞 E) (Nat.prime_iff_prime_int.1 hp.out)).1 h P hP hPo`. Take `⟨n, i, -, -⟩` from `GlobalTheory.GO.PlWitt.exists_good (p := p) Q hpP`. Set `a : GaloisField p n →ₐ[ZMod p] AlgebraicClosure (ZMod p)` to `IsAlgClosed.lift`. Establish `hj : Function.Injective ((algebraMap (WittVector p (AlgebraicClosure (ZMod p))) (KW p)).comp (WittVector.map a.toRingHom))` using `(IsFractionRing.injective _ _).comp (WittVector.map_injective _ a.toRingHom.injective)`. Conclude with `⟨(IsFractionRing.lift (K := GlobalTheory.GO.PlWitt.Qn p n) hj).comp i⟩`.
+-/
 theorem nonempty_emb (E : Type) [Field E] [NumberField E] (p : ℕ) [hp : Fact p.Prime]
     (h : ¬ (p : ℤ) ∣ discr E) : Nonempty (E →+* KW p) := by
   have := span_prime_isMaximal p hp.out
@@ -25,6 +30,11 @@ theorem nonempty_emb (E : Type) [Field E] [NumberField E] (p : ℕ) [hp : Fact p
     (IsFractionRing.injective _ _).comp (WittVector.map_injective _ a.toRingHom.injective)
   exact ⟨(IsFractionRing.lift (K := GlobalTheory.GO.PlWitt.Qn p n) hj).comp i⟩
 
+/- English proof (translation)
+Take `⟨τ₀⟩` from `nonempty_emb D.host.E p (fun hd => h (Int.natCast_dvd.1 hd))`. Take `⟨g₀, hg₀⟩` from `(factEmb D.R D.host).1.2 (jc.comp τ₀)`. Use `⟨τ₀.comp (D.host.sigmaOf (g₀⁻¹ * g) : D.host.E →+* D.host.E), ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, ← hg₀]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+
+Use `show D.host.φ₀ (D.host.sigmaOf g₀ (D.host.sigmaOf (g₀⁻¹ * g) x)) = D.host.φ₀ (D.host.sigmaOf g x)`. Establish `: D.host.sigmaOf (g₀ * (g₀⁻¹ * g)) = D.host.sigmaOf g₀ * D.host.sigmaOf (g₀⁻¹ * g)` using `map_mul (D.host.gal).symm _ _`. Rewrite `this` using `[mul_inv_cancel_left]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem exists_emb_comp_eq (D : D7) (p : ℕ) [Fact p.Prime] (h : UnramE D p) (jc : KW p →+* ℂ)
     (g : D.R.GG) : ∃ τ : Emb D p, jc.comp τ = D.host.emb g := by
   obtain ⟨τ₀⟩ := nonempty_emb D.host.E p (fun hd => h (Int.natCast_dvd.1 hd))

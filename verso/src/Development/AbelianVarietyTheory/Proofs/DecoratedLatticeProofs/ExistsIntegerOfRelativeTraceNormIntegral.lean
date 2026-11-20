@@ -5,6 +5,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.FixedUnitNorm
 
+/- English proof (translation)
+Introduce `D w t n ht hn`. Establish `hint : ∀ s : 𝓞 D.host.F, IsIntegral ℤ (algebraMap D.host.F D.host.E s)` using `fun s => (NumberField.RingOfIntegers.isIntegral_coe s).map (IsScalarTower.toAlgHom ℤ D.host.F D.host.E)`. Set `t' : 𝓞 D.host.E` to `⟨algebraMap D.host.F D.host.E t, hint t⟩`. Set `n' : 𝓞 D.host.E` to `⟨algebraMap D.host.F D.host.E n, hint n⟩`. Establish `hw : IsIntegral (𝓞 D.host.E) w`.
+
+Use `⟨Polynomial.X ^ 2 - Polynomial.C t' * Polynomial.X + Polynomial.C n', ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`. Establish `h1 : algebraMap (𝓞 D.host.E) D.host.E t' = w + D.sp.cm.sig w` using `ht.symm`. Establish `h2 : algebraMap (𝓞 D.host.E) D.host.E n' = w * D.sp.cm.sig w` using `hn.symm`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, h1, h2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := 𝓞 D.host.E) (K := D.host.E)).mp hw`. Conclude with `⟨y, hy⟩`.
+-/
 theorem integral_of_trace_norm_integral : ∀ (D : D7) (w : D.host.E) (t n : 𝓞 D.host.F),
     w + D.sp.cm.sig w = algebraMap D.host.F D.host.E t →
     w * D.sp.cm.sig w = algebraMap D.host.F D.host.E n → ∃ x : 𝓞 D.host.E, (x : D.host.E) = w := by

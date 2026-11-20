@@ -16,15 +16,29 @@ namespace UpperTheory.Gal.Int.Geo.Pl
 private def iT {R : Type} [CommRing R] {n : ℕ} (g : GL (Fin n) R) : GL (Fin n) R :=
   ⟨(g⁻¹).valᵀ, g.valᵀ, by rw [← transpose_mul, Units.mul_inv, transpose_one], by rw [← transpose_mul, Units.inv_mul, transpose_one]⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext (by simp [iT])`.
+-/
 private theorem iT_one {R : Type} [CommRing R] {n : ℕ} : iT (1 : GL (Fin n) R) = 1 := Units.ext (by simp [iT])
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+-/
 private theorem iT_cont {R : Type} [CommRing R] [TopologicalSpace R] {n : ℕ} : Continuous (iT : GL (Fin n) R → GL (Fin n) R) :=
   Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[GlobalTheory.HenQ.Basic.mem_KGL_iff]`. Conclude with `⟨fun i j => h.2 j i, fun i j => h.1 j i⟩`.
+-/
 private theorem iT_mem {E : Type} [Field E] [NumberField E] {n : ℕ} {w : Plc E} {g : GLw n w} (h : g ∈ KGL w n) : iT g ∈ KGL w n := by
   rw [GlobalTheory.HenQ.Basic.mem_KGL_iff] at h ⊢
   exact ⟨fun i j => h.2 j i, fun i j => h.1 j i⟩
 
+/- English proof (translation)
+Establish `h : IsOpen ((w.adicCompletionIntegers E : ValuationSubring _) : Set (w.adicCompletion E))` using `Valued.isOpen_valuationSubring _`. Establish `: (KGL w n : Set (GLw n w)) = (⋂ i, ⋂ j, (fun g : GLw n w => g.val i j) ⁻¹' ((w.adicCompletionIntegers E : ValuationSubring _) : Set (w.adicCompletion E))) ∩ ⋂ i, ⋂ j, (fun g : GLw n w => (g⁻¹).val i j) ⁻¹' ((w.adicCompletionIntegers E : ValuationSubring _) : Set (w.adicCompletio …`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, GlobalTheory.HenQ.Basic.mem_KGL_iff, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `(isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => h.preimage (Units.continuous_val.matrix_elem i j)).inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => h.preimage (Units.continuous_coe_inv.matrix_elem i j))`.
+-/
 private theorem kgl_open {E : Type} [Field E] [NumberField E] {n : ℕ} (w : Plc E) : IsOpen (KGL w n : Set (GLw n w)) := by
   have h : IsOpen ((w.adicCompletionIntegers E : ValuationSubring _) : Set (w.adicCompletion E)) := Valued.isOpen_valuationSubring _
   have : (KGL w n : Set (GLw n w)) = (⋂ i, ⋂ j, (fun g : GLw n w => g.val i j) ⁻¹' ((w.adicCompletionIntegers E : ValuationSubring _) : Set (w.adicCompletion E))) ∩
@@ -36,6 +50,9 @@ private theorem kgl_open {E : Type} [Field E] [NumberField E] {n : ℕ} (w : Plc
   exact (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => h.preimage (Units.continuous_val.matrix_elem i j)).inter
     (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => h.preimage (Units.continuous_coe_inv.matrix_elem i j))
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Establish `h1 : (comp w k)⁻¹ = GeneralLinearGroup.map (pLoc E w) (mat k)⁻¹` using `(map_inv _ _).symm`. Use `show (mat (F.th k)).val.map (pLoc E w) = ((comp w k)⁻¹).valᵀ`. Rewrite using `[F.th_mat, h1]`. Both sides reduce to the same expression.
+-/
 private theorem comp_th {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p}
     (F : Frame S) (w : Plc E) (k : GUf E n) : comp w (F.th k) = iT (comp w k) := by
   refine Units.ext ?_
@@ -44,6 +61,27 @@ private theorem comp_th {E : Type} [Field E] [NumberField E] [IsCMField E] {A : 
   rw [F.th_mat, h1]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ A n p hp S F x U w₀ Up V hoff`. Apply the tactic sequence `have hoff' : ∀ u ∈ V.S, (p : 𝓞 E) ∉ u.asIdeal := by first | exact hoff.1 | exact hoff`. Establish `hcof` using `Filter.eventually_cofinite.1 F.a_cof`. Establish `hc : ∀ u : Plc E, Continuous fun g : GLw n u => (F.a u)⁻¹ * g * F.a u` using `fun u => (continuous_const.mul continuous_id).mul continuous_const`. Establish `hO : ∀ u : Plc E, ∃ e : ℕ, ∀ e', e ≤ e' → ∀ g ∈ KGL u n, Near1 u e' g → (F.a u)⁻¹ * g * F.a u ∈ KGL u n ∧ (u ∈ V.S → iT ((F.a u)⁻¹ * g * F.a u) ∈ V.Kw u)` using `fun u => by`.
+
+Use `hN E n u (((fun g : GLw n u => (F.a u)⁻¹ * g * F.a u) ⁻¹' (KGL u n : Set (GLw n u))) ∩ {g | u ∈ V.S → iT ((F.a u)⁻¹ * g * F.a u) ∈ V.Kw u}) (((kgl_open u).preimage (hc u)).inter ?_) ⟨?_, fun _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : u ∈ V.S`. Simplify using `only [hu, true_imp_iff]`. Conclude with `(V.shape.opn u hu).preimage (iT_cont.comp (hc u))`. Simplify using `[hu]`.
+
+Simplify using `[Subgroup.one_mem]`. Simplify using `[iT_one, Subgroup.one_mem]`. Use `choose e he using hO`. Establish `hJ : IsOpen (V.J : Set (GLw n w₀))` using `V.Kw0 ▸ V.shape.opn w₀ V.shape.mem`. Take `⟨e₀, he₀⟩` from `hN E n w₀ ((fun g : GLw n w₀ => iT ((F.a w₀)⁻¹ * g * F.a w₀)) ⁻¹' (Subtype.val '' {k : V.J | V.χ k = 1})) ((hJ.isOpenMap_subtype_val _ V.ker_open).preimage (iT_cont.comp (hc w₀))) ⟨1, map_one _, by simp [iT_one]⟩`.
+
+Establish `hT : ∀ u ∈ V.S ∪ hcof.toFinset, (p : 𝓞 E) ∉ u.asIdeal ∧ (u ∈ V.S ∨ F.a u ∉ KGL u n)` using `fun u hu => by`. Rewrite `hu` using `[Finset.mem_union, Set.Finite.mem_toFinset]`. Conclude with `⟨hu.elim (hoff' u) fun h h' => h (F.a_int u p hp.out S.good h'), hu⟩`. Use `⟨V.S ∪ hcof.toFinset, (V.S ∪ hcof.toFinset).sup e + e₀, hT, fun k' hk hn => ?_⟩` and prove the remaining obligations. Take `⟨π, hπ⟩` from `hP E n p hp.out`.
+
+Establish `hK` using `(hD E A n p S F k').2.1.1 hk`. Establish `hj : F.j (k' * (π k')⁻¹) = F.j k'`. Rewrite using `[map_mul, map_inv, (F.ker _).2 fun w hw => (hπ k' w).2 hw, inv_one, mul_one]`. Establish `h1 : ∀ w : Plc E, (p : 𝓞 E) ∈ w.asIdeal → comp w (k' * (π k')⁻¹) = 1` using `fun w hw => by`. Rewrite using `[map_mul, map_inv, (hπ k' w).1 hw, mul_inv_cancel]`.
+
+Establish `h2 : ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → comp w (k' * (π k')⁻¹) = (F.a w)⁻¹ * (F.a w * comp w k' * (F.a w)⁻¹) * F.a w` using `fun w hw => by`. Rewrite using `[map_mul, map_inv, (hπ k' w).2 hw]`. Use `group`. Establish `h3` using `fun u hu => he u _ ((Finset.le_sup (f := e) hu).trans (Nat.le_add_right _ e₀)) _ (hK u (hT u hu).1) (hn u hu)`. Establish `h4 : ∀ w : Plc E, comp w (F.th (k' * (π k')⁻¹)) ∈ KGL w n` using `fun w => by`.
+
+Rewrite using `[comp_th]`. Use `iT_mem ?_` and prove the remaining obligations. Distinguish the cases in `hw : (p : 𝓞 E) ∈ w.asIdeal`. Rewrite using `[h1 w hw]`. Conclude with `Subgroup.one_mem _`.
+
+Rewrite using `[h2 w hw]`. Distinguish the cases in `hu : w ∈ V.S ∪ hcof.toFinset`. Conclude with `(h3 w hu).1`. Rewrite `hu` using `[Finset.mem_union, Set.Finite.mem_toFinset, not_or, Set.mem_setOf_eq, not_not]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ hu.2) (hK w hw)) hu.2`.
+
+Establish `hw₀ : w₀ ∈ V.S ∪ hcof.toFinset` using `Finset.mem_union_left _ V.shape.mem`. Take `⟨y, hy, hy'⟩` from `he₀ _ (Nat.le_add_left _ _) _ (hK w₀ (hT w₀ hw₀).1) (hn w₀ hw₀)`. Establish `h5 : comp w₀ (F.th (k' * (π k')⁻¹)) = y` using `by rw [comp_th, h2 w₀ (hT w₀ hw₀).1, hy']`. Use `⟨_, hj, CertificateRingHomMap.mem_lev.2 ⟨CertificateRingHomMap.pIntSim_of E n S.facts.pos _ h4, fun w hw => ?_, fun w _ _ => h4 w⟩, h5 ▸ y.2, ?_⟩` and prove the remaining obligations. Establish `hu` using `Finset.mem_union_left hcof.toFinset hw`.
+
+Rewrite using `[comp_th, h2 w (hT w hu).1]`. Conclude with `(h3 w hu).2 hw`. Rewrite using `[← hy]`. Conclude with `congrArg _ (Subtype.ext h5)`.
+-/
 theorem stabOf_of (hN : NearNbhd) (hP : PrimeProj) (hD : Dict) : StabOf := by
   intro E _ _ _ A n p hp S F x U w₀ Up V hoff
   have hoff' : ∀ u ∈ V.S, (p : 𝓞 E) ∉ u.asIdeal := by first | exact hoff.1 | exact hoff

@@ -16,6 +16,9 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallMidJB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnipCT.setIntegral_conj_levi_of_unip_invariant | exact GlobalTheory.UnipCT.setIntegral_conj_levi_of_unip_invariant | (intros; apply GlobalTheory.UnipCT.setIntegral_conj_levi_of_unip_invariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.levi_constant_term_integral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n n₁ : ℕ)
     (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁) (γ : UA σ W₁.J) (m : UA σ W.J),
     m ∈ ratU σ W.J → IsLevi H 1 γ m → ∀ Φ : UA σ W.J → ℂ,

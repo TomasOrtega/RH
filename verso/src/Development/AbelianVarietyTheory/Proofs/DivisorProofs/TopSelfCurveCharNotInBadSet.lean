@@ -25,6 +25,13 @@ noncomputable section
 
 namespace GlobalTheory.DetDRVert
 
+/- English proof (translation)
+Establish `hT (n : ℕ) : IsScalarTower k K (coh F n)`. Use `⟨fun a b x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cohOn.action F ⊤ n (algebraMap K Γ(X, ⊤) (a • b)) x = cohOn.action F ⊤ n (algebraMap k Γ(X, ⊤) a) (cohOn.action F ⊤ n (algebraMap K Γ(X, ⊤) b) x)`. Rewrite using `[Algebra.smul_def, map_mul, map_mul, hk]`. Both sides reduce to the same expression.
+
+Establish `e (n : ℕ) : ((-1 : ℤ) ^ n * hdim k F n) = (Module.finrank k K : ℤ) * ((-1 : ℤ) ^ n * hdim K F n)`. Rewrite using `[hdim_def, hdim_def, ← Module.finrank_mul_finrank k K (coh F n)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[chi_def, chi_def]`.
+
+Repeatedly rewrite using `[e]`. Conclude with `(mul_finsum _ _).symm`.
+-/
 theorem chi_tower {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebra k K] [Algebra K Γ(X, ⊤)]
     [Algebra k Γ(X, ⊤)] (hk : ∀ a : k, algebraMap k Γ(X, ⊤) a = algebraMap K Γ(X, ⊤) (algebraMap k K a))
     (F : X.Modules) : chi k F = (Module.finrank k K : ℤ) * chi K F := by
@@ -42,6 +49,9 @@ theorem chi_tower {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebra k K
   simp_rw [e]
   exact (mul_finsum _ _).symm
 
+/- English proof (translation)
+Rewrite using `[interNum_def, interNum_def, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[chi_tower k K hk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem interNum_tower {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebra k K] [Algebra K Γ(X, ⊤)]
     [Algebra k Γ(X, ⊤)] (hk : ∀ a : k, algebraMap k Γ(X, ⊤) a = algebraMap K Γ(X, ⊤) (algebraMap k K a))
     {ι : Type} [Fintype ι] (F : X.Modules) (L : ι → LB X) :
@@ -51,6 +61,9 @@ theorem interNum_tower {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebr
   rw [chi_tower k K hk]
   ring
 
+/- English proof (translation)
+Rewrite using `[topSelf_def, topSelf_def, interNum_tower k K hk]`.
+-/
 theorem topSelf_tower {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebra k K] [Algebra K Γ(X, ⊤)]
     [Algebra k Γ(X, ⊤)] (hk : ∀ a : k, algebraMap k Γ(X, ⊤) a = algebraMap K Γ(X, ⊤) (algebraMap k K a))
     (M : LB X) (d : ℕ) : topSelfIntersection k M d = (Module.finrank k K : ℤ) * topSelfIntersection K M d := by
@@ -58,6 +71,29 @@ theorem topSelf_tower {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebra
 
 end GlobalTheory.DetDRVert
 
+/- English proof (translation)
+Introduce `hPX P2 PH _ D O hO _ B hB c W τ Z i _ _ κ _ _ _ hd hp A T H h hW`. Substitute `hW` using the available equality. Establish `hX` using `(h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.ar`. Establish `: Module.Finite ℤ (𝓞 D.what₂.LL)` using `hX.finite`. Establish `: IsProper (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p` using `(isProper_and_exists_isAmpleLB_of_isProjOver hX.isProjOver).1`.
+
+Establish `hproj : IsProjOver (strHom κ Z)`. Establish `: IsFinite (spMap (Int.castRingHom (𝓞 D.what₂.LL)))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := 𝓞 D.what₂.LL)).2 inferInstance`. Establish `e : strHom κ Z ≫ spMap (Int.castRingHom κ) = i ≫ (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p ≫ spMap (Int.castRingHom (𝓞 D.what₂.LL))` using `specZIsTerminal.hom_ext _ _`.
+
+Establish `: IsProper (strHom κ Z ≫ spMap (Int.castRingHom κ))`. Rewrite using `[e]`. Use `infer_instance`. Establish `: IsProper (strHom κ Z)` using `IsProper.of_comp _ (spMap (Int.castRingHom κ))`. Conclude with `ProperCurve.isProjOver_of_isProper _ hd`.
+
+Set `F₀ : HermLB.IsomClass (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p → ℤ` to `Quotient.lift (s := HermLB.isometrySetoid _) (fun L => topSelfIntersection κ (L.B.pull i) 1) fun L L' e => by`. Establish `⟨w, hw, _⟩` using `HermLB.Isometric.pull e i rfl`. Conclude with `interNum_congr_lbIso κ _ (fun _ => (L.restr i).isLB) (fun _ => (L'.restr i).isLB) fun _ => ⟨w, hw⟩`. Set `F : HermLB.IsomClass (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p →+ ℤ` to `AddMonoidHom.mk' F₀ (by`. Introduce and unpack `⟨L⟩ ⟨L'⟩`.
+
+Conclude with `HtTensCurve.topSelf_one_pull_tens hproj hd i L.isLB L'.isLB)`. Establish `hF (L : HermLB (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p) : F L.icls = topSelfIntersection κ (L.B.pull i) 1` using `rfl`. Establish `key {ι : Type} [Fintype ι] (L : ι → HermLB (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p) (e : ι → ℤ) : topSelfIntersection κ ((comb L e).B.pull i) 1 = ∑ x, e x * F (L x).icls`. Express the relevant statement in the definitionally equal form `F (comb L e).icls = _`. Rewrite using `[icls_comb, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => by rw [map_zsmul, smul_eq_mul]`. Use `set q := ringChar κ with hq`. Use `haveI : Fact q.Prime := ⟨CharP.char_is_prime κ q⟩`. Use `letI : Algebra (ZMod q) κ := ZMod.algebra κ q`. Use `letI : Algebra (ZMod q) Γ(Z, ⊤) := ((algebraMap κ Γ(Z, ⊤)).comp (algebraMap (ZMod q) κ)).toAlgebra`.
+
+Establish `htw : ∀ a : ZMod q, algebraMap (ZMod q) Γ(Z, ⊤) a = algebraMap κ Γ(Z, ⊤) (algebraMap (ZMod q) κ a)` using `fun _ => rfl`. Use `haveI : Module.Finite (ZMod q) κ := Module.Finite.of_finite`. Establish `hdeg : 0 < Module.finrank (ZMod q) κ` using `Module.finrank_pos`. Take `⟨-, -, -, -, -, h0, -⟩` from `GlobalTheory.T.curve_degree_data_outside_set hPX P2 PH D O hO A T H h B hB c q hp Z i hd`. Establish `hsum : (Module.finrank (ZMod q) κ : ℤ) * ∑ k : Fin O.N, F ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).root (GlobalTheory.FlagAr.setB O.Y B) (τ, k)).icls = 0`.
+
+Establish `h1` using `h0 τ`. Rewrite `h1` using `[GlobalTheory.PowerSumSmul.psum, Finset.filter_true_of_mem (fun k _ => k.is_lt)]`. Rewrite using `[Finset.mul_sum]`. Establish `h2 : ∀ k : Fin O.N, ((topSelfIntersection (ZMod q) (((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).root (GlobalTheory.FlagAr.setB O.Y B) (τ, k)).B.pull i) 1 : ℤ) : ℝ) = (((Module.finrank (ZMod q) κ : ℤ) * F ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).root (GlobalTheory.FlagAr.setB O …` using `fun k => by`. Rewrite using `[hF, GlobalTheory.DetDRVert.topSelf_tower (ZMod q) κ htw]`.
+
+Simplify using `only [h2] at h1`. Conclude with `h1` after adjusting the coercions. Establish `hsum' : ∑ k : Fin O.N, F ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).root (GlobalTheory.FlagAr.setB O.Y B) (τ, k)).icls = 0` using `(mul_eq_zero.1 hsum).resolve_left (by exact_mod_cast hdeg.ne')`. Establish `hx : ∀ x : D.what₂.Tau × Fin O.N, (if x.1 = τ then (-1 : ℤ) else 0) * F ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).root (GlobalTheory.FlagAr.setB O.Y B) x).dual.icls = if x.1 = τ then F ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).root (GlobalTheory.FlagAr.setB O.Y B) x).icls els …`. Introduce `x`.
+
+Use `split_ifs`. Rewrite using `[HermLB.icls_dual, map_neg, neg_one_mul, neg_neg]`. Rewrite using `[zero_mul]`. Rewrite using `[key, Fintype.sum_option]`. Express the relevant statement in the definitionally equal form `(0 : ℤ) * _ + ∑ x : D.what₂.Tau × Fin O.N, (if x.1 = τ then (-1 : ℤ) else 0) * F ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).root (GlobalTheory.FlagAr.setB O.Y B) x).dual.icls = 0`.
+
+Rewrite using `[zero_mul, zero_add, Finset.sum_congr rfl fun x _ => hx x, Fintype.sum_prod_type, Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (fun hτ => absurd (Finset.mem_univ τ) hτ)]`. Simplify using `using hsum'`.
+-/
 theorem GlobalTheory.DetDRVert.topSelf_detDR_eq_zero : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (B : ℝ), 2 ≤ B → ∀ (c : O.s.Comp) (W : O.LatModel (GlobalTheory.FlagAr.setB O.Y B) c) (τ : D.what₂.Tau)
     (Z : Scheme.{0}) (i : Z ⟶ W.V.X) [IsClosedImmersion i] [IsIntegral Z] (κ : Type) [Field κ] [Finite κ]

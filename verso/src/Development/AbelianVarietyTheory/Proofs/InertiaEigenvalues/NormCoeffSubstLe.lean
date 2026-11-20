@@ -15,6 +15,13 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K]
 def Ex (u a e : K⟦X⟧) : Prop :=
   ∀ k : ℕ, Tendsto (fun m : ℕ => coeff k (Polynomial.aeval u (trunc m a))) atTop (𝓝 (coeff k e))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `j _`. Rewrite using `[pow_zero, pow_zero, coeff_one]`. Use `split_ifs with hj`.
+
+Simplify using `[hj]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `j hj`. Rewrite using `[pow_succ, coeff_mul, ← le_div_iff₀ (pow_pos hρ j)]`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Rewrite using `[le_div_iff₀ (pow_pos hρ j), norm_mul, ← hp', pow_add, mul_mul_mul_comm, pow_succ]`. Conclude with `mul_le_mul (ih _ (by omega)) (h _ (by omega)) (by positivity) (by positivity)`.
+-/
 theorem pow_bound (u : K⟦X⟧) (k : ℕ) {ρ r : ℝ} (hρ : 0 < ρ) (hr : 0 ≤ r)
     (h : ∀ j ≤ k, ‖coeff j u‖ * ρ ^ j ≤ r) (n : ℕ) : ∀ j ≤ k, ‖coeff j (u ^ n)‖ * ρ ^ j ≤ r ^ n := by
   induction n with
@@ -32,6 +39,15 @@ theorem pow_bound (u : K⟦X⟧) (k : ℕ) {ρ r : ℝ} (hρ : 0 < ρ) (hr : 0 �
     rw [le_div_iff₀ (pow_pos hρ j), norm_mul, ← hp', pow_add, mul_mul_mul_comm, pow_succ]
     exact mul_le_mul (ih _ (by omega)) (h _ (by omega)) (by positivity) (by positivity)
 
+/- English proof (translation)
+Take `⟨r, hr0, hr1⟩` from `exists_between hu`. Establish `hr : 0 < r` using `lt_of_le_of_lt (norm_nonneg _) hr0`. Establish `hev : ∀ᶠ ρ : ℝ in 𝓝[>] 0, ∀ j ∈ Finset.range (k + 1), ‖coeff j u‖ * ρ ^ j < r`. Rewrite using `[eventually_all_finset]`. Introduce `j _`.
+
+Use `nhdsWithin_le_nhds ?_` and prove the remaining obligations. Use `ContinuousAt.eventually_lt (f := fun ρ : ℝ => ‖coeff j u‖ * ρ ^ j) (g := fun _ => r) (by fun_prop) (by fun_prop) ?_` and prove the remaining obligations. Break down `j with _ | j` into its components or cases. Simplify using `using hr0`. Simplify using `using hr`.
+
+Take `⟨ρ, hρ, hρ0⟩` from `(hev.and self_mem_nhdsWithin).exists`. Establish `hρ0 : 0 < ρ` using `hρ0`. Establish `hb` using `pow_bound u k hρ0 hr.le (fun j hj => (hρ j (Finset.mem_range.2 (by omega))).le)`. Use `⟨r, (ρ ^ k)⁻¹, hr, hr1, by positivity, fun p B hB hp => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_eq_sum_range, map_sum]`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun n _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, norm_mul, le_inv_mul_iff₀ (pow_pos hρ0 k)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_bound (u : K⟦X⟧) (hu : ‖constantCoeff u‖ < 1) (k : ℕ) :
     ∃ r C : ℝ, 0 < r ∧ r < 1 ∧ 0 < C ∧ ∀ (p : Polynomial K) (B : ℝ), 0 ≤ B →
       (∀ m, ‖p.coeff m‖ * r ^ m ≤ B) → ‖coeff k (Polynomial.aeval u p)‖ ≤ C * B := by
@@ -57,6 +73,9 @@ theorem exists_bound (u : K⟦X⟧) (hu : ‖constantCoeff u‖ < 1) (k : ℕ) :
     _ ≤ ‖p.coeff n‖ * r ^ n := mul_le_mul_of_nonneg_left (hb n k le_rfl) (norm_nonneg _)
     _ ≤ B := hp n
 
+/- English proof (translation)
+Rewrite using `[coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun p _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (hg _)`.
+-/
 theorem coeff_mul_le {f g : K⟦X⟧} (hf : ∀ m, ‖coeff m f‖ ≤ 1) (hg : ∀ m, ‖coeff m g‖ ≤ 1) (m : ℕ) :
     ‖coeff m (f * g)‖ ≤ 1 := by
   rw [coeff_mul]
@@ -64,9 +83,25 @@ theorem coeff_mul_le {f g : K⟦X⟧} (hf : ∀ m, ‖coeff m f‖ ≤ 1) (hg : 
   rw [norm_mul]
   exact mul_le_one₀ (hf _) (norm_nonneg _) (hg _)
 
+/- English proof (translation)
+Simplify `hf j) n m le_rfl` using `using pow_bound f m one_pos zero_le_one (fun j _ => by simpa`.
+-/
 theorem coeff_pow_le {f : K⟦X⟧} (hf : ∀ m, ‖coeff m f‖ ≤ 1) (n m : ℕ) : ‖coeff m (f ^ n)‖ ≤ 1 := by
   simpa using pow_bound f m one_pos zero_le_one (fun j _ => by simpa using hf j) n m le_rfl
 
+/- English proof (translation)
+Introduce `k`. Take `⟨r, C, hr0, hr1, hC, hb⟩` from `exists_bound u hu k`. Establish `h1 : Tendsto (fun m : ℕ => coeff k (Polynomial.aeval u (trunc m f * trunc m g))) atTop (𝓝 (coeff k (e * e')))`. Simplify using `only [map_mul, coeff_mul]`. Conclude with `tendsto_finset_sum _ fun p _ => (he _).mul (he' _)`.
+
+Establish `h2 : Tendsto (fun m : ℕ => coeff k (Polynomial.aeval u (trunc m (f * g) - trunc m f * trunc m g))) atTop (𝓝 0)`. Use `squeeze_zero_norm (a := fun m => C * r ^ m) (fun M => hb _ _ (by positivity) fun m => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hm : m < M`. Establish `: (trunc M (f * g) - trunc M f * trunc M g).coeff m = 0`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_mul, coeff_trunc, if_pos hm, coeff_mul, sub_eq_zero]`.
+
+Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Rewrite using `[coeff_trunc, coeff_trunc, if_pos (by omega), if_pos (by omega)]`. Rewrite using `[this]`. Simplify using `[pow_nonneg hr0.le]`.
+
+Establish `: ‖(trunc M (f * g) - trunc M f * trunc M g).coeff m‖ ≤ 1`. Rewrite using `[Polynomial.coeff_sub, coeff_trunc, if_neg hm, zero_sub, norm_neg, ← Polynomial.coeff_coe, Polynomial.coe_mul]`. Apply the tactic sequence `refine coeff_mul_le (fun j => ?_) (fun j => ?_) m <;>`. Rewrite using `[Polynomial.coeff_coe, coeff_trunc] split_ifs`. Apply the tactic sequence `first | exact hf j | exact hg j`.
+
+Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one hr0.le hr1).const_mul C`. Use `h1.add h2` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Use `this.congr fun m => ?_` and prove the remaining obligations. Rewrite using `[← map_add, ← map_add, add_sub_cancel]`.
+-/
 theorem Ex.mul {u f g e e' : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1) (hf : ∀ m, ‖coeff m f‖ ≤ 1)
     (hg : ∀ m, ‖coeff m g‖ ≤ 1) (he : Ex u f e) (he' : Ex u g e') : Ex u (f * g) (e * e') := by
   intro k
@@ -101,6 +136,13 @@ theorem Ex.mul {u f g e e' : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1) (hf : �
   refine this.congr fun m => ?_
   rw [← map_add, ← map_add, add_sub_cancel]
 
+/- English proof (translation)
+Establish `hpow : ∀ n : ℕ, Ex u (f ^ n) (e ^ n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `k`.
+
+Rewrite using `[← tendsto_add_atTop_iff_nat 1]`. Simplify using the standard rewrite rules. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul hu (coeff_pow_le hf n) hf he`. Introduce `k`.
+
+Simplify using `only [Polynomial.aeval_eq_sum_range (p := p), map_sum, map_smul]`. Conclude with `tendsto_finset_sum _ fun n _ => (hpow n k).const_smul _`.
+-/
 theorem Ex.aeval {u f e : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1) (hf : ∀ m, ‖coeff m f‖ ≤ 1)
     (he : Ex u f e) (p : Polynomial K) : Ex u (Polynomial.aeval f p) (Polynomial.aeval e p) := by
   have hpow : ∀ n : ℕ, Ex u (f ^ n) (e ^ n) := by
@@ -115,6 +157,15 @@ theorem Ex.aeval {u f e : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1) (hf : ∀ m
   simp only [Polynomial.aeval_eq_sum_range (p := p), map_sum, map_smul]
   exact tendsto_finset_sum _ fun n _ => (hpow n k).const_smul _
 
+/- English proof (translation)
+Introduce `k`. Take `⟨r, C, hr0, hr1, hC, hb⟩` from `exists_bound u hu k`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Establish `hε3 : 0 < ε / 3` using `by positivity`.
+
+Take `⟨N, hN1, hN2⟩` from `((hF r hr0 hr1 (ε / 3 / C) (by positivity)).and (Metric.tendsto_nhds.1 (hE k) _ hε3)).exists`. Use `filter_upwards [Metric.tendsto_nhds.1 (h N k) _ hε3] with M hM`. Establish `h3` using `hb (trunc M (f - F N)) (ε / 3 / C) (by positivity) fun m => by`. Rewrite using `[coeff_trunc]`. Use `split_ifs`.
+
+Conclude with `hN1 m`. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Rewrite `h3` using `[map_sub, map_sub, map_sub, ← dist_eq_norm, mul_div_cancel₀ _ hC.ne']`. Use `dist_triangle4 (coeff k (Polynomial.aeval u (trunc M f))) (coeff k (Polynomial.aeval u (trunc M (F N)))) (coeff k (E N)) (coeff k e)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Ex.of_approx {u f e : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1) (F E : ℕ → K⟦X⟧)
     (h : ∀ N, Ex u (F N) (E N)) (hE : ∀ k, Tendsto (fun N => coeff k (E N)) atTop (𝓝 (coeff k e)))
     (hF : ∀ r : ℝ, 0 < r → r < 1 → ∀ ε > 0, ∀ᶠ N in atTop, ∀ m, ‖coeff m (f - F N)‖ * r ^ m ≤ ε) :
@@ -137,6 +188,13 @@ theorem Ex.of_approx {u f e : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1) (F E : 
     (coeff k (Polynomial.aeval u (trunc M (F N)))) (coeff k (E N)) (coeff k e)
   linarith
 
+/- English proof (translation)
+Establish `hs : HasSubst Y` using `HasSubst.of_constantCoeff_zero' h0`. Rewrite using `[coeff_subst' hs, finsum_eq_sum_of_support_subset (s := Finset.range (m + 1))]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hB fun n hn => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `n hn`. Assume the negation of the conclusion as `hlt`. Apply `hn` to reduce the goal to its premises. Establish `hlt' : m < n` using `by simpa using hlt`. Establish `: X ^ n ∣ Y ^ n` using `pow_dvd_pow_of_dvd (X_dvd_iff.2 h0) n`.
+
+Simplify using `[X_pow_dvd_iff.1 this m hlt']`.
+-/
 theorem norm_coeff_subst_le {Y : K⟦X⟧} (h0 : constantCoeff Y = 0) (hY : ∀ m, ‖coeff m Y‖ ≤ 1)
     (a : K⟦X⟧) (m : ℕ) {B : ℝ} (hB : 0 ≤ B) (ha : ∀ n ≤ m, ‖coeff n a‖ ≤ B) :
     ‖coeff m (subst Y a)‖ ≤ B := by
@@ -154,6 +212,9 @@ theorem norm_coeff_subst_le {Y : K⟦X⟧} (h0 : constantCoeff Y = 0) (hY : ∀ 
     have : X ^ n ∣ Y ^ n := pow_dvd_pow_of_dvd (X_dvd_iff.2 h0) n
     simp [X_pow_dvd_iff.1 this m hlt']
 
+/- English proof (translation)
+Establish `hB : 0 ≤ B` using `le_trans (by positivity) (ha 0)`. Rewrite using `[← le_div_iff₀ (pow_pos hr0 m)]`. Use `norm_coeff_subst_le h0 hY a m (by positivity) fun n hn => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (pow_pos hr0 m)]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one hr0.le hr1.le hn) (norm_nonneg _)) (ha n)`.
+-/
 theorem weighted_subst_le {Y : K⟦X⟧} (h0 : constantCoeff Y = 0) (hY : ∀ m, ‖coeff m Y‖ ≤ 1)
     (a : K⟦X⟧) {r B : ℝ} (hr0 : 0 < r) (hr1 : r < 1) (ha : ∀ n, ‖coeff n a‖ * r ^ n ≤ B) (m : ℕ) :
     ‖coeff m (subst Y a)‖ * r ^ m ≤ B := by
@@ -163,6 +224,11 @@ theorem weighted_subst_le {Y : K⟦X⟧} (h0 : constantCoeff Y = 0) (hY : ∀ m,
   rw [le_div_iff₀ (pow_pos hr0 m)]
   exact le_trans (mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one hr0.le hr1.le hn) (norm_nonneg _)) (ha n)
 
+/- English proof (translation)
+Take `⟨s, hs0, hs1⟩` from `exists_between hr1`. Establish `hs : 0 < s` using `hr0.trans hs0`. Take `⟨B, hB⟩` from `(ha s hs hs1).bddAbove_range`. Establish `hb` using `weighted_subst_le h0 hY a hs hs1 (B := B) fun n => hB ⟨n, rfl⟩`. Use `squeeze_zero (g := fun k => B * (r / s) ^ k) (fun k => by positivity) (fun k => ?_) ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := mul_le_mul_of_nonneg_right (hb k) (by positivity)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) ((div_lt_one hs).2 hs0)).const_mul B`.
+-/
 theorem conv_subst {Y : K⟦X⟧} (h0 : constantCoeff Y = 0) (hY : ∀ m, ‖coeff m Y‖ ≤ 1) (a : K⟦X⟧)
     (ha : ∀ r : ℝ, 0 < r → r < 1 → Tendsto (fun k : ℕ => ‖coeff k a‖ * r ^ k) atTop (𝓝 0))
     (r : ℝ) (hr0 : 0 < r) (hr1 : r < 1) :
@@ -178,6 +244,11 @@ theorem conv_subst {Y : K⟦X⟧} (h0 : constantCoeff Y = 0) (hY : ∀ m, ‖coe
   · simpa using (tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity)
       ((div_lt_one hs).2 hs0)).const_mul B
 
+/- English proof (translation)
+Establish `hs : HasSubst Y` using `HasSubst.of_constantCoeff_zero' h0`. Use `Ex.of_approx hu _ _ (fun N => Ex.aeval hu hY hv (trunc N a)) he fun r hr0 hr1 ε hε => ?_` and prove the remaining obligations. Take `⟨N₀, hN₀⟩` from `eventually_atTop.1 ((ha r hr0 hr1).eventually (ge_mem_nhds hε))`. Use `filter_upwards [eventually_ge_atTop N₀] with N hN m`. Rewrite using `[← subst_coe hs, ← subst_sub hs]`.
+
+Use `weighted_subst_le h0 hY _ hr0 hr1 (fun n => ?_) m` and prove the remaining obligations. Rewrite using `[map_sub, Polynomial.coeff_coe, coeff_trunc]`. Use `split_ifs with hn`. Simplify using `using hε.le`. Rewrite using `[sub_zero]; exact hN₀ n (by omega)`.
+-/
 theorem Ex.subst {u v Y a e : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1) (h0 : constantCoeff Y = 0)
     (hY : ∀ m, ‖coeff m Y‖ ≤ 1) (hv : Ex u Y v)
     (ha : ∀ r : ℝ, 0 < r → r < 1 → Tendsto (fun k : ℕ => ‖coeff k a‖ * r ^ k) atTop (𝓝 0))
@@ -193,6 +264,11 @@ theorem Ex.subst {u v Y a e : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1) (h0 : c
   · simpa using hε.le
   · rw [sub_zero]; exact hN₀ n (by omega)
 
+/- English proof (translation)
+Introduce `k`. Establish `: ∀ p : Polynomial K, Polynomial.aeval (PowerSeries.rescale c v) p = PowerSeries.rescale c (Polynomial.aeval v p)` using `fun p => by`. Simplify using `only [Polynomial.aeval_eq_sum_range (p := p), map_sum, ← map_pow]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use extensionality with `j`.
+
+Simplify using `only [coeff_rescale, coeff_smul, smul_eq_mul, mul_left_comm]`. Simplify using `only [this, coeff_rescale]`. Conclude with `(he k).const_mul _`.
+-/
 theorem Ex.rescale {v a e : K⟦X⟧} (c : K) (he : Ex v a e) :
     Ex (PowerSeries.rescale c v) a (PowerSeries.rescale c e) := by
   intro k
@@ -211,6 +287,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 
 open PowerSeries Filter Topology in
 open TensorProduct in
+/- English proof (translation)
+Establish `hc : ∀ c : ℤ_[l], ‖algebraMap ℤ_[l] ↥LL.1 c‖ ≤ 1`. Introduce `c`. Establish `h : ((algebraMap ℤ_[l] ↥LL.1 c : ↥LL.1) : PadicAlgCl l) = ((c : ℚ_[l]) : PadicAlgCl l)` using `rfl`. Use `show ‖((algebraMap ℤ_[l] ↥LL.1 c : ↥LL.1) : PadicAlgCl l)‖ ≤ 1`. Rewrite using `[h, PadicAlgCl.norm_extends]`.
+
+Conclude with `PadicInt.norm_le_one c`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨p, hpm, hp⟩` from `hx`. Establish `hsum : x ^ p.natDegree = -∑ i ∈ Finset.range p.natDegree, algebraMap ℤ_[l] ↥LL.1 (p.coeff i) * x ^ i`.
+
+Establish `h` using `hp`. Rewrite `h` using `[hpm.as_sum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C] at h`. Conclude with `eq_neg_of_add_eq_zero_left h`. Establish `hn : p.natDegree ≠ 0`.
+
+Introduce `h0`. Rewrite `hsum` using `[h0]`. Simplify using `at hsum`. Establish `hle : ‖x‖ ^ p.natDegree ≤ ‖x‖ ^ (p.natDegree - 1)`. Rewrite using `[← norm_pow, hsum, norm_neg]`.
+
+Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `pow_lt_pow_right₀ hlt (show p.natDegree - 1 < p.natDegree by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma norm_le_one_of_mem_integralClosure_padicInt {l : ℕ} [Fact (Nat.Prime l)] {LL : _root_.Formalism.BasicNotions.Loc.FinExt l}
     (x : ↥LL.1) (hx : x ∈ integralClosure ℤ_[l] ↥LL.1) : ‖x‖ ≤ 1 := by
   have hc : ∀ c : ℤ_[l], ‖algebraMap ℤ_[l] ↥LL.1 c‖ ≤ 1 := by
@@ -247,6 +336,9 @@ private lemma norm_le_one_of_mem_integralClosure_padicInt {l : ℕ} [Fact (Nat.P
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Use extensionality with `j`. Rewrite using `[coeff_rescale]`. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[coeff_C, hj.ne']`.
+-/
 private lemma rescale_C_eq_C (c b : K) : rescale c (C b) = C b := by
   ext j
   rw [coeff_rescale]
@@ -256,6 +348,11 @@ private lemma rescale_C_eq_C (c b : K) : rescale c (C b) = C b := by
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `monomial n b`. Simplify using `only [Polynomial.aeval_monomial, map_mul, map_pow]`. Use `congr 1`.
+
+Use extensionality with `j`. Rewrite using `[coeff_rescale]`. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[coeff_C, hj.ne']`.
+-/
 private lemma aeval_rescale_eq_rescale_aeval (c : K) (v : K⟦X⟧) (p : Polynomial K) :
     Polynomial.aeval (rescale c v) p = rescale c (Polynomial.aeval v p) := by
   induction p using Polynomial.induction_on' with
@@ -271,6 +368,9 @@ private lemma aeval_rescale_eq_rescale_aeval (c : K) (v : K⟦X⟧) (p : Polynom
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Introduce `k`. Repeatedly rewrite using `[aeval_rescale_eq_rescale_aeval, coeff_rescale]`. Conclude with `(he k).const_mul _`.
+-/
 private lemma ex_rescale {v a e : K⟦X⟧} (c : K) (he : _root_.GlobalTheory.HWL.ExpSub.Ex v a e) :
     _root_.GlobalTheory.HWL.ExpSub.Ex (rescale c v) a (rescale c e) := by
   intro k
@@ -279,6 +379,19 @@ private lemma ex_rescale {v a e : K⟦X⟧} (c : K) (he : _root_.GlobalTheory.HW
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Use `set w : K⟦X⟧ := u - C (constantCoeff u) with hw`. Establish `hw0 : constantCoeff w = 0` using `by simp [hw]`. Establish `hr0 : 0 ≤ r` using `(norm_nonneg _).trans hr`. Use `⟨∑ i ∈ Finset.range (k + 1), ‖coeff k (w ^ i)‖, Finset.sum_nonneg (fun _ _ => norm_nonneg _), fun j => ?_⟩` and prove the remaining obligations. Establish `hu : u = w + C (constantCoeff u)` using `by simp [hw]`.
+
+Rewrite using `[hu, add_pow, map_sum]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i hi`. Establish `hterm : coeff k (w ^ i * C (constantCoeff u) ^ (j - i) * (j.choose i : K⟦X⟧)) = (constantCoeff u) ^ (j - i) * (j.choose i : K) * coeff k (w ^ i)`.
+
+Rewrite using `[← map_pow, ← map_natCast (C (R := K)), mul_assoc, ← map_mul, mul_comm, coeff_C_mul]`. Rewrite using `[hterm, norm_mul, norm_mul, norm_pow]`. Use `split_ifs with hik`. Establish `h1 : ‖constantCoeff u‖ ^ (j - i) ≤ r ^ (j - k)` using `(pow_le_pow_left₀ (norm_nonneg _) hr _).trans (pow_le_pow_of_le_one hr0 hr1 (by omega))`. Establish `h2 : ‖(j.choose i : K)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one _ _`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: coeff k (w ^ i) = 0`. Take `⟨w', hw'⟩` from `(PowerSeries.X_dvd_iff).mpr hw0`. Rewrite using `[hw', mul_pow, coeff_X_pow_mul', if_neg (by omega)]`. Simplify using `[this]`.
+
+Use `_ ≤ ∑ i ∈ Finset.range (k + 1), ‖coeff k (w ^ i)‖ * r ^ (j - k) := by`. Rewrite using `[← Finset.sum_filter]`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hi ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Use `intros`. Check the signs of the components of the expression. Use `_ = _ := by rw [Finset.sum_mul]`.
+-/
 private lemma exists_norm_coeff_pow_le_mul_pow_sub (u : K⟦X⟧) {r : ℝ} (hr : ‖constantCoeff u‖ ≤ r) (hr1 : r ≤ 1) (k : ℕ) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ j : ℕ, ‖coeff k (u ^ j)‖ ≤ B * r ^ (j - k) := by
   set w : K⟦X⟧ := u - C (constantCoeff u) with hw
@@ -319,6 +432,13 @@ private lemma exists_norm_coeff_pow_le_mul_pow_sub (u : K⟦X⟧) {r : ℝ} (hr 
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Take `⟨B, hB0, hB⟩` from `exists_norm_coeff_pow_le_mul_pow_sub u hr hr1 k`. Use `⟨B / r ^ k, by positivity, fun p ε hε hp => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_eq_sum_range, map_sum]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `j _`.
+
+Rewrite using `[PowerSeries.coeff_smul, smul_eq_mul, norm_mul]`. Establish `hpow : r ^ (j - k) * r ^ k ≤ r ^ j`. Break down `le_or_gt k j with hkj | hkj` into its components or cases. Rewrite using `[pow_sub_mul_pow r hkj]`. Rewrite using `[Nat.sub_eq_zero_of_le hkj.le, pow_zero, one_mul]`.
+
+Conclude with `pow_le_pow_of_le_one hr0.le hr1 hkj.le`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma exists_norm_coeff_aeval_le_mul_of_weighted_bound (u : K⟦X⟧) {r : ℝ} (hr : ‖constantCoeff u‖ ≤ r) (hr0 : 0 < r)
     (hr1 : r ≤ 1) (k : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (p : Polynomial K) (ε : ℝ), 0 ≤ ε → (∀ j, ‖p.coeff j‖ * r ^ j ≤ ε) →
@@ -341,6 +461,9 @@ private lemma exists_norm_coeff_aeval_le_mul_of_weighted_bound (u : K⟦X⟧) {r
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Introduce `k`. Repeatedly rewrite using `[map_add]`. Conclude with `(h₁ k).add (h₂ k)`.
+-/
 private lemma ex_add_inertia_eigenvalues {u f g e e' : K⟦X⟧} (h₁ : _root_.GlobalTheory.HWL.ExpSub.Ex u f e)
     (h₂ : _root_.GlobalTheory.HWL.ExpSub.Ex u g e') : _root_.GlobalTheory.HWL.ExpSub.Ex u (f + g) (e + e') := by
   intro k
@@ -349,6 +472,11 @@ private lemma ex_add_inertia_eigenvalues {u f g e e' : K⟦X⟧} (h₁ : _root_.
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Introduce `k`. Establish `hk : ∀ m, coeff k (Polynomial.aeval u (trunc m (C a * f))) = a * coeff k (Polynomial.aeval u (trunc m f))`. Introduce `m`. Rewrite using `[trunc_C_mul, map_mul, Polynomial.aeval_C]`. Conclude with `coeff_C_mul _ _ _`.
+
+Repeatedly rewrite using `[hk, coeff_C_mul]`. Conclude with `(h k).const_mul a`.
+-/
 private lemma ex_C_mul {u f e : K⟦X⟧} (a : K) (h : _root_.GlobalTheory.HWL.ExpSub.Ex u f e) :
     _root_.GlobalTheory.HWL.ExpSub.Ex u (C a * f) (C a * e) := by
   intro k
@@ -362,6 +490,9 @@ private lemma ex_C_mul {u f e : K⟦X⟧} (a : K) (h : _root_.GlobalTheory.HWL.E
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Introduce `k`. Apply `tendsto_const_nhds.congr'` to reduce the goal to its premises. Use `filter_upwards [eventually_ge_atTop 1] with m hm`. Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`. Rewrite using `[trunc_one, Polynomial.aeval_one]`.
+-/
 private lemma ex_one' (u : K⟦X⟧) : _root_.GlobalTheory.HWL.ExpSub.Ex u 1 1 := by
   intro k
   apply tendsto_const_nhds.congr'
@@ -371,6 +502,21 @@ private lemma ex_one' (u : K⟦X⟧) : _root_.GlobalTheory.HWL.ExpSub.Ex u 1 1 :
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Introduce `k`. Establish `hM : 0 ≤ M` using `(norm_nonneg _).trans (hf 0)`. Use `set r : ℝ := max ‖constantCoeff u‖ (1 / 2) with hr`. Establish `hr0 : 0 < r` using `lt_max_of_lt_right (by norm_num)`. Establish `hr1 : r < 1` using `max_lt hu (by norm_num)`.
+
+Take `⟨Cb, hC0, hC⟩` from `exists_norm_coeff_aeval_le_mul_of_weighted_bound u (le_max_left _ _) hr0 hr1.le k`. Use `set D : ℕ → Polynomial K := fun m => trunc m (f * g) - trunc m f * trunc m g with hD`. Establish `hsplit : ∀ m, coeff k (Polynomial.aeval u (trunc m (f * g))) = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal k, coeff x.1 (Polynomial.aeval u (trunc m f)) * coeff x.2 (Polynomial.aeval u (trunc m g)) + coeff k (Polynomial.aeval u (D m))`. Introduce `m`. Simplify using `only [hD, map_sub, map_mul, coeff_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hD0 : Tendsto (fun m => coeff k (Polynomial.aeval u (D m))) atTop (𝓝 0)`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `hlim : Tendsto (fun m : ℕ => Cb * (M * M * r ^ m)) atTop (𝓝 0)`. Simplify using `using ((tendsto_pow_atTop_nhds_zero_of_lt_one hr0.le hr1).const_mul (M * M)).const_mul Cb`.
+
+Use `squeeze_zero (fun _ => norm_nonneg _) (fun m => hC (D m) _ (by positivity) (fun j => ?_)) hlim` and prove the remaining obligations. Simplify using `only [hD, Polynomial.coeff_sub, Polynomial.coeff_mul, coeff_trunc]`. Break down `lt_or_ge j m with hjm | hjm` into its components or cases. Establish `hx : ∀ x ∈ Finset.HasAntidiagonal.antidiagonal j, (if x.1 < m then coeff x.1 f else 0) * (if x.2 < m then coeff x.2 g else 0) = coeff x.1 f * coeff x.2 g`. Introduce `x hx`.
+
+Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[if_pos (by omega), if_pos (by omega)]`. Rewrite using `[if_pos hjm, Finset.sum_congr rfl hx, ← coeff_mul, sub_self, norm_zero, zero_mul]`. Check the signs of the components of the expression. Rewrite using `[if_neg (by omega), zero_sub, norm_neg]`.
+
+Establish `hs : ‖∑ x ∈ Finset.HasAntidiagonal.antidiagonal j, (if x.1 < m then coeff x.1 f else 0) * (if x.2 < m then coeff x.2 g else 0)‖ ≤ M * M`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `x _`. Rewrite using `[norm_mul]`. Apply the tactic sequence `apply mul_le_mul _ _ (norm_nonneg _) hM <;> split_ifs <;> simp [hf, hg, hM]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hlim` using `(tendsto_finset_sum (Finset.HasAntidiagonal.antidiagonal k : Finset (ℕ × ℕ)) fun (x : ℕ × ℕ) _ => (h₁ x.1).mul (h₂ x.2)).add hD0`. Rewrite `hlim` using `[add_zero, ← coeff_mul]`. Conclude with `hlim.congr (fun m => (hsplit m).symm)`.
+-/
 private lemma ex_mul_of_bounded_coeff {u f g e e' : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1) {M : ℝ}
     (hf : ∀ j, ‖coeff j f‖ ≤ M) (hg : ∀ j, ‖coeff j g‖ ≤ M)
     (h₁ : _root_.GlobalTheory.HWL.ExpSub.Ex u f e) (h₂ : _root_.GlobalTheory.HWL.ExpSub.Ex u g e') :
@@ -419,6 +565,11 @@ private lemma ex_mul_of_bounded_coeff {u f g e e' : K⟦X⟧} (hu : ‖constantC
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Proceed by induction on `n generalizing k with`. Consider the case `zero => rw [pow_zero, coeff_one]; split_ifs <;> simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, coeff_mul]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises.
+
+Introduce `x _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (ih _) (norm_nonneg _) (hf _)`.
+-/
 private lemma norm_coeff_pow_le_one_of_norm_coeff_le_one {f : K⟦X⟧} (hf : ∀ m, ‖coeff m f‖ ≤ 1) (n k : ℕ) :
     ‖coeff k (f ^ n)‖ ≤ 1 := by
   induction n generalizing k with
@@ -432,6 +583,9 @@ private lemma norm_coeff_pow_le_one_of_norm_coeff_le_one {f : K⟦X⟧} (hf : �
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using ex_one' u`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `ex_mul_of_bounded_coeff hu (norm_coeff_pow_le_one_of_norm_coeff_le_one hf n) hf ih h`.
+-/
 private lemma ex_pow_of_norm_coeff_le_one {u f e : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1)
     (hf : ∀ m, ‖coeff m f‖ ≤ 1) (h : _root_.GlobalTheory.HWL.ExpSub.Ex u f e) (n : ℕ) :
     _root_.GlobalTheory.HWL.ExpSub.Ex u (f ^ n) (e ^ n) := by
@@ -443,6 +597,11 @@ private lemma ex_pow_of_norm_coeff_le_one {u f e : K⟦X⟧} (hu : ‖constantCo
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add]`. Conclude with `ex_add_inertia_eigenvalues hp hq`. Consider the case `monomial n a`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial]`.
+
+Conclude with `ex_C_mul a (ex_pow_of_norm_coeff_le_one hu hf he n)`.
+-/
 private lemma ex_aeval_of_norm_constantCoeff_lt_one {u f e : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1)
     (hf : ∀ m, ‖coeff m f‖ ≤ 1) (he : _root_.GlobalTheory.HWL.ExpSub.Ex u f e) (p : Polynomial K) :
     _root_.GlobalTheory.HWL.ExpSub.Ex u (Polynomial.aeval f p) (Polynomial.aeval e p) := by
@@ -454,6 +613,9 @@ private lemma ex_aeval_of_norm_constantCoeff_lt_one {u f e : K⟦X⟧} (hu : ‖
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Take `⟨Y', hY'⟩` from `(PowerSeries.X_dvd_iff).mpr h0`. Rewrite using `[hY', mul_pow, coeff_X_pow_mul', if_neg (by omega)]`.
+-/
 private lemma coeff_pow_eq_zero_of_constantCoeff_eq_zero_of_lt {Y : K⟦X⟧} (h0 : constantCoeff Y = 0) {j d : ℕ} (h : j < d) :
     coeff j (Y ^ d) = 0 := by
   obtain ⟨Y', hY'⟩ := (PowerSeries.X_dvd_iff).mpr h0
@@ -461,6 +623,13 @@ private lemma coeff_pow_eq_zero_of_constantCoeff_eq_zero_of_lt {Y : K⟦X⟧} (h
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Establish `hs : HasSubst Y` using `HasSubst.of_constantCoeff_zero' h0`. Rewrite using `[coeff_subst' hs, finsum_eq_sum_of_support_subset (s := Finset.range (j + 1))]`. Rewrite using `[← le_div_iff₀ (by positivity)]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `d hd`.
+
+Rewrite `hd` using `[Finset.mem_range]`. Rewrite using `[smul_eq_mul, norm_mul, le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`.
+
+Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hjd`. Conclude with `hd (by rw [coeff_pow_eq_zero_of_constantCoeff_eq_zero_of_lt h0 (by omega), smul_zero])`.
+-/
 private lemma norm_coeff_subst_mul_pow_le_of_weighted_bound {Y f : K⟦X⟧} (h0 : constantCoeff Y = 0)
     (hY : ∀ m, ‖coeff m Y‖ ≤ 1) {r δ : ℝ} (hr0 : 0 < r) (hr1 : r ≤ 1) (hδ : 0 ≤ δ)
     (hf : ∀ i, ‖coeff i f‖ * r ^ i ≤ δ) (j : ℕ) :
@@ -484,6 +653,23 @@ private lemma norm_coeff_subst_mul_pow_le_of_weighted_bound {Y f : K⟦X⟧} (h0
 
 open PowerSeries Filter Topology in
 variable {K : Type} [NormedField K] [IsUltrametricDist K] in
+/- English proof (translation)
+Introduce `k`. Establish `hs : HasSubst Y` using `HasSubst.of_constantCoeff_zero' h0`. Use `set r : ℝ := max ‖constantCoeff u‖ (1 / 2) with hr`. Establish `hr0 : 0 < r` using `lt_max_of_lt_right (by norm_num)`. Establish `hr1 : r < 1` using `max_lt hu (by norm_num)`.
+
+Take `⟨Cb, hC0, hC⟩` from `exists_norm_coeff_aeval_le_mul_of_weighted_bound u (le_max_left _ _) hr0 hr1.le k`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Use `set δ : ℝ := ε / (3 * (Cb + 1)) with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`.
+
+Establish `hCδ : Cb * δ < ε / 3`. Rewrite using `[hδ, mul_div_assoc', div_lt_div_iff₀ (by positivity) (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨Na, hNa⟩` from `eventually_atTop.mp ((ha r hr0 hr1).eventually (gt_mem_nhds hδ0))`. Take `⟨Nb, hNb⟩` from `Metric.tendsto_atTop.mp (he k) (ε / 3) (by positivity)`.
+
+Take `⟨Mz, hMz⟩` from `Metric.tendsto_atTop.mp (ex_aeval_of_norm_constantCoeff_lt_one hu hY hv (trunc (max Na Nb) a) k) (ε / 3) (by positivity)`. Use `⟨Mz, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hSP : PowerSeries.subst Y a - Polynomial.aeval Y (trunc (max Na Nb) a) = PowerSeries.subst Y (a - (trunc (max Na Nb) a : K⟦X⟧))`. Rewrite using `[subst_sub hs, subst_coe hs]`. Establish `hdiff : ‖coeff k (Polynomial.aeval u (trunc m (PowerSeries.subst Y a))) - coeff k (Polynomial.aeval u (trunc m (Polynomial.aeval Y (trunc (max Na Nb) a))))‖ ≤ Cb * δ`.
+
+Rewrite using `[← map_sub, ← map_sub, ← map_sub, hSP]`. Apply `hC _ _ hδ0.le` to reduce the goal to its premises. Introduce `j`. Rewrite using `[coeff_trunc]`. Use `split_ifs`.
+
+Apply `norm_coeff_subst_mul_pow_le_of_weighted_bound h0 hY hr0 hr1.le hδ0.le` to reduce the goal to its premises. Introduce `i`. Rewrite using `[map_sub, Polynomial.coeff_coe, coeff_trunc]`. Use `split_ifs with hi`. Simplify using `[hδ0.le]`.
+
+Rewrite using `[sub_zero]`. Conclude with `(hNa i ((le_max_left Na Nb).trans (not_lt.mp hi))).le`. Simplify using `[hδ0.le]`. Establish `h2` using `hNb (max Na Nb) (le_max_right _ _)`. Establish `h3` using `hMz m hm`.
+
+Rewrite `h2`, `h3`, the goal using `[dist_eq_norm]`. Use `set A := coeff k (Polynomial.aeval u (trunc m (PowerSeries.subst Y a)))`. Use `set B := coeff k (Polynomial.aeval u (trunc m (Polynomial.aeval Y (trunc (max Na Nb) a))))`. Use `set W := coeff k (Polynomial.aeval v (trunc (max Na Nb) a))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma ex_subst_of_ex_of_coeff_decay {u v Y a e : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1)
     (h0 : constantCoeff Y = 0) (hY : ∀ m, ‖coeff m Y‖ ≤ 1) (hv : _root_.GlobalTheory.HWL.ExpSub.Ex u Y v)
     (ha : ∀ r : ℝ, 0 < r → r < 1 → Tendsto (fun k : ℕ => ‖coeff k a‖ * r ^ k) atTop (𝓝 0))
@@ -538,6 +724,25 @@ private lemma ex_subst_of_ex_of_coeff_decay {u v Y a e : K⟦X⟧} (hu : ‖cons
 open PowerSeries Filter Topology in
 open TensorProduct in
 
+/- English proof (translation)
+Introduce `l _ LL ζ ζ' c y hζ hζ' hy0 hyexp a e ha hae`. Establish `hiff : ∀ (z : ↥LL.1) (f g : PowerSeries ↥LL.1), _root_.GlobalTheory.HWL.IsExp z f g ↔ _root_.GlobalTheory.HWL.ExpSub.Ex (C z * exp ↥LL.1 - 1) f g`. Introduce `z f g`. Unfold `_root_.GlobalTheory.HWL.IsExp _root_.GlobalTheory.HWL.ExpSub.Ex`. Simplify using `only [(Topology.IsInducing.subtypeVal).tendsto_nhds_iff, Function.comp_def]`.
+
+Use `set Y := PowerSeries.map (algebraMap ↥(_root_.Formalism.BasicNotions.Loc.OL LL) ↥LL.1) y with hYdef`. Establish `hY : ∀ m, ‖coeff m Y‖ ≤ 1`. Introduce `m`. Rewrite using `[hYdef, coeff_map]`. Conclude with `norm_le_one_of_mem_integralClosure_padicInt _ (coeff m y).2`.
+
+Establish `h0 : constantCoeff Y = 0`. Rewrite using `[hYdef, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hy0, map_zero]`. Establish `hu : ‖constantCoeff (C ζ * exp ↥LL.1 - 1)‖ < 1`. Establish `h : constantCoeff (C ζ * exp ↥LL.1 - 1) = ζ - 1` using `by simp`. Rewrite using `[h]`.
+
+Use `show ‖((ζ - 1 : ↥LL.1) : _root_.Formalism.BasicNotions.Loc.Om l)‖ < 1`. Use `push_cast`. Conclude with `hζ`. Establish `hv` using `(hiff ζ Y _).mp hyexp`. Establish `hresc : rescale c (C ζ' * exp ↥LL.1 - 1) = C ζ' * rescale c (exp ↥LL.1) - 1`.
+
+Rewrite using `[map_sub, map_mul, map_one, rescale_C_eq_C]`. Establish `he` using `ex_rescale c ((hiff ζ' a e).mp hae)`. Rewrite `he` using `[hresc]`. Use `⟨?_, (hiff ζ _ _).mpr (ex_subst_of_ex_of_coeff_decay hu h0 hY hv ha he)⟩` and prove the remaining obligations. Introduce `r hr0 hr1`.
+
+Use `set s : ℝ := (r + 1) / 2 with hs`. Establish `hs0 : 0 < s` using `by positivity`. Establish `hs1 : s < 1` using `by linarith`. Establish `hrs : r < s` using `by linarith`. Take `⟨B, hB⟩` from `(ha s hs0 hs1).bddAbove_range`.
+
+Establish `hB' : ∀ i, ‖coeff i a‖ * s ^ i ≤ B` using `fun i => hB ⟨i, rfl⟩`. Establish `hB0 : 0 ≤ B` using `(by positivity : (0 : ℝ) ≤ ‖coeff 0 a‖ * s ^ 0).trans (hB' 0)`. Establish `hS : ∀ k, ‖coeff k (PowerSeries.subst Y a)‖ * s ^ k ≤ B` using `norm_coeff_subst_mul_pow_le_of_weighted_bound h0 hY hs0 hs1.le hB0 hB'`. Establish `hq : Tendsto (fun k : ℕ => B * (r / s) ^ k) atTop (𝓝 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) ((div_lt_one hs0).mpr hrs)).const_mul B`.
+
+Use `squeeze_zero (fun k => by positivity) (fun k => ?_) hq` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← mul_pow]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+
+Use `_ ≤ B * (r / s) ^ k := by gcongr; exact hS k`.
+-/
 theorem _root_.GlobalTheory.HWL.ExpSub.conv_isExp_subst : ∀ (l : ℕ) [Fact l.Prime] (LL : _root_.Formalism.BasicNotions.Loc.FinExt l) (ζ ζ' c : ↥LL.1) (y : PowerSeries ↥(_root_.Formalism.BasicNotions.Loc.OL LL)), ‖((ζ : _root_.Formalism.BasicNotions.Loc.Om l)) - 1‖ < 1 → ‖((ζ' : _root_.Formalism.BasicNotions.Loc.Om l)) - 1‖ < 1 → PowerSeries.constantCoeff y = 0 → _root_.GlobalTheory.HWL.IsExp ζ (PowerSeries.map (algebraMap ↥(_root_.Formalism.BasicNotions.Loc.OL LL) ↥LL.1) y) (PowerSeries.C ζ' * PowerSeries.rescale c (PowerSeries.exp ↥LL.1) - 1) → ∀ a e : PowerSeries ↥LL.1, _root_.GlobalTheory.HWL.Conv a → _root_.GlobalTheory.HWL.IsExp ζ' a e → _root_.GlobalTheory.HWL.Conv (PowerSeries.subst (PowerSeries.map (algebraMap ↥(_root_.Formalism.BasicNotions.Loc.OL LL) ↥LL.1) y) a) ∧ _root_.GlobalTheory.HWL.IsExp ζ (PowerSeries.subst (PowerSeries.map (algebraMap ↥(_root_.Formalism.BasicNotions.Loc.OL LL) ↥LL.1) y) a) (PowerSeries.rescale c e) := by
   intro l _ LL ζ ζ' c y hζ hζ' hy0 hyexp a e ha hae
   have hiff : ∀ (z : ↥LL.1) (f g : PowerSeries ↥LL.1), _root_.GlobalTheory.HWL.IsExp z f g ↔

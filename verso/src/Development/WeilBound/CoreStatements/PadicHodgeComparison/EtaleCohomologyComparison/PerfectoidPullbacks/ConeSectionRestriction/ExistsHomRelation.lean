@@ -13,6 +13,9 @@ namespace CrystallineSemistableComparison.Pb
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.homogeneous_integral_expression I hI e he y hy hfin w a ha`.
+-/
 theorem exists_hom_relation {K σ : Type} [Field K] {m : ℕ} (I : Ideal (MvPolynomial σ K))
     (hI : ∀ f ∈ I, ∀ n : ℕ, MvPolynomial.homogeneousComponent n f ∈ I) (e : ℕ) (he : 0 < e) (y : Fin m → MvPolynomial σ K)
     (hy : ∀ k, (y k).IsHomogeneous e)

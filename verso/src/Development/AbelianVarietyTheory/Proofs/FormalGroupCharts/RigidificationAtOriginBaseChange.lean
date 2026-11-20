@@ -25,11 +25,17 @@ open GlobalTheory.RawChartGermBC
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
 variable {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ X0) (x1 : Sp S' ⟶ X0) (d : ℕ)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => by obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective a rfl`.
+-/
 theorem jetCoef_eq (κ : Type) (m : ℕ) : jetCoef ψ κ m = jetBC ψ κ m :=
   RingHom.ext fun a => by
     obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective a
     rfl
 
+/- English proof (translation)
+Take `rfl : φ' = fun p => MvPolynomial.map ψ (φ p)` from `funext h`. Rewrite using `[jetCoef_eq, jetCoef_eq]`. Conclude with `spMap_comp_eq _ _ _ _ (PullbackSections.jetSubstP_comp_jetBC ψ m φ)`.
+-/
 theorem subst_jetCoef (m n n' : ℕ) (φ : Fin n × Fin d → MvPolynomial (Fin n' × Fin d) S)
     (φ' : Fin n × Fin d → MvPolynomial (Fin n' × Fin d) S') (h : ∀ p, φ' p = MvPolynomial.map ψ (φ p)) :
     (Formalism.L2.Pj.homAt x1 (jetSubstP m φ')).left ≫ spMap (jetCoef ψ (Fin n × Fin d) m) =
@@ -38,12 +44,18 @@ theorem subst_jetCoef (m n n' : ℕ) (φ : Fin n × Fin d → MvPolynomial (Fin 
   rw [jetCoef_eq, jetCoef_eq]
   exact spMap_comp_eq _ _ _ _ (PullbackSections.jetSubstP_comp_jetBC ψ m φ)
 
+/- English proof (translation)
+Rewrite using `[jetCoef_eq]`. Conclude with `spMap_comp_eq _ _ _ _ (PullbackSections.jetAug_comp_jetBC ψ _ m)`.
+-/
 theorem aug_jetCoef (m n : ℕ) :
     (Formalism.L2.Pj.homAt x1 (jetAug : Jet S' (Fin n × Fin d) m →ₐ[S'] S')).left ≫ spMap (jetCoef ψ (Fin n × Fin d) m) =
       spMap ψ ≫ (Formalism.L2.Pj.homAt x0 (jetAug : Jet S (Fin n × Fin d) m →ₐ[S] S)).left := by
   rw [jetCoef_eq]
   exact spMap_comp_eq _ _ _ _ (PullbackSections.jetAug_comp_jetBC ψ _ m)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `spMap (algebraMap S' S') ≫ spMap ψ ≫ x0 = spMap ψ ≫ spMap (algebraMap S S) ≫ x0`. Rewrite using `[← Category.assoc, ← Category.assoc]`. Use `congr 1`. Conclude with `spMap_comp_eq _ _ _ _ (RingHom.ext fun _ => rfl)`.
+-/
 theorem overAt_hom_comp :
     (overAt (spMap ψ ≫ x0) S').hom = spMap ψ ≫ (overAt x0 S).hom := by
   change spMap (algebraMap S' S') ≫ spMap ψ ≫ x0 = spMap ψ ≫ spMap (algebraMap S S) ≫ x0
@@ -51,6 +63,13 @@ theorem overAt_hom_comp :
   congr 1
   exact spMap_comp_eq _ _ _ _ (RingHom.ext fun _ => rfl)
 
+/- English proof (translation)
+Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Use `congrArg (fun q => val wP q z J) ?_` and prove the remaining obligations. Conclude with `(congrArg (r ≫ ·) (hx m)).trans (Category.assoc _ _ _).symm`.
+
+Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Use `(val_corr hJ (he m) _).trans ((val_pull hJ _ _ _).trans ?_)` and prove the remaining obligations. Use `congrArg (fun q => val (e m) q z J) ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Use `congrArg (r ≫ ·) (subst_jetCoef ψ x0 x1 d m 2 1 _ _ ?_)` and prove the remaining obligations.
+
+Introduce and unpack `⟨i, j⟩`. Use `fin_cases i`. Conclude with `(MvPolynomial.map_X ψ _).symm`. Conclude with `(map_psIn ψ d m _ _).symm`.
+-/
 theorem val_eLG_bc (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S)
     (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG x1 d m 1 ⟶ t.G)
     (hx : ∀ m, (x' m).left = spMap (jetCoef ψ (Fin 1 × Fin d) m) ≫ (x m).left)
@@ -81,6 +100,13 @@ namespace GlobalTheory
 
 open ChartRigBC in
 
+/- English proof (translation)
+Introduce `E _ _ _ H X0 t S S' _ _ ψ x0 x1 hx1 d x x' hx e e' _ _ he act wP _ h0`. Establish `hL` using `t.PP.isLB`. Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ((val_eLG_bc t ψ x0 x1 d act x x' hx e e' he wP 0 _ y hJ).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (GermB.val_rigT _ _ _ _ _ y J hJ).symm` and prove the remaining obligations.
+
+Establish `h1` using `(val_pull hJ _ _ _).symm.trans ((val_corr hJ h0 (spMap ψ)).trans (GermB.val_rigT _ _ _ _ _ y J hJ))`. Use `(congrArg (fun q => val (eLG t x0 d x act e wP 0) q y J) ?_).trans (h1.trans (congrArg (fun q => val t.PP.rig q y J) ?_))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `aug_jetCoef ψ x0 x1 d 0 1`. Substitute `hx1` using the available equality.
+
+Rewrite using `[Category.id_comp]`. Conclude with `(overAt_hom_comp ψ x0).symm`.
+-/
 theorem rigidificationAtOrigin_baseChange :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S S' : Type) [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ X0) (x1 : Sp S' ⟶ X0), x1 = spMap ψ ≫ x0 → ∀ (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG x1 d m 1 ⟶ t.G), (∀ m, (x' m).left = spMap (jetCoef ψ (Fin 1 × Fin d) m) ≫ (x m).left) → ∀ (e : ∀ m, FrTyG t x0 d x m) (e' : ∀ m, FrTyG t x1 d x' m), (∀ m, (e m).IsGen) → (∀ m, (e' m).IsGen) → (∀ m, LB.Gen.Corr t.PP.L _ _ _ _ (e' m) (LB.pullGen t.PP.L _ _ (e m) (spMap (jetCoef ψ (Fin 2 × Fin d) m)))) → ∀ (act : 𝓞 E → Fin d → PS S 1 d) (wP : PrimTyG t), wP.IsGen → Rig0G t x0 d x act e wP → Rig0G t x1 d x' (fun a i => (MvPowerSeries.map ψ (act a i))) e' wP := by
   intro E _ _ _ H X0 t S S' _ _ ψ x0 x1 hx1 d x x' hx e e' _ _ he act wP _ h0

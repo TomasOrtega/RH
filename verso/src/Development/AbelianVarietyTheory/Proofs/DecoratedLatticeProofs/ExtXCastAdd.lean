@@ -31,6 +31,9 @@ def locHom : (Sp E N ≃ₗ[E] Sp E N) →* GL A k where
     rw [← toLoc_comp_square]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locHom_val (x : Sp E N ≃ₗ[E] Sp E N) : (locHom ι e x).val = toLoc ι e e x.toLinearMap := rfl
 
 section Num
@@ -38,6 +41,9 @@ variable {A : Type} {N c c' : ℕ} (e : A ⊕ Fin c ≃ Fin (N + c')) (hcc : c' 
   (he : ∀ i : Fin c, (e (Sum.inr i)).val = N + i.val)
 
 include hcc he in
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hc : (e (Sum.inl a)).val - N < c` using `by have := (e (Sum.inl a)).isLt; omega`. Establish `h2 : e (Sum.inr ⟨_, hc⟩) = e (Sum.inl a)` using `Fin.ext (by rw [he]; simp; omega)`. Conclude with `absurd (e.injective h2) (by simp)`.
+-/
 theorem eX_lt (a : A) : (e (Sum.inl a)).val < N := by
   by_contra h
   push Not at h
@@ -63,6 +69,9 @@ def eX : A ≃ Fin N :=
         have := m.isLt
         omega)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eX_val (a : A) : ((eX e hcc he a : Fin N) : ℕ) = (e (Sum.inl a)).val := rfl
 
 end Num
@@ -75,11 +84,17 @@ def extX (c : ℕ) (y : Sp E N ≃ₗ[E] Sp E N) : Sp E (N + c) ≃ₗ[E] Sp E (
     (y.prodCongr (LinearEquiv.refl E (Fin c → E))) ≪≫ₗ (LinearEquiv.sumArrowLequivProdArrow (Fin N) (Fin c) E E).symm ≪≫ₗ
     (LinearEquiv.funCongrLeft E E finSumFinEquiv).symm
 
+/- English proof (translation)
+Simplify using `[extX, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft, LinearEquiv.sumArrowLequivProdArrow, LinearEquiv.funCongrLeft, Equiv.sumArrowEquivProdArrow]`. Both sides reduce to the same expression.
+-/
 theorem extX_castAdd (y : Sp E N ≃ₗ[E] Sp E N) (v : Sp E (N + c)) (i : Fin N) :
     extX c y v (Fin.castAdd c i) = y (fun i => v (Fin.castAdd c i)) i := by
   simp [extX, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft, LinearEquiv.sumArrowLequivProdArrow, LinearEquiv.funCongrLeft, Equiv.sumArrowEquivProdArrow]
   rfl
 
+/- English proof (translation)
+Simplify using `[extX, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft, LinearEquiv.sumArrowLequivProdArrow, LinearEquiv.funCongrLeft, Equiv.sumArrowEquivProdArrow]`.
+-/
 theorem extX_natAdd (y : Sp E N ≃ₗ[E] Sp E N) (v : Sp E (N + c)) (i : Fin c) :
     extX c y v (Fin.natAdd N i) = v (Fin.natAdd N i) := by
   simp [extX, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft, LinearEquiv.sumArrowLequivProdArrow, LinearEquiv.funCongrLeft, Equiv.sumArrowEquivProdArrow]

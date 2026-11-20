@@ -10,6 +10,11 @@ noncomputable section
 
 namespace FreeParAlgIndep
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (IsScalarTower.toAlgHom k (MvPolynomial (Par e n) k) (GenParField k e n))` using `IsFractionRing.injective (MvPolynomial (Par e n) k) (GenParField k e n)`. Establish `h` using `(MvPolynomial.algebraicIndependent_X (Par e n) k).map' hinj`. Establish `hc : (⇑(IsScalarTower.toAlgHom k (MvPolynomial (Par e n) k) (GenParField k e n)) ∘ X) = genPar k e n`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp_apply, IsScalarTower.coe_toAlgHom', genPar]`.
+
+Rewrite `h` using `[hc]`. Then use the resulting hypothesis.
+-/
 theorem genPar_algIndep (k : Type*) [Field k] (e n : ℕ) :
     AlgebraicIndependent k (genPar k e n) := by
   have hinj : Function.Injective (IsScalarTower.toAlgHom k (MvPolynomial (Par e n) k)
@@ -22,6 +27,11 @@ theorem genPar_algIndep (k : Type*) [Field k] (e n : ℕ) :
     simp only [Function.comp_apply, IsScalarTower.coe_toAlgHom', genPar]
   rwa [hc] at h
 
+/- English proof (translation)
+Establish `: FaithfulSMul k A₀` using `(faithfulSMul_iff_algebraMap_injective k A₀).2 (algebraMap k A₀).injective`. Establish `: FaithfulSMul A₀ L` using `(faithfulSMul_iff_algebraMap_injective A₀ L).2 Subtype.val_injective`. Establish `hadd` using `trdeg_add_eq k A₀ (A := L)`. Use `(Algebra.IsAlgebraic.isTranscendenceBasis_of_le_trdeg_of_finite A₀ w ?_).1` and prove the remaining obligations. Establish `h3 : #ι + (e : Cardinal) ≤ Algebra.trdeg A₀ L + e`.
+
+Rewrite using `[add_comm, add_comm _ (e : Cardinal)]`. Use `hle.trans ?_` and prove the remaining obligations. Rewrite using `[← hadd]`. Use `gcongr`. Conclude with `(Cardinal.add_le_add_iff_of_lt_aleph0 (Cardinal.natCast_lt_aleph0)).1 h3`.
+-/
 theorem algebraicIndependent_of_trdeg {k L : Type} [Field k] [Field L] [Algebra k L]
     (A₀ : Subalgebra k L) {ι : Type} [Finite ι] (w : ι → L)
     [Algebra.IsAlgebraic (Algebra.adjoin A₀ (Set.range w)) L] {e : ℕ}
@@ -40,6 +50,39 @@ theorem algebraicIndependent_of_trdeg {k L : Type} [Field k] [Field L] [Algebra 
     gcongr
   exact (Cardinal.add_le_add_iff_of_lt_aleph0 (Cardinal.natCast_lt_aleph0)).1 h3
 
+/- English proof (translation)
+Introduce `k _ _ n e L _ _ _ _ _ x hgen hU hT j₀ hx0 htr`. Generalize the expression as in `hz : (fun m => x m * (x j₀)⁻¹) = z at htr ⊢`. Establish `hzm : ∀ m, z m = x m * (x j₀)⁻¹` using `fun m => by rw [← hz]`. Establish `hz0 : z j₀ = 1` using `by rw [hzm, mul_inv_cancel₀ hx0]`. Rewrite using `[IntermediateField.algebraicIndependent_adjoin_iff]`.
+
+Set `w : (Fin e × {j : Fin n // j ≠ j₀}) ⊕ Fin n → L` to `Sum.elim (fun p => algebraMap (GenParField k e n) L (genPar k e n (.inl (p.1, p.2.1)))) (fun j => algebraMap (GenParField k e n) L (genPar k e n (.inr j)))`. Establish `halg : Algebra.IsAlgebraic (Algebra.adjoin (Algebra.adjoin k (Set.range z)) (Set.range w)) L` using `by set A₀ := Algebra.adjoin k (Set.range z) with hA₀ set B := Algebra.adjoin A₀ (Set.range w) with hB`. Establish `hzB : ∀ m, z m ∈ B` using `fun m => Subalgebra.algebraMap_mem B (⟨z m, Algebra.subset_adjoin ⟨m, rfl⟩⟩ : A₀)`. Establish `hwB : ∀ i, w i ∈ B` using `fun i => Algebra.subset_adjoin ⟨i, rfl⟩`. Establish `hkB : ∀ c : k, algebraMap k L c ∈ B` using `fun c => by`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply k A₀ L]`. Conclude with `Subalgebra.algebraMap_mem B _`. Establish `hparB : ∀ p, algebraMap (GenParField k e n) L (genPar k e n p) ∈ B`. Introduce and unpack `(⟨i, j⟩ | j)`. Distinguish the cases in `hj : j = j₀`.
+
+Rewrite using `[hj]`. Establish `hsum : ∑ j, algebraMap (GenParField k e n) L (genPar k e n (.inl (i, j))) * z j = 0`. Simplify using `only [hzm, ← mul_assoc, ← Finset.sum_mul, hU i, zero_mul]`. Establish `h1` using `Finset.add_sum_erase Finset.univ (fun j => algebraMap (GenParField k e n) L (genPar k e n (.inl (i, j))) * z j) (Finset.mem_univ j₀)`. Simplify using `only [hz0, mul_one] at h1`.
+
+Rewrite `h1` using `[hsum, ← eq_neg_iff_add_eq_zero]`. Rewrite using `[h1]`. Use `neg_mem (Subalgebra.sum_mem _ fun j' hj' => Subalgebra.mul_mem _ ?_ (hzB j'))` and prove the remaining obligations. Conclude with `hwB (.inl (i, ⟨j', Finset.ne_of_mem_erase hj'⟩))`. Conclude with `hwB (.inl (i, ⟨j, hj⟩))`.
+
+Conclude with `hwB (.inr j)`. Establish `hmem : ∀ b ∈ B, IsAlgebraic B b` using `fun b hb => isAlgebraic_algebraMap (⟨b, hb⟩ : B)`. Establish `hx0alg : IsAlgebraic B (x j₀)`. Establish `hs : ∑ j, algebraMap (GenParField k e n) L (genPar k e n (.inr j)) * z j = (x j₀)⁻¹`. Simplify using `only [hzm, ← mul_assoc, ← Finset.sum_mul, hT, one_mul]`.
+
+Establish `h2 : IsAlgebraic B (∑ j, algebraMap (GenParField k e n) L (genPar k e n (.inr j)) * z j)` using `hmem _ (Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ (hwB (.inr j)) (hzB j))`. Use `h2.inv` as an intermediate fact. Rewrite `this` using `[hs, inv_inv]`. Then use the resulting hypothesis. Establish `hxalg : ∀ m, IsAlgebraic B (x m)` using `fun m => by`. Establish `hm : x m = z m * x j₀` using `by rw [hzm, inv_mul_cancel_right₀ hx0]`.
+
+Rewrite using `[hm]`. Conclude with `(hmem _ (hzB m)).mul hx0alg`. Establish `hpoly : ∀ a : MvPolynomial (Par e n) k, algebraMap (GenParField k e n) L (algebraMap (MvPolynomial (Par e n) k) (GenParField k e n) a) ∈ B`. Introduce `a`. Proceed by induction on `a using MvPolynomial.induction_on with`.
+
+Consider the case `C c`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply k (MvPolynomial (Par e n) k) (GenParField k e n), ← IsScalarTower.algebraMap_apply k (GenParField k e n) L]`. Conclude with `hkB c`. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add]`.
+
+Conclude with `Subalgebra.add_mem _ ha hb`. Consider the case `mul_X a p ha`. Rewrite using `[map_mul, map_mul]`. Conclude with `Subalgebra.mul_mem _ ha (hparB p)`. Establish `hK : ∀ f, IsAlgebraic B (algebraMap (GenParField k e n) L f)` using `fun f => by`.
+
+Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial (Par e n) k) f`. Rewrite using `[map_div₀, div_eq_mul_inv]`. Conclude with `(hmem _ (hpoly a)).mul (hmem _ (hpoly b)).inv`. Use `⟨fun y => ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ (MvPolynomial.aeval (R` using `GenParField k e n) x).range := by`.
+
+Rewrite using `[← Algebra.adjoin_range_eq_range_aeval, hgen]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨p, rfl⟩` from `(AlgHom.mem_range _).1 hy`. Use `clear hy`. Proceed by induction on `p using MvPolynomial.induction_on with`.
+
+Consider the case `C c`. Rewrite using `[MvPolynomial.aeval_C]`. Conclude with `hK c`. Consider the case `add a b ha hb`. Rewrite using `[map_add]`.
+
+Conclude with `ha.add hb`. Consider the case `mul_X a j ha`. Rewrite using `[map_mul, MvPolynomial.aeval_X]`. Conclude with `ha.mul (hxalg j)`. Establish `hcard : (e : Cardinal) + #((Fin e × {j : Fin n // j ≠ j₀}) ⊕ Fin n) ≤ Algebra.trdeg k L`.
+
+Establish `hind : AlgebraicIndependent k (fun p => algebraMap (GenParField k e n) L (genPar k e n p))` using `(genPar_algIndep k e n).map' (f := IsScalarTower.toAlgHom k (GenParField k e n) L) (algebraMap (GenParField k e n) L).injective`. Establish `hinj : Function.Injective (Sum.elim (fun i : Fin e => (Sum.inl (i, j₀) : Par e n)) (Sum.elim (fun p : Fin e × {j : Fin n // j ≠ j₀} => (Sum.inl (p.1, p.2.1) : Par e n)) Sum.inr))`. Apply the tactic sequence `rintro (i | ⟨i, j, hj⟩ | j) (i' | ⟨i', j', hj'⟩ | j') h <;>`. Apply the tactic sequence `simp only [Sum.elim_inl, Sum.elim_inr, Sum.inl.injEq, Sum.inr.injEq, Prod.mk.injEq, reduceCtorEq, Subtype.mk.injEq, and_true] at h ⊢ <;>`. Apply the tactic sequence `first | exact h | exact absurd h.2.symm hj' | exact absurd h.2 hj`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(algebraicIndependent_of_trdeg (Algebra.adjoin k (Set.range z)) w htr hcard).comp Sum.inl Sum.inl_injective`.
+-/
 theorem proof : FreeParAlgIndep.Statement := by
   intro k _ _ n e L _ _ _ _ _ x hgen hU hT j₀ hx0 htr
   generalize hz : (fun m => x m * (x j₀)⁻¹) = z at htr ⊢

@@ -24,6 +24,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.FamTraceChiCol.ColRead
 
+/- English proof (translation)
+Substitute `hfr` using the available equality. Take `⟨hh, e⟩` from `hres (inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z : E)) _ (by rw [adAt_inclE]; exact hasRes_coe w z)`. Use `⟨⟨_, hh⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[e, TC.GLev0.redM_mat G i h ρ hres hA, Formalism.L2.Forms.lamJ, Finset.range_zero, Finset.prod_empty, mul_one, hz, map_sum ρ]`. Use `congrArg _ (Finset.sum_congr rfl fun x _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_sum ρ]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[apply_ite ρ, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem lamJ_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {v : HeightOneSpectrum (𝓞 F)} {gp : Fin 2 → ℕ} (G : Formalism.L2.Forms.GLoc F E σ gp) (i : Fin 2) (h : (gp i : 𝓞 F) ∈ v.asIdeal)
     {w : HeightOneSpectrum (𝓞 E)} (ρ : 𝓞 E ⧸ w.asIdeal →+* Formalism.L2.Forms.kv F v)
@@ -64,6 +69,23 @@ open GlobalTheory.SymBridge GlobalTheory.RootEx
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Substitute `hn` using the available equality. Take `⟨e, he, hβ⟩` from `hF`. Use `choose R hR hR' using hA`. Establish `hM : ∀ i j, valuation k ((mt V x).map q.pr i j - q.pr (incA D (R i j))) < 1` using `fun i j => by`.
+
+Establish `h2 : y.1 i j = toEAf D (mt V x i j)`. Rewrite using `[← hy]`. Both sides reduce to the same expression. Establish `h3` using `LevChi.val_pr_lt q hq (z := mt V x i j - incA D (R i j)) (by`. Rewrite using `[RingHom.map_sub, ← h2, RingHom.map_sub]`.
+
+Conclude with `(congrArg (fun t => Valued.v (adAt D.host.F PP (y.1 i j) - t)) (adAt_inclE D.host.F PP _)).trans_lt (hR' i j))`. Rewrite `h3` using `[RingHom.map_sub]`. Then use the resulting hypothesis. Establish `hgM : ∀ a b, g.val a b = (mt V x).map q.pr (e a) (e b)` using `fun a b => by`. Establish `h1 : (mt V x).map q.pr * F.β = F.β * g.val` using `by rw [hg, Matrix.mul_assoc, F.γβ, Matrix.mul_one]`. Establish `h2` using `congrFun (congrFun h1 (e a)) b`.
+
+Rewrite `h2` using `[hβ]`. Simplify `h2.symm` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `he' : ∀ a : Fin V.rank, e (Sum.inl (Sum.inl a)) = a` using `fun a => Fin.ext (he _)`. Establish `hc : ∀ a b : Fin V.rank, ((a : ℕ) + 1 = b ∧ (b : ℕ) < V.rank ∧ (b : ℕ) ≠ V.rank) ↔ b.val = a.val + 1` using `fun a b => ⟨fun h => h.1.symm, fun h => ⟨h.symm, b.2, b.2.ne⟩⟩`. Use `⟨∑ a : Fin V.rank, ∑ b : Fin V.rank, if b.val = a.val + 1 then R a b else 0, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[apply_ite (Ideal.Quotient.mk PP.asIdeal), map_zero, hR]`.
+
+Conclude with `if_congr (hc a b).symm rfl rfl`. Set `φ : 𝓞 D.host.E →+* k` to `(q.pr.comp (incA D)).comp (algebraMap (𝓞 D.host.E) D.host.E)`. Establish `hφ : ∀ r : 𝓞 D.host.E, (ofSplit q).pr (r : D.host.E) = φ r` using `fun _ => rfl`. Rewrite using `[hφ, map_sum φ, ← Finset.sum_sub_distrib]`. Use `(valuation k).map_sum_lt one_ne_zero fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum φ, ← Finset.sum_sub_distrib]`. Use `(valuation k).map_sum_lt one_ne_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[hgM, he', he']`. Conclude with `hM a b`.
+
+Rewrite using `[map_zero, sub_zero, map_zero]`. Conclude with `zero_lt_one`.
+-/
 theorem exists_close {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {D : D7} (q : GlobalTheory.FinPl.SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (hq : Formalism.L2.NTheta.IsIdemAt q.e PP)
     (V : HSp D) {n κ τ : ℕ} (hr : V.rank = n) (hn : n = κ) (F : Frame k V.rank (XIx (Fin κ) (Fin τ) 0)) (hF : IsStdFr xPos F)
@@ -113,6 +135,15 @@ theorem exists_close {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
     · rw [map_zero, sub_zero, map_zero]
       exact zero_lt_one
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha _ row col _ κ _ y hκy hy i g hg`. Take `⟨hS⟩` from `hA.tr.std`. Take `⟨hP⟩` from `hA.tr.pins`. Take `⟨k₀, hR⟩` from `(hS u).ends 0 (Nat.zero_le _) (Or.inl rfl)`. Establish `hPP : (a.pl i).1 ∈ (B.primes X).vGs` using `(hA.lev.2.1 _).1 (a.pl i).2`.
+
+Take `⟨A, -, hA'⟩` from `GlobalTheory.FamTrace.TraceFwd.exists_red I hA.tr.ok ((TC.spaces_in_coordinates I hA.tr.ok hP l Z).2.2.2 0 (Nat.zero_le _)).1 ((W.R.T.cols.forms u).cls 0 (Nat.zero_le _) (Or.inl rfl)).lev hR ⟨_, hy⟩ (a.pl i).1 hPP`. Use `letI := (a.G i).fld`. Use `letI := (a.G i).val`. Use `letI := (a.G i).top`. Use `letI := (a.G i).loc`.
+
+Take `⟨z, hz, hz'⟩` from `exists_close (a.G i).q ((ha.tie row col).2.idem i).1 ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) (show B.R.N 0 = B.R.k by simp [Ranks.N]) _ ((ha.stdG i).1 0 (Nat.zero_le _)) hκy hA' g hg`. Take `⟨j, hj⟩` from `TC.GLev0.mem_vGs.1 hPP`. Establish `h` using `TC.GLev0.g_mem_under hj`. Take `⟨w, hw, ρ, hwu, hres⟩` from `TC.GLev0.exists_w (X := X) (F0 W u).gl (hS u).gl.piG j _ h`. Establish `hwP : w = (a.pl i).1` using `TC.GLev0.vGs_inj (X := X) hPP (TC.GLev0.mem_vGs.2 ⟨j, hw⟩) hwu`.
+
+Substitute `hwP` using the available equality. Take `⟨w', h1, h2⟩` from `lamJ_eq (F0 W u).gl j h ρ hres hA' ((F0 W u).gl.chiB j _ h) B.R.k B.R.t z hz ((F0 W u).glev0.fr j _ h) ((hS u).fr0 j _ h)`. Conclude with `⟨j, h, z, w', h1, hz', (GlobalTheory.FamTraceChiCol.colLam_eq (F0 W u) j h _).trans h2⟩`.
+-/
 theorem colLam_read : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), ∀ y : Formalism.UG.UPts (Formalism.L2.Forms.sigD (I.rec7 l Z)) (Formalism.L2.Forms.gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ = y.1.1 → (y : GL _ _) ∈ (F0 W u).cls0.lev.U → ∀ (i : Fin a.n) g, GlobalTheory.FamTrace.IsMatrixInFrameOfXZero (a.G i) κ g → ∃ (j : Fin 2) (h : ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)).asIdeal) (z : 𝓞 (I.rec7 l Z).host.E) (w : ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)).adicCompletionIntegers (I.rec7 l Z).host.F), (w : ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)).adicCompletion (I.rec7 l Z).host.F) = (F0 W u).gl.phi j _ h ((z : (I.rec7 l Z).host.E) ⊗ₜ[(I.rec7 l Z).host.F] (1 : ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)).adicCompletion (I.rec7 l Z).host.F)) ∧ valuation (a.G i).k ((∑ p : Fin (I.rec7 l Z).R.k, ∑ q : Fin (I.rec7 l Z).R.k, if q.val = p.val + 1 then g.val (Sum.inl (Sum.inl p)) (Sum.inl (Sum.inl q)) else 0) - (ofSplit (a.G i).q).pr (z : (I.rec7 l Z).host.E)) < 1 ∧ GlobalTheory.FamTraceChiCol.colLam (F0 W u) ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)) (y : GL _ _) = (F0 W u).gl.psi0 j _ h (IsLocalRing.residue _ w) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha _ row col _ κ _ y hκy hy i g hg
   obtain ⟨hS⟩ := hA.tr.std

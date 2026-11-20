@@ -12,6 +12,25 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 
 namespace GlobalTheory.HalfIntChars
 
+/- English proof (translation)
+Establish `key : ∀ x : L, ∑ i, (m i : ℂ) * σ i x = 0`. Introduce `x`. Set `f : ℂ → ℂ` to `fun t => ∏ i, (1 + t * σ i x) ^ m i`. Establish `hd : ∀ i ∈ (Finset.univ : Finset I), HasDerivAt (fun t : ℂ => (1 + t * σ i x) ^ m i) ((m i : ℂ) * σ i x) 0`. Introduce `i _`.
+
+Establish `h1 : HasDerivAt (fun t : ℂ => 1 + t * σ i x) (σ i x) 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const (σ i x)).const_add 1`. Establish `h2` using `(hasDerivAt_zpow (m i) ((fun t : ℂ => 1 + t * σ i x) 0) (Or.inl (by simp))).comp (0 : ℂ) h1`. Simplify `h2` using `[Function.comp_def]`. Establish `hf : HasDerivAt f (∑ i, (m i : ℂ) * σ i x) 0`.
+
+Use `HasDerivAt.fun_finset_prod hd` as an intermediate fact. Simplify `this` using `[f]`. Establish `hs` using `hasDerivAt_iff_tendsto_slope.1 hf`. Establish `hu : Tendsto (fun n : ℕ => ((1 : ℂ) / ((n : ℂ) + 1))) atTop (𝓝[≠] 0)`. Use `tendsto_nhdsWithin_iff.2 ⟨tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℂ), Eventually.of_forall fun n => ?_⟩` and prove the remaining obligations.
+
+Conclude with `one_div_ne_zero (Nat.cast_add_one_ne_zero n)`. Establish `hfin : ∀ᶠ n : ℕ in atTop, (1 + (1 / ((n : L) + 1)) * x) ≠ 0`. Rewrite using `[← Nat.cofinite_eq_atTop]`. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `a ha b hb`.
+
+Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_not] at ha hb`. Establish `ha1 : ((a : L) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero a`. Establish `hb1 : ((b : L) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero b`. Clear denominators, using `at ha hb` for the nonvanishing conditions. Establish `: (a : L) = b` using `by linear_combination ha - hb`.
+
+Conclude with `this` after adjusting the coercions. Establish `h0 : Tendsto (fun n : ℕ => slope f 0 ((1 : ℂ) / ((n : ℂ) + 1))) atTop (𝓝 0)`. Use `tendsto_const_nhds.congr' (hfin.mono fun n hn => ?_)` and prove the remaining obligations. Establish `h1` using `h _ hn`. Establish `h2 : f ((1 : ℂ) / ((n : ℂ) + 1)) = 1`.
+
+Use `Eq.trans ?_ h1` and prove the remaining obligations. Simplify using `[f]`. Establish `h3 : f 0 = 1` using `by simp [f]`. Simplify using `only [slope, h2, h3, vsub_self, smul_zero]`. Conclude with `tendsto_nhds_unique (hs.comp hu) h0`.
+
+Establish `li` using `(linearIndependent_monoidHom L ℂ).comp (fun i => (σ i : L →* ℂ)) (fun i j hij => hσ (RingHom.coe_monoidHom_injective hij))`. Use `Fintype.linearIndependent_iff.1 li (fun i => (m i : ℂ)) (by` as an intermediate fact. Use function extensionality and compare the values at `x`. Simplify `key x)` using `[Finset.sum_apply]`. Use function extensionality and compare the values at `i`.
+
+Conclude with `this i` after adjusting the coercions.
+-/
 theorem emb_mul_indep {L I : Type} [Field L] [CharZero L] [Fintype I] (σ : I → L →+* ℂ) (hσ : Function.Injective σ)
     (m : I → ℤ) (h : ∀ k : L, k ≠ 0 → ∏ i, σ i k ^ m i = 1) : m = 0 := by
   classical
@@ -58,6 +77,11 @@ theorem emb_mul_indep {L I : Type} [Field L] [CharZero L] [Fintype I] (σ : I �
   funext i
   exact_mod_cast this i
 
+/- English proof (translation)
+Establish `h1 : ((‖z‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 hz`. Establish `h2 : starRingEnd ℂ z ≠ 0` using `by simpa using hz`. Establish `h3 : z * starRingEnd ℂ z = ((‖z‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Rewrite using `[← h3]`.
+-/
 theorem unit_sq (z : ℂ) (hz : z ≠ 0) : (z / ((‖z‖ : ℝ) : ℂ)) ^ 2 = z / starRingEnd ℂ z := by
   have h1 : ((‖z‖ : ℝ) : ℂ) ≠ 0 := by exact_mod_cast norm_ne_zero_iff.2 hz
   have h2 : starRingEnd ℂ z ≠ 0 := by simpa using hz
@@ -66,6 +90,19 @@ theorem unit_sq (z : ℂ) (hz : z ≠ 0) : (z / ((‖z‖ : ℝ) : ℂ)) ^ 2 = z
   field_simp
   rw [← h3]
 
+/- English proof (translation)
+Set `σ : I ⊕ I → L →+* ℂ` to `Sum.elim φ fun i => (starRingEnd ℂ).comp (φ i)`. Establish `hσ : Function.Injective σ`. Introduce and unpack `(i | i) (j | j) hij`. Conclude with `congrArg _ (h1 hij)`. Conclude with `absurd hij (h2 i j)`.
+
+Conclude with `absurd hij.symm (h2 j i)`. Use `congrArg _ (h1 (RingHom.ext fun x => ?_))` and prove the remaining obligations. Use `congrArg (fun f : L →+* ℂ => starRingEnd ℂ (f x)) hij` as an intermediate fact. Simplify `this` using `[σ]`. Use `emb_mul_indep σ hσ (Sum.elim (n - n') (n' - n)) (fun k hk => by` as an intermediate fact.
+
+Establish `e` using `(h (Units.mk0 k hk)).symm.trans (h' (Units.mk0 k hk))`. Simplify using `only [Units.val_mk0] at e`. Establish `hne : ∀ i, φ i k ≠ 0` using `fun i => by simpa using hk`. Establish `hu : ∀ i, φ i k / ((‖φ i k‖ : ℝ) : ℂ) ≠ 0` using `fun i => div_ne_zero (hne i) (by exact_mod_cast norm_ne_zero_iff.2 (hne i))`. Establish `e2 : ∏ i, (φ i k / ((‖φ i k‖ : ℝ) : ℂ)) ^ (n i - n' i) = 1`.
+
+Repeatedly rewrite using `[zpow_sub₀ (hu _)]`. Rewrite using `[Finset.prod_div_distrib, e, div_self]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (hu i)`. Establish `e3` using `congrArg (· ^ 2) e2`. Simplify using `only [← Finset.prod_pow, one_pow] at e3`.
+
+Rewrite using `[Fintype.prod_sum_type, ← Finset.prod_mul_distrib, ← e3]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm (n i - n' i), zpow_mul, zpow_natCast, unit_sq _ (hne i), div_zpow]`. Simplify using `only [σ, Sum.elim_inl, Sum.elim_inr, Pi.sub_apply, RingHom.comp_apply]`. Rewrite using `[div_eq_mul_inv, ← zpow_neg, neg_sub])`.
+
+Use function extensionality and compare the values at `i`. Use `congrFun this (Sum.inl i)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+-/
 theorem hasInf_unique {L I : Type} [Field L] [NumberField L] [Fintype I] (φ : I → L →+* ℂ) (h1 : Function.Injective φ)
     (h2 : ∀ i j, φ i ≠ (starRingEnd ℂ).comp (φ j)) {χ : HChar L} {n n' : I → ℤ} (h : χ.HasInf φ n) (h' : χ.HasInf φ n') :
     n = n' := by
@@ -99,6 +136,11 @@ theorem hasInf_unique {L I : Type} [Field L] [NumberField L] [Fintype I] (φ : I
   have := congrFun this (Sum.inl i)
   simpa [sub_eq_zero] using this
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `h`. Take `⟨n', hn', h'⟩` from `h'`. Use `⟨n + n', fun i => by simp [hn, hn', mul_add], fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[HChar.inf_mul, Units.val_mul, h k, h' k, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hne : φ i k ≠ 0` using `by simp`. Rewrite using `[Pi.add_apply, zpow_add₀ (div_ne_zero hne (by exact_mod_cast norm_ne_zero_iff.2 hne))]`.
+-/
 theorem hasInfQ_mul {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I → L →+* ℂ} {χ χ' : HChar L} {a a' : I → ℚ}
     (h : χ.HasInfQ φ a) (h' : χ'.HasInfQ φ a') : (χ * χ').HasInfQ φ (a + a') := by
   obtain ⟨n, hn, h⟩ := h
@@ -109,6 +151,9 @@ theorem hasInfQ_mul {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I �
   have hne : φ i k ≠ 0 := by simp
   rw [Pi.add_apply, zpow_add₀ (div_ne_zero hne (by exact_mod_cast norm_ne_zero_iff.2 hne))]
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `h`. Use `⟨-n, fun i => by simp [hn], fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[HChar.inf_inv, Units.val_inv_eq_inv_val, h k, ← Finset.prod_inv_distrib]`. Simplify using the standard rewrite rules.
+-/
 theorem hasInfQ_inv {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I → L →+* ℂ} {χ : HChar L} {a : I → ℚ}
     (h : χ.HasInfQ φ a) : (χ⁻¹).HasInfQ φ (-a) := by
   obtain ⟨n, hn, h⟩ := h
@@ -116,9 +161,17 @@ theorem hasInfQ_inv {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I �
   rw [HChar.inf_inv, Units.val_inv_eq_inv_val, h k, ← Finset.prod_inv_distrib]
   simp
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext ((factEmb R H).1.1 h)`.
+-/
 theorem embPsi_inj {R : Ranks} (H : Formalism.BasicNotions.Host R) : Function.Injective (embPsi H) := fun _ _ h =>
   Subtype.ext ((factEmb R H).1.1 h)
 
+/- English proof (translation)
+Introduce `h`. Establish `hi : embPsi H i (H.sqd) = Complex.I * ((Real.sqrt H.d : ℝ) : ℂ)` using `((factEmb R H).2 _).2 i.2`. Establish `hj : embPsi H j (H.sqd) = Complex.I * ((Real.sqrt H.d : ℝ) : ℂ)` using `((factEmb R H).2 _).2 j.2`. Rewrite `hi` using `[h, RingHom.comp_apply, hj, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Establish `h0 : ((Real.sqrt H.d : ℝ) : ℂ) = 0`.
+
+Establish `: (2 * Complex.I) * ((Real.sqrt H.d : ℝ) : ℂ) = 0` using `by linear_combination -hi`. Conclude with `(mul_eq_zero.1 this).resolve_left (mul_ne_zero two_ne_zero Complex.I_ne_zero)`. Establish `hd : 0 < H.d` using `H.hyp.2.1.pos`. Establish `: (0 : ℝ) < Real.sqrt H.d` using `Real.sqrt_pos.2 (by exact_mod_cast hd)`. Conclude with `this.ne' (by exact_mod_cast h0)`.
+-/
 theorem embPsi_ne_conj {R : Ranks} (H : Formalism.BasicNotions.Host R) (i j : R.Psi) :
     embPsi H i ≠ (starRingEnd ℂ).comp (embPsi H j) := by
   intro h
@@ -144,6 +197,11 @@ def halfInt {R : Ranks} (H : Formalism.BasicNotions.Host R) : Subgroup (HChar H.
 
 open Classical in
 
+/- English proof (translation)
+Introduce `R H`. Use `⟨⟨halfInt H, fun _ => Iff.rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `χ a b ⟨n, hn, h⟩ ⟨n', hn', h'⟩`. Take `rfl` from `hasInf_unique _ (embPsi_inj H) (embPsi_ne_conj H) h h'`. Use function extensionality and compare the values at `i`.
+
+Use `(hn i).symm.trans (hn' i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_unitary_rational_infType_subgroup_and_infType_unique : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R), (∃ G : Subgroup (HChar H.E), ∀ χ, χ ∈ G ↔ χ.IsUnitary ∧ ∃ a : R.Psi → ℚ, χ.HasInfQ (embPsi H) a) ∧ ∀ (χ : HChar H.E) (a b : R.Psi → ℚ), χ.HasInfQ (embPsi H) a → χ.HasInfQ (embPsi H) b → a = b := by
   intro R H
   refine ⟨⟨halfInt H, fun _ => Iff.rfl⟩, ?_⟩

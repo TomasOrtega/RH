@@ -9,6 +9,9 @@ open GlobalTheory.MBLow.TanGauge
 noncomputable section
 namespace GlobalTheory.MBLow.TanGauge
 
+/- English proof (translation)
+Rewrite using `[← map_zpow, ← map_zpow, ← GlobalTheory.ZH.CrdCalc.valR_eq y V hV]`. Establish `hU : ⊤ ≤ y ⁻¹ᵁ f ⁻¹ᵁ U` using `hV.trans (y.preimage_mono e)`. Use `(GlobalTheory.ZH.CrdCalc.valR_res y e hV _).trans ?_` and prove the remaining obligations. Conclude with `GlobalTheory.ZH.EvCrd.valR_comp y f U hU _`.
+-/
 theorem valHom_res_pullU_zpow {X Y : Scheme.{0}} {A : Type} [CommRing A] (y : Sp A ⟶ Y) (f : Y ⟶ X)
     (U : X.Opens) {V : Y.Opens} (e : V ≤ f ⁻¹ᵁ U) (hV : ⊤ ≤ y ⁻¹ᵁ V) (u : Γ(X, U)ˣ) (n : ℤ) :
     GlobalTheory.ZH.CrdCalc.valHom y V hV ((res e (pullU f U u)) ^ n : Γ(Y, V)ˣ).val = valR (y ≫ f) U (u ^ n).val := by
@@ -17,6 +20,15 @@ theorem valHom_res_pullU_zpow {X Y : Scheme.{0}} {A : Type} [CommRing A] (y : Sp
   refine (GlobalTheory.ZH.CrdCalc.valR_res y e hV _).trans ?_
   exact GlobalTheory.ZH.EvCrd.valR_comp y f U hU _
 
+/- English proof (translation)
+Introduce `X Y L K _ φ ε s A _ y j j' h h'`. Establish `hh : ⊤ ≤ y ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ j')` using `fun q hq => ⟨h hq, h' hq⟩`. Establish `e1` using `GlobalTheory.ZH.CrdCalc.valR_res y (inf_le_left : LB.wchart L φ j ⊓ LB.wchart L φ j' ≤ LB.wchart L φ j) hh (s.f j)`. Establish `e2` using `GlobalTheory.ZH.CrdCalc.valR_res y (inf_le_right : LB.wchart L φ j ⊓ LB.wchart L φ j' ≤ LB.wchart L φ j') hh (s.f j')`. Rewrite using `[← e1, ← e2]`.
+
+Establish `c` using `s.compat j j'`. Express the relevant statement in the definitionally equal form `valR y _ ((Y.presheaf.map _).hom _) = _ * valR y _ ((Y.presheaf.map _).hom _)`. Use `(congrArg (valR y (LB.wchart L φ j ⊓ LB.wchart L φ j')) c).trans ?_` and prove the remaining obligations. Use `(GlobalTheory.ZH.CrdCalc.valR_mul y (LB.wchart L φ j ⊓ LB.wchart L φ j') hh _ _).trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `(GlobalTheory.ZH.CrdCalc.valR_eq y (LB.wchart L φ j ⊓ LB.wchart L φ j') hh _).trans ?_` and prove the remaining obligations. Simplify using `only [LB.LinComb]`. Rewrite using `[Units.coe_prod, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk : ⊤ ≤ (y ≫ φ k) ⁻¹ᵁ (L.U (j k) ⊓ L.U (j' k))` using `fun q _ => ⟨wchart_top_le L φ j y h k (x := q) trivial, wchart_top_le L φ j' y h' k (x := q) trivial⟩`.
+
+Unfold `trV`. Conclude with `valHom_res_pullU_zpow y (φ k) (L.U (j k) ⊓ L.U (j' k)) (V := LB.wchart L φ j ⊓ LB.wchart L φ j') _ hh (L.g (j k) (j' k)) (ε k)`.
+-/
 theorem valR_linComb_sec : ∀ {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (s : LB.Sec (LB.LinComb L φ ε)) {A : Type} [CommRing A] (y : Sp A ⟶ Y) (j j' : K → L.ι),
     ⊤ ≤ y ⁻¹ᵁ LB.wchart L φ j → ⊤ ≤ y ⁻¹ᵁ LB.wchart L φ j' →

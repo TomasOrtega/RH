@@ -7,6 +7,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.HeckePointLaw
 
+/- English proof (translation)
+The claim follows from `heckePointLaws_of_transport GlobalTheory.T.heckeIsogeny_thetaGenerator_transport`.
+-/
 theorem heckePointLaws : GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws :=
   heckePointLaws_of_transport GlobalTheory.T.heckeIsogeny_thetaGenerator_transport
 

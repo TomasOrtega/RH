@@ -15,6 +15,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.PointLog
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, RiemLat.gram, Matrix.of_apply, RiemLat.ip, hd, star_sum, star_smul, Matrix.mulVec_sum, Matrix.mulVec_smul, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_change (R : RiemLat E g Λ) {m : ℕ} (bb d : Fin m → Fin g → ℂ) (Y : Matrix (Fin m) (Fin m) ℂ)
     (hd : ∀ b, d b = ∑ c, Y c b • bb c) : R.gram d = Yᴴ * R.gram bb * Y := by
   ext a b
@@ -25,6 +28,21 @@ theorem gram_change (R : RiemLat E g Λ) {m : ℕ} (bb d : Fin m → Fin g → �
   refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun e _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ R m bb d Y M κ hκ hd hM hpos`. Establish `hdet` using `congrArg Matrix.det hM`. Rewrite `hdet` using `[Matrix.det_mul, gram_change R bb d Y hd, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Establish `hMp : 0 < M.det` using `hpos.det_pos`. Take `⟨hr, hi⟩` from `Complex.pos_iff.mp hMp`.
+
+Use `set r := M.det.re with hrdef`. Establish `hMr : M.det = (r : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp [hrdef, ← hi]`. Use `set y := Y.det with hy`. Use `set G := (R.gram bb).det with hG`.
+
+Establish `hyy : star y * y = ((‖y‖ ^ 2 : ℝ) : ℂ)`. Simplify using `using Complex.conj_mul' y`. Establish `hκm : 0 < κ ^ m` using `pow_pos hκ m`. Establish `e1 : ((‖y‖ ^ 2 : ℝ) : ℂ) * G * (r : ℂ) = ((κ ^ m : ℝ) : ℂ)`. Rewrite using `[← hyy, ← hMr]`.
+
+Use `push_cast`. Take the linear combination `hdet`. Establish `hy0 : y ≠ 0`. Introduce `h0`. Rewrite `e1` using `[h0]`.
+
+Establish `: ((κ ^ m : ℝ) : ℂ) = 0` using `by simpa using e1.symm`. Conclude with `hκm.ne' (by exact_mod_cast this)`. Establish `hn : 0 < ‖y‖` using `norm_pos_iff.mpr hy0`. Establish `hGr : G = ((κ ^ m / (‖y‖ ^ 2 * r) : ℝ) : ℂ)`. Establish `h2 : ((‖y‖ ^ 2 * r : ℝ) : ℂ) ≠ 0`.
+
+Conclude with `(mul_pos (pow_pos hn 2) hr).ne'` after adjusting the coercions. Move the coercions through the operations in `at h2 e1 ⊢`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e1`. Use `⟨hy0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hGr, Complex.ofReal_re, Real.log_div hκm.ne' (mul_pos (pow_pos hn 2) hr).ne', Real.log_mul (pow_pos hn 2).ne' hr.ne', Real.log_pow, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_det_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (R : RiemLat E g Λ) (m : ℕ) (bb d : Fin m → Fin g → ℂ) (Y M : Matrix (Fin m) (Fin m) ℂ) (κ : ℝ), 0 < κ → (∀ b, d b = ∑ c, Y c b • bb c) → R.gram d * M = (κ : ℂ) • (1 : Matrix (Fin m) (Fin m) ℂ) → M.PosDef → Y.det ≠ 0 ∧ -Real.log M.det.re = 2 * Real.log ‖Y.det‖ + Real.log (R.gram bb).det.re - m * Real.log κ := by
   intro E _ _ _ g Λ _ _ R m bb d Y M κ hκ hd hM hpos
   have hdet := congrArg Matrix.det hM

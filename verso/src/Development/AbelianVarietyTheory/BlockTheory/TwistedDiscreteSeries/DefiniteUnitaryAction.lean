@@ -24,18 +24,32 @@ def classSumAt (f f' : S.Forms) : ℂ :=
 def IsUnitaryAt {G : Type} [Group G] (r : Representation K G S.Forms) : Prop :=
   ∀ (g : G) (f f' : S.Forms), classSumAt S σ (r g f) (r g f') = classSumAt S σ f f'
 
+/- English proof (translation)
+Establish `: 0 < S.wt c` using `Fintype.card_pos`. Conclude with `this.ne'` after adjusting the coercions.
+-/
 theorem wt_ne_zero (c : S.Cl) : (S.wt c : ℂ) ≠ 0 := by
   have : 0 < S.wt c := Fintype.card_pos
   exact_mod_cast this.ne'
 
+/- English proof (translation)
+Simplify using `only [pairAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem pairAt_smul_left (a : K) (x y : S.V) : pairAt S σ (a • x) y = starRingEnd ℂ (σ a) * pairAt S σ x y := by
   simp only [pairAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [pairAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairAt_smul_right (a : K) (x y : S.V) : pairAt S σ x (a • y) = σ a * pairAt S σ x y := by
   simp only [pairAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Establish `e : S.pair x y = ∑ i, ∑ j, star (S.bV.repr x i) * S.gramV i j * S.bV.repr y j` using `by conv_lhs => rw [← S.bV.sum_repr x, ← S.bV.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, starRingEnd_apply, CSD.gramV, Matrix.of_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Simplify using `only [pairAt, map_sum, map_mul, h]`.
+-/
 theorem pairAt_eq (h : ∀ a, σ (star a) = starRingEnd ℂ (σ a)) (x y : S.V) : pairAt S σ x y = σ (S.pair x y) := by
   have e : S.pair x y = ∑ i, ∑ j, star (S.bV.repr x i) * S.gramV i j * S.bV.repr y j := by
     conv_lhs => rw [← S.bV.sum_repr x, ← S.bV.sum_repr y]
@@ -47,10 +61,16 @@ theorem pairAt_eq (h : ∀ a, σ (star a) = starRingEnd ℂ (σ a)) (x y : S.V) 
   rw [e]
   simp only [pairAt, map_sum, map_mul, h]
 
+/- English proof (translation)
+Simplify using `only [classSumAt, CSD.csum, map_sum, map_mul, map_inv₀, map_natCast, pairAt_eq S σ h]`.
+-/
 theorem classSumAt_eq (h : ∀ a, σ (star a) = starRingEnd ℂ (σ a)) (f f' : S.Forms) :
     classSumAt S σ f f' = σ (S.csum f f') := by
   simp only [classSumAt, CSD.csum, map_sum, map_mul, map_inv₀, map_natCast, pairAt_eq S σ h]
 
+/- English proof (translation)
+Simplify using `only [IsUnitaryAt, classSumAt_eq S σ h, σ.injective.eq_iff]`.
+-/
 theorem isUnitaryAt_iff (h : ∀ a, σ (star a) = starRingEnd ℂ (σ a)) {G : Type} [Group G] (r : Representation K G S.Forms) :
     IsUnitaryAt S σ r ↔ ∀ (g : G) (f f' : S.Forms),
       S.csum (r g f : S.Cl → S.V) (r g f' : S.Cl → S.V) = S.csum (f : S.Cl → S.V) (f' : S.Cl → S.V) := by
@@ -91,10 +111,16 @@ section Basic₂
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Introduce `g x y` and use `congrArg (cj s) (h g (Tw.out x) (Tw.out y))`.
+-/
 theorem IsUnitaryRep.tw {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ρ : Representation ℂ G H}
     (h : IsUnitaryRep ρ) (s : Bool) : IsUnitaryRep (Tw.rep s ρ) := fun g x y =>
   congrArg (cj s) (h g (Tw.out x) (Tw.out y))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun t => (isUnitaryAt_iff _ _ D.starLL_cx _).1 (h.what₂ t _), fun i t => (isUnitaryAt_iff _ _ D.starLL_cx _).1 (h.lifts i t _)⟩`.
+-/
 theorem DefiniteUnitary.csum (h : DefiniteUnitary A) :
     (∀ t g (f f' : (A.MtildeCSD t).Forms), (A.MtildeCSD t).csum (A.leftGroupActionRight t g f : _ → _) (A.leftGroupActionRight t g f' : _ → _) =
       (A.MtildeCSD t).csum (f : _ → _) (f' : _ → _)) ∧
@@ -102,6 +128,11 @@ theorem DefiniteUnitary.csum (h : DefiniteUnitary A) :
       (A.MtCSD i t).csum (f : _ → _) (f' : _ → _) :=
   ⟨fun t => (isUnitaryAt_iff _ _ D.starLL_cx _).1 (h.what₂ t _), fun i t => (isUnitaryAt_iff _ _ D.starLL_cx _).1 (h.lifts i t _)⟩
 
+/- English proof (translation)
+Take `⟨-, hr, hip⟩` from `h.models.HE`. Prove the components needed by the constructor for the conclusion. Introduce `hu g x hx y hy`. Rewrite `hx`, `hy` using `[← hr]`. Take `⟨x, rfl⟩` from `hx`.
+
+Take `⟨y, rfl⟩` from `hy`. Rewrite using `[← h.models.gE, ← h.models.gE, ← hip, ← hip, hu]`. Introduce `hu g x y`. Rewrite using `[hip, hip, h.models.gE, h.models.gE]`. Conclude with `hu g _ (hr ▸ LinearMap.mem_range_self _ x) _ (hr ▸ LinearMap.mem_range_self _ y)`.
+-/
 theorem rows_iff (R : RealDat D A Ks) (F : Face D A) (h : R.Char F) :
     IsUnitaryRep R.gE ↔ ∀ (g : G), ∀ x ∈ R.EEat R.triv, ∀ y ∈ R.EEat R.triv,
       Formalism.IndefR.Mult.ipM (R.MY 0) R.ν0 R.fd0

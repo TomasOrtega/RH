@@ -14,10 +14,20 @@ namespace GlobalTheory.TwistDet
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+The claim follows from `(Ideal.finite_factors (I := Ideal.span {(p : 𝓞 D.host.E)}) (by simpa using hp)).subset fun _ hv => Ideal.dvd_span_singleton.2 hv`.
+-/
 theorem finite_placesOver {p : ℕ} (hp : p ≠ 0) : (placesOver D.host.E p).Finite :=
   (Ideal.finite_factors (I := Ideal.span {(p : 𝓞 D.host.E)}) (by simpa using hp)).subset
     fun _ hv => Ideal.dvd_span_singleton.2 hv
 
+/- English proof (translation)
+Use `v.isPrime` as an intermediate fact. Establish `h1` using `Ideal.absNorm_pow_inertiaDeg (v.asIdeal.under ℤ) v.asIdeal`. Rewrite `h1` using `[h, pow_one]`. Establish `h2 : Ideal.absNorm v.asIdeal = normV v`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Both sides reduce to the same expression. Take `⟨a, ha⟩` from `(IsPrincipalIdealRing.principal (v.asIdeal.under ℤ)).principal`. Establish `ha' : v.asIdeal.under ℤ = Ideal.span {a}` using `ha`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `h1` using `[ha', Ideal.span_singleton_zero, Ideal.absNorm_bot]`. Conclude with `v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h1.symm)`. Establish `hpa : Prime a` using `(Ideal.span_singleton_prime ha0).1 (ha' ▸ inferInstance)`. Rewrite using `[← h2, ← h1, ha', Ideal.absNorm_span_singleton, Algebra.norm_self]`. Conclude with `Int.prime_iff_natAbs_prime.1 hpa`.
+-/
 theorem prime_normV {v : PlE D.host} (h : v.asIdeal.inertiaDeg ℤ = 1) : (normV v).Prime := by
   have := v.isPrime
   have h1 := Ideal.absNorm_pow_inertiaDeg (v.asIdeal.under ℤ) v.asIdeal
@@ -34,6 +44,19 @@ theorem prime_normV {v : PlE D.host} (h : v.asIdeal.inertiaDeg ℤ = 1) : (normV
   rw [← h2, ← h1, ha', Ideal.absNorm_span_singleton, Algebra.norm_self]
   exact Int.prime_iff_natAbs_prime.1 hpa
 
+/- English proof (translation)
+Establish `hp` using `prime_normV h`. Establish `hmem : ((normV v : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal`. Establish `h2 : Ideal.absNorm v.asIdeal = normV v`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+
+Conclude with `h2 ▸ Ideal.absNorm_mem v.asIdeal`. Use `⟨normV v, hp, hodd, ?_, hmem⟩` and prove the remaining obligations. Establish `n2 : normV v ∉ D.host.small` using `UpperTheory.Small.not_mem_of_ramIdx_one D.host hp v hmem he`. Establish `nq : normV v ≠ D.host.q` using `fun e => hq (show ((D.host.q : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal from e ▸ hmem)`. Establish `nd : normV v ≠ D.host.d` using `fun e => hd (show ((D.host.d : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal from e ▸ hmem)`.
+
+Establish `hb : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E)` using `D.host.sqd_sq`. Establish `hi : IsIntegral ℤ D.host.sqrtMinusD` using `IsIntegral.of_pow two_pos (hb ▸ (isIntegral_natCast (R := ℤ) _).neg)`. Set `b : 𝓞 D.host.E` to `⟨_, hi⟩`. Establish `hb' : b * b = -(D.host.d : 𝓞 D.host.E)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Rewrite using `[← sq]`. Use `push_cast`. Conclude with `hb`. Establish `: Fact (normV v).Prime` using `⟨hp⟩`. Establish `: Finite (𝓞 D.host.E ⧸ v.asIdeal)` using `Nat.finite_of_card_ne_zero hp.ne_zero`.
+
+Set `` to `Fintype.ofFinite (𝓞 D.host.E ⧸ v.asIdeal)`. Set `e` to `ZMod.ringEquivOfPrime (𝓞 D.host.E ⧸ v.asIdeal) hp (Nat.card_eq_fintype_card.symm)`. Establish `hsq : IsSquare (((-(D.host.d : ℤ) : ℤ)) : ZMod (normV v))` using `⟨e.symm (Ideal.Quotient.mk _ b), by rw [← map_mul, ← map_mul, hb']; simp⟩`. Establish `hne : (((-(D.host.d : ℤ) : ℤ)) : ZMod (normV v)) ≠ 0`. Rewrite using `[Int.cast_neg, neg_ne_zero, Int.cast_natCast, Ne, ZMod.natCast_eq_zero_iff]`.
+
+Conclude with `fun hdvd => nd ((Nat.prime_dvd_prime_iff_eq hp D.host.hyp.2.1).1 hdvd)`. Establish `hj : jacobiSym (-(D.host.d : ℤ)) (normV v) = 1`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym]`. Conclude with `(legendreSym.eq_one_iff _ hne).2 hsq`. Conclude with `(primeClass_eq_splitK_iff _).2 ⟨n2, nq, nd, hj⟩`.
+-/
 theorem exists_splitK {v : PlE D.host} (h : v.asIdeal.inertiaDeg ℤ = 1) (he : eWL D.host.E v = 1)
     (hodd : Odd (normV v))
     (hq : v ∉ placesOver D.host.E D.host.q) (hd : v ∉ placesOver D.host.E D.host.d) :
@@ -72,6 +95,45 @@ theorem exists_splitK {v : PlE D.host} (h : v.asIdeal.inertiaDeg ℤ = 1) (he : 
 
 variable {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
+/- English proof (translation)
+Use `choose η hηc _ hηD hηF using fun s => h8 s (hg s)`. Set `ρ` to `IsLocalRing.residue (X.O0 i)`. Set `W : X.Sig i → GE N → Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)` to `fun s g => ((η s g : (X.O0 i)ˣ) : X.O0 i) • ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix _ _ (X.O0 i))`. Set `Wb : X.Sig i → GE N →* Matrix (Fin D.R.r) (Fin D.R.r) (IsLocalRing.ResidueField (X.O0 i))` to `fun s => { toFun := fun g => (W s g).map ρ map_one' := by simp [W] map_mul' := fun g h => by`. Rewrite using `[← Matrix.map_mul]`.
+
+Simplify using `only [W, map_mul, Units.val_mul, smul_mul_smul_comm] }`. Establish `hm : IsOpen (IsLocalRing.maximalIdeal (X.O0 i) : Set (X.O0 i))`. Simplify using `using (isAdic_iff.1 (X.twistBaseCoefficientRing_isAdic i)).1 1`. Establish `hopen : ∀ s, IsOpen ((Wb s).ker : Set (GE N))`. Introduce `s`.
+
+Establish `hc : Continuous (W s)` using `(hηc s).smul (X.rhoS_cont i s)`. Establish `e : ((Wb s).ker : Set (GE N)) = ⋂ a, ⋂ b, (fun g => W s g a b - (1 : Matrix _ _ (X.O0 i)) a b) ⁻¹' (IsLocalRing.maximalIdeal (X.O0 i) : Set (X.O0 i))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, Set.mem_preimage, ← IsLocalRing.residue_eq_zero_iff, map_sub, sub_eq_zero, ← Matrix.ext_iff]`. Use `forall₂_congr fun a b => ?_` and prove the remaining obligations.
+
+Establish `: (1 : Matrix (Fin D.R.r) (Fin D.R.r) (IsLocalRing.ResidueField (X.O0 i))) a b = ρ ((1 : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)) a b)`. Simplify using `[Matrix.one_apply, apply_ite]`. Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => hm.preimage ((hc.matrix_elem a b).sub continuous_const)`. Set `H₀ : Subgroup (GE N)` to `⨅ s, (Wb s).ker`. Establish `hH₀ : IsOpen (H₀ : Set (GE N))`. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite hopen`.
+
+Establish `hn₀ : H₀.Normal` using `Subgroup.normal_iInf_normal fun s => inferInstance`. Use `⟨H₀ ⊓ H₀.comap (cConj X), hH₀.inter (isOpen_comap_cConj X hH₀), inferInstance, ?_⟩` and prove the remaining obligations. Introduce `P P' hPP' hs hS hF s`. Take `⟨v, hv, A, hA, hzA, hu, -⟩` from `hz`. Use `set δ := X.delta i z with hδ`.
+
+Establish `hsc : ∀ z' : GE N, (X.delta i z' = δ ∨ X.delta i z' = δ⁻¹) → (∃ v ∈ X.pD i, ∃ A : ValuationSubring N.Om, IsPlaceOver A v ∧ z' ∈ Ine (F` using `D.host.E) A) → ∀ σ g : GE N, g * σ * g⁻¹ * z'⁻¹ ∈ H₀ → ∃ c : (X.O0 i)ˣ, (c = δ ∨ c = δ⁻¹) ∧ Wb s σ⁻¹ = ρ c • (1 : Matrix _ _ _) := by`. Introduce and unpack `z' hz' ⟨v, hv, A, hA, hzA⟩ σ g hH`. Establish `h1 : ∃ c : (X.O0 i)ˣ, (c = δ ∨ c = δ⁻¹) ∧ W s z'⁻¹ = (c : X.O0 i) • (1 : Matrix _ _ _)`. Break down `hηD s v hv A hA with h | h` into its components or cases. Use `⟨_, ?_, h _ (inv_mem hzA)⟩` and prove the remaining obligations.
+
+Rewrite using `[map_inv]`. Break down `hz' with e | e` into its components or cases. Conclude with `Or.inr (by rw [e])`. Conclude with `Or.inl (by rw [e, inv_inv])`. Use `⟨_, ?_, h _ (inv_mem hzA)⟩` and prove the remaining obligations.
+
+Rewrite using `[map_inv, inv_inv]`. Conclude with `hz'`. Take `⟨c, hc, hW⟩` from `h1`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `h2 : Wb s z'⁻¹ = ρ c • (1 : Matrix _ _ _)`.
+
+Express the relevant statement in the definitionally equal form `(W s z'⁻¹).map ρ = _`. Rewrite using `[hW]`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hab]`. Establish `h3 : Wb s (g * σ * g⁻¹ * z'⁻¹)⁻¹ = 1` using `Subgroup.mem_iInf.1 (inv_mem hH) s`. Establish `e : σ⁻¹ = g⁻¹ * (z'⁻¹ * (g * σ * g⁻¹ * z'⁻¹)⁻¹) * g` using `by group`. Rewrite using `[e, map_mul, map_mul, map_mul, h2, h3, mul_one, mul_smul_comm, mul_one, smul_mul_assoc, ← map_mul, inv_mul_cancel, map_one]`.
+
+Take `⟨σ, hσ⟩` from `exists_isFrob (F := D.host.E) (N.plOm.2 P')`. Establish `h4 : ∃ c : (X.O0 i)ˣ, (c = δ ∨ c = δ⁻¹) ∧ Wb s σ⁻¹ = ρ c • (1 : Matrix _ _ _)`. Break down `hPP' with rfl | hPP'` into its components or cases. Take `⟨g, hg⟩` from `hF σ hσ`. Conclude with `hsc z (Or.inl rfl) ⟨v, hv, A, hA, hzA⟩ σ g hg.1`.
+
+Take `⟨σ₀, g', hσ₀, rfl⟩` from `exists_frob_of_conj X hPP' hσ`. Take `⟨g, hg⟩` from `hF σ₀ hσ₀`. Take `⟨v', hv'⟩` from `exists_isConjPl v`. Use `hsc (cConj X z) (Or.inr (antiHom_cConj X (X.delta_anti i) z)) ⟨v', ?_, _, isPlaceOver_moveVal_cc X hv' hA, cConj_mem_ine X hzA⟩ _ (cConj X g * g'⁻¹) ?_` and prove the remaining obligations. Rewrite `hv`, the goal using `[← Finset.mem_coe, X.pD_eq]`.
+
+Conclude with `mem_placesOver_conj hv' hv`. Establish `: cConj X (g * σ₀ * g⁻¹ * z⁻¹) ∈ H₀` using `hg.2`. Rewrite `this` using `[map_mul, map_mul, map_mul, map_inv, map_inv]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+
+Take `⟨c, hc, hW⟩` from `h4`. Establish `h5` using `hηF s P' hS hs σ⁻¹ (by rwa [inv_inv])`. Rewrite `h5` using `[Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot (Nat.succ_pos _), h0]`. Establish `e6 : Finset.Ico (0 + 1) (D.R.r + 1) = Finset.Icc 1 D.R.r`. Use extensionality with `a`.
+
+Simplify using `only [Finset.mem_Ico, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite `h5` using `[e6]`. Simplify using `only [pow_zero, zero_mul, Nat.zero_div, mul_one] at h5`. Rewrite using `[h5]`.
+
+Use `IsUnit.map _ ?_` and prove the remaining obligations. Establish `hc1 : IsUnit (1 - (c : X.O0 i))`. Establish `hu1 : IsUnit ((δ : X.O0 i) - 1)` using `isUnit_of_mul_isUnit_left (y := (δ : X.O0 i) + 1) (by convert hu using 1; ring)`. Break down `hc with rfl | rfl` into its components or cases. Simplify using `using hu1.neg`.
+
+Establish `: 1 - ((δ⁻¹ : (X.O0 i)ˣ) : X.O0 i) = ((δ⁻¹ : (X.O0 i)ˣ) : X.O0 i) * ((δ : X.O0 i) - 1)`. Rewrite using `[mul_sub, Units.inv_mul, mul_one]`. Rewrite using `[this]`. Conclude with `(Units.isUnit _).mul hu1`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, map_sub, map_one]`.
+
+Establish `e7 : (IsLocalRing.residue (X.O0 i)).mapMatrix (W s σ⁻¹) = ρ c • (1 : Matrix _ _ _)` using `hW`. Rewrite using `[e7]`. Establish `e8 : (1 : Matrix (Fin D.R.r) (Fin D.R.r) (IsLocalRing.ResidueField (X.O0 i))) - ρ c • 1 = ρ (1 - c) • (1 : Matrix _ _ _)` using `by rw [map_sub, map_one, sub_smul, one_smul]`. Rewrite using `[e8, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ (hc1.map ρ).ne_zero`.
+-/
 theorem exists_subgroup_isUnit (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (z : GE N)
     (hg : ∀ s, goodE Y i s) (h8 : ∀ s, characterTwistExists X Y i s) (h0 : ∀ s P, X.hEig i s 0 P = 1) (hz : IsTameInertiaElementAtTwistPrime X i z) :
     ∃ H : Subgroup (GE N), IsOpen (H : Set (GE N)) ∧ H.Normal ∧ ∀ P P' : PlE D.host, Over P P' →
@@ -184,6 +246,13 @@ theorem exists_subgroup_isUnit (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.
   rw [e8, Matrix.det_smul, Matrix.det_one, mul_one]
   exact pow_ne_zero _ (hc1.map ρ).ne_zero
 
+/- English proof (translation)
+Establish `ho : ∀ v, Over P' v ↔ Over P v` using `fun v => ⟨over_trans h, over_trans (over_symm h)⟩`. Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Take `rfl : d' = d` from `MonoidHom.ext fun σ => Multiplicative.toAdd.injective (by simpa using hs σ)`. Conclude with `⟨hd.1, hd.2.1, hd.2.2.1, fun v hv => hd.2.2.2.1 v (mt (ho v).2 hv), fun v hv => hd.2.2.2.2 v ((ho v).1 hv)⟩`. Establish `e : ∀ σ, d' σ = (d σ)⁻¹` using `fun σ => Multiplicative.toAdd.injective (by simpa using hs σ)`.
+
+Use `⟨?_, fun g g' hg => by rw [e, e, hd.2.1 g g' hg], fun v hv A hA σ hσ => by` and prove the remaining obligations. Rewrite using `[e, hd.2.2.1 v hv A hA σ hσ, inv_one], fun v hv A hA σ hσ => by`. Rewrite using `[e, hd.2.2.2.1 v (mt (ho v).2 hv) A hA σ hσ, inv_one], fun v hv A hA c => ?_⟩`. Establish `: d'.ker = d.ker` using `by ext σ; simp [MonoidHom.mem_ker, e]`. Rewrite using `[this]`.
+
+Conclude with `hd.1`. Take `⟨σ, hσ, hc⟩` from `hd.2.2.2.2 v ((ho v).1 hv) A hA c⁻¹`. Conclude with `⟨σ, hσ, by rw [e, hc, inv_inv]⟩`.
+-/
 theorem goodChar_of_over {i : X.Tw} {M : ℕ} {P P' : PlE D.host} (h : Over P P')
     {d d' : GE N →* Multiplicative (ZMod (X.l i ^ M))} (hd : GoodChar X i M P d) (s : ℤˣ)
     (hs : ∀ σ, Multiplicative.toAdd (d' σ) = ((s : ℤ) : ZMod (X.l i ^ M)) * Multiplicative.toAdd (d σ)) :
@@ -204,6 +273,11 @@ theorem goodChar_of_over {i : X.Tw} {M : ℕ} {P P' : PlE D.host} (h : Over P P'
 def IsSub {ι : Type} (P : ι → PlE D.host) (J : Finset ι) (Q : Finset (PlE D.host)) : Prop :=
   ∀ v, v ∈ Q ↔ ∃ q ∈ J, Over (P q) v
 
+/- English proof (translation)
+Use `choose c hc using exists_isConjPl (D := D)`. Use `⟨J.image P ∪ J.image (fun q => c (P q)), fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨q, hq, rfl⟩ | ⟨q, hq, rfl⟩) exacts [⟨q, hq, Or.inl rfl⟩, ⟨q, hq, Or.inr (hc _)⟩]`.
+
+Introduce and unpack `⟨q, hq, rfl | h⟩ exacts [Or.inl ⟨q, hq, rfl⟩, Or.inr ⟨q, hq, isConjPl_unique (hc _) h⟩]`.
+-/
 theorem exists_isSub {ι : Type} (P : ι → PlE D.host) (J : Finset ι) : ∃ Q, IsSub P J Q := by
   classical
   choose c hc using exists_isConjPl (D := D)
@@ -215,20 +289,34 @@ theorem exists_isSub {ι : Type} (P : ι → PlE D.host) (J : Finset ι) : ∃ Q
   · rintro ⟨q, hq, rfl | h⟩
     exacts [Or.inl ⟨q, hq, rfl⟩, Or.inr ⟨q, hq, isConjPl_unique (hc _) h⟩]
 
+/- English proof (translation)
+Introduce `v hv v' hc` and use `by obtain ⟨q, hq, ho⟩ := (h v).1 hv exact (h v').2 ⟨q, hq, over_trans ho (Or.inr hc)⟩`.
+-/
 theorem IsSub.conjCl {ι : Type} {P : ι → PlE D.host} {J : Finset ι} {Q : Finset (PlE D.host)} (h : IsSub P J Q) :
     ConjCl (D := D) Q := fun v hv v' hc => by
   obtain ⟨q, hq, ho⟩ := (h v).1 hv
   exact (h v').2 ⟨q, hq, over_trans ho (Or.inr hc)⟩
 
+/- English proof (translation)
+The claim follows from `Finset.ext fun v => (h v).trans (h' v).symm`.
+-/
 theorem IsSub.unique {ι : Type} {P : ι → PlE D.host} {J : Finset ι} {Q Q' : Finset (PlE D.host)} (h : IsSub P J Q)
     (h' : IsSub P J Q') : Q = Q' := Finset.ext fun v => (h v).trans (h' v).symm
 
+/- English proof (translation)
+Rewrite using `[h]`. Conclude with `⟨fun ⟨q', hq', ho⟩ => hP _ _ ho ▸ hq', fun hq => ⟨q, hq, over_refl _⟩⟩`.
+-/
 theorem IsSub.mem_iff {ι : Type} {P : ι → PlE D.host} {J : Finset ι} {Q : Finset (PlE D.host)} (h : IsSub P J Q)
     (hP : ∀ q q', Over (P q) (P q') → q = q') (q : ι) : P q ∈ Q ↔ q ∈ J := by
   rw [h]
   exact ⟨fun ⟨q', hq', ho⟩ => hP _ _ ho ▸ hq', fun hq => ⟨q, hq, over_refl _⟩⟩
 
 open Classical in
+/- English proof (translation)
+Introduce `w`. Rewrite using `[Finset.mem_erase, Finset.mem_erase, h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, q', hq', ho⟩`. Break down `Finset.mem_insert.1 hq' with rfl | hq'` into its components or cases.
+
+Break down `over_trans (over_symm hv) ho with e | e exacts [absurd e h2, absurd (isConjPl_unique e hc) h1]` into its components or cases. Conclude with `⟨q', hq', ho⟩`. Introduce and unpack `⟨q', hq', ho⟩`. Establish `hn : ¬ Over (P q) w` using `fun h' => hq (hP _ _ (over_trans h' (over_symm ho)) ▸ hq')`. Conclude with `⟨fun e => hn (e ▸ over_trans hv (Or.inr hc)), fun e => hn (e ▸ hv), q', Finset.mem_insert_of_mem hq', ho⟩`.
+-/
 theorem IsSub.erase {ι : Type} {P : ι → PlE D.host} {J : Finset ι} {Q : Finset (PlE D.host)} {q : ι} (hq : q ∉ J)
     (h : IsSub P (insert q J) Q) (hP : ∀ q q', Over (P q) (P q') → q = q') {v v' : PlE D.host} (hv : Over (P q) v)
     (hc : IsConjPl D.host v v') : IsSub P J ((Q.erase v).erase v') := by
@@ -246,6 +334,13 @@ theorem IsSub.erase {ι : Type} {P : ι → PlE D.host} {J : Finset ι} {Q : Fin
 
 variable (Y : NExp D.R D.host D.what₂ D.LL0 N X)
 
+/- English proof (translation)
+Establish `h1` using `fun v hv => ((h v).1 hv).elim fun q hq => hA.1 q v hq.2`. Use `⟨⟨fun v hv => (h1 v hv).1, Finset.disjoint_left.2 fun v hv => (h1 v hv).2.2.2.1, h.conjCl⟩, fun v hv => ?_, Finset.disjoint_left.2 fun v hv => (h1 v hv).2.2.2.2.1, fun v hv => ⟨?_, (h1 v hv).2.2.2.2.2⟩⟩` and prove the remaining obligations. Use `exists_splitK (h1 v hv).2.1 (h1 v hv).2.2.1 ?_ (fun e => (h1 v hv).2.2.2.2.1 (hq e)) fun e => (h1 v hv).2.2.2.2.1 (hd' e)` and prove the remaining obligations. Rewrite using `[Nat.odd_iff, ← Nat.mod_mod_of_dvd _ (Dvd.intro (X.l i ^ M) rfl), (h1 v hv).2.2.2.2.2]`. Take `⟨q, hq, ho⟩` from `(h v).1 hv`.
+
+Break down `ho with rfl | hc` into its components or cases. Conclude with `hA.2.2 q`. Establish `hP : P q ∈ Q` using `(h _).2 ⟨q, hq, over_refl _⟩`. Take `⟨s, hs⟩` from `Y.delU_conj i Q M (P q) hP v hv hc`. Use `goodChar_of_over (Or.inr hc) (hA.2.2 q) s fun σ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hd Q h.conjCl v hv, ← hd Q h.conjCl _ hP, hs]`.
+-/
 theorem IsSub.admissible {ι : Type} {i : X.Tw} {M : ℕ} {A : Finset (PlE D.host)} {P : ι → PlE D.host}
     {d : PlE D.host → (GE N →* Multiplicative (ZMod (X.l i ^ M)))} (hd : IsCoord Y i M d)
     (hA : SlopeTestRemainingChoices X i M A P fun q => d (P q)) (hq : placesOver D.host.E D.host.q ⊆ A)

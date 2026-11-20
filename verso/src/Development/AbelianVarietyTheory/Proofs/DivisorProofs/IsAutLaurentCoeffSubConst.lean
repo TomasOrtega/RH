@@ -25,6 +25,13 @@ namespace GlobalTheory.LaurentAut
 open GlobalTheory.EisCont.Smooth
 open scoped ContDiff
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `((isCompact_closedBall x₀ 1).prod hC).exists_bound_of_continuousOn hc'.continuousOn`. Establish `hx : x₀ ∈ Metric.closedBall x₀ 1` using `Metric.mem_closedBall_self zero_le_one`. Establish `hc0 : Continuous (Φ' x₀)` using `hc'.comp (continuous_const.prodMk continuous_id)`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (bound := C.indicator fun _ => B) (Metric.closedBall_mem_nhds x₀ one_pos) ?_ ((hc x₀).integrable_of_hasCompactSupport (.intro hC fun y hy => (h0 x₀ hx y hy).1)) (hc0.integrable_of_hasCompactSupport (.intro hC fun y hy => (h0 x₀ hx …` and prove the remaining obligations. Use `filter_upwards [Metric.closedBall_mem_nhds x₀ one_pos] with t ht`.
+
+Conclude with `((hc t).integrable_of_hasCompactSupport (.intro hC fun y hy => (h0 t ht y hy).1)).aestronglyMeasurable`. Distinguish the cases in `hy : y ∈ C`. Rewrite using `[Set.indicator_of_mem hy]`. Conclude with `hB (t, y) ⟨ht, hy⟩`. Rewrite using `[Set.indicator_of_notMem hy, (h0 t ht y hy).2, norm_zero]`.
+
+Conclude with `(integrable_indicator_iff hC.measurableSet).2 (integrableOn_const hC.measure_lt_top.ne)`.
+-/
 theorem hasDerivAt_integral_cpt {𝕜 : Type} [RCLike 𝕜] [NormedSpace 𝕜 ℂ] [ProperSpace 𝕜] {H : Type} [TopologicalSpace H] [T2Space H]
     [MeasurableSpace H] [OpensMeasurableSpace H] (μ : Measure H) [IsFiniteMeasureOnCompacts μ] {Φ Φ' : 𝕜 → H → ℂ} {x₀ : 𝕜}
     {C : Set H} (hC : IsCompact C) (hc : ∀ t, Continuous (Φ t)) (hc' : Continuous fun p : 𝕜 × H => Φ' p.1 p.2)
@@ -56,13 +63,22 @@ variable {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Gro
 def IsWt (f : Matrix (Fin N) (Fin N) ℂ → ℝ) : Prop :=
   ContDiff ℝ ∞ f ∧ ∃ S, IsCompact S ∧ (∀ B ∈ S, B.det ≠ 0) ∧ ∀ y, f y ≠ 0 → y ∈ S
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.smooth, hf.supp⟩`.
+-/
 theorem isWt_of_isBump {f : Matrix (Fin N) (Fin N) ℂ → ℝ} (hf : IsBump f) : IsWt f := ⟨hf.smooth, hf.supp⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `hy (closure_minimal (fun z hz => hfS z hz) hS.isClosed (support_fderiv_subset ℝ (f := f) h))`.
+-/
 theorem fderiv_supp {f : Matrix (Fin N) (Fin N) ℂ → ℝ} {S : Set (Matrix (Fin N) (Fin N) ℂ)} (hS : IsCompact S)
     (hfS : ∀ y, f y ≠ 0 → y ∈ S) {y : Matrix (Fin N) (Fin N) ℂ} (hy : y ∉ S) : fderiv ℝ f y = 0 := by
   by_contra h
   exact hy (closure_minimal (fun z hz => hfS z hz) hS.isClosed (support_fderiv_subset ℝ (f := f) h))
 
+/- English proof (translation)
+Take `⟨h1, S, hS, hd, hfS⟩` from `hf`. Use `⟨(h1.fderiv_right (m := ∞) le_rfl).clm_apply (CompanionTheory.D.gk.admitted.Gard.contDiff_mul.comp (contDiff_id.prodMk contDiff_const)), S, hS, hd, fun y hy => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hy (by simp only [fderiv_supp hS hfS h, ContinuousLinearMap.zero_apply])`.
+-/
 theorem IsWt.der {f : Matrix (Fin N) (Fin N) ℂ → ℝ} (hf : IsWt f) (M : Matrix (Fin N) (Fin N) ℂ) :
     IsWt fun X => fderiv ℝ f X (X * M) := by
   obtain ⟨h1, S, hS, hd, hfS⟩ := hf
@@ -75,6 +91,11 @@ variable [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H]
   (hι : IsEmbedding ι) (h1 : ∀ y, ‖(ι y).det‖ = 1)
 include hι h1
 
+/- English proof (translation)
+Use `⟨_, isCompact_preimage hι h1 (CompanionTheory.D.gk.admitted.Gard.isCompact_mul_inv hT hS hd), fun g hg x hx hB => ?_⟩` and prove the remaining obligations. Use `hx ⟨(g, ι x⁻¹ * g), ⟨hg, hB⟩, ?_⟩` and prove the remaining obligations. Establish `e : g = ι x * (ι x⁻¹ * g)` using `by rw [← Matrix.mul_assoc, ← map_mul, mul_inv_cancel, map_one, Matrix.one_mul]`. Use `show g * (ι x⁻¹ * g)⁻¹ = ι x`. Use `nth_rewrite 1 [e]`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hd _ hB).isUnit, Matrix.mul_one]`.
+-/
 theorem exists_cpt {S T : Set (Matrix (Fin N) (Fin N) ℂ)} (hS : IsCompact S) (hd : ∀ B ∈ S, B.det ≠ 0)
     (hT : IsCompact T) : ∃ C : Set H, IsCompact C ∧ ∀ X ∈ T, ∀ y ∉ C, ι y⁻¹ * X ∉ S := by
   refine ⟨_, isCompact_preimage hι h1 (CompanionTheory.D.gk.admitted.Gard.isCompact_mul_inv hT hS hd), fun g hg x hx hB => ?_⟩
@@ -84,6 +105,9 @@ theorem exists_cpt {S T : Set (Matrix (Fin N) (Fin N) ℂ)} (hS : IsCompact S) (
   nth_rewrite 1 [e]
   rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hd _ hB).isUnit, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨hs, S, hS, hd, hfS⟩` from `hf`. Take `⟨C, hC, h⟩` from `exists_cpt hι h1 hS hd (isCompact_singleton (x := 1))`. Conclude with `⟨hs.continuous.comp ((hι.continuous.comp continuous_inv).mul continuous_const), C, hC, fun y hy => by_contra fun e => h 1 rfl y hy (hfS _ e)⟩`.
+-/
 theorem IsWt.cpt {f : Matrix (Fin N) (Fin N) ℂ → ℝ} (hf : IsWt f) :
     (Continuous fun y => f (ι y⁻¹ * 1)) ∧ ∃ C : Set H, IsCompact C ∧ ∀ y ∉ C, f (ι y⁻¹ * 1) = 0 := by
   obtain ⟨hs, S, hS, hd, hfS⟩ := hf
@@ -95,6 +119,11 @@ variable [T2Space H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Take `⟨hw, C, hC, h0⟩` from `hf.cpt hι h1`. Establish `hI : Integrable (fun y => ‖f (ι y⁻¹ * 1)‖) μ` using `(hw.integrable_of_hasCompactSupport (.intro hC h0)).norm`. Use `⟨C, ∫ y, ‖f (ι y⁻¹ * 1)‖ ∂μ, hC, integral_nonneg fun _ => norm_nonneg _, fun ψ g M hM => ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_mul_const]`. Use `integral_mono_of_nonneg (.of_forall fun _ => norm_nonneg _) (hI.mul_const M) (.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y ∈ C`. Simplify using `only [norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hM y hy) (norm_nonneg _)`. Simplify using `only [h0 y hy, zero_smul, norm_zero, zero_mul, le_rfl]`.
+-/
 theorem IsWt.bound {f : Matrix (Fin N) (Fin N) ℂ → ℝ} (hf : IsWt f) : ∃ (C : Set H) (I : ℝ), IsCompact C ∧ 0 ≤ I ∧
     ∀ (ψ : G → ℂ) (g : G) (M : ℝ), (∀ y ∈ C, ‖ψ (g * j y)‖ ≤ M) → ∫ y, ‖f (ι y⁻¹ * 1) • ψ (g * j y)‖ ∂μ ≤ I * M := by
   obtain ⟨hw, C, hC, h0⟩ := hf.cpt hι h1
@@ -106,6 +135,15 @@ theorem IsWt.bound {f : Matrix (Fin N) (Fin N) ℂ → ℝ} (hf : IsWt f) : ∃ 
   · simp only [norm_smul]; exact mul_le_mul_of_nonneg_left (hM y hy) (norm_nonneg _)
   · simp only [h0 y hy, zero_smul, norm_zero, zero_mul, le_rfl]
 
+/- English proof (translation)
+Take `⟨hs, S, hS, hd, hfS⟩` from `hf`. Take `⟨C, hC, h⟩` from `exists_cpt hι h1 hS hd ((isCompact_closedBall (0 : ℝ) 1).image hx.continuous)`. Establish `e : (fun t => avg j ι μ f ψ (g * j (x t))) = fun t => ∫ y, f (ι y⁻¹ * ι (x t)) • ψ (g * j y) ∂μ`. Use function extensionality and compare the values at `t`. Rewrite using `[← integral_mul_left_eq_self _ (x t)]`.
+
+Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[← map_mul, mul_assoc]`. Establish `hi : Continuous fun y : H => ι y⁻¹` using `hι.continuous.comp continuous_inv`. Establish `hψ' : Continuous fun y => ψ (g * j y)` using `by fun_prop`. Establish `hx' : Continuous (deriv fun t => ι (x t))` using `hx.continuous_deriv (by simp)`.
+
+Establish `key` using `hasDerivAt_integral_cpt μ (x₀ := (0 : ℝ)) (Φ := fun t y => f (ι y⁻¹ * ι (x t)) • ψ (g * j y)) (Φ' := fun t y => fderiv ℝ f (ι y⁻¹ * ι (x t)) (ι y⁻¹ * deriv (fun t => ι (x t)) t) • ψ (g * j y)) hC (fun t => (hs.continuous.comp (hi.mul continuous_const)).smul hψ') ((((hs.continuous …`. Establish `hn` using `h _ ⟨t, ht, rfl⟩ y hy`. Establish `h2 : f (ι y⁻¹ * ι (x t)) = 0` using `by_contra fun e => hn (hfS _ e)`. Simplify using `only [h2, fderiv_supp hS hfS hn, ContinuousLinearMap.zero_apply, zero_smul, and_self])`. Use the proof step `(fun t y => by`.
+
+Establish `d1` using `(LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ (ι y⁻¹))).hasFDerivAt.comp_hasDerivAt t (hx.differentiable (by simp) t).hasDerivAt`. Conclude with `((hs.differentiable (by simp) _).hasFDerivAt.comp_hasDerivAt t d1).smul_const _)`. Rewrite using `[e, key.deriv]`. Simplify using `only [avg, hx0, map_one, Matrix.mul_one]`.
+-/
 theorem deriv_avg (hj : Continuous j) {f : Matrix (Fin N) (Fin N) ℂ → ℝ} (hf : IsWt f) {ψ : G → ℂ} (hψ : Continuous ψ)
     {x : ℝ → H} (hx : ContDiff ℝ ∞ fun t => ι (x t)) (hx0 : x 0 = 1) (g : G) :
     deriv (fun t => avg j ι μ f ψ (g * j (x t))) 0 =
@@ -147,6 +185,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (hι : IsEmbedding ι) (h1 : ∀ y, ‖(ι y).det‖ = 1) {f : Matrix (Fin N) (Fin N) ℂ → ℝ}
 include hι h1
 
+/- English proof (translation)
+The claim follows from `| [], _ => ⟨f, hf, fun _ _ => rfl⟩ | γ :: l, hl => by obtain ⟨f', hf', e⟩ := foldr_avg hCM hx hf l fun δ hδ => hl δ (List.mem_cons_of_mem _ hδ) obtain ⟨x, ex, hxs⟩ := hx γ (hl γ List.mem_cons_self) have hx0 : x 0 = 1 := by simpa using (congrArg (projInf σ J) ((ex 0).symm.trans (l …`.
+-/
 theorem foldr_avg (hCM : IsCMExt F E σ)
     (hx : ∀ γ, IsRealLine σ J γ → ∃ x : ℝ → GInf σ J, (∀ t, γ t = ofInf σ J (x t)) ∧ ContDiff ℝ ∞ fun t => ι (x t))
     (hf : IsWt f) : ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → ∃ f', IsWt f' ∧ ∀ ψ, Continuous ψ →
@@ -161,6 +202,11 @@ theorem foldr_avg (hCM : IsCMExt F E σ)
     rw [List.foldr_cons, e ψ hψ, ← deriv_avg hι h1 Measure.haar (continuous_ofInf σ J) hf' hψ hxs hx0 g]
     simp only [lineDer, ex]
 
+/- English proof (translation)
+Take `⟨C, I, hC, hI, hb⟩` from `hf.bound (j := ofInf σ J) hι h1 Measure.haar`. Take `⟨c, hc⟩` from `height_bddAbove_of_isCompact σ J (hC.image (continuous_ofInf σ J))`. Use `⟨I * (c : ℝ) ^ m, by positivity, fun ψ A hA g => ?_⟩` and prove the remaining obligations. Establish `hA0 : 0 ≤ A` using `by simpa using (norm_nonneg _).trans (hA 1)`. Use `(norm_integral_le_integral_norm _).trans ((hb ψ g (A * ((height σ J g : ℝ) * c) ^ m) fun y hy => ?_).trans (le_of_eq (by ring)))` and prove the remaining obligations.
+
+Use `(hA _).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) ?_ m) hA0)` and prove the remaining obligations. Conclude with `(height_mul_le σ J g _).trans (mul_le_mul_right (hc _ ⟨y, hy, rfl⟩) _)` after adjusting the coercions.
+-/
 theorem avg_growth (hf : IsWt f) (m : ℕ) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (ψ : GAd σ J → ℂ) (A : ℝ),
     (∀ g, ‖ψ g‖ ≤ A * (height σ J g : ℝ) ^ m) →
       ∀ g, ‖avg (ofInf σ J) ι Measure.haar f ψ g‖ ≤ K * A * (height σ J g : ℝ) ^ m := by
@@ -173,6 +219,13 @@ theorem avg_growth (hf : IsWt f) (m : ℕ) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (ψ : 
   refine (hA _).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) ?_ m) hA0)
   exact_mod_cast (height_mul_le σ J g _).trans (mul_le_mul_right (hc _ ⟨y, hy, rfl⟩) _)
 
+/- English proof (translation)
+Set `W : Submodule ℂ (GAd σ J → ℂ)` to `{ carrier := {ψ | Continuous ψ} zero_mem' := continuous_zero add_mem' := fun h h' => h.add h' smul_mem' := fun a ψ h => h.const_smul a }`. Set `T : W →ₗ[ℂ] ℂ` to `{ toFun := fun ψ => avg (ofInf σ J) ι Measure.haar f ψ g map_add' := fun a b => by`. Simplify `integral_add (integrable_avg hι h1 Measure.haar (continuous_ofInf σ J) hf a.2 g) (integrable_avg hι h1 Measure.haar (continuous_ofInf σ J) hf b.2 g)` using `only [avg, Submodule.coe_add, Pi.add_apply, smul_add]`. Use the proof step `map_smul' := fun c a => by`. Simplify using `only [avg, Submodule.coe_smul, Pi.smul_apply, RingHom.id_apply, ← integral_smul, smul_comm c] }`.
+
+Take `⟨μ, hμ⟩` from `T.exists_extend`. Establish `e : ∀ ψ, Continuous ψ → μ ψ = avg (ofInf σ J) ι Measure.haar f ψ g` using `fun ψ hψ => LinearMap.congr_fun hμ ⟨ψ, hψ⟩`. Use `(hhol μ fun m => ?_).congr fun s hs => (e _ (hsm s hs).cont).symm` and prove the remaining obligations. Take `⟨K, -, hK⟩` from `avg_growth hι h1 (isWt_of_isBump hf) m`. Use `⟨[[]], K * 1 * (height σ J g : ℝ) ^ m, by simp, fun ψ hψ _ hb => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e ψ hψ.cont]`. Conclude with `hK ψ 1 (fun g => by simpa using hb [] (by simp) g) g`.
+-/
 theorem avg_holo (hf : IsBump f) {H₀ : ℂ → GAd σ J → ℂ} {U : Set ℂ} (hsm : ∀ s ∈ U, IsSmoothModerate σ J (H₀ s))
     (hhol : ∀ μ, GlobalTheory.EisLine.IsModerateForm σ J μ → DifferentiableOn ℂ (fun s => μ (H₀ s)) U) (g : GAd σ J) :
     DifferentiableOn ℂ (fun s => avg (ofInf σ J) ι Measure.haar f (H₀ s) g) U := by
@@ -201,6 +254,15 @@ theorem avg_holo (hf : IsBump f) {H₀ : ℂ → GAd σ J → ℂ} {U : Set ℂ}
 variable {x : Matrix (Fin n) (Fin 1) E} {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF F ⊗[F] E)}
   {h : GAd σ J → ℝ}
 
+/- English proof (translation)
+Take `⟨hw, C, hC, h0⟩` from `(isWt_of_isBump hf).cpt hι h1`. Establish `hj : Continuous fun y => h (1 * ofInf σ J y)` using `hc.comp (continuous_const.mul (continuous_ofInf σ J))`. Establish `hne : ∀ g, (h g : ℂ) ≠ 0` using `fun g => by exact_mod_cast (ht_pos hI g).ne'`. Establish `hsl : ∀ g, (h g : ℂ) ∈ Complex.slitPlane` using `fun g => Or.inl (by simpa using ht_pos hI g)`. Use `⟨fun t => avg (ofInf σ J) ι Measure.haar f (fun g => (h g : ℂ) ^ t) 1, fun t => ?_, fun t => ?_, fun t g => ?_⟩` and prove the remaining obligations.
+
+Establish `hj'` using `Complex.continuous_ofReal.comp hj`. Conclude with `(hasDerivAt_integral_cpt Measure.haar (x₀ := t) (Φ := fun t y => f (ι y⁻¹ * 1) • (h (1 * ofInf σ J y) : ℂ) ^ t) (Φ' := fun t y => f (ι y⁻¹ * 1) • ((h (1 * ofInf σ J y) : ℂ) ^ t * Complex.log (h (1 * ofInf σ J y)))) hC (fun t => hw.smul (hj'.cpow continuous_const fun y => hsl _)) …`. Establish `e : avg (ofInf σ J) ι Measure.haar f (fun g => (h g : ℂ) ^ (t : ℂ)) 1 = ((∫ y, f (ι y⁻¹ * 1) * h (1 * ofInf σ J y) ^ t ∂Measure.haar : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Complex.ofReal_mul, Complex.real_smul, Complex.ofReal_cpow (ht_pos hI _).le]`. Establish `hpos` using `(hw.mul (hj.rpow_const fun y => Or.inl (ht_pos hI _).ne')).integral_pos_of_hasCompactSupport_nonneg_nonzero (μ := Measure.haar) (x := 1) (HasCompactSupport.mul_right (.intro hC h0) (f' := fun y => h (1 * ofInf σ J y) ^ t)) (fun y => mul_nonneg (hf.nonneg _) (Real.rpow_pos_of_pos …`. Use `show avg (ofInf σ J) ι Measure.haar f (fun g => (h g : ℂ) ^ (t : ℂ)) 1 ≠ 0`. Rewrite using `[e]`. Conclude with `hpos.ne'` after adjusting the coercions.
+
+Take `⟨p, k, hk, rfl⟩` from `exists_iwa hI g`. Rewrite using `[avg_mul hι h1 Measure.haar hf (κ := projInf σ J k) (hu _ fun w => by simpa using (mem_levelAll.1 hk).2 w) (fun y => ext_inf_fin σ J (by simp) (by simp))]`. Simplify using `only [avg, ht_right hI _ hk, pow_left hI p.2, one_mul, ← integral_mul_const, smul_mul_assoc, mul_comm ((h p : ℂ) ^ t)]`.
+-/
 theorem avg_pow (hf : IsBump f)
     (hu : ∀ κ, (∀ w, projInfArch σ J w κ ∈ stabArch σ J w (Formalism.UG.bc (compInf F E w) a)) →
       ι κ ∈ Matrix.unitaryGroup (Fin N) ℂ)
@@ -241,6 +303,35 @@ end Unitary
 
 open GlobalTheory.EisRes.CentralEig in
 
+/- English proof (translation)
+Use `set ρ : ℂ := ((n : ℂ) - 1) / 2 with hρ`. Establish `hρre : ρ.re = ((n : ℝ) - 1) / 2` using `by simp [hρ]`. Establish `hc : Continuous h` using `HtCont.continuous_iwaHt F E σ n J r X Y L a h hS`. Establish `hcmp` using `iwaHt_mul_le_of_isCompact F E σ n J r X Y L a h hS`. Take `⟨hCM, -, hJ, hn, -, hA, hI⟩` from `hS`.
+
+Take `⟨N, ι, hι, h1, hu, hx⟩` from `exists_mat hCM hJ fun w => Formalism.UG.bc (compInf F E w) a`. Take `⟨f, hf, -, -⟩` from `exists_bump hι h1 Measure.haar (V := Set.univ) univ_mem`. Take `⟨b, hbd, hb0, hb⟩` from `avg_pow hι h1 hf hu hI hc`. Take `⟨T, hT⟩` from `exists_reps σ J (col0 X)`. Establish `heig : ∀ s : ℂ, ρ.re < s.re → ∀ g, avg (ofInf σ J) ι Measure.haar f (Eis s) g = b (s + ρ) * Eis s g`.
+
+Introduce `s hs g`. Establish `hn' : (4 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hre : 0 ≤ (s + ρ).re` using `by rw [Complex.add_re]; rw [hρre] at hs ⊢; linarith`. Rewrite `hs` using `[hρre]`. Establish `hsum` using `hP T hT s hs`.
+
+Use `haveI : Countable T := by`. Use `(hsum g).summable.countable_support` as an intermediate fact. Rewrite using `[Function.support_eq_univ fun t => by`. Simplify using `only [ne_eq, Complex.cpow_eq_zero_iff, Complex.ofReal_eq_zero, (ht_pos hI _).ne', false_and, not_false_eq_true]] at this`. Conclude with `Set.countable_univ_iff.1 this`.
+
+Take `⟨C, I, hC, hI0, hbd⟩` from `(isWt_of_isBump hf).bound (j := ofInf σ J) hι h1 Measure.haar`. Take `⟨K, hK0, hK⟩` from `hcmp _ (hC.image (continuous_ofInf σ J))`. Establish `hcp : Continuous fun g => (h g : ℂ) ^ (s + ρ)` using `(Complex.continuous_ofReal.comp hc).cpow continuous_const fun g => Or.inl (by simpa using ht_pos hI g)`. Establish `key` using `hasSum_integral_of_summable_integral_norm (μ := Measure.haar) (F := fun (t : T) y => f (ι y⁻¹ * 1) • (h (t.1.1 * g * ofInf σ J y) : ℂ) ^ (s + ρ)) (fun t => integrable_avg hι h1 Measure.haar (continuous_ofInf σ J) hf hcp _) (.of_nonneg_of_le (fun t => integral_nonneg fun _ => norm …`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos (ht_pos hI _), Complex.norm_cpow_eq_rpow_re_of_pos (ht_pos hI _), ← Real.mul_rpow hK0 (ht_pos hI _).le]`.
+
+Conclude with `Real.rpow_le_rpow (ht_pos hI _).le (hK _ _ ⟨y, hy, rfl⟩) hre)`. Use the proof step `(((summable_norm_iff.2 (hsum g).summable).mul_left _).mul_left _))`. Establish `e1 : (fun t : T => ∫ y, f (ι y⁻¹ * 1) • (h (t.1.1 * g * ofInf σ J y) : ℂ) ^ (s + ρ) ∂Measure.haar) = fun t : T => b (s + ρ) * (h (t.1.1 * g) : ℂ) ^ (s + ρ)` using `funext fun t => hb (s + ρ) (t.1.1 * g)`. Establish `e2 : (fun y => ∑' t : T, f (ι y⁻¹ * 1) • (h (t.1.1 * g * ofInf σ J y) : ℂ) ^ (s + ρ)) = fun y => f (ι y⁻¹ * 1) • Eis s (g * ofInf σ J y)` using `funext fun y => by`. Simplify `((hsum (g * ofInf σ J y)).const_smul (f (ι y⁻¹ * 1))).tsum_eq` using `only [mul_assoc]`.
+
+Rewrite `key` using `[e1, e2]`. Conclude with `key.unique ((hsum g).mul_left _)`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hU₀`. Establish `hbd' : Differentiable ℂ fun s => b (s + ρ)` using `hbd.comp (differentiable_id.add_const ρ)`. Establish `hall : ∀ g, ∀ s ∈ Metric.ball ρ ε, avg (ofInf σ J) ι Measure.haar f (H₀ s) g = b (s + ρ) * H₀ s g`.
+
+Introduce `g`. Establish `a1` using `((avg_holo hι h1 hf hsm hhol g).mono hball).analyticOnNhd Metric.isOpen_ball`. Establish `hd : DifferentiableOn ℂ (fun s => H₀ s g) (Metric.ball ρ ε)` using `(hhol _ (GlobalTheory.EisLine.isModerateForm_proj σ J g)).mono hball`. Establish `a2` using `(hbd'.differentiableOn.fun_mul hd).analyticOnNhd Metric.isOpen_ball`. Use `set z₀ : ℂ := ρ + ((ε / 2 : ℝ) : ℂ) with hz₀`.
+
+Establish `hz₀b : z₀ ∈ Metric.ball ρ ε`. Rewrite using `[Metric.mem_ball, hz₀, dist_eq_norm, add_sub_cancel_left, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (half_pos hε)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz₀re : ρ.re < z₀.re` using `by simp [hz₀, hε]`. Establish `hopen : IsOpen (Metric.ball ρ ε ∩ {s : ℂ | ρ.re < s.re})` using `Metric.isOpen_ball.inter (isOpen_lt continuous_const Complex.continuous_re)`.
+
+Use `a1.eqOn_of_preconnected_of_eventuallyEq a2 (convex_ball ρ ε).isPreconnected hz₀b ?_` and prove the remaining obligations. Use `filter_upwards [hopen.mem_nhds ⟨hz₀b, hz₀re⟩] with s hs'`. Establish `hne : s ≠ ρ` using `by rintro rfl; exact lt_irrefl ρ.re hs'.2`. Rewrite using `[hH s (hball hs'.1) hne, mul_left_comm, ← heig s hs'.2 g]`. Simplify using `only [avg, hH s (hball hs'.1) hne, ← integral_const_mul, mul_smul_comm]`.
+
+Establish `hρ0 : b (ρ + ρ) ≠ 0`. Establish `: ρ + ρ = (((n : ℝ) - 1 : ℝ) : ℂ)` using `by rw [hρ]; push_cast; ring`. Rewrite using `[this]`. Conclude with `hb0 _`. Establish `hV : ∀ᶠ s in 𝓝 ρ, b (s + ρ) ≠ 0 ∧ ‖(b (s + ρ))⁻¹‖ < ‖(b (ρ + ρ))⁻¹‖ + 1` using `(hbd'.continuous.continuousAt.eventually_ne hρ0).and ((hbd'.continuous.continuousAt.inv₀ hρ0).norm.eventually (gt_mem_nhds (lt_add_one _)))`.
+
+Take `⟨-, m, A, hmA⟩` from `GlobalTheory.WeakHolFamily.word_holomorphic_and_uniform F E σ n J H₀ (Metric.ball ρ ε) (Metric.closedBall ρ (ε / 2)) Metric.isOpen_ball (isCompact_closedBall _ _) (Metric.closedBall_subset_ball (half_lt_self hε)) (fun s hs => hsm s (hball hs)) (fun μ hμ => (hhol μ hμ).mono hball) …`. Use `⟨_, inter_mem hV (Metric.closedBall_mem_nhds ρ (half_pos hε)), m, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨f', hf', e⟩` from `foldr_avg hι h1 hCM hx (isWt_of_isBump hf) l hl`. Take `⟨K, hK0, hK⟩` from `avg_growth hι h1 hf' m`. Use `⟨(‖(b (ρ + ρ))⁻¹‖ + 1) * (K * A), fun s hs g => ?_⟩` and prove the remaining obligations.
+
+Establish `hsb : s ∈ Metric.ball ρ ε` using `Metric.closedBall_subset_ball (half_lt_self hε) hs.2`. Establish `e1 : avg (ofInf σ J) ι Measure.haar f (H₀ s) = b (s + ρ) • H₀ s` using `funext fun g => hall g s hsb`. Establish `e2 : l.foldr lineDer (b (s + ρ) • H₀ s) g = b (s + ρ) * l.foldr lineDer (H₀ s) g`. Use `congrFun (GlobalTheory.UAut.dop_smul (Finsupp.single l 1) (b (s + ρ)) (H₀ s)) g` as an intermediate fact. Simplify `this` using `[GlobalTheory.UAut.dop]`.
+
+Establish `e3 : l.foldr lineDer (H₀ s) g = (b (s + ρ))⁻¹ * avg (ofInf σ J) ι Measure.haar f' (H₀ s) g`. Rewrite using `[← e _ (hsm s (hball hsb)).cont, e1, e2, inv_mul_cancel_left₀ hs.1.1]`. Rewrite using `[e3, norm_mul, mul_assoc]`. Conclude with `mul_le_mul hs.1.2.le (hK _ A (hmA s hs.2) g) (norm_nonneg _) (by positivity)`.
+-/
 theorem uniform_growth_near_rho {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin (r + 1)) E}
     {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF F ⊗[F] E)} {h : GAd σ J → ℝ} {Eis : ℂ → GAd σ J → ℂ}
@@ -340,6 +431,37 @@ theorem uniform_growth_near_rho {F E : Type} [Field F] [NumberField F] [Field E]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y L a h Eis c hS hP k U H hU hHd hHe c₀`. Take `⟨k₀, U₀, H₀, hU₀, hH₀e, hH₀sm, hH₀hol⟩` from `hP.2.2.2.1 (((n : ℂ) - 1) / 2)`. Take `⟨V₁, hV₁, hE1⟩` from `GlobalTheory.T.eisenstein_residue_holomorphic_region F E σ n J r X Y L a h Eis c hS hP k₀ U₀ H₀ hU₀ hH₀e hH₀sm hH₀hol`. Take `⟨V₂, hV₂, hE2⟩` from `GlobalTheory.T.exists_nhds_dop_central_eq_holomorphic_smul F E σ n J r X Y L a h Eis c hS hP k₀ U₀ H₀ hU₀ hH₀e hH₀sm hH₀hol`. Take `⟨V₃, hV₃, m, hE3⟩` from `uniform_growth_near_rho hS hP.1 hU₀ hH₀e hH₀sm hH₀hol`.
+
+Take `⟨hCM, -, hJ, -, -, hA, -⟩` from `hS`. Use `haveI := hA.lat`. Use `set ρ : ℂ := ((n : ℂ) - 1) / 2 with hρ`. Use `set W : Set ℂ := interior (U ∩ U₀ ∩ (V₁ ∩ V₃) ∩ V₂) with hWdef`. Establish `hWo : IsOpen W` using `isOpen_interior`.
+
+Establish `hWn : W ∈ 𝓝 ρ` using `interior_mem_nhds.2 (Filter.inter_mem (Filter.inter_mem (Filter.inter_mem hU hU₀) (Filter.inter_mem hV₁ hV₃)) hV₂)`. Establish `hWU : W ⊆ U` using `fun x hx => (interior_subset hx).1.1.1`. Establish `hWU₀ : W ⊆ U₀` using `fun x hx => (interior_subset hx).1.1.2`. Establish `hWV₁ : W ⊆ V₁` using `fun x hx => (interior_subset hx).1.2.1`. Establish `hWV₃ : W ⊆ V₃` using `fun x hx => (interior_subset hx).1.2.2`.
+
+Establish `hWV₂ : W ⊆ interior V₂` using `interior_mono fun x hx => hx.2`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hWn`. Establish `hr : (0 : ℝ) < ε / 2` using `by linarith`. Establish `hcb : Metric.closedBall ρ (ε / 2) ⊆ W` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Establish `hsph : Metric.sphere ρ (ε / 2) ⊆ W` using `Metric.sphere_subset_closedBall.trans hcb`.
+
+Establish `hsmW : ∀ s ∈ W, IsSmoothModerate σ J (H₀ s)` using `fun s hs => hH₀sm s (hWU₀ hs)`. Establish `hholW : ∀ μ, GlobalTheory.EisLine.IsModerateForm σ J μ → DifferentiableOn ℂ (fun s => μ (H₀ s)) W` using `fun μ hμ => (hH₀hol μ hμ).mono hWU₀`. Establish `hH₀d : ∀ g, DifferentiableOn ℂ (H₀ · g) W` using `fun g => hholW _ (GlobalTheory.EisLine.isModerateForm_proj σ J g)`. Set `Rj : ℤ → GAd σ J → ℂ` to `fun j g => circleIntegral (fun z => (z - ρ) ^ j * H₀ z g) ρ (ε / 2)`. Establish `hHR : ∀ g, H ρ g = (2 * ↑Real.pi * Complex.I)⁻¹ * Rj ((k : ℤ) - k₀ - 1) g` using `GlobalTheory.eval_center_eq_circleIntegral_shifted_order ρ k k₀ (ε / 2) W Eis H H₀ hr hWo hcb (fun g => (hHd g).mono hWU) hH₀d (fun s hs hne g => hHe s (hWU hs) hne g) (fun s hs hne g => hH₀e s (hWU₀ hs) hne g)`.
+
+Establish `hinv : ∀ j g, ∀ k ∈ levelAll σ J L a, Rj j (g * k) = Rj j g` using `fun j g k hk => circleIntegral.integral_congr hr.le fun z hz => by`. Simplify using `only [hE1 z (hWV₁ (hsph hz)) k hk g]`. Establish `hzfin : ∀ j, FiniteDimensional ℂ (Submodule.span ℂ {f | ∃ z, GlobalTheory.UAut.IsCentral σ J z ∧ f = GlobalTheory.UAut.dop z (Rj j)})`. Introduce `j`. Use `haveI := FiniteDimensional.span_of_finite ℂ (Set.finite_range fun i : Fin (-j).toNat => Rj (j + i))`.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun i : Fin (-j).toNat => Rj (j + i))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨χ, hχ, hχe⟩` from `hE2 z hz`. Take `⟨cc, hcc⟩` from `GlobalTheory.circleIntegral_zpow_mul_holo_mul_eq_sum ρ (ε / 2) W χ H₀ hr hWo hcb (hχ.mono hWV₂) hH₀d j`. Establish `e : GlobalTheory.UAut.dop z (Rj j) = ∑ i : Fin (-j).toNat, cc i • Rj (j + i)`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[GlobalTheory.T.moderate_eisenstein_holomorphic_derivative F E σ hCM n J hJ H₀ ρ (ε / 2) W hWo hr hcb hsmW hholW j z hz.1 g]`. Rewrite using `[circleIntegral.integral_congr hr.le (g := fun w => (w - ρ) ^ j * (χ w * H₀ w g)) fun w hw => by`. Simplify using `only [hχe w (interior_subset (hWV₂ (hsph hw))), Pi.smul_apply, smul_eq_mul]]`. Rewrite using `[hcc g, Finset.sum_apply]`.
+
+Conclude with `(Fin.sum_univ_eq_sum_range (fun i => cc i * circleIntegral (fun w => (w - ρ) ^ (j + (i : ℤ)) * H₀ w g) ρ (ε / 2)) _).symm`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `haut : ∀ j, GlobalTheory.UAut.IsAut σ J (levelAll σ J L a ⊓ infPts σ J) (Rj j)`. Introduce `j`.
+
+Establish `hleft : ∀ γ ∈ ratPts σ J, ∀ g, Rj j (γ * g) = Rj j g` using `fun γ hγ g => circleIntegral.integral_congr hr.le fun z hz => by`. Simplify using `only [(hsmW z (hsph hz)).left γ hγ g]`. Establish `hlev : ∃ U : Subgroup (GAd σ J), IsOpen (U : Set (GAd σ J)) ∧ ∀ k ∈ U, k ∈ finPts σ J → ∀ g, Rj j (g * k) = Rj j g` using `⟨levelOpen σ J L, isOpen_levelOpen σ J L, fun k hk hkf g => hinv j g k (mem_levelAll.2 ⟨mem_levelOpen.1 hk, fun w => by rw [mem_finPts_iff_forall.1 hkf w]; exact one_mem _⟩)⟩`. Establish `hcont` using `GlobalTheory.CircleCont.continuous_circleIntegral_family F E σ hCM n J hJ H₀ ρ (ε / 2) W hWo hr hcb hsmW hholW j`. Establish `hsm` using `GlobalTheory.T.moderate_eisenstein_holomorphic_ball F E σ hCM n J hJ H₀ ρ (ε / 2) W hWo hr hcb hsmW hholW j`.
+
+Establish `hkf : GlobalTheory.Doubling.IsKFinite (levelAll σ J L a ⊓ infPts σ J) (Rj j)` using `GlobalTheory.Doubling.IsKFinite.of_invariant fun g k hk => hinv j g k (Subgroup.mem_inf.1 hk).1`. Establish `hgr : ∃ N : ℕ, ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → ∃ C : ℝ, ∀ g, ‖l.foldr lineDer (Rj j) g‖ ≤ C * (height σ J g : ℝ) ^ N`. Use `⟨m, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hE3 l hl`. Use `⟨2 * Real.pi * (ε / 2) * ((ε / 2) ^ j * C), fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `GlobalTheory.T.moderate_eisenstein_holomorphic_derivative F E σ hCM n J hJ H₀ ρ (ε / 2) W hWo hr hcb hsmW hholW j (Finsupp.single l 1) (fun l' hl' => by rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hl')]; exact hl) g`. Simplify using `only [GlobalTheory.UAut.dop, zero_mul, Finsupp.sum_single_index, one_mul] at e`. Establish `hb : ∀ z ∈ Metric.sphere ρ (ε / 2), ‖(z - ρ) ^ j * l.foldr lineDer (H₀ z) g‖ ≤ (ε / 2) ^ j * C * (height σ J g : ℝ) ^ m`. Introduce `z hz`. Establish `hz' : ‖z - ρ‖ = ε / 2` using `by simpa [dist_eq_norm] using hz`.
+
+Rewrite using `[norm_mul, norm_zpow, hz', mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC z (hWV₃ (hsph hz)) g) (zpow_nonneg hr.le j)`. Use `(congrArg norm e).le.trans ((circleIntegral.norm_integral_le_of_norm_le_const hr.le hb).trans (le_of_eq ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨⟨hleft, hlev, hcont, hsm, hgr⟩, GlobalTheory.UAut.kfin_iff.2 hkf, hzfin j⟩`.
+
+Establish `e : (fun g => H ρ g - c₀) = (fun _ => -c₀) + (2 * ↑Real.pi * Complex.I)⁻¹ • Rj ((k : ℤ) - k₀ - 1)`. Use function extensionality and compare the values at `g`. Simplify using `only [hHR, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Establish `h1` using `GlobalTheory.UAut.isAut_iff_isAutOn.1 (haut ((k : ℤ) - k₀ - 1))`. Establish `h2` using `(GlobalTheory.UAut.isAutOn_add_smul F E σ hCM n J hJ _ _ _ _ ((2 * ↑Real.pi * Complex.I)⁻¹) h1 h1).2`. Conclude with `GlobalTheory.UAut.isAut_iff_isAutOn.2 (GlobalTheory.UAut.isAutOn_add_smul F E σ hCM n J hJ _ _ _ _ 1 (GlobalTheory.UAut.isAutOn_const σ J _ _ (-c₀)) h2).1`.
+-/
 theorem isAut_laurentCoeff_sub_const : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
     (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ) (Eis : ℂ → GAd σ J → ℂ) (c : ℂ → ℂ),

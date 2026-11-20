@@ -9,6 +9,15 @@ namespace PositivityTheory.Rg.BcB.CV.Glob2Aux
 
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D4 PositivityTheory.Rg.BcB.CV
 
+/- English proof (translation)
+Substitute `hT` using the available equality. Establish `hinv : ∀ y : S.map e.toMonoidHom, e.symm y ∈ S`. Introduce `y`. Take `⟨x, hx, hxy⟩` from `Subgroup.mem_map.1 y.2`. Rewrite using `[← hxy]`.
+
+Express the relevant statement in the definitionally equal form `e.symm (e x) ∈ S`. Rewrite using `[e.symm_apply_apply]`. Conclude with `hx`. Set `ψ : S ≃ₜ* S.map e.toMonoidHom` to `{ toFun := fun x => ⟨e x, Subgroup.mem_map.2 ⟨x, x.2, rfl⟩⟩ invFun := fun y => ⟨e.symm y, hinv y⟩ left_inv := fun x => Subtype.ext (e.symm_apply_apply x) right_inv := fun y => Subtype.ext (e.apply_symm_apply y) map_mul' := fun x y => Subtype.ext (map_mul e (x : G) y) continuous_t …`. Use `⟨ν.map ψ, ContinuousMulEquiv.isHaarMeasure_map ν ψ, ⟨?_⟩⟩` and prove the remaining obligations.
+
+Establish `hψ : Measurable ψ` using `ψ.continuous.measurable`. Establish `hi : Measurable (Inv.inv : S → S)` using `continuous_inv.measurable`. Establish `hi' : Measurable (Inv.inv : S.map e.toMonoidHom → S.map e.toMonoidHom)` using `continuous_inv.measurable`. Use `show Measure.map Inv.inv (ν.map ψ) = ν.map ψ`. Rewrite using `[Measure.map_map hi' hψ]`.
+
+Establish `: (Inv.inv ∘ ψ) = ψ ∘ Inv.inv` using `funext fun x => (map_inv ψ x).symm`. Rewrite using `[this, ← Measure.map_map hψ hi, Measure.map_inv_eq_self]`.
+-/
 theorem exists_haar_map {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [MeasurableSpace H] [BorelSpace H]
     (e : G ≃ₜ* H) (S : Subgroup G) (ν : Measure S) [ν.IsHaarMeasure] [ν.IsInvInvariant] (T : Subgroup H)
@@ -38,6 +47,11 @@ theorem exists_haar_map {G H : Type} [Group G] [TopologicalSpace G] [IsTopologic
   have : (Inv.inv ∘ ψ) = ψ ∘ Inv.inv := funext fun x => (map_inv ψ x).symm
   rw [this, ← Measure.map_map hψ hi, Measure.map_inv_eq_self]
 
+/- English proof (translation)
+Use `⟨isEmbedding_prodMkLeft c, ?_⟩` and prove the remaining obligations. Establish `: Set.range (fun x : X => (x, c)) = Set.univ ×ˢ {c}`. Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
+
+Conclude with `⟨trivial, rfl⟩`. Introduce and unpack `⟨-, hp⟩`. Conclude with `⟨p.1, Prod.ext rfl (Set.mem_singleton_iff.1 hp).symm⟩`. Rewrite using `[this]`. Conclude with `isClosed_univ.prod isClosed_singleton`.
+-/
 theorem isClosedEmbedding_slice {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [T2Space Y] (c : Y) :
     Topology.IsClosedEmbedding (fun x : X => (x, c)) := by
   refine ⟨isEmbedding_prodMkLeft c, ?_⟩
@@ -53,6 +67,73 @@ namespace PositivityTheory.Rg.BcB.CV
 
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D4 Glob2Aux
 
+/- English proof (translation)
+Introduce `hS hLT hQM hQP hTV hPl hFA hAT`. Introduce `E _ _ _ _ n m _ _ μ _ d ν _ _ Wof a V τ φ hm hP hV hVa hφ hVC`. Take `⟨v₁, v₂, hv⟩` from `exists_pair_ne (InfinitePlace E)`. Take `⟨G', iG, iT, iTG, iLC, iSC, iM, iB, iMGL, iBGL, e, μ₁, μ₂, θ', hμ₁, hμ₂, -, he1, hev1, hev2, heθ, hcent⟩` from `hS E n v₁ v₂ hv μ`. Use `hμ₁` as an intermediate fact.
+
+Use `hμ₂` as an intermediate fact. Take `⟨hLCA, hT2A, hSCA, hθc, hdegm, -⟩` from `hAT E n`. Use `hLCA` as an intermediate fact. Use `hT2A` as an intermediate fact. Use `hSCA` as an intermediate fact.
+
+Establish `hmem : ∀ g, g ∈ adCent d ↔ e g ∈ ((twCent (thC n) (locGL v₁ d)).prod (twCent (thC n) (locGL v₂ d))).prod (twCent θ' (e (ratGL E n d)).2)`. Introduce `g`. Rewrite using `[← hcent d, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨g, h, rfl⟩`. Introduce and unpack `⟨x, hx, hxg⟩`. Express the relevant statement in the definitionally equal form `e x = e g at hxg`. Establish `: x = g` using `by rw [← e.symm_apply_apply x, hxg, e.symm_apply_apply]`. Rewrite using `[← this]` and apply the resulting hypothesis.
+
+Establish `hE1 : ∀ t ∈ twCent (thC n) (locGL v₁ d), embInf n v₁ t ∈ adCent d` using `fun t ht => (hmem _).2 (by rw [hev1]; exact Subgroup.mem_prod.2 ⟨Subgroup.mem_prod.2 ⟨ht, one_mem _⟩, one_mem _⟩)`. Establish `hE2 : ∀ t ∈ twCent (thC n) (locGL v₂ d), embInf n v₂ t ∈ adCent d` using `fun t ht => (hmem _).2 (by rw [hev2]; exact Subgroup.mem_prod.2 ⟨Subgroup.mem_prod.2 ⟨one_mem _, ht⟩, one_mem _⟩)`. Take `⟨hsep₁, hL₁⟩` from `hFA E n m d Wof a V v₁ hP hVa hE1`. Take `⟨hsep₂, hL₂⟩` from `hFA E n m d Wof a V v₂ hP hVa hE2`. Take `⟨hcl₁, hcomm₁, -, hLC, hSC⟩` from `hLT n _ hsep₁`.
+
+Take `⟨hcl₂, hcomm₂, -, -, -⟩` from `hLT n _ hsep₂`. Use `hLC` as an intermediate fact. Use `hSC` as an intermediate fact. Establish `: T2Space ((GL (Fin n) ℂ × GL (Fin n) ℂ) × G')` using `e.symm.toHomeomorph.isEmbedding.t2Space`. Establish `: T2Space G'` using `(isEmbedding_prodMkRight ((1 : GL (Fin n) ℂ × GL (Fin n) ℂ))).t2Space`.
+
+Establish `hclP : IsClosed (((twCent (thC n) (locGL v₁ d)).prod (twCent (thC n) (locGL v₂ d)) : Subgroup _) : Set (GL (Fin n) ℂ × GL (Fin n) ℂ))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hcl₁.prod hcl₂`. Establish `hcommP : ∀ s ∈ (twCent (thC n) (locGL v₁ d)).prod (twCent (thC n) (locGL v₂ d)), ∀ t ∈ (twCent (thC n) (locGL v₁ d)).prod (twCent (thC n) (locGL v₂ d)), s * t = t * s`. Introduce `s hs t ht`.
+
+Rewrite `hs`, `ht` using `[Subgroup.mem_prod]`. Conclude with `Prod.ext (hcomm₁ _ hs.1 _ ht.1) (hcomm₂ _ hs.2 _ ht.2)`. Establish `hcl3 : IsClosed (twCent θ' (e (ratGL E n d)).2 : Set G')`. Establish `hA : IsClosed ((((twCent (thC n) (locGL v₁ d)).prod (twCent (thC n) (locGL v₂ d))).prod (twCent θ' (e (ratGL E n d)).2) : Subgroup _) : Set ((GL (Fin n) ℂ × GL (Fin n) ℂ) × G'))`. Rewrite using `[← hcent d, Subgroup.coe_map]`.
+
+Conclude with `e.toHomeomorph.isClosedMap _ hP.closed`. Establish `h2` using `hA.preimage (f := fun g : G' => ((1 : GL (Fin n) ℂ × GL (Fin n) ℂ), g)) (continuous_const.prodMk continuous_id)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_prod, one_mem, and_self, true_and]`.
+
+Establish `hcomm3 : ∀ s ∈ twCent θ' (e (ratGL E n d)).2, ∀ t ∈ twCent θ' (e (ratGL E n d)).2, s * t = t * s`. Introduce `s hs t ht`. Establish `hs' : e.symm ((1, 1), s) ∈ adCent d` using `(hmem _).2 (by`. Rewrite using `[e.apply_symm_apply]`. Conclude with `Subgroup.mem_prod.2 ⟨Subgroup.mem_prod.2 ⟨one_mem _, one_mem _⟩, hs⟩)`.
+
+Establish `ht' : e.symm ((1, 1), t) ∈ adCent d` using `(hmem _).2 (by`. Rewrite using `[e.apply_symm_apply]`. Conclude with `Subgroup.mem_prod.2 ⟨Subgroup.mem_prod.2 ⟨one_mem _, one_mem _⟩, ht⟩)`. Establish `h` using `congrArg e (hP.comm _ hs' _ ht')`. Rewrite `h` using `[map_mul, map_mul, e.apply_symm_apply, e.apply_symm_apply]`.
+
+Conclude with `congrArg Prod.snd h`. Establish `: SigmaFinite μ₁` using `inferInstance`. Establish `: SigmaFinite μ₂` using `inferInstance`. Establish `: (μ₁.prod μ₁).IsHaarMeasure` using `inferInstance`. Establish `: ((μ₁.prod μ₁).prod μ₂).IsHaarMeasure` using `inferInstance`.
+
+Take `⟨ν', hν'1, hν'2⟩` from `exists_haar_map e (adCent d) ν _ (hcent d)`. Use `hν'1` as an intermediate fact. Use `hν'2` as an intermediate fact. Establish `hFm : Measurable fun x => φ (twConj (thetaA E n) x (ratGL E n d)) * V (yOf τ Wof x)`. Establish `h1 : Continuous fun x : GA E n => twConj (thetaA E n) x (ratGL E n d)` using `(continuous_inv.mul continuous_const).mul hθc`.
+
+Use `(hφ.cont.comp h1).measurable.mul (hV.meas.comp (measurable_pi_lambda _ fun e' => ?_))` and prove the remaining obligations. Use `hdegm (Wof e')` as an intermediate fact. Rewrite `this` using `[← BorelSpace.measurable_eq]`. Conclude with `measurable_const.sub this`. Establish `hFi : ∀ t ∈ adCent d, ∀ x, φ (twConj (thetaA E n) (t * x) (ratGL E n d)) * V (yOf τ Wof (t * x)) = φ (twConj (thetaA E n) x (ratGL E n d)) * V (yOf τ Wof x)`.
+
+Introduce `t ht x`. Establish `ht' : t⁻¹ * ratGL E n d * thetaA E n t = ratGL E n d` using `ht`. Establish `h1 : twConj (thetaA E n) (t * x) (ratGL E n d) = twConj (thetaA E n) x (ratGL E n d)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : yOf τ Wof (t * x) = fun e' => yOf τ Wof x e' - sdot e' (a t)`.
+
+Use function extensionality and compare the values at `e'`. Simplify using `only [yOf, hP.degT t ht x e']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, hVa t ht]`. Use `hQM (GA E n) ((GL (Fin n) ℂ × GL (Fin n) ℂ) × G') e μ ((μ₁.prod μ₁).prod μ₂) (adCent d) _ ν ν' (fun x => φ (twConj (thetaA E n) x (ratGL E n d)) * V (yOf τ Wof x)) hP.closed (hcent d) hFm hFi ?_` and prove the remaining obligations.
+
+Use `hQP (GL (Fin n) ℂ × GL (Fin n) ℂ) G' (μ₁.prod μ₁) μ₂ _ _ ν' _ hclP hcl3 hcommP hcomm3 (hFm.comp e.symm.continuous.measurable) ?_ (Or.inl ?_)` and prove the remaining obligations. Introduce `t ht x show _ * _ = _ * _`. Rewrite using `[map_mul]`. Conclude with `hFi _ ((hmem _).2 (by rw [e.apply_symm_apply]; exact ht)) _`. Introduce `ν₁ _ _ x'`.
+
+Establish `hPl7 : ∀ v, GeneralLinearGroup.map (cV v) (ratGL E n d) = locGL v d` using `fun v => (hPl E n v ⊥).2.2.2.2.2.2.1 d`. Establish `hδ : e (ratGL E n d) = ((locGL v₁ d, locGL v₂ d), (e (ratGL E n d)).2)`. Establish `h` using `he1 (ratGL E n d)`. Rewrite `h` using `[hPl7 v₁, hPl7 v₂]`. Conclude with `Prod.ext h rfl`.
+
+Establish `hproj : ∀ y : (GL (Fin n) ℂ × GL (Fin n) ℂ) × G', GeneralLinearGroup.map (cV v₁) (e.symm y) = y.1.1 ∧ GeneralLinearGroup.map (cV v₂) (e.symm y) = y.1.2`. Introduce `y`. Establish `h` using `he1 (e.symm y)`. Rewrite `h` using `[e.apply_symm_apply]`. Conclude with `⟨(congrArg Prod.fst h).symm, (congrArg Prod.snd h).symm⟩`.
+
+Use `set g' := twConj θ' x' (e (ratGL E n d)).2 with hg'`. Use `set g0 := e.symm (((1 : GL (Fin n) ℂ), (1 : GL (Fin n) ℂ)), x') with hg0`. Use `set f : GL (Fin n) ℂ × GL (Fin n) ℂ → ℂ := fun g => φ (e.symm (g, g')) with hf`. Use `set z : (Fin m → SignType) → ℝ := fun e' => yOf τ Wof g0 e' - pAt Wof v₁ 1 e' - pAt Wof v₂ 1 e' with hz`. Establish `hsplit : ∀ x₁ x₂ : GL (Fin n) ℂ, e.symm ((x₁, x₂), x') = embInf n v₁ x₁ * (embInf n v₂ x₂ * g0)`.
+
+Introduce `x₁ x₂`. Rewrite using `[← e.symm_apply_apply (embInf n v₁ x₁ * (embInf n v₂ x₂ * g0))]`. Use `congr 1`. Rewrite using `[map_mul, map_mul, hev1, hev2, hg0, e.apply_symm_apply]`. Simplify using the standard rewrite rules.
+
+Establish `hφpart : ∀ x₁ x₂ : GL (Fin n) ℂ, twConj (thetaA E n) (e.symm ((x₁, x₂), x')) (ratGL E n d) = e.symm ((twConj (thC n) x₁ (locGL v₁ d), twConj (thC n) x₂ (locGL v₂ d)), g')`. Introduce `x₁ x₂`. Rewrite using `[← e.symm_apply_apply (twConj (thetaA E n) (e.symm ((x₁, x₂), x')) (ratGL E n d))]`. Use `congr 1`. Simplify using `only [twConj, map_mul, map_inv, heθ, e.apply_symm_apply]`.
+
+Rewrite using `[hδ, hg']`. Both sides reduce to the same expression. Establish `hVpart : ∀ x₁ x₂ : GL (Fin n) ℂ, yOf τ Wof (e.symm ((x₁, x₂), x')) = pAt Wof v₁ x₁ + pAt Wof v₂ x₂ + z`. Introduce `x₁ x₂`. Use function extensionality and compare the values at `e'`.
+
+Establish `hh : e (embInf n v₂ x₂ * g0) = ((1, x₂), x')`. Rewrite using `[map_mul, hev2, hg0, e.apply_symm_apply]`. Simplify using the standard rewrite rules. Establish `hc1 : GeneralLinearGroup.map (cV v₁) (embInf n v₂ x₂ * g0) = 1`. Establish `h` using `(hproj (e (embInf n v₂ x₂ * g0))).1`.
+
+Rewrite `h` using `[e.symm_apply_apply, hh]`. Conclude with `h`. Establish `hc0 : GeneralLinearGroup.map (cV v₂) g0 = 1` using `(hproj _).2`. Establish `h8a` using `(hPl E n v₁ (Wof e')).2.2.2.2.2.2.2 x₁ (embInf n v₂ x₂ * g0)`. Establish `h8b` using `(hPl E n v₂ (Wof e')).2.2.2.2.2.2.2 x₂ g0`.
+
+Rewrite `h8a` using `[hc1, mul_one]`. Rewrite `h8b` using `[hc0, mul_one]`. Rewrite using `[hsplit]`. Simplify using `only [yOf, pAt, Pi.add_apply, hz]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hkey : (fun x₁ : GL (Fin n) ℂ × GL (Fin n) ℂ => φ (twConj (thetaA E n) (e.symm (x₁, x')) (ratGL E n d)) * V (yOf τ Wof (e.symm (x₁, x')))) = fun x => f (twConj (thC n) x.1 (locGL v₁ d), twConj (thC n) x.2 (locGL v₂ d)) * V (pAt Wof v₁ x.1 + pAt Wof v₂ x.2 + z)`. Use function extensionality and compare the values at `x`. Take `⟨x₁, x₂⟩` from `x`. Rewrite using `[hφpart, hVpart]`. Establish `hz0 : z 0 = 0`.
+
+Establish `hr : Module.finrank E (Wof 0) = 0` using `by rw [hP.zero]; exact finrank_bot E _`. Establish `h1` using `(hPl E n v₁ (Wof 0)).2.2.2.1 hP.zero`. Establish `h2` using `(hPl E n v₂ (Wof 0)).2.2.2.1 hP.zero`. Simplify using `only [hz, yOf, pAt, prof, hr, h1.1, h2.1, h1.2 g0]`. Simplify using the standard rewrite rules.
+
+Establish `hfc : Continuous f` using `hφ.cont.comp (e.symm.continuous.comp (continuous_id.prodMk continuous_const))`. Establish `hfs : HasCompactSupport f` using `hφ.supp.comp_isClosedEmbedding (e.symm.toHomeomorph.isClosedEmbedding.comp (isClosedEmbedding_slice g'))`. Establish `hvc1 : ∀ g, VeryCusp fun x => f (x, g)`. Introduce `g`. Establish `h` using `hVC v₁ (e.symm ((1, g), g')) (hproj _).1`.
+
+Establish `heq : (fun x => f (x, g)) = fun x => φ (embInf n v₁ x * e.symm ((1, g), g'))`. Use function extensionality and compare the values at `x`. Simplify using `only [hf]`. Use `congr 1`. Rewrite using `[← e.symm_apply_apply (embInf n v₁ x * e.symm ((1, g), g')), map_mul, hev1, e.apply_symm_apply]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[heq]`. Conclude with `h`. Establish `hvc2 : ∀ g, VeryCusp fun x => f (g, x)`. Introduce `g`.
+
+Establish `h` using `hVC v₂ (e.symm ((g, 1), g')) (hproj _).2`. Establish `heq : (fun x => f (g, x)) = fun x => φ (embInf n v₂ x * e.symm ((g, 1), g'))`. Use function extensionality and compare the values at `x`. Simplify using `only [hf]`. Use `congr 1`.
+
+Rewrite using `[← e.symm_apply_apply (embInf n v₂ x * e.symm ((g, 1), g')), map_mul, hev2, e.apply_symm_apply]`. Simplify using the standard rewrite rules. Rewrite using `[heq]`. Conclude with `h`. Conclude with `(congrArg (quotIntegral (μ₁.prod μ₁) _ ν₁) hkey).trans (hTV n m μ₁ (locGL v₁ d) (locGL v₂ d) ν₁ f V (pAt Wof v₁) (pAt Wof v₂) z hm hsep₁ hsep₂ hfc hfs hvc1 hvc2 hV hL₁ hL₂ hz0)`.
+-/
 theorem pf_Glob2 : PositivityTheory.Rg.BcB.D4.SplitAt2 → PositivityTheory.Rg.BcB.CV.LocTor → PositivityTheory.Rg.BcB.CV.QMap → PositivityTheory.Rg.BcB.CV.QProd → PositivityTheory.Rg.BcB.CV.TwoVanish → PositivityTheory.Rg.BcB.CV.Ploc → PositivityTheory.Rg.BcB.CV.FamAt → PositivityTheory.Rg.BcB.CV.AdTop → PositivityTheory.Rg.BcB.CV.Glob2 := by
   intro hS hLT hQM hQP hTV hPl hFA hAT
   intro E _ _ _ _ n m _ _ μ _ d ν _ _ Wof a V τ φ hm hP hV hVa hφ hVC

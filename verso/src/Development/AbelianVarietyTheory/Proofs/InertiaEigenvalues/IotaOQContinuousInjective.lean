@@ -8,6 +8,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 open Polynomial NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Use `⟨_root_.GlobalTheory.CoeffEmbedding.continuous_iotaOQ _ _ _ D.nd D.naut i, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.MainNotions.N.iotaOQ`. Conclude with `(D.naut.iotaQ i).injective.comp (IsFractionRing.injective _ _)`.
+-/
 theorem _root_.GlobalTheory.TypeLeaf.iotaOQ_continuous_injective (D : _root_.Formalism.BasicNotions.D7) (i : D.nd.Loc) :
     Continuous (_root_.Formalism.MainNotions.N.iotaOQ D.nd D.naut i) ∧ Function.Injective (_root_.Formalism.MainNotions.N.iotaOQ D.nd D.naut i) := by
   refine ⟨_root_.GlobalTheory.CoeffEmbedding.continuous_iotaOQ _ _ _ D.nd D.naut i, ?_⟩

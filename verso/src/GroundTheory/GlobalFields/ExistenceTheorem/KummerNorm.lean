@@ -14,6 +14,11 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Rewrite `h` using `[ord_eq_zero_iff]`. Use `(Submonoid.mem_units_iff _ _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_finiteProj]`. Conclude with `h.1`. Rewrite using `[← map_inv, coe_finiteProj]`.
+
+Conclude with `h.2`.
+-/
 theorem IdeleGroup.finiteProj_mem_units_of_ord_eq_zero {K : Type*} [Field K] [NumberField K]
     {v : HeightOneSpectrum (𝓞 K)} {x : IdeleGroup K} (h : ord v x = 0) :
     finiteProj v x ∈ (Submonoid.ofClass (v.adicCompletionIntegers K)).units := by
@@ -30,6 +35,13 @@ variable {K : Type u} [Field K] [NumberField K] (n : ℕ) [NeZero n] [HasEnoughR
 
 omit [HasEnoughRootsOfUnity K n] in
 
+/- English proof (translation)
+Use extensionality with `e`. Rewrite using `[Subgroup.mem_subgroupOf, mem_unitsPow, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Establish `hzu : z ∈ S.unit K`.
+
+Introduce `v hv`. Establish `he : v.valuationOfNeZero (e : Kˣ) = 1`. Establish `h` using `e.2 v hv`. Rewrite `h` using `[← valuationOfNeZero_eq]`. Conclude with `h` after adjusting the coercions.
+
+Establish `h1 : v.valuationOfNeZero z ^ n = 1` using `by rw [← map_pow, hz, he]`. Rewrite using `[← valuationOfNeZero_eq, (pow_eq_one_iff.1 h1).resolve_right (NeZero.ne n), WithZero.coe_one]`. Conclude with `⟨⟨z, hzu⟩, Subtype.ext hz⟩`. Introduce and unpack `⟨f, rfl⟩`. Conclude with `⟨f, rfl⟩`.
+-/
 theorem unitsPow_subgroupOf_sUnit (S : Set (HeightOneSpectrum (𝓞 K))) :
     (unitsPow K n).subgroupOf (S.unit K) = (powMonoidHom n : S.unit K →* S.unit K).range := by
   ext e
@@ -49,6 +61,9 @@ theorem unitsPow_subgroupOf_sUnit (S : Set (HeightOneSpectrum (𝓞 K))) :
   · rintro ⟨f, rfl⟩
     exact ⟨f, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[unitsPow_subgroupOf_sUnit, SUnit.index_range_powMonoidHom]`.
+-/
 theorem index_unitsPow_subgroupOf_sUnit (S : Set (HeightOneSpectrum (𝓞 K))) [Finite S] :
     ((unitsPow K n).subgroupOf (S.unit K)).index =
       n ^ (Fintype.card (InfinitePlace K) + Nat.card S) := by
@@ -72,6 +87,9 @@ instance sUnitKummerField.numberField : NumberField (sUnitKummerField K n S) :=
 instance sUnitKummerField.isAbelianGalois : IsAbelianGalois K (sUnitKummerField K n S) :=
   { toIsGalois := inferInstance, toIsMulCommutative := inferInstance }
 
+/- English proof (translation)
+Rewrite using `[finrank_kummerExtension, ← Subgroup.index, index_unitsPow_subgroupOf_sUnit]`.
+-/
 theorem finrank_sUnitKummerField :
     Module.finrank K (sUnitKummerField K n S) =
       n ^ (Fintype.card (InfinitePlace K) + Nat.card S) := by
@@ -86,6 +104,19 @@ attribute [local instance] galCommGroup
 variable {K : Type u} [Field K] [NumberField K] {n : ℕ} [NeZero n] [HasEnoughRootsOfUnity K n]
   {S : Set (HeightOneSpectrum (𝓞 K))} [Finite S]
 
+/- English proof (translation)
+Establish `hexpM : ∀ τ : Gal(sUnitKummerField K n S/K), τ ^ n = 1` using `Monoid.exponent_dvd_iff_forall_pow_eq_one.1 (kummerExtension_exponent_dvd K n _ _)`. Establish `hexp : ∀ τ : Gal(K⟮β⟯/K), τ ^ n = 1`. Introduce `τ`. Take `⟨τ', rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := K⟮β⟯) (E := sUnitKummerField K n S) τ`. Rewrite using `[← map_pow, hexpM, map_one]`.
+
+Establish `hβ' : (⟨β, mem_adjoin_simple_self K β⟩ : K⟮β⟯) ^ n = algebraMap K K⟮β⟯ (a : K)` using `Subtype.ext (by exact hβ)`. Establish `hgen : adjoin K {(⟨β, mem_adjoin_simple_self K β⟩ : K⟮β⟯)} = ⊤` using `lift_injective _ (by rw [lift_adjoin_simple, lift_top])`. Establish `hinf : ∀ w, infiniteLocalSymbol K⟮β⟯ w (infiniteProj w x) = 1`. Introduce `w`. Take `⟨t, ht⟩` from `hx.2.1 w`.
+
+Rewrite using `[← ht, powMonoidHom_apply, map_pow, hexp]`. Establish `hfin : ∀ v, localSymbol K⟮β⟯ v (finiteProj v x) = 1`. Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Take `⟨t, ht⟩` from `hx.1 v hv`.
+
+Rewrite using `[← ht, powMonoidHom_apply, map_pow, hexp]`. Establish `hord : ord v x = 0` using `hx.2.2 v (by simpa using hv)`. Take `⟨w⟩` from `nonempty_placesOver K⟮β⟯ v`. Establish `hnv : (n : 𝓞 K) ∉ v.asIdeal` using `fun h ↦ hv (hS v h)`. Establish `hav : (n : ℤ) ∣ WithZero.log (v.valuation K (a : K))`.
+
+Establish `h` using `ha v hv`. Rewrite `h` using `[← valuationOfNeZero_eq]`. Rewrite using `[← valuationOfNeZero_eq, show v.valuationOfNeZero a = 1 by exact_mod_cast h]`. Simplify using the standard rewrite rules. Establish `he` using `Kummer.ramificationIdx_eq_one_of_pow_eq (M := K⟮β⟯) a hβ' hgen v hnv hav w.1.asIdeal`.
+
+Conclude with `units_le_ker_localSymbol K⟮β⟯ v w he (finiteProj_mem_units_of_ord_eq_zero hord)`. Rewrite using `[ideleSymbol_apply, finprod_eq_one_of_forall_eq_one hfin, Finset.prod_eq_one fun w _ ↦ hinf w, mul_one]`.
+-/
 theorem ideleSymbol_adjoin_eq_one
     (hS : ∀ v : HeightOneSpectrum (𝓞 K), (n : 𝓞 K) ∈ v.asIdeal → v ∈ S)
     {a : Kˣ} (ha : a ∈ S.unit K) (β : sUnitKummerField K n S)
@@ -125,6 +156,13 @@ theorem ideleSymbol_adjoin_eq_one
   rw [ideleSymbol_apply, finprod_eq_one_of_forall_eq_one hfin,
     Finset.prod_eq_one fun w _ ↦ hinf w, mul_one]
 
+/- English proof (translation)
+Use `set M := sUnitKummerField K n S`. Establish `hfix : ∀ (β : M) (a : Kˣ), a ∈ S.unit K → (β : AlgebraicClosure K) ^ n = algebraMap K _ (a : K) → ideleSymbol K M x β = β`. Introduce `β a ha hβ`. Establish `hβ' : β ^ n = algebraMap K M (a : K)` using `Subtype.ext hβ`. Establish `h1` using `restrictNormal_ideleSymbol (K⟮β⟯ : IntermediateField K M) M x`.
+
+Rewrite `h1` using `[ideleSymbol_adjoin_eq_one hS ha β hβ' hx, AlgEquiv.restrictNormal_eq_one_iff]`. Conclude with `h1 β (mem_adjoin_simple_self K β)`. Apply `AlgEquiv.coe_toAlgHom_injective` to reduce the goal to its premises. Use `IntermediateField.algHom_ext_of_eq_adjoin K (S := M) (s := {α : AlgebraicClosure K | ∃ a ∈ S.unit K, α ^ n = algebraMap K _ (a : K)}) rfl ?_` and prove the remaining obligations. Introduce and unpack `y ⟨a, ha, hy⟩`.
+
+Conclude with `hfix _ a ha hy`.
+-/
 theorem ideleSymbol_sUnitKummerField_eq_one
     (hS : ∀ v : HeightOneSpectrum (𝓞 K), (n : 𝓞 K) ∈ v.asIdeal → v ∈ S)
     {x : IdeleGroup K} (hx : x ∈ powerSubgroup n S ∅) :
@@ -143,6 +181,9 @@ theorem ideleSymbol_sUnitKummerField_eq_one
   rintro y ⟨a, ha, hy⟩
   exact hfix _ a ha hy
 
+/- English proof (translation)
+Rewrite using `[← ker_reciprocityMap, Subgroup.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Subgroup.mem_comap, MonoidHom.mem_ker, reciprocityMap_mk]`. Conclude with `ideleSymbol_sUnitKummerField_eq_one hS hx`.
+-/
 theorem map_powerSubgroup_le_range_ideleClassNorm
     (hS : ∀ v : HeightOneSpectrum (𝓞 K), (n : 𝓞 K) ∈ v.asIdeal → v ∈ S) :
     (powerSubgroup n S ∅).map (IdeleClassGroup.mk K) ≤
@@ -152,6 +193,11 @@ theorem map_powerSubgroup_le_range_ideleClassNorm
   rw [Subgroup.mem_comap, MonoidHom.mem_ker, reciprocityMap_mk]
   exact ideleSymbol_sUnitKummerField_eq_one hS hx
 
+/- English proof (translation)
+Establish `hle` using `map_powerSubgroup_le_range_ideleClassNorm (n := n) (S := (S : Set (HeightOneSpectrum (𝓞 K)))) fun v hv ↦ Finset.mem_coe.2 (hS v hv)`. Establish `h1 : (ideleClassNorm K (sUnitKummerField K n (S : Set (HeightOneSpectrum (𝓞 K))))).range.index = n ^ (S.card + Fintype.card (InfinitePlace K))`. Rewrite using `[index_range_ideleClassNorm_eq_finrank_of_isMulCommutative, finrank_sUnitKummerField, Nat.card_coe_set_eq, Set.ncard_coe_finset, add_comm]`. Establish `h2` using `index_map_powerSubgroup (n := n) S hS hJ`. Establish `hrel` using `Subgroup.relIndex_mul_index hle`.
+
+Rewrite `hrel` using `[h1, h2]`. Establish `hone : ((powerSubgroup n (S : Set (HeightOneSpectrum (𝓞 K))) ∅).map (IdeleClassGroup.mk K)).relIndex (ideleClassNorm K (sUnitKummerField K n (S : Set (HeightOneSpectrum (𝓞 K))))).range = 1` using `Nat.eq_of_mul_eq_mul_right (pow_pos (NeZero.pos n) _) (by rw [hrel, one_mul])`. Conclude with `le_antisymm (Subgroup.relIndex_eq_one.1 hone) hle`.
+-/
 theorem range_ideleClassNorm_sUnitKummerField (S : Finset (HeightOneSpectrum (𝓞 K)))
     (hS : ∀ v : HeightOneSpectrum (𝓞 K), (n : 𝓞 K) ∈ v.asIdeal → v ∈ S)
     (hJ : (diagonal K).range ⊔ sIdeles (S : Set (HeightOneSpectrum (𝓞 K))) = ⊤) :

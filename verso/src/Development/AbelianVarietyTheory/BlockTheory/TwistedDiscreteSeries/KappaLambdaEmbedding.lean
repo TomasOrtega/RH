@@ -122,6 +122,9 @@ def KappaIdentity : Prop :=
     (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat D A Ks) (F : Face D A), KappaIdentityAt R F
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (t : T) : datXP R t R.triv = R.datXt t := rfl
 
 end GlobalTheory.IndefiniteRowSideFullHecke.KappaLambdaEmbedding

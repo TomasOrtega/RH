@@ -1,6 +1,49 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
 open IsLocalRing UpperTheory.V.Alg
 
+/- English proof (translation)
+Introduce `O E _ _ _ _ _ R _ _ _ I x hI`. Use `set p : Ideal R := RingHom.ker x with hp`. Establish `hmem : ∀ a, a ∈ p ↔ x a = 0` using `fun a => RingHom.mem_ker`. Set `J : Ideal R` to `p ^ 2 ⊔ I`. Establish `hJp : J ≤ p` using `sup_le (Ideal.pow_le_self two_ne_zero) hI`.
+
+Set `N : Submodule O R` to `Submodule.span O {(1 : R)} ⊔ J.restrictScalars O`. Set `f : (R ⧸ N) →ₗ[O] TensorProduct O E (R ⧸ N)` to `TensorProduct.mk O E (R ⧸ N) 1`. Set `π : R →ₗ[O] TensorProduct O E (R ⧸ N)` to `f ∘ₗ N.mkQ`. Establish `hπN : ∀ a ∈ N, π a = 0`. Introduce `a ha`.
+
+Establish `: N.mkQ a = 0` using `(Submodule.Quotient.mk_eq_zero N).2 ha`. Simplify using `only [π, LinearMap.comp_apply, this, map_zero]`. Establish `hJN : ∀ a ∈ J, a ∈ N` using `fun a ha => Submodule.mem_sup_right (by simpa using ha)`. Establish `h1N : (1 : R) ∈ N` using `Submodule.mem_sup_left (Submodule.subset_span rfl)`. Establish `hsub : ∀ a : R, a - x a • (1 : R) ∈ p`.
+
+Introduce `a`. Rewrite using `[hmem]`. Simplify using the standard rewrite rules. Establish `hder : ∀ a b, π (a * b) = x a • π b + x b • π a`. Introduce `a b`.
+
+Establish `h1 : (a - x a • (1 : R)) * (b - x b • (1 : R)) ∈ N`. Apply `hJN` to reduce the goal to its premises. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul (hsub a) (hsub b)`.
+
+Establish `h2 : a * b = (a - x a • (1 : R)) * (b - x b • (1 : R)) - (x a * x b) • (1 : R) + (x a • b + x b • a)`. Simplify using `only [Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, map_add, hπN _ (N.sub_mem h1 (N.smul_mem _ h1N))]`. Simplify using the standard rewrite rules.
+
+Establish `hker : ∀ a, x a = 0 → π a = 0 → ∃ e : O, e ≠ 0 ∧ e • a ∈ J`. Introduce `a ha h`. Establish `h' : f (N.mkQ a) = 0` using `h`. Take `⟨s, hs⟩` from `(IsLocalizedModule.eq_zero_iff (nonZeroDivisors O) f).1 h'`. Use `⟨s, nonZeroDivisors.coe_ne_zero s, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : (s : O) • a ∈ N`. Rewrite using `[← Submodule.Quotient.mk_eq_zero N]`. Simplify `hs` using `[Submonoid.smul_def]`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 h3`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hu`.
+
+Establish `hv' : v ∈ J` using `by simpa using hv`. Establish `hxv : x v = 0` using `(hmem v).1 (hJp hv')`. Use `congrArg x huv` as an intermediate fact. Simplify using `[hxv, ha] at this`. Rewrite using `[← huv, this]`.
+
+Simplify using `using hv'`. Take `⟨m, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian p)`. Establish `hgp : ∀ i, x (g i) = 0` using `fun i => (hmem _).1 (hg ▸ Submodule.subset_span ⟨i, rfl⟩)`. Establish `hspan : Submodule.span E (Set.range (π ∘ g)) = ⊤`. Establish `key : ∀ a ∈ p, π a ∈ Submodule.span E (Set.range (π ∘ g))`.
+
+Introduce `a ha`. Rewrite `ha` using `[← hg]`. Take `⟨r, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 ha`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_mul, hder, hgp, zero_smul, add_zero, ← IsScalarTower.algebraMap_smul E]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `key2 : ∀ a, π a ∈ Submodule.span E (Set.range (π ∘ g))`. Introduce `a`. Use `key _ (hsub a)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, hπN _ (N.smul_mem _ h1N), sub_zero]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Proceed by induction on `v with`. Consider the case `zero => exact Submodule.zero_mem _`.
+
+Consider the case `add u v hu hv => exact Submodule.add_mem _ hu hv`. Consider the case `tmul e q`. Take `⟨a, rfl⟩` from `N.mkQ_surjective q`. Establish `: e ⊗ₜ[O] N.mkQ a = e • π a`. Simplify using `[π, f, TensorProduct.smul_tmul']`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (key2 a)`. Take `⟨κ, a, hainj, hsp, hli⟩` from `exists_linearIndependent' E (π ∘ g)`. Use `haveI : Finite κ := Finite.of_injective a hainj`. Take `⟨n, ⟨ε⟩⟩` from `Finite.exists_equiv_fin κ`.
+
+Set `b0 : Module.Basis κ E (TensorProduct O E (R ⧸ N))` to `Module.Basis.mk hli (by rw [hsp, hspan])`. Set `b` to `b0.reindex ε`. Set `t : Fin n → R` to `fun i => g (a (ε.symm i))`. Establish `hbt : ∀ i, π (t i) = b i`. Introduce `i`.
+
+Simplify using `[b, b0, t]`. Use `⟨n, fun i => ((b.coord i).restrictScalars O) ∘ₗ π, t, 1, one_ne_zero, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i u v`. Rewrite using `[LinearMap.comp_apply, hder, map_add, map_smul, map_smul, Algebra.smul_def, Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Introduce `i u hu`. Simplify using `[hπN u (hJN u (Submodule.mem_sup_right hu))]`. Introduce `i`. Conclude with `hgp _`. Introduce `i j`.
+
+Simplify using `[hbt, Finsupp.single_apply, eq_comm]`. Introduce `u hu`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) (fun i => b.repr (π u) i)`. Use `choose o ho using hd`. Establish `h0 : π ((d : O) • u - ∑ i, o i • t i) = 0`.
+
+Rewrite using `[map_sub, map_smul, map_sum, sub_eq_zero]`. Use `conv_lhs => rw [← b.sum_repr (π u), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hbt, ← IsScalarTower.algebraMap_smul E (o i), ho, smul_assoc]`. Take `⟨e, he, hJ⟩` from `hker _ (by simp [hu, t, hgp]) h0`.
+
+Use `⟨e * d, fun i => e * o i, mul_ne_zero he (nonZeroDivisors.coe_ne_zero d), ?_⟩` and prove the remaining obligations. Simplify `hJ` using `[smul_sub, Finset.smul_sum, mul_smul]`.
+-/
 theorem UpperTheory.exists_derivations_dual_to_cotangent_parameters :
     ∀ (O E : Type) [CommRing O] [IsDomain O] [Field E] [Algebra O E] [IsFractionRing O E] (R : Type) [CommRing R] [Algebra O R] [IsNoetherianRing R] (I : Ideal R) (x : R →ₐ[O] O), I ≤ RingHom.ker x → ∃ (n : ℕ) (D : Fin n → (R →ₗ[O] E)) (t : Fin n → R) (c : O), c ≠ 0 ∧ (∀ i a b, D i (a * b) = algebraMap O E (x a) * D i b + algebraMap O E (x b) * D i a) ∧ (∀ i, ∀ a ∈ I, D i a = 0) ∧ (∀ i, x (t i) = 0) ∧ (∀ i j, D j (t i) = if j = i then algebraMap O E c else 0) ∧ ∀ a, x a = 0 → ∃ (e : O) (o : Fin n → O), e ≠ 0 ∧ e • a - ∑ i, o i • t i ∈ RingHom.ker x ^ 2 ⊔ I := by
   intro O E _ _ _ _ _ R _ _ _ I x hI

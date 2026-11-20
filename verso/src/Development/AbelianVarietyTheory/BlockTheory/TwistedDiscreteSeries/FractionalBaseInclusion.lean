@@ -12,6 +12,9 @@ variable {D : D7}
 def fracBase (D : D7) (i : D.ntw.Tw) : FractionRing (D.ntw.O0 i) →+* FractionRing (D.ntw.O i) :=
   IsFractionRing.map (j := algebraMap (D.ntw.O0 i) (D.ntw.O i)) (D.ntw.O_inj i)
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_eq (D.ntw.O (c.twI w)) (D.ntw.Ok (c.twI w) (c.k' w)) (c.Oe w), RingHom.coe_comp]`. Conclude with `(c.Oe_inj w).comp (D.ntw.Ok_inj _ _)`.
+-/
 theorem algebraMap_ext_injective (c : NChoice D) (w : D.what₂.places.Pl) :
     Function.Injective (algebraMap (D.ntw.O (c.twI w)) (c.Oe w)) := by
   rw [IsScalarTower.algebraMap_eq (D.ntw.O (c.twI w)) (D.ntw.Ok (c.twI w) (c.k' w)) (c.Oe w), RingHom.coe_comp]
@@ -40,8 +43,14 @@ def EmbCompat : Prop :=
       ∀ (w : D.what₂.places.Pl) (ιK : K →+* FractionRing (D.ntw.O (c.twI w))), ιK = smallEmb c w κ →
         CompatAt c w K ιK
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 example (D : D7) : IsInclusion D D.LL0 (RingHom.id _) := fun _ => rfl
 
+/- English proof (translation)
+Simplify using `[fracExt, fracBase, IsFractionRing.map]`.
+-/
 example (c : NChoice D) (w : D.what₂.places.Pl) (y : D.ntw.O0 (c.twI w)) :
     fracExt c w (fracBase D (c.twI w) (algebraMap _ (FractionRing (D.ntw.O0 (c.twI w))) y)) =
       algebraMap (c.Oe w) (FractionRing (c.Oe w))

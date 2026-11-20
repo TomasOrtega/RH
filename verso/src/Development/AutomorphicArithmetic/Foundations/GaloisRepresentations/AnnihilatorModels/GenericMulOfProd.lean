@@ -43,6 +43,9 @@ variable {R S B I : Type} [CommRing R] [CommRing S] [CommRing B] [Algebra R S] [
 def splitMap (z : I → (S →ₐ[R] B)) : B ⊗[R] S →ₐ[B] (I → B) :=
   Algebra.TensorProduct.lift (Algebra.ofId B (I → B)) (Pi.algHom R (fun _ => B) z) fun _ _ => Commute.all _ _
 
+/- English proof (translation)
+Simplify using `[splitMap, Algebra.ofId_apply]`.
+-/
 theorem splitMap_tmul (z : I → (S →ₐ[R] B)) (b : B) (s : S) (i : I) : splitMap z (b ⊗ₜ s) i = b * z i s := by
   simp [splitMap, Algebra.ofId_apply]
 

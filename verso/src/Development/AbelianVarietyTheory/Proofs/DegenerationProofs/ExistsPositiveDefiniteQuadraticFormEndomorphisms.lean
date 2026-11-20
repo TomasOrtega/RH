@@ -14,13 +14,28 @@ open GlobalTheory.SS
 noncomputable section
 namespace GlobalTheory.SS.HtForm
 
+/- English proof (translation)
+The claim follows from `Units.ext (GlobalTheory.AbLaw.rs_rs h₁ h₂ _)`.
+-/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (u : Γ(X, U)ˣ) :
     res h₂ (res h₁ u) = res (h₂.trans h₁) u :=
   Units.ext (GlobalTheory.AbLaw.rs_rs h₁ h₂ _)
 
+/- English proof (translation)
+The claim follows from `Units.ext (GlobalTheory.AbLaw.rs_self h _)`.
+-/
 theorem res_self {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (u : Γ(X, U)ˣ) : res h u = u :=
   Units.ext (GlobalTheory.AbLaw.rs_self h _)
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `h`. Establish `hle : ∀ j : J → L.ι, LB.wchart L (fun i => φ (e i)) j ≤ LB.wchart L φ (fun i => j (e.symm i))` using `fun j y hy => Set.mem_iInter.2 fun i => by`. Use `Set.mem_iInter.1 hy (e.symm i)` as an intermediate fact. Simplify using `using this`. Use `⟨⟨fun j => res (hle j) (t.s _)⟩, fun j j' => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (res (inf_le_inf (hle j) (hle j'))) (ht (fun i => j (e.symm i)) (fun i => j' (e.symm i)))`. Use `((res_res _ _ _).trans (res_res _ _ _).symm).trans (h1.trans ((map_mul _ _ _).trans ?_))` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ((res_res _ _ _).trans (res_res _ _ _).symm)` and prove the remaining obligations. Use `(map_prod (res (inf_le_inf (hle j) (hle j'))) _ _).trans ?_` and prove the remaining obligations. Simplify using `only [LB.LinComb, map_zpow, res_res]`.
+
+Use `Fintype.prod_equiv e.symm _ _ fun i => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `e.surjective i`. Establish `key : ∀ (i' : J) (hi : i' = i) (a : LB.wchart L (fun i => φ (e i)) j ⊓ LB.wchart L (fun i => φ (e i)) j' ≤ φ (e i) ⁻¹ᵁ (L.U (j i') ⊓ L.U (j' i'))) (b : LB.wchart L (fun i => φ (e i)) j ⊓ LB.wchart L (fun i => φ (e i)) j' ≤ φ (e i') ⁻¹ᵁ (L.U (j i') ⊓ L.U (j' i'))), res a (pullU (φ …`. Introduce and unpack `_ rfl _ _`. Both sides reduce to the same expression.
+
+Conclude with `(congrArg (· ^ ε (e i)) (res_res _ _ _)).trans (key _ (e.symm_apply_apply i) _ _)`.
+-/
 theorem gen_reindex {X Y : Scheme.{0}} (L : LB X) {I J : Type} [Fintype I] [Fintype J] (e : J ≃ I)
     (φ : I → (Y ⟶ X)) (ε : I → ℤ) (h : ∃ t : LB.Gen (LB.LinComb L φ ε), t.IsGen) :
     ∃ t : LB.Gen (LB.LinComb L (fun i => φ (e i)) (fun i => ε (e i))), t.IsGen := by
@@ -44,6 +59,13 @@ theorem gen_reindex {X Y : Scheme.{0}} (L : LB X) {I J : Type} [Fintype I] [Fint
     rfl
   exact (congrArg (· ^ ε (e i)) (res_res _ _ _)).trans (key _ (e.symm_apply_apply i) _ _)
 
+/- English proof (translation)
+Establish `hm : (IsLocalRing.closedPoint k : Sp k) ∈ (⨆ i, M.U i)`. Rewrite using `[hM.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i₀, hi₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hm`. Establish `htop : M.U i₀ = ⊤` using `(IsLocalRing.closedPoint_mem_iff _).1 hi₀`.
+
+Establish `hle : ∀ i, M.U i ≤ M.U i ⊓ M.U i₀` using `fun i => le_inf le_rfl (htop ▸ le_top)`. Use `⟨⟨fun i => res (hle i) (M.g i i₀)⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `h3 : M.U i ⊓ M.U j ≤ M.U i ⊓ M.U j ⊓ M.U i₀` using `le_inf le_rfl (htop ▸ le_top)`. Establish `hc` using `congrArg (res h3) (hM.cocycle i j i₀)`. Rewrite `hc` using `[map_mul, res_res, res_res, res_res, res_self]`.
+
+Rewrite using `[res_res, res_res]`. Conclude with `hc.symm`.
+-/
 theorem gen_field {k : Type} [Field k] (M : LB (Sp k)) (hM : M.IsLB) : ∃ e : M.Gen, e.IsGen := by
   have hm : (IsLocalRing.closedPoint k : Sp k) ∈ (⨆ i, M.U i) := by
     rw [hM.cover]; trivial
@@ -57,6 +79,11 @@ theorem gen_field {k : Type} [Field k] (M : LB (Sp k)) (hM : M.IsLB) : ∃ e : M
   rw [res_res, res_res]
   exact hc.symm
 
+/- English proof (translation)
+Simplify using `only [psum]`. Proceed by induction on `(List.finRange n).filter (· ∈ I) with`. Consider the case `nil => exact MonObj.comp_one h`. Consider the case `cons k l ih`. Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons] at ih ⊢`.
+
+Rewrite using `[← ih]`. Conclude with `MonObj.comp_mul h _ _`.
+-/
 theorem comp_psum {S : Scheme.{0}} (A : Over S) [GrpObj A] {T T' : Over S} {n : ℕ} (h : T' ⟶ T) (x : Fin n → (T ⟶ A))
     (I : Finset (Fin n)) : h ≫ psum A x I =
       (((List.finRange n).filter (· ∈ I)).map fun k => h ≫ x k).prod := by
@@ -68,6 +95,11 @@ theorem comp_psum {S : Scheme.{0}} (A : Over S) [GrpObj A] {T T' : Over S} {n : 
     rw [← ih]
     exact MonObj.comp_mul h _ _
 
+/- English proof (translation)
+Use `(Equiv.ulift.sum_comp F).trans ?_` and prove the remaining obligations. Establish `: (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}}`. Evaluate the decidable proposition. Rewrite using `[this]`. Repeat the step `rw [Finset.sum_insert (by decide)]` while it applies.
+
+Rewrite using `[Finset.sum_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_subsets_fin_three_expand (F : Finset (Fin 3) → ℤ) : ∑ I : ULift.{0} (Finset (Fin 3)), F I.down =
     F ∅ + F {0} + F {1} + F {2} + F {0, 1} + F {0, 2} + F {1, 2} + F {0, 1, 2} := by
   refine (Equiv.ulift.sum_comp F).trans ?_
@@ -78,6 +110,21 @@ theorem sum_subsets_fin_three_expand (F : Finset (Fin 3) → ℤ) : ∑ I : ULif
   rw [Finset.sum_singleton]
   ring
 
+/- English proof (translation)
+Set `ψ : Γ(B.left, D) ⟶ CommRingCat.of K` to `Spec.preimage (IsOpenImmersion.lift hD.fromSpec x.left (by rw [hD.range_fromSpec]; exact hx))`. Establish `hψ : Spec.map ψ ≫ hD.fromSpec = x.left`. Simplify using `only [ψ, Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`. Establish `hmem : ∀ a, ψ.hom a ∈ Set.range (algebraMap k K)` using `fun a => hO _ fun i => by`.
+
+Take `⟨b, hb1, hb2⟩` from `hb i`. Set `χ : Γ(B.left, D) ⟶ CommRingCat.of (O i)` to `Spec.preimage (IsOpenImmersion.lift hD.fromSpec b (by rw [hD.range_fromSpec]; exact hb2))`. Establish `hχ : Spec.map χ ≫ hD.fromSpec = b`. Simplify using `only [χ, Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `: ψ = χ ≫ CommRingCat.ofHom (O i).subtype`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono hD.fromSpec, hψ, Spec.map_comp, Category.assoc, hχ, hb1]`. Rewrite using `[this]`. Conclude with `(χ.hom a).2`.
+
+Set `e : k ≃+* (algebraMap k K).range` to `RingEquiv.ofBijective (algebraMap k K).rangeRestrict ⟨fun a b h => (algebraMap k K).injective (congrArg Subtype.val h), (algebraMap k K).rangeRestrict_surjective⟩`. Set `ρ : Γ(B.left, D) →+* k` to `e.symm.toRingHom.comp (ψ.hom.codRestrict (algebraMap k K).range hmem)`. Establish `hρ : ψ = CommRingCat.ofHom ρ ≫ CommRingCat.ofHom (algebraMap k K)`. Use extensionality with `a`. Conclude with `(congrArg Subtype.val (e.apply_symm_apply (ψ.hom.codRestrict (algebraMap k K).range hmem a))).symm`.
+
+Establish `h1 : spMap (algebraMap k K) ≫ Spec.map (CommRingCat.ofHom ρ) ≫ hD.fromSpec = x.left`. Rewrite using `[← hψ, hρ, Spec.map_comp, Category.assoc]`. Establish `h2 : (Spec.map (CommRingCat.ofHom ρ) ≫ hD.fromSpec) ≫ B.hom = 𝟙 _`. Establish `: IsDominant (spMap (algebraMap k K))`. Rewrite using `[isDominant_iff]`.
+
+Use `show DenseRange (PrimeSpectrum.comap (algebraMap k K))`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 (algebraMap k K).injective]`. Conclude with `bot_le`. Use `ext_of_isDominant (spMap (algebraMap k K)) ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, h1, Category.comp_id]`.
+
+Conclude with `Over.w x`. Use `⟨Over.homMk (Spec.map (CommRingCat.ofHom ρ) ≫ hD.fromSpec) h2, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`. Both sides reduce to the same expression.
+-/
 theorem factor_of_const {k K : Type} [Field k] [Field K] [Algebra k K] (B : Over (Sp k))
     (x : Over.mk (spMap (algebraMap k K)) ⟶ B) {D : B.left.Opens} (hD : IsAffineOpen D)
     {I : Type} (O : I → ValuationSubring K) (hO : ∀ a : K, (∀ i, a ∈ O i) → a ∈ Set.range (algebraMap k K))
@@ -123,6 +170,19 @@ theorem factor_of_const {k K : Type} [Field k] [Field K] [Algebra k K] (B : Over
   rw [← h1]
   rfl
 
+/- English proof (translation)
+Take `⟨x⟩ : Nonempty B.left` from `inferInstance`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `B.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Establish `: Nonempty U` using `⟨⟨x, hxU⟩⟩`. Set `A : Type` to `Γ(B.left, U)`.
+
+Use `letI : Algebra k A := (cstK B U).toAlgebra`. Establish `hft : Algebra.FiniteType k A` using `(B.hom.finiteType_appLE (isAffineOpen_top _) hU le_top).comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of k)).inv).2)`. Set `K` to `FractionRing A`. Establish `h1 : Algebra.EssFiniteType A K` using `Algebra.EssFiniteType.of_isLocalization K (nonZeroDivisors A)`. Establish `h2 : Algebra.EssFiniteType k K` using `Algebra.EssFiniteType.comp k A K`.
+
+Use `⟨K, inferInstance, inferInstance, IntermediateField.fg_top_iff.2 h2, Over.homMk (spMap (algebraMap A K) ≫ hU.fromSpec) ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec B.hom (isAffineOpen_top _) hU le_top`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Use `show (spMap (algebraMap A K) ≫ hU.fromSpec) ≫ B.hom = spMap (algebraMap k K)`. Rewrite using `[Category.assoc, ← h, IsScalarTower.algebraMap_eq k A K, ← Spec.map_comp, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Establish `: IsDominant (spMap (algebraMap A K))`. Rewrite using `[isDominant_iff]`. Use `show DenseRange (PrimeSpectrum.comap (algebraMap A K))`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective A K)]`.
+
+Conclude with `bot_le`. Establish `: IsDominant hU.fromSpec`. Rewrite using `[isDominant_iff, DenseRange, hU.range_fromSpec]`. Conclude with `U.isOpen.dense ⟨x, hxU⟩`. Use `show IsDominant (spMap (algebraMap A K) ≫ hU.fromSpec)`.
+
+Use `infer_instance`.
+-/
 theorem exists_generic {k : Type} [Field k] (B : Over (Sp k)) [IsIntegral B.left] [LocallyOfFiniteType B.hom] :
     ∃ (K : Type) (_ : Field K) (_ : Algebra k K), (⊤ : IntermediateField k K).FG ∧
       ∃ P : Over.mk (spMap (algebraMap k K)) ⟶ B, IsDominant P.left := by
@@ -162,6 +222,41 @@ end GlobalTheory.SS.HtForm
 namespace GlobalTheory.SS
 open HtForm
 
+/- English proof (translation)
+Introduce `k _ _ B _ hB L ⟨hL, hΘ, hsym, N, hN, hamp⟩`. Use `hB.comm` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Establish `hpr` using `hB.proper`. Use `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ B.hom hB.smooth hB.geomConnected` as an intermediate fact.
+
+Establish `: IsIntegral B.left` using `GeometricallyIntegral.isIntegral_of_subsingleton B.hom`. Take `⟨K, _, _, hK, P, hP⟩` from `exists_generic B`. Take `⟨Pl, hPl⟩` from `GlobalTheory.T.exists_productFormula_places_of_fg_field k K hK`. Take `⟨h, hrel, hpos⟩` from `GlobalTheory.T.exists_lineBundle_height_properScheme k K Pl B hpr L hL`. Establish `hrel' : ∀ (Z : Over (Sp k)), IsProper Z.hom → ∀ (I : Type) [Fintype I] (φ : I → (Z ⟶ B)) (ε : I → ℤ), (∃ t : LB.Gen (LB.LinComb L (fun i => (φ i).left) ε), t.IsGen) → ∀ z : Over.mk (spMap (algebraMap k K)) ⟶ Z, ∑ i, ε i * h (z ≫ φ i) = 0`.
+
+Introduce `Z hZ I _ φ ε ht z`. Use `hrel Z hZ _ (fun i => φ ((Fintype.equivFin I).symm i)) (fun i => ε ((Fintype.equivFin I).symm i)) (gen_reindex L (Fintype.equivFin I).symm (fun i => (φ i).left) ε ht) z` as an intermediate fact. Rewrite `this` using `[(Fintype.equivFin I).symm.sum_comp fun i => ε i * h (z ≫ φ i)]`. Then use the resulting hypothesis. Establish `h1 : h 1 = 0`. Use `hrel (𝟙_ _) (by show IsProper (𝟙 _); infer_instance) 1 (fun _ => η[B]) (fun _ => 1) (gen_field (k := k) _ (LB.isLB_linComb hL _ _)) (toUnit _)` as an intermediate fact.
+
+Rewrite `this` using `[Fin.sum_univ_one, _root_.one_mul]`. Conclude with `this`. Establish `hpull : ∀ (F : B ⟶ B) (q : ℤ), PullPow F.left L q → ∀ x, h (x ≫ F) = q * h x`. Introduce `F q hF x`. Establish `e : (fun i => ((![F, 𝟙 B] : Fin 2 → (B ⟶ B)) i).left) = ![F.left, 𝟙 B.left]`.
+
+Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Use `hrel B hpr 2 ![F, 𝟙 B] ![1, -q] (by rw [e]; exact hF) x` as an intermediate fact. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv : ∀ x, h x⁻¹ = h x` using `fun x => by`.
+
+Use `hpull ι[B] 1 hsym x` as an intermediate fact. Rewrite `this` using `[_root_.one_mul]`. Conclude with `this`. Establish `hpar : ∀ x y, h (x * y) + h (x * y⁻¹) = 2 * h x + 2 * h y`. Introduce `x y`.
+
+Establish `hp3 : IsProper (G3 B).hom`. Establish `: IsProper (B ⊗ B).hom` using `by show IsProper (pullback.fst _ _ ≫ B.hom); infer_instance`. Use `show IsProper (pullback.fst _ _ ≫ B.hom)`. Use `infer_instance`. Use `hrel' (G3 B) hp3 (ULift.{0} (Finset (Fin 3))) (fun I => psum B (x3 B) I.down) (fun I => (-1) ^ (3 - I.down.card)) hΘ (lift x (lift y y⁻¹))` as an intermediate fact.
+
+Rewrite `this` using `[sum_subsets_fin_three_expand fun I => (-1) ^ (3 - I.card) * h (lift x (lift y y⁻¹) ≫ psum B (x3 B) I)]`. Establish `e0 : lift x (lift y y⁻¹) ≫ x3 B 0 = x` using `by simp [x3]`. Establish `e1 : lift x (lift y y⁻¹) ≫ x3 B 1 = y` using `by simp [x3]`. Establish `e2 : lift x (lift y y⁻¹) ≫ x3 B 2 = y⁻¹` using `by simp [x3]`. Establish `l0 : (List.finRange 3).filter (· ∈ (∅ : Finset (Fin 3))) = []` using `by decide`.
+
+Establish `l1 : (List.finRange 3).filter (· ∈ ({0} : Finset (Fin 3))) = [0]` using `by decide`. Establish `l2 : (List.finRange 3).filter (· ∈ ({1} : Finset (Fin 3))) = [1]` using `by decide`. Establish `l3 : (List.finRange 3).filter (· ∈ ({2} : Finset (Fin 3))) = [2]` using `by decide`. Establish `l4 : (List.finRange 3).filter (· ∈ ({0, 1} : Finset (Fin 3))) = [0, 1]` using `by decide`. Establish `l5 : (List.finRange 3).filter (· ∈ ({0, 2} : Finset (Fin 3))) = [0, 2]` using `by decide`.
+
+Establish `l6 : (List.finRange 3).filter (· ∈ ({1, 2} : Finset (Fin 3))) = [1, 2]` using `by decide`. Establish `l7 : (List.finRange 3).filter (· ∈ ({0, 1, 2} : Finset (Fin 3))) = [0, 1, 2]` using `by decide`. Establish `c4 : ({0, 1} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c5 : ({0, 2} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c6 : ({1, 2} : Finset (Fin 3)).card = 2` using `by decide`.
+
+Establish `c7 : ({0, 1, 2} : Finset (Fin 3)).card = 3` using `by decide`. Simplify using `only [comp_psum] at this`. Rewrite `this` using `[l0, l1, l2, l3, l4, l5, l6, l7, c4, c5, c6, c7]`. Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, e0, e1, e2, _root_.mul_one, mul_inv_cancel, h1, hinv, Finset.card_singleton, Finset.card_empty] at this`. Evaluate the numerical expressions using `at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hchart : ∀ x : Over.mk (spMap (algebraMap k K)) ⟶ B, ∃ s : LB.Sec (GlobalTheory.AbLaw.pw L N), Set.range x.left ⊆ Out.nonzeroLocus s ∧ IsAffineOpen (Out.nonzeroLocus s)`. Introduce `x`. Take `⟨s, hs, ha⟩` from `hamp (x.left (IsLocalRing.closedPoint K))`. Use `⟨s, ?_, ha⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Establish `: p = IsLocalRing.closedPoint K` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Rewrite using `[this]`. Conclude with `hs`. Use `⟨fun f => h (P ≫ f), fun f g => ?_, fun f => ?_, fun f hf h0 => ?_, fun F q hF f => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [MonObj.comp_mul, GrpObj.comp_inv]`. Conclude with `hpar _ _`. Take `⟨s, hs, -⟩` from `hchart (P ≫ f)`. Conclude with `(hpos N s _ hN hs).1`. Take `⟨s, hs, ha⟩` from `hchart (P ≫ f)`.
+
+Take `⟨c, hc⟩` from `factor_of_const B (P ≫ f) ha Pl.O hPl hs ((hpos N s _ hN hs).2 h0)`. Establish `hf' : f = toUnit B ≫ c`. Use `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated B.hom ((Over.w f).trans (Over.w _).symm) P.left ?_)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← Over.comp_left, hc, ← Category.assoc, toUnit_unique (P ≫ toUnit B) (toUnit _)]`. Establish `hc' : c = η[B]`.
+
+Use `IsMonHom.one_hom f` as an intermediate fact. Rewrite `this` using `[hf', ← Category.assoc, toUnit_unique (η[B] ≫ toUnit B) (𝟙 _), Category.id_comp]`. Conclude with `this`. Rewrite using `[hf', hc']`. Both sides reduce to the same expression.
+
+Use `show h (P ≫ f ≫ F) = q * h (P ≫ f)`. Rewrite using `[← Category.assoc]`. Conclude with `hpull F q hF _`.
+-/
 theorem exists_quadraticForm_end : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B], IsAbelianScheme B → ∀ (L : LB B.left), AmpleCub B L → ∃ Q : (B ⟶ B) → ℤ, (∀ f g, Q (f * g) + Q (f * g⁻¹) = 2 * Q f + 2 * Q g) ∧ (∀ f, 0 ≤ Q f) ∧ (∀ f, IsMonHom f → Q f = 0 → f = 1) ∧ ∀ (F : B ⟶ B) (q : ℤ), PullPow F.left L q → ∀ f, Q (f ≫ F) = q * Q f := by
   intro k _ _ B _ hB L ⟨hL, hΘ, hsym, N, hN, hamp⟩
   have := hB.comm

@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConvexNerveComplex
 
 open Set UpperTheory.V.ConeExtensionAcyclic
 
+/- English proof (translation)
+Introduce `I S h`. Use `⟨fun c hc => ?_, fun n c hc h0 => ?_⟩` and prove the remaining obligations. Take `⟨S', hS, hs, hA⟩` from `h 0 c.support ((Finsupp.mem_supported ℤ c).1 hc)`. Take `⟨b, hb, e⟩` from `hA.1 c ((Finsupp.mem_supported ℤ c).2 hs)`. Conclude with `⟨b, Finsupp.supported_mono (hS 1) hb, e⟩`.
+
+Take `⟨S', hS, hs, hA⟩` from `h (n + 1) c.support ((Finsupp.mem_supported ℤ c).1 hc)`. Take `⟨b, hb, e⟩` from `hA.2 n c ((Finsupp.mem_supported ℤ c).2 hs) h0`. Conclude with `⟨b, Finsupp.supported_mono (hS (n + 2)) hb, e⟩`.
+-/
 theorem UpperTheory.V.ConeExtensionAcyclic.acyc_directed :
     ∀ {I : Type} (S : ∀ n, Set (Fin n → I)), (∀ (n : ℕ) (s : Finset (Fin n → I)), (↑s : Set (Fin n → I)) ⊆ S n → ∃ S' : ∀ k, Set (Fin k → I), (∀ k, S' k ⊆ S k) ∧ (↑s : Set (Fin n → I)) ⊆ S' n ∧ Acyc S') → Acyc S := by
   intro I S h

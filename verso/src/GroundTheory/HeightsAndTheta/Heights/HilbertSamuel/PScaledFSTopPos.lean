@@ -23,6 +23,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+The claim follows from `| 0, V, a, _ => by unfold geoNum split_ifs <;> positivity | n + 1, V, a, ha => by unfold geoNum split_ifs with h · exact Finset.sum_nonneg fun k _ => mul_nonneg (ha _ _) (finsum_nonneg fun W => finsum_nonneg fun _ => mul_nonneg (Nat.cast_nonneg _) (geoNum_nonneg n W _ fun j k => …`.
+-/
 theorem geoNum_nonneg : ∀ (n : ℕ) (V : Ideal (MRing ι)) (a : Fin n → K → ℤ), (∀ j k, 0 ≤ a j k) →
     0 ≤ geoNum n V a
   | 0, V, a, _ => by
@@ -35,12 +38,18 @@ theorem geoNum_nonneg : ∀ (n : ℕ) (V : Ideal (MRing ι)) (a : Fin n → K �
         mul_nonneg (Nat.cast_nonneg _) (geoNum_nonneg n W _ fun j k => ha _ _))
     · exact le_rfl
 
+/- English proof (translation)
+Unfold `IsSemipositiveRel IsSmoothHerm at *`. Rewrite using `[← h]`. Conclude with `hA`.
+-/
 theorem semipos_of_h_eq {P0 P : Ideal (MRing ι)} {A B : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} (h : A.h = B.h)
     (hA : IsSemipositiveRel P0 P A) : IsSemipositiveRel P0 P B := by
   unfold IsSemipositiveRel IsSmoothHerm at *
   rw [← h]
   exact hA
 
+/- English proof (translation)
+Establish `hM : IsSemipositiveRel ⊥ P (constLine (ι` using `ι) 0) := by`. Use `⟨G5.isSmoothHerm_constLine 0, fun z _ w _ => ?_⟩` and prove the remaining obligations. Simplify using `[leviForm, constLine, HermLine.ofWeight]`. Establish `hfs : IsSemipositiveRel ⊥ P (fsH ι)` using `semipos_of_h_eq (funext fun z => by simp [HermLine.zcomb]) (PerturbSemipos.proof K ι ⊥ P _ 0 1 hM le_rfl zero_le_one)`. Conclude with `semipos_of_h_eq rfl (Mono.semipos_constShift hfs (-1))`.
+-/
 theorem semipos (P : Ideal (MRing ι)) : IsSemipositiveRel ⊥ P (scaledFSH ι) := by
   have hM : IsSemipositiveRel ⊥ P (constLine (ι := ι) 0) := by
     refine ⟨G5.isSmoothHerm_constLine 0, fun z _ w _ => ?_⟩
@@ -50,6 +59,13 @@ theorem semipos (P : Ideal (MRing ι)) : IsSemipositiveRel ⊥ P (scaledFSH ι) 
       (PerturbSemipos.proof K ι ⊥ P _ 0 1 hM le_rfl zero_le_one)
   exact semipos_of_h_eq rfl (Mono.semipos_constShift hfs (-1))
 
+/- English proof (translation)
+Establish `hpos` using `(fsH ι).pos z hz`. Establish `hH : ∏ k, ‖z ⟨k, c k⟩‖ ≤ (fsH ι).h z`. Establish `hfs : (fsH ι).h z = ∏ k, Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2)`. Rewrite using `[fsH, GroundTheory.Heights₂.Heights.Inter.ofMetrics_fs_h]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hfs]`. Use `Finset.prod_le_prod (fun k _ => norm_nonneg _) fun k _ => Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i => ‖z ⟨k, i⟩‖ ^ 2) (fun i _ => sq_nonneg _) (Finset.mem_univ (c k))`. Unfold `logNorm`. Apply `Real.log_nonpos (div_nonneg (norm_nonneg _) hpos.le)` to reduce the goal to its premises.
+
+Rewrite using `[div_le_one hpos]`. Simplify `hH` using `[map_prod, norm_prod]`.
+-/
 theorem logNorm_fsH_nonpos (c : ∀ k, ι k) {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     logNorm (fsH ι) (∏ k, (X ⟨k, c k⟩ : MRing ι) ^ (fun _ : K => (1 : ℕ)) k) z ≤ 0 := by
   have hpos := (fsH ι).pos z hz
@@ -65,6 +81,25 @@ theorem logNorm_fsH_nonpos (c : ∀ k, ι k) {z : (Σ k, ι k) → ℂ} (hz : �
   rw [div_le_one hpos]
   simpa [map_prod, norm_prod] using hH
 
+/- English proof (translation)
+Establish `hF` using `hII K ι`. Use `set L : Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι := fun _ => scaledFSH ι with hLdef`. Establish `hHs : IsSmoothHerm (scaledFSH ι)` using `(semipos (ι := ι) ⊥).1`. Establish `hFs : IsSmoothHerm (fsH ι)` using `GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs 1`. Establish `hCs : IsSmoothHerm (constLine (ι` using `ι) (-1)) := G5.isSmoothHerm_constLine (-1)`.
+
+Establish `hLs : ∀ j, IsSmoothHerm (L j)` using `fun _ => hHs`. Establish `e0 : (fun _ : Fin (n + 1) => scaledFSH ι) = Fin.snoc L ((fsH ι).tensor (constLine (-1)))`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) j <;> simp [L, scaledFSH]`. Rewrite using `[e0, hF.2.1 P n L _ _ hP hLs hFs hCs]`.
+
+Take `⟨c, hc⟩ : ∃ c : ∀ k, ι k, ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P` from `⟨fun k => (hP.2.1.2.2 k).choose, fun k => (hP.2.1.2.2 k).choose_spec⟩`. Establish `hsH` using `GroundTheory.Heights₂.Heights.Inter.ThmIUnique.isMultiHomog_coordMonomial c (fun _ : K => (1 : ℕ))`. Establish `hsP` using `GroundTheory.Heights₂.Heights.Inter.ThmIUnique.coordMonomial_not_mem hP.2.1.1 c hc (fun _ : K => (1 : ℕ))`. Establish `hfa : ∀ k, (fsH ι).a k = ((fun _ : K => (1 : ℕ)) k : ℤ)` using `fun k => by simp [fsH, HermLine.ofMetrics]`. Establish `hA : 0 ≤ II K ι P (n + 1) (Fin.snoc L (fsH ι))`.
+
+Rewrite using `[hF.2.2 P n L (fsH ι) _ _ hP hLs hFs hfa hsH hsP, recR_eq]`. Use `sub_nonneg.mpr (le_trans ?_ (finsum_nonneg fun W => finsum_nonneg fun hW => mul_nonneg (Nat.cast_nonneg _) ?_))` and prove the remaining obligations. Conclude with `IntegralAgainstPositive.proof K ι P ⊥ n L _ bot_le (fun _ => semipos P) fun z hz => logNorm_fsH_nonpos c hz.1`. Use `split_ifs with hh`. Conclude with `hlow W ((divSuppArith K ι P n (fsH ι) _ W hP ⟨_, hfa, hsH, hsP⟩ hW).1 hh) hh`.
+
+Conclude with `mul_nonneg (by exact_mod_cast geoNum_nonneg n W _ fun j k => by simp [L, scaledFSH_a]) (Real.log_natCast_nonneg _)`. Establish `hone : (1 : MRing ι) ∉ P` using `fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).mpr h)`. Establish `hca : ∀ k, (constLine (ι` using `ι) (-1)).a k = ((0 : K → ℕ) k : ℤ) := fun k => by`. Simplify using `[constLine, HermLine.ofWeight]`. Establish `hB : II K ι P (n + 1) (Fin.snoc L (constLine (-1))) = ptsIntegral P (pot L) (fun _ => 1)`.
+
+Rewrite using `[hF.2.2 P n L _ 1 0 hP hLs hCs hca GroundTheory.Heights₂.Heights.Inter.ThmIUnique.isMultiHomog_one' hone, recR_eq]`. Establish `hd : divSupp P (1 : MRing ι) = ∅`. Use extensionality with `W`. Simplify using `only [divSupp, Ideal.span_singleton_one, le_top, sup_of_le_right, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Conclude with `fun h => (h.1.1.ne_top (top_le_iff.mp h.1.2)).elim`.
+
+Establish `hl : logNorm (constLine (ι` using `ι) (-1)) 1 = fun _ => -1 := by`. Use function extensionality and compare the values at `z`. Simplify using `[logNorm, constLine, HermLine.ofWeight]`. Rewrite using `[cycR, hd, finsum_mem_empty, arInt, hl, G5.ptsIntegral_const]`. Simplify using `only [zero_sub, neg_mul, one_mul, neg_neg]`.
+
+Both sides reduce to the same expression. Establish `heq : ptsIntegral P (pot L) (fun _ => 1) = ptsIntegral P (pot fun _ : Fin n => fsH ι) (fun _ => 1)` using `G5.ptsIntegral_eq_of_add_const P _ _ (fun j => ⟨1, fun z hz => by show Real.log ((scaledFSH ι).h z) = Real.log ((fsH ι).h z) + 1`. Rewrite using `[show (1 : ℝ) = -(-1) by norm_num]`. Conclude with `G5.log_tensor_constLine (fsH ι) (-1) z hz.1⟩) _`. Establish `hpos` using `hG K ι P n hP`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem step (II : IntersectionSystem) (hII : IsIntersectionSystem II) (hG : FSGeomDegPos.Statement) (n : ℕ)
     (hlow : ∀ W : Ideal (MRing ι), IsArithVar W n → IsHorizontal W → 0 ≤ II K ι W n (fun _ => scaledFSH ι))
     (P : Ideal (MRing ι)) (hP : IsArithVar P (n + 1)) :
@@ -122,6 +157,11 @@ theorem step (II : IntersectionSystem) (hII : IsIntersectionSystem II) (hG : FSG
   linarith
 end ScaledFSTopPos
 
+/- English proof (translation)
+Introduce `K _ ι _ P d II hII hd hP`. Take `⟨n, rfl⟩ : ∃ n, d = n + 1` from `⟨d - 1, by omega⟩`. Use `clear hd`. Proceed by induction on `n generalizing P with`. Consider the case `zero`.
+
+Conclude with `ScaledFSTopPos.step II hII hG 0 (fun W hW _ => absurd hW (GroundTheory.Heights₂.Heights.Inter.arithVarZero K ι W)) P hP`. Consider the case `succ m ih => exact ScaledFSTopPos.step II hII hG (m + 1) (fun W hW _ => (ih W hW).le) P hP`.
+-/
 theorem ScaledFSTopPos.proof (hG : FSGeomDegPos.Statement) : ScaledFSTopPos.Statement := by
   intro K _ ι _ P d II hII hd hP
   obtain ⟨n, rfl⟩ : ∃ n, d = n + 1 := ⟨d - 1, by omega⟩

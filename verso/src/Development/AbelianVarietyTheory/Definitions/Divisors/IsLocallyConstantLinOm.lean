@@ -15,6 +15,17 @@ section Alg
 variable {k : Type} [Field k] {A : Type} [CommRing A] [Algebra k A] {c : A →ₐ[k] A} {δ : A} {β ν κ : Type} [Fintype β]
   [DecidableEq β] [Fintype ν] [DecidableEq ν] [Fintype κ] {JB : Matrix β β A} [Invertible (2 : k)]
 
+/- English proof (translation)
+Take `⟨b, h0, h1⟩` from `h.basis`. Establish `h2 : ∀ x : k, Algebra.trace k A (algebraMap k A x) = 2 * x` using `fun x => by`. Rewrite using `[Algebra.trace_algebraMap_of_basis b]`. Simplify using the standard rewrite rules. Establish `h3 : Algebra.trace k A δ = 0`.
+
+Take `⟨x, y, e⟩` from `h.exists_eq (δ * δ)`. Establish `e0 : δ * b 0 = (0 : k) • b 0 + (1 : k) • b 1` using `by rw [h0, h1]; simp`. Establish `e1 : δ * b 1 = x • b 0 + y • b 1` using `by rw [h0, h1, e, Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `hn` using `h.algebraMap_norm (1 + δ)`. Establish `hn'` using `h.algebraMap_norm δ`.
+
+Rewrite `hn`, `hn'` using `[Algebra.norm_eq_matrix_det b, det_fin_two]`. Rewrite using `[Algebra.trace_eq_matrix_trace b, trace_fin_two]`. Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul, add_mul, one_mul, e0, e1] at hn hn' ⊢`. Simplify using `[h.anti] at hn hn' ⊢`. Apply `h.algebraMap_injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Take the linear combination `hn + hn'`. Take `⟨x, y, rfl⟩` from `h.exists_eq z`. Rewrite using `[map_add, h2, ← Algebra.smul_def, map_smul, h3, map_add c, map_smul, h.anti, c.commutes]`. Simplify using `[two_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem algebraMap_trace (h : IsQuad c δ) (z : A) : algebraMap k A (Algebra.trace k A z) = z + c z := by
   obtain ⟨b, h0, h1⟩ := h.basis
   have h2 : ∀ x : k, Algebra.trace k A (algebraMap k A x) = 2 * x := fun x => by
@@ -37,9 +48,17 @@ theorem algebraMap_trace (h : IsQuad c δ) (z : A) : algebraMap k A (Algebra.tra
   simp [two_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `h.algebraMap_injective (by rw [algebraMap_trace h, algebraMap_trace h, h.invol, add_comm])`.
+-/
 theorem trace_conj (h : IsQuad c δ) (z : A) : Algebra.trace k A (c z) = Algebra.trace k A z :=
   h.algebraMap_injective (by rw [algebraMap_trace h, algebraMap_trace h, h.invol, add_comm])
 
+/- English proof (translation)
+Establish `h1` using `algebraMap_trace h (1 * z)`. Establish `h2` using `algebraMap_trace h (δ * z)`. Rewrite `h1`, `h2` using `[hz, map_zero, map_mul]`. Rewrite `h2` using `[h.anti]`. Rewrite `h1` using `[map_one]`.
+
+Establish `h3 : algebraMap k A (⅟(2 : k)) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap k A) 2, ← map_mul, invOf_mul_self, map_one]`. Use `h.unit.mul_right_eq_zero.1 ?_` and prove the remaining obligations. Take the linear combination `(-algebraMap k A (⅟(2 : k))) * h2 - algebraMap k A (⅟(2 : k)) * δ * h1 - δ * z * h3`.
+-/
 theorem eq_zero_of_trace (h : IsQuad c δ) {z : A} (hz : ∀ a, Algebra.trace k A (a * z) = 0) : z = 0 := by
   have h1 := algebraMap_trace h (1 * z)
   have h2 := algebraMap_trace h (δ * z)
@@ -64,10 +83,16 @@ def trB : LinearMap.BilinForm k (β → A) :=
 
 omit [DecidableEq β] [Invertible (2 : k)] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trB_apply (u v : β → A) : trB c JB u v = -Algebra.trace k A (u ⬝ᵥ JB *ᵥ fun i => c (v i)) := rfl
 
 omit [DecidableEq β] [Invertible (2 : k)] in
 
+/- English proof (translation)
+Establish `e : (fun i => c ((N *ᵥ v) i)) = N.map c *ᵥ fun i => c (v i)` using `funext fun i => RingHom.map_mulVec c.toRingHom N v i`. Rewrite using `[trB_apply, e, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec u, vecMul_transpose]`.
+-/
 theorem trB_mulVec {γ γ' : Type} [Fintype γ] [Fintype γ'] (M : Matrix β γ A) (N : Matrix β γ' A) (u : γ → A) (v : γ' → A) :
     trB c JB (M *ᵥ u) (N *ᵥ v) = -Algebra.trace k A (u ⬝ᵥ (Mᵀ * JB * N.map c) *ᵥ fun i => c (v i)) := by
   have e : (fun i => c ((N *ᵥ v) i)) = N.map c *ᵥ fun i => c (v i) := funext fun i => RingHom.map_mulVec c.toRingHom N v i
@@ -75,6 +100,11 @@ theorem trB_mulVec {γ γ' : Type} [Fintype γ] [Fintype γ'] (M : Matrix β γ 
 
 omit [DecidableEq β] in
 
+/- English proof (translation)
+Rewrite using `[trB_apply, trB_apply, ← trace_conj hq (y 0 ⬝ᵥ _), ← map_neg, ← map_neg, ← map_sub, WeilM.symp]`. Use `congr 1`. Simplify using `only [hTens, Fin.sum_univ_two, dotProduct, mulVec, map_sum, map_mul, hq.invol, hJ, Finset.mul_sum]`. Simplify using `only [of_apply, cons_val', cons_val_zero, cons_val_one, cons_val_fin_one, mul_zero, zero_mul, Finset.sum_const_zero, zero_add, add_zero, mul_one, ← Finset.mul_sum, neg_mul, one_mul, sub_neg_eq_add, neg_add]`. Use `congr 1`.
+
+Simplify using `only [Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Simplify using `only [Finset.mul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem symp_eq (hq : IsQuad c δ) (hJ : ∀ i j, c (JB j i) = -JB i j) (x y : Matrix (Fin 2) β A) :
     WeilM.symp c (-1) (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) A) JB x y = trB c JB (x 0) (y 1) - trB c JB (y 0) (x 1) := by
   rw [trB_apply, trB_apply, ← trace_conj hq (y 0 ⬝ᵥ _), ← map_neg, ← map_neg, ← map_sub, WeilM.symp]
@@ -88,6 +118,15 @@ theorem symp_eq (hq : IsQuad c δ) (hJ : ∀ i j, c (JB j i) = -JB i j) (x y : M
     simp only [Finset.mul_sum, ← Finset.sum_neg_distrib]
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Take `⟨b, -, -⟩` from `hq.basis`. Use `Module.Finite.of_basis b` as an intermediate fact. Set `ε` to `Module.finBasis k (β → A)`. Set `f : (β → A) →ₗ[k] (Fin _ → k)` to `LinearMap.pi fun i => trB c JB (ε i)`. Establish `hf : ∀ u v, ε.equivFun u ⬝ᵥ f v = trB c JB u v` using `fun u v => by conv_rhs => rw [← ε.sum_equivFun u]`.
+
+Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply]`. Both sides reduce to the same expression. Establish `hi : Function.Injective f` using `(injective_iff_map_eq_zero f).2 fun v hv => by`. Establish `h0 : ∀ u, trB c JB u v = 0` using `fun u => by rw [← hf, hv, dotProduct_zero]`. Establish `h1 : (JB *ᵥ fun i => c (v i)) = 0` using `funext fun i => eq_zero_of_trace hq fun a => by`.
+
+Use `h0 (Pi.single i a)` as an intermediate fact. Rewrite `this` using `[trB_apply, single_dotProduct, neg_eq_zero]`. Then use the resulting hypothesis. Establish `h2` using `congrArg (JB⁻¹ *ᵥ ·) h1`. Simplify using `only [mulVec_mulVec, nonsing_inv_mul _ hu, one_mulVec, mulVec_zero] at h2`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[← hq.invol (v i), congrFun h2 i, Pi.zero_apply, map_zero]`. Set `f'` to `LinearMap.linearEquivOfInjective f hi (by simp)`. Use `⟨_, ε.equivFun, ⟨(LinearEquiv.finTwoArrow k (β → A)).trans (ε.equivFun.prodCongr f'), fun x y => ?_⟩, fun x => ⟨rfl, fun u => hf u _⟩⟩` and prove the remaining obligations. Rewrite using `[symp_eq hq hJ, ← hf, ← hf]`. Both sides reduce to the same expression.
+-/
 theorem exists_coord (hq : IsQuad c δ) (hJ : ∀ i j, c (JB j i) = -JB i j) (hu : IsUnit JB.det) :
     ∃ (d : ℕ) (e : (β → A) ≃ₗ[k] (Fin d → k))
       (co : Darboux (WeilM.symp c (-1) (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) A) JB) (Fin d)),
@@ -120,11 +159,20 @@ def actC (e : (β → A) ≃ₗ[k] (κ → k)) (g : GL β A) : (κ → k) →ₗ
 
 omit [Fintype κ] [Invertible (2 : k)]
 
+/- English proof (translation)
+Simplify using `[actC]`.
+-/
 theorem actC_apply (e : (β → A) ≃ₗ[k] (κ → k)) (g : GL β A) (u : β → A) : actC e g (e u) = e (g.val *ᵥ u) := by simp [actC]
 
+/- English proof (translation)
+Simplify using `[actC]`.
+-/
 theorem actC_actC (e : (β → A) ≃ₗ[k] (κ → k)) (g g' : GL β A) (x : κ → k) :
     actC e g (actC e g' x) = actC e (g * g') x := by simp [actC]
 
+/- English proof (translation)
+Simplify using `[actC]`.
+-/
 theorem actC_one (e : (β → A) ≃ₗ[k] (κ → k)) (x : κ → k) : actC e 1 x = x := by simp [actC]
 
 variable (c JB) in
@@ -134,9 +182,17 @@ def linOm (e : (β → A) ≃ₗ[k] (κ → k)) : UG c JB →* Module.End ℂ ((
   map_one' := LinearMap.ext fun φ => funext fun x => by simp [LinearMap.funLeft, actC_one]
   map_mul' h h' := LinearMap.ext fun φ => funext fun x => by simp [LinearMap.funLeft, actC_actC]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem linOm_apply (e : (β → A) ≃ₗ[k] (κ → k)) (h : UG c JB) (φ : (κ → k) → ℂ) (x : κ → k) :
     linOm c JB e h φ x = φ (actC e (h : GL β A)⁻¹ x) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨u, rfl⟩` from `e.surjective x`. Establish `hr : ∀ i, actB c h w i = (h : GL β A).val *ᵥ w i` using `fun i => by`. Use function extensionality and compare the values at `j`. Simplify using `[actB, mul_apply, mulVec, dotProduct, mul_comm]`.
+
+Establish `h0 : ∀ u v, trB c JB ((h : GL β A).val *ᵥ u) ((h : GL β A).val *ᵥ v) = trB c JB u v` using `fun u v => by`. Rewrite using `[trB_mulVec, show (h : GL β A).valᵀ * JB * (h : GL β A).val.map c = JB from h.2, trB_apply]`. Establish `h1 : trB c JB u ((h : GL β A).val *ᵥ w 1) = trB c JB (((h : GL β A)⁻¹).val *ᵥ u) (w 1)`. Rewrite using `[← h0 (_ *ᵥ u), mulVec_mulVec, Units.mul_inv, one_mulVec]`. Simplify using `only [linOm_apply, Darboux.rho, schr, (hco _).1, (hco _).2, actC_apply, ← map_add e, hr, h0, h1, mulVec_add, mulVec_mulVec, Units.inv_mul, one_mulVec]`.
+-/
 theorem linOm_impl [Fintype κ] [Invertible (2 : k)] (ψ : AddChar k ℂ) (e : (β → A) ≃ₗ[k] (κ → k))
     (co : Darboux (WeilM.symp c (-1) (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) A) JB) κ)
     (hco : ∀ x, (co.e x).1 = e (x 0) ∧ ∀ u, e u ⬝ᵥ (co.e x).2 = trB c JB u (x 1))
@@ -161,6 +217,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {A : Type} [CommRing A] [Algebra k A] {c : A →ₐ[k] A} {δ : A} {β ν κ : Type} [Fintype β]
   [DecidableEq β] [Fintype ν] [DecidableEq ν] [Fintype κ] {JB : Matrix β β A} {ψ : AddChar k ℂ}
 
+/- English proof (translation)
+Set `a : (κ → k) ≃ₜ (κ → k)` to `{ toFun := actC e (h : GL β A)⁻¹ invFun := actC e (h : GL β A) left_inv := fun x => by rw [actC_actC, mul_inv_cancel, actC_one] right_inv := fun x => by rw [actC_actC, inv_mul_cancel, actC_one] continuous_toFun := LinearMap.continuous_on_pi _ continuous_invFun := LinearMap.contin …`. Conclude with `⟨hφ.1.comp_continuous a.continuous, hφ.2.comp_homeomorph a⟩`.
+-/
 theorem linOm_mem (e : (β → A) ≃ₗ[k] (κ → k)) (h : UG c JB) {φ : (κ → k) → ℂ} (hφ : φ ∈ SB (κ → k)) :
     linOm c JB e h φ ∈ SB (κ → k) := by
   let a : (κ → k) ≃ₜ (κ → k) :=
@@ -172,6 +231,13 @@ theorem linOm_mem (e : (β → A) ≃ₗ[k] (κ → k)) (h : UG c JB) {φ : (κ 
       continuous_invFun := LinearMap.continuous_on_pi _ }
   exact ⟨hφ.1.comp_continuous a.continuous, hφ.2.comp_homeomorph a⟩
 
+/- English proof (translation)
+Take `⟨b, -, -⟩` from `hq.basis`. Use `Module.Finite.of_basis b` as an intermediate fact. Use `IsModuleTopology.isTopologicalRing k A` as an intermediate fact. Use `IsModuleTopology.toContinuousAdd k A` as an intermediate fact. Use `isLocallyConstant_orbit _ ?_` and prove the remaining obligations.
+
+Establish `c1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `c2 : Continuous e.symm` using `LinearMap.continuous_on_pi e.symm.toLinearMap`. Establish `hc : ∀ M : UG c JB → GL β A, Continuous M → Continuous fun q : UG c JB × (κ → k) => actC e (M q.1) q.2` using `fun M hM => by`. Establish `c3 : Continuous fun q : UG c JB × (κ → k) => (M q.1).val` using `Units.continuous_val.comp (hM.comp continuous_fst)`. Establish `c4 : Continuous fun q : UG c JB × (κ → k) => e.symm q.2` using `c2.comp continuous_snd`.
+
+Conclude with `(c1.comp (c3.matrix_mulVec c4)).congr fun q => by simp [actC]`. Establish `c5 : Continuous fun p : UG c JB => (p : GL β A)` using `continuous_subtype_val`. Use `filter_upwards [eventually_comp_eq (p₀ := (1 : UG c JB)) (fun p v => actC e (p : GL β A)⁻¹ v) (fun p v => actC e (p : GL β A) v) (hc (fun p => (p : GL β A)⁻¹) c5.inv) (hc (fun p => (p : GL β A)) c5) (by simp [actC_one]) (by simp [actC_one]) (fun p v => by rw [actC_actC, mul_inv_c …`. Conclude with `funext h1`.
+-/
 theorem isLocallyConstant_linOm [TopologicalSpace A] [IsModuleTopology k A] (hq : IsQuad c δ)
     (e : (β → A) ≃ₗ[k] (κ → k)) {φ : (κ → k) → ℂ} (hφ : φ ∈ SB (κ → k)) :
     IsLocallyConstant fun h : UG c JB => linOm c JB e h φ := by
@@ -197,6 +263,15 @@ variable [Invertible (2 : k)]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Set `L : Matrix β ν A → Submodule k ((κ → k) × (κ → k))` to `fun C => LinearMap.range (co.e.toLinearMap ∘ₗ { toFun := fun z : Matrix α ν A => z * Cᵀ, map_add' := fun _ _ => Matrix.add_mul _ _ _ map_smul' := fun _ _ => Matrix.smul_mul _ _ _ })`. Establish `iso : ∀ C : Matrix β ν A, Cᵀ * JB * C.map c = 0 → ∀ a ∈ L C, ∀ b ∈ L C, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2`. Introduce and unpack `C h _ ⟨z, rfl⟩ _ ⟨z', rfl⟩`. Establish `e : z * Cᵀ * JB * ((z' * Cᵀ).map c)ᵀ = z * (Cᵀ * JB * C.map c) * (z'.map c)ᵀ`. Rewrite using `[Matrix.map_mul, transpose_mul, transpose_map, transpose_transpose]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Express the relevant statement in the definitionally equal form `(co.e (z * Cᵀ)).1 ⬝ᵥ (co.e (z' * Cᵀ)).2 = (co.e (z' * Cᵀ)).1 ⬝ᵥ (co.e (z * Cᵀ)).2`. Rewrite using `[← sub_eq_zero, ← co.form, WeilM.symp, hTens_eq_trace, e, h]`. Simplify using the standard rewrite rules. Take `⟨h0, Cx, M, hx, h1, -⟩` from `h`.
+
+Use `⟨L C, fun _ => Iff.rfl, iso C h0, LagrFormLine.finrank_eq _ (L Cx) (iso C h0) (iso Cx hx) ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[← Matrix.fromRows_toRows M, Matrix.fromCols_mul_fromRows]`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Take `⟨u, rfl⟩` from `co.e.surjective w`.
+
+Establish `hu : u = u * M.toRows₁ᵀ * Cᵀ + u * M.toRows₂ᵀ * Cxᵀ`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_add, ← Matrix.transpose_mul, ← Matrix.transpose_mul, ← Matrix.transpose_add, h1, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[hu, map_add]`. Conclude with `Submodule.add_mem_sup ⟨_, rfl⟩ ⟨_, rfl⟩`.
+-/
 theorem exists_lagr {α : Type} [Fintype α] [DecidableEq α] {ξ : A} {JA : Matrix α α A} (co : Darboux (WeilM.symp c ξ JA JB) κ)
     {C : Matrix β ν A} (h : IsLagr c JB C) : ∃ Λ : Submodule k ((κ → k) × (κ → k)),
       (∀ w, w ∈ Λ ↔ ∃ z : Matrix α ν A, co.e (z * Cᵀ) = w) ∧ (∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) ∧
@@ -224,6 +299,31 @@ theorem exists_lagr {α : Type} [Fintype α] [DecidableEq α] {ξ : A} {JA : Mat
   rw [hu, map_add]
   exact Submodule.add_mem_sup ⟨_, rfl⟩ ⟨_, rfl⟩
 
+/- English proof (translation)
+Use `borelize k`. Use `GlobalTheory.SplitWeil.secondCountable k` as an intermediate fact. Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Take `⟨b, -, -⟩` from `hq.basis`. Use `Module.Finite.of_basis b` as an intermediate fact.
+
+Use `Module.Free.of_basis b` as an intermediate fact. Take `⟨Λ, hΛ, hiso, hdim⟩` from `exists_lagr co hL`. Take `⟨h0, Cx, M, -, -, h1⟩` from `hL`. Rewrite `h1` using `[← Matrix.fromRows_toRows M, Matrix.fromRows_mul_fromCols, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Set `ε` to `Module.finBasis k (ν → A)`.
+
+Set `μ : Measure (Fin (Module.finrank k (ν → A)) → k)` to `Measure.pi fun _ => Measure.addHaar`. Set `j` to `e.toLinearMap ∘ₗ (Matrix.toLin' C).restrictScalars k ∘ₗ ε.equivFun.symm.toLinearMap`. Establish `hj : ∀ a, j a = e (C *ᵥ ε.equivFun.symm a)` using `fun _ => rfl`. Set `p` to `ε.equivFun.toLinearMap ∘ₗ (Matrix.toLin' M.toRows₁).restrictScalars k ∘ₗ e.symm.toLinearMap`. Establish `hpj : ∀ a, p (j a) = a` using `fun a => by show ε.equivFun (M.toRows₁ *ᵥ e.symm (e (C *ᵥ ε.equivFun.symm a))) = a`.
+
+Rewrite using `[e.symm_apply_apply, mulVec_mulVec, h1.1, one_mulVec, ε.equivFun.apply_symm_apply]`. Establish `hjc : Continuous j` using `LinearMap.continuous_on_pi j`. Establish `hpc : Continuous p` using `LinearMap.continuous_on_pi p`. Establish `hint : ∀ φ ∈ SB (κ → k), Integrable (fun a => φ (j a)) μ` using `fun φ hφ => by`. Use `(hφ.1.continuous.comp hjc).integrable_of_hasCompactSupport (HasCompactSupport.intro (hφ.2.image hpc) fun x hx => ?_)` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Conclude with `hx ⟨j x, subset_tsupport _ h, hpj x⟩`. Set `f : SB (κ → k) →ₗ[ℂ] ℂ` to `{ toFun := fun φ => ∫ a, φ.1 (j a) ∂μ map_add' := fun φ φ' => integral_add (hint _ φ.2) (hint _ φ'.2) map_smul' := fun z φ => integral_const_mul z _ }`. Take `⟨l, hl⟩` from `LinearMap.exists_extend f`. Establish `hl' : ∀ φ ∈ SB (κ → k), l φ = ∫ a, φ (j a) ∂μ` using `fun φ hφ => LinearMap.congr_fun hl ⟨φ, hφ⟩`.
+
+Establish `hY : ∀ z : Matrix (Fin 2) ν A, ∀ φ ∈ SB (κ → k), l (co.rho ψ (z * Cᵀ) φ) = l φ` using `fun z φ hφ => by`. Establish `hr : ∀ i, (z * Cᵀ) i = C *ᵥ z i` using `fun i => by`. Use function extensionality and compare the values at `i'`. Simplify using `[mul_apply, mulVec, dotProduct, mul_comm]`. Rewrite using `[Darboux.rho, hl' _ (HypPair.schr_mem hψ _ hφ), hl' _ hφ, ← integral_add_right_eq_self (μ := μ) (fun a => φ (j a)) (ε.equivFun (z 0))]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [schr, (hco _).1, hj, (hco _).2, hr, trB_mulVec, h0, map_add, mulVec_add, LinearEquiv.symm_apply_apply]`. Simplify using the standard rewrite rules. Establish `hN : ∃ φ ∈ SB (κ → k), l φ ≠ 0`.
+
+Take `⟨U, hUo, hUc, hU0⟩` from `GlobalTheory.LagrFormLine.exists_compact_open k κ`. Establish `hm : (U.indicator fun _ => (1 : ℂ)) ∈ SB (κ → k)` using `⟨(LocallyConstant.charFn ℂ (⟨hUc.isClosed, hUo⟩ : IsClopen U)).isLocallyConstant, HasCompactSupport.intro hUc fun x hx => Set.indicator_of_notMem hx _⟩`. Use `⟨_, hm, ?_⟩` and prove the remaining obligations. Establish `hSo : IsOpen (j ⁻¹' U)` using `hUo.preimage hjc`. Establish `hfin : μ (j ⁻¹' U) < ⊤` using `lt_of_le_of_lt (measure_mono (show j ⁻¹' U ⊆ p '' U from fun y hy => ⟨j y, hy, hpj y⟩)) ((hUc.image hpc).measure_lt_top)`.
+
+Establish `hpos : 0 < μ (j ⁻¹' U)` using `hSo.measure_pos μ ⟨0, by simpa using hU0⟩`. Rewrite using `[hl' _ hm, show (fun a => U.indicator (fun _ => (1 : ℂ)) (j a)) = (j ⁻¹' U).indicator (fun _ => (1 : ℂ)) from rfl, integral_indicator_const _ hSo.measurableSet]`. Conclude with `smul_ne_zero (ENNReal.toReal_ne_zero.mpr ⟨hpos.ne', hfin.ne⟩) one_ne_zero`. Use `⟨fun l₁ _ hl₁ q t hqt φ hφ => ?_, l, hY, hN⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `GlobalTheory.LagrInvForm.proportional k ψ hψ hψ1 _ Λ hiso hdim l₁ l (fun w hw => by obtain ⟨z, rfl⟩ := (hΛ w).1 hw; exact hl₁ z) (fun w hw => by obtain ⟨z, rfl⟩ := (hΛ w).1 hw; exact hY z) hN`.
+
+Establish `hφ'` using `linOm_mem e q hφ`. Rewrite using `[hy _ hφ, hy _ hφ', mul_left_comm, hl' _ hφ, hl' _ hφ']`. Use `congr 1`. Establish `hd : (LinearMap.toMatrix' (actC ε.equivFun t)).det = Algebra.norm k t.val.det`. Rewrite using `[LinearMap.det_toMatrix', actC, LinearMap.det_conj, LinearMap.det_restrictScalars, LinearMap.det_toLin']`.
+
+Set `g` to `GeneralLinearGroup.mkOfDetNeZero (LinearMap.toMatrix' (actC ε.equivFun t)) (hd ▸ (((isUnit_iff_isUnit_det _).1 t.isUnit).map _).ne_zero)`. Establish `hg : GeneralLinearGroup.det g = Units.map (Algebra.norm k : A →* k) (GeneralLinearGroup.det t)` using `Units.ext hd`. Establish `hjg : ∀ a, actC e (q : GL β A)⁻¹ (j (g.val *ᵥ a)) = j a` using `fun a => by`. Take `⟨s, rfl⟩` from `ε.equivFun.surjective a`. Establish `: g.val *ᵥ ε.equivFun s = ε.equivFun (t.val *ᵥ s)` using `(LinearMap.toMatrix'_mulVec _ _).trans (actC_apply _ _ _)`.
+
+Rewrite using `[this, hj, hj, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply, actC_apply, mulVec_mulVec s, ← hqt, mulVec_mulVec, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Rewrite using `[← integral_comp_mulVec Measure.addHaar g]`. Simplify using `only [linOm_apply, hjg, hg]`. Simplify using `[sbClass, μ]`.
+-/
 theorem siegelRule_linOm (hq : IsQuad c δ) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (e : (β → A) ≃ₗ[k] (κ → k))
     (co : Darboux (WeilM.symp c (-1) (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) A) JB) κ)
     (hco : ∀ x, (co.e x).1 = e (x 0) ∧ ∀ u, e u ⬝ᵥ (co.e x).2 = trB c JB u (x 1)) {C : Matrix β ν A} (hL : IsLagr c JB C) :
@@ -306,6 +406,13 @@ end Top
 open scoped TensorProduct
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.LocIntw in
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology k (k ⊗[F] E) := ⟨rfl⟩`. Establish `hJ : ∀ i j, conjR k σ (JR (F` using `F) k Q j i) = -JR (F := F) k Q i j := fun i j => by`. Rewrite using `[JR_eq k hQ]`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [StdUnn.blk4, submatrix_apply, Equiv.symm_apply_apply, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, Matrix.one_apply, map_zero, neg_zero, map_neg, neg_neg, apply_ite (conjR k σ), map_one, eq_comm (a := i …`.
+
+Establish `hu : IsUnit (JR (F` using `F) k Q).det := by`. Rewrite using `[JR_eq k hQ]`. Conclude with `isUnit_det_of_right_inverse (B := StdUnn.blk4 0 (-1) 1 0) (by simp [StdUnn.Model.submatrix_fromBlocks_mul, StdUnn.Model.block_matrix_one])`. Take `⟨d, e, co, hco⟩` from `exists_coord hq hJ hu`. Take `⟨hS, l, hl, h0⟩` from `siegelRule_linOm hq hψ hψ1 e co hco (isLagr_colY k σ hQ)`.
+
+Conclude with `⟨d, co, linOm _ _ e, l, ⟨⟨fun g _ hφ => linOm_mem e g hφ, fun g w φ _ => linOm_impl ψ e co hco g w φ, fun _ _ _ => trivial⟩, hS⟩, ⟨trivial, hl⟩, h0, fun _ hφ => isLocallyConstant_linOm hq e hφ⟩`.
+-/
 theorem exists_model {F E : Type} [Field F] [Field E] [Algebra F E] {k : Type} [Field k] [Algebra F k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Invertible (2 : k)] {σ : E →ₐ[F] E} {δ : k ⊗[F] E}
     (hq : IsQuad (conjR k σ) δ) {ψ : AddChar k ℂ} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) {n : ℕ}

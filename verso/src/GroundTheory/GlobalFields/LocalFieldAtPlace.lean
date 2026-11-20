@@ -12,14 +12,23 @@ section Discrete
 variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Algebra R K]
   [IsFractionRing R K] (v : HeightOneSpectrum R)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem isDiscreteValuationRing_adicCompletionIntegers :
     IsDiscreteValuationRing (v.adicCompletionIntegers K) :=
   inferInstance
 
+/- English proof (translation)
+The claim follows from `valuedAdicCompletion_surjective K v`.
+-/
 theorem valued_adicCompletion_surjective :
     Function.Surjective (Valued.v : v.adicCompletion K → ℤᵐ⁰) :=
   valuedAdicCompletion_surjective K v
 
+/- English proof (translation)
+Establish `h : Valuation.IsUniformizer (Valued.v : Valuation (v.adicCompletion K) ℤᵐ⁰) (ϖ : v.adicCompletion K)` using `Valuation.isUniformizer_of_maximalIdeal_eq_span Valued.v ((IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ)`. Rewrite using `[h.val, Valuation.IsRankOneDiscrete.generator_eq_exp_neg_one_of_surjective (valuedAdicCompletion_surjective K v)]`. Both sides reduce to the same expression.
+-/
 theorem valued_of_irreducible {ϖ : v.adicCompletionIntegers K} (hϖ : Irreducible ϖ) :
     Valued.v (ϖ : v.adicCompletion K) = exp (-1 : ℤ) := by
   have h : Valuation.IsUniformizer (Valued.v : Valuation (v.adicCompletion K) ℤᵐ⁰)
@@ -43,13 +52,24 @@ noncomputable def normalizedAbv : AbsoluteValue (v.adicCompletion K) ℝ where
   eq_zero' _ := norm_eq_zero
   add_le' := norm_add_le
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem normalizedAbv_apply (x : v.adicCompletion K) : normalizedAbv v x = ‖x‖ :=
   rfl
 
+/- English proof (translation)
+The claim follows from `FinitePlace.norm_def v x`.
+-/
 theorem normalizedAbv_eq_toNNReal (x : v.adicCompletion K) :
     normalizedAbv v x = WithZeroMulInt.toNNReal (NumberField.HeightOneSpectrum.absNorm_ne_zero v) (Valued.v x) :=
   FinitePlace.norm_def v x
 
+/- English proof (translation)
+Establish `hx' : Valued.v x ≠ 0` using `(Valued.v).ne_zero_iff.2 hx`. Establish `key : ∀ (y : ℤᵐ⁰) (hy : y ≠ 0), Multiplicative.toAdd (unzero hy) = log y`. Introduce and unpack `(_ | a) hy`. Conclude with `absurd rfl hy`. Both sides reduce to the same expression.
+
+Rewrite using `[normalizedAbv_eq_toNNReal, WithZeroMulInt.toNNReal_neg_apply _ hx', key]`. Simplify using the standard rewrite rules.
+-/
 theorem normalizedAbv_eq_zpow {x : v.adicCompletion K} (hx : x ≠ 0) :
     normalizedAbv v x = (Ideal.absNorm v.asIdeal : ℝ) ^ log (Valued.v x) := by
   have hx' : Valued.v x ≠ 0 := (Valued.v).ne_zero_iff.2 hx
@@ -60,6 +80,9 @@ theorem normalizedAbv_eq_zpow {x : v.adicCompletion K} (hx : x ≠ 0) :
   rw [normalizedAbv_eq_toNNReal, WithZeroMulInt.toNNReal_neg_apply _ hx', key]
   simp
 
+/- English proof (translation)
+Establish `h0 : (ϖ : v.adicCompletion K) ≠ 0`. Introduce `h`. Conclude with `hϖ.ne_zero (Subtype.ext h)`. Rewrite using `[normalizedAbv_eq_zpow v h0, valued_of_irreducible v hϖ, log_exp, zpow_neg_one]`.
+-/
 theorem normalizedAbv_of_irreducible {ϖ : v.adicCompletionIntegers K} (hϖ : Irreducible ϖ) :
     normalizedAbv v (ϖ : v.adicCompletion K) = (Ideal.absNorm v.asIdeal : ℝ)⁻¹ := by
   have h0 : (ϖ : v.adicCompletion K) ≠ 0 := by
@@ -95,6 +118,9 @@ open ValuativeRel
 variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Algebra R K]
   [IsFractionRing R K] (v : HeightOneSpectrum R)
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, mem_adicCompletionIntegers, (ValuativeRel.isEquiv (ValuativeRel.valuation (v.adicCompletion K)) Valued.v).le_one_iff_le_one]`.
+-/
 theorem mem_valuationInteger_iff (x : v.adicCompletion K) :
     x ∈ 𝒪[v.adicCompletion K] ↔ x ∈ v.adicCompletionIntegers K := by
   rw [Valuation.mem_integer_iff, mem_adicCompletionIntegers,

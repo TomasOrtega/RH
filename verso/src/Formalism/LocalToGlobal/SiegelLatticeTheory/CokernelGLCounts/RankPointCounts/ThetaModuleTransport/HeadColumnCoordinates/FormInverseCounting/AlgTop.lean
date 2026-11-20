@@ -4,6 +4,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 
 namespace Formalism.L2.SG.LocalCountModules.LocCnt0LAlg
 
+/- English proof (translation)
+The claim follows from `locCnt0L_of_pair h stepInj Formalism.L2.SG.LocalCountModules.UnramifiedPairingLinear.stepAdj`.
+-/
 theorem locCnt0L_of_stepPair (h : StepPair) : Formalism.L2.SG.LocalCountModules.LocCnt0L.LocCnt0L :=
   locCnt0L_of_pair h stepInj Formalism.L2.SG.LocalCountModules.UnramifiedPairingLinear.stepAdj
 

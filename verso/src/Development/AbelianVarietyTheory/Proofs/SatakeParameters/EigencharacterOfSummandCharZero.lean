@@ -14,18 +14,27 @@ variable {Γ : Type} [Group Γ] {K : Type} [Field K]
 def sumL (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) : Σ m : ℕ, Γ →* GL (Fin m) K :=
   L.foldr (fun p s => ⟨p.1 + s.1, Formalism.MainNotions.SumRepresentations.At.sumRep p.2 s.2⟩) ⟨0, 1⟩
 
+/- English proof (translation)
+The claim follows from `| [], _ => GlobalTheory.BCGal.ss_zero _ | p :: L, h => GlobalTheory.BCGal.ss_sumRep _ _ (h p List.mem_cons_self) (isSSRep_sumL L fun q hq => h q (List.mem_cons_of_mem _ hq))`.
+-/
 theorem isSSRep_sumL : ∀ L : List (Σ m : ℕ, Γ →* GL (Fin m) K), (∀ p ∈ L, IsSSRep p.2) →
     IsSSRep (sumL L).2
   | [], _ => GlobalTheory.BCGal.ss_zero _
   | p :: L, h => GlobalTheory.BCGal.ss_sumRep _ _ (h p List.mem_cons_self)
       (isSSRep_sumL L fun q hq => h q (List.mem_cons_of_mem _ hq))
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.BCGal.sumRep_val, Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₁₂]`.
+-/
 theorem charpoly_sumRep {a b : ℕ} (ρ : Γ →* GL (Fin a) K) (ρ' : Γ →* GL (Fin b) K) (g : Γ) :
     ((Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ' g : GL _ _) : Matrix (Fin (a + b)) (Fin (a + b)) K).charpoly =
       ((ρ g : GL _ _) : Matrix (Fin a) (Fin a) K).charpoly *
         ((ρ' g : GL _ _) : Matrix (Fin b) (Fin b) K).charpoly := by
   rw [GlobalTheory.BCGal.sumRep_val, Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₁₂]
 
+/- English proof (translation)
+The claim follows from `| [], g => by rw [List.map_nil, List.prod_nil] exact Polynomial.eq_one_of_monic_natDegree_zero (Matrix.charpoly_monic _) (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]; rfl) | p :: L, g => by rw [List.map_cons, List.prod_cons, ← charpoly_sumL L g] exact charpoly_sumR …`.
+-/
 theorem charpoly_sumL : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) (g : Γ),
     (((sumL L).2 g : GL _ _) : Matrix (Fin (sumL L).1) (Fin (sumL L).1) K).charpoly =
       (L.map fun p => ((p.2 g : GL _ _) : Matrix (Fin p.1) (Fin p.1) K).charpoly).prod
@@ -37,6 +46,9 @@ theorem charpoly_sumL : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) (g : �
     rw [List.map_cons, List.prod_cons, ← charpoly_sumL L g]
     exact charpoly_sumRep p.2 (sumL L).2 g
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.BCGal.sumRep_val]`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, Function.comp_def]`.
+-/
 theorem sumRep_mulVec_inl {a b : ℕ} (ρ : Γ →* GL (Fin a) K) (ρ' : Γ →* GL (Fin b) K) (g : Γ)
     (w : Fin (a + b) → K) (i : Fin a) :
     (((Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ' g : GL _ _) : Matrix (Fin (a + b)) (Fin (a + b)) K) *ᵥ w)
@@ -45,6 +57,9 @@ theorem sumRep_mulVec_inl {a b : ℕ} (ρ : Γ →* GL (Fin a) K) (ρ' : Γ →*
   rw [GlobalTheory.BCGal.sumRep_val]
   simp [Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, Function.comp_def]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.BCGal.sumRep_val]`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, Function.comp_def]`.
+-/
 theorem sumRep_mulVec_inr {a b : ℕ} (ρ : Γ →* GL (Fin a) K) (ρ' : Γ →* GL (Fin b) K) (g : Γ)
     (w : Fin (a + b) → K) (j : Fin b) :
     (((Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ' g : GL _ _) : Matrix (Fin (a + b)) (Fin (a + b)) K) *ᵥ w)
@@ -53,6 +68,15 @@ theorem sumRep_mulVec_inr {a b : ℕ} (ρ : Γ →* GL (Fin a) K) (ρ' : Γ →*
   rw [GlobalTheory.BCGal.sumRep_val]
   simp [Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, Function.comp_def]
 
+/- English proof (translation)
+Distinguish the cases in `h1 : w ∘ finSumFinEquiv ∘ Sum.inl = 0`. Use `right`. Use `⟨w ∘ finSumFinEquiv ∘ Sum.inr, fun h2 => hw ?_, fun g => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Take `⟨s, rfl⟩` from `finSumFinEquiv.surjective j`.
+
+Break down `s with i | i` into its components or cases. Conclude with `congrFun h1 i`. Conclude with `congrFun h2 i`. Use function extensionality and compare the values at `j`. Establish `h3` using `congrFun (he g) (finSumFinEquiv (Sum.inr j))`.
+
+Rewrite `h3` using `[sumRep_mulVec_inr]`. Rewrite using `[h3]`. Simplify using the standard rewrite rules. Use `left`. Use `⟨w ∘ finSumFinEquiv ∘ Sum.inl, h1, fun g => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Establish `h3` using `congrFun (he g) (finSumFinEquiv (Sum.inl i))`. Rewrite `h3` using `[sumRep_mulVec_inl]`. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+-/
 theorem eigen_pair (χ : Γ →* Kˣ) {a b : ℕ} (ρ : Γ →* GL (Fin a) K) (ρ' : Γ →* GL (Fin b) K)
     (w : Fin (a + b) → K) (hw : w ≠ 0)
     (he : ∀ g, ((Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ' g : GL _ _) : Matrix (Fin (a + b)) (Fin (a + b)) K) *ᵥ w =
@@ -80,6 +104,9 @@ theorem eigen_pair (χ : Γ →* Kˣ) {a b : ℕ} (ρ : Γ →* GL (Fin a) K) (�
     rw [h3]
     simp
 
+/- English proof (translation)
+The claim follows from `| [], w, hw, _ => (hw (funext fun i => (Nat.not_lt_zero _ i.2).elim)).elim | p :: L, w, hw, he => by rcases eigen_pair χ p.2 (sumL L).2 w hw he with ⟨v, hv0, hv⟩ | ⟨v, hv0, hv⟩ · exact ⟨p, List.mem_cons_self, v, hv0, hv⟩ · obtain ⟨q, hq, u, hu0, hu⟩ := eigen_sumL χ L v hv0 hv exa …`.
+-/
 theorem eigen_sumL (χ : Γ →* Kˣ) : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) (w : Fin (sumL L).1 → K),
     w ≠ 0 → (∀ g, (((sumL L).2 g : GL _ _) : Matrix (Fin (sumL L).1) (Fin (sumL L).1) K) *ᵥ w =
       ((χ g : Kˣ) : K) • w) →
@@ -92,6 +119,13 @@ theorem eigen_sumL (χ : Γ →* Kˣ) : ∀ (L : List (Σ m : ℕ, Γ →* GL (F
     · obtain ⟨q, hq, u, hu0, hu⟩ := eigen_sumL χ L v hv0 hv
       exact ⟨q, List.mem_cons_of_mem _ hq, u, hu0, hu⟩
 
+/- English proof (translation)
+Establish `hnm : n = m`. Establish `h1` using `congrArg Polynomial.natDegree (hc 1)`. Rewrite `h1` using `[Matrix.charpoly_natDegree_eq_dim, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, Fintype.card_fin]`. Then use the resulting hypothesis. Substitute `hnm` using the available equality. Take `⟨P, hP⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix ρ σ hρ hσ hc`.
+
+Use `⟨((P⁻¹ : GL _ _) : Matrix (Fin n) (Fin n) K) *ᵥ v, fun h0 => hv0 ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun u => ((P : GL _ _) : Matrix (Fin n) (Fin n) K) *ᵥ u) h0`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mulVec_zero] at h1`. Rewrite `h1` using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Rewrite using `[Matrix.mulVec_mulVec, hP g]`.
+
+Establish `e : ((P⁻¹ * ρ g * P : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * ((P⁻¹ : GL _ _) : Matrix (Fin n) (Fin n) K) = ((P⁻¹ : GL _ _) : Matrix (Fin n) (Fin n) K) * ((ρ g : GL _ _) : Matrix (Fin n) (Fin n) K)`. Rewrite using `[← Units.val_mul, ← Units.val_mul, mul_assoc, mul_inv_cancel, mul_one]`. Rewrite using `[e, ← Matrix.mulVec_mulVec, hv g, Matrix.mulVec_smul]`.
+-/
 theorem eigen_transfer {n m : ℕ} (ρ : Γ →* GL (Fin n) K) (σ : Γ →* GL (Fin m) K) (hρ : IsSSRep ρ)
     (hσ : IsSSRep σ)
     (hc : ∀ g, ((ρ g : GL _ _) : Matrix (Fin n) (Fin n) K).charpoly =
@@ -120,6 +154,11 @@ end GlobalTheory.EigTwist
 
 open GlobalTheory.EigTwist in
 
+/- English proof (translation)
+Introduce `K _ _ Γ _ n ρ L χ hρ hL hc hv`. Take `⟨v, hv0, hv⟩` from `hv`. Establish `hS` using `isSSRep_sumL L hL`. Establish `hcS : ∀ g, ((ρ g : GL _ _) : Matrix (Fin n) (Fin n) K).charpoly = (((sumL L).2 g : GL _ _) : Matrix (Fin (sumL L).1) (Fin (sumL L).1) K).charpoly` using `fun g => (hc g).trans (charpoly_sumL L g).symm`. Take `⟨w, hw0, hw⟩` from `eigen_transfer ρ (sumL L).2 hρ hS hcS χ v hv0 hv`.
+
+Conclude with `eigen_sumL χ L w hw0 hw`.
+-/
 theorem GlobalTheory.eigenCharTwist_holds : EigenCharTwist := by
   intro K _ _ Γ _ n ρ L χ hρ hL hc hv
   obtain ⟨v, hv0, hv⟩ := hv

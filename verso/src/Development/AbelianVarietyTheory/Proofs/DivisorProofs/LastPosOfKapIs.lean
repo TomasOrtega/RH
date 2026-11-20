@@ -7,6 +7,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HolDict
 
+/- English proof (translation)
+Establish `hk` using `R.m_add_three_le_k`. Establish `hi` using `i.2`. Establish `e : n - (R.k - 1) = i` using `by omega`. Unfold `Formalism.L2.NTheta.lamAt`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`.
+
+Use `congr 2`. Conclude with `Fin.ext e`.
+-/
 theorem lamAt_last {R : Ranks} (h : HCParam R) (i : Fin R.m) (n : ℕ) (hn : n + 1 = R.k + i) :
     Formalism.L2.NTheta.lamAt h n = -h.b i := by
   have hk := R.m_add_three_le_k
@@ -17,6 +22,15 @@ theorem lamAt_last {R : Ranks} (h : HCParam R) (i : Fin R.m) (n : ℕ) (hn : n +
   congr 2
   exact Fin.ext e
 
+/- English proof (translation)
+Introduce `D κ h i τ k hk`. Rewrite using `[(h i τ).1 k, show (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ (inR i).1 (inR i).2 _]`. Establish `hp : (k : ℕ) + 1 = D.R.k + i`. Rewrite using `[hk]`. Simplify using `only [Ranks.sigW]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hg` using `(D.hc τ).gap_be i`. Establish `hq : (((D.R.sigW ((i : ℕ) + 1)).1 : ℕ) : ℚ) = ((k : ℕ) : ℚ) + 1`. Conclude with `hk.symm` after adjusting the coercions. Simplify using `only [aPl, if_pos k.2]`.
+
+Rewrite using `[lamAt_last (D.hc τ) i k hp, hq]`. Establish `h1 : (1 : ℤ) ≤ ⌊-(D.hc τ).b i + (D.hc τ).e i - (((k : ℕ) : ℚ) + 1 - (((k : ℕ) : ℚ) + 1)) - ((D.R.t : ℚ) + 1) / 2⌋`. Rewrite using `[Int.le_floor]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem lastPos_of_kapIs :
     ∀ (D : D7) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)), KapIs κ → ∀ i, (κ i).LastPos := by
   intro D κ h i τ k hk

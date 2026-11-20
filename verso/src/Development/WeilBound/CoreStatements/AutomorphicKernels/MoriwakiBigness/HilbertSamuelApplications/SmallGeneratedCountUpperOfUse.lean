@@ -12,10 +12,19 @@ open GroundTheory.Heights₂.Heights.HilbertSamuel
 def HSUse : Prop :=
   ArithKleiman.Statement ∧ G7.Statement ∧ ArithmeticVolumeNef.Statement
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem HSUse.g7 (h : HSUse) : G7.Statement := h.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2`.
+-/
 theorem HSUse.g7p (h : HSUse) : ReciprocityTheory.ChartRestriction.G.Geo.ArithmeticHilbertSamuelUpperBound := h.2.2
 
+/- English proof (translation)
+The claim follows from `G5.proof' h.1 CurvePointsFinite.proof`.
+-/
 theorem HSUse.z1 (h : HSUse) : ReciprocityTheory.ChartRestriction.G.Geo.SuccessiveMinimaLowerBound :=
   G5.proof' h.1 CurvePointsFinite.proof
 

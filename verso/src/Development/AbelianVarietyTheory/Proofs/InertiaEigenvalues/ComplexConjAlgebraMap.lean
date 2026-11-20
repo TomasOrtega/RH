@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.IndDataDown
 
+/- English proof (translation)
+Set `φ : K' →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, ← RingHom.comp_apply φ (algebraMap K K'), ← IsCMField.complexEmbedding_complexConj K (φ.comp (algebraMap K K')) t]`. Both sides reduce to the same expression.
+-/
 theorem complexConj_algebraMap (K K' : Type) [Field K] [NumberField K] [IsCMField K] [Field K'] [NumberField K']
     [IsCMField K'] [Algebra K K'] (t : K) :
     IsCMField.complexConj K' (algebraMap K K' t) = algebraMap K K' (IsCMField.complexConj K t) := by
@@ -23,6 +26,17 @@ theorem complexConj_algebraMap (K K' : Type) [Field K] [NumberField K] [IsCMFiel
     ← IsCMField.complexEmbedding_complexConj K (φ.comp (algebraMap K K')) t]
   rfl
 
+/- English proof (translation)
+Introduce `heq`. Take `⟨u, hne, hu⟩` from `hx`. Use `set c := IsCMField.ringOfIntegersComplexConj K`. Establish `hcc : ∀ a : 𝓞 K, c (c a) = a` using `fun a => by`. Use `ext`.
+
+Simplify using `[c, IsCMField.complexConj_apply_apply]`. Establish `hle : u.asIdeal ≤ x.asIdeal`. Introduce `a ha`. Establish `h1 : a * c a ∈ u.asIdeal` using `u.asIdeal.mul_mem_right _ ha`. Establish `h2 : c (a * c a) = a * c a` using `by rw [map_mul, hcc, mul_comm]`.
+
+Take `⟨y, hy⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff K _).1 h2`. Establish `h3 : y ∈ (u.under (𝓞 (maximalRealSubfield K))).asIdeal` using `by show algebraMap _ _ y ∈ u.asIdeal`. Rewrite using `[hy]`. Conclude with `h1`. Rewrite `h3` using `[hu]`.
+
+Establish `h4 : a * c a ∈ x.asIdeal`. Establish `: algebraMap _ _ y ∈ x.asIdeal` using `h3`. Rewrite `this` using `[hy]`. Then use the resulting hypothesis. Break down `x.isPrime.mem_or_mem h4 with h5 | h5` into its components or cases. Conclude with `h5`.
+
+Rewrite using `[← heq]`. Conclude with `h5`. Conclude with `hne (HeightOneSpectrum.ext (u.isMaximal.eq_of_le x.isPrime.ne_top hle))`.
+-/
 theorem comap_conj_ne (K : Type) [Field K] [NumberField K] [IsCMField K] (x : HeightOneSpectrum (𝓞 K))
     (hx : GlobalTheory.UnitaryBC.IsSplitAt x) :
     x.asIdeal.comap ((IsCMField.ringOfIntegersComplexConj K : 𝓞 K ≃ₐ[𝓞 (maximalRealSubfield K)] 𝓞 K) :
@@ -50,6 +64,17 @@ theorem comap_conj_ne (K : Type) [Field K] [NumberField K] [IsCMField K] (x : He
     · rw [← heq]; exact h5
   exact hne (HeightOneSpectrum.ext (u.isMaximal.eq_of_le x.isPrime.ne_top hle))
 
+/- English proof (translation)
+Introduce `hxx hx`. Use `set c := IsCMField.ringOfIntegersComplexConj K`. Use `set c' := IsCMField.ringOfIntegersComplexConj K'`. Establish `hcomm : ∀ a : 𝓞 K, c' (algebraMap (𝓞 K) (𝓞 K') a) = algebraMap (𝓞 K) (𝓞 K') (c a)` using `fun a => by`. Use `ext`.
+
+Conclude with `complexConj_algebraMap K K' (a : K)`. Use `haveI := x'.isPrime`. Establish `hbot : x'.asIdeal.comap (c' : 𝓞 K' →+* 𝓞 K') ≠ ⊥`. Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot x'.ne_bot`. Introduce `h0`.
+
+Establish `: c'.symm b ∈ x'.asIdeal.comap (c' : 𝓞 K' →+* 𝓞 K')` using `by show c' (c'.symm b) ∈ x'.asIdeal`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `hb`. Rewrite `this` using `[h0, Ideal.mem_bot]`. Conclude with `hb0 (by simpa using congrArg c' this)`.
+
+Use `⟨⟨x'.asIdeal.comap (c' : 𝓞 K' →+* 𝓞 K'), Ideal.comap_isPrime _ _, hbot⟩, fun heq => ?_, ?_⟩` and prove the remaining obligations. Apply `comap_conj_ne K x hx` to reduce the goal to its premises. Establish `heq' : x'.asIdeal.comap (c' : 𝓞 K' →+* 𝓞 K') = x'.asIdeal` using `congrArg HeightOneSpectrum.asIdeal heq`. Use extensionality with `a`. Rewrite using `[← hxx]`.
+
+Use `show algebraMap (𝓞 K) (𝓞 K') (c a) ∈ x'.asIdeal ↔ algebraMap (𝓞 K) (𝓞 K') a ∈ x'.asIdeal`. Rewrite using `[← hcomm]`. Conclude with `Ideal.ext_iff.1 heq' _`. Use extensionality with `b show c' (algebraMap _ _ b) ∈ x'.asIdeal ↔ algebraMap _ _ b ∈ x'.asIdeal`. Rewrite using `[AlgEquiv.commutes]`.
+-/
 theorem isSplitAt_of_under (K K' : Type) [Field K] [NumberField K] [IsCMField K] [Field K'] [NumberField K']
     [IsCMField K'] [Algebra K K'] (x : HeightOneSpectrum (𝓞 K)) (x' : HeightOneSpectrum (𝓞 K')) :
     x'.under (𝓞 K) = x → GlobalTheory.UnitaryBC.IsSplitAt x → GlobalTheory.UnitaryBC.IsSplitAt x' := by

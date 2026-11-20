@@ -7,6 +7,27 @@ open Submodule Module
 
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
 
+/- English proof (translation)
+Establish `key : ∀ (m : ℕ) (y : Fin m → V) (c : Fin m → ℝ), ∃ n : Fin m → ℤ, ‖∑ i, (c i - (n i : ℝ)) • y i‖ ^ 2 ≤ (1 / 4) * ∑ i, ‖y i‖ ^ 2`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro y c; exact ⟨fun i => i.elim0, by simp⟩`. Consider the case `succ m ih`.
+
+Introduce `y c`. Take `⟨n, hn⟩` from `ih (fun i => y i.castSucc) (fun i => c i.castSucc)`. Use `set u := ∑ i : Fin m, (c i.castSucc - (n i : ℝ)) • y i.castSucc with hu`. Use `set w := y (Fin.last m) with hw`. Use `set f := Int.fract (c (Fin.last m)) with hfd`.
+
+Establish `hf0 : 0 ≤ f` using `Int.fract_nonneg _`. Establish `hf1 : f < 1` using `Int.fract_lt_one _`. Establish `havg : (1 - f) * ‖u + f • w‖ ^ 2 + f * ‖u + (f - 1) • w‖ ^ 2 = ‖u‖ ^ 2 + f * (1 - f) * ‖w‖ ^ 2`. Rewrite using `[norm_add_sq_real, norm_add_sq_real, norm_smul, norm_smul, real_inner_smul_right, real_inner_smul_right, Real.norm_eq_abs, Real.norm_eq_abs, mul_pow, mul_pow, sq_abs, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hq : f * (1 - f) ≤ 1 / 4` using `by nlinarith [sq_nonneg (f - 1 / 2)]`. Establish `hbound : ‖u‖ ^ 2 + f * (1 - f) * ‖w‖ ^ 2 ≤ (1 / 4) * ∑ i, ‖y i‖ ^ 2`. Rewrite using `[Fin.sum_univ_castSucc]`. Establish `h1` using `mul_le_mul_of_nonneg_right hq (sq_nonneg ‖w‖)`. Use polynomial arithmetic with `[hn]`.
+
+Establish `hsplit : ∀ N : ℤ, ∑ i, (c i - ((Fin.snoc (α` using `fun _ => ℤ) n N i : ℤ) : ℝ)) • y i = u + (c (Fin.last m) - (N : ℝ)) • w := by`. Introduce `N`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last, hu, hw]`. Distinguish the cases in `hc : ‖u + f • w‖ ^ 2 ≤ ‖u + (f - 1) • w‖ ^ 2`.
+
+Use `⟨Fin.snoc (α := fun _ => ℤ) n ⌊c (Fin.last m)⌋, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, ← Int.fract]`. Use polynomial arithmetic with `[mul_nonneg hf0 (sub_nonneg.mpr hc)]`. Use `⟨Fin.snoc (α := fun _ => ℤ) n (⌊c (Fin.last m)⌋ + 1), ?_⟩` and prove the remaining obligations. Establish `e : c (Fin.last m) - (((⌊c (Fin.last m)⌋ + 1 : ℤ)) : ℝ) = f - 1`.
+
+Rewrite using `[hfd, Int.fract]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, e]`. Use `push_neg at hc`.
+
+Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr hf1.le) (sub_nonneg.mpr hc.le)]`. Introduce `m y v hv`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℝ).mp hv`. Take `⟨n, hn⟩` from `key m y c`. Use `⟨∑ i, (n i) • y i, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩), ?_⟩` and prove the remaining obligations.
+
+Establish `e : v - ∑ i, (n i) • y i = ∑ i, (c i - (n i : ℝ)) • y i`. Rewrite using `[← hc, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sub_smul, Int.cast_smul_eq_zsmul]`. Rewrite using `[e]`.
+
+Conclude with `hn`.
+-/
 theorem babai : ∀ (m : ℕ) (y : Fin m → V) (v : V), v ∈ span ℝ (Set.range y) →
     ∃ x ∈ span ℤ (Set.range y), ‖v - x‖ ^ 2 ≤ (1 / 4) * ∑ i, ‖y i‖ ^ 2 := by
   have key : ∀ (m : ℕ) (y : Fin m → V) (c : Fin m → ℝ), ∃ n : Fin m → ℤ,
@@ -60,6 +81,31 @@ theorem babai : ∀ (m : ℕ) (y : Fin m → V) (v : V), v ∈ span ℝ (Set.ran
   rw [e]
   exact hn
 
+/- English proof (translation)
+Use `set n := finrank ℝ V with hn`. Establish `hcard : Fintype.card ι = n` using `(finrank_eq_card_basis b).symm`. Establish `hli : LinearIndependent ℝ bd`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+
+Use `congrArg (inner ℝ (b i)) hg` as an intermediate fact. Simplify `this` using `[inner_sum, real_inner_smul_right, hd]`. Set `Bd : Basis ι ℝ V` to `Basis.mk hli (hli.span_eq_top_of_card_eq_finrank' hcard).ge`. Establish `hBd : ∀ i, Bd i = bd i` using `fun i => Basis.mk_apply _ _ _`. Set `e : ι ≃ Fin n` to `Fintype.equivFinOfCardEq hcard`.
+
+Set `φ : V ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin n)` to `(stdOrthonormalBasis ℝ V).repr`. Set `B' : Basis (Fin n) ℝ (EuclideanSpace ℝ (Fin n))` to `(Bd.reindex e).map φ.toLinearEquiv`. Establish `hB' : ∀ j, B' j = φ (bd (e.symm j))` using `fun j => by simp [B', hBd]`. Establish `hmin' : ∀ x ∈ span ℤ (Set.range B'), x ≠ 0 → lam ≤ ‖x‖`. Introduce `x hx hx0`.
+
+Take `⟨c, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 hx`. Establish `hw : (∑ i, c i • B' i) = φ (∑ i, c i • bd (e.symm i))`. Simplify using `[hB', map_sum, map_zsmul]`. Establish `hwmem : (∑ i, c i • bd (e.symm i)) ∈ span ℤ (Set.range bd)` using `sum_mem fun i _ => zsmul_mem (subset_span (Set.mem_range_self _)) _`. Rewrite using `[hw, LinearIsometryEquiv.norm_map]`.
+
+Use `hmin _ hwmem ?_` and prove the remaining obligations. Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[hw, h0, map_zero]`. Take `⟨y, hyli, hyint, hynorm⟩` from `ReciprocityTheory.ChartRestriction.G.T0.transference_dual B' lam hlam hmin'`.
+
+Set `yV : Fin n → V` to `fun i => φ.symm (y i)`. Establish `hyVint : ∀ i k, ∃ m : ℤ, inner ℝ (yV i) (bd k) = m`. Introduce `i k`. Take `⟨m, hm⟩` from `hyint i (e k)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hm, hB', Equiv.symm_apply_apply, ← LinearIsometryEquiv.inner_map_map φ]`. Simplify using `[yV]`. Establish `hyVmem : ∀ i, yV i ∈ span ℤ (Set.range b)`. Introduce `i`. Establish `hrep : ∀ k, b.repr (yV i) k = inner ℝ (yV i) (bd k)`.
+
+Introduce `k`. Establish `h : inner ℝ (yV i) (bd k) = ∑ l, b.repr (yV i) l * inner ℝ (b l) (bd k)` using `by conv_lhs => rw [← b.sum_repr (yV i)]`. Rewrite using `[sum_inner]`. Repeatedly rewrite using `[real_inner_smul_left]`. Rewrite using `[h]`.
+
+Simplify using `[hd]`. Rewrite using `[← b.sum_repr (yV i)]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hyVint i k`. Rewrite using `[hrep, hm, Int.cast_smul_eq_zsmul]`.
+
+Conclude with `zsmul_mem (subset_span (Set.mem_range_self k)) m`. Establish `hyVli : LinearIndependent ℝ yV` using `hyli.map' φ.symm.toLinearEquiv.toLinearMap φ.symm.toLinearEquiv.ker`. Establish `hspan : span ℝ (Set.range yV) = ⊤` using `hyVli.span_eq_top_of_card_eq_finrank' (by simp [n])`. Take `⟨x, hx, hxb⟩` from `babai n yV v (hspan ▸ mem_top)`. Use `⟨x, span_le.2 (by rintro _ ⟨i, rfl⟩; exact hyVmem i) hx, hxb.trans ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: ‖yV i‖ = ‖y i‖` using `by simp [yV]`. Rewrite using `[this]`. Conclude with `hynorm i`. Use `_ = (n : ℝ) / 4 * ((n : ℝ) ^ 2 / lam) ^ 2 := by`.
+
+Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cover {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Basis ι ℝ V) (bd : ι → V)
     (hd : ∀ i j, inner ℝ (b i) (bd j) = if i = j then 1 else 0) (lam : ℝ) (hlam : 0 < lam)
     (hmin : ∀ x ∈ span ℤ (Set.range bd), x ≠ 0 → lam ≤ ‖x‖) (v : V) :

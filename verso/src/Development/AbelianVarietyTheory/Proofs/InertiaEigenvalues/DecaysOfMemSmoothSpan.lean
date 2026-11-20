@@ -20,11 +20,21 @@ namespace GlobalTheory.ShortVecDecay
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun w => ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)).comp continuous_fst`.
+-/
 theorem continuous_pInf : Continuous (pInf E) :=
   continuous_pi fun w =>
     ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
       (continuous_apply w)).comp continuous_fst
 
+/- English proof (translation)
+Establish `hc : Continuous fun p : Cinf E × Af E => (((infEq E p.1, p.2) : InfiniteAdeleRing E × Af E) : Ad E)` using `((continuous_infEq E).comp continuous_fst).prodMk continuous_snd`. Establish `hD` using `((isCompact_closedBall (0 : Cinf E) 1).prod hT).image hc`. Establish `hS` using `((finite_setOf_algebraMap_mem (K := E) hD).inter_of_left {x | x ≠ 0}).image fun x => ‖pInf E (algebraMap E (Ad E) x)‖`. Take `⟨m, M, hm, -, h⟩` from `exists_pos_bounds hS.isCompact continuous_id (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `norm_pos_iff.2 ((map_ne_zero ((pInf E).comp (algebraMap E (Ad E)))).2 hx.2))`. Use `⟨min m 1, lt_min hm one_pos, fun x hx hxT => ?_⟩` and prove the remaining obligations. Break down `le_total ‖pInf E (algebraMap E (Ad E) x)‖ 1 with h1 | h1` into its components or cases. Use `(min_le_left _ _).trans (h _ ⟨x, ⟨⟨(pInf E (algebraMap E (Ad E) x), pFin E (algebraMap E (Ad E) x)), ⟨by simpa using h1, hxT⟩, ?_⟩, hx⟩, rfl⟩).1` and prove the remaining obligations. Conclude with `Prod.ext ((infEq E).apply_symm_apply _) rfl`.
+
+Conclude with `(min_le_right _ _).trans h1`.
+-/
 theorem exists_le_norm_pInf {T : Set (Af E)} (hT : IsCompact T) :
     ∃ ε : ℝ, 0 < ε ∧ ∀ x : E, x ≠ 0 → pFin E (algebraMap E (Ad E) x) ∈ T → ε ≤ ‖pInf E (algebraMap E (Ad E) x)‖ := by
   have hc : Continuous fun p : Cinf E × Af E => (((infEq E p.1, p.2) : InfiniteAdeleRing E × Af E) : Ad E) :=
@@ -42,6 +52,11 @@ theorem exists_le_norm_pInf {T : Set (Af E)} (hT : IsCompact T) :
     exact Prod.ext ((infEq E).apply_symm_apply _) rfl
   · exact (min_le_right _ _).trans h1
 
+/- English proof (translation)
+Establish `hc : Continuous fun y : GA E a => toL (y.val.map (pInf E))` using `(Units.continuous_val.matrix_map continuous_pInf : Continuous fun y : GA E a => y.val.map (pInf E))`. Take `⟨B, hB⟩` from `hκ.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨a * |B| + 1, by positivity, fun y hy x => ?_⟩` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Simplify using `only [vecMul, dotProduct, map_sum, map_mul]`.
+
+Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ (‖fun i => pInf E (x i)‖ * |B|) fun j _ => ?_).trans ?_)` and prove the remaining obligations. Use `(norm_mul_le _ _).trans (mul_le_mul (norm_le_pi_norm (fun i => pInf E (x i)) j) ?_ (norm_nonneg _) (norm_nonneg _))` and prove the remaining obligations. Conclude with `(((norm_le_pi_norm (toL (y.val.map (pInf E)) j) i).trans (norm_le_pi_norm (toL (y.val.map (pInf E))) j)).trans (hB y hy)).trans (le_abs_self B)`. Simplify using `only [Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use polynomial arithmetic with `[norm_nonneg fun i => pInf E (x i)]`.
+-/
 theorem exists_norm_vecMul_le {κ : Set (GA E a)} (hκ : IsCompact κ) :
     ∃ M : ℝ, 0 < M ∧ ∀ y ∈ κ, ∀ x : Fin a → Ad E,
       ‖fun i => pInf E ((x ᵥ* y.val) i)‖ ≤ M * ‖fun i => pInf E (x i)‖ := by
@@ -61,6 +76,9 @@ theorem exists_norm_vecMul_le {κ : Set (GA E a)} (hκ : IsCompact κ) :
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `hc : Continuous fun p : (Fin a → Af E) × GA E a => p.1 ᵥ* p.2.val.map (pFin E)` using `continuous_fst.matrix_vecMul ((Units.continuous_val.comp continuous_snd).matrix_map (continuous_snd : Continuous (pFin E)))`. Use `⟨_, (hL.prod hκ).image hc, fun y hy x hx => ⟨(_, y), ⟨hx, hy⟩, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[vecMul, dotProduct]`.
+-/
 theorem exists_isCompact_vecMul {κ : Set (GA E a)} (hκ : IsCompact κ) {L : Set (Fin a → Af E)} (hL : IsCompact L) :
     ∃ L' : Set (Fin a → Af E), IsCompact L' ∧ ∀ y ∈ κ, ∀ x : Fin a → Ad E,
       (fun i => pFin E (x i)) ∈ L → (fun i => pFin E ((x ᵥ* y.val) i)) ∈ L' := by
@@ -71,6 +89,9 @@ theorem exists_isCompact_vecMul {κ : Set (GA E a)} (hκ : IsCompact κ) {L : Se
   funext i
   simp [vecMul, dotProduct]
 
+/- English proof (translation)
+Use `Eq.trans ?_ (norm_posIdele_infinite (K := E) ρ hρ w)` and prove the remaining obligations. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _)`.
+-/
 theorem norm_pInf_posIdele {ρ : ℝ} (hρ : 0 < ρ) (w : InfinitePlace E) :
     ‖pInf E (posIdele (K := E) ρ hρ).val w‖ = ρ := by
   refine Eq.trans ?_ (norm_posIdele_infinite (K := E) ρ hρ w)
@@ -78,6 +99,9 @@ theorem norm_pInf_posIdele {ρ : ℝ} (hρ : 0 < ρ) (w : InfinitePlace E) :
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h : pFin E (posIdele (K` using `E) (r i) (hr i)).val = 1 := IsDedekindDomain.FiniteAdeleRing.ext _ fun v => posIdele_finite _ _ v`. Rewrite using `[coe_diagUnits, vecMul_diagonal, map_mul, h, mul_one]`.
+-/
 theorem pFin_vecMul_diag (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) (x : Fin a → Ad E) :
     (fun i => pFin E ((x ᵥ* (diagUnits a fun i => posIdele (K := E) (r i) (hr i)).val) i)) = fun i => pFin E (x i) := by
   funext i
@@ -85,6 +109,11 @@ theorem pFin_vecMul_diag (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) (x : Fin a �
     IsDedekindDomain.FiniteAdeleRing.ext _ fun v => posIdele_finite _ _ v
   rw [coe_diagUnits, vecMul_diagonal, map_mul, h, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← le_div_iff₀' hρ]`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hρ]`. Use `le_trans ?_ ((norm_le_pi_norm _ w).trans (norm_le_pi_norm (fun i => pInf E ((x ᵥ* (diagUnits a fun i => posIdele (K := E) (r i) (hr i)).val) i)) i))` and prove the remaining obligations. Rewrite using `[coe_diagUnits, vecMul_diagonal, map_mul, Pi.mul_apply, norm_mul, norm_pInf_posIdele]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (h i) (norm_nonneg _)`.
+-/
 theorem le_norm_vecMul_diag (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) {ρ : ℝ} (hρ : 0 < ρ) (h : ∀ i, ρ ≤ r i)
     (x : Fin a → Ad E) : ρ * ‖fun i => pInf E (x i)‖ ≤
       ‖fun i => pInf E ((x ᵥ* (diagUnits a fun i => posIdele (K := E) (r i) (hr i)).val) i)‖ := by
@@ -96,6 +125,17 @@ theorem le_norm_vecMul_diag (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) {ρ : ℝ}
   rw [coe_diagUnits, vecMul_diagonal, map_mul, Pi.mul_apply, norm_mul, norm_pInf_posIdele]
   exact mul_le_mul_of_nonneg_left (h i) (norm_nonneg _)
 
+/- English proof (translation)
+Take `⟨M₁, hM₁, h₁⟩` from `exists_norm_vecMul_le hκ.inv`. Take `⟨M₂, hM₂, h₂⟩` from `exists_norm_vecMul_le hω.inv`. Take `⟨L₁, hL₁, g₁⟩` from `exists_isCompact_vecMul hκ.inv hL`. Take `⟨L₂, hL₂, g₂⟩` from `exists_isCompact_vecMul hω.inv hL₁`. Take `⟨ε, hε, hT⟩` from `exists_le_norm_pInf (isCompact_iUnion fun i : Fin a => hL₂.image (continuous_apply i))`.
+
+Use `⟨ε / (M₁ * M₂), by positivity, fun b hb k hk r hr ρ hρ hρr η hη x hx hxL => ?_⟩` and prove the remaining obligations. Use `set D := diagUnits a fun i => posIdele (K := E) (r i) (hr i) with hD`. Use `set u₀ : Fin a → Ad E := fun j => algebraMap E (Ad E) (η j) with hu₀`. Establish `e₂ : x ᵥ* (k⁻¹).val = (u₀ ᵥ* b.val) ᵥ* D.val`. Rewrite using `[hx, vecMul_vecMul, vecMul_vecMul, ← Units.val_mul, ← Units.val_mul, mul_inv_cancel_right]`.
+
+Establish `e₀ : (u₀ ᵥ* b.val) ᵥ* (b⁻¹).val = u₀`. Rewrite using `[vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`. Establish `f₂` using `g₁ k⁻¹ (Set.inv_mem_inv.2 hk) x hxL`. Rewrite `f₂` using `[e₂, pFin_vecMul_diag]`. Establish `f₀` using `g₂ b⁻¹ (Set.inv_mem_inv.2 hb) _ f₂`.
+
+Establish `n₂` using `h₁ k⁻¹ (Set.inv_mem_inv.2 hk) x`. Establish `n₀` using `h₂ b⁻¹ (Set.inv_mem_inv.2 hb) (u₀ ᵥ* b.val)`. Establish `n₁` using `le_norm_vecMul_diag r hr hρ hρr (u₀ ᵥ* b.val)`. Rewrite `f₀`, `n₀` using `[e₀]`. Rewrite `n₂` using `[e₂]`.
+
+Take `⟨i, hi⟩` from `Function.ne_iff.1 hη`. Establish `n` using `(hT (η i) hi (Set.mem_iUnion.2 ⟨i, _, f₀, rfl⟩)).trans (norm_le_pi_norm (fun i => pInf E (u₀ i)) i)`. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_le_norm_vecMul {ω κ : Set (GA E a)} (hω : IsCompact ω) (hκ : IsCompact κ) {L : Set (Fin a → Af E)}
     (hL : IsCompact L) : ∃ δ : ℝ, 0 < δ ∧ ∀ b ∈ ω, ∀ k ∈ κ, ∀ (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) (ρ : ℝ), 0 < ρ →
       (∀ i, ρ ≤ r i) → ∀ η : Fin a → E, η ≠ 0 → ∀ x : Fin a → Ad E,
@@ -138,6 +178,11 @@ def Decays (F : GA E a → ℂ) : Prop :=
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use `choose u hu hu1 using h`. Establish `e : GeneralLinearGroup.det b = ∏ i, u i`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GeneralLinearGroup.val_det_apply, det_of_isUpperTriangular (mem_adelicBorel.1 hb), Units.coe_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => hu i`.
+
+Rewrite using `[e, map_prod, coe_finset_prod_pos]`. Conclude with `Finset.prod_eq_one fun i _ => hu1 i`.
+-/
 theorem ideleModule_det_eq_one {b : GA E a} (hb : b ∈ adelicBorel (K := E) (n := a))
     (h : ∀ i, ∃ u : IdeleGroup E, b.val i i = u ∧ (ideleModule E u : ℝ) = 1) :
     (ideleModule E (GeneralLinearGroup.det b) : ℝ) = 1 := by
@@ -151,6 +196,9 @@ theorem ideleModule_det_eq_one {b : GA E a} (hb : b ∈ adelicBorel (K := E) (n 
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `h : GeneralLinearGroup.det (ratGL E a γ) = IdeleGroup.diagonal E (GeneralLinearGroup.det γ)`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[IdeleGroup.coe_diagonal, ratGL, ← det_map (algebraMap E (Ad E)) γ]`. Rewrite using `[h]`. Conclude with `ideleModule_diagonal _`.
+-/
 theorem ideleModule_det_rat (γ : GL (Fin a) E) : ideleModule E (GeneralLinearGroup.det (ratGL E a γ)) = 1 := by
   have h : GeneralLinearGroup.det (ratGL E a γ) = IdeleGroup.diagonal E (GeneralLinearGroup.det γ) := by
     refine Units.ext ?_
@@ -158,6 +206,35 @@ theorem ideleModule_det_rat (γ : GL (Fin a) E) : ideleModule E (GeneralLinearGr
   rw [h]
   exact ideleModule_diagonal _
 
+/- English proof (translation)
+Introduce `L hL C₀ hC₀ N`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Conclude with `⟨0, fun g c _ ξ hξ => (hξ (Subsingleton.elim _ _)).elim⟩`. Take `⟨ω, hω, hωB, hω1, t, ht, hsieg⟩` from `GlobalTheory.SiegelDiagNormOne.exists_siegelSet_diag_normOne E a`. Use `set d : ℕ := Module.finrank ℚ E with hd`.
+
+Establish `hdet : ∀ b ∈ ω, (ideleModule E (GeneralLinearGroup.det b) : ℝ) = 1` using `fun b hb => ideleModule_det_eq_one (hωB hb) (hω1 b hb)`. Establish `hRD` using `fun i : Fin a => GlobalTheory.cuspRapidDecaySiegelGL_of_finite GlobalTheory.automorphicFormsFiniteGL E a φ hφ ω hω hωB hdet t ht (Pi.single i ((a * d * N : ℕ) : ℝ))`. Use `choose C hC using hRD`. Take `⟨δ, hδ, hgeo⟩` from `exists_le_norm_vecMul hω ((isCompact_maxCompact (K := E) (n := a)).mul hC₀.inv) hL`. Take `⟨m, M, hm, -, hmM⟩` from `exists_pos_bounds hC₀ (f := fun c => (ideleModule E (GeneralLinearGroup.det c) : ℝ)) (continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det E a))) (fun c _ => (ideleModule E _).2)`.
+
+Use `⟨(∑ i, |C i|) * ((δ ^ (a * d) * m)⁻¹) ^ N, fun g c hc ξ hξ hξL => ?_⟩` and prove the remaining obligations. Take `⟨γ, b, hb, _, ⟨r, hr, hrat, rfl⟩, k, hk, e⟩` from `hsieg (g * c)`. Use `replace e : ratGL E a γ * (g * c) = b * diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) * k := e`. Establish `hprod : 0 < ∏ i, r i` using `Finset.prod_pos fun i _ => hr i`. Use `set ρ := (∏ i, r i) ^ ((a : ℝ)⁻¹) with hρ`.
+
+Establish `hρpos : 0 < ρ` using `Real.rpow_pos_of_pos hprod _`. Establish `hρa : ρ ^ a = ∏ i, r i` using `Real.rpow_inv_natCast_pow hprod.le ha.ne'`. Use `set r' : Fin a → ℝ := fun i => r i / ρ with hr'`. Establish `hr'pos : ∀ i, 0 < r' i` using `fun i => div_pos (hr i) hρpos`. Establish `hD : diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) = diagUnits a (fun _ : Fin a => posIdele (K := E) ρ hρpos) * diagUnits a (fun i => posIdele (K := E) (r' i) (hr'pos i)) := by`.
+
+Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.mul_apply, ← GlobalTheory.CuspBoundSiegel.posIdele_mul]`. Conclude with `GlobalTheory.CuspBoundSiegel.posIdele_congr _ _ (by simp only [hr']; field_simp)`.
+
+Establish `key : ratGL E a γ * (g * c) = splitCentre E a (Real.log ρ) * (b * diagUnits a (fun i => posIdele (K` using `E) (r' i) (hr'pos i)) * k) := by`. Rewrite using `[e, hD, GlobalTheory.CuspBoundSiegel.diagUnits_posIdele a hρpos, ← mul_assoc b, ← splitCentre_comm]`. Simplify using `only [mul_assoc]`. Use `haveI : Nonempty (Fin a) := ⟨⟨0, ha⟩⟩`. Take `⟨i₀, hi₀⟩` from `Finite.exists_min r`.
+
+Establish `h1 : ‖φ.1 (g * c)‖ ≤ (∑ i, |C i|) * (r' i₀ ^ (a * d)) ^ N`. Rewrite using `[← hφ.1.left γ, key, hA]`. Use `(hC i₀ b hb r' hr'pos (fun i j hij => by` and prove the remaining obligations. Simplify using `only [hr']`. Rewrite using `[← mul_div_assoc]`.
+
+Conclude with `div_le_div_of_nonneg_right (hrat i j hij) hρpos.le) (by`. Simplify using `only [hr']`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hρa, div_self hprod.ne']) k hk).trans ?_`. Rewrite using `[Finset.prod_eq_single i₀ (fun j _ hj => by rw [Pi.single_eq_of_ne hj, Real.rpow_zero]) (by simp), Pi.single_eq_same, Real.rpow_natCast, ← pow_mul]`. Conclude with `mul_le_mul_of_nonneg_right ((le_abs_self _).trans (Finset.single_le_sum (f := fun i => |C i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i₀))) (pow_nonneg (hr'pos i₀).le _)`.
+
+Establish `eg : g = ratGL E a γ⁻¹ * (b * diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) * (k * c⁻¹)) := by`. Rewrite using `[← mul_assoc _ k, ← e, map_inv]`. Use `group`. Establish `hη : ξ ᵥ* (γ⁻¹).val ≠ 0` using `fun h => hξ (by`. Use `congrArg (· ᵥ* γ.val) h` as an intermediate fact.
+
+Simplify `this)` using `only [vecMul_vecMul, ← Units.val_mul, inv_mul_cancel, Units.val_one, vecMul_one, zero_vecMul]`. Establish `h2` using `hgeo b hb (k * c⁻¹) (Set.mul_mem_mul hk (Set.inv_mem_inv.2 hc)) r hr (r i₀) (hr i₀) hi₀ _ hη _ (by conv_lhs => rw [eg, Units.val_mul, ← vecMul_vecMul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `((algebraMap E (Ad E)).map_vecMul (γ⁻¹).val ξ j).symm) hξL`.
+
+Establish `h3 : (ideleModule E (GeneralLinearGroup.det g) : ℝ) * (ideleModule E (GeneralLinearGroup.det c) : ℝ) = ρ ^ (a * d)`. Establish `h` using `det_mul_mul b (diagUnits a fun i => posIdele (K := E) (r i) (hr i)) k`. Rewrite `h` using `[ideleModule_det_diagUnits_posIdele r hr, mem_normOneGL.1 (maxCompact_le_normOneGL hk), mul_one, ← e]`. Establish `hγ` using `ideleModule_det_rat γ`. Use `replace h : (ideleModule E (GeneralLinearGroup.det (ratGL E a γ * (g * c))) : ℝ) = (ideleModule E (GeneralLinearGroup.det b) : ℝ) * (∏ i, r i) ^ d := h`.
+
+Rewrite `h` using `[map_mul, map_mul, hγ, one_mul, map_mul, map_mul, Positive.val_mul, hdet b hb, one_mul]`. Rewrite using `[h, pow_mul, hρa]`. Use `set X := ‖fun i => pInf E (((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val) i)‖ with hX`. Use `set G : ℝ := (ideleModule E (GeneralLinearGroup.det g) : ℝ) with hG`. Establish `hGpos : 0 < G` using `(ideleModule E _).2`.
+
+Establish `h4 : r' i₀ ^ (a * d) ≤ (δ ^ (a * d) * m)⁻¹ * (X ^ (a * d) / G)`. Establish `h5 : (δ * r i₀) ^ (a * d) ≤ X ^ (a * d)` using `pow_le_pow_left₀ (mul_pos hδ (hr i₀)).le h2 _`. Establish `h6 : G * m ≤ ρ ^ (a * d)` using `h3 ▸ mul_le_mul_of_nonneg_left (hmM c hc).1 hGpos.le`. Establish `hri` using `hr i₀`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (pow_nonneg (hr'pos i₀).le _) h4 N) (Finset.sum_nonneg fun _ _ => abs_nonneg _)`.
+-/
 theorem decays_of_isCuspForm {φ : Sm E a} (hφ : IsCuspForm φ)
     (hA : ∀ (t : ℝ) (g : GA E a), ‖φ.1 (splitCentre E a t * g)‖ = ‖φ.1 g‖) : Decays φ.1 := by
   intro L hL C₀ hC₀ N
@@ -249,6 +326,11 @@ theorem decays_of_isCuspForm {φ : Sm E a} (hφ : IsCuspForm φ)
   exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (pow_nonneg (hr'pos i₀).le _) h4 N)
     (Finset.sum_nonneg fun _ _ => abs_nonneg _)
 
+/- English proof (translation)
+Take `⟨ω, hω, hc⟩` from `hπ`. Use `decays_of_isCuspForm (π.cusp φ hφ) fun t g => ?_` and prove the remaining obligations. Rewrite using `[splitCentre_comm, splitCentre_eq_scalar]`. Establish `h` using `congrFun (congrArg Subtype.val (hc (infId E (expU fun _ => (t : ℂ))) φ hφ)) g`. Use `(congrArg norm h).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `‖_ * φ.1 g‖ = _`. Rewrite using `[norm_mul, hω, one_mul]`.
+-/
 theorem decays_of_mem {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a} (hφ : φ ∈ π.V) : Decays φ.1 := by
   obtain ⟨ω, hω, hc⟩ := hπ
   refine decays_of_isCuspForm (π.cusp φ hφ) fun t g => ?_
@@ -258,13 +340,22 @@ theorem decays_of_mem {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a} (hφ
   change ‖_ * φ.1 g‖ = _
   rw [norm_mul, hω, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hφ`. Consider the case `cons X l ih => exact π.stable (.lie X) _ ih`.
+-/
 theorem word_mem {π : CuspSub E a} (l : List (Lie E a)) {φ : Sm E a} (hφ : φ ∈ π.V) : GlobalTheory.GLFin.word l φ ∈ π.V := by
   induction l with
   | nil => exact hφ
   | cons X l ih => exact π.stable (.lie X) _ ih
 
+/- English proof (translation)
+Introduce `_ _ _ _ _` and use `⟨0, fun _ _ _ _ _ _ => by simp⟩`.
+-/
 theorem Decays.zero : Decays (0 : GA E a → ℂ) := fun _ _ _ _ _ => ⟨0, fun _ _ _ _ _ _ => by simp⟩
 
+/- English proof (translation)
+Introduce `L hL C₀ hC₀ N` and use `by obtain ⟨C, h⟩ := hF L hL C₀ hC₀ N obtain ⟨C', h'⟩ := hG L hL C₀ hC₀ N refine ⟨C + C', fun g c hc ξ hξ hm => ?_⟩ rw [add_mul] exact (norm_add_le _ _).trans (add_le_add (h g c hc ξ hξ hm) (h' g c hc ξ hξ hm))`.
+-/
 theorem Decays.add {F G : GA E a → ℂ} (hF : Decays F) (hG : Decays G) : Decays (F + G) := fun L hL C₀ hC₀ N => by
   obtain ⟨C, h⟩ := hF L hL C₀ hC₀ N
   obtain ⟨C', h'⟩ := hG L hL C₀ hC₀ N
@@ -272,12 +363,24 @@ theorem Decays.add {F G : GA E a → ℂ} (hF : Decays F) (hG : Decays G) : Deca
   rw [add_mul]
   exact (norm_add_le _ _).trans (add_le_add (h g c hc ξ hξ hm) (h' g c hc ξ hξ hm))
 
+/- English proof (translation)
+Introduce `L hL C₀ hC₀ N` and use `by obtain ⟨C, h⟩ := hF L hL C₀ hC₀ N refine ⟨‖z‖ * C, fun g c hc ξ hξ hm => ?_⟩ rw [mul_assoc] exact (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left (h g c hc ξ hξ hm) (norm_nonneg _))`.
+-/
 theorem Decays.smul {F : GA E a → ℂ} (hF : Decays F) (z : ℂ) : Decays (z • F) := fun L hL C₀ hC₀ N => by
   obtain ⟨C, h⟩ := hF L hL C₀ hC₀ N
   refine ⟨‖z‖ * C, fun g c hc ξ hξ hm => ?_⟩
   rw [mul_assoc]
   exact (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left (h g c hc ξ hξ hm) (norm_nonneg _))
 
+/- English proof (translation)
+Introduce `L hL C₀ hC₀ N`. Establish `hK : IsCompact ((fun y : GL (Fin a) (Cinf E) => toL y.val) ⁻¹' tsupport f)` using `GlobalTheory.CuspQuot.isOpenEmbedding_val.isInducing.isCompact_preimage' hc fun x hx => hs hx`. Take `⟨C, h⟩` from `hF L hL _ (hC₀.mul (hK.image GlobalTheory.CuspQuot.continuous_infGL)) N`. Use `haveI : IsFiniteMeasureOnCompacts (volume : Measure (Fin a → Cinf E)) := inferInstance`. Use `haveI : SigmaFinite (volume : Measure (Fin a → Cinf E)) := inferInstance`.
+
+Use `haveI : IsFiniteMeasureOnCompacts (volume : Measure (Lie E a)) := MeasureTheory.Measure.pi.isFiniteMeasureOnCompacts _`. Establish `hi : Integrable f` using `hf.integrable_of_hasCompactSupport hc`. Use `⟨(∫ x, ‖f x‖) * C, fun g c hcC ξ hξ hm => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← integral_mul_const]`. Use `norm_integral_le_of_norm_le (hi.norm.mul_const _) (.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x ∈ tsupport f`. Take `⟨u, hu⟩` from `hs hx`. Take `rfl : x = toL u.val` from `hu.symm`. Rewrite using `[norm_mul, chart_val, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h g _ (Set.mul_mem_mul hcC ⟨u, hx, rfl⟩) ξ hξ hm) (norm_nonneg _)`.
+
+Simplify using `[image_eq_zero_of_notMem_tsupport hx]`.
+-/
 theorem Decays.smoothInf {F : GA E a → ℂ} (hF : Decays F) {f : Lie E a → ℂ} (hf : Continuous f)
     (hc : HasCompactSupport f) (hs : tsupport f ⊆ invSet E a) : Decays (GlobalTheory.JSW.smoothInf f F) := by
   intro L hL C₀ hC₀ N
@@ -299,6 +402,9 @@ theorem Decays.smoothInf {F : GA E a → ℂ} (hF : Decays F) {f : Lie E a → �
     exact mul_le_mul_of_nonneg_left (h g _ (Set.mul_mem_mul hcC ⟨u, hx, rfl⟩) ξ hξ hm) (norm_nonneg _)
   · simp [image_eq_zero_of_notMem_tsupport hx]
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 <| by rintro _ ⟨f, φ, hf, -, rfl⟩ exact GlobalTheory.AutGrowth.smoothing_mem_Sm E a volume f hf φ.1 φ.2`.
+-/
 theorem smoothSpan_le_Sm (π : CuspSub E a) : GlobalTheory.JSW.smoothSpan π ≤ Sm E a := Submodule.span_le.2 <| by
   rintro _ ⟨f, φ, hf, -, rfl⟩
   exact GlobalTheory.AutGrowth.smoothing_mem_Sm E a volume f hf φ.1 φ.2

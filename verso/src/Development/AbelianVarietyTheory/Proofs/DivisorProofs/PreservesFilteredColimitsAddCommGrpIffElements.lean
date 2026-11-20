@@ -8,6 +8,23 @@ instance forgetPreservesSmall :
     PreservesFilteredColimitsOfSize.{0, 0} (forget AddCommGrpCat.{1}) :=
   preservesFilteredColimitsOfSize_shrink.{0, 1, 0, 1} _
 
+/- English proof (translation)
+Introduce `T _ N`. Prove the components needed by the constructor for the conclusion. Introduce `hN J _ _ D c hc`. Establish `h1 : IsColimit (N.mapCocone c)` using `isColimitOfPreserves N hc`. Establish `h2 : IsColimit ((forget AddCommGrpCat.{1}).mapCocone (N.mapCocone c))` using `isColimitOfPreserves (forget AddCommGrpCat.{1}) h1`.
+
+Use `⟨fun x => ?_, fun j y hy => ?_⟩` and prove the remaining obligations. Take `⟨j, y, hy⟩` from `Types.jointly_surjective_of_isColimit h2 x`. Conclude with `⟨j, y, hy⟩`. Establish `h3` using `(Types.FilteredColimit.isColimit_eq_iff' h2 y 0).1 (by`. Express the relevant statement in the definitionally equal form `N.map (c.ι.app j) y = N.map (c.ι.app j) 0`.
+
+Rewrite using `[hy, map_zero])`. Take `⟨k, f, hf⟩` from `h3`. Use `⟨k, f, ?_⟩` and prove the remaining obligations. Establish `: N.map (D.map f) y = N.map (D.map f) 0` using `hf`. Rewrite using `[this, map_zero]`.
+
+Introduce `h`. Prove the components needed by the constructor for the conclusion. Introduce `J _ _`. Prove the components needed by the constructor for the conclusion. Introduce `D`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `c hc`. Take `⟨hs, hi⟩` from `h J D c hc`. Use `haveI : ReflectsColimit (D ⋙ N) (forget AddCommGrpCat.{1}) := reflectsColimit_of_reflectsIsomorphisms _ _`. Use `⟨isColimitOfReflects (forget AddCommGrpCat.{1}) ?_⟩` and prove the remaining obligations.
+
+Use `Types.FilteredColimit.isColimitOf' _ _ (fun x => ?_) (fun i (x y : N.obj (D.obj i)) hxy => ?_)` and prove the remaining obligations. Take `⟨j, y, hy⟩` from `hs x`. Conclude with `⟨j, y, hy.symm⟩`. Establish `hxy' : N.map (c.ι.app i) (x - y) = 0`. Establish `: (N.map (c.ι.app i)).hom x = (N.map (c.ι.app i)).hom y` using `hxy`.
+
+Express the relevant statement in the definitionally equal form `(N.map (c.ι.app i)).hom (x - y) = 0`. Rewrite using `[AddMonoidHom.map_sub, this, sub_self]`. Take `⟨k, f, hf⟩` from `hi i (x - y) hxy'`. Use `⟨k, f, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(N.map (D.map f)).hom x = (N.map (D.map f)).hom y`.
+
+Establish `hf' : (N.map (D.map f)).hom (x - y) = 0` using `hf`. Rewrite `hf'` using `[AddMonoidHom.map_sub, sub_eq_zero]`. Conclude with `hf'`.
+-/
 theorem preservesFilteredColimits_iff_elements :
     ∀ (T : Type 1) [Category.{0} T] (N : T ⥤ AddCommGrpCat.{1}), PreservesFilteredColimitsOfSize.{0, 0} N ↔ ∀ (J : Type) [SmallCategory J] [IsFiltered J] (D : J ⥤ T) (c : Cocone D), IsColimit c → (∀ x : N.obj c.pt, ∃ j y, N.map (c.ι.app j) y = x) ∧ ∀ j (y : N.obj (D.obj j)), N.map (c.ι.app j) y = 0 → ∃ (k : J) (f : j ⟶ k), N.map (D.map f) y = 0 := by
   intro T _ N

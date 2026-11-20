@@ -10,6 +10,11 @@ universe u
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨hq, hf⟩` from `hM`. Use `⟨(SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso e hq, fun U hU => ?_⟩` and prove the remaining obligations. Use `hf U hU` as an intermediate fact. Set `φ : Γ(M, U) →ₗ[Γ(X, U)] Γ(N, U)` to `{ toFun := e.hom.app U map_add' := map_add _ map_smul' := fun r m => Scheme.Modules.Hom.app_smul e.hom r m }`. Use `Module.Finite.of_surjective φ fun n => ⟨e.inv.app U n, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(e.inv ≫ e.hom).app U n = n`. Rewrite using `[e.inv_hom_id]`. Both sides reduce to the same expression.
+-/
 theorem IsCoherent.of_iso {X : Scheme.{u}} {M N : X.Modules} (e : M ≅ N) (hM : IsCoherent M) :
     IsCoherent N := by
   obtain ⟨hq, hf⟩ := hM
@@ -24,6 +29,9 @@ theorem IsCoherent.of_iso {X : Scheme.{u}} {M N : X.Modules} (e : M ≅ N) (hM :
   rw [e.inv_hom_id]
   rfl
 
+/- English proof (translation)
+The claim follows from `IsCoherent.of_iso ((Scheme.Modules.restrictFunctorIsoPullback f).app G).symm (isCoherent_pullback f hG)`.
+-/
 theorem IsCoherent.restrict {X U : Scheme.{u}} (f : U ⟶ X) [IsOpenImmersion f] {G : X.Modules}
     (hG : IsCoherent G) : IsCoherent (G.restrict f) :=
   IsCoherent.of_iso ((Scheme.Modules.restrictFunctorIsoPullback f).app G).symm
@@ -49,6 +57,9 @@ instance isClosedImmersion_embedProj [IsClosedImmersion i] [IsSeparated (X ↘ S
   unfold embedProj
   infer_instance
 
+/- English proof (translation)
+Use `letI := baseAlgebra A hV`. Use `letI := overBase i ψ h hV`. Conclude with `⟨ProjSpace.toBaseChange_toSpecBase _⟩`.
+-/
 lemma embedProj_isOver {V : X.Opens} (hV : IsAffineOpen V) :
     letI := overBase i ψ h hV
     (embedProj i ψ h hV).IsOver (Spec (.of Γ(X, V))) := by
@@ -56,6 +67,9 @@ lemma embedProj_isOver {V : X.Opens} (hV : IsAffineOpen V) :
   letI := overBase i ψ h hV
   exact ⟨ProjSpace.toBaseChange_toSpecBase _⟩
 
+/- English proof (translation)
+Use `letI := baseAlgebra A hV`. Rewrite using `[embedProj, ProjSpace.toBaseChange_baseChangeMap, embed_fst]`.
+-/
 lemma embedProj_baseChangeMap {V : X.Opens} (hV : IsAffineOpen V) :
     letI := baseAlgebra A hV
     embedProj i ψ h hV ≫ ProjSpace.baseChangeMap A Γ(X, V) N = (ψ ⁻¹ᵁ V).ι ≫ i := by
@@ -73,6 +87,11 @@ def twistRestrictIso {V : X.Opens} (hV : IsAffineOpen V) (G : X'.Modules) (k : �
 
 attribute [local instance] algebraOfOver
 
+/- English proof (translation)
+Use `letI := overBase i ψ h hV`. Use `haveI := embedProj_isOver i ψ h hV`. Establish `hGr : IsCoherent (G.restrict (ψ ⁻¹ᵁ V).ι)` using `hG.restrict _`. Take `⟨q₀, hq₀⟩` from `ProjScheme.exists_subsingleton_H_twist.{u} (embedProj i ψ h hV) _ hGr`. Use `⟨q₀, fun n hn => ⟨fun q => ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h1` using `hq₀ n hn (q + 1) (Nat.succ_pos q)`. Conclude with `(H.linearEquivOfIso.{u} Γ(X, V) (twistRestrictIso i ψ h hV G n) (q + 1)).toEquiv.subsingleton_congr.1 h1`. Establish `hc : IsCoherent (ProjScheme.twist (embedProj i ψ h hV) (G.restrict (ψ ⁻¹ᵁ V).ι) n)` using `isCoherent_tensor_of_invertible hGr (ProjScheme.isInvertibleSheaf_twistingSheaf _ _)`. Establish `h2` using `ProjScheme.finite_H.{u} (embedProj i ψ h hV) _ hc 0`. Conclude with `Module.Finite.equiv (H.linearEquivOfIso.{u} Γ(X, V) (twistRestrictIso i ψ h hV G n) 0)`.
+-/
 theorem exists_vanishing_finite [IsClosedImmersion i] [IsSeparated (X ↘ Spec (.of A))]
     {V : X.Opens} (hV : IsAffineOpen V) [IsNoetherianRing Γ(X, V)] (G : X'.Modules)
     (hG : IsCoherent G) :

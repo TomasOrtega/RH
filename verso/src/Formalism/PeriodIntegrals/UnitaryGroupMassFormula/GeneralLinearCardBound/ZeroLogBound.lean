@@ -7,6 +7,9 @@ namespace PI.GZeroLogBound.UnitaryGroupMassFormula
 
 open Formalism.BasicNotions
 
+/- English proof (translation)
+Establish `h1 : Nat.card (GL (Fin r) (ZMod g)) ≤ Nat.card (Matrix (Fin r) (Fin r) (ZMod g))` using `Nat.card_le_card_of_injective _ Units.val_injective`. Establish `h2 : Nat.card (Matrix (Fin r) (Fin r) (ZMod g)) = g ^ (r * r)` using `by show Nat.card (Fin r → Fin r → ZMod g) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun, Nat.card_zmod, Nat.card_eq_fintype_card (α := Fin r), Fintype.card_fin, ← pow_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_GL_le (r g : ℕ) [NeZero g] :
     Nat.card (GL (Fin r) (ZMod g)) ≤ g ^ (r * r) := by
   have h1 : Nat.card (GL (Fin r) (ZMod g)) ≤ Nat.card (Matrix (Fin r) (Fin r) (ZMod g)) :=
@@ -16,6 +19,15 @@ theorem card_GL_le (r g : ℕ) [NeZero g] :
     rw [Nat.card_fun, Nat.card_fun, Nat.card_zmod, Nat.card_eq_fintype_card (α := Fin r), Fintype.card_fin, ← pow_mul]
   omega
 
+/- English proof (translation)
+Introduce `Y hY`. Unfold `lam0`. Establish `hg2 : ∀ k, 2 ≤ D.host.g k` using `fun k => (D.host.g_prime k).two_le`. Establish `hY2 : (2 : ℝ) ≤ 2 * Y` using `le_trans (by exact_mod_cast hg2 0) (hY 0)`. Establish `hpos : (0 : ℝ) < 2 * Y` using `by linarith`.
+
+Establish `hk : ∀ k, ((Nat.card (GL (Fin D.R.r) (ZMod (D.host.g k))) : ℕ) : ℝ) ^ D.R.f ≤ ((2 * Y) ^ (D.R.r * D.R.r)) ^ D.R.f`. Introduce `k`. Establish `: NeZero (D.host.g k)` using `⟨(D.host.g_prime k).ne_zero⟩`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `card_GL_le D.R.r (D.host.g k)` after adjusting the coercions. Use `_ ≤ (2 * Y) ^ (D.R.r * D.R.r) := pow_le_pow_left₀ (by positivity) (hY k) _`. Establish `hbound : (D.what₂.restRowsFiniteGroupCard : ℝ) ≤ (2 * Y) ^ (2 * D.R.f * D.R.r ^ 2)`. Rewrite using `[D.nd.restN_card_levelGroup_eq]`. Use `push_cast`.
+
+Rewrite using `[Fin.prod_univ_two]`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : (0 : ℝ) < D.what₂.restRowsFiniteGroupCard` using `by exact_mod_cast D.what₂.restRowsFiniteGroupCard_pos`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem zero_log_bound (D : D7) : PI.GZeroLogBound.Conclusion0 D := by
   intro Y hY
   unfold lam0
@@ -43,6 +55,9 @@ theorem zero_log_bound (D : D7) : PI.GZeroLogBound.Conclusion0 D := by
         Real.log_le_log hc hbound
     _ = _ := by rw [Real.log_pow]; push_cast; ring
 
+/- English proof (translation)
+Introduce `D` and use `zero_log_bound D`.
+-/
 theorem target : PI.GZeroLogBound.Target := fun D => zero_log_bound D
 
 end PI.GZeroLogBound.UnitaryGroupMassFormula

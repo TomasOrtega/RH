@@ -13,6 +13,9 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.WittCompat
 
+/- English proof (translation)
+Establish `ho` using `GlobalTheory.SeedSec.o_eq_aDp_wA l a C w (c : Om l) hw`. Apply `(GlobalTheory.MemLoc.ULaws.u_laws l C).2.2.2.1` to reduce the goal to its premises. Establish `hB : C.ι (Per.aB l (wA l a w)) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (wA l a w))` using `GlobalTheory.MemLoc.ULaws.iota_aB C (wA l a w)`. Rewrite using `[hB, ← ho, C.ι_u]`.
+-/
 theorem u_eq_aB (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (C : Core l) (w : Wq l a) (c : ↥(MaximalUnramifiedExtension l))
     (hw : ((Per.θ l (wA l a w) : Per.OC l) : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (c : Om l)) :
     C.u c = Per.aB l (wA l a w) := by
@@ -23,6 +26,13 @@ theorem u_eq_aB (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (C : Core l) (w : 
     GlobalTheory.MemLoc.ULaws.iota_aB C (wA l a w)
   rw [hB, ← ho, C.ι_u]
 
+/- English proof (translation)
+Introduce `l _ P AI T K w`. Take `⟨C, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Establish `h1 : ((Per.θ l (wA l (fK K) w) : Per.OC l) : ℂ_[l]) = algebraMap (Om l) ℂ_[l] ((oK K (thetaW (fK K) K w) : ↥K.1) : Om l)` using `(congrArg (fun y : Per.OC l => (y : ℂ_[l])) (intToOC_thetaW (fK K) K w)).symm`. Establish `h2 : ((Per.θ l (wA l (fK K) w) : Per.OC l) : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (GlobalTheory.TameFrob.iotaO l (fK K) w)` using `(congrArg (fun y : Per.OC l => (y : ℂ_[l])) (intToOC_thetaW (fK K) (unrExt l (fK K)) w)).symm`. Establish `h3 : ((oK K (thetaW (fK K) K w) : ↥K.1) : Om l) = GlobalTheory.TameFrob.iotaO l (fK K) w` using `(algebraMap (Om l) ℂ_[l]).injective (h1.symm.trans h2)`.
+
+Establish `hm : ((oK K (thetaW (fK K) K w) : ↥K.1) : Om l) ∈ K0 K`. Rewrite using `[h3, ← Kunr_fK K]`. Conclude with `GlobalTheory.TameFrob.iotaO_mem l (fK K) w`. Use `⟨⟨_, hm⟩, Subtype.ext rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[RingEquiv.eq_symm_apply]`.
+
+Conclude with `(hC.u ⟨_, hm.2⟩).trans (u_eq_aB l (fK K) C w ⟨_, hm.2⟩ h1)`.
+-/
 theorem exists_unramified_witt_element : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) (w : W0 K),
     ∃ c : ↥(K0 K), algebraMap ↥(K0 K) ↥K.1 c = oK K (thetaW (fK K) K w) ∧
       algebraMap ↥(K0 K) P.R.B c = T.eB.symm (Per.aB l (wA l (fK K) w)) := by

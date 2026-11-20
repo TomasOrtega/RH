@@ -36,10 +36,18 @@ def Generic (ψ₀ : AddChar F ℂ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin k) F) V) : Prop :=
   ∃ ℓ : Module.Dual ℂ V, ℓ ≠ 0 ∧ IsWhit ψ₀ π ℓ
 
+/- English proof (translation)
+Use `⟨fun i => by simp, fun i j hij => ?_⟩` and prove the remaining obligations. Simplify using `[(ne_of_lt hij).symm]`.
+-/
 theorem isUni_one : IsUni k (1 : GL (Fin k) F) := by
   refine ⟨fun i => by simp, fun i j hij => ?_⟩
   simp [(ne_of_lt hij).symm]
 
+/- English proof (translation)
+Unfold `superdiag`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `: i ≠ j` using `by intro e; subst e; omega`. Simplify using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem superdiag_one : superdiag k (1 : Matrix (Fin k) (Fin k) F) = 0 := by
   unfold superdiag
   refine Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_
@@ -48,6 +56,11 @@ theorem superdiag_one : superdiag k (1 : Matrix (Fin k) (Fin k) F) = 0 := by
     simp [this]
   · rfl
 
+/- English proof (translation)
+Establish `hp : ∀ y : GL (Fin k) F, psiNat ψ₀ (y * 1 * y⁻¹) = 1`. Introduce `y`. Rewrite using `[mul_one, mul_inv_cancel]`. Simplify using `only [psiNat, isUni_one, if_true, psiU, Units.val_one, superdiag_one, AddChar.map_zero_eq_one]`. Unfold `gam`.
+
+Rewrite using `[Finset.sum_congr rfl (fun y _ => hp y)]`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`. Rewrite using `[div_eq_inv_mul]`.
+-/
 theorem gam_one (ψ₀ : AddChar F ℂ) :
     gam ψ₀ (1 : GL (Fin k) F) = (Fintype.card (GL (Fin k) F) : ℂ) / (cardU F k : ℂ) := by
   have hp : ∀ y : GL (Fin k) F, psiNat ψ₀ (y * 1 * y⁻¹) = 1 := by
@@ -88,6 +101,11 @@ def GenericRatio : Prop :=
 
 def GenericRatioOfBound : Prop := MirabolicBound → CardUni → GenericRatio
 
+/- English proof (translation)
+Establish `h` using `Formalism.FourierDecayAlt.P.GrowthPolynomialOperator.t_GGNumeric (k - 1) q hq`. Establish `he : Finset.Ico 1 k = Finset.Icc 1 (k - 1)`. Use extensionality with `i`. Simplify using `only [Finset.mem_Ico, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[he]`. Conclude with `h`.
+-/
 theorem ratio_numeric (k : ℕ) (q : ℝ) (hq : 3 ≤ q) :
     ∏ i ∈ Finset.Ico 1 k, (1 - (q ^ i)⁻¹)⁻¹ ≤ 1 + 3 / q := by
   have h := Formalism.FourierDecayAlt.P.GrowthPolynomialOperator.t_GGNumeric (k - 1) q hq
@@ -133,6 +151,11 @@ def TermsGGBound : Prop :=
         T.Gam1 = (gamProd ψ (1 : ∀ v, GL (Fin k) (Fq v))).re →
         T.GGBound (∏ v, (1 + 3 / (Fintype.card (Fq v) : ℝ)))
 
+/- English proof (translation)
+Introduce `ι _ Fq _ _ k ψ hψ hq X _ _ hfree d hd τ Rw H H₁ _ _ _ _ T hGG hG1`. Establish `h2` using `(h ι Fq k ψ hψ hq X hfree d hd).2`. Unfold `Formalism.FourierDecayAlt.PB.Terms.GGBound`. Establish `hM : Matrix.of T.GG = Matrix.of fun i j => if ∃ x : (∀ v, GL (Fin k) (Fq v))ᵐᵒᵖ, x • j = i then conj (gamProd ψ (d i j)) else 0`. Use extensionality with `i j`.
+
+Simplify using `[hGG]`. Rewrite using `[hM, hG1]`. Use `h2 using 3` and compare the differences between its conclusion and the goal.
+-/
 theorem termsGGBound_of_matrix (h : GGMatrixBound) : TermsGGBound := by
   intro ι _ Fq _ _ k ψ hψ hq X _ _ hfree d hd τ Rw H H₁ _ _ _ _ T hGG hG1
   have h2 := (h ι Fq k ψ hψ hq X hfree d hd).2

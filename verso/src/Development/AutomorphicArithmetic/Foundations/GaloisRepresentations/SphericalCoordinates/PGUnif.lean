@@ -12,6 +12,23 @@ open scoped Matrix TensorProduct Classical
 
 namespace UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `hM hC hP hB hF p _ D ha hm t₀ ht ρ hρ gb hgb N hN hNp X`. Take `⟨b, hbρ, hbt, hbT⟩` from `hB p D ha hm t₀ ht ρ hρ gb hgb`. Take `⟨M⟩` from `hM p D ℂ b N hN hNp`. Take `⟨j, hjo, hjc, hjs, hjG⟩` from `hC p D ℂ b ℂ (RingHom.id ℂ) gb hbρ hbt N hN hNp M X`. Establish `hpts` using `hP p D ℂ b (RingHom.id ℂ) gb hbρ hbt N hN hNp M X j hjo hjc hjs hjG`.
+
+Take `⟨h, hL, -⟩` from `model_uniformised p D ℂ b N (RingHom.id ℂ) ρ M hN hNp hbT`. Establish `hfine` using `T.complexPoints_classify_markedPeriods p D ℂ b N (RingHom.id ℂ) ρ M h hL (by omega) hNp hbT`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 _`. Simplify using `[spMap]`. Establish `hsq : (j ≫ pullback.fst M.s (spMap (RingHom.id ℂ))) ≫ M.s = X.s`.
+
+Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hjs, hid, Category.comp_id]`. Take `⟨hX, hL', hXf⟩` from `hF p D b gb N M X ρ h hL _ hsq hjG hpts hfine`. Use `haveI := hjo`. Use `haveI := hjc`. Establish `hsm : SmoothOfRelativeDimension (D.n - 1) X.s`.
+
+Establish `h1 : SmoothOfRelativeDimension (D.a * (D.n - 1)) M.s` using `M.smooth`. Rewrite `h1` using `[ha, Nat.one_mul]`. Use `haveI : SmoothOfRelativeDimension (D.n - 1) (pullback.snd M.s (spMap (RingHom.id ℂ))) := (smoothOfRelativeDimension_isStableUnderBaseChange (D.n - 1)).of_isPullback (IsPullback.of_hasPullback _ _) h1`. Establish `h3 : SmoothOfRelativeDimension (0 + (D.n - 1)) (j ≫ pullback.snd M.s (spMap (RingHom.id ℂ)))` using `inferInstance`. Rewrite `h3` using `[Nat.zero_add, hjs]`.
+
+Conclude with `h3`. Establish `hqc : QuasiCompact X.s` using `by haveI : QuasiCompact M.s := quasiCompact_of_qProj M.qproj`. Rewrite using `[← hjs]`. Use `infer_instance`. Establish `hsep : IsSeparated X.s` using `by haveI : IsSeparated M.s := by`.
+
+Take `⟨K, i, hi, -, hiK⟩` from `M.qproj`. Use `haveI := hi`. Use `haveI := isProper_str ℂ K`. Rewrite using `[← hiK]`. Use `infer_instance`.
+
+Rewrite using `[← hjs]`. Use `infer_instance`. Use `⟨hsm, hqc, hsep, hX, hL', hXf, ?_⟩` and prove the remaining obligations. Use `T.complexUniformisation_of_markedPeriods_family _ _ _ ρ _ (gfam X.univ hX hL') N (D.Cls N) (D.n - 1) hN ?_ hsm hqc (fun D' t ht => Datum.Cls.fullMark D N (by omega) hNp D' t ht) hXf` and prove the remaining obligations. Introduce `a`.
+
+Express the relevant statement in the definitionally equal form `X.univ.eta a ^ N = 1`. Rewrite using `[← GObj.eta_nsmul, GObj.eta_ker]`.
+-/
 theorem gUnif_of : ModelEx → GenCmp → GenPts → BaseC → GFine → GUnif := by
   intro hM hC hP hB hF p _ D ha hm t₀ ht ρ hρ gb hgb N hN hNp X
   obtain ⟨b, hbρ, hbt, hbT⟩ := hB p D ha hm t₀ ht ρ hρ gb hgb

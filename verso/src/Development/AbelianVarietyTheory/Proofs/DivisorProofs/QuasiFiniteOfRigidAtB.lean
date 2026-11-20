@@ -9,6 +9,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChartQF
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.MumfordChart.admissibleBase_chartRing k m e, (C.b.charZero_iff C.b.injective).1 inferInstance⟩`.
+-/
 theorem base_chartRing {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {k : Type} [Field k] {m e : ℕ}
     (C : Fam Xo c (ChartRing k m e)) : GlobalTheory.Mum.Base (ChartRing k m e) :=

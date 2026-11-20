@@ -19,12 +19,22 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.DxEuler
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨t1, t2, t3, t4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)).2.2.2.2.2.2.2.1 n M`. Conclude with `((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2.measurableSet`.
+-/
 theorem measurableSet_latV (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ)
     (v : HeightOneSpectrum (𝓞 F)) : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
   obtain ⟨t1, t2, t3, t4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   haveI := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)).2.2.2.2.2.2.2.1 n M
   exact ((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2.measurableSet
 
+/- English proof (translation)
+Take `⟨lf, hlf, h1⟩` from `GlobalTheory.CompanionTheory.AdeleHaar.exists_haar_integral_one F`. Establish `hm` using `measurableSet_latV σ hCM b n M`. Establish `e0` using `GlobalTheory.CompanionTheory.SW.WBox.coordW_box F E σ hCM d b lam hlam lf hlf h1 n M ∅ (fun w => latV b w) hm`. Establish `e1` using `GlobalTheory.CompanionTheory.SW.WBox.coordW_box F E σ hCM d b lam hlam lf hlf h1 n M {v} (fun w => latV b w) hm`. Establish `hs : {X : Fin n → Fin M → Af F ⊗[F] E | (∀ w ∈ ({v} : Finset _), projV w X ∈ latV b w) ∧ ∀ w, w ∉ ({v} : Finset _) → projV w X ∈ latV b w} = {X | (∀ w ∈ (∅ : Finset _), projV w X ∈ latV b w) ∧ ∀ w, w ∉ (∅ : Finset _) → projV w X ∈ latV b w}`.
+
+Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Finset.mem_singleton, Finset.notMem_empty, false_imp_iff, implies_true, true_and, not_false_eq_true, forall_true_left]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h'⟩ w`. Distinguish the cases in `hw : w = v`.
+
+Conclude with `h w hw`. Conclude with `h' w hw`. Conclude with `fun h => ⟨fun w _ => h w, fun w _ => h w⟩`. Rewrite `e1` using `[hs, e0]`. Simplify using `using e1.symm`.
+-/
 theorem coordW_latV (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E)
     (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)) (hlam : ∀ v, IsStdV v (lam v)) (n M : ℕ) (v : HeightOneSpectrum (𝓞 F)) :
     coordW (Fv F v) b (lam v) n M (latV b v) = 1 := by
@@ -46,6 +56,11 @@ theorem coordW_latV (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (b : M
   rw [hs, e0] at e1
   simpa using e1.symm
 
+/- English proof (translation)
+Take `⟨-, hAfLC, hAfSC, hAfT2⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`. Establish `hKf : IsHomeomorph (GlobalTheory.CompanionTheory.SW.WBox.cK (F` using `F) (E := E) (Af F) b) := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Af F)).2.2.2.2.2.2.1 d b`. Use `haveI := GlobalTheory.CompanionTheory.SW.WBox.sigmaFinite_coordK (Af F) hKf lf`. Unfold `coordW`.
+
+Use `infer_instance`.
+-/
 theorem sfinite_coordW (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E)
     (lf : Measure (Af F)) (hlf : lf.IsAddHaarMeasure) (n M : ℕ) : SFinite (coordW (Af F) b lf n M) := by
   obtain ⟨-, hAfLC, hAfSC, hAfT2⟩ := GlobalTheory.CompanionTheory.AdeleTop.adele_top F
@@ -56,6 +71,31 @@ theorem sfinite_coordW (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (b 
   unfold coordW
   infer_instance
 
+/- English proof (translation)
+Take `⟨-, hAfLC, hAfSC, hAfT2⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`. Use `haveI hBf := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Af F)).2.2.2.2.2.2.2.1 n M`. Establish `hBv : ∀ v, BorelSpace (Fin n → Fin M → Fv F v ⊗[F] E)` using `fun v => by`. Take `⟨t1, t2, t3, t4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`.
+
+Conclude with `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)).2.2.2.2.2.2.2.1 n M`. Establish `hSFv : ∀ v, SigmaFinite (coordW (Fv F v) b (lam v) n M)` using `fun v => by`. Take `⟨t1, t2, t3, t4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI := (hlam v).1`.
+
+Establish `hK : IsHomeomorph (GlobalTheory.CompanionTheory.SW.WBox.cK (F` using `F) (E := E) (Fv F v) b) := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)).2.2.2.2.2.2.1 d b`. Use `haveI := GlobalTheory.CompanionTheory.SW.WBox.sigmaFinite_coordK (Fv F v) hK (lam v)`. Unfold `coordW`. Use `infer_instance`. Establish `hcV : ∀ v, Continuous (projV v : (Fin n → Fin M → Af F ⊗[F] E) → _)` using `(GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.1`.
+
+Establish `hpv : ∀ v, Measurable (projV v : (Fin n → Fin M → Af F ⊗[F] E) → _)` using `fun v => by haveI := hBv v`. Conclude with `(hcV v).measurable`. Establish `hlat` using `measurableSet_latV σ hCM b n M`. Use `set A : Set (Fin n → Fin M → Af F ⊗[F] E) := {Y | ∀ v, v ∉ S → projV v Y ∈ latV b v} with hA`. Establish `hAm : MeasurableSet A`.
+
+Establish `: A = ⋂ v, ⋂ (_ : v ∉ S), projV v ⁻¹' latV b v`. Use extensionality with `Y`. Simplify using `[hA]`. Rewrite using `[this]`. Conclude with `MeasurableSet.iInter fun v => MeasurableSet.iInter fun _ => hpv v (hlat v)`.
+
+Establish `hfm : Measurable fun Y : Fin n → Fin M → Af F ⊗[F] E => ∏ v ∈ S, φ v (projV v Y)` using `Finset.measurable_prod _ fun v _ => (hφ v).comp (hpv v)`. Use `⟨hfm.indicator hAm, ?_⟩` and prove the remaining obligations. Set `ρ : (Fin n → Fin M → Af F ⊗[F] E) → ∀ v : S, (Fin n → Fin M → Fv F v.1 ⊗[F] E)` to `fun Y v => projV v.1 Y`. Establish `hρ : Measurable ρ` using `measurable_pi_lambda _ fun v => hpv v.1`. Use `haveI : ∀ v : S, SigmaFinite (coordW (Fv F v.1) b (lam v.1) n M) := fun v => hSFv v.1`.
+
+Establish `hmap : ((coordW (Af F) b lf n M).restrict A).map ρ = Measure.pi fun v : S => coordW (Fv F v.1) b (lam v.1) n M`. Use `symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hρ (MeasurableSet.univ_pi hs), Measure.restrict_apply (hρ (MeasurableSet.univ_pi hs))]`. Set `A' : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → Fv F v ⊗[F] E)` to `fun v => if h : v ∈ S then s ⟨v, h⟩ else Set.univ`.
+
+Establish `hA' : ∀ v, MeasurableSet (A' v)` using `fun v => by`. Distinguish the cases in `h : v ∈ S`. Simplify using `only [A', dif_pos h]`. Conclude with `hs _`. Simplify using `only [A', dif_neg h]`.
+
+Conclude with `MeasurableSet.univ`. Establish `key` using `GlobalTheory.CompanionTheory.SW.WBox.coordW_box F E σ hCM d b lam hlam lf hlf h1 n M S A' hA'`. Establish `hset : ρ ⁻¹' Set.univ.pi s ∩ A = {X | (∀ v ∈ S, projV v X ∈ A' v) ∧ ∀ v, v ∉ S → projV v X ∈ latV b v}`. Use extensionality with `X`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_pi, Set.mem_univ, forall_true_left, hA, Set.mem_setOf_eq]`.
+
+Use `and_congr_left fun _ => ⟨fun h v hv => ?_, fun h v => ?_⟩` and prove the remaining obligations. Simplify `h ⟨v, hv⟩` using `only [A', dif_pos hv]`. Use `h v.1 v.2` as an intermediate fact. Simplify `this` using `only [A', dif_pos v.2]`. Rewrite using `[hset, key, ← Finset.prod_coe_sort S]`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [A', dif_pos v.2]`. Rewrite using `[lintegral_indicator hAm]`. Establish `hG : Measurable fun y : (∀ v : S, (Fin n → Fin M → Fv F v.1 ⊗[F] E)) => ∏ v : S, φ v.1 (y v)` using `Finset.measurable_prod _ fun v _ => (hφ v.1).comp (measurable_pi_apply v)`. Establish `e1 : ∫⁻ Y in A, ∏ v ∈ S, φ v (projV v Y) ∂(coordW (Af F) b lf n M) = ∫⁻ y, ∏ v : S, φ v.1 (y v) ∂(((coordW (Af F) b lf n M).restrict A).map ρ)`.
+
+Rewrite using `[lintegral_map hG hρ]`. Use `lintegral_congr fun Y => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_coe_sort S]`. Rewrite using `[e1, hmap, GlobalTheory.RestrMeas.lintegral_fintype_prod_eq_prod (f := fun v : S => φ v.1) fun v => (hφ v.1).aemeasurable, ← Finset.prod_coe_sort S]`.
+-/
 theorem lint_fin (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E)
     (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)) (hlam : ∀ v, IsStdV v (lam v))
     (lf : Measure (Af F)) (hlf : lf.IsAddHaarMeasure) (h1 : lf {x | ∀ v, x v ∈ v.adicCompletionIntegers F} = 1)
@@ -142,6 +182,9 @@ abbrev intInf (F : Type) [Field F] [NumberField F] : AddSubgroup (Ainf F) :=
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : l₁ = l₂` from `Measure.ext fun s _ => hl s`. Both sides reduce to the same expression.
+-/
 theorem coordW_congr {F : Type} [Field F] [Algebra F E] {R : Type} [CommRing R] [Algebra F R] [TopologicalSpace R]
     {m₁ m₂ : MeasurableSpace R} (h : m₁ = m₂) (l₁ : @Measure R m₁) (l₂ : @Measure R m₂) (hl : ∀ s, l₁ s = l₂ s)
     {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ) :
@@ -150,6 +193,9 @@ theorem coordW_congr {F : Type} [Field F] [Algebra F E] {R : Type} [CommRing R] 
   obtain rfl : l₁ = l₂ := Measure.ext fun s _ => hl s
   rfl
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Take `⟨h1, D, h2, h3⟩` from `hinf`. Conclude with `⟨laminf, fun _ => rfl, h1, D, h2, h3⟩`.
+-/
 theorem std_transfer (laminf : @Measure (Ainf F) measAinf) (hinf : IsStdInf laminf)
     [m : MeasurableSpace (Ainf F)] (hm : m = measAinf) :
     ∃ l : Measure (Ainf F), (∀ s, l s = laminf s) ∧ l.IsAddHaarMeasure ∧
@@ -158,6 +204,15 @@ theorem std_transfer (laminf : @Measure (Ainf F) measAinf) (hinf : IsStdInf lami
   obtain ⟨h1, D, h2, h3⟩ := hinf
   exact ⟨laminf, fun _ => rfl, h1, D, h2, h3⟩
 
+/- English proof (translation)
+Use `IsAddFundamentalDomain.mk' ?_ fun x => ?_` and prove the remaining obligations. Establish `hmeas` using `measurableSet_fundamentalSet F`. Establish `hpre : fundamentalSetInfinite F = (fun x : InfiniteAdeleRing F => ((x, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)) ⁻¹' fundamentalSet F`. Use extensionality with `x`. Simplify using `[fundamentalSet, Set.mem_prod, Subring.zero_mem]`.
+
+Rewrite using `[hpre]`. Conclude with `(measurable_prodMk_right hmeas).nullMeasurableSet`. Take `⟨z, hz, hu⟩` from `existsUnique_sub_mem_fundamentalSetInfinite F x`. Use `⟨⟨algebraMap (𝓞 F) (InfiniteAdeleRing F) (-z), -z, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (InfiniteAdeleRing F) (-z) + x ∈ fundamentalSetInfinite F`.
+
+Rewrite using `[map_neg, neg_add_eq_sub]` and apply the resulting hypothesis. Introduce and unpack `⟨_, k, rfl⟩ h`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (InfiniteAdeleRing F) k + x ∈ fundamentalSetInfinite F at h`. Establish `hk : -k = z` using `hu (-k) (by`. Express the relevant statement in the definitionally equal form `x - algebraMap (𝓞 F) (InfiniteAdeleRing F) (-k) ∈ fundamentalSetInfinite F`.
+
+Rewrite using `[map_neg, sub_neg_eq_add, add_comm])` and apply the resulting hypothesis. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (InfiniteAdeleRing F) k = algebraMap (𝓞 F) (InfiniteAdeleRing F) (-z)`. Rewrite using `[← hk, neg_neg]`.
+-/
 theorem isFD_fundamentalSetInfinite (ν : Measure (InfiniteAdeleRing F)) :
     IsAddFundamentalDomain (intInf F) (fundamentalSetInfinite F) ν := by
   refine IsAddFundamentalDomain.mk' ?_ fun x => ?_
@@ -181,6 +236,21 @@ theorem isFD_fundamentalSetInfinite (ν : Measure (InfiniteAdeleRing F)) :
       change algebraMap (𝓞 F) (InfiniteAdeleRing F) k = algebraMap (𝓞 F) (InfiniteAdeleRing F) (-z)
       rw [← hk, neg_neg]
 
+/- English proof (translation)
+Use `haveI : Countable (𝓞 F) := inferInstance`. Use `haveI : Countable (intInf F) := by`. Establish `: Function.Surjective ((((algebraMap F (Ainf F)).comp (algebraMap (𝓞 F) F)).toAddMonoidHom).rangeRestrict)` using `AddMonoidHom.rangeRestrict_surjective _`. Conclude with `this.countable`. Establish `h2 : l (fundamentalSetInfinite F) = 1` using `((isFD_fundamentalSetInfinite l).measure_eq hD).trans hD1`.
+
+Use `set c : ℝ≥0 := Measure.addHaarScalarFactor l (infiniteAdeleMeasure F) with hc`. Establish `hl : l = c • infiniteAdeleMeasure F` using `Measure.isAddLeftInvariant_eq_smul l (infiniteAdeleMeasure F)`. Use `set s : ℝ≥0 := NNReal.sqrt ‖discr F‖₊ with hs`. Establish `h3 : (c : ℝ≥0∞) * (s : ℝ≥0∞) = 1`. Rewrite `h2` using `[hl, Measure.smul_apply, infiniteAdeleMeasure_fundamentalSetInfinite]`.
+
+Simplify `h2` using `[ENNReal.smul_def]`. Establish `hset : ({x | ∀ v, x v ∈ v.adicCompletionIntegers F} : Set (Af F)) = (integralFiniteAdelesPositiveCompacts F : Set (FiniteAdeleRing (𝓞 F) F))`. Use extensionality with `x`. Conclude with `GroundTheory.Global.mem_integralFiniteAdeles.symm`. Establish `hlf2 : lf = Measure.addHaarMeasure (integralFiniteAdelesPositiveCompacts F)`.
+
+Use `Measure.addHaarMeasure_unique lf (integralFiniteAdelesPositiveCompacts F)` as an intermediate fact. Rewrite `this` using `[← hset, h1, one_smul]`. Conclude with `this`. Establish `hf : ∀ t, lf t = (s : ℝ≥0∞) * finiteAdeleMeasure F t`. Introduce `t`.
+
+Establish `hs0 : (s : ℝ≥0∞) ≠ 0`. Simplify `sqrt_discr_ne_zero F` using `[hs]`. Rewrite using `[finiteAdeleMeasure, Measure.smul_apply, ← hlf2, ENNReal.smul_def, smul_eq_mul, ENNReal.coe_inv (sqrt_discr_ne_zero F), ← mul_assoc, ENNReal.mul_inv_cancel hs0 ENNReal.coe_ne_top, one_mul]`. Use `haveI : SigmaFinite l := by rw [hl]; infer_instance`. Use `haveI : SigmaFinite lf := by rw [hlf2]; infer_instance`.
+
+Use `symm`. Use `Measure.prod_eq fun A B _ _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, hf B]`. Establish `hA : l A = (c : ℝ≥0∞) * infiniteAdeleMeasure F A` using `by conv_lhs => rw [hl]`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+
+Rewrite using `[hA]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem adele_eq (l : Measure (InfiniteAdeleRing F)) (hH : l.IsAddHaarMeasure)
     (D : Set (Ainf F)) (hD : IsAddFundamentalDomain (intInf F) D l) (hD1 : l D = 1)
     (lf : Measure (Af F)) (hlf : lf.IsAddHaarMeasure) (h1 : lf {x | ∀ v, x v ∈ v.adicCompletionIntegers F} = 1) :

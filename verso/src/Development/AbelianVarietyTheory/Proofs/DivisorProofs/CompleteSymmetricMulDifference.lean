@@ -7,6 +7,15 @@ open MvPolynomial GlobalTheory.LineForm
 
 namespace GlobalTheory.LineForm
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hj`. Establish `e1 : j + m + 2 - (j + 1) = m + 1` using `by omega`. Establish `e2 : j + m + 1 - (j + 1) = m` using `by omega`. Establish `e3 : j + m - j = m` using `by omega`. Establish `e4 : j + m + 2 - 2 * (j + 1) = m - j` using `by omega`.
+
+Establish `e5 : j + m - 2 * j = m - j` using `by omega`. Establish `e6 : j + m + 1 - 2 * (j + 1) = m - j - 1` using `by omega`. Rewrite using `[e1, e2, e3, e4, e5, e6, Nat.choose_succ_succ']`. Break down `lt_or_ge j m with h | h` into its components or cases. Take `⟨n, hn⟩ : ∃ n, m - j = n + 1` from `⟨m - j - 1, by omega⟩`.
+
+Rewrite using `[hn, Nat.add_sub_cancel]`. Simplify using `only [Nat.cast_add, map_mul, map_add, map_pow, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Nat.choose_eq_zero_of_lt (show m < j + 1 by omega)]`. Simplify using `only [Nat.cast_add, map_mul, map_add, map_pow, map_neg, map_one, Nat.cast_zero, map_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hs_term_rec (k j : ℕ) (hj : j ≤ k) :
     (C ((-1) ^ (j + 1) * ((k + 2 - (j + 1)).choose (j + 1) : ℝ)) * X 0 ^ (k + 2 - 2 * (j + 1)) * X 1 ^ (j + 1) :
         MvPolynomial (Fin 2) ℝ) =
@@ -29,6 +38,11 @@ theorem hs_term_rec (k j : ℕ) (hj : j ≤ k) :
     simp only [Nat.cast_add, map_mul, map_add, map_pow, map_neg, map_one, Nat.cast_zero, map_zero]
     ring
 
+/- English proof (translation)
+Unfold `hs`. Rewrite using `[Finset.sum_range_succ' _ (k + 2), Finset.sum_range_succ _ (k + 1), Finset.sum_range_succ' _ (k + 1), Finset.sum_congr rfl (fun j hj => hs_term_rec k j (Nat.lt_succ_iff.mp (Finset.mem_range.mp hj))), Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Establish `e : k + 2 - (k + 1 + 1) = 0` using `by omega`. Rewrite using `[e]`. Simplify using `only [Nat.choose_zero_succ, Nat.cast_zero, mul_zero, map_zero, zero_mul, add_zero, pow_zero, Nat.choose_zero_right, Nat.cast_one, mul_one, map_one, one_mul, Nat.sub_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hs_add_two (k : ℕ) : hs (k + 2) = X 0 * hs (k + 1) - X 1 * hs k := by
   unfold hs
   rw [Finset.sum_range_succ' _ (k + 2), Finset.sum_range_succ _ (k + 1), Finset.sum_range_succ' _ (k + 1),
@@ -40,6 +54,13 @@ theorem hs_add_two (k : ℕ) : hs (k + 2) = X 0 * hs (k + 1) - X 1 * hs k := by
     Nat.cast_one, mul_one, map_one, one_mul, Nat.sub_zero]
   ring
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k using Nat.twoStepInduction with`. Consider the case `zero => simp [hs]`. Consider the case `one`. Establish `: hs 1 = X 0` using `by simp [hs, Finset.sum_range_succ]`.
+
+Rewrite using `[this, aeval_X]`. Simplify using `only [Matrix.cons_val_zero]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `more k h0 h1`. Rewrite using `[hs_add_two, map_sub, map_mul, map_mul, aeval_X, aeval_X]`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Take the linear combination `(X 0 + X 1) * h1 - (X 0 * X 1) * h0`.
+-/
 theorem aeval_hs_mul_sub :
     ∀ k : ℕ, aeval ![X 0 + X 1, X 0 * X 1] (hs k) * (X 0 - X 1) =
       (X 0 ^ (k + 1) - X 1 ^ (k + 1) : MvPolynomial (Fin 2) ℝ) := by

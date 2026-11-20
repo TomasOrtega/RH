@@ -16,12 +16,20 @@ namespace GlobalTheory.QNorm
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 
+/- English proof (translation)
+Rewrite using `[← Subgroup.relIndex_mul_index (le_sup_right : W ≤ U ⊔ W), Subgroup.relIndex_sup_right]`.
+-/
 theorem _root_.GlobalTheory.QNorm.index_eq_relIndex_mul_index_sup {G : Type} [CommGroup G] (U W : Subgroup G) :
     W.index = W.relIndex U * (U ⊔ W).index := by
   rw [← Subgroup.relIndex_mul_index (le_sup_right : W ≤ U ⊔ W), Subgroup.relIndex_sup_right]
 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
+/- English proof (translation)
+Introduce `x hx`. Unfold `_root_.GlobalTheory.QNorm.sqs at hx`. Take `⟨s, -, rfl⟩` from `Subgroup.mem_map.mp hx`. Unfold `_root_.GlobalTheory.QNorm.locSq _root_.GlobalTheory.QNorm.finSq`. Rewrite using `[Subgroup.mem_inf]`.
+
+Simplify using `only [Subgroup.mem_iInf, _root_.GlobalTheory.QNorm.mem_sqSub, powMonoidHom_apply, Units.val_pow_eq_pow_val, map_pow]`. Conclude with `⟨fun v _ => ⟨_, sq _⟩, fun σ => ⟨_, sq _⟩⟩`.
+-/
 theorem _root_.GlobalTheory.QNorm.sqs_le_locSq (F : Type) [Field F] [NumberField F]
     (U : Subgroup Fˣ) (S : Finset (HeightOneSpectrum (𝓞 F))) :
     _root_.GlobalTheory.QNorm.sqs U ≤ _root_.GlobalTheory.QNorm.locSq F S := by
@@ -36,6 +44,11 @@ theorem _root_.GlobalTheory.QNorm.sqs_le_locSq (F : Type) [Field F] [NumberField
 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
+/- English proof (translation)
+Proceed by induction on `a using WithZero.recZeroCoe with`. Consider the case `zero => simp at h`. Consider the case `coe m`. Establish `h1 : m * m = 1` using `by exact_mod_cast h`. Establish `h2 : Multiplicative.toAdd m + Multiplicative.toAdd m = 0`.
+
+Rewrite using `[← toAdd_mul, h1, toAdd_one]`. Establish `h3 : Multiplicative.toAdd m = 0` using `by omega`. Establish `h4 : m = 1` using `by rw [← ofAdd_toAdd m, h3, ofAdd_zero]`. Rewrite using `[h4, WithZero.coe_one]`.
+-/
 private lemma eq_one_of_mul_self_eq_one_withZero (a : WithZero (Multiplicative ℤ))
     (h : a * a = 1) : a = 1 := by
   induction a using WithZero.recZeroCoe with
@@ -50,6 +63,13 @@ private lemma eq_one_of_mul_self_eq_one_withZero (a : WithZero (Multiplicative �
 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Rewrite `hs` using `[mul_zero]`. Conclude with `y.ne_zero hs`.
+
+Unfold `_root_.GlobalTheory.QNorm.sqs`. Use `Subgroup.mem_map.mpr ⟨Units.mk0 s hs0, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[_root_.GlobalTheory.QNorm.mem_sUnits]`. Introduce `v hv`. Establish `h1` using `hy v hv`.
+
+Rewrite `h1` using `[hs, map_mul]`. Conclude with `eq_one_of_mul_self_eq_one_withZero _ h1`. Use `ext`. Simplify using `[hs, sq]`.
+-/
 theorem _root_.GlobalTheory.QNorm.mem_sqs_sUnits_of_isSquare (F : Type) [Field F] [NumberField F]
     (S : Finset (HeightOneSpectrum (𝓞 F))) (y : Fˣ) (hy : y ∈ _root_.GlobalTheory.QNorm.sUnits F S)
     (h : IsSquare (y : F)) : y ∈ _root_.GlobalTheory.QNorm.sqs (_root_.GlobalTheory.QNorm.sUnits F S) := by
@@ -70,6 +90,9 @@ theorem _root_.GlobalTheory.QNorm.mem_sqs_sUnits_of_isSquare (F : Type) [Field F
 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
+/- English proof (translation)
+Introduce `y hy`. Unfold `_root_.GlobalTheory.QNorm.sqs at hy`. Take `⟨s, hs, rfl⟩` from `Subgroup.mem_map.mp hy`. Rewrite using `[powMonoidHom_apply]`. Conclude with `U.pow_mem hs 2`.
+-/
 private lemma sqs_le_self {G : Type} [CommGroup G] (U : Subgroup G) :
     _root_.GlobalTheory.QNorm.sqs U ≤ U := by
   intro y hy
@@ -81,6 +104,35 @@ private lemma sqs_le_self {G : Type} [CommGroup G] (U : Subgroup G) :
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 
+/- English proof (translation)
+Introduce `F _ _ δ S hS hδ hns x hx hxN`. Take `⟨T, hST, hcard, hδT, hpat⟩` from `_root_.GlobalTheory.QNorm.exists_auxiliary_places F δ S hS hδ hns`. Establish `htop` using `_root_.GlobalTheory.QNorm.sUnits_union_sup_finSq_eq_top F S T hS hST hpat`. Establish `hS'` using `hS.mono (Finset.subset_union_left (s₂ := T))`. Establish `hUU : _root_.GlobalTheory.QNorm.sUnits F S ≤ _root_.GlobalTheory.QNorm.sUnits F (S ∪ T)`.
+
+Introduce `z hz`. Rewrite `hz`, the goal using `[_root_.GlobalTheory.QNorm.mem_sUnits]`. Introduce `v hv`. Conclude with `hz v (fun h => hv (Finset.mem_union_left _ h))`. Establish `hsq_eq : _root_.GlobalTheory.QNorm.locSq F S ⊓ _root_.GlobalTheory.QNorm.sUnits F (S ∪ T) = _root_.GlobalTheory.QNorm.sqs (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T))`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `y ⟨hyL, hyU⟩`. Conclude with `_root_.GlobalTheory.QNorm.mem_sqs_sUnits_of_isSquare F _ y hyU (_root_.GlobalTheory.QNorm.isSquare_of_mem_locSq F S T hS htop y hyU hyL)`. Conclude with `le_inf (_root_.GlobalTheory.QNorm.sqs_le_locSq F _ S) (sqs_le_self _)`. Take `⟨hL0, hL⟩` from `_root_.GlobalTheory.QNorm.index_locSq_le F S`.
+
+Establish `hrel` using `_root_.GlobalTheory.QNorm.relIndex_sqs_sUnits F (S ∪ T)`. Establish `hL'` using `_root_.GlobalTheory.QNorm.index_eq_relIndex_mul_index_sup (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T)) (_root_.GlobalTheory.QNorm.locSq F S)`. Rewrite `hL'` using `[← Subgroup.inf_relIndex_right, hsq_eq, hrel, Finset.card_union_of_disjoint hST]`. Establish `hJ0 : (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T) ⊔ _root_.GlobalTheory.QNorm.locSq F S).index ≠ 0`. Rewrite `hL0` using `[hL']`.
+
+Conclude with `right_ne_zero_of_mul hL0`. Establish `hJ : (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T) ⊔ _root_.GlobalTheory.QNorm.locSq F S).index ≤ 2`. Establish `h4 : (4 : ℕ) ^ (S.card + Fintype.card (InfinitePlace F)) = 2 ^ (S.card + T.card + Fintype.card (InfinitePlace F)) * 2`. Rewrite using `[show (4 : ℕ) = 2 ^ 2 by norm_num, ← pow_mul, ← pow_succ]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `hL` using `[hL', h4]`. Conclude with `le_of_mul_le_mul_left hL (by positivity)`. Establish `hLN : _root_.GlobalTheory.QNorm.locSq F S ≤ _root_.GlobalTheory.QNorm.locNorm F δ S`. Introduce `y hy`.
+
+Unfold `_root_.GlobalTheory.QNorm.locSq _root_.GlobalTheory.QNorm.finSq at hy`. Unfold `_root_.GlobalTheory.QNorm.locNorm`. Rewrite `hy`, the goal using `[Subgroup.mem_inf]`. Simplify using `only [Subgroup.mem_iInf] at hy ⊢`. Conclude with `⟨fun v hv => _root_.GlobalTheory.QNorm.sqSub_le_normSub _ _ (hy.1 v hv), fun σ => _root_.GlobalTheory.QNorm.sqSub_le_normSub _ _ (hy.2 σ)⟩`.
+
+Use `haveI : (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T) ⊔ _root_.GlobalTheory.QNorm.locSq F S).FiniteIndex := ⟨hJ0⟩`. Establish `hK : (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T) ⊔ _root_.GlobalTheory.QNorm.locNorm F δ S).index ≤ 2` using `le_trans (Subgroup.index_antitone (sup_le_sup_left hLN _)) hJ`. Take `⟨hR0, hR⟩` from `_root_.GlobalTheory.QNorm.first_inequality_sUnits F δ (S ∪ T) hS' (hUU hδ) hns`. Take `⟨-, hN⟩` from `_root_.GlobalTheory.QNorm.two_pow_le_index_locNorm F (δ : F) S δ.ne_zero`. Establish `hcnt : _root_.GlobalTheory.QNorm.tFin F δ (S ∪ T) = _root_.GlobalTheory.QNorm.tFin F δ S`.
+
+Unfold `_root_.GlobalTheory.QNorm.tFin`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_setOf_eq, Finset.mem_union]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hv | hv, h⟩`. Conclude with `⟨hv, h⟩`. Conclude with `absurd (hδT v hv) h`. Introduce and unpack `⟨hv, h⟩`. Conclude with `⟨Or.inl hv, h⟩`.
+
+Establish `hNidx` using `_root_.GlobalTheory.QNorm.index_eq_relIndex_mul_index_sup (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T)) (_root_.GlobalTheory.QNorm.locNorm F δ S)`. Establish `hGN` using `_root_.GlobalTheory.QNorm.normSub_id_le_locNorm F (δ : F) S`. Establish `hRle : (_root_.GlobalTheory.QNorm.normSub (RingHom.id F) (δ : F)).relIndex (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T)) ≤ (_root_.GlobalTheory.QNorm.locNorm F δ S).relIndex (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T))`. Establish `h2 : 2 * (_root_.GlobalTheory.QNorm.normSub (RingHom.id F) (δ : F)).relIndex (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T)) ≤ (_root_.GlobalTheory.QNorm.locNorm F δ S).relIndex (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T)) * 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Use linear arithmetic over natural numbers and integers. Establish `hchain` using `Subgroup.relIndex_mul_relIndex (_root_.GlobalTheory.QNorm.normSub (RingHom.id F) (δ : F) ⊓ _root_.GlobalTheory.QNorm.sUnits F (S ∪ T)) (_root_.GlobalTheory.QNorm.locNorm F δ S ⊓ _root_.GlobalTheory.QNorm.sUnits F (S ∪ T)) (_root_.GlobalTheory.QNorm.sUnits F (S ∪ T)) (inf_le_inf_r …`. Rewrite `hchain` using `[Subgroup.inf_relIndex_right, Subgroup.inf_relIndex_right]`. Establish `hne : (_root_.GlobalTheory.QNorm.normSub (RingHom.id F) (δ : F) ⊓ _root_.GlobalTheory.QNorm.sUnits F (S ∪ T)).relIndex (_root_.GlobalTheory.QNorm.locNorm F δ S ⊓ _root_.GlobalTheory.QNorm.sUnits F (S ∪ T)) ≠ 0`. Introduce `h0`.
+
+Rewrite `hchain` using `[h0, zero_mul]`. Conclude with `hR0 hchain.symm`. Establish `hNpos` using `lt_of_lt_of_le (Nat.pos_of_ne_zero hR0) hRle`. Establish `hone : (_root_.GlobalTheory.QNorm.normSub (RingHom.id F) (δ : F) ⊓ _root_.GlobalTheory.QNorm.sUnits F (S ∪ T)).relIndex (_root_.GlobalTheory.QNorm.locNorm F δ S ⊓ _root_.GlobalTheory.QNorm.sUnits F (S ∪ T)) = 1`. Establish `hle1` using `hchain.le.trans hRle`.
+
+Establish `h3` using `le_of_mul_le_mul_right (hle1.trans (one_mul _).symm.le) hNpos`. Use linear arithmetic over natural numbers and integers. Conclude with `(Subgroup.relIndex_eq_one.mp hone ⟨hxN, hUU hx⟩).1`.
+-/
 theorem _root_.GlobalTheory.QNorm.sUnit_mem_normSub_of_mem_locNorm : ∀ (F : Type) [Field F] [NumberField F] (δ : Fˣ) (S : Finset (HeightOneSpectrum (𝓞 F))), _root_.GlobalTheory.QNorm.admitted F S → δ ∈ _root_.GlobalTheory.QNorm.sUnits F S → ¬ IsSquare (δ : F) → ∀ x ∈ _root_.GlobalTheory.QNorm.sUnits F S, x ∈ _root_.GlobalTheory.QNorm.locNorm F δ S → x ∈ _root_.GlobalTheory.QNorm.normSub (RingHom.id F) (δ : F) := by
   intro F _ _ δ S hS hδ hns x hx hxN
   classical

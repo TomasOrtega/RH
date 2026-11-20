@@ -20,6 +20,11 @@ def Family.weight (F : Family A) {Λ : Type*} [AddCommGroup Λ] [Module ℝ Λ]
     (φ₀ φc : Λ →ₗ[ℝ] (X → ℝ)) (c : Λ →ₗ[ℝ] (Fin F.m → ℝ)) (t : ℝ) (lam : Λ) : X → ℝ :=
   fun x => φ₀ lam x + ∑ i, c lam i * (F.sys i).ph t x + φc lam x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Family.weight, map_add, Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `map_smul s a := by`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Family.weight, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Family.weight_isLinearMap (F : Family A) {Λ : Type*} [AddCommGroup Λ] [Module ℝ Λ]
     (φ₀ φc : Λ →ₗ[ℝ] (X → ℝ)) (c : Λ →ₗ[ℝ] (Fin F.m → ℝ)) (t : ℝ) :
     IsLinearMap ℝ (F.weight φ₀ φc c t) where
@@ -32,6 +37,11 @@ theorem Family.weight_isLinearMap (F : Family A) {Λ : Type*} [AddCommGroup Λ] 
     simp only [Family.weight, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum]
     ring
 
+/- English proof (translation)
+Establish `h : ∀ lam, (F.chernForm (c lam) t).φ x y = ∑ i, c lam i * ((F.R i).θ + LocPot.ofFun ((F.sys i).ph t)).φ x y` using `fun lam => lincomb_φ _ _ _ _ _`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Rewrite using `[h (a + b), h a, h b, map_add, ← Finset.sum_add_distrib]`. Simplify using `only [Pi.add_apply, add_mul]`.
+
+Introduce `s a`. Rewrite using `[h (s • a), h a, map_smul, smul_eq_mul, Finset.mul_sum]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem Family.chernForm_isLinearMap (F : Family A) {Λ : Type*} [AddCommGroup Λ] [Module ℝ Λ]
     (c : Λ →ₗ[ℝ] (Fin F.m → ℝ)) (t : ℝ) (x y : X) :
     IsLinearMap ℝ fun lam => (F.chernForm (c lam) t).φ x y := by
@@ -52,11 +62,31 @@ section Currents
 
 variable {D : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `: fderiv ℝ (fun y => f y + c) = fderiv ℝ f` using `funext fun _ => fderiv_add_const c`. Simplify using `only [levi, this]`.
+-/
 theorem levi_add_const' {ι : Type*} [Fintype ι] (f : (ι → ℂ) → ℝ) (c : ℝ) (z w : ι → ℂ) :
     levi (fun y => f y + c) z w = levi f z w := by
   have : fderiv ℝ (fun y => f y + c) = fderiv ℝ f := funext fun _ => fderiv_add_const c
   simp only [levi, this]
 
+/- English proof (translation)
+Establish `hsm : A.Smooth (S.uT t)` using `fun j => (S.smooth t ht hl j).sub contDiffOn_const`. Use `⟨⟨ReciprocityTheory.AnForm.M.isPotentialAdd A _ _ R.θ_pot R.om_pot, h1, h2, fun j => (hsm j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono (Set.subset_univ _))), fun x _ => sub_nonpos.2 (S.ph_le t ht hl x), ?_, ?_, Or.inl hsm⟩, hsm⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hL : 1 ≤ Real.log (R.r x)`. Use `Real.log_le_log (Real.exp_pos 1) (hr x hx)` as an intermediate fact.
+
+Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Establish `ha` using `S.le_ph t ht hl x hx`. Establish `hb` using `R.le_φ x hx`. Establish `hc` using `mul_le_mul_of_nonneg_right (le_abs_self R.C) (zero_le_one.trans hL)`. Establish `hd` using `mul_le_mul_of_nonneg_left hL (abs_nonneg S.C)`.
+
+Establish `he'` using `le_abs_self S.C`. Use `show -((|R.C| + |S.C|) * Real.log (R.r x)) ≤ S.ph t x - S.C`. Use the polynomial consequences of the given equalities and inequalities. Introduce `x k y hy w set f : (Fin D → ℂ) → ℝ := (fun z => R.θ.φ x z + S.ph t z) ∘ (A.chart k).symm with hfdef set g : (Fin D → ℂ) → ℝ := R.om.φ x ∘ (A.chart k).symm with hgdef`. Establish `hyθ : (A.chart k).symm y ∈ R.θ.U x` using `hy.2.2.1.1`.
+
+Establish `hyω : (A.chart k).symm y ∈ R.om.U x` using `hy.2.2.1.2`. Establish `hf : ContDiffAt ℝ 2 f y`. Establish `hθ` using `R.θ_pot.1 x k`. Establish `hp` using `(S.smooth t ht hl k).mono (Set.inter_subset_inter_right _ (Set.preimage_mono (Set.subset_univ (R.θ.U x))))`. Conclude with `((hθ.add hp).contDiffAt (((A.chart k).isOpen_inter_preimage_symm (R.θ.isOpen_U x)).mem_nhds ⟨hy.1, hyθ⟩)).of_le (WithTop.coe_le_coe.2 le_top)`.
+
+Establish `hg : ContDiffAt ℝ 2 g y` using `((R.om_pot.1 x k).contDiffAt (((A.chart k).isOpen_inter_preimage_symm (R.om.isOpen_U x)).mem_nhds ⟨hy.1, hyω⟩)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hfun : (potForm (thetaOmega R) (S.uT t)).φ x ∘ (A.chart k).symm = fun y' => (f y' + 1 * g y') + -S.C`. Use function extensionality and compare the values at `y'`. Use `show (R.θ.φ x _ + R.om.φ x _) + (S.ph t _ - S.C) = _`. Simplify using `only [hfdef, hgdef, Function.comp_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, levi_add_const', ReciprocityTheory.AnForm.levi_add_smul 1 hf hg w, one_mul]`. Establish `hge` using `S.thGe t ht hl x k y ⟨hy.1, hyθ, hyω⟩ w`. Establish `hgnn : 0 ≤ levi g y w`. Distinguish the cases in `hw : w = 0`.
+
+Substitute `hw` using the available equality. Simplify using `[levi]`. Conclude with `(R.om_pos x k y ⟨hy.1, hyω⟩ w hw).le`. Establish `hprod` using `mul_nonneg (sub_nonneg.2 he) hgnn`. Use `show 0 ≤ levi f y w + levi g y w`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem System.curr_isSmoothPotForm {A : FinHolAtlas D X} {R : RegChartData A} (S : System R)
     (hr : ∀ x ∈ R.Yo, Real.exp 1 ≤ R.r x) (Om : KaehlerForm A)
     (h1 : LeviLe A Set.univ 1 (thetaOmega R) 1 Om.pot)
@@ -122,6 +152,9 @@ def LinearWeights.Statement : Prop :=
     ∃ (Om : KaehlerForm A) (C₁ : ℝ), ∀ t, 0 < t → S.ell₀ ≤ ell t → errE S.C t ≤ 1 →
       IsSmoothPotForm A R.Yo R.r Om C₁ (thetaOmega R) (S.uT t)
 
+/- English proof (translation)
+Use `⟨fun A F Λ _ _ φ₀ φc c t => ⟨F.weight_isLinearMap φ₀ φc c t, fun x y => F.chernForm_isLinearMap c t x y⟩, ?_⟩` and prove the remaining obligations. Introduce `D X _ A R S hr`. Take `⟨Om, h1, h2⟩` from `hK A R`. Conclude with `⟨Om, |R.C| + |S.C|, fun t ht hl he => S.curr_isSmoothPotForm hr Om h1 h2 t ht hl he⟩`.
+-/
 theorem LinearWeights.proof (hK : KaehlerBound.Statement) : LinearWeights.Statement := by
   refine ⟨fun A F Λ _ _ φ₀ φc c t => ⟨F.weight_isLinearMap φ₀ φc c t,
     fun x y => F.chernForm_isLinearMap c t x y⟩, ?_⟩

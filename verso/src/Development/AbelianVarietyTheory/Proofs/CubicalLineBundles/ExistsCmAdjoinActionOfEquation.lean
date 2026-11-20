@@ -9,6 +9,9 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Establish `h1 : m * m' - n * n' * k = m * m' + (-k) * n * n'` using `by ring`. Rewrite using `[h1]`. Simplify using `only [mul_zpow, ← zpow_mul, zpow_add]`. The two sides agree by associativity and commutativity.
+-/
 private theorem okAct_group_identity {A : Type*} [CommGroup A] (i w : A) (k m n m' n' : ℤ) :
     i ^ (m * m' - n * n' * k) * w ^ (m * n' + n * m' + n * n') =
       (i ^ m * w ^ n) ^ m' * (w ^ m * (w * i ^ (-k)) ^ n) ^ n' := by
@@ -17,6 +20,21 @@ private theorem okAct_group_identity {A : Type*} [CommGroup A] (i w : A) (k m n 
   simp only [mul_zpow, ← zpow_mul, zpow_add]
   ac_rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H S G _ _ W hW hEq`. Take `⟨-, hco, -, hsq, -⟩` from `OK_isDedekindDomain_and_projective E H`. Use `set k : ℕ := (1 + H.d) / 4 with hk`. Use `choose c hc hcu using hco`. Establish `hcoord : ∀ m n : ℤ, c ((m : OK H) + (n : OK H) * wK H) = (m, n)` using `fun m n => (hcu _ (m, n) rfl).symm`.
+
+Establish `hWW : W ≫ W = W * (𝟙 G) ^ (-(k : ℤ))`. Rewrite using `[zpow_neg, zpow_natCast, eq_mul_inv_iff_mul_eq]`. Conclude with `hEq`. Set `F : OK H → (G ⟶ G)` to `fun a => (𝟙 G) ^ (c a).1 * W ^ (c a).2`. Establish `hF : ∀ m n : ℤ, F ((m : OK H) + (n : OK H) * wK H) = (𝟙 G) ^ m * W ^ n` using `fun m n => by`.
+
+Simplify using `only [F, hcoord]`. Establish `hex : ∀ a : OK H, ∃ m n : ℤ, a = (m : OK H) + (n : OK H) * wK H` using `fun a => ⟨_, _, hc a⟩`. Use `⟨⟨F, fun a => ?_, ?_, fun a b => ?_, fun a b => ?_⟩, ?_, hF⟩` and prove the remaining obligations. Establish `h1` using `Serre.isMonHom_zpow (𝟙 G) (c a).1`. Establish `h2` using `Serre.isMonHom_zpow W (c a).2`.
+
+Conclude with `Serre.isMonHom_mul _ _`. Use `hF 1 0` as an intermediate fact. Simplify using `using this`. Take `⟨m, n, rfl⟩` from `hex a`. Take `⟨m', n', rfl⟩` from `hex b`.
+
+Establish `e : ((m : OK H) + (n : OK H) * wK H) * ((m' : OK H) + (n' : OK H) * wK H) = ((m * m' - n * n' * (k : ℤ) : ℤ) : OK H) + ((m * n' + n * m' + n * n' : ℤ) : OK H) * wK H`. Use `push_cast`. Take the linear combination `((n : OK H) * (n' : OK H)) * hsq`. Rewrite using `[e, hF, hF, hF]`. Simplify using `only [MonObj.comp_mul, GrpObj.comp_zpow, MonObj.mul_comp, GrpObj.zpow_comp, Category.comp_id, Category.id_comp, hWW]`.
+
+Conclude with `okAct_group_identity _ _ _ _ _ _ _`. Take `⟨m, n, rfl⟩` from `hex a`. Take `⟨m', n', rfl⟩` from `hex b`. Establish `e : ((m : OK H) + (n : OK H) * wK H) + ((m' : OK H) + (n' : OK H) * wK H) = ((m + m' : ℤ) : OK H) + ((n + n' : ℤ) : OK H) * wK H`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hF, hF, hF, zpow_add, zpow_add]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Use `hF 0 1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_okAct_of_equation : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (W : G ⟶ G), IsMonHom W → (W ≫ W) * (𝟙 G) ^ ((1 + H.d) / 4) = W → ∃ a : OAct (OK H) G, a.act (wK H) = W ∧ ∀ m n : ℤ, a.act ((m : OK H) + (n : OK H) * wK H) = (𝟙 G) ^ m * W ^ n := by
   intro E _ _ _ H S G _ _ W hW hEq
   obtain ⟨-, hco, -, hsq, -⟩ := OK_isDedekindDomain_and_projective E H

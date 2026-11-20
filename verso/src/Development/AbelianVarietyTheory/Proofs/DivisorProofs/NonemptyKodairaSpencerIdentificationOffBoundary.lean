@@ -18,6 +18,13 @@ open GlobalTheory.CechPic GlobalTheory.TangentOrigin GlobalTheory.Vanishing
 open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag psiSet TIx IsTanFrame KSIso)
 
+/- English proof (translation)
+Take `⟨_, ⟨W, hW, rfl⟩, hyW, hWV⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open hy V.isOpen`. Establish `hWV : W ≤ V` using `hWV`. Use `replace hW : IsAffineOpen W := hW`. Set `p` to `hW.primeIdealOf ⟨y, hyW⟩`. Establish `hne` using `h p.asIdeal.ResidueField (spMap (algebraMap Γ(Z, W) p.asIdeal.ResidueField) ≫ GlobalTheory.FlagMod.tau hW) (GlobalTheory.FlagMod.le_preimage_comp _ (GlobalTheory.FlagMod.tau_le hW hWV))`.
+
+Rewrite `hne` using `[← GlobalTheory.FlagMod.ev_res _ hWV (GlobalTheory.FlagMod.le_preimage_comp _ (GlobalTheory.FlagMod.tau_le hW le_rfl)), GlobalTheory.FlagMod.ev_spMap_tau]`. Establish `hnm : resG Z hWV a ∈ p.asIdeal.primeCompl` using `fun hm => hne (Ideal.algebraMap_residueField_eq_zero.2 hm)`. Use `letI := Z.presheaf.algebra_section_stalk (⟨y, hyW⟩ : W)`. Use `hW.isLocalization_stalk ⟨y, hyW⟩` as an intermediate fact. Establish `hu` using `(IsLocalization.AtPrime.isUnit_to_map_iff (Z.presheaf.stalk y) p.asIdeal (resG Z hWV a)).2 hnm`.
+
+Rewrite using `[← ger_resG hWV y hyW]`. Conclude with `hu`.
+-/
 theorem isUnit_ger_of_ev {Z : Scheme.{0}} {V : Z.Opens} (a : Γ(Z, V)) (y : Z) (hy : y ∈ V)
     (h : ∀ (L : Type) [Field L] (z : Sp L ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ V), GlobalTheory.FlagMod.ev z V hz a ≠ 0) :
     IsUnit (ger y hy a) := by
@@ -36,6 +43,25 @@ theorem isUnit_ger_of_ev {Z : Scheme.{0}} {V : Z.Opens} (a : Γ(Z, V)) (y : Z) (
   rw [← ger_resG hWV y hyW]
   exact hu
 
+/- English proof (translation)
+Introduce `hdR E _ _ _ H Dw l Xo c Y X Z M hKS`. Use `haveI : Smooth M.str := SmoothOfRelativeDimension.smooth (dimFlag Dw) M.str`. Use `haveI : IsReduced M.X := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isReduced_of_smooth M.str`. Establish `hBLB : (LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)).IsLB` using `LB.isLB_div M.K.isLB (LB.isLB_pull ((common₀ X Z).isLB _) M.σ)`. Establish `hloc : ∀ t : M.K.bundle.ι × X.F.J, ∃ a : Γ(M.X, ksOpen M t.1 t.2), ∀ (K : Type) [Field K] (z : Sp K ⟶ M.X) (hz : ⊤ ≤ z ⁻¹ᵁ ksOpen M t.1 t.2), KSRel M t.1 t.2 z (GlobalTheory.FlagMod.ev z _ hz a)` using `fun t => GlobalTheory.FlagMod.glue_field (ksOpen M t.1 t.2) (fun L _ z x => KSRel M t.1 t.2 z x) (fun L _ z hz x y hx hy => (GlobalTheory.T.kodairaSpencer_coordinate_unique_ne_zero M hKS t.1 t.2 L z hz).1 x y hx hy) (fun W hW hle => GlobalTheory.T.exists_regular_kodairaSpencerCoo …`.
+
+Use `choose a ha using hloc`. Establish `cover : ∀ y ∈ M.off, ∃ t : M.K.bundle.ι × X.F.J, y ∈ ksOpen M t.1 t.2`. Introduce `y hy`. Take `⟨i, hi⟩` from `exists_chart M.K.isLB y`. Take `⟨k, hk⟩` from `((common₀ X Z).pull M.σ).cover y`.
+
+Conclude with `⟨(i, k), hy, hi, (((common₀ X Z).pull M.σ).mem _ k y).2 hk⟩`. Establish `rule : ∀ (y : M.X) (t t' : M.K.bundle.ι × X.F.J) (h : y ∈ ksOpen M t.1 t.2) (h' : y ∈ ksOpen M t'.1 t'.2), ger y h (a t) = (tr (LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)) y (t.1, flagIdx M _ t.2) (t'.1, flagIdx M _ t'.2) : _) * ger y h' (a t')`. Introduce `y t t' h h'`. Establish `hle : ksOpen M t.1 t.2 ⊓ ksOpen M t'.1 t'.2 ≤ (LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)).U (t.1, flagIdx M _ t.2) ⊓ (LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)).U (t'.1, flagIdx M _ t'.2)` using `fun q hq => ⟨hq.1.2, hq.2.2⟩`. Rewrite using `[val_tr _ y (hle ⟨h, h'⟩)]`.
+
+Establish `e : resG M.X (inf_le_left : ksOpen M t.1 t.2 ⊓ ksOpen M t'.1 t'.2 ≤ _) (a t) = resG M.X hle ((LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)).g (t.1, flagIdx M _ t.2) (t'.1, flagIdx M _ t'.2)).val * resG M.X inf_le_right (a t')`. Use `GlobalTheory.FlagMod.ext_ev_field fun L _ z hz => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.FlagMod.le_preimage_mono inf_le_left hz`. Establish `h2` using `GlobalTheory.FlagMod.le_preimage_mono inf_le_right hz`. Establish `hg` using `GlobalTheory.FlagMod.le_preimage_mono hle hz`.
+
+Rewrite using `[map_mul, GlobalTheory.FlagMod.ev_res z _ hz h1, GlobalTheory.FlagMod.ev_res z _ hz h2, GlobalTheory.FlagMod.ev_res z _ hz hg]`. Conclude with `GlobalTheory.T.kodairaSpencerCoords_two_charts_transition M hKS t.1 t'.1 t.2 t'.2 L z h1 h2 hg _ _ (ha t L z h1) (ha t' L z h2)`. Use `congrArg (ger y (⟨h, h'⟩ : y ∈ ksOpen M t.1 t.2 ⊓ ksOpen M t'.1 t'.2)) e` as an intermediate fact. Establish `e1` using `ger_resG (inf_le_left : ksOpen M t.1 t.2 ⊓ ksOpen M t'.1 t'.2 ≤ _) y ⟨h, h'⟩ (a t)`. Establish `e2` using `ger_resG (inf_le_right : ksOpen M t.1 t.2 ⊓ ksOpen M t'.1 t'.2 ≤ _) y ⟨h, h'⟩ (a t')`.
+
+Establish `e3` using `ger_resG hle y ⟨h, h'⟩ ((LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)).g (t.1, flagIdx M _ t.2) (t'.1, flagIdx M _ t'.2)).val`. Rewrite `this` using `[map_mul, e1, e2, e3]`. Conclude with `this`. Take `⟨f, hf⟩` from `H0.exists_of_germs (p := M.str) (O := M.off) hBLB (fun t : M.K.bundle.ι × X.F.J => ksOpen M t.1 t.2) (fun t => (t.1, flagIdx M _ t.2)) (fun t => inf_le_left) (fun t => inf_le_right) cover a rule`. Establish `hloc' : ∀ i k, f.loc (i, flagIdx M _ k) = a (i, k)` using `fun i k => fun_ext_ger fun y hy => (H0.germ_apply _ y hy.1 hy.2 f).symm.trans (hf (i, k) y hy)`.
+
+Use `⟨⟨f, nowhereZero_of_exists fun y hy => ?_, (isKS_iff_ksRel M f).2 @fun K _ z i k ho hi => ?_⟩⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `cover y hy`. Use `⟨(t.1, flagIdx M _ t.2), ht.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hf t y ht]`. Conclude with `isUnit_ger_of_ev (a t) y ht fun L _ z hz => (GlobalTheory.T.kodairaSpencer_coordinate_unique_ne_zero M hKS t.1 t.2 L z hz).2 _ (ha t L z hz)`.
+
+Establish `hk : KSRel M i k z (GlobalTheory.FlagMod.ev z (ksOpen M i k) (GlobalTheory.FlagMod.le_preimage_inf ho hi) (a (i, k)))` using `ha (i, k) K z (GlobalTheory.FlagMod.le_preimage_inf ho hi)`. Establish `e : H0.val (B` using `LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)) z (i, flagIdx M _ k) ho hi f = GlobalTheory.FlagMod.ev z (ksOpen M i k) (GlobalTheory.FlagMod.le_preimage_inf ho hi) (a (i, k)) := by`. Rewrite using `[← hloc' i k]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `@hk`.
+-/
 theorem canId_nonempty : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F))
     (X : GlobalTheory.FlagMod.FlagCover Y) (Z : Comp Xo c) (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)),

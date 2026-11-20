@@ -16,6 +16,11 @@ namespace GlobalTheory.ProjOrigin
 
 open ProjSpace
 
+/- English proof (translation)
+Establish `h` using `Proj.awayι_preimage_basicOpen (grading R N) (X_mem R N i) one_pos (X_mem R N j.1) one_pos`. Establish `e : awayToPoly R N i (HomogeneousLocalization.Away.isLocalizationElem (X_mem R N i) (X_mem R N j.1)) = X j`. Use `(awayToPoly_mk R N i _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[pow_one, dehom_X_of_ne]`. Rewrite using `[← e]`.
+
+Conclude with `(congrArg (spMap (awayToPoly R N i) p ∈ ·) h).to_iff`.
+-/
 theorem chartι_mem_chart_iff (R : Type) [CommRing R] (N : ℕ) (i : Fin (N + 1)) (j : {j // j ≠ i})
     (p : Sp (MvPolynomial {j // j ≠ i} R)) :
     chartι R N i p ∈ chart R N j.1 ↔ (X j : MvPolynomial {j // j ≠ i} R) ∉ p.asIdeal := by

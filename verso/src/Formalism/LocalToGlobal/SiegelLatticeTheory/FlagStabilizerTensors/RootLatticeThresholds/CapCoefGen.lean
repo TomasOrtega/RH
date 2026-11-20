@@ -14,6 +14,9 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Apply the tactic sequence `convert Matrix.diagonal_one; split_ifs <;> simp`.
+-/
 theorem jm_sq : Jm ε * Jm ε = 1 := by
   unfold Jm; rw [Matrix.diagonal_mul_diagonal]
   convert Matrix.diagonal_one; split_ifs <;> simp
@@ -22,12 +25,18 @@ section Transp
 
 variable {P Q : Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `h1 : Qᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hinv (hQP : Q * P = 1) (hPQ : P * Q = 1) : (Pᴴ * Jm ε * P)⁻¹ = Q * Jm ε * Qᴴ := by
   apply Matrix.inv_eq_left_inv
   have h1 : Qᴴ * Pᴴ = 1 := by rw [← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]
   calc Q * Jm ε * Qᴴ * (Pᴴ * Jm ε * P) = Q * (Jm ε * ((Qᴴ * Pᴴ) * (Jm ε * P))) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [h1, Matrix.one_mul, ← Matrix.mul_assoc (Jm ε), jm_sq, Matrix.one_mul, hQP]
 
+/- English proof (translation)
+Rewrite using `[hinv hQP hPQ]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P Q, hPQ, Matrix.one_mul]`. Simplify using `only [hPQ, Matrix.mul_one]`.
+-/
 theorem conj_star (hQP : Q * P = 1) (hPQ : P * Q = 1) (Z : Matrix (Fin n) (Fin n) ℂ) :
     P * ((Pᴴ * Jm ε * P)⁻¹ * Zᴴ * (Pᴴ * Jm ε * P)) * Q = Jm ε * (P * Z * Q)ᴴ * Jm ε := by
   rw [hinv hQP hPQ]
@@ -35,16 +44,27 @@ theorem conj_star (hQP : Q * P = 1) (hPQ : P * Q = 1) (Z : Matrix (Fin n) (Fin n
   rw [← Matrix.mul_assoc P Q, hPQ, Matrix.one_mul]
   simp only [hPQ, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.hpart1 S7.cpart1`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, conj_star hQP hPQ]`.
+-/
 theorem conj_hpart1 (hQP : Q * P = 1) (hPQ : P * Q = 1) (Z : Matrix (Fin n) (Fin n) ℂ) :
     P * Formalism.QuantumDeterminants.hpart1 (Pᴴ * Jm ε * P) Z * Q = S7.cpart1 ε (P * Z * Q) := by
   unfold Formalism.QuantumDeterminants.hpart1 S7.cpart1
   rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, conj_star hQP hPQ]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.hpart2 S7.cpart2`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, conj_star hQP hPQ]`.
+-/
 theorem conj_hpart2 (hQP : Q * P = 1) (hPQ : P * Q = 1) (Z : Matrix (Fin n) (Fin n) ℂ) :
     P * Formalism.QuantumDeterminants.hpart2 (Pᴴ * Jm ε * P) Z * Q = S7.cpart2 ε (P * Z * Q) := by
   unfold Formalism.QuantumDeterminants.hpart2 S7.cpart2
   rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, conj_star hQP hPQ]
 
+/- English proof (translation)
+Use `show (P * g * Q)ᴴ * Jm ε * (P * g * Q) = Jm ε`. Establish `h1 : Qᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (Qᴴ * Pᴴ) * Jm ε * (P * Q) := by rw [hg]; simp only [Matrix.mul_assoc]`.
+
+Use `_ = Jm ε := by rw [h1, hPQ, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem conj_UJ (hQP : Q * P = 1) (hPQ : P * Q = 1) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : gᴴ * (Pᴴ * Jm ε * P) * g = Pᴴ * Jm ε * P) : inUJ ε (P * g * Q) := by
   show (P * g * Q)ᴴ * Jm ε * (P * g * Q) = Jm ε
@@ -54,6 +74,11 @@ theorem conj_UJ (hQP : Q * P = 1) (hPQ : P * Q = 1) {g : Matrix (Fin n) (Fin n) 
     _ = (Qᴴ * Pᴴ) * Jm ε * (P * Q) := by rw [hg]; simp only [Matrix.mul_assoc]
     _ = Jm ε := by rw [h1, hPQ, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hM' : Mᴴ * Jm ε * M = Jm ε` using `hM`. Establish `h1 : Qᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Pᴴ * ((Mᴴ * Jm ε * M) * P) := by rw [h1, hPQ]; simp only [Matrix.one_mul, Matrix.mul_assoc]`.
+
+Use `_ = Pᴴ * Jm ε * P := by rw [hM', Matrix.mul_assoc]`.
+-/
 theorem unconj_UH (hQP : Q * P = 1) (hPQ : P * Q = 1) {M : Matrix (Fin n) (Fin n) ℂ} (hM : inUJ ε M) :
     (Q * M * P)ᴴ * (Pᴴ * Jm ε * P) * (Q * M * P) = Pᴴ * Jm ε * P := by
   have hM' : Mᴴ * Jm ε * M = Jm ε := hM
@@ -64,6 +89,9 @@ theorem unconj_UH (hQP : Q * P = 1) (hPQ : P * Q = 1) {M : Matrix (Fin n) (Fin n
     _ = Pᴴ * ((Mᴴ * Jm ε * M) * P) := by rw [h1, hPQ]; simp only [Matrix.one_mul, Matrix.mul_assoc]
     _ = Pᴴ * Jm ε * P := by rw [hM', Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hinvP : P⁻¹ = Q` using `Matrix.inv_eq_right_inv hPQ`. Establish `hu : IsUnit P` using `(Matrix.isUnit_iff_isUnit_det P).mpr (Matrix.isUnit_det_of_right_inverse hPQ)`. Establish `h` using `Matrix.exp_conj P ((t : ℂ) • X) hu`. Rewrite `h` using `[hinvP]`. Rewrite using `[show (t : ℂ) • (P * X * Q) = P * ((t : ℂ) • X) * Q by rw [Matrix.mul_smul, Matrix.smul_mul], h]`.
+-/
 theorem exp_conj' (hQP : Q * P = 1) (hPQ : P * Q = 1) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     P * NormedSpace.exp ((t : ℂ) • X) * Q = NormedSpace.exp ((t : ℂ) • (P * X * Q)) := by
   have hinvP : P⁻¹ = Q := Matrix.inv_eq_right_inv hPQ
@@ -79,24 +107,42 @@ section Coef
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
   {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {P Q : Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+Rewrite using `[← exp_conj' hQP hPQ X t]`. Simplify using `only [← Matrix.mul_assoc, hQP, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hQP, Matrix.mul_one]`.
+-/
 theorem exp_eq_unconj (hQP : Q * P = 1) (hPQ : P * Q = 1) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) = Q * NormedSpace.exp ((t : ℂ) • (P * X * Q)) * P := by
   rw [← exp_conj' hQP hPQ X t]
   simp only [← Matrix.mul_assoc, hQP, Matrix.one_mul]
   rw [Matrix.mul_assoc, hQP, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[exp_eq_unconj hQP hPQ X t]`. Conclude with `unconj_UH hQP hPQ (PI.UnitaryGroupMassFormula.DSIC.exp_mem_UJ hX t)`.
+-/
 theorem exp_mem_Hm (hQP : Q * P = 1) (hPQ : P * Q = 1) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε (P * X * Q))
     (t : ℝ) : (NormedSpace.exp ((t : ℂ) • X))ᴴ * (Pᴴ * Jm ε * P) * NormedSpace.exp ((t : ℂ) • X) =
       Pᴴ * Jm ε * P := by
   rw [exp_eq_unconj hQP hPQ X t]
   exact unconj_UH hQP hPQ (PI.UnitaryGroupMassFormula.DSIC.exp_mem_UJ hX t)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hm := by rw [hg, hh]`.
+-/
 theorem mul_mem_Hm {g h : Matrix (Fin n) (Fin n) ℂ} {Hm : Matrix (Fin n) (Fin n) ℂ} (hg : gᴴ * Hm * g = Hm)
     (hh : hᴴ * Hm * h = Hm) : (g * h)ᴴ * Hm * (g * h) = Hm := by
   calc (g * h)ᴴ * Hm * (g * h) = hᴴ * (gᴴ * Hm * g) * h := by
         rw [Matrix.conjTranspose_mul]; simp only [Matrix.mul_assoc]
     _ = Hm := by rw [hg, hh]
 
+/- English proof (translation)
+Unfold `Formalism.REAL.RdV`. Establish `hpath : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) = fun t : ℝ => (inner ℂ a (σ (P * g * Q) (σ (NormedSpace.exp ((t : ℂ) • (P * X * Q))) (x : H)))) • T`. Use function extensionality and compare the values at `t`. Rewrite using `[hf _ (mul_mem_Hm hg (exp_mem_Hm hQP hPQ hX t))]`. Use `congr 2`.
+
+Establish `e : P * (g * NormedSpace.exp ((t : ℂ) • X)) * Q = (P * g * Q) * (P * NormedSpace.exp ((t : ℂ) • X) * Q)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Q P, hQP, Matrix.one_mul]`. Rewrite using `[e, exp_conj' hQP hPQ X t, hσ.1.2 _ (conj_UJ hQP hPQ hg) _ (PI.UnitaryGroupMassFormula.DSIC.exp_mem_UJ hX t)]`. Both sides reduce to the same expression.
+
+Rewrite using `[hpath]`. Establish `hd` using `(isDerivedOn_smE hσ).deriv _ hX x`. Establish `hd1 : HasDerivAt (fun t : ℝ => inner ℂ a (σ (P * g * Q) (σ (NormedSpace.exp ((t : ℂ) • (P * X * Q))) (x : H)))) (inner ℂ a (σ (P * g * Q) ((actM (smE ε σ) (P * X * Q) x : smD ε σ) : H))) 0`. Use `(((innerSL ℂ a).comp (σ (P * g * Q))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd` as an intermediate fact. Apply the tactic sequence `convert this using 1 <;> first | (ext t; simp) | simp`.
+
+Conclude with `(hd1.smul_const T).deriv`.
+-/
 theorem rdv_cf (hσ : IsURepOn (UJset ε) σ) (hQP : Q * P = 1) (hPQ : P * Q = 1) (a : H) (T : E)
     (x : smD ε σ) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (hf : ∀ h, hᴴ * (Pᴴ * Jm ε * P) * h = Pᴴ * Jm ε * P → f h = (inner ℂ a (σ (P * h * Q) x)) • T)
@@ -122,6 +168,13 @@ theorem rdv_cf (hσ : IsURepOn (UJset ε) σ) (hQP : Q * P = 1) (hPQ : P * Q = 1
     convert this using 1 <;> first | (ext t; simp) | simp
   exact (hd1.smul_const T).deriv
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.EabH`. Establish `h1 : inG ε (P * Formalism.QuantumDeterminants.hpart1 (Pᴴ * Jm ε * P) (Matrix.single c d 1) * Q)`. Rewrite using `[conj_hpart1 hQP hPQ]`. Conclude with `SmDerA.inG_cpart1 ε _`. Establish `h2 : inG ε (P * Formalism.QuantumDeterminants.hpart2 (Pᴴ * Jm ε * P) (Matrix.single c d 1) * Q)`.
+
+Rewrite using `[conj_hpart2 hQP hPQ]`. Conclude with `SmDerA.inG_cpart2 ε _`. Rewrite using `[rdv_cf hσ hQP hPQ a T x f hf h1 hg, rdv_cf hσ hQP hPQ a T x f hf h2 hg, conj_hpart1 hQP hPQ, conj_hpart2 hQP hPQ]`. Establish `hY : actM (smE ε σ) (P * Matrix.single c d 1 * Q) = actM (smE ε σ) (S7.cpart1 ε (P * Matrix.single c d 1 * Q)) + Complex.I • actM (smE ε σ) (S7.cpart2 ε (P * Matrix.single c d 1 * Q))` using `by conv_lhs => rw [SmDerA.cpart_decomp ε (P * Matrix.single c d 1 * Q)]`. Rewrite using `[SmDerA.actM_add, SmDerA.actM_smul]`.
+
+Rewrite using `[hY, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, map_add, map_smul, inner_add_right, inner_smul_right, add_smul, smul_smul]`.
+-/
 theorem eabH_cf (hσ : IsURepOn (UJset ε) σ) (hQP : Q * P = 1) (hPQ : P * Q = 1) (a : H) (T : E)
     (x : smD ε σ) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (hf : ∀ h, hᴴ * (Pᴴ * Jm ε * P) * h = Pᴴ * Jm ε * P → f h = (inner ℂ a (σ (P * h * Q) x)) • T)
@@ -154,6 +207,9 @@ def Ec (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H
     Fin n → Fin n → Module.End ℂ (smD ε σ) :=
   fun c d => actM (smE ε σ) (P * Matrix.single c d 1 * Q)
 
+/- English proof (translation)
+Unfold `Ec actM`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul]`.
+-/
 theorem Ec_eq (c d : Fin n) :
     Ec ε σ P Q c d = ∑ a, ∑ b, (P a c * Q d b) • smE ε σ a b := by
   unfold Ec actM
@@ -161,6 +217,11 @@ theorem Ec_eq (c d : Fin n) :
   congr 1
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Top Formalism.REAL.Tm`. Rewrite using `[eabH_cf hσ hQP hPQ a T x f hf c d hg, hf g hg]`. Distinguish the cases in `hcd : c = d`. Rewrite using `[if_pos hcd, if_pos hcd, LinearMap.add_apply, Submodule.coe_add, map_add, inner_add_right, add_smul, Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply, Submodule.coe_smul, map_smul, inner_smul_right, smul_smul]`. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg hcd, if_neg hcd, zero_add, zero_add]`. Both sides reduce to the same expression.
+-/
 theorem top_cf (hσ : IsURepOn (UJset ε) σ) (hQP : Q * P = 1) (hPQ : P * Q = 1) (a : H) (T : E)
     (x : smD ε σ) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (hf : ∀ h, hᴴ * (Pᴴ * Jm ε * P) * h = Pᴴ * Jm ε * P → f h = (inner ℂ a (σ (P * h * Q) x)) • T)
@@ -177,6 +238,9 @@ theorem top_cf (hσ : IsURepOn (UJset ε) σ) (hQP : Q * P = 1) (hPQ : P * Q = 1
   · rw [if_neg hcd, if_neg hcd, zero_add, zero_add]
     rfl
 
+/- English proof (translation)
+The claim follows from `| [], x, f, hf, g, hg => by simp only [List.map_nil, List.foldr_nil, List.prod_nil, Module.End.one_apply]; exact hf g hg | t :: L, x, f, hf, g, hg => by simp only [List.map_cons, List.foldr_cons, List.prod_cons, Module.End.mul_apply] exact top_cf hσ hQP hPQ a T _ _ (fun h hh => f …`.
+-/
 theorem foldr_cf (hσ : IsURepOn (UJset ε) σ) (hQP : Q * P = 1) (hPQ : P * Q = 1) (a : H) (T : E) :
     ∀ (L : List (ℂ × Fin n × Fin n)) (x : smD ε σ) (f : Matrix (Fin n) (Fin n) ℂ → E),
     (∀ h, hᴴ * (Pᴴ * Jm ε * P) * h = Pᴴ * Jm ε * P → f h = (inner ℂ a (σ (P * h * Q) x)) • T) →
@@ -196,6 +260,13 @@ section Capelli2
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
   {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {P Q : Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.qminorOp Formalism.REAL.qminor`. Rewrite using `[Finset.sum_apply, LinearMap.sum_apply, Submodule.coe_sum, map_sum, inner_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `hL1 : (List.ofFn fun k : Fin t => Formalism.QuantumDeterminants.Top (E` using `E) (Formalism.QuantumDeterminants.EabH (Pᴴ * Jm ε * P)) (u - ((k : ℕ) : ℂ)) (ra (s k)) (cb k)) = (List.ofFn fun k : Fin t => ((u - ((k : ℕ) : ℂ)), ra (s k), cb k)).map fun t => Formalism.QuantumDeterminants.Top (E := E) (Formalism.QuantumDeterminants.EabH (Pᴴ * Jm ε * P)) t.1 t.2 …`. Rewrite using `[List.map_ofFn]`.
+
+Both sides reduce to the same expression. Establish `hL2 : (List.ofFn fun k : Fin t => Formalism.REAL.Tm (Ec ε σ P Q) (u - (k : ℂ)) (ra (s k)) (cb k)) = (List.ofFn fun k : Fin t => ((u - ((k : ℕ) : ℂ)), ra (s k), cb k)).map fun t => Formalism.REAL.Tm (Ec ε σ P Q) t.1 t.2.1 t.2.2`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[Pi.smul_apply, hL1, foldr_cf hσ hQP hPQ a T _ x f hf g hg, hL2]`.
+
+Rewrite using `[show ((Equiv.Perm.sign s : ℤ) : Module.End ℂ (smD ε σ)) = ((Equiv.Perm.sign s : ℤ) : ℂ) • 1 by`. Rewrite using `[Int.cast_smul_eq_zsmul ℂ, zsmul_eq_mul, mul_one]]`. Rewrite using `[smul_mul_assoc, one_mul, LinearMap.smul_apply, Submodule.coe_smul, map_smul, inner_smul_right, smul_smul]`.
+-/
 theorem qminorOp_cf (hσ : IsURepOn (UJset ε) σ) (hQP : Q * P = 1) (hPQ : P * Q = 1) (a : H) (T : E)
     (x : smD ε σ) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (hf : ∀ h, hᴴ * (Pᴴ * Jm ε * P) * h = Pᴴ * Jm ε * P → f h = (inner ℂ a (σ (P * h * Q) x)) • T)
@@ -219,6 +290,13 @@ theorem qminorOp_cf (hσ : IsURepOn (UJset ε) σ) (hQP : Q * P = 1) (hPQ : P * 
     rw [Int.cast_smul_eq_zsmul ℂ, zsmul_eq_mul, mul_one]]
   rw [smul_mul_assoc, one_mul, LinearMap.smul_apply, Submodule.coe_smul, map_smul, inner_smul_right, smul_smul]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.capelliH Formalism.QuantumDeterminants.qdetOp`. Rewrite using `[qminorOp_cf hσ hQP hPQ a T x f hf id id u hg]`. Establish `hP : IsUnit P` using `(Matrix.isUnit_iff_isUnit_det P).mpr (Matrix.isUnit_det_of_right_inverse hPQ)`. Establish `hPi : P⁻¹ = Q` using `Matrix.inv_eq_right_inv hPQ`. Establish `hq` using `PI.UnitaryGroupMassFormula.DSIC.quasi_determinant_conj_inv (Module.End ℂ (smD ε σ)) n (smE ε σ) (isDerivedOn_smE hσ).glRep P hP u`.
+
+Rewrite `hq` using `[hPi]`. Establish `hE : Ec ε σ P Q = fun a b => ∑ c, ∑ d, (P c a * Q b d) • smE ε σ c d`. Use function extensionality and compare the values at `c d`. Conclude with `Ec_eq c d`. Establish `hq' : Formalism.REAL.qminor (Ec ε σ P Q) id id u = Formalism.REAL.qminor (smE ε σ) id id u`.
+
+Rewrite using `[hE]`. Conclude with `hq`. Use `show _ = (inner ℂ a (σ (P * g * Q) ((Formalism.REAL.qminor (smE ε σ) id id u x : smD ε σ) : H))) • T`. Rewrite using `[hq']`.
+-/
 theorem capelliH_cf (hσ : IsURepOn (UJset ε) σ) (hQP : Q * P = 1) (hPQ : P * Q = 1) (a : H) (T : E)
     (x : smD ε σ) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (hf : ∀ h, hᴴ * (Pᴴ * Jm ε * P) * h = Pᴴ * Jm ε * P → f h = (inner ℂ a (σ (P * h * Q) x)) • T)
@@ -244,6 +322,13 @@ section Rect
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `hNm : N = m`. Establish `h1` using `Matrix.rank_mul_le_left Q P`. Establish `h2` using `Matrix.rank_mul_le_left P Q`. Rewrite `h1` using `[hQP, Matrix.rank_one]`. Rewrite `h2` using `[hPQ, Matrix.rank_one]`.
+
+Establish `h3` using `Matrix.rank_le_width Q`. Establish `h4` using `Matrix.rank_le_width P`. Simplify using `at h1 h2 h3 h4`. Use linear arithmetic over natural numbers and integers. Substitute `hNm` using the available equality.
+
+Conclude with `capelliH_cf hσ hQP hPQ a T x f hf u hg`.
+-/
 theorem capelliH_cf_rect {N m : ℕ} {ε : Fin N → Bool} {σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)}
     (hσ : IsURepOn (UJset ε) σ) {P : Matrix (Fin N) (Fin m) ℂ} {Q : Matrix (Fin m) (Fin N) ℂ} (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (a : H) (T : E) (x : smD ε σ) (f : Matrix (Fin m) (Fin m) ℂ → E)

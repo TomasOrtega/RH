@@ -18,6 +18,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FrameOfReal
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl F3 hC j`. Establish `hBV` using `hC.models.BV j`. Establish `hu : ∀ τ, IsUnit (Rl.BV j τ)` using `fun τ => by`. Take `⟨ε, hε, h2, -⟩` from `hBV τ`. Establish `hd : (Matrix.diagonal fun a => (ε a : ℂ)) * Matrix.diagonal (fun a => (ε a : ℂ)) = 1`.
+
+Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `rcases hε a with h | h <;> simp [h.1]`. Use `IsUnit.of_mul_eq_one_right (Matrix.diagonal (fun a => (ε a : ℂ)) * (Matrix.conjTranspose (Rl.BV j τ) * gramAt D (Vc D j) τ)) ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_assoc, h2, hd]`. Establish `sdV` using `hC.lev.βV j`. Establish `sdW` using `hC.lev.βW j`. Establish `bV : Lev.IsBaseFrame (Vc D j) (Rl.βV j) (Rl.ΛV j) 1`. Take `⟨c, hc⟩` from `sdV`.
+
+Rewrite `hc` using `[one_pow]`. Then use the resulting hypothesis. Establish `bW : Lev.IsBaseFrame (Wc D j) (Rl.βW j) (Rl.ΛW j) 1`. Take `⟨c, hc⟩` from `sdW`. Rewrite `hc` using `[one_pow]`. Then use the resulting hypothesis. Establish `hv` using `(hC.thP.vP j A3.A.μ0).1`.
+
+Establish `hstd` using `(hC.thP.ωP j A3.A.μ0).std`. Use `⟨⟨Rl.ψ, Rl.θ, cart (Rl.MW j (sg0 D A3.A)), fun τ => (hu τ).unit, onb (Rl.MW j (sg0 D A3.A)), Rl.ΛV j, Rl.ΛW j, Rl.βV j, Rl.βW j, Rl.vacP j⟩, ?_, hstd, rfl, rfl, rfl, fun _ => rfl, rfl, rfl, rfl, rfl, rfl, rfl, bV, bW⟩` and prove the remaining obligations. Conclude with `{ rank_le := (D.sp.W_rank _ (Nat.le_add_left _ _) j.2).le.trans (r_le_V j) onbS := hBV cartT := fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart _ τ onbT := fun τ => GlobalTheory.AdTh.VecFock.isONBasis_onb _ τ _ (hC.models.order j τ) sdS := GlobalTheory.SDFrameLattice.isSelfDu …`.
+-/
 theorem exists_frame_real : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks) (F3 : Face3 D A3), Rl.Char3 F3 → ∀ j : Fin D.R.m, ∃ F : Frame (Vc D j) (Wc D j), F.Good ∧ IsStdChar D F.ψ (-1) ∧ F.ψ = Rl.ψ ∧ F.θ = Rl.θ ∧ F.sT = cart (Rl.MW j (sg0 D A3.A)) ∧ (∀ τ, (F.BS τ).val = Rl.BV j τ) ∧ F.BT = onb (Rl.MW j (sg0 D A3.A)) ∧ F.ΛS = Rl.ΛV j ∧ F.ΛT = Rl.ΛW j ∧ F.βS = Rl.βV j ∧ F.βT = Rl.βW j ∧ F.f₀ = Rl.vacP j ∧ Lev.IsBaseFrame (Vc D j) F.βS F.ΛS 1 ∧ Lev.IsBaseFrame (Wc D j) F.βT F.ΛT 1 := by
   intro D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl F3 hC j
   have hBV := hC.models.BV j

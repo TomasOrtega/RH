@@ -37,6 +37,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε 
 
 variable {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.DS.G2.closGen_stable hgap (ReciprocityTheory.ChartRestriction.DS.rreg_isURepOn ε) (ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE (ReciprocityTheory.ChartRestriction.DS.rreg_isURepOn ε)) (ReciprocityTheory.ChartRestriction.DS.datumV_isKIr …`.
+-/
 theorem rreg_mem_Hlam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     ∀ g ∈ UJset ε, ∀ x ∈ Hlam ε Ψ v₀, rreg ε g x ∈ Hlam ε Ψ v₀ :=
   ReciprocityTheory.ChartRestriction.DS.G2.closGen_stable hgap (ReciprocityTheory.ChartRestriction.DS.rreg_isURepOn ε)
@@ -44,6 +47,9 @@ theorem rreg_mem_Hlam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ 
     (ReciprocityTheory.ChartRestriction.DS.datumV_isKIrrHW hP hv₀) (ReciprocityTheory.ChartRestriction.DS.datumV_casimir hP v₀)
     (ReciprocityTheory.ChartRestriction.DS.datumV_kStable hP v₀)
 
+/- English proof (translation)
+Establish `hmem : rreg ε g (x : L2 ε) ∈ Hlam ε Ψ v₀` using `rreg_mem_Hlam hgap hP hv₀ g hg (x : L2 ε) x.2`. Use `show (Hlam ε Ψ v₀).starProjection (rreg ε g (x : L2 ε)) = rreg ε g (x : L2 ε)`. Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero hmem` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[sub_self, inner_zero_left]`.
+-/
 theorem sigLam_coe (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (x : Hlam ε Ψ v₀) :
     ((sigLam ε Ψ v₀ g x : Hlam ε Ψ v₀) : L2 ε) = rreg ε g x := by
   have hmem : rreg ε g (x : L2 ε) ∈ Hlam ε Ψ v₀ := rreg_mem_Hlam hgap hP hv₀ g hg (x : L2 ε) x.2
@@ -52,6 +58,19 @@ theorem sigLam_coe (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v
   intro w _
   rw [sub_self, inner_zero_left]
 
+/- English proof (translation)
+Take `⟨⟨hr1, hrm⟩, hriso, hrc⟩` from `rreg_isURepOn ε`. Establish `hc : ∀ {g : Matrix (Fin n) (Fin n) ℂ}, g ∈ UJset ε → ∀ x : Hlam ε Ψ v₀, ((sigLam ε Ψ v₀ g x : Hlam ε Ψ v₀) : L2 ε) = rreg ε g x` using `fun hg x => sigLam_coe hgap hP hv₀ hg x`. Establish `h1mem : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε` using `by show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * ReciprocityTheory.ChartRestriction.DS.Jm ε * 1 = ReciprocityTheory.ChartRestriction.DS.Jm ε`. Simplify using the standard rewrite rules. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hc h1mem, hr1]`. Both sides reduce to the same expression.
+
+Introduce `a ha b hb`. Establish `ha' : aᴴ * (ReciprocityTheory.ChartRestriction.DS.Jm ε * a) = ReciprocityTheory.ChartRestriction.DS.Jm ε`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `ha`. Establish `hb' : bᴴ * (ReciprocityTheory.ChartRestriction.DS.Jm ε * b) = ReciprocityTheory.ChartRestriction.DS.Jm ε`.
+
+Rewrite using `[← Matrix.mul_assoc]`. Conclude with `hb`. Establish `hab : a * b ∈ UJset ε` using `by show (a * b)ᴴ * ReciprocityTheory.ChartRestriction.DS.Jm ε * (a * b) = ReciprocityTheory.ChartRestriction.DS.Jm ε`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (ReciprocityTheory.ChartRestriction.DS.Jm ε) a b, ← Matrix.mul_assoc aᴴ, ha', hb']`. Apply `ContinuousLinearMap.ext` to reduce the goal to its premises.
+
+Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hc hab, hrm a ha b hb, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hc ha, hc hb]`. Introduce `g hg x show ‖((sigLam ε Ψ v₀ g x : Hlam ε Ψ v₀) : L2 ε)‖ = ‖(x : L2 ε)‖`. Rewrite using `[hc hg]`.
+
+Conclude with `hriso g hg x`. Introduce `x`. Rewrite using `[Topology.IsInducing.subtypeVal.continuousOn_iff]`. Conclude with `(hrc (x : L2 ε)).congr (fun g hg => hc hg x)`.
+-/
 theorem sigLam_isURepOn (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : IsURepOn (UJset ε) (sigLam ε Ψ v₀) := by
   obtain ⟨⟨hr1, hrm⟩, hriso, hrc⟩ := rreg_isURepOn ε
   have hc : ∀ {g : Matrix (Fin n) (Fin n) ℂ}, g ∈ UJset ε → ∀ x : Hlam ε Ψ v₀,
@@ -88,6 +107,17 @@ theorem sigLam_isURepOn (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv�
     rw [Topology.IsInducing.subtypeVal.continuousOn_iff]
     exact (hrc (x : L2 ε)).congr (fun g hg => hc hg x)
 
+/- English proof (translation)
+Introduce `S hSc hSG`. Establish `hσ` using `ReciprocityTheory.ChartRestriction.DS.rreg_isURepOn ε`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`. Establish `hV` using `ReciprocityTheory.ChartRestriction.DS.datumV_isKIrrHW hP hv₀`. Establish `hc` using `ReciprocityTheory.ChartRestriction.DS.datumV_casimir hP v₀`.
+
+Establish `hVK` using `ReciprocityTheory.ChartRestriction.DS.datumV_kStable hP v₀`. Establish `hinj : Function.Injective (Hlam ε Ψ v₀).subtype` using `Subtype.coe_injective`. Establish `hHc : IsClosed ((Hlam ε Ψ v₀ : Submodule ℂ (L2 ε)) : Set (L2 ε))` using `Submodule.isClosed_topologicalClosure _`. Establish `hS'c : IsClosed ((S.map (Hlam ε Ψ v₀).subtype : Submodule ℂ (L2 ε)) : Set (L2 ε))`. Rewrite using `[Submodule.map_coe]`.
+
+Conclude with `hHc.isClosedEmbedding_subtypeVal.isClosedMap _ hSc`. Establish `hSG' : ∀ g ∈ UJset ε, ∀ x ∈ S.map (Hlam ε Ψ v₀).subtype, rreg ε g x ∈ S.map (Hlam ε Ψ v₀).subtype`. Introduce and unpack `g hg _ ⟨y, hy, rfl⟩`. Conclude with `⟨sigLam ε Ψ v₀ g y, hSG g hg y hy, ReciprocityTheory.ChartRestriction.DS.G2.sigLam_coe hgap hP hv₀ hg y⟩`. Break down `ReciprocityTheory.ChartRestriction.DS.G2.rigid_irred hgap hσ hD hV hc hVK _ (ReciprocityTheory.ChartRestriction.DS.map_subtype_le_closGen S) hS'c hSG' with h | h` into its components or cases.
+
+Use `left`. Conclude with `Submodule.map_injective_of_injective hinj (h.trans (Submodule.map_bot _).symm)`. Use `right`. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_subtype_top]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sigLam_irred (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) (sigLam ε Ψ v₀) := by
   intro S hSc hSG
   have hσ := ReciprocityTheory.ChartRestriction.DS.rreg_isURepOn ε
@@ -114,6 +144,11 @@ theorem sigLam_irred (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ :
     rw [h, Submodule.map_subtype_top]
     rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Apply `ReciprocityTheory.ChartRestriction.DS.datumV_ne_bot hP hv₀` to reduce the goal to its premises. Establish `h1 : (lowKSubLam ε Ψ v₀).map (Hlam ε Ψ v₀).subtype = ⊥` using `by haveI := h`. Rewrite using `[show lowKSubLam ε Ψ v₀ = ⊥ from Submodule.eq_bot_of_subsingleton, Submodule.map_bot]`.
+
+Rewrite `h1` using `[ReciprocityTheory.ChartRestriction.DS.map_lowKSubLam]`. Conclude with `Submodule.map_injective_of_injective Subtype.coe_injective (h1.trans (Submodule.map_bot _).symm)`.
+-/
 theorem Hlam_nontrivial (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : Nontrivial (Hlam ε Ψ v₀) := by
   by_contra h
   rw [not_nontrivial_iff_subsingleton] at h
@@ -124,6 +159,11 @@ theorem Hlam_nontrivial (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv�
   rw [ReciprocityTheory.ChartRestriction.DS.map_lowKSubLam] at h1
   exact Submodule.map_injective_of_injective Subtype.coe_injective (h1.trans (Submodule.map_bot _).symm)
 
+/- English proof (translation)
+Introduce `g hg x`. Take `⟨h1, h2⟩` from `hg`. Establish `h2' : g * ReciprocityTheory.ChartRestriction.DS.Jm ε = ReciprocityTheory.ChartRestriction.DS.Jm ε * g` using `h2`. Establish `hU : g ∈ UJset ε` using `by show gᴴ * ReciprocityTheory.ChartRestriction.DS.Jm ε * g = ReciprocityTheory.ChartRestriction.DS.Jm ε`. Rewrite using `[Matrix.mul_assoc, ← h2', ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff').mp h1, Matrix.one_mul]`.
+
+Conclude with `sigLam_coe hgap hP hv₀ hU x`.
+-/
 theorem subtype_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, (Hlam ε Ψ v₀).subtype (sigLam ε Ψ v₀ g x) =
       rreg ε g ((Hlam ε Ψ v₀).subtype x) := by
@@ -136,6 +176,13 @@ theorem subtype_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀
       (Matrix.mem_unitaryGroup_iff').mp h1, Matrix.one_mul]
   exact sigLam_coe hgap hP hv₀ hU x
 
+/- English proof (translation)
+Establish `hσ` using `ReciprocityTheory.ChartRestriction.DS.rreg_isURepOn ε`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`. Establish `hV` using `ReciprocityTheory.ChartRestriction.DS.datumV_isKIrrHW hP hv₀`. Establish `hc` using `ReciprocityTheory.ChartRestriction.DS.datumV_casimir hP v₀`. Establish `hVK` using `ReciprocityTheory.ChartRestriction.DS.datumV_kStable hP v₀`.
+
+Establish `hinj : Function.Injective (Hlam ε Ψ v₀).subtype` using `Subtype.coe_injective`. Establish `hint` using `ReciprocityTheory.ChartRestriction.DS.G2.subtype_sigLam hgap hP hv₀`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.ChartRestriction.DS.isKTypeOf_map_iff (Hlam ε Ψ v₀).subtype hinj hint, ReciprocityTheory.ChartRestriction.DS.map_lowKSubLam]`. Conclude with `ReciprocityTheory.ChartRestriction.DS.isKTypeOf_of_isKIrrHW hσ hD hV hVK (fun μ x hx hx0 hμ => ReciprocityTheory.ChartRestriction.DS.datumV_weight_le hP hv₀ hx hx0 hμ)`.
+
+Introduce `S hS`. Rewrite `hS` using `[ReciprocityTheory.ChartRestriction.DS.isKTypeOf_map_iff (Hlam ε Ψ v₀).subtype hinj hint]`. Establish `h` using `ReciprocityTheory.ChartRestriction.DS.G2.data_lowK_eq hgap hσ hD hV hc hVK (S.map (Hlam ε Ψ v₀).subtype) (ReciprocityTheory.ChartRestriction.DS.map_subtype_le_closGen S) hS`. Rewrite `h` using `[← ReciprocityTheory.ChartRestriction.DS.map_lowKSubLam]`. Conclude with `Submodule.map_injective_of_injective hinj h`.
+-/
 theorem sigLam_lowK (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ v₀) (Formalism.QuantumDeterminants.lowK ε lam) (lowKSubLam ε Ψ v₀) ∧
       ∀ S : Submodule ℂ (Hlam ε Ψ v₀), Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ v₀) (Formalism.QuantumDeterminants.lowK ε lam) S →
@@ -159,6 +206,11 @@ theorem sigLam_lowK (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : 
     rw [← ReciprocityTheory.ChartRestriction.DS.map_lowKSubLam] at h
     exact Submodule.map_injective_of_injective hinj h
 
+/- English proof (translation)
+Establish `hσ` using `ReciprocityTheory.ChartRestriction.DS.rreg_isURepOn ε`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`. Establish `hV` using `ReciprocityTheory.ChartRestriction.DS.datumV_isKIrrHW hP hv₀`. Establish `hc` using `ReciprocityTheory.ChartRestriction.DS.datumV_casimir hP v₀`. Establish `hVK` using `ReciprocityTheory.ChartRestriction.DS.datumV_kStable hP v₀`.
+
+Establish `hinj : Function.Injective (Hlam ε Ψ v₀).subtype` using `Subtype.coe_injective`. Establish `hint` using `ReciprocityTheory.ChartRestriction.DS.G2.subtype_sigLam hgap hP hv₀`. Rewrite `hS` using `[ReciprocityTheory.ChartRestriction.DS.isKTypeOf_map_iff (Hlam ε Ψ v₀).subtype hinj hint]`. Establish `hle` using `ReciprocityTheory.ChartRestriction.DS.map_subtype_le_closGen S`. Conclude with `⟨ReciprocityTheory.ChartRestriction.DS.G2.data_vogan hgap hσ hD hV hc hVK _ hle hS, fun h hh hbig hμ => ReciprocityTheory.ChartRestriction.DS.G2.data_casValK_gap hgap hσ hD hV hc hVK hh hbig _ hle hS hμ⟩`.
+-/
 theorem sigLam_kType_bounds (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {μ : Fin n → ℝ} (S : Submodule ℂ (Hlam ε Ψ v₀))
     (hS : Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ v₀) μ S) :
     Formalism.MainNotions.S.vNormSq ε (Formalism.QuantumDeterminants.lowK ε lam) ≤ Formalism.MainNotions.S.vNormSq ε μ ∧

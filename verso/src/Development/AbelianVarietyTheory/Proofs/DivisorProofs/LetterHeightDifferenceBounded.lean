@@ -25,6 +25,15 @@ open Formalism.MainNotions.DIV.Cons (intO)
 
 namespace GlobalTheory.ConcatStep
 
+/- English proof (translation)
+Establish `ha : (minpoly ℤ γ).coeff 0 ≠ 0`. Introduce `h`. Establish `hq` using `minpoly.coeff_zero_ne_zero (A := ℚ) (IsIntegral.tower_top hi) h0`. Rewrite `hq` using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hi, Polynomial.coeff_map, h, map_zero]`. Conclude with `hq rfl`.
+
+Use `⟨_, Int.natAbs_ne_zero.2 ha, fun C _ _ f => ?_⟩` and prove the remaining obligations. Establish `hz : Polynomial.aeval (f γ) (minpoly ℤ γ) = 0`. Rewrite using `[show f γ = f.toIntAlgHom γ from rfl, Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `h1` using `norm_coeff_zero_le (minpoly ℤ γ) hz (norm_le_one_of_isIntegral (hi.map f.toIntAlgHom))`. Establish `h2 : ‖(((minpoly ℤ γ).coeff 0 : ℤ) : C)‖ = ‖((((minpoly ℤ γ).coeff 0).natAbs : ℕ) : C)‖`.
+
+Break down `Int.natAbs_eq ((minpoly ℤ γ).coeff 0) with h | h` into its components or cases. Use `conv_lhs => rw [h]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [h]`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem exists_nat_le {K : Type} [Field K] [CharZero K] {γ : K} (h0 : γ ≠ 0) (hi : IsIntegral ℤ γ) :
     ∃ n : ℕ, n ≠ 0 ∧ ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (f : K →+* C),
       ‖(n : C)‖ ≤ ‖f γ‖ := by
@@ -45,6 +54,15 @@ theorem exists_nat_le {K : Type} [Field K] [CharZero K] {γ : K} (h0 : γ ≠ 0)
       simp
   rwa [h2] at h1
 
+/- English proof (translation)
+Use `split_ifs with h`. Take `⟨e, b, hb, hab⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN p hp.ne_one`. Establish `h3` using `one_le_norm_natCast hp hpC hb`. Establish `hb1 : (1 : ℝ) ≤ b`. Establish `: b ≠ 0` using `by rintro rfl; exact hb (dvd_zero _)`.
+
+Conclude with `Nat.one_le_iff_ne_zero.2 this` after adjusting the coercions. Establish `hpp : (0 : ℝ) < (p : ℝ) ^ e` using `pow_pos (by exact_mod_cast hp.pos) e`. Use `Real.log_le_log (by linarith) ?_` and prove the remaining obligations. Rewrite `ha` using `[hab, Nat.cast_mul, Nat.cast_pow, norm_mul, norm_pow, hpC, inv_pow]`. Rewrite using `[hab, Nat.cast_mul, Nat.cast_pow]`.
+
+Establish `h4 : a * ((p : ℝ) ^ e)⁻¹ ≤ 1`. Use `le_trans ?_ ha` and prove the remaining obligations. Use `gcongr`. Conclude with `le_mul_of_one_le_right (by positivity) h3`. Rewrite `h4` using `[← div_eq_mul_inv, div_le_one hpp]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hd : ¬ p ∣ N` using `fun hd => h (Nat.mem_primeFactors.2 ⟨hp, hd, hN⟩)`. Establish `h3` using `one_le_norm_natCast hp hpC hd`. Conclude with `Real.log_nonpos (by linarith) (by nlinarith)`.
+-/
 theorem log_le_of_mul_norm_le {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] {p N : ℕ} (hp : p.Prime)
     (hpC : ‖(p : C)‖ = (p : ℝ)⁻¹) (hN : N ≠ 0) {a : ℝ} (h1 : 1 ≤ a) (ha : a * ‖(N : C)‖ ≤ 1) :
     Real.log a ≤ if p ∈ N.primeFactors then Real.log N else 0 := by
@@ -68,6 +86,17 @@ theorem log_le_of_mul_norm_le {C : Type} [NontriviallyNormedField C] [IsUltramet
     have h3 := one_le_norm_natCast hp hpC hd
     exact Real.log_nonpos (by linarith) (by nlinarith)
 
+/- English proof (translation)
+Establish `hl : 0 ≤ Real.log a` using `Real.log_nonneg h1`. Break down `A.eq_empty_or_nonempty with rfl | hne` into its components or cases. Rewrite using `[Set.subset_empty_iff.1 hBA, sub_self, abs_zero]`. Conclude with `hl`. Establish `hBne : B.Nonempty` using `let ⟨r, hr⟩ := hne`.
+
+Use the proof step `⟨_, hAB r hr⟩`. Establish `e1 : sInf A ≤ sInf B` using `csInf_le_csInf ⟨0, hA⟩ hBne hBA`. Establish `e2 : sInf B ≤ a * sInf A`. Rewrite using `[← div_le_iff₀' (by linarith)]`. Use `le_csInf hne fun r hr => ?_` and prove the remaining obligations.
+
+Rewrite using `[div_le_iff₀' (by linarith)]`. Conclude with `csInf_le ⟨0, fun s hs => hA s (hBA hs)⟩ (hAB r hr)`. Break down `(le_csInf hne hA).eq_or_lt with h0 | h0` into its components or cases. Establish `: sInf B = sInf A` using `le_antisymm (by rw [← h0] at e2 ⊢; simpa using e2) e1`. Rewrite using `[this, sub_self, abs_zero]`.
+
+Conclude with `hl`. Establish `f1` using `Real.log_le_log h0 e1`. Establish `f2` using `Real.log_le_log (h0.trans_le e1) e2`. Rewrite `f2` using `[Real.log_mul (by linarith) h0.ne']`. Rewrite using `[abs_le]`.
+
+Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem abs_log_sInf_sub_le {A B : Set ℝ} {a : ℝ} (h1 : 1 ≤ a) (hA : ∀ r ∈ A, 0 ≤ r) (hBA : B ⊆ A)
     (hAB : ∀ r ∈ A, a * r ∈ B) : |Real.log (sInf A) - Real.log (sInf B)| ≤ Real.log a := by
   have hl : 0 ≤ Real.log a := Real.log_nonneg h1
@@ -97,6 +126,37 @@ open MonoidalCategory CartesianMonoidalCategory MonObj
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨α, hinj, -, -⟩` from `exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`. Set `gm : (E →+* ℂ) → c.F` to `fun σ => ∏ τ ∈ Finset.univ.erase σ, (embK c σ α - embK c τ α)`. Establish `hgm0 : ∀ σ, gm σ ≠ 0` using `fun σ => Finset.prod_ne_zero_iff.2 fun τ hτ => sub_ne_zero.2 fun h => (Finset.ne_of_mem_erase hτ) (hinj h).symm`. Use `choose e he0 he using fun σ => exists_nat_le (hgm0 σ) (integral_prod_sub c α σ)`.
+
+Use `⟨∏ σ, e σ, Finset.prod_ne_zero_iff.2 fun σ _ => he0 σ, fun {X} t C _ _ f x u hu j => ?_⟩` and prove the remaining obligations. Set `eq` to `Equiv.ofBijective _ (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw)`. Establish `hget : ∀ i, eq i = (letters Dw).get i` using `fun _ => rfl`. Generalize the expression as in `hy : (letters Dw).get j = y`. Take `⟨σ, k⟩` from `y`.
+
+Establish `hj : eq.symm ⟨σ, k⟩ = j` using `by rw [← hy]; exact eq.symm_apply_apply j`. Establish `hfgm : f (gm σ) ≠ 0` using `(map_ne_zero f).2 (hgm0 σ)`. Establish `hn1 : ‖f (gm σ)‖ ≤ 1` using `norm_le_one_of_isIntegral ((integral_prod_sub c α σ).map f.toIntAlgHom)`. Establish `hpos : 0 < ‖f (gm σ)‖` using `norm_pos_iff.2 hfgm`. Use `⟨‖f (gm σ)‖⁻¹, (one_le_inv₀ hpos).2 hn1, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[inv_mul_le_iff₀ hpos, _root_.mul_one, ← Finset.mul_prod_erase _ _ (Finset.mem_univ σ), Nat.cast_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (norm_natCast_le_one' _)).trans (he σ C f)`. Introduce and unpack `r ⟨cg, hcg0, hcgz, ⟨w, ⟨xO, rfl, vO, hvO, rfl⟩, hc⟩, rfl⟩`. Set `xC` to `spMap (intO C).subtype ≫ xO`. Set `ρ` to `actR (x0 := xC) (S := C) t.act`.
+
+Set `U : GlobalTheory.ShFam.Pad.Letter Dw → TanM xC t.G` to `fun y => GlobalTheory.LieMet.tanOf (hu.1 y.1 y.2).1`. Establish `hU : ∀ y (a : 𝓞 E), ρ a (U y) = f (embK c y.1 a) • U y` using `fun y a => GlobalTheory.LieMet.tan_ext ((hu.1 y.1 y.2).2 a)`. Set `lam : (E →+* ℂ) → intO C` to `fun τ => ⟨f (embK c τ α), norm_le_one_of_isIntegral (((Algebra.IsIntegral.isIntegral (R := ℤ) α).map (embK c τ).toIntAlgHom).map f.toIntAlgHom)⟩`. Set `Q : Polynomial (intO C)` to `∏ τ ∈ Finset.univ.erase σ, (Polynomial.X - Polynomial.C (lam τ))`. Set `wv : TanM xC t.G` to `bcT t (intO C).subtype xO (GlobalTheory.LieMet.tanOf hvO)`.
+
+Establish `hw : wv = ∑ i, cg i • U ((letters Dw).get i)` using `(GlobalTheory.LieMet.isComb_iff (fun i => U ((letters Dw).get i)) cg wv).1 hc`. Establish `hval : ∀ y : GlobalTheory.ShFam.Pad.Letter Dw, Polynomial.aeval (ρ α) (Q.map (intO C).subtype) (U y) = (if y.1 = σ then f (gm σ) else 0) • U y`. Introduce `y`. Rewrite using `[aevalS_eig (ρ α) (hU y α)]`. Use `congr 1`.
+
+Simplify using `only [Q, Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, map_prod, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `only [gm, map_prod, map_sub]`. Both sides reduce to the same expression.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨h, Finset.mem_univ _⟩) (sub_self _)`. Establish `hg2 : ∀ y, (letters Dw).get (eq.symm y) = y` using `fun y => eq.apply_symm_apply y`. Set `cf : Fin (Dw.mult σ) → C` to `fun i => f (gm σ) * cg (eq.symm ⟨σ, i⟩)`. Establish `hsum : Polynomial.aeval (ρ α) (Q.map (intO C).subtype) wv = ∑ i, cf i • U ⟨σ, i⟩`. Rewrite using `[hw, map_sum]`.
+
+Simplify using `only [map_smul, hval]`. Rewrite using `[← Equiv.sum_comp eq.symm]`. Simplify using `only [hg2]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single σ]`. Use `Finset.sum_congr rfl fun i _ => ?_ dsimp only` and prove the remaining obligations.
+
+Rewrite using `[if_pos rfl, smul_smul, mul_comm]`. Introduce `τ _ hτ`. Conclude with `Finset.sum_eq_zero fun i _ => by dsimp only; rw [if_neg hτ, zero_smul, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ σ) h`.
+
+Use `⟨cf, ?_, ?_, ⟨_, ?_, (GlobalTheory.LieMet.isComb_iff (fun i => U ⟨σ, i⟩) cf _).2 hsum⟩, ?_⟩` and prove the remaining obligations. Use `show f (gm σ) * cg (eq.symm ⟨σ, k⟩) ≠ 0`. Rewrite using `[hj]`. Conclude with `mul_ne_zero hfgm hcg0`. Introduce `i hi show f (gm σ) * cg (eq.symm ⟨σ, i⟩) = 0`.
+
+Rewrite using `[hcgz _ ?_, mul_zero]`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Break down `hle.lt_or_eq with hlt | heq` into its components or cases. Establish `h1` using `List.pairwise_iff_get.1 (GlobalTheory.Proof.frame_combination_coeff_unique.pairwise_letters Dw) _ _ hlt`.
+
+Rewrite `h1` using `[hg2, hy]`. Establish `h3 : (i : ℕ) < k` using `h1 rfl`. Establish `h4 : (k : ℕ) < i` using `Fin.lt_iff_val_lt_val.1 hi`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `congrArg eq heq`.
+
+Rewrite `h1` using `[Equiv.apply_symm_apply, hget, hy]`. Establish `h2 : i = k` using `eq_of_heq (Sigma.mk.inj_iff.1 h1).2`. Conclude with `absurd hi (by rw [h2]; exact lt_irrefl _)`. Conclude with `⟨xO, rfl, (tv (Polynomial.aeval (actR (x0 := xO) t.act α) Q (GlobalTheory.LieMet.tanOf hvO))).left, GlobalTheory.LieMet.isTan_tv _, congrArg (fun z => (tv z).left) (bcT_aeval t (intO C).subtype xO α Q _)⟩`. Use `show ‖f (gm σ)‖⁻¹ * ‖cg j‖⁻¹ = ‖f (gm σ) * cg (eq.symm ⟨σ, k⟩)‖⁻¹`.
+
+Rewrite using `[hj, norm_mul, mul_inv]`.
+-/
 theorem scale_unif {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) {l : Level H} (c : Coeff l) : ∃ N : ℕ, N ≠ 0 ∧ ∀ {X : Scheme.{0}} (t : SAB H X) (C : Type)
     [NontriviallyNormedField C] [IsUltrametricDist C] (f : c.F →+* C) (x : Sp C ⟶ X)
@@ -194,6 +254,9 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+The claim follows from `|lnStep t x u p false (.inr (j : ℕ)) - lnStep t x u p false (.inl (((letters Dw).get j).1, (((letters Dw).get j).2 : ℕ)))| ≤ if p ∈ N.primeFactors then Real.log N else 0 := by obtain ⟨N, hN, h⟩ := scale_unif Dw c refine ⟨N, hN, fun {X} t C _ _ p hp hpC f x u hu j => ?_⟩ obtain ⟨a …`.
+-/
 theorem abs_lnStep_sub_le (Dw : Datum H) {l : Level H} (c : Coeff l) : ∃ N : ℕ, N ≠ 0 ∧
     ∀ {X : Scheme.{0}} (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (p : ℕ), p.Prime →
     ‖(p : C)‖ = (p : ℝ)⁻¹ → ∀ (f : c.F →+* C) (x : Sp C ⟶ X) (u : Vecs Dw t C), GlobalTheory.LocM.IsFrame t f x u →
@@ -214,6 +277,9 @@ theorem abs_lnStep_sub_le (Dw : Datum H) {l : Level H} (c : Coeff l) : ∃ N : �
     obtain ⟨cg, g1, g2, g3⟩ := (GlobalTheory.Proof.frame_combination_coeff_unique.concat_frame E H Dw l c X t C f x u hu).2 j cf w hz hc
     exact ⟨cg, g2 ▸ h0, g1, ⟨w, hw, g3⟩, by rw [g2]⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[GlobalTheory.LgDiff.expo_single', GlobalTheory.LgDiff.expo_single']`. Establish `e1 : letterOf Dw (.inr (j : ℕ)) = some ((letters Dw).get j)` using `List.getElem?_eq_getElem j.2`. Establish `e2 : letterOf Dw (.inl (((letters Dw).get j).1, (((letters Dw).get j).2 : ℕ))) = some ((letters Dw).get j)` using `dif_pos ((letters Dw).get j).2.2`. Rewrite using `[e1, e2]`.
+-/
 theorem expo_eq (Dw : Datum H) (j : Fin (letters Dw).length) :
     expo Dw (Finsupp.single (((fun _ => false), none, .inr (j : ℕ)) : Sym E) 1) =
       expo Dw (Finsupp.single (((fun _ => false), none,
@@ -227,6 +293,11 @@ theorem expo_eq (Dw : Datum H) (j : Fin (letters Dw).length) :
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Unfold `parOf`. Establish `hn : (Finsupp.single a (1 : ℤ)).support.Nonempty` using `⟨a, by simp⟩`. Rewrite using `[dif_pos hn]`. Use `Finsupp.support_single_subset hn.choose_spec` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`.
+
+Rewrite using `[this]`.
+-/
 theorem parOf_single (a : Sym E) : parOf (Finsupp.single a 1) = a.2.1 := by
   unfold parOf
   have hn : (Finsupp.single a (1 : ℤ)).support.Nonempty := ⟨a, by simp⟩
@@ -237,10 +308,16 @@ theorem parOf_single (a : Sym E) : parOf (Finsupp.single a 1) = a.2.1 := by
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Rewrite using `[Finsupp.sum_single_index (by simp), Int.cast_one, one_mul]`.
+-/
 theorem sum_single (a : Sym E) (Φ : Sym E → ℝ) :
     ((Finsupp.single a (1 : ℤ)).sum fun b n => (n : ℝ) * Φ b) = Φ a := by
   rw [Finsupp.sum_single_index (by simp), Int.cast_one, one_mul]
 
+/- English proof (translation)
+The claim follows from `|lnStep Z.t (spMap ψ ≫ x₀) (fun τ i => spMap (dualMap ψ) ≫ f.v τ i) p false (.inr (j : ℕ)) - lnStep Z.t (spMap ψ ≫ x₀) (fun τ i => spMap (dualMap ψ) ≫ f.v τ i) p false (.inl (((letters Dw).get j).1, (((letters Dw).get j).2 : ℕ)))| ≤ if p ∈ N.primeFactors then Real.log N else 0 := …`.
+-/
 theorem abs_lnStep_bc_le (Dw : Datum H) {l : Level H} (c : Coeff l) : ∃ N : ℕ, N ≠ 0 ∧
     ∀ {Xo : Moduli Dw l} {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β) (j : Fin (letters Dw).length)
       (p : ℕ) (_ : Fact p.Prime) (_ : IsUltrametricDist ℂ_[p]) (R : Type) [CommRing R] (φ : c.F →+* R) (x₀ : Sp R ⟶ Z.X) (f : EigFrame Z φ x₀)
@@ -256,11 +333,17 @@ theorem abs_lnStep_bc_le (Dw : Datum H) {l : Level H} (c : Coeff l) : ∃ N : �
   exact h Z.t _ _ hp.out hn _ _ _ (GlobalTheory.LocM.isFrame_bc E H Dw l c _ Z.t _ _ φ ψ x₀ f.v
     ⟨fun τ i => ⟨f.tan τ i, f.eig τ i⟩, f.basis⟩) j
 
+/- English proof (translation)
+The claim follows from `|A + -k / m * s - (A + -k / m * s')| ≤ |k / m| * B := by rw [add_sub_add_left_eq_sub, ← mul_sub, abs_mul, neg_div, abs_neg] exact mul_le_mul_of_nonneg_left h (abs_nonneg _)`.
+-/
 theorem abs_add_mul_sub_le {A k m s s' B : ℝ} (h : |s - s'| ≤ B) :
     |A + -k / m * s - (A + -k / m * s')| ≤ |k / m| * B := by
   rw [add_sub_add_left_eq_sub, ← mul_sub, abs_mul, neg_div, abs_neg]
   exact mul_le_mul_of_nonneg_left h (abs_nonneg _)
 
+/- English proof (translation)
+The claim follows from `|lgOf Y (Finsupp.single a 1) v ε y - lgOf Y (Finsupp.single a' 1) v ε y| ≤ |Real.log (ε.w (resP v)) / Real.log (resP v)| * B := by simp only [lgOf, dif_pos hp] rewrite [he, sum_single, sum_single] exact abs_add_mul_sub_le (h _ _ _ _ _ _ _)`.
+-/
 theorem abs_lgOf_single_sub_le {Dw : Datum H} {l : Level H} {c : Coeff l} {Xo : Moduli Dw l} {O : Type} [CommRing O]
     {β : O →+* c.F} {Z : Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
     (a a' : Sym E) (he : expo Dw (Finsupp.single a 1) = expo Dw (Finsupp.single a' 1))
@@ -275,6 +358,9 @@ theorem abs_lgOf_single_sub_le {Dw : Datum H} {l : Level H} {c : Coeff l} {Xo : 
   rewrite [he, sum_single, sum_single]
   exact abs_add_mul_sub_le (h _ _ _ _ _ _ _)
 
+/- English proof (translation)
+The claim follows from `|lgOf Y (Finsupp.single (((fun _ => false), none, .inr (j : ℕ)) : Sym E) 1) v ε y - lgOf Y (Finsupp.single (((fun _ => false), none, .inl (((letters Dw).get j).1, (((letters Dw).get j).2 : ℕ))) : Sym E) 1) v ε y| ≤ |Real.log (ε.w (resP v)) / Real.log (resP v)| * if resP v ∈ N.pri …`.
+-/
 theorem abs_lgOf_sub_le (Dw : Datum H) {l : Level H} (c : Coeff l) : ∃ N : ℕ, N ≠ 0 ∧
     ∀ {Xo : Moduli Dw l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
       {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) (j : Fin (letters Dw).length)
@@ -293,6 +379,9 @@ theorem abs_lgOf_sub_le (Dw : Datum H) {l : Level H} (c : Coeff l) : ∃ N : ℕ
     · exact Real.log_natCast_nonneg _
     · exact le_rfl
 
+/- English proof (translation)
+The claim follows from `|(adlOf Y hm (Finsupp.single (((fun _ => false), none, .inr (j : ℕ)) : Sym E) 1)).ht x - (adlOf Y hm (Finsupp.single (((fun _ => false), none, .inl (((letters Dw).get j).1, (((letters Dw).get j).2 : ℕ))) : Sym E) 1)).ht x| ≤ K := by obtain ⟨N, hN, h⟩ := abs_lgOf_sub_le Dw c refin …`.
+-/
 theorem abs_ht_sub_le (Dw : Datum H) {l : Level H} (c : Coeff l) : ∃ K : ℝ,
     ∀ {Xo : Moduli Dw l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
       {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) {C : CxSt F} (hm : Mets Y C)
@@ -346,6 +435,9 @@ end
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 open GlobalTheory.ShFam GlobalTheory.ShFam.Pad ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+The claim follows from `|(adlOf (O.Φ.C c) (O.met.hm c) (Finsupp.single (((fun _ => false), none, .inr (j : ℕ)) : Sym D.host.E) 1)).ht x - (adlOf (O.Φ.C c) (O.met.hm c) (Finsupp.single (((fun _ => false), none, .inl (((letters O.S.Dw).get j).1, (((letters O.S.Dw).get j).2 : ℕ))) : Sym D.host.E) 1)).ht x| …`.
+-/
 theorem GlobalTheory.ConcatStep.step : ∀ (D : D7) (O : Setup D), ∃ C : ℝ, ∀ (c : O.s.Comp) (x : (O.var c).X)
     (j : Fin (letters O.S.Dw).length),
     |(adlOf (O.Φ.C c) (O.met.hm c) (Finsupp.single (((fun _ => false), none, .inr (j : ℕ)) : Sym D.host.E) 1)).ht x -

@@ -3,6 +3,9 @@ import Development.EtaleCohomology.EtaleSheaves.LeafChartRing
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.E.t_E6Cut
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem comp_ap {A B C : Scheme.{0}} (u : A ⟶ B) (v : B ⟶ C) (x : A) :
     (u ≫ v) x = v (u x) := by simp
 
@@ -14,6 +17,9 @@ private def lvlIso {V Y : Scheme.{0}} (f : V ⟶ Y) (p : ℕ) :
     HasLimit.isoOfNatIso (WidePullbackShape.diagramIsoWideCospan
       (WidePullbackShape.wideCospan Y (fun _ : Fin (p + 1) => V) (fun _ => f) ⋙ yoneda))
 
+/- English proof (translation)
+Establish `h` using `HasLimit.isoOfNatIso_hom_π (WidePullbackShape.diagramIsoWideCospan (WidePullbackShape.wideCospan Y (fun _ : Fin (p + 1) => V) (fun _ => f) ⋙ yoneda)) none`. Establish `h2` using `preservesLimitIso_hom_π yoneda (WidePullbackShape.wideCospan Y (fun _ : Fin (p + 1) => V) (fun _ => f)) none`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (h.trans (Category.comp_id _))).trans h2)`.
+-/
 private theorem lvlIso_base {V Y : Scheme.{0}} (f : V ⟶ Y) (p : ℕ) :
     (lvlIso f p).hom ≫ WidePullback.base (fun _ : Fin (p + 1) => yoneda.map f) =
       yoneda.map (WidePullback.base (fun _ : Fin (p + 1) => f)) := by
@@ -23,6 +29,31 @@ private theorem lvlIso_base {V Y : Scheme.{0}} (f : V ⟶ Y) (p : ℕ) :
     (WidePullbackShape.wideCospan Y (fun _ : Fin (p + 1) => V) (fun _ => f)) none
   exact (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (h.trans (Category.comp_id _))).trans h2)
 
+/- English proof (translation)
+Establish `hb : ∀ (i : Fin (p + 1)) z, (WidePullback.base (fun _ : Fin (p + 1) => f)) z = f ((WidePullback.π (fun _ : Fin (p + 1) => f) i) z)`. Introduce `i z`. Rewrite using `[← comp_ap, WidePullback.π_arrow]`. Establish `hxO : ∀ (x : O.toScheme) (i : Fin (p + 1)), (WidePullback.π (fun _ : Fin (p + 1) => f) i) (O.ι x) ∈ Set.range (j i)`. Introduce `x i`.
+
+Establish `hx : O.ι x ∈ (O : Set _)`. Rewrite using `[← Scheme.Opens.range_ι]`. Conclude with `⟨x, rfl⟩`. Rewrite `hx` using `[hO]`. Conclude with `Set.mem_iInter.1 hx i`.
+
+Set `W : Y.Opens` to `⟨⋂ i, Set.range (j i ≫ f), isOpen_iInter_of_finite fun i => (j i ≫ f).opensRange.2⟩`. Establish `hW : ∀ (w : W.toScheme) (i : Fin (p + 1)), W.ι w ∈ Set.range (j i ≫ f)`. Introduce `w i`. Establish `hw : W.ι w ∈ (W : Set _)`. Rewrite using `[← Scheme.Opens.range_ι]`.
+
+Conclude with `⟨w, rfl⟩`. Conclude with `Set.mem_iInter.1 hw i`. Establish `hr : Set.range (O.ι ≫ WidePullback.base (fun _ : Fin (p + 1) => f)) ⊆ Set.range W.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Use `Set.mem_iInter.2 fun i => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hxO x i`. Conclude with `⟨y, by rw [comp_ap, hy, comp_ap, hb i]⟩`. Set `r` to `IsOpenImmersion.lift W.ι _ hr`. Establish `hl : ∀ i, Set.range W.ι ⊆ Set.range (j i ≫ f)`.
+
+Introduce and unpack `i _ ⟨w, rfl⟩`. Conclude with `hW w i`. Set `l : ∀ i, W.toScheme ⟶ T i` to `fun i => IsOpenImmersion.lift (j i ≫ f) W.ι (hl i)`. Establish `hlf : ∀ i, l i ≫ j i ≫ f = W.ι` using `fun i => IsOpenImmersion.lift_fac _ _ _`. Set `L : W.toScheme ⟶ widePullback Y (fun _ : Fin (p + 1) => V) (fun _ => f)` to `WidePullback.lift W.ι (fun i => l i ≫ j i) (fun i => by simpa using hlf i)`.
+
+Establish `hLπ : ∀ i, L ≫ WidePullback.π (fun _ : Fin (p + 1) => f) i = l i ≫ j i` using `fun i => WidePullback.lift_π _ _ _ _ i`. Establish `hLb : L ≫ WidePullback.base (fun _ : Fin (p + 1) => f) = W.ι` using `WidePullback.lift_base _ _ _ _`. Establish `hs : Set.range L ⊆ Set.range O.ι`. Rewrite using `[Scheme.Opens.range_ι, hO]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Use `Set.mem_iInter.2 fun i => ?_` and prove the remaining obligations. Use `⟨l i w, ?_⟩` and prove the remaining obligations. Use `congr($(hLπ i) w)` as an intermediate fact. Rewrite `this` using `[comp_ap, comp_ap]`. Conclude with `this.symm`.
+
+Set `s` to `IsOpenImmersion.lift O.ι L hs`. Establish `hsO : s ≫ O.ι = L` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hrW : r ≫ W.ι = O.ι ≫ WidePullback.base (fun _ : Fin (p + 1) => f)` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hm : ∀ i, Set.range (O.ι ≫ WidePullback.π (fun _ : Fin (p + 1) => f) i) ⊆ Set.range (j i)`. Introduce and unpack `i _ ⟨x, rfl⟩`.
+
+Rewrite using `[comp_ap]`. Conclude with `hxO x i`. Establish `hrs : r ≫ s = 𝟙 _`. Rewrite using `[← cancel_mono O.ι, Category.assoc, hsO, Category.id_comp]`. Apply `WidePullback.hom_ext` to reduce the goal to its premises.
+
+Introduce `i`. Rewrite using `[Category.assoc, hLπ, ← IsOpenImmersion.lift_fac (j i) _ (hm i), ← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono (j i ≫ f), Category.assoc, hlf, hrW, IsOpenImmersion.lift_fac_assoc, Category.assoc, WidePullback.π_arrow]`. Rewrite using `[Category.assoc, hLb, hrW]`.
+
+Establish `hsr : s ≫ r = 𝟙 _`. Rewrite using `[← cancel_mono W.ι, Category.assoc, hrW, ← Category.assoc, hsO, hLb, Category.id_comp]`. Establish `: IsIso r` using `⟨s, hrs, hsr⟩`. Rewrite using `[← hrW]`. Use `infer_instance`.
+-/
 private theorem piece_open {V Y : Scheme.{0}} (f : V ⟶ Y) (p : ℕ) {T : Fin (p + 1) → Scheme.{0}}
     (j : ∀ i, T i ⟶ V) (h1 : ∀ i, IsOpenImmersion (j i)) (h2 : ∀ i, IsOpenImmersion (j i ≫ f))
     (O : (widePullback Y (fun _ : Fin (p + 1) => V) (fun _ => f)).Opens)
@@ -96,6 +127,15 @@ private theorem piece_open {V Y : Scheme.{0}} (f : V ⟶ Y) (p : ℕ) {T : Fin (
   rw [← hrW]
   infer_instance
 
+/- English proof (translation)
+Introduce and unpack `V Y f ⟨ι, O, j, hj, hd, hc, hf⟩ p`. Set `π` to `fun i => WidePullback.π (fun _ : Fin (p + 1) => f) i`. Set `U : (Fin (p + 1) → ι) → (widePullback Y (fun _ : Fin (p + 1) => V) (fun _ => f)).Opens` to `fun a => ⟨⋂ i, (π i) ⁻¹' Set.range (j (a i)), isOpen_iInter_of_finite fun i => (j (a i)).opensRange.2.preimage (π i).continuous⟩`. Establish `hU : ∀ a z, z ∈ Set.range (U a).ι ↔ ∀ i, (π i) z ∈ Set.range (j (a i))`. Introduce `a z`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `Set.mem_iInter`. Use `⟨widePullback Y (fun _ : Fin (p + 1) => V) (fun _ => f), WidePullback.base (fun _ : Fin (p + 1) => f), lvlIso f p, lvlIso_base f p, Fin (p + 1) → ι, fun a => (U a).toScheme, fun a => (U a).ι, fun a => inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hab`.
+
+Use `Set.disjoint_left.2 fun z hza hzb => ?_` and prove the remaining obligations. Conclude with `Set.disjoint_left.1 (hd _ _ hi) ((hU a z).1 hza i) ((hU b z).1 hzb i)`. Introduce `z choose a ha using fun i => hc ((π i) z)`. Conclude with `⟨a, (hU a z).2 ha⟩`. Introduce `a`.
+
+Conclude with `piece_open f p (fun i => j (a i)) (fun i => hj _) (fun i => hf _) (U a) rfl`.
+-/
 theorem UpperTheory.cech_nerve_representable_disjoint :
     ∀ {V Y : Scheme.{0}} (f : V ⟶ Y), (∃ (ι : Type) (O : ι → Scheme.{0}) (j : ∀ a, O a ⟶ V), (∀ a, IsOpenImmersion (j a)) ∧ (∀ a b, a ≠ b → Disjoint (Set.range (j a)) (Set.range (j b))) ∧ (∀ y : V, ∃ a, y ∈ Set.range (j a)) ∧ ∀ a, IsOpenImmersion (j a ≫ f)) → ∀ p : ℕ, ∃ (Z : Scheme.{0}) (g : Z ⟶ Y) (e : yoneda.obj Z ≅ (cech f).obj (op (SimplexCategory.mk p))),
       e.hom ≫ (cechAug f).app (op (SimplexCategory.mk p)) = yoneda.map g ∧ (∃ (ι : Type) (O : ι → Scheme.{0}) (j : ∀ a, O a ⟶ Z), (∀ a, IsOpenImmersion (j a)) ∧ (∀ a b, a ≠ b → Disjoint (Set.range (j a)) (Set.range (j b))) ∧ (∀ y : Z, ∃ a, y ∈ Set.range (j a)) ∧ ∀ a, IsOpenImmersion (j a ≫ g)) := by

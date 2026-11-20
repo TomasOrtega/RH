@@ -19,6 +19,11 @@ namespace GlobalTheory.ThK.ZFinDom
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hS : Ψ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a'))`. Use `(Submodule.span_le.2 ?_ : GlobalTheory.ThK.PolData B G.M ≤ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a'))) hΨ` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, -, φ, hSB, hvac, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hvac.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2)`.
+
+Take `⟨hc, hr, -⟩` from `(GlobalTheory.T.theta_basic_properties hKP.base F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hP).1 Ψ hS`. Take `⟨hw, -⟩` from `GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hP (Or.inl (GlobalTheory.ThK.Check.conv_range hT.geo))`. Use `⟨hc.comp (Continuous.prodMk continuous_id continuous_const), fun δ hδ g => ?_, (hw Ψ hS).1 h⟩` and prove the remaining obligations. Simplify using `using hr δ hδ 1 (one_mem _) g h`.
+-/
 theorem theta_facts {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {Ψ} (hΨ : Ψ ∈ GlobalTheory.ThK.PolData B G.M)
     (h : UA σ G.W.J) : Continuous (fun g => theta om Ψ g h) ∧
@@ -35,6 +40,13 @@ theorem theta_facts {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E
   refine ⟨hc.comp (Continuous.prodMk continuous_id continuous_const), fun δ hδ g => ?_, (hw Ψ hS).1 h⟩
   simpa using hr δ hδ 1 (one_mem _) g h
 
+/- English proof (translation)
+Establish `hI : ∫ s in (0 : ℝ)..t, f' s = f t - f 0` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (fun s _ => hd s) (hc.intervalIntegrable _ _)`. Establish `h1 : ‖f t‖ ≤ ‖f 0‖ + ‖∫ s in (0 : ℝ)..t, f' s‖`. Rewrite using `[hI]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖∫ s in (0 : ℝ)..t, f' s‖ ≤ ∫ s in Set.uIoc 0 t, ‖f' s‖` using `intervalIntegral.norm_integral_le_integral_norm_uIoc`.
+
+Establish `h3 : ∫ s in Set.uIoc 0 t, ‖f' s‖ ≤ ∫ s in Set.Icc (-1 : ℝ) 1, ‖f' s‖`. Use `setIntegral_mono_set (hc.norm.integrableOn_Icc) (Filter.Eventually.of_forall fun _ => norm_nonneg _) ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun s (hs : s ∈ Set.uIoc 0 t) => ?_` and prove the remaining obligations. Use `show s ∈ Set.Icc (-1 : ℝ) 1`. Rewrite `hs` using `[Set.mem_uIoc]`.
+
+Take `⟨ht₁, ht₂⟩` from `ht`. Rewrite using `[Set.mem_Icc]`. Apply the tactic sequence `rcases hs with ⟨h₁, h₂⟩ | ⟨h₁, h₂⟩ <;> constructor <;> linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_le_of_hasDerivAt {f f' : ℝ → ℂ} (hd : ∀ s, HasDerivAt f (f' s) s) (hc : Continuous f') {t : ℝ}
     (ht : t ∈ Set.Ioo (-1 : ℝ) 1) : ‖f t‖ ≤ ‖f 0‖ + ∫ s in Set.Icc (-1 : ℝ) 1, ‖f' s‖ := by
   have hI : ∫ s in (0 : ℝ)..t, f' s = f t - f 0 :=
@@ -55,6 +67,13 @@ theorem norm_le_of_hasDerivAt {f f' : ℝ → ℂ} (hd : ∀ s, HasDerivAt f (f'
     rcases hs with ⟨h₁, h₂⟩ | ⟨h₁, h₂⟩ <;> constructor <;> linarith
   linarith
 
+/- English proof (translation)
+Establish `hcont : Continuous (fun p : G × ℝ => ‖u (p.1 * c p.2)‖)` using `(hc.comp (continuous_fst.mul (hcc.comp continuous_snd))).norm`. Establish `hprod : Integrable (fun p : G × ℝ => ‖u (p.1 * c p.2)‖) ((μ.restrict D).prod (volume.restrict (Set.Icc (-1 : ℝ) 1)))`. Rewrite using `[integrable_prod_iff' hcont.aestronglyMeasurable]`. Use `⟨Filter.Eventually.of_forall fun s => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.integrableOn_fundamentalDomain_mul_right hD (c s) u hu hi).norm`.
+
+Establish `hconst : (fun s => ∫ g, ‖‖u (g * c s)‖‖ ∂(μ.restrict D)) = fun _ => ∫ g in D, ‖u g‖ ∂μ`. Use function extensionality and compare the values at `s`. Use `GlobalTheory.setIntegral_fundamentalDomain_mul_right hD (c s) (fun g => ((‖u g‖ : ℝ) : ℂ)) (fun δ hδ g => by simp only [hu δ hδ g])` as an intermediate fact. Rewrite `this` using `[integral_complex_ofReal, integral_complex_ofReal]`. Simplify using `only [norm_norm]`.
+
+Conclude with `this` after adjusting the coercions. Rewrite using `[hconst]`. Conclude with `integrable_const _`. Conclude with `hprod.integral_prod_left`.
+-/
 theorem integrableOn_avg {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] {μ : Measure G} [SFinite μ] [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant]
     {Γ : Subgroup G} [Countable Γ] {D : Set G} (hD : IsFundamentalDomain Γ D μ) (u : G → ℂ)
@@ -82,6 +101,17 @@ theorem integrableOn_avg {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
 set_option maxHeartbeats 400000 in
 set_option synthInstance.maxHeartbeats 100000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hKP hT Ψ hΨ γ hγ h`. Establish `hΨ'` using `GlobalTheory.T.line_derivative_preserves_polynomial F E σ B a a' G X om om' hKP hT Ψ hΨ γ hγ`. Take `⟨-, -, hi⟩` from `theta_facts hKP hT hΨ h`. Take `⟨hcont', hr', hi'⟩` from `theta_facts hKP hT hΨ' h`. Take `⟨htg, hlc, hsc, ht2⟩` from `GlobalTheory.UnipCT.topFacts σ G.V.J`.
+
+Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ G.V.J`. Use `haveI := hT.geo.hM.haar`. Use `haveI : SigmaCompactSpace (UA σ G.V.J) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SigmaFinite G.M.μ := Measure.IsHaarMeasure.sigmaFinite _`.
+
+Use `haveI : SFinite G.M.μ := inferInstance`. Use `haveI := GlobalTheory.T.unitary_haar_right_invariant F E σ B a G.V (a - G.p) G.p hT.base hT.geo.hV G.M.μ hT.geo.hM.haar`. Establish `hcc : Continuous (fun t : ℝ => γ (Multiplicative.ofAdd t))` using `hγ.1.comp continuous_ofAdd`. Establish `hderiv : ∀ g (s : ℝ), HasDerivAt (fun t : ℝ => theta om Ψ (g * γ (Multiplicative.ofAdd t)) h) (theta om (derL om (fun t => γ (Multiplicative.ofAdd t)) Ψ) (g * γ (Multiplicative.ofAdd s)) h) s`. Introduce `g s`.
+
+Establish `h0` using `GlobalTheory.T.theta_derivative_along_line F E σ B a a' G X om om' hKP hT Ψ hΨ γ hγ (g * γ (Multiplicative.ofAdd s)) h`. Establish `h1` using `HasDerivAt.comp_sub_const s s (by rw [sub_self]; exact h0)`. Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc, ← map_mul, ← ofAdd_add, add_sub_cancel]`. Use `⟨fun g => ‖theta om Ψ g h‖ + ∫ s in Set.Icc (-1 : ℝ) 1, ‖theta om (derL om (fun t => γ (Multiplicative.ofAdd t)) Ψ) (g * γ (Multiplicative.ofAdd s)) h‖, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hi.norm.add (integrableOn_avg hT.geo.hM.dom _ hr' hcont' hi' _ hcc)`. Introduce `g _ t ht`. Use `norm_le_of_hasDerivAt (f := fun t : ℝ => theta om Ψ (g * γ (Multiplicative.ofAdd t)) h) (hderiv g) (hcont'.comp (continuous_const.mul hcc)) ht` as an intermediate fact. Simplify using `using this`.
+-/
 theorem dom : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

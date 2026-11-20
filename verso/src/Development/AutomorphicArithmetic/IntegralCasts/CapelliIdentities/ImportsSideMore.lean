@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `r hr k`. Establish `hr2 : (0 : ℝ) ≤ r ^ (2 : ℕ)` using `by positivity`. Establish `hcast : ((↑k : ℂ) / (2 : ℂ)) = (((k : ℝ) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[hcast, ← Complex.ofReal_cpow hr2]`. Establish `hreal : (r ^ (2 : ℕ)) ^ ((k : ℝ) / 2) = r ^ k`.
+
+Rewrite using `[← Real.rpow_natCast r 2, ← Real.rpow_mul hr.le]`. Establish `: ((2 : ℕ) : ℝ) * ((k : ℝ) / 2) = (k : ℝ)` using `by push_cast; ring`. Rewrite using `[this, Real.rpow_natCast]`. Rewrite using `[hreal]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Reformulated.B.Yia3.main :
     ∀ (r : ℝ), (0 : ℝ) < r → ∀ (k : ℕ), (↑(r ^ (2 : ℕ)) : ℂ) ^ ((↑k : ℂ) / (2 : ℂ)) = (↑r : ℂ) ^ k := by
   intro r hr k

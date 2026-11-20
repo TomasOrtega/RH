@@ -17,6 +17,9 @@ open MvPolynomial Filter
 
 universe u w
 
+/- English proof (translation)
+Use `⟨FractionRing (R ⧸ P), inferInstance, inferInstance, (IsScalarTower.toAlgHom S (R ⧸ P) (FractionRing (R ⧸ P))).comp (Ideal.Quotient.mkₐ S P), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, IsScalarTower.coe_toAlgHom', ← map_zero (algebraMap (R ⧸ P) (FractionRing (R ⧸ P))), (IsFractionRing.injective (R ⧸ P) (FractionRing (R ⧸ P))).eq_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem CycleSplit.Small.exists_residue {S : Type u} [CommRing S] {R : Type w} [CommRing R] [Algebra S R]
     (P : Ideal R) [P.IsPrime] :
     ∃ (K : Type w) (_ : Field K) (_ : Algebra S K) (ψ : R →ₐ[S] K), RingHom.ker ψ = P := by
@@ -27,6 +30,23 @@ theorem CycleSplit.Small.exists_residue {S : Type u} [CommRing S] {R : Type w} [
     ← map_zero (algebraMap (R ⧸ P) (FractionRing (R ⧸ P))),
     (IsFractionRing.injective (R ⧸ P) (FractionRing (R ⧸ P))).eq_iff, Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x M 𝔪 _ pp hpp hhom hle _ hdim`. Distinguish the cases in `hrel : ∃ j, (X j : Poly S N) ∉ pp`. Use `swap`. Use `push Not at hrel`. Conclude with `Eventually.of_forall fun c => by`.
+
+Rewrite using `[interSum_one, restrLen_of_irrelevant _ hrel, restrLen_of_irrelevant _ hrel, sub_zero]`. Take `⟨j, hj⟩` from `hrel`. Establish `hxj : x j ≠ 0` using `fun h0 => hj (hle ((mem_primeOf_of_isHomogeneous (S := S) x (isHomogeneous_X S j)).mpr (by rw [aeval_X, h0])))`. Take `⟨hPprime, hPy⟩` from `PrimeFiltration.Point.proof S Ω N x pp hpp hhom hle j hxj hj`. Use `hPprime` as an intermediate fact.
+
+Take `⟨K', _, _, ψ, hψ⟩` from `CycleSplit.Small.exists_residue (S := S) (chartPrime pp hxj)`. Set `y : Fin (N + 1) → K'` to `fun i => ψ (ratio hxj i)`. Establish `hxy : ∀ i, y i ≠ 0 → x i ≠ 0`. Introduce `i hyi hxi`. Apply `hyi` to reduce the goal to its premises.
+
+Establish `: ratio (S` using `S) hxj i = 0 := Subtype.ext (by simp [ratio, hxi])`. Simplify using `only [y, this, map_zero]`. Establish `hpy : primeOf (S` using `S) y = pp := hPy K' ψ hψ`. Establish `hy0 : y ≠ 0`. Introduce `h`.
+
+Establish `h1 : ratio (S` using `S) hxj j = 1 := Subtype.ext (by simp [ratio, div_self hxj])`. Use `congrFun h j` as an intermediate fact. Simplify using `only [y, h1, map_one, Pi.zero_apply] at this`. Conclude with `one_ne_zero this`. Establish `hyrel : ∃ i, (X i : Poly S N) ∉ primeOf (S` using `S) y := ⟨j, hpy ▸ hj⟩`.
+
+Establish `hydim : ringKrullDim (Poly S N ⧸ primeOf (S` using `S) y) ≤ 1 := hpy ▸ hdim`. Establish `key : ∀ Q : LineBundle S x, ∀ᶠ c : ℕ in atTop, restrLen pp (Q.toSubSystem.twist (twistSys S x (c : ℤ))) = ((Module.length S ((twistBundle S y 0).twist (twistSys S y 0)).secs).toNat : ℤ)`. Introduce `Q`. Take `⟨Q', r, hR⟩` from `PrimeFiltration.Restrict.proof S Ω N x pp hpp hhom hle j hxj hj K' ψ hψ hxy Q`. Establish `hRD : RestrictData Q.toSubSystem hxy Q'.toSubSystem r` using `⟨fun I => (hR I).1, fun I => (hR I).2.1, fun I => (hR I).2.2.1, fun I => (hR I).2.2.2⟩`.
+
+Take `⟨c₀, hc₀⟩` from `SurjectiveClosed.proof Extension.full.{u, w, w} IdealTwistFamily.proof (TildeVanish.proof SerreVanish.full.{u, w}) S Ω N x Q pp hhom`. Use `filter_upwards [eventually_ge_atTop c₀.toNat] with c hc`. Establish `hcc : c₀ ≤ (c : ℤ)` using `by omega`. Unfold `restrLen`. Rewrite using `[QuotientH0Length.length_secs_eq _ _ (hc₀ c hcc), (hRQ S Ω N x pp hpp hhom hle j hxj hj K' ψ hψ hxy Q Q' r hRD c 0).some.length_eq, (CechZerothCohomologySections.proof.{u, w, w} S K' N y K' _ hy0).some.length_eq, hPt S K' N y hyrel hydim Q' (twistBundle S y 0) c 0]`.
+
+Use `filter_upwards [key M, key (twistBundle S x 0)] with c h1 h2`. Rewrite using `[interSum_one, h1, show (twistSys S x 0).twist (twistSys S x (c : ℤ)) = (twistBundle S x 0).toSubSystem.twist (twistSys S x (c : ℤ)) from rfl, h2, sub_self]`.
+-/
 theorem CycleSplit.Small.proof (hRQ : PrimeFiltration.RestrictQuot.Statement.{u, w})
     (hPt : CycleSplit.PointSecs.Statement.{u, w}) : CycleSplit.Small.Statement.{u, w} := by
   intro S _ _ Ω _ _ N x M 𝔪 _ pp hpp hhom hle _ hdim

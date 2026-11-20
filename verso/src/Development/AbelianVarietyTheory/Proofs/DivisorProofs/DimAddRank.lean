@@ -13,6 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `g n hn F T`. Establish `hn0 : n ≠ 0` using `by omega`. Establish `hζ : IsUnit (zetaAway n)` using `by rw [← cycBase_ζ hn0]; exact Units.isUnit _`. Establish `hd : SmoothOfRelativeDimension g F.univ.A.hom` using `GlobalTheory.SiegSharpCover.smoothDim F.univ hn hζ (isUnit_natCast hn0)`. Establish `hA : SmoothOfRelativeDimension g T.A.A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback T.cart.1 hd`.
+
+Establish `e : T.A.g = g` using `H1.dim_unique _ T.A.smoothDim hA ((η[T.A.A]).left (IsLocalRing.closedPoint _))`. Establish `hR : AdmBase T.V (maximalIdeal T.V)` using `⟨inferInstance, inferInstance, inferInstance, T.complete⟩`. Establish `h` using `GlobalTheory.TateUnif.rank_add_dim hR T.semi T.U`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Trait.dim_add_rank : ∀ {g n : ℕ}, 2 ≤ n → ∀ (F : SFam g n (zetaAway n)) (T : GlobalTheory.Poinc.Trait F),
     T.D.toPre.P.g + Module.finrank ℤ T.D.toPre.X = g := by
   intro g n hn F T

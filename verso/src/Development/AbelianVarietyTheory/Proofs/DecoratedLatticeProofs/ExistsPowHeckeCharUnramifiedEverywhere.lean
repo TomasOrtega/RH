@@ -7,6 +7,15 @@ open NumberField IsDedekindDomain Formalism.L2.Host
 
 namespace GlobalTheory.Corev.UnrPow
 
+/- English proof (translation)
+Introduce `L _ _ χ`. Take `⟨hfin, hlev⟩` from `GlobalTheory.Mem.UnrAe.unr_ae_and_level L χ`. Establish `hm : ∀ v, ∃ m : ℕ, 0 < m ∧ ∀ x, IsUnitAt v x → χ.loc v x ^ m = 1`. Introduce `v`. Take `⟨n, hn⟩` from `hlev v`.
+
+Take `⟨m, hm, hx⟩` from `GlobalTheory.Mem.FinOrder.exists_pow_congr v n`. Use `⟨m, hm, fun x hu => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `hn _ (GlobalTheory.Mem.UnrAe.isUnitAt_pow hu m) (hx x hu)`. Use `choose m hm0 hm using hm`.
+
+Use `⟨∏ v ∈ hfin.toFinset, m v, Finset.prod_pos fun v _ => hm0 v, fun v x hx => ?_⟩` and prove the remaining obligations. Use `show χ.loc v x ^ (∏ v ∈ hfin.toFinset, m v) = 1`. Distinguish the cases in `hv : χ.UnrAt v`. Rewrite using `[hv x hx, one_pow]`. Take `⟨d, hd⟩ : m v ∣ ∏ v ∈ hfin.toFinset, m v` from `Finset.dvd_prod_of_mem _ (hfin.mem_toFinset.2 hv)`.
+
+Rewrite using `[hd, pow_mul, hm v x hx, one_pow]`.
+-/
 theorem exists_pow_unrAt : ∀ (L : Type) [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L),
     ∃ N : ℕ, 0 < N ∧ ∀ v : HeightOneSpectrum (𝓞 L), (χ ^ N).UnrAt v := by
   intro L _ _ χ

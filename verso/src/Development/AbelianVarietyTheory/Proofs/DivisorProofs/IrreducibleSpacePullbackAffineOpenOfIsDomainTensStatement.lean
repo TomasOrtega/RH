@@ -5,6 +5,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 open CategoryTheory Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GeomIrr.irreducibleSpace_pullback_of_isDomain_tensor | exact GlobalTheory.GeomIrr.irreducibleSpace_pullback_of_isDomain_tensor | (intros; apply GlobalTheory.GeomIrr.irreducibleSpace_pullback_of_isDomain_tensor <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.irreducibleSpace_pullback_affine_open_of_isDomain_tensor : ∀ {F : Type} [Field F] {X : Scheme.{0}} (g : X ⟶ Sp F) (V : X.Opens), IsAffineOpen V →
     ∀ (k : Type) [Field k] (f : F →+* k),
     letI : Algebra F Γ(X, V) :=

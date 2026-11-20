@@ -13,6 +13,11 @@ namespace GlobalTheory.CompanionTheory.BmuReduce
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `a`. Take `⟨U, F, hU, haU, hF, hfF⟩` from `hf a (Set.mem_univ a)`. Use `(hF.contDiffAt (hU.mem_nhds haU)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds haU] with g hg`.
+
+Conclude with `hfF g hg (Set.mem_univ g)`.
+-/
 theorem contDiff_of_smOn_univ {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup V]
     [NormedSpace ℝ V] {f : E → V} (hf : SmOn Set.univ f) : ContDiff ℝ ∞ f := by
   rw [contDiff_iff_contDiffAt]
@@ -22,6 +27,9 @@ theorem contDiff_of_smOn_univ {E V : Type*} [NormedAddCommGroup E] [NormedSpace 
   filter_upwards [hU.mem_nhds haU] with g hg
   exact hfF g hg (Set.mem_univ g)
 
+/- English proof (translation)
+Establish `h1 : tsupport (fun t => φ t * a t) ⊆ U` using `(tsupport_mul_subset_left (f := φ) (g := a)).trans hs`. Use `⟨contDiff_iff_contDiffAt.2 fun x => ?_, hc.mul_right, h1⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport (fun t => φ t * a t)`. Conclude with `hφ.contDiffAt.mul (ha.contDiffAt (hU.mem_nhds (h1 hx)))`. Conclude with `(contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq (notMem_tsupport_iff_eventuallyEq.1 hx)`.
+-/
 theorem cut_mul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {U : Set E} (hU : IsOpen U) {φ a : E → ℝ}
     (hφ : ContDiff ℝ ∞ φ) (hc : HasCompactSupport φ) (hs : tsupport φ ⊆ U) (ha : ContDiffOn ℝ ∞ a U) :
     ContDiff ℝ ∞ (fun t => φ t * a t) ∧ HasCompactSupport (fun t => φ t * a t) ∧
@@ -32,6 +40,9 @@ theorem cut_mul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {U : Set 
   · exact hφ.contDiffAt.mul (ha.contDiffAt (hU.mem_nhds (h1 hx)))
   · exact (contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq (notMem_tsupport_iff_eventuallyEq.1 hx)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(hφ.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const, hc.fderiv_apply ℝ v, (tsupport_fderiv_apply_subset ℝ v).trans hs⟩`.
+-/
 theorem cut_fderiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {U : Set E} {φ : E → ℝ}
     (hφ : ContDiff ℝ ∞ φ) (hc : HasCompactSupport φ) (hs : tsupport φ ⊆ U) (v : E) :
     ContDiff ℝ ∞ (fun t => fderiv ℝ φ t v) ∧ HasCompactSupport (fun t => fderiv ℝ φ t v) ∧
@@ -42,6 +53,9 @@ theorem cut_fderiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {U : S
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {G : Set (Mat n)} {σ : Mat n → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Establish `h1` using `SmOn.comp (smOn_dsW h (u := fun x => σ x w) (hw.smOn_mul h) hW) (φ := fun t : E => ((1 : Mat n), s t)) (B := Set.univ) (contDiff_const.prodMk hs) fun t _ => ⟨h.one_mem, hm t⟩`. Use `contDiff_of_smOn_univ (h1.congr fun x _ => ?_)` and prove the remaining obligations. Simplify using `[h.map_one]`.
+-/
 theorem contDiff_orbit {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (h : RepOn G σ) {w : H}
     (hw : IsSm G σ w) {W : List (Mat n)} (hW : LieW G W) {s : E → Mat n} (hs : ContDiff ℝ ∞ s)
     (hm : ∀ t, s t ∈ G) : ContDiff ℝ ∞ (fun t => dsW σ W (σ (s t) w)) := by
@@ -51,6 +65,11 @@ theorem contDiff_orbit {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (h
   refine contDiff_of_smOn_univ (h1.congr fun x _ => ?_)
   simp [h.map_one]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨by simpa using IsSm.zero, ?_⟩` and prove the remaining obligations. Use `dsW_smul h (IsSm.zero (G := G) (σ := σ)) (0 : ℂ) hW` as an intermediate fact. Simplify using `using this`.
+
+Consider the case `insert i S hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `⟨((hv i).smul _).add ih.1, by rw [dsW_add h ((hv i).smul _) ih.1 hW, dsW_smul h (hv i) _ hW, ih.2]⟩`.
+-/
 theorem dsW_sum (h : RepOn G σ) {W : List (Mat n)} (hW : LieW G W) {ι : Type*} (c : ι → ℂ) (v : ι → H)
     (hv : ∀ i, IsSm G σ (v i)) (S : Finset ι) :
     IsSm G σ (∑ i ∈ S, c i • v i) ∧ dsW σ W (∑ i ∈ S, c i • v i) = ∑ i ∈ S, c i • dsW σ W (v i) := by
@@ -64,16 +83,32 @@ theorem dsW_sum (h : RepOn G σ) {W : List (Mat n)} (hW : LieW G W) {ι : Type*}
     rw [Finset.sum_insert hi, Finset.sum_insert hi]
     exact ⟨((hv i).smul _).add ih.1, by rw [dsW_add h ((hv i).smul _) ih.1 hW, dsW_smul h (hv i) _ hW, ih.2]⟩
 
+/- English proof (translation)
+Introduce `X hX t` and use `ex_mem_of_lie (hW X hX) t`.
+-/
 theorem lieW_of {Hm : Mat n} {W : List (Mat n)} (hW : LieWd Hm W) : LieW (UH Hm) W :=
   fun X hX t => ex_mem_of_lie (hW X hX) t
 
+/- English proof (translation)
+The claim follows from `hu.dsW h (W := [X]) (lieW_of fun Y hY => by rw [List.mem_singleton.1 hY]; exact hX)`.
+-/
 theorem isSm_ds {Hm : Mat n} (h : RepOn (UH Hm) σ) {X : Mat n} (hX : Lie Hm X) {u : H} (hu : IsSm (UH Hm) σ u) :
     IsSm (UH Hm) σ (ds σ X u) :=
   hu.dsW h (W := [X]) (lieW_of fun Y hY => by rw [List.mem_singleton.1 hY]; exact hX)
 
+/- English proof (translation)
+The claim follows from `List.foldr_append`.
+-/
 theorem dsW_append (W W' : List (Mat n)) (v : H) : dsW σ (W ++ W') v = dsW σ W (dsW σ W' v) :=
   List.foldr_append
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `had n Hm H σ hσ y hy [Y] (fun X hX => by rw [List.mem_singleton.1 hX]; exact hY)`. Take `⟨Λ, hΛ⟩` from `hlin n Hm H σ hσ u hu`. Establish `h3 : Lie Hm (y⁻¹ * Y * y)` using `h1 _ (by simp)`. Establish `h4 : ds σ (y⁻¹ * Y * y) u = ∑ j, (a j : ℂ) • ds σ (Z j) u + ∑ i, (b i : ℂ) • ds σ (Q i) u`. Rewrite using `[hΛ _ h3, hab]`.
+
+Simplify using `only [Complex.coe_smul, map_add, map_sum, map_smul, hΛ _ (hZ _), hΛ _ (hQ _)]`. Establish `h5 : dsW σ [Y] (σ y u) = ∑ j, (a j : ℂ) • σ y (ds σ (Z j) u) + ∑ i, (b i : ℂ) • σ y (ds σ (Q i) u)`. Rewrite using `[h2 u hu]`. Express the relevant statement in the definitionally equal form `σ y (ds σ (y⁻¹ * Y * y) u) = _`. Rewrite using `[h4]`.
+
+Simplify using `only [map_add, map_sum, map_smul]`. Establish `hA` using `dsW_sum hσ.rep (lieW_of hW) (fun j => (a j : ℂ)) (fun j => σ y (ds σ (Z j) u)) (fun j => (isSm_ds hσ.rep (hZ j) hu).apply hσ.rep hy) Finset.univ`. Establish `hB` using `dsW_sum hσ.rep (lieW_of hW) (fun j => (b j : ℂ)) (fun j => σ y (ds σ (Q j) u)) (fun j => (isSm_ds hσ.rep (hQ j) hu).apply hσ.rep hy) Finset.univ`. Rewrite using `[dsW_append, h5, dsW_add hσ.rep hA.1 hB.1 (lieW_of hW), hA.2, hB.2]`. Simplify using `only [Complex.coe_smul]`.
+-/
 theorem last_letter [CompleteSpace H] (hlin : DsLin) (had : DsAd) {Hm : Mat n} (hσ : URep Hm σ)
     {W : List (Mat n)} (hW : LieWd Hm W) {Y y : Mat n} (hY : Lie Hm Y) (hy : y ∈ UH Hm) {d e : ℕ}
     {Z : Fin d → Mat n} {Q : Fin e → Mat n} (hZ : ∀ j, Lie Hm (Z j)) (hQ : ∀ i, Lie Hm (Q i))
@@ -100,6 +135,11 @@ theorem last_letter [CompleteSpace H] (hlin : DsLin) (had : DsAd) {Hm : Mat n} (
   rw [dsW_append, h5, dsW_add hσ.rep hA.1 hB.1 (lieW_of hW), hA.2, hB.2]
   simp only [Complex.coe_smul]
 
+/- English proof (translation)
+Establish `h1` using `contDiff_orbit hσ.rep hu (lieW_of hW) hs hm`. Establish `h2 : HasLineDerivAt ℝ (fun t => dsW σ W (σ (s t) u)) (fderiv ℝ (fun t => dsW σ W (σ (s t) u)) t v) t v` using `(h1.differentiable (by simp) t).hasFDerivAt.hasLineDerivAt v`. Establish `h3 : HasLineDerivAt ℝ (fun t => dsW σ W (σ (s t) u)) (dsW σ W (σ (s t) (ds σ Z u))) t v`. Unfold `HasLineDerivAt`. Simplify using `only [hfl]`.
+
+Conclude with `hder n Hm H σ hσ W hW (s t) (hm t) Z hZ u hu`. Conclude with `h2.unique h3`.
+-/
 theorem fderiv_orbit [CompleteSpace H] (hder : DsDer) {Hm : Mat n} (hσ : URep Hm σ)
     {W : List (Mat n)} (hW : LieWd Hm W) {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {s : E → Mat n}
     (hs : ContDiff ℝ ∞ s) (hm : ∀ t, s t ∈ UH Hm) {t v : E} {Z : Mat n} (hZ : Lie Hm Z)
@@ -114,10 +154,16 @@ theorem fderiv_orbit [CompleteSpace H] (hder : DsDer) {Hm : Mat n} (hσ : URep H
     exact hder n Hm H σ hσ W hW (s t) (hm t) Z hZ u hu
   exact h2.unique h3
 
+/- English proof (translation)
+The claim follows from `(hψ.smul hf).integrable_of_hasCompactSupport hc.smul_right`.
+-/
 theorem integrable_cut {d : ℕ} {ψ : (Fin d → ℝ) → ℝ} (hψ : Continuous ψ) (hc : HasCompactSupport ψ)
     {f : (Fin d → ℝ) → H} (hf : Continuous f) : Integrable (fun t => ψ t • f t) :=
   (hψ.smul hf).integrable_of_hasCompactSupport hc.smul_right
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `cut_fderiv hψ hc (Set.subset_univ _) v`. Use `integral_smul_fderiv_eq_neg_fderiv_smul_of_integrable (integrable_cut h1.continuous h2 hf.continuous) (integrable_cut hψ.continuous hc ((hf.continuous_fderiv (by simp)).clm_apply continuous_const)) (integrable_cut hψ.continuous hc hf.continuous) (fun x _ => hψ.differentiable (by …` and prove the remaining obligations.
+-/
 theorem parts {d : ℕ} {ψ : (Fin d → ℝ) → ℝ} (hψ : ContDiff ℝ ∞ ψ) (hc : HasCompactSupport ψ)
     {f : (Fin d → ℝ) → H} (hf : ContDiff ℝ ∞ f) (v : Fin d → ℝ) :
     ∫ t, ψ t • fderiv ℝ f t v = - ∫ t, fderiv ℝ ψ t v • f t := by
@@ -127,6 +173,25 @@ theorem parts {d : ℕ} {ψ : (Fin d → ℝ) → ℝ} (hψ : ContDiff ℝ ∞ �
     (integrable_cut hψ.continuous hc hf.continuous) (fun x _ => hψ.differentiable (by simp) x)
     (fun x _ => hf.differentiable (by simp) x)
 
+/- English proof (translation)
+Introduce `hlin had hder n Hm H _ _ _ σ hσ d e Q s U hch W`. Simplify using `only [Complex.coe_smul]`. Proceed by induction on `W using List.reverseRecOn with`. Consider the case `nil`. Introduce `_ φ hφ hc _`.
+
+Use `⟨∫ t, ‖φ t‖, integral_nonneg fun t => norm_nonneg _, fun u _ R hR => ?_⟩` and prove the remaining obligations. Establish `hu : ‖u‖ ≤ R` using `hR [] le_rfl`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Establish `: ∀ t, ‖φ t • dsW σ [] (σ (s t) u)‖ = ‖φ t‖ * ‖u‖` using `fun t => by`. Rewrite using `[norm_smul]`.
+
+Conclude with `congrArg _ (hσ.iso _ (hch.mem t) u)`. Simplify using `only [this]`. Rewrite using `[integral_mul_const]`. Conclude with `mul_le_mul_of_nonneg_left hu (integral_nonneg fun t => norm_nonneg _)`. Consider the case `append_singleton W Y ih`.
+
+Introduce `hWY φ hφ hc hs`. Establish `hW : LieWd Hm W` using `fun X hX => hWY X (List.mem_append_left _ hX)`. Establish `hY : Lie Hm Y` using `hWY Y (by simp)`. Take `⟨Z, hZ, hfl, hsp⟩` from `hch.flow`. Take `⟨a, b, ha, hb, hab⟩` from `hsp Y hY`.
+
+Establish `hA` using `fun j => cut_mul hch.isOpen hφ hc hs (ha j)`. Establish `hB` using `fun i => cut_mul hch.isOpen hφ hc hs (hb i)`. Establish `hA'` using `fun j => cut_fderiv (hA j).1 (hA j).2.1 (hA j).2.2 (Pi.single j 1)`. Use `choose C hC0 hC using fun j => ih hW _ (hA' j).1 (hA' j).2.1 (hA' j).2.2`. Use `choose D hD0 hD using fun i => ih hW _ (hB i).1 (hB i).2.1 (hB i).2.2`.
+
+Use `⟨∑ j, C j + ∑ i, D i, add_nonneg (Finset.sum_nonneg fun j _ => hC0 j) (Finset.sum_nonneg fun j _ => hD0 j), fun u hu R hR => ?_⟩` and prove the remaining obligations. Establish `hf` using `contDiff_orbit hσ.rep hu (lieW_of hW) hch.smooth hch.mem`. Establish `hg` using `fun i => contDiff_orbit hσ.rep (isSm_ds hσ.rep (hch.lieQ i) hu) (lieW_of hW) hch.smooth hch.mem`. Establish `hpt : ∀ t, φ t • dsW σ (W ++ [Y]) (σ (s t) u) = ∑ j, (φ t * a j t) • fderiv ℝ (fun t => dsW σ W (σ (s t) u)) t (Pi.single j 1) + ∑ i, (φ t * b i t) • dsW σ W (σ (s t) (ds σ (Q i) u))` using `fun t => by`. Distinguish the cases in `ht : t ∈ tsupport φ`.
+
+Rewrite using `[last_letter hlin had hσ hW hY (hch.mem t) (fun j => hZ j t) hch.lieQ (hab t (hs ht)) hu]`. Simplify using `only [fun j => fderiv_orbit hder hσ hW hch.smooth hch.mem (hZ j t) (hfl j t) hu, smul_add, Finset.smul_sum, smul_smul]`. Simplify using `[image_eq_zero_of_notMem_tsupport ht]`. Establish `iA : ∀ j, Integrable fun t => (φ t * a j t) • fderiv ℝ (fun t => dsW σ W (σ (s t) u)) t (Pi.single j 1)` using `fun j => integrable_cut (hA j).1.continuous (hA j).2.1 ((hf.continuous_fderiv (by simp)).clm_apply continuous_const)`. Establish `iB : ∀ i, Integrable fun t => (φ t * b i t) • dsW σ W (σ (s t) (ds σ (Q i) u))` using `fun i => integrable_cut (hB i).1.continuous (hB i).2.1 (hg i).continuous`.
+
+Simplify using `only [hpt]`. Rewrite using `[integral_add (integrable_finset_sum _ fun j _ => iA j) (integrable_finset_sum _ fun j _ => iB j), integral_finset_sum _ fun j _ => iA j, integral_finset_sum _ fun j _ => iB j, add_mul, Finset.sum_mul, Finset.sum_mul]`. Use `(norm_add_le _ _).trans (add_le_add ((norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)) ((norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)))` and prove the remaining obligations. Rewrite using `[parts (hA j).1 (hA j).2.1 hf, norm_neg]`. Conclude with `hC j u hu R fun P hP => hR P (by simp; omega)`.
+
+Use `hD i _ (isSm_ds hσ.rep (hch.lieQ i) hu) R fun P hP => ?_` and prove the remaining obligations. Use `hR (P ++ [i]) (by simp; omega)` as an intermediate fact. Rewrite `this` using `[List.map_append, dsW_append]`. Then use the resulting hypothesis.
+-/
 theorem reduce : DsLin → DsAd → DsDer → Reduce := by
   intro hlin had hder n Hm H _ _ _ σ hσ d e Q s U hch W
   simp only [Complex.coe_smul]

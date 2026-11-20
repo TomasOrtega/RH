@@ -8,6 +8,17 @@ namespace GlobalTheory.CuspLimit
 
 open Classical in
 
+/- English proof (translation)
+Establish `h0 : Summable fun i => ‖A i * (Real.exp (-(a i * (T + 1))) : ℂ)‖` using `(hs (T + 1) (by linarith)).summable.norm`. Establish `hlim : Tendsto (fun t : ℝ => ∑' i, A i * (Real.exp (-(a i * t)) : ℂ)) atTop (𝓝 (∑' i, if a i = 0 then A i else 0))`. Use `tendsto_tsum_of_dominated_convergence h0 (fun i => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hi : A i = 0`. Simplify using `[hi]`.
+
+Distinguish the cases in `hz : a i = 0`. Simplify using `[hz]`. Establish `hp : 0 < a i` using `lt_of_le_of_ne (ha i hi) (Ne.symm hz)`. Rewrite using `[if_neg hz]`. Establish `h1 : Tendsto (fun t : ℝ => Real.exp (-(a i * t))) atTop (𝓝 0)` using `Real.tendsto_exp_neg_atTop_nhds_zero.comp (tendsto_id.const_mul_atTop hp)`.
+
+Establish `h2` using `((Complex.continuous_ofReal.tendsto 0).comp h1).const_mul (A i)`. Simplify using `using h2`. Use `filter_upwards [eventually_ge_atTop (T + 1)] with t ht i`. Distinguish the cases in `hi : A i = 0`. Simplify using `[hi]`.
+
+Rewrite using `[norm_mul, norm_mul, Complex.norm_of_nonneg (Real.exp_pos _).le, Complex.norm_of_nonneg (Real.exp_pos _).le]`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr ?_) (norm_nonneg _)` and prove the remaining obligations. Conclude with `neg_le_neg (mul_le_mul_of_nonneg_left ht (ha i hi))`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop T] with t ht`.
+
+Conclude with `(hs t ht).tsum_eq`.
+-/
 theorem tendsto_dirichlet {ι : Type*} (A : ι → ℂ) (a : ι → ℝ) (F : ℝ → ℂ) (T : ℝ)
     (ha : ∀ i, A i ≠ 0 → 0 ≤ a i)
     (hs : ∀ t, T < t → HasSum (fun i => A i * (Real.exp (-(a i * t)) : ℂ)) (F t)) :
@@ -38,6 +49,29 @@ theorem tendsto_dirichlet {ι : Type*} (A : ι → ℂ) (a : ι → ℝ) (F : �
   filter_upwards [eventually_gt_atTop T] with t ht
   exact (hs t ht).tsum_eq
 
+/- English proof (translation)
+Introduce `E _ _ _ r X la P ξ x s d T g hP hnn hξ hx hd hg hw`. Establish `hpi` using `Real.pi_pos`. Use `set F : ℝ → ℂ := fun t => P (X.flow ξ (fun τ => s τ + (I * t) * (d τ : ℂ)) x) with hF`. Establish `him : ∀ t : ℝ, T < t → T < (I * (t : ℂ)).im` using `fun t ht => by simpa using ht`. Establish `h1` using `tendsto_dirichlet g (fun m : ℤ => 2 * Real.pi * m) F T (fun m hm => by`.
+
+Establish `: 0 < m`. Assume the negation of the conclusion as `h`. Conclude with `hm (hg m (not_lt.mp h))`. Use the proof step `positivity)`. Use the proof step `(fun t ht => by`.
+
+Establish `h` using `(hw _ (him t ht)).2`. Use `h using 3 with m` and compare the differences between its conclusion and the goal. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.eTwoPi, ← Complex.exp_int_mul]`. Use `push_cast`. Use `congr 1`.
+
+Take the linear combination `(-(2 * (Real.pi : ℂ) * m * t)) * Complex.I_mul_I)`. Establish `e1 : (∑' m : ℤ, if 2 * Real.pi * (m : ℝ) = 0 then g m else 0) = 0`. Establish `: (fun m : ℤ => if 2 * Real.pi * (m : ℝ) = 0 then g m else 0) = fun _ => 0`. Use function extensionality and compare the values at `m`. Use `split_ifs with h`.
+
+Establish `hm : m = 0` using `by simpa [hpi.ne'] using h`. Conclude with `hg m hm.le`. Both sides reduce to the same expression. Rewrite using `[this, tsum_zero]`. Establish `h2` using `tendsto_dirichlet (fun ν : X.Ψ → ℝ => X.fj la ξ ν P x * cexp (4 * Real.pi * I * ∑ τ, (ν τ : ℂ) * s τ)) (fun ν => 4 * Real.pi * ∑ τ, ν τ * d τ) F T (fun ν hν => by`.
+
+Establish `h0` using `hnn ξ hξ ν x hx (left_ne_zero_of_mul hν)`. Establish `: 0 ≤ ∑ τ, ν τ * d τ` using `Finset.sum_nonneg fun τ _ => mul_nonneg (h0 τ) (hd τ).le`. Use the proof step `positivity)`. Use the proof step `(fun t ht => by`. Establish `h` using `m3bExp_holds r X la P hP ξ hξ x hx _ (hw _ (him t ht)).1`.
+
+Use `h using 2 with ν` and compare the differences between its conclusion and the goal. Rewrite using `[mul_assoc]`. Use `congr 1`. Use `push_cast`. Rewrite using `[← Complex.exp_add]`.
+
+Use `congr 1`. Establish `e : ∑ τ, (ν τ : ℂ) * (s τ + I * t * (d τ : ℂ)) = ∑ τ, (ν τ : ℂ) * s τ + I * t * ∑ τ, (ν τ : ℂ) * (d τ : ℂ)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun τ _ => by ring`. Rewrite using `[e]`.
+
+Take the linear combination `(-(4 * (Real.pi : ℂ) * t * ∑ τ, (ν τ : ℂ) * (d τ : ℂ))) * Complex.I_mul_I)`. Rewrite using `[tsum_eq_single (0 : X.Ψ → ℝ) (fun ν hν => by split_ifs with h`. Assume the negation of the conclusion as `hne`. Establish `h0` using `hnn ξ hξ ν x hx (left_ne_zero_of_mul hne)`. Establish `hz : ∑ τ, ν τ * d τ = 0` using `by simpa [hpi.ne'] using h`.
+
+Use `hν (funext fun τ => ?_)` and prove the remaining obligations. Use `(Finset.sum_eq_zero_iff_of_nonneg fun τ _ => mul_nonneg (h0 τ) (hd τ).le).mp hz τ (Finset.mem_univ τ)` as an intermediate fact. Conclude with `(mul_eq_zero.mp this).resolve_right (hd τ).ne'`. Use the proof step `rfl)] at h2`. Rewrite `h1` using `[e1]`.
+
+Simplify using `using tendsto_nhds_unique h2 h1`.
+-/
 theorem fj_zero_eq_zero_of_line : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (ξ : Fin r → E) (x : Frame X.Ψ r) (s : X.Ψ → ℂ) (d : X.Ψ → ℝ) (T : ℝ) (g : ℤ → ℂ), X.IsSec la P → FreqNonneg X la P → X.IsIso ξ → x ∈ X.dom → (∀ τ, 0 < d τ) → (∀ m ≤ 0, g m = 0) → (∀ w : ℂ, T < w.im → X.flow ξ (fun τ => s τ + w * (d τ : ℂ)) x ∈ X.dom ∧ HasSum (fun m : ℤ => g m * ReciprocityTheory.ChartRestriction.G.Geo.Tor.eTwoPi w ^ m) (P (X.flow ξ (fun τ => s τ + w * (d τ : ℂ)) x))) → X.fj la ξ 0 P x = 0 := by
   intro E _ _ _ r X la P ξ x s d T g hP hnn hξ hx hd hg hw
   classical

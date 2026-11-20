@@ -12,6 +12,9 @@ open GlobalTheory.Doubling (absE)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.JacBridge.Geom.adapted_basis_levi_unip | exact GlobalTheory.JacBridge.Geom.adapted_basis_levi_unip | (intros; apply GlobalTheory.JacBridge.Geom.adapted_basis_levi_unip <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adapted_plane_local_idele_character_compat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), IsCMExt F E σ →
   ∀ (d d₁ r s : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ), W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ →
   ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (w : HeightOneSpectrum (𝓞 E)) (e : (w.adicCompletion E)ˣ → (Fv F v)ˣ),

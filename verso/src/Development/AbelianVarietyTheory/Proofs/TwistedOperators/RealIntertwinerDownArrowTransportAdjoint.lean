@@ -17,6 +17,9 @@ namespace GlobalTheory.AdjTr
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `h.ne (LinearMap.ext fun φ => by have := congrArg (fun L => L (e.symm φ)) h0 simpa using this) bdd φ w := h.bdd (e φ) w eqK τ g hg φ φ' hφ v := h.eqK τ g hg (e φ) (e φ') (by rw [hpt, hpt, hφ, hω]) v eqg τ Y hY φ φ' hd v := h.eqg τ Y hY (e φ) (e φ') (fun z => by simp only [hpt, hω, …`.
+-/
 theorem isIntw_transport {V W : HSp D} {S S' : D.what₂.Tau → SPar} {X Y P P' : Type} [AddCommGroup P] [Module ℂ P]
     [AddCommGroup P'] [Module ℂ P'] (θ : InfFam D) (M : DSModel V S) (M' : DSModel W S')
     (ω : GA D V × GA D W →* Module.End ℂ (X → ℂ)) (ω₀ : GA D V × GA D W →* Module.End ℂ (Y → ℂ))
@@ -36,6 +39,15 @@ theorem isIntw_transport {V W : HSp D} {S S' : D.what₂.Tau → SPar} {X Y P P'
 
 open GlobalTheory.FockAdjoint in
 
+/- English proof (translation)
+Use `set A := Fr.ofModel M`. Use `set B := Fr.ofModel M'`. Establish `L` using `GlobalTheory.AdjLawPf.adjLaw D ψ hψ V W`. Establish `cA` using `GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv A`. Establish `cB` using `GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv B`.
+
+Establish `hd` using `L.theta g hg`. Use `show ptF ψ θ B A (dag V W g) (jHom A B Q) = dag V W (ptF ψ θ A B g Q)`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[jHom_C, ← mul_one (MvPolynomial.C _), ptF_C, ptF_one, ← mul_one (MvPolynomial.C a), ptF_C, ptF_one, dag_smul']`.
+
+Consider the case `add p q hp hq => rw [map_add, ptF_add, ptF_add, hp, hq, dag_add]`. Consider the case `mul_X p v hp`. Take `⟨τ, i, j⟩` from `v`. Rewrite using `[map_mul, jHom_X, mul_comm (jHom A B p), mul_assoc, ptF_C, ptF_X_mul hψ hθ B A hd, hp, mul_comm p, ptF_X_mul hψ hθ A B hg]`. Simplify using `only`.
+
+Rewrite using `[aPlus_dag hψ hθ L τ (cA τ) (cB τ) _ (ptF_theta hψ hθ A B hg p), cdag_unitMap, aPlus_real_smul hψ hθ (ptF_theta hψ hθ A B hg p), dag_smul', Complex.conj_ofReal, smul_smul]`. Rewrite using `[show ((sg (B.ε τ i) * sg (A.ε τ j) : ℝ) : ℂ) = sgv A B τ i j from rfl, sgv_mul_self, one_smul]`.
+-/
 theorem ptOf_dag {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {V W : HSp D} {SV SW : D.what₂.Tau → SPar} (M : DSModel V SV) (M' : DSModel W SW) {g : WO V W → ℂ}
     (hg : IsThetaFunO ψ V W g) (Q : PolF D W.rank V.rank) :
@@ -62,6 +74,9 @@ theorem ptOf_dag {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdCh
     rw [show ((sg (B.ε τ i) * sg (A.ε τ j) : ℝ) : ℂ) = sgv A B τ i j from rfl, sgv_mul_self, one_smul]
 
 open GlobalTheory.FockAdjoint in
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [jHom_C, swapHom]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p v hp => rw [map_mul, map_mul, hp, MvPolynomial.map_X, jHom_X, map_mul, swapHom_X]`.
+-/
 theorem jHom_map_conj {S T : HSp D} (A : Fr S) (B : Fr T) (P : PolF D T.rank S.rank) :
     jHom A B (MvPolynomial.map (starRingEnd ℂ) P) = swapHom A B P := by
   induction P using MvPolynomial.induction_on with
@@ -69,6 +84,9 @@ theorem jHom_map_conj {S T : HSp D} (A : Fr S) (B : Fr T) (P : PolF D T.rank S.r
   | add p q hp hq => rw [map_add, map_add, hp, hq, map_add]
   | mul_X p v hp => rw [map_mul, map_mul, hp, MvPolynomial.map_X, jHom_X, map_mul, swapHom_X]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[dag, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`.
+-/
 theorem dag_cj {S T : HSp D} (F : WO S T → ℂ) : dag S T (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id F) = F ∘ adjO S T := by
   funext y; simp [dag, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]
 
@@ -76,6 +94,17 @@ end GlobalTheory.AdjTr
 
 open GlobalTheory.AdjTr in
 
+/- English proof (translation)
+Introduce `D S T ψ θ χ ω f hθ hW hV`. Use `set A := Fr.ofModel S.M`. Use `set B := Fr.ofModel T.M`. Establish `hstd : IsStdChar D ψ (-1)` using `hV.1`. Establish `L` using `GlobalTheory.AdjLawPf.adjLaw D ψ hstd S.V T.V`.
+
+Establish `hth : IsThetaFunO ψ (GlobalTheory.Grid.neg S.V) T.V f` using `hV.2.theta`. Establish `hvv` using `GlobalTheory.T.isNonzeroFockVacuum_conj_unitVacuum_negSpace S T ψ θ f hV`. Use `⟨adjRep ω, dag S.V T.V (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id f), χ⁻¹, (swapEquiv A B).toLinearEquiv, ?_, fun τ a h => GlobalTheory.Mem.HeckeExp.hasInfExp_inv h, ⟨L.theta _ hvv.theta, ?_, fun τ => GlobalTheory.FockAdjoint.vac_dag hstd hθ L τ (Global …` and prove the remaining obligations. Conclude with `GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint D ψ S.V T.V χ⁻¹ χ⁻¹ (conjRep ω) (GlobalTheory.T.isWeilDatum_complexConjugate_of_negHermitianSpace ψ S.V T.V χ χ ω hW)`. Introduce `h0`.
+
+Apply `hvv.ne` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `congrFun h0 (adjO T.V S.V x)` as an intermediate fact. Simplify using `only [dag, GlobalTheory.AdjLawPf.adj_invol, Pi.zero_apply, map_eq_zero] at this`. Conclude with `this`.
+
+Use `isIntw_transport θ T.M S.M ω.swap (adjRep ω) (GlobalTheory.Grid.fock ψ θ true S T f) (ptOf ψ θ T.M S.M (dag S.V T.V (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id f))) (swapEquiv A B).toLinearEquiv (adjO S.V T.V) It (fun φ => ?_) (fun p F => ?_) ((GlobalThe …` and prove the remaining obligations. Use `show ptOf ψ θ T.M S.M (dag S.V T.V (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id f)) (swapHom A B φ) = _`. Rewrite using `[← jHom_map_conj, ptOf_dag hstd hθ S.M T.M hvv.theta, ← GlobalTheory.T.conj_fockPureTensorMap_negFormSpace_eq S T ψ θ f hstd hθ hth, dag_cj]`. Take `⟨h, g⟩` from `p`. Rewrite using `[adjRep_apply, WRep.swap_apply]`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply, GlobalTheory.AdjLawPf.adj_invol]`.
+-/
 theorem GlobalTheory.AdjTr.downArrow_transport : ∀ {D : D7} (S T : GlobalTheory.Grid.Node D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (χ : (AE D)ˣ →* Circle)
     (ω : GlobalTheory.Grid.WRep S.V T.V) (f : WO S.V T.V → ℂ), IsInfFam θ → GlobalTheory.Grid.IsWeil ψ true S.V T.V χ χ ω →
     GlobalTheory.Grid.IsVac ψ θ true S T f →

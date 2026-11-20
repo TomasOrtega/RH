@@ -21,6 +21,15 @@ def HinfCompactBundle : Prop :=
   ∀ {D : D7} (X : HidaSetting D) (u : D.what₂.Word),
     IsCompact ((PoincareSetting.Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf)
 
+/- English proof (translation)
+Introduce `D X u`. Take `⟨e, he⟩` from `h1 X.B.I (h0 X.B.I)`. Establish `key : ∀ s : X.B.I.Ginf, e s ∈ Hsub (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) ↔ s ∈ (PoincareSetting.Hinf X u : Set X.B.I.Ginf)`. Introduce `s`. Rewrite using `[he s]`.
+
+Conclude with `h2 X.B.I (h0 X.B.I) D.R.rS (frameOf X u).e (frameOf X u).f (frameOf X u).z s`. Establish `hset : (Hsub (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) : Set (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)) = e '' (PoincareSetting.Hinf X u : Set X.B.I.Ginf)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Use `⟨e.symm x, (key _).1 ?_, e.apply_symm_apply x⟩` and prove the remaining obligations. Rewrite using `[e.apply_symm_apply]` and apply the resulting hypothesis. Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `(key s).2 hs`. Establish `hc : IsCompact (Hsub (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) : Set (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J))`.
+
+Rewrite using `[hset]`. Conclude with `(h3 X u).image e.toHomeomorph.continuous`. Conclude with `isCompact_iff_compactSpace.mp hc`.
+-/
 theorem hinfCompact_of (h0 : ∀ I : Formalism.MainNotions.S.AutInst, AdBridgeIso I) (h1 : InfHAHomeo) (h2 : HStepInf)
     (h3 : HinfCompactBundle) : MassDataMassesW.HinfCompact := by
   intro D X u

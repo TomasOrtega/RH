@@ -14,6 +14,11 @@ namespace VP
 
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
 
+/- English proof (translation)
+Use extensionality with `e`. Rewrite using `[MvPowerSeries.coeff_subst (hs (fun _ => MvPowerSeries.constantCoeff_zero)), finsum_eq_single _ 0]`. Apply the tactic sequence `by_cases he : e = 0 <;> simp [he, MvPowerSeries.coeff_C, MvPowerSeries.coeff_one]`. Introduce `d hd`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs'⟩ : ∃ s, d s ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hd (Finsupp.ext h)`. Establish `h0 : (d.prod fun _ n => (0 : MvPowerSeries τ C) ^ n) = 0` using `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs') (zero_pow hs')`. Simplify using `[h0]`.
+-/
 theorem subst_zeroPt {σ τ : Type} [Finite σ] (f : MvPowerSeries σ C) :
     MvPowerSeries.subst (fun _ : σ => (0 : MvPowerSeries τ C)) f = MvPowerSeries.C (MvPowerSeries.constantCoeff f) := by
   ext e
@@ -34,17 +39,28 @@ def l (m : Fin dd) : MvPowerSeries (Fin dd) C := un1 (Y.lg m)
 
 def e (k : Fin dd) : MvPowerSeries (Fin dd) C := un1 (Y.ex k)
 
+/- English proof (translation)
+Establish `h` using `Y.lg_lin m 0 (by simp)`. Express the relevant statement in the definitionally equal form `MvPowerSeries.coeff (Finsupp.mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) 0) (Y.lg m) = 0`. Rewrite using `[Finsupp.mapDomain_zero, h]`. Simplify using the standard rewrite rules.
+-/
 theorem cc_l (m : Fin dd) : MvPowerSeries.constantCoeff (l Y m) = 0 := by
   have h := Y.lg_lin m 0 (by simp)
   change MvPowerSeries.coeff (Finsupp.mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) 0) (Y.lg m) = 0
   rw [Finsupp.mapDomain_zero, h]
   simp
 
+/- English proof (translation)
+Establish `h` using `Y.ex_const k`. Express the relevant statement in the definitionally equal form `MvPowerSeries.coeff (Finsupp.mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) 0) (Y.ex k) = 0`. Rewrite using `[Finsupp.mapDomain_zero, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h]`.
+-/
 theorem cc_e (k : Fin dd) : MvPowerSeries.constantCoeff (e Y k) = 0 := by
   have h := Y.ex_const k
   change MvPowerSeries.coeff (Finsupp.mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) 0) (Y.ex k) = 0
   rw [Finsupp.mapDomain_zero, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h]
 
+/- English proof (translation)
+Establish `ha : ∀ i, MvPowerSeries.constantCoeff (Y.lg i) = 0` using `fun i => by`. Rewrite using `[← constantCoeff_uncurry]`. Conclude with `cc_l Y i`. Use `show MvPowerSeries.subst (fun j => un1 (Y.lg j)) (un1 (Y.ex n)) = _`. Rewrite using `[uncurry_comp ha, Y.ex_lg]`.
+
+Conclude with `uncurry_X n`.
+-/
 theorem exlg (n : Fin dd) : MvPowerSeries.subst (l Y) (e Y n) = MvPowerSeries.X n := by
   have ha : ∀ i, MvPowerSeries.constantCoeff (Y.lg i) = 0 := fun i => by
     rw [← constantCoeff_uncurry]; exact cc_l Y i
@@ -52,13 +68,22 @@ theorem exlg (n : Fin dd) : MvPowerSeries.subst (l Y) (e Y n) = MvPowerSeries.X 
   rw [uncurry_comp ha, Y.ex_lg]
   exact uncurry_X n
 
+/- English proof (translation)
+Use `show MvPowerSeries.subst (fun j => un1 (Y.ex j)) (un1 (Y.lg m)) = _`. Rewrite using `[uncurry_comp Y.ex_const, Y.lg_ex]`. Conclude with `uncurry_X m`.
+-/
 theorem lgex (m : Fin dd) : MvPowerSeries.subst (e Y) (l Y m) = MvPowerSeries.X m := by
   show MvPowerSeries.subst (fun j => un1 (Y.ex j)) (un1 (Y.lg m)) = _
   rw [uncurry_comp Y.ex_const, Y.lg_ex]
   exact uncurry_X m
 
+/- English proof (translation)
+The claim follows from `Y.B.G.const k`.
+-/
 theorem cc_F (k : Fin dd) : MvPowerSeries.constantCoeff (Y.B.G.F k) = 0 := Y.B.G.const k
 
+/- English proof (translation)
+Establish `h : (fun q : Fin 2 × Fin dd => (![pt C dd 0, pt C dd 1] : Fin 2 → Pt C 2 dd) q.1 q.2) = MvPowerSeries.X`. Apply the tactic sequence `funext ⟨i, k⟩; fin_cases i <;> rfl`. Unfold `ev`. Rewrite using `[h, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+-/
 theorem ev_id (f : PS C 2 dd) : ev (n := 2) ![pt C dd 0, pt C dd 1] f = f := by
   have h : (fun q : Fin 2 × Fin dd => (![pt C dd 0, pt C dd 1] : Fin 2 → Pt C 2 dd) q.1 q.2) =
       MvPowerSeries.X := by
@@ -67,6 +92,11 @@ theorem ev_id (f : PS C 2 dd) : ev (n := 2) ![pt C dd 0, pt C dd 1] f = f := by
   rw [h, MvPowerSeries.subst_self]
   rfl
 
+/- English proof (translation)
+Establish `hF : addOf Y.B.G.F (pt C dd 0) (pt C dd 1) = fun k => Y.B.G.F k`. Use function extensionality and compare the values at `fun k => ev_id (Y.B.G.F k)`. Establish `h` using `Y.lg_add m`. Rewrite `h` using `[hF, eval_single_eq_subst, eval_single_eq_subst, eval_single_eq_subst]`. Use `show MvPowerSeries.subst (fun k => Y.B.G.F k) (un1 (Y.lg m)) = MvPowerSeries.subst (fun k : Fin dd => (MvPowerSeries.X ((0 : Fin 2), k) : PS C 2 dd)) (un1 (Y.lg m)) + MvPowerSeries.subst (fun k : Fin dd => (MvPowerSeries.X ((1 : Fin 2), k) : PS C 2 dd)) (un1 (Y.lg m))`.
+
+Rewrite using `[subst_singlePointUncurry (fun k => Y.B.G.const k), subst_singlePointUncurry (fun k => MvPowerSeries.constantCoeff_X _), subst_singlePointUncurry (fun k => MvPowerSeries.constantCoeff_X _)]`. Conclude with `h`.
+-/
 theorem l_add (m : Fin dd) :
     MvPowerSeries.subst (fun k => Y.B.G.F k) (l Y m) =
       MvPowerSeries.subst (fun k : Fin dd => (MvPowerSeries.X ((0 : Fin 2), k) : PS C 2 dd)) (l Y m) +
@@ -82,6 +112,21 @@ theorem l_add (m : Fin dd) :
     subst_singlePointUncurry (fun k => MvPowerSeries.constantCoeff_X _)]
   exact h
 
+/- English proof (translation)
+Use `set u : Fin 1 × Fin dd → MvPowerSeries (Fin dd) C := fun q => un1 (Y.ex q.2) with hu_def`. Establish `hu : MvPowerSeries.HasSubst u` using `hs (fun q => cc_e Y q.2)`. Establish `hz : MvPowerSeries.HasSubst (exZero Y)` using `hs (fun q => by`. Unfold `exZero`. Use `split_ifs`.
+
+Conclude with `cc_e Y q.2`. Use the proof step `simp)`. Establish `hsw : MvPowerSeries.HasSubst (fun q : Fin 2 × Fin dd => (![pt C dd 1, pt C dd 0] : Fin 2 → Pt C 2 dd) q.1 q.2)` using `hs (fun q => by`. Break down `q with ⟨i, j⟩` into its components or cases. Apply the tactic sequence `fin_cases i <;> exact MvPowerSeries.constantCoeff_X _)`.
+
+Establish `hun : MvPowerSeries.HasSubst (fun q : Fin 2 × Fin dd => (![0, pt C dd 0] : Fin 2 → Pt C 1 dd) q.1 q.2)` using `hs (fun q => by`. Break down `q with ⟨i, j⟩` into its components or cases. Use `fin_cases i`. Simplify using the standard rewrite rules. Conclude with `MvPowerSeries.constantCoeff_X _)`.
+
+Establish `hu0 : MvPowerSeries.subst u (0 : MvPowerSeries (Fin 1 × Fin dd) C) = 0`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hu, map_zero]`. Establish `hz0 : MvPowerSeries.subst (exZero Y) (0 : PS C 2 dd) = 0`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hz, map_zero]`. Establish `h1` using `Y.B.G.comm k`.
+
+Establish `h2` using `congrArg (MvPowerSeries.subst u) (Y.B.G.unit k)`. Unfold `ev at h1 h2`. Rewrite using `[← h1, MvPowerSeries.subst_comp_subst_apply hsw hz]`. Rewrite `h2` using `[MvPowerSeries.subst_comp_subst_apply hun hu, MvPowerSeries.subst_X hu]`. Use `show _ = u (0, k)`.
+
+Use `h2 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Break down `q with ⟨i, j⟩` into its components or cases. Use `fin_cases i`. Simplify using `[pt, MvPowerSeries.subst_X hz, exZero, hu0]`.
+
+Use `show MvPowerSeries.subst (exZero Y) (MvPowerSeries.X ((0 : Fin 2), j)) = MvPowerSeries.subst u (MvPowerSeries.X ((0 : Fin 1), j))`. Rewrite using `[MvPowerSeries.subst_X hz, MvPowerSeries.subst_X hu]`. Simplify using `[exZero, u]`.
+-/
 theorem F_exZero (k : Fin dd) : MvPowerSeries.subst (exZero Y) (Y.B.G.F k) = e Y k := by
 
   set u : Fin 1 × Fin dd → MvPowerSeries (Fin dd) C := fun q => un1 (Y.ex q.2) with hu_def
@@ -125,6 +170,13 @@ theorem F_exZero (k : Fin dd) : MvPowerSeries.subst (exZero Y) (Y.B.G.F k) = e Y
 
 def J (m k : Fin dd) : MvPowerSeries (Fin dd) C := MvPowerSeries.subst (e Y) (MvPowerSeries.pderiv C k (l Y m))
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply, zero_add, Nat.cast_zero, Nat.cast_one, one_mul, mul_one]`. Express the relevant statement in the definitionally equal form `MvPowerSeries.coeff (Finsupp.mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) (Finsupp.single i 1)) (Y.lg m) = _`. Rewrite using `[Finsupp.mapDomain_single, Y.lg_lin m _ (by simp), MvPowerSeries.coeff_X]`. Distinguish the cases in `hmi : m = i`.
+
+Substitute `hmi` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hmi, if_neg]`. Introduce `h`. Use `Finsupp.single_left_injective (one_ne_zero) h` as an intermediate fact.
+
+Conclude with `hmi (congrArg Prod.snd this).symm`.
+-/
 theorem pderiv_l_zero (m i : Fin dd) :
     MvPowerSeries.constantCoeff (MvPowerSeries.pderiv C i (l Y m)) = if m = i then 1 else 0 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]
@@ -139,6 +191,19 @@ theorem pderiv_l_zero (m i : Fin dd) :
     have := Finsupp.single_left_injective (one_ne_zero) h
     exact hmi (congrArg Prod.snd this).symm
 
+/- English proof (translation)
+Establish `hF` using `fun w => (ordGE_one_iff (Y.B.G.F w)).2 (Y.B.G.const w)`. Establish `hX` using `fun (b : Fin 2) (w : Fin dd) => (ordGE_one_iff (MvPowerSeries.X (b, w) : PS C 2 dd)).2 (MvPowerSeries.constantCoeff_X _)`. Establish `hz : MvPowerSeries.HasSubst (exZero Y)` using `hs (fun q => by`. Unfold `exZero`. Use `split_ifs`.
+
+Conclude with `cc_e Y q.2`. Use the proof step `simp)`. Establish `hsF : MvPowerSeries.HasSubst (fun k => Y.B.G.F k)` using `hs (fun k => Y.B.G.const k)`. Establish `hsX1 : MvPowerSeries.HasSubst (fun k : Fin dd => (MvPowerSeries.X ((1 : Fin 2), k) : PS C 2 dd))` using `hs (fun k => MvPowerSeries.constantCoeff_X _)`. Establish `h` using `congrArg (MvPowerSeries.pderiv C ((1 : Fin 2), i)) (l_add Y m)`.
+
+Rewrite `h` using `[map_add, pderiv_subst hF, pderiv_subst (hX 0), pderiv_subst (hX 1)]`. Use `beta_reduce at h`. Establish `s0 : ∑ w : Fin dd, MvPowerSeries.pderiv C ((1 : Fin 2), i) (MvPowerSeries.X ((0 : Fin 2), w) : PS C 2 dd) * MvPowerSeries.subst (fun k : Fin dd => (MvPowerSeries.X ((0 : Fin 2), k) : PS C 2 dd)) (MvPowerSeries.pderiv C w (l Y m)) = 0` using `Finset.sum_eq_zero (fun w _ => by rw [MvPowerSeries.pderiv_X_of_ne (by simp), zero_mul])`. Establish `s1 : ∑ w : Fin dd, MvPowerSeries.pderiv C ((1 : Fin 2), i) (MvPowerSeries.X ((1 : Fin 2), w) : PS C 2 dd) * MvPowerSeries.subst (fun k : Fin dd => (MvPowerSeries.X ((1 : Fin 2), k) : PS C 2 dd)) (MvPowerSeries.pderiv C w (l Y m)) = MvPowerSeries.subst (fun k : Fin dd => (MvPowerS …`. Rewrite using `[Finset.sum_eq_single i (fun w _ hw => by`.
+
+Rewrite using `[MvPowerSeries.pderiv_X_of_ne (by simpa using hw), zero_mul]) (by simp),`. Use the proof step `MvPowerSeries.pderiv_X_self, one_mul]`. Rewrite `h` using `[s0, s1, zero_add]`. Establish `h2` using `congrArg (MvPowerSeries.subst (exZero Y)) h`. Rewrite `h2` using `[← MvPowerSeries.coe_substAlgHom hz, map_sum]`.
+
+Simplify using `only [map_mul, MvPowerSeries.coe_substAlgHom] at h2`. Rewrite `h2` using `[MvPowerSeries.subst_comp_subst_apply hsX1 hz]`. Simplify using `only [MvPowerSeries.subst_comp_subst_apply hsF hz, F_exZero, MvPowerSeries.subst_X hz] at h2`. Establish `hz1 : (fun s : Fin dd => exZero Y ((1 : Fin 2), s)) = fun _ => 0` using `funext fun s => by simp [exZero]`. Rewrite `h2` using `[hz1, subst_zeroPt, pderiv_l_zero]`.
+
+Use `h2.trans ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem eqA (m i : Fin dd) :
     ∑ k, MvPowerSeries.subst (exZero Y) (MvPowerSeries.pderiv C ((1 : Fin 2), i) (Y.B.G.F k)) * J Y m k =
       if m = i then 1 else 0 := by
@@ -180,6 +245,15 @@ theorem eqA (m i : Fin dd) :
   refine h2.trans ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hl` using `fun w => (ordGE_one_iff (l Y w)).2 (cc_l Y w)`. Establish `hsE : MvPowerSeries.HasSubst (e Y)` using `hs (cc_e Y)`. Establish `hsL : MvPowerSeries.HasSubst (l Y)` using `hs (cc_l Y)`. Establish `key : ∀ g, MvPowerSeries.subst (e Y) (MvPowerSeries.subst (l Y) g) = g` using `fun g => by`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hsL hsE]`.
+
+Repeatedly rewrite using `[lgex Y]`. Rewrite using `[MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Establish `h` using `congrArg (MvPowerSeries.subst (e Y)) (congrArg (MvPowerSeries.pderiv C k) (exlg Y n))`. Rewrite `h` using `[pderiv_subst hl k, ← MvPowerSeries.coe_substAlgHom hsE, map_sum]`.
+
+Simplify using `only [map_mul, MvPowerSeries.coe_substAlgHom, key] at h`. Use `h.trans ?_` and prove the remaining obligations. Distinguish the cases in `hnk : n = k`. Substitute `hnk` using the available equality. Rewrite using `[MvPowerSeries.pderiv_X_self, if_pos rfl, ← MvPowerSeries.coe_substAlgHom hsE, map_one]`.
+
+Rewrite using `[MvPowerSeries.pderiv_X_of_ne hnk, if_neg hnk, ← MvPowerSeries.coe_substAlgHom hsE, map_zero]`.
+-/
 theorem eqK (n k : Fin dd) :
     ∑ m, J Y m k * MvPowerSeries.pderiv C m (e Y n) = if n = k then 1 else 0 := by
 
@@ -202,6 +276,19 @@ theorem eqK (n k : Fin dd) :
 
 end VP
 
+/- English proof (translation)
+Introduce `i j`. Establish `hFK : Y.B.FK C = Y.B.G.F`. Use function extensionality and compare the values at `q`. Use `show MvPowerSeries.map (algebraMap C C) (Y.B.G.F q) = _`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hFK]`. Set `A : Matrix (Fin dd) (Fin dd) (MvPowerSeries (Fin dd) C)` to `fun a k => MvPowerSeries.subst (exZero Y) (MvPowerSeries.pderiv C ((1 : Fin 2), a) (Y.B.G.F k))`. Set `Jt : Matrix (Fin dd) (Fin dd) (MvPowerSeries (Fin dd) C)` to `fun k m => VP.J Y m k`. Set `D : Matrix (Fin dd) (Fin dd) (MvPowerSeries (Fin dd) C)` to `fun m n => MvPowerSeries.pderiv C m (VP.e Y n)`. Establish `hAJ : A * Jt = 1`.
+
+Use `Matrix.ext fun a m => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Use `(VP.eqA Y m a).trans ?_` and prove the remaining obligations. Distinguish the cases in `h : m = a`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Establish `hJD : Jt * D = 1`. Use `Matrix.ext fun k n => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Use `(VP.eqK Y n k).trans ?_` and prove the remaining obligations. Distinguish the cases in `h : n = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+
+Establish `hDA : D = A` using `calc D = (A * Jt) * D := by rw [hAJ, Matrix.one_mul] _ = A * (Jt * D) := Matrix.mul_assoc A Jt D _ = A := by rw [hJD, Matrix.mul_one]`. Conclude with `congrFun (congrFun hDA i) j`.
+-/
 theorem expODE {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
     (Y : FBChart C V O dd) : ExpODESt Y := by
   intro i j
@@ -236,11 +323,17 @@ theorem expODE {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing
     _ = A := by rw [hJD, Matrix.mul_one]
   exact congrFun (congrFun hDA i) j
 
+/- English proof (translation)
+The claim follows from `logCoord_of_ode p (expODE Y)`.
+-/
 theorem logCoord_holds {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ}
     [NeZero d] {Orb : Type} [Fintype Orb] {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
     (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) : LogCoordSt Y p :=
   logCoord_of_ode p (expODE Y)
 
+/- English proof (translation)
+The claim follows from `valuation_eq_pair_of_log_unit_germ Y p H Ls n (logCoord_holds Y p) h2 h3`.
+-/
 theorem valuation_eq_pair_of_unit_germ {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ}
     [NeZero d] {Orb : Type} [Fintype Orb] {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
     (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (H : ∀ o, (Y.raw (p o)).Hyps V) (Ls : LetSys C dd) (n : ℕ)

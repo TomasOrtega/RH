@@ -17,6 +17,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.A0
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Set `m : (E →+* ℂ) → ℕ` to `fun τ => if τ (H.rt : E) = H.rt0 then p else q`. Set `e` to `(Fintype.equivFin (Σ τ : E →+* ℂ, Fin (m τ))).symm`. Establish `h : ∀ τ, Nat.card {i // (e i).1 = τ} = m τ` using `fun τ => by`. Rewrite using `[Nat.card_congr ((e.subtypeEquiv (q := fun x => x.1 = τ) fun _ => Iff.rfl).trans (Equiv.sigmaSubtype τ))]`. Simplify using the standard rewrite rules.
+
+Conclude with `⟨_, fun i => (e i).1, fun τ => ⟨fun hτ => by rw [h]; simp [m, hτ], fun hτ => by rw [h]; simp [m, hτ]⟩⟩`.
+-/
 theorem exists_typeFn {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (p q : ℕ) :
     ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H p q ty := by
   classical
@@ -28,6 +33,9 @@ theorem exists_typeFn {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Ho
     simp
   exact ⟨_, fun i => (e i).1, fun τ => ⟨fun hτ => by rw [h]; simp [m, hτ], fun hτ => by rw [h]; simp [m, hτ]⟩⟩
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hT`. Take `⟨U, hU, b, hb, hf⟩` from `h p hp`. Conclude with `⟨b, (hf p hp hU).1, hb⟩`.
+-/
 theorem exists_basis_of_isVBOn {X : Scheme.{0}} {Ω : Type} [Field Ω] {V : Type} [AddCommGroup V] [Module Ω V]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {L : Lat ξ V} {T : Set (Cpt ξ)} {r : ℕ} {S : Submodule Ω V}
     (h : L.IsVBOn T r S) (hT : T.Nonempty) :
@@ -36,6 +44,13 @@ theorem exists_basis_of_isVBOn {X : Scheme.{0}} {Ω : Type} [Field Ω] {V : Type
   obtain ⟨U, hU, b, hb, hf⟩ := h p hp
   exact ⟨b, (hf p hp hU).1, hb⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y U Z τ hO hpq hτ hZ`. Set `σ : c.F →+* ℂ` to `c.F.val.toRingHom`. Take `⟨g, ty, hty⟩` from `exists_typeFn H D.p D.q`. Establish `hσρ : (σ.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ = H.rt0` using `rfl`. Take `⟨FU⟩` from `GlobalTheory.familyUnif_of_laws GlobalTheory.abelianSchemeLaws_all.1 E H D l Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) g ty hpq hσρ hty`.
+
+Establish `hστ : ∀ a : 𝓞 E, σ (tauIn c τ a) = τ (a : E)` using `fun a => rfl`. Take `⟨Φ, hΦ, -⟩` from `GlobalTheory.T.exists_unit_analytic_function E H D l Xo c τ τ σ g ty FU hty hτ hστ`. Take `⟨h1, h2, -, hne⟩` from `GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c O β Y U Z τ hO hτ`. Take `⟨b₁, hb₁, hs₁⟩` from `exists_basis_of_isVBOn h1 hne`. Take `⟨b₂, hb₂, hs₂⟩` from `exists_basis_of_isVBOn h2 hne`.
+
+Establish `hσrt : σ (tauIn c τ H.rt) = H.rt0` using `(hστ H.rt).trans hτ`. Take `⟨f, κ, W, -, -, hgen, -⟩` from `GlobalTheory.T.eigen_frames_analytic hres hgaga E H D l Xo c O β Y U Z τ σ Φ b₁ b₂ hO hpq hτ hσrt hZ hΦ hb₁ hs₁ hb₂ hs₂`. Take `⟨φ, hφ, hrep⟩` from `GlobalTheory.T.wedge_eigen_line_generator E H D l Xo c O β Y U Z τ _ _ hO hτ hgen`. Conclude with `⟨φ, hφ, FlatOnModel.of_gen hφ hgen hrep, fun φ' h1' h2' => GlobalTheory.T.frame_functions_flat_agree E H D l Xo c O β Y U Z τ φ φ' hO hτ hZ hφ (FlatOnModel.of_gen hφ hgen hrep) h1' h2'⟩`.
+-/
 theorem flat_zero_of_resolution_gaga (hres : Geo.ResK.ResKStatement) (hgaga : GagaSections) : FlatLineGenerator := by
   intro E _ _ _ H D l Xo c O _ β Y U Z τ hO hpq hτ hZ
   let σ : c.F →+* ℂ := c.F.val.toRingHom

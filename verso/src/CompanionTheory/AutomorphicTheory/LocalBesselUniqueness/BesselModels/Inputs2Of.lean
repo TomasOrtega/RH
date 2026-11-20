@@ -5,6 +5,9 @@ namespace CompanionTheory.Lime.BM
 
 def Inputs2 : Prop := Formalism.FourierDecayAlt.ThreeDimData.DecLow ∧ Formalism.FourierDecayAlt.ThreeDimData.DecInf ∧ PI.KFinSmooth ∧ UniqGap
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inputs.1, inputs.2.1, inputs.2.2.1, h⟩`.
+-/
 theorem inputs2_of (h : UniqGap) : Inputs2 := ⟨inputs.1, inputs.2.1, inputs.2.2.1, h⟩
 
 end CompanionTheory.Lime.BM

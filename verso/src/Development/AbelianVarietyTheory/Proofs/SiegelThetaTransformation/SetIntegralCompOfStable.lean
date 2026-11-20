@@ -13,6 +13,9 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 
 namespace GlobalTheory.SW.Repro
 
+/- English proof (translation)
+Establish `h` using `hu.restrict_preimage hS`. Rewrite `h` using `[show u ⁻¹' S = S from Set.ext hSu]`. Rewrite using `[← integral_map h.measurable.aemeasurable (by rwa [h.map_eq]), h.map_eq]`.
+-/
 theorem setIntegral_comp_of_stable {V : Type} [MeasurableSpace V] {ν : Measure V} {S : Set V}
     (hS : MeasurableSet S) {u : V → V} (hu : MeasurePreserving u ν ν) (hSu : ∀ x, u x ∈ S ↔ x ∈ S)
     {f : V → ℂ} (hf : AEStronglyMeasurable f (ν.restrict S)) :
@@ -21,6 +24,31 @@ theorem setIntegral_comp_of_stable {V : Type} [MeasurableSpace V] {ν : Measure 
   rw [show u ⁻¹' S = S from Set.ext hSu] at h
   rw [← integral_map h.measurable.aemeasurable (by rwa [h.map_eq]), h.map_eq]
 
+/- English proof (translation)
+Use `borelize K`. Establish `: SecondCountableTopology V`. Establish `: ProperSpace V` using `FiniteDimensional.proper ℂ V`. Use `infer_instance`. Set `μ : Measure K` to `(Measure.haarMeasure ⊤).inv`.
+
+Establish `hp : IsProbabilityMeasure (Measure.haarMeasure (⊤ : TopologicalSpace.PositiveCompacts K))` using `⟨by simpa using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts K))⟩`. Establish `hp' : IsProbabilityMeasure μ` using `Measure.isProbabilityMeasure_map measurable_inv.aemeasurable`. Establish `hχ0 : ∀ t, χ t ≠ 0` using `fun t h => by simpa [h] using hχ1 t`. Establish `hcont : ContinuousOn (Function.uncurry fun t x => (χ t)⁻¹ * F (A t x)) (Set.univ ×ˢ U)`. Use `ContinuousOn.mul ?_ ?_` and prove the remaining obligations.
+
+Conclude with `((hχ.inv₀ hχ0).comp continuous_fst).continuousOn`. Conclude with `hF.continuousOn.comp hA.continuousOn fun p hp => hAU _ _ hp.2`. Use `⟨fun x => ∫ t, (χ t)⁻¹ * F (A t x) ∂μ, ?_, fun s x => ?_, fun x y c h => ?_, fun x h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(differentiableOn_integral_of_holomorphic_of_continuousOn (μ := μ) hU hcont fun t => (hF.comp (hAd t).differentiableOn fun x hx => hAU t x hx).const_mul _).1`. Establish `h` using `integral_mul_right_eq_self (μ := μ) (fun t => (χ t)⁻¹ * F (A t x)) s`.
+
+Simplify using `only`. Rewrite using `[← h, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hmul, hχm]`.
+
+Use `hχ0 s` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using `only`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h, ← mul_assoc, inv_mul_cancel₀ (hχ0 _), one_mul]`. Simplify using the standard rewrite rules.
+
+Establish `hint : Integrable (Function.uncurry fun x t => k x * ((χ t)⁻¹ * F (A t x))) ((ν.restrict S).prod μ)`. Establish `h1 : Integrable (fun p : V × K => k p.1) ((ν.restrict S).prod μ)` using `hk.comp_fst μ`. Establish `e : (ν.restrict S).prod μ = (ν.prod μ).restrict (S ×ˢ Set.univ)`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hm : MeasurableSet (S ×ˢ (Set.univ : Set K))` using `hS.measurableSet.prod MeasurableSet.univ`.
+
+It suffices to establish `h3 : Integrable (fun p : V × K => k p.1 * ((χ p.2)⁻¹ * F (A p.2 p.1))) ((ν.restrict S).prod μ) from h3`. Use `h1.mul_bdd (c := C) ?_ ?_` and prove the remaining obligations. Rewrite using `[e]`. Use `ContinuousOn.aestronglyMeasurable ?_ hm` and prove the remaining obligations. Use `ContinuousOn.mul ?_ ?_` and prove the remaining obligations.
+
+Conclude with `((hχ.inv₀ hχ0).comp continuous_snd).continuousOn`. Conclude with `hF.continuousOn.comp (f := fun p : V × K => A p.2 p.1) (hA.comp continuous_swap).continuousOn fun p hp => hAU _ _ (hSU hp.1)`. Rewrite using `[e]`. Use `ae_restrict_of_forall_mem hm fun p hp => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_inv, hχ1, inv_one, one_mul]`.
+
+Conclude with `hC _ ((hAS _ _).2 hp.1)`. Establish `hkF : AEStronglyMeasurable (fun x => k x * F x) (ν.restrict S)` using `hk.aestronglyMeasurable.mul ((hF.continuousOn.mono hSU).aestronglyMeasurable hS.measurableSet)`. Simplify using `only [← integral_const_mul]`. Rewrite using `[integral_integral_swap hint]`. Establish `h2 : ∀ t, ∫ x in S, k x * ((χ t)⁻¹ * F (A t x)) ∂ν = ∫ x in S, k x * F x ∂ν`.
+
+Introduce `t`. Rewrite using `[← setIntegral_comp_of_stable hS.measurableSet (hν t) (hAS t) hkF]`. Use `setIntegral_congr_fun hS.measurableSet fun x hx => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← hkA t x hx]`.
+
+Use `hχ0 t` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using `[h2]`.
+-/
 theorem exists_mean {K V : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
     [CompactSpace K] [T2Space K] [SecondCountableTopology K]
     [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] [MeasurableSpace V]
@@ -104,6 +132,11 @@ theorem exists_mean {K V : Type} [Group K] [TopologicalSpace K] [IsTopologicalGr
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Establish `h1 : gram τ X.Gm (y * x⁻¹) = gram τ X.Gm 1`. Rewrite using `[FrameDegreeData.gram_mul, h, ← FrameDegreeData.gram_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hx)]`. Establish `h2 : ∀ u : Matrix (Fin r) (Fin r) ℂ, hermC τ X.Gm (u *ᵥ v) (u *ᵥ w) = v ⬝ᵥ gram τ X.Gm u *ᵥ star w`. Introduce `u`. Rewrite using `[FrameDegreeData.gram_eq, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`.
+
+Simplify using `[hermC, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`. Rewrite using `[h2, h1, ← h2, Matrix.one_mulVec, Matrix.one_mulVec]`.
+-/
 theorem unitary_of_gram_eq (τ : E →+* ℂ) {x y : Matrix (Fin r) (Fin r) ℂ} (hx : x.det ≠ 0)
     (h : gram τ X.Gm y = gram τ X.Gm x) (v w : Fin r → ℂ) :
     hermC τ X.Gm ((y * x⁻¹) *ᵥ v) ((y * x⁻¹) *ᵥ w) = hermC τ X.Gm v w := by
@@ -117,22 +150,36 @@ theorem unitary_of_gram_eq (τ : E →+* ℂ) {x y : Matrix (Fin r) (Fin r) ℂ}
     simp [hermC, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
   rw [h2, h1, ← h2, Matrix.one_mulVec, Matrix.one_mulVec]
 
+/- English proof (translation)
+Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => ?_` and prove the remaining obligations. Simplify using `only [Data.lmulC, mat, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem differentiable_lmulC (u : X.Ψ → Matrix (Fin r) (Fin r) ℂ) :
     Differentiable ℂ (X.lmulC u) := by
   refine differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => ?_
   simp only [Data.lmulC, mat, Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_assoc (u τ) (mat x τ) (mat b τ)).symm`.
+-/
 theorem lmulC_rmul (u : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (x b : Frame X.Ψ r) :
     X.lmulC u (rmul x b) = rmul (X.lmulC u x) b := by
   funext τ
   exact (Matrix.mul_assoc (u τ) (mat x τ) (mat b τ)).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Conclude with `Matrix.nonsing_inv_mul_cancel_right _ _ (isUnit_iff_ne_zero.2 (hx τ).1)`.
+-/
 theorem lmulC_div (x y : Frame X.Ψ r) (hx : x ∈ X.dom) :
     X.lmulC (fun τ => mat y τ * (mat x τ)⁻¹) x = y := by
   funext τ
   exact Matrix.nonsing_inv_mul_cancel_right _ _ (isUnit_iff_ne_zero.2 (hx τ).1)
 
+/- English proof (translation)
+Use `⟨∏ τ, ∏ i, |C| ^ (la τ i).natAbs, by positivity, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[bchar, norm_prod]`. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_prod]`. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations.
+
+Take `⟨n, h | h⟩` from `Int.eq_nat_or_neg (la τ i)`. Rewrite using `[h, zpow_natCast, norm_pow, Int.natAbs_natCast]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) ((hb τ i i).1.trans (le_abs_self C)) n`. Rewrite using `[h, _root_.zpow_neg, zpow_natCast, ← inv_pow, norm_pow, Int.natAbs_neg, Int.natAbs_natCast]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) ((hb τ i i).2.trans (le_abs_self C)) n`.
+-/
 theorem exists_bchar_bound (la : Wt X.Ψ r) (C : ℝ) : ∃ D : ℝ, 0 ≤ D ∧ ∀ b : Frame X.Ψ r,
     (∀ τ i j, ‖b τ i j‖ ≤ C ∧ ‖(b τ i i)⁻¹‖ ≤ C) → ‖bchar la b‖ ≤ D := by
   refine ⟨∏ τ, ∏ i, |C| ^ (la τ i).natAbs, by positivity, fun b hb => ?_⟩
@@ -146,6 +193,9 @@ theorem exists_bchar_bound (la : Wt X.Ψ r) (C : ℝ) : ∃ D : ℝ, 0 ≤ D ∧
   · rw [h, _root_.zpow_neg, zpow_natCast, ← inv_pow, norm_pow, Int.natAbs_neg, Int.natAbs_natCast]
     exact pow_le_pow_left₀ (norm_nonneg _) ((hb τ i i).2.trans (le_abs_self C)) n
 
+/- English proof (translation)
+Establish `h2 : ∀ τ i, ‖dmin X.Gm x τ i‖ = 1` using `fun τ i => by`. Rewrite using `[dmin, hx τ, Slab.lminor_sgnM]`. Apply the tactic sequence `rcases Slab.psgn_sq X.p0 i with h | h <;> simp [h]`. Simplify using `[Data.pnorm, h2]`.
+-/
 theorem pnorm_ortho (la : Wt X.Ψ r) (F : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r}
     (hx : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x τ) = sgnM X) : X.pnorm la F x = ‖F x‖ := by
   have h2 : ∀ τ i, ‖dmin X.Gm x τ i‖ = 1 := fun τ i => by
@@ -153,12 +203,40 @@ theorem pnorm_ortho (la : Wt X.Ψ r) (F : Frame X.Ψ r → ℂ) {x : Frame X.Ψ 
     rcases Slab.psgn_sq X.p0 i with h | h <;> simp [h]
   simp [Data.pnorm, h2]
 
+/- English proof (translation)
+Establish `_ : (volume : Measure (Fin r → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `_ : (volume : Measure (Fin r → Fin r → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+-/
 theorem isAddHaarMeasure_volume : (volume : Measure (Frame X.Ψ r)).IsAddHaarMeasure := by
   have _ : (volume : Measure (Fin r → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
   have _ : (volume : Measure (Fin r → Fin r → ℂ)).IsAddHaarMeasure :=
     Measure.pi.isAddHaarMeasure _
   exact Measure.pi.isAddHaarMeasure _
 
+/- English proof (translation)
+Establish `_` using `isAddHaarMeasure_volume X`. Set `T : (X.Ψ → Fin r → ℂ) → X.Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun t τ => mat x₀ τ * Matrix.diagonal (t τ) * (mat x₀ τ)⁻¹`. Establish `hdet : ∀ τ, IsUnit (mat x₀ τ).det` using `fun τ => isUnit_iff_ne_zero.2 (hx₀' τ).1`. Establish `hTu : ∀ t, (∀ τ i, ‖t τ i‖ = 1) → X.IsUnitaryC (T t)`. Introduce `t ht τ v w`.
+
+Use `unitary_of_gram_eq X τ.1 (hx₀' τ).1 ?_ v w` and prove the remaining obligations. Rewrite using `[FrameDegreeData.gram_mul, hx₀ τ, sgnM, Matrix.diagonal_transpose, Matrix.diagonal_map (map_zero _), Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Establish `h` using `Complex.mul_conj' (t τ a)`.
+
+Rewrite `h` using `[ht, Complex.ofReal_one]`. Take the linear combination `((sgn X.p0 a : ℝ) : ℂ) * h`. Establish `hT0 : ∀ t, X.lmulC (T t) x₀ = rmul x₀ fun τ => Matrix.diagonal (t τ)` using `fun t => lmulC_div X x₀ (rmul x₀ fun τ => Matrix.diagonal (t τ)) hx₀'`. Establish `hbor : ∀ t : X.Ψ → Fin r → ℂ, (∀ τ i, ‖t τ i‖ = 1) → (fun τ => Matrix.diagonal (t τ) : Frame X.Ψ r) ∈ Bor X.Ψ r`. Introduce `t ht τ`.
+
+Use `⟨?_, fun a c h => Matrix.diagonal_apply_ne _ h.ne'⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Matrix.diagonal (t τ)).det ≠ 0`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ h => by simpa [h] using ht τ i`. Establish `hchar : ∀ t : X.Ψ → Fin r → ℂ, bchar la (fun τ => Matrix.diagonal (t τ) : Frame X.Ψ r) = ∏ τ, ∏ i, t τ i ^ la τ i` using `fun t => by simp [bchar]`.
+
+Establish `hnorm : ∀ t : X.Ψ → Fin r → ℂ, (∀ τ i, ‖t τ i‖ = 1) → ‖∏ τ, ∏ i, t τ i ^ la τ i‖ = 1` using `fun t ht => by simp [norm_prod, ht]`. Establish `hk : ∀ t : X.Ψ → Fin r → ℂ, (∀ τ i, ‖t τ i‖ = 1) → ∀ x ∈ X.dom, κ x₀ (X.lmulC (T t) x) * ∏ τ, ∏ i, t τ i ^ la τ i = κ x₀ x`. Introduce `t ht x hx`. Rewrite using `[← hinv _ (hTu t ht) x₀ hx₀' x hx, hT0, (hhol _ (((hu _ (hTu t ht)).2.2 x).2 hx)).2 x₀ hx₀' _ (hbor t ht), hchar, mul_comm]`. Establish `hc1 : ∀ (t : X.Ψ → Fin r → Circle) τ i, ‖(t τ i : ℂ)‖ = 1` using `fun t τ i => Circle.norm_coe _`.
+
+Establish `a1 : Continuous (Function.uncurry fun t : X.Ψ → Fin r → Circle => X.lmulC (T fun τ i => t τ i))`. Use `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [Function.uncurry, Data.lmulC, T, Matrix.mul_apply (N := (mat x₀ τ)⁻¹), Matrix.mul_apply (N := mat _ τ), Matrix.mul_diagonal]`. Simplify using `only [mat, Matrix.of_apply]`. Use `fun_prop`.
+
+Establish `a2 : ∀ (s t : X.Ψ → Fin r → Circle) x, X.lmulC (T fun τ i => (t * s) τ i) x = X.lmulC (T fun τ i => t τ i) (X.lmulC (T fun τ i => s τ i) x)`. Introduce `s t x`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(mat x₀ τ * Matrix.diagonal (fun i => ((t τ i * s τ i : Circle) : ℂ)) * (mat x₀ τ)⁻¹ * mat x τ : Matrix (Fin r) (Fin r) ℂ) = mat x₀ τ * Matrix.diagonal (fun i => (t τ i : ℂ)) * (mat x₀ τ)⁻¹ * (mat x₀ τ * Matrix.diagonal (fun i => (s τ i : ℂ)) * (mat x₀ τ)⁻¹ * mat x τ)`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ (hdet τ), Circle.coe_mul, ← Matrix.diagonal_mul_diagonal]`.
+
+Establish `a3 : Continuous fun t : X.Ψ → Fin r → Circle => ∏ τ, ∏ i, (t τ i : ℂ) ^ la τ i`. Use `continuous_finset_prod _ fun τ _ => continuous_finset_prod _ fun i _ => ?_` and prove the remaining obligations. Conclude with `Continuous.zpow₀ (by fun_prop) _ fun t => Or.inl (Circle.coe_ne_zero _)`. Establish `a4 : ∀ s t : X.Ψ → Fin r → Circle, ∏ τ, ∏ i, ((t * s) τ i : ℂ) ^ la τ i = (∏ τ, ∏ i, (t τ i : ℂ) ^ la τ i) * ∏ τ, ∏ i, (s τ i : ℂ) ^ la τ i`. Introduce `s t`.
+
+Simplify using `only [Pi.mul_apply, Circle.coe_mul, mul_zpow, Finset.prod_mul_distrib]`. Take `⟨G, hG, hGT, hGB, hG0, hGI⟩` from `exists_mean (K := X.Ψ → Fin r → Circle) volume (FourierCoefficientDomain.isOpen_dom X) hS hSU (fun t => X.lmulC (T fun τ i => t τ i)) a1 (fun t => differentiable_lmulC X _) a2 (fun t x hx => ((hu _ (hTu _ (hc1 t))).2.2 x).2 hx) (fun t => (hu _ (hTu _ (hc1 t))).2.1) (fun t => (hu …`. Establish `hG0' : G x₀ = F x₀` using `hG0 x₀ fun t => by`. Rewrite using `[hT0, hB x₀ hx₀' _ (hbor _ (hc1 t)), hchar]`. Establish `key` using `lowest_weight_function_mul_eq X la x₀ hx₀ hx₀' G (fun x => κ x x₀) hG (hhol x₀ hx₀').1 (fun x hx b hb => hGB _ _ _ fun t => by`.
+
+Rewrite using `[lmulC_rmul, hB _ (((hu _ (hTu _ (hc1 t))).2.2 x).2 hx) b hb])`. Use the proof step `(hhol x₀ hx₀').2`. Use the proof step `(fun t ht x hx => hGT (fun τ i => ⟨t τ i, mem_sphere_zero_iff_norm.2 (ht τ i)⟩) x)`. Use the proof step `(fun t ht x hx => by`. Establish `h` using `congrArg conj (hk t ht x hx)`.
+
+Rewrite `h` using `[map_mul, ← hsym x₀ hx₀' x hx, ← hsym x₀ hx₀' _ (((hu _ (hTu t ht)).2.2 x).2 hx)]`. Establish `h1` using `Complex.mul_conj' (∏ τ, ∏ i, t τ i ^ la τ i)`. Rewrite `h1` using `[hnorm t ht, Complex.ofReal_one]`. Rewrite using `[← h]`. Express the relevant statement in the definitionally equal form `κ (X.lmulC (T t) x) x₀ = _`.
+
+Take the linear combination `(-κ (X.lmulC (T t) x) x₀) * h1)`. Rewrite using `[← hGI, ← integral_mul_const, ← integral_mul_const]`. Use `setIntegral_congr_fun hS.measurableSet fun x hx => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[mul_assoc, key x (hSU hx), hG0', mul_assoc]`.
+-/
 theorem integral_mul_ortho (la : Wt X.Ψ r) {x₀ : Frame X.Ψ r}
     (hx₀ : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x₀ τ) = sgnM X) (hx₀' : x₀ ∈ X.dom)
     {S : Set (Frame X.Ψ r)} (hS : IsOpen S) (hSU : S ⊆ X.dom)
@@ -265,6 +343,33 @@ namespace GlobalTheory.SW
 
 open Repro in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g q0 hr idx n c c' m P hn hP hrn hP0`. Establish `_` using `isAddHaarMeasure_volume X`. Take `⟨δ₀, hδ₀, h₀⟩` from `thin_slab E r X`. Take `⟨δ₁, hδ₁, h₁⟩` from `GlobalTheory.T.gaussianKernel_integrableOn_thin_slab E r X g q0 hr idx n c c' m P hn hP hrn`. Take `⟨hinv, hsym, hpos⟩` from `kern_invariant_symm_pos E r X g q0 hr idx n c c' m P hn hP`.
+
+Establish `hhol` using `GlobalTheory.T.realPlaceKernel_holomorphic_weight_rowHighest E r X g q0 hr idx n c c' m P hn hP`. Use `⟨min δ₀ δ₁, lt_min hδ₀ hδ₁, fun δ hδ hle => ?_⟩` and prove the remaining obligations. Take `⟨hS, hSU, hort, ⟨x₀, hx₀⟩, hu, ⟨C₀, hC₀⟩, hdec⟩` from `h₀ δ hδ (hle.trans (min_le_left _ _))`. Establish `hx₀' : x₀ ∈ X.dom` using `hSU (hort x₀ hx₀)`. Take `⟨hint, C₁, hC₁⟩` from `h₁ δ hδ (hle.trans (min_le_right _ _)) x₀ hx₀'`.
+
+Use `set κ := kern X hr idx P with hκ`. Establish `hcont : ∀ x₁ ∈ X.dom, ContinuousOn (κ x₁) (slab X δ)` using `fun x₁ hx₁ => (Complex.continuous_conj.comp_continuousOn ((hhol x₁ hx₁).1.continuousOn.mono hSU)).congr fun x hx => hsym x (hSU hx) x₁ hx₁`. Establish `hre : κ x₀ x₀ = ((κ x₀ x₀).re : ℂ)` using `(Complex.conj_eq_iff_re.1 (hsym x₀ hx₀' x₀ hx₀').symm).symm`. Establish `hk0 : 0 < (κ x₀ x₀).re` using `hpos hP0 x₀ hx₀`. Establish `hI : ∫ x in slab X δ, κ x₀ x * κ x x₀ = ((∫ x in slab X δ, ‖κ x₀ x‖ ^ 2 : ℝ) : ℂ)`.
+
+Rewrite using `[← integral_complex_ofReal]`. Use `setIntegral_congr_fun hS.measurableSet fun x hx => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hsym x₀ hx₀' x (hSU hx), Complex.mul_conj']`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hIpos : 0 < ∫ x in slab X δ, ‖κ x₀ x‖ ^ 2`. Establish `hi : IntegrableOn (fun x => ‖κ x₀ x‖ ^ 2) (slab X δ) volume`. Simplify using `only [sq]`. Use `Integrable.mul_bdd (c := C₁) hint.norm hint.norm.aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Conclude with `ae_restrict_of_forall_mem hS.measurableSet fun x hx => by`. Rewrite using `[norm_norm]`. Conclude with `hC₁ x hx`. Rewrite using `[setIntegral_pos_iff_support_of_nonneg_ae (Filter.Eventually.of_forall fun x => sq_nonneg _) hi]`. Establish `ho : IsOpen (slab X δ ∩ κ x₀ ⁻¹' {0}ᶜ)` using `(hcont x₀ hx₀').isOpen_inter_preimage hS isOpen_compl_singleton`.
+
+Use `(ho.measure_pos volume ⟨x₀, hort x₀ hx₀, fun h => ?_⟩).trans_le (measure_mono fun x hx => ⟨?_, hx.1⟩)` and prove the remaining obligations. Rewrite `hk0` using `[Set.mem_singleton_iff.1 h]`. Simplify using `at hk0`. Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.2 hx.2)`. Use `⟨(∫ x in slab X δ, ‖κ x₀ x‖ ^ 2) / (κ x₀ x₀).re, div_pos hIpos hk0, fun F hF hB ⟨C, hC⟩ x₁ hx₁ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨D, hD0, hD⟩` from `exists_bchar_bound X (wtOf X hr c c' n) C₀`. Establish `hFb : ∀ x ∈ slab X δ, ‖F x‖ ≤ D * C`. Introduce `x hx`. Take `⟨x', hx', b, hb, rfl, hbC⟩` from `hC₀ x hx`. Establish `h` using `hC x' (hSU (hort x' hx'))`.
+
+Rewrite `h` using `[pnorm_ortho X _ _ hx']`. Rewrite using `[hB x' (hSU (hort x' hx')) b hb, norm_mul]`. Conclude with `mul_le_mul (hD b hbC) h (norm_nonneg _) hD0`. Take `⟨x', hx', b, hb, rfl⟩` from `hdec x₁ hx₁`. Establish `hx'' : x' ∈ X.dom` using `hSU (hort x' hx')`.
+
+Set `u : X.Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun τ => mat x' τ * (mat x₀ τ)⁻¹`. Establish `huu : X.IsUnitaryC u` using `fun τ v w => unitary_of_gram_eq X τ.1 (hx₀' τ).1 ((hx' τ).trans (hx₀ τ).symm) v w`. Establish `hux : X.lmulC u x₀ = x'` using `lmulC_div X x₀ x' hx₀'`. Take `⟨hu1, hu2, hu3⟩` from `hu u huu`. Establish `key` using `integral_mul_ortho X (wtOf X hr c c' n) hx₀ hx₀' hS hSU hu κ hinv hsym hhol hint (fun x => F (X.lmulC u x)) (hF.comp (differentiable_lmulC X u).differentiableOn fun x hx => (hu3 x).2 hx) (fun x hx b hb => by rw [lmulC_rmul, hB _ ((hu3 x).2 hx) b hb]) (D * C) (fun x hx => hFb _ (( …`.
+
+Establish `h2 : ∫ x in slab X δ, κ x₀ x * F (X.lmulC u x) = ∫ x in slab X δ, κ x' x * F x`. Rewrite using `[← setIntegral_comp_of_stable hS.measurableSet hu1 hu2 (f := fun x => κ x' x * F x) (((hcont x' hx'').mul (hF.continuousOn.mono hSU)).aestronglyMeasurable hS.measurableSet)]`. Use `setIntegral_congr_fun hS.measurableSet fun x hx => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← hinv u huu x₀ hx₀' x (hSU hx), hux]`.
+
+Establish `h3 : ∫ x in slab X δ, κ (rmul x' b) x * F x = bchar (wtOf X hr c c' n) b * ∫ x in slab X δ, κ x' x * F x`. Rewrite using `[← integral_const_mul]`. Use `setIntegral_congr_fun hS.measurableSet fun x hx => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[(hhol x (hSU hx)).2 x' hx'' b hb, mul_assoc]`.
+
+Rewrite `key` using `[h2, hI, hux, hre]`. Establish `hk1 : ((κ x₀ x₀).re : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hk0.ne'`. Rewrite using `[h3, hB x' hx'' b hb, Complex.ofReal_div, (eq_div_iff hk1).2 key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kern_reproducing : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ) (c : X.Ψ → Fin q0 → ℕ) (c' : X.Ψ → Fin X.p0 → ℕ) (m : ℕ) (P : Fin m → Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)), Even n → (∀ j, P j ∈ Harm.rowHighest ℂ c c') → 2 * r ≤ n → (∃ j, P j ≠ 0) → ∃ δ₁ : ℝ, 0 < δ₁ ∧ ∀ δ : ℝ, 0 < δ → δ ≤ δ₁ → ∃ a : ℝ, 0 < a ∧ ∀ F : Frame X.Ψ r → ℂ, DifferentiableOn ℂ F X.dom → (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, F (rmul x b) = bchar (wtOf X hr c c' n) b * F x) → (∃ C : ℝ, ∀ x ∈ X.dom, X.pnorm (wtOf X hr c c' n) F x ≤ C) → ∀ x₁ ∈ X.dom, ∫ x₂ in slab X δ, kern X hr idx P x₁ x₂ * F x₂ = a * F x₁ := by
   intro E _ _ _ r X g q0 hr idx n c c' m P hn hP hrn hP0
   have _ := isAddHaarMeasure_volume X

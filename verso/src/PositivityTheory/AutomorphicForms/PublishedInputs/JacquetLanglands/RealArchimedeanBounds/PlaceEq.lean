@@ -10,10 +10,22 @@ namespace UpperTheory.Esk.BoxMapsToLemmas
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Rewrite using `[← Real.norm_eq_abs]`. Conclude with `(InfinitePlace.norm_embedding_of_isReal _ t).symm`.
+-/
 lemma place_eq (v : InfinitePlace F) (t : F) : v t = |sg v t| := by
   rw [← Real.norm_eq_abs]
   exact (InfinitePlace.norm_embedding_of_isReal _ t).symm
 
+/- English proof (translation)
+Introduce `t ht t' ht' h`. Assume the negation of the conclusion as `hne`. Set `a : 𝓞 F` to `⟨t - t', ht.1.sub ht'.1⟩`. Establish `ha : a ≠ 0`. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Establish `h1 : ((a : 𝓞 F) : F) = 0` using `by rw [h0]; rfl`. Conclude with `sub_eq_zero.1 h1`. Establish `hlt : ∀ v : InfinitePlace F, v (a : F) < 1`. Introduce `v`.
+
+Establish `hv` using `congrFun h v`. Simplify using `only at hv`. Rewrite using `[place_eq]`. Use `show |sg v (t - t')| < 1`. Rewrite using `[map_sub]`.
+
+Conclude with `Int.abs_sub_lt_one_of_floor_eq_floor hv`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Conclude with `absurd (InfinitePlace.one_le_of_lt_one (w := w) ha fun z _ => hlt z) (not_le.2 (hlt w))`.
+-/
 lemma injOn (R : ℝ) : Set.InjOn (fun t : F => fun v : InfinitePlace F => ⌊sg v t⌋)
     {t : F | IsIntegral ℤ t ∧ ∀ v : InfinitePlace F, v t ≤ R} := by
   intro t ht t' ht' h
@@ -36,6 +48,13 @@ lemma injOn (R : ℝ) : Set.InjOn (fun t : F => fun v : InfinitePlace F => ⌊sg
   exact absurd (InfinitePlace.one_le_of_lt_one (w := w) ha fun z _ => hlt z) (not_le.2 (hlt w))
 
 open Classical in
+/- English proof (translation)
+Introduce `t ht`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc]`. Introduce `v`. Establish `h1` using `ht.2 v`. Rewrite `h1` using `[place_eq, abs_le]`.
+
+Establish `hc : R ≤ (⌈R⌉₊ : ℝ)` using `Nat.le_ceil R`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Int.le_floor]`. Use `push_cast`. Combine the linear relations using `[h1.1]`.
+
+Establish `h2 : ((⌊sg v t⌋ : ℤ) : ℝ) ≤ ((⌈R⌉₊ : ℤ) : ℝ)`. Use `push_cast`. Combine the linear relations using `[Int.floor_le (sg v t), h1.2]`. Conclude with `h2` after adjusting the coercions.
+-/
 lemma mapsTo (R : ℝ) : Set.MapsTo (fun t : F => fun v : InfinitePlace F => ⌊sg v t⌋)
     {t : F | IsIntegral ℤ t ∧ ∀ v : InfinitePlace F, v t ≤ R}
     ((Fintype.piFinset fun _ : InfinitePlace F => Finset.Icc (-(⌈R⌉₊ : ℤ)) ⌈R⌉₊ : Finset _) : Set _) := by
@@ -57,6 +76,17 @@ lemma mapsTo (R : ℝ) : Set.MapsTo (fun t : F => fun v : InfinitePlace F => ⌊
 end UpperTheory.Esk.BoxMapsToLemmas
 
 open Classical in
+/- English proof (translation)
+Introduce `F _ _ _`. Use `⟨5 ^ Fintype.card (InfinitePlace F), fun R hR => ?_⟩` and prove the remaining obligations. Use `set d := Fintype.card (InfinitePlace F)`. Use `set T := (Fintype.piFinset fun _ : InfinitePlace F => Finset.Icc (-(⌈R⌉₊ : ℤ)) ⌈R⌉₊)`. Use `⟨Set.Finite.of_injOn (BoxMapsToLemmas.mapsTo R) (BoxMapsToLemmas.injOn R) T.finite_toSet, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `Set.ncard_le_ncard_of_injOn _ (BoxMapsToLemmas.mapsTo R) (BoxMapsToLemmas.injOn R) T.finite_toSet`. Rewrite `h1` using `[Set.ncard_coe_finset]`. Establish `h2 : T.card = (2 * ⌈R⌉₊ + 1) ^ d`. Simplify using `only [T, Fintype.card_piFinset, Int.card_Icc, Finset.prod_const, Finset.card_univ]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h3 : ((2 * ⌈R⌉₊ + 1 : ℕ) : ℝ) ≤ 5 * max 1 R`. Use `Nat.ceil_lt_add_one hR` as an intermediate fact. Establish `hm1 : (1 : ℝ) ≤ max 1 R` using `le_max_left _ _`. Establish `hmR : R ≤ max 1 R` using `le_max_right _ _`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (max 1 R) ^ d ≤ 1 + R ^ d`. Break down `le_total R 1 with h | h` into its components or cases. Rewrite using `[max_eq_left h, one_pow]`.
+
+Combine the linear relations using `[pow_nonneg hR d]`. Rewrite using `[max_eq_right h]`. Combine the linear relations using `[zero_le_one' ℝ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Esk.dBox : UpperTheory.Esk.DBox := by
   intro F _ _ _
   refine ⟨5 ^ Fintype.card (InfinitePlace F), fun R hR => ?_⟩

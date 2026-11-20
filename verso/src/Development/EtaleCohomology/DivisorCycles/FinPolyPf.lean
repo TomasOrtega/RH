@@ -6,6 +6,11 @@ namespace LateralTheory.DivDb.FinPolyPf
 variable {K : Type} [Field K] [IsAlgClosed K] {n : ℕ}
 
 omit [IsAlgClosed K] in
+/- English proof (translation)
+Introduce `a ha`. Rewrite `ha` using `[Polynomial.mem_roots (Matrix.charpoly_monic x).ne_zero]`. Rewrite using `[Polynomial.mem_roots hP]`. Consider the cases of `n with`. Consider the case `zero => simp [Matrix.charpoly, Matrix.det_fin_zero] at ha`.
+
+Consider the case `succ m`. Establish `hs : a ∈ spectrum K x` using `Matrix.mem_spectrum_of_isRoot_charpoly ha`. Establish `h2` using `spectrum.subset_polynomial_aeval x P ⟨a, hs, rfl⟩`. Rewrite `h2` using `[hx, spectrum.zero_eq]`. Simplify using `using h2`.
+-/
 theorem root_sub (x : Matrix (Fin n) (Fin n) K) (P : K[X]) (hP : P ≠ 0) (hx : aeval x P = 0) :
     x.charpoly.roots ⊆ P.roots := by
   intro a ha
@@ -19,17 +24,33 @@ theorem root_sub (x : Matrix (Fin n) (Fin n) K) (P : K[X]) (hP : P ≠ 0) (hx : 
     rw [hx, spectrum.zero_eq] at h2
     simpa using h2
 
+/- English proof (translation)
+The claim follows from `IsAlgClosed.card_roots_eq_natDegree`.
+-/
 theorem card_roots_eq (P : K[X]) : Multiset.card P.roots = P.natDegree :=
   IsAlgClosed.card_roots_eq_natDegree
 
+/- English proof (translation)
+Rewrite using `[card_roots_eq, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`.
+-/
 theorem cp_card (x : Matrix (Fin n) (Fin n) K) : Multiset.card x.charpoly.roots = n := by
   rw [card_roots_eq, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
 
+/- English proof (translation)
+Rewrite using `[← prod_multiset_X_sub_C_of_monic_of_roots_card_eq (Matrix.charpoly_monic x) (card_roots_eq _), ← prod_multiset_X_sub_C_of_monic_of_roots_card_eq hm (card_roots_eq _), h]`.
+-/
 theorem eq_of_roots (x : Matrix (Fin n) (Fin n) K) (P : K[X]) (hm : P.Monic)
     (h : x.charpoly.roots = P.roots) : x.charpoly = P := by
   rw [← prod_multiset_X_sub_C_of_monic_of_roots_card_eq (Matrix.charpoly_monic x) (card_roots_eq _),
     ← prod_multiset_X_sub_C_of_monic_of_roots_card_eq hm (card_roots_eq _), h]
 
+/- English proof (translation)
+Introduce `K _ _ n x P hm hd hx`. Establish `hsub` using `root_sub x P hm.ne_zero hx`. Establish `hPc : Multiset.card P.roots = n` using `by rw [card_roots_eq, hd]`. Use `⟨fun hsep => ?_, fun hpg hdet => ?_⟩` and prove the remaining obligations. Apply `eq_of_roots x P hm` to reduce the goal to its premises.
+
+Establish `hle : x.charpoly.roots ≤ P.roots` using `(Multiset.le_iff_subset (Polynomial.nodup_roots hsep)).2 hsub`. Conclude with `Multiset.eq_of_le_of_card_le hle (by rw [hPc, cp_card])`. Apply `eq_of_roots x P hm` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`. Use `hpg.2 _ (fun a ha => hsub ha) (cp_card x) hne ?_` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.det_eq_prod_roots_charpoly, hdet, (IsAlgClosed.splits P).coeff_zero_eq_prod_roots_of_monic hm, hd, ← mul_assoc, ← pow_add, Even.neg_one_pow ⟨n, rfl⟩, one_mul]`.
+-/
 theorem FinPoly_of : FinPoly := by
   intro K _ _ n x P hm hd hx
   have hsub := root_sub x P hm.ne_zero hx

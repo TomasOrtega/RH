@@ -38,6 +38,15 @@ namespace GlobalTheory.SeeSawCompare
 
 variable {D : D7} {u : D.what₂.Word}
 
+/- English proof (translation)
+Establish `hs' : ∀ τ, Formalism.UG.HasSignature (gramAt D V τ) V.rank 0` using `fun τ => by`. Use `hs (tauE D τ)` as an intermediate fact. Rewrite `this` using `[hp (tauE D τ)]`. Conclude with `this`. Establish `hJ : ∀ τ, Formalism.REAL.Jm (M.ε τ) = 1` using `fun τ => by`.
+
+Use `signs_pos_of_frame_gram_posdef (M.ε τ) (M.fr τ) _ (M.fr_gram τ) (hs' τ)` as an intermediate fact. Unfold `Formalism.REAL.Jm`. Simplify using `[this]`. Establish `hd` using `fun τ => (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hc : ∀ τ, x.s τ = 1` using `fun τ => by rw [h1, cart, hJ, Matrix.mul_one, Matrix.nonsing_inv_mul _ (hd τ)]`.
+
+Use `⟨hs, Inh.coCpt_of_isDefinite hs fun τ => Or.inl (hp τ), fun τ => ?_, fun τ => Or.inl (hc τ), fun τ => ?_, h3⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `⟨by simp, by simp, by simpa using Formalism.IndefR.Fin.Lifts.posDef_of_sig _ (hs' τ)⟩`. Use `⟨V.rank, fun _ => 1, fun a => Or.inl ⟨rfl, a.2⟩, ?_, by simp [hc]⟩` and prove the remaining obligations. Rewrite using `[h2, onb, ← M.fr_gram τ, hJ, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ (hd τ), Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_nonsing_inv _ (hd τ)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem defSp_is {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) {S : D.what₂.Tau → SPar} (M : DSModel V S) (x : DefSp V)
     (h1 : x.s = cart M) (h2 : x.B = onb M) (h3 : IsSelfDualC V x.L) : x.Is := by
   have hs' : ∀ τ, Formalism.UG.HasSignature (gramAt D V τ) V.rank 0 := fun τ => by
@@ -180,6 +189,9 @@ structure Kept : Prop where
 
 variable {W}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.rank, h.sig, h.fin, h.opn, (injective_iff_map_eq_zero _).2 fun φ => h.inj φ trivial, h.cont⟩`.
+-/
 theorem ColIsOn.is {X : HSp D} {j : ℕ} {A : ColOn c u X j} (h : ColIsOn ⊤ A) : A.Is :=
   ⟨h.rank, h.sig, h.fin, h.opn, (injective_iff_map_eq_zero _).2 fun φ => h.inj φ trivial, h.cont⟩
 
@@ -187,11 +199,17 @@ section Step
 
 variable {X X' : HSp D} {j : ℕ} {A : ColOn c u X j} {A' : ColOn c u X' (j + 1)} {k : ColStep A A'} {vol : Vol X}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.weil, h.theta, fun φ hφ => (h.maps φ ⟨hφ, trivial⟩).1, h.it_ne, fun φ φ' => h.sum φ φ' trivial⟩`.
+-/
 theorem StepIsOn.is (h : StepIsOn ⊤ k vol) : k.Is vol :=
   ⟨h.weil, h.theta, fun φ hφ => (h.maps φ ⟨hφ, trivial⟩).1, h.it_ne, fun φ φ' => h.sum φ φ' trivial⟩
 
 end Step
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.row, h.col.is, h.line, h.base, h.unimod⟩`.
+-/
 theorem NodeIsOn.is {ρ j : ℕ} {N : Node c u ρ j} (h : NodeIsOn ⊤ N) : N.Is := ⟨h.row, h.col.is, h.line, h.base, h.unimod⟩
 
 end GlobalTheory.SeeSawCompare

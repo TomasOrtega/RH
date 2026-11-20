@@ -10,6 +10,9 @@ local notation "gPt" p:max => spMap (ValuationSubring.subtype (OO p))
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : interior (frontier D) = ∅` using `interior_frontier_preimage_of_isConstructible (f := id) continuous_id hD`. Establish `h2 : interior D = ∅` using `interior_eq_empty_iff_dense_compl.2 (hSg.mono h.subset_compl_left)`. Rewrite `h1` using `[frontier, h2, Set.diff_empty]`. Then use the resulting hypothesis.
+-/
 theorem interior_closure_eq_empty_of_isConstructible_of_disjoint_dense
     {Y : Type*} [TopologicalSpace Y] {D Sg : Set Y} (hD : Topology.IsConstructible D)
     (hSg : Dense Sg) (h : Disjoint D Sg) : interior (closure D) = ∅ := by
@@ -19,6 +22,11 @@ theorem interior_closure_eq_empty_of_isConstructible_of_disjoint_dense
     interior_eq_empty_iff_dense_compl.2 (hSg.mono h.subset_compl_left)
   rwa [frontier, h2, Set.diff_empty] at h1
 
+/- English proof (translation)
+Introduce `X S _ _ f _ _ C Sg hC hSg h`. Establish `hD : Topology.IsConstructible (f '' C)` using `f.isConstructible_image hC`. Establish `h1` using `interior_closure_eq_empty_of_isConstructible_of_disjoint_dense hD hSg h`. Take `⟨x, hx⟩ : ((closure (f '' C))ᶜ).Nonempty` from `(interior_eq_empty_iff_dense_compl.1 h1).nonempty`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVU⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open hx isClosed_closure.isOpen_compl`.
+
+Use `⟨V, ⟨x, hxV⟩, hV, ?_⟩` and prove the remaining obligations. Conclude with `Set.disjoint_left.2 fun y hy hyV => hVU hyV (subset_closure hy)`.
+-/
 theorem exists_isAffineOpen_disjoint_image_of_isConstructible_of_disjoint_dense :
     ∀ (X S : Scheme.{0}) [IsIntegral S] [IsNoetherian S] (f : X ⟶ S) [LocallyOfFiniteType f] [QuasiCompact f] (C : Set X) (Sg : Set S), Topology.IsConstructible C → Dense Sg → Disjoint (f '' C) Sg → ∃ V : S.Opens, (V : Set S).Nonempty ∧ IsAffineOpen V ∧ Disjoint (f '' C) V := by
   intro X S _ _ f _ _ C Sg hC hSg h

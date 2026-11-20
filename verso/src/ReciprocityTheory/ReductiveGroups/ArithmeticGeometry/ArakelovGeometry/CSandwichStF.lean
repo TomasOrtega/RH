@@ -9,6 +9,19 @@ open scoped ComplexOrder Matrix
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {D : ℕ}
 
+/- English proof (translation)
+Set `P : Fin (projDeg x e) → Ω` to `fun l => ∑ i, (u (finProdFinEquiv (l, i)) : Ω) * ∏ t, (x ∘ e) t ^ adtEnum D N i t`. Establish `hcol : ∀ j, ∑ p, (u p : Ω) * ((M j p : Ω) * aeval x (b j)) = ((M *ᵥ u) j : Ω) * aeval x (b j)`. Introduce `j`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `push_cast`.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Establish `hs : ∑ p, (u p : Ω) * aeval x (prodForm e (adtEnum D N (finProdFinEquiv.symm p).2) (H (finProdFinEquiv.symm p).1)) = 0`. Repeatedly rewrite using `[← hM, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [hcol, hu]`. Simplify using the standard rewrite rules. Establish `h0 : ∑ l, P l * aeval x (H l) = 0`. Rewrite `hs` using `[← Equiv.sum_comp finProdFinEquiv]`. Simplify using `only [Equiv.symm_apply_apply, Fintype.sum_prod_type, aeval_prodForm] at hs`.
+
+Rewrite using `[← hs]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hP : ∀ l, P l ∈ sec ℤ (x ∘ e) N`.
+
+Introduce `l`. Use `⟨∑ i, (u (finProdFinEquiv (l, i))) • monoZ (adtEnum D N i), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ((MvPolynomial.mem_homogeneousSubmodule _ _).2 (monoZ_isHomogeneous (adtEnum_sum D N i)))`. Simplify using `[P, map_sum, aeval_monoZ, zsmul_eq_mul]`. Establish `hPz` using `alpha_injective x e hfr.isRatProjFrame (fun l => aeval x (H l)) hli P hP h0`.
+
+Use function extensionality and compare the values at `p`. Take `⟨⟨l, i⟩, rfl⟩` from `finProdFinEquiv.surjective p`. Establish `h1` using `eq_zero_of_sum_mono hfr.free (fun i => u (finProdFinEquiv (l, i))) (congrFun hPz l)`. Simplify using `using congrFun h1 i`.
+-/
 theorem alphaMat_ker {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) {N r : ℕ}
     {b : Fin r → MvPolynomial (Ix κ) ℚ} (H : Fin (projDeg x e) → MvPolynomial (Ix κ) ℤ)
     (hli : LinearIndependent (fnField (x ∘ e)) fun l => aeval x (H l))

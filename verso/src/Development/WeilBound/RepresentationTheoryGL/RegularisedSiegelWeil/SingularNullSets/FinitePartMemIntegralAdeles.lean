@@ -18,11 +18,17 @@ namespace PositivityTheory.Rg.Rsw.L.LFixW.U2
 
 section Gen
 
+/- English proof (translation)
+Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def, mul_left_comm, ← map_mul, mul_inv_cancel₀ hc, map_one, mul_one]`.
+-/
 theorem tmul_den {F E A : Type} [Field F] [Field E] [Algebra F E] [CommRing A] [Algebra F A] (x : A) {c : F}
     (hc : c ≠ 0) (b : E) : (x * algebraMap F A c⁻¹) ⊗ₜ[F] (c • b) = x ⊗ₜ[F] b := by
   rw [TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def, mul_left_comm, ← map_mul,
     mul_inv_cancel₀ hc, map_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+-/
 theorem map_smul_basis {F E R R' ι : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] [CommRing R']
     [Algebra F R'] (φ : R →ₐ[F] R') (b : Module.Basis ι F E) (r : R) (k : ι) :
     Algebra.TensorProduct.map φ (AlgHom.id F E) (r • Algebra.TensorProduct.basis R b k) = φ r ⊗ₜ[F] b k := by
@@ -35,10 +41,18 @@ variable {D : D7}
 
 abbrev bA (D : D7) := Algebra.TensorProduct.basis (AF D.host.F) (bE D.host.F D.host.E)
 
+/- English proof (translation)
+The claim follows from `LIdemEx.repr_map' (evFin D.host.F v) (bE D.host.F D.host.E) z k`.
+-/
 theorem crd_cv (v : Pl D) (z : AE D) (k : Fin (Module.finrank D.host.F D.host.E)) :
     (bV (E := D.host.E) v).repr (cv D v z) k = evFin D.host.F v ((bA D).repr z k) :=
   LIdemEx.repr_map' (evFin D.host.F v) (bE D.host.F D.host.E) z k
 
+/- English proof (translation)
+Use `intLoc_induction (p := fun t => finPart D (plc D.host.E v t) ∈ intAE D) (fun a ha x => ?_) (by simp) (fun y z hy hz => by rw [LinearMap.map_add, RingHom.map_add]; exact add_mem hy hz) (fun y hy => by rw [LinearMap.map_neg, RingHom.map_neg]; exact neg_mem hy) ht` and prove the remaining obligations. Rewrite using `[plc_tmul]`. Use `AddSubgroup.subset_closure ⟨(iV v a).2, fun w => ?_, x, rfl⟩` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h show (iV w a).2 w ∈ _` using the available equality.
+
+Rewrite using `[show (iV w a).2 w = a from GlobalTheory.CompanionTheory.PsiCondLoc.single_self w a]`. Conclude with `ha`. Use `show (iV v a).2 w ∈ _`. Rewrite using `[show (iV v a).2 w = 0 from GlobalTheory.CompanionTheory.PsiCondLoc.single_ne v a h]`. Conclude with `zero_mem _`.
+-/
 theorem finPart_plc_mem (v : Pl D) {t : Fv D.host.F v ⊗[D.host.F] D.host.E} (ht : t ∈ intLoc D.host.F D.host.E v) :
     finPart D (plc D.host.E v t) ∈ intAE D := by
   refine intLoc_induction (p := fun t => finPart D (plc D.host.E v t) ∈ intAE D) (fun a ha x => ?_) (by simp)
@@ -55,6 +69,15 @@ theorem finPart_plc_mem (v : Pl D) {t : Fv D.host.F v ⊗[D.host.F] D.host.E} (h
     rw [show (iV v a).2 w = 0 from GlobalTheory.CompanionTheory.PsiCondLoc.single_ne v a h]
     exact zero_mem _
 
+/- English proof (translation)
+Rewrite using `[← (bA D).sum_repr z, map_sum]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Establish `hN : (den (bE D.host.F D.host.E k) : D.host.F) ≠ 0` using `by exact_mod_cast den_ne (bE D.host.F D.host.E k)`. Set `o : 𝓞 D.host.E` to `⟨(den (bE D.host.F D.host.E k) : D.host.E) * bE D.host.F D.host.E k, den_int _⟩`. Establish `ho : (o : D.host.E) = (den (bE D.host.F D.host.E k) : D.host.F) • bE D.host.F D.host.E k`.
+
+Rewrite using `[Algebra.smul_def, map_intCast]`. Both sides reduce to the same expression. Establish `e1 : finPart D ((bA D).repr z k • (bA D) k) = sndA D.host.F ((bA D).repr z k) ⊗ₜ[D.host.F] bE D.host.F D.host.E k` using `map_smul_basis (sndA D.host.F) (bE D.host.F D.host.E) _ k`. Rewrite using `[e1]`. Use `AddSubgroup.subset_closure ⟨sndA D.host.F ((bA D).repr z k) * algebraMap D.host.F (Af D.host.F) ((den (bE D.host.F D.host.E k) : D.host.F))⁻¹, fun v => ?_, o, by rw [ho]; exact (tmul_den _ hN _).symm⟩` and prove the remaining obligations.
+
+Use `show evalV D.host.F v (sndA D.host.F ((bA D).repr z k) * algebraMap D.host.F (Af D.host.F) _) ∈ _`. Rewrite using `[map_mul, AlgHom.commutes]`. Establish `hc : evalV D.host.F v (sndA D.host.F ((bA D).repr z k)) = (bV (E` using `D.host.E) v).repr (cv D v z) k := (crd_cv v z k).symm`. Rewrite using `[hc]`. Distinguish the cases in `hv : IsGood D.host.F D.host.E v`.
+
+Conclude with `mul_mem ((mem_intLoc_iff hv _).1 (hz v) k) (hv.deninv k)`. Rewrite using `[hb v hv, map_zero, Finsupp.zero_apply, zero_mul]`. Conclude with `zero_mem _`.
+-/
 theorem finPart_mem_of_good {z : AE D} (hb : ∀ v, ¬ IsGood D.host.F D.host.E v → cv D v z = 0)
     (hz : ∀ v, cv D v z ∈ intLoc D.host.F D.host.E v) : finPart D z ∈ intAE D := by
   rw [← (bA D).sum_repr z, map_sum]
@@ -82,6 +105,9 @@ theorem finPart_mem_of_good {z : AE D} (hb : ∀ v, ¬ IsGood D.host.F D.host.E 
     exact zero_mem _
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[hz', RingHom.map_sub, map_sum]`. Distinguish the cases in `hw : w ∈ B`. Rewrite using `[if_pos hw, Finset.sum_eq_single w (fun v _ hv => compFin_plc_ne (Ne.symm hv) _) (fun h => absurd hw h), compFin_plc_self, sub_self]`. Rewrite using `[if_neg hw, Finset.sum_eq_zero (fun v hv => compFin_plc_ne (fun h => hw (by rw [h]; exact hv)) _), sub_zero]`.
+-/
 theorem cv_sub_plc (z : AE D) (B : Finset (Pl D)) (z' : AE D) (hz' : z' = z - ∑ v ∈ B, plc D.host.E v (cv D v z))
     (w : Pl D) : cv D w z' = if w ∈ B then 0 else cv D w z := by
   rw [hz', RingHom.map_sub, map_sum]
@@ -91,6 +117,9 @@ theorem cv_sub_plc (z : AE D) (B : Finset (Pl D)) (z' : AE D) (hz' : z' = z - �
   · rw [if_neg hw, Finset.sum_eq_zero (fun v hv => compFin_plc_ne (fun h => hw (by rw [h]; exact hv)) _), sub_zero]
 
 open Classical in
+/- English proof (translation)
+Use `finPart_mem_of_good (fun v hv => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[hcv, if_pos (by rw [hB]; exact (Set.Finite.mem_toFinset hfin).2 hv)]`. Rewrite using `[hcv] split_ifs`. Conclude with `zero_mem _`. Conclude with `hz v`.
+-/
 theorem finite_part_mem_integral_adeles (z z' : AE D) (hz : ∀ v, cv D v z ∈ intLoc D.host.F D.host.E v)
     (hfin : {x | ¬IsGood D.host.F D.host.E x}.Finite) (B : Finset (Pl D)) (hB : B = hfin.toFinset)
     (hcv : ∀ w, cv D w z' = if w ∈ B then 0 else cv D w z) : finPart D z' ∈ intAE D := by
@@ -101,6 +130,9 @@ theorem finite_part_mem_integral_adeles (z z' : AE D) (hz : ∀ v, cv D v z ∈ 
     · exact zero_mem _
     · exact hz v
 
+/- English proof (translation)
+Establish `hfin : {x | ¬IsGood D.host.F D.host.E x}.Finite` using `Filter.eventually_cofinite.1 (eventually_good (F := D.host.F) (E := D.host.E))`. Establish `h1` using `finite_part_mem_integral_adeles z _ hz hfin _ rfl (cv_sub_plc z hfin.toFinset _ rfl)`. Establish `e : z = (z - ∑ v ∈ hfin.toFinset, plc D.host.E v (cv D v z)) + ∑ v ∈ hfin.toFinset, plc D.host.E v (cv D v z)` using `(sub_add_cancel _ _).symm`. Rewrite using `[e, RingHom.map_add, map_sum]`. Conclude with `add_mem h1 (sum_mem fun v _ => finPart_plc_mem v (hz v))`.
+-/
 theorem finPart_mem (z : AE D) (hz : ∀ v, cv D v z ∈ intLoc D.host.F D.host.E v) : finPart D z ∈ intAE D := by
   have hfin : {x | ¬IsGood D.host.F D.host.E x}.Finite :=
     Filter.eventually_cofinite.1 (eventually_good (F := D.host.F) (E := D.host.E))
@@ -110,6 +142,15 @@ theorem finPart_mem (z : AE D) (hz : ∀ v, cv D v z ∈ intLoc D.host.F D.host.
   rw [e, RingHom.map_add, map_sum]
   exact add_mem h1 (sum_mem fun v _ => finPart_plc_mem v (hz v))
 
+/- English proof (translation)
+Set `bI` to `Algebra.TensorProduct.basis (Ainf D.host.F) (bE D.host.F D.host.E)`. Apply `bI.repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => ?_` and prove the remaining obligations. Establish `h1` using `LIdemEx.repr_map' (fstA D.host.F) (bE D.host.F D.host.E) z k`. Establish `h2` using `LIdemEx.repr_map' (fstA D.host.F) (bE D.host.F D.host.E) (1 : AE D) k`.
+
+Establish `e1 : infPart D z = Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) z` using `rfl`. Establish `e2 : (1 : Ainf D.host.F ⊗[D.host.F] D.host.E) = Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (1 : AE D)` using `(map_one _).symm`. Rewrite using `[e1, e2, h1, h2]`. Use function extensionality and compare the values at `w`. Establish `g1` using `LIdemEx.repr_map' (evInf D.host.F w) (bE D.host.F D.host.E) z k`.
+
+Establish `g2` using `LIdemEx.repr_map' (evInf D.host.F w) (bE D.host.F D.host.E) (1 : AE D) k`. Establish `hz : Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) z = Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) 1`. Rewrite using `[map_one]`. Conclude with `h w`. Rewrite `g1` using `[hz]`.
+
+Conclude with `g1.symm.trans g2`.
+-/
 theorem infPart_eq_one {z : AE D} (h : ∀ w, compInf D.host.F D.host.E w z = 1) : infPart D z = 1 := by
   let bI := Algebra.TensorProduct.basis (Ainf D.host.F) (bE D.host.F D.host.E)
   apply bI.repr.injective

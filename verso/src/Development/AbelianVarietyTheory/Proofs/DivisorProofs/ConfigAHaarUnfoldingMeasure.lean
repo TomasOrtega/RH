@@ -12,18 +12,33 @@ noncomputable section
 
 namespace GlobalTheory.IterBochner
 
+/- English proof (translation)
+The claim follows from `(ENNReal.ofReal_le_ofReal (Complex.re_le_norm w)).trans (ofReal_norm_eq_enorm w).le`.
+-/
 theorem ofReal_re_le (w : ℂ) : ENNReal.ofReal w.re ≤ ‖w‖ₑ :=
   (ENNReal.ofReal_le_ofReal (Complex.re_le_norm w)).trans (ofReal_norm_eq_enorm w).le
 
+/- English proof (translation)
+The claim follows from `(ENNReal.ofReal_le_ofReal ((neg_le_abs _).trans (Complex.abs_re_le_norm w))).trans (ofReal_norm_eq_enorm w).le`.
+-/
 theorem ofReal_neg_re_le (w : ℂ) : ENNReal.ofReal (-w.re) ≤ ‖w‖ₑ :=
   (ENNReal.ofReal_le_ofReal ((neg_le_abs _).trans (Complex.abs_re_le_norm w))).trans (ofReal_norm_eq_enorm w).le
 
+/- English proof (translation)
+The claim follows from `(ENNReal.ofReal_le_ofReal ((le_abs_self _).trans (Complex.abs_im_le_norm w))).trans (ofReal_norm_eq_enorm w).le`.
+-/
 theorem ofReal_im_le (w : ℂ) : ENNReal.ofReal w.im ≤ ‖w‖ₑ :=
   (ENNReal.ofReal_le_ofReal ((le_abs_self _).trans (Complex.abs_im_le_norm w))).trans (ofReal_norm_eq_enorm w).le
 
+/- English proof (translation)
+The claim follows from `(ENNReal.ofReal_le_ofReal ((neg_le_abs _).trans (Complex.abs_im_le_norm w))).trans (ofReal_norm_eq_enorm w).le`.
+-/
 theorem ofReal_neg_im_le (w : ℂ) : ENNReal.ofReal (-w.im) ≤ ‖w‖ₑ :=
   (ENNReal.ofReal_le_ofReal ((neg_le_abs _).trans (Complex.abs_im_le_norm w))).trans (ofReal_norm_eq_enorm w).le
 
+/- English proof (translation)
+Establish `hi : Integrable q ν` using `⟨hq.aestronglyMeasurable, hfin⟩`. Rewrite using `[← integral_re_add_im hi, integral_eq_lintegral_pos_part_sub_lintegral_neg_part hi.re, integral_eq_lintegral_pos_part_sub_lintegral_neg_part hi.im]`. Both sides reduce to the same expression.
+-/
 theorem integral_eq_four {Z : Type} [MeasurableSpace Z] (ν : Measure Z) (q : Z → ℂ) (hq : Measurable q)
     (hfin : ∫⁻ z, ‖q z‖ₑ ∂ν < ⊤) :
     ∫ z, q z ∂ν = (((∫⁻ z, ENNReal.ofReal (q z).re ∂ν).toReal - (∫⁻ z, ENNReal.ofReal (-(q z).re) ∂ν).toReal : ℝ) : ℂ) +
@@ -33,6 +48,11 @@ theorem integral_eq_four {Z : Type} [MeasurableSpace Z] (ν : Measure Z) (q : Z 
     integral_eq_lintegral_pos_part_sub_lintegral_neg_part hi.im]
   rfl
 
+/- English proof (translation)
+Establish `fin : ∀ P : X → ENNReal, P ≤ N → ∫⁻ x, P x ∂μ ≠ ⊤` using `fun P hP => ((lintegral_mono fun x => hP x).trans_lt hN).ne`. Establish `int : ∀ P : X → ENNReal, Measurable P → P ≤ N → Integrable (fun x => (P x).toReal) μ` using `fun P hm hP => integrable_toReal_of_lintegral_ne_top hm.aemeasurable (fin P hP)`. Establish `itg : ∀ P : X → ENNReal, Measurable P → P ≤ N → ∫ x, (P x).toReal ∂μ = (∫⁻ x, P x ∂μ).toReal` using `fun P hm hP => integral_toReal hm.aemeasurable (ae_lt_top hm (fin P hP))`. Rewrite using `[integral_congr_ae hG]`. Establish `i12 : Integrable (fun x => ((((P₁ x).toReal - (P₂ x).toReal : ℝ)) : ℂ)) μ` using `((int _ h₁ l₁).sub (int _ h₂ l₂)).ofReal (𝕜 := ℂ)`.
+
+Establish `i34 : Integrable (fun x => ((((P₃ x).toReal - (P₄ x).toReal : ℝ)) : ℂ) * Complex.I) μ` using `(((int _ h₃ l₃).sub (int _ h₄ l₄)).ofReal (𝕜 := ℂ)).mul_const Complex.I`. Rewrite using `[integral_add i12 i34, integral_mul_const, integral_complex_ofReal, integral_complex_ofReal, integral_sub (int _ h₁ l₁) (int _ h₂ l₂), integral_sub (int _ h₃ l₃) (int _ h₄ l₄), itg _ h₁ l₁, itg _ h₂ l₂, itg _ h₃ l₃, itg _ h₄ l₄]`.
+-/
 theorem integral_eq_four_of_ae {X : Type} [MeasurableSpace X] (μ : Measure X) (G : X → ℂ)
     (P₁ P₂ P₃ P₄ N : X → ENNReal) (h₁ : Measurable P₁) (h₂ : Measurable P₂) (h₃ : Measurable P₃) (h₄ : Measurable P₄)
     (l₁ : P₁ ≤ N) (l₂ : P₂ ≤ N) (l₃ : P₃ ≤ N) (l₄ : P₄ ≤ N) (hN : ∫⁻ x, N x ∂μ < ⊤)
@@ -58,6 +78,9 @@ end GlobalTheory.IterBochner
 
 namespace GlobalTheory.IterBochner
 
+/- English proof (translation)
+Establish `h1 : Measurable fun p : X × Y => ∫⁻ z, g (p.1, p.2, z) ∂μZ`. Establish `: Measurable fun p : (X × Y) × Z => g (p.1.1, p.1.2, p.2)` using `hg.comp (measurable_fst.fst.prodMk (measurable_fst.snd.prodMk measurable_snd))`. Conclude with `this.lintegral_prod_right'`. Conclude with `h1.lintegral_prod_right'`.
+-/
 theorem measurable_lintegral2 {X Y Z : Type} [MeasurableSpace X] [MeasurableSpace Y] [MeasurableSpace Z]
     (μY : Measure Y) (μZ : Measure Z) [SFinite μY] [SFinite μZ] (g : X × Y × Z → ENNReal) (hg : Measurable g) :
     Measurable fun x => ∫⁻ y, ∫⁻ z, g (x, y, z) ∂μZ ∂μY := by
@@ -67,6 +90,11 @@ theorem measurable_lintegral2 {X Y Z : Type} [MeasurableSpace X] [MeasurableSpac
     exact this.lintegral_prod_right'
   exact h1.lintegral_prod_right'
 
+/- English proof (translation)
+Establish `hm : ∀ g : Y × Z → ENNReal, Measurable g → Measurable fun y => ∫⁻ z, g (y, z) ∂μZ` using `fun g hg => hg.lintegral_prod_right'`. Establish `hc : Measurable fun p : Y × Z => (q p.1 p.2).re` using `Complex.measurable_re.comp hq`. Establish `hd : Measurable fun p : Y × Z => (q p.1 p.2).im` using `Complex.measurable_im.comp hq`. Establish `hN : Measurable fun y => ∫⁻ z, ‖q y z‖ₑ ∂μZ` using `hm (fun p => ‖q p.1 p.2‖ₑ) hq.enorm`. Use `integral_eq_four_of_ae μY (fun y => ∫ z, q y z ∂μZ) _ _ _ _ (fun y => ∫⁻ z, ‖q y z‖ₑ ∂μZ) (hm (fun p => ENNReal.ofReal (q p.1 p.2).re) (ENNReal.measurable_ofReal.comp hc)) (hm (fun p => ENNReal.ofReal (-(q p.1 p.2).re)) (ENNReal.measurable_ofReal.comp hc.neg)) (hm (fun p => ENNRe …` and prove the remaining obligations.
+
+Use `filter_upwards [ae_lt_top hN hfin.ne] with y hy`. Conclude with `integral_eq_four μZ (q y) (hq.comp measurable_prodMk_left) hy`.
+-/
 theorem integral2_eq_four {Y Z : Type} [MeasurableSpace Y] [MeasurableSpace Z] (μY : Measure Y) (μZ : Measure Z)
     [SFinite μZ] (q : Y → Z → ℂ) (hq : Measurable fun p : Y × Z => q p.1 p.2)
     (hfin : ∫⁻ y, ∫⁻ z, ‖q y z‖ₑ ∂μZ ∂μY < ⊤) :
@@ -88,6 +116,11 @@ theorem integral2_eq_four {Y Z : Type} [MeasurableSpace Y] [MeasurableSpace Z] (
   filter_upwards [ae_lt_top hN hfin.ne] with y hy
   exact integral_eq_four μZ (q y) (hq.comp measurable_prodMk_left) hy
 
+/- English proof (translation)
+Establish `hm : ∀ g : X × Y × Z → ENNReal, Measurable g → Measurable fun x => ∫⁻ y, ∫⁻ z, g (x, y, z) ∂μZ ∂μY` using `fun g hg => measurable_lintegral2 μY μZ g hg`. Establish `hc : Measurable fun p : X × Y × Z => (q p.1 p.2.1 p.2.2).re` using `Complex.measurable_re.comp hq`. Establish `hd : Measurable fun p : X × Y × Z => (q p.1 p.2.1 p.2.2).im` using `Complex.measurable_im.comp hq`. Establish `hN : Measurable fun x => ∫⁻ y, ∫⁻ z, ‖q x y z‖ₑ ∂μZ ∂μY` using `hm (fun p => ‖q p.1 p.2.1 p.2.2‖ₑ) hq.enorm`. Use `integral_eq_four_of_ae μX (fun x => ∫ y, ∫ z, q x y z ∂μZ ∂μY) _ _ _ _ (fun x => ∫⁻ y, ∫⁻ z, ‖q x y z‖ₑ ∂μZ ∂μY) (hm (fun p => ENNReal.ofReal (q p.1 p.2.1 p.2.2).re) (ENNReal.measurable_ofReal.comp hc)) (hm (fun p => ENNReal.ofReal (-(q p.1 p.2.1 p.2.2).re)) (ENNReal.measurable_o …` and prove the remaining obligations.
+
+Use `filter_upwards [ae_lt_top hN hfin.ne] with x hx`. Conclude with `integral2_eq_four μY μZ (q x) (hq.comp measurable_prodMk_left) hx`.
+-/
 theorem integral3_eq_four {X Y Z : Type} [MeasurableSpace X] [MeasurableSpace Y] [MeasurableSpace Z] (μX : Measure X)
     (μY : Measure Y) (μZ : Measure Z) [SFinite μY] [SFinite μZ] (q : X → Y → Z → ℂ)
     (hq : Measurable fun p : X × Y × Z => q p.1 p.2.1 p.2.2)
@@ -118,6 +151,11 @@ end GlobalTheory.IterBochner
 
 namespace GlobalTheory.IterBochner
 
+/- English proof (translation)
+Establish `e0 : ∀ x y z, ‖φ x y z * ((w y : ℝ) : ℂ)‖ₑ = ‖φ x y z‖ₑ * ENNReal.ofReal (w y)` using `fun x y z => by`. Rewrite using `[enorm_mul, ← ofReal_norm_eq_enorm ((w y : ℝ) : ℂ), Complex.norm_real, Real.norm_of_nonneg (hw y)]`. Establish `e1 : ∀ x y z, ENNReal.ofReal (φ x y z * ((w y : ℝ) : ℂ)).re = ENNReal.ofReal (φ x y z).re * ENNReal.ofReal (w y)` using `fun x y z => by rw [Complex.re_mul_ofReal, ENNReal.ofReal_mul' (hw y)]`. Establish `e2 : ∀ x y z, ENNReal.ofReal (-(φ x y z * ((w y : ℝ) : ℂ)).re) = ENNReal.ofReal (-(φ x y z).re) * ENNReal.ofReal (w y)` using `fun x y z => by rw [Complex.re_mul_ofReal, ← neg_mul, ENNReal.ofReal_mul' (hw y)]`. Establish `e3 : ∀ x y z, ENNReal.ofReal (φ x y z * ((w y : ℝ) : ℂ)).im = ENNReal.ofReal (φ x y z).im * ENNReal.ofReal (w y)` using `fun x y z => by rw [Complex.im_mul_ofReal, ENNReal.ofReal_mul' (hw y)]`.
+
+Establish `e4 : ∀ x y z, ENNReal.ofReal (-(φ x y z * ((w y : ℝ) : ℂ)).im) = ENNReal.ofReal (-(φ x y z).im) * ENNReal.ofReal (w y)` using `fun x y z => by rw [Complex.im_mul_ofReal, ← neg_mul, ENNReal.ofReal_mul' (hw y)]`. Establish `hq : Measurable fun p : X × Y × Z => φ p.1 p.2.1 p.2.2 * ((w p.2.1 : ℝ) : ℂ)` using `hφ.mul (Complex.measurable_ofReal.comp (hwm.comp measurable_snd.fst))`. Use `integral3_eq_four μX μY μZ (fun x y z => φ x y z * ((w y : ℝ) : ℂ)) hq (by simpa only [e0] using hfin)` as an intermediate fact. Simplify `this` using `only [e1, e2, e3, e4]`.
+-/
 theorem integral3_weight_eq_four {X Y Z : Type} [MeasurableSpace X] [MeasurableSpace Y] [MeasurableSpace Z] (μX : Measure X)
     (μY : Measure Y) (μZ : Measure Z) [SFinite μY] [SFinite μZ] (φ : X → Y → Z → ℂ) (w : Y → ℝ) (hw : ∀ y, 0 ≤ w y)
     (hφ : Measurable fun p : X × Y × Z => φ p.1 p.2.1 p.2.2) (hwm : Measurable w)
@@ -151,16 +189,34 @@ namespace GlobalTheory.IterBochner
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (a b : UA σ J) : mat (a * b) = mat a * mat b := rfl
 
+/- English proof (translation)
+Use `show (((a.1)⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) * (a.1 : Matrix (Fin n) (Fin n) (AE F E)) = 1`. Conclude with `Units.inv_mul _`.
+-/
 theorem mat_inv_mul' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (a : UA σ J) : mat a⁻¹ * mat a = 1 := by
   show (((a.1)⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) * (a.1 : Matrix (Fin n) (Fin n) (AE F E)) = 1
   exact Units.inv_mul _
 
+/- English proof (translation)
+Use `show (a.1 : Matrix (Fin n) (Fin n) (AE F E)) * (((a.1)⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = 1`. Conclude with `Units.mul_inv _`.
+-/
 theorem mat_mul_inv' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (a : UA σ J) : mat a * mat a⁻¹ = 1 := by
   show (a.1 : Matrix (Fin n) (Fin n) (AE F E)) * (((a.1)⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = 1
   exact Units.mul_inv _
 
+/- English proof (translation)
+Take `⟨hx, hy, hι⟩` from `hl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : incV F H.x = mat h⁻¹ *ᵥ ((t : AE F E) • incV F H.x)`. Rewrite using `[← hx, Matrix.mulVec_mulVec, mat_inv_mul', Matrix.one_mulVec]`. Rewrite `e` using `[Matrix.mulVec_smul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = _ := by rw [← e]`. Establish `e : incV F H.y = mat h⁻¹ *ᵥ (cA σ ((t⁻¹ : (AE F E)ˣ) : AE F E) • incV F H.y)`. Rewrite using `[← hy, Matrix.mulVec_mulVec, mat_inv_mul', Matrix.one_mulVec]`.
+
+Rewrite `e` using `[Matrix.mulVec_smul]`. Rewrite using `[inv_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, ← map_mul, Units.mul_inv, map_one, one_smul]`. Use `_ = _ := by rw [← e]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (mat h⁻¹), Matrix.mul_assoc (incM F H.ι), mat_mul_inv', Matrix.mul_one]`. Use `_ = mat h⁻¹ * (mat h * incM F H.ι) * mat h₁⁻¹ := by rw [hι]`. Use `_ = incM F H.ι * mat h₁⁻¹ := by rw [← Matrix.mul_assoc, mat_inv_mul', Matrix.one_mul]`.
+-/
 theorem isLevi_inv {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} (H : Plane E n n₁) (t : (AE F E)ˣ) (h₁ : UA σ W₁.J)
     (h : UA σ W.J) (hl : IsLevi H t h₁ h) : IsLevi H t⁻¹ h₁⁻¹ h⁻¹ := by
   obtain ⟨hx, hy, hι⟩ := hl
@@ -183,6 +239,13 @@ theorem isLevi_inv {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} (H : Pla
       _ = mat h⁻¹ * (mat h * incM F H.ι) * mat h₁⁻¹ := by rw [hι]
       _ = incM F H.ι * mat h₁⁻¹ := by rw [← Matrix.mul_assoc, mat_inv_mul', Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hv : v ∈ Submodule.span E (Y.L : Set (Fin (n₁ + 2) → E))` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨s, t, u, -, -, -, h⟩` from `hH.split z hz`. Conclude with `⟨s, t, u, h⟩`.
+
+Consider the case `zero => exact ⟨0, 0, 0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨s, t, u, rfl⟩` from `ha`. Take `⟨s', t', u', rfl⟩` from `hb`. Conclude with `⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add, add_smul, add_smul]; abel⟩`.
+
+Consider the case `smul c a _ ha`. Take `⟨s, t, u, rfl⟩` from `ha`. Conclude with `⟨c * s, c * t, c • u, by rw [Matrix.mulVec_smul, smul_add, smul_add, mul_smul, mul_smul]⟩`.
+-/
 theorem exists_decomp (B : Base F E) {n₁ : ℕ} (H : Plane E (n₁ + 2) n₁) (Y : Spc F E (n₁ + 2)) (Y₁ : Spc F E n₁) {i₀ i₁ : ℕ}
     (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (hL : Submodule.span E (Y.L : Set (Fin (n₁ + 2) → E)) = ⊤) (v : Fin (n₁ + 2) → E) :
     ∃ (s t : E) (u : Fin n₁ → E), v = s • H.x + H.ι *ᵥ u + t • H.y := by
@@ -200,12 +263,18 @@ theorem exists_decomp (B : Base F E) {n₁ : ℕ} (H : Plane E (n₁ + 2) n₁) 
     obtain ⟨s, t, u, rfl⟩ := ha
     exact ⟨c * s, c * t, c • u, by rw [Matrix.mulVec_smul, smul_add, smul_add, mul_smul, mul_smul]⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[incV]`. Simplify using `[incV, Pi.single_apply, h]`.
+-/
 theorem incV_single {n : ℕ} (j : Fin n) : incV F (Pi.single j (1 : E)) = Pi.single j (1 : AE F E) := by
   funext i
   by_cases h : i = j
   · subst h; simp [incV]
   · simp [incV, Pi.single_apply, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [incV, incM, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem incV_decomp {n n₁ : ℕ} (x y : Fin n → E) (ι : Matrix (Fin n) (Fin n₁) E) (s t : E) (u : Fin n₁ → E) :
     incV F (s • x + ι *ᵥ u + t • y) =
       inclR (F := F) (AF F) s • incV F x + incM F ι *ᵥ incV F u + inclR (F := F) (AF F) t • incV F y := by
@@ -220,11 +289,17 @@ namespace GlobalTheory.IterBochner
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Conclude with `IsModuleTopology.isTopologicalRing (AF F) (AE F E)`.
+-/
 theorem isTopologicalRing_AE : IsTopologicalRing (AE F E) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
   exact IsModuleTopology.isTopologicalRing (AF F) (AE F E)
 
+/- English proof (translation)
+Use `haveI := isTopologicalRing_AE (F := F) (E := E)`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Conclude with `IsModuleTopology.continuous_of_linearMap (cA (F := F) (E := E) σ).toLinearMap`.
+-/
 theorem continuous_cA' : Continuous (cA (F := F) (E := E) σ) := by
   haveI := isTopologicalRing_AE (F := F) (E := E)
   haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
@@ -237,6 +312,9 @@ def leviMat {n₁ : ℕ} {J₁ : Matrix (Fin n₁) (Fin n₁) E} (H : Plane E (n
   Matrix.of fun i j => (inclR (F := F) (AF F) (s j) • ((l : AE F E) • incV F H.x) + (incM F H.ι * mat g) *ᵥ incV F (u j) +
     inclR (F := F) (AF F) (t j) • (cA σ ((l⁻¹ : (AE F E)ˣ) : AE F E) • incV F H.y)) i
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e` using `congrFun (congrArg (fun v => mat h *ᵥ v) (congrArg (incV F) (hdec j))) i`. Rewrite `e` using `[incV_single, Matrix.mulVec_single_one, incV_decomp, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hl.1, hl.2.1, hl.2.2]`. Conclude with `e`.
+-/
 theorem mat_eq_leviMat {n₁ : ℕ} {W : Spc F E (n₁ + 2)} {W₁ : Spc F E n₁} (H : Plane E (n₁ + 2) n₁) (s t : Fin (n₁ + 2) → E)
     (u : Fin (n₁ + 2) → Fin n₁ → E) (hdec : ∀ j, Pi.single j (1 : E) = s j • H.x + H.ι *ᵥ u j + t j • H.y)
     (l : (AE F E)ˣ) (g : UA σ W₁.J) (h : UA σ W.J) (hl : IsLevi H l g h) : mat h = leviMat σ H s t u l g := by
@@ -246,6 +324,13 @@ theorem mat_eq_leviMat {n₁ : ℕ} {W : Spc F E (n₁ + 2)} {W₁ : Spc F E n�
     Matrix.mulVec_smul, Matrix.mulVec_mulVec, hl.1, hl.2.1, hl.2.2] at e
   exact e
 
+/- English proof (translation)
+Use `haveI := isTopologicalRing_AE (F := F) (E := E)`. Establish `h1 : Continuous fun p : X => (a p : AE F E)` using `Units.continuous_val.comp ha`. Establish `h2 : Continuous fun p : X => cA σ (((a p)⁻¹ : (AE F E)ˣ) : AE F E)` using `continuous_cA'.comp (Units.continuous_coe_inv.comp ha)`. Establish `h3 : Continuous fun p : X => mat (b p)` using `Units.continuous_val.comp (continuous_subtype_val.comp hb)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+
+Establish `hv : Continuous fun p : X => inclR (F` using `F) (AF F) (s j) • ((a p : AE F E) • incV F H.x) + (incM F H.ι * mat (b p)) *ᵥ incV F (u j) + inclR (F := F) (AF F) (t j) • (cA σ (((a p)⁻¹ : (AE F E)ˣ) : AE F E) • incV F H.y) :=`. Use `by`. Use `Continuous.add (Continuous.add ?_ ?_) ?_` and prove the remaining obligations. Conclude with `(continuous_const : Continuous fun _ : X => inclR (F := F) (AF F) (s j)).smul (h1.smul (continuous_const : Continuous fun _ : X => incV F H.x))`. Conclude with `((continuous_const : Continuous fun _ : X => incM F H.ι).matrix_mul h3).matrix_mulVec (continuous_const : Continuous fun _ : X => incV F (u j))`.
+
+Conclude with `(continuous_const : Continuous fun _ : X => inclR (F := F) (AF F) (t j)).smul (h2.smul (continuous_const : Continuous fun _ : X => incV F H.y))`. Conclude with `(continuous_apply i).comp hv`.
+-/
 theorem continuous_leviMat {n₁ : ℕ} {J₁ : Matrix (Fin n₁) (Fin n₁) E} (H : Plane E (n₁ + 2) n₁) (s t : Fin (n₁ + 2) → E)
     (u : Fin (n₁ + 2) → Fin n₁ → E) {X : Type} [TopologicalSpace X] (a : X → (AE F E)ˣ) (b : X → UA σ J₁)
     (ha : Continuous a) (hb : Continuous b) :
@@ -270,6 +355,13 @@ by
         (h2.smul (continuous_const : Continuous fun _ : X => incV F H.y))
   exact (continuous_apply i).comp hv
 
+/- English proof (translation)
+Use `haveI := (GlobalTheory.UnipCT.topFacts σ W₁.J).1`. Establish `hM : Continuous fun p : (AE F E)ˣ × UA σ W₁.J => leviMat σ H s t u p.1 p.2` using `continuous_leviMat H s t u _ _ continuous_fst continuous_snd`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : ∀ p : (AE F E)ˣ × UA σ W₁.J, ((m p.1 p.2).1 : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) (AE F E)) = leviMat σ H s t u p.1 p.2` using `fun p => mat_eq_leviMat H s t u hdec p.1 p.2 _ (hm p.1 p.2)`.
+
+Conclude with `(continuous_congr fun p => (e p).symm).1 hM`. Establish `e : ∀ p : (AE F E)ˣ × UA σ W₁.J, ((((m p.1 p.2).1)⁻¹ : GL (Fin (n₁ + 2)) (AE F E)) : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) (AE F E)) = leviMat σ H s t u p.1⁻¹ p.2⁻¹` using `fun p => mat_eq_leviMat H s t u hdec p.1⁻¹ p.2⁻¹ _ (isLevi_inv H _ _ _ (hm p.1 p.2)) haveI := isTopologicalRing_AE (F := F) (E := E)`. Establish `i1 : Continuous fun p : (AE F E)ˣ × UA σ W₁.J => p.1⁻¹` using `continuous_inv.comp continuous_fst`. Establish `i2 : Continuous fun p : (AE F E)ˣ × UA σ W₁.J => p.2⁻¹` using `continuous_inv.comp continuous_snd`. Establish `i3 : Continuous fun p : (AE F E)ˣ × UA σ W₁.J => leviMat σ H s t u p.1⁻¹ p.2⁻¹` using `continuous_leviMat H s t u _ _ i1 i2`.
+
+Conclude with `(continuous_congr fun p => (e p).symm).1 i3`.
+-/
 theorem continuous_of_isLevi {n₁ : ℕ} {W : Spc F E (n₁ + 2)} {W₁ : Spc F E n₁} (H : Plane E (n₁ + 2) n₁)
     (s t : Fin (n₁ + 2) → E) (u : Fin (n₁ + 2) → Fin n₁ → E)
     (hdec : ∀ j, Pi.single j (1 : E) = s j • H.x + H.ι *ᵥ u j + t j • H.y)
@@ -298,6 +390,21 @@ end GlobalTheory.IterBochner
 
 namespace GlobalTheory.IterBochner
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC _ hG hG₁ K μK μ _ _ hμ m hm f hf hfin`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI := isTopologicalRing_AE (F := F) (E := E)`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`.
+
+Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : LocallyCompactSpace (AE F E)ˣ := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`.
+
+Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Take `⟨_, _, _, _⟩` from `GlobalTheory.UnipCT.topFacts σ G₁.V.J`. Take `⟨_, _, _, _⟩` from `GlobalTheory.UnipCT.topFacts σ G.V.J`. Use `haveI : BorelSpace (UA σ G₁.V.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`.
+
+Use `haveI := hG₁.hM.haar`. Use `haveI hs0 : SigmaFinite μ := inferInstance`. Use `haveI hs1 : SigmaFinite G₁.M.μ := inferInstance`. Use `haveI : SFinite μ := @instSFiniteOfSigmaFinite _ _ _ hs0`. Use `haveI : SFinite G₁.M.μ := @instSFiniteOfSigmaFinite _ _ _ hs1`.
+
+Use `haveI : SFinite (G₁.M.μ.restrict G₁.M.dom) := inferInstance`. Establish `hL : Submodule.span E (G.V.L : Set (Fin (b + 2) → E)) = ⊤` using `hG.hV.lat.span_eq_top`. Use `choose s t u hdec using fun j : Fin (b + 2) => exists_decomp B H G.V G₁.V hC.hH hL (Pi.single j 1)`. Establish `hmc : Continuous fun p : (AE F E)ˣ × UA σ G₁.V.J => m p.1 p.2` using `continuous_of_isLevi H s t u hdec m hm`. Establish `hφ : Measurable fun p : K × (AE F E)ˣ × UA σ G₁.V.J => f (m p.2.1 p.2.2 * p.1.1)` using `(hf.comp ((hmc.comp continuous_snd).mul (continuous_subtype_val.comp continuous_fst))).measurable`.
+
+Establish `hwm : Measurable fun l : (AE F E)ˣ => (absE F E l : ℝ) ^ (1 - ((b + 2 : ℕ) : ℝ))` using `(measurable_coe_nnreal_real.comp GlobalTheory.Doubling.continuous_absE.measurable).pow_const _`. Conclude with `integral3_weight_eq_four μK μ (G₁.M.μ.restrict G₁.M.dom) (fun k l g₀ => f (m l g₀ * k.1)) (fun l => (absE F E l : ℝ) ^ (1 - ((b + 2 : ℕ) : ℝ))) (fun l => Real.rpow_nonneg (NNReal.coe_nonneg _) _) hφ hwm hfin`.
+-/
 theorem integral_levi_eq_four : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →
     ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

@@ -13,6 +13,17 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `K _ _ n hn μ _ ν _ κ γ e U hU hκ him he`. Establish `hκeq : ∀ g, (((κ g).re : ℝ) : ℂ) = κ g` using `fun g => by`. Apply the tactic sequence `apply Complex.ext <;> simp [him g]`. Establish `hsm : (isExpLieAlgebra K n).IsSmoothFun (fun A => (((κ A).re : ℝ) : ℂ))`. Establish `h : (fun A => (((κ A).re : ℝ) : ℂ)) = fun g => κ g` using `funext hκeq`.
+
+Rewrite using `[h]`. Conclude with `hκ`. Establish `hcs : HasCompactSupport (fun g => (κ g).re)` using `κ.hasCompactSupport.comp_left (g := Complex.re) rfl`. Take `⟨β, hβ, hβc, hβu, hβκ⟩` from `UpperTheory.exists_contDiff_archMatrix_extension_of_smooth K n (fun g => (κ g).re) hsm hcs`. Set `φ : archGroup K n ≃ₜ* ArchUnits K n` to `{ Subgroup.topEquiv (G := ArchUnits K n) with continuous_toFun := continuous_subtype_val continuous_invFun := continuous_id.subtype_mk _ }`.
+
+Set `m : archGroup K n ≃ᵐ ArchUnits K n` to `φ.toHomeomorph.toMeasurableEquiv`. Establish `hmφ : (m : archGroup K n → ArchUnits K n) = φ` using `rfl`. Use `haveI hH : (Measure.map m ν).IsHaarMeasure := by`. Rewrite using `[hmφ]`. Conclude with `φ.isHaarMeasure_map ν`.
+
+Establish `hint : ∀ f : archGroup K n → ℂ, ∫ A, f A ∂ν = ∫ A : ArchUnits K n, f ⟨A, Subgroup.mem_top A⟩ ∂(Measure.map m ν)`. Introduce `f`. Rewrite using `[integral_map_equiv m (fun A : ArchUnits K n => f ⟨A, Subgroup.mem_top A⟩)]`. Both sides reduce to the same expression. Establish `hkey` using `UpperTheory.tens_conv_eq_archConv K n hn (Measure.map m ν) ν hint β hβ.continuous hβc hβu κ γ e (fun A => by rw [hβκ A]; exact (hκeq A).symm)`.
+
+Rewrite using `[hkey, ← UpperTheory.finAvg_tens_of_leftInvariant K n hn U hU γ e he]`. Conclude with `UpperTheory.cuspDecay_archConv_finAvg K n μ (Measure.map m ν) β hβ hβc hβu U hU (tens γ e)`.
+-/
 theorem UpperTheory.cuspDecay_tens_conv_real_smoothT :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (G1 K n)) [μ.IsHaarMeasure]
         (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (κ γ : TI K n) (e : TF K n)

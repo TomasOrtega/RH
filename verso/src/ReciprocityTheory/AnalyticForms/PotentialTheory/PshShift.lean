@@ -14,6 +14,9 @@ def LeviCompStatement : Prop :=
     AnalyticAt ℂ τ z → ContDiffAt ℝ 2 φ (τ z) →
       levi (φ ∘ τ) z w = levi φ (τ z) (fderiv ℂ τ z w)
 
+/- English proof (translation)
+The claim follows from `plurisubharmonicShift_proof`.
+-/
 theorem pshShift : PshShiftStatement := plurisubharmonicShift_proof
 
 end

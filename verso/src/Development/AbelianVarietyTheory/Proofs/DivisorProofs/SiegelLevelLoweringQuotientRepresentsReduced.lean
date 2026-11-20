@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.QuotFamRep
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_rid (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 _ := Spec.map_id _
 
 section Calc
@@ -28,24 +31,44 @@ variable {h n n' n'' : ℕ} {B B' B'' : Type} [CommRing B] [CommRing B'] [CommRi
   {c : SiegPre h n ζ s} {c' : SiegPre h n' ζ' s'} {c'' : SiegPre h n'' ζ'' s''} {f : S' ⟶ S} {f' : S'' ⟶ S'}
   {d d' d'' : ℕ}
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).1 h₂`.
+-/
 theorem sRel_comp (h₁ : SRel c' c d' d f) (h₂ : SRel c'' c' d'' d' f') : SRel c'' c d'' d (f' ≫ f) :=
   ((GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).1 h₂
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).2 h₂`.
+-/
 theorem sRel_cancel (h₁ : SRel c' c d' d f) (h₂ : SRel c'' c d'' d (f' ≫ f)) : SRel c'' c' d'' d' f' :=
   ((GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).2 h₂
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n' B B' B' ζ ζ' ζ' S S' S' s s' s' c c' c' f (𝟙 S') d d' d' h₁).2.1 hc`.
+-/
 theorem sRel_principal (h₁ : SRel c' c d' d f) (hc : c.Principal) : c'.Principal :=
   (GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n' B B' B' ζ ζ' ζ' S S' S' s s' s' c c' c' f (𝟙 S') d d' d' h₁).2.1 hc
 
+/- English proof (translation)
+Simplify using `using (GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n' B B' B' ζ ζ' ζ' S S' S' s s' s' c c' c' f (𝟙 S') 1 1 1 h₁).2.2 e`.
+-/
 theorem sRel_scale (h₁ : SRel c' c 1 1 f) (e : ℕ) : SRel c' c e e f := by
   simpa using (GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n' B B' B' ζ ζ' ζ' S S' S' s s' s' c c' c' f (𝟙 S') 1 1 1 h₁).2.2 e
 
 end Calc
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.siegelPre_pullback_principal_ringChange h k B B ζ ζ (RingHom.id B) S S' s (f ≫ s) f rfl (by rw [spMap_rid, Category.comp_id])).1 c`.
+-/
 theorem exists_pull {h k : ℕ} {B : Type} [CommRing B] {ζ : B} {S S' : Scheme.{0}} {s : S ⟶ Sp B}
     (c : SiegPre h k ζ s) (f : S' ⟶ S) : ∃ c' : SiegPre h k ζ (f ≫ s), SiegPB c' c f :=
   (GlobalTheory.T.siegelPre_pullback_principal_ringChange h k B B ζ ζ (RingHom.id B) S S' s (f ≫ s) f rfl (by rw [spMap_rid, Category.comp_id])).1 c
 
+/- English proof (translation)
+Use `algebraize [j]`. Establish `hm : Module.Finite A A'` using `by rw [IsFinite.SpecMap_iff] at hf; exact hf`. Establish `: Algebra.IsIntegral A A'` using `inferInstance`. Use `show Ideal.comap (algebraMap A A') y.asIdeal = ⊥ ↔ _`. Use `⟨fun e => Ideal.eq_bot_of_comap_eq_bot e, fun e => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `Ideal.comap_bot_of_injective (algebraMap A A') hj`.
+-/
 theorem asIdeal_eq_bot_iff {A A' : Type} [CommRing A] [CommRing A'] [IsDomain A] [IsDomain A'] (j : A →+* A')
     (hj : Function.Injective j) (hf : IsFinite (spMap j)) (y : Sp A') :
     ((spMap j) y).asIdeal = ⊥ ↔ y.asIdeal = ⊥ := by
@@ -62,6 +85,31 @@ namespace GlobalTheory
 
 open QuotFamRep in
 
+/- English proof (translation)
+Introduce `h n N F j Q hn hN hnN hj hjz hfin het hsurj S s' c hS hd hc`. Establish `hN0 : N ≠ 0` using `hN.pos.ne'`. Establish `hn0 : n ≠ 0` using `by omega`. Set `S'` to `pullback s' (spMap j)`. Set `q : S' ⟶ S` to `pullback.fst s' (spMap j)`.
+
+Set `t : S' ⟶ Sp (cycAway N)` to `pullback.snd s' (spMap j)`. Establish `hq` using `GlobalTheory.T.siegelPre_pullback_principal_ringChange h n (cycAway n) (cycAway n) (zetaAway n) (zetaAway n) (RingHom.id _) S S' s' (t ≫ spMap j) q`. Use `rfl (by rw [spMap_rid, Category.comp_id]; exact pullback.condition)`. Take `⟨c', hc'⟩` from `hq.1 c`. Establish `hc'P : c'.Principal` using `hq.2.1 c c' hc' hc`.
+
+Take `⟨S₁, π₁, C, hπf, hπe, hπs, hCrel, -⟩` from `GlobalTheory.T.exists_finite_etale_deeper_level_siegel_cover h n N (cycAway n) (cycAway N) (zetaAway n) (cycBase hN0) j S' t c' hn hN hnN (by rw [cycBase_ζ]; exact hjz) hc'P`. Set `p : S₁ ⟶ S` to `π₁ ≫ q`. Establish `: IsFinite p` using `by dsimp [p, q]; infer_instance`. Establish `: Etale p` using `by dsimp [p, q]; infer_instance`. Establish `: Surjective p` using `by dsimp [p, q]; infer_instance`.
+
+Establish `hp : p ≫ s' = (π₁ ≫ t) ≫ spMap j`. Simplify using `only [p, q, t, Category.assoc, pullback.condition]`. Establish `hred : IsReduced S₁` using `GlobalTheory.isReduced_of_smooth_of_isReduced p`. Establish `hden : Dense {x : S₁ | ((π₁ ≫ t) x).asIdeal = ⊥}`. Establish `: UniversallyOpen p` using `UniversallyOpen.of_flat p`.
+
+Establish `e : ∀ x, s' (p x) = spMap j ((π₁ ≫ t) x)` using `fun x => by`. Rewrite using `[← Scheme.Hom.comp_apply, hp, Scheme.Hom.comp_apply]`. Use `hd.preimage p.isOpenMap using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Use `show ((π₁ ≫ t) x).asIdeal = ⊥ ↔ (s' (p x)).asIdeal = ⊥`.
+
+Rewrite using `[e, asIdeal_eq_bot_iff j hj hfin]`. Establish `hCP : C.Principal` using `sRel_principal hCrel hc'P`. Take `⟨f₁, hf₁s, hf₁⟩` from `F.rep S₁ (π₁ ≫ t) C hred hden hCP`. Take `⟨c₀, hC0, h0C⟩` from `GlobalTheory.T.exists_siegelObject_lowered_level h n N (cycAway n) (cycAway N) (zetaAway n) (zetaAway N) j S₁ (π₁ ≫ t) C hN0 (isUnit_natCast hN0) hnN hjz`. Establish `hf₁N : SRel C F.univ (N / n) (N / n) f₁` using `sRel_scale ((sRel_one_one_iff _ _ _).2 hf₁) _`.
+
+Establish `h0F : SRel c₀ F.univ 1 (N / n) f₁` using `by simpa using sRel_comp hf₁N h0C`. Take `⟨g, hg⟩ : ∃ g : S₁ ⟶ Q.X, g = f₁ ≫ Q.π` from `⟨_, rfl⟩`. Establish `hgQ : SRel C Q.univ (N / n) 1 g` using `hg ▸ sRel_comp Q.low hf₁N`. Establish `h0Q : SiegPB c₀ Q.univ g` using `(sRel_one_one_iff _ _ _).1 (by simpa using sRel_comp hgQ h0C)`. Establish `hCc : SRel C c (N / n) 1 p` using `sRel_comp ((sRel_one_one_iff _ _ _).2 hc') hCrel`.
+
+Establish `h0c₁ : SRel c₀ c 1 1 p` using `by simpa using sRel_comp hCc h0C`. Establish `hf₁p : f₁ ≫ F.s ≫ spMap j = p ≫ s'` using `by rw [← Category.assoc, hf₁s, hp]`. Establish `hgs : g ≫ Q.s = p ≫ s'` using `by rw [hg, Category.assoc, Q.base]; exact hf₁p`. Establish `key : pullback.fst p p ≫ g = pullback.snd p p ≫ g`. Establish `: IsReduced (pullback p p)` using `GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.fst p p)`.
+
+Establish `: IsSeparated Q.s` using `isSeparated_of_isQProjOver Q.qproj`. Use `(GlobalTheory.hom_eq_iff_forall_isAlgClosed Q.s ?_).2 fun K _ _ x => ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, hgs, pullback.condition_assoc]`. Take `⟨cx, hcx⟩` from `exists_pull c₀ (x ≫ pullback.fst p p)`. Establish `hx₁` using `(sRel_one_one_iff _ _ _).2 hcx`.
+
+Establish `hx₂ : SRel cx c₀ 1 1 (x ≫ pullback.snd p p)`. Use `sRel_cancel h0c₁ ?_` and prove the remaining obligations. Use `sRel_comp h0c₁ hx₁` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`.
+
+Establish `e` using `Q.fibre K (x ≫ pullback.fst p p ≫ f₁) (x ≫ pullback.snd p p ≫ f₁) _ cx (by simp only [Category.assoc, hf₁p, pullback.condition_assoc]) (by simpa only [Category.assoc] using sRel_comp h0F hx₁) (by simpa only [Category.assoc] using sRel_comp h0F hx₂)`. Simplify `e` using `only [hg, Category.assoc]`. Establish `hcoeq : ∀ {Z : Scheme.{0}} (g₁ g₂ : Z ⟶ S₁), g₁ ≫ p = g₂ ≫ p → g₁ ≫ g = g₂ ≫ g` using `fun g₁ g₂ e => by`. Use `pullback.lift g₁ g₂ e ≫= key` as an intermediate fact. Rewrite `this` using `[pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Then use the resulting hypothesis.
+
+Establish `hfac : p ≫ EffectiveEpi.desc p g hcoeq = g` using `EffectiveEpi.fac p g hcoeq`. Use `⟨EffectiveEpi.desc p g hcoeq, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi p, ← Category.assoc, hfac, hgs]`. Conclude with `GlobalTheory.T.siegPB_of_finite_etale_surjective_cover h n (cycAway n) (cycBase hn0) S S₁ Q.X s' ((π₁ ≫ t) ≫ spMap j) Q.s c c₀ Q.univ p _ hn (hN.of_dvd_nat hnN) Q.princ inferInstance inferInstance inferInstance ((sRel_one_one_iff _ _ _).1 h0c₁) (hfac.symm ▸ h0Q)`.
+-/
 theorem quotFam_represents : ∀ (h n N : ℕ) (F : SFam h N (zetaAway N)) (j : cycAway n →+* cycAway N) (Q : SQuot F n (zetaAway n) j), 3 ≤ n → Odd N → n ∣ N → Function.Injective j → j (zetaAway n) = zetaAway N ^ (N / n) → IsFinite (spMap j) → Etale (spMap j) → Surjective (spMap j) → ∀ (S : Scheme.{0}) (s' : S ⟶ Sp (cycAway n)) (c : SiegPre h n (zetaAway n) s'), IsReduced S → Dense {x : S | (s' x).asIdeal = ⊥} → c.Principal → ∃ f : S ⟶ Q.X, f ≫ Q.s = s' ∧ SiegPB c Q.univ f := by
   intro h n N F j Q hn hN hnN hj hjz hfin het hsurj S s' c hS hd hc
   have hN0 : N ≠ 0 := hN.pos.ne'

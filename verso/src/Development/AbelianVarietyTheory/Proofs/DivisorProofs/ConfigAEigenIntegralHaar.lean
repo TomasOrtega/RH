@@ -14,6 +14,45 @@ open GlobalTheory.Doubling (absE)
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' cfg e hev K μK μ hK hμK hμ X om om' om₁ om₁' T T₁ Φ hΦ t h₁ m hL h`. Establish `hS : Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))`. Use `Submodule.span_le.mpr ?_ hΦ` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hφ, hv, rfl⟩`. Use `GlobalTheory.TensUniq.pure_mem_schA f φ hφ ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hv, T.geo.hM.std] with v h1 h2`. Rewrite using `[h1, h2]`. Establish `hpres : ∀ x, ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), om x Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))` using `fun x Ψ hΨ => (T.weil.isUSplitting).pres x Ψ hΨ`. Establish `himpl` using `(T.weil.isUSplitting).impl`. Establish `hrho : ∀ w, ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), G.M.co.rho B.ψ w Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))` using `fun w Ψ hΨ => GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ T.base.std w Ψ hΨ`.
+
+Establish `hcm` using `T.base.cm`. Use `set z : ℕ := (b + 2 - a') / 2 with hz`. Use `set ct : (AE F E)ˣ := Units.map (cA σ).toMonoidHom t with hct`. Use `set Ψ0 := om (1, h) Φ with hΨ0`. Establish `hΨ0s : Ψ0 ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))` using `hpres _ _ hS`.
+
+Establish `hνF : ∀ a : (HeckeCharacterZeroLocus.ThmBIn.AF F)ˣ, X.ν (HeckeCharacterZeroLocus.ThmBIn.idF F E a) = 1`. Introduce `a`. Establish `e1 : (X.α (HeckeCharacterZeroLocus.ThmBIn.idF F E a) : ℂ) = _` using `T.chars.resα a`. Establish `e2 : (X.β (HeckeCharacterZeroLocus.ThmBIn.idF F E a) : ℂ) = _` using `T.chars.resβ a`. Establish `hpar : a' % 2 = (b + 2) % 2`.
+
+Take `⟨k, hk⟩` from `T.geo.even`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Circle.coe_eq_one, Chars.ν, MonoidHom.div_apply, Circle.coe_div, e1, e2]`. Use `split_ifs`. Simplify using the standard rewrite rules.
+
+Rewrite using `[neg_one_pow_eq_pow_mod_two (R := ℂ), hpar, ← neg_one_pow_eq_pow_mod_two (R := ℂ)]`. Conclude with `div_self (pow_ne_zero _ (by norm_num))`. Establish `hνct : X.ν ct = (X.ν t)⁻¹` using `GlobalTheory.ideleChar_conj_eq_inv_of_trivial_on_base F E σ hcm X.ν hνF t ct rfl`. Establish `habs : absE F E ct = absE F E t` using `GlobalTheory.Doubling.absE_conjUnit σ t`. Establish `hlt : a' < b + 2` using `T.geo.lt`.
+
+Establish `h2z : 2 * z + a' = b + 2`. Take `⟨k, hk⟩` from `T.geo.even`. Use linear arithmetic over natural numbers and integers. Establish `hr : (0 : ℝ) < (absE F E t : ℝ)`. Establish `h1 : absE F E t * absE F E t⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`.
+
+Establish `h2 : absE F E t ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Conclude with `pos_iff_ne_zero.mpr h2` after adjusting the coercions. Establish `hsc : (X.β t : ℂ) * (((absE F E t : ℝ) ^ (((b + 2 : ℕ) : ℝ) / 2) : ℝ) : ℂ) = (X.α t : ℂ) * (((absE F E t : ℝ) ^ ((a' : ℝ) / 2) : ℝ) : ℂ) * ((X.ν ct : ℂ) * ((absE F E ct : ℝ) : ℂ) ^ z)`. Establish `hexp : ((b + 2 : ℕ) : ℝ) / 2 = (a' : ℝ) / 2 + (z : ℝ)`. Establish `: ((2 * z + a' : ℕ) : ℝ) = ((b + 2 : ℕ) : ℝ)` using `by rw [h2z]`.
+
+Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hνct, habs, hexp, Real.rpow_add hr, Real.rpow_natCast, Chars.ν, MonoidHom.div_apply, Circle.coe_inv, Circle.coe_div]`. Establish `hα : (X.α t : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `hβ : (X.β t : ℂ) ≠ 0` using `Circle.coe_ne_zero _`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `s1 : ∀ (k : K) l, G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) (om (1, m * h) Φ)) = om (1, m) (G.M.co.rho B.ψ (shiftA H H' (l * ct)) (om (k.1, 1) Ψ0))`. Introduce `k l`. Establish `hc : om (k.1, 1) (om (1, m * h) Φ) = om (1, m) (om (k.1, 1) Ψ0)`.
+
+Simplify using `only [hΨ0, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[hc, himpl (1, m) _ _ (hpres _ _ hΨ0s)]`. Use `congr 1`.
+
+Establish `hy` using `hL.2.1`. Use `show l.1 • Matrix.vecMulVec (incV F H.x) (incV F H'.y) = (1 : Matrix (Fin (b + 2)) (Fin (b + 2)) (AE F E)) * ((l * ct).1 • Matrix.vecMulVec (incV F H.x) (incV F H'.y)) * (mat m)ᵀ`. Rewrite using `[Matrix.one_mul]`. Use extensionality with `i j`. Establish `hyj` using `congrFun hy j`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hyj`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]`. Establish `hs : ∀ k, (l * ct).1 * (incV F H.x i * incV F H'.y k) * mat m j k = ((l * ct).1 * incV F H.x i) * (mat m j k * incV F H'.y k)` using `fun k => by ring`. Simplify using `only [hs, ← Finset.mul_sum, hyj]`. Establish `hu : (l * ct).1 * (cA σ) (t⁻¹).1 = l.1`.
+
+Rewrite using `[Units.val_mul, hct]`. Use `show l.1 * (cA σ) t.1 * (cA σ) (t⁻¹).1 = l.1`. Rewrite using `[mul_assoc, ← map_mul, Units.mul_inv, map_one, mul_one]`. Rewrite using `[← hu]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `key : cone B G.M om e K μK μ (shiftA H H') X.ν z (om (1, m * h) Φ) = ((X.α t : ℂ) * (((absE F E t : ℝ) ^ ((a' : ℝ) / 2) : ℝ) : ℂ)) • om₁ (1, h₁) (cone B G.M om e K μK μ (shiftA H H') X.ν z Ψ0)`. Rewrite using `[GlobalTheory.T.doubling_haar_eigen_unfolding hKP F E σ B b a' G G₁ H H' cfg e hev K μK μ hK hμK hμ X om om' om₁ om₁' T T₁ h₁ Ψ0 hΨ0s]`. Use function extensionality and compare the values at `y`. Simplify using `only [cone, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `: BorelSpace (AE F E)ˣ` using `⟨rfl⟩`. Rewrite using `[← integral_const_mul]`. Use `conv_rhs => rw [← integral_mul_right_eq_self (μ := μ) _ ct]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `l`. Rewrite using `[s1 k l, GlobalTheory.T.doubling_levi_translation_identity hKP F E σ B b a' G G₁ H H' cfg e hev X om om' om₁ om₁' T T₁ t h₁ m hL _ (hrho _ _ (hpres _ _ hΨ0s)), Pi.smul_apply, smul_eq_mul, hsc, map_mul, map_mul, Circle.coe_mul, NNReal.coe_mul, Complex.ofReal_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlin : ∀ (c : ℂ) (φ : Fn F b (b + a')) (x : UA σ G₁.W.J), G₁.M.I om₁ (c • φ) x = c * G₁.M.I om₁ φ x`.
+
+Introduce `c φ x`. Simplify using `only [Model.I, theta, map_smul, thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]`. Conclude with `integral_const_mul _ _`. Establish `hmove : ∀ (φ : Fn F b (b + a')), G₁.M.I om₁ (om₁ (1, h₁) φ) 1 = G₁.M.I om₁ φ h₁`. Introduce `φ`.
+
+Simplify using `only [Model.I, theta]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show thetaSum F (om₁ (g, 1) (om₁ (1, h₁) φ)) = thetaSum F (om₁ (g, h₁) φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`. Rewrite using `[key, hlin, hmove]`.
+-/
 theorem GlobalTheory.ThK.cone_levi_law : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

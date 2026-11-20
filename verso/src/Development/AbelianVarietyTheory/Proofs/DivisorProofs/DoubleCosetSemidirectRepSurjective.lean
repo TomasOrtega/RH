@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `P M N _ _ _ s π u hs _ hker KP KM L hKs _ _ TM CM TP CP _ hTP _ _ d`. Take `⟨t, ht, k, hk, hm⟩` from `(DoubleCoset.eq TM KM (Quotient.out (DoubleCoset.mk TM KM (π (Quotient.out d)))) (π (Quotient.out d))).1 (DoubleCoset.out_eq' TM KM _)`. Generalize the expression as in `Quotient.out (DoubleCoset.mk TM KM (π (Quotient.out d))) = q at hm ⊢`. Take `⟨X, hX⟩` from `(hker ((s q)⁻¹ * (s t)⁻¹ * Quotient.out d * (s k)⁻¹)).1 (by`. Simplify using `only [map_mul, map_inv, hs]`.
+
+Rewrite using `[hm]`. Use the proof step `group)`. Use `⟨X, ?_⟩` and prove the remaining obligations. Rewrite using `[hX]`. Use `conv_rhs => rw [← DoubleCoset.out_eq' TP KP d]`.
+
+Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨s t, (hTP _).2 ⟨t, ht, rfl⟩, s k, hKs k hk, by group⟩`.
+-/
 theorem doubleCoset_semidirect_surj :
     ∀ (P M N : Type) [Group P] [Group M] [Group N] (s : M →* P) (π : P →* M) (u : N →* P),
       (∀ m, π (s m) = m) → Function.Injective u → (∀ p, π p = 1 ↔ ∃ X, u X = p) →

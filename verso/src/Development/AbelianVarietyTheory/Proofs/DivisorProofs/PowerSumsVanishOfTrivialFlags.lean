@@ -12,6 +12,13 @@ variable {p : ℕ} [Fact p.Prime]
 open Matrix NumberField in
 open scoped TensorProduct Classical in
 variable {p : ℕ} [Fact p.Prime] in
+/- English proof (translation)
+Establish `hc : ∀ u : InfinitePlace K, u.IsComplex` using `fun u => IsTotallyComplex.isComplex u`. Set `P : mixedEmbedding.mixedSpace K →ₗ[ℝ] (InfinitePlace K → ℂ)` to `{ toFun := fun x u => x.2 ⟨u, hc u⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hP : ∀ f : K, P (mixedEmbedding K f) = fun u => u.embedding f`. Introduce `f`. Use function extensionality and compare the values at `u`.
+
+Conclude with `mixedEmbedding.mixedEmbedding_apply_isComplex K f ⟨u, hc u⟩`. Establish `hmem : ((0, fun u => w u.1) : mixedEmbedding.mixedSpace K) ∈ Submodule.span ℝ (Set.range (mixedEmbedding.latticeBasis K))`. Rewrite using `[(mixedEmbedding.latticeBasis K).span_eq]`. Discharge the goal by the elementary cases of `trivial`. Establish `hmap` using `Submodule.mem_map_of_mem (f := P) hmem`.
+
+Rewrite `hmap` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ hmap` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `⟨_, (by rw [mixedEmbedding.latticeBasis_apply, hP])⟩`.
+-/
 private theorem mem_span_infinitePlace_embedding (K : Type) [Field K] [NumberField K]
     [IsTotallyComplex K] (w : InfinitePlace K → ℂ) :
     w ∈ Submodule.span ℝ (Set.range fun (f : K) (u : InfinitePlace K) => u.embedding f) := by
@@ -35,6 +42,27 @@ private theorem mem_span_infinitePlace_embedding (K : Type) [Field K] [NumberFie
 open Matrix NumberField in
 open scoped TensorProduct Classical in
 variable {p : ℕ} [Fact p.Prime] in
+/- English proof (translation)
+Use `letI : Algebra G.F ℂ := v.embedding.toAlgebra`. Establish `hsc : ∀ f : G.F, algebraMap G.F (Matrix (Fin G.n) (Fin G.n) ℂ) f = Matrix.scalar (Fin G.n) (v.embedding f)`. Introduce `f`. Use extensionality with `i j`. Simplify using `[Matrix.algebraMap_matrix_apply, Matrix.scalar_apply, Matrix.diagonal_apply, RingHom.algebraMap_toAlgebra]`.
+
+Set `ψ : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) ℂ` to `{ G.psi v with commutes' := fun f => by`. Simplify using `only [RingHom.toMonoidHom_eq_coe, OneHom.toFun_eq_coe, MonoidHom.toOneHom_coe, MonoidHom.coe_coe]`. Rewrite using `[G.psi_F, hsc] }`. Set `φ : ℂ ⊗[G.F] G.C →ₐ[ℂ] Matrix (Fin G.n) (Fin G.n) ℂ` to `Algebra.TensorProduct.lift (Algebra.ofId ℂ _) ψ (fun z c => Algebra.commutes z _)`. Establish `hφ : ∀ (z : ℂ) (c : G.C), φ (z ⊗ₜ c) = z • G.psi v c`.
+
+Introduce `z c`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.lift (Algebra.ofId ℂ _) ψ _) (z ⊗ₜ[G.F] c) = _`. Use `erw [Algebra.TensorProduct.lift_tmul]`. Rewrite using `[Algebra.ofId_apply, Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Establish `hn : 0 < G.n` using `G.n_pos`. Establish `hinj : Function.Injective φ`. Set `χ : G.C ⊗[G.F] ℂ →+* Matrix (Fin G.n) (Fin G.n) ℂ` to `φ.toRingHom.comp (Algebra.TensorProduct.comm G.F G.C ℂ).toRingEquiv.toRingHom`. Establish `hker : TwoSidedIdeal.ker χ = ⊥`. Assume the negation of the conclusion as `h`.
+
+Take `⟨b, hb, hmem⟩` from `_root_.GroundTheory.Brauer.exists_one_tmul_mem_of_ne_bot (TwoSidedIdeal.ker χ) h`. Rewrite `hmem` using `[TwoSidedIdeal.mem_ker]`. Establish `h1 : χ (1 ⊗ₜ b) = b • (1 : Matrix (Fin G.n) (Fin G.n) ℂ)`. Express the relevant statement in the definitionally equal form `φ ((Algebra.TensorProduct.comm G.F G.C ℂ) (1 ⊗ₜ b)) = _`. Rewrite using `[Algebra.TensorProduct.comm_tmul, hφ, map_one]`.
+
+Rewrite `h1` using `[hmem]`. Establish `h2` using `congrFun (congrFun h1 ⟨0, hn⟩) ⟨0, hn⟩`. Simplify using `at h2`. Conclude with `hb h2.symm`. Establish `hχ : Function.Injective χ` using `(TwoSidedIdeal.ker_eq_bot χ).1 hker`.
+
+Introduce `x y hxy`. Apply `(Algebra.TensorProduct.comm G.F G.C ℂ).symm.injective` to reduce the goal to its premises. Apply `hχ` to reduce the goal to its premises. Simplify `hxy` using `[χ]`. Establish `hrank : Module.finrank ℂ (ℂ ⊗[G.F] G.C) = Module.finrank ℂ (Matrix (Fin G.n) (Fin G.n) ℂ)`.
+
+Rewrite using `[Module.finrank_baseChange, G.rankC, Module.finrank_matrix, Module.finrank_self]`. Simplify using `[sq]`. Establish `hsurj : Function.Surjective φ.toLinearMap` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrank).1 hinj`. Take `⟨t, rfl⟩` from `hsurj M`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul z c`. Express the relevant statement in the definitionally equal form `φ (z ⊗ₜ c) ∈ _`. Rewrite using `[hφ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+
+Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+-/
 private theorem mem_span_range_psi {p : ℕ} [Fact p.Prime] (G : _root_.GlobalTheory.LKTrip.HTGroup p)
     (v : InfinitePlace G.F) (M : Matrix (Fin G.n) (Fin G.n) ℂ) :
     M ∈ Submodule.span ℂ (Set.range (G.psi v)) := by
@@ -99,6 +127,9 @@ open Matrix NumberField in
 open scoped TensorProduct Classical in
 variable {p : ℕ} [Fact p.Prime] in
 
+/- English proof (translation)
+The claim follows from `|((Module.finBasis ℚ G.C).repr c i : ℝ)| ≤ R * ∑ w : InfinitePlace G.F, ∑ a : Fin G.n, ∑ b : Fin G.n, ‖G.psi w c a b‖ := by intro p _ G classical let B := Module.finBasis ℚ G.C let Φ : G.C → (InfinitePlace G.F → Matrix (Fin G.n) (Fin G.n) ℂ) := fun c u => G.psi u c let L : (Fin ( …`.
+-/
 theorem _root_.GlobalTheory.CoordArch.coord_bound : ∀ (p : ℕ) [Fact p.Prime] (G : _root_.GlobalTheory.LKTrip.HTGroup p), ∃ R : ℝ, ∀ (c : G.C) (i : Fin (Module.finrank ℚ G.C)),
     |((Module.finBasis ℚ G.C).repr c i : ℝ)| ≤ R * ∑ w : InfinitePlace G.F, ∑ a : Fin G.n, ∑ b : Fin G.n, ‖G.psi w c a b‖ := by
   intro p _ G

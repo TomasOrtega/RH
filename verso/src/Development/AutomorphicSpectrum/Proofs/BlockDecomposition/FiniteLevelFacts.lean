@@ -20,11 +20,22 @@ def atHom (a b : ℕ) (w : Pl E) : Gf E a b →* GLw a w × GLw b w :=
   (GeneralLinearGroup.map (pLoc E w)).prodMap (GeneralLinearGroup.map (pLoc E w))
 
 omit [IsCMField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem atHom_apply (w : Pl E) (y : Gf E a b) : atHom a b w y = atW w y := rfl
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.EulerTwU.continuous_pc w).comp continuous_fst).prodMk ((GlobalTheory.EulerTwU.continuous_pc w).comp continuous_snd)`.
+-/
 theorem continuous_atHom (w : Pl E) : Continuous (atHom (E := E) a b w) :=
   ((GlobalTheory.EulerTwU.continuous_pc w).comp continuous_fst).prodMk ((GlobalTheory.EulerTwU.continuous_pc w).comp continuous_snd)
 
+/- English proof (translation)
+Use `Subgroup.isOpen_mono (H₁ := GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n) ?_ (GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E n)` and prove the remaining obligations. Introduce `g hg`. Take `⟨h1, h2⟩` from `(GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff E n).1 hg`. Use `Subgroup.mem_iInf.2 fun w => Subgroup.mem_comap.2 ?_` and prove the remaining obligations. Use `GlobalTheory.EulerTwU.mem_GLint _ _ (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations.
+
+Conclude with `GroundTheory.Global.mem_integralFiniteAdeles.1 (h1 i j) w`. Rewrite using `[← map_inv]`. Conclude with `GroundTheory.Global.mem_integralFiniteAdeles.1 (h2 i j) w`.
+-/
 theorem isOpen_Kf (n : ℕ) : IsOpen (Kf E n : Set (GL (Fin n) (Af E))) := by
   refine Subgroup.isOpen_mono (H₁ := GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E n) ?_
     (GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E n)
@@ -36,13 +47,26 @@ theorem isOpen_Kf (n : ℕ) : IsOpen (Kf E n : Set (GL (Fin n) (Af E))) := by
   · rw [← map_inv]
     exact GroundTheory.Global.mem_integralFiniteAdeles.1 (h2 i j) w
 
+/- English proof (translation)
+Establish `h : ∀ n, Continuous (thF E n)` using `fun n => GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _)`. Conclude with `((h a).comp continuous_fst).prodMk ((h b).comp continuous_snd)`.
+-/
 theorem continuous_thP : Continuous (thP E a b) := by
   have h : ∀ n, Continuous (thF E n) := fun n => GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _)
   exact ((h a).comp continuous_fst).prodMk ((h b).comp continuous_snd)
 
+/- English proof (translation)
+The claim follows from `Prod.ext (GlobalTheory.EulerTwU.thF_thF y.1) (GlobalTheory.EulerTwU.thF_thF y.2)`.
+-/
 theorem thP_thP (y : Gf E a b) : thP E a b (thP E a b y) = y :=
   Prod.ext (GlobalTheory.EulerTwU.thF_thF y.1) (GlobalTheory.EulerTwU.thF_thF y.2)
 
+/- English proof (translation)
+Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Establish `hT : {w | ¬ K2 a b w ≤ M w}.Finite` using `hK`. Establish `h1 : ∀ᶠ u in nhds (1 : Gf E a b), ∀ w ∈ {w | ¬ K2 a b w ≤ M w}, atHom a b w u ∈ M w` using `(Filter.eventually_all_finite hT).2 fun w _ => (continuous_atHom w).continuousAt.eventually_mem ((hM w).mem_nhds (by rw [map_one]; exact one_mem _))`. Establish `h2 : ∀ᶠ u in nhds (1 : Gf E a b), u ∈ ((Kf E a).prod (Kf E b) : Subgroup (Gf E a b))` using `((isOpen_Kf a).prod (isOpen_Kf b)).mem_nhds ⟨one_mem _, one_mem _⟩`. Use `filter_upwards [h1, h2] with u hu1 hu2`.
+
+Use `Subgroup.mem_iInf.2 fun w => Subgroup.mem_comap.2 ?_` and prove the remaining obligations. Distinguish the cases in `hw : K2 a b w ≤ M w`. Use `hw ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 hu2.1 w)`. Conclude with `Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 hu2.2 w)`.
+
+Conclude with `hu1 w hw`.
+-/
 theorem isOpen_family (M : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (hM : ∀ w, IsOpen (M w : Set (GLw a w × GLw b w)))
     (hK : ∀ᶠ w in cofinite, K2 a b w ≤ M w) :
     IsOpen ((⨅ w, (M w).comap (atHom a b w) : Subgroup (Gf E a b)) : Set (Gf E a b)) := by
@@ -62,6 +86,11 @@ theorem isOpen_family (M : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (hM : �
     · exact Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 hu2.2 w)
   · exact hu1 w hw
 
+/- English proof (translation)
+Take `⟨K₁, K₂, h₁, h₂, h₃⟩` from `h`. Use `⟨fun w => (K₁ w).prod (K₂ w), fun w => ?_, ?_, fun w => (h₃.1 w).2⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_prod]`. Conclude with `(h₁.1 w).1.prod (h₂.1 w).1`. Use `filter_upwards [h₁.2, h₂.2] with w e₁ e₂`.
+
+Rewrite using `[e₁, e₂]`.
+-/
 theorem exists_level_of_test {φ : ∀ w : Pl E, GLw a w × GLw b w → ℂ} (h : IsTestP φ) :
     ∃ L : ∀ w : Pl E, Subgroup (GLw a w × GLw b w), (∀ w, IsOpen (L w : Set (GLw a w × GLw b w))) ∧
       (∀ᶠ w in cofinite, L w = K2 a b w) ∧ ∀ w, ∀ k ∈ L w, ∀ x, φ w (k * x) = φ w x ∧ φ w (x * k) = φ w x := by
@@ -72,6 +101,21 @@ theorem exists_level_of_test {φ : ∀ w : Pl E, GLw a w × GLw b w → ℂ} (h 
   · filter_upwards [h₁.2, h₂.2] with w e₁ e₂
     rw [e₁, e₂]
 
+/- English proof (translation)
+Introduce `E _ _ _ _ a b S φ₁ φ₂ h₁ h₂`. Take `⟨L₁, o₁, e₁, i₁⟩` from `exists_level_of_test h₁`. Take `⟨L₂, o₂, e₂, i₂⟩` from `exists_level_of_test h₂`. Set `A : Subgroup (Gf E a b)` to `⨅ w, (L₁ w ⊓ L₂ w).comap (atHom a b w)`. Establish `hA : IsOpen (A : Set (Gf E a b))`.
+
+Use `isOpen_family _ (fun w => ?_) ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`. Conclude with `(o₁ w).inter (o₂ w)`. Use `filter_upwards [e₁, e₂] with w f₁ f₂`. Rewrite using `[f₁, f₂, inf_idem]`.
+
+Establish `mA : ∀ {u}, u ∈ A → ∀ w, atW w u ∈ L₁ w ⊓ L₂ w` using `fun hu w => Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 hu w)`. Use `⟨A ⊓ A.comap (thP E a b), ?_, fun u hu y => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hA.inter (hA.preimage continuous_thP)`. Establish `hu₁` using `mA hu.1`.
+
+Establish `hu₂` using `mA (Subgroup.mem_comap.1 hu.2)`. Establish `key : ∀ (w : Pl E) (f : GLw a w × GLw b w → ℂ) (k k' x : GLw a w × GLw b w), (∀ c ∈ ({k⁻¹, k'} : Set _), ∀ x, f (c * x) = f x ∧ f (x * c) = f x) → f (k⁻¹ * x * k') = f x`. Introduce `w f k k' x h`. Rewrite using `[(h k' (by simp) _).2, (h k⁻¹ (by simp) _).1]`. Unfold `finFn`.
+
+Use `finprod_congr fun w => finprod_congr fun _ => ?_` and prove the remaining obligations. Establish `m₁ : atW w (u⁻¹ * y * thP E a b u) = (atW w u)⁻¹ * atW w y * atW w (thP E a b u)`. Simplify using `only [← atHom_apply, map_mul, map_inv]`. Establish `m₂ : atW w (thP E a b (u⁻¹ * y * thP E a b u)) = (atW w (thP E a b u))⁻¹ * atW w (thP E a b y) * atW w u`. Simplify using `only [← atHom_apply, map_mul, map_inv, thP_thP]`.
+
+Rewrite using `[m₁, m₂, key w (φ₁ w), key w (φ₂ w)]`. Introduce `c hc x`. Break down `hc with rfl | rfl` into its components or cases. Conclude with `i₂ w _ (inv_mem (hu₂ w).2) x`. Conclude with `i₂ w _ (hu₁ w).2 x`.
+
+Introduce `c hc x`. Break down `hc with rfl | rfl` into its components or cases. Conclude with `i₁ w _ (inv_mem (hu₁ w).1) x`. Conclude with `i₁ w _ (hu₂ w).1 x`.
+-/
 theorem finLevel : FinLevel := by
   intro E _ _ _ _ a b S φ₁ φ₂ h₁ h₂
   obtain ⟨L₁, o₁, e₁, i₁⟩ := exists_level_of_test h₁

@@ -12,6 +12,15 @@ namespace CompanionTheory.D.LK
 open Formalism.REAL GlobalTheory.CompanionTheory.DSVerma GlobalTheory.CompanionTheory.DSCover
 open CompanionTheory.D.DSIC (KRel NC)
 
+/- English proof (translation)
+Rewrite using `[f.as_sum, map_sum]`. Use `totalDegree_finsetSum_le fun s hs => ?_` and prove the remaining obligations. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h0 : s i = 0`. Simplify using `[h0]`.
+
+Use `(totalDegree_monomial_le _ _).trans ?_` and prove the remaining obligations. Establish `e : s = (s - Finsupp.single i 1) + Finsupp.single i 1`. Rewrite using `[tsub_add_cancel_of_le]`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `e2` using `congrArg Finsupp.degree e`. Rewrite `e2` using `[map_add, Finsupp.degree_single]`. Establish `h3` using `(le_totalDegree hs).trans h`. Express the relevant statement in the definitionally equal form `s.degree ≤ k + 1 at h3`. Express the relevant statement in the definitionally equal form `(s - Finsupp.single i 1).degree ≤ k`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem deg_pderiv {σ : Type} (i : σ) (f : MvPolynomial σ ℂ) (k : ℕ) (h : f.totalDegree ≤ k + 1) :
     (pderiv i f).totalDegree ≤ k := by
   classical
@@ -32,17 +41,57 @@ theorem deg_pderiv {σ : Type} (i : σ) (f : MvPolynomial σ ℂ) (k : ℕ) (h :
     change (s - Finsupp.single i 1).degree ≤ k
     omega
 
+/- English proof (translation)
+Rewrite using `[totalDegree_eq_zero_iff_eq_C.1 (Nat.le_zero.1 h), pderiv_C]`.
+-/
 theorem pderiv_deg_zero {σ : Type} (i : σ) (f : MvPolynomial σ ℂ) (h : f.totalDegree ≤ 0) : pderiv i f = 0 := by
   rw [totalDegree_eq_zero_iff_eq_C.1 (Nat.le_zero.1 h), pderiv_C]
 
+/- English proof (translation)
+The claim follows from `(totalDegree_mul _ _).trans (by rw [totalDegree_X]; omega)`.
+-/
 theorem deg_X_mul {σ : Type} (j : σ) (f : MvPolynomial σ ℂ) : (X j * f).totalDegree ≤ f.totalDegree + 1 :=
   (totalDegree_mul _ _).trans (by rw [totalDegree_X]; omega)
 
+/- English proof (translation)
+Consider the cases of `h : f.totalDegree with`. Consider the case `zero => simp [pderiv_deg_zero i f h.le]`. Consider the case `succ k => exact (deg_X_mul _ _).trans (Nat.succ_le_succ (deg_pderiv i f k h.le))`.
+-/
 theorem deg_X_pderiv {σ : Type} (j i : σ) (f : MvPolynomial σ ℂ) : (X j * pderiv i f).totalDegree ≤ f.totalDegree := by
   cases h : f.totalDegree with
   | zero => simp [pderiv_deg_zero i f h.le]
   | succ k => exact (deg_X_mul _ _).trans (Nat.succ_le_succ (deg_pderiv i f k h.le))
 
+/- English proof (translation)
+Introduce `n ε`. Set `u : Fin n → Fin n → Module.End ℂ (MvPolynomial (NC ε) ℂ)` to `fun a c => (if a = c then 1 else 0) - dd ε a c`. Set `v : Fin n → Fin n → Module.End ℂ (MvPolynomial (NC ε) ℂ)` to `fun a c => (if a = c then 1 else 0) + dd ε a c`. Establish `hδ : ∀ (a c : Fin n) (T : Module.End ℂ (MvPolynomial (NC ε) ℂ)), Commute (if a = c then 1 else 0) T`. Introduce `a c T`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `⟨fun c d => ∑ i : NC ε, yy i * (u i.1.1 c * v d i.1.2), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c d e f`. Use `glRel_abstract yy u v ?_ ?_ ?_ ?_ ?_ ?_ ?_ c d e f` and prove the remaining obligations. Introduce `i j`.
+
+Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Simplify using `[yy, mul_left_comm]`. Introduce `a b c d`. Conclude with `(hδ _ _ _).sub_left ((hδ _ _ _).symm.sub_right (dd_comm _ _ _ _))`. Introduce `a b c d`.
+
+Conclude with `(hδ _ _ _).sub_left ((hδ _ _ _).symm.add_right (dd_comm _ _ _ _))`. Introduce `a b c d`. Conclude with `(hδ _ _ _).add_left ((hδ _ _ _).symm.add_right (dd_comm _ _ _ _))`. Introduce `a c j`. Rewrite using `[← dd_yy]`.
+
+Simplify using `only [u, sub_mul, mul_sub, (hδ a c (yy j)).eq]`. Normalize the expressions using the abelian group laws. Introduce `a c j`. Rewrite using `[← dd_yy]`. Simplify using `only [v, add_mul, mul_add, (hδ a c (yy j)).eq]`.
+
+Normalize the expressions using the abelian group laws. Introduce `d e`. Establish `h0 : ¬(ε d = true ∧ ε e = false) → dd ε d e = 0` using `fun h => dif_neg h`. Simplify using `only [u, v]`. Generalize the expression as in `dd ε d e = T at *`.
+
+Distinguish the cases in `hde : d = e`. Substitute `hde` using the available equality. Apply the tactic sequence `cases h : ε d <;> simp_all`. Apply the tactic sequence `cases h : ε d <;> cases h' : ε e <;> simp_all`. Introduce `i f`.
+
+Establish `hu : ∀ j : NC ε, u j.1.1 i.1.1 = if j.1.1 = i.1.1 then 1 else 0`. Introduce `j`. Simplify using `[u, dd, i.2.1]`. Establish `hv : ∀ j : NC ε, v i.1.2 j.1.2 = if i.1.2 = j.1.2 then 1 else 0`. Introduce `j`.
+
+Simplify using `[v, dd, i.2.2]`. Simplify using `only [hu, hv]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[yy]`. Introduce `j _ hj split_ifs with h1 h2`.
+
+Conclude with `absurd (Subtype.ext (Prod.ext h1 h2.symm)) hj`. Apply the tactic sequence `all_goals simp`. Simplify using the standard rewrite rules. Introduce `a b f`. Simplify using `[yy, LinearMap.sum_apply, map_sum]`.
+
+Introduce `c d f h`. Establish `hd : ∀ (i : NC ε) (a b : Fin n), (X i * dd ε a b f).totalDegree ≤ f.totalDegree` using `fun i a b => by`. Unfold `dd`. Use `split_ifs`. Conclude with `deg_X_pderiv _ _ f`.
+
+Simplify using the standard rewrite rules. Rewrite using `[LinearMap.sum_apply]`. Use `totalDegree_finsetSum_le fun i _ => ?_` and prove the remaining obligations. Establish `i1` using `i.2.1`. Establish `i2` using `i.2.2`.
+
+Consider the cases of `hc : ε c`. Establish `e1 : i.1.1 ≠ c` using `fun e => by rw [e, hc] at i1; exact Bool.noConfusion i1`. Establish `e2 : dd ε d i.1.2 = 0` using `dif_neg (by simp [← h, hc])`. Simplify using `only [u, v, if_neg e1, e2, yy, Module.End.mul_apply, add_zero, zero_sub, LinearMap.neg_apply, LinearMap.mulLeft_apply]`. Use `split_ifs`.
+
+Rewrite using `[mul_neg, totalDegree_neg]`. Conclude with `hd _ _ _`. Simplify using the standard rewrite rules. Establish `e1 : d ≠ i.1.2` using `fun e => by rw [← e, ← h, hc] at i2; exact Bool.noConfusion i2`. Establish `e2 : dd ε i.1.1 c = 0` using `dif_neg (by simp [hc])`.
+
+Simplify using `only [u, v, if_neg e1, e2, yy, Module.End.mul_apply, zero_add, sub_zero, LinearMap.mulLeft_apply]`. Use `split_ifs`. Conclude with `hd _ _ _`. Simplify using the standard rewrite rules.
+-/
 theorem generalized_verma_module_polynomial : Verma2 := by
   intro n ε
   let u : Fin n → Fin n → Module.End ℂ (MvPolynomial (NC ε) ℂ) := fun a c => (if a = c then 1 else 0) - dd ε a c
@@ -122,6 +171,11 @@ theorem generalized_verma_module_polynomial : Verma2 := by
       · exact hd _ _ _
       · simp
 
+/- English proof (translation)
+Introduce `a b c d h1 h2`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v z`. Establish `e1` using `LinearMap.congr_fun (hE a b c d h1 h2) v`. Establish `e2` using `LinearMap.congr_fun (hM a b c d) z`.
+
+Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at e1 e2`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.add_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, map_add, sub_eq_iff_eq_add.1 e1, sub_eq_iff_eq_add.1 e2, TensorProduct.add_tmul, TensorProduct.tmul_add, TensorProduct.sub_tmul, TensorProduct.tmul_sub]`. Apply the tactic sequence `split_ifs <;> simp <;> abel`.
+-/
 theorem kRel_tens {n : ℕ} {ε : Fin n → Bool} {V Z : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup Z] [Module ℂ Z]
     {E : Fin n → Fin n → Module.End ℂ V} {M : Fin n → Fin n → Module.End ℂ Z} (hE : KRel ε E) (hM : GlRel M) :
     KRel ε fun a b => ((E a b).rTensor Z + (M a b).lTensor V : Module.End ℂ (V ⊗[ℂ] Z)) := by
@@ -136,6 +190,61 @@ theorem kRel_tens {n : ℕ} {ε : Fin n → Bool} {V Z : Type} [AddCommGroup V] 
     TensorProduct.tmul_add, TensorProduct.sub_tmul, TensorProduct.tmul_sub]
   split_ifs <;> simp <;> abel
 
+/- English proof (translation)
+Introduce and unpack `n m ⟨Z, _, _, M, χ, z₀, a, d, Fil, hM, h1, h0, hF⟩`. Set `ε : Fin n → Bool` to `fun c => decide ((c : ℕ) ≤ m)`. Take `⟨M', hM', hX, hc, hdeg⟩` from `generalized_verma_module_polynomial n ε`. Set `P` to `MvPolynomial (NC ε) ℂ`. Set `cc : P →ₗ[ℂ] ℂ` to `MvPolynomial.lcoeff ℂ (0 : NC ε →₀ ℕ)`.
+
+Establish `hcc : ∀ f : P, cc f = constantCoeff f` using `fun f => rfl`. Set `y : Pos n → Module.End ℂ P` to `fun i => if h : ε i.1.1 = true ∧ ε i.1.2 = false then yy (⟨i.1, h⟩ : NC ε) else 0`. Set `S : ℕ → Set (Z ⊗[ℂ] P)` to `fun k => {t | ∃ k₁ z f, z ∈ Fil k₁ ∧ k₁ + f.totalDegree ≤ k ∧ t = z ⊗ₜ f}`. Establish `hin : ∀ {k k₁ : ℕ} {z : Z} {f : P}, z ∈ Fil k₁ → k₁ + f.totalDegree ≤ k → z ⊗ₜ[ℂ] f ∈ Submodule.span ℂ (S k)` using `fun hz hf => Submodule.subset_span ⟨_, _, _, hz, hf, rfl⟩`. Establish `hmap : ∀ (T : Module.End ℂ (Z ⊗[ℂ] P)) (k : ℕ) (Q : Submodule ℂ (Z ⊗[ℂ] P)), (∀ k₁ z f, z ∈ Fil k₁ → k₁ + f.totalDegree ≤ k → T (z ⊗ₜ f) ∈ Q) → ∀ t ∈ Submodule.span ℂ (S k), T t ∈ Q`.
+
+Introduce `T k Q h`. Use `fun t ht => (Submodule.span_le (p := Q.comap T)).2 ?_ ht` and prove the remaining obligations. Introduce and unpack `_ ⟨k₁, z, f, hz, hf, rfl⟩`. Conclude with `h k₁ z f hz hf`. Establish `hy : ∀ i f, (y i f).totalDegree ≤ f.totalDegree + 1` using `fun i f => by`.
+
+Simplify using `only [y]`. Use `split_ifs`. Conclude with `deg_X_mul _ _`. Simplify using the standard rewrite rules. Establish `hddl : ∀ a b (f : P) k, f.totalDegree ≤ k + 1 → (dd ε a b f).totalDegree ≤ k` using `fun a b f k h => by`.
+
+Unfold `dd`. Use `split_ifs`. Conclude with `deg_pderiv _ _ _ h`. Simplify using the standard rewrite rules. Establish `hdd0 : ∀ a b (f : P), f.totalDegree ≤ 0 → dd ε a b f = 0` using `fun a b f h => by`.
+
+Unfold `dd`. Use `split_ifs`. Conclude with `pderiv_deg_zero _ _ h`. Simplify using the standard rewrite rules. Use `⟨Z ⊗[ℂ] P, inferInstance, inferInstance, fun c e => (M c e).rTensor P + (M' c e).lTensor Z, χ ∘ₗ (TensorProduct.rid ℂ Z).toLinearMap ∘ₗ cc.lTensor Z, z₀ ⊗ₜ 1, fun i => (a i).rTensor P + (y i).lTensor Z, fun i => if (i.1.1 : ℕ) < m then (d i).rTensor P else (dd ε i.1.1 i.1.2).lTen …` and prove the remaining obligations.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v f => simp [hcc, hc, h0]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, add_zero]`. Introduce `i j`.
+
+Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `z f`. Establish `e1` using `LinearMap.congr_fun (hF.a_comm i j).eq z`. Establish `e2 : y i (y j f) = y j (y i f)`. Establish `hq : ∀ i, ∃ q : P, ∀ f, y i f = q * f` using `fun i => by`.
+
+Simplify using `only [y]`. Use `split_ifs`. Conclude with `⟨_, fun _ => rfl⟩`. Conclude with `⟨0, fun f => (zero_mul f).symm⟩`. Take `⟨q, hq1⟩` from `hq i`.
+
+Take `⟨q', hq2⟩` from `hq j`. Rewrite using `[hq1, hq2, hq2, hq1, mul_left_comm]`. Simplify using `only [Module.End.mul_apply] at e1`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, map_add, e1, e2]`. Normalize the expressions using the abelian group laws.
+
+Introduce `i j`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `z f`. Establish `e1` using `LinearMap.congr_fun (hF.d_comm i j).eq z`. Establish `e2` using `LinearMap.congr_fun (dd_comm (ε := ε) i.1.1 i.1.2 j.1.1 j.1.2).eq f`.
+
+Simplify using `only [Module.End.mul_apply] at e1 e2`. Apply the tactic sequence `split_ifs <;> simp [e1, e2]`. Introduce `i j hi`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `z f`.
+
+Distinguish the cases in `h : (i.1.1 : ℕ) < m`. Establish `e1` using `LinearMap.congr_fun (hF.da i j h) z`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at e1`. Simplify using `only [if_pos h, LinearMap.sub_apply, Module.End.mul_apply, LinearMap.add_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, map_add, sub_eq_iff_eq_add.1 e1, TensorProduct.add_tmul]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `e1 : dd ε i.1.1 i.1.2 (y j f) - y j (dd ε i.1.1 i.1.2 f) = if i = j then f else 0`. Simplify using `only [y]`. Distinguish the cases in `hj : ε j.1.1 = true ∧ ε j.1.2 = false`. Rewrite using `[dif_pos hj]`. Use `LinearMap.congr_fun (dd_yy i.1.1 i.1.2 (⟨j.1, hj⟩ : NC ε)) f` as an intermediate fact.
+
+Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at this`. Rewrite using `[this]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg e, if_neg fun h' => e (Subtype.ext (Prod.ext h'.1 h'.2))]`. Both sides reduce to the same expression. Rewrite using `[dif_neg hj, if_neg]`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`.
+
+Use `i.2` as an intermediate fact. Conclude with `hj ⟨by simp only [ε, decide_eq_true_eq]; omega, by simp only [ε, decide_eq_false_iff_not]; rw [Fin.lt_def] at this; omega⟩`. Simplify using `only [if_neg h, LinearMap.sub_apply, Module.End.mul_apply, LinearMap.add_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, map_add, sub_eq_iff_eq_add.1 e1, TensorProduct.tmul_add]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `k l hkl`.
+
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k₁, z, f, hz, hf, rfl⟩`. Conclude with `⟨k₁, z, f, hz, hf.trans hkl, rfl⟩`. Introduce `t`. Establish `hm : ∀ {k l}, k ≤ l → Submodule.span ℂ (S k) ≤ Submodule.span ℂ (S l)` using `fun hkl => Submodule.span_mono (by rintro _ ⟨k₁, z, f, hz, hf, rfl⟩; exact ⟨k₁, z, f, hz, hf.trans hkl, rfl⟩)`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul z f`. Take `⟨k, hk⟩` from `hF.exh z`. Conclude with `⟨_, hin hk le_rfl⟩`.
+
+Consider the case `add p q hp hq`. Take `⟨k, hk⟩` from `hp`. Take `⟨l, hl⟩` from `hq`. Conclude with `⟨max k l, Submodule.add_mem _ (hm (le_max_left _ _) hk) (hm (le_max_right _ _) hl)⟩`. Use `fun i k => hmap _ k _ fun k₁ z f hz hf => ?_` and prove the remaining obligations.
+
+Use `hy i f` as an intermediate fact. Rewrite using `[LinearMap.add_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul]`. Conclude with `Submodule.add_mem _ (hin (hF.a_mem i _ z hz) (by omega)) (hin hz (by omega))`. Introduce `i k`. Use `hmap (((M i.1.1 i.1.2).rTensor P + (M' i.1.1 i.1.2).lTensor Z) - ((a i).rTensor P + (y i).lTensor Z)) k _ fun k₁ z f hz hf => ?_` and prove the remaining obligations.
+
+Establish `e : (((M i.1.1 i.1.2).rTensor P + (M' i.1.1 i.1.2).lTensor Z) - ((a i).rTensor P + (y i).lTensor Z) : Module.End ℂ (Z ⊗[ℂ] P)) (z ⊗ₜ f) = (M i.1.1 i.1.2 z - a i z) ⊗ₜ f + z ⊗ₜ (M' i.1.1 i.1.2 f - y i f)`. Simplify using `only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, TensorProduct.sub_tmul, TensorProduct.tmul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `Submodule.add_mem _ (hin (hF.r_mem i _ z hz) hf) (hin hz (le_trans (Nat.add_le_add_left ?_ _) hf))` and prove the remaining obligations.
+
+Simplify using `only [y]`. Use `split_ifs with h`. Rewrite using `[hX ⟨i.1, h⟩]`. Simplify using `[yy]`. Rewrite using `[LinearMap.zero_apply, sub_zero]`.
+
+Use `hdeg _ _ _ ?_` and prove the remaining obligations. Use `i.2` as an intermediate fact. Rewrite `this` using `[Fin.lt_def]`. Simplify using `only [ε, decide_eq_true_eq, decide_eq_false_iff_not] at h ⊢`. Conclude with `decide_eq_decide.2 (by omega)`.
+
+Use `fun i k => hmap _ _ _ fun k₁ z f hz hf => ?_ split_ifs` and prove the remaining obligations. Consider the cases of `k₁ with`. Consider the case `zero => rw [LinearMap.rTensor_tmul, hF.d_zero i z hz, TensorProduct.zero_tmul]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ k₁ => rw [LinearMap.rTensor_tmul]; exact hin (hF.d_mem i _ z hz) (by omega)`.
+
+Rewrite using `[LinearMap.lTensor_tmul]`. Consider the cases of `hf' : f.totalDegree with`. Consider the case `zero => rw [hdd0 _ _ f hf'.le, TensorProduct.tmul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ l => have := hddl i.1.1 i.1.2 f l hf'.le; exact hin hz (by omega)`.
+
+Use `fun i => hmap _ _ ⊥ fun k₁ z f hz hf => ?_` and prove the remaining obligations. Take `rfl : k₁ = 0` from `by omega`. Use `split_ifs`. Simplify using `[hF.d_zero i z hz]`. Simplify using `[hdd0 _ _ f (by omega)]`.
+-/
 theorem free_module_induction : FreeStep := by
   rintro n m ⟨Z, _, _, M, χ, z₀, a, d, Fil, hM, h1, h0, hF⟩
   classical
@@ -289,6 +398,9 @@ theorem free_module_induction : FreeStep := by
     · simp [hF.d_zero i z hz]
     · simp [hdd0 _ _ f (by omega)]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Conclude with `⟨ℂ, inferInstance, inferInstance, 0, LinearMap.id, 1, 0, 0, fun _ => ⊤, fun _ _ _ _ => by simp, rfl, by simp, fun _ _ => Commute.refl _, fun _ _ => Commute.refl _, fun _ _ h => absurd h (Nat.not_lt_zero _), fun _ _ _ => le_rfl, fun _ => ⟨0, trivial⟩, fun _ _ _ _ => trivial, fun _ …`. Consider the case `succ m ih => exact free_module_induction n m ih`.
+-/
 theorem free_all (n m : ℕ) : Free n m := by
   induction m with
   | zero =>
@@ -298,6 +410,25 @@ theorem free_all (n m : ℕ) : Free n m := by
       fun _ _ _ _ => trivial, fun _ _ _ => rfl⟩
   | succ m ih => exact free_module_induction n m ih
 
+/- English proof (translation)
+Introduce `n ε V _ _ E hE`. Take `⟨Z, _, _, M, χ, z₀, a, d, Fil, hM, h1, h0, hF⟩` from `free_all n n`. Set `S : ℕ → Set (V ⊗[ℂ] Z)` to `fun k => {t | ∃ v z, z ∈ Fil k ∧ t = v ⊗ₜ z}`. Establish `hin : ∀ {k : ℕ} (v : V) {z : Z}, z ∈ Fil k → v ⊗ₜ[ℂ] z ∈ Submodule.span ℂ (S k)` using `fun v _ hz => Submodule.subset_span ⟨_, _, hz, rfl⟩`. Establish `hmap : ∀ (T : Module.End ℂ (V ⊗[ℂ] Z)) (k : ℕ) (Q : Submodule ℂ (V ⊗[ℂ] Z)), (∀ v z, z ∈ Fil k → T (v ⊗ₜ z) ∈ Q) → ∀ t ∈ Submodule.span ℂ (S k), T t ∈ Q`.
+
+Introduce `T k Q h`. Use `fun t ht => (Submodule.span_le (p := Q.comap T)).2 ?_ ht` and prove the remaining obligations. Introduce and unpack `_ ⟨v, z, hz, rfl⟩`. Conclude with `h v z hz`. Establish `hm : Monotone fun k => Submodule.span ℂ (S k)` using `fun k l hkl => Submodule.span_mono (by rintro _ ⟨v, z, hz, rfl⟩; exact ⟨v, z, hF.mono hkl hz, rfl⟩)`.
+
+Use `⟨V ⊗[ℂ] Z, inferInstance, inferInstance, fun c e => (E c e).rTensor Z + (M c e).lTensor V, (TensorProduct.rid ℂ V).toLinearMap ∘ₗ χ.lTensor V, kRel_tens hE hM, fun v => ⟨v ⊗ₜ z₀, by simp [h1]⟩, fun c e t => ?_, hA n ε _ _ (fun i => (a i).lTensor V) (fun i => (d i).lTensor V) (fun …` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v f => simp [h0]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Conclude with `fun i j => (hF.a_comm i j).map (Module.End.lTensorAlgHom ℂ Z V)`. Conclude with `fun i j => (hF.d_comm i j).map (Module.End.lTensorAlgHom ℂ Z V)`. Introduce `i j _`. Use `congrArg (Module.End.lTensorAlgHom ℂ Z V) (hF.da i j i.1.1.2)` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_mul, apply_ite (Module.End.lTensorAlgHom ℂ Z V), map_one, map_zero]`.
+
+Conclude with `this`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul v z`.
+
+Take `⟨k, hk⟩` from `hF.exh z`. Conclude with `⟨_, hin v hk⟩`. Consider the case `add p q hp hq`. Take `⟨k, hk⟩` from `hp`. Take `⟨l, hl⟩` from `hq`.
+
+Conclude with `⟨max k l, Submodule.add_mem _ (hm (le_max_left _ _) hk) (hm (le_max_right _ _) hl)⟩`. Conclude with `fun i k => hmap _ k _ fun v z hz => hin v (hF.a_mem i _ z hz)`. Introduce `i k`. Use `hmap (((E i.1.1 i.1.2).rTensor Z + (M i.1.1 i.1.2).lTensor V) - (a i).lTensor V) k _ fun v z hz => ?_` and prove the remaining obligations. Establish `e : (((E i.1.1 i.1.2).rTensor Z + (M i.1.1 i.1.2).lTensor V) - (a i).lTensor V : Module.End ℂ (V ⊗[ℂ] Z)) (v ⊗ₜ z) = E i.1.1 i.1.2 v ⊗ₜ z + v ⊗ₜ (M i.1.1 i.1.2 z - a i z)`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, TensorProduct.tmul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (hin _ hz) (hin _ (hF.r_mem i _ z hz))`. Conclude with `fun i k => hmap _ _ _ fun v z hz => hin v (hF.d_mem i _ z hz)`.
+
+Conclude with `fun i => hmap _ _ ⊥ fun v z hz => by simp [hF.d_zero i z hz]`.
+-/
 theorem cover2_of (hA : AcycAbs) : Cover2 := by
   intro n ε V _ _ E hE
   obtain ⟨Z, _, _, M, χ, z₀, a, d, Fil, hM, h1, h0, hF⟩ := free_all n n

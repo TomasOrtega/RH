@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.TopLevelInv
 
+/- English proof (translation)
+Introduce `D T L sc G t μ₀ hL j hj y`. Establish `hrank : (G.pS (.top t j)).rank = rankX D j` using `(G.isV (X := .top j) (show j ≤ D.R.m by omega) (fun _ h => by cases h)).rank`. Establish `hchr : G.chrS (.top t j) = L.mu t (j + 1)`. Rewrite using `[GridData.chrS, hrank]`. Simplify using `[Formalism.IndefR.Lift.attChr, GridData.chr, Nat.not_odd_iff_even.2 (even_rankX D j)]`.
+
+Establish `hE : ChrEq (L.mu t (j + 1)) (muBase L (j + 1) * L.xiH t)`. Establish `h1 : muBase L (j + 1) = L.C.mu0 ⟨j, by omega⟩` using `dif_pos (by omega)`. Rewrite using `[h1]`. Conclude with `GlobalTheory.TowerCharRead.chrEq_mul (hL.mu0 ⟨j, by omega⟩) (hL.xi t)`. Rewrite using `[hchr, map_prod]`.
+
+Rewrite using `[show ∀ (s : Finset (locPl G t)) (f : locPl G t → Circle), ((∏ w ∈ s, f w : Circle) : ℂ) = ∏ w ∈ s, (f w : ℂ) from fun s f => map_prod Circle.coeHom f s]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun f => ((f (y w) : ℂˣ) : ℂ)) (GlobalTheory.LFun.locChar_eq_of_chrEq hE w.1)`.
+-/
 theorem chrS_top_prod_locIdele : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {t μ₀ : T}, L.Is μ₀ →
     ∀ (j : ℕ), j + 1 < D.R.m → ∀ y : ∀ w : locPl G t, (Kw w.1)ˣ,
     ((G.chrS (.top t j) (∏ w : locPl G t, GlobalTheory.LFun.locIdele D.host.F w.1 (y w)) : Circle) : ℂ) =

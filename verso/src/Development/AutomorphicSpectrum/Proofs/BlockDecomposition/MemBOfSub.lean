@@ -22,32 +22,56 @@ section Basic
 
 variable {K L : Cx.{w} R}
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Conclude with `⟨z.1, z.2, rfl⟩`.
+-/
 theorem cls_surj (K : Cx.{w} R) (n : ℕ) (c : K.H n) : ∃ x hx, K.cls x hx = c := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ c
   exact ⟨z.1, z.2, rfl⟩
 
+/- English proof (translation)
+Unfold `Cx.cls`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+-/
 theorem cls_eq_zero (K : Cx.{w} R) {n : ℕ} (x : K.X n) (hx : K.d n x = 0) : K.cls x hx = 0 ↔ x ∈ K.B n := by
   unfold Cx.cls
   rw [Submodule.Quotient.mk_eq_zero]
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cls_congr (K : Cx.{w} R) {n : ℕ} {x y : K.X n} (e : x = y) (hx : K.d n x = 0) (hy : K.d n y = 0) :
     K.cls x hx = K.cls y hy := by
   subst e
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cls_add (K : Cx.{w} R) {n : ℕ} (x y : K.X n) (hx : K.d n x = 0) (hy : K.d n y = 0) (hz : K.d n (x + y) = 0) :
     K.cls (x + y) hz = K.cls x hx + K.cls y hy := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cls_sub (K : Cx.{w} R) {n : ℕ} (x y : K.X n) (hx : K.d n x = 0) (hy : K.d n y = 0) (hz : K.d n (x - y) = 0) :
     K.cls (x - y) hz = K.cls x hx - K.cls y hy := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapH_cls (φ : Cx.Hom K L (RingHom.id R)) (n : ℕ) (x : K.X n) (hx : K.d n x = 0) (h : L.d n (φ.f n x) = 0) :
     φ.mapH n (K.cls x hx) = L.cls (φ.f n x) h := rfl
 
+/- English proof (translation)
+The claim follows from `(cls_eq_zero K x hx).1 (Subsingleton.elim _ _)`.
+-/
 theorem mem_B_of_sub {n : ℕ} (h : Subsingleton (K.H n)) (x : K.X n) (hx : K.d n x = 0) : x ∈ K.B n :=
   (cls_eq_zero K x hx).1 (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Use `⟨fun c c' => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `cls_surj K n c`. Take `⟨y, hy, rfl⟩` from `cls_surj K n c'`. Rewrite using `[(cls_eq_zero K x hx).2 (h x hx), (cls_eq_zero K y hy).2 (h y hy)]`.
+-/
 theorem sub_of_mem_B {n : ℕ} (h : ∀ x, K.d n x = 0 → x ∈ K.B n) : Subsingleton (K.H n) := by
   refine ⟨fun c c' => ?_⟩
   obtain ⟨x, hx, rfl⟩ := cls_surj K n c
@@ -84,23 +108,38 @@ def altCx (R : Type) [CommRing R] : Cx.{0} R where
 def exH (R : Type) [CommRing R] : ∀ n, (altCx R).X n →ₗ[R] (altCx R).X n :=
   fun n => if n = 0 then LinearMap.id else 0
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(if (0 : ℕ) = 0 then LinearMap.id else 0 : R →ₗ[R] R) y = y`. Simplify using the standard rewrite rules.
+-/
 theorem exH_zero (R : Type) [CommRing R] (y : R) : (show R from exH R 0 y) = y := by
   change (if (0 : ℕ) = 0 then LinearMap.id else 0 : R →ₗ[R] R) y = y
   simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(if (1 : ℕ) = 0 then LinearMap.id else 0 : R →ₗ[R] R) y = 0`. Simplify using the standard rewrite rules.
+-/
 theorem exH_one (R : Type) [CommRing R] (y : R) : (show R from exH R 1 y) = 0 := by
   change (if (1 : ℕ) = 0 then LinearMap.id else 0 : R →ₗ[R] R) y = 0
   simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(if Even 0 then LinearMap.id else 0 : R →ₗ[R] R) y = y`. Simplify using the standard rewrite rules.
+-/
 theorem alt_zero (R : Type) [CommRing R] (y : R) : (show R from (altCx R).d 0 y) = y := by
   change (if Even 0 then LinearMap.id else 0 : R →ₗ[R] R) y = y
   simp
 
+/- English proof (translation)
+Use `⟨(1 : R), fun h0 => one_ne_zero (α := R) ?_⟩` and prove the remaining obligations. Establish `e : (show R from (altCx R).d 0 (show R from exH R 0 (1 : R))) - (show R from exH R 1 (show R from (altCx R).d 0 (1 : R))) = 0` using `h0`. Rewrite `e` using `[exH_zero, alt_zero, exH_one, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem exAD_ne (R : Type) [CommRing R] [Nontrivial R] : ∃ x : (altCx R).X 0, (AD.ofH (exH R)).r 0 x ≠ 0 := by
   refine ⟨(1 : R), fun h0 => one_ne_zero (α := R) ?_⟩
   have e : (show R from (altCx R).d 0 (show R from exH R 0 (1 : R))) - (show R from exH R 1 (show R from (altCx R).d 0 (1 : R))) = 0 := h0
   rwa [exH_zero, alt_zero, exH_one, sub_zero] at e
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(1 : R), fun h0 => one_ne_zero (α := R) ((exH_zero R 1).symm.trans h0)⟩`.
+-/
 theorem exNH_ne (R : Type) [CommRing R] [Nontrivial R] : ∃ x : (altCx R).X 0, (NH.ofH (exH R)).h 0 x ≠ 0 :=
   ⟨(1 : R), fun h0 => one_ne_zero (α := R) ((exH_zero R 1).symm.trans h0)⟩
 
@@ -112,6 +151,9 @@ def cone (t : AD K L) : Cx.{w} R where
     change L.d (n + 1) (L.d n x.1 + t.r n x.2) + t.r (n + 1) (K.d n x.2) = 0
     rw [map_add, L.dd, zero_add, t.anti]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cone_d (t : AD K L) (n : ℕ) (b : L.X n) (x : K.X n) :
     (cone t).d n ((b, x) : L.X n × K.X n) = ((L.d n b + t.r n x, K.d n x) : L.X (n + 1) × K.X (n + 1)) := rfl
 
@@ -136,6 +178,19 @@ def sec {t : AD K L} (u : NH t) : Cx.Hom K (cone t) (RingHom.id R) where
     rw [← u.eq n x, map_neg]
     abel
 
+/- English proof (translation)
+Use `sub_of_mem_B fun z hz => ?_` and prove the remaining obligations. Take `⟨b, x⟩` from `z`. Establish `h1 : L.d j b + t.r j x = 0` using `congrArg Prod.fst hz`. Establish `h2 : K.d j x = 0` using `congrArg Prod.snd hz`. Establish `h3 : L.d j (b + u.h j x) = 0`.
+
+Use `u.eq j x` as an intermediate fact. Rewrite `this` using `[h2, map_zero, sub_zero]`. Rewrite using `[map_add, this, h1]`. Establish `m1` using `mem_B_of_sub hL _ h3`. Establish `m2` using `mem_B_of_sub hK _ h2`.
+
+Consider the cases of `j with`. Consider the case `zero`. Establish `e2 : x = 0` using `m2`. Substitute `e2` using the available equality. Establish `e1 : b + u.h 0 0 = 0` using `m1`.
+
+Rewrite `e1` using `[map_zero, add_zero]`. Substitute `e1` using the available equality. Conclude with `Submodule.zero_mem _`. Consider the case `succ j`. Take `⟨c, hc⟩` from `m1`.
+
+Take `⟨y, rfl⟩` from `m2`. Use `⟨(c - u.h j y, y), ?_⟩` and prove the remaining obligations. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `L.d j (c - u.h j y) + t.r j y = b`. Rewrite using `[← u.eq j y, map_sub, hc]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem cone_one (t : AD K L) (u : NH t) (j : ℕ) (hL : Subsingleton (L.H j)) (hK : Subsingleton (K.H j)) :
     Subsingleton ((cone t).H j) := by
   refine sub_of_mem_B fun z hz => ?_
@@ -165,6 +220,17 @@ theorem cone_one (t : AD K L) (u : NH t) (j : ℕ) (hL : Subsingleton (L.H j)) (
     rw [← u.eq j y, map_sub, hc]
     abel
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hs (K.cls x hx)`. Take `⟨⟨b, y⟩, hz, rfl⟩` from `cls_surj _ _ c`. Establish `h1 : L.d j b + t.r j y = 0` using `congrArg Prod.fst hz`. Establish `h2 : K.d j y = 0` using `congrArg Prod.snd hz`. Establish `h3 : K.cls y h2 - K.cls x hx = 0` using `sub_eq_zero.2 hc`.
+
+Establish `h4 : y - x ∈ K.B j` using `(cls_eq_zero K (y - x) (by rw [map_sub, h2, hx, sub_zero])).1 h3`. Consider the cases of `j with`. Consider the case `zero`. Establish `e : y - x = 0` using `h4`. Rewrite `e` using `[sub_eq_zero]`.
+
+Substitute `e` using the available equality. Conclude with `⟨-b, by rw [map_neg]; exact (eq_neg_of_add_eq_zero_right h1).symm⟩`. Consider the case `succ j`. Take `⟨v, hv⟩` from `h4`. Use `⟨t.r j v - b, ?_⟩` and prove the remaining obligations.
+
+Establish `e : x = y - K.d j v` using `by rw [hv]; abel`. Use `t.anti j v` as an intermediate fact. Rewrite using `[e, map_sub, map_sub]`. Rewrite using `[eq_neg_of_add_eq_zero_left h1]`. Rewrite using `[eq_neg_of_add_eq_zero_left this]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem kill (t : AD K L) (j : ℕ) (hs : Function.Surjective ((pr t).mapH j)) (x : K.X j) (hx : K.d j x = 0) :
     t.r j x ∈ L.B (j + 1) := by
   obtain ⟨c, hc⟩ := hs (K.cls x hx)
@@ -192,10 +258,16 @@ theorem kill (t : AD K L) (j : ℕ) (hs : Function.Surjective ((pr t).mapH j)) (
 def secM (t : AD K L) (u : NH t) (c : ℕ) (l : K.H c →ₗ[R] L.H c) : K.H c →ₗ[R] (cone t).H c :=
   (sec u).mapH c + ((inc t).mapH c).comp l
 
+/- English proof (translation)
+Take `⟨b, hb, rfl⟩` from `cls_surj L c z`. Conclude with `(cls_eq_zero K _ _).2 (Submodule.zero_mem _)`.
+-/
 theorem pr_inc (t : AD K L) (c : ℕ) (z : L.H c) : (pr t).mapH c ((inc t).mapH c z) = 0 := by
   obtain ⟨b, hb, rfl⟩ := cls_surj L c z
   exact (cls_eq_zero K _ _).2 (Submodule.zero_mem _)
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `cls_surj K c y`. Express the relevant statement in the definitionally equal form `(pr t).mapH c ((sec u).mapH c (K.cls x hx) + (inc t).mapH c (l (K.cls x hx))) = _`. Rewrite using `[map_add, pr_inc, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem pr_secM (t : AD K L) (u : NH t) (c : ℕ) (l : K.H c →ₗ[R] L.H c) (y : K.H c) :
     (pr t).mapH c (secM t u c l y) = y := by
   obtain ⟨x, hx, rfl⟩ := cls_surj K c y
@@ -203,6 +275,17 @@ theorem pr_secM (t : AD K L) (u : NH t) (c : ℕ) (l : K.H c →ₗ[R] L.H c) (y
   rw [map_add, pr_inc, add_zero]
   rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `cls_surj K c y`. Establish `hz : L.d c (u.h c x - u'.h c x) = 0`. Establish `e` using `u.eq c x`. Establish `e'` using `u'.eq c x`.
+
+Rewrite `e`, `e'` using `[hx, map_zero, sub_zero]`. Rewrite using `[map_sub, e, e', sub_self]`. Express the relevant statement in the definitionally equal form `(sec u).mapH c (K.cls x hx) + (inc t).mapH c (l (K.cls x hx)) = (sec u').mapH c (K.cls x hx) + (inc t).mapH c (l' (K.cls x hx))`. Establish `e2 : (inc t).mapH c (l (K.cls x hx)) - (inc t).mapH c (l' (K.cls x hx)) = (inc t).mapH c (L.cls _ hz)` using `by rw [← map_sub, h x hx hz]`. Establish `e1 : (sec u).mapH c (K.cls x hx) - (sec u').mapH c (K.cls x hx) + (inc t).mapH c (L.cls _ hz) = 0`.
+
+Establish `hw : ((sec u).f c x - (sec u').f c x + (inc t).f c (u.h c x - u'.h c x)) = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(u.h c x) - -(u'.h c x) + (u.h c x - u'.h c x) = 0`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `x - x + 0 = 0`.
+
+Normalize the expressions using the abelian group laws. Establish `hc : ∀ v (hv : (cone t).d c v = 0), v = 0 → (cone t).cls v hv = 0`. Introduce `v hv e`. Substitute `e` using the available equality. Conclude with `((cls_eq_zero _ _ _).2 (Submodule.zero_mem _))`.
+
+Establish `hv : (cone t).d c ((sec u).f c x - (sec u').f c x + (inc t).f c (u.h c x - u'.h c x)) = 0` using `by rw [hw, map_zero]`. Conclude with `hc _ hv hw`. Rewrite using `[← sub_eq_zero]`. Establish `e3 : (sec u).mapH c (K.cls x hx) + (inc t).mapH c (l (K.cls x hx)) - ((sec u').mapH c (K.cls x hx) + (inc t).mapH c (l' (K.cls x hx))) = ((sec u).mapH c (K.cls x hx) - (sec u').mapH c (K.cls x hx) + (inc t).mapH c (L.cls _ hz)) + ((inc t).mapH c (l (K.cls x hx)) - (inc t).mapH c …` using `by abel`. Rewrite using `[e3, e1, e2, sub_self, add_zero]`.
+-/
 theorem secM_eq (t : AD K L) (u u' : NH t) (c : ℕ) (l l' : K.H c →ₗ[R] L.H c)
     (h : ∀ x hx hz, L.cls (u.h c x - u'.h c x) hz = l (K.cls x hx) - l' (K.cls x hx)) : secM t u c l = secM t u' c l' := by
   refine LinearMap.ext fun y => ?_
@@ -246,6 +329,13 @@ def coneHom (t : AD K L) (t' : AD K' L') (f : Cx.Hom K K' (RingHom.id R)) (g : C
     change L'.d n (g.f n x.1) + t'.r n (f.f n x.2) = g.f (n + 1) (L.d n x.1 + t.r n x.2)
     rw [hc, g.comm, map_add]
 
+/- English proof (translation)
+Establish `hi : ∀ z : L.H c, (inc t').mapH c (g.mapH c z) = (coneHom t t' f g hc).mapH c ((inc t).mapH c z)`. Introduce `z`. Take `⟨b, hb, rfl⟩` from `cls_surj L c z`. Establish `e : (inc t').f c (g.f c b) = (coneHom t t' f g hc).f c ((inc t).f c b)` using `Prod.ext rfl (by change 0 = f.f c 0; rw [map_zero])`. Conclude with `cls_congr _ e _ _`.
+
+Take `⟨x, hx, rfl⟩` from `cls_surj K c y`. Express the relevant statement in the definitionally equal form `(sec u').mapH c (f.mapH c (K.cls x hx)) + (inc t').mapH c (l' (f.mapH c (K.cls x hx))) = (coneHom t t' f g hc).mapH c ((sec u).mapH c (K.cls x hx) + (inc t).mapH c (l (K.cls x hx)))`. Rewrite using `[map_add, hl, hi]`. Use `congr 1`. Establish `e : (sec u').f c (f.f c x) = (coneHom t t' f g hc).f c ((sec u).f c x)` using `Prod.ext (by change -(u'.h c (f.f c x)) = g.f c (-(u.h c x)); rw [hu, map_neg]) rfl`.
+
+Conclude with `cls_congr _ e _ _`.
+-/
 theorem secM_nat (t : AD K L) (t' : AD K' L') (f : Cx.Hom K K' (RingHom.id R)) (g : Cx.Hom L L' (RingHom.id R))
     (hc : ∀ n x, t'.r n (f.f n x) = g.f (n + 1) (t.r n x)) (u : NH t) (u' : NH t') (c : ℕ) (l : K.H c →ₗ[R] L.H c)
     (l' : K'.H c →ₗ[R] L'.H c) (hu : ∀ x, u'.h c (f.f c x) = g.f c (u.h c x))
@@ -311,6 +401,11 @@ def shF (φ : Cx.Hom A A' (RingHom.id R)) : Cx.Hom (sh A) (sh A') (RingHom.id R)
       change -(A'.d n (φ.f n x)) = φ.f (n + 1) (-(A.d n x))
       rw [map_neg, φ.comm]
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Establish `e : x = 0` using `h`. Substitute `e` using the available equality. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `succ n`. Take `⟨y, rfl⟩` from `h`. Use `⟨(-y : A.X n), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(A.d n (-y)) = A.d n y`. Rewrite using `[map_neg, neg_neg]`.
+-/
 theorem sh_mem_B {n : ℕ} (x : A.X n) (h : x ∈ A.B n) : (show (sh A).X (n + 1) from x) ∈ (sh A).B (n + 1) := by
   cases n with
   | zero =>
@@ -323,6 +418,11 @@ theorem sh_mem_B {n : ℕ} (x : A.X n) (h : x ∈ A.B n) : (show (sh A).X (n + 1
     change -(A.d n (-y)) = A.d n y
     rw [map_neg, neg_neg]
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Take `⟨y, rfl⟩` from `h`. Conclude with `Submodule.zero_mem (A.B 0)`. Consider the case `succ n`.
+
+Take `⟨y, rfl⟩` from `h`. Use `⟨-(show A.X n from y), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.d n (-y) = -(A.d n y)`. Rewrite using `[map_neg]`.
+-/
 theorem mem_B_sh {n : ℕ} (x : (sh A).X (n + 1)) (h : x ∈ (sh A).B (n + 1)) : (show A.X n from x) ∈ A.B n := by
   cases n with
   | zero =>
@@ -334,6 +434,9 @@ theorem mem_B_sh {n : ℕ} (x : (sh A).X (n + 1)) (h : x ∈ (sh A).B (n + 1)) :
     change A.d n (-y) = -(A.d n y)
     rw [map_neg]
 
+/- English proof (translation)
+The claim follows from `neg_eq_zero.1 h`.
+-/
 theorem sh_cocycle {n : ℕ} (x : (sh A).X (n + 1)) (h : (sh A).d (n + 1) x = 0) : A.d n (show A.X n from x) = 0 :=
   neg_eq_zero.1 h
 
@@ -344,14 +447,25 @@ def eZ (A : Cx.{w} R) (n : ℕ) : (sh A).Z (n + 1) →ₗ[R] A.Z n :=
 def eH (A : Cx.{w} R) (n : ℕ) : (sh A).H (n + 1) →ₗ[R] A.H n :=
   Submodule.mapQ _ _ (eZ A n) fun z hz => mem_B_sh z.1 hz
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eH_cls (n : ℕ) (x : (sh A).X (n + 1)) (hx : (sh A).d (n + 1) x = 0) :
     eH A n ((sh A).cls x hx) = A.cls (show A.X n from x) (sh_cocycle x hx) := rfl
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `cls_surj _ _ y`. Both sides reduce to the same expression.
+-/
 theorem eH_shF (φ : Cx.Hom A A' (RingHom.id R)) (n : ℕ) (y : (sh A).H (n + 1)) :
     eH A' n ((shF φ).mapH (n + 1) y) = φ.mapH n (eH A n y) := by
   obtain ⟨x, hx, rfl⟩ := cls_surj _ _ y
   rfl
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Use `sub_of_mem_B fun x _ => ?_` and prove the remaining obligations. Establish `e : x = 0` using `Subsingleton.elim (α := PUnit.{w + 1}) _ _`. Rewrite using `[e]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `succ m`. Use `sub_of_mem_B fun x hx => ?_` and prove the remaining obligations. Conclude with `sh_mem_B _ (mem_B_of_sub (h m rfl) _ (sh_cocycle x hx))`.
+-/
 theorem sh_sub {n : ℕ} (h : ∀ m, m + 1 = n → Subsingleton (A.H m)) : Subsingleton ((sh A).H n) := by
   cases n with
   | zero =>
@@ -403,10 +517,16 @@ section Sys
 
 variable {ι : Type} [DecidableEq ι]
 
+/- English proof (translation)
+Simplify using `[Cos.d, LinearMap.sum_apply, Finset.sum_apply]`.
+-/
 theorem cech_d (P : PM.{w} R ι) (n : ℕ) (x : P.cech.X n) (i : Fin (n + 2) → ι) :
     P.cech.d n x i = ∑ k : Fin (n + 2), (-1 : ℤ) ^ (k : ℕ) • P.res (ent_comp i k.succAbove) (x (i ∘ k.succAbove)) := by
   simp [Cos.d, LinearMap.sum_apply, Finset.sum_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[cech_d, cech_d, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, hf]`.
+-/
 theorem cech_nat (P Q : PM.{w} R ι) (f : ∀ S, P.M S →ₗ[R] Q.M S)
     (hf : ∀ {S T : Finset ι} (h : S ⊆ T) x, f T (P.res h x) = Q.res h (f S x)) (n : ℕ) (x : P.cech.X n) :
     Q.cech.d n (fun i => f _ (x i)) = fun i => f _ (P.cech.d n x i) := by
@@ -421,24 +541,49 @@ def prodP (P Q : PM.{w} R ι) : PM.{w} R ι where
   res_id S h x := Prod.ext (P.res_id S h x.1) (Q.res_id S h x.2)
   res_comp h h' x := Prod.ext (P.res_comp h h' x.1) (Q.res_comp h h' x.2)
 
+/- English proof (translation)
+The claim follows from `cech_nat (prodP P Q) P (fun S => LinearMap.fst R _ _) (fun h x => rfl) n z`.
+-/
 theorem d_fst (P Q : PM.{w} R ι) (n : ℕ) (z : (prodP P Q).cech.X n) :
     P.cech.d n (fun i => (z i).1) = fun i => ((prodP P Q).cech.d n z i).1 :=
   cech_nat (prodP P Q) P (fun S => LinearMap.fst R _ _) (fun h x => rfl) n z
 
+/- English proof (translation)
+The claim follows from `cech_nat (prodP P Q) Q (fun S => LinearMap.snd R _ _) (fun h x => rfl) n z`.
+-/
 theorem d_snd (P Q : PM.{w} R ι) (n : ℕ) (z : (prodP P Q).cech.X n) :
     Q.cech.d n (fun i => (z i).2) = fun i => ((prodP P Q).cech.d n z i).2 :=
   cech_nat (prodP P Q) Q (fun S => LinearMap.snd R _ _) (fun h x => rfl) n z
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `Prod.ext (congrFun (d_fst P Q n (fun i => (x i, y i))) i).symm (congrFun (d_snd P Q n (fun i => (x i, y i))) i).symm`.
+-/
 theorem d_pair (P Q : PM.{w} R ι) (n : ℕ) (x : P.cech.X n) (y : Q.cech.X n) :
     (prodP P Q).cech.d n (fun i => (x i, y i)) = fun i => (P.cech.d n x i, Q.cech.d n y i) := by
   funext i
   exact Prod.ext (congrFun (d_fst P Q n (fun i => (x i, y i))) i).symm (congrFun (d_snd P Q n (fun i => (x i, y i))) i).symm
 
+/- English proof (translation)
+Rewrite using `[d_fst, d_snd, h]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem d_zero (P Q : PM.{w} R ι) (n : ℕ) (z : (prodP P Q).cech.X n) (h : (prodP P Q).cech.d n z = 0) :
     P.cech.d n (fun i => (z i).1) = 0 ∧ Q.cech.d n (fun i => (z i).2) = 0 := by
   rw [d_fst, d_snd, h]
   exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4⟩` from `hP`. Take `⟨b1, b2, b3, b4⟩` from `hQ`. Establish `aug : ∀ x : P.M ∅ × Q.M ∅, (prodP P Q).aug x = fun i => (P.aug x.1 i, Q.aug x.2 i)` using `fun _ => rfl`. Use `⟨fun x => ?_, fun x hx => ?_, fun y hy => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(prodP P Q).cech.d 0 ((prodP P Q).aug x) = 0`.
+
+Rewrite using `[aug, d_pair]`. Use function extensionality and compare the values at `i`. Conclude with `Prod.ext (congrFun (a1 x.1) i) (congrFun (b1 x.2) i)`. Establish `h1 : P.aug x.1 = 0` using `funext fun i => congrArg Prod.fst (congrFun hx i)`. Establish `h2 : Q.aug x.2 = 0` using `funext fun i => congrArg Prod.snd (congrFun hx i)`.
+
+Conclude with `Prod.ext (a2 x.1 h1) (b2 x.2 h2)`. Take `⟨e1, e2⟩` from `d_zero P Q 0 y hy`. Take `⟨x1, h1⟩` from `a3 _ e1`. Take `⟨x2, h2⟩` from `b3 _ e2`. Use `⟨(x1, x2), ?_⟩` and prove the remaining obligations.
+
+Rewrite `h1`, `h2`, the goal using `[one_smul]`. Rewrite using `[aug]`. Use function extensionality and compare the values at `i`. Conclude with `Prod.ext (congrFun h1 i) (congrFun h2 i)`. Take `⟨e1, e2⟩` from `d_zero P Q (n + 1) y hy`.
+
+Take `⟨x1, h1⟩` from `a4 n _ e1`. Take `⟨x2, h2⟩` from `b4 n _ e2`. Use `⟨fun i => (x1 i, x2 i), ?_⟩` and prove the remaining obligations. Rewrite `h1`, `h2`, the goal using `[one_smul]`. Use `(d_pair P Q n x1 x2).trans ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Conclude with `Prod.ext (congrFun h1 i) (congrFun h2 i)`.
+-/
 theorem prod_Ex {P Q : PM.{w} R ι} (hP : P.Ex) (hQ : Q.Ex) : (prodP P Q).Ex := by
   obtain ⟨a1, a2, a3, a4⟩ := hP
   obtain ⟨b1, b2, b3, b4⟩ := hQ
@@ -468,6 +613,9 @@ theorem prod_Ex {P Q : PM.{w} R ι} (hP : P.Ex) (hQ : Q.Ex) : (prodP P Q).Ex := 
     funext i
     exact Prod.ext (congrFun h1 i) (congrFun h2 i)
 
+/- English proof (translation)
+Establish `h2 : ∀ n, Subsingleton (P.cech.cx.X n)` using `fun n => show Subsingleton (∀ i : Fin (n + 1) → ι, P.M (ent i)) from inferInstance`. Establish `h3` using `h ∅`. Conclude with `⟨fun x => (h2 _).elim _ _, fun x _ => Subsingleton.elim _ _, fun y _ => ⟨0, (h2 _).elim _ _⟩, fun n y _ => ⟨0, (h2 _).elim _ _⟩⟩`.
+-/
 theorem Ex_of_sub (P : PM.{w} R ι) (h : ∀ S, Subsingleton (P.M S)) : P.Ex := by
   have h2 : ∀ n, Subsingleton (P.cech.cx.X n) := fun n =>
     show Subsingleton (∀ i : Fin (n + 1) → ι, P.M (ent i)) from inferInstance
@@ -487,6 +635,9 @@ def shSy (A : Sy.{w} R ι) : Sy.{w} R ι where
     | zero => exact Subsingleton.elim (α := PUnit.{w + 1}) _ _
     | succ n => exact A.res_comp h h' n x
 
+/- English proof (translation)
+Introduce `n` and use `by cases n with | zero => exact Ex_of_sub _ fun S => inferInstanceAs (Subsingleton PUnit.{w + 1}) | succ n => exact hA n`.
+-/
 theorem shSy_desc {A : Sy.{w} R ι} (hA : A.Desc) : (shSy A).Desc := fun n => by
   cases n with
   | zero => exact Ex_of_sub _ fun S => inferInstanceAs (Subsingleton PUnit.{w + 1})
@@ -513,6 +664,9 @@ def exDat (R : Type) [CommRing R] (ι : Type) [DecidableEq ι] : Dat (flatSy R �
   hρ _ _ _ := rfl
   hn _ _ _ := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(1 : R), one_ne_zero (α := R)⟩`.
+-/
 theorem exDat_ne (R : Type) [CommRing R] [Nontrivial R] (ι : Type) [DecidableEq ι] :
     ∃ x : ((flatSy R ι).K ∅).X 0, (exDat R ι).ρ ∅ 0 x ≠ 0 := ⟨(1 : R), one_ne_zero (α := R)⟩
 
@@ -520,6 +674,9 @@ variable {A B : Sy.{w} R ι}
 
 def Dat.ad (D : Dat A B) (S : Finset ι) : AD (sh (A.K S)) (B.K S) := shR (D.ρ S) (D.hρ S)
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => exact (map_zero ((B.res h).f 1)).symm`. Consider the case `succ n => exact D.hn h n x`.
+-/
 theorem Dat.compat (D : Dat A B) {S T : Finset ι} (h : S ⊆ T) (n : ℕ) (x : (sh (A.K S)).X n) :
     (D.ad T).r n ((shF (A.res h)).f n x) = (B.res h).f (n + 1) ((D.ad S).r n x) := by
   cases n with
@@ -536,11 +693,27 @@ def Dat.m (D : Dat A B) : D.sy.Hom (shSy A) where
   φ S := pr (D.ad S)
   nat h n x := rfl
 
+/- English proof (translation)
+Introduce `n` and use `prod_Ex (P := B.term n) (Q := (shSy A).term n) (hB n) (shSy_desc hA n)`.
+-/
 theorem Dat.desc (D : Dat A B) (hA : A.Desc) (hB : B.Desc) : D.sy.Desc := fun n =>
   prod_Ex (P := B.term n) (Q := (shSy A).term n) (hB n) (shSy_desc hA n)
 
 end Sys
 
+/- English proof (translation)
+Introduce `hs`. Unfold `ConeKill`. Introduce `R _ ι _ A B a hA hB oA oB ρ η hρ hρn hηn hη lam hlamn hlam n x hx`. Set `D : Dat A B` to `⟨ρ, hρ, hρn⟩`. Set `N : ∀ (α : ι) (S : Finset ι), α ∈ S → NH (D.ad S)` to `fun α S hS => shN (ρ S) (hρ S) (η α S hS) (hη α S hS)`.
+
+Set `l : ∀ (α : ι) (S : Finset ι), α ∈ S → ((sh (A.K S)).H (a + 1) →ₗ[R] (B.K S).H (a + 1))` to `fun α S hS => (lam α S hS).comp (eH (A.K S) a)`. Establish `hind : ∀ (S : Finset ι) (α α' : ι) (hS : α ∈ S) (hS' : α' ∈ S), secM (D.ad S) (N α S hS) (a + 1) (l α S hS) = secM (D.ad S) (N α' S hS') (a + 1) (l α' S hS')`. Introduce `S α α' hS hS'`. Conclude with `secM_eq _ _ _ _ _ _ fun x hx hz => hlam α α' S hS hS' x (sh_cocycle x hx) hz`. Set `σ : ∀ S : Finset ι, S.Nonempty → (((shSy A).K S).H (a + 1) →ₗ[R] (D.sy.K S).H (a + 1))` to `fun S hS => secM (D.ad S) (N hS.choose S hS.choose_spec) (a + 1) (l _ S hS.choose_spec)`.
+
+Establish `oneS : (shSy A).One (a + 1)` using `fun S hS j hj => sh_sub fun m hm => oA S hS m (by omega)`. Establish `oneC : D.sy.One (a + 1)` using `fun S hS j hj => cone_one (D.ad S) (N _ S hS.choose_spec) j (oB S hS j hj) (oneS S hS j hj)`. Establish `hsec : ∀ S hS x, (D.m.φ S).mapH (a + 1) (σ S hS x) = x` using `fun S hS x => pr_secM _ _ _ _ x`. Establish `hnat : ∀ {S T : Finset ι} (h : S ⊆ T) hS hT x, σ T hT (((shSy A).res h).mapH (a + 1) x) = (D.sy.res h).mapH (a + 1) (σ S hS x)`. Introduce `S T h hS hT x`.
+
+Establish `hα` using `hS.choose_spec`. Establish `e` using `hind T hT.choose hS.choose hT.choose_spec (h hα)`. Use `(congrArg (fun f => f (((shSy A).res h).mapH (a + 1) x)) e).trans ?_` and prove the remaining obligations. Use `secM_nat (D.ad S) (D.ad T) (shF (A.res h)) (B.res h) (D.compat h) (N _ S hα) (N _ T (h hα)) (a + 1) (l _ S hα) (l _ T (h hα)) (fun x => hηn _ h hα a x) (fun y => ?_) x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lam _ T _ (eH (A.K T) a ((shF (A.res h)).mapH (a + 1) y)) = _`.
+
+Rewrite using `[eH_shF]`. Conclude with `hlamn _ h hα _`. Establish `surj` using `hs R ι D.sy (shSy A) D.m (a + 1) (D.desc hA hB) (shSy_desc hA) oneC oneS σ hsec hnat (n + 1)`. Use `kill (D.ad ∅) (n + 1) surj x ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-((A.K ∅).d n x) = 0`.
+
+Rewrite using `[hx, neg_zero]`.
+-/
 theorem coneKillOf : ConeKillOf := by
   intro hs
   unfold ConeKill

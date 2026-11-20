@@ -13,6 +13,9 @@ section Linear
 
 variable {k R : Type} [Field k] [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `h1 : ((A⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ ((A : Matrix ι ι k) *ᵥ u) = u`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite `h1` using `[h, Matrix.mulVec_smul]`. Rewrite using `[← h1, smul_smul, Units.inv_mul, one_smul]`.
+-/
 lemma inv_mulVec_of_mulVec (A : GL ι k) (b : kˣ) (u w : ι → k)
     (h : (A : Matrix ι ι k) *ᵥ u = (b : k) • w) :
     ((A⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ w = ((b⁻¹ : kˣ) : k) • u := by
@@ -21,6 +24,9 @@ lemma inv_mulVec_of_mulVec (A : GL ι k) (b : kˣ) (u w : ι → k)
   rw [h, Matrix.mulVec_smul] at h1
   rw [← h1, smul_smul, Units.inv_mul, one_smul]
 
+/- English proof (translation)
+Introduce `h0`. Apply `hu` to reduce the goal to its premises. Establish `h1 : ((A⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ ((A : Matrix ι ι k) *ᵥ u) = u`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[← h1, h0, Matrix.mulVec_zero]`.
+-/
 lemma mulVec_ne_zero (A : GL ι k) {u : ι → k} (hu : u ≠ 0) : (A : Matrix ι ι k) *ᵥ u ≠ 0 := by
   intro h0
   apply hu
@@ -28,15 +34,38 @@ lemma mulVec_ne_zero (A : GL ι k) {u : ι → k} (hu : u ≠ 0) : (A : Matrix �
     rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
   rw [← h1, h0, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Introduce `h`. Use `congrFun h i` as an intermediate fact. Simplify using `at this`.
+-/
 lemma single_ne_zero (i : ι) : (Pi.single i 1 : ι → k) ≠ 0 := by
   intro h
   have := congrFun h i
   simp at this
 
+/- English proof (translation)
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 private lemma mulVec_single_apply_hermitian_block_frames {S : Type} [CommRing S] (M : Matrix ι ι S) (j r : ι) :
     (M *ᵥ Pi.single j 1) r = M r j := by
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Establish `hent : ∀ (C : GL ι k) (r c : ι), ((Matrix.GeneralLinearGroup.map (n` using `ι) φ C : GL ι R) : Matrix ι ι R) r c = φ ((C : Matrix ι ι k) r c) := fun _ _ _ => rfl`. Establish `hinv : ∀ r c : ι, (((Matrix.GeneralLinearGroup.map (n` using `ι) φ A)⁻¹ : GL ι R) : Matrix ι ι R) r c = φ (((A⁻¹ : GL ι k) : Matrix ι ι k) r c) := by`. Introduce `r c`. Use `hent A⁻¹ r c` as an intermediate fact. Rewrite `this` using `[map_inv]`.
+
+Conclude with `this`. Establish `hz : ∀ x : k, φ x = 0 → x = 0` using `fun x h => hφ (by rw [h, map_zero])`. Prove the components needed by the constructor for the conclusion. Introduce `hA`. Establish `hA' : ∀ r ∉ ({i} : Set ι), ∀ c ∈ ({i} : Set ι), ((Matrix.GeneralLinearGroup.map (n` using `ι) φ A : GL ι R) : Matrix ι ι R) r c = 0 ∧ (((Matrix.GeneralLinearGroup.map (n := ι) φ A)⁻¹ : GL ι R) : Matrix ι ι R) r c = 0 := hA`.
+
+Establish `hcol : ∀ r, r ≠ i → (A : Matrix ι ι k) r i = 0`. Introduce `r hr`. Use `(hA' r (by simpa using hr) i (Set.mem_singleton i)).1` as an intermediate fact. Rewrite `this` using `[hent]`. Conclude with `hz _ this`.
+
+Establish `hv : (A : Matrix ι ι k) *ᵥ Pi.single i 1 = (A : Matrix ι ι k) i i • Pi.single i 1`. Use function extensionality and compare the values at `r`. Rewrite using `[mulVec_single_apply_hermitian_block_frames, Pi.smul_apply, smul_eq_mul, Pi.single_apply]`. Use `split_ifs with h`. Rewrite using `[h, mul_one]`.
+
+Rewrite using `[hcol r h, mul_zero]`. Establish `hii : (A : Matrix ι ι k) i i ≠ 0`. Introduce `h0`. Apply `GlobalTheory.CompanionTheory.RgEisLines.mulVec_ne_zero A (GlobalTheory.CompanionTheory.RgEisLines.single_ne_zero (k := k) i)` to reduce the goal to its premises. Rewrite using `[hv, h0, zero_smul]`.
+
+Conclude with `⟨Units.mk0 _ hii, by rw [Units.val_mk0]; exact hv⟩`. Introduce and unpack `⟨b, hb⟩`. Establish `hb'` using `GlobalTheory.CompanionTheory.RgEisLines.inv_mulVec_of_mulVec A b _ _ hb`. Establish `goal : ∀ r ∉ ({i} : Set ι), ∀ c ∈ ({i} : Set ι), ((Matrix.GeneralLinearGroup.map (n` using `ι) φ A : GL ι R) : Matrix ι ι R) r c = 0 ∧ (((Matrix.GeneralLinearGroup.map (n := ι) φ A)⁻¹ : GL ι R) : Matrix ι ι R) r c = 0 := by`. Introduce `r hr c hc`.
+
+Rewrite `hr`, `hc` using `[Set.mem_singleton_iff]`. Rewrite using `[hc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hent, ← mulVec_single_apply_hermitian_block_frames (A : Matrix ι ι k) i r, hb, Pi.smul_apply, Pi.single_eq_of_ne hr, smul_zero, map_zero]`. Rewrite using `[hinv, ← mulVec_single_apply_hermitian_block_frames ((A⁻¹ : GL ι k) : Matrix ι ι k) i r, hb', Pi.smul_apply, Pi.single_eq_of_ne hr, smul_zero, map_zero]`.
+
+Conclude with `goal`.
+-/
 lemma map_mem_stab_iff (φ : k →+* R) (hφ : Function.Injective φ) (A : GL ι k) (i : ι) :
     Matrix.GeneralLinearGroup.map (n := ι) φ A ∈ stab R ({i} : Set ι) ↔
       ∃ b : kˣ, (A : Matrix ι ι k) *ᵥ Pi.single i 1 = (b : k) • Pi.single i 1 := by
@@ -86,6 +115,15 @@ lemma map_mem_stab_iff (φ : k →+* R) (hφ : Function.Injective φ) (A : GL ι
           Pi.single_eq_of_ne hr, smul_zero, map_zero]
     exact goal
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.RgEisLines.map_mem_stab_iff φ hφ]`. Establish `hCC : ∀ v : ι → k, (C : Matrix ι ι k) *ᵥ (((C⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ v) = v`. Introduce `v`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hCC' : ∀ v : ι → k, ((C⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ ((C : Matrix ι ι k) *ᵥ v) = v`.
+
+Introduce `v`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hmul : ((C * B⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1 = (C : Matrix ι ι k) *ᵥ (((B⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1)`. Rewrite using `[Units.val_mul, Matrix.mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨b, hb⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[hmul]`. Rewrite using `[← hCC' (((B⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1), hb, Matrix.mulVec_smul]`. Introduce and unpack `⟨b, hb⟩`.
+
+Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, ← hb, Matrix.mulVec_smul, hCC]`.
+-/
 lemma map_mul_inv_mem_stab_iff (φ : k →+* R) (hφ : Function.Injective φ) (B C : GL ι k) (i : ι) :
     Matrix.GeneralLinearGroup.map (n := ι) φ (C * B⁻¹) ∈ stab R ({i} : Set ι) ↔
       ∃ b : kˣ, (b : k) • (((C⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1) =
@@ -109,6 +147,17 @@ lemma map_mul_inv_mem_stab_iff (φ : k →+* R) (hφ : Function.Injective φ) (B
     refine ⟨b, ?_⟩
     rw [hmul, ← hb, Matrix.mulVec_smul, hCC]
 
+/- English proof (translation)
+Establish `hact : ∀ x : ι → k, (1 + Matrix.vecMulVec (v - Pi.single m 1) (Pi.single m 1) : Matrix ι ι k) *ᵥ x = x + x m • (v - Pi.single m 1)`. Introduce `x`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `r`.
+
+Simplify using `[Matrix.mulVec, Matrix.vecMulVec, dotProduct, Pi.single_apply, mul_comm]`. Establish `hunit : IsUnit (1 + Matrix.vecMulVec (v - Pi.single m 1) (Pi.single m 1) : Matrix ι ι k)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Introduce `h0`. Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`.
+
+Rewrite `hx` using `[hact]`. Establish `hxm : x m = 0`. Establish `e` using `congrFun hx m`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, Pi.single_eq_same, smul_eq_mul, Pi.zero_apply] at e`. Establish `e2 : x m * v m = 0` using `by linear_combination e`.
+
+Conclude with `(mul_eq_zero.1 e2).resolve_right hv`. Apply `hx0` to reduce the goal to its premises. Use function extensionality and compare the values at `r`. Simplify `congrFun hx r` using `[hxm]`. Use `⟨hunit.unit, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsUnit.unit_spec, hact]`. Simplify using the standard rewrite rules. Introduce `c hc`. Rewrite using `[IsUnit.unit_spec, hact]`. Simplify using `[Pi.single_apply, hc.symm]`.
+-/
 private lemma exists_GL_mulVec_single_eq_of_ne_zero (m : ι) (v : ι → k) (hv : v m ≠ 0) :
     ∃ G : GL ι k, (G : Matrix ι ι k) *ᵥ Pi.single m 1 = v ∧
       ∀ c, c ≠ m → (G : Matrix ι ι k) *ᵥ Pi.single c 1 = Pi.single c 1 := by
@@ -141,6 +190,15 @@ private lemma exists_GL_mulVec_single_eq_of_ne_zero (m : ι) (v : ι → k) (hv 
     rw [IsUnit.unit_spec, hact]
     simp [Pi.single_apply, hc.symm]
 
+/- English proof (translation)
+Distinguish the cases in `hi : ξ i = 0`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, ξ j ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Conclude with `hξ (funext fun x => by`. Assume the negation of the conclusion as `hx`.
+
+Conclude with `hne ⟨x, hx⟩)`. Establish `hji : j ≠ i` using `fun h => hj (by rw [h]; exact hi)`. Take `⟨G₂, hG₂, -⟩` from `exists_GL_mulVec_single_eq_of_ne_zero i (Pi.single i 1 + Pi.single j 1 : ι → k) (by`. Rewrite using `[Pi.add_apply, Pi.single_eq_same, Pi.single_eq_of_ne hji.symm, add_zero]`. Conclude with `one_ne_zero)`.
+
+Take `⟨G₁, hG₁, hG₁'⟩` from `exists_GL_mulVec_single_eq_of_ne_zero j (ξ - Pi.single i 1 : ι → k) (by simp [Pi.single_apply, hji, hj])`. Use `⟨(G₁ * G₂)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_inv, Units.val_mul, ← Matrix.mulVec_mulVec, hG₂, Matrix.mulVec_add, hG₁, hG₁' i hji.symm]`. Normalize the expressions using the abelian group laws. Take `⟨G, hG, -⟩` from `exists_GL_mulVec_single_eq_of_ne_zero i ξ hi`.
+
+Conclude with `⟨G⁻¹, by rw [inv_inv, hG]⟩`.
+-/
 lemma exists_inv_mulVec_eq (i : ι) {ξ : ι → k} (hξ : ξ ≠ 0) :
     ∃ g : GL ι k, ((g⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1 = ξ := by
   by_cases hi : ξ i = 0
@@ -168,6 +226,9 @@ section Adelic
 
 variable {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Introduce `x y h`. Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace k))`. Establish `h1` using `congrArg (fun a : 𝔸[k] => (Prod.fst (show InfiniteAdeleRing k × IsDedekindDomain.FiniteAdeleRing (𝓞 k) k from a)) v) h`. Conclude with `(algebraMap k v.Completion).injective h1`.
+-/
 lemma algebraMap_injective : Function.Injective (algebraMap k 𝔸[k]) := by
   intro x y h
   obtain ⟨v⟩ := (inferInstance : Nonempty (InfinitePlace k))
@@ -175,11 +236,17 @@ lemma algebraMap_injective : Function.Injective (algebraMap k 𝔸[k]) := by
     (Prod.fst (show InfiniteAdeleRing k × IsDedekindDomain.FiniteAdeleRing (𝓞 k) k from a)) v) h
   exact (algebraMap k v.Completion).injective h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[ratV, Units.smul_def, map_mul]`.
+-/
 lemma ratV_smul (a : kˣ) (w : ι → k) :
     ratV (a • w) = algebraMap k 𝔸[k] a • (ratV w : ι → 𝔸[k]) := by
   funext j
   simp [ratV, Units.smul_def, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Express the relevant statement in the definitionally equal form `((((B⁻¹ : GL ι k) : Matrix ι ι k).map (algebraMap k 𝔸[k])) *ᵥ Pi.single i 1) r = algebraMap k 𝔸[k] ((((B⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1) r)`. Rewrite using `[mulVec_single_apply_hermitian_block_frames, mulVec_single_apply_hermitian_block_frames, Matrix.map_apply]`.
+-/
 lemma vec_map (B : GL ι k) (i : ι) :
     MG.vec (Matrix.GeneralLinearGroup.map (n := ι) (algebraMap k 𝔸[k]) B) i =
       ratV (((B⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1) := by
@@ -188,6 +255,29 @@ lemma vec_map (B : GL ι k) (i : ι) :
     algebraMap k 𝔸[k] ((((B⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1) r)
   rw [mulVec_single_apply_hermitian_block_frames, mulVec_single_apply_hermitian_block_frames, Matrix.map_apply]
 
+/- English proof (translation)
+Introduce `G _ _ _ _ K _ k _ _ ι _ _ π Γ P i ω d c η hS`. Establish `alg_inj : Function.Injective (algebraMap k 𝔸[k])` using `GlobalTheory.CompanionTheory.RgEisLines.algebraMap_injective`. Establish `hpick : ∀ γ : Γ, ∃ B : GL ι k, Matrix.GeneralLinearGroup.map (n` using `ι) (algebraMap k 𝔸[k]) B = π γ := by`. Introduce `γ`. Take `⟨B, hB⟩` from `MonoidHom.mem_range.mp (hS.piΓ γ γ.2)`.
+
+Conclude with `⟨B, hB⟩`. Use `choose Bf hBf using hpick`. Establish `hne : ∀ γ : Γ, (((Bf γ)⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1 ≠ 0` using `fun γ => GlobalTheory.CompanionTheory.RgEisLines.mulVec_ne_zero _ (GlobalTheory.CompanionTheory.RgEisLines.single_ne_zero i)`. Set `f : Γ → Projectivization k (ι → k)` to `fun γ => Projectivization.mk k _ (hne γ)`. Establish `key : ∀ γ γ' : Γ, f γ = f γ' ↔ ((γ' : G) * (γ : G)⁻¹) ∈ P`.
+
+Introduce `γ γ'`. Use `show Projectivization.mk k _ (hne γ) = Projectivization.mk k _ (hne γ') ↔ _`. Rewrite using `[Projectivization.mk_eq_mk_iff, hS.mem, map_mul, map_inv, ← hBf γ, ← hBf γ', ← map_inv, ← map_mul, GlobalTheory.CompanionTheory.RgEisLines.map_mul_inv_mem_stab_iff _ alg_inj]`. Simplify using `only [Units.smul_def]`. Set `F : Cos P Γ → Projectivization k (ι → k)` to `Quotient.lift f (fun a b h => by`.
+
+Rewrite using `[key]`. Establish `h'` using `QuotientGroup.rightRel_apply.mp h`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv] at h')` and apply the resulting hypothesis. Establish `hFinj : Function.Injective F`. Introduce `q₁ q₂ h`.
+
+Take `⟨γ, rfl⟩` from `Quotient.exists_rep q₁`. Take `⟨γ', rfl⟩` from `Quotient.exists_rep q₂`. Apply `Quotient.sound` to reduce the goal to its premises. Apply `QuotientGroup.rightRel_apply.mpr` to reduce the goal to its premises. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv]`.
+
+Conclude with `(key γ γ').1 h`. Establish `hFsurj : Function.Surjective F`. Introduce `l`. Take `⟨g, hg⟩` from `GlobalTheory.CompanionTheory.RgEisLines.exists_inv_mulVec_eq (k := k) i l.rep_nonzero`. Establish `hmem : Matrix.GeneralLinearGroup.map (n` using `ι) (algebraMap k 𝔸[k]) g ∈ (adStd k).ratGL ι := MonoidHom.mem_range.mpr ⟨g, rfl⟩`.
+
+Take `⟨γ, hγ, hst⟩` from `hS.trans _ hmem`. Establish `h2 : Matrix.GeneralLinearGroup.map (n` using `ι) (algebraMap k 𝔸[k]) (g * (Bf ⟨γ, hγ⟩)⁻¹) ∈ stab 𝔸[k] ({i} : Set ι) := by`. Rewrite using `[map_mul, map_inv, hBf]`. Conclude with `hst`. Take `⟨b, hb⟩` from `(GlobalTheory.CompanionTheory.RgEisLines.map_mul_inv_mem_stab_iff _ alg_inj _ _ i).1 h2`.
+
+Use `⟨Quotient.mk _ ⟨γ, hγ⟩, ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (Projectivization.mk_rep l)` and prove the remaining obligations. Use `show Projectivization.mk k _ (hne ⟨γ, hγ⟩) = _`. Rewrite using `[Projectivization.mk_eq_mk_iff]`. Conclude with `⟨b, by rw [Units.smul_def, ← hg]; exact hb⟩`.
+
+Use `⟨Equiv.ofBijective F ⟨hFinj, hFsurj⟩, fun q => ?_⟩` and prove the remaining obligations. Establish `hq : F q = f (Quotient.out q)`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, ha⟩` from `Projectivization.exists_smul_eq_mk_rep (K := k) _ (hne (Quotient.out q))`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (Equiv.ofBijective F ⟨hFinj, hFsurj⟩ q).rep = a • ((((Bf (Quotient.out q))⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1)`. Rewrite using `[ha]`. Conclude with `congrArg Projectivization.rep hq`. Establish `e2 : MG.vec (π (rep q)) i = ratV ((((Bf (Quotient.out q))⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1)`. Rewrite using `[show π (rep q) = Matrix.GeneralLinearGroup.map (n := ι) (algebraMap k 𝔸[k]) (Bf (Quotient.out q)) from (hBf (Quotient.out q)).symm, GlobalTheory.CompanionTheory.RgEisLines.vec_map]`.
+
+Rewrite using `[e1, GlobalTheory.CompanionTheory.RgEisLines.ratV_smul, e2]`.
+-/
 theorem lines : Lines := by
   intro G _ _ _ _ K _ k _ _ ι _ _ π Γ P i ω d c η hS
   have alg_inj : Function.Injective (algebraMap k 𝔸[k]) := GlobalTheory.CompanionTheory.RgEisLines.algebraMap_injective

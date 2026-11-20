@@ -32,6 +32,9 @@ section General
 
 variable {X X' Y Z : Scheme.{0}} {L : LB X} {L' : LB X'} {Φ : X' ⟶ X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Establish `pm` using `(Geo.Tor.maps_iff w φ' (fun k => φ' k ≫ Φ) ε a b (𝟙 Y) (flatGen L Φ φ' ε b) (fun j => wchart_pull_le L Φ φ' j) (fun _ => rfl)).1 h`. Establish `e` using `DegPull.pmaps_val (fun k => (Category.id_comp _).symm) pm r z hJ hJ'`. Rewrite `e` using `[Category.comp_id]`. Conclude with `e`.
+-/
 theorem val_of_maps {w : LB.Iso L' (L.pull Φ)} {φ' : K → (Y ⟶ X')} {ε : K → ℤ}
     {a : LB.Gen (LB.LinComb L' φ' ε)} {b : LB.Gen (LB.LinComb L (fun k => φ' k ≫ Φ) ε)}
     (h : LB.Gen.Maps (LB.linCombIso w φ' ε) a (flatGen L Φ φ' ε b)) (r : Z ⟶ Y) (z : Z) {J J'}
@@ -43,6 +46,9 @@ theorem val_of_maps {w : LB.Iso L' (L.pull Φ)} {φ' : K → (Y ⟶ X')} {ε : K
   rw [Category.comp_id] at e
   exact e
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨J₂, hJ, fun _ _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+-/
 theorem exists_good_cast {L₁ L₂ : LB X} (h : L₁ = L₂) (z : Z) (J₂ : (Z ⟶ X) → L₂.ι) (hJ : Good L₂ z J₂) :
     ∃ J₁, Good L₁ z J₁ ∧
       (∀ {K : Type} [Fintype K] {Y : Scheme.{0}} (φ : K → (Y ⟶ X)) (ε : K → ℤ) (b : LB.Gen (LB.LinComb L₁ φ ε)) (r : Z ⟶ Y),
@@ -59,6 +65,11 @@ section Transport
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X X' : Scheme.{0}} {t : SAB H X}
   {t' : SAB H X'} {Φ : t'.G.left ⟶ t.G.left} {w : LB.Iso t'.PP.L (t.PP.L.pull Φ)}
 
+/- English proof (translation)
+Rewrite using `[val_of_maps he s z hJ hJ', val_of_maps hu p z hJ hJ']`. Simplify using `only [hs, primφ, primε, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_one, Category.comp_id, zpow_one, zpow_neg, Finset.prod_inv_distrib]`. Generalize the expression as in `(∏ I : ULift.{0} (Finset (Fin 2)), om w z J J' (p ≫ cφG t' ![𝟙 t'.G, t'.act.act H.w0] I) ^ cε 2 I) = l`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem val_prim_mul {Y Z : Scheme.{0}} {φ' : ULift.{0} (Finset (Fin 2)) → (Y ⟶ t'.G.left)}
     {e' : LB.Gen (LB.LinComb t'.PP.L φ' (cε 2))} {e : LB.Gen (LB.LinComb t.PP.L (fun k => φ' k ≫ Φ) (cε 2))}
     (he : LB.Gen.Maps (LB.linCombIso w φ' (cε 2)) e' (flatGen t.PP.L Φ φ' (cε 2) e))
@@ -81,6 +92,11 @@ variable {S : Type} [CommRing S] {x0 : Sp S ⟶ X} {x0' : Sp S ⟶ X'} {d : ℕ}
   {κ : Type} [Fintype κ] {tg : κ → (Sp (DualNumber S) ⟶ t.G.left)} {uvec : κ → Fin d → S}
   {x' : ∀ m, jOG x0' d m 1 ⟶ t'.G} {x : ∀ m, jOG x0 d m 1 ⟶ t.G}
 
+/- English proof (translation)
+Establish `i₀ : (𝟙 t'.G : t'.G ⟶ t'.G).left ≫ ν.φ = ν.φ ≫ (𝟙 t.G : t.G ⟶ t.G).left` using `by simp`. Establish `a` using `(cφ_push ν (T := jOG x0 d m 2) (T' := jOG x0' d m 2) (𝟙 _) ((jpt_push hx m 0).trans (Category.id_comp _).symm) ((jpt_push hx m 1).trans (Category.id_comp _).symm) I).trans (Category.id_comp _)`. Establish `b` using `cφ_push ν ν.φ i₀ (ν.act H.w0) I`. Apply `ν.cart.1.hom_ext` to reduce the goal to its premises. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) a).trans ?_)` and prove the remaining obligations.
+
+Use `Eq.trans ?_ ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) b)).symm` and prove the remaining obligations. Rewrite using `[← Category.assoc, hx]`. Conclude with `(GermD.formEq_eL hc m I).symm`. Simplify using `only [cφG, ← Over.comp_left, Over.w]`.
+-/
 theorem cube_subst {ρ : X' ⟶ X} (ν : SABMap t' t ρ) (hc : IsChartG t x0 d F act tg uvec x)
     (hx : ∀ m, (x' m).left ≫ ν.φ = (x m).left) (m : ℕ) (I : ULift.{0} (Finset (Fin 2))) :
     (homAt x0' (GermD.sL m (act H.w0))).left ≫
@@ -98,6 +114,15 @@ theorem cube_subst {ρ : X' ⟶ X} (ν : SABMap t' t ρ) (hc : IsChartG t x0 d F
     exact (GermD.formEq_eL hc m I).symm
   · simp only [cφG, ← Over.comp_left, Over.w]
 
+/- English proof (translation)
+Introduce `m`. Establish `heL : (eLG t x0 d x act e wP m).IsGen` using `DVR.mulGen_isGen t.PP.L _ _ _ _ _ _ (DVR.pullGen_isGen t.PP.L _ _ _ hP _) (DVR.pullGen_isGen t.PP.L _ _ _ (hg m) _)`. Take `⟨τ, -, hτ⟩ : ∃ τ : LB.Gen (LB.LinComb t.PP.L (Y` from `(jOG x0 d m 1).left) (K := Fin 1) (fun _ => (x m).left) fun _ => (k : ℤ)), τ.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (jOG x0 d m 1).left) (z : Z) (J : (Z ⟶ t.G.left) → t.PP.L.ι), Good t.PP.L z J → val τ r z J = val (genPowG t _ _ (eLG t x0 d x act e wP m) k) r z J := by`. Use `exists_gen t.PP.isLB ?_ _ (GermD.genPowG_isGen t _ _ _ heL k)` and prove the remaining obligations. Introduce `U _ hU`.
+
+Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_one, Category.comp_id, _root_.mul_one, GermD.formEq_eL hc m]`. Rewrite using `[_root_.mul_assoc, ← Finset.prod_mul_distrib]`. Simplify using `only [← zpow_add, _root_.mul_neg, neg_add_cancel, zpow_zero, Finset.prod_const_one, _root_.mul_one]`. Take `⟨s₁, hp⟩` from `GermD.exists_pullSec t.G t.PP.L (k : ℤ) (jBaseG x0 d m 1 ▷ t.G) (whiskerRight_snd _ _) s`. Use `⟨s₁, τ, hp, corr_of_val t.PP.isLB fun y J hJ => hτ _ _ y J hJ, fun j => fn_ext fun y hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨J, hJ, e₀⟩` from `exists_good t.PP.L t.PP.isLB y (fun _ : Fin 1 => (x m).left) j (fun a b _ => congrArg j (Subsingleton.elim a b)) (fun k => Set.mem_iInter.1 hy k)`. Establish `q : sv t s₁ (𝟙 _ ≫ (ptSecT t.G (x m)).left) y J = gs (𝟙 _) y ⊤ (toΓ _ (psJet m f)) * (val τ (𝟙 _) y J).val`. Rewrite using `[sv_pullSec hp _ y hJ, Category.id_comp, h m y J hJ, hτ _ _ y J hJ, GermD.val_genPowG]`. Rewrite `q` using `[val_of τ _ y J j (fun k => by rw [Category.id_comp]; exact e₀ k)]`. Establish `q'` using `(sval_of (φ := fun _ : Fin 1 => (snd _ t.G).left) (ε := fun _ => (k : ℤ)) s₁ (𝟙 _ ≫ (ptSecT t.G (x m)).left) y J j (fun k => by rw [Category.id_comp, ptSecT_snd]; exact e₀ k)).symm.trans q`.
+
+Conclude with `((gs_res _ y _ hy _).trans (gs_pull _ (ptSecT t.G (x m)).left y _ (val_le t.G t.PP.L (x m) _ hy) _)).trans (q'.trans ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_res _ y le_top hy _) (gs_unit _ y _ hy _))).symm)`.
+-/
 theorem isGermG_of_val (hc : IsChartG t x0 d F act tg uvec x) {e : ∀ m, FrTyG t x0 d x m} {wP : PrimTyG t}
     (hg : ∀ m, (e m).IsGen) (hP : wP.IsGen) {k : ℕ} {s : LB.Sec (LPow t.G t.PP.L k (Over.mk x0))}
     {f : MvPowerSeries (Fin 1 × Fin d) S}
@@ -132,6 +157,9 @@ theorem isGermG_of_val (hc : IsChartG t x0 d F act tg uvec x) {e : ∀ m, FrTyG 
     (q'.trans ((gs_mul _ y _ hy _ _).trans
       (congrArg₂ (· * ·) (gs_res _ y le_top hy _) (gs_unit _ y _ hy _))).symm)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← Over.comp_left, ← Over.comp_left, ptSecT, lift_whiskerRight, lift_snd]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ptSecT, lift_whiskerRight, lift_fst, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem ptSec_base (m : ℕ) (a : jOG x0 d m 1 ⟶ t.G) :
     ((ptSecT t.G a).left ≫ (jBaseG x0 d m 1 ▷ t.G).left) ≫ (snd (Over.mk x0) t.G).left = a.left ∧
     ((ptSecT t.G a).left ≫ (jBaseG x0 d m 1 ▷ t.G).left) ≫ (fst (Over.mk x0) t.G).left =
@@ -147,6 +175,21 @@ section Charts
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Take `⟨⟨-, hact, -⟩, x', hx₂, hx₁, ⟨e', he'⟩, wP', -, ⟨u₂, cu₂, mu₂⟩, u₁, cu₁, mu₁⟩` from `C.gen`. Take `⟨-, ⟨c₂, cc₂, mc₂⟩, c₁, cc₁, mc₁⟩` from `he' m`. Establish `hc` using `(isChart_iff y.1 _ _ _ _ _).1 C.ch.chart`. Establish `p₁ : (r ≫ (x' m).left) ≫ C.I.m1.φ = r ≫ (C.ch.x m).left` using `(Category.assoc _ _ _).trans (congrArg (r ≫ ·) (hx₁ m))`.
+
+Establish `p₂ : (r ≫ (x' m).left) ≫ C.I.m2.φ = (r ≫ spMap (jetCoef (algebraMap T.V T.Fr) _ m)) ≫ (C.xT m).left` using `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (hx₂ m)).trans (Category.assoc _ _ _).symm)`. Use `⟨r ≫ (x' m).left, ?_, p₁, p₂, fun z J₁ J₂ J' h₁ h₂ h' => ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans (congrArg (r ≫ ·) ((Over.w (x' m)).trans (Category.comp_id _)))`. Establish `hs` using `fun I => (Category.assoc r _ _).trans ((congrArg (r ≫ ·) (cube_subst C.I.m1 hc hx₁ m I)).trans (Category.assoc _ _ _).symm)`. Establish `k₁` using `val_prim_mul mc₁ mu₁ _ _ hs z h₁ h'`.
+
+Establish `k₂` using `val_prim_mul mc₂ mu₂ _ _ hs z h₂ h'`. Use `⟨_, Eq.trans ?_ k₁, Eq.trans ?_ k₂⟩` and prove the remaining obligations. Use `(val_mul h₁ _ _ _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Use `(val_pull h₁ _ _ _).trans (Eq.trans ?_ ((val_corr h₁ cu₁ _).trans (val_pull h₁ _ _ _)).symm)` and prove the remaining obligations. Conclude with `congrArg (fun q => val C.ch.wP q z J₁) p₁.symm`.
+
+Conclude with `(val_pull h₁ _ _ _).trans (val_corr h₁ cc₁ _).symm`. Use `(val_mul h₂ _ _ _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Use `(val_pull h₂ _ _ _).trans (Eq.trans ?_ ((val_corr h₂ cu₂ _).trans (val_pull h₂ _ _ _)).symm)` and prove the remaining obligations. Conclude with `congrArg (fun q => val C.wPT q z J₂) p₂.symm`. Use `(val_pull h₂ _ _ _).trans (Eq.trans ?_ ((val_corr h₂ cc₂ _).trans (val_pull h₂ _ _ _)).symm)` and prove the remaining obligations.
+
+Use `congrArg (fun q => val (L := C.I.G.PP.L) (φ := cφG C.I.G ![jptG C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT m (0 : Fin 2), jptG C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT m (1 : Fin 2)]) (ε := cε 2) (C.eT m) q z J₂) ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans (Eq.trans (congrArg (r ≫ ·) ?_) (Category.assoc _ _ _).symm)` and prove the remaining obligations. Establish `e : (fun p : Fin 2 × Fin (chD C.ch) => (![fun j => MvPolynomial.X ((0 : Fin 1), j), fun j => psIn (chD C.ch) m ![0] (C.ch.B.A.act H.w0 j)] : Fin 2 → Fin (chD C.ch) → MvPolynomial (Fin 1 × Fin (chD C.ch)) T.Fr) p.1 p.2) = fun p => MvPolynomial.map (algebraMap T.V T.Fr) ((![fun j = …`. Use function extensionality and compare the values at `⟨i, j⟩`. Use `fin_cases i`.
+
+Conclude with `(MvPolynomial.map_X _ _).symm`. Conclude with `(congrArg (psIn (chD C.ch) m ![0]) (hact H.w0 j)).trans (RawChartGermBC.map_psIn _ _ m _ _).symm`. Use `(RawChartGermBC.spMap_comp_eq _ _ _ _ ?_).symm` and prove the remaining obligations. Use `Eq.trans ?_ (PullbackSections.jetSubstP_comp_jetBC (algebraMap T.V T.Fr) m _)` and prove the remaining obligations. Rewrite using `[← e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem frames_tied {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} (C : IntegralChartA3 Xo c T io y) (m : ℕ)
     {Z : Scheme.{0}} (r : Z ⟶ Sp (Jet T.Fr (Fin 1 × Fin (chD C.ch)) m)) :
     letI := io.toAlgebra
@@ -197,6 +240,13 @@ theorem frames_tied {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} (C : 
       rw [← e]
       rfl
 
+/- English proof (translation)
+Take `⟨x0', a₁, u', a₂, a₃, a₄, a₅, a₆⟩` from `y'`. Take `⟨hx, hu, -⟩` from `h`. Simplify using `only at hx hu`. Take `rfl : u' = fun τ i => spMap (dualMap φ.toRingHom) ≫ y.u τ i` from `funext fun τ => funext fun i => hu τ i`. Substitute `hx` using the available equality.
+
+Set `R` to `ChartAt.toRaw C`. Take `⟨e', hg, hc, -⟩` from `GlobalTheory.T.exists_rawChart_frames_baseChange E H Dw l Xo S S' φ.toRingHom y.x R.d R.B.G.F R.B.A.act R.x (fun m => rjBC φ.toRingHom y.x R.d m 1 ≫ R.x m) (fun _ => rfl) R.e R.frame.gen`. Establish `hG` using `GlobalTheory.T.rawChart_baseChange_rig_germ_alt E H Dw l Xo S S' φ.toRingHom y.x R.d R.B.G.F R.B.A.act R.x (fun m => rjBC φ.toRingHom y.x R.d m 1 ≫ R.x m) (fun _ => rfl) R.e e' R.frame.gen hg hc R.wP R.prim.1`. Establish `h₁` using `GlobalTheory.T.isRawChart_baseChange_jetPoints E H Dw l Xo S S' φ.toRingHom y.x R.d R.B.G.F R.B.A.act R.x (fun m => rjBC φ.toRingHom y.x R.d m 1 ≫ R.x m) (fun _ => rfl) y.u R.uvec R.chart`. Establish `h₂` using `GlobalTheory.T.isFrame_rawChart_baseChange E H Dw l Xo S S' φ.toRingHom y.x R.d R.B.G.F R.B.A.act R.x (fun m => rjBC φ.toRingHom y.x R.d m 1 ≫ R.x m) (fun _ => rfl) R.e e' R.frame.gen hg hc _ _ _ _ R.frame`.
+
+Use `⟨fun m => rjBC φ.toRingHom y.x R.d m 1 ≫ R.x m, e', ⟨h₁.zero, h₁.trunc, h₁.law, h₁.act, h₁.tan, h₁.basis⟩, ⟨h₂.gen, h₂.ph1, h₂.ph2, h₂.sy, h₂.ad⟩, hG.1 R.rig0, fun _ => rfl, fun m z J hJ => ?_⟩` and prove the remaining obligations. Establish `k` using `RawChartGermBC.val_reL_bc φ.toRingHom y.x R.d R.B.A.act R.x _ (fun _ => rfl) R.e e' hc R.wP m (𝟙 _) z hJ`. Rewrite `k` using `[Category.id_comp]`. Conclude with `k`.
+-/
 theorem exists_chart_baseChange {S S' : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] [CommRing S'] [Algebra c.F S']
     [Algebra ℚ S'] (φ : S →ₐ[c.F] S') {y : FrPt Xo c S} {y' : FrPt Xo c S'} (h : FrMap φ y y') (C : ChartAt Xo c y) :
     ∃ (x' : ∀ m, jO y' C.d m 1 ⟶ Xo.univ.t.G) (e' : ∀ m, FrTy y' C.d x' m),
@@ -237,6 +287,17 @@ theorem exists_chart_baseChange {S S' : Type} [CommRing S] [Algebra c.F S] [Alge
 
 end Charts
 
+/- English proof (translation)
+Establish `hK : ∀ {n : ℕ} (f : Germ.PS R n d), Germ.FB.toK k (MvPowerSeries.map (algebraMap R k) f : Germ.PS k n d) = Germ.FB.toK k f`. Introduce `n f`. Use extensionality with `m`. Both sides reduce to the same expression. Establish `hF : (FBMap.mapFB (algebraMap R k) B).FK k = B.FK k` using `funext fun i => hK (B.G.F i)`.
+
+Establish `hA : ∀ a, (FBMap.mapFB (algebraMap R k) B).actK k a = B.actK k a` using `fun a => funext fun i => hK (B.A.act a i)`. Establish `hN : ∀ b Q, (FBMap.mapFB (algebraMap R k) B).nabVal k h H.w0 q (f b) u Q = B.nabVal k h H.w0 q (f b) u Q`. Introduce `b Q`. Simplify using `only [FB.nabVal, FB.hL, hF, hA]`. Simplify using `only [hN]`.
+
+Establish `hP : ∀ Q : MvPolynomial (LtN Dw n) k, nabValN B k h H.w0 q (boxSer f) (fun ℓ : LtN Dw n => ℓ.2.2) (fun (ℓ : LtN Dw n) => u ⟨ℓ.1, ℓ.2.1⟩) Q = ∑ m ∈ Q.support, Q.coeff m * ∏ b, B.nabVal k h H.w0 q (f b) u (MvPolynomial.monomial (colOf m b) 1)`. Introduce `Q`. Take `⟨Q, rfl⟩ : ∃ Q', MvPolynomial.rename (HarmCopies.letterEquiv (E →+* ℂ) Dw.mult n) Q' = Q` from `MvPolynomial.rename_surjective _ (HarmCopies.letterEquiv _ _ n).surjective Q`. Rewrite using `[nabValN_boxSer R _ _ B k h H.w0 hh q n f _ _ (HarmCopies.letterEquiv (E →+* ℂ) Dw.mult n) _ u _ (fun _ => rfl) (fun _ => rfl), GlobalTheory.NabCol.sum_support_rename (HarmCopies.letterEquiv (E →+* ℂ) Dw.mult n) (fun mo => ∏ b, B.nabVal k h H.w0 q (f b) u (MvPolynomial.monomial ( …`. Use `Finset.sum_congr rfl fun mo _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hc : colM mo b = colOf (Finsupp.mapDomain (HarmCopies.letterEquiv (E →+* ℂ) Dw.mult n) mo) b`. Use extensionality with `ℓ`. Conclude with `(Finsupp.mapDomain_apply (HarmCopies.letterEquiv (E →+* ℂ) Dw.mult n).injective mo (ℓ, b)).symm`.
+
+Rewrite using `[hc]`. Rewrite using `[hP, MvPolynomial.support_map_of_injective _ g.injective]`. Simplify using `only [MvPolynomial.coeff_map]`.
+-/
 theorem nabValN_columns {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     [StarRing (𝓞 E)] {R k k₀ : Type} [CommRing R] [Field k] [Field k₀] [Algebra ℚ k] [Algebra R k] (g : k₀ →+* k) {d : ℕ}
     (B : FB R d (𝓞 E)) (h : PS k 2 d) (hh : MvPowerSeries.constantCoeff h = 0) (q n : ℕ) (f : Fin n → PS k 1 d)
@@ -277,6 +338,9 @@ theorem nabValN_columns {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   rw [hP, MvPolynomial.support_map_of_injective _ g.injective]
   simp only [MvPolynomial.coeff_map]
 
+/- English proof (translation)
+Substitute `ha h₁ h₂` using the available equality. Use `(Units.mul_left_inj (o₂ ^ q)).1 ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, ← h]`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alg_tie {R : Type} [CommRing R] {a b f : R} {o₁ o₂ A v₁ v₂ : Rˣ} {q : ℕ} (h : a * o₁.val ^ q = b * o₂.val ^ q)
     (ha : a = f * (v₂ ^ q).val) (h₁ : v₁ = o₁ * A) (h₂ : v₂ = o₂ * A) : b = f * (v₁ ^ q).val := by
   subst ha h₁ h₂
@@ -285,17 +349,32 @@ theorem alg_tie {R : Type} [CommRing R] {a b f : R} {o₁ o₂ A v₁ v₂ : Rˣ
   simp only [Units.val_pow_eq_pow_val, Units.val_mul]
   ring
 
+/- English proof (translation)
+Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun p => ?_)` and prove the remaining obligations. Conclude with `congrArg (Ideal.Quotient.mk _) (MvPolynomial.map_map f g p)`.
+-/
 theorem jetCoef_comp {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (g : B →+* D) (κ : Type) (m : ℕ) :
     (jetCoef g κ m).comp (jetCoef f κ m) = jetCoef (g.comp f) κ m := by
   refine Ideal.Quotient.ringHom_ext (RingHom.ext fun p => ?_)
   exact congrArg (Ideal.Quotient.mk _) (MvPolynomial.map_map f g p)
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_spMap {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (g : B →+* D) :
     (spMap g ≫ spMap f : Sp D ⟶ Sp A) = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Take `⟨p, p₀, p₁, p₂, hp⟩` from `frames_tied C m (spMap (jetCoef (algebraMap T.Fr F) (Fin 1 × Fin (chD C.ch)) m))`. Take `⟨zF, z₁, z₂, hz⟩` from `hf m`. Establish `hLG : P.U.LG.L.IsLB` using `P.U.LG.isLB`. Take `⟨J₂, hJ₂⟩` from `DegPull.exists_good' hLG z`.
+
+Take `⟨J', hJ'⟩` from `DegPull.exists_good' C.I.t'.PP.isLB z`. Take `⟨J₃, hJ₃, hv, hw⟩` from `exists_good_cast (L' := C.I.t'.PP.L) (Φ := C.I.m2.φ) (congrArg RigLB.L P.bundle).symm z J₂ hJ₂`. Take `⟨A, k₁, k₂⟩` from `hp z J J₃ J' hJ hJ₃ hJ'`. Establish `ec : spMap (jetCoef (algebraMap T.Fr F) (Fin 1 × Fin (chD C.ch)) m) ≫ spMap (jetCoef (algebraMap T.V T.Fr) (Fin 1 × Fin (chD C.ch)) m) = spMap (jetCoef (algebraMap T.V F) (Fin 1 × Fin (chD C.ch)) m)`. Rewrite using `[spMap_spMap, jetCoef_comp, ← IsScalarTower.algebraMap_eq]`.
+
+Rewrite `p₂`, `k₂` using `[ec]`. Take `⟨b₁, b₂⟩` from `ptSec_base (t := Xo.univ.t) m a`. Establish `key` using `ht.2 _ p zF _ (z₂.trans p₂.symm) (b₁.trans (ha.trans p₁.symm)) (z₁.trans b₂.symm) (by`. Rewrite using `[← Category.assoc, p₀]`. Use `(congrArg (· ≫ spMap (algebraMap T.Fr F)) b₂).trans ?_` and prove the remaining obligations.
+
+Conclude with `RawChartGermBC.spMap_comp_eq _ _ _ _ (RingHom.ext fun s => (jetBC_algebraMap (algebraMap T.Fr F) _ m s).symm))`. Use `z J J₂ (J' p) hJ hJ₂ (hJ' p)`. Rewrite `key` using `[hw]`. Establish `k₃` using `(val_corr hJ₂ (corr_of_val hLG (hτ m)) (spMap (jetCoef (algebraMap T.V F) (Fin 1 × Fin (chD C.ch)) m))).trans ((hv _ _ _ _).trans k₂)`. Conclude with `alg_tie key (hz z J₂ hJ₂) k₁ k₃`.
+-/
 theorem sv_of_tie {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
     {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} (C : IntegralChartA3 Xo c T io y)
@@ -344,6 +423,15 @@ namespace GlobalTheory
 open GermValuationJetHarmonics in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `nab hnab T io y C P τ _ hτ F _ _ _ _ _`. Use `letI := io.toAlgebra`. Use `letI : Algebra c.F F := ((algebraMap T.Fr F).comp io).toAlgebra`.
+
+Introduce `φ hφ yF hy q n σ hh f ht hf a Pp hP`. Take `⟨x', e', h₁, h₂, h₃, h₄, h₅⟩` from `exists_chart_baseChange φ hy C.ch`. Rewrite `h₁`, `h₂`, `h₃`, `h₄`, `h₅` using `[hφ]`. Establish `hg` using `RawChartBaseChange.isCanonGauge_mapFB (algebraMap T.Fr F) C.ch.B C.ch.h C.ch.gauge`. Set `CF : ChartAt Xo c yF` to `⟨C.ch.d, FBMap.mapFB (algebraMap T.Fr F) C.ch.B, fun ℓ j => algebraMap T.Fr F (C.ch.uvec ℓ j), x', e', C.ch.wP, MvPowerSeries.map (algebraMap T.Fr F) C.ch.h, h₁, h₂, C.ch.prim, hg, h₃⟩`.
+
+Establish `hG : ∀ i, IsGerm yF CF.d CF.x CF.B.A.act CF.e CF.wP q (hh i) (f i)` using `fun i => (isGerm_iff yF _ _ _ _ _ _ _ _).2 (isGermG_of_val ((isChart_iff yF _ _ _ _ _).1 h₁) h₂.gen C.ch.prim.1 fun m z J hJ => (sv_of_tie C P τ hτ F yF.x q (σ i) (hh i) (f i) (ht i) (hf i) m (x' m) (h₄ m) z J hJ).trans (congrArg (fun v => gs (𝟙 _) z ⊤ (toΓ _ (psJet m (f i))) * ( …`. Take `⟨C₁, hex, hpin⟩` from `hnab.2 F yF`. Use `choose f₁ hf₁ using fun b => hex q (hh b)`. Establish `e₁ : ∀ m, ∏ b, nab yF q (hh b) (colOf m b) = ∏ b, C₁.B.nabVal F C₁.h H.w0 q (f₁ b) C₁.uvec (MvPolynomial.monomial (colOf m b) 1)` using `fun m => Finset.prod_congr rfl fun b _ => hpin q (hh b) (f₁ b) (hf₁ b) (colOf m b)`. Establish `h` using `ChartField.chartVal_indep E H Dw l Xo c hnab.1 F yF C₁ CF q n hh f₁ f hf₁ hG a Pp hP`.
+
+Simplify using `only [e₁]`. Use `h.trans ?_` and prove the remaining obligations. Conclude with `(nabValN_columns (algebraMap c.F F) C.ch.B _ (HarmCopies.const_eq_zero hg) q n f (fun ℓ j => algebraMap T.Fr F (C.ch.uvec ℓ j)) Pp).symm`.
+-/
 theorem harmonic_value_of_tied_sections : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (nab : NabV Xo c), IsNab Xo c nab → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y) (P : PELUnif (maximalIdeal T.V) C.I.G) (τ : Frames P.U.LG.L (κ := Fin 1 × Fin (chD C.ch)) C.xT), τ.Gen → IsEL P C.xT C.actT C.eT C.wPT τ → ∀ (F : Type) [Field F] [CharZero F] [Algebra T.Fr F] [Algebra T.V F] [IsScalarTower T.V T.Fr F], letI := io.toAlgebra; letI : Algebra c.F F := ((algebraMap T.Fr F).comp io).toAlgebra; ∀ (φ : T.Fr →ₐ[c.F] F), φ.toRingHom = algebraMap T.Fr F → ∀ (yF : FrPt Xo c F), FrMap φ y.1 yF → ∀ (q n : ℕ) (σ : Fin n → P.U.toUnifPre.SecGF F q) (hh : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L (q : ℤ) (ptO Xo yF.x))) (f : Fin n → PS F 1 (chD C.ch)), (∀ i, SecTieF C.I P F yF.x q (σ i) (hh i)) → (∀ i, GermA P.U.toUnifPre (κ := Fin 1 × Fin (chD C.ch)) C.xT τ F q (σ i) (f i)) → ∀ (a : ((E →+* ℂ) × ℕ → ℕ)) (Pp : MvPolynomial (LtN Dw n) c.F), Pp ∈ harmA c a n → ∑ m ∈ Pp.support, algebraMap c.F F (Pp.coeff m) * ∏ i, nab yF (q : ℤ) (hh i) (colOf m i) = nabValN C.ch.B F (MvPowerSeries.map (algebraMap T.Fr F) C.ch.h) H.w0 q (boxSer f) (fun ℓ : LtN Dw n => ℓ.2.2) (fun (ℓ : LtN Dw n) i => algebraMap T.Fr F (C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩ i)) (MvPolynomial.map (algebraMap c.F F) Pp) := by
   intro E _ _ _ H Dw l Xo c
   letI := H.starRing

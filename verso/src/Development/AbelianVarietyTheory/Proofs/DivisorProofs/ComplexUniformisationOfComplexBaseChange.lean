@@ -12,6 +12,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped Matrix
 
+/- English proof (translation)
+Establish `hs : ∀ U : X.Opens, {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U} = {b ∈ B | ⊤ ≤ y' b ⁻¹ᵁ U}` using `fun U => Set.ext fun b => ⟨fun ⟨hb, h'⟩ => ⟨hb, by rw [← h b hb]; exact h'⟩, fun ⟨hb, h'⟩ => ⟨hb, by rw [h b hb]; exact h'⟩⟩`. Prove the components needed by the constructor for the conclusion. Introduce `H U s`. Take `⟨h1, h2⟩` from `H U s`. Rewrite using `[← hs U]`.
+
+Conclude with `⟨h1, h2.congr fun b hb => by rw [h b hb.1]⟩`. Introduce `H U s`. Take `⟨h1, h2⟩` from `H U s`. Rewrite using `[hs U]`. Conclude with `⟨h1, h2.congr fun b hb => by rw [h b hb.1]⟩`.
+-/
 theorem isHolTo_congr_on {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} {B : Set V}
     {y y' : V → (Sp ℂ ⟶ X)} (h : ∀ b ∈ B, y b = y' b) : IsHolTo B y ↔ IsHolTo B y' := by
   have hs : ∀ U : X.Opens, {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U} = {b ∈ B | ⊤ ≤ y' b ⁻¹ᵁ U} := fun U =>
@@ -26,6 +31,27 @@ theorem isHolTo_congr_on {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {
     rw [hs U]
     exact ⟨h1, h2.congr fun b hb => by rw [h b hb.1]⟩
 
+/- English proof (translation)
+Introduce `O _ bar g ρ R _ σ Λ F N C F' hbc hU`. Take `⟨U'⟩` from `hU`. Take `⟨f, φ, hpb, hgp, hact, hL, heta⟩` from `hbc`. Establish `hw : φ ≫ F.A.hom = F'.A.hom ≫ f` using `hgp.1.w`. Establish `hsq : f ≫ F.s = F'.s ≫ spMap σ` using `hpb.w`.
+
+Establish `hid : spMap (RingHom.id ℂ) = 𝟙 _` using `Spec.map_id _`. Establish `hbase : ∀ y' : Sp ℂ ⟶ F'.X, y' ≫ F'.s = spMap (RingHom.id ℂ) → (y' ≫ f) ≫ F.s = spMap σ`. Introduce `y' h`. Rewrite using `[Category.assoc, hsq, ← Category.assoc, h, hid, Category.id_comp]`. Establish `hinj : ∀ y₁ y₂ : Sp ℂ ⟶ F'.X, y₁ ≫ F'.s = spMap (RingHom.id ℂ) → y₂ ≫ F'.s = spMap (RingHom.id ℂ) → y₁ ≫ f = y₂ ≫ f → y₁ = y₂` using `fun y₁ y₂ h₁ h₂ h => hpb.hom_ext h (by rw [h₁, h₂])`.
+
+Set `exF : ∀ i P, (Fin g → ℂ) → (Over.mk (U'.u i P ≫ f) ⟶ F.A)` to `fun i P z => Over.homMk ((U'.ex i P z).left ≫ φ) (by rw [Category.assoc, hw, ← Category.assoc, Over.w]; rfl)`. Use `⟨{ n := U'.n, Di := U'.Di, t := U'.t, mem := U'.mem, ne := U'.ne, all := U'.all, distinct := U'.distinct u := fun i P => U'.u i P ≫ f, ex := exF, unif := ?_, onto := ?_, disj := ?_, fibre := ?_, hol := ?_, lift := ?_ }⟩` and prove the remaining obligations. Introduce `i P hP`. Establish `h` using `U'.unif i P hP`. Take `⟨e, he, hee⟩` from `(GlobalTheory.T.uniformisationAt_correspond_of_cartesian O bar g ρ R ℂ σ (RingHom.id ℂ) Λ F F' N f φ hgp hact hL heta (U'.Di i) (U'.t i) P (U'.u i P) h.1 (hbase _ h.1)).1 _ h`.
+
+Establish `: e = exF i P` using `funext fun z => Over.OverMorphism.ext (by rw [hee z]; rfl)`. Rewrite using `[← this]`. Conclude with `he`. Introduce `y hy`. Take `⟨i, P, hP, hu⟩` from `U'.onto (hpb.lift y (spMap (RingHom.id ℂ)) (by rw [hy, hid, Category.id_comp])) (IsPullback.lift_snd _ _ _ _)`.
+
+Use `⟨i, P, hP, ?_⟩` and prove the remaining obligations. Use `show U'.u i P ≫ f = y`. Rewrite using `[hu, IsPullback.lift_fst]`. Introduce `i j P P' hP hP' h`. Conclude with `U'.disj i j P P' hP hP' (hinj _ _ (U'.unif i P hP).1 (U'.unif j P' hP').1 h)`.
+
+Introduce `i P P' hP hP'`. Use `Iff.trans ⟨fun h => hinj _ _ (U'.unif i P hP).1 (U'.unif i P' hP').1 h, fun h => ?_⟩ (U'.fibre i P P' hP hP')` and prove the remaining obligations. Use `show U'.u i P ≫ f = U'.u i P' ≫ f`. Rewrite using `[h]`. Introduce `i m B P hB hP`.
+
+Take `⟨h1, h2⟩` from `U'.hol i m B P hB hP`. Use `⟨(GlobalTheory.T.isHolTo_baseChange_complex_iff R σ F.X F'.X F.s F'.s f hpb (Fin m → ℂ) B (fun b => U'.u i (P b)) (fun b hb => (U'.unif i (P b) (hP.1 b hb)).1)).1 h1, ?_⟩` and prove the remaining obligations. Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp h2 φ`. Introduce `m B y hB hy hhol b₀ hb₀ classical`. Set `y' : (Fin m → ℂ) → (Sp ℂ ⟶ F'.X)` to `fun b => if h : y b ≫ F.s = spMap σ then hpb.lift (y b) (spMap (RingHom.id ℂ)) (by rw [h, hid, Category.id_comp]) else hpb.lift (y b₀) (spMap (RingHom.id ℂ)) (by rw [hy b₀ hb₀, hid, Category.id_comp])`.
+
+Establish `hy'1 : ∀ b ∈ B, y' b ≫ F'.s = spMap (RingHom.id ℂ)`. Introduce `b hb`. Simplify using `only [y', dif_pos (hy b hb)]`. Conclude with `IsPullback.lift_snd _ _ _ _`. Establish `hy'2 : ∀ b ∈ B, y' b ≫ f = y b`.
+
+Introduce `b hb`. Simplify using `only [y', dif_pos (hy b hb)]`. Conclude with `IsPullback.lift_fst _ _ _ _`. Establish `hh : IsHolTo B y'` using `(GlobalTheory.T.isHolTo_baseChange_complex_iff R σ F.X F'.X F.s F'.s f hpb _ B y' hy'1).2 ((isHolTo_congr_on fun b hb => (hy'2 b hb).symm).1 hhol)`. Take `⟨B', i, P, hB', hb', hsub, hP, hu⟩` from `U'.lift m B y' hB hy'1 hh b₀ hb₀`.
+
+Use `⟨B', i, P, hB', hb', hsub, hP, fun b hb => ?_⟩` and prove the remaining obligations. Use `show U'.u i (P b) ≫ f = y b`. Rewrite using `[hu b hb, hy'2 b (hsub hb)]`.
+-/
 theorem unif_of_isBC : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (R : Type) [CommRing R]
     (σ : R →+* ℂ) (Λ : Type) (F : Fam R O Λ g) (N : ℕ) (C : ∀ D' : PLat O bar, (Λ → D'.La) → Prop) (F' : Fam ℂ O Λ g),
     IsBC F' F σ → Nonempty (Unif F' (RingHom.id ℂ) ρ N C) → Nonempty (Unif F σ ρ N C) := by

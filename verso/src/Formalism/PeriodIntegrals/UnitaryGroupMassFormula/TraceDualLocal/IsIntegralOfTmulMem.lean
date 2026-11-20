@@ -14,19 +14,31 @@ def BA : Module.Basis (Module.Free.ChooseBasisIndex ℤ (𝓞 K)) ℚ_[ℓ] (ℚ
 
 variable {K ℓ}
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.basis_apply _ i`.
+-/
 theorem BA_apply (i : Module.Free.ChooseBasisIndex ℤ (𝓞 K)) : BA K ℓ i = 1 ⊗ₜ integralBasis K i :=
   Algebra.TensorProduct.basis_apply _ i
 
+/- English proof (translation)
+Simplify using `[BA, Finsupp.mapRange_apply]`.
+-/
 theorem BA_repr_tmul (x : K) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 K)) :
     (BA K ℓ).repr (1 ⊗ₜ x) i = (((integralBasis K).repr x i : ℚ) : ℚ_[ℓ]) := by
   simp [BA, Finsupp.mapRange_apply]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩ : ∃ a : 𝓞 K, algebraMap (𝓞 K) K a = x` from `⟨⟨x, (mem_integralClosure_iff ℤ K).2 hx⟩, rfl⟩`. Rewrite using `[integralBasis_repr_apply]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem coord_int (x : K) (hx : IsIntegral ℤ x) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 K)) :
     ∃ z : ℤ, (integralBasis K).repr x i = z := by
   obtain ⟨a, rfl⟩ : ∃ a : 𝓞 K, algebraMap (𝓞 K) K a = x := ⟨⟨x, (mem_integralClosure_iff ℤ K).2 hx⟩, rfl⟩
   rw [integralBasis_repr_apply]
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[show ((ℓ : ℚ_[ℓ] ⊗[ℚ] K)) ^ D * x = ((ℓ : ℚ_[ℓ]) ^ D) • x by`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast]]`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+-/
 theorem BA_repr_natPow_mul (D : ℕ) (x : ℚ_[ℓ] ⊗[ℚ] K) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 K)) :
     (BA K ℓ).repr ((ℓ : ℚ_[ℓ] ⊗[ℚ] K) ^ D * x) i = (ℓ : ℚ_[ℓ]) ^ D * (BA K ℓ).repr x i := by
   rw [show ((ℓ : ℚ_[ℓ] ⊗[ℚ] K)) ^ D * x = ((ℓ : ℚ_[ℓ]) ^ D) • x by
@@ -74,8 +86,16 @@ def S : Subring (ℚ_[ℓ] ⊗[ℚ] K) where
 
 variable {K ℓ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_S {x : ℚ_[ℓ] ⊗[ℚ] K} : x ∈ S K ℓ ↔ ∀ i, (BA K ℓ).repr x i ∈ PadicInt.subring ℓ := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_S]`. Introduce `i`. Rewrite using `[BA_repr_tmul]`. Take `⟨z, hz⟩` from `coord_int x hx i`. Rewrite using `[hz, Rat.cast_intCast]`.
+
+Conclude with `intCast_mem _ z`.
+-/
 theorem tmul_mem_S (x : K) (hx : IsIntegral ℤ x) : (1 ⊗ₜ x : ℚ_[ℓ] ⊗[ℚ] K) ∈ S K ℓ := by
   rw [mem_S]
   intro i
@@ -84,6 +104,13 @@ theorem tmul_mem_S (x : K) (hx : IsIntegral ℤ x) : (1 ⊗ₜ x : ℚ_[ℓ] ⊗
   rw [hz, Rat.cast_intCast]
   exact intCast_mem _ z
 
+/- English proof (translation)
+Set `T : Submodule ℤ K` to `(Submodule.span ℤ (Set.range (integralBasis K))).map (LinearMap.mulLeft ℤ ((d : K)⁻¹))`. Establish `hT : T.FG` using `(Submodule.fg_span (Set.finite_range _)).map _`. Establish `hle : Subalgebra.toSubmodule (Algebra.adjoin ℤ {s}) ≤ T`. Rewrite using `[Algebra.adjoin_eq_span, Submodule.span_le]`. Introduce `x hx`.
+
+Rewrite `hx` using `[SetLike.mem_coe, Submonoid.mem_closure_singleton]`. Take `⟨n, rfl⟩` from `hx`. Use `⟨(d : K) * s ^ n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_span_integralBasis]`. Conclude with `⟨⟨_, (mem_integralClosure_iff ℤ K).2 (h n)⟩, rfl⟩`.
+
+Use `show (d : K)⁻¹ * ((d : K) * s ^ n) = s ^ n`. Rewrite using `[inv_mul_cancel_left₀ (Nat.cast_ne_zero.2 hd)]`. Conclude with `IsIntegral.of_mem_of_fg _ (hT.of_le hle) s (Algebra.self_mem_adjoin_singleton ℤ s)`.
+-/
 theorem isIntegral_of_pow_bdd (s : K) (d : ℕ) (hd : d ≠ 0) (h : ∀ n : ℕ, IsIntegral ℤ ((d : K) * s ^ n)) :
     IsIntegral ℤ s := by
   let T : Submodule ℤ K :=
@@ -101,6 +128,23 @@ theorem isIntegral_of_pow_bdd (s : K) (d : ℕ) (hd : d ≠ 0) (h : ∀ n : ℕ,
       rw [inv_mul_cancel_left₀ (Nat.cast_ne_zero.2 hd)]
   exact IsIntegral.of_mem_of_fg _ (hT.of_le hle) s (Algebra.self_mem_adjoin_singleton ℤ s)
 
+/- English proof (translation)
+Establish `hℓ : (ℓ : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : ℓ.Prime).ne_zero`. Establish `hw : ∀ i, ∃ w : ℤ, (integralBasis K).repr X i = w`. Introduce `i`. Take `⟨z, hz⟩` from `coord_int _ hX i`. Establish `hz' : (integralBasis K).repr ((ℓ : K) ^ E * X) i = (ℓ : ℚ) ^ E * (integralBasis K).repr X i`.
+
+Rewrite using `[show ((ℓ : K)) ^ E * X = ((ℓ : ℚ) ^ E) • X by`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast]]`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Establish `hn : ‖(((integralBasis K).repr X i : ℚ) : ℚ_[ℓ])‖ ≤ 1`. Use `mem_S.1 hS i` as an intermediate fact.
+
+Rewrite `this` using `[BA_repr_tmul, PadicInt.mem_subring_iff]`. Then use the resulting hypothesis. Establish `hdiv : ((ℓ : ℤ) ^ E : ℤ) ∣ z`. Rewrite using `[← Padic.norm_int_le_pow_iff_dvd]`. Establish `hq : ((z : ℚ_[ℓ])) = (ℓ : ℚ_[ℓ]) ^ E * (((integralBasis K).repr X i : ℚ) : ℚ_[ℓ])`. Establish `h2 : ((z : ℚ) : ℚ_[ℓ]) = (((ℓ : ℚ) ^ E * (integralBasis K).repr X i : ℚ) : ℚ_[ℓ])`.
+
+Rewrite using `[← hz', hz]`. Move the coercions through the operations in `at h2`. Conclude with `h2`. Rewrite using `[hq, norm_mul, Padic.norm_p_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨w, hw⟩` from `hdiv`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `h1 : (ℓ : ℚ) ^ E * (integralBasis K).repr X i = (ℓ : ℚ) ^ E * w`. Rewrite using `[← hz', hz, hw]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ (pow_ne_zero _ hℓ) h1`. Use `choose w hw using hw`. Establish `hX' : X = ∑ i, (w i : ℚ) • integralBasis K i` using `by conv_lhs => rw [← (integralBasis K).sum_repr X]`. Simplify using `only [hw]`.
+
+Rewrite using `[hX']`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def, Rat.cast_intCast, integralBasis_apply]`. Establish `hwi : IsIntegral ℤ ((w i : ℤ) : K)`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := K) (x := w i))`.
+
+Conclude with `hwi.mul (RingOfIntegers.isIntegral_coe _)`.
+-/
 theorem isIntegral_of_tmul_mem (X : K) (E : ℕ) (hX : IsIntegral ℤ ((ℓ : K) ^ E * X))
     (hS : (1 ⊗ₜ X : ℚ_[ℓ] ⊗[ℚ] K) ∈ S K ℓ) : IsIntegral ℤ X := by
   have hℓ : (ℓ : ℚ) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : ℓ.Prime).ne_zero

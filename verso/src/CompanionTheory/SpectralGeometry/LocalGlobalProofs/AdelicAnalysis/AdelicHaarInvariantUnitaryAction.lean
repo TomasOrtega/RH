@@ -36,6 +36,13 @@ def tupEquiv {K A : Type} [AddCommGroup K] [TopologicalSpace K] [AddCommGroup A]
     refine continuous_pi fun _ => continuous_pi fun i => ?_
     exact Φ.symm.continuous.comp (continuous_pi fun k => continuous_apply (i, k))
 
+/- English proof (translation)
+Establish `he : Measurable e` using `e.continuous.measurable`. Establish `hes : Measurable e.symm` using `e.symm.continuous.measurable`. Establish `hT : T = e.symm ∘ G ∘ e`. Use function extensionality and compare the values at `x`. Simplify using `[← hc x]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.map_map hG he, Measure.map_map hes (hG.comp he), hT]`. Use `_ = (μ.map e).map e.symm := by rw [hinv]`. Use `_ = μ := by`. Rewrite using `[Measure.map_map hes he]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem map_eq_of_conj {V W : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
     [TopologicalSpace W] [MeasurableSpace W] [BorelSpace W] (e : V ≃ₜ W) (μ : Measure V)
     (T : V → V) (G : W → W) (hG : Measurable G) (hc : ∀ x, e (T x) = G (e x))
@@ -55,6 +62,19 @@ theorem map_eq_of_conj {V W : Type} [TopologicalSpace V] [MeasurableSpace V] [Bo
 end GlobalTheory.CompanionTheory.SW.HaarInv
 
 open GlobalTheory.CompanionTheory.SW.HaarInv in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ μ _ h`. Take `⟨⟨i3, i4, i5⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `letI : MeasurableSpace (AF F) := borel (AF F)`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Take `⟨iR, -, -, -, -, -, -, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (AF F)`.
+
+Use `haveI := hBor 1 M`. Set `b` to `Module.finBasis F E`. Take `⟨B, -, hBdet, hB⟩` from `GlobalTheory.CompanionTheory.SW.CoordMat.coord_orthogonal F E σ hσ M J hJ _ b`. Take `⟨g, hg, hconj⟩` from `hB (AF F) h`. Set `Φ` to `GlobalTheory.CompanionTheory.SW.TopK.coordHomeo (AF F) b`.
+
+Establish `hadd : ∀ x y, Φ (x + y) = Φ x + Φ y` using `fun x y => by`. Use function extensionality and compare the values at `k`. Simplify using `[Φ, GlobalTheory.CompanionTheory.SW.TopK.coordHomeo]`. Set `e` to `tupEquiv (M := M) Φ hadd`. Establish `hcomm : ∀ X, e.toHomeomorph (actW (AF F) σ J h X) = (fun x => g *ᵥ x) (e.toHomeomorph X)`.
+
+Introduce `X`. Use `hconj X` as an intermediate fact. Use function extensionality and compare the values at `p`. Establish `hp` using `congrFun this p`. Simplify `hp` using `[e, tupEquiv, Φ, GlobalTheory.CompanionTheory.SW.TopK.coordHomeo]`.
+
+Establish `hdet : IsUnit (B.map (algebraMap F (AF F))).det`. Establish `: (B.map (algebraMap F (AF F))).det = algebraMap F (AF F) B.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `(Ne.isUnit hBdet).map _`. Use `haveI : (μ.map e.toHomeomorph).IsAddHaarMeasure := e.isAddHaarMeasure_map μ`. Establish `hinv : (μ.map e.toHomeomorph).map (fun x => g *ᵥ x) = μ.map e.toHomeomorph` using `GlobalTheory.CompanionTheory.Adelic.OrthHaar.map_mulVec_eq_of_transpose_mul_mul_eq (AF F) (GlobalTheory.CompanionTheory.AdeleStableRange.adeleRing_stableRange_one F) _ (μ.map e.toHomeomorph) (B.map (algebraMap F (AF F))) g hdet hg`. Conclude with `map_eq_of_conj e.toHomeomorph μ (actW (AF F) σ J h) (fun x => g *ᵥ x) (continuous_const.matrix_mulVec continuous_id).measurable hcomm hinv`.
+-/
 theorem GlobalTheory.CompanionTheory.SW.HaarInv.actW_map_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (μ : Measure (Fin 1 → Fin M → AF F ⊗[F] E)), μ.IsAddHaarMeasure → ∀ h : HA (AF F) σ J, μ.map (actW (AF F) σ J h) = μ := by
   intro F E _ _ _ _ _ σ hσ M J hJ μ _ h
   obtain ⟨⟨i3, i4, i5⟩, -⟩ := GlobalTheory.CompanionTheory.AdeleTop.adele_top F

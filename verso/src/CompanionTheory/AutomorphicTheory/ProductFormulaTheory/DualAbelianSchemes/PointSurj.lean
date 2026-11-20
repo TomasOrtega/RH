@@ -17,10 +17,16 @@ section Lemmas
 
 variable {k : Type} [Field k] {A T : Over (Sp k)} {M : LB (A ⊗ T).left}
 
+/- English proof (translation)
+Rewrite using `[pull_evc, Category.comp_id, ← Category.assoc, comp_toUnit]`.
+-/
 theorem pull_evc_const (hM : M.IsLB) (t₀ : 𝟙_ (Over (Sp k)) ⟶ T) {Y : Over (Sp k)} (a : Y ⟶ A) :
     GlobalTheory.CechPic.pull a.left (evc hM (𝟙 A) (toUnit A ≫ t₀)) = evc hM a (toUnit Y ≫ t₀) := by
   rw [pull_evc, Category.comp_id, ← Category.assoc, comp_toUnit]
 
+/- English proof (translation)
+Rewrite using `[pull_evc_const, pull_evc_const, pull_evc_const]`. Conclude with `(isAdditive_iff hM).1 hadd Y a a' _`.
+-/
 theorem pull_mul_evc_const [GrpObj A] (hM : M.IsLB) (hadd : IsAdditive M) (t₀ : 𝟙_ (Over (Sp k)) ⟶ T)
     {Y : Over (Sp k)} (a a' : Y ⟶ A) :
     GlobalTheory.CechPic.pull (a * a').left (evc hM (𝟙 A) (toUnit A ≫ t₀)) =
@@ -33,6 +39,37 @@ end Lemmas
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hAA k _ _ A B _ _ hA hB P hP hadd hadd' hfin M hM haddM`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `: IsCommMonObj A` using `hA.comm`. Establish `: IsCommMonObj B` using `hB.comm`.
+
+Establish `hpA : IsProjBy A.hom` using `GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety k A hA`. Establish `hpB : IsProjBy B.hom` using `GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety k B hB`. Use `hA.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact.
+
+Use `hB.smooth` as an intermediate fact. Establish `hpq : IsPullback (fst A B).left (snd A B).left A.hom B.hom` using `IsPullback.of_hasPullback _ _`. Establish `hsw : (swap P).IsLB` using `pull_isLB hP _`. Take `⟨G, hG, eG⟩` from `cls_surj (GlobalTheory.CechPic.pull (lift (fst A B) (toUnit (A ⊗ B))).left (cls M hM) - cls P hP)`. Establish `cst : ∀ {X : Over (Sp k)} (x : 𝟙_ (Over (Sp k)) ⟶ X) (Y : Over (Sp k)), (toUnit Y ≫ x).left = Y.hom ≫ x.left` using `fun x Y => congrArg (· ≫ x.left) ((Category.comp_id _).symm.trans (Over.w (toUnit Y)))`.
+
+Establish `sl₁ : ∀ y' : 𝟙_ (Over (Sp k)) ⟶ B, cls _ (pull_isLB hG (lift (𝟙 A) (toUnit A ≫ y')).left) = evc hM (𝟙 A) (toUnit A ≫ 𝟙 _) - evc hP (𝟙 A) (toUnit A ≫ y')` using `fun y' => by`. Rewrite using `[cls_pull hG, eG, map_sub, ← pull_comp, ← Over.comp_left, comp_lift, lift_fst, comp_toUnit, Category.comp_id]`. Both sides reduce to the same expression. Establish `sl₂ : ∀ x' : 𝟙_ (Over (Sp k)) ⟶ A, cls _ (pull_isLB hG (lift (toUnit B ≫ x') (𝟙 B)).left) = - evc hsw (𝟙 B) (toUnit B ≫ x')` using `fun x' => by`. Rewrite using `[cls_pull hG, eG, map_sub, ← pull_comp, ← Over.comp_left, comp_lift, lift_fst, comp_toUnit]`.
+
+Establish `e₁ : GlobalTheory.CechPic.pull (lift (toUnit B ≫ x') (toUnit B)).left (cls M hM) = 0`. Establish `e` using `pull_evc hM (toUnit B) x' (𝟙 _)`. Rewrite `e` using `[Category.comp_id, GlobalTheory.T.picard_group_of_field_trivial k (evc hM x' (𝟙 _)), map_zero]`. Conclude with `e.symm`. Rewrite using `[e₁, zero_sub, evc_swap hP hsw]`.
+
+Both sides reduce to the same expression. Establish `fibB : ∀ (y : Sp k ⟶ B.left) (σ : A.left ⟶ (A ⊗ B).left), y ≫ B.hom = 𝟙 _ → σ ≫ (fst A B).left = 𝟙 _ → σ ≫ (snd A B).left = A.hom ≫ y → FibAc A.hom (G.pull σ)`. Introduce `y σ hy h₁ h₂`. Set `y' : 𝟙_ (Over (Sp k)) ⟶ B` to `Over.homMk y hy`. Establish `hσ : σ = (lift (𝟙 A) (toUnit A ≫ y')).left`.
+
+Use `hpq.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[h₁, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Rewrite using `[h₂, ← Over.comp_left, lift_snd, cst]`. Both sides reduce to the same expression.
+
+Substitute `hσ` using the available equality. Introduce `κ _ _ D hD hc`. Use `hAA k A hA _ (pull_isLB hG _) (fun Y a a' => ?_) (fun ht => ?_) κ D hD hc` and prove the remaining obligations. Rewrite using `[sl₁ y', map_sub, map_sub, map_sub, pull_mul_evc_const hM haddM, pull_mul_evc_const hP hadd]`. Normalize the expressions using the abelian group laws.
+
+Establish `h0` using `(cls_eq_zero_iff (pull_isLB hG _)).2 ht`. Rewrite `h0` using `[sl₁ y', sub_eq_zero]`. Use `hno y' ((cls_eq_iff hM (pull_isLB hP _)).1 ?_)` and prove the remaining obligations. Establish `e` using `congrArg (GlobalTheory.CechPic.pull (fst A (𝟙_ (Over (Sp k)))).left) h0`. Rewrite `e` using `[pull_evc, pull_evc, Category.comp_id, Category.comp_id, ← Category.assoc (fst A _) (toUnit A) y', toUnit_unique (fst A (𝟙_ (Over (Sp k))) ≫ toUnit A) (snd A _)]`.
+
+Use `Eq.trans ?_ (e.trans (cls_ev hP _ _ _).symm)` and prove the remaining obligations. Rewrite using `[evc, lift_fst_snd, Over.id_left, pull_id]`. Establish `htot : FibAc ((fst A B).left ≫ A.hom) G` using `GlobalTheory.T.fibre_acyclicity_of_sections A.hom B.hom (fst A B).left (snd A B).left hpq hpA G hG fibB`. Set `F' : Set (Sp k ⟶ A.left)` to `(fun x : 𝟙_ (Over (Sp k)) ⟶ A => x.left) '' {x | Triv (ev P (toUnit B ≫ x) (𝟙 B))}`. Establish `fibA : ∀ (y : Sp k ⟶ A.left) (σ : B.left ⟶ (A ⊗ B).left), y ≫ A.hom = 𝟙 _ → σ ≫ (snd A B).left = 𝟙 _ → σ ≫ (fst A B).left = B.hom ≫ y → y ∉ F' → FibAc B.hom (G.pull σ)`.
+
+Introduce `y σ hy h₁ h₂ hyF`. Set `x' : 𝟙_ (Over (Sp k)) ⟶ A` to `Over.homMk y hy`. Establish `hσ : σ = (lift (toUnit B ≫ x') (𝟙 B)).left`. Use `hpq.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[h₂, ← Over.comp_left, lift_fst, cst]`.
+
+Both sides reduce to the same expression. Rewrite using `[h₁, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Substitute `hσ` using the available equality. Introduce `κ _ _ D hD hc`.
+
+Use `hAA k B hB _ (pull_isLB hG _) (fun Y a a' => ?_) (fun ht => ?_) κ D hD hc` and prove the remaining obligations. Rewrite using `[sl₂ x', map_neg, map_neg, map_neg, pull_mul_evc_const hsw hadd']`. Normalize the expressions using the abelian group laws. Establish `h0` using `(cls_eq_zero_iff (pull_isLB hG _)).2 ht`. Rewrite `h0` using `[sl₂ x', neg_eq_zero, evc_swap hP hsw]`.
+
+Conclude with `hyF ⟨x', (triv_ev_iff hP _ _).2 h0, rfl⟩`. Establish `htot' : FibAc ((snd A B).left ≫ B.hom) G` using `hpq.w ▸ htot`. Establish `hη : η[A].left ≫ A.hom = 𝟙 _` using `Over.w η[A]`. Take `⟨m, D, hD, hc, hac⟩` from `GlobalTheory.T.exists_affine_cover_cech_acyclic_of_fibAc_off_finite B.hom A.hom (snd A B).left (fst A B).left hpq.flip hpB G hG F' (hfin.image _) fibA htot' η[A].left (lift (toUnit B ≫ η[A]) (𝟙 B)).left hη (by rw [← Over.comp_left, lift_snd]; rfl) (by rw [← Over.comp_left, lift_f …`. Establish `: Nonempty B.left` using `⟨η[B].left (IsLocalRing.closedPoint k)⟩`.
+
+Use `GlobalTheory.T.cech_complex_trivial_line_bundle_not_acyclic B.hom _ (pull_isLB hG _) ?_ (Fin m) D hc hac` and prove the remaining obligations. Use `(cls_eq_zero_iff (pull_isLB hG _)).1 ?_` and prove the remaining obligations. Rewrite using `[sl₂, evc_swap hP hsw, ← Hom.one_def, IsAdditive.evc_one hP hadd, neg_zero]`.
+-/
 theorem pointSurj_pf : (∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A], IsAbelianScheme A → ∀ M : LB A.left, ∀ hM : M.IsLB, (∀ (Y : Over (Sp k)) (a a' : Y ⟶ A), GlobalTheory.CechPic.pull (a * a').left (cls M hM) = GlobalTheory.CechPic.pull a.left (cls M hM) + GlobalTheory.CechPic.pull a'.left (cls M hM)) → ¬ Triv M → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → A.left.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB A.hom M D).Acyclic) → PointSurj := by
   intro hAA k _ _ A B _ _ hA hB P hP hadd hadd' hfin M hM haddM
   by_contra hno

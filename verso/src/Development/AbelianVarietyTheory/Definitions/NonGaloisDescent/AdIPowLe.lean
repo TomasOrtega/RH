@@ -13,6 +13,9 @@ variable {l : ℕ} {R : Type} [CommRing R]
 
 abbrev adI (B : Obj l R) : Ideal B.A := Ideal.span {(l : B.A)} ⊔ B.I
 
+/- English proof (translation)
+Use `le_trans (Ideal.pow_right_mono ?_ m) (Ideal.le_comap_pow f.f m)` and prove the remaining obligations. Use `sup_le ?_ fun a ha => Ideal.mem_sup_right (f.f_I a ha)` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`.
+-/
 theorem adI_pow_le {B B' : Obj l R} (f : Hom B B') (m : ℕ) : adI B ^ m ≤ (adI B' ^ m).comap f.f := by
   refine le_trans (Ideal.pow_right_mono ?_ m) (Ideal.le_comap_pow f.f m)
   refine sup_le ?_ fun a ha => Ideal.mem_sup_right (f.f_I a ha)
@@ -22,6 +25,9 @@ theorem adI_pow_le {B B' : Obj l R} (f : Hom B B') (m : ℕ) : adI B ^ m ≤ (ad
 def qmap {B B' : Obj l R} (f : Hom B B') (m : ℕ) : (B.A ⧸ adI B ^ m) →+* (B'.A ⧸ adI B' ^ m) :=
   Ideal.quotientMap _ f.f (adI_pow_le f m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qmap_mk {B B' : Obj l R} (f : Hom B B') (m : ℕ) (a : B.A) :
     qmap f m (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ (f.f a) := rfl
 

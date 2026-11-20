@@ -3,6 +3,11 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.QLog
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, k, rfl⟩`. Simplify `h.unit_p.pow k` using `[map_pow, map_natCast]`. Introduce `q`. Take `⟨k, b, hb⟩` from `h.denom q`.
+
+Use `⟨⟨b, ⟨(p : B) ^ k, k, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [map_pow, map_natCast]`. Rewrite using `[← hb, mul_comm]`. Introduce `x y hxy`. Conclude with `⟨1, by simpa using h.inj hxy⟩`.
+-/
 theorem IsFrame.isLocalization_away {p : ℕ} {B O Q : Type} [CommRing B] [CommRing Q] [CommRing O]
     [Algebra B Q] {θ : B →+* O} (h : IsFrame p Q θ) : IsLocalization.Away (p : B) Q := by
   refine ⟨?_, ?_, ?_⟩
@@ -16,6 +21,9 @@ theorem IsFrame.isLocalization_away {p : ℕ} {B O Q : Type} [CommRing B] [CommR
   · intro x y hxy
     exact ⟨1, by simpa using h.inj hxy⟩
 
+/- English proof (translation)
+Introduce `p _ B O Q _ _ _ _ θ hQ C _ _ hC`. Use `haveI := hQ.isLocalization_away`. Use `⟨IsLocalization.Away.lift (p : B) (g := (algebraMap O C).comp θ) ?_, fun b => ?_⟩` and prove the remaining obligations. Simplify `hC.unit_p` using `[map_natCast]`. Conclude with `IsLocalization.Away.lift_eq (p : B) _ b`.
+-/
 theorem frame_fraction_map : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (C : Type) [CommRing C] [Algebra O C], IsFrame p C (RingHom.id O) → ∃ Θ : Q →+* C, ∀ b, Θ (algebraMap B Q b) = algebraMap O C (θ b) := by
   intro p _ B O Q _ _ _ _ θ hQ C _ _ hC
   haveI := hQ.isLocalization_away

@@ -12,6 +12,25 @@ noncomputable section
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `hr : Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.card ι` using `by first`. Consider the case `rw [Module.finrank_real_of_complex, finrank_euclideanSpace]`. Consider the case `rw [finrank_real_of_complex, finrank_euclideanSpace]`. Set `e` to `((stdOrthonormalBasis ℝ (EuclideanSpace ℂ ι)).reindex (finCongr hr)).repr`. Set `P` to `S.map ⟨e, e.injective⟩`.
+
+Establish `hcard : P.card = S.card` using `Finset.card_map _`. Break down `lt_or_ge ρ (δ / 2) with hsmall | hbig` into its components or cases. Establish `h1 : S.card ≤ 1`. Use `Finset.card_le_one.2 fun a ha b hb => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hab`.
+
+Establish `h3` using `hsep a ha b hb hab`. Establish `h2 : ‖a - b‖ ≤ ‖a‖ + ‖b‖` using `norm_sub_le a b`. Combine the linear relations using `[hS a ha, hS b hb]`. Combine the equalities or inequalities in the displayed calculation. Use `one_le_pow₀ ?_` and prove the remaining obligations.
+
+Establish `: 0 ≤ 4 * ρ / δ` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR : δ ≤ max δ ρ` using `le_max_left _ _`. Establish `hnorm : ∀ x ∈ P, ‖x‖ ≤ max δ ρ`. Introduce `x hx`.
+
+Take `⟨a, ha, rfl⟩` from `Finset.mem_map.1 hx`. Simplify using `only [Function.Embedding.coeFn_mk, LinearIsometryEquiv.norm_map]`. Conclude with `(hS a ha).trans (le_max_right _ _)`. Establish `hsep' : ∀ x ∈ P, ∀ y ∈ P, x ≠ y → δ ≤ dist x y`. Introduce `x hx y hy hxy`.
+
+Take `⟨a, ha, rfl⟩` from `Finset.mem_map.1 hx`. Take `⟨b, hb, rfl⟩` from `Finset.mem_map.1 hy`. Establish `hab : a ≠ b` using `fun h => hxy (by rw [h])`. Simplify using `only [Function.Embedding.coeFn_mk, LinearIsometryEquiv.dist_map, dist_eq_norm]`. Use `first`.
+
+Consider the case `exact hsep a ha b hb hab`. Consider the case `(rw [← map_sub, LinearIsometryEquiv.norm_map]; exact hsep a ha b hb hab)`. Establish `hPc` using `hP (2 * Fintype.card ι) P δ (max δ ρ) hδ hR hnorm hsep'`. Rewrite `hPc` using `[hcard]`. Establish `hle : 3 * max δ ρ / δ ≤ 1 + 4 * ρ / δ`.
+
+Rewrite using `[div_le_iff₀ hδ, add_mul, one_mul, div_mul_cancel₀ _ hδ.ne']`. Break down `le_total δ ρ with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_left h]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `hPc.trans ?_` and prove the remaining obligations. Use `first`. Consider the case `exact pow_le_pow_left₀ (by positivity) hle _`. Consider the case `exact pow_le_pow_left (by positivity) hle _`.
+-/
 lemma lemS_pack (hP : Ext.PackingCount) (S : Finset (EuclideanSpace ℂ ι)) (δ ρ : ℝ)
     (hδ : 0 < δ) (hρ : 0 ≤ ρ) (hS : ∀ a ∈ S, ‖a‖ ≤ ρ)
     (hsep : ∀ a ∈ S, ∀ b ∈ S, a ≠ b → δ ≤ ‖a - b‖) :
@@ -64,6 +83,9 @@ lemma lemS_pack (hP : Ext.PackingCount) (S : Finset (EuclideanSpace ℂ ι)) (δ
       | exact pow_le_pow_left₀ (by positivity) hle _
       | exact pow_le_pow_left (by positivity) hle _
 
+/- English proof (translation)
+Unfold `GT.la1`. Use `csInf_le ⟨0, ?_⟩ ⟨x, hx, hne, rfl⟩` and prove the remaining obligations. Introduce and unpack `t ⟨y, _, _, rfl⟩`. Conclude with `norm_nonneg y`.
+-/
 lemma firstMinimum_le_norm (Y : GT ι) {x : EuclideanSpace ℂ ι} (hx : x ∈ lat Y.b) (hne : x ≠ 0) :
     Y.la1 ≤ ‖x‖ := by
   unfold GT.la1
@@ -71,6 +93,13 @@ lemma firstMinimum_le_norm (Y : GT ι) {x : EuclideanSpace ℂ ι} (hx : x ∈ l
   rintro t ⟨y, _, _, rfl⟩
   exact norm_nonneg y
 
+/- English proof (translation)
+Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 (isOpen_discrete ({0} : Set (lat Y.b))) 0 rfl`. Establish `hne : ({t : ℝ | ∃ x ∈ lat Y.b, x ≠ 0 ∧ t = ‖x‖}).Nonempty`. Take `⟨i⟩ : Nonempty (Fin (2 * Fintype.card ι))` from `⟨⟨0, by omega⟩⟩`. Conclude with `⟨_, Y.b i, Submodule.subset_span ⟨i, rfl⟩, Y.b.ne_zero i, rfl⟩`. Unfold `GT.la1`.
+
+Use `lt_of_lt_of_le hε (le_csInf hne ?_)` and prove the remaining obligations. Introduce and unpack `t ⟨x, hx, hx0, rfl⟩`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hmem : (⟨x, hx⟩ : lat Y.b) ∈ Metric.ball (0 : lat Y.b) ε`.
+
+Simplify `hlt` using `[Metric.mem_ball, dist_zero_right]`. Establish `h0` using `hball hmem`. Simplify using `only [Set.mem_singleton_iff] at h0`. Conclude with `hx0 (congrArg Subtype.val h0)`.
+-/
 lemma firstMinimum_pos (Y : GT ι) (hN : 0 < Fintype.card ι) : 0 < Y.la1 := by
   obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.1 (isOpen_discrete ({0} : Set (lat Y.b))) 0 rfl
   have hne : ({t : ℝ | ∃ x ∈ lat Y.b, x ≠ 0 ∧ t = ‖x‖}).Nonempty := by
@@ -87,10 +116,24 @@ lemma firstMinimum_pos (Y : GT ι) (hN : 0 < Fintype.card ι) : 0 < Y.la1 := by
   simp only [Set.mem_singleton_iff] at h0
   exact hx0 (congrArg Subtype.val h0)
 
+/- English proof (translation)
+Simplify using `only [Hf, PiLp.inner_apply, RCLike.inner_apply]`. Apply the tactic sequence `all_goals (refine Finset.sum_congr rfl fun i _ => ?_; ring)`.
+-/
 lemma lemS_Hf_eq_inner (w v : EuclideanSpace ℂ ι) : Hf w v = inner ℂ v w := by
   simp only [Hf, PiLp.inner_apply, RCLike.inner_apply]
   all_goals (refine Finset.sum_congr rfl fun i _ => ?_; ring)
 
+/- English proof (translation)
+Take `⟨_, hF'⟩` from `hF`. Establish `h` using `hF' γ hγ v`. Establish `hnorm : ‖v + γ‖ ^ 2 = ‖v‖ ^ 2 + 2 * (Hf v γ).re + ‖γ‖ ^ 2`. Rewrite using `[norm_add_sq (𝕜 := ℂ), lemS_Hf_eq_inner, inner_re_symm]`. Both sides reduce to the same expression.
+
+Establish `hγγ : Hf γ γ = ((‖γ‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[lemS_Hf_eq_inner]`. Use `first`. Consider the case `exact_mod_cast inner_self_eq_norm_sq_to_K (𝕜 := ℂ) γ`. Consider the case `(rw [inner_self_eq_norm_sq_to_K]; simp)`.
+
+Consider the case `(rw [inner_self_eq_norm_sq_to_K]; norm_cast)`. Establish `hA : ∀ z : ℂ, ((q : ℂ) * (Real.pi : ℂ) * z + (q : ℂ) * (Real.pi : ℂ) * ((‖γ‖ ^ 2 : ℝ) : ℂ) / 2).re = q * Real.pi * z.re + q * Real.pi * ‖γ‖ ^ 2 / 2`. Introduce `z`. Simplify using the standard rewrite rules. Use `first`.
+
+Consider the case `(left; rw [← Complex.ofReal_pow, Complex.ofReal_re])`. Consider the case `ring`. Establish `key : Real.exp (q * Real.pi * (Hf v γ).re + q * Real.pi * ‖γ‖ ^ 2 / 2) ^ 2 * Real.exp (-(q * Real.pi) * (‖v‖ ^ 2 + 2 * (Hf v γ).re + ‖γ‖ ^ 2)) = Real.exp (-(q * Real.pi) * ‖v‖ ^ 2)`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GT.ptN2]`. Rewrite using `[add_comm γ v, h, norm_mul, norm_mul, Y.ka_abs γ hγ, Complex.norm_exp, hnorm, hγγ, hA]`. Take the linear combination `‖F v‖ ^ 2 * key`.
+-/
 lemma lemS_periodic (Y : GT ι) (q : ℕ) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ Y.Sec q)
     {γ : EuclideanSpace ℂ ι} (hγ : γ ∈ lat Y.b) (v : EuclideanSpace ℂ ι) :
     Y.ptN2 q F (γ + v) = Y.ptN2 q F v := by
@@ -123,6 +166,33 @@ lemma lemS_periodic (Y : GT ι) (q : ℕ) {F : EuclideanSpace ℂ ι → ℂ} (h
   rw [add_comm γ v, h, norm_mul, norm_mul, Y.ka_abs γ hγ, Complex.norm_exp, hnorm, hγγ, hA]
   linear_combination ‖F v‖ ^ 2 * key
 
+/- English proof (translation)
+Establish `hc : Continuous F` using `hF.1.continuous`. Establish `hfc : Continuous fun u => Y.ptN2 q F u`. Unfold `GT.ptN2`. Conclude with `(hc.norm.pow 2).mul (Real.continuous_exp.comp (continuous_const.mul (continuous_norm.pow 2)))`. Establish `hf0 : ∀ u, 0 ≤ Y.ptN2 q F u` using `fun u => by`.
+
+Unfold `GT.ptN2`. Check the signs of the components of the expression. Establish `hmeas : Measurable fun u => ENNReal.ofReal (Y.ptN2 q F u)` using `ENNReal.measurable_ofReal.comp hfc.measurable`. Establish `hfd : MeasureTheory.IsAddFundamentalDomain (lat Y.b) (ZSpan.fundamentalDomain Y.b) MeasureTheory.volume` using `ZSpan.isAddFundamentalDomain Y.b MeasureTheory.volume`. Establish `hK0 : 0 ≤ K`.
+
+Establish `h` using `hK ∅ (by simp) (by simp)`. Simplify using `using h`. Establish `hcount : ∀ x : EuclideanSpace ℂ ι, ∑' γ : lat Y.b, (closedBall v0 ρ).indicator (fun _ => (1 : ENNReal)) (γ +ᵥ x) ≤ ENNReal.ofReal K`. Introduce `x`. Rewrite using `[ENNReal.tsum_eq_iSup_sum]`.
+
+Use `iSup_le fun T => ?_` and prove the remaining obligations. Establish `h1 : ∑ γ ∈ T, (closedBall v0 ρ).indicator (fun _ => (1 : ENNReal)) (γ +ᵥ x) = ((T.filter (fun γ : lat Y.b => γ +ᵥ x ∈ closedBall v0 ρ)).card : ENNReal)`. Rewrite using `[Finset.natCast_card_filter]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : γ +ᵥ x ∈ closedBall v0 ρ`.
+
+Rewrite using `[Set.indicator_of_mem h, if_pos h]`. Rewrite using `[Set.indicator_of_notMem h, if_neg h]`. Rewrite using `[h1]`. Establish `hinj : Function.Injective (fun γ : lat Y.b => (γ +ᵥ x) - v0)`. Introduce `a b h`.
+
+Conclude with `Subtype.ext (by simpa [Submodule.vadd_def, vadd_eq_add] using h)`. Establish `hS` using `hK ((T.filter (fun γ : lat Y.b => γ +ᵥ x ∈ closedBall v0 ρ)).image (fun γ : lat Y.b => (γ +ᵥ x) - v0)) ?_ ?_`. Rewrite `hS` using `[Finset.card_image_of_injective _ hinj]`. Rewrite using `[← ENNReal.ofReal_natCast]`. Conclude with `ENNReal.ofReal_le_ofReal hS`.
+
+Introduce `a ha`. Take `⟨γ, hγ, rfl⟩` from `Finset.mem_image.1 ha`. Establish `hγ'` using `(Finset.mem_filter.1 hγ).2`. Rewrite `hγ'` using `[Metric.mem_closedBall, dist_eq_norm]`. Conclude with `hγ'`.
+
+Introduce `a ha b hb`. Take `⟨γ, _, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨γ', _, rfl⟩` from `Finset.mem_image.1 hb`. Establish `e : ((γ +ᵥ x) - v0) - ((γ' +ᵥ x) - v0) = (γ : EuclideanSpace ℂ ι) - γ'`. Simplify using `only [Submodule.vadd_def, vadd_eq_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem γ.2 γ'.2`. Establish `hper : ∀ (γ : lat Y.b) (u : EuclideanSpace ℂ ι), (closedBall v0 ρ).indicator (fun u => ENNReal.ofReal (Y.ptN2 q F u)) (γ +ᵥ u) = (closedBall v0 ρ).indicator (fun _ => (1 : ENNReal)) (γ +ᵥ u) * ENNReal.ofReal (Y.ptN2 q F u)`. Introduce `γ u`.
+
+Establish `hp : Y.ptN2 q F (γ +ᵥ u) = Y.ptN2 q F u`. Rewrite using `[Submodule.vadd_def, vadd_eq_add]`. Conclude with `lemS_periodic Y q hF γ.2 u`. Simplify using `only [Set.indicator_apply]`. Use `split_ifs`.
+
+Rewrite using `[hp, one_mul]`. Rewrite using `[zero_mul]`. Establish `hae : ∀ γ : lat Y.b, AEMeasurable (fun u => (closedBall v0 ρ).indicator (fun _ => (1 : ENNReal)) (γ +ᵥ u) * ENNReal.ofReal (Y.ptN2 q F u)) (MeasureTheory.volume.restrict (ZSpan.fundamentalDomain Y.b))` using `fun γ => (((measurable_const.indicator measurableSet_closedBall).comp (measurable_const_vadd γ)).mul hmeas).aemeasurable`. Use `haveI : MeasureTheory.VAddInvariantMeasure (lat Y.b) (EuclideanSpace ℂ ι) MeasureTheory.volume := ⟨fun c s _ => MeasureTheory.measure_preimage_add _ (c : EuclideanSpace ℂ ι) s⟩`. Establish `hlin : ∫⁻ u in closedBall v0 ρ, ENNReal.ofReal (Y.ptN2 q F u) ≤ ENNReal.ofReal K * ∫⁻ u in ZSpan.fundamentalDomain Y.b, ENNReal.ofReal (Y.ptN2 q F u)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `MeasureTheory.lintegral_mono fun u => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_right]`. Conclude with `mul_le_mul_of_nonneg_right (hcount u) zero_le`. Use `_ = ENNReal.ofReal K * ∫⁻ u in ZSpan.fundamentalDomain Y.b, ENNReal.ofReal (Y.ptN2 q F u) := MeasureTheory.lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`.
+
+Establish `hint_D : MeasureTheory.IntegrableOn (fun u => Y.ptN2 q F u) (ZSpan.fundamentalDomain Y.b)` using `(hfc.continuousOn.integrableOn_compact (ZSpan.fundamentalDomain_isBounded Y.b).isCompact_closure).mono_set subset_closure`. Establish `hfin : ∫⁻ u in ZSpan.fundamentalDomain Y.b, ENNReal.ofReal (Y.ptN2 q F u) ≠ ⊤` using `(MeasureTheory.Integrable.lintegral_lt_top hint_D).ne`. Rewrite using `[MeasureTheory.integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun u => hf0 u) hfc.aestronglyMeasurable, MeasureTheory.integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun u => hf0 u) hfc.aestronglyMeasurable]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hK0]`.
+-/
 lemma lemS_cover (Y : GT ι) (q : ℕ) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ Y.Sec q)
     (v0 : EuclideanSpace ℂ ι) (ρ K : ℝ)
     (hK : ∀ S : Finset (EuclideanSpace ℂ ι), (∀ a ∈ S, ‖a‖ ≤ ρ) →
@@ -233,6 +303,23 @@ lemma lemS_cover (Y : GT ι) (q : ℕ) {F : EuclideanSpace ℂ ι → ℂ} (hF :
     _ = K * (∫⁻ u in ZSpan.fundamentalDomain Y.b, ENNReal.ofReal (Y.ptN2 q F u)).toReal := by
         rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal hK0]
 
+/- English proof (translation)
+Introduce `ι _ Y q hq F hF v`. Use `set N := Fintype.card ι with hNdef`. Use `set ρ := Real.sqrt (2 * N) / Real.sqrt (q * Real.pi) with hρ`. Use `set K := (1 + 4 * Real.sqrt (2 * N) / (Real.sqrt (q * Real.pi) * Y.la1)) ^ (2 * N) with hKdef`. Establish `hρ0 : 0 ≤ ρ` using `by positivity`.
+
+Establish `hK : ∀ S : Finset (EuclideanSpace ℂ ι), (∀ a ∈ S, ‖a‖ ≤ ρ) → (∀ a ∈ S, ∀ b ∈ S, a - b ∈ lat Y.b) → (S.card : ℝ) ≤ K`. Introduce `S hS hSl`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Establish `hE : IsEmpty ι` using `Fintype.card_eq_zero_iff.mp hN`. Establish `hsub : ∀ a b : EuclideanSpace ℂ ι, a = b` using `fun a b => PiLp.ext (fun i => isEmptyElim i)`.
+
+Establish `: S.card ≤ 1` using `Finset.card_le_one.mpr (fun a _ b _ => hsub a b)`. Rewrite using `[hKdef, hN, mul_zero, pow_zero]`. Conclude with `this` after adjusting the coercions. Establish `hla` using `firstMinimum_pos Y hN`. Use `lemS_pack hP S Y.la1 ρ hla hρ0 hS (fun a ha b hb hab => firstMinimum_le_norm Y (hSl a ha b hb) (sub_ne_zero.mpr hab))` as an intermediate fact.
+
+Establish `e : 4 * Real.sqrt (2 * N) / (Real.sqrt (q * Real.pi) * Y.la1) = 4 * ρ / Y.la1`. Rewrite using `[hρ, mul_div_assoc', div_div]`. Rewrite using `[hKdef, e]`. Conclude with `this`. Establish `hK0 : 0 ≤ K` using `by simpa using hK ∅ (by simp) (by simp)`.
+
+Establish `h1` using `lemS_local q hq F hF.1 v`. Establish `h2` using `lemS_cover Y q hF v ρ K hK`. Use `set D := ZSpan.fundamentalDomain Y.b with hDdef`. Establish `hvol` using `lemS_vol_le Y`. Establish `hvol0 : volume D ≠ 0` using `ZSpan.measure_fundamentalDomain_ne_zero Y.b`.
+
+Establish `hvr : 0 < volume.real D`. Rewrite using `[measureReal_def]`. Conclude with `ENNReal.toReal_pos hvol0 (ne_top_of_le_ne_top ENNReal.one_ne_top hvol)`. Establish `hvr1 : volume.real D ≤ 1`. Rewrite using `[measureReal_def]`.
+
+Conclude with `ENNReal.toReal_le_of_le_ofReal zero_le_one (by simpa using hvol)`. Establish `hl2 : Y.l2 q F = (volume.real D)⁻¹ * ∫ u in D, Y.ptN2 q F u`. Rewrite using `[GT.l2, setAverage_eq, smul_eq_mul]`. Establish `hD0 : 0 ≤ ∫ u in D, Y.ptN2 q F u` using `setIntegral_nonneg (ZSpan.fundamentalDomain_measurableSet Y.b) (fun u _ => by simp only [GT.ptN2]; positivity)`. Establish `hID : ∫ u in D, Y.ptN2 q F u ≤ Y.l2 q F`.
+
+Rewrite using `[hl2]`. Conclude with `le_mul_of_one_le_left hD0 ((one_le_inv₀ hvr).mpr hvr1)`. Establish `hq0 : 0 ≤ 2 * (q : ℝ) ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lemS_main (hP : Ext.PackingCount) : GSupStatement := by
   intro ι _ Y q hq F hF v
   set N := Fintype.card ι with hNdef
@@ -283,6 +370,9 @@ theorem lemS_main (hP : Ext.PackingCount) : GSupStatement := by
         mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hID hK0) hq0
     _ = 2 * (q : ℝ) ^ N * K * Y.l2 q F := by ring
 
+/- English proof (translation)
+The claim follows from `lemS_main hP`.
+-/
 theorem gSup (hP : Ext.PackingCount) : GSupStatement := lemS_main hP
 
 end

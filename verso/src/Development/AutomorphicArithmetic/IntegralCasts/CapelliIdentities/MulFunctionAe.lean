@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MultiplicationFunction
 
+/- English proof (translation)
+Introduce `X inst ν c hc hb f`. Unfold `UpperTheory.Reformulated.B.MultiplicationFunction.mulFn`. Conclude with `MeasureTheory.MemLp.coeFn_toLp _`.
+-/
 theorem UpperTheory.Reformulated.B.MulFunctionAe.mulFn_ae.{u_1} :
     ∀ {X : Type u_1} [inst : MeasurableSpace X] {ν : MeasureTheory.Measure X} (c : X → ℝ) (hc : Measurable c)
       (hb : ∀ (x : X), |c x| ≤ (1 : ℝ)) (f : ↥(MeasureTheory.Lp ℂ (2 : ENNReal) ν)),

@@ -11,6 +11,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CechPer
 
+/- English proof (translation)
+Introduce `A _ g L u hA c p hp`. Take `⟨n, L', v, M₁, M₂, hAA, h1, h2, h3, hM1, hM2⟩` from `GlobalTheory.T.exists_holomorphicUniformisation_square_abelianVariety A g L u hA`. Rewrite using `[mem_prim_iff]`. Establish `key : ∀ (φ : A ⊗ A ⟶ A) (M : (Fin n → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (_hw : ∀ w, u.ex (M w) = v.ex w ≫ φ) (hM : ∀ l : v.Λ, M l ∈ u.Λ), IsPer v.ex v.Λ (cmp1 (str (A ⊗ A)) (pullOver (dp0 ℂ) (𝟙 _) φ c)) (fun l ↦ p ⟨M l, hM l⟩)`. Introduce `φ M hw hM`.
+
+Establish `hm` using `IsMor.of_over (dp0 ℂ) (φ := φ.left) (s := str A) (s' := str (A ⊗ A)) (by rw [← Category.assoc, Over.w])`. Conclude with `GlobalTheory.T.isPer_of_isPull1_of_isPer A g L u (A ⊗ A) n L' v φ M hm.w hw hM _ _ _ (comparison_pullback hm c) hp`. Establish `hμ` using `key μ[A] (M₁ + M₂) h3 (fun l ↦ add_mem (hM1 l) (hM2 l))`. Establish `hf` using `key (fst A A) M₁ h1 hM1`. Establish `hs` using `key (snd A A) M₂ h2 hM2`.
+
+Take `⟨hlin, -⟩` from `GlobalTheory.T.cechDeRhamPeriods_linear (A ⊗ A) n L' v`. Establish `hdiff` using `(hlin _ _ _ _ hμ (hlin _ _ _ _ hf hs).1).2`. Establish `hq : ((fun l : v.Λ ↦ p ⟨(M₁ + M₂) l, add_mem (hM1 l) (hM2 l)⟩) - ((fun l : v.Λ ↦ p ⟨M₁ l, hM1 l⟩) + fun l : v.Λ ↦ p ⟨M₂ l, hM2 l⟩)) = 0`. Use function extensionality and compare the values at `l`. Rewrite using `[Pi.sub_apply, Pi.add_apply, Pi.zero_apply, sub_eq_zero, ← map_add]`.
+
+Both sides reduce to the same expression. Rewrite `hdiff` using `[hq]`. Establish `h0` using `GlobalTheory.T.cechDeRham_class_eq_zero_of_periods_zero (A ⊗ A) n L' v hAA _ hdiff`. Rewrite `h0` using `[← map_add, ← map_sub]`. Conclude with `sub_eq_zero.1 ((GlobalTheory.T.bijective_cmp1_of_isAbelianScheme_over_complex (A ⊗ A) hAA).1 (h0.trans (map_zero _).symm))`.
+-/
 theorem mem_primDR_of_isPer : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g),
     IsAbelianScheme A → ∀ (c : FirstDeRham (str A)) (p : u.Λ →+ ℂ), IsPer u.ex u.Λ (cmp1 (str A) c) p → c ∈ primDR A := by
   intro A _ g L u hA c p hp

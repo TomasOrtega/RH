@@ -14,6 +14,13 @@ open scoped Classical
 
 namespace GlobalTheory.FlagTan
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply, Finset.sum_eq_single 1]`. Simplify using the standard rewrite rules. Introduce `σ _ hσ`. It suffices to establish `∏ i, P (σ i) i = 0 by rw [this, smul_zero]`. Assume the negation of the conclusion as `hne`.
+
+Establish `h1 : ∀ i, P (σ i) i ≠ 0` using `fun i hi => hne (Finset.prod_eq_zero (Finset.mem_univ i) hi)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, σ i ≠ i := by`. Assume the negation of the conclusion as `hc`. Conclude with `hσ (Equiv.ext fun i => by_contra fun k => hc ⟨i, k⟩)`. Use `Finset.sum_lt_sum (s := Finset.univ) (f := b) (g := fun i => b (σ i)) (fun j _ => (h _ _ (h1 j)).elim (fun e => by rw [e]) le_of_lt) ⟨i, Finset.mem_univ _, (h _ _ (h1 i)).resolve_left hi⟩` as an intermediate fact.
+
+Rewrite `this` using `[Equiv.sum_comp σ b]`. Conclude with `lt_irrefl _ this`. Simplify using the standard rewrite rules.
+-/
 theorem det_eq_prod_diag_of_height {m R : Type} [Fintype m] [DecidableEq m] [CommRing R] (P : Matrix m m R)
     (b : m → ℤ) (h : ∀ k j, P k j ≠ 0 → k = j ∨ b j < b k) : P.det = ∏ k, P k k := by
   rw [Matrix.det_apply, Finset.sum_eq_single 1]
@@ -32,6 +39,9 @@ theorem det_eq_prod_diag_of_height {m R : Type} [Fintype m] [DecidableEq m] [Com
     exact lt_irrefl _ this
   · simp
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_subtype (Finset.univ.filter fun q : Fin n × Fin n => q.1 < q.2) (by simp) (fun q => (x q.1)⁻¹ * x q.2), Finset.prod_mul_distrib, Finset.prod_filter, Finset.prod_filter, Fintype.prod_prod_type, Fintype.prod_prod_type_right, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← Finset.prod_filter, ← Finset.prod_filter, Finset.prod_const, Finset.prod_const, zpow_sub, mul_comm]`. Simplify using `only [zpow_natCast, inv_pow, Finset.filter_lt_eq_Ioi, Finset.filter_gt_eq_Iio]`.
+-/
 theorem prod_pairs_lt {G : Type} [CommGroup G] {n : ℕ} (x : Fin n → G) :
     ∏ q : {q : Fin n × Fin n // q.1 < q.2}, ((x q.1.1)⁻¹ * x q.1.2) =
       ∏ i, x i ^ (((Finset.Iio i).card : ℤ) - (Finset.Ioi i).card) := by
@@ -46,6 +56,11 @@ theorem prod_pairs_lt {G : Type} [CommGroup G] {n : ℕ} (x : Fin n → G) :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_mul_distrib, ← Finset.prod_mul_prod_compl Φ]`. Use `congr 1`. Use `Finset.prod_bij' (fun σ _ => conjEmb σ) (fun σ _ => conjEmb σ) (fun σ hσ => ?_) (fun σ hσ => ?_) (fun σ _ => conjEmb_conjEmb σ) (fun σ _ => conjEmb_conjEmb σ) fun σ _ => by rw [conjEmb_conjEmb]` and prove the remaining obligations. Rewrite using `[h, conjEmb_conjEmb]`. Conclude with `Finset.mem_compl.1 hσ`.
+
+Conclude with `Finset.mem_compl.2 ((h σ).1 hσ)`.
+-/
 theorem IsHalf.prod_univ {Φ : Finset (E →+* ℂ)} (h : IsHalf Φ) {G : Type} [CommMonoid G] (g : (E →+* ℂ) → G) :
     ∏ σ, g σ = ∏ τ ∈ Φ, (g τ * g (conjEmb τ)) := by
   rw [Finset.prod_mul_distrib, ← Finset.prod_mul_prod_compl Φ]
@@ -55,6 +70,13 @@ theorem IsHalf.prod_univ {Φ : Finset (E →+* ℂ)} (h : IsHalf Φ) {G : Type} 
   · rw [h, conjEmb_conjEmb]; exact Finset.mem_compl.1 hσ
   · exact Finset.mem_compl.2 ((h σ).1 hσ)
 
+/- English proof (translation)
+Establish `e1 : ∏ k : HIx Dw Φ, (t (some ⟨conjEmb k.1.1, k.2.1⟩) * t (some ⟨k.1.1, k.2.2⟩)) = ∏ σ, ∏ i, t (some ⟨σ, i⟩) ^ Dw.mult (conjEmb σ)`. Rewrite using `[h.prod_univ, Fintype.prod_sigma, ← Finset.prod_coe_sort Φ]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type, conjEmb_conjEmb]`. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_pow]`.
+
+Conclude with `mul_comm _ _`. Rewrite using `[e1, Fintype.prod_sigma, Fintype.prod_option, Fintype.prod_sigma, ← Finset.prod_mul_distrib]`. Simplify using `only [detTanEx, zpow_zero, one_mul]`. Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[prod_pairs_lt fun i => t (some ⟨σ, i⟩), ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_add, zpow_natCast, mul_comm]`.
+-/
 theorem prod_char_eq {Φ : Finset (E →+* ℂ)} (h : IsHalf Φ) {G : Type} [CommGroup G] (t : Ix Dw → G) :
     (∏ k : HIx Dw Φ, (t (some ⟨conjEmb k.1.1, k.2.1⟩) * t (some ⟨k.1.1, k.2.2⟩))) *
       ∏ k : VIx Dw, ((t (some ⟨k.1, k.2.1.1⟩))⁻¹ * t (some ⟨k.1, k.2.1.2⟩)) = ∏ k, t k ^ detTanEx Dw k := by
@@ -74,6 +96,13 @@ theorem prod_char_eq {Φ : Finset (E →+* ℂ)} (h : IsHalf Φ) {G : Type} [Com
 
 variable {K : Type} [Field K] [Algebra c.F K] {K₀ : Type} [CommRing K₀] [Algebra c.F K₀] {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Take `⟨g', a', hg', h'⟩` from `(frChg_exists_unique E H Dw l Xo c K y' y).1 h.1.symm`. Establish `C` using `frChg_calculus E H Dw l Xo c K`. Establish `D` using `frChg_calculus E H Dw l Xo c (DualNumber K)`. Take `⟨e, e'⟩` from `(frChg_exists_unique E H Dw l Xo c K y' y').2 _ _ _ _ ((C.1 _ _ _ _ _ _ _ h').1 h) (C.2.1 y')`. Take `⟨w, hw, -⟩` from `existsUnique_frChg E H Dw l Xo c _ v' (fun τ => (g' τ).map (cst c K)) (Units.map (cst c K).toRingHom.toMonoidHom a') fun τ => by`.
+
+Use `(hg' τ).map (cst c K).toRingHom` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Use `⟨w, (frMap_iff_frChg hw hv).2 ?_, (D.1 _ _ _ _ _ _ _ hw).2 ?_⟩` and prove the remaining obligations. Use `h' using 2 with τ` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Use `D.2.1 v' using 2 with τ` and compare the differences between its conclusion and the goal. Rewrite using `[← Matrix.map_mul, congrFun e τ, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `(map_mul (cst c K) a a').symm.trans (by rw [e', map_one])`.
+-/
 theorem exists_move {g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K} {a : K}
     {y y' : FrPt Xo c K} (h : FrChg g a y y') {v' : FrPt Xo c (DualNumber K)} (hv : IsDef y' v') :
     ∃ w, IsDef y w ∧ FrChg (fun τ => (g τ).map (cst c K)) (cst c K a) w v' := by
@@ -93,6 +122,17 @@ theorem exists_move {g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (D
     · rw [← Matrix.map_mul, congrFun e τ, Matrix.map_one _ (map_zero _) (map_one _)]
     · exact (map_mul (cst c K) a a').symm.trans (by rw [e', map_one])
 
+/- English proof (translation)
+Establish `D` using `frChg_calculus E H Dw l Xo c (DualNumber K)`. Take `⟨y₀', h₀', hs⟩` from `hv`. Take `⟨y₀, h₀⟩` from `exists_frMap (cst c K) y`. Establish `k1` using `(D.1 _ _ _ _ _ _ _ ((frMap_iff_frChg h h₀).1 h₀')).1 hs`. Take `⟨w', hw', -⟩` from `existsUnique_isShift (fun k : FIx Dw => k.elim (N none) fun q => (g' q.1 * (Matrix.of fun i j => N (some ⟨q.1, i, j⟩)) * g q.1) q.2.1 q.2.2) y₀`.
+
+Establish `k2 : FrChg (fun τ => (g τ).map (cst c K)) (cst c K a) w' v'`. Use `(D.1 _ _ _ _ _ _ _ hw').2 ?_` and prove the remaining obligations. Use `k1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`. Establish `: g τ * (g' τ * (Matrix.of fun i j => N (some ⟨τ, i, j⟩)) * g τ) = (Matrix.of fun i j => N (some ⟨τ, i, j⟩)) * g τ`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hg, Matrix.one_mul]`. Use extensionality with `i j`. Simplify using `[unip, Matrix.mul_apply, fst_sum, Matrix.one_apply]`. Use `congrFun (congrFun this i) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.mul_apply]`.
+
+Simplify `this` using `[unip, Matrix.mul_apply (M := Matrix.map _ _), Matrix.mul_apply (N := Matrix.map _ _), snd_sum]`. Apply the tactic sequence `ext <;> simp [unip₀, mul_comm]`. Take `⟨G, A, -, k3⟩` from `(frChg_exists_unique E H Dw l Xo c _ v' w).1 hw.1.symm`. Take `⟨e, e'⟩` from `(frChg_exists_unique E H Dw l Xo c _ w w).2 _ _ _ _ ((D.1 _ _ _ _ _ _ _ hw).1 k3) (D.2.1 w)`. Establish `k4` using `(D.1 _ _ _ _ _ _ _ k2).1 k3`.
+
+Rewrite `k4` using `[e, e']`. Take `rfl : w = w'` from `(existsUnique_frChg E H Dw l Xo c _ w' (fun _ => 1) 1 fun _ => by simp).unique k4 (D.2.1 w')`. Conclude with `⟨y₀, h₀, hw'⟩`.
+-/
 theorem isVert_move {g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K} {a : Kˣ}
     {y y' : FrPt Xo c K} (h : FrChg g a y y') (hg : ∀ τ, g τ * g' τ = 1) {N : FIx Dw → K}
     {w v' : FrPt Xo c (DualNumber K)} (hv : IsVert y' N v')

@@ -41,6 +41,9 @@ def pre {n : ℕ} (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) : AddSubgro
 def IsTr {X : Type} [AddCommGroup X] (A L : AddSubgroup X) (T : Finset X) : Prop :=
   (∀ t ∈ T, t ∈ A) ∧ ∀ a ∈ A, ∃! t, t ∈ T ∧ a - t ∈ L
 
+/- English proof (translation)
+Introduce `_ hη a ha` and use `hη a (h ha)`.
+-/
 theorem ann_anti {ψ : AddChar k Circle} {n : ℕ} {A A' : AddSubgroup (Fin n → k)} (h : A ≤ A') : ann ψ A' ≤ ann ψ A :=
   fun _ hη a ha => hη a (h ha)
 
@@ -48,6 +51,9 @@ section
 variable {ψ : AddChar k Circle} {m N : ℕ} {h : m + 2 ≤ N} {V : Type} [AddCommGroup V] [Module ℂ V]
   {π : Representation ℂ (GL (Fin N) k) V}
 
+/- English proof (translation)
+Use `PositivityTheory.RgUd.Form.LeviSmoothness.mir.avg_conj ψ h π hψ hπ g ξ _ ?_ hA v` and prove the remaining obligations. Introduce `x`. Rewrite using `[Matrix.mulVec_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem avg_conj (hψ : Continuous ψ) (hπ : IsSmooth π) (g : GL (Fin (m + 1)) k) (ξ : Fin (m + 1) → k)
     {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (v : V) :
     π (blkAt k (m + 1) N (by omega) g) (avg ψ h π ξ A v) =
@@ -64,6 +70,9 @@ section
 variable {ψ : AddChar k Circle} {m N : ℕ} {h : m + 2 ≤ N} {V : Type} [AddCommGroup V] [Module ℂ V]
   {π : Representation ℂ (GL (Fin N) k) V} {s : ℝ} {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
 
+/- English proof (translation)
+Establish `e` using `hB.mir (glEmb k (m + 1) g) (glEmb_mem_Mir k (m + 1) g) a b`. Rewrite `e` using `[ColumnElementGluing.blkAt_glEmb h g, ColumnElementGluing.det_glEmb, hg, Real.one_rpow, Complex.ofReal_one, one_mul]`. Conclude with `e`.
+-/
 theorem form_inv (hB : Lv ψ h π s B) (g : GL (Fin (m + 1)) k) (hg : nabs k (Matrix.GeneralLinearGroup.det g) = 1)
     (a b : V) : B (π (blkAt k (m + 1) N (by omega) g) a) (π (blkAt k (m + 1) N (by omega) g) b) = B a b := by
   have e := hB.mir (glEmb k (m + 1) g) (glEmb_mem_Mir k (m + 1) g) a b

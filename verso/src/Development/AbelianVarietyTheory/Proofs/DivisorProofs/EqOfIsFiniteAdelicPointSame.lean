@@ -16,6 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinPtUnique
 
+/- English proof (translation)
+Introduce `D V n g g' x ⟨hg, e, he⟩ ⟨hg', e', he'⟩`. Apply `GlobalTheory.FinRealComm.GA_ext_inf_fin V` to reduce the goal to its premises. Establish `h1 : infHom V g = 1` using `hg`. Establish `h2 : infHom V g' = 1` using `hg'`. Rewrite using `[h1, h2]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.ext` to reduce the goal to its premises. Introduce `i j`. Apply `(GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[he i j, he' i j]`.
+-/
 theorem eq_of_isFinPt : ∀ {D : D7} (V : HSp D) {n : ℕ} (g g' : GA D V) (x : Formalism.MainNotions.StandardLatticesGL3.GA D n),
     IsFinPt V g x → IsFinPt V g' x → g = g' := by
   intro D V n g g' x ⟨hg, e, he⟩ ⟨hg', e', he'⟩

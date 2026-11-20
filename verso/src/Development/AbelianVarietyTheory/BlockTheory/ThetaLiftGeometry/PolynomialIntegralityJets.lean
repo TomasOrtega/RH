@@ -71,12 +71,20 @@ def CoefAlg_at (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Formalism.L
   FamTie D cc δ χ → ∀ (u : D.what₂.Word) (μ : D.what₂.Tup), KerTie B χ (O u μ) →
     ∀ i, i < D.R.m → ∀ c c' α, TaylorLogMetric.taylor D ((O u μ).Th i c c') α ∈ TaylorLogMetric.Qbar
 
+/- English proof (translation)
+Rewrite using `[h, LevFree]`. Simplify using `only [Finset.mem_insert, Finset.mem_union]`. The claim follows by propositional logic.
+-/
 theorem not_mem_S {D : D7} {Dx : DivX D} {u : D.what₂.Word} {μ : D.what₂.Tup} {O : GL3Theta.LiftObj D (D.chTw u μ)}
     (h : LevelTie Dx O) (w : D.what₂.places.Pl) : LevFree Dx u μ w ↔ D.what₂.places.resChar w ∉ O.S := by
   rw [h, LevFree]
   simp only [Finset.mem_insert, Finset.mem_union]
   tauto
 
+/- English proof (translation)
+Introduce `β`. Unfold `KM.applyAt0`. Rewrite using `[MvPolynomial.coeff_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_monomial]`.
+
+Use `split_ifs`. Rewrite using `[mul_assoc, norm_mul]`. Conclude with `mul_le_one₀ (IsUltrametricDist.norm_intCast_le_one _ _) (norm_nonneg _) (h _)`. Simplify using the standard rewrite rules.
+-/
 theorem polyIntegral_applyAt0 {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N0 N1 l : ℕ) [Fact l.Prime]
     (F : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (h : JetsIntegral F) (P : MvPolynomial (KM.XZ Lt N0 N1) ℤ) :
     PolyIntegral (KM.applyAt0 N0 N1 l F P) := by
@@ -91,6 +99,13 @@ theorem polyIntegral_applyAt0 {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N0 N1 l
     exact mul_le_one₀ (IsUltrametricDist.norm_intCast_le_one _ _) (norm_nonneg _) (h _)
   · simp
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `h (Finsupp.single () 1)`. Establish `h2 : ‖(p : ℂ_[p])‖ < 1`. Establish `: ((p : ℕ) : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (p : ℚ_[p])` using `by simp`. Rewrite using `[this, norm_algebraMap']`.
+
+Conclude with `Padic.norm_p_lt_one`. Establish `h3 : (p : ℂ_[p]) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Simplify using `only [jetAt, MvPowerSeries.coeff_monomial_same] at h1`. Rewrite `h1` using `[Finsupp.prod_single_index (by simp)]`. Simplify using `only [Nat.factorial_one, Nat.cast_one, one_mul, norm_inv] at h1`.
+
+Establish `h4` using `norm_pos_iff.2 h3`. Rewrite `h1` using `[inv_le_one₀ h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 example (p : ℕ) [hp : Fact p.Prime] :
     ¬ JetsIntegral (MvPowerSeries.monomial (Finsupp.single () 1) ((p : ℂ_[p])⁻¹) : MvPowerSeries Unit ℂ_[p]) := by
   intro h

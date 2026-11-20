@@ -30,6 +30,9 @@ section
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ)
   {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v)
 
+/- English proof (translation)
+Establish `hU : ValuativeCriterion.Uniqueness (terminal.from X)` using `IsSeparated.valuativeCriterion _`. Set `S : ValuativeCommSq (terminal.from X)` to `{ R := TWO.Ov v, K := F, i₁ := (TWM.ιS hϖ hv).left ≫ x₁, i₂ := terminal.from _, commSq := ⟨terminal.hom_ext _ _⟩ }`. Use `(hU S).elim ⟨x₁, rfl, terminal.hom_ext _ _⟩ ⟨x₂, h.symm, terminal.hom_ext _ _⟩` as an intermediate fact. Conclude with `congrArg CommSq.LiftStruct.l this`.
+-/
 theorem point_ext {X : Scheme.{0}} [X.IsSeparated] (x₁ x₂ : (TWM.TO hϖ hv).left ⟶ X)
     (h : (TWM.ιS hϖ hv).left ≫ x₁ = (TWM.ιS hϖ hv).left ≫ x₂) : x₁ = x₂ := by
   have hU : ValuativeCriterion.Uniqueness (terminal.from X) := IsSeparated.valuativeCriterion _
@@ -39,6 +42,11 @@ theorem point_ext {X : Scheme.{0}} [X.IsSeparated] (x₁ x₂ : (TWM.TO hϖ hv).
   have := (hU S).elim ⟨x₁, rfl, terminal.hom_ext _ _⟩ ⟨x₂, h.symm, terminal.hom_ext _ _⟩
   exact congrArg CommSq.LiftStruct.l this
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_sec hL h (Geo.Tor.genSec t ht)`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.TwistUnit.exists_ratio_local (R := TWO.Ov v) hL s t' ht'`. Use `⟨TWM.ιr (v := v) x₀, TWM.v_ιr x₀, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `gs_pull (𝟙 _) (TWM.ιS hϖ hv).left z ⊤ trivial x₀`. Rewrite `e` using `[Category.id_comp]`.
+
+Establish `e'` using `e.symm.trans (congrArg (gs (𝟙 _) z ⊤) (TWM.appTop_specMap (CommRingCat.ofHom (algebraMap (TWO.Ov v) F)) x₀))`. Conclude with `(sval_genSec t ht _ z hJ).symm.trans ((hs _ _ z J hJ).symm.trans ((hx₀ _ _ z J hJ).trans (congrArg (· * _) e')))`.
+-/
 theorem exists_ratio_nonneg {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → ((TWM.TO hϖ hv).left ⟶ X)} {ε : K → ℤ} {φ' : K' → ((TWM.TO hϖ hv).left ⟶ X)} {ε' : K' → ℤ}
     (h : FormEq φ ε φ' ε') (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (t' : LB.Gen (LB.LinComb L φ' ε'))
@@ -54,6 +62,13 @@ theorem exists_ratio_nonneg {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Ty
   exact (sval_genSec t ht _ z hJ).symm.trans ((hs _ _ z J hJ).symm.trans
     ((hx₀ _ _ z J hJ).trans (congrArg (· * _) e')))
 
+/- English proof (translation)
+Take `⟨x, hx, e⟩` from `exists_ratio_nonneg hϖ hv hL h t ht t' ht'`. Take `⟨y, hy, e'⟩` from `exists_ratio_nonneg hϖ hv hL (fun U _ g => (h U g).symm) t' ht' t ht`. Use `⟨x, le_antisymm (TWO.le_zero_of_add_eq_zero_nonneg ?_ hy) hx, e⟩` and prove the remaining obligations. Take `⟨z⟩` from `exists_pt (R := V) (F := F)`. Take `⟨J, hJ⟩` from `exists_good' hL z`.
+
+Establish `a` using `e z J hJ`. Rewrite `a` using `[e' z J hJ, ← _root_.mul_assoc, cst_eq, cst_eq, ← map_mul]`. Establish `b : cstH z (x * y) = 1`. Rewrite using `[← Units.mul_left_inj (val t (TWM.ιS hϖ hv).left z J), _root_.one_mul]`. Conclude with `a.symm`.
+
+Rewrite using `[← AddValuation.map_mul, cstH_inj z (b.trans (map_one _).symm), AddValuation.map_one]`.
+-/
 theorem exists_ratio_zero {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → ((TWM.TO hϖ hv).left ⟶ X)} {ε : K → ℤ} {φ' : K' → ((TWM.TO hϖ hv).left ⟶ X)} {ε' : K' → ℤ}
     (h : FormEq φ ε φ' ε') (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (t' : LB.Gen (LB.LinComb L φ' ε'))
@@ -70,6 +85,23 @@ theorem exists_ratio_zero {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type
     rw [← Units.mul_left_inj (val t (TWM.ιS hϖ hv).left z J), _root_.one_mul]; exact a.symm
   rw [← AddValuation.map_mul, cstH_inj z (b.trans (map_one _).symm), AddValuation.map_one]
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Establish `: IsProper D.toPre.P.A.hom` using `D.toPre.P.isAb.proper`. Establish `: D.toPre.P.A.left.IsSeparated` using `⟨by`. Rewrite using `[← terminal.comp_from D.toPre.P.A.hom]`. Use the proof step `infer_instance⟩`.
+
+Take `⟨φ₁, h₁, t₁, ht₁, x₁, v₁, e₁⟩` from `hg`. Take `⟨φ₂, h₂, t₂, ht₂, x₂, v₂, e₂⟩` from `hw`. Establish `c₁ : TWM.ιS hϖ hv ≫ cP D.toPre _ χ = cP D.toPre _ χ` using `comp_cP D.toPre _ χ`. Establish `c₂ : TWM.ιS hϖ hv ≫ (1 : TWM.TO hϖ hv ⟶ D.toPre.P.A) = 1` using `MonObj.comp_one _`. Establish `c₃ : TWM.ιS hϖ hv ≫ (cP D.toPre _ χ * m) = cP D.toPre _ χ * g.b`.
+
+Rewrite using `[MonObj.comp_mul, c₁, hm]`. Take `rfl : φ₁ = TWM.gtφO hϖ hv m χ` from `funext fun i => point_ext hϖ hv _ _ ((h₁ i).symm.trans (by fin_cases i exacts [congrArg (·.left) c₃.symm, congrArg (·.left) c₁.symm, congrArg (·.left) hm.symm, congrArg (·.left) c₂.symm]))`. Take `rfl : φ₂ = TWM.lineφO hϖ hv m` from `funext fun i => point_ext hϖ hv _ _ ((h₂ i).symm.trans (by fin_cases i exacts [congrArg (·.left) c₂.symm, congrArg (·.left) hm.symm]))`. Take `⟨u, hu, eu⟩` from `exists_ratio_zero hϖ hv hL (fun U _ h => by`. Establish `p` using `SectionScalarValuation.prod_famB D.toPre m χ k h`.
+
+Establish `q : (TWM.TO hϖ hv).hom ≫ eSec D.toPre.P.A = (1 : TWM.TO hϖ hv ⟶ D.toPre.P.A).left` using `rfl`. Establish `r : m * SectionScalarValuation.cQ D.toPre _ χ = cP D.toPre _ χ * m` using `mul_comm _ _`. Establish `r' : SectionScalarValuation.cQ D.toPre (TWM.TO hϖ hv) χ = cP D.toPre _ χ` using `rfl`. Rewrite `p` using `[r, r']`. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[p, Fintype.prod_unique (_ : PUnit → U), q]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `[Fin.prod_univ_succ, TWM.gtφO, TWM.lineφO, DegPre.gtε, DegPre.lineε, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use the proof step `module)`.
+
+Use the proof step `(LB.mulGen _ _ _ _ _ (LB.mulGen _ _ _ _ _ G₀ t₁) t₂)`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ hG₀ ht₁) ht₂)`. Use the proof step `(LB.pullGen D.toPre.P.L _ _ (GeneratorPullback.powGen D.toPre.P.L (fun _ : PUnit => eSec D.toPre.P.A) (fun _ => 1) D.toPre.rig k) (TWM.TO hϖ hv).hom)`. Use the proof step `(DVR.pullGen_isGen _ _ _ _ (DVR.powGen_isGen _ _ _ _ D.toPre.rig_gen k) _)`. Use `⟨x * x₁ * x₂ * u, fun z J hJ => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `a` using `eu z J hJ`. Rewrite `a` using `[val_mul hJ, val_mul hJ, val_pull hJ, Over.w (TWM.ιS hϖ hv)]`. Establish `b : val (GeneratorPullback.powGen D.toPre.P.L (fun _ : PUnit => eSec D.toPre.P.A) (fun _ => 1) D.toPre.rig k) (TF (R` using `V) F).hom z J = rigV D.toPre (TF (R := V) F).hom z J ^ k := map_pow _ _ _`. Rewrite `a` using `[b, Units.val_mul, Units.val_mul, Units.val_pow_eq_pow_val]`. Rewrite using `[hs z J hJ, e₁ z J hJ, e₂ z J hJ]`.
+
+Simplify using `only [cst_eq, map_mul] at a ⊢`. Take the linear combination `(-(cstH z x * cstH z x₁ * cstH z x₂)) * a`. Rewrite using `[AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_mul, hu, v₁, v₂, add_zero, add_assoc, WithTop.coe_add]`.
+-/
 theorem v_of_isCoef {D : DegData V (maximalIdeal V)} {k : ℕ} {g : GtPtF D.toPre F} {w : Frm D.toPre F k g.b}
     {χ : D.toPre.X} {l ω : ℚ} (hg : GenV hϖ hv (g.s χ) l) (hw : GenV hϖ hv w ω)
     (m : TWM.TO hϖ hv ⟶ D.toPre.P.A) (hm : TWM.ιS hϖ hv ≫ m = g.b)
@@ -127,6 +159,19 @@ theorem v_of_isCoef {D : DegData V (maximalIdeal V)} {k : ℕ} {g : GtPtF D.toPr
 
 end
 
+/- English proof (translation)
+Introduce `hLL hT _ _ _ V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv k hk g w l ω hw hg hω a₀`. Take `⟨m, hm⟩` from `TWM.exists_liftO hϖ hv g.b`. Take `⟨σ, hσ, G₀, hG₀, x, hx, hs⟩` from `GlobalTheory.exists_integral_section_unit_at hLL.1 hT V ϖ hϖ D Q hQ F v hv k hk a₀ m`. Rewrite `hs` using `[hm]`. Take `⟨c, hc, vc⟩` from `v_of_isCoef hϖ hv (hg a₀) hω m hm σ G₀ hG₀ x hs`.
+
+Take `⟨s₀, rfl, h₀⟩` from `GlobalTheory.FamFree.exists_fam_single hLL.1.globalFns D.tau_bimult (by omega : 1 ≤ k) a₀ σ`. Choose the witnesses or unpack the hypotheses as in `⟨ζ, hζ⟩ : ∃ ζ : F, v ζ = (((Q a₀ : ℚ) / k : ℚ) : WithTop ℚ) := by`. Distinguish the cases in `h : a₀ = 0`. Conclude with `⟨1, by rw [h, QForm.Q_zero hϖ D hQ, AddValuation.map_one]; simp⟩`. Establish `h1` using `QForm.Q_pos hϖ D hQ h`.
+
+Take `⟨ζ, -, e⟩` from `exists_val_eq hv (r := (Q a₀ : ℚ) / k) (div_pos (by exact_mod_cast (by omega : (0 : ℤ) < Q a₀)) (by exact_mod_cast (by omega : 0 < k)))`. Conclude with `⟨ζ, e⟩`. Establish `hsm : Fam.IsSmul D.toPre F ζ s₀ (ζ • s₀)` using `(isSmul_iff _ _ _).2 rfl`. Establish `hz : ∀ β, (∀ z : D.toPre.X, β ≠ a₀ + k • z) → ∀ j, ((ζ • s₀).s β).f j = 0` using `fun β hβ j => by`. Rewrite using `[hsm β j, h₀ β (fun mu e => hβ mu e.symm) j]`.
+
+Conclude with `mul_zero _`. Use `⟨ζ • s₀, fun χ => ?_, hz, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ z : D.toPre.X, χ = a₀ + k • z`. Take `⟨z, rfl⟩` from `h`. Establish `H` using `SectionScalarValuation.fe_move hϖ hQ hv k z a₀ (ζ • s₀) (hσ.smul hζ.ge (hsm a₀))`.
+
+Establish `hk0 : (k : ℚ) ≠ 0` using `by exact_mod_cast (by omega : k ≠ 0)`. Establish `e : 0 + (Q a₀ : ℚ) / k + ((k * Q z + QForm.bOf D.toPre Q z a₀ : ℤ) : ℚ) = 0 + (Q (a₀ + k • z) : ℚ) / k`. Rewrite using `[q_shift hϖ hQ a₀ z k]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `H` using `[e]`. Then use the resulting hypothesis. Conclude with `vge_of_zero (hz χ fun z e => h ⟨z, e⟩) _`. Establish `e : ζ • s₀ = (ζ - 1) • s₀ + s₀` using `by rw [sub_smul, one_smul, sub_add_cancel]`. Rewrite using `[e, ((coef_basic V D.toPre F k g).2.2 w hw).2.1, coef_eq hc, show (ζ - 1) * c + c = ζ * c by ring, AddValuation.map_mul, hζ, vc, hx, ← WithTop.coe_add, ← WithTop.coe_add, zero_add, add_assoc]`.
+-/
 theorem exists_fam_coef_val : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllDV fun {V} _ _ _ {ϖ} hϖ D Q {F} _ _ {v} hv => ∀ (k : ℕ), 4 ≤ k → ∀ (g : GtPtF D.toPre F) (w : Frm D.toPre F k g.b) l ω, w.IsGen → GtV hϖ hv g l → GenV hϖ hv w ω → ∀ a₀ : D.toPre.X, ∃ s : Fam D.toPre F k, NuGe D Q F v k s 0 ∧ (∀ β, (∀ z : D.toPre.X, β ≠ a₀ + k • z) → ∀ j, (s.s β).f j = 0) ∧ v (coef s g w a₀) = (((Q a₀ : ℚ) / k + l a₀ + ω : ℚ) : WithTop ℚ) := by
   intro hLL hT _ _ _ V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv k hk g w l ω hw hg hω a₀
   obtain ⟨m, hm⟩ := TWM.exists_liftO hϖ hv g.b

@@ -5,6 +5,13 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ σ _ I M h`. Use `set m : Ideal (MvPowerSeries σ k) := Ideal.span (Set.range MvPowerSeries.X) with hm`. Establish `hfg : m.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hjac : m ≤ Ideal.jacobson ⊥`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, hm, Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only [SetLike.mem_coe, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules. Establish `hle : m ^ M ≤ I`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (N' := m ^ M) (N := I) (I := m) (Ideal.FG.pow hfg) hjac ?_` and prove the remaining obligations.
+
+Rewrite `h` using `[pow_succ']`. Conclude with `h`. Conclude with `⟨hle, FormalIsogeny.finite_quotient_of_pow_le (N := M) hle⟩`.
+-/
 theorem pow_span_X_le_and_finite_quotient_of_le_sup_pow_succ : ∀ (k : Type) [Field k] (σ : Type) [Finite σ] (I : Ideal (MvPowerSeries σ k)) (M : ℕ), Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ k)) ^ M ≤ I ⊔ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ k)) ^ (M + 1) → Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ k)) ^ M ≤ I ∧ Module.Finite k (MvPowerSeries σ k ⧸ I) := by
   intro k _ σ _ I M h
   set m : Ideal (MvPowerSeries σ k) := Ideal.span (Set.range MvPowerSeries.X) with hm

@@ -32,6 +32,15 @@ noncomputable section
 
 namespace GlobalTheory.FinTransJet
 
+/- English proof (translation)
+Establish `hc` using `GlobalTheory.ColStd.colLat_comap_eq_stdLat B`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hy' : y ∈ Formalism.L2.Pj.stdLat D.host.E n` using `hy`.
+
+Rewrite `hy'` using `[← hc]`. Conclude with `hy'`. Introduce `hx`. Use `⟨(B⁻¹ : GL (Fin n) D.host.E).1.mulVec x, ?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ Formalism.L2.Pj.stdLat D.host.E n`.
+
+Rewrite using `[← hc, Submodule.mem_comap]`. Simplify using `only [LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec]`. Rewrite using `[show (B.1 * (B⁻¹).1) = 1 from B.mul_inv, Matrix.one_mulVec]`. Conclude with `hx`. Simplify using `only [Matrix.mulVec_mulVec]`.
+
+Rewrite using `[show (B.1 * (B⁻¹).1) = 1 from B.mul_inv, Matrix.one_mulVec]`.
+-/
 theorem inV_stdL_eq_colLat {D : D7} {n : ℕ} (B : GL (Fin n) D.host.E) :
     GlobalTheory.MovedDict.inV B (Formalism.MainNotions.StandardLatticesGL3.stdL D n) = (Formalism.L2.DIV.colLat B : Set (Fin n → D.host.E)) := by
   have hc := GlobalTheory.ColStd.colLat_comap_eq_stdLat B
@@ -55,6 +64,15 @@ end GlobalTheory.FinTransJet
 
 namespace GlobalTheory.FinTransJet
 
+/- English proof (translation)
+Introduce `_hP _hI D ψ θ S T sS sT frS frT hS hT hcS hcT δ t0 _hC hδ _ht0 e0 he0 f hf c hjets u hu`. Establish `hlS : Submodule.IsLattice D.host.E (Formalism.L2.DIV.colLat frS)` using `GlobalTheory.FunObj.VecEx.isLattice_colLat frS`. Establish `hlT : Submodule.IsLattice D.host.E (Formalism.L2.DIV.colLat frT)` using `GlobalTheory.FunObj.VecEx.isLattice_colLat frT`. Take `⟨n, hn, hnu⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_mem_latO' hlS hlT u hu`. Rewrite `hf`, `hnu` using `[← inV_stdL_eq_colLat frS, ← inV_stdL_eq_colLat frT]`.
+
+Establish `he0d : Differentiable ℂ e0` using `he0.1.1`. Take `⟨ζ, s, ⟨m, hm, hζ⟩, hs, hk⟩` from `GlobalTheory.HeisTrans.core ψ θ S T sS sT frS frT hS hT hcS hcT (Formalism.MainNotions.StandardLatticesGL3.stdL D S.rank) (Formalism.MainNotions.StandardLatticesGL3.stdL D T.rank) (GlobalTheory.NormSum.VacInt.sd_std D S.rank) (GlobalTheory.NormSum.VacInt.sd_std D T.rank) δ hδ e0 …`. Establish `hζalg : IsAlgebraic ℚ ζ`. Establish `hint : IsIntegral ℚ ζ` using `⟨Polynomial.X ^ m - 1, Polynomial.monic_X_pow_sub_C 1 hm.ne', by simp [hζ]⟩`. Conclude with `hint.isAlgebraic`.
+
+Use `⟨1, ![ζ], ![s], fun l => ?_, fun l => ?_, fun k => ?_⟩` and prove the remaining obligations. Use `fin_cases l`. Conclude with `hζalg`. Use `fin_cases l`. Conclude with `⟨n, hn, hs⟩`.
+
+Use `Eq.trans (hk k) ?_` and prove the remaining obligations. Use `congr 3`. Use function extensionality and compare the values at `z`. Simplify using `[Formalism.MainNotions.StandardLatticesGL3.comb]`.
+-/
 theorem fock_jets_heisO_fin : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) →
     ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)

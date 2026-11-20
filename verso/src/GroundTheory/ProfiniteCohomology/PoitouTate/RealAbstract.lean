@@ -11,6 +11,11 @@ open CategoryTheory MonoidalCategory
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Use `Finite.of_injective (fun a (χ : A →+ ZMod n) => χ a) fun a b hab => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨χ, hχ⟩` from `QZ.exists_apply_ne_zero (sub_ne_zero.2 hne)`. Establish `hn : ∀ x, n • χ x = 0` using `fun x => by rw [← map_nsmul, hA, map_zero]`. Establish `h` using `congrFun hab (zmodOfQZ χ hn)`.
+
+Apply `hχ` to reduce the goal to its premises. Rewrite using `[map_sub, ← zmodToQZ_zmodOfQZ χ hn a, ← zmodToQZ_zmodOfQZ χ hn b]`. Express the relevant statement in the definitionally equal form `zmodToQZ n (zmodOfQZ χ hn a) - zmodToQZ n (zmodOfQZ χ hn b) = 0`. Rewrite using `[show zmodOfQZ χ hn a = zmodOfQZ χ hn b from h, sub_self]`.
+-/
 theorem finite_of_finite_addMonoidHom_zmod {A : Type*} [AddCommGroup A] {n : ℕ} [NeZero n]
     (hA : ∀ a : A, n • a = 0) [Finite (A →+ ZMod n)] : Finite A := by
   refine Finite.of_injective (fun a (χ : A →+ ZMod n) => χ a) fun a b hab => ?_
@@ -27,6 +32,9 @@ section NormZero
 
 variable {k F : Type} [CommRing k] [Group F] [TopologicalSpace F] [IsTopologicalGroup F] [Fintype F]
 
+/- English proof (translation)
+Establish `h : (H0Iso B).hom.hom (normClass B 0) = 0` using `Subtype.ext ((H0Iso_hom_normClass B 0).trans (map_zero _))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem normClass_zero (B : Rep k F) [IsDiscreteRep B] : normClass B 0 = 0 := by
   have h : (H0Iso B).hom.hom (normClass B 0) = 0 :=
     Subtype.ext ((H0Iso_hom_normClass B 0).trans (map_zero _))
@@ -91,6 +99,9 @@ def ptTDualToGlobal {r s : ℕ} (h : r + s = 3)
 
 omit [Fintype ι] [Fintype κ] [IsDiscreteRep D] in
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨tateCompactCohomologyResMap φ ψ g m, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← tateCompactCohomologyResMap_comp, hfg, tateCompactCohomologyResMap_id]`. Both sides reduce to the same expression. Rewrite using `[← ConcreteCategory.comp_apply, ← tateCompactCohomologyResMap_comp, hgf, tateCompactCohomologyResMap_id]`. Both sides reduce to the same expression.
+-/
 theorem bijective_tateCompactCohomologyResMap_of_comp_eq_id {A B : Rep (ULift.{0} ℤ) G}
     [IsDiscreteRep A] [IsDiscreteRep B] (f : A ⟶ B) (g : B ⟶ A) (hfg : f ≫ g = 𝟙 A)
     (hgf : g ≫ f = 𝟙 B) (m : ℕ) : Function.Bijective (tateCompactCohomologyResMap φ ψ f m) := by
@@ -109,6 +120,21 @@ variable {φ ψ D t inv invr} (P : TatePoitouTateHypotheses φ ψ D t inv invr)
 
 include P in
 
+/- English proof (translation)
+Establish `hD` using `P.nonempty_addEquiv`. Establish `hnD` using `nsmul_eq_zero_of_nonempty_addEquiv hD`. Establish `: Finite D` using `finite_of_nonempty_addEquiv hD`. Establish `: Finite (dualRep D M)` using `finite_dualRep`. Establish `: Finite (dualRep D (dualRep D M))` using `finite_dualRep`.
+
+Establish `: IsDiscreteRep (dualRep D M)` using `isDiscreteRep_dualRep D M`. Establish `: IsDiscreteRep (dualRep D (dualRep D M))` using `isDiscreteRep_dualRep D (dualRep D M)`. Establish `hMD : ∀ f : dualRep D M, n • f = 0` using `nsmul_dualRep_eq_zero hnD`. Establish `hMDD : ∀ f : dualRep D (dualRep D M), n • f = 0` using `nsmul_dualRep_eq_zero hnD`. Establish `hφ` using `P.duality (dualRep D M) hMD (r := s) (s := r) (by omega) hr`.
+
+Establish `: Finite (cohomology (dualRep D M) s)` using `P.finite_cohomology (dualRep D M) hMD s (by omega)`. Establish `: Finite (tateCompactCohomologyRes φ ψ (dualRep D (dualRep D M)) r →+ ZMod n)` using `Finite.of_surjective _ hφ.2`. Establish `: Finite (tateCompactCohomologyRes φ ψ (dualRep D (dualRep D M)) r)` using `finite_of_finite_addMonoidHom_zmod (nsmul_tateCompactCohomologyRes_eq_zero φ ψ hMDD r)`. Establish `hflip` using `bijective_of_bijective_flip (nsmul_tateCompactCohomologyRes_eq_zero φ ψ hMDD r) (bilinAddHom (tateCompactCupRes φ ψ (dualEvalPairing D (dualRep D M)) h)) t hφ`. Use `set e := Rep.isoOfBijective (toDualDual D M) (bijective_toDualDual hD hM)`.
+
+Establish `hg` using `bijective_tateCompactCohomologyResMap_of_comp_eq_id φ ψ e.hom e.inv e.hom_inv_id e.inv_hom_id r`. Establish `hμ : (toDualDual D M ⊗ₘ 𝟙 (dualRep D M)) ≫ dualEvalPairing D (dualRep D M) = (𝟙 M ⊗ₘ 𝟙 (dualRep D M)) ≫ evalPairing D M`. Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun z => ?_))` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+
+Consider the case `tmul a f => rfl`. Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`. Set `β : tateCompactCohomologyRes φ ψ M r →+ (cohomology (dualRep D M) s →+ ZMod n)` to `(AddMonoidHom.compHom t).comp (bilinAddHom (tateCompactCupRes φ ψ (evalPairing D M) h))`. Establish `hβ : Function.Bijective β`. Use `hflip.comp hg using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Use `AddMonoidHom.ext fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t (tateCompactCupRes φ ψ (evalPairing D M) h x y) = t (tateCompactCupRes φ ψ (dualEvalPairing D (dualRep D M)) h ((tateCompactCohomologyResMap φ ψ (toDualDual D M) r).hom x) y)`. Rewrite using `[tateCompactCupRes_tateCompactCohomologyResMap φ ψ _ (evalPairing D M) _ (𝟙 _) hμ, cohomologyMap_id]`. Both sides reduce to the same expression.
+
+Conclude with `bijective_compHom_zmodToQZ β (nsmul_cohomology_eq_zero _ hMD s) hβ`.
+-/
 theorem bijective_ptTCompactDualMap (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + s = 3)
     (hr : 1 ≤ r) : Function.Bijective (ptTCompactDualMap φ ψ D M t h) := by
   have hD := P.nonempty_addEquiv
@@ -155,6 +181,9 @@ theorem bijective_ptTCompactDualMap (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h
 omit [NeZero n] in
 include P in
 
+/- English proof (translation)
+Use `AddMonoidHom.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[ptTCompactDualMap_apply, tateCompactCupRes_ptTLocalToCompact φ ψ D M h h', P.localToCompact_two, ptTLocalDualMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem ptTCompactDualMap_ptTLocalToCompact {r s : ℕ} (h : r + s = 2) (h' : r + 1 + s = 3)
     (ξ : ptTLocal φ ψ M r) :
     ptTCompactDualMap φ ψ D M t h' ((ptTLocalToCompact φ ψ M r).hom ξ) =
@@ -166,6 +195,11 @@ theorem ptTCompactDualMap_ptTLocalToCompact {r s : ℕ} (h : r + s = 2) (h' : r 
 
 include P in
 
+/- English proof (translation)
+Use `set e := AddEquiv.ofBijective _ (P.bijective_ptTCompactDualMap M hM h' (by omega))`. Establish `hlam : ptTLocalDualMap φ ψ D M inv invr h = e.toAddMonoidHom.comp (ptTLocalToCompact φ ψ M (r + 1)).hom.toAddMonoidHom` using `AddMonoidHom.ext fun ξ => (P.ptTCompactDualMap_ptTLocalToCompact M h h' ξ).symm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlam]`. Conclude with `exact_comp_addEquiv (ptTExact_local φ ψ M r) e`.
+
+Rewrite using `[hlam]`. Conclude with `exact_addEquiv_comp_comp_symm (g := (ptTLocalToCompact φ ψ M (r + 1)).hom.toAddMonoidHom) (ptTExact_compact φ ψ M (r + 1)) e`. Conclude with `exact_comp_symm_addEquiv (ptTExact_global φ ψ M (r + 1)) e`.
+-/
 theorem exact_stage_succ (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + 1 + s = 2)
     (h' : r + 1 + 1 + s = 3) :
     Function.Exact (ptTGlobalToLocal φ ψ M (r + 1)).hom (ptTLocalDualMap φ ψ D M inv invr h) ∧
@@ -193,6 +227,9 @@ variable {φ ψ}
 
 omit [Fintype ι] [Fintype κ] [Finite M] in
 
+/- English proof (translation)
+Introduce `z` and use `by rw [ptTExact_compact φ ψ M 0 z] constructor · rintro ⟨ξ, rfl⟩ exact ⟨ptTHatMk φ ψ M ξ, ptTLocalHatToCompact_hatMk φ ψ M ξ⟩ · rintro ⟨ξ', rfl⟩ obtain ⟨ξ, rfl⟩ := ptTHatMk_surjective φ ψ M ξ' exact ⟨ξ, (ptTLocalHatToCompact_hatMk φ ψ M ξ).symm⟩`.
+-/
 theorem exact_ptTLocalHatToCompact_ptTToGlobal :
     Function.Exact (ptTLocalHatToCompact φ ψ M) (ptTToGlobal φ ψ M 1).hom := fun z => by
   rw [ptTExact_compact φ ψ M 0 z]
@@ -205,6 +242,9 @@ theorem exact_ptTLocalHatToCompact_ptTToGlobal :
 
 omit [Fintype ι] [Fintype κ] [Finite M] in
 
+/- English proof (translation)
+Introduce `ξ'` and use `by obtain ⟨ξ, rfl⟩ := ptTHatMk_surjective φ ψ M ξ' rw [ptTLocalHatToCompact_hatMk] have hex := (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (tateCompactCohomology_exact_localZero φ ψ M (fun v => Rep.res (φ v).toMonoidHom M) (fun _ => 𝟙 _) (fun w => Rep.res (ψ …`.
+-/
 theorem exact_ptTGlobalToLocalHat_ptTLocalHatToCompact :
     Function.Exact (ptTGlobalToLocalHat φ ψ M) (ptTLocalHatToCompact φ ψ M) := fun ξ' => by
   obtain ⟨ξ, rfl⟩ := ptTHatMk_surjective φ ψ M ξ'
@@ -246,6 +286,13 @@ variable {φ ψ D t inv invr} (P : TatePoitouTateHypotheses φ ψ D t inv invr)
 
 include P in
 
+/- English proof (translation)
+Use `set e := AddEquiv.ofBijective _ (P.bijective_ptTCompactDualMap M hM (show 1 + 2 = 3 from rfl) le_rfl)`. Establish `hlam : ptTLocalHatDualMap φ ψ D M inv invr = e.toAddMonoidHom.comp (ptTLocalHatToCompact φ ψ M)` using `AddMonoidHom.ext fun ξ' => by`. Take `⟨ξ, rfl⟩` from `ptTHatMk_surjective φ ψ M ξ'`. Rewrite using `[ptTLocalHatDualMap_hatMk, AddMonoidHom.comp_apply, ptTLocalHatToCompact_hatMk]`. Conclude with `(P.ptTCompactDualMap_ptTLocalToCompact M (show 0 + 2 = 2 from rfl) (show 0 + 1 + 2 = 3 from rfl) ξ).symm`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlam]`. Conclude with `exact_comp_addEquiv (exact_ptTGlobalToLocalHat_ptTLocalHatToCompact M) e`. Rewrite using `[hlam]`. Conclude with `exact_addEquiv_comp_comp_symm (g := ptTLocalHatToCompact φ ψ M) (exact_ptTLocalHatToCompact_ptTToGlobal M) e`.
+
+Conclude with `exact_comp_symm_addEquiv (ptTExact_global φ ψ M 0) e`.
+-/
 theorem exact_stage_zero (hM : ∀ m : M, n • m = 0) :
     Function.Exact (ptTGlobalToLocalHat φ ψ M) (ptTLocalHatDualMap φ ψ D M inv invr) ∧
       Function.Exact (ptTLocalHatDualMap φ ψ D M inv invr)
@@ -271,6 +318,9 @@ theorem exact_stage_zero (hM : ∀ m : M, n • m = 0) :
 omit [NeZero n] [Finite M] in
 include P in
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => P.injective_res_zero M ?_` and prove the remaining obligations. Establish `h1` using `congrArg Prod.fst hx`. Express the relevant statement in the definitionally equal form `(fun v => ptRes φ M v 0 x) = 0 at h1`. Conclude with `h1.trans (funext fun v => (map_zero (ptRes φ M v 0)).symm)`.
+-/
 theorem injective_ptTGlobalToLocalHat : Function.Injective (ptTGlobalToLocalHat φ ψ M) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => P.injective_res_zero M ?_
   have h1 := congrArg Prod.fst hx
@@ -279,6 +329,17 @@ theorem injective_ptTGlobalToLocalHat : Function.Injective (ptTGlobalToLocalHat 
 
 include P in
 
+/- English proof (translation)
+Establish `: Finite D` using `finite_of_nonempty_addEquiv P.nonempty_addEquiv`. Establish `: Finite (dualRep D M)` using `finite_dualRep`. Introduce `χ`. Take `⟨g, hg⟩` from `QZ.exists_comp_eq_of_injective (ptTGlobalToLocalHat φ ψ (dualRep D M)) (P.injective_ptTGlobalToLocalHat (dualRep D M)) χ`. Establish `hv : ∀ v, ∃ ξv, ptLocalPairing φ D M inv v (show 2 + 0 = 2 from rfl) ξv = g.comp ((AddMonoidHom.inl _ _).comp (AddMonoidHom.single (fun v => cohomology (Rep.res (φ v).toMonoidHom (dualRep D M)) 0) v))` using `fun v => P.surjective_localPairing_two M hM v _`.
+
+Establish `hw : ∀ w, ∃ ξw, ptLocalPairing ψ D M invr w (show 2 + 0 = 2 from rfl) ξw = g.comp ((AddMonoidHom.inr _ _).comp ((AddMonoidHom.single (fun w => cohomologyTateZero (Rep.res (ψ w).toMonoidHom (dualRep D M))) w).comp (normClasses (Rep.res (ψ w).toMonoidHom (dualRep D M))).mkQ.toAddMo …` using `fun w => P.surjective_realPairing_two M hM w _ fun x hx => by`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 hx, map_zero]`. Use `choose ξ₁ hξ₁ using hv`. Use `choose ξ₂ hξ₂ using hw`. Use `⟨(ξ₁, ξ₂), AddMonoidHom.ext fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `hdec : ptTGlobalToLocalHat φ ψ (dualRep D M) y = (∑ v, AddMonoidHom.inl _ _ (Pi.single v (ptRes φ (dualRep D M) v 0 y))) + ∑ w, AddMonoidHom.inr _ _ (Pi.single w (Submodule.Quotient.mk (p` using `normClasses (Rep.res (ψ w).toMonoidHom (dualRep D M))) (ptRes ψ (dualRep D M) w 0 y))) := by`. Rewrite using `[ptTGlobalToLocalHat_apply, ptTGlobalToLocal_apply, ptTHatMk_apply, ← map_sum, ← map_sum]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_add, AddMonoidHom.inl_apply, AddMonoidHom.inr_apply, add_zero]`. Conclude with `(Finset.univ_sum_single _).symm`.
+
+Simplify using `only [Prod.snd_add, AddMonoidHom.inl_apply, AddMonoidHom.inr_apply, zero_add]`. Conclude with `(Finset.univ_sum_single _).symm`. Rewrite using `[ptTLocalDualMap_apply, ← hg, AddMonoidHom.comp_apply, hdec, map_add, map_sum, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hξ₁]`. Both sides reduce to the same expression. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hξ₂]`. Both sides reduce to the same expression.
+-/
 theorem surjective_ptTLocalDualMap_two (hM : ∀ m : M, n • m = 0) :
     Function.Surjective (ptTLocalDualMap φ ψ D M inv invr (show 2 + 0 = 2 from rfl)) := by
   classical
@@ -323,6 +384,9 @@ theorem surjective_ptTLocalDualMap_two (hM : ∀ m : M, n • m = 0) :
 
 include P in
 
+/- English proof (translation)
+Introduce `z` and use `by have hb := P.bijective_ptTCompactDualMap M hM (show 3 + 0 = 3 from rfl) (by norm_num) obtain ⟨ξ, hξ⟩ := P.surjective_ptTLocalDualMap_two M hM (ptTCompactDualMap φ ψ D M t _ z) refine ⟨ξ, hb.1 ?_⟩ rw [P.ptTCompactDualMap_ptTLocalToCompact M (show 2 + 0 = 2 from rfl) (show 2 + 1 …`.
+-/
 theorem surjective_ptTLocalToCompact_two (hM : ∀ m : M, n • m = 0) :
     Function.Surjective (ptTLocalToCompact φ ψ M 2).hom := fun z => by
   have hb := P.bijective_ptTCompactDualMap M hM (show 3 + 0 = 3 from rfl) (by norm_num)
@@ -333,6 +397,9 @@ theorem surjective_ptTLocalToCompact_two (hM : ∀ m : M, n • m = 0) :
 
 include P in
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(ptTExact_global φ ψ M 2 x).1 hx`. Take `⟨ξ, rfl⟩` from `P.surjective_ptTLocalToCompact_two M hM z`. Conclude with `(ptTExact_compact φ ψ M 2 _).2 ⟨ξ, rfl⟩`.
+-/
 theorem injective_ptTGlobalToLocal_three (hM : ∀ m : M, n • m = 0) :
     Function.Injective (ptTGlobalToLocal φ ψ M 3).hom := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
@@ -342,6 +409,9 @@ theorem injective_ptTGlobalToLocal_three (hM : ∀ m : M, n • m = 0) :
 
 include P in
 
+/- English proof (translation)
+Take `⟨a0, b0, c0⟩` from `P.exact_stage_zero M hM`. Take `⟨a1, b1, c1⟩` from `P.exact_stage_succ M hM (r := 0) (s := 1) rfl rfl`. Take `⟨a2, -, -⟩` from `P.exact_stage_succ M hM (r := 1) (s := 0) rfl rfl`. Conclude with `⟨P.injective_ptTGlobalToLocalHat M, a0, b0, c0, a1, b1, c1, a2, P.surjective_ptTLocalDualMap_two M hM⟩`.
+-/
 theorem nineTerm (hM : ∀ m : M, n • m = 0) :
     Function.Injective (ptTGlobalToLocalHat φ ψ M) ∧
     Function.Exact (ptTGlobalToLocalHat φ ψ M) (ptTLocalHatDualMap φ ψ D M inv invr) ∧
@@ -367,6 +437,25 @@ theorem nineTerm (hM : ∀ m : M, n • m = 0) :
 
 include P in
 
+/- English proof (translation)
+Establish `hnD` using `nsmul_eq_zero_of_nonempty_addEquiv P.nonempty_addEquiv`. Establish `: Finite D` using `finite_of_nonempty_addEquiv P.nonempty_addEquiv`. Establish `: Finite (dualRep D M)` using `finite_dualRep`. Establish `hψ` using `P.bijective_ptTCompactDualMap M hM (show 1 + 2 = 3 from rfl) le_rfl`. Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun χ => ?_⟩` and prove the remaining obligations.
+
+Use `set f := ptTCompactDualMap φ ψ D M t (show 1 + 2 = 3 from rfl) (ptTShaLift φ ψ M x)`. Establish `hker : (ptTGlobalToLocal φ ψ (dualRep D M) 2).hom.toAddMonoidHom.ker ≤ f.ker` using `fun y hy => AddMonoidHom.mem_ker.2 (DFunLike.congr_fun hx ⟨y, hy⟩)`. Take `⟨g, hg⟩` from `QZ.exists_comp_eq_of_ker_le (ptTGlobalToLocal φ ψ (dualRep D M) 2).hom.toAddMonoidHom f hker`. Establish `hv : ∀ v, ∃ ξv, ptLocalPairing φ D M inv v (show 0 + 2 = 2 from rfl) ξv = g.comp ((AddMonoidHom.inl _ _).comp (AddMonoidHom.single (fun v => cohomology (Rep.res (φ v).toMonoidHom (dualRep D M)) 2) v))` using `fun v => P.surjective_localPairing_zero M hM v _`. Establish `hw : ∀ w, ∃ ξw, ptLocalPairing ψ D M invr w (show 0 + 2 = 2 from rfl) ξw = g.comp ((AddMonoidHom.inr _ _).comp (AddMonoidHom.single (fun w => cohomology (Rep.res (ψ w).toMonoidHom (dualRep D M)) 2) w))` using `fun w => P.surjective_realPairing_zero M hM w _`.
+
+Use `choose ξ₁ hξ₁ using hv`. Use `choose ξ₂ hξ₂ using hw`. Establish `hf : ptTLocalDualMap φ ψ D M inv invr (show 0 + 2 = 2 from rfl) (ξ₁, ξ₂) = f`. Use `AddMonoidHom.ext fun y => ?_` and prove the remaining obligations. Establish `hdec : (ptTGlobalToLocal φ ψ (dualRep D M) 2).hom y = (∑ v, AddMonoidHom.inl _ _ (Pi.single v (ptRes φ (dualRep D M) v 2 y))) + ∑ w, AddMonoidHom.inr _ _ (Pi.single w (ptRes ψ (dualRep D M) w 2 y))`.
+
+Rewrite using `[ptTGlobalToLocal_apply, ← map_sum, ← map_sum]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_add, AddMonoidHom.inl_apply, AddMonoidHom.inr_apply, add_zero]`. Conclude with `(Finset.univ_sum_single _).symm`. Simplify using `only [Prod.snd_add, AddMonoidHom.inl_apply, AddMonoidHom.inr_apply, zero_add]`.
+
+Conclude with `(Finset.univ_sum_single _).symm`. Rewrite using `[ptTLocalDualMap_apply, ← hg, AddMonoidHom.comp_apply]`. Express the relevant statement in the definitionally equal form `_ = g ((ptTGlobalToLocal φ ψ (dualRep D M) 2).hom y)`. Rewrite using `[hdec, map_add, map_sum, map_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hξ₁]`. Both sides reduce to the same expression. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hξ₂]`.
+
+Both sides reduce to the same expression. Rewrite `hf` using `[← P.ptTCompactDualMap_ptTLocalToCompact M _ (show 0 + 1 + 2 = 3 from rfl)]`. Establish `hx' : (ptTLocalToCompact φ ψ M 0).hom (ξ₁, ξ₂) = ptTShaLift φ ψ M x` using `hψ.1 hf`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← ptTToGlobal_ptTShaLift φ ψ M x, ← hx']`.
+
+Conclude with `(ptTExact_compact φ ψ M 0 _).2 ⟨(ξ₁, ξ₂), rfl⟩`. Take `⟨f, hf⟩` from `QZ.exists_comp_eq_of_injective (ptTSha φ ψ (dualRep D M) 2).subtype Subtype.val_injective χ`. Take `⟨x, hx⟩` from `hψ.2 f`. Use `⟨⟨_, ptTToGlobal_mem_ptTSha φ ψ M (r := 0) x⟩, AddMonoidHom.ext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[ptTShaPairing_apply, hx, ← hf]`.
+
+Both sides reduce to the same expression.
+-/
 theorem bijective_ptTShaPairing (hM : ∀ m : M, n • m = 0) :
     Function.Bijective (ptTShaPairing φ ψ D M t) := by
   classical
@@ -426,6 +515,11 @@ theorem bijective_ptTShaPairing (hM : ∀ m : M, n • m = 0) :
 
 include P in
 
+/- English proof (translation)
+Establish `hnD` using `nsmul_eq_zero_of_nonempty_addEquiv P.nonempty_addEquiv`. Establish `: Finite D` using `finite_of_nonempty_addEquiv P.nonempty_addEquiv`. Establish `: Finite (dualRep D M)` using `finite_dualRep`. Use `P.finite_cohomology M hM 1 (by norm_num)` as an intermediate fact. Use `P.finite_cohomology (dualRep D M) (nsmul_dualRep_eq_zero hnD) 2 le_rfl` as an intermediate fact.
+
+Establish `h1 : Finite (ptTSha φ ψ M 1)` using `Finite.of_injective _ Subtype.val_injective`. Establish `h2 : Finite (ptTSha φ ψ (dualRep D M) 2)` using `Finite.of_injective _ Subtype.val_injective`. Establish `hb` using `P.bijective_ptTShaPairing M hM`. Conclude with `⟨h1, h2, hb, bijective_flip_of_bijective_qz _ hb⟩`.
+-/
 theorem sha (hM : ∀ m : M, n • m = 0) :
     Finite (ptTSha φ ψ M 1) ∧ Finite (ptTSha φ ψ (dualRep D M) 2) ∧
       Function.Bijective (ptTShaPairing φ ψ D M t) ∧

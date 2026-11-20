@@ -38,6 +38,9 @@ end Point
 end GlobalTheory.BigOn.Exp.TwConj.LevAt
 namespace GlobalTheory.BigOn.Exp.TwConj
 open LevAt in
+/- English proof (translation)
+Introduce `_ _ _ hA hC` and use `by refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hA (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hC _root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt)) fun Fm x hx i p hr hm w hw j H => ?_ obtain ⟨⟨a1, -, -⟩, a2, a3⟩ …`.
+-/
 theorem twLevAt_holds_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → _root_.GlobalTheory.BigOn.Exp.TwAdmAlt → _root_.GlobalTheory.BigOn.Exp.TwistCharacter →
     _root_.GlobalTheory.BigOn.Exp.TwConj.TwLevAtAlt := fun _ _ _ hA hC => by
   refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hA (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hC _root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt)) fun Fm x hx i p hr hm w hw j H => ?_

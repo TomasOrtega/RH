@@ -13,6 +13,9 @@ variable {K L : Type u} [Field K] [Field L] [Algebra K L] (W₀ : WeierstrassCur
 
 section Coord
 
+/- English proof (translation)
+Establish `h1 : (W₀.baseChange L).map (σ : L →+* L) = W₀.baseChange L` using `WeierstrassCurve.map_baseChange (R := K) (S := K) W₀ (σ : L →ₐ[K] L)`. Rewrite using `[← Affine.map_polynomial]`. Conclude with `congrArg (fun V : WeierstrassCurve L => V.toAffine.polynomial) h1`.
+-/
 theorem polynomial_map_galois (σ : L ≃ₐ[K] L) :
     (W₀.baseChange L).toAffine.polynomial.map (mapRingHom (σ : L →+* L)) =
       (W₀.baseChange L).toAffine.polynomial := by
@@ -30,6 +33,9 @@ noncomputable def galCoord (σ : L ≃ₐ[K] L) :
     rw [Ideal.map_span, Set.image_singleton]
     exact congrArg (fun q => Ideal.span {q}) h.symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galCoord_mk (σ : L ≃ₐ[K] L) (p : L[X][Y]) :
     galCoord W₀ σ (CoordinateRing.mk _ p) =
       CoordinateRing.mk _ (p.map (mapRingHom (σ : L →+* L))) :=
@@ -43,11 +49,17 @@ noncomputable def galFF (σ : L ≃ₐ[K] L) :
     (W₀.baseChange L).toAffine.FunctionField ≃+* (W₀.baseChange L).toAffine.FunctionField :=
   IsFractionRing.ringEquivOfRingEquiv (galCoord W₀ σ)
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap _ a`.
+-/
 theorem galFF_algebraMap_coord (σ : L ≃ₐ[K] L) (a : (W₀.baseChange L).toAffine.CoordinateRing) :
     galFF W₀ σ (algebraMap _ (W₀.baseChange L).toAffine.FunctionField a) =
       algebraMap _ (W₀.baseChange L).toAffine.FunctionField (galCoord W₀ σ a) :=
   IsFractionRing.ringEquivOfRingEquiv_algebraMap _ a
 
+/- English proof (translation)
+Establish `e : ∀ a : L, algebraMap L (W₀.baseChange L).toAffine.FunctionField a = algebraMap (W₀.baseChange L).toAffine.CoordinateRing _ (CoordinateRing.mk _ (C (C a)))` using `fun a => rfl`. Rewrite using `[e, e, galFF_algebraMap_coord, galCoord_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem galFF_algebraMap (σ : L ≃ₐ[K] L) (c : L) :
     galFF W₀ σ (algebraMap L (W₀.baseChange L).toAffine.FunctionField c) =
       algebraMap L (W₀.baseChange L).toAffine.FunctionField (σ c) := by
@@ -57,14 +69,23 @@ theorem galFF_algebraMap (σ : L ≃ₐ[K] L) (c : L) :
   rw [e, e, galFF_algebraMap_coord, galCoord_mk]
   simp
 
+/- English proof (translation)
+Rewrite using `[genX, galFF_algebraMap_coord, galCoord_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem galFF_genX (σ : L ≃ₐ[K] L) : galFF W₀ σ (genX (W₀.baseChange L)) = genX (W₀.baseChange L) := by
   rw [genX, galFF_algebraMap_coord, galCoord_mk]
   simp
 
+/- English proof (translation)
+Rewrite using `[genY, galFF_algebraMap_coord, galCoord_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem galFF_genY (σ : L ≃ₐ[K] L) : galFF W₀ σ (genY (W₀.baseChange L)) = genY (W₀.baseChange L) := by
   rw [genY, galFF_algebraMap_coord, galCoord_mk]
   simp
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply K L, galFF_algebraMap, AlgEquiv.commutes]`.
+-/
 theorem galFF_algebraMap_base (σ : L ≃ₐ[K] L) (k : K) :
     galFF W₀ σ (algebraMap K (W₀.baseChange L).toAffine.FunctionField k) =
       algebraMap K (W₀.baseChange L).toAffine.FunctionField k := by
@@ -74,19 +95,31 @@ noncomputable def galFFAlg (σ : L ≃ₐ[K] L) :
     (W₀.baseChange L).toAffine.FunctionField ≃ₐ[K] (W₀.baseChange L).toAffine.FunctionField :=
   AlgEquiv.ofRingEquiv (f := galFF W₀ σ) (galFF_algebraMap_base W₀ σ)
 
+/- English proof (translation)
+Rewrite using `[RingEquiv.symm_apply_eq, galFF_algebraMap, AlgEquiv.apply_symm_apply]`.
+-/
 theorem galFF_symm_algebraMap (σ : L ≃ₐ[K] L) (c : L) :
     (galFF W₀ σ).symm (algebraMap L (W₀.baseChange L).toAffine.FunctionField c) =
       algebraMap L (W₀.baseChange L).toAffine.FunctionField (σ.symm c) := by
   rw [RingEquiv.symm_apply_eq, galFF_algebraMap, AlgEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[RingEquiv.symm_apply_eq, galFF_genX]`.
+-/
 theorem galFF_symm_genX (σ : L ≃ₐ[K] L) :
     (galFF W₀ σ).symm (genX (W₀.baseChange L)) = genX (W₀.baseChange L) := by
   rw [RingEquiv.symm_apply_eq, galFF_genX]
 
+/- English proof (translation)
+Rewrite using `[RingEquiv.symm_apply_eq, galFF_genY]`.
+-/
 theorem galFF_symm_genY (σ : L ≃ₐ[K] L) :
     (galFF W₀ σ).symm (genY (W₀.baseChange L)) = genY (W₀.baseChange L) := by
   rw [RingEquiv.symm_apply_eq, galFF_genY]
 
+/- English proof (translation)
+Establish `e : ∀ a : K, galFF W₀ σ (algebraMap L (W₀.baseChange L).toAffine.FunctionField (algebraMap K L a)) = algebraMap L _ (algebraMap K L a)` using `fun a => by`. Rewrite using `[galFF_algebraMap, AlgEquiv.commutes]`. Apply the tactic sequence `ext <;> exact e _`.
+-/
 theorem map_galFF_curve (σ : L ≃ₐ[K] L) :
     ((W₀.baseChange L).baseChange (W₀.baseChange L).toAffine.FunctionField).map
       (galFF W₀ σ : _ →+* _) =
@@ -104,6 +137,9 @@ noncomputable def galConj (σ : L ≃ₐ[K] L)
       change galFF W₀ σ (ψ ((galFF W₀ σ).symm (algebraMap L _ c))) = algebraMap L _ c
       rw [galFF_symm_algebraMap, ψ.commutes, galFF_algebraMap, AlgEquiv.apply_symm_apply] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galConj_apply (σ : L ≃ₐ[K] L)
     (ψ : (W₀.baseChange L).toAffine.FunctionField →ₐ[L] (W₀.baseChange L).toAffine.FunctionField)
     (f : (W₀.baseChange L).toAffine.FunctionField) :
@@ -117,6 +153,9 @@ variable {Fd : Type*} [Field Fd] (V : WeierstrassCurve Fd) (τ : Fd ≃+* Fd)
   (hV : V.map (τ : Fd →+* Fd) = V)
 
 include hV in
+/- English proof (translation)
+Establish `h1` using `(Affine.map_nonsingular (W := V.toAffine) (f := (τ : Fd →+* Fd)) τ.injective x y).mpr h`. Establish `hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine` using `hV`. Rewrite `h1` using `[hV']`. Conclude with `h1`.
+-/
 theorem nonsingular_aut {x y : Fd} (h : V.toAffine.Nonsingular x y) :
     V.toAffine.Nonsingular (τ x) (τ y) := by
   have h1 := (Affine.map_nonsingular (W := V.toAffine) (f := (τ : Fd →+* Fd)) τ.injective x y).mpr h
@@ -125,6 +164,9 @@ theorem nonsingular_aut {x y : Fd} (h : V.toAffine.Nonsingular x y) :
   exact h1
 
 include hV in
+/- English proof (translation)
+Establish `h1` using `Affine.map_negY (W' := V.toAffine) (τ : Fd →+* Fd) x y`. Establish `hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine` using `hV`. Rewrite `h1` using `[hV']`. Conclude with `h1`.
+-/
 theorem negY_aut (x y : Fd) : V.toAffine.negY (τ x) (τ y) = τ (V.toAffine.negY x y) := by
   have h1 := Affine.map_negY (W' := V.toAffine) (τ : Fd →+* Fd) x y
   have hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine := hV
@@ -132,6 +174,9 @@ theorem negY_aut (x y : Fd) : V.toAffine.negY (τ x) (τ y) = τ (V.toAffine.neg
   exact h1
 
 include hV in
+/- English proof (translation)
+Establish `h1` using `Affine.map_addX (W' := V.toAffine) (τ : Fd →+* Fd) (x₁ := x₁) (x₂ := x₂) (ℓ := ℓ)`. Establish `hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine` using `hV`. Rewrite `h1` using `[hV']`. Conclude with `h1`.
+-/
 theorem addX_aut (x₁ x₂ ℓ : Fd) :
     V.toAffine.addX (τ x₁) (τ x₂) (τ ℓ) = τ (V.toAffine.addX x₁ x₂ ℓ) := by
   have h1 := Affine.map_addX (W' := V.toAffine) (τ : Fd →+* Fd) (x₁ := x₁) (x₂ := x₂) (ℓ := ℓ)
@@ -140,6 +185,9 @@ theorem addX_aut (x₁ x₂ ℓ : Fd) :
   exact h1
 
 include hV in
+/- English proof (translation)
+Establish `h1` using `Affine.map_addY (W' := V.toAffine) (τ : Fd →+* Fd) (x₁ := x₁) (x₂ := x₂) (y₁ := y₁) (ℓ := ℓ)`. Establish `hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine` using `hV`. Rewrite `h1` using `[hV']`. Conclude with `h1`.
+-/
 theorem addY_aut (x₁ x₂ y₁ ℓ : Fd) :
     V.toAffine.addY (τ x₁) (τ x₂) (τ y₁) (τ ℓ) = τ (V.toAffine.addY x₁ x₂ y₁ ℓ) := by
   have h1 := Affine.map_addY (W' := V.toAffine) (τ : Fd →+* Fd) (x₁ := x₁) (x₂ := x₂) (y₁ := y₁) (ℓ := ℓ)
@@ -150,6 +198,9 @@ theorem addY_aut (x₁ x₂ y₁ ℓ : Fd) :
 variable [DecidableEq Fd]
 
 include hV in
+/- English proof (translation)
+Establish `h1` using `Affine.map_slope (W := V.toAffine) (τ : Fd →+* Fd) x₁ x₂ y₁ y₂`. Establish `hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine` using `hV`. Rewrite `h1` using `[hV']`. Conclude with `h1`.
+-/
 theorem slope_aut (x₁ x₂ y₁ y₂ : Fd) :
     V.toAffine.slope (τ x₁) (τ x₂) (τ y₁) (τ y₂) = τ (V.toAffine.slope x₁ x₂ y₁ y₂) := by
   have h1 := Affine.map_slope (W := V.toAffine) (τ : Fd →+* Fd) x₁ x₂ y₁ y₂
@@ -176,6 +227,9 @@ noncomputable def autPoint : V.toAffine.Point →+ V.toAffine.Point where
       exact ⟨by rw [slope_aut V τ hV, addX_aut V τ hV],
         by rw [slope_aut V τ hV, addY_aut V τ hV]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem autPoint_some {x y : Fd} (h : V.toAffine.Nonsingular x y) :
     autPoint V τ hV (.some x y h) = .some (τ x) (τ y) (nonsingular_aut V τ hV h) := rfl
 
@@ -192,6 +246,9 @@ noncomputable def galFFPoint (σ : L ≃ₐ[K] L) :
 
 omit [DecidableEq L] in
 
+/- English proof (translation)
+Rewrite using `[genericPoint, galFFPoint, autPoint_some]`. Simplify using `only [Affine.Point.some.injEq]`. Conclude with `⟨galFF_genX W₀ σ, galFF_genY W₀ σ⟩`.
+-/
 theorem galFFPoint_genericPoint (σ : L ≃ₐ[K] L) :
     galFFPoint W₀ σ (genericPoint (W₀.baseChange L)) = genericPoint (W₀.baseChange L) := by
   rw [genericPoint, galFFPoint, autPoint_some]
@@ -200,6 +257,11 @@ theorem galFFPoint_genericPoint (σ : L ≃ₐ[K] L) :
 
 omit [W₀.IsElliptic] in
 
+/- English proof (translation)
+Consider the cases of `R with`. Consider the case `zero`. Establish `h0 : (Affine.Point.zero : (W₀.baseChange L).toAffine.Point) = 0` using `rfl`. Rewrite using `[h0, map_zero, map_zero, map_zero, map_zero]`. Consider the case `some x y h`.
+
+Express the relevant statement in the definitionally equal form `autPoint _ _ _ (Affine.Point.some _ _ _) = Affine.Point.some _ _ _`. Rewrite using `[autPoint_some]`. Simplify using `only [Affine.Point.some.injEq]`. Conclude with `⟨galFF_algebraMap W₀ σ x, galFF_algebraMap W₀ σ y⟩`.
+-/
 theorem galFFPoint_constPoint (σ : L ≃ₐ[K] L) (R : (W₀.baseChange L).toAffine.Point) :
     galFFPoint W₀ σ (constPoint (W₀.baseChange L) R) =
       constPoint (W₀.baseChange L) (galPointsHom K L W₀ σ R) := by
@@ -214,6 +276,9 @@ theorem galFFPoint_constPoint (σ : L ≃ₐ[K] L) (R : (W₀.baseChange L).toAf
     exact ⟨galFF_algebraMap W₀ σ x, galFF_algebraMap W₀ σ y⟩
 
 omit [DecidableEq L] in
+/- English proof (translation)
+Rewrite using `[genericPoint, Affine.Point.map_some, Affine.Point.map_some, galFFPoint, autPoint_some]`. Simplify using `only [Affine.Point.some.injEq]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[galConj_apply, galFF_symm_genX]`. Rewrite using `[galConj_apply, galFF_symm_genY]`.
+-/
 theorem map_galConj_genericPoint (σ : L ≃ₐ[K] L)
     (ψ : (W₀.baseChange L).toAffine.FunctionField →ₐ[L] (W₀.baseChange L).toAffine.FunctionField) :
     Affine.Point.map (galConj W₀ σ ψ) (genericPoint (W₀.baseChange L)) =
@@ -225,6 +290,9 @@ theorem map_galConj_genericPoint (σ : L ≃ₐ[K] L)
   · rw [galConj_apply, galFF_symm_genY]
 variable [IsAlgClosed L]
 
+/- English proof (translation)
+Apply `algHom_eq_of_map_genericPoint` to reduce the goal to its premises. Rewrite using `[map_galConj_genericPoint, map_translate_genericPoint, map_add, galFFPoint_genericPoint, galFFPoint_constPoint, map_translate_genericPoint]`.
+-/
 theorem galConj_translate (σ : L ≃ₐ[K] L) (R : (W₀.baseChange L).toAffine.Point) :
     galConj W₀ σ (translate (W₀.baseChange L) R) =
       translate (W₀.baseChange L) (galPointsHom K L W₀ σ R) := by
@@ -232,6 +300,9 @@ theorem galConj_translate (σ : L ≃ₐ[K] L) (R : (W₀.baseChange L).toAffine
   rw [map_galConj_genericPoint, map_translate_genericPoint, map_add, galFFPoint_genericPoint,
     galFFPoint_constPoint, map_translate_genericPoint]
 
+/- English proof (translation)
+Rewrite using `[← galConj_translate, galConj_apply, RingEquiv.symm_apply_apply]`.
+-/
 theorem galFF_translate (σ : L ≃ₐ[K] L) (R : (W₀.baseChange L).toAffine.Point)
     (f : (W₀.baseChange L).toAffine.FunctionField) :
     galFF W₀ σ (translate (W₀.baseChange L) R f) =

@@ -3,6 +3,13 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PointSide
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Unfold `GlobalTheory.LKCount.orbK GlobalTheory.LKCount.orbC`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `q`. Establish `hz : ∀ x : G, f (x⁻¹ * δ * x) = 0`. Introduce `x`.
+
+Assume the negation of the conclusion as `h`. Apply `hδ` to reduce the goal to its premises. Establish `hs` using `hf _ h`. Establish `hc : ((π (x⁻¹ * δ * x) : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).charpoly = ((π δ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).charpoly`. Rewrite using `[map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`.
+
+Rewrite `hs` using `[hc]`. Then use the resulting hypothesis. Simplify using `[hz]`.
+-/
 theorem orbK_eq_zero_of_charpoly_not_separable (G : Type) [Group G] (k : Type) [Field k] (n : ℕ)
     (π : G →* GL (Fin n) k) (K : Subgroup G) (δ : G) (f : G → ℂ)
     (hf : ∀ g, f g ≠ 0 → ((π g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).charpoly.Separable)

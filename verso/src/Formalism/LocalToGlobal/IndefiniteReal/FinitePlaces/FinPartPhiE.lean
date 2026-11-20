@@ -15,17 +15,26 @@ section Main
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [phiE, finPart, Algebra.TensorProduct.algebraMap_apply, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Both sides reduce to the same expression.
+-/
 theorem finPart_phiE (v : HeightOneSpectrum (𝓞 D.host.F)) (a : v.adicCompletion D.host.F) :
     finPart D (phiE v a) = sglV v a ⊗ₜ[D.host.F] (1 : D.host.E) := by
   simp only [phiE, finPart, Algebra.TensorProduct.algebraMap_apply, RingHom.coe_coe,
     AlgHom.toRingHom_eq_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
   rfl
 
+/- English proof (translation)
+Simplify using `only [incA, finPart, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one]`. Both sides reduce to the same expression.
+-/
 theorem finPart_incA (w : D.host.E) : finPart D (incA D w) = (1 : Af D.host.F) ⊗ₜ[D.host.F] w := by
   simp only [incA, finPart, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, Algebra.TensorProduct.algebraMap_apply,
     Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one]
   rfl
 
+/- English proof (translation)
+Simplify using `only [incA, Algebra.TensorProduct.algebraMap_apply]`. Unfold `inclR`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem tmul_eq (a : AF D.host.F) (w : D.host.E) :
     a ⊗ₜ[D.host.F] w = algebraMap (AF D.host.F) (AE D) a * incA D w := by
   simp only [incA, Algebra.TensorProduct.algebraMap_apply]
@@ -34,6 +43,15 @@ theorem tmul_eq (a : AF D.host.F) (w : D.host.E) :
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hphi : ∀ x y, phiE v (x * y) = phiE v x * phiE v y`. Introduce `x y`. Simplify using `only [phiE, map_mul]`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp [phiE]`. Consider the case `tmul a w`. Establish `hf : compV v ι (finPart D (a ⊗ₜ[D.host.F] w)) = evalV D.host.F v (sndA D.host.F a) * ι w`. Simplify using `[finPart, compV, Algebra.TensorProduct.lift_tmul]`. Establish `ha : e * algebraMap (AF D.host.F) (AE D) a = e * phiE v (evalV D.host.F v (sndA D.host.F a))`.
+
+Establish `h0 : e * phiE v 1 = e` using `heps`. Simplify using `only [phiE] at h0 ⊢`. Rewrite using `[← sA_one_mul, map_mul, ← mul_assoc, h0]`. Rewrite using `[hf, hphi, tmul_eq]`. Combine the equalities or inequalities in the displayed calculation.
+
+Consider the case `add x y hx hy`. Rewrite using `[add_mul, hx, hy, ← mul_add]`. Use `congr 1`. Simplify using `only [phiE, map_add]`.
+-/
 theorem mul_e_of (v : HeightOneSpectrum (𝓞 D.host.F)) (e : AE D) (ι : D.host.E →ₐ[D.host.F] v.adicCompletion D.host.F)
     (hid : ∀ w : D.host.E, e * incA D w = e * phiE v (ι w)) (heps : e * phiE v 1 = e) :
     ∀ z : AE D, z * e = e * phiE v (compV v ι (finPart D z)) := by
@@ -64,6 +82,97 @@ theorem mul_e_of (v : HeightOneSpectrum (𝓞 D.host.F)) (e : AE D) (ι : D.host
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨b, tO, NO, hbP, hbsP, ht, hN, htv, hNv⟩` from `split_datum P hP v hv`. Take `⟨r₁, r₂, hsum, hprod, hr₁, hr₂⟩` from `roots_exist v tO NO hNv htv`. Take `⟨t', ht'⟩ : ∃ t', t' = algebraMap D.host.F (v.adicCompletion D.host.F) (tO : D.host.F)` from `⟨_, rfl⟩`. Take `⟨N', hN'⟩ : ∃ N', N' = algebraMap D.host.F (v.adicCompletion D.host.F) (NO : D.host.F)` from `⟨_, rfl⟩`. Establish `hsum' : r₁ + r₂ = t'` using `by rw [ht']; exact hsum`.
+
+Establish `hprod' : r₁ * r₂ = N'` using `by rw [hN']; exact hprod`. Establish `hbne : star (b : D.host.E) ≠ b`. Introduce `h`. Apply `hbsP` to reduce the goal to its premises. Establish `: starO b = b` using `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E h`.
+
+Rewrite using `[this]`. Conclude with `hbP`. Establish `hr : r₁ ^ 2 - ((tO : D.host.F) : v.adicCompletion D.host.F) * r₁ + ((NO : D.host.F) : v.adicCompletion D.host.F) = 0`. Rewrite using `[← hsum, ← hprod]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨ι, hι, hadj⟩` from `emb_exists v (b : D.host.E) tO NO ht hN hbne r₁ hr`. Establish `hd : r₁ - r₂ ≠ 0`. Introduce `h`. Establish `h' : r₁ = r₂` using `sub_eq_zero.1 h`. Rewrite `hr₁` using `[h', hr₂]`.
+
+Conclude with `lt_irrefl _ hr₁`. Take `⟨y₀, hy⟩ : ∃ y₀ : v.adicCompletion D.host.F, y₀ * (r₁ - r₂) = 1` from `⟨(r₁ - r₂)⁻¹, inv_mul_cancel₀ hd⟩`. Take `⟨x₀, hx⟩ : ∃ x₀ : v.adicCompletion D.host.F, x₀ = -r₂ * y₀` from `⟨_, rfl⟩`. Establish `f1 : x₀ * x₀ - N' * (y₀ * y₀) - x₀ = 0`. Rewrite using `[hx, ← hprod']`.
+
+Take the linear combination `(-(r₂ * y₀)) * hy`. Establish `f2 : x₀ * y₀ + x₀ * y₀ + t' * (y₀ * y₀) - y₀ = 0`. Rewrite using `[hx, ← hsum']`. Take the linear combination `y₀ * hy`. Establish `f3 : x₀ * x₀ + t' * (x₀ * y₀) + N' * (y₀ * y₀) = 0`.
+
+Rewrite using `[hx, ← hsum', ← hprod']`. Expand and normalize the polynomial expressions, which then agree. Establish `f4 : x₀ + x₀ + t' * y₀ = 1`. Rewrite using `[hx, ← hsum']`. Take the linear combination `hy`.
+
+Establish `f5 : x₀ + y₀ * r₁ = 1`. Rewrite using `[hx]`. Take the linear combination `hy`. Establish `f6 : x₀ + t' * y₀ - y₀ * r₁ = 0`. Rewrite using `[hx, ← hsum']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `f7 : x₀ * r₁ + N' * y₀ = 0`. Rewrite using `[hx, ← hprod']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u, hu0⟩ : ∃ u : AE D, u = incA D (b : D.host.E)` from `⟨_, rfl⟩`.
+
+Take `⟨Tt, hTt⟩ : ∃ Tt : AE D, Tt = algebraMap D.host.F (AE D) (tO : D.host.F)` from `⟨_, rfl⟩`. Take `⟨Nn, hNn⟩ : ∃ Nn : AE D, Nn = algebraMap D.host.F (AE D) (NO : D.host.F)` from `⟨_, rfl⟩`. Establish `hu : u * u = Tt * u - Nn`. Establish `hbb : (b : D.host.E) * b = algebraMap D.host.F D.host.E (tO : D.host.F) * b - algebraMap D.host.F D.host.E (NO : D.host.F)` using `by rw [ht, hN]; ring`. Rewrite using `[hu0, hTt, hNn, ← map_mul, hbb, map_sub, map_mul, incA_alg, incA_alg]`.
+
+Establish `hcu : cA D u = Tt - u`. Establish `hs : star (b : D.host.E) = algebraMap D.host.F D.host.E (tO : D.host.F) - b` using `by rw [ht]; ring`. Rewrite using `[hu0, hTt, cA_incA, hs, map_sub, incA_alg]`. Establish `sT : ∀ a, Tt * phiE v a = phiE v (t' * a)` using `fun a => by rw [hTt, ht', phiE_smul]`. Establish `sN : ∀ a, Nn * phiE v a = phiE v (N' * a)` using `fun a => by rw [hNn, hN', phiE_smul]`.
+
+Establish `m : ∀ a c, phiE v a * phiE v c = phiE v (a * c)` using `fun a c => (phiE_mul v a c).symm`. Establish `g1 : phiE v (x₀ * x₀) - phiE v (N' * (y₀ * y₀)) - phiE v x₀ = 0`. Use `congrArg (phiE v) f1` as an intermediate fact. Rewrite `this` using `[phiE_sub, phiE_sub, phiE_zero]`. Then use the resulting hypothesis. Establish `g2 : phiE v (x₀ * y₀) + phiE v (x₀ * y₀) + phiE v (t' * (y₀ * y₀)) - phiE v y₀ = 0`.
+
+Use `congrArg (phiE v) f2` as an intermediate fact. Rewrite `this` using `[phiE_sub, phiE_add, phiE_add, phiE_zero]`. Then use the resulting hypothesis. Establish `g3 : phiE v (x₀ * x₀) + phiE v (t' * (x₀ * y₀)) + phiE v (N' * (y₀ * y₀)) = 0`. Use `congrArg (phiE v) f3` as an intermediate fact. Rewrite `this` using `[phiE_add, phiE_add, phiE_zero]`. Then use the resulting hypothesis.
+
+Establish `g4 : phiE v x₀ + phiE v x₀ + phiE v (t' * y₀) = phiE v 1`. Use `congrArg (phiE v) f4` as an intermediate fact. Rewrite `this` using `[phiE_add, phiE_add]`. Then use the resulting hypothesis. Establish `g5 : phiE v x₀ + phiE v (y₀ * r₁) = phiE v 1`. Use `congrArg (phiE v) f5` as an intermediate fact.
+
+Rewrite `this` using `[phiE_add]`. Then use the resulting hypothesis. Establish `g6 : phiE v x₀ + phiE v (t' * y₀) - phiE v (y₀ * r₁) = 0`. Use `congrArg (phiE v) f6` as an intermediate fact. Rewrite `this` using `[phiE_sub, phiE_add, phiE_zero]`. Then use the resulting hypothesis. Establish `g7 : phiE v (x₀ * r₁) + phiE v (N' * y₀) = 0`.
+
+Use `congrArg (phiE v) f7` as an intermediate fact. Rewrite `this` using `[phiE_add, phiE_zero]`. Then use the resulting hypothesis. Take `⟨e, he⟩ : ∃ e : AE D, e = phiE v x₀ + phiE v y₀ * u` from `⟨_, rfl⟩`. Establish `hee : e * e = e`. Rewrite using `[he]`.
+
+Take the linear combination `(phiE v y₀ * phiE v y₀) * hu + m x₀ x₀ + (2 * u) * m x₀ y₀ + (Tt * u - Nn) * m y₀ y₀ + u * sT (y₀ * y₀) - sN (y₀ * y₀) + g1 + u * g2`. Establish `hce : cA D e = phiE v x₀ + phiE v y₀ * (Tt - u)`. Rewrite using `[he, map_add, map_mul, cA_phiE, cA_phiE, hcu]`. Establish `hec : e * cA D e = 0`. Rewrite using `[hce, he]`.
+
+Take the linear combination `(-(phiE v y₀ * phiE v y₀)) * hu + m x₀ x₀ + Tt * m x₀ y₀ + Nn * m y₀ y₀ + sT (x₀ * y₀) + sN (y₀ * y₀) + g3`. Establish `hsume : e + cA D e = algebraMap (AF D.host.F) (AE D) (sA v 1)` using `by show e + cA D e = phiE v 1`. Rewrite using `[hce, he]`. Take the linear combination `sT y₀ + g4`. Establish `hplace : IsPlaceIdem D v (sA v 1)` using `⟨sglV v 1, rfl, sglV_same v 1, fun w hw => sglV_ne v 1 hw⟩`.
+
+Establish `hcompe : compV v ι (finPart D e) = 1`. Rewrite using `[he, map_add, map_mul, map_add, map_mul, compV_phiE, compV_phiE, hu0, compV_incA, hι]`. Conclude with `f5`. Establish `hιF : ∀ f : 𝓞 D.host.F, ι (algebraMap D.host.F D.host.E (f : D.host.F)) = ((f : D.host.F) : v.adicCompletion D.host.F)` using `fun f => ι.commutes _`. Establish `hιs : ι (star (b : D.host.E)) = r₂`.
+
+Establish `hs : star (b : D.host.E) = algebraMap D.host.F D.host.E (tO : D.host.F) - b` using `by rw [ht]; ring`. Rewrite using `[hs, map_sub, hιF, hι, ← hsum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfwd : ∀ x : 𝓞 D.host.E, x ∈ P.asIdeal → Valued.v (ι (x : D.host.E)) < 1`. Introduce `x hxP`.
+
+Establish `hz : x * starO b ∈ P.asIdeal` using `P.asIdeal.mul_mem_right _ hxP`. Establish `hzs : starO (x * starO b) ∈ P.asIdeal`. Establish `: starO (x * starO b) = b * starO x`. Apply `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Use `show star ((x : D.host.E) * star (b : D.host.E)) = (b : D.host.E) * star (x : D.host.E)`.
+
+Rewrite using `[star_mul, star_star]`. Rewrite using `[this]`. Conclude with `P.asIdeal.mul_mem_right _ hbP`. Take `⟨TF, hTF⟩` from `fixed_int (x * starO b + starO (x * starO b)) (by show star ((x : D.host.E) * star (b : D.host.E) + star ((x : D.host.E) * star (b : D.host.E))) = _`. Rewrite using `[star_add, star_star, add_comm]`.
+
+Use the proof step `rfl)`. Take `⟨MF, hMF⟩` from `fixed_int (x * starO b * starO (x * starO b)) (by show star ((x : D.host.E) * star (b : D.host.E) * star ((x : D.host.E) * star (b : D.host.E))) = _`. Rewrite using `[star_mul, star_star]`. Use the proof step `rfl)`. Establish `hTFv : TF ∈ v.asIdeal`.
+
+Rewrite using `[← hv, Ideal.mem_comap]`. Establish `: algebraMap (𝓞 D.host.F) (𝓞 D.host.E) TF = x * starO b + starO (x * starO b)` using `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E hTF`. Rewrite using `[this]`. Conclude with `P.asIdeal.add_mem hz hzs`. Establish `hMFv : MF ∈ v.asIdeal`.
+
+Rewrite using `[← hv, Ideal.mem_comap]`. Establish `: algebraMap (𝓞 D.host.F) (𝓞 D.host.E) MF = x * starO b * starO (x * starO b)` using `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E hMF`. Rewrite using `[this]`. Conclude with `P.asIdeal.mul_mem_right _ hz`. Take `⟨z, hz0⟩ : ∃ z : D.host.E, z = (x : D.host.E) * star (b : D.host.E)` from `⟨_, rfl⟩`.
+
+Establish `hzq : ι z * ι z = ((TF : D.host.F) : v.adicCompletion D.host.F) * ι z - ((MF : D.host.F) : v.adicCompletion D.host.F)`. Rewrite using `[← hιF, ← hιF, ← map_mul, ← map_mul, ← map_sub]`. Use `congr 1`. Establish `e1 : algebraMap D.host.F D.host.E (TF : D.host.F) = z + star z` using `by rw [hz0]; exact hTF`. Establish `e2 : algebraMap D.host.F D.host.E (MF : D.host.F) = z * star z` using `by rw [hz0]; exact hMF`.
+
+Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvz : Valued.v (ι z) < 1`. Establish `hT : Valued.v (((TF : D.host.F) : v.adicCompletion D.host.F)) < 1` using `(val_coe_lt_one_iff v TF).2 hTFv`. Establish `hM : Valued.v (((MF : D.host.F) : v.adicCompletion D.host.F)) < 1` using `(val_coe_lt_one_iff v MF).2 hMFv`.
+
+Establish `hzle : Valued.v (ι z) ≤ 1`. Rewrite using `[hz0]`. Conclude with `val_emb_le v ι (x * starO b)`. Establish `hsq : Valued.v (ι z * ι z) < 1`. Rewrite using `[hzq]`.
+
+Use `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt ?_ hM)` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Conclude with `lt_of_lt_of_le (mul_lt_one_of_lt_of_le hT hzle) le_rfl`. Assume the negation of the conclusion as `hge`. Use `push Not at hge`.
+
+Rewrite `hsq` using `[Valuation.map_mul]`. Conclude with `absurd (one_le_mul hge hge) (not_le.2 hsq)`. Rewrite `hvz` using `[hz0, map_mul, hιs, Valuation.map_mul, hr₂, mul_one]`. Conclude with `hvz`. Establish `hιP : ∀ x : 𝓞 D.host.E, x ∈ P.asIdeal ↔ Valued.v (ι (x : D.host.E)) < 1`.
+
+Introduce `x`. Use `⟨hfwd x, fun hlt => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxP`. Take `⟨y, i, hi, hyi⟩` from `P.isMaximal.exists_inv hxP`. Establish `h1 : ι ((y : D.host.E) * x) + ι (i : D.host.E) = 1`.
+
+Rewrite using `[← map_add]`. Establish `: ((y : D.host.E) * x + i) = 1` using `by exact_mod_cast congrArg (fun w : 𝓞 D.host.E => (w : D.host.E)) hyi`. Rewrite using `[this, map_one]`. Establish `h2 : Valued.v (ι ((y : D.host.E) * x)) < 1`. Rewrite using `[map_mul, Valuation.map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left zero_le (val_emb_le v ι y)) hlt`. Establish `h3` using `hfwd i hi`. Establish `h4 : Valued.v (ι ((y : D.host.E) * x) + ι (i : D.host.E)) < 1` using `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt h2 h3)`. Rewrite `h4` using `[h1, Valuation.map_one]`. Conclude with `lt_irrefl _ h4`.
+
+Establish `hid : ∀ w : D.host.E, e * incA D w = e * phiE v (ι w)`. Introduce `w`. Establish `hw : w ∈ Algebra.adjoin D.host.F {(b : D.host.E)}` using `by rw [hadj]; exact Algebra.mem_top`. Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+
+Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Rewrite using `[← hu0, hι, he]`. Take the linear combination `phiE v y₀ * hu + u * sT y₀ - u * m y₀ r₁ + u * g6 - m x₀ r₁ - sN y₀ - g7`. Consider the case `algebraMap f`.
+
+Rewrite using `[incA_alg, AlgHom.commutes, he]`. Establish `s1` using `phiE_smul v f x₀`. Establish `s2` using `phiE_smul v f y₀`. Establish `m1 : phiE v x₀ * phiE v (algebraMap D.host.F (v.adicCompletion D.host.F) f) = phiE v (algebraMap D.host.F (v.adicCompletion D.host.F) f * x₀)` using `by rw [mul_comm _ x₀, phiE_mul]`. Establish `m2 : phiE v y₀ * phiE v (algebraMap D.host.F (v.adicCompletion D.host.F) f) = phiE v (algebraMap D.host.F (v.adicCompletion D.host.F) f * y₀)` using `by rw [mul_comm _ y₀, phiE_mul]`.
+
+Take the linear combination `s1 + u * s2 - m1 - u * m2`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, mul_add, hx, hy, map_add, phiE_add, mul_add]`. Consider the case `mul x y _ _ hx hy`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hy1 : Valued.v y₀ = 1`. Establish `h12 : Valued.v (r₁ - r₂) = 1` using `by rw [Valuation.map_sub_eq_of_lt_right _ (by rw [hr₂]; exact hr₁), hr₂]`. Use `congrArg Valued.v hy` as an intermediate fact. Rewrite `this` using `[Valuation.map_mul, h12, mul_one, Valuation.map_one]`. Then use the resulting hypothesis. Establish `hx1 : Valued.v x₀ = 1` using `by rw [hx, Valuation.map_mul, Valuation.map_neg, hr₂, hy1, mul_one]`.
+
+Establish `heps : e * phiE v 1 = e`. Establish `h : e * (e + cA D e) = e * phiE v 1` using `by rw [hsume]; rfl`. Rewrite `h` using `[mul_add, hee, hec, add_zero]`. Conclude with `h.symm`. Establish `hz` using `mul_e_of v e ι hid heps`.
+
+Use `⟨e, ι, ⟨⟨hee, hec, v, sA v 1, hplace, hsume⟩, ?_⟩, hplace, hsume, hz, hcompe⟩` and prove the remaining obligations. Introduce `x hx0`. Establish `hxE : (x : D.host.E) ≠ 0` using `by exact_mod_cast hx0`. Establish `hιx : ι (x : D.host.E) ≠ 0` using `(map_ne_zero ι).2 hxE`. Establish `hcomp : compV v ι (finPart D (e * incA D ((x : D.host.E)⁻¹))) = (ι (x : D.host.E))⁻¹`.
+
+Rewrite using `[map_mul, map_mul, hcompe, compV_incA, one_mul, map_inv₀]`. Prove the components needed by the constructor for the conclusion. Introduce `hxP hmem`. Establish `h1` using `compV_int v ι hmem`. Rewrite `h1` using `[hcomp, map_inv₀]`.
+
+Establish `h2` using `hfwd x hxP`. Establish `hne : Valued.v (ι (x : D.host.E)) ≠ 0` using `(Valuation.ne_zero_iff _).2 hιx`. Establish `h4 : 1 ≤ Valued.v (ι (x : D.host.E))`. Establish `h5` using `mul_le_mul' h1 (le_refl (Valued.v (ι (x : D.host.E))))`. Rewrite `h5` using `[inv_mul_cancel₀ hne, one_mul]`. Then use the resulting hypothesis.
+
+Conclude with `absurd h2 (not_lt.2 h4)`. Introduce `hnot`. Assume the negation of the conclusion as `hxP`. Apply `hnot` to reduce the goal to its premises. Establish `hv1 : Valued.v (ι (x : D.host.E)) = 1` using `le_antisymm (val_emb_le v ι x) (not_lt.1 fun h => hxP ((hιP x).2 h))`.
+
+Take `⟨c, hc⟩ : ∃ c, c = ι ((x : D.host.E)⁻¹)` from `⟨_, rfl⟩`. Establish `hc1 : Valued.v c = 1` using `by rw [hc, map_inv₀, map_inv₀, hv1, inv_one]`. Rewrite using `[hid, ← hc, he, add_mul, mul_assoc, mul_comm u, ← mul_assoc, ← phiE_mul, ← phiE_mul, map_add, map_mul, finPart_phiE, finPart_phiE, hu0, finPart_incA, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Use `add_mem (AddSubgroup.subset_closure ⟨sglV v (x₀ * c), sglV_int v ?_, 1, by simp⟩) (AddSubgroup.subset_closure ⟨sglV v (y₀ * c), sglV_int v ?_, b, rfl⟩)` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul, hx1, hc1, mul_one]`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul, hy1, hc1, mul_one]`.
+-/
 theorem idem_data (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ¬ Lev.IsConjPl (D := D) P P)
     (v : HeightOneSpectrum (𝓞 D.host.F))
     (hv : P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal) :
@@ -294,6 +403,9 @@ theorem idem_data (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ¬ Lev.IsConjPl 
     · rw [HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul, hx1, hc1, mul_one]
     · rw [HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul, hy1, hc1, mul_one]
 
+/- English proof (translation)
+Take `⟨e, -, he, hpl, hs, -, -⟩` from `idem_data P hP v hv`. Conclude with `⟨e, he, sA v 1, hpl, hs⟩`.
+-/
 theorem idem_at (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ¬ Lev.IsConjPl (D := D) P P)
     (v : HeightOneSpectrum (𝓞 D.host.F))
     (hv : P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal) :

@@ -14,9 +14,17 @@ def coset (V : Set Fˣ) (a : Fˣ) : Set Fˣ := (fun u => a⁻¹ * u) ⁻¹' V
 
 def ind (V : Set Fˣ) (a : Fˣ) : F → ℂ := (Units.val '' coset V a).indicator fun _ => 1
 
+/- English proof (translation)
+The claim follows from `hV.preimage (continuous_const.mul continuous_id)`.
+-/
 theorem isOpen_coset {V : Set Fˣ} (hV : IsOpen V) (a : Fˣ) : IsOpen (coset V a) :=
   hV.preimage (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Establish `: coset V a = (fun u => a * u) '' V`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨a⁻¹ * u, h, by simp⟩`.
+
+Introduce and unpack `⟨v, hv, rfl⟩`. Simplify `hv` using `[coset]`. Rewrite using `[this]`. Conclude with `hV.image (continuous_const.mul continuous_id)`.
+-/
 theorem isCompact_coset {V : Set Fˣ} (hV : IsCompact V) (a : Fˣ) : IsCompact (coset V a) := by
   have : coset V a = (fun u => a * u) '' V := by
     ext u
@@ -28,6 +36,11 @@ theorem isCompact_coset {V : Set Fˣ} (hV : IsCompact V) (a : Fˣ) : IsCompact (
   rw [this]
   exact hV.image (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Establish `hO : IsOpen (Units.val '' coset V a)` using `isOpenEmbedding_units_val.isOpenMap _ (isOpen_coset ho a)`. Establish `hK : IsCompact (Units.val '' coset V a)` using `(isCompact_coset hc a).image Units.continuous_val`. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ Units.val '' coset V a`. Conclude with `⟨_, hO, hx, fun y hy => by`.
+
+Simplify using `only [ind, Set.indicator_of_mem hx, Set.indicator_of_mem hy]⟩`. Conclude with `⟨_, hK.isClosed.isOpen_compl, hx, fun y hy => by`. Simplify using `only [ind, Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]⟩`. Conclude with `HasCompactSupport.intro hK fun x hx => Set.indicator_of_notMem hx _`.
+-/
 theorem ind_mem {V : Set Fˣ} (ho : IsOpen V) (hc : IsCompact V) (a : Fˣ) :
     ind V a ∈ schwartzBruhat F := by
   have hO : IsOpen (Units.val '' coset V a) :=
@@ -42,19 +55,33 @@ theorem ind_mem {V : Set Fˣ} (ho : IsOpen V) (hc : IsCompact V) (a : Fˣ) :
         simp only [ind, Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]⟩
   exact HasCompactSupport.intro hK fun x hx => Set.indicator_of_notMem hx _
 
+/- English proof (translation)
+Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨u, -, hu⟩`. Conclude with `u.ne_zero hu`.
+-/
 theorem ind_zero (V : Set Fˣ) (a : Fˣ) : ind V a 0 = 0 := by
   refine Set.indicator_of_notMem ?_ _
   rintro ⟨u, -, hu⟩
   exact u.ne_zero hu
 
+/- English proof (translation)
+The claim follows from `Set.indicator_of_mem (Set.mem_image_of_mem _ hu) _`.
+-/
 theorem ind_unit_of_mem {V : Set Fˣ} {a u : Fˣ} (hu : u ∈ coset V a) : ind V a (u : F) = 1 :=
   Set.indicator_of_mem (Set.mem_image_of_mem _ hu) _
 
+/- English proof (translation)
+Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨v, hv, hvu⟩`. Conclude with `hu (Units.ext hvu ▸ hv)`.
+-/
 theorem ind_unit_of_notMem {V : Set Fˣ} {a u : Fˣ} (hu : u ∉ coset V a) : ind V a (u : F) = 0 := by
   refine Set.indicator_of_notMem ?_ _
   rintro ⟨v, hv, hvu⟩
   exact hu (Units.ext hvu ▸ hv)
 
+/- English proof (translation)
+Distinguish the cases in `hu : u ∈ coset (V : Set Fˣ) a`. Rewrite using `[ind_unit_of_mem hu, Set.indicator_of_mem hu, one_mul]`. Establish `hw : a⁻¹ * u ∈ V` using `hu`. Establish `e : u = a * (a⁻¹ * u)` using `by simp`. Establish `hχ : χ u = χ a` using `by conv_lhs => rw [e]`.
+
+Rewrite using `[map_mul, MonoidHom.mem_ker.mp (hVχ hw), mul_one]`. Establish `hm1 : modulus (((a⁻¹ * u : Fˣ)) : F) = 1` using `modulus_eq_one_iff.2 ⟨Units.ne_zero _, mem_unitFiltrationUnits_zero_iff_ord.1 (hV0 hw)⟩`. Establish `hm : modulus (u : F) = modulus (a : F)` using `by conv_lhs => rw [e, Units.val_mul, modulus_mul, hm1, mul_one]`. Rewrite using `[hχ, hm]`. Rewrite using `[ind_unit_of_notMem hu, Set.indicator_of_notMem hu, zero_mul, zero_mul]`.
+-/
 theorem integrand_ind {V : Subgroup Fˣ} (hV0 : V ≤ unitFiltrationUnits F 0) {χ : Fˣ →* ℂˣ}
     (hVχ : V ≤ χ.ker) (a : Fˣ) (s : ℂ) (u : Fˣ) :
     ind (V : Set Fˣ) a u * ((χ u : ℂˣ) : ℂ) * ((modulus (u : F) : ℝ) : ℂ) ^ s =
@@ -76,15 +103,24 @@ theorem integrand_ind {V : Subgroup Fˣ} (hV0 : V ≤ unitFiltrationUnits F 0) {
 
 variable [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+The claim follows from `measure_preimage_mul (multHaar F) a⁻¹ V`.
+-/
 theorem measure_coset (V : Set Fˣ) (a : Fˣ) : multHaar F (coset V a) = multHaar F V :=
   measure_preimage_mul (multHaar F) a⁻¹ V
 
+/- English proof (translation)
+Use `(integrable_indicator_iff (isOpen_coset ho a).measurableSet).2 ?_` and prove the remaining obligations. Conclude with `integrableOn_const (isCompact_coset hc a).measure_lt_top.ne`.
+-/
 theorem integrable_coset {V : Subgroup Fˣ} (ho : IsOpen (V : Set Fˣ)) (hc : IsCompact (V : Set Fˣ))
     (a : Fˣ) (c : ℂ) :
     Integrable ((coset (V : Set Fˣ) a).indicator fun _ => c) (multHaar F) := by
   refine (integrable_indicator_iff (isOpen_coset ho a).measurableSet).2 ?_
   exact integrableOn_const (isCompact_coset hc a).measure_lt_top.ne
 
+/- English proof (translation)
+Rewrite using `[integral_indicator_const c (isOpen_coset ho a).measurableSet, measureReal_def, measureReal_def, measure_coset]`. Simplify using the standard rewrite rules.
+-/
 theorem integral_coset {V : Subgroup Fˣ} (ho : IsOpen (V : Set Fˣ)) (a : Fˣ) (c : ℂ) :
     ∫ u, (coset (V : Set Fˣ) a).indicator (fun _ => c) u ∂multHaar F =
       ((multHaar F).real (V : Set Fˣ) : ℂ) * c := by
@@ -92,6 +128,17 @@ theorem integral_coset {V : Subgroup Fˣ} (ho : IsOpen (V : Set Fˣ)) (a : Fˣ) 
     measureReal_def, measure_coset]
   simp
 
+/- English proof (translation)
+Establish `hm0 : ((modulus (t : F) : ℝ) : ℂ) ≠ 0`. Conclude with `(modulus_ne_zero t.ne_zero)` after adjusting the coercions. Establish `hcc : ((modulus (t : F) : ℝ) : ℂ) ^ (-(1 / 2) : ℂ) * ((modulus (t : F) : ℝ) : ℂ) ^ (1 / 2 : ℂ) = 1`. Rewrite using `[← Complex.cpow_add _ _ hm0, neg_add_cancel, Complex.cpow_zero]`. Use `set c := ((modulus (t : F) : ℝ) : ℂ) ^ (-(1 / 2) : ℂ) with hc_def`.
+
+Establish `e : ∀ u : Fˣ, (ind (V : Set Fˣ) 1 u - c * ind (V : Set Fˣ) t u) * ((χ u : ℂˣ) : ℂ) * ((modulus (u : F) : ℝ) : ℂ) ^ (1 / 2 : ℂ) = (coset (V : Set Fˣ) 1).indicator (fun _ => (1 : ℂ)) u - (coset (V : Set Fˣ) t).indicator (fun _ => ((χ t : ℂˣ) : ℂ)) u`. Introduce `u`. Establish `h1` using `integrand_ind hV0 hVχ 1 (1 / 2) u`. Establish `h2` using `integrand_ind hV0 hVχ t (1 / 2) u`. Establish `e1 : (fun _ : Fˣ => (((χ 1 : ℂˣ) : ℂ)) * ((modulus ((1 : Fˣ) : F) : ℝ) : ℂ) ^ (1 / 2 : ℂ)) = fun _ => (1 : ℂ)`.
+
+Use function extensionality and compare the values at `_`. Simplify using the standard rewrite rules. Rewrite `h1` using `[e1]`. Establish `e2 : c * (coset (V : Set Fˣ) t).indicator (fun _ => ((χ t : ℂˣ) : ℂ) * ((modulus (t : F) : ℝ) : ℂ) ^ (1 / 2 : ℂ)) u = (coset (V : Set Fˣ) t).indicator (fun _ => ((χ t : ℂˣ) : ℂ)) u`. Distinguish the cases in `hu : u ∈ coset (V : Set Fˣ) t`.
+
+Rewrite using `[Set.indicator_of_mem hu, Set.indicator_of_mem hu, mul_left_comm, hcc, mul_one]`. Rewrite using `[Set.indicator_of_notMem hu, Set.indicator_of_notMem hu, mul_zero]`. Rewrite using `[← e2, ← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[localZeta]`.
+
+Simplify using `only [e]`. Rewrite using `[integral_sub (integrable_coset ho hc 1 1) (integrable_coset ho hc t _), integral_coset ho 1, integral_coset ho t]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zeta_test {V : Subgroup Fˣ} (ho : IsOpen (V : Set Fˣ)) (hc : IsCompact (V : Set Fˣ))
     (hV0 : V ≤ unitFiltrationUnits F 0) {χ : Fˣ →* ℂˣ} (hVχ : V ≤ χ.ker) (t : Fˣ) :
     localZeta (fun x => ind (V : Set Fˣ) 1 x -
@@ -133,6 +180,15 @@ end GlobalTheory.CompanionTheory.GaussLam.TestFn
 
 open GlobalTheory.CompanionTheory.GaussLam.TestFn in
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ η hη t ht`. Take `⟨n, hn⟩` from `exists_unitFiltrationUnits_le_ker hη`. Establish `ho` using `isOpen_unitFiltrationUnits (K := F) n`. Establish `hc` using `isCompact_unitFiltrationUnits (K := F) n`. Establish `hV0 : unitFiltrationUnits F n ≤ unitFiltrationUnits F 0` using `unitFiltrationUnits_antitone (Nat.zero_le n)`.
+
+Establish `hvol : (multHaar F).real (unitFiltrationUnits F n : Set Fˣ) ≠ 0`. Rewrite using `[measureReal_def]`. Use `ENNReal.toReal_ne_zero.mpr ⟨?_, hc.measure_lt_top.ne⟩` and prove the remaining obligations. Conclude with `(ho.measure_pos _ ⟨1, one_mem _⟩).ne'`. Use `⟨_, ?_, ?_, (zeta_test ho hc hV0 (χ := 1) (fun _ _ => rfl) t).trans ?_, (zeta_test ho hc hV0 hn t).trans_ne ?_⟩` and prove the remaining obligations.
+
+Conclude with `Submodule.sub_mem _ (ind_mem ho hc 1) (Submodule.smul_mem _ (((modulus (t : F) : ℝ) : ℂ) ^ (-(1 / 2) : ℂ)) (ind_mem ho hc t))`. Simplify using `[ind_zero]`. Simplify using the standard rewrite rules. Rewrite using `[ht]`. Establish `: ((multHaar F).real (unitFiltrationUnits F n : Set Fˣ) : ℂ) ≠ 0`.
+
+Conclude with `hvol` after adjusting the coercions. Simplify using `only [Units.val_neg, Units.val_one, sub_neg_eq_add]`. Conclude with `mul_ne_zero this (by norm_num)`.
+-/
 theorem GlobalTheory.CompanionTheory.GaussLam.TestFn.exists_test : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (η : Fˣ →* ℂˣ), Continuous η → ∀ t : Fˣ, η t = -1 → ∃ g : F → ℂ, g ∈ schwartzBruhat F ∧ g 0 = 0 ∧ localZeta g 1 (1 / 2) = 0 ∧ localZeta g η (1 / 2) ≠ 0 := by
   intro F _ _ _ _ _ _ η hη t ht
   obtain ⟨n, hn⟩ := exists_unitFiltrationUnits_le_ker hη

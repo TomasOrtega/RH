@@ -12,6 +12,15 @@ open GlobalTheory.HSApp
 
 namespace GlobalTheory.Vanishing.ProdNe
 
+/- English proof (translation)
+Establish `hi0 : f.loc i = 0`. Apply `germ_injective_of_isIntegral Y y (memInf (U := ⊤) trivial hi)` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h0`. Use `H0.ext_germ fun z hz => ?_` and prove the remaining obligations.
+
+Take `⟨j, hj⟩` from `hc z`. Use `⟨j, hj, ?_⟩` and prove the remaining obligations. Establish `hj0 : f.loc j = 0`. Take `⟨w, hwi, hwj⟩` from `nonempty_preirreducible_inter (B.U i).isOpen (B.U j).isOpen ⟨y, hi⟩ ⟨z, hj⟩`. Apply `germ_injective_of_isIntegral Y w (memInf (U := ⊤) trivial hwj)` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Establish `e` using `H0.germ_change (O := ⊤) i j w (show w ∈ (⊤ : Y.Opens) from trivial) hwi hwj f`. Establish `e2 : H0.germ (O` using `⊤) i w (show w ∈ (⊤ : Y.Opens) from trivial) hwi f = 0 := by`. Rewrite using `[H0.germ_apply, hi0, map_zero]`. Rewrite `e` using `[e2]`.
+
+Break down `mul_eq_zero.mp e.symm with h | h` into its components or cases. Conclude with `absurd h (Units.ne_zero _)`. Conclude with `h`. Rewrite using `[H0.germ_apply, hj0, map_zero, map_zero]`.
+-/
 theorem eq_zero_of_germ_eq_zero {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y]
     {p : Y ⟶ Sp k} {B : LB Y} (hc : ∀ z : Y, ∃ j, z ∈ B.U j) (f : H0 p B ⊤) (y : Y) (i : B.ι)
     (hi : y ∈ B.U i) (h0 : H0.germ i y (show y ∈ (⊤ : Y.Opens) from trivial) hi f = 0) : f = 0 := by
@@ -36,6 +45,11 @@ theorem eq_zero_of_germ_eq_zero {k : Type} [CommRing k] {Y : Scheme.{0}} [IsInte
     · exact h
   rw [H0.germ_apply, hj0, map_zero, map_zero]
 
+/- English proof (translation)
+Introduce `k _ Y _ p P B N C σ f hσ hf hmul`. Take `⟨y⟩` from `(inferInstance : Nonempty Y)`. Take `⟨t, ha, hb, hc⟩` from `C.cover y`. Establish `e` using `C.germ_mul σ f t y trivial ha hb hc`. Rewrite `e` using `[hmul, map_zero]`.
+
+Break down `mul_eq_zero.mp e.symm with h | h` into its components or cases. Conclude with `hσ (eq_zero_of_germ_eq_zero (fun z => let ⟨t, h⟩ := C.cover z; ⟨C.a t, h.1⟩) σ y _ ha h)`. Conclude with `hf (eq_zero_of_germ_eq_zero (fun z => let ⟨t, h⟩ := C.cover z; ⟨C.b t, h.2.1⟩) f y _ hb h)`.
+-/
 theorem mul_ne_zero : ∀ {k : Type} [Field k] {Y : Scheme.{0}} [IsIntegral Y] {p : Y ⟶ Sp k} {P B N : LB Y} (C : ProdChart P B N) (σ : H0 p P ⊤) (f : H0 p B ⊤), σ ≠ 0 → f ≠ 0 → C.mul σ f ≠ 0 := by
   intro k _ Y _ p P B N C σ f hσ hf hmul
   obtain ⟨y⟩ := (inferInstance : Nonempty Y)

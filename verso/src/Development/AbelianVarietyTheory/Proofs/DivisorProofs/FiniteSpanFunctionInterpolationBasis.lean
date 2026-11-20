@@ -4,6 +4,25 @@ namespace GlobalTheory
 
 open Module
 
+/- English proof (translation)
+Use `set V := Submodule.span ℂ (Set.range g) with hV`. Use `haveI : FiniteDimensional ℂ V := FiniteDimensional.span_of_finite ℂ (Set.finite_range g)`. Set `ev : Y → Module.Dual ℂ V` to `fun y => (LinearMap.proj y).comp V.subtype`. Establish `hev : ∀ y (v : V), ev y v = (v : Y → ℂ) y` using `fun _ _ => rfl`. Establish `hE : Submodule.span ℂ (Set.range ev) = ⊤`.
+
+Establish `hco : (Submodule.span ℂ (Set.range ev)).dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Rewrite `hv` using `[Submodule.mem_dualCoannihilator]`. Rewrite using `[Submodule.mem_bot]`.
+
+Use extensionality with `y`. Use `hv (ev y) (Submodule.subset_span ⟨y, rfl⟩)` as an intermediate fact. Simplify `this` using `[hev]`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := Submodule.span ℂ (Set.range ev)), hco, Submodule.dualAnnihilator_bot]`. Take `⟨f, hf, hfspan, -⟩` from `Submodule.exists_fun_fin_finrank_span_eq ℂ (Set.range ev)`.
+
+Use `choose c hc using hf`. Set `Φ : V →ₗ[ℂ] (Fin (finrank ℂ (Submodule.span ℂ (Set.range ev))) → ℂ)` to `LinearMap.pi (fun i => ev (c i))`. Establish `hker : LinearMap.ker Φ = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`.
+
+Rewrite `hv` using `[LinearMap.mem_ker]`. Rewrite using `[Submodule.mem_bot]`. Establish `hle : Submodule.span ℂ (Set.range f) ≤ LinearMap.ker (Module.Dual.eval ℂ V v)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Use `congrFun hv i` as an intermediate fact. Simplify using `only [Φ, LinearMap.pi_apply, Pi.zero_apply] at this`. Rewrite using `[← hc i]`. Simplify using `using this`. Rewrite `hle` using `[hfspan, hE]`.
+
+Conclude with `(Module.forall_dual_apply_eq_zero_iff ℂ v).1 fun φ => by`. Simplify using `using hle (Submodule.mem_top (x := φ))`. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective Φ hker`. Use `⟨_, fun j => ((L (Pi.single j 1) : V) : Y → ℂ), c, fun j => (L (Pi.single j 1)).2, ?_⟩` and prove the remaining obligations. Introduce `φ hφ y`.
+
+Establish `h1 : (⟨φ, hφ⟩ : V) = L (Φ ⟨φ, hφ⟩)`. Rewrite using `[← LinearMap.comp_apply, hL, LinearMap.id_apply]`. Establish `h2 : Φ ⟨φ, hφ⟩ = ∑ j, φ (c j) • (Pi.single j 1 : Fin (finrank ℂ (Submodule.span ℂ (Set.range ev))) → ℂ)`. Use extensionality with `i`. Simplify using `[Φ, hev, Finset.sum_apply, Pi.single_apply]`.
+
+Establish `h3` using `congrArg (fun w : V => (w : Y → ℂ) y) h1`. Simplify using `only at h3`. Rewrite using `[h3, h2, map_sum]`. Simplify using `[Finset.sum_apply, map_smul]`.
+-/
 theorem exists_interpolation_basis (Y : Type) (r : ℕ) (g : Fin r → Y → ℂ) :
     ∃ (r' : ℕ) (g' : Fin r' → Y → ℂ) (c : Fin r' → Y),
     (∀ j, g' j ∈ Submodule.span ℂ (Set.range g)) ∧

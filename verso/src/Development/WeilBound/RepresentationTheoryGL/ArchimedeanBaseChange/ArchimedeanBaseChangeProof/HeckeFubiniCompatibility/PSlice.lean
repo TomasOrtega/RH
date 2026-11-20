@@ -77,10 +77,18 @@ def eqA (v : InfinitePlace E) :
     (MeasurableEquiv.prodAssoc.trans ((MeasurableEquiv.funUnique {w : InfinitePlace E // w = v} (G a)).prodCongr
       (MeasurableEquiv.refl _)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eqA_symm_apply (v : InfinitePlace E) (q : G a × RA E a b v) :
     (eqA (b := b) v).symm q = (fun w => if h : w = v then q.1 else q.2.1 ⟨w, h⟩, q.2.2) := by
   rfl
 
+/- English proof (translation)
+Rewrite using `[eqA_symm_apply, ιA, σA, ← map_mul]`. Use `congr 1`. Use `Prod.ext (funext fun w => ?_) (by simp)` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Pi.mulSingle_eq_of_ne h]`.
+-/
 theorem splitH_eqA_symm (v : InfinitePlace E) (q : G a × RA E a b v) :
     splitH a b ((eqA v).symm q) = ιA v q.1 * σA v q.2 := by
   rw [eqA_symm_apply, ιA, σA, ← map_mul]
@@ -90,6 +98,9 @@ theorem splitH_eqA_symm (v : InfinitePlace E) (q : G a × RA E a b v) :
   · subst h; simp
   · simp [h, Pi.mulSingle_eq_of_ne h]
 
+/- English proof (translation)
+Establish `h1` using `(measurePreserving_piEquivPiSubtypeProd (fun _ : InfinitePlace E => μa) (fun w => w = v)).prod (MeasurePreserving.id ((Measure.pi fun _ : InfinitePlace E => μb).prod ν))`. Establish `h2` using `measurePreserving_prodAssoc (Measure.pi fun _ : {w : InfinitePlace E // w = v} => μa) (Measure.pi fun _ : {w : InfinitePlace E // ¬ w = v} => μa) ((Measure.pi fun _ : InfinitePlace E => μb).prod ν)`. Establish `h3` using `(measurePreserving_funUnique μa {w : InfinitePlace E // w = v}).prod (MeasurePreserving.id ((Measure.pi fun _ : {w : InfinitePlace E // ¬ w = v} => μa).prod ((Measure.pi fun _ : InfinitePlace E => μb).prod ν)))`. Conclude with `h3.comp (h2.comp (by convert h1; rfl))`.
+-/
 theorem measurePreserving_eqA (μa : Measure (G a)) [SigmaFinite μa] (μb : Measure (G b)) [SigmaFinite μb]
     (ν : Measure (Hf E a b)) [SigmaFinite ν] (v : InfinitePlace E) :
     MeasurePreserving (eqA (b := b) v) ((Measure.pi fun _ => μa).prod ((Measure.pi fun _ => μb).prod ν))
@@ -103,6 +114,21 @@ theorem measurePreserving_eqA (μa : Measure (G a)) [SigmaFinite μa] (μb : Mea
       ((Measure.pi fun _ : InfinitePlace E => μb).prod ν)))
   exact h3.comp (h2.comp (by convert h1; rfl))
 
+/- English proof (translation)
+Use `haveI : SigmaFinite μa := inferInstance`. Use `haveI : SigmaFinite μb := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : SigmaFinite (Measure.pi fun _ : InfinitePlace E => μa) := inferInstance`. Use `haveI : SigmaFinite (Measure.pi fun _ : InfinitePlace E => μb) := inferInstance`.
+
+Use `haveI : SigmaFinite (Measure.pi fun _ : {w : InfinitePlace E // w ≠ v} => μa) := inferInstance`. Use `haveI : SigmaFinite ((Measure.pi fun _ : InfinitePlace E => μb).prod ν) := inferInstance`. Use `haveI : SigmaFinite (restA μa μb ν v) := by unfold restA; infer_instance`. Use `haveI : IsFiniteMeasureOnCompacts (Measure.pi fun _ : InfinitePlace E => μa) := inferInstance`. Use `haveI : IsFiniteMeasureOnCompacts (Measure.pi fun _ : InfinitePlace E => μb) := inferInstance`.
+
+Use `haveI : IsFiniteMeasureOnCompacts ((Measure.pi fun _ : InfinitePlace E => μb).prod ν) := inferInstance`. Use `set M := (Measure.pi fun _ : InfinitePlace E => μa).prod ((Measure.pi fun _ : InfinitePlace E => μb).prod ν) with hM`. Use `haveI : IsFiniteMeasureOnCompacts M := by rw [hM]; infer_instance`. Establish `hmp` using `measurePreserving_eqA (b := b) μa μb ν v`. Establish `hQ' : Continuous (fun z => Q (splitH a b z))` using `hQ.comp (splitH a b).continuous`.
+
+Establish `hQs' : HasCompactSupport (fun z => Q (splitH a b z))` using `hQs.comp_homeomorph (splitH a b).toHomeomorph`. Establish `hI : Integrable (fun z => Q (splitH a b z)) M` using `hQ'.integrable_of_hasCompactSupport hQs'`. Establish `hcomp : (fun z => Q (splitH a b z)) ∘ (eqA (b` using `b) v).symm = fun q => Q (ιA v q.1 * σA v q.2) := by`. Use function extensionality and compare the values at `q`. Simplify using `only [Function.comp_apply, splitH_eqA_symm]`.
+
+Establish `hI2 : Integrable (fun q : G a × RA E a b v => Q (ιA v q.1 * σA v q.2)) (μa.prod (restA μa μb ν v))`. Rewrite using `[← hcomp]`. Conclude with `((hmp.symm _).integrable_comp_emb (eqA v).symm.measurableEmbedding).2 hI`. Use `⟨hI2, ?_⟩` and prove the remaining obligations. Establish `e1 : ∫ z, Q (splitH a b z) ∂M = ∫ ya, ∫ yb, ∫ h, Q (splitH a b (ya, (yb, h))) ∂ν ∂(Measure.pi fun _ => μb) ∂(Measure.pi fun _ => μa)`.
+
+Rewrite using `[integral_prod _ hI]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hI.prod_right_ae] with ya hya`. Conclude with `integral_prod _ hya`. Establish `e2 : ∫ z, Q (splitH a b z) ∂M = ∫ q, Q (ιA v q.1 * σA v q.2) ∂(μa.prod (restA μa μb ν v))`.
+
+Rewrite using `[← (hmp.symm _).integral_comp' (g := fun z => Q (splitH a b z))]`. Simplify using `only [splitH_eqA_symm]`. Rewrite using `[← integral_prod _ hI2, ← e2, e1]`. Conclude with `hF E a b D μa μb ν hC Q hQ hQs`.
+-/
 theorem integral_split (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : InfinitePlace E)
     (Q : H E a b → ℂ) (hQ : Continuous Q) (hQs : HasCompactSupport Q) :
     Integrable (fun q : G a × RA E a b v => Q (ιA v q.1 * σA v q.2)) (μa.prod (restA μa μb ν v)) ∧
@@ -143,6 +169,11 @@ theorem integral_split (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb �
   rw [← integral_prod _ hI2, ← e2, e1]
   exact hF E a b D μa μb ν hC Q hQ hQs
 
+/- English proof (translation)
+Rewrite using `[← splitH_eqA_symm v (t, r), eqA_symm_apply]`. Simplify using `only [tens, entA, gInf_splitH₁, gInf_splitH₂, hFin_splitH, cA]`. Rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ v]`. Establish `e : ∀ w : {w : InfinitePlace E // w ≠ v}, (if h : (w : InfinitePlace E) = v then t else r.1 ⟨w, h⟩) = r.1 w` using `fun w => by rw [dif_neg w.2]`. Simplify using `only [dif_pos, e]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_ισ (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (i j : Io Ma Mb κ)
     (t : G a) (r : RA E a b v) :
     tens ka kb ψ i j (ιA v t * σA v r) = ent (Ma v) (ka v t.val) (i.1.1 v) (j.1.1 v) * cA v ka kb ψ i j r := by
@@ -154,6 +185,17 @@ theorem tens_ισ (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matr
   simp only [dif_pos, e]
   ring
 
+/- English proof (translation)
+Use `haveI : SigmaFinite μa := inferInstance`. Use `haveI : SigmaFinite μb := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : SigmaFinite (restA μa μb ν v) := by unfold restA; infer_instance`. Establish `hQ : ∀ j, Continuous (fun g => tens ka kb ψ i j g * f j (p * g)) ∧ HasCompactSupport (fun g => tens ka kb ψ i j g * f j (p * g))` using `fun j => ⟨(hT i j).1.mul ((hf j).comp (continuous_const.mul continuous_id)), (hT i j).2.mul_right⟩`.
+
+Establish `hs` using `fun j => integral_split hF D hC v _ (hQ j).1 (hQ j).2`. Establish `hpt : ∀ j t, ∫ r, tens ka kb ψ i j (ιA v t * σA v r) * f j (p * (ιA v t * σA v r)) ∂restA μa μb ν v = ent (Ma v) (ka v t.val) (i.1.1 v) (j.1.1 v) * ∫ r, cA v ka kb ψ i j r * f j (p * ιA v t * σA v r) ∂restA μa μb ν v`. Introduce `j t`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun r => ?_)` and prove the remaining obligations.
+
+Simplify using `only [tens_ισ, mul_assoc]`. Establish `hsplit : ∀ j, ∫ g, tens ka kb ψ i j g * f j (p * g) ∂D.μ = ∫ t, ent (Ma v) (ka v t.val) (i.1.1 v) (j.1.1 v) * ∫ r, cA v ka kb ψ i j r * f j (p * ιA v t * σA v r) ∂restA μa μb ν v ∂μa` using `fun j => (hs j).2.trans (integral_congr_ae (ae_of_all _ fun t => hpt j t))`. Establish `hint : ∀ j, Integrable (fun t => ent (Ma v) (ka v t.val) (i.1.1 v) (j.1.1 v) * ∫ r, cA v ka kb ψ i j r * f j (p * ιA v t * σA v r) ∂restA μa μb ν v) μa` using `fun j => ((hs j).1.integral_prod_left).congr (ae_of_all _ fun t => hpt j t)`. Use `show ∑ j, ∫ g, tens ka kb ψ i j g * f j (p * g) ∂D.μ = _`. Rewrite using `[Finset.sum_congr rfl fun j _ => hsplit j, ← integral_finset_sum _ fun j _ => hint j]`.
+
+Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Simplify using `only [Rv, map_sum, map_smul, inner_sum, inner_smul_right]`. Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun j : Io Ma Mb κ => j.1.1 v)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hj).2]`. Simplify using `only [ent, eb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conv_slice (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : InfinitePlace E) (ka : Kers Ma)
     (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (f : Io Ma Mb κ → H E a b → ℂ) (hT : IsTestM (tens ka kb ψ))
     (hf : ∀ i, Continuous (f i)) (i : Io Ma Mb κ) (p : H E a b) :
@@ -192,6 +234,11 @@ theorem conv_slice (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (
   simp only [ent, eb]
   ring
 
+/- English proof (translation)
+Use `set U : GL (Fin a) (Cinf E) := Units.map (Matrix.piRingEquiv (n := Fin a) (β := fun _ : InfinitePlace E => ℂ)).symm.toMonoidHom (MulEquiv.piUnits.symm (Pi.mulSingle v (GeneralLinearGroup.mkOfDetNeZero x hx))) with hU`. Establish `e : atW v x = toL U.val`. Use function extensionality and compare the values at `i j w`. Distinguish the cases in `h : w = v`. Apply the tactic sequence `subst h; (simp [atW, hU, toL]) <;> rfl`.
+
+Simplify using `[atW, hU, toL, h, Pi.mulSingle_eq_of_ne h]`. Establish `e2 : (y, m₂) * ιA (b` using `b) v (GeneralLinearGroup.mkOfDetNeZero x hx) = (y * infGL E a U, m₂) := by`. Simplify using `[ιA, splitH_apply, infP, hU]`. Rewrite using `[along, e, chart_val, e2]`.
+-/
 theorem along_eq (v : InfinitePlace E) (y : GA E a) (m₂ : GA E b) (φ : H E a b → ℂ) {x : Mat a} (hx : x ∈ GLs a) :
     along v y (fun z => φ (z, m₂)) x = φ ((y, m₂) * ιA v (GeneralLinearGroup.mkOfDetNeZero x hx)) := by
   set U : GL (Fin a) (Cinf E) := Units.map (Matrix.piRingEquiv (n := Fin a) (β := fun _ : InfinitePlace E => ℂ)).symm.toMonoidHom
@@ -206,6 +253,11 @@ theorem along_eq (v : InfinitePlace E) (y : GA E a) (m₂ : GA E b) (φ : H E a 
   rw [along, e, chart_val, e2]
 
 omit [BorelSpace (G a)] [BorelSpace (G b)] [BorelSpace (Hf E a b)] in
+/- English proof (translation)
+Establish `h1 : Continuous fun t : G a => (Pi.mulSingle v t : InfinitePlace E → G a)`. Use `continuous_pi fun w => ?_` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `only [Pi.mulSingle_eq_same]`.
+
+Conclude with `continuous_id`. Simplify `continuous_const` using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `(splitH a b).continuous.comp (h1.prodMk continuous_const)`.
+-/
 theorem continuous_ιA (v : InfinitePlace E) : Continuous (ιA (a := a) (b := b) v) := by
   have h1 : Continuous fun t : G a => (Pi.mulSingle v t : InfinitePlace E → G a) := by
     refine continuous_pi fun w => ?_
@@ -215,17 +267,34 @@ theorem continuous_ιA (v : InfinitePlace E) : Continuous (ιA (a := a) (b := b)
   exact (splitH a b).continuous.comp (h1.prodMk continuous_const)
 
 omit [BorelSpace (G a)] [BorelSpace (G b)] [BorelSpace (Hf E a b)] in
+/- English proof (translation)
+Use `(splitH a b).continuous.comp (Continuous.prodMk (continuous_pi fun w => ?_) continuous_snd)` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Simplify using `only [h, dif_pos]`. Conclude with `continuous_const`. Simplify using `only [h, dif_neg, not_false_eq_true]`.
+
+Conclude with `(continuous_apply _).comp continuous_fst`.
+-/
 theorem continuous_σA (v : InfinitePlace E) : Continuous (σA (a := a) (b := b) v) := by
   refine (splitH a b).continuous.comp (Continuous.prodMk (continuous_pi fun w => ?_) continuous_snd)
   by_cases h : w = v
   · simp only [h, dif_pos]; exact continuous_const
   · simp only [h, dif_neg, not_false_eq_true]; exact (continuous_apply _).comp continuous_fst
 
+/- English proof (translation)
+Rewrite using `[ιA, ιA, ιA, ← map_mul, Pi.mulSingle_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem ιA_mul (v : InfinitePlace E) (s t : G a) : ιA (b := b) v (s * t) = ιA v s * ιA v t := by
   rw [ιA, ιA, ιA, ← map_mul, Pi.mulSingle_mul]
   simp
 
 omit [BorelSpace (G a)] [BorelSpace (G b)] [BorelSpace (Hf E a b)] in
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `((continuous_finset_prod _ fun w _ => ?_).mul (continuous_finset_prod _ fun w _ => ?_)).mul ((hψ i.2 j.2).1.comp (continuous_snd.comp continuous_snd))` and prove the remaining obligations. Conclude with `continuous_ent ((hka w).1.comp ((continuous_apply w).comp continuous_fst)) _ _`. Conclude with `continuous_ent ((hkb w).1.comp ((continuous_apply w).comp (continuous_fst.comp continuous_snd))) _ _`. Establish `hK : IsCompact ((Set.univ.pi fun w : {w : InfinitePlace E // w ≠ v} => tsupport (fun t : G a => ka w t.val)) ×ˢ ((Set.univ.pi fun w : InfinitePlace E => tsupport (fun t : G b => kb w t.val)) ×ˢ tsupport (ψ i.2 j.2)))` using `(isCompact_univ_pi fun w : {w : InfinitePlace E // w ≠ v} => (hka w.1).2).prod ((isCompact_univ_pi fun w => (hkb w).2).prod (hψ i.2 j.2).2)`.
+
+Use `HasCompactSupport.intro hK fun r hr => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hr` to reduce the goal to its premises. Establish `h1` using `left_ne_zero_of_mul (left_ne_zero_of_mul hne)`. Establish `h2` using `right_ne_zero_of_mul (left_ne_zero_of_mul hne)`.
+
+Establish `h3` using `right_ne_zero_of_mul hne`. Use `⟨fun w _ => ?_, fun w _ => ?_, subset_tsupport _ h3⟩` and prove the remaining obligations. Establish `h` using `Finset.prod_ne_zero_iff.1 h1 w (Finset.mem_univ _)`. Use `subset_tsupport _ (show ka w (r.1 w).val ≠ 0 from fun h0 => h ?_)` and prove the remaining obligations. Rewrite using `[h0, ent_zero]`.
+
+Establish `h` using `Finset.prod_ne_zero_iff.1 h2 w (Finset.mem_univ _)`. Use `subset_tsupport _ (show kb w (r.2.1 w).val ≠ 0 from fun h0 => h ?_)` and prove the remaining obligations. Rewrite using `[h0, ent_zero]`.
+-/
 theorem cA_props (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {ψ : Matrix κ κ (Hf E a b → ℂ)}
     (hka : ∀ w, Continuous (fun t : G a => ka w t.val) ∧ HasCompactSupport (fun t : G a => ka w t.val))
     (hkb : ∀ w, Continuous (fun t : G b => kb w t.val) ∧ HasCompactSupport (fun t : G b => kb w t.val))
@@ -254,6 +323,13 @@ theorem cA_props (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {ψ : Matri
       refine subset_tsupport _ (show kb w (r.2.1 w).val ≠ 0 from fun h0 => h ?_)
       rw [h0, ent_zero]
 
+/- English proof (translation)
+Use `haveI : SigmaFinite μa := inferInstance`. Use `haveI : SigmaFinite μb := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : IsLocallyFiniteMeasure (restA μa μb ν v) := by unfold restA; infer_instance`. Establish `hcont : ∀ j, Continuous (fun z : X => ∫ r, cA v ka kb ψ i j r * f j (φ z * σA v r) ∂restA μa μb ν v)`.
+
+Introduce `j`. Take `⟨hc, hcs⟩` from `cA_props v hka hkb hψ i j`. Establish `e : (fun z : X => ∫ r, cA v ka kb ψ i j r * f j (φ z * σA v r) ∂restA μa μb ν v) = fun z => ∫ r in tsupport (cA v ka kb ψ i j), cA v ka kb ψ i j r * f j (φ z * σA v r) ∂restA μa μb ν v`. Use function extensionality and compare the values at `fun z => (setIntegral_eq_integral_of_forall_compl_eq_zero fun r hr => by`. Rewrite using `[image_eq_zero_of_notMem_tsupport hr, zero_mul]).symm`.
+
+Rewrite using `[e]`. Use `continuous_parametric_integral_of_continuous (f := fun z r => cA v ka kb ψ i j r * f j (φ z * σA v r)) ?_ hcs` and prove the remaining obligations. Conclude with `(hc.comp continuous_snd).mul ((hf j).comp ((hφ.comp continuous_fst).mul ((continuous_σA v).comp continuous_snd)))`. Simplify using `only [Rv]`. Conclude with `continuous_finset_sum _ fun q _ => (continuous_finset_sum _ fun j _ => hcont j).smul continuous_const`.
+-/
 theorem continuous_Rv_comp (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {ψ : Matrix κ κ (Hf E a b → ℂ)}
     {f : Io Ma Mb κ → H E a b → ℂ} (hf : ∀ i, Continuous (f i))
     (hka : ∀ w, Continuous (fun t : G a => ka w t.val) ∧ HasCompactSupport (fun t : G a => ka w t.val))
@@ -281,6 +357,9 @@ theorem continuous_Rv_comp (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {
   simp only [Rv]
   exact continuous_finset_sum _ fun q _ => (continuous_finset_sum _ fun j _ => hcont j).smul continuous_const
 
+/- English proof (translation)
+The claim follows from `continuous_Rv_comp (μa := μa) (μb := μb) (ν := ν) v hf hka hkb hψ i (continuous_const.mul (continuous_ιA v))`.
+-/
 theorem continuous_Rv (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {ψ : Matrix κ κ (Hf E a b → ℂ)}
     {f : Io Ma Mb κ → H E a b → ℂ} (hf : ∀ i, Continuous (f i))
     (hka : ∀ w, Continuous (fun t : G a => ka w t.val) ∧ HasCompactSupport (fun t : G a => ka w t.val))
@@ -290,6 +369,15 @@ theorem continuous_Rv (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {ψ : 
   continuous_Rv_comp (μa := μa) (μb := μb) (ν := ν) v hf hka hkb hψ i
     (continuous_const.mul (continuous_ιA v))
 
+/- English proof (translation)
+Rewrite using `[along_eq v y m₂ (fun p => conv D.μ (tens ka kb ψ) f i p) hx, conv_slice hF D hC v ka kb ψ f hT hf i]`. Use `set p0 := (y, m₂) * ιA (b := b) v (GeneralLinearGroup.mkOfDetNeZero x hx) with hp0`. Establish `hFA : ∀ t : G a, FA v μa μb ν ka kb ψ f i y m₂ (x * t.val) = Rv v μa μb ν ka kb ψ f i (p0 * ιA v t)`. Introduce `t`. Establish `hxt : x * t.val ∈ GLs a` using `GlobalTheory.CompanionTheory.WaveAll.mul_mem_GLs hx (val_mem_GLs t)`.
+
+Establish `hm : GeneralLinearGroup.mkOfDetNeZero (x * t.val) hxt = GeneralLinearGroup.mkOfDetNeZero x hx * t` using `Units.ext rfl`. Simplify using `only [FA, dif_pos hxt, hm, ιA_mul, hp0, mul_assoc]`. Establish `hc : Continuous fun t : G a => ka v t.val (FA v μa μb ν ka kb ψ f i y m₂ (x * t.val))`. Simplify using `only [hFA]`. Conclude with `(hka v).1.clm_apply (continuous_Rv v hf hka hkb hψ i p0)`.
+
+Establish `hcs : HasCompactSupport fun t : G a => ka v t.val (FA v μa μb ν ka kb ψ f i y m₂ (x * t.val))` using `HasCompactSupport.intro (hka v).2 fun t ht => by`. Rewrite using `[image_eq_zero_of_notMem_tsupport ht, ContinuousLinearMap.zero_apply]`. Use `show _ = ⟪eb Ma v (i.1.1 v), ∫ t : G a, ka v t.val (FA v μa μb ν ka kb ψ f i y m₂ (x * t.val)) ∂μa⟫_ℂ`. Rewrite using `[← integral_inner (hc.integrable_of_hasCompactSupport hcs)]`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hFA]`.
+-/
 theorem along_conv (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : InfinitePlace E) (ka : Kers Ma)
     (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (f : Io Ma Mb κ → H E a b → ℂ) (hT : IsTestM (tens ka kb ψ))
     (hf : ∀ i, Continuous (f i))
@@ -317,6 +405,11 @@ theorem along_conv (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (
   refine integral_congr_ae (ae_of_all _ fun t => ?_)
   simp only [hFA]
 
+/- English proof (translation)
+Establish `e : ∀ j r, cA v ka kb ψ ((Function.update i.1.1 v q, i.1.2), i.2) j r = cA v ka kb ψ i j r`. Introduce `j r`. Simplify using `only [cA]`. Use `congr 2`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Function.update_of_ne w.2]`. Simplify using `only [Rv, e]`.
+-/
 theorem Rv_update (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ))
     (f : Io Ma Mb κ → H E a b → ℂ) (i : Io Ma Mb κ) (q : Ix (Ma v)) (p : H E a b) :
     Rv v μa μb ν ka kb ψ f ((Function.update i.1.1 v q, i.1.2), i.2) p = Rv v μa μb ν ka kb ψ f i p := by
@@ -328,6 +421,11 @@ theorem Rv_update (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matr
     rw [Function.update_of_ne w.2]
   simp only [Rv, e]
 
+/- English proof (translation)
+Establish `e : ∀ j r, cA v ka' kb ψ i j r = cA v ka kb ψ i j r`. Introduce `j r`. Simplify using `only [cA]`. Use `congr 2`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[h w w.2]`. Simplify using `only [Rv, e]`.
+-/
 theorem Rv_congr (v : InfinitePlace E) {ka ka' : Kers Ma} (h : ∀ w, w ≠ v → ka' w = ka w) (kb : Kers Mb)
     (ψ : Matrix κ κ (Hf E a b → ℂ)) (f : Io Ma Mb κ → H E a b → ℂ) (i : Io Ma Mb κ) (p : H E a b) :
     Rv v μa μb ν ka' kb ψ f i p = Rv v μa μb ν ka kb ψ f i p := by
@@ -339,6 +437,15 @@ theorem Rv_congr (v : InfinitePlace E) {ka ka' : Kers Ma} (h : ∀ w, w ≠ v �
     rw [h w w.2]
   simp only [Rv, e]
 
+/- English proof (translation)
+Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `hinv : ContinuousOn (fun x : Mat a => x⁻¹) (GLs a)`. Establish `e : (fun x : Mat a => x⁻¹) = fun x => (x.det)⁻¹ • x.adjugate`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
+
+Rewrite using `[e]`. Conclude with `((continuous_id.matrix_det).continuousOn.inv₀ fun x hx => hx).smul (continuous_id.matrix_adjugate).continuousOn`. Establish `hm : Continuous fun x : GLs a => GeneralLinearGroup.mkOfDetNeZero x.1 x.2`. Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Establish `e : (fun x : GLs a => ((GeneralLinearGroup.mkOfDetNeZero x.1 x.2)⁻¹ : G a).val) = fun x => x.1⁻¹`.
+
+Use function extensionality and compare the values at `fun x => Matrix.coe_units_inv _`. Rewrite using `[e]`. Conclude with `hinv.comp_continuous continuous_subtype_val fun x => x.2`. Use `show Continuous (fun x : GLs a => FA v μa μb ν ka kb ψ f i y m₂ x.1)`. Establish `e : (fun x : GLs a => FA v μa μb ν ka kb ψ f i y m₂ x.1) = fun x : GLs a => Rv v μa μb ν ka kb ψ f i ((y, m₂) * ιA v (GeneralLinearGroup.mkOfDetNeZero x.1 x.2))`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [FA, dif_pos x.2]`. Rewrite using `[e]`. Conclude with `(continuous_Rv v hf hka hkb hψ i (y, m₂)).comp hm`.
+-/
 theorem continuousOn_FA (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ))
     (f : Io Ma Mb κ → H E a b → ℂ) (hf : ∀ i, Continuous (f i))
     (hka : ∀ w, Continuous (fun t : G a => ka w t.val) ∧ HasCompactSupport (fun t : G a => ka w t.val))

@@ -10,6 +10,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Coc.Pf
 
+/- English proof (translation)
+Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Establish `h0 : (Ideal.Quotient.mk (orig k Unit ^ (p + 1)) (MvPolynomial.C a) : Jet k Unit p) = algebraMap k (Jet k Unit p) a` using `rfl`. Simplify using `only [RingHom.comp_apply, h0, RingHom.coe_coe, AlgHom.commutes]`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply k B (Jet B Unit p), AlgHom.commutes]`. Both sides reduce to the same expression. Introduce `i`. Establish `h1 : (inL (k` using `k) B p : Jet k Unit p →ₐ[k] Jet B Unit p) (Ideal.Quotient.mk (orig k Unit ^ (p + 1)) (MvPolynomial.X i)) = dQ B p := by`. Express the relevant statement in the definitionally equal form `(MvPolynomial.aeval fun _ => dQ B p) (MvPolynomial.X i : MvPolynomial Unit k) = _`.
+
+Simplify using the standard rewrite rules. Establish `h2 : (jetAug : Jet B Unit p →ₐ[B] B) (dQ B p) = 0`. Express the relevant statement in the definitionally equal form `(MvPolynomial.aeval fun _ => (0 : B)) (MvPolynomial.X () : MvPolynomial Unit B) = _`. Simplify using the standard rewrite rules. Establish `h3 : (jetAug : Jet k Unit p →ₐ[k] k) (Ideal.Quotient.mk (orig k Unit ^ (p + 1)) (MvPolynomial.X i)) = 0`.
+
+Express the relevant statement in the definitionally equal form `(MvPolynomial.aeval fun _ => (0 : k)) (MvPolynomial.X i : MvPolynomial Unit k) = _`. Simplify using the standard rewrite rules. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, h1, h2, h3, map_zero]`.
+-/
 theorem aug_comp_inL (k : Type) [Field k] (B : Type) [CommRing B] [Algebra k B] (p : ℕ) :
     ((jetAug : Jet B Unit p →ₐ[B] B) : Jet B Unit p →+* B).comp
         ((inL (k := k) B p : Jet k Unit p →ₐ[k] Jet B Unit p) : Jet k Unit p →+* Jet B Unit p) =
@@ -36,6 +45,13 @@ theorem aug_comp_inL (k : Type) [Field k] (B : Type) [CommRing B] [Algebra k B] 
       simp
     simp only [RingHom.comp_apply, RingHom.coe_coe, h1, h2, h3, map_zero]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X0 t k _ x p y B _ _ hy τ hτ j₀ hj₀`. Establish `h1 : ∀ (κ : Fin 2) (q : Sp (Jet B Unit p)), (spMap ((inL (k` using `k) B p : Jet k Unit p →ₐ[k] Jet B Unit p) : Jet k Unit p →+* Jet B Unit p) ≫ (![y.left, (1 : Tm x p ⟶ t.G).left] : Fin 2 → _) κ) q ∈ t.PP.L.U j₀ := by`. Introduce `κ q`. Rewrite using `[Scheme.Hom.comp_apply]`. Use `fin_cases κ`.
+
+Conclude with `jet_left_mem t x j₀ hj₀ y hy _`. Conclude with `jet_left_mem t x j₀ hj₀ 1 (by simp [Hom.one_def]) _`. Establish `hc : spMap ((jetAug : Jet B Unit p →ₐ[B] B) : Jet B Unit p →+* B) ≫ spMap ((inL (k` using `k) B p : Jet k Unit p →ₐ[k] Jet B Unit p) : Jet k Unit p →+* Jet B Unit p) = spMap (algebraMap k B) ≫ spMap ((jetAug : Jet k Unit p →ₐ[k] k) : Jet k Unit p →+* k) := by`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[aug_comp_inL]`.
+
+Take `⟨e₀, he, hall⟩` from `val_eq_unit_of_red t.G.left (Sp (Jet k Unit p)) t.PP.L t.PP.isLB B p (Fin 2) ![y.left, (1 : Tm x p ⟶ t.G).left] ![1, -1] τ (spMap ((inL (k := k) B p : Jet k Unit p →ₐ[k] Jet B Unit p) : Jet k Unit p →+* Jet B Unit p)) j₀ h1 (fun z' J' hG _ => by rw [hc]; exact hτ _ _ z' J' hG)`. Conclude with `⟨e₀, he, fun z J hG hJ => hall z J hG fun κ => hJ _ (h1 κ z)⟩`.
+-/
 theorem red_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (k : Type) [Field k] (x : Sp k ⟶ X0) (p : ℕ) (y : Tm x p ⟶ t.G) (B : Type) [CommRing B] [Algebra k B], homAt x (jetAug : Jet k Unit p →ₐ[k] k) ≫ y = 1 → ∀ (τ : LB.Gen (LB.LinComb t.PP.L (K := Fin 2) ![y.left, (1 : Tm x p ⟶ t.G).left] ![1, -1])), (∀ (Z' : Scheme.{0}) (r : Z' ⟶ Sp k) (z : Z') (J : (Z' ⟶ t.G.left) → t.PP.L.ι), Good t.PP.L z J → val τ (r ≫ spMap ((jetAug : Jet k Unit p →ₐ[k] k) : Jet k Unit p →+* k)) z J = 1) → ∀ j₀ : t.PP.L.ι, ⊤ ≤ (1 : overAt x k ⟶ t.G).left ⁻¹ᵁ t.PP.L.U j₀ → ∃ τ₀ : (Jet B Unit p)ˣ, (jetAug : Jet B Unit p →ₐ[B] B) τ₀ = 1 ∧ ∀ (z : Sp (Jet B Unit p)) (J : (Sp (Jet B Unit p) ⟶ t.G.left) → t.PP.L.ι), Good t.PP.L z J → (∀ ψ : Sp (Jet B Unit p) ⟶ t.G.left, ψ z ∈ t.PP.L.U j₀ → J ψ = j₀) → val τ (spMap ((inL (k := k) B p : Jet k Unit p →ₐ[k] Jet B Unit p) : Jet k Unit p →+* Jet B Unit p)) z J = gm (𝟙 _) z ⊤ (unitΓ τ₀) := by
   intro E _ _ _ H X0 t k _ x p y B _ _ hy τ hτ j₀ hj₀
   have h1 : ∀ (κ : Fin 2) (q : Sp (Jet B Unit p)),

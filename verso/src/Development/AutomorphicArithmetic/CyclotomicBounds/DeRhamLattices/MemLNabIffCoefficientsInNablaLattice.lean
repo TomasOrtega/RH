@@ -14,6 +14,15 @@ set_option maxHeartbeats 1600000
 open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
+/- English proof (translation)
+Introduce `D X j t gramR c0R c0L hT x`. Take `⟨e, -, he, -, hN, -⟩` from `hT.coefL j t`. Establish `h1 : x ∈ lNab D X.A3.A X.F.lv2.P0 X.F.lv2.ψ0 j t ↔ ∀ a, (show (X.A3.A.MtCSD j t).Forms from GlobalTheory.Mem.R3.liftForm X.A3.A X.F.lv2.P0 X.F.lv2.ψ0 j t x).1 a ∈ (X.A3.A.MtCSD j t).Nab a` using `GlobalTheory.Mem.LiftForms.mem_lvlNab _ _ _ _ x`. Use `h1.trans (forall_congr' fun a => ?_)` and prove the remaining obligations. Generalize the expression as in `GlobalTheory.Mem.R3.liftForm X.A3.A X.F.lv2.P0 X.F.lv2.ψ0 j t x = f`.
+
+Establish `h2 : (X.R.B.jL j t f) ((X.R.B.L j t).pres.y a) = (X.R.B.L j t).pres.coef ((show (X.A3.A.MtCSD j t).Forms from f).1 a)` using `GlobalTheory.PresBasic.ext_y (X.R.B.L j t).pres f a`. Establish `h3` using `hN a`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨e _, ?_, h2.trans (he _)⟩` and prove the remaining obligations.
+
+Conclude with `h3.le ⟨_, h, rfl⟩`. Introduce and unpack `⟨F, hF, hv⟩`. Take `⟨v, hv1, hv2⟩` from `h3.ge hF`. Establish `h4 : (X.R.B.L j t).pres.coef ((show (X.A3.A.MtCSD j t).Forms from f).1 a) = (X.R.B.L j t).pres.coef v`. Use `h2.symm.trans (hv.trans ?_)` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (he v).symm` and prove the remaining obligations. Conclude with `congrArg (c0L j) hv2.symm`. Establish `h5 : (show (X.A3.A.MtCSD j t).Forms from f).1 a - v = 0` using `Bridge.ClassPres.coef_inj (X.R.B.L j t).pres (by rw [map_sub, h4, sub_self])`. Rewrite using `[sub_eq_zero.1 h5]`. Conclude with `hv1`.
+-/
 theorem _root_.UpperTheory.KN.mem_lNab_iff_coefficients_in_nabla_lattice :
     ∀ (D : D7) (X : RealSide D) (j : Fin D.R.m) (t : X.T),
       ∀ gramR c0R c0L, Bridge.FamTie X.R.B X.R.pl (X.R.Sb : Set (Pl D.host.E)) X.R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ) (fun j τ => Bridge.lamLdef (Vc D j).rank ((j : ℕ) + 1) τ) gramR c0R c0L →

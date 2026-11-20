@@ -17,6 +17,11 @@ namespace GlobalTheory.CompFinIdemSum
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x`. Rewrite using `[GlobalTheory.EmbChart.tensAt_tmul, GlobalTheory.EmbChart.atPlace_apply]`. Establish `h0 : evFin D.host.F u (pairA D.host.F 0 (singleFin v a)) = 0` using `evalV_singleFin_ne h a`.
+
+Establish `h1 : compFin D.host.F D.host.E u (pairA D.host.F 0 (singleFin v a) ⊗ₜ[D.host.F] x) = evFin D.host.F u (pairA D.host.F 0 (singleFin v a)) ⊗ₜ[D.host.F] x` using `Algebra.TensorProduct.map_tmul ..`. Rewrite using `[h1, h0, TensorProduct.zero_tmul]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz, add_zero]`.
+-/
 theorem compFin_tensAt_ne {u v : HeightOneSpectrum (𝓞 D.host.F)} (h : u ≠ v)
     (y : Fv D.host.F v ⊗[D.host.F] D.host.E) :
     compFin D.host.F D.host.E u (GlobalTheory.EmbChart.tensAt D.host.E v y) = 0 := by
@@ -34,6 +39,21 @@ theorem compFin_tensAt_ne {u v : HeightOneSpectrum (𝓞 D.host.F)} (h : u ≠ v
 set_option maxHeartbeats 1000000 in
 open Classical in
 
+/- English proof (translation)
+Introduce `D Z e he PP hPP`. Take `⟨⟨es, hes, rfl⟩, hcc⟩` from `he`. Take `⟨v0, τ0, -, hPP0⟩` from `GlobalTheory.SplitIdemDict.exists_emb (hes PP hPP)`. Establish `hu : PP.under (𝓞 D.host.F) = v0` using `by rw [hPP0]; exact splitPrime_under τ0`. Rewrite using `[hu]`.
+
+Establish `key : ∀ Q ∈ Z, compFin D.host.F D.host.E v0 (es Q) = (if Q = PP then splitIdem (isCMExt_host D) τ0 else 0) + (if Q = splitPrime (τ0.comp D.sp.cm.sig) then 1 - splitIdem (isCMExt_host D) τ0 else 0)`. Introduce `Q hQ`. Take `⟨v, τ, hI, hQτ⟩` from `GlobalTheory.SplitIdemDict.exists_emb (hes Q hQ)`. Establish `hQv : Q.under (𝓞 D.host.F) = v` using `by rw [hQτ]; exact splitPrime_under τ`. Rewrite using `[GlobalTheory.SplitIdemDict.eq_idem hI, GlobalTheory.EmbChart.idem]`.
+
+Distinguish the cases in `hv : v = v0`. Substitute `hv` using the available equality. Apply the tactic sequence `rcases eq_or_eq_comp_conj (isCMExt_host D) τ0 τ with h | h <;> rw [h] at hQτ ⊢`. Rewrite using `[if_pos (hQτ.trans hPP0.symm), if_neg (by rw [hQτ]; exact (splitPrime_comp_ne (isCMExt_host D) τ0).symm), add_zero]`. Conclude with `GlobalTheory.EmbChart.compFin_tensAt _ _`.
+
+Rewrite using `[if_neg (by rw [hQτ, hPP0]; exact splitPrime_comp_ne (isCMExt_host D) τ0), if_pos hQτ, zero_add, GlobalTheory.EmbChart.compFin_tensAt, splitIdem_comp]`. Establish `h1 : Q ≠ PP` using `fun h => hv (by rw [← hQv, h, hu])`. Establish `h2 : Q ≠ splitPrime (τ0.comp D.sp.cm.sig)` using `fun h => hv (by rw [← hQv, h]; exact splitPrime_under _)`. Rewrite using `[if_neg h1, if_neg h2, add_zero]`. Conclude with `compFin_tensAt_ne (Ne.symm hv) _`.
+
+Establish `hsum : compFin D.host.F D.host.E v0 (∑ Q ∈ Z, es Q) = splitIdem (isCMExt_host D) τ0 + (if splitPrime (τ0.comp D.sp.cm.sig) ∈ Z then 1 - splitIdem (isCMExt_host D) τ0 else 0)`. Rewrite using `[map_sum, Finset.sum_congr rfl key]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, if_pos hPP]`. Establish `hc : compFin D.host.F D.host.E v0 (cA D (∑ Q ∈ Z, es Q)) = sigR _ D.sp.cm.sig (compFin D.host.F D.host.E v0 (∑ Q ∈ Z, es Q))` using `(GlobalTheory.SplitIdemDict.compFin_cA _).symm`. Establish `h1 : ∀ a : Fv D.host.F v0 ⊗[D.host.F] D.host.E, a + (1 - a) = 1` using `fun a => by abel`.
+
+Rewrite using `[map_add, hc, hsum]`. Distinguish the cases in `hP' : splitPrime (τ0.comp D.sp.cm.sig) ∈ Z`. It suffices to derive a contradiction. Establish `hz` using `congrArg (compFin D.host.F D.host.E v0) hcc`. Rewrite `hz` using `[map_mul, hc, hsum, if_pos hP', h1, map_one, mul_one, map_zero]`.
+
+Establish `h3` using `congrArg (fun y => splitProj τ0 y) hz`. Simplify using `only [map_one, map_zero] at h3`. Conclude with `one_ne_zero h3`. Rewrite using `[if_neg hP', add_zero, sigR_splitIdem, h1]`.
+-/
 theorem compFin_add_cA_eq_one : ∀ {D : D7} (Z : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Z → ∀ PP ∈ Z,
     compFin D.host.F D.host.E (PP.under (𝓞 D.host.F)) (e + cA D e) = 1 := by
   intro D Z e he PP hPP

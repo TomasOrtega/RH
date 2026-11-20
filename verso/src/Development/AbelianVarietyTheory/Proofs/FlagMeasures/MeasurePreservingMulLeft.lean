@@ -14,6 +14,9 @@ def leftMat {j : ℕ} (A : Matrix (Fin j) (Fin j) ℂ) :
   map_add' S T := Matrix.mul_add _ _ _
   map_smul' c T := by simp
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.TwoSidedJac.real_jacobians).1 j j A 1 (leftMat A) (fun T => by show A * T = A * T * 1`. Rewrite using `[Matrix.mul_one])`. Rewrite using `[h, Matrix.det_one, norm_one, one_pow, mul_one, ← pow_mul]`.
+-/
 theorem det_leftMat {j : ℕ} (A : Matrix (Fin j) (Fin j) ℂ) :
     LinearMap.det (leftMat A) = (‖A.det‖ ^ 2) ^ j := by
   have h := (GlobalTheory.TwoSidedJac.real_jacobians).1 j j A 1 (leftMat A) (fun T => by
@@ -28,6 +31,9 @@ def leftMul (a : MatInf E j) :
   LinearMap.pi fun w => (show (Fin j → Fin j → ℂ) →ₗ[ℝ] (Fin j → Fin j → ℂ) from
     leftMat (Matrix.of (a w))).comp (LinearMap.proj w)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem det_leftMul (a : MatInf E j) : LinearMap.det (leftMul E j a) = detNorm E j a ^ j := by
   calc LinearMap.det (leftMul E j a)
       = ∏ w, LinearMap.det (leftMat (Matrix.of (a w))) := LinearMap.det_pi _
@@ -35,6 +41,9 @@ theorem det_leftMul (a : MatInf E j) : LinearMap.det (leftMul E j a) = detNorm E
     _ = (∏ w, ‖(Matrix.of (a w)).det‖ ^ 2) ^ j := Finset.prod_pow _ _ _
     _ = detNorm E j a ^ j := by rfl
 
+/- English proof (translation)
+Unfold `detNorm`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hw : Matrix.of ((x * y) w) = Matrix.of (x w) * Matrix.of (y w)` using `rfl`. Rewrite using `[hw, Matrix.det_mul, norm_mul, mul_pow]`.
+-/
 theorem detNorm_mul (x y : MatInf E j) : detNorm E j (x * y) = detNorm E j x * detNorm E j y := by
   unfold detNorm
   rw [← Finset.prod_mul_distrib]
@@ -42,17 +51,36 @@ theorem detNorm_mul (x y : MatInf E j) : detNorm E j (x * y) = detNorm E j x * d
   have hw : Matrix.of ((x * y) w) = Matrix.of (x w) * Matrix.of (y w) := rfl
   rw [hw, Matrix.det_mul, norm_mul, mul_pow]
 
+/- English proof (translation)
+Unfold `detNorm`. Use `continuous_finsetProd _ fun w _ => ?_` and prove the remaining obligations. Conclude with `((Continuous.matrix_det (continuous_apply w)).norm).pow 2`.
+-/
 theorem continuous_detNorm :
     Continuous (fun x : InfinitePlace E → Fin j → Fin j → ℂ => detNorm E j x) := by
   unfold detNorm
   refine continuous_finsetProd _ fun w _ => ?_
   exact ((Continuous.matrix_det (continuous_apply w)).norm).pow 2
 
+/- English proof (translation)
+Establish `: (volume : Measure (Fin j → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (Fin j → Fin j → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+-/
 theorem isAddHaar_volume : (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)).IsAddHaarMeasure := by
   have : (volume : Measure (Fin j → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
   have : (volume : Measure (Fin j → Fin j → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
   exact Measure.pi.isAddHaarMeasure _
 
+/- English proof (translation)
+Introduce `E _ _ j a ha`. Establish `: (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)).IsAddHaarMeasure` using `isAddHaar_volume E j`. Establish `hdet0 : LinearMap.det (leftMul E j a) ≠ 0`. Rewrite using `[det_leftMul]`. Conclude with `pow_ne_zero _ ha.ne'`.
+
+Establish `hemb : MeasurableEmbedding ⇑(leftMul E j a)` using `((LinearMap.toContinuousLinearMap (leftMul E j a)).toContinuousLinearEquivOfDetNeZero hdet0).toHomeomorph.toMeasurableEquiv.measurableEmbedding`. Establish `hpos : 0 < (detNorm E j a)⁻¹ ^ j` using `pow_pos (inv_pos.mpr ha) j`. Establish `hmap : Measure.map (leftMul E j a) (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)) = ENNReal.ofReal ((detNorm E j a)⁻¹ ^ j) • volume`. Rewrite using `[Measure.map_linearMap_addHaar_eq_smul_addHaar _ hdet0, det_leftMul, ← inv_pow, abs_of_pos hpos]`. Establish `hc0 : ENNReal.ofReal ((detNorm E j a)⁻¹ ^ j) ≠ 0` using `(ENNReal.ofReal_pos.mpr hpos).ne'`.
+
+Establish `hctop : ENNReal.ofReal ((detNorm E j a)⁻¹ ^ j) ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hρ : Measurable fun x : InfinitePlace E → Fin j → Fin j → ℂ => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)` using `(((continuous_detNorm E j).measurable.inv).pow_const j).ennreal_ofReal`. Establish `hρf : ∀ x : InfinitePlace E → Fin j → Fin j → ℂ, ENNReal.ofReal ((detNorm E j (leftMul E j a x))⁻¹ ^ j) = ENNReal.ofReal ((detNorm E j a)⁻¹ ^ j) * ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)`. Introduce `x`. Establish `hx : detNorm E j (leftMul E j a x) = detNorm E j a * detNorm E j x` using `detNorm_mul E j a x`.
+
+Rewrite using `[hx, mul_inv, mul_pow, ENNReal.ofReal_mul hpos.le]`. Establish `hV : Measure.map (leftMul E j a) ((volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)).withDensity fun x => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)) = (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)).withDensity fun x => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hemb.measurable hs, withDensity_apply _ (hemb.measurable hs), withDensity_apply _ hs]`. Combine the equalities or inequalities in the displayed calculation.
+
+Repeatedly rewrite using `[hρf]`. Rewrite using `[lintegral_const_mul' _ _ hctop, ← mul_assoc, ENNReal.inv_mul_cancel hc0 hctop, one_mul]`. Use `_ = (ENNReal.ofReal ((detNorm E j a)⁻¹ ^ j))⁻¹ * ∫⁻ y in s, ENNReal.ofReal ((detNorm E j y)⁻¹ ^ j) ∂(Measure.map (leftMul E j a) volume) := by`. Rewrite using `[setLIntegral_map hs hρ hemb.measurable]`. Use `_ = ∫⁻ y in s, ENNReal.ofReal ((detNorm E j y)⁻¹ ^ j) := by`.
+
+Rewrite using `[hmap, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, ENNReal.inv_mul_cancel hc0 hctop, one_mul]`. Conclude with `⟨hemb, hemb.measurable, hV⟩`.
+-/
 theorem measurePreserving_mul_left : ∀ (E : Type) [Field E] [NumberField E] (j : ℕ) (a : MatInf E j), 0 < detNorm E j a → MeasurableEmbedding (fun g : MatInf E j => a * g) ∧ MeasurePreserving (fun g : MatInf E j => a * g) (haarGL E j) (haarGL E j) := by
   intro E _ _ j a ha
   have : (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)).IsAddHaarMeasure :=

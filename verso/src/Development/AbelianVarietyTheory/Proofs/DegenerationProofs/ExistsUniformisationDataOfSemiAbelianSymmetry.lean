@@ -17,6 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Introduce `laws hext V _ _ hd _ hc A G _ _ hG hE hS gen hgen`. Establish `hV : GlobalTheory.UU.CDVR V` using `⟨hd, hc, inferInstance⟩`. Take `⟨L, hL⟩` from `GlobalTheory.UU.polarisation_extends laws V A G hG gen hgen`. Take `⟨P, rfl⟩` from `GlobalTheory.CubicalPackage.exists_package laws V hV A G hG gen hgen L hL`. Take `⟨w, -, hw, -, -, hiso, -⟩` from `GlobalTheory.T.symmetryHyp_extends_semiAbelian_dvr hext V A G hG hS gen hgen P.L hL`.
+
+Take `⟨E, ⟨d⟩⟩` from `hE`. Establish `: IsCommMonObj ((Over.pullback (spMap (IsLocalRing.residue V))).obj G)` using `Functor.isCommMonObj_obj`. Take `⟨r, hr⟩` from `GlobalTheory.UU.thick_zero_factor V`. Take `⟨Q₀⟩` from `GlobalTheory.UU.nonempty_tq_pullback_comp r _ hr G (GlobalTheory.UU.TQ.ofGtDatum d)`. Take `⟨P₀, h₀⟩` from `GlobalTheory.UU.exists_isLevelCP (IsLocalRing.maximalIdeal V) 0 P`.
+
+Take `⟨wA, hwA⟩` from `hL`. Use `E.free` as an intermediate fact. Use `E.finite` as an intermediate fact. Conclude with `⟨⟨hV, hG, gen, hgen, P, wA, hwA, E.X, Q₀, P₀, h₀, GlobalTheory.T.exists_even_cubical_trivialisation_specialFibre laws V hV A G hG gen hgen P w hw hiso E.X Q₀ P₀ h₀⟩, rfl⟩`.
+-/
 theorem exists_setting_of_hypS : Laws → (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → (∃ E : SplitExt (Sp (IsLocalRing.ResidueField V)), E.IsGt ((Over.pullback (spMap (IsLocalRing.residue V))).obj G)) → HypS A.A A.L → ∀ gen : (Over.pullback (jK V)).obj G ≅ A.A, IsMonHom gen.hom → ∃ s : GlobalTheory.UU.HidaSetting V A G, s.gen = gen := by
   intro laws hext V _ _ hd _ hc A G _ _ hG hE hS gen hgen
   have hV : GlobalTheory.UU.CDVR V := ⟨hd, hc, inferInstance⟩

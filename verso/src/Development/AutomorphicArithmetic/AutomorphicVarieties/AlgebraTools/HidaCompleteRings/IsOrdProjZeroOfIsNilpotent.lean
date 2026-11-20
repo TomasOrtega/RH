@@ -8,9 +8,15 @@ variable {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
 
 def ordPart (U : Module.End R M) : Submodule R M := ⨅ n : ℕ, LinearMap.range (U ^ n)
 
+/- English proof (translation)
+Simplify using `[ordPart, Submodule.mem_iInf]`.
+-/
 theorem mem_ordPart {U : Module.End R M} {x : M} : x ∈ ordPart U ↔ ∀ n : ℕ, ∃ y, (U ^ n) y = x := by
   simp [ordPart, Submodule.mem_iInf]
 
+/- English proof (translation)
+Establish `h1` using `Submodule.mem_map_of_mem (f := f) hx`. Rewrite `h1` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h1`.
+-/
 theorem map_mem_smul_top {N : Type*} [AddCommGroup N] [Module R N] (f : M →ₗ[R] N) (J : Ideal R)
     {x : M} (hx : x ∈ (J • ⊤ : Submodule R M)) : f x ∈ (J • ⊤ : Submodule R N) := by
   have h1 := Submodule.mem_map_of_mem (f := f) hx
@@ -48,6 +54,9 @@ open Classical in
 noncomputable def ordProj (I : Ideal R) (U : Module.End R M) : Module.End R M :=
   if h : ∃ e, IsOrdProj I U e then h.choose else 0
 
+/- English proof (translation)
+Unfold `ordProj`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isOrdProj_ordProj {I : Ideal R} {U : Module.End R M} (h : ∃ e, IsOrdProj I U e) :
     IsOrdProj I U (ordProj I U) := by
   unfold ordProj
@@ -60,6 +69,9 @@ structure OrdAdm (I : Ideal R) : Prop where
   complete : IsAdicComplete I M
   finLen : ∀ k : ℕ, IsFiniteLength R (M ⧸ (I ^ k • ⊤ : Submodule R M))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.idem, h.comm, h.bij, fun k => (h.nil k).imp fun _ hn x => Submodule.smul_mono (Ideal.pow_right_mono hIJ k) le_rfl (hn x)⟩`.
+-/
 theorem IsOrdProj.mono {I J : Ideal R} (hIJ : I ≤ J) {U e : Module.End R M} (h : IsOrdProj I U e) :
     IsOrdProj J U e :=
   ⟨h.idem, h.comm, h.bij, fun k => (h.nil k).imp fun _ hn x =>
@@ -73,12 +85,18 @@ variable {A A' : Type*} [CommRing A] [CommRing A'] [Algebra A A']
   {M : Type*} [AddCommGroup M] [Module A M]
   {M' : Type*} [AddCommGroup M'] [Module A M'] [Module A' M'] [IsScalarTower A A' M']
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => simp only [pow_succ', Module.End.mul_apply, h, ih]`.
+-/
 theorem pow_intertwine {U : Module.End A M} {U' : Module.End A' M'} {f : M →ₗ[A] M'}
     (h : ∀ x, f (U x) = U' (f x)) (n : ℕ) (x : M) : f ((U ^ n) x) = (U' ^ n) (f x) := by
   induction n with
   | zero => simp
   | succ n ih => simp only [pow_succ', Module.End.mul_apply, h, ih]
 
+/- English proof (translation)
+Use `mem_ordPart.2 fun n => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `mem_ordPart.1 hx n`. Conclude with `⟨f y, (pow_intertwine h n y).symm⟩`.
+-/
 theorem map_mem_ordPart {U : Module.End A M} {U' : Module.End A' M'} {f : M →ₗ[A] M'}
     (h : ∀ x, f (U x) = U' (f x)) {x : M} (hx : x ∈ ordPart U) : f x ∈ ordPart U' := by
   refine mem_ordPart.2 fun n => ?_
@@ -91,12 +109,18 @@ def ordMap {U : Module.End A M} {U' : Module.End A' M'} (f : M →ₗ[A] M')
   map_add' x y := Subtype.ext (by simp)
   map_smul' c x := Subtype.ext (by simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_ordMap {U : Module.End A M} {U' : Module.End A' M'} (f : M →ₗ[A] M')
     (h : ∀ x, f (U x) = U' (f x)) (x : ordPart U) : (ordMap f h x : M') = f x := rfl
 
 def ordEnd {U : Module.End A M} (V : Module.End A M) (h : Commute V U) : Module.End A (ordPart U) :=
   ordMap (A' := A) V fun x => LinearMap.congr_fun h.eq x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_ordEnd {U : Module.End A M} (V : Module.End A M) (h : Commute V U)
     (x : ordPart U) : (ordEnd V h x : M) = V x := rfl
 
@@ -116,6 +140,9 @@ def towerLim (t : ∀ b, P (b + 1) →ₗ[R] P b) : Submodule R (∀ b, P b) whe
 def towerProj (t : ∀ b, P (b + 1) →ₗ[R] P b) (b : ℕ) : towerLim t →ₗ[R] P b :=
   (LinearMap.proj b).comp (towerLim t).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem towerProj_apply (t : ∀ b, P (b + 1) →ₗ[R] P b) (b : ℕ) (x : towerLim t) :
     towerProj t b x = x.1 b := rfl
 
@@ -123,6 +150,9 @@ def towerLift (t : ∀ b, P (b + 1) →ₗ[R] P b) {X : Type*} [AddCommGroup X] 
     (f : ∀ b, X →ₗ[R] P b) (h : ∀ b x, t b (f (b + 1) x) = f b x) : X →ₗ[R] towerLim t :=
   LinearMap.codRestrict _ (LinearMap.pi f) fun x b => h b x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem towerProj_towerLift (t : ∀ b, P (b + 1) →ₗ[R] P b) {X : Type*} [AddCommGroup X]
     [Module R X] (f : ∀ b, X →ₗ[R] P b) (h : ∀ b x, t b (f (b + 1) x) = f b x) (b : ℕ) (x : X) :
     towerProj t b (towerLift t f h x) = f b x := rfl
@@ -132,6 +162,9 @@ def towerMap (t : ∀ b, P (b + 1) →ₗ[R] P b) (s : ∀ b, Q (b + 1) →ₗ[R
   towerLift s (fun b => (f b).comp (towerProj t b)) fun b x => by
     simp only [LinearMap.comp_apply, towerProj_apply, h, x.2 b]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem towerProj_towerMap (t : ∀ b, P (b + 1) →ₗ[R] P b) (s : ∀ b, Q (b + 1) →ₗ[R] Q b)
     (f : ∀ b, P b →ₗ[R] Q b) (h : ∀ b x, s b (f (b + 1) x) = f b (t b x)) (b : ℕ) (x : towerLim t) :
     towerProj s b (towerMap t s f h x) = f b (towerProj t b x) := rfl

@@ -4,6 +4,21 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Selm
 
 open UpperTheory.V UpperTheory.V.PropA
 
+/- English proof (translation)
+Introduce `l _ X _ _ R g hgen`. Take `⟨π, hπ⟩` from `hgen`. Use `choose s hs using fun j : Fin R => hπ (g (π (Pi.single j 1)))`. Use `⟨Matrix.of fun i j => s j i, fun c => ?_⟩` and prove the remaining obligations. Establish `hcomm : ∀ v : Fin R → ℤ_[l], π (Matrix.mulVec (Matrix.of fun i j => s j i) v) = g (π v)`.
+
+Establish `h : π ∘ₗ (Matrix.of fun i j => s j i).mulVecLin = g ∘ₗ π`. Use extensionality with `j`. Simplify using `[Matrix.mulVec_single_one]`. Rewrite using `[← hs j]`. Both sides reduce to the same expression.
+
+Introduce `v`. Simplify using `using LinearMap.congr_fun h v`. Use `set A : Matrix (Fin R) (Fin R) ℤ_[l] := c • (Matrix.of fun i j => s j i) - 1 with hA`. Establish `hcommA : ∀ v, π (A.mulVecLin v) = (c • g - 1) (π v)`. Introduce `v`.
+
+Simplify using `only [hA, Matrix.mulVecLin_apply, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, map_sub, map_smul, hcomm, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Set `φ : (Fin R → ℤ_[l]) →ₗ[ℤ_[l]] X ⧸ LinearMap.range (c • g - 1)` to `(LinearMap.range (c • g - 1)).mkQ ∘ₗ π`. Establish `hker : LinearMap.range A.mulVecLin ≤ LinearMap.ker φ`. Introduce and unpack `_ ⟨v, rfl⟩`. Simplify using `only [LinearMap.mem_ker, φ, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Rewrite using `[hcommA]`. Conclude with `LinearMap.mem_range_self _ _`. Establish `hsurj : Function.Surjective ((LinearMap.range A.mulVecLin).liftQ φ hker)`. Introduce `x`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ x`.
+
+Take `⟨v, rfl⟩` from `hπ y`. Conclude with `⟨Submodule.Quotient.mk v, rfl⟩`. Establish `hlen` using `Module.length_le_of_surjective _ hsurj`. Establish `hdet` using `KStar.Selmer.length_cokernel_eq_addVal_det A`. Unfold `cokLen`.
+
+Conclude with `hlen.trans_eq hdet`.
+-/
 theorem UpperTheory.V.PropA.lift :
     ∀ (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l] X] (R : ℕ) (g : Module.End ℤ_[l] X), GenBy l R X →
       ∃ S : Matrix (Fin R) (Fin R) ℤ_[l], ∀ c : ℤ_[l], cokLen (c • g - 1) ≤ vl l (c • S - 1).det := by

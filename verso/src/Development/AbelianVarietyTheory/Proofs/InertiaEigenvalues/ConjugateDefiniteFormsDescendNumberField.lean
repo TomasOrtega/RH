@@ -22,6 +22,9 @@ namespace GlobalTheory.ConjDesc
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hC i Tp tup M hP a x₀ h`. Take `⟨_, _, _, hT, hc⟩` from `hP.lift.c0`. Take `⟨x, hx⟩` from `GlobalTheory.RationalValues.placeEx R i M.jL (inC M.c') (tup a) (fun _ : Unit => h) M.c0' hC.models.jV hT hc hC.lev hC.grp.chiW hC.fam.pl_onto hC.fam.muVal x₀`. Conclude with `⟨x (), hx ()⟩`.
+-/
 theorem vals : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → ∀ (a : Tp) (x₀ : A.fam.amb.FL i (tup a)) (h : GA D (Vc D i)), ∃ x : VsV D i M.c'.F, (R.HV i (tup a)).e (jVx R i (tup a) x₀) (fin _ h) = M.c0' x := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hC i Tp tup M hP a x₀ h
   obtain ⟨_, _, _, hT, hc⟩ := hP.lift.c0
@@ -31,6 +34,19 @@ theorem vals : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ i Tp tup M hP c hc`. Take `⟨gramR, c0R, c0L, hFT, hC0⟩` from `hP.lift.c0`. Establish `hfield : (inC M.c').comp M.jL = D.what₂.embLL` using `hP.lift.field`. Establish `hbas : ∀ j, c (GlobalTheory.CoefModel.mapVV D.what₂.embLL (lamV D i) (bVV D.what₂.LL (lamV D i) j)) = c0L i (bVV D.what₂.LL (lamV D i) j)` using `fun j => by`. Take `⟨v', hv', hcv'⟩` from `hC0 (bVV D.what₂.LL (lamV D i) j)`.
+
+Use `(hc v' _ ?_).trans hcv'` and prove the remaining obligations. Rewrite using `[GlobalTheory.CoefModel.mapVV_coe, hv', MvPolynomial.map_map, hfield]`. Establish `hli : LinearIndependent ℂ fun j => c (GlobalTheory.CoefModel.mapVV D.what₂.embLL (lamV D i) (bVV D.what₂.LL (lamV D i) j))`. Establish `h` using `(hFT.mapL i).2.1`. Simplify using `only [← hbas] at h`.
+
+Conclude with `h`. Establish `hli0` using `GlobalTheory.CoefModel.linearIndependent_mapVV D.what₂.embLL (lamV D i)`. Establish `hsp0` using `GlobalTheory.CoefModel.span_mapVV D.what₂.embLL (lamV D i)`. Set `B` to `Module.Basis.mk hli0 hsp0.ge`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `z hz`. Establish `hs` using `B.sum_repr z`. Establish `h0 : ∑ j, B.repr z j • c (GlobalTheory.CoefModel.mapVV D.what₂.embLL (lamV D i) (bVV D.what₂.LL (lamV D i) j)) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Module.Basis.mk_apply]`. Use `_ = 0 := by rw [hs, hz]`. Establish `hc0` using `Fintype.linearIndependent_iff.1 hli _ h0`. Rewrite using `[← hs]`.
+
+Conclude with `Finset.sum_eq_zero fun j _ => by rw [hc0 j, zero_smul]`.
+-/
 theorem c_inj : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → ∀ (c : VsV D i ℂ →ₗ[ℂ] (R.cV i).W), ExtC R i (inC M.c') M.c0' c → Function.Injective c := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ i Tp tup M hP c hc
   obtain ⟨gramR, c0R, c0L, hFT, hC0⟩ := hP.lift.c0
@@ -62,6 +78,23 @@ theorem c_inj : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hC hFW i Tp tup M hP τ ta hta hFix c hc hxi a b hab y y' hy`. Take `⟨φ, hφs, hφ⟩` from `GlobalTheory.T.exists_galoisConj_definiteForms_semilinearEquiv D G Pl0 T0 A T R F κ v₀ hC hFW i Tp tup M hP c hc τ (tup a) (tup b) hFix hab`. Establish `hy' : y' = φ y` using `(hφ y y').1 hy`. Establish `hmem : y ∈ Submodule.span ℂ (Set.range (R.jV i (tup a)))`. Rewrite using `[GlobalTheory.HeckeClassSums.span_jV hC.models.HV hC.models.jV i (tup a)]`.
+
+Conclude with `Submodule.mem_top`. Take `⟨n, α, g, hg⟩` from `Submodule.mem_span_set'.1 hmem`. Establish `hinj` using `c_inj D G Pl0 T0 A T R κ v₀ i Tp tup M hP c hc`. Use `⟨n, α, fun k => (g k : (R.HV i (tup a)).H), fun k => φ (g k : (R.HV i (tup a)).H), hg.symm, ?_, ?_⟩` and prove the remaining obligations. Substitute `hy' hg` using the available equality.
+
+Conclude with `(map_sum φ _ _).trans (Finset.sum_congr rfl fun k _ => hφs _ _)`. Introduce `k h`. Establish `hk : ∃ x₀ : A.fam.amb.FL i (tup a), R.jV i (tup a) x₀ = (g k : (R.HV i (tup a)).H)` using `(g k).2`. Take `⟨x₀, hx₀⟩` from `hk`. Establish `hv` using `vals D G Pl0 T0 A T R F κ v₀ hC i Tp tup M hP`.
+
+Establish `hv2` using `hv a x₀ h`. Set `x` to `hv2.choose`. Establish `hx : (R.HV i (tup a)).e (jVx R i (tup a) x₀) (fin _ h) = M.c0' x` using `hv2.choose_spec`. Establish `hx' : ((g k : (R.HV i (tup a)).H)) = jVx R i (tup a) x₀` using `hx₀.symm`. Establish `hcf` using `(hφ (g k : (R.HV i (tup a)).H) (φ (g k))).2 rfl h`.
+
+Set `x1` to `hcf.choose`. Set `x1'` to `hcf.choose_spec.choose`. Establish `hcv : ConjVec i τ x1 x1'` using `hcf.choose_spec.choose_spec.1`. Establish `h1 : (R.HV i (tup a)).e (g k : (R.HV i (tup a)).H) (fin _ h) = c x1` using `hcf.choose_spec.choose_spec.2.1`. Establish `h1' : (R.HV i (tup b)).e (φ (g k : (R.HV i (tup a)).H)) (fin _ h) = c x1'` using `hcf.choose_spec.choose_spec.2.2`.
+
+Set `xC : VsV D i ℂ` to `GlobalTheory.CoefModel.mapVV (inC M.c') (lamV D i) x`. Establish `hxC : c xC = M.c0' x` using `hc x xC rfl`. Establish `e0 : (R.HV i (tup a)).e (g k : (R.HV i (tup a)).H) (fin _ h) = M.c0' x` using `by rw [hx']; exact hx`. Establish `e1 : c x1 = c xC` using `h1.symm.trans (e0.trans hxC.symm)`. Establish `hx1 : x1 = xC` using `hinj e1`.
+
+Set `x' : VsV D i M.c'.F` to `⟨MvPolynomial.map (ta : M.c'.F →+* M.c'.F) (x : Pol M.c'.F D.what₂.Tau (Vc D i).rank), GlobalTheory.Proof.TensorMapDescent.map_mem_VV (ta : M.c'.F →+* M.c'.F) (lamV D i) _ x.2⟩`. Establish `hcomp : (τ : ℂ →+* ℂ).comp (inC M.c') = (inC M.c').comp (ta : M.c'.F →+* M.c'.F)`. Use extensionality with `z`. Conclude with `(hta z).symm`. Establish `hx1' : (x1' : Pol ℂ D.what₂.Tau (Vc D i).rank) = MvPolynomial.map (inC M.c') (x' : Pol M.c'.F D.what₂.Tau (Vc D i).rank)`.
+
+Rewrite using `[hcv, hx1]`. Use `show MvPolynomial.map (τ : ℂ →+* ℂ) (MvPolynomial.map (inC M.c') (x : Pol M.c'.F D.what₂.Tau (Vc D i).rank)) = MvPolynomial.map (inC M.c') (MvPolynomial.map (ta : M.c'.F →+* M.c'.F) (x : Pol M.c'.F D.what₂.Tau (Vc D i).rank))`. Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map, hcomp]`. Conclude with `⟨x, x', rfl, e0, h1'.trans (hc x' x1' hx1')⟩`.
+-/
 theorem conj_desc : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → ∀ (τ : ℂ ≃+* ℂ) (ta : M.c'.F ≃+* M.c'.F), (∀ a : M.c'.F, ((ta a : M.c'.F) : ℂ) = τ (a : ℂ)) → FixBase T R i τ → ∀ (c : VsV D i ℂ →ₗ[ℂ] (R.cV i).W), ExtC R i (inC M.c') M.c0' c → (∀ t x, ((R.xi (tup t) x : Circle) : ℂ) ∈ M.c'.F) → ∀ a b : Tp, ConjTup R τ (tup a) (tup b) → ∀ (y : (R.HV i (tup a)).H) (y' : (R.HV i (tup b)).H), ConjForm R i τ c (tup a) (tup b) y y' → ∃ (n : ℕ) (α : Fin n → ℂ) (ys : Fin n → (R.HV i (tup a)).H) (ys' : Fin n → (R.HV i (tup b)).H), y = ∑ k, α k • ys k ∧ y' = ∑ k, τ (α k) • ys' k ∧ ∀ k (h : GA D (Vc D i)), ∃ x x' : VsV D i M.c'.F, (x' : Pol M.c'.F D.what₂.Tau (Vc D i).rank) = MvPolynomial.map (ta : M.c'.F →+* M.c'.F) (x : Pol M.c'.F D.what₂.Tau (Vc D i).rank) ∧ (R.HV i (tup a)).e (ys k) (fin _ h) = M.c0' x ∧ (R.HV i (tup b)).e (ys' k) (fin _ h) = M.c0' x' := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hC hFW i Tp tup M hP τ ta hta hFix c hc hxi a b hab y y' hy
   obtain ⟨φ, hφs, hφ⟩ := GlobalTheory.T.exists_galoisConj_definiteForms_semilinearEquiv D G Pl0 T0 A T R F κ v₀ hC hFW i Tp tup M hP c hc τ (tup a) (tup b) hFix hab

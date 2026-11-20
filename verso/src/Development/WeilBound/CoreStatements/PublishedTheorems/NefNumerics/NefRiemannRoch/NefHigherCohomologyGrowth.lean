@@ -18,6 +18,29 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ d hd Y _ hY N hN E _ hsupp j hj`. Use `haveI hnoeth : AlgebraicGeometry.IsNoetherian Y := isNoetherian_of_isProjOver hY`. Take `⟨hprop, A, hA⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hY`. Use `haveI := hprop`. Establish `hfin : ∀ (F : Y.Modules) [IsFiniteQC F] (m : ℕ), FiniteCoh k (twist F (lbPow N m))` using `fun F _ m => IsAmpleLB.finiteCohTwists (algebraMap_eq_strHom k Y) F hA _ (isLB_lbPow hN.isLB m)`.
+
+Set `P : Y.Modules → Prop` to `fun F => suppDim F ≤ ((d + 1 : ℕ) : WithBot ℕ∞) → ∀ j, 0 < j → ∃ C : ℕ, ∀ m : ℕ, hdim k (twist F (lbPow N m)) j ≤ C * ((d + 1) * (m + 1) ^ d)`. Establish `key : ∀ F : Y.Modules, IsFiniteQC F → P F`. Use `QCoh.devissage Y P ?_ ?_ ?_` and prove the remaining obligations. Introduce `F hF _ j _`. Use `⟨0, fun m => ?_⟩` and prove the remaining obligations.
+
+Establish `hz : IsZero (twist F (lbPow N m))` using `(isZero_twist_iff (isLB_lbPow hN.isLB m)).2 hF`. Use `haveI : Subsingleton (coh (twist F (lbPow N m)) j) := by`. Use `cohOn.subsingleton_of_isZero hz ⊤ j` as an intermediate fact. Conclude with `this`. Rewrite using `[hdim_eq_zero_of_subsingleton]`.
+
+Conclude with `Nat.zero_le _`. Introduce `S hS h1 h3 hP1 hP3 hs2 j hj haveI := h1 haveI := h3 haveI := hS.mono_f haveI := hS.epi_g`. Take `⟨C1, hC1⟩` from `hP1 ((suppDim_le_of_mono S.f).trans hs2) j hj`. Take `⟨C3, hC3⟩` from `hP3 ((suppDim_le_of_epi S.g).trans hs2) j hj`. Use `⟨C1 + C3, fun m => ?_⟩` and prove the remaining obligations.
+
+Establish `hL` using `isLB_lbPow hN.isLB m`. Use `haveI := Twist.preservesFiniteLimits_twistFunctor hL`. Use `haveI := Twist.preservesColimits_twistFunctor hL`. Establish `hS'` using `hS.map_of_exact (twistFunctor (lbPow N m))`. Establish `h` using `hdim₂_le k hS' j ((hfin S.X₁ m).finite j) ((hfin S.X₃ m).finite j)`.
+
+Establish `e1` using `hC1 m`. Establish `e3` using `hC3 m`. Simplify using `only [ShortComplex.map_X₁, ShortComplex.map_X₂, ShortComplex.map_X₃, twistFunctor_obj] at h`. Combine the equalities or inequalities in the displayed calculation. Introduce `Z hirr IH G hG hs j hj haveI := hG`.
+
+Establish `hsub : support ((Scheme.Modules.pushforward (redι Z)).obj G) ⊆ (Z : Set Y)`. Use `(support_pushforward_subset_image_of_isClosedImmersion _ G).trans ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩`. Rewrite using `[← range_redι Z]`. Conclude with `⟨x, rfl⟩`.
+
+Use `haveI : IsFiniteQC ((Scheme.Modules.pushforward (redι Z)).obj G) := ProperFinite.isFiniteQC_pushforward (redι Z) (IsAmpleLB.pull_of_isClosedImmersion hA (redι Z)) G`. Distinguish the cases in `hstrict : support ((Scheme.Modules.pushforward (redι Z)).obj G) ⊂ (Z : Set Y)`. Conclude with `IH _ inferInstance hstrict hs j hj`. Establish `heq : support ((Scheme.Modules.pushforward (redι Z)).obj G) = (Z : Set Y)`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hstrict (HasSubset.Subset.ssubset_of_ne hsub hne)`. Establish `hgen` using `hirr.isGenericPoint_genericPoint_closure`. Rewrite `hgen` using `[Z.isClosed.closure_eq]`. Take `⟨w, hcl⟩ : ∃ w : Y, closure ({w} : Set Y) = (Z : Set Y)` from `⟨_, hgen⟩`. Establish `hw : w ∈ support ((Scheme.Modules.pushforward (redι Z)).obj G)`.
+
+Rewrite using `[heq, ← hcl]`. Conclude with `subset_closure (Set.mem_singleton _)`. Establish `hdimZ : topologicalKrullDim (Z : Set Y) ≤ ((d + 1 : ℕ) : WithBot ℕ∞)`. Use `SheafCycle.dim_closure_le_suppDim hw` as an intermediate fact. Rewrite `this` using `[hcl]`.
+
+Conclude with `this.trans hs`. Conclude with `RRPush.hdim_pushforward_le k d hd Y hY N hN Z hirr hdimZ G j hj`. Conclude with `key E inferInstance hsupp j hj`.
+-/
 theorem nefTwist_hdim_bound_succ : ∀ (k : Type) [Field k] [Infinite k] (d : ℕ), (∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → ∀ N : LB Y, IsNef k N → ∀ (E : Y.Modules) [IsFiniteQC E], suppDim E ≤ (d : ℕ) → ∀ j, 0 < j → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist E (lbPow N m)) j ≤ C * (d * (m + 1) ^ (d - 1)))) → (∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → ∀ N : LB Y, IsNef k N → ∀ (E : Y.Modules) [IsFiniteQC E], suppDim E ≤ (d + 1 : ℕ) → ∀ j, 0 < j → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist E (lbPow N m)) j ≤ C * ((d + 1) * (m + 1) ^ d))) := by
   intro k _ _ d hd Y _ hY N hN E _ hsupp j hj
   haveI hnoeth : AlgebraicGeometry.IsNoetherian Y := isNoetherian_of_isProjOver hY

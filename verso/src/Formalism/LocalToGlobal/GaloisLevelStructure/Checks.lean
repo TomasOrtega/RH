@@ -4,6 +4,9 @@ open Formalism.BasicNotions ReciprocityTheory.Aut Formalism.AUTREP
 
 namespace Formalism.L2
 
+/- English proof (translation)
+The claim follows from `(A.ptV i P x).1 hx w k s ϖ hw hc hu k1 k2 y hy`.
+-/
 theorem AVTied.eigen {D : D7} {M : MtFam D} (A : AVTied D M) (i : D.nd.Loc) (P : D.naut.AV i) (x : D.nd.X i)
     (hx : D.naut.ptV i P = some x) (w : PlE D.host) (k : ℕ) (s : ReciprocityTheory.Aut.SplitPlace D.host.E)
     (ϖ : s.v.adicCompletion (NumberField.maximalRealSubfield D.host.E)) (hw : SplitOut D.nd i w)
@@ -24,6 +27,11 @@ def MtReal.transfer {D : D7} {μ μ' : D.what₂.Tup} {j j' : ℕ} (m : MtReal D
   real_range := by
     rw [LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, m.real_range]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [MtReal.transfer, Submodule.mem_comap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨φ y, h, by simp⟩`.
+
+Introduce and unpack `⟨z, hz, rfl⟩ show m.real (φ (φ.symm z)) ∈ S`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hz`.
+-/
 theorem MtReal.comap_transfer {D : D7} {μ : D.what₂.Tup} {j : ℕ} (m : MtReal D μ j)
     (φ : D.what₂.Mt μ j ≃ₗ[ℂ] D.what₂.Mt μ j) (S : Submodule ℂ (GAf D.host.E D.R.nV → m.wt.W)) :
     S.comap (MtReal.transfer m φ).real = (S.comap m.real).map φ.symm.toLinearMap := by
@@ -44,15 +52,26 @@ open NumberField ReciprocityTheory.Aut Formalism.AUTREP
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
   {W W' W'' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] [AddCommGroup W''] [Module ℂ W'']
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearEquiv.refl ℂ S, fun _ _ _ h => h⟩`.
+-/
 theorem IsoRep.refl (S : Submodule ℂ (GAf L n → W)) : IsoRep S S :=
   ⟨LinearEquiv.refl ℂ S, fun _ _ _ h => h⟩
 
+/- English proof (translation)
+Take `⟨T1, e1⟩` from `h1`. Take `⟨T2, e2⟩` from `h2`. Conclude with `⟨T1.trans T2, fun h f f' e => e2 h (T1 f) (T1 f') (e1 h f f' e)⟩`.
+-/
 theorem IsoRep.trans {S : Submodule ℂ (GAf L n → W)} {S' : Submodule ℂ (GAf L n → W')}
     {S'' : Submodule ℂ (GAf L n → W'')} (h1 : IsoRep S S') (h2 : IsoRep S' S'') : IsoRep S S'' := by
   obtain ⟨T1, e1⟩ := h1
   obtain ⟨T2, e2⟩ := h2
   exact ⟨T1.trans T2, fun h f f' e => e2 h (T1 f) (T1 f') (e1 h f f' e)⟩
 
+/- English proof (translation)
+Take `⟨T, e⟩` from `h1`. Use `⟨T.symm, fun h g g' hg => ?_⟩` and prove the remaining obligations. Establish `key` using `e h (T.symm g) ⟨rt L n h (T.symm g : GAf L n → W), hS h _ (T.symm g).2⟩ rfl`. Rewrite `key` using `[LinearEquiv.apply_symm_apply, ← hg]`. Establish `: T ⟨rt L n h (T.symm g : GAf L n → W), hS h _ (T.symm g).2⟩ = g'` using `Subtype.ext key`.
+
+Rewrite using `[← this, LinearEquiv.symm_apply_apply]`.
+-/
 theorem IsoRep.symm {S : Submodule ℂ (GAf L n → W)} {S' : Submodule ℂ (GAf L n → W')}
     (hS : ∀ h, ∀ f ∈ S, rt L n h f ∈ S) (h1 : IsoRep S S') : IsoRep S' S := by
   obtain ⟨T, e⟩ := h1
@@ -62,19 +81,31 @@ theorem IsoRep.symm {S : Submodule ℂ (GAf L n → W)} {S' : Submodule ℂ (GAf
   have : T ⟨rt L n h (T.symm g : GAf L n → W), hS h _ (T.symm g).2⟩ = g' := Subtype.ext key
   rw [← this, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearEquiv.refl ℂ a.W, fun _ _ => rfl⟩`.
+-/
 theorem AlgWt.Iso.refl (a : AlgWt L n) : a.Iso a := ⟨LinearEquiv.refl ℂ a.W, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨T, e⟩` from `h`. Use `⟨T.symm, fun γ x => ?_⟩` and prove the remaining obligations. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, e, LinearEquiv.apply_symm_apply]`.
+-/
 theorem AlgWt.Iso.symm {a b : AlgWt L n} (h : a.Iso b) : b.Iso a := by
   obtain ⟨T, e⟩ := h
   refine ⟨T.symm, fun γ x => ?_⟩
   apply T.injective
   rw [LinearEquiv.apply_symm_apply, e, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Take `⟨T, e⟩` from `h`. Take `⟨T', e'⟩` from `h'`. Conclude with `⟨T.trans T', fun γ x => by simp [e, e']⟩`.
+-/
 theorem AlgWt.Iso.trans {a b c : AlgWt L n} (h : a.Iso b) (h' : b.Iso c) : a.Iso c := by
   obtain ⟨T, e⟩ := h
   obtain ⟨T', e'⟩ := h'
   exact ⟨T.trans T', fun γ x => by simp [e, e']⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨AlgWt.Iso.refl _, IsoRep.refl _⟩ symm h := ⟨h.1.symm, h.2.symm (fun k f hf => (by rename_i x _; exact x.irrS.1.stable k f hf))⟩ trans h h' := ⟨h.1.trans h'.1, h.2.trans h'.2⟩`.
+-/
 theorem AutRep.iso_equivalence : Equivalence (AutRep.Iso (L := L) (n := n)) where
   refl π := ⟨AlgWt.Iso.refl _, IsoRep.refl _⟩
   symm h := ⟨h.1.symm, h.2.symm (fun k f hf => (by rename_i x _; exact x.irrS.1.stable k f hf))⟩

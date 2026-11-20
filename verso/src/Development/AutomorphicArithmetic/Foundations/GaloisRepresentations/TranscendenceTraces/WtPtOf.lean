@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Introduce `hE hC Z S p _ w hw Ω Ω' _ _ _ _ z z' h`. Take `⟨L, _, _, a, a', ha⟩` from `hC Z Ω Ω' z z' h`. Rewrite using `[← hE p w hw Ω L z a, ← hE p w hw Ω' L z' a', ha]`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.wtPt_of :
     WtExt → PtCommon → WtPt := by
   intro hE hC Z S p _ w hw Ω Ω' _ _ _ _ z z' h

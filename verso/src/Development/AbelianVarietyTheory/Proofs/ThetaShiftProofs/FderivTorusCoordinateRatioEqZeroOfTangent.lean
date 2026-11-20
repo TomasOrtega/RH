@@ -9,6 +9,9 @@ open scoped LaurentSeries
 
 namespace GlobalTheory.AbelianLetters
 
+/- English proof (translation)
+Establish `e'` using `congrArg (· z) (h.fderiv_eq (𝕜 := ℂ))`. Rewrite `e'` using `[fderiv_comp_smul, smul_zero, fderiv_fun_mul hu hG, hu0]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, smul_eq_mul, _root_.one_mul] at e'`. Rewrite `e'` using `[e, ← _root_.mul_assoc, mul_inv_cancel₀ hc, _root_.one_mul, left_eq_add, mul_eq_zero]`. Conclude with `e'.resolve_left hG0`.
+-/
 theorem fderiv_eq_zero_of_smul {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {F u G : V → ℂ} {c : ℂ} {z : V}
     (hc : c ≠ 0) (hu : DifferentiableAt ℂ u 0) (hu0 : u 0 = 1) (hG : DifferentiableAt ℂ G 0) (hG0 : G 0 ≠ 0)
     (h : (fun t => F (c • t)) =ᶠ[nhds 0] fun t => u t * G t) (e : fderiv ℂ F 0 z = c⁻¹ * fderiv ℂ G 0 z) :
@@ -19,6 +22,17 @@ theorem fderiv_eq_zero_of_smul {V : Type} [NormedAddCommGroup V] [NormedSpace �
   rw [e, ← _root_.mul_assoc, mul_inv_cancel₀ hc, _root_.one_mul, left_eq_add, mul_eq_zero] at e'
   exact e'.resolve_left hG0
 
+/- English proof (translation)
+Introduce `_ _ D g n ex sB hb _ hpull hadd hol _ hn u hu hud hu0 v ν z hν hv hval x`. Establish `hv'` using `(HolHom.isDerivAt0_iff _ _ _).1 hv`. Establish `hH` using `HolHom.holAt_of_isHolTo hol (Set.mem_univ 0)`. Establish `hp` using `hpull _ _ v (𝟙 _)`. Rewrite `hp` using `[Category.comp_id]`.
+
+Take `⟨j, hj⟩ : ∃ j, ⊤ ≤ (show Sp ℂ ⟶ _ from (ex 0).b.left) ⁻¹ᵁ LB.wchart D.P.L (Out.DegPre.gtφT D D.P.A (sB D.P.A (𝟙 _)).b x) j` from `by choose j hj using fun k => exists_chart D.P.isLB (Out.DegPre.gtφT D D.P.A (sB D.P.A (𝟙 _)).b x k ((show Sp ℂ ⟶ _ from (ex 0).b.left) (default : PrimeSpectrum ℂ)))`. Conclude with `⟨j, (HolHom.le_preimage_iff _ _).2 (Set.mem_iInter.2 hj)⟩`. Establish `hvW` using `(HolHom.le_preimage_dual_iff hv'.1 _).2 hj`. Establish `h1` using `(top_le_wchart_pull hp.1 x j).2 hvW`. Establish `h2` using `(top_le_wchart_pull hν.1 x j).2 (fun p _ => h1 trivial)`.
+
+Establish `e1` using `valR_of_isPull hν x j`. Establish `e2` using `valR_of_isPull hp x j`. Establish `e3` using `HolHom.valR_spMap (epsScaleR ((n : ℂ)⁻¹)) (𝟙 (Sp (DualNumber ℂ))) (LB.wchart D.P.L (Out.DegPre.gtφT D (epsR ℂ) (sB (epsR ℂ) v).b x) j) h1 (((sB (epsR ℂ) v).s x).s j).val`. Rewrite `e3` using `[Category.comp_id]`. Establish `e4` using `congrArg TrivSqZeroExt.snd ((hval x j h2).symm.trans (e1.trans (e3.trans (congrArg _ e2))))`.
+
+Establish `e5 : ∀ a : DualNumber ℂ, TrivSqZeroExt.snd (epsScaleR ((n : ℂ)⁻¹) a) = (n : ℂ)⁻¹ * TrivSqZeroExt.snd a`. Introduce `a`. Simplify using `[epsScaleR]`. Use `replace e4 := e4.trans ((e5 _).trans (congrArg (_ * ·) (hv'.2 _ hj _)))`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add] at e4`.
+
+Take `⟨hev, hd⟩` from `hH _ hj`. Conclude with `fderiv_eq_zero_of_smul (F := fun z' => chiVal (ex z') x j) (Nat.cast_ne_zero.2 hn.ne') (hud x) (hu0 x) (hd (((sB D.P.A (𝟙 _)).s x).s j).val) ((HolHom.valR_eq _ _ hj _).trans_ne ((((sB D.P.A (𝟙 _)).s x).s j).isUnit.map (HolHom.evalHom _ _ hj)).ne_zero) (hev.mono fun z' hz' => hu x …`.
+-/
 theorem fderiv_ratio_eq_zero : ∀ [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (D : Out.DegPre ℂ) (g n : ℕ) (ex : (Fin g → ℂ) → Out.GtPtF D ℂ) (sB : ∀ Tt : Over (Sp ℂ), (Tt ⟶ D.P.A) → Out.GtPt D Tt), (∀ Tt b, (sB Tt b).b = b ^ n) → (∀ Tt b b', Out.GtPt.IsAdd (sB Tt b) (sB Tt b') (sB Tt (b * b'))) → (∀ (Tt Tt' : Over (Sp ℂ)) (h : Tt' ⟶ Tt) b, Out.GtPt.IsPull h.left (sB Tt b) (sB Tt' (h ≫ b))) → (∀ z z', (ex z).IsAdd (ex z') (ex (z + z'))) → IsHolTo Set.univ (fun z => (show Sp ℂ ⟶ _ from (ex z).b.left)) → (∀ x j, DifferentiableOn ℂ (fun z => chiVal (ex z) x j) {z | ⊤ ≤ LB.wchart D.P.L (Out.DegPre.gtφ D ℂ (ex z).b x) j}) → 0 < n → ∀ u : D.X → (Fin g → ℂ) → ℂ, IsRatio ex n (sB D.P.A (𝟙 _)) u → (∀ x, DifferentiableAt ℂ (u x) 0) → (∀ x, u x 0 = 1) → ∀ (v : epsR ℂ ⟶ D.P.A) (ν : Out.GtPt D (epsR ℂ)) (z : Fin g → ℂ), Out.GtPt.IsPull (spMap (epsScaleR ((n : ℂ)⁻¹))) (sB (epsR ℂ) v) ν → IsDerivAt0 (fun z => (show Sp ℂ ⟶ _ from (ex z).b.left)) z v.left → (∀ x j, ⊤ ≤ LB.wchart D.P.L (Out.DegPre.gtφT D (epsR ℂ) ν.b x) j → valR (A := DualNumber ℂ) (𝟙 _) _ ((ν.s x).s j).val = TrivSqZeroExt.inl (chiVal (ex 0) x j) + TrivSqZeroExt.inr (fderiv ℂ (fun z => chiVal (ex z) x j) 0 z)) → ∀ x, fderiv ℂ (u x) 0 z = 0 := by
   intro _ _ D g n ex sB hb _ hpull hadd hol _ hn u hu hud hu0 v ν z hν hv hval x
   have hv' := (HolHom.isDerivAt0_iff _ _ _).1 hv

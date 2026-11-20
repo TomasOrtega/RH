@@ -18,6 +18,11 @@ namespace GlobalTheory.FormalAlg.TowerH1
 variable {R : Type} [CommRing R] {I : Ideal R}
   {Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))}
 
+/- English proof (translation)
+Establish `h : (thick R I e).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) = 0`. Use `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (e + 1)))))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite using `[← this]`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.2 ha]`.
+
+Simplify using `only [AbLaw.cst, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, h, map_zero]`.
+-/
 theorem cst_eq_zero (e : ℕ) (V : (Y e).left.Opens) {a : R} (ha : a ∈ I ^ (e + 1)) :
     AbLaw.cst ((Y e).hom ≫ thick R I e) V a = 0 := by
   have h : (thick R I e).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) = 0 := by
@@ -28,6 +33,13 @@ theorem cst_eq_zero (e : ℕ) (V : (Y e).left.Opens) {a : R} (ha : a ∈ I ^ (e 
     simp [Ideal.Quotient.eq_zero_iff_mem.2 ha]
   simp only [AbLaw.cst, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, h, map_zero]
 
+/- English proof (translation)
+Establish `h : x * y ∈ towerIdeal Y e (I ^ (e + 1)) V`. Establish `h0` using `Ideal.mul_mem_mul hx hy`. Unfold `towerIdeal at h0 ⊢`. Rewrite `h0` using `[← Ideal.map_mul, ← pow_succ']`. Conclude with `h0`.
+
+Establish `hb : towerIdeal Y e (I ^ (e + 1)) V = ⊥`. Unfold `towerIdeal`. Rewrite using `[Ideal.map_eq_bot_iff_le_ker]`. Introduce `a ha`. Conclude with `cst_eq_zero e V ha`.
+
+Rewrite `h` using `[hb]`. Conclude with `h`.
+-/
 theorem mul_eq_zero_of_mem (e : ℕ) (V : (Y e).left.Opens) {x y : Γ((Y e).left, V)}
     (hx : x ∈ towerIdeal Y e I V) (hy : y ∈ towerIdeal Y e (I ^ e) V) : x * y = 0 := by
   have h : x * y ∈ towerIdeal Y e (I ^ (e + 1)) V := by
@@ -43,21 +55,33 @@ theorem mul_eq_zero_of_mem (e : ℕ) (V : (Y e).left.Opens) {x y : Γ((Y e).left
   rw [hb] at h
   exact h
 
+/- English proof (translation)
+Use `mul_eq_zero_of_mem e V hx hy` as an intermediate fact. Rewrite `this` using `[sub_mul]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem mul_eq_mul_of_sub_mem (e : ℕ) (V : (Y e).left.Opens) {x x' y : Γ((Y e).left, V)}
     (hx : x - x' ∈ towerIdeal Y e I V) (hy : y ∈ towerIdeal Y e (I ^ e) V) : x * y = x' * y := by
   have := mul_eq_zero_of_mem e V hx hy
   rw [sub_mul] at this
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+The claim follows from `mul_eq_mul_of_sub_mem e V (Ideal.mem_of_dvd _ (sub_dvd_pow_sub_pow x x' m) hx) hy`.
+-/
 theorem pow_mul_eq_pow_mul_of_sub_mem (e : ℕ) (V : (Y e).left.Opens) {x x' y : Γ((Y e).left, V)}
     (hx : x - x' ∈ towerIdeal Y e I V) (hy : y ∈ towerIdeal Y e (I ^ e) V) (m : ℕ) :
     x ^ m * y = x' ^ m * y :=
   mul_eq_mul_of_sub_mem e V (Ideal.mem_of_dvd _ (sub_dvd_pow_sub_pow x x' m) hx) hy
 
+/- English proof (translation)
+Rewrite using `[pow_mul_eq_pow_mul_of_sub_mem e V hx hy m, one_pow, one_mul]`.
+-/
 theorem pow_mul_eq_of_sub_one_mem (e : ℕ) (V : (Y e).left.Opens) {x y : Γ((Y e).left, V)}
     (hx : x - 1 ∈ towerIdeal Y e I V) (hy : y ∈ towerIdeal Y e (I ^ e) V) (m : ℕ) : x ^ m * y = y := by
   rw [pow_mul_eq_pow_mul_of_sub_mem e V hx hy m, one_pow, one_mul]
 
+/- English proof (translation)
+Unfold `towerIdeal at hx ⊢`. Establish `h1` using `Ideal.mem_map_of_mem (rs (Y e).left h) hx`. Rewrite `h1` using `[Ideal.map_map]`. Establish `h2 : (rs (Y e).left h).comp (AbLaw.cst ((Y e).hom ≫ thick R I e) U) = AbLaw.cst ((Y e).hom ≫ thick R I e) V` using `RingHom.ext fun r => rs_cst _ h r`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem rs_mem (e : ℕ) (J : Ideal R) {U V : (Y e).left.Opens} (h : V ≤ U) {x : Γ((Y e).left, U)}
     (hx : x ∈ towerIdeal Y e J U) : rs (Y e).left h x ∈ towerIdeal Y e J V := by
   unfold towerIdeal at hx ⊢
@@ -67,6 +91,9 @@ theorem rs_mem (e : ℕ) (J : Ideal R) {U V : (Y e).left.Opens} (h : V ≤ U) {x
     RingHom.ext fun r => rs_cst _ h r
   rwa [h2] at h1
 
+/- English proof (translation)
+Establish `hu : IsUnit (rs X (X.basicOpen_le f) f)` using `X.toRingedSpace.isUnit_res_basicOpen f`. Use `hu.map (rs X hb)` as an intermediate fact. Rewrite `this` using `[rs_rs]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_rs_of_le_basicOpen {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (f : Γ(X, U))
     (hb : V ≤ X.basicOpen f) : IsUnit (rs X h f) := by
   have hu : IsUnit (rs X (X.basicOpen_le f) f) := X.toRingedSpace.isUnit_res_basicOpen f
@@ -77,6 +104,9 @@ end GlobalTheory.FormalAlg.TowerH1
 
 namespace GlobalTheory.FormalAlg.TowerH1
 
+/- English proof (translation)
+Simplify using `only [Charts.ev, MvPolynomial.eval₂Hom_X']`.
+-/
 theorem ev_X {R : Type} [CommRing R] {I : Ideal R}
     {Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))}
     {β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left} {n : ℕ} (C : Charts I Y β n) (e : ℕ) (i m : Fin (n + 1)) :
@@ -87,6 +117,37 @@ end GlobalTheory.FormalAlg.TowerH1
 
 open GlobalTheory.FormalAlg.TowerH1 in
 
+/- English proof (translation)
+Introduce `R _ _ I Y β hβ n C`. Set `J : ℕ → Ideal (MvPolynomial (Fin (n + 1)) R)` to `fun e => ⨅ i, RingHom.ker (C.ev e i)`. Establish `hJ : ∀ e F, F ∈ J e ↔ ∀ i, C.ev e i F = 0`. Introduce `e F`. Simplify using `only [J, Ideal.mem_iInf, RingHom.mem_ker]`.
+
+Take `⟨d₀, hd₀⟩` from `GlobalTheory.T.uniform_serre_vanishing_cech_cocycles R I n J (fun e t a F ha _ _ hF => (hJ _ _).2 fun i => GlobalTheory.T.liftedRatios_eval_ideal_mul_eq_zero_succ R I Y β hβ n C e a F i ha ((hJ e F).1 hF i))`. Use `⟨d₀, fun k hk e c hc hcoc => ?_⟩` and prove the remaining obligations. Establish `lev` using `GlobalTheory.T.thickeningTower_liftedRatios_projective_relations R I Y β hβ n C`. Use `choose N₀ hN₀ using fun i j => GlobalTheory.T.exists_homogeneous_form_of_overlap_ideal_pow_thickening R I Y β hβ n C e i j (c i j) (hc i j)`. Set `N` to `Finset.univ.sup (fun p : Fin (n + 1) × Fin (n + 1) => N₀ p.1 p.2)`.
+
+Establish `hN : ∀ i j, N₀ i j ≤ N` using `fun i j => Finset.le_sup (f := fun p : Fin (n + 1) × Fin (n + 1) => N₀ p.1 p.2) (Finset.mem_univ (i, j))`. Use `choose F hFh hFc hFe using fun i j => hN₀ i j N (hN i j) k`. Establish `hFm : ∀ i j, F i j ∈ Ideal.map MvPolynomial.C (I ^ e)` using `fun i j => MvPolynomial.mem_map_C_iff.2 (hFc i j)`. Establish `htri : ∀ i j l, ∃ L : ℕ, ((MvPolynomial.X i : MvPolynomial (Fin (n + 1)) R) * MvPolynomial.X j * MvPolynomial.X l) ^ L * (MvPolynomial.X l ^ N * F i j + MvPolynomial.X i ^ N * F j l - MvPolynomial.X j ^ N * F i l) ∈ J e`. Introduce `i j l`.
+
+Establish `hH : (MvPolynomial.X l ^ N * F i j + MvPolynomial.X i ^ N * F j l - MvPolynomial.X j ^ N * F i l : MvPolynomial (Fin (n + 1)) R).IsHomogeneous (N + (k + 2 * N))` using `(((MvPolynomial.isHomogeneous_X_pow l N).mul (hFh i j)).add ((MvPolynomial.isHomogeneous_X_pow i N).mul (hFh j l))).sub ((MvPolynomial.isHomogeneous_X_pow j N).mul (hFh i l))`. Establish `hHc : ∀ m, MvPolynomial.coeff m (MvPolynomial.X l ^ N * F i j + MvPolynomial.X i ^ N * F j l - MvPolynomial.X j ^ N * F i l : MvPolynomial (Fin (n + 1)) R) ∈ I ^ e` using `MvPolynomial.mem_map_C_iff.1 (sub_mem (add_mem (Ideal.mul_mem_left _ _ (hFm i j)) (Ideal.mul_mem_left _ _ (hFm j l))) (Ideal.mul_mem_left _ _ (hFm i l)))`. Establish `hTij : C.D e i ⊓ C.D e j ⊓ C.D e l ≤ C.D e i ⊓ C.D e j` using `inf_le_left`. Establish `hTil : C.D e i ⊓ C.D e j ⊓ C.D e l ≤ C.D e i ⊓ C.D e l` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Establish `hTjl : C.D e i ⊓ C.D e j ⊓ C.D e l ≤ C.D e j ⊓ C.D e l` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`.
+
+Establish `hTi : C.D e i ⊓ C.D e j ⊓ C.D e l ≤ C.D e i` using `inf_le_left.trans inf_le_left`. Establish `hTj : C.D e i ⊓ C.D e j ⊓ C.D e l ≤ C.D e j` using `inf_le_left.trans inf_le_right`. Establish `h1 : rs (Y e).left hTi (C.ev e i (F i j)) = rs (Y e).left hTi (C.ρ e i j) ^ N * rs (Y e).left hTij (c i j)`. Use `congrArg (rs (Y e).left hTij) (hFe i j)` as an intermediate fact. Simplify `this` using `only [rs_rs, map_mul, map_pow]`.
+
+Establish `h3 : rs (Y e).left hTi (C.ev e i (F i l)) = rs (Y e).left hTi (C.ρ e i l) ^ N * rs (Y e).left hTil (c i l)`. Use `congrArg (rs (Y e).left hTil) (hFe i l)` as an intermediate fact. Simplify `this` using `only [rs_rs, map_mul, map_pow]`. Establish `h2 : rs (Y e).left hTi (C.ev e i (F j l)) = rs (Y e).left hTi (C.ρ e i j) ^ (k + 2 * N) * (rs (Y e).left hTj (C.ρ e j l) ^ N * rs (Y e).left hTjl (c j l))`. Establish `t1` using `congrArg (rs (Y e).left hTij) (GlobalTheory.T.homogeneousForm_chart_change_coeff_ideal_pow R I Y β hβ n C e (k + 2 * N) (F j l) (hFh j l) (hFc j l) i j).2.2`.
+
+Establish `t2` using `congrArg (rs (Y e).left hTjl) (hFe j l)`. Simplify using `only [rs_rs, map_mul, map_pow] at t1 t2`. Rewrite using `[t1, t2]`. Establish `hcjl : rs (Y e).left hTjl (c j l) ∈ towerIdeal Y e (I ^ e) _` using `rs_mem e _ hTjl (hc j l)`. Establish `hP : rs (Y e).left hTi (C.ρ e i i) - 1 ∈ towerIdeal Y e I _`.
+
+Use `rs_mem e I hTi (lev.2.1 e i)` as an intermediate fact. Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis. Establish `hB : rs (Y e).left hTi (C.ρ e i l) - rs (Y e).left hTi (C.ρ e i j) * rs (Y e).left hTj (C.ρ e j l) ∈ towerIdeal Y e I _`. Use `rs_mem e I hTij (lev.2.2 e i j l)` as an intermediate fact. Simplify `this` using `only [map_sub, map_mul, rs_rs]`.
+
+Establish `e1` using `pow_mul_eq_of_sub_one_mem e _ hP hcjl N`. Establish `e2` using `pow_mul_eq_pow_mul_of_sub_mem e _ hB hcjl N`. Establish `hyp` using `hcoc i j l`. Establish `hz : rs (Y e).left hTi (C.ev e i (MvPolynomial.X l ^ N * F i j + MvPolynomial.X i ^ N * F j l - MvPolynomial.X j ^ N * F i l)) = 0`. Simplify using `only [map_add, map_sub, map_mul, map_pow, ev_X]`.
+
+Rewrite using `[h1, h2, h3]`. Take the linear combination `(rs (Y e).left hTi (C.ρ e i j) ^ (k + 2 * N) * rs (Y e).left hTj (C.ρ e j l) ^ N) * e1 - rs (Y e).left hTi (C.ρ e i j) ^ (k + N) * e2 + rs (Y e).left hTi (C.ρ e i j) ^ N * rs (Y e).left hTi (C.ρ e i l) ^ N * hyp`. Take `⟨L, hL⟩` from `GlobalTheory.T.homogeneousForm_killed_by_power_of_tripleChart_product R I Y β hβ n C e _ _ hH hHc i j l hz`. Conclude with `⟨L, (hJ _ _).2 hL⟩`. Take `⟨N', G, hGh, hGc, hrel⟩` from `hd₀ k hk e N F hFh hFc htri`.
+
+Establish `tr` using `fun i j => GlobalTheory.T.homogeneousForm_chart_change_coeff_ideal_pow R I Y β hβ n C e (k + N') (G j) (hGh j) (hGc j) i j`. Use `⟨fun i => C.ev e i (G i), fun i => (tr i i).1, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `hrel i j`. Establish `hl : C.D e i ⊓ C.D e j ≤ C.D e i` using `inf_le_left`. Establish `hr : C.D e i ⊓ C.D e j ≤ C.D e j` using `inf_le_right`.
+
+Establish `h0` using `congrArg (rs (Y e).left hl) ((hJ _ _).1 hL i)`. Simplify using `only [map_mul, map_sub, map_pow, ev_X, map_zero] at h0`. Rewrite `h0` using `[hFe i j, (tr i j).2.2]`. Establish `hci` using `hc i j`. Establish `hai : rs (Y e).left hl (C.ev e i (G i)) ∈ towerIdeal Y e (I ^ e) _` using `rs_mem e _ hl (tr i i).1`.
+
+Establish `haj : rs (Y e).left hr (C.ev e j (G j)) ∈ towerIdeal Y e (I ^ e) _` using `rs_mem e _ hr (tr j j).1`. Establish `hP : rs (Y e).left hl (C.ρ e i i) - 1 ∈ towerIdeal Y e I _`. Use `rs_mem e I hl (lev.2.1 e i)` as an intermediate fact. Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis. Establish `ec` using `pow_mul_eq_of_sub_one_mem e _ hP hci (L + N')`.
+
+Establish `ea` using `pow_mul_eq_of_sub_one_mem e _ hP hai (L + N)`. Establish `eb` using `pow_mul_eq_of_sub_one_mem e _ hP haj (L + N + N')`. Establish `hu : IsUnit (rs (Y e).left hl (C.ρ e i j) ^ (L + N + N'))` using `(isUnit_rs_of_le_basicOpen hl _ (lev.1 e i j).ge).pow _`. Establish `hw : rs (Y e).left hl (C.ρ e i j) ^ (L + N + N') * (c i j - (rs (Y e).left hl (C.ev e i (G i)) - rs (Y e).left hl (C.ρ e i j) ^ k * rs (Y e).left hr (C.ev e j (G j)))) = 0`. Take the linear combination `h0 - rs (Y e).left hl (C.ρ e i j) ^ (L + N + N') * ec + rs (Y e).left hl (C.ρ e i j) ^ (L + N + N') * ea - rs (Y e).left hl (C.ρ e i j) ^ (L + N + N' + k) * eb`.
+
+Conclude with `sub_eq_zero.1 ((hu.mul_right_eq_zero).1 hw)`.
+-/
 theorem GlobalTheory.FormalAlg.towerCech_h1_uniform : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → ∀ (n : ℕ) (C : Charts I Y β n), ∃ k₀ : ℕ, ∀ k, k₀ ≤ k → ∀ e : ℕ, (∀ c : ∀ i j, Γ((Y e).left, C.D e i ⊓ C.D e j), (∀ i j, c i j ∈ towerIdeal Y e (I ^ e) _) → (∀ i j l, rs (Y e).left (inf_le_left : C.D e i ⊓ C.D e j ⊓ C.D e l ≤ C.D e i ⊓ C.D e j) (c i j) + rs (Y e).left (inf_le_left.trans inf_le_left : C.D e i ⊓ C.D e j ⊓ C.D e l ≤ C.D e i) (C.ρ e i j) ^ k * rs (Y e).left (le_inf (inf_le_left.trans inf_le_right) inf_le_right : C.D e i ⊓ C.D e j ⊓ C.D e l ≤ C.D e j ⊓ C.D e l) (c j l) = rs (Y e).left (le_inf (inf_le_left.trans inf_le_left) inf_le_right : C.D e i ⊓ C.D e j ⊓ C.D e l ≤ C.D e i ⊓ C.D e l) (c i l)) → ∃ a : ∀ i, Γ((Y e).left, C.D e i), (∀ i, a i ∈ towerIdeal Y e (I ^ e) _) ∧ ∀ i j, c i j = rs (Y e).left (inf_le_left : C.D e i ⊓ C.D e j ≤ C.D e i) (a i) - rs (Y e).left (inf_le_left : C.D e i ⊓ C.D e j ≤ C.D e i) (C.ρ e i j) ^ k * rs (Y e).left (inf_le_right : C.D e i ⊓ C.D e j ≤ C.D e j) (a j)) := by
   intro R _ _ I Y β hβ n C
   classical

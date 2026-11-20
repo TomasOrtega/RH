@@ -6,6 +6,11 @@ import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSu
 open GlobalTheory.BI
 namespace GlobalTheory.BI
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ G _ _ H ψ h`. Establish `hcl : ∀ a x : H, ψ (x⁻¹ * a * x) = ψ a` using `(GlobalTheory.T.isCharacterOverSubfield_restrict_classFunction_one K L H ψ h).2.1`. Establish `e : ind H ψ = fun g : G => ∑ᶠ q : G ⧸ H, ext0 H ψ (q.out⁻¹ * g * q.out)`. Use function extensionality and compare the values at `(GlobalTheory.T.inducedClassFunctionFromSubgroup_eq_finsum_cosets L G H ψ hcl)`. Rewrite using `[e]`.
+
+Conclude with `GlobalTheory.T.isCharacter_finsum_conj_subgroupFunctionExtendByZero K L G H ψ h`.
+-/
 theorem isChar_ind : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] [CharZero K] [CharZero L]
     (G : Type) [Group G] [Finite G] (H : Subgroup G) (ψ : H → L),
     IsChar K L ψ → IsChar K L (ind H ψ) := by

@@ -9,6 +9,25 @@ open MvPolynomial
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `k _ K _ _ N y a hy ha`. Establish `key : ∀ i : Fin (N + 1), ∃ (e : ℕ) (f : MvPolynomial (Fin (N + 1)) k), f.IsHomogeneous e ∧ a * y i ^ e = aeval y f`. Introduce `i`. Distinguish the cases in `hi : y i = 0`. Conclude with `⟨1, 0, isHomogeneous_zero _ _ _, by simp [hi]⟩`.
+
+Take `⟨f, s, e, hs, hf, hse, hrep⟩` from `ha i hi`. Take `⟨n, rfl⟩` from `exists_eq_X_pow_of_mem_monos_single hs`. Establish `hne : (X i ^ n : MvPolynomial (Fin (N + 1)) k) ≠ 0` using `pow_ne_zero _ (X_ne_zero i)`. Establish `hn : n = e` using `(isHomogeneous_X_pow i n).inj_right hse hne`. Substitute `hn` using the available equality.
+
+Use `⟨n, f, hf, ?_⟩` and prove the remaining obligations. Establish `hyn : y i ^ n ≠ 0` using `pow_ne_zero _ hi`. Rewrite using `[hrep, map_pow, aeval_X, div_mul_cancel₀ _ hyn]`. Use `choose e f hf hrel using key`. Use `set E := ∑ i, e i with hE`.
+
+Set `M : Submodule k K` to `(homogeneousSubmodule (Fin (N + 1)) k E).map (aeval y : MvPolynomial (Fin (N + 1)) k →ₐ[k] K).toLinearMap`. Use `isIntegral_of_smul_mem_submodule M ?_ ((homogeneousSubmodule_fg (Fin (N + 1)) k E).map _) a ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Function.ne_iff.mp hy`. Use `(Submodule.ne_bot_iff M).mpr ⟨y i ^ E, ⟨X i ^ E, ?_, by simp⟩, pow_ne_zero _ hi⟩` and prove the remaining obligations. Conclude with `(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X_pow i E)`.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `hgE : g.IsHomogeneous E` using `(mem_homogeneousSubmodule _ _).mp hg`. Rewrite using `[smul_eq_mul, AlgHom.toLinearMap_apply, g.as_sum, map_sum, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hmE : m.degree = E`.
+
+Assume the negation of the conclusion as `h`. Conclude with `mem_support_iff.mp hm (hgE.coeff_eq_zero h)`. Establish `hsum : ∑ i, e i ≤ ∑ i, m i`. Rewrite using `[← hE, ← hmE, Finsupp.degree_eq_sum]`. Take `⟨i, -, hi⟩` from `Finset.exists_le_of_sum_le Finset.univ_nonempty hsum`.
+
+Use `set m' := m - Finsupp.single i (e i) with hm'`. Establish `hsplit : m' + Finsupp.single i (e i) = m` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr hi)`. Establish `hdeg : m'.degree + e i = E`. Rewrite using `[← hmE, ← hsplit, map_add, Finsupp.degree_single]`. Use `⟨monomial m' (coeff m g) * f i, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(mem_homogeneousSubmodule _ _).mpr ?_` and prove the remaining obligations. Rewrite using `[← hdeg]`. Conclude with `(isHomogeneous_monomial _ rfl).mul (hf i)`. Establish `hmono : (monomial m (coeff m g) : MvPolynomial (Fin (N + 1)) k) = monomial m' (coeff m g) * X i ^ e i`. Rewrite using `[X_pow_eq_monomial, monomial_mul, mul_one, hsplit]`.
+
+Rewrite using `[AlgHom.toLinearMap_apply, map_mul, ← hrel i, hmono, map_mul, map_pow, aeval_X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalFunctionsIntegral.proof : GlobalFunctionsIntegral.Statement := by
   intro k _ K _ _ N y a hy ha
   classical

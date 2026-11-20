@@ -11,9 +11,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.UnipRed
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bc_val {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →+* B) (g : GL (Fin n) A) :
     (Formalism.UG.bc f g : GL (Fin n) B).val = f.mapMatrix g.val := rfl
 
+/- English proof (translation)
+Establish `hU : u.val ^ m = 1` using `by rw [← Units.val_pow_eq_pow_val, hu, Units.val_one]`. Establish `h1 : (u.val - 1) * ∑ j ∈ Finset.range m, u.val ^ j = 0`. Rewrite using `[mul_geom_sum, hU, sub_self]`. Establish `hj : ∀ j : ℕ, S.subtype.mapMatrix (y.val ^ j) = (x⁻¹).val * ι.mapMatrix (u.val ^ j) * x.val`. Introduce `j`.
+
+Establish `h : Formalism.UG.bc S.subtype (y ^ j) = x⁻¹ * Formalism.UG.bc ι (u ^ j) * x`. Rewrite using `[map_pow, map_pow, hxy]`. Simplify using `using conj_pow (a := x⁻¹) (b := Formalism.UG.bc ι u) (i := j)`. Establish `h'` using `congrArg Units.val h`. Rewrite `h'` using `[Units.val_mul, Units.val_mul, bc_val, bc_val, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val]`.
+
+Conclude with `h'`. Establish `hsum : S.subtype.mapMatrix (∑ j ∈ Finset.range m, y.val ^ j) = (x⁻¹).val * ι.mapMatrix (∑ j ∈ Finset.range m, u.val ^ j) * x.val`. Rewrite using `[map_sum, map_sum, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => hj j`. Establish `hY : φ.mapMatrix y.val = 1`.
+
+Rewrite using `[← bc_val, hy, Units.val_one]`. Establish `hk : φ.mapMatrix (∑ j ∈ Finset.range m, y.val ^ j) = (m : k) • 1`. Rewrite using `[map_sum]`. Simplify using `only [map_pow, hY, one_pow, Finset.sum_const, Finset.card_range]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+
+Establish `hd : (∑ j ∈ Finset.range m, u.val ^ j).det ≠ 0`. Introduce `h0`. Establish `h2 : S.subtype (∑ j ∈ Finset.range m, y.val ^ j).det = 0`. Rewrite using `[RingHom.map_det, hsum, Matrix.det_mul, Matrix.det_mul, ← RingHom.map_det, h0, map_zero, mul_zero, zero_mul]`. Establish `h3 : (∑ j ∈ Finset.range m, y.val ^ j).det = 0` using `Subtype.ext h2`.
+
+Establish `h4` using `RingHom.map_det φ (∑ j ∈ Finset.range m, y.val ^ j)`. Rewrite `h4` using `[h3, map_zero, hk, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `(hm.pow _).ne_zero h4.symm`. Establish `hunit : IsUnit (∑ j ∈ Finset.range m, u.val ^ j)` using `(Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit hd)`. Establish `h5 : u.val - 1 = 0` using `(hunit.mul_left_eq_zero).1 h1`.
+
+Conclude with `Units.ext (by rw [Units.val_one]; exact sub_eq_zero.1 h5)`.
+-/
 theorem eq_one_of_reduction_eq_one {E R k : Type} [Field E] [CommRing R] [CommRing k]
     [Nontrivial k] (S : Subring R) (ι : E →+* R) (φ : S →+* k) {n m : ℕ} (hm : IsUnit (m : k))
     (u : GL (Fin n) E) (x : GL (Fin n) R) (y : GL (Fin n) S) (hu : u ^ m = 1)
@@ -55,6 +73,15 @@ theorem eq_one_of_reduction_eq_one {E R k : Type} [Field E] [CommRing R] [CommRi
   have h5 : u.val - 1 = 0 := (hunit.mul_left_eq_zero).1 h1
   exact Units.ext (by rw [Units.val_one]; exact sub_eq_zero.1 h5)
 
+/- English proof (translation)
+Introduce `E R k _ _ _ _ S ι φ p n hp hchar hlt u x y hu hxy hnil`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `Units.ext (Subsingleton.elim _ _)`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Use `haveI : Fact p.Prime := ⟨hp⟩`.
+
+Use `haveI : Nontrivial k := CharP.nontrivial_of_char_ne_one (R := k) hp.ne_one`. Take `⟨a, ha⟩` from `hnil`. Establish `hpa : (Formalism.UG.bc φ y) ^ (p ^ a) = 1`. Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : ((Formalism.UG.bc φ y : GL (Fin n) k).val - 1) ^ (p ^ a) = 0` using `pow_eq_zero_of_le (Nat.lt_pow_self hp.one_lt).le ha`.
+
+Rewrite `h1` using `[sub_pow_char_pow_of_commute p a (Commute.one_right _), one_pow, sub_eq_zero]`. Rewrite using `[Units.val_pow_eq_pow_val, h1, Units.val_one]`. Take `⟨b, m, hm, hbm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hu.orderOf_pos.ne' p hp.ne_one`. Apply `GlobalTheory.BadShare.gl_eq_one_of_pow_prime_pow E n p hp hlt u (a + b)` to reduce the goal to its premises. Use `eq_one_of_reduction_eq_one S ι φ (m := m) ((CharP.isUnit_natCast_iff hp).2 hm) _ x (y ^ p ^ (a + b)) ?_ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← pow_mul, pow_add, mul_assoc, ← hbm, mul_comm, pow_mul, pow_orderOf_eq_one, one_pow]`. Rewrite using `[map_pow, map_pow, hxy]`. Simplify using `using conj_pow (a := x⁻¹) (b := Formalism.UG.bc ι u) (i := p ^ (a + b))`. Rewrite using `[map_pow, pow_add, pow_mul, hpa, one_pow]`.
+-/
 theorem eq_one_of_unipotent_reduction :
     ∀ (E R k : Type) [Field E] [NumberField E] [CommRing R] [CommRing k] (S : Subring R) (ι : E →+* R) (φ : S →+* k) (p n : ℕ), p.Prime → CharP k p → Module.finrank ℚ E * n + 1 < p → ∀ (u : GL (Fin n) E) (x : GL (Fin n) R) (y : GL (Fin n) S), IsOfFinOrder u → Formalism.UG.bc S.subtype y = x⁻¹ * Formalism.UG.bc ι u * x → IsNilpotent ((Formalism.UG.bc φ y : GL (Fin n) k).val - 1) → u = 1 := by
   intro E R k _ _ _ _ S ι φ p n hp hchar hlt u x y hu hxy hnil

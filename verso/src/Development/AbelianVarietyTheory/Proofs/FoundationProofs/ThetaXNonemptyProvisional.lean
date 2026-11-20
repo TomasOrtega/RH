@@ -25,6 +25,9 @@ def coordIncl (a b : ℕ) : (Fin a → E) →ₗ[E] (Fin b → E) where
     simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[Examples₂.diagForm_apply, Examples₂.diagForm_apply, Fin.sum_univ_add]`. Simplify using `[coordIncl]`.
+-/
 theorem coordIncl_isom {a b : ℕ} (h : a ≤ b) (x y : Fin a → E) :
     Examples₂.diagForm b (fun _ => false) (coordIncl a b x) (coordIncl a b y) =
       Examples₂.diagForm a (fun _ => false) x y := by
@@ -36,6 +39,15 @@ end Incl
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Distinguish the cases in `ht : t = D.R.t`. Substitute `ht` using the available equality. Use `⟨D.sp.X, D.sp.Y, D.sp.iXY, D.sp.iX'.comp D.sp.eYm.symm.toLinearMap, fun j hj => D.sp.X_rank j hj, fun j hj => ⟨D.sp.X_sig j, D.sp.X_def j hj⟩, fun j hj => D.sp.Y_rank j hj, fun j _ => D.sp.Y_sig j, fun j hj => D.sp.iXY_isom j hj, ?_, fun _ => ⟨fun _ => rfl, fun _ => rfl⟩⟩` and prove the remaining obligations. Introduce `x y`. Establish `h1` using `D.sp.iX'_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y)`.
+
+Establish `h2` using `D.sp.eYm_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y)`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h2`. Conclude with `h1.trans h2.symm`. Establish `hs : ∀ x : D.host.E, IsIntegral ℤ x → IsIntegral ℤ (star x)` using `Examples₂.star_isIntegral`. Establish `hm` using `D.R.two_le_m`.
+
+Use `⟨fun j => Examples₂.posSpace hs (D.R.k + j * (t + 1)), fun j => Examples₂.posSpace hs (D.R.r + j * t), fun j => coordIncl _ _, coordIncl _ _, fun _ _ => rfl, fun j _ => ⟨Examples₂.posSpace_sigOK hs _, fun _ => Or.inl rfl⟩, fun _ _ => rfl, fun j _ => Examples₂.posSpace_sigOK hs _, …` and prove the remaining obligations. Rewrite using `[mul_add, mul_one]`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_add, mul_one]`.
+
+Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_spaces (D : D7) (t : ℕ) :
     ∃ (X Y : ℕ → HSp D) (i : ∀ j, (X j).V →ₗ[D.host.E] (Y j).V)
       (i' : (Y D.R.m).V →ₗ[D.host.E] (X D.R.m).V),
@@ -71,6 +83,9 @@ end ThetaProv
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D`. Use `choose X Y i i' hXr hXs hYr hYs hi hi' hrec using ThetaProv.exists_spaces D`. Conclude with `⟨{ AF := fun _ => PUnit cusp := fun _ => ⊤ pet := fun _ _ _ => 0 pet_add_left := by intros; simp pet_smul_left := by intros; simp pet_right := fun _ _ => ⟨by intros; simp, by intros; simp⟩ pet_symm := by intros; simp pet_pos := fun _ F h => absurd (Subsingleton.elim _ _) h actR : …`.
+-/
 theorem thetaX_nonempty_provisional : ∀ D : D7, Nonempty (ThetaX D) := by
   intro D
   choose X Y i i' hXr hXs hYr hYs hi hi' hrec using ThetaProv.exists_spaces D

@@ -35,6 +35,9 @@ def sqRep (R : Type) [CommRing R] (N : ℕ) (lam : DomWeight N) :
     apply Subtype.ext
     exact (factSqActMul R N lam g g' f).1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sqRep_coe (R : Type) [CommRing R] (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) R)
     (f : nablaSq R N lam) :
     (sqRep R N lam g f : MvPolynomial (Fin N × Fin N) R) = sqAct R N lam g f := rfl
@@ -58,9 +61,19 @@ instance nontrivial_nablaSq (K : Type) [Field K] (N : ℕ) (lam : DomWeight N) :
 
 def unitaryIncl (n : ℕ) : Matrix.unitaryGroup (Fin n) ℂ →* GL (Fin n) ℂ := Unitary.toUnits
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem unitaryIncl_coe (n : ℕ) (u : Matrix.unitaryGroup (Fin n) ℂ) :
     (unitaryIncl n u : Matrix (Fin n) (Fin n) ℂ) = u := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e : (embGL R n (n + 1) rfl g : Matrix (Fin (n + 1)) (Fin (n + 1)) R) a b = Matrix.fromBlocks (g : Matrix (Fin n) (Fin n) R) 0 0 (1 : Matrix (Fin 1) (Fin 1) R) (finSumFinEquiv.symm a) (finSumFinEquiv.symm b)` using `rfl`. Rewrite using `[e]`. Take `⟨a, rfl⟩` from `finSumFinEquiv.surjective a`. Take `⟨b, rfl⟩` from `finSumFinEquiv.surjective b`.
+
+Simplify using `only [Equiv.symm_apply_apply, EmbeddingLike.apply_eq_iff_eq]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Simplify using `[Subsingleton.elim a b]`.
+-/
 theorem embGL_apply (R : Type) [CommRing R] {n N : ℕ} (h : n + 1 = N) (g : GL (Fin n) R) (a b : Fin N) :
     (embGL R n N h g : Matrix (Fin N) (Fin N) R) a b =
       if hab : a.val < n ∧ b.val < n then (g : Matrix (Fin n) (Fin n) R) ⟨a.val, hab.1⟩ ⟨b.val, hab.2⟩

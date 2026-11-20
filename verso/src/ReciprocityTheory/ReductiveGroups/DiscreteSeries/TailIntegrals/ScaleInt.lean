@@ -7,6 +7,15 @@ open scoped ENNReal
 
 namespace ReciprocityTheory.ChartRestriction.DS.Xi.RankOneLeviIdentities
 
+/- English proof (translation)
+Establish `hg` using `integrable_one_add_norm (μ := μ) hr`. Use `⟨∫ x, (1 + ‖x‖) ^ (-r) ∂μ, integral_nonneg fun x => by positivity, fun a b ha hb => ?_⟩` and prove the remaining obligations. Establish `ht : 0 < a / b` using `div_pos ha hb`. Establish `ha'` using `ha.ne'`. Establish `hb'` using `hb.ne'`.
+
+Establish `hpt : ∀ x : E, (a + b * ‖x‖) ^ (-r) = a ^ (-r) * (1 + ‖(a / b)⁻¹ • x‖) ^ (-r)`. Introduce `x`. Rewrite using `[norm_smul, Real.norm_of_nonneg (inv_nonneg.2 ht.le), ← Real.mul_rpow ha.le (by positivity : (0 : ℝ) ≤ 1 + (a / b)⁻¹ * ‖x‖)]`. Use `congr 1`. Apply the tactic sequence `first | (field_simp; done) | (field_simp; ring)`.
+
+Establish `hF : Integrable (fun x => a ^ (-r) * (1 + ‖(a / b)⁻¹ • x‖) ^ (-r)) μ` using `(hg.comp_smul (inv_ne_zero ht.ne')).const_mul (a ^ (-r))`. Repeatedly rewrite using `[hpt]`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hF (Filter.Eventually.of_forall fun x => mul_nonneg (Real.rpow_nonneg ha.le _) (Real.rpow_nonneg (by positivity) _))]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[integral_const_mul, Measure.integral_comp_smul (μ := μ) (f := fun y => (1 + ‖y‖) ^ (-r)) (R := (a / b)⁻¹), smul_eq_mul, inv_pow, inv_inv, abs_of_pos (pow_pos ht _), Real.rpow_natCast]`.
+
+Conclude with `le_of_eq (by ring)`.
+-/
 theorem scale_int {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] {r : ℝ}
     (hr : (Module.finrank ℝ E : ℝ) < r) :

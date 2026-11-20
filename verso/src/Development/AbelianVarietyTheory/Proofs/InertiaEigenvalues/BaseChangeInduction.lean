@@ -6,6 +6,11 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 
 namespace GlobalTheory.BaseChangeInduction
 
+/- English proof (translation)
+Set `S : Submodule B N` to `{ carrier := {n | p n} zero_mem' := hzero add_mem' := fun {a b} ha hb => hadd a b ha hb smul_mem' := fun r n hn => hsmul r n hn }`. Establish `hq : S.mkQ = 0`. Use `(h (N ⧸ S) 0).unique (fun x => ?_) (fun x => rfl)` and prove the remaining obligations. Conclude with `(Submodule.Quotient.mk_eq_zero S).2 (himg x)`. Establish `hy : S.mkQ y = 0` using `by rw [hq]; rfl`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero S).1 hy`.
+-/
 theorem baseChange_induction {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} (h : GlobalTheory.Prism.SemiBC u)
     (p : N → Prop) (hzero : p 0) (hadd : ∀ y z, p y → p z → p (y + z))

@@ -5,6 +5,13 @@ open scoped Matrix
 
 namespace GlobalTheory.HilbertThetaSeries.IdeleAbs
 
+/- English proof (translation)
+Introduce `h`. Establish `: Finite (𝓞 F ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Use `w.isPrime` as an intermediate fact. Rewrite `h` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' p h`.
+
+Establish `h1 : ((p : ℕ) : 𝓞 F ⧸ w.asIdeal) * x = 0`. Rewrite using `[← nsmul_eq_mul, ← hx, addOrderOf_nsmul_eq_zero]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[addOrderOf_zero]`.
+
+Conclude with `hp.out.one_lt.ne hx`. Establish `h2 : ((p : ℕ) : 𝓞 F ⧸ w.asIdeal) = 0` using `(mul_eq_zero.1 h1).resolve_right hx0`. Apply `hw` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using h2`.
+-/
 theorem not_dvd_absNorm_of_not_mem {F : Type} [Field F] [NumberField F] (p : ℕ) [hp : Fact p.Prime]
     (w : HeightOneSpectrum (𝓞 F)) (hw : ((p : ℕ) : 𝓞 F) ∉ w.asIdeal) : ¬ p ∣ Ideal.absNorm w.asIdeal := by
   intro h
@@ -23,10 +30,22 @@ theorem not_dvd_absNorm_of_not_mem {F : Type} [Field F] [NumberField F] (p : ℕ
   rw [← Ideal.Quotient.eq_zero_iff_mem]
   simpa using h2
 
+/- English proof (translation)
+Rewrite using `[Padic.eq_padicNorm]`. Conclude with `(padicNorm.nat_eq_one_iff N).2 h` after adjusting the coercions.
+-/
 theorem norm_natCast_eq_one (p : ℕ) [Fact p.Prime] (N : ℕ) (h : ¬ p ∣ N) : ‖((N : ℚ) : ℚ_[p])‖ = 1 := by
   rw [Padic.eq_padicNorm]
   exact_mod_cast (padicNorm.nat_eq_one_iff N).2 h
 
+/- English proof (translation)
+Establish `key : ∃ r : ℚ, 0 < r ∧ ‖(r : ℚ_[p])‖ = 1 ∧ (r : ℝ) = absF z`. Use `finprod_induction (fun t : ℝ => ∃ r : ℚ, 0 < r ∧ ‖(r : ℚ_[p])‖ = 1 ∧ (r : ℝ) = t) ⟨1, one_pos, by simp, by simp⟩ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, ha', rfl⟩ ⟨b, hb, hb', rfl⟩`. Conclude with `⟨a * b, mul_pos ha hb, by rw [Rat.cast_mul, norm_mul, ha', hb', one_mul], by rw [Rat.cast_mul]⟩`. Introduce `w`.
+
+Distinguish the cases in `hw : ((p : ℕ) : 𝓞 F) ∈ w.asIdeal`. Use `⟨1, one_pos, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[FinitePlace.norm_def, hz w hw, map_one]`. Simplify using the standard rewrite rules. Establish `hne : Valued.v (pLoc F w (z : Af F)) ≠ 0` using `(Valuation.ne_zero_iff _).2 (z.isUnit.map (pLoc F w)).ne_zero`.
+
+Establish `hN : 0 < Ideal.absNorm w.asIdeal` using `Nat.pos_of_ne_zero fun h0 => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Use `⟨(Ideal.absNorm w.asIdeal : ℚ) ^ (WithZero.unzero hne).toAdd, zpow_pos (by exact_mod_cast hN) _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Rat.cast_zpow, norm_zpow, norm_natCast_eq_one p _ (not_dvd_absNorm_of_not_mem p w hw), one_zpow]`. Rewrite using `[FinitePlace.norm_def, WithZeroMulInt.toNNReal_neg_apply _ hne]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Take `⟨r, h1, h2, h3⟩` from `key`. Conclude with `⟨r, h1, h2, h3.symm⟩`.
+-/
 theorem absF_eq_rat (F : Type) [Field F] [NumberField F] (p : ℕ) [Fact p.Prime] (z : (Af F)ˣ)
     (hz : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal → Valued.v (pLoc F w (z : Af F)) = 1) :
     ∃ r : ℚ, 0 < r ∧ ‖(r : ℚ_[p])‖ = 1 ∧ absF z = r := by

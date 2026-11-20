@@ -9,6 +9,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.SgInf.AeqCont
 
+/- English proof (translation)
+Establish `hm : Measurable (lmulM s : Mt k r → Mt k r)` using `Continuous.measurable (α := Mt k r) (γ := Mt k r) (continuous_const.matrix_mul (continuous_id (X := Mat k r)))`. Use `le_antisymm ?_ bot_le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem null_preimage_lmulM {k r : ℕ} {μG : Measure (Mt k r)} (hμ : IsHaarOn (GG k r) μG)
     {s : Mat k r} (hs : s ∈ GG k r) {N : Set (Mt k r)} (hN : μG N = 0) :
     μG (lmulM s ⁻¹' N) = 0 := by
@@ -23,6 +26,23 @@ theorem null_preimage_lmulM {k r : ℕ} {μG : Measure (Mt k r)} (hμ : IsHaarOn
     _ = μG (toMeasurable μG N) := by rw [hμ.2.2.2 s hs]
     _ = 0 := by rw [measure_toMeasurable, hN]
 
+/- English proof (translation)
+Establish `hH : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1`. Establish `hgrp` using `uHGroup _ _ hH`. Introduce `x0 hx0`. Assume the negation of the conclusion as `hne`. Take `⟨U, hUo, hU⟩` from `(continuousOn_iff'.1 (hf.sub hg)) ({0}ᶜ : Set B) isOpen_compl_singleton`.
+
+Establish `hmemU : ∀ y ∈ GG k r, y ∈ U → f y ≠ g y`. Introduce `y hy hyU h`. Establish `: y ∈ (f - g) ⁻¹' ({0}ᶜ : Set B) ∩ GG k r` using `by rw [hU]; exact ⟨hyU, hy⟩`. Conclude with `this.1 (by simp [h])`. Establish `hx0U : x0 ∈ U`.
+
+Establish `: x0 ∈ (f - g) ⁻¹' ({0}ᶜ : Set B) ∩ GG k r` using `⟨by simpa [sub_eq_zero] using hne, hx0⟩`. Rewrite `this` using `[hU]`. Conclude with `this.1`. Use `set N : Set (Mt k r) := {x | (Matrix.of x : Mat k r) ∈ U ∧ (Matrix.of x : Mat k r) ∈ GG k r} with hNdef`. Establish `hN : μG N = 0`.
+
+Establish `h0 : μG {x | ¬ f (Matrix.of x) = g (Matrix.of x)} = 0` using `ae_iff.1 hfg`. Conclude with `measure_mono_null (fun x hx => hmemU _ hx.2 hx.1) h0`. Set `O : GG k r → Set (Mt k r)` to `fun s => {x | (s.1 * Matrix.of x : Mat k r) ∈ U}`. Establish `hO : ∀ s, IsOpen (O s)` using `fun s => hUo.preimage (continuous_const.matrix_mul (continuous_id (X := Mat k r)))`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable O hO`.
+
+Establish `hcov : {x : Mt k r | (Matrix.of x : Mat k r) ∈ GG k r} ⊆ ⋃ s ∈ T, lmulM s.1 ⁻¹' N`. Introduce `x hx`. Establish `hdet : IsUnit (Matrix.of x : Mat k r).det` using `(hgrp.2.2 _ hx).1`. Establish `hxinv : (Matrix.of x : Mat k r)⁻¹ ∈ GG k r` using `(hgrp.2.2 _ hx).2`. Set `s : GG k r` to `⟨x0 * (Matrix.of x : Mat k r)⁻¹, hgrp.2.1 _ hx0 _ hxinv⟩`.
+
+Establish `hxO : x ∈ ⋃ i, O i` using `Set.mem_iUnion.2 ⟨s, by show x0 * (Matrix.of x : Mat k r)⁻¹ * Matrix.of x ∈ U`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet, Matrix.mul_one]`. Conclude with `hx0U⟩`. Rewrite `hxO` using `[← hT]`. Take `⟨t, htT, hxt⟩` from `Set.mem_iUnion₂.1 hxO`.
+
+Conclude with `Set.mem_iUnion₂.2 ⟨t, htT, hxt, hgrp.2.1 _ t.2 _ hx⟩`. Establish `hG0 : μG {x : Mt k r | (Matrix.of x : Mat k r) ∈ GG k r} = 0` using `measure_mono_null hcov ((measure_biUnion_null_iff hTc).2 fun s _ => null_preimage_lmulM hμ s.2 hN)`. Establish `huniv : μG Set.univ = 0`. Establish `: (Set.univ : Set (Mt k r)) = {x | (Matrix.of x : Mat k r) ∈ GG k r} ∪ {x | (Matrix.of x : Mat k r) ∉ GG k r}`. Apply the tactic sequence `ext x; by_cases h : (Matrix.of x : Mat k r) ∈ GG k r <;> simp [h]`.
+
+Rewrite using `[this]`. Conclude with `measure_union_null hG0 hμ.2.2.1`. Conclude with `hμ.2.1 (Measure.measure_univ_eq_zero.1 huniv)`.
+-/
 theorem eqOn_of_ae (k r : ℕ) {B : Type} [NormedAddCommGroup B] (μG : Measure (Mt k r))
     (f g : Mat k r → B) (hμ : IsHaarOn (GG k r) μG) (hf : ContinuousOn f (GG k r))
     (hg : ContinuousOn g (GG k r))

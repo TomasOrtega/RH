@@ -11,11 +11,19 @@ namespace GlobalTheory.AlgWtHW
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `σ`. Simplify using `only [tauPt, inv_one, Units.val_one, Matrix.transpose_one]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem tauPt_one (τ : L →+* ℂ) : tauPt τ (1 : GL (Fin n) ℂ) = fun _ => 1 := by
   funext σ
   simp only [tauPt, inv_one, Units.val_one, Matrix.transpose_one]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `σ`. Simplify using `only [tauPt]`. Use `split_ifs`. Simplify using the standard rewrite rules. Simplify using `[_root_.mul_inv_rev, Matrix.transpose_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem tauPt_mul (τ : L →+* ℂ) (A B : GL (Fin n) ℂ) :
     tauPt τ (A * B) = fun σ => tauPt τ A σ * tauPt τ B σ := by
   funext σ
@@ -33,6 +41,11 @@ def tauSubst (τ : L →+* ℂ) : (L →+* ℂ) × Fin n × Fin n →
   else if p.1 = ComplexEmbedding.conjugate τ then MvPolynomial.X (Sum.inr (p.2.2, p.2.1))
   else MvPolynomial.C ((1 : Matrix (Fin n) (Fin n) ℂ) p.2.1 p.2.2)
 
+/- English proof (translation)
+Establish `e` using `MvPolynomial.eval₂Hom_bind₁ (RingHom.id ℂ) (Sum.elim (fun p => B.val p.1 p.2) (fun p => (B⁻¹).val p.1 p.2)) (tauSubst τ) Q`. Use `erw [e]`. Use `show MvPolynomial.eval _ Q = MvPolynomial.eval _ Q`. Use `congr 2`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [evPt, tauSubst]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.one_apply, *]`.
+-/
 theorem eval_evPt (τ : L →+* ℂ) (Q : MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ) (B : GL (Fin n) ℂ) :
     MvPolynomial.eval (evPt τ B) Q =
       MvPolynomial.eval (Sum.elim (fun p => B.val p.1 p.2) (fun p => (B⁻¹).val p.1 p.2))
@@ -46,6 +59,13 @@ theorem eval_evPt (τ : L →+* ℂ) (Q : MvPolynomial ((L →+* ℂ) × Fin n �
   simp only [evPt, tauSubst]
   split_ifs <;> simp [Matrix.one_apply, *]
 
+/- English proof (translation)
+Take `⟨h1, hm⟩` from `GlobalTheory.T.algebraicWeight_polyMatrix_multiplicative L n a ι b P h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show evM P (evPt τ 1) = 1`. Rewrite using `[evPt_eq_upt, tauPt_one]`. Conclude with `h1`.
+
+Introduce `A B show evM P (evPt τ (A * B)) = evM P (evPt τ A) * evM P (evPt τ B)`. Rewrite using `[evPt_eq_upt, evPt_eq_upt, evPt_eq_upt, tauPt_mul]`. Conclude with `hm _ _ (isUPt_tauPt τ A) (isUPt_tauPt τ B)`. Introduce `i j`. Use `⟨MvPolynomial.bind₁ (tauSubst τ) (P i j), fun B => ?_⟩` and prove the remaining obligations.
+
+Use `show MvPolynomial.eval (evPt τ B) (P i j) = _`. Conclude with `eval_evPt τ (P i j) B`.
+-/
 theorem isPolyRep_evPt (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : AlgWt L n) (ι : Type)
     [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℂ a.W)
     (P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ) (h : Agrees a b P) (τ : L →+* ℂ) :

@@ -28,6 +28,11 @@ noncomputable def UpperTheory.Reformulated.B.IntertwinerStructure.Intw :
                     Φ) =
           Formalism.FourierDecayAlt.MA.actA P A' (Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.trR P Bs e Φ)
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs e hs ι s A A' h`. Establish `hv : ∀ Φ ρ q, (Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.trR P Bs e Φ ρ).1 q = Formalism.FourierDecayAlt.P.CutMP.Gauge.rawR P Bs.μsec e Φ.1 ρ q` using `fun Φ ρ q => by`. Simplify using `only [Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.trR, Formalism.FourierDecayAlt.MA.toSm, dif_pos (hs Φ ρ)]`. Establish `hh : ∀ X Y : Wq →L[ℂ] Wp, Formalism.FourierDecayAlt.B.hsVec (X + Y) = Formalism.FourierDecayAlt.B.hsVec X + Formalism.FourierDecayAlt.B.hsVec Y` using `fun _ _ => rfl`. Set `T : _ →+ _` to `AddMonoidHom.mk' (Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.trR P Bs e) fun Φ Ψ => funext fun ρ => Subtype.ext <|`.
+
+Use function extensionality and compare the values at `fun q => (hv _ ρ q).trans <| Eq.trans (by simp [Formalism.FourierDecayAlt.P.CutMP.Gauge.rawR, hh, inner_add_right, mul_add]) (congrArg₂ (· + ·) (hv Φ ρ q) (hv Ψ ρ q)).symm`. Use `Finset.sum_induction (p := fun x : _ × _ => UpperTheory.Reformulated.B.IntertwinerStructure.Intw P Bs e x.1 x.2) (fun i => (A i, A' i)) (fun a b ha hb Φ => (T.map_add _ _).trans ((congrArg₂ (· + ·) (ha Φ) (hb Φ)).trans (funext fun ρ => Finset.sum_add_distrib.symm))) (fun Φ => T.m …` and prove the remaining obligations. Simplify `H` using `only [Prod.fst_sum, Prod.snd_sum]`.
+-/
 theorem UpperTheory.Reformulated.B.IntertwinerStructure.intw_sum :
     ∀ {Wp Wq : Type} [inst : NormedAddCommGroup Wp] [inst_1 : InnerProductSpace ℂ Wp] [inst_2 : NormedAddCommGroup Wq]
       [inst_3 : InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [inst_5 : FiniteDimensional ℂ Wq] {P : Formalism.FourierDecayAlt.M.Par}

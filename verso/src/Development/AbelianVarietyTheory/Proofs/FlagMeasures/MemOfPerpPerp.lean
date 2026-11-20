@@ -20,6 +20,11 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 
 omit [StarRing K] in
 
+/- English proof (translation)
+Take `⟨s, _, b, hbv, hsL⟩` from `dualLattice_basis (R := 𝓞 K) Λ hΛ.span_eq_top`. Take `⟨d, hd0, hd⟩` from `dualLattice_denom (R := 𝓞 K) b (Submodule.span (𝓞 K) {v}) (Submodule.fg_span_singleton v)`. Use `⟨d, hd0, (Submodule.span_le.2 ?_) (hd v (Submodule.mem_span_singleton_self v))⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[hbv]`.
+
+Conclude with `hsL i.2`.
+-/
 theorem exists_smul_mem {Λ : Submodule (𝓞 K) V} (hΛ : Submodule.IsLattice K Λ) (v : V) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ d • v ∈ Λ := by
   obtain ⟨s, _, b, hbv, hsL⟩ := dualLattice_basis (R := 𝓞 K) Λ hΛ.span_eq_top
@@ -29,6 +34,9 @@ theorem exists_smul_mem {Λ : Submodule (𝓞 K) V} (hΛ : Submodule.IsLattice K
   rw [hbv]; exact hsL i.2
 
 omit [FiniteDimensional K V] in
+/- English proof (translation)
+Take `⟨r, hr⟩` from `Submodule.mem_one.1 H`. Take `⟨t, ht⟩` from `star_algebraMap_ringOfIntegers_mem_range r`. Conclude with `Submodule.mem_one.2 ⟨t, by rw [ht, hr]; exact hs.eq x y⟩`.
+-/
 theorem swap_mem {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {x y : V} (H : h x y ∈ (1 : Submodule (𝓞 K) K)) :
     h y x ∈ (1 : Submodule (𝓞 K) K) := by
   obtain ⟨r, hr⟩ := Submodule.mem_one.1 H
@@ -36,11 +44,19 @@ theorem swap_mem {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {x y : V} (H
   exact Submodule.mem_one.2 ⟨t, by rw [ht, hr]; exact hs.eq x y⟩
 
 omit [FiniteDimensional K V] [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Rewrite using `[← hs.eq x y, H, map_zero]`.
+-/
 theorem swap_zero {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {x y : V} (H : h x y = 0) : h y x = 0 := by
   rw [← hs.eq x y, H, map_zero]
 
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Establish `: h v ∈ (U.map h).dualCoannihilator.dualAnnihilator`. Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `y hy`. Rewrite `hy` using `[Submodule.mem_dualCoannihilator]`. Conclude with `H y fun u hu => hy _ ⟨u, hu, rfl⟩`.
+
+Rewrite `this` using `[Subspace.dualCoannihilator_dualAnnihilator_eq]`. Take `⟨u, hu, e⟩` from `this`. Establish `: v - u = 0` using `hn.1 _ fun y => by rw [map_sub, e, sub_self, LinearMap.zero_apply]`. Rewrite using `[sub_eq_zero.1 this]` and apply the resulting hypothesis.
+-/
 theorem mem_of_perp_perp {h : V →ₗ⋆[K] V →ₗ[K] K} (hn : h.Nondegenerate) (U : Submodule K V) (v : V)
     (H : ∀ y, (∀ u ∈ U, h u y = 0) → h v y = 0) : v ∈ U := by
   have : h v ∈ (U.map h).dualCoannihilator.dualAnnihilator := by
@@ -53,6 +69,23 @@ theorem mem_of_perp_perp {h : V →ₗ⋆[K] V →ₗ[K] K} (hn : h.Nondegenerat
   have : v - u = 0 := hn.1 _ fun y => by rw [map_sub, e, sub_self, LinearMap.zero_apply]
   rwa [sub_eq_zero.1 this]
 
+/- English proof (translation)
+Set `P : Submodule K V` to `perp h U`. Establish `hP : ∀ y, y ∈ P ↔ ∀ u ∈ U, h u y = 0` using `fun y => by simp [P, perp, Submodule.mem_iInf]`. Set `φ : Λ →ₗ[𝓞 K] (V ⧸ P)` to `(P.mkQ.restrictScalars (𝓞 K)) ∘ₗ Λ.subtype`. Establish `: Module.Finite (𝓞 K) Λ` using `Module.Finite.iff_fg.mpr hΛ.fg`. Establish `: Module.IsTorsionFree (𝓞 K) (V ⧸ P)` using `Module.IsTorsionFree.trans_faithfulSMul (𝓞 K) K _`.
+
+Establish `: Module.FinitePresentation (𝓞 K) (LinearMap.range φ)` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective (𝓞 K) (LinearMap.range φ)` using `Module.Flat.projective_of_finitePresentation`. Take `⟨s, hs'⟩` from `φ.rangeRestrict.exists_rightInverse_of_surjective φ.range_rangeRestrict`. Set `p : Λ →ₗ[𝓞 K] Λ` to `LinearMap.id - s ∘ₗ φ.rangeRestrict`. Establish `hp : ∀ y : Λ, (p y : V) ∈ P` using `fun y => by`.
+
+Establish `e : φ.rangeRestrict (p y) = 0`. Use `LinearMap.congr_fun hs' (φ.rangeRestrict y)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Simplify using `only [p, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, this, sub_self]`. Conclude with `(Submodule.Quotient.mk_eq_zero P).1 (congrArg Subtype.val e)`.
+
+Establish `hp1 : ∀ y : Λ, (y : V) ∈ P → p y = y` using `fun y hy => by`. Establish `e : φ.rangeRestrict y = 0` using `Subtype.ext ((Submodule.Quotient.mk_eq_zero P).2 hy)`. Simplify using `[p, e]`. Set `g : Λ →ₗ[𝓞 K] K` to `((h v).restrictScalars (𝓞 K)) ∘ₗ Λ.subtype ∘ₗ p`. Establish `hg : ∀ y, g y ∈ LinearMap.range (Algebra.linearMap (𝓞 K) K)` using `fun y => Submodule.mem_one.1 (H _ (p y).2 ((hP _).1 (hp y)))`.
+
+Set `f` to `g.codRestrictOfInjective (Algebra.linearMap (𝓞 K) K) (IsFractionRing.injective (𝓞 K) K) hg`. Establish `hf : ∀ y, algebraMap (𝓞 K) K (f y) = h v (p y)` using `fun y => g.codRestrictOfInjective_comp_apply _ _ hg y`. Take `⟨t, _, b, hbv, hsL⟩` from `dualLattice_basis (R := 𝓞 K) Λ hΛ.span_eq_top`. Take `⟨bs, hbs⟩` from `dualLattice_dualBasis h hn b`. Take `⟨d, hd0, hdL⟩` from `dualLattice_denom (R := 𝓞 K) b Λ hΛ.fg`.
+
+Take `⟨w, hw⟩` from `dualLattice_repr h hs b bs hbs Λ (fun i => by rw [hbv]; exact hsL i.2) d hd0 hdL f`. Use `⟨w, ?_, mem_of_perp_perp hn U _ fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu, dualBasic_mem_dual]`. Conclude with `fun y hy => swap_mem hs (Submodule.mem_one.2 ⟨_, (hw y hy).symm⟩)`. Take `⟨c, hc0, hc⟩` from `exists_smul_mem hΛ y`.
+
+Establish `h1` using `hw _ hc`. Rewrite using `[hf, hp1 _ (by`. Express the relevant statement in the definitionally equal form `c • y ∈ P`. Rewrite using `[← algebraMap_smul K c y]`. Conclude with `P.smul_mem _ ((hP y).2 hy))] at h1`.
+
+Express the relevant statement in the definitionally equal form `h w (c • y) = h v (c • y) at h1`. Rewrite `h1` using `[← algebraMap_smul K c y, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Use `mul_left_cancel₀ ((map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hc0) h1` as an intermediate fact. Rewrite using `[map_sub, LinearMap.sub_apply, this, sub_self]`.
+-/
 theorem exists_sub_mem {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hn : h.Nondegenerate)
     {Λ : Submodule (𝓞 K) V} (hΛ : Submodule.IsLattice K Λ) (hu : IsUnimodular h Λ) (U : Submodule K V) (v : V)
     (H : ∀ y ∈ Λ, (∀ u ∈ U, h u y = 0) → h v y ∈ (1 : Submodule (𝓞 K) K)) : ∃ l ∈ Λ, v - l ∈ U := by
@@ -100,6 +133,57 @@ theorem exists_sub_mem {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hn : 
 variable {W : Type} [AddCommGroup W] [Module K W] [FiniteDimensional K W] [Module (𝓞 K) W]
   [IsScalarTower (𝓞 K) K W]
 
+/- English proof (translation)
+Establish `inj` using `IsFractionRing.injective (𝓞 K) K`. Establish `hT' : (T : K) ≠ 0` using `(map_ne_zero_iff _ inj).mpr hT`. Establish `hint : ∀ x ∈ Λ, ∀ y ∈ Λ, h x y ∈ (1 : Submodule (𝓞 K) K)` using `fun x hx y hy => by`. Rewrite `hy` using `[← hu, dualBasic_mem_dual]`. Conclude with `hy x hx`.
+
+Set `U : Submodule K V` to `X ⊔ K ∙ z`. Establish `hU : ∀ v, (∀ u ∈ U, h u v = 0) ↔ (∀ x ∈ X, h x v = 0) ∧ h z v = 0` using `fun v => by`. Use `⟨fun H => ⟨fun x hx => H x (Submodule.mem_sup_left hx), H z (Submodule.mem_sup_right (Submodule.mem_span_singleton_self z))⟩, fun H u hu => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hu`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`.
+
+Simplify using `[LinearMap.map_smulₛₗ, H.1 x hx, H.2]`. Take `⟨g, hg⟩` from `(U.mkQ ∘ₗ ι).exists_leftInverse_of_injective (by`. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Establish `: ι w ∈ U` using `(Submodule.Quotient.mk_eq_zero U).1 hw`.
+
+Conclude with `hn0.1 w fun y => by rw [← hι]; exact (hU _).2 ⟨fun x hx => hXι x hx y, hzι y⟩ _ this)`. Set `π : V →ₗ[K] W` to `g ∘ₗ U.mkQ`. Establish `hπι : ∀ w, π (ι w) = w` using `fun w => LinearMap.congr_fun hg w`. Establish `hπU : ∀ u ∈ U, π u = 0` using `fun u hu => by`. Establish `: U.mkQ u = 0` using `(Submodule.Quotient.mk_eq_zero U).2 hu`.
+
+Simplify using `only [π, LinearMap.comp_apply, this, map_zero]`. Establish `hπX : ∀ x ∈ X, π x = 0` using `fun x hx => hπU x (Submodule.mem_sup_left hx)`. Establish `hπz : π z = 0` using `hπU z (Submodule.mem_sup_right (Submodule.mem_span_singleton_self z))`. Establish `hF : ∀ v, (∀ x ∈ X, h x v = 0) → v + (h z v / T) • z - ι (π v) ∈ X` using `fun v hv => by`. Take `⟨w, hw⟩` from `hsp (v + (h z v / T) • z) (fun x hx => by simp [hv x hx, hXz x hx]) (by rw [map_add, map_smul, hz, smul_eq_mul]; field_simp; ring)`.
+
+Use `hπX _ hw` as an intermediate fact. Rewrite `this` using `[map_sub, map_add, map_smul, hπz, smul_zero, add_zero, hπι, sub_eq_zero]`. Rewrite using `[this]` and apply the resulting hypothesis. Establish `hperp : ∀ {w l}, ι w - l ∈ U → ∀ x ∈ X, h x l = 0` using `fun {w l} H x hx => by`. Use `swap_zero hs ((hU x).2 ⟨fun y hy => hXX y hy x hx, swap_zero hs (hXz x hx)⟩ _ H)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, hXι x hx, zero_sub, neg_eq_zero]`. Then use the resulting hypothesis. Establish `hpair : ∀ y ∈ L, ∀ l ∈ Λ, (∀ x ∈ X, h x l = 0) → h0 y (π l) ∈ (1 : Submodule (𝓞 K) K)`. Introduce `y hy l hl hlX`. Take `⟨l', hl', e⟩` from `(hL y).1 hy`. Establish `e1` using `swap_zero hs (hXι _ (hF l hlX) y)`.
+
+Establish `e2` using `hlX _ e`. Rewrite `e1` using `[map_sub, map_add, map_smul, swap_zero hs (hzι y), smul_zero, add_zero, hι, sub_eq_zero]`. Rewrite `e2` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Rewrite using `[← e1, e2]`. Conclude with `hint _ hl' _ hl`.
+
+Establish `hπl : ∀ {w l}, ι w - l ∈ U → π l = w` using `fun {w l} H => by`. Use `hπU _ H` as an intermediate fact. Rewrite `this` using `[map_sub, hπι, sub_eq_zero]`. Conclude with `this.symm`. Use `⟨⟨⟨?_, ?_⟩, fun x hx y hy => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `(hΛ.fg.map (π.restrictScalars (𝓞 K))).of_le fun w hw => ?_` and prove the remaining obligations. Take `⟨l, hl, e⟩` from `(hL w).1 hw`. Conclude with `⟨l, hl, hπl (Submodule.mem_sup_left e)⟩`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
+
+Take `⟨d, hd0, hd⟩` from `exists_smul_mem hΛ (ι w)`. Establish `h1 : d • w ∈ L` using `(hL _).2 ⟨_, hd, by`. Rewrite using `[← algebraMap_smul K d w, map_smul, algebraMap_smul, sub_self]`. Conclude with `X.zero_mem⟩`. Establish `h2` using `Submodule.smul_mem _ (algebraMap (𝓞 K) K d)⁻¹ (Submodule.subset_span (R := K) h1)`.
+
+Rewrite `h2` using `[← algebraMap_smul K d w, inv_smul_smul₀ ((map_ne_zero_iff _ inj).mpr hd0)]`. Then use the resulting hypothesis. Take `⟨l, hl, e⟩` from `(hL y).1 hy`. Rewrite using `[← hπl (Submodule.mem_sup_left e)]`. Conclude with `hpair x hx l hl (hperp (Submodule.mem_sup_left e))`. Set `A : Submodule (𝓞 K) V` to `Λ ⊓ (perp h X).restrictScalars (𝓞 K)`.
+
+Establish `hA : ∀ y, y ∈ A ↔ y ∈ Λ ∧ ∀ x ∈ X, h x y = 0` using `fun y => by simp [A, perp, Submodule.mem_iInf]`. Set `f1 : A →ₗ[𝓞 K] dual h0 L` to `((π.restrictScalars (𝓞 K)) ∘ₗ A.subtype).codRestrict _ fun l => by`. Rewrite using `[dualBasic_mem_dual]`. Conclude with `fun y hy => hpair y hy l ((hA _).1 l.2).1 ((hA _).1 l.2).2`. Establish `s1 : Function.Surjective f1` using `fun w => by`.
+
+Take `⟨l, hl, e⟩` from `exists_sub_mem hs hn hΛ hu U (ι w) fun y hy hyU => by`. Take `⟨a, b⟩` from `(hU y).1 hyU`. Establish `e` using `hF y a`. Rewrite `e` using `[b, zero_div, zero_smul, add_zero]`. Establish `e1` using `hXι _ e w`.
+
+Rewrite `e1` using `[map_sub, LinearMap.sub_apply, sub_eq_zero, hι]`. Use `swap_mem hs ?_` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `(dualBasic_mem_dual h0 L w).1 w.2 _ ((hL _).2 ⟨y, hy, by simpa using X.neg_mem e⟩)`. Conclude with `⟨⟨l, (hA _).2 ⟨hl, hperp e⟩⟩, Subtype.ext (hπl e)⟩`.
+
+Set `g2 : A →ₗ[𝓞 K] K` to `((h z).restrictScalars (𝓞 K)) ∘ₗ A.subtype`. Establish `hg2 : ∀ y, g2 y ∈ LinearMap.range (Algebra.linearMap (𝓞 K) K)` using `fun y => Submodule.mem_one.1 (hint _ hzΛ _ ((hA _).1 y.2).1)`. Set `f2` to `g2.codRestrictOfInjective (Algebra.linearMap (𝓞 K) K) inj hg2`. Establish `hf2 : ∀ y, algebraMap (𝓞 K) K (f2 y) = h z y` using `fun y => g2.codRestrictOfInjective_comp_apply _ _ hg2 y`. Establish `s2 : Function.Surjective f2`.
+
+Rewrite using `[← LinearMap.range_eq_top]`. Assume the negation of the conclusion as `hne`. Establish `hbot : (LinearMap.range f2 : Ideal (𝓞 K)) ≠ ⊥` using `fun e => by`. Establish `: f2 ⟨z, (hA _).2 ⟨hzΛ, hXz⟩⟩ = 0` using `(Submodule.eq_bot_iff _).1 e _ ⟨_, rfl⟩`. Establish `h2` using `hf2 ⟨z, (hA _).2 ⟨hzΛ, hXz⟩⟩`.
+
+Rewrite `h2` using `[this, map_zero, hz]`. Conclude with `hT' (neg_eq_zero.1 h2.symm)`. Take `⟨γ, hγ, hγ1⟩` from `FractionalIdeal.exists_notMem_one_of_ne_bot (K := K) hbot hne`. Rewrite `hγ` using `[FractionalIdeal.mem_inv_iff (FractionalIdeal.coeIdeal_ne_zero.2 hbot)]`. Take `⟨o, ho⟩` from `hprim (star γ) (exists_sub_mem hs hn hΛ hu X _ fun y hy hyX => by`.
+
+Use `hγ _ (FractionalIdeal.mem_coeIdeal_of_mem _ ⟨⟨y, (hA _).2 ⟨hy, hyX⟩⟩, rfl⟩)` as an intermediate fact. Rewrite `this` using `[hf2, FractionalIdeal.mem_one_iff]`. Rewrite using `[LinearMap.map_smulₛₗ, starRingEnd_apply, star_star, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Submodule.mem_one.2 this)`. Take `⟨t, ht⟩` from `star_algebraMap_ringOfIntegers_mem_range o`.
+
+Use `hγ1 ((FractionalIdeal.mem_one_iff _).2 ⟨t, ?_⟩)` and prove the remaining obligations. Rewrite using `[ht]`. Express the relevant statement in the definitionally equal form `star (o : K) = γ`. Rewrite using `[ho, star_star]`. Establish `hker : LinearMap.ker ((L.comap (dual h0 L).subtype).mkQ ∘ₗ f1) = LinearMap.ker ((Ideal.span {T}).mkQ ∘ₗ f2)`.
+
+Use extensionality with `l`. Simplify using `only [LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton']`. Express the relevant statement in the definitionally equal form `π l ∈ L ↔ _`. Take `⟨a, b⟩` from `(hA _).1 l.2`. Establish `e` using `hF l b`.
+
+Rewrite using `[hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l', hl', e'⟩`. Take `⟨o, ho⟩` from `hprim (h z l / T) ⟨l' - l, Λ.sub_mem hl' a, by`. Use `X.add_mem e e' using 1` and compare the differences between its conclusion and the goal.
+
+Use the proof step `abel⟩`. Use `⟨o, inj ?_⟩` and prove the remaining obligations. Rewrite using `[hf2, map_mul]`. Express the relevant statement in the definitionally equal form `(o : K) * T = _`. Rewrite using `[ho, div_mul_cancel₀ _ hT']`.
+
+Introduce and unpack `⟨o, ho⟩`. Establish `h1 : h z l / T = algebraMap (𝓞 K) K o`. Rewrite using `[← hf2, ← ho, map_mul]`. Conclude with `mul_div_cancel_right₀ _ hT'`. Rewrite `e` using `[h1, algebraMap_smul]`.
+
+Conclude with `⟨_, Λ.add_mem a (Λ.smul_mem o hzΛ), by simpa using X.neg_mem e⟩`. Conclude with `⟨(LinearMap.quotKerEquivOfSurjective ((L.comap (dual h0 L).subtype).mkQ ∘ₗ f1) ((Submodule.mkQ_surjective _).comp s1)).symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hker ≪≫ₗ LinearMap.quotKerEquivOfSurjective ((Ideal.span {T}).mkQ ∘ₗ f2) ((Submodule.mkQ_surjective _).comp s2)⟩`.
+-/
 theorem perp_lattice {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hn : h.Nondegenerate)
     {h0 : W →ₗ⋆[K] W →ₗ[K] K} (hn0 : h0.Nondegenerate) (ι : W →ₗ[K] V) (hι : ∀ x y, h (ι x) (ι y) = h0 x y)
     (X : Submodule K V) (z : V) (T : 𝓞 K) (hT : T ≠ 0) (hz : h z z = -(T : K))
@@ -242,6 +326,25 @@ theorem perp_lattice {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hn : h.
 
 end General
 
+/- English proof (translation)
+Introduce `D u`. Use `letI := D.host.cmStar`. Introduce `F0 he hz`. Establish `hm : 0 < D.R.m` using `lt_of_lt_of_le (by norm_num) D.R.two_le_m`. Use `⟨⟨fun τ v hv => ?_, ?_⟩, fun Λ hΛ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `D.sp.X_sig 0 τ`. Rewrite `h1` using `[baseSpace_posDef D.R D.host.F D.sp τ]`. Establish `h2` using `Formalism.UG.P.stdform_sig_pos _ h1 (fun k => τ ((D.sp.X 0).frame.repr v k)) fun e => hv (by`. Apply `(D.sp.X 0).frame.repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => ?_` and prove the remaining obligations.
+
+Simplify using `using congrFun e k)`. Rewrite using `[hT_expand]`. Simplify using `only [map_sum, map_mul, D.sp.cm.cmUnram.2.1 τ]`. Conclude with `h2`. Rewrite using `[(D.sp.X 0).rank_eq, D.sp.X_rank 0 (Nat.zero_le _)]`.
+
+Simplify using `[Ranks.N]`. Establish `hT : Lat.Tu D u ≠ 0` using `fun e => by`. Establish `h1` using `D.cOf_eq u`. Rewrite `h1` using `[← D.sp_T, show (D.mem u).A.T = 0 from e, Nat.cast_zero, mul_zero]`. Conclude with `D.sp.T_prime.ne_zero (Nat.cast_eq_zero.1 h1.symm)`.
+
+Take `⟨-, ⟨h1, h2, h3, -, h4⟩, -⟩` from `hΛ`. Establish `hW` using `(Formalism.MainNotions.WHyp_Wsp D u hT (lf D F0) he hz).1`. Establish `hs` using `(D.sp.Y 0).herm`. Establish `hXp : ∀ v, (∀ x ∈ F0.X, (D.sp.Y 0).hT x v = 0) → (D.sp.Y 0).hT F0.z v = 0 → v ∈ Lat.orth (D.sp.Y 0) F0.Xplus` using `fun v a b => (Formalism.MainNotions.mem_orth_iff _ _).2 (Formalism.MainNotions.hT_zero_of_mem_Xplus F0 (fun i => a _ (Submodule.subset_span ⟨i, rfl⟩)) b)`. Establish `hι : ∀ w, ∀ x ∈ F0.Xplus, (D.sp.Y 0).hT x (D.sp.iXY 0 w) = 0` using `fun w => (Formalism.MainNotions.mem_orth_iff _ _).1 (hW.le (Submodule.mem_sup_left ⟨w, rfl⟩))`.
+
+Establish `hXX : ∀ y ∈ F0.X, ∀ x ∈ F0.Xplus, (D.sp.Y 0).hT x y = 0` using `fun y hy => (Formalism.MainNotions.mem_orth_iff _ _).1 (Formalism.MainNotions.X_le_orth_Xplus F0 hy)`. Establish `hzp : F0.z ∈ F0.Xplus` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Establish `hsub : ∀ v, (∀ x ∈ F0.X, (D.sp.Y 0).hT x v = 0) → (v ∈ Lat.Lsub Λ (lf D F0) ↔ ∃ l ∈ Λ, v - l ∈ F0.X)` using `fun v hv => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, -⟩`.
+
+Take `⟨l, hl, x, hx, rfl⟩` from `Submodule.mem_sup.1 a`. Conclude with `⟨l, hl.1, by simpa using hx⟩`. Introduce and unpack `⟨l, hl, e⟩`. Use `⟨Submodule.mem_sup.2 ⟨l, ⟨hl, (Formalism.MainNotions.mem_orth_iff _ _).2 fun x hx => ?_⟩, v - l, e, by abel⟩, (Formalism.MainNotions.mem_orth_iff _ _).2 hv⟩` and prove the remaining obligations. Use `hXX _ e x (Submodule.mem_sup_left hx)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, hv x hx, zero_sub, neg_eq_zero]`. Then use the resulting hypothesis. Establish `hXz : ∀ x ∈ F0.X, (D.sp.Y 0).hT x F0.z = 0` using `fun x hx => swap_zero hs (hXX x hx _ hzp)`. Use `perp_lattice hs (D.sp.Y 0).nondeg (D.sp.X 0).nondeg (D.sp.iXY 0) (D.sp.iXY_isom 0 hm) F0.X F0.z _ (Nat.cast_ne_zero.2 hT) (by rw [F0.z_norm]; simp) (fun x hx y hy => hXX y hy x (Submodule.mem_sup_left hx)) hXz (fun x hx w => hι w x (Submodule.mem_sup_left hx)) (fun w => hι w _ hz …` and prove the remaining obligations. Take `⟨_, ⟨w, rfl⟩, x, hx, rfl⟩` from `Submodule.mem_sup.1 (hW.ge (hXp v a b))`. Conclude with `⟨w, by simpa using hx⟩`.
+
+Rewrite using `[← hsub _ fun x hx => hι w x (Submodule.mem_sup_left hx)]`. Conclude with `⟨fun a => a.1, fun a => ⟨a, hι w _ hzp⟩⟩`.
+-/
 theorem main : ∀ (D : D7) (u : D.what₂.Word), letI := D.host.cmStar; ∀ F0 : FlagG (VS D) D.R.rS ((Lat.Tu D u : ℕ) : D.host.E), F0.e = D.sp.hypE → F0.z = D.zmOf u → (PD (D.sp.X 0).hT ∧ Module.finrank D.host.E (D.sp.X 0).V = D.R.k) ∧ ∀ Λ : Cnt.LatV D, IsRowLat D F0 Λ → IsIntLat (D.sp.X 0).hT (Lat.L0X D Λ (lf D F0)) ∧ Nonempty ((↥(dual (D.sp.X 0).hT (Lat.L0X D Λ (lf D F0))) ⧸ (Lat.L0X D Λ (lf D F0)).comap (dual (D.sp.X 0).hT (Lat.L0X D Λ (lf D F0))).subtype) ≃ₗ[𝓞 D.host.E] (𝓞 D.host.E ⧸ Ideal.span {((Lat.Tu D u : ℕ) : 𝓞 D.host.E)})) := by
   intro D u
   letI := D.host.cmStar

@@ -10,5 +10,8 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.QuasiPlurisubhar
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ExtLogGrowth.extension_of_log_growth | exact GlobalTheory.ExtLogGrowth.extension_of_log_growth | (intros; apply GlobalTheory.ExtLogGrowth.extension_of_log_growth <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.extension_statement : GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.Extension := by
   first | exact @GlobalTheory.ExtLogGrowth.extension_of_log_growth | exact GlobalTheory.ExtLogGrowth.extension_of_log_growth | (intros; apply GlobalTheory.ExtLogGrowth.extension_of_log_growth <;> assumption)

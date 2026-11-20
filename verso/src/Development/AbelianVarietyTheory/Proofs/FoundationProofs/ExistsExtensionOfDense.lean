@@ -5,6 +5,29 @@ open scoped BigOperators
 
 namespace GlobalTheory.FinWeil
 
+/- English proof (translation)
+Use `choose b hb0 hb using hβ`. Establish `hb' : ∀ x (n : ℕ), b x ∣ n → ∀ a ∈ A, β x (n • a) = 1 ∧ β (n • a) x = 1`. Introduce and unpack `x n ⟨k, rfl⟩ a ha`. Rewrite using `[mul_smul]`. Conclude with `hb x _ (A.nsmul_mem ha k)`.
+
+Establish `hex : ∀ (x : X) (v : M), ∃ G : M, ∃ m : ℕ, 0 < m ∧ ∀ n : ℕ, m ∣ n → ∀ z, ∀ a ∈ A, ι z = x + n • a → W₀ z v = G`. Introduce `x v`. Take `⟨m, hm0, hm⟩` from `hs v`. Take `⟨z₁, a₁, ha₁, hz₁⟩` from `hd x (m * b x) (Nat.mul_pos hm0 (hb0 x))`. Use `⟨W₀ z₁ v, m * b x, Nat.mul_pos hm0 (hb0 x), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `n ⟨k, rfl⟩ z a ha hz`. Rewrite `hz` using `[mul_smul]`. Establish `ha' : k • a ∈ A` using `A.nsmul_mem ha k`. Establish `hsub : a₁ - k • a ∈ A` using `A.sub_mem ha₁ ha'`. Establish `hιd : ι (z₁ - z) = (m * b x) • (a₁ - k • a)`.
+
+Rewrite using `[map_sub, hz₁, hz, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `h1 : W₀ (z₁ - z) v = v` using `hm _ ⟨b x • (a₁ - k • a), A.nsmul_mem hsub _, by rw [hιd, mul_smul]⟩`. Establish `h2` using `hW z (z₁ - z) v`. Rewrite `h2` using `[h1, hιd, hz, hl, (hb' x _ (Dvd.intro_left m rfl) _ hsub).1, hA _ (A.nsmul_mem ha' _) _ (A.nsmul_mem hsub _), add_sub_cancel]`.
+
+Simplify using `using h2`. Use `choose val lev hlev0 hlev using hex`. Use `⟨fun x => { toFun := val x map_add' := ?_ map_smul' := ?_ }, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v w`. Take `⟨z, a, ha, hz⟩` from `hd x (lev x v * lev x w * lev x (v + w)) (Nat.mul_pos (Nat.mul_pos (hlev0 _ _) (hlev0 _ _)) (hlev0 _ _))`.
+
+Rewrite using `[← hlev x v _ ⟨lev x w * lev x (v + w), by ring⟩ z a ha hz, ← hlev x w _ ⟨lev x v * lev x (v + w), by ring⟩ z a ha hz, ← hlev x (v + w) _ ⟨lev x v * lev x w, by ring⟩ z a ha hz, map_add]`. Introduce `c v`. Take `⟨z, a, ha, hz⟩` from `hd x (lev x v * lev x (c • v)) (Nat.mul_pos (hlev0 _ _) (hlev0 _ _))`. Rewrite using `[← hlev x v _ ⟨lev x (c • v), by ring⟩ z a ha hz, ← hlev x (c • v) _ ⟨lev x v, by ring⟩ z a ha hz, map_smul, RingHom.id_apply]`. Introduce `z`.
+
+Use extensionality with `v`. Conclude with `(hlev (ι z) v _ dvd_rfl z 0 A.zero_mem (by simp)).symm`. Introduce `x y v`. Express the relevant statement in the definitionally equal form `val x (val y v) = β x y • val (x + y) v`. Take `⟨n, hn0, h1, h2, h3, h4, h5⟩ : ∃ n : ℕ, 0 < n ∧ lev x (val y v) ∣ n ∧ lev y v ∣ n ∧ lev (x + y) v ∣ n ∧ b x ∣ n ∧ b y ∣ n` from `⟨lev x (val y v) * lev y v * lev (x + y) v * b x * b y, Nat.mul_pos (Nat.mul_pos (Nat.mul_pos (Nat.mul_pos (hlev0 _ _) (hlev0 _ _)) (hlev0 _ _)) (hb0 _)) (hb0 _), ⟨lev y v * lev (x + y) v * b x * b y, by ring⟩, ⟨lev x (val y v) * lev (x + y) v * b x * b y, by ring⟩, ⟨lev x (val y …`.
+
+Take `⟨z, a, ha, hz⟩` from `hd x n hn0`. Take `⟨w, c, hc, hw⟩` from `hd y n hn0`. Establish `hzw : ι (z + w) = x + y + n • (a + c)`. Rewrite using `[map_add, hz, hw, smul_add]`. Normalize the expressions using the abelian group laws.
+
+Establish `hβzw : β (ι z) (ι w) = β x y`. Rewrite using `[hz, hw, hl, hr, hr, (hb' x n h4 c hc).1, (hb' y n h5 a ha).2, hA _ (A.nsmul_mem ha n) _ (A.nsmul_mem hc n)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hlev x (val y v) n h1 z a ha hz, ← hlev (x + y) v n h3 (z + w) _ (A.add_mem ha hc) hzw, ← hlev y v n h2 w c hc hw, hW, hβzw]`. Introduce `x v`.
+
+Use `⟨lev x v, hlev0 _ _, fun a ha => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `val (x + lev x v • a) v = val x v`. Take `⟨z, c, hc, hz⟩` from `hd (x + lev x v • a) (lev x v * lev (x + lev x v • a) v) (Nat.mul_pos (hlev0 _ _) (hlev0 _ _))`. Rewrite using `[← hlev _ v _ (Dvd.intro_left _ rfl) z c hc hz]`. Use `hlev x v _ dvd_rfl z (a + lev (x + lev x v • a) v • c) (A.add_mem ha (A.nsmul_mem hc _)) ?_` and prove the remaining obligations.
+
+Rewrite using `[hz, smul_add, mul_smul, add_assoc]`.
+-/
 theorem exists_extension_of_dense {X₀ X M : Type} [AddCommGroup X₀] [AddCommGroup X]
     [AddCommGroup M] [Module ℂ M] (ι : X₀ →+ X) (A : AddSubgroup X) (β : X → X → ℂ)
     (W₀ : X₀ → M →ₗ[ℂ] M)

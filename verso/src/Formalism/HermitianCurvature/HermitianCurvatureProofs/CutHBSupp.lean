@@ -20,12 +20,32 @@ def ProperDomP : Prop :=
     (j : ℕ) (hj : j ≤ P.r) (Cs : Set (B.Mat P.k P.r)), IsCompact Cs →
     PartialBesselProperness.Proper (p.T.bs j) p.T.base (by omega : j + (P.r - j) = P.r) Cs (domP P.k P.r j p.T.base.z p.T.base.z')
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [zxH]`.
+-/
 theorem zxH_rfl (h : C.LPt) (v : XH h) : zxH h (D.ptSize h) rfl v = LeftFubiniLemmas.lhOf (D.ptPerm h) v *
     U.hMat (D.ptPerm h) (D.ptDiag h) := by
   first
   | rfl
   | simp [zxH]
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hF hw hγ hΩ K _ hK0`. Take `⟨hh1, hh2⟩` from `hh`. Substitute `hh2` using the available equality. Establish `hhh : D.IsLocPt h (D.ptSize h)` using `⟨hh1, rfl⟩`. Take `⟨R, hR⟩` from `hF.2.1`.
+
+Use `set Cs : Set (B.Mat P.k P.r) := {g | B.gN g ≤ R} with hCs`. Establish `hCc : IsCompact Cs` using `Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le P.k P.r R`. Establish `e : D.ptSize h + (P.r - D.ptSize h) = P.r` using `by omega`. Establish `hd : ∀ i, D.ptDiag h i ≠ 0` using `ptDiag_ne hhh`. Establish `hR1 : ∀ ew : Wd.Ix (Fin w.length), ∃ R1 : ℝ, ∀ v : XH h, R1 < ‖v‖ → ∀ g ∈ B.GV P.k P.r, U.Zh P.k (D.ptSize h) (P.r - D.ptSize h) (D.castM e.symm g) = LeftFubiniLemmas.lhOf (D.ptPerm h) v * U.hMat (D.ptPerm h) (D.ptDiag h) → pbF (p.T.bs (D.ptSize h)) p.T.base e (D.uwG P.k P.r p.T. …`.
+
+Introduce `ew`. Use `pb_head_support (p.T.bs (D.ptSize h)) p.T.base e (D.ptPerm h) (D.ptDiag h) hd _ Cs hCc ?_` and prove the remaining obligations. Introduce `g hg hgC`. Assume the negation of the conclusion as `hne`. Conclude with `hgC (Formalism.FourierDecayAlt.P.PBG.uwG_supp p.T.base.z p.T.base.z' F R hR (D.ptSize h) (by omega) w ew g hg hne)`.
+
+Use `choose R1 hR1 using hR1`. Use `⟨⋃ ew, Metric.closedBall (0 : XH h) (R1 ew), isCompact_iUnion fun ew => isCompact_closedBall _ _, fun v hv τ hτK ew => ?_⟩` and prove the remaining obligations. Establish `hτ : τ ≠ 0` using `hK0 hτK`. Establish `hvR : R1 ew < ‖v‖`. Assume the negation of the conclusion as `hle`.
+
+Establish `hle : ‖v‖ ≤ R1 ew` using `not_lt.mp hle`. Conclude with `hv (Set.mem_iUnion.2 ⟨ew, by rw [Metric.mem_closedBall, dist_zero_right]; exact hle⟩)`. Establish `hpt` using `pts Wp Wq P p (D.ptSize h) hj h hhh γ hγ hΩ v`. Establish `hyD` using `hpt.2 τ hτ`. Establish `hyG` using `x0_GV hj hpt.1 hτ hγ`.
+
+Establish `hz : p.T.base.z = D.castV e (liftVec P.k (D.ptSize h) (P.r - D.ptSize h) (p.T.bs (D.ptSize h)).z)` using `(p.T.z_lev (D.ptSize h) (by omega)).symm`. Establish `hPW` using `hW P.k (D.ptSize h) (P.r - D.ptSize h) P.r Wp Wq (p.T.bs (D.ptSize h)) p.T.base e hz (D.ptSize h) (by omega) F Cs (fun g hg _ => hF.1 g hg) hCc (fun g hg hgC => by`. Assume the negation of the conclusion as `hne`. Conclude with `hgC (hR g hg hne))`. Use the proof step `(domP P.k P.r (D.ptSize h) p.T.base.z p.T.base.z') (isOpen_domP _ _ _ _ _)`.
+
+Use the proof step `(fun g hg => hg.1 ⟨D.ptSize h, by omega⟩ (show D.ptSize h ≤ D.ptSize h from le_rfl) (show D.ptSize h ≤ P.r by omega))`. Use the proof step `(hP Wp Wq P p (D.ptSize h) (by omega) Cs hCc) w ew _ hyD hyG`. Unfold `phf`. Unfold `pbT`. Rewrite using `[hPW]`.
+
+Use `hR1 ew v hvR _ hyG ?_` and prove the remaining obligations. Rewrite using `[leading_block_of_base_point hj _ τ γ e.symm, zxH_rfl]`.
+-/
 theorem supp_of (hW : PartialBesselProperness.PbWords) (hP : ProperDomP) : Supp := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hF hw hγ hΩ K _ hK0
   obtain ⟨hh1, hh2⟩ := hh

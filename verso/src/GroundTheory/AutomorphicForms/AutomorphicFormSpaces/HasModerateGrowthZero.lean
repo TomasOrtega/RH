@@ -44,24 +44,45 @@ section Closure
 
 variable {φ ψ : AdelicGLn.AdelicGL K n → ℂ}
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem isLeftInvariant_zero : IsLeftInvariant (0 : AdelicGLn.AdelicGL K n → ℂ) := fun _ _ => rfl
 
+/- English proof (translation)
+Introduce `γ g` and use `by simp [hφ γ g, hψ γ g]`.
+-/
 theorem IsLeftInvariant.add (hφ : IsLeftInvariant φ) (hψ : IsLeftInvariant ψ) :
     IsLeftInvariant (φ + ψ) := fun γ g => by simp [hφ γ g, hψ γ g]
 
+/- English proof (translation)
+Introduce `γ g` and use `by simp [hφ γ g]`.
+-/
 theorem IsLeftInvariant.smul (c : ℂ) (hφ : IsLeftInvariant φ) : IsLeftInvariant (c • φ) :=
   fun γ g => by simp [hφ γ g]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(archSmooth K n).zero_mem, fun _ => Eventually.of_forall fun _ => rfl⟩`.
+-/
 theorem isSmooth_zero : IsSmooth (0 : AdelicGLn.AdelicGL K n → ℂ) :=
   ⟨(archSmooth K n).zero_mem, fun _ => Eventually.of_forall fun _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(archSmooth K n).add_mem hφ.1 hψ.1, fun g => ((hφ.2 g).and (hψ.2 g)).mono fun y hy => by simp [hy.1, hy.2]⟩`.
+-/
 theorem IsSmooth.add (hφ : IsSmooth φ) (hψ : IsSmooth ψ) : IsSmooth (φ + ψ) :=
   ⟨(archSmooth K n).add_mem hφ.1 hψ.1, fun g => ((hφ.2 g).and (hψ.2 g)).mono fun y hy => by
     simp [hy.1, hy.2]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(archSmooth K n).smul_mem c hφ.1, fun g => (hφ.2 g).mono fun y hy => by simp [hy]⟩`.
+-/
 theorem IsSmooth.smul (c : ℂ) (hφ : IsSmooth φ) : IsSmooth (c • φ) :=
   ⟨(archSmooth K n).smul_mem c hφ.1, fun g => (hφ.2 g).mono fun y hy => by simp [hy]⟩
 
+/- English proof (translation)
+Unfold `IsKFinite`. Establish `: Submodule.span ℂ (range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k : AdelicGLn.AdelicGL K n) (0 : AdelicGLn.AdelicGL K n → ℂ)) ≤ ⊥` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; simp; rfl)`. Conclude with `Submodule.finiteDimensional_of_le this`.
+-/
 theorem isKFinite_zero : IsKFinite (0 : AdelicGLn.AdelicGL K n → ℂ) := by
   unfold IsKFinite
   have : Submodule.span ℂ (range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) =>
@@ -69,6 +90,11 @@ theorem isKFinite_zero : IsKFinite (0 : AdelicGLn.AdelicGL K n → ℂ) := by
     Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; simp; rfl)
   exact Submodule.finiteDimensional_of_le this
 
+/- English proof (translation)
+Unfold `IsKFinite at *`. Establish `hle : Submodule.span ℂ (range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k : AdelicGLn.AdelicGL K n) (φ + ψ)) ≤ Submodule.span ℂ (range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k : AdelicGLn.A …`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨k, rfl⟩) (Submodule.subset_span ⟨k, rfl⟩)`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem IsKFinite.add (hφ : IsKFinite φ) (hψ : IsKFinite ψ) : IsKFinite (φ + ψ) := by
   unfold IsKFinite at *
   have hle : Submodule.span ℂ
@@ -83,6 +109,11 @@ theorem IsKFinite.add (hφ : IsKFinite φ) (hψ : IsKFinite ψ) : IsKFinite (φ 
     exact Submodule.add_mem_sup (Submodule.subset_span ⟨k, rfl⟩) (Submodule.subset_span ⟨k, rfl⟩)
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Unfold `IsKFinite at *`. Establish `hle : Submodule.span ℂ (range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k : AdelicGLn.AdelicGL K n) (c • φ)) ≤ Submodule.span ℂ (range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k : AdelicGLn.A …`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.smul_mem _ c (Submodule.subset_span ⟨k, rfl⟩)`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem IsKFinite.smul (c : ℂ) (hφ : IsKFinite φ) : IsKFinite (c • φ) := by
   unfold IsKFinite at *
   have hle : Submodule.span ℂ
@@ -95,6 +126,9 @@ theorem IsKFinite.smul (c : ℂ) (hφ : IsKFinite φ) : IsKFinite (c • φ) := 
     exact Submodule.smul_mem _ c (Submodule.subset_span ⟨k, rfl⟩)
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Unfold `IsZFinite`. Establish `: Submodule.span ℂ ((fun z => uAction z (0 : archSmooth K n)) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n))) ≤ ⊥` using `Submodule.span_le.2 (by rintro _ ⟨z, -, rfl⟩; simp)`. Conclude with `Submodule.finiteDimensional_of_le this`.
+-/
 theorem isZFinite_zero : IsZFinite (0 : archSmooth K n) := by
   unfold IsZFinite
   have : Submodule.span ℂ ((fun z => uAction z (0 : archSmooth K n)) ''
@@ -102,6 +136,11 @@ theorem isZFinite_zero : IsZFinite (0 : archSmooth K n) := by
     Submodule.span_le.2 (by rintro _ ⟨z, -, rfl⟩; simp)
   exact Submodule.finiteDimensional_of_le this
 
+/- English proof (translation)
+Unfold `IsZFinite at *`. Establish `hle : Submodule.span ℂ ((fun z => uAction z (φ + ψ)) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n))) ≤ Submodule.span ℂ ((fun z => uAction z φ) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n))) ⊔ Submodule.span ℂ ((fun z => uAction z ψ) '' ((isExpLieAlgebra K n).centerU : …`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [map_add]`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨z, hz, rfl⟩) (Submodule.subset_span ⟨z, hz, rfl⟩)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem IsZFinite.add {φ ψ : archSmooth K n} (hφ : IsZFinite φ) (hψ : IsZFinite ψ) :
     IsZFinite (φ + ψ) := by
   unfold IsZFinite at *
@@ -118,6 +157,11 @@ theorem IsZFinite.add {φ ψ : archSmooth K n} (hφ : IsZFinite φ) (hψ : IsZFi
       (Submodule.subset_span ⟨z, hz, rfl⟩)
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Unfold `IsZFinite at *`. Establish `hle : Submodule.span ℂ ((fun z => uAction z (c • φ)) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n))) ≤ Submodule.span ℂ ((fun z => uAction z φ) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n)))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [map_smul]`.
+
+Conclude with `Submodule.smul_mem _ c (Submodule.subset_span ⟨z, hz, rfl⟩)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem IsZFinite.smul (c : ℂ) {φ : archSmooth K n} (hφ : IsZFinite φ) : IsZFinite (c • φ) := by
   unfold IsZFinite at *
   have hle : Submodule.span ℂ ((fun z => uAction z (c • φ)) ''
@@ -130,9 +174,17 @@ theorem IsZFinite.smul (c : ℂ) {φ : archSmooth K n} (hφ : IsZFinite φ) : Is
     exact Submodule.smul_mem _ c (Submodule.subset_span ⟨z, hz, rfl⟩)
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 0, fun g => by simp⟩`.
+-/
 theorem hasModerateGrowth_zero : HasModerateGrowth (0 : AdelicGLn.AdelicGL K n → ℂ) :=
   ⟨0, 0, fun g => by simp⟩
 
+/- English proof (translation)
+Take `⟨C₁, N₁, h₁⟩` from `hφ`. Take `⟨C₂, N₂, h₂⟩` from `hψ`. Use `⟨|C₁| + |C₂|, max N₁ N₂, fun g => ?_⟩` and prove the remaining obligations. Establish `hg` using `one_le_height g`. Establish `e₁ : height g ^ N₁ ≤ height g ^ max N₁ N₂` using `pow_le_pow_right₀ hg (le_max_left _ _)`.
+
+Establish `e₂ : height g ^ N₂ ≤ height g ^ max N₁ N₂` using `pow_le_pow_right₀ hg (le_max_right _ _)`. Establish `p₁ : 0 ≤ height g ^ N₁` using `pow_nonneg (height_pos g).le _`. Establish `p₂ : 0 ≤ height g ^ N₂` using `pow_nonneg (height_pos g).le _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem HasModerateGrowth.add (hφ : HasModerateGrowth φ) (hψ : HasModerateGrowth ψ) :
     HasModerateGrowth (φ + ψ) := by
   obtain ⟨C₁, N₁, h₁⟩ := hφ
@@ -153,20 +205,32 @@ theorem HasModerateGrowth.add (hφ : HasModerateGrowth φ) (hψ : HasModerateGro
             (mul_le_mul_of_nonneg_left e₂ (abs_nonneg _)))
     _ = (|C₁| + |C₂|) * height g ^ max N₁ N₂ := by ring
 
+/- English proof (translation)
+Take `⟨C, N, h⟩` from `hφ`. Use `⟨‖c‖ * C, N, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h g) (norm_nonneg c)`.
+-/
 theorem HasModerateGrowth.smul (c : ℂ) (hφ : HasModerateGrowth φ) : HasModerateGrowth (c • φ) := by
   obtain ⟨C, N, h⟩ := hφ
   refine ⟨‖c‖ * C, N, fun g => ?_⟩
   rw [Pi.smul_apply, norm_smul, mul_assoc]
   exact mul_le_mul_of_nonneg_left (h g) (norm_nonneg c)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext rfl`.
+-/
 theorem archSmooth_mk_add (hφ : IsArchSmooth φ) (hψ : IsArchSmooth ψ) :
     (⟨φ + ψ, (archSmooth K n).add_mem hφ hψ⟩ : archSmooth K n) = ⟨φ, hφ⟩ + ⟨ψ, hψ⟩ :=
   Subtype.ext rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext rfl`.
+-/
 theorem archSmooth_mk_smul (c : ℂ) (hφ : IsArchSmooth φ) :
     (⟨c • φ, (archSmooth K n).smul_mem c hφ⟩ : archSmooth K n) = c • ⟨φ, hφ⟩ :=
   Subtype.ext rfl
 
+/- English proof (translation)
+The claim follows from `hφ.isLeftInvariant.add hψ.isLeftInvariant isSmooth := hφ.isSmooth.add hψ.isSmooth isKFinite := hφ.isKFinite.add hψ.isKFinite isZFinite := by have := hφ.isZFinite.add hψ.isZFinite rwa [← archSmooth_mk_add] at this hasModerateGrowth := hφ.hasModerateGrowth.add hψ.hasModerateGrowth`.
+-/
 theorem IsAutomorphicForm.add (hφ : IsAutomorphicForm φ) (hψ : IsAutomorphicForm ψ) :
     IsAutomorphicForm (φ + ψ) where
   isLeftInvariant := hφ.isLeftInvariant.add hψ.isLeftInvariant
@@ -177,6 +241,9 @@ theorem IsAutomorphicForm.add (hφ : IsAutomorphicForm φ) (hψ : IsAutomorphicF
     rwa [← archSmooth_mk_add] at this
   hasModerateGrowth := hφ.hasModerateGrowth.add hψ.hasModerateGrowth
 
+/- English proof (translation)
+The claim follows from `hφ.isLeftInvariant.smul c isSmooth := hφ.isSmooth.smul c isKFinite := hφ.isKFinite.smul c isZFinite := by have := hφ.isZFinite.smul c rwa [← archSmooth_mk_smul] at this hasModerateGrowth := hφ.hasModerateGrowth.smul c`.
+-/
 theorem IsAutomorphicForm.smul (c : ℂ) (hφ : IsAutomorphicForm φ) : IsAutomorphicForm (c • φ) where
   isLeftInvariant := hφ.isLeftInvariant.smul c
   isSmooth := hφ.isSmooth.smul c
@@ -186,6 +253,9 @@ theorem IsAutomorphicForm.smul (c : ℂ) (hφ : IsAutomorphicForm φ) : IsAutomo
     rwa [← archSmooth_mk_smul] at this
   hasModerateGrowth := hφ.hasModerateGrowth.smul c
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isLeftInvariant_zero, isSmooth_zero, isKFinite_zero, isZFinite_zero, hasModerateGrowth_zero⟩`.
+-/
 theorem isAutomorphicForm_zero : IsAutomorphicForm (0 : AdelicGLn.AdelicGL K n → ℂ) :=
   ⟨isLeftInvariant_zero, isSmooth_zero, isKFinite_zero, isZFinite_zero, hasModerateGrowth_zero⟩
 
@@ -199,6 +269,9 @@ def automorphicForms : Submodule ℂ (AdelicGLn.AdelicGL K n → ℂ) where
   add_mem' hφ hψ := hφ.add hψ
   smul_mem' c _ hφ := hφ.smul c
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_automorphicForms {φ : AdelicGLn.AdelicGL K n → ℂ} :
     φ ∈ automorphicForms K n ↔ IsAutomorphicForm φ :=
   Iff.rfl

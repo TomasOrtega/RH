@@ -22,6 +22,11 @@ def pt : PtProp := fun _ L _ _ _ _ _ _ _ => G.At L
 def cls (la : ℝ) : FamClass := fun Fm =>
   Fm.toFamCore.Windows la ∧ ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, G.At (Fm.L x i)
 
+/- English proof (translation)
+Establish `h1` using `h.1`. Establish `h2` using `h.field`. Establish `h3` using `h.2.1`. Substitute `h1` using the available equality. Establish `h4 : p.D.host.TT = H.TT` using `Finset.image_injective (Formalism.HC.Frame.A.val_injective _) h3`.
+
+Unfold `At`. Rewrite using `[eq_of_heq h2, h4]`. Conclude with `hG`.
+-/
 theorem at_of_from {C : FC} {p : Pt C} {R : Ranks} {H : Host R} {a b : R.A → ℤ} {M : ℕ} {c : Fin M → Fin (R.k - 2) → Bool}
     {u0 : ℕ} (h : p.From H a b c u0) (hG : G p.L.sc R.toFrame H.toHostAx H.TT R.t) : G.At p.L := by
   have h1 := h.1

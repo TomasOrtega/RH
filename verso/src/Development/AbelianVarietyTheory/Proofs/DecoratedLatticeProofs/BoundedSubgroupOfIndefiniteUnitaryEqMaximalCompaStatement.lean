@@ -7,5 +7,8 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies (LieAt LieInf atPlace IsExpFam IsSmoothInf wordDer)
 open scoped TensorProduct DirectSum Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BoundedUnitary.eq_Kset_of_bounded | exact GlobalTheory.BoundedUnitary.eq_Kset_of_bounded | (intros; apply GlobalTheory.BoundedUnitary.eq_Kset_of_bounded <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bounded_subgroup_of_indefinite_unitary_eq_maximalCompact : ∀ (n : ℕ) (ε : Fin n → Bool) (G' : Set (Matrix (Fin n) (Fin n) ℂ)), G' ⊆ Formalism.MainNotions.S.UJset ε → Formalism.REAL.Kset ε ⊆ G' → (∀ a ∈ G', ∀ b ∈ G', a * b ∈ G') → (∀ a ∈ G', a⁻¹ ∈ G') → (∃ C : ℝ, ∀ a ∈ G', ∀ i j, ‖a i j‖ ≤ C) → G' = Formalism.REAL.Kset ε := by
   first | exact @GlobalTheory.BoundedUnitary.eq_Kset_of_bounded | exact GlobalTheory.BoundedUnitary.eq_Kset_of_bounded | (intros; apply GlobalTheory.BoundedUnitary.eq_Kset_of_bounded <;> assumption)

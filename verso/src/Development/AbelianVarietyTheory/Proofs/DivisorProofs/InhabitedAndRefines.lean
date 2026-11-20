@@ -11,17 +11,32 @@ variable {R : Type} [CommRing R] [IsDomain R]
 
 def ofDeg (D : DegPre R) (hB : D.TauBimult) : Data R := Wit.ofDeg D hB
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofDeg_X (D : DegPre R) (hB : D.TauBimult) : (ofDeg D hB).X = D.X := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofDeg_c (D : DegPre R) (hB : D.TauBimult) (a : D.X) : (ofDeg D hB).c a = D.c a := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ofDeg (GlobalTheory.ToricData.arcDataInt k).toPre (GlobalTheory.ToricData.arcDataInt k).tau_bimult, inferInstanceAs (Nontrivial ℤ)⟩`.
+-/
 theorem exists_nontrivial (k : Type) [Field k] : ∃ Q : Data (PowerSeries k), Nontrivial Q.X :=
   ⟨ofDeg (GlobalTheory.ToricData.arcDataInt k).toPre (GlobalTheory.ToricData.arcDataInt k).tau_bimult, inferInstanceAs (Nontrivial ℤ)⟩
 
+/- English proof (translation)
+The claim follows from `Wit.refines_ofDeg D hB`.
+-/
 theorem refines_ofDeg (D : DegPre R) (hB : D.TauBimult) :
     Refines (ofDeg D hB) (RingHom.id R) D (AddEquiv.refl _) :=
   Wit.refines_ofDeg D hB
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun k _ => exists_nontrivial k, fun _ _ _ D hB => refines_ofDeg D hB⟩`.
+-/
 theorem inhabited_and_refines :
     (∀ (k : Type) [Field k], ∃ Q : Data (PowerSeries k), Nontrivial Q.X) ∧
     ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (hB : D.TauBimult),
@@ -30,6 +45,9 @@ theorem inhabited_and_refines :
 
 open GlobalTheory.ToricData ReciprocityTheory.ChartRestriction.G.Out.InhTate in
 
+/- English proof (translation)
+Introduce `(a b : X)` and use `by refine ⟨arcVar k ^ (be a b), ?_, cg _ _ 1, cg_isGen _ _ _, fun z J hJ => ?_⟩ · rw [Fin.prod_univ_one] exact Units.val_zpow_eq_zpow_val _ _ have e1 := (Wit.exists_tau (arcData k be hs hp he).toPre a b).choose_spec.2 _ (𝟙 _) z J hJ refine e1.trans ?_ have e2 : val ((arcData k be …`.
+-/
 theorem isMonomialTau_arcData (k : Type) [Field k] {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (be : LinearMap.BilinForm ℤ X) (hs : ∀ y z, be y z = be z y) (hp : ∀ y, y ≠ 0 → 0 < be y y)
     (he : ∀ y, (2 : ℤ) ∣ be y y) :

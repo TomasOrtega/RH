@@ -11,6 +11,9 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTh
 open GlobalTheory.LineFrame
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LineFrame.exists_unip_frameGL | exact GlobalTheory.LineFrame.exists_unip_frameGL | (intros; apply GlobalTheory.LineFrame.exists_unip_frameGL <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adapted_frame_local_determinant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d m r s i₀ i₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E m) (H : Plane E d m), B.IsGood σ → W.IsSkew σ B r s →
     ∀ (hA : H.IsAdapted σ B W W₁ i₀ i₁),

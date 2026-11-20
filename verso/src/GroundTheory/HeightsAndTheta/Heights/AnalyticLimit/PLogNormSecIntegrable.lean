@@ -10,12 +10,32 @@ open MeasureTheory
 open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot IsPotential IsSection MIntegrable logNormSec locDens
   locDensCont)
 
+/- English proof (translation)
+The claim follows from `|Real.log (a * Real.exp t)| ≤ |Real.log a| + |t| := by rcases ha.eq_or_lt with h | h · subst h; simp · rw [Real.log_mul h.ne' (Real.exp_pos t).ne', Real.log_exp]; exact abs_add_le _ _`.
+-/
 theorem abs_log_mul_exp_le {a : ℝ} (t : ℝ) (ha : 0 ≤ a) :
     |Real.log (a * Real.exp t)| ≤ |Real.log a| + |t| := by
   rcases ha.eq_or_lt with h | h
   · subst h; simp
   · rw [Real.log_mul h.ne' (Real.exp_pos t).ne', Real.log_exp]; exact abs_add_le _ _
 
+/- English proof (translation)
+Introduce `D X _ A L s hL hs _ Φ hΦ j K hK hKc`. Use `LocallyIntegrableOn.integrableOn_compact_subset ?_ hK hKc` and prove the remaining obligations. Introduce `u0 hu0`. Use `set c := A.chart j with hc`. Use `set p := c.symm u0`.
+
+Use `set V := c.target ∩ c.symm ⁻¹' L.U p with hVdef`. Establish `hV : IsOpen V` using `c.isOpen_inter_preimage_symm (L.isOpen_U p)`. Establish `hu0V : u0 ∈ V` using `⟨hu0, L.mem_U p⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hV u0 hu0V`. Use `set B := Metric.closedBall u0 (r / 2) with hBdef`.
+
+Establish `hBV : B ⊆ V` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Establish `hBc : IsCompact B` using `isCompact_closedBall _ _`. Establish `hBm : MeasurableSet B` using `Metric.isClosed_closedBall.measurableSet`. Use `⟨B, mem_nhdsWithin_of_mem_nhds (Metric.closedBall_mem_nhds _ (by linarith)), ?_⟩` and prove the remaining obligations. Use `set f : (Fin D → ℂ) → ℂ := s p ∘ c.symm with hfdef`.
+
+Establish `hf : AnalyticOnNhd ℂ f V` using `hs.1 p j`. Use `set φ : (Fin D → ℂ) → ℝ := L.φ p ∘ c.symm with hφdef`. Establish `hφc : ContinuousOn φ V` using `(hL.1 p j).continuousOn`. Establish `hF : ∀ u ∈ V, logNormSec L s (c.symm u) = Real.log (‖f u‖ * Real.exp (-φ u))` using `fun u hu => congrArg Real.log (hs.2 _ p _ ⟨L.mem_U _, hu.2⟩)`. Establish `hDc : ContinuousOn (locDens A Φ j) B` using `(locDensCont A Φ hΦ j).mono (hBV.trans Set.inter_subset_left)`.
+
+Take `⟨M, hM⟩` from `hBc.exists_bound_of_continuousOn hDc`. Establish `hlogf : IntegrableOn (fun u => Real.log ‖f u‖) B` using `(ReciprocityTheory.ChartRestriction.G.Geo.logAbsLocInt' D V f hV hf).integrableOn_compact_subset hBV hBc`. Establish `hφi : IntegrableOn φ B` using `(hφc.mono hBV).integrableOn_compact hBc`. Establish `hfc : ContinuousOn f B` using `fun u hu => (hf u (hBV hu)).continuousAt.continuousWithinAt`. Establish `hmeas : AEStronglyMeasurable (fun u => Real.log (‖f u‖ * Real.exp (-φ u)) * locDens A Φ j u) (volume.restrict B)`.
+
+Establish `h1 : AEStronglyMeasurable (fun u => ‖f u‖ * Real.exp (-φ u)) (volume.restrict B)` using `(hfc.norm.mul (Real.continuous_exp.comp_continuousOn (hφc.mono hBV).neg)).aestronglyMeasurable hBm`. Conclude with `(Real.measurable_log.comp_aemeasurable h1.aemeasurable).aestronglyMeasurable.mul (hDc.aestronglyMeasurable hBm)`. Establish `hint : IntegrableOn (fun u => Real.log (‖f u‖ * Real.exp (-φ u)) * locDens A Φ j u) B`. Use `Integrable.mono' ((hlogf.norm.add hφi.norm).mul_const M) hmeas ?_` and prove the remaining obligations. Use `ae_restrict_of_forall_mem hBm fun u hu => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Establish `hb` using `abs_log_mul_exp_le (-φ u) (norm_nonneg (f u))`. Rewrite `hb` using `[abs_neg]`. Simplify using `only [Real.norm_eq_abs] at hb ⊢`. Conclude with `mul_le_mul hb (hM u hu) (abs_nonneg _) (add_nonneg (abs_nonneg _) (abs_nonneg _))`.
+
+Use `hint.congr_fun (fun u hu => ?_) hBm` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hF u (hBV hu)]`.
+-/
 theorem LogNormSecIntegrable.proof : LogNormSecIntegrable.Statement := by
   intro D X _ A L s hL hs _ Φ hΦ j K hK hKc
   refine LocallyIntegrableOn.integrableOn_compact_subset ?_ hK hKc

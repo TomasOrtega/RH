@@ -9,6 +9,13 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.GalN UpperTheory.GalN.V
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `e.surjective y`. Establish `hx : (g : Matrix (Fin n) (Fin n) K).charpoly.IsRoot x` using `(Polynomial.isRoot_map_iff (f := e.toRingHom) e.injective).1 h`. Establish `hs : x ∈ spectrum K (g : Matrix (Fin n) (Fin n) K)` using `Matrix.mem_spectrum_iff_isRoot_charpoly.2 hx`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `spectrum.zero_notMem K (Units.isUnit g) hs`. Establish `hi : x⁻¹ ∈ spectrum K ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Simplify `hs)` using `using (spectrum.inv_mem_iff (r := Units.mk0 x hx0) (a := g)).1 (by simpa`. Use `⟨by simpa using hx0, ?_⟩` and prove the remaining obligations. Use `(Polynomial.isRoot_map_iff (f := e.toRingHom) (x := x⁻¹) e.injective).2 (Matrix.mem_spectrum_iff_isRoot_charpoly.1 hi)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 private lemma root_inv {K L : Type*} [Field K] [Field L] (e : K ≃+* L) {n : ℕ} (g : GL (Fin n) K) (y : L)
     (h : ((g : Matrix (Fin n) (Fin n) K).charpoly.map e.toRingHom).IsRoot y) :
     y ≠ 0 ∧ (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).charpoly.map e.toRingHom).IsRoot y⁻¹ := by
@@ -27,6 +34,19 @@ private lemma root_inv {K L : Type*} [Field K] [Field L] (e : K ≃+* L) {n : �
     (Matrix.mem_spectrum_iff_isRoot_charpoly.1 hi)
   simpa using this
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ ι n r w A S hA hS hlt`. Take `⟨s, hs⟩` from `exists_isFrob hA`. Use `⟨s, 1, le_rfl, by simpa using hs, ?_⟩` and prove the remaining obligations. Introduce `α hα hqα`. Establish `hP` using `(hS A hA).2 s hs`.
+
+Establish `key : ∀ y : ℂ, ((r s : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.map ι.toRingHom).IsRoot y → y ≠ 0 ∧ y⁻¹ ∈ S`. Introduce `y hy`. Take `⟨hy0, hr⟩` from `root_inv ι (r s) y hy`. Use `⟨hy0, ?_⟩` and prove the remaining obligations. Establish `hroots : (((r s⁻¹ : Matrix (Fin n) (Fin n) (Qbar l))).charpoly.map ι.toRingHom).roots = S`.
+
+Rewrite using `[hP]`. Conclude with `Polynomial.roots_multiset_prod_X_sub_C S`. Rewrite using `[← hroots, Polynomial.mem_roots ((Matrix.charpoly_monic _).map _).ne_zero, map_inv]`. Conclude with `hr`. Take `⟨ha0, ha⟩` from `key α hα`.
+
+Take `⟨hb0, hb⟩` from `key _ hqα`. Establish `hq0 : (((normV w : ℕ) : ℂ)) ≠ 0`. Introduce `h0`. Apply `hb0` to reduce the goal to its premises. Simplify using `[h0]`.
+
+Establish `hlt'` using `hlt _ ha _ hb`. Establish `hqr : (0 : ℝ) < ((normV w : ℕ) : ℝ)`. Establish `: (normV w : ℕ) ≠ 0` using `by exact_mod_cast hq0`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Establish `heq : ((normV w : ℕ) : ℝ) * ‖((((normV w : ℕ) : ℂ) ^ 1 * α))⁻¹‖ = ‖α⁻¹‖`.
+
+Rewrite using `[pow_one, norm_inv, norm_mul, norm_inv, Complex.norm_natCast, mul_inv]`. Clear the denominators using the available nonvanishing facts. Conclude with `absurd hlt' (by rw [heq]; exact lt_irrefl _)`.
+-/
 theorem UpperTheory.GalN.V.L.unlfrob :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)) (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (S : Multiset ℂ), IsPlaceOver A w → FrobEig ι r w S → (∀ α ∈ S, ∀ β ∈ S, ‖α‖ < ((normV w : ℕ) : ℝ) * ‖β‖) → UnlAt ι r w A := by
   intro F Ω _ _ _ _ _ l _ ι n r w A S hA hS hlt

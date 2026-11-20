@@ -9,12 +9,26 @@ private noncomputable def UpperTheory.V.Pa.BC.tlHom (O O' : Type) [CommRing O] [
   Algebra.TensorProduct.lift (Algebra.ofId O' _) (MvPowerSeries.mapAlgHom (Algebra.ofId O O'))
     (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Rewrite using `[UpperTheory.V.Pa.BC.tlHom, Algebra.TensorProduct.lift_tmul]`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.V.Pa.BC.tlHom_tmul (O O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] (σ : Type)
     (o : O') (f : MvPowerSeries σ O) :
     UpperTheory.V.Pa.BC.tlHom O O' σ (o ⊗ₜ f) = MvPowerSeries.C o * MvPowerSeries.map (algebraMap O O') f := by
   rw [UpperTheory.V.Pa.BC.tlHom, Algebra.TensorProduct.lift_tmul]
   rfl
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis O O'`. Establish `hsum : ∀ (c : Module.Free.ChooseBasisIndex O O' → MvPowerSeries σ O) (m : σ →₀ ℕ), MvPowerSeries.coeff m (UpperTheory.V.Pa.BC.tlHom O O' σ (∑ i, b i ⊗ₜ c i)) = ∑ i, MvPowerSeries.coeff m (c i) • b i`. Introduce `c m`. Simplify using `only [map_sum, UpperTheory.V.Pa.BC.tlHom_tmul, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_map, Algebra.smul_def]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨c, rfl⟩` from `TensorProduct.eq_repr_basis_left b x`. Rewrite `hx`, the goal using `[Finsupp.sum_fintype _ _ (by simp)]`.
+
+Establish `hc : ∀ i, c i = 0`. Introduce `i`. Use extensionality with `m`. Establish `hm` using `congrArg (MvPowerSeries.coeff m) hx`. Rewrite `hm` using `[hsum, map_zero]`.
+
+Rewrite using `[MvPowerSeries.coeff_zero]`. Conclude with `Fintype.linearIndependent_iff.1 b.linearIndependent (fun j => MvPowerSeries.coeff m (c j)) hm i`. Simplify using `[hc]`. Introduce `F`. Set `c : Module.Free.ChooseBasisIndex O O' → MvPowerSeries σ O` to `fun i m => b.repr (MvPowerSeries.coeff m F) i`.
+
+Use `⟨∑ i, b i ⊗ₜ c i, ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Rewrite using `[hsum]`. Conclude with `b.sum_repr _`.
+-/
 private theorem UpperTheory.V.Pa.BC.tlHom_bij (O O' : Type) [CommRing O] [CommRing O'] [Algebra O O']
     [Module.Finite O O'] [Module.Free O O'] (σ : Type) :
     Function.Bijective (UpperTheory.V.Pa.BC.tlHom O O' σ) := by
@@ -48,6 +62,15 @@ private theorem UpperTheory.V.Pa.BC.tlHom_bij (O O' : Type) [CommRing O] [CommRi
     rw [hsum]
     exact b.sum_repr _
 
+/- English proof (translation)
+Use extensionality with `k x`. Rewrite using `[MvPowerSeries.coeff_coeff_optionEquivLeft, PowerSeries.coeff_C]`. Use `split_ifs with hk`. Substitute `hk` using the available equality. Establish `hx : x.optionElim 0 = Finsupp.embDomain Function.Embedding.some x`.
+
+Use extensionality with `a`. Consider the cases of `a with`. Consider the case `none`. Rewrite using `[Finsupp.embDomain_notin_range _ _ _ (by simp)]`. Simplify using the standard rewrite rules.
+
+Consider the case `some v`. Rewrite using `[show (some v : Option σ) = Function.Embedding.some v from rfl, Finsupp.embDomain_apply_self]`. Simplify using the standard rewrite rules. Rewrite using `[hx, MvPowerSeries.coeff_embDomain_rename]`. Rewrite using `[MvPowerSeries.coeff_zero]`.
+
+Apply `MvPowerSeries.coeff_rename_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨y, hy⟩`. Apply `hk` to reduce the goal to its premises. Establish `hn` using `congrArg (fun z : Option σ →₀ ℕ => z none) hy`. Simplify `hn.symm` using `[Finsupp.mapDomain_notin_range]`.
+-/
 private theorem UpperTheory.V.Pa.BC.tl_option {σ R : Type} [CommRing R] (p : MvPowerSeries σ R) :
     MvPowerSeries.optionEquivLeft σ R (MvPowerSeries.rename (Function.Embedding.some : σ ↪ Option σ) p) =
       PowerSeries.C p := by
@@ -73,6 +96,11 @@ private theorem UpperTheory.V.Pa.BC.tl_option {σ R : Type} [CommRing R] (p : Mv
     have hn := congrArg (fun z : Option σ →₀ ℕ => z none) hy
     simpa [Finsupp.mapDomain_notin_range] using hn.symm
 
+/- English proof (translation)
+Use `⟨fun p q h => ?_, fun q => ⟨PowerSeries.map (e.symm : B →+* A) q, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `n`. Establish `hn` using `congrArg (PowerSeries.coeff n) h`. Simplify using `using hn`. Use extensionality with `n`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem UpperTheory.V.Pa.BC.tl_map_bij {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) :
     Function.Bijective (PowerSeries.map (e : A →+* B)) := by
   refine ⟨fun p q h => ?_, fun q => ⟨PowerSeries.map (e.symm : B →+* A) q, ?_⟩⟩
@@ -82,6 +110,21 @@ private theorem UpperTheory.V.Pa.BC.tl_map_bij {A B : Type} [CommRing A] [CommRi
   · ext n
     simp
 
+/- English proof (translation)
+Introduce `O O' _ _ _ _ _ D`. Set `ε : Option (Empty ⊕ Fin D) ≃ Unit ⊕ Fin D` to `{ toFun := fun o => Option.elim o (Sum.inl ()) (Sum.map Empty.elim id) invFun := fun s => Sum.elim (fun _ => none) (fun i => some (Sum.inr i)) s left_inv := by`. Introduce and unpack `(_ | (e | i))`. Both sides reduce to the same expression. Conclude with `e.elim`.
+
+Both sides reduce to the same expression. Use `right_inv := by`. Apply the tactic sequence `rintro (⟨⟩ | i) <;> rfl }`. Establish `hb` using `UpperTheory.V.Pa.BC.tl_map_bij (RingEquiv.ofBijective (UpperTheory.V.Pa.BC.tlHom O O' (Empty ⊕ Fin D)) (UpperTheory.V.Pa.BC.tlHom_bij O O' (Empty ⊕ Fin D)))`. Set `e1 : Til O O' (abelian₂ O Empty D) ≃ₐ[O'] PowerSeries (MvPowerSeries (Empty ⊕ Fin D) O')` to `AlgEquiv.ofBijective (PowerSeries.mapAlgHom (UpperTheory.V.Pa.BC.tlHom O O' (Empty ⊕ Fin D))) hb`.
+
+Set `φ : O' ⊗[O] abelian₂ O Empty D →+* MvPowerSeries (Empty ⊕ Fin D) O'` to `(UpperTheory.V.Pa.BC.tlHom O O' (Empty ⊕ Fin D) : O' ⊗[O] abelian₂ O Empty D →+* MvPowerSeries (Empty ⊕ Fin D) O')`. Use `⟨e1.trans ((MvPowerSeries.optionEquivLeft (Empty ⊕ Fin D) O').symm.trans (MvPowerSeries.renameEquiv O' ε)), ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `h1 : e1 (Til.ι O O' _ a) = PowerSeries.C (MvPowerSeries.map (algebraMap O O') a)` using `by show PowerSeries.map φ (PowerSeries.C ((1 : O') ⊗ₜ[O] a)) = _`. Rewrite using `[PowerSeries.map_C]`.
+
+Use `show PowerSeries.C (UpperTheory.V.Pa.BC.tlHom O O' _ ((1 : O') ⊗ₜ[O] a)) = _`. Rewrite using `[UpperTheory.V.Pa.BC.tlHom_tmul, map_one, one_mul]`. Establish `h2 : (MvPowerSeries.optionEquivLeft (Empty ⊕ Fin D) O').symm (PowerSeries.C (MvPowerSeries.map (algebraMap O O') a)) = MvPowerSeries.rename (Function.Embedding.some : (Empty ⊕ Fin D) ↪ _) (MvPowerSeries.map (algebraMap O O') a)`. Rewrite using `[AlgEquiv.symm_apply_eq, UpperTheory.V.Pa.BC.tl_option]`. Rewrite using `[AlgEquiv.trans_apply, h1, AlgEquiv.trans_apply, h2]`.
+
+Use `show MvPowerSeries.rename (⇑ε) _ = _`. Rewrite using `[MvPowerSeries.rename_rename]`. Both sides reduce to the same expression. Establish `h1 : e1 (Til.s O O' _) = PowerSeries.X` using `by show PowerSeries.map φ PowerSeries.X = _`. Conclude with `PowerSeries.map_X _`.
+
+Establish `h2 : (MvPowerSeries.optionEquivLeft (Empty ⊕ Fin D) O').symm PowerSeries.X = MvPowerSeries.X none`. Rewrite using `[AlgEquiv.symm_apply_eq, MvPowerSeries.optionEquivLeft_X_none]`. Rewrite using `[AlgEquiv.trans_apply, h1, AlgEquiv.trans_apply, h2]`. Use `show MvPowerSeries.rename (⇑ε) _ = _`. Rewrite using `[MvPowerSeries.rename_X]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Pa.BC.til_lam :
     ∀ (O O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] [Module.Finite O O'] [Module.Free O O'] (D : ℕ), ∃ τ : Til O O' (abelian₂ O Empty D) ≃ₐ[O'] abelian₂ O' Unit D, (∀ a, τ (Til.ι O O' _ a) = lamEmb O O' D a) ∧ τ (Til.s O O' _) = MvPowerSeries.X (.inl ()) := by
   intro O O' _ _ _ _ _ D

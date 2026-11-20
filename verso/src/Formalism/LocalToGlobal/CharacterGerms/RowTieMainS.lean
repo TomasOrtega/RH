@@ -47,6 +47,9 @@ variable {Xo c}
 variable {C : Type} [Field C] [CharZero C] {V : VF C}
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {Orb : Type} [Fintype Orb]
 
+/- English proof (translation)
+The claim follows from `hypotheses_of_self_labelling_unramified (cartesian_self_conj_of_stability ptSelf_holds hStabSelf_holds) axesSelf_holds SelfConjugateGermZero.germ_zero_self_conjugate cEqSelf_holds independence_bound_self_conjugate (rank_maximal_self_charts_of_nondegenerate Xo c rank_maximal_self_ …`.
+-/
 theorem hypsSelf_main (G : GeoInS Xo c) (hstar : ∀ a : 𝓞 E, star a = H.bar a)
     {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι)
     (hd : ¬ ((V.l : ℤ) ∣ Algebra.discr ℤ (Module.Free.chooseBasis ℤ (𝓞 E)))) {k : ℕ}
@@ -56,6 +59,9 @@ theorem hypsSelf_main (G : GeoInS Xo c) (hstar : ∀ a : 𝓞 E, star a = H.bar 
   hypotheses_of_self_labelling_unramified (cartesian_self_conj_of_stability ptSelf_holds hStabSelf_holds) axesSelf_holds SelfConjugateGermZero.germ_zero_self_conjugate cEqSelf_holds independence_bound_self_conjugate
     (rank_maximal_self_charts_of_nondegenerate Xo c rank_maximal_self_unconditional G.ndg) G.ch hstar hι hd hY ha _ hr o
 
+/- English proof (translation)
+Use `⟨fun o => rdS Y (selfOfLab ha (labSGeo_of_core Xo c G.lab hstar T io y C3 C V ι hι k Y hY Orb 2 lab ha)) (hypsSelf_main G hstar hι hd hY ha hr) o, fun o => ⟨rfl, rfl, rfl, fun _ _ => Iff.rfl, fun _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `a n ν hν N pl F nW hn gaC std hA hj supp tie`. Conclude with `value_blocks_self_conj_finite (descent_holds Xo c) hι hY ha _ (hypsSelf_main G hstar hι hd hY ha hr) a n (valuation_eq_self_of_unit_germ Y _ _ _ n (unitSelf_holds Y _) (germLiftSelf_holds Y _ _)) ν hν pl F nW hn gaC std hA hj supp tie`.
+-/
 theorem rowTieSelf_main (G : GeoInS Xo c) (hstar : ∀ a : 𝓞 E, star a = H.bar a)
     {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι)
     (hd : ¬ ((V.l : ℤ) ∣ Algebra.discr ℤ (Module.Free.chooseBasis ℤ (𝓞 E)))) {k : ℕ}

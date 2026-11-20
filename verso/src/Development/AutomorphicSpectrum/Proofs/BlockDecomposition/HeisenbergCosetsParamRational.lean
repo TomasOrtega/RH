@@ -32,9 +32,19 @@ section Field
 
 variable {K : Type} [Field K] {n ρ p : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zinc_eq_comp (hn : ρ + p = n) (v : Fin ρ → K) :
     zinc hn v = Sum.elim v (fun _ : Fin p => (0 : K)) ∘ (finSumFinEquiv.trans (finCongr hn)).symm := rfl
 
+/- English proof (translation)
+Rewrite using `[zinc_eq_comp]`. Unfold `bl`. Rewrite using `[Matrix.submatrix_mulVec_equiv]`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, Pi.neg_apply, Equiv.symm_symm]`.
+
+Generalize the expression as in `(finSumFinEquiv.trans (finCongr hn)).symm i = j`. Establish `e : (Sum.elim v (fun _ : Fin p => (0 : K)) ∘ ⇑(finSumFinEquiv.trans (finCongr hn)).symm) ∘ ⇑(finSumFinEquiv.trans (finCongr hn)) = Sum.elim v (fun _ : Fin p => (0 : K))`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.fromBlocks_mulVec]`.
+
+Break down `j with j | j` into its components or cases. Simplify using `[Function.comp_def, Matrix.neg_mulVec]`. Conclude with `congrFun (Matrix.mulVec_zero X) j`. Simplify using `[Function.comp_def]`. Conclude with `congrFun (Matrix.mulVec_zero c) j`.
+-/
 theorem bl_mulVec_zinc (hn : ρ + p = n) (X : Matrix (Fin ρ) (Fin p) K) (c : Matrix (Fin p) (Fin p) K) (v : Fin ρ → K) :
     (bl hn (-1) X 0 c).mulVec (zinc hn v) = - zinc hn v := by
   rw [zinc_eq_comp]
@@ -54,12 +64,20 @@ theorem bl_mulVec_zinc (hn : ρ + p = n) (X : Matrix (Fin ρ) (Fin p) K) (c : Ma
   · simp [Function.comp_def]
     exact congrFun (Matrix.mulVec_zero c) j
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `congrFun h (finSumFinEquiv.trans (finCongr hn) (Sum.inl j))` as an intermediate fact. Rewrite `this` using `[zinc_eq_comp]`. Simplify using `using this`.
+-/
 theorem zinc_eq_zero (hn : ρ + p = n) {v : Fin ρ → K} (h : zinc hn v = 0) : v = 0 := by
   funext j
   have := congrFun h (finSumFinEquiv.trans (finCongr hn) (Sum.inl j))
   rw [zinc_eq_comp] at this
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[Submodule.eq_bot_iff]`. Introduce `v hv`. Establish `h0 : (T * rowC hn η a c).mulVec (zinc hn v) = 0` using `hv`. Rewrite `h0` using `[← Matrix.mulVec_mulVec]`. Establish `h1 : (rowC hn η a c).mulVec (zinc hn v) = 0`.
+
+Use `congrArg (T⁻¹).mulVec h0` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hT, Matrix.one_mulVec, Matrix.mulVec_zero]`. Then use the resulting hypothesis. Establish `h2 : (rowC hn η a c).mulVec (zinc hn v) = - zinc hn v` using `bl_mulVec_zinc hn _ _ _`. Rewrite `h1` using `[h2, neg_eq_zero]`. Conclude with `zinc_eq_zero hn h1`.
+-/
 theorem ker_rows_eq_bot (hn : ρ + p = n) {T : Matrix (Fin n) (Fin n) K} (hT : IsUnit T.det)
     (η : Matrix (Fin ρ) (Fin p) K) (a c : Matrix (Fin p) (Fin p) K) :
     LinearMap.ker ((T * rowC hn η a c).mulVecLin ∘ₗ zinc hn) = ⊥ := by
@@ -74,6 +92,13 @@ theorem ker_rows_eq_bot (hn : ρ + p = n) {T : Matrix (Fin n) (Fin n) K} (hT : I
   rw [h2, neg_eq_zero] at h1
   exact zinc_eq_zero hn h1
 
+/- English proof (translation)
+Use `set S := x * r⁻¹ with hSd`. Establish `hSr : S * r = x` using `by rw [hSd, mul_assoc, Matrix.nonsing_inv_mul _ hr, mul_one]`. Establish `hdet : IsUnit S.det`. Rewrite using `[hSd, Matrix.det_mul]`. Conclude with `hx.mul (Matrix.isUnit_nonsing_inv_det _ hr)`.
+
+Establish `hd : IsUnit (GlobalTheory.CompanionTheory.RatPtsUnn.blkD S).det`. Rewrite `hdet` using `[GlobalTheory.CompanionTheory.RatPtsUnn.det_eq_of_lowerLeft_zero S hS]`. Conclude with `isUnit_of_mul_isUnit_right hdet`. Use `⟨_, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[← hSr]`.
+
+Conclude with `GlobalTheory.CompanionTheory.SwUnf.lowerC_siegel_mul hS r`.
+-/
 theorem exists_unit_lowerC {x r : Matrix (Fin (n + n)) (Fin (n + n)) K} (hx : IsUnit x.det) (hr : IsUnit r.det)
     (hS : IsSiegelP (x * r⁻¹)) : ∃ T : Matrix (Fin n) (Fin n) K, IsUnit T.det ∧ lowerC x = T * lowerC r := by
   set S := x * r⁻¹ with hSd
@@ -88,6 +113,11 @@ theorem exists_unit_lowerC {x r : Matrix (Fin (n + n)) (Fin (n + n)) K} (hx : Is
   rw [← hSr]
   exact GlobalTheory.CompanionTheory.SwUnf.lowerC_siegel_mul hS r
 
+/- English proof (translation)
+Establish `hy' : cT σ y * J * y = J` using `hy`. Establish `hz' : cT σ z * J * z = J` using `h2`. Express the relevant statement in the definitionally equal form `cT σ (y * z⁻¹) * J * (y * z⁻¹) = J`. Establish `e1 : cT σ z⁻¹ * cT σ z = 1`. Rewrite using `[← GlobalTheory.CompanionTheory.SwUnf.BigCell.cT_mul_sq, Matrix.mul_nonsing_inv _ hz, GlobalTheory.CompanionTheory.SwUnf.BigCell.cT_one_sq]`.
+
+Establish `e2 : z * z⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hz`. Rewrite using `[GlobalTheory.CompanionTheory.SwUnf.BigCell.cT_mul_sq]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isUnitary_mul_inv (σ : K →+* K) {m : ℕ} {J y z : Matrix (Fin m) (Fin m) K} (hz : IsUnit z.det)
     (hy : IsUnitary σ J y) (h2 : IsUnitary σ J z) : IsUnitary σ J (y * z⁻¹) := by
   have hy' : cT σ y * J * y = J := hy
@@ -106,6 +136,49 @@ end Field
 
 open GlobalTheory.CompanionTheory.EisCellsAsm in
 
+/- English proof (translation)
+Introduce `D n ρ p hn M`. Establish `hσ : ∀ x, sg D (sg D x) = x` using `sg_sg D`. Take `⟨hadd, hsh, hemb, hc⟩` from `GlobalTheory.T.heisenberg_centre_rational_form M`. Use `choose hnm ζ hζ hζm using hc`. Use `choose a b hab using fun q : Cosets (P D p) (GF D p) => GlobalTheory.CompanionTheory.SwUnf.BigCell.exists_blockMatrixTwoByTwoFin_eq (ratOf (Quotient.out q))`.
+
+Set `cc : Cosets (P D p) (GF D p) → Matrix (Fin p) (Fin p) D.host.E` to `fun q => lowerC (ratOf (Quotient.out q))`. Set `dd : Cosets (P D p) (GF D p) → Matrix (Fin p) (Fin p) D.host.E` to `fun q => GlobalTheory.CompanionTheory.RatPtsUnn.blkD (ratOf (Quotient.out q))`. Establish `hab' : ∀ q, ratOf (Quotient.out q) = blk4 (a q) (b q) (cc q) (dd q)` using `hab`. Establish `hmat : ∀ q, mat ((Quotient.out q : GF D p) : G D p) = (blk4 (a q) (b q) (cc q) (dd q)).map (incA D)` using `fun q => by`. Rewrite using `[← hab']`.
+
+Conclude with `mat_ratOf _`. Establish `hI` using `fun (l : ratHerm D ρ) (u : Cosets (P D p) (GF D p) × Matrix (Fin ρ) (Fin p) D.host.E) => GlobalTheory.T.weyl_heisenberg_levi_rational hn M l.1 (ζ l) (hζ l) u.2 (Quotient.out u.1) (a u.1) (b u.1) (cc u.1) (dd u.1) (hmat u.1)`. Set `R : ratHerm D ρ → Cosets (P D p) (GF D p) × Matrix (Fin ρ) (Fin p) D.host.E → Matrix (Fin (n + n)) (Fin (n + n)) D.host.E` to `fun l u => wM hn * nM hn (ζ l) * sM hn (sg D) u.2 * eM hn (a u.1) (b u.1) (cc u.1) (dd u.1)`. Set `c : ratHerm D ρ → Cosets (P D p) (GF D p) × Matrix (Fin ρ) (Fin p) D.host.E → GF D n` to `fun l u => ⟨M.w * M.nzx l.1 0 * M.sh (u.2.map (incA D)) * M.emb (Quotient.out u.1 : GF D p), (hI l u).1⟩`. Establish `hcm : ∀ l u, mat (c l u : G D n) = (R l u).map (incA D)` using `fun l u => (hI l u).2`.
+
+Establish `hRs : ∀ l u, IsUnit (R l u).det ∧ IsUnitary (sg D) (blk4 0 1 (-1) 0) (R l u)` using `fun l u => by`. Establish `e : ratOf (c l u) = R l u` using `Matrix.map_injective incA_injective ((mat_ratOf _).symm.trans (hcm l u))`. Rewrite using `[← e]`. Conclude with `GlobalTheory.CompanionTheory.SwUnf.BigCell.ratOf_spec _`. Establish `hRC : ∀ l u, lowerC (R l u) = rowC hn u.2 (a u.1) (cc u.1)` using `fun l u => (GlobalTheory.T.rows_of_weyl_heisenberg_product (sg D) hσ hn _ _ _ _ _ _).1`.
+
+Establish `hRD : ∀ l u, GlobalTheory.CompanionTheory.RatPtsUnn.blkD (R l u) = rowD hn (sg D) (ζ l) u.2 (b u.1) (dd u.1)` using `fun l u => (GlobalTheory.T.rows_of_weyl_heisenberg_product (sg D) hσ hn _ _ _ _ _ _).2`. Use `⟨fun x => mk ((P D n).subgroupOf (GF D n)) (c x.1 x.2), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨l₁, q₁, η₁⟩ ⟨l₂, q₂, η₂⟩ h`. Establish `hS` using `(mk_eq_iff_siegel GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn (c l₁ (q₁, η₁)) (c l₂ (q₂, η₂)) (hRs l₁ _).1 (hcm l₁ _) (hcm l₂ _)).1 h`. Take `⟨T, hT1, hT2⟩` from `(GlobalTheory.T.siegel_parabolic_quotient_iff_rows (sg D) hσ (R l₂ (q₂, η₂)) (R l₁ (q₁, η₁)) (hRs l₁ _).1 (hRs l₂ _).2 (hRs l₁ _).2).1 hS`.
+
+Rewrite `hT1` using `[hRC, hRC]`. Rewrite `hT2` using `[hRD, hRD]`. Take `⟨⟨T', h1, h2⟩, h3⟩` from `GlobalTheory.T.rows_proportional_of_transform (sg D) hσ hn (a q₁) (b q₁) (cc q₁) (dd q₁) (a q₂) (b q₂) (cc q₂) (dd q₂) (ζ l₁) (ζ l₂) η₁ η₂ T hT1 hT2`. Establish `hq : q₁ = q₂`. Establish `hs1` using `GlobalTheory.CompanionTheory.SwUnf.BigCell.ratOf_spec (Quotient.out q₁)`.
+
+Establish `hs2` using `GlobalTheory.CompanionTheory.SwUnf.BigCell.ratOf_spec (Quotient.out q₂)`. Establish `hSp` using `(GlobalTheory.T.siegel_parabolic_quotient_iff_rows (sg D) hσ (ratOf (Quotient.out q₂)) (ratOf (Quotient.out q₁)) hs1.1 hs2.2 hs1.2).2 ⟨T', h1, h2⟩`. Use `(mk_eq_iff_siegel GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn (Quotient.out q₁) (Quotient.out q₂) hs1.1 (mat_ratOf _) (mat_ratOf _)).2 hSp` as an intermediate fact. Conclude with `(Quotient.out_eq q₁).symm.trans (this.trans (Quotient.out_eq q₂))`. Substitute `hq` using the available equality.
+
+Establish `hU : IsUnit (blk4 (a q₁) (b q₁) (cc q₁) (dd q₁)).det`. Rewrite using `[← hab']`. Conclude with `(GlobalTheory.CompanionTheory.SwUnf.BigCell.ratOf_spec _).1`. Take `⟨e1, e2⟩` from `h3 hU rfl rfl rfl rfl`. Establish `hl : l₁ = l₂` using `Subtype.ext (Subtype.ext (by rw [← hζ l₁, ← hζ l₂, e1]))`.
+
+Rewrite using `[hl, e2]`. Introduce `q`. Establish `hspec` using `GlobalTheory.CompanionTheory.SwUnf.BigCell.ratOf_spec (Quotient.out q)`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Establish `hker : LinearMap.ker ((lowerC (ratOf (Quotient.out q))).mulVecLin ∘ₗ zinc hn) = ⊥`. Rewrite using `[LinearMap.ker_comp]`. Conclude with `hz`. Take `⟨T₀, a₁, b₁, Z, a₂, b₂, X, Y, a₃, b₃, W, a₄, b₄, c', d', hU, hD, hL1, hL2⟩` from `GlobalTheory.T.unitary_cell_block_normal_form (sg D) hσ hn _ hspec.1 hspec.2 hker`. Take `⟨ζ₀, η₀, T, hyD, hyU, hζ₀, hr1, hr2⟩` from `GlobalTheory.T.unitary_block_invertible_criterion (sg D) hσ hn a₁ b₁ Z a₂ b₂ X Y a₃ b₃ W a₄ b₄ c' d' hU hD`.
+
+Generalize the expression as in `a₄ + a₃ * X = a' at hyD hyU hr1`. Generalize the expression as in `b₄ + a₃ * Y = b' at hyD hyU hr2`. Take `⟨γ, hγ, hγm⟩` from `GlobalTheory.CompanionTheory.RatPtsUnn.clause2 _ hyD hyU`. Set `q' : Cosets (P D p) (GF D p)` to `mk ((P D p).subgroupOf (GF D p)) ⟨γ, hγ⟩`. Establish `hs2` using `GlobalTheory.CompanionTheory.SwUnf.BigCell.ratOf_spec (Quotient.out q')`.
+
+Establish `hSy : IsSiegelP (blk4 a' b' c' d' * (ratOf (Quotient.out q'))⁻¹)` using `(mk_eq_iff_siegel GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn (Quotient.out q') ⟨γ, hγ⟩ hs2.1 (mat_ratOf _) hγm).1 (Quotient.out_eq q')`. Establish `hsU` using `isUnitary_mul_inv (sg D) hs2.1 hyU hs2.2`. Take `⟨A, B, hsb⟩` from `GlobalTheory.CompanionTheory.SwUnf.BigCell.exists_blockMatrixTwoByTwoFin_eq (blk4 a' b' c' d' * (ratOf (Quotient.out q'))⁻¹)`. Rewrite `hsb` using `[(GlobalTheory.CompanionTheory.SwUnf.BigCell.isSiegelParabolic_iff _).1 hSy]`. Generalize the expression as in `GlobalTheory.CompanionTheory.RatPtsUnn.blkD (blk4 a' b' c' d' * (ratOf (Quotient.out q'))⁻¹) = Dd at hsb`.
+
+Rewrite `hsU` using `[hsb]`. Establish `hy : blk4 a' b' c' d' = blk4 A B 0 Dd * blk4 (a q') (b q') (cc q') (dd q')`. Rewrite using `[← hsb, ← hab', mul_assoc, Matrix.nonsing_inv_mul _ hs2.1, mul_one]`. Take `⟨ζ₂, η₂, T₂, hζ₂, hC, hDd⟩` from `GlobalTheory.T.parabolic_factorization_rows (sg D) hσ hn a' b' c' d' (a q') (b q') (cc q') (dd q') A B Dd hsU hy ζ₀ η₀ hζ₀`. Set `bq : HermQ D ρ` to `⟨ζ₂, fun i j => congrFun (congrFun hζ₂ i) j⟩`.
+
+Set `l₂ : ratHerm D ρ` to `⟨⟨ζ₂.map (incA D), adj_map_herm bq⟩, ⟨ζ₂, rfl⟩⟩`. Establish `hl : ζ l₂ = ζ₂` using `Matrix.map_injective incA_injective (hζ l₂)`. Use `⟨(l₂, (q', η₂)), ?_⟩` and prove the remaining obligations. Establish `hsp : IsSiegelP (ratOf (Quotient.out q) * (R l₂ (q', η₂))⁻¹)` using `(GlobalTheory.T.siegel_parabolic_quotient_iff_rows (sg D) hσ _ _ (hRs l₂ _).1 hspec.2 (hRs l₂ _).2).2 ⟨T₀ * T * T₂, by`. Rewrite using `[hRC, hL1, hr1, hC]`.
+
+Simplify using `only [mul_assoc], by`. Rewrite using `[hRD, hL2, hr2, hDd, hl]`. Simplify using `only [mul_assoc]⟩`. Conclude with `((mk_eq_iff_siegel GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn (c l₂ (q', η₂)) (Quotient.out q) (hRs l₂ _).1 (hcm l₂ _) (mat_ratOf _)).2 hsp).trans (Quotient.out_eq q)`. Introduce and unpack `⟨⟨l, u⟩, rfl⟩`.
+
+Establish `hspec'` using `GlobalTheory.CompanionTheory.SwUnf.BigCell.ratOf_spec (Quotient.out (mk ((P D n).subgroupOf (GF D n)) (c l u)))`. Establish `hS` using `(mk_eq_iff_siegel GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn (c l u) (Quotient.out (mk ((P D n).subgroupOf (GF D n)) (c l u))) (hRs l u).1 (hcm l u) (mat_ratOf _)).1 (Quotient.out_eq _).symm`. Take `⟨T, hT, hTC⟩` from `exists_unit_lowerC hspec'.1 (hRs l u).1 hS`. Rewrite `hTC` using `[hRC]`. Establish `h` using `ker_rows_eq_bot hn hT u.2 (a u.1) (cc u.1)`.
+
+Rewrite `h` using `[← hTC, LinearMap.ker_comp]`. Conclude with `h`. Introduce `l l' u h`. Express the relevant statement in the definitionally equal form `rmulEquiv (P D n) (GF D n) ⟨M.nzx l'.1 0, h⟩ (mk ((P D n).subgroupOf (GF D n)) (c l u)) = mk ((P D n).subgroupOf (GF D n)) (c (l' + l) u)`. Establish `e : c (l' + l) u = c l u * ⟨M.nzx l'.1 0, h⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `M.w * M.nzx (l' + l).1 0 * M.sh (u.2.map (incA D)) * M.emb (Quotient.out u.1 : GF D p) = M.w * M.nzx l.1 0 * M.sh (u.2.map (incA D)) * M.emb (Quotient.out u.1 : GF D p) * M.nzx l'.1 0`. Establish `e1 : ((l' + l : ratHerm D ρ) : hermA D ρ) = l.1 + l'.1` using `Subtype.ext (add_comm l'.1.1 l.1.1)`. Establish `h1` using `hemb l'.1 (Quotient.out u.1 : GF D p).1`. Establish `h2` using `hsh l'.1 (u.2.map (incA D))`.
+
+Rewrite using `[e1, hadd]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = M.w * M.nzx l.1 0 * M.sh (u.2.map (incA D)) * (M.nzx l'.1 0 * M.emb (Quotient.out u.1 : GF D p)) := by`. Rewrite using `[h2]`.
+
+Simplify using `only [mul_assoc]`. Use `_ = _ := by`. Rewrite using `[h1]`. Simplify using `only [mul_assoc]`. Rewrite using `[e]`.
+
+Conclude with `rmul_mk _ _`. Introduce `f hf l u y`. Conclude with `term_mk hf y (c l u)`.
+-/
 theorem cell : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn),
     ∃ e : ratHerm D ρ × (Cosets (P D p) (GF D p) × Matrix (Fin ρ) (Fin p) D.host.E) → Cosets (P D n) (GF D n),
       Function.Injective e ∧

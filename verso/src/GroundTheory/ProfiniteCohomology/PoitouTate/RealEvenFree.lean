@@ -17,6 +17,11 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Use `⟨fun w => InfinitePlace.not_isReal_iff_isComplex.1 fun hw => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun f : F →+* ℂ => f x) (ComplexEmbedding.isReal_iff.1 (InfinitePlace.isReal_iff.1 hw))`. Establish `h2 : (starRingEnd ℂ) (w.embedding x) = w.embedding x` using `h1`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h2`. Establish `h3 : (w.embedding x) ^ 2 = -1` using `by rw [← map_pow, hx, map_neg, map_one]`.
+
+Rewrite `h3` using `[hr]`. Establish `h4 : r ^ 2 = -1` using `by exact_mod_cast h3`. Use polynomial arithmetic with `[sq_nonneg r]`.
+-/
 theorem isTotallyComplex_of_sq_eq_neg_one {F : Type*} [Field F] (x : F) (hx : x ^ 2 = -1) :
     IsTotallyComplex F := by
   refine ⟨fun w => InfinitePlace.not_isReal_iff_isComplex.1 fun hw => ?_⟩
@@ -38,6 +43,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [∀ w, IsTopologicalGroup (F w)] [∀ w, Fintype (F w)] (ψ : ∀ w, F w →ₜ* G) [Fintype κ]
   {n : ℕ} [NeZero n] (D : Rep (ULift.{0} ℤ) G) [IsDiscreteRep D]
 
+/- English proof (translation)
+Establish `h1 : t ((ptTLocalToCompact φ ψ D 2).hom ((Pi.single v η, 0) : ptTLocal φ ψ D 2)) = 1` using `zmodToQZ_injective ((ht _).trans ((congrArg₂ (· + ·) (sum_apply_pi_single inv v η) (Finset.sum_eq_zero fun w _ => map_zero (invr w))).trans ((add_zero _).trans hη)))`. Introduce `a`. Use `⟨a.val • (ptTLocalToCompact φ ψ D 2).hom ((Pi.single v η, 0) : ptTLocal φ ψ D 2), ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, h1, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val]`.
+-/
 theorem surjective_of_ptTLocalToCompact_two (t : tateCompactCohomologyRes φ ψ D 3 →+ ZMod n)
     (inv : ∀ v, cohomology (Rep.res (φ v).toMonoidHom D) 2 →+ QZ)
     (invr : ∀ w, cohomology (Rep.res (ψ w).toMonoidHom D) 2 →+ QZ)
@@ -64,6 +72,9 @@ section Places
 variable {N : ℕ} (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((N : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S) (hev : Even N)
 include hS hev
 
+/- English proof (translation)
+Introduce `v hv`. Apply `hS v` to reduce the goal to its premises. Take `⟨m, hm⟩` from `hev`. Rewrite using `[hm, ← two_mul, Nat.cast_mul]`. Conclude with `v.asIdeal.mul_mem_right _ hv`.
+-/
 theorem mem_of_natCast_two_mem_of_even :
     ∀ v : HeightOneSpectrum (𝓞 K.1), ((2 : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S := by
   intro v hv
@@ -72,6 +83,9 @@ theorem mem_of_natCast_two_mem_of_even :
   rw [hm, ← two_mul, Nat.cast_mul]
   exact v.asIdeal.mul_mem_right _ hv
 
+/- English proof (translation)
+Introduce `v hv`. Rewrite `hv` using `[Nat.cast_mul]`. Break down `v.isPrime.mem_or_mem hv with h2 | hN` into its components or cases. Conclude with `mem_of_natCast_two_mem_of_even S hS hev v h2`. Conclude with `hS v hN`.
+-/
 theorem mem_of_natCast_two_mul_mem_of_even :
     ∀ v : HeightOneSpectrum (𝓞 K.1), ((2 * N : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S := by
   intro v hv
@@ -82,6 +96,9 @@ theorem mem_of_natCast_two_mul_mem_of_even :
 
 end Places
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (-1 : ℚ̄) (show 0 < 2 by norm_num)`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hev`. Rewrite using `[hm, show 2 * (m + m) = 2 * 2 * m by ring, pow_mul, pow_mul, hz]`. Evaluate the numerical expressions.
+-/
 theorem exists_sq_eq_neg_one_of_even {N : ℕ} (hev : Even N) : ∃ z : ℚ̄, z ^ 2 = -1 ∧ z ^ (2 * N) = 1 := by
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq (-1 : ℚ̄) (show 0 < 2 by norm_num)
   refine ⟨z, hz, ?_⟩
@@ -89,6 +106,15 @@ theorem exists_sq_eq_neg_one_of_even {N : ℕ} (hev : Even N) : ∃ z : ℚ̄, z
   rw [hm, show 2 * (m + m) = 2 * 2 * m by ring, pow_mul, pow_mul, hz]
   norm_num
 
+/- English proof (translation)
+Introduce `hfix`. Establish `key` using `gsRealFamily_apply S ιr w (realConj w.1 w.2) η`. Rewrite `key` using `[hfix]`. Establish `hη' : ((η : ℚ̄)) ^ 2 = -1`. Establish `e` using `congrArg (fun y : maxUnramifiedOutside K.1 ℚ̄ S => (y : ℚ̄)) hη`.
+
+Move the coercions through the operations in `at e`. Conclude with `e`. Establish `ha2 : (ιr w (η : ℚ̄)) ^ 2 = -1` using `by rw [← map_pow, hη', map_neg, map_one]`. Establish `ha0 : ιr w (η : ℚ̄) ≠ 0` using `fun h0 => by`. Rewrite `ha2` using `[h0]`.
+
+Evaluate the numerical expressions using `at ha2`. Establish `hu : Units.mk0 _ ha0 ^ 4 = 1` using `Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_mk0, show (4 : ℕ) = 2 * 2 from rfl, pow_mul, ha2]`. Use the proof step `norm_num)`. Establish `hc` using `realConj_apply_of_pow_eq_one w.1 w.2 (Units.mk0 _ ha0) (by norm_num) hu`.
+
+Establish `h3 : ιr w (η : ℚ̄) * ιr w (η : ℚ̄) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (-1 : AlgebraicClosure w.1.Completion) = 1` using `by rw [← ha2, sq, h3]`. Evaluate the numerical expressions using `at h4`.
+-/
 theorem gsRealFamily_realConj_ne (w : {v : InfinitePlace K.1 // v.IsReal}) (η : maxUnramifiedOutside K.1 ℚ̄ S)
     (hη : η ^ 2 = -1) : gsRealFamily S ιr w (realConj w.1 w.2) η ≠ η := by
   intro hfix
@@ -116,6 +142,11 @@ theorem gsRealFamily_realConj_ne (w : {v : InfinitePlace K.1 // v.IsReal}) (η :
   have h4 : (-1 : AlgebraicClosure w.1.Completion) = 1 := by rw [← ha2, sq, h3]
   norm_num at h4
 
+/- English proof (translation)
+Introduce `w x h hmem`. Break down `eq_one_or_eq_realConj w.1 w.2 h with h1 | h1` into its components or cases. Conclude with `h1`. It suffices to derive a contradiction. Substitute `h1` using the available equality.
+
+Establish `hfix : (x * gsRealFamily S ιr w (realConj w.1 w.2) * x⁻¹) ζ = ζ` using `hW _ hmem`. Establish `h2 : gsRealFamily S ιr w (realConj w.1 w.2) (x⁻¹ ζ) = x⁻¹ ζ`. Combine the equalities or inequalities in the displayed calculation. Establish `hη : (x⁻¹ ζ) ^ 2 = -1` using `by rw [← map_pow, hζ, map_neg, map_one]`. Conclude with `gsRealFamily_realConj_ne S ιr w (x⁻¹ ζ) hη h2`.
+-/
 theorem freeOnCosets_gsRealFamily_of_fixes (ζ : maxUnramifiedOutside K.1 ℚ̄ S) (hζ : ζ ^ 2 = -1)
     (W : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (hW : ∀ σ ∈ W, σ ζ = ζ) :
     FreeOnCosets (gsRealFamily S ιr) W := by
@@ -140,6 +171,9 @@ variable [Fintype S] {N : ℕ} [NeZero N]
 set_option maxHeartbeats 1000000 in
 include hS in
 
+/- English proof (translation)
+Take `⟨v⟩` from `hne`. Take `⟨η, hη⟩` from `(bijective_gsLocalInvRoots_of_places S ιs N (fun v hv h => hv (hS v h)) v).2 1`. Conclude with `surjective_of_ptTLocalToCompact_two (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) t (gsLocalInvRootsQZ S ιs N) (gsRealInvRootsQZ S ιr N) ht v η ((zmodToQZ_gsLocalInvRoots S ιs N v η).symm.trans (congrArg (zmodToQZ N) hη))`.
+-/
 theorem surjective_of_localToCompact_two [hne : Nonempty S]
     (t : tateCompactCohomologyRes (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 3 →+ ZMod N)
     (ht : ∀ ξ : ptTLocal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2,
@@ -155,6 +189,11 @@ theorem surjective_of_localToCompact_two [hne : Nonempty S]
 omit [Fintype S] in
 include hS hev in
 
+/- English proof (translation)
+Take `⟨z, hz2, hzN⟩` from `exists_sq_eq_neg_one_of_even hev`. Establish `hn0 : 2 * N ≠ 0` using `by have := NeZero.ne N; omega`. Establish `hzL : z ∈ L.1` using `rootsOfUnity_mem_of_gsOpenSubgroup_le S (2 * N) hL W₀ hW₀ hU hn0 (fun v hv h => hv (mem_of_natCast_two_mul_mem_of_even S hS hev v h)) z hzN`. Use `isTotallyComplex_of_sq_eq_neg_one (⟨z, hzL⟩ : L.1) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `push_cast`. Conclude with `hz2`.
+-/
 theorem isTotallyComplex_of_gsOpenSubgroup_le {L : FiniteSubfield} [Fact (K ≤ L)]
     (hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S)
     (W₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S))
@@ -173,6 +212,15 @@ theorem isTotallyComplex_of_gsOpenSubgroup_le {L : FiniteSubfield} [Fact (K ≤ 
 omit [Fintype S] in
 include hS hev in
 
+/- English proof (translation)
+Take `⟨z, hz2, hzN⟩` from `exists_sq_eq_neg_one_of_even hev`. Establish `hn0 : 2 * N ≠ 0` using `by have := NeZero.ne N; omega`. Establish `hzmem : z ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `mem_maxUnramifiedOutside_of_pow_eq_one S hn0 (fun v hv h => hv (mem_of_natCast_two_mul_mem_of_even S hS hev v h)) hzN`. Establish `hζ : (⟨z, hzmem⟩ : maxUnramifiedOutside K.1 ℚ̄ S) ^ 2 = -1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `push_cast`. Conclude with `hz2`. Establish `hne : (⟨z, hzmem⟩ : maxUnramifiedOutside K.1 ℚ̄ S) ≠ 0` using `fun h0 => by`. Rewrite `hζ` using `[h0]`. Evaluate the numerical expressions using `at hζ`.
+
+Establish `hpow : Units.mk0 _ hne ^ (2 * N) = 1` using `Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_mk0, Units.val_one]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `hzN)`.
+
+Conclude with `freeOnCosets_gsRealFamily_of_fixes S ιr _ hζ _ fun σ hσ => hW₀ σ (hU hσ) _ hpow`.
+-/
 theorem freeOnCosets_gsRealFamily_of_le (W₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S))
     (hW₀ : ∀ σ ∈ W₀, ∀ ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ, ζ ^ (2 * N) = 1 →
       σ (ζ : maxUnramifiedOutside K.1 ℚ̄ S) = ζ)

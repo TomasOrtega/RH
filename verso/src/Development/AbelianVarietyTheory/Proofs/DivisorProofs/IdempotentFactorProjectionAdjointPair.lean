@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.MumFam.FactorAdj
 
+/- English proof (translation)
+Introduce `R _ _ I D D' F`. Use `haveI := F.inc_hom`. Use `haveI := F.o.onB.hom F.f`. Establish `hm : IsMonHom (F.inc ≫ F.o.onB.act F.f)` using `inferInstance`. Establish `H` using `GlobalTheory.T.of_twisted_adjoint_comp R (pol D') (pol D) F.pr (F.o.onB.act F.e) (F.o.onB.act (Star.star F.e)) (F.inc ≫ F.o.onB.act F.f) F.xp (DistribMulAction.toAddMonoidHom D'.toPre.X F.e) (DistribMulAction.toAddMonoidHom D'.toPre.X (Star.star F.e)) ((DistribMulAction.toAddMono …`.
+
+Establish `e1 : (F.inc ≫ F.o.onB.act F.f) ≫ F.o.onB.act (Star.star F.e) = F.inc ≫ F.o.onB.act (Star.star F.e * F.f)`. Rewrite using `[F.o.onB.map_mul, Category.assoc]`. Establish `e2 : (DistribMulAction.toAddMonoidHom D'.toPre.X (Star.star F.e)).comp ((DistribMulAction.toAddMonoidHom D'.toPre.X F.f).comp F.xi) = (DistribMulAction.toAddMonoidHom D'.toPre.X (Star.star F.e * F.f)).comp F.xi`. Use extensionality with `y`. Simplify using `[mul_smul]`.
+
+Conclude with `e1 ▸ e2 ▸ H`.
+-/
 theorem factor_adj : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D' : DegData R I) (F : Factor D.toPre D'.toPre), Adj (pol D') (pol D) F.pr (F.inc ≫ F.o.onB.act (Star.star F.e * F.f)) F.xp ((DistribMulAction.toAddMonoidHom D'.toPre.X (Star.star F.e * F.f)).comp F.xi) := by
   intro R _ _ I D D' F
   haveI := F.inc_hom

@@ -56,14 +56,23 @@ def NoLocalInvariants : Prop :=
   ∀ (i : N.Loc) (x : N.X i), (IsCuspPoint N A i x ∨ x ∈ ZgoodN N A i) →
     ∀ ρ, IsRankPart N i x ρ → NoLocalInv N i ρ
 
+/- English proof (translation)
+Unfold `matW`. Rewrite using `[← Matrix.map_mul, smul_mul_smul_comm, map_mul, map_mul, mul_inv, Units.val_mul, Units.val_mul]`.
+-/
 theorem matW_mul (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g h : G H.E N.Om) :
     matW N i ρ (g * h) = matW N i ρ g * matW N i ρ h := by
   unfold matW
   rw [← Matrix.map_mul, smul_mul_smul_comm, map_mul, map_mul, mul_inv, Units.val_mul, Units.val_mul]
 
+/- English proof (translation)
+Simplify using `[matW]`.
+-/
 theorem matW_one (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) : matW N i ρ 1 = 1 := by
   simp [matW]
 
+/- English proof (translation)
+Unfold `matT`. Rewrite using `[Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.smul_mul, ← matW_mul, inv_mul_cancel, matW_one]`.
+-/
 theorem matT_transpose_mul_matW (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i))
     (g : G H.E N.Om) :
     (matT N i ρ g)ᵀ * matW N i ρ g =

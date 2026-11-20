@@ -24,6 +24,11 @@ section LH
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `W hW hsig`. Take `⟨φ, hφ⟩` from `hL (stdPos D W.rank) W (stdPos_sigOK D W.rank) hW (stdPos_rank D W.rank) (fun τ => by rw [stdPos_sig, hsig])`. Use `⟨fun a => φ ((stdPos D W.rank).frame a), ?_, fun a c => ?_⟩` and prove the remaining obligations. Conclude with `(stdPos D W.rank).frame.linearIndependent.map' φ.toLinearMap φ.ker`. Rewrite using `[hφ]`.
+
+Use `(Formalism.BasicNotions.Examples₂.stdSpace_gram_apply (fun x hx => Formalism.BasicNotions.Examples₂.star_isIntegral x hx) W.rank (fun _ => false) W.rank 0 a c).trans ?_` and prove the remaining obligations. Simplify using `[Formalism.BasicNotions.Examples₂.sgn]`.
+-/
 theorem landherrHasse_of_sig (D : D7) (hL : LandherrSig D) : LandherrHasse D := by
   intro W hW hsig
   obtain ⟨φ, hφ⟩ := hL (stdPos D W.rank) W (stdPos_sigOK D W.rank) hW (stdPos_rank D W.rank)
@@ -37,11 +42,17 @@ theorem landherrHasse_of_sig (D : D7) (hL : LandherrSig D) : LandherrHasse D := 
 
 end LH
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨genusMassAt_of D hG n, class_number_finite_rank D n, classMassAt_of D hM n⟩`.
+-/
 theorem classItemsAt_all (D : D7) (hG : GenusMassStd D) (hM : ClassMass D) (n : ℕ) : ClassItemsAt D n :=
   ⟨genusMassAt_of D hG n, class_number_finite_rank D n, classMassAt_of D hM n⟩
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+The claim follows from `stmtF_of_open Fm C3 (by linarith) (siegel_weil_part_one_of_weil_theorem eps Fm hW) (fun _ => standardMassRatio_of_modelMassRatio Formalism.HermitianLattices.SiegelMassBounds.siegel_mass_ratio) (fun _ hT x i => ⟨theorem_two_of_landherr (Fm.D x i) (hT x i) (hV x i) (hL x i) (fun n …`.
+-/
 theorem stmtF_of_named {eps : ℝ} (Fm : FamP eps) (C3 : ℝ) (hC3 : 1 ≤ C3)
     (hR : ∀ x (i : Fm.Ix x), Formalism.L2.Theta.RealTied (Fm.D x i))
     (hW : WeilSiegelCM)
@@ -64,6 +75,9 @@ theorem stmtF_of_named {eps : ℝ} (Fm : FamP eps) (C3 : ℝ) (hC3 : 1 ≤ C3)
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+The claim follows from `(((((hR.and hV).and hM).and hHC).and hL).and (hG.and hN)).imp fun Fm _ _ h => stmtF_of_named Fm C3 hC3 h.1.1.1.1.1 hW h.1.1.1.1.2 h.1.1.1.2 h.1.1.2 h.1.2 h.2.1 h.2.2`.
+-/
 theorem packet_statement_of_named (𝒞 : FamClass) (C3 : ℝ) (hC3 : 1 ≤ C3)
     (hR : RowReal 𝒞)
     (hW : WeilSiegelCM)
@@ -76,14 +90,23 @@ theorem packet_statement_of_named (𝒞 : FamClass) (C3 : ℝ) (hC3 : 1 ≤ C3)
   (((((hR.and hV).and hM).and hHC).and hL).and (hG.and hN)).imp
     fun Fm _ _ h => stmtF_of_named Fm C3 hC3 h.1.1.1.1.1 hW h.1.1.1.1.2 h.1.1.1.2 h.1.1.2 h.1.2 h.2.1 h.2.2
 
+/- English proof (translation)
+The claim follows from `hR.imp fun Fm _ _ _ x i => hP (Fm.D x i)`.
+-/
 theorem rowRec_of_all {𝒞 : FamClass} {P : D7 → Prop} (hP : ∀ D, P D) (hR : RowReal 𝒞) : RowRec 𝒞 P :=
   hR.imp fun Fm _ _ _ x i => hP (Fm.D x i)
 
+/- English proof (translation)
+The claim follows from `h.imp fun Fm _ _ h _ _ x hx i => (h x hx i).elim fun X => Formalism.MainNotions.Gaps.CC.class_number_of_class_data X (Fm.ex x hx i).lev`.
+-/
 theorem rowCount_of_clsTie {𝒞 : FamClass} (h : RowClsTie 𝒞) : RowCount 𝒞 :=
   h.imp fun Fm _ _ h _ _ x hx i => (h x hx i).elim fun X => Formalism.MainNotions.Gaps.CC.class_number_of_class_data X (Fm.ex x hx i).lev
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+The claim follows from `packet_statement_of_named 𝒞 C3 hC3 hR hW hV (rowRec_of_all (class_mass_of_genus_classes hUJ) hR) hHC hL hG (rowCount_of_clsTie hX)`.
+-/
 theorem packet_statement_of_genus_classes (𝒞 : FamClass) (C3 : ℝ) (hC3 : 1 ≤ C3)
     (hR : RowReal 𝒞) (hW : WeilSiegelCM) (hV : RowRec 𝒞 VolSigIndep)
     (hUJ : PI.UJClassMass2.UJClassMass)
@@ -93,6 +116,9 @@ theorem packet_statement_of_genus_classes (𝒞 : FamClass) (C3 : ℝ) (hC3 : 1 
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+The claim follows from `packet_statement_of_named 𝒞 C3 hC3 hR hW hV (rowRec_of_all (classMass_of_steps hLG hSS) hR) hHC hL hG (rowCount_of_clsTie hX)`.
+-/
 theorem packet_statement_of_surjection (𝒞 : FamClass) (C3 : ℝ) (hC3 : 1 ≤ C3)
     (hR : RowReal 𝒞) (hW : WeilSiegelCM) (hV : RowRec 𝒞 VolSigIndep)
     (hLG : ClassSteps.LatGenus) (hSS : PI.UnitaryGroupMassFormula.UJClassMass.SurjStep)

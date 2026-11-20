@@ -29,6 +29,9 @@ namespace GlobalTheory.HalfModTorus
 
 open GlobalTheory.Doubling
 
+/- English proof (translation)
+Establish `h' : Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) y = 1` using `h`. Establish `e : GlobalTheory.AdelicU.compFin D.host.F D.host.E v y = Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v) (AlgHom.id D.host.F D.host.E) (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) y)`. Rewrite using `[← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Both sides reduce to the same expression. Rewrite using `[e, h', map_one]`.
+-/
 theorem compFin_eq_one {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (y : AE D) (h : finPart D y = 1) :
     GlobalTheory.AdelicU.compFin D.host.F D.host.E v y = 1 := by
   have h' : Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) y = 1 := h
@@ -39,10 +42,16 @@ theorem compFin_eq_one {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (y : AE 
     rfl
   rw [e, h', map_one]
 
+/- English proof (translation)
+The claim follows from `Units.ext (compFin_eq_one v (x : AE D) h)`.
+-/
 theorem unitFin_eq_one {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (x : (AE D)ˣ) (h : finPart D (x : AE D) = 1) :
     unitFin D.host.F D.host.E v x = 1 :=
   Units.ext (compFin_eq_one v (x : AE D) h)
 
+/- English proof (translation)
+Establish `e : GlobalTheory.AdelicU.compInf D.host.F D.host.E w y = Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id D.host.F D.host.E) (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) y)`. Rewrite using `[← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Both sides reduce to the same expression. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem compInf_eq {D : D7} (w : InfinitePlace D.host.F) (t' : GlobalTheory.AdelicU.EmbOver D.host.E w) (y : AE D) :
     GlobalTheory.AdelicU.infEmb t' (GlobalTheory.AdelicU.compInf D.host.F D.host.E w y) = GlobalTheory.AdelicU.infProj t' (infPart D y) := by
   have e : GlobalTheory.AdelicU.compInf D.host.F D.host.E w y =
@@ -53,6 +62,9 @@ theorem compInf_eq {D : D7} (w : InfinitePlace D.host.F) (t' : GlobalTheory.Adel
   rw [e]
   rfl
 
+/- English proof (translation)
+Establish `e1 : (∏ᶠ v, absEv D.host.F D.host.E v (unitFin D.host.F D.host.E v x)) = 1` using `finprod_eq_one_of_forall_eq_one hf`. Establish `e2 : (∏ w, absEw D.host.F D.host.E w (unitInf D.host.F D.host.E w x)) = c ^ Fintype.card D.what₂.Tau`. Rewrite using `[← (GlobalTheory.CMTypePlaces.places_bijective D).prod_comp (fun w => absEw D.host.F D.host.E w (unitInf D.host.F D.host.E w x))]`. Simplify using `only [hw, Finset.prod_const, Finset.card_univ]`. Rewrite using `[absE_apply, e1, e2, mul_one]`.
+-/
 theorem absE_of_components {D : D7} (x : (AE D)ˣ) (c : NNReal)
     (hf : ∀ v, absEv D.host.F D.host.E v (unitFin D.host.F D.host.E v x) = 1)
     (hw : ∀ τ : D.what₂.Tau, absEw D.host.F D.host.E
@@ -66,6 +78,19 @@ theorem absE_of_components {D : D7} (x : (AE D)ˣ) (c : NNReal)
     simp only [hw, Finset.prod_const, Finset.card_univ]
   rw [absE_apply, e1, e2, mul_one]
 
+/- English proof (translation)
+Introduce `D θ hθ r n t ht α hfin hinf`. Establish `hcm` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).1`. Use `haveI := hcm.1`. Establish `hxv : ((Matrix.GeneralLinearGroup.det α : (AE D)ˣ) : AE D) = α.1.det` using `rfl`. Establish `h1 : finPart D ((Matrix.GeneralLinearGroup.det α : (AE D)ˣ) : AE D) = 1`.
+
+Rewrite using `[hxv, RingHom.map_det, RingHom.mapMatrix_apply, hfin, Matrix.det_one]`. Establish `hf : ∀ v, absEv D.host.F D.host.E v (unitFin D.host.F D.host.E v (Matrix.GeneralLinearGroup.det α)) = 1` using `fun v => by rw [unitFin_eq_one v _ h1, map_one]`. Establish `hdet : ∀ τ, θ τ (infPart D ((Matrix.GeneralLinearGroup.det α : (AE D)ˣ) : AE D)) = ((∏ i, t i : ℝ) : ℂ)`. Introduce `τ`. Establish `e : θ τ (infPart D ((Matrix.GeneralLinearGroup.det α : (AE D)ˣ) : AE D)) = (compAt θ τ α.1).det`.
+
+Rewrite using `[hxv, ← RingHom.comp_apply, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[e, hinf τ, Matrix.det_diagonal, Complex.ofReal_prod]`. Establish `hw : ∀ τ : D.what₂.Tau, absEw D.host.F D.host.E (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E))) (unitInf D.host.F D.host.E _ (Matrix.GeneralLinearGroup.det α)) = ‖((∏ i, t i : ℝ) : ℂ)‖₊ ^ 2`. Introduce `τ`.
+
+Set `t' : GlobalTheory.AdelicU.EmbOver D.host.E (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E)))` to `⟨tauE D τ, (InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _))).symm⟩`. Rewrite using `[absEw_eq_sq hcm t', ← hdet τ, GlobalTheory.AutFunCompare.isInfEmb_unique _ _ _ (hθ τ) (GlobalTheory.AdelicU.isInfEmb_infProj t')]`. Conclude with `congrArg (fun z : ℂ => ‖z‖₊ ^ 2) (compInf_eq _ t' _)`. Establish `hcard : Fintype.card D.what₂.Tau = Module.finrank ℚ D.host.F`. Rewrite using `[Fintype.card_of_bijective (GlobalTheory.CMTypePlaces.places_bijective D), IsTotallyReal.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero]`.
+
+Establish `hP : 0 < ∏ i, t i` using `Finset.prod_pos fun i _ => ht i`. Establish `habs : ((absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det α) : NNReal) : ℝ) = (∏ i, t i) ^ (2 * Module.finrank ℚ D.host.F)`. Rewrite using `[absE_of_components _ _ hf hw, hcard, NNReal.coe_pow, NNReal.coe_pow, coe_nnnorm, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hP, ← pow_mul]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod`. Rewrite using `[habs, Finset.prod_pow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hP.le]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem halfMod_torus : ∀ {D : D7} (θ : InfFam D), IsInfFam θ → ∀ (r n : ℕ) (t : Fin r → ℝ), (∀ i, 0 < t i) →
     ∀ α : GL (Fin r) (Formalism.L2.Theta.AE D), α.1.map (finPart D) = 1 →
       (∀ τ, compAt θ τ α.1 = diagonal (fun i => (t i : ℂ))) →

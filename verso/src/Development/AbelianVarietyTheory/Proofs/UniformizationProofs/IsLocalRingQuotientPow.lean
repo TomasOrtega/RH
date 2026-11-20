@@ -28,6 +28,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.WtTower
 
+/- English proof (translation)
+Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun a _ => (map_zpow _ _ _).trans (congrArg (· ^ ε a) ?_))` and prove the remaining obligations. Establish `hm : (φ a) (r z) ∈ M.U (p.1 a) ⊓ L.U (p.2 a)` using `⟨LB.wchart_le M φ p.1 a hz.1, LB.wchart_le L φ p.2 a hz.2⟩`. Conclude with `(gm_res r z _ hz _).trans (gm_pull r (φ a) z ((LB.div M L).U (p.1 a, p.2 a)) hm _)`.
+-/
 theorem gm_linCombIso {X Y Z : Scheme.{0}} {L M : LB X} (w : LB.Iso L M) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     (ε : K → ℤ) (p : (LB.LinComb M φ ε).ι × (LB.LinComb L φ ε).ι) (r : Z ⟶ Y) (z : Z)
     (hz : r z ∈ (LB.div (LB.LinComb M φ ε) (LB.LinComb L φ ε)).U p) :
@@ -38,6 +41,17 @@ theorem gm_linCombIso {X Y Z : Scheme.{0}} {L M : LB X} (w : LB.Iso L M) {K : Ty
     ⟨LB.wchart_le M φ p.1 a hz.1, LB.wchart_le L φ p.2 a hz.2⟩
   exact (gm_res r z _ hz _).trans (gm_pull r (φ a) z ((LB.div M L).U (p.1 a, p.2 a)) hm _)
 
+/- English proof (translation)
+Establish `tr : ∀ (y : Y) (j j' : B.ι) (i i' : A.ι), y ∈ B.U j → y ∈ B.U j' → y ∈ A.U i → y ∈ A.U i' → gm (𝟙 Y) y (B.U j ⊓ A.U i) (w.s (j, i)) * gm (𝟙 Y) y (A.U i) (t.s i) = gm (𝟙 Y) y _ (B.g j j') * (gm (𝟙 Y) y (B.U j' ⊓ A.U i') (w.s (j', i')) * gm (𝟙 Y) y (A.U i') (t.s i'))`. Introduce `y j j' i i' hj hj' hi hi'`. Establish `hm : (𝟙 Y : Y ⟶ Y) y ∈ B.U j ⊓ A.U i ⊓ (B.U j' ⊓ A.U i')` using `⟨⟨hj, hi⟩, hj', hi'⟩`. Establish `hn : (𝟙 Y : Y ⟶ Y) y ∈ A.U i ⊓ A.U i'` using `⟨hi, hi'⟩`. Establish `e` using `(gm_res _ y _ hm _).symm.trans ((congrArg (gm (𝟙 Y) y _) (hw (j, i) (j', i'))).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div A B (𝟙 Y) y (j, i) (j', i') hm) (gm_res _ y _ hm _))))`.
+
+Establish `e'` using `(gm_res _ y _ hn _).symm.trans ((congrArg (gm (𝟙 Y) y _) (ht i i')).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gm_res _ y _ hn _))))`. Use `(congrArg₂ (· * ·) e e').trans ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_mul_mul_comm, inv_mul_cancel_right]`. Both sides reduce to the same expression. Establish `glue : ∀ j : B.ι, ∃ s : Γ(Y, B.U j)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (i : A.ι), r z ∈ B.U j → r z ∈ A.U i → gm r z (B.U j) s = gm r z (B.U j ⊓ A.U i) (w.s (j, i)) * gm r z (A.U i) (t.s i)`.
+
+Introduce `j`. Establish `v : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (i : A.ι), r z ∈ B.U j ⊓ A.U i → gm r z (B.U j ⊓ A.U i) (@id (Γ(Y, B.U j ⊓ A.U i)ˣ) (w.s (j, i)) * res inf_le_right (t.s i)) = gm r z (B.U j ⊓ A.U i) (w.s (j, i)) * gm r z (A.U i) (t.s i)` using `fun Z r z i h => (map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gm_res r z _ h _))`. Take `⟨s, hs⟩` from `glue_unit (B.U j) (fun i => B.U j ⊓ A.U i) (fun _ => inf_le_left) (fun x hx => by`. Take `⟨i, hi⟩` from `exists_chart hA x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hx, hi⟩)`.
+
+Use the proof step `(fun i => @id (Γ(Y, B.U j ⊓ A.U i)ˣ) (w.s (j, i)) * res inf_le_right (t.s i)) (fun i i' x hx => by`. Rewrite using `[v _ _ x i hx.1, v _ _ x i' hx.2, tr x j j i i' hx.1.1 hx.1.1 hx.1.2 hx.2.2, gm_self hB _ x hx.1.1, _root_.one_mul])`. Use `⟨s, fun Z r z i hj hi => ?_⟩` and prove the remaining obligations. Establish `hm : r z ∈ B.U j ⊓ A.U i` using `⟨hj, hi⟩`. Conclude with `(gm_res r z inf_le_left hm s).symm.trans ((congrArg (gm r z _) (hs i)).trans (v Z r z i hm))`.
+
+Use `choose s hs using glue`. Use `⟨⟨s⟩, fun j j' => unit_ext fun y hy => ?_, fun Z r z j i => hs j Z r z i⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hA y`. Rewrite using `[map_mul, gm_res _ y _ hy, gm_res _ y _ hy]`. Conclude with `(hs j _ _ y i hy.1 hi).trans ((tr y j j' i i hy.1 hy.2 hi hi).trans (congrArg _ (hs j' _ _ y i hy.2 hi).symm))`.
+-/
 theorem exists_gen_of_iso {Y : Scheme.{0}} {A B : LB Y} (hA : A.IsLB) (hB : B.IsLB) (w : LB.Iso A B) (hw : w.IsGen)
     (t : LB.Gen A) (ht : t.IsGen) : ∃ t' : LB.Gen B, t'.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (j : B.ι) (i : A.ι),
       r z ∈ B.U j → r z ∈ A.U i →
@@ -78,6 +92,9 @@ theorem exists_gen_of_iso {Y : Scheme.{0}} {A B : LB Y} (hA : A.IsLB) (hB : B.Is
   rw [map_mul, gm_res _ y _ hy, gm_res _ y _ hy]
   exact (hs j _ _ y i hy.1 hi).trans ((tr y j j' i i hy.1 hy.2 hi hi).trans (congrArg _ (hs j' _ _ y i hy.2 hi).symm))
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Take `⟨t, ht⟩` from `t`. Take `⟨t', ht', -⟩` from `exists_gen_of_iso hA hB w hw t ht`. Conclude with `⟨t', ht'⟩`.
+-/
 theorem triv_of_lbIso {Y : Scheme.{0}} {A B : LB Y} (hA : A.IsLB) (hB : B.IsLB) (h : LBIso A B) (t : Triv A) :
     Triv B := by
   obtain ⟨w, hw⟩ := h
@@ -87,6 +104,13 @@ theorem triv_of_lbIso {Y : Scheme.{0}} {A B : LB Y} (hA : A.IsLB) (hB : B.IsLB) 
 
 variable {S S' : Scheme.{0}} {X : Type} [AddCommGroup X]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Take `⟨u', hu', hv⟩` from `exists_gen_of_iso (pull_isLB hN _) (pull_isLB hN' _) (LB.linCombIso w (K := PUnit) (fun _ => Q.q.left) (fun _ => 1)) (DVR.linCombIso_isGen w hw _ _) u hu.1`. Use `⟨u', hu', fun J => isWt_of_gm _ _ fun Z t g z hz => ?_⟩` and prove the remaining obligations. Establish `e : ((t ≫ Q.i) * g).left ≫ Q.q.left = g.left ≫ Q.q.left` using `congrArg (·.left) (WtBundle.act_comp Q t g)`. Establish `m : ∀ (M : LB Q.B.left) (I : PUnit → M.ι), g.left z ∈ (M.pull Q.q.left).U I → ((t ≫ Q.i) * g).left z ∈ (M.pull Q.q.left).U I` using `fun M I h => (mem_pull (F := Q.q.left)).2 ((congrArg (fun a : Z.left ⟶ Q.B.left => a z ∈ M.U (I PUnit.unit)) e).mpr ((mem_pull (F := Q.q.left)).1 h))`.
+
+Take `⟨I, hI⟩` from `exists_chart (pull_isLB hN Q.q.left) (g.left z)`. Establish `a₁` using `gm_linCombIso w (K := PUnit) (fun _ => Q.q.left) (fun _ => 1) (J, I) g.left z ⟨hz, hI⟩`. Establish `a₂` using `gm_linCombIso w (K := PUnit) (fun _ => Q.q.left) (fun _ => 1) (J, I) ((t ≫ Q.i) * g).left z ⟨m _ _ hz, m _ _ hI⟩`. Rewrite `a₂` using `[e, ← a₁]`. Rewrite using `[hv _ _ z J I (m _ _ hz) (m _ _ hI), hv _ _ z J I hz hI, WtBundle.gm_of_isWt (hu.2 I) t g z (m _ _ hI) hI, gm_charUnit, mul_left_comm]`.
+
+Conclude with `congrArg (fun x => _ * (x * _)) a₂`.
+-/
 theorem exists_genWt_of_lbIso {G : Over S} [GrpObj G] (Q : TQ G X) {N N' : LB Q.B.left} (hN : N.IsLB) (hN' : N'.IsLB)
     (h : LBIso N N') {u : LB.Gen (N.pull Q.q.left)} {χ : X} (hu : Q.GenWt N u χ) :
     ∃ u' : LB.Gen (N'.pull Q.q.left), Q.GenWt N' u' χ := by
@@ -108,6 +132,9 @@ theorem exists_genWt_of_lbIso {G : Over S} [GrpObj G] (Q : TQ G X) {N N' : LB Q.
     gm_charUnit, mul_left_comm]
   exact congrArg (fun x => _ * (x * _)) a₂
 
+/- English proof (translation)
+The claim follows from `let c := chartPullLinComb N β (K := PUnit) (fun _ => Q'.q.left) (fun _ => Q.q.left) (fun _ => 1) F fun _ => hβ ⟨GtBaseChange.genPull c u, GtBaseChange.genPull_isGen c hu.1, fun J => (hu.2 (c.idx J)).pull hF hi (c.le J)⟩`.
+-/
 theorem exists_genWt_pull {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] (Q : TQ G X) (Q' : TQ G' X) {f : S' ⟶ S}
     {F : G'.left ⟶ G.left} (hF : IsGrpPullback G' G f F) (hi : TorusCompat f F Q'.i Q.i) {β : Q'.B.left ⟶ Q.B.left}
     (hβ : Q'.q.left ≫ β = F ≫ Q.q.left) {N : LB Q.B.left} {u : LB.Gen (N.pull Q.q.left)} {χ : X}
@@ -115,12 +142,18 @@ theorem exists_genWt_pull {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] (Q 
   let c := chartPullLinComb N β (K := PUnit) (fun _ => Q'.q.left) (fun _ => Q.q.left) (fun _ => 1) F fun _ => hβ
   ⟨GtBaseChange.genPull c u, GtBaseChange.genPull_isGen c hu.1, fun J => (hu.2 (c.idx J)).pull hF hi (c.le J)⟩
 
+/- English proof (translation)
+The claim follows from `let c := chartPullIn O (K := PUnit) (fun _ => b) (fun _ => 1) Q.q.left ⟨GtBaseChange.genPull c u, GtBaseChange.genPull_isGen c hu.1, fun J => (hu.2 (c.idx J)).res (c.le J)⟩`.
+-/
 theorem exists_gen_comp {G : Over S} [GrpObj G] (Q : TQ G X) {Y : Scheme.{0}} (b : Q.B.left ⟶ Y) {O : LB Y}
     {u : LB.Gen ((O.pull b).pull Q.q.left)} {χ : X} (hu : Q.GenWt (O.pull b) u χ) :
     ∃ u' : LB.Gen (O.pull (Q.q.left ≫ b)), u'.IsGen ∧ ∀ j, IsWt Q.i _ (u'.s j).val χ :=
   let c := chartPullIn O (K := PUnit) (fun _ => b) (fun _ => 1) Q.q.left
   ⟨GtBaseChange.genPull c u, GtBaseChange.genPull_isGen c hu.1, fun J => (hu.2 (c.idx J)).res (c.le J)⟩
 
+/- English proof (translation)
+Establish `e : (fun i => preHom (lift (x 0) (x 1)) (x2 B i)) = x` using `funext fun i => by fin_cases i exacts [lift_fst (x 0) (x 1), lift_snd (x 0) (x 1)]`. Use `psum_hom (preHom (lift (x 0) (x 1))) (x2 B) I` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `congrArg (·.left) this.symm`.
+-/
 theorem psum_eq_lift {B T : Over S} [GrpObj B] [IsCommMonObj B] (x : Fin 2 → (T ⟶ B)) (I : Finset (Fin 2)) :
     (psum B x I).left = (lift (x 0) (x 1)).left ≫ (psum B (x2 B) I).left := by
   have e : (fun i => preHom (lift (x 0) (x 1)) (x2 B i)) = x := funext fun i => by
@@ -130,6 +163,11 @@ theorem psum_eq_lift {B T : Over S} [GrpObj B] [IsCommMonObj B] (x : Fin 2 → (
   rw [e] at this
   exact congrArg (·.left) this.symm
 
+/- English proof (translation)
+Take `⟨x, hx⟩ : ∃ x : Fin 2 → (T ⟶ B'), ∀ i, pushPt hb.1.w (x i) = U ≫ x2 B i` from `⟨fun i => Over.homMk (hb.1.lift (U ≫ x2 B i).left T.hom (Over.w (U ≫ x2 B i))) (hb.1.lift_snd _ _ _), fun i => Over.OverMorphism.ext (hb.1.lift_fst _ _ _)⟩`. Take `⟨w, hw⟩` from `h`. Take `⟨t, ht⟩` from `ht`. Establish `t₁ : Triv (cubeLB B' x N)` using `gen_chartPull (chartPullSame N (fun I : ULift (Finset (Fin 2)) => (psum B' x I.down).left) (fun I => (psum B' (x2 B') I.down).left) (fun I => (-1) ^ (2 - I.down.card)) (lift (x 0) (x 1)).left fun I => psum_eq_lift x I.down) t ht`. Establish `l₁ : (cubeLB B' x N).IsLB` using `LB.isLB_linComb hN _ _`.
+
+Establish `l₂ : (cubeLB B' x (O.pull b)).IsLB` using `LB.isLB_linComb (pull_isLB hO b) _ _`. Establish `l₃ : (abelian₂ B O).IsLB` using `LB.isLB_linComb hO _ _`. Establish `t₂ : Triv (cubeLB B' x (O.pull b))` using `triv_of_lbIso l₁ l₂ ⟨_, DVR.linCombIso_isGen w hw _ _⟩ t₁`. Establish `c : ChartPull (cubeLB B' x (O.pull b)) (abelian₂ B O) U.left` using `chartPullLinComb O b (fun I : ULift (Finset (Fin 2)) => (psum B' x I.down).left) (fun I => (psum B (x2 B) I.down).left) (fun I => (-1) ^ (2 - I.down.card)) U.left fun I => psum_push hb x (x2 B) U hx I.down`. Conclude with `triv_of_lbIso l₂ (pull_isLB l₃ _) (LBIso.chartPull c (chartPullPull (abelian₂ B O) U.left U.left rfl) (GtBaseChange.lbIso_refl l₃)) t₂`.
+-/
 theorem triv_lam_pull {B : Over S} {B' : Over S'} [GrpObj B] [IsCommMonObj B] [GrpObj B'] [IsCommMonObj B']
     {f : S' ⟶ S} {b : B'.left ⟶ B.left} (hb : IsGrpPullback B' B f b) {O : LB B.left} {N : LB B'.left} (hO : O.IsLB)
     (hN : N.IsLB) (h : LBIso N (O.pull b)) (ht : Triv (abelian₂ B' N)) {T : Over S'} (U : Over.mk (T.hom ≫ f) ⟶ B ⊗ B) :
@@ -154,23 +192,35 @@ theorem triv_lam_pull {B : Over S} {B' : Over S'} [GrpObj B] [IsCommMonObj B] [G
   exact triv_of_lbIso l₂ (pull_isLB l₃ _)
     (LBIso.chartPull c (chartPullPull (abelian₂ B O) U.left U.left rfl) (GtBaseChange.lbIso_refl l₃)) t₂
 
+/- English proof (translation)
+The claim follows from `(isGrpPullback_pullback G (thick R I (e + 1))).cancel ((isGrpPullback_pullback G (thick R I e)).congr (thickTrans_comp R I e).symm ((pullback.lift_fst _ _ _).trans (Category.comp_id _)).symm) (pullback.lift_snd _ _ _)`.
+-/
 theorem isGrpPullback_thickMap {R : Type} [CommRing R] (I : Ideal R) (G : Over (Spec (CommRingCat.of R))) [GrpObj G]
     (e : ℕ) : IsGrpPullback (thickObj R I e G) (thickObj R I (e + 1) G) (thickTrans R I e) (thickMap R I e G) :=
   (isGrpPullback_pullback G (thick R I (e + 1))).cancel
     ((isGrpPullback_pullback G (thick R I e)).congr (thickTrans_comp R I e).symm
       ((pullback.lift_fst _ _ _).trans (Category.comp_id _)).symm) (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `have : Nontrivial (V ⧸ IsLocalRing.maximalIdeal V ^ (e + 1)) := Ideal.Quotient.nontrivial_iff.2 (ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal V).ne_top (Ideal.pow_le_self (Nat.succ_ne_zero e))) IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjecti …`.
+-/
 theorem isLocalRing_quotient_pow (V : Type) [CommRing V] [IsLocalRing V] (e : ℕ) :
     IsLocalRing (V ⧸ IsLocalRing.maximalIdeal V ^ (e + 1)) :=
   have : Nontrivial (V ⧸ IsLocalRing.maximalIdeal V ^ (e + 1)) := Ideal.Quotient.nontrivial_iff.2
     (ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal V).ne_top (Ideal.pow_le_self (Nat.succ_ne_zero e)))
   IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+Take `⟨d, -, n, σ, hσ⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy R B L hL).1 h`. Conclude with `⟨_, isLB_pw hL _, n, σ, hσ⟩`.
+-/
 theorem isProjBy_of_relAmple {R : Type} [CommRing R] (B : Over (Spec (CommRingCat.of R))) {L : LB B.left}
     (hL : L.IsLB) (h : RelAmple B L) : IsProjBy B.hom := by
   obtain ⟨d, -, n, σ, hσ⟩ := (GlobalTheory.Unif.relAmple_iff_veryAmpleBy R B L hL).1 h
   exact ⟨_, isLB_pw hL _, n, σ, hσ⟩
 
+/- English proof (translation)
+The claim follows from `AbTriv.triv_of_forall_thick hG V (B ⊗ B) (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hB hB) (isProjBy_tensor V _ _ hp hp) _ (LB.isLB_linComb hO _ _) h`.
+-/
 theorem triv_lam_of_levels (hG : GlobalFnsSt) {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [IsAdicComplete (IsLocalRing.maximalIdeal V) V] {B : Over (Spec (CommRingCat.of V))} [GrpObj B] [IsCommMonObj B]
     (hB : IsAbelianScheme B) (hp : IsProjBy B.hom) {O : LB B.left} (hO : O.IsLB)

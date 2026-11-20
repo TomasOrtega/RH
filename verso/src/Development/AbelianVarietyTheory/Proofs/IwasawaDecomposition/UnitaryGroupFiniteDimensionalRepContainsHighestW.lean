@@ -18,6 +18,11 @@ namespace GlobalTheory.UnitaryContainsType
 def permMat {n : ℕ} (s : Equiv.Perm (Fin n)) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun i j => if s i = j then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [permMat, Matrix.mul_apply, Matrix.diagonal_apply, Matrix.of_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, one_mul]`. Rewrite using `[Finset.sum_eq_single (s i)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem permMat_mul_diag_mul {n : ℕ} (s : Equiv.Perm (Fin n)) (d : Fin n → ℂ) :
     permMat s * Matrix.diagonal d * permMat s.symm = Matrix.diagonal (d ∘ s) := by
   ext i j
@@ -29,6 +34,11 @@ theorem permMat_mul_diag_mul {n : ℕ} (s : Equiv.Perm (Fin n)) (d : Fin n → �
     simp [Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [permMat, Matrix.mul_apply, Matrix.one_apply, Matrix.of_apply, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single (s i)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem permMat_mul {n : ℕ} (s : Equiv.Perm (Fin n)) : permMat s * permMat s.symm = 1 := by
   ext i j
   simp only [permMat, Matrix.mul_apply, Matrix.one_apply, Matrix.of_apply, mul_ite, mul_one, mul_zero]
@@ -38,6 +48,9 @@ theorem permMat_mul {n : ℕ} (s : Equiv.Perm (Fin n)) : permMat s * permMat s.s
     simp [Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [permMat, Matrix.star_apply, Matrix.of_apply]`. Distinguish the cases in `h : s j = i`. Rewrite using `[if_pos h, if_pos (by rw [← h]; simp)]; simp`. Rewrite using `[if_neg h, if_neg (by rintro rfl; simp at h)]; simp`.
+-/
 theorem star_permMat {n : ℕ} (s : Equiv.Perm (Fin n)) : star (permMat s) = permMat s.symm := by
   ext i j
   simp only [permMat, Matrix.star_apply, Matrix.of_apply]
@@ -45,11 +58,47 @@ theorem star_permMat {n : ℕ} (s : Equiv.Perm (Fin n)) : star (permMat s) = per
   · rw [if_pos h, if_pos (by rw [← h]; simp)]; simp
   · rw [if_neg h, if_neg (by rintro rfl; simp at h)]; simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff, star_permMat, permMat_mul]`.
+-/
 theorem permMat_mem {n : ℕ} (s : Equiv.Perm (Fin n)) : permMat s ∈ Matrix.unitaryGroup (Fin n) ℂ := by
   rw [Matrix.mem_unitaryGroup_iff, star_permMat, permMat_mul]
 
 open Formalism.MainNotions.S in
 
+/- English proof (translation)
+Take `⟨⟨h1, hmul⟩, hiso, -⟩` from `hπ`. Rewrite `hmul`, `hiso` using `[GlobalTheory.CompactDS.ujset_eq]`. Take `⟨-, -, -, ⟨v, -, hv0, hvw⟩, hdom⟩` from `hK`. Rewrite `hvw`, `hdom` using `[GlobalTheory.CompactDS.kset_eq]`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations.
+
+Establish `hd : Matrix.diagonal (fun c => Complex.exp ((((Pi.single a (2 * Real.pi) : Fin n → ℝ) c : ℝ) : ℂ) * Complex.I)) = 1`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c = a`.
+
+Substitute `hc` using the available equality. Simplify using `only [Pi.single_eq_same]`. Use `push_cast`. Conclude with `Complex.exp_two_pi_mul_I`. Simplify using `[hc]`.
+
+Establish `h` using `hvw (Pi.single a (2 * Real.pi)) (by rw [hd]; exact one_mem _)`. Rewrite `h` using `[hd, h1]`. Simplify using `only [ContinuousLinearMap.one_apply] at h`. Establish `hs : (∑ c, Λ c * (Pi.single a (2 * Real.pi) : Fin n → ℝ) c) = Λ a * (2 * Real.pi)`. Simplify using `[Pi.single_apply]`.
+
+Rewrite `h` using `[hs]`. Use `set z := Complex.exp (((Λ a * (2 * Real.pi) : ℝ) : ℂ) * Complex.I) with hz`. Establish `he : z = 1`. Assume the negation of the conclusion as `hne`. Apply `hv0` to reduce the goal to its premises.
+
+Establish `: (z - 1) • v = 0` using `by rw [sub_smul, one_smul, ← h, sub_self]`. Conclude with `(smul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`. Take `⟨k, hk⟩` from `Complex.exp_eq_one_iff.1 he`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h2 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`.
+
+Establish `h3 : ((Λ a : ℝ) : ℂ) = ((k : ℝ) : ℂ)`. Apply `mul_right_cancel₀ h2` to reduce the goal to its premises. Move the coercions through the operations in `at hk ⊢`. Take the linear combination `hk`. Conclude with `h3` after adjusting the coercions.
+
+Establish `hab' : a ≠ b` using `fun e => by rw [e] at hab; omega set s := Equiv.swap a b with hs`. Establish `hPm` using `permMat_mem s`. Establish `hss : s.symm = s` using `Equiv.symm_swap a b`. Establish `hPP : permMat s * permMat s = 1` using `by have := permMat_mul s; rwa [hss] at this`. Establish `hw : IsWtOn (Matrix.unitaryGroup (Fin n) ℂ : Set _) π (Λ ∘ s) (π (permMat s) v)`.
+
+Introduce `θ hθ`. Establish `e0` using `permMat_mul_diag_mul s (fun c => Complex.exp ((θ c : ℂ) * Complex.I))`. Rewrite `e0` using `[hss]`. Establish `hD' : Matrix.diagonal (fun c => Complex.exp ((((θ ∘ s) c : ℝ) : ℂ) * Complex.I)) ∈ (Matrix.unitaryGroup (Fin n) ℂ : Set _)`. Establish `: Matrix.diagonal (fun c => Complex.exp ((((θ ∘ s) c : ℝ) : ℂ) * Complex.I)) = permMat s * Matrix.diagonal (fun c => Complex.exp ((θ c : ℂ) * Complex.I)) * permMat s`.
+
+Rewrite using `[e0]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `mul_mem (mul_mem hPm hθ) hPm`. Establish `e1 : Matrix.diagonal (fun c => Complex.exp ((θ c : ℂ) * Complex.I)) * permMat s = permMat s * Matrix.diagonal (fun c => Complex.exp ((((θ ∘ s) c : ℝ) : ℂ) * Complex.I))`.
+
+Establish `: Matrix.diagonal (fun c => Complex.exp ((((θ ∘ s) c : ℝ) : ℂ) * Complex.I)) = permMat s * Matrix.diagonal (fun c => Complex.exp ((θ c : ℂ) * Complex.I)) * permMat s`. Rewrite using `[e0]`. Both sides reduce to the same expression. Rewrite using `[this, ← mul_assoc, ← mul_assoc, hPP, one_mul]`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul _ hθ _ hPm, e1, hmul _ hPm _ hD', ContinuousLinearMap.comp_apply, hvw (θ ∘ s) hD', map_smul]`.
+
+Use `congr 4`. Rewrite using `[← Equiv.sum_comp s (fun c => (Λ ∘ s) c * θ c)]`. Simplify using `[hs]`. Establish `hne : π (permMat s) v ≠ 0`. Introduce `h`.
+
+Use `hiso _ hPm v` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `hv0 (norm_eq_zero.1 this.symm)`. Establish `hc` using `hdom (Λ ∘ s) (π (permMat s) v) trivial hne hw`. Establish `hle` using `(GlobalTheory.UnitaryHighestWeightUnique.height_le hc).1`.
+
+Establish `hsum : ∑ x : Fin n, ((x : ℕ) : ℝ) * (Λ ∘ s) x = ∑ x : Fin n, ((s x : ℕ) : ℝ) * Λ x`. Rewrite using `[← Equiv.sum_comp s (fun x => ((s x : ℕ) : ℝ) * Λ x)]`. Simplify using `[hs]`. Establish `hb : ((b : ℕ) : ℝ) = (a : ℕ) + 1` using `by exact_mod_cast hab.symm`. Establish `hdiff : ∑ x : Fin n, ((x : ℕ) : ℝ) * Λ x - ∑ x : Fin n, ((s x : ℕ) : ℝ) * Λ x = Λ b - Λ a`.
+
+Rewrite using `[← Finset.sum_sub_distrib, Fintype.sum_eq_add a b hab']`. Simplify using `only [hs, Equiv.swap_apply_left, Equiv.swap_apply_right, hb]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `x ⟨hxa, hxb⟩`. Simplify using `[hs, Equiv.swap_apply_of_ne_of_ne hxa hxb]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem weight_int_dom {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hπ : IsURepOn (UJset (allPos n)) π) {Λ : Fin n → ℝ}
     (hK : IsKTypeOf (allPos n) π Λ ⊤) :
@@ -142,10 +191,18 @@ def restr {G V : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] (ρ : Represen
   map_one' := by ext v; simp
   map_mul' a b := by ext v; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restr_apply {G V : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (S : Submodule ℂ V) (hS : ∀ g, ∀ v ∈ S, ρ g v ∈ S) (g : G) (v : S) :
     ((restr ρ S hS g v : S) : V) = ρ g v := rfl
 
+/- English proof (translation)
+Set `P : Submodule ℂ V → Prop` to `fun S => S ≠ ⊥ ∧ ∀ g, ∀ v ∈ S, ρ g v ∈ S`. Establish `hex : ∃ k, ∃ S, P S ∧ Module.finrank ℂ S = k` using `⟨_, ⊤, ⟨top_ne_bot, fun _ _ _ => trivial⟩, rfl⟩`. Take `⟨S, hS, e⟩` from `Nat.find_spec hex`. Use `⟨S, hS.1, hS.2, fun S' hle hst => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : S' = ⊥`.
+
+Conclude with `Or.inl h0`. Use `right`. Conclude with `Submodule.eq_of_le_of_finrank_le hle (e ▸ Nat.find_min' hex ⟨S', ⟨h0, hst⟩, rfl⟩)`.
+-/
 theorem exists_minimal {G V : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [Nontrivial V] (ρ : Representation ℂ G V) :
     ∃ S : Submodule ℂ V, S ≠ ⊥ ∧ (∀ g, ∀ v ∈ S, ρ g v ∈ S) ∧
@@ -161,6 +218,63 @@ theorem exists_minimal {G V : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] [
   right
   exact Submodule.eq_of_le_of_finrank_le hle (e ▸ Nat.find_min' hex ⟨S', ⟨h0, hst⟩, rfl⟩)
 
+/- English proof (translation)
+Use `set σ := restr ρ S hS with hσ`. Establish `hcS : ∀ (l : Module.Dual ℂ S) (v : S), Continuous fun u => l (σ u v)`. Introduce `l v`. Take `⟨L, hL⟩` from `LinearMap.exists_extend l`. Establish `e : (fun u => l (σ u v)) = fun u => L (ρ u v)`.
+
+Use function extensionality and compare the values at `u`. Rewrite using `[← hL]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hc L v`.
+
+Take `⟨c, hcinv⟩` from `GlobalTheory.exists_invariant_core_of_continuous_coeff σ hcS`. Use `letI : NormedAddCommGroup S := c.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ S := InnerProductSpace.ofCore c.toCore`. Use `haveI : Nontrivial S := Submodule.nontrivial_iff_ne_bot.2 hS0`. Establish `hcont : ∀ v : S, Continuous fun u : Matrix.unitaryGroup (Fin n) ℂ => σ u v`.
+
+Introduce `v`. Set `b` to `Module.finBasis ℂ S`. Establish `e : (fun u : Matrix.unitaryGroup (Fin n) ℂ => σ u v) = fun u => ∑ i, b.coord i (σ u v) • b i`. Use function extensionality and compare the values at `u`. Conclude with `(b.sum_repr (σ u v)).symm`.
+
+Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun i _ => (hcS (b.coord i) v).smul continuous_const`. Set `π : Matrix (Fin n) (Fin n) ℂ → (S →L[ℂ] S)` to `fun g => if hg : g ∈ Matrix.unitaryGroup (Fin n) ℂ then LinearMap.toContinuousLinearMap (σ ⟨g, hg⟩) else 0`. Establish `hπu : ∀ g (hg : g ∈ Matrix.unitaryGroup (Fin n) ℂ) (v : S), π g v = σ ⟨g, hg⟩ v`. Introduce `g hg v`.
+
+Simplify using `[π, hg]`. Establish `hπ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos n)) π`. Rewrite using `[GlobalTheory.CompactDS.ujset_eq]`. Use `⟨⟨?_, fun a ha b hb => ?_⟩, fun g hg v => ?_, fun v => ?_⟩` and prove the remaining obligations. Use `ext1 v`.
+
+Rewrite using `[hπu 1 (one_mem _)]`. Use `show (σ 1) v = v`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Use `ext1 v`.
+
+Rewrite using `[ContinuousLinearMap.comp_apply, hπu _ (mul_mem ha hb), hπu _ ha, hπu _ hb]`. Use `show σ (⟨a, ha⟩ * ⟨b, hb⟩) v = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite using `[hπu g hg, norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ)]`.
+
+Use `congr 2`. Conclude with `hcinv _ v v`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Conclude with `(hcont v).congr fun u => (hπu u.1 u.2 v).symm`. Establish `hirr : ∀ S' : Submodule ℂ S, (∀ g ∈ PI.UpqRep.UJset (PI.UpqRep.allPos n), ∀ v ∈ S', π g v ∈ S') → S' = ⊥ ∨ S' = ⊤`.
+
+Introduce `S' hS'`. Establish `hS'' : ∀ (u : Matrix.unitaryGroup (Fin n) ℂ), ∀ v ∈ S', σ u v ∈ S'`. Introduce `u v hv`. Establish `hu : (u : Matrix (Fin n) (Fin n) ℂ) ∈ PI.UpqRep.UJset (PI.UpqRep.allPos n)`. Establish `e : PI.UpqRep.UJset (PI.UpqRep.allPos n) = Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos n)` using `rfl`.
+
+Rewrite using `[e, GlobalTheory.CompactDS.ujset_eq]`. Conclude with `u.2`. Use `hS' _ hu v hv` as an intermediate fact. Rewrite `this` using `[hπu _ u.2]`. Then use the resulting hypothesis. Set `M` to `S'.map S.subtype`.
+
+Establish `hM : ∀ g, ∀ v ∈ M, ρ g v ∈ M`. Introduce and unpack `g _ ⟨y, hy, rfl⟩`. Conclude with `⟨σ g y, hS'' g y hy, rfl⟩`. Break down `hmin M (Submodule.map_subtype_le S S') hM with h | h` into its components or cases. Use `left`.
+
+Conclude with `Submodule.map_injective_of_injective S.injective_subtype (h.trans (Submodule.map_bot _).symm)`. Use `right`. Conclude with `Submodule.map_injective_of_injective S.injective_subtype (h.trans (Submodule.map_subtype_top S).symm)`. Take `⟨u, hu⟩` from `GlobalTheory.UnitaryHighestWeight.exists_isHCTypeU n S π hπ hirr`. Establish `hu' : Formalism.MainNotions.S.IsHCTypeU n u π` using `hu`.
+
+Take `⟨hint, hdom⟩` from `weight_int_dom hu'.2.2.1 hu'.2.2.2`. Use `choose w hw using hint`. Establish `hadj : ∀ a b : Fin n, a.val + 1 = b.val → w b ≤ w a` using `fun a b h => by`. Use `hdom a b h` as an intermediate fact. Rewrite `this` using `[hw, hw]`.
+
+Conclude with `this` after adjusting the coercions. Establish `hanti : Antitone w`. Introduce `i j hij`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (Fin.le_def.1 hij)`. Proceed by induction on `d generalizing j with`.
+
+Consider the case `zero`. Establish `: j = i` using `Fin.ext (by omega)`. Rewrite using `[this]`. Consider the case `succ d ih`. Establish `hj' : i.val + d < n` using `by omega`.
+
+Establish `h1` using `ih (j := ⟨i.val + d, hj'⟩) (Fin.le_def.2 (by simp)) rfl`. Establish `h2` using `hadj ⟨i.val + d, hj'⟩ j (by simp only; omega)`. Conclude with `h2.trans h1`. Set `lam : DomWeight n` to `⟨w, hanti⟩`. Establish `hul : u = fun i => ((lam.w i : ℤ) : ℝ) + ((rhoVec n i : ℚ) : ℝ)`.
+
+Use function extensionality and compare the values at `i`. Establish `h` using `hw i`. Rewrite `h` using `[show Formalism.MainNotions.S.allPos n = fun _ => true from rfl, GlobalTheory.DefiniteCheck.lowK_const]`. Simplify using `only [lam, rhoVec]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨H, _, _, π₂, e, hπ₂, he, hmem, hint2⟩` from `GlobalTheory.NablaType.exists_isHCTypeU_nablaSq n lam`. Rewrite `hπ₂` using `[← hul]`. Take `⟨A, hA⟩` from `GlobalTheory.UnitaryHighestWeightUnique.exists_equiv_of_isHCTypeU n u S H π π₂ hu' hπ₂`. Set `G0 : S →ₗ[ℂ] nablaSq ℂ n lam` to `LinearMap.codRestrict (nablaSq ℂ n lam) (e ∘ₗ A.toLinearMap) (fun x => hmem (A x))`.
+
+Establish `hG0 : ∀ (g : Matrix.unitaryGroup (Fin n) ℂ) (x : S), G0 (σ g x) = GlobalTheory.Branching.smallRep (GlobalTheory.Branching.unitaryIncl n) lam g (G0 x)`. Introduce `g x`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show e (A (σ g x)) = sqAct ℂ n lam (GlobalTheory.Branching.unitaryIncl n g) (e (A x))`. Rewrite using `[← hint2 (GlobalTheory.Branching.unitaryIncl n g) g.2 (A x), GlobalTheory.Branching.unitaryIncl_coe, ← hA _ g.2 x, hπu _ g.2 x]`.
+
+Establish `hinj : Function.Injective G0`. Introduce `x y hxy`. Establish `: e (A x) = e (A y)` using `congrArg Subtype.val hxy`. Conclude with `A.injective (he this)`. Set `G : σ.IntertwiningMap (GlobalTheory.Branching.smallRep (GlobalTheory.Branching.unitaryIncl n) lam)` to `G0.intertwiningMap_of_isIntertwiningMap _ _ hG0`.
+
+Use `haveI := GlobalTheory.Branching.isIrreducible_smallRep_unitary n lam`. Establish `hsurj : Function.Surjective G`. Break down `Representation.IsIrreducible.surjective_or_eq_zero G with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+
+Take `⟨x, hx⟩` from `exists_ne (0 : S)`. Apply `hx` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `congrArg (fun T => T x) (congrArg DFunLike.coe h)`.
+
+Set `F : S ≃ₗ[ℂ] nablaSq ℂ n lam` to `LinearEquiv.ofBijective G0 ⟨hinj, hsurj⟩`. Establish `hF : ∀ (g : Matrix.unitaryGroup (Fin n) ℂ) (y : nablaSq ℂ n lam), F.symm (GlobalTheory.Branching.smallRep (GlobalTheory.Branching.unitaryIncl n) lam g y) = σ g (F.symm y)`. Introduce `g y`. Apply `F.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+
+Use `show _ = G0 (σ g (F.symm y))`. Rewrite using `[hG0]`. Use `congr 1`. Conclude with `(F.apply_symm_apply y).symm`. Set `f0 : nablaSq ℂ n lam →ₗ[ℂ] V` to `S.subtype ∘ₗ F.symm.toLinearMap`.
+
+Use `⟨lam, f0.intertwiningMap_of_isIntertwiningMap _ _ fun g y => ?_, ?_⟩` and prove the remaining obligations. Use `show ((F.symm (GlobalTheory.Branching.smallRep (GlobalTheory.Branching.unitaryIncl n) lam g y) : S) : V) = ρ g (F.symm y : V)`. Rewrite using `[hF]`. Both sides reduce to the same expression. Introduce `h0`.
+
+Take `⟨y, hy⟩` from `exists_ne (0 : nablaSq ℂ n lam)`. Apply `hy` to reduce the goal to its premises. Establish `h1 : f0 y = 0` using `congrArg (fun T => T y) (congrArg DFunLike.coe h0)`. Establish `h2 : F.symm y = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `h1`. Simplify using `using congrArg F h2`.
+-/
 theorem exists_intertwining_of_minimal {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : Representation ℂ (Matrix.unitaryGroup (Fin n) ℂ) V)
     (hc : ∀ (l : Module.Dual ℂ V) (v : V), Continuous fun u => l (ρ u v))
@@ -314,6 +428,9 @@ theorem exists_intertwining_of_minimal {n : ℕ} {V : Type} [AddCommGroup V] [Mo
       exact h1
     simpa using congrArg F h2
 
+/- English proof (translation)
+Introduce `n V _ _ _ _ ρ hc`. Take `⟨S, hS0, hS, hmin⟩` from `exists_minimal ρ`. Conclude with `exists_intertwining_of_minimal ρ hc S hS0 hS hmin`.
+-/
 theorem exists_smallRep_intertwining : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [Nontrivial V] (ρ : Representation ℂ (Matrix.unitaryGroup (Fin n) ℂ) V),
     (∀ (l : Module.Dual ℂ V) (v : V), Continuous fun u => l (ρ u v)) →

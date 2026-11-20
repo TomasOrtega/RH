@@ -13,6 +13,15 @@ noncomputable section
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ D C M' h hgp hπ`. Establish `hex : ∃ (P' : GlobalTheory.UU.CP ((Over.pullback h).obj C.G)) (w : _), GlobalTheory.UU.IsCPMap P' C.P h (pullback.fst C.G.hom h) pullback.condition w` using `GlobalTheory.UU.exists_pull C.P (GlobalTheory.UU.toBase_mul_pullback C.G h)`. Take `⟨P', w, hP⟩` from `hex`. Establish `hG : IsGrpPullback ((Over.pullback h).obj C.G) C.G h (pullback.fst C.G.hom h)` using `isGrpPullback_pullback C.G h`. Establish `hw : LBIso P'.L.L (C.P.L.L.pull (pullback.fst C.G.hom h))` using `⟨w, hP.gen⟩`.
+
+Establish `key : ∀ {Y : Scheme.{0}} (b : Y ⟶ ((Over.pullback h).obj C.G).left) (c : Y ⟶ C.G.left), c = b ≫ pullback.fst C.G.hom h → LBIso (P'.L.L.pull b) (C.P.L.L.pull c)` using `fun b c e => LBIso.chartPull (chartPullId _) (GlobalTheory.RigidBundleGlue.chartPullComp C.P.L.L _ b c e) (GlobalTheory.RigidBundleGlue.LBIso.pull hw b)`. Set `α' : C.A.A.left ⟶ ((Over.pullback h).obj C.G).left` to `pullback.lift C.α (C.A.A.hom ≫ M'.gp) (by rw [C.α_cart.1.w, Category.assoc, hgp])`. Establish `hα : α' ≫ pullback.fst C.G.hom h = C.α` using `pullback.lift_fst _ _ _`. Use `⟨{ toModif := M' G := (Over.pullback h).obj C.G semi := IsSemiAbelian.pullback h C.G C.semi P := P' A := C.A α := α' α_cart := IsGrpPullback.cancel hG (C.α_cart.congr hgp.symm hα.symm) (pullback.lift_snd _ _ _) α_lb := LBIso.trans C.A.isLB (pull_isLB C.P.L.isLB _) (pull_isLB P'.L …` and prove the remaining obligations. Introduce `W _ _ _ hW φ ξ hφ hloc hξ`.
+
+Take `⟨W', _, _, _, io, G'', _, _, β, D', A', U', hD, hW', hio, hfin, hcart, hlb, hlab⟩` from `C.trait W hW φ (ξ ≫ h) hφ hloc (by rw [Category.assoc, hπ]; exact hξ)`. Set `β' : G''.left ⟶ ((Over.pullback h).obj C.G).left` to `pullback.lift β (G''.hom ≫ spMap io ≫ ξ) (by rw [hcart.1.w, Category.assoc, Category.assoc])`. Establish `hβ : β' ≫ pullback.fst C.G.hom h = β` using `pullback.lift_fst _ _ _`. Use `⟨W', inferInstance, inferInstance, inferInstance, io, G'', inferInstance, inferInstance, β', D', A', U', hD, hW', hio, hfin, IsGrpPullback.cancel hG (hcart.congr (Category.assoc _ _ _).symm hβ.symm) (pullback.lift_snd _ _ _), LBIso.trans U'.LG.isLB (pull_isLB C.P.L.isLB _) (pull_ …` and prove the remaining obligations. Introduce `F _ _ _ _ em hF j p p₁ p' x' h₁ h₂ h₃ h₄`.
+
+Use `hlab F em hF j p p₁ p' x' h₁ h₂ h₃ ?_` and prove the remaining obligations. Establish `e` using `congrArg (· ≫ pullback.fst C.G.hom h) h₄`. Simplify using `only [Category.assoc, hβ, hα] at e`. Simplify `e` using `only [Category.assoc]`.
+-/
 theorem LabCover.exists_pull : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (C : LabCover D) (M' : Modif R) (h : M'.S ⟶ C.S), M'.gp ≫ h = C.gp → h ≫ C.π = M'.π → ∃ (C' : LabCover D) (eS : C'.S ≅ M'.S) (β : C'.G.left ⟶ C.G.left), eS.hom ≫ M'.π = C'.π ∧ IsGrpPullback C'.G C.G (eS.hom ≫ h) β ∧ LBIso C'.P.L.L (C.P.L.L.pull β) := by
   intro R _ _ _ D C M' h hgp hπ
   have hex : ∃ (P' : GlobalTheory.UU.CP ((Over.pullback h).obj C.G)) (w : _),

@@ -2,6 +2,37 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `Fintype.ofFinite C` as an intermediate fact. Use `choose p hp using hcut`. Establish `hext : ∀ s t : E, (∀ x, ex x s = ex x t) → s = t` using `fun s t h => sub_eq_zero.mp (hsep _ fun x => by rw [map_sub, h x, sub_self])`. Set `π : C → E →ₗ[F] E` to `fun c => { toFun := p c map_add' := fun s t => hext _ _ fun x => by`. Distinguish the cases in `hx : cl x = c`.
+
+Rewrite using `[map_add, (hp c _ x).1 hx, (hp c _ x).1 hx, (hp c _ x).1 hx, map_add]`. Rewrite using `[map_add, (hp c _ x).2 hx, (hp c _ x).2 hx, (hp c _ x).2 hx, add_zero]`. Use the proof step `map_smul' := fun r s => hext _ _ fun x => by`. Distinguish the cases in `hx : cl x = c`. Rewrite using `[RingHom.id_apply, map_smul, (hp c _ x).1 hx, (hp c _ x).1 hx, map_smul]`.
+
+Rewrite using `[RingHom.id_apply, map_smul, (hp c _ x).2 hx, (hp c _ x).2 hx, smul_zero] }`. Establish `h1 : ∀ c s x, cl x = c → ex x (π c s) = ex x s` using `fun c s x h => (hp c s x).1 h`. Establish `h0 : ∀ c s x, cl x ≠ c → ex x (π c s) = 0` using `fun c s x h => (hp c s x).2 h`. Establish `hsum : ∑ c, π c = LinearMap.id`. Use `LinearMap.ext fun s => hext _ _ fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.sum_apply, map_sum, Finset.sum_eq_single (cl x)]`. Conclude with `h1 _ s x rfl`. Introduce `c _ hc`. Conclude with `h0 c s x (Ne.symm hc)`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Establish `hfac : ∀ x, ex x ≠ 0 → ∃ r : W x →ₗ[F] E, r ∘ₗ ex x = π (cl x)`. Introduce `x hx`. Establish `hk : LinearMap.ker (ex x ∘ₗ (LinearMap.range (π (cl x))).subtype) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+
+Introduce and unpack `⟨_, s, rfl⟩ hs`. Conclude with `Subtype.ext (hinj x hx _ (fun y hy => h0 _ s y hy) hs)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hk`. Use `⟨(LinearMap.range (π (cl x))).subtype ∘ₗ g, LinearMap.ext fun s => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subtype.val (LinearMap.congr_fun hg ⟨π (cl x) s, LinearMap.mem_range_self _ s⟩)`.
+
+Rewrite using `[LinearMap.comp_apply, ← h1 (cl x) s x rfl]`. Conclude with `h2`. Establish `hpass : ∀ x y, ex x ≠ 0 → ex y ≠ 0 → TensorProduct.map (ex x) (ex y) w = 0 → TensorProduct.map (π (cl x)) (π (cl y)) w = 0`. Introduce `x y hx hy h`. Take `⟨r, hr⟩` from `hfac x hx`.
+
+Take `⟨t, ht⟩` from `hfac y hy`. Rewrite using `[← hr, ← ht, TensorProduct.map_comp, LinearMap.comp_apply, h, map_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `ha`. Apply `h` to reduce the goal to its premises. Rewrite using `[ha, TensorProduct.map_zero_left, LinearMap.zero_apply]`. Introduce `hb`. Apply `h` to reduce the goal to its premises.
+
+Rewrite using `[hb, TensorProduct.map_zero_right, LinearMap.zero_apply]`. Introduce and unpack `⟨ha, hb⟩ h`. Establish `hall : ∀ c, TensorProduct.map (π (cl a)) (π c) w = 0`. Introduce `c`. Distinguish the cases in `hc : cl b = c`.
+
+Rewrite using `[← hc]`. Conclude with `hpass a b ha hb h`. Distinguish the cases in `hy : ∃ y, cl y = c ∧ ex y ≠ 0`. Take `⟨y, rfl, hy⟩` from `hy`. Conclude with `hpass a y ha hy (hoff a y (hab ▸ hc))`.
+
+Establish `hz : π c = 0`. Use `LinearMap.ext fun s => hsep _ fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hyc : cl y = c`. Establish `: ex y = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hy ⟨y, hyc, hne⟩`. Rewrite using `[this, LinearMap.zero_apply]`. Conclude with `h0 c s y hyc`. Rewrite using `[hz, TensorProduct.map_zero_right, LinearMap.zero_apply]`. Establish `hz : π (cl a) = 0`.
+
+Apply `hfull` to reduce the goal to its premises. Establish `e : TensorProduct.map (π (cl a)) (∑ c, π c) = ∑ c, TensorProduct.map (π (cl a)) (π c)` using `map_sum (TensorProduct.mapBilinear (RingHom.id F) E E E E (π (cl a))) π Finset.univ`. Rewrite using `[← hsum, e, LinearMap.sum_apply]`. Conclude with `Finset.sum_eq_zero fun c _ => hall c`. Apply `ha` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun s => ?_` and prove the remaining obligations. Rewrite using `[← h1 (cl a) s a rfl, hz, LinearMap.zero_apply, map_zero, LinearMap.zero_apply]`.
+-/
 theorem tensor_component_ne_zero_iff (F : Type) [Field F] (X C : Type) [Finite C] (cl : X → C)
     (E : Type) [AddCommGroup E] [Module F E] (W : X → Type) [∀ a, AddCommGroup (W a)]
     [∀ a, Module F (W a)] (ex : ∀ a, E →ₗ[F] W a)

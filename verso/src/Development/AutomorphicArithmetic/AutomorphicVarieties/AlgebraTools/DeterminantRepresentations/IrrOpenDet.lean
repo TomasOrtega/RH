@@ -6,6 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 
 open Polynomial Matrix UpperTheory.V UpperTheory.V.W
 
+/- English proof (translation)
+Introduce `n A G _ _ D H`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Use `⟨Set.univ, isOpen_univ, ?_⟩` and prove the remaining obligations. Introduce `K _ _ φ ρ p _ _`.
+
+Rewrite using `[UpperTheory.V.AlgebraTools.Det.matIrrIff H ρ]`. Conclude with `⟨fun _ => Subsingleton.elim _ _, fun _ => Set.mem_univ _⟩`. Take `⟨U, hU, h⟩` from `UpperTheory.V.AlgebraTools.Det.irrOpen (ι := Fin n) (fun h : H => D.tr (MonoidAlgebra.single (h : G) 1))`. Use `⟨U, hU, ?_⟩` and prove the remaining obligations. Introduce `K _ _ φ ρ p hp hD`.
+
+Rewrite using `[UpperTheory.V.AlgebraTools.Det.matIrrIff H ρ]`. Use `h K φ (ρ.comp H.subtype) p hp ?_` and prove the remaining obligations. Introduce `g`. Establish `h1` using `(UpperTheory.V.AlgebraTools.Det.mapApi D φ).2.2.1 1 (g : G)`. Establish `h2` using `(UpperTheory.V.AlgebraTools.Det.repApi ρ).2.2.1 hn (MonoidAlgebra.single (g : G) 1)`.
+
+Establish `h3 : GDet.repAlg ρ K (MonoidAlgebra.single (g : G) 1) = ρ g`. Use extensionality with `i j`. Simplify using `[GDet.repAlg]`. Rewrite `h1` using `[hD]`. Rewrite `h2` using `[h3]`.
+
+Express the relevant statement in the definitionally equal form `(ρ g).trace = φ (D.lam 1 _)`. Rewrite using `[← h1, ← h2]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.irrOpenDet :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (H : Subgroup G),
     ∃ U : Set (PrimeSpectrum A), IsOpen U ∧

@@ -15,6 +15,9 @@ open scoped Classical in
 noncomputable def dualB : Module.Basis (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) ℚ E :=
   (Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) (integralBasis E)
 
+/- English proof (translation)
+Use `conv_rhs => rw [← (dualB E).sum_repr z]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dualB, LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]`.
+-/
 theorem sum_dualB (z : E) :
     ∑ i, Algebra.trace ℚ E (z * integralBasis E i) • dualB E i = z := by
   classical
@@ -22,6 +25,13 @@ theorem sum_dualB (z : E) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [dualB, LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]
 
+/- English proof (translation)
+Establish `h : ∀ j, Algebra.trace ℚ E (dualB E i * integralBasis E j) = if j = i then 1 else 0`. Introduce `j`. Establish `h` using `LinearMap.BilinForm.apply_dualBasis_left (traceForm_nondegenerate ℚ E) (integralBasis E) i j`. Rewrite `h` using `[Algebra.traceForm_apply]`. Use `h` and compare the differences between its conclusion and the goal.
+
+Both sides reduce to the same expression. Use `conv_rhs => rw [← (integralBasis E).sum_repr z]`. Rewrite using `[Finset.mul_sum, map_sum]`. Repeatedly rewrite using `[mul_smul_comm, LinearMap.map_smul, h, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem repr_eq_trace (z : E) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
     (integralBasis E).repr z i = Algebra.trace ℚ E (dualB E i * z) := by
   classical
@@ -38,11 +48,19 @@ theorem repr_eq_trace (z : E) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
   rw [Finset.sum_ite_eq']
   simp
 
+/- English proof (translation)
+Rewrite using `[← repr_eq_trace]`. Conclude with `integralBasis_repr_apply E c i`.
+-/
 theorem trace_dualB_int (c : 𝓞 E) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
     Algebra.trace ℚ E (dualB E i * (c : E)) = ((RingOfIntegers.basis E).repr c i : ℚ) := by
   rw [← repr_eq_trace]
   exact integralBasis_repr_apply E c i
 
+/- English proof (translation)
+Establish `key : ∀ z : E, Algebra.trace ℚ E ((∑ i, integralBasis E i * dualB E i) * z) = Algebra.trace ℚ E z`. Introduce `z`. Rewrite using `[Finset.sum_mul, map_sum, Algebra.trace_eq_matrix_trace (integralBasis E) z, Matrix.trace]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, repr_eq_trace]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← sub_eq_zero]`. Use `(traceForm_nondegenerate ℚ E).1 _ fun z => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, sub_mul, map_sub, key, one_mul, sub_self]`.
+-/
 theorem sum_mul_dualB : ∑ i, integralBasis E i * dualB E i = 1 := by
   classical
   have key : ∀ z : E, Algebra.trace ℚ E ((∑ i, integralBasis E i * dualB E i) * z) = Algebra.trace ℚ E z := by
@@ -56,6 +74,13 @@ theorem sum_mul_dualB : ∑ i, integralBasis E i * dualB E i = 1 := by
   refine (traceForm_nondegenerate ℚ E).1 _ fun z => ?_
   rw [Algebra.traceForm_apply, sub_mul, map_sub, key, one_mul, sub_self]
 
+/- English proof (translation)
+Establish `hmem : dualB E i ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_traceDual]`. Introduce `a ha`. Rewrite `ha` using `[Submodule.mem_one]`. Take `⟨a, rfl⟩` from `ha`.
+
+Use `⟨(RingOfIntegers.basis E).repr a i, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply]`. Conclude with `(trace_dualB_int E a i).symm`. Use `isIntegral_discr_mul_of_mem_traceDual (A := ℤ) (K := ℚ) (1 : Submodule (𝓞 E) E) (b := integralBasis E) (fun i => by` as an intermediate fact. Rewrite using `[integralBasis_apply]`.
+
+Conclude with `(RingOfIntegers.isIntegral_coe _)) (Submodule.one_le.mp le_rfl) hmem`. Rewrite `this` using `[← coe_discr, Algebra.smul_def, mul_one, map_intCast]`. Conclude with `⟨⟨_, this⟩, rfl⟩`.
+-/
 theorem discr_mul_dualB (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
     ∃ y : 𝓞 E, (y : E) = ((discr E : ℤ) : E) * dualB E i := by
   classical
@@ -73,6 +98,21 @@ theorem discr_mul_dualB (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
   rw [← coe_discr, Algebra.smul_def, mul_one, map_intCast] at this
   exact ⟨⟨_, this⟩, rfl⟩
 
+/- English proof (translation)
+Use `choose y hy using discr_mul_dualB E`. Establish `hy' : ∀ i, algebraMap (𝓞 E) E (y i) = ((discr E : ℤ) : E) * dualB E i` using `hy`. Use `⟨RingOfIntegers.basis E, y, ?_, fun a => ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_intCast]`.
+
+Simplify using `only [map_mul, hy', ← integralBasis_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Use `_ = _ := by rw [sum_mul_dualB, mul_one]`. Establish `h1 : ∀ k, ∑ i, (RingOfIntegers.basis E).repr (a * RingOfIntegers.basis E i) k • y i = a * y k`.
+
+Introduce `k`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_mul, hy']`. Establish `h2` using `sum_dualB E (dualB E k * algebraMap (𝓞 E) E a)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h3` using `trace_dualB_int E (a * RingOfIntegers.basis E i) k`. Establish `h4 : ((a * RingOfIntegers.basis E i : 𝓞 E) : E) = algebraMap (𝓞 E) E a * integralBasis E i`. Rewrite using `[integralBasis_apply, ← map_mul]`.
+
+Rewrite `h3` using `[h4, ← mul_assoc]`. Rewrite using `[h3, map_zsmul, hy', Int.cast_smul_eq_zsmul, mul_smul_comm]`. Use `_ = _ := by rw [h2]; ring`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr (a * RingOfIntegers.basis E i)]`. Rewrite using `[TensorProduct.sum_tmul]`. Conclude with `Finset.sum_congr rfl fun k _ => TensorProduct.smul_tmul _ _ _`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by rw [← TensorProduct.tmul_sum, h1]`.
+-/
 theorem exists_sep_discr :
     ∃ x y : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → 𝓞 E, ∑ i, x i * y i = ((discr E : ℤ) : 𝓞 E) ∧
       ∀ a : 𝓞 E, (∑ i, (a * x i) ⊗ₜ[ℤ] y i : 𝓞 E ⊗[ℤ] 𝓞 E) = ∑ i, x i ⊗ₜ[ℤ] (a * y i) := by

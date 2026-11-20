@@ -26,41 +26,77 @@ def midSwap (e : m' ⊕ m' ≃ β) : β ⊕ β ≃ β ⊕ β :=
 
 variable (e : m' ⊕ m' ≃ β)
 
+/- English proof (translation)
+Simplify using `[midSwap]`.
+-/
 @[simp] theorem midSwap_inl_inl (i : m') : midSwap e (.inl (e (.inl i))) = .inl (e (.inl i)) := by simp [midSwap]
+/- English proof (translation)
+Simplify using `[midSwap]`.
+-/
 @[simp] theorem midSwap_inl_inr (i : m') : midSwap e (.inl (e (.inr i))) = .inr (e (.inl i)) := by simp [midSwap]
+/- English proof (translation)
+Simplify using `[midSwap]`.
+-/
 @[simp] theorem midSwap_inr_inl (i : m') : midSwap e (.inr (e (.inl i))) = .inl (e (.inr i)) := by simp [midSwap]
+/- English proof (translation)
+Simplify using `[midSwap]`.
+-/
 @[simp] theorem midSwap_inr_inr (i : m') : midSwap e (.inr (e (.inr i))) = .inr (e (.inr i)) := by simp [midSwap]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases x with x | x <;> obtain ⟨i | i, rfl⟩ := e.surjective x <;> simp`.
+-/
 theorem midSwap_midSwap (x : β ⊕ β) : midSwap e (midSwap e x) = x := by
   rcases x with x | x <;> obtain ⟨i | i, rfl⟩ := e.surjective x <;> simp
 
+/- English proof (translation)
+The claim follows from `Equiv.ext fun x => by rw [Equiv.symm_apply_eq, midSwap_midSwap]`.
+-/
 theorem midSwap_symm : (midSwap e).symm = midSwap e :=
   Equiv.ext fun x => by rw [Equiv.symm_apply_eq, midSwap_midSwap]
 
 def swapMat : Matrix (β ⊕ β) (β ⊕ β) A := (midSwap e).toPEquiv.toMatrix
 
+/- English proof (translation)
+The claim follows from `PEquiv.toMatrix_toPEquiv_mul _ _`.
+-/
 theorem swapMat_mul {γ : Type} (M : Matrix (β ⊕ β) γ A) : swapMat e * M = M.submatrix (midSwap e) id :=
   PEquiv.toMatrix_toPEquiv_mul _ _
 
+/- English proof (translation)
+The claim follows from `(PEquiv.mul_toMatrix_toPEquiv M (midSwap e)).trans (by rw [midSwap_symm])`.
+-/
 theorem mul_swapMat {γ : Type} (M : Matrix γ (β ⊕ β) A) : M * swapMat e = M.submatrix id (midSwap e) :=
   (PEquiv.mul_toMatrix_toPEquiv M (midSwap e)).trans (by rw [midSwap_symm])
 
+/- English proof (translation)
+Use `(swapMat_mul e (swapMat e)).trans ?_` and prove the remaining obligations. Use extensionality with `x y`. Simplify using `[swapMat, PEquiv.toMatrix_apply, midSwap_midSwap, Matrix.one_apply]`.
+-/
 theorem swapMat_mul_self : swapMat (A := A) e * swapMat e = 1 := by
   refine (swapMat_mul e (swapMat e)).trans ?_
   ext x y
   simp [swapMat, PEquiv.toMatrix_apply, midSwap_midSwap, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `x y`. Simplify using `only [swapMat, transpose_apply, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq]`. Use `congr 1`. Conclude with `propext ⟨fun h => by rw [← h, midSwap_midSwap], fun h => by rw [← h, midSwap_midSwap]⟩`.
+-/
 theorem swapMat_transpose : (swapMat (A := A) e)ᵀ = swapMat e := by
   ext x y
   simp only [swapMat, transpose_apply, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq]
   congr 1
   exact propext ⟨fun h => by rw [← h, midSwap_midSwap], fun h => by rw [← h, midSwap_midSwap]⟩
 
+/- English proof (translation)
+Use extensionality with `x y`. Simplify using `only [swapMat, map_apply, PEquiv.toMatrix_apply]`. Apply the tactic sequence `split_ifs <;> simp [h0, h1]`.
+-/
 theorem swapMat_map (f : A → A) (h0 : f 0 = 0) (h1 : f 1 = 1) : (swapMat (A := A) e).map f = swapMat e := by
   ext x y
   simp only [swapMat, map_apply, PEquiv.toMatrix_apply]
   split_ifs <;> simp [h0, h1]
 
+/- English proof (translation)
+Use extensionality with `x y`. Apply the tactic sequence `rcases x with x | x <;> obtain ⟨i | i, rfl⟩ := e.surjective x <;>`. Apply the tactic sequence `rcases y with y | y <;> obtain ⟨j | j, rfl⟩ := e.surjective y <;>`. Simplify using `[WeilM.dbl, blkMat]`.
+-/
 theorem dbl_submatrix_midSwap (J : Matrix m' m' A) :
     (WeilM.dbl (blkMat e J (-J))).submatrix (midSwap e) (midSwap e) = WeilM.dbl (blkMat e J (-J)) := by
   ext x y
@@ -72,6 +108,9 @@ def blkA₁ : Matrix β β A := (fromBlocks 1 0 1 0 : Matrix (m' ⊕ m') (m' ⊕
 
 def blkA₂ : Matrix β β A := (fromBlocks 0 1 0 1 : Matrix (m' ⊕ m') (m' ⊕ m') A).submatrix e.symm e.symm
 
+/- English proof (translation)
+Use `(swapMat_mul e _).trans ?_` and prove the remaining obligations. Use extensionality with `x y`. Apply the tactic sequence `rcases x with x | x <;> obtain ⟨i | i, rfl⟩ := e.surjective x <;> obtain ⟨j | j, rfl⟩ := e.surjective y <;>`. Simplify using `[diagCols, blkA₁, blkA₂, Matrix.one_apply]`.
+-/
 theorem swapMat_mul_diagCols : swapMat e * diagCols β = fromRows (blkA₁ (A := A) e) (blkA₂ e) := by
   refine (swapMat_mul e _).trans ?_
   ext x y
@@ -99,6 +138,9 @@ def swapU (J : Matrix m' m' A) : UG c (WeilM.dbl (blkMat e J (-J))) :=
     rw [submatrix_submatrix]
     exact dbl_submatrix_midSwap e J⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_swapU (J : Matrix m' m' A) : ((swapU c e J : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) = swapMat e := rfl
 
 variable {c} in
@@ -113,14 +155,25 @@ def leftU {J : Matrix β β A} (g : UG c J) : UG c (WeilM.dbl J) :=
     simp [hg, Matrix.map_one _ (map_zero c) (map_one c)]⟩
 
 variable {c} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_leftU {J : Matrix β β A} (g : UG c J) :
     ((leftU g : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) = fromBlocks (g : GL β A).1 0 0 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.fromBlocks_mul_fromRows]`. Simplify using the standard rewrite rules.
+-/
 theorem fromBlocks_mul_fromRows' (P : Matrix β β A) (X Y : Matrix β β A) :
     (fromBlocks P 0 0 1 : Matrix (β ⊕ β) (β ⊕ β) A) * (fromRows X Y : Matrix (β ⊕ β) β A) = fromRows (P * X) Y := by
   rw [Matrix.fromBlocks_mul_fromRows]
   simp
 
+/- English proof (translation)
+Establish `hP : P = (P.submatrix e e).submatrix e.symm e.symm` using `by simp`. Rewrite using `[hP, blkA₁, blkMat, submatrix_mul_equiv, submatrix_mul_equiv, ← hP]`. Use `congr 1`. Rewrite using `[← fromBlocks_toBlocks (P.submatrix e e), fromBlocks_multiply, fromBlocks_multiply]`. Establish `h' : (P.submatrix e e).toBlocks₂₁ + (P.submatrix e e).toBlocks₂₂ = leviMat e P` using `h`.
+
+Simplify using `only [Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.one_mul, Matrix.zero_mul]`. Rewrite using `[h']`. Both sides reduce to the same expression.
+-/
 theorem mul_blkA₁ {P : Matrix β β A} (h : KeepsDiag e P) : P * blkA₁ e = blkA₁ e * blkMat e (leviMat e P) 1 := by
   have hP : P = (P.submatrix e e).submatrix e.symm e.symm := by simp
   rw [hP, blkA₁, blkMat, submatrix_mul_equiv, submatrix_mul_equiv, ← hP]
@@ -131,6 +184,9 @@ theorem mul_blkA₁ {P : Matrix β β A} (h : KeepsDiag e P) : P * blkA₁ e = b
   rw [h']
   rfl
 
+/- English proof (translation)
+Rewrite using `[blkA₂, blkMat, submatrix_mul_equiv, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+-/
 theorem blkA₂_mul (X : Matrix m' m' A) : blkA₂ (A := A) e * blkMat e X 1 = blkA₂ e := by
   rw [blkA₂, blkMat, submatrix_mul_equiv, fromBlocks_multiply]
   simp
@@ -149,16 +205,27 @@ variable {R A : Type} [CommRing R] [Invertible (2 : R)] [CommRing A] [Algebra R 
   {α β m' : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype m'] [DecidableEq m']
   (e : m' ⊕ m' ≃ β)
 
+/- English proof (translation)
+Rewrite using `[diagSub, LinearMap.mem_eqLocus]`. Use function extensionality and compare the values at `i`. Simplify using `[LinearMap.funLeft_apply, Matrix.mul_apply, blkA₁, ← e.sum_comp, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem row_mul_blkA₁_mem (z : Matrix α β A) (r : α) : (z * (blkA₁ (A := A) e)ᵀ) r ∈ diagSub A e := by
   rw [diagSub, LinearMap.mem_eqLocus]
   funext i
   simp [LinearMap.funLeft_apply, Matrix.mul_apply, blkA₁, ← e.sum_comp, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[diagSub, LinearMap.mem_eqLocus]`. Use function extensionality and compare the values at `i`. Simplify using `[LinearMap.funLeft_apply, Matrix.mul_apply, blkA₂, ← e.sum_comp, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem row_mul_blkA₂_mem (z : Matrix α β A) (r : α) : (z * (blkA₂ (A := A) e)ᵀ) r ∈ diagSub A e := by
   rw [diagSub, LinearMap.mem_eqLocus]
   funext i
   simp [LinearMap.funLeft_apply, Matrix.mul_apply, blkA₂, ← e.sum_comp, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `hz : z * (fromRows (blkA₁ (A` using `A) e) (blkA₂ e))ᵀ = fromCols (z * (blkA₁ (A := A) e)ᵀ) (z * (blkA₂ (A := A) e)ᵀ) := by`. Rewrite using `[transpose_fromRows, mul_fromCols]`. Establish `h1` using `hΔ _ (row_mul_blkA₁_mem e z)`. Establish `h2` using `hΔ _ (row_mul_blkA₂_mem e z)`. Rewrite using `[Darboux.rho, hz, hdd]`.
+
+Simplify using `[schr, h1, h2]`.
+-/
 theorem rho_apply_zero {ψ : AddChar R ℂ} {ξ : A} {JA : Matrix α α A} {JB : Matrix β β A} {κ : Type}
     [Fintype κ] {d : Darboux (symp c ξ JA JB) κ} {dd : Darboux (symp c ξ JA (WeilM.dbl JB)) (κ ⊕ κ)}
     (hdd : IsDblCoord c ξ JA JB d dd) (hΔ : ∀ u : Matrix α β A, (∀ i, u i ∈ diagSub A e) → (d.e u).1 = 0)
@@ -172,6 +239,11 @@ theorem rho_apply_zero {ψ : AddChar R ℂ} {ξ : A} {JA : Matrix α α A} {JB :
   rw [Darboux.rho, hz, hdd]
   simp [schr, h1, h2]
 
+/- English proof (translation)
+Introduce `l hl hinv p t hp φ hφ`. Establish `h1` using `h (l ∘ₗ om γ) (hs.adm γ l hl) (fun z φ hφ => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hs.impl γ _ φ hφ, ← hinv z _ (hs.pres γ φ hφ)]`. Simplify using `only [actB, Matrix.transpose_mul, Matrix.mul_assoc]) (γ⁻¹ * p * γ) t (by`. Establish `e : (((γ⁻¹ : UG c JB) : GL β A) : Matrix β β A) * ((γ : GL β A) : Matrix β β A) = 1` using `Units.inv_mul _`.
+
+Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[hp, Matrix.mul_assoc, ← Matrix.mul_assoc, e, Matrix.one_mul]) (om γ⁻¹ φ) (hs.pres _ φ hφ)`. Simplify using `only [LinearMap.comp_apply, ← Module.End.mul_apply, ← map_mul] at h1`. Simplify `h1` using `[mul_assoc]`.
+-/
 theorem siegelRule_conj {C : TestClass R} {ψ : AddChar R ℂ} {ξ : A} {JA : Matrix α α A} {JB : Matrix β β A} {κ : Type}
     [Fintype κ] {d : Darboux (symp c ξ JA JB) κ} {χ : Aˣ →* Circle} {ν : Type} [Fintype ν] [DecidableEq ν]
     {Cy : Matrix β ν A} {om : UG c JB →* Module.End ℂ ((κ → R) → ℂ)} (hs : IsSplitting C ψ d (actB c) om)
@@ -201,6 +273,17 @@ variable {R A : Type} [CommRing R] [Invertible (2 : R)] [CommRing A] [Algebra R 
   {α β m' : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype m'] [DecidableEq m']
   (e : m' ⊕ m' ≃ β)
 
+/- English proof (translation)
+Substitute `hJB` using the available equality. Take `⟨φ₂, hφ₂, hne0⟩` from `hne`. Establish `hk : KeepsDiag e (g : GL β A).1` using `mem_stabGL_diagSub.1 hg`. Set `t : GL β A` to `blkGL e (leviGL e ⟨g, hg⟩, 1)`. Establish `hdet : GeneralLinearGroup.det t = GeneralLinearGroup.det (leviGL e ⟨g, hg⟩)`.
+
+Use `ext`. Simplify using `[t, det_blkMat]`. Establish `hS' : SiegelRule c C ψ ξ JA (WeilM.dbl (blkMat e J (-J))) dd χ (fromRows (blkA₁ (A` using `A) e) (blkA₂ e)) omd := by`. Establish `h` using `siegelRule_conj hs hS (swapU c e J)`. Rewrite `h` using `[val_swapU]`.
+
+Use `h using 2` and compare the differences between its conclusion and the goal. Conclude with `(swapMat_mul_diagCols e).symm`. Establish `hmat : ((leftU g : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) * fromRows (blkA₁ (A` using `A) e) (blkA₂ e) = fromRows (blkA₁ (A := A) e) (blkA₂ e) * (t : Matrix β β A) := by`. Establish `ht : (t : Matrix β β A) = blkMat e (leviMat e (g : GL β A).1) 1` using `by simp [t]`. Rewrite using `[val_leftU, fromBlocks_mul_fromRows', fromRows_mul, mul_blkA₁ e hk, ht, blkA₂_mul]`.
+
+Establish `h1` using `hS' _ hev (fun z ψ' _ => rho_apply_zero e hdd hΔ z ψ') (leftU g) t hmat (boxFun φ φ₂) (hsp φ hφ φ₂ hφ₂)`. Rewrite `h1` using `[hbox g (leftU g) rfl φ hφ φ₂ hφ₂, hdet]`. Simplify using `only [LinearMap.proj_apply, boxFun] at h1`. Establish `hz : ((0 : κ ⊕ κ → R) ∘ Sum.inl) = 0` using `rfl`. Establish `hz' : ((0 : κ ⊕ κ → R) ∘ Sum.inr) = 0` using `rfl`.
+
+Rewrite `h1` using `[hz, hz', ← mul_assoc]`. Conclude with `mul_right_cancel₀ hne0 h1`.
+-/
 theorem apply_zero_of_keepsDiag {C : TestClass R} {ψ : AddChar R ℂ} {ξ : A} {JA : Matrix α α A} {J : Matrix m' m' A}
     {JB : Matrix β β A} (hJB : JB = blkMat e J (-J)) {κ : Type} [Fintype κ] {d : Darboux (symp c ξ JA JB) κ}
     {dd : Darboux (symp c ξ JA (WeilM.dbl JB)) (κ ⊕ κ)} (hdd : IsDblCoord c ξ JA JB d dd) {χ : Aˣ →* Circle}
@@ -250,6 +333,9 @@ open Matrix
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `g _`. Use `⟨g (fun i => (x i).2) • (BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ), fun f => ?_⟩` and prove the remaining obligations. Use `show pureA F f g x = _`. Simplify using `[pureA, mul_comm]`.
+-/
 theorem proj_mem_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (x : κ → AF F) :
     (LinearMap.proj (R := ℂ) (φ := fun _ : (κ → AF F) => ℂ) x) ∈ (adeleClass F).adm κ := by
   intro g _
@@ -259,6 +345,19 @@ theorem proj_mem_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype �
   show pureA F f g x = _
   simp [pureA, mul_comm]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ B _ n m W _ W₂ hW₂ X _ co _ hΔ _ χ _ _ om₂ hom K _ _ Φ hΦ hfin`. Take `⟨⟨hsplB, dd, omd, hdc, ⟨-, hus, hSR⟩, hbox⟩, -, hcont⟩` from `hom`. Establish `hJB : incM F W₂.J = blkMat finSumFinEquiv (incM F W.J) (-(incM F W.J))`. Rewrite using `[hW₂, dblGram, incM, incM, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _)]`. Establish `hev` using `proj_mem_adm F (Fin m × Fin (n + n) ⊕ Fin m × Fin (n + n)) 0`.
+
+Establish `key` using `fun (p : UA σ W₂.J) (hp : (p : GL (Fin (n + n)) (AE F E)) ∈ Formalism.UG.stabGL (diagSub (AE F E) finSumFinEquiv)) (φ : (Fin m × Fin (n + n) → AF F) → ℂ) (hφ : φ ∈ schA F (Fin m × Fin (n + n))) => apply_zero_of_keepsDiag finSumFinEquiv hJB hdc hus.toIsSplitting hSR hbox hΔ hev (f …`. Rewrite using `[mem_degPSOf]`. Use `⟨fun p g => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hφ : om₂ (1, g) Φ ∈ schA F (Fin m × Fin (n + n))` using `hsplB.pres g Φ hΦ`. Establish `hmul : om₂ (1, (p : UA σ W₂.J) * g) Φ = om₂ (1, (p : UA σ W₂.J)) (om₂ (1, g) Φ)`.
+
+Rewrite using `[show ((1 : UA σ X.J), (p : UA σ W₂.J) * g) = (1, (p : UA σ W₂.J)) * (1, g) by simp, map_mul, Module.End.mul_apply]`. Establish `hk` using `key p p.2 _ hφ`. Rewrite `hk` using `[MonoidHom.comp_apply, MonoidHom.inr_apply]`. Establish `hsc : ∀ u : (AE F E)ˣ, ((((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) u) : ℝ) ^ ((Fintype.card (Fin m) : ℝ) / 2) : ℝ) : ℂ) = GlobalTheory.Doubling.npow (absE F E u) (((m : ℂ) - (n : ℂ)) / 2 + (Fintype.card (Fin n) : ℂ) / 2)`. Introduce `u`.
+
+Rewrite using `[GlobalTheory.ModuAdele.modu_norm_eq_absE, GlobalTheory.Doubling.npow, Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `congr 1`. Use `push_cast`. Simplify using `only [Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hmul, hk, hsc]`. Both sides reduce to the same expression. Conclude with `(hcont _ (proj_mem_adm F _ 0) Φ hΦ).comp (continuous_const.prodMk continuous_id)`. Set `L : ((Fin m × Fin (n + n) → AF F) → ℂ) →ₗ[ℂ] (UA σ W₂.J → ℂ)` to `{ toFun := fun Ψ g => om₂ (1, g) Ψ 0 map_add' := fun Ψ Ψ' => funext fun g => by simp map_smul' := fun a Ψ => funext fun g => by simp } haveI := hfin`. Use `isKFinite_iff.2 ⟨(Submodule.span ℂ {Ψ | ∃ k ∈ K, Ψ = om₂ (1, k) Φ}).map L, inferInstance, fun k hk => ?_⟩` and prove the remaining obligations.
+
+Use `⟨om₂ (1, k) Φ, Submodule.subset_span ⟨k, hk, rfl⟩, funext fun g => ?_⟩` and prove the remaining obligations. Use `show om₂ (1, g) (om₂ (1, k) Φ) 0 = om₂ (1, g * k) Φ 0`. Rewrite using `[show ((1 : UA σ X.J), g * k) = (1, g) * (1, k) by simp, map_mul, Module.End.mul_apply]`.
+-/
 theorem apply_mem_degPSOf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ B : Base F E, IsCharAF F B.ψ → ∀ (n m : ℕ) (W : Spc F E n), (∀ i j, σ (W.J j i) = -W.J i j) →
     ∀ W₂ : Spc F E (n + n), W₂.J = dblGram finSumFinEquiv W.J →

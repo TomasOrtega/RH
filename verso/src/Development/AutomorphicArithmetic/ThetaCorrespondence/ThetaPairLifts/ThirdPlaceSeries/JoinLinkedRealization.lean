@@ -32,6 +32,9 @@ open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalis
   Formalism.L2.Theta Formalism.L2.SG.RowsJoinPinned GlobalTheory.Mem.R3 GlobalTheory.Mem.SRe
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {K : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl K Yd cX}
+/- English proof (translation)
+Substitute `hS0` using the available equality. Establish `hRR` using `(GlobalTheory.Mem.R3.rowLat_ties hR _ _ _ _ _ x.A3 _ x.R x.F x.cG _ x.Y x.Z x.pins hH).1`. Conclude with `(_root_.GlobalTheory.Mem.KJoinLat.join_subspace_real_data_lattice_alt D L hT Gi Gl K Yd cX ex x Rc P S y c 1 (schurAll hR.2.2.2.1 hR.2.2.2.2 D) hPins hH hH.ok hH.sep hRR (rowConditions_at_companion_from_readings D L hT Gi Gl K Yd cX ex x).2.1 hSee hEv hRow).1`.
+-/
 theorem join_linked_realization_alt (hR : GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧
       GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay)
     (x : TwIn ex) (Rc : _root_.Formalism.L2.RecTAlt ex) (S0 : _root_.Formalism.L2.SG.SpectralTiesReal.STiesRAlt Rc) (P : SPack D fun u => (Rc.T.cols.forms u).to0)
@@ -51,6 +54,15 @@ open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalis
   Formalism.L2.Theta Formalism.L2.SG.RowsJoinPinned GlobalTheory.Mem.SRe
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL}
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Use `show Nonempty (_root_.Formalism.L2.SG.JoinSI.IndefiniteRealisationJoin (R := b.R) (S := b.S) (Q := b.B.Q))`. Establish `hPins : _root_.Formalism.IndefR.IndefiniteRealisationNormalisation (_root_.GlobalTheory.Mem.R3.realisationOfInput w.y.y)`. Establish `h : (fun r : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => _root_.Formalism.IndefR.IndefiniteRealisationNormalisation r.B.Q) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b)` using `t.pins`. Rewrite `h` using `[w.y.eq]`. Conclude with `h`.
+
+Take `⟨sP, sS, hP, hS, hSeq⟩` from `w.s`. Establish `hx : w.a.x = w.x` using `eq_of_heq w.ax`. Establish `hM` using `GlobalTheory.Mem.R3.StageMove.spectralStage_point_rowPlacement_transfer _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ w.a _ q.saturationAtWeightedPoint`. Rewrite `hM` using `[hx]`. Establish `hF : (fun u => (b.R.T.cols.forms u).to0) = fun u => (q.x.col.C.forms u).to0`.
+
+Rewrite using `[w.recPin.s.cols]`. Establish `hN` using `move hF (fun _ P S t c => SeeAt w.x.R.toRealDat w.x.F.lv2 P.X P.inst t ∧ EvalTieT (MP w.x.R.toRealDat) w.x.R.toRealDat.ν0 w.x.R.toRealDat.fd0 (EP w.x.R.toRealDat w.x.F.lv2) P.X P.G (iotaX P.X P.inst).toMulEquiv t c ∧ RowJ w.x.R.toRealDat w.x.Y.eE P.X P.inst P.G t S.j) (P := sP) ( …`. Establish `hJ` using `_root_.GlobalTheory.Fc.JoinLinked.join_linked_realization_alt hR w.x b.R b.S sP sS hSeq w.y.y w.y.y.cS hPins w.y.intersectionNumber_baseChange hN.1 hN.2.1 hN.2.2`. Establish `h : (fun r : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => Nonempty (_root_.Formalism.L2.SG.JoinSI.IndefiniteRealisationJoin (R` using `b.R) (S := b.S) (Q := r.B.Q))) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput w.y.y) := hJ`. Rewrite `h` using `[← w.y.eq]`.
+
+Conclude with `h`.
+-/
 theorem selJ_of_bWit (hR : GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧
       GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay)
     {K : Ctx} {q : WPt p.s K} {c : ℝ} {b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c} (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) (t : b.Comparison₂) : _root_.GlobalTheory.Fc.R1.SelectionJumpBundleCondition _ _ c b := by
@@ -76,6 +88,9 @@ theorem selJ_of_bWit (hR : GlobalTheory.Published.DiscreteSeriesCover ∧ Global
 end Wit
 section Constructions₂
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL}
+/- English proof (translation)
+Use `GlobalTheory.Fc.Built.ind (R := R) (fun K β c b _ _ hl => ?_) hb` and prove the remaining obligations. Take `⟨q, b', ⟨w⟩, he⟩` from `hl`. Use `congrArg (fun s : Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Fc.BundleCondition D O c => R s.1 s.2.1 c s.2.2) he` as an intermediate fact. Conclude with `cast this.symm (h K q c b' w)`.
+-/
 theorem of_built_of_bWit {R : BdP _root_.GlobalTheory.Fc.BundleCondition} {Q : V4.Slot} {κ : Par}
     (h : ∀ (K : Ctx) (q : WPt p.s K) (c : ℝ) (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → R _ _ c b)
     {D : D7} {O : Obj D} {c : ℝ} {b : _root_.GlobalTheory.Fc.BundleCondition D O c} (hb : GlobalTheory.Fc.Built Q (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) κ D O c b) : R D O c b := by
@@ -83,6 +98,9 @@ theorem of_built_of_bWit {R : BdP _root_.GlobalTheory.Fc.BundleCondition} {Q : V
   obtain ⟨q, b', ⟨w⟩, he⟩ := hl
   have := congrArg (fun s : Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Fc.BundleCondition D O c => R s.1 s.2.1 c s.2.2) he
   exact cast this.symm (h K q c b' w)
+/- English proof (translation)
+Take `⟨S, hS, hA⟩` from `hA`. Use `⟨S, hS, Row.imp hA fun 𝒜 σ s H => ?_⟩` and prove the remaining obligations. Introduce `eps Fm hc x hx i`. Take `⟨κ, -, -, t⟩` from `s Fm hc`. Conclude with `_root_.GlobalTheory.Fc.JoinLinked.of_built_of_bWit (R := fun D O c b => A D O c b → R D O c b) h (t x hx i).1 (H Fm hc x hx i)`.
+-/
 theorem linked_atAll_of_imp {A R : BdP _root_.GlobalTheory.Fc.BundleCondition}
     (h : ∀ (K : Ctx) (q : WPt p.s K) (c : ℝ) (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → A _ _ c b → R _ _ c b)
     (hA : _root_.GlobalTheory.Fc.RL.LinkedAt p fun S L => Row S L (AtAll A)) : _root_.GlobalTheory.Fc.RL.LinkedAt p fun S L => Row S L (AtAll R) := by
@@ -92,6 +110,9 @@ theorem linked_atAll_of_imp {A R : BdP _root_.GlobalTheory.Fc.BundleCondition}
   obtain ⟨κ, -, -, t⟩ := s Fm hc
   exact _root_.GlobalTheory.Fc.JoinLinked.of_built_of_bWit (R := fun D O c b => A D O c b → R D O c b) h (t x hx i).1 (H Fm hc x hx i)
 end Constructions₂
+/- English proof (translation)
+Introduce `_ _ h1 h2 h3 h4 h5 _ _ _ _ _ _ hT` and use `_root_.GlobalTheory.Fc.JoinLinked.linked_atAll_of_imp (A := _root_.GlobalTheory.Fc.HasCompatibility) (R := _root_.GlobalTheory.Fc.R1.SelectionJumpBundleCondition) (fun _ _ _ _ w ht => _root_.GlobalTheory.Fc.JoinLinked.selJ_of_bWit ⟨h1, h2, h3, h4, h5⟩ w (Classical.choice ht)) hT`.
+-/
 theorem at_selJ_alt : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.DiscreteSeriesCover →
     GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay →
     ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP), _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) _root_.GlobalTheory.Fc.R1.SlotPrimitivityCondition →

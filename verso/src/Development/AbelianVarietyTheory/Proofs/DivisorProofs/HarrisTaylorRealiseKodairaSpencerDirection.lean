@@ -23,6 +23,23 @@ namespace GlobalTheory.HTRealise
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hZ` using `GlobalTheory.T.lieConditionHodgeSubspace_le_hodgeFiltration p D R b N k β s hs o₀`. Substitute `hs'` using the available equality. Use `haveI : Module.Finite k (DualNumber k) := inferInstanceAs (Module.Finite k (k × k))`. Use `haveI : IsArtinianRing (DualNumber k) := IsArtinianRing.of_finite k (DualNumber k)`. Establish `hπ : Function.Surjective (TrivSqZeroExt.fstHom k k k).toRingHom` using `fun r => ⟨TrivSqZeroExt.inl r, rfl⟩`.
+
+Establish `hsq : RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom ^ 2 = 0` using `(SqExt.dual k).sq`. Establish `hA₀` using `o₀.ab`. Take `⟨M, hM⟩` from `GlobalTheory.T.dualNumberGraphFiltration_exists_isCompl k o₀.A hA₀ f`. Take `⟨A, _, i, h, act, hA, hE, hact⟩` from `GlobalTheory.HTDeform.exists_lift_oAct p D R b N (DualNumber k) k (TrivSqZeroExt.fstHom k k k).toRingHom hπ hsq tR o₀ (graphFil o₀.A f) ⟨M, hM⟩ (fun y => GlobalTheory.T.mem_hodgeFiltration_iff_dualNumberGraph_reduction k o₀.A hA₀ f y) (fun c d hd => by haveI := o₀.act.hom c`. Conclude with `GlobalTheory.T.dualNumberGraphFiltration_pushforward_mem k o₀.A (o₀.act.act c) f (fun x hx => hf.1 c x hx) d hd)`.
+
+Use `haveI : IsCommMonObj A := hA.comm`. Take `⟨P, φ₂, hP, r1, r2, hsym, hamp, hker, hros, hsq2, hpol⟩` from `GlobalTheory.T.harrisTaylor_exists_polarisation_bundle_lift p D R b N (DualNumber k) k (TrivSqZeroExt.fstHom k k k).toRingHom hπ hsq tR o₀ A i h hA act hact (fun φ' hφ' x hx y hy => by`. Rewrite `hx`, `hy` using `[hE]`. Conclude with `GlobalTheory.T.dualNumberGraphFiltration_isotropic_of_skew k o₀.A hA₀ o₀.P o₀.isLB φ hφ f hf.2.2 φ' hφ' x hx y hy)`. Take `⟨eta, e1, e2, e3, e4, e5⟩` from `GlobalTheory.T.harrisTaylor_primeToP_level_lift_squareZero p D R b N (DualNumber k) k (TrivSqZeroExt.fstHom k k k).toRingHom hπ hsq tR o₀ A i h hA act hact hN P φ₂ hP hsq2 hpol`.
+
+Establish `hEl : ∀ d : Crys (divided₂ hsq) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A, (haveI` using `o₀.act.hom (algebraMap (𝓞 D.F) D.O D.ω); push (divided₂ hsq) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (o₀.act.act (algebraMap (𝓞 D.F) D.O D.ω)) d) - tR b.ρ • d ∈ liftFil (divided₂ hsq) h → ∃ w : Fin D.a → Crys (divided₂ hsq) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀ …`. Introduce `d hd`. Rewrite `hd`, the goal using `[hE]`. Substitute `htR` using the available equality. Conclude with `GlobalTheory.T.dualNumberGraphFiltration_lie_of_map_into_hodge p D R b N k β _ o₀ f hZ hf.2.1 d hd`.
+
+Use `⟨{ A := A ab := hA act := act P := P isLB := hP rig₁ := r1 rig₂ := r2` and prove the remaining obligations. Use symmetry as in `:= hsym`. Use `ample := hamp`. Use `kerP := hker`. Use `rosati := hros`.
+
+Use `lie := fun R' _ β' x hx v hv => GlobalTheory.T.harrisTaylor_lift_lie_of_hodge_summand_lie p D R b N (DualNumber k) k (TrivSqZeroExt.fstHom k k k).toRingHom hπ hsq tR o₀ A i h hA act hact hEl R' β' x hx v hv`. Use `lieRank := fun k' _ _ x β' hx j => GlobalTheory.HTLiftLie.lieMult_of_sqZeroLift p D R b N (DualNumber k) k (TrivSqZeroExt.fstHom k k k).toRingHom hπ hsq tR o₀ A i h act hact k' x β' hx j`. Use `eta := eta`. Use `eta_add := e1`. Use `eta_lin := e2`.
+
+Use `eta_ker := e3`. Use `geom := e4 },`. Use the proof step `{ φ := i φ₂ := φ₂ cart := h sq := hsq2 act := hact pol := hpol eta := e5 }, fun x hx => ?_⟩`. Take `⟨d, hd⟩` from `exists_crys hA₀ x (f x)`. Use `⟨d, ?_, hd⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `d ∈ liftFil (divided₂ hsq) h`. Rewrite using `[hE]`. Conclude with `⟨x, hx, 0, zero_mem _, fun c => by rw [hd c, LinearMap.zero_apply, add_zero]⟩`.
+-/
 theorem realise_core (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R]
     (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (hN : N.Coprime p) (k : Type) [Field k] (β : R →+* k)
     (s : Sp k ⟶ Sp R) (hs : s = spMap β) (o₀ : GlobalTheory.UPel.HT.Obj b N s)
@@ -104,6 +121,11 @@ theorem realise_core (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p)
 
 end GlobalTheory.HTRealise
 
+/- English proof (translation)
+Introduce `p _ D R _ b N _ hN k _ _ t o₀ β ht φ hφ f hf`. Establish `e1 : spMap (algebraMap k (DualNumber k)) ≫ t = spMap ((algebraMap k (DualNumber k)).comp β)`. Rewrite using `[ht, ← GlobalTheory.Cris.spMap_comp]`. Establish `e2 : t = spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap ((algebraMap k (DualNumber k)).comp β)`. Rewrite using `[ht, ← GlobalTheory.Cris.spMap_comp]`.
+
+Conclude with `congrArg spMap (RingHom.ext fun r => rfl)`. Rewrite using `[e1]`. Conclude with `GlobalTheory.HTRealise.realise_core p D R b N hN k β t ht o₀ φ hφ f hf _ rfl e2`.
+-/
 theorem GlobalTheory.UPel.HT.realise_isKS : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → ∀ f : HdR o₀.A →ₗ[k] HdR o₀.A, IsKS (GlobalTheory.HTCount.crysAct o₀) φ (Fil o₀.A) (GlobalTheory.HTCount.lieZ o₀ β) f → ∃ (o' : GlobalTheory.UPel.HT.Obj b N (spMap (algebraMap k (DualNumber k)) ≫ t)) (m' : GlobalTheory.UPel.HT.ObjMap o₀ o' (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)), ∀ x ∈ Fil o₀.A, IsFilLift m'.cart x (f x) := by
   intro p _ D R _ b N _ hN k _ _ t o₀ β ht φ hφ f hf
   have e1 : spMap (algebraMap k (DualNumber k)) ≫ t = spMap ((algebraMap k (DualNumber k)).comp β) := by

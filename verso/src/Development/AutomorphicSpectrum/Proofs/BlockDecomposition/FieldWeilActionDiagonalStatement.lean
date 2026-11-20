@@ -12,6 +12,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PieDiag.piE_diag | exact GlobalTheory.CompanionTheory.PieDiag.piE_diag | (intros; apply GlobalTheory.CompanionTheory.PieDiag.piE_diag <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.field_weil_action_diagonal : GL2LocalData.ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ η => ∀ (c : Eˣ →* ℂˣ), ∀ Φ ∈ GL2LocalData.SBc F E c, ∀ (t : Eˣ) (a : Fˣ),
   (a : F) = Algebra.norm F (t : E) → ∀ (g : GL (Fin 2) F) (x : E),
     GL2LocalData.piE E χ σ η c (dg2 a 1 * g) Φ x = ((c t : ℂˣ) : ℂ) * mp a (1 / 2) * GL2LocalData.piE E χ σ η c g Φ (x * t) := by

@@ -16,6 +16,27 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 
+/- English proof (translation)
+Introduce `D S T v w h hw c ϖ e hU he d t ht k₁ hk₁ k₂ hk₂`. Take `⟨-, ⟨a, ha, -, hea⟩, -⟩` from `he`. Establish `hg : (locMat D.sp.cm.sig T.gram h (e.symm (k₁ * t * k₂))).1 = a.1 * (k₁ * t * k₂).1.1 * (a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1`. Establish `h1` using `hea (e.symm (k₁ * t * k₂))`. Rewrite `h1` using `[MulEquiv.apply_symm_apply]`.
+
+Rewrite using `[h1]`. Simplify using `only [Units.val_mul, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[GlobalTheory.T.inertPlace_homLattice_index_eq_localComponent_index D S T v w h hw]`. Take `⟨c₀, b, hc₀, hX⟩` from `GlobalTheory.T.inertPlace_homLattice_components_scaled_integral D S T v w h hw a ha`.
+
+Use `set M := (GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).toAddSubgroup.map (GlobalTheory.InertHomIdx.matW S T w) with hM`. Use `clear_value M`. Set `τ : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E) →+ Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E)` to `{ toFun := fun X => c₀ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * X * b.1) map_zero' := by simp map_add' := fun X Y => by simp [Matrix.mul_add, Matrix.add_mul, smul_add] }`. Establish `hτ : Function.Injective τ`. Introduce `X Y hXY`.
+
+Establish `h1 : c₀ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * X * b.1) = c₀ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * Y * b.1)` using `hXY`. Establish `h2` using `congrArg (fun Z => c₀⁻¹ • (a.1 * Z * (b⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1)) h1`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, inv_mul_cancel₀ hc₀, one_smul] at h2`. Simplify `h2` using `[← Matrix.mul_assoc, Matrix.mul_assoc _ _ (b⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1]`. Establish `h1 : M.map τ = GlobalTheory.InertHomIdx.intMat (w.adicCompletion D.host.E) T.rank S.rank`.
+
+Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX', rfl⟩`. Conclude with `(hX X).1 hX'`. Introduce `hY`.
+
+Use `⟨c₀⁻¹ • (a.1 * Y * (b⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1), (hX _).2 ?_, ?_⟩` and prove the remaining obligations. Use `show c₀ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * (c₀⁻¹ • (a.1 * Y * (b⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1)) * b.1) ∈ _`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ hc₀, one_smul, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Conclude with `hY`.
+
+Use `show c₀ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * (c₀⁻¹ • (a.1 * Y * (b⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1)) * b.1) = Y`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ hc₀, one_smul, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Establish `h2 : (M.map (GlobalTheory.InertHomIdx.lmul (locMat D.sp.cm.sig T.gram h (e.symm (k₁ * t * k₂))).1)).map τ = (GlobalTheory.InertHomIdx.intMat (w.adicCompletion D.host.E) T.rank S.rank).map (GlobalTheory.InertHomIdx.lmul (k₁ * t * k₂).1.1)`. Establish `hcomm : τ.comp (GlobalTheory.InertHomIdx.lmul (locMat D.sp.cm.sig T.gram h (e.symm (k₁ * t * k₂))).1) = (GlobalTheory.InertHomIdx.lmul (k₁ * t * k₂).1.1).comp τ`.
+
+Use `AddMonoidHom.ext fun X => ?_` and prove the remaining obligations. Use `show c₀ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * ((locMat D.sp.cm.sig T.gram h (e.symm (k₁ * t * k₂))).1 * X) * b.1) = (k₁ * t * k₂).1.1 * (c₀ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * X * b.1))`. Rewrite using `[hg, Matrix.mul_smul]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1) a.1, Units.inv_mul, Matrix.one_mul]`. Rewrite using `[← h1, AddSubgroup.map_map, AddSubgroup.map_map, hcomm]`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective _ _ hτ, h2, h1, GlobalTheory.T.relIndex_integralMatrices_unitaryDiagonal_translate ϖ c _ hU T.rank S.rank d t ht k₁ hk₁ k₂ hk₂]`. Use `congr 1`. Use `show (Ideal.absNorm v.asIdeal) ^ 2 = Ideal.absNorm w.asIdeal`.
+
+Rewrite using `[GlobalTheory.LFun.InertChart.absNorm_eq (Algebra.IsQuadraticExtension.finrank_eq_two _ _) hw]`.
+-/
 theorem GlobalTheory.InertHomIdx.idx_moved_inert : ∀ (D : D7) (S T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsInertAt D.host.F D.host.E v w → ∀ c ϖ e, IsUnramInv ϖ c (qV D.host.F v) → IsInertChart D.sp.cm.sig T.gram (frameLat T) h c e → ∀ (d : Fin T.rank → ℤ) (t : GU c T.rank), t.1.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KU c T.rank, ∀ k₂ ∈ KU c T.rank, GlobalTheory.FinWeil.idx (GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)) ((GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).map (GlobalTheory.FinWeilO.rhoF S T (1, embV T v (e.symm (k₁ * t * k₂))))) = qV D.host.E w ^ (S.rank * (∑ i, max (d i) 0).toNat) := by
   intro D S T v w h hw c ϖ e hU he d t ht k₁ hk₁ k₂ hk₂
   obtain ⟨-, ⟨a, ha, -, hea⟩, -⟩ := he

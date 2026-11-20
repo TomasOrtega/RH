@@ -20,6 +20,17 @@ namespace GlobalTheory.CMVal.Euler
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `GlobalTheory.T.exists_finite_cosets_unitIdeles_completedOrder E c hc`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_ideal_section_integralFiniteIdele_upToUnits E`. Establish `hI` using `((GlobalTheory.countable_ideal_and_summable_absNorm_rpow E).2 S.re hS).1`. Establish `hP : Summable fun p : R × Ideal (𝓞 E) => (Ideal.absNorm p.2 : ℝ) ^ (-S.re)` using `(summable_prod_of_nonneg fun p => Real.rpow_nonneg (Nat.cast_nonneg _) _).2 ⟨fun _ => hI, Summable.of_finite⟩`. Set `A : Set ((Af E)ˣ ⧸ hatOUnits c)` to `{z | z.out ∈ intI}`.
+
+Use `choose J hJ hJ' using fun z : A => hg z.1.out z.2`. Use `choose r hr hr' using fun z : A => hR _ (hJ' z)`. Set `f : A → R × Ideal (𝓞 E)` to `fun z => (⟨r z, hr z⟩, J z)`. Establish `hf : Function.Injective f`. Introduce `z z' h`.
+
+Take `⟨h1, h2⟩` from `Prod.mk.inj h`. Establish `h1' : r z = r z'` using `congrArg Subtype.val h1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' z.1, ← QuotientGroup.out_eq' z'.1, QuotientGroup.eq]`. Use `mul_mem (inv_mem (hr' z)) (hr' z')` as an intermediate fact.
+
+Rewrite `this` using `[← h1', ← h2]`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left]`. Establish `h3 : Summable fun z : A => omega χ S z.1.out`. Use `Summable.of_norm ((hP.comp_injective hf).congr fun z => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_omega hu, hJ z, Real.inv_rpow (Nat.cast_nonneg _), ← Real.rpow_neg (Nat.cast_nonneg _)]`. Both sides reduce to the same expression. Establish `h4` using `(summable_subtype_iff_indicator (f := fun z : (Af E)ˣ ⧸ hatOUnits c => omega χ S z.out) (s := A)).1 h3`. Use `h4.congr fun z => ?_` and prove the remaining obligations. Simplify using `only [cs, Set.indicator_apply, A, Set.mem_setOf_eq]`.
+-/
 theorem summable_intI {c : Ideal (OF E)} (hc : c ≠ ⊥) {χ : HChar E} (hu : IsUnitary χ) {S : ℂ} (hS : 1 < S.re) :
     Summable (cs (hatOUnits c) (omega χ S) intI) := by
   classical
@@ -63,6 +74,13 @@ variable {c : Ideal (OF E)} {χ : HChar E} {S : ℂ} (hω : ∀ u ∈ hatOUnits 
 
 include hω hB hu hS hm in
 open Classical in
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert w s hw ih`. Take `⟨h1, h2, h3⟩` from `hs w (Finset.mem_insert_self _ _)`. Establish `h4` using `tsum_split hω hB (MS_subset m (s ∪ T)) (MS_anti m (Finset.subset_insert w _)) (stable_MS hm (s ∪ T)) (unifAt w) (unif_shift h1 (by simp [hw, h2]))`.
+
+Establish `h5 : eulerFactor χ S w = (1 - omega χ S (unifAt w))⁻¹` using `by rw [eulerFactor, if_pos h3, omega_unifAt]`. Establish `h6` using `one_sub_omega_ne hu hS w`. Rewrite using `[ih fun w' hw' => hs w' (Finset.mem_insert_of_mem hw'), Finset.prod_insert hw, Finset.insert_union, h5]`. Establish `h7 : FS c χ S m (insert w (s ∪ T)) = (1 - omega χ S (unifAt w)) * FS c χ S m (s ∪ T)`. Unfold `FS`.
+
+Take the linear combination `-h4`. Rewrite using `[h7]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem FS_union (T s : Finset (HeightOneSpectrum (𝓞 E))) (hs : ∀ w ∈ s, m (w.under (OF E)) = 0 ∧ w ∉ T ∧ UnrAt χ w) :
     FS c χ S m T = (∏ w ∈ s, eulerFactor χ S w) * FS c χ S m (s ∪ T) := by
   induction s using Finset.induction_on with
@@ -79,6 +97,15 @@ theorem FS_union (T s : Finset (HeightOneSpectrum (𝓞 E))) (hs : ∀ w ∈ s, 
     rw [h7]; field_simp
 
 include hω hm in
+/- English proof (translation)
+Unfold `Formalism.L2.Host.HChar.LevelLe at h`. Use `push Not at h`. Take `⟨x, hx1, hx2, hx3⟩` from `h`. Establish `hl : ∀ v', LocIn (m v') v' (single P x : Af E)` using `fun v' => locIn_of_sub_one fun P' hP' => by`. Distinguish the cases in `e : P' = P`.
+
+Substitute `e` using the available equality. Establish `: v' = v` using `by by_contra hne; exact not_over hP' hne hP`. Rewrite using `[single_self, this]`. Conclude with `hx2`. Rewrite using `[suppAt_single P x P' e]`.
+
+Simplify using the standard rewrite rules. Use `tsum_zero_of hω (stable_MS hm T) (single P x) ?_ fun y => ?_` and prove the remaining obligations. Rewrite using `[omega_unit _ _ (val_single hx1), finPart_single]`. Conclude with `fun h => hx3 (Units.ext h)`. Rewrite using `[mul_comm]`.
+
+Conclude with `mul_mem_MS_iff (fun v' => (hl v').inv fun P' _ => val_single hx1 P') (val_inv_one (val_single hx1)) y`.
+-/
 theorem FS_zero (T : Finset (HeightOneSpectrum (𝓞 E))) {v : HeightOneSpectrum (OF E)} {P : HeightOneSpectrum (𝓞 E)}
     (hP : Over P v) (h : ¬ LevelLe χ P (m v)) : FS c χ S m T = 0 := by
   unfold Formalism.L2.Host.HChar.LevelLe at h
@@ -100,6 +127,15 @@ variable [IsCMField E]
 
 include hω hB hm in
 open Classical in
+/- English proof (translation)
+Take `⟨x, hx, hx'⟩` from `GlobalTheory.T.exists_uniformiser_split_place_cm_order_nonunit E v hv`. Take `⟨π, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_split_place_uniformiser_idele E v x hv hx`. Establish `hm' : ∀ v', Function.update m v k v' ≤ expIn c v'` using `fun v' => by`. Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality.
+
+Rewrite using `[Function.update_self]`. Use `hm v'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne e]`. Conclude with `hm v'`.
+
+Establish `h5 : omega χ S π = (((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-S)) ^ 2`. Rewrite using `[omega_apply, h4 χ hF, h3, sq, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (by positivity) (by positivity), inv_natCast_cpow, sq, Units.val_one, one_mul]`. Rewrite using `[← h5]`. Use `tsum_split hω hB (MS_subset m T) (MS_anti m Finset.subset_union_right) (stable_MS hm' T) π fun y => ?_` and prove the remaining obligations. Establish `hT' : (∀ w' ∈ T, Valued.v (((π⁻¹ * y : (Af E)ˣ) : Af E) w') = 1) ↔ ∀ w' ∈ T, Valued.v ((y : Af E) w') = 1` using `forall₂_congr fun w' hw' => by rw [shift_coord y (h2 w' (hT w' hw'))]`.
+
+Simplify using `only [MS, Set.mem_setOf_eq, Finset.forall_mem_union, mem_aboveF]`. Rewrite using `[hT', forall_locIn_shift (m := m) (v := v) (fun _ e => Function.update_of_ne e _ _) h2, forall_locIn_iff m v, Function.update_self, hx' k π y h1, hk]`. The claim follows by propositional logic.
+-/
 theorem FS_step (hF : TrivOnF χ) (T : Finset (HeightOneSpectrum (𝓞 E))) {v : HeightOneSpectrum (OF E)} (hv : Splits v) {k : ℕ}
     (hk : m v = k + 1) (hT : ∀ w ∈ T, ¬ Over w v) :
     FS c χ S m T = FS c χ S m (fib v ∪ T) +
@@ -124,6 +160,15 @@ theorem FS_step (hF : TrivOnF χ) (T : Finset (HeightOneSpectrum (𝓞 E))) {v :
 
 include hω hB hm in
 open Classical in
+/- English proof (translation)
+Take `⟨R, h1, h2, h3⟩` from `GlobalTheory.T.exists_local_unit_representatives_split_prime E v P hv hP`. Establish `h4 : ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) - 1 = R.card` using `by rw [← h1]; push_cast; ring`. Establish `key : ∀ r ∈ R, ∀ y : (Af E)ˣ, (single P r)⁻¹ * y ∈ MS m T ↔ LocIn 1 v (((single P r)⁻¹ * y : (Af E)ˣ) : Af E) ∧ (∀ v' ≠ v, LocIn (m v') v' (y : Af E)) ∧ ∀ w ∈ T, Valued.v ((y : Af E) w) = 1` using `fun r hr y => by`. Establish `hT' : (∀ w' ∈ T, Valued.v ((((single P r)⁻¹ * y : (Af E)ˣ) : Af E) w') = 1) ↔ ∀ w' ∈ T, Valued.v ((y : Af E) w') = 1` using `forall₂_congr fun w' _ => by rw [Units.val_mul, mul_coord, map_mul, val_inv_one (val_single (h2 r hr)), one_mul]`. Simplify using `only [MS, Set.mem_setOf_eq]`.
+
+Rewrite using `[hT', forall_locIn_shift (m := m) (v := v) (fun _ _ => rfl) (single_off hP r), hk, and_assoc]`. Establish `key2 : ∀ y : (Af E)ˣ, y ∈ MS (Function.update m v 0) T ↔ (∀ v' ≠ v, LocIn (m v') v' (y : Af E)) ∧ ∀ w ∈ T, Valued.v ((y : Af E) w) = 1` using `fun y => by`. Simplify using `only [MS, Set.mem_setOf_eq]`. Rewrite using `[forall_locIn_iff _ v, Function.update_self, locIn_zero_iff]`. Use `⟨fun h => ⟨fun v' e => by simpa [Function.update_of_ne e] using h.1.2 v' e, h.2⟩, fun h => ⟨⟨fun w hw => (h.2 w (hT w hw)).le, fun v' e => by simpa [Function.update_of_ne e] using h.1 v' e⟩, h.2⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[h4]`. Use `tsum_fin hω hB (MS_subset _ T) (stable_MS hm T) R (single P) (fun r hr => ?_) (fun y hy => ?_) (fun r hr y hy => ?_)` and prove the remaining obligations. Rewrite using `[omega_unit _ _ (val_single (h2 r hr)), finPart_single, hU r (h2 r hr), Units.val_one]`. Establish `hy'` using `(key2 y).1 hy`. Use `(existsUnique_congr fun r => and_congr_right fun hr => ?_).2 (h3 y fun w hw => hy'.2 w (hT w hw))` and prove the remaining obligations.
+
+Rewrite using `[key r hr]`. Conclude with `and_iff_left hy'`. Conclude with `(key2 y).2 ((key r hr y).1 hy).2`.
+-/
 theorem FS_resid (T : Finset (HeightOneSpectrum (𝓞 E))) {v : HeightOneSpectrum (OF E)} (hv : Splits v)
     {P : HeightOneSpectrum (𝓞 E)} (hP : Over P v) (hU : UnrAt χ P) (hk : m v = 1) (hT : ∀ w, Over w v → w ∈ T) :
     FS c χ S (Function.update m v 0) T = (((Ideal.absNorm v.asIdeal : ℕ) : ℂ) - 1) * FS c χ S m T := by
@@ -159,6 +204,11 @@ variable {c : Ideal (OF E)} {χ : HChar E} {S : ℂ} (hω : ∀ u ∈ hatOUnits 
 
 include hm in
 open Classical in
+/- English proof (translation)
+Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Use `hm v'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Function.update_of_ne e]`. Conclude with `hm v'`.
+-/
 theorem update_le (v : HeightOneSpectrum (OF E)) {k : ℕ} (hk : m v = k + 1) (v' : HeightOneSpectrum (OF E)) :
     Function.update m v k v' ≤ expIn c v' := by
   by_cases e : v' = v
@@ -168,6 +218,9 @@ theorem update_le (v : HeightOneSpectrum (OF E)) {k : ℕ} (hk : m v = k + 1) (v
 include hω hB hm in
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[FS_step hω hB hm hF T hv hk hT, FS_zero hω (update_le hm v hk) T hP (by rwa [Function.update_self]), Finset.prod_eq_one fun w hw => by rw [eulerFactor, if_neg (hr w ((mem_aboveF w v).1 hw))]]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem FS_ram (hF : TrivOnF χ) (T : Finset (HeightOneSpectrum (𝓞 E))) {v : HeightOneSpectrum (OF E)} (hv : Splits v) {k : ℕ}
     (hk : m v = k + 1) (hT : ∀ w ∈ T, ¬ Over w v) {P : HeightOneSpectrum (𝓞 E)} (hP : Over P v) (h : ¬ LevelLe χ P k)
     (hr : ∀ w, Over w v → ¬ UnrAt χ w) :
@@ -183,6 +236,19 @@ def eFactor (χ : HChar E) (S : ℂ) (q : HeightOneSpectrum (OF E)) (P : HeightO
 include hω hB hu hS hm in
 open Classical in
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨P', hP', hne⟩ : ∃ P', Over P' v ∧ P ≠ P' := by`. Take `⟨A, B, hAB, hA, hB⟩` from `hv`. Distinguish the cases in `e : P = A`. Conclude with `⟨B, hB, e ▸ hAB⟩`. Conclude with `⟨A, hA, e⟩`.
+
+Take `⟨s1, s2⟩` from `GlobalTheory.T.splitsInCMField_two_primes_degree_one E v hv`. Take `⟨h', hval⟩` from `GlobalTheory.T.heckeChar_unramified_inverse_split_pair E χ v P P' hF hv hP hP' hne (hl P' hP') h`. Establish `hfib : fib v = {P, P'}`. Use extensionality with `w`. Rewrite using `[mem_aboveF, Finset.mem_insert, Finset.mem_singleton]`.
+
+Apply the tactic sequence `exact ⟨s1 P P' hP hP' hne w, by rintro (rfl | rfl) <;> assumption⟩`. Establish `h1` using `FS_union hω hB hu hS (update_le hm v hk) T (fib v) fun w hw => by`. Establish `hw'` using `(mem_aboveF w v).1 hw`. Use `⟨by rw [(over_iff_under _ _).1 hw', Function.update_self], fun e => hT w e hw', ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases s1 P P' hP hP' hne w hw' with rfl | rfl <;> assumption`.
+
+Establish `h2` using `FS_resid hω hB hm (fib v ∪ T) hv hP h hk fun w hw => Finset.mem_union_left _ ((mem_aboveF w v).2 hw)`. Establish `e1` using `one_sub_omega_ne hu hS P`. Establish `e2` using `one_sub_omega_ne hu hS P'`. Rewrite `e1` using `[omega_unifAt, (s2 P hP).1]`. Rewrite `e2` using `[omega_unifAt, (s2 P' hP').1, hval, Units.val_inv_eq_inv_val]`.
+
+Rewrite using `[FS_step hω hB hm hF T hv hk hT, h1, h2]`. Use `conv => enter [1, 2, 2, 1]`. Rewrite using `[hfib]`. Use `conv => enter [2, 1, 2]`. Rewrite using `[hfib]`.
+
+Rewrite using `[Finset.prod_pair hne, eulerFactor, eulerFactor, if_pos h, if_pos h', (s2 P hP).1, (s2 P' hP').1, hval, Units.val_inv_eq_inv_val, eFactor]`. Generalize the expression as in `(1 - (val χ P : ℂ) * (Ideal.absNorm v.asIdeal : ℂ) ^ (-S)) = a at *`. Generalize the expression as in `(1 - (val χ P : ℂ)⁻¹ * (Ideal.absNorm v.asIdeal : ℂ) ^ (-S)) = b at *`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem FS_unr (hF : TrivOnF χ) (T : Finset (HeightOneSpectrum (𝓞 E))) {v : HeightOneSpectrum (OF E)} (hv : Splits v)
     (hk : m v = 1) (hT : ∀ w ∈ T, ¬ Over w v) {P : HeightOneSpectrum (𝓞 E)} (hP : Over P v) (h : UnrAt χ P)
     (hl : ∀ w, Over w v → LevelLe χ w 1) :
@@ -220,6 +286,41 @@ end
 
 open Classical in
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ φ hφ s κ 𝔣 Q χ Pq S L hE h𝔣 hQ hχ hPq hS hL`. Take `⟨hc0, hsp, hdv, hnQ, hnQ', hfin⟩` from `GlobalTheory.T.conductorTimesSplitPrimes_exponents E 𝔣 Q h𝔣 hQ`. Use `set c := condQ 𝔣 Q with hc`. Establish `hu` using `hχ.1`. Establish `hF` using `hχ.2.1`.
+
+Establish `hS0 : 0 < S.re` using `by linarith`. Establish `hω : ∀ u ∈ hatOUnits c, omega χ S u = 1` using `fun u hu => by`. Rewrite using `[omega_unit _ _ (OrderUnits.val_eq_one hu), OrderUnits.finPart_eq_one E I φ hφ s κ 𝔣 Q χ hE h𝔣 hQ hχ u hu, Units.val_one]`. Establish `hB` using `summable_intI hc0 hu hS`. Establish `hm : ∀ v, expIn c v ≤ expIn c v` using `fun _ => le_rfl`.
+
+Set `e : HeightOneSpectrum (OF E) → ℂ` to `fun v => if v ∈ Q.filter (fun q => UnrAt χ (Pq q)) then eFactor χ S v (Pq v) else 1`. Establish `hstep : ∀ v, expIn c v ≠ 0 → ∀ T : Finset (HeightOneSpectrum (𝓞 E)), (∀ w ∈ T, ¬ Over w v) → FS c χ S (expIn c) T = e v * (∏ w ∈ fib v, eulerFactor χ S w) * FS c χ S (expIn c) (fib v ∪ T)`. Introduce `v hv T hT`. Establish `hs` using `hsp v (hdv v hv)`. Distinguish the cases in `hvQ : v ∈ Q`.
+
+Establish `hl : ∀ w, Over w v → LevelLe χ w 1` using `fun w hw => (hχ.2.2.2 v w hw).1 hvQ`. Distinguish the cases in `hU : UnrAt χ (Pq v)`. Rewrite using `[FS_unr hω hB hu hS0 hm hF T hs (hnQ v hvQ) hT (hPq v hvQ) hU hl]`. Simplify using `[e, hvQ, hU]`. Rewrite using `[FS_ram hω hB hm hF T hs (k := 0) (hnQ v hvQ) hT (hPq v hvQ) (fun h => hU ((χ.unrAt_iff _).2 h)) fun w hw h => hU ?_]`.
+
+Simplify using `[e, hU]`. Distinguish the cases in `a : w = Pq v`. Conclude with `a ▸ h`. Conclude with `(GlobalTheory.T.heckeChar_unramified_inverse_split_pair E χ v w (Pq v) hF hs hw (hPq v hvQ) a (hl _ (hPq v hvQ)) h).1`. Establish `hl : ∀ w, Over w v → ExpAt χ w (expIn c v)` using `fun w hw => by`.
+
+Rewrite using `[hnQ' v hvQ]`. Conclude with `(hχ.2.2.2 v w hw).2 hvQ`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero hv`. Take `⟨P, -, -, hP, -⟩` from `id hs`. Rewrite using `[FS_ram hω hB hm hF T hs hk hT hP (fun h => by have := (hl P hP k).1 h; omega) fun w hw => (hl w hw).not_unrAt hv]`.
+
+Simplify using `[e, hvQ]`. Establish `hV : ∀ V : Finset (HeightOneSpectrum (OF E)), (∀ v ∈ V, expIn c v ≠ 0) → FS c χ S (expIn c) ∅ = (∏ v ∈ V, e v) * (∏ w ∈ V.biUnion fib, eulerFactor χ S w) * FS c χ S (expIn c) (V.biUnion fib)`. Introduce `V`. Proceed by induction on `V using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert v V hv ih`. Introduce `h`. Establish `hT : ∀ w ∈ V.biUnion fib, ¬ Over w v` using `fun w hw => by`. Take `⟨v', h1, h2⟩` from `Finset.mem_biUnion.1 hw`. Conclude with `not_over ((mem_aboveF w v').1 h2) fun a => hv (a ▸ h1)`.
+
+Rewrite using `[ih fun v' hv' => h v' (Finset.mem_insert_of_mem hv'), hstep v (h v (Finset.mem_insert_self _ _)) _ hT, Finset.biUnion_insert, Finset.prod_insert hv, Finset.prod_union (Finset.disjoint_right.2 fun w hw hw' => hT w hw ((mem_aboveF w v).1 hw'))]`. Expand and normalize the polynomial expressions, which then agree. Establish `he : ∏ v ∈ hfin.toFinset, e v = ∏ q ∈ Q.filter (fun q => UnrAt χ (Pq q)), eFactor χ S q (Pq q)`. Rewrite using `[Finset.prod_ite_mem, Finset.inter_eq_right.2]`. Introduce `v hv`.
+
+Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, hnQ v (Finset.mem_filter.1 hv).1]`. Conclude with `one_ne_zero`. Establish `h0` using `hV hfin.toFinset fun v hv => hfin.mem_toFinset.1 hv`. Rewrite `h0` using `[he]`. Use `set T₀ := hfin.toFinset.biUnion fib with hT₀`.
+
+Use `set e₀ := ∏ q ∈ Q.filter (fun q => UnrAt χ (Pq q)), eFactor χ S q (Pq q) with he₀`. Establish `h1 : ∀ T, T₀ ⊆ T → FS c χ S (expIn c) ∅ = (∏ w ∈ T, eulerFactor χ S w) * e₀ * FS c χ S (expIn c) T`. Introduce `T hT`. Rewrite using `[h0, FS_union hω hB hu hS0 hm T₀ (T \ T₀), Finset.sdiff_union_of_subset hT, ← Finset.prod_sdiff hT]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `w hw`. Establish `hw'` using `(Finset.mem_sdiff.1 hw).2`. Establish `h2 : expIn c (w.under (OF E)) = 0`. Assume the negation of the conclusion as `a`. Conclude with `hw' (Finset.mem_biUnion.2 ⟨_, hfin.mem_toFinset.2 a, (mem_aboveF _ _).2 (over_under w)⟩)`.
+
+Establish `h3 : w.under (OF E) ∉ Q` using `fun a => by rw [hnQ _ a] at h2; exact one_ne_zero h2`. Use `⟨h2, hw', (expAt_zero_iff χ w).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, hnQ' _ h3]`. Conclude with `(hχ.2.2.2 _ w (over_under w)).2 h3`. Establish `hO : ∀ z : Af E, z ∈ hatO c ↔ ∀ v, LocIn (expIn c v) v z` using `fun z => ⟨locIn_of_mem_hatO, GlobalTheory.T.mem_completedOrder_of_local_congruence_split E c hc0 hsp z⟩`.
+
+Establish `h2 : Tendsto (fun T => FS c χ S (expIn c) T) atTop (𝓝 1)`. Use `tendsto_tsum_one hω hB atTop _ (MS_subset _) (fun y hy T => ⟨(hO _).1 hy.1, fun w _ => OrderUnits.val_eq_one hy w⟩) fun y hy => ?_` and prove the remaining obligations. Distinguish the cases in `a : ∀ w, Valued.v ((y : Af E) w) = 1`. Conclude with `Eventually.of_forall fun T hT => hy ⟨(hO _).2 hT.1, (hO _).2 fun v => (hT.1 v).inv fun w _ => a w⟩`. Take `⟨w, hw⟩` from `not_forall.1 a filter_upwards [eventually_ge_atTop {w}] with T hT hy'`.
+
+Conclude with `hw (hy'.2 w (hT (Finset.mem_singleton_self w)))`. Establish `h3 : FS c χ S (expIn c) ∅ = L * e₀`. Establish `h4 : Tendsto (fun T => (∏ w ∈ T, eulerFactor χ S w) * e₀ * FS c χ S (expIn c) T) atTop (𝓝 (L * e₀ * 1))` using `(Tendsto.mul_const e₀ hL).mul h2`. Rewrite `h4` using `[mul_one]`. Use `tendsto_nhds_unique (tendsto_const_nhds.congr' ?_) h4` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_ge_atTop T₀] with T hT using h1 T hT`. Establish `h5` using `hasSum_classes (stable_MS hm ∅) (summable_mono hB (MS_subset _ _))`. Establish `h6 : MS (expIn c) ∅ = {y : (Af E)ˣ | (y : Af E) ∈ hatO c}`. Use extensionality with `y`. Simplify using `[MS, hO]`.
+
+Unfold `FS at h3`. Rewrite `h5` using `[h3, h6]`. Conclude with `h5`.
+-/
 theorem hasSum_euler : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ → ∀ (s : ℕ) (κ : I → ℕ) (𝔣 : Ideal (OF E)) (Q : Finset (HeightOneSpectrum (OF E))) (χ : HChar E) (Pq : HeightOneSpectrum (OF E) → HeightOneSpectrum (𝓞 E)) (S L : ℂ), UnramFin E → IsBaseCond 𝔣 → IsFinSetSplitPlacesCoprimeConductor 𝔣 Q → IsValChar φ s κ 𝔣 Q χ → (∀ q ∈ Q, Over (Pq q) q) → 1 < S.re → HasProd (eulerFactor χ S) L → open Classical in HasSum (fun z : {z : (Af E)ˣ ⧸ hatOUnits (condQ 𝔣 Q) // ∃ y : (Af E)ˣ, (QuotientGroup.mk y : (Af E)ˣ ⧸ hatOUnits (condQ 𝔣 Q)) = z ∧ (y : Af E) ∈ hatO (condQ 𝔣 Q)} => (finPart χ z.1.out : ℂ) * ((modF z.1.out : ℝ) : ℂ) ^ S) (L * ∏ q ∈ Q.filter (fun q => UnrAt χ (Pq q)), ((1 - (val χ (Pq q) : ℂ) * (Ideal.absNorm q.asIdeal : ℂ) ^ (-S)) * (1 - (val χ (Pq q) : ℂ)⁻¹ * (Ideal.absNorm q.asIdeal : ℂ) ^ (-S)) + ((Ideal.absNorm q.asIdeal : ℂ) - 1) * ((Ideal.absNorm q.asIdeal : ℂ) ^ (-S)) ^ 2)) := by
   intro E _ _ _ I _ φ hφ s κ 𝔣 Q χ Pq S L hE h𝔣 hQ hχ hPq hS hL
   obtain ⟨hc0, hsp, hdv, hnQ, hnQ', hfin⟩ := GlobalTheory.T.conductorTimesSplitPrimes_exponents E 𝔣 Q h𝔣 hQ

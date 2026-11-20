@@ -12,6 +12,19 @@ section Abstract
 
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Set `K : Subgroup G` to `{ carrier := {k | ∀ g, F (k * g) = F g} one_mem' := by intro g; simp mul_mem' := by`. Introduce `a b ha hb g`. Rewrite using `[mul_assoc, ha, hb]`. Use the proof step `inv_mem' := by`. Introduce `a ha g`.
+
+Use `ha (a⁻¹ * g)` as an intermediate fact. Simplify using `using this.symm }`. Establish `h1 : ∀ᶠ k in nhds (1 : G), ∀ g ∈ tsupport F, F (k * g) = F g`. Apply `IsCompact.eventually_forall_of_forall_eventually hF.2` to reduce the goal to its premises. Introduce `g _`.
+
+Establish `a1 : IsLocallyConstant (fun z : G × G => F (z.1 * z.2))` using `hF.1.comp_continuous (by fun_prop)`. Establish `a2 : IsLocallyConstant (fun z : G × G => F z.2)` using `hF.1.comp_continuous (by fun_prop)`. Use `filter_upwards [a1.eventually_eq (1, g), a2.eventually_eq (1, g)] with z hz1 hz2`. Simplify using `only [hz1, hz2, one_mul]`. Establish `h2 : ∀ᶠ k in nhds (1 : G), ∀ g ∈ tsupport F, F (k⁻¹ * g) = F g`.
+
+Establish `: Filter.Tendsto (fun x : G => x⁻¹) (nhds 1) (nhds 1)`. Simplify using `using (continuous_inv (G := G)).tendsto 1`. Conclude with `this.eventually h1`. Establish `hK : IsOpen (K : Set G)`. Apply `Subgroup.isOpen_of_mem_nhds K (g := 1)` to reduce the goal to its premises.
+
+Use `filter_upwards [h1, h2] with k hk1 hk2`. Introduce `g`. Distinguish the cases in `hg : g ∈ tsupport F`. Conclude with `hk1 g hg`. Distinguish the cases in `hg' : k * g ∈ tsupport F`.
+
+Simplify using `using (hk2 _ hg').symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hg, image_eq_zero_of_notMem_tsupport hg']`. Conclude with `⟨⟨K, hK⟩, fun k hk x => hk x⟩`.
+-/
 theorem exists_open_left_stab {F : G → ℂ} (hF : F ∈ SB G) :
     ∃ K : OpenSubgroup G, ∀ k ∈ K, ∀ x, F (k * x) = F x := by
   let K : Subgroup G :=
@@ -48,6 +61,11 @@ theorem exists_open_left_stab {F : G → ℂ} (hF : F ∈ SB G) :
       · rw [image_eq_zero_of_notMem_tsupport hg, image_eq_zero_of_notMem_tsupport hg']
   exact ⟨⟨K, hK⟩, fun k hk x => hk x⟩
 
+/- English proof (translation)
+Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_, HasCompactSupport.intro hK fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (K : Set G)`. Conclude with `⟨K, K.isOpen, hx, fun y hy => by`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]⟩`. Conclude with `⟨(K : Set G)ᶜ, K.isClosed.isOpen_compl, hx, fun y hy => by`.
+
+Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`.
+-/
 theorem ind_mem (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) :
     Set.indicator (K : Set G) (fun _ => (1 : ℂ)) ∈ SB G := by
   refine ⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_,
@@ -61,10 +79,16 @@ theorem ind_mem (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) :
 def ind (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) : SB G :=
   ⟨_, ind_mem K hK⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ind_apply (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) (x : G) :
     (ind K hK : G → ℂ) x = Set.indicator (K : Set G) (fun _ => (1 : ℂ)) x :=
   rfl
 
+/- English proof (translation)
+Establish `h : k * x ∈ (K : Set G) ↔ x ∈ (K : Set G)` using `Subgroup.mul_mem_cancel_left K.toSubgroup hk`. Distinguish the cases in `hx : x ∈ (K : Set G)`. Rewrite using `[ind_apply, ind_apply, Set.indicator_of_mem (h.2 hx), Set.indicator_of_mem hx]`. Rewrite using `[ind_apply, ind_apply, Set.indicator_of_notMem (fun h' => hx (h.1 h')), Set.indicator_of_notMem hx]`.
+-/
 theorem ind_left (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) {k : G} (hk : k ∈ K) (x : G) :
     (ind K hK : G → ℂ) (k * x) = (ind K hK : G → ℂ) x := by
   have h : k * x ∈ (K : Set G) ↔ x ∈ (K : Set G) :=
@@ -74,6 +98,21 @@ theorem ind_left (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) {k : G} (hk :
   · rw [ind_apply, ind_apply, Set.indicator_of_notMem (fun h' => hx (h.1 h')),
       Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Establish `hdisc : DiscreteTopology (G ⧸ (K : Subgroup G))` using `QuotientGroup.discreteTopology K.isOpen`. Set `π : G → G ⧸ (K : Subgroup G)` to `fun x => ((x⁻¹ : G) : G ⧸ (K : Subgroup G))`. Establish `hπ : Continuous π` using `QuotientGroup.continuous_mk.comp continuous_inv`. Establish `hfin : (π '' tsupport (f : G → ℂ)).Finite` using `((show IsCompact (tsupport (f : G → ℂ)) from f.2.2).image hπ).finite_of_discrete`. Establish `key : ∀ (x : G) (q : G ⧸ (K : Subgroup G)), x * q.out ∈ K ↔ π x = q`.
+
+Introduce `x q`. Establish `h` using `QuotientGroup.eq (s := (K : Subgroup G)) (a := x⁻¹) (b := q.out)`. Rewrite `h` using `[inv_inv, QuotientGroup.out_eq']`. Conclude with `h.symm`. Establish `hinj : Set.InjOn (fun q : G ⧸ (K : Subgroup G) => q.out) (hfin.toFinset : Set _)` using `fun a _ b _ h => Quotient.out_injective h`.
+
+Use `⟨hfin.toFinset.image (fun q => q.out), fun t => (f : G → ℂ) t⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image hinj]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`.
+
+Establish `hterm : ∀ q ∈ hfin.toFinset, ((((f : G → ℂ) q.out⁻¹ • pullHomeo (Homeomorph.mulRight q.out) (ind K hK) : SB G)) : G → ℂ) x = if π x = q then (f : G → ℂ) x else 0`. Introduce `q _`. Establish `e : ((((f : G → ℂ) q.out⁻¹ • pullHomeo (Homeomorph.mulRight q.out) (ind K hK) : SB G)) : G → ℂ) x = (f : G → ℂ) q.out⁻¹ * (ind K hK : G → ℂ) (x * q.out)` using `rfl`. Rewrite using `[e, ind_apply]`. Distinguish the cases in `h : π x = q`.
+
+Establish `hm : x * q.out ∈ K` using `(key x q).2 h`. Rewrite using `[if_pos h, Set.indicator_of_mem (show x * q.out ∈ (K : Set G) from hm), mul_one]`. Use `hf _ hm q.out⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Conclude with `this.symm`.
+
+Rewrite using `[if_neg h, Set.indicator_of_notMem (show x * q.out ∉ (K : Set G) from fun hm => h ((key x q).1 hm)), mul_zero]`. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_ite_eq]`. Use `split_ifs with h`. Both sides reduce to the same expression. Assume the negation of the conclusion as `h0`.
+
+Conclude with `h (hfin.mem_toFinset.2 ⟨x, subset_tsupport _ h0, rfl⟩)`.
+-/
 theorem exists_decomp (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) (f : SB G)
     (hf : ∀ k ∈ K, ∀ x, (f : G → ℂ) (k * x) = (f : G → ℂ) x) :
     ∃ (S : Finset G) (a : G → ℂ),
@@ -118,6 +157,9 @@ theorem exists_decomp (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) (f : SB 
   · by_contra h0
     exact h (hfin.mem_toFinset.2 ⟨x, subset_tsupport _ h0, rfl⟩)
 
+/- English proof (translation)
+Take `⟨S, a, h⟩` from `exists_decomp K hK f hf`. Use `⟨∑ t ∈ S, a t, fun M hM => ?_⟩` and prove the remaining obligations. Rewrite using `[h, _root_.map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hM, smul_eq_mul]`.
+-/
 theorem exists_coeff (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) (f : SB G)
     (hf : ∀ k ∈ K, ∀ x, (f : G → ℂ) (k * x) = (f : G → ℂ) x) :
     ∃ s : ℂ, ∀ M : SB G →ₗ[ℂ] ℂ,
@@ -136,6 +178,9 @@ section Integral
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [MeasurableSpace G] [BorelSpace G]
 
+/- English proof (translation)
+The claim follows from `α.2.1.continuous.integrable_of_hasCompactSupport α.2.2`.
+-/
 theorem integrable_sb (μ : Measure G) [IsFiniteMeasureOnCompacts μ] (α : SB G) :
     Integrable (α : G → ℂ) μ :=
   α.2.1.continuous.integrable_of_hasCompactSupport α.2.2
@@ -145,12 +190,18 @@ def haarForm (μ : Measure G) [IsFiniteMeasureOnCompacts μ] : SB G →ₗ[ℂ] 
   map_add' α β := integral_add (integrable_sb μ α) (integrable_sb μ β)
   map_smul' c α := integral_const_mul c (α : G → ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem haarForm_apply (μ : Measure G) [IsFiniteMeasureOnCompacts μ] (α : SB G) :
     haarForm μ α = ∫ x, (α : G → ℂ) x ∂μ :=
   rfl
 
 variable [LocallyCompactSpace G]
 
+/- English proof (translation)
+Establish `h` using `integral_isMulLeftInvariant_eq_smul_of_hasCompactSupport (map (· * g) μ) μ hu hcu`. Establish `h1 : modularCharacterFun g = 1` using `hU g`. Rewrite `h` using `[integral_smul_nnreal_measure, ← modularCharacterFun_eq_haarScalarFactor μ g, h1, one_smul, integral_map (AEMeasurable.mul_const aemeasurable_id' _) hu.aestronglyMeasurable]`. Conclude with `h`.
+-/
 theorem integral_mul_right_real (hU : IsUnimod G) (μ : Measure G) [μ.IsHaarMeasure] (g : G)
     {u : G → ℝ} (hu : Continuous u) (hcu : HasCompactSupport u) :
     ∫ x, u (x * g) ∂μ = ∫ x, u x ∂μ := by
@@ -160,6 +211,11 @@ theorem integral_mul_right_real (hU : IsUnimod G) (μ : Measure G) [μ.IsHaarMea
     integral_map (AEMeasurable.mul_const aemeasurable_id' _) hu.aestronglyMeasurable] at h
   exact h
 
+/- English proof (translation)
+Establish `hc : Continuous (α : G → ℂ)` using `α.2.1.continuous`. Establish `hcs : HasCompactSupport (α : G → ℂ)` using `α.2.2`. Establish `hre` using `integral_mul_right_real hU μ g (u := fun x => RCLike.re ((α : G → ℂ) x)) (RCLike.continuous_re.comp hc) (hcs.comp_left (g := RCLike.re) (map_zero _))`. Establish `him` using `integral_mul_right_real hU μ g (u := fun x => RCLike.im ((α : G → ℂ) x)) (RCLike.continuous_im.comp hc) (hcs.comp_left (g := RCLike.im) (map_zero _))`. Rewrite using `[haarForm_apply, haarForm_apply, ← integral_re_add_im (integrable_sb μ (pullHomeo (Homeomorph.mulRight g) α)), ← integral_re_add_im (integrable_sb μ α)]`.
+
+Simplify using `only [pullHomeo_apply, Homeomorph.coe_mulRight]`. Rewrite using `[hre, him]`.
+-/
 theorem haarForm_right (hU : IsUnimod G) (μ : Measure G) [μ.IsHaarMeasure] (g : G) (α : SB G) :
     haarForm μ (pullHomeo (Homeomorph.mulRight g) α) = haarForm μ α := by
   have hc : Continuous (α : G → ℂ) := α.2.1.continuous
@@ -174,6 +230,11 @@ theorem haarForm_right (hU : IsUnimod G) (μ : Measure G) [μ.IsHaarMeasure] (g 
   simp only [pullHomeo_apply, Homeomorph.coe_mulRight]
   rw [hre, him]
 
+/- English proof (translation)
+Establish `e : haarForm μ (ind K hK) = ∫ x, Set.indicator (K : Set G) (fun _ => (1 : ℂ)) x ∂μ` using `rfl`. Rewrite using `[e, integral_indicator_const (1 : ℂ) K.isOpen.measurableSet]`. Establish `h0 : μ (K : Set G) ≠ 0` using `(K.isOpen.measure_pos μ ⟨1, K.one_mem⟩).ne'`. Establish `h1 : μ.real (K : Set G) ≠ 0`. Rewrite using `[Measure.real, ENNReal.toReal_ne_zero]`.
+
+Conclude with `⟨h0, hK.measure_lt_top.ne⟩`. Simplify using `using h1`.
+-/
 theorem haarForm_ind_ne_zero (μ : Measure G) [μ.IsHaarMeasure] (K : OpenSubgroup G)
     (hK : IsCompact (K : Set G)) : haarForm μ (ind K hK) ≠ 0 := by
   have e : haarForm μ (ind K hK) = ∫ x, Set.indicator (K : Set G) (fun _ => (1 : ℂ)) x ∂μ := rfl
@@ -186,6 +247,15 @@ theorem haarForm_ind_ne_zero (μ : Measure G) [μ.IsHaarMeasure] (K : OpenSubgro
 
 end Integral
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ hU μ _ L hL`. Take `⟨K₀, hK₀⟩` from `GroundTheory.Automorphic.exists_compactOpenSubgroup (G := G)`. Establish `hI` using `haarForm_right hU μ`. Use `⟨L (ind K₀ hK₀) / haarForm μ (ind K₀ hK₀), fun α => ?_⟩` and prove the remaining obligations. Rewrite using `[← haarForm_apply]`.
+
+Take `⟨K', hK'⟩` from `exists_open_left_stab α.2`. Establish `hKc : IsCompact ((K₀ ⊓ K' : OpenSubgroup G) : Set G)` using `GroundTheory.Automorphic.isCompact_inf_left hK₀`. Take `⟨s, hs⟩` from `exists_coeff (K₀ ⊓ K') hKc α (fun k hk x => hK' k hk.2 x)`. Take `⟨s₀, hs₀⟩` from `exists_coeff (K₀ ⊓ K') hKc (ind K₀ hK₀) (fun k hk x => ind_left K₀ hK₀ hk.1 x)`. Establish `hne` using `haarForm_ind_ne_zero μ (K₀ ⊓ K') hKc`.
+
+Establish `hne₀` using `haarForm_ind_ne_zero μ K₀ hK₀`. Establish `h1` using `hs L hL`. Establish `h2` using `hs _ hI`. Establish `h3` using `hs₀ L hL`. Establish `h4` using `hs₀ _ hI`.
+
+Rewrite using `[h1, h2, h3, h4]`. Establish `hs₀0 : s₀ ≠ 0` using `fun h => hne₀ (by rw [h4, h, zero_mul])`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_eq_mul_integral :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
       [LocallyCompactSpace G] [TotallyDisconnectedSpace G] [MeasurableSpace G] [BorelSpace G],

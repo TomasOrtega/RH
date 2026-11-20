@@ -18,6 +18,13 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped GlobalTheory.IndLineGL
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ v hv A A' hA hA'`. Take `⟨π, σ₁, α₀, β₀, ξ₁, ξ₂, e, Θ, hα, hβ, hαu, hβu, hπ, hπe, hσ, hΘ, hInd⟩` from `GlobalTheory.T.config_a_theta_unfolding hKP F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ v hv`. Establish `hlt : a' < b + 2` using `hM.triple.geo.lt`. Break down `GlobalTheory.T.unitary_char_induced_jacquet hKP (Fv F v) (b + 2) a' (b + a') (by omega) hlt α₀ β₀ hα hβ hαu hβu (Rf.Pi v) (Rf₁.Pi v) π σ₁ hπ hπe hσ e ξ₁ ξ₂ _ _ (hInd A hA) (hInd A' hA') with h0 | ⟨c, hc⟩` into its components or cases. Use `left`.
+
+Introduce `x h hh`. Take `⟨g, rfl⟩` from `hΘ h hh`. Use `congrFun (LinearMap.congr_fun h0 x) g` as an intermediate fact. Simplify using `using this`. Use `right`.
+
+Use `⟨c, fun x h hh => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hΘ h hh`. Use `congrFun (LinearMap.congr_fun hc x) g` as an intermediate fact. Simplify using `using this`.
+-/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

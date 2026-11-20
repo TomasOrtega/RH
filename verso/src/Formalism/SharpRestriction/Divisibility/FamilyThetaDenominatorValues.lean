@@ -26,6 +26,9 @@ def QOk (i : D.ntw.Tw) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E))) : Prop :
 def SOk (i : D.ntw.Tw) (lam : D.ntw.abelian₂ i) (s : ℤ) : Prop :=
   Formalism.MainNotions.BlochKatoReduction.Gen.SOk D.ntw i lam s
 
+/- English proof (translation)
+Consider the cases of `PT`. Simplify using `only [Formalism.MainNotions.BlochKatoReduction.Gen.sFun]`. Apply the tactic sequence `split_ifs <;> simp only [Nat.odd_iff, Nat.even_iff] at * <;> omega`.
+-/
 theorem paramsT_s_eq {L : SizeData₂ D} {P : ParameterChoice' D L} (PT : ParamsT D L P) : PT.s = Formalism.MainNotions.BlochKatoReduction.Gen.sFun D.R := by
   cases PT
   simp only [Formalism.MainNotions.BlochKatoReduction.Gen.sFun]
@@ -80,12 +83,18 @@ def ThetaDenominatorValues (X : Loc D) (C : ℝ) : Prop :=
       ∀ (lam : D.ntw.abelian₂ i) (s : ℤ), SOk D i lam s → ∀ δ, IntAfter D i (X.cE i lam + n i lam) (D.ntw.th i Q lam δ)
 
 variable {D} in
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hx`. Use `⟨((D.ntw.l i : ℕ) : D.ntw.O i) ^ (b - a) * y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hy, map_natCast, ← mul_assoc, ← pow_add, Nat.sub_add_cancel h]`.
+-/
 theorem IntAfter.mono {i : D.ntw.Tw} {a b : ℕ} (h : a ≤ b) {x : FractionRing (D.ntw.O i)}
     (hx : IntAfter D i a x) : IntAfter D i b x := by
   obtain ⟨y, hy⟩ := hx
   refine ⟨((D.ntw.l i : ℕ) : D.ntw.O i) ^ (b - a) * y, ?_⟩
   rw [map_mul, map_pow, hy, map_natCast, ← mul_assoc, ← pow_add, Nat.sub_add_cancel h]
 
+/- English proof (translation)
+Take `⟨n, -, -, -, h4⟩` from `h`. Use `⟨fun i => Finset.univ.sup (fun lam : D.ntw.abelian₂ i => X.cE i lam + n i lam), ?_⟩` and prove the remaining obligations. Introduce `i hi Q hQ lam s hs δ`. Conclude with `IntAfter.mono (Finset.le_sup (f := fun lam : D.ntw.abelian₂ i => X.cE i lam + n i lam) (Finset.mem_univ lam)) (h4 i hi Q hQ lam s hs δ)`.
+-/
 theorem thetaDenominator_of_values (X : Loc D) (C : ℝ) (h : ThetaDenominatorValues D X C) : ThetaDenominatorExists D := by
   classical
   obtain ⟨n, -, -, -, h4⟩ := h
@@ -188,6 +197,13 @@ variable {D} in
 
 def ValRuled (X : Formalism.MainNotions.ExistsIdealDenominator.Geo D) : Prop := Nonempty (ValRule X)
 
+/- English proof (translation)
+Unfold `OrdRule`. Proceed by induction on `o with`. Consider the case `nil => exact List.Pairwise.nil`. Consider the case `cons a t ih`. Rewrite `h` using `[List.nodup_cons]`.
+
+Rewrite using `[List.pairwise_cons]`. Use `⟨fun u' hu' _ => ?_, ?_⟩` and prove the remaining obligations. Establish `hua : ¬ (a = u')` using `fun e => h.1 (e ▸ hu')`. Simplify using `[List.idxOf_cons, hua]`. Use `(ih h.2).imp_of_mem fun {u u'} hu hu' hr hne => ?_` and prove the remaining obligations.
+
+Establish `hua : ¬ (a = u)` using `fun e => h.1 (e ▸ hu)`. Establish `hua' : ¬ (a = u')` using `fun e => h.1 (e ▸ hu')`. Simplify `hr hne` using `[List.idxOf_cons, hua, hua']`.
+-/
 theorem ordRule_idx {σ : Type} [DecidableEq σ] (o : List σ) (h : o.Nodup) :
     OrdRule (fun u : σ => u) (fun u => o.idxOf u) o := by
   unfold OrdRule
@@ -206,6 +222,9 @@ theorem ordRule_idx {σ : Type} [DecidableEq σ] (o : List σ) (h : o.Nodup) :
 
 variable {D} in
 
+/- English proof (translation)
+Use `⟨{ Bx := fun _ _ => Unit Ex := fun _ _ => Unit lx := fun _ _ _ => () le := fun _ _ _ => () slx := fun i _ _ => e i rk := fun _ _ _ => 0 rk_inj := fun _ _ _ _ _ => rfl ord := fun i j => ?_ pt := fun i j y => (h i j).elim y }⟩` and prove the remaining obligations. Unfold `OrdRule`. Conclude with `List.pairwise_of_forall fun _ _ hne => (hne rfl).elim`.
+-/
 theorem valRuled_of_noPts (X : Formalism.MainNotions.ExistsIdealDenominator.Geo D) (h : ∀ i j, IsEmpty (D.nth.Pt i j))
     (e : ∀ i : D.ntw.Tw, 𝓞 D.host.E →+* ℂ_[D.ntw.l i]) : ValRuled X := by
   refine ⟨{
@@ -316,6 +335,9 @@ def KeyUpperBound (X : Formalism.MainNotions.ExistsIdealDenominator.Geo D) : Pro
   ∀ i j, ∃ C : ℝ, ∀ y, ‖(X.pt i j y).key‖ ≤ (D.ntw.l i : ℝ) ^ C
 
 variable {D} in
+/- English proof (translation)
+Introduce `i j` and use `let ⟨C, hC⟩ := h i j; ⟨C, fun y => (hC y).2⟩`.
+-/
 theorem keyUpper_of_twoSided (X : Formalism.MainNotions.ExistsIdealDenominator.Geo D) (h : KeyTwoSidedBound X) : KeyUpperBound X :=
   fun i j => let ⟨C, hC⟩ := h i j; ⟨C, fun y => (hC y).2⟩
 
@@ -331,6 +353,23 @@ def ExistsUnitClasses (X : Formalism.MainNotions.ExistsIdealDenominator.Geo D) :
 
 def inL (w : D.what₂.places.Pl) (y : ℝ) : ℝ := y / (D.what₂.places.ramIdx w : ℝ)
 
+/- English proof (translation)
+Establish `hnat : ∀ (w' : D.what₂.places.Pl) (n : ℕ), 0 ≤ D.what₂.places.val w' (n : D.what₂.LL)`. Introduce `w' n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Rewrite using `[Nat.cast_succ]`. Conclude with `le_trans (le_min ih (by rw [AddValuation.map_one])) (AddValuation.map_add _ _ _)`. Establish `hint : ∀ (w' : D.what₂.places.Pl) (z : ℤ), 0 ≤ D.what₂.places.val w' (z : D.what₂.LL)`. Introduce `w' z`. Break down `Int.eq_nat_or_neg z with ⟨n, rfl | rfl⟩` into its components or cases.
+
+Simplify using `using hnat w' n`. Rewrite using `[Int.cast_neg, AddValuation.map_neg]`. Simplify using `using hnat w' n`. Establish `hstar : ∀ n : ℕ, D.what₂.places.val (D.what₂.places.conj w) (n : D.what₂.LL) = D.what₂.places.val w (n : D.what₂.LL)`. Introduce `n`.
+
+Rewrite using `[D.conj_val, star_natCast]`. Establish `hres : D.what₂.places.resChar (D.what₂.places.conj w) = D.what₂.places.resChar w`. Assume the negation of the conclusion as `hne`. Establish `hcop : Nat.Coprime (D.what₂.places.resChar (D.what₂.places.conj w)) (D.what₂.places.resChar w)` using `(Nat.coprime_primes (D.what₂.places.resChar_prime _) (D.what₂.places.resChar_prime _)).2 hne`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hcop`.
+
+Establish `h1 : (a : D.what₂.LL) * ((D.what₂.places.resChar (D.what₂.places.conj w) : ℕ) : D.what₂.LL) + (b : D.what₂.LL) * ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) = 1`. Conclude with `congrArg (Int.cast : ℤ → D.what₂.LL) hab` after adjusting the coercions. Establish `hq : 0 < D.what₂.places.val w ((D.what₂.places.resChar (D.what₂.places.conj w) : ℕ) : D.what₂.LL)`. Rewrite using `[← hstar, D.what₂.places.val_resChar]`. Conclude with `D.what₂.places.ramIdx_pos _` after adjusting the coercions.
+
+Establish `hp : 0 < D.what₂.places.val w ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)`. Rewrite using `[D.what₂.places.val_resChar]`. Conclude with `D.what₂.places.ramIdx_pos _` after adjusting the coercions. Establish `ha : 0 < D.what₂.places.val w ((a : D.what₂.LL) * ((D.what₂.places.resChar (D.what₂.places.conj w) : ℕ) : D.what₂.LL))`. Rewrite using `[AddValuation.map_mul]`.
+
+Conclude with `lt_of_lt_of_le hq (le_add_of_nonneg_left (hint w a))`. Establish `hb : 0 < D.what₂.places.val w ((b : D.what₂.LL) * ((D.what₂.places.resChar w : ℕ) : D.what₂.LL))`. Rewrite using `[AddValuation.map_mul]`. Conclude with `lt_of_lt_of_le hp (le_add_of_nonneg_left (hint w b))`. Establish `hadd` using `AddValuation.map_add (D.what₂.places.val w) ((a : D.what₂.LL) * ((D.what₂.places.resChar (D.what₂.places.conj w) : ℕ) : D.what₂.LL)) ((b : D.what₂.LL) * ((D.what₂.places.resChar w : ℕ) : D.what₂.LL))`.
+
+Rewrite `hadd` using `[h1, AddValuation.map_one]`. Conclude with `absurd hadd (not_le.2 (lt_min ha hb))`. Establish `hv` using `D.what₂.places.val_resChar (D.what₂.places.conj w)`. Rewrite `hv` using `[hres, hstar, D.what₂.places.val_resChar]`. Conclude with `hv.symm` after adjusting the coercions.
+-/
 theorem ramIdx_conj (w : D.what₂.places.Pl) :
     D.what₂.places.ramIdx (D.what₂.places.conj w) = D.what₂.places.ramIdx w := by
   have hnat : ∀ (w' : D.what₂.places.Pl) (n : ℕ), 0 ≤ D.what₂.places.val w' (n : D.what₂.LL) := by
@@ -403,6 +442,9 @@ def onBoundJ (L : SizeData₂ D) (C : ℝ) : ℝ :=
   C * (L.sc.L * Real.log (D.R.k : ℝ) * (D.R.m : ℝ) * wMax D +
     (D.R.f : ℝ) * (D.R.m : ℝ) * L.sc.b * Real.log L.sc.x)
 
+/- English proof (translation)
+Simplify using `only [onBound, onBoundJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem onBound_eq (L : SizeData₂ D) (C : ℝ) : onBound D L C = (D.R.m : ℝ) * onBoundJ D L C := by
   simp only [onBound, onBoundJ]
   ring
@@ -414,6 +456,11 @@ def ONTw (L : SizeData₂ D) (C : ℝ) : Prop :=
 
 variable {D} in
 
+/- English proof (translation)
+Take `⟨fl, r, _, _, hle, hsum⟩` from `h`. Use `le_trans (Finset.sum_le_sum fun w hw => ?_) (hsum T)` and prove the remaining obligations. Establish `h0 : 0 ≤ SizeData₂.lwP w`. Unfold `SizeData₂.lwP Formalism.BasicNotions.lw`. Conclude with `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+
+Apply `mul_le_mul_of_nonneg_left _ h0` to reduce the goal to its premises. Unfold `DV.ur`. Conclude with `mul_le_mul_of_nonneg_left (hle w (hT w hw)) (Nat.cast_nonneg _)`.
+-/
 theorem ONTw.sum_le {L : SizeData₂ D} {C : ℝ} (h : ONTw D L C) (T : Finset D.what₂.places.Pl)
     (hT : ∀ w ∈ T, D.what₂.muAt w ≠ D.what₂.mu0) :
     ∑ w ∈ T, SizeData₂.lwP w * DV.ur D w (onL D L (D.what₂.muAt w) w) ≤ onBound D L C := by
@@ -436,6 +483,15 @@ def ONTwJ (L : SizeData₂ D) (C : ℝ) : Prop :=
 
 variable {D} in
 
+/- English proof (translation)
+Take `⟨fl, r, hfl, hr, hle, hJ, h2⟩` from `h`. Use `⟨fl, r, hfl, hr, hle, fun T => ?_⟩` and prove the remaining obligations. Establish `key : ∀ w, SizeData₂.lwP w * DV.ur D w (onR D fl r w) = (∑ j ∈ SizeData₂.lifts D, SizeData₂.lwP w * DV.ur D w (onRj D fl r j w)) + SizeData₂.lwP w * DV.ur D w (2 / ((D.what₂.places.resChar w : ℝ) ^ 2))`. Introduce `w`. Simplify using `only [onR, DV.ur, mul_add, Finset.mul_sum]`.
+
+Simplify using `only [key, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm]`. Establish `hs : ∑ j ∈ SizeData₂.lifts D, ∑ w ∈ T, SizeData₂.lwP w * DV.ur D w (onRj D fl r j w) ≤ ∑ _j ∈ SizeData₂.lifts D, onBoundJ D L C` using `Finset.sum_le_sum fun j hj => hJ j hj T`. Establish `hcard : ∑ _j ∈ SizeData₂.lifts D, onBoundJ D L C = onBound D L C`. Rewrite using `[Finset.sum_const, nsmul_eq_mul, onBound_eq]`.
+
+Simplify using `[SizeData₂.lifts]`. Establish `h2'` using `h2 T`. Establish `hB : onBound D L (2 * C) = 2 * onBound D L C`. Simplify using `only [onBound]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hB]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ONTwJ.toONTw {L : SizeData₂ D} {C : ℝ} (h : ONTwJ D L C) (hC : C ≤ onBound D L C) : ONTw D L (2 * C) := by
   obtain ⟨fl, r, hfl, hr, hle, hJ, h2⟩ := h
   refine ⟨fl, r, hfl, hr, hle, fun T => ?_⟩
@@ -475,6 +531,31 @@ def DomON (L : SizeData₂ D) (nW : ℕ) (CP : ℝ) : Prop := ∀ j ∈ SizeData
 def SizeConditionTwenty (L : SizeData₂ D) : Prop :=
   10 ^ 4 * zBase L * ((D.R.r + D.R.t : ℕ) : ℝ) ≤ L.sc.b
 
+/- English proof (translation)
+Unfold `SizeConditionTwenty`. Establish `hZdef : zBase L = (D.R.f : ℝ) * (D.R.r : ℝ) * L.sc.L` using `rfl`. Establish `hCbN : (0 : ℝ) ≤ PT.CbN` using `by linarith [PT.CbN_ge]`. Establish `hb0 : 0 ≤ L.sc.b`. Use `le_trans ?_ PT.b_ge` and prove the remaining obligations.
+
+Check the signs of the components of the expression. Establish `hnV : ((D.R.r + D.R.t : ℕ) : ℝ) = PT.nP + PT.TO * PT.nWn`. Rewrite using `[PT.split]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Break down `le_or_gt (zBase L) 0 with hZ0 | hZ0` into its components or cases. Establish `h1 : 10 ^ 4 * zBase L * ((D.R.r + D.R.t : ℕ) : ℝ) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg (by linarith) (Nat.cast_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr : 1 ≤ D.R.r`. Break down `Nat.eq_zero_or_pos D.R.r with h | h` into its components or cases.
+
+Rewrite `hZ0` using `[hZdef, h]`. Simplify using `at hZ0`. Conclude with `h`. Establish `hf : 1 ≤ D.R.f`. Break down `Nat.eq_zero_or_pos D.R.f with h | h` into its components or cases.
+
+Rewrite `hZ0` using `[hZdef, h]`. Simplify using `at hZ0`. Conclude with `h`. Establish `hTOn : 2501 ≤ PT.TO`. Establish `h1 : 2501 ≤ D.R.r + 2 * (2 * 5 ^ 4 * D.R.r) * (PT.Dp + 1)` using `by nlinarith`.
+
+Conclude with `h1.trans PT.order_ge_rank_bound`. Establish `hTO : (2501 : ℝ) ≤ PT.TO` using `by exact_mod_cast hTOn`. Establish `hnWn : 2 ≤ PT.nWn`. Establish `h1 : 2 ≤ D.R.f * D.R.r * (D.R.r + 1)`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `h1.trans PT.nW_lo.1`. Establish `hnW : (2 : ℝ) ≤ PT.nWn` using `by exact_mod_cast hnWn`. Establish `hPP2 : (2 : ℝ) ≤ PT.PP` using `hnW.trans PT.nW_le`. Establish `hnP : (PT.nP : ℝ) ≤ PT.nWn` using `by exact_mod_cast PT.nW_lo.2.2`. Establish `hnV_le : ((D.R.r + D.R.t : ℕ) : ℝ) ≤ 2 * PT.TO * PT.PP`.
+
+Rewrite using `[hnV]`. Use polynomial arithmetic with `[PT.nW_le]`. Establish `hsq : L.sc.b = L.sc.b ^ (1 / 2 : ℝ) * L.sc.b ^ (1 / 2 : ℝ)`. Rewrite using `[← Real.sqrt_eq_rpow, Real.mul_self_sqrt hb0]`. Establish `hZPP : 2 * 10 ^ 4 * zBase L ≤ PT.PP ^ 3 * (PT.TO : ℝ) ^ 2`.
+
+Establish `hT2 : (2501 : ℝ) ^ 2 ≤ (PT.TO : ℝ) ^ 2` using `by nlinarith`. Establish `hP3 : PT.PP ≤ PT.PP ^ 3`. Establish `h4 : (4 : ℝ) ≤ PT.PP ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hP3' : (2 : ℝ) ≤ PT.PP ^ 3` using `hPP2.trans hP3`.
+
+Break down `le_or_gt (zBase L) 1 with h1 | h1` into its components or cases. Establish `hm` using `mul_le_mul hP3' hT2 (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrp : zBase L ≤ zBase L ^ PT.eP`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hpos : 0 ≤ zBase L ^ PT.eP` using `Real.rpow_nonneg hZ0.le _`. Establish `hPPZ : zBase L ≤ PT.PP`. Rewrite using `[PT.PP_eq]`. Use polynomial arithmetic with `[PT.one_le_CP]`. Establish `hm` using `mul_le_mul (hPPZ.trans hP3) hT2 (by norm_num) (by linarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sizeCondition_of_dominance (L : SizeData₂ D) {P : ParameterChoice' D L} (PT : ParamsT D L P) {CP : ℝ} (hD : DomON D L PT.nWn CP) : SizeConditionTwenty D L := by
   unfold SizeConditionTwenty
   have hZdef : zBase L = (D.R.f : ℝ) * (D.R.r : ℝ) * L.sc.L := rfl
@@ -685,6 +766,11 @@ def familyOntoIndicesWith (C : ℝ) : Prop :=
 
 variable {Fm OF} in
 
+/- English proof (translation)
+Take `⟨x0, h0⟩` from `h`. Take `⟨x1, h1⟩` from `hg`. Use `⟨max x0 x1, fun x hx hxm i => ?_⟩` and prove the remaining obligations. Take `⟨a, b, c, d⟩` from `h1 x hx (le_trans (le_max_right _ _) hxm) i`. Take `⟨p, q⟩` from `h0 x hx (le_trans (le_max_left _ _) hxm) i`.
+
+Conclude with `⟨p a b c d, q a b c d⟩`.
+-/
 theorem familyOntoIndicesWith.concl {C : ℝ} (h : familyOntoIndicesWith Fm OF C)
     (hg : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
       DomON (Fm.D x i) (Fm.L x i) (Fm.parT x hx i).nWn (Fm.parT x hx i).CP ∧ Formalism.MainNotions.TwConjAt (Fm.D x i) (Fm.ex x hx i).nch ∧ TraceLatticeInclusion (Fm.D x i) (OF x hx i).X.I.E (OF x hx i).T ∧

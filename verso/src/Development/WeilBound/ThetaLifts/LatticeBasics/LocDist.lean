@@ -8,6 +8,11 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Globa
 
 attribute [local instance] GlobalTheory.LocalData.complRel
 
+/- English proof (translation)
+Introduce `F _ _ v n d ξ hξ l hl`. Establish `: IsNonarchimedeanLocalField (Fv F v)` using `GlobalTheory.LocalData.isLocalField v`. Establish `: LocallyCompactSpace (Fv F v)` using `inferInstance`. Establish `: NonarchimedeanAddGroup (Fv F v)`. Use `⟨fun U hU => ?_⟩` and prove the remaining obligations.
+
+Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.1 hU`. Conclude with `⟨⟨(Valued.v.restrict.ltAddSubgroup γ), Valued.isOpen_ball _ _⟩, hγ⟩`. Use `⟨fun h => LD.lt_case ξ _ hξ h l hl, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl φ hφ g`. Conclude with `LD.eq_case ξ _ hξ l hl g φ hφ`.
+-/
 theorem locDist : LocDist := by
   intro F _ _ v n d ξ hξ l hl
   have : IsNonarchimedeanLocalField (Fv F v) := GlobalTheory.LocalData.isLocalField v

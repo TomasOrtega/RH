@@ -22,10 +22,20 @@ variable {K : Type} [Field K] [NumberField K] {V W : Type} [AddCommGroup V] [Mod
 def sumBasis (coE : V ≃ₗ[K] (Cl → W)) (BK : Basis J0 K W) : Basis (J0 × Cl) K V :=
   ((Pi.basis fun _ : Cl => BK).map coE.symm).reindex ((Equiv.sigmaEquivProd Cl J0).trans (Equiv.prodComm Cl J0))
 
+/- English proof (translation)
+Simplify using `[sumBasis, Basis.reindex_apply, Basis.map_apply, Pi.basis_apply, Equiv.prodComm, Equiv.sigmaEquivProd]`.
+-/
 theorem sumBasis_apply (coE : V ≃ₗ[K] (Cl → W)) (BK : Basis J0 K W) (i : J0) (c : Cl) :
     sumBasis coE BK (i, c) = coE.symm (Pi.single c (BK i)) := by
   simp [sumBasis, Basis.reindex_apply, Basis.map_apply, Pi.basis_apply, Equiv.prodComm, Equiv.sigmaEquivProd]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Take `⟨i, c⟩` from `j`. Establish `hφ : φ c (BK i) = ∑ i', LinearMap.toMatrix BK BK (φ c) i' i • BK i'`. Simplify using `[LinearMap.toMatrix_apply, BK.sum_repr]`. Establish `hs : ∀ (f : J0 → W), Pi.single (M` using `fun _ : Cl => W) c (∑ i', f i') = ∑ i', Pi.single c (f i') := by`.
+
+Introduce `f`. Conclude with `(map_sum (LinearMap.single K (fun _ : Cl => W) c) f Finset.univ)`. Simplify using `only [famOf, sumBasis_apply]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Matrix.blockDiagonal_apply, ite_smul, zero_smul]`.
+
+Simplify using `only [Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hφ, hs, map_sum]`. Simplify using `only [Pi.single_smul, map_smul, sumBasis_apply]`.
+-/
 theorem famOf_sumBasis (coE : V ≃ₗ[K] (Cl → W)) (BK : Basis J0 K W) (φ : Cl → Module.End K W) :
     famOf (sumBasis coE BK) (Matrix.blockDiagonal fun c => LinearMap.toMatrix BK BK (φ c)) =
       fun j : J0 × Cl => coE.symm (Pi.single j.2 (φ j.2 (BK j.1))) := by
@@ -51,6 +61,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
   {ι : Type} [Fintype ι] {W : Type} [AddCommGroup W] [Module K W]
   {Cl : Type} [Fintype Cl] [DecidableEq Cl] {J0 : Type} [Fintype J0] [DecidableEq J0]
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [Complex.normSq_apply] <;> ring`.
+-/
 theorem conj_mul_real_mul (z : ℂ) (r : ℝ) : starRingEnd ℂ z * (r : ℂ) * z = ((Complex.normSq z * r : ℝ) : ℂ) := by
   apply Complex.ext <;> simp [Complex.normSq_apply] <;> ring
 
@@ -72,6 +85,11 @@ def ownFrame (Q : HLat K) {n : ℕ} (eQ : Q.ι ≃ Fin n) (g : FinPl K → Matri
       exact Fintype.sum_equiv eQ _ _ fun k => by simp
     rw [h, EquivLike.range_comp]
 
+/- English proof (translation)
+Establish `h : gramJ Q (⇑Q.b) v = ((Q.X v)⁻¹)ᴴ * (Q.X v)⁻¹`. Use extensionality with `a c`. Simplify using `[gramJ, majAt, fcoord, vecAt, Matrix.mul_apply, Basis.repr_self, Finsupp.single_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[h, Matrix.det_mul, Matrix.det_conjTranspose]`. Use `conj_mul_real_mul ((Q.X v)⁻¹).det 1` as an intermediate fact.
+
+Simplify `this` using `[Complex.star_def]`.
+-/
 private theorem det_gramJ_self_basis_eq_normSq_det_inv (Q : HLat K) (v : InfinitePlace K) :
     (gramJ Q (⇑Q.b) v).det = ((Complex.normSq ((Q.X v)⁻¹).det : ℝ) : ℂ) := by
   have h : gramJ Q (⇑Q.b) v = ((Q.X v)⁻¹)ᴴ * (Q.X v)⁻¹ := by
@@ -81,6 +99,31 @@ private theorem det_gramJ_self_basis_eq_normSq_det_inv (Q : HLat K) (v : Infinit
   have := conj_mul_real_mul ((Q.X v)⁻¹).det 1
   simpa [Complex.star_def] using this
 
+/- English proof (translation)
+Establish `hne : ∀ p c, LinearMap.det (φ p c) ≠ 0`. Introduce `p c h`. Establish `h1` using `hφ p c`. Rewrite `h1` using `[h, zero_pow hn.ne']`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ (hg p c τ)) h1.symm`.
+
+Set `FA : FrameData A (J0 × Cl)` to `{ e := sumBasis coE BK Γ := fun p => Matrix.blockDiagonal fun c => LinearMap.toMatrix BK BK (φ p c) det_ne := fun p => by`. Rewrite using `[Matrix.det_blockDiagonal]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun c _ => by rw [LinearMap.det_toMatrix]; exact hne p c`. Use `loc := fun p => by rw [hAloc p, famOf_sumBasis] }`. Set `FQ : (s : Cl × ι) → FrameData (Q s.1 s.2) (Q s.1 s.2).ι` to `fun s => ownFrame (Q s.1 s.2) (eQ s.1 s.2) (fun p => g p s.1 s.2) (fun p => hg p s.1 s.2) (fun p => hQloc p s.1 s.2)`.
+
+Establish `hdet : ∀ v c, ((N v c)ᴴ * G0.map Complex.ofReal * N v c).det = ((Complex.normSq (N v c).det * G0.det : ℝ) : ℂ)`. Introduce `v c`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, ← conj_mul_real_mul]`. Establish `hm : (G0.map Complex.ofReal).det = (G0.det : ℂ)`. Rewrite using `[show G0.map Complex.ofReal = Complex.ofRealHom.mapMatrix G0 from rfl, ← RingHom.map_det]`.
+
+Both sides reduce to the same expression. Rewrite using `[hm, Complex.star_def]`. Establish `hgramA : ∀ v, (gramJ A (⇑FA.e) v).det.re = (∏ c, Complex.normSq (N v c).det) * G0.det ^ Fintype.card Cl`. Introduce `v`. Establish `h1 : gramJ A (⇑FA.e) v = Matrix.blockDiagonal fun c => (N v c)ᴴ * G0.map Complex.ofReal * N v c`.
+
+Use extensionality with `⟨i, c⟩ ⟨i', c'⟩`. Simplify using `only [gramJ, Matrix.of_apply, Matrix.blockDiagonal_apply]`. Use `show majAt A.b A.X v (sumBasis coE BK (i, c)) (sumBasis coE BK (i', c')) = _`. Rewrite using `[sumBasis_apply, sumBasis_apply, hGram]`. Rewrite using `[h1, Matrix.det_blockDiagonal]`.
+
+Repeatedly rewrite using `[hdet]`. Rewrite using `[← Complex.ofReal_prod, Complex.ofReal_re, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Establish `hgramQ : ∀ (s : Cl × ι) v, (gramJ (Q s.1 s.2) (⇑(FQ s).e) v).det.re = Complex.normSq ((Q s.1 s.2).X v)⁻¹.det`. Introduce `s v`. Rewrite using `[show (FQ s).e = (Q s.1 s.2).b from rfl, det_gramJ_self_basis_eq_normSq_det_inv, Complex.ofReal_re]`.
+
+Establish `hpos : 0 < G0.det ^ Fintype.card Cl`. Take `⟨v⟩ : Nonempty (InfinitePlace K)` from `inferInstance`. Establish `h` using `(mu_of_frames A hA FA).1 v`. Rewrite `h` using `[hgramA]`. Establish `h0 : 0 ≤ ∏ c, Complex.normSq (N v c).det` using `Finset.prod_nonneg fun c _ => Complex.normSq_nonneg _`.
+
+Break down `lt_or_ge 0 (G0.det ^ Fintype.card Cl) with h2 | h2` into its components or cases. Conclude with `h2`. Conclude with `absurd h (not_lt.mpr (mul_nonpos_of_nonneg_of_nonpos h0 h2))`. Establish `key` using `mu_functor A hA FA (fun s : Cl × ι => Q s.1 s.2) (fun s => hQ s.1 s.2) n hn (fun s => (Fintype.card_congr (eQ s.1 s.2)).trans (Fintype.card_fin n)) FQ (fun s => a s.2) (G0.det ^ Fintype.card Cl) hpos ?_ ?_`. Rewrite `key` using `[Fintype.card_prod, Real.log_pow, Fintype.sum_prod_type]`.
+
+Move the coercions through the operations in `at key`. Combine the linear relations using `[key]`. Introduce `p show (Matrix.blockDiagonal fun c => LinearMap.toMatrix BK BK (φ p c)).det ^ n = ∏ s : Cl × ι, ((g p s.1 s.2).submatrix (eQ s.1 s.2) (eQ s.1 s.2)).det ^ a s.2`. Rewrite using `[Matrix.det_blockDiagonal, ← Finset.prod_pow, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.det_toMatrix, hφ]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_submatrix_equiv_self]`. Introduce `v`. Rewrite using `[hgramA]`.
+
+Repeatedly rewrite using `[hgramQ]`. Rewrite using `[Fintype.prod_prod_type, mul_pow, mul_comm, ← Finset.prod_pow]`. Use `congr 1`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, hN, map_prod]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀]`.
+-/
 theorem mu_sum_functor [Nonempty J0] [Nonempty Cl] (A : HLat K) (hA : A.Good) (coE : A.V ≃ₗ[K] (Cl → W)) (BK : Basis J0 K W)
     (Q : Cl → ι → HLat K) (hQ : ∀ c τ, (Q c τ).Good) (n : ℕ) (hn : 0 < n) (eQ : ∀ c τ, (Q c τ).ι ≃ Fin n) (a : ι → ℤ)
     (g : FinPl K → Cl → ι → Matrix (Fin n) (Fin n) K) (hg : ∀ p c τ, (g p c τ).det ≠ 0)

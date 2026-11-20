@@ -18,6 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CuspGKForms.isKFinCuspOfType_of_mem_gkGen | exact GlobalTheory.CuspGKForms.isKFinCuspOfType_of_mem_gkGen | (intros; apply GlobalTheory.CuspGKForms.isKFinCuspOfType_of_mem_gkGen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gk_generated_cusp_forms_of_type : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
     ∀ ψ : GA D V → ℂ, GlobalTheory.CuspGK.IsKFinCuspOfType θ M ψ → ∀ f ∈ GlobalTheory.CuspGK.gkGen θ M ψ, GlobalTheory.CuspGK.IsKFinCuspOfType θ M f := by

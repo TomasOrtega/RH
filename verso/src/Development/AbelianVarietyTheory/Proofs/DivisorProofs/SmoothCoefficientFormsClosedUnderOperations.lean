@@ -9,6 +9,19 @@ open scoped Matrix ContDiff ComplexOrder
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Introduce `n v`. Establish `hc : ∀ γ : Alt n, (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr ((fun _ : V n => γ) x) S) v)` using `fun γ S => contDiffAt_const`. Establish `hs : ∀ (J : Type) (s : Finset J) (α : J → V n → Alt n), (∀ j ∈ s, ∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (α j x) S) v) → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (∑ j ∈ s, α j x) S) v)`. Introduce `J s α h S`. Simplify using `only [map_sum, Finsupp.coe_finset_sum, Finset.sum_apply]`.
+
+Conclude with `ContDiffAt.sum fun j hj => h j hj S`. Establish `hg : ∀ (g : V n → ℂ) (α : V n → Alt n), ContDiffAt ℝ ∞ g v → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (α x) S) v) → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (g x • α x) S) v)`. Introduce `g α h1 h2 S`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `h1.mul (h2 S)`.
+
+Use `⟨hc, hs, hg, ?_⟩` and prove the remaining obligations. Introduce `α β ha hb U`. Establish `key : ∀ x, α x * β x = ∑ S, (bas n).repr (α x) S • ∑ T, (bas n).repr (β x) T • (bas n S * bas n T)`. Introduce `x`. Use `conv_lhs => rw [← (bas n).sum_repr (α x), ← (bas n).sum_repr (β x)]`.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul_comm]`. Simplify using `only [key]`. Use `hs _ Finset.univ (fun S x => (bas n).repr (α x) S • ∑ T, (bas n).repr (β x) T • (bas n S * bas n T)) (fun S _ => ?_) U` and prove the remaining obligations. Use `hg _ _ (ha S) ?_` and prove the remaining obligations. Use `hs _ Finset.univ (fun T x => (bas n).repr (β x) T • (bas n S * bas n T)) (fun T _ => ?_)` and prove the remaining obligations.
+
+Conclude with `hg _ (fun _ => bas n S * bas n T) (hb T) (hc _)`.
+-/
 theorem smooth_coeff_closure : ∀ (n : ℕ) (v : V n), (∀ γ : Alt n, (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr ((fun _ : V n => γ) x) S) v)) ∧ (∀ (J : Type) (s : Finset J) (α : J → V n → Alt n), (∀ j ∈ s, ∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (α j x) S) v) → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (∑ j ∈ s, α j x) S) v)) ∧ (∀ (g : V n → ℂ) (α : V n → Alt n), ContDiffAt ℝ ∞ g v → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (α x) S) v) → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (g x • α x) S) v)) ∧ (∀ α β : V n → Alt n, (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (α x) S) v) → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (β x) S) v) → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (α x * β x) S) v)) := by
   intro n v
   have hc : ∀ γ : Alt n, (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr ((fun _ : V n => γ) x) S) v) :=

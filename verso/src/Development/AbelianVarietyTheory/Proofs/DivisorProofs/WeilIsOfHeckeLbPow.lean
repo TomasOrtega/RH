@@ -30,6 +30,11 @@ namespace GlobalTheory.BiextPairing
 
 open GlobalTheory.UPel.HT
 
+/- English proof (translation)
+Establish `hQ : (Hecke.lbPow P k).IsLB` using `LB.isLB_linComb hP _ _`. Establish `h₁ : LBIso (lbPow P k) (Hecke.lbPow P k)`. Unfold `Hecke.lbPow lbPow`. Use `(GlobalTheory.PrimNorm.lbIso_iff hP _ _ _ _).2 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Conclude with `h₁.trans (LB.isLB_linComb hP _ _) hQ (pull_isLB hQ _) (GlobalTheory.DescendedPrincipal.lbIso_pull_id hQ).symm`.
+-/
 theorem lbIso_lbPow_hecke {X : Scheme.{0}} {P : LB X} (hP : P.IsLB) (k : ℕ) :
     LBIso (lbPow P k) ((Hecke.lbPow P k).pull (𝟙 X)) := by
   have hQ : (Hecke.lbPow P k).IsLB := LB.isLB_linComb hP _ _
@@ -39,6 +44,9 @@ theorem lbIso_lbPow_hecke {X : Scheme.{0}} {P : LB X} (hP : P.IsLB) (k : ℕ) :
     simp
   exact h₁.trans (LB.isLB_linComb hP _ _) hQ (pull_isLB hQ _) (GlobalTheory.DescendedPrincipal.lbIso_pull_id hQ).symm
 
+/- English proof (translation)
+Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hQ : (Hecke.lbPow P k).IsLB` using `LB.isLB_linComb hP _ _`. Use `(GlobalTheory.weilIs_along_hom hG S A A (𝟙 _) P (Hecke.lbPow P k) k 1 T X Y u u hA hA hP hQ inferInstance (lbIso_lbPow_hecke hP k) (by simpa using h)).1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem weilIs_of_hecke_lbPow {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A)
     {P : LB A.left} (hP : P.IsLB) (k : ℕ) {T : Over S} {X Y : T ⟶ A} {u : Γ(T.left, ⊤)ˣ}
     (h : Out.WeilIs A (Hecke.lbPow P k) 1 X Y u) : Out.WeilIs A P k X Y u := by

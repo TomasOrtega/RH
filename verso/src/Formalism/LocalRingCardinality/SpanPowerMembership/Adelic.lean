@@ -15,6 +15,11 @@ section Local
 variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Algebra R K]
   [IsFractionRing R K] (v : HeightOneSpectrum R)
 
+/- English proof (translation)
+Break down `eq_or_ne γ 0 with rfl | hγ` into its components or cases. Use `first`. Consider the case `exact iff_of_true zero_lt_one zero_le'`. Consider the case `simp`. Use `first`.
+
+Consider the case `(rw [← WithZero.exp_log hγ, ← WithZero.exp_zero, WithZero.exp_lt_exp, WithZero.exp_le_exp]; omega)`. Consider the case `(obtain ⟨a, rfl⟩ := WithZero.ne_zero_iff_exists.mp hγ`. Rewrite using `[← WithZero.coe_one, WithZero.exp, WithZero.coe_lt_coe, WithZero.coe_le_coe, ← ofAdd_toAdd a, ← ofAdd_zero, Multiplicative.ofAdd_lt, Multiplicative.ofAdd_le]`. Use the proof step `omega)`.
+-/
 theorem wz_lt_one_iff (γ : ℤᵐ⁰) : γ < 1 ↔ γ ≤ exp (-1 : ℤ) := by
   rcases eq_or_ne γ 0 with rfl | hγ
   · first
@@ -27,6 +32,11 @@ theorem wz_lt_one_iff (γ : ℤᵐ⁰) : γ < 1 ↔ γ ≤ exp (-1 : ℤ) := by
          ← ofAdd_toAdd a, ← ofAdd_zero, Multiplicative.ofAdd_lt, Multiplicative.ofAdd_le]
        omega)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Valuation.integer.integers _`. Consider the case `exact ⟨Subtype.val_injective, fun x => x.2, fun r hr => ⟨⟨r, hr⟩, rfl⟩⟩`. Consider the case `(refine ⟨Subtype.val_injective, fun x => ?_, fun r hr => ⟨⟨r, ?_⟩, rfl⟩⟩`. Conclude with `(mem_adicCompletionIntegers R K v).mp x.2`.
+
+Conclude with `(mem_adicCompletionIntegers R K v).mpr hr)`.
+-/
 theorem adicInt_integers :
     Valuation.Integers (Valued.v : Valuation (v.adicCompletion K) ℤᵐ⁰) (v.adicCompletionIntegers K) := by
   first
@@ -36,6 +46,17 @@ theorem adicInt_integers :
      · exact (mem_adicCompletionIntegers R K v).mp x.2
      · exact (mem_adicCompletionIntegers R K v).mpr hr)
 
+/- English proof (translation)
+Take `⟨π, hπ⟩ : ∃ π : K, v.valuation K π = exp (-1 : ℤ)` from `by first`. Consider the case `exact valuation_exists_uniformizer K v`. Consider the case `exact v.valuation_exists_uniformizer K`. Consider the case `exact valuation_exists_uniformizer (K := K) v`. Establish `hv : Valued.v (π : v.adicCompletion K) = exp (-1 : ℤ)`.
+
+Rewrite using `[← hπ]`. Use `first`. Consider the case `exact valuedAdicCompletion_eq_valuation' (v := v) π`. Consider the case `exact valuedAdicCompletion_eq_valuation' v π`. Consider the case `exact valuedAdicCompletion_eq_valuation' K v π`.
+
+Consider the case `exact valuedAdicCompletion_eq_valuation (v := v) π`. Consider the case `exact Valued.valuedCompletion_apply π`. Consider the case `simp`. Establish `hle : Valued.v (π : v.adicCompletion K) ≤ 1`. Rewrite using `[hv]`.
+
+Conclude with `((wz_lt_one_iff _).mpr le_rfl).le`. Use `⟨⟨(π : v.adicCompletion K), ?_⟩, hv⟩` and prove the remaining obligations. Use `first`. Consider the case `exact hle`. Consider the case `exact (mem_adicCompletionIntegers R K v).mpr hle`.
+
+Consider the case `simpa [mem_adicCompletionIntegers] using hle`.
+-/
 theorem adicInt_exists_unif :
     ∃ π : v.adicCompletionIntegers K, Valued.v (π : v.adicCompletion K) = exp (-1 : ℤ) := by
   obtain ⟨π, hπ⟩ : ∃ π : K, v.valuation K π = exp (-1 : ℤ) := by
@@ -60,6 +81,9 @@ theorem adicInt_exists_unif :
   | exact (mem_adicCompletionIntegers R K v).mpr hle
   | simpa [mem_adicCompletionIntegers] using hle
 
+/- English proof (translation)
+Establish `hI` using `adicInt_integers (K := K) v`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hI.isUnit_iff_valuation_eq_one]`. Conclude with `(hI.map_le_one x).lt_iff_ne.symm`.
+-/
 theorem adicInt_mem_max_iff (x : v.adicCompletionIntegers K) :
     x ∈ maximalIdeal (v.adicCompletionIntegers K) ↔ Valued.v (x : v.adicCompletion K) < 1 := by
   have hI := adicInt_integers (K := K) v
@@ -76,17 +100,30 @@ variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Al
 local notation "Ov" => v.adicCompletionIntegers K
 local notation "Kv" => v.adicCompletion K
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (adicInt_integers (K := K) v).dvd_iff_le`. Consider the case `exact Valuation.Integers.dvd_iff_le (adicInt_integers (K := K) v)`.
+-/
 theorem adicInt_dvd_iff (x y : Ov) :
     x ∣ y ↔ Valued.v (y : Kv) ≤ Valued.v (x : Kv) := by
   first
   | exact (adicInt_integers (K := K) v).dvd_iff_le
   | exact Valuation.Integers.dvd_iff_le (adicInt_integers (K := K) v)
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[adicInt_mem_max_iff v x, Ideal.mem_span_singleton, adicInt_dvd_iff v π x, hπ, wz_lt_one_iff]`.
+-/
 theorem adicInt_max_eq_span (π : Ov) (hπ : Valued.v (π : Kv) = exp (-1 : ℤ)) :
     maximalIdeal Ov = Ideal.span {π} := by
   ext x
   rw [adicInt_mem_max_iff v x, Ideal.mem_span_singleton, adicInt_dvd_iff v π x, hπ, wz_lt_one_iff]
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `adicInt_exists_unif (K := K) v`. Establish `h1 : ((π ^ n : Ov) : Kv) = (π : Kv) ^ n` using `by first`. Consider the case `rfl`. Consider the case `push_cast`. Both sides reduce to the same expression.
+
+Consider the case `simp`. Establish `hpow : Valued.v ((π ^ n : Ov) : Kv) = exp (-(n : ℤ))`. Rewrite using `[h1, map_pow, hπ]`. Use `first`. Consider the case `(rw [← WithZero.exp_nsmul]; congr 1; simp)`.
+
+Consider the case `(rw [← WithZero.exp_nsmul]; simp)`. Consider the case `simp [WithZero.exp, ← ofAdd_nsmul]`. Rewrite using `[adicInt_max_eq_span v π hπ, Ideal.span_singleton_pow, Ideal.mem_span_singleton, adicInt_dvd_iff v, hpow]`.
+-/
 theorem adicInt_mem_pow_iff (n : ℕ) (x : Ov) :
     x ∈ (maximalIdeal Ov) ^ n ↔ Valued.v (x : Kv) ≤ exp (-(n : ℤ)) := by
   obtain ⟨π, hπ⟩ := adicInt_exists_unif (K := K) v
@@ -104,10 +141,18 @@ theorem adicInt_mem_pow_iff (n : ℕ) (x : Ov) :
   rw [adicInt_max_eq_span v π hπ, Ideal.span_singleton_pow, Ideal.mem_span_singleton,
     adicInt_dvd_iff v, hpow]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m : ℤ, exp m = γ` from `⟨_, WithZero.exp_log h⟩`. Conclude with `⟨m.natAbs + 1, by rw [WithZero.exp_lt_exp]; omega⟩`.
+-/
 theorem wz_exists_nat_lt (γ : ℤᵐ⁰) (h : γ ≠ 0) : ∃ N : ℕ, exp (-(N : ℤ)) < γ := by
   obtain ⟨m, rfl⟩ : ∃ m : ℤ, exp m = γ := ⟨_, WithZero.exp_log h⟩
   exact ⟨m.natAbs + 1, by rw [WithZero.exp_lt_exp]; omega⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `h0 : Valued.v x ≠ 0` using `by first`. Consider the case `exact (Valuation.ne_zero_iff _).mpr hx`. Consider the case `exact (map_ne_zero _).mpr hx`. Consider the case `simpa using hx`.
+
+Take `⟨N, hN⟩` from `wz_exists_nat_lt (Valued.v x) h0`. Conclude with `absurd (h N) (not_le.mpr hN)`.
+-/
 theorem adicInt_eq_zero_of_forall (x : Kv) (h : ∀ n : ℕ, Valued.v x ≤ exp (-(n : ℤ))) : x = 0 := by
   by_contra hx
   have h0 : Valued.v x ≠ 0 := by
@@ -118,6 +163,13 @@ theorem adicInt_eq_zero_of_forall (x : Kv) (h : ∀ n : ℕ, Valued.v x ≤ exp 
   obtain ⟨N, hN⟩ := wz_exists_nat_lt (Valued.v x) h0
   exact absurd (h N) (not_le.mpr hN)
 
+/- English proof (translation)
+Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `hx' : r < Valued.v x` using `not_le.mp hx`. Establish `hx0 : Valued.v x ≠ 0` using `(lt_of_le_of_lt zero_le' hx').ne'`. Establish `hmem : {y : Kv | Valued.v y = Valued.v x} ∈ 𝓝 x` using `by first`.
+
+Consider the case `exact Valuation.loc_const hx0`. Consider the case `exact Valued.locally_const hx0`. Consider the case `exact (Valued.isOpen_sphere Kv hx0).mem_nhds rfl`. Consider the case `exact (Valued.isClopen_sphere Kv hx0).isOpen.mem_nhds rfl`. Consider the case `exact (Valued.isOpen_sphere (R := Kv) hx0).mem_nhds rfl`.
+
+Use `filter_upwards [hmem] with y hy`. Use `show ¬ Valued.v y ≤ r`. Rewrite using `[show Valued.v y = Valued.v x from hy]`. Conclude with `not_le.mpr hx'`.
+-/
 theorem adicCompl_isClosed_le (r : ℤᵐ⁰) : IsClosed {x : Kv | Valued.v x ≤ r} := by
   rw [← isOpen_compl_iff, isOpen_iff_mem_nhds]
   intro x hx
@@ -135,6 +187,25 @@ theorem adicCompl_isClosed_le (r : ℤᵐ⁰) : IsClosed {x : Kv | Valued.v x �
   rw [show Valued.v y = Valued.v x from hy]
   exact not_le.mpr hx'
 
+/- English proof (translation)
+Establish `key : ∀ (n : ℕ) (x y : Ov), x ≡ y [SMOD (maximalIdeal Ov ^ n • ⊤ : Submodule Ov Ov)] ↔ Valued.v ((x : Kv) - y) ≤ exp (-(n : ℤ))`. Introduce `n x y`. Rewrite using `[smul_eq_mul, Ideal.mul_top, SModEq.sub_mem, adicInt_mem_pow_iff]`. Both sides reduce to the same expression. Establish `h1 : IsHausdorff (maximalIdeal Ov) Ov`.
+
+Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `h0 : (x : Kv) = 0` using `adicInt_eq_zero_of_forall v _ (fun n => by`. Simplify using `using (key n x 0).1 (hx n))`. Conclude with `Subtype.ext h0`. Establish `h2 : IsPrecomplete (maximalIdeal Ov) Ov`.
+
+Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Use `set g : ℕ → Kv := fun n => (f n : Kv)`. Establish `hg : ∀ m n, m ≤ n → Valued.v (g n - g m) ≤ exp (-(m : ℤ))`. Introduce `m n hmn`. Use `(key m (f m) (f n)).1 (hf hmn)` as an intermediate fact.
+
+Rewrite `this` using `[← Valuation.map_neg, neg_sub]`. Then use the resulting hypothesis. Establish `hc : CauchySeq g`. Rewrite using `[(Valued.hasBasis_uniformity Kv ℤᵐ⁰).cauchySeq_iff]`. Introduce `γ _`. Establish `hne : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0` using `fun h => γ.ne_zero (MonoidWithZeroHom.ValueGroup₀.embedding_injective (h.trans (map_zero _).symm))`.
+
+Take `⟨N, hN⟩` from `wz_exists_nat_lt _ hne`. Use `⟨N, fun m hm n hn => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_lt_iff_lt_embedding]`. Establish `hle : ∀ a b, N ≤ a → a ≤ b → Valued.v (g b - g a) < MonoidWithZeroHom.ValueGroup₀.embedding γ.1` using `fun a b ha hab => lt_of_le_of_lt ((hg a b hab).trans (exp_le_exp.2 (by omega))) hN`. Break down `le_total m n with h | h` into its components or cases.
+
+Conclude with `hle m n hm h`. Rewrite using `[← Valuation.map_neg, neg_sub]`. Conclude with `hle n m hn h`. Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hc`. Establish `hLmem : L ∈ Ov`.
+
+Use `(Valued.isClosed_valuationSubring Kv).mem_of_tendsto hL (Eventually.of_forall ?_)` and prove the remaining obligations. Introduce `n`. Conclude with `(f n).2`. Use `⟨⟨L, hLmem⟩, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+
+Establish `hcl : IsClosed {y : Kv | Valued.v (g n - y) ≤ exp (-(n : ℤ))}` using `(adicCompl_isClosed_le v _).preimage (continuous_const.sub continuous_id)`. Use `hcl.mem_of_tendsto hL ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop n] with k hk`. Use `show Valued.v (g n - g k) ≤ _`. Rewrite using `[← Valuation.map_neg, neg_sub]`.
+
+Conclude with `hg n k hk`. Conclude with `{ toIsHausdorff := h1, toIsPrecomplete := h2 }`.
+-/
 theorem adicInt_isAdicComplete : IsAdicComplete (maximalIdeal Ov) Ov := by
   have key : ∀ (n : ℕ) (x y : Ov), x ≡ y [SMOD (maximalIdeal Ov ^ n • ⊤ : Submodule Ov Ov)] ↔
       Valued.v ((x : Kv) - y) ≤ exp (-(n : ℤ)) := by
@@ -198,6 +269,11 @@ variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Al
 local notation "Ov" => v.adicCompletionIntegers K
 local notation "Kv" => v.adicCompletion K
 
+/- English proof (translation)
+Use `first`. Consider the case `exact valuedAdicCompletion_eq_valuation' (v := v) y`. Consider the case `exact valuedAdicCompletion_eq_valuation' v y`. Consider the case `exact valuedAdicCompletion_eq_valuation' K v y`. Consider the case `exact valuedAdicCompletion_eq_valuation (v := v) y`.
+
+Consider the case `exact Valued.valuedCompletion_apply y`. Consider the case `simp`.
+-/
 theorem adicCompl_val_algebraMap (y : K) : Valued.v (algebraMap K Kv y) = v.valuation K y := by
   first
   | exact valuedAdicCompletion_eq_valuation' (v := v) y
@@ -207,6 +283,19 @@ theorem adicCompl_val_algebraMap (y : K) : Valued.v (algebraMap K Kv y) = v.valu
   | exact Valued.valuedCompletion_apply y
   | simp
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, rfl⟩` from `residue_surjective y`. Establish `hn : {z : Kv | Valued.v (z - x) < 1} ∈ 𝓝 (x : Kv)`. Rewrite using `[Valued.mem_nhds]`. Use `⟨1, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_lt_iff_lt_embedding, Units.val_one, map_one] at hz ⊢`. Conclude with `hz`. Take `⟨_, hz, ⟨k, rfl⟩⟩` from `mem_closure_iff_nhds.1 (denseRange_algebraMap (R := R) (K := K) (v := v) (x : Kv)) _ hn`. Establish `hz' : Valued.v (algebraMap K Kv k - x) < 1` using `hz`. Establish `hk : v.valuation K k ≤ 1`.
+
+Rewrite using `[← adicCompl_val_algebraMap]`. Establish `e : algebraMap K Kv k = (algebraMap K Kv k - x) + x` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ hz'.le x.2`. Take `⟨a, ha⟩` from `exists_valuation_sub_lt_of_integer (K := K) v hk 1`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.coe_comp, Function.comp_apply]`. Apply `(Ideal.Quotient.eq).2` to reduce the goal to its premises. Rewrite using `[adicInt_mem_max_iff]`. Establish `e1 : ((algebraMap R Ov a : Ov) : Kv) = algebraMap K Kv (algebraMap R K a)` using `rfl`.
+
+Establish `e2 : ((algebraMap R Ov a - x : Ov) : Kv) = algebraMap K Kv (algebraMap R K a - k) + (algebraMap K Kv k - x)`. Rewrite using `[map_sub, AddSubgroupClass.coe_sub, e1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Use `Valuation.map_add_lt _ ?_ hz'` and prove the remaining obligations.
+
+Rewrite using `[adicCompl_val_algebraMap]`. Simplify using `using ha`.
+-/
 theorem adicInt_residue_surj : Function.Surjective ((residue Ov).comp (algebraMap R Ov)) := by
   intro y
   obtain ⟨x, rfl⟩ := residue_surjective y
@@ -239,6 +328,13 @@ theorem adicInt_residue_surj : Function.Surjective ((residue Ov).comp (algebraMa
   rw [adicCompl_val_algebraMap]
   simpa using ha
 
+/- English proof (translation)
+Establish `hf : ∀ a ∈ v.asIdeal, ((residue Ov).comp (algebraMap R Ov)) a = 0`. Introduce `a ha`. Rewrite using `[RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, adicInt_mem_max_iff]`. Establish `h1 : ((algebraMap R Ov a : Ov) : Kv) = algebraMap K Kv (algebraMap R K a)` using `by first`. Consider the case `rfl`.
+
+Consider the case `simp`. Rewrite using `[h1, adicCompl_val_algebraMap, valuation_of_algebraMap]`. Use `first`. Consider the case `exact (v.intValuation_lt_one_iff_dvd a).mpr (Ideal.dvd_span_singleton.mpr ha)`. Consider the case `exact (intValuation_lt_one_iff_mem v a).mpr ha`.
+
+Conclude with `Finite.of_surjective _ (Ideal.Quotient.lift_surjective_of_surjective v.asIdeal hf (adicInt_residue_surj v))`.
+-/
 theorem adicInt_residue_finite [Finite (R ⧸ v.asIdeal)] : Finite (ResidueField Ov) := by
   have hf : ∀ a ∈ v.asIdeal, ((residue Ov).comp (algebraMap R Ov)) a = 0 := by
     intro a ha
@@ -254,6 +350,11 @@ theorem adicInt_residue_finite [Finite (R ⧸ v.asIdeal)] : Finite (ResidueField
   exact Finite.of_surjective _
     (Ideal.Quotient.lift_surjective_of_surjective v.asIdeal hf (adicInt_residue_surj v))
 
+/- English proof (translation)
+Rewrite using `[(adicInt_integers (K := K) v).isUnit_iff_valuation_eq_one]`. Establish `h1 : algebraMap Ov Kv (algebraMap R Ov r) = algebraMap K Kv (algebraMap R K r)` using `by first`. Consider the case `rfl`. Consider the case `simp`. Rewrite using `[h1, adicCompl_val_algebraMap, valuation_of_algebraMap]`.
+
+Use `first`. Consider the case `exact (intValuation_eq_one_iff v r).mpr hr`. Consider the case `exact v.intValuation_eq_one_iff.mpr hr`. Consider the case `(refine le_antisymm (v.intValuation_le_one r) (not_lt.mp fun h => hr ?_)`. Conclude with `Ideal.dvd_span_singleton.mp ((v.intValuation_lt_one_iff_dvd r).mp h))`.
+-/
 theorem adicInt_isUnit_of_not_mem (r : R) (hr : r ∉ v.asIdeal) : IsUnit (algebraMap R Ov r) := by
   rw [(adicInt_integers (K := K) v).isUnit_iff_valuation_eq_one]
   have h1 : algebraMap Ov Kv (algebraMap R Ov r) = algebraMap K Kv (algebraMap R K r) := by
@@ -267,6 +368,11 @@ theorem adicInt_isUnit_of_not_mem (r : R) (hr : r ∉ v.asIdeal) : IsUnit (algeb
   | (refine le_antisymm (v.intValuation_le_one r) (not_lt.mp fun h => hr ?_)
      exact Ideal.dvd_span_singleton.mp ((v.intValuation_lt_one_iff_dvd r).mp h))
 
+/- English proof (translation)
+Use `adicInt_residue_finite (K := K) v` as an intermediate fact. Establish `hDu : IsUnit ((T : Ov) ^ 2 - 4 * (N : Ov))`. Establish `e : ((T : Ov) ^ 2 - 4 * (N : Ov)) = algebraMap R Ov ((T ^ 2 - 4 * N : ℤ) : R)`. Rewrite using `[map_intCast]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `adicInt_isUnit_of_not_mem v _ hD`. Conclude with `Formalism.HermitianLatticesTheory.unimodUnramUnique_quad (T : Ov) (N : Ov) (-1) hDu isUnit_one.neg`.
+-/
 theorem adicInt_exists_norm [Finite (R ⧸ v.asIdeal)] (T N : ℤ)
     (hD : ((T ^ 2 - 4 * N : ℤ) : R) ∉ v.asIdeal) :
     ∃ s t : Ov, s ^ 2 + (T : Ov) * s * t + (N : Ov) * t ^ 2 = -1 := by
@@ -286,6 +392,11 @@ open scoped TensorProduct
 
 variable {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R)
 
+/- English proof (translation)
+Rewrite using `[H.gal_sqq]`. Establish `hc : (((H.gal H.conj).1.1 : ℤˣ) : ℤ) = -1` using `by first`. Consider the case `(simp only [Formalism.HC.HostRaw.conj, MulEquiv.apply_symm_apply]; rfl)`. Consider the case `(simp only [Formalism.HC.HostRaw.conj, MulEquiv.apply_symm_apply]; decide)`. Consider the case `(rw [Formalism.HC.HostRaw.conj, MulEquiv.apply_symm_apply]; rfl)`.
+
+Consider the case `simp [Formalism.HC.HostRaw.conj, Formalism.HC.Frame.cc]`. Rewrite using `[hc]`. Simplify using the standard rewrite rules.
+-/
 theorem adel_conj_aE : H.conj (H.sqq) = - H.sqq := by
   rw [H.gal_sqq]
   have hc : (((H.gal H.conj).1.1 : ℤˣ) : ℤ) = -1 := by
@@ -296,6 +407,11 @@ theorem adel_conj_aE : H.conj (H.sqq) = - H.sqq := by
     | simp [Formalism.HC.HostRaw.conj, Formalism.HC.Frame.cc]
   rw [hc]; simp
 
+/- English proof (translation)
+Rewrite using `[H.gal_sqd]`. Establish `hc : (((H.gal H.conj).1.2 : ℤˣ) : ℤ) = -1` using `by first`. Consider the case `(simp only [Formalism.HC.HostRaw.conj, MulEquiv.apply_symm_apply]; rfl)`. Consider the case `(simp only [Formalism.HC.HostRaw.conj, MulEquiv.apply_symm_apply]; decide)`. Consider the case `(rw [Formalism.HC.HostRaw.conj, MulEquiv.apply_symm_apply]; rfl)`.
+
+Consider the case `simp [Formalism.HC.HostRaw.conj, Formalism.HC.Frame.cc]`. Rewrite using `[hc]`. Simplify using the standard rewrite rules.
+-/
 theorem adel_conj_bE : H.conj (H.sqd) = - H.sqd := by
   rw [H.gal_sqd]
   have hc : (((H.gal H.conj).1.2 : ℤˣ) : ℤ) = -1 := by
@@ -306,10 +422,23 @@ theorem adel_conj_bE : H.conj (H.sqd) = - H.sqd := by
     | simp [Formalism.HC.HostRaw.conj, Formalism.HC.Frame.cc]
   rw [hc]; simp
 
+/- English proof (translation)
+The claim follows from `H.sqq_sq`.
+-/
 theorem adel_aE_sq : H.sqq ^ 2 = -(H.q : H.E) := H.sqq_sq
 
+/- English proof (translation)
+The claim follows from `H.sqd_sq`.
+-/
 theorem adel_bE_sq : H.sqd ^ 2 = -(H.d : H.E) := H.sqd_sq
 
+/- English proof (translation)
+Establish `key : ∀ φ : H.E →+* ℂ, starRingEnd ℂ (φ x) = φ x` using `fun φ => by`. Establish `h1` using `Formalism.HC.HostAx.conjE_apply (H := H.toHostAx) φ x`. Rewrite `h1` using `[hx]`. Conclude with `h1.symm`. Use `first`.
+
+Consider the case `exact (NumberField.mem_maximalRealSubfield_iff x).mpr key`. Consider the case `exact (mem_maximalRealSubfield_iff x).mpr key`. Consider the case `exact fun φ => key φ`. Consider the case `(intro φ; exact key φ)`. Consider the case `(show ∀ φ : H.E →+* ℂ, star (φ x) = φ x`.
+
+Conclude with `key)`.
+-/
 theorem adel_mem_F (x : H.E) (hx : H.conj x = x) : x ∈ H.F := by
   have key : ∀ φ : H.E →+* ℂ, starRingEnd ℂ (φ x) = φ x := fun φ => by
     have h1 := Formalism.HC.HostAx.conjE_apply (H := H.toHostAx) φ x
@@ -332,6 +461,9 @@ open scoped TensorProduct
 
 variable {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R)
 
+/- English proof (translation)
+Introduce `h`. Take `⟨-, hd, -, -, -⟩` from `H.hyp`. Establish `h2` using `H.sqd_sq`. Rewrite `h2` using `[h, zero_pow two_ne_zero, eq_comm, neg_eq_zero, Nat.cast_eq_zero]`. Conclude with `hd.ne_zero h2`.
+-/
 theorem adel_bE_ne : (H.sqd : H.E) ≠ 0 := by
   intro h
   obtain ⟨-, hd, -, -, -⟩ := H.hyp
@@ -351,24 +483,36 @@ def adelNd : ℤ := ((H.d : ℤ) + 1) / 4
 
 def adelNq : ℤ := ((H.q : ℤ) + 1) / 4
 
+/- English proof (translation)
+Take `⟨-, -, -, hd, -⟩` from `H.hyp`. Unfold `adelNd`. Establish `h : (4 : ℤ) ∣ (H.d : ℤ) + 1` using `by omega`. Conclude with `Int.mul_ediv_cancel' h`.
+-/
 theorem adelNd_spec : 4 * adelNd H = (H.d : ℤ) + 1 := by
   obtain ⟨-, -, -, hd, -⟩ := H.hyp
   unfold adelNd
   have h : (4 : ℤ) ∣ (H.d : ℤ) + 1 := by omega
   exact Int.mul_ediv_cancel' h
 
+/- English proof (translation)
+Take `⟨-, -, hq, -, -⟩` from `H.hyp`. Unfold `adelNq`. Establish `h : (4 : ℤ) ∣ (H.q : ℤ) + 1` using `by omega`. Conclude with `Int.mul_ediv_cancel' h`.
+-/
 theorem adelNq_spec : 4 * adelNq H = (H.q : ℤ) + 1 := by
   obtain ⟨-, -, hq, -, -⟩ := H.hyp
   unfold adelNq
   have h : (4 : ℤ) ∣ (H.q : ℤ) + 1 := by omega
   exact Int.mul_ediv_cancel' h
 
+/- English proof (translation)
+Unfold `adelTheta`. Use `first`. Consider the case `(rw [map_div₀, map_add, map_one, adel_conj_bE, map_ofNat]; ring)`. Consider the case `(simp [adel_conj_bE]; ring)`.
+-/
 theorem adelic_theta_conj : H.conj (adelTheta H) = 1 - adelTheta H := by
   unfold adelTheta
   first
   | (rw [map_div₀, map_add, map_one, adel_conj_bE, map_ofNat]; ring)
   | (simp [adel_conj_bE]; ring)
 
+/- English proof (translation)
+Establish `h4` using `congrArg (Int.cast : ℤ → H.E) (adelNd_spec H)`. Move the coercions through the operations in `at h4`. Establish `hs` using `H.sqd_sq`. Unfold `adelTheta`. Take the linear combination `(-1/4 : H.E) * hs - (1/4 : H.E) * h4`.
+-/
 theorem adelic_theta_mul_one_sub : adelTheta H * (1 - adelTheta H) = ((adelNd H : ℤ) : H.E) := by
   have h4 := congrArg (Int.cast : ℤ → H.E) (adelNd_spec H)
   push_cast at h4
@@ -376,10 +520,20 @@ theorem adelic_theta_mul_one_sub : adelTheta H * (1 - adelTheta H) = ((adelNd H 
   unfold adelTheta
   linear_combination (-1/4 : H.E) * hs - (1/4 : H.E) * h4
 
+/- English proof (translation)
+Unfold `adelAlpha`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem adelic_alpha_beta_linear : 2 * adelAlpha H + adelBeta H = 1 := by
   unfold adelAlpha
   ring
 
+/- English proof (translation)
+Take `⟨-, hd, -, -, -⟩` from `H.hyp`. Establish `hd0 : (H.d : H.E) ≠ 0` using `Nat.cast_ne_zero.mpr hd.ne_zero`. Establish `key : adelBeta H ^ 2 * (H.d : H.F) = (H.q : H.F)`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hb : ((adelBeta H : H.F) : H.E) = H.sqq / H.sqd` using `rfl`.
+
+Move the coercions through the operations in `[hb]`. Rewrite using `[div_pow, H.sqq_sq, H.sqd_sq, neg_div_neg_eq, div_mul_cancel₀ _ hd0]`. Establish `h4d` using `congrArg (Int.cast : ℤ → H.F) (adelNd_spec H)`. Establish `h4q` using `congrArg (Int.cast : ℤ → H.F) (adelNq_spec H)`. Move the coercions through the operations in `at h4d h4q`.
+
+Unfold `adelAlpha`. Take the linear combination `(1/4 : H.F) * key + (adelBeta H ^ 2 / 4) * h4d - (1/4 : H.F) * h4q`.
+-/
 theorem adelic_alpha_beta_norm : adelAlpha H ^ 2 + adelAlpha H * adelBeta H + ((adelNd H : ℤ) : H.F) * adelBeta H ^ 2 =
     ((adelNq H : ℤ) : H.F) := by
   obtain ⟨-, hd, -, -, -⟩ := H.hyp
@@ -404,6 +558,11 @@ open scoped TensorProduct
 
 variable {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R)
 
+/- English proof (translation)
+Introduce and unpack `⟨hdv, hqv⟩`. Take `⟨hq, hd, hq8, hd16, -⟩` from `H.hyp`. Establish `hne : H.d ≠ H.q` using `by omega`. Establish `hcop : IsCoprime (H.d : ℤ) (H.q : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hd hq).mpr hne)`. Take `⟨a, b, hab⟩` from `hcop.map (Int.castRingHom (𝓞 H.F))`.
+
+Simplify using `only [eq_intCast] at hab`. Establish `h1 : (1 : 𝓞 H.F) ∈ v.asIdeal`. Rewrite using `[← hab]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left a hdv) (v.asIdeal.mul_mem_left b hqv)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+-/
 theorem adel_not_both (v : HeightOneSpectrum (𝓞 H.F)) :
     ¬ (((H.d : ℤ) : 𝓞 H.F) ∈ v.asIdeal ∧ ((H.q : ℤ) : 𝓞 H.F) ∈ v.asIdeal) := by
   rintro ⟨hdv, hqv⟩
@@ -418,6 +577,23 @@ theorem adel_not_both (v : HeightOneSpectrum (𝓞 H.F)) :
     exact v.asIdeal.add_mem (v.asIdeal.mul_mem_left a hdv) (v.asIdeal.mul_mem_left b hqv)
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)
 
+/- English proof (translation)
+Use `haveI : Finite (𝓞 H.F ⧸ v.asIdeal) := by first`. Consider the case `exact Ideal.finiteQuotientOfFreeOfNeBot v.asIdeal v.ne_bot`. Consider the case `infer_instance`. Consider the case `exact (Ideal.fintypeQuotientOfFreeOfNeBot v.asIdeal v.ne_bot).finite`. Establish `hI3 : 2 * algebraMap H.F (v.adicCompletion H.F) (adelAlpha H) + algebraMap H.F (v.adicCompletion H.F) (adelBeta H) = 1`.
+
+Establish `h` using `congrArg (algebraMap H.F (v.adicCompletion H.F)) (adelic_alpha_beta_linear H)`. Use `first`. Consider the case `(rw [map_add, map_mul, map_ofNat, map_one] at h; exact h)`. Consider the case `simpa using h`. Establish `hI4 : algebraMap H.F (v.adicCompletion H.F) (adelAlpha H) ^ 2 + algebraMap H.F (v.adicCompletion H.F) (adelAlpha H) * algebraMap H.F (v.adicCompletion H.F) (adelBeta H) + ((adelNd H : ℤ) : v.adicCompletion H.F) * algebraMap H.F (v.adicCompletion H.F) (adelBeta H) ^ 2 = ((adelNq H …`.
+
+Establish `h` using `congrArg (algebraMap H.F (v.adicCompletion H.F)) (adelic_alpha_beta_norm H)`. Use `first`. Consider the case `(rw [map_add, map_add, map_mul, map_mul, map_pow, map_pow, map_intCast, map_intCast] at h; exact h)`. Consider the case `simpa using h`. Distinguish the cases in `hdv : ((H.d : ℤ) : 𝓞 H.F) ∈ v.asIdeal`.
+
+Establish `hqv : ((H.q : ℤ) : 𝓞 H.F) ∉ v.asIdeal` using `fun h => adel_not_both H v ⟨hdv, h⟩`. Establish `hc : (1 : ℤ) ^ 2 - 4 * adelNq H = -(H.q : ℤ)`. Use `adelNq_spec H` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨s, t, hst⟩` from `adicInt_exists_norm (K := H.F) v 1 (adelNq H) (by rw [hc]; simpa using hqv)`.
+
+Establish `hst' : (s : v.adicCompletion H.F) ^ 2 + (s : v.adicCompletion H.F) * (t : v.adicCompletion H.F) + ((adelNq H : ℤ) : v.adicCompletion H.F) * (t : v.adicCompletion H.F) ^ 2 = -1`. Establish `h` using `congrArg (fun z : v.adicCompletionIntegers H.F => (z : v.adicCompletion H.F)) hst`. Use `first`. Consider the case `(push_cast at h; linear_combination h)`. Consider the case `(simp at h; linear_combination h)`.
+
+Use `⟨(s : v.adicCompletion H.F) + algebraMap H.F (v.adicCompletion H.F) (adelAlpha H) * (t : v.adicCompletion H.F), algebraMap H.F (v.adicCompletion H.F) (adelBeta H) * (t : v.adicCompletion H.F), fun h => absurd hdv h, ?_⟩` and prove the remaining obligations. Take the linear combination `hst' + ((s : v.adicCompletion H.F) * (t : v.adicCompletion H.F)) * hI3 + (t : v.adicCompletion H.F) ^ 2 * hI4`. Establish `hc : (1 : ℤ) ^ 2 - 4 * adelNd H = -(H.d : ℤ)`. Use `adelNd_spec H` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨s, t, hst⟩` from `adicInt_exists_norm (K := H.F) v 1 (adelNd H) (by rw [hc]; simpa using hdv)`. Establish `hst' : (s : v.adicCompletion H.F) ^ 2 + (s : v.adicCompletion H.F) * (t : v.adicCompletion H.F) + ((adelNd H : ℤ) : v.adicCompletion H.F) * (t : v.adicCompletion H.F) ^ 2 = -1`. Establish `h` using `congrArg (fun z : v.adicCompletionIntegers H.F => (z : v.adicCompletion H.F)) hst`. Use `first`. Consider the case `(push_cast at h; linear_combination h)`.
+
+Consider the case `(simp at h; linear_combination h)`. Use `⟨(s : v.adicCompletion H.F), (t : v.adicCompletion H.F), fun _ => ⟨s.2, t.2⟩, ?_⟩` and prove the remaining obligations. Take the linear combination `hst'`.
+-/
 theorem adel_local (v : HeightOneSpectrum (𝓞 H.F)) :
     ∃ S T : v.adicCompletion H.F,
       (((H.d : ℤ) : 𝓞 H.F) ∉ v.asIdeal →
@@ -483,6 +659,11 @@ open scoped TensorProduct
 
 variable {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R)
 
+/- English proof (translation)
+Take `⟨-, hd, -, -, -⟩` from `H.hyp`. Establish `h0 : ((H.d : ℤ) : 𝓞 H.F) ≠ 0` using `Int.cast_ne_zero.mpr (by exact_mod_cast hd.ne_zero)`. Use `(Ideal.finite_factors (I := Ideal.span {((H.d : ℤ) : 𝓞 H.F)}) ?_).subset ?_` and prove the remaining obligations. Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Introduce `v hv`.
+
+Rewrite using `[Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+-/
 theorem adel_finite_d :
     {v : HeightOneSpectrum (𝓞 H.F) | ((H.d : ℤ) : 𝓞 H.F) ∈ v.asIdeal}.Finite := by
   obtain ⟨-, hd, -, -, -⟩ := H.hyp
@@ -498,6 +679,9 @@ def adelSv (v : HeightOneSpectrum (𝓞 H.F)) : v.adicCompletion H.F := (adel_lo
 def adelTv (v : HeightOneSpectrum (𝓞 H.F)) : v.adicCompletion H.F :=
   (adel_local H v).choose_spec.choose
 
+/- English proof (translation)
+The claim follows from `(adel_local H v).choose_spec.choose_spec`.
+-/
 theorem adelSTv_spec (v : HeightOneSpectrum (𝓞 H.F)) :
     (((H.d : ℤ) : 𝓞 H.F) ∉ v.asIdeal →
         adelSv H v ∈ v.adicCompletionIntegers H.F ∧ adelTv H v ∈ v.adicCompletionIntegers H.F) ∧
@@ -514,6 +698,11 @@ def adelT : FiniteAdeleRing (𝓞 H.F) H.F :=
     by_contra h
     exact hv ((adelSTv_spec H v).1 h).2))⟩
 
+/- English proof (translation)
+Use `RestrictedProduct.ext _ _ fun v => ?_` and prove the remaining obligations. Establish `h` using `(adelSTv_spec H v).2`. Use `first`. Consider the case `(change adelSv H v * adelSv H v + adelSv H v * adelTv H v + ((adelNd H : ℤ) : v.adicCompletion H.F) * (adelTv H v * adelTv H v) = -1`. Conclude with `h)`.
+
+Consider the case `simpa [adelS, adelT] using h`.
+-/
 theorem adel_key : adelS H * adelS H + adelS H * adelT H +
     ((adelNd H : ℤ) : FiniteAdeleRing (𝓞 H.F) H.F) * (adelT H * adelT H) = -1 := by
   refine RestrictedProduct.ext _ _ fun v => ?_
@@ -524,18 +713,31 @@ theorem adel_key : adelS H * adelS H + adelS H * adelT H +
      exact h)
   | simpa [adelS, adelT] using h
 
+/- English proof (translation)
+Establish `h'` using `congrArg f h`. Simplify using `using h'`.
+-/
 theorem adel_hom_key {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) (S T : A) (N : ℤ)
     (h : S * S + S * T + (N : A) * (T * T) = -1) :
     f S * f S + f S * f T + (N : B) * (f T * f T) = -1 := by
   have h' := congrArg f h
   simpa using h'
 
+/- English proof (translation)
+Rewrite using `[map_add, map_mul, hs, ht, hτu]`. Take the linear combination `hk + t * t * hu`.
+-/
 theorem adel_alg {B : Type*} [CommRing B] (τ : B →+* B) (s t u : B) (N : ℤ)
     (hs : τ s = s) (ht : τ t = t) (hτu : τ u = 1 - u) (hu : u * (1 - u) = N)
     (hk : s * s + s * t + (N : B) * (t * t) = -1) : τ (s + u * t) * (s + u * t) = -1 := by
   rw [map_add, map_mul, hs, ht, hτu]
   linear_combination hk + t * t * hu
 
+/- English proof (translation)
+Establish `hL : ∀ x : H.E, Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 H.F) H.F) ((Algebra.TensorProduct.includeLeftRingHom : H.E →+* H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) H.F) x) = (Algebra.TensorProduct.includeLeftRingHom : H.E →+* H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) H.F) (σ x)`. Introduce `x`. Simplify using `[Formalism.UG.sigR, Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.map_tmul]`. Establish `hR : ∀ a : FiniteAdeleRing (𝓞 H.F) H.F, Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 H.F) H.F) ((Algebra.TensorProduct.includeRight : FiniteAdeleRing (𝓞 H.F) H.F →ₐ[H.F] H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) H.F).toRingHom a) = (Algebra.TensorProduct.includeRight : FiniteAdeleRing (𝓞 H.F …`. Introduce `a`.
+
+Simplify using `[Formalism.UG.sigR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`. Establish `key` using `adel_hom_key (Algebra.TensorProduct.includeRight : FiniteAdeleRing (𝓞 H.F) H.F →ₐ[H.F] H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) H.F).toRingHom _ _ _ (adel_key H)`. Establish `hu : (Algebra.TensorProduct.includeLeftRingHom : H.E →+* H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) H.F) (adelTheta H) * (1 - (Algebra.TensorProduct.includeLeftRingHom : H.E →+* H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) H.F) (adelTheta H)) = ((adelNd H : ℤ) : H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) …`. Rewrite using `[← map_one (Algebra.TensorProduct.includeLeftRingHom : H.E →+* H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) H.F), ← map_sub, ← map_mul, adelic_theta_mul_one_sub, map_intCast]`. Establish `hτu : Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 H.F) H.F) ((Algebra.TensorProduct.includeLeftRingHom : H.E →+* H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) H.F) (adelTheta H)) = 1 - (Algebra.TensorProduct.includeLeftRingHom : H.E →+* H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) H.F) (adelTheta H)`.
+
+Rewrite using `[hL, hσ, adelic_theta_conj, map_sub, map_one]`. Conclude with `⟨_, adel_alg _ _ _ _ _ (hR _) (hR _) hτu hu key⟩`.
+-/
 theorem exists_adelic_neg_one (σ : H.E →ₐ[H.F] H.E) (hσ : ∀ x, σ x = H.conj x) :
     ∃ y : H.E ⊗[H.F] FiniteAdeleRing (𝓞 H.F) H.F,
       Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 H.F) H.F) y * y = -1 := by

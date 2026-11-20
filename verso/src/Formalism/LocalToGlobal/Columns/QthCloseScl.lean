@@ -12,16 +12,37 @@ section Close
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (hq0 : (q : E) ≠ 0)
 
+/- English proof (translation)
+Conclude with `(qth_intAt_iff P _).1 ⟨(q : 𝓞 E), 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩`.
+-/
 theorem qth_vq_le : P.valuation E (q : E) ≤ 1 := by
   exact (qth_intAt_iff P _).1 ⟨(q : 𝓞 E), 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h),
     by simp⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, toGLm_mulVec]`. Normalize the expressions using the abelian group laws.
+-/
 theorem qth_mulVec {m : ℕ} (W : Sp E m ≃ₗ[E] Sp E m) (x : Sp E m) :
     W x = x + (((toGLm E m W : GL (Fin m) E) : Matrix (Fin m) (Fin m) E) - 1).mulVec x := by
   rw [Matrix.sub_mulVec, Matrix.one_mulVec, toGLm_mulVec]
   abel
 
 include hq0 in
+/- English proof (translation)
+Rewrite `hx`, the goal using `[ciMem_sclLat]`. Introduce `l`. Rewrite using `[qth_intAt_iff, qth_mulVec W x]`. Use `set M := ((toGLm E m W : GL (Fin m) E) : Matrix (Fin m) (Fin m) E) with hM`. Establish `hyj : ∀ j : Fin m, P.valuation E (((q : E) ^ e j.1)⁻¹ * x j) ≤ 1` using `fun j => (qth_intAt_iff P _).1 (hx j)`.
+
+Establish `hqe : ∀ j : Fin m, P.valuation E ((q : E) ^ (e j.1)) ≤ 1`. Introduce `j`. Apply the tactic sequence `rcases he j with h | h <;> rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[zpow_one]`.
+
+Conclude with `qth_vq_le P q`. Establish `hv0 : P.valuation E (q : E) ≠ 0` using `by simpa using hq0`. Establish `hcM : ∀ j, P.valuation E (((q : E) ^ e l.1)⁻¹ * (M - 1) l j) ≤ 1`. Introduce `j`. Apply the tactic sequence `rcases he l with h | h <;> rw [h]`.
+
+Simplify using `only [zpow_zero, inv_one, one_mul]`. Conclude with `(hW l j).trans (qth_vq_le P q)`. Rewrite using `[zpow_one, map_mul, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsplit : ((q : E) ^ e l.1)⁻¹ * (x + (M - 1).mulVec x) l = ((q : E) ^ e l.1)⁻¹ * x l + ∑ j, (((q : E) ^ e l.1)⁻¹ * (M - 1) l j) * (q : E) ^ (e j.1) * (((q : E) ^ e j.1)⁻¹ * x j)`.
+
+Simplify using `only [Pi.add_apply, Matrix.mulVec, dotProduct, mul_add, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hz : (q : E) ^ (e j.1) ≠ 0` using `zpow_ne_zero _ hq0`. Establish `h1 : (q : E) ^ (e j.1) * (((q : E) ^ (e j.1))⁻¹ * x j) = x j`.
+
+Rewrite using `[← mul_assoc, mul_inv_cancel₀ hz, one_mul]`. Rewrite using `[mul_assoc _ ((q : E) ^ (e j.1)), h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Use `Valuation.map_add_le _ (hyj l) (Valuation.map_sum_le _ fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul]`. Conclude with `mul_le_one' (mul_le_one' (hcM j) (hqe j)) (hyj j)`.
+-/
 theorem qth_close_scl {m : ℕ} (e : ℕ → ℤ) (he : ∀ l, e l = 0 ∨ e l = 1) (W : Sp E m ≃ₗ[E] Sp E m)
     (hW : ∀ i j, P.valuation E ((((toGLm E m W : GL (Fin m) E) : Matrix (Fin m) (Fin m) E) - 1) i j) ≤ P.valuation E (q : E))
     {x : Sp E m} (hx : x ∈ LocE.sclLat P q m e) : W x ∈ LocE.sclLat P q m e := by
@@ -63,6 +84,11 @@ theorem qth_close_scl {m : ℕ} (e : ℕ → ℤ) (he : ∀ l, e l = 0 ∨ e l =
   exact mul_le_one' (mul_le_one' (hcM j) (hqe j)) (hyj j)
 
 include hq0 in
+/- English proof (translation)
+Rewrite `hx`, the goal using `[ciMem_stdAt]`. Introduce `i`. Rewrite using `[qth_mulVec W x]`. Establish `hxi : ∀ j, P.valuation E (x j) ≤ 1` using `fun j => (qth_intAt_iff P _).1 (hx j)`. Rewrite using `[qth_intAt_iff]`.
+
+Use `show P.valuation E (x i + ∑ j, (((toGLm E m W : GL (Fin m) E) : Matrix (Fin m) (Fin m) E) - 1) i j * x j) ≤ 1`. Use `Valuation.map_add_le _ (hxi i) (Valuation.map_sum_le _ fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' ((hW i j).trans (qth_vq_le P q)) (hxi j)`.
+-/
 theorem qth_close_std {m : ℕ} (W : Sp E m ≃ₗ[E] Sp E m)
     (hW : ∀ i j, P.valuation E ((((toGLm E m W : GL (Fin m) E) : Matrix (Fin m) (Fin m) E) - 1) i j) ≤ P.valuation E (q : E))
     {x : Sp E m} (hx : x ∈ stdAt E m P) : W x ∈ stdAt E m P := by

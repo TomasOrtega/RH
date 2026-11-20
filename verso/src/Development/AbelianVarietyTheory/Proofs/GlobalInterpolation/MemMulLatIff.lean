@@ -41,6 +41,9 @@ section General
 variable {W : Type} [AddCommGroup W] [Module (𝓞 E) W]
 
 omit [StarRing E] in
+/- English proof (translation)
+Introduce `x hx` and use `mem_of_locP fun Q => by by_cases hQ : Q ∈ S · exact h'.1 Q hQ (mem_localization_of_mem Q hx.1) · exact h.2 Q hQ (mem_localization_of_mem Q hx.2)`.
+-/
 theorem Dom.inf_le {As L₁ L₂ : Submodule (𝓞 E) W} (h : Dom S As L₁) (h' : Dom S L₁ L₂) : L₂ ⊓ As ≤ L₁ := fun x hx =>
   mem_of_locP fun Q => by
     by_cases hQ : Q ∈ S
@@ -48,6 +51,13 @@ theorem Dom.inf_le {As L₁ L₂ : Submodule (𝓞 E) W} (h : Dom S As L₁) (h'
     · exact h.2 Q hQ (mem_localization_of_mem Q hx.2)
 
 omit [StarRing E] in
+/- English proof (translation)
+Introduce `x hx`. Take `⟨t, h1, h2⟩` from `((f.inf f₁).inf f₂).approx S x`. Simplify using `only [localization_inf, Submodule.mem_inf] at h1 h2`. Establish `e : ∀ {M : Submodule (𝓞 E) W}, t - x ∈ M → x ∈ M → t ∈ M` using `fun h h' => by simpa using add_mem h h'`. Establish `ht : t ∈ L₁` using `mem_of_locP fun Q => by`.
+
+Distinguish the cases in `hQ : Q ∈ S`. Conclude with `e (h1 Q hQ).1.2 (mem_localization_of_mem Q hx)`. Conclude with `(h2 Q hQ).1.2`. Use `Submodule.mem_sup.2 ⟨t, ⟨ht, mem_of_locP fun Q => ?_⟩, x - t, ⟨sub_mem hx ht, mem_of_locP fun Q => ?_⟩, by abel⟩` and prove the remaining obligations. Distinguish the cases in `hQ : Q ∈ S`.
+
+Conclude with `e (h1 Q hQ).1.1 (h.1 Q hQ (mem_localization_of_mem Q hx))`. Conclude with `(h2 Q hQ).1.1`. Distinguish the cases in `hQ : Q ∈ S`. Simplify using `using neg_mem (h1 Q hQ).2`. Conclude with `sub_mem (h'.2 Q hQ (mem_localization_of_mem Q hx)) (h2 Q hQ).2`.
+-/
 theorem Dom.le_sup {As L₁ L₂ : Submodule (𝓞 E) W} (h : Dom S As L₁) (h' : Dom S L₁ L₂) (f : Full As) (f₁ : Full L₁) (f₂ : Full L₂) :
     L₁ ≤ (L₁ ⊓ As) ⊔ (L₁ ⊓ L₂) := by
   intro x hx
@@ -68,10 +78,18 @@ theorem Dom.le_sup {As L₁ L₂ : Submodule (𝓞 E) W} (h : Dom S As L₁) (h'
 
 variable [Module E W] [IsScalarTower (𝓞 E) E W]
 
+/- English proof (translation)
+Use `M.smul_mem (c : 𝓞 E) hx` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul E, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem nat_smul_mem {M : Submodule (𝓞 E) W} (c : ℕ) {x : W} (hx : x ∈ M) : (c : E) • x ∈ M := by
   have := M.smul_mem (c : 𝓞 E) hx
   rwa [← algebraMap_smul E, map_natCast] at this
 
+/- English proof (translation)
+Establish `hcE : (c : E) ≠ 0` using `by exact_mod_cast hc.ne'`. Use `⟨fun P hP x hx => ?_, fun Q hQ x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[mem_localization_twist M hc (expS_bound S), expS, if_pos hP, zpow_one]`. Simplify `nat_smul_mem c hx` using `[smul_smul, hcE]`. Rewrite using `[mem_localization_twist M hc (expS_bound S), expS, if_neg hQ] split_ifs`.
+
+Simplify using `using nat_smul_mem c hx`. Simplify using `using hx`.
+-/
 theorem dom_tw (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c) : Dom S M (twist₂ M c (expS S)) := by
   have hcE : (c : E) ≠ 0 := by exact_mod_cast hc.ne'
   refine ⟨fun P hP x hx => ?_, fun Q hQ x hx => ?_⟩
@@ -82,10 +100,18 @@ theorem dom_tw (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c) : Dom S M (twis
     · simpa using nat_smul_mem c hx
     · simpa using hx
 
+/- English proof (translation)
+Use `expS_bound S Q` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem negS_bound (Q : HeightOneSpectrum (𝓞 E)) : -1 ≤ -expS S Q ∧ -expS S Q ≤ 1 := by
   have := expS_bound S Q
   omega
 
+/- English proof (translation)
+Establish `hcE : (c : E) ≠ 0` using `by exact_mod_cast hc.ne'`. Use `⟨fun P hP x hx => ?_, fun Q hQ x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_localization_twist M hc negS_bound, expS, if_pos hP]`. Simplify using `using nat_smul_mem c hx`. Rewrite `hx` using `[mem_localization_twist M hc negS_bound, expS, if_neg hQ] at hx split_ifs`.
+
+Simplify `nat_smul_mem c hx` using `[smul_smul, hcE]`. Simplify using `using hx`.
+-/
 theorem tw_dom (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c) : Dom S (twist₂ M c fun Q => -expS S Q) M := by
   have hcE : (c : E) ≠ 0 := by exact_mod_cast hc.ne'
   refine ⟨fun P hP x hx => ?_, fun Q hQ x hx => ?_⟩
@@ -96,6 +122,9 @@ theorem tw_dom (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c) : Dom S (twist�
     · simpa [smul_smul, hcE] using nat_smul_mem c hx
     · simpa using hx
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_localization_twist M hc he, mem_localization_twist M' hc he, h]`.
+-/
 theorem tw_congr {M M' : Submodule (𝓞 E) W} {c : ℕ} (hc : 0 < c) {e : HeightOneSpectrum (𝓞 E) → ℤ} (he : ∀ Q, -1 ≤ e Q ∧ e Q ≤ 1)
     {Q : HeightOneSpectrum (𝓞 E)} (h : localization₂ Q.asIdeal M = localization₂ Q.asIdeal M') :
     localization₂ Q.asIdeal (twist₂ M c e) = localization₂ Q.asIdeal (twist₂ M' c e) := by
@@ -106,14 +135,29 @@ end General
 
 variable {a b : ℕ} {AA : Submodule (𝓞 E) E}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun P hP => (GlobalTheory.ThetaMove.PeriodComp.perO_components E a b AA).1 P _ _ _ _ h₁.1.fg (h.1 P hP) (h'.1 P hP), fun Q hQ => (GlobalTheory.ThetaMove.PeriodComp.perO_components E a b AA).1 Q _ _ _ _ h₂.1.fg (h.2 Q hQ) (h'.2 Q hQ)⟩`.
+-/
 theorem dom_per {M₁ M₂ : Submodule (𝓞 E) (Sp E a)} {M₁' M₂' : Submodule (𝓞 E) (Sp E b)} (h₁ : IsSdLat M₁) (h₂ : IsSdLat M₂)
     (h : Dom S M₂ M₁) (h' : Dom S M₁' M₂') : Dom S (perO AA M₁ M₁') (perO AA M₂ M₂') :=
   ⟨fun P hP => (GlobalTheory.ThetaMove.PeriodComp.perO_components E a b AA).1 P _ _ _ _ h₁.1.fg (h.1 P hP) (h'.1 P hP),
     fun Q hQ => (GlobalTheory.ThetaMove.PeriodComp.perO_components E a b AA).1 Q _ _ _ _ h₂.1.fg (h.2 Q hQ) (h'.2 Q hQ)⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.ThetaMove.PeriodComp.perO_components E a b AA).2.2 M M' h.1.fg h'.1 hA`.
+-/
 theorem full_per {M : Submodule (𝓞 E) (Sp E a)} {M' : Submodule (𝓞 E) (Sp E b)} (h : IsSdLat M) (h' : IsSdLat M') (hA : AA ≠ ⊥) :
     Full (perO AA M M') := (GlobalTheory.ThetaMove.PeriodComp.perO_components E a b AA).2.2 M M' h.1.fg h'.1 hA
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h.1.fg`. Set `ev : HomE E a b →ₗ[𝓞 E] (s → Sp E b)` to `{ toFun := fun x i => x i.1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hinj : Function.Injective ev`. Introduce `x y hxy`. Establish `h1 : Submodule.span E (s : Set (Sp E a)) = ⊤`.
+
+Rewrite using `[← h.1.span_eq_top, ← hs, Submodule.span_span_of_tower]`. Conclude with `LinearMap.ext_on h1 fun i hi => congrFun hxy ⟨i, hi⟩`. Establish `hfg : (homO M M').FG`. Use `Submodule.fg_of_fg_map_injective ev hinj ?_` and prove the remaining obligations. Establish `h2 : (Submodule.pi Set.univ fun _ : s => M').FG` using `Submodule.fg_pi fun _ => h'.1.fg`.
+
+Use `h2.of_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ i _`. Conclude with `hx _ (hs ▸ Submodule.subset_span i.2)`. Use `hA.map₂ ((LinearMap.lsmul E (HomE E a b)).restrictScalars₁₂ (𝓞 E) (𝓞 E)) hfg` as an intermediate fact. Rewrite `this` using `[Submodule.map₂_eq_span_image2]`.
+
+Unfold `perO`. Use `this using 2` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using `[Set.mem_smul, eq_comm]`.
+-/
 theorem perO_fg {M : Submodule (𝓞 E) (Sp E a)} {M' : Submodule (𝓞 E) (Sp E b)} (h : IsSdLat M) (h' : IsSdLat M') (hA : AA.FG) :
     (perO AA M M').FG := by
   classical
@@ -140,6 +184,11 @@ theorem perO_fg {M : Submodule (𝓞 E) (Sp E a)} {M' : Submodule (𝓞 E) (Sp E
   ext z
   simp [Set.mem_smul, eq_comm]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.ThetaMove.relIndex_eq_prod_locP E _ S _ _ (full_per h₁ h₁' hA) (full_per h₂ h₂' hA) h, Nat.cast_prod]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations. Establish `hle` using `h.1 P hP`. Rewrite `hle`, the goal using `[(GlobalTheory.ThetaMove.PeriodComp.perO_components E a b AA).2.1 P _ _ h₁.1.fg (hU P hP), (GlobalTheory.ThetaMove.PeriodComp.perO_components E a b AA).2.1 P _ _ h₂.1.fg (hU P hP)]`. Use `GlobalTheory.IdxHom.relIndex_homAt E a b P M₁ M₂ M₁' M₂' h₁.1 h₂.1 h₁'.1 h₂'.1 hle` as an intermediate fact.
+
+Simplify using `using congrArg (fun q : ℚ => (q : ℝ)) this`.
+-/
 theorem idx_formula (hU : ∀ P ∈ S, localization₂ P.asIdeal AA = localization₂ P.asIdeal (1 : Submodule (𝓞 E) E)) (hA : AA ≠ ⊥)
     {M₁ M₂ : Submodule (𝓞 E) (Sp E a)} {M₁' M₂' : Submodule (𝓞 E) (Sp E b)} (h₁ : IsSdLat M₁) (h₂ : IsSdLat M₂)
     (h₁' : IsSdLat M₁') (h₂' : IsSdLat M₂') (h : Dom S (perO AA M₁ M₁') (perO AA M₂ M₂')) :
@@ -153,9 +202,15 @@ theorem idx_formula (hU : ∀ P ∈ S, localization₂ P.asIdeal AA = localizati
   simpa using congrArg (fun q : ℚ => (q : ℝ)) this
 
 omit [StarRing E] in
+/- English proof (translation)
+Conclude with `Nat.pos_of_ne_zero fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)` after adjusting the coercions.
+-/
 theorem norm_pos (P : HeightOneSpectrum (𝓞 E)) : (0 : ℝ) < ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) := by
   exact_mod_cast Nat.pos_of_ne_zero fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
 
+/- English proof (translation)
+Establish `h1` using `idx_formula hU hA h₁ h₂ h₁' h₂' h`. Establish `h2 : (0 : ℝ) < ∏ P ∈ S, ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) ^ (volExp P M₁ M₁' - volExp P M₂ M₂')` using `Finset.prod_pos fun P _ => zpow_pos (norm_pos P) _`. Rewrite `h2` using `[← h1]`. Conclude with `h2.ne'` after adjusting the coercions.
+-/
 theorem idx_ne (hU : ∀ P ∈ S, localization₂ P.asIdeal AA = localization₂ P.asIdeal (1 : Submodule (𝓞 E) E)) (hA : AA ≠ ⊥)
     {M₁ M₂ : Submodule (𝓞 E) (Sp E a)} {M₁' M₂' : Submodule (𝓞 E) (Sp E b)} (h₁ : IsSdLat M₁) (h₂ : IsSdLat M₂)
     (h₁' : IsSdLat M₁') (h₂' : IsSdLat M₂') (h : Dom S (perO AA M₁ M₁') (perO AA M₂ M₂')) :
@@ -166,6 +221,9 @@ theorem idx_ne (hU : ∀ P ∈ S, localization₂ P.asIdeal AA = localization₂
   rw [← h1] at h2
   exact_mod_cast h2.ne'
 
+/- English proof (translation)
+Use `forall₂_congr fun P hP => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.ThetaMove.PeriodComp.perO_components E a b AA).2.1 P _ _ h.1.fg (hU P hP)]`. Conclude with `⟨fun H Q hQ => by rw [Finset.mem_singleton.1 hQ]; exact H, fun H => H P (Finset.mem_singleton_self P)⟩`.
+-/
 theorem mem_homAt_iff {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)}
     (hU : ∀ P ∈ S, localization₂ P.asIdeal AA = localization₂ P.asIdeal (1 : Submodule (𝓞 E) E)) (h : IsSdLat N) (x : HomE E a b) :
     x ∈ homAt S N N' ↔ ∀ P ∈ S, x ∈ localization₂ P.asIdeal (perO AA N N') := by
@@ -173,6 +231,13 @@ theorem mem_homAt_iff {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E)
   rw [(GlobalTheory.ThetaMove.PeriodComp.perO_components E a b AA).2.1 P _ _ h.1.fg (hU P hP)]
   exact ⟨fun H Q hQ => by rw [Finset.mem_singleton.1 hQ]; exact H, fun H => H P (Finset.mem_singleton_self P)⟩
 
+/- English proof (translation)
+Establish `hcE : (c : E) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `e : ∀ y : HomE E a b, (c : 𝓞 E) • y = (c : E) • y` using `fun y => by rw [← algebraMap_smul E, map_natCast]`. Establish `h1 : x ∈ mulLat c (homAt S N N') ↔ (c : E)⁻¹ • x ∈ homAt S N N'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Simplify `hy` using `[e, smul_smul, hcE]`. Introduce `hx`. Conclude with `⟨_, hx, by simp [e, smul_smul, hcE]⟩`. Rewrite using `[h1, mem_homAt_iff hU h, ← GlobalTheory.ThetaMove.PeriodTwist.twO_perO E a b AA N N' c _ h.1.fg hc (expS_bound S)]`. Use `forall₂_congr fun P hP => ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_localization_twist _ hc (expS_bound S), expS, if_pos hP, zpow_one]`.
+-/
 theorem mem_mulLat_iff {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)}
     (hU : ∀ P ∈ S, localization₂ P.asIdeal AA = localization₂ P.asIdeal (1 : Submodule (𝓞 E) E)) (h : IsSdLat N) {c : ℕ} (hc : 0 < c) (x : HomE E a b) :
     x ∈ mulLat c (homAt S N N') ↔ ∀ P ∈ S, x ∈ localization₂ P.asIdeal (perO AA N (twist₂ N' c (expS S))) := by
@@ -188,6 +253,11 @@ theorem mem_mulLat_iff {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E
   refine forall₂_congr fun P hP => ?_
   rw [mem_localization_twist _ hc (expS_bound S), expS, if_pos hP, zpow_one]
 
+/- English proof (translation)
+Establish `h1 : x ∈ divLat c (homAt S N N') ↔ (c : E) • x ∈ homAt S N N'`. Express the relevant statement in the definitionally equal form `(c : 𝓞 E) • x ∈ homAt S N N' ↔ _`. Rewrite using `[← algebraMap_smul E, map_natCast]`. Rewrite using `[h1, mem_homAt_iff hU h, ← GlobalTheory.ThetaMove.PeriodTwist.twO_perO E a b AA N N' c _ h.1.fg hc negS_bound]`. Use `forall₂_congr fun P hP => ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_localization_twist _ hc negS_bound, expS, if_pos hP]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_divLat_iff {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)}
     (hU : ∀ P ∈ S, localization₂ P.asIdeal AA = localization₂ P.asIdeal (1 : Submodule (𝓞 E) E)) (h : IsSdLat N) {c : ℕ} (hc : 0 < c) (x : HomE E a b) :
     x ∈ divLat c (homAt S N N') ↔ ∀ P ∈ S, x ∈ localization₂ P.asIdeal (perO AA N (twist₂ N' c fun Q => -expS S Q)) := by
@@ -205,6 +275,9 @@ section Analytic
 
 variable {X : Fields} {A : Amb X} {a b : ℕ} {S : Finset (HeightOneSpectrum (𝓞 X.E))}
 
+/- English proof (translation)
+Introduce `z _`. Establish `h1 : AnalyticAt ℂ (fun z => F (z + x)) z` using `AnalyticAt.comp (f := fun z => z + x) (hF _ (Set.mem_univ _)) (analyticAt_id.add analyticAt_const)`. Establish `h2 : AnalyticAt ℂ (fun z => H z x) z` using `(LinearMap.toContinuousLinearMap (H.flip x)).analyticAt z`. Conclude with `h1.mul ((analyticAt_const.mul h2).sub analyticAt_const).cexp`.
+-/
 theorem analytic_opU {ι : Type} [Fintype ι] (H : Sesq (VCx ι a b)) (x : VCx ι a b) {F : VCx ι a b → ℂ}
     (hF : AnalyticOnNhd ℂ F Set.univ) : AnalyticOnNhd ℂ (opU H x F) Set.univ := by
   intro z _
@@ -213,11 +286,17 @@ theorem analytic_opU {ι : Type} [Fintype ι] (H : Sesq (VCx ι a b)) (x : VCx �
   have h2 : AnalyticAt ℂ (fun z => H z x) z := (LinearMap.toContinuousLinearMap (H.flip x)).analyticAt z
   exact h1.mul ((analyticAt_const.mul h2).sub analyticAt_const).cexp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Rewrite using `[vac, mul_inv_cancel_left₀ (hA.2.2.2.2.1 N N' h h').1]`.
+-/
 theorem e_eq (hA : Moves A a b) {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)} (h : IsSdLat N) (h' : IsSdLat N') :
     A.e a b N N' = fun z => A.chiF a b N N' * vac A N N' z := by
   funext z
   rw [vac, mul_inv_cancel_left₀ (hA.2.2.2.2.1 N N' h h').1]
 
+/- English proof (translation)
+Establish `he : AnalyticOnNhd ℂ (A.e a b N N') Set.univ`. Rewrite using `[e_eq hA h h']`. Conclude with `analyticOnNhd_const.mul (hA.2.2.2.2.1 N N' h h').2.1.1`. Use `analyticOnNhd_const.mul (analyticOnNhd_const.mul (analytic_opU _ _ ?_))` and prove the remaining obligations. Conclude with `Finset.analyticOnNhd_fun_sum _ fun y _ => analyticOnNhd_const.mul (analytic_opU _ _ he)`.
+-/
 theorem analytic_thInd (hA : Moves A a b) {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)} (h : IsSdLat N)
     (h' : IsSdLat N') (c : ℕ) (x : HomE X.E a b) : AnalyticOnNhd ℂ (A.thInd S N N' c x) Set.univ := by
   have he : AnalyticOnNhd ℂ (A.e a b N N') Set.univ := by
@@ -226,11 +305,31 @@ theorem analytic_thInd (hA : Moves A a b) {N : Submodule (𝓞 X.E) (Sp X.E a)} 
   refine analyticOnNhd_const.mul (analyticOnNhd_const.mul (analytic_opU _ _ ?_))
   exact Finset.analyticOnNhd_fun_sum _ fun y _ => analyticOnNhd_const.mul (analytic_opU _ _ he)
 
+/- English proof (translation)
+Simplify using `only [xiInd, xiS, sumU, opU, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem xiInd_mul {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (vol : ℝ) (M : AddSubgroup V) (SA SB : Finset V)
     (k : ℂ) (θ : V → ℂ) (s z : V) : xiInd H α vol M SA SB (fun w => k * θ w) s z = k * xiInd H α vol M SA SB θ s z := by
   simp only [xiInd, xiS, sumU, opU, Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Take `⟨hδ, hτ, hfg, hne, hv, hm, -⟩` from `id hA`. Take `⟨tw, tw'⟩` from `GlobalTheory.ThetaMove.TwistSd.isSdLat_twO_expS X.E b N' c S hS h' hc`. Establish `inj` using `embH_injective (a := a) (b := b) (X.embC A.σ₀) hδ`. Establish `hB : BC (X.embC A.σ₀) A.δ A.AA S N N' c = lam A N (twist₂ N' c (expS S))`. Unfold `BC halfBO`.
+
+Rewrite using `[GlobalTheory.ThetaMove.PeriodTwist.twO_perO X.E a b A.AA N N' c _ h.1.fg hc (expS_bound S)]`. Both sides reduce to the same expression. Establish `hAC : AC (X.embC A.σ₀) A.δ A.AA S N N' c = lam A N (twist₂ N' c fun Q => -expS S Q)`. Unfold `AC halfAO`. Rewrite using `[GlobalTheory.ThetaMove.PeriodTwist.twO_perO X.E a b A.AA N N' c _ h.1.fg hc negS_bound]`.
+
+Both sides reduce to the same expression. Establish `d1 : Dom S (perO A.AA N (twist₂ N' c fun Q => -expS S Q)) (perO A.AA N N')` using `dom_per h h (Dom.refl _ _) (tw_dom _ hc)`. Establish `d2 : Dom S (perO A.AA N N') (perO A.AA N (twist₂ N' c (expS S)))` using `dom_per h h (Dom.refl _ _) (dom_tw _ hc)`. Establish `hvol` using `GlobalTheory.ThetaMove.VolumePos.volC_pos X.E a b A.AA S N N' h.1.fg h'.1.fg h.1.span_eq_top h'.1.span_eq_top hfg hne`. Establish `i1 : relIdx (lam A N (twist₂ N' c (expS S))) (lam A N N') = (perO A.AA N (twist₂ N' c (expS S))).toAddSubgroup.relIndex (perO A.AA N N').toAddSubgroup` using `AddSubgroup.relIndex_map_map_of_injective _ _ inj`.
+
+Establish `i2 : relIdx (lam A N N') (lam A N (twist₂ N' c (expS S))) ≠ 0`. Establish `f1 : (lam A N (twist₂ N' c (expS S))).FG`. Establish `f2 : Module.Finite (𝓞 X.E) (perO A.AA N (twist₂ N' c (expS S)))` using `Module.Finite.iff_fg.2 (perO_fg h tw hfg)`. Establish `f3 : Module.Finite ℤ (perO A.AA N (twist₂ N' c (expS S)))` using `Module.Finite.trans (𝓞 X.E) _`. Establish `f4 : (perO A.AA N (twist₂ N' c (expS S))).toAddSubgroup.FG` using `(AddGroup.fg_iff_addSubgroup_fg _).1 (Module.Finite.iff_addGroup_fg.1 f3)`.
+
+Take `⟨T, hT⟩` from `f4`. Conclude with `⟨T.image (embH (X.embC A.σ₀) A.δ), by rw [Finset.coe_image, ← AddMonoidHom.map_closure, hT]; rfl⟩`. Use `GlobalTheory.ThetaInter.finite_quot (A₁ := lam A N N') f1 (by` as an intermediate fact. Introduce and unpack `_ ⟨y, -, rfl⟩`. Take `⟨n, hn, hy⟩` from `full_per h h' hne y`.
+
+Conclude with `⟨n, hn, _, hy, by rw [Nat.cast_smul_eq_nsmul, map_nsmul]⟩)`. Conclude with `AddSubgroup.index_ne_zero_of_finite`. Establish `hsup : lam A N N' ≤ (lam A N N' ⊓ lam A N (twist₂ N' c fun Q => -expS S Q)) ⊔ (lam A N N' ⊓ lam A N (twist₂ N' c (expS S)))`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.1 (d1.le_sup d2 (full_per h tw' hne) (full_per h h' hne) (full_per h tw hne) hy)`.
+
+Rewrite using `[map_add]`. Conclude with `AddSubgroup.add_mem_sup ⟨⟨_, hu.1, rfl⟩, _, hu.2, rfl⟩ ⟨⟨_, hw.1, rfl⟩, _, hw.2, rfl⟩`. Establish `key` using `GlobalTheory.XiIndZero.xiInd_eq_inter _ (Formalism.L2.Ker.HV A.sc) (alV A.d A.sc) _ _ _ _ (vac A N N') (embH (X.embC A.σ₀) A.δ (A.liftW S N N' c x)) z (isHerm_HV _) (hv N _ h tw).2.2.1 (hv N _ h tw).2.2.2 (hv N N' h h').2.2.1 (hv N N' h h').2.1.2 hvol hsup (i1 ▸ idx_ne hU hne h h …`. Rewrite using `[← GlobalTheory.ThetaMove.LiftTranslate.signed_liftW_eq X A a b S N G N' G' c x t _ hA hS hU h h' g g' hc hD ht htx (hv N _ h tw).2.1.2 z, hm N N' _ h h' tw, ← i1]`. Use `Eq.trans ?_ key` and prove the remaining obligations.
+
+Unfold `Amb.thInd`. Rewrite using `[hB, hAC, e_eq hA h h', xiInd_mul, mul_left_comm, inv_mul_cancel_left₀ (hv N N' h h').1]`.
+-/
 theorem thInd_eq (hA : Moves A a b) (hS : ∀ P ∈ S, conjPrime₂ P ∉ S) (hU : A.AAUnit S)
     {N G : Submodule (𝓞 X.E) (Sp X.E a)} {N' G' : Submodule (𝓞 X.E) (Sp X.E b)} (h : IsSdLat N) (h' : IsSdLat N') (g : IsSdLat G)
     (g' : IsSdLat G') {c : ℕ} (hc : 0 < c) (hD : Dom S (perO A.AA G G') (perO A.AA N (twist₂ N' c (expS S)))) {x t : HomE X.E a b}
@@ -283,11 +382,33 @@ theorem thInd_eq (hA : Moves A a b) (hS : ∀ P ∈ S, conjPrime₂ P ∉ S) (hU
   unfold Amb.thInd
   rw [hB, hAC, e_eq hA h h', xiInd_mul, mul_left_comm, inv_mul_cancel_left₀ (hv N N' h h').1]
 
+/- English proof (translation)
+Unfold `latSum`. Rewrite using `[mul_finsum]`.
+-/
 theorem latSum_const_mul {E : Type} [Field E] [NumberField E] {W : Type} [AddCommGroup W] [Module (𝓞 E) W] (As L : Submodule (𝓞 E) W)
     (k : ℂ) (F : W → ℂ) : latSum As L (fun t => k * F t) = k * latSum As L F := by
   unfold latSum
   rw [mul_finsum]
 
+/- English proof (translation)
+Take `⟨hδ, hτ, hfg, hne, hv, hm, hm'⟩` from `id hA`. Take `⟨tw, -⟩` from `GlobalTheory.ThetaMove.TwistSd.isSdLat_twO_expS X.E b N' c S hS h' hc`. Take `⟨-, tw'⟩` from `GlobalTheory.ThetaMove.TwistSd.isSdLat_twO_expS X.E b N' cA S hS h' hcA`. Establish `inj` using `embH_injective (a := a) (b := b) (X.embC A.σ₀) hδ`. Establish `d0 : Dom S (perO A.AA G G') (perO A.AA N (twist₂ N' cA fun Q => -expS S Q))` using `dom_per g h dG dG'`.
+
+Establish `d1 : Dom S (perO A.AA N (twist₂ N' cA fun Q => -expS S Q)) (perO A.AA N N')` using `dom_per h h (Dom.refl _ _) (tw_dom _ hcA)`. Establish `d2 : Dom S (perO A.AA N N') (perO A.AA N (twist₂ N' c (expS S)))` using `dom_per h h (Dom.refl _ _) (dom_tw _ hc)`. Establish `d3 : Dom S (perO A.AA N (twist₂ N' c (expS S))) (perO A.AA N F')` using `dom_per h h (Dom.refl _ _) dF'`. Establish `d4 : Dom S (perO A.AA N F') (perO A.AA F F')` using `dom_per h f dF (Dom.refl _ _)`. Establish `dB` using `(d0.trans d1).trans d2`.
+
+Establish `mC` using `fun x => mem_mulLat_iff (N' := N') hU h hc x`. Establish `mD` using `fun x => mem_divLat_iff (N' := N') hU h hcA x`. Establish `r1` using `GlobalTheory.latSum_reindex_of_le_sup X.E _ (divLat cA (homAt S N N')) (mulLat c (homAt S N N')) (perO A.AA G G') (perO A.AA N (twist₂ N' c (expS S))) (fun x => Ξ x * ((A.chiF a b N N')⁻¹ * A.thInd S N N' c x z)) (fun t => ((Real.sqrt ((perO A.AA N (twist₂ N' c (expS S))).toAddSu …`. Distinguish the cases in `hQ : Q ∈ S`. Conclude with `(mC t).1 hb Q hQ`.
+
+Conclude with `dB.2 Q hQ (mem_localization_of_mem Q ht)⟩)`. Use the proof step `(fun x hx => by`. Take `⟨t, h1, h2⟩` from `((full_per g g' hne).inf (full_per h tw hne)).approx S x`. Simplify using `only [localization_inf, Submodule.mem_inf] at h1 h2`. Use `Submodule.mem_sup.2 ⟨t, mem_of_locP fun Q => ?_, -(t - x), neg_mem ((mC _).2 fun P hP => (h1 P hP).2), by abel⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hQ : Q ∈ S`. Simplify using `using add_mem (h1 Q hQ).1 (d0.1 Q hQ ((mD x).1 hx Q hQ))`. Conclude with `(h2 Q hQ).1)`. Use the proof step `(fun x _ t ht htx => by`. Use `hΞ.2 x _ htx` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Simplify using `only [thInd_eq hA hS hU h h' g g' hc dB ht htx z, this]`. Use the proof step `ring)`. Use the proof step `(fun t _ ht => by`. Establish `: Ξ t = 0` using `by_contra fun h0 => ht (hΞ.1 t h0)`.
+
+Simplify using `[this])`. Establish `s1` using `GlobalTheory.ThetaMove.Step.cosSum_inter X.E _ _ (Formalism.L2.Ker.HV A.sc) (alV A.d A.sc) (embH (X.embC A.σ₀) A.δ) (perO A.AA G G') (perO A.AA N (twist₂ N' c (expS S))) (perO A.AA N F') (vac A N F') Ξ (isHerm_HV _) inj (hv _ _ g g').2.2.1 (hv _ _ g g').2.2.2 (hv _ _ h tw).2.2.1 …`. Establish `s2` using `GlobalTheory.ThetaMove.Step.cosSum_inter X.E _ _ (Formalism.L2.Ker.HV A.sc) (alV A.d A.sc) (embH (X.embC A.σ₀) A.δ) (perO A.AA G G') (perO A.AA N F') (perO A.AA F F') (vac A F F') Ξ (isHerm_HV _) inj (hv _ _ g g').2.2.1 (hv _ _ g g').2.2.2 (hv _ _ h f').2.2.1 (hv _ _ h f').2.2.2 …`. Establish `m1` using `hm N F' _ h f' tw`. Establish `m2` using `hm' F N F' f h f'`.
+
+Establish `s1' : cosSum (Formalism.L2.Ker.HV A.sc) (alV A.d A.sc) (embH (X.embC A.σ₀) A.δ) (perO A.AA G G') (perO A.AA N (twist₂ N' c (expS S))) (vac A N (twist₂ N' c (expS S))) Ξ z = _` using `m1 ▸ s1`. Establish `s2' : cosSum (Formalism.L2.Ker.HV A.sc) (alV A.d A.sc) (embH (X.embC A.σ₀) A.δ) (perO A.AA G G') (perO A.AA N F') (vac A N F') Ξ z = _` using `m2 ▸ s2`. Rewrite using `[r1, latSum_const_mul]`. Express the relevant statement in the definitionally equal form `_ * cosSum (Formalism.L2.Ker.HV A.sc) (alV A.d A.sc) (embH (X.embC A.σ₀) A.δ) (perO A.AA G G') (perO A.AA N (twist₂ N' c (expS S))) (vac A N (twist₂ N' c (expS S))) Ξ z = _`. Rewrite using `[s1', s2', ← mul_assoc, ← mul_assoc, ← mul_inv, ← mul_inv, ← Complex.ofReal_mul, ← Complex.ofReal_mul, ← Real.sqrt_mul (Nat.cast_nonneg _), ← Real.sqrt_mul (by positivity), idx_formula hU hne h h h' tw d2, idx_formula hU hne h h tw f' d3, idx_formula hU hne h f f' f' d4, ← Finset …`.
+
+Use `congr 4`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (norm_pos P).ne', ← zpow_add₀ (norm_pos P).ne']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_eq (hA : Moves A a b) (hS : ∀ P ∈ S, conjPrime₂ P ∉ S) (hU : A.AAUnit S)
     {N F G : Submodule (𝓞 X.E) (Sp X.E a)} {N' F' G' : Submodule (𝓞 X.E) (Sp X.E b)} (h : IsSdLat N) (h' : IsSdLat N')
     (f : IsSdLat F) (f' : IsSdLat F') (g : IsSdLat G) (g' : IsSdLat G') {cA c : ℕ} (hcA : 0 < cA) (hc : 0 < c)
@@ -362,6 +483,13 @@ theorem pair_eq (hA : Moves A a b) (hS : ∀ P ∈ S, conjPrime₂ P ∉ S) (hU 
   congr 1
   ring
 
+/- English proof (translation)
+Take `⟨G, F, g, f, dG₁, dG₂, dF₁, dF₂⟩` from `GlobalTheory.ThetaMove.CommonRef.common_refinement X.E a N₁ N₂ S hS h₁ h₂ ag`. Take `⟨F', -, f', -, dF₁', dF₂', -, -⟩` from `GlobalTheory.ThetaMove.CommonRef.common_refinement X.E b _ _ S hS (GlobalTheory.ThetaMove.TwistSd.isSdLat_twO_expS X.E b N₁' c S hS h₁' hc).1 (GlobalTheory.ThetaMove.TwistSd.isSdLat_twO_expS X.E b N₂' c S hS h₂' hc).1 fun Q h h' => tw_congr hc (expS_bound S) (ag' Q h h')`. Take `⟨-, G', -, g', -, -, dG₁', dG₂'⟩` from `GlobalTheory.ThetaMove.CommonRef.common_refinement X.E b _ _ S hS (GlobalTheory.ThetaMove.TwistSd.isSdLat_twO_expS X.E b N₁' cA S hS h₁' hcA).2 (GlobalTheory.ThetaMove.TwistSd.isSdLat_twO_expS X.E b N₂' cA S hS h₂' hcA).2 fun Q h h' => tw_congr hcA negS_bound (ag' Q h h')`. Rewrite using `[pair_eq hA hS hU h₁ h₁' f f' g g' hcA hc dG₁ dF₁ dG₁' dF₁' b₁, pair_eq hA hS hU h₂ h₂' f f' g g' hcA hc dG₂ dF₂ dG₂' dF₂' b₂, ← mul_assoc]`. Use `congr 1`.
+
+Establish `e : ∏ P ∈ S, ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) ^ (volExp P N₂ N₂' - volExp P F F') = ρ ^ 2 * ∏ P ∈ S, ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) ^ (volExp P N₁ N₁' - volExp P F F')`. Rewrite using `[hρ2, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (norm_pos P).ne']`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hρ.le, Complex.ofReal_mul, mul_inv, mul_inv_cancel_left₀ (Complex.ofReal_ne_zero.2 hρ.ne')]`.
+-/
 theorem core (hA : Moves A a b) (hS : ∀ P ∈ S, conjPrime₂ P ∉ S) (hU : A.AAUnit S)
     {N₁ N₂ : Submodule (𝓞 X.E) (Sp X.E a)} {N₁' N₂' : Submodule (𝓞 X.E) (Sp X.E b)} (h₁ : IsSdLat N₁) (h₂ : IsSdLat N₂)
     (h₁' : IsSdLat N₁') (h₂' : IsSdLat N₂')
@@ -395,6 +523,21 @@ end Analytic
 
 section Final
 
+/- English proof (translation)
+Establish `hPS : P ∈ Sall sel mu u` using `Finset.mem_union_left _ hP`. Take `⟨h1, -, -, h4⟩` from `GlobalTheory.ThetaMove.BadPrimes.bad_primes X Pr sel S mu u hX hPr hsel hT hg P hPS`. Establish `hne : conjPrime₂ P ≠ P` using `fun e => h1 (e.symm ▸ hPS)`. Establish `hTP` using `h4.2 hP`. Establish `hv` using `(GlobalTheory.ThetaMove.split_of_conj_ne₂ X P (P.under (𝓞 X.F)) hX hne rfl).1`.
+
+Establish `hTc : ((Pr.T u : ℕ) : 𝓞 X.E) ∈ (conjPrime₂ P).asIdeal`. Rewrite using `[mem_conjP, map_natCast]`. Conclude with `hTP`. Establish `hgT : ∀ Q : HeightOneSpectrum (𝓞 X.E), ((Pr.T u : ℕ) : 𝓞 X.E) ∈ Q.asIdeal → ∀ k, ((Pr.g k : ℕ) : 𝓞 X.E) ∉ Q.asIdeal`. Introduce `Q hQ k hk`.
+
+Establish `hc : IsCoprime ((Pr.T u : ℕ) : 𝓞 X.E) ((Pr.g k : ℕ) : 𝓞 X.E)` using `Nat.Coprime.cast ((Nat.coprime_primes (hPr.T_prime u) (hPr.g_prime k)).2 (hPr.T_ne_g u k))`. Take `⟨x, y, hxy⟩` from `hc`. Conclude with `Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hxy ▸ add_mem (Q.asIdeal.mul_mem_left _ hQ) (Q.asIdeal.mul_mem_left _ hk)))`. Take `⟨m0, eta, ht⟩` from `hCh`. Establish `e1 : Ch.muVal ⟨i, hi⟩ (conjPrime₂ P) = (Ch.muVal ⟨i, hi⟩ P)⁻¹`.
+
+Establish `h5` using `GlobalTheory.HeckeSplit.val_eq_inv_of_split X.F X.E (m0 ⟨i, hi⟩) _ P (conjPrime₂ P) (ht.mu0 _).triv ((ht.mu0 _).unr _ (hgT _ hTP)) ((ht.mu0 _).unr _ (hgT _ hTc)) hne.symm hv`. Apply `Units.ext` to reduce the goal to its premises. Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[ht.muVal _ _ (hgT _ hTc), h5, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, ht.muVal _ _ (hgT _ hTP)]`. Establish `hplc : Formalism.EigenvalueLevelCeiling.plc (P.under (𝓞 X.F)) = Pr.T u`.
+
+Establish `h6 : ((Pr.T u : ℕ) : 𝓞 X.F) ∈ (P.under (𝓞 X.F)).asIdeal`. Express the relevant statement in the definitionally equal form `_ ∈ Ideal.comap _ _`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hTP`. Establish `h7 : ((Pr.T u : ℕ) : 𝓞 X.F ⧸ (P.under (𝓞 X.F)).asIdeal) = 0`.
+
+Rewrite using `[← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h6`. Use `(P.under (𝓞 X.F)).isPrime` as an intermediate fact. Conclude with `CharP.ringChar_of_prime_eq_zero (hPr.T_prime u) h7`. Establish `hmu` using `mu.2`.
+
+Simplify using `only [tupGrp, Subgroup.mem_inf, Subgroup.mem_iInf, mem_kills] at hmu`. Establish `e2` using `GlobalTheory.UnifConj.unifVal_conj X.F X.E X.K (mu : Chr X.F X.E X.K) _ P (conjPrime₂ P) hmu.1.1.2 (hmu.2 _ fun hgood => hgood.2.2 (hplc ▸ hT)) hne.symm hv`. Unfold `mUof`. Rewrite using `[dif_pos hi, dif_pos hi, e1, e2, mul_inv]`.
+-/
 theorem mUof_conj {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (u : Pr.Word) (σ₀ : X.K →+* ℂ)
     (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.FromHecke W σ₀) (hsel : IsSel X sel) (hT : Pr.T u ∈ S) (hg : ∀ k, Pr.g k ∈ S)
@@ -448,6 +591,11 @@ def LatFactsAll : Prop :=
 def ThZeroAll : Prop :=
   ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (a b : ℕ), TaylorLogMetric.IsCurveIdeal D cc → Even a → Even b → B.ThZeroMem a b
 
+/- English proof (translation)
+Unfold `kerOf latSum`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Generalize the expression as in `Function.surjInv (Submodule.Quotient.mk_surjective _) q = x`. Establish `hx : (x : HomE X.E a b) ∈ divLat (cA * cB) (homAt Sa N N')`.
+
+Express the relevant statement in the definitionally equal form `((cA * cB : ℕ) : 𝓞 X.E) • (x : HomE X.E a b) ∈ homAt Sa N N'`. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ x.2`. Simplify using `only [thDistC]`. Rewrite using `[if_pos ⟨Dvd.intro_left _ rfl, hx⟩, smul_comm]`.
+-/
 theorem kerOf_eq {X : Fields} (A : Amb X) {a b : ℕ} (Sa SB : Finset (HeightOneSpectrum (𝓞 X.E))) (cA cB : ℕ)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ) (mI : SB → X.E → X.K)
     (lam : X.Tau → DomWeight a) (lam' : X.Tau → DomWeight b) (n : X.Tau → ℕ)

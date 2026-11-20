@@ -21,6 +21,11 @@ def baseFn {O : Type} [CommRing O] (s : X ⟶ Sp O) (o : O) : Γ(X, ⊤) :=
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `e : X.presheaf.germ ⊤ (f (IsLocalRing.closedPoint R)) trivial ≫ Scheme.stalkClosedPointTo f = f.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom`. Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Simplify using `[Iso.trans_hom, Scheme.Hom.appTop]`. Establish `e2 : (Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ s.appTop ≫ f.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom = CommRingCat.ofHom φ`. Rewrite using `[← Category.assoc s.appTop, ← Scheme.Hom.comp_appTop, hf, Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]`.
+
+Rewrite `e2` using `[← e]`. Conclude with `congrArg (fun q => q.hom o) e2`.
+-/
 theorem baseFn_value {O R : Type} [CommRing O] [CommRing R] [IsLocalRing R] (s : X ⟶ Sp O) (f : Sp R ⟶ X)
     (φ : O →+* R) (hf : f ≫ s = spMap φ) (o : O) :
     (Scheme.stalkClosedPointTo f).hom (X.presheaf.germ ⊤ (centre f) trivial (baseFn s o)) = φ o := by
@@ -37,6 +42,9 @@ theorem baseFn_value {O R : Type} [CommRing O] [CommRing R] [IsLocalRing R] (s :
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `e` using `TopCat.Presheaf.germ_stalkSpecializes X.presheaf (U := ⊤) (x := genPt ξ) (y := p.1) trivial p.2`. Establish `e2` using `congrArg (fun q => (q ≫ Scheme.stalkClosedPointTo ξ).hom g) e`. Conclude with `e2`.
+-/
 theorem genMap_germ (ξ : Sp Ω ⟶ X) (p : Cpt ξ) (g : Γ(X, ⊤)) :
     genMap ξ p (X.presheaf.germ ⊤ p.1 trivial g) =
       (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ ⊤ (genPt ξ) trivial g) := by
@@ -46,12 +54,20 @@ theorem genMap_germ (ξ : Sp Ω ⟶ X) (p : Cpt ξ) (g : Γ(X, ⊤)) :
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `e` using `TopCat.Presheaf.stalkSpecializes_comp X.presheaf p.2 h`. Establish `e2` using `congrArg (fun r => (r ≫ Scheme.stalkClosedPointTo ξ).hom s) e`. Conclude with `e2`.
+-/
 theorem genMap_specializes (ξ : Sp Ω ⟶ X) (p q : Cpt ξ) (h : p.1 ⤳ q.1) (s : X.presheaf.stalk q.1) :
     genMap ξ p ((X.presheaf.stalkSpecializes h).hom s) = genMap ξ q s := by
   have e := TopCat.Presheaf.stalkSpecializes_comp X.presheaf p.2 h
   have e2 := congrArg (fun r => (r ≫ Scheme.stalkClosedPointTo ξ).hom s) e
   exact e2
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hl g (by rw [h₂]; exact (inv_ne_zero ha).isUnit)`. Use `⟨(g⁻¹ : Aˣ), ?_, ?_⟩` and prove the remaining obligations. Use `map_units_inv f₁.toMonoidHom g` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `show (f₁ g)⁻¹ = _`.
+
+Rewrite using `[h₁, inv_inv]`. Use `map_units_inv f₂.toMonoidHom g` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `show (f₂ g)⁻¹ = _`. Rewrite using `[h₂, inv_inv]`.
+-/
 theorem exists_inv {A L₁ L₂ : Type} [CommRing A] [Field L₁] [Field L₂] (f₁ : A →+* L₁) (f₂ : A →+* L₂)
     (hl : ∀ b, IsUnit (f₂ b) → IsUnit b) (g : A) (a₁ : L₁) (a₂ : L₂) (ha : a₂ ≠ 0)
     (h₁ : f₁ g = a₁⁻¹) (h₂ : f₂ g = a₂⁻¹) : ∃ u, f₁ u = a₁ ∧ f₂ u = a₂ := by
@@ -71,6 +87,9 @@ def valMap (ξ : Sp Ω ⟶ X) (p : Cpt ξ) (hi : Function.Injective (genMap ξ p
   ev.comp (RingEquiv.ofBijective (genMap ξ p).rangeRestrict
     ⟨fun _ _ h => hi (congrArg Subtype.val h), (genMap ξ p).rangeRestrict_surjective⟩).symm.toRingHom
 
+/- English proof (translation)
+Establish `: (RingEquiv.ofBijective (genMap ξ p).rangeRestrict ⟨fun _ _ h => hi (congrArg Subtype.val h), (genMap ξ p).rangeRestrict_surjective⟩).symm ⟨genMap ξ p s, h⟩ = s`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show ev _ = ev s`. Conclude with `congrArg ev this`.
+-/
 theorem valMap_genMap (ξ : Sp Ω ⟶ X) (p : Cpt ξ) (hi : Function.Injective (genMap ξ p)) {R : Type} [CommRing R]
     (ev : X.presheaf.stalk p.1 →+* R) (s : X.presheaf.stalk p.1) (h : genMap ξ p s ∈ regAt ξ p) :
     valMap ξ p hi ev ⟨genMap ξ p s, h⟩ = ev s := by
@@ -84,6 +103,13 @@ theorem valMap_genMap (ξ : Sp Ω ⟶ X) (p : Cpt ξ) (hi : Function.Injective (
 
 variable {O F V K : Type} [CommRing O] [Field F] [CommRing V] [IsLocalRing V] [Field K] [Algebra V K]
 
+/- English proof (translation)
+Establish `key : ∀ o : O, genMap ξ ⟨_, h₁⟩ (X.presheaf.germ ⊤ (centre y) trivial (baseFn s o)) = inc (β o) ∧ (Scheme.stalkClosedPointTo y).hom (X.presheaf.germ ⊤ (centre y) trivial (baseFn s o)) = βK (β o)`. Introduce `o`. Use `⟨?_, baseFn_value s y (βK.comp β) hy o⟩` and prove the remaining obligations. Conclude with `(genMap_germ ξ ⟨_, h₁⟩ (baseFn s o)).trans (baseFn_value s ξ (inc.comp β) hξ o)`. Distinguish the cases in `h0 : x = 0`.
+
+Substitute `h0` using the available equality. Conclude with `⟨0, (map_zero _).trans (map_zero inc).symm, (map_zero (Scheme.stalkClosedPointTo y).hom).trans (map_zero βK).symm⟩`. Break down `hx with ⟨o, rfl⟩ | ⟨o, ho⟩` into its components or cases. Conclude with `⟨_, key o⟩`. Take `⟨k1, k2⟩` from `key o`.
+
+Rewrite `k1`, `k2` using `[ho]`. Conclude with `exists_inv (genMap ξ ⟨_, h₁⟩) (Scheme.stalkClosedPointTo y).hom (fun b hb => (Scheme.isLocalHom_stalkClosedPointTo' y).map_nonunit b hb) _ (inc x) (βK x) ((map_ne_zero βK).2 h0) (k1.trans (map_inv₀ inc x)) (k2.trans (map_inv₀ βK x))`.
+-/
 theorem exists_germ (ξ : Sp Ω ⟶ X) (s : X ⟶ Sp O) (inc : F →+* Ω) (β : O →+* F) (βK : F →+* K) (y : Sp K ⟶ X)
     (hξ : ξ ≫ s = spMap (inc.comp β)) (hy : y ≫ s = spMap (βK.comp β)) (h₁ : genPt ξ ⤳ centre y) (x : F)
     (hx : x ∈ β.range ∨ x⁻¹ ∈ β.range) :
@@ -105,6 +131,17 @@ theorem exists_germ (ξ : Sp Ω ⟶ X) (s : X ⟶ Sp O) (inc : F →+* Ω) (β :
     (fun b hb => (Scheme.isLocalHom_stalkClosedPointTo' y).map_nonunit b hb) _ (inc x) (βK x) ((map_ne_zero βK).2 h0)
     (k1.trans (map_inv₀ inc x)) (k2.trans (map_inv₀ βK x))
 
+/- English proof (translation)
+Establish `hsp : centre y ⤳ centre z`. Substitute `hz` using the available equality. Conclude with `(IsLocalRing.specializes_closedPoint _).map z.continuous`. Establish `h₂ : genPt ξ ⤳ centre z` using `h₁.trans hsp`. Set `ψ : regAt ξ ⟨_, h₁⟩ →+* K` to `valMap ξ ⟨_, h₁⟩ (hg.inj _) (Scheme.stalkClosedPointTo y).hom`.
+
+Establish `c3 : ∀ a : regAt ξ ⟨_, h₁⟩, ValAt ξ y (a : Ω) (ψ a)`. Introduce and unpack `⟨_, s', rfl⟩`. Conclude with `⟨h₁, s', rfl, (valMap_genMap ξ ⟨_, h₁⟩ (hg.inj _) _ s' _).symm⟩`. Establish `c4 : ∀ (a : Ω) (r : K), ValAt ξ y a r → ∃ h, ψ ⟨a, h⟩ = r`. Introduce and unpack `a r ⟨h, s', rfl, rfl⟩`.
+
+Conclude with `⟨⟨s', rfl⟩, valMap_genMap ξ ⟨_, h₁⟩ (hg.inj _) _ s' _⟩`. Use `⟨h₂, ψ, hsp, ?_, c3, c4, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨s', rfl⟩`. Use `⟨(X.presheaf.stalkSpecializes hsp).hom s', ?_⟩` and prove the remaining obligations. Conclude with `genMap_specializes ξ ⟨_, h₁⟩ ⟨_, h₂⟩ hsp s'`.
+
+Introduce and unpack `a h ⟨s', rfl⟩`. Establish `v : ValAt ξ z (genMap ξ ⟨_, h₂⟩ s') ((Scheme.stalkClosedPointTo z).hom s')` using `⟨h₂, s', rfl, rfl⟩`. Establish `v'` using `GlobalTheory.T.valAt_comp_local_hom X Ω ξ V K (algebraMap V K) z _ _ v (by rw [hz]; exact h₁)`. Rewrite `v'` using `[hz]`. Take `⟨h', e⟩` from `c4 _ _ v'`.
+
+Conclude with `⟨_, e.symm⟩`. Introduce `x`. Take `⟨u, e1, e2⟩` from `exists_germ ξ s inc β βK y hξ hy h₁ x (hF x)`. Take `⟨h, e⟩` from `c4 _ _ (⟨h₁, u, e1, e2⟩ : ValAt ξ y (inc x) (βK x))`. Conclude with `⟨h, e⟩`.
+-/
 theorem val_abs (ξ : Sp Ω ⟶ X) (hg : IsCptGen ξ) (s : X ⟶ Sp O) (inc : F →+* Ω) (β : O →+* F) (βK : F →+* K)
     (y : Sp K ⟶ X) (z : Sp V ⟶ X) (hξ : ξ ≫ s = spMap (inc.comp β)) (hy : y ≫ s = spMap (βK.comp β))
     (hz : spMap (algebraMap V K) ≫ z = y) (h₁ : genPt ξ ⤳ centre y)
@@ -145,6 +182,15 @@ end GlobalTheory.CompanionTheory.Ar.Flat.CPoint.PointVal
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ _ _ β Y U Z p κ V K _ _ _ _ _ _ j βK y z hβ hκ hj hjk hy hU hz`. Establish `hsj : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap β`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`. Establish `hξ : (Z.ξ₀ ≫ Y.j) ≫ Y.s = spMap (Z.inc.comp β)`. Rewrite using `[Category.assoc, hsj, ← Category.assoc, Z.over_inc, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Establish `hy' : (y ≫ Y.j) ≫ Y.s = spMap (βK.comp β)`. Rewrite using `[Category.assoc, hsj, ← Category.assoc, hy, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `h₁ : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)` using `((Z.closure _).1 (hU ⟨IsLocalRing.closedPoint K, rfl⟩)).map Y.j.continuous`.
+
+Establish `hF : ∀ x : c.F, x ∈ β.range ∨ x⁻¹ ∈ β.range`. Introduce `x`. Distinguish the cases in `h : ‖κ x‖ ≤ 1`. Conclude with `Or.inl ((hκ x).1 h)`. Use `Or.inr ((hκ _).1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ (not_le.1 h).le`. Take `⟨h₂, ψ, r⟩` from `PointVal.val_abs (Z.ξ₀ ≫ Y.j) Z.gen Y.s Z.inc β βK (y ≫ Y.j) z hξ hy' hz h₁ hF`. Conclude with `⟨h₁, h₂, ψ, r⟩`.
+-/
 theorem point_val : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (p : Nat.Primes) (κ : c.F →+* ℂ_[p]) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (j : K →+* ℂ_[p]) (βK : c.F →+* K) (y : Sp K ⟶ Xo.XF c) (z : Sp V ⟶ Y.X),
     Function.Injective β → (∀ x : c.F, ‖κ x‖ ≤ 1 ↔ x ∈ β.range) → (∀ a : K, ‖j a‖ ≤ 1 ↔ a ∈ (algebraMap V K).range) →
     j.comp βK = κ → y ≫ pullback.snd _ _ = spMap βK → Set.range y ⊆ U → spMap (algebraMap V K) ≫ z = y ≫ Y.j →

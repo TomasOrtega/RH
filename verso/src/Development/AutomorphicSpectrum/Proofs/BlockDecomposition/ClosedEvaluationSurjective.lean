@@ -27,6 +27,13 @@ open ValuativeRel Topology
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Unfold `intC`. Establish `e : (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * y)) = fun _ => 0`. Use function extensionality and compare the values at `d`. Rewrite using `[h, smul_zero]`. Rewrite using `[e]`.
+
+Unfold `GlobalTheory.CompanionTheory.Rodier.smInt`. Use `finsum_eq_zero_of_forall_eq_zero fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v = 0`. Rewrite using `[hv, smul_zero]`. Establish `e2 : (fun _ : Fin (t + 1) → k => (0 : τ.V ⊗[ℂ] σ.V)) ⁻¹' {v} = ∅`.
+
+Use extensionality with `d`. Simplify using `[Ne.symm hv]`. Rewrite using `[e2]`. Simplify using the standard rewrite rules.
+-/
 theorem intC_eq_zero {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (y : Mir k ((i + 1) + t + 1)) (h : ∀ d, evX f (dEmb k i t d * y) = 0) : intC ψ f y = 0 := by
   unfold intC
@@ -45,10 +52,16 @@ theorem intC_eq_zero {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {
     rw [e2]
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evX_cInd {i t : ℕ} {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (g p : Mir k ((i + 1) + t + 1)) :
     evX (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) g f) p = evX f (p * g) := rfl
 
+/- English proof (translation)
+Unfold `intC`. Establish `e : (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) g f) (dEmb k i t d * y)) = fun d => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * (y * g))`. Use function extensionality and compare the values at `d`. Rewrite using `[evX_cInd, mul_assoc]`. Rewrite using `[e]`.
+-/
 theorem intC_translate {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (g y : Mir k ((i + 1) + t + 1)) :
     intC ψ (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) g f) y = intC ψ f (y * g) := by
@@ -63,6 +76,9 @@ theorem intC_translate {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)}
 def rtr {i t : ℕ} {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (g : Mir k ((i + 1) + t)) (f : XS τ σ) : XS τ σ :=
   cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) (sEmb k ((i + 1) + t) g) f
 
+/- English proof (translation)
+Establish `e1 : sEmb k ((i + 1) + t) (x * g) = sEmb k ((i + 1) + t) x * sEmb k ((i + 1) + t) g` using `map_mul _ _ _`. Unfold `eC rtr`. Rewrite using `[intC_translate, e1, map_mul (dpowM ((i + 1) + t) (-1 / 2)) x g, smul_smul, Units.val_mul, mul_comm]`.
+-/
 theorem eC_translate {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (g x : Mir k ((i + 1) + t)) :
     ((dpowM ((i + 1) + t) (-1 / 2) g : ℂˣ) : ℂ) •
@@ -71,12 +87,20 @@ theorem eC_translate {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {
   unfold eC rtr
   rw [intC_translate, e1, map_mul (dpowM ((i + 1) + t) (-1 / 2)) x g, smul_smul, Units.val_mul, mul_comm]
 
+/- English proof (translation)
+Break down `le_total (valuation k (a : k)) (valuation k (b : k)) with h | h` into its components or cases. Conclude with `⟨a, le_rfl, h⟩`. Conclude with `⟨b, h, le_rfl⟩`.
+-/
 theorem exists_small (a b : kˣ) : ∃ c : kˣ, valuation k (c : k) ≤ valuation k (a : k) ∧
     valuation k (c : k) ≤ valuation k (b : k) := by
   rcases le_total (valuation k (a : k)) (valuation k (b : k)) with h | h
   · exact ⟨a, le_rfl, h⟩
   · exact ⟨b, h, le_rfl⟩
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `h : ({1}ᶜ : Set k) ∈ 𝓝 (0 : k)` using `isOpen_compl_singleton.mem_nhds (by simp)`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset h`. Use `⟨s, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+
+Establish `: (1 : k) ∈ GlobalTheory.SplitWeil.cball s` using `by show valuation k (1 : k) ≤ valuation k (s : k)`. Rewrite using `[map_one]`. Conclude with `not_lt.1 hc`. Conclude with `hs this rfl`.
+-/
 theorem exists_lt_one : ∃ s : kˣ, valuation k (s : k) < 1 := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
   have h : ({1}ᶜ : Set k) ∈ 𝓝 (0 : k) := isOpen_compl_singleton.mem_nhds (by simp)
@@ -89,10 +113,16 @@ theorem exists_lt_one : ∃ s : kˣ, valuation k (s : k) < 1 := by
     exact not_lt.1 hc
   exact hs this rfl
 
+/- English proof (translation)
+The claim follows from `show valuation k y ≤ valuation k (s' : k) from le_trans (show valuation k y ≤ valuation k (s : k) from hy) h`.
+-/
 theorem mem_ball_mono {s s' : kˣ} (h : valuation k (s : k) ≤ valuation k (s' : k)) {y : k}
     (hy : y ∈ GlobalTheory.SplitWeil.cball s) : y ∈ GlobalTheory.SplitWeil.cball s' :=
   show valuation k y ≤ valuation k (s' : k) from le_trans (show valuation k y ≤ valuation k (s : k) from hy) h
 
+/- English proof (translation)
+Establish `h : IsSmoothChar (dpow (k` using `k) (n + 1) r) := IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow ((r : ℝ) : ℂ))`. Establish `h2 : IsOpen {g : Mir k n | dpowM n r g = 1}` using `h.preimage continuous_subtype_val`. Conclude with `h2.mem_nhds (map_one _)`.
+-/
 theorem dpowM_nhds (n : ℕ) (r : ℝ) : {g : Mir k n | dpowM n r g = 1} ∈ 𝓝 (1 : Mir k n) := by
   have h : IsSmoothChar (dpow (k := k) (n + 1) r) := IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow ((r : ℝ) : ℂ))
   have h2 : IsOpen {g : Mir k n | dpowM n r g = 1} :=
@@ -104,14 +134,29 @@ section Ev
 variable {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
   (H : Subgroup G) (ρ : Representation ℂ H W)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_add (a b : cIndSpace H ρ) : (a + b).1.1.1 = a.1.1.1 + b.1.1.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_zero : (0 : cIndSpace H ρ).1.1.1 = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_smul (c : ℂ) (a : cIndSpace H ρ) : (c • a).1.1.1 = c • a.1.1.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_cInd (g x : G) (a : cIndSpace H ρ) : (cInd H ρ g a).1.1.1 x = a.1.1.1 (x * g) := rfl
 
+/- English proof (translation)
+Use `⟨c⁻¹ • y, I.smul_mem _ hy, ?_, ?_⟩` and prove the remaining obligations. Introduce `a x hx`. Rewrite using `[ev_smul, Pi.smul_apply, y.1.1.2 a x, hval x hx, map_smul, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Introduce `g hg`. Rewrite using `[ev_smul, Pi.smul_apply, h0 g hg, smul_zero]`.
+-/
 theorem scale_bump (I : Submodule ℂ (cIndSpace H ρ)) (y : cIndSpace H ρ) (hy : y ∈ I) (c : ℂ) (hc : c ≠ 0)
     (v : W) (K : Subgroup G) (hval : ∀ x ∈ K, y.1.1.1 x = c • v)
     (h0 : ∀ g, (¬ ∃ a : H, ∃ x ∈ K, g = (a : G) * x) → y.1.1.1 g = 0) :
@@ -144,6 +189,9 @@ def imGen (he1 : ∀ f g, e (f + g) = e f + e g) (he2 : ∀ (c : ℂ) f, e (c �
     rintro z a ⟨f, hf⟩
     exact ⟨z • f, by rw [he2, hf, ev_smul]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_imGen (he1 : ∀ f g, e (f + g) = e f + e g) (he2 : ∀ (c : ℂ) f, e (c • f) = c • e f)
     (y : cIndSpace H ρ) : y ∈ imGen H ρ e he1 he2 ↔ ∃ f, e f = y.1.1.1 := Iff.rfl
 
@@ -155,6 +203,9 @@ def imC {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (
     (fun f g => (GlobalTheory.T.evaluation_maps_linear k i t ψ hψ τ σ hτ hσ f g 0).1)
     (fun c f => (GlobalTheory.T.evaluation_maps_linear k i t ψ hψ τ σ hτ hσ f f c).2.1)
 
+/- English proof (translation)
+The claim follows from `mem_imGen _ _ _ _ _ y`.
+-/
 theorem mem_imC {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (y : cIndSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ)) :
     y ∈ imC ψ hψ τ σ hτ hσ ↔ ∃ f : XS τ σ, eC ψ f = y.1.1.1 := mem_imGen _ _ _ _ _ y
@@ -170,6 +221,11 @@ structure IsBump (s : kˣ) (hs : valuation k (s : k) ≤ 1) (w : τ.V ⊗[ℂ] �
   zero : ∀ g : Mir k ((i + 1) + t + 1), (¬ ∃ a : HPG k (i + 1) (t + 1), ∃ x ∈ congM k s hs ((i + 1) + t + 1),
     g = (a : Mir k ((i + 1) + (t + 1))) * 1 * x) → evX F g = 0
 
+/- English proof (translation)
+Distinguish the cases in `hg : ∃ a : HPG k (i + 1) (t + 1), ∃ x ∈ congM k s hs ((i + 1) + t + 1), g = (a : Mir k ((i + 1) + (t + 1))) * 1 * x`. Take `⟨a, x, hx, rfl⟩` from `hg`. Rewrite using `[mul_assoc _ x κ]`. Conclude with `(hF.one a _ (mul_mem hx hκ)).trans (hF.one a x hx).symm`. Use `(hF.zero _ fun ⟨a, x, hx, e⟩ => hg ⟨a, x * κ⁻¹, mul_mem hx (inv_mem hκ), ?_⟩).trans (hF.zero _ hg).symm` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, ← e]`. Use `group`.
+-/
 theorem IsBump.right (hF : IsBump s hs w F) (g κ : Mir k ((i + 1) + t + 1))
     (hκ : κ ∈ congM k s hs ((i + 1) + t + 1)) : evX F (g * κ) = evX F g := by
   by_cases hg : ∃ a : HPG k (i + 1) (t + 1), ∃ x ∈ congM k s hs ((i + 1) + t + 1),
@@ -181,6 +237,9 @@ theorem IsBump.right (hF : IsBump s hs w F) (g κ : Mir k ((i + 1) + t + 1))
     rw [← mul_assoc, ← e]
     group
 
+/- English proof (translation)
+Establish `h` using `hF.one 1 _ ((GlobalTheory.T.unipotent_ball_mem_congruence k i t s hs d).1 hd)`. Rewrite `h` using `[map_one, Module.End.one_apply]`. Rewrite using `[← h]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem IsBump.on_ball (hF : IsBump s hs w F) (d : Fin (t + 1) → k) (hd : ∀ j, d j ∈ GlobalTheory.SplitWeil.cball s) :
     evX F (dEmb k i t d) = w := by
   have h := hF.one 1 _ ((GlobalTheory.T.unipotent_ball_mem_congruence k i t s hs d).1 hd)
@@ -189,11 +248,19 @@ theorem IsBump.on_ball (hF : IsBump s hs w F) (d : Fin (t + 1) → k) (hd : ∀ 
   congr 1
   simp
 
+/- English proof (translation)
+Use `hF.zero _ fun ⟨a, x, hx, e⟩ => hd ((GlobalTheory.T.unipotent_ball_mem_congruence k i t s hs d).2 a a.2 x hx ?_)` and prove the remaining obligations. Rewrite using `[e, mul_one]`.
+-/
 theorem IsBump.off_ball (hF : IsBump s hs w F) (d : Fin (t + 1) → k) (hd : ¬ ∀ j, d j ∈ GlobalTheory.SplitWeil.cball s) :
     evX F (dEmb k i t d) = 0 := by
   refine hF.zero _ fun ⟨a, x, hx, e⟩ => hd ((GlobalTheory.T.unipotent_ball_mem_congruence k i t s hs d).2 a a.2 x hx ?_)
   rw [e, mul_one]
 
+/- English proof (translation)
+Establish `hsx` using `(GlobalTheory.T.shifted_embedding_mem_congruence_iff k _ s hs x).2 hx`. Unfold `intC`. Establish `: (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX F (dEmb k i t d * sEmb k ((i + 1) + t) x)) = fun d => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX F (dEmb k i t d * 1)`. Use function extensionality and compare the values at `d`. Rewrite using `[hF.right _ _ hsx, mul_one]`.
+
+Rewrite using `[this]`.
+-/
 theorem IsBump.intC_sEmb (ψ : AddChar k Circle) (hF : IsBump s hs w F) (x : Mir k ((i + 1) + t))
     (hx : x ∈ congM k s hs ((i + 1) + t)) : intC ψ F (sEmb k ((i + 1) + t) x) = intC ψ F 1 := by
   have hsx := (GlobalTheory.T.shifted_embedding_mem_congruence_iff k _ s hs x).2 hx
@@ -205,6 +272,11 @@ theorem IsBump.intC_sEmb (ψ : AddChar k Circle) (hF : IsBump s hs w F) (x : Mir
     rw [hF.right _ _ hsx, mul_one]
   rw [this]
 
+/- English proof (translation)
+Use `intC_eq_zero ψ F _ fun d => hF.zero _ fun ⟨a, x, hx, e⟩ => ?_` and prove the remaining obligations. Establish `e' : dEmb k i t d * sEmb k ((i + 1) + t) g = (a : Mir k ((i + 1) + (t + 1))) * x`. Rewrite using `[e, mul_one]`. Establish `h` using `GlobalTheory.T.unipotent_congruence_factorization k i t s hs hs1 d g a a.2 x hx e'`. Take `⟨b, hb, z, hz, e2⟩` from `h`.
+
+Conclude with `hg ⟨⟨b, hb⟩, z, hz, e2⟩`.
+-/
 theorem IsBump.intC_off (ψ : AddChar k Circle) (hs1 : valuation k (s : k) < 1) (hF : IsBump s hs w F)
     (g : Mir k ((i + 1) + t))
     (hg : ¬ ∃ a : MirabolicParabolic k (i + 1) t, ∃ x ∈ congM k s hs ((i + 1) + t), g = (a : Mir k ((i + 1) + t)) * x) :
@@ -218,6 +290,15 @@ theorem IsBump.intC_off (ψ : AddChar k Circle) (hs1 : valuation k (s : k) < 1) 
 
 end Local
 
+/- English proof (translation)
+Establish `hv` using `GlobalTheory.T.bump_section_value_local_integral k i t ψ τ σ s hψ1 w F hF.on_ball hF.off_ball`. Take `⟨c, hc0, hc⟩` from `hv`. Establish `hy` using `GlobalTheory.T.closed_evaluation_induced k i t ψ hψ τ σ hτ hσ F`. Take `⟨yF, hyF⟩` from `hy`. Establish `hval : ∀ x ∈ congM k s hs ((i + 1) + t), yF.1.1.1 x = c • qC τ σ w`.
+
+Introduce `x hx`. Establish `e2 : yF.1.1.1 x = eC ψ F x` using `congrFun hyF x`. Rewrite using `[e2]`. Unfold `eC`. Rewrite using `[hF.intC_sEmb ψ x hx, hc, hdp x hx, Units.val_one, one_smul, map_smul]`.
+
+Establish `hzero : ∀ g, (¬ ∃ a : MirabolicParabolic k (i + 1) t, ∃ x ∈ congM k s hs ((i + 1) + t), g = (a : Mir k ((i + 1) + t)) * x) → yF.1.1.1 g = 0`. Introduce `g hg`. Establish `e2 : yF.1.1.1 g = eC ψ F g` using `congrFun hyF g`. Rewrite using `[e2]`. Unfold `eC`.
+
+Rewrite using `[hF.intC_off ψ hs1 g hg, map_zero, smul_zero]`. Conclude with `scale_bump (MirabolicParabolic k (i + 1) t) (sigC τ σ) (imC ψ hψ τ σ hτ hσ) yF ((mem_imC ψ hψ τ σ hτ hσ yF).2 ⟨F, hyF.symm⟩) c hc0 (qC τ σ w) (congM k s hs ((i + 1) + t)) hval hzero`.
+-/
 theorem local_core {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (w : τ.V ⊗[ℂ] σ.V) (s : kˣ) (hs : valuation k (s : k) ≤ 1)
     (hs1 : valuation k (s : k) < 1) (hψ1 : ∀ y ∈ GlobalTheory.SplitWeil.cball s, ψ y = 1)
@@ -255,6 +336,11 @@ def LocB {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k 
       (∀ (a : MirabolicParabolic k (i + 1) t), ∀ x ∈ K, B.1.1.1 ((a : Mir k ((i + 1) + t)) * x) = sigC τ σ a v) ∧
       ∀ g, (¬ ∃ a : MirabolicParabolic k (i + 1) t, ∃ x ∈ K, g = (a : Mir k ((i + 1) + t)) * x) → B.1.1.1 g = 0
 
+/- English proof (translation)
+Take `⟨s₁, hs₁⟩` from `GlobalTheory.T.congruence_subgroups_basis_nhds k _ O₁ hO₁`. Take `⟨s₂, hs₂⟩` from `GlobalTheory.SplitWeil.exists_cball_addChar_eq_one ψ hψ`. Take `⟨s₃, hs₃⟩` from `GlobalTheory.T.congruence_subgroups_basis_nhds k _ _ (Filter.inter_mem hO (dpowM_nhds ((i + 1) + t) (-1 / 2)))`. Take `⟨s₄, hs₄⟩` from `exists_lt_one (k := k)`. Take `⟨a₁, ha₁, ha₂⟩` from `exists_small s₁ s₂`.
+
+Take `⟨a₂, ha₃, ha₄⟩` from `exists_small s₃ s₄`. Take `⟨s, h12, h34⟩` from `exists_small a₁ a₂`. Establish `hs1 : valuation k (s : k) < 1` using `lt_of_le_of_lt (h34.trans ha₄) hs₄`. Conclude with `⟨s, hs1.le, hs1, fun y hy => hs₂ y (mem_ball_mono (h12.trans ha₂) hy), fun x hx => hs₃ s hs1.le (h34.trans ha₃) hx, hs₁ s hs1.le (h12.trans ha₁)⟩`.
+-/
 theorem exists_radius {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (O : Set (Mir k ((i + 1) + t)))
     (hO : O ∈ 𝓝 (1 : Mir k ((i + 1) + t))) (O₁ : Set (Mir k ((i + 1) + t + 1))) (hO₁ : O₁ ∈ 𝓝 (1 : Mir k ((i + 1) + t + 1))) :
     ∃ (s : kˣ) (hs : valuation k (s : k) ≤ 1), valuation k (s : k) < 1 ∧ (∀ y ∈ GlobalTheory.SplitWeil.cball s, ψ y = 1) ∧
@@ -271,6 +357,13 @@ theorem exists_radius {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) 
   exact ⟨s, hs1.le, hs1, fun y hy => hs₂ y (mem_ball_mono (h12.trans ha₂) hy),
     fun x hx => hs₃ s hs1.le (h34.trans ha₃) hx, hs₁ s hs1.le (h12.trans ha₁)⟩
 
+/- English proof (translation)
+Establish `hsurj : ∃ w, qC τ σ w = v` using `LinearMap.rTensor_surjective σ.V (Submodule.mkQ_surjective _) v`. Take `⟨w, hw⟩` from `hsurj`. Substitute `hw` using the available equality. Establish `hfx` using `GlobalTheory.T.smooth_vector_fixed_near_identity k i t τ σ hτ hσ w`. Take `⟨O₁, hO₁, hfix⟩` from `hfx`.
+
+Take `⟨s, hs, hs1, hψ1, hsO, hsO₁⟩` from `exists_radius ψ hψ O hO O₁ hO₁`. Take `⟨hKo, hKc⟩` from `GlobalTheory.T.congruence_subgroup_open_compact k ((i + 1) + t + 1) s hs`. Establish `hb` using `GlobalTheory.CompanionTheory.BZMirOnto.exists_bump (HPG k (i + 1) (t + 1)) (sigX τ σ) (congM k s hs ((i + 1) + t + 1)) hKo hKc 1 w (fun a x hx e => hfix a (by`. Establish `e' : (a : Mir k ((i + 1) + (t + 1))) = x` using `by rw [e]; group`. Rewrite using `[e']`.
+
+Conclude with `hsO₁ hx))`. Take `⟨F, hF1, hF0⟩` from `hb`. Establish `hbump : IsBump s hs w F` using `⟨hF1, hF0⟩`. Establish `hc` using `local_core ψ hψ τ σ hτ hσ w s hs hs1 hψ1 (fun x hx => (hsO x hx).2) F hbump`. Conclude with `⟨congM k s hs ((i + 1) + t), (GlobalTheory.T.congruence_subgroup_open_compact k _ s hs).1, fun x hx => (hsO x hx).1, hc⟩`.
+-/
 theorem exists_local {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (v : (psiN τ).V ⊗[ℂ] σ.V) (O : Set (Mir k ((i + 1) + t)))
     (hO : O ∈ 𝓝 (1 : Mir k ((i + 1) + t))) : LocB ψ hψ τ σ hτ hσ v O := by
@@ -292,6 +385,11 @@ theorem exists_local {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (
   have hc := local_core ψ hψ τ σ hτ hσ w s hs hs1 hψ1 (fun x hx => (hsO x hx).2) F hbump
   exact ⟨congM k s hs ((i + 1) + t), (GlobalTheory.T.congruence_subgroup_open_compact k _ s hs).1, fun x hx => (hsO x hx).1, hc⟩
 
+/- English proof (translation)
+Establish `hB'` using `(mem_imC ψ hψ τ σ hτ hσ B).1 hB`. Take `⟨f, hf⟩` from `hB'`. Establish `e` using `(GlobalTheory.T.evaluation_maps_linear k i t ψ hψ τ σ hτ hσ (rtr g f) (rtr g f) ((dpowM ((i + 1) + t) (-1 / 2) g : ℂˣ) : ℂ)).2.1`. Use `(mem_imC ψ hψ τ σ hτ hσ _).2 ⟨((dpowM ((i + 1) + t) (-1 / 2) g : ℂˣ) : ℂ) • rtr g f, e.trans ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[ev_cInd, ← hf, Pi.smul_apply]`. Conclude with `eC_translate ψ f g x`.
+-/
 theorem imC_translate {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (g : Mir k ((i + 1) + t)) (B : cIndSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ))
     (hB : B ∈ imC ψ hψ τ σ hτ hσ) : cInd (MirabolicParabolic k (i + 1) t) (sigC τ σ) g B ∈ imC ψ hψ τ σ hτ hσ := by
@@ -303,6 +401,9 @@ theorem imC_translate {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) 
   rw [ev_cInd, ← hf, Pi.smul_apply]
   exact eC_translate ψ f g x
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t ψ hψ τ σ hτ hσ y`. Conclude with `GlobalTheory.T.smooth_subrep_compact_induction_span (MirabolicParabolic k (i + 1) t) (sigC τ σ) (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k _) (imC ψ hψ τ σ hτ hσ) (imC_translate ψ hψ τ σ hτ hσ) (exists_local ψ hψ τ σ hτ hσ) y |> (mem_imC ψ hψ τ σ hτ hσ y).1`.
+-/
 theorem eC_onto : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (y : cIndSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ)),
     ∃ f : XS τ σ, eC ψ f = (y : smoothPart (ind (MirabolicParabolic k (i + 1) t) (sigC τ σ))).1.1 := by
   intro k _ _ _ _ i t ψ hψ τ σ hτ hσ y

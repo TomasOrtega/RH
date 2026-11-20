@@ -8,6 +8,13 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a b ca cb hb hst hca hcb X q Un Gn ΦYn ΦWn l H bp hU hD p hp z hz`. Take `⟨Hh, hHh, hev⟩` from `GlobalTheory.T.two_point_fibre_chart_fifth K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hst hca hcb X q Un Gn ΦYn ΦWn l H bp hU hD p z hz`. Use `⟨Hh, hHh, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev] with z' h`. Rewrite using `[h]`.
+
+Use `congr 1`. Unfold `alphaOf potAt`. Use `congr 1`. Distinguish the cases in `hτ : p.1 = τ`. Establish `hpa : p.2 ≠ a` using `fun e => hp (Prod.ext hτ e)`.
+
+Establish `hs` using `(GlobalTheory.T.elementary_factor_properties N j a b ca cb (z' 0) M.j_le hb hst hca hcb).2.2.2 (BM.G l p.1 (bp (Fin.tail z'))) (H τ (Fin.tail z')) p.2 hpa`. Simplify using `only [flagAt, if_pos hτ]`. Rewrite using `[hs, hτ]`. Simplify using `only [flagAt, if_neg hτ]`.
+-/
 theorem fibre_base_member : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d) (τ : Ψ) (a b ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → ∀ (X : Type) (q : Fin 2 → X → FA.S.X) (Un : Set (Fin d → ℂ)) (Gn : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (ΦYn : (Fin (d + 1) → ℂ) → FA.S.X) (ΦWn : (Fin (d + 2) → ℂ) → X) (l : Fin BM.q) (H : Ψ → (Fin d → ℂ) → Matrix (Fin N) (Fin N) ℂ) (bp : (Fin d → ℂ) → BM.Rb.X), IsOpen Un → IsFibreData FA τ a ca cb q Un Gn ΦYn ΦWn l H bp → ∀ p, p ≠ (τ, a) → ∀ z : Fin (d + 1) → ℂ, Fin.tail z ∈ Un → ∃ Hh : (Fin (d + 1) → ℂ) → ℂ, AnalyticAt ℂ Hh z ∧ ∀ᶠ z' in 𝓝 z, ((FA.S.comap some).potH p).φ (ΦYn z) (ΦYn z') = alphaOf BM l H bp p (Fin.tail z') + (Hh z').re := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a b ca cb hb hst hca hcb X q Un Gn ΦYn ΦWn l H bp hU hD p hp z hz
   obtain ⟨Hh, hHh, hev⟩ := GlobalTheory.T.two_point_fibre_chart_fifth K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hst hca hcb X q Un Gn

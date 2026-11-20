@@ -22,6 +22,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LabPi
 
 namespace GlobalTheory.FixedConjMat
 
+/- English proof (translation)
+Establish `hb` using `(Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D (Formalism.IndefR.RationalEmbedding.iota D x)).2`. Establish `e : (Formalism.IndefR.RationalEmbedding.iota D).symm (Formalism.IndefR.RationalEmbedding.iota D x) = x` using `(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply x`. Rewrite using `[hb]`. Use `erw [e]`. Use extensionality with `i j`.
+
+Conclude with `GlobalTheory.RedFrame.tauF_gen (Formalism.IndefR.RationalEmbedding.inst D) _`.
+-/
 theorem fmat_iota (D : D7) (x : Formalism.L2.Theta.GA D (D.sp.Y 0)) :
     (Formalism.L2.SG.InstExistsPf.instOf D).fmat ((Formalism.IndefR.RationalEmbedding.iota D x).2) =
       (Formalism.IndefR.Lev.finE (D.sp.Y 0) x).1 := by
@@ -33,9 +38,15 @@ theorem fmat_iota (D : D7) (x : Formalism.L2.Theta.GA D (D.sp.Y 0)) :
   ext i j
   exact GlobalTheory.RedFrame.tauF_gen (Formalism.IndefR.RationalEmbedding.inst D) _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finE_val_eq (D : D7) (V : HSp D) (g : Formalism.L2.Theta.GA D V) :
     (Formalism.IndefR.Lev.finE V g).1 = (Formalism.MainNotions.StandardLattice.finMat D.sp.cm.sig V.gram g).map (Formalism.IndefR.Lev.swapAE D) := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem map_cast_swap (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) {m n : Type}
     (M : Matrix m n (ReciprocityTheory.Aut.AL D.host.E)) :
     (M.map (Formalism.IndefR.principalLevelFrame.tensCastR hF).symm).map (Formalism.IndefR.Lev.swapAE D) =
@@ -43,11 +54,17 @@ theorem map_cast_swap (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) {m
   ext i j
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero f) (map_one f)]`.
+-/
 theorem map_mul_eq_one {k l R S : Type} [Fintype k] [Fintype l] [DecidableEq k] [DecidableEq l] [CommRing R]
     [CommRing S] (f : R →+* S) {A : Matrix k l R} {B : Matrix l k R} (h : A * B = 1) :
     A.map f * B.map f = 1 := by
   rw [← Matrix.map_mul, h, Matrix.map_one _ (map_zero f) (map_one f)]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, hg]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem conj_map {k l R S : Type} [Fintype k] [Fintype l] [CommRing R] [CommRing S] (f : R →+* S)
     (T : Matrix k k S) (Ti : Matrix k k S) (B : Matrix k l R) (Y : Matrix l l R) (B' : Matrix l k R)
     (g : Matrix l l S) (hg : Y.map f = g) :
@@ -57,6 +74,13 @@ theorem conj_map {k l R S : Type} [Fintype k] [Fintype l] [CommRing R] [CommRing
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨⟨β, β', h1, h2, hβ⟩, -⟩` from `hP`. Establish `hbb` using `map_mul_eq_one (Formalism.IndefR.Lev.swapAE D) h1`. Establish `hbb'` using `map_mul_eq_one (Formalism.IndefR.Lev.swapAE D) h2`. Use `⟨HMul.hMul (Formalism.IndefR.Lev.finE (Yc D 0) t).1 (β.map (Formalism.IndefR.Lev.swapAE D)), HMul.hMul (β'.map (Formalism.IndefR.Lev.swapAE D)) ((Formalism.IndefR.Lev.finE (Yc D 0) t)⁻¹).1, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (β.map _), hbb, Matrix.one_mul, Units.mul_inv]`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (((Formalism.IndefR.Lev.finE (Yc D 0) t)⁻¹).1), Units.inv_mul, Matrix.one_mul, hbb']`. Introduce `y`. Rewrite using `[MulAut.conj_apply, map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul]`. Establish `e1` using `finE_val_eq D (Yc D 0) (PY.ψ y)`. Establish `e3` using `e1.trans (congrArg (fun M => M.map (Formalism.IndefR.Lev.swapAE D)) (hβ y))`.
+
+Rewrite using `[e3]`. Conclude with `conj_map _ _ _ _ _ _ _ (map_cast_swap D hF _)`.
+-/
 theorem finE_conj_stdPsi (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (PY : RowPsi (Yc D 0) D.R.r)
     (t : Formalism.L2.Theta.GA D (Yc D 0)) (hP : StdPsi hF PY) :
     ∃ (U : Matrix (Fin (Yc D 0).rank) (Fin D.R.r) (Formalism.IndefR.Lev.EAf D))
@@ -79,6 +103,9 @@ theorem finE_conj_stdPsi (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E)
     rw [e3]
     exact conj_map _ _ _ _ _ _ _ (map_cast_swap D hF _)
 
+/- English proof (translation)
+Introduce `D hF PY t hP`. Take `⟨U, U', h1, h2, h3⟩` from `finE_conj_stdPsi D hF PY t hP`. Conclude with `⟨U, U', h1, h2, fun y => (fmat_iota D _).trans (h3 y)⟩`.
+-/
 theorem fmat_iota_conj_stdPsi : ∀ (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (PY : RowPsi (Yc D 0) D.R.r) (t : Formalism.L2.Theta.GA D (D.sp.Y 0)), StdPsi hF PY → ∃ (U : Matrix (Fin (Formalism.L2.SG.InstExistsPf.instOf D).n) (Fin D.R.r) (Formalism.IndefR.Lev.EAf D)) (U' : Matrix (Fin D.R.r) (Fin (Formalism.L2.SG.InstExistsPf.instOf D).n) (Formalism.IndefR.Lev.EAf D)), U * U' = 1 ∧ U' * U = 1 ∧ ∀ y : Formalism.AUTREP.GAf D.host.E D.R.r, (Formalism.L2.SG.InstExistsPf.instOf D).fmat ((Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t (PY.ψ y))).2) = U * ((y : GL (Fin D.R.r) (ReciprocityTheory.Aut.AL D.host.E)) : Matrix (Fin D.R.r) (Fin D.R.r) (ReciprocityTheory.Aut.AL D.host.E)).map (GlobalTheory.FixedConj.adeleEquiv D hF) * U' := by
   intro D hF PY t hP
   obtain ⟨U, U', h1, h2, h3⟩ := finE_conj_stdPsi D hF PY t hP

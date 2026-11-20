@@ -13,6 +13,11 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DerivDLR
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {r : ℕ}
 
+/- English proof (translation)
+Establish `h : ∀ k, a j k * (x + t • (Pi.single i 1 : Fin r → ℝ)) k = a j k * x k + (if k = i then t * a j i else 0)`. Introduce `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[Pi.single_apply, hk]`. Simplify using `only [linF, h, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma linF_line (a : ι → Fin r → ℝ) (b : ι → ℝ) (j : ι) (x : Fin r → ℝ) (i : Fin r) (t : ℝ) :
     linF a b j (x + t • (Pi.single i 1 : Fin r → ℝ)) = linF a b j x + t * a j i := by
   have h : ∀ k, a j k * (x + t • (Pi.single i 1 : Fin r → ℝ)) k
@@ -24,6 +29,9 @@ lemma linF_line (a : ι → Fin r → ℝ) (b : ι → ℝ) (j : ι) (x : Fin r 
   simp only [linF, h, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   ring
 
+/- English proof (translation)
+Establish `: 0 ≤ ∑ i, a j i * y i` using `Finset.sum_nonneg fun i _ => mul_nonneg (ha j i).le (hy i)`. Use `hb j` as an intermediate fact. Unfold `linF`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma linF_pos (a : ι → Fin r → ℝ) (b : ι → ℝ) (ha : ∀ j i, 0 < a j i) (hb : ∀ j, 0 < b j)
     (j : ι) (y : Fin r → ℝ) (hy : ∀ k, 0 ≤ y k) : 0 < linF a b j y := by
   have : 0 ≤ ∑ i, a j i * y i :=
@@ -32,6 +40,13 @@ lemma linF_pos (a : ι → Fin r → ℝ) (b : ι → ℝ) (ha : ∀ j i, 0 < a 
   unfold linF
   linarith
 
+/- English proof (translation)
+Establish `hlin : HasDerivAt (fun t : ℝ => linF a b j (x + t • (Pi.single i 1 : Fin r → ℝ))) (a j i) τ`. Establish `: (fun t : ℝ => linF a b j (x + t • (Pi.single i 1 : Fin r → ℝ))) = fun t : ℝ => linF a b j x + t * a j i`. Use function extensionality and compare the values at `t`. Conclude with `linF_line a b j x i t`. Rewrite using `[this]`.
+
+Simplify using `using ((hasDerivAt_id τ).mul_const (a j i)).const_add (linF a b j x)`. Establish `hC` using `hlin.ofReal_comp`. Establish `hslit : ((linF a b j (x + τ • (Pi.single i 1 : Fin r → ℝ)) : ℝ) : ℂ) ∈ Complex.slitPlane` using `Complex.ofReal_mem_slitPlane.2 hpos`. Establish `hpow` using `((hasDerivAt_id _).cpow_const (c := w) hslit)`. Use `(HasDerivAt.scomp τ hpow hC).congr_deriv ?_` and prove the remaining obligations.
+
+Simplify using `only [id, mul_one, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 lemma hasDerivAt_factor (a : ι → Fin r → ℝ) (b : ι → ℝ) (w : ℂ) (j : ι) (i : Fin r)
     (x : Fin r → ℝ) (τ : ℝ)
     (hpos : 0 < linF a b j (x + τ • (Pi.single i 1 : Fin r → ℝ))) :
@@ -51,6 +66,15 @@ lemma hasDerivAt_factor (a : ι → Fin r → ℝ) (b : ι → ℝ) (w : ℂ) (j
   simp only [id, mul_one, smul_eq_mul]
   rfl
 
+/- English proof (translation)
+Establish `hprod` using `HasDerivAt.fun_finset_prod (u := Finset.univ) (f := fun j (t : ℝ) => ((linF a b j (x + t • (Pi.single i 1 : Fin r → ℝ)) : ℝ) : ℂ) ^ (-s - (β j : ℂ))) (x := τ) (fun j _ => hasDerivAt_factor a b (-s - (β j : ℂ)) j i x τ (linF_pos a b ha hb j _ hy))`. Use `hprod.congr_deriv ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hF : Fr a b s (β + Pi.single j 1) (x + τ • (Pi.single i 1 : Fin r → ℝ)) = ((linF a b j (x + τ • (Pi.single i 1 : Fin r → ℝ)) : ℝ) : ℂ) ^ (-s - (β j : ℂ) - 1) * ∏ k ∈ Finset.univ.erase j, ((linF a b k (x + τ • (Pi.single i 1 : Fin r → ℝ)) : ℝ) : ℂ) ^ (-s - (β k : ℂ))`. Unfold `Fr`.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j)]`. Use `congr 1`. Use `congr 1`. Simplify using `only [Pi.add_apply, Pi.single_eq_same]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hkj : k ≠ j` using `Finset.ne_of_mem_erase hk`. Simplify using `[Pi.single_apply, hkj]`. Rewrite using `[hF, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma hasDerivAt_Fr (a : ι → Fin r → ℝ) (b : ι → ℝ) (ha : ∀ j i, 0 < a j i) (hb : ∀ j, 0 < b j)
     (s : ℂ) (β : ι → ℕ) (i : Fin r) (x : Fin r → ℝ) (τ : ℝ)
     (hy : ∀ k, 0 ≤ (x + τ • (Pi.single i 1 : Fin r → ℝ)) k) :
@@ -80,6 +104,21 @@ lemma hasDerivAt_Fr (a : ι → Fin r → ℝ) (b : ι → ℝ) (ha : ∀ j i, 0
   rw [hF, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Proceed by induction on `cs generalizing x with`. Consider the case `nil`. Establish `hy : ∀ k, 0 ≤ (x + τ • (Pi.single i 1 : Fin r → ℝ)) k`. Introduce `k`. Establish `: 0 ≤ τ * (Pi.single i 1 : Fin r → ℝ) k`.
+
+Use `mul_nonneg hτ ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`.
+
+Simplify using `using add_nonneg (hx k) this`. Simplify `hasDerivAt_Fr a b ha hb s β i x τ hy` using `[DLR]`. Consider the case `cons c cs ih`. Establish `hxc : ∀ k, 0 ≤ (x + (Pi.single c 1 : Fin r → ℝ)) k`. Introduce `k`.
+
+Establish `: 0 ≤ (Pi.single c 1 : Fin r → ℝ) k`. Distinguish the cases in `hk : k = c`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`.
+
+Simplify using `using add_nonneg (hx k) this`. Establish `hsw : ∀ (G : (Fin r → ℝ) → ℂ) (t : ℝ), DLR (c :: cs) G (x + t • (Pi.single i 1 : Fin r → ℝ)) = DLR cs G ((x + (Pi.single c 1 : Fin r → ℝ)) + t • (Pi.single i 1 : Fin r → ℝ)) - DLR cs G (x + t • (Pi.single i 1 : Fin r → ℝ))`. Introduce `G t`. Establish `: x + t • (Pi.single i 1 : Fin r → ℝ) + (Pi.single c 1 : Fin r → ℝ) = (x + (Pi.single c 1 : Fin r → ℝ)) + t • (Pi.single i 1 : Fin r → ℝ)` using `by abel`. Express the relevant statement in the definitionally equal form `fdR c (DLR cs G) _ = _`.
+
+Simplify using `only [fdR, this]`. Establish `h` using `(ih (x + Pi.single c 1) hxc).sub (ih x hx)`. Use `(h.congr_deriv ?_).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => hsw _ t)` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsw, mul_sub]`.
+-/
 theorem hasDerivAt_DLR_Fr (ι : Type) [Fintype ι] [DecidableEq ι] (r : ℕ) (a : ι → Fin r → ℝ)
     (b : ι → ℝ) (ha : ∀ j i, 0 < a j i) (hb : ∀ j, 0 < b j)
     (s : ℂ) (β : ι → ℕ) (cs : List (Fin r)) (i : Fin r) (x : Fin r → ℝ) (τ : ℝ)

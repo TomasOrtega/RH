@@ -16,6 +16,13 @@ open scoped ENNReal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `cntCl`. Establish `hsub : {O : Set α | ∃ a ∈ X, O = {b | b ∈ X ∧ R a b}} ⊆ (fun O => O ∩ X) '' {O : Set α | ∃ a ∈ Y, O = {b | b ∈ Y ∧ R a b}}`. Introduce and unpack `O ⟨a, ha, rfl⟩`. Use `⟨{b | b ∈ Y ∧ R a b}, ⟨a, h ha, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `c`.
+
+Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, hc⟩, hcX⟩`. Conclude with `⟨hcX, hc⟩`. Introduce and unpack `⟨hcX, hc⟩`.
+
+Conclude with `⟨⟨h hcX, hc⟩, hcX⟩`. Conclude with `(Set.encard_le_encard hsub).trans (Set.encard_image_le _ _)`.
+-/
 theorem cntCl_mono {α : Type} {X Y : Set α} (h : X ⊆ Y) (R : α → α → Prop) : cntCl X R ≤ cntCl Y R := by
   unfold cntCl
   have hsub : {O : Set α | ∃ a ∈ X, O = {b | b ∈ X ∧ R a b}} ⊆
@@ -31,15 +38,42 @@ theorem cntCl_mono {α : Type} {X Y : Set α} (h : X ⊆ Y) (R : α → α → P
       exact ⟨⟨h hcX, hc⟩, hcX⟩
   exact (Set.encard_le_encard hsub).trans (Set.encard_image_le _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction f (fun x => 1 ≤ x) (fun _ _ ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl h`.
+-/
 theorem one_le_prod_real {ι : Type} {s : Finset ι} {f : ι → ℝ} (h : ∀ i ∈ s, 1 ≤ f i) : 1 ≤ ∏ i ∈ s, f i :=
   Finset.prod_induction f (fun x => 1 ≤ x) (fun _ _ ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl h
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `sizeZ`. Conclude with `one_le_prod_real fun τ _ => one_le_prod_real fun l _ => le_max_left _ _`.
+-/
 theorem one_le_sizeZ (b C : ℝ) (Z : GramM D) : 1 ≤ sizeZ D b C Z := by
   unfold sizeZ
   exact one_le_prod_real fun τ _ => one_le_prod_real fun l _ => le_max_left _ _
 
+/- English proof (translation)
+Take `⟨hcard, -, -, -, hrd, -⟩` from `GlobalTheory.real_places_facts D`. Establish `hH : 0 < b ^ (C * (D.R.m : ℝ) ^ 2)` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `hB1 : 1 ≤ B` using `hT.trans hB`. Establish `hnn : ∀ l τ, 0 ≤ absDl D Z l τ` using `fun l τ => by`. Unfold `absDl absReal`.
+
+Conclude with `mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (by linarith) _)`. Establish `hM1 : ∀ l τ, 1 ≤ max 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2))` using `fun l τ => le_max_left _ _`. Establish `hsq : ∀ l τ, absDl D Z l τ ^ 2 ≤ (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2 * max 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2` using `fun l τ => by`. Rewrite using `[← mul_pow]`. Use `pow_le_pow_left₀ (hnn l τ) ?_ 2` and prove the remaining obligations.
+
+Establish `h` using `le_max_right 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2))`. Rewrite `h` using `[div_le_iff₀ hH]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpt : ∀ τ, |Gz D T T' Z τ| ≤ B * (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2 * (max 1 (absDl D Z (D.R.rS + 1) τ / b ^ (C * (D.R.m : ℝ) ^ 2)) * max 1 (absDl D Z D.R.rS τ / b ^ (C * (D.R.m : ℝ) ^ 2))) ^ 2` using `fun τ => by`. Unfold `Gz`.
+
+Establish `ha` using `hsq (D.R.rS + 1) τ`. Establish `hc` using `hsq D.R.rS τ`. Establish `hMa` using `one_le_pow₀ (n := 2) (hM1 (D.R.rS + 1) τ)`. Establish `hMc` using `one_le_pow₀ (n := 2) (hM1 D.R.rS τ)`. Establish `hK` using `sq_nonneg (b ^ (C * (D.R.m : ℝ) ^ 2))`.
+
+Establish `hA0` using `sq_nonneg (absDl D Z (D.R.rS + 1) τ)`. Establish `hC0` using `sq_nonneg (absDl D Z D.R.rS τ)`. Establish `e1` using `mul_nonneg (sub_nonneg.2 hB1) (mul_nonneg (mul_nonneg hK (zero_le_one.trans hMa)) (zero_le_one.trans hMc))`. Establish `e2` using `mul_nonneg (mul_nonneg hK (zero_le_one.trans hMa)) (sub_nonneg.2 hMc)`. Establish `e3` using `mul_nonneg (zero_le_one.trans hT) hC0`.
+
+Establish `e4` using `mul_nonneg (sub_nonneg.2 hB) hC0`. Establish `e5` using `mul_nonneg (zero_le_one.trans hB1) (sub_nonneg.2 hc)`. Establish `e6` using `mul_nonneg (mul_nonneg (mul_nonneg (zero_le_one.trans hB1) hK) (zero_le_one.trans hMc)) (sub_nonneg.2 hMa)`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> nlinarith [e1, e2, e3, e4, e5, e6, ha, hA0]`.
+
+Establish `hprod : ∏ τ, Gz D T T' Z τ ≤ ∏ τ, (B * (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2 * (max 1 (absDl D Z (D.R.rS + 1) τ / b ^ (C * (D.R.m : ℝ) ^ 2)) * max 1 (absDl D Z D.R.rS τ / b ^ (C * (D.R.m : ℝ) ^ 2))) ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hprod` using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hcard, Finset.prod_pow]`. Establish `hsz : ∏ τ, (max 1 (absDl D Z (D.R.rS + 1) τ / b ^ (C * (D.R.m : ℝ) ^ 2)) * max 1 (absDl D Z D.R.rS τ / b ^ (C * (D.R.m : ℝ) ^ 2))) ≤ sizeZ D b C Z`. Unfold `sizeZ`.
+
+Use `Finset.prod_le_prod (fun τ _ => mul_nonneg (zero_le_one.trans (hM1 _ _)) (zero_le_one.trans (hM1 _ _))) ?_` and prove the remaining obligations. Introduce `τ _`. Establish `hmem1 : D.R.rS + 1 ∈ Finset.Icc 1 (D.R.rS + 1)` using `Finset.mem_Icc.2 ⟨by omega, le_rfl⟩`. Establish `hmem2 : D.R.rS ∈ (Finset.Icc 1 (D.R.rS + 1)).erase (D.R.rS + 1)` using `Finset.mem_erase.2 ⟨by omega, Finset.mem_Icc.2 ⟨hr, by omega⟩⟩`. Rewrite using `[← Finset.mul_prod_erase _ _ hmem1, ← Finset.mul_prod_erase _ _ hmem2]`.
+
+Establish `h1 : 1 ≤ ∏ l ∈ ((Finset.Icc 1 (D.R.rS + 1)).erase (D.R.rS + 1)).erase D.R.rS, max 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2))` using `one_le_prod_real fun l _ => hM1 l τ`. Establish `ha` using `hM1 (D.R.rS + 1) τ`. Establish `hc` using `hM1 D.R.rS τ`. Rewrite using `[← mul_assoc]`. Conclude with `le_mul_of_one_le_right (mul_nonneg (zero_le_one.trans ha) (zero_le_one.trans hc)) h1`.
+
+Use `hprod.trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ ?_ hsz 2) (pow_nonneg ?_ _))` and prove the remaining obligations. Conclude with `Finset.prod_nonneg fun τ _ => mul_nonneg (zero_le_one.trans (hM1 _ _)) (zero_le_one.trans (hM1 _ _))`. Conclude with `mul_nonneg (by linarith) (sq_nonneg _)`.
+-/
 theorem prod_Gz_le {b C B T T' : ℝ} (hb : 1 ≤ b) (hC : 0 ≤ C) (hr : 1 ≤ D.R.rS) (hT : 1 ≤ T * T') (hB : T * T' ≤ B)
     (Z : GramM D) :
     ∏ τ, Gz D T T' Z τ ≤ (B * (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2) ^ D.R.f * sizeZ D b C Z ^ 2 := by
@@ -102,6 +136,27 @@ theorem prod_Gz_le {b C B T T' : ℝ} (hb : 1 ≤ b) (hC : 0 ≤ C) (hr : 1 ≤ 
   · exact Finset.prod_nonneg fun τ _ => mul_nonneg (zero_le_one.trans (hM1 _ _)) (zero_le_one.trans (hM1 _ _))
   · exact mul_nonneg (by linarith) (sq_nonneg _)
 
+/- English proof (translation)
+Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `hbp : 0 < b` using `by linarith`. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hf : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `hs` using `one_le_sizeZ b C Z`.
+
+Establish `hs4 : 1 ≤ sizeZ D b C Z ^ 4` using `one_le_pow₀ hs`. Establish `hE : HHZ D b C Z = b ^ (C * (D.R.m : ℝ) ^ 2 * D.R.f * (C * D.R.m)) * sizeZ D b C Z ^ 4`. Unfold `HHZ`. Rewrite using `[← Real.rpow_mul hb0]`. Establish `hE0 : 0 ≤ C * (D.R.m : ℝ) ^ 2 * D.R.f * (C * D.R.m)` using `by positivity`.
+
+Establish `hbE : 1 ≤ b ^ (C * (D.R.m : ℝ) ^ 2 * D.R.f * (C * D.R.m))` using `Real.one_le_rpow hb hE0`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hE]`. Conclude with `one_le_mul_of_one_le_of_one_le hbE hs4`. Rewrite using `[hE]`.
+
+Establish `e1 : T ^ D.R.f ≤ (b ^ (CT * D.R.m)) ^ D.R.f` using `pow_le_pow_left₀ (by linarith) hT _`. Rewrite `e1` using `[← Real.rpow_mul_natCast hb0]`. Establish `hx : CT * D.R.m * D.R.f ≤ C * (D.R.m : ℝ) ^ 2 * D.R.f * (C * D.R.m)`. Establish `q1` using `mul_nonneg (mul_nonneg (sub_nonneg.2 hCT) (by linarith : (0 : ℝ) ≤ D.R.m)) hf`. Establish `q2 : (1 : ℝ) ≤ C * (D.R.m : ℝ) ^ 2` using `by nlinarith`.
+
+Establish `q3` using `mul_nonneg (mul_nonneg (mul_nonneg (by linarith : (0 : ℝ) ≤ C) (by linarith : (0 : ℝ) ≤ D.R.m)) hf) (sub_nonneg.2 q2)`. Use the polynomial consequences of the given equalities and inequalities. Establish `e2` using `Real.rpow_le_rpow_of_exponent_le hb hx`. Combine the equalities or inequalities in the displayed calculation. Establish `hTT : 1 ≤ T * T'` using `one_le_mul_of_one_le_of_one_le h1 h1'`.
+
+Establish `hB : T * T' ≤ b ^ (CT * D.R.m) * b ^ (CT * D.R.m)` using `mul_le_mul hT hT' (by linarith) (Real.rpow_nonneg hb0 _)`. Establish `hP` using `prod_Gz_le (C := C) hb (by linarith) hr hTT hB Z`. Establish `eB : (b ^ (CT * D.R.m) * b ^ (CT * D.R.m) * (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2) ^ D.R.f = b ^ ((2 * CT * D.R.m + 2 * C * (D.R.m : ℝ) ^ 2) * D.R.f)`. Rewrite using `[← Real.rpow_add hbp, ← Real.rpow_mul_natCast hb0 _ 2, ← Real.rpow_add hbp, ← Real.rpow_mul_natCast hb0]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hP` using `[eB]`. Establish `hx : (2 * CT * D.R.m + 2 * C * (D.R.m : ℝ) ^ 2) * D.R.f ≤ C * (D.R.m : ℝ) ^ 2 * D.R.f * (C * D.R.m)`. Establish `q1 : 2 * CT * D.R.m + 2 * C * (D.R.m : ℝ) ^ 2 ≤ C * (D.R.m : ℝ) ^ 2 * (C * D.R.m)`.
+
+Establish `r1` using `mul_nonneg (sub_nonneg.2 hCT) (by linarith : (0 : ℝ) ≤ D.R.m)`. Establish `r2` using `mul_nonneg (mul_nonneg (by linarith : (0 : ℝ) ≤ C) (by linarith : (0 : ℝ) ≤ D.R.m)) (by linarith : (0 : ℝ) ≤ D.R.m - 1)`. Establish `r3 : (4 : ℝ) ≤ C * D.R.m` using `by nlinarith`. Establish `r4` using `mul_nonneg (mul_nonneg (by linarith : (0 : ℝ) ≤ C) (sq_nonneg (D.R.m : ℝ))) (sub_nonneg.2 r3)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `mul_le_mul_of_nonneg_right q1 hf` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2` using `Real.rpow_le_rpow_of_exponent_le hb hx`. Establish `hs2 : sizeZ D b C Z ^ 2 ≤ sizeZ D b C Z ^ 4` using `pow_le_pow_right₀ hs (by norm_num)`. Rewrite using `[hE]`.
+
+Conclude with `hP.trans (mul_le_mul e2 hs2 (sq_nonneg _) (by linarith))`.
+-/
 theorem sizes {b C CT : ℝ} (hb : 1 ≤ b) (hC : 2 ≤ C) (hCT : CT ≤ C) (hr : 1 ≤ D.R.rS) {T T' : ℝ} (h1 : 1 ≤ T)
     (h1' : 1 ≤ T') (hT : T ≤ b ^ (CT * D.R.m)) (hT' : T' ≤ b ^ (CT * D.R.m)) (Z : GramM D) :
     1 ≤ HHZ D b C Z ∧ T ^ D.R.f ≤ HHZ D b C Z ∧ ∏ τ, Gz D T T' Z τ ≤ HHZ D b C Z := by
@@ -158,6 +213,17 @@ theorem sizes {b C CT : ℝ} (hb : 1 ≤ b) (hC : 2 ≤ C) (hCT : CT ≤ C) (hr 
     rw [hE]
     exact hP.trans (mul_le_mul e2 hs2 (sq_nonneg _) (by linarith))
 
+/- English proof (translation)
+Establish `hH : 1 ≤ H` using `hD0.trans hD`. Establish `h1 : N ^ (2 * r) ≤ H ^ (2 * r)` using `pow_le_pow_left₀ hN0 hN _`. Establish `h2 : De ^ r ≤ H ^ r` using `pow_le_pow_left₀ (by linarith) hD _`. Establish `h3 : (9 : ℝ) ^ (1 * f) ≤ C ^ f`. Rewrite using `[one_mul]`.
+
+Conclude with `pow_le_pow_left₀ (by norm_num) (by linarith) _`. Establish `hexp : ((2 * r + r + (9 * 1 + 9 * 1 * r + 16 * r ^ 2) : ℕ) : ℝ) ≤ C * (r : ℝ) ^ 2`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h4 : H ^ (2 * r + r + (9 * 1 + 9 * 1 * r + 16 * r ^ 2)) ≤ H ^ (C * (r : ℝ) ^ 2)`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hH hexp`. Combine the equalities or inequalities in the displayed calculation. Establish `hH0 : 0 ≤ H` using `by linarith`.
+
+Establish `s1 : N ^ (2 * r) * De ^ r ≤ H ^ (2 * r) * H ^ r` using `mul_le_mul h1 h2 (pow_nonneg (by linarith) _) (pow_nonneg hH0 _)`. Establish `s2 : N ^ (2 * r) * De ^ r * 9 ^ (1 * f) ≤ H ^ (2 * r) * H ^ r * C ^ f` using `mul_le_mul s1 h3 (by positivity) (mul_nonneg (pow_nonneg hH0 _) (pow_nonneg hH0 _))`. Conclude with `mul_le_mul_of_nonneg_right s2 (pow_nonneg hH0 _)`. Use `_ = C ^ f * H ^ (2 * r + r + (9 * 1 + 9 * 1 * r + 16 * r ^ 2)) := by`. Rewrite using `[pow_add, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ C ^ f * H ^ (C * (r : ℝ) ^ 2) := mul_le_mul_of_nonneg_left h4 (pow_nonneg (by linarith) _)`.
+-/
 theorem final_arith {N De H C : ℝ} {r f : ℕ} (hr : 1 ≤ r) (hN0 : 0 ≤ N) (hN : N ≤ H) (hD0 : 1 ≤ De) (hD : De ≤ H)
     (hC : 37 ≤ C) :
     N ^ (2 * r) * De ^ r * 9 ^ (1 * f) * H ^ (9 * 1 + 9 * 1 * r + 16 * r ^ 2) ≤ C ^ f * H ^ (C * (r : ℝ) ^ 2) := by
@@ -187,6 +253,61 @@ theorem final_arith {N De H C : ℝ} {r f : ℕ} (hr : 1 ≤ r) (hN0 : 0 ≤ N) 
         ring
     _ ≤ C ^ f * H ^ (C * (r : ℝ) ^ 2) := mul_le_mul_of_nonneg_left h4 (pow_nonneg (by linarith) _)
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0 A`. Take `⟨C₀, hC₀⟩` from `GlobalTheory.T.count_terms_gramClass_over_sublattice Cg cb Cu cT CT C0 A`. Use `⟨max (max C₀ 37) CT, ?_⟩` and prove the remaining obligations. Introduce `D large₂ u u' C' Cl hCl hHyp F0 he hz Λ hΛ F' hterm hgen hrel Z hZ`. Establish `hCC₀ : C₀ ≤ max (max C₀ 37) CT` using `(le_max_left _ _).trans (le_max_left _ _)`.
+
+Establish `hC37 : (37 : ℝ) ≤ max (max C₀ 37) CT` using `(le_max_right _ _).trans (le_max_left _ _)`. Establish `hCT : CT ≤ max (max C₀ 37) CT` using `le_max_right _ _`. Establish `hHyp'` using `hHyp`. Take `⟨⟨hS0, -, -⟩, hSt, -⟩` from `hHyp'`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hTr, -, -⟩` from `hS0`.
+
+Take `⟨hr, -, -, hT3, hT3', -, -, hg0, hg1, -, -, -, -⟩` from `hSt`. Establish `hb : 1 ≤ large₂.sc.b` using `by show 1 ≤ Real.exp (large₂.sc.x ^ large₂.sc.eps)`. Conclude with `Real.one_le_exp (Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _)`. Establish `hTu : ((Tu D u : ℕ) : ℝ) ≤ large₂.sc.b ^ (CT * (D.R.m : ℝ))` using `(hTr u).2`. Establish `hTu' : ((Tu D u' : ℕ) : ℝ) ≤ large₂.sc.b ^ (CT * (D.R.m : ℝ))` using `(hTr u').2`.
+
+Establish `hT1 : (1 : ℝ) ≤ (Tu D u : ℕ)` using `by exact_mod_cast (by omega : 1 ≤ Tu D u)`. Establish `hT1' : (1 : ℝ) ≤ (Tu D u' : ℕ)` using `by exact_mod_cast (by omega : 1 ≤ Tu D u')`. Establish `hTne : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hTne' : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hg : gS D ≠ 0`.
+
+Unfold `gS`. Conclude with `Nat.mul_ne_zero hg0.ne_zero hg1.ne_zero`. Establish `hk1 : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hΛ'` using `hΛ`. Take `⟨-, ⟨hlat, huni, hlift, -⟩, hXS⟩` from `hΛ'`.
+
+Establish `hterm'` using `hterm`. Take `⟨⟨hlift', -, hG'⟩, -, hXS'⟩` from `hterm'`. Establish `hfr : ∀ b, frame (lf D F0) b ∈ Λ` using `frame_mem_of_XS (lf D F0) hlift hXS`. Establish `hfr' : ∀ b, frame F' b ∈ Λ` using `frame_mem_of_XS F' hlift' hXS'`. Establish `hUUE : UUE Λ (lf D F0) F' = Xplus (lf D F0) ⊔ Xplus F'` using `UUE_eq (lf D F0) F' hlift hlift' hfr hfr'`.
+
+Establish `hW : WHyp D (lf D F0) (Wsp D)` using `Formalism.MainNotions.WHyp_Wsp D u (by omega) (lf D F0) he hz`. Establish `hRP` using `GlobalTheory.Mass.RowPerp.main D u F0 he hz`. Establish `hPD` using `hRP.1.1`. Establish `hInt` using `(hRP.2 Λ hΛ).1`. Establish `hsz` using `sizes (D := D) hb (by linarith) hCT hr hT1 hT1' hTu hTu' (ZhatL (lf D F0) F')`.
+
+Establish `hszZ` using `sizes (D := D) hb (by linarith) hCT hr hT1 hT1' hTu hTu' Z`. Establish `hHle : Hp Λ (lf D F0) F' ≤ orth (hS D) (Xplus (lf D F0))`. Introduce `x hx`. Unfold `Hp at hx`. Rewrite `hx`, the goal using `[Formalism.MainNotions.mem_orth_iff]`.
+
+Introduce `y hy`. Apply `hx y` to reduce the goal to its premises. Use `show y ∈ UUE Λ (lf D F0) F'`. Rewrite using `[hUUE]`. Conclude with `Submodule.mem_sup_left hy`.
+
+Establish `hbot : (Xplus (lf D F0) ⊔ Xplus F') ⊓ orth (hS D) (Xplus (lf D F0) ⊔ Xplus F') = ⊥` using `sup_inf_orth (lf D F0).fl F'.fl hG'`. Establish `hHX : Hp Λ (lf D F0) F' ⊓ Xsp (lf D F0) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`.
+
+Establish `hx3 : x ∈ (Xplus (lf D F0) ⊔ Xplus F') ⊓ orth (hS D) (Xplus (lf D F0) ⊔ Xplus F')`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_sup_left ?_, ?_⟩` and prove the remaining obligations. Conclude with `(le_sup_left : (lf D F0).fl.X ≤ (lf D F0).fl.X ⊔ Submodule.span D.host.E {(lf D F0).fl.z}) hx2`. Rewrite using `[← hUUE]`. Conclude with `hx1`.
+
+Rewrite `hx3` using `[hbot]`. Conclude with `hx3`. Establish `hfinV` using `Formalism.MainNotions.finrank_hS D`. Establish `horth` using `finrank_orth_le (lf D F0).fl F'.fl hG' hTne hTne'`. Establish `hHpfin : finrank D.host.E (Hp Λ (lf D F0) F') + 2 * (D.R.rS + 1) ≤ finrank D.host.E (hS D).V`.
+
+Unfold `Hp`. Rewrite using `[hUUE]`. Conclude with `horth`. Establish `hThle : ∀ (F'' : Fg D ((Tu D u' : ℕ) : D.host.E)) (β : (hS D).V ≃ₗ[D.host.E] (hS D).V), Th Λ (lf D F0) F' F'' β ≤ Hp Λ (lf D F0) F'`. Introduce `F'' β x hx`.
+
+Unfold `Th at hx`. Take `⟨p, hp, rfl⟩` from `Submodule.mem_map.1 hx`. Unfold `ThPairs at hp`. Conclude with `(Submodule.mem_prod.1 (Submodule.mem_inf.1 (Submodule.mem_inf.1 hp).1).1).1`. Establish `hThEq : ∀ (F'' : Fg D ((Tu D u' : ℕ) : D.host.E)) (β : (hS D).V ≃ₗ[D.host.E] (hS D).V), s0 Λ (lf D F0) F' F'' β D.R.k = 1 → Th Λ (lf D F0) F' F'' β = Hp Λ (lf D F0) F'`.
+
+Introduce `F'' β hs`. Unfold `s0 at hs`. Use `Submodule.eq_of_le_of_finrank_le (hThle F'' β) ?_` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hne : (Partners D Λ (lf D F0) F' Z).Nonempty`.
+
+Use `swap`. Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty]`. Establish `h0 : cntPartners D Λ (lf D F0) F' Z = 0`. Unfold `cntPartners cntCl`. Rewrite using `[hne]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Take `⟨F₁, -, -, -, β₁, -, hs₁⟩` from `hne`. Establish `hrank : finrank D.host.E (Hp Λ (lf D F0) F') = D.R.k - 1`.
+
+Establish `hE` using `hThEq F₁ β₁ hs₁`. Unfold `s0 at hs₁`. Rewrite `hs₁` using `[hE]`. Use linear arithmetic over natural numbers and integers. Establish `hsub : Partners D Λ (lf D F0) F' Z ⊆ FrSet D Λ (lf D F0) ((Tu D u' : ℕ) : D.host.E) Z (seen D (lf D F0) (Thp Λ (lf D F0) F'))`.
+
+Introduce and unpack `F'' ⟨hterm'', hgen'', hZ'', β, hpair, hs⟩`. Use `⟨hterm'', hZ'', ?_⟩` and prove the remaining obligations. Establish `hterm3` using `hterm''`. Take `⟨⟨hlift'', -, hG''⟩, -, hXS''⟩` from `hterm3`. Establish `hfr'' : ∀ b, frame F'' b ∈ Λ` using `frame_mem_of_XS F'' hlift'' hXS''`.
+
+Establish `hTh` using `hThEq F'' β hs`. Introduce `w hw`. Rewrite `hw`, the goal using `[mem_seen]`. Take `⟨x, hx, hxw⟩` from `hw`. Establish `hxΛ : x ∈ Λ` using `(Submodule.mem_inf.1 hx).1`.
+
+Establish `hxH : x ∈ Hp Λ (lf D F0) F'` using `(Submodule.mem_inf.1 hx).2`. Establish `hxT : x ∈ Th Λ (lf D F0) F' F'' β` using `by rw [hTh]; exact hxH`. Take `⟨y, hy, hxy⟩` from `exists_partner_lift hg (lf D F0) F' F'' β hlift hlift' hlift'' hfr hfr' hfr'' hG'' hgen'' hpair hxΛ hxT`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem _ hxw hxy` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hPL0 : seen D (lf D F0) (Thp Λ (lf D F0) F') ≤ L0X D Λ (lf D F0)` using `seen_le_L0X (lf D F0) (Hp Λ (lf D F0) F') hHle`. Establish `hrk : rkW D (seen D (lf D F0) (Thp Λ (lf D F0) F')) = D.R.k - 1`. Rewrite using `[← hrank]`. Conclude with `rk_seen (lf D F0) hlat hW (Hp Λ (lf D F0) F') hHle hHX`.
+
+Establish `hXle : Xplus (lf D F0) ≤ spanE (hS D) (UU Λ (lf D F0) F')` using `by show Xplus (lf D F0) ≤ UUE Λ (lf D F0) F'`. Rewrite using `[hUUE]`. Conclude with `le_sup_left`. Establish `hnd : spanE (hS D) (UU Λ (lf D F0) F') ⊓ orth (hS D) (spanE (hS D) (UU Λ (lf D F0) F')) = ⊥` using `by show UUE Λ (lf D F0) F' ⊓ orth (hS D) (UUE Λ (lf D F0) F') = ⊥`. Rewrite using `[hUUE]`.
+
+Conclude with `hbot`. Establish `hdet : detW D (seen D (lf D F0) (Thp Λ (lf D F0) F')) ≤ NG Λ (lf D F0) F'` using `det_seen_le (lf D F0) hlat huni hW (fun τ x hx => hPD τ x hx) hInt (UU Λ (lf D F0) F') (UU_le (lf D F0) F' hlift hlift') hXle hnd`. Establish `hNG` using `GlobalTheory.LoopC.FrameDet.main D large₂ u u' C' Cl Cg cb Cu cT CT C0 A hHyp F0 he hz Λ hΛ F' hterm hgen`. Establish `hdetH : detW D (seen D (lf D F0) (Thp Λ (lf D F0) F')) ≤ HHZ D large₂.sc.b (max (max C₀ 37) CT) (ZhatL (lf D F0) F')`. Rewrite `hdet` using `[hNG]`.
+
+Conclude with `hdet.trans hsz.2.2`. Establish `hHh1 : 1 ≤ HHZ D large₂.sc.b (max (max C₀ 37) CT) (ZhatL (lf D F0) F') * HHZ D large₂.sc.b (max (max C₀ 37) CT) Z` using `one_le_mul_of_one_le_of_one_le hsz.1 hszZ.1`. Establish `hHZ : HHZ D large₂.sc.b (max (max C₀ 37) CT) Z ≤ HHZ D large₂.sc.b (max (max C₀ 37) CT) (ZhatL (lf D F0) F') * HHZ D large₂.sc.b (max (max C₀ 37) CT) Z` using `le_mul_of_one_le_left (by linarith [hszZ.1]) hsz.1`. Establish `hZ'le : HHZ D large₂.sc.b (max (max C₀ 37) CT) (ZhatL (lf D F0) F') ≤ HHZ D large₂.sc.b (max (max C₀ 37) CT) (ZhatL (lf D F0) F') * HHZ D large₂.sc.b (max (max C₀ 37) CT) Z` using `le_mul_of_one_le_right (by linarith [hsz.1]) hszZ.1`. Establish `hDeH : max 1 (detW D (seen D (lf D F0) (Thp Λ (lf D F0) F'))) ≤ HHZ D large₂.sc.b (max (max C₀ 37) CT) (ZhatL (lf D F0) F') * HHZ D large₂.sc.b (max (max C₀ 37) CT) Z` using `max_le hHh1 (hdetH.trans hZ'le)`.
+
+Establish `hDe3 : max 1 (detW D (seen D (lf D F0) (Thp Λ (lf D F0) F'))) ≤ (HHZ D large₂.sc.b (max (max C₀ 37) CT) (ZhatL (lf D F0) F') * HHZ D large₂.sc.b (max (max C₀ 37) CT) Z) ^ 3` using `hDeH.trans (le_self_pow₀ hHh1 (by norm_num))`. Establish `hcnt` using `hC₀ (max (max C₀ 37) CT) hCC₀ D large₂ u u' C' Cl hCl hHyp F0 he hz Λ hΛ Z hZ 1 le_rfl hk1 (seen D (lf D F0) (Thp Λ (lf D F0) F')) hPL0 hrk (max 1 (detW D (seen D (lf D F0) (Thp Λ (lf D F0) F')))) (HHZ D large₂.sc.b (max (max C₀ 37) CT) (ZhatL (lf D F0) F') * HHZ D large₂.sc.b (m …`. Establish `hN0 : 0 ≤ NT D u` using `by unfold NT; positivity`. Establish `hN : NT D u ≤ HHZ D large₂.sc.b (max (max C₀ 37) CT) (ZhatL (lf D F0) F') * HHZ D large₂.sc.b (max (max C₀ 37) CT) Z` using `(hsz.2.1 : NT D u ≤ _).trans hZ'le`. Establish `hfin` using `final_arith (f := D.R.f) hr hN0 hN (le_max_left _ _) hDeH hC37`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `cntPartners`. Conclude with `cntCl_mono hsub _` after adjusting the coercions. Use `_ ≤ _ := hcnt`. Use `_ ≤ _ := ENNReal.ofReal_le_ofReal hfin`.
+-/
 theorem partners_le : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl : ℝ), 1 ≤ Cl → Formalism.MainNotions.S.UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C := by
   intro Cg cb Cu cT CT C0 A
   obtain ⟨C₀, hC₀⟩ := GlobalTheory.T.count_terms_gramClass_over_sublattice Cg cb Cu cT CT C0 A

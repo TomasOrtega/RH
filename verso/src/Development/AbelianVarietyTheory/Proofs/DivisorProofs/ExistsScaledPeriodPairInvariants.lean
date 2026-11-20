@@ -9,6 +9,13 @@ open scoped IntermediateField BigOperators Topology
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Introduce `L c hc`. Establish `hH : IsHomothetic c L (scalePeriods L c hc)` using `isHomothetic_scalePeriods L c hc`. Establish `h2 : (scalePeriods L c hc).g₂ = (c ^ 4)⁻¹ * L.g₂`. Rewrite using `[PeriodPair.g₂, PeriodPair.g₂, hH.G_eq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : (scalePeriods L c hc).g₃ = (c ^ 6)⁻¹ * L.g₃`. Rewrite using `[PeriodPair.g₃, PeriodPair.g₃, hH.G_eq]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨scalePeriods L c hc, hH, h2, h3, hH.derivWeierstrassP_mul, ?_⟩` and prove the remaining obligations. Establish `hi : (c ^ 12)⁻¹ ≠ 0` using `inv_ne_zero (pow_ne_zero _ hc)`.
+
+Establish `hD : (scalePeriods L c hc).g₂ ^ 3 - 27 * (scalePeriods L c hc).g₃ ^ 2 = (c ^ 12)⁻¹ * (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)`. Rewrite using `[h2, h3]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : (scalePeriods L c hc).g₂ ^ 3 = (c ^ 12)⁻¹ * L.g₂ ^ 3` using `by rw [h2]; ring`. Rewrite using `[latticeCurve_j_eq, latticeCurve_j_eq, hD, hn, mul_left_comm, mul_div_mul_left _ _ hi]`.
+-/
 theorem exists_scaled_periodPair : ∀ (L : PeriodPair) (c : ℂ), c ≠ 0 → ∃ L' : PeriodPair,
     (∀ z, c * z ∈ L'.lattice ↔ z ∈ L.lattice) ∧ L'.g₂ = (c ^ 4)⁻¹ * L.g₂ ∧
       L'.g₃ = (c ^ 6)⁻¹ * L.g₃ ∧

@@ -19,11 +19,17 @@ def potOf (R : AnRes P J e) (L : HermLine ι) : LocPot R.X where
   mem_U := R.mem_U
   φ x y := Real.log (L.h (R.lift x y))
 
+/- English proof (translation)
+The claim follows from `contDiffOn_pi.mpr fun p => ((R.holo x p j).contDiffOn_of_completeSpace).restrict_scalars ℝ`.
+-/
 theorem contDiffOn_lift (R : AnRes P J e) (x : R.X) (j : Fin R.A.n) :
     ContDiffOn ℝ ∞ (fun y => R.lift x ((R.A.chart j).symm y))
       ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x) :=
   contDiffOn_pi.mpr fun p => ((R.holo x p j).contDiffOn_of_completeSpace).restrict_scalars ℝ
 
+/- English proof (translation)
+Establish `hmc : ∀ y ∈ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x, R.lift x ((R.A.chart j).symm y) ∈ {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `fun y hy => (R.mem x _ hy.2).1`. Use `(hL.comp (contDiffOn_lift R x j) hmc).log fun y hy => ?_` and prove the remaining obligations. Conclude with `(L.pos _ (hmc y hy)).ne'`.
+-/
 theorem contDiffOn_potOf (R : AnRes P J e) {L : HermLine ι} (hL : IsSmoothHerm L) (x : R.X)
     (j : Fin R.A.n) :
     ContDiffOn ℝ ∞ (fun y => Real.log (L.h (R.lift x ((R.A.chart j).symm y))))
@@ -34,10 +40,18 @@ theorem contDiffOn_potOf (R : AnRes P J e) {L : HermLine ι} (hL : IsSmoothHerm 
   refine (hL.comp (contDiffOn_lift R x j) hmc).log fun y hy => ?_
   exact (L.pos _ (hmc y hy)).ne'
 
+/- English proof (translation)
+Introduce `j` and use `contDiffOn_potOf R hL x j`.
+-/
 theorem smoothOn_potOf (R : AnRes P J e) {L : HermLine ι} (hL : IsSmoothHerm L) (x : R.X) :
     R.A.SmoothOn ((potOf R L).U x) ((potOf R L).φ x) :=
   fun j => contDiffOn_potOf R hL x j
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨j, hj⟩` from `R.A.cover z`. Establish `hzt : R.A.chart j z ∈ (R.A.chart j).target` using `(R.A.chart j).map_source hj`. Establish `hc : ContinuousAt ((fun z => R.lift x z p) ∘ (R.A.chart j).symm) (R.A.chart j z)` using `(R.holo x p j _ ⟨hzt, by rwa [Set.mem_preimage, (R.A.chart j).left_inv hj]⟩).continuousAt`. Establish `h` using `((R.A.chart j).symm.continuousAt_iff_continuousAt_comp_right (f := fun z => R.lift x z p) (x := z) (by simpa using hj)).mpr (by simpa using hc)`.
+
+Conclude with `h.continuousWithinAt`.
+-/
 theorem continuousOn_lift (R : AnRes P J e) (x : R.X) (p : Σ k, ι k) :
     ContinuousOn (fun z => R.lift x z p) (R.U x) := by
   intro z hz
@@ -49,6 +63,27 @@ theorem continuousOn_lift (R : AnRes P J e) (x : R.X) (p : Σ k, ι k) :
     (f := fun z => R.lift x z p) (x := z) (by simpa using hj)).mpr (by simpa using hc)
   exact h.continuousWithinAt
 
+/- English proof (translation)
+Use `⟨smoothOn_potOf R hL, fun x x' y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : y ∈ R.U x ∩ R.U x'` using `hy`. Use `choose p hp using (R.mem x' y hy'.2).1`. Take `⟨c, hc, hcy⟩` from `R.compat x x' y hy'`. Establish `hnum : ∀ k, R.lift x y ⟨k, p k⟩ ≠ 0` using `fun k => by`.
+
+Rewrite using `[hcy]`. Conclude with `mul_ne_zero (hc k) (hp k)`. Establish `hr : ∀ k, R.lift x y ⟨k, p k⟩ / R.lift x' y ⟨k, p k⟩ ≠ 0` using `fun k => div_ne_zero (hnum k) (hp k)`. Establish `hO : IsOpen (R.U x ∩ R.U x')` using `(R.isOpen_U x).inter (R.isOpen_U x')`. Set `q : K → R.X → ℂ` to `fun k z => R.lift x z ⟨k, p k⟩ / R.lift x' z ⟨k, p k⟩ / (R.lift x y ⟨k, p k⟩ / R.lift x' y ⟨k, p k⟩)`.
+
+Set `W : Set R.X` to `{z | z ∈ R.U x ∩ R.U x' ∧ ∀ k, R.lift x' z ⟨k, p k⟩ ≠ 0 ∧ q k z ∈ Complex.slitPlane}`. Establish `hW : IsOpen W`. Use `isOpen_iff_mem_nhds.mpr fun z hz => ?_` and prove the remaining obligations. Establish `hn : ∀ k, ContinuousAt (fun z => R.lift x z ⟨k, p k⟩) z` using `fun k => ((continuousOn_lift R x _).mono Set.inter_subset_left).continuousAt (hO.mem_nhds hz.1)`. Establish `hd : ∀ k, ContinuousAt (fun z => R.lift x' z ⟨k, p k⟩) z` using `fun k => ((continuousOn_lift R x' _).mono Set.inter_subset_right).continuousAt (hO.mem_nhds hz.1)`.
+
+Use `filter_upwards [hO.mem_nhds hz.1, eventually_all.mpr fun k => (hd k).eventually_ne (hz.2 k).1, eventually_all.mpr fun k => (((hn k).div (hd k) (hz.2 k).1).div_const _).eventually_mem (Complex.isOpen_slitPlane.mem_nhds (hz.2 k).2)] with w h1 h2 h3`. Conclude with `⟨h1, fun k => ⟨h2 k, h3 k⟩⟩`. Establish `hyW : y ∈ W`. Use `⟨hy', fun k => ⟨hp k, ?_⟩⟩` and prove the remaining obligations. Establish `: q k y = 1` using `div_self (hr k)`.
+
+Rewrite using `[this]`. Conclude with `Complex.mem_slitPlane_iff.mpr (Or.inl (by simp))`. Set `G : R.X → ℂ` to `fun z => ∑ k, ((L.a k : ℝ) : ℂ) * (Complex.log (q k z) + ((Real.log ‖R.lift x y ⟨k, p k⟩ / R.lift x' y ⟨k, p k⟩‖ : ℝ) : ℂ))`. Use `⟨W, hW, hyW, G, fun j y' hy'' => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz : (R.A.chart j).symm y' ∈ W` using `hy''.2`.
+
+Establish `hterm : ∀ k, AnalyticAt ℂ (fun y'' => ((L.a k : ℝ) : ℂ) * (Complex.log (q k ((R.A.chart j).symm y'')) + ((Real.log ‖R.lift x y ⟨k, p k⟩ / R.lift x' y ⟨k, p k⟩‖ : ℝ) : ℂ))) y'`. Introduce `k`. Establish `hn : AnalyticAt ℂ (fun y'' => R.lift x ((R.A.chart j).symm y'') ⟨k, p k⟩) y'` using `R.holo x _ j y' ⟨hy''.1, hz.1.1⟩`. Establish `hd : AnalyticAt ℂ (fun y'' => R.lift x' ((R.A.chart j).symm y'') ⟨k, p k⟩) y'` using `R.holo x' _ j y' ⟨hy''.1, hz.1.2⟩`. Establish `hq : AnalyticAt ℂ (fun y'' => q k ((R.A.chart j).symm y'')) y'` using `(hn.div hd (hz.2 k).1).div analyticAt_const (hr k)`.
+
+Establish `hl : AnalyticAt ℂ (Complex.log ∘ fun y'' => q k ((R.A.chart j).symm y'')) y'` using `AnalyticAt.comp (f := fun y'' => q k ((R.A.chart j).symm y'')) (analyticAt_clog (hz.2 k).2) hq`. Conclude with `analyticAt_const.mul (hl.add analyticAt_const)`. Conclude with `Finset.analyticAt_fun_sum _ fun k _ => hterm k`. Establish `hzW : z ∈ W` using `hz.1.1`. Take `⟨c', hc', hcz⟩` from `R.compat x x' z hzW.1`.
+
+Establish `hpos : 0 < L.h (R.lift x' z)` using `L.pos _ (R.mem x' z hzW.1.2).1`. Establish `hprod : (∏ k, ‖c' k‖ ^ L.a k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc' k))`. Establish `hterm : ∀ k, Real.log ‖q k z‖ + Real.log ‖R.lift x y ⟨k, p k⟩ / R.lift x' y ⟨k, p k⟩‖ = Real.log ‖c' k‖`. Introduce `k`. Establish `hqz : q k z = c' k / (R.lift x y ⟨k, p k⟩ / R.lift x' y ⟨k, p k⟩)`.
+
+Simplify using `only [q]`. Rewrite using `[hcz, mul_div_assoc, div_self (hzW.2 k).1, mul_one]`. Rewrite using `[hqz, norm_div, Real.log_div (norm_ne_zero_iff.mpr (hc' k)) (norm_ne_zero_iff.mpr (hr k))]`. Expand and normalize the polynomial expressions, which then agree. Use `show Real.log (L.h (R.lift x z)) - Real.log (L.h (R.lift x' z)) = (G z).re`.
+
+Rewrite using `[hcz, L.smul c' _ hc', Real.log_mul hprod hpos.ne', add_sub_cancel_right, Real.log_prod fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc' k))]`. Simplify using `only [G, Complex.re_sum, Complex.re_ofReal_mul, Complex.add_re, Complex.log_re, Complex.ofReal_re]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hterm k, Real.log_zpow]`.
+-/
 theorem isPotential_potOf (R : AnRes P J e) {L : HermLine ι} (hL : IsSmoothHerm L) :
     IsPotential R.A (potOf R L) := by
   classical

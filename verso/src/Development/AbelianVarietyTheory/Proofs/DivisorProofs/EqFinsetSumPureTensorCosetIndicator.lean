@@ -12,6 +12,35 @@ noncomputable section
 
 namespace GlobalTheory.WeilAdm
 
+/- English proof (translation)
+Introduce `F _ _ κ _ U K hUo hUc hK`. Establish `hcov : K ⊆ ⋃ y : (κ → FiniteAdeleRing (𝓞 F) F), {x | x - y ∈ U}`. Introduce `x _`. Conclude with `Set.mem_iUnion.2 ⟨x, by simp [U.zero_mem]⟩`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun y => {x | x - y ∈ U}) (fun y => hUo.preimage (continuous_id.sub continuous_const)) hcov`.
+
+Set `R : Finset (κ → FiniteAdeleRing (𝓞 F) F)` to `(t.image (QuotientAddGroup.mk : (κ → FiniteAdeleRing (𝓞 F) F) → _ ⧸ U)).image Quotient.out`. Establish `hdist : ∀ r ∈ R, ∀ r' ∈ R, ∀ x, x - r ∈ U → x - r' ∈ U → r = r'`. Introduce `r hr r' hr' x h h'`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hr`. Take `⟨q', -, rfl⟩` from `Finset.mem_image.1 hr'`.
+
+Establish `e1 : (QuotientAddGroup.mk q.out : _ ⧸ U) = QuotientAddGroup.mk x` using `QuotientAddGroup.eq.2 (by rwa [neg_add_eq_sub])`. Establish `e2 : (QuotientAddGroup.mk q'.out : _ ⧸ U) = QuotientAddGroup.mk x` using `QuotientAddGroup.eq.2 (by rwa [neg_add_eq_sub])`. Rewrite `e1`, `e2` using `[QuotientAddGroup.out_eq']`. Rewrite using `[e1, e2]`. Establish `hcover : ∀ x ∈ K, ∃ r ∈ R, x - r ∈ U`.
+
+Introduce `x hx`. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (ht hx)`. Use `⟨(QuotientAddGroup.mk y : _ ⧸ U).out, Finset.mem_image_of_mem _ (Finset.mem_image_of_mem _ hy), ?_⟩` and prove the remaining obligations. Establish `e : -(QuotientAddGroup.mk y : _ ⧸ U).out + y ∈ U` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' _)`. Use `U.add_mem hxy e` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hSB : ∀ r : κ → FiniteAdeleRing (𝓞 F) F, Set.indicator {y | y - r ∈ U} (fun _ => (1 : ℂ)) ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)`. Introduce `r`. Establish `hcl : IsClopen {y : κ → FiniteAdeleRing (𝓞 F) F | y - r ∈ U}` using `⟨(AddSubgroup.isClosed_of_isOpen U hUo).preimage (continuous_id.sub continuous_const), hUo.preimage (continuous_id.sub continuous_const)⟩`.
+
+Establish `hco : IsCompact {y : κ → FiniteAdeleRing (𝓞 F) F | y - r ∈ U}` using `(Homeomorph.subRight r).isCompact_preimage.2 hUc`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ {y : κ → FiniteAdeleRing (𝓞 F) F | y - r ∈ U}`.
+
+Use `filter_upwards [hcl.isOpen.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_mem (show y ∈ {y : κ → FiniteAdeleRing (𝓞 F) F | y - r ∈ U} from hy), Set.indicator_of_mem hx]`. Use `filter_upwards [hcl.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Simplify using `only [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`. Conclude with `HasCompactSupport.intro' hco hcl.isClosed (fun y hy => Set.indicator_of_notMem hy _)`.
+
+Use `⟨R, fun r _ => hSB r, fun Φ hinv hsupp => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hx : ∃ r ∈ R, (fun i => (x i).2) - r ∈ U`. Take `⟨r0, hr0, hxr0⟩` from `hx`.
+
+Rewrite using `[Finset.sum_eq_single_of_mem r0 hr0]`. Establish `hm : (fun i => (x i).2) ∈ {y | y - r0 ∈ U}` using `hxr0`. Simplify using `only [GlobalTheory.WeilM.pureA, GlobalTheory.WeilAdm.slice, RingEquiv.symm_apply_apply, Set.indicator_of_mem hm, mul_one]`. Take `⟨x', hx'⟩ : ∃ x' : κ → AdeleRing (𝓞 F) F, x' = fun i => ((x i).1, r0 i)` from `⟨_, rfl⟩`. Establish `e : x = x' + GlobalTheory.WeilAdm.finE F ((fun i => (x i).2) - r0)`.
+
+Substitute `hx'` using the available equality. Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (x i).1 = (x i).1 + 0`. Rewrite using `[add_zero]`.
+
+Use `show (x i).2 = r0 i + ((x i).2 - r0 i)`. Rewrite using `[add_sub_cancel]`. Use `conv_lhs => rw [e]`. Rewrite using `[hinv x' _ hxr0, hx']`. Introduce `r hr hne`.
+
+Simplify using `only [GlobalTheory.WeilM.pureA]`. Establish `hm : (fun i => (x i).2) ∉ {y | y - r ∈ U}` using `fun h => hne (hdist r hr r0 hr0 _ h hxr0)`. Rewrite using `[Set.indicator_of_notMem hm, mul_zero]`. Use `push_neg at hx`. Establish `hK' : (fun i => (x i).2) ∉ K` using `fun h => by`.
+
+Take `⟨r, hr, h'⟩` from `hcover _ h`. Conclude with `hx r hr h'`. Rewrite using `[hsupp x hK']`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `r hr`. Simplify using `only [GlobalTheory.WeilM.pureA]`. Establish `hm : (fun i => (x i).2) ∉ {y | y - r ∈ U}` using `hx r hr`. Rewrite using `[Set.indicator_of_notMem hm, mul_zero]`.
+-/
 theorem eq_sum_pureA_coset_indicator : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (U : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F))
     (K : Set (κ → FiniteAdeleRing (𝓞 F) F)), IsOpen (U : Set (κ → FiniteAdeleRing (𝓞 F) F)) → IsCompact (U : Set (κ → FiniteAdeleRing (𝓞 F) F)) → IsCompact K →
       ∃ R : Finset (κ → FiniteAdeleRing (𝓞 F) F),

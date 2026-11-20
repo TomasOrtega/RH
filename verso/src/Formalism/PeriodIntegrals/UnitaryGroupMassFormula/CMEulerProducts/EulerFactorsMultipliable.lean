@@ -9,6 +9,11 @@ namespace CMEul.Mult
 
 open Formalism.HermitianLatticesTheory
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm P ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField K)`. Establish `h1 : Ideal.absNorm P ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`.
+
+Conclude with `hP.ne_top`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_le_absNorm {K : Type} [Field K] [NumberField K] (P : Ideal (𝓞 K)) (hP : P.IsMaximal) :
     2 ≤ Ideal.absNorm P := by
   have h0 : Ideal.absNorm P ≠ 0 := by
@@ -19,6 +24,13 @@ theorem two_le_absNorm {K : Type} [Field K] [NumberField K] (P : Ideal (𝓞 K))
     exact hP.ne_top
   omega
 
+/- English proof (translation)
+Establish `hdvd : ∏ P ∈ s, P.1 ∣ Ideal.span {algebraMap ℤ (𝓞 K) (n : ℤ)}`. Use `Finset.prod_dvd_of_coprime ?_ ?_` and prove the remaining obligations. Introduce `P _ Q _ hPQ`. Conclude with `Ideal.isCoprime_iff_sup_eq.mpr (P.2.coprime_of_ne Q.2 (fun h => hPQ (Subtype.ext h)))`. Introduce `P hP`.
+
+Rewrite using `[Ideal.dvd_span_singleton]`. Establish `hm` using `Ideal.absNorm_mem P.1`. Rewrite `hm` using `[hs P hP]`. Simplify using `using hm`. Establish `h2` using `map_dvd Ideal.absNorm hdvd`.
+
+Rewrite `h2` using `[map_prod, Ideal.absNorm_span_singleton, Algebra.norm_algebraMap]`. Establish `h3 : ∏ P ∈ s, Ideal.absNorm P.1 = n ^ s.card`. Rewrite using `[Finset.prod_congr rfl hs, Finset.prod_const]`. Rewrite `h2` using `[h3, Int.natAbs_pow, Int.natAbs_natCast]`. Conclude with `(Nat.pow_dvd_pow_iff_le_right (by omega)).mp h2`.
+-/
 theorem card_le {K : Type} [Field K] [NumberField K] (n : ℕ) (hn : 2 ≤ n)
     (s : Finset {P : Ideal (𝓞 K) // P.IsMaximal}) (hs : ∀ P ∈ s, Ideal.absNorm P.1 = n) :
     s.card ≤ Module.finrank ℤ (𝓞 K) := by
@@ -39,6 +51,15 @@ theorem card_le {K : Type} [Field K] [NumberField K] (n : ℕ) (hn : 2 ≤ n)
   rw [h3, Int.natAbs_pow, Int.natAbs_natCast] at h2
   exact (Nat.pow_dvd_pow_iff_le_right (by omega)).mp h2
 
+/- English proof (translation)
+Establish `hsum : Summable (fun n : ℕ => (n : ℝ) ^ (-s))` using `Real.summable_nat_rpow.mpr (by linarith)`. Use `summable_of_sum_le (c := (Module.finrank ℤ (𝓞 K) : ℝ) * ∑' n : ℕ, (n : ℝ) ^ (-s)) (fun P => by positivity) ?_` and prove the remaining obligations. Introduce `u`. Establish `hmap : ∀ P ∈ u, Ideal.absNorm P.1 ∈ u.image (fun P => Ideal.absNorm P.1)` using `fun P hP => Finset.mem_image_of_mem _ hP`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun P hP => by rw [(Finset.mem_filter.mp hP).2]), Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ∑ n ∈ u.image (fun P => Ideal.absNorm P.1), (Module.finrank ℤ (𝓞 K) : ℝ) * (n : ℝ) ^ (-s) := by`. Use `Finset.sum_le_sum (fun n hn => ?_)` and prove the remaining obligations. Take `⟨P, hPu, rfl⟩` from `Finset.mem_image.mp hn`.
+
+Establish `hc` using `card_le (Ideal.absNorm P.1) (two_le_absNorm P.1 P.2) (u.filter (fun Q => Ideal.absNorm Q.1 = Ideal.absNorm P.1)) (fun Q hQ => (Finset.mem_filter.mp hQ).2)`. Establish `hc' : ((u.filter (fun Q => Ideal.absNorm Q.1 = Ideal.absNorm P.1)).card : ℝ) ≤ (Module.finrank ℤ (𝓞 K) : ℝ)`. Conclude with `hc` after adjusting the coercions. Conclude with `mul_le_mul_of_nonneg_right hc' (by positivity)`. Use `_ = (Module.finrank ℤ (𝓞 K) : ℝ) * ∑ n ∈ u.image (fun P => Ideal.absNorm P.1), (n : ℝ) ^ (-s) := by`.
+
+Rewrite using `[Finset.mul_sum]`. Use `_ ≤ (Module.finrank ℤ (𝓞 K) : ℝ) * ∑' n : ℕ, (n : ℝ) ^ (-s) := by gcongr`. Conclude with `hsum.sum_le_tsum _ (fun n _ => by positivity)`.
+-/
 theorem summable_norm_rpow {K : Type} [Field K] [NumberField K] {s : ℝ} (hs : 1 < s) :
     Summable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => ((Ideal.absNorm P.1 : ℕ) : ℝ) ^ (-s)) := by
   classical
@@ -73,6 +94,11 @@ theorem summable_norm_rpow {K : Type} [Field K] [NumberField K] {s : ℝ} (hs : 
         gcongr
         exact hsum.sum_le_tsum _ (fun n _ => by positivity)
 
+/- English proof (translation)
+Establish `h1 : x ^ (-(3 / 2 : ℝ)) ≤ x ^ (-1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by norm_num)`. Rewrite `h1` using `[Real.rpow_neg_one]`. Establish `h2 : x⁻¹ ≤ 1 / 2`. Rewrite using `[one_div]`. Conclude with `inv_anti₀ (by norm_num) hx`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rpow_le_half {x : ℝ} (hx : 2 ≤ x) : x ^ (-(3 / 2 : ℝ)) ≤ 1 / 2 := by
   have h1 : x ^ (-(3 / 2 : ℝ)) ≤ x ^ (-1 : ℝ) :=
     Real.rpow_le_rpow_of_exponent_le (by linarith) (by norm_num)
@@ -82,6 +108,9 @@ theorem rpow_le_half {x : ℝ} (hx : 2 ≤ x) : x ^ (-(3 / 2 : ℝ)) ≤ 1 / 2 :
     exact inv_anti₀ (by norm_num) hx
   linarith
 
+/- English proof (translation)
+The claim follows from `|eulerFac K M P - 1| ≤ 2 * ((Ideal.absNorm P : ℕ) : ℝ) ^ (-(3 / 2 : ℝ)) := by have hN : (2 : ℝ) ≤ ((Ideal.absNorm P : ℕ) : ℝ) := by exact_mod_cast two_le_absNorm P hP set x : ℝ := ((Ideal.absNorm P : ℕ) : ℝ) with hx have hx0 : 0 < x := by linarith have hMz : -(M : ℤ) ≤ -3 := by o …`.
+-/
 theorem abs_eulerFac_sub_one_le {K : Type} [Field K] [NumberField K] [StarRing K] (M : ℕ)
     (hM : 3 ≤ M) (P : Ideal (𝓞 K)) (hP : P.IsMaximal) :
     |eulerFac K M P - 1| ≤ 2 * ((Ideal.absNorm P : ℕ) : ℝ) ^ (-(3 / 2 : ℝ)) := by
@@ -139,6 +168,11 @@ theorem abs_eulerFac_sub_one_le {K : Type} [Field K] [NumberField K] [StarRing K
 
 end CMEul.Mult
 
+/- English proof (translation)
+Introduce `K _ _ _ M hM`. Establish `hs : Summable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => Formalism.HermitianLatticesTheory.eulerFac K M P.1 - 1)`. Use `Summable.of_norm_bounded ((CMEul.Mult.summable_norm_rpow (K := K) (s := 3 / 2) (by norm_num)).mul_left 2) ?_` and prove the remaining obligations. Introduce `P`. Rewrite using `[Real.norm_eq_abs]`.
+
+Conclude with `CMEul.Mult.abs_eulerFac_sub_one_le M hM P.1 P.2`. Simplify using `using Real.multipliable_one_add_of_summable hs`.
+-/
 theorem euler_factors_multipliable : CMEul.StepMult := by
   intro K _ _ _ M hM
   have hs : Summable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => Formalism.HermitianLatticesTheory.eulerFac K M P.1 - 1) := by

@@ -39,6 +39,23 @@ open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 
 namespace GlobalTheory.EffGen
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom q`. Introduce `K N N' B hN hN' hB m x hx hNn hNb hN'n hm hpos hBc`. Establish `hm1 : 1 ≤ m` using `by omega`. Take `⟨N₀, h₀, hc₀, hn₀, hb₀⟩` from `GlobalTheory.T.exists_nef_big_of_class_eq_smul_add_smul hNN ℂ X q hq N N' hN hN' (2 * m - 1) 2 hNn hNb hN'n (by omega)`. Take `⟨m', D₀, U, hm', hD₀, hcur, hxU, hklt, hnk⟩` from `GlobalTheory.T.exists_isolated_nonKlt_divisor_smooth_projective hK.2 X q D hq hD N₀ 2 x two_pos hn₀ hb₀ hx (fun Z e hZ hxZ he hdim => by`.
+
+Establish `h1` using `hpos Z e hZ hxZ he hdim`. Establish `h2` using `GlobalTheory.T.pow_mul_intersection_le_of_nef_class_on_closed hNN ℂ X q hq N N' N₀ hN hN' h₀ (2 * m - 1) 2 Z e hNn hN'n hc₀ hdim`. Establish `h3 : ((2 * m - 1 : ℕ) : ℤ) ^ e ≤ interNumRed ℂ Z (fun _ : Fin e => N₀)`. Establish `: (0 : ℤ) ≤ ((2 * m - 1 : ℕ) : ℤ) ^ e` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h3' : (((2 * m - 1 : ℕ) : ℝ)) ^ e ≤ (interNumRed ℂ Z (fun _ : Fin e => N₀) : ℝ)`. Conclude with `h3` after adjusting the coercions. Establish `h4 : ((((D + 1).choose 2 : ℕ) : ℝ) * 2) ^ e < ((2 * m - 1 : ℕ) : ℝ) ^ e`. Use `pow_lt_pow_left₀ ?_ (by positivity) (by omega)` and prove the remaining obligations. Establish `: (D + 1).choose 2 * 2 < 2 * m - 1` using `by omega`.
+
+Conclude with `this` after adjusting the coercions. Rewrite using `[lt_div_iff₀ (by positivity), ← mul_pow]`. Move the coercions through the operations in `at h4 h3' ⊢`. Use the proof step `linarith)`. Take `⟨J, hJ, hvan⟩` from `GlobalTheory.T.nadel_vanishing_canonical_add_boundary hK.1 X q D hq K B N hB D₀ m' 2 hm' two_pos hD₀ hNn hNb (fun C hC => by`.
+
+Establish `e1` using `GlobalTheory.T.intersectionNumber_curve_of_class_eq_smul_add ℂ X q hq B N N' hB hN hN' m 1 C hC (by rw [hBc, one_smul])`. Establish `e2` using `GlobalTheory.T.intersectionNumber_curve_of_class_eq_smul_add ℂ X q hq N₀ N N' h₀ hN hN' (2 * m - 1) 2 C hC hc₀`. Establish `e3` using `hcur C hC`. Rewrite using `[e3, e1, e2]`. Establish `: ((2 * m - 1 : ℕ) : ℚ) = 2 * m - 1`.
+
+Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Move the coercions through the operations in `[this]`. Use the proof step `ring)`. Conclude with `GlobalTheory.T.exists_section_nonvanishing_point ℂ X q hq (tens K.bundle B) (isLB_tens K.isLB hB) J x U hx hxU (fun y hy => by`. Rewrite using `[hJ]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hne`. Conclude with `h (hklt y hy hne)`. Introduce and unpack `rfl`.
+
+Conclude with `hnk) (hvan 1 one_pos)`.
+-/
 theorem core_gen (hK : GlobalTheory.Published.NadelVanishingAndNonKltDivisor) (hNN : GlobalTheory.Published.NefNumerics)
     (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (q : X ⟶ Sp ℂ) (D : ℕ)
     [SmoothOfRelativeDimension D q] (hq : IsProjOver q) (hD : 1 ≤ D) :
@@ -88,6 +105,21 @@ theorem core_gen (hK : GlobalTheory.Published.NadelVanishingAndNonKltDivisor) (h
       · rintro rfl
         exact hnk) (hvan 1 one_pos)
 
+/- English proof (translation)
+Introduce `hK hNN F _ _ Y p D _ hproj hgc hD1`. Use `letI := algebraΓOfHom p`. Introduce `K N N' B hN hN' hB a m y hNn hN'n hm hdec hBc`. Take `⟨N₁, N₂, h₁, h₂, ha, hcls, hamp, hN₂⟩` from `hdec`. Use `haveI : Algebra.IsAlgebraic ℚ F := Algebra.IsAlgebraic.of_finite ℚ F`.
+
+Set `σ : F →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := F)).toRingHom`. Use `letI : Algebra F ℂ := σ.toAlgebra`. Set `π` to `pullback.fst p (spMap (algebraMap F ℂ))`. Set `q` to `pullback.snd p (spMap (algebraMap F ℂ))`. Establish `H : IsPullback π q p (spMap (algebraMap F ℂ))` using `IsPullback.of_hasPullback _ _`.
+
+Take `⟨hXi, hXn, hsm, hqp, hsurj⟩` from `GlobalTheory.T.baseChange_smooth_projective_variety_properties F ℂ Y _ p q π D H hproj hgc`. Use `haveI := hXi`. Use `haveI := hXn`. Use `haveI := hsm`. Use `letI := algebraΓOfHom q`.
+
+Use `haveI : IsAffineHom π := MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance`. Take `⟨y', rfl⟩` from `hsurj y`. Use `haveI : Smooth q := SmoothOfRelativeDimension.smooth D q`. Take `⟨m₁, A, s₁, hm₁, hA, hAa, hy⟩` from `hamp`. Take `⟨x, hxc, hyx, hxU⟩` from `GlobalTheory.T.exists_closedPoint_specializes_in_open_of_finiteType ℂ _ q (π ⁻¹ᵁ nonzeroLocus s₁) y' hy`.
+
+Establish `hAx : AmpleAt (N₁.pull π) x` using `GlobalTheory.T.ampleModuloEffectiveAwayFromPoint_pull_affine Y _ π N₁ h₁ x ⟨m₁, A, s₁, hm₁, hA, hAa, hxU⟩`. Establish `hNnC` using `GlobalTheory.T.isNefLineBundle_baseChange_field_extension hNN F ℂ Y _ p q π H hproj N hNn`. Establish `hN'nC` using `GlobalTheory.T.isNefLineBundle_baseChange_field_extension hNN F ℂ Y _ p q π H hproj N' hN'n`. Establish `hN₂C` using `GlobalTheory.T.isNefLineBundle_baseChange_field_extension hNN F ℂ Y _ p q π H hproj N₂ hN₂`. Establish `hc : a • cls (N.pull π) (pull_isLB hN π) = cls (N₁.pull π) (pull_isLB h₁ π) + cls (N₂.pull π) (pull_isLB h₂ π)`.
+
+Rewrite using `[cls_pull hN, cls_pull h₁, cls_pull h₂, ← map_nsmul, hcls, map_add]`. Establish `hbig` using `GlobalTheory.T.isBigLineBundle_of_smul_class_eq_ampleAt_add_nef hNN ℂ _ q hqp (N.pull π) (N₁.pull π) (N₂.pull π) _ _ _ a x hNnC ha hc hAx hN₂C`. Establish `hpos` using `GlobalTheory.T.one_le_intersectionNumber_subvariety_through_positive hNN ℂ _ q hqp (N.pull π) (N₁.pull π) (N₂.pull π) _ _ _ a x hNnC ha hc hAx hN₂C`. Establish `hcB : cls (B.pull π) (pull_isLB hB π) = m • cls (N.pull π) (pull_isLB hN π) + cls (N'.pull π) (pull_isLB hN' π)`. Rewrite using `[cls_pull hB, cls_pull hN, cls_pull hN', hBc, map_add, map_nsmul]`.
+
+Take `⟨s, hs⟩` from `core_gen hK hNN _ q D hqp hD1 (CanonLB.baseChange H K) (N.pull π) (N'.pull π) (B.pull π) _ _ _ m x hxc hNnC hbig hN'nC hm hpos hcB`. Conclude with `GlobalTheory.T.exists_tensor_section_nonvanishing_of_baseChange F ℂ Y _ p q π H hproj K.bundle B K.isLB hB y' ⟨s, hyx.mem_open (nonzeroLocus s).isOpen hs⟩`.
+-/
 theorem effective_generation : GlobalTheory.Published.NadelVanishingAndNonKltDivisor → GlobalTheory.Published.NefNumerics → ∀ (F : Type) [Field F] [NumberField F] (Y : Scheme.{0}) (p : Y ⟶ Sp F) (D : ℕ) [SmoothOfRelativeDimension D p], IsProjOver p → GeometricallyConnected p → 1 ≤ D → letI := algebraΓOfHom p; ∀ (K : CanonLB p D) (N N' B : LB Y) (hN : N.IsLB) (hN' : N'.IsLB) (hB : B.IsLB) (a m : ℕ) (y : Y), IsNef F N → IsNef F N' → (D + 1).choose 2 < m → (∃ (N₁ N₂ : LB Y) (h₁ : N₁.IsLB) (h₂ : N₂.IsLB), 0 < a ∧ a • cls N hN = cls N₁ h₁ + cls N₂ h₂ ∧ AmpleAt N₁ y ∧ IsNef F N₂) → cls B hB = m • cls N hN + cls N' hN' → ∃ s : (tens K.bundle B).Sec, y ∈ nonzeroLocus s := by
   intro hK hNN F _ _ Y p D _ hproj hgc hD1
   letI := algebraΓOfHom p

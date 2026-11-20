@@ -23,6 +23,9 @@ set_option synthInstance.maxHeartbeats 400000
 
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 
+/- English proof (translation)
+Break down `m with ⟨z⟩` into its components or cases. Simplify using `only at hm`. Substitute `hm` using the available equality. Conclude with `hser.elim fun s => state_b2_of_rational_data ((by with_unfolding_all exact (((thTw (Dof x) th).row l.a.A.row) :))) ((by with_unfolding_all exact (((thTw (Dof x) th).rat l.rat.S) :))) ((by with_unfolding_all exact (l.rat.In.hL :))) ((by with_unfolding_all exact (l.rat.In.eig :))) …`.
+-/
 theorem lb2_of_theta_twist (x : St P) (l : SeriesLevel hL x) (th : NTh (Dof x).R (Dof x).host (Dof x).what₂ (Dof x).LL0 (Dof x).nd (Dof x).ntw (Dof x).nexp)
     (hT : GlobalTheory.GeoTie.ThetaTie l.b.YS x.m.z.geo.fw th)
     (m : Moved (oTw x (thTw (Dof x) th))) (hm : m.z = datTw x (thTw (Dof x) th)) (hc : m.Copy) (hh : m.Coh)
@@ -51,6 +54,13 @@ theorem lb2_of_theta_twist (x : St P) (l : SeriesLevel hL x) (th : NTh (Dof x).R
       (by with_unfolding_all exact ((hT.side ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) b).ev_eq :)), (by with_unfolding_all exact ((hT.side ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) b).fmUr :)), (by with_unfolding_all exact ((hT.side ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) b).hk :)),
       (by with_unfolding_all exact ((hT.side ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) b).hk_none :))⟩, (by with_unfolding_all exact (hT.isUnramified₂ :))⟩⟩
 
+/- English proof (translation)
+Introduce `hL K B f T w P x l th hT`. Establish `hser` using `GlobalTheory.T.series_at_theta_twist hL x l th`. Take `⟨m, hm, hc, hh⟩` from `GlobalTheory.T.exists_movedData_laterStagesWithNewTwist x (thTw (Dof x) th)`. Take `⟨r, hp, hrep, hj, he⟩` from `GlobalTheory.T.exists_normalisedReading_transported_newTwist x _ m hm hc hh`. Take `⟨l', h1, h2, h3, h4, h5, h6, h7⟩` from `GlobalTheory.T.read_package_twist_heq hL x l.toLI _ m hm hc hh r hp hrep hj he`.
+
+Take `⟨mt, hPV⟩` from `mt_thTw x l.toLI th m hm hc hh r hp hj`. Use `⟨stTw x _ m hc hh r hp, ?_, rfl, ?_⟩` and prove the remaining obligations. Conclude with `(lb2_of_theta_twist x l th hT m hm hc hh r hp l' h1 h2 h3 h4 h5 h6 h7 mt hPV hser).elim fun b => ⟨{ toLI := { l' with mt := mt }, b := b }⟩`. Use `show HEq m.z.R.toRealDat.toLevCh _`. Rewrite using `[hm]`.
+
+Conclude with `(by with_unfolding_all exact ((HEq.refl (datTw x (thTw (Dof x) th)).R.toRealDat.toLevCh) :))`.
+-/
 theorem points_carry : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : SeriesLevel hL x) (th : NTh (Dof x).R (Dof x).host (Dof x).what₂ (Dof x).LL0 (Dof x).nd (Dof x).ntw (Dof x).nexp), GlobalTheory.GeoTie.ThetaTie l.b.YS x.m.z.geo.fw th → ∃ x' : St P, Nonempty (StrictHenselianAcyclic hL x') ∧ x'.o = oTw x (thTw (Dof x) th) ∧ HEq x'.m.z.R.toRealDat.toLevCh (GlobalTheory.Mem.R3.Tr.levCh (a := x.o.Z) (oTw x (thTw (Dof x) th)).Z x.m.z.R.toRealDat.toLevCh) := by
   intro hL K B f T w P x l th hT
   have hser := GlobalTheory.T.series_at_theta_twist hL x l th

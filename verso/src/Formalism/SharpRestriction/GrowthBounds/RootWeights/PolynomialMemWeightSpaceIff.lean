@@ -10,6 +10,9 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `h : m v = 0`. Simplify using `[h]`. Rewrite using `[tsub_add_cancel_of_le]`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem monomial_shift_cancel {σ : Type} (m : σ →₀ ℕ) (v : σ) (c : K) :
     (monomial (m - Finsupp.single v 1 + Finsupp.single v 1) (c * (m v : K)) : MvPolynomial σ K) =
       monomial m (c * (m v : K)) := by
@@ -19,6 +22,11 @@ theorem monomial_shift_cancel {σ : Type} (m : σ →₀ ℕ) (v : σ) (c : K) :
     rw [Finsupp.single_le_iff]
     omega
 
+/- English proof (translation)
+Rewrite using `[gl_derivation_monomial]`. Simplify using `only [monomial_shift_cancel]`. Unfold `wtS`. Rewrite using `[Int.cast_sum, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp [mul_comm]`.
+-/
 theorem diagonal_derivation_monomial (LL : Letters ι) (S : Set ι) (a : Fin n) (m : ι × Fin n →₀ ℕ) (c : K) :
     glDerivation K LL S a a (monomial m c) = monomial m (((wtS LL S m a : ℤ) : K) * c) := by
   rw [gl_derivation_monomial]
@@ -28,6 +36,11 @@ theorem diagonal_derivation_monomial (LL : Letters ι) (S : Set ι) (a : Fin n) 
   refine Finset.sum_congr rfl fun l _ => ?_
   split_ifs <;> simp [mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial u b`. Rewrite using `[diagonal_derivation_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, hp, hq, coeff_add, mul_add]`.
+-/
 theorem diagonal_derivation_coeff (LL : Letters ι) (S : Set ι) (a : Fin n) (F : MvPolynomial (ι × Fin n) K)
     (m : ι × Fin n →₀ ℕ) :
     coeff m (glDerivation K LL S a a F) = ((wtS LL S m a : ℤ) : K) * coeff m F := by
@@ -42,12 +55,20 @@ theorem diagonal_derivation_coeff (LL : Letters ι) (S : Set ι) (a : Fin n) (F 
   | add p q hp hq =>
     rw [map_add, coeff_add, hp, hq, coeff_add, mul_add]
 
+/- English proof (translation)
+Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero, gl_operator_apply_derivation]`. Both sides reduce to the same expression.
+-/
 theorem polynomial_mem_weightSpace_iff (LL : Letters ι) (S : Set ι) (mu : Fin n → ℤ) (F : MvPolynomial (ι × Fin n) K) :
     F ∈ weightSp (glOps K n LL S) mu ↔ ∀ a, glDerivation K LL S a a F = ((mu a : ℤ) : K) • F := by
   simp only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
     LinearMap.smul_apply, sub_eq_zero, gl_operator_apply_derivation]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `h` using `congrArg (coeff m) ((polynomial_mem_weightSpace_iff LL S mu F).1 hF a)`. Rewrite `h` using `[diagonal_derivation_coeff, coeff_smul, smul_eq_mul]`. Establish `hc : coeff m F ≠ 0` using `mem_support_iff.1 hm`. Establish `h2` using `mul_right_cancel₀ hc h`.
+
+Conclude with `h2` after adjusting the coercions.
+-/
 theorem weight_vector_monomial_weight [CharZero K] (LL : Letters ι) (S : Set ι) (mu : Fin n → ℤ) (F : MvPolynomial (ι × Fin n) K)
     (hF : F ∈ weightSp (glOps K n LL S) mu) (m : ι × Fin n →₀ ℕ) (hm : m ∈ F.support) : wtS LL S m = mu := by
   funext a
@@ -57,12 +78,30 @@ theorem weight_vector_monomial_weight [CharZero K] (LL : Letters ι) (S : Set ι
   have h2 := mul_right_cancel₀ hc h
   exact_mod_cast h2
 
+/- English proof (translation)
+Rewrite using `[polynomial_mem_weightSpace_iff]`. Introduce `a`. Rewrite using `[diagonal_derivation_monomial, smul_monomial, smul_eq_mul]`.
+-/
 theorem monomial_mem_weightSpace (LL : Letters ι) (S : Set ι) (m : ι × Fin n →₀ ℕ) (c : K) :
     monomial m c ∈ weightSp (glOps K n LL S) (wtS LL S m) := by
   rw [polynomial_mem_weightSpace_iff]
   intro a
   rw [diagonal_derivation_monomial, smul_monomial, smul_eq_mul]
 
+/- English proof (translation)
+Use `⟨polynomial_gl_commutation LL S, ?_, ?_⟩` and prove the remaining obligations. Introduce `x haveI : ∀ m : x.support, FiniteDimensional K (Pol K n (fun i => multideg (m : ι × Fin n →₀ ℕ) i)) := fun m => homogeneous_multidegree_findim _`. Use `⟨⨆ m : x.support, Pol K n (fun i => multideg (m : ι × Fin n →₀ ℕ) i), inferInstance, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∑ m ∈ x.support, monomial m (coeff m x) ∈ ⨆ m : x.support, Pol K n (fun i => multideg (m : ι × Fin n →₀ ℕ) i)`. Apply `Submodule.sum_mem` to reduce the goal to its premises.
+
+Introduce `m hm`. Apply `Submodule.mem_iSup_of_mem (⟨m, hm⟩ : x.support)` to reduce the goal to its premises. Rewrite using `[Pol, mem_restrictSupport_iff]`. Introduce `m' hm'`. Establish `h1` using `support_monomial_subset (Finset.mem_coe.1 hm')`.
+
+Rewrite `h1` using `[Finset.mem_singleton]`. Substitute `h1` using the available equality. Introduce `i`. Both sides reduce to the same expression. Use `key using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `x.as_sum`. Introduce `a b y hy`. Use `Submodule.iSup_induction _ (motive := fun y => glOps K n LL S a b y ∈ ⨆ m : x.support, Pol K n (fun i => multideg (m : ι × Fin n →₀ ℕ) i)) hy ?_ ?_ ?_` and prove the remaining obligations. Introduce `m z hz`. Conclude with `Submodule.mem_iSup_of_mem m (gl_operator_preserves_multidegree LL S _ a b z hz)`.
+
+Simplify using the standard rewrite rules. Introduce `z w hz hw`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hz hw`. Rewrite using `[eq_top_iff]`.
+
+Introduce `F _`. Establish `key : ∑ m ∈ F.support, monomial m (coeff m F) ∈ ⨆ mu : Fin n → ℤ, weightSp (glOps K n LL S) mu`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `m _`. Conclude with `Submodule.mem_iSup_of_mem (wtS LL S m) (monomial_mem_weightSpace LL S m _)`.
+
+Use `key using 1` and compare the differences between its conclusion and the goal. Conclude with `F.as_sum`.
+-/
 theorem polynomial_isGLRep (LL : Letters ι) (S : Set ι) : IsGLRep (glOps K n LL S) := by
   classical
   refine ⟨polynomial_gl_commutation LL S, ?_, ?_⟩

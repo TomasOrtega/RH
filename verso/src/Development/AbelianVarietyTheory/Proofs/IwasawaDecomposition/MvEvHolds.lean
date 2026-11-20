@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(congrFun (eeat_eq (reL a Z) R) (R.levR F true))`.
+-/
 theorem ep_eq_reL {B : Base} {C : Cols B} (a : Late B C) (Z : New a.D) {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type}
     {A : FamIn a.D.what₂.LL G' Pl0 T a.D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [iK : Algebra Ks a.D.what₂.LL]
     (R : RealDat a.D A Ks) (F : Face a.D A) :
@@ -20,6 +23,9 @@ theorem ep_eq_reL {B : Base} {C : Cols B} (a : Late B C) (Z : New a.D) {G' : Typ
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B C a Z G' _ _ Pl0 T A Ks _ _ iK R F X h G t c hj`. Conclude with `(by with_unfolding_all exact ((cast (congrArg (fun E : Submodule ℂ (MMap (MP R)) => EvalTieT (MP R) R.ν0 R.fd0 E X G (iotaX X h).toMulEquiv t c) (ep_eq_reL a Z R F)) hj) :))`.
+-/
 theorem mvEv_holds : MvEv := by
   intro B C a Z G' _ _ Pl0 T A Ks _ _ iK R F X h G t c hj
   exact (by with_unfolding_all exact ((cast (congrArg (fun E : Submodule ℂ (MMap (MP R)) =>

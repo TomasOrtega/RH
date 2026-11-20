@@ -5,6 +5,13 @@ open scoped BigOperators ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.DualFlag
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `b e h0`. Simplify using `[h0]`.
+
+Consider the case `succ n ih`. Introduce `b e h0`. Establish `h` using `ih (fun i => b i.succ) (fun i => e i.castSucc) (by simpa using h0)`. Establish `hL` using `Fin.sum_univ_succ (fun i : Fin (n + 2) => b i * (e i.rev.succ - e i.rev.castSucc))`. Establish `hR` using `Fin.sum_univ_succ (fun i : Fin (n + 1) => (b i.castSucc - b i.succ) * (-e i.rev.succ.castSucc))`.
+
+Simplify using `only [Fin.rev_succ, Fin.rev_zero, Fin.succ_last, Fin.castSucc_zero, Fin.succ_zero_eq_one, Fin.succ_castSucc] at h hL hR`. Rewrite using `[hL, hR]`. Take the linear combination `h`.
+-/
 theorem abel_sum_rev : ∀ (n : ℕ) (b : Fin (n + 1) → ℝ) (e : Fin (n + 2) → ℝ), e 0 = 0 →
     (∑ i : Fin (n + 1), b i * (e i.rev.succ - e i.rev.castSucc)) =
       (∑ i : Fin n, (b i.castSucc - b i.succ) * (-e i.rev.succ.castSucc)) +

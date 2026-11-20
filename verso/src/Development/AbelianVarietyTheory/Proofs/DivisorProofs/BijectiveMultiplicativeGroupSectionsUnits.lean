@@ -16,6 +16,9 @@ def gammaIso : yoneda.obj (Spec (CommRingCat.of (MvPolynomial Unit (ULift ℤ)))
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial TensorProduct in
 
+/- English proof (translation)
+The claim follows from `Presieve.isSheaf_iso _ _root_.GlobalTheory.EtC.GmSec.gammaIso (Presieve.isSheaf_of_le _ Scheme.etaleTopology_le_proetaleTopology (GrothendieckTopology.Subcanonical.isSheaf_of_isRepresentable _))`.
+-/
 theorem _root_.GlobalTheory.EtC.GmSec.isSheaf_gamma :
     Presieve.IsSheaf Scheme.etaleTopology.{0} (Scheme.Γ ⋙ forget CommRingCat) :=
   Presieve.isSheaf_iso _ _root_.GlobalTheory.EtC.GmSec.gammaIso
@@ -26,6 +29,9 @@ abbrev uval {V : Scheme.{0}} (t : ((Scheme.Γ ⋙ unitsF) ⋙ forget (ModuleCat.
   Additive.toMul (ULift.down (α := Additive Γ(V, ⊤)ˣ) t)
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial TensorProduct in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma gmSec_uval_map_eq_units_map {U V : Scheme.{0}} (g : V ⟶ U)
     (t : ((Scheme.Γ ⋙ _root_.GlobalTheory.EtC.unitsF) ⋙
       forget (ModuleCat.{1} (ULift.{1} ℤ))).obj (op U)) :
@@ -35,6 +41,9 @@ private lemma gmSec_uval_map_eq_units_map {U V : Scheme.{0}} (g : V ⟶ U)
   rfl
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial TensorProduct in
+/- English proof (translation)
+Consider the cases of `s`. Consider the cases of `s'`. Use `congr 1`.
+-/
 private lemma gmSec_eq_of_uval_eq {U : Scheme.{0}}
     (s s' : ((Scheme.Γ ⋙ _root_.GlobalTheory.EtC.unitsF) ⋙
       forget (ModuleCat.{1} (ULift.{1} ℤ))).obj (op U))
@@ -42,6 +51,19 @@ private lemma gmSec_eq_of_uval_eq {U : Scheme.{0}}
   cases s; cases s'; congr 1
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial TensorProduct in
+/- English proof (translation)
+Introduce `U S hS x hx`. Establish `hG` using `_root_.GlobalTheory.EtC.GmSec.isSheaf_gamma S hS`. Set `a : Presieve.FamilyOfElements (Scheme.Γ ⋙ forget CommRingCat) S.arrows` to `fun V f hf => ((_root_.GlobalTheory.EtC.GmSec.uval (x f hf) : Γ(V, ⊤)ˣ) : Γ(V, ⊤))`. Set `b : Presieve.FamilyOfElements (Scheme.Γ ⋙ forget CommRingCat) S.arrows` to `fun V f hf => (((_root_.GlobalTheory.EtC.GmSec.uval (x f hf))⁻¹ : Γ(V, ⊤)ˣ) : Γ(V, ⊤))`. Establish `ha : a.Compatible`.
+
+Introduce `Y₁ Y₂ Z g₁ g₂ f₁ f₂ h₁ h₂ w`. Conclude with `congrArg (fun t => ((_root_.GlobalTheory.EtC.GmSec.uval t : Γ(Z, ⊤)ˣ) : Γ(Z, ⊤))) (hx g₁ g₂ h₁ h₂ w)`. Establish `hb : b.Compatible`. Introduce `Y₁ Y₂ Z g₁ g₂ f₁ f₂ h₁ h₂ w`. Use `congrArg (fun t => (((_root_.GlobalTheory.EtC.GmSec.uval t)⁻¹ : Γ(Z, ⊤)ˣ) : Γ(Z, ⊤))) (hx g₁ g₂ h₁ h₂ w)` as an intermediate fact.
+
+Simplify using `only [gmSec_uval_map_eq_units_map, ← map_inv] at this`. Conclude with `this`. Establish `hA` using `hG.isAmalgamation ha`. Establish `hB` using `hG.isAmalgamation hb`. Use `set A := hG.amalgamate a ha`.
+
+Use `set B := hG.amalgamate b hb`. Establish `hAB : A * B = 1`. Use `hG.isSeparatedFor.ext fun V f hf => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Scheme.Γ.map f.op).hom (A * B) = (Scheme.Γ.map f.op).hom 1`. Rewrite using `[map_mul, map_one]`.
+
+Express the relevant statement in the definitionally equal form `(Scheme.Γ ⋙ forget CommRingCat).map f.op A * (Scheme.Γ ⋙ forget CommRingCat).map f.op B = 1`. Rewrite using `[hA f hf, hB f hf]`. Conclude with `(_root_.GlobalTheory.EtC.GmSec.uval (x f hf)).mul_inv`. Establish `hBA : B * A = 1` using `by rw [mul_comm, hAB]`. Set `u : Γ(U, ⊤)ˣ` to `⟨A, B, hAB, hBA⟩`.
+
+Use `⟨⟨Additive.ofMul u⟩, fun V f hf => gmSec_eq_of_uval_eq _ _ (Units.ext (hA f hf)), fun t ht => gmSec_eq_of_uval_eq _ _ (Units.ext ?_)⟩` and prove the remaining obligations. Use `hG.isSeparatedFor.ext fun V f hf => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((_root_.GlobalTheory.EtC.GmSec.uval (((Scheme.Γ ⋙ _root_.GlobalTheory.EtC.unitsF) ⋙ forget (ModuleCat.{1} (ULift.{1} ℤ))).map f.op t) : Γ(V, ⊤)ˣ) : Γ(V, ⊤)) = (Scheme.Γ ⋙ forget CommRingCat).map f.op A`. Rewrite using `[ht f hf, hA f hf]`.
+-/
 private theorem isSheaf_etaleTopology_units :
     Presieve.IsSheaf Scheme.etaleTopology.{0}
       ((Scheme.Γ ⋙ _root_.GlobalTheory.EtC.unitsF) ⋙ forget (ModuleCat.{1} (ULift.{1} ℤ))) := by
@@ -85,6 +107,9 @@ private theorem isSheaf_etaleTopology_units :
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial TensorProduct in
 
+/- English proof (translation)
+Introduce `U`. Establish `hP : Presheaf.IsSheaf Scheme.etaleTopology (Scheme.Γ ⋙ _root_.GlobalTheory.EtC.unitsF)` using `(Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget _)).mpr ((isSheaf_iff_isSheaf_of_type _ _).mpr isSheaf_etaleTopology_units)`. Use `haveI := isIso_toSheafify Scheme.etaleTopology hP`. Use `delta _root_.GlobalTheory.EtC.ofRings.sec`. Conclude with `ConcreteCategory.bijective_of_isIso ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ _root_.GlobalTheory.EtC.unitsF)).app (op U))`.
+-/
 theorem _root_.GlobalTheory.EtC.GmSec.gm_sec_bijective :
     ∀ U : Scheme.{0},
       Function.Bijective

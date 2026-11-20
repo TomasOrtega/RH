@@ -10,6 +10,35 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X m c d M hm hc hd hc6 hd6 hL t w ht hw`. Unfold `Lv at hL`. Unfold `IsSec at ht`. Unfold `IsSymb at hw`. Take `⟨hM, hcM, hdM⟩` from `hL`.
+
+Take `⟨hgr, hok, -⟩` from `rowB Ω M hM`. Take `⟨-, hadm, -⟩` from `admB Ω ε X`. Use `haveI : NeZero M := ⟨by omega⟩`. Establish `pt : ∀ a b : Row M, Ok a b → IsPt X m (sg X c M a) (sg X d M b) (t (sg X c M a) (sg X d M b))`. Introduce `a b hab`.
+
+Conclude with `(ht _ _ (sgB Ω ε X c M hc hc6 hM hcM a (hok a b hab).1).1 (sgB Ω ε X d M hd hd6 hM hdM b (hok a b hab).2.1).1).1`. Establish `loc : ∀ a b : Row M, ∃ T : Finset Ω, ∀ r : Gal(Ω/ℚ), (∀ z ∈ T, r z = z) → Ok a b → (X.gal r) (sg X c M a) = sg X c M a ∧ (X.gal r) (sg X d M b) = sg X d M b ∧ Mv X m (X.gal r) r (t (sg X c M a) (sg X d M b)) (t (sg X c M a) (sg X d M b)) 1`. Introduce `a b`. Distinguish the cases in `hab : Ok a b`. Take `⟨T1, h1⟩` from `PC.galNear Ω ε X (sg X c M a)`.
+
+Take `⟨T2, h2⟩` from `PC.galNear Ω ε X (sg X d M b)`. Take `⟨S, hS⟩` from `mvNear Ω ε X m hm _ _ _ (pt a b hab)`. Set `Tf : X.K → Finset Ω` to `fun f => Classical.choose (PC.galNear Ω ε X f)`. Use `⟨T1 ∪ T2 ∪ S.biUnion Tf, fun r hr _ => ⟨h1 r (fun z hz => hr z (by simp [hz])), h2 r (fun z hz => hr z (by simp [hz])), ?_⟩⟩` and prove the remaining obligations. Use `hS _ r (hadm r) (fun f hf => ?_)` and prove the remaining obligations.
+
+Conclude with `Classical.choose_spec (PC.galNear Ω ε X f) r (fun z hz => hr z (by simp only [Finset.mem_union, Finset.mem_biUnion]; exact Or.inr ⟨f, hf, hz⟩))`. Conclude with `⟨∅, fun r _ h => absurd h hab⟩`. Set `G : Row M × Row M → Finset Ω` to `fun p => Classical.choose (loc p.1 p.2)`. Use `⟨Finset.univ.biUnion G, ?_⟩` and prove the remaining obligations. Introduce `s s' hss x y hxy`.
+
+Use `set r := s'⁻¹ * s`. Use `set a := gr M s⁻¹ x`. Use `set b := gr M s⁻¹ y`. Establish `hab : Ok a b` using `(hok x y hxy).2.2.1 s⁻¹`. Establish `hr : ∀ z ∈ G (a, b), r z = z`.
+
+Introduce `z hz`. Use `hss z (Finset.mem_biUnion.2 ⟨(a, b), Finset.mem_univ _, hz⟩)` as an intermediate fact. Use `show s'⁻¹ (s z) = z`. Rewrite using `[this]`. Conclude with `s'.symm_apply_apply z`.
+
+Take `⟨fa, fb, fm⟩` from `Classical.choose_spec (loc a b) r hr hab`. Establish `hsr : s' * r = s` using `by simp [r]`. Establish `hrs : r * s⁻¹ = s'⁻¹` using `by simp [r]`. Establish `inv1 : ∀ (q : Gal(Ω/ℚ)) (e : Row M), gr M q (gr M q⁻¹ e) = e`. Introduce `q e`.
+
+Rewrite using `[← (hgr _ _ _).1, mul_inv_cancel, (hgr 1 1 e).2]`. Establish `sa` using `sgB Ω ε X c M hc hc6 hM hcM a (hok a b hab).1`. Establish `sb` using `sgB Ω ε X d M hd hd6 hM hdM b (hok a b hab).2.1`. Establish `ex : sg X c M (gr M s'⁻¹ x) = sg X c M a`. Rewrite using `[← hrs, (hgr _ _ _).1, ← sa.2.2.1 r, fa]`.
+
+Establish `ey : sg X d M (gr M s'⁻¹ y) = sg X d M b`. Rewrite using `[← hrs, (hgr _ _ _).1, ← sb.2.2.1 r, fb]`. Establish `ws'` using `(hw s' x y hxy).2`. Rewrite `ws'` using `[ex, ey]`. Establish `ws` using `(hw s x y hxy).2`.
+
+Establish `gx : (X.gal s) (sg X c M a) = sg X c M x` using `by rw [sa.2.2.1 s, inv1]`. Establish `gy : (X.gal s) (sg X d M b) = sg X d M y` using `by rw [sb.2.2.1 s, inv1]`. Establish `q1 : IsPt X m ((X.gal r) (sg X c M a)) ((X.gal r) (sg X d M b)) (t (sg X c M a) (sg X d M b))`. Rewrite using `[fa, fb]`. Conclude with `pt a b hab`.
+
+Establish `q2 : IsPt X m ((X.gal s') ((X.gal r) (sg X c M a))) ((X.gal s') ((X.gal r) (sg X d M b))) (t (sg X c M x) (sg X d M y))`. Rewrite using `[← gal_mul_apply, ← gal_mul_apply, hsr, gx, gy]`. Conclude with `pt x y hxy`. Establish `comp` using `mvComp Ω ε X m hm (X.gal r) (X.gal s') r s' (hadm r) (hadm s') _ _ _ _ _ (pt a b hab) q1 q2 _ _ fm ws'`. Rewrite `comp` using `[map_one, one_pow, one_mul]`.
+
+Establish `eg : (X.gal r).trans (X.gal s') = X.gal s`. Use extensionality with `f`. Rewrite using `[← hsr, gal_mul_apply]`. Both sides reduce to the same expression. Rewrite `comp` using `[eg, hsr]`.
+
+Establish `q3 : IsPt X m ((X.gal s) (sg X c M a)) ((X.gal s) (sg X d M b)) (t (sg X c M x) (sg X d M y))`. Rewrite using `[gx, gy]`. Conclude with `pt x y hxy`. Conclude with `((mvEx Ω ε X m hm (X.gal s) s (hadm s) _ _ _ (pt a b hab)).2.2.2 _ q3 _ _ comp).1 ws`.
+-/
 theorem UpperTheory.V.Z.Kato.Sym.PC.loc :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (m c d M : ℕ), 0 < m → 1 < c → 1 < d → Nat.Coprime c 6 → Nat.Coprime d 6 → Lv c d M → ∀ t w, IsSec X m t → IsSymb X m c d M t w → ∃ T : Finset Ω, ∀ s s', (∀ z ∈ T, s z = s' z) → ∀ x y, Ok x y → Cgr m (w s x y) (w s' x y) := by
   intro Ω _ _ _ ε X m c d M hm hc hd hc6 hd6 hL t w ht hw

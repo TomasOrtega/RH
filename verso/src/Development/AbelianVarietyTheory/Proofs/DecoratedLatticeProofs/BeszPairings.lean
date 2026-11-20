@@ -13,6 +13,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.BesPair
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p ρ B s n _ _ c FA F hF hs hz`. Take `⟨rfl, h1, h2, h3, h4⟩` from `hF`. Establish `hG` using `GlobalTheory.MixModel.gram_conjTranspose (S := B.V)`. Establish `hp0 : p.pr 0 = 0` using `map_zero (GlobalTheory.LocMod.Witness.prH p)`. Establish `hl : ∀ r, p.pr (star ((B.V.gram *ᵥ (B.d.i₀ *ᵥ vecB B.o B.ζ)) r)) = p.pr ((star (B.d.i₀ *ᵥ vecB B.o B.ζ) ᵥ* B.V.gram) r)` using `fun r => by conv_rhs => rw [← hG, ← Matrix.star_mulVec]`.
+
+Both sides reduce to the same expression. Establish `hM : ∀ {ι : Type} [Fintype ι] (M : Matrix (Fin B.V.rank) ι D.host.E), star (B.d.i₀ *ᵥ vecB B.o B.ζ) ᵥ* B.V.gram ᵥ* M = star (vecB B.o B.ζ) ᵥ* (B.d.i₀ᴴ * B.V.gram * M)` using `fun M => by`. Rewrite using `[Matrix.star_mulVec, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, Matrix.mul_assoc]`. Establish `hsum : ∀ (t : k) {ι : Type} [Fintype ι] (M : Matrix (Fin B.V.rank) ι D.host.E) (i : ι), ∑ r, t * p.pr (M r i) * p.pr ((star (B.d.i₀ *ᵥ vecB B.o B.ζ) ᵥ* B.V.gram) r) = t * p.pr ((star (B.d.i₀ *ᵥ vecB B.o B.ζ) ᵥ* B.V.gram ᵥ* M) i)`. Introduce `t ι _ M i`.
+
+Express the relevant statement in the definitionally equal form `_ = t * GlobalTheory.LocMod.Witness.prH p _`. Rewrite using `[Matrix.vecMul, dotProduct, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `t * GlobalTheory.LocMod.Witness.prH p (M r i) * GlobalTheory.LocMod.Witness.prH p _ = t * (GlobalTheory.LocMod.Witness.prH p _ * GlobalTheory.LocMod.Witness.prH p (M r i))`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hE : star (B.d.i₀ *ᵥ vecB B.o B.ζ) ᵥ* B.V.gram ᵥ* B.d.e = 0`. Rewrite using `[hM, B.d.i₀e, Matrix.vecMul_zero]`. Establish `hE' : star (B.d.i₀ *ᵥ vecB B.o B.ζ) ᵥ* B.V.gram ᵥ* B.d.e' = 0`. Rewrite using `[hM, B.d.i₀e', Matrix.vecMul_zero]`.
+
+Establish `hA : star (B.d.i₀ *ᵥ vecB B.o B.ζ) ᵥ* B.V.gram ᵥ* (B.d.i₀ * B.o.iA) = 0`. Rewrite using `[hM, ← Matrix.mul_assoc, B.d.iso, vecB, Matrix.star_mulVec, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, B.o.orth, Matrix.vecMul_zero]`. Establish `hdot : (star (B.d.i₀ *ᵥ vecB B.o B.ζ) ᵥ* B.V.gram) ⬝ᵥ (B.d.i₀ *ᵥ vecB B.o B.ζ) = star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ`. Rewrite using `[Matrix.dotProduct_mulVec, hM, B.d.iso, vecB, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`. Simplify using `only [Matrix.vecMul_vecMul]`.
+
+Rewrite using `[B.o.isoB, ← Matrix.dotProduct_mulVec]`. Establish `hcore : ∀ a, ∑ r, F.β r (Sum.inl a) * p.pr (star ((B.V.gram *ᵥ (B.d.i₀ *ᵥ vecB B.o B.ζ)) r)) = 0`. Introduce `a`. Repeatedly rewrite using `[h1, hl, Matrix.mul_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `hsum (FA.β b a) (B.d.i₀ * B.o.iA) b` as an intermediate fact. Rewrite `this` using `[hA, Pi.zero_apply, hp0, mul_zero]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun r _ => by ring`.
+
+Establish `hval : ∀ j : Fin (2 * ρ + 1), j.val = ρ → ∑ r, F.β r (Sum.inr j) * p.pr (star ((B.V.gram *ᵥ (B.d.i₀ *ᵥ vecB B.o B.ζ)) r)) = s * p.hz B`. Introduce `j hj`. Repeatedly rewrite using `[h3 j hj, hl]`. Express the relevant statement in the definitionally equal form `_ = s * GlobalTheory.LocMod.Witness.prH p _`. Rewrite using `[← hdot, dotProduct, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `s * GlobalTheory.LocMod.Witness.prH p _ * GlobalTheory.LocMod.Witness.prH p _ = s * (GlobalTheory.LocMod.Witness.prH p _ * GlobalTheory.LocMod.Witness.prH p _)`. Expand and normalize the polynomial expressions, which then agree. Establish `hunit : valuation k (s * p.hz B) = 1` using `by rw [map_mul, hs, hz, one_mul]`.
+
+Use `⟨Sum.inr ⟨ρ, by omega⟩, fun r => (h3 _ rfl r).symm, fun m => ?_, Sum.inr ⟨ρ, by omega⟩, by rw [hval _ rfl, hunit]⟩` and prove the remaining obligations. Break down `m with a | j` into its components or cases. Rewrite using `[hcore a]`. Conclude with `zero_mem _`. Break down `lt_trichotomy j.val ρ with hj | hj | hj` into its components or cases.
+
+Repeatedly rewrite using `[h2 ⟨j.val, hj⟩ j rfl, hl]`. Rewrite using `[hsum, hE, Pi.zero_apply, hp0, mul_zero]`. Conclude with `zero_mem _`. Rewrite using `[hval j hj]`. Conclude with `(Valuation.mem_integer_iff _ _).2 (le_of_eq hunit)`.
+
+Establish `hj2` using `j.isLt`. Repeatedly rewrite using `[h4 ⟨2 * ρ - j.val, by omega⟩ j (by simp only; omega), hl]`. Rewrite using `[hsum, hE', Pi.zero_apply, hp0, mul_zero]`. Conclude with `zero_mem _`.
+-/
 theorem besz_pairings : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) (ρ : ℕ) (B : BesLev D ρ) (s : k) (n : Type) [Fintype n] [DecidableEq n] (c : ℕ)
     (FA : Frame k B.A.rank n) (F : Frame k B.V.rank (n ⊕ Fin c)),

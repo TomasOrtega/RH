@@ -15,6 +15,9 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.IsLocallyNoetherian X` using `AlgebraicGeometry.LocallyOfFiniteType.isLocallyNoetherian f`. Establish `: CompactSpace ↥X` using `AlgebraicGeometry.QuasiCompact.compactSpace_of_compactSpace f`. Prove the components needed by the constructor for the conclusion.
+-/
 theorem isNoetherian_of_locallyOfFiniteType {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsNoetherian Y] [AlgebraicGeometry.LocallyOfFiniteType f]
     [AlgebraicGeometry.QuasiCompact f] :
@@ -24,6 +27,9 @@ theorem isNoetherian_of_locallyOfFiniteType {X Y : Scheme.{u}} (f : X ⟶ Y)
   have : CompactSpace ↥X := AlgebraicGeometry.QuasiCompact.compactSpace_of_compactSpace f
   constructor
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.LocallyOfFiniteType e.inv` using `inferInstance`. Establish `: AlgebraicGeometry.QuasiCompact e.inv` using `inferInstance`. Conclude with `isNoetherian_of_locallyOfFiniteType e.inv`.
+-/
 theorem isNoetherian_of_iso {X Y : Scheme.{u}} (e : X ≅ Y)
     [AlgebraicGeometry.IsNoetherian X] :
     AlgebraicGeometry.IsNoetherian Y := by
@@ -31,6 +37,9 @@ theorem isNoetherian_of_iso {X Y : Scheme.{u}} (e : X ≅ Y)
   have : AlgebraicGeometry.QuasiCompact e.inv := inferInstance
   exact isNoetherian_of_locallyOfFiniteType e.inv
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.IsProper π` using `Blowup.blowupIsProper.{u} X X' π I h`. Establish `: AlgebraicGeometry.LocallyOfFiniteType π` using `inferInstance`. Establish `: AlgebraicGeometry.QuasiCompact π` using `inferInstance`. Conclude with `isNoetherian_of_locallyOfFiniteType π`.
+-/
 theorem isNoetherian_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} [AlgebraicGeometry.IsNoetherian X]
     {π : X' ⟶ X} {I : X.IdealSheafData} (h : Blowup.IsBlowupAlongIdealSheaf π I) :
     AlgebraicGeometry.IsNoetherian X' := by
@@ -48,6 +57,11 @@ instance instIsNoetherianAffineSpaceIdx (k : Type u) [Field k] (n : Type u) [Fin
   exact isNoetherian_of_iso
     (AlgebraicGeometry.AffineSpace.SpecIso n (CommRingCat.of k)).symm
 
+/- English proof (translation)
+Use `revert hi`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Conclude with `isNoetherian_of_iso B.isoZero.symm`.
+
+Consider the case `succ n ih`. Introduce `hi`. Establish `hn : n < B.length` using `hi`. Conclude with `@isNoetherian_of_isBlowupAlongIdealSheaf (B.schemeAt n) (B.schemeAt (n + 1)) (ih (le_of_lt hn)) _ _ (B.isBlowupAlongIdealSheaf_blowupMorphism n hn)`.
+-/
 theorem isNoetherian_schemeAt {X : Scheme.{u}} (B : SequenceOfBlowups X)
     [AlgebraicGeometry.IsNoetherian X] (i : ℕ) (hi : i ≤ B.length) :
     AlgebraicGeometry.IsNoetherian (B.schemeAt i) := by
@@ -66,6 +80,11 @@ instance SequenceOfBlowups.instIsNoetherianTop {X : Scheme.{u}} (B : SequenceOfB
     [AlgebraicGeometry.IsNoetherian X] : AlgebraicGeometry.IsNoetherian B.lastObj :=
   isNoetherian_schemeAt B B.length le_rfl
 
+/- English proof (translation)
+Use `revert hi`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Establish `: AlgebraicGeometry.IsNoetherian S.ambient` using `instIsNoetherianAffineSpaceIdx k (ULift.{u, 0} (Fin S.dim))`.
+
+Conclude with `isNoetherian_of_iso S.ambientBlowups.isoZero.symm`. Consider the case `succ n ih`. Introduce `hi`. Establish `hn : n < S.ambientLength` using `hi`. Conclude with `@isNoetherian_of_isBlowupAlongIdealSheaf (S.ambientLevel n) (S.ambientLevel (n + 1)) (ih (le_of_lt hn)) _ _ (S.ambientBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hn)`.
+-/
 theorem isNoetherian_ambientLevel {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
     [AlgebraicGeometry.LocallyOfFiniteType pY] (S : AffineSpacePrincipalizationData k Y pY) (i : ℕ)
@@ -84,6 +103,9 @@ theorem isNoetherian_ambientLevel {k : Type u} [Field k] [CharZero k] {Y : Schem
     exact @isNoetherian_of_isBlowupAlongIdealSheaf (S.ambientLevel n) (S.ambientLevel (n + 1)) (ih (le_of_lt hn)) _ _
       (S.ambientBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hn)
 
+/- English proof (translation)
+Introduce `k _ _ Y pY _ _ _ _ i hi`. Conclude with `isNoetherian_ambientLevel (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY) i hi`.
+-/
 theorem embeddedPrincipalizationAmbientIsNoetherian (A : PrincipalizationAlgorithm.{u}) (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u}) :
     EmbeddedPrincipalizationAmbientIsNoetherian A hemb hsnc hsm := by

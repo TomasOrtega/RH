@@ -25,12 +25,18 @@ instance evaluationLeftAdjoint_preservesMono {C : Type u} [Category.{0} C] (R' :
     exact MorphismProperty.colimMap (W := MorphismProperty.monomorphisms (ModuleCat.{1} R'))
       (J := Discrete (c ⟶ t)) _ (fun _ => (inferInstance : Mono f))
 
+/- English proof (translation)
+The claim follows from `((evaluationAdjunctionRight (ModuleCat.{1} (ULift.{1} R)) (op U)).comp (sheafificationAdjunction Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R)))).map_injective _ hF`.
+-/
 theorem secInj (R : Type) [CommRing R] (F : Shv R) (hF : Injective F) (U : Scheme.{0}) :
     Injective ((sheafToPresheaf Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R)) ⋙
       (evaluation _ _).obj (op U)).obj F) :=
   ((evaluationAdjunctionRight (ModuleCat.{1} (ULift.{1} R)) (op U)).comp
     (sheafificationAdjunction Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R)))).map_injective _ hF
 
+/- English proof (translation)
+Introduce `R _ F hF U`. Establish `h` using `secInj R F hF U`. Conclude with `(Module.injective_iff_injective_object (ULift.{1} R) (Sec F U)).mpr h`.
+-/
 theorem LeafSecInj_of : LateralTheory.E.LeafTensQIsoPf.LeafSecInj := by
   intro R _ F hF U
   have h := secInj R F hF U

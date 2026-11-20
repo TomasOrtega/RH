@@ -12,8 +12,14 @@ def flagIdealOver (F : Type) [Field F] (n : ℕ) : Ideal (MRingOver F (PluckerBl
   RingHom.ker (aeval (fun q : Σ j, PluckerBlocks n n j => flagMinor (genMat F n) q.1 q.2) :
     MRingOver F (PluckerBlocks n n) →ₐ[F] MvPolynomial (Fin n × Fin n) F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flagIdealQ_eq (n : ℕ) : flagIdealQ n = flagIdealOver ℚ n := rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.ker_isPrime _`.
+-/
 theorem flagIdealOver_isPrime (F : Type) [Field F] (n : ℕ) : (flagIdealOver F n).IsPrime :=
   RingHom.ker_isPrime _
 

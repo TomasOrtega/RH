@@ -12,6 +12,11 @@ section
 open GlobalTheory.DefU GlobalTheory.Branching
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.EmbUnitary.exists_equiv_unitaryGroup E n τ`. Establish `heq : (sqRep ℂ n lam).comp ((cEmb τ).comp (embU n τ).subtype) = (smallRep (unitaryIncl n) lam).comp e.toMulEquiv.toMonoidHom`. Use extensionality with `x : 1`. Express the relevant statement in the definitionally equal form `sqRep ℂ n lam (cEmb τ (x : UA E n)) = sqRep ℂ n lam (unitaryIncl n (e x))`. Rewrite using `[he]`.
+
+Rewrite using `[heq]`. Conclude with `GlobalTheory.CuspMult.isIrreducible_comp_mulEquiv _ e.toMulEquiv (isIrreducible_smallRep_unitary n lam)`.
+-/
 private theorem irr_emb (τ : E →+* ℂ) (lam : DomWeight n) :
     Representation.IsIrreducible ((sqRep ℂ n lam).comp ((cEmb τ).comp (embU n τ).subtype)) := by
   obtain ⟨e, he⟩ := GlobalTheory.EmbUnitary.exists_equiv_unitaryGroup E n τ
@@ -27,6 +32,9 @@ private noncomputable def locRep (τ : E →+* ℂ) (lam : DomWeight n) :
     Representation ℂ ((embU n τ).subgroupOf (infU E n)) (nablaSq ℂ n lam) :=
   (sqRep ℂ n lam).comp ((cEmb τ).comp ((infU E n).subtype.comp (Subgroup.subtype _)))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CuspMult.isIrreducible_comp_mulEquiv _ (Subgroup.subgroupOfEquivOfLe (embU_le_infU τ)) (irr_emb τ lam)`.
+-/
 private theorem irr_locRep (τ : E →+* ℂ) (lam : DomWeight n) : (locRep τ lam).IsIrreducible :=
   GlobalTheory.CuspMult.isIrreducible_comp_mulEquiv _ (Subgroup.subgroupOfEquivOfLe (embU_le_infU τ)) (irr_emb τ lam)
 
@@ -43,6 +51,9 @@ private noncomputable def repN {m : ℕ} (N : Submodule ℂ (Fin m → UA E n �
     ext F k : 3
     exact (RU_RU x.1 y.1 (F.1 k)).symm
 
+/- English proof (translation)
+Set `π : AutSub E n` to `⟨σ, hσ⟩`. Establish `h1` using `iSup_range_weight_eq_top E n π τ lam h`. Use `UpperTheory.isotypic_of_jointly_injective_into_isotypic _ _ π.V (locRep τ lam) (π.rep.comp ((infU E n).subtype.comp (Subgroup.subtype _))) (irr_locRep τ lam) ?_ N ((repN N hN).comp (Subgroup.subtype _)) (Fin m) (fun k => ((LinearMap.proj k).comp N.subtype).codRestrict σ fun F => …` and prove the remaining obligations. Use `top_le_iff.1 (h1.ge.trans (iSup_le fun f => ?_))` and prove the remaining obligations. Conclude with `le_iSup_of_le ⟨f.toLinearMap, fun g v => LinearMap.congr_fun (f.isIntertwining' ⟨g.1.1, g.2⟩) v⟩ le_rfl`.
+-/
 private theorem isoN {m : ℕ} (N : Submodule ℂ (Fin m → UA E n → ℂ))
     (hN : ∀ x ∈ infU E n, ∀ F ∈ N, (fun k => RU E n x (F k)) ∈ N) (σ : Submodule ℂ (UA E n → ℂ))
     (hσ : IsAutRepU σ) (hNσ : ∀ F ∈ N, ∀ k, F k ∈ σ) (τ : E →+* ℂ) (lam : DomWeight n) (h : HasWeightAt σ τ lam) :
@@ -57,6 +68,21 @@ private theorem isoN {m : ℕ} (N : Submodule ℂ (Fin m → UA E n → ℂ))
   refine top_le_iff.1 (h1.ge.trans (iSup_le fun f => ?_))
   exact le_iSup_of_le ⟨f.toLinearMap, fun g v => LinearMap.congr_fun (f.isIntertwining' ⟨g.1.1, g.2⟩) v⟩ le_rfl
 
+/- English proof (translation)
+Use `haveI : Nontrivial N := Submodule.nontrivial_iff_ne_bot.2 h0`. Take `⟨hgen, hcomm⟩` from `UpperTheory.archimedeanUnitary_le_iSup_embU_and_commute E n`. Take `⟨μ, hμ0, hμ⟩` from `UpperTheory.exists_multilinear_intertwiner_of_commuting_subgroups (infU E n) I (fun i => (embU n (emb i)).subgroupOf (infU E n)) (fun i j hij a ha b hb' => Subtype.ext (hcomm (emb i) (emb j) (fun e => hij (hb.1 e)) a.1 ha b.1 hb')) (fun i => nablaSq ℂ n (lam i)) (fun i => locRep …`. Use `⟨μ, hμ0, fun x hx => ?_⟩` and prove the remaining obligations. Use `Subgroup.iSup_induction _ (C := fun x => ∀ v k, RU E n x ((μ v).1 k) = (μ fun i => sqRep ℂ n (lam i) (cEmb (emb i) x) (v i)).1 k) (hgen hx) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `τ y hy v k`. Take `⟨i, hi⟩` from `hb.2 (InfinitePlace.mk τ)`. Establish `hi' : InfinitePlace.mk (emb i) = InfinitePlace.mk τ` using `hi`. Establish `hy' : y ∈ embU n (emb i)`. Unfold `embU at hy ⊢`.
+
+Rewrite using `[hi']` and apply the resulting hypothesis. Establish `h2` using `hμ i ⟨⟨y, embU_le_infU _ hy'⟩, hy'⟩ v`. Establish `h3 : (fun j => sqRep ℂ n (lam j) (cEmb (emb j) y) (v j)) = Function.update v i (locRep (emb i) (lam i) ⟨⟨y, embU_le_infU _ hy'⟩, hy'⟩ (v i))`. Use function extensionality and compare the values at `j`. Distinguish the cases in `e : j = i`.
+
+Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Both sides reduce to the same expression. Establish `h4` using `(Subgroup.mem_inf.1 hy').2`. Rewrite `h4` using `[Subgroup.mem_iInf]`.
+
+Establish `h5` using `h4 (emb j)`. Rewrite `h5` using `[Subgroup.mem_iInf]`. Establish `h6 : cEmb (emb j) y = 1` using `h5 fun e' => e (hb.1 e')`. Rewrite using `[Function.update_of_ne e, h6, map_one, Module.End.one_apply]`. Rewrite using `[h3, h2]`.
+
+Both sides reduce to the same expression. Introduce `v k`. Simplify using `only [map_one, Module.End.one_apply]`. Introduce `a b ha hb v k`. Rewrite using `[← RU_RU, hb, ha]`.
+
+Simplify using `only [map_mul, Module.End.mul_apply]`.
+-/
 private theorem exists_multi {I : Type} [Finite I] (emb : I → (E →+* ℂ))
     (hb : Function.Bijective (fun i => InfinitePlace.mk (emb i))) (lam : I → DomWeight n)
     (σ : Submodule ℂ (UA E n → ℂ)) (hσ : IsAutRepU σ) (hw : ∀ i, HasWeightAt σ (emb i) (lam i)) {m : ℕ}
@@ -104,6 +130,9 @@ private theorem exists_multi {I : Type} [Finite I] (emb : I → (E →+* ℂ))
 
 end
 
+/- English proof (translation)
+Use `Fintype.ofFinite I` as an intermediate fact. Use extensionality with `v`. Simplify using `[PiTensorProduct.dualDistrib_apply]`.
+-/
 private theorem dualDistrib_comp_map {I : Type} [Finite I] {M : I → Type} [∀ i, AddCommGroup (M i)]
     [∀ i, Module ℂ (M i)] (f : ∀ i, Module.Dual ℂ (M i)) (g : ∀ i, M i →ₗ[ℂ] M i) :
     PiTensorProduct.dualDistrib (PiTensorProduct.tprod ℂ f) ∘ₗ PiTensorProduct.map g =
@@ -112,6 +141,19 @@ private theorem dualDistrib_comp_map {I : Type} [Finite I] {M : I → Type} [∀
   ext v
   simp [PiTensorProduct.dualDistrib_apply]
 
+/- English proof (translation)
+Introduce `E _ _ _ n hn I _ emb hb lam σ hσ hw m N h0 hNσ hN`. Take `⟨μ, hμ0, hμ⟩` from `exists_multi emb hb (fun i => (lam i).dual) σ hσ hw N h0 hNσ hN`. Use `choose κ hκ using fun i => UpperTheory.exists_dual_schur_module_iso_dual_weight n hn (lam i)`. Set `D` to `PiTensorProduct.dualDistribEquiv (R := ℂ) (M := fun i => nablaSq ℂ n (lam i))`. Establish `hD : ∀ t, D t = PiTensorProduct.dualDistrib t` using `fun _ => rfl`.
+
+Set `Ψ` to `PiTensorProduct.lift (μ.compLinearMap fun i => (κ i).toLinearMap)`. Establish `hΦ : ∀ f, (N.subtype ∘ₗ Ψ ∘ₗ D.symm.toLinearMap) (D (PiTensorProduct.tprod ℂ f)) = (μ fun i => κ i (f i)).1`. Introduce `f`. Express the relevant statement in the definitionally equal form `(Ψ (D.symm (D _))).1 = _`. Rewrite using `[D.symm_apply_apply, PiTensorProduct.lift.tprod]`.
+
+Both sides reduce to the same expression. Use `⟨N.subtype ∘ₗ Ψ ∘ₗ D.symm.toLinearMap, fun h => hμ0 ?_, fun ℓ => (Ψ (D.symm ℓ)).2, fun ℓ x hx k => ?_⟩` and prove the remaining obligations. Use extensionality with `v : 1`. Use `hΦ fun i => (κ i).symm (v i)` as an intermediate fact. Rewrite `this` using `[h]`.
+
+Simplify using `only [LinearEquiv.apply_symm_apply] at this`. Conclude with `Subtype.ext this.symm`. Take `⟨t, rfl⟩` from `D.surjective ℓ`. Generalize the expression as in `(N.subtype ∘ₗ Ψ ∘ₗ D.symm.toLinearMap) = Φ at hΦ`. Proceed by induction on `t using PiTensorProduct.induction_on with`.
+
+Consider the case `smul_tprod c f`. Rewrite using `[map_smul, LinearMap.smul_comp, map_smul, map_smul, Pi.smul_apply, Pi.smul_apply, map_smul]`. Use `congr 1`. Rewrite using `[hΦ, hμ x hx, hD, dualDistrib_comp_map, ← hD, hΦ]`. Simplify using `only [map_inv (cEmb _), hκ]`.
+
+Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_comp, Pi.add_apply, ha, hb]`.
+-/
 theorem UpperTheory.exists_tensor_dual_embedding_of_hasWeightAt :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), 1 ≤ n → ∀ (I : Type) [Finite I] (emb : I → (E →+* ℂ)), Function.Bijective (fun i => InfinitePlace.mk (emb i)) → ∀ (lam : I → DomWeight n) (σ : Submodule ℂ (UA E n → ℂ)), IsAutRepU σ → (∀ i, HasWeightAt σ (emb i) (lam i).dual) → ∀ (m : ℕ) (N : Submodule ℂ (Fin m → UA E n → ℂ)), N ≠ ⊥ → (∀ F ∈ N, ∀ k, F k ∈ σ) → (∀ x ∈ infU E n, ∀ F ∈ N, (fun k => RU E n x (F k)) ∈ N) → ∃ Φ : Module.Dual ℂ (⨂[ℂ] i : I, nablaSq ℂ n (lam i)) →ₗ[ℂ] (Fin m → UA E n → ℂ), Φ ≠ 0 ∧ (∀ ℓ, Φ ℓ ∈ N) ∧ ∀ ℓ, ∀ x ∈ infU E n, ∀ k, RU E n x (Φ ℓ k) = Φ (ℓ ∘ₗ PiTensorProduct.map fun i => GlobalTheory.Branching.sqRep ℂ n (lam i) (cEmb (emb i) x⁻¹)) k := by
   intro E _ _ _ n hn I _ emb hb lam σ hσ hw m N h0 hNσ hN

@@ -15,6 +15,17 @@ namespace PositivityTheory.ThKF0
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E}
   {n d r s r' s' : ℕ} {X : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+Establish `h0` using `GlobalTheory.LatVacArith.psi_symp_latAtV σ B X W r s r' s' hB hX hW v (θ * (θ - θ')) 1 (by rw [map_one]; exact one_mem _) γ hγ γ hγ`. Rewrite using `[← mul_one (B.ψ (_ * symp _ (inclR (F := F) (AF F) (θ' : E)) _ _ _ _)), ← h0, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Establish `hc` using `PositivityTheory.ThK.Vac.cA_cA (PositivityTheory.ThK.Vac.sigma_sigma hB.cm)`. Establish `hh` using `GlobalTheory.VacCocycle.conj_hTens (cA σ) hc (JA := incM F X.J) (JB := incM F W.J) (fun i j => by show cA σ (inclR (F := F) (AF F) _) = inclR (F := F) (AF F) _`.
+
+Rewrite using `[GlobalTheory.VacIndic.cA_inclR, hX.herm]) (fun i j => by`. Use `show cA σ (inclR (F := F) (AF F) _) = -inclR (F := F) (AF F) _`. Rewrite using `[GlobalTheory.VacIndic.cA_inclR, hW.skew, map_neg]) γ γ`. Establish `e1 : cA σ (inclR (F` using `F) (AF F) (θ : E)) = 1 - inclR (F := F) (AF F) (θ : E) := by`. Rewrite using `[GlobalTheory.VacIndic.cA_inclR, eq_sub_of_add_eq' h, map_sub, map_one]`.
+
+Establish `e2 : cA σ (inclR (F` using `F) (AF F) (θ' : E)) = 1 - inclR (F := F) (AF F) (θ' : E) := by`. Rewrite using `[GlobalTheory.VacIndic.cA_inclR, eq_sub_of_add_eq' h', map_sub, map_one]`. Simplify using `only [symp, one_mul]`. Rewrite using `[show ((θ * (θ - θ') : 𝓞 E) : E) = θ * (θ - θ') by simp, map_mul (inclR (F := F) (AF F)), map_sub (inclR (F := F) (AF F))]`. Generalize the expression as in `hTens (cA σ) (incM F X.J) (incM F W.J) γ γ = T at hh ⊢`.
+
+Generalize the expression as in `inclR (F := F) (AF F) (θ : E) = a at e1 ⊢`. Generalize the expression as in `inclR (F := F) (AF F) (θ' : E) = a' at e2 ⊢`. Establish `t` using `GlobalTheory.VacCocycle.trace_conj (R := AF F) (cA σ) hc (a * (a - a') * T)`. Rewrite `t` using `[map_mul (cA σ), map_mul (cA σ), map_sub (cA σ), e1, e2, hh, show (1 - a) * (1 - a - (1 - a')) * -T = a * T - a' * T - a * (a - a') * T by ring, map_sub, map_sub]`. Establish `h3 : (⅟(2 : AF F)) * 2 = 1` using `invOf_mul_self _`.
+
+Generalize the expression as in `(⅟(2 : AF F)) = u at h3 ⊢`. Express the relevant statement in the definitionally equal form `u * Algebra.trace (AF F) (AE F E) (a * T) = u * Algebra.trace (AF F) (AE F E) (a' * T) + Algebra.trace (AF F) (AE F E) (a * (a - a') * T)`. Take the linear combination `u * t + (Algebra.trace (AF F) (AE F E) (a * (a - a') * T)) * h3`.
+-/
 theorem chi_indep (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') {θ θ' : 𝓞 E} (h : (θ : E) + σ θ = 1)
     (h' : (θ' : E) + σ θ' = 1) {v : Pl F} {γ} (hγ : γ ∈ latAtV X W v) :
     B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) γ γ) =
@@ -47,12 +58,20 @@ theorem chi_indep (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ 
     u * Algebra.trace (AF F) (AE F E) (a' * T) + Algebra.trace (AF F) (AE F E) (a * (a - a') * T)
   linear_combination u * t + (Algebra.trace (AF F) (AE F E) (a * (a - a') * T)) * h3
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TensUniq.eq_of_tens_eq v φ _ _ hφ fun t ht => (GlobalTheory.VacBridge.rho_acts_locCo co ψ v γ ((latAtV_at_stable X W v).1 γ hγ) φ t ht).symm.trans (h t ht)`.
+-/
 theorem loc_eig {ψ : AddChar (AF F) ℂ} (co : Darboux (symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J)) (Fin n × Fin d))
     {v : Pl F} {φ} (hφ : φ ∈ SB (Fin n × Fin d → Fv F v)) {γ} (hγ : γ ∈ latAtV X W v) {c : ℂ}
     (h : Acts (evFin F v) (co.rho ψ γ) φ (c • φ)) : schr (psiAt ψ v) (locCo co v γ) φ = c • φ :=
   GlobalTheory.TensUniq.eq_of_tens_eq v φ _ _ hφ fun t ht =>
     (GlobalTheory.VacBridge.rho_acts_locCo co ψ v γ ((latAtV_at_stable X W v).1 γ hγ) φ t ht).symm.trans (h t ht)
 
+/- English proof (translation)
+Take `⟨hs, h0, θ, hθ, hA⟩` from `h`. Take `⟨hs', h0', θ', hθ', hA'⟩` from `h'`. Take `⟨c, hc⟩` from `PositivityTheory.ThK.Vac.local_line M.co hB.std v (latAtV X W v) (latAtV_at_stable X W v).1 (fun z hz h => PositivityTheory.ThK.Vac.mem_latAtV hB hX hW v hz h) _ hs hs' h0 (fun γ hγ => loc_eig M.co hs hγ (hA γ hγ)) fun γ hγ => by`. Establish `k` using `loc_eig M.co hs' hγ (hA' γ hγ)`. Rewrite `k` using `[← chi_indep hB hX hW hθ hθ' hγ]`.
+
+Conclude with `k`. Conclude with `⟨c, fun c0 => h0' (by rw [hc, c0, zero_smul]), hc⟩`.
+-/
 theorem vac_line (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') (M : Model σ X W) (v : Pl F) {φ φ'}
     (h : M.IsVac B.ψ v φ) (h' : M.IsVac B.ψ v φ') : ∃ c : ℂ, c ≠ 0 ∧ φ' = c • φ := by
   obtain ⟨hs, h0, θ, hθ, hA⟩ := h

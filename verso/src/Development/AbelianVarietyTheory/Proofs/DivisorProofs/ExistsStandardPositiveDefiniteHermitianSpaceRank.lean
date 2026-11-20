@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.StdDefSpace
 
+/- English proof (translation)
+Introduce `D n`. Use `⟨Formalism.BasicNotions.Examples₂.posSpace Formalism.BasicNotions.Examples₂.star_isIntegral n, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `(Formalism.BasicNotions.Examples₂.stdSpace_gram_apply (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n (fun _ => false) n 0 i j).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+
+Apply the tactic sequence `by_cases h : i = j <;> simp [h, Formalism.BasicNotions.Examples₂.sgn] <;> first | rfl | exact h`. Conclude with `Formalism.BasicNotions.Examples₂.posSpace_sigOK _ n`. Conclude with `fun _ => Or.inl rfl`.
+-/
 theorem exists_std_definite : ∀ (D : D7) (n : ℕ), ∃ V : HSp D, V.rank = n ∧ V.gram = 1 ∧ IsDefiniteSpace V := by
   intro D n
   refine ⟨Formalism.BasicNotions.Examples₂.posSpace Formalism.BasicNotions.Examples₂.star_isIntegral n, rfl, ?_, ?_, ?_⟩

@@ -19,35 +19,59 @@ namespace GlobalTheory.AnnNbhdCpt
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AdelicCoord.af_ext (by rw [map_add, map_one, GlobalTheory.AdelicCoord.fstA_pairA, GlobalTheory.AdelicCoord.fstA_pairA, zero_add]) (by rw [map_add, map_one, GlobalTheory.AdelicCoord.sndA_pairA, GlobalTheory.AdelicCoord.sndA_pairA, add_zero])`.
+-/
 theorem pairA_add_one : pairA D.host.F 0 1 + pairA D.host.F 1 0 = 1 :=
   GlobalTheory.AdelicCoord.af_ext (by rw [map_add, map_one, GlobalTheory.AdelicCoord.fstA_pairA, GlobalTheory.AdelicCoord.fstA_pairA, zero_add])
     (by rw [map_add, map_one, GlobalTheory.AdelicCoord.sndA_pairA, GlobalTheory.AdelicCoord.sndA_pairA, add_zero])
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AdelicCoord.af_ext (by rw [map_mul, map_zero, GlobalTheory.AdelicCoord.fstA_pairA, GlobalTheory.AdelicCoord.fstA_pairA, mul_zero]) (by rw [map_mul, map_zero, GlobalTheory.AdelicCoord.sndA_pairA, GlobalTheory.AdelicCoord.sndA_pairA, zero_mul])`.
+-/
 theorem pairA_mul_pairA : pairA D.host.F 1 0 * pairA D.host.F 0 1 = 0 :=
   GlobalTheory.AdelicCoord.af_ext (by rw [map_mul, map_zero, GlobalTheory.AdelicCoord.fstA_pairA, GlobalTheory.AdelicCoord.fstA_pairA, mul_zero])
     (by rw [map_mul, map_zero, GlobalTheory.AdelicCoord.sndA_pairA, GlobalTheory.AdelicCoord.sndA_pairA, zero_mul])
 
+/- English proof (translation)
+Rewrite using `[← add_smul, pairA_add_one, one_smul]`.
+-/
 theorem smul_fin_add (z : AE D) : pairA D.host.F 0 1 • z + pairA D.host.F 1 0 • z = z := by
   rw [← add_smul, pairA_add_one, one_smul]
 
+/- English proof (translation)
+Establish `h'` using `(GlobalTheory.AdelicCoord.infPart_eq_zero_iff D z).1 h`. Use `smul_fin_add z` as an intermediate fact. Rewrite `this` using `[h', add_zero]`. Then use the resulting hypothesis.
+-/
 theorem smul_fin_of_inf (z : AE D) (h : infPart D z = 0) : pairA D.host.F 0 1 • z = z := by
   have h' := (GlobalTheory.AdelicCoord.infPart_eq_zero_iff D z).1 h
   have := smul_fin_add z
   rwa [h', add_zero] at this
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.AdelicCoord.infPart_eq_zero_iff, smul_smul, pairA_mul_pairA, zero_smul]`.
+-/
 theorem infPart_smul_fin (z : AE D) : infPart D (pairA D.host.F 0 1 • z) = 0 := by
   rw [GlobalTheory.AdelicCoord.infPart_eq_zero_iff, smul_smul, pairA_mul_pairA, zero_smul]
 
+/- English proof (translation)
+Unfold `idAt`. Rewrite using `[Ideal.mem_inf, Ideal.mem_iInf, RingHom.mem_ker]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, fun w => absurd trivial w.2⟩⟩`.
+-/
 theorem mem_idAt_true (z : AE D) : z ∈ idAt D (fun _ => True) ↔ infPart D z = 0 := by
   unfold idAt
   rw [Ideal.mem_inf, Ideal.mem_iInf, RingHom.mem_ker]
   exact ⟨fun h => h.1, fun h => ⟨h, fun w => absurd trivial w.2⟩⟩
 
+/- English proof (translation)
+Unfold `MxAt`. Rewrite using `[← Matrix.ext_iff]`. Simplify using `only [Matrix.smul_apply, Matrix.zero_apply, mem_idAt_true, GlobalTheory.AdelicCoord.infPart_eq_zero_iff]`.
+-/
 theorem mxAt_true_iff {m n : ℕ} (x : Mx D m n) : MxAt (fun _ => True) x ↔ pairA D.host.F 1 0 • x = 0 := by
   unfold MxAt
   rw [← Matrix.ext_iff]
   simp only [Matrix.smul_apply, Matrix.zero_apply, mem_idAt_true, GlobalTheory.AdelicCoord.infPart_eq_zero_iff]
 
+/- English proof (translation)
+Use `haveI := (Formalism.IndefR.Eqv.ae_facts D).1`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `show Continuous fun x : Mx D m n => c • x i j`. Simplify using `only [Algebra.smul_def]`. Conclude with `continuous_const.mul (continuous_id.matrix_elem i j)`.
+-/
 theorem continuous_smul_mx {m n : ℕ} (c : AF D.host.F) : Continuous fun x : Mx D m n => c • x := by
   haveI := (Formalism.IndefR.Eqv.ae_facts D).1
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -60,6 +84,25 @@ def annSet (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (Γ : AddSubgroup (WO 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Set `e : AF D.host.F` to `pairA D.host.F 0 1`. Set `V : AddSubgroup (WO S T)` to `{ carrier := {u | e • u ∈ Γ} add_mem' := fun {a b} ha hb => by show e • (a + b) ∈ Γ; rw [smul_add]; exact add_mem ha hb zero_mem' := by show e • (0 : WO S T) ∈ Γ; rw [smul_zero]; exact zero_mem _ neg_mem' := fun {a} ha => by show e • (-a) ∈ Γ; rw [smul_neg]; exact neg_mem ha }`. Establish `hfinE : ∀ u : WO S T, MxAt (fun _ => True) (e • u)` using `fun u i j => by`. Rewrite using `[mem_idAt_true, Matrix.smul_apply]`.
+
+Conclude with `infPart_smul_fin _`. Establish `hVo : IsOpen (V : Set (WO S T))`. Use `AddSubgroup.isOpen_of_mem_nhds V (g := 0) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset (((continuous_smul_mx e).isOpen_preimage U hU).mem_nhds (by show e • (0 : WO S T) ∈ U; rw [smul_zero]; exact h0)) fun u hu => hUΓ _ hu (hfinE u)` and prove the remaining obligations. Take `⟨Q, hQc, hQ⟩` from `GlobalTheory.AnnihMat.annihilator_inBox_full D ψ hψ S T V hVo`.
+
+Establish `hfix : ∀ u : WO S T, MxAt (fun _ => True) u → e • u = u` using `fun u hu => by`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply]`. Conclude with `smul_fin_of_inf _ ((mem_idAt_true _).1 (hu i j))`. Establish `hsub : annSet ψ Γ ⊆ (fun x : WO S T => e • x) '' Q`.
+
+Introduce and unpack `u' ⟨hfin, hann⟩`. Take `⟨k, hk, hk0⟩` from `hQ u' fun u hu hu0 => by`. Establish `hu1 : MxAt (fun _ => True) u` using `fun i j => by`. Rewrite using `[mem_idAt_true]`. Conclude with `congrFun (congrFun hu0 i) j`.
+
+Establish `: u ∈ Γ`. Establish `h` using `hu`. Express the relevant statement in the definitionally equal form `e • u ∈ Γ at h`. Rewrite `h` using `[hfix u hu1]`. Then use the resulting hypothesis. Conclude with `(psi_symplO_swap ψ _ _).2 (hann u this)`.
+
+Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `hd : e • (u' - k) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.zero_apply]`. Conclude with `(GlobalTheory.AdelicCoord.finPart_eq_zero_iff D _).1 (congrFun (congrFun hk0 i) j)`.
+
+Rewrite `hd` using `[smul_sub, sub_eq_zero]`. Use `show e • k = u'`. Rewrite using `[← hd, hfix u' hfin]`. Establish `hcl : IsClosed (annSet ψ Γ)`. Establish `e1 : annSet ψ Γ = {x : WO S T | pairA D.host.F 1 0 • x = 0} ∩ ⋂ u ∈ Γ, {x : WO S T | ψ (symplO S T u x) = 1}`.
+
+Use extensionality with `x`. Simplify using `only [annSet, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, mxAt_true_iff]`. Rewrite using `[e1]`. Use `IsClosed.inter (isClosed_eq (continuous_smul_mx _) continuous_const) (isClosed_biInter fun u _ => isClosed_eq ?_ continuous_const)` and prove the remaining obligations. Conclude with `hψ.1.1.comp (GlobalTheory.SplitScalar.continuous_symplO S T continuous_const continuous_id)`.
+
+Conclude with `(hQc.image (continuous_smul_mx e)).of_isClosed_subset hcl hsub`.
+-/
 theorem isCompact_annSet (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D)
     (Γ : AddSubgroup (WO S T)) (U : Set (WO S T)) (hU : IsOpen U) (h0 : (0 : WO S T) ∈ U)
     (hUΓ : ∀ a ∈ U, MxAt (fun _ => True) a → a ∈ Γ) : IsCompact (annSet ψ Γ) := by

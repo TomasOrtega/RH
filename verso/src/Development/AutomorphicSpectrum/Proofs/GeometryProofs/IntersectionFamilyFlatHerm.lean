@@ -9,6 +9,9 @@ open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo Reciproci
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Introduce `hP K _ ι _ Ω _ F _ _ y φ I W n L A S d hI hY hO hyW hW hL hA`. Take `⟨u, hu, -⟩` from `GlobalTheory.T.exists_place_weight_conj_invariant K ι Ω F y φ (fun σ => Real.log (S.κ σ)) hO`. Rewrite using `[GlobalTheory.T.intersection_family_flat_twist K ι Ω F y φ I W n L A S d u hI hY hO hyW hW hL hA hu, GlobalTheory.T.intersection_family_place_weight hP K ι Ω F y φ I W n L d (fun σ => Real.log (S.κ σ)) u hI hY hO hyW hW hL (fun σ => congrArg Real.log (S.κ_conj σ)) (fun σ z hz => …`.
+-/
 theorem FlatHerm.inter_eq : PtsIntegrableStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] (y : (Σ k, ι k) → Ω) (φ : F →+* Ω)
     (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ) (W : Ideal (MRing ι)) (n : ℕ)

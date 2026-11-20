@@ -7,18 +7,59 @@ open Formalism.UG Matrix GlobalTheory.SatakeWeyl
 
 namespace GlobalTheory.InertZeta
 
+/- English proof (translation)
+Use `ext`. Simplify using `[Fin.val_rev]`.
+-/
 theorem rev_zero_eq_last {N : ℕ} : (0 : Fin (N + 2)).rev = Fin.last (N + 1) := by ext; simp [Fin.val_rev]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[Fin.val_rev]`.
+-/
 theorem rev_last_eq_zero {N : ℕ} : (Fin.last (N + 1)).rev = (0 : Fin (N + 2)) := by ext; simp [Fin.val_rev]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases idx_cases a with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases b with rfl | ⟨j, rfl⟩ | rfl <;>`. Simplify using `[rev_zero_eq_last, rev_last_eq_zero, ← mid_rev] at h ⊢`.
+-/
 theorem blk_rev_of_eq {N : ℕ} (a b : Fin (N + 2)) (h : blk N a = blk N b) : blk N a.rev = blk N b.rev := by
   rcases idx_cases a with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases b with rfl | ⟨j, rfl⟩ | rfl <;>
     simp [rev_zero_eq_last, rev_last_eq_zero, ← mid_rev] at h ⊢
 
+/- English proof (translation)
+Apply the tactic sequence `rcases idx_cases a with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases b with rfl | ⟨j, rfl⟩ | rfl <;>`. Simplify using `[Fin.lt_def] at h ⊢`.
+-/
 theorem lt_of_blk_lt {N : ℕ} {a b : Fin (N + 2)} (h : blk N a < blk N b) : a < b := by
   rcases idx_cases a with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases b with rfl | ⟨j, rfl⟩ | rfl <;>
     simp [Fin.lt_def] at h ⊢
 
+/- English proof (translation)
+Introduce `_ L _ _ ϖ σ q N hU g`. Establish `hσσ : ∀ x, σ (σ x) = x` using `hU.1`. Establish `hσv : ∀ x, Valued.v (σ x) = Valued.v x` using `hU.2.1`. Establish `hσϖ : σ ϖ = ϖ` using `hU.2.2.1`. Establish `hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hU.2.2.2.1`.
+
+Take `⟨b, k, hb, hk, rfl⟩` from `P.fIwasawa_iwasawa σ hσσ hσv g`. Establish `hbT : (mat b).BlockTriangular (blk N)` using `fun i j h => hb i j (lt_of_blk_lt h)`. Take `⟨m', hm'L, hm'e, hu'⟩` from `leviPart L σ (N + 2) (blk N) blk_rev_of_eq b hbT`. Use `set M₀ : Matrix (Fin N) (Fin N) L := Matrix.of fun i j => mat m' (mid i) (mid j) with hM₀`. Establish `hM₀U : cT σ M₀ * antiJ L N * M₀ = antiJ L N`.
+
+Establish `h1 : cT σ (mat m') * antiJ L (N + 2) * mat m' = antiJ L (N + 2)` using `m'.2`. Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun h1 (mid i)) (mid j)`. Rewrite `h2` using `[Matrix.mul_apply, sum_idx]`. Establish `e0 : mat m' 0 (mid j) = 0` using `hm'L _ _ (by simp)`.
+
+Establish `eL : mat m' (Fin.last (N + 1)) (mid j) = 0` using `hm'L _ _ (by simp)`. Rewrite `h2` using `[e0, eL, mul_zero, mul_zero, zero_add, add_zero]`. Establish `hJ : antiJ L (N + 2) (mid i) (mid j) = antiJ L N i j`. Simplify using `only [antiJ]`. Conclude with `if_congr (by simp only [val_mid]; omega) rfl rfl`.
+
+Rewrite `h2` using `[hJ]`. Rewrite using `[← h2, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[P.fSatake_cTJ, P.fSatake_cTJ, ← mid_rev]`. Both sides reduce to the same expression.
+
+Take `⟨g₀, hg₀⟩` from `exists_mat M₀ hM₀U`. Take `⟨⟨k₀, hk₀⟩, hout⟩` from `QuotientGroup.mk_out_eq_mul (KU σ N) g₀`. Establish `hxL : σ (mat m' 0 0) * mat m' (Fin.last (N + 1)) (Fin.last (N + 1)) = 1`. Rewrite using `[hm'e 0 0 rfl, hm'e _ _ rfl]`. Use `P.fSatake_unit_diag hb 0` as an intermediate fact.
+
+Rewrite `this` using `[rev_zero_eq_last]`. Then use the resulting hypothesis. Establish `hx0 : mat m' 0 0 ≠ 0`. Introduce `h`. Rewrite `hxL` using `[h, map_zero, zero_mul]`. Conclude with `zero_ne_one hxL`.
+
+Establish `hvx0 : Valued.v (mat m' 0 0) ≠ 0` using `by simpa using hx0`. Establish `hvx : Valued.v (mat m' 0 0) = WithZero.exp (-(-(Valued.v (mat m' 0 0)).log))`. Rewrite using `[neg_neg, WithZero.exp_log hvx0]`. Use `⟨-(Valued.v (mat m' 0 0)).log, (g₀ : GU σ N ⧸ KU σ N), fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨hmL, hm0, hmLL, hmM⟩` from `hm`.
+
+Generalize the expression as in `-(Valued.v (mat m' 0 0)).log = a at hvx hm0 hmLL`. Establish `hmiL : m⁻¹ ∈ leviU σ (blk N)` using `inv_mem hmL`. Establish `hcL : m⁻¹ * m' ∈ leviU σ (blk N)` using `mul_mem hmiL hm'L`. Establish `hcK : m⁻¹ * m' ∈ KU σ (N + 2)`. Rewrite using `[mem_KU_iff hσv]`.
+
+Introduce `i j`. Distinguish the cases in `hij : blk N i = blk N j`. Use `swap`. Rewrite using `[hcL i j hij]`. Conclude with `zero_mem _`.
+
+Rewrite using `[mat_mul, Matrix.mul_apply, sum_idx]`. Apply the tactic sequence `rcases idx_cases i with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨j, rfl⟩ | rfl <;>`. Simplify using `at hij`. Rewrite using `[Finset.sum_eq_zero (fun l _ => by rw [hmiL 0 (mid l) (by simp), zero_mul]), hmiL 0 (Fin.last _) (by simp), zero_mul, add_zero, add_zero, mat_inv_apply, rev_zero_eq_last, hmLL, map_zpow₀, hσϖ]`. Rewrite using `[intL, Valuation.mem_integer_iff]`.
+
+Rewrite using `[map_mul, map_zpow₀, hϖ, hvx, ← WithZero.exp_zsmul, ← WithZero.exp_add, show (-a) • (-1 : ℤ) + -a = 0 by rw [smul_eq_mul]; ring, WithZero.exp_zero]`. Rewrite using `[hmiL (mid i) 0 (by simp), zero_mul, zero_add, hmiL (mid i) (Fin.last _) (by simp), zero_mul, add_zero]`. Establish `e : ∑ l, mat m⁻¹ (mid i) (mid l) * mat m' (mid l) (mid j) = mat ((g₀ * k₀)⁻¹ * g₀) i j`. Rewrite using `[mat_mul, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mat_inv_apply, mat_inv_apply, ← mid_rev, ← mid_rev, hmM, hout, hg₀]`. Both sides reduce to the same expression. Rewrite using `[e, show (g₀ * k₀)⁻¹ * g₀ = k₀⁻¹ by group]`. Conclude with `P.fSatake_K_int (inv_mem hk₀) i j`. Rewrite using `[Finset.sum_eq_zero (fun l _ => by rw [hmiL (Fin.last _) (mid l) (by simp), zero_mul]), hmiL (Fin.last _) 0 (by simp), zero_mul, zero_add, zero_add, mat_inv_apply, rev_last_eq_zero, hm0, map_zpow₀, hσϖ, eq_inv_of_mul_eq_one_right hxL, intL, Valuation.mem_integer_iff, map_mul, map …`.
+
+Take `⟨hr, -⟩` from `leviRad L σ (N + 2) (blk N) hσv (m⁻¹ * m') hcL (m'⁻¹ * b) hu'`. Conclude with `⟨(m⁻¹ * m') * (m'⁻¹ * b) * (m⁻¹ * m')⁻¹, hr, (m⁻¹ * m') * k, mul_mem hcK hk, by group⟩`.
+-/
 theorem cosetSurj_of_leviExists : LeviExists → CosetSurj := by
   intro _ L _ _ ϖ σ q N hU g
   have hσσ : ∀ x, σ (σ x) = x := hU.1

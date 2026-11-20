@@ -14,10 +14,20 @@ open GroundTheory.Global.AdeleBaseChange
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[← Algebra.smul_def, ← map_smul, map_eq_zero_iff _ (adeleTensorAlgEquivLeft F E).injective]`.
+-/
 theorem smul_eq_zero_iff (u : AF F) (z : AE F E) :
     u • z = 0 ↔ algebraMap (AF F) (AdeleRing (𝓞 E) E) u * adeleTensorAlgEquivLeft F E z = 0 := by
   rw [← Algebra.smul_def, ← map_smul, map_eq_zero_iff _ (adeleTensorAlgEquivLeft F E).injective]
 
+/- English proof (translation)
+Simplify using `only [smul_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `congrArg Prod.snd (h (0, 1) rfl)`. Express the relevant statement in the definitionally equal form `finiteAdeleMap F E 1 * (adeleTensorAlgEquivLeft F E z).2 = 0 at h1`.
+
+Rewrite `h1` using `[map_one, one_mul]`. Then use the resulting hypothesis. Introduce `h u hu`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E) u.1 * (adeleTensorAlgEquivLeft F E z).1 = 0`. Rewrite using `[hu, map_zero, zero_mul]`.
+
+Express the relevant statement in the definitionally equal form `finiteAdeleMap F E u.2 * (adeleTensorAlgEquivLeft F E z).2 = 0`. Rewrite using `[h, mul_zero]`.
+-/
 theorem fst_iff (z : AE F E) :
     (∀ u : AF F, u.1 = 0 → u • z = 0) ↔ (adeleTensorAlgEquivLeft F E z).2 = 0 := by
   simp only [smul_eq_zero_iff]
@@ -33,6 +43,13 @@ theorem fst_iff (z : AE F E) :
     · change finiteAdeleMap F E u.2 * (adeleTensorAlgEquivLeft F E z).2 = 0
       rw [h, mul_zero]
 
+/- English proof (translation)
+Simplify using `only [smul_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `congrArg Prod.fst (h (1, 0) rfl)`. Express the relevant statement in the definitionally equal form `GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E) 1 * (adeleTensorAlgEquivLeft F E z).1 = 0 at h1`.
+
+Rewrite `h1` using `[map_one, one_mul]`. Then use the resulting hypothesis. Introduce `h u hu`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E) u.1 * (adeleTensorAlgEquivLeft F E z).1 = 0`. Rewrite using `[h, mul_zero]`.
+
+Express the relevant statement in the definitionally equal form `finiteAdeleMap F E u.2 * (adeleTensorAlgEquivLeft F E z).2 = 0`. Rewrite using `[hu, map_zero, zero_mul]`.
+-/
 theorem snd_iff (z : AE F E) :
     (∀ u : AF F, u.2 = 0 → u • z = 0) ↔ (adeleTensorAlgEquivLeft F E z).1 = 0 := by
   simp only [smul_eq_zero_iff]
@@ -48,6 +65,13 @@ theorem snd_iff (z : AE F E) :
     · change finiteAdeleMap F E u.2 * (adeleTensorAlgEquivLeft F E z).2 = 0
       rw [hu, map_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ l`. Establish `e : adeleTensorAlgEquivLeft F E ((l : AE F E) - 1) = (GlobalTheory.IdeleLogHom.toE F E l : AdeleRing (𝓞 E) E) - 1`. Rewrite using `[map_sub, map_one]`. Both sides reduce to the same expression. Establish `hI : ∀ u : AF F, evI F u = 0 ↔ u.1 = 0` using `fun u => map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[mem_idelesAt, ← sub_eq_zero]`. Use `Iff.trans ?_ ((fst_iff ((l : AE F E) - 1)).trans (by rw [e]; rfl))` and prove the remaining obligations. Simplify using `only [At, hI]`. Rewrite using `[mem_idelesAt, ← sub_eq_zero]`.
+
+Conclude with `(snd_iff ((l : AE F E) - 1)).trans (by rw [e]; rfl)`.
+-/
 theorem mem_idelesAt_iff : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (l : (AE F E)ˣ),
     (l ∈ idelesAt E (evI F) ↔ ((GlobalTheory.IdeleLogHom.toE F E l : AdeleRing (𝓞 E) E)).2 = 1) ∧

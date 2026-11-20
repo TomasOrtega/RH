@@ -9,6 +9,21 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite `hg` using `[MulAction.mem_stabilizer_iff]`. Establish `t2 : ∀ v : n → k, v ∈ stdLat k n ↔ ∀ i, v i ∈ 𝒪[k]`. Introduce `v`. Simplify using `only [stdLat, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, rfl⟩ i`. Conclude with `(y i).2`. Introduce `h`. Conclude with `⟨fun i => ⟨v i, h i⟩, rfl⟩`. Establish `hent : ∀ i j, (g : Matrix n n k) i j ∈ 𝒪[k]`.
+
+Introduce `i j`. Establish `hs : Pi.single j (1 : k) ∈ stdLat k n`. Rewrite using `[t2]`. Introduce `i'`. Distinguish the cases in `h : i' = j`.
+
+Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `one_mem _`. Simplify using `only [Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+
+Establish `h1 : g • Pi.single j (1 : k) ∈ stdLat k n`. Rewrite using `[← hg]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ hs`. Rewrite `h1` using `[t2]`. Establish `h2` using `h1 i`.
+
+Express the relevant statement in the definitionally equal form `((g : Matrix n n k) *ᵥ Pi.single j 1) i ∈ 𝒪[k] at h2`. Simplify `h2` using `[Matrix.mulVec_single]`. Set `A : Matrix n n 𝒪[k]` to `Matrix.of fun i j => ⟨(g : Matrix n n k) i j, hent i j⟩`. Establish `hA : (algebraMap 𝒪[k] k).mapMatrix A = (g : Matrix n n k)`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Rewrite using `[← hA, ← RingHom.map_det]`. Conclude with `(A.det).2`.
+-/
 theorem det_mem_of_mem_latStab_std {g : GL n k} (hg : g ∈ latStab (stdLat k n)) : g.val.det ∈ 𝒪[k] := by
   rw [MulAction.mem_stabilizer_iff] at hg
   have t2 : ∀ v : n → k, v ∈ stdLat k n ↔ ∀ i, v i ∈ 𝒪[k] := by
@@ -44,6 +59,25 @@ theorem det_mem_of_mem_latStab_std {g : GL n k} (hg : g ∈ latStab (stdLat k n)
   rw [← hA, ← RingHom.map_det]
   exact (A.det).2
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis 𝒪[k] L`. Set `B` to `b.extendOfIsLattice k`. Establish `hc : Fintype.card (Module.Free.ChooseBasisIndex 𝒪[k] L) = Fintype.card n`. Use `Module.finrank_eq_card_basis B` as an intermediate fact. Simplify using `using this.symm`.
+
+Set `e` to `Fintype.equivOfCardEq hc`. Set `B'` to `B.reindex e`. Set `P` to `(Pi.basisFun k n).toMatrix B'`. Set `Q` to `B'.toMatrix (Pi.basisFun k n)`. Set `h : GL n k` to `⟨P, Q, Module.Basis.toMatrix_mul_toMatrix_flip _ _, Module.Basis.toMatrix_mul_toMatrix_flip _ _⟩`.
+
+Establish `hB' : ∀ j, B' j = (b (e.symm j) : n → k)`. Introduce `j`. Simplify using `[B', B]`. Establish `key : ∀ y : n → k, h • y = ∑ j, y j • B' j`. Introduce `y`.
+
+Express the relevant statement in the definitionally equal form `P *ᵥ y = _`. Use extensionality with `i`. Simplify using `[P, Matrix.mulVec, dotProduct, Module.Basis.toMatrix_apply, Finset.sum_apply, mul_comm]`. Use `⟨h, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Simplify using `only [HSMul.hSMul, SMul.smul]`. Rewrite using `[Submodule.mem_map]`. Simplify using `only [DistribSMul.toLinearMap_apply]`. Express the relevant statement in the definitionally equal form `(∃ y ∈ stdLat k n, h • y = x) ↔ x ∈ L`. Simplify using `only [key]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨c, rfl⟩, rfl⟩`. Use `L.sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hB']`. Express the relevant statement in the definitionally equal form `algebraMap 𝒪[k] k (c j) • (b (e.symm j) : n → k) ∈ L`.
+
+Rewrite using `[algebraMap_smul]`. Conclude with `L.smul_mem (c j) (b (e.symm j)).2`. Introduce `hx`. Set `c` to `b.repr ⟨x, hx⟩`. Use `⟨fun j => (c (e.symm j) : k), ⟨fun j => c (e.symm j), rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Repeatedly rewrite using `[hB']`. Establish `hsum` using `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower] at hsum`. Rewrite using `[Equiv.sum_comp e.symm (fun i => ((c i : 𝒪[k]) : k) • (b i : n → k))]`. Rewrite using `[← hsum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `algebraMap_smul k (c i) _`.
+-/
 theorem exists_smul_stdLat_eq (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] : ∃ h : GL n k, h • stdLat k n = L := by
   let b := Module.Free.chooseBasis 𝒪[k] L
   let B := b.extendOfIsLattice k
@@ -88,6 +122,11 @@ theorem exists_smul_stdLat_eq (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] 
     refine Finset.sum_congr rfl fun i _ => ?_
     exact algebraMap_smul k (c i) _
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `exists_smul_stdLat_eq L`. Establish `hs : h⁻¹ * g * h ∈ latStab (stdLat k n)`. Simplify using `only [latStab, MulAction.mem_stabilizer_iff] at hg ⊢`. Rewrite using `[mul_smul, mul_smul, hg, inv_smul_smul]`. Establish `h1` using `det_mem_of_mem_latStab_std hs`.
+
+Rewrite `h1` using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Establish `hdet : Matrix.GeneralLinearGroup.det (h⁻¹ * g * h) = Matrix.GeneralLinearGroup.det g`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]`. Rewrite `h1` using `[hdet]`. Then use the resulting hypothesis.
+-/
 theorem det_mem_of_mem_latStab {L : Submodule 𝒪[k] (n → k)} [L.IsLattice k] {g : GL n k} (hg : g ∈ latStab L) :
     ((Matrix.GeneralLinearGroup.det g : kˣ) : k) ∈ 𝒪[k] := by
   obtain ⟨h, rfl⟩ := exists_smul_stdLat_eq L
@@ -100,6 +139,11 @@ theorem det_mem_of_mem_latStab {L : Submodule 𝒪[k] (n → k)} [L.IsLattice k]
     rw [map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]
   rwa [hdet] at h1
 
+/- English proof (translation)
+Establish `h1` using `det_mem_of_mem_latStab hg`. Establish `h2` using `det_mem_of_mem_latStab (inv_mem hg)`. Rewrite `h2` using `[map_inv, Units.val_inv_eq_inv_val]`. Use `set d : k := ((Matrix.GeneralLinearGroup.det g : kˣ) : k) with hd`. Establish `hd0 : d ≠ 0` using `Units.ne_zero _`.
+
+Establish `hu : IsUnit (⟨d, h1⟩ : 𝒪[k])` using `⟨⟨⟨d, h1⟩, ⟨d⁻¹, h2⟩, Subtype.ext (mul_inv_cancel₀ hd0), Subtype.ext (inv_mul_cancel₀ hd0)⟩, rfl⟩`. Conclude with `((Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one).1 hu`.
+-/
 theorem valuation_det_of_mem_latStab {L : Submodule 𝒪[k] (n → k)} [L.IsLattice k] {g : GL n k} (hg : g ∈ latStab L) :
     valuation k ((Matrix.GeneralLinearGroup.det g : kˣ) : k) = 1 := by
   have h1 := det_mem_of_mem_latStab hg
@@ -113,6 +157,9 @@ theorem valuation_det_of_mem_latStab {L : Submodule 𝒪[k] (n → k)} [L.IsLatt
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n _ _ L hL g hg μ hμ`. Conclude with `hμ _ (valuation_det_of_mem_latStab hg)`.
+-/
 theorem isUnram_det_latStab : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (L : Submodule 𝒪[k] (n → k)), L.IsLattice k → ∀ g ∈ latStab L, ∀ μ : kˣ →* ℂˣ, IsUnram μ → μ (Matrix.GeneralLinearGroup.det g) = 1 := by
   intro k _ _ _ _ n _ _ L hL g hg μ hμ
   exact hμ _ (valuation_det_of_mem_latStab hg)

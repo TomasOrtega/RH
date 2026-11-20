@@ -18,11 +18,17 @@ def remb : F →+ RSp F where
 
 variable {F}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem remb_apply (a : F) (τ : F →+* ℝ) : remb F a τ = τ a := rfl
 
 def latOf (N : FractionalIdeal (𝓞 F)⁰ F) : Submodule ℤ (RSp F) :=
   Submodule.map (remb F).toIntLinearMap ((N : Submodule (𝓞 F) F).restrictScalars ℤ)
 
+/- English proof (translation)
+Simplify using `[latOf]`.
+-/
 theorem mem_latOf (N : FractionalIdeal (𝓞 F)⁰ F) (x : RSp F) :
     x ∈ latOf N ↔ ∃ a ∈ N, remb F a = x := by
   simp [latOf]
@@ -35,6 +41,9 @@ def phi1 (k : ℕ) (w : ℂ) (t : ℝ) : ℂ :=
 def Phi (k : ℕ) (z : (F →+* ℝ) → ℂ) (ξ : RSp F) : ℂ :=
   ∏ τ : F →+* ℝ, phi1 k (z τ) (ξ τ)
 
+/- English proof (translation)
+Simplify using `[phi1, Complex.exp_ne_zero]`.
+-/
 example : phi1 2 Complex.I 1 ≠ 0 := by
   simp [phi1, Complex.exp_ne_zero]
 

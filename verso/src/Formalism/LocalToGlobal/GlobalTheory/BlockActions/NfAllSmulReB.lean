@@ -11,6 +11,9 @@ section Gen
 
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Frames.tr, Matrix.mul_assoc]`.
+-/
 theorem fnOf_trG (G : ι → Matrix (Fin n) (Fin n) ℂ) (s : ι → ℤ) (M g : ι → Matrix (Fin n) (Fin n) ℂ)
     (hg : ∀ τ, IsUnit (g τ).det) (P : MvPolynomial (ι × Fin n × Fin n) ℂ) (y : Frames G) :
     fnOf G s M P (y.tr g hg) = fnOf G s (fun τ => M τ * g τ) P y := by
@@ -20,6 +23,11 @@ end Gen
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hN : D.R.N D.R.m = D.R.k + D.R.m * (D.R.t + 1)` using `rfl`. Establish `h1 : 0 < D.R.N D.R.m` using `by omega`. Simplify using `only [shiftOf, lamT, lamTr]`.
+
+Rewrite using `[detShift_shW _ _ h1, detShift_wSh _ _ h1]`. Both sides reduce to the same expression.
+-/
 theorem shift_lamTr : shiftOf (lamT u D.R.m) = fun τ => (lamTr D u τ).detShift := by
   funext τ
   have hk := D.R.m_add_three_le_k
@@ -29,11 +37,21 @@ theorem shift_lamTr : shiftOf (lamT u D.R.m) = fun τ => (lamTr D u τ).detShift
   rw [detShift_shW _ _ h1, detShift_wSh _ _ h1]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.product_first_zeroth_parts.CSpan, lamTr, delSq_wSh]`.
+-/
 theorem cspan_lamTr : Formalism.MainNotions.product_first_zeroth_parts.CSpan (lamTr D u) = Formalism.MainNotions.product_first_zeroth_parts.CSpan ((D.fm u).lam D.R.m) := by
   simp only [Formalism.MainNotions.product_first_zeroth_parts.CSpan, lamTr, delSq_wSh]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Set `ga : GL (Fin (D.R.N D.R.m)) D.host.E` to `(Tf.til.ga c).1`. Establish `hy` using `congrFun hq (((Tf.val D.R.m le_rfl (Or.inr rfl)).eY z).tr (atInf (embT D) (ga : Matrix _ _ D.host.E)) (isUnit_det_atInf (embT D) ga))`. Establish `hback : (((Tf.val D.R.m le_rfl (Or.inr rfl)).eY z).tr (atInf (embT D) (ga : Matrix _ _ D.host.E)) (isUnit_det_atInf (embT D) ga)).tr (atInf (embT D) ((ga⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E)) (isUnit_det_atInf (embT D) ga⁻¹) = (Tf.val D.R.m le_rfl (Or.inr r …`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`.
+
+Use `show atInf (embT D) ((ga⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ * (atInf (embT D) (ga : Matrix _ _ D.host.E) τ * ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY z).1 τ) = ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY z).1 τ`. Establish `h1` using `atInf_mul_inv (embT D) ga⁻¹ τ`. Rewrite `h1` using `[inv_inv]`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Simplify using `only [trEvS, LinearMap.smul_apply, LinearMap.funLeft_apply, Pi.smul_apply, smul_eq_mul] at hy`.
+
+Rewrite `hy` using `[hback, Equiv.symm_apply_apply, fnOf_trG]`. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, ← hy, ← mul_assoc, Units.mul_inv, one_mul]`.
+-/
 theorem val_of_trEv (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (f : (D.mem u).C.Y D.R.m → ℂ)
     (M : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ) (Q : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)
     (hq : trEvS Tf c f = fnOf _ (shiftOf (lamT u D.R.m)) M Q) (z : (D.mem u).C.Y D.R.m) :
@@ -64,6 +82,17 @@ variable (D) in
 
 abbrev eN : Fin (D.R.N D.R.m - 1) ⊕ Fin 1 ≃ Fin (D.R.N D.R.m) := finSumFinEquiv.trans (finCongr (Nm_succ D.R))
 
+/- English proof (translation)
+Establish `hN` using `Nm_succ D.R`. Use extensionality with `x y`. Take `⟨p, rfl⟩` from `(eN D).surjective x`. Take `⟨q, rfl⟩` from `(eN D).surjective y`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+
+Use `show Matrix.diagonal _ _ _ = _`. Apply the tactic sequence `rcases p with i | i <;> rcases q with j | j`. Establish `hi' : ¬ ((i : ℕ) + 1 = D.R.N D.R.m)` using `by have := i.isLt; omega`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[Matrix.diagonal_apply, hi']`. Establish `hne : (eN D) (Sum.inl i) ≠ (eN D) (Sum.inl j)` using `fun h => hij (Sum.inl_injective ((eN D).injective h))`. Simplify using `[Matrix.diagonal_apply, hne, Matrix.one_apply, hij]`. Use `i.isLt` as an intermediate fact. Simplify using `[Matrix.diagonal_apply, Fin.ext_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Use `j.isLt` as an intermediate fact. Simplify using `[Matrix.diagonal_apply, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hi : i = 0` using `Subsingleton.elim _ _`.
+
+Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hi hj` using the available equality. Simplify using `[Matrix.diagonal_apply, hN]`.
+-/
 theorem lastGL_eq (a : ℂˣ) : ((Formalism.MainNotions.PrimeDegreeVariant.lastGL ℂ (D.R.N D.R.m) a : GL (Fin (D.R.N D.R.m)) ℂ) : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ) =
     Matrix.reindex (eN D) (eN D) (Matrix.fromBlocks 1 0 0 (Matrix.of fun _ _ => (a : ℂ))) := by
   have hN := Nm_succ D.R
@@ -91,24 +120,43 @@ def dOT (u : D.what₂.Word) (o' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.
     Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ :=
   Matrix.reindex (eN D) (eN D) (Matrix.fromBlocks o' 0 0 (Matrix.of fun _ _ => ((sqrtT D u : ℂˣ) : ℂ)))
 
+/- English proof (translation)
+Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+-/
 theorem reindex_mulB {a b : Type} [Fintype a] [Fintype b] {c : Type} [Semiring c] (e : a ≃ b) (X Y : Matrix a a c) :
     Matrix.reindex e e X * Matrix.reindex e e Y = Matrix.reindex e e (X * Y) := by
   simp only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+Simplify using `only [sqrtT, Units.val_mk0]`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem sqrtT_mul_self : ((sqrtT D u : ℂˣ) : ℂ) * ((sqrtT D u : ℂˣ) : ℂ) = ((D.mem u).A.T : ℂ) := by
   simp only [sqrtT, Units.val_mk0]
   rw [← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg _)]
   push_cast; rfl
 
+/- English proof (translation)
+Simplify using `only [sqrtT, Units.val_mk0, Complex.star_def, Complex.conj_ofReal]`.
+-/
 theorem star_sqrtT : star ((sqrtT D u : ℂˣ) : ℂ) = ((sqrtT D u : ℂˣ) : ℂ) := by
   simp only [sqrtT, Units.val_mk0, Complex.star_def, Complex.conj_ofReal]
 
+/- English proof (translation)
+Unfold `dgE`. Rewrite using `[Matrix.reindex_apply, Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem dgE_map (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) (τ : D.what₂.Tau) :
     (dgE B').map (embT D τ) = Matrix.reindex (eN D) (eN D) (Matrix.fromBlocks (B'.map (embT D τ)) 0 0 1) := by
   unfold dgE
   rw [Matrix.reindex_apply, Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.fromBlocks_map,
     Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Establish `hl : ((Formalism.MainNotions.PrimeDegreeVariant.lastGL ℂ (D.R.N D.R.m) (sqrtT D u) : GL _ ℂ) : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ)ᵀ = Matrix.reindex (eN D) (eN D) (Matrix.fromBlocks 1 0 0 (Matrix.of fun _ _ => ((sqrtT D u : ℂˣ) : ℂ)))`. Rewrite using `[← lastGL_eq]`. Use `show (Matrix.diagonal _)ᵀ = Matrix.diagonal _`. Conclude with `Matrix.diagonal_transpose _`. Establish `he : ((Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) g : GL (Fin (D.R.N D.R.m)) ℂ) : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ)ᵀ = Matrix.reindex (eN D) (eN D) (Matrix.fromBlocks (atInf (embT D) B'⁻¹ τ * o') 0 0 1)`.
+
+Rewrite using `[embGL_val, Matrix.transpose_reindex, Matrix.fromBlocks_transpose, hg, Matrix.transpose_transpose, Matrix.transpose_zero, Matrix.transpose_zero, Matrix.transpose_one]`. Establish `hBB : B'.map (embT D τ) * atInf (embT D) B'⁻¹ τ = 1` using `by show B'.map (embT D τ) * (B'⁻¹).map (embT D τ) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hB', Matrix.map_one _ (map_zero _) (map_one _)]`. Unfold `gFull`. Rewrite using `[Units.val_mul, Matrix.transpose_mul, hl, he, dgE_map, reindex_mulB, reindex_mulB, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+
+Unfold `dOT`. Use `congr 1`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul, ← Matrix.mul_assoc, hBB]`.
+-/
 theorem dgE_gFull (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) (hB' : IsUnit B'.det)
     (o' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) (τ : D.what₂.Tau) (g : GL (Fin (D.R.N D.R.m - 1)) ℂ)
     (hg : (g : Matrix _ _ ℂ) = (atInf (embT D) B'⁻¹ τ * o')ᵀ) :
@@ -132,6 +180,13 @@ theorem dgE_gFull (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D
   congr 1
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul, ← Matrix.mul_assoc, hBB]
 
+/- English proof (translation)
+Establish `hT : ((D.mem u).A.T : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`. Unfold `dOT`. Rewrite using `[Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose, Matrix.conjTranspose_zero, Matrix.conjTranspose_zero, reindex_mulB, reindex_mulB, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Rewrite using `[show (1 : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ) = Matrix.reindex (eN D) (eN D) 1 by`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_one_equiv]]`.
+
+Use `congr 1`. Rewrite using `[← Matrix.fromBlocks_one]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, ho]`. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Fin.sum_univ_one, Matrix.one_apply, Fin.fin_one_eq_zero, if_true, star_sqrtT]`. Rewrite using `[show ((sqrtT D u : ℂˣ) : ℂ) * ((D.mem u).A.T : ℂ)⁻¹ * ((sqrtT D u : ℂˣ) : ℂ) = ((sqrtT D u : ℂˣ) : ℂ) * ((sqrtT D u : ℂˣ) : ℂ) * ((D.mem u).A.T : ℂ)⁻¹ by ring, sqrtT_mul_self, mul_inv_cancel₀ hT]`.
+-/
 theorem dOT_on (o' G' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) (ho : o'ᴴ * G' * o' = 1) :
     (dOT u o')ᴴ * Matrix.reindex (eN D) (eN D) (Matrix.fromBlocks G' 0 0 (Matrix.of fun _ _ => ((D.mem u).A.T : ℂ)⁻¹)) *
       dOT u o' = 1 := by
@@ -155,6 +210,11 @@ end Frame
 
 section Main
 
+/- English proof (translation)
+Establish `h` using `((Tf.til.ga c)⁻¹).2`. Rewrite `h` using `[InvMemClass.coe_inv]`. Establish `h' : (((((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E).map (sigD D : D.host.E →+* D.host.E))ᵀ * gramN D D.R.m le_rfl * ((((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) = gramN D D.R.m le_rfl` using `h`. Establish `h2` using `congrArg (fun X => X.map (embT D τ)) h'`. Simplify using `only [Matrix.map_mul] at h2`.
+
+Rewrite `h2` using `[map_cT]`. Conclude with `h2`.
+-/
 theorem ga_inv_unitary (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (τ : D.what₂.Tau) :
     (atInf (embT D) ((((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ)ᴴ *
       gramC (gramN D D.R.m le_rfl) (embT D) τ *
@@ -170,6 +230,11 @@ theorem ga_inv_unitary (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (τ :
   rw [map_cT] at h2
   exact h2
 
+/- English proof (translation)
+Establish `h` using `gram_bZ (u := u) Tf.til.z0 Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Establish `h2` using `congrArg (fun X => X.map (embT D τ)) h`. Simplify using `only [Matrix.map_mul] at h2`. Rewrite `h2` using `[map_cT]`. Use `show ((bZ u Tf.til.z0).map (embT D τ))ᴴ * (gramN D D.R.m le_rfl).map (embT D τ) * (bZ u Tf.til.z0).map (embT D τ) = _`.
+
+Rewrite using `[h2, Matrix.reindex_apply, Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _)]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[gramC, map_inv₀, map_natCast]`.
+-/
 theorem gram_bZ_map (Tf : FormsTiedSym D u Ch chOf) (τ : D.what₂.Tau) :
     (atInf (embT D) (bZ u Tf.til.z0) τ)ᴴ * gramC (gramN D D.R.m le_rfl) (embT D) τ * atInf (embT D) (bZ u Tf.til.z0) τ =
       Matrix.reindex (eN D) (eN D) (Matrix.fromBlocks (gramC (gramP D) (embT D) τ) 0 0
@@ -185,6 +250,9 @@ theorem gram_bZ_map (Tf : FormsTiedSym D u Ch chOf) (τ : D.what₂.Tau) :
   ext i j
   simp [gramC, map_inv₀, map_natCast]
 
+/- English proof (translation)
+Establish `e : ∀ (X Y Z G : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ), (X * Y * Z)ᴴ * G * (X * Y * Z) = Zᴴ * (Yᴴ * (Xᴴ * G * X) * Y) * Z`. Introduce `X Y Z G`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e, ga_inv_unitary, gram_bZ_map, dOT_on _ _ ho]`.
+-/
 theorem frame_on (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (τ : D.what₂.Tau)
     (o' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) (ho : o'ᴴ * gramC (gramP D) (embT D) τ * o' = 1) :
     (atInf (embT D) ((((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ *
@@ -197,12 +265,20 @@ theorem frame_on (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (τ : D.wha
     simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
   rw [e, ga_inv_unitary, gram_bZ_map, dOT_on _ _ ho]
 
+/- English proof (translation)
+Unfold `dgE`. Rewrite using `[Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]`. Conclude with `hB'`.
+-/
 theorem isUnit_dgE (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) (hB' : IsUnit B'.det) :
     IsUnit (dgE B').det := by
   unfold dgE
   rw [Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
   exact hB'
 
+/- English proof (translation)
+Establish `hbZ` using `bZ_isUnitS Tf`. Establish `hd` using `isUnit_dgE B' hB'`. Establish `h1` using `atInf_mul_inv (embT D) ((Tf.til.ga c).1) τ`. Establish `h2 : atInf (embT D) (bZg u Tf.til.z0 B')⁻¹ τ * atInf (embT D) (bZ u Tf.til.z0) τ = ((dgE B')⁻¹).map (embT D τ)` using `by show ((bZg u Tf.til.z0 B')⁻¹).map (embT D τ) * (bZ u Tf.til.z0).map (embT D τ) = _`. Rewrite using `[bZg_eq_mul, Matrix.mul_inv_rev, Matrix.map_mul, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hbZ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`.
+
+Establish `h3 : ((dgE B')⁻¹).map (embT D τ) * dOT u o' = ((gFull D u g : GL (Fin (D.R.N D.R.m)) ℂ) : Matrix _ _ ℂ)ᵀ`. Rewrite using `[← dgE_gFull B' hB' o' τ g hg, ← Matrix.mul_assoc, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hd, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Establish `e : (atInf (embT D) (bZg u Tf.til.z0 B')⁻¹ τ * atInf (embT D) (((Tf.til.ga c).1 : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ) * (atInf (embT D) ((((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ * atInf (embT D) (bZ u Tf.til.z0) τ * d …`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, h1, Matrix.mul_one, h2, h3, Matrix.transpose_transpose]`.
+-/
 theorem frame_eq (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (τ : D.what₂.Tau)
     (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) (hB' : IsUnit B'.det)
     (o' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) (g : GL (Fin (D.R.N D.R.m - 1)) ℂ)
@@ -230,10 +306,26 @@ theorem frame_eq (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (τ : D.wha
     simp only [Matrix.mul_assoc]
   rw [e, h1, Matrix.mul_one, h2, h3, Matrix.transpose_transpose]
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.GlobalTheoryTheory.ColValS.nfAll_smul_self_re lam a p`.
+-/
 theorem nfAll_smul_reB {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (a : ℂ) (p : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     (Formalism.L2.Forms.nfAll lam (a • p) (a • p)).re = ‖a‖ ^ 2 * (Formalism.MainNotions.product_first_zeroth_parts.nfAll lam p p).re :=
   Formalism.L2.GlobalTheoryTheory.ColValS.nfAll_smul_self_re lam a p
 
+/- English proof (translation)
+Introduce `w c φ hφ`. Take `⟨Q, hQ, hq⟩` from `trEv_repS Tf (B w c) (hB w c) φ hφ c`. Establish `hcQ : coMTS Tf B w c (φ ((D.fm u).til c)) = Q`. Simplify using `only [coMTS, LinearMap.coe_comp, Function.comp_apply]`. Rewrite using `[hq, fnInv_fnOf _ _ _ (atInf_inv_isUnit _ (bZg_isUnitS Tf (B w c) (hB w c)))]`.
+
+Rewrite using `[hcQ]`. Use `set oM1 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ := fun τ => atInf (embT D) ((((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ * atInf (embT D) (bZ u Tf.til.z0) τ * dOT u (o.1 τ) with hoM1`. Establish `hon : ∀ τ, (oM1 τ)ᴴ * gramC (gramN D D.R.m le_rfl) (embT D) τ * oM1 τ = 1` using `fun τ => frame_on Tf c τ (o.1 τ) (ho τ)`. Establish `hdet : ∀ τ, IsUnit (oM1 τ).det`. Introduce `τ`.
+
+Establish `h1` using `congrArg Matrix.det (hon τ)`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_one]`. Establish `h2 : (oM1 τ).det * ((oM1 τ)ᴴ.det * (gramC (gramN D D.R.m le_rfl) (embT D) τ).det) = 1`. Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `⟨Units.mkOfMulEqOne _ _ h2, rfl⟩`. Set `oM : Fr D D.R.m le_rfl` to `⟨oM1, hdet⟩`. Establish `hoM : oM.IsON` using `fun τ => Or.inl (hon τ)`. Establish `hg : ∀ τ, ((gFull D u (gPof B hB o w c τ) : GL (Fin (D.R.N D.R.m)) ℂ) : Matrix _ _ ℂ) = ((atInf (embT D) (bZg u Tf.til.z0 (B w c))⁻¹ τ * atInf (embT D) (((Tf.til.ga c).1 : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ) * oM.1 τ)ᵀ` using `fun τ => frame_eq Tf c τ (B w c) (hB w c) (o.1 τ) _ rfl`. Use `set χ : ℂ := (((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.chi (Tf.tilAd.ka c) : ℂˣ) : ℂ) with hχ`.
+
+Establish `hf : φ ((D.fm u).til c) = fun z => fnOf _ (shiftOf (lamT u D.R.m)) (fun τ => (oM.1 τ)⁻¹) (χ • blk (fun τ => sqAct ℂ _ (lamTr D u τ) (gFull D u (gPof B hB o w c τ))) Q) ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY z)`. Use function extensionality and compare the values at `z`. Rewrite using `[val_of_trEv Tf c _ _ Q hq z, ← map_smul, shift_lamTr, fnOf_sqAct _ (lamTr D u) _ (fun τ => oM.1 τ) oM.2 (fun τ => gFull D u (gPof B hB o w c τ)) hg]`. Establish `hmem0 : blk (fun τ => sqAct ℂ _ (lamTr D u τ) (gFull D u (gPof B hB o w c τ))) Q ∈ Formalism.MainNotions.product_first_zeroth_parts.CSpan (lamTr D u)` using `Formalism.L2.Ker.lc_blk_sqAct_mem _ _ _ (by rw [cspan_lamTr]; exact hQ)`. Rewrite `hmem0` using `[cspan_lamTr]`.
+
+Establish `hmem : χ • blk (fun τ => sqAct ℂ _ (lamTr D u τ) (gFull D u (gPof B hB o w c τ))) Q ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m)` using `Submodule.smul_mem _ _ hmem0`. Rewrite using `[hf, (Tf.val D.R.m le_rfl (Or.inr rfl)).ipV ((D.fm u).til c) oM hoM _ hmem _ hmem, nfAll_smul_reB, hχ, (Tf.glevM).chi_unit (Tf.tilAd.ka c), one_pow, one_mul]`.
+-/
 theorem ipV_co_ofS (Tf : FormsTiedSym D u Ch chOf)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
     (hB : ∀ w c, IsUnit (B w c).det) (o : FrP D) (ho : ∀ τ, (o.1 τ)ᴴ * gramC (gramP D) (embT D) τ * o.1 τ = 1) :

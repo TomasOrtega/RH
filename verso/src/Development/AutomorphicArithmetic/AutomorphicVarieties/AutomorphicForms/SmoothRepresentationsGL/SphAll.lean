@@ -8,6 +8,11 @@ open UpperTheory.V UpperTheory.V.Af.Smo
 open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspSub)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
+/- English proof (translation)
+Use `TR.ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, TR.pInf_finGL, mul_one, one_mul]`. Rewrite using `[map_mul, map_mul, GlobalTheory.CuspRep.pFin_finGL]`. Use `cmp_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`.
+
+Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Rewrite using `[hg, mul_one, one_mul]`. Establish `: cmp v (locGL E n w y) = 1` using `GlobalTheory.CuspRep.pLoc_locGL_of_ne h y`. Rewrite using `[this, mul_one, one_mul]`.
+-/
 private theorem comm_loc {E : Type} [Field E] [NumberField E] [IsTotallyReal E] {n : ℕ} (w : HeightOneSpectrum (𝓞 E))
     (g : GA E n) (hg : cmp w (GeneralLinearGroup.map (pFin E) g) = 1) (y : GL (Fin n) (w.adicCompletion E)) :
     g * finGL E n (locGL E n w y) = finGL E n (locGL E n w y) * g := by
@@ -22,6 +27,15 @@ private theorem comm_loc {E : Type} [Field E] [NumberField E] [IsTotallyReal E] 
     · have : cmp v (locGL E n w y) = 1 := GlobalTheory.CuspRep.pLoc_locGL_of_ne h y
       rw [this, mul_one, one_mul]
 
+/- English proof (translation)
+Introduce `hA hZ hE E _ _ _ n S B W hW hS hK p hp h0`. Use `hA E n S (fun k => W (p * finGL E n k) = 0) (fun k hk => (hK p k hk).trans h0) ?_` and prove the remaining obligations. Introduce `w hw k _ hk hP y`. Establish `hc : cmp w (GeneralLinearGroup.map (pFin E) (p * finGL E n k)) = 1`. Rewrite using `[map_mul, map_mul, GlobalTheory.CuspRep.pFin_finGL, hp w hw, hk, mul_one]`.
+
+Take `⟨e1, e2, -, -⟩` from `hE E n 0`. Establish `hz` using `hZ E n w (psiL w) (hS w hw).1 (B w) _ ?_ ((hS w hw).2 (p * finGL E n k)) (by simpa using hP)`. Use `congrFun hz y` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `ν hν g`.
+
+Take `⟨a1, a2⟩` from `e1 w ν hν`. Take `⟨b1, b2⟩` from `e2 _ a1`. Use `hW _ b1 (p * finGL E n k * finGL E n (locGL E n w g))` as an intermediate fact. Rewrite `this` using `[b2, a2]`. Use `show W _ = _`.
+
+Rewrite using `[map_mul, map_mul, ← mul_assoc, comm_loc w _ hc ν, mul_assoc, this]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Af.Smo.sphAll :
     UpperTheory.V.Af.Smo.AwayInd → UpperTheory.V.Af.Smo.SphZero → UpperTheory.V.Af.Smo.EmbY → UpperTheory.V.Af.Smo.SphAll := by
   intro hA hZ hE E _ _ _ n S B W hW hS hK p hp h0

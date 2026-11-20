@@ -14,6 +14,13 @@ noncomputable section
 
 namespace ReductionToProjective
 
+/- English proof (translation)
+Establish `h1` using `powLog_mono D (show n + j ≤ 2 * n by omega)`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `h2 : 2 * Real.log ((n : ℝ) + 1) = Real.log (((n : ℝ) + 1) ^ 2)`. Rewrite using `[Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hlog : Real.log (((2 * n : ℕ) : ℝ) + 1) ≤ 2 * Real.log ((n : ℝ) + 1)`. Rewrite using `[h2]`. Conclude with `Real.log_le_log (by positivity) (by push_cast; nlinarith)`. Establish `hp : ((2 * n : ℕ) : ℝ) ^ D = 2 ^ D * (n : ℝ) ^ D` using `by push_cast; rw [mul_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem powLog_shift_le (D : ℕ) {n j : ℕ} (hj : j ≤ n) :
     ((n + j : ℕ) : ℝ) ^ D * Real.log (((n + j : ℕ) : ℝ) + 1) ≤
       2 ^ (D + 1) * ((n : ℝ) ^ D * Real.log ((n : ℝ) + 1)) := by
@@ -31,6 +38,21 @@ theorem powLog_shift_le (D : ℕ) {n j : ℕ} (hj : j ≤ n) :
         mul_le_mul_of_nonneg_left hlog (by positivity)
     _ = 2 ^ (D + 1) * ((n : ℝ) ^ D * Real.log ((n : ℝ) + 1)) := by rw [hp]; ring
 
+/- English proof (translation)
+Take `⟨C', hC'⟩` from `exists_chiP_succ_sub_le D`. Use `IsBigO.of_bound (δ * (k * (|C'| * 2 ^ (D + 1))) + |C|) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (k + 1)] with n hn`. Establish `hP0 : 0 ≤ (n : ℝ) ^ D * Real.log ((n : ℝ) + 1)` using `powLog_nonneg D n`. Establish `hCP : C * (n : ℝ) ^ D * Real.log (n + 1) ≤ |C| * ((n : ℝ) ^ D * Real.log ((n : ℝ) + 1))`.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self C) hP0`. Establish `hCP' : -(|C| * ((n : ℝ) ^ D * Real.log ((n : ℝ) + 1))) ≤ C * (n : ℝ) ^ D * Real.log (n + 1)`. Rewrite using `[mul_assoc, ← neg_mul]`. Conclude with `mul_le_mul_of_nonneg_right (neg_abs_le C) hP0`.
+
+Establish `h2 : (1 : ℝ) ≤ 2 ^ (D + 1)` using `one_le_pow₀ (by norm_num)`. Establish `hup : chiP D (n + k) - chiP D n ≤ k * (|C'| * 2 ^ (D + 1)) * ((n : ℝ) ^ D * Real.log ((n : ℝ) + 1))`. Use `(chiP_add_sub_le D C' hC' k n (by omega)).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j hj => mul_le_mul_of_nonneg_left ?_ (abs_nonneg C')` and prove the remaining obligations.
+
+Conclude with `powLog_shift_le D (by have := Finset.mem_range.1 hj; omega)`. Use `_ = _ := by rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]; ring`. Establish `hdn : chiP D n - chiP D (n - k) ≤ k * (|C'| * 2 ^ (D + 1)) * ((n : ℝ) ^ D * Real.log ((n : ℝ) + 1))`. Establish `h` using `chiP_add_sub_le D C' hC' k (n - k) (by omega)`. Rewrite `h` using `[Nat.sub_add_cancel (by omega : k ≤ n)]`.
+
+Use `h.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j hj => mul_le_mul_of_nonneg_left ?_ (abs_nonneg C')` and prove the remaining obligations. Establish `hj'` using `Finset.mem_range.1 hj`. Use `(powLog_mono D (show n - k + j ≤ n by omega)).trans ?_` and prove the remaining obligations.
+
+Conclude with `le_mul_of_one_le_left hP0 h2`. Use `_ = _ := by rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]; ring`. Establish `hlo'` using `hlo n hn`. Establish `hhi'` using `hhi n hn`. Establish `hu` using `mul_le_mul_of_nonneg_left hup hδ`.
+
+Establish `hd` using `mul_le_mul_of_nonneg_left hdn hδ`. Rewrite using `[Real.norm_eq_abs, Real.norm_of_nonneg hP0, abs_le]`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sub_chiP_isBigO (D k : ℕ) (δ C : ℝ) (hδ : 0 ≤ δ) (chi : ℕ → ℝ)
     (hlo : ∀ n : ℕ, k + 1 ≤ n → δ * chiP D (n - k) - C * (n : ℝ) ^ D * Real.log (n + 1) ≤ chi n)
     (hhi : ∀ n : ℕ, k + 1 ≤ n → chi n ≤ δ * chiP D (n + k) + C * (n : ℝ) ^ D * Real.log (n + 1)) :
@@ -73,6 +95,9 @@ theorem sub_chiP_isBigO (D k : ℕ) (δ C : ℝ) (hδ : 0 ≤ δ) (chi : ℕ →
   · nlinarith
   · nlinarith
 
+/- English proof (translation)
+Take `⟨k, E, C, -, -, -, -, -, -, -, hs⟩` from `hPB D Ω κ d e hfr hFS`. Establish `ht` using `hTop D Ω κ I d.x d.m e hI d.arith d.smooth hfr hFS`. Use `(sub_chiP_isBigO D k (projDeg d.x e) C (Nat.cast_nonneg _) (resChi d) (fun n hn => (hs n hn).1) (fun n hn => (hs n hn).2)).congr_left fun n => ?_` and prove the remaining obligations. Simplify using `only [hsDefect, ht]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem defect_pullFS (hPB : ProjectionBounds.Statement) (hTop : TopPullFS.Statement) {D : ℕ} {Ω : Type}
     [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] (I : AllFam) (hI : I.IsFamily) (d : HSMDatum D Ω κ)
     (e : Fin (D + 1) → Ix κ) (hfr : IsProjFrame d.x e) (hFS : IsPullFS d.x e d.m) :
@@ -86,9 +111,23 @@ theorem defect_pullFS (hPB : ProjectionBounds.Statement) (hTop : TopPullFS.State
   simp only [hsDefect, ht]
   ring
 
+/- English proof (translation)
+The claim follows from `(isLittleO_pow_pow_atTop_of_lt (𝕜 := ℝ) (Nat.lt_succ_self D)).comp_tendsto tendsto_natCast_atTop_atTop`.
+-/
 theorem isLittleO_pow_pw (D : ℕ) : (fun n : ℕ => (n : ℝ) ^ D) =o[atTop] pw D :=
   (isLittleO_pow_pow_atTop_of_lt (𝕜 := ℝ) (Nat.lt_succ_self D)).comp_tendsto tendsto_natCast_atTop_atTop
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ I d hI`. Use `⟨fun e hfr hFS => defect_pullFS hPB hTop I hI d e hfr hFS, ?_⟩` and prove the remaining obligations. Take `⟨B, d', e, hB, hx', hm', hfr', hidx⟩` from `hFC D Ω κ d`. Take `⟨d₀, hx₀, hFS₀, hmet⟩` from `hMF D Ω κ I d' e hI hfr'`. Establish `hfr₀ : IsProjFrame d₀.x e` using `hx₀ ▸ hfr'`.
+
+Establish `hFS₀' : IsPullFS d₀.x e d₀.m` using `hx₀ ▸ hFS₀`. Establish `h1` using `(defect_pullFS hPB hTop I hI d₀ e hfr₀ hFS₀').trans_isLittleO (isLittleO_pow_mul_log D)`. Rewrite `h1` using `[hx₀]`. Establish `h2` using `(hCL D Ω κ I d.x B d.m d'.m hI d.arith d.indep hB d.smooth hm').trans_isLittleO (isLittleO_pow_pw D)`. Rewrite `h2` using `[← hx']`.
+
+Establish `hg : (genDeg (ι` using `GlobalTheory κ) (coordIdeal ℤ d.x) D 1 : ℝ) = (projDeg d'.x e : ℝ) := by`. Establish `hd` using `hDeg D Ω κ d'.x e d'.arith hfr'`. Establish `hi` using `hInv D Ω κ d.x B hB`. Rewrite `hi` using `[← hx', hd]`. Rewrite using `[← hi]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hg]`. Use `((h1.sub hmet).sub (hidx.add h2)).congr_left fun n => ?_` and prove the remaining obligations. Simplify using `only [hsDefect]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proof (hPB : ProjectionBounds.Statement) (hCL : ChangeOfLattice.Statement)
     (hTop : TopPullFS.Statement) (hDeg : ProjDegGenDeg.Statement) (hInv : GenDegMatAct.Statement)
     (hFC : FrameChange.Statement) (hMF : MetricToFS.Statement) : ReductionToProjective.Statement := by

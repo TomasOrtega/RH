@@ -13,6 +13,21 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
 
+/- English proof (translation)
+Introduce `hA hHS k _ X _ p D hX P a b M hRep hAmp hSemi ρ t₁ hv`. Take `⟨Φ, hΦ⟩` from `((hA.arExists k X p D hX).2 PUnit fun _ => M).1`. Establish `hα : M.IsSelfInter (Φ (MvPolynomial.X PUnit.unit ^ (D + 1)))` using `((hA.arIso k X p D hX).2 PUnit _ Φ hΦ).1 PUnit.unit`. Take `⟨t₀, hlim⟩` from `GlobalTheory.T.ampleArithHilbertSamuel_largeRadius_pair hHS k X p D hX P a b 0 0 M _ hRep hAmp hSemi hα`. Establish `key` using `GlobalTheory.T.le_slope_of_tendsto_div_pow_of_log_lower_bound D (fun t m => P.lc (m * a) (m * b) (Real.exp (t * m))) (Φ (MvPolynomial.X PUnit.unit ^ (D + 1)) / ((D + 1).factorial : ℝ)) (((D : ℝ) + 1) * gdeg M D / ((D + 1).factorial : ℝ)) ρ t₀ t₁ (Nat.cast_nonneg _) ?_ ?_`.
+
+Establish `hf : ((D + 1).factorial : ℝ) = ((D : ℝ) + 1) * (D.factorial : ℝ)`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : (0 : ℝ) < D.factorial` using `by exact_mod_cast Nat.factorial_pos D`.
+
+Establish `hD1 : (0 : ℝ) < (D : ℝ) + 1` using `by positivity`. Rewrite `key` using `[hf, mul_div_mul_left _ _ hD1.ne', le_div_iff₀ hD]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t ht`. Simplify using `using hlim t ht`.
+
+Introduce `t m Q hm hQ hle`. Take `⟨v, hli, hvB⟩` from `hv m hm`. Establish `hB` using `GlobalTheory.VolBr.Pair.isBallFam k X p P (m * a) (m * b)`. Establish `hcard` using `GlobalTheory.T.seminormBallFamily_pow_le_encard_of_linearIndependent _ _ _ hB (ρ * m ^ D) Q (Real.exp (t₁ * m)) v (Real.exp_pos _).le hli hvB`. Establish `hsub : P.Bl (m * a) (m * b) (((ρ * m ^ D : ℕ) : ℝ) * Q * Real.exp (t₁ * m)) ⊆ P.Bl (m * a) (m * b) (Real.exp (t * m))` using `(GlobalTheory.VolBr.isBallFam_mono_neg_add _ _ _ hB).1 _ _ (by push_cast; linarith)`.
+
+Establish `hfin` using `GlobalTheory.T.hermLineBundlePair_sectionBall_finite k X p D hX P (m * a) (m * b) (Real.exp (t * m))`. Establish `h1 : ((Q ^ (ρ * m ^ D) : ℕ) : ℕ∞) ≤ (P.Bl (m * a) (m * b) (Real.exp (t * m))).encard` using `hcard.trans (Set.encard_le_encard hsub)`. Rewrite `h1` using `[← hfin.cast_ncard_eq]`. Establish `hn : Q ^ (ρ * m ^ D) ≤ (P.Bl (m * a) (m * b) (Real.exp (t * m))).ncard` using `by exact_mod_cast h1`. Use `show _ ≤ Real.log _`.
+
+Establish `hQ' : (0 : ℝ) < ((Q ^ (ρ * m ^ D) : ℕ) : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.cast_pow, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ Real.log ((P.Bl (m * a) (m * b) (Real.exp (t * m))).ncard : ℝ) := Real.log_le_log hQ' (by exact_mod_cast hn)`.
+-/
 theorem GlobalTheory.HSNef.factorial_mul_le_gdeg_of_indep : GlobalTheory.Published.ArCalc → AmpleHS → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p) (a b : ℤ) (M : HermLB p), P.Rep a b M → IsAmpleLB M.B → M.SemiPos D → ∀ (ρ : ℕ) (t₁ : ℝ), (∀ m : ℕ, 0 < m → ∃ v : Fin (ρ * m ^ D) → X.functionField, LinearIndependent ℤ v ∧ ∀ s, v s ∈ P.Bl (m * a) (m * b) (Real.exp (t₁ * m))) → (D.factorial : ℝ) * ρ ≤ gdeg M D := by
   intro hA hHS k _ X _ p D hX P a b M hRep hAmp hSemi ρ t₁ hv
   obtain ⟨Φ, hΦ⟩ := ((hA.arExists k X p D hX).2 PUnit fun _ => M).1

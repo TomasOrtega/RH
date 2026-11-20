@@ -11,6 +11,9 @@ open Matrix QnYLeibnizW
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[cramer_eq_adjugate_mulVec]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+-/
 theorem trace_adjugate_mul_eq_sum_cramer {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) :
     (A.adjugate * B).trace = ∑ j, A.cramer (fun i => B i j) j := by
   simp only [Matrix.trace, Matrix.diag]
@@ -18,6 +21,9 @@ theorem trace_adjugate_mul_eq_sum_cramer {n : ℕ} (A B : Matrix (Fin n) (Fin n)
   rw [cramer_eq_adjugate_mulVec]
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Establish `h` using `ReciprocityTheory.GeometryOfNumbersTheory.hasDerivAt_det (fun t : ℝ => Zhat k r z z' (g * NormedSpace.exp ((t : ℂ) • X))) (Zhat k r z z' (g * X)) 0 (fun i j => (hermL (Hpk k r) (fvec k r z' j) (fvec k r z i)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_mul_exp_smul_zero g X))`. Simplify using `only [curve_zero] at h`. Conclude with `h`.
+-/
 theorem hasDerivAt_det_Zhat (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g X : Q.Mx k r) :
     HasDerivAt (fun t : ℝ => (Zhat k r z z' (g * NormedSpace.exp ((t : ℂ) • X))).det)
       ((Zhat k r z z' g).adjugate * Zhat k r z z' (g * X)).trace 0 := by
@@ -28,12 +34,20 @@ theorem hasDerivAt_det_Zhat (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g 
   simp only [curve_zero] at h
   exact h
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Zhat, herm, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, dotProduct_smul]`.
+-/
 theorem Zhat_add_smul (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (A B : Q.Mx k r) (c : ℂ) :
     Zhat k r z z' (A + c • B) = Zhat k r z z' A + c • Zhat k r z z' B := by
   ext i j
   simp [Zhat, herm, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add,
     dotProduct_smul]
 
+/- English proof (translation)
+Establish `hv : Matrix.single p q (1 : ℂ) *ᵥ fvec k r z' j = fvec k r z' j q • bvec p`. Rewrite using `[Matrix.single_mulVec]`. Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l = p`. Substitute `h` using the available equality.
+
+Simplify using `[bvec]`. Simplify using `[bvec, h]`. Use function extensionality and compare the values at `i`. Simplify using `only [Zhat, Pi.smul_apply, ← Matrix.mulVec_mulVec, hv, herm, Matrix.mulVec_smul, dotProduct_smul]`.
+-/
 theorem Zhat_mul_single (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Q.Mx k r)
     (p q : Fin (2 * r + k + 1)) (j : Fin (r + 1)) :
     (fun i => Zhat k r z z' (g * Matrix.single p q 1) i j) =
@@ -47,6 +61,19 @@ theorem Zhat_mul_single (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Q.
   funext i
   simp only [Zhat, Pi.smul_apply, ← Matrix.mulVec_mulVec, hv, herm, Matrix.mulVec_smul, dotProduct_smul]
 
+/- English proof (translation)
+Introduce `E _ _ k r z z' D a b f hf g hg`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hgG : g ∈ Q.Glev k r 0` using `hg.1`. Take `⟨hX1, hX2⟩` from `hpart_mem (k := k) (r := r) (i := 0) a b`. Use `set Z : Q.Mx k r := Matrix.single (Q.posL k r 0 a) (Q.posL k r 0 b) 1 with hZdef`.
+
+Use `set X1 := hpart1 (Hpk k r) Z with hX1def`. Use `set X2 := hpart2 (Hpk k r) Z with hX2def`. Establish `hf1` using `hasDerivAt_f f F U g X1 hU hgU hgG hF hfF hX1`. Establish `hf2` using `hasDerivAt_f f F U g X2 hU hgU hgG hF hfF hX2`. Establish `hEf : Q.EH k r (Q.posL k r 0 a) (Q.posL k r 0 b) f g = fderiv ℝ F g (g * X1) + Complex.I • fderiv ℝ F g (g * X2)` using `by show RdV X1 f g + Complex.I • RdV X2 f g = _`.
+
+Rewrite using `[rdV_of_hasDerivAt X1 g f _ hf1, rdV_of_hasDerivAt X2 g f _ hf2]`. Establish `key : ∀ (φ : Q.Mx k r → ℂ) (d1 d2 : ℂ), HasDerivAt (fun t : ℝ => φ (g * NormedSpace.exp ((t : ℂ) • X1))) d1 0 → HasDerivAt (fun t : ℝ => φ (g * NormedSpace.exp ((t : ℂ) • X2))) d2 0 → Q.EH k r (Q.posL k r 0 a) (Q.posL k r 0 b) (fun x => φ x • f x) g = φ g • Q.EH k r (Q.posL k r 0 …`. Introduce `φ d1 d2 h1 h2`. Rewrite using `[hEf]`. Use `show RdV X1 (fun x => φ x • f x) g + Complex.I • RdV X2 (fun x => φ x • f x) g = _`.
+
+Rewrite using `[rdV_smul_of X1 g φ f d1 _ h1 hf1, rdV_smul_of X2 g φ f d2 _ h2 hf2]`. Use `module`. Rewrite using `[key (fun x => (Zhat k r z z' x).det) _ _ (hasDerivAt_det_Zhat k r z z' g X1) (hasDerivAt_det_Zhat k r z z' g X2)]`. Establish `hsum : g * X1 + Complex.I • (g * X2) = g * Z`. Rewrite using `[← Matrix.mul_smul, ← Matrix.mul_add, hX1def, hX2def, hpart_sum]`.
+
+Establish `hd : ((Zhat k r z z' g).adjugate * Zhat k r z z' (g * X1)).trace + Complex.I * ((Zhat k r z z' g).adjugate * Zhat k r z z' (g * X2)).trace = ((Zhat k r z z' g).adjugate * Zhat k r z z' (g * Z)).trace`. Rewrite using `[← hsum, Zhat_add_smul, Matrix.mul_add, Matrix.mul_smul, Matrix.trace_add, Matrix.trace_smul, smul_eq_mul]`. Rewrite using `[hd, trace_adjugate_mul_eq_sum_cramer]`. Use `congr 2`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hZdef, Zhat_mul_single, map_smul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem det_leibniz : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (D : Set (Q.Mx k r)) (a b : Fin (Q.mdim k r 0)) (f : Q.Mx k r → E), Q.SmoothLev k r 0 D f → ∀ g ∈ Q.Glev k r 0 ∩ D, Q.EH k r (Q.posL k r 0 a) (Q.posL k r 0 b) (fun x => (Zhat k r z z' x).det • f x) g = (Zhat k r z z' g).det • Q.EH k r (Q.posL k r 0 a) (Q.posL k r 0 b) f g + (∑ j : Fin (r + 1), fvec k r z' j (Q.posL k r 0 b) * (Zhat k r z z' g).cramer (fun i => herm (Hpk k r) (g.mulVec (bvec (Q.posL k r 0 a))) (fvec k r z i)) j) • f g := by
   intro E _ _ k r z z' D a b f hf g hg
   obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf g hg

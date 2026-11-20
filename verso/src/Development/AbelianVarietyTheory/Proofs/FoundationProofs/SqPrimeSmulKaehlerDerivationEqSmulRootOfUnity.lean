@@ -24,6 +24,13 @@ def evMul (l : ℕ) (A : ValuationSubring Ω) : Submodule A (KaehlerDifferential
     rintro c a ⟨N₁, h₁⟩
     exact ⟨N₁, fun N hN z hz => Submodule.smul_mem _ c (h₁ N hN z hz)⟩
 
+/- English proof (translation)
+Use `⟨n, fun N hN z hz => ?_⟩` and prove the remaining obligations. Establish `: NeZero (l ^ N)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `h1 : (x : Ω) ^ (l ^ N) = 1`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hN`. Establish `h0 : (x : Ω) ^ (l ^ n) = 1`.
+
+Use `congrArg (fun t : A => (t : Ω)) hx` as an intermediate fact. Simplify using `using this`. Rewrite using `[pow_add, pow_mul, h0, one_pow]`. Take `⟨i, -, hi⟩` from `hz.eq_pow_of_pow_eq_one h1`. Establish `h2 : x = z ^ i`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SubmonoidClass.coe_pow, hi]`. Rewrite using `[h2, Derivation.leibniz_pow]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))`.
+-/
 theorem dA_mem_evMul (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) {x : A} {n : ℕ}
     (hx : x ^ (l ^ n) = 1) : dA A x ∈ evMul l A := by
   refine ⟨n, fun N hN z hz => ?_⟩
@@ -44,6 +51,13 @@ theorem dA_mem_evMul (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) {x : A} 
 
 end Gen
 
+/- English proof (translation)
+Introduce `l _ hl2 Ω _ _ _ A hA v`. Establish `hder : ∀ B : Subalgebra (fixA A) A, IsDerOn B (fun x => dA A x)` using `fun B => ⟨fun x _ y _ => map_add (dA A) x y, fun x _ y _ => Derivation.leibniz (dA A) x y, fun a => (dA A).map_algebraMap a⟩`. Take `⟨C, tr, k, a, b, hF, htr⟩` from `GlobalTheory.T.exists_almostDualTraceData_cyclotomicAlgebra l hl2 Ω A hA {v}`. Establish `h1` using `GlobalTheory.AlmostEt.derOn_mem_span_of_trData (fixA A) A _ (cycAlg l A) C tr k a b _ htr (fun x => dA A x) (hder C) v (hF (by simp))`. Establish `h2 : Submodule.span A ((fun x => dA A x) '' (cycAlg l A : Set A)) ≤ evMul l A`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h3` using `GlobalTheory.AlmostEt.derOn_adjoin_mem_span (fixA A) A _ {z : A | ∃ n : ℕ, z ^ (l ^ n) = 1} (fun x => dA A x) (hder _) x hx`. Use `Submodule.span_le.2 ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨n, hn⟩, rfl⟩`.
+
+Conclude with `dA_mem_evMul l A hn`. Take `⟨N₀, h⟩` from `h2 h1`. Use `⟨N₀, fun N hN z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `Submodule.mem_span_singleton.1 (h N hN z hz)`. Conclude with `⟨y, by rw [pow_two]; exact hy.symm⟩`.
+-/
 theorem l_sq_smul_dA_eq_smul : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), OverL l A → ∀ v : A, ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → ∀ z : A, IsPrimitiveRoot (z : Ω) (l ^ N) → ∃ y : A, ((l : A) ^ 2) • dA A v = y • dA A z := by
   intro l _ hl2 Ω _ _ _ A hA v
   have hder : ∀ B : Subalgebra (fixA A) A, IsDerOn B (fun x => dA A x) := fun B =>

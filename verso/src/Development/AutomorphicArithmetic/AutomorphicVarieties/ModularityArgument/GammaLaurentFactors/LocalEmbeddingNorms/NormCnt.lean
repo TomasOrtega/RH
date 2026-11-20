@@ -10,6 +10,15 @@ open scoped Classical
 
 namespace UpperTheory.V.Z.Gam
 
+/- English proof (translation)
+Use `haveI : Fact l.Prime := ⟨hl⟩`. Use `haveI : NeZero l := ⟨hl.ne_zero⟩`. Establish `hp : IsPrimitiveRoot (η u) l`. Rewrite using `[← orderOf_eq_prime (hη u) h1]`. Conclude with `IsPrimitiveRoot.orderOf _`.
+
+Establish `h2 : (θ u)⁻¹ ∈ rootsOfUnity l ℂ`. Rewrite using `[mem_rootsOfUnity, inv_pow, ← map_pow, hθ _ (U.pow_mem hu l) (by rw [map_pow, hη]), inv_one]`. Take `⟨j, hj, e⟩` from `hp.eq_pow_of_mem_rootsOfUnity h2`. Rewrite using `[Finset.card_eq_one]`. Use `⟨j, Finset.eq_singleton_iff_unique_mem.2 ⟨Finset.mem_filter.2 ⟨Finset.mem_range.2 hj, fun x hx => ?_⟩, fun i hi => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨m, -, hm⟩` from `hp.eq_pow_of_mem_rootsOfUnity ((mem_rootsOfUnity l (η x)).2 (hη x))`. Establish `h3` using `hθ (x * (u ^ m)⁻¹) (U.mul_mem hx (U.inv_mem (U.pow_mem hu m))) (by rw [map_mul, map_inv, map_pow, hm, mul_inv_cancel])`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one, map_pow]`. Rewrite using `[h3, ← hm, ← pow_mul, mul_comm m, pow_mul, e, ← mul_pow, mul_inv_cancel, one_pow]`. Take `⟨hi, h⟩` from `Finset.mem_filter.1 hi`.
+
+Use `hp.pow_inj (Finset.mem_range.1 hi) hj ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(eq_inv_of_mul_eq_one_right (h u hu))`.
+-/
 private theorem count_one {A : Type} [CommGroup A] (U : Subgroup A) (l : ℕ) (hl : l.Prime) (η θ : A →* ℂˣ)
     (hη : ∀ x, η x ^ l = 1) (hθ : ∀ x ∈ U, η x = 1 → θ x = 1) (u : A) (hu : u ∈ U) (h1 : η u ≠ 1) :
     ((Finset.range l).filter fun j => ∀ x ∈ U, θ x * η x ^ j = 1).card = 1 := by
@@ -35,25 +44,42 @@ private theorem count_one {A : Type} [CommGroup A] (U : Subgroup A) (l : ℕ) (h
 
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] {v : HeightOneSpectrum (𝓞 K)}
 
+/- English proof (translation)
+Use `w.1.isMaximal` as an intermediate fact. Use `v.isMaximal` as an intermediate fact. Conclude with `Ideal.inertiaDeg'_eq_inertiaDeg _ _`.
+-/
 private theorem fdeg_eq (w : PlacesOver L v) : fdeg w = w.1.asIdeal.inertiaDeg (𝓞 K) := by
   have := w.1.isMaximal
   have := v.isMaximal
   exact Ideal.inertiaDeg'_eq_inertiaDeg _ _
 
+/- English proof (translation)
+Use `w.1.isPrime` as an intermediate fact. Rewrite using `[fdeg_eq]`. Conclude with `Ideal.inertiaDeg_pos _ _`.
+-/
 private theorem fdeg_pos (w : PlacesOver L v) : 0 < fdeg w := by
   have := w.1.isPrime
   rw [fdeg_eq]
   exact Ideal.inertiaDeg_pos _ _
 
+/- English proof (translation)
+Rewrite using `[fdeg_eq, ← inertiaDeg_integer v w.1]`. Conclude with `ord_norm (x : w.1.adicCompletion L)`.
+-/
 private theorem ord_nm (w : PlacesOver L v) (x : (w.1.adicCompletion L)ˣ) :
     ord ((nm w x : (v.adicCompletion K)ˣ) : v.adicCompletion K) = fdeg w * ord (x : w.1.adicCompletion L) := by
   rw [fdeg_eq, ← inertiaDeg_integer v w.1]
   exact ord_norm (x : w.1.adicCompletion L)
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun _ => by rw [mem_unitFiltrationUnits_zero_iff]`.
+-/
 private theorem unr_iff (θ : (v.adicCompletion K)ˣ →* ℂˣ) :
     IsUnram θ ↔ ∀ x ∈ unitFiltrationUnits (v.adicCompletion K) 0, θ x = 1 :=
   forall_congr' fun _ => by rw [mem_unitFiltrationUnits_zero_iff]
 
+/- English proof (translation)
+Rewrite using `[unr_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ hx ⟨y, rfl⟩`. Use `h y ?_` and prove the remaining obligations. Rewrite `hx` using `[← ord_eq_zero_iff_mem, ord_nm]`.
+
+Conclude with `ord_eq_zero_iff_mem.1 ((mul_eq_zero.1 hx).resolve_left (by exact_mod_cast (fdeg_pos w).ne'))`. Introduce `h y hy`. Use `h _ ?_ ⟨y, rfl⟩` and prove the remaining obligations. Rewrite using `[← ord_eq_zero_iff_mem, ord_nm, ord_eq_zero_iff_mem.2 hy, mul_zero]`.
+-/
 private theorem unr_nm (w : PlacesOver L v) (θ : (v.adicCompletion K)ˣ →* ℂˣ) :
     IsUnram (θ.comp (nm w)) ↔ ∀ x ∈ unitFiltrationUnits (v.adicCompletion K) 0, x ∈ (nm w).range → θ x = 1 := by
   rw [unr_iff]
@@ -66,6 +92,9 @@ private theorem unr_nm (w : PlacesOver L v) (θ : (v.adicCompletion K)ˣ →* �
     refine h _ ?_ ⟨y, rfl⟩
     rw [← ord_eq_zero_iff_mem, ord_nm, ord_eq_zero_iff_mem.2 hy, mul_zero]
 
+/- English proof (translation)
+Use `v.isMaximal` as an intermediate fact. Rewrite using `[Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 K) K (𝓞 L) L, ← Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 L)]`. Conclude with `Fintype.sum_equiv (placesOverEquiv L v) _ _ fun w => by rw [fdeg_eq]; rfl`.
+-/
 private theorem sum_ef (v : HeightOneSpectrum (𝓞 K)) :
     ∑ w : PlacesOver L v, w.1.asIdeal.ramificationIdx (𝓞 K) * fdeg w = Module.finrank K L := by
   have := v.isMaximal
@@ -73,6 +102,11 @@ private theorem sum_ef (v : HeightOneSpectrum (𝓞 K)) :
     ← Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 L)]
   exact Fintype.sum_equiv (placesOverEquiv L v) _ _ fun w => by rw [fdeg_eq]; rfl
 
+/- English proof (translation)
+Use `w.1.isPrime` as an intermediate fact. Use `w'.1.isPrime` as an intermediate fact. Establish `hw : w.1.asIdeal.LiesOver v.asIdeal` using `w.2`. Establish `e : w.1.asIdeal.under (𝓞 K) = w'.1.asIdeal.under (𝓞 K)` using `w.2.over.symm.trans w'.2.over`. Take `⟨σ, hσ⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 K) (𝓞 L) (L ≃ₐ[K] L) _ _ e`.
+
+Rewrite using `[fdeg_eq, fdeg_eq, hσ]`. Conclude with `⟨(Ideal.ramificationIdx_smul _ _ σ).symm, (Ideal.inertiaDeg_smul _ _ σ).symm⟩`.
+-/
 private theorem gal_e [IsGalois K L] (w w' : PlacesOver L v) :
     w.1.asIdeal.ramificationIdx (𝓞 K) = w'.1.asIdeal.ramificationIdx (𝓞 K) ∧ fdeg w = fdeg w' := by
   have := w.1.isPrime
@@ -83,6 +117,15 @@ private theorem gal_e [IsGalois K L] (w w' : PlacesOver L v) :
   rw [fdeg_eq, fdeg_eq, hσ]
   exact ⟨(Ideal.ramificationIdx_smul _ _ σ).symm, (Ideal.inertiaDeg_smul _ _ σ).symm⟩
 
+/- English proof (translation)
+Establish `h1 : η.UnrAt v` using `fun x hx => hu (mem_unitFiltrationUnits_zero_iff_valued.2 hx)`. Take `⟨π, hπ, hπ'⟩` from `exists_ord_eq_one_valued v`. Take `⟨ϖ, hϖ⟩` from `exists_ord_eq_one_units (w.1.adicCompletion L)`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← η.val_eq h1 π hπ']`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h2 : π ^ (fdeg w : ℤ) * (nm w ϖ)⁻¹ ∈ (η.loc v).ker`. Apply `hu` to reduce the goal to its premises. Rewrite using `[← ord_eq_zero_iff_mem, Units.val_mul, ord_mul (Units.ne_zero _) (Units.ne_zero _), ← map_inv, ord_nm, ord_zpow_units hπ, ← zpow_neg_one, ord_zpow_units hϖ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : nm w ϖ ∈ (η.loc v).ker` using `hk ▸ ⟨ϖ, rfl⟩`. Rewrite `h2`, `h3` using `[MonoidHom.mem_ker]`. Rewrite `h2` using `[map_mul, map_inv, h3, inv_one, mul_one, zpow_natCast, map_pow]`. Then use the resulting hypothesis. Introduce `m hm`. Rewrite `hm` using `[← map_pow, ← MonoidHom.mem_ker, hk]`.
+
+Take `⟨y, hy⟩` from `hm`. Establish `h4` using `ord_nm w y`. Rewrite `h4` using `[hy, ← zpow_natCast, ord_zpow_units hπ]`. Conclude with `Int.natCast_dvd_natCast.1 ⟨_, h4⟩`.
+-/
 private theorem prim (η : HChar K) (w : PlacesOver L v) (hk : (η.loc v).ker = (nm w).range)
     (hu : unitFiltrationUnits (v.adicCompletion K) 0 ≤ (η.loc v).ker) :
     η.UnrAt v ∧ IsPrimitiveRoot (η.val v) (fdeg w) := by
@@ -107,6 +150,15 @@ private theorem prim (η : HChar K) (w : PlacesOver L v) (hk : (η.loc v).ker = 
     rw [hy, ← zpow_natCast, ord_zpow_units hπ] at h4
     exact Int.natCast_dvd_natCast.1 ⟨_, h4⟩
 
+/- English proof (translation)
+Use `haveI : Fact (Module.finrank K L).Prime := ⟨hl⟩`. Use `haveI : NeZero (Module.finrank K L) := ⟨hl.ne_zero⟩`. Establish `hc : Nat.card (L ≃ₐ[K] L) = Module.finrank K L` using `IsGalois.card_aut_eq_finrank K L`. Use `haveI : IsCyclic (L ≃ₐ[K] L) := isCyclic_of_prime_card hc`. Use `haveI : IsMulCommutative (L ≃ₐ[K] L) := inferInstance`.
+
+Set `ι : (L ≃ₐ[K] L) →* ℂˣ` to `(rootsOfUnity (Module.finrank K L) ℂ).subtype.comp (mulEquivOfPrimeCardEq hc (Complex.card_rootsOfUnity _)).toMonoidHom`. Establish `hι : Function.Injective ι` using `Subtype.val_injective.comp (MulEquiv.injective _)`. Establish `hm : ι.comp (ideleSymbol K L) ∈ hcharSub K` using `⟨(continuous_of_discreteTopology (f := ι)).comp (continuous_ideleSymbol L), fun k => (congrArg ι (ideleSymbol_diagonal (L := L) k)).trans (map_one ι)⟩`. Use `⟨⟨_, hm⟩, fun v => ?_⟩` and prove the remaining obligations. Establish `e : HChar.loc (⟨ι.comp (ideleSymbol K L), hm⟩ : HChar K) v = ι.comp (localSymbol L v)` using `MonoidHom.ext fun x => congrArg ι (ideleSymbol_finiteEmbedding (L := L) v x)`.
+
+Rewrite using `[e]`. Use `⟨fun x => by rw [MonoidHom.comp_apply, ← map_pow, ← hc, pow_card_eq_one', map_one], fun w => ?_⟩` and prove the remaining obligations. Establish `hk : (localSymbol L v).ker = (nm w).range` using `ker_localSymbol L v w`. Use `⟨by rw [MonoidHom.ker_comp_of_injective _ _ hι, hk], ?_⟩` and prove the remaining obligations. Rewrite using `[← hk]`.
+
+Use `⟨fun h => ramificationIdx_eq_one_of_units_le_ker_localSymbol v h w.1, fun h x hx => ?_⟩` and prove the remaining obligations. Use `units_le_ker_localSymbol L v w h ?_` and prove the remaining obligations. Establish `h1` using `mem_unitFiltrationUnits_zero_iff_valued.1 hx`. Establish `h2` using `mem_unitFiltrationUnits_zero_iff_valued.1 (inv_mem hx)`. Conclude with `(Submonoid.mem_units_iff _ _).2 ⟨h1.le, h2.le⟩`.
+-/
 private theorem exists_eta [IsGalois K L] (hl : (Module.finrank K L).Prime) :
     ∃ η : HChar K, ∀ v : HeightOneSpectrum (𝓞 K), (∀ x, η.loc v x ^ Module.finrank K L = 1) ∧
       ∀ w : PlacesOver L v, (η.loc v).ker = (nm w).range ∧
@@ -136,6 +188,9 @@ private theorem exists_eta [IsGalois K L] (hl : (Module.finrank K L).Prime) :
   have h2 := mem_unitFiltrationUnits_zero_iff_valued.1 (inv_mem hx)
   exact (Submonoid.mem_units_iff _ _).2 ⟨h1.le, h2.le⟩
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ, HChar.loc_mul, ih, pow_succ]`.
+-/
 private theorem loc_pow (η : HChar K) (j : ℕ) (x : (v.adicCompletion K)ˣ) : (η ^ j).loc v x = η.loc v x ^ j := by
   induction j with
   | zero => simp
@@ -143,6 +198,23 @@ private theorem loc_pow (η : HChar K) (j : ℕ) (x : (v.adicCompletion K)ˣ) : 
 
 end UpperTheory.V.Z.Gam
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ _ hl`. Take `⟨η, hη⟩` from `exists_eta (K := K) (L := L) hl`. Use `⟨η, ?_, fun v w => ?_⟩` and prove the remaining obligations. Use `filter_upwards [IdeleNorm.eventually_forall_placesOver K (IdeleNorm.eventually_ramificationIdx_eq_one K L)] with v hv`. Establish `h` using `fun w : PlacesOver L v => prim η w ((hη v).2 w).1 (by rw [((hη v).2 w).1]; exact ((hη v).2 w).2.2 (hv w))`.
+
+Take `⟨w₀⟩` from `nonempty_placesOver L v`. Use `⟨(h w₀).1, fun w => ⟨(h w).2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← sum_ef v, Finset.sum_congr rfl fun w' _ => show _ = fdeg w by rw [hv w', one_mul, (gal_e w' w).2]]`. Simplify using the standard rewrite rules. Take `⟨hp, hw⟩` from `hη v`.
+
+Use `⟨MonoidHom.ext fun y => ?_, fun w' θ h => ?_, fun θ hθ => ⟨?_, fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Conclude with `((hw w).1.ge ⟨y, rfl⟩ :)`. Establish `h1` using `(unr_nm w θ).1 h`. Rewrite `h1` using `[← (hw w).1, (hw w').1]`. Conclude with `(unr_nm w' θ).2 h1`.
+
+Unfold `IsSmoothChar at hθ ⊢`. Rewrite using `[← MonoidHom.comap_ker]`. Conclude with `hθ.preimage (continuous_normUnits (K := v.adicCompletion K) (L := w.1.adicCompletion L))`. Conclude with `(unr_nm w θ).2 fun x hx _ => (unr_iff θ).1 h x hx`. Establish `h1` using `(unr_nm w θ).1 h`.
+
+Establish `e : ∀ j : ℕ, IsUnram (θ * (η ^ j).loc v) ↔ ∀ x ∈ unitFiltrationUnits (v.adicCompletion K) 0, θ x * η.loc v x ^ j = 1` using `fun j => by`. Rewrite using `[unr_iff]`. Simplify using `only [MonoidHom.mul_apply, loc_pow]`. Establish `hs : w.1.asIdeal.ramificationIdx (𝓞 K) * ∑ w' : PlacesOver L v, fdeg w' = Module.finrank K L`. Rewrite using `[← sum_ef v, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun w' _ => by rw [(gal_e w w').1]`. Use `(congrArg Finset.card (Finset.filter_congr fun j _ => e j)).trans ?_` and prove the remaining obligations. Distinguish the cases in `hr : w.1.asIdeal.ramificationIdx (𝓞 K) = 1`. Rewrite `hs` using `[hr, one_mul]`. Rewrite using `[hs, Finset.filter_true_of_mem, Finset.card_range]`.
+
+Introduce `j _ x hx`. Establish `h2` using `(hw w).2.2 hr hx`. Rewrite using `[h1 x hx h2, show η.loc v x = 1 from (hw w).1.ge h2, one_pow, one_mul]`. Take `⟨u, hu, hu'⟩` from `SetLike.not_le_iff_exists.1 (mt (hw w).2.1 hr)`. Rewrite `hu'`, `h1` using `[← (hw w).1]`.
+
+Rewrite `hl` using `[← hs]`. Establish `h3` using `((Nat.prime_mul_iff.1 hl).resolve_right fun h => hr h.2).2`. Rewrite `hl` using `[hs]`. Rewrite using `[h3]`. Use `count_one _ _ hl (η.loc v) θ hp h1 u hu hu'` and compare the differences between its conclusion and the goal.
+-/
 theorem UpperTheory.V.Z.Gam.normCnt :
     UpperTheory.V.Z.Gam.NormCnt := by
   intro K L _ _ _ _ _ _ hl

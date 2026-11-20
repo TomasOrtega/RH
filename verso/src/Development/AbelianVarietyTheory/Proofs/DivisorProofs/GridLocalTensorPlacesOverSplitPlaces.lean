@@ -18,12 +18,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.LocPlSplit
 
+/- English proof (translation)
+Take `⟨-, ι, -⟩` from `Formalism.IndefR.Fin.idem_data w h (w.under (𝓞 D.host.F)) rfl`. Conclude with `⟨ι⟩`.
+-/
 theorem nonempty_of_not_isConjPl {D : D7} {w : HeightOneSpectrum (𝓞 D.host.E)}
     (h : ¬ Formalism.IndefR.Lev.IsConjPl (D := D) w w) :
     Nonempty (D.host.E →ₐ[D.host.F] Fv D.host.F (w.under (𝓞 D.host.F))) := by
   obtain ⟨-, ι, -⟩ := Formalism.IndefR.Fin.idem_data w h (w.under (𝓞 D.host.F)) rfl
   exact ⟨ι⟩
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t w hw`. Use `nonempty_of_not_isConjPl ?_` and prove the remaining obligations. Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Take `⟨e, he⟩` from `G.pl.w_split v hv`.
+
+Conclude with `Formalism.IndefR.Fin.idemAt_split he`. Conclude with `(hL.Q_pl t w h).2 w h`.
+-/
 theorem locPl_split : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (w : HeightOneSpectrum (𝓞 D.host.E)), w ∈ locPl G t →
       Nonempty (D.host.E →ₐ[D.host.F] Fv D.host.F (w.under (𝓞 D.host.F))) := by

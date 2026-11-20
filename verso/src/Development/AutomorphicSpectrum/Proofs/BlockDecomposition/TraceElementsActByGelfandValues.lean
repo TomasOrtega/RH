@@ -9,6 +9,17 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.CompanionTheory.CapelliGelfand
 
+/- English proof (translation)
+Introduce `V _ _ m E χ v hE hq`. Establish `hcap : ∀ Y : ℂ, Formalism.QuantumDeterminants.capP χ Y = ∏ s, (Y + χ s)`. Introduce `Y`. Both sides reduce to the same expression. Establish `hP : ∀ u : ℂ, Formalism.REAL.qdet E u v = (∏ s, (Polynomial.X + Polynomial.C (χ s - (m : ℂ) / 2))).eval u • v`.
+
+Introduce `u`. Establish `h` using `hq (u - (m : ℂ) / 2)`. Establish `h1 : u - (m : ℂ) / 2 + (((m + 1 : ℕ) : ℂ) - 1) / 2 = u`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h` using `[h1, hcap]`. Rewrite using `[h, Polynomial.eval_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_C]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ N ih`. Rewrite using `[GlobalTheory.T.trace_element_capelli_recursion V m E hE _ v hP N (fun k => GlobalTheory.Dec.gelfVal χ k) (fun k hk => ih k hk)]`.
+
+Rewrite using `[GlobalTheory.T.trace_element_gelfand_polynomial_formula m χ N]`.
+-/
 theorem etr_eq_gelfVal_of_capelli :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (m : ℕ) (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ V)
       (χ : Fin (m + 1) → ℂ) (v : V), Formalism.REAL.GlRel E →

@@ -10,6 +10,9 @@ open scoped ComplexConjugate
 noncomputable section
 open Classical
 
+/- English proof (translation)
+Establish `hi : Integrable (fun c : ℂ => (1 + ‖c‖) ^ (-(3 : ℝ)))` using `integrable_one_add_norm (by rw [Complex.finrank_real_complex]; norm_num)`. Use `hi.congr (Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Real.rpow_neg (by positivity)]`. Use `norm_cast`.
+-/
 theorem integrable_decay3 : Integrable (fun c : ℂ => ((1 + ‖c‖) ^ 3)⁻¹) := by
   have hi : Integrable (fun c : ℂ => (1 + ‖c‖) ^ (-(3 : ℝ))) :=
     integrable_one_add_norm (by rw [Complex.finrank_real_complex]; norm_num)
@@ -24,6 +27,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+Establish `hnull : volume (Formalism.FourierDecayAlt.P.JCx1.needs.Qm S ⁻¹' (⋃ v, {y : Fin S.f → ℂ | y v = 0})) = 0`. Rewrite using `[(Formalism.FourierDecayAlt.P.JCx1.needs.Qm_mp S).measure_preimage (MeasurableSet.iUnion fun v => measurableSet_eq_fun (measurable_pi_apply v) measurable_const).nullMeasurableSet]`. Conclude with `measure_iUnion_null fun v => Measure.pi_hyperplane _ v 0`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp hnull] with c hc`. Introduce `v hv`.
+
+Conclude with `hc (Set.mem_preimage.mpr (Set.mem_iUnion.mpr ⟨v, by simp [Formalism.FourierDecayAlt.P.JCx1.needs.Qm_apply, hv]⟩))`.
+-/
 theorem ae_coords_ne (S : C.HidaSetting E Wp Wq) : ∀ᵐ c : J.CV E, ∀ v, c (S.pl v) ≠ 0 := by
   have hnull : volume (Formalism.FourierDecayAlt.P.JCx1.needs.Qm S ⁻¹' (⋃ v, {y : Fin S.f → ℂ | y v = 0})) = 0 := by
     rw [(Formalism.FourierDecayAlt.P.JCx1.needs.Qm_mp S).measure_preimage (MeasurableSet.iUnion fun v =>
@@ -33,19 +41,37 @@ theorem ae_coords_ne (S : C.HidaSetting E Wp Wq) : ∀ᵐ c : J.CV E, ∀ v, c (
   intro v hv
   exact hc (Set.mem_preimage.mpr (Set.mem_iUnion.mpr ⟨v, by simp [Formalism.FourierDecayAlt.P.JCx1.needs.Qm_apply, hv]⟩))
 
+/- English proof (translation)
+The claim follows from `(EuclideanSpace.proj (𝕜 := ℂ) (S.pl v)).continuous`.
+-/
 theorem continuous_coord (S : C.HidaSetting E Wp Wq) (v : Fin S.f) : Continuous fun c : J.CV E => c (S.pl v) :=
   (EuclideanSpace.proj (𝕜 := ℂ) (S.pl v)).continuous
 
+/- English proof (translation)
+Establish `: (fun c : J.CV E => S.psiInf l c) = fun c => ∏ v, KB.psiL S (S.σ v l) (c (S.pl v))`. Use function extensionality and compare the values at `fun c => psiInf_eq_prod S l c`. Rewrite using `[this]`. Conclude with `continuous_finsetProd _ fun v _ => (continuous_psiL S _).comp (continuous_coord S v)`.
+-/
 theorem continuous_psiInf (S : C.HidaSetting E Wp Wq) (l : E) : Continuous fun c : J.CV E => S.psiInf l c := by
   have : (fun c : J.CV E => S.psiInf l c) = fun c => ∏ v, KB.psiL S (S.σ v l) (c (S.pl v)) :=
     funext fun c => psiInf_eq_prod S l c
   rw [this]
   exact continuous_finsetProd _ fun v _ => (continuous_psiL S _).comp (continuous_coord S v)
 
+/- English proof (translation)
+Rewrite using `[psiInf_eq_prod, norm_prod]`. Simplify using `[norm_psiL]`.
+-/
 theorem norm_psiInf (S : C.HidaSetting E Wp Wq) (l : E) (c : J.CV E) : ‖S.psiInf l c‖ = 1 := by
   rw [psiInf_eq_prod, norm_prod]
   simp [norm_psiL]
 
+/- English proof (translation)
+Establish `H : ∀ (v : Fin S.f) (h h' : Y), ∃ φ : ℂ → ℂ, Continuous φ ∧ (∀ c : ℂ, c ≠ 0 → φ c = S.gramLoc v ε i (w.1 v) (C.loc (S.σ v) h ++ [(1, c)]) (C.loc (S.σ v) h' ++ [(1, c)]))`. Introduce `v h h'`. Take `⟨φ, hc, he, -, -⟩` from `hInt v ε hε i hi1 hi2 w (C.loc (S.σ v) h) (C.loc (S.σ v) h') (by rw [Formalism.FourierDecayAlt.P.JCx1.needs.ptSize_loc]; exact hY h h.2) (by rw [Formalism.FourierDecayAlt.P.JCx1.needs.ptSize_loc]; exact hY h' h'.2)`. Conclude with `⟨φ, hc, he⟩`. Use `choose φ hφc hφe using H`.
+
+Use `set Φ : J.CV E → ℂ := fun c => (∑ h : Y, ∑ h' : Y, κ h h' * ∏ v, φ v h h' (c (S.pl v))) / (C.Word.size S.P w.1 : ℂ) with hΦ`. Establish `hΦc : Continuous Φ`. Apply `Continuous.div_const` to reduce the goal to its premises. Conclude with `continuous_finsetSum _ fun h _ => continuous_finsetSum _ fun h' _ => continuous_const.mul (continuous_finsetProd _ fun v _ => (hφc v h h').comp (continuous_coord S v))`. Use `hΦc.aestronglyMeasurable.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_coords_ne S] with c hc`. Simplify using `only [hΦ, C.HidaSetting.N1]`. Use `congr 1`. Rewrite using `[← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hφe v h h' _ (hc v)]`.
+-/
 theorem aestronglyMeasurable_level_norm (S : C.HidaSetting E Wp Wq) (hInt : KB.IntAll S) (ε : ℝ) (hε : 0 < ε) (i : ℕ) (hi1 : 1 ≤ i)
     (hi2 : i ≤ S.G.r + 1) (w : S.W) (Y : Finset (TB.Pt E)) (hY : ∀ h ∈ Y, TB.level h = i - 1)
     (κ : TB.Pt E → TB.Pt E → ℂ) : AEStronglyMeasurable (S.N1 ε i w.1 Y κ) volume := by
@@ -84,11 +110,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gram_withRR (S : C.HidaSetting E Wp Wq) (RR : Fin S.f → ℝ → ℕ → List C.Letter → C.LPt → C.LPt → ℂ)
     (ε : ℝ) (k : ℕ) (w : C.Word S.f) (h h' : TB.Pt E) :
     (KB.withRR S RR).gram ε k w h h' = if k ≤ S.G.r + 1 then
       ∏ v, (KB.withRR S RR).gramLoc v ε k (w v) (C.loc (S.σ v) h) (C.loc (S.σ v) h') else 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem level_norm_of_regularization_eq (S : C.HidaSetting E Wp Wq) (RR : Fin S.f → ℝ → ℕ → List C.Letter → C.LPt → C.LPt → ℂ)
     (ε : ℝ) (i : ℕ) (w : C.Word S.f) (Y : Finset (TB.Pt E)) (κ : TB.Pt E → TB.Pt E → ℂ) (c : J.CV E) :
     (KB.withRR S RR).N1 ε i w Y κ c = (∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, (KB.withRR S RR).gramLoc v ε i (w v)
@@ -101,12 +133,20 @@ variable (S : C.HidaSetting E Wp Wq) (RR : ℕ → Fin S.f → ℝ → ℕ → L
 
 include hconv
 
+/- English proof (translation)
+The claim follows from `(hconv v ε hε i a ha p q).const_mul _`.
+-/
 theorem tendsto_gramLoc' (v : Fin S.f) (ε : ℝ) (hε : 0 < ε) (i : ℕ) (a : List C.Letter) (ha : D.AdmAt S v a)
     (p q : C.LPt) :
     Tendsto (fun n => ((√(C.nLoc S.G.k S.G.r S.fr (S.pd v).G p) * √(C.nLoc S.G.k S.G.r S.fr (S.pd v).G q) : ℝ) : ℂ) *
       RR n v ε i a p q) atTop (𝓝 (S.gramLoc v ε i a p q)) :=
   (hconv v ε hε i a ha p q).const_mul _
 
+/- English proof (translation)
+Establish `e1 : (fun n => (KB.withRR S (RR n)).gram ε k w'.1 h h') = fun n => ∏ v : Fin S.f, ((√(C.nLoc S.G.k S.G.r S.fr (S.pd v).G (C.loc (S.σ v) h)) * √(C.nLoc S.G.k S.G.r S.fr (S.pd v).G (C.loc (S.σ v) h')) : ℝ) : ℂ) * RR n v ε k (w'.1 v) (C.loc (S.σ v) h) (C.loc (S.σ v) h')`. Use function extensionality and compare the values at `fun n => by rw [gram_withRR, if_pos hk]; rfl`. Establish `e2 : S.gram ε k w'.1 h h' = ∏ v, S.gramLoc v ε k (w'.1 v) (C.loc (S.σ v) h) (C.loc (S.σ v) h')`. Simplify using `only [C.HidaSetting.gram, if_pos hk]`. Rewrite using `[e1, e2]`.
+
+Conclude with `tendsto_finsetProd _ fun v _ => tendsto_gramLoc' S RR hconv v ε hε k (w'.1 v) ⟨w', rfl⟩ _ _`.
+-/
 theorem tendsto_gram (ε : ℝ) (hε : 0 < ε) (k : ℕ) (hk : k ≤ S.G.r + 1) (w' : S.W) (h h' : TB.Pt E) :
     Tendsto (fun n => (KB.withRR S (RR n)).gram ε k w'.1 h h') atTop (𝓝 (S.gram ε k w'.1 h h')) := by
   have e1 : (fun n => (KB.withRR S (RR n)).gram ε k w'.1 h h') = fun n =>
@@ -119,6 +159,9 @@ theorem tendsto_gram (ε : ℝ) (hε : 0 < ε) (k : ℕ) (hk : k ≤ S.G.r + 1) 
   rw [e1, e2]
   exact tendsto_finsetProd _ fun v _ => tendsto_gramLoc' S RR hconv v ε hε k (w'.1 v) ⟨w', rfl⟩ _ _
 
+/- English proof (translation)
+Establish `e : ∀ n, (KB.withRR S (RR n)).base.N0 ε k w' Y κ = (∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * (KB.withRR S (RR n)).gram ε k w'.1 h h').re / C.Word.size S.P w'.1` using `fun n => rfl`. Simplify using `only [e]`. Use `show Tendsto _ atTop (𝓝 ((∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * S.gram ε k w'.1 h h').re / C.Word.size S.P w'.1))`. Conclude with `((Complex.continuous_re.tendsto _).comp (tendsto_finsetSum _ fun h _ => tendsto_finsetSum _ fun h' _ => tendsto_const_nhds.mul (tendsto_gram S RR hconv ε hε k hk w' h h'))).div_const _`.
+-/
 theorem tendsto_base_norm_of_regularization (ε : ℝ) (hε : 0 < ε) (k : ℕ) (hk : k ≤ S.G.r + 1) (w' : S.W) (Y : Finset (TB.Pt E))
     (κ : TB.Pt E → TB.Pt E → ℂ) :
     Tendsto (fun n => (KB.withRR S (RR n)).base.N0 ε k w' Y κ) atTop (𝓝 (S.base.N0 ε k w' Y κ)) := by
@@ -130,6 +173,9 @@ theorem tendsto_base_norm_of_regularization (ε : ℝ) (hε : 0 < ε) (k : ℕ) 
   exact ((Complex.continuous_re.tendsto _).comp (tendsto_finsetSum _ fun h _ => tendsto_finsetSum _
     fun h' _ => tendsto_const_nhds.mul (tendsto_gram S RR hconv ε hε k hk w' h h'))).div_const _
 
+/- English proof (translation)
+Establish `e1 : (fun n => (KB.withRR S (RR n)).N1 ε i w.1 Y κ c) = fun n => (∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v : Fin S.f, ((√(C.nLoc S.G.k S.G.r S.fr (S.pd v).G (C.loc (S.σ v) h ++ [(1, c (S.pl v))])) * √(C.nLoc S.G.k S.G.r S.fr (S.pd v).G (C.loc (S.σ v) h' ++ [(1, c (S.pl v))])) : ℝ) : ℂ) * …` using `funext fun n => rfl`. Establish `e2 : S.N1 ε i w.1 Y κ c = (∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, S.gramLoc v ε i (w.1 v) (C.loc (S.σ v) h ++ [(1, c (S.pl v))]) (C.loc (S.σ v) h' ++ [(1, c (S.pl v))])) / (C.Word.size S.P w.1 : ℂ)` using `rfl`. Rewrite using `[e1, e2]`. Conclude with `(tendsto_finsetSum _ fun h _ => tendsto_finsetSum _ fun h' _ => tendsto_const_nhds.mul (tendsto_finsetProd _ fun v _ => tendsto_gramLoc' S RR hconv v ε hε i (w.1 v) ⟨w, rfl⟩ _ _)).div_const _`.
+-/
 theorem tendsto_level_norm_of_regularization (ε : ℝ) (hε : 0 < ε) (i : ℕ) (w : S.W) (Y : Finset (TB.Pt E)) (κ : TB.Pt E → TB.Pt E → ℂ)
     (c : J.CV E) :
     Tendsto (fun n => (KB.withRR S (RR n)).N1 ε i w.1 Y κ c) atTop (𝓝 (S.N1 ε i w.1 Y κ c)) := by
@@ -146,6 +192,17 @@ theorem tendsto_level_norm_of_regularization (ε : ℝ) (hε : 0 < ε) (i : ℕ)
   exact (tendsto_finsetSum _ fun h _ => tendsto_finsetSum _ fun h' _ => tendsto_const_nhds.mul
     (tendsto_finsetProd _ fun v _ => tendsto_gramLoc' S RR hconv v ε hε i (w.1 v) ⟨w, rfl⟩ _ _)).div_const _
 
+/- English proof (translation)
+Establish `e : ∀ n, (KB.withRR S (RR n)).Nhat ε i w.1 Y κ l = ((ZLattice.covolume (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1) : ℝ) : ℂ)⁻¹ * ∫ c : J.CV E, (KB.withRR S (RR n)).N1 ε i w.1 Y κ c * S.psiInf l c` using `fun n => rfl`. Simplify using `only [e]`. Unfold `C.HidaSetting.Nhat`. Use `Tendsto.const_mul _ ?_` and prove the remaining obligations. Establish `hB : ∀ v (h h' : Y), ∃ Cc : ℝ, ∀ n, ∀ c : ℂ, c ≠ 0 → ‖(KB.withRR S (RR n)).gramLoc v ε i (w.1 v) (C.loc (S.σ v) h ++ [(1, c)]) (C.loc (S.σ v) h' ++ [(1, c)])‖ ≤ Cc * ((1 + ‖c‖) ^ 3)⁻¹` using `fun v h h' => hbd v ε hε i hi1 hi2 (w.1 v) ⟨w, rfl⟩ _ _ (by rw [Formalism.FourierDecayAlt.P.JCx1.needs.ptSize_loc]; exact hY h h.2) (by rw [Formalism.FourierDecayAlt.P.JCx1.needs.ptSize_loc]; exact hY h' h'.2)`.
+
+Use `choose Cb hCb using hB`. Use `set sz : ℂ := (C.Word.size S.P w.1 : ℂ) with hsz`. Set `g : (Fin S.f → ℂ) → ℝ` to `fun y => (∑ h : Y, ∑ h' : Y, ‖κ h h'‖ * ∏ v, (Cb v h h' * ((1 + ‖y v‖) ^ 3)⁻¹)) / ‖sz‖`. Establish `hgi : Integrable g`. Use `Integrable.div_const (integrable_finsetSum _ fun h _ => integrable_finsetSum _ fun h' _ => Integrable.const_mul (Integrable.fintype_prod (f := fun v c => Cb v h h' * ((1 + ‖c‖) ^ 3)⁻¹) fun v => integrable_decay3.const_mul _) _) _` and prove the remaining obligations.
+
+Establish `hbi : Integrable (fun c : J.CV E => g (Formalism.FourierDecayAlt.P.JCx1.needs.Qm S c))` using `(Formalism.FourierDecayAlt.P.JCx1.needs.Qm_mp S).integrable_comp_of_integrable hgi`. Use `tendsto_integral_of_dominated_convergence (fun c => g (Formalism.FourierDecayAlt.P.JCx1.needs.Qm S c)) (fun n => ?_) hbi (fun n => ?_) ?_` and prove the remaining obligations. Conclude with `(aestronglyMeasurable_level_norm (KB.withRR S (RR n)) (hInt n) ε hε i hi1 hi2 w Y hY κ).mul (continuous_psiInf S l).aestronglyMeasurable`. Use `filter_upwards [ae_coords_ne S] with c hc`. Rewrite using `[norm_mul, norm_psiInf, mul_one, level_norm_of_regularization_eq, norm_div]`.
+
+Simplify using `only [g, Formalism.FourierDecayAlt.P.JCx1.needs.Qm_apply]`. Use `div_le_div_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort Y]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun h _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort Y]`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun h' _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod]`. Conclude with `mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun v _ => norm_nonneg _) fun v _ => hCb v h h' _ _ (hc v)) (norm_nonneg _)`. Conclude with `Eventually.of_forall fun c => (tendsto_level_norm_of_regularization S RR hconv ε hε i w Y κ c).mul_const _`.
+-/
 theorem tendsto_Nhat (hInt : ∀ n, KB.IntAll (KB.withRR S (RR n)))
     (hbd : ∀ v ε, 0 < ε → ∀ i, 1 ≤ i → i ≤ S.G.r + 1 → ∀ a, D.AdmAt S v a → ∀ h h', D.ptSize h = i - 1 →
       D.ptSize h' = i - 1 → ∃ C : ℝ, ∀ n, ∀ c : ℂ, c ≠ 0 →

@@ -27,10 +27,44 @@ open GlobalTheory.SmGL.CuspMax GlobalTheory.JacMinCusp Matrix
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.DYha2.main hx hy`.
+-/
 theorem tmul_ne_zero' {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] {x : X} {y : Y}
     (hx : x ≠ 0) (hy : y ≠ 0) : x ⊗ₜ[ℂ] y ≠ 0 :=
   _root_.UpperTheory.Reformulated.B.DYha2.main hx hy
 
+/- English proof (translation)
+Use `(isCuspidal_iff_maximal k a W σ).2 ⟨hσ, fun r t h' hr ht => ?_⟩` and prove the remaining obligations. Establish `hcd : r + (t + b) = n` using `by omega`. Establish `hJ : twKer π (unipRad k (two (stdSum hcd))) 1 = ⊤` using `Submodule.Quotient.subsingleton_iff.1 (hmin r (t + b) hcd hr (by omega))`. Use `set K' := twKer σ (unipRad k (two (stdSum h'))) 1 with hK'`. Use `set Kab := twKer π (unipRad k (two (stdSum h))) 1 with hKab`.
+
+Set `T : W ⊗[ℂ] W' →ₗ[ℂ] (W ⧸ K') ⊗[ℂ] W'` to `LinearMap.rTensor W' K'.mkQ`. Set `Φ : V →ₗ[ℂ] (W ⧸ K') ⊗[ℂ] W'` to `T ∘ₗ φ.toLinearMap ∘ₗ Kab.mkQ`. Establish `hΦ : ∀ v, Φ v = T (φ (Submodule.Quotient.mk v))` using `fun v => rfl`. Establish `hA : ∀ u' ∈ unipRad k (two (stdSum h')), ∀ y : W ⊗[ℂ] W', T (extTensor σ ρ (u', 1) y) = T y`. Introduce `u' hu' y`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w w'`. Rewrite using `[extTensor_tmul]`. Simplify using `only [T, LinearMap.rTensor_tmul, map_one, Module.End.one_apply, Submodule.mkQ_apply]`.
+
+Use `congr 1`. Conclude with `(Submodule.Quotient.eq K').2 (Submodule.subset_span ⟨⟨u', hu'⟩, w, by simp⟩)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hB : ∀ g : GL (Fin a) k × GL (Fin b) k, GeneralLinearGroup.det g.1 = 1 → g.2 = 1 → ∀ v : V, jac₂ (stdSum h) π g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (π (leviEmb k (two (stdSum h)) (leviTwo k _ _ g)) v)`. Introduce `g h1 h2 v`.
+
+Establish `hd : deltaHalf k (Two (Fin a) (Fin b)) (leviTwo k _ _ g) = 1`. Rewrite using `[deltaHalf_two, h1, h2]`. Simplify using the standard rewrite rules. Use `show jac (two (stdSum h)) π (leviTwo k _ _ g) _ = _`. Rewrite using `[jac_mk, hd]`.
+
+Simplify using the standard rewrite rules. Establish `hN : ∀ u ∈ unipRad k (two (stdSum h)), ∀ v : V, (Submodule.Quotient.mk (π u v) : V ⧸ Kab) = Submodule.Quotient.mk v`. Introduce `u hu v`. Conclude with `(Submodule.Quotient.eq Kab).2 (Submodule.subset_span ⟨⟨u, hu⟩, v, by simp⟩)`. Establish `hC : ∀ u ∈ unipRad k (two (stdSum hcd)), ∀ v : V, Φ (π u v) = Φ v`.
+
+Introduce `u hu v`. Establish `hu'` using `(mem_unipRad_two_iff hcd).1 hu`. Establish `hp : u ∈ parab k (two (stdSum h))`. Rewrite using `[mem_parab]`. Introduce `i j hij`.
+
+Rewrite `hij` using `[blk_two_stdSum_lt]`. Rewrite using `[hu' i j (by omega), Matrix.one_apply_ne]`. Introduce `hij'`. Substitute `hij'` using the available equality. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨n', hn', hun⟩` from `exists_levi_mul_unip k (two (stdSum h)) ⟨u, hp⟩`. Use `set g := (leviTwo k (Fin a) (Fin b)).symm (leviProj k (two (stdSum h)) ⟨u, hp⟩) with hg`. Establish `hlg : leviTwo k _ _ g = leviProj k (two (stdSum h)) ⟨u, hp⟩` using `by simp [g]`. Establish `hg2 : g.2 = 1`. Use extensionality with `i j`.
+
+Use `show (leviProj k (two (stdSum h)) ⟨u, hp⟩ true : Matrix (Fin b) (Fin b) k) i j = _`. Rewrite using `[leviProj_apply, two_true, two_true]`. Rewrite using `[hu' _ _ (by simp; omega)]`. Simplify using `[Matrix.one_apply, stdSum]`. Establish `hg1 : g.1 ∈ unipRad k (two (stdSum h'))`.
+
+Rewrite using `[mem_unipRad_two_iff]`. Introduce `i j hij`. Use `show (leviProj k (two (stdSum h)) ⟨u, hp⟩ false : Matrix (Fin a) (Fin a) k) i j = _`. Rewrite using `[leviProj_apply, two_false, two_false]`. Rewrite using `[hu' _ _ (by simp; omega)]`.
+
+Simplify using `[Matrix.one_apply, stdSum]`. Establish `hdet : GeneralLinearGroup.det g.1 = 1` using `det_eq_one_of_mem_unipRad k hg1`. Establish `hu_eq : u = leviEmb k (two (stdSum h)) (leviTwo k _ _ g) * n'` using `by rw [hlg]; exact hun`. Rewrite using `[hu_eq, map_mul, Module.End.mul_apply, hΦ, ← hB g hdet hg2, φ.isIntertwining, show g = (g.1, 1) from Prod.ext rfl hg2, hA _ hg1, hN _ hn', ← hΦ]`. Establish `hΦ0 : ∀ v, Φ v = 0`.
+
+Introduce `v`. Establish `hv : v ∈ twKer π (unipRad k (two (stdSum hcd))) 1` using `hJ ▸ Submodule.mem_top`. Establish `: twKer π (unipRad k (two (stdSum hcd))) 1 ≤ LinearMap.ker Φ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, w, rfl⟩`.
+
+Simplify using `[hC u u.2 w]`. Conclude with `this hv`. Establish `hsurj : Function.Surjective Φ` using `(LinearMap.rTensor_surjective W' (Submodule.mkQ_surjective K')).comp (hφ.comp (Submodule.mkQ_surjective Kab))`. Use `show Subsingleton (W ⧸ K')`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← sub_eq_zero]`. Assume the negation of the conclusion as `hq`. Take `⟨w, hw⟩` from `exists_ne (0 : W')`. Take `⟨v, hv⟩` from `hsurj ((x - y) ⊗ₜ w)`. Conclude with `tmul_ne_zero' hq hw (hv.symm.trans (hΦ0 v))`.
+-/
 theorem isCuspidal_of_jacquet_min_left {n a b : ℕ} {V W W' : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] [Nontrivial W']
     (π : Representation ℂ (GL (Fin n) k) V) (h : a + b = n)
@@ -123,6 +157,17 @@ theorem isCuspidal_of_jacquet_min_left {n a b : ℕ} {V W W' : Type} [AddCommGro
   obtain ⟨v, hv⟩ := hsurj ((x - y) ⊗ₜ w)
   exact tmul_ne_zero' hq hw (hv.symm.trans (hΦ0 v))
 
+/- English proof (translation)
+Establish `key : ∀ x, GlobalTheory.SmGL.blk (two (stdSum h)) x = false`. Introduce `x`. Unfold `GlobalTheory.SmGL.blk`. Take `⟨⟨b, y⟩, hy⟩ : ∃ p, (two (stdSum h)).symm x = p` from `⟨_, rfl⟩`. Rewrite using `[hy]`.
+
+Consider the cases of `b`. Both sides reduce to the same expression. Conclude with `Fin.elim0 y`. Establish `hbot : unipRad k (two (stdSum h)) = ⊥`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨i, j, hij⟩` from `(GlobalTheory.SmGL.CuspMax.unipRad_ne_bot_iff).1 hne`. Rewrite `hij` using `[key i, key j]`. Conclude with `lt_irrefl _ hij`. Establish `hker : twKer π (⊥ : Subgroup (GL (Fin n) k)) 1 = ⊥`. Unfold `twKer`.
+
+Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `w ⟨⟨g, hg⟩, v, rfl⟩`. Rewrite `hg` using `[Subgroup.mem_bot]`. Substitute `hg` using the available equality. Simplify using the standard rewrite rules.
+
+Use `haveI : Nontrivial V := GlobalTheory.JacFactor.nontrivial_of_isIrreducible hπ`. Rewrite using `[hbot]`. Use `show Nontrivial (V ⧸ twKer π ⊥ 1)`. Rewrite using `[hker]`. Conclude with `(Submodule.quotEquivOfEqBot (⊥ : Submodule ℂ V) rfl).toEquiv.nontrivial`.
+-/
 theorem nontrivial_jacquet_top {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) k) V) (hπ : π.IsIrreducible) (h : n + 0 = n) :
     Nontrivial (Jacquet π (unipRad k (two (stdSum h)))) := by
@@ -152,11 +197,25 @@ theorem nontrivial_jacquet_top {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ
   rw [hker]
   exact (Submodule.quotEquivOfEqBot (⊥ : Submodule ℂ V) rfl).toEquiv.nontrivial
 
+/- English proof (translation)
+Introduce `k _ _ _ _` and use `⟨GlobalTheory.BZBridge.irreducibleAdmissible hA k, GlobalTheory.CompanionTheory.JacquetBridge.jacquetFiniteLength k, GlobalTheory.CompanionTheory.BZInd.inductionFiniteLength k, GlobalTheory.SmGL.IndDual.inductionContragredient k⟩`.
+-/
 theorem bernsteinZelevinsky (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) :
     GlobalTheory.Published.BernsteinZelevinskyFiniteness := fun k _ _ _ _ =>
   ⟨GlobalTheory.BZBridge.irreducibleAdmissible hA k, GlobalTheory.CompanionTheory.JacquetBridge.jacquetFiniteLength k,
     GlobalTheory.CompanionTheory.BZInd.inductionFiniteLength k, GlobalTheory.SmGL.IndDual.inductionContragredient k⟩
 
+/- English proof (translation)
+Set `P : ℕ → Prop` to `fun d => 0 < d ∧ ∃ (t : ℕ) (h : d + t = n), Nontrivial (Jacquet π (unipRad k (two (stdSum h))))`. Establish `hP : ∃ d, P d` using `⟨n, hn, 0, rfl, nontrivial_jacquet_top π hi _⟩`. Take `⟨ha, b, h, hJ⟩` from `Nat.find_spec hP`. Establish `hmin : ∀ (c d : ℕ) (h' : c + d = n), 0 < c → c < Nat.find hP → Subsingleton (Jacquet π (unipRad k (two (stdSum h'))))` using `fun c d h' hc hca => by`. Assume the negation of the conclusion as `hns`.
+
+Conclude with `Nat.find_min hP hca ⟨hc, d, h', not_subsingleton_iff_nontrivial.1 hns⟩`. Generalize the expression as in `Nat.find hP = a at ha h hJ hmin`. Establish `hBZ` using `bernsteinZelevinsky hA`. Establish `hfl : HasFiniteLength (jac (two (stdSum h)) π)` using `(hBZ k).2.1 _ _ _ (two (stdSum h)) V π hs (hasFiniteLength_of_isIrreducible hi)`. Take `⟨Y, _, _, τ, hτs, hτi, q, hq⟩` from `IrrQuot.exists_irreducible_smooth_quotient _ (isSmooth_jac (two (stdSum h)) hs) hfl hJ`.
+
+Take `⟨s, ⟨E⟩⟩` from `GlobalTheory.LeviFactor.exists_equiv_piTensor_levi hBZ k Bool (Two (Fin a) (Fin b)) (⟨Y, τ, hτs, hτi⟩ : IrrRep _)`. Set `F : ∀ j : Bool, Representation ℂ (GL (Two (Fin a) (Fin b) j) k) (s j).V` to `fun j => (s j).ρ`. Set `B` to `GlobalTheory.JacFactor.piTensorBoolEquiv F`. Set `φ : (jac₂ (stdSum h) π).IntertwiningMap (extTensor (F false) (F true))` to `⟨B.toLinearEquiv.toLinearMap ∘ₗ E.toLinearEquiv.toLinearMap ∘ₗ q.toLinearMap, fun g => LinearMap.ext fun v => by show B (E (q (jac (two (stdSum h)) π (leviTwo k _ _ g) v))) = extTensor (F false) (F true) g (B (E (q v)))`. Establish `e1 : E (τ (leviTwo k _ _ g) (q v)) = piTensor F (leviTwo k _ _ g) (E (q v))` using `E.toIntertwiningMap.isIntertwining _ _ _ _`.
+
+Establish `e2` using `B.toIntertwiningMap.isIntertwining _ _ g (E (q v))`. Rewrite using `[q.isIntertwining]`. Conclude with `(congrArg B e1).trans e2⟩`. Establish `hφ : Function.Surjective φ` using `B.toLinearEquiv.surjective.comp (E.toLinearEquiv.surjective.comp hq)`. Use `haveI : Nontrivial (s true).V := GlobalTheory.JacFactor.nontrivial_of_isIrreducible (s true).irr`.
+
+Conclude with `⟨a, b, h, s false, s true, ha, isCuspidal_of_jacquet_min_left π h hmin (s false).ρ (s true).ρ (s false).smooth φ hφ, φ, hφ⟩`.
+-/
 theorem exists_quotient_jac₂ (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {n : ℕ} {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible)
     (hn : 0 < n) :
@@ -198,6 +257,9 @@ theorem exists_quotient_jac₂ (hA : GlobalTheory.Published.IrreducibleAdmissibl
   exact ⟨a, b, h, s false, s true, ha,
     isCuspidal_of_jacquet_min_left π h hmin (s false).ρ (s true).ρ (s false).smooth φ hφ, φ, hφ⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨E.toIntertwiningMap.comp ψ, E.toLinearEquiv.injective.comp hψ⟩`.
+-/
 theorem exists_injective_comp {G A B C : Type} [Group G] [AddCommMonoid A] [Module ℂ A] [AddCommMonoid B] [Module ℂ B]
     [AddCommMonoid C] [Module ℂ C] {ρ₁ : Representation ℂ G A} {ρ₂ : Representation ℂ G B}
     {ρ₃ : Representation ℂ G C} (ψ : ρ₁.IntertwiningMap ρ₂) (hψ : Function.Injective ψ) (E : ρ₂.Equiv ρ₃) :
@@ -206,6 +268,9 @@ theorem exists_injective_comp {G A B C : Type} [Group G] [AddCommMonoid A] [Modu
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hd : ∑ i, (![IrrGL.of s.ρ s.smooth s.irr, IrrGL.of t.ρ t.smooth t.irr] i).1 = a + b` using `Fin.sum_univ_two _`. Take `⟨E⟩` from `nonempty_prod₂_equiv_prodIrr s.ρ s.smooth s.irr t.ρ t.smooth t.irr hd`. Take `⟨f, hf⟩` from `exists_injective_comp ψ hψ E`. Conclude with `⟨_, hd, IrrGL.isCusp_of.2 ⟨ha, hc⟩, f, hf⟩`.
+-/
 theorem exists_embedding_of_prod₂ {a b : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (a + b)) k) V) (s : IrrRep (GL (Fin a) k)) (t : IrrRep (GL (Fin b) k))
     (ha : 0 < a) (hc : IsCuspidal s.ρ) (ψ : π.IntertwiningMap (prod₂ s.ρ t.ρ)) (hψ : Function.Injective ψ) :
@@ -217,6 +282,11 @@ theorem exists_embedding_of_prod₂ {a b : ℕ} {V : Type} [AddCommGroup V] [Mod
   obtain ⟨f, hf⟩ := exists_injective_comp ψ hψ E
   exact ⟨_, hd, IrrGL.isCusp_of.2 ⟨ha, hc⟩, f, hf⟩
 
+/- English proof (translation)
+Take `⟨a, b, rfl, s, t, ha, hc, φ, hφ⟩` from `exists_quotient_jac₂ hA π hs hi hn`. Use `haveI : Nontrivial s.V := GlobalTheory.JacFactor.nontrivial_of_isIrreducible s.irr`. Use `haveI : Nontrivial t.V := GlobalTheory.JacFactor.nontrivial_of_isIrreducible t.irr`. Establish `hφ0 : φ ≠ 0`. Introduce and unpack `rfl`.
+
+Take `⟨w, hw⟩` from `exists_ne (0 : s.V)`. Take `⟨w', hw'⟩` from `exists_ne (0 : t.V)`. Take `⟨v, hv⟩` from `hφ (w ⊗ₜ w')`. Conclude with `tmul_ne_zero' hw hw' hv.symm`. Conclude with `(GlobalTheory.CompanionTheory.Frob.exists_injective_of_jac₂ k a b V s.V t.V π s.ρ t.ρ hs hi φ hφ0).elim fun ψ hψ => exists_embedding_of_prod₂ π s t ha hc ψ hψ`.
+-/
 theorem exists_embedding {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (π : Representation ℂ (GL (Fin n) k) V) (hs : IsSmooth π)
     (hi : π.IsIrreducible) (hn : 0 < n) :
@@ -234,6 +304,9 @@ theorem exists_embedding {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   exact (GlobalTheory.CompanionTheory.Frob.exists_injective_of_jac₂ k a b V s.V t.V π s.ρ t.ρ hs hi φ hφ0).elim fun ψ hψ =>
     exists_embedding_of_prod₂ π s t ha hc ψ hψ
 
+/- English proof (translation)
+Introduce `hA x hx` and use `exists_embedding hA x.rep x.2.rep.smooth x.2.rep.irr hx`.
+-/
 theorem jacquetSubLeft : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → JacquetSubLeft k :=
   fun hA x hx => exists_embedding hA x.rep x.2.rep.smooth x.2.rep.irr hx

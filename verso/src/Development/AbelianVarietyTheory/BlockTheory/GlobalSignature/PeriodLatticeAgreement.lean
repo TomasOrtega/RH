@@ -47,11 +47,22 @@ def AgreePeriodPair : Prop :=
 def LatticePeriodEta : Prop :=
   DiscrEta ∧ AreaEq ∧ PeriodEta ∧ DiscrScale ∧ AgreePeriodPair
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latt {ω₁ τ w : ℂ} : w ∈ latt ω₁ τ ↔ ∃ m n : ℤ, w = ω₁ * ((m : ℂ) + (n : ℂ) * τ) := Iff.rfl
 
+/- English proof (translation)
+Simplify using `[scale, AddSubgroup.mem_map]`.
+-/
 theorem mem_scale {c w : ℂ} {Λ : AddSubgroup ℂ} : w ∈ scale c Λ ↔ ∃ v ∈ Λ, c * v = w := by
   simp [scale, AddSubgroup.mem_map]
 
+/- English proof (translation)
+Use extensionality with `w`. Rewrite using `[mem_scale, mem_latt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨m, n, rfl⟩, rfl⟩`. Conclude with `⟨m, n, by ring⟩`.
+
+Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨_, ⟨m, n, rfl⟩, by ring⟩`.
+-/
 theorem scale_latt (c ω₁ τ : ℂ) : scale c (latt ω₁ τ) = latt (c * ω₁) τ := by
   ext w
   rw [mem_scale, mem_latt]
@@ -61,6 +72,11 @@ theorem scale_latt (c ω₁ τ : ℂ) : scale c (latt ω₁ τ) = latt (c * ω�
   · rintro ⟨m, n, rfl⟩
     exact ⟨_, ⟨m, n, rfl⟩, by ring⟩
 
+/- English proof (translation)
+Use `⟨⟨0, 1, by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨m, n, h⟩`. Establish `h1` using `congrArg Complex.re h`. Simplify using `at h1`. Establish `h2 : ((2 * m : ℤ) : ℝ) = ((1 : ℤ) : ℝ)` using `by push_cast; linarith`.
+
+Use `Int.cast_injective h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 example : Complex.I ∈ latt 1 Complex.I ∧ (1 / 2 : ℂ) ∉ latt 1 Complex.I := by
   refine ⟨⟨0, 1, by simp⟩, ?_⟩
   rintro ⟨m, n, h⟩

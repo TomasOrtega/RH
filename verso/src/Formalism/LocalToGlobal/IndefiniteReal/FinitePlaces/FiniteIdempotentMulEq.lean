@@ -18,6 +18,11 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 def incInf (D : D7) : Ainf D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.F] AE D :=
   TensorProduct.map (LinearMap.inl D.host.F (Ainf D.host.F) (Af D.host.F)) LinearMap.id
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [mul_zero, map_zero, map_zero]`. Consider the case `tmul a e`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `show _ = incInf D (fstA D.host.F a ⊗ₜ[D.host.F] e)`.
+
+Establish `: pairA D.host.F 1 0 * a = (fstA D.host.F a, (0 : Af D.host.F))` using `Prod.ext (by show (1 : Ainf D.host.F) * a.1 = a.1; rw [one_mul]) (by show (0 : Af D.host.F) * a.2 = 0; rw [zero_mul])`. Rewrite using `[this]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [mul_add, hx, hy, map_add, map_add]`.
+-/
 theorem inf_mul (z : AE D) :
     algebraMap (AF D.host.F) (AE D) (pairA D.host.F 1 0) * z = incInf D (infPart D z) := by
   induction z using TensorProduct.induction_on with
@@ -31,6 +36,11 @@ theorem inf_mul (z : AE D) :
     rw [this]; rfl
   | add x y hx hy => rw [mul_add, hx, hy, map_add, map_add]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [mul_zero, map_zero, map_zero]`. Consider the case `tmul a e`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, finPart_tmul, jF_tmul]`. Use `congr 1`.
+
+Conclude with `Prod.ext (by show (0 : Ainf D.host.F) * a.1 = 0; rw [zero_mul]) (by show (1 : Af D.host.F) * a.2 = a.2; rw [one_mul])`. Consider the case `add x y hx hy => rw [mul_add, hx, hy, map_add, map_add]`.
+-/
 theorem finite_idempotent_mul_eq (z : AE D) :
     algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 1) * z = jF D (finPart D z) := by
   induction z using TensorProduct.induction_on with
@@ -42,17 +52,28 @@ theorem finite_idempotent_mul_eq (z : AE D) :
     exact Prod.ext (by show (0 : Ainf D.host.F) * a.1 = 0; rw [zero_mul]) (by show (1 : Af D.host.F) * a.2 = a.2; rw [one_mul])
   | add x y hx hy => rw [mul_add, hx, hy, map_add, map_add]
 
+/- English proof (translation)
+Establish `h1 : pairA D.host.F 1 0 + pairA D.host.F 0 1 = (1 : AF D.host.F)` using `Prod.ext (add_zero _) (zero_add _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_jF_of_inf (z : AE D) (hz : infPart D z = 0) : z = jF D (finPart D z) := by
   have h1 : pairA D.host.F 1 0 + pairA D.host.F 0 1 = (1 : AF D.host.F) := Prod.ext (add_zero _) (zero_add _)
   calc z = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 1 0 + pairA D.host.F 0 1) * z := by rw [h1, map_one, one_mul]
     _ = jF D (finPart D z) := by rw [map_add, add_mul, inf_mul, hz, map_zero, zero_add, finite_idempotent_mul_eq]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a e => rw [jF_tmul, finPart_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem finPart_jF (y : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (jF D y) = y := by
   induction y using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero]
   | tmul a e => rw [jF_tmul, finPart_tmul]; rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a e`. Rewrite using `[jF_tmul]`. Use `show (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)) (pairA D.host.F 0 a ⊗ₜ[D.host.F] e) = 0`.
+
+Rewrite using `[Algebra.TensorProduct.map_tmul]`. Use `show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] _ = 0`. Rewrite using `[TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+-/
 theorem infPart_jF (y : Af D.host.F ⊗[D.host.F] D.host.E) : infPart D (jF D y) = 0 := by
   induction y using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero]
@@ -64,6 +85,9 @@ theorem infPart_jF (y : Af D.host.F ⊗[D.host.F] D.host.E) : infPart D (jF D y)
     rw [TensorProduct.zero_tmul]
   | add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Establish `hNF : (N : D.host.F) ≠ 0` using `by exact_mod_cast hN.ne'`. Take `⟨u, hu⟩` from `ReciprocityTheory.UG.AdeleIntA.exists_approx_adele (R := 𝓞 D.host.F) (algebraMap D.host.F (Af D.host.F) (1 / (N : D.host.F)) * a)`. Use `⟨N * u, _, intAf_of_isInt _ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_sub, ← mul_assoc, ← map_mul, mul_one_div_cancel hNF, map_one, one_mul, ← map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem approx_Af (a : Af D.host.F) (N : ℕ) (hN : 0 < N) :
     ∃ f : D.host.F, ∃ c ∈ intAf D.host.F, a = algebraMap D.host.F (Af D.host.F) f + algebraMap D.host.F (Af D.host.F) N * c := by
   have hNF : (N : D.host.F) ≠ 0 := by exact_mod_cast hN.ne'
@@ -73,11 +97,23 @@ theorem approx_Af (a : Af D.host.F) (N : ℕ) (hN : 0 < N) :
   rw [mul_sub, ← mul_assoc, ← map_mul, mul_one_div_cancel hNF, map_one, one_mul, ← map_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.E).2 (Algebra.IsAlgebraic.isAlgebraic e)`.
+-/
 theorem isAlg_Z (e : D.host.E) : IsAlgebraic ℤ e :=
   (IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.E).2 (Algebra.IsAlgebraic.isAlgebraic e)
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, zero_mem _, by rw [TensorProduct.tmul_zero, smul_zero, add_zero]⟩`. Consider the case `tmul a e`. Take `⟨m, hm0, hmint⟩` from `IsAlgebraic.exists_integral_multiple (isAlg_Z e)`. Establish `hmF : ((m : ℤ) : D.host.F) ≠ 0` using `by exact_mod_cast hm0`.
+
+Set `e' : 𝓞 D.host.E` to `⟨m • e, hmint⟩`. Establish `he : e = (1 / (m : D.host.F)) • (e' : D.host.E)` using `by show e = (1 / (m : D.host.F)) • (m • e)`. Rewrite using `[zsmul_eq_mul, Algebra.smul_def, ← mul_assoc, ← map_intCast (algebraMap D.host.F D.host.E), ← map_mul, one_div_mul_cancel hmF, map_one, one_mul]`. Take `⟨f, c, hc, hfc⟩` from `approx_Af ((1 / (m : D.host.F)) • a) N hN`. Use `⟨f • (e' : D.host.E), c ⊗ₜ[D.host.F] (e' : D.host.E), AddSubgroup.subset_closure ⟨c, hc, e', rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hN' : algebraMap D.host.F (Af D.host.F) (N : D.host.F) * c = N • c`. Rewrite using `[map_natCast, nsmul_eq_mul]`. Rewrite using `[he, ← TensorProduct.smul_tmul, hfc, TensorProduct.add_tmul, hN', Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy`. Take `⟨w, y1, hy1, rfl⟩` from `hx`.
+
+Take `⟨w', y2, hy2, rfl⟩` from `hy`. Conclude with `⟨w + w', y1 + y2, add_mem hy1 hy2, by rw [TensorProduct.tmul_add, smul_add]; abel⟩`.
+-/
 theorem approx_AfE (N : ℕ) (hN : 0 < N) (z : Af D.host.F ⊗[D.host.F] D.host.E) :
     ∃ w : D.host.E, ∃ y ∈ intAE D, z = (1 : Af D.host.F) ⊗ₜ[D.host.F] w + N • y := by
   induction z using TensorProduct.induction_on with

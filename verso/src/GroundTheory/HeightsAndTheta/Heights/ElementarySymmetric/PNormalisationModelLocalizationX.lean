@@ -12,6 +12,9 @@ namespace NormalisationModelLocalization
 
 variable {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ}
 
+/- English proof (translation)
+Rewrite using `[Set.disjoint_left]`. Introduce `f hf hfJ`. Conclude with `hf (RingHom.mem_ker.2 (hq f hfJ))`.
+-/
 theorem disjoint_primeCompl (hq : q ∈ zeroSet J) :
     Disjoint ((RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl : Set (MvPolynomial (Fin n) ℂ))
       (J : Set (MvPolynomial (Fin n) ℂ)) := by
@@ -19,14 +22,23 @@ theorem disjoint_primeCompl (hq : q ∈ zeroSet J) :
   intro f hf hfJ
   exact hf (RingHom.mem_ker.2 (hq f hfJ))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.isPrime_of_isPrime_disjoint (RingHom.ker (eval q)).primeCompl _ J hJ (disjoint_primeCompl hq)`.
+-/
 theorem isPrime_map (hJ : J.IsPrime) (hq : q ∈ zeroSet J) :
     (J.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))))).IsPrime :=
   IsLocalization.isPrime_of_isPrime_disjoint (RingHom.ker (eval q)).primeCompl _ J hJ (disjoint_primeCompl hq)
 
+/- English proof (translation)
+Use `haveI := isPrime_map hJ hq`. Conclude with `Ideal.Quotient.isDomain _`.
+-/
 theorem isDomain (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : IsDomain (curveLocalRing J q) := by
   haveI := isPrime_map hJ hq
   exact Ideal.Quotient.isDomain _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (algebraMap _ (Localization.AtPrime (RingHom.ker (eval q))) f) = 0 ↔ _`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← Ideal.mem_comap]`. Establish `h` using `IsLocalization.under_map_of_isPrime_disjoint (M := (RingHom.ker (eval q)).primeCompl) (S := Localization.AtPrime (RingHom.ker (eval q))) hJ (disjoint_primeCompl hq)`. Rewrite `h` using `[Ideal.under]`. Rewrite using `[h]`.
+-/
 theorem algebraMap_eq_zero_iff (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (f : MvPolynomial (Fin n) ℂ) :
     algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing J q) f = 0 ↔ f ∈ J := by
   change Ideal.Quotient.mk _ (algebraMap _ (Localization.AtPrime (RingHom.ker (eval q))) f) = 0 ↔ _
@@ -41,16 +53,27 @@ def toFrac (J : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ) :
   (algebraMap (curveLocalRing J q) (FractionRing (curveLocalRing J q))).comp
     (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing J q))
 
+/- English proof (translation)
+Rewrite using `[toFrac, RingHom.comp_apply, map_eq_zero_iff _ (IsFractionRing.injective _ _), algebraMap_eq_zero_iff hJ hq]`.
+-/
 theorem toFrac_eq_zero_iff (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (f : MvPolynomial (Fin n) ℂ) :
     toFrac J q f = 0 ↔ f ∈ J := by
   rw [toFrac, RingHom.comp_apply, map_eq_zero_iff _ (IsFractionRing.injective _ _), algebraMap_eq_zero_iff hJ hq]
 
+/- English proof (translation)
+The claim follows from `Subalgebra.algebraMap_mem _ _`.
+-/
 theorem toFrac_mem (f : MvPolynomial (Fin n) ℂ) :
     toFrac J q f ∈ integralClosure (curveLocalRing J q) (FractionRing (curveLocalRing J q)) :=
   Subalgebra.algebraMap_mem _ _
 
 variable (M : IndefiniteRowSideFullHecke.ComplexSets.NormalModel J)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← M.comap_eq]`. Conclude with `h`. Introduce `h`.
+
+Rewrite `h` using `[← M.comap_eq]`. Conclude with `h`.
+-/
 theorem rename_mem_iff (f : MvPolynomial (Fin n) ℂ) : rename Sum.inl f ∈ M.ideal ↔ f ∈ J := by
   constructor
   · intro h
@@ -64,8 +87,14 @@ def num (i : Fin M.m) : MvPolynomial (Fin n) ℂ := (M.birational i).choose
 
 def den (i : Fin M.m) : MvPolynomial (Fin n) ℂ := (M.birational i).choose_spec.choose
 
+/- English proof (translation)
+The claim follows from `(M.birational i).choose_spec.choose_spec.1`.
+-/
 theorem den_not_mem (i : Fin M.m) : den M i ∉ J := (M.birational i).choose_spec.choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(M.birational i).choose_spec.choose_spec.2`.
+-/
 theorem den_mul_sub_mem (i : Fin M.m) :
     rename Sum.inl (den M i) * X (Sum.inr i) - rename Sum.inl (num M i) ∈ M.ideal :=
   (M.birational i).choose_spec.choose_spec.2
@@ -75,11 +104,27 @@ def denProd : MvPolynomial (Fin n) ℂ := ∏ i, den M i
 def relIdeal : Ideal (MvPolynomial (Fin n ⊕ Fin M.m) ℂ) :=
   Ideal.span (Set.range fun i => rename Sum.inl (den M i) * X (Sum.inr i) - rename Sum.inl (num M i))
 
+/- English proof (translation)
+Rewrite using `[relIdeal, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `den_mul_sub_mem M i`.
+-/
 theorem relIdeal_le : relIdeal M ≤ M.ideal := by
   rw [relIdeal, Ideal.span_le]
   rintro _ ⟨i, rfl⟩
   exact den_mul_sub_mem M i
 
+/- English proof (translation)
+Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨0, C c, by simp⟩`. Consider the case `add p r hp hr`. Take `⟨N₁, g₁, h₁⟩` from `hp`. Take `⟨N₂, g₂, h₂⟩` from `hr`.
+
+Use `⟨N₁ + N₂, denProd M ^ N₂ * g₁ + denProd M ^ N₁ * g₂, ?_⟩` and prove the remaining obligations. Establish `e : rename Sum.inl (denProd M) ^ (N₁ + N₂) * (p + r) - rename Sum.inl (denProd M ^ N₂ * g₁ + denProd M ^ N₁ * g₂) = rename Sum.inl (denProd M) ^ N₂ * (rename Sum.inl (denProd M) ^ N₁ * p - rename Sum.inl g₁) + rename Sum.inl (denProd M) ^ N₁ * (rename Sum.inl (denProd M) ^ N₂ * r …`. Simplify using `only [map_add, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `add_mem (Ideal.mul_mem_left _ _ h₁) (Ideal.mul_mem_left _ _ h₂)`. Consider the case `mul_X p s hp`. Take `⟨N, g, hg⟩` from `hp`. Consider the cases of `s with`. Consider the case `inl i`.
+
+Use `⟨N, g * X i, ?_⟩` and prove the remaining obligations. Establish `e : rename Sum.inl (denProd M) ^ N * (p * X (Sum.inl i)) - rename Sum.inl (g * X i) = (rename Sum.inl (denProd M) ^ N * p - rename Sum.inl g) * X (Sum.inl i)`. Simplify using `only [map_mul, rename_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hg`. Consider the case `inr i => set c := ∏ j ∈ Finset.univ.erase i, den M j with hc`. Establish `hB : denProd M = den M i * c` using `(Finset.mul_prod_erase _ _ (Finset.mem_univ i)).symm`. Use `⟨N + 1, g * c * num M i, ?_⟩` and prove the remaining obligations. Establish `e : rename Sum.inl (denProd M) ^ (N + 1) * (p * X (Sum.inr i)) - rename Sum.inl (g * c * num M i) = (rename Sum.inl (denProd M) ^ N * p - rename Sum.inl g) * (rename Sum.inl (denProd M) * X (Sum.inr i)) + rename Sum.inl g * rename Sum.inl c * (rename Sum.inl (den M i) * X (Sum.in …`.
+
+Rewrite using `[hB]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (Ideal.mul_mem_right _ _ hg) (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩))`.
+-/
 theorem clear (h : MvPolynomial (Fin n ⊕ Fin M.m) ℂ) :
     ∃ (N : ℕ) (g : MvPolynomial (Fin n) ℂ),
       rename Sum.inl (denProd M) ^ N * h - rename Sum.inl g ∈ relIdeal M := by
@@ -126,6 +171,11 @@ def toFracModel (q : Fin n → ℂ) : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+*
   eval₂Hom ((toFrac J q).comp C)
     (Sum.elim (fun j => toFrac J q (X j)) (fun i => toFrac J q (num M i) * Ring.inverse (toFrac J q (den M i))))
 
+/- English proof (translation)
+Rewrite using `[toFracModel, eval₂Hom_rename]`. Establish `e : eval₂Hom ((toFrac J q).comp C) (Sum.elim (fun j => toFrac J q (X j)) (fun i => toFrac J q (num M i) * Ring.inverse (toFrac J q (den M i))) ∘ Sum.inl) = toFrac J q`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using the standard rewrite rules.
+
+Introduce `j`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+-/
 theorem toFracModel_rename (f : MvPolynomial (Fin n) ℂ) : toFracModel M q (rename Sum.inl f) = toFrac J q f := by
   rw [toFracModel, eval₂Hom_rename]
   have e : eval₂Hom ((toFrac J q).comp C) (Sum.elim (fun j => toFrac J q (X j))
@@ -139,6 +189,11 @@ theorem toFracModel_rename (f : MvPolynomial (Fin n) ℂ) : toFracModel M q (ren
 
 variable {M}
 
+/- English proof (translation)
+Use `isDomain hJ hq` as an intermediate fact. Rewrite using `[relIdeal, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hu : IsUnit (toFrac J q (den M i))` using `isUnit_iff_ne_zero.2 (fun h => den_not_mem M i ((toFrac_eq_zero_iff hJ hq _).1 h))`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, map_sub, map_mul, toFracModel_rename]`.
+
+Rewrite using `[toFracModel, eval₂Hom_X', Sum.elim_inr, mul_left_comm, Ring.mul_inverse_cancel _ hu, mul_one, sub_self]`.
+-/
 theorem relIdeal_le_ker (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : relIdeal M ≤ RingHom.ker (toFracModel M q) := by
   have := isDomain hJ hq
   rw [relIdeal, Ideal.span_le]
@@ -148,6 +203,17 @@ theorem relIdeal_le_ker (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : relIdeal M ≤
   simp only [SetLike.mem_coe, RingHom.mem_ker, map_sub, map_mul, toFracModel_rename]
   rw [toFracModel, eval₂Hom_X', Sum.elim_inr, mul_left_comm, Ring.mul_inverse_cancel _ hu, mul_one, sub_self]
 
+/- English proof (translation)
+Use `isDomain hJ hq` as an intermediate fact. Establish `hBJ : toFrac J q (denProd M) ≠ 0`. Rewrite using `[denProd, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun i _ h => den_not_mem M i ((toFrac_eq_zero_iff hJ hq _).1 h))`. Establish `hBM : rename Sum.inl (denProd M) ∉ M.ideal` using `fun h => hBJ ((toFrac_eq_zero_iff hJ hq _).2 ((rename_mem_iff M _).1 h))`.
+
+Use extensionality with `h`. Take `⟨N, g, hg⟩` from `clear M h`. Establish `hφ` using `relIdeal_le_ker hJ hq hg`. Rewrite `hφ` using `[RingHom.mem_ker, map_sub, map_mul, map_pow, toFracModel_rename, toFracModel_rename, sub_eq_zero]`. Establish `hM` using `relIdeal_le M hg`.
+
+Rewrite using `[RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite `hφ` using `[h0, mul_zero, eq_comm, toFrac_eq_zero_iff hJ hq]`. Establish `hg' : rename Sum.inl g ∈ M.ideal` using `(rename_mem_iff M g).2 hφ`.
+
+Establish `hmul : rename Sum.inl (denProd M) ^ N * h ∈ M.ideal`. Use `M.ideal.add_mem hM hg'` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `(M.isPrime.mem_or_mem hmul).resolve_left (fun hp => hBM (M.isPrime.mem_of_pow_mem N hp))`. Introduce `hh`.
+
+Establish `hg' : rename Sum.inl g ∈ M.ideal`. Use `M.ideal.sub_mem (M.ideal.mul_mem_left (rename Sum.inl (denProd M) ^ N) hh) hM` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Rewrite `hφ` using `[(toFrac_eq_zero_iff hJ hq g).2 ((rename_mem_iff M g).1 hg')]`. Conclude with `(mul_eq_zero.1 hφ).resolve_left (pow_ne_zero _ hBJ)`.
+-/
 theorem ker_toFracModel (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : RingHom.ker (toFracModel M q) = M.ideal := by
   have := isDomain hJ hq
   have hBJ : toFrac J q (denProd M) ≠ 0 := by
@@ -184,10 +250,16 @@ def modelToFrac (hJ : J.IsPrime) (hq : q ∈ zeroSet J) :
     rw [← RingHom.mem_ker, ker_toFracModel hJ hq]
     exact ha)
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.lift_mk _ _ _`.
+-/
 theorem modelToFrac_mk (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (h : MvPolynomial (Fin n ⊕ Fin M.m) ℂ) :
     modelToFrac M hJ hq (Ideal.Quotient.mk M.ideal h) = toFracModel M q h :=
   Ideal.Quotient.lift_mk _ _ _
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨h, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[modelToFrac_mk, ← RingHom.mem_ker, ker_toFracModel hJ hq]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hx`.
+-/
 theorem modelToFrac_injective (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : Function.Injective (modelToFrac M hJ hq) := by
   rw [injective_iff_map_eq_zero]
   intro x hx
@@ -195,6 +267,9 @@ theorem modelToFrac_injective (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : Function
   rw [modelToFrac_mk, ← RingHom.mem_ker, ker_toFracModel hJ hq] at hx
   exact Ideal.Quotient.eq_zero_iff_mem.2 hx
 
+/- English proof (translation)
+Take `⟨f, hf, hfy⟩` from `y.2`. Establish `hy : (y : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) = Ideal.Quotient.mk M.ideal (rename Sum.inl f)` using `hfy.symm`. Rewrite using `[hy, modelToFrac_mk, toFracModel_rename]`. Conclude with `(isUnit_algebraMap_curveLocalRing J q f (fun h0 => hf (RingHom.mem_ker.2 h0))).map (algebraMap (curveLocalRing J q) (FractionRing (curveLocalRing J q)))`.
+-/
 theorem modelToFrac_isUnit (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (y : normalModelSubmonoid M q) :
     IsUnit (modelToFrac M hJ hq y) := by
   obtain ⟨f, hf, hfy⟩ := y.2
@@ -209,11 +284,19 @@ def locToFrac (hJ : J.IsPrime) (hq : q ∈ zeroSet J) :
   IsLocalization.lift (M := normalModelSubmonoid M q) (S := Localization (normalModelSubmonoid M q))
     (modelToFrac_isUnit M hJ hq)
 
+/- English proof (translation)
+Rewrite using `[locToFrac]`. Conclude with `IsLocalization.lift_eq _ _`.
+-/
 theorem locToFrac_algebraMap (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (r : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) :
     locToFrac M hJ hq (algebraMap _ _ r) = modelToFrac M hJ hq r := by
   rw [locToFrac]
   exact IsLocalization.lift_eq _ _
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (normalModelSubmonoid M q) z`. Rewrite `hz` using `[locToFrac, IsLocalization.lift_mk'_spec, mul_zero]`. Rewrite using `[modelToFrac_injective M hJ hq (hz.trans (map_zero _).symm)]`.
+
+Conclude with `IsLocalization.mk'_zero _`.
+-/
 theorem locToFrac_injective (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : Function.Injective (locToFrac M hJ hq) := by
   rw [injective_iff_map_eq_zero]
   intro z hz
@@ -233,6 +316,9 @@ def polyLocToModel : Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (F
     (fun y => IsLocalization.map_units (Localization (normalModelSubmonoid M q))
       (⟨_, Submonoid.mem_map_of_mem _ y.2⟩ : normalModelSubmonoid M q))
 
+/- English proof (translation)
+Rewrite using `[polyLocToModel]`. Conclude with `IsLocalization.lift_eq _ _`.
+-/
 theorem polyLocToModel_algebraMap (f : MvPolynomial (Fin n) ℂ) :
     polyLocToModel M (algebraMap _ _ f) =
       algebraMap (MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) (Localization (normalModelSubmonoid M q))
@@ -250,6 +336,9 @@ def locToModel : curveLocalRing J q →+* Localization (normalModelSubmonoid M q
         Ideal.Quotient.eq_zero_iff_mem.2 ((rename_mem_iff M f).2 hf), map_zero]
     exact hle ha)
 
+/- English proof (translation)
+Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl` to reduce the goal to its premises. Use `RingHom.ext fun f => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `locToFrac M hJ hq (polyLocToModel M (algebraMap _ _ f)) = toFrac J q f`. Rewrite using `[polyLocToModel_algebraMap, locToFrac_algebraMap, modelToFrac_mk, toFracModel_rename]`.
+-/
 theorem locToFrac_comp (hJ : J.IsPrime) (hq : q ∈ zeroSet J) :
     (locToFrac M hJ hq).comp (locToModel M) = algebraMap (curveLocalRing J q) (FractionRing (curveLocalRing J q)) := by
   apply Ideal.Quotient.ringHom_ext
@@ -258,6 +347,19 @@ theorem locToFrac_comp (hJ : J.IsPrime) (hq : q ∈ zeroSet J) :
   change locToFrac M hJ hq (polyLocToModel M (algebraMap _ _ f)) = toFrac J q f
   rw [polyLocToModel_algebraMap, locToFrac_algebraMap, modelToFrac_mk, toFracModel_rename]
 
+/- English proof (translation)
+Establish `hX : ∀ s, toFracModel M q (X s) ∈ integralClosure (curveLocalRing J q) (FractionRing (curveLocalRing J q))`. Introduce `s`. Consider the cases of `s with`. Consider the case `inl j`. Rewrite using `[← rename_X (R := ℂ) (Sum.inl : Fin n → Fin n ⊕ Fin M.m) j, toFracModel_rename]`.
+
+Conclude with `toFrac_mem _`. Consider the case `inr i`. Take `⟨P, hPm, hP⟩` from `M.integral i`. Establish `h0 : toFracModel M q (P.eval₂ (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] _).toRingHom (X (Sum.inr i))) = 0`. Rewrite using `[← RingHom.mem_ker, ker_toFracModel hJ hq]`.
+
+Conclude with `hP`. Rewrite `h0` using `[Polynomial.hom_eval₂]`. Establish `hc : (toFracModel M q).comp (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] _).toRingHom = (algebraMap (curveLocalRing J q) (FractionRing (curveLocalRing J q))).comp (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing J q))` using `RingHom.ext (toFracModel_rename M)`. Rewrite `h0` using `[hc]`. Use `⟨P.map (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing J q)), hPm.map _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.eval₂_map]`. Conclude with `h0`. Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C c`. Rewrite using `[← rename_C (R := ℂ) (Sum.inl : Fin n → Fin n ⊕ Fin M.m) c, toFracModel_rename]`.
+
+Conclude with `toFrac_mem _`. Consider the case `add p r hp hr`. Rewrite using `[map_add]`. Conclude with `add_mem hp hr`. Consider the case `mul_X p s hp`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_mem hp (hX s)`.
+-/
 theorem toFracModel_mem (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (h : MvPolynomial (Fin n ⊕ Fin M.m) ℂ) :
     toFracModel M q h ∈ integralClosure (curveLocalRing J q) (FractionRing (curveLocalRing J q)) := by
   have hX : ∀ s, toFracModel M q (X s) ∈
@@ -293,6 +395,11 @@ theorem toFracModel_mem (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (h : MvPolynomia
     rw [map_mul]
     exact mul_mem hp (hX s)
 
+/- English proof (translation)
+Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (normalModelSubmonoid M q) z`. Take `⟨h, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Take `⟨f, hf, hfs⟩` from `s.2`. Establish `hs : (s : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) = Ideal.Quotient.mk M.ideal (rename Sum.inl f)` using `hfs.symm`. Take `⟨u, hu⟩` from `isUnit_algebraMap_curveLocalRing J q f (fun h0 => hf (RingHom.mem_ker.2 h0))`.
+
+Establish `key : locToFrac M hJ hq (IsLocalization.mk' _ (Ideal.Quotient.mk M.ideal h) s) = toFracModel M q h * algebraMap (curveLocalRing J q) (FractionRing (curveLocalRing J q)) ↑u⁻¹`. Rewrite using `[locToFrac, IsLocalization.lift_mk'_spec, hs, modelToFrac_mk, modelToFrac_mk, toFracModel_rename, toFrac, RingHom.comp_apply, ← hu, mul_left_comm, ← map_mul, Units.mul_inv, map_one, mul_one]`. Rewrite using `[key]`. Conclude with `mul_mem (toFracModel_mem M hJ hq h) (Subalgebra.algebraMap_mem _ _)`.
+-/
 theorem locToFrac_mem (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (z : Localization (normalModelSubmonoid M q)) :
     locToFrac M hJ hq z ∈ integralClosure (curveLocalRing J q) (FractionRing (curveLocalRing J q)) := by
   obtain ⟨⟨r, s⟩, rfl⟩ := IsLocalization.mk'_surjective (normalModelSubmonoid M q) z
@@ -308,6 +415,21 @@ theorem locToFrac_mem (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (z : Localization 
   rw [key]
   exact mul_mem (toFracModel_mem M hJ hq h) (Subalgebra.algebraMap_mem _ _)
 
+/- English proof (translation)
+Use `isDomain hJ hq` as an intermediate fact. Use `M.isPrime` as an intermediate fact. Use `haveI : IsIntegrallyClosed (MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) := M.isIntegrallyClosed`. Use `letI : Algebra (Localization (normalModelSubmonoid M q)) (FractionRing (curveLocalRing J q)) := (locToFrac M hJ hq).toAlgebra`. Establish `hinj` using `locToFrac_injective M hJ hq`.
+
+Use `haveI : IsDomain (Localization (normalModelSubmonoid M q)) := Function.Injective.isDomain (locToFrac M hJ hq) hinj`. Use `haveI : IsIntegrallyClosed (Localization (normalModelSubmonoid M q)) := isIntegrallyClosed_of_isLocalization _ (normalModelSubmonoid M q) (fun s hs => mem_nonZeroDivisors_of_ne_zero (fun h0 => zero_not_mem_normalModelSubmonoid M q hq (h0 ▸ hs)))`. Use `haveI : IsFractionRing (Localization (normalModelSubmonoid M q)) (FractionRing (curveLocalRing J q)) := by`. Use `(isLocalization_iff _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+
+Use `isUnit_iff_ne_zero.2 (fun h0 => nonZeroDivisors.coe_ne_zero y ?_)` and prove the remaining obligations. Conclude with `(injective_iff_map_eq_zero _).1 hinj _ h0`. Introduce `z`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors (curveLocalRing J q)) z`. Establish `hb : locToModel M (b : curveLocalRing J q) ≠ 0`.
+
+Introduce `h0`. Establish `h1` using `congrArg (locToFrac M hJ hq) h0`. Rewrite `h1` using `[← RingHom.comp_apply, locToFrac_comp, map_zero]`. Conclude with `nonZeroDivisors.coe_ne_zero b ((injective_iff_map_eq_zero _).1 (IsFractionRing.injective _ _) _ h1)`. Use `⟨⟨locToModel M a, ⟨locToModel M b, mem_nonZeroDivisors_of_ne_zero hb⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `z * locToFrac M hJ hq (locToModel M b) = locToFrac M hJ hq (locToModel M a)`. Rewrite using `[← RingHom.comp_apply, ← RingHom.comp_apply, locToFrac_comp]`. Conclude with `hab`. Introduce `a b hab`. Conclude with `⟨1, by rw [hinj hab]⟩`.
+
+Establish `hx' : IsIntegral (Localization (normalModelSubmonoid M q)) x`. Take `⟨p, hpm, hp⟩` from `hx`. Use `⟨p.map (locToModel M), hpm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, RingHom.algebraMap_toAlgebra, locToFrac_comp]`. Conclude with `hp`.
+
+Conclude with `(IsIntegrallyClosed.isIntegral_iff (K := FractionRing (curveLocalRing J q))).1 hx'`.
+-/
 theorem exists_locToFrac (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (x : FractionRing (curveLocalRing J q))
     (hx : IsIntegral (curveLocalRing J q) x) : ∃ z, locToFrac M hJ hq z = x := by
   have := isDomain hJ hq
@@ -350,6 +472,17 @@ end NormalisationModelLocalization
 
 open NormalisationModelLocalization in
 
+/- English proof (translation)
+Introduce `n J q M hJ`. Distinguish the cases in `hq : q ∈ zeroSet J`. Set `g : Localization (normalModelSubmonoid M q) →+* curveNormalisation J q` to `(locToFrac M hJ hq).codRestrict (integralClosure (curveLocalRing J q) (FractionRing (curveLocalRing J q))) (locToFrac_mem M hJ hq)`. Establish `hbij : Function.Bijective g`. Use `⟨fun a b h => locToFrac_injective M hJ hq (congrArg Subtype.val h), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨x, hx⟩`. Take `⟨z, hz⟩` from `exists_locToFrac M hJ hq x hx`. Conclude with `⟨z, Subtype.ext hz⟩`. Use `⟨(RingEquiv.ofBijective g hbij).symm, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[RingEquiv.symm_apply_eq]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `toFrac J q f = locToFrac M hJ hq (algebraMap _ _ (Ideal.Quotient.mk M.ideal (rename Sum.inl f)))`. Rewrite using `[locToFrac_algebraMap, modelToFrac_mk, toFracModel_rename]`. Use `haveI := curveLocalRing_subsingleton J q hq haveI : Subsingleton (FractionRing (curveLocalRing J q)) := IsLocalization.subsingleton (M := nonZeroDivisors (curveLocalRing J q)) (by rw [Subsingleton.elim (0 : curveLocalRing J q) 1]; exact one_mem _) haveI : Subsingleton (curveNorma …`. Establish `h0 : (0 : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) ∈ normalModelSubmonoid M q`.
+
+Simplify using `only [zeroSet, Set.mem_ofPred_eq, not_forall] at hq`. Take `⟨g, hg, hgq⟩` from `hq`. Establish `h1` using `mk_rename_mem_normalModelSubmonoid M q g hgq`. Rewrite `h1` using `[Ideal.Quotient.eq_zero_iff_mem.2 ((rename_mem_iff M g).2 hg)]`. Then use the resulting hypothesis. Use `haveI : Subsingleton (Localization (normalModelSubmonoid M q)) := IsLocalization.subsingleton h0`.
+
+Set `e : curveNormalisation J q ≃+* Localization (normalModelSubmonoid M q)` to `{ toFun := fun _ => 0 invFun := fun _ => 0 left_inv := fun _ => Subsingleton.elim _ _ right_inv := fun _ => Subsingleton.elim _ _ map_mul' := fun _ _ => Subsingleton.elim _ _ map_add' := fun _ _ => Subsingleton.elim _ _ }`. Conclude with `⟨e, fun _ => Subsingleton.elim _ _⟩`.
+-/
 theorem NormalisationModelLocalization.proof : NormalisationModelLocalization.Statement := by
   intro n J q M hJ
   by_cases hq : q ∈ zeroSet J

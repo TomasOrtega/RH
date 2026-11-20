@@ -21,6 +21,9 @@ namespace GlobalTheory.PowUnif
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.BoxFamily GlobalTheory.UnifPullRig GlobalTheory.WCub
 
+/- English proof (translation)
+Establish `e : ∀ a, ((Over.map f).map (x a) ≫ p') ≫ π = (Over.map f).map (x a ≫ ρ) ≫ p` using `fun a => Over.OverMorphism.ext ((Category.assoc _ _ _).trans ((congrArg ((x a).left ≫ ·) h).trans (Category.assoc _ _ _).symm))`. Use `⟨e, ?_⟩` and prove the remaining obligations. Use `show (lift _ (lift _ _) ≫ (π ⊗ₘ π ⊗ₘ π)).left = _`. Rewrite using `[lift_map, lift_map, e, e, e]`.
+-/
 theorem tri_map {S S' : Scheme.{0}} {G G' : Over S} (f : S' ⟶ S) {E E' T : Over S'} (p : (Over.map f).obj E ⟶ G)
     (p' : (Over.map f).obj E' ⟶ G') (x : Fin 3 → (T ⟶ E')) (ρ : E' ⟶ E) (π : G' ⟶ G)
     (h : p'.left ≫ π.left = ρ.left ≫ p.left) :
@@ -33,6 +36,9 @@ theorem tri_map {S S' : Scheme.{0}} {G G' : Over S} (f : S' ⟶ S) {E E' T : Ove
   show (lift _ (lift _ _) ≫ (π ⊗ₘ π ⊗ₘ π)).left = _
   rw [lift_map, lift_map, e, e, e]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun z => z.left) (psum_hom (MonoidHom.mk' (fun z : T ⟶ E' => z ≫ ρ) fun a b => MonObj.mul_comp a b ρ) x k)`.
+-/
 theorem psum_comp {S : Scheme.{0}} {E E' T : Over S} [GrpObj E] [IsCommMonObj E] [GrpObj E'] [IsCommMonObj E']
     (x : Fin 3 → (T ⟶ E')) (ρ : E' ⟶ E) [IsMonHom ρ] (k : Finset (Fin 3)) :
     (psum E' x k).left ≫ ρ.left = (psum E (fun a => x a ≫ ρ) k).left :=
@@ -42,6 +48,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {j : ℕ} {D D' : De
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
   {G G' : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
 
+/- English proof (translation)
+Use `(U.gt e).q_hom` as an intermediate fact. Establish `f₃` using `tri_thφ (thick R I e) (fstG I e G) x (𝟙 _) (Category.id_comp _).symm`. Establish `f₄` using `tri_thφ (thick R I e) (U.gt e).pG x (U.gt e).q rfl`. Conclude with `(clause_iff (tri (thick R I e) (U.gt e).pG x) (tri (thick R I e) (fstG I e G) x) (fun k : thK => (psum (thickObj R I e G) x k.down).left) _ _ _ (D.toPre.cub.t.s _) (U.cubG.t.s _) (fun k => (U.w e).s (fun _ => J (tri (thick R I e) (U.gt e).pG x ≫ thφ D.toPre.P.A (x3 D.toPre.P.A) k …`.
+-/
 theorem w_cub_val (U : UnifPre I D A G) (e : ℕ) (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
     (x : Fin 3 → (T ⟶ thickObj R I e G)) (y : T.left) {J N} (hJ : Good D.toPre.P.L y J) (hN : Good U.LG.L y N) :
     val (L := D.toPre.P.L) (φ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (ε := thε) D.toPre.cub.t
@@ -62,6 +71,11 @@ theorem w_cub_val (U : UnifPre I D A G) (e : ℕ) (T : Over (Spec (CommRingCat.o
       hJ (tri (thick R I e) (U.gt e).pG x ≫ thφ D.toPre.P.A (x3 D.toPre.P.A) k)),
       mem_pull.2 (pt_of_eq (f₃ k) y ▸ hN (tri (thick R I e) (fstG I e G) x ≫ thφ G (x3 G) k))⟩)
 
+/- English proof (translation)
+Establish `c` using `GlobalTheory.CubBox.cubV_box hG R j D.toPre D'.toPre pD ((Over.map (thick R I e)).obj T) y J J' hJ hJ' ((Over.map (thick R I e)).map (x 0) ≫ p') ((Over.map (thick R I e)).map (x 1) ≫ p') ((Over.map (thick R I e)).map (x 2) ≫ p')`. Establish `q` using `prod_cub ((Over.map (thick R I e)).map (x 0) ≫ p') ((Over.map (thick R I e)).map (x 1) ≫ p') ((Over.map (thick R I e)).map (x 2) ≫ p') (om (pr := fun i => (pD.pw.pr i).left) pD.w y J J')`. Use `(congrArg₂ (· * ·) q rfl).trans ((mul_comm _ _).trans (c.trans (Finset.prod_congr rfl fun i _ => ?_)))` and prove the remaining obligations. Establish `t` using `(tri_map (thick R I e) p p' x (ρ i) (pD.pw.pr i) (h i)).1`. Rewrite using `[t, t, t]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cub_box_val (hG : GlobalFnsSt) (pD : IsPowDeg D'.toPre D.toPre j) (e : ℕ)
     {E E' T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (p : (Over.map (thick R I e)).obj E ⟶ D.toPre.P.A)
     (p' : (Over.map (thick R I e)).obj E' ⟶ D'.toPre.P.A) (x : Fin 3 → (T ⟶ E')) (ρ : Fin j → (E' ⟶ E))
@@ -83,6 +97,15 @@ theorem cub_box_val (hG : GlobalFnsSt) (pD : IsPowDeg D'.toPre D.toPre j) (e : �
   rw [t, t, t]
   rfl
 
+/- English proof (translation)
+Use `g'.q_hom` as an intermediate fact. Use `(U.gt e).q_hom` as an intermediate fact. Establish `hρ : ∀ i, rhoE I pG e i ≫ fGl I G e = fGl I G' e ≫ (pG.pr i).left` using `fun i => pullback.lift_fst _ _ _`. Set `ρ : Fin j → (thickObj R I e G' ⟶ thickObj R I e G)` to `fun i => (Over.pullback (thick R I e)).map (pG.pr i)`. Establish `ps : ∀ i (k : thK), (psum (thickObj R I e G') x k.down).left ≫ rhoE I pG e i = (psum (thickObj R I e G) (fun a => x a ≫ ρ i) k.down).left` using `fun i k => by`.
+
+Use `pG.hom i` as an intermediate fact. Conclude with `psum_comp x (ρ i) k.down`. Establish `f₂` using `tri_thφ (thick R I e) g'.pG x g'.q rfl`. Establish `f₃` using `fun i => tri_thφ (thick R I e) (fstG I e G) (fun a => x a ≫ ρ i) (𝟙 _) (Category.id_comp _).symm`. Establish `f₄` using `fun i => tri_thφ (thick R I e) (U.gt e).pG (fun a => x a ≫ ρ i) (U.gt e).q rfl`.
+
+Establish `hψ : ∀ i a, thφ G' (x3 G') a ≫ (pG.pr i).left = (pG.pr i ⊗ₘ pG.pr i ⊗ₘ pG.pr i).left ≫ thφ G (x3 G) a` using `fun i a => letI := pG.hom i`. Use the proof step `(CubeMap.ofHom (pG.pr i)).psum_comm a.down`. Establish `t` using `fun i => (tri_map (thick R I e) (fstG I e G) (fstG I e G') x (ρ i) (pG.pr i) (hρ i).symm).2`. Establish `key` using `rel_box (T := (thickObj R I e G).left) (T' := (thickObj R I e G').left) D.toPre.P.isLB D'.toPre.P.isLB U.LG.isLB (U.w_gen e) Q hρ hq (K := thK) (ε := thε) y (fun k => (psum (thickObj R I e G') x k.down).left) (φ := thφ G (x3 G)) (ψ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (ψ' := thφ …`. Establish `a : ((tri (thick R I e) (fstG I e G') x ≫ thφ G' (x3 G') k) ≫ (pG.pr i).left) y ∈ U.LG.L.U (jL k i)` using `Set.mem_iInter.1 (Set.mem_iInter.1 hL k) i`.
+
+Rewrite `a` using `[Category.assoc, hψ, ← Category.assoc, t]`. Conclude with `a)`. Use `key.trans (congrArg₂ (· * ·) rfl (Eq.trans (Finset.prod_congr rfl fun i _ => ?_) (gm_box_pull U.LG.L (fun i => (pG.pr i).left) _ hψ (fun _ => U.cubG.t) _ y jL hL).symm))` and prove the remaining obligations. Rewrite using `[t]`.
+-/
 theorem cub_box (hG : GlobalFnsSt) (pD : IsPowDeg D'.toPre D.toPre j) (pG : IsPowGrp G' G j) (U : UnifPre I D A G)
     (e : ℕ) (g' : GtCoord I D'.toPre e G')
     (hq : ∀ i, g'.pG.left ≫ (pD.pw.pr i).left = rhoE I pG e i ≫ (U.gt e).pG.left)

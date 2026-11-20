@@ -19,13 +19,22 @@ abbrev FinTypCls (Occ : Set (NG.FinTyp L n)) : Type := Quotient (finTypSetoid Oc
 
 def finTypRep (Occ : Set (NG.FinTyp L n)) (c : FinTypCls Occ) : NG.FinTyp L n := (Quotient.out c).1
 
+/- English proof (translation)
+The claim follows from `(Quotient.out c).2`.
+-/
 theorem finTypRep_mem (Occ : Set (NG.FinTyp L n)) (c : FinTypCls Occ) : finTypRep Occ c ∈ Occ := (Quotient.out c).2
 
+/- English proof (translation)
+Rewrite using `[← Quotient.out_eq c, ← Quotient.out_eq c']`. Conclude with `Quotient.sound h`.
+-/
 theorem finTypRep_inj {Occ : Set (NG.FinTyp L n)} {c c' : FinTypCls Occ}
     (h : (finTypRep Occ c).Iso (finTypRep Occ c')) : c = c' := by
   rw [← Quotient.out_eq c, ← Quotient.out_eq c']
   exact Quotient.sound h
 
+/- English proof (translation)
+The claim follows from `Quotient.mk_out (s := finTypSetoid Occ) π`.
+-/
 theorem finTypRep_mk_iso {Occ : Set (NG.FinTyp L n)} (π : Occ) :
     (finTypRep Occ (Quotient.mk (finTypSetoid Occ) π)).Iso π.1 :=
   Quotient.mk_out (s := finTypSetoid Occ) π
@@ -33,6 +42,11 @@ theorem finTypRep_mk_iso {Occ : Set (NG.FinTyp L n)} (π : Occ) :
 def constSp (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) : Submodule ℂ (GAf L n → ℂ) :=
   Submodule.span ℂ {fun _ => (1 : ℂ)}
 
+/- English proof (translation)
+Rewrite using `[constSp, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, by funext x; simp⟩`. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `⟨a, by funext x; simp⟩`.
+-/
 theorem mem_constSp {f : GAf L n → ℂ} : f ∈ constSp L n ↔ ∃ a : ℂ, f = fun _ => a := by
   rw [constSp, Submodule.mem_span_singleton]
   constructor

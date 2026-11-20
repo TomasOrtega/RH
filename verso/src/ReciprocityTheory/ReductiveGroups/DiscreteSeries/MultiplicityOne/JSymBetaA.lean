@@ -14,6 +14,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `hT : T = 0`. Substitute `hT` using the available equality. Simplify using the standard rewrite rules. Distinguish the cases in `hd : DifferentiableAt ℝ h 0`. Conclude with `deriv_smul_const hd T`.
+
+Establish `hnd : ¬ DifferentiableAt ℝ (fun t => h t • T) 0`. Introduce `hd'`. Apply `hd` to reduce the goal to its premises. Take `⟨φ, -, hφ⟩` from `exists_dual_vector ℂ T (norm_ne_zero_iff.mpr hT)`. Establish `hφT : φ T ≠ 0`.
+
+Rewrite using `[hφ]`. Conclude with `Complex.ofReal_ne_zero.mpr (norm_ne_zero_iff.mpr hT)`. Establish `he : h = fun t => (φ T)⁻¹ * φ (h t • T)`. Use function extensionality and compare the values at `t`. Rewrite using `[map_smul, smul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[he]`. Conclude with `DifferentiableAt.const_mul ((φ.restrictScalars ℝ).differentiableAt.comp (0 : ℝ) hd') _`. Rewrite using `[deriv_zero_of_not_differentiableAt hnd, deriv_zero_of_not_differentiableAt hd, zero_smul]`.
+-/
 theorem deriv_smul_const_any {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (h : ℝ → ℂ) (T : E) :
     deriv (fun t => h t • T) 0 = deriv h 0 • T := by
   by_cases hT : T = 0
@@ -38,16 +47,25 @@ theorem deriv_smul_const_any {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Conclude with `deriv_smul_const_any _ T`.
+-/
 theorem LdV_smul (X : Mat k r) (φ : Mat k r → ℂ) (T : E) :
     LdV X (fun g => φ g • T) = fun g => LdV X φ g • T := by
   funext g
   exact deriv_smul_const_any _ T
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Conclude with `deriv_smul_const_any _ T`.
+-/
 theorem RdV_smul (X : Mat k r) (φ : Mat k r → ℂ) (T : E) :
     RdV X (fun g => φ g • T) = fun g => RdV X φ g • T := by
   funext g
   exact deriv_smul_const_any _ T
 
+/- English proof (translation)
+Proceed by induction on `v with`. Consider the case `nil => rfl`. Consider the case `cons X v ih => show RdV X (Rw v (fun g => φ g • T)) = fun g => RdV X (Rw v φ) g • T`. Rewrite using `[ih]`. Conclude with `RdV_smul X (Rw v φ) T`.
+-/
 theorem Rw_smul (v : List (Mat k r)) (φ : Mat k r → ℂ) (T : E) :
     Rw v (fun g => φ g • T) = fun g => Rw v φ g • T := by
   induction v with
@@ -57,6 +75,9 @@ theorem Rw_smul (v : List (Mat k r)) (φ : Mat k r → ℂ) (T : E) :
     rw [ih]
     exact RdV_smul X (Rw v φ) T
 
+/- English proof (translation)
+Proceed by induction on `u with`. Consider the case `nil => exact Rw_smul v φ T`. Consider the case `cons X u ih => show LdV X (dLR u v (fun g => φ g • T)) = fun g => LdV X (dLR u v φ) g • T`. Rewrite using `[ih]`. Conclude with `LdV_smul X (dLR u v φ) T`.
+-/
 theorem dLR_smul (u v : List (Mat k r)) (φ : Mat k r → ℂ) (T : E) :
     dLR u v (fun g => φ g • T) = fun g => dLR u v φ g • T := by
   induction u with
@@ -66,6 +87,13 @@ theorem dLR_smul (u v : List (Mat k r)) (φ : Mat k r → ℂ) (T : E) :
     rw [ih]
     exact LdV_smul X (dLR u v φ) T
 
+/- English proof (translation)
+Take `⟨hck, hb⟩` from `hf`. Use `⟨?_, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hcd, heq⟩` from `hck g₀ hg₀`. Use `⟨U, fun g => f' g • ContinuousLinearMap.id ℂ Wp, hU, hgU, hcd.smul contDiffOn_const, fun g hgU' hgG => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [scalF, heq g hgU' hgG]`. Establish `h1` using `hb u v hu hv hl g hg`. Establish `hsc : dLR u v (scalF Wp f) g = dLR u v f g • ContinuousLinearMap.id ℂ Wp` using `congrFun (dLR_smul u v f (ContinuousLinearMap.id ℂ Wp)) g`. Rewrite using `[hsc, norm_smul]`. Establish `hid : ‖ContinuousLinearMap.id ℂ Wp‖ ≤ 1` using `ContinuousLinearMap.norm_id_le`.
+
+Establish `hg0 : 0 ≤ gN g ^ A` using `Real.rpow_nonneg (Real.sqrt_nonneg _) A`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ hg0` to reduce the goal to its premises. Conclude with `mul_le_of_le_one_right (norm_nonneg _) hid`. Use `_ ≤ c := h1`.
+-/
 theorem ccle_scalF {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] {A : ℝ} {m : ℕ}
     {f : Mat k r → ℂ} {c : ℝ} (hf : CCle A m f c) : CCle A m (scalF Wp f) c := by
   obtain ⟨hck, hb⟩ := hf
@@ -86,11 +114,17 @@ theorem ccle_scalF {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp
           exact mul_le_of_le_one_right (norm_nonneg _) hid
       _ ≤ c := h1
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hf`. Conclude with `⟨c, ccle_scalF hc⟩`.
+-/
 theorem inCC_scalF {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] {A : ℝ} {m : ℕ}
     {f : Mat k r → ℂ} (hf : InCC A m f) : InCC A m (scalF Wp f) := by
   obtain ⟨c, hc⟩ := hf
   exact ⟨c, ccle_scalF hc⟩
 
+/- English proof (translation)
+Take `⟨c, hck, hb⟩` from `h`. Use `⟨c, ?_, fun u v hu hv hl g hg => hb u v hu hv (by omega) g hg⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hcd, heq⟩` from `hck g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hcd.of_le (WithTop.coe_le_coe.mpr (Nat.cast_le.mpr (by norm_num))), heq⟩`.
+-/
 theorem inCC_five_four' {A : ℝ} {f : Mat k r → E} (h : InCC A 5 f) : InCC A 4 f := by
   obtain ⟨c, hck, hb⟩ := h
   refine ⟨c, ?_, fun u v hu hv hl g hg => hb u v hu hv (by omega) g hg⟩
@@ -98,6 +132,11 @@ theorem inCC_five_four' {A : ℝ} {f : Mat k r → E} (h : InCC A 5 f) : InCC A 
   obtain ⟨U, f', hU, hgU, hcd, heq⟩ := hck g₀ hg₀
   exact ⟨U, f', hU, hgU, hcd.of_le (WithTop.coe_le_coe.mpr (Nat.cast_le.mpr (by norm_num))), heq⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hcd, heq⟩` from `h g₀ hg₀`. Establish `hc : ContinuousAt f' g₀` using `hcd.continuousOn.continuousAt (hU.mem_nhds hgU)`. Use `(hc.continuousWithinAt (s := GV k r)).congr_of_eventuallyEq ?_ (heq g₀ hgU hg₀)` and prove the remaining obligations. Use `filter_upwards [inter_mem_nhdsWithin (GV k r) (hU.mem_nhds hgU)] with g hg`.
+
+Conclude with `heq g hg.2 hg.1`.
+-/
 theorem continuousOn_of_ckOn {m : ℕ∞} {f : Mat k r → E} (h : CkOn m (GV k r) f) :
     ContinuousOn f (GV k r) := by
   intro g₀ hg₀
@@ -107,6 +146,19 @@ theorem continuousOn_of_ckOn {m : ℕ∞} {f : Mat k r → E} (h : CkOn m (GV k 
   filter_upwards [inter_mem_nhdsWithin (GV k r) (hU.mem_nhds hgU)] with g hg
   exact heq g hg.2 hg.1
 
+/- English proof (translation)
+Take `⟨c, hCk, hbd⟩` from `hf`. Establish `hb0 : ∀ g ∈ GV k r, ‖f g‖ ≤ c * gN g ^ (-A)`. Introduce `g hg`. Establish `h1` using `hbd [] [] (by simp) (by simp) (by simp) g hg`. Establish `hgN : 0 < gN g` using `lt_of_lt_of_le one_pos (hLow k r g hg)`.
+
+Establish `hpow : 0 < gN g ^ A` using `Real.rpow_pos_of_pos hgN A`. Rewrite using `[Real.rpow_neg hgN.le, ← div_eq_mul_inv, le_div_iff₀ hpow]`. Establish `h2 : gN g ^ A * ‖f g‖ ≤ c` using `h1`. Combine the linear relations using `[mul_comm (gN g ^ A) ‖f g‖]`. Establish `hae : ∀ᵐ g ∂D.μG, Matrix.of g ∈ GV k r` using `ae_iff.mpr D.haarG.conc`.
+
+Establish `hGm : MeasurableSet {g : Mt k r | Matrix.of g ∈ GV k r}` using `(show IsClosed {g : Mt k r | Matrix.of g ∈ GV k r} from (hCl k r).closed).measurableSet`. Establish `hgNc : Continuous fun g : Mt k r => gN (Matrix.of g)`. Unfold `gN`. Conclude with `Real.continuous_sqrt.comp (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i)))`. Establish `hint : Integrable (fun g : Mt k r => gN (Matrix.of g) ^ (-A)) D.μG`.
+
+Use `⟨(hgNc.measurable.pow_const (-A)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun g => by show (0 : ℝ) ≤ gN (Matrix.of g) ^ (-A)`. Unfold `gN`. Conclude with `Real.rpow_nonneg (Real.sqrt_nonneg _) _)]`. Conclude with `hInt k r D.μG A D.haarG hA`.
+
+Establish `hcont : ContinuousOn (fun g : Mt k r => f (Matrix.of g)) {g : Mt k r | Matrix.of g ∈ GV k r}` using `continuousOn_of_ckOn hCk`. Establish `hmeas : AEStronglyMeasurable (fun g : Mt k r => f (Matrix.of g)) D.μG`. Use `hcont.aestronglyMeasurable (μ := D.μG) hGm` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem (s := {g : Mt k r | Matrix.of g ∈ GV k r}) hae]`. Then use the resulting hypothesis. Use `(hint.const_mul c).mono' hmeas (hae.mono fun g hg => ?_)` and prove the remaining obligations.
+
+Conclude with `hb0 _ hg`.
+-/
 theorem integrable_of_inCC (hInt : GNIntSharp) (hLow : GNLower) (hCl : ClosedG) {Wp Wq : Type}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
     (D : RealPlaceData k r Wp Wq) {A : ℝ} (hA : AB k r ≤ A) {f : Mat k r → ℂ} (hf : InCC A 5 f) :
@@ -142,6 +194,11 @@ theorem integrable_of_inCC (hInt : GNIntSharp) (hLow : GNLower) (hCl : ClosedG) 
   refine (hint.const_mul c).mono' hmeas (hae.mono fun g hg => ?_)
   exact hb0 _ hg
 
+/- English proof (translation)
+Establish `hsub : {q : (Fin r → ℂ) × ℂ | Complex.normSq q.2 = c} ⊆ Set.univ ×ˢ Metric.sphere (0 : ℂ) (Real.sqrt c)`. Introduce and unpack `⟨a, z⟩ hz`. Simplify using `only [Set.mem_setOf_eq] at hz`. Use `⟨Set.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_sphere_zero_iff_norm, ← hz, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]`.
+
+Use `measure_mono_null hsub ?_` and prove the remaining obligations. Rewrite using `[Measure.volume_eq_prod, Measure.prod_prod, Measure.addHaar_sphere, mul_zero]`.
+-/
 theorem volume_normSq_eq (c : ℝ) :
     volume {q : (Fin r → ℂ) × ℂ | Complex.normSq q.2 = c} = 0 := by
   have hsub : {q : (Fin r → ℂ) × ℂ | Complex.normSq q.2 = c} ⊆
@@ -153,6 +210,9 @@ theorem volume_normSq_eq (c : ℝ) :
   refine measure_mono_null hsub ?_
   rw [Measure.volume_eq_prod, Measure.prod_prod, Measure.addHaar_sphere, mul_zero]
 
+/- English proof (translation)
+Unfold `bcWeight`. Use `split_ifs with h`. Conclude with `mul_nonneg (Finset.prod_nonneg fun a _ => by positivity) (pow_nonneg (by linarith) _)`. Conclude with `le_rfl`.
+-/
 theorem bcWeight_nonneg (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) : 0 ≤ bcWeight k r T T' q := by
   unfold bcWeight
   split_ifs with h

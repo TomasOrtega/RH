@@ -4,6 +4,9 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Con
 import Formalism.LocalRingCardinality.Params
 import Formalism.LocalRingCardinality.DataHost
 
+/- English proof (translation)
+Introduce `D n L hL x`. Establish `hx : x ∈ Submodule.span D.host.E (↑L : Set (Fin n → D.host.E))` using `hL ▸ Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (NumberField.RingOfIntegers D.host.E)) D.host.E _ x hx`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨t.1, nonZeroDivisors.ne_zero t.2, ht⟩`.
+-/
 theorem UpperTheory.Reformulated.B.LatticeVariant.lsd_spanDen :
     ∀ {D : Formalism.BasicNotions.D7} {n : ℕ}
     (L : Submodule (NumberField.RingOfIntegers D.host.E) (Fin n → D.host.E)),

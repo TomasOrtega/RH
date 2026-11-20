@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.LevSurjOpen
 
+/- English proof (translation)
+The claim follows from `| 0 => by have h := hadd 0 0 rw [add_zero] at h rw [zero_smul, pow_zero] exact mul_eq_left.mp h.symm | n + 1 => by rw [succ_nsmul, hadd, lev_nsmul lev hadd a n, pow_succ]`.
+-/
 theorem lev_nsmul {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : Type} [AddCommGroup L]
     (lev : L → (𝟙_ (Over S) ⟶ G)) (hadd : ∀ a b, lev (a + b) = lev a * lev b) (a : L) :
     ∀ n : ℕ, lev (n • a) = lev a ^ n
@@ -26,6 +29,11 @@ theorem lev_nsmul {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : Type} [AddCommGr
     exact mul_eq_left.mp h.symm
   | n + 1 => by rw [succ_nsmul, hadd, lev_nsmul lev hadd a n, pow_succ]
 
+/- English proof (translation)
+Use `haveI : Subsingleton (Sp k) := inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Rewrite using `[Set.range_subset_iff]`. Use `⟨fun H => H _, fun H p => ?_⟩` and prove the remaining obligations. Establish `: p = (⊥ : PrimeSpectrum k)` using `Subsingleton.elim (α := Sp k) p (⊥ : PrimeSpectrum k)`. Rewrite using `[this]`.
+
+Conclude with `H`.
+-/
 theorem range_subset_iff_pt {k : Type} [Field k] {X : Scheme.{0}} (y : Sp k ⟶ X) (O : Set X) :
     Set.range y.base ⊆ O ↔ y.base (⊥ : PrimeSpectrum k) ∈ O := by
   haveI : Subsingleton (Sp k) := inferInstanceAs (Subsingleton (PrimeSpectrum k))
@@ -35,10 +43,48 @@ theorem range_subset_iff_pt {k : Type} [Field k] {X : Scheme.{0}} (y : Sp k ⟶ 
   rw [this]
   exact H
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext h (toUnit_unique _ _)`.
+-/
 theorem torsion_hom_ext {S : Scheme.{0}} {G : Over S} [GrpObj G] {M : ℕ} {X : Over S} (u v : X ⟶ torsion G M)
     (h : u ≫ torsion.ι G M = v ≫ torsion.ι G M) : u = v :=
   pullback.hom_ext h (toUnit_unique _ _)
 
+/- English proof (translation)
+Introduce `S _ M t G _ _ h lev hab hM hadd htors k _ _ x₀ hx₀`. Use `haveI := hab`. Establish `hM0 : M ≠ 0` using `by omega`. Establish `hu : IsUnit (M : Γ(S, ⊤))`. Simplify using `using (GlobalTheory.SiegelTor.isUnit_natCast hM0).map ((Scheme.ΓSpecIso (CommRingCat.of (cycAway M))).inv ≫ t.appTop).hom`.
+
+Take `⟨-, hfin, het⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion G hu`. Use `haveI := hfin`. Use `haveI := het`. Set `ℓ : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ torsion G M)` to `fun a => GlobalTheory.TorsionFamily.torsionLift G (lev a) M (htors a)`. Establish `hℓ : ∀ a, ℓ a ≫ torsion.ι G M = lev a` using `fun a => GlobalTheory.TorsionFamily.torsionLift_ι _ _ _ _`.
+
+Establish `hcl : ∀ a, GlobalTheory.LevCover.ClopenCond (torsion G M) fun _ y => y ≫ 𝟙 (torsion G M) = y ≫ (toUnit (torsion G M) ≫ ℓ a)` using `fun a => GlobalTheory.LevCover.clopenCond_eq _ _`. Use `choose U hUc hU using hcl`. Take `⟨κ, _, q, hq⟩` from `GlobalTheory.LevCover.exists_finite_mod (Fin h ⊕ Fin h → ℤ) (n := M) (by omega)`. Set `rep : Set.range q → (Fin h ⊕ Fin h → ℤ)` to `fun c => c.2.choose`. Establish `hrep : ∀ a, lev (rep ⟨q a, a, rfl⟩) = lev a`.
+
+Introduce `a`. Take `⟨c, hc⟩` from `hq _ _ ((⟨q a, a, rfl⟩ : Set.range q).2.choose_spec)`. Establish `e` using `congrArg lev hc`. Rewrite `e` using `[hadd, lev_nsmul lev hadd, htors, _root_.mul_one]`. Conclude with `e.symm`.
+
+Set `Zs : Set (torsion G M).left` to `⋃ c : Set.range q, (U (rep c) : Set (torsion G M).left)`. Establish `hZo : IsOpen Zs` using `isOpen_iUnion fun c => (U _).isOpen`. Establish `hZc : IsClosed Zs` using `isClosed_iUnion_of_finite fun c => hUc _`. Set `C : (torsion G M).left.Opens` to `⟨Zsᶜ, hZc.isOpen_compl⟩`. Take `⟨V, i, hVf, hVe, -, hV⟩` from `GlobalTheory.LevCover.exists_sub C hZo.isClosed_compl`.
+
+Use `haveI := hVf`. Use `haveI := hVe`. Use `haveI : IsFinite (𝟙_ (Over S)).hom := by show IsFinite (𝟙 S); infer_instance`. Use `haveI : Etale (𝟙_ (Over S)).hom := by show Etale (𝟙 S); infer_instance`. Take `⟨U₀, hU₀c, hU₀⟩` from `GlobalTheory.LevCover.exists_image (toUnit V)`.
+
+Set `U₁ : Set S` to `(U₀ : Set (𝟙_ (Over S)).left)`. Establish `hU₁c : IsClosed U₁` using `hU₀c`. Establish `key : ∀ (k' : Type) [Field k'] [IsAlgClosed k'] (x : Sp k' ⟶ S), Set.range x.base ⊆ U₁ ↔ Nonempty (Over.mk x ⟶ V)`. Introduce `k' _ _ x`. Establish `H` using `hU₀ k' x (toUnit _)`.
+
+Establish `hz : (toUnit (Over.mk x) : Over.mk x ⟶ 𝟙_ (Over S)).left = x`. Simplify using `using Over.w (toUnit (Over.mk x))`. Rewrite `H` using `[hz]`. Conclude with `H.trans ⟨fun ⟨w, _⟩ => ⟨w⟩, fun ⟨w⟩ => ⟨w, toUnit_unique _ _⟩⟩`. Use `⟨⟨U₁ᶜ, hU₁c.isOpen_compl⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `_ ⟨p, hp⟩ hpU`. Substitute `hp` using the available equality. Establish `hr : Set.range x₀.base ⊆ U₁`. Rewrite using `[range_subset_iff_pt]`. Establish `: p = (⊥ : PrimeSpectrum k)` using `@Subsingleton.elim (Sp k) (inferInstanceAs (Subsingleton (PrimeSpectrum k))) p (⊥ : PrimeSpectrum k)`.
+
+Rewrite using `[← this]`. Conclude with `hpU`. Take `⟨w⟩` from `(key k x₀).1 hr`. Set `y` to `w ≫ i`. Establish `hy : Set.range y.left.base ⊆ (C : Set (torsion G M).left)` using `(hV _ y).2 ⟨w, rfl⟩`.
+
+Establish `hg : (y ≫ torsion.ι G M) ^ M = 1`. Rewrite using `[← MonObj.comp_pow, GlobalTheory.TorsionFamily.torsion_ι_pow, MonObj.comp_one]`. Take `⟨a, ha⟩` from `hx₀ _ hg`. Establish `e1 : (toUnit (Over.mk x₀) ≫ ℓ (rep ⟨q a, a, rfl⟩)) ≫ torsion.ι G M = toUnit _ ≫ lev a`. Rewrite using `[Category.assoc, hℓ, hrep]`.
+
+Establish `e2 : y ≫ torsion.ι G M = toUnit _ ≫ lev a` using `ha.symm`. Establish `hy' : y = toUnit _ ≫ ℓ (rep ⟨q a, a, rfl⟩)` using `torsion_hom_ext _ _ (e2.trans e1.symm)`. Establish `hin : Set.range y.left.base ⊆ (U (rep ⟨q a, a, rfl⟩) : Set (torsion G M).left)`. Use `(hU _ _ y).1 ?_` and prove the remaining obligations. Use `show y ≫ 𝟙 _ = y ≫ toUnit _ ≫ ℓ _`.
+
+Rewrite using `[Category.comp_id, ← Category.assoc, toUnit_unique (y ≫ toUnit _) (toUnit _), ← hy']`. Establish `h1` using `(range_subset_iff_pt _ _).1 hy`. Establish `h2` using `(range_subset_iff_pt _ _).1 hin`. Conclude with `h1 (Set.mem_iUnion.2 ⟨⟨q a, a, rfl⟩, h2⟩)`. Introduce `k' _ _ x hx g hg`.
+
+Set `y` to `GlobalTheory.TorsionFamily.torsionLift G g M hg`. Establish `hnC : ¬ Set.range y.left.base ⊆ (C : Set (torsion G M).left)`. Introduce `H`. Take `⟨w, -⟩` from `(hV _ y).1 H`. Establish `hr` using `(key k' x).2 ⟨w⟩`.
+
+Establish `h1` using `(range_subset_iff_pt _ _).1 hr`. Establish `h2` using `(range_subset_iff_pt _ _).1 hx`. Conclude with `h2 h1`. Rewrite `hnC` using `[range_subset_iff_pt]`. Establish `hZ : y.left.base (⊥ : PrimeSpectrum k') ∈ Zs` using `not_not.1 hnC`.
+
+Take `⟨c, hc⟩` from `Set.mem_iUnion.1 hZ`. Establish `hin : Set.range y.left.base ⊆ (U (rep c) : Set (torsion G M).left)` using `(range_subset_iff_pt _ _).2 hc`. Establish `e : y ≫ 𝟙 _ = y ≫ toUnit _ ≫ ℓ (rep c)` using `(hU _ _ y).2 hin`. Rewrite `e` using `[Category.comp_id, ← Category.assoc, toUnit_unique (y ≫ toUnit _) (toUnit _)]`. Use `⟨rep c, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hℓ, ← Category.assoc, ← e]`. Conclude with `GlobalTheory.TorsionFamily.torsionLift_ι _ _ _ _`.
+-/
 theorem exists_open_levSurj : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (M : ℕ) (t : S ⟶ Sp (cycAway M)) (G : Over S) [GrpObj G] [IsCommMonObj G] (h : ℕ) (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ G)), IsAbelianScheme G → 3 ≤ M → (∀ a b, lev (a + b) = lev a * lev b) → (∀ a, lev a ^ M = 1) → ∀ (k : Type) [Field k] [IsAlgClosed k] (x₀ : Sp k ⟶ S), (∀ g : Over.mk x₀ ⟶ G, g ^ M = 1 → ∃ a, toUnit _ ≫ lev a = g) → ∃ W : S.Opens, Set.range x₀.base ⊆ W ∧ ∀ (k' : Type) [Field k'] [IsAlgClosed k'] (x : Sp k' ⟶ S), Set.range x.base ⊆ W → ∀ g : Over.mk x ⟶ G, g ^ M = 1 → ∃ a, toUnit _ ≫ lev a = g := by
   intro S _ M t G _ _ h lev hab hM hadd htors k _ _ x₀ hx₀
   haveI := hab

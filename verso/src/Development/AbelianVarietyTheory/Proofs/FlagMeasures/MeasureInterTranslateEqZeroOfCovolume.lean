@@ -5,6 +5,23 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.StrictDomain
 
+/- English proof (translation)
+Take `⟨δ, hδ, hδγ, hγδ⟩` from `hi γ hγ`. Use `set A : Set X := U ∩ ⋃ ε ∈ S, (fun x => ε * x) ⁻¹' B with hA`. Establish `hmemA : ∀ x, x ∈ A ↔ x ∈ U ∧ ∃ ε ∈ S, ε * x ∈ B`. Introduce `x`. Simplify using `[hA]`.
+
+Establish `hAm : MeasurableSet A` using `hU.inter (MeasurableSet.biUnion hc fun ε hε => hm ε hε hB)`. Establish `hAinv : ∀ η ∈ S, ∀ x ∈ A, η * x ∈ A`. Introduce `η hη x hx`. Take `⟨hxU, ε, hε, hεx⟩` from `(hmemA x).1 hx`. Take `⟨η', hη', h1, -⟩` from `hi η hη`.
+
+Take `⟨κ, hκ, hκe⟩` from `hmul ε hε η' hη'`. Conclude with `(hmemA _).2 ⟨hUS η hη x hxU, κ, hκ, by rw [hκe, h1]; exact hεx⟩`. Establish `hle : μ (A ∩ D) ≤ μ B`. Rewrite using `[← hcov A hAm Set.inter_subset_left hAinv]`. Unfold `covol`.
+
+Conclude with `iInf_le_of_le B (iInf_le_of_le hB (iInf_le_of_le (fun x hx => ((hmemA x).1 hx).2) le_rfl))`. Use `set B' : Set X := (fun x => δ * x) ⁻¹' B with hB'`. Establish `hB'm : MeasurableSet B'` using `hm δ hδ hB`. Establish `hB'μ : μ B' = μ B`. Rewrite using `[hB', ← Measure.map_apply (hm δ hδ) hB, hinv δ hδ]`.
+
+Establish `hdj : Disjoint B B'`. Rewrite using `[Set.disjoint_left]`. Introduce `x hx hx'`. Use `hdis _ hx'` as an intermediate fact. Rewrite `this` using `[hγδ]`.
+
+Conclude with `this hx`. Establish `hsub : B ∪ B' ⊆ A ∩ D`. Introduce and unpack `x (hx | hx)`. Take `⟨κ, hκ, hκe⟩` from `hmul δ hδ γ hγ`. Conclude with `⟨(hmemA x).2 ⟨hDU (hBD hx), κ, hκ, by rw [hκe, hδγ]; exact hx⟩, hBD hx⟩`.
+
+Establish `hxD : x ∈ D`. Use `hBγ _ hx` as an intermediate fact. Rewrite `this` using `[hγδ]`. Then use the resulting hypothesis. Conclude with `⟨(hmemA x).2 ⟨hDU hxD, δ, hδ, hx⟩, hxD⟩`. Establish `h2 : μ B + μ B ≤ μ B + 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `le_antisymm ((ENNReal.add_le_add_iff_left hfin).1 h2) zero_le`.
+-/
 theorem null_of_translate_disjoint {X : Type} [Mul X] [MeasurableSpace X] (S : Set X) (μ : Measure X)
     (U D : Set X) (hc : S.Countable) (hm : ∀ γ ∈ S, Measurable fun x => γ * x)
     (hinv : ∀ γ ∈ S, μ.map (fun x => γ * x) = μ)
@@ -56,6 +73,19 @@ theorem null_of_translate_disjoint {X : Type} [Mul X] [MeasurableSpace X] (S : S
       _ ≤ μ B + 0 := by rw [add_zero]; exact hle
   exact le_antisymm ((ENNReal.add_le_add_iff_left hfin).1 h2) zero_le
 
+/- English proof (translation)
+Introduce `X _ _ _ S μ _ U D hc hm hinv hmul hi hU hUS hD hDU hcov γ hγ hfree`. Take `⟨V, hVm, hV⟩` from `exists_seq_separating X MeasurableSet.univ (Set.univ : Set X)`. Establish `key : ∀ (W : Set X), MeasurableSet W → ∀ m : ℕ, μ (D ∩ (fun x => γ * x) ⁻¹' D ∩ W ∩ (fun x => γ * x) ⁻¹' Wᶜ ∩ spanningSets μ m) = 0`. Introduce `W hW m`. Use `null_of_translate_disjoint S μ U D hc hm hinv hmul hi hU hUS hDU hcov γ hγ _ ((((hD.inter (hm γ hγ hD)).inter hW).inter (hm γ hγ hW.compl)).inter (measurableSet_spanningSets μ m)) (ne_top_of_le_ne_top (measure_spanningSets_lt_top μ m).ne (measure_mono Set.inter_subset_right)) ?_ …` and prove the remaining obligations.
+
+Introduce `x hx`. Conclude with `hx.1.1.1.1`. Introduce `x hx`. Conclude with `hx.1.1.1.2`. Introduce `x hx hx'`.
+
+Conclude with `hx.1.2 hx'.1.1.2`. Establish `hsub : {x | x ∈ D ∧ γ * x ∈ D} ⊆ ⋃ n : ℕ, ⋃ m : ℕ, ((D ∩ (fun x => γ * x) ⁻¹' D ∩ V n ∩ (fun x => γ * x) ⁻¹' (V n)ᶜ ∩ spanningSets μ m) ∪ (D ∩ (fun x => γ * x) ⁻¹' D ∩ (V n)ᶜ ∩ (fun x => γ * x) ⁻¹' (V n)ᶜᶜ ∩ spanningSets μ m))`. Introduce and unpack `x ⟨hx, hγx⟩`. Establish `hne` using `hfree x (hDU hx)`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, ¬ (γ * x ∈ V n ↔ x ∈ V n) := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (hV _ (Set.mem_univ _) _ (Set.mem_univ _) h)`. Establish `hm' : x ∈ ⋃ m, spanningSets μ m` using `by rw [iUnion_spanningSets]; exact Set.mem_univ _`. Take `⟨m, hm'⟩` from `Set.mem_iUnion.1 hm'`.
+
+Use `Set.mem_iUnion.2 ⟨n, Set.mem_iUnion.2 ⟨m, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hxV : x ∈ V n`. Conclude with `Or.inl ⟨⟨⟨⟨hx, hγx⟩, hxV⟩, fun h => hn ⟨fun _ => hxV, fun _ => h⟩⟩, hm'⟩`. Conclude with `Or.inr ⟨⟨⟨⟨hx, hγx⟩, hxV⟩, fun h => hn ⟨fun h' => (h h').elim, fun h' => (hxV h').elim⟩⟩, hm'⟩`. Use `measure_mono_null hsub (measure_iUnion_null fun n => measure_iUnion_null fun m => ?_)` and prove the remaining obligations.
+
+Conclude with `measure_union_null (key _ (hVm n) m) (key _ (hVm n).compl m)`.
+-/
 theorem measure_inter_translate_eq_zero : ∀ (X : Type) [Mul X] [MeasurableSpace X] [MeasurableSpace.CountablySeparated X] (S : Set X) (μ : Measure X) [SigmaFinite μ] (U D : Set X), S.Countable → (∀ γ ∈ S, Measurable fun x => γ * x) → (∀ γ ∈ S, μ.map (fun x => γ * x) = μ) → (∀ γ ∈ S, ∀ δ ∈ S, ∃ ε ∈ S, ∀ x, ε * x = γ * (δ * x)) → (∀ γ ∈ S, ∃ δ ∈ S, (∀ x, δ * (γ * x) = x) ∧ ∀ x, γ * (δ * x) = x) → MeasurableSet U → (∀ γ ∈ S, ∀ x ∈ U, γ * x ∈ U) → MeasurableSet D → D ⊆ U → (∀ A, MeasurableSet A → A ⊆ U → (∀ γ ∈ S, ∀ x ∈ A, γ * x ∈ A) → covol S μ A = μ (A ∩ D)) → ∀ γ ∈ S, (∀ x ∈ U, γ * x ≠ x) → μ {x | x ∈ D ∧ γ * x ∈ D} = 0 := by
   intro X _ _ _ S μ _ U D hc hm hinv hmul hi hU hUS hD hDU hcov γ hγ hfree
   obtain ⟨V, hVm, hV⟩ := exists_seq_separating X MeasurableSet.univ (Set.univ : Set X)

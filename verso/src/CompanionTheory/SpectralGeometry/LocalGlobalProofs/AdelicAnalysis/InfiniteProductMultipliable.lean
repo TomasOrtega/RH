@@ -5,6 +5,9 @@ open scoped ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW.AbsTprod
 
+/- English proof (translation)
+Establish `h' : Summable (fun v => ‖a v - 1‖)` using `by simpa [Real.norm_eq_abs] using h`. Establish `hm` using `multipliable_one_add_of_summable h'`. Establish `hfun : (fun v => 1 + (a v - 1)) = a` using `funext fun v => by ring`. Rewrite `hm` using `[hfun]`. Then use the resulting hypothesis.
+-/
 theorem multipliable_of_summable_abs_sub_one {ι : Type} {a : ι → ℝ}
     (h : Summable (fun v => |a v - 1|)) : Multipliable a := by
   have h' : Summable (fun v => ‖a v - 1‖) := by simpa [Real.norm_eq_abs] using h
@@ -12,10 +15,16 @@ theorem multipliable_of_summable_abs_sub_one {ι : Type} {a : ι → ℝ}
   have hfun : (fun v => 1 + (a v - 1)) = a := funext fun v => by ring
   rwa [hfun] at hm
 
+/- English proof (translation)
+Conclude with `tprod_nonneg h0`.
+-/
 theorem tprod_nonneg_of_nonneg {ι : Type} {a : ι → ℝ} (hm : Multipliable a)
     (h0 : ∀ v, 0 ≤ a v) : 0 ≤ ∏' v, a v := by
   exact tprod_nonneg h0
 
+/- English proof (translation)
+Establish `h' : Summable (fun v => ‖a v - 1‖)` using `by simpa [Real.norm_eq_abs] using h`. Establish `hne : ∀ v, 1 + (a v - 1) ≠ 0` using `fun v => by simpa using h0 v`. Establish `hp` using `tprod_one_add_ne_zero_of_summable (f := fun v => a v - 1) hne h'`. Simplify using `using hp`.
+-/
 theorem tprod_ne_zero_of_summable {ι : Type} {a : ι → ℝ}
     (h : Summable (fun v => |a v - 1|)) (h0 : ∀ v, a v ≠ 0) : ∏' v, a v ≠ 0 := by
   have h' : Summable (fun v => ‖a v - 1‖) := by simpa [Real.norm_eq_abs] using h
@@ -23,6 +32,9 @@ theorem tprod_ne_zero_of_summable {ι : Type} {a : ι → ℝ}
   have hp := tprod_one_add_ne_zero_of_summable (f := fun v => a v - 1) hne h'
   simpa using hp
 
+/- English proof (translation)
+Establish `hsub : ∀ p : ι → Prop, Multipliable (fun v : {v // p v} => a v.1)` using `fun p => GlobalTheory.CompanionTheory.SW.AbsTprod.multipliable_of_summable_abs_sub_one (a := fun v : {v // p v} => a v.1) (h.comp_injective Subtype.val_injective)`. Use `⟨hsub _, ?_⟩` and prove the remaining obligations. Establish `key` using `Multipliable.tprod_mul_tprod_compl (f := a) (s := (S : Set ι)) (hsub (· ∈ (S : Set ι))) (hsub (· ∈ (S : Set ι)ᶜ))`. Rewrite using `[← key, Finset.tprod_subtype']`. Both sides reduce to the same expression.
+-/
 theorem tprod_eq_prod_mul_tprod_compl {ι : Type} {a : ι → ℝ}
     (h : Summable (fun v => |a v - 1|)) (S : Finset ι) :
     Multipliable (fun v : {v // v ∉ S} => a v.1) ∧
@@ -36,6 +48,9 @@ theorem tprod_eq_prod_mul_tprod_compl {ι : Type} {a : ι → ℝ}
   rw [← key, Finset.tprod_subtype']
   rfl
 
+/- English proof (translation)
+Introduce `ι a h`. Establish `hm` using `GlobalTheory.CompanionTheory.SW.AbsTprod.multipliable_of_summable_abs_sub_one h`. Use `⟨hm, fun S => GlobalTheory.CompanionTheory.SW.AbsTprod.tprod_eq_prod_mul_tprod_compl h S, fun hpos => ?_, fun h0 => GlobalTheory.CompanionTheory.SW.AbsTprod.tprod_nonneg_of_nonneg hm h0⟩` and prove the remaining obligations. Conclude with `lt_of_le_of_ne (GlobalTheory.CompanionTheory.SW.AbsTprod.tprod_nonneg_of_nonneg hm fun v => (hpos v).le) (GlobalTheory.CompanionTheory.SW.AbsTprod.tprod_ne_zero_of_summable h fun v => (hpos v).ne').symm`.
+-/
 theorem abs_tprod : ∀ (ι : Type) (a : ι → ℝ), Summable (fun v => |a v - 1|) → Multipliable a ∧ (∀ S : Finset ι, Multipliable (fun v : {v // v ∉ S} => a v.1) ∧ ∏' v, a v = (∏ v ∈ S, a v) * ∏' v : {v // v ∉ S}, a v.1) ∧ ((∀ v, 0 < a v) → 0 < ∏' v, a v) ∧ ((∀ v, 0 ≤ a v) → 0 ≤ ∏' v, a v) := by
   intro ι a h
   have hm := GlobalTheory.CompanionTheory.SW.AbsTprod.multipliable_of_summable_abs_sub_one h

@@ -21,9 +21,15 @@ variable {D : D7}
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[(atPl_spec w x).2 w, Pi.single_eq_same]`.
+-/
 theorem cpt_atPl_self (w : Pl D.host.E) (x : Kw w) : cpt w (toEAf D (atPl w x)) = x := by
   rw [(atPl_spec w x).2 w, Pi.single_eq_same]
 
+/- English proof (translation)
+Establish `h` using `atPl_add w 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(add_eq_left.1 h.symm)`.
+-/
 theorem atPl_zero (w : Pl D.host.E) : atPl w (0 : Kw w) = 0 := by
   have h := atPl_add w 0 0
   rw [add_zero] at h
@@ -34,6 +40,11 @@ def atPlHom (w : Pl D.host.E) : Kw w →+ AE D where
   map_zero' := atPl_zero w
   map_add' := atPl_add w
 
+/- English proof (translation)
+Use `ae_ext ?_ fun Q => ?_` and prove the remaining obligations. Rewrite using `[(atPl_spec w _).1, map_mul, (atPl_spec w 1).1, zero_mul]`. Rewrite using `[(atPl_spec w _).2 Q, map_mul, map_mul, (atPl_spec w 1).2 Q]`. Distinguish the cases in `hQ : Q = w`. Substitute `hQ` using the available equality.
+
+Rewrite using `[Pi.single_eq_same, Pi.single_eq_same, one_mul]`. Rewrite using `[Pi.single_eq_of_ne hQ, Pi.single_eq_of_ne hQ, zero_mul]`.
+-/
 theorem atPl_cpt (w : Pl D.host.E) (a : AE D) : atPl w (cpt w (toEAf D a)) = atPl w 1 * a := by
   classical
   refine ae_ext ?_ fun Q => ?_
@@ -44,6 +55,11 @@ theorem atPl_cpt (w : Pl D.host.E) (a : AE D) : atPl w (cpt w (toEAf D a)) = atP
       rw [Pi.single_eq_same, Pi.single_eq_same, one_mul]
     · rw [Pi.single_eq_of_ne hQ, Pi.single_eq_of_ne hQ, zero_mul]
 
+/- English proof (translation)
+Establish `hne : ValuativeRel.valuation k (u : k) ≠ 0` using `by simp`. Rewrite `h` using `[Valuation.map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hne, one_mul]`. Use `_ ≤ ValuativeRel.valuation k (u : k) * 1 := by gcongr`.
+
+Use `_ = _ := mul_one _`.
+-/
 theorem valuation_le_of_inv_mul {k : Type} [Field k] [ValuativeRel k] (u : kˣ) (b : k)
     (h : ValuativeRel.valuation k (((u⁻¹ : kˣ) : k) * b) ≤ 1) :
     ValuativeRel.valuation k b ≤ ValuativeRel.valuation k (u : k) := by
@@ -55,10 +71,16 @@ theorem valuation_le_of_inv_mul {k : Type} [Field k] [ValuativeRel k] (u : kˣ) 
     _ ≤ ValuativeRel.valuation k (u : k) * 1 := by gcongr
     _ = _ := mul_one _
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, cpt_atPl_self]`.
+-/
 theorem cpt_atPl_mul (w : Pl D.host.E) (x : Kw w) (z : AE D) :
     cpt w (toEAf D (atPl w x * z)) = x * cpt w (toEAf D z) := by
   rw [map_mul, map_mul, cpt_atPl_self]
 
+/- English proof (translation)
+Establish `h2` using `((GlobalTheory.StdFrames.comp_toAd D).int x).1 h w`. Establish `h3 : cpt w (toEAf D x) ∈ (ValuativeRel.valuation (Kw w)).integer` using `(GlobalTheory.FinPl.SplitPoint.mem_integer_iff D.host.E w _).2 h2`. Conclude with `h3`.
+-/
 theorem valuation_cpt_le_one (w : Pl D.host.E) (x : AE D) (h : finPart D x ∈ intAE D) :
     ValuativeRel.valuation (Kw w) (cpt w (toEAf D x)) ≤ 1 := by
   have h2 := ((GlobalTheory.StdFrames.comp_toAd D).int x).1 h w
@@ -76,6 +98,21 @@ variable {D : D7}
 
 open scoped Topology in
 
+/- English proof (translation)
+Use `letI tf : TopologicalSpace (Af D.host.F ⊗[D.host.F] D.host.E) := moduleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E)`. Use `letI ti : TopologicalSpace (Ainf D.host.F ⊗[D.host.F] D.host.E) := moduleTopology (Ainf D.host.F) (Ainf D.host.F ⊗[D.host.F] D.host.E)`. Take `⟨e, he, hec, -⟩ : ∃ e : AE D ≃+* (Ainf D.host.F ⊗[D.host.F] D.host.E) × (Af D.host.F ⊗[D.host.F] D.host.E), (∀ z, (e z).1 = infPart D z ∧ (e z).2 = finPart D z) ∧ Continuous e ∧ Continuous e.symm` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `hfc : Continuous (finPart D)`. Establish `: (finPart D : AE D → _) = fun z => (e z).2` using `funext fun z => (he z).2.symm`.
+
+Rewrite using `[this]`. Conclude with `continuous_snd.comp hec`. Establish `h1 : IsOpen {z : Af D.host.F ⊗[D.host.F] D.host.E | z ∈ intAE D}`. Use `GlobalTheory.IdeleParts.isOpen_nsmul_adelicCompletion_integers D.host.F D.host.E 1 one_pos` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using the standard rewrite rules. Use `haveI : MulArchimedean (ValuativeRel.ValueGroupWithZero (Kw w)) := ValuativeRel.isRankLeOne_iff_mulArchimedean.1 inferInstance`. Set `f : AE D →+ Kw w` to `((cpt w).comp (toEAf D)).toAddMonoidHom`.
+
+Use `continuous_of_continuousAt_zero f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Use `(IsValuativeTopology.hasBasis_nhds_zero (Kw w)).tendsto_right_iff.2 fun γ _ => ?_` and prove the remaining obligations. Establish `hϖ : ValuativeRel.valuation (Kw w) (unifAt w : Kw w) < 1`. Rewrite using `[isUnif_unifAt w]`.
+
+Conclude with `ValuativeRel.uniformizer_lt_one`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hϖ γ`. Use `set u : (Kw w)ˣ := unifAt w ^ n`. Establish `hu : ValuativeRel.valuation (Kw w) (u : Kw w) < γ`. Simplify `hn` using `[u, Units.val_pow_eq_pow_val, map_pow]`.
+
+Establish `hU : {z : AE D | finPart D (atPl w ((u⁻¹ : (Kw w)ˣ) : Kw w) * z) ∈ intAE D} ∈ 𝓝 (0 : AE D)`. Use `IsOpen.mem_nhds (h1.preimage (hfc.comp (continuous_const.mul continuous_id))) ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, mul_zero, map_zero]`. Conclude with `zero_mem _`. Use `filter_upwards [hU] with z hz`.
+
+Establish `h3` using `valuation_cpt_le_one w _ hz`. Rewrite `h3` using `[cpt_atPl_mul]`. Conclude with `(valuation_le_of_inv_mul u _ h3).trans_lt hu`.
+-/
 theorem continuous_cpt_toEAf (w : Pl D.host.E) : Continuous fun a : AE D => cpt w (toEAf D a) := by
   letI tf : TopologicalSpace (Af D.host.F ⊗[D.host.F] D.host.E) :=
     moduleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E)
@@ -122,6 +159,21 @@ namespace GlobalTheory.PlcAtW
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `letI tf : TopologicalSpace (Af D.host.F ⊗[D.host.F] D.host.E) := moduleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E)`. Use `letI ti : TopologicalSpace (Ainf D.host.F ⊗[D.host.F] D.host.E) := moduleTopology (Ainf D.host.F) (Ainf D.host.F ⊗[D.host.F] D.host.E)`. Take `⟨e, he, -, hes⟩ : ∃ e : AE D ≃+* (Ainf D.host.F ⊗[D.host.F] D.host.E) × (Af D.host.F ⊗[D.host.F] D.host.E), (∀ z, (e z).1 = infPart D z ∧ (e z).2 = finPart D z) ∧ Continuous e ∧ Continuous e.symm` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `hs : Function.Bijective (Formalism.IndefR.Lev.swapAE D)` using `(Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).bijective`. Establish `ht : Function.Bijective (toAd D)` using `⟨GlobalTheory.AdeleBaseChange.map_injective (toAd_spec D), GlobalTheory.AdeleBaseChange.map_surjective (toAd_spec D)⟩`.
+
+Set `R : Af D.host.F ⊗[D.host.F] D.host.E ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E` to `RingEquiv.ofBijective ((toAd D).comp (Formalism.IndefR.Lev.swapAE D)) (ht.comp hs)`. Establish `hfin : ∀ y, finPart D (e.symm (0, y)) = y` using `fun y => by`. Rewrite using `[← (he _).2, RingEquiv.apply_symm_apply]`. Establish `hR : Continuous R.symm`. Use `GlobalTheory.AdeleBaseChange.continuous_symm_finite D.host.F D.host.E R fun y => ?_` and prove the remaining obligations.
+
+Establish `key` using `(GlobalTheory.StdFrames.comp_toAd D).int (e.symm (0, y))`. Rewrite `key` using `[hfin]`. Establish `e1 : ((toAd D).comp (toEAf D)) (e.symm (0, y)) = R y` using `by show toAd D (Formalism.IndefR.Lev.swapAE D (finPart D (e.symm (0, y)))) = toAd D (Formalism.IndefR.Lev.swapAE D y)`. Rewrite using `[hfin]`. Rewrite `key` using `[e1]`.
+
+Conclude with `key`. Establish `hform : ∀ x, atPl w x = e.symm (0, R.symm (singleV D.host.E w x))` using `fun x => by`. Use `ae_ext ?_ fun Q => ?_` and prove the remaining obligations. Rewrite using `[(atPl_spec w x).1, ← (he _).1, RingEquiv.apply_symm_apply]`. Rewrite using `[(atPl_spec w x).2 Q] show _ = toAd D (Formalism.IndefR.Lev.swapAE D (finPart D (e.symm (0, R.symm (singleV D.host.E w x))))) Q`.
+
+Rewrite using `[hfin]`. Use `show _ = R (R.symm (singleV D.host.E w x)) Q`. Rewrite using `[RingEquiv.apply_symm_apply]`. Distinguish the cases in `hQ : Q = w`. Substitute `hQ` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]`. Conclude with `(RestrictedProduct.single_eq_same _ _ _).symm`. Rewrite using `[Pi.single_eq_of_ne hQ]`. Conclude with `(RestrictedProduct.single_eq_of_ne _ _ hQ).symm`. Rewrite using `[funext hform]`.
+
+Conclude with `hes.comp (continuous_const.prodMk (hR.comp (GlobalTheory.FinPl.SplitPoint.continuous_single_at D.host.E w)))`.
+-/
 theorem continuous_atPl (w : Pl D.host.E) : Continuous (atPl (D := D) w) := by
   classical
   letI tf : TopologicalSpace (Af D.host.F ⊗[D.host.F] D.host.E) :=
@@ -169,6 +221,11 @@ end GlobalTheory.PlcAtW
 
 namespace GlobalTheory.PlcAtW
 
+/- English proof (translation)
+Introduce `D w e he`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[Finset.sum_singleton]`. Establish `h` using `hes w (Finset.mem_singleton_self w)`. Establish `he1` using `GlobalTheory.IdemAtPl.eq_atPl_of_isIdemAt h`.
+
+Use `⟨{ e := es w split := h.1 π := (cpt w).comp (toEAf D) ι := atPlHom w π_ι := cpt_atPl_self w ι_π := fun a => by show atPl w (cpt w (toEAf D a)) = es w * a` and prove the remaining obligations. Rewrite using `[atPl_cpt, ← he1]`. Use `cont_π := continuous_cpt_toEAf w`. Use `cont_ι := continuous_atPl w }, ⟨h, fun _ => rfl, fun _ => rfl⟩, rfl⟩`.
+-/
 theorem exists_plc : ∀ (D : D7) (w : Pl D.host.E) (e : AE D), IsIdemSum e {w} → ∃ p : Place D (Kw w), IsPlc w p ∧ p.e = e := by
   intro D w e he
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := he

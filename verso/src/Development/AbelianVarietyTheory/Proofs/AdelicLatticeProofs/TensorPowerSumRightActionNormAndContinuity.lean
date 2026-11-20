@@ -9,12 +9,18 @@ namespace GlobalTheory.ClassFin.ActNorm
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.ClassFin.tpow]`.
+-/
 private lemma tpow_apply_eq_prod {ι : Type} (n : ℕ) (y : Matrix ι ι ℂ)
     (a b : Fin n → ι) : _root_.GlobalTheory.ClassFin.tpow n y a b = ∏ k, y (a k) (b k) := by
   simp [_root_.GlobalTheory.ClassFin.tpow]
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[tpow_apply_eq_prod, conjTranspose_apply, star_prod]`.
+-/
 private lemma tpow_conjTranspose {ι : Type} (n : ℕ) (y : Matrix ι ι ℂ) :
     (_root_.GlobalTheory.ClassFin.tpow n y)ᴴ = _root_.GlobalTheory.ClassFin.tpow n yᴴ := by
   ext a b
@@ -22,6 +28,9 @@ private lemma tpow_conjTranspose {ι : Type} (n : ℕ) (y : Matrix ι ι ℂ) :
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.ClassFin.nsq _root_.GlobalTheory.ClassFin.TIdx at *`. Conclude with `Fintype.sum_sigma _`.
+-/
 private lemma nsq_eq_sum_sum_norm_sq_components {ι : Type} [Fintype ι] {m : ℕ} (d : Fin m → ℕ)
     (x : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ) :
     _root_.GlobalTheory.ClassFin.nsq x = ∑ i, ∑ a : Fin (d i) → ι, ‖x ⟨i, a⟩‖ ^ 2 := by
@@ -30,6 +39,9 @@ private lemma nsq_eq_sum_sum_norm_sq_components {ι : Type} [Fintype ι] {m : �
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma act_apply_eq_vecMul_tpow {ι : Type} [Fintype ι] {m : ℕ}
     (d : Fin m → ℕ) (v : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ) (y : Matrix ι ι ℂ) (i : Fin m)
     (a : Fin (d i) → ι) :
@@ -38,6 +50,11 @@ private lemma act_apply_eq_vecMul_tpow {ι : Type} [Fintype ι] {m : ℕ}
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Establish `key : ∀ x : κ → ℂ, ((∑ c, ‖x c‖ ^ 2 : ℝ) : ℂ) = x ⬝ᵥ star x`. Introduce `x`. Use `push_cast`. Simplify using `[dotProduct, Complex.mul_conj']`. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+
+Rewrite using `[key, key, star_vecMul, dotProduct_mulVec, vecMul_vecMul, hM, vecMul_one]`.
+-/
 private lemma sum_norm_sq_vecMul_eq_of_mul_conjTranspose_eq_one {κ : Type} [Fintype κ] [DecidableEq κ] (w : κ → ℂ)
     (M : Matrix κ κ ℂ) (hM : M * Mᴴ = 1) : ∑ c, ‖(w ᵥ* M) c‖ ^ 2 = ∑ a, ‖w a‖ ^ 2 := by
   have key : ∀ x : κ → ℂ, ((∑ c, ‖x c‖ ^ 2 : ℝ) : ℂ) = x ⬝ᵥ star x := by
@@ -49,6 +66,13 @@ private lemma sum_norm_sq_vecMul_eq_of_mul_conjTranspose_eq_one {κ : Type} [Fin
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Establish `hc : ∀ c, ‖(w ᵥ* M) c‖ ^ 2 ≤ (Fintype.card κ : ℝ) * K ^ 2 * ∑ a, ‖w a‖ ^ 2`. Introduce `c`. Establish `h1 : ‖(w ᵥ* M) c‖ ≤ ∑ a, ‖w a‖ * K`. Simplify using `only [vecMul, dotProduct]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hK a c) (norm_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun a => ‖w a‖)`. Use `_ = _ := by ring`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma sum_norm_sq_vecMul_le_card_sq_mul_bound_sq {κ : Type} [Fintype κ] (w : κ → ℂ) (M : Matrix κ κ ℂ)
     (K : ℝ) (hK : ∀ a c, ‖M a c‖ ≤ K) :
     ∑ c, ‖(w ᵥ* M) c‖ ^ 2 ≤ (Fintype.card κ : ℝ) ^ 2 * K ^ 2 * ∑ a, ‖w a‖ ^ 2 := by
@@ -71,6 +95,9 @@ private lemma sum_norm_sq_vecMul_le_card_sq_mul_bound_sq {κ : Type} [Fintype κ
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Rewrite using `[tpow_apply_eq_prod, norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma norm_tpow_apply_le_pow_of_forall_norm_le {ι : Type} (n : ℕ) (y : Matrix ι ι ℂ) (B : ℝ)
     (hy : ∀ i j, ‖y i j‖ ≤ B) (a b : Fin n → ι) : ‖_root_.GlobalTheory.ClassFin.tpow n y a b‖ ≤ B ^ n := by
   rw [tpow_apply_eq_prod, norm_prod]
@@ -81,6 +108,17 @@ private lemma norm_tpow_apply_le_pow_of_forall_norm_le {ι : Type} (n : ℕ) (y 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
 
+/- English proof (translation)
+Introduce `ι _ _ m d`. Use `⟨fun v U hU => ?_, fun C => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `hK : ∀ n, _root_.GlobalTheory.ClassFin.tpow n U * (_root_.GlobalTheory.ClassFin.tpow n U)ᴴ = 1`. Introduce `n`. Establish `h` using `(_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).1 n`.
+
+Rewrite using `[tpow_conjTranspose, ← h.2.1, hU, h.1]`. Rewrite using `[nsq_eq_sum_sum_norm_sq_components, nsq_eq_sum_sum_norm_sq_components]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [act_apply_eq_vecMul_tpow]`. Conclude with `sum_norm_sq_vecMul_eq_of_mul_conjTranspose_eq_one _ _ (hK _)`.
+
+Use `set B := max C 0`. Use `⟨∑ i, (Fintype.card (Fin (d i) → ι) : ℝ) ^ 2 * (B ^ d i) ^ 2, Finset.sum_nonneg fun _ _ => by positivity, fun v y hy => ?_⟩` and prove the remaining obligations. Establish `hyB : ∀ i j, ‖y i j‖ ≤ B` using `fun i j => (hy i j).trans (le_max_left _ _)`. Rewrite using `[nsq_eq_sum_sum_norm_sq_components, nsq_eq_sum_sum_norm_sq_components, Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [act_apply_eq_vecMul_tpow]`. Use `(sum_norm_sq_vecMul_le_card_sq_mul_bound_sq _ _ _ (norm_tpow_apply_le_pow_of_forall_norm_le _ y B hyB)).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `Finset.single_le_sum (f := fun i => (Fintype.card (Fin (d i) → ι) : ℝ) ^ 2 * (B ^ d i) ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`. Unfold `_root_.GlobalTheory.ClassFin.act`.
+
+Simplify using `only [vecMul, dotProduct, tpow_apply_eq_prod]`. Use `fun_prop`.
+-/
 theorem _root_.GlobalTheory.ClassFin.ActNorm.act_norm_continuity : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (m : ℕ) (d : Fin m → ℕ), (∀ (v : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ) (U : Matrix ι ι ℂ), U * Uᴴ = 1 → _root_.GlobalTheory.ClassFin.nsq (_root_.GlobalTheory.ClassFin.act d v U) = _root_.GlobalTheory.ClassFin.nsq v) ∧ (∀ C : ℝ, ∃ C' : ℝ, 0 ≤ C' ∧ ∀ (v : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ) (y : Matrix ι ι ℂ), (∀ i j, ‖y i j‖ ≤ C) → _root_.GlobalTheory.ClassFin.nsq (_root_.GlobalTheory.ClassFin.act d v y) ≤ C' * _root_.GlobalTheory.ClassFin.nsq v) ∧ ∀ v : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ, Continuous (_root_.GlobalTheory.ClassFin.act d v) := by
   intro ι _ _ m d
   refine ⟨fun v U hU => ?_, fun C => ?_, fun v => ?_⟩

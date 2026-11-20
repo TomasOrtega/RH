@@ -11,6 +11,11 @@ open scoped Classical
 
 namespace GlobalTheory.CoinvFullRank
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT x hx hxS`. Distinguish the cases in `hS : ∃ ψ, ψ ∈ G.M'.SoLoc B.ψ B.τ₁`. Take `⟨ψ, -, ι, hι, -⟩` from `hS`. Conclude with `GlobalTheory.T.linear_bar_span_gl_integral hK F E σ B a a' G X om om' hT ι hι x hxS (fun μ _ Y hY => GlobalTheory.T.linear_bar_gl_haar_integral hK F E σ B a a' G X om om' hT ι hι μ x hx Y hY)`. Establish `h0 : G.M'.SoLoc B.ψ B.τ₁ = ∅` using `Set.eq_empty_iff_forall_notMem.2 fun ψ h => hS ⟨ψ, h⟩`.
+
+Rewrite `hxS` using `[h0, Submodule.span_empty, Submodule.mem_bot]`. Substitute `hxS` using the available equality. Conclude with `zero_mem _`.
+-/
 theorem mem_span_diff_of_mem_augAt : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ x ∈ augAt om' B.v₁, x ∈ Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁) →

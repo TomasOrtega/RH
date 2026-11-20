@@ -6,6 +6,21 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `L _ _ C _ _ ι r e N l c i i' h v β`. Use `set φ := Algebra.TensorProduct.map (AlgHom.id ℚ (v.adicCompletion ℚ)) ι with hφ`. Set `P : (Fin r → v.adicCompletion ℚ ⊗[ℚ] L) → Prop` to `fun β => ∑ k, φ ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] l k) * (∑ i'', φ (β i'') * ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] e i'')) * ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] c k) = φ (β i') * ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] e i)`. Establish `hzero : P 0` using `by simp [P]`. Establish `hadd : ∀ β₁ β₂, P β₁ → P β₂ → P (β₁ + β₂)`.
+
+Introduce `β₁ β₂ h₁ h₂`. Simplify using `only [P, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib, mul_add] at h₁ h₂ ⊢`. Rewrite using `[h₁, h₂]`. Establish `hpure : ∀ (a : v.adicCompletion ℚ) (γ : Fin r → L), P (fun j => a ⊗ₜ[ℚ] γ j)`. Introduce `a γ`.
+
+Simplify using `only [P, hφ, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, ← TensorProduct.tmul_sum]`. Rewrite using `[h γ]`. Establish `hsingle : ∀ j x, P (Pi.single j x)`. Introduce `j x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simpa using hzero`. Consider the case `tmul a m`. Establish `: (Pi.single j (a ⊗ₜ[ℚ] m) : Fin r → v.adicCompletion ℚ ⊗[ℚ] L) = fun j' => a ⊗ₜ[ℚ] (Pi.single j m : Fin r → L) j'`. Use function extensionality and compare the values at `j'`. Distinguish the cases in `hj : j' = j`.
+
+Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`. Rewrite using `[this]`. Conclude with `hpure a _`.
+
+Consider the case `add x y hx hy`. Rewrite using `[Pi.single_add]`. Conclude with `hadd _ _ hx hy`. Establish `hall : P (∑ j, Pi.single j (β j))` using `Finset.sum_induction _ P hadd hzero (fun j _ => hsingle j (β j))`. Rewrite `hall` using `[Finset.univ_sum_single]`.
+
+Conclude with `hall`.
+-/
 theorem adicCompletion_tensor_matrixUnit_identity : ∀ (L : Type) [Field L] [NumberField L] (C : Type) [Ring C] [Algebra ℚ C] (ι : L →ₐ[ℚ] C) (r : ℕ)
     (e : Fin r → C) (N : ℕ) (l : Fin N → L) (c : Fin N → C) (i i' : Fin r),
     (∀ β : Fin r → L, ∑ k, ι (l k) * (∑ i'', ι (β i'') * e i'') * c k = ι (β i') * e i) →

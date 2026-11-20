@@ -7,6 +7,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult.Obj
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 B _ _ _ R _ _ _ j X`. Take `⟨hfin, hproj, hrk⟩` from `GlobalTheory.T.lie_algebra_finite_projective_rank X`. Set `p : Ideal B` to `(IsLocalRing.maximalIdeal R).comap j`. Use `haveI : p.IsPrime := Ideal.comap_isPrime _ _`. Use `haveI : Module.FinitePresentation B X.Lie := Module.finitePresentation_of_projective B X.Lie`.
+
+Use `haveI : Module.Free (Localization.AtPrime p) (LocalizedModule p.primeCompl X.Lie) := Module.free_of_flat_of_isLocalRing`. Take `⟨f, hf, hfree, hfr⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers p.primeCompl (LocalizedModule.mkLinearMap p.primeCompl X.Lie) (Localization.AtPrime p)`. Establish `hju : IsUnit (j f)`. Assume the negation of the conclusion as `h`. Conclude with `hf ((IsLocalRing.mem_maximalIdeal _).2 h)`.
+
+Set `B'` to `Localization.Away f`. Set `k : B →ₐ[ℂ] B'` to `IsScalarTower.toAlgHom ℂ B B'`. Set `j' : B' →ₐ[ℂ] R` to `IsLocalization.liftAlgHom (M := Submonoid.powers f) (f := j) (by`. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `using hju.pow n)`.
+
+Establish `hjk : j'.comp k = j` using `AlgHom.ext fun x ↦ by`. Simplify using `[j', k, IsLocalization.liftAlgHom, IsLocalization.lift_eq]`. Use `haveI : Nontrivial B' := (j' : B' →+* R).domain_nontrivial`. Use `haveI : Algebra.Smooth B B' := Algebra.Smooth.of_isLocalization_Away f`. Use `haveI : Algebra.Smooth ℂ B' := Algebra.Smooth.comp ℂ B B'`.
+
+Take `⟨X₁, q, hq⟩` from `exists_isPullBy X (spMap (algebraMap B B'))`. Take `⟨e, -, -⟩` from `exists_lieEquiv (R' := B') hq`. Use `haveI : Module.Finite B' (LocalizedModule.Away f X.Lie) := Module.Finite.of_isLocalizedModule (Submonoid.powers f) (LocalizedModule.mkLinearMap (Submonoid.powers f) X.Lie)`. Establish `hd : Module.finrank B' (LocalizedModule.Away f X.Lie) = Module.finrank ℚ F`. Rewrite using `[hfr]`.
+
+Conclude with `hrk ⟨p, inferInstance⟩`. Set `b₀` to `Module.finBasisOfFinrankEq B' (LocalizedModule.Away f X.Lie) hd`. Set `hbc` to `IsLocalizedModule.isBaseChange (Submonoid.powers f) B' (LocalizedModule.mkLinearMap (Submonoid.powers f) X.Lie)`. Set `b₁ : Module.Basis (Fin (Module.finrank ℚ F)) B' X₁.Lie` to `b₀.map (hbc.equiv.symm ≪≫ₗ e)`. Conclude with `⟨B', inferInstance, inferInstance, inferInstance, X₁, DetGen.ofBasis X₁ b₁, k, j', q, hq, hjk⟩`.
+-/
 theorem exists_detGen_away : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (B : Type) [CommRing B] [Algebra ℂ B]
     [Algebra.Smooth ℂ B] (R : Type) [CommRing R] [Algebra ℂ R] [IsLocalRing R] (j : B →ₐ[ℂ] R) (X : Obj F 𝔠 (Sp B)),
     ∃ (B' : Type) (_ : CommRing B') (_ : Algebra ℂ B') (_ : Algebra.Smooth ℂ B') (X₁ : Obj F 𝔠 (Sp B'))

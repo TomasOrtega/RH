@@ -14,6 +14,17 @@ namespace GlobalTheory.FormalIsogeny
 
 section Nakayama
 
+/- English proof (translation)
+Take `⟨n, g, hg⟩` from `Module.Finite.exists_fin (R := A) (M := M ⧸ (I • ⊤ : Submodule A M))`. Use `choose m hm using fun i => Submodule.Quotient.mk_surjective _ (g i)`. Establish `: IsPrecomplete I (Fin n → A)`. Use `⟨fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, ∃ L : A, ∀ k, u k i ≡ L [SMOD (I ^ k • ⊤ : Submodule A A)]` using `fun i => IsPrecomplete.prec' (fun k => u k i) fun {a b} hab => by`.
+
+Use `Submodule.mem_map_of_mem (f := LinearMap.proj (R := A) (φ := fun _ => A) i) (SModEq.sub_mem.1 (hu hab))` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `SModEq.sub_mem.2 (Submodule.smul_mono le_rfl le_top this)`. Use `choose L hL using h1`. Use `⟨L, fun k => SModEq.sub_mem.2 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Finset.univ_sum_single (u k - L)]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h2 : u k i - L i ∈ I ^ k` using `by simpa using SModEq.sub_mem.1 (hL i k)`. Establish `h3 : (Pi.single i ((u k - L) i) : Fin n → A) = (u k i - L i) • Pi.single i 1`. Rewrite using `[← Pi.single_smul']`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h3]`. Conclude with `Submodule.smul_mem_smul h2 trivial`. Use `Module.Finite.of_surjective (Fintype.linearCombination A m) (surjective_of_mkQ_comp_surjective (I := I) ?_)` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hg, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨Pi.single i 1, by simp [hm]⟩`.
+-/
 theorem finite_of_finite_quotient_smul_top {A M : Type*} [CommRing A] [AddCommGroup M]
     [Module A M] (I : Ideal A) [IsPrecomplete I A] [IsHausdorff I M]
     [Module.Finite A (M ⧸ (I • ⊤ : Submodule A M))] : Module.Finite A M := by
@@ -42,6 +53,9 @@ theorem finite_of_finite_quotient_smul_top {A M : Type*} [CommRing A] [AddCommGr
   rintro _ ⟨i, rfl⟩
   exact ⟨Pi.single i 1, by simp [hm]⟩
 
+/- English proof (translation)
+Establish `: IsHausdorff I B` using `IsHausdorff.map_algebraMap_iff.1 ‹_›`. Establish `: Module.Finite A (B ⧸ (I • ⊤ : Submodule A B))`. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `.equiv (Submodule.Quotient.restrictScalarsEquiv A (I.map (algebraMap A B))).symm`. Conclude with `finite_of_finite_quotient_smul_top I`.
+-/
 theorem finite_of_finite_quotient_map {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     (I : Ideal A) [IsPrecomplete I A] [IsHausdorff (I.map (algebraMap A B)) B]
     [Module.Finite A (B ⧸ I.map (algebraMap A B))] : Module.Finite A B := by
@@ -51,6 +65,11 @@ theorem finite_of_finite_quotient_map {A B : Type*} [CommRing A] [CommRing B] [A
     exact .equiv (Submodule.Quotient.restrictScalarsEquiv A (I.map (algebraMap A B))).symm
   exact finite_of_finite_quotient_smul_top I
 
+/- English proof (translation)
+Use `⟨fun u hu => ?_⟩` and prove the remaining obligations. Establish `he' : ∀ n, I ^ ((e + 1) * n) ≤ J ^ n` using `fun n => by`. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_right_mono ((Ideal.pow_le_pow_right e.le_succ).trans he) n`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := J) (fun n => u ((e + 1) * n)) fun {m n} hmn => (hu (Nat.mul_le_mul_left _ hmn)).mono (Submodule.smul_mono_left (he' m))`.
+
+Conclude with `⟨L, fun n => (hu (Nat.le_mul_of_pos_left n e.succ_pos)).trans ((hL n).mono (Submodule.smul_mono_left (Ideal.pow_right_mono hJ n)))⟩`.
+-/
 theorem isPrecomplete_of_pow_le {A : Type*} [CommRing A] {I J : Ideal A} (hJ : J ≤ I) {e : ℕ}
     (he : I ^ e ≤ J) [IsPrecomplete J A] : IsPrecomplete I A := by
   refine ⟨fun u hu => ?_⟩
@@ -62,6 +81,11 @@ theorem isPrecomplete_of_pow_le {A : Type*} [CommRing A] {I J : Ideal A} (hJ : J
   exact ⟨L, fun n => (hu (Nat.le_mul_of_pos_left n e.succ_pos)).trans
     ((hL n).mono (Submodule.smul_mono_left (Ideal.pow_right_mono hJ n)))⟩
 
+/- English proof (translation)
+Use `IsNoetherianRing.of_finite R S` as an intermediate fact. Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra (R := R) S` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, maximalIdeal S ^ e ≤ (maximalIdeal R).map (algebraMap R S) := by`. Use `Ideal.exists_pow_le_of_le_radical_of_fg (fun b hb => ?_) (IsNoetherian.noetherian _)` and prove the remaining obligations. Take `⟨N, -, hN⟩` from `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.exists_pow_mem_map_maximalIdeal (R := R) S b fun n hn => eq_maximalIdeal hn ▸ hb`.
+
+Conclude with `⟨N, hN⟩`. Use `isPrecomplete_of_pow_le (ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.map_maximalIdeal_le_maximal (R := R) S _ inferInstance) he` as an intermediate fact. Conclude with `⟨⟩`.
+-/
 theorem isAdicComplete_maximalIdeal_of_finite (R S : Type*) [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [CommRing S] [IsLocalRing S]
     [Algebra R S] [Module.Finite R S] : IsAdicComplete (maximalIdeal S) S := by
@@ -87,6 +111,23 @@ variable (R : Type*) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 
 include K
 
+/- English proof (translation)
+Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful R K L` as an intermediate fact. Establish `hinj` using `FaithfulSMul.algebraMap_injective R L`. Use `set B := integralClosure R L`. Establish `hBn : IsNoetherianRing B` using `(krullAkizuki K B).1`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible R`.
+
+Establish `hm : (maximalIdeal R).map (algebraMap R B) = Ideal.span {algebraMap R B π}`. Rewrite using `[hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`. Establish `: IsHausdorff ((maximalIdeal R).map (algebraMap R B)) B`. Use `IsHausdorff.of_isDomain _ ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `Ideal.exists_maximal B`.
+
+Use `ne_top_of_le_ne_top hn.ne_top (Ideal.map_le_iff_le_comap.2 ?_)` and prove the remaining obligations. Conclude with `(eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal n)).ge`. Establish `halg : Algebra.IsAlgebraic R L` using `(IsFractionRing.comap_isAlgebraic_iff (A := R) (K := K) (C := L)).mpr inferInstance`. Take `⟨s, hsT, hs⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset (R := K) (B : Set L)).mp (IsNoetherian.noetherian _)`. Set `C` to `Algebra.adjoin R (s : Set L)`.
+
+Establish `hCB : C ≤ B` using `Algebra.adjoin_le hsT`. Establish `hCf : Module.Finite R C` using `Algebra.finite_adjoin_of_finite_of_isIntegral s.finite_toSet fun x hx => hsT hx`. Establish `hCn : IsNoetherianRing C` using `IsNoetherianRing.of_finite R C`. Establish `hCd : Ring.DimensionLEOne C` using `Ring.DimensionLEOne.of_isIntegral R C`. Use `letI : Algebra C B := (Subalgebra.inclusion hCB).toAlgebra`.
+
+Establish `: IsScalarTower R C B` using `.of_algebraMap_eq fun _ => rfl`. Establish `: FaithfulSMul C B` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (Subalgebra.inclusion_injective hCB)`. Establish `hfin : Module.Finite C (B ⧸ Ideal.span {algebraMap C B (algebraMap R C π)})`. Use `finite_quotient_span_of_birational (fun x => ?_) fun h => ?_` and prove the remaining obligations. Establish `h1 : (x : L) ∈ Submodule.span K (s : Set L)` using `hs ▸ Submodule.subset_span x.2`.
+
+Take `⟨d, hd⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors R) K _ _ h1`. Use `⟨algebraMap R C d, fun h => ?_, ⟨_, Algebra.span_le_adjoin R _ hd⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h3 : algebraMap R L d = 0` using `congrArg Subtype.val h`. Conclude with `nonZeroDivisors.coe_ne_zero d (hinj (h3.trans (map_zero _).symm))`. Express the relevant statement in the definitionally equal form `algebraMap R L d * x = (d : R) • (x : L)`.
+
+Rewrite using `[Algebra.smul_def]`. Establish `h3 : algebraMap R L π = 0` using `congrArg Subtype.val h`. Conclude with `hπ.ne_zero (hinj (h3.trans (map_zero _).symm))`. Establish `: Module.Finite R (B ⧸ (maximalIdeal R).map (algebraMap R B))`. Rewrite using `[hm, IsScalarTower.algebraMap_apply R C B]`.
+
+Conclude with `.trans C _`. Conclude with `finite_of_finite_quotient_map (maximalIdeal R)`.
+-/
 theorem finite_integralClosure : Module.Finite R (integralClosure R L) := by
   have := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful R K L
   have hinj := FaithfulSMul.algebraMap_injective R L
@@ -130,6 +171,9 @@ theorem finite_integralClosure : Module.Finite R (integralClosure R L) := by
     exact .trans C _
   exact finite_of_finite_quotient_map (maximalIdeal R)
 
+/- English proof (translation)
+The claim follows from `have := finite_integralClosure R K L ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr R K L`.
+-/
 theorem isDiscreteValuationRing_integralClosure : IsDiscreteValuationRing (integralClosure R L) :=
   have := finite_integralClosure R K L
   ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr R K L
@@ -140,11 +184,19 @@ section PowerSeries
 
 variable {R : Type*} [CommRing R] {σ τ : Type*}
 
+/- English proof (translation)
+Rewrite using `[mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_iff_constantCoeff]`.
+-/
 theorem mem_maximalIdeal_iff_constantCoeff [IsLocalRing R] {g : MvPowerSeries σ R} :
     g ∈ maximalIdeal (MvPowerSeries σ R) ↔ constantCoeff g ∈ maximalIdeal R := by
   rw [mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff,
     isUnit_iff_constantCoeff]
 
+/- English proof (translation)
+Take `⟨n, s, rfl⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hI`. Use `choose c hc using fun d => (Submodule.mem_span_range_iff_exists_fun R).1 (hg d)`. Establish `: g = ∑ i, (show MvPowerSeries σ R from fun d => c d i) * C (s i)`. Use extensionality with `d`. Rewrite using `[← hc d, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [coeff_mul_C]; rfl`. Rewrite using `[this]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (Submodule.subset_span ⟨i, rfl⟩))`.
+-/
 theorem mem_map_C_of_coeff_mem {I : Ideal R} (hI : I.FG) {g : MvPowerSeries σ R}
     (hg : ∀ d, coeff d g ∈ I) : g ∈ I.map (C : R →+* MvPowerSeries σ R) := by
   obtain ⟨n, s, rfl⟩ := Submodule.fg_iff_exists_fin_generating_family.1 hI
@@ -157,6 +209,9 @@ theorem mem_map_C_of_coeff_mem {I : Ideal R} (hI : I.FG) {g : MvPowerSeries σ R
   exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _
     (Ideal.mem_map_of_mem _ (Submodule.subset_span ⟨i, rfl⟩))
 
+/- English proof (translation)
+Introduce `g`. Use `choose c hc using fun d => hφ (coeff d g)`. Conclude with `⟨c, by ext d; exact hc d⟩`.
+-/
 theorem map_surjective_of_surjective {S : Type*} [CommRing S] {φ : R →+* S}
     (hφ : Function.Surjective φ) :
     Function.Surjective (MvPowerSeries.map φ : MvPowerSeries σ R →+* MvPowerSeries σ S) := by
@@ -164,6 +219,13 @@ theorem map_surjective_of_surjective {S : Type*} [CommRing S] {φ : R →+* S}
   choose c hc using fun d => hφ (coeff d g)
   exact ⟨c, by ext d; exact hc d⟩
 
+/- English proof (translation)
+Use `le_antisymm ?_ ringKrullDim_succ_le_ringKrullDim_powerseries` and prove the remaining obligations. Establish `hX : (PowerSeries.X : PowerSeries R) ∈ maximalIdeal (PowerSeries R)`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules. Establish `h` using `ringKrullDim_le_ringKrullDim_quotient_add_card ({PowerSeries.X} : Finset (PowerSeries R)) (by`.
+
+Rewrite using `[IsLocalRing.ringJacobson_eq_maximalIdeal]`. Simplify using `using hX)`. Establish `hker : Ideal.span (({PowerSeries.X} : Finset (PowerSeries R)) : Set (PowerSeries R)) = RingHom.ker (PowerSeries.constantCoeff (R` using `R)) := by`. Use extensionality with `g`. Rewrite using `[Finset.coe_singleton, Ideal.mem_span_singleton, PowerSeries.X_dvd_iff, RingHom.mem_ker]`.
+
+Establish `e` using `(Ideal.quotEquivOfEq hker).trans (RingHom.quotientKerEquivOfSurjective (f := PowerSeries.constantCoeff (R := R)) fun r => ⟨PowerSeries.C r, PowerSeries.constantCoeff_C r⟩)`. Rewrite `h` using `[ringKrullDim_eq_of_ringEquiv e]`. Simplify using `using h`.
+-/
 theorem ringKrullDim_powerSeries (R : Type*) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] :
     ringKrullDim (PowerSeries R) = ringKrullDim R + 1 := by
   refine le_antisymm ?_ ringKrullDim_succ_le_ringKrullDim_powerseries
@@ -183,6 +245,11 @@ theorem ringKrullDim_powerSeries (R : Type*) [CommRing R] [IsLocalRing R] [IsNoe
   rw [ringKrullDim_eq_of_ringEquiv e] at h
   simpa using h
 
+/- English proof (translation)
+Use `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le _ ?_` and prove the remaining obligations. Establish `hX : (PowerSeries.X : PowerSeries R) ∈ maximalIdeal (PowerSeries R)`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules. Establish `hm : (maximalIdeal (PowerSeries R)).map PowerSeries.constantCoeff = maximalIdeal R` using `map_maximalIdeal_of_surjective _ fun r => ⟨PowerSeries.C r, PowerSeries.constantCoeff_C r⟩`.
+
+Establish `h` using `PowerSeries.spanFinrank_le_spanFinrank_map_constantCoeff_add_one_of_X_mem hX`. Rewrite `h` using `[hm]`. Rewrite using `[ringKrullDim_powerSeries, ← IsRegularLocalRing.spanFinrank_maximalIdeal]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem isRegularLocalRing_powerSeries (R : Type*) [CommRing R] [IsRegularLocalRing R] :
     IsRegularLocalRing (PowerSeries R) := by
   refine IsRegularLocalRing.of_spanFinrank_maximalIdeal_le _ ?_
@@ -196,6 +263,11 @@ theorem isRegularLocalRing_powerSeries (R : Type*) [CommRing R] [IsRegularLocalR
   rw [ringKrullDim_powerSeries, ← IsRegularLocalRing.spanFinrank_maximalIdeal]
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `: ∀ n, IsRegularLocalRing (MvPowerSeries (Fin n) R)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => exact IsRegularLocalRing.of_ringEquiv (isEmptyEquiv (Fin 0) R).toRingEquiv.symm`. Consider the case `succ n ih`. Use `isRegularLocalRing_powerSeries (MvPowerSeries (Fin n) R)` as an intermediate fact.
+
+Conclude with `IsRegularLocalRing.of_ringEquiv (finSuccEquiv R n).toRingEquiv.symm`. Use `this (Nat.card σ)` as an intermediate fact. Conclude with `IsRegularLocalRing.of_ringEquiv (renameEquiv R (Finite.equivFin σ)).toRingEquiv.symm`.
+-/
 theorem isRegularLocalRing_mvPowerSeries (R : Type*) [CommRing R] [IsRegularLocalRing R]
     (σ : Type*) [Finite σ] : IsRegularLocalRing (MvPowerSeries σ R) := by
   have : ∀ n, IsRegularLocalRing (MvPowerSeries (Fin n) R) := fun n => by
@@ -207,6 +279,9 @@ theorem isRegularLocalRing_mvPowerSeries (R : Type*) [CommRing R] [IsRegularLoca
   have := this (Nat.card σ)
   exact IsRegularLocalRing.of_ringEquiv (renameEquiv R (Finite.equivFin σ)).toRingEquiv.symm
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_eq_of_ringEquiv (renameEquiv R (Finite.equivFin σ)).toRingEquiv]`. Proceed by induction on `Nat.card σ with`. Consider the case `zero => simpa using ringKrullDim_eq_of_ringEquiv (isEmptyEquiv (Fin 0) R).toRingEquiv`. Consider the case `succ n ih`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (finSuccEquiv R n).toRingEquiv, ringKrullDim_powerSeries, ih, Nat.cast_add_one, add_assoc]`.
+-/
 theorem ringKrullDim_mvPowerSeries (R : Type*) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (σ : Type*) [Finite σ] : ringKrullDim (MvPowerSeries σ R) = ringKrullDim R + Nat.card σ := by
   rw [ringKrullDim_eq_of_ringEquiv (renameEquiv R (Finite.equivFin σ)).toRingEquiv]
@@ -218,6 +293,17 @@ theorem ringKrullDim_mvPowerSeries (R : Type*) [CommRing R] [IsLocalRing R] [IsN
 
 variable [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Finite σ]
 
+/- English proof (translation)
+Establish `h1 : IsHausdorff (maximalIdeal R) (MvPowerSeries σ R ⧸ J)`. Use `IsHausdorff.of_map (J := maximalIdeal (MvPowerSeries σ R)) ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Conclude with `mem_maximalIdeal_iff_constantCoeff.2 hr`.
+
+Establish `h2` using `(IsHausdorff.map_algebraMap_iff (S := MvPowerSeries σ R ⧸ J)).2 h1`. Establish `h3 : Module.Finite R (MvPowerSeries σ (ResidueField R) ⧸ J.map (MvPowerSeries.map (residue R)))` using `.trans (ResidueField R) _`. Establish `hsurj` using `map_surjective_of_surjective (σ := σ) (residue_surjective (R := R))`. Set `p : MvPowerSeries σ R →ₐ[R] MvPowerSeries σ (ResidueField R) ⧸ J.map (MvPowerSeries.map (residue R))` to `(Ideal.Quotient.mkₐ R _).comp { MvPowerSeries.map (residue R) with commutes' := fun r => by simp [MvPowerSeries.algebraMap_apply] }`. Establish `hp : Function.Surjective p` using `Ideal.Quotient.mk_surjective.comp hsurj`.
+
+Set `q : MvPowerSeries σ R →ₐ[R] (MvPowerSeries σ R ⧸ J) ⧸ (maximalIdeal R).map (algebraMap R (MvPowerSeries σ R ⧸ J))` to `(Ideal.Quotient.mkₐ R _).comp (Ideal.Quotient.mkₐ R _)`. Establish `hq : Function.Surjective q` using `Ideal.Quotient.mk_surjective.comp Ideal.Quotient.mk_surjective`. Establish `hpq : ∀ g ∈ RingHom.ker p, q g = 0`. Introduce `g hg`. Establish `h4 : MvPowerSeries.map (residue R) g ∈ J.map (MvPowerSeries.map (residue R))` using `Ideal.Quotient.eq_zero_iff_mem.1 hg`.
+
+Take `⟨u, hu, hug⟩` from `(Ideal.mem_map_iff_of_surjective _ hsurj).1 h4`. Establish `h5 : g - u ∈ (maximalIdeal R).map (C : R →+* MvPowerSeries σ R)` using `mem_map_C_of_coeff_mem (IsNoetherian.noetherian _) fun d => by`. Rewrite using `[← residue_eq_zero_iff, ← coeff_map, map_sub, hug, sub_self, map_zero]`. Establish `h6` using `Ideal.mem_map_of_mem (Ideal.Quotient.mk J) h5`. Rewrite `h6` using `[Ideal.map_map, map_sub, Ideal.Quotient.eq_zero_iff_mem.2 hu, sub_zero]`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h6`. Establish `h7 : Module.Finite R (MvPowerSeries σ R ⧸ RingHom.ker p)` using `.equiv (Ideal.quotientKerAlgEquivOfSurjective hp).symm.toLinearEquiv`. Establish `h8 : Module.Finite R ((MvPowerSeries σ R ⧸ J) ⧸ (maximalIdeal R).map (algebraMap R (MvPowerSeries σ R ⧸ J)))` using `Module.Finite.of_surjective (Ideal.Quotient.liftₐ _ q hpq).toLinearMap (Ideal.Quotient.lift_surjective_of_surjective _ hpq hq)`. Conclude with `finite_of_finite_quotient_map (maximalIdeal R)`.
+-/
 theorem finite_quotient_of_residue (J : Ideal (MvPowerSeries σ R))
     (h : Module.Finite (ResidueField R)
       (MvPowerSeries σ (ResidueField R) ⧸ J.map (MvPowerSeries.map (residue R)))) :
@@ -267,6 +353,9 @@ def FiniteReduction {R : Type*} [CommRing R] [IsLocalRing R] {σ τ : Type*}
   Module.Finite (ResidueField R) (MvPowerSeries σ (ResidueField R) ⧸
     Ideal.span (Set.range fun j => MvPowerSeries.map (residue R) (f j)))
 
+/- English proof (translation)
+Use `finite_quotient_of_residue _ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Conclude with `h`.
+-/
 theorem FiniteReduction.finite_quotient {f : τ → MvPowerSeries σ R} (h : FiniteReduction f) :
     Module.Finite R (MvPowerSeries σ R ⧸ Ideal.span (Set.range f)) := by
   refine finite_quotient_of_residue _ ?_
@@ -275,6 +364,13 @@ theorem FiniteReduction.finite_quotient {f : τ → MvPowerSeries σ R} (h : Fin
 
 variable [Finite τ]
 
+/- English proof (translation)
+Establish `h1` using `h.finite_quotient`. Establish `key : ∀ (A : Type _) [CommRing A] [Algebra R A] [Algebra A (MvPowerSeries σ R)] [IsScalarTower R A (MvPowerSeries σ R)] (I : Ideal A) [IsPrecomplete I A], I.map (algebraMap A (MvPowerSeries σ R)) = Ideal.span (Set.range fun j => φ (X j)) → Module.Finite A (MvPowerSeries σ R)`. Introduce `A _ _ _ _ I _ hI`. Establish `: IsHausdorff (I.map (algebraMap A (MvPowerSeries σ R))) (MvPowerSeries σ R)`. Use `IsHausdorff.of_isLocalRing _ _ (ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top ?_)` and prove the remaining obligations.
+
+Rewrite using `[hI, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `mem_maximalIdeal_iff_constantCoeff.2 (h0 j)`. Establish `: Module.Finite A (MvPowerSeries σ R ⧸ I.map (algebraMap A (MvPowerSeries σ R)))`. Rewrite using `[hI]`.
+
+Conclude with `.of_restrictScalars_finite R _ _`. Conclude with `finite_of_finite_quotient_map I`. Use `@key (MvPowerSeries τ R) _ _ φ.toRingHom.toAlgebra (@IsScalarTower.of_algebraMap_eq _ _ _ _ _ _ _ φ.toRingHom.toAlgebra _ fun r => (φ.commutes r).symm) (Ideal.span (Set.range X)) _ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem finite_of_finiteReduction (φ : MvPowerSeries τ R →ₐ[R] MvPowerSeries σ R)
     (h0 : ∀ j, constantCoeff (φ (X j)) ∈ maximalIdeal R) (h : FiniteReduction fun j => φ (X j)) :
     φ.toRingHom.Finite := by
@@ -301,6 +397,9 @@ theorem finite_of_finiteReduction (φ : MvPowerSeries τ R →ₐ[R] MvPowerSeri
 
 omit [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Finite σ] in
 
+/- English proof (translation)
+Use `((IsLocalRing.local_hom_TFAE _).out 0 3).2 fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `algHom_sub_constantCoeff_mem φ (K := maximalIdeal _) (fun j => mem_maximalIdeal_iff_constantCoeff.2 (h0 j)) g`. Establish `h2 : algebraMap R (MvPowerSeries σ R) (constantCoeff g) ∈ maximalIdeal _`. Conclude with `mem_maximalIdeal_iff_constantCoeff.2 ((mem_maximalIdeal_iff_constantCoeff (g := g)).1 hg)`. Simplify using `using add_mem h1 h2`.
+-/
 theorem isLocalHom_of_constantCoeff_mem (φ : MvPowerSeries τ R →ₐ[R] MvPowerSeries σ R)
     (h0 : ∀ j, constantCoeff (φ (X j)) ∈ maximalIdeal R) : IsLocalHom φ.toRingHom := by
   refine ((IsLocalRing.local_hom_TFAE _).out 0 3).2 fun g hg => ?_
@@ -317,6 +416,11 @@ section Criterion
 
 variable {R : Type*} [CommRing R] {σ τ : Type*} [Finite σ]
 
+/- English proof (translation)
+Use `Module.Finite.of_surjective (((Ideal.Quotient.mkₐ R J).comp (MvPolynomial.coeToMvPowerSeries.algHom R)).toLinearMap ∘ₗ (MvPolynomial.restrictTotalDegree σ R N).subtype) fun y => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨⟨truncTotal (N + 1) g, (MvPolynomial.mem_restrictTotalDegree _ _ _).2 (Nat.le_of_lt_succ (totalDegree_truncTotal_lt _ N.succ_ne_zero))⟩, ?_⟩` and prove the remaining obligations. Use `Ideal.Quotient.eq.2 (h ?_)` and prove the remaining obligations. Rewrite using `[← germIdeal_eq_span, mem_germIdeal_pow_iff_le_order]`.
+
+Use `nat_le_order fun d hd => ?_` and prove the remaining obligations. Simplify using `[coeff_truncTotal _ (Nat.lt_succ_of_lt hd)]`.
+-/
 theorem finite_quotient_of_pow_le {J : Ideal (MvPowerSeries σ R)} {N : ℕ}
     (h : Ideal.span (Set.range X) ^ N ≤ J) : Module.Finite R (MvPowerSeries σ R ⧸ J) := by
   refine Module.Finite.of_surjective (((Ideal.Quotient.mkₐ R J).comp
@@ -330,6 +434,13 @@ theorem finite_quotient_of_pow_le {J : Ideal (MvPowerSeries σ R)} {N : ℕ}
   refine nat_le_order fun d hd => ?_
   simp [coeff_truncTotal _ (Nat.lt_succ_of_lt hd)]
 
+/- English proof (translation)
+Establish `: IsArtinianRing (MvPowerSeries σ k ⧸ J)` using `IsArtinianRing.of_finite k _`. Take `⟨N, hN⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := MvPowerSeries σ k ⧸ J)`. Establish `h1 : (Ideal.span (Set.range X)).map (Ideal.Quotient.mk J) ≤ Ideal.jacobson ⊥`. Rewrite using `[Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`.
+
+Use `Ideal.mem_jacobson_bot.2 fun y => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `: IsUnit (X i * g + 1 : MvPowerSeries σ k)` using `by simp [isUnit_iff_constantCoeff]`. Simplify using `using this.map (Ideal.Quotient.mk J)`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `Ideal.pow_right_mono h1 N`. Rewrite `h2` using `[hN, ← Ideal.map_pow, Ideal.zero_eq_bot, Ideal.map_le_iff_le_comap, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Then use the resulting hypothesis.
+-/
 theorem exists_pow_le_of_finite_quotient {k : Type*} [Field k] {J : Ideal (MvPowerSeries σ k)}
     (h : Module.Finite k (MvPowerSeries σ k ⧸ J)) : ∃ N, Ideal.span (Set.range X) ^ N ≤ J := by
   have : IsArtinianRing (MvPowerSeries σ k ⧸ J) := IsArtinianRing.of_finite k _
@@ -348,11 +459,19 @@ theorem exists_pow_le_of_finite_quotient {k : Type*} [Field k] {J : Ideal (MvPow
 
 variable [IsLocalRing R]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exists_pow_le_of_finite_quotient, fun ⟨_, h⟩ => finite_quotient_of_pow_le h⟩`.
+-/
 theorem finiteReduction_iff {f : τ → MvPowerSeries σ R} : FiniteReduction f ↔
     ∃ N, Ideal.span (Set.range X) ^ N ≤
       Ideal.span (Set.range fun j => MvPowerSeries.map (residue R) (f j)) :=
   ⟨exists_pow_le_of_finite_quotient, fun ⟨_, h⟩ => finite_quotient_of_pow_le h⟩
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `finiteReduction_iff.1 h`. Use `finiteReduction_iff.2 ⟨N, ?_⟩` and prove the remaining obligations. Use `Ideal.map_mono (f := MvPowerSeries.map (σ := σ) (ResidueField.map ρ)) hN` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow, Ideal.map_span, Ideal.map_span, ← Set.range_comp, ← Set.range_comp]`. Establish `e1 : (MvPowerSeries.map (σ` using `σ) (ResidueField.map ρ)) ∘ X = X := by ext1 i`.
+
+Simplify using the standard rewrite rules. Establish `e2 : ((MvPowerSeries.map (ResidueField.map ρ)) ∘ fun j => MvPowerSeries.map (residue R) (f j)) = fun j => MvPowerSeries.map (residue S) (MvPowerSeries.map ρ (f j))`. Use extensionality with `j d`. Simplify using `only [Function.comp_apply, coeff_map, ResidueField.map_residue]`. Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis.
+-/
 theorem FiniteReduction.map {S : Type*} [CommRing S] [IsLocalRing S] (ρ : R →+* S) [IsLocalHom ρ]
     {f : τ → MvPowerSeries σ R} (h : FiniteReduction f) :
     FiniteReduction fun j => MvPowerSeries.map ρ (f j) := by
@@ -377,6 +496,11 @@ section Free
 variable {R : Type*} [CommRing R] [IsRegularLocalRing R] [IsAdicComplete (maximalIdeal R) R]
   {σ τ : Type*} [Finite σ] [Finite τ]
 
+/- English proof (translation)
+Use `letI := ψ.toAlgebra`. Establish `: Module.Finite A B` using `hψ`. Establish `: IsLocalHom (algebraMap A B)` using `‹_›`. Establish `hf : Module.Flat A B` using `flat_of_isCM_of_quasiFinite (isCM_of_isRegularLocalRing B) hd`. Establish `hfr : Module.Free A B` using `Module.free_of_flat_of_isLocalRing`.
+
+Use `⟨hf, FaithfulSMul.algebraMap_injective A B, hfr, _, Module.finBasis A B, fun g => ?_⟩` and prove the remaining obligations. Use `⟨(Module.finBasis A B).equivFun g, ?_, fun c hc => ?_⟩` and prove the remaining obligations. Conclude with `((Module.finBasis A B).sum_equivFun g).symm`. Rewrite using `[eq_comm, ← LinearEquiv.eq_symm_apply, Module.Basis.equivFun_symm_apply, hc]`. Both sides reduce to the same expression.
+-/
 theorem flat_injective_basis_of_finite {A B : Type*} [CommRing A] [CommRing B]
     [IsRegularLocalRing A] [IsRegularLocalRing B] (ψ : A →+* B) [IsLocalHom ψ] (hψ : ψ.Finite)
     (hd : ringKrullDim A ≤ ringKrullDim B) :
@@ -393,6 +517,11 @@ theorem flat_injective_basis_of_finite {A B : Type*} [CommRing A] [CommRing B]
   · rw [eq_comm, ← LinearEquiv.eq_symm_apply, Module.Basis.equivFun_symm_apply, hc]
     rfl
 
+/- English proof (translation)
+Use `isRegularLocalRing_mvPowerSeries R σ` as an intermediate fact. Use `isRegularLocalRing_mvPowerSeries R τ` as an intermediate fact. Use `isLocalHom_of_constantCoeff_mem φ h0` as an intermediate fact. Use `flat_injective_basis_of_finite φ.toRingHom (finite_of_finiteReduction φ h0 h) ?_` and prove the remaining obligations. Rewrite using `[ringKrullDim_mvPowerSeries, ringKrullDim_mvPowerSeries]`.
+
+Use `gcongr`.
+-/
 theorem flat_injective_basis_of_finiteReduction (φ : MvPowerSeries τ R →ₐ[R] MvPowerSeries σ R)
     (h0 : ∀ j, constantCoeff (φ (X j)) ∈ maximalIdeal R) (h : FiniteReduction fun j => φ (X j))
     (hc : Nat.card τ ≤ Nat.card σ) :
@@ -425,6 +554,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRe
 
 variable {R : Type} [CommRing R] {d : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `k generalizing i with`. Consider the case `zero => simp [mulN]`. Consider the case `succ k ih`. Establish `h : ∀ (j : Fin 2) (l : Fin d), constantCoeff ((![mulN G k, pt R d 0] : Fin 2 → Pt R 1 d) j l) = 0`. Apply the tactic sequence `intro j l; fin_cases j <;> simp [pt, ih]`.
+
+Conclude with `constantCoeff_subst_eq_zero (hasSubst_ev _ h) (fun p => h p.1 p.2) (G.const i)`.
+-/
 theorem constantCoeff_mulN (G : FGLaw R d) (k : ℕ) (i : Fin d) :
     constantCoeff (mulN G k i) = 0 := by
   induction k generalizing i with
@@ -435,6 +569,9 @@ theorem constantCoeff_mulN (G : FGLaw R d) (k : ℕ) (i : Fin d) :
       intro j l; fin_cases j <;> simp [pt, ih]
     exact constantCoeff_subst_eq_zero (hasSubst_ev _ h) (fun p => h p.1 p.2) (G.const i)
 
+/- English proof (translation)
+Simplify using `[constantCoeff_mulN]`.
+-/
 theorem constantCoeff_vec_mulN (G : FGLaw R d) (k : ℕ) (j : Fin 1) (i : Fin d) :
     constantCoeff ((![mulN G k] : Fin 1 → Pt R 1 d) j i) = 0 := by
   simp [constantCoeff_mulN]

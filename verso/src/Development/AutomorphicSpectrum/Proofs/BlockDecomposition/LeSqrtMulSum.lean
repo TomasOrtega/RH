@@ -24,27 +24,44 @@ section Calculus
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.RCalc.contDiffOn_fderiv_field GlobalTheory.CompanionTheory.RCalc.isOpen_GLs hf (GlobalTheory.CompanionTheory.RCalc.mulL X)`.
+-/
 theorem Ld_contDiffOn (X : Mat n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (Ld X f) (GLs n) :=
   GlobalTheory.CompanionTheory.RCalc.contDiffOn_fderiv_field GlobalTheory.CompanionTheory.RCalc.isOpen_GLs hf (GlobalTheory.CompanionTheory.RCalc.mulL X)
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simpa using hf`. Consider the case `cons p w ih => rw [Lw_cons]`. Conclude with `Ld_contDiffOn _ ih`.
+-/
 theorem Lw_contDiffOn (w : List (Bool × Fin n × Fin n)) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (Lw w f) (GLs n) := by
   induction w with
   | nil => simpa using hf
   | cons p w ih => rw [Lw_cons]; exact Ld_contDiffOn _ ih
 
+/- English proof (translation)
+Introduce `g hg`. Establish `: f =ᶠ[nhds g] h` using `Filter.eventuallyEq_of_mem (GlobalTheory.CompanionTheory.RCalc.isOpen_GLs.mem_nhds hg) e`. Simplify using `[Ld, this.fderiv_eq]`.
+-/
 theorem Ld_congr (X : Mat n) {f h : Mat n → V} (e : Set.EqOn f h (GLs n)) : Set.EqOn (Ld X f) (Ld X h) (GLs n) := by
   intro g hg
   have : f =ᶠ[nhds g] h := Filter.eventuallyEq_of_mem (GlobalTheory.CompanionTheory.RCalc.isOpen_GLs.mem_nhds hg) e
   simp [Ld, this.fderiv_eq]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simpa using e`. Consider the case `cons p w ih => rw [Lw_cons, Lw_cons]`. Conclude with `Ld_congr _ ih`.
+-/
 theorem Lw_congr (w : List (Bool × Fin n × Fin n)) {f h : Mat n → V} (e : Set.EqOn f h (GLs n)) :
     Set.EqOn (Lw w f) (Lw w h) (GLs n) := by
   induction w with
   | nil => simpa using e
   | cons p w ih => rw [Lw_cons, Lw_cons]; exact Ld_congr _ ih
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `hf`. Use `⟨R, fun y hy hl => ?_⟩` and prove the remaining obligations. Establish `hc : ContinuousAt (lg : Mat n → ℝ) y` using `GlobalTheory.CompanionTheory.KerUniq.continuousOn_lg.continuousAt (GlobalTheory.CompanionTheory.RCalc.isOpen_GLs.mem_nhds hy)`. Establish `h1 : ∀ᶠ g in nhds y, g ∈ GLs n ∧ R < lg g` using `(GlobalTheory.CompanionTheory.RCalc.isOpen_GLs.eventually_mem hy).and (hc.eventually (lt_mem_nhds hl))`. Establish `h2 : f =ᶠ[nhds y] 0` using `h1.mono fun g hg => hR g hg.1 hg.2`.
+
+Simplify using `[Ld, h2.fderiv_eq]`.
+-/
 theorem Ld_cpt (X : Mat n) {f : Mat n → V} (hf : Cpt f) : Cpt (Ld X f) := by
   obtain ⟨R, hR⟩ := hf
   refine ⟨R, fun y hy hl => ?_⟩
@@ -55,11 +72,17 @@ theorem Ld_cpt (X : Mat n) {f : Mat n → V} (hf : Cpt f) : Cpt (Ld X f) := by
   have h2 : f =ᶠ[nhds y] 0 := h1.mono fun g hg => hR g hg.1 hg.2
   simp [Ld, h2.fderiv_eq]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simpa using hf`. Consider the case `cons p w ih => rw [Lw_cons]`. Conclude with `Ld_cpt _ ih`.
+-/
 theorem Lw_cpt (w : List (Bool × Fin n × Fin n)) {f : Mat n → V} (hf : Cpt f) : Cpt (Lw w f) := by
   induction w with
   | nil => simpa using hf
   | cons p w ih => rw [Lw_cons]; exact Ld_cpt _ ih
 
+/- English proof (translation)
+Simplify using `[Lw, List.foldr_append]`.
+-/
 theorem Lw_append (w w' : List (Bool × Fin n × Fin n)) (f : Mat n → V) : Lw (w ++ w') f = Lw w (Lw w' f) := by
   simp [Lw, List.foldr_append]
 
@@ -70,6 +93,15 @@ def co (p : Bool × Fin n × Fin n) : Mat n →L[ℝ] ℝ :=
     (LinearMap.toContinuousLinearMap
       ((Matrix.entryLinearMap ℝ ℂ p.2.1 p.2.2 : Mat n →ₗ[ℝ] ℂ)))
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply, Fintype.sum_prod_type]`. Simplify using `only [Fintype.sum_bool, Fintype.sum_prod_type]`. Simplify using `[co, bs, Matrix.single_apply, Finset.sum_add_distrib]`. Establish `e : ∀ F : Fin n → Fin n → ℂ, (∑ x, ∑ x_1, if x = a ∧ x_1 = b then F x x_1 else 0) = F a b`.
+
+Introduce `F`. Rewrite using `[Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[hc]`.
+
+Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules. Rewrite using `[e (fun x y => ((Y x y).re : ℂ)), e (fun x y => ((Y x y).im : ℂ) * Complex.I)]`.
+
+Conclude with `Complex.re_add_im _`.
+-/
 theorem sum_co_bs (Y : Mat n) : ∑ p, co p Y • bs p = Y := by
   ext a b
   rw [Matrix.sum_apply, Fintype.sum_prod_type]
@@ -105,18 +137,32 @@ section Classes
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 variable [MeasurableSpace (G n)] {μ : Measure (G n)}
 
+/- English proof (translation)
+Unfold `IsRep at *`. Use `filter_upwards [h] with g hg`. Rewrite using `[hg]`. Conclude with `e (GlobalTheory.CompanionTheory.KerUniq.val_mem g)`.
+-/
 theorem isRep_congr {b b' : Mat n → V} {y : Lp V 2 μ} (e : Set.EqOn b b' (GLs n)) (h : IsRep μ b y) : IsRep μ b' y := by
   unfold IsRep at *
   filter_upwards [h] with g hg
   rw [hg]
   exact e (GlobalTheory.CompanionTheory.KerUniq.val_mem g)
 
+/- English proof (translation)
+The claim follows from `(memLp_congr_ae h).1 (Lp.memLp y)`.
+-/
 theorem isRep_memLp {b : Mat n → V} {y : Lp V 2 μ} (h : IsRep μ b y) : MemLp (fun g : G n => b g.val) 2 μ :=
   (memLp_congr_ae h).1 (Lp.memLp y)
 
+/- English proof (translation)
+The claim follows from `Lp.ext ((toL_coe (isRep_memLp h)).trans h.symm)`.
+-/
 theorem isRep_toL {b : Mat n → V} {y : Lp V 2 μ} (h : IsRep μ b y) : toL μ b = y :=
   Lp.ext ((toL_coe (isRep_memLp h)).trans h.symm)
 
+/- English proof (translation)
+Establish `hm : TendstoInMeasure μ (fun j => (Y j : G n → V)) Filter.atTop (Y' : G n → V)` using `tendstoInMeasure_of_tendsto_Lp hY`. Take `⟨ns, hmono, hns⟩` from `hm.exists_seq_tendsto_ae`. Establish `hall : ∀ᵐ g ∂μ, ∀ j, (Y j : G n → V) g = h j g.val` using `ae_all_iff.2 hr`. Unfold `IsRep`. Use `filter_upwards [hns, hall] with g h1 h2`.
+
+Establish `h3` using `(hp g.val (GlobalTheory.CompanionTheory.KerUniq.val_mem g)).comp hmono.tendsto_atTop`. Use `tendsto_nhds_unique h1 (h3.congr fun j => (h2 (ns j)).symm)` and prove the remaining obligations.
+-/
 theorem isRep_limit {Y : ℕ → Lp V 2 μ} {Y' : Lp V 2 μ} {h : ℕ → Mat n → V} {h' : Mat n → V}
     (hY : Filter.Tendsto Y Filter.atTop (nhds Y')) (hr : ∀ j, IsRep μ (h j) (Y j))
     (hp : ∀ x ∈ GLs n, Filter.Tendsto (fun j => h j x) Filter.atTop (nhds (h' x))) : IsRep μ h' Y' := by
@@ -131,6 +177,13 @@ theorem isRep_limit {Y : ℕ → Lp V 2 μ} {Y' : Lp V 2 μ} {h : ℕ → Mat n 
 
 end Classes
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ ∑ i ∈ S, a i` using `Finset.sum_nonneg fun i _ => ha i`. Establish `h1 : ∑ i ∈ S, a i ^ 2 ≤ (∑ i ∈ S, a i) ^ 2`. Rewrite using `[sq (∑ i ∈ S, a i), Finset.sum_mul]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Rewrite using `[sq]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (Finset.single_le_sum (fun j _ => ha j) hi) (ha i)`. Establish `h2 : t ^ 2 ≤ max C 0 * (∑ i ∈ S, a i) ^ 2`. Establish `h3 : 0 ≤ ∑ i ∈ S, a i ^ 2` using `Finset.sum_nonneg fun i _ => sq_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (Real.sqrt (max C 0) * ∑ i ∈ S, a i) ^ 2 = max C 0 * (∑ i ∈ S, a i) ^ 2`.
+
+Rewrite using `[mul_pow, Real.sq_sqrt (le_max_right _ _)]`. Conclude with `abs_le_of_sq_le_sq' (h4 ▸ h2) (mul_nonneg (Real.sqrt_nonneg _) h0) |>.2`.
+-/
 theorem le_sqrt_mul_sum {ι : Type} {S : Finset ι} {a : ι → ℝ} (ha : ∀ i, 0 ≤ a i) {t C : ℝ} (ht : 0 ≤ t)
     (h : t ^ 2 ≤ C * ∑ i ∈ S, a i ^ 2) : t ≤ Real.sqrt (max C 0) * ∑ i ∈ S, a i := by
   have h0 : 0 ≤ ∑ i ∈ S, a i := Finset.sum_nonneg fun i _ => ha i

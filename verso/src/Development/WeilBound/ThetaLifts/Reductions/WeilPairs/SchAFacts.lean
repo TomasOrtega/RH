@@ -22,6 +22,15 @@ open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.Modulus
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `⟨GlobalTheory.ThKOp.continuous_of_mem_schA hΦ, ?_, fun b => ?_⟩` and prove the remaining obligations. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F haveI : BorelSpace (AF F) := ⟨rfl⟩`. Establish `hb : (MeasurableSpace.pi : MeasurableSpace (Fin N → AF F)) = borel _` using `BorelSpace.measurable_eq`. Establish `key : ∀ (m : MeasurableSpace (Fin N → AF F)), m = borel _ → ∀ μ : @Measure _ m, @Measure.IsAddHaarMeasure _ _ _ m μ → Integrable (fun x => Φ x * starRingEnd ℂ (Φ x)) μ`. Introduce and unpack `m rfl μ hμ`.
+
+Establish `hm` using `GlobalTheory.WeilM.schA_memLp_two F (Fin N) μ hμ Φ hΦ`. Establish `hi` using `(hm.integrable_norm_pow two_ne_zero).ofReal (𝕜 := ℂ)`. Use `hi.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Conclude with `key _ hb μN hμN`. Establish `h` using `GlobalTheory.WeylFour.SchrKeep.schr_mem_schA F B.ψ hB.std (Fin N) (0, b) Φ hΦ`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Simplify using `[GlobalTheory.WeilM.schr]`.
+-/
 theorem schA_facts {B : Base F E} {σ : E →ₐ[F] E} (hB : B.IsGood σ) (N : ℕ) (μN : Measure (Fin N → AF F))
     (hμN : μN.IsAddHaarMeasure) (Φ : (Fin N → AF F) → ℂ) (hΦ : Φ ∈ schA F (Fin N)) :
     Continuous Φ ∧ Integrable (fun x => Φ x * starRingEnd ℂ (Φ x)) μN ∧

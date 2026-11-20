@@ -1,5 +1,18 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `A _ n G`. Rewrite using `[← Fintype.sum_prod_type']`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun p : Fin (n + 3) × Fin (n + 2) => (p.1 : ℕ) ≤ (p.2 : ℕ)), add_eq_zero_iff_eq_neg, ← Finset.sum_neg_distrib]`. Use `Finset.sum_bij (fun p hp => (p.2.succ, p.1.castLT (lt_of_le_of_lt (Finset.mem_filter.mp hp).2 p.2.isLt))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ hp`.
+
+Establish `h` using `(Finset.mem_filter.mp hp).2`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.val_succ, Fin.val_castLT] at h ⊢`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨i, j⟩ _ ⟨i', j'⟩ _ h`. Simplify using `only [Prod.mk.injEq, Fin.ext_iff, Fin.val_succ, Fin.val_castLT] at h ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨i, j⟩ hp`. Establish `h` using `(Finset.mem_filter.mp hp).2`. Establish `hi` using `i.isLt`. Simplify using `only [not_le] at h`.
+
+Use `⟨(j.castSucc, ⟨i.val - 1, by omega⟩), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.val_castSucc]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Prod.mk.injEq, Fin.ext_iff, Fin.val_succ, Fin.val_castLT, Fin.val_castSucc, and_true]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce and unpack `⟨i, j⟩ hp`. Establish `h : (i : ℕ) ≤ (j : ℕ)` using `(Finset.mem_filter.mp hp).2`. Establish `hi : (i : ℕ) < n + 2` using `lt_of_le_of_lt h j.isLt`. Establish `key` using `SimplexCategory.δ_comp_δ (i := i.castLT hi) (j := j) h`. Rewrite `key` using `[Fin.castSucc_castLT]`.
+
+Simplify using `only`. Rewrite using `[key, ← neg_smul]`. Use `congr 1`. Simplify using `only [Fin.val_succ, Fin.val_castLT]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Reformulated.B.AlternatingSumZero.alt_sum_zero.{u_1} :
     ∀ {A : Type u_1} [inst : AddCommGroup A] {n : ℕ}
       (G : ({ len := n : SimplexCategory } ⟶ { len := n + (2 : ℕ) : SimplexCategory }) → A),

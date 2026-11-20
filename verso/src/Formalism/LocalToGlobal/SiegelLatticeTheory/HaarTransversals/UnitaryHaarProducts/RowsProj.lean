@@ -25,6 +25,19 @@ def repHom {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsURepOn 
   map_one' := (isURep_of_on hU).1
   map_mul' a b := ((isURep_of_on hU).2.1 a b).trans (ContinuousLinearMap.mul_def _ _).symm
 
+/- English proof (translation)
+Establish `hd : (d : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hF.1.ne'`. Establish `hww : ⟪w, w⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, hw]`. Simplify using the standard rewrite rules. Establish `hpt : ∀ g : Formalism.REAL.UJ ε, phLoc (ε` using `ε) σ w d g * phLoc (ε := ε) σ w d (g⁻¹ * y) = ((d : ℂ) * d) * (coefOn (ε := ε) σ w (σ (umat y) w) g * star (coefOn (ε := ε) σ w w g)) := by`.
+
+Introduce `g`. Establish `hsplit : σ (umat (g⁻¹ * y)) w = σ (umat g⁻¹) (σ (umat y) w)`. Rewrite using `[show umat (g⁻¹ * y) = umat g⁻¹ * umat y from rfl, hU.1.2 _ (g⁻¹).2 _ y.2, ContinuousLinearMap.comp_apply]`. Establish `hmul : umat g * umat g⁻¹ = 1` using `by simp [umat]`. Establish `key : ∀ x, σ (umat g) (σ (umat g⁻¹) x) = x`.
+
+Introduce `x`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hU.1.2 _ g.2 _ (g⁻¹).2, hmul, hU.1.1, ContinuousLinearMap.one_apply]`. Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ (umat g)).toLinearMap, hU.2.1 _ g.2⟩`. Establish `hin : ⟪w, σ (umat (g⁻¹ * y)) w⟫_ℂ = ⟪σ (umat g) w, σ (umat y) w⟫_ℂ`. Rewrite using `[hsplit]`.
+
+Establish `h1 : ⟪L w, L (σ (umat g⁻¹) (σ (umat y) w))⟫_ℂ = ⟪w, σ (umat g⁻¹) (σ (umat y) w)⟫_ℂ` using `L.inner_map_map _ _`. Establish `h2 : L (σ (umat g⁻¹) (σ (umat y) w)) = σ (umat y) w` using `key _`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`. Use `show (d : ℂ) * star ⟪w, σ (umat g) w⟫_ℂ * ((d : ℂ) * star ⟪w, σ (umat (g⁻¹ * y)) w⟫_ℂ) = ((d : ℂ) * d) * (⟪σ (umat y) w, σ (umat g) w⟫_ℂ * star ⟪w, σ (umat g) w⟫_ℂ)`.
+
+Rewrite using `[hin, ← inner_conj_symm (σ (umat y) w) (σ (umat g) w), starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), integral_const_mul, (hF.2 w (σ (umat y) w) w w).2, hww, one_mul]`. Use `show (d : ℂ) * d * (⟪σ (umat y) w, w⟫_ℂ / d) = (d : ℂ) * star ⟪w, σ (umat y) w⟫_ℂ`. Rewrite using `[← inner_conj_symm (σ (umat y) w) w, starRingEnd_apply]`.
+
+Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+-/
 theorem phLoc_conv {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsURepOn (UJset ε) σ) (w : H) (d : ℝ)
     (hF : IsFdeg (Formalism.REAL.muG ε) σ d) (hw : ‖w‖ = 1) (y : Formalism.REAL.UJ ε) :
     ∫ g, phLoc (ε := ε) σ w d g * phLoc (ε := ε) σ w d (g⁻¹ * y) ∂(Formalism.REAL.muG ε) = phLoc (ε := ε) σ w d y := by
@@ -71,6 +84,23 @@ variable {G1 G2 : Type} [Group G1] [Group G2] [MeasurableSpace G1] [MeasurableSp
   (μ1 : Measure G1) (μ2 : Measure G2) [SFinite μ1] [SFinite μ2]
   {Hp : Type} [NormedAddCommGroup Hp] [InnerProductSpace ℂ Hp] [CompleteSpace Hp]
 
+/- English proof (translation)
+Establish `hR1 : ∀ z, R 1 z = z`. Introduce `z`. Establish `h1 : R 1 (R 1 z) = R 1 z`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul, one_mul]`. Establish `h2 : ‖R 1 (R 1 z - z)‖ = ‖R 1 z - z‖` using `hU 1 _`.
+
+Rewrite `h2` using `[map_sub, h1, sub_self, norm_zero]`. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 h2.symm)`. Establish `hinn : ∀ g a b, ⟪R g a, R g b⟫_ℂ = ⟪a, b⟫_ℂ`. Introduce `g a b`. Set `L : Hp →ₗᵢ[ℂ] Hp` to `⟨(R g).toLinearMap, hU g⟩`.
+
+Conclude with `L.inner_map_map a b`. Establish `hadj : ∀ g a b, ⟪a, R g b⟫_ℂ = ⟪R g⁻¹ a, b⟫_ℂ`. Introduce `g a b`. Rewrite using `[← hinn g⁻¹ a (R g b), ← ContinuousLinearMap.comp_apply, ← hmul, inv_mul_cancel, hR1]`. Establish `hbd : ∀ p, ‖⟪x, R p y⟫_ℂ‖ ≤ ‖x‖ * ‖y‖` using `fun p => (norm_inner_le_norm _ _).trans (le_of_eq (by rw [hU]))`.
+
+Establish `hint : Integrable (fun p : G1 × G2 => (φ1 p.1 * φ2 p.2) * ⟪x, R p y⟫_ℂ) (μ1.prod μ2)`. Use `(hφ.const_mul ((‖x‖ * ‖y‖ : ℝ) : ℂ)).mono (hφ.aestronglyMeasurable.mul (hmeas x y)) (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_norm]`. Use polynomial arithmetic with `[hbd p, norm_nonneg (φ1 p.1), norm_nonneg (φ2 p.2), mul_nonneg (norm_nonneg (φ1 p.1)) (norm_nonneg (φ2 p.2))]`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[integral_prod _ hint, hP1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show ∫ k, φ1 g * φ2 k * ⟪x, R (g, k) y⟫_ℂ ∂μ2 = φ1 g * ⟪x, R (g, 1) (P2 y)⟫_ℂ`. Rewrite using `[hadj, hP2, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+
+Use `show φ1 g * φ2 k * ⟪x, R (g, k) y⟫_ℂ = φ1 g * (φ2 k * ⟪R (g, 1)⁻¹ x, R (1, k) y⟫_ℂ)`. Rewrite using `[← hadj, ← ContinuousLinearMap.comp_apply, ← hmul]`. Simplify using `only [Prod.mk_mul_mk, mul_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_prod_symm _ hint, hP2]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show ∫ g, φ1 g * φ2 k * ⟪x, R (g, k) y⟫_ℂ ∂μ1 = φ2 k * ⟪x, R (1, k) (P1 y)⟫_ℂ`. Rewrite using `[hadj, hP1, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show φ1 g * φ2 k * ⟪x, R (g, k) y⟫_ℂ = φ2 k * (φ1 g * ⟪R (1, k)⁻¹ x, R (g, 1) y⟫_ℂ)`.
+
+Rewrite using `[← hadj, ← ContinuousLinearMap.comp_apply, ← hmul]`. Simplify using `only [Prod.mk_mul_mk, mul_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_op_eq (R : G1 × G2 → (Hp →L[ℂ] Hp)) (hmul : ∀ g h, R (g * h) = R g ∘L R h)
     (hU : ∀ g x, ‖R g x‖ = ‖x‖)
     (hmeas : ∀ x y : Hp, AEStronglyMeasurable (fun g => ⟪x, R g y⟫_ℂ) (μ1.prod μ2))
@@ -130,6 +160,11 @@ variable (I : AutInst) {H : InfinitePlace I.F → Type} [∀ v, NormedAddCommGro
   [∀ v, InnerProductSpace ℂ (H v)] {σ : ∀ v, Matrix (Fin I.n) (Fin I.n) ℂ → (H v →L[ℂ] H v)}
   {dv : InfinitePlace I.F → ℝ} {w : ∀ v, H v}
 
+/- English proof (translation)
+Establish `heq : phInf I σ w dv = fun g => ∏ v, phLoc (ε` using `I.ε v) (σ v) (w v) (dv v) (g v) := by`. Use function extensionality and compare the values at `g`. Use `show ((∏ v, dv v : ℝ) : ℂ) * star (∏ v, ⟪w v, σ v (umat (g v)) (w v)⟫_ℂ) = ∏ v, ((dv v : ℂ) * star ⟪w v, σ v (umat (g v)) (w v)⟫_ℂ)`. Rewrite using `[Finset.prod_mul_distrib, Complex.ofReal_prod, star_prod]`. Rewrite using `[heq]`.
+
+Conclude with `Integrable.fintype_prod_dep (f := fun v => phLoc (ε := I.ε v) (σ v) (w v) (dv v)) (μ := fun v => Formalism.REAL.muG (I.ε v)) hL`.
+-/
 theorem phInf_int (hL : ∀ v, Integrable (phLoc (ε := I.ε v) (σ v) (w v) (dv v)) (Formalism.REAL.muG (I.ε v))) :
     Integrable (phInf I σ w dv) (muInf I) := by
   have heq : phInf I σ w dv = fun g => ∏ v, phLoc (ε := I.ε v) (σ v) (w v) (dv v) (g v) := by
@@ -141,6 +176,13 @@ theorem phInf_int (hL : ∀ v, Integrable (phLoc (ε := I.ε v) (σ v) (w v) (dv
   exact Integrable.fintype_prod_dep (f := fun v => phLoc (ε := I.ε v) (σ v) (w v) (dv v))
     (μ := fun v => Formalism.REAL.muG (I.ε v)) hL
 
+/- English proof (translation)
+Establish `heq : phInf I σ w dv = fun g => ∏ v, phLoc (ε` using `I.ε v) (σ v) (w v) (dv v) (g v) := by`. Use function extensionality and compare the values at `g`. Use `show ((∏ v, dv v : ℝ) : ℂ) * star (∏ v, ⟪w v, σ v (umat (g v)) (w v)⟫_ℂ) = ∏ v, ((dv v : ℂ) * star ⟪w v, σ v (umat (g v)) (w v)⟫_ℂ)`. Rewrite using `[Finset.prod_mul_distrib, Complex.ofReal_prod, star_prod]`. Establish `hpt : ∀ g : I.Ginf, phInf I σ w dv g * phInf I σ w dv (g⁻¹ * y) = ∏ v, (phLoc (ε` using `I.ε v) (σ v) (w v) (dv v) (g v) * phLoc (ε := I.ε v) (σ v) (w v) (dv v) ((g v)⁻¹ * y v)) := by`.
+
+Introduce `g`. Rewrite using `[heq]`. Simplify using `only [← Finset.prod_mul_distrib, Pi.mul_apply, Pi.inv_apply]`. Establish `hI` using `integral_fintype_prod_eq_prod (ι := InfinitePlace I.F) (f := fun v (h : Formalism.REAL.UJ (I.ε v)) => phLoc (ε := I.ε v) (σ v) (w v) (dv v) h * phLoc (ε := I.ε v) (σ v) (w v) (dv v) (h⁻¹ * y v)) (μ := fun v => Formalism.REAL.muG (I.ε v))`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), hI, heq]`.
+
+Conclude with `Finset.prod_congr rfl fun v _ => phLoc_conv (hU v) (w v) (dv v) (hF v) (hw v) (y v)`.
+-/
 theorem phInf_conv (hU : ∀ v, IsURepOn (UJset (I.ε v)) (σ v)) (hF : ∀ v, IsFdeg (Formalism.REAL.muG (I.ε v)) (σ v) (dv v))
     (hw : ∀ v, ‖w v‖ = 1) (y : I.Ginf) :
     ∫ g, phInf I σ w dv g * phInf I σ w dv (g⁻¹ * y) ∂(muInf I) = phInf I σ w dv y := by

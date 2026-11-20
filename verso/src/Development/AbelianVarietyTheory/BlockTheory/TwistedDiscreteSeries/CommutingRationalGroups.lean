@@ -25,6 +25,9 @@ def IsAlgV (i : Fin D.R.m) (t : T) (c : G → ℂ) (κ : G → (levV R i t).Q) (
 def algW (i : Fin D.R.m) (c : G → ℂ) : MMap (R.MW i (sg0 D A)) →ₗ[ℂ] MMap (R.MW i (sg0 D A)) :=
   postOn _ (gaL (Wc D i) (R.βW i) (R.datWp i R.triv) R.eG c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algW_eC (i : Fin D.R.m) :
     algW R i (RealDat.eC (A := A) (sg0 D A)) = postOn _ (R.eWf i (sg0 D A)) := rfl
 

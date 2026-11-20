@@ -10,6 +10,15 @@ noncomputable section
 
 namespace Formalism.RepresentationBoundsCohomology.FIN
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ G _ _ D M _ _ ρM u hu hopen`. Establish `hdisc : DiscreteTopology (VT ⧸ D.T)` using `QuotientAddGroup.discreteTopology (N := D.T.toAddSubgroup) hopen`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Proceed by induction on `y using Submodule.Quotient.induction_on with`.
+
+Consider the case `_ c`. Use `⟨transportCocycles (MulEquiv.refl G) u ρM D.ρA hu ⟨c.1, c.2.2⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : IsLocallyConstant c.1` using `(IsLocallyConstant.iff_continuous _).2 c.2.1`. Conclude with `h1.comp u.symm`. Introduce and unpack `_ ⟨c, hc, rfl⟩`.
+
+Establish `hc' : IsLocallyConstant (c : G → M)` using `hc`. Establish `h3 : (fun g : G => u ((c : G → M) g)) ∈ Z1 D.ρA`. Use `⟨(hc'.comp u).continuous, fun a b => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[c.2, map_add, hu]`.
+
+Use `⟨Submodule.Quotient.mk ⟨_, h3⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (Submodule.mkQ _) (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.symm (u ((c : G → M) g)) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+-/
 theorem kRowRange : StatKRowRange := by
   intro O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ G _ _ D M _ _ ρM u hu hopen
   have hdisc : DiscreteTopology (VT ⧸ D.T) :=
@@ -32,6 +41,9 @@ theorem kRowRange : StatKRowRange := by
     change u.symm (u ((c : G → M) g)) = _
     rw [LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `O G M _ _ _ _ _ ρ Dw`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Establish `hc' : IsLocallyConstant (c : G → M)` using `hc`. Use `⟨restrictCocycles1 ρ Dw c, ?_, rfl⟩` and prove the remaining obligations. Conclude with `hc'.comp_continuous continuous_subtype_val`.
+-/
 theorem resLC : StatResLC := by
   intro O G M _ _ _ _ _ ρ Dw
   rintro _ ⟨c, hc, rfl⟩
@@ -47,16 +59,35 @@ variable {O Γ VT VT' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
     [AddCommGroup VT] [Module O VT] [TopologicalSpace VT] [IsTopologicalAddGroup VT] [ContinuousSMul O VT]
     [AddCommGroup VT'] [Module O VT'] [TopologicalSpace VT'] [IsTopologicalAddGroup VT'] [ContinuousSMul O VT']
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem clsRow_of_mem (D : LatData O Γ VT VT') {T₂ : Type} [AddCommGroup T₂] [Module O T₂] (v : T₂ ≃ₗ[O] D.T')
     (f : Γ → T₂) (h : (fun g => v (f g)) ∈ Z1 D.ρTl') : clsRow D v f = Submodule.Quotient.mk ⟨_, h⟩ :=
   dif_pos h
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem clsRowV_of_mem (D : LatData O Γ VT VT') {V₂ : Type} [AddCommGroup V₂] [Module O V₂] (w : V₂ ≃ₗ[O] VT')
     (f : Γ → V₂) (h : (fun g => w (f g)) ∈ Z1 D.ρT') : clsRowV D w f = Submodule.Quotient.mk ⟨_, h⟩ :=
   dif_pos h
 
 end
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ G _ _ D T₂ _ _ ρ₂ v hv Fs`. Use `⟨fun a ha b hb => ?_, fun c a ha => ?_, fun a ha => ?_, fun x _ => ?_⟩` and prove the remaining obligations. Establish `hab : a + b ∈ zcRow D v` using `add_mem ha hb`. Rewrite using `[clsRow_of_mem D v _ hab, clsRow_of_mem D v _ ha, clsRow_of_mem D v _ hb, ← Submodule.Quotient.mk_add]`. Conclude with `congrArg _ (Subtype.ext (funext fun g => map_add v _ _))`.
+
+Establish `hca : c • a ∈ zcRow D v` using `Submodule.smul_mem _ c ha`. Rewrite using `[clsRow_of_mem D v _ hca, clsRow_of_mem D v _ ha, ← Submodule.Quotient.mk_smul]`. Conclude with `congrArg _ (Subtype.ext (funext fun g => map_smul v _ _))`. Rewrite using `[clsRow_of_mem D v _ ha, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 h`. Use `⟨v.symm m, funext fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : v (a g) = D.ρTl' g m - m` using `hm g`. Apply `v.injective` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `v (ρ₂ g (v.symm m) - v.symm m) = v (a g)`. Rewrite using `[map_sub, hv, LinearEquiv.apply_symm_apply, h1]`. Introduce and unpack `⟨m, hm⟩`. Use `(mem_coboundaries1 _ _).2 ⟨v m, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v (a g) = _`.
+
+Rewrite using `[← hm]`. Express the relevant statement in the definitionally equal form `v (ρ₂ g m - m) = _`. Rewrite using `[map_sub, hv]`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `_ c`.
+
+Establish `h : (fun g => v (v.symm (c.1 g))) ∈ Z1 D.ρTl'`. Simplify using `using c.2`. Use `⟨fun g => v.symm (c.1 g), h, ?_⟩` and prove the remaining obligations. Rewrite using `[clsRow_of_mem D v _ h]`. Conclude with `congrArg _ (Subtype.ext (funext fun g => (v.apply_symm_apply _).symm))`.
+-/
 theorem classMapReal : StatClassMapReal := by
   intro O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ G _ _ D T₂ _ _ ρ₂ v hv Fs
   refine ⟨fun a ha b hb => ?_, fun c a ha => ?_, fun a ha => ?_, fun x _ => ?_⟩
@@ -89,6 +120,15 @@ theorem classMapReal : StatClassMapReal := by
       rw [clsRow_of_mem D v _ h]
       exact congrArg _ (Subtype.ext (funext fun g => (v.apply_symm_apply _).symm))
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ G _ _ D T₂ V₂ _ _ _ _ ρV iV v w hw hwe a ha`. Establish `ha' : (fun g => v (a g)) ∈ Z1 D.ρTl'` using `ha`. Establish `h : (fun g => w (iV (a g))) ∈ Z1 D.ρT'`. Use `⟨?_, fun g k => ?_⟩` and prove the remaining obligations. Simplify using `only [hw]`.
+
+Conclude with `continuous_subtype_val.comp ha'.1`. Simplify using `only [hw]`. Use `congrArg Subtype.val (ha'.2 g k)` as an intermediate fact. Conclude with `this`. Rewrite using `[clsRow_of_mem D v _ ha, clsRowV_of_mem D w _ h]`.
+
+Use `⟨?_, fun h0 => ?_⟩` and prove the remaining obligations. Conclude with `congrArg _ (Subtype.ext (funext fun g => (hw (a g)).symm))`. Rewrite `h0` using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 h0`. Use `⟨w.symm m, funext fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : w (iV (a g)) = D.ρT' g m - m` using `hm g`. Apply `w.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `w (ρV g (w.symm m) - w.symm m) = _`. Rewrite using `[map_sub, hwe, LinearEquiv.apply_symm_apply, h1]`.
+-/
 theorem clsVReal : StatClsVReal := by
   intro O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ G _ _ D T₂ V₂ _ _ _ _ ρV iV v w hw hwe a ha
   have ha' : (fun g => v (a g)) ∈ Z1 D.ρTl' := ha

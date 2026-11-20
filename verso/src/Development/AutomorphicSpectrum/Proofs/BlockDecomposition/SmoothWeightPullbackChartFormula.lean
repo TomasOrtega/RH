@@ -15,6 +15,19 @@ namespace GlobalTheory.CompanionTheory.MixZ.PullDens
 
 open Filter Topology in
 
+/- English proof (translation)
+Introduce `k _ X q σ D T _ A F hF hH B φ h c j u hu hsrc`. Establish `hcont : ContinuousAt (F ∘ (A.chart j).symm) u` using `hF.continuousAt.comp ((A.chart j).continuousAt_symm hu)`. Establish `hN : ∀ᶠ w in 𝓝 u, F ((A.chart j).symm w) ∈ c.e.source` using `hcont.eventually (c.e.open_source.mem_nhds hsrc)`. Establish `hG : AnalyticAt ℂ (c.finChart ∘ F ∘ (A.chart j).symm) u`. Use `analyticAt_pi_iff.2 fun a => ?_` and prove the remaining obligations.
+
+Use `(hH c.U (c.x a) j u ⟨hu, c.source_subset hsrc⟩).congr ?_` and prove the remaining obligations. Use `filter_upwards [hN] with w hw`. Conclude with `(c.finChart_eq_ev hw a).symm`. Use `⟨hG, ?_⟩` and prove the remaining obligations. Use `set G := c.finChart ∘ F ∘ (A.chart j).symm with hGdef`.
+
+Use `set y₀ := F ((A.chart j).symm u) with hy₀`. Establish `hGu : G u = c.finChart y₀` using `rfl`. Establish `hsy : c.finChart.symm (G u) = y₀` using `c.finChart.left_inv hsrc`. Establish `hz : G u ∈ c.finChart.target` using `c.finChart.map_source hsrc`. Establish `hma` using `h.maDens_eq c hz`.
+
+Rewrite `hma` using `[hsy]`. Establish `hr : c.e y₀ = GlobalTheory.FinChart.toV D (G u)` using `rfl`. Establish `hd` using `h.contDiffAt c hsrc (mem_pick φ.isLB y₀)`. Rewrite `hd` using `[hr]`. Establish `hψ : ContDiffAt ℝ 2 (fun w => φ.locPot.φ y₀ (c.finChart.symm w)) (G u)` using `(hd.comp (G u) (GlobalTheory.FinChart.toV D).contDiff.contDiffAt).div_const 2`.
+
+Establish `hcomp` using `ReciprocityTheory.AnForm.A.maDens_comp (fun _ w => φ.locPot.φ y₀ (c.finChart.symm w)) G u hG (fun _ => hψ)`. Rewrite `hcomp` using `[ReciprocityTheory.AnForm.A.det_jacC, Complex.normSq_eq_norm_sq, hma]`. Rewrite using `[mul_comm, ← hcomp]`. Unfold `locDens`. Use `maDens_congr_hessC _ _ _ fun _ => hessCGerm _ _ _ ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hN] with w hw`. Simplify using `only [LocPot.pullback, Function.comp_apply, hGdef]`. Rewrite using `[c.finChart.left_inv hw]`.
+-/
 theorem locDens_pullback_eq : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {q : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ} {T : Type}
     [TopologicalSpace T] (A : FinHolAtlas D T) (F : T → GlobalTheory.CxPts q σ) (hF : Continuous F),
     (∀ (W : X.Opens) (f : Γ(X, W)), A.HoloOn (F ⁻¹' ptsIn q σ W) (ev q σ W f ∘ F)) →

@@ -17,26 +17,43 @@ section B
 variable (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
   (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (P : GL (IdxD D) (FpX X p))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cV_crd (s : IdxD D) :
     ((P⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ cV X u p θ s =
       crd1 X p θ P (ratV (F := X.B.I.F) (FpX X p) (vecAt (frameOf X u) s)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem yV_crd (i : Fin D.R.k) :
     ((P⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ yV X hb u p θ i =
       crd1 X p θ P (adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i)) := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_transpose, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`.
+-/
 theorem dot_PT_Pinv (a w : IdxD D → FpX X p) :
     ((P : Matrix (IdxD D) (IdxD D) (FpX X p))ᵀ *ᵥ a) ⬝ᵥ
       (((P⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ w) = a ⬝ᵥ w := by
   rw [Matrix.mulVec_transpose, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel,
     Units.val_one, Matrix.vecMul_one]
 
+/- English proof (translation)
+Unfold `crd2 aV`. Conclude with `(dot_PT_Pinv X p P _ _).symm`.
+-/
 theorem aV_dot (s : IdxD D) (w : IdxD D → FpX X p) :
     aV X u p θ s ⬝ᵥ w = crd2 X p θ P (ratV (F := X.B.I.F) (FpX X p) (vecAt (frameOf X u) s)) ⬝ᵥ
       (((P⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ w) := by
   unfold crd2 aV
   exact (dot_PT_Pinv X p P _ _).symm
 
+/- English proof (translation)
+Establish `hyi : ∀ j, crd1 X p θ P (adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i)) j ∈ OvA X p` using `fun j => ((latCrd_of X p θ P hL _).1 (adq_ref_lat X hb u p (wI i))).1 j`. Establish `h1` using `adq_dotG X p (a := crd2 X p θ P V) (a' := crd2 X p θ P (adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 v0)) (b := crd1 X p θ P (adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i))) (b' := crd1 X p θ P (adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i))) (fun j => ((latCrd_of X p θ P hL …`. Rewrite `h1` using `[adq_pairM X hb u p θ P hθ]`. Take `⟨z, hz⟩` from `h0`. Rewrite `h1` using `[hz]`.
+
+Establish `h3` using `inG_add h1 (inG_g_mul (X := X) (p := p) z)`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem ay_gen (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex₂ X p P)) (i : Fin D.R.k)
     (V : Fin X.B.I.n → TpX X p) (v0 : Formalism.L2.SG.HidaSetting.VA X.B.I)
     (hw : adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 v0 ∈
@@ -59,6 +76,11 @@ theorem ay_gen (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex₂ X p
   have h3 := inG_add h1 (inG_g_mul (X := X) (p := p) z)
   rwa [sub_add_cancel] at h3
 
+/- English proof (translation)
+Rewrite using `[aV_dot X u p θ P, yV_crd X hb u p θ P]`. Break down `s with a | ((j | v) | c)` into its components or cases. Conclude with `ay_gen X hb u p θ P hθ hL i _ (X.e0 a) (adq_ref_lat X hb u p (Sum.inl a)) (adq_e_cong X hb u p a) (fin_dir X p θ P hθ hL _ _ ((X.weightVectorsIntegral i).2.2 a).1)`. Conclude with `absurd ⟨j, rfl⟩ hs`. Conclude with `ay_gen X hb u p θ P hθ hL i _ X.z0 (adq_ref_lat X hb u p zI) (adq_z_cong X hb u p) (fin_dir X p θ P hθ hL _ _ (X.weightVectorsIntegral i).1)`.
+
+Conclude with `ay_gen X hb u p θ P hθ hL i _ (X.f0 (Fin.rev c)) (adq_refR_lat X hb u p (Sum.inl (Fin.rev c))) (adq_f_cong X hb u p (Fin.rev c)) (fin_dir X p θ P hθ hL _ _ ((X.weightVectorsIntegral i).2.2 (Fin.rev c)).2.1)`.
+-/
 theorem ay_inG (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex₂ X p P)) (s : IdxD D) (hs : ¬ IsW s)
     (i : Fin D.R.k) : InG X p (aV X u p θ s ⬝ᵥ yV X hb u p θ i) := by
   rw [aV_dot X u p θ P, yV_crd X hb u p θ P]
@@ -71,6 +93,11 @@ theorem ay_inG (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex₂ X p
   · exact ay_gen X hb u p θ P hθ hL i _ (X.f0 (Fin.rev c)) (adq_refR_lat X hb u p (Sum.inl (Fin.rev c)))
       (adq_f_cong X hb u p (Fin.rev c)) (fin_dir X p θ P hθ hL _ _ ((X.weightVectorsIntegral i).2.2 (Fin.rev c)).2.1)
 
+/- English proof (translation)
+Establish `h : ∀ (s : IdxD D) (i : Fin D.R.k), ∃ y : OvA X p, ¬ IsW s → aV X u p θ s ⬝ᵥ yV X hb u p θ i = ((gOf p : ℕ) : FpX X p) * (y : FpX X p)`. Introduce `s i`. Distinguish the cases in `hs : IsW s`. Conclude with `⟨0, fun h => absurd hs h⟩`. Take `⟨y, hy⟩` from `ay_inG X hb u p θ P hθ hL s hs i`.
+
+Conclude with `⟨y, fun _ => hy⟩`. Use `choose o ho using h`. Conclude with `⟨fun s i => (o s i : FpX X p), ho, fun s i => (o s i).2⟩`.
+-/
 theorem adaptIn_ay (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex₂ X p P)) :
     ∃ o : IdxD D → Fin D.R.k → FpX X p,
       (∀ s i, ¬ IsW s → aV X u p θ s ⬝ᵥ yV X hb u p θ i = ((gOf p : ℕ) : FpX X p) * o s i) ∧

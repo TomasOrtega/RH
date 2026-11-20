@@ -12,6 +12,23 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 namespace GlobalTheory.FullRankCoinv
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n d ν hnd hν Ψ₁ hΨ₁ Ψ₂ hΨ₂`. Take `⟨U, hU, hinv⟩` from `GlobalTheory.FullRankCoinv.sb_right_invariant k n d Ψ₁ hΨ₁.1`. Establish `hF : ∀ (Y : Matrix (Fin n) (Fin d) k), ∀ u ∈ U, GlobalTheory.SplitFlip.smallF (GlobalTheory.SplitFlip.haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Ψ₁ (Y * u.val) = GlobalTheory.SplitFlip.smallF (GlobalTheory.SplitFlip.haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Ψ₁ Y`. Introduce `Y u hu`. Simplify using `only [GlobalTheory.SplitFlip.smallF]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[← Matrix.mul_assoc, hinv u hu]`. Use `⟨⟨?_, ?_⟩, fun Y hY => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+
+Introduce `Y`. Establish `h2` using `hΨ₂.1.1.eventually_eq Y`. Distinguish the cases in `hY : Y.rank = n`. Take `⟨h, rfl⟩` from `GlobalTheory.FullRankCoinv.exists_eq_normal_form_mul_of_rank_eq k n d hnd Y hY set V : Set (GL (Fin d) k) := {u | h⁻¹ * u * h ∈ U} with hVdef`. Establish `hV : V ∈ 𝓝 1`.
+
+Establish `hc : Continuous fun u : GL (Fin d) k => h⁻¹ * u * h` using `(continuous_const.mul continuous_id).mul continuous_const`. Use `hc.tendsto 1` as an intermediate fact. Simplify using `only [mul_one, inv_mul_cancel] at this`. Conclude with `this hU`. Establish `ht : Filter.Tendsto (fun Z : Matrix (Fin n) (Fin d) k => Z * (h⁻¹).val) (𝓝 (GlobalTheory.FullRankCoinv.Y0 k n d * h.val)) (𝓝 (GlobalTheory.FullRankCoinv.Y0 k n d))`.
+
+Use `((continuous_id.matrix_mul continuous_const : Continuous fun Z : Matrix (Fin n) (Fin d) k => Z * (h⁻¹).val)).tendsto (GlobalTheory.FullRankCoinv.Y0 k n d * h.val)` as an intermediate fact. Simplify `this` using `only [id, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Use `filter_upwards [ht (GlobalTheory.FullRankOnto.eventually_Y0_mul hnd hV), h2] with Z hZ hZ2`. Take `⟨u, hu, e⟩` from `hZ`. Establish `e' : Z = (GlobalTheory.FullRankCoinv.Y0 k n d * h.val) * (h⁻¹ * u * h).val`.
+
+Establish `e2 : Z = Z * (h⁻¹).val * h.val`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Rewrite using `[e2]`. Simplify using `only at e`. Rewrite using `[e]`.
+
+Simplify using `only [Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc h.val (h⁻¹).val, ← Units.val_mul h h⁻¹, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Establish `hu' : h⁻¹ * u * h ∈ U` using `hu`. Establish `hFZ : GlobalTheory.SplitFlip.smallF (GlobalTheory.SplitFlip.haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Ψ₁ Z = GlobalTheory.SplitFlip.smallF (GlobalTheory.SplitFlip.haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Ψ₁ (GlobalTheory.FullRankCoinv.Y0 k n d * h.val)`. Rewrite using `[e', hF _ _ hu']`.
+
+Rewrite using `[hFZ, hZ2]`. Establish `h0 : Ψ₂ Y = 0` using `hΨ₂.2 Y hY filter_upwards [h2] with Z hZ`. Simplify using `[hZ, h0]`. Conclude with `(hΨ₂.1.2.comp_left (g := starRingEnd ℂ) (map_zero _)).mul_left`. Simplify using `[hΨ₂.2 Y hY]`.
+-/
 theorem smallF_mul_conj_mem_fullRk : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (n d : ℕ) (ν : kˣ →* ℂˣ), n ≤ d → GlobalTheory.SmGL.IsSmoothChar ν →
     ∀ Ψ₁ ∈ GlobalTheory.FullRankCoinv.fullRk k n d, ∀ Ψ₂ ∈ GlobalTheory.FullRankCoinv.fullRk k n d,

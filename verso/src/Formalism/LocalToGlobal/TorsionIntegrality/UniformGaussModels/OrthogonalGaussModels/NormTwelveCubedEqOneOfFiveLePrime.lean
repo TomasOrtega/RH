@@ -16,6 +16,9 @@ namespace GM
 
 variable (p : ℕ) [Fact p.Prime]
 
+/- English proof (translation)
+Use `Formalism.L2.Th1.E.ScaledModelNorms.norm_nat p fun h => ?_` and prove the remaining obligations. Establish `hp : p.Prime` using `Fact.out`. Establish `h12 : p ∣ 12` using `hp.dvd_of_dvd_pow (h.trans hN)`. Establish `hle : p ≤ 12` using `Nat.le_of_dvd (by norm_num) h12`. Apply the tactic sequence `interval_cases p <;> first | omega | exact absurd hp (by norm_num)`.
+-/
 theorem norm_divisor_twelve_power_eq_one (h5 : 5 ≤ p) {N k : ℕ} (hN : N ∣ 12 ^ k) : ‖(N : ℂ_[p])‖ = 1 := by
   refine Formalism.L2.Th1.E.ScaledModelNorms.norm_nat p fun h => ?_
   have hp : p.Prime := Fact.out
@@ -23,16 +26,43 @@ theorem norm_divisor_twelve_power_eq_one (h5 : 5 ≤ p) {N k : ℕ} (hN : N ∣ 
   have hle : p ≤ 12 := Nat.le_of_dvd (by norm_num) h12
   interval_cases p <;> first | omega | exact absurd hp (by norm_num)
 
+/- English proof (translation)
+Use `norm_divisor_twelve_power_eq_one p h5 (N := 1728) (k := 3) (by norm_num)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem norm_twelve_cubed_eq_one_of_five_le_prime (h5 : 5 ≤ p) : ‖(1728 : ℂ_[p])‖ = 1 := by
   have := norm_divisor_twelve_power_eq_one p h5 (N := 1728) (k := 3) (by norm_num)
   simpa using this
 
+/- English proof (translation)
+Use `norm_divisor_twelve_power_eq_one p h5 (N := 27) (k := 3) (by norm_num)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem norm_27 (h5 : 5 ≤ p) : ‖(27 : ℂ_[p])‖ = 1 := by
   have := norm_divisor_twelve_power_eq_one p h5 (N := 27) (k := 3) (by norm_num)
   simpa using this
 
 end GM
 
+/- English proof (translation)
+Introduce `dK L hsq hd4 hcm p _ h5 ι`. Establish `hD0 : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 ≠ 0` using `Formalism.L2.Th1.F.discNeZero L`. Take `⟨c, hc12⟩` from `IsAlgClosed.exists_pow_nat_eq (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) (show 0 < 12 by norm_num)`. Establish `hc : c ≠ 0`. Introduce `h`.
+
+Rewrite `hc12` using `[h]`. Conclude with `hD0 (by rw [← hc12]; simp)`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hH` using `Formalism.L2.Th1.F.homogeneity L c hc`. Establish `e2 : (Formalism.L2.Th1.F.scalePair L c hc).g₂ = (c ^ 4)⁻¹ * L.g₂` using `hH.2.2.2.2.2.2.2.2.2.1`.
+
+Establish `e3 : (Formalism.L2.Th1.F.scalePair L c hc).g₃ = (c ^ 6)⁻¹ * L.g₃` using `hH.2.2.2.2.2.2.2.2.2.2`. Use `set a : ℂ := (Formalism.L2.Th1.F.scalePair L c hc).g₂ with ha`. Use `set b : ℂ := (Formalism.L2.Th1.F.scalePair L c hc).g₃ with hb`. Establish `hΔ : a ^ 3 - 27 * b ^ 2 = 1`. Rewrite using `[e2, e3]`.
+
+Establish `: ((c ^ 4)⁻¹ * L.g₂) ^ 3 - 27 * ((c ^ 6)⁻¹ * L.g₃) ^ 2 = (c ^ 12)⁻¹ * (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, hc12, inv_mul_cancel₀ hD0]`. Establish `hj : 1728 * a ^ 3 = jInv L`. Unfold `jInv`.
+
+Rewrite using `[e2, ← hc12]`. Clear the denominators using the available nonvanishing facts. Establish `hJ : ‖ι (jInv L)‖ ≤ 1` using `ReciprocityTheory.ChartRestriction.L1.jInt dK L hsq hd4 hcm p ι`. Establish `ha3 : ‖ι a‖ ^ 3 ≤ 1`. Establish `h` using `congrArg ι hj`.
+
+Rewrite `h` using `[map_mul, map_pow, map_ofNat]`. Rewrite `hJ` using `[← h, norm_mul, GM.norm_twelve_cubed_eq_one_of_five_le_prime p h5, one_mul, norm_pow]`. Conclude with `hJ`. Establish `ha1 : ‖ι a‖ ≤ 1` using `(pow_le_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 ha3`. Establish `hb2 : ‖ι b‖ ^ 2 ≤ 1`.
+
+Establish `h : 27 * ι b ^ 2 = ι a ^ 3 - 1`. Establish `h` using `congrArg ι hΔ`. Rewrite `h` using `[map_sub, map_mul, map_pow, map_pow, map_ofNat, map_one]`. Take the linear combination `-h`. Establish `h'` using `congrArg norm h`.
+
+Rewrite `h'` using `[norm_mul, GM.norm_27 p h5, one_mul, norm_pow]`. Rewrite using `[h', sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ (by simp))` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `ha3`.
+
+Establish `hb1 : ‖ι b‖ ≤ 1` using `(pow_le_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 hb2`. Unfold `curveL`. Use `Formalism.L2.Th1.E.ScaledModelNorms.intCurve_short p h5 _ _ ha1 hb1 ?_` and prove the remaining obligations. Establish `h` using `congrArg ι hΔ`. Rewrite `h` using `[map_sub, map_mul, map_pow, map_pow, map_ofNat, map_one]`.
+
+Rewrite using `[h, norm_one]`.
+-/
 theorem good_model_exists_all_primes : GoodModelAll := by
   intro dK L hsq hd4 hcm p _ h5 ι
   have hD0 : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 ≠ 0 := Formalism.L2.Th1.F.discNeZero L

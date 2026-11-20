@@ -12,6 +12,9 @@ open NumberField
 
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.DYda8.main`.
+-/
 theorem exists_frobenius_all_primes : ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E], (∀ a b : E ≃ₐ[ℚ] E, a * b = b * a) → ∀ p : ℕ, p.Prime → ∃ φ : E ≃ₐ[ℚ] E, ∀ (O : Type) [CommRing O] (n : Ideal O), n.IsPrime → (p : O) ∈ n → ∀ (τ : 𝓞 E →+* O) (x : 𝓞 E), τ (RingOfIntegers.mapRingEquiv φ.toRingEquiv x) - τ x ^ p ∈ n :=
   _root_.UpperTheory.Reformulated.B.DYda8.main
 

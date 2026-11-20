@@ -19,17 +19,29 @@ namespace GlobalTheory.SplitIdx.LocIndex
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {m n : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem mulL_apply' {K : Type} [CommRing K] {a b : ℕ} (P : Matrix (Fin a) (Fin a) K)
     (y : Matrix (Fin a) (Fin b) K) : GlobalTheory.SplitIdx.mulL (n := b) P y = P * y := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_intMat_iff' (y : Matrix (Fin m) (Fin n) (v.adicCompletion F)) :
     y ∈ GlobalTheory.SplitIdx.intMat F v m n ↔ ∀ i j, y i j ∈ v.adicCompletionIntegers F := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `AddMonoidHom.ext fun y => by rw [AddMonoidHom.comp_apply, mulL_apply', mulL_apply', mulL_apply', Matrix.mul_assoc]`.
+-/
 theorem mulL_mul (A B : Matrix (Fin m) (Fin m) (v.adicCompletion F)) :
     GlobalTheory.SplitIdx.mulL (n := n) (A * B) = (GlobalTheory.SplitIdx.mulL (n := n) A).comp (GlobalTheory.SplitIdx.mulL B) :=
   AddMonoidHom.ext fun y => by
     rw [AddMonoidHom.comp_apply, mulL_apply', mulL_apply', mulL_apply', Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `(mem_intMat_iff' v _).2 fun i j => ?_` and prove the remaining obligations. Rewrite using `[mulL_apply', Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => mul_mem (hP i k) ((mem_intMat_iff' v _).1 hy k j)`.
+-/
 theorem mulL_mem {P : Matrix (Fin m) (Fin m) (v.adicCompletion F)}
     (hP : ∀ i j, P i j ∈ v.adicCompletionIntegers F) {y : Matrix (Fin m) (Fin n) (v.adicCompletion F)}
     (hy : y ∈ GlobalTheory.SplitIdx.intMat F v m n) : GlobalTheory.SplitIdx.mulL P y ∈ GlobalTheory.SplitIdx.intMat F v m n := by
@@ -37,10 +49,16 @@ theorem mulL_mem {P : Matrix (Fin m) (Fin m) (v.adicCompletion F)}
   rw [mulL_apply', Matrix.mul_apply]
   exact sum_mem fun k _ => mul_mem (hP i k) ((mem_intMat_iff' v _).1 hy k j)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.LatHecke.mem_GLint_iff_entry _ _).1 hk`.
+-/
 private theorem entries_mem_integers_of_mem_KGL {k : GL (Fin m) (v.adicCompletion F)} (hk : k ∈ KGL v m) :
     (∀ i j, k.1 i j ∈ v.adicCompletionIntegers F) ∧ (∀ i j, (k⁻¹).1 i j ∈ v.adicCompletionIntegers F) :=
   (GlobalTheory.LatHecke.mem_GLint_iff_entry _ _).1 hk
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => mulL_mem v (entries_mem_integers_of_mem_KGL v hk).1 h⟩` and prove the remaining obligations. Establish `e : y = GlobalTheory.SplitIdx.mulL (k⁻¹).1 (GlobalTheory.SplitIdx.mulL (n` using `n) k.1 y) := by`. Rewrite using `[mulL_apply', mulL_apply', ← Matrix.mul_assoc, k.inv_mul, Matrix.one_mul]`. Rewrite using `[e]`. Conclude with `mulL_mem v (entries_mem_integers_of_mem_KGL v hk).2 h`.
+-/
 theorem mulL_mem_iff {k : GL (Fin m) (v.adicCompletion F)} (hk : k ∈ KGL v m)
     (y : Matrix (Fin m) (Fin n) (v.adicCompletion F)) :
     GlobalTheory.SplitIdx.mulL k.1 y ∈ GlobalTheory.SplitIdx.intMat F v m n ↔ y ∈ GlobalTheory.SplitIdx.intMat F v m n := by
@@ -50,6 +68,11 @@ theorem mulL_mem_iff {k : GL (Fin m) (v.adicCompletion F)} (hk : k ∈ KGL v m)
   rw [e]
   exact mulL_mem v (entries_mem_integers_of_mem_KGL v hk).2 h
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `mulL_mem v (entries_mem_integers_of_mem_KGL v hk).1 hx`.
+
+Introduce `hy`. Use `⟨GlobalTheory.SplitIdx.mulL (k⁻¹).1 y, mulL_mem v (entries_mem_integers_of_mem_KGL v hk).2 hy, ?_⟩` and prove the remaining obligations. Rewrite using `[mulL_apply', mulL_apply', ← Matrix.mul_assoc, k.mul_inv, Matrix.one_mul]`.
+-/
 theorem map_mulL {k : GL (Fin m) (v.adicCompletion F)} (hk : k ∈ KGL v m) :
     (GlobalTheory.SplitIdx.intMat F v m n).map (GlobalTheory.SplitIdx.mulL k.1) = GlobalTheory.SplitIdx.intMat F v m n := by
   ext y
@@ -61,6 +84,9 @@ theorem map_mulL {k : GL (Fin m) (v.adicCompletion F)} (hk : k ∈ KGL v m) :
     refine ⟨GlobalTheory.SplitIdx.mulL (k⁻¹).1 y, mulL_mem v (entries_mem_integers_of_mem_KGL v hk).2 hy, ?_⟩
     rw [mulL_apply', mulL_apply', ← Matrix.mul_assoc, k.mul_inv, Matrix.one_mul]
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[AddSubgroup.mem_comap, AddSubgroup.mem_comap, mulL_mul, AddMonoidHom.comp_apply, mulL_mem_iff v hk]`.
+-/
 theorem comap_mulL {k : GL (Fin m) (v.adicCompletion F)} (hk : k ∈ KGL v m)
     (P : Matrix (Fin m) (Fin m) (v.adicCompletion F)) :
     (GlobalTheory.SplitIdx.intMat F v m n).comap (GlobalTheory.SplitIdx.mulL (k.1 * P)) =
@@ -68,6 +94,15 @@ theorem comap_mulL {k : GL (Fin m) (v.adicCompletion F)} (hk : k ∈ KGL v m)
   ext y
   rw [AddSubgroup.mem_comap, AddSubgroup.mem_comap, mulL_mul, AddMonoidHom.comp_apply, mulL_mem_iff v hk]
 
+/- English proof (translation)
+Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `hne : ϖ ≠ 0` using `fun h => by`. Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `ht : Valued.v (((⟨ϖ, hϖO⟩ : v.adicCompletionIntegers F) ^ (max (-d) 0).toNat : v.adicCompletionIntegers F) : v.adicCompletion F) ≠ 0`.
+
+Rewrite using `[SubmonoidClass.coe_pow, map_pow]`. Conclude with `pow_ne_zero _ ((Valuation.ne_zero_iff _).2 hne)`. Rewrite using `[GlobalTheory.CNorm.mem_span_singleton_adicCompletionIntegers v ht, SubmonoidClass.coe_pow, map_pow]`. Express the relevant statement in the definitionally equal form `Valued.v (ϖ ^ d * (x : v.adicCompletion F)) ≤ 1 ↔ _`. Rewrite using `[map_mul, map_zpow₀, hv]`.
+
+Establish `hx1 : Valued.v (x : v.adicCompletion F) ≤ 1` using `x.2`. Distinguish the cases in `hx : (x : v.adicCompletion F) = 0`. Rewrite using `[hx, map_zero]`. Simplify using the standard rewrite rules. Establish `hx0 : Valued.v (x : v.adicCompletion F) ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`.
+
+Rewrite `hx1`, the goal using `[← WithZero.exp_log hx0]`. Rewrite `*` using `[← WithZero.exp_zsmul, ← WithZero.exp_nsmul, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp, WithZero.exp_le_exp]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul] at *`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem zpow_mul_mem_iff {ϖ : v.adicCompletion F} (hϖ : IsUnifV F v ϖ) (hϖO : ϖ ∈ v.adicCompletionIntegers F)
     (d : ℤ) (x : v.adicCompletionIntegers F) :
     ϖ ^ d * (x : v.adicCompletion F) ∈ v.adicCompletionIntegers F ↔
@@ -93,6 +128,9 @@ theorem zpow_mul_mem_iff {ϖ : v.adicCompletion F} (hϖ : IsUnifV F v ϖ) (hϖO 
     simp only [smul_eq_mul, nsmul_eq_mul] at *
     omega
 
+/- English proof (translation)
+Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Use `(GlobalTheory.CNorm.isAdicComplete_and_card_quotient_adicCompletionIntegers F v).2 _ e ?_` and prove the remaining obligations. Rewrite using `[SubmonoidClass.coe_pow, map_pow, hv, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem card_quot_pow {ϖ : v.adicCompletion F} (hϖ : IsUnifV F v ϖ) (hϖO : ϖ ∈ v.adicCompletionIntegers F)
     (e : ℕ) :
     Nat.card (v.adicCompletionIntegers F ⧸ Ideal.span {(⟨ϖ, hϖO⟩ : v.adicCompletionIntegers F) ^ e}) =
@@ -107,6 +145,9 @@ end GlobalTheory.SplitIdx.LocIndex
 
 namespace GlobalTheory.SplitIdx.LocIndex
 
+/- English proof (translation)
+Establish `h : ∀ i, 0 ≤ max (-d i) 0` using `fun i => le_max_right _ _`. Apply `@Nat.cast_injective ℤ` to reduce the goal to its premises. Rewrite using `[Int.toNat_of_nonneg (Finset.sum_nonneg fun i _ => h i), Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (Int.toNat_of_nonneg (h i)).symm`.
+-/
 theorem toNat_sum {m : ℕ} (d : Fin m → ℤ) :
     (∑ i, max (-d i) 0).toNat = ∑ i, (max (-d i) 0).toNat := by
   have h : ∀ i, 0 ≤ max (-d i) 0 := fun i => le_max_right _ _
@@ -114,6 +155,23 @@ theorem toNat_sum {m : ℕ} (d : Fin m → ℤ) :
   rw [Int.toNat_of_nonneg (Finset.sum_nonneg fun i _ => h i), Nat.cast_sum]
   exact Finset.sum_congr rfl fun i _ => (Int.toNat_of_nonneg (h i)).symm
 
+/- English proof (translation)
+Introduce `F _ _ v m n ϖ hϖ d t ht k₁ hk₁ k₂ hk₂`. Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `hϖO : ϖ ∈ v.adicCompletionIntegers F`. Express the relevant statement in the definitionally equal form `Valued.v ϖ ≤ 1`. Rewrite using `[hv, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Evaluate the numerical expressions. Rewrite using `[← AddSubgroup.relIndex_comap, Units.val_mul, Units.val_mul, Matrix.mul_assoc, comap_mulL v hk₁, mulL_mul, ← AddSubgroup.comap_comap, AddSubgroup.relIndex_comap, map_mulL v hk₂, ht]`. Set `ψ : GlobalTheory.SplitIdx.intMat F v m n →+ ((i : Fin m) → Fin n → v.adicCompletionIntegers F ⧸ Ideal.span {(⟨ϖ, hϖO⟩ : v.adicCompletionIntegers F) ^ (max (-d i) 0).toNat})` to `{ toFun := fun y i j => Ideal.Quotient.mk _ ⟨y.1 i j, (mem_intMat_iff' v y.1).1 y.2 i j⟩ map_zero' := by`. Use function extensionality and compare the values at `i j`. Conclude with `map_zero (Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖO⟩ : v.adicCompletionIntegers F) ^ (max (-d i) 0).toNat}))`.
+
+Use the proof step `map_add' := fun y z => by`. Use function extensionality and compare the values at `i j`. Conclude with `map_add (Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖO⟩ : v.adicCompletionIntegers F) ^ (max (-d i) 0).toNat})) ⟨y.1 i j, (mem_intMat_iff' v y.1).1 y.2 i j⟩ ⟨z.1 i j, (mem_intMat_iff' v z.1).1 z.2 i j⟩ }`. Establish `hψ : ∀ (y : GlobalTheory.SplitIdx.intMat F v m n) i j, ψ y i j = Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖO⟩ : v.adicCompletionIntegers F) ^ (max (-d i) 0).toNat}) ⟨y.1 i j, (mem_intMat_iff' v y.1).1 y.2 i j⟩` using `fun _ _ _ => rfl`. Establish `hker : ψ.ker = (AddSubgroup.comap (GlobalTheory.SplitIdx.mulL (n` using `n) (Matrix.diagonal fun i => ϖ ^ d i)) (GlobalTheory.SplitIdx.intMat F v m n)).addSubgroupOf (GlobalTheory.SplitIdx.intMat F v m n) := by`.
+
+Use extensionality with `y`. Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_comap, mem_intMat_iff', mulL_apply']`. Simplify using `only [Matrix.diagonal_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`.
+
+Establish `h1 : ψ y i j = 0` using `congrFun (congrFun h i) j`. Rewrite `h1` using `[hψ, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(zpow_mul_mem_iff v hϖ hϖO (d i) ⟨y.1 i j, (mem_intMat_iff' v y.1).1 y.2 i j⟩).2 h1`. Introduce `h`. Use function extensionality and compare the values at `i j`.
+
+Use `show ψ y i j = 0`. Rewrite using `[hψ, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(zpow_mul_mem_iff v hϖ hϖO (d i) ⟨y.1 i j, (mem_intMat_iff' v y.1).1 y.2 i j⟩).1 (h i j)`. Establish `hsurj : Function.Surjective ψ`. Introduce `z`.
+
+Use `choose w hw using fun i j => Ideal.Quotient.mk_surjective (z i j)`. Use `⟨⟨fun i j => (w i j : v.adicCompletion F), (mem_intMat_iff' v _).2 fun i j => (w i j).2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Rewrite using `[hψ]`. Conclude with `hw i j`.
+
+Rewrite using `[AddSubgroup.relIndex, ← hker, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hsurj, AddSubgroup.card_top, Nat.card_pi]`. Simplify using `only [Nat.card_pi, card_quot_pow v hϖ hϖO, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, Finset.prod_pow_eq_pow_sum]`. Use `congr 1`. Rewrite using `[toNat_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem relIndex_intMat : ∀ {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (m n : ℕ) (ϖ : v.adicCompletion F), IsUnifV F v ϖ → ∀ (d : Fin m → ℤ) (t : GL (Fin m) (v.adicCompletion F)), t.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KGL v m, ∀ k₂ ∈ KGL v m, (GlobalTheory.SplitIdx.intMat F v m n).relIndex ((GlobalTheory.SplitIdx.intMat F v m n).map (GlobalTheory.SplitIdx.mulL (n := n) (k₁ * t * k₂).1)) = qV F v ^ (n * (∑ i, max (-d i) 0).toNat) := by
   intro F _ _ v m n ϖ hϖ d t ht k₁ hk₁ k₂ hk₂
   have hv : Valued.v ϖ = WithZero.exp (-1 : ℤ) := hϖ

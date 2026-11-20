@@ -7,6 +7,11 @@ namespace GlobalTheory.GLintLattice
 
 variable {K : Type} [Field K] (A : ValuationSubring K) {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ i`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`. Introduce `h`.
+
+Use `⟨fun i => ⟨y i, h i⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`.
+-/
 theorem mem_span_basisFun_iff (y : Fin r → K) :
     y ∈ Submodule.span A (Set.range (Pi.basisFun K (Fin r))) ↔ ∀ i, y i ∈ A := by
   rw [Submodule.mem_span_range_iff_exists_fun]
@@ -18,6 +23,13 @@ theorem mem_span_basisFun_iff (y : Fin r → K) :
     ext j
     simp [Finset.sum_apply, Pi.single_apply, Algebra.smul_def]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `h (Pi.single j 1) (fun k => by` as an intermediate fact. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]) i`. Simplify `this` using `[Matrix.mulVec_single_one]`. Introduce `h y hy i`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Conclude with `sum_mem (fun j _ => mul_mem (h i j) (hy j))`.
+-/
 theorem mulVec_maps_iff (M : Matrix (Fin r) (Fin r) K) :
     (∀ y : Fin r → K, (∀ i, y i ∈ A) → ∀ i, (M *ᵥ y) i ∈ A) ↔ ∀ i j, M i j ∈ A := by
   constructor
@@ -31,6 +43,17 @@ theorem mulVec_maps_iff (M : Matrix (Fin r) (Fin r) K) :
     simp only [Matrix.mulVec, dotProduct]
     exact sum_mem (fun j _ => mul_mem (h i j) (hy j))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `show ((u : Matrix (Fin r) (Fin r) A.toSubring) i j : K) ∈ A`. Conclude with `(u : Matrix (Fin r) (Fin r) A.toSubring) i j |>.2`.
+
+Rewrite using `[← map_inv] show (((u⁻¹ : GL (Fin r) A.toSubring) : Matrix (Fin r) (Fin r) A.toSubring) i j : K) ∈ A`. Conclude with `((u⁻¹ : GL (Fin r) A.toSubring) : Matrix (Fin r) (Fin r) A.toSubring) i j |>.2`. Introduce and unpack `⟨h1, h2⟩`. Set `M : Matrix (Fin r) (Fin r) A.toSubring` to `Matrix.of fun i j => ⟨_, h1 i j⟩`. Set `M' : Matrix (Fin r) (Fin r) A.toSubring` to `Matrix.of fun i j => ⟨_, h2 i j⟩`.
+
+Establish `hM : M.map A.toSubring.subtype = (x : Matrix (Fin r) (Fin r) K)` using `by ext; rfl`. Establish `hM' : M'.map A.toSubring.subtype = ((x⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K)` using `by ext; rfl`. Establish `inj : Function.Injective fun N : Matrix (Fin r) (Fin r) A.toSubring => N.map A.toSubring.subtype` using `Matrix.map_injective Subtype.val_injective`. Establish `e1 : M * M' = 1` using `inj (by`. Simplify using `only`.
+
+Rewrite using `[Matrix.map_mul, hM, hM', Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `x.mul_inv)`. Establish `e2 : M' * M = 1` using `inj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hM, hM', Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `x.inv_mul)`. Use `⟨⟨M, M', e1, e2⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem mem_GLint_iff (x : GL (Fin r) K) :
     x ∈ Formalism.UG.GLint (Fin r) A.toSubring ↔
       (∀ i j, (x : Matrix (Fin r) (Fin r) K) i j ∈ A) ∧
@@ -63,6 +86,19 @@ theorem mem_GLint_iff (x : GL (Fin r) K) :
     ext i j
     rfl
 
+/- English proof (translation)
+Introduce `K _ A r x`. Establish `hf : ∀ z, ((x : Matrix (Fin r) (Fin r) K).mulVecLin.restrictScalars A) z = (x : Matrix (Fin r) (Fin r) K) *ᵥ z` using `fun z => rfl`. Establish `inv_x : ∀ z : Fin r → K, ((x⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) *ᵥ ((x : Matrix (Fin r) (Fin r) K) *ᵥ z) = z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Establish `x_inv : ∀ z : Fin r → K, (x : Matrix (Fin r) (Fin r) K) *ᵥ (((x⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) *ᵥ z) = z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[mem_GLint_iff, ← mulVec_maps_iff, ← mulVec_maps_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hm : (x : Matrix (Fin r) (Fin r) K) *ᵥ y ∈ (Submodule.span A (Set.range (Pi.basisFun K (Fin r)))).map ((x : Matrix (Fin r) (Fin r) K).mulVecLin.restrictScalars A)` using `⟨y, (mem_span_basisFun_iff A y).2 hy, hf y⟩`. Rewrite `hm` using `[h]`. Conclude with `(mem_span_basisFun_iff A _).1 hm`.
+
+Establish `hm : y ∈ (Submodule.span A (Set.range (Pi.basisFun K (Fin r)))).map ((x : Matrix (Fin r) (Fin r) K).mulVecLin.restrictScalars A)`. Rewrite using `[h]`. Conclude with `(mem_span_basisFun_iff A y).2 hy`. Take `⟨z, hz, hzy⟩` from `hm`. Rewrite `hzy` using `[hf]`.
+
+Rewrite using `[← hzy, inv_x]`. Conclude with `(mem_span_basisFun_iff A z).1 hz`. Introduce and unpack `⟨h1, h2⟩`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Rewrite using `[hf, mem_span_basisFun_iff]`. Conclude with `h1 z ((mem_span_basisFun_iff A z).1 hz)`. Introduce `y hy`. Use `⟨((x⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) *ᵥ y, (mem_span_basisFun_iff A _).2 (h2 y ((mem_span_basisFun_iff A y).1 hy)), ?_⟩` and prove the remaining obligations. Rewrite using `[hf, x_inv]`.
+-/
 theorem stdLattice_map_eq_iff_mem_GLint : ∀ (K : Type) [Field K] (A : ValuationSubring K) (r : ℕ)
     (x : GL (Fin r) K),
     (Submodule.span A (Set.range (Pi.basisFun K (Fin r)))).map

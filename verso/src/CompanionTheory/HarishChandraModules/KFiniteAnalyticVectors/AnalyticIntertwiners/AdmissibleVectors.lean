@@ -18,11 +18,23 @@ def actLC (E : Fin n → Fin n → Module.End ℂ M) : Matrix (Fin n) (Fin n) �
   map_add' X Y := by simp [actM, add_smul, Finset.sum_add_distrib]
   map_smul' c X := by simp [actM, Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Use `show actM E (single a b x) = _`. Simplify using `[actM, Matrix.single_apply, ite_and, ite_smul]`.
+-/
 theorem actLC_single (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (x : ℂ) :
     actLC E (single a b x) = x • E a b := by
   show actM E (single a b x) = _
   simp [actM, Matrix.single_apply, ite_and, ite_smul]
 
+/- English proof (translation)
+Establish `hm : ∀ a b c d (x y : ℂ), actLC E (single a b x * single c d y) = (x * y) • (if b = c then E a d else 0)`. Introduce `a b c d x y`. Distinguish the cases in `h : b = c`. Substitute `h` using the available equality. Rewrite using `[single_mul_single_same, actLC_single, if_pos rfl]`.
+
+Rewrite using `[single_mul_single_of_ne (h := h), map_zero, if_neg h, smul_zero]`. Proceed by induction on `X using Matrix.induction_on' with`. Consider the case `h_zero => simp`. Consider the case `h_add X X' h h'`. Rewrite using `[show (X + X') * Y - Y * (X + X') = (X * Y - Y * X) + (X' * Y - Y * X') by noncomm_ring, map_add, h, h', map_add]`.
+
+Use `noncomm_ring`. Consider the case `h_std_basis a b x`. Proceed by induction on `Y using Matrix.induction_on' with`. Consider the case `h_zero => simp`. Consider the case `h_add Y Y' h h'`.
+
+Rewrite using `[show single a b x * (Y + Y') - (Y + Y') * single a b x = (single a b x * Y - Y * single a b x) + (single a b x * Y' - Y' * single a b x) by noncomm_ring, map_add, h, h', map_add]`. Use `noncomm_ring`. Consider the case `h_std_basis c d y`. Rewrite using `[map_sub, hm, hm, actLC_single, actLC_single, smul_mul_smul_comm, smul_mul_smul_comm, mul_comm y x, ← smul_sub, ← smul_sub, hE]`.
+-/
 theorem actLC_lie {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     actLC E (X * Y - Y * X) = actLC E X * actLC E Y - actLC E Y * actLC E X := by
   have hm : ∀ a b c d (x y : ℂ), actLC E (single a b x * single c d y) = (x * y) • (if b = c then E a d else 0) := by
@@ -58,9 +70,15 @@ def twLC (E : Fin (p + q) → Fin (p + q) → Module.End ℂ M) (j : ℕ) : Mat 
     rw [show rx (c • X) = c • rx X from rfl, map_smul, trace_smul, RingHom.id_apply, smul_eq_mul]
     module
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twLC_apply (E : Fin (p + q) → Fin (p + q) → Module.End ℂ M) (j : ℕ) (Z : Mat p q) (v : M) :
     twLC E j Z v = actM E (rx Z) v + ((j : ℂ) * (Z.trace / 2)) • v := rfl
 
+/- English proof (translation)
+Use `show actLC E (rx (X * Y - Y * X)) + _ = (actLC E (rx X) + _) * (actLC E (rx Y) + _) - (actLC E (rx Y) + _) * (actLC E (rx X) + _)`. Rewrite using `[show rx (X * Y - Y * X) = rx (X * Y) - rx (Y * X) from rfl, rx_mulC, rx_mulC, actLC_lie hE, trace_sub, trace_mul_comm X Y, sub_self]`. Simplify using `only [mul_add, add_mul, smul_mul_assoc, mul_smul_comm, mul_one, one_mul]`. Use `module`.
+-/
 theorem twLC_lie {E : Fin (p + q) → Fin (p + q) → Module.End ℂ M} (hE : IsGlRep E) (j : ℕ) (X Y : Mat p q) :
     twLC E j (X * Y - Y * X) = twLC E j X * twLC E j Y - twLC E j Y * twLC E j X := by
   show actLC E (rx (X * Y - Y * X)) + _ = (actLC E (rx X) + _) * (actLC E (rx Y) + _) -
@@ -70,6 +88,13 @@ theorem twLC_lie {E : Fin (p + q) → Fin (p + q) → Module.End ℂ M} (hE : Is
   simp only [mul_add, add_mul, smul_mul_assoc, mul_smul_comm, mul_one, one_mul]
   module
 
+/- English proof (translation)
+Establish `e : rx (Eab a b) = single (finSumFinEquiv a) (finSumFinEquiv b) (1 : ℂ)`. Use extensionality with `i k`. Simplify using `only [rx, Eab, reindex_apply, submatrix_apply, Matrix.single_apply, Equiv.eq_symm_apply]`. Use `show actLC E (rx (Eab a b)) v + ((j : ℂ) * ((Eab a b).trace / 2)) • v = _`. Rewrite using `[e, actLC_single, one_smul]`.
+
+Use `congr 2`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Eab, trace_single_eq_same, if_pos rfl]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Eab, trace_single_eq_of_ne _ _ _ h, if_neg h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twLC_E (E : Fin (p + q) → Fin (p + q) → Module.End ℂ M) (j : ℕ) (a b : Formalism.BasicNotions.TH.Ix p q) (v : M) :
     twLC E j (Eab a b) v = E (finSumFinEquiv a) (finSumFinEquiv b) v + (if a = b then (j : ℂ) / 2 else 0) • v := by
   have e : rx (Eab a b) = single (finSumFinEquiv a) (finSumFinEquiv b) (1 : ℂ) := by
@@ -82,6 +107,19 @@ theorem twLC_E (E : Fin (p + q) → Fin (p + q) → Module.End ℂ M) (j : ℕ) 
   · subst h; rw [Eab, trace_single_eq_same, if_pos rfl]; ring
   · rw [Eab, trace_single_eq_of_ne _ _ _ h, if_neg h]; ring
 
+/- English proof (translation)
+Take `⟨J, hJ⟩ : ∃ J, J = Formalism.UG.Jpq p q` from `⟨_, rfl⟩`. Establish `hJJ : J * J = 1` using `by rw [hJ]; exact rx_injC (by rw [rx_mulC, rx_JC, Jm_sqC, rx_oneC])`. Establish `hJA : ∀ A : Mat p q, J * (J * A) = A` using `fun A => by rw [← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Establish `hJh : Jᴴ = J`. Rewrite using `[hJ, Jpq_diagC, diagonal_conjTranspose]`.
+
+Apply the tactic sequence `congr 1; funext a; rcases a with a | a <;> simp [sgnC]`. Establish `hK : IsKC Z → IsKC (J * Zᴴ * J)` using `fun h a b hab => by`. Apply the tactic sequence `have : Z b a = 0 := h b a fun h' => hab (by rcases a with a | a <;> rcases b with b | b <;> exact h')`. Rewrite using `[hJ, Jpq_diagC, mul_diagonal, diagonal_mul, conjTranspose_apply, this]`. Simplify using the standard rewrite rules.
+
+Use `⟨(2⁻¹ : ℂ) • (Z - J * Zᴴ * J), ?_, (-Complex.I / 2) • (Z + J * Zᴴ * J), ?_, ?_, fun h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show _ * Formalism.UG.Jpq p q + Formalism.UG.Jpq p q * _ = 0`. Rewrite using `[← hJ, conjTranspose_smul, show star (2⁻¹ : ℂ) = 2⁻¹ by simp]`. Simplify using `only [conjTranspose_sub, conjTranspose_mul, conjTranspose_conjTranspose, hJh, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, hJJ, hJA, Matrix.mul_one]`. Use `module`.
+
+Use `show _ * Formalism.UG.Jpq p q + Formalism.UG.Jpq p q * _ = 0`. Rewrite using `[← hJ, conjTranspose_smul, show star (-Complex.I / 2) = Complex.I / 2 by simp]`. Simplify using `only [conjTranspose_add, conjTranspose_mul, conjTranspose_conjTranspose, hJh, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, hJJ, hJA, Matrix.mul_one]`. Use `module`. Rewrite using `[smul_smul, show Complex.I * (-Complex.I / 2) = 2⁻¹ by linear_combination (-1 / 2 : ℂ) * Complex.I_mul_I] module`.
+
+Introduce `a b hab`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, h a b hab, hK h a b hab]`. Simplify using the standard rewrite rules. Introduce `a b hab`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, h a b hab, hK h a b hab]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem upq_decC (Z : Mat p q) : ∃ Y₁ ∈ upq p q, ∃ Y₂ ∈ upq p q, Z = Y₁ + Complex.I • Y₂ ∧
     (IsKC Z → IsKC Y₁ ∧ IsKC Y₂) := by
   obtain ⟨J, hJ⟩ : ∃ J, J = Formalism.UG.Jpq p q := ⟨_, rfl⟩
@@ -111,6 +149,9 @@ theorem upq_decC (Z : Mat p q) : ∃ Y₁ ∈ upq p q, ∃ Y₂ ∈ upq p q, Z =
 
 end Alg
 
+/- English proof (translation)
+The claim follows from `hS.mem_of_tendsto (hasDerivAt_iff_tendsto_slope_zero.1 hf) (Eventually.of_forall fun t => S.smul_of_tower_mem _ (S.sub_mem (hm _) (hm _)))`.
+-/
 theorem deriv_memC {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] {S : Submodule ℂ H} (hS : IsClosed (S : Set H))
     {f : ℝ → H} {y : H} (hf : HasDerivAt f y 0) (hm : ∀ t, f t ∈ S) : y ∈ S :=
   hS.mem_of_tendsto (hasDerivAt_iff_tendsto_slope_zero.1 hf) (Eventually.of_forall fun t =>
@@ -129,6 +170,11 @@ def kdC {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (�
     rw [(Submodule.mem_bot ℂ).1 hv, map_zero]; exact Submodule.zero_mem _⟩
   smul_mem' := fun c _ ⟨A, hA, ha, hsA⟩ => ⟨A, hA, A.smul_mem c ha, hsA⟩
 
+/- English proof (translation)
+Simplify using `only [epq, Equiv.symm_apply_apply] at he`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Conclude with `(show (a : ℕ) < b from h)`. Conclude with `absurd he (by decide : true ≠ false)`. Conclude with `absurd he (by decide : false ≠ true)`.
+
+Conclude with `Nat.lt_of_add_lt_add_left (show p + (a : ℕ) < p + b from h)`.
+-/
 theorem posC_ofC {p q : ℕ} {a b : Formalism.BasicNotions.TH.Ix p q} (h : finSumFinEquiv a < finSumFinEquiv b)
     (he : epq p q (finSumFinEquiv a) = epq p q (finSumFinEquiv b)) : posC a b := by
   simp only [epq, Equiv.symm_apply_apply] at he
@@ -138,6 +184,55 @@ theorem posC_ofC {p q : ℕ} {a b : Formalism.BasicNotions.TH.Ix p q} (h : finSu
   · exact absurd he (by decide : false ≠ true)
   · exact Nat.lt_of_add_lt_add_left (show p + (a : ℕ) < p + b from h)
 
+/- English proof (translation)
+Introduce `p q _ T πU hirr`. Take `⟨j, σ, ⟨hσ, -⟩, hσi, hkf, hex⟩` from `hDe p q T πU hirr`. Take `⟨hsm, hst⟩` from `hS _ _ _ σ hσ hσi`. Establish `hder` using `isDerivedOn_smE (ε := epq p q) (σ := σ) hσ`. Take `⟨L, hL⟩ : ∃ L, L = twLC (smE (epq p q) σ) j` from `⟨_, rfl⟩`.
+
+Establish `hd : ∀ X ∈ upq p q, ∀ v : smD (epq p q) σ, HasDerivAt (fun t : ℝ => πU.π (T.expt (t • X)) (v : πU.H)) ((L X v : smD (epq p q) σ) : πU.H) 0`. Introduce `X hX v`. Establish `hc : HasDerivAt (fun t : ℝ => Complex.exp ((j : ℂ) * (t * X.trace / 2))) ((j : ℂ) * (X.trace / 2)) 0`. Use `((((hasDerivAt_id (0 : ℝ)).ofReal_comp.mul_const X.trace).div_const 2).const_mul (j : ℂ)).cexp` as an intermediate fact. Simplify using `using this`.
+
+Establish `h` using `hc.fun_smul (hder.deriv _ (hex X hX).1 v)`. Simplify using `only [(hex X hX).2, ContinuousLinearMap.smul_apply]`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hL, twLC_apply, exp_zero_smul, hσ.1.1]`. Simplify using the standard rewrite rules.
+
+Establish `hLK : ∀ Z, ∀ v ∈ kdC (epq p q) σ, L Z v ∈ kdC (epq p q) σ`. Introduce `Z v hv`. Rewrite using `[hL, twLC_apply]`. Use `add_mem ?_ (Submodule.smul_mem _ _ hv)` and prove the remaining obligations. Simplify using `only [actM, LinearMap.sum_apply, LinearMap.smul_apply]`.
+
+Conclude with `sum_mem fun a _ => sum_mem fun b _ => Submodule.smul_mem _ _ (hst a b v hv)`. Set `io : kdC (epq p q) σ →ₗ[ℂ] πU.H` to `(smD (epq p q) σ).subtype.comp (kdC (epq p q) σ).subtype`. Establish `hio : Function.Injective io` using `Subtype.val_injective.comp Subtype.val_injective`. Establish `hrange : ∀ x, x ∈ Set.range io ↔ Formalism.BasicNotions.TH.KFin T πU.π x` using `fun x => ⟨fun ⟨v, hv⟩ => (hkf x).2 (hv ▸ v.2), fun h => ⟨⟨⟨x, hsm x ((hkf x).1 h)⟩, (hkf x).1 h⟩, rfl⟩⟩`. Set `act : Mat p q →ₗ[ℂ] Module.End ℂ (kdC (epq p q) σ)` to `{ toFun := fun Z => (L Z).restrict (hLK Z) map_add' := fun X Y => LinearMap.ext fun v => Subtype.ext (by show L (X + Y) v = L X v + L Y v`.
+
+Rewrite using `[map_add]`. Use the proof step `rfl)`. Use the proof step `map_smul' := fun c X => LinearMap.ext fun v => Subtype.ext (by show L (c • X) v = c • L X v`. Rewrite using `[map_smul]`. Use the proof step `rfl) }`.
+
+Use `⟨fun x hx => ⟨LinearMap.range io, (hrange x).2 hx, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩ X hX`. Conclude with `⟨_, ⟨act X v, rfl⟩, hX, hd X hX v⟩`. Use `⟨{ V := kdC (epq p q) σ, act := act, lie := fun X Y => ?_, kfin := fun v => ?_, wts := fun v => ?_ }, io, hio, hrange, fun Y hY v => hd Y hY v⟩` and prove the remaining obligations. Use `LinearMap.ext fun v => Subtype.ext ?_ show L (X * Y - Y * X) v = L X (L Y v) - L Y (L X v)` and prove the remaining obligations.
+
+Rewrite using `[hL, twLC_lie hder.glRep]`. Both sides reduce to the same expression. Take `⟨S, hSf, hv, hSK⟩` from `v.2`. Use `⟨S.comap io, FiniteDimensional.of_injective (((io.domRestrict (S.comap io))).codRestrict S fun w => w.2) fun a b h => Subtype.ext (hio (congrArg (Subtype.val : S → πU.H) h)), hv, fun X hX w hw => ?_⟩` and prove the remaining obligations. Establish `key : ∀ Y ∈ upq p q, IsKC Y → act Y w ∈ S.comap io` using `fun Y hY hYK => by`.
+
+Use `deriv_memC S.closed_of_finiteDimensional (hd Y hY w) fun t => ?_` and prove the remaining obligations. Rewrite using `[(hex Y hY).2, ContinuousLinearMap.smul_apply]`. Use `S.smul_mem _ (hSK _ (exp_mem_Kset ⟨?_, ?_⟩) _ hw)` and prove the remaining obligations. Establish `h : (rx Y)ᴴ * Jm (epq p q) + Jm (epq p q) * rx Y = 0` using `(hex Y hY).1 show _ = (0 : Matrix _ _ ℂ)`. Rewrite using `[conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h, smul_zero]`.
+
+Establish `h : rx Y * Jm (epq p q) = Jm (epq p q) * rx Y` using `by show rx Y * Formalism.REAL.Jm (epq p q) = Formalism.REAL.Jm (epq p q) * rx Y`. Rewrite using `[← rx_JC, ← rx_mulC, ← rx_mulC, (comm_iff_KC _).2 hYK]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, h]`. Take `⟨Y₁, h₁, Y₂, h₂, e, hk⟩` from `upq_decC X`. Rewrite using `[e, map_add, map_smul]`.
+
+Conclude with `add_mem (key Y₁ h₁ (hk hX).1) (Submodule.smul_mem _ _ (key Y₂ h₂ (hk hX).2))`. Establish `hle : Submodule.span ℂ {w : smD (epq p q) σ | w ∈ KF (epq p q) σ ∧ ∃ μ : Fin (p + q) → ℤ, ∀ a, smE (epq p q) σ a a w = (μ a : ℂ) • w} ≤ (⨆ μ : Formalism.BasicNotions.TH.Ix p q → ℚ, wtSub act μ).map (kdC (epq p q) σ).subtype`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, μ, hμ⟩`. Use `⟨⟨w, hw⟩, Submodule.mem_iSup_of_mem (fun a => (μ (finSumFinEquiv a) : ℚ) + (j : ℚ) / 2) ?_, rfl⟩` and prove the remaining obligations.
+
+Use `(Submodule.mem_iInf _).2 fun a => LinearMap.mem_ker.2 (Subtype.ext ?_)` and prove the remaining obligations. Use `show L (Eab a a) w - (((μ (finSumFinEquiv a) : ℚ) + (j : ℚ) / 2 : ℚ) : ℂ) • w = 0`. Rewrite using `[hL, twLC_E, hμ, if_pos rfl]`. Use `push_cast`. Use `module`.
+
+Take `⟨y, hy, e⟩` from `hle (hW _ _ _ σ hσ hσi v.1 v.2)`. Rewrite using `[← show y = v from Subtype.ext e]` and apply the resulting hypothesis. Introduce and unpack `M io' ⟨hinj, hran, hdM⟩`. Establish `hkM : ∀ v, Formalism.MainNotions.S.IsKFin (epq p q) σ (io' v)` using `fun v => (hkf _).1 ((hran _).1 ⟨v, rfl⟩)`. Set `φ : M.V →ₗ[ℂ] smD (epq p q) σ` to `io'.codRestrict _ fun v => hsm _ (hkM v)`.
+
+Establish `hφi : Function.Injective φ` using `fun a b h => hinj (congrArg Subtype.val h)`. Establish `hφs : ∀ w ∈ KF (epq p q) σ, ∃ v, φ v = w` using `fun w hw => by`. Take `⟨v, hv⟩` from `(hran _).2 ((hkf _).2 hw)`. Conclude with `⟨v, Subtype.ext hv⟩`. Establish `hφ : ∀ Z v, φ (M.act Z v) = L Z (φ v)`.
+
+Establish `key : ∀ Y ∈ upq p q, ∀ v, φ (M.act Y v) = L Y (φ v)` using `fun Y hY v => Subtype.ext ((hdM Y hY v).unique (hd Y hY (φ v)))`. Introduce `Z v`. Take `⟨Y₁, h₁, Y₂, h₂, e, -⟩` from `upq_decC Z`. Rewrite using `[e]`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, key Y₁ h₁, key Y₂ h₂]`.
+
+Use `⟨fun μ => ?_, ?_, fun N hN => ?_⟩` and prove the remaining obligations. Use `hA _ _ _ σ hσ hσi fun i => ((μ (finSumFinEquiv.symm i) : ℚ) : ℝ) - (j : ℝ) / 2` as an intermediate fact. Use `FiniteDimensional.of_injective ((φ.domRestrict (hwSub M.act μ)).codRestrict (Submodule.span ℂ {v : smD (epq p q) σ | v ∈ KF (epq p q) σ ∧ IsKHWVec (epq p q) (smE (epq p q) σ) (fun i => ((μ (finSumFinEquiv.symm i) : ℚ) : ℝ) - (j : ℝ) / 2) v}) fun w => ?_) fun a b h => Subtype.ext …` and prove the remaining obligations. Take `⟨w, hw1, hw2⟩` from `w`. Use `Submodule.subset_span ⟨hkM w, fun i => ?_, fun i k hik he => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, rfl⟩` from `finSumFinEquiv.surjective i`. Establish `h1 : M.act (Eab a a) w - ((μ a : ℚ) : ℂ) • w = 0` using `LinearMap.mem_ker.1 ((Submodule.mem_iInf _).1 hw1 a)`. Establish `h2` using `hφ (Eab a a) w`. Rewrite `h2` using `[sub_eq_zero.1 h1, map_smul, hL, twLC_E, if_pos rfl]`. Use `show smE (epq p q) σ _ _ (φ w) = ((((μ (finSumFinEquiv.symm (finSumFinEquiv a)) : ℚ) : ℝ) - (j : ℝ) / 2 : ℝ) : ℂ) • φ w`.
+
+Rewrite using `[Equiv.symm_apply_apply, eq_sub_of_add_eq h2.symm, ← sub_smul]`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨a, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨b, rfl⟩` from `finSumFinEquiv.surjective k`.
+
+Establish `h1 : M.act (Eab a b) w = 0` using `LinearMap.mem_ker.1 ((Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hw2 a) b) (posC_ofC hik he))`. Establish `h2` using `hφ (Eab a b) w`. Rewrite `h2` using `[h1, map_zero, hL, twLC_E, if_neg (fun h => by subst h; exact lt_irrefl _ hik), zero_smul, add_zero]`. Conclude with `h2.symm`. Use `hirr.1` as an intermediate fact.
+
+Take `⟨h, hh⟩` from `exists_ne (0 : πU.H)`. Take `⟨v, hv, hvK⟩` from `Metric.dense_iff.1 (hD _ _ _ σ hσ hσi) h ‖h‖ (norm_pos_iff.2 hh)`. Take `⟨u, rfl⟩` from `(hran v).2 ((hkf v).2 hvK)`. Use `nontrivial_of_ne u 0 fun e => ?_` and prove the remaining obligations. Rewrite `hv` using `[e, map_zero]`.
+
+Simplify using `at hv`. Break down `hI _ _ _ σ hσ hσi (N.map φ) (by rintro _ ⟨v, -, rfl⟩; exact hkM v) (by` into its components or cases. Introduce and unpack `i k _ ⟨v, hv, rfl⟩`. Take `⟨a, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨b, rfl⟩` from `finSumFinEquiv.surjective k`.
+
+Establish `h2` using `hφ (Eab a b) v`. Rewrite `h2` using `[hL, twLC_E]`. Rewrite using `[eq_sub_of_add_eq h2.symm, ← map_smul, ← map_sub]`. Conclude with `⟨_, N.sub_mem (hN _ v hv) (N.smul_mem _ hv), rfl⟩) with h | h`. Use `Or.inl (eq_bot_iff.2 fun v hv => hφi ?_)` and prove the remaining obligations.
+
+Establish `: φ v ∈ N.map φ` using `⟨v, hv, rfl⟩`. Rewrite `this` using `[h]`. Rewrite using `[(Submodule.mem_bot ℂ).1 this, map_zero]`. Use `Or.inr (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations. Establish `: φ v ∈ (N.map φ : Set (smD (epq p q) σ))` using `h ▸ hkM v`.
+
+Take `⟨u, hu, e⟩` from `this`. Conclude with `hφi e ▸ hu`.
+-/
 theorem harish_chandra_first_clause (hD : ForIrr fun _ ε H _ _ σ => Dense {v : H | Formalism.MainNotions.S.IsKFin ε σ v})
     (hS : KFSm) (hW : IntWts) (hI : UIrr) (hA : UAdm) (hDe : Descend) : Clause1 := by
   intro p q _ T πU hirr

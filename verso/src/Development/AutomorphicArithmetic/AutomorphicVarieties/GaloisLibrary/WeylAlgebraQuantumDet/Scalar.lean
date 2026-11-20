@@ -9,6 +9,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 
 open Matrix UpperTheory.V.Weyl
 
+/- English proof (translation)
+Introduce `n Ξ ν v hv htop`. Set `S : Submodule ℂ (Fin Ξ.d → ℂ)` to `Submodule.span ℂ (Set.range fun y : Matrix (Fin n) (Fin n) ℂ => Ξ.mat y *ᵥ v)`. Establish `hS : ∀ y, ∀ w ∈ S, Ξ.mat y *ᵥ w ∈ S`. Introduce `y w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨z, rfl⟩` from `hx`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul]`. Conclude with `Submodule.subset_span ⟨y * z, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x z _ _ hx hz`. Rewrite using `[Matrix.mulVec_add]`. Conclude with `S.add_mem hx hz`. Consider the case `smul a x _ hx`. Rewrite using `[Matrix.mulVec_smul]`.
+
+Conclude with `S.smul_mem a hx`. Establish `hvS : v ∈ S`. Establish `h : Ξ.mat 1 *ᵥ v ∈ S` using `Submodule.subset_span ⟨1, rfl⟩`. Simplify using `using h`. Take `⟨Ξ', A, B, hd, hBA, hA, hD⟩` from `preSub n Ξ S hS`.
+
+Take `⟨hdiag, hup⟩` from `topLie n Ξ ν v htop`. Use `⟨Ξ', ?_, ?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`. Conclude with `Module.finrank_pos_iff_exists_ne_zero.mpr ⟨⟨v, hvS⟩, fun h => hv (congrArg Subtype.val h)⟩`. Rewrite using `[hd]`.
+
+Simplify using `using Submodule.finrank_le S`. Use `set c : ℂ := ∏ k : Fin n, (u - ((k : ℕ) : ℂ) + (ν k : ℂ)) with hc`. Establish `hQv : Formalism.REAL.qdet Ξ.E u *ᵥ v = c • v` using `qdetHW n Ξ.d Ξ.E (fun k => (ν k : ℂ)) v (glRel n Ξ) hdiag hup u`. Establish `hcomm : ∀ y, Ξ.mat y * Formalism.REAL.qdet Ξ.E u = Formalism.REAL.qdet Ξ.E u * Ξ.mat y` using `commAll n Ξ _ (fun y hy => qdetComm n Ξ u y hy)`. Establish `hQS : ∀ w ∈ S, Formalism.REAL.qdet Ξ.E u *ᵥ w = c • w`.
+
+Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[Matrix.mulVec_mulVec, ← hcomm y, ← Matrix.mulVec_mulVec, hQv, Matrix.mulVec_smul]`.
+
+Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [Matrix.mulVec_add, hx, hz, smul_add]`. Consider the case `smul a x _ hx => rw [Matrix.mulVec_smul, hx, smul_comm]`. Establish `hR` using `qdetRect n Ξ.d Ξ'.d Ξ.E Ξ'.E A (fun a b => hD _) u`. Establish `hcA : Formalism.REAL.qdet Ξ.E u * A = c • A`.
+
+Use `Matrix.toLin'.injective (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, hQS _ (hA w), Matrix.smul_mulVec]`. Use `show Formalism.REAL.qdet Ξ'.E u = c • 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Weyl.scalar :
     ∀ (n : ℕ) (Ξ : Pre n) (ν : Fin n → ℕ) (v : Fin Ξ.d → ℂ), v ≠ 0 → Ξ.IsTop ν v →
       ∃ Ξ' : Pre n, 0 < Ξ'.d ∧ Ξ'.d ≤ Ξ.d ∧ Ξ'.HasWt fun k => (ν k : ℂ) := by

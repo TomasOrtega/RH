@@ -18,9 +18,17 @@ namespace GlobalTheory.UChartOf
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.comp_apply, IsIso.hom_inv_id]`. Both sides reduce to the same expression.
+-/
 theorem inv_apply_self {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (x : X) : inv f (f x) = x := by
   rw [← Scheme.Hom.comp_apply, IsIso.hom_inv_id]; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : s = bdParam k n e` from `funext fun i => by simpa using hs i`. Establish `hmem : ∀ i, (l.M' : ℤ) • δ i ∈ levelForms H l.M' P.D.toPre.X` using `fun i => (mem_levelForms_iff_smul (GlobalTheory.MumfordChart.level_ne_zero l)).2 ⟨δ i, (balForms_eq_levelForms H P.D.toPre.X) ▸ hcone.mem i, rfl⟩`. Set `gam : Fin n → levelForms H l.M' P.D.toPre.X` to `fun i => ⟨(l.M' : ℤ) • δ i, hmem i⟩`. Establish `hgam : ∀ i, (gam i : LinearMap.BilinForm ℤ P.D.toPre.X) = (l.M' : ℤ) • δ i` using `fun _ => rfl`.
+
+Establish `hpb : IsPartOfBasis gam` using `hcone.isPartOfBasis_level (GlobalTheory.MumfordChart.level_ne_zero l) hgam`. Conclude with `⟨⟨k, _, n, e, ξ', t, P, gam, δ, a, hx, het, hid, fun p => (hset p).trans Iff.rfl, hsab, hmono, hrank, hcone, hgam, ha, hBD⟩, ⟨k, _, n, e, ξ', t, P, gam, hx, het, hid, hset, hsab, hmono, hpb, hrig⟩⟩`.
+-/
 theorem chart_of_data {φ : InvFun (𝓞 E)} (Y : Model Xo c (RingHom.id c.F)) (BD' : EffCartierData Y.X) (d : ℕ)
     (x : gen Y) {k : Type} [Field k] {m e : ℕ} (ξ' : Sp (ChartRing k m e) ⟶ gen Y) (t : SAB H (Sp (ChartRing k m e)))
     (P : PELUnif (maximalIdeal (ChartRing k m e)) t) (n : ℕ) (h : n = m) (s : Fin n → ChartRing k m e)
@@ -54,6 +62,21 @@ namespace GlobalTheory.UChartOf
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Set `π : gen Y ⟶ S` to `genι Y ≫ ε.hom`. Establish `hjQ : Y.jQ ≫ π = j`. Simplify using `only [π, ← Category.assoc]`. Conclude with `hj`. Establish `hrange : ∀ w : gen Y, w ∈ Set.range Y.jQ ↔ π w ∈ Set.range j`.
+
+Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, by rw [← hjQ]; rfl⟩`. Introduce and unpack `⟨z, hz⟩`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `: π (Y.jQ z) = π w` using `by rw [← hz, ← hjQ]; rfl`. Rewrite using `[← inv_apply_self π (Y.jQ z), this, inv_apply_self]`. Establish `hx' : π x ∉ Set.range j` using `fun h => hx ((hrange x).2 h)`. Take `⟨k, _, m, e, C, ξ, a, htaut, hy, hcl, het, hbd, hset, ha, hBD⟩` from `hpre (π x) hx'`.
+
+Take `⟨hm, hs, -, -, hrig, -, -⟩` from `id htaut`. Set `ξ' : Sp (ChartRing k m e) ⟶ gen Y` to `ξ ≫ inv π`. Establish `hξ : ξ' ≫ π = ξ` using `by simp [ξ']`. Establish `hξg : ξ' ≫ genι Y = ξ ≫ ε.inv`. Simplify using `only [ξ', π, IsIso.inv_comp, IsIso.Iso.inv_hom, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`.
+
+Establish `hvan : (Scheme.IdealSheafData.vanishingIdeal j.opensRange.compl).comap π = genBdIdeal Y` using `GlobalTheory.vanishingIdeal_comap_of_isOpenImmersion (gen Y) S π _ (genBd Y) fun w => (not_congr (hrange w)).trans Iff.rfl`. Use `chart_of_data Y _ d x ξ' C.t C.P C.m hm C.s hs C.δ a ?_ ?_ ?_ ?_ ?_ C.mono C.rank C.cone ha ?_ hrig.1` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `inv π (ξ (closedPoint _)) = x`. Rewrite using `[hcl, inv_apply_self]`. Conclude with `GlobalTheory.Member.isEtaleCompletion_stalkClosedPointTo_comp_iso ξ (inv π) het`.
+
+Rewrite using `[← hvan, GlobalTheory.TorRef.idlAlong_comap, hξ]`. Conclude with `hbd`. Introduce `p`. Rewrite using `[mem_genBd, hrange, ← Scheme.Hom.comp_apply, hξ, hset p, not_not]`. Rewrite using `[hξg]`.
+
+Conclude with `hsab C htaut ξ hy`. Rewrite using `[EffCartierData.idealSheaf_pull, GlobalTheory.TorRef.idlAlong_comap, hξg, Category.assoc, ε.inv_hom_id, Category.comp_id]`. Conclude with `hBD`.
+-/
 theorem charts_of_upre {φ : InvFun (𝓞 E)} {S : Scheme.{0}} {j : Xo.XF c ⟶ S} [IsOpenImmersion j]
     {BD : EffCartierData S} {d : ℕ} (Y : Model Xo c (RingHom.id c.F)) (ε : Y.X ≅ S) (hj : Y.j ≫ ε.hom = j)
     (hsab : ∀ {k : Type} [Field k] {m e : ℕ} (C : MonoFam Xo c φ (ChartRing k m e)), IsTaut C →

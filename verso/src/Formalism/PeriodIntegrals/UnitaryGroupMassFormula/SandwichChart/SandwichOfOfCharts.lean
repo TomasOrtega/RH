@@ -46,6 +46,11 @@ def SideA : Prop :=
       Matrix.of n' ∈ Nset k r →
       Psi k r n c m n' ∈ gBall k r ρ → Qf k r n c m n' < ENNReal.ofReal (((1 + ε) * ρ) ^ 2)
 
+/- English proof (translation)
+Introduce `hLieG hLieWb hGauss hPhiForm hBig hPhiDeriv hLIso hW0 hLieEN hExpN`. Establish `hF : ChartFwd` using `h2 h0 h1 hW0 hBig hPhiForm hPhiDeriv hLieWb hExpN hLIso`. Establish `hB : ChartBwd` using `h3 h0 h1 hW0 hBig hPhiForm hPhiDeriv hLieWb hExpN hLIso`. Introduce `k r ε hε hε1`. Take `⟨δ₁, hδ₁, hB'⟩` from `h4 h0 hLieG hLieWb hPhiForm hLieEN hLIso hF k r ε hε hε1`.
+
+Take `⟨δ₂, hδ₂, hA'⟩` from `h5 h0 hLieG hLieWb hGauss hPhiForm hW0 hLieEN hExpN hLIso hB k r ε hε hε1`. Use `⟨min δ₁ δ₂, lt_min hδ₁ hδ₂, ?_⟩` and prove the remaining obligations. Introduce `ρ hρ hρδ n c m n' hn hm hn'`. Conclude with `⟨hA' ρ hρ (lt_of_lt_of_le hρδ (min_le_right _ _)) n c m n' hn hm hn', hB' ρ hρ (lt_of_lt_of_le hρδ (min_le_left _ _)) n c m n' hn hm hn'⟩`.
+-/
 theorem sandwichOf_of_charts (h0 : NormRL) (h1 : LogG) (h2 : ChartFwdOf) (h3 : ChartBwdOf)
     (h4 : SideB) (h5 : SideA) : SandwichOf := by
   intro hLieG hLieWb hGauss hPhiForm hBig hPhiDeriv hLIso hW0 hLieEN hExpN

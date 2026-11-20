@@ -24,6 +24,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.BoundaryLimit
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.Regular
 open GlobalTheory.CompanionTheory.Ar.RiemannLimit
 
+/- English proof (translation)
+Establish `h0ball : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Establish `e : (fun z => L.B z c' (t z)) = fun z => ∑ i, t z i • L.B z c' (Pi.single i 1)`. Use function extensionality and compare the values at `z`. Use `conv_lhs => rw [pi_eq_sum_univ' (t z)]`. Simplify using `only [map_sum, map_smul]`.
+
+Rewrite using `[e]`. Use `tendsto_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : ContinuousAt (fun z => L.B z c' (Pi.single i 1)) 0` using `(L.B_hol c' _).continuousOn.continuousAt (Metric.isOpen_ball.mem_nhds h0ball)`. Conclude with `((continuous_apply i).continuousAt.comp ht).smul h1`.
+-/
 theorem contAt_act {E : Type} [Field E] [NumberField E] [IsCMField E] {n a g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
     (L : ActPeriods E n a g Λ) (c' : 𝓞 E) (t : (Fin n → ℂ) → Fin g → ℂ) (ht : ContinuousAt t 0) :
     ContinuousAt (fun z => L.B z c' (t z)) 0 := by
@@ -38,6 +43,11 @@ theorem contAt_act {E : Type} [Field E] [NumberField E] [IsCMField E] {n a g : �
     (L.B_hol c' _).continuousOn.continuousAt (Metric.isOpen_ball.mem_nhds h0ball)
   exact ((continuous_apply i).continuousAt.comp ht).smul h1
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `l hl i`. Establish `h1 : ∑ j, (T *ᵥ l) j • u j = 0`. Rewrite using `[← hl]`. Simplify using `only [hf, Finset.smul_sum, smul_smul, mulVec, dotProduct, Finset.sum_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`. Establish `h2 : T *ᵥ l = 0` using `funext (hu _ h1)`. Conclude with `congrFun (Matrix.eq_zero_of_mulVec_eq_zero hd h2) i`.
+-/
 theorem li_of_det {g m : ℕ} (u f : Fin m → Fin g → ℂ) (T : Matrix (Fin m) (Fin m) ℂ) (hu : LinearIndependent ℂ u)
     (hf : ∀ i, f i = ∑ j, T j i • u j) (hd : T.det ≠ 0) : LinearIndependent ℂ f := by
   rw [Fintype.linearIndependent_iff] at hu ⊢
@@ -50,6 +60,9 @@ theorem li_of_det {g m : ℕ} (u f : Fin m → Fin g → ℂ) (T : Matrix (Fin m
   have h2 : T *ᵥ l = 0 := funext (hu _ h1)
   exact congrFun (Matrix.eq_zero_of_mulVec_eq_zero hd h2) i
 
+/- English proof (translation)
+Establish `hc : Continuous (fun t : (Fin g → ℂ) × Matrix (Fin g) (Fin g) ℂ × (Fin g → ℂ) => t.1 ⬝ᵥ t.2.1 *ᵥ star t.2.2)` using `continuous_fst.dotProduct ((continuous_fst.comp continuous_snd).matrix_mulVec (continuous_star.comp (continuous_snd.comp continuous_snd)))`. Conclude with `ContinuousAt.comp (f := fun z => (u z, Q z, u' z)) hc.continuousAt (hu.prodMk (hQ.prodMk hu'))`.
+-/
 theorem contAt_form {n g : ℕ} (u u' : (Fin n → ℂ) → Fin g → ℂ) (Q : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ)
     (hu : ContinuousAt u 0) (hu' : ContinuousAt u' 0) (hQ : ContinuousAt Q 0) :
     ContinuousAt (fun z => u z ⬝ᵥ Q z *ᵥ star (u' z)) 0 := by
@@ -59,6 +72,77 @@ theorem contAt_form {n g : ℕ} (u u' : (Fin n → ℂ) → Fin g → ℂ) (Q : 
       (continuous_star.comp (continuous_snd.comp continuous_snd)))
   exact ContinuousAt.comp (f := fun z => (u z, Q z, u' z)) hc.continuousAt (hu.prodMk (hQ.prodMk hu'))
 
+/- English proof (translation)
+Introduce `E _ _ _ n a g Λ _ _ Ψ _ L σ m b W I per s Hb Qm ρ hσ hb hIW hiso hinj hact hs hHerm hpos hQc hQ0 hρ hrep ν hν`. Take `⟨r, k, rfl, v, q, T, hfam, hq, hT, hdet, hνeq⟩` from `hν`. Simplify using `only [Fin.cast_eq_self] at hT`. Take `⟨y, hyI, hyv, hyli, hidx⟩` from `GlobalTheory.T.exists_family_in_ideal_of_isOFamily E g Λ W I per (L.B 0) r v hIW hinj hact hfam`. Establish `h0ball : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`.
+
+Use `choose cf hcf using fun τ => GlobalTheory.T.exists_eigenComponent_polynomial E (σ τ)`. Set `f : Ψ → (Fin n → ℂ) → Fin r → Fin g → ℂ` to `fun τ z a => eigComp (L.B z) (σ τ) (s (y a) z)`. Set `qt : Ψ → (Fin n → ℂ) → Fin k → Fin g → ℂ` to `fun τ z c => ∑ j, T τ j (Fin.natAdd r c) • b τ j z`. Set `F : Ψ → (Fin n → ℂ) → Fin (r + k) → Fin g → ℂ` to `fun τ z => Fin.append (f τ z) (qt τ z)`. Establish `hbc : ∀ τ j, ContinuousAt (b τ j) 0` using `fun τ j => (hb.1 τ j).continuousOn.continuousAt (Metric.isOpen_ball.mem_nhds h0ball)`.
+
+Establish `hfc : ∀ τ a, ContinuousAt (fun z => f τ z a) 0`. Introduce `τ a'`. Establish `e : (fun z => f τ z a') = fun z => ∑ e ∈ (cf τ).support, cf τ e • L.B z e (s (y a') z)`. Use function extensionality and compare the values at `z`. Conclude with `((hcf τ) (Fin g → ℂ) (L.B z)).1 _`.
+
+Rewrite using `[e]`. Use `tendsto_finset_sum _ fun e _ => ?_` and prove the remaining obligations. Conclude with `(contAt_act L e _ (hs (y a')).1).tendsto.const_smul _`. Establish `hqc : ∀ τ c, ContinuousAt (fun z => qt τ z c) 0` using `fun τ c => tendsto_finset_sum _ fun j _ => (hbc τ j).tendsto.const_smul _`. Establish `hFc : ∀ τ i, ContinuousAt (fun z => F τ z i) 0`.
+
+Introduce `τ i`. Use `Fin.addCases (fun a' => ?_) (fun c => ?_) i` and prove the remaining obligations. Simplify `hfc τ a'` using `only [F, Fin.append_left]`. Simplify `hqc τ c` using `only [F, Fin.append_right]`. Establish `hf0 : ∀ τ a', f τ 0 a' = eigComp (L.B 0) (σ τ) (v a')`.
+
+Introduce `τ a'`. Simplify using `only [f, (hs (y a')).2.1, hyv]`. Establish `hqt0 : ∀ τ c, qt τ 0 c = q τ c`. Introduce `τ c`. Use `hT τ (Fin.natAdd r c)` as an intermediate fact.
+
+Rewrite `this` using `[Fin.append_right]`. Conclude with `this.symm`. Establish `hF0 : ∀ τ, F τ 0 = Fin.append (fun a' => eigComp (L.B 0) (σ τ) (v a')) (q τ)`. Introduce `τ`. Simplify using `only [F]`.
+
+Use `congr 1`. Conclude with `funext (hf0 τ)`. Conclude with `funext (hqt0 τ)`. Establish `hsol` using `fun τ => GlobalTheory.T.exists_continuous_change_of_frame n g (r + k) (fun z i => b τ i z) (F τ) (T τ) (fun i => hbc τ i) (hFc τ) ((hb.2 0 h0ball τ).1) (fun i => by rw [hF0 τ]; exact hT τ i) (by filter_upwards [Metric.isOpen_ball.mem_nhds h0ball] with z hz i`. Rewrite using `[(hb.2 z hz τ).2]`.
+
+Use `Fin.addCases (fun a' => ?_) (fun c => ?_) i` and prove the remaining obligations. Simplify using `only [F, Fin.append_left]`. Conclude with `((hcf τ) (Fin g → ℂ) (L.B z)).2.1 _`. Simplify using `only [F, Fin.append_right]`. Rewrite using `[← (hb.2 z hz τ).2]`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))`. Use `choose Tt hTc hT0 hTe using hsol`. Set `Qd : Ψ → (Fin n → ℂ) → ℂ` to `fun τ z => (Matrix.of fun c c' => qt τ z c' ⬝ᵥ Qm z *ᵥ star (qt τ z c)).det`. Establish `hQdc : ∀ τ, ContinuousAt (Qd τ) 0`. Introduce `τ`.
+
+Establish `hM : ContinuousAt (fun z => (Matrix.of fun c c' => qt τ z c' ⬝ᵥ Qm z *ᵥ star (qt τ z c) : Matrix (Fin k) (Fin k) ℂ)) 0`. Use `continuousAt_pi.2 fun c => continuousAt_pi.2 fun c' => ?_` and prove the remaining obligations. Conclude with `contAt_form _ _ _ (continuousAt_pi.2 fun i => ((continuous_apply i).continuousAt.comp (hqc τ c'))) (continuousAt_pi.2 fun i => ((continuous_apply i).continuousAt.comp (hqc τ c))) hQc`. Establish `hdc : Continuous (fun N : Matrix (Fin k) (Fin k) ℂ => N.det)` using `continuous_id.matrix_det`. Conclude with `hdc.continuousAt.comp hM`.
+
+Establish `hQd0 : ∀ τ, Qd τ 0 = (Matrix.of fun c c' => q τ c' ⬝ᵥ Hb *ᵥ star (q τ c)).det`. Introduce `τ`. Simplify using `only [Qd, hqt0, hQ0]`. Establish `hstable : ∀ (c : 𝓞 E), ∀ x ∈ AddSubgroup.closure {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}, L.B 0 c x ∈ AddSubgroup.closure {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}`. Introduce `c x hx`.
+
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨x, hx, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨c • x, I.smul_mem c hx, (hact c x).symm⟩` and prove the remaining obligations. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`. Establish `hQpos : ∀ τ, 0 < (Qd τ 0).re`.
+
+Introduce `τ`. Rewrite using `[hQd0 τ]`. Use `GlobalTheory.T.gram_det_pos_of_semidefinite_transversal g Hb (Submodule.span ℂ {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}) k (q τ) hHerm hpos fun l hl => ?_` and prove the remaining obligations. Use `GlobalTheory.T.eigenComponent_append_independent_span E (Fin g → ℂ) (L.B 0) (σ τ) _ r k v (q τ) hfam hstable (hq τ) ?_ l ?_` and prove the remaining obligations. Use `li_of_det (fun i => b τ i 0) (F τ 0) (T τ) (hb.2 0 h0ball τ).1 (fun i => by rw [hF0 τ]; exact hT τ i) (hdet τ)` as an intermediate fact.
+
+Rewrite `this` using `[hF0 τ]`. Then use the resulting hypothesis. Use `Submodule.span_mono ?_ hl` and prove the remaining obligations. Conclude with `AddSubgroup.subset_closure`. Establish `hTne : ∀ τ, 0 < ‖(Tt τ 0).det‖ ^ 2` using `fun τ => by`. Rewrite using `[hT0 τ]`.
+
+Use `norm_pos_iff.2 (hdet τ)` as an intermediate fact. Check the signs of the components of the expression. Establish `hdetc : ∀ τ, ContinuousAt (fun z => ‖(Tt τ z).det‖ ^ 2) 0`. Introduce `τ`. Establish `hdc : Continuous (fun N : Matrix (Fin (r + k)) (Fin (r + k)) ℂ => ‖N.det‖ ^ 2)` using `(continuous_id.matrix_det.norm).pow 2`.
+
+Conclude with `hdc.continuousAt.comp (hTc τ)`. Establish `hQre : ∀ τ, ContinuousAt (fun z => (Qd τ z).re) 0` using `fun τ => Complex.continuous_re.continuousAt.comp (hQdc τ)`. Set `Φ : (Fin n → ℂ) → ℝ` to `fun z => ∑ τ, (Real.log (Qd τ z).re - Real.log (‖(Tt τ z).det‖ ^ 2))`. Establish `hΦc : ContinuousAt Φ 0`. Use `tendsto_finset_sum _ fun τ _ => ?_` and prove the remaining obligations.
+
+Conclude with `((hQre τ).log (hQpos τ).ne').sub ((hdetc τ).log (hTne τ).ne')`. Use `set idx : ℕ := (Submodule.span (𝓞 E) (Set.range fun a' => (y a' : Λ))).toAddSubgroup.relIndex I.toAddSubgroup with hidxdef`. Establish `hidx0 : idx ≠ 0`. Rewrite using `[← hidx]`. Conclude with `hfam.2.2`.
+
+Establish `hidxpos : (0 : ℝ) < idx` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero hidx0)`. Establish `hνe : ν = (idx : ℝ) * ∏ τ, ((Qd τ 0).re / ‖(Tt τ 0).det‖ ^ 2)`. Rewrite using `[hνeq, hidx]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hQd0 τ, hT0 τ, one_pow, one_mul]`. Establish `hνpos : 0 < ν`. Rewrite using `[hνe]`. Conclude with `mul_pos hidxpos (Finset.prod_pos fun τ _ => div_pos (hQpos τ) (hTne τ))`. Establish `hlogν : Real.log ν = Real.log idx + Φ 0`.
+
+Rewrite using `[hνe, Real.log_mul hidxpos.ne' (Finset.prod_ne_zero_iff.2 fun τ _ => (div_pos (hQpos τ) (hTne τ)).ne'), Real.log_prod (fun τ _ => (div_pos (hQpos τ) (hTne τ)).ne')]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun τ _ => Real.log_div (hQpos τ).ne' (hTne τ).ne'`. Use `⟨hνpos, fun ε hε => ?_⟩` and prove the remaining obligations. Establish `hev : ∀ᶠ z in 𝓝 (0 : Fin n → ℂ), (∀ τ, ∀ i, F τ z i = ∑ j, Tt τ z j i • b τ j z) ∧ (∀ τ, 0 < (Qd τ z).re) ∧ (∀ τ, 0 < ‖(Tt τ z).det‖ ^ 2) ∧ |Φ z - Φ 0| < ε`.
+
+Use `(eventually_all.2 hTe).and ((eventually_all.2 fun τ => (hQre τ).eventually (lt_mem_nhds (hQpos τ))).and ((eventually_all.2 fun τ => (hdetc τ).eventually (lt_mem_nhds (hTne τ))).and ?_))` and prove the remaining obligations. Use `(hΦc.eventually (Metric.ball_mem_nhds (Φ 0) hε))` as an intermediate fact. Use `filter_upwards [this] with z hz`. Simplify `hz` using `[Real.dist_eq]`. Take `⟨δ₀, hδ₀, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hev`.
+
+Use `⟨min δ₀ ρ, lt_min hδ₀ hρ, fun w hw hwδ => ?_⟩` and prove the remaining obligations. Use `set z := expCover a w with hz`. Establish `hzball : z ∈ Metric.ball (0 : Fin n → ℂ) δ₀`. Rewrite using `[mem_ball_zero_iff]`. Conclude with `hwδ.trans_le (min_le_left _ _)`.
+
+Take `⟨h1, h2, h3, h4⟩` from `hball z hzball`. Establish `hwρ : ‖z‖ < ρ` using `hwδ.trans_le (min_le_right _ _)`. Use `set R := L.riem w hw with hR`. Establish `hfz : ∀ τ, (fun a' => eigComp R.B (σ τ) (R.P (y a' : Λ))) = f τ z`. Introduce `τ`.
+
+Use function extensionality and compare the values at `a'`. Simplify using `only [f]`. Rewrite using `[(hs (y a')).2.2 w hw]`. Both sides reduce to the same expression. Establish `hGQ : ∀ τ, (R.gram (F τ z)).det = (R.gram (f τ z)).det * Qd τ z`.
+
+Introduce `τ`. Establish `hp` using `fun c => hrep w hw hwρ (qt τ z c)`. Use `choose p hp1 hp2 hp3 using hp`. Establish `hS` using `GlobalTheory.T.eigenComponent_span_relIndex_criterion E g Λ R I (σ τ) r k (fun a' => (y a' : Λ)) (qt τ z) p hyI (by rw [← hidxdef]; exact hidx0) (fun c => ?_) hp1 hp2`. Rewrite `hS` using `[hfz τ]`.
+
+Use `hS.trans ?_` and prove the remaining obligations. Use `congr 2`. Use extensionality with `c c'`. Conclude with `hp3 c (qt τ z c')`. Establish `hzb : z ∈ Metric.ball (0 : Fin n → ℂ) 1` using `expCover_mem_ball L.a_le hw`.
+
+Establish `h5 : qt τ z c ∈ Submodule.span ℂ (Set.range fun i => b τ i z)` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite `h5` using `[(hb.2 z hzb τ).2]`. Conclude with `h5`. Establish `hDG : ∀ τ, ‖(Tt τ z).det‖ ^ 2 * (R.gram fun i => b τ i z).det.re = (R.gram (f τ z)).det.re * (Qd τ z).re`. Introduce `τ`.
+
+Establish `e1` using `GlobalTheory.T.gram_det_mul_normSq_det E g Λ R (r + k) (fun i => b τ i z) (F τ z) (Tt τ z) (h1 τ)`. Rewrite `e1` using `[hGQ τ]`. Establish `e2` using `congrArg Complex.re e1`. Rewrite `e2` using `[Complex.mul_re, GlobalTheory.T.gram_det_im_eq_zero E g Λ R r (f τ z), zero_mul, sub_zero, Complex.re_ofReal_mul]`. Conclude with `e2.symm`.
+
+Take `⟨hnz, hnzpos⟩` from `GlobalTheory.T.nz_eq_nzOf_and_pos E g Λ Ψ R σ I r (fun a' => (y a' : Λ)) hσ (fun x hx y hy => hiso x hx y hy) hyI hyli (by rw [← hidxdef]; exact hidx0)`. Establish `hnz2 : R.nz σ I = (∏ τ, (R.gram (f τ z)).det.re) / (idx : ℝ)`. Rewrite using `[hnz, RiemLat.nzOf]`. Simplify using `only [hfz]`. Both sides reduce to the same expression.
+
+Establish `hPne : (∏ τ, (R.gram (f τ z)).det.re) ≠ 0`. Introduce `h0`. Rewrite `hnzpos` using `[hnz2, h0, zero_div]`. Conclude with `lt_irrefl _ hnzpos`. Establish `hGne : ∀ τ, (R.gram (f τ z)).det.re ≠ 0` using `fun τ => (Finset.prod_ne_zero_iff.1 hPne) τ (Finset.mem_univ τ)`.
+
+Establish `hlogD : ∀ τ, Real.log (R.gram fun i => b τ i z).det.re = Real.log (R.gram (f τ z)).det.re + (Real.log (Qd τ z).re - Real.log (‖(Tt τ z).det‖ ^ 2))`. Introduce `τ`. Establish `e : (R.gram fun i => b τ i z).det.re = (R.gram (f τ z)).det.re * (Qd τ z).re / ‖(Tt τ z).det‖ ^ 2`. Rewrite using `[← hDG τ, mul_div_cancel_left₀ _ (h3 τ).ne']`. Rewrite using `[e, Real.log_div (mul_ne_zero (hGne τ) (h2 τ).ne') (h3 τ).ne', Real.log_mul (hGne τ) (h2 τ).ne']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hmain : R.logDet (fun τ i => b τ i z) - Real.log (R.nz σ I) - Real.log ν = Φ z - Φ 0`. Rewrite using `[hnz2, hlogν, Real.log_div hPne hidxpos.ne', Real.log_prod (fun τ _ => hGne τ), RiemLat.logDet]`. Simplify using `only [hlogD, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hmain]`. Conclude with `h4`.
+-/
 theorem limit_of_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (L : ActPeriods E n a g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (m : ℕ) (b : Ψ → Fin m → (Fin n → ℂ) → Fin g → ℂ) (W I : Submodule (𝓞 E) Λ) (per : W →+ (Fin g → ℂ)) (s : W → (Fin n → ℂ) → Fin g → ℂ) (Hb : Matrix (Fin g) (Fin g) ℂ) (Qm : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (ρ : ℝ), IsCMFam σ → IsEigFrames (Metric.ball 0 1) L.B σ b → I ≤ W → (∀ x ∈ I, ∀ y ∈ I, L.toLogPeriods.E x y = 0) → Function.Injective per → (∀ (c : 𝓞 E) (x : W), per (c • x) = L.B 0 c (per x)) → (∀ x : W, ContinuousAt (s x) 0 ∧ s x 0 = per x ∧ ∀ w ∈ logCover L.a_le, s x (expCover a w) = L.P w x) → Hb.IsHermitian → (∀ v : Fin g → ℂ, 0 ≤ (v ⬝ᵥ Hb *ᵥ star v).re ∧ ((v ⬝ᵥ Hb *ᵥ star v).re = 0 → v ∈ Submodule.span ℂ {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x})) → ContinuousAt Qm 0 → Qm 0 = Hb → 0 < ρ → (∀ w ∈ logCover L.a_le, ‖expCover a w‖ < ρ → ∀ y : Fin g → ℂ, ∃ p : Fin g → ℂ, p - y ∈ Submodule.span ℂ (L.P w '' (I : Set Λ)) ∧ (∀ x ∈ I, p ⬝ᵥ L.H (expCover a w) *ᵥ star (L.P w x) = 0) ∧ ∀ y' : Fin g → ℂ, y' ⬝ᵥ L.H (expCover a w) *ᵥ star p = y' ⬝ᵥ Qm (expCover a w) *ᵥ star y) → ∀ ν : ℝ, PhiNormSq (L.B 0) (fun x y => y ⬝ᵥ Hb *ᵥ star x) (AddSubgroup.closure {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}) 1 σ (fun τ i => b τ i 0) ν → 0 < ν ∧ ∀ ε > (0 : ℝ), ∃ δ > (0 : ℝ), ∀ w (hw : w ∈ logCover L.a_le), ‖expCover a w‖ < δ → |(L.riem w hw).logDet (fun τ i => b τ i (expCover a w)) - Real.log ((L.riem w hw).nz σ I) - Real.log ν| < ε := by
   intro E _ _ _ n a g Λ _ _ Ψ _ L σ m b W I per s Hb Qm ρ hσ hb hIW hiso hinj hact hs hHerm hpos hQc hQ0 hρ hrep ν hν
   classical
@@ -250,6 +334,45 @@ theorem limit_of_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   rw [hmain]
   exact h4
 
+/- English proof (translation)
+Introduce `E _ _ _ n a g Λ _ _ Ψ _ L σ m b hσ hb`. Take `⟨bas, A, T0, B, c, ρ, h⟩` from `exists_isChart L.toLogPeriods`. Take `⟨Pr, hPr⟩` from `GlobalTheory.T.exists_isKerProj' g (∑ j, B j)`. Take `⟨hsat, hs, hinj, hspan⟩` from `GlobalTheory.T.chartW_saturated_and_continuous_section n a g Λ L.toLogPeriods bas A T0 B c ρ h`. Take `⟨hext, hlim⟩` from `GlobalTheory.T.mem_chartW_of_continuous_period n a g Λ L.toLogPeriods bas A T0 B c ρ h`.
+
+Take `⟨hHerm, hIm, hKill, hPos⟩` from `GlobalTheory.T.chartQ_hermitian_and_real_pairing n a g Λ L.toLogPeriods bas A T0 B c ρ Pr h hPr`. Take `⟨hQc, ρ', hρ', hrep⟩` from `GlobalTheory.T.chartQ_continuousAt_and_local_solution n a g Λ L.toLogPeriods bas A T0 B c ρ Pr h hPr`. Establish `h0ball : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Establish `hBc : ∀ (c' : 𝓞 E) (t : (Fin n → ℂ) → Fin g → ℂ), ContinuousAt t 0 → ContinuousAt (fun z => L.B z c' (t z)) 0` using `fun c' t ht => contAt_act L c' t ht`. Establish `hstab : ∀ (c' : 𝓞 E) (x : Λ), x ∈ chartW bas B → c' • x ∈ chartW bas B`.
+
+Introduce `c' x hx`. Use `hext (c' • x) (fun z => L.B z c' (chartS bas A T0 x z)) (hBc c' _ (hs x hx).1) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[L.act w hw, (hs x hx).2 w hw]`. Establish `hconj : ∀ c' : 𝓞 E, ∃ c'' : 𝓞 E, (c'' : E) = IsCMField.complexConj E (c' : E)`. Introduce `c'`.
+
+Use `⟨⟨IsCMField.complexConj E (c' : E), ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `(NumberField.RingOfIntegers.isIntegral_coe c').map (IsCMField.complexConj E)`. Set `W : Submodule (𝓞 E) Λ` to `{ carrier := chartW bas B add_mem' := fun hx hy => (chartW bas B).add_mem hx hy zero_mem' := (chartW bas B).zero_mem smul_mem' := fun c' x hx => hstab c' x hx }`. Establish `hW : ∀ x, x ∈ W ↔ x ∈ chartW bas B` using `fun x => Iff.rfl`. Set `I : Submodule (𝓞 E) Λ` to `{ carrier := {x | x ∈ chartW bas B ∧ ∀ y ∈ chartW bas B, L.toLogPeriods.E x y = 0} add_mem' := fun {x y} hx hy => ⟨(chartW bas B).add_mem hx.1 hy.1, fun u hu => by`.
+
+Rewrite using `[map_add, LinearMap.add_apply, hx.2 u hu, hy.2 u hu, add_zero]⟩`. Use the proof step `zero_mem' := ⟨(chartW bas B).zero_mem, fun u _ => by simp⟩`. Use the proof step `smul_mem' := fun c' x hx => ⟨hstab c' x hx.1, fun u hu => by`. Take `⟨c'', hc⟩` from `hconj c'`. Rewrite using `[L.adj c' c'' hc]`.
+
+Conclude with `hx.2 _ (hstab c'' u hu)⟩ }`. Establish `hI : ∀ x, x ∈ I ↔ x ∈ W ∧ ∀ y ∈ W, L.toLogPeriods.E x y = 0` using `fun x => Iff.rfl`. Set `toZ : W →+ chartW bas B` to `AddMonoidHom.mk' (fun x => ⟨x.1, x.2⟩) (fun _ _ => rfl)`. Establish `hrad : ∀ x : chartW bas B, (∀ x' : chartW bas B, L.toLogPeriods.E x x' = 0) ↔ (x : Λ) ∈ I` using `fun x => ⟨fun hx => ⟨x.2, fun y hy => hx ⟨y, hy⟩⟩, fun hx x' => hx.2 _ x'.2⟩`. Set `per : W →+ (Fin g → ℂ)` to `(chartPer bas A T0 B).comp toZ`.
+
+Establish `hper : ∀ x : W, per x = chartS bas A T0 (x : Λ) 0` using `fun _ => rfl`. Set `s : W → (Fin n → ℂ) → Fin g → ℂ` to `fun x => chartS bas A T0 (x : Λ)`. Establish `hs' : ∀ x : W, ContinuousAt (s x) 0 ∧ s x 0 = per x ∧ ∀ w ∈ logCover L.a_le, s x (expCover a w) = L.P w x` using `fun x => ⟨(hs x.1 x.2).1, rfl, (hs x.1 x.2).2⟩`. Establish `hinj' : Function.Injective per` using `fun x y hxy => Subtype.ext (congrArg Subtype.val (hinj hxy))`. Establish `hseq : ∃ ws : ℕ → Fin n → ℂ, (∀ m, ws m ∈ logCover L.a_le) ∧ Tendsto (fun m => expCover a (ws m)) atTop (𝓝 0)`.
+
+Use `⟨fun m k => if k.val < a then -(((m : ℝ) + 1 : ℝ) : ℂ) else 0, fun m => ⟨fun i => ?_, fun k hk => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hi : (Fin.castLE L.a_le i).val < a` using `i.2`. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Simplify using `only [hi, if_true, Complex.neg_re, Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hk' : ¬ k.val < a` using `not_lt.2 hk`. Simplify using `[hk']`. Rewrite using `[tendsto_pi_nhds]`. Introduce `k`. Distinguish the cases in `hk : k.val < a`.
+
+Simplify using `only [expCover, hk, if_true, Pi.zero_apply]`. Establish `h1 : Tendsto (fun m : ℕ => Real.exp (-((m : ℝ) + 1))) atTop (𝓝 0)` using `Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp (tendsto_atTop_add_const_right _ _ tendsto_natCast_atTop_atTop))`. Establish `h2` using `(Complex.continuous_ofReal.tendsto 0).comp h1`. Simplify `h2` using `only [Function.comp_def, Complex.ofReal_zero, Complex.ofReal_exp, Complex.ofReal_neg]`. Simplify using `[expCover, hk]`.
+
+Establish `hact : ∀ (c' : 𝓞 E) (x : W), per (c' • x) = L.B 0 c' (per x)`. Introduce `c' x`. Take `⟨ws, hws, hlim0⟩` from `hseq`. Establish `h1 : Tendsto (fun m => chartS bas A T0 ((c' • x : W) : Λ) (expCover a (ws m))) atTop (𝓝 (per (c' • x)))` using `(hs' (c' • x)).1.tendsto.comp hlim0 |>.congr fun _ => rfl`. Establish `h2 : Tendsto (fun m => L.B (expCover a (ws m)) c' (chartS bas A T0 (x : Λ) (expCover a (ws m)))) atTop (𝓝 (L.B 0 c' (per x)))` using `(hBc c' _ (hs' x).1).tendsto.comp hlim0 |>.congr fun _ => rfl`.
+
+Use `tendsto_nhds_unique h1 (h2.congr fun m => ?_)` and prove the remaining obligations. Rewrite using `[(hs x.1 x.2).2 _ (hws m), ← L.act _ (hws m)]`. Conclude with `((hs _ (hstab c' x.1 x.2)).2 _ (hws m)).symm`. Establish `hset : {p | ∃ x : chartW bas B, (∀ x' : chartW bas B, L.toLogPeriods.E x x' = 0) ∧ p = chartPer bas A T0 B x} = {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}`. Use extensionality with `p`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x.1, x.2⟩, (hrad x).1 hx, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x.1, x.2⟩, (hrad ⟨x.1, x.2⟩).2 hx, rfl⟩`.
+
+Use `⟨W, I, per, s, chartQ Pr A T0 0, hI, ?_, hinj', hs', ?_, ?_, hHerm, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x k hk hx`. Establish `h2 : x ∈ chartW bas B` using `hsat x k hk hx.1`. Use `⟨h2, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h3` using `hx.2 y hy`.
+
+Rewrite `h3` using `[map_zsmul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h3).resolve_left hk`. Introduce `ws x p h1 h2 h3`. Take `⟨x₀, hx₀⟩` from `hlim ws x p h1 h2 h3`. Conclude with `⟨⟨x₀.1, x₀.2⟩, hx₀⟩`.
+
+Rewrite using `[← hspan]`. Use `congr 1`. Introduce `x x'`. Conclude with `hIm (toZ x) (toZ x')`. Introduce `x hx`.
+
+Conclude with `hKill (toZ x) ((hrad (toZ x)).2 hx)`. Use `limit_of_data E n a g Λ Ψ L σ m b W I per s (chartQ Pr A T0 0) (chartQ Pr A T0) ρ' hσ hb (fun x hx => hx.1) (fun x hx y hy => hx.2 y hy.1) hinj' hact hs' hHerm ?_ hQc rfl hρ' ?_` and prove the remaining obligations. Introduce `v`. Rewrite using `[← hset]`. Conclude with `hPos v`.
+
+Introduce `w hw hwρ y`. Take `⟨p, h1, h2, h3⟩` from `hrep w hw hwρ y`. Use `⟨p, ?_, fun x hx => ?_, h3⟩` and prove the remaining obligations. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨x, (hrad x).1 hx, rfl⟩`. Conclude with `h2 ⟨x, hx.1⟩ ((hrad ⟨x, hx.1⟩).2 hx)`.
+-/
 theorem limit_at_centre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (L : ActPeriods E n a g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (m : ℕ) (b : Ψ → Fin m → (Fin n → ℂ) → Fin g → ℂ), IsCMFam σ → IsEigFrames (Metric.ball 0 1) L.B σ b → ∃ (W : Submodule (𝓞 E) Λ) (I : Submodule (𝓞 E) Λ) (per : W →+ (Fin g → ℂ)) (s : W → (Fin n → ℂ) → Fin g → ℂ) (Hb : Matrix (Fin g) (Fin g) ℂ), (∀ x, x ∈ I ↔ x ∈ W ∧ ∀ y ∈ W, L.toLogPeriods.E x y = 0) ∧ IsSaturated I ∧ Function.Injective per ∧ (∀ x : W, ContinuousAt (s x) 0 ∧ s x 0 = per x ∧ ∀ w ∈ logCover L.a_le, s x (expCover a w) = L.P w x) ∧ (∀ (ws : ℕ → Fin n → ℂ) (x : ℕ → Λ) (p : Fin g → ℂ), (∀ k, ws k ∈ logCover L.a_le) → Tendsto (fun k => expCover a (ws k)) atTop (𝓝 0) → Tendsto (fun k => L.P (ws k) (x k)) atTop (𝓝 p) → ∃ x₀ : W, p = per x₀) ∧ Submodule.span ℂ (Set.range per) = ⊤ ∧ Hb.IsHermitian ∧ (∀ x x' : W, (per x ⬝ᵥ Hb *ᵥ star (per x')).im = L.toLogPeriods.E x x') ∧ (∀ x : W, (x : Λ) ∈ I → Hb *ᵥ star (per x) = 0) ∧ ∀ ν : ℝ, PhiNormSq (L.B 0) (fun x y => y ⬝ᵥ Hb *ᵥ star x) (AddSubgroup.closure {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}) 1 σ (fun τ i => b τ i 0) ν → 0 < ν ∧ ∀ ε > (0 : ℝ), ∃ δ > (0 : ℝ), ∀ w (hw : w ∈ logCover L.a_le), ‖expCover a w‖ < δ → |(L.riem w hw).logDet (fun τ i => b τ i (expCover a w)) - Real.log ((L.riem w hw).nz σ I) - Real.log ν| < ε := by
   intro E _ _ _ n a g Λ _ _ Ψ _ L σ m b hσ hb
   classical

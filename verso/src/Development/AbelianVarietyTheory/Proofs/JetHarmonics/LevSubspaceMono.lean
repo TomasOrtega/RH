@@ -8,6 +8,11 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `M _ _ n ε E μ _ hU`. Take `⟨h0, hadd, hsmul, hmono⟩` from `GlobalTheory.T.compactCasimirLe_subspace_monotone M n ε E (isUnitary_kUnit ε E hU)`. Use `⟨fun j => ⟨h0 _, Submodule.zero_mem _⟩, fun j x y hx hy => ⟨hadd _ _ _ hx.1 hy.1, Submodule.add_mem _ hx.2 hy.2⟩, fun j a x hx => ⟨hsmul _ _ _ hx.1, Submodule.smul_mem _ _ hx.2⟩, ?_⟩` and prove the remaining obligations. Introduce `j j' x hj hx`. Establish `hj' : (j : ℝ) ≤ (j' : ℝ)` using `by exact_mod_cast hj`.
+
+Use `⟨hmono _ _ _ (by positivity) ?_ hx.1, ?_⟩` and prove the remaining obligations. Use `gcongr`. Conclude with `wtNear_le_of_add_dist_le M n ε E _ _ _ _ (by simpa using hj') hx.2`.
+-/
 theorem lev_subspace_mono :
     ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool)
       (E : Fin n → Fin n → Module.End ℂ M) (μ : Fin n → ℝ), GlRel E → IsUnitary ε E →

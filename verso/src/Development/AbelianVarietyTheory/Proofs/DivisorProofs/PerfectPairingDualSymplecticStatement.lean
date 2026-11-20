@@ -2,6 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PerfectPairingDualSymplectic
 import Mathlib
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AnnIso.pairing_vanishes_of_annihilator_isotropic | exact GlobalTheory.AnnIso.pairing_vanishes_of_annihilator_isotropic | (intros; apply GlobalTheory.AnnIso.pairing_vanishes_of_annihilator_isotropic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.perfect_pairing_dual_symplectic : ∀ (R : Type) [CommRing R] (M : Type) [AddCommGroup M] [Module R M]
     (N : Type 1) [AddCommGroup N] [Module R N] (e : M ≃ₗ[R] N) (g : ℕ),
     Module.Finite R N → Module.Projective R N → (∀ P : PrimeSpectrum R, Module.rankAtStalk N P = 2 * g) →

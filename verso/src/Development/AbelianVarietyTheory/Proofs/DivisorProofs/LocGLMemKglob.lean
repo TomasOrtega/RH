@@ -14,6 +14,9 @@ namespace GlobalTheory.EulerTwSplit
 open GlobalTheory.EulerTw GlobalTheory.EulerTwU
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hid : GeneralLinearGroup.map (RingHom.id (w.adicCompletion E)) (GeneralLinearGroup.map f g) = GeneralLinearGroup.map f g` using `Units.ext (Matrix.ext fun _ _ => rfl)`. Express the relevant statement in the definitionally equal form `PhiU n _ * invT n _ (GeneralLinearGroup.map (RingHom.id _) (GeneralLinearGroup.map f g)) * (PhiU n _)⁻¹ ∈ _`. Rewrite using `[hid]`. Conclude with `mul_mem (mul_mem (GlobalTheory.ThetaSatake.phiU_mem _ n) (GlobalTheory.BCT.LocGlue.intst E n v w f hf g hg)) (inv_mem (GlobalTheory.ThetaSatake.phiU_mem _ n))`.
+-/
 theorem theta_mem {v w : Pl E} (f : v.adicCompletion E →+* w.adicCompletion E) (hf : ∀ x, Valued.v (f x) = Valued.v x)
     {g : GLw n v} (hg : g ∈ GlobalTheory.LFun.KGL v n) :
     thetaGL n (RingHom.id _) (GeneralLinearGroup.map f g) ∈ GlobalTheory.LFun.KGL w n := by
@@ -24,29 +27,49 @@ theorem theta_mem {v w : Pl E} (f : v.adicCompletion E →+* w.adicCompletion E)
   exact mul_mem (mul_mem (GlobalTheory.ThetaSatake.phiU_mem _ n) (GlobalTheory.BCT.LocGlue.intst E n v w f hf g hg))
     (inv_mem (GlobalTheory.ThetaSatake.phiU_mem _ n))
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_Kglob_iff]`. Introduce `v`. Rewrite using `[pc_thF]`. Conclude with `theta_mem _ (conjLoc_spec _ v).2.2 (hx _)`.
+-/
 theorem thF_mem_Kglob {x : GL (Fin n) (Af E)} (hx : x ∈ Kglob E n) : thF E n x ∈ Kglob E n := by
   rw [mem_Kglob_iff] at hx ⊢
   intro v
   rw [pc_thF]
   exact theta_mem _ (conjLoc_spec _ v).2.2 (hx _)
 
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 theorem pc_one (v : Pl E) : GeneralLinearGroup.map (n := Fin n) (pLoc E v) 1 = 1 := map_one _
 
+/- English proof (translation)
+The claim follows from `pc_pfU hv _`.
+-/
 theorem pc_thU {u v : Pl E} (hv : v ∈ orb E u) (z : Gam E n u) :
     GeneralLinearGroup.map (pLoc E v) ((thU E n u z : Gam E n u) : GL (Fin n) (Af E)) =
       GeneralLinearGroup.map (pLoc E v) (thF E n z) :=
   pc_pfU hv _
 
+/- English proof (translation)
+Rewrite using `[pc_thF, pc_thF, h]`.
+-/
 theorem pc_thF_congr {v : Pl E} {x x' : GL (Fin n) (Af E)}
     (h : GeneralLinearGroup.map (pLoc E (cPl E v)) x = GeneralLinearGroup.map (pLoc E (cPl E v)) x') :
     GeneralLinearGroup.map (pLoc E v) (thF E n x) = GeneralLinearGroup.map (pLoc E v) (thF E n x') := by
   rw [pc_thF, pc_thF, h]
 
+/- English proof (translation)
+The claim follows from `pc_thF_congr (pc_pfU (cPl_mem_orb hv) g)`.
+-/
 theorem pc_thF_pfU {u v : Pl E} (hv : v ∈ orb E u) (g : GL (Fin n) (Af E)) :
     GeneralLinearGroup.map (pLoc E v) (thF E n ((pfU E n u g : Gam E n u) : GL (Fin n) (Af E))) =
       GeneralLinearGroup.map (pLoc E v) (thF E n g) :=
   pc_thF_congr (pc_pfU (cPl_mem_orb hv) g)
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[show KU E n u = (Kglob E n).subgroupOf (Gam E n u) from rfl, Subgroup.mem_subgroupOf]`. Rewrite `hz`, the goal using `[mem_Kglob_iff]`. Introduce `v`. Distinguish the cases in `hv : v ∈ orb E u`. Rewrite using `[pc_thU hv]`.
+
+Conclude with `(mem_Kglob_iff _).1 (thF_mem_Kglob ((mem_Kglob_iff _).2 hz)) v`. Rewrite using `[pc_gam _ hv]`. Conclude with `one_mem _`.
+-/
 theorem thU_mem_KU {u : Pl E} {z : Gam E n u} (hz : z ∈ KU E n u) : thU E n u z ∈ KU E n u := by
   rw [show KU E n u = (Kglob E n).subgroupOf (Gam E n u) from rfl, Subgroup.mem_subgroupOf] at hz ⊢
   rw [mem_Kglob_iff] at hz ⊢
@@ -56,6 +79,11 @@ theorem thU_mem_KU {u : Pl E} {z : Gam E n u} (hz : z ∈ KU E n u) : thU E n u 
     exact (mem_Kglob_iff _).1 (thF_mem_Kglob ((mem_Kglob_iff _).2 hz)) v
   · rw [pc_gam _ hv]; exact one_mem _
 
+/- English proof (translation)
+Rewrite using `[mem_Kglob_iff]`. Introduce `v`. Distinguish the cases in `h : v = u`. Substitute `h` using the available equality. Rewrite using `[pLoc_locGL]`.
+
+Conclude with `hg`. Rewrite using `[pLoc_locGL_of_ne h]`. Conclude with `one_mem _`.
+-/
 theorem locGL_mem_Kglob {u : Pl E} {g : GLw n u} (hg : g ∈ GlobalTheory.LFun.KGL u n) : locGL E n u g ∈ Kglob E n := by
   rw [mem_Kglob_iff]
   intro v
@@ -66,6 +94,37 @@ theorem locGL_mem_Kglob {u : Pl E} {g : GLw n u} (hg : g ∈ GlobalTheory.LFun.K
 set_option hygiene false in
 local notation "PC[" v "]" => GeneralLinearGroup.map (pLoc E v)
 
+/- English proof (translation)
+Introduce `E _ _ _ n u hne D hD y hy`. Establish `hu : u ∈ orb E u` using `mem_orb.2 (Or.inl rfl)`. Establish `hub : cPl E u ∈ orb E u` using `mem_orb.2 (Or.inr rfl)`. Establish `memKU : ∀ z : Gam E n u, z ∈ KU E n u ↔ ∀ v, PC[v] z.1 ∈ GlobalTheory.LFun.KGL v n` using `fun z => by`. Rewrite using `[show KU E n u = (Kglob E n).subgroupOf (Gam E n u) from rfl, Subgroup.mem_subgroupOf, mem_Kglob_iff]`.
+
+Establish `pcmul : ∀ v (a b : Gam E n u), PC[v] (a * b).1 = PC[v] a.1 * PC[v] b.1` using `fun v a b => by`. Rewrite using `[Subgroup.coe_mul, map_mul]`. Establish `pcinv : ∀ v (a : Gam E n u), PC[v] (a⁻¹).1 = (PC[v] a.1)⁻¹` using `fun v a => by`. Rewrite using `[Subgroup.coe_inv, map_inv]`. Establish `pcδ : ∀ v ∈ orb E u, PC[v] (pfU E n u D).1 = PC[v] D` using `fun v hv => pc_pfU hv D`.
+
+Establish `pcθδ : ∀ v ∈ orb E u, PC[v] (thU E n u (pfU E n u D)).1 = PC[v] (thF E n D)` using `fun v hv => by`. Rewrite using `[pc_thU hv, pc_thF_pfU hv]`. Establish `hMM : (y⁻¹ * pfU E n u D * thU E n u y) * thU E n u (y⁻¹ * pfU E n u D * thU E n u y) = y⁻¹ * (pfU E n u D * thU E n u (pfU E n u D)) * y`. Simplify using `only [map_mul, map_inv, thU_thU]`. Use `group`.
+
+Establish `hconj : (PC[u] y.1)⁻¹ * PC[u] (D * thF E n D) * PC[u] y.1 ∈ GlobalTheory.LFun.KGL u n`. Establish `h` using `(memKU _).1 (mul_mem hy (thU_mem_KU hy)) u`. Rewrite `h` using `[hMM, pcmul, pcmul, pcinv, pcmul, pcδ u hu, pcθδ u hu]`. Rewrite using `[map_mul]`. Conclude with `h`.
+
+Take `⟨t1, ht1, k1, hk1, hg1⟩` from `GlobalTheory.SplitUniq.splitUniq E n u _ (PC[u] y.1) (hD u hu).2.1 (hD u hu).2.2 hconj`. Use `set T : Gam E n u := pfU E n u (locGL E n u t1) with hT`. Establish `pcTu : PC[u] T.1 = t1` using `by rw [hT, pc_pfU hu]; exact pLoc_locGL _ _`. Establish `pcTo : ∀ v, v ≠ u → PC[v] T.1 = 1`. Introduce `v h`.
+
+Distinguish the cases in `hv : v ∈ orb E u`. Rewrite using `[hT, pc_pfU hv]`. Conclude with `pLoc_locGL_of_ne h _`. Conclude with `pc_gam _ hv`. Establish `pcθTu : PC[u] (thU E n u T).1 = 1`.
+
+Rewrite using `[pc_thU hu, hT, pc_thF_pfU hu, pc_thF_congr (x' := 1) (by rw [pLoc_locGL_of_ne hne]; exact (map_one _).symm), map_one, map_one]`. Establish `pcθTb : PC[cPl E u] (thU E n u T).1 = PC[cPl E u] (thF E n (locGL E n u t1))`. Rewrite using `[pc_thU hub, hT, pc_thF_pfU hub]`. Establish `hN : PC[u] (D * thF E n D) = PC[u] D * PC[u] (thF E n D)` using `map_mul _ _ _`. Use `⟨T * pfU E n u D * thU E n u T * (pfU E n u D)⁻¹, ?_, (T * pfU E n u D * thU E n u T * (pfU E n u D)⁻¹)⁻¹ * y, ?_, by group⟩` and prove the remaining obligations.
+
+Use `show T * pfU E n u D * thU E n u T * (pfU E n u D)⁻¹ * pfU E n u D = pfU E n u D * thU E n u (T * pfU E n u D * thU E n u T * (pfU E n u D)⁻¹)`. Simplify using `only [map_mul, map_inv, thU_thU]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `gl_ext` to reduce the goal to its premises. Introduce `v`.
+
+Distinguish the cases in `hv : v ∈ orb E u`. Apply the tactic sequence `rcases mem_orb.1 hv with h | h <;> rw [h]`. Simplify using `only [pcmul, pcinv, pcTu, pcθTu, pcδ u hu, pcθδ u hu]`. Rewrite `ht1` using `[hN]`. Establish `key : t1 * PC[u] D = PC[u] D * (PC[u] (thF E n D) * t1 * (PC[u] (thF E n D))⁻¹)`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [pcmul, pcinv, pcTo _ hne, pcθTb, pcδ _ hub, pcθδ _ hub] group`. Simplify using `[pcmul, pcinv, pc_gam _ hv]`. Rewrite using `[memKU]`.
+
+Introduce `v`. Simplify using `only [pcmul, pcinv]`. Distinguish the cases in `hv : v ∈ orb E u`. Apply the tactic sequence `rcases mem_orb.1 hv with h | h <;> rw [h]`. Simplify using `only [pcTu, pcθTu, pcδ u hu]`.
+
+Use `hk1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hg1]`. Use `group`. Simplify using `only [pcTo _ hne, pcθTb, pcδ _ hub]`. Establish `hB : PC[cPl E u] (thF E n (locGL E n u t1)) = PC[cPl E u] (thF E n y.1) * (PC[cPl E u] (thF E n (locGL E n u k1)))⁻¹`.
+
+Establish `ht1' : t1 = PC[u] y.1 * k1⁻¹` using `by rw [hg1]; group`. Rewrite using `[ht1', map_mul, map_inv, map_mul, map_inv, map_mul, map_inv]`. Rewrite using `[pc_thF_congr (x' := y.1) (by rw [cPl_cPl]; exact pLoc_locGL _ _)]`. Establish `hMb : PC[cPl E u] (y⁻¹ * pfU E n u D * thU E n u y).1 = (PC[cPl E u] y.1)⁻¹ * PC[cPl E u] D * PC[cPl E u] (thF E n y.1)`. Rewrite using `[pcmul, pcmul, pcinv, pcδ _ hub, pc_thU hub]`.
+
+Establish `h1` using `(memKU _).1 hy (cPl E u)`. Rewrite `h1` using `[hMb]`. Establish `h2 : PC[cPl E u] (thF E n (locGL E n u k1)) ∈ GlobalTheory.LFun.KGL (cPl E u) n` using `(mem_Kglob_iff _).1 (thF_mem_Kglob (locGL_mem_Kglob hk1)) _`. Use `mul_mem (mul_mem (hD _ hub).1 h2) (inv_mem h1) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hB]`.
+
+Use `group`. Simplify using `only [pc_gam _ hv, inv_one, mul_one, one_mul]`. Conclude with `one_mem _`.
+-/
 theorem split_twCent : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (u : Pl E), GlobalTheory.EulerTw.cPl E u ≠ u → ∀ D : GL (Fin n) (Af E), (∀ v ∈ GlobalTheory.EulerTw.orb E u, (GeneralLinearGroup.map (pLoc E v) D ∈ GlobalTheory.LFun.KGL v n ∧ GeneralLinearGroup.map (pLoc E v) (D * thF E n D) ∈ GlobalTheory.LFun.KGL v n ∧ ∃ a b : (v.adicCompletion E)[X], (∀ i, a.coeff i ∈ v.adicCompletionIntegers E) ∧ (∀ i, b.coeff i ∈ v.adicCompletionIntegers E) ∧ a * (GeneralLinearGroup.map (pLoc E v) (D * thF E n D)).val.charpoly + b * derivative (GeneralLinearGroup.map (pLoc E v) (D * thF E n D)).val.charpoly = 1)) → ∀ y, y⁻¹ * GlobalTheory.EulerTw.pfU E n u D * GlobalTheory.EulerTw.thU E n u y ∈ GlobalTheory.EulerTw.KU E n u → ∃ t ∈ twCent (GlobalTheory.EulerTw.thU E n u) (GlobalTheory.EulerTw.pfU E n u D), ∃ k ∈ GlobalTheory.EulerTw.KU E n u, y = t * k := by
   intro E _ _ _ n u hne D hD y hy
   have hu : u ∈ orb E u := mem_orb.2 (Or.inl rfl)

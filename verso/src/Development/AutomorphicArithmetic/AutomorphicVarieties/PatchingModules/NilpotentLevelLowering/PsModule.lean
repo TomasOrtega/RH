@@ -5,6 +5,11 @@ open UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Hi UpperTheory.V.AlgebraToo
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on hx (fun a ha y _ i => ?_) (fun a b ha hb i => ?_)` and prove the remaining obligations. Conclude with `J.mul_mem_right _ ha`. Conclude with `J.add_mem (ha i) (hb i)`.
+
+Introduce `hx`. Rewrite using `[pi_eq_sum_univ x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top`.
+-/
 private theorem psm_mem_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} (x : Fin r → R) :
     x ∈ J • (⊤ : Submodule R (Fin r → R)) ↔ ∀ i, x i ∈ J := by
   constructor
@@ -16,6 +21,13 @@ private theorem psm_mem_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} (x : 
     rw [pi_eq_sum_univ x]
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top
 
+/- English proof (translation)
+Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `key : ∀ i, ∃ L : R, ∀ n, f n i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)]` using `fun i => IsPrecomplete.prec' (I := I) (fun n => f n i) fun {m n} hmn => by`. Establish `h` using `hf hmn`. Rewrite `h` using `[SModEq.sub_mem, psm_mem_pi]`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+
+Conclude with `h i`. Use `choose L hL using key`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, psm_mem_pi]`. Introduce `i`.
+
+Establish `h` using `hL i n`. Rewrite `h` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Then use the resulting hypothesis.
+-/
 private theorem psm_prec_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (r : ℕ) :
     IsPrecomplete I (Fin r → R) := by
   refine ⟨fun f hf => ?_⟩
@@ -32,6 +44,11 @@ private theorem psm_prec_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete
   have h := hL i n
   rwa [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at h
 
+/- English proof (translation)
+Take `⟨r, π, hπ⟩` from `Module.Finite.exists_fin' R M`. Use `haveI := psm_prec_pi I r`. Rewrite using `[← AdicCompletion.of_surjective_iff]`. Introduce `y`. Take `⟨z, rfl⟩` from `AdicCompletion.map_surjective I hπ y`.
+
+Take `⟨w, rfl⟩` from `AdicCompletion.of_surjective I (Fin r → R) z`. Conclude with `⟨π w, (AdicCompletion.map_of I π w).symm⟩`.
+-/
 private theorem psm_prec_finite {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] (I : Ideal R) [IsPrecomplete I R] : IsPrecomplete I M := by
   obtain ⟨r, π, hπ⟩ := Module.Finite.exists_fin' R M
@@ -42,6 +59,15 @@ private theorem psm_prec_finite {R M : Type} [CommRing R] [AddCommGroup M] [Modu
   obtain ⟨w, rfl⟩ := AdicCompletion.of_surjective I (Fin r → R) z
   exact ⟨π w, (AdicCompletion.map_of I π w).symm⟩
 
+/- English proof (translation)
+Use `letI : UniformSpace R := ⊥`. Use `haveI : DiscreteUniformity R := ⟨rfl⟩`. Use `letI : WithIdeal S := ⟨m⟩`. Establish `hm : IsAdic m` using `rfl`. Take `⟨h1, h2⟩` from `hm.isAdicComplete_iff.1 inferInstance`.
+
+Use `haveI : IsLinearTopology S S := Ideal.isLinearTopology m`. Establish `hf : Continuous f` using `continuous_of_discreteTopology`. Establish `hE : MvPowerSeries.HasEval a`. Use `⟨fun s => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[IsTopologicallyNilpotent, hm.hasBasis_nhds_zero.tendsto_right_iff]`.
+
+Introduce `n _`. Take `⟨e, he⟩` from `ha s`. Use `filter_upwards [Filter.eventually_ge_atTop (e * n)] with k hk`. Establish `h3` using `Ideal.pow_mem_pow he n`. Rewrite `h3` using `[← pow_mul]`.
+
+Conclude with `Ideal.pow_mem_of_pow_mem _ h3 hk`. Conclude with `⟨MvPowerSeries.eval₂Hom hf hE, fun x => by rw [MvPowerSeries.coe_eval₂Hom, MvPowerSeries.eval₂_C], fun s => by rw [MvPowerSeries.coe_eval₂Hom, MvPowerSeries.eval₂_X]⟩`.
+-/
 private theorem psm_ev {R S σ : Type} [CommRing R] [CommRing S] [Finite σ] (m : Ideal S) [IsAdicComplete m S]
     (f : R →+* S) (a : σ → S) (ha : ∀ s, a s ∈ m.radical) :
     ∃ F : MvPowerSeries σ R →+* S, (∀ x, F (MvPowerSeries.C x) = f x) ∧ ∀ s, F (MvPowerSeries.X s) = a s := by
@@ -65,6 +91,13 @@ private theorem psm_ev {R S σ : Type} [CommRing R] [CommRing S] [Finite σ] (m 
     fun x => by rw [MvPowerSeries.coe_eval₂Hom, MvPowerSeries.eval₂_C],
     fun s => by rw [MvPowerSeries.coe_eval₂Hom, MvPowerSeries.eval₂_X]⟩
 
+/- English proof (translation)
+Take `⟨n, v, hv⟩` from `Module.Finite.exists_fin (R := Λ) (M := M)`. Take `⟨r, hr⟩` from `(Filter.eventually_all.2 fun i => hb (v i)).exists`. Establish `h1 : LinearMap.range (ι b ^ r) ≤ I • ⊤`. Rewrite using `[LinearMap.range_eq_map, ← hv, Submodule.map_span, Submodule.span_le, hv]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`.
+
+Conclude with `hr i`. Take `⟨p, hp, -, hc, h0⟩` from `LinearMap.exists_monic_and_coeff_mem_pow_and_aeval_eq_zero_of_range_le_smul Λ (ι b ^ r) I h1`. Rewrite `h0` using `[← map_pow, Polynomial.aeval_algHom_apply, map_eq_zero_iff _ hι, hp.as_sum, map_add, map_sum, add_eq_zero_iff_eq_neg, map_pow, Polynomial.aeval_X, ← pow_mul]`. Use `⟨_, h0 ▸ neg_mem (Ideal.sum_mem _ fun k hk => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_mul, Polynomial.aeval_C]`.
+
+Use `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations. Conclude with `Ideal.pow_le_self (Nat.sub_ne_zero_of_lt (Finset.mem_range.1 hk)) (hc k)`.
+-/
 private theorem psm_rad {Λ B M : Type} [CommRing Λ] [CommRing B] [Algebra Λ B] [AddCommGroup M] [Module Λ M]
     [Module.Finite Λ M] (I : Ideal Λ) (ι : B →ₐ[Λ] Module.End Λ M) (hι : Function.Injective ι) (b : B)
     (hb : ∀ x : M, ∀ᶠ r : ℕ in Filter.atTop, (ι b ^ r) x ∈ (I • ⊤ : Submodule Λ M)) :
@@ -84,6 +117,11 @@ private theorem psm_rad {Λ B M : Type} [CommRing Λ] [CommRing B] [Algebra Λ B
   refine Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)
   exact Ideal.pow_le_self (Nat.sub_ne_zero_of_lt (Finset.mem_range.1 hk)) (hc k)
 
+/- English proof (translation)
+Use `letI : Algebra Λ B := g.toAlgebra`. Set `ι' : B →ₐ[Λ] Module.End Λ M` to `{ ι with commutes' := hg }`. Use `haveI : Module.Finite Λ B := Module.Finite.of_injective ι'.toLinearMap hι`. Use `haveI : IsPrecomplete (maximalIdeal Λ) B := psm_prec_finite _`. Use `haveI : IsAdicComplete ((maximalIdeal Λ).map (algebraMap Λ B)) B := { toIsHausdorff := IsHausdorff.map_algebraMap_iff.2 inferInstance toIsPrecomplete := IsPrecomplete.map_algebraMap_iff.2 inferInstance }`.
+
+Use `psm_ev ((maximalIdeal Λ).map (algebraMap Λ B)) f b fun s => psm_rad _ ι' hι _ fun x => ?_` and prove the remaining obligations. Establish `h` using `mem_topNil.1 (hb.ge (Submodule.mem_top (x := x))) s 1`. Rewrite `h` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 private theorem psm_abs {Λ A B M κ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ]
     [IsAdicComplete (maximalIdeal Λ) Λ] [CommRing A] [CommRing B] [AddCommGroup M] [Module Λ M]
     [Module.Finite Λ M] [Finite κ] (g : Λ →+* B) (f : A →+* B) (ι : B →+* Module.End Λ M)
@@ -101,6 +139,13 @@ private theorem psm_abs {Λ A B M κ : Type} [CommRing Λ] [IsLocalRing Λ] [IsN
   have h := mem_topNil.1 (hb.ge (Submodule.mem_top (x := x))) s 1
   rwa [pow_one] at h
 
+/- English proof (translation)
+Introduce `Λ _ _ _ _ A M κ _ _ _ _ _ _ _ _ T hT htop`. Set `B` to `Algebra.adjoin A (Set.range T)`. Establish `hcomm : IsMulCommutative B` using `Algebra.isMulCommutative_adjoin A (by`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`. Conclude with `(hT i j).eq)`.
+
+Use `letI : CommRing B := { (inferInstance : Ring B) with mul_comm := fun x y => hcomm.is_comm.comm x y }`. Set `ι : B →+* Module.End Λ M` to `{ toFun := fun x => (x : Module.End A M).restrictScalars Λ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hι : Function.Injective ι` using `fun x y h => Subtype.ext (LinearMap.ext fun m => LinearMap.congr_fun h m)`. Take `⟨F, hC, hX⟩` from `psm_abs (A := A) ((algebraMap A B).comp (algebraMap Λ A)) (algebraMap A B) ι hι (fun c => LinearMap.ext fun m => algebraMap_smul A c m) (fun i => ⟨T i, Algebra.subset_adjoin ⟨i, rfl⟩⟩) htop`. Use `⟨{ (B.val : B →+* Module.End A M).comp F with commutes' := fun c => ?_ }, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `show ((F (MvPowerSeries.C c) : B) : Module.End A M) = _`. Rewrite using `[hC]`. Both sides reduce to the same expression. Use `show ((F (MvPowerSeries.X i) : B) : Module.End A M) = _`. Rewrite using `[hX]`.
+-/
 theorem UpperTheory.V.Pa.Lev.psModule :
     ∀ (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] (A M κ : Type) [CommRing A] [Algebra Λ A] [AddCommGroup M] [Module A M] [Module Λ M] [IsScalarTower Λ A M] [Module.Finite Λ M] [Fintype κ] (T : κ → Module.End A M), (∀ i j, Commute (T i) (T j)) → topNil (maximalIdeal Λ) (fun i => (T i).restrictScalars Λ) = ⊤ → ∃ act : MvPowerSeries κ A →ₐ[A] Module.End A M, ∀ i, act (MvPowerSeries.X i) = T i := by
   intro Λ _ _ _ _ A M κ _ _ _ _ _ _ _ _ T hT htop

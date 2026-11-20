@@ -19,6 +19,9 @@ def pCLM (l : Type) [Fintype l] : (l ⊕ l → ℝ) →L[ℝ] EuclideanSpace ℝ
 def qCLM (l : Type) [Fintype l] : (l ⊕ l → ℝ) →L[ℝ] EuclideanSpace ℝ l :=
   LinearMap.toContinuousLinearMap { toFun := qPart, map_add' := qPart_add, map_smul' := qPart_smul }
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[coe_rhoSch, SchwartzMap.smulLeftCLM_apply_apply (GlobalTheory.PhaseLipschitz.hasTemperateGrowth_phase _ _), SchwartzMap.compSubConstCLM_apply, smul_eq_mul, rhoFun, phase_eq_eChar, sub_neg_eq_add]`. Simplify using the standard rewrite rules.
+-/
 theorem rhoSch_eq (w : l ⊕ l → ℝ) (g : Sch l) :
     rhoSch w g = SchwartzMap.smulLeftCLM ℂ
       (fun y => GlobalTheory.Published.Metaplectic.eChar (innerSL ℝ (qPart w) y + ⟪pPart w, qPart w⟫ / 2))
@@ -28,6 +31,15 @@ theorem rhoSch_eq (w : l ⊕ l → ℝ) (g : Sch l) :
     SchwartzMap.compSubConstCLM_apply, smul_eq_mul, rhoFun, phase_eq_eChar, sub_neg_eq_add]
   simp
 
+/- English proof (translation)
+Take `⟨q₁, M₁, hq₁, hb₁⟩` from `GlobalTheory.PhaseLipschitz.seminorm_smulLeft_eChar_sub_le (EuclideanSpace ℝ l) p hp`. Take `⟨q₂, M₂, -, hb₂⟩` from `GlobalTheory.SchwartzTranslateLip.translate_sub_le (EuclideanSpace ℝ l) p hp`. Take `⟨q₃, M₃, -, hb₃⟩` from `GlobalTheory.SchwartzTranslateLip.translate_sub_le (EuclideanSpace ℝ l) q₁ hq₁`. Use `⟨q₁, q₂, q₃, M₁, M₂, M₃, fun w g => ?_⟩` and prove the remaining obligations. Use `set T := SchwartzMap.compSubConstCLM ℂ (-pPart w) g with hT`.
+
+Establish `hL : ‖innerSL ℝ (qPart w)‖ = ‖qPart w‖` using `innerSL_apply_norm _ _`. Establish `h1` using `map_add_le_add p (SchwartzMap.smulLeftCLM ℂ (fun y => GlobalTheory.Published.Metaplectic.eChar (innerSL ℝ (qPart w) y + ⟪pPart w, qPart w⟫ / 2)) T - T) (T - g)`. Rewrite `h1` using `[sub_add_sub_cancel]`. Rewrite using `[rhoSch_eq]`. Use `le_trans h1 (add_le_add ((hb₁ _ _ T).trans ?_) (hb₂ _ g))` and prove the remaining obligations.
+
+Rewrite using `[hL]`. Establish `h2` using `map_add_le_add q₁ (T - g) g`. Rewrite `h2` using `[sub_add_cancel]`. Establish `h3` using `hb₃ (pPart w) g`. Use `gcongr`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem seminorm_rhoSch_sub_le (p : Seminorm ℂ (Sch l)) (hp : Continuous p) :
     ∃ (q₁ q₂ q₃ : Seminorm ℂ (Sch l)) (M₁ M₂ M₃ : ℕ), ∀ (w : l ⊕ l → ℝ) (g : Sch l),
       p (rhoSch w g - g) ≤ (‖qPart w‖ + |⟪pPart w, qPart w⟫ / 2|) * (1 + ‖qPart w‖) ^ M₁ *
@@ -50,6 +62,17 @@ theorem seminorm_rhoSch_sub_le (p : Seminorm ℂ (Sch l)) (hp : Continuous p) :
   gcongr
   linarith
 
+/- English proof (translation)
+Rewrite using `[(schwartz_withSeminorms ℂ (EuclideanSpace ℝ l) ℂ).tendsto_nhds _ g]`. Introduce `i ε hε`. Take `⟨q₁, q₂, q₃, M₁, M₂, M₃, hb⟩` from `seminorm_rhoSch_sub_le (schwartzSeminormFamily ℂ _ ℂ i) ((schwartz_withSeminorms ℂ (EuclideanSpace ℝ l) ℂ).continuous_seminorm i)`. Establish `hpc : Tendsto (fun u : l ⊕ l → ℝ => pPart u) (𝓝 0) (𝓝 0)`. Use `(pCLM l).continuous.tendsto 0` as an intermediate fact.
+
+Rewrite `this` using `[map_zero]`. Conclude with `this`. Establish `hqc : Tendsto (fun u : l ⊕ l → ℝ => qPart u) (𝓝 0) (𝓝 0)`. Use `(qCLM l).continuous.tendsto 0` as an intermediate fact. Rewrite `this` using `[map_zero]`.
+
+Conclude with `this`. Establish `hpn : Tendsto (fun u : l ⊕ l → ℝ => ‖pPart u‖) (𝓝 0) (𝓝 0)` using `by simpa using hpc.norm`. Establish `hqn : Tendsto (fun u : l ⊕ l → ℝ => ‖qPart u‖) (𝓝 0) (𝓝 0)` using `by simpa using hqc.norm`. Establish `hk : Tendsto (fun u : l ⊕ l → ℝ => |⟪pPart u, qPart u⟫ / 2|) (𝓝 0) (𝓝 0)`. Use `((hpc.inner (𝕜 := ℝ) hqc).div_const 2).abs` as an intermediate fact.
+
+Simplify using `using this`. Establish `lim : Tendsto (fun u : l ⊕ l → ℝ => (‖qPart u‖ + |⟪pPart u, qPart u⟫ / 2|) * (1 + ‖qPart u‖) ^ M₁ * (‖pPart u‖ * (1 + ‖pPart u‖) ^ M₃ * q₃ g + q₁ g) + ‖pPart u‖ * (1 + ‖pPart u‖) ^ M₂ * q₂ g) (𝓝 0) (𝓝 0)`. Use `(((hqn.add hk).mul ((hqn.const_add 1).pow M₁)).mul (((hpn.mul ((hpn.const_add 1).pow M₃)).mul_const (q₃ g)).add_const (q₁ g))).add ((hpn.mul ((hpn.const_add 1).pow M₂)).mul_const (q₂ g))` as an intermediate fact. Simplify using `using this`. Use `filter_upwards [lim.eventually (gt_mem_nhds hε)] with u hu`.
+
+Conclude with `(hb u g).trans_lt hu`.
+-/
 theorem tendsto_rhoSch_zero (g : Sch l) : Tendsto (fun u => rhoSch u g) (𝓝 0) (𝓝 g) := by
   rw [(schwartz_withSeminorms ℂ (EuclideanSpace ℝ l) ℂ).tendsto_nhds _ g]
   intro i ε hε
@@ -78,12 +101,24 @@ theorem tendsto_rhoSch_zero (g : Sch l) : Tendsto (fun u => rhoSch u g) (𝓝 0)
   filter_upwards [lim.eventually (gt_mem_nhds hε)] with u hu
   exact (hb u g).trans_lt hu
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[coe_rhoSch, coe_rhoSch, rhoFun_rhoFun, SchwartzMap.smul_apply, coe_rhoSch]`. Both sides reduce to the same expression.
+-/
 theorem rhoSch_rhoSch (w₀ u : l ⊕ l → ℝ) (g : Sch l) :
     rhoSch w₀ (rhoSch u g) = Complex.exp (((Real.pi * sympl w₀ u : ℝ) : ℂ) * Complex.I) • rhoSch (w₀ + u) g := by
   ext x
   rw [coe_rhoSch, coe_rhoSch, rhoFun_rhoFun, SchwartzMap.smul_apply, coe_rhoSch]
   rfl
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun w₀ => ?_` and prove the remaining obligations. Use `set c : (l ⊕ l → ℝ) → ℂ := fun u => Complex.exp (((Real.pi * sympl w₀ u : ℝ) : ℂ) * Complex.I) with hcdef`. Establish `hs : Continuous fun u : l ⊕ l → ℝ => sympl w₀ u`. Establish `e : (fun u : l ⊕ l → ℝ => sympl w₀ u) = fun u => ⟪pPart w₀, qCLM l u⟫ - ⟪qPart w₀, pCLM l u⟫` using `rfl`. Rewrite using `[e]`.
+
+Conclude with `(continuous_const.inner (qCLM l).continuous).sub (continuous_const.inner (pCLM l).continuous)`. Establish `hc : Continuous c`. Rewrite using `[hcdef]`. Use `fun_prop`. Establish `h1 : Tendsto (fun u => (c u)⁻¹ • rhoSch w₀ (rhoSch u g)) (𝓝 0) (𝓝 ((c 0)⁻¹ • rhoSch w₀ g))` using `((hc.tendsto 0).inv₀ (Complex.exp_ne_zero _)).smul (((rhoSch w₀).continuous.tendsto g).comp (tendsto_rhoSch_zero g))`.
+
+Establish `hq0 : qPart (0 : l ⊕ l → ℝ) = 0` using `rfl`. Establish `hp0 : pPart (0 : l ⊕ l → ℝ) = 0` using `rfl`. Establish `hc0 : c 0 = 1` using `by simp [hcdef, sympl, hq0, hp0]`. Establish `e : ∀ u, (c u)⁻¹ • rhoSch w₀ (rhoSch u g) = rhoSch (w₀ + u) g` using `fun u => by`. Rewrite using `[rhoSch_rhoSch, inv_smul_smul₀ (Complex.exp_ne_zero _)]`.
+
+Simplify using `only [e, hc0, inv_one, one_smul] at h1`. Establish `h3 : Tendsto (fun w => w - w₀) (𝓝 w₀) (𝓝 0)` using `(continuous_sub_right w₀).tendsto' _ _ (sub_self _)`. Use `(h1.comp h3).congr fun w => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem continuous_rhoSch (g : Sch l) : Continuous fun w => rhoSch w g := by
   refine continuous_iff_continuousAt.2 fun w₀ => ?_
   set c : (l ⊕ l → ℝ) → ℂ := fun u => Complex.exp (((Real.pi * sympl w₀ u : ℝ) : ℂ) * Complex.I) with hcdef
@@ -108,6 +143,25 @@ theorem continuous_rhoSch (g : Sch l) : Continuous fun w => rhoSch w g := by
   refine (h1.comp h3).congr fun w => ?_
   simp
 
+/- English proof (translation)
+Take `⟨q₁, q₂, q₃, M₁, M₂, M₃, hb⟩` from `seminorm_rhoSch_sub_le (SchwartzMap.seminorm ℂ k m) ((schwartz_withSeminorms ℂ (EuclideanSpace ℝ l) ℂ).continuous_seminorm (k, m))`. Use `set p := SchwartzMap.seminorm ℂ k m (E := EuclideanSpace ℝ l) (F := ℂ) with hpdef`. Use `set c := ‖pCLM l‖ + ‖qCLM l‖ with hcdef`. Use `set N := 3 + M₁ + M₂ + M₃ with hN`. Establish `hq1 : 0 ≤ q₁ g` using `apply_nonneg _ _`.
+
+Establish `hq2 : 0 ≤ q₂ g` using `apply_nonneg _ _`. Establish `hq3 : 0 ≤ q₃ g` using `apply_nonneg _ _`. Establish `hp : 0 ≤ p g` using `apply_nonneg _ _`. Use `⟨(1 + c) ^ N * (2 * q₃ g + 2 * q₁ g + q₂ g + p g), N, fun w => ?_⟩` and prove the remaining obligations. Establish `hc : 0 ≤ c` using `by positivity`.
+
+Establish `hw` using `norm_nonneg w`. Use `set X := (1 + c) * (1 + ‖w‖) with hX`. Establish `hX1 : 1 ≤ X` using `by rw [hX]; nlinarith`. Establish `hpw : ‖pPart w‖ ≤ ‖pCLM l‖ * ‖w‖` using `(pCLM l).le_opNorm w`. Establish `hqw : ‖qPart w‖ ≤ ‖qCLM l‖ * ‖w‖` using `(qCLM l).le_opNorm w`.
+
+Establish `hpn` using `norm_nonneg (pCLM l)`. Establish `hqn` using `norm_nonneg (qCLM l)`. Establish `ha : 1 + ‖pPart w‖ ≤ X` using `by rw [hX]; nlinarith`. Establish `hb' : 1 + ‖qPart w‖ ≤ X` using `by rw [hX]; nlinarith`. Establish `ha' : ‖pPart w‖ ≤ X` using `by linarith`.
+
+Establish `hb'' : ‖qPart w‖ ≤ X` using `by linarith`. Establish `hk : ‖qPart w‖ + |⟪pPart w, qPart w⟫ / 2| ≤ 2 * X ^ 2`. Establish `h1 : |⟪pPart w, qPart w⟫| ≤ ‖pPart w‖ * ‖qPart w‖` using `abs_real_inner_le_norm _ _`. Establish `h2 : ‖pPart w‖ * ‖qPart w‖ ≤ X * X` using `mul_le_mul ha' hb'' (norm_nonneg _) (by linarith)`. Rewrite using `[abs_div, abs_two]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hsub : p (rhoSch w g) ≤ p (rhoSch w g - g) + p g`. Simplify using `using map_add_le_add p (rhoSch w g - g) g`. Combine the equalities or inequalities in the displayed calculation. Use `add_le_add ((hb w g).trans ?_) le_rfl` and prove the remaining obligations.
+
+Use `gcongr`. Use `_ = 2 * X ^ (3 + M₁ + M₃) * q₃ g + 2 * X ^ (2 + M₁) * q₁ g + X ^ (1 + M₂) * q₂ g + 1 * p g := by ring`. Use `_ ≤ 2 * X ^ N * q₃ g + 2 * X ^ N * q₁ g + X ^ N * q₂ g + X ^ N * p g := by`. Establish `e1 : X ^ (3 + M₁ + M₃) ≤ X ^ N` using `pow_le_pow_right₀ hX1 (by omega)`. Establish `e2 : X ^ (2 + M₁) ≤ X ^ N` using `pow_le_pow_right₀ hX1 (by omega)`.
+
+Establish `e3 : X ^ (1 + M₂) ≤ X ^ N` using `pow_le_pow_right₀ hX1 (by omega)`. Establish `e4 : (1 : ℝ) ≤ X ^ N` using `one_le_pow₀ hX1`. Establish `f1` using `mul_le_mul_of_nonneg_right e1 hq3`. Establish `f2` using `mul_le_mul_of_nonneg_right e2 hq1`. Establish `f3` using `mul_le_mul_of_nonneg_right e3 hq2`.
+
+Establish `f4` using `mul_le_mul_of_nonneg_right e4 hp`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = (1 + c) ^ N * (2 * q₃ g + 2 * q₁ g + q₂ g + p g) * (1 + ‖w‖) ^ N := by`. Rewrite using `[hX, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem seminorm_rhoSch_le (g : Sch l) (k m : ℕ) :
     ∃ (C : ℝ) (N : ℕ), ∀ w, SchwartzMap.seminorm ℂ k m (rhoSch w g) ≤ C * (1 + ‖w‖) ^ N := by
   obtain ⟨q₁, q₂, q₃, M₁, M₂, M₃, hb⟩ := seminorm_rhoSch_sub_le (SchwartzMap.seminorm ℂ k m)
@@ -157,6 +211,9 @@ theorem seminorm_rhoSch_le (g : Sch l) (k m : ℕ) :
     _ = (1 + c) ^ N * (2 * q₃ g + 2 * q₁ g + q₂ g + p g) * (1 + ‖w‖) ^ N := by
         rw [hX, mul_pow]; ring
 
+/- English proof (translation)
+Introduce `_ f` and use `⟨fun w => rhoSch w f, continuous_rhoSch f, fun w => coe_rhoSch w f, seminorm_rhoSch_le f⟩`.
+-/
 theorem exists_continuous_schwartz_rhoFun : ∀ (n : ℕ) (f : Sch (Fin n)), ∃ G : (Fin n ⊕ Fin n → ℝ) → Sch (Fin n),
     Continuous G ∧ (∀ w, ⇑(G w) = rhoFun w ⇑f) ∧
     ∀ k m : ℕ, ∃ (C : ℝ) (N : ℕ), ∀ w, SchwartzMap.seminorm ℂ k m (G w) ≤ C * (1 + ‖w‖) ^ N :=

@@ -10,6 +10,19 @@ open GlobalTheory.FunObj.FiniteSupport
 noncomputable section
 namespace GlobalTheory.TopLevelInv
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ Γ hs j hj g x x' y e e' hrest hj0 hj1`. Use function extensionality and compare the values at `b`. Consider the cases of `b with`. Consider the case `theta i l`. Distinguish the cases in `hi : i = Γ.m`.
+
+Substitute `hi` using the available equality. Rewrite using `[moveArgs_theta, fill_theta, fill_theta, transpose_transpose]`. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Establish `h1 : (Pi.mulSingle (Γ.m, l + 1) g : Γ.VertexGroup) (Γ.m, l) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h) _`.
+
+Rewrite using `[h1, Pi.mulSingle_eq_same, Units.val_one, Matrix.mul_one, hj0]`. Distinguish the cases in `hl' : l = j + 1`. Substitute `hl'` using the available equality. Establish `h1 : (Pi.mulSingle (Γ.m, j + 1) g : Γ.VertexGroup) (Γ.m, j + 1 + 1) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h) _`. Rewrite using `[h1, Pi.mulSingle_eq_same, inv_one, Units.val_one, Matrix.one_mul, hj1]`.
+
+Establish `h1 : (Pi.mulSingle (Γ.m, j + 1) g : Γ.VertexGroup) (Γ.m, l) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h; omega) _`. Establish `h2 : (Pi.mulSingle (Γ.m, j + 1) g : Γ.VertexGroup) (Γ.m, l + 1) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h; omega) _`. Simplify using `only [h1, h2, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one, hrest l hl hl']`. Simplify using `[fill, Grid.moveArgs, hi]`. Consider the case `ex i l`.
+
+Distinguish the cases in `hl : l = Γ.m`. Substitute `hl` using the available equality. Establish `h1 : (Pi.mulSingle (Γ.m, j + 1) g : Γ.VertexGroup) (i, Γ.m) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h; omega) _`. Establish `h2 : (Pi.mulSingle (Γ.m, j + 1) g : Γ.VertexGroup) (i + 1, Γ.m) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h; omega) _`. Simplify using `only [Grid.moveArgs, Edge.src, Edge.tgt, fill_ex, h1, h2, map_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Simplify using `[fill, Grid.moveArgs, hl]`.
+-/
 theorem fill_moveVertex : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {Γ : Grid k} (hs : 1 ≤ Γ.s) (j : ℕ) (hj : j + 1 < Γ.m) (g : GL (Fin (Γ.rank (Γ.m, j + 1))) k)
     (x x' : ColArgs Γ) (y : RowArgs Γ) (e e' : Vars Γ),
     (∀ l, l ≠ j → l ≠ j + 1 → downMap hs x' e' l = downMap hs x e l) →

@@ -7,11 +7,17 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.SecRatio
 
+/- English proof (translation)
+Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem rr {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : Γ(X, U)) :
     resG X h₂ (resG X h₁ s) = resG X (h₂.trans h₁) s := by
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Unfold `constFn`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp]`. Use `erw [Scheme.Hom.appLE_map]`.
+-/
 private theorem res_const {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U V : X.Opens}
     (e : U ≤ V) (a : R) : resG X e (constFn p V a) = constFn p U a := by
   unfold constFn
@@ -20,6 +26,9 @@ private theorem res_const {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp
 
 variable {X : Scheme.{0}} {H : LB X}
 
+/- English proof (translation)
+Use `congrArg (resG X (le_inf hi hj)) (s.compat i j)` as an intermediate fact. Rewrite `this` using `[map_mul]`. Use `erw [rr, rr] at this`. Conclude with `this`.
+-/
 theorem compat_res (s : H.Sec) (i j : H.ι) {V : X.Opens} (hi : V ≤ H.U i) (hj : V ≤ H.U j) :
     resG X hi (s.f i) = resG X (le_inf hi hj) (H.g i j : Γ(X, H.U i ⊓ H.U j)) * resG X hj (s.f j) := by
   have := congrArg (resG X (le_inf hi hj)) (s.compat i j)
@@ -27,6 +36,13 @@ theorem compat_res (s : H.Sec) (i j : H.ι) {V : X.Opens} (hi : V ≤ H.U i) (hj
   erw [rr, rr] at this
   exact this
 
+/- English proof (translation)
+Establish `hle : V ≤ X.basicOpen (t.f l)`. Introduce `x hx`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hV hx)`. Establish `hk' : x ∈ H.U k` using `X.basicOpen_le _ hk`. Establish `h1 : x ∈ X.basicOpen (resG X (inf_le_left : H.U k ⊓ H.U l ≤ H.U k) (t.f k))` using `by erw [Scheme.basicOpen_res]`.
+
+Conclude with `⟨⟨hk', hl hx⟩, hk⟩`. Rewrite `h1` using `[compat_res t k l inf_le_left inf_le_right, Scheme.basicOpen_mul]`. Establish `h2` using `h1.2`. Use `erw [Scheme.basicOpen_res] at h2`. Conclude with `h2.2`.
+
+Establish `hu : IsUnit (resG X (X.basicOpen_le (t.f l)) (t.f l))` using `X.toRingedSpace.isUnit_res_basicOpen (t.f l)`. Use `hu.map (resG X hle)` as an intermediate fact. Rewrite `this` using `[rr]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_res (t : H.Sec) (l : H.ι) {V : X.Opens} (hV : V ≤ Out.nonzeroLocus t)
     (hl : V ≤ H.U l) : IsUnit (resG X hl (t.f l)) := by
   have hle : V ≤ X.basicOpen (t.f l) := by
@@ -45,6 +61,19 @@ theorem isUnit_res (t : H.Sec) (l : H.ι) {V : X.Opens} (hV : V ≤ Out.nonzeroL
   have := hu.map (resG X hle)
   rwa [rr] at this
 
+/- English proof (translation)
+Establish `hu : ∀ l, IsUnit (resG X (inf_le_right : W ⊓ H.U l ≤ H.U l) (t.f l))` using `fun l => isUnit_res t l (inf_le_left.trans hW) _`. Establish `hq : ∀ l, ∃ q : Γ(X, W ⊓ H.U l), resG X (inf_le_right : W ⊓ H.U l ≤ H.U l) (s.f l) = q * resG X (inf_le_right : W ⊓ H.U l ≤ H.U l) (t.f l)` using `fun l => ⟨resG X (inf_le_right : W ⊓ H.U l ≤ H.U l) (s.f l) * ↑(hu l).unit⁻¹, by`. Rewrite using `[_root_.mul_assoc, IsUnit.val_inv_mul, _root_.mul_one]⟩`. Use `choose q hq using hq`. Establish `hcov : W ≤ ⨆ l, W ⊓ H.U l`.
+
+Rewrite using `[← inf_iSup_eq, hH.cover, inf_top_eq]`. Establish `hcomp : TopCat.Presheaf.IsCompatible X.sheaf.1 (fun l => W ⊓ H.U l) q`. Introduce `i j`. Express the relevant statement in the definitionally equal form `resG X (inf_le_left : W ⊓ H.U i ⊓ (W ⊓ H.U j) ≤ W ⊓ H.U i) (q i) = resG X (inf_le_right : W ⊓ H.U i ⊓ (W ⊓ H.U j) ≤ W ⊓ H.U j) (q j)`. Establish `hi : W ⊓ H.U i ⊓ (W ⊓ H.U j) ≤ H.U i` using `inf_le_left.trans inf_le_right`.
+
+Establish `hj : W ⊓ H.U i ⊓ (W ⊓ H.U j) ≤ H.U j` using `inf_le_right.trans inf_le_right`. Establish `e1` using `congrArg (resG X (inf_le_left : W ⊓ H.U i ⊓ (W ⊓ H.U j) ≤ W ⊓ H.U i)) (hq i)`. Establish `e2` using `congrArg (resG X (inf_le_right : W ⊓ H.U i ⊓ (W ⊓ H.U j) ≤ W ⊓ H.U j)) (hq j)`. Rewrite `e1`, `e2` using `[map_mul, rr, rr]`. Establish `u` using `isUnit_res t i ((inf_le_left.trans inf_le_left).trans hW) hi`.
+
+Apply `u.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[← e1, compat_res s i j hi hj, compat_res t i j hi hj, e2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨r, hr, hr'⟩` from `X.sheaf.existsUnique_gluing' (fun l => W ⊓ H.U l) W (fun l => homOfLE inf_le_left) hcov q hcomp`. Use `⟨r, fun l => ?_, fun r' h' => hr' r' fun l => ?_⟩` and prove the remaining obligations.
+
+Establish `: resG X (inf_le_left : W ⊓ H.U l ≤ W) r = q l` using `hr l`. Rewrite using `[this]`. Conclude with `hq l`. Express the relevant statement in the definitionally equal form `resG X (inf_le_left : W ⊓ H.U l ≤ W) r' = q l`. Apply `(hu l).mul_right_cancel` to reduce the goal to its premises.
+
+Rewrite using `[← hq l]`. Conclude with `(h' l).symm`.
+-/
 theorem existsUnique_isRatio (hH : H.IsLB) (s t : H.Sec) (W : X.Opens)
     (hW : W ≤ Out.nonzeroLocus t) : ∃! r : Γ(X, W), IsRatio s t W r := by
   have hu : ∀ l, IsUnit (resG X (inf_le_right : W ⊓ H.U l ≤ H.U l) (t.f l)) :=
@@ -78,6 +107,13 @@ theorem existsUnique_isRatio (hH : H.IsLB) (s t : H.Sec) (W : X.Opens)
     apply (hu l).mul_right_cancel
     rw [← hq l]; exact (h' l).symm
 
+/- English proof (translation)
+Use `⟨⟨fun l => ∑ j, constFn p (H.U l) (a j) * (s j).f l, fun i j => ?_⟩, fun l => rfl, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG X inf_le_left _ = _ * resG X inf_le_right _`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, res_const, res_const]`.
+
+Establish `: resG X inf_le_left _ = _ * resG X inf_le_right _` using `(s n).compat i j`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨f, hf⟩ h`. Establish `: f = _` using `funext h`.
+
+Substitute `this` using the available equality. Both sides reduce to the same expression.
+-/
 theorem existsUnique_isLin {k : Type} [CommRing k] (p : X ⟶ Sp k) {J : Type} [Fintype J]
     (s : J → H.Sec) (a : J → k) : ∃! φ : H.Sec, IsLin p s a φ := by
   refine ⟨⟨fun l => ∑ j, constFn p (H.U l) (a j) * (s j).f l, fun i j => ?_⟩, fun l => rfl, ?_⟩
@@ -92,6 +128,9 @@ theorem existsUnique_isLin {k : Type} [CommRing k] (p : X ⟶ Sp k) {J : Type} [
     subst this
     rfl
 
+/- English proof (translation)
+Introduce `_ _ hH` and use `⟨existsUnique_isRatio hH, fun _ _ p _ _ s a => existsUnique_isLin p s a⟩`.
+-/
 theorem ratio_and_lin : (∀ (X : Scheme.{0}) (H : LB X), H.IsLB → (∀ (s t : H.Sec) (W : X.Opens), W ≤ Out.nonzeroLocus t → ∃! r : Γ(X, W), IsRatio s t W r) ∧ ∀ (k : Type) [CommRing k] (p : X ⟶ Sp k) (J : Type) [Fintype J] (s : J → H.Sec) (a : J → k), ∃! φ : H.Sec, IsLin p s a φ) :=
   fun _ _ hH => ⟨existsUnique_isRatio hH, fun _ _ p _ _ s a => existsUnique_isLin p s a⟩
 

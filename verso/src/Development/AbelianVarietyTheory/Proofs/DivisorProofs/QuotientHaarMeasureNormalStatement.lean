@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientHaarMeasure
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.leftHaar_semidirect_coords | exact GlobalTheory.leftHaar_semidirect_coords | (intros; apply GlobalTheory.leftHaar_semidirect_coords <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.quotient_haar_measure_normal : ∀ (G M : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group M] [TopologicalSpace M] [IsTopologicalGroup M]
     [LocallyCompactSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (Q N : Subgroup G),

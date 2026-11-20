@@ -5,6 +5,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `U f hU`. Establish `h0 : s v₀ = s' v₀` using `h.eq_of_nhds`. Establish `hfd : fderiv ℂ (fun v => valAt' (s' v) U f) v₀ = fderiv ℂ (fun v => valAt' (s v) U f) v₀`. Apply `Filter.EventuallyEq.fderiv_eq` to reduce the goal to its premises. Use `filter_upwards [h] with v hv`.
+
+Rewrite using `[hv]`. Rewrite using `[hfd]`. Conclude with `hf U f (h0 ▸ hU)`.
+-/
 private theorem flat_of_eventuallyEq {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {Y : Scheme.{0}}
     {s s' : V → (Sp ℂ ⟶ Y)} {v₀ w : V} (h : s =ᶠ[𝓝 v₀] s') (hf : Flat s v₀ w) : Flat s' v₀ w := by
   intro U f hU
@@ -17,6 +22,21 @@ private theorem flat_of_eventuallyEq {V : Type} [NormedAddCommGroup V] [NormedSp
   exact hf U f (h0 ▸ hU)
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `hComp hPre hPF hExp O _ bar g ρ D X s A _ S k m B P b₀ hB hb₀ hP hu z₀ w hw`. Establish `hBU : IsOpen (B ×ˢ (Set.univ : Set (Fin k → Fin g → ℂ)))` using `hB.prod isOpen_univ`. Establish `hmem : (b₀, z₀) ∈ B ×ˢ (Set.univ : Set (Fin k → Fin g → ℂ))` using `⟨hb₀, Set.mem_univ _⟩`. Establish `hnhds : B ×ˢ (Set.univ : Set (Fin k → Fin g → ℂ)) ∈ 𝓝 (b₀, z₀)` using `hBU.mem_nhds hmem`. Establish `hS` using `S.hol m B P hB hP`.
+
+Establish `hw1 : w.1 = 0`. Establish `h1` using `hComp ((Fin m → ℂ) × (Fin k → Fin g → ℂ)) (KS.pow A k).left X (KS.pow A k).hom (fun bz => S.pt k (P bz.1) bz.2) (b₀, z₀) w hw`. Establish `h2 : Flat (fun bz : (Fin m → ℂ) × (Fin k → Fin g → ℂ) => S.u (P bz.1)) (b₀, z₀) w`. Use `flat_of_eventuallyEq ?_ h1` and prove the remaining obligations. Use `filter_upwards [hnhds] with bz hbz`.
+
+Conclude with `(hPF O bar g ρ D X s A S k (P bz.1) (hP.1 _ hbz.1)).1 bz.2`. Establish `hfst : HasFDerivAt (fun bz : (Fin m → ℂ) × (Fin k → Fin g → ℂ) => bz.1) (ContinuousLinearMap.fst ℂ (Fin m → ℂ) (Fin k → Fin g → ℂ)) (b₀, z₀)` using `hasFDerivAt_fst`. Establish `h3 : Flat (fun b => S.u (P b)) b₀ (ContinuousLinearMap.fst ℂ (Fin m → ℂ) (Fin k → Fin g → ℂ) w)` using `(hPre (Fin m → ℂ) ((Fin m → ℂ) × (Fin k → Fin g → ℂ)) X B (fun b => S.u (P b)) hS.1 (fun bz => bz.1) (ContinuousLinearMap.fst ℂ (Fin m → ℂ) (Fin k → Fin g → ℂ)) (b₀, z₀) w hfst hb₀).mp h2`. Conclude with `hu _ h3`. Establish `hw2 : ∀ j, w.2 j = 0`.
+
+Introduce `j`. Establish `h1` using `hComp ((Fin m → ℂ) × (Fin k → Fin g → ℂ)) (KS.pow A k).left A.left (Over.Hom.left (KS.pr A j)) (fun bz => S.pt k (P bz.1) bz.2) (b₀, z₀) w hw`. Establish `h2 : Flat (fun bz : (Fin m → ℂ) × (Fin k → Fin g → ℂ) => Over.Hom.left (S.ex (P bz.1) (bz.2 j))) (b₀, z₀) w`. Use `flat_of_eventuallyEq ?_ h1` and prove the remaining obligations. Use `filter_upwards [hnhds] with bz hbz`.
+
+Conclude with `(hPF O bar g ρ D X s A S k (P bz.1) (hP.1 _ hbz.1)).2.1 bz.2 j`. Set `L : (Fin m → ℂ) × (Fin k → Fin g → ℂ) →L[ℂ] (Fin m → ℂ) × (Fin g → ℂ)` to `(ContinuousLinearMap.fst ℂ (Fin m → ℂ) (Fin k → Fin g → ℂ)).prod ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin k => Fin g → ℂ) j).comp (ContinuousLinearMap.snd ℂ (Fin m → ℂ) (Fin k → Fin g → ℂ)))`. Establish `hL : HasFDerivAt (fun bz : (Fin m → ℂ) × (Fin k → Fin g → ℂ) => (bz.1, bz.2 j)) L (b₀, z₀)` using `L.hasFDerivAt`. Establish `hmem2 : ((b₀, z₀).1, (b₀, z₀).2 j) ∈ B ×ˢ (Set.univ : Set (Fin g → ℂ))` using `⟨hb₀, Set.mem_univ _⟩`. Establish `h3 : Flat (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => Over.Hom.left (S.ex (P bz.1) bz.2)) (b₀, z₀ j) (L w)` using `(hPre ((Fin m → ℂ) × (Fin g → ℂ)) ((Fin m → ℂ) × (Fin k → Fin g → ℂ)) A.left (B ×ˢ Set.univ) (fun bz => Over.Hom.left (S.ex (P bz.1) bz.2)) hS.2 (fun bz => (bz.1, bz.2 j)) L (b₀, z₀) w hL hmem2).mp h2`.
+
+Establish `hLw : L w = (0, w.2 j)`. Simplify using `[L, hw1]`. Rewrite `h3` using `[hLw]`. Establish `hι : HasFDerivAt (fun z : Fin g → ℂ => (b₀, z)) (ContinuousLinearMap.inr ℂ (Fin m → ℂ) (Fin g → ℂ)) (z₀ j)` using `(hasFDerivAt_const b₀ (z₀ j)).prodMk (hasFDerivAt_id (z₀ j))`. Establish `hmem3 : (fun z : Fin g → ℂ => (b₀, z)) (z₀ j) ∈ B ×ˢ (Set.univ : Set (Fin g → ℂ))` using `⟨hb₀, Set.mem_univ _⟩`.
+
+Establish `h4 : Flat (fun z : Fin g → ℂ => Over.Hom.left (S.ex (P b₀) z)) (z₀ j) (w.2 j)` using `(hPre ((Fin m → ℂ) × (Fin g → ℂ)) (Fin g → ℂ) A.left (B ×ˢ Set.univ) (fun bz => Over.Hom.left (S.ex (P bz.1) bz.2)) hS.2 (fun z => (b₀, z)) (ContinuousLinearMap.inr ℂ (Fin m → ℂ) (Fin g → ℂ)) (z₀ j) (w.2 j) hι hmem3).mpr h3`. Conclude with `hExp X A g (S.u (P b₀)) (S.ex (P b₀)) (S.exp _ (hP.1 _ hb₀)) (z₀ j) (w.2 j) h4`. Conclude with `Prod.ext hw1 (_root_.funext hw2)`.
+-/
 theorem UpperTheory.Gal.W2.ptImm_of :
     UpperTheory.Gal.W2.FlatComp → UpperTheory.Gal.W2.FlatPre → UpperTheory.Gal.W2.PtFibre → UpperTheory.Gal.W2.ExpImm → UpperTheory.Gal.W2.PtImm := by
   intro hComp hPre hPF hExp O _ bar g ρ D X s A _ S k m B P b₀ hB hb₀ hP hu z₀ w hw

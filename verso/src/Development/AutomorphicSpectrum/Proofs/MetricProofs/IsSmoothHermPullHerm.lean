@@ -13,12 +13,22 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.FA.StepLine
 
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter (pullHerm)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Distinguish the cases in `h : ∃ a, κ a = k`. Simplify using `[pullDeg, Function.extend_def, h]`. Simplify using `[pullDeg, Function.extend_def, h]`.
+-/
 theorem pullDeg_zero {K K' : Type} (κ : K → K') : pullDeg κ (0 : K → ℤ) = 0 := by
   funext k
   by_cases h : ∃ a, κ a = k
   · simp [pullDeg, Function.extend_def, h]
   · simp [pullDeg, Function.extend_def, h]
 
+/- English proof (translation)
+Establish `hlin : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k', ι' k') → ℂ => fun q => z (v q))` using `contDiff_pi.2 fun q => contDiff_apply ℝ ℂ (v q)`. Use `show ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (B.h ∘ fun z : (Σ k', ι' k') → ℂ => fun q => z (v q)) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Use `ContDiffOn.comp hB hlin.contDiffOn ?_` and prove the remaining obligations. Introduce `z hz k`. Take `⟨i', hi'⟩` from `hz (κ k)`.
+
+Take `⟨q, hq⟩` from `hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `h2 : q.1 = k` using `hv.1 (by rw [← hv.2.2.1 q, hq])`. Take `⟨k₀, m⟩` from `q`. Simplify using `only at h2`. Substitute `h2` using the available equality.
+
+Conclude with `⟨m, by simpa [hq] using hi'⟩`.
+-/
 theorem isSmoothHerm_pullHerm {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type}
     [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')}
     (hv : IsBlockMap κ v) {B : HermLine ι} (hB : IsSmoothHerm B) : IsSmoothHerm (pullHerm hv B) := by
@@ -36,6 +46,17 @@ theorem isSmoothHerm_pullHerm {K K' : Type} [Fintype K] [Fintype K'] {ι : K →
   subst h2
   exact ⟨m, by simpa [hq] using hi'⟩
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ N j M p B hB`. Establish `hdy : ∀ k, M.dy p k ≠ 0 → k ∈ Set.range (Subtype.val : PartialFlagBlocks M p → K)`. Introduce `k hk`. Distinguish the cases in `h : ∀ p', M.blk p' ≠ some k`. Conclude with `⟨⟨k, Or.inl h⟩, rfl⟩`.
+
+Distinguish the cases in `h' : M.blk p = some k`. Conclude with `⟨⟨k, Or.inr h'⟩, rfl⟩`. Conclude with `absurd (show M.dy p k = 0 by unfold FlagModel.dy; rw [dif_neg h, if_neg h']) hk`. Use `⟨(fsHerm ι (M.dy p)).tensor (pullHerm (isBlockMap_stepV M p) B), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show M.dy p + pullDeg _ B.a = M.dy p`.
+
+Rewrite using `[hB, pullDeg_zero, add_zero]`. Introduce `z z' hb hs`. Establish `hc : z ∘ stepV M p = z' ∘ stepV M p`. Use function extensionality and compare the values at `⟨⟨k, hk⟩, m⟩`. Break down `hk with h | h` into its components or cases.
+
+Conclude with `congrFun hb ⟨⟨k, h⟩, m⟩`. Conclude with `hs k h m`. Use `show (fsHerm ι (M.dy p)).h z * B.h (z ∘ stepV M p) = (fsHerm ι (M.dy p)).h z' * B.h (z' ∘ stepV M p)`. Rewrite using `[StepW.fsHerm_h_blockMap K ι (PartialFlagBlocks M p) (stepIdx M p) Subtype.val (stepV M p) (M.dy p) z (isBlockMap_stepV M p) hdy, StepW.fsHerm_h_blockMap K ι (PartialFlagBlocks M p) (stepIdx M p) Subtype.val (stepV M p) (M.dy p) z' (isBlockMap_stepV M p) hdy, hc]`. Introduce `hS`.
+
+Conclude with `isSmoothHerm_tensor (FlagHeightMultilinear.isSmoothHerm_fsHerm _) (isSmoothHerm_pullHerm (isBlockMap_stepV M p) hS)`. Introduce `z hz`. Establish `h1` using `(fsHerm ι (M.dy p)).pos z hz`. Establish `h2` using `(pullHerm (isBlockMap_stepV M p) B).pos z hz`. Conclude with `Real.log_mul h1.ne' h2.ne'`.
+-/
 theorem exists_stepLine : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ]
     (y : (Σ k, ι k) → Φ) (Ψ : Type) (N j : ℕ) (M : FlagModel y Ψ N j) (p : Ψ × Fin N)
     (B : HermLine (stepIdx M p)), B.a = 0 → ∃ A : HermLine ι, A.a = M.dy p ∧ M.OnStep p A ∧

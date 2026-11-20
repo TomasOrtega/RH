@@ -5,6 +5,11 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hT : Continuous fun t => LinearMap.toContinuousLinearMap (A t)` using `continuous_clm_apply.2 fun w => by simpa using hc w`. Use `contDiff_of_continuous_oneParameter (W →L[ℝ] W) _ hT ?_ ?_` and prove the remaining obligations. Use extensionality with `w`. Simplify using `[h0]`. Introduce `s t`.
+
+Use extensionality with `w`. Simplify using `[hadd]`.
+-/
 theorem contDiff_toCLM_of_continuous_oneParameter {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W]
     [FiniteDimensional ℝ W] (A : ℝ → W →ₗ[ℝ] W)
     (hc : ∀ w, Continuous fun t => A t w) (hadd : ∀ s t, A (s + t) = (A s).comp (A t)) (h0 : A 0 = LinearMap.id) :

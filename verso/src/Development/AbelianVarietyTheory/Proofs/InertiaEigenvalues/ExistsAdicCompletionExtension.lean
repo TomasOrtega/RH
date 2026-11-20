@@ -5,6 +5,11 @@ open PowerSeries GlobalTheory.NB.LT
 
 namespace GlobalTheory.NB.LT
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `AdicCompletion.mk_surjective J B x`. Rewrite using `[AdicCompletion.evalₐ_mk, AdicCompletion.evalₐ_mk, Ideal.Quotient.factor_mk, Ideal.Quotient.eq]`. Establish `hs` using `s.prop h`. Rewrite `hs` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Rewrite using `[← neg_sub]`.
+
+Conclude with `(J ^ m).neg_mem hs`.
+-/
 theorem factorPow_evalₐ_adic {B : Type} [CommRing B] (J : Ideal B) {m n : ℕ} (h : m ≤ n)
     (x : AdicCompletion J B) :
     Ideal.Quotient.factorPow J h (AdicCompletion.evalₐ J n x) = AdicCompletion.evalₐ J m x := by
@@ -15,6 +20,17 @@ theorem factorPow_evalₐ_adic {B : Type} [CommRing B] (J : Ideal B) {m n : ℕ}
   rw [← neg_sub]
   exact (J ^ m).neg_mem hs
 
+/- English proof (translation)
+Establish `hJ : ∀ n, ∀ b ∈ Ideal.span {(l : B)} ^ n, AdicCompletion.evalₐ (Ideal.span {(l : B)}) n (f b) = 0`. Introduce `n b hb`. Rewrite `hb` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hb`. Rewrite using `[map_mul, map_pow, map_natCast, map_mul, map_pow, map_natCast]`.
+
+Establish `hl : ((l : B ⧸ Ideal.span {(l : B)} ^ n)) ^ n = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(l : B)} ^ n)), ← map_pow, Ideal.Quotient.eq_zero_iff_mem, Ideal.span_singleton_pow]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[hl, zero_mul]`. Set `ψ : ∀ n, B ⧸ Ideal.span {(l : B)} ^ n →+* B ⧸ Ideal.span {(l : B)} ^ n` to `fun n => Ideal.Quotient.lift (Ideal.span {(l : B)} ^ n) ((AdicCompletion.evalₐ (Ideal.span {(l : B)}) n : _ →+* _).comp f) (hJ n)`.
+
+Establish `hψ : ∀ n b, ψ n (Ideal.Quotient.mk _ b) = AdicCompletion.evalₐ (Ideal.span {(l : B)}) n (f b)` using `fun n b => rfl`. Set `F : ∀ n, AdicCompletion (Ideal.span {(l : B)}) B →+* B ⧸ Ideal.span {(l : B)} ^ n` to `fun n => (ψ n).comp (AdicCompletion.evalₐ (Ideal.span {(l : B)}) n : _ →+* _)`. Establish `hF : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow (Ideal.span {(l : B)}) hle).comp (F n) = F m`. Introduce `m n hle`. Use extensionality with `x`.
+
+Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (Ideal.span {(l : B)}) n x)`. Simplify using `only [F, RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[← factorPow_evalₐ_adic _ hle x, ← hb, hψ, factorPow_evalₐ_adic, Ideal.Quotient.factor_mk, hψ]`. Use `⟨AdicCompletion.liftRingHom _ F hF, fun b => ?_⟩` and prove the remaining obligations. Use `AdicCompletion.ext_evalₐ fun n => ?_` and prove the remaining obligations.
+
+Rewrite using `[AdicCompletion.evalₐ_liftRingHom]`. Simplify using `only [F, RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[AdicCompletion.algebraMap_apply, AdicCompletion.evalₐ_of, hψ]`. Both sides reduce to the same expression.
+-/
 theorem exists_adicCompletion_extension {B : Type} [CommRing B] (l : ℕ)
     (f : B →+* AdicCompletion (Ideal.span {(l : B)}) B) :
     ∃ g : AdicCompletion (Ideal.span {(l : B)}) B →+* AdicCompletion (Ideal.span {(l : B)}) B,
@@ -52,6 +68,11 @@ theorem exists_adicCompletion_extension {B : Type} [CommRing B] (l : ℕ)
   rw [AdicCompletion.algebraMap_apply, AdicCompletion.evalₐ_of, hψ]
   rfl
 
+/- English proof (translation)
+Establish `hu' : IsUnit (((algebraMap O⟦X⟧ (EE O l)).comp (ψ : O⟦X⟧ →+* O⟦X⟧)) X)` using `hu`. Take `⟨g, hg⟩` from `exists_adicCompletion_extension l (IsLocalization.Away.lift (X : O⟦X⟧) (S := Localization.Away (X : O⟦X⟧)) hu')`. Establish `key : ∀ a, g (algebraMap O⟦X⟧ (EE O l) a) = algebraMap O⟦X⟧ (EE O l) (ψ a)`. Introduce `a`. Rewrite using `[IsScalarTower.algebraMap_apply O⟦X⟧ (Localization.Away (X : O⟦X⟧)) (EE O l), hg, IsLocalization.Away.lift_eq]`.
+
+Both sides reduce to the same expression. Use `⟨{ g with commutes' := fun c => ?_ }, key⟩` and prove the remaining obligations. Use `show g (algebraMap O (EE O l) c) = algebraMap O (EE O l) c`. Rewrite using `[IsScalarTower.algebraMap_apply O O⟦X⟧ (EE O l), key, AlgHom.commutes]`.
+-/
 theorem exists_EE_extension {l : ℕ} {O : Type} [CommRing O] (ψ : O⟦X⟧ →ₐ[O] O⟦X⟧)
     (hu : IsUnit (algebraMap O⟦X⟧ (EE O l) (ψ X))) :
     ∃ ψE : EE O l →ₐ[O] EE O l,

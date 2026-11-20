@@ -5,6 +5,9 @@ noncomputable section
 namespace GlobalTheory.UnitLemma
 open Polynomial IsLocalRing
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `hz`. Take `⟨y, hy⟩` from `K.c_int x`. Conclude with `⟨y, hy.symm⟩`.
+-/
 theorem c_mem (K : UQ) {z : K.E} (hz : z ∈ (algebraMap K.O K.E).range) : K.c z ∈ (algebraMap K.O K.E).range := by
   obtain ⟨x, rfl⟩ := hz
   obtain ⟨y, hy⟩ := K.c_int x

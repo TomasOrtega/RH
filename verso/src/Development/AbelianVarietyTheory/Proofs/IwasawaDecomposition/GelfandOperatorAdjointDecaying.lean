@@ -18,10 +18,16 @@ section Alg
 
 variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [gelfA, map_sum, map_list_prod, List.map_ofFn, Function.comp_def]`.
+-/
 theorem map_gelfA {B : Type} [Ring B] (f : A →+* B) (E : Fin n → Fin n → A) (k : ℕ) :
     f (gelfA E k) = gelfA (fun a b => f (E a b)) k := by
   simp only [gelfA, map_sum, map_list_prod, List.map_ofFn, Function.comp_def]
 
+/- English proof (translation)
+Simplify using `only [gelfA]`. Use `sum_mem fun idx _ => list_prod_mem fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[List.mem_ofFn]`. Take `⟨a, rfl⟩` from `hx`. Conclude with `h _ _`.
+-/
 theorem gelfA_mem {S : Type} [SetLike S A] [SubsemiringClass S A] (s : S) {E : Fin n → Fin n → A}
     (h : ∀ a b, E a b ∈ s) (k : ℕ) : gelfA E k ∈ s := by
   simp only [gelfA]
@@ -31,6 +37,11 @@ theorem gelfA_mem {S : Type} [SetLike S A] [SubsemiringClass S A] (s : S) {E : F
   exact h _ _
 
 attribute [local instance 100] LieRing.ofAssociativeRing in
+/- English proof (translation)
+Introduce `a b c d`. Apply `MulOpposite.unop_injective` to reduce the goal to its premises. Establish `key : E c d * E a b - E a b * E c d = -((if b = c then E a d else 0) - (if d = a then E c b else 0))`. Rewrite using `[← hE a b c d, neg_sub]`. Simplify using `only [MulOpposite.unop_sub, MulOpposite.unop_mul, MulOpposite.unop_op, neg_mul_neg, key]`.
+
+Apply the tactic sequence `split_ifs <;> (simp; try abel)`.
+-/
 theorem glRel_op {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E) : Formalism.REAL.GlRel fun a b => op (-E a b) := by
   intro a b c d
   apply MulOpposite.unop_injective
@@ -40,6 +51,9 @@ theorem glRel_op {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E) : For
   simp only [MulOpposite.unop_sub, MulOpposite.unop_mul, MulOpposite.unop_op, neg_mul_neg, key]
   split_ifs <;> (simp; try abel)
 
+/- English proof (translation)
+Use `range_le_filt (Nat.lt_succ_self m) ⟨Matrix.single I K 1, ?_⟩` and prove the remaining obligations. Simplify using `[wordMap, Matrix.single_apply]`. Rewrite using `[Fintype.sum_eq_single I fun x hx => by simp [Ne.symm hx]]`. Simplify using the standard rewrite rules.
+-/
 private theorem prod_ofFn_mem_filt_succ (E : Fin n → Fin n → A) (m : ℕ) (I K : Fin m → Fin n) :
     (List.ofFn fun a => E (I a) (K a)).prod ∈ filt E (m + 1) := by
   refine range_le_filt (Nat.lt_succ_self m) ⟨Matrix.single I K 1, ?_⟩
@@ -47,6 +61,11 @@ private theorem prod_ofFn_mem_filt_succ (E : Fin n → Fin n → A) (m : ℕ) (I
   rw [Fintype.sum_eq_single I fun x hx => by simp [Ne.symm hx]]
   simp
 
+/- English proof (translation)
+Use `List.ext_getElem (by simp) fun i h1 h2 => ?_` and prove the remaining obligations. Simplify using `only [List.getElem_reverse, List.getElem_ofFn, List.length_ofFn]`. Use `congr 1`. Use `ext`. Simplify using `only [Fin.val_rev]`.
+
+Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem list_ofFn_reverse_eq_ofFn_rev' {X : Type} (m : ℕ) (f : Fin m → X) :
     (List.ofFn f).reverse = List.ofFn fun a => f a.rev := by
   refine List.ext_getElem (by simp) fun i h1 h2 => ?_
@@ -57,6 +76,17 @@ private theorem list_ofFn_reverse_eq_ofFn_rev' {X : Type} (m : ℕ) (f : Fin m �
   simp at h1
   omega
 
+/- English proof (translation)
+Use `set G : Fin n → Fin n → Aᵐᵒᵖ := fun a b => op (-E a b) with hGdef`. Establish `hG : Formalism.REAL.GlRel G` using `glRel_op hE`. Establish `hc : ∀ a b, E a b * unop (gelfA G k) = unop (gelfA G k) * E a b`. Introduce `a b`. Establish `h0` using `congrArg MulOpposite.unop (gelf_adjoin_comm hG (Algebra.subset_adjoin ⟨k, rfl⟩) a b)`.
+
+Simplify using `only [hGdef, MulOpposite.unop_mul, MulOpposite.unop_op, mul_neg, neg_mul, neg_inj] at h0`. Conclude with `h0.symm`. Establish `hf : unop (gelfA G k) ∈ filt E (k + 2)`. Simplify using `only [hGdef, gelfA, Finset.unop_sum, MulOpposite.unop_list_prod, List.map_ofFn, Function.comp_def, MulOpposite.unop_op]`. Use `sum_mem fun idx _ => ?_` and prove the remaining obligations.
+
+Establish `hmap : (List.ofFn fun a : Fin (k + 1) => -E (idx a.rev) (idx (a.rev + 1))) = (List.ofFn fun a : Fin (k + 1) => E (idx a.rev) (idx (a.rev + 1))).map Neg.neg`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Simplify using `only [list_ofFn_reverse_eq_ofFn_rev']`. Rewrite using `[hmap, List.prod_map_neg, List.length_ofFn]`.
+
+Establish `hw` using `prod_ofFn_mem_filt_succ E (k + 1) (fun a => idx a.rev) (fun a => idx (a.rev + 1))`. Break down `neg_one_pow_eq_or A (k + 1) with h | h` into its components or cases. Rewrite using `[h, one_mul]`. Conclude with `hw`. Rewrite using `[h, neg_one_mul]`.
+
+Conclude with `neg_mem hw`. Conclude with `central_of_filt hE (k + 2) _ hf hc`.
+-/
 theorem unop_gelfA_mem {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E) (k : ℕ) :
     unop (gelfA (fun a b => op (-E a b)) k) ∈ Algebra.adjoin ℂ (Set.range (gelfA E)) := by
   set G : Fin n → Fin n → Aᵐᵒᵖ := fun a b => op (-E a b) with hGdef
@@ -110,6 +140,13 @@ def adjPairs : Subsemiring (Module.End ℂ M × (Module.End ℂ M)ᵐᵒᵖ) whe
     exact e1.trans e2.symm
 
 include h1 h2 in
+/- English proof (translation)
+Establish `hgen : ∀ a b, ((E a b, op (-E a b)) : Module.End ℂ M × (Module.End ℂ M)ᵐᵒᵖ) ∈ adjPairs P Q B h1 h2` using `fun a b => ⟨hP a b, fun y hy => by simpa using neg_mem (hQ a b y hy), fun x hx y hy => by simpa using h a b x hx y hy⟩`. Establish `hmem` using `gelfA_mem (adjPairs P Q B h1 h2) hgen k`. Establish `e1` using `map_gelfA (RingHom.fst (Module.End ℂ M) (Module.End ℂ M)ᵐᵒᵖ) (fun a b => ((E a b, op (-E a b)) : Module.End ℂ M × (Module.End ℂ M)ᵐᵒᵖ)) k`. Establish `e2` using `map_gelfA (RingHom.snd (Module.End ℂ M) (Module.End ℂ M)ᵐᵒᵖ) (fun a b => ((E a b, op (-E a b)) : Module.End ℂ M × (Module.End ℂ M)ᵐᵒᵖ)) k`. Simplify using `only [RingHom.coe_fst, RingHom.coe_snd] at e1 e2`.
+
+Take `⟨-, m2, m3⟩` from `hmem`. Use `⟨(gelfA (fun a b => op (-E a b)) k).unop, unop_gelfA_mem hE k, fun y hy => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Use `m2 y hy` as an intermediate fact. Rewrite `this` using `[e2]`. Then use the resulting hypothesis. Use `m3 x hx y hy` as an intermediate fact.
+
+Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis.
+-/
 theorem exists_adj {n : ℕ} {E : Fin n → Fin n → Module.End ℂ M} (hE : Formalism.REAL.GlRel E)
     (hP : ∀ a b, ∀ x ∈ P, E a b x ∈ P) (hQ : ∀ a b, ∀ y ∈ Q, E a b y ∈ Q)
     (h : ∀ a b, ∀ x ∈ P, ∀ y ∈ Q, B (E a b x) y = B x (-E a b y)) (k : ℕ) :
@@ -160,6 +197,35 @@ def ModS (θ : InfF D) (V : HSp D) : Submodule ℂ (GA D V → ℂ) where
     rw [Pi.smul_apply, norm_smul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (hC g) (norm_nonneg c)
 
+/- English proof (translation)
+Introduce `D θ hθ V μ 𝓕 hq τ Z hZ k F hF`. Establish `h0 : (0 : Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ lieAt V τ` using `by simp [lieAt]`. Establish `hint : ∀ φ F, IsMod θ V φ → F ∈ Decay θ V → IntegrableOn (fun g => φ g * F g) 𝓕 μ` using `fun φ F hφ hF => (GlobalTheory.T.integration_by_parts_rightDerivative_adelicQuotient D θ hθ V μ 𝓕 hq τ 0 h0 φ F hφ hF).1`. Establish `hRC : ∀ (W : Submodule ℂ (GA D V → ℂ)) (Y : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ), (∀ X ∈ lieAt V τ, Rder θ V τ X φ ∈ W) → RderC θ V τ Y φ ∈ W`. Introduce `W Y φ hW`.
+
+Take `⟨m1, m2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Y`. Conclude with `W.add_mem (hW _ m1) (W.smul_mem _ (hW _ m2))`. Set `S` to `SmFun θ V`. Set `P : Submodule ℂ S` to `(ModS θ V).comap S.subtype`. Set `Q : Submodule ℂ S` to `(Decay θ V).comap S.subtype`.
+
+Set `B : S → S → ℂ` to `fun x y => ∫ g in 𝓕, x.1 g * y.1 g ∂μ`. Establish `h1 : ∀ x ∈ P, ∀ x' ∈ P, ∀ y ∈ Q, B (x + x') y = B x y + B x' y`. Introduce `x hx x' hx' y hy`. Simplify using `only [B, Submodule.coe_add, Pi.add_apply, add_mul]`. Conclude with `integral_add (hint _ _ hx hy) (hint _ _ hx' hy)`.
+
+Establish `h2 : ∀ x ∈ P, ∀ y ∈ Q, ∀ y' ∈ Q, B x (y + y') = B x y + B x y'`. Introduce `x hx y hy y' hy'`. Simplify using `only [B, Submodule.coe_add, Pi.add_apply, mul_add]`. Conclude with `integral_add (hint _ _ hx hy) (hint _ _ hx hy')`. Set `E : Fin V.rank → Fin V.rank → Module.End ℂ S` to `fun a b => GlobalTheory.Mem.RealTranslate.derEnd hθ τ (Matrix.single a b 1)`.
+
+Establish `hE : Formalism.REAL.GlRel E` using `glRel_derEnd hθ V τ`. Establish `hEv : ∀ a b (x : S), (E a b x).1 = RderC θ V τ (Matrix.single a b 1) x.1` using `fun _ _ _ => rfl`. Establish `hP : ∀ a b, ∀ x ∈ P, E a b x ∈ P`. Introduce `a b x hx`. Establish `hx' : IsMod θ V x.1` using `hx`.
+
+Use `show (E a b x).1 ∈ ModS θ V`. Rewrite using `[hEv]`. Conclude with `hRC (ModS θ V) _ _ fun X hX => hx'.rder hX`. Establish `hQ : ∀ a b, ∀ y ∈ Q, E a b y ∈ Q`. Introduce `a b y hy`.
+
+Establish `hy' : y.1 ∈ Decay θ V` using `hy`. Use `show (E a b y).1 ∈ Decay θ V`. Rewrite using `[hEv]`. Conclude with `hRC (Decay θ V) _ _ fun X hX => Rder_mem_Decay hy' hX`. Establish `hadj : ∀ a b, ∀ x ∈ P, ∀ y ∈ Q, B (E a b x) y = B x (-E a b y)`.
+
+Introduce `a b x hx y hy`. Establish `hx' : IsMod θ V x.1` using `hx`. Establish `hy' : y.1 ∈ Decay θ V` using `hy`. Take `⟨m1, m2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ (Matrix.single a b 1)`. Establish `r1` using `(GlobalTheory.T.integration_by_parts_rightDerivative_adelicQuotient D θ hθ V μ 𝓕 hq τ _ m1 x.1 y.1 hx' hy').2`.
+
+Establish `r2` using `(GlobalTheory.T.integration_by_parts_rightDerivative_adelicQuotient D θ hθ V μ 𝓕 hq τ _ m2 x.1 y.1 hx' hy').2`. Establish `i1` using `hint _ _ (hx'.rder m1) hy'`. Establish `i2` using `hint _ _ (hx'.rder m2) hy'`. Establish `j1` using `hint _ _ hx' (Rder_mem_Decay hy' m1)`. Establish `j2` using `hint _ _ hx' (Rder_mem_Decay hy' m2)`.
+
+Simplify using `only [B, Submodule.coe_neg, hEv, Pi.neg_apply, RderC, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[show (fun g => (Rder θ V τ ((1 / 2 : ℂ) • (Matrix.single a b 1 + conjAt V τ (Matrix.single a b 1))) x.1 g + Complex.I * Rder θ V τ ((1 / (2 * Complex.I)) • (Matrix.single a b 1 - conjAt V τ (Matrix.single a b 1))) x.1 g) * y.1 g) = fun g => Rder θ V τ ((1 / 2 : ℂ) • (Matrix.sing …`. Expand and normalize the polynomial expressions, which then agree. Take `⟨z, hz, hzQ, hzB⟩` from `exists_adj P Q B h1 h2 hE hP hQ hadj k`. Establish `hF'` using `Submodule.mem_inf.1 hF`.
+
+Set `Fs : S` to `⟨F, hF'.1.1⟩`. Establish `hFQ : Fs ∈ Q` using `hF'.1`. Establish `hzZ : ∀ x : S, x.1 ∈ Z → (z x).1 ∈ Z`. Use `Algebra.adjoin_induction (p := fun z _ => ∀ x : S, x.1 ∈ Z → (z x).1 ∈ Z) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩ x hx`.
+
+Rewrite using `[← GlobalTheory.Mem.RealTranslate.gelf_eq hθ τ j x]`. Conclude with `hZ j _ hx`. Introduce `c x hx`. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `Z.smul_mem c hx`.
+
+Introduce `u v _ _ hu hv x hx`. Conclude with `Z.add_mem (hu x hx) (hv x hx)`. Introduce `u v _ _ hu hv x hx`. Conclude with `hu _ (hv x hx)`. Use `⟨(z Fs).1, Submodule.mem_inf.2 ⟨hzQ Fs hFQ, hzZ Fs hF'.2⟩, fun φ hφ => ?_⟩` and prove the remaining obligations.
+
+Establish `e : gelf θ V τ k φ = (gelfA E k ⟨φ, hφ.1⟩).1` using `GlobalTheory.Mem.RealTranslate.gelf_eq hθ τ k ⟨φ, hφ.1⟩`. Rewrite using `[e]`. Conclude with `hzB ⟨φ, hφ.1⟩ hφ Fs hFQ`.
+-/
 theorem gelf_by_parts : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D), ∀ μ 𝓕, IsQuot V μ 𝓕 → ∀ τ (Z : Submodule ℂ (GA D V → ℂ)), (∀ k, ∀ f ∈ Z, gelf θ V τ k f ∈ Z) → ∀ k, ∀ F ∈ Decay θ V ⊓ Z, ∃ F' ∈ Decay θ V ⊓ Z, ∀ φ, IsMod θ V φ → ∫ g in 𝓕, gelf θ V τ k φ g * F g ∂μ = ∫ g in 𝓕, φ g * F' g ∂μ := by
   intro D θ hθ V μ 𝓕 hq τ Z hZ k F hF
   have h0 : (0 : Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ lieAt V τ := by simp [lieAt]

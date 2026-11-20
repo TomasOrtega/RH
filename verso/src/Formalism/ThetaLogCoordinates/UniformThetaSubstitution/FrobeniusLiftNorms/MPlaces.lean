@@ -16,6 +16,13 @@ open Formalism.DworkPowerSeriesWeights (Integral mvExp jetPair mfact)
 open Formalism.FG.IntegralSubstitution (integral_mul integralSubstV)
 open TwoS
 
+/- English proof (translation)
+Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `hp0 : (0 : ℝ) ≤ (p : ℝ)` using `by linarith`. Establish `h1 : (p : ℝ) - 1 ≠ 0` using `by intro h; linarith`. Establish `h2 : (p : ℝ) + 1 ≠ 0` using `by intro h; linarith`. Establish `h3 : (p : ℝ) ^ 2 - 1 ≠ 0`.
+
+Establish `: (p : ℝ) ^ 2 - 1 = ((p : ℝ) - 1) * ((p : ℝ) + 1)` using `by ring`. Rewrite using `[this]`. Conclude with `mul_ne_zero h1 h2`. Rewrite using `[norm_pow, norm_unif hp hn hϖ, ← Real.rpow_natCast, ← Real.rpow_mul (inv_nonneg.2 hp0), Real.inv_rpow hp0, Real.rpow_neg hp0]`. Use `congr 2`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_unif_pow {K : Type} [NormedField K] {p : ℕ} (hp : p.Prime)
     (hn : ‖(p : K)‖ = (p : ℝ)⁻¹) {ϖ : K} (hϖ : ϖ ^ (p ^ 2 - 1) = (p : K)) :
     ‖ϖ ^ (p + 1)‖ = (p : ℝ) ^ (-(1 / ((p : ℝ) - 1))) := by

@@ -16,6 +16,11 @@ namespace UpperTheory.HilbertEisensteinWeightOne.LibOpenLevel
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Take `⟨g, hg, rfl⟩` from `hk`. Set `p : Ohat F →+* w.adicCompletionIntegers F` to `((pLoc F w).comp (Ohat F).subtype).codRestrict (w.adicCompletionIntegers F) fun x => GlobalFixedVectors.mem_Ohat.1 x.2 w`. Use `⟨GeneralLinearGroup.map p g, ?_, Units.ext rfl⟩` and prove the remaining obligations. Establish `key : GeneralLinearGroup.map (n` using `Fin 2) (Ideal.Quotient.mk (IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c)) (GeneralLinearGroup.map p g) = 1 := by`. Set `q` to `Ideal.quotientMap (I := Ideal.span {(M : ↥(Ohat F))}) (IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c) p ((Ideal.span_singleton_le_iff_mem _).2 (by simpa using hM))`.
+
+Use `congrArg (GeneralLinearGroup.map q) (MonoidHom.mem_ker.1 hg)` as an intermediate fact. Rewrite `this` using `[map_one]`. Rewrite using `[← this]`. Both sides reduce to the same expression. Conclude with `Subgroup.mem_comap.2 (key ▸ one_mem _)`.
+-/
 private theorem local_mem_principal_congruence {M : ℕ} (w : HeightOneSpectrum (𝓞 F)) (c : ℕ)
     (hM : (M : w.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c)
     {k : GL (Fin 2) (Af F)} (hk : k ∈ KLev F 2 M) : GeneralLinearGroup.map (pLoc F w) k ∈ K1 w c := by
@@ -33,6 +38,15 @@ private theorem local_mem_principal_congruence {M : ℕ} (w : HeightOneSpectrum 
     rfl
   exact Subgroup.mem_comap.2 (key ▸ one_mem _)
 
+/- English proof (translation)
+Use `⟨∏ w ∈ hc.toFinset, Ideal.absNorm w.asIdeal ^ c w, ?_, fun w => ?_⟩` and prove the remaining obligations. Use `Nat.pos_of_ne_zero (Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ ?_)` and prove the remaining obligations. Conclude with `fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Distinguish the cases in `h : c w = 0`. Simplify using `[h]`.
+
+Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem (fun w : HeightOneSpectrum (𝓞 F) => Ideal.absNorm w.asIdeal ^ c w) (hc.mem_toFinset.2 h)`. Rewrite using `[hm, Nat.cast_mul, Nat.cast_pow]`. Use `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow ?_ _)` and prove the remaining obligations. Establish `h1` using `Ideal.absNorm_mem w.asIdeal`. Rewrite using `[← map_natCast (algebraMap (𝓞 F) (w.adicCompletionIntegers F))]`.
+
+Generalize the expression as in `(Ideal.absNorm w.asIdeal : 𝓞 F) = x at h1`. Use `(Valuation.mem_maximalIdeal_iff _ (Valued.v : Valuation (w.adicCompletion F) _)).2 ?_` and prove the remaining obligations. Establish `h2 : Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) x) < 1`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (w.adicCompletion F)]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).trans_lt ((w.valuation_lt_one_iff_mem x).2 h1)`.
+
+Conclude with `h2`.
+-/
 private theorem exists_level (c : HeightOneSpectrum (𝓞 F) → ℕ) (hc : {w | c w ≠ 0}.Finite) :
     ∃ M : ℕ, 1 ≤ M ∧ ∀ w : HeightOneSpectrum (𝓞 F),
       (M : w.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c w := by
@@ -54,6 +68,11 @@ private theorem exists_level (c : HeightOneSpectrum (𝓞 F) → ℕ) (hc : {w |
       exact (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).trans_lt ((w.valuation_lt_one_iff_mem x).2 h1)
     exact h2
 
+/- English proof (translation)
+Take `⟨m, hm, hω⟩` from `isOfFinOrder_iff_pow_eq_one.1 hH.fin`. Establish `ho` using `GlobalTheory.HeckeGal.isOpen_ker_of_pow ω.1 ω.2.1 hm fun x => by`. Use `congrArg (fun ξ : HChar F => ξ.1 x) hω` as an intermediate fact. Simplify using `using this`. Take `⟨S, M, hS, key⟩` from `GlobalTheory.OpenIdeleCongr.localIdele_mem_of_isOpen ω.1.ker ho`.
+
+Use `hS.subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hwS`. Conclude with `hw (Nat.le_zero.1 ((hH.cond w).2 fun x hu _ => MonoidHom.mem_ker.1 (key w x hu fun h => absurd h hwS)))`.
+-/
 theorem finite_support {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) :
     {w | c w ≠ 0}.Finite := by
   obtain ⟨m, hm, hω⟩ := isOfFinOrder_iff_pow_eq_one.1 hH.fin
@@ -70,10 +89,16 @@ variable (F) in
 def Kc (c : HeightOneSpectrum (𝓞 F) → ℕ) : Subgroup (GL (Fin 2) (Af F)) :=
   ⨅ w, (K1 w (c w)).comap (GeneralLinearGroup.map (pLoc F w))
 
+/- English proof (translation)
+Simplify using `[Kc, Subgroup.mem_iInf]`.
+-/
 theorem mem_Kc {c : HeightOneSpectrum (𝓞 F) → ℕ} {k : GL (Fin 2) (Af F)} :
     k ∈ Kc F c ↔ ∀ w, GeneralLinearGroup.map (pLoc F w) k ∈ K1 w (c w) := by
   simp [Kc, Subgroup.mem_iInf]
 
+/- English proof (translation)
+Take `⟨M, hM1, hM⟩` from `exists_level c hc`. Conclude with `Subgroup.isOpen_mono (fun k hk => mem_Kc.2 fun w => local_mem_principal_congruence w _ (hM w) hk) (isOpen_KLev hM1)`.
+-/
 theorem isOpen_Kc {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite) : IsOpen (Kc F c : Set (GL (Fin 2) (Af F))) := by
   obtain ⟨M, hM1, hM⟩ := exists_level c hc
   exact Subgroup.isOpen_mono (fun k hk => mem_Kc.2 fun w => local_mem_principal_congruence w _ (hM w) hk) (isOpen_KLev hM1)
@@ -89,10 +114,16 @@ def stab (φ : UpperTheory.V.TR.Sm F 2) : Subgroup (GL (Fin 2) (Af F)) where
     conv_lhs => rw [← ha]
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (H₂ := stab φ) (fun k hk => h k hk) (isOpen_Kc (finite_support hH))`.
+-/
 theorem isOpen_stab {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) (φ : UpperTheory.V.TR.Sm F 2)
     (h : ∀ k ∈ Kc F c, UpperTheory.V.TR.finRep F 2 k φ = φ) : IsOpen {k | UpperTheory.V.TR.finRep F 2 k φ = φ} :=
   Subgroup.isOpen_mono (H₂ := stab φ) (fun k hk => h k hk) (isOpen_Kc (finite_support hH))
 
+/- English proof (translation)
+The claim follows from `isOpen_stab hH φ fun k hk => Subtype.ext (funext fun g => h k (mem_Kc.1 hk) g)`.
+-/
 theorem isOpen_stab_of_glob {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c)
     (φ : UpperTheory.V.TR.Sm F 2)
     (h : ∀ k : GL (Fin 2) (Af F), (∀ w, GeneralLinearGroup.map (pLoc F w) k ∈ K1 w (c w)) →

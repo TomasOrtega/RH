@@ -6,6 +6,11 @@ open ReciprocityTheory.Ty.Fin GlobalTheory.CompanionTheory.TyFin.ColStep
 
 namespace GlobalTheory.CompanionTheory.TyFin.RowTrans
 
+/- English proof (translation)
+Establish `hx1 : (LinearEquiv.toSpanNonzeroSingleton K V x hx).symm ⟨x, Submodule.mem_span_singleton_self x⟩ = 1`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearEquiv.toSpanNonzeroSingleton_one]`. Take `⟨g, hg⟩` from `Submodule.exists_linearEquiv_restrict_eq ((LinearEquiv.toSpanNonzeroSingleton K V x hx).symm.trans (LinearEquiv.toSpanNonzeroSingleton K V y hy))`. Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `h` using `hg ⟨x, Submodule.mem_span_singleton_self x⟩`.
+
+Rewrite `h` using `[LinearEquiv.trans_apply, hx1, LinearEquiv.toSpanNonzeroSingleton_one]`. Conclude with `h.symm`.
+-/
 theorem exists_linearEquiv_apply_eq_of_ne_zero {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] {x y : V} (hx : x ≠ 0) (hy : y ≠ 0) : ∃ e : V ≃ₗ[K] V, e x = y := by
   have hx1 : (LinearEquiv.toSpanNonzeroSingleton K V x hx).symm
@@ -19,6 +24,11 @@ theorem exists_linearEquiv_apply_eq_of_ne_zero {K V : Type} [Field K] [AddCommGr
   rw [LinearEquiv.trans_apply, hx1, LinearEquiv.toSpanNonzeroSingleton_one] at h
   exact h.symm
 
+/- English proof (translation)
+Introduce `K _ _ _ j r r' hr hr'`. Take `⟨e, he⟩` from `GlobalTheory.CompanionTheory.TyFin.RowTrans.exists_linearEquiv_apply_eq_of_ne_zero (K := K) hr hr'`. Establish `h1 : (e.symm : (Fin j → K) →ₗ[K] Fin j → K) ∘ₗ (e : (Fin j → K) →ₗ[K] Fin j → K) = LinearMap.id` using `LinearMap.ext fun v => by simp`. Establish `h2 : (e : (Fin j → K) →ₗ[K] Fin j → K) ∘ₗ (e.symm : (Fin j → K) →ₗ[K] Fin j → K) = LinearMap.id` using `LinearMap.ext fun v => by simp`. Use `⟨⟨(LinearMap.toMatrix' (e : (Fin j → K) →ₗ[K] Fin j → K)).transpose, (LinearMap.toMatrix' (e.symm : (Fin j → K) →ₗ[K] Fin j → K)).transpose, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.transpose_mul, ← LinearMap.toMatrix'_comp, h1, LinearMap.toMatrix'_id, Matrix.transpose_one]`. Rewrite using `[← Matrix.transpose_mul, ← LinearMap.toMatrix'_comp, h2, LinearMap.toMatrix'_id, Matrix.transpose_one]`. Express the relevant statement in the definitionally equal form `Matrix.vecMul r (LinearMap.toMatrix' (e : (Fin j → K) →ₗ[K] Fin j → K)).transpose = r'`. Rewrite using `[Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec, LinearEquiv.coe_coe]`. Conclude with `he`.
+-/
 theorem gl_transitive_rows : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (j : ℕ)
     (r r' : Fin j → K), r ≠ 0 → r' ≠ 0 →
     ∃ g : GL (Fin j) K, Matrix.vecMul r (g : Matrix (Fin j) (Fin j) K) = r' := by

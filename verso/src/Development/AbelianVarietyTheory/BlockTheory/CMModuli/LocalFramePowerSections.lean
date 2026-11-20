@@ -157,9 +157,15 @@ def DataAtTraits {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'} (a : A
 
 end Data
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨inferInstance, inferInstance, inferInstance⟩, rfl⟩`.
+-/
 example (p : ℕ) [Fact p.Prime] : IsTrait (RingHom.id ℤ_[p]) (RingHom.id _) :=
   ⟨⟨inferInstance, inferInstance, inferInstance⟩, rfl⟩
 
+/- English proof (translation)
+Establish `: Function.Injective ((algebraMap W (FractionRing W)).comp ρ)`. Rewrite using `[← h.2]`. Conclude with `κ.injective.comp (IsFractionRing.injective R₁ _)`. Conclude with `Function.Injective.of_comp (f := algebraMap W (FractionRing W)) this`.
+-/
 example {R₁ W : Type} [CommRing R₁] [IsDomain R₁] [CommRing W] [IsDomain W] [IsLocalRing W] {ρ : R₁ →+* W} {κ}
     (h : IsTrait ρ κ) : Function.Injective ρ := by
   have : Function.Injective ((algebraMap W (FractionRing W)).comp ρ) := by

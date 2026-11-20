@@ -8,6 +8,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.Top.Bl.QpIsOf
 
+/- English proof (translation)
+Introduce `B f T w _ Z nch tp hxi _ a p`. Establish `hr` using `w.ok.xi_reads a`. Establish `hsel : Formalism.L2.Col.IsSel B.fields w.I.sel` using `w.ok.sel_ok`. Establish `hf` using `GlobalTheory.OpenChrRam.qprime_finite B.fields.F B.fields.E B.fields.K ((w.I.tup a : Formalism.L2.DIV.Chr _ _ _)) (w.I.tup a).2.1.1.1.1.2`. Establish `hpm : ∀ (v : HeightOneSpectrum (𝓞 B.fields.F)) (P : HeightOneSpectrum (𝓞 B.fields.E)), Ideal.under (𝓞 B.fields.F) P.asIdeal = v.asIdeal → ((p : 𝓞 B.fields.E) ∈ P.asIdeal ↔ (p : 𝓞 B.fields.F) ∈ v.asIdeal)`.
+
+Introduce `v P h`. Rewrite using `[← h, Ideal.under, Ideal.mem_comap, map_natCast]`. Establish `hx : ∀ P, (tp.xi a).UnrAt P ↔ (w.I.xi a).UnrAt P` using `fun P => by rw [congrFun hxi a]; exact Iff.rfl`. Use `(GlobalTheory.Mem.HD.ReQ.mem_qpSet tp a p).trans ?_` and prove the remaining obligations. Use `Iff.trans (and_congr_right fun _ => exists_congr fun P => and_congr_right fun _ => not_congr (hx P)) ?_` and prove the remaining obligations.
+
+Use `show (p.Prime ∧ ∃ P, (p : 𝓞 B.fields.E) ∈ P.asIdeal ∧ ¬ (w.I.xi a).UnrAt P) ↔ p.Prime ∧ ∃ P ∈ Formalism.L2.Col.QE w.I.sel (w.I.tup a : Formalism.L2.DIV.Chr _ _ _), (p : 𝓞 B.fields.E) ∈ P.asIdeal`. Rewrite using `[Formalism.L2.Col.QE, dif_pos hf]`. Use `and_congr_right fun _ => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨P, hp, hP⟩`. Use `⟨w.I.sel (P.under (𝓞 B.fields.F)), Finset.mem_image_of_mem _ (hf.mem_toFinset.2 ((GlobalTheory.Mem.ReadTwist.mem_qprime_iff hr _).2 ⟨P, rfl, hP⟩)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hpm _ _ (hsel _), ← hpm _ P rfl]`. Conclude with `hp`. Introduce and unpack `⟨P, hP, hp⟩`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hP`. Take `⟨P', hP', hr'⟩` from `(GlobalTheory.Mem.ReadTwist.mem_qprime_iff hr v).1 (hf.mem_toFinset.1 hv)`.
+
+Use `⟨P', ?_, hr'⟩` and prove the remaining obligations. Rewrite using `[hpm v P' (by rw [← hP']; rfl), ← hpm v _ (hsel v)]`. Conclude with `hp`.
+-/
 theorem qpIs_qpSet : ∀ {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), ColPin w → ∀ (Z : w.Lt) {nch : NChoice (w.D Z)}
     (tp : TupTied (w.D Z) (TC.cf w.I w.l Z) nch), tp.xi = w.I.xi → GlobalTheory.Mem.HD.TupPins tp →
     TC.QpIs w.I (GlobalTheory.Mem.HD.ReQ.qpSet tp) := by

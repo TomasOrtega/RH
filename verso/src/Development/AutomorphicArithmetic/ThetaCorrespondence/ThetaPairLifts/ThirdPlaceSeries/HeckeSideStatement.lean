@@ -9,6 +9,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeckeFrob.locPol_eq_alt | exact _root_.GlobalTheory.HeckeFrob.locPol_eq_alt | (intros; apply _root_.GlobalTheory.HeckeFrob.locPol_eq_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.spherical_vector_fixed_local_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E)
     (w : PlE D.host) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)),
     IsConjPl D.host w s.w → IsUnif D.host.E s.v ϖ → ∀ J : Subgroup (GAf D.host.E D.R.nV),

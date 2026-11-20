@@ -11,6 +11,13 @@ open Classical
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] {r : ℕ}
 
+/- English proof (translation)
+Take `⟨⟨h1, h2⟩, -⟩` from `hM'`. Establish `hq : 0 < qRes O` using `lt_of_lt_of_le two_pos two_le_qRes`. Establish `hpow : qRes O ^ n = qRes O ^ (n - k) * qRes O ^ k`. Rewrite using `[← pow_add, Nat.sub_add_cancel hk]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h3, h4⟩`. Use `⟨⟨h3.trans h1, ?_⟩, h3⟩` and prove the remaining obligations. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex M.1.toAddSubgroup M'.1.toAddSubgroup L.1.toAddSubgroup h3 h1, h4, h2, hpow]`. Introduce and unpack `⟨⟨-, h4⟩, h5⟩`. Use `⟨h5, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `AddSubgroup.relIndex_mul_relIndex M.1.toAddSubgroup M'.1.toAddSubgroup L.1.toAddSubgroup h5 h1`. Rewrite `h` using `[h4, h2, hpow]`. Conclude with `Nat.eq_of_mul_eq_mul_right (pow_pos hq k) h`.
+-/
 theorem mem_subIdx_sub_iff {n k : ℕ} (hk : k ≤ n) {L M' M : Lat O K r}
     (hM' : M' ∈ subElem k L) :
     M ∈ subIdx (n - k) M' ↔ M ∈ subIdx n L ∧ M.1 ≤ M'.1 := by
@@ -30,6 +37,13 @@ theorem mem_subIdx_sub_iff {n k : ℕ} (hk : k ≤ n) {L M' M : Lat O K r}
     rw [h4, h2, hpow] at h
     exact Nat.eq_of_mul_eq_mul_right (pow_pos hq k) h
 
+/- English proof (translation)
+Rewrite using `[heckeElem_eq_sum]`. Establish `h : ∀ M' ∈ (subElem_finite k L).toFinset, heckeAll (n - k) φ M' = ∑ M ∈ (subIdx_finite n L).toFinset, if M.1 ≤ M'.1 then φ M else 0`. Introduce `M' hM'`. Rewrite using `[heckeAll_eq_sum, ← Finset.sum_filter]`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations.
+
+Use extensionality with `M`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset]`. Conclude with `mem_subIdx_sub_iff hk ((Set.Finite.mem_toFinset _).1 hM')`. Rewrite using `[Finset.sum_congr rfl h, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun M _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_filter, Finset.sum_const, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem heckeElem_heckeAll_eq {E : Type} [AddCommGroup E] [Module ℂ E] (φ : Lat O K r → E)
     {n k : ℕ} (hk : k ≤ n) (L : Lat O K r) :
     heckeElem k (heckeAll (n - k) φ) L = ∑ M ∈ (subIdx_finite n L).toFinset,
@@ -47,6 +61,15 @@ theorem heckeElem_heckeAll_eq {E : Type} [AddCommGroup E] [Module ℂ E] (φ : L
   refine Finset.sum_congr rfl fun M _ => ?_
   rw [← Finset.sum_filter, Finset.sum_const, Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ _ r E _ _ φ n L hn`. Rewrite using `[Finset.sum_congr rfl (fun k hk => by`. Rewrite using `[heckeElem_heckeAll_eq φ (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk)) L])]`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_eq_zero fun M hM => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Establish `hM' : M ∈ subIdx n L` using `(Set.Finite.mem_toFinset _).1 hM`. Establish `h` using `GlobalTheory.T.sum_alternating_card_elementarySublattices_above O K r n L M hn hM'`. Use `zero_smul ℂ (φ M) using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 2`. Rewrite using `[← Set.ncard_coe_finset]`. Use `congr 1`.
+
+Use extensionality with `M'`. Simplify using the standard rewrite rules.
+-/
 theorem heckeSeries_identity : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] (r : ℕ)
     (E : Type) [AddCommGroup E] [Module ℂ E] (φ : Lat O K r → E) (n : ℕ) (L : Lat O K r),

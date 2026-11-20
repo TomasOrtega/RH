@@ -47,6 +47,21 @@ def mkSD_k {B : Base F E} {m : ℕ} {A : Spc F E m} {r s r' s' : ℕ} {χ : Chr 
   bs := _root_.PositivityTheory.SiegelWeilFormula.Khead.basis2_k H.good
   ok := ⟨H.good, H.hm, H.hn, H.aniso, H.sign.imp (fun h => ⟨h.1, h.2.skew⟩) (fun h => ⟨h.1, h.2.herm⟩), H.hecke, H.res, H.dbl,
     H.frame, H.stdK, H.hgt, H.haar, H.dom⟩
+/- English proof (translation)
+Introduce `hBL hSec hStrong hMain F E _ _ _ _ _ σ B m n A Y r s r' s' χ κ _ dd om S l b K a μ D Φ H`. Use `set d := _root_.PositivityTheory.SiegelWeilFormula.Khead.mkSD_k H with hd`. Establish `hK : d.KFin Φ` using `⟨H.sch, H.fin⟩`. Establish `hY : Y.IsHerm σ B r' s' ∨ Y.IsSkew σ B r' s'` using `H.sign.elim (fun h => .inr h.2) (fun h => .inl h.2)`. Take `⟨Ê, ⟨t, hsum, -⟩, hw⟩` from `hBL F E σ B n Y r' s' H.good H.hn hY χ H.hecke m H.res b K a H.frame H.stdK H.hgt (s0 m n) (d.sec0 Φ) (hSec F E σ d Φ hK)`.
+
+Introduce `x`. Establish `hfl : ∀ z, (fun y => ((d.Ht y : ℝ) : ℂ) ^ (z - s0 m n) * d.sec0 Φ y) = flat a (d.sec0 Φ) (s0 m n) z` using `fun z =>`. Use function extensionality and compare the values at `fun y => by`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.Ht, flat]`. Rewrite using `[Real.coe_toNNReal _ (hgt_nonneg d.ok.hgt y)]`.
+
+Both sides reduce to the same expression. Establish `Heisenberg₂ : ∀ z : ℂ, t < z.re → d.eis (d.sec0 Φ) (s0 m n) z x = Ê z x` using `fun z hz => by`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.eis]`. Rewrite using `[hfl z]`. Conclude with `(hsum z hz x).tsum_eq`.
+
+Establish `hmer` using `meromorphicOn_of_weak hw x`. Establish `hext : IsExtAt (fun z => d.eis (d.sec0 Φ) (s0 d.m d.n) z x) (s0 d.m d.n) (Ê · x)` using `⟨Set.univ, trivial, isRightDomain_univ, hmer, t, fun z hz => (Heisenberg₂ z hz).symm⟩`. Establish `hEA : d.EisAll` using `fun Φ' hΦ' => hStrong F E σ d ⟨r', s', hY⟩ _ _ (hSec F E σ d Φ' hΦ')`. Take `⟨H', hext', han, hval⟩` from `hMain F E σ d H.hnm hEA Φ hK x`. Establish `hev` using `hext'.eventuallyEq hext`.
+
+Establish `hloc : Function.update (Ê · x) (s0 m n) (d.I Φ x) =ᶠ[𝓝 (s0 m n)] H'` using `by filter_upwards [eventually_nhdsWithin_iff.1 hev] with z hz`. Distinguish the cases in `e : z = s0 m n`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hval.symm`.
+
+Rewrite using `[Function.update_of_ne e]`. Conclude with `(hz e).symm`. Use `⟨Function.update (Ê · x) (s0 m n) (d.I Φ x), fun z _ => (hmer z trivial).update _ _, ⟨max t (s0 m n).re, fun z hz => ?_⟩, han.congr hloc.symm, Function.update_self _ _ _⟩` and prove the remaining obligations. Establish `hz1 : t < z.re` using `lt_of_le_of_lt (le_max_left _ _) hz`. Establish `hz2 : z ≠ s0 m n` using `fun e => by subst e; exact lt_irrefl _ (lt_of_le_of_lt (le_max_right _ _) hz)`.
+
+Rewrite using `[Function.update_of_ne hz2]`. Conclude with `hsum z hz1 x`.
+-/
 theorem headOf_k : _root_.PositivityTheory.SiegelWeilFormula.HeadOf_k := by
   intro hBL hSec hStrong hMain F E _ _ _ _ _ σ B m n A Y r s r' s' χ κ _ dd om S l b K a μ D Φ H
   set d := _root_.PositivityTheory.SiegelWeilFormula.Khead.mkSD_k H with hd

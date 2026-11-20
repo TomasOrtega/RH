@@ -15,6 +15,9 @@ open GlobalTheory.Points
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω}
   {Ω' : Type} [Field Ω'] [Algebra o Ω'] {M' : RatModel o Ω'} {φ : Ω →ₐ[o] Ω'}
 
+/- English proof (translation)
+Rewrite using `[Scheme.Opens.toSpecΓ, Scheme.toSpecΓ_naturality_assoc, ← SpecMap_ΓSpecIso_hom, valMap, ← Spec.map_comp, ← Spec.map_comp]`. Establish `e : V.topIso.inv ≫ p.appTop = (p ≫ V.ι).appLE V ⊤ h`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE p V.ι V ⊤ ⊤ (by simp) le_top, Scheme.Opens.ι_appLE, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[← e]`.
+-/
 theorem comp_toSpecΓ_eq_valMap {C : Type} [CommRing C] {X : Scheme.{0}} (V : X.Opens) (p : Sp C ⟶ V)
     (h : ⊤ ≤ (p ≫ V.ι) ⁻¹ᵁ V) : p ≫ V.toSpecΓ = Spec.map (valMap (p ≫ V.ι) V h) := by
   rw [Scheme.Opens.toSpecΓ, Scheme.toSpecΓ_naturality_assoc, ← SpecMap_ΓSpecIso_hom, valMap,
@@ -25,6 +28,17 @@ theorem comp_toSpecΓ_eq_valMap {C : Type} [CommRing C] {X : Scheme.{0}} (V : X.
     rfl
   rw [← e]
 
+/- English proof (translation)
+Set `χ : M.ringOn U →+* M'.ringOn V` to `(φ.toRingHom.comp (M.ringOn U).val.toRingHom).codRestrict (M'.ringOn V) fun x => h x x.2`. Set `ψ : Γ(M.Z, U) →+* Γ(M'.Z, V)` to `(M'.sectionsEquiv V hVne).symm.toRingHom.comp (χ.comp (M.sectionsEquiv U hUne).toRingHom)`. Establish `hr : Set.range M'.pt ⊆ Set.range V.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(top_le_preimage_iff _ _).1 (M'.top_le_preimage_pt hVne)`.
+
+Establish `hp` using `IsOpenImmersion.lift_fac V.ι M'.pt hr`. Use `set p := IsOpenImmersion.lift V.ι M'.pt hr`. Establish `hp' : p ≫ V.toSpecΓ = Spec.map (valMap M'.pt V (M'.top_le_preimage_pt hVne))`. Use `comp_toSpecΓ_eq_valMap V p (hp ▸ M'.top_le_preimage_pt hVne)` as an intermediate fact. Simplify `this` using `only [hp]`.
+
+Use `⟨p, V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ) ≫ hU.fromSpec, hp, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[← hU.range_fromSpec]`. Conclude with `⟨_, rfl⟩`. Rewrite using `[← Category.assoc, hp']`.
+
+Use `conv_rhs => rw [← specMap_valMap_fromSpec hU M.pt (M.top_le_preimage_pt hUne)]`. Rewrite using `[← Spec.map_comp_assoc, ← Spec.map_comp_assoc]`. Use `congr 2`. Use extensionality with `a`. Establish `e : (M'.sectionsEquiv V hVne (ψ a) : Ω') = φ (M.sectionsEquiv U hUne a)` using `congrArg Subtype.val ((M'.sectionsEquiv V hVne).apply_symm_apply _)`.
+
+Conclude with `e`.
+-/
 theorem exists_hom_range_subset {U : M.Z.Opens} (hU : IsAffineOpen U) (hUne : (U : Set M.Z).Nonempty)
     {V : M'.Z.Opens} (hVne : (V : Set M'.Z).Nonempty) (h : ∀ x ∈ M.ringOn U, φ x ∈ M'.ringOn V) :
     ∃ (p : Sp Ω' ⟶ V) (g : (V : Scheme.{0}) ⟶ M.Z), p ≫ V.ι = M'.pt ∧ Set.range g ⊆ U ∧
@@ -54,6 +68,9 @@ theorem exists_hom_range_subset {U : M.Z.Opens} (hU : IsAffineOpen U) (hUne : (U
     congrArg Subtype.val ((M'.sectionsEquiv V hVne).apply_symm_apply _)
   exact e
 
+/- English proof (translation)
+Take `⟨p, g, hp, hg, e⟩` from `exists_hom_range_subset hU hUne ⟨z, hz⟩ h`. Establish `e' : V.ι ≫ f = g` using `hom_ext_of_isOpenImmersion V.ι hp (by rw [← Category.assoc, hp]; exact hf) e`. Conclude with `hg ⟨⟨z, hz⟩, by rw [← e']; rfl⟩`.
+-/
 theorem IsHom.map_mem_of_ringOn {f : M'.Z ⟶ M.Z} (hf : M.IsHom M' φ f) {U : M.Z.Opens} (hU : IsAffineOpen U)
     (hUne : (U : Set M.Z).Nonempty) {V : M'.Z.Opens} (h : ∀ x ∈ M.ringOn U, φ x ∈ M'.ringOn V) {z : M'.Z}
     (hz : z ∈ V) : f z ∈ U := by
@@ -61,6 +78,17 @@ theorem IsHom.map_mem_of_ringOn {f : M'.Z ⟶ M.Z} (hf : M.IsHom M' φ f) {U : M
   have e' : V.ι ≫ f = g := hom_ext_of_isOpenImmersion V.ι hp (by rw [← Category.assoc, hp]; exact hf) e
   exact hg ⟨⟨z, hz⟩, by rw [← e']; rfl⟩
 
+/- English proof (translation)
+Establish `hne : (U : Set M.Z).Nonempty` using `⟨_, hU ⟨genericPoint _, rfl⟩⟩`. Use `⟨?_, le_antisymm (fun x hx => ?_) hR⟩` and prove the remaining obligations. Use `haveI : IsAffine (ofAffine o Ω R).Z := inferInstanceAs (IsAffine (Sp R))`. Take `⟨p, h, hp, -, e⟩` from `exists_hom_range_subset (M := ofAffine o Ω R) (φ := AlgHom.id o Ω) (isAffineOpen_top _) ⟨genericPoint _, trivial⟩ hne fun x hx => by`. Take `⟨a, rfl⟩` from `mem_ringOn_univ_ofAffine.1 hx`.
+
+Conclude with `hR a.2`. Establish `hid : spMap (AlgHom.id o Ω).toRingHom = 𝟙 _` using `Spec.map_id _`. Establish `hg' : (ofAffine o Ω R).pt ≫ g = M.pt`. Use `hg` as an intermediate fact. Rewrite `this` using `[IsHom, hid, Category.id_comp]`. Then use the resulting hypothesis.
+
+Establish `e1 : h ≫ g = U.ι` using `hom_ext_of_isOpenImmersion (φ := AlgHom.id o Ω) U.ι hp (by rw [← Category.assoc, e, Category.assoc, hg']) (by rw [hp, hid, Category.id_comp])`. Establish `hr : Set.range g ⊆ Set.range U.ι` using `by rwa [Scheme.Opens.range_ι]`. Establish `hl` using `IsOpenImmersion.lift_fac U.ι g hr`. Use `set l := IsOpenImmersion.lift U.ι g hr`. Establish `e2 : h ≫ l = 𝟙 _` using `by rw [← cancel_mono U.ι, Category.assoc, hl, e1, Category.id_comp]`.
+
+Establish `e3 : l ≫ h = 𝟙 _`. Use `IsHom.unique (φ := AlgHom.id o Ω) ?_ (isHom_id _)` and prove the remaining obligations. Establish `: (ofAffine o Ω R).pt ≫ l = p` using `by rw [← cancel_mono U.ι, Category.assoc, hl, hg', hp]`. Rewrite using `[IsHom, ← Category.assoc, this, e]`. Use `haveI : IsIso h := ⟨l, e2, e3⟩`.
+
+Conclude with `IsAffine.of_isIso h`. Take `⟨a, rfl⟩` from `mem_ringOn_univ_ofAffine.1 (mem_ringOn.2 fun z _ => hg.map_mem_O (mem_ringOn.1 hx (g z) (hU ⟨z, rfl⟩)))`. Conclude with `a.2`.
+-/
 theorem isAffineOpen_of_isHom (R : Subalgebra o Ω) [Algebra.FiniteType o R] [IsFractionRing R Ω] {U : M.Z.Opens}
     (hR : R ≤ M.ringOn U) {g : (ofAffine o Ω R).Z ⟶ M.Z} (hg : M.IsHom (ofAffine o Ω R) (AlgHom.id o Ω) g)
     (hU : Set.range g ⊆ U) : IsAffineOpen U ∧ M.ringOn U = R := by
@@ -91,6 +119,9 @@ theorem isAffineOpen_of_isHom (R : Subalgebra o Ω) [Algebra.FiniteType o R] [Is
       hg.map_mem_O (mem_ringOn.1 hx (g z) (hU ⟨z, rfl⟩)))
     exact a.2
 
+/- English proof (translation)
+Take `⟨U, a, hz, rfl⟩` from `hx`. Establish `e` using `hf.valF_app ⟨_, hz⟩ a`. Establish `h1 : z ∈ M'.Z.basicOpen (f.app U a)` using `(isUnit_valF_iff (U := f ⁻¹ᵁ U) hz _).1 ((isUnit_O_iff _).2 ⟨by simpa [e] using h0, by simpa only [e] using hi⟩)`. Rewrite `h1` using `[← Scheme.preimage_basicOpen]`. Conclude with `((isUnit_O_iff _).1 ((isUnit_valF_iff hz a).2 h1)).2`.
+-/
 theorem IsHom.inv_mem_O {f : M'.Z ⟶ M.Z} (hf : M.IsHom M' φ f) {z : M'.Z} {x : Ω} (hx : x ∈ M.O (f z))
     (h0 : x ≠ 0) (hi : (φ x)⁻¹ ∈ M'.O z) : x⁻¹ ∈ M.O (f z) := by
   obtain ⟨U, a, hz, rfl⟩ := hx
@@ -100,6 +131,9 @@ theorem IsHom.inv_mem_O {f : M'.Z ⟶ M.Z} (hf : M.IsHom M' φ f) {z : M'.Z} {x 
   rw [← Scheme.preimage_basicOpen] at h1
   exact ((isUnit_O_iff _).1 ((isUnit_valF_iff hz a).2 h1)).2
 
+/- English proof (translation)
+Establish `h0 : t i / t k ≠ 0` using `div_ne_zero ((map_ne_zero φ).1 h.1) hk.1`. Conclude with `(hk.div_iff_isUnit i).2 ((isUnit_O_iff _).2 ⟨h0, hf.inv_mem_O (hk.2 i) h0 (by simpa using h.2 k)⟩)`.
+-/
 theorem IsHom.div_of_div {f : M'.Z ⟶ M.Z} (hf : M.IsHom M' φ f) {J : Type} {t : J → Ω} {i k : J} {z : M'.Z}
     (hk : M.Div t k (f z)) (h : M'.Div (fun j => φ (t j)) i z) : M.Div t i (f z) := by
   have h0 : t i / t k ≠ 0 := div_ne_zero ((map_ne_zero φ).1 h.1) hk.1
@@ -111,23 +145,41 @@ variable {J : Type} [Fintype J]
 
 def pairing (φ : Ω →ₐ[o] Ω') (s : J → Ω') (v : J → Ω) : Ω' := ∑ j, φ (v j) * s j
 
+/- English proof (translation)
+Simplify using `only [pairing, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum, _root_.mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem pairing_sum {I : Type} [Fintype I] (s : J → Ω') (c : I → Ω) (a : I → J → Ω) :
     pairing φ s (∑ i, c i • a i) = ∑ i, φ (c i) * pairing φ s (a i) := by
   simp only [pairing, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.sum_mul,
     Finset.mul_sum, _root_.mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [pairing, map_div₀, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem pairing_div (s : J → Ω') (v : J → Ω) (c : Ω) :
     pairing φ s (fun j => v j / c) = (φ c)⁻¹ * pairing φ s v := by
   simp only [pairing, map_div₀, Finset.mul_sum]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hv`. Conclude with `⟨fun i => c i, fun i => (c i).2, pairing_sum s (fun i => (c i : Ω)) a⟩`.
+-/
 theorem exists_pairing_eq {I : Type} [Fintype I] (s : J → Ω') {S : Subalgebra o Ω} {a : I → J → Ω} {v : J → Ω}
     (hv : v ∈ Submodule.span S (Set.range a)) :
     ∃ c : I → Ω, (∀ i, c i ∈ S) ∧ pairing φ s v = ∑ i, φ (c i) * pairing φ s (a i) := by
   obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun _).1 hv
   exact ⟨fun i => c i, fun i => (c i).2, pairing_sum s (fun i => (c i : Ω)) a⟩
 
+/- English proof (translation)
+Establish `h0 : pairing φ s (a i) ≠ 0` using `hi.1`. Establish `h1 : ∀ k, pairing φ s (b k) / pairing φ s (a i) ∈ M'.O z` using `fun k => by`. Take `⟨c, hc, e⟩` from `exists_pairing_eq (φ := φ) s (h ▸ Submodule.subset_span ⟨k, rfl⟩ : b k ∈ Submodule.span (M.O (f z)) (Set.range a))`. Rewrite using `[e, Finset.sum_div]`. Conclude with `sum_mem fun i' _ => by`.
+
+Rewrite using `[mul_div_assoc]`. Conclude with `mul_mem (hf.map_mem_O (hc i')) (hi.2 i')`. Take `⟨d, hd, e⟩` from `exists_pairing_eq (φ := φ) s (h ▸ Submodule.subset_span ⟨i, rfl⟩ : a i ∈ Submodule.span (M.O (f z)) (Set.range b))`. Establish `e1 : ∑ k, (⟨φ (d k), hf.map_mem_O (hd k)⟩ * ⟨_, h1 k⟩ : M'.O z) = 1`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Simplify using `only [AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, OneMemClass.coe_one, ← mul_div_assoc, ← Finset.sum_div, ← e, div_self h0]`. Take `⟨k, -, hk⟩` from `IsLocalRing.exists_of_isUnit_sum (e1 ▸ isUnit_one)`. Take `⟨hk0, hk1⟩` from `(isUnit_O_iff _).1 (isUnit_of_mul_isUnit_right hk)`. Establish `hk2 : pairing φ s (b k) ≠ 0` using `fun h => hk0 (by simp [h])`. Use `⟨k, hk2, fun k' => ?_⟩` and prove the remaining obligations.
+
+Use `mul_mem (h1 k') hk1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+-/
 theorem IsHom.exists_div_pairing {f : M'.Z ⟶ M.Z} (hf : M.IsHom M' φ f) (s : J → Ω') {I K : Type} [Fintype I]
     [Fintype K] {a : I → J → Ω} {b : K → J → Ω} {z : M'.Z}
     (h : Submodule.span (M.O (f z)) (Set.range a) = Submodule.span (M.O (f z)) (Set.range b)) {i : I}
@@ -154,6 +206,13 @@ theorem IsHom.exists_div_pairing {f : M'.Z ⟶ M.Z} (hf : M.IsHom M' φ f) (s : 
   convert this using 1
   field_simp
 
+/- English proof (translation)
+Take `⟨U, b, hz, hb, H⟩` from `EE.loc z`. Establish `h1 : ∀ l, b l ∈ Submodule.span (M.O z) (Set.range a)` using `fun l => h ▸ H z hz ▸ Submodule.subset_span ⟨l, rfl⟩`. Use `choose c _ hc using fun l => exists_pairing_eq (φ := φ) s (h1 l)`. Establish `e : (Pi.single j 1 : J → Ω) = ∑ l, b⁻¹ j l • b l`. Use extensionality with `j'`.
+
+Use `congrFun (congrFun (Matrix.nonsing_inv_mul b (isUnit_iff_ne_zero.2 hb)) j) j'` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `[Finset.sum_apply, this, Pi.single_apply, eq_comm]`. Establish `e2 : pairing φ s (Pi.single j 1) = s j`. Simplify using `[pairing, Pi.single_apply, apply_ite φ]`.
+
+Use `⟨fun i => ∑ l, b⁻¹ j l * c l i, ?_⟩` and prove the remaining obligations. Rewrite using `[← e2, e]`. Use `(pairing_sum s (fun l => b⁻¹ j l) fun l => b l).trans ?_` and prove the remaining obligations. Simplify using `only [hc, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum, _root_.mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem Lat.exists_eq_sum_pairing [DecidableEq J] (EE : M.Lat J) (s : J → Ω') {I : Type} [Fintype I]
     {a : I → J → Ω} {z : M.Z} (h : EE.E z = Submodule.span (M.O z) (Set.range a)) (j : J) :
     ∃ c : I → Ω, s j = ∑ i, φ (c i) * pairing φ s (a i) := by
@@ -174,6 +233,13 @@ theorem Lat.exists_eq_sum_pairing [DecidableEq J] (EE : M.Lat J) (s : J → Ω')
   simp only [hc, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum, _root_.mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `h3 : ∀ j, s j / g ∈ K` using `fun j => by`. Take `⟨c, e⟩` from `EE.exists_eq_sum_pairing (φ := φ) s h j`. Rewrite using `[e, Finset.sum_div]`. Conclude with `sum_mem fun i _ => by`. Rewrite using `[mul_div_assoc]`.
+
+Conclude with `mul_mem (h1 _) (h2 i)`. Use `top_unique (hs ▸ Subfield.closure_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ (⟨x, rfl⟩ | ⟨i, j, rfl⟩)`. Conclude with `h1 x`. Use `div_mem (h3 j) (h3 i)` as an intermediate fact.
+
+Rewrite `this` using `[div_div_div_cancel_right₀ hg]`. Then use the resulting hypothesis.
+-/
 theorem Lat.eq_top_of_pairing_mem [DecidableEq J] (EE : M.Lat J) {s : J → Ω'}
     (hs : Subfield.closure (Set.range φ ∪ {x | ∃ i j, x = s j / s i}) = ⊤) {I : Type} [Fintype I]
     {a : I → J → Ω} {z : M.Z} (h : EE.E z = Submodule.span (M.O z) (Set.range a)) {g : Ω'} (hg : g ≠ 0)
@@ -192,16 +258,27 @@ theorem Lat.eq_top_of_pairing_mem [DecidableEq J] (EE : M.Lat J) {s : J → Ω'}
 
 end Pairing
 
+/- English proof (translation)
+Take `⟨a, b, -, rfl⟩` from `exists_eq_div hV hne x`. Rewrite using `[map_div₀]`. Conclude with `div_mem (h _ ((mem_ringOn_iff_exists hne).2 ⟨a, rfl⟩)) (h _ ((mem_ringOn_iff_exists hne).2 ⟨b, rfl⟩))`.
+-/
 theorem map_mem_of_ringOn {V : M.Z.Opens} (hV : IsAffineOpen V) (hne : (V : Set M.Z).Nonempty) {K : Subfield Ω'}
     (h : ∀ x ∈ M.ringOn V, φ x ∈ K) (x : Ω) : φ x ∈ K := by
   obtain ⟨a, b, -, rfl⟩ := exists_eq_div hV hne x
   rw [map_div₀]
   exact div_mem (h _ ((mem_ringOn_iff_exists hne).2 ⟨a, rfl⟩)) (h _ ((mem_ringOn_iff_exists hne).2 ⟨b, rfl⟩))
 
+/- English proof (translation)
+The claim follows from `and_congr_right fun _ => (he.forall (p := fun k => t k / t (e i) ∈ M.O z)).symm`.
+-/
 theorem div_comp_iff {I K : Type} {t : K → Ω} {e : I → K} (he : Function.Surjective e) {i : I} {z : M.Z} :
     M.Div (fun i => t (e i)) i z ↔ M.Div t (e i) z :=
   and_congr_right fun _ => (he.forall (p := fun k => t k / t (e i) ∈ M.O z)).symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h⟩`. Establish `hi : t i ≠ 0` using `left_ne_zero_of_mul h0`. Establish `hk : u k ≠ 0` using `right_ne_zero_of_mul h0`. Conclude with `⟨⟨hi, fun i' => by simpa [mul_div_mul_right _ _ hk] using h (i', k)⟩, ⟨hk, fun k' => by simpa [mul_div_mul_left _ _ hi] using h (i, k')⟩⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨mul_ne_zero h1.1 h2.1, fun q => by simpa [mul_div_mul_comm] using mul_mem (h1.2 q.1) (h2.2 q.2)⟩`.
+-/
 theorem div_mul_prod_iff {I K : Type} {t : I → Ω} {u : K → Ω} {i : I} {k : K} {z : M.Z} :
     M.Div (fun q : I × K => t q.1 * u q.2) (i, k) z ↔ M.Div t i z ∧ M.Div u k z := by
   constructor

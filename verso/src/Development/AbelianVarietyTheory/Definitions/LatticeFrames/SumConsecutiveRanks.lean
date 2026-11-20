@@ -50,6 +50,9 @@ def DegLe (L : SizeData₂ D) (C : ℝ) : Prop :=
     (∑ τ : D.what₂.Tau, nuAbs D u j τ) ≤ (∑ t : D.host.TT, (L.aT t : ℝ)) + (D.R.k : ℝ) * (∑ τ : D.what₂.Tau, wj D j τ) +
       C * (D.R.f : ℝ) * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * D.R.t * (L.etaSz + D.R.t))
 
+/- English proof (translation)
+Unfold `errA errF`. Prove the components needed by the constructor for the conclusion. Check the signs of the components of the expression. Establish `: 0 ≤ 2 * (D.R.f : ℝ) * (D.R.m : ℝ) ^ 3 * (D.R.N D.R.m : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem errF_le_errA (D : D7) : 0 ≤ errF D ∧ errF D ≤ errA D := by
   unfold errA errF
   constructor
@@ -69,6 +72,9 @@ def ColCoarse : Prop :=
   ∀ (i : Fin 2) (w : D.what₂.places.Pl), D.what₂.places.resChar w = D.host.g i →
     ∀ x ∈ ((D.fm u).lat 0).L, Int.ColGe D u w x (-vDeg D EX u i w - errA D)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.sum_range_succ, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_consecutive_ranks (k T : ℝ) (n : ℕ) :
     ∑ j ∈ Finset.range n, (k + j * T) * (k + (j + 1) * T) =
       n * k ^ 2 + n ^ 2 * k * T + (n ^ 3 - n) / 3 * T ^ 2 := by
@@ -76,6 +82,19 @@ theorem sum_consecutive_ranks (k T : ℝ) (n : ℕ) :
   | zero => simp
   | succ n ih => rw [Finset.sum_range_succ, ih]; push_cast; ring
 
+/- English proof (translation)
+Unfold `errStep errF`. Establish `h` using `sum_consecutive_ranks (D.R.k : ℝ) ((D.R.t : ℝ) + 1) D.R.m`. Establish `e : ∑ j ∈ Finset.range D.R.m, (D.R.f : ℝ) * (D.R.N j : ℝ) * (D.R.N (j + 1) : ℝ) = (D.R.f : ℝ) * ∑ j ∈ Finset.range D.R.m, ((D.R.k : ℝ) + j * ((D.R.t : ℝ) + 1)) * ((D.R.k : ℝ) + (j + 1) * ((D.R.t : ℝ) + 1))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Ranks.N]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_add_distrib, e, h, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Simplify using `only [Ranks.N]`.
+
+Use `push_cast`. Establish `ht : 3 * (D.R.m : ℝ) ≤ (D.R.t : ℝ) + 1`. Use `D.R.three_m_lt_t` as an intermediate fact. Establish `: 3 * D.R.m ≤ D.R.t + 1` using `by omega`. Conclude with `this` after adjusting the coercions.
+
+Generalize the expression as in `(D.R.t : ℝ) + 1 = T at *`. Establish `hm : (0 : ℝ) ≤ D.R.m` using `by positivity`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `by positivity`. Establish `hf : (0 : ℝ) ≤ D.R.f` using `by positivity`. Generalize the expression as in `(D.R.m : ℝ) = m at *`.
+
+Generalize the expression as in `(D.R.k : ℝ) = k at *`. Generalize the expression as in `(D.R.f : ℝ) = f at *`. Take `⟨s, rfl⟩ : ∃ s, T = 3 * m + s` from `⟨T - 3 * m, by ring⟩`. Establish `hs : 0 ≤ s` using `by linarith`. Establish `: f * m * (k + m * (3 * m + s)) ^ 2 - (f * (m * k ^ 2 + m ^ 2 * k * (3 * m + s) + (m ^ 3 - m) / 3 * (3 * m + s) ^ 2) + m * (2 * f * m ^ 2 * (k + m * (3 * m + s)))) = f * (m ^ 2 * k * (m + s) + 2 / 3 * m ^ 3 * (3 * m + s) * s + m / 3 * (3 * m + s) ^ 2)` using `by ring`.
+
+Establish `h2 : 0 ≤ f * (m ^ 2 * k * (m + s) + 2 / 3 * m ^ 3 * (3 * m + s) * s + m / 3 * (3 * m + s) ^ 2)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem errStep_le_errF (D : D7) : errStep D ≤ errF D := by
   unfold errStep errF
   have h := sum_consecutive_ranks (D.R.k : ℝ) ((D.R.t : ℝ) + 1) D.R.m
@@ -107,19 +126,34 @@ theorem errStep_le_errF (D : D7) : errStep D ≤ errF D := by
   have h2 : 0 ≤ f * (m ^ 2 * k * (m + s) + 2 / 3 * m ^ 3 * (3 * m + s) * s + m / 3 * (3 * m + s) ^ 2) := by positivity
   linarith
 
+/- English proof (translation)
+Take `⟨y, hy, a, z, hz, hya, ha⟩` from `h`. Conclude with `⟨y, hy, a, z, hz, hya, ha.imp id fun ha => le_trans (mul_le_mul_of_nonneg_left hst (Nat.cast_nonneg _)) ha⟩`.
+-/
 theorem colGe_of_le (w : D.what₂.places.Pl) (x : ((D.fm u).lat 0).V) {s t : ℝ} (hst : s ≤ t)
     (h : Int.ColGe D u w x t) : Int.ColGe D u w x s := by
   obtain ⟨y, hy, a, z, hz, hya, ha⟩ := h
   exact ⟨y, hy, a, z, hz, hya, ha.imp id fun ha => le_trans (mul_le_mul_of_nonneg_left hst (Nat.cast_nonneg _)) ha⟩
 
+/- English proof (translation)
+Introduce `i w hw x hx` and use `colGe_of_le D u w x (by linarith [errStep_le_errF D]) (h i w hw x hx)`.
+-/
 theorem colA_of_colStep (h : ColStep D EX u) : ColA D EX u := fun i w hw x hx =>
   colGe_of_le D u w x (by linarith [errStep_le_errF D]) (h i w hw x hx)
 
+/- English proof (translation)
+Introduce `i w hw x hx` and use `colGe_of_le D u w x (by linarith [(errF_le_errA D).2]) (h i w hw x hx)`.
+-/
 theorem colCoarse_of_colA (h : ColA D EX u) : ColCoarse D EX u := fun i w hw x hx =>
   colGe_of_le D u w x (by linarith [(errF_le_errA D).2]) (h i w hw x hx)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : ∑ j ∈ Finset.range 2, ((5 + j * 8) * (5 + (j + 1) * 8) + 2 * 2 ^ 2 * 21) = 674 ∧ 2 * 21 ^ 2 = 882 := by decide
 
+/- English proof (translation)
+Unfold `errA`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (D : D7) : errA D - errF D = 2 * (D.R.f : ℝ) * (D.R.m : ℝ) ^ 3 * (D.R.N D.R.m : ℝ) := by unfold errA; ring
 
 end GlobalTheory.Core.AtG

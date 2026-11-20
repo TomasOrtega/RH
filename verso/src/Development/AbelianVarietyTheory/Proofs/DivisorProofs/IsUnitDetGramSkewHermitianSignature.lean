@@ -8,6 +8,9 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 
 namespace GlobalTheory.SkewUnit
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d W r s hW`. Conclude with `isUnit_iff_ne_zero.2 (GlobalTheory.SkewDet.det_ne_zero_of_isSkew F E σ B d r s W hW)`.
+-/
 theorem isUnit_det_of_isSkew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d : ℕ) (W : Spc F E d) (r s : ℕ), W.IsSkew σ B r s → IsUnit W.J.det := by
   intro F E _ _ _ _ _ σ B d W r s hW

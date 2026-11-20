@@ -5,6 +5,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `Integrable.mono' (hφ.norm.mul_const ‖y‖) ?_ (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Conclude with `hφ.aestronglyMeasurable.smul (hc y).aestronglyMeasurable`. Rewrite using `[norm_smul, hn]`.
+-/
 theorem absOpInt_integrable {G : Type} [Group G] [TopologicalSpace G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) {Hp : Type} [NormedAddCommGroup Hp]
     [InnerProductSpace ℂ Hp] (π : G →* (Hp →L[ℂ] Hp)) (hn : ∀ g x, ‖π g x‖ = ‖x‖)
@@ -14,6 +17,13 @@ theorem absOpInt_integrable {G : Type} [Group G] [TopologicalSpace G] [SecondCou
   · exact hφ.aestronglyMeasurable.smul (hc y).aestronglyMeasurable
   · rw [norm_smul, hn]
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ μ Hp _ _ _ π hn hc φ hφ`. Set `L : Hp →ₗ[ℂ] Hp` to `{ toFun := fun y => ∫ g, φ g • π g y ∂μ map_add' := fun y z => by`. Simplify using `only [map_add, smul_add]`. Conclude with `integral_add (absOpInt_integrable μ π hn hc φ hφ y) (absOpInt_integrable μ π hn hc φ hφ z)`. Use the proof step `map_smul' := fun c y => by`.
+
+Simplify using `only [map_smul, RingHom.id_apply]`. Repeatedly rewrite using `[smul_comm (φ _) c]`. Conclude with `integral_smul c _ }`. Use `⟨L.mkContinuous (∫ g, ‖φ g‖ ∂μ) fun y => ?_, fun y => rfl, fun x y => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Express the relevant statement in the definitionally equal form `⟪x, ∫ g, φ g • π g y ∂μ⟫_ℂ = _`. Rewrite using `[← integral_inner (absOpInt_integrable μ π hn hc φ hφ y)]`. Repeatedly rewrite using `[inner_smul_right]`.
+-/
 theorem absOpInt : ∀ (G : Type) [Group G] [TopologicalSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) (Hp : Type) [NormedAddCommGroup Hp] [InnerProductSpace ℂ Hp] [CompleteSpace Hp] (π : G →* (Hp →L[ℂ] Hp)), (∀ g x, ‖π g x‖ = ‖x‖) → (∀ x, Continuous fun g => π g x) → ∀ φ : G → ℂ, Integrable φ μ → ∃ P : Hp →L[ℂ] Hp, (∀ y, P y = ∫ g, φ g • π g y ∂μ) ∧ ∀ x y : Hp, ⟪x, P y⟫_ℂ = ∫ g, φ g * ⟪x, π g y⟫_ℂ ∂μ := by
   intro G _ _ _ _ _ μ Hp _ _ _ π hn hc φ hφ
   let L : Hp →ₗ[ℂ] Hp :=

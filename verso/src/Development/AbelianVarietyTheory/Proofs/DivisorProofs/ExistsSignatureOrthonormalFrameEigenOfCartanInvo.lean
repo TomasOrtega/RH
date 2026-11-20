@@ -14,6 +14,17 @@ namespace GlobalTheory.HoweD.FrameCartan
 open Matrix GlobalTheory.RealLift.HermitianFrameExistence
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `n M θ hM _ hC`. Take `⟨hθθ, hiso, hpos⟩` from `hC`. Use `set G : Matrix (Fin n) (Fin n) ℂ := M.map star with hGdef`. Establish `hJ : ∀ p q : ℕ, (fromBlocks 1 0 0 (-1) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map star = fromBlocks 1 0 0 (-1)`. Apply the tactic sequence `intro p q; ext (i | i) (j | j) <;> simp [one_apply] <;> split_ifs <;> simp`.
+
+Establish `Gherm : Gᴴ = G`. Use extensionality with `i j`. Simplify using `only [hGdef, conjTranspose_apply, map_apply, star_star]`. Rewrite using `[← hM i j, star_star]`. Establish `hiso' : θᴴ * G * θ = G` using `by rw [← map_star_trip, hiso]`.
+
+Establish `hcomm : θᴴ * G = G * θ`. Combine the equalities or inequalities in the displayed calculation. Establish `hherm : (G * θ).IsHermitian`. Unfold `IsHermitian`. Rewrite using `[conjTranspose_mul, Gherm, hcomm]`.
+
+Establish `hPD : (G * θ).PosDef`. Use `Matrix.posDef_iff_dotProduct_mulVec.2 ⟨hherm, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hval : star x ⬝ᵥ (G * θ) *ᵥ x = star ((θ *ᵥ x) ⬝ᵥ M *ᵥ star x)`. Rewrite using `[← hcomm, star_form, ← hGdef, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec]`. Use `Complex.pos_iff.2 ⟨?_, (hherm.im_star_dotProduct_mulVec_self x).symm⟩` and prove the remaining obligations.
+
+Rewrite using `[hval, Complex.star_def, Complex.conj_re]`. Conclude with `hpos x hx`. Take `⟨p, q, B, B', h1, _, h3, h4⟩` from `GlobalTheory.exists_basis_adapted_to_cartan_involution n G θ hθθ hiso' hPD`. Use `⟨p, q, B, ⟨?_, B', h1⟩, h4⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frame_of_cartan : ∀ (n : ℕ) (M θ : Matrix (Fin n) (Fin n) ℂ), (∀ i j, star (M j i) = M i j) → M.det ≠ 0 →
     IsCartan M θ → ∃ (r s : ℕ) (A : Matrix (Fin n) (Ix r s) ℂ), IsFrame M A ∧ θ * A = A * Jm r s := by
   intro n M θ hM _ hC

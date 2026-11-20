@@ -14,6 +14,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 
 namespace GlobalTheory.CompanionTheory.GE
 
+/- English proof (translation)
+Introduce `hN hV A _ _ X _ _ H hH k M T d hM`. Establish `hln : IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))`. Establish `hcs : CompactSpace X` using `hH.compactSpace`. Establish `hcoh` using `GlobalTheory.T.kernel_sequence_coherent hM`. Take `⟨d', hd'⟩` from `GlobalTheory.T.uniform_span_eventually (KerSeq.kerOp T hM.comm d) (fun e => (hcoh e).1) (GlobalTheory.T.kernel_operators_span_eventually hN hM)`.
+
+Establish `hK : OpSeq k (KerSeq.kerSeq T d) (KerSeq.kerOp T hM.comm d) d'` using `⟨hcoh, KerSeq.kerOp_comm T hM.comm d, hd'⟩`. Take `⟨n₀, hn₀⟩` from `hV (A := A) H hH k _ _ d' hK`. Use `⟨n₀, fun n hn e he => ?_⟩` and prove the remaining obligations. Take `⟨e₀, rfl⟩` from `Nat.exists_eq_add_of_le he`. Use `haveI := GlobalTheory.T.operator_sequence_sum_epi hM e₀`.
+
+Conclude with `GlobalTheory.T.twisted_vanishing_sections_span (GlobalTheory.lbZPow H n) (GlobalTheory.Twist.isLB_lbZPow hH.isLB n) (fun i => T i (d + e₀)) (kernel.ι _) (kernel.condition _) (KerSeq.kerSC_shortExact T d e₀) (hn₀ n hn e₀ 1 one_pos)`.
+-/
 theorem uniformGen_of_gradedNoeth : GradedNoeth → UniformVanishing → UniformGen := by
   intro hN hV A _ _ X _ _ H hH k M T d hM
   have hln : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))

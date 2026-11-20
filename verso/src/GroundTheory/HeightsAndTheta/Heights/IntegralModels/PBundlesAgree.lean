@@ -14,6 +14,11 @@ namespace BundlesAgree
 
 variable {X : Scheme.{0}} [IsIntegral X]
 
+/- English proof (translation)
+Establish `hU' : U = ⊥`. Assume the negation of the conclusion as `h`. Take `⟨x, hx⟩` from `(Opens.ne_bot_iff_nonempty U).mp h`. Conclude with `hU (((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, hx⟩)`. Establish `ht` using `TopCat.Sheaf.isTerminalOfEqEmpty ⟨E.presheaf, E.isSheaf⟩ hU'`.
+
+Establish `h0 : (𝟙 (E.presheaf.obj (op U))) = 0` using `ht.hom_ext _ _`. Simplify using `using ConcreteCategory.congr_hom h0 s`.
+-/
 lemma section_eq_zero (E : X.Modules) {U : X.Opens} (hU : genericPoint X ∉ U) (s : Γ(E, U)) :
     s = 0 := by
   have hU' : U = ⊥ := by
@@ -24,6 +29,9 @@ lemma section_eq_zero (E : X.Modules) {U : X.Opens} (hU : genericPoint X ∉ U) 
   have h0 : (𝟙 (E.presheaf.obj (op U))) = 0 := ht.hom_ext _ _
   simpa using ConcreteCategory.congr_hom h0 s
 
+/- English proof (translation)
+Distinguish the cases in `hU : genericPoint X ∈ U`. Conclude with `hE U hU (h hU)`. Rewrite using `[section_eq_zero E hU a, section_eq_zero E hU b]`.
+-/
 lemma section_ext (E : X.Modules)
     (hE : ∀ (U : X.Opens) (hU : genericPoint X ∈ U),
       Function.Injective (E.presheaf.germ U (genericPoint X) hU))
@@ -37,6 +45,9 @@ lemma section_ext (E : X.Modules)
 
 omit [IsIntegral X] in
 
+/- English proof (translation)
+The claim follows from `PresheafOfModules.germ_smul (R := X.presheaf) (M := E.val) x U hx r s`.
+-/
 lemma germ_smul' (E : X.Modules) (U : X.Opens) (x : X) (hx : x ∈ U) (r : Γ(X, U)) (s : Γ(E, U)) :
     E.presheaf.germ U x hx (r • s) = X.presheaf.germ U x hx r • E.presheaf.germ U x hx s :=
   PresheafOfModules.germ_smul (R := X.presheaf) (M := E.val) x U hx r s
@@ -58,6 +69,9 @@ variable (E E' : X.Modules)
   (hE' : ∀ (U : X.Opens) (hU : genericPoint X ∈ U),
       Function.Injective (E'.presheaf.germ U (genericPoint X) hU))
 
+/- English proof (translation)
+Rewrite using `[lift, dif_pos hU]`. Conclude with `(hex U hU s).choose_spec`.
+-/
 lemma germ_lift (U : X.Opens) (hU : genericPoint X ∈ U) (s : Γ(E, U)) :
     E'.presheaf.germ U (genericPoint X) hU (lift E E' φ hex U s) =
       φ (E.presheaf.germ U (genericPoint X) hU s) := by
@@ -65,23 +79,35 @@ lemma germ_lift (U : X.Opens) (hU : genericPoint X ∈ U) (s : Γ(E, U)) :
   exact (hex U hU s).choose_spec
 
 include hE' in
+/- English proof (translation)
+The claim follows from `section_ext E' hE' fun hU => by rw [map_add, germ_lift, germ_lift, germ_lift, map_add, map_add]`.
+-/
 lemma lift_add (U : X.Opens) (a b : Γ(E, U)) :
     lift E E' φ hex U (a + b) = lift E E' φ hex U a + lift E E' φ hex U b :=
   section_ext E' hE' fun hU => by
     rw [map_add, germ_lift, germ_lift, germ_lift, map_add, map_add]
 
 include hE' in
+/- English proof (translation)
+The claim follows from `section_ext E' hE' fun hU => by rw [germ_lift, map_zero, map_zero, map_zero]`.
+-/
 lemma lift_zero (U : X.Opens) : lift E E' φ hex U 0 = 0 :=
   section_ext E' hE' fun hU => by
     rw [germ_lift, map_zero, map_zero, map_zero]
 
 include hE' in
+/- English proof (translation)
+The claim follows from `section_ext E' hE' fun hU => by rw [germ_lift, germ_smul', germ_smul', map_smul, germ_lift]`.
+-/
 lemma lift_smul (U : X.Opens) (r : Γ(X, U)) (s : Γ(E, U)) :
     lift E E' φ hex U (r • s) = r • lift E E' φ hex U s :=
   section_ext E' hE' fun hU => by
     rw [germ_lift, germ_smul', germ_smul', map_smul, germ_lift]
 
 include hE' in
+/- English proof (translation)
+The claim follows from `section_ext E' hE' fun hV => by rw [germ_lift, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply, germ_lift]`.
+-/
 lemma lift_res {U V : X.Opens} (i : V ⟶ U) (s : Γ(E, U)) :
     lift E E' φ hex V (E.presheaf.map i.op s) = E'.presheaf.map i.op (lift E E' φ hex U s) :=
   section_ext E' hE' fun hV => by
@@ -101,6 +127,9 @@ def homOfGeneric : E ⟶ E' :=
     (fun U r s => lift_smul E E' φ hex hE' U.unop r s)
 
 include hE' in
+/- English proof (translation)
+The claim follows from `germ_lift E E' φ hex U hU s`.
+-/
 lemma germ_homOfGeneric_app (U : X.Opens) (hU : genericPoint X ∈ U) (s : Γ(E, U)) :
     E'.presheaf.germ U (genericPoint X) hU ((homOfGeneric E E' φ hex hE').app U s) =
       φ (E.presheaf.germ U (genericPoint X) hU s) :=
@@ -108,6 +137,9 @@ lemma germ_homOfGeneric_app (U : X.Opens) (hU : genericPoint X ∈ U) (s : Γ(E,
 
 include hE' in
 
+/- English proof (translation)
+The claim follows from `Scheme.Modules.hom_ext f g fun U => by ext s exact section_ext E' hE' fun hU => h U hU s`.
+-/
 lemma hom_ext_of_germ {f g : E ⟶ E'}
     (h : ∀ (U : X.Opens) (hU : genericPoint X ∈ U) (s : Γ(E, U)),
       E'.presheaf.germ U (genericPoint X) hU (f.app U s) =
@@ -118,6 +150,9 @@ lemma hom_ext_of_germ {f g : E ⟶ E'}
 
 omit [IsIntegral X] in
 
+/- English proof (translation)
+Use `TopCat.Presheaf.stalkFunctor_map_germ_apply (F := E.presheaf) (G := E'.presheaf) U x hU (Scheme.Modules.Hom.mapPresheaf f) s` as an intermediate fact. Conclude with `this.symm`.
+-/
 lemma germ_app_eq_stalk (f : E ⟶ E') (U : X.Opens) (x : X) (hU : x ∈ U) (s : Γ(E, U)) :
     E'.presheaf.germ U x hU (f.app U s) =
       ((TopCat.Presheaf.stalkFunctor Ab x).map (Scheme.Modules.Hom.mapPresheaf f)).hom
@@ -130,6 +165,21 @@ end BundlesAgree
 
 open BundlesAgree in
 
+/- English proof (translation)
+Introduce `X _ _ hN E E' hE hE' φ hφ`. Establish `inj` using `h₁ X E hE`. Establish `inj'` using `h₁ X E' hE'`. Establish `mem : ∀ (F : X.Modules) (U : X.Opens) (hU : genericPoint X ∈ U) (s : Γ(F, U)) (x : X) (hx : x ∈ U), F.presheaf.germ U (genericPoint X) hU s ∈ genericImage F x` using `fun F U hU s x hx => ⟨F.presheaf.germ U x hx s, TopCat.Presheaf.germ_stalkSpecializes_apply F.presheaf hx (genericPoint_specializes x) s⟩`. Establish `hex : ∀ (U : X.Opens) (hU : genericPoint X ∈ U) (s : Γ(E, U)), ∃ t : Γ(E', U), E'.presheaf.germ U (genericPoint X) hU t = φ.toLinearMap (E.presheaf.germ U _ hU s)` using `fun U hU s => h₂ X hN E' hE' U hU _ fun x hx hx1 => by`.
+
+Rewrite using `[← hφ x hx1]`. Conclude with `AddSubgroup.mem_map.mpr ⟨_, mem E U hU s x hx, rfl⟩`. Establish `hex' : ∀ (U : X.Opens) (hU : genericPoint X ∈ U) (s : Γ(E', U)), ∃ t : Γ(E, U), E.presheaf.germ U (genericPoint X) hU t = φ.symm.toLinearMap (E'.presheaf.germ U _ hU s)` using `fun U hU s => h₂ X hN E hE U hU _ fun x hx hx1 => by`. Establish `h` using `mem E' U hU s x hx`. Rewrite `h` using `[← hφ x hx1]`.
+
+Take `⟨a, ha, he⟩` from `AddSubgroup.mem_map.mp h`. Establish `: φ.symm (E'.presheaf.germ U (genericPoint X) hU s) = a`. Rewrite using `[← he]`. Conclude with `φ.symm_apply_apply a`. Conclude with `this ▸ ha`.
+
+Set `f` to `homOfGeneric E E' φ.toLinearMap hex inj'`. Set `g` to `homOfGeneric E' E φ.symm.toLinearMap hex' inj`. Establish `hf` using `germ_homOfGeneric_app E E' φ.toLinearMap hex inj'`. Establish `hg` using `germ_homOfGeneric_app E' E φ.symm.toLinearMap hex' inj`. Use `⟨⟨f, g, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `hom_ext_of_germ E E inj fun U hU s => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.comp_app, Scheme.Modules.Hom.id_app, ConcreteCategory.comp_apply, hg, hf]`. Simplify using the standard rewrite rules. Use `hom_ext_of_germ E' E' inj' fun U hU s => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.comp_app, Scheme.Modules.Hom.id_app, ConcreteCategory.comp_apply, hf, hg]`.
+
+Simplify using the standard rewrite rules. Introduce `v`. Take `⟨U, hU, s, rfl⟩` from `E.presheaf.exists_germ_eq v`. Rewrite using `[← germ_app_eq_stalk]`. Conclude with `hf U hU s`.
+
+Introduce `ψ hψ`. Use `Iso.ext (hom_ext_of_germ E E' inj' fun U hU s => ?_)` and prove the remaining obligations. Rewrite using `[germ_app_eq_stalk]`. Conclude with `(hψ _).trans (hf U hU s).symm`.
+-/
 theorem BundlesAgree.proof (h₁ : GenericGermInjective.Statement)
     (h₂ : HeightOneSections.Statement) : BundlesAgree.Statement := by
   intro X _ _ hN E E' hE hE' φ hφ

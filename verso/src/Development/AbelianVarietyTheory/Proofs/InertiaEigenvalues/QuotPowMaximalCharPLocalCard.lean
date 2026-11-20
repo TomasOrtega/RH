@@ -3,6 +3,45 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `L _ _ la J hmax l e b hl he hb hJ hspan`. Establish `hn0 : e * b ≠ 0` using `Nat.mul_ne_zero he.ne' hb.ne'`. Use `set n := e * b with hn`. Use `set q := Ideal.Quotient.mk (la ^ n) with hq`. Establish `hlla : ((l : ℕ) : 𝓞 L) ∈ la`.
+
+Establish `: ((l:ℕ) : 𝓞 L) ∈ la ^ e * J` using `by rw [← hspan]; exact Ideal.mem_span_singleton_self _`. Conclude with `(Ideal.pow_le_self he.ne' : la ^ e ≤ la) ((Ideal.mul_le_left : la ^ e * J ≤ la ^ e) this)`. Establish `hl0 : ((l : ℕ) : 𝓞 L) ≠ 0` using `Nat.cast_ne_zero.mpr hl.ne_zero`. Establish `hla0 : la ≠ ⊥` using `fun h => hl0 (by rw [h] at hlla; simpa using hlla)`. Establish `hlatop : la ≠ ⊤` using `hmax.ne_top`.
+
+Establish `hpowle : ∀ i j : ℕ, la ^ i ≤ la ^ j ↔ j ≤ i` using `fun i j => ⟨fun h => by`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Conclude with `absurd h (Ideal.pow_right_strictAnti la hla0 hlatop hc).not_ge,`. Use `fun h => Ideal.pow_le_pow_right h⟩`.
+
+Establish `hle : la ^ n ≤ la` using `Ideal.pow_le_self hn0`. Establish `hnil : ∀ c ∈ la, IsNilpotent (q c)` using `fun c hc => ⟨n, by rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]; exact Ideal.pow_mem_pow hc n⟩`. Establish `hunit : ∀ a : 𝓞 L, IsUnit (q a) ↔ a ∉ la`. Introduce `a`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hu ha`. Take `⟨d, hd⟩` from `hu.exists_right_inv`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective d`. Establish `: a * c - 1 ∈ la ^ n`. Rewrite using `[← Ideal.Quotient.eq]`.
+
+Simplify `hd` using `[hq]`. Establish `h1 : (1 : 𝓞 L) ∈ la`. Use `la.sub_mem (la.mul_mem_right c ha) (hle this)` as an intermediate fact. Simplify using `using this`. Conclude with `hlatop ((Ideal.eq_top_iff_one _).mpr h1)`.
+
+Introduce `ha`. Take `⟨c, y, hy, hcy⟩` from `hmax.exists_inv ha`. Establish `h1 : q c * q a = 1 - q y`. Rewrite using `[← map_mul, ← map_one q, ← map_sub, ← hcy]`. Simplify using the standard rewrite rules.
+
+Establish `: IsUnit (q c * q a)` using `h1 ▸ (hnil y hy).isUnit_one_sub`. Conclude with `isUnit_of_mul_isUnit_right this`. Establish `hmem : ∀ a : 𝓞 L, q a ∈ la.map q ↔ a ∈ la` using `fun a => Ideal.mem_quotient_iff_mem hle`. Take `⟨π₀, hπla, hπ2⟩` from `SetLike.exists_of_lt ((Ideal.pow_right_strictAnti la hla0 hlatop) (by norm_num : 1 < 2))`. Use `replace hπla : π₀ ∈ la := by simpa using hπla`.
+
+Express the relevant statement in the definitionally equal form `π₀ ∉ la ^ 2 at hπ2`. Establish `hQ : Ideal.span {π₀} ⊔ la ^ 2 = la`. Use `Ideal.eq_prime_pow_of_succ_lt_of_le (P := la) (I := Ideal.span {π₀} ⊔ la ^ 2) hla0 (i := 1) (lt_of_le_of_ne le_sup_right (fun h => hπ2 (h ▸ Ideal.mem_sup_left (Ideal.mem_span_singleton_self π₀)))) (by rw [pow_one]; exact sup_le ((Ideal.span_singleton_le_iff_mem _).mpr hπla) (Idea …` as an intermediate fact. Simplify using `using this`. Establish `hk : ∀ k, 1 ≤ k → la ≤ Ideal.span {π₀} ⊔ la ^ k`.
+
+Introduce `k hk`. Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => rw [pow_one]`. Conclude with `le_sup_right`. Consider the case `succ k _ ih`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hm : Ideal.span {q π₀} = la.map q`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `(hmem π₀).mpr hπla`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton, hq, Ideal.map_quotient_self, sup_bot_eq]`. Establish `hJtop : J.map q = ⊤`. Establish `: (1 : 𝓞 L) ∈ la ⊔ J` using `hJ ▸ Submodule.mem_top`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp this`.
+
+Establish `hz' : q z = 1 - q y` using `by rw [← map_one q, ← hyz, map_add]; ring`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem q hz) (hz' ▸ (hnil y hy).isUnit_one_sub)`. Establish `hlspan : Ideal.span {((l : ℕ) : 𝓞 L ⧸ la ^ n)} = (la.map q) ^ e`. Establish `: ((l : ℕ) : 𝓞 L ⧸ la ^ n) = q (l : 𝓞 L)` using `(map_natCast q l).symm`. Rewrite using `[this, ← Set.image_singleton, ← Ideal.map_span, hspan, Ideal.map_mul, Ideal.map_pow, hJtop, Ideal.mul_top]`.
+
+Use `⟨⟨fun k => ?_⟩, ?_, q π₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Simplify using the standard rewrite rules. Take `⟨v, m', hm', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hk0.ne' l hl.ne_one`. Establish `hcop : Nat.Coprime l m'` using `(Nat.Prime.coprime_iff_not_dvd hl).mpr hm'`.
+
+Establish `hm'la : ((m' : ℕ) : 𝓞 L) ∉ la`. Introduce `h`. Take `⟨u, w, huw⟩` from `Nat.isCoprime_iff_coprime.mpr hcop`. Establish `h1 : ((u * l + w * m' : ℤ) : 𝓞 L) = 1` using `by rw [huw]; simp`. Move the coercions through the operations in `at h1`.
+
+Establish `: (1 : 𝓞 L) ∈ la` using `h1 ▸ la.add_mem (la.mul_mem_left _ hlla) (la.mul_mem_left _ h)`. Conclude with `hlatop ((Ideal.eq_top_iff_one _).mpr this)`. Establish `hmu : IsUnit ((m' : ℕ) : 𝓞 L ⧸ la ^ n)`. Rewrite using `[← map_natCast q]`. Conclude with `(hunit _).mpr hm'la`.
+
+Rewrite using `[Nat.cast_mul, Nat.cast_pow, hmu.mul_left_eq_zero, ← Ideal.span_singleton_eq_bot, ← Ideal.span_singleton_pow, hlspan, ← pow_mul, ← Ideal.map_pow, Ideal.map_eq_bot_iff_le_ker, hq, Ideal.mk_ker, hpowle, (Nat.Coprime.pow_left b hcop).dvd_mul_right, Nat.pow_dvd_pow_iff_le_right hl.on …`. Conclude with `⟨fun h => Nat.le_of_mul_le_mul_left h he, fun h => Nat.mul_le_mul_left e h⟩`. Conclude with `Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero n hla0)`. Introduce `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Rewrite using `[← Ideal.mem_span_singleton, hm, hmem]`. Conclude with `(not_congr (hunit a)).trans not_not`. Rewrite using `[← Ideal.span_singleton_pow, hm, hlspan]`. Establish `hc1 : Nat.card ((𝓞 L ⧸ la ^ n) ⧸ la.map q) = Nat.card (𝓞 L ⧸ la)` using `Nat.card_congr (DoubleQuot.quotQuotEquivQuotOfLE hle).toEquiv`. Establish `hc2 : ∀ I : Ideal (𝓞 L), Nat.card (𝓞 L ⧸ I) = Ideal.absNorm I` using `fun I => by`.
+
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[hm, hc1, hc2, hc2, map_pow, hn, mul_comm e b]`.
+-/
 theorem quot_pow_maximal_charP_local_card : ∀ (L : Type) [Field L] [NumberField L] (la J : Ideal (𝓞 L)) [la.IsMaximal] (l e b : ℕ), l.Prime → 0 < e → 0 < b → la ⊔ J = ⊤ → Ideal.span {((l : ℕ) : 𝓞 L)} = la ^ e * J → CharP (𝓞 L ⧸ la ^ (e * b)) (l ^ b) ∧ Finite (𝓞 L ⧸ la ^ (e * b)) ∧ ∃ π : 𝓞 L ⧸ la ^ (e * b), (∀ x : 𝓞 L ⧸ la ^ (e * b), ¬ IsUnit x ↔ π ∣ x) ∧ Ideal.span {((l : ℕ) : 𝓞 L ⧸ la ^ (e * b))} = Ideal.span {π ^ e} ∧ Nat.card (𝓞 L ⧸ la ^ (e * b)) = Nat.card ((𝓞 L ⧸ la ^ (e * b)) ⧸ Ideal.span {π}) ^ (b * e) := by
   intro L _ _ la J hmax l e b hl he hb hJ hspan
   have hn0 : e * b ≠ 0 := Nat.mul_ne_zero he.ne' hb.ne'

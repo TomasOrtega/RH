@@ -28,11 +28,24 @@ section Smul
 
 variable {T : LocLat G Qp LL O}
 
+/- English proof (translation)
+The claim follows from `W.AΔ.algebraMap_mem t`.
+-/
 theorem algebraMap_mem_invariants (t : O) : algebraMap O (LetA O n) t ∈ W.AΔ := W.AΔ.algebraMap_mem t
 
+/- English proof (translation)
+The claim follows from `algebraMap_smul (LetA O n) t x`.
+-/
 theorem algebraMap_smul_eq_smul (t : O) (x : W.DD T) : algebraMap O (LetA O n) t • x = t • x :=
   algebraMap_smul (LetA O n) t x
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (letE (O := O) c : LetA O n) • (algebraMap O (LetA O n) t • w) = algebraMap O (LetA O n) t • w`. Rewrite using `[smul_comm]`. Conclude with `congrArg _ h1`.
+
+Introduce `δ hδ`. Rewrite using `[algebraMap_smul_eq_smul, map_smul, h2 δ hδ]`. Establish `: W.γ T (algebraMap O (LetA O n) t • w) - algebraMap O (LetA O n) t • w = algebraMap O (LetA O n) t • (W.γ T w - w)`. Rewrite using `[algebraMap_smul_eq_smul, algebraMap_smul_eq_smul, map_smul, smul_sub]`. Rewrite using `[this]`.
+
+Conclude with `InFNc_smul W (algebraMap_mem_invariants W t) h3`.
+-/
 theorem inI_algebraMap_smul {c : ZMod n} (t : O) {w : W.DD T} (h : InI W T c w) :
     InI W T c (algebraMap O (LetA O n) t • w) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -48,6 +61,13 @@ theorem inI_algebraMap_smul {c : ZMod n} (t : O) {w : W.DD T} (h : InI W T c w) 
     rw [this]
     exact InFNc_smul W (algebraMap_mem_invariants W t) h3
 
+/- English proof (translation)
+Take `⟨κ, κ', H, a', hH, ha', hP⟩` from `h`. Use `⟨κ, κ', H, fun k => a * a' k, hH, fun k => ⟨W.AΔ.mul_mem ha (ha' k).1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← (ha' k).2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ∑ k, (a * a' k) • ((W.φD T) ^ e) (H k) = a • ∑ k, a' k • ((W.φD T) ^ e) (H k)`.
+
+Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_smul _ _ _`. Rewrite using `[hs]`. Establish `key : lA W ^ κ' • (lA W ^ κ • Λ • (a • x) - a • ∑ k, a' k • ((W.φD T) ^ e) (H k)) = a • (lA W ^ κ' • (lA W ^ κ • Λ • x - ∑ k, a' k • ((W.φD T) ^ e) (H k)))`. Simplify using `only [smul_sub]`.
+
+Rewrite using `[smul_comm Λ a x, smul_comm (lA W ^ κ) a, smul_comm (lA W ^ κ') a, smul_comm (lA W ^ κ') a]`. Rewrite using `[key]`. Conclude with `inMultiple_smul W ha hP`.
+-/
 theorem repVV_smul_invariant {c' : ZMod n} {e M : ℕ} {Λ : LetA O n} {d : ℕ} {b : Fin d → W.DD T}
     {sol : Fin d → ℕ → Fin d → LL} (a : LetA O n) (ha : a ∈ W.AΔ) {x : W.DD T} {f : Fin d → W.EE}
     (h : RepVV W T c' e M Λ b sol x f) :
@@ -70,6 +90,15 @@ theorem repVV_smul_invariant {c' : ZMod n} {e M : ℕ} {Λ : LetA O n} {d : ℕ}
 
 end Smul
 
+/- English proof (translation)
+Take `⟨w₁, z, h1, ⟨Λ', hΛ', h2⟩, h3, h4, h5⟩` from `h`. Use `set a := algebraMap O (LetA O n) t with ha_def`. Establish `ha : a ∈ W.AΔ` using `algebraMap_mem_invariants W t`. Use `⟨a • w₁, a • z, inI_algebraMap_smul W t h1, ⟨Λ', hΛ', ?_⟩, ?_, InFNc_smul W ha h4, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+
+Conclude with `InFNc_smul W ha h2`. Rewrite using `[map_smulA, smul_comm]`. Conclude with `inMultiple_smul W ha h3`. Establish `h6` using `repVV_smul_invariant W a ha h5`. Rewrite using `[map_smulA, ← smul_sub]`.
+
+Use `RepVV_congr W h6 rfl fun k => ?_` and prove the remaining obligations. Establish `hat : algebraMap (LetA O n) W.EE a = algebraMap O W.EE t`. Rewrite using `[ha_def, ← IsScalarTower.algebraMap_apply]`. Use `split_ifs`. Rewrite using `[hat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`.
+-/
 theorem liftsAt_algebraMap_mul (A : ArcP n) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (c : ZMod n) {d : ℕ} (bb : Fin d → W.DD T₂) (sol : Fin d → ℕ → Fin d → LL) (k₀ : Fin d) {g : W.EE}
     {e : ℕ} (t : O) (h : LiftsAt W A F c bb sol k₀ g e) :

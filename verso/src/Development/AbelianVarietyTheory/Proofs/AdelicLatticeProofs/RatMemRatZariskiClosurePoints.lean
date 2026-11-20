@@ -8,6 +8,9 @@ namespace GlobalTheory.ClassFin.RatPts
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.ClassFin.ev`. Rewrite using `[← MvPolynomial.aeval_algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 lemma _root_.GlobalTheory.ClassFin.RatPts.ev_map_algebraMap {ι R : Type} [CommRing R] [Algebra ℚ R]
     (f : MvPolynomial (ι × ι) ℚ) (γ : Matrix ι ι ℚ) :
     _root_.GlobalTheory.ClassFin.ev f (γ.map (algebraMap ℚ R)) = algebraMap ℚ R (_root_.GlobalTheory.ClassFin.ev f γ) := by
@@ -18,6 +21,11 @@ lemma _root_.GlobalTheory.ClassFin.RatPts.ev_map_algebraMap {ι R : Type} [CommR
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
 
+/- English proof (translation)
+Introduce `ι _ _ Γ`. Use `⟨fun γ hγ => ?_, fun R _ _ γ hγ => ?_⟩` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.ClassFin.pts, Set.mem_setOf_eq]`. Introduce `f hf`. Establish `h` using `hf _ hγ`.
+
+Rewrite `h` using `[_root_.GlobalTheory.ClassFin.RatPts.ev_map_algebraMap]`. Conclude with `(algebraMap ℚ ℂ).injective (by rw [h, map_zero])`. Simplify using `only [_root_.GlobalTheory.ClassFin.pts, Set.mem_setOf_eq] at hγ ⊢`. Introduce `f hf`. Rewrite using `[_root_.GlobalTheory.ClassFin.RatPts.ev_map_algebraMap, hγ f hf, map_zero]`.
+-/
 theorem _root_.GlobalTheory.ClassFin.RatPts.rat_mem_pts : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), (∀ γ : Matrix ι ι ℚ, γ.map (algebraMap ℚ ℂ) ∈ Γ → γ ∈ _root_.GlobalTheory.ClassFin.pts Γ ℚ) ∧ ∀ (R : Type) [CommRing R] [Algebra ℚ R], ∀ γ ∈ _root_.GlobalTheory.ClassFin.pts Γ ℚ, γ.map (algebraMap ℚ R) ∈ _root_.GlobalTheory.ClassFin.pts Γ R := by
   intro ι _ _ Γ
   refine ⟨fun γ hγ => ?_, fun R _ _ γ hγ => ?_⟩

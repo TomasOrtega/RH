@@ -6,6 +6,17 @@ open MeasureTheory
 
 namespace GlobalTheory.Pc3.RS
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `K hK`. Distinguish the cases in `h0 : K = ⊥`.
+
+Conclude with `⟨∅, fun w hw _ => by rw [h0] at hw; exact (Submodule.mem_bot ℂ).1 hw⟩`. Take `⟨w0, hw0K, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Establish `: ∃ x0, (w0 : X → ℂ) x0 ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `hw0 (Subtype.ext (funext hc))`. Take `⟨x0, hx0⟩` from `this`. Set `e : W →ₗ[ℂ] ℂ` to `(LinearMap.proj x0).comp W.subtype`. Set `K' : Submodule ℂ W` to `K ⊓ LinearMap.ker e`. Establish `hlt : K' < K`.
+
+Use `lt_of_le_of_ne inf_le_left fun heq => ?_` and prove the remaining obligations. Establish `: w0 ∈ K'` using `heq ▸ hw0K`. Conclude with `hx0 (LinearMap.mem_ker.1 (Submodule.mem_inf.1 this).2)`. Establish `hr : Module.finrank ℂ K' < m` using `hK ▸ Submodule.finrank_lt_finrank_of_lt hlt`. Take `⟨S, hS⟩` from `ih _ hr K' rfl`.
+
+Use `⟨insert x0 S, fun w hw hv => hS w (Submodule.mem_inf.2 ⟨hw, ?_⟩) fun s hs => hv s (Finset.mem_insert_of_mem hs)⟩` and prove the remaining obligations. Conclude with `LinearMap.mem_ker.2 (hv x0 (Finset.mem_insert_self _ _))`.
+-/
 theorem exists_finset_sep {X : Type*} (W : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ W] :
     ∀ (m : ℕ) (K : Submodule ℂ W), Module.finrank ℂ K = m →
       ∃ S : Finset X, ∀ w ∈ K, (∀ s ∈ S, (w : X → ℂ) s = 0) → w = 0 := by
@@ -33,6 +44,17 @@ theorem exists_finset_sep {X : Type*} (W : Submodule ℂ (X → ℂ)) [FiniteDim
       refine ⟨insert x0 S, fun w hw hv => hS w (Submodule.mem_inf.2 ⟨hw, ?_⟩) fun s hs => hv s (Finset.mem_insert_of_mem hs)⟩
       exact LinearMap.mem_ker.2 (hv x0 (Finset.mem_insert_self _ _))
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_finset_sep W _ ⊤ rfl`. Set `r : W →ₗ[ℂ] (S → ℂ)` to `{ toFun := fun w s => (w : X → ℂ) s map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hinj : LinearMap.ker r = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `w hw`.
+
+Conclude with `hS w Submodule.mem_top fun s hs => congrFun hw ⟨s, hs⟩`. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective r hinj`. Establish `key : ∀ (w : W) (x : X), (w : X → ℂ) x = ∑ s : S, (w : X → ℂ) s * ((L (Pi.single s 1) : W) : X → ℂ) x`. Introduce `w x`. Establish `h1 : L (r w) = w` using `by simpa using LinearMap.congr_fun hL w`.
+
+Establish `h2 : r w = ∑ s : S, (w : X → ℂ) s • (Pi.single s 1 : S → ℂ)`. Use extensionality with `t`. Simplify using `[r, Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [← h1, h2]`. Simplify using `[map_sum, map_smul, Finset.sum_apply]`.
+
+Establish `hfun : (fun x => ∫ y, G y x ∂μ) = ((∑ s : S, (∫ y, G y s ∂μ) • L (Pi.single s 1) : W) : X → ℂ)`. Use function extensionality and compare the values at `x`. Establish `e : ∀ y, G y x = ∑ s : S, G y s * ((L (Pi.single s 1) : W) : X → ℂ) x` using `fun y => key ⟨G y, hG y⟩ x`. Repeatedly rewrite using `[e]`. Rewrite using `[integral_finsetSum (Finset.univ : Finset S) fun (s : S) _ => (hi (s : X)).mul_const (((L (Pi.single s 1) : W) : X → ℂ) x)]`.
+
+Simplify using `only [integral_mul_const, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hfun]`. Conclude with `Submodule.coe_mem _`.
+-/
 theorem integral_mem {X Y : Type} [MeasurableSpace Y] (μ : Measure Y) (W : Submodule ℂ (X → ℂ))
     [FiniteDimensional ℂ W] (G : Y → X → ℂ) (hG : ∀ y, G y ∈ W) (hi : ∀ x, Integrable (fun y => G y x) μ) :
     (fun x => ∫ y, G y x ∂μ) ∈ W := by

@@ -15,6 +15,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨SymplecticReduction.full, SiegelCoordinates.intersectionNumber_baseChange, FirstCoordinateBound.intersectionNumber_baseChange, GaussianSum.full, ThetaBound.full, WeakMatrixArithmetic.intersectionNumber_baseChange, OrthogonalLines.full, h₇, ShortVectors.intersectionNumber_baseCha …`.
+-/
 theorem KernelsCut.proof (h₇ : LineOfLargeDegree.Statement) (h₉ : RestTermSharp.Statement) :
     KernelsCut.Statement :=
   ⟨SymplecticReduction.full, SiegelCoordinates.intersectionNumber_baseChange, FirstCoordinateBound.intersectionNumber_baseChange, GaussianSum.full,

@@ -14,6 +14,17 @@ universe u
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ P hP W hW hPW c a h _ _ hhW α hα`. Use `hP.isPrime` as an intermediate fact. Use `hW.isPrime` as an intermediate fact. Take `⟨_, _, _, hmax⟩` from `h₂ F K ι P hP W hW hPW`. Establish `: IsLocalHom (algebraMap (degZeroLoc P {W}) (coneLocal P W hPW))` using `((local_hom_TFAE _).out 2 0).mp hmax.le`.
+
+Establish `hu : IsUnit (algebraMap (MRing ι F ⧸ P) (coneLocal P W hPW) (Ideal.Quotient.mk P h))` using `IsLocalization.map_units (coneLocal P W hPW) (⟨_, ⟨h, hhW, rfl⟩⟩ : W.primeCompl.map (Ideal.Quotient.mk P))`. Establish `hne : algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P h) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h' => hhW (hPW h')`. Establish `ha : algebraMap (MRing ι F ⧸ P) (coneLocal P W hPW) (Ideal.Quotient.mk P a) = algebraMap (degZeroLoc P {W}) (coneLocal P W hPW) α * algebraMap (MRing ι F ⧸ P) (coneLocal P W hPW) (Ideal.Quotient.mk P h)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_mul, degZeroLoc.algebraMap_cone_coe, Subalgebra.coe_algebraMap, Subalgebra.coe_algebraMap, hα, div_mul_cancel₀ _ hne]`. Establish `hspan : Ideal.span {algebraMap (MRing ι F ⧸ P) (coneLocal P W hPW) (Ideal.Quotient.mk P a)} = (Ideal.span {α}).map (algebraMap (degZeroLoc P {W}) (coneLocal P W hPW))`. Rewrite using `[Ideal.map_span, Set.image_singleton, ha, Ideal.span_singleton_mul_right_unit hu]`. Establish `key : ∀ (A R : Type u) [CommRing A] [CommRing R] [IsLocalRing A] [IsLocalRing R] [Algebra A R] [IsLocalHom (algebraMap A R)] [Module.Flat A R], (maximalIdeal A).map (algebraMap A R) = maximalIdeal R → ∀ x : A, Module.length R (R ⧸ (Ideal.span {x}).map (algebraMap A R)) = Ring.ord …`.
+
+Introduce `A R _ _ _ _ _ _ _ hm x`. Establish `hs : Module.length R (R ⧸ maximalIdeal R) = 1` using `Module.length_eq_one_iff.mpr (isSimpleModule_iff_quot_maximal.mpr ⟨_, maximalIdeal.isMaximal _, ⟨LinearEquiv.refl _ _⟩⟩)`. Rewrite using `[(Algebra.TensorProduct.quotIdealMapEquivTensorQuot R (Ideal.span {x})).toLinearEquiv.length_eq, IsLocalRing.length_baseChange, hm, hs, mul_one]`. Both sides reduce to the same expression. Unfold `multAt`.
+
+Rewrite using `[h₁ _ P W a (coneLocal P W hPW) inferInstance, hspan]`. Conclude with `key (degZeroLoc P {W}) (coneLocal P W hPW) hmax α`.
+-/
 theorem ConeLocalLength.proof (h₁ : LocalizedQuotientLength.Statement.{u, u})
     (h₂ : ConeLocalFlat.Statement.{u}) : ConeLocalLength.Statement.{u} := by
   intro F _ K _ _ ι _ P hP W hW hPW c a h _ _ hhW α hα

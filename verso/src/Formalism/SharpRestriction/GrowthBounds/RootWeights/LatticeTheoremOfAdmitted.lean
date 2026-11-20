@@ -4,6 +4,9 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
+/- English proof (translation)
+The claim follows from `isotypicProjectorTheoremField_of_sharp_bound D h2 (invariant_denominator_sharp_of D h2 h5)`.
+-/
 theorem lattice_theorem_of_admitted (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (h5 : adm5 D) : IsotypicProjectorTheoremField D :=
   isotypicProjectorTheoremField_of_sharp_bound D h2 (invariant_denominator_sharp_of D h2 h5)
 

@@ -21,6 +21,19 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `hConn hZ hDens F _ _ V p _ hp X s Xw hXi hXn hproj hflat hXw hirr K hK hU`. Distinguish the cases in `hT : ∃ yb, IsTest p Xw yb`. Use `swap`. Conclude with `⟨0, fun yb h => absurd ⟨yb, h⟩ hT⟩`. Take `⟨yb₀, hyb₀⟩` from `hT`.
+
+Establish `hne : (Xw : Set X).Nonempty` using `(Set.range_nonempty _).mono hyb₀.2`. Use `haveI : IsDiscreteValuationRing V := (GlobalTheory.isDiscreteValuationRing_and_finite_residueField_of_numberField V (Fact.out : p.Prime).ne_zero hp).1`. Take `⟨D, hD, ht, sig, hsig, hval⟩` from `GlobalTheory.T.exists_charts_normal_projective_covering GlobalTheory.T.exists_charts_normal_projective hDens F V p hp X s Xw hXi hXn hproj hflat hXw hne K hK hU`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hprop : IsProper s`.
+
+Take `⟨N, i, hi, hs⟩` from `hproj`. Use `isProper_str V N` as an intermediate fact. Rewrite using `[← hs]`. Use `infer_instance`. Establish `hHyp : GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.Hyp s D` using `⟨hXi, fun z => (hXn z).2, hprop, hflat, hConn F V X s Xw hXi hXn hproj hflat hirr, hD, ht⟩`.
+
+Take `⟨M, n, hM, -, hVC⟩` from `hZ V ϖ hϖ X s D hHyp sig hsig`. Take `⟨r, hr⟩` from `GlobalTheory.T.norm_uniformizer_constant F V p hp ϖ hϖ`. Use `⟨(r ^ n) ^ ((M : ℝ)⁻¹), fun yb hyb κ hκ => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφi, hφl, hφs, y, hy⟩` from `GlobalTheory.T.test_point_generic_fibre F V p hp X s Xw hXw yb hyb`. Take `⟨⟨e, cc, he, hco⟩, hall⟩` from `hVC 𝓞_ℂ_[p] ℂ_[p] ℝ≥0 (Valued.v : Valuation ℂ_[p] ℝ≥0) (PadicComplexInt.integers p) φ hφi hφl yb hφs y hy`.
+
+Establish `h1` using `hall e cc he hco`. Establish `h2` using `hval yb hyb y hy e cc he hco κ hκ`. Establish `h3 : ‖(cc : ℂ_[p])‖ ^ M = r ^ n`. Use `congrArg (fun t : ℝ≥0 => (t : ℝ)) h1` as an intermediate fact. Simplify using `only [NNReal.coe_pow, NNReal.coe_zpow, coe_valued] at this`.
+
+Rewrite using `[this, ← hr φ]`. Both sides reduce to the same expression. Rewrite using `[← h2, ← h3, Real.pow_rpow_inv_natCast (norm_nonneg _) (by omega)]`.
+-/
 theorem princSt_of_connSt_propZ_densSt : ConnSt → GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.PropZ → DensSt → PrincSt := by
   intro hConn hZ hDens F _ _ V p _ hp X s Xw hXi hXn hproj hflat hXw hirr K hK hU
   by_cases hT : ∃ yb, IsTest p Xw yb

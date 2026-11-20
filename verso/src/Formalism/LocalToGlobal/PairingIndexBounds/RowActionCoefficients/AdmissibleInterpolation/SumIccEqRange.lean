@@ -22,12 +22,23 @@ def Sim (x : Kc) (n : ℤ) : Prop := ∃ u : Kc, u ∈ Oc ∧ u⁻¹ ∈ Oc ∧ 
 
 variable {Oc π}
 
+/- English proof (translation)
+Take `⟨u, hu, _, rfl⟩` from `h`. Rewrite using `[zpow_zero, mul_one]` and apply the resulting hypothesis.
+-/
 theorem Sim.mem {x : Kc} (h : Sim Oc π x 0) : x ∈ Oc := by
   obtain ⟨u, hu, _, rfl⟩ := h
   rwa [zpow_zero, mul_one]
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 theorem Sim.congr {x : Kc} {n m : ℤ} (h : Sim Oc π x n) (e : n = m) : Sim Oc π x m := e ▸ h
 
+/- English proof (translation)
+Take `⟨u, hu, hu', rfl⟩` from `hx`. Take `⟨v, hv, hv', rfl⟩` from `hy`. Use `⟨u * v, mul_mem hu hv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv]`. Conclude with `mul_mem hu' hv'`.
+
+Rewrite using `[zpow_add₀ hπ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Sim.mul (hπ : π ≠ 0) {x y : Kc} {n m : ℤ} (hx : Sim Oc π x n) (hy : Sim Oc π y m) :
     Sim Oc π (x * y) (n + m) := by
   obtain ⟨u, hu, hu', rfl⟩ := hx
@@ -36,15 +47,26 @@ theorem Sim.mul (hπ : π ≠ 0) {x y : Kc} {n m : ℤ} (hx : Sim Oc π x n) (hy
   · rw [mul_inv]; exact mul_mem hu' hv'
   · rw [zpow_add₀ hπ]; ring
 
+/- English proof (translation)
+Take `⟨u, hu, hu', rfl⟩` from `hx`. Conclude with `⟨u⁻¹, hu', by rwa [inv_inv], by rw [mul_inv, zpow_neg]⟩`.
+-/
 theorem Sim.inv {x : Kc} {n : ℤ} (hx : Sim Oc π x n) : Sim Oc π x⁻¹ (-n) := by
   obtain ⟨u, hu, hu', rfl⟩ := hx
   exact ⟨u⁻¹, hu', by rwa [inv_inv], by rw [mul_inv, zpow_neg]⟩
 
+/- English proof (translation)
+Take `⟨u, hu, hu', rfl⟩` from `hx`. Use `⟨u ^ k, pow_mem hu k, by rw [← inv_pow]; exact pow_mem hu' k, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ← zpow_natCast (π ^ n), ← zpow_mul, mul_comm n]`.
+-/
 theorem Sim.pow {x : Kc} {n : ℤ} (hx : Sim Oc π x n) (k : ℕ) : Sim Oc π (x ^ k) (k * n) := by
   obtain ⟨u, hu, hu', rfl⟩ := hx
   refine ⟨u ^ k, pow_mem hu k, by rw [← inv_pow]; exact pow_mem hu' k, ?_⟩
   rw [mul_pow, ← zpow_natCast (π ^ n), ← zpow_mul, mul_comm n]
 
+/- English proof (translation)
+Consider the cases of `k with`. Consider the case `ofNat k`. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `hx.pow k`. Consider the case `negSucc k`.
+
+Rewrite using `[zpow_negSucc]`. Conclude with `(hx.pow (k + 1)).inv.congr (by rw [Int.negSucc_eq]; push_cast; ring)`.
+-/
 theorem Sim.zpow {x : Kc} {n : ℤ} (hx : Sim Oc π x n) (k : ℤ) : Sim Oc π (x ^ k) (k * n) := by
   cases k with
   | ofNat k =>
@@ -54,6 +76,9 @@ theorem Sim.zpow {x : Kc} {n : ℤ} (hx : Sim Oc π x n) (k : ℤ) : Sim Oc π (
     rw [zpow_negSucc]
     exact (hx.pow (k + 1)).inv.congr (by rw [Int.negSucc_eq]; push_cast; ring)
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, by rw [inv_one]; exact one_mem _, by simp⟩`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a S)).mul hπ (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem Sim.prod (hπ : π ≠ 0) {ι : Type} (S : Finset ι) (x : ι → Kc) (n : ι → ℤ)
     (h : ∀ i ∈ S, Sim Oc π (x i) (n i)) : Sim Oc π (∏ i ∈ S, x i) (∑ i ∈ S, n i) := by
   classical
@@ -63,11 +88,21 @@ theorem Sim.prod (hπ : π ≠ 0) {ι : Type} (S : Finset ι) (x : ι → Kc) (n
     rw [Finset.prod_insert ha, Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self a S)).mul hπ (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_mem _, by rw [inv_one]; exact one_mem _, (one_mul _).symm⟩`.
+-/
 theorem Sim.self_zpow (k : ℤ) : Sim Oc π (π ^ k) k :=
   ⟨1, one_mem _, by rw [inv_one]; exact one_mem _, (one_mul _).symm⟩
 
 end Rel
 
+/- English proof (translation)
+Establish `h1 : ∀ k : Fin c, min (colH μ k.val) i = ∑ t : Fin N, if t.val < i ∧ k.val < μ t then 1 else 0`. Introduce `k`. Rewrite using `[← Finset.card_filter]`. Establish `: (Finset.univ.filter fun t : Fin N => t.val < i ∧ k.val < μ t) = Finset.univ.filter fun t : Fin N => t.val < min (colH μ k.val) i`. Use extensionality with `t`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[← BidetPairing.lt_colH_iff hμ k.val t, lt_min_iff, and_comm]`. Rewrite using `[this, BidetPairing.card_fin_lt N _ (le_trans (min_le_right _ _) hi)]`. Rewrite using `[Finset.sum_congr rfl fun k _ => h1 k, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with h`. Simplify using `only [h, true_and]`. Rewrite using `[← Finset.card_filter, BidetPairing.card_fin_lt c _ (hc t)]`. Simplify using `[h]`.
+-/
 theorem sum_min_colH {N : ℕ} (μ : Fin N → ℕ) (hμ : Antitone μ) (c : ℕ) (hc : ∀ t, μ t ≤ c) (i : ℕ) (hi : i ≤ N) :
     ∑ k : Fin c, min (colH μ k.val) i = ∑ t : Fin N, if t.val < i then μ t else 0 := by
   have h1 : ∀ k : Fin c, min (colH μ k.val) i = ∑ t : Fin N, if t.val < i ∧ k.val < μ t then 1 else 0 := by
@@ -86,11 +121,17 @@ theorem sum_min_colH {N : ℕ} (μ : Fin N → ℕ) (hμ : Antitone μ) (c : ℕ
     rw [← Finset.card_filter, BidetPairing.card_fin_lt c _ (hc t)]
   · simp [h]
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [Finset.sum_Icc_succ_top (by omega), ih, Finset.sum_range_succ]`.
+-/
 theorem sum_Icc_eq_range (F : ℕ → ℤ) (i : ℕ) : ∑ a ∈ Finset.Icc 1 i, F a = ∑ t ∈ Finset.range i, F (t + 1) := by
   induction i with
   | zero => simp
   | succ i ih => rw [Finset.sum_Icc_succ_top (by omega), ih, Finset.sum_range_succ]
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun t => if t < i then F t else 0) N, ← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `t`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_fin_lt (F : ℕ → ℤ) (N i : ℕ) (hi : i ≤ N) :
     ∑ t : Fin N, (if t.val < i then F t.val else 0) = ∑ t ∈ Finset.range i, F t := by
   rw [Fin.sum_univ_eq_sum_range (fun t => if t < i then F t else 0) N, ← Finset.sum_filter]
@@ -99,6 +140,13 @@ theorem sum_fin_lt (F : ℕ → ℤ) (N i : ℕ) (hi : i ≤ N) :
   simp only [Finset.mem_filter, Finset.mem_range]
   omega
 
+/- English proof (translation)
+Establish `key : ∀ s, ((if ¬ P s then la s else 0) + i * (if P s then w s else 0)) + (((if ¬ P s then w s else 0) - (if P s then w s else 0)) * (-n) + -(((if ¬ P s then w s else 0) - (if P s then w s else 0)) * (-n1))) + -(e0 s) * n + -(-(e1 s) * (n1 + -i)) + (if P s then -(c s) * n + c s * …`. Introduce `s`. Distinguish the cases in `h : P s`. Take `⟨h1, h2⟩` from `hO s h`. Simplify using `only [h, not_true_eq_false, if_true, if_false]`.
+
+Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h1, h2, h3⟩` from `hE s h`. Simplify using `only [h, not_false_eq_true, if_true, if_false]`. Rewrite using `[h1, h2, h3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Finset.sum_eq_zero (fun s (_ : s ∈ Finset.univ) => key s)]`. Simplify using `only [Finset.sum_filter, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.mul_sum]`. Simplify using `only [← Finset.sum_mul, Finset.sum_sub_distrib]`.
+-/
 theorem place_arith {n' : ℕ} (P : Fin n' → Prop) [DecidablePred P] (w e0 e1 c e M la : Fin n' → ℤ) (n n1 i : ℤ)
     (hE : ∀ s, ¬ P s → e s = e0 s + w s ∧ e1 s = -w s ∧ M s = la s + i * w s)
     (hO : ∀ s, P s → c s = w s - e0 s ∧ e1 s = e0 s) :
@@ -128,6 +176,11 @@ section Blocks
 
 variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
+/- English proof (translation)
+Proceed by induction on `s generalizing x with`. Consider the case `zero => exact ⟨x, rfl⟩`. Consider the case `succ s ih`. Take `⟨y, hy⟩` from `(X.G.P.setting v).frob x`. Take `⟨z, hz⟩` from `ih (x ^ p + (p : X.G.P.W v) * y)`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, RingAut.mul_apply, hy, hz]`.
+-/
 theorem sig_int (v : X.Pl) (s : ℕ) (x : X.G.P.W v) :
     ∃ y : X.G.P.W v, (X.G.P.σ v ^ s) (algebraMap (X.G.P.W v) (X.G.P.Qq v) x) = algebraMap (X.G.P.W v) (X.G.P.Qq v) y := by
   induction s generalizing x with
@@ -138,12 +191,20 @@ theorem sig_int (v : X.Pl) (s : ℕ) (x : X.G.P.W v) :
     refine ⟨z, ?_⟩
     rw [pow_succ, RingAut.mul_apply, hy, hz]
 
+/- English proof (translation)
+Unfold `mF`. Rewrite using `[Matrix.det_submatrix_equiv_self]`. Conclude with `(RingHom.map_det ((X.G.P.ι b.1).comp (X.G.P.σ b.1 ^ b.2.val : X.G.P.Qq b.1 ≃+* X.G.P.Qq b.1).toRingHom) A).symm`.
+-/
 theorem mF_det (j : ℕ) (b : BX X) (A : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)) :
     (mF X j b A).det = X.G.P.ι b.1 ((X.G.P.σ b.1 ^ b.2.val) A.det) := by
   unfold mF
   rw [Matrix.det_submatrix_equiv_self]
   exact (RingHom.map_det ((X.G.P.ι b.1).comp (X.G.P.σ b.1 ^ b.2.val : X.G.P.Qq b.1 ≃+* X.G.P.Qq b.1).toRingHom) A).symm
 
+/- English proof (translation)
+Unfold `DgX`. Rewrite using `[Matrix.det_diagonal, Fin.prod_univ_eq_prod_range (fun i => if i < i0 v then ((p : K'))⁻¹ else 1) (NJ X (j + 1)), Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const]`. Establish `: (Finset.range (NJ X (j + 1))).filter (fun i => i < i0 v) = Finset.range (i0 v)`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Finset.card_range, zpow_neg, zpow_natCast, inv_pow]`.
+-/
 theorem det_DgX (K' : Type) [Field K'] (j : ℕ) (i0 : X.Pl → ℕ) (v : X.Pl) (h : i0 v ≤ NJ X (j + 1)) :
     (DgX X K' j i0 v).det = (p : K') ^ (-(i0 v : ℤ)) := by
   unfold DgX
@@ -155,9 +216,15 @@ theorem det_DgX (K' : Type) [Field K'] (j : ℕ) (i0 : X.Pl → ℕ) (v : X.Pl) 
     omega
   rw [this, Finset.card_range, zpow_neg, zpow_natCast, inv_pow]
 
+/- English proof (translation)
+Apply the tactic sequence `cases j <;> rfl`.
+-/
 theorem len_def (v : X.Pl) (j : ℕ) (L : (X.Pj j).Tup) : len X v j L = lenLat (X.G.P.W v) p (X.latAt v j L) := by
   cases j <;> rfl
 
+/- English proof (translation)
+Establish `hu : IsUnit (g : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit g)`. Establish `hS` using `X.G.P.setting v`. Use `hS.frac_alt` as an intermediate fact. Rewrite using `[len_def, hL, lenLat_colSpan hS.p_unif _ hu]`.
+-/
 theorem len_eq (v : X.Pl) (j : ℕ) (L : (X.Pj j).Tup) (g : GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v))
     (hL : X.latAt v j L = colSpan (X.G.P.W v) (g : Matrix _ _ (X.G.P.Qq v))) :
     len X v j L = -ordP (X.G.P.W v) p (g : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det := by
@@ -167,11 +234,21 @@ theorem len_eq (v : X.Pl) (j : ℕ) (L : (X.Pj j).Tup) (g : GL (Fin ((X.Pj j).m 
   have := hS.frac_alt
   rw [len_def, hL, lenLat_colSpan hS.p_unif _ hu]
 
+/- English proof (translation)
+Unfold `Sys.nuv nu`. Rewrite using `[if_pos ⟨by omega, by omega⟩]`.
+-/
 theorem nuv_lam (j : ℕ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (t : ℕ) (ht : t < X.G.P.m + 1) :
     X.nuv v (j + 1) s (t + 1) = lamI (X.G.P.lam0 v) s (t + 1) + X.w v (j + 1) s := by
   unfold Sys.nuv nu
   rw [if_pos ⟨by omega, by omega⟩]
 
+/- English proof (translation)
+Take `⟨_, _, h3, h4, _, h6, _⟩` from `hS p X j b`. Establish `hi' : i ≤ NJ X (j + 1)` using `by show i ≤ X.G.P.m + 1 + (j + 1) * (X.t + 1)`. Use linear arithmetic over natural numbers and integers. Establish `h` using `sum_min_colH (muX X j (NJ X (j + 1)) b) (h3 _) (cX X j b) (h4 _) i hi'`. Simplify using `only [h6] at h`.
+
+Establish `h7 : ∀ t : Fin (NJ X (j + 1)), (((if t.val < i then muX X j (NJ X (j + 1)) b t else 0 : ℕ)) : ℤ) = if t.val < i then X.nuv b.1 (j + 1) b.2 (t.val + 1) else 0`. Introduce `t`. Use `split_ifs`. Conclude with `Int.toNat_of_nonneg (nuv_nonneg X b.1 j b.2 _)`. Both sides reduce to the same expression.
+
+Rewrite using `[h, Nat.cast_sum, Finset.sum_congr rfl fun t _ => h7 t, sum_fin_lt (fun t => X.nuv b.1 (j + 1) b.2 (t + 1)) _ _ hi', sum_Icc_eq_range, Finset.sum_congr rfl fun t ht => nuv_lam X j b.1 b.2 t (by have := Finset.mem_range.1 ht; omega), Finset.sum_add_distrib, Finset.sum_const, Finse …`.
+-/
 theorem boxes (hS : XShape) (j : ℕ) (b : BX X) (i : ℕ) (hi : i ≤ X.G.P.m + 1) :
     ((∑ k : Fin (cX X j b), min (X.colHt b.1 (j + 1) b.2 k.val) i : ℕ) : ℤ) =
       ∑ a ∈ Finset.Icc 1 i, lamI (X.G.P.lam0 b.1) b.2 a + (i : ℤ) * X.w b.1 (j + 1) b.2 := by
@@ -194,12 +271,22 @@ theorem boxes (hS : XShape) (j : ℕ) (b : BX X) (i : ℕ) (hi : i ≤ X.G.P.m +
 
 variable (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (Oc : Subring Kc)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `sig_int X b.1 b.2.val x`. Rewrite using `[hy, (X.G.P.setting b.1).ι_comp]`. Conclude with `hO _`.
+-/
 theorem tw_int (hO : ∀ o : X.G.O, algebraMap X.G.Kf Kc (algebraMap X.G.O X.G.Kf o) ∈ Oc) (b : BX X) (x : X.G.P.W b.1) :
     algebraMap X.G.Kf Kc (X.G.P.ι b.1 ((X.G.P.σ b.1 ^ b.2.val) (algebraMap (X.G.P.W b.1) (X.G.P.Qq b.1) x))) ∈ Oc := by
   obtain ⟨y, hy⟩ := sig_int X b.1 b.2.val x
   rw [hy, (X.G.P.setting b.1).ι_comp]
   exact hO _
 
+/- English proof (translation)
+Establish `hS` using `X.G.P.setting b.1`. Use `hS.frac_alt` as an intermediate fact. Take `⟨n, u, rfl⟩` from `exists_eq_unit_mul_zpow₂ hS.p_unif hx`. Rewrite using `[ordP_eq hS.p_unif]`. Use `⟨_, tw_int X Kc Oc hO b u, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (algebraMap (X.G.P.W b.1) (X.G.P.Qq b.1) (u : X.G.P.W b.1))⁻¹ = algebraMap (X.G.P.W b.1) (X.G.P.Qq b.1) ((u⁻¹ : (X.G.P.W b.1)ˣ) : X.G.P.W b.1)`. Use `symm`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite using `[← map_inv₀, ← map_inv₀, ← map_inv₀, e]`.
+
+Conclude with `tw_int X Kc Oc hO b _`. Rewrite using `[map_mul, map_mul, map_mul, map_zpow₀, map_zpow₀, map_zpow₀, map_natCast, map_natCast, map_natCast]`.
+-/
 theorem sim_tw (hO : ∀ o : X.G.O, algebraMap X.G.Kf Kc (algebraMap X.G.O X.G.Kf o) ∈ Oc) (b : BX X)
     {x : X.G.P.Qq b.1} (hx : x ≠ 0) :
     Sim Oc (p : Kc) (algebraMap X.G.Kf Kc (X.G.P.ι b.1 ((X.G.P.σ b.1 ^ b.2.val) x))) (ordP (X.G.P.W b.1) p x) := by
@@ -217,6 +304,9 @@ theorem sim_tw (hO : ∀ o : X.G.O, algebraMap X.G.Kf Kc (algebraMap X.G.O X.G.K
     exact tw_int X Kc Oc hO b _
   · rw [map_mul, map_mul, map_mul, map_zpow₀, map_zpow₀, map_zpow₀, map_natCast, map_natCast, map_natCast]
 
+/- English proof (translation)
+Rewrite using `[mF_det]`. Conclude with `sim_tw X Kc Oc hO b ((Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit g)).ne_zero`.
+-/
 theorem sim_mF (hO : ∀ o : X.G.O, algebraMap X.G.Kf Kc (algebraMap X.G.O X.G.Kf o) ∈ Oc) (j : ℕ) (b : BX X)
     (g : GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)) :
     Sim Oc (p : Kc) (algebraMap X.G.Kf Kc (mF X j b (g : Matrix _ _ (X.G.P.Qq b.1))).det)
@@ -230,6 +320,27 @@ end FrameUnitLemmas
 
 open FrameUnitLemmas in
 
+/- English proof (translation)
+Introduce `p _ X Kc _ _ Oc hO hp j L L'' g g' hL hL'' i0 hi0`. Establish `hr : ∀ v, i0 v ≤ X.G.P.m + 1` using `fun v => by`. Establish `h1` using `hi0 v`. Establish `h2` using `(X.std v).two_r`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hN : ∀ v, i0 v ≤ NJ X (j + 1)` using `fun v => by`. Establish `h1` using `hr v`. Use `show i0 v ≤ X.G.P.m + 1 + (j + 1) * (X.t + 1)`. Use linear arithmetic over natural numbers and integers. Establish `hg : ∀ b : BX X, Sim Oc (p : Kc) (algebraMap X.G.Kf Kc (mF X j b (g b.1 : Matrix _ _ (X.G.P.Qq b.1))).det) (ordP (X.G.P.W b.1) p (g b.1 : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)).det)` using `fun b => sim_mF X Kc Oc hO j b (g b.1)`.
+
+Establish `hg' : ∀ b : BX X, Sim Oc (p : Kc) (algebraMap X.G.Kf Kc (mF X (j + 1) b (g' b.1 : Matrix _ _ (X.G.P.Qq b.1)) * DgX X X.G.Kf j i0 b.1).det) (ordP (X.G.P.W b.1) p (g' b.1 : Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj (j + 1)).m + 1)) (X.G.P.Qq b.1)).det + -(i0 b.1 : ℤ))`. Introduce `b`. Rewrite using `[Matrix.det_mul, map_mul, det_DgX X X.G.Kf j i0 b.1 (hN b.1), map_zpow₀, map_natCast]`. Conclude with `(sim_mF X Kc Oc hO (j + 1) b (g' b.1)).mul hp (Sim.self_zpow _)`. Establish `hU : Sim Oc (p : Kc) (numericalIdentityScalar X Kc j (fun v => g v) (fun v => g' v) i0) (∑ b : BX X, if IsOddPos b.2 then -(cX X j b : ℤ) * ordP (X.G.P.W b.1) p (g b.1 : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)).det + (cX X j b : ℤ) * (ordP (X.G.P.W b.1 …`.
+
+Unfold `numericalIdentityScalar`. Use `Sim.prod hp _ _ _ fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `((hg b).zpow _).mul hp ((hg' b).pow _)`. Conclude with `((hg b).pow _).mul hp (Sim.self_zpow _)`.
+
+Establish `h1 : Sim Oc (p : Kc) (algebraMap X.G.Kf Kc (∏ v : X.Pl, (p : X.G.Kf) ^ (Nprime (X.G.P.lam0 v) (X.w v) (j + 1) (i0 v)))) (∑ v : X.Pl, Nprime (X.G.P.lam0 v) (X.w v) (j + 1) (i0 v))`. Simplify using `only [map_prod, map_zpow₀, map_natCast]`. Conclude with `Sim.prod hp _ _ _ fun v _ => Sim.self_zpow _`. Establish `h2 : Sim Oc (p : Kc) (algebraMap X.G.Kf Kc (∏ v : X.Pl, (p : X.G.Kf) ^ (X.vm v (j + 1) * len X v j L))) (∑ v : X.Pl, X.vm v (j + 1) * len X v j L)`. Simplify using `only [map_prod, map_zpow₀, map_natCast]`.
+
+Conclude with `Sim.prod hp _ _ _ fun v _ => Sim.self_zpow _`. Establish `h3 : Sim Oc (p : Kc) (algebraMap X.G.Kf Kc (∏ v : X.Pl, (p : X.G.Kf) ^ (X.vm v (j + 1) * len X v (j + 1) L''))) (∑ v : X.Pl, X.vm v (j + 1) * len X v (j + 1) L'')`. Simplify using `only [map_prod, map_zpow₀, map_natCast]`. Conclude with `Sim.prod hp _ _ _ fun v _ => Sim.self_zpow _`. Establish `h4 : Sim Oc (p : Kc) (algebraMap X.G.Kf Kc (sX X j (fun v => g v))) (∑ b : BX X, -(eJ X j b.1 b.2) * ordP (X.G.P.W b.1) p (g b.1 : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)).det)`.
+
+Unfold `sX`. Simplify using `only [map_prod, map_zpow₀]`. Conclude with `Sim.prod hp _ _ _ fun b _ => (hg b).zpow _`. Establish `h5 : Sim Oc (p : Kc) (algebraMap X.G.Kf Kc (∏ b : BX X, (mF X (j + 1) b (g' b.1) * DgX X X.G.Kf j i0 b.1).det ^ (-(eJ X (j + 1) b.1 b.2)))) (∑ b : BX X, -(eJ X (j + 1) b.1 b.2) * (ordP (X.G.P.W b.1) p (g' b.1 : Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj (j + 1)).m + 1)) (X.G …`. Simplify using `only [map_prod, map_zpow₀]`.
+
+Conclude with `Sim.prod hp _ _ _ fun b _ => (hg' b).zpow _`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, map_inv₀, map_inv₀]`. Use `Sim.mem (π := (p : Kc)) (Sim.congr (((((h1.mul hp (h2.mul hp h3.inv)).mul hp h4).mul hp h5.inv)).mul hp hU) ?_)` and prove the remaining obligations. Simplify using `only [Fintype.sum_sigma, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[len_eq X v j L (g v) (hL v), len_eq X v (j + 1) L'' (g' v) (hL'' v)]`. Rewrite using `[Finset.sum_neg_distrib]`. Use `place_arith (fun s : Fin (X.G.P.n' v) => IsOddPos s) (X.w v (j + 1)) (eJ X j v) (eJ X (j + 1) v) (fun s => (cX X j ⟨v, s⟩ : ℤ)) (fun s => (eX X j ⟨v, s⟩ : ℤ)) (fun s => ((∑ k : Fin (cX X j ⟨v, s⟩), min (X.colHt v (j + 1) s k.val) (i0 v) : ℕ) : ℤ)) (fun s => ∑ a ∈ Finset.Icc 1 (i0 …` and prove the remaining obligations. Introduce `s hs`. Take `⟨_, _, _, _, _, _, _, _, h9, _⟩` from `hS p X j ⟨v, s⟩`.
+
+Conclude with `⟨(h9 hs).1, (h9 hs).2, boxes X hS j ⟨v, s⟩ (i0 v) (hr v)⟩`. Introduce `s hs`. Take `⟨_, _, _, _, _, _, _, _, _, h10⟩` from `hS p X j ⟨v, s⟩`. Conclude with `h10 hs`.
+-/
 theorem xUnit_of (hS : XShape) : XUnit := by
   intro p _ X Kc _ _ Oc hO hp j L L'' g g' hL hL'' i0 hi0
   have hr : ∀ v, i0 v ≤ X.G.P.m + 1 := fun v => by

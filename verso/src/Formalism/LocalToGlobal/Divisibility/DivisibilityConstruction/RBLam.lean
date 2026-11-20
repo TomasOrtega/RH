@@ -13,6 +13,23 @@ open Formalism.L2.DIV
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ) ≤ D.host.q` using `by exact_mod_cast D.host.hyp.1.one_lt.le`. Establish `hd : (1 : ℝ) ≤ D.host.d` using `by exact_mod_cast D.host.hyp.2.1.one_lt.le`. Establish `hn : (1 : ℝ) ≤ D.R.n`. Establish `: 1 ≤ D.R.n` using `D.R.ord_pos`. Conclude with `this` after adjusting the coercions.
+
+Establish `hc1 : (1 : ℝ) ≤ szCond L`. Unfold `szCond`. Establish `h4 : (1 : ℝ) ≤ (D.host.QS : ℝ)` using `by exact_mod_cast D.host.QS_pos`. Establish `h5 : (1 : ℝ) ≤ (D.host.QS : ℝ) * D.host.q` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hrt : D.R.r + 5 ≤ D.R.t`. Use `D.R.rank_add_five_le` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `ht5 : (5 : ℝ) ≤ D.R.t` using `by exact_mod_cast (by omega : 5 ≤ D.R.t)`.
+
+Establish `hrt' : (D.R.r : ℝ) ≤ D.R.t` using `by exact_mod_cast (by omega : D.R.r ≤ D.R.t)`. Establish `ht0 : (0 : ℝ) ≤ D.R.t` using `by linarith`. Establish `hr0 : (0 : ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`. Establish `hpow : (D.R.t : ℝ) ^ 150 ≤ Real.sqrt L.sc.b`. Establish `h1 : (1 : ℝ) ≤ szCond L ^ 36` using `one_le_pow₀ hc1`.
+
+Establish `h2 : (0 : ℝ) ≤ (D.R.t : ℝ) ^ 150` using `pow_nonneg ht0 _`. Use `hSC` as an intermediate fact. Unfold `SizeCond at this`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2t : 2 * (D.R.t : ℝ) ^ 2 ≤ (D.R.t : ℝ) ^ 150`.
+
+Establish `h148 : (2 : ℝ) ≤ (D.R.t : ℝ) ^ 148`. Combine the equalities or inequalities in the displayed calculation. Establish `: (D.R.t : ℝ) ^ 150 = (D.R.t : ℝ) ^ 2 * (D.R.t : ℝ) ^ 148` using `by ring`. Rewrite using `[this]`. Use polynomial arithmetic with `[pow_nonneg ht0 2]`.
+
+Establish `hb1 : (1 : ℝ) ≤ L.sc.b`. Unfold `Scale.b`. Conclude with `Real.one_le_exp (by unfold Scale.L; exact Real.rpow_nonneg (by linarith [L.sc.one_lt_alt]) _)`. Establish `hsq : Real.sqrt L.sc.b ≤ L.sc.b`. Rewrite using `[Real.sqrt_le_left (by linarith)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hr2 : (D.R.r : ℝ) ^ 2 ≤ (D.R.t : ℝ) ^ 2` using `pow_le_pow_left₀ hr0 hrt' 2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem two_r_sq_le_b (L : SizeData₂ D) (hSC : SizeCond L) : 2 * (D.R.r : ℝ) ^ 2 ≤ L.sc.b := by
   have hq : (1 : ℝ) ≤ D.host.q := by exact_mod_cast D.host.hyp.1.one_lt.le
   have hd : (1 : ℝ) ≤ D.host.d := by exact_mod_cast D.host.hyp.2.1.one_lt.le
@@ -59,6 +76,25 @@ theorem two_r_sq_le_b (L : SizeData₂ D) (hSC : SizeCond L) : 2 * (D.R.r : ℝ)
   have hr2 : (D.R.r : ℝ) ^ 2 ≤ (D.R.t : ℝ) ^ 2 := pow_le_pow_left₀ hr0 hrt' 2
   linarith
 
+/- English proof (translation)
+Establish `hx1 : 1 ≤ L.sc.x` using `le_of_lt L.sc.one_lt_alt`. Establish `hX1 : (1 : ℝ) ≤ L.sc.x ^ L.sc.eps` using `Real.one_le_rpow hx1 L.sc.eps_pos.le`. Establish `hX0 : (0 : ℝ) ≤ L.sc.x ^ L.sc.eps` using `by linarith`. Establish `hg0 : (0 : ℝ) < D.host.g 0` using `by exact_mod_cast (D.host.g_prime 0).pos`. Establish `hlam : Real.log (Fintype.card G : ℝ) ≤ 2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * Real.log (2 * (D.host.g 0 : ℝ))`.
+
+Establish `h` using `GZeroLogBound D (D.host.g 0 : ℝ) (fun i => (hSG i 0).2.1)`. Rewrite using `[hc]`. Conclude with `h`. Establish `hth : L.sc.x ^ szTh L ≤ L.sc.x ^ L.sc.eps`. Apply `Real.rpow_le_rpow_of_exponent_le hx1` to reduce the goal to its premises.
+
+Unfold `szTh`. Combine the linear relations using `[L.sc.eps_pos]`. Establish `hlg : Real.log (2 * (D.host.g 0 : ℝ)) ≤ 2 * (L.sc.x ^ L.sc.eps * L.sc.x ^ L.sc.eps)`. Rewrite using `[Real.log_mul (by norm_num) hg0.ne']`. Establish `h1` using `(hSG 0 0).2.2`.
+
+Establish `h2 : L.sc.x ^ szTh L * L.sc.L ≤ L.sc.x ^ L.sc.eps * L.sc.x ^ L.sc.eps` using `by show L.sc.x ^ szTh L * L.sc.x ^ L.sc.eps ≤ _`. Conclude with `mul_le_mul_of_nonneg_right hth hX0`. Establish `h3` using `Real.log_two_lt_d9`. Establish `h4 : (1 : ℝ) ≤ L.sc.x ^ L.sc.eps * L.sc.x ^ L.sc.eps` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hr` using `two_r_sq_le_b L hSC`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `hm1 : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 1 ≤ D.R.m)`. Establish `hr0 : (0 : ℝ) ≤ (D.R.r : ℝ) ^ 2` using `pow_nonneg (Nat.cast_nonneg _) 2`. Establish `hb0 : (0 : ℝ) ≤ L.sc.b` using `by linarith`.
+
+Use `set X := L.sc.x ^ L.sc.eps with hXdef`. Establish `hU : (ofRecord D L Del h0).unitE Nc = X * ((D.R.f : ℝ) * D.R.m * L.sc.b * X + Nc)` using `rfl`. Rewrite using `[hU]`. Establish `hXX : (0 : ℝ) ≤ X * X` using `mul_nonneg hX0 hX0`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `hlam.trans (mul_le_mul_of_nonneg_left hlg ?_)` and prove the remaining obligations. Check the signs of the components of the expression. Use `_ = (D.R.f : ℝ) * (2 * (D.R.r : ℝ) ^ 2) * (2 * (X * X)) := by ring`. Use `_ ≤ (D.R.f : ℝ) * ((D.R.m : ℝ) ^ 2 * L.sc.b) * (2 * (X * X)) := by`. Establish `: 2 * (D.R.r : ℝ) ^ 2 ≤ (D.R.m : ℝ) ^ 2 * L.sc.b`.
+
+Establish `hm2 : (1 : ℝ) ≤ (D.R.m : ℝ) ^ 2` using `by nlinarith`. Use `mul_le_mul_of_nonneg_right hm2 hb0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (0 : ℝ) ≤ 2 * (X * X)` using `by positivity`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left this hf0) h2`.
+
+Use `_ = 2 * ((D.R.m : ℝ) * (X * ((D.R.f : ℝ) * D.R.m * L.sc.b * X + 0))) := by ring`. Use `_ ≤ 2 * ((D.R.m : ℝ) * (X * ((D.R.f : ℝ) * D.R.m * L.sc.b * X + Nc))) := by`. Establish `hm0 : (0 : ℝ) ≤ D.R.m` using `by linarith`. Use `gcongr`.
+-/
 theorem log_card_le_unitE {G : Type} [Fintype G] (L : SizeData₂ D) (hSG : SizeG L) (hSC : SizeCond L) (Del h0 : ℕ) (Nc : ℝ)
     (hNc : 0 ≤ Nc) (hc : Fintype.card G = D.what₂.restRowsFiniteGroupCard) :
     Real.log (Fintype.card G : ℝ) ≤ 2 * ((D.R.m : ℝ) * (ofRecord D L Del h0).unitE Nc) := by
@@ -113,6 +149,11 @@ theorem log_card_le_unitE {G : Type} [Fintype G] (L : SizeData₂ D) (hSG : Size
         have hm0 : (0 : ℝ) ≤ D.R.m := by linarith
         gcongr
 
+/- English proof (translation)
+Establish `h1` using `log_card_le_unitE (G := G) L hSG hSC Del h0 Nc hNc hc`. Unfold `LamSizeAt`. Establish `key : (2 + cs) * ((D.R.m : ℝ) * (ofRecord D L Del h0).unitE Nc) = 2 * ((D.R.m : ℝ) * (ofRecord D L Del h0).unitE Nc) + cs * ((D.R.m : ℝ) * (ofRecord D L Del h0).unitE Nc)`. Expand and normalize the polynomial expressions, which then agree. Use `show Real.log (Fintype.card G) + Real.log (s : ℝ) ≤ (2 + cs) * ((D.R.m : ℝ) * (ofRecord D L Del h0).unitE Nc)`.
+
+Rewrite using `[key]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lamSizeAt_record {G : Type} [Group G] [Fintype G] (L : SizeData₂ D) (hSG : SizeG L) (hSC : SizeCond L) (Del h0 : ℕ)
     (Nc : ℝ) (hNc : 0 ≤ Nc) (hc : Fintype.card G = D.what₂.restRowsFiniteGroupCard) (s : ℕ) (cs : ℝ)
     (hs : Real.log (s : ℝ) ≤ cs * ((D.R.m : ℝ) * (ofRecord D L Del h0).unitE Nc)) :
@@ -126,6 +167,9 @@ theorem lamSizeAt_record {G : Type} [Group G] [Fintype G] (L : SizeData₂ D) (h
   rw [key]
   linarith
 
+/- English proof (translation)
+Establish `h` using `lamSizeAt_record (G := G) L hSG hSC Del h0 Nc hNc hc 1 0 (by simp)`. Establish `e : (2 : ℝ) + 0 = 2` using `by norm_num`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem lamSizeAt_record_one {G : Type} [Group G] [Fintype G] (L : SizeData₂ D) (hSG : SizeG L) (hSC : SizeCond L)
     (Del h0 : ℕ) (Nc : ℝ) (hNc : 0 ≤ Nc) (hc : Fintype.card G = D.what₂.restRowsFiniteGroupCard) :
     LamSizeAt (G := G) (ofRecord D L Del h0) Nc 1 2 := by

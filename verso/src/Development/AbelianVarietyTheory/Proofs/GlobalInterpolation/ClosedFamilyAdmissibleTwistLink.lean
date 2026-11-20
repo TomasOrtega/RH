@@ -11,6 +11,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Forma
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `𝒜 sel aPt0 aPtTw aPer0 aPerTw aP10 aAtG hServ`. Establish `hDG : Closed (D3 3 𝒜) fun Fm _ => DGamSize Fm` using `Closed.of_class fun _ _ hc => hc.2.2.2`. Establish `hA2 : Formalism.L2.G.Adm2InU.Adm2InU (D3 3 𝒜)` using `{ pt0 := aPt0, ptTw := aPtTw, per0 := aPer0, perTw := aPerTw, serv := Formalism.L2.G.ServT.servF_of_servT (fun Fm hc => sel Fm (d3_a hc)) hDG hServ, p10 := aP10, dgt := Formalism.MainNotions.closed_eventually_levelPrimeCoprimeStabiliser (WithChN 𝒜) 3, atG := aAtG }`. Conclude with `(Formalism.L2.G.Adm2InU.admissible_family_of_inclusion hA2).imp fun _ _ _ a => a.1`.
+-/
 theorem GlobalTheory.Top.closed_family_admissible_twist_link : ∀ (𝒜 : FamClass)
     (sel : Formalism.L2.TSel 𝒜)
     (aPt0 : Closed (D3 3 𝒜) fun Fm _ => ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (_ : Fm.x1 < x) (i : Fm.Ix x), ∀ u, Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 (Fm.D x i) u)

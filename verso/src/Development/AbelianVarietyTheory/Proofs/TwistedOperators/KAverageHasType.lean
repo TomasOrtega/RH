@@ -38,6 +38,27 @@ noncomputable section
 
 namespace GlobalTheory.PlaceDecomp
 
+/- English proof (translation)
+Introduce `D θ hθ hp N U W _ _ _ ρ τ e he`. Use `haveI : CompleteSpace (N.M.H τ) := (N.M.ds τ).1`. Use `haveI : IsTopologicalGroup (GA D N.V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hP` using `N.M.fr_unit τ`. Establish `hJ` using `N.M.fr_gram τ`.
+
+Establish `hσ : Std (N.M.ε τ) (N.M.σ τ)` using `std_of_isDS hp.harishChandraModules (N.M.ds τ)`. Establish `hec : Continuous e` using `by obtain ⟨F, -, h1, h2, -⟩ := he; exact h2 _ h1`. Establish `hU : ∀ k, (N.M.fr τ)⁻¹ * toMK k * N.M.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D N.V τ)` using `fun k => GlobalTheory.Published.AutFin.conj_mem_UH hP hJ k`. Establish `hκ` using `GlobalTheory.SeriesToClosure.continuous_conjK (ε := N.M.ε τ) (P := N.M.fr τ)`. Establish `hA : ∀ f, GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e f = GlobalTheory.AvgOtherPlace.avgF θ N.V (muK (N.M.ε τ)) τ (fun k => (N.M.fr τ)⁻¹ * toMK k * N.M.fr τ) e f` using `fun f => rfl`.
+
+Use `⟨GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e, ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, fun φ _ => GlobalTheory.SeriesToClosure.moves_avg hθ hP hJ hσ he φ⟩` and prove the remaining obligations. Introduce `f hf`. Conclude with `GlobalTheory.KFinAvgSpan.continuous_avg hθ hP hJ hec hf`. Introduce `f f' hf hf'`. Rewrite using `[hA, hA, hA]`.
+
+Conclude with `GlobalTheory.AvgOtherPlace.avgF_add _ hθ hκ hU hec hf hf'`. Introduce `c f _`. Rewrite using `[hA, hA]`. Conclude with `GlobalTheory.AvgOtherPlace.avgF_smul _ c f`. Introduce `f hf`.
+
+Use `⟨GlobalTheory.AvgCuspType.avg_isCuspOfType D θ hθ hp N f hf.1 τ e he, fun k hk hkf g => ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.SeriesToClosure.avg]`. Use `congr 1`. Use function extensionality and compare the values at `k'`. Rewrite using `[mul_assoc, ← GlobalTheory.PointAtPlaceHom.comm_of_mem N.V (GlobalTheory.PointAtPlaceHom.atTau_mem N.V τ _) hkf, ← mul_assoc, hf.2 k hk hkf]`.
+
+Introduce `τ' hne f hf hT x haveI := GlobalTheory.AvgCoeff.coeffSpan_finiteDimensional (ρ τ')`. Establish `hAc : Continuous fun k' : KG (N.M.ε τ) => atTau θ N.V τ ((N.M.fr τ)⁻¹ * toMK k' * N.M.fr τ)` using `GlobalTheory.RealAverage.continuous_atTau hθ hκ hU`. Establish `hc : ∀ k k', GlobalTheory.Published.AutFin.kAt θ N.V τ' (N.M.ε τ') (N.M.fr τ') k * atTau θ N.V τ ((N.M.fr τ)⁻¹ * toMK k' * N.M.fr τ) = atTau θ N.V τ ((N.M.fr τ)⁻¹ * toMK k' * N.M.fr τ) * GlobalTheory.Published.AutFin.kAt θ N.V τ' (N.M.ε τ') (N.M.fr τ') k` using `fun k k' => GlobalTheory.PointAtPlaceComm.atTau_comm D θ hθ N.V τ' τ hne _ (GlobalTheory.Published.AutFin.conj_mem_UH (N.M.fr_unit τ') (N.M.fr_gram τ') k) _ (hU k')`. Establish `hcont : ∀ k, Continuous fun k' : KG (N.M.ε τ) => e k' * f (x * atTau θ N.V τ ((N.M.fr τ)⁻¹ * toMK k' * N.M.fr τ) * GlobalTheory.Published.AutFin.kAt θ N.V τ' (N.M.ε τ') (N.M.fr τ') k)` using `fun k => hec.mul (hf.1.1.cont.comp ((continuous_const.mul hAc).mul continuous_const))`. Establish `key` using `GlobalTheory.AvgCoeff.integral_mem (muK (N.M.ε τ)) (GlobalTheory.Published.AutFin.coeffSpan (ρ τ')) (fun k' k => e k' * f (x * atTau θ N.V τ ((N.M.fr τ)⁻¹ * toMK k' * N.M.fr τ) * GlobalTheory.Published.AutFin.kAt θ N.V τ' (N.M.ε τ') (N.M.fr τ') k)) (fun k' => Submodule.smul_mem _ …`.
+
+Establish `heq : (fun k => GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e f (x * GlobalTheory.Published.AutFin.kAt θ N.V τ' (N.M.ε τ') (N.M.fr τ') k)) = fun k => ∫ k', e k' * f (x * atTau θ N.V τ ((N.M.fr τ)⁻¹ * toMK k' * N.M.fr τ) * GlobalTheory.Published.AutFin.kAt θ N.V …`. Use function extensionality and compare the values at `k`. Simplify using `only [GlobalTheory.SeriesToClosure.avg]`. Use `congr 1`. Use function extensionality and compare the values at `k'`.
+
+Rewrite using `[mul_assoc, hc, ← mul_assoc]`. Use `show (fun k => GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e f (x * GlobalTheory.Published.AutFin.kAt θ N.V τ' (N.M.ε τ') (N.M.fr τ') k)) ∈ _`. Rewrite using `[heq]`. Conclude with `key`. Introduce `τ' hne g hg f _`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.SeriesToClosure.avg, rTr]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[mul_assoc x, mul_assoc x, GlobalTheory.AvgOtherPlace.atTau_comm hθ hne (hU k) hg]`.
+
+Introduce `τ' hne X hX f hf`. Rewrite using `[hA, hA]`. Conclude with `(GlobalTheory.AvgOtherPlace.avgF_Rder _ hθ hne hκ hU hec hf.1.1 hX).symm`.
+-/
 theorem hasCtp_kAvg : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → GlobalTheory.FunPr.Hypotheses₂ → ∀ (N : GlobalTheory.Grid.Node D) (U : Subgroup (GA D N.V)) (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] [∀ τ, FiniteDimensional ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (N.M.ε τ)) (W τ)) (τ : D.what₂.Tau) (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), KFinFun (N.M.ε τ) e → HasCtp θ N U (TyOf θ N ρ) τ (kAvg (N.M.ε τ) (N.M.σ τ) e) := by
   intro D θ hθ hp N U W _ _ _ ρ τ e he
   haveI : CompleteSpace (N.M.H τ) := (N.M.ds τ).1

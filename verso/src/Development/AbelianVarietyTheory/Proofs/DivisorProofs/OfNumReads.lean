@@ -9,14 +9,31 @@ namespace GlobalTheory.ColRows.NumReads
 
 open Formalism.LatticeIndexTer (ph)
 
+/- English proof (translation)
+Simplify using `[ph]`.
+-/
 theorem ph_zero : ph 0 = 0 := by simp [ph]
 
+/- English proof (translation)
+Unfold `NumDatum.Nm Ranks.N`. Rewrite using `[Nat.add_sub_cancel]`. Use `Nat.mul_le_mul_right (N.R.t + 1) hj.le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem N_pred_le (N : NumDatum) (j : ℕ) (hj : j < N.R.m) : N.R.N ((j + 1) - 1) ≤ N.Nm := by
   unfold NumDatum.Nm Ranks.N
   rw [Nat.add_sub_cancel]
   have := Nat.mul_le_mul_right (N.R.t + 1) hj.le
   omega
 
+/- English proof (translation)
+Introduce `N J _ eJ δ T Nc lam0 C0 ce Ch Sw C1 H`. Use `⟨?_, ?_, rfl, ?_, ?_, ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩⟩` and prove the remaining obligations. Introduce `z`. Conclude with `N.mem_topsPl z`. Introduce `t _`.
+
+Both sides reduce to the same expression. Introduce `j z`. Establish `hle` using `N_pred_le N (eJ j).1 (eJ j).2`. Use `show ∑ i : Fin N.Nm, ph (N.nuPad δ ((eJ j).1 + 1) z i) = _`. Unfold `NumDatum.nuPad`.
+
+Establish `e : ∀ i : Fin N.Nm, ph (if i.1 < N.R.N ((eJ j).1 + 1 - 1) then ((N.nu δ ((eJ j).1 + 1) z i.1 : ℚ) : ℝ) else 0) = (if i.1 < N.R.N ((eJ j).1 + 1 - 1) then ph ((N.nu δ ((eJ j).1 + 1) z i.1 : ℚ) : ℝ) else 0)`. Introduce `i`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `ph_zero`.
+
+Rewrite using `[Finset.sum_congr rfl (fun i _ => e i), NumDatum.sum_pad (fun i => ph ((N.nu δ ((eJ j).1 + 1) z i : ℚ) : ℝ)) hle, Nat.add_sub_cancel]`. Introduce `j z`. Establish `hle` using `N_pred_le N (eJ j).1 (eJ j).2`. Use `show ∑ i : Fin N.Nm, N.nuPad δ ((eJ j).1 + 1) z i = _`. Unfold `NumDatum.nuPad NumDatum.nuAbs`.
+
+Rewrite using `[NumDatum.sum_pad (fun i => ((N.nu δ ((eJ j).1 + 1) z i : ℚ) : ℝ)) hle]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem ofNum_reads : ∀ (N : NumDatum) (J : Type) [Fintype J] (eJ : J ≃ Fin N.R.m) (δ : Code N) (T : ℕ)
     (Nc lam0 C0 ce Ch Sw C1 : ℝ) (H : N.NumFacts δ Nc lam0 C0 ce Ch Sw C1),
     Reads N eJ δ T (RecNums.ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H) := by

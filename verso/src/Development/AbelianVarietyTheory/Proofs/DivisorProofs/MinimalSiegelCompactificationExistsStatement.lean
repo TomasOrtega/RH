@@ -8,5 +8,8 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Gl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SiegMinTop.minSt5 | exact GlobalTheory.SiegMinTop.minSt5 | (intros; apply GlobalTheory.SiegMinTop.minSt5 <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.minimalSiegelCompactification_exists : GlobalTheory.SiegJoin.MinSt5 := by
   first | exact @GlobalTheory.SiegMinTop.minSt5 | exact GlobalTheory.SiegMinTop.minSt5 | (intros; apply GlobalTheory.SiegMinTop.minSt5 <;> assumption)

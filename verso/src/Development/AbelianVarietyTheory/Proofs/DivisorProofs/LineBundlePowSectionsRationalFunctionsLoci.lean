@@ -11,6 +11,17 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 set_option autoImplicit false
 noncomputable section
 
+/- English proof (translation)
+Introduce `k _ X _ p P e`. Establish `hR : P.Rep ((e : ℤ) * 1) ((e : ℤ) * 0) (P.L.pow e)` using `GlobalTheory.VolBr.Pair.rep_pow k X p P 1 0 P.L e (GlobalTheory.VolBr.Pair.rep_base k X p P).1`. Rewrite `hR` using `[mul_one, mul_zero]`. Take `⟨g, -, hrange, -, hloc⟩` from `GlobalTheory.VolBr.RepDict.rep_dict k X p P (e : ℤ) 0 (P.L.pow e) hR`. Establish `hcov {B : LB X} (hB : B.IsLB) (x : X) : ∃ c, x ∈ B.U c` using `Opens.mem_iSup.1 (hB.cover.ge (Opens.mem_top _))`.
+
+Establish `key : ∀ u : (lbPow P.L.B e).Sec, NV P e 0 (g u) = (ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u : Set X)`. Introduce `u`. Use extensionality with `x`. Take `⟨i, hi⟩` from `hcov P.L.isLB x`. Take `⟨j, hj⟩` from `hcov P.A.isLB x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(hloc u x i j hi hj).2 (h i j hi hj)`. Introduce `h i' j' hi' hj'`. Conclude with `(hloc u x i' j' hi' hj').1 h`.
+
+Use `⟨fun u => ⟨g u, ?_, key u⟩, fun f hf => ?_⟩` and prove the remaining obligations. Establish `: g u ∈ Set.range g` using `⟨u, rfl⟩`. Rewrite `this` using `[hrange]`. Conclude with `this`. Establish `: f ∈ Set.range g` using `by rw [hrange]; exact hf`.
+
+Take `⟨u, rfl⟩` from `this`. Conclude with `⟨u, key u⟩`.
+-/
 theorem GlobalTheory.HSAmp.pow_sec_dict : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p), ∀ e : ℕ, (∀ u : (lbPow P.L.B e).Sec, ∃ f ∈ P.H e 0, NV P e 0 f = ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u) ∧ ∀ f ∈ P.H e 0, ∃ u : (lbPow P.L.B e).Sec, NV P e 0 f = ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u := by
   intro k _ X _ p P e
   have hR : P.Rep ((e : ℤ) * 1) ((e : ℤ) * 0) (P.L.pow e) :=

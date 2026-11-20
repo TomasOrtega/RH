@@ -15,6 +15,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Establish `e : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+-/
 theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have e : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0} := by
     ext z; simp
@@ -22,6 +25,9 @@ theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z
   exact isOpen_iInter_of_finite fun k => isOpen_iUnion fun i =>
     isOpen_ne_fun (continuous_apply _) continuous_const
 
+/- English proof (translation)
+Take `⟨U, hU, hUo, hyU⟩` from `eventually_nhds_iff.mp hγ`. Establish `hdU : DifferentiableOn ℂ γ U` using `fun y' h => (hU y' h).differentiableWithinAt`. Establish `hc : ContDiffAt ℝ ∞ γ y` using `((ReciprocityTheory.ChartRestriction.DS.S7.cca_contDiffOn hUo hdU).contDiffAt (hUo.mem_nhds hyU)).restrict_scalars ℝ`. Establish `hρ : ContDiffAt ℝ ∞ A.h (γ y)` using `hA.contDiffAt (isOpen_blockNonzero.mem_nhds hy)`. Conclude with `(contDiffAt_infty.mp ((hρ.comp y hc).log (A.pos _ hy).ne')) 2` after adjusting the coercions.
+-/
 theorem contDiffAt_log_metric {D : ℕ} {A : HermLine ι} (hA : IsSmoothHerm A)
     {γ : (Fin D → ℂ) → (Σ k, ι k) → ℂ} {y : Fin D → ℂ}
     (hγ : ∀ᶠ y' in 𝓝 y, DifferentiableAt ℂ γ y') (hy : ∀ k, ∃ i, γ y ⟨k, i⟩ ≠ 0) :
@@ -33,6 +39,11 @@ theorem contDiffAt_log_metric {D : ℕ} {A : HermLine ι} (hA : IsSmoothHerm A)
   have hρ : ContDiffAt ℝ ∞ A.h (γ y) := hA.contDiffAt (isOpen_blockNonzero.mem_nhds hy)
   exact_mod_cast (contDiffAt_infty.mp ((hρ.comp y hc).log (A.pos _ hy).ne')) 2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Break down `Fin.eq_castSucc_or_eq_last k with ⟨j, rfl⟩ | rfl` into its components or cases. Rewrite using `[Function.update_of_ne (Fin.castSucc_ne_last j)]`. Simplify using `only [pot, Fin.snoc_castSucc]`. Rewrite using `[Function.update_self]`.
+
+Simplify using `only [pot, Fin.snoc_last]`.
+-/
 theorem cxHessian_pot_snoc {n : ℕ} (L : Fin n → HermLine ι) (A X : HermLine ι)
     (γ : (Fin (n + 1) → ℂ) → (Σ k, ι k) → ℂ) (y : Fin (n + 1) → ℂ) :
     (fun k => cxHessian (fun y' => pot (Fin.snoc L X) k (γ y')) y) =
@@ -45,6 +56,15 @@ theorem cxHessian_pot_snoc {n : ℕ} (L : Fin n → HermLine ι) (A X : HermLine
   · rw [Function.update_self]
     simp only [pot, Fin.snoc_last]
 
+/- English proof (translation)
+Establish `hev` using `hγ.eventually_nhds`. Establish `ha : ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 (fun y'' => Real.log (A.h (γ y''))) y'` using `by filter_upwards [hev] with y' hy'`. Conclude with `contDiffAt_log_metric hA (hy'.mono fun _ h => h.1) hy'.self_of_nhds.2`. Establish `hc : ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 (fun y'' => Real.log (C.h (γ y''))) y'` using `by filter_upwards [hev] with y' hy'`. Conclude with `contDiffAt_log_metric hC (hy'.mono fun _ h => h.1) hy'.self_of_nhds.2`.
+
+Establish `hψ : (fun y' => Real.log ((A.tensor C).h (γ y'))) =ᶠ[𝓝 y] fun y' => 1 * Real.log (A.h (γ y')) + 1 * Real.log (C.h (γ y'))` using `by filter_upwards [hγ] with y' hy'`. Rewrite using `[one_mul, one_mul]`. Conclude with `Real.log_mul (A.pos _ hy'.2).ne' (C.pos _ hy'.2).ne'`. Establish `hH` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.gaamix_cxHessian_comb 1 1 ha hc hψ`. Simplify using `only [Complex.ofReal_one, one_smul] at hH`.
+
+Unfold `maDensity`. Rewrite using `[cxHessian_pot_snoc L A (A.tensor C), cxHessian_pot_snoc L A C, hH]`. Establish `hm` using `ReciprocityTheory.AnForm.A.mdisc_update_add (fun k => cxHessian (fun y' => pot (Fin.snoc L A) k (γ y')) y) (Fin.last n) (cxHessian (fun y' => Real.log (A.h (γ y'))) y) (cxHessian (fun y' => Real.log (C.h (γ y'))) y)`. Express the relevant statement in the definitionally equal form `mixedDisc _ = mixedDisc _ + mixedDisc _ at hm`. Rewrite `hm` using `[← cxHessian_pot_snoc L A A γ y]`.
+
+Rewrite using `[hm, Complex.add_re, mul_add]`.
+-/
 theorem maDensity_snoc_tensor {n : ℕ} (L : Fin n → HermLine ι) {A C : HermLine ι}
     (hA : IsSmoothHerm A) (hC : IsSmoothHerm C) {γ : (Fin (n + 1) → ℂ) → (Σ k, ι k) → ℂ}
     {y : Fin (n + 1) → ℂ}
@@ -75,6 +95,11 @@ theorem maDensity_snoc_tensor {n : ℕ} (L : Fin n → HermLine ι) {A C : HermL
   rw [← cxHessian_pot_snoc L A A γ y] at hm
   rw [hm, Complex.add_re, mul_add]
 
+/- English proof (translation)
+Unfold `sheetDensity`. Distinguish the cases in `h : ∃ γ, IsSheet P Ψ y w γ`. Simplify using `only [dif_pos h]`. Establish `hγ : ∀ᶠ y' in 𝓝 y, DifferentiableAt ℂ h.choose y' ∧ ∀ k, ∃ i, h.choose y' ⟨k, i⟩ ≠ 0` using `by filter_upwards [h.choose_spec.2] with y' hy'`. Conclude with `⟨hy'.1, hy'.2.1.1⟩`.
+
+Rewrite using `[maDensity_snoc_tensor L hA hC hγ, mul_add]`. Simplify using `only [dif_neg h, add_zero]`.
+-/
 theorem sheetDensity_snoc_tensor (P : Ideal (MRing ι)) {n : ℕ}
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1 + 1) → ℂ)) (L : Fin n → HermLine ι)
     {A C : HermLine ι} (hA : IsSmoothHerm A) (hC : IsSmoothHerm C) (g : ((Σ k, ι k) → ℂ) → ℝ)
@@ -90,6 +115,15 @@ theorem sheetDensity_snoc_tensor (P : Ideal (MRing ι)) {n : ℕ}
     rw [maDensity_snoc_tensor L hA hC hγ, mul_add]
   · simp only [dif_neg h, add_zero]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `ptsIntegral P (pot (Fin.snoc L (A.tensor C))) (logNorm B s) = ptsIntegral P (pot (Fin.snoc L A)) (logNorm B s) + ptsIntegral P (pot (Fin.snoc L C)) (logNorm B s)`. Unfold `ptsIntegral`. Distinguish the cases in `hΨ : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1 + 1) → ℂ), IsGoodProj P Ψ`. Rewrite using `[dif_pos hΨ, dif_pos hΨ, dif_pos hΨ]`. Establish `hsm : ∀ X : HermLine ι, IsSmoothHerm X → ∀ j, IsSmoothHerm ((Fin.snoc L X : Fin (n + 1) → HermLine ι) j)`.
+
+Introduce `X hX j`. Break down `Fin.eq_castSucc_or_eq_last j with ⟨j, rfl⟩ | rfl` into its components or cases. Simplify `hL j` using `only [Fin.snoc_castSucc]`. Simplify `hX` using `only [Fin.snoc_last]`. Establish `iA` using `hInt K ι P (n + 1) hΨ.choose (Fin.snoc L A) B s hP hΨ.choose_spec (hsm A hA) hB hs`.
+
+Establish `iC` using `hInt K ι P (n + 1) hΨ.choose (Fin.snoc L C) B s hP hΨ.choose_spec (hsm C hC) hB hs`. Unfold `ptsIntegralAt`. Rewrite using `[← integral_add iA iC]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[← finsum_mem_add_distrib (hFF K ι P (n + 1) hΨ.choose hP hΨ.choose_spec y)]`. Conclude with `finsum_mem_congr rfl fun w _ => sheetDensity_snoc_tensor P hΨ.choose L hA hC _ y w`. Rewrite using `[dif_neg hΨ, dif_neg hΨ, dif_neg hΨ, add_zero]`.
+-/
 theorem arInt_snoc_tensor (hFF : FibreFiniteStatement) (hInt : PtsIntegrableStatement)
     {P : Ideal (MRing ι)} {n : ℕ} (L : Fin n → HermLine ι) {A C B : HermLine ι} {s : MRing ι}
     (hP : IsArithVar P (n + 2)) (hL : ∀ j, IsSmoothHerm (L j)) (hA : IsSmoothHerm A)
@@ -119,6 +153,11 @@ theorem arInt_snoc_tensor (hFF : FibreFiniteStatement) (hInt : PtsIntegrableStat
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Establish `hi : ∀ X : HermLine ι, Fin.init (fun j => ((Fin.snoc L X : Fin (n + 1) → HermLine ι) j).a) = fun j => (L j).a`. Introduce `X`. Use function extensionality and compare the values at `j`. Simplify using `only [Fin.init, Fin.snoc_castSucc]`. Simplify using `only [geoNum]`.
+
+Use `split_ifs with h`. Simplify using `only [hi, Fin.snoc_last, HermLine.tensor, Pi.add_apply, ← Finset.sum_add_distrib, add_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem geoNum_snoc_tensor {n : ℕ} (L : Fin n → HermLine ι) (A C : HermLine ι) (W : Ideal (MRing ι)) :
     geoNum (n + 1) W (fun j => ((Fin.snoc L (A.tensor C) : Fin (n + 1) → HermLine ι) j).a) =
       geoNum (n + 1) W (fun j => ((Fin.snoc L A : Fin (n + 1) → HermLine ι) j).a) + geoNum (n + 1) W (fun j => ((Fin.snoc L C : Fin (n + 1) → HermLine ι) j).a) := by
@@ -131,6 +170,13 @@ theorem geoNum_snoc_tensor {n : ℕ} (L : Fin n → HermLine ι) (A C : HermLine
 
 open Classical in
 
+/- English proof (translation)
+Introduce `K _ ι _ I P n L A C B s hI hP hL hA hC hB hs`. Set `term : HermLine ι → Ideal (MRing ι) → ℝ` to `fun X W => (multAt (P ⊔ Ideal.span {s}) W : ℝ) * (if IsHorizontal W then I W (n + 1) (Fin.snoc L X) else (geoNum (n + 1) W (fun j => ((Fin.snoc L X : Fin (n + 1) → HermLine ι) j).a) : ℝ) * Real.log (charOf W))`. Establish `e : ∀ X, recR I P (Fin.snoc L X) B s = (∑ᶠ W ∈ divSupp P s, term X W) - arInt P s B (Fin.snoc L X)` using `fun X => rfl`. Establish `key : ∀ W ∈ divSupp P s, term (A.tensor C) W = term A W + term C W`. Introduce `W hW`.
+
+Simplify using `only [term]`. Use `split_ifs with hh`. Rewrite using `[hI W L A C ((divSuppArith K ι P (n + 1) B s W hP hs hW).1 hh) hL hA hC]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[geoNum_snoc_tensor L A C W]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, e, e, finsum_mem_congr rfl key, finsum_mem_add_distrib (divSupp_finite P s), arInt_snoc_tensor hFF hInt L hP hL hA hC hB hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem RPositionAdd.proof (hFF : FibreFiniteStatement) (hInt : PtsIntegrableStatement) :
     RPositionAdd.Statement := by
   intro K _ ι _ I P n L A C B s hI hP hL hA hC hB hs

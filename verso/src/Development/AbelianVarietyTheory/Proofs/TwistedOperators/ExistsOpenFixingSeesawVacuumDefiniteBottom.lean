@@ -39,6 +39,11 @@ noncomputable section
 
 namespace GlobalTheory.VacFixTarget
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, Prod.mk_one_one, map_one, Module.End.one_apply, one_smul]`. Consider the case `succ m ih`. Establish `e : (((1 : GA D S), k ^ (m + 1)) : GA D S × GA D V) = (1, k ^ m) * (1, k)`.
+
+Rewrite using `[pow_succ, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, map_mul, Module.End.mul_apply, hc, map_smul, ih, smul_smul, pow_succ, mul_comm]`.
+-/
 theorem om_pow_eq_snd {D : D7} {S V : HSp D} (om : GA D S × GA D V →* Module.End ℂ (WO S V → ℂ)) (k : GA D V)
     (f : WO S V → ℂ) (c : ℂ) (hc : om (1, k) f = c • f) : ∀ m : ℕ, om (1, k ^ m) f = c ^ m • f := by
   intro m
@@ -55,6 +60,9 @@ def congGroup {D : D7} (V : HSp D) (N : ℕ) : Subgroup (GA D V) where
   mul_mem' := fun ha hb => GlobalTheory.Member.PrincLevel.finCong_mul ha hb
   inv_mem' := fun ha => GlobalTheory.Member.PrincLevel.finCong_inv ha
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_of_mem_nhds _ (g := 1) (GlobalTheory.Member.PrincLevel.finCong_mem_nhds V hN)`.
+-/
 theorem isOpen_congGroup {D : D7} (V : HSp D) {N : ℕ} (hN : 0 < N) : IsOpen (congGroup V N : Set (GA D V)) :=
   Subgroup.isOpen_of_mem_nhds _ (g := 1) (GlobalTheory.Member.PrincLevel.finCong_mem_nhds V hN)
 
@@ -64,10 +72,16 @@ namespace GlobalTheory.VacFixTarget
 
 open Formalism.L2.Fam.ThC (fixSig)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.quasi, h.level, h.cont, h.smooth⟩`.
+-/
 theorem isThetaFunO_fixSig {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f : WO S T → ℂ}
     (h : IsThetaFunO ψ S T f) : IsThetaFunO ψ (fixSig S) (fixSig T) f :=
   ⟨h.quasi, h.level, h.cont, h.smooth⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.inf, isThetaFunO_fixSig h.2.theta, h.2.lat, h.2.fock, h.2.norm⟩`.
+-/
 theorem isVacO_fixSig {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)} {f : WO S T → ℂ}
@@ -82,6 +96,35 @@ open GlobalTheory.Grid (neg)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T L sc G W i j A A' WW X hX t`. Establish `hW : IsWeilDatumO W.ψ (neg A) WW _ _ ((X.ω t).toSgn true)` using `hX.is.weil t`. Establish `hvac : IsVacO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.Λ X.rW.Λ X.vac` using `hX.is.isVac`. Establish `hθ : IsInfFam W.θ` using `hvac.2.inf`. Establish `hsdS : IsSelfDualC (neg A) X.rA.Λ` using `GlobalTheory.RowTest.isSelfDualC_neg' hX.is.rigA.1`.
+
+Establish `hsdT : IsSelfDualC WW X.rW.Λ` using `hX.is.rigW.1`. Establish `hcS : ∀ τ, IsCartanInv (gramAt D (neg A) τ) (-X.rA.s τ)` using `fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (hX.is.rigA.2.2 τ).1`. Establish `hcT : ∀ τ, IsCartanInv (gramAt D WW τ) (X.rW.s τ)` using `fun τ => (hX.is.rigW.2.2 τ).1`. Establish `hone : ∀ κ : GA D WW, (X.ω t).toSgn true (1, κ) = X.ω t (1, κ)` using `fun κ => by`. Simplify using `[GlobalTheory.Grid.WRep.toSgn]`.
+
+Establish `hev` using `(GlobalTheory.LatNhds.eventually_actO D (neg A) WW X.rA.Λ X.rW.Λ hsdS hsdT (GlobalTheory.LatFinGen.latO_finitely_generated D (neg A) WW X.rA.Λ X.rW.Λ hsdS hsdT)).1`. Establish `hpair : Filter.Tendsto (fun x : GA D WW => (((1 : GA D (neg A)), x) : GA D (neg A) × GA D WW)) (𝓝 1) (𝓝 1)`. Use `((continuous_const.prodMk continuous_id : Continuous fun x : GA D WW => (((1 : GA D (neg A)), x) : GA D (neg A) × GA D WW))).tendsto 1` as an intermediate fact. Conclude with `this`. Establish `hev'` using `hpair.eventually hev`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨n₁, hn₁⟩ : ∃ n : ℕ, ∀ x ∈ GfC WW, GlobalTheory.Member.FinCong WW n.factorial x → ∀ u ∈ (latO (neg A) WW (X.rA.Λ : Set (Fin A.rank → D.host.E)) (X.rW.Λ : Set (Fin WW.rank → D.host.E)) fun _ => True), actO (neg A) WW 1 x u ∈ (latO (neg A) WW (X.rA.Λ : Set (Fin A.rank → D.host.E)) …`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `choose k hk hkc u hu hu' using hne`. Establish `ht` using `GlobalTheory.SplitCharTrivial.tendsto_one_of_finCong hk hkc`.
+
+Take `⟨n, hn⟩` from `(ht.eventually hev').exists`. Conclude with `hu' n (hn _ (hu n))`. Establish `hscal : ∀ k ∈ GfC WW, GlobalTheory.Member.FinCong WW n₁.factorial k → ∃ c : ℂ, ‖c‖ = 1 ∧ (X.ω t).toSgn true (1, k) X.vac = c • X.vac`. Introduce `k hk hc`. Establish `hΛ : ∀ u : WO (neg A) WW, u ∈ (latO (neg A) WW (X.rA.Λ : Set (Fin A.rank → D.host.E)) (X.rW.Λ : Set (Fin WW.rank → D.host.E)) fun _ => True) ↔ ∃ u₀ ∈ (latO (neg A) WW (X.rA.Λ : Set (Fin A.rank → D.host.E)) (X.rW.Λ : Set (Fin WW.rank → D.host.E)) fun _ => True), u = actO (neg A) W …`.
+
+Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `⟨actO (neg A) WW 1 k⁻¹ u, hn₁ k⁻¹ (inv_mem hk) (GlobalTheory.Member.PrincLevel.finCong_inv hc) u hu, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.WeilVacMove.actO_inv_actO (1 : GA D (neg A)) k⁻¹ u` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv, inv_one]`. Conclude with `this.symm`. Introduce and unpack `⟨u₀, hu₀, rfl⟩`. Conclude with `hn₁ k hk hc u₀ hu₀`. Establish `hvac'` using `GlobalTheory.WeilVacMove.isVacO_om D W.ψ W.θ (neg A) WW _ _ ((X.ω t).toSgn true) hW hθ (fun τ => -X.rA.s τ) (fun τ => -X.rA.s τ) X.rW.s X.rW.s _ _ _ _ 1 k (fun τ => GlobalTheory.SmoothVac.comm_compAt_one (neg A) W.θ τ (-X.rA.s τ)) (fun τ => by rw [GlobalTheory.OrientedHeis.compAt …`.
+
+Conclude with `GlobalTheory.VacUnique.vacUniqueO D W.ψ W.θ hvac.1 hθ (Formalism.L2.Fam.ThC.fixSig (neg A)) (Formalism.L2.Fam.ThC.fixSig WW) (fun τ => -X.rA.s τ) X.rW.s (Formalism.L2.Fam.ThC.fixSig_ok _) (Formalism.L2.Fam.ThC.fixSig_ok _) hcS hcT X.rA.Λ X.rW.Λ hsdS hsdT X.vac _ (isVacO_fixSig hv …`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.SmoothVac.exists_ne_zero_of_isVacO hvac`. Establish `hcont : Continuous fun k : GA D WW => (X.ω t).toSgn true (1, k) X.vac w₀` using `(hW.om_cont _ hvac.2.theta w₀).comp (continuous_const.prodMk continuous_id)`. Establish `key : ∃ n : ℕ, ∀ k ∈ GfC WW, GlobalTheory.Member.FinCong WW (n₁.factorial * n.factorial) k → (X.ω t).toSgn true (1, k) X.vac = X.vac`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Use `choose k hk hkc hkne using hne`. Establish `hpow : ∀ n, ∃ m : ℕ, ∃ c : ℂ, (X.ω t).toSgn true (1, k n ^ m) X.vac = c • X.vac ∧ ¬ ‖c - 1‖ ≤ 1 / 2`. Introduce `n`. Take `⟨c, -, hc⟩` from `hscal (k n) (hk n) (GlobalTheory.SmoothVac.finCong_of_mul_left (hkc n))`.
+
+Establish `hc1 : c ≠ 1`. Introduce and unpack `rfl`. Conclude with `hkne n (by rw [hc, one_smul])`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hc1 (GlobalTheory.Doubling.eq_one_of_forall_norm_pow_sub_one_le (A := ℂ) fun m => h m (c ^ m) (om_pow_eq_snd _ (k n) _ c hc m))`. Use `choose m c hmc hc using hpow`. Establish `hmem : ∀ n, k n ^ m n ∈ GlobalTheory.Member.PrincLevel.levelGroup WW (n₁.factorial * n.factorial)` using `fun n => pow_mem (show k n ∈ GlobalTheory.Member.PrincLevel.levelGroup WW (n₁.factorial * n.factorial) from ⟨hk n, hkc n⟩) _`. Establish `ht` using `GlobalTheory.SplitCharTrivial.tendsto_one_of_finCong (k := fun n => k n ^ m n) (fun n => (hmem n).1) (fun n => GlobalTheory.SmoothVac.finCong_of_mul_right (hmem n).2)`. Establish `h2` using `(hcont.tendsto 1).comp ht`.
+
+Establish `e1 : (X.ω t).toSgn true ((1 : GA D (neg A)), (1 : GA D WW)) X.vac w₀ = X.vac w₀` using `by show (X.ω t).toSgn true 1 X.vac w₀ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Rewrite `h2` using `[Function.comp_def, e1]`. Establish `hpos : 0 < ‖X.vac w₀‖ / 2` using `half_pos (norm_pos_iff.2 hw₀)`.
+
+Take `⟨n, hn⟩` from `(h2.eventually (Metric.ball_mem_nhds _ hpos)).exists`. Rewrite `hn` using `[hmc n, Pi.smul_apply, smul_eq_mul, dist_eq_norm, ← sub_one_mul, norm_mul]`. Use `hc n` as an intermediate fact. Use `push_neg at this`. Use polynomial arithmetic with `[norm_nonneg (X.vac w₀)]`.
+
+Take `⟨n, hn⟩` from `key`. Use `⟨congGroup WW (n₁.factorial * n.factorial), isOpen_congGroup WW (Nat.mul_pos n₁.factorial_pos n.factorial_pos), fun κ hU hκ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hone]`. Conclude with `hn κ hκ hU`.
+-/
 theorem exists_open_fix_vac_target : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, IsBottomTri W i j X → ∀ t : T,
     ∃ U : Subgroup (GA D WW), IsOpen (U : Set (GA D WW)) ∧ ∀ κ ∈ U, κ ∈ GfC WW → X.ω t (1, κ) X.vac = X.vac := by

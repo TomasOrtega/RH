@@ -24,6 +24,9 @@ def actL (g : G) : Rules pts →ₗ[K] Rules pts where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actL_apply (g : G) (f : Rules pts) (p : TRing K) (y : pts p.R) :
     actL pts actR g f p y = f p (mvPt pts actR g y) := rfl
 
@@ -51,6 +54,9 @@ def ActBor : Prop :=
 
 variable {pts actR}
 
+/- English proof (translation)
+Establish `h` using `hT g S y`. Unfold `mvPt`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem mvPt_spec (hT : ActTotal pts actR) (g : G) {S : Type} [CommRing S] [Algebra K S] (y : pts S) :
     actR g y (mvPt pts actR g y) := by
   have h := hT g S y
@@ -60,6 +66,11 @@ theorem mvPt_spec (hT : ActTotal pts actR) (g : G) {S : Type} [CommRing S] [Alge
 
 variable (pts actR)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hf`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `p q φ y z hyz`. Conclude with `h1 p q φ _ _ (hN g p.R q.R φ y (mvPt pts actR g y) z (mvPt pts actR g z) hyz (mvPt_spec hT g y) (mvPt_spec hT g z))`. Introduce `p t y y' hyy`.
+
+Conclude with `h2 p t _ _ (hB g p.R t y (mvPt pts actR g y) y' (mvPt pts actR g y') hyy (mvPt_spec hT g y) (mvPt_spec hT g y'))`.
+-/
 theorem actL_mem [Fintype ι] (hT : ActTotal pts actR) (hN : ActNat pts mapR actR) (hB : ActBor pts borR actR)
     (e : ι → ℕ) (g : G) {f : Rules pts} (hf : f ∈ secW pts mapR borR e) :
     actL pts actR g f ∈ secW pts mapR borR e := by
@@ -72,12 +83,18 @@ theorem actL_mem [Fintype ι] (hT : ActTotal pts actR) (hN : ActNat pts mapR act
     exact h2 p t _ _ (hB g p.R t y (mvPt pts actR g y) y' (mvPt pts actR g y') hyy
       (mvPt_spec hT g y) (mvPt_spec hT g y'))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p y`. Use `show f p (mvPt pts actR 1 y) = f p y`. Conclude with `hf p p (AlgHom.id K p.R) y _ (hF 1 p.R y y _ (hO p.R y) (mvPt_spec hT 1 y))`.
+-/
 theorem actL_one (hT : ActTotal pts actR) (hF : ActFun pts mapR actR) (hO : ActOne pts actR)
     {f : Rules pts} (hf : IsNatural pts mapR f) : actL pts actR 1 f = f := by
   funext p y
   show f p (mvPt pts actR 1 y) = f p y
   exact hf p p (AlgHom.id K p.R) y _ (hF 1 p.R y y _ (hO p.R y) (mvPt_spec hT 1 y))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p y`. Use `show f p (mvPt pts actR (g * h) y) = f p (mvPt pts actR h (mvPt pts actR g y))`. Establish `h1 : actR (g * h) y (mvPt pts actR h (mvPt pts actR g y))` using `hM g h p.R y _ _ (mvPt_spec hT g y) (mvPt_spec hT h _)`. Conclude with `(hf p p (AlgHom.id K p.R) _ _ (hF (g * h) p.R y _ _ (mvPt_spec hT (g * h) y) h1)).symm`.
+-/
 theorem actL_mul (hT : ActTotal pts actR) (hF : ActFun pts mapR actR) (hM : ActMul pts actR)
     (g h : G) {f : Rules pts} (hf : IsNatural pts mapR f) :
     actL pts actR (g * h) f = actL pts actR g (actL pts actR h f) := by

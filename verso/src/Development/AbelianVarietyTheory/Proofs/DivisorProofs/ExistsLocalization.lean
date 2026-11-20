@@ -19,6 +19,9 @@ def locφ₀ : T.B₀ →+* Localization.Away b ⧸ locJ T b :=
       rw [RingHom.mem_ker] at hx ⊢
       exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ ((T.ker x).1 hx))⟩
 
+/- English proof (translation)
+Unfold `locφ₀`. Conclude with `RingHom.liftOfSurjective_comp_apply _ _ _ x`.
+-/
 theorem locφ₀_π (x : T.B) :
     locφ₀ T b (T.π x) = Ideal.Quotient.mk (locJ T b) (algebraMap T.B (Localization.Away b) x) := by
   unfold locφ₀
@@ -59,12 +62,18 @@ def liftφ : Localization.Away b →ₐ[R] S.B where
     rw [IsScalarTower.algebraMap_apply R T.B (Localization.Away b)]
     exact (IsLocalization.Away.lift_eq b (g := (u.φ : T.B →+* S.B)) hu _).trans (u.φ.commutes r)
 
+/- English proof (translation)
+Use `show IsLocalization.Away.lift b (g := (u.φ : T.B →+* S.B)) hu (algebraMap T.B (Localization.Away b) x) = u.φ x`. Conclude with `IsLocalization.Away.lift_eq b hu x`.
+-/
 theorem liftφ_algebraMap (x : T.B) :
     liftφ u hu (algebraMap T.B (Localization.Away b) x) = u.φ x := by
   show IsLocalization.Away.lift b (g := (u.φ : T.B →+* S.B)) hu
       (algebraMap T.B (Localization.Away b) x) = u.φ x
   exact IsLocalization.Away.lift_eq b hu x
 
+/- English proof (translation)
+Establish `h : (liftφ u hu : Localization.Away b →+* S.B).comp (algebraMap T.B (Localization.Away b)) = (u.φ : T.B →+* S.B)` using `RingHom.ext fun x => liftφ_algebraMap u hu x`. Conclude with `DPLoc.isDPMorphism_of_comp (S := Localization.Away b) (Submonoid.powers b) T.δ S.δ _ (by rw [h]; exact u.dp)`.
+-/
 theorem liftφ_dp : IsDPMorphism (DPLoc.dp (S := Localization.Away b) (Submonoid.powers b) T.δ) S.δ
     (liftφ u hu : Localization.Away b →+* S.B) := by
   have h : (liftφ u hu : Localization.Away b →+* S.B).comp (algebraMap T.B (Localization.Away b)) =
@@ -90,6 +99,19 @@ def lift : loc T b ⟶ S where
     change spMap (liftφ₀ u hu) ≫ spMap (locφ₀ T b) ≫ T.x = S.x
     rw [← Category.assoc, ← Cris.spMap_comp, this, u.pt]
 
+/- English proof (translation)
+Introduce `R _ I κ X s T b`. Use `⟨loc T b, toLoc T b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsLocalization.Away.algebraMap_isUnit b`. Introduce `y`. Take `⟨⟨a, m⟩, hm⟩` from `IsLocalization.surj (Submonoid.powers b) y`.
+
+Take `⟨n, hn⟩` from `m.2`. Use `⟨n, a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y * algebraMap T.B (Localization.Away b) b ^ n = algebraMap T.B (Localization.Away b) a`. Rewrite using `[← map_pow, show b ^ n = ↑m from hn]`. Conclude with `hm`.
+
+Introduce `x hx`. Express the relevant statement in the definitionally equal form `algebraMap T.B (Localization.Away b) x = 0 at hx`. Take `⟨⟨_, n, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers b) (Localization.Away b) x).1 hx`. Conclude with `⟨n, hm⟩`. Introduce `S u hu`.
+
+Use `⟨lift u hu, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `c`. Simplify using `only [Thick.comp_φ]`. Conclude with `liftφ_algebraMap u hu c`. Introduce `v hv`.
+
+Establish `h : (v.φ : Localization.Away b →+* S.B).comp (algebraMap T.B (Localization.Away b)) = (liftφ u hu : Localization.Away b →+* S.B).comp (algebraMap T.B (Localization.Away b))`. Use extensionality with `c`. Establish `hc : (toLoc T b ≫ v).φ c = u.φ c` using `by rw [hv]`. Simplify using `only [Thick.comp_φ] at hc`. Use `show v.φ (algebraMap T.B (Localization.Away b) c) = liftφ u hu (algebraMap T.B (Localization.Away b) c)`.
+
+Conclude with `hc.trans (liftφ_algebraMap u hu c).symm`. Use extensionality with `y`. Conclude with `RingHom.congr_fun (IsLocalization.ringHom_ext (Submonoid.powers b) h) y`.
+-/
 theorem exists_localization : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I) (X : Scheme.{0}) (s : X ⟶ Sp R) (T : Thick κ s) (b : T.B), ∃ (T' : Thick κ s) (l : T ⟶ T'), IsUnit (l.φ b) ∧ (∀ y : T'.B, ∃ (n : ℕ) (x : T.B), y * l.φ b ^ n = l.φ x) ∧ (∀ x : T.B, l.φ x = 0 → ∃ n : ℕ, b ^ n * x = 0) ∧ ∀ (S : Thick κ s) (u : T ⟶ S), IsUnit (u.φ b) → ∃! v : T' ⟶ S, l ≫ v = u := by
   intro R _ I κ X s T b
   refine ⟨loc T b, toLoc T b, ?_, ?_, ?_, ?_⟩

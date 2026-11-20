@@ -10,10 +10,24 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.F
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CyclotomicCharacterFirst
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.WeilDeligne GlobalTheory.GalOfCusp GlobalTheory.HeckeGal GlobalTheory.LocLanglands GlobalTheory.Published UpperTheory.V.W
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ContinuousCyclotomicCharacter₂.cyc_continuous F Ω l`.
+-/
 private theorem cyc_continuous (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime] :
     Continuous (cycBar F Ω l) :=
   _root_.UpperTheory.Reformulated.B.ContinuousCyclotomicCharacter₂.cyc_continuous F Ω l
 
+/- English proof (translation)
+Introduce `H F Ω _ _ _ _ _ l _ A w h hl κ hκ m k hk hpow`. Use `set c : ↥(Dec (F := F) A) →* (Qbar l)ˣ := (cycBar F Ω l).comp (Dec (F := F) A).subtype with hc`. Establish `hcc : Continuous c` using `(cyc_continuous F Ω l).comp continuous_subtype_val`. Set `i : ↥(Ine (F` to `F) A) →* ↥(Dec (F := F) A) := (Subgroup.inclusion (Weil_le_Dec h)).comp (ineIncl h)`. Establish `hi : Continuous i` using `continuous_subtype_val.subtype_mk _`.
+
+Set `χ : ↥(Dec (F` to `F) A) →* (Qbar l)ˣ := κ * c ^ (-m)`. Establish `hχ : Continuous χ` using `hκ.mul ((continuous_zpow (-m)).comp hcc)`. Establish `ho : IsOpen ((χ.comp i)⁻¹.ker : Set ↥(Ine (F` using `F) A)) := by`. Use `isOpen_ker_of_pow _ (hχ.comp hi).inv hk fun σ => ?_` and prove the remaining obligations. Establish `h1 : χ (i σ) ^ k = 1` using `hpow (i σ) σ.2`.
+
+Rewrite using `[MonoidHom.inv_apply, MonoidHom.comp_apply, inv_pow, h1, inv_one]`. Take `⟨hmul, hz, h0⟩` from `UpperTheory.V.Loc.laMul (l := l) h`. Establish `H0 : IsWtPart h χ 0 (χ.comp i)⁻¹` using `h0 χ _ ho fun σ => mul_inv_cancel _`. Establish `H1` using `(hmul _ _ _ _ _ _ H0 (hz _ _ _ m (UpperTheory.V.Loc.laCyc H h hl))).1`. Establish `e : χ * c ^ m = κ`.
+
+Simplify using `only [χ, mul_assoc, ← zpow_add, neg_add_cancel, zpow_zero, mul_one]`. Establish `e' : (0 + m • fun _ : Emb l w => (-1 : ℤ)) = fun _ => -m`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules. Rewrite `H1` using `[← hc, e, e']`.
+
+Conclude with `⟨_, H1⟩`.
+-/
 theorem UpperTheory.V.Loc.laArith :
     GlobalArtinReciprocity → ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w), ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → ∀ (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ), Continuous κ → ∀ (m : ℤ) (k : ℕ), 0 < k → (∀ g : ↥(Dec (F := F) A), (g : G F Ω) ∈ Ine (F := F) A → (κ g * cycBar F Ω l g ^ (-m)) ^ k = 1) → IsLocAlg h κ fun _ => -m := by
   intro H F Ω _ _ _ _ _ l _ A w h hl κ hκ m k hk hpow

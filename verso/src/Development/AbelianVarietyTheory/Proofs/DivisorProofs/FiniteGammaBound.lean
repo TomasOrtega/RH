@@ -16,6 +16,19 @@ open NumberField
 namespace GlobalTheory.GamLoss
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Set `S : Set (Fin N → E)` to `Set.range fun p : H × Fin N => (ρ p.1).mulVec (Pi.single p.2 1)`. Set `L : Submodule (𝓞 E) (Fin N → E)` to `Submodule.span (𝓞 E) S`. Establish `hfg : L.FG` using `⟨(Set.finite_range _).toFinset, by rw [Set.Finite.coe_toFinset]⟩`. Establish `hS1 : ∀ i : Fin N, (Pi.single i 1 : Fin N → E) ∈ L` using `fun i => Submodule.subset_span ⟨(1, i), by show (ρ 1).mulVec _ = _`. Rewrite using `[map_one, Matrix.one_mulVec]⟩`.
+
+Establish `hspan : Submodule.span E (L : Set (Fin N → E)) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin N)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span (by simpa using hS1 i)`. Establish `hL : ∀ h, ∀ x ∈ L, (ρ h).mulVec x ∈ L`.
+
+Introduce `h x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨g, i⟩, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨(h * g, i), by show (ρ (h * g)).mulVec _ = (ρ h).mulVec ((ρ g).mulVec _)`.
+
+Rewrite using `[map_mul, Matrix.mulVec_mulVec]⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`.
+
+Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Take `⟨ψ, hψ⟩` from `GlobalTheory.StabOrder.exists_faithful L hfg hspan ρ hρ hL`. Establish `e` using `(MonoidHom.ofInjective hψ).toEquiv`. Use `GlobalTheory.card_finite_subgroup_GL_int_dvd _ ψ.range (Finite.of_equiv _ e)` as an intermediate fact.
+
+Rewrite `this` using `[← Nat.card_congr e]`. Then use the resulting hypothesis.
+-/
 theorem card_dvd_of_inj {N : ℕ} {H : Type} [Group H] [Finite H] (ρ : H →* Matrix (Fin N) (Fin N) E)
     (hρ : Function.Injective ρ) :
     Nat.card H ∣ 8 ^ (Module.finrank ℚ E * N) * (2 * (Module.finrank ℚ E * N)).factorial := by
@@ -55,17 +68,37 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formali
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`.
+-/
 theorem incA_inj' : Function.Injective (incA D) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)
 
+/- English proof (translation)
+Introduce `a b e`. Conclude with `Units.ext (Matrix.ext fun i j => incA_inj' (by simpa [Formalism.UG.bc] using congrArg (fun g => (Units.val g) i j) e))`.
+-/
 theorem bc_incA_injective (n : ℕ) : Function.Injective (Formalism.UG.bc (n := Fin n) (incA D)) := by
   intro a b e
   exact Units.ext (Matrix.ext fun i j => incA_inj' (by simpa [Formalism.UG.bc] using congrArg (fun g => (Units.val g) i j) e))
 
+/- English proof (translation)
+Take `⟨u, -, hu⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 q.2)`. Conclude with `⟨u, hu⟩`.
+-/
 theorem exists_rat (V : HSp D) (q : GQ V) : ∃ u : GL (Fin V.rank) D.host.E, Formalism.UG.bc (incA D) u = matHom V q.1 := by
   obtain ⟨u, -, hu⟩ := Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 q.2)
   exact ⟨u, hu⟩
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.ClassRegroup.card_stab]`. Use `set H := Formalism.IndefR.Bridge.stab ((GlobalTheory.ClassRegroup.finPt V).comp (GQ V).subtype) (K.comap (finG V)) x`. Distinguish the cases in `hf : Finite H`. Use `swap`. Use `left haveI : Infinite H := not_finite_iff_infinite.1 hf`.
+
+Conclude with `Nat.card_eq_zero_of_infinite`. Use `right`. Set `φ` to `Formalism.UG.bc (n := Fin V.rank) (incA D)`. Establish `hφ : Function.Injective φ` using `bc_incA_injective V.rank`. Set `ι : GQ V →* φ.range` to `((matHom V).comp (GQ V).subtype).codRestrict φ.range fun q => by`.
+
+Take `⟨u, hu⟩` from `exists_rat V q`. Conclude with `⟨u, hu⟩`. Establish `hι : Function.Injective ι`. Introduce `a b e`. Establish `e1` using `congrArg (fun z : φ.range => z.1) e`.
+
+Conclude with `Subtype.ext (Subtype.val_injective e1)`. Set `ρ0 : GQ V →* GL (Fin V.rank) D.host.E` to `(MonoidHom.ofInjective hφ).symm.toMonoidHom.comp ι`. Set `ρ : H →* Matrix (Fin V.rank) (Fin V.rank) D.host.E` to `(Units.coeHom _).comp (ρ0.comp H.subtype)`. Establish `hρ : Function.Injective ρ`. Introduce `a b e`.
+
+Establish `e1 : ρ0 a.1 = ρ0 b.1` using `Units.ext e`. Establish `e2 : ι a.1 = ι b.1` using `(MonoidHom.ofInjective hφ).symm.injective e1`. Conclude with `Subtype.ext (hι e2)`. Conclude with `card_dvd_of_inj ρ hρ`.
+-/
 theorem gamOrd_zero_or_dvd (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))) (x : GfC V) :
     gamOrd V K x = 0 ∨ gamOrd V K x ∣ 8 ^ (Module.finrank ℚ D.host.E * V.rank) *
       (2 * (Module.finrank ℚ D.host.E * V.rank)).factorial := by
@@ -107,8 +140,18 @@ noncomputable def rk (D : D7) : ℕ := Module.finrank ℚ D.host.E * bigN D
 
 noncomputable def mk (D : D7) : ℕ := 8 ^ rk D * (2 * rk D).factorial
 
+/- English proof (translation)
+The claim follows from `Nat.mul_pos (pow_pos (by norm_num) _) (Nat.factorial_pos _)`.
+-/
 theorem mk_pos (D : D7) : 0 < mk D := Nat.mul_pos (pow_pos (by norm_num) _) (Nat.factorial_pos _)
 
+/- English proof (translation)
+Establish `h1 : j * (D.R.t + 1) ≤ D.R.m * (D.R.t + 1)` using `Nat.mul_le_mul_right _ hj`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hs : sLen D = D.R.r + 6` using `rfl`. Simplify using `only [rankX, rankP, nRk, bigN]`.
+
+Rewrite `*` using `[hs]`. Establish `e : D.R.m * (D.R.t + (D.R.r + 6) + 1) = D.R.m * (D.R.r + 6 - 1) + D.R.m * (D.R.t + 1) + D.R.m`. Rewrite using `[show D.R.r + 6 - 1 = D.R.r + 5 by omega]; ring`. Rewrite using `[e]`. Establish `: D.R.r + 1 = D.R.k + D.R.m` using `by omega`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem rankX_le (D : D7) {j : ℕ} (hj : j ≤ D.R.m) : rankX D j ≤ bigN D := by
   have h1 : j * (D.R.t + 1) ≤ D.R.m * (D.R.t + 1) := Nat.mul_le_mul_right _ hj
   have hk := D.R.m_add_three_le_k
@@ -122,6 +165,11 @@ theorem rankX_le (D : D7) {j : ℕ} (hj : j ≤ D.R.m) : rankX D j ≤ bigN D :=
   have : D.R.r + 1 = D.R.k + D.R.m := by omega
   omega
 
+/- English proof (translation)
+Establish `h1 : i * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ hi`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Simplify using `only [rankV, bigN]`. Establish `e : D.R.m * (D.R.t + sLen D + 1) = D.R.m * D.R.t + D.R.m * sLen D + D.R.m` using `by ring`.
+
+Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rankV_le (D : D7) {i : ℕ} (hi : i ≤ D.R.m) : rankV D i D.R.m ≤ bigN D := by
   have h1 : i * sLen D ≤ D.R.m * sLen D := Nat.mul_le_mul_right _ hi
   have hk := D.R.m_add_three_le_k
@@ -131,15 +179,26 @@ theorem rankV_le (D : D7) {i : ℕ} (hi : i ≤ D.R.m) : rankV D i D.R.m ≤ big
   rw [e]
   omega
 
+/- English proof (translation)
+Establish `h : Module.finrank ℚ D.host.E * n ≤ rk D` using `Nat.mul_le_mul_left _ hn`. Conclude with `mul_dvd_mul (Nat.pow_dvd_pow _ h) (Nat.factorial_dvd_factorial (by omega))`.
+-/
 theorem dvd_mk {n : ℕ} (hn : n ≤ bigN D) :
     8 ^ (Module.finrank ℚ D.host.E * n) * (2 * (Module.finrank ℚ D.host.E * n)).factorial ∣ mk D := by
   have h : Module.finrank ℚ D.host.E * n ≤ rk D := Nat.mul_le_mul_left _ hn
   exact mul_dvd_mul (Nat.pow_dvd_pow _ h) (Nat.factorial_dvd_factorial (by omega))
 
+/- English proof (translation)
+The claim follows from `(gamOrd_zero_or_dvd V K x).imp_right fun h => h.trans (dvd_mk hV)`.
+-/
 theorem gamOrd_zero_or_dvd_mk (V : HSp D) (hV : V.rank ≤ bigN D) (K : Subgroup (GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)))
     (x : GfC V) : gamOrd V K x = 0 ∨ gamOrd V K x ∣ mk D :=
   (gamOrd_zero_or_dvd V K x).imp_right fun h => h.trans (dvd_mk hV)
 
+/- English proof (translation)
+Break down `hg with rfl | hg` into its components or cases. Conclude with `⟨0, by simp, Or.inl rfl⟩`. Use `⟨(g : D.what₂.LL)⁻¹, by simp, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.vw_inv]`. Use `Formalism.L2.DIV.vw_nat_le_of_dvd (K := D.what₂.LL) w (mk_pos D) hg` as an intermediate fact.
+
+Use `push_cast`. Conclude with `neg_le_neg this` after adjusting the coercions.
+-/
 theorem lossLe_inv (w : PlL D) {g : ℕ} (hg : g = 0 ∨ g ∣ mk D) :
     LossLe w ((g : ℂ)⁻¹) (vw w (mk D : D.what₂.LL)) := by
   rcases hg with rfl | hg
@@ -150,9 +209,17 @@ theorem lossLe_inv (w : PlL D) {g : ℕ} (hg : g = 0 ∨ g ∣ mk D) :
   push_cast
   exact_mod_cast neg_le_neg this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, map_one _, Or.inr (by rw [Formalism.DivisionValues.ValuationRepresentative.vw_one]; simp)⟩`.
+-/
 theorem lossLe_one (w : PlL D) : LossLe w 1 0 :=
   ⟨1, map_one _, Or.inr (by rw [Formalism.DivisionValues.ValuationRepresentative.vw_one]; simp)⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using lossLe_one w`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.card_insert_of_notMem hi]`. Use `GlobalTheory.SumSize.Model.lossLe_mul (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))` as an intermediate fact.
+
+Use `this.mono (le_of_eq ?_)` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lossLe_prod (w : PlL D) {ι : Type} (s : Finset ι) (z : ι → ℂ) {a : ℝ} (h : ∀ i ∈ s, LossLe w (z i) a) :
     LossLe w (∏ i ∈ s, z i) (s.card * a) := by
   classical
@@ -165,11 +232,21 @@ theorem lossLe_prod (w : PlL D) {ι : Type} (s : Finset ι) (z : ι → ℂ) {a 
     refine this.mono (le_of_eq ?_)
     push_cast; ring
 
+/- English proof (translation)
+Use `Formalism.L2.DIV.vw_nat_le_of_dvd (K := D.what₂.LL) w (mk_pos D) (one_dvd _)` as an intermediate fact. Rewrite `this` using `[Nat.cast_one, Formalism.DivisionValues.ValuationRepresentative.vw_one]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem vw_mk_nonneg (w : PlL D) : (0 : ℝ) ≤ vw w (mk D : D.what₂.LL) := by
   have := Formalism.L2.DIV.vw_nat_le_of_dvd (K := D.what₂.LL) w (mk_pos D) (one_dvd _)
   rw [Nat.cast_one, Formalism.DivisionValues.ValuationRepresentative.vw_one] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Use `⟨fun w => mul_nonneg (by positivity) (vw_mk_nonneg w), ?_, fun s => ?_⟩` and prove the remaining obligations. Establish `hf` using `FractionalIdeal.finite_factors (K := D.what₂.LL) (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.what₂.LL)) (mk D : D.what₂.LL))`. Rewrite `hf` using `[Filter.eventually_cofinite]`. Use `hf.subset fun w hw h0 => hw ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(2 * D.R.m + 1 : ℝ) * (vw w (mk D : D.what₂.LL) : ℝ) = 0`.
+
+Rewrite using `[show vw w (mk D : D.what₂.LL) = 0 from h0]`. Simplify using the standard rewrite rules. Use `Formalism.EigenvalueLevelCeiling.sum_lw_vw_natCast_le (K := D.what₂.LL) s (mk D) (mk_pos D).ne'` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun w _ => by ring`.
+
+Use `_ ≤ _ := mul_le_mul_of_nonneg_left this (by positivity)`.
+-/
 theorem loss_mk : Loss (fun w : PlL D => (2 * D.R.m + 1 : ℝ) * vw w (mk D : D.what₂.LL))
     ((2 * D.R.m + 1 : ℝ) * Real.log (mk D)) := by
   refine ⟨fun w => mul_nonneg (by positivity) (vw_mk_nonneg w), ?_, fun s => ?_⟩
@@ -193,15 +270,36 @@ open Formalism.DivisionValues (vw lw)
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : D.R.f ≤ D.R.k` using `D.R.f_le_k`. Unfold `bigN`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem f_le_bigN (D : D7) : D.R.f ≤ bigN D := by
   have h : D.R.f ≤ D.R.k := D.R.f_le_k
   unfold bigN; omega
 
+/- English proof (translation)
+Establish `: 0 < D.R.ord` using `D.R.ord_pos`. Use `show 2 ≤ 2 * D.R.ord`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_le_f (D : D7) : 2 ≤ D.R.f := by
   have : 0 < D.R.ord := D.R.ord_pos
   show 2 ≤ 2 * D.R.ord
   omega
 
+/- English proof (translation)
+Establish `hd : Module.finrank ℚ D.host.E = 2 * D.R.f` using `by rw [GlobalTheory.StabOrder.finrank_host]; rfl`. Establish `hfN` using `f_le_bigN D`. Establish `hf2` using `two_le_f D`. Establish `hN : 1 ≤ bigN D` using `by omega`. Establish `hrk : rk D = 2 * D.R.f * bigN D` using `by rw [rk, hd]`.
+
+Use `set n := 2 * rk D with hn'`. Establish `hn : n = 4 * D.R.f * bigN D` using `by rw [hn', hrk]; ring`. Establish `hn1 : 1 ≤ n` using `by rw [hn]; exact Nat.one_le_iff_ne_zero.2 (by positivity)`. Establish `h8 : Real.log 8 ≤ 7`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 8 by norm_num); linarith` as an intermediate fact.
+
+Establish `hfac : Real.log (n.factorial : ℝ) ≤ n * Real.log n`. Establish `h1 : (n.factorial : ℝ) ≤ (n : ℝ) ^ n` using `by exact_mod_cast Nat.factorial_le_pow n`. Combine the equalities or inequalities in the displayed calculation. Establish `hfNr : (D.R.f : ℝ) ≤ bigN D` using `by exact_mod_cast hfN`. Establish `hNr : (1 : ℝ) ≤ bigN D` using `by exact_mod_cast hN`.
+
+Establish `hlog : Real.log n ≤ 4 * bigN D`. Establish `h1 : (n : ℝ) ≤ (2 * bigN D : ℝ) ^ 2`. Rewrite using `[hn]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hpos : (0 : ℝ) < n` using `by exact_mod_cast hn1`. Combine the equalities or inequalities in the displayed calculation. Unfold `mk`. Use `push_cast`. Rewrite using `[Real.log_mul (by positivity) (by exact_mod_cast (Nat.factorial_pos _).ne'), Real.log_pow]`.
+
+Establish `e1 : ((rk D : ℕ) : ℝ) = 2 * D.R.f * bigN D` using `by rw [hrk]; push_cast; ring`. Establish `e2 : ((n : ℕ) : ℝ) = 4 * D.R.f * bigN D` using `by rw [hn]; push_cast; ring`. Rewrite using `[← hn', e1]`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `by positivity`. Establish `t1 : 2 * D.R.f * bigN D * Real.log 8 ≤ 2 * D.R.f * bigN D * 7` using `mul_le_mul_of_nonneg_left h8 (by positivity)`.
+
+Establish `t2 : (n : ℝ) * Real.log n ≤ (n : ℝ) * (4 * bigN D)` using `mul_le_mul_of_nonneg_left hlog (by positivity)`. Rewrite `t2` using `[e2]`. Establish `t3 : (D.R.f : ℝ) * bigN D ≤ D.R.f * (bigN D) ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem log_mk_le (D : D7) : Real.log (mk D) ≤ 30 * D.R.f * (bigN D : ℝ) ^ 2 := by
   have hd : Module.finrank ℚ D.host.E = 2 * D.R.f := by rw [GlobalTheory.StabOrder.finrank_host]; rfl
   have hfN := f_le_bigN D
@@ -243,9 +341,21 @@ theorem log_mk_le (D : D7) : Real.log (mk D) ≤ 30 * D.R.f * (bigN D : ℝ) ^ 2
   have t3 : (D.R.f : ℝ) * bigN D ≤ D.R.f * (bigN D) ^ 2 := by nlinarith
   nlinarith
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`.
+-/
 theorem sig_nonneg {T : Type} {L : Formalism.IndefR.Links.LevCh D T} {sc : Consts} (G : GridData L sc) : 0 ≤ sig G :=
   Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)
 
+/- English proof (translation)
+Use `⟨_, GlobalTheory.SumSize.Model.loss_mono loss_mk ?_, fun t w Φ β c => ?_⟩` and prove the remaining obligations. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hs` using `sig_nonneg ch.G`. Establish `hL` using `log_mk_le D`. Establish `hP : (0 : ℝ) ≤ D.R.f * (bigN D : ℝ) ^ 2` using `by positivity`.
+
+Establish `hq : (1 : ℝ) ≤ (Real.log b + sig ch.G) * b` using `by nlinarith`. Unfold `bOne`. Establish `hX : (1 : ℝ) ≤ D.R.m * ((Real.log b + sig ch.G) * b)` using `by nlinarith`. Establish `h1 : (0 : ℝ) ≤ C * (D.R.f * (bigN D : ℝ) ^ 2)` using `by positivity`. Establish `h3 : (2 * D.R.m + 1 : ℝ) * (D.R.f * (bigN D : ℝ) ^ 2) ≤ (3 * D.R.m) * (D.R.f * (bigN D : ℝ) ^ 2)` using `mul_le_mul_of_nonneg_right (by linarith) hP`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `GridChoice.invGam`. Use `(GlobalTheory.SumSize.Model.lossLe_mul (lossLe_prod w Finset.univ _ (a := (vw w (mk D : D.what₂.LL) : ℝ)) ?_) (lossLe_prod w Finset.univ _ (a := (vw w (mk D : D.what₂.LL) : ℝ)) ?_)).mono (le_of_eq ?_)` and prove the remaining obligations. Introduce `j _`. Conclude with `lossLe_inv w (gamOrd_zero_or_dvd_mk _ (by rw [rank_top ch.G j.2.le]; exact rankX_le D j.2.le) _ _)`.
+
+Introduce `i _`. Conclude with `lossLe_inv w (gamOrd_zero_or_dvd_mk _ (by rw [rank_grid ch.G (Nat.le_of_lt_succ i.2)]; exact rankV_le D (Nat.le_of_lt_succ i.2)) _ _)`. Simplify using `only [Finset.card_univ, Fintype.card_fin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finGamAt_of {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : Formalism.L2.DIV.FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : Formalism.IndefR.Links.RealDat D A Ks} (ch : Choice R)
     {C b : ℝ} (hC : 90 ≤ C) (hb : 1 ≤ b) (hlb : 1 ≤ Real.log b) : FinGamAt ch C b := by
@@ -286,6 +396,11 @@ end GlobalTheory.GamLoss
 namespace GlobalTheory.GamLoss
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 
+/- English proof (translation)
+Introduce `_`. Use `⟨0, fun CF _ => ⟨90, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ _ => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hL : (1 : ℝ) ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hb : (1 : ℝ) ≤ large₂.sc.b` using `Real.one_le_exp (by linarith)`. Establish `hlb : (1 : ℝ) ≤ Real.log large₂.sc.b` using `by show (1 : ℝ) ≤ Real.log (Real.exp large₂.sc.L)`.
+
+Rewrite using `[Real.log_exp]`. Conclude with `hL`. Conclude with `finGamAt_of ch hC hb hlb`.
+-/
 theorem finGamK : GlobalTheory.FunPr.Hypotheses₂ → FinGamK := by
   intro _
   refine ⟨0, fun CF _ => ⟨90, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ _ => ?_⟩⟩⟩

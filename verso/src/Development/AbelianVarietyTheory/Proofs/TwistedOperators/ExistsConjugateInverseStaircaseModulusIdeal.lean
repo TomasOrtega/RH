@@ -14,6 +14,11 @@ namespace GlobalTheory.ConjIdeal
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Introduce `x hx`. Use `FractionalIdeal.mul_induction_on hx (fun i hi j hj => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `FractionalIdeal.mul_mem_mul (hA i hi) (hB j hj)`. Rewrite using `[map_add]`.
+
+Conclude with `FractionalIdeal.mem_coe.1 (Submodule.add_mem _ (FractionalIdeal.mem_coe.2 hy) (FractionalIdeal.mem_coe.2 hz))`.
+-/
 theorem map_mem_mul (c : E →+* E) {A A' B B' : FractionalIdeal (𝓞 E)⁰ E}
     (hA : ∀ x ∈ A', c x ∈ A) (hB : ∀ x ∈ B', c x ∈ B) : ∀ x ∈ A' * B', c x ∈ A * B := by
   intro x hx
@@ -22,9 +27,15 @@ theorem map_mem_mul (c : E →+* E) {A A' B B' : FractionalIdeal (𝓞 E)⁰ E}
   · rw [map_add]
     exact FractionalIdeal.mem_coe.1 (Submodule.add_mem _ (FractionalIdeal.mem_coe.2 hy) (FractionalIdeal.mem_coe.2 hz))
 
+/- English proof (translation)
+Introduce `x` and use `by rw [h, hc]`.
+-/
 theorem conj_symm (c : E →+* E) (hc : ∀ x, c (c x) = x) {I I' : FractionalIdeal (𝓞 E)⁰ E}
     (h : ∀ x, x ∈ I' ↔ c x ∈ I) : ∀ x, x ∈ I ↔ c x ∈ I' := fun x => by rw [h, hc]
 
+/- English proof (translation)
+Introduce `x`. Use `⟨map_mem_mul c (fun y hy => (hA y).1 hy) (fun y hy => (hB y).1 hy) x, fun h => ?_⟩` and prove the remaining obligations. Use `map_mem_mul c (fun y hy => (conj_symm c hc hA y).1 hy) (fun y hy => (conj_symm c hc hB y).1 hy) _ h` as an intermediate fact. Rewrite `this` using `[hc]`. Then use the resulting hypothesis.
+-/
 theorem conj_mul (c : E →+* E) (hc : ∀ x, c (c x) = x) {A A' B B' : FractionalIdeal (𝓞 E)⁰ E}
     (hA : ∀ x, x ∈ A' ↔ c x ∈ A) (hB : ∀ x, x ∈ B' ↔ c x ∈ B) : ∀ x, x ∈ A' * B' ↔ c x ∈ A * B := by
   intro x
@@ -32,12 +43,20 @@ theorem conj_mul (c : E →+* E) (hc : ∀ x, c (c x) = x) {A A' B B' : Fraction
   have := map_mem_mul c (fun y hy => (conj_symm c hc hA y).1 hy) (fun y hy => (conj_symm c hc hB y).1 hy) _ h
   rwa [hc] at this
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp only [pow_zero]`. Conclude with `h1`. Consider the case `succ n ih => simpa only [pow_succ] using conj_mul c hc ih hA`.
+-/
 theorem conj_pow (c : E →+* E) (hc : ∀ x, c (c x) = x) (h1 : ∀ x, x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔ c x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E))
     {A A' : FractionalIdeal (𝓞 E)⁰ E} (hA : ∀ x, x ∈ A' ↔ c x ∈ A) (n : ℕ) : ∀ x, x ∈ A' ^ n ↔ c x ∈ A ^ n := by
   induction n with
   | zero => simp only [pow_zero]; exact h1
   | succ n ih => simpa only [pow_succ] using conj_mul c hc ih hA
 
+/- English proof (translation)
+Introduce `h`. Apply `h0` to reduce the goal to its premises. Rewrite `h`, the goal using `[FractionalIdeal.eq_zero_iff]`. Introduce `x hx`. Use `h (c x) ((hB (c x)).2 (by rwa [hc]))` as an intermediate fact.
+
+Rewrite using `[← hc x, this, map_zero]`.
+-/
 theorem conj_ne_zero (c : E →+* E) (hc : ∀ x, c (c x) = x) {B B' : FractionalIdeal (𝓞 E)⁰ E}
     (hB : ∀ x, x ∈ B' ↔ c x ∈ B) (h0 : B ≠ 0) : B' ≠ 0 := by
   intro h
@@ -47,6 +66,9 @@ theorem conj_ne_zero (c : E →+* E) (hc : ∀ x, c (c x) = x) {B B' : Fractiona
   have := h (c x) ((hB (c x)).2 (by rwa [hc]))
   rw [← hc x, this, map_zero]
 
+/- English proof (translation)
+Introduce `x`. Use `GlobalTheory.ChiGrid.StairConj.mem_mul_inv_iff c hc (map_mul c) h0 (conj_ne_zero c hc hB h0) h1 hB x` as an intermediate fact. Simplify `this` using `only [one_mul]`.
+-/
 theorem conj_inv (c : E →+* E) (hc : ∀ x, c (c x) = x) (h1 : ∀ x, x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔ c x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E))
     {B B' : FractionalIdeal (𝓞 E)⁰ E} (hB : ∀ x, x ∈ B' ↔ c x ∈ B) (h0 : B ≠ 0) :
     ∀ x, x ∈ B'⁻¹ ↔ c x ∈ B⁻¹ := by
@@ -58,6 +80,19 @@ end GlobalTheory.ConjIdeal
 
 namespace GlobalTheory.ConjIdeal
 
+/- English proof (translation)
+Introduce `D T L P sc a b`. Establish `hs : ∀ x : D.host.E, star x = D.host.conj x` using `bridge_star_holds D.R D.host`. Set `c : D.host.E →+* D.host.E` to `(D.host.conj : D.host.E ≃ₐ[ℚ] D.host.E).toRingEquiv.toRingHom`. Establish `hcx : ∀ x, c x = D.host.conj x` using `fun _ => rfl`. Establish `hc : ∀ x, c (c x) = x` using `fun x => Formalism.L2.Pj.conj_conj D x`.
+
+Establish `h1 : ∀ x, x ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ↔ c x ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Establish `k : ∀ x, x ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) → c x ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Introduce `x hx`. Take `⟨z, rfl⟩` from `(FractionalIdeal.mem_one_iff (𝓞 D.host.E)⁰).1 hx`. Conclude with `(FractionalIdeal.mem_one_iff (𝓞 D.host.E)⁰).2 ⟨D.host.conj • z, Formalism.L2.Pj.algebraMap_gal_smul D _ z⟩`.
+
+Conclude with `fun x => ⟨k x, fun h => by simpa only [hc] using k _ h⟩`. Take `⟨hA0, hA⟩` from `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).2 T L P sc`. Establish `hA' : ∀ x, x ∈ P.stAbar sc ↔ c x ∈ P.stA sc` using `fun x => by rw [hcx, ← hs]; exact hA x`. Use `set M : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E := ((P.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) with hMdef`. Use `set Mb : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E := ((P.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) with hMbdef`.
+
+Establish `hM : ∀ x, x ∈ M ↔ c x ∈ Mb` using `fun x => GlobalTheory.ChiGrid.StairConj.mem_coe_iff D _ x`. Establish `hM0 : M ≠ 0` using `by rw [hMdef, Ne, FractionalIdeal.coeIdeal_eq_zero]; exact P.modul_ne_bot sc`. Establish `hMb0 : Mb ≠ 0` using `conj_ne_zero c hc (conj_symm c hc hM) hM0`. Establish `hAb0 : P.stAbar sc ≠ 0` using `conj_ne_zero c hc hA' hA0`. Use `⟨P.stAbar sc ^ a * (P.stA sc ^ a)⁻¹ * (Mb ^ b * (M ^ b)⁻¹), ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : P.stA sc ^ a ≠ 0` using `pow_ne_zero _ hA0`. Establish `e2 : P.stAbar sc ^ a ≠ 0` using `pow_ne_zero _ hAb0`. Establish `e3 : M ^ b ≠ 0` using `pow_ne_zero _ hM0`. Establish `e4 : Mb ^ b ≠ 0` using `pow_ne_zero _ hMb0`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `x`. Rewrite using `[hs]`. Conclude with `conj_mul c hc (conj_mul c hc (conj_pow c hc h1 hA' a) (conj_inv c hc h1 (conj_pow c hc h1 (conj_symm c hc hA') a) (pow_ne_zero _ hAb0))) (conj_mul c hc (conj_pow c hc h1 (conj_symm c hc hM) b) (conj_inv c hc h1 (conj_pow c hc h1 hM b) (pow_ne_zero _ hMb0))) x`.
+-/
 theorem stA_modul_conj_inv : ∀ {D : D7} {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) (a b : ℕ), ∃ I' : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E, P.stA sc ^ a * (P.stAbar sc ^ a)⁻¹ * (((P.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ^ b * (((P.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ^ b)⁻¹) * I' = 1 ∧ ∀ x : D.host.E, x ∈ I' ↔ star x ∈ P.stA sc ^ a * (P.stAbar sc ^ a)⁻¹ * (((P.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ^ b * (((P.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ^ b)⁻¹) := by
   intro D T L P sc a b
   have hs : ∀ x : D.host.E, star x = D.host.conj x := bridge_star_holds D.R D.host

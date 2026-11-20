@@ -4,6 +4,15 @@ namespace GlobalTheory.QuotientCardinality
 
 open ValuativeRel
 
+/- English proof (translation)
+Introduce `F _ _ _ _ ϖ hϖ a m u v h`. Establish `hint` using `Valuation.integer.integers (ValuativeRel.valuation F)`. Establish `hu : ValuativeRel.valuation F ((u : (ValuativeRel.valuation F).integer) : F) = 1` using `hint.one_of_isUnit u.isUnit`. Establish `hv : ValuativeRel.valuation F ((v : (ValuativeRel.valuation F).integer) : F) = 1` using `hint.one_of_isUnit v.isUnit`. Establish `hne : (ϖ : F) ≠ 0`.
+
+Introduce `h0`. Conclude with `hϖ.ne_zero (Subtype.ext (by simpa using h0))`. Establish `hpos : 0 < ValuativeRel.valuation F (ϖ : F)`. Rewrite using `[pos_iff_ne_zero]`. Conclude with `(map_ne_zero (ValuativeRel.valuation F)).mpr hne`.
+
+Establish `hne1 : ValuativeRel.valuation F (ϖ : F) ≠ 1`. Introduce `h1`. Conclude with `hϖ.not_isUnit ((hint.isUnit_iff_valuation_eq_one (x := ϖ)).mpr h1)`. Establish `h2` using `congrArg (ValuativeRel.valuation F) h`. Rewrite `h2` using `[map_mul, map_mul, hu, hv, mul_one, mul_one, map_zpow₀, map_pow, ← zpow_natCast]`.
+
+Conclude with `zpow_right_injective₀ hpos hne1 h2`.
+-/
 theorem main : ∀ {F : Type} [inst : Field F] [inst_1 : ValuativeRel F] [inst_2 : TopologicalSpace F] [IsNonarchimedeanLocalField F] {ϖ : ↥(Valuation.integer (ValuativeRel.valuation F))}, Irreducible ϖ → ∀ {a : ℤ} {m : ℕ} {u v : (↥(Valuation.integer (ValuativeRel.valuation F)))ˣ}, (↑ϖ : F) ^ a * (↑(↑u : ↥(Valuation.integer (ValuativeRel.valuation F))) : F) * (↑(↑v : ↥(Valuation.integer (ValuativeRel.valuation F))) : F) = (↑ϖ : F) ^ m → a = (↑m : ℤ) := by
   intro F _ _ _ _ ϖ hϖ a m u v h
   have hint := Valuation.integer.integers (ValuativeRel.valuation F)

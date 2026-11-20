@@ -25,11 +25,21 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.
   UpperTheory.V.Pr UpperTheory.V
 open scoped Pointwise
 
+/- English proof (translation)
+Rewrite using `[← map_one (PadicInt.toZMod (p := l)), ← map_one (PadicInt.toZModPow (p := l) 1), ← RingHom.sub_mem_ker_iff, ← RingHom.sub_mem_ker_iff, PadicInt.ker_toZMod, PadicInt.ker_toZModPow, PadicInt.maximalIdeal_eq_span_p, pow_one]`.
+-/
 private theorem toZMod_one_iff {l : ℕ} [Fact l.Prime] (x : ℤ_[l]) :
     PadicInt.toZMod x = 1 ↔ PadicInt.toZModPow 1 x = 1 := by
   rw [← map_one (PadicInt.toZMod (p := l)), ← map_one (PadicInt.toZModPow (p := l) 1), ← RingHom.sub_mem_ker_iff,
     ← RingHom.sub_mem_ker_iff, PadicInt.ker_toZMod, PadicInt.ker_toZModPow, PadicInt.maximalIdeal_eq_span_p, pow_one]
 
+/- English proof (translation)
+Use `haveI := h.fin`. Set `χ : F.G0 →* kˣ` to `F.Ψ.comp F.del.ker.subtype`. Set `ω : F.G0 →* kˣ` to `(F.om k).comp F.del.ker.subtype`. Take `⟨g, h1, h2⟩` from `(Loc.v0e (ι := Bool) (fun b => if b then χ else 1) ω).2 fun hm => h.f5 (by`. Establish `hle : Subgroup.closure (Set.range fun q : Bool × Bool => (if q.1 then χ else 1) / (if q.2 then χ else 1)) ≤ Subgroup.zpowers χ`.
+
+Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `_ ⟨⟨a, b⟩, rfl⟩`. Apply the tactic sequence `cases a <;> cases b <;> simp`. Take `⟨j, hj⟩` from `hle hm`. Conclude with `⟨j, fun g => (DFunLike.congr_fun hj g).symm⟩)`.
+
+Use `⟨g, h1 true false, fun e => h2 (Units.ext ?_)⟩` and prove the remaining obligations. Use `show ZMod.castHom (dvd_refl l) k (PadicInt.toZMod ((F.eps g : ℤ_[l]ˣ) : ℤ_[l])) = 1`. Rewrite using `[e, map_one]`.
+-/
 private theorem exists_kernel_element_nontrivial_cyclotomic {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] (F : Fr.Frame l k) {C₀ : ℕ} (h : F.Ok C₀) :
     ∃ g : F.G0, F.Ψ g = 1 ∧ PadicInt.toZMod ((F.eps g : ℤ_[l]ˣ) : ℤ_[l]) ≠ 1 := by
   haveI := h.fin
@@ -47,12 +57,18 @@ private theorem exists_kernel_element_nontrivial_cyclotomic {l : ℕ} [Fact l.Pr
   show ZMod.castHom (dvd_refl l) k (PadicInt.toZMod ((F.eps g : ℤ_[l]ˣ) : ℤ_[l])) = 1
   rw [e, map_one]
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, map_mul]`. Conclude with `mul_lt_one_of_lt_of_le ha ((A.valuation_le_one_iff _).2 (natCast_mem A c))`.
+-/
 private theorem val_dvd {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {a b : ℕ} (h : a ∣ b) (ha : A.valuation (a : Ω) < 1) :
     A.valuation (b : Ω) < 1 := by
   obtain ⟨c, rfl⟩ := h
   rw [Nat.cast_mul, map_mul]
   exact mul_lt_one_of_lt_of_le ha ((A.valuation_le_one_iff _).2 (natCast_mem A c))
 
+/- English proof (translation)
+Introduce `g hg` and use `by have h1 : cycZ ℚ Ω l g = 1 := (Base.places ℚ Ω l A).2.2.2 (fun h' => hA (val_dvd A ((dvd_mul_right l N).trans h) h')) hg have h2 : Chr.cls ℚ Ω N g = 1 := (Chr.clsFacts ℚ Ω N).2.2.2.2 A (fun h' => hA (val_dvd A ((dvd_mul_left N l).trans h) h')) hg simp [MonoidHom.mem_ker, Chr.P …`.
+-/
 private theorem cr_unr {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O]
     [Algebra ℤ_[l] O] {N M : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter O N) (h : l * N ∣ M) (A : ValuationSubring Ω)
     (hA : ¬ A.valuation (M : Ω) < 1) : Ine (F := ℚ) A ≤ (Chr.Psi l e (Chr.dirG ℚ Ω ψ)).ker := fun g hg => by
@@ -62,6 +78,9 @@ private theorem cr_unr {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
     (Chr.clsFacts ℚ Ω N).2.2.2.2 A (fun h' => hA (val_dvd A ((dvd_mul_left N l).trans h) h')) hg
   simp [MonoidHom.mem_ker, Chr.Psi, Chr.dirG, chiO, h1, h2]
 
+/- English proof (translation)
+Take `⟨j, rfl⟩` from `(Loc.decEmb (F := L) (Ω := Ω) (v := l)).1 A w hA ((natCast_place hA l).1 hl)`. Take `⟨-, φ, b1, -, -, -, b5, -⟩` from `(Loc.decEmb (F := L) (Ω := Ω) (v := l)).2 j`. Take `⟨g, hg, h⟩` from `h`. Conclude with `fun x hx => Loc.muNone φ b1 ⟨⟨g, hg⟩, by rw [b5]; exact h⟩ x hx`.
+-/
 private theorem cr_mu {L Ω : Type} [Field L] [NumberField L] [Field Ω] [CharZero Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ}
     [Fact l.Prime] (A : ValuationSubring Ω) (w : W.Plc L) (hA : IsPlaceOver A w) (hl : A.valuation (l : Ω) < 1)
     (h : ∃ g ∈ Dec (F := L) A, PadicInt.toZMod ((cycZ L Ω l g : ℤ_[l]ˣ) : ℤ_[l]) ≠ 1) :
@@ -71,6 +90,11 @@ private theorem cr_mu {L Ω : Type} [Field L] [NumberField L] [Field Ω] [CharZe
   obtain ⟨g, hg, h⟩ := h
   exact fun x hx => Loc.muNone φ b1 ⟨⟨g, hg⟩, by rw [b5]; exact h⟩ x hx
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Establish `h1` using `(h x).2 hx`. Rewrite `h1` using `[valuation_lt_one_iff']`. Establish `h2` using `h1.2.resolve_right fun h' => h' (ValuationSubring.mem_top _)`.
+
+Conclude with `hx0 (Subtype.ext ((algebraMap F Ω).injective (h2.trans (map_zero _).symm)))`.
+-/
 private theorem ne_top {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {A : ValuationSubring Ω} {v : W.Plc F}
     (h : IsPlaceOver A v) : A ≠ ⊤ := by
   rintro rfl
@@ -86,6 +110,11 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [F
   {η : G ℚ Ω →* ℤˣ} {Ψ : G ℚ Ω →* Oˣ} {σ g₁ : G ℚ Ω} {B : ValuationSubring Ω} {M : ℕ}
   {L : Type} [Field L] [NumberField L] [IsCMField L] [Algebra L Ω] [IsAlgClosure L Ω] {Φ : Fr.Frame l (ResidueField O)}
 
+/- English proof (translation)
+Use `show k.p0h g ^ _ = 1`. Rewrite using `[← map_pow]`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show k.p (toUpl Ω L (W.resP L Ω (g ^ _))) ∈ ({1} : Set _)`. Express the relevant statement in the definitionally equal form `toUpl Ω L (W.resP L Ω (g ^ _)) ∈ k.p.ker`.
+
+Rewrite using `[k.p_ker]`. Use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ⟨A, hA, ?_, ?_, ?_⟩)` and prove the remaining obligations. Conclude with `(Ine (F := L) A).pow_mem hg _`. Conclude with `(k.mem_range_resP _).1 ⟨_, rfl⟩`. Rewrite using `[map_pow, map_pow, Subgroup.coe_pow, map_pow, pow_card_eq_one']`.
+-/
 private theorem cr_tame [Finite (ResidueField O)] (k : GalLink η Ψ σ g₁ B M L Φ) (A : ValuationSubring Ω)
     (hA : ¬ A.valuation (l : Ω) < 1) (g : G L Ω) (hg : g ∈ Ine (F := L) A) :
     k.p0 g ^ Nat.card (ResidueField O)ˣ = 1 := by
@@ -100,10 +129,32 @@ private theorem cr_tame [Finite (ResidueField O)] (k : GalLink η Ψ σ g₁ B M
   · exact (k.mem_range_resP _).1 ⟨_, rfl⟩
   · rw [map_pow, map_pow, Subgroup.coe_pow, map_pow, pow_card_eq_one']
 
+/- English proof (translation)
+Introduce `g hg` and use `(k.mem_range_resP g).2 (k.split A hA ⟨hg, (toUpl Ω L g).2⟩)`.
+-/
 private theorem cr_split (k : GalLink η Ψ σ g₁ B M L Φ) (A : ValuationSubring Ω) (hA : A.valuation (M : Ω) < 1) :
     Dec (F := W.Lp L) A ≤ (W.resP L Ω).range := fun g hg =>
   (k.mem_range_resP g).2 (k.split A hA ⟨hg, (toUpl Ω L g).2⟩)
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Take `⟨e, he⟩` from `UpperTheory.frame_criterion_galois_equivariance k hB`. Take `⟨x, hx1, hx2⟩` from `exists_kernel_element_nontrivial_cyclotomic Φ ok`. Take `⟨g, rfl⟩` from `k.surjective_levelChangeBaseGroupHom x`. Establish `hx3 : Φ.eps (k.p0 g) = cycZ L Ω l g` using `k.eps _`.
+
+Rewrite `hx2` using `[hx3]`. Take `⟨v0, A0, p, hp, hpM, hn, hpv, hA0, hsp, hΨ0, hω⟩` from `UpperTheory.frame_criterion_decomposition_groups k ok.Ψ_open g hx1 hx2 (2 * M * (discr L).natAbs) (mul_ne_zero (mul_ne_zero two_ne_zero hM) (Int.natAbs_ne_zero.2 (discr_ne_zero L)))`. Establish `hpM' : ¬ p ∣ M` using `fun h => hpM ((h.mul_left _).mul_right _)`. Establish `hMv : ((M : ℕ) : 𝓞 (W.Lp L)) ∉ v0.asIdeal` using `fun h => by`. Establish `hc : IsCoprime ((p : ℕ) : 𝓞 (W.Lp L)) (M : ℕ)` using `Nat.Coprime.cast ((Nat.Prime.coprime_iff_not_dvd hp).2 hpM')`.
+
+Take `⟨a, b, hab⟩` from `hc`. Conclude with `v0.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ hpv) (Ideal.mul_mem_left _ _ h)))`. Establish `hlv : ∀ v : W.Plc (W.Lp L), ((l : ℕ) : 𝓞 (W.Lp L)) ∈ v.asIdeal → ((M : ℕ) : 𝓞 (W.Lp L)) ∈ v.asIdeal` using `fun v h => by`. Take `⟨c, rfl⟩` from `hlM`. Rewrite using `[Nat.cast_mul]`.
+
+Conclude with `Ideal.mul_mem_right _ _ h`. Set `A : W.Plc (W.Lp L) → ValuationSubring Ω` to `fun v => if h : ((l : ℕ) : 𝓞 (W.Lp L)) ∈ v.asIdeal then k.pl (e ⟨v, h⟩) else if v = v0 then A0 else placeOf Ω v`. Establish `hA : ∀ v, IsPlaceOver (A v) v` using `fun v => by`. Simplify using `only [A]`. Use `split_ifs with h1 h2`.
+
+Conclude with `he ⟨v, h1⟩`. Conclude with `h2 ▸ hA0`. Conclude with `isPlaceOver_placeOf Ω v`. Establish `hAv : A v0 = A0` using `by simp only [A, dif_neg fun h => hMv (hlv _ h), if_true]`. Use `choose w hw using fun v => (Base.places L Ω l (A v)).1 (ne_top (hA v))`.
+
+Establish `hfin : {v : W.Plc (W.Lp L) | ((M : ℕ) : 𝓞 (W.Lp L)) ∈ v.asIdeal ∧ ((l : ℕ) : 𝓞 (W.Lp L)) ∉ v.asIdeal}.Finite` using `(Ideal.finite_factors (I := Ideal.span {((M : ℕ) : 𝓞 (W.Lp L))}) (fun h => hM (Nat.cast_eq_zero.1 (Ideal.span_singleton_eq_bot.1 h)))).subset fun v hv => Ideal.dvd_span_singleton.2 hv.1`. Take `⟨hc, -⟩` from `k.c`. Take `⟨c, hc'⟩` from `toUpl_surj (L := L) ⟨σ, hc⟩`. Establish `hcσ : galEmb ℚ (W.Lp L) Ω c = σ` using `congrArg Subtype.val hc'`. Use `⟨{ odd := ok.l_odd unr := fun A v _ g hg => (k.mem_range_resP g).2 (k.unr A ⟨hg, (toUpl Ω L g).2⟩) c := c hc := by subst hcσ; exact hσ w := w, A := A, hw := hw, hA := hA St := hfin.toFinset St_l := fun u hu => (hfin.mem_toFinset.1 hu).2 v0 := v0 v0_St := fun h => hMv (hfin.mem_to …` and prove the remaining obligations.
+
+Introduce and unpack `v (h | h | rfl)`. Conclude with `cr_split k _ ((natCast_place (hA v) M).2 (hlv v h))`. Conclude with `cr_split k _ ((natCast_place (hA v) M).2 (hfin.mem_toFinset.1 h).1)`. Rewrite using `[hAv]`. Conclude with `hsp`.
+
+Conclude with `fun h => hMv ((natCast_place (hA v0) M).1 h)`. Use `show ∀ g ∈ Dec (F := L) (A v0), _`. Rewrite using `[hAv]`. Conclude with `hΨ0`. Use `show ∃ g ∈ Dec (F := L) (A v0), _`.
+
+Rewrite using `[hAv]`. Conclude with `hω`.
+-/
 private theorem cr_set [CharP (ResidueField O) l] (k : GalLink η Ψ σ g₁ B M L Φ) {C₀ : ℕ} (ok : Φ.Ok C₀) (hlM : l ∣ M) (hM : M ≠ 0)
     (hB : B.valuation (l : Ω) < 1) (hσ : Sd.IsCC σ)
     (hΨ : ∀ A : ValuationSubring Ω, ¬ A.valuation (M : Ω) < 1 → Ine (F := ℚ) A ≤ Ψ.ker) :
@@ -169,6 +220,39 @@ private theorem cr_set [CharP (ResidueField O) l] (k : GalLink η Ψ σ g₁ B M
 
 end
 
+/- English proof (translation)
+Introduce `_ _ hLev hB0 Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ k c₁ _ f n ka C₀ hn ok big hle hf hka hkO`. Establish `hl : l.Prime` using `Fact.out`. Use `haveI := ok.fin`. Establish `hlM : l ∣ M` using `(dvd_mul_right l N).trans H.dvd`. Take `⟨s, ⟨a⟩⟩` from `cr_set k ok hlM H.M_pos H.atl H.cc (cr_unr e ψ H.dvd)`.
+
+Establish `hSfin : s.S.Finite`. Use `((Ideal.finite_factors (I := Ideal.span {((l : ℕ) : 𝓞 (W.Lp L))}) (fun h => hl.ne_zero (Nat.cast_eq_zero.1 (Ideal.span_singleton_eq_bot.1 h)))).union (s.St.finite_toSet.union (Set.finite_singleton s.v0))).subset ?_` and prove the remaining obligations. Introduce and unpack `v (h | h | h)`. Conclude with `Or.inl (Ideal.dvd_span_singleton.2 h)`. Conclude with `Or.inr (Or.inl h)`.
+
+Conclude with `Or.inr (Or.inr h)`. Take `⟨V, hV⟩` from `hLev l L Ω s s.S hSfin subset_rfl s.split`. Take `⟨π, π1, π2, π3, π4⟩` from `UpperTheory.frame_criterion_projection k s a V hV`. Establish `π5 : Function.Surjective π` using `fun x => by`. Take `⟨g, rfl⟩` from `k.surjective_levelChangeBaseGroupHom x`.
+
+Conclude with `⟨_, π2 g⟩`. Take `⟨κ, κ1, κ2, κ3⟩` from `UpperTheory.frame_criterion_level_kernel k s a V hV c₁ ι n ka hka hkO`. Establish `hκ : ∀ (g : G L Ω) (m : ℕ), ka g ^ m = 1 → κ (V.pr g) ^ m = 1` using `fun g m h => by`. Use `Units.ext (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, SubmonoidClass.coe_pow, κ1, ← Units.val_pow_eq_pow_val, h]`.
+
+Both sides reduce to the same expression. Establish `ok' : (Φ.ext f).Ok C₀` using `Fr.ok_ext f ok`. Take `⟨r, r1, r2⟩` from `UpperTheory.frame_criterion_residual (Φ.ext f) V.frame n hn ok'.Ψ_open ok'.baseSubgroup_spec π π1 π5 π3 κ κ2 κ3`. Establish `hAl : ∀ v : W.Vl l L, (s.A v).valuation (l : Ω) < 1` using `fun v => (natCast_place (s.hA v) l).2 v.2`. Use `choose lam hlam using fun v : W.Vl l L => UpperTheory.frame_criterion_lambda_characters k (a.e v) (s.A v) (a.A_pl v) (val_dvd _ hlM (hAl v))`.
+
+Establish `hram : ∀ g ∈ V.frame.I0, κ g = 1`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Simplify using `using hκ g 1 (by rw [pow_one]; exact hka.unr _ a.v0M g hg)`. Establish `hext : ∀ x : Φ.Γ, Φ.Ψ x = 1 → (Φ.ext f).Ψ x = 1` using `fun x hx => by show Units.map f.toMonoidHom (Φ.Ψ x) = 1`. Rewrite using `[hx, map_one]`.
+
+Establish `hD0 : ∀ g ∈ V.frame.D0, ∀ i, r.chib i g = W.pushCh (residue c₁.O) κ g`. Introduce and unpack `_ ⟨g, hg, rfl⟩ i`. Establish `h1 : (Φ.ext f).Ψ (π (V.pr g)).1 = 1` using `hext _ ((congrArg (fun x : Φ.G0 => Φ.Ψ x) (π2 g)).trans (a.v0Ψ g hg))`. Conclude with `(r1 i _).trans ((congrArg (fun x => x ^ Fr.w n i * W.pushCh (residue c₁.O) κ (V.pr g)) h1).trans (by simp))`. Establish `hI : ∀ (v : W.Vl l L) (g : Dec (F` using `L) (s.A v)), lam v g ∈ Φ.Iv (a.e v) ↔ g.1 ∈ Ine (F := L) (s.A v) := fun v g => by`.
+
+Rewrite using `[k.j_ine, hlam, ← a.A_pl]`. Conclude with `galEmb_mem_Ine _ _`. Set `K : TwLink (Φ.ext f) r` to `{ π := π, π_cont := π1, π_surj := π5, π_conj := π3, π_eps := π4 e := a.e lam := lam lam_loc := fun v g => by`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show Φ.loc (a.e v) (lam v g) = (π (V.pr g.1)).1`.
+
+Rewrite using `[π2, k.j_loc, k.galois_link_projection_coe]`. Conclude with `congrArg k.p (Subtype.ext (hlam v g))`. Use `lam_I := fun v g => by`. Conclude with `hI v g`. Use `κ := κ, κ_cont := κ2, κ_conj := κ3, chib := r1, psib := r2`.
+
+Use `mu := fun v => by`. Use `cr_mu (s.A v.1) (s.w v.1) (s.hw v.1) (hAl v) ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `k.mu (a.e v)`. Take `⟨g, rfl⟩` from `(lam v).surjective x`. Use `⟨g.1, g.2, fun h => hx (Units.ext ?_)⟩` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun x => ((cycMod ℚ Ω l 1 x : (ZMod (l ^ 1))ˣ) : ZMod (l ^ 1))) (hlam v g)).trans ((toZMod_one_iff _).1 h)`. Use `tame := by`. Introduce and unpack `u _ ⟨g, hg, rfl⟩`. Take `⟨m, hm, hm'⟩` from `hka.ord`. Establish `hu : ¬ (s.A u.1).valuation (l : Ω) < 1` using `fun h => s.St_l u.1 u.2 ((natCast_place (s.hA u.1) l).1 h)`.
+
+Use `⟨Nat.card (ResidueField c.O)ˣ * m, fun h => ?_, ?_, hκ g _ ?_⟩` and prove the remaining obligations. Use `hm ((hl.dvd_mul.1 h).resolve_left fun h' => ?_) haveI := Fintype.ofFinite (ResidueField c.O)` and prove the remaining obligations. Rewrite `h'` using `[Nat.card_units, ← CharP.cast_eq_zero_iff (ResidueField c.O), Nat.cast_pred Nat.card_pos, Nat.card_eq_fintype_card, FiniteField.cast_card_eq_zero]`. Simplify using `at h'`. Conclude with `(congrArg (fun x : Φ.G0 => x ^ _) (π2 g)).trans (by rw [pow_mul, cr_tame k _ hu g hg, one_pow]; rfl)`.
+
+Rewrite using `[mul_comm, pow_mul, hm' _ hu g hg, one_pow]`. Use `ramκ := hram`. Use `ker := fun N h1 h2 h3 h4 h5 => UpperTheory.frame_criterion_kernel k s a V hV π π2 N h1 h2 h3 (fun u g hg h => h4 u g hg (hext _ h)) h5 }`. Establish `hv0 : r.V0ok`. Use `⟨fun i g hg => ?_, fun g hg i j => (hD0 g hg i).trans (hD0 g hg j).symm, ?_⟩` and prove the remaining obligations.
+
+Establish `hg' : g ∈ V.frame.D0` using `Subgroup.map_mono (Ine_le_Dec _) hg`. Rewrite using `[MonoidHom.mem_ker, hD0 g hg', MonoidHom.comp_apply, hram g hg, map_one]`. Take `⟨g, hg, h⟩` from `a.v0ω`. Use `⟨V.pr g, ⟨g, hg, rfl⟩, fun h' => h ?_⟩` and prove the remaining obligations. Establish `h1 : V.ε (V.pr g).1 = cycZ L Ω l g` using `DFunLike.congr_fun V.hε (W.resP L Ω g)`.
+
+Establish `h2 : ((algebraMap c₁.O (ResidueField c₁.O)).comp (algebraMap ℤ_[l] c₁.O)) (V.ε (V.pr g).1 : ℤ_[l]) = 1` using `congrArg Units.val h'`. Rewrite `h2` using `[h1, ← map_one ((algebraMap c₁.O (ResidueField c₁.O)).comp (algebraMap ℤ_[l] c₁.O)), ← RingHom.sub_mem_ker_iff]`. Rewrite using `[← map_one (PadicInt.toZMod (p := l)), ← RingHom.sub_mem_ker_iff, PadicInt.ker_toZMod]`. Conclude with `le_maximalIdeal (RingHom.ker_ne_top _) h2`. Use `haveI : IsCO c₁.O (ResidueField c₁.O) := (co_res c₁.O).1`.
+
+Take `⟨p, -⟩` from `W.residual_diagonal_determinant_isPolar l V.frame c₁.O n r (by omega) (UpperTheory.residual_ok_of_local_chars_restrict r (by omega) r2)`. Take `⟨B₀⟩` from `hB0 l L Ω s V c₁ n r _ ⟨p⟩`. Take `⟨S⟩` from `Fr.space_ex ok' hn`. Conclude with `⟨⟨hn, C₀, ok', big, hle, hf, s, V, hV, r, K, π2, κ1, hlam, a.A_pl, hv0, a.v0M, B₀, S⟩⟩`.
+-/
 theorem UpperTheory.V.Pr.cRealEx :
     GlobalTheory.Published.GlobalArtinReciprocity → UpperTheory.V.W.LocCFTAll → UpperTheory.V.W.LevEx → UpperTheory.V.W.ProModularRingExists → UpperTheory.V.Pr.CRealEx := by
   intro _ _ hLev hB0 Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ k c₁ _ f n ka C₀ hn ok big hle hf hka hkO

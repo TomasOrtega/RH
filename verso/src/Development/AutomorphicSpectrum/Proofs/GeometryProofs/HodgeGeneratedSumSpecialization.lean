@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.HodgeMetric.FrameLat
 
+/- English proof (translation)
+Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hs : (Scheme.stalkClosedPointTo z).hom (p : X.presheaf.stalk (centre z)) ≠ 0` using `fun h0 => hp0 ((map_natCast (Scheme.stalkClosedPointTo z).hom p).symm.trans h0)`. Take `⟨u, hu⟩` from `CxVal.isUnit _ hs`. Establish `hg : genMap ξ ⟨centre z, hz⟩ (p : X.presheaf.stalk (centre z)) = (p : Ω)` using `map_natCast _ _`. Introduce `h`.
+
+Use `h ⟨Nat.cast_ne_zero.2 hp.ne_zero, ⟨_, hg⟩, ⟨((u⁻¹ : (X.presheaf.stalk (centre z))ˣ) : X.presheaf.stalk (centre z)), ?_⟩⟩` and prove the remaining obligations. Establish `h1 : genMap ξ ⟨centre z, hz⟩ (u : X.presheaf.stalk (centre z)) = (p : Ω)` using `by rw [hu, hg]`. Establish `h2 : genMap ξ ⟨centre z, hz⟩ ((u⁻¹ : (X.presheaf.stalk (centre z))ˣ) : X.presheaf.stalk (centre z)) * genMap ξ ⟨centre z, hz⟩ (u : X.presheaf.stalk (centre z)) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite `h2` using `[h1]`.
+
+Conclude with `eq_inv_of_mul_eq_one_left h2`.
+-/
 theorem not_inFibre_of_complex {Ω : Type} [Field Ω] [CharZero Ω] {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : genPt ξ ⤳ centre z) {p : ℕ} (hp : p.Prime) :
     ¬ InFibre ξ p ⟨centre z, hz⟩ := by
@@ -27,6 +34,13 @@ theorem not_inFibre_of_complex {Ω : Type} [Field Ω] [CharZero Ω] {X : Scheme.
   rw [h1] at h2
   exact eq_inv_of_mul_eq_one_left h2
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K _ J _ y 𝔐 a b N bb z hgen hfr k`. Establish `hβ : Function.Injective (algebraMap (𝓞 c.F) c.F)` using `NumberField.RingOfIntegers.coe_injective`. Take `⟨hV, -, -⟩` from `GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ ⟨centre z, hgen⟩ fun r hr => not_inFibre_of_complex hgen hr`. Establish `hm : bb k ∈ (Lat.comap (fun p => 𝔐.V a p ⊔ 𝔐.V b p) (𝔐.Vgen a ⊔ 𝔐.Vgen b).subtype) ⟨centre z, hgen⟩`. Rewrite using `[hfr.2]`.
+
+Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Establish `hm' : ((bb k : ↥(𝔐.Vgen a ⊔ 𝔐.Vgen b)) : 𝔐.Li) ∈ 𝔐.V a ⟨centre z, hgen⟩ ⊔ 𝔐.V b ⟨centre z, hgen⟩` using `hm`. Rewrite `hm'` using `[hV, hV]`. Use `(sup_le ?_ ?_ : 𝔐.dR a ⟨centre z, hgen⟩ ⊔ 𝔐.dR b ⟨centre z, hgen⟩ ≤ 𝔐.M.lat ⟨centre z, hgen⟩) hm'` and prove the remaining obligations. Conclude with `fun x hx => hx.1`.
+
+Conclude with `fun x hx => hx.1`.
+-/
 theorem frame_mem_lat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (a b : CMType H ⊕ CMType H) (N : ℕ) (bb : Fin N → ↥(𝔐.Vgen a ⊔ 𝔐.Vgen b)) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (h : genPt 𝔐.ξ ⤳ centre z), (Lat.comap (fun p => 𝔐.V a p ⊔ 𝔐.V b p) (𝔐.Vgen a ⊔ 𝔐.Vgen b).subtype).IsFrameAt bb ⟨centre z, h⟩ → ∀ k, ((bb k : ↥(𝔐.Vgen a ⊔ 𝔐.Vgen b)) : 𝔐.Li) ∈ 𝔐.M.lat ⟨centre z, h⟩ := by
   intro E _ _ _ H D l Xo c Y S Ω _ _ K _ J _ y 𝔐 a b N bb z hgen hfr k
   have hβ : Function.Injective (algebraMap (𝓞 c.F) c.F) := NumberField.RingOfIntegers.coe_injective

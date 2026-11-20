@@ -21,6 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Heat
 
+/- English proof (translation)
+Establish `hm` using `hJ.mem φ r`. Conclude with `(gs_add r z _ hm _ _).trans (congrArg₂ (· + ·) ((gs_mul r z _ hm _ _).trans (congrArg (· * _) (gs_res r z le_top hm a))) ((gs_mul r z _ hm _ _).trans (congrArg (· * _) (gs_res r z le_top hm b))))`.
+-/
 theorem sval_smul_add_smul {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s t : LB.Sec (LB.LinComb L φ ε)) (a b : Γ(Y, ⊤)) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     sval (a • s + b • t) r z J = gs r z ⊤ a * sval s r z J + gs r z ⊤ b * sval t r z J := by
@@ -29,6 +32,9 @@ theorem sval_smul_add_smul {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K
     ((gs_mul r z _ hm _ _).trans (congrArg (· * _) (gs_res r z le_top hm a)))
     ((gs_mul r z _ hm _ _).trans (congrArg (· * _) (gs_res r z le_top hm b))))
 
+/- English proof (translation)
+Establish `e₁` using `gs_pull (r ≫ x) p z ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)`. Establish `e₂` using `gs_pull r (spMap φ) z ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)`. Rewrite `e₁` using `[Category.assoc, h]`. Use `e₁.trans (e₂.symm.trans (congrArg (gs r z ⊤) ?_))` and prove the remaining obligations. Conclude with `(congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm`.
+-/
 theorem gs_base_fn {R Ω : Type} [CommRing R] [CommRing Ω] {Y Z : Scheme.{0}} (p : Y ⟶ Sp R) (φ : R →+* Ω)
     (x : Sp Ω ⟶ Y) (h : x ≫ p = spMap φ) (r : Z ⟶ Sp Ω) (z : Z) (a : R) :
     gs (r ≫ x) z ⊤ (p.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) =
@@ -39,6 +45,9 @@ theorem gs_base_fn {R Ω : Type} [CommRing R] [CommRing Ω] {Y Z : Scheme.{0}} (
   refine e₁.trans (e₂.symm.trans (congrArg (gs r z ⊤) ?_))
   exact (congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm
 
+/- English proof (translation)
+Introduce `R _ G L Ω _ φ x' h g k σ₁ σ₂ ω₁ ω₂ a b h₁ h₂`. Use `⟨(show Γ(G.left, ⊤) from G.hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) • σ₁ + (show Γ(G.left, ⊤) from G.hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom b)) • σ₂, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Use `(sval_smul_add_smul σ₁ σ₂ _ _ (r ≫ x') z hJ).trans ?_` and prove the remaining obligations. Rewrite using `[h₁ Z r z J hJ, h₂ Z r z J hJ, map_add, map_mul, map_mul, gs_add r z ⊤ trivial, gs_mul r z ⊤ trivial, gs_mul r z ⊤ trivial, ← gs_base_fn G.hom φ x' h r z a, ← gs_base_fn G.hom φ x' h r z b, add_mul, _root_.mul_assoc, _root_.mul_assoc]`.
+-/
 theorem exists_isValue_lin : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) (L : LB G.left) (Ω : Type) [CommRing Ω] (φ : R →+* Ω) (x' : Sp Ω ⟶ G.left), x' ≫ G.hom = spMap φ → ∀ (g : GlobalTheory.RayEv.Transport.Frame L (x' ≫ 𝟙 G.left)) (k : ℕ) (σ₁ σ₂ : SecM (𝟙 G.left) L k) (ω₁ ω₂ : Ω) (a b : R), IsValue (𝟙 _) L x' g k σ₁ ω₁ → IsValue (𝟙 _) L x' g k σ₂ ω₂ → ∃ σ : SecM (𝟙 G.left) L k, IsValue (𝟙 _) L x' g k σ (φ a * ω₁ + φ b * ω₂) := by
   intro R _ G L Ω _ φ x' h g k σ₁ σ₂ ω₁ ω₂ a b h₁ h₂
   refine ⟨(show Γ(G.left, ⊤) from G.hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) • σ₁ +

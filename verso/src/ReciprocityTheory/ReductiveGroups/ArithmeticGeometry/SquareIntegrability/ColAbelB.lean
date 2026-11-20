@@ -14,6 +14,11 @@ variable {ι : Type} [Fintype ι]
 def cabPoly (η : EuclideanSpace ℂ ι) (c : ℕ) : MvPolynomial ι ℂ :=
   (∑ i, MvPolynomial.C ((starRingEnd ℂ) (η i)) * MvPolynomial.X i) ^ c
 
+/- English proof (translation)
+Unfold `cabPoly`. Use `(MvPolynomial.totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Establish `: (∑ i, MvPolynomial.C ((starRingEnd ℂ) (η i)) * MvPolynomial.X i : MvPolynomial ι ℂ).totalDegree ≤ 1`. Use `(MvPolynomial.totalDegree_finsetSum _ _).trans ?_` and prove the remaining obligations. Use `Finset.sup_le fun i _ => ?_` and prove the remaining obligations.
+
+Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Simplify using `[MvPolynomial.totalDegree_C, MvPolynomial.totalDegree_X]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cabPoly_deg (η : EuclideanSpace ℂ ι) (c : ℕ) : (cabPoly η c).totalDegree ≤ c := by
   unfold cabPoly
   refine (MvPolynomial.totalDegree_pow _ _).trans ?_
@@ -25,21 +30,45 @@ theorem cabPoly_deg (η : EuclideanSpace ℂ ι) (c : ℕ) : (cabPoly η c).tota
   calc c * _ ≤ c * 1 := Nat.mul_le_mul_left c this
     _ = c := mul_one c
 
+/- English proof (translation)
+Unfold `cabPoly Hf`. Simplify using `[mul_comm]`.
+-/
 theorem cabPoly_eval (η v : EuclideanSpace ℂ ι) (c : ℕ) :
     MvPolynomial.eval (fun i => v i) (cabPoly η c) = (Hf v η) ^ c := by
   unfold cabPoly Hf
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `: Hf v η = inner ℂ η v`. Unfold `Hf`. Simplify using `[PiLp.inner_apply]`. Rewrite using `[this, mul_comm]`. Conclude with `norm_inner_le_norm _ _`.
+-/
 theorem cab_Hf_norm_le (v η : EuclideanSpace ℂ ι) : ‖Hf v η‖ ≤ ‖v‖ * ‖η‖ := by
   have : Hf v η = inner ℂ η v := by
     unfold Hf; simp [PiLp.inner_apply]
   rw [this, mul_comm]
   exact norm_inner_le_norm _ _
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex, finrank_euclideanSpace]`.
+-/
 theorem cab_finrank : Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.card ι := by
   rw [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex,
     finrank_euclideanSpace]
 
+/- English proof (translation)
+Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Use `set s : ℝ := q * Real.pi / 2 with hs`. Establish `hs0 : 0 < s` using `by positivity`. Establish `hpt : ∀ v : EuclideanSpace ℂ ι, ‖MvPolynomial.eval (fun i => v i) (cabPoly η c)‖ ^ 2 * Real.exp (-(q * Real.pi) * ‖v‖ ^ 2) ≤ (c.factorial * (2 / (q * Real.pi)) ^ c) * Real.exp (-s * ‖v‖ ^ 2)`. Introduce `v`.
+
+Rewrite using `[cabPoly_eval, norm_pow]`. Establish `h1 : ‖Hf v η‖ ≤ ‖v‖` using `(cab_Hf_norm_le v η).trans (mul_le_of_le_one_right (norm_nonneg _) hη)`. Establish `h2 : (‖Hf v η‖ ^ c) ^ 2 ≤ (‖v‖ ^ 2) ^ c`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h1 _`.
+
+Establish `h3 : (s * ‖v‖ ^ 2) ^ c / c.factorial ≤ Real.exp (s * ‖v‖ ^ 2)` using `Real.pow_div_factorial_le_exp (x := s * ‖v‖ ^ 2) (hx := by positivity) (n := c)`. Establish `hf : (0 : ℝ) < c.factorial` using `by exact_mod_cast Nat.factorial_pos c`. Establish `h4 : (‖v‖ ^ 2) ^ c ≤ c.factorial * (1 / s) ^ c * Real.exp (s * ‖v‖ ^ 2)`. Rewrite `h3` using `[div_le_iff₀ hf, mul_pow]`. Establish `: (‖v‖ ^ 2) ^ c = (s ^ c * (‖v‖ ^ 2) ^ c) * (1 / s) ^ c`.
+
+Rewrite using `[mul_comm (s ^ c), mul_assoc, ← mul_pow, mul_one_div_cancel hs0.ne', one_pow, mul_one]`. Rewrite using `[this]`. Establish `hp : 0 ≤ (1 / s) ^ c` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : 1 / s = 2 / (q * Real.pi)` using `by rw [hs]; field_simp`.
+
+Rewrite `h4` using `[h5]`. Establish `he : Real.exp (s * ‖v‖ ^ 2) * Real.exp (-(q * Real.pi) * ‖v‖ ^ 2) = Real.exp (-s * ‖v‖ ^ 2)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Rewrite using `[hs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Establish `hint : Integrable (fun v : EuclideanSpace ℂ ι => (c.factorial * (2 / (q * Real.pi)) ^ c) * Real.exp (-s * ‖v‖ ^ 2))` using `(pa_gauss_integrable hs0).const_mul _`. Use `(integral_mono_of_nonneg (Filter.Eventually.of_forall fun v => by positivity) hint (Filter.Eventually.of_forall hpt)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[integral_const_mul, GaussianFourier.integral_rexp_neg_mul_sq_norm hs0, cab_finrank]`.
+
+Use `congr 1`. Establish `: Real.pi / s = 2 / q` using `by rw [hs]; field_simp`. Rewrite using `[this]`. Establish `: ((2 * Fintype.card ι : ℕ) : ℝ) / 2 = (Fintype.card ι : ℝ)` using `by push_cast; ring`. Rewrite using `[this, Real.rpow_natCast]`.
+-/
 theorem cab_J_le (η : EuclideanSpace ℂ ι) (hη : ‖η‖ ≤ 1) (c q : ℕ) (hq : 1 ≤ q) :
     ∫ v : EuclideanSpace ℂ ι, ‖MvPolynomial.eval (fun i => v i) (cabPoly η c)‖ ^ 2 *
       Real.exp (-(q * Real.pi) * ‖v‖ ^ 2) ≤
@@ -101,6 +130,13 @@ noncomputable section
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `hs : 0 < Real.sqrt (q * Real.pi)`. Apply `Real.sqrt_pos.mpr; have : (1 : ℝ) ≤ q := by exact_mod_cast hq` to reduce the goal to its premises. Check the signs of the components of the expression. Establish `hcard : 0 < 2 * Fintype.card ι` using `by have := Fintype.card_pos (α := ι); omega`. Establish `hmem : ∃ t, t ∈ {t : ℝ | ∃ x ∈ lat Y.b, x ≠ 0 ∧ t = ‖x‖}`.
+
+Use `⟨‖Y.b ⟨0, hcard⟩‖, Y.b ⟨0, hcard⟩, Submodule.subset_span ⟨_, rfl⟩, Y.b.ne_zero _, rfl⟩` and prove the remaining obligations. Rewrite using `[← div_le_iff₀' hs]`. Unfold `GT.la1`. Apply `le_csInf hmem` to reduce the goal to its premises. Introduce and unpack `t ⟨x, hx, hx0, rfl⟩`.
+
+Rewrite using `[div_le_iff₀' hs]`. Conclude with `hlat x hx hx0`.
+-/
 theorem sqrt_pi_mul_firstMinimum_ge (Y : GT ι) (q : ℕ) (R0 : ℝ) (hq : 1 ≤ q) (hne : Nonempty ι)
     (hlat : ∀ γ ∈ lat Y.b, γ ≠ 0 → R0 ≤ Real.sqrt (q * Real.pi) * ‖γ‖) :
     R0 ≤ Real.sqrt (q * Real.pi) * Y.la1 := by
@@ -117,6 +153,23 @@ theorem sqrt_pi_mul_firstMinimum_ge (Y : GT ι) (q : ℕ) (R0 : ℝ) (hq : 1 ≤
   rw [div_le_iff₀' hs]
   exact hlat x hx hx0
 
+/- English proof (translation)
+Establish `hq1 : 1 ≤ q` using `by omega`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast (by omega : 0 < q)`. Establish `h` using `hS ι Y q hq1 β hβ w`. Use `set G := Fintype.card ι with hG`. Use `set A := 4 * Real.sqrt (2 * G) / (Real.sqrt (q * Real.pi) * Y.la1) with hA`.
+
+Establish `hA2 : (1 + A) ^ 2 ≤ 2.56`. Break down `Nat.eq_zero_or_pos G with h0 | h0` into its components or cases. Rewrite using `[hA, h0]`. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+
+Establish `hne : Nonempty ι` using `Fintype.card_pos_iff.mp h0`. Establish `hla` using `sqrt_pi_mul_firstMinimum_ge Y q R0 hq1 hne hlat`. Establish `hlap : 0 < Real.sqrt (q * Real.pi) * Y.la1` using `lt_of_lt_of_le hR0 hla`. Establish `hA0 : 0 ≤ A` using `by rw [hA]; positivity`. Establish `hAle : A ≤ 4 * Real.sqrt (2 * G) / R0`.
+
+Rewrite using `[hA]; exact div_le_div_of_nonneg_left (by positivity) hR0 hla`. Establish `hsq : (4 * Real.sqrt (2 * G) / R0) ^ 2 ≤ 0.36`. Rewrite using `[div_pow, mul_pow, Real.sq_sqrt (by positivity), div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `: A ≤ 0.6`.
+
+Establish `h1 : A ^ 2 ≤ 0.36` using `le_trans (pow_le_pow_left₀ hA0 hAle 2) hsq`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `hpow : (1 + A) ^ (2 * G) ≤ 2.56 ^ G`. Rewrite using `[pow_mul]; exact pow_le_pow_left₀ (by positivity) hA2 G`.
+
+Establish `hl0 : 0 ≤ Y.l2 q β`. Unfold `GT.l2`. Rewrite using `[MeasureTheory.setAverage_eq]`. Conclude with `smul_nonneg (inv_nonneg.2 MeasureTheory.measureReal_nonneg) (MeasureTheory.integral_nonneg fun v => mul_nonneg (sq_nonneg _) (Real.exp_pos _).le)`. Establish `hqG : (0 : ℝ) ≤ 2 * (q : ℝ) ^ G` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 12 * (5.12 : ℝ) ^ G * c.factorial * (2 / (q * Real.pi)) ^ c := by`. Use `congr 3`.
+
+Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+-/
 theorem cab_sup (hS : GSupStatement) (Y : GT ι) (q c : ℕ) (hq : 2 ≤ q) (R0 : ℝ) (hR0 : 0 < R0)
     (hlat : ∀ γ ∈ lat Y.b, γ ≠ 0 → R0 ≤ Real.sqrt (q * Real.pi) * ‖γ‖)
     (h90 : 90 * (Fintype.card ι : ℝ) ≤ R0 ^ 2) (β : EuclideanSpace ℂ ι → ℂ) (hβ : β ∈ Y.Sec q)
@@ -168,10 +221,28 @@ section
 
 noncomputable section
 
+/- English proof (translation)
+Use `Real.quadratic_le_exp_of_nonneg (x := 1 / 4) (by norm_num)` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cab_exp_quarter : (1.28 : ℝ) ≤ Real.exp (1 / 4) := by
   have := Real.quadratic_le_exp_of_nonneg (x := 1 / 4) (by norm_num)
   norm_num at this ⊢; linarith
 
+/- English proof (translation)
+Establish `hpi` using `Real.pi_gt_d2`. Establish `hpi4` using `Real.pi_lt_d2`. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hc : (2 * (c + 1) / Real.pi) ^ c ≤ Real.exp (c * Real.log (q * c))`. Break down `Nat.eq_zero_or_pos c with h0 | h0` into its components or cases.
+
+Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Establish `hc1 : (1 : ℝ) ≤ c` using `by exact_mod_cast h0`. Establish `hqc : 0 < q * c` using `by positivity`. Rewrite using `[Real.exp_nat_mul, Real.exp_log hqc]`.
+
+Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Rewrite using `[div_le_iff₀ Real.pi_pos]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlog : 0 ≤ c * Real.log (q * c)`. Break down `Nat.eq_zero_or_pos c with h0 | h0` into its components or cases.
+
+Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Establish `hc1 : (1 : ℝ) ≤ c` using `by exact_mod_cast h0`. Conclude with `mul_nonneg (by positivity) (Real.log_nonneg (by nlinarith))`. Establish `hg : (5.12 : ℝ) ^ gA ≤ 4 ^ gA * Real.exp (gA / 4)`.
+
+Establish `: (5.12 : ℝ) ^ gA = 4 ^ gA * 1.28 ^ gA` using `by rw [← mul_pow]; norm_num`. Rewrite using `[this]`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hexp : Real.exp (gA / 4) * Real.exp (c * Real.log (q * c)) * Real.exp (5 * Real.pi * c) * Real.exp (-((Real.pi - 2) * t0)) ≤ 1`.
+
+Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add, Real.exp_le_one_iff]`. Establish `hcl : (c : ℝ) * Real.log (q * c) = c * Real.log (q * c)` using `rfl`. Establish `hc0 : (0 : ℝ) ≤ c` using `Nat.cast_nonneg c`. Establish `hg0 : (0 : ℝ) ≤ gA` using `Nat.cast_nonneg gA`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hC5 (by linarith : (0 : ℝ) ≤ (Real.pi - 2) / 2), mul_le_mul_of_nonneg_left hC6 (by linarith : (0 : ℝ) ≤ (Real.pi - 2) / 2)]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cab_key (c gA : ℕ) (q t0 : ℝ) (hq : 2 ≤ q) (dst : ℝ) (hd : 0 ≤ dst)
     (hC5 : 4 * c * (7 + Real.log (q * c)) + dst + 1 ≤ t0) (hC6 : gA * Real.log 2 ≤ t0) :
     (5.12 : ℝ) ^ gA * (2 * (c + 1) / Real.pi) ^ c * Real.exp (5 * Real.pi * c) *
@@ -216,6 +287,29 @@ theorem cab_key (c gA : ℕ) (q t0 : ℝ) (hq : 2 ≤ q) (dst : ℝ) (hd : 0 ≤
     _ ≤ 4 ^ gA * 1 := by gcongr
     _ = 4 ^ gA := mul_one _
 
+/- English proof (translation)
+Establish `hq0 : 0 < q` using `by linarith`. Establish `hqc : 0 < q * (c + 1)` using `by positivity`. Establish `hf1 : (1 : ℝ) ≤ c.factorial` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero c)`. Use `set Y := (q * (c + 1)) ^ ((c : ℝ) / 2) * Real.exp (5 * Real.pi * c / 2) * (2 * 9 ^ g' * Real.exp (-(Real.pi / 2 * t0))) with hY`. Establish `hY0 : 0 ≤ Y` using `by positivity`.
+
+Use `set Bsq := 12 * (5.12 : ℝ) ^ G * c.factorial * (2 / (q * Real.pi)) ^ c with hBsq`. Establish `hB0 : 0 ≤ Bsq` using `by positivity`. Use `set RHS := 7 * 2 ^ gA * (4.3 : ℝ) ^ dst * Real.exp (-t0) * c.factorial with hRHS`. Establish `hR0 : 0 ≤ RHS` using `by positivity`. Establish `hr : ((q * (c + 1)) ^ ((c : ℝ) / 2)) ^ 2 = (q * (c + 1)) ^ c`.
+
+Rewrite using `[← Real.rpow_natCast _ 2, ← Real.rpow_mul hqc.le, ← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : Real.exp (-(Real.pi * t0)) = Real.exp (-((Real.pi - 2) * t0)) * Real.exp (-2 * t0)`.
+
+Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (2 * (c + 1) / Real.pi) ^ c = (2 / (q * Real.pi)) ^ c * (q * (c + 1)) ^ c`. Rewrite using `[← mul_pow]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hY2 : Y ^ 2 = (q * (c + 1)) ^ c * Real.exp (5 * Real.pi * c) * (4 * 81 ^ g' * Real.exp (-(Real.pi * t0)))`. Rewrite using `[hY, mul_pow, mul_pow, hr, mul_pow, mul_pow, ← Real.exp_nat_mul, ← Real.exp_nat_mul, show (81 : ℝ) ^ g' = (9 ^ g') ^ 2 by rw [← pow_mul, mul_comm, pow_mul]; norm_num]`. Put the polynomial expressions in normal form.
+
+Establish `hBY : Bsq * Y ^ 2 = 48 * c.factorial * 81 ^ g' * Real.exp (-2 * t0) * ((5.12 : ℝ) ^ G * (2 * (c + 1) / Real.pi) ^ c * Real.exp (5 * Real.pi * c) * Real.exp (-((Real.pi - 2) * t0)))`. Rewrite using `[hY2, e1, e2, hBsq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hK` using `cab_key c gA q t0 hq dst (Nat.cast_nonneg dst) hC5 hC6`. Establish `h81 : (81 : ℝ) ^ g' ≤ 18.49 ^ dst`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hG' : (5.12 : ℝ) ^ G ≤ 5.12 ^ gA` using `pow_le_pow_right₀ (by norm_num) hG`. Establish `hsq : Bsq * Y ^ 2 ≤ RHS ^ 2`. Rewrite using `[hBY]`. Establish `hRHS2 : RHS ^ 2 = 49 * c.factorial * c.factorial * 18.49 ^ dst * Real.exp (-2 * t0) * 4 ^ gA`.
+
+Rewrite using `[hRHS, show (18.49 : ℝ) ^ dst = ((4.3 : ℝ) ^ dst) ^ 2 by rw [← pow_mul, mul_comm, pow_mul]; norm_num, show Real.exp (-2 * t0) = Real.exp (-t0) ^ 2 by rw [← Real.exp_nat_mul]; ring_nf, show (4 : ℝ) ^ gA = ((2 : ℝ) ^ gA) ^ 2 by rw [← pow_mul, mul_comm, pow_mul]; norm_num]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hRHS2]`. Establish `hX : (5.12 : ℝ) ^ G * (2 * (c + 1) / Real.pi) ^ c * Real.exp (5 * Real.pi * c) * Real.exp (-((Real.pi - 2) * t0)) ≤ 4 ^ gA`. Use `le_trans ?_ hK` and prove the remaining obligations.
+
+Use `gcongr`. Establish `hE : 0 ≤ Real.exp (-2 * t0)` using `(Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ (18.49 : ℝ) ^ dst * Real.exp (-2 * t0) * 4 ^ gA` using `by positivity`. Establish `h2 : 48 * (c.factorial : ℝ) ≤ 49 * c.factorial * c.factorial` using `by nlinarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hL : Real.sqrt Bsq * (q * (c + 1)) ^ ((c : ℝ) / 2) * Real.exp (5 * Real.pi * c / 2) * (2 * 9 ^ g' * Real.exp (-(Real.pi / 2 * t0))) = Real.sqrt Bsq * Y`. Rewrite using `[hY]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_mul hB0, Real.sqrt_sq hY0]`. Use `_ ≤ Real.sqrt (RHS ^ 2) := Real.sqrt_le_sqrt hsq`. Use `_ = RHS := Real.sqrt_sq hR0`.
+-/
 theorem cab_numeric (c G gA g' dst : ℕ) (q t0 : ℝ) (hq : 2 ≤ q) (hG : G ≤ gA) (hg' : 2 * g' ≤ dst)
     (hC5 : 4 * c * (7 + Real.log (q * c)) + dst + 1 ≤ t0) (hC6 : gA * Real.log 2 ≤ t0) :
     Real.sqrt (12 * (5.12 : ℝ) ^ G * c.factorial * (2 / (q * Real.pi)) ^ c) *
@@ -295,6 +389,33 @@ section
 
 noncomputable section
 
+/- English proof (translation)
+Use `set sk := Real.sqrt k with hsk`. Establish `hsk0 : 0 < sk` using `Real.sqrt_pos.mpr hk`. Establish `hsk2 : sk ^ 2 = k` using `Real.sq_sqrt hk.le`. Use `set R0 := 4 * sk * δ with hR0`. Establish `hR00 : 0 < R0` using `by positivity`.
+
+Set `h : κ → ℝ` to `fun a => 4 * sk * ‖U a‖`. Establish `hsq : ∀ t : ℝ, Real.exp (-(4 * sk * t) ^ 2 / 16) = Real.exp (-(k * t ^ 2))`. Introduce `t`. Use `congr 1`. Rewrite using `[mul_pow, mul_pow, hsk2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `e` to `stdOrthonormalBasis ℝ W`. Establish `hcount : ∀ R : ℝ, R0 ≤ R → ∀ S : Finset κ, (∀ i ∈ S, h i ≤ R) → (S.card : ℝ) ≤ (3 * R / R0) ^ (2 * g')`. Introduce `R hR S hS`. Use `set R' := R / (4 * sk) with hR'`.
+
+Establish `h4 : 0 < 4 * sk` using `by positivity`. Establish `hδR : δ ≤ R'`. Rewrite using `[hR', le_div_iff₀ h4]`. Rewrite `hR` using `[hR0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Set `P : Finset (EuclideanSpace ℝ (Fin (Module.finrank ℝ W)))` to `S.image (fun a => e.repr (U a))`. Establish `hinj : Set.InjOn (fun a => e.repr (U a)) S`. Introduce `a _ b _ hab`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hsep a b hne`.
+
+Simplify using `only at hab`. Establish `h2 : U a = U b` using `e.repr.injective hab`. Rewrite `h1` using `[h2, sub_self, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard : P.card = S.card` using `Finset.card_image_of_injOn hinj`.
+
+Establish `hPn : ∀ x ∈ P, ‖x‖ ≤ R'`. Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.mp hx`. Rewrite using `[LinearIsometryEquiv.norm_map, hR', le_div_iff₀ h4]`. Use `hS a ha` as an intermediate fact.
+
+Simplify using `only [h] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPs : ∀ x ∈ P, ∀ y ∈ P, x ≠ y → δ ≤ dist x y`. Introduce `x hx y hy hxy`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.mp hx`.
+
+Take `⟨b, hb, rfl⟩` from `Finset.mem_image.mp hy`. Establish `hab : a ≠ b` using `fun hab => hxy (by rw [hab])`. Rewrite using `[dist_eq_norm, ← map_sub, LinearIsometryEquiv.norm_map]`. Conclude with `hsep a b hab`. Use `hP _ P δ R' hδ hδR hPn hPs` as an intermediate fact.
+
+Rewrite `this` using `[hcard, hN]`. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hR', hR0]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hlowh : ∀ a, R0 ≤ h a` using `fun a => by`. Simplify using `only [h, hR0]; exact mul_le_mul_of_nonneg_left (hlow a) (by positivity)`. Establish `hbig' : 16 * (2 * (g' : ℝ) + 1) ≤ R0 ^ 2`. Rewrite using `[hR0, mul_pow, mul_pow, hsk2]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨hs, hle⟩` from `hA κ h g' R0 hR00 hbig' hlowh hcount`. Establish `hfun : (fun a => Real.exp (-(h a) ^ 2 / 16)) = fun a => Real.exp (-(k * ‖U a‖ ^ 2))`. Use function extensionality and compare the values at `a`. Conclude with `hsq _`. Rewrite `hs`, `hle` using `[hfun]`.
+
+Use `⟨hs, hle.trans (le_of_eq ?_)⟩` and prove the remaining obligations. Rewrite using `[hR0, hsq]`.
+-/
 theorem cab_tail (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) {κ : Type}
     {W : Type*} [NormedAddCommGroup W] [InnerProductSpace ℝ W] [FiniteDimensional ℝ W]
     (g' : ℕ) (hN : Module.finrank ℝ W = 2 * g') (U : κ → W) (δ k : ℝ) (hδ : 0 < δ) (hk : 0 < k)

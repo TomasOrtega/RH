@@ -22,16 +22,25 @@ namespace GlobalTheory.FrameGlue.PowGlue
 
 open GlobalTheory.TrueGeo.SmallSec
 
+/- English proof (translation)
+The claim follows from `(h.antisymm (genericPoint_specializes x)).eq`.
+-/
 theorem eq_gen_of_specializes {X : Scheme.{0}} [IsIntegral X] {x : X} (h : x ⤳ genericPoint X) :
     x = genericPoint X :=
   (h.antisymm (genericPoint_specializes x)).eq
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using unitAt_one x`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+-/
 theorem unitAt_pow {X : Scheme.{0}} [IsIntegral X] {x : X} {f : X.functionField} (h : UnitAt x f) (n : ℕ) :
     UnitAt x (f ^ n) := by
   induction n with
   | zero => simpa using unitAt_one x
   | succ n ih => rw [pow_succ]; exact ih.mul h
 
+/- English proof (translation)
+Establish `e` using `valAt_algebraMap (y := y) 1`. Rewrite `e` using `[map_one, map_one]`. Then use the resulting hypothesis.
+-/
 theorem valAt_one' {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) :
     valAt y (1 : Z.functionField) = 1 := by
   have e := valAt_algebraMap (y := y) 1
@@ -39,6 +48,9 @@ theorem valAt_one' {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp 
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Use `RootLine.isPreimmersion_j V` as an intermediate fact. Apply `V.j.isEmbedding.injective` to reduce the goal to its premises. Establish `e1 : V.j (g (genericPoint V'.G)) = π (V'.j (genericPoint V'.G))`. Rewrite using `[← Scheme.Hom.comp_apply, hgj, Scheme.Hom.comp_apply]`. Rewrite using `[e1, eq_gen_of_specializes (RootLine.j_gen_specializes V'), eq_gen_of_specializes hπ, eq_gen_of_specializes (RootLine.j_gen_specializes V)]`.
+-/
 theorem gen_of_lies (V V' : Cover Y) (π : V'.X ⟶ V.X) (hπ : π (genericPoint V'.X) ⤳ genericPoint V.X)
     (g : V'.G ⟶ V.G) (hgj : g ≫ V.j = V'.j ≫ π) : g (genericPoint V'.G) = genericPoint V.G := by
   have := RootLine.isPreimmersion_j V
@@ -52,6 +64,53 @@ end GlobalTheory.FrameGlue.PowGlue
 
 open GlobalTheory.FrameGlue.PowGlue GlobalTheory.TrueGeo.SmallSec in
 
+/- English proof (translation)
+Introduce `F _ _ Y C A p hp V hη W ι U c c' hW hc hunit hnorm V' π hπ hL L m hN`. Take `⟨g, hgj, hgπ⟩` from `hL`. Use `RootLine.isPreimmersion_j V'` as an intermediate fact. Establish `hη'` using `RootLine.j_gen_specializes V'`. Establish `hg : g (genericPoint V'.G) ⤳ genericPoint V.G` using `specializes_of_eq (gen_of_lies V V' π hπ g hgj)`.
+
+Take `⟨hηV, eV⟩` from `V.φ_eq_fnMap`. Take `⟨hηV', eV'⟩` from `V'.φ_eq_fnMap`. Establish `hφ : ∀ t, V'.φ t = fnMap g hg (V.φ t)`. Introduce `t`. Rewrite using `[eV', eV, ← ProjSpace.fnMap_comp g V.π hg hηV (ProjSpace.comp_genericPoint_specializes _ _ hg hηV) t]`.
+
+Conclude with `ProjSpace.fnMap_congr hgπ.symm _ _ _`. Establish `hcc : ∀ a, fnMap V'.j hη' (fnMap π hπ (c' a)) = fnMap g hg (c a)`. Introduce `a`. Rewrite using `[← hc a, ← ProjSpace.fnMap_comp V'.j π hη' hπ (ProjSpace.comp_genericPoint_specializes _ _ hη' hπ), ← ProjSpace.fnMap_comp g V.j hg hη (ProjSpace.comp_genericPoint_specializes _ _ hg hη)]`. Conclude with `ProjSpace.fnMap_congr hgj.symm _ _ _`.
+
+Take `⟨r, hr, hu, hn⟩` from `hN`. Use `choose s hs using fun k : L.ι => fnMap_surjective V'.j hη' (r fun _ => k : V'.G.functionField)`. Establish `hs0 : ∀ k, s k ≠ 0` using `fun k e => (r fun _ => k).ne_zero (by rw [← hs k, e, map_zero])`. Use `⟨fun k => Units.mk0 (s k) (hs0 k), ?_, ?_⟩` and prove the remaining obligations. Introduce `i k h`.
+
+Apply `(fnMap V'.j hη').injective` to reduce the goal to its premises. Establish `h' : genericPoint V'.G ∈ (L.pull V'.j).U (fun _ => i) ⊓ (L.pull V'.j).U (fun _ => k)` using `⟨Set.mem_iInter.2 fun _ => hη'.mem_open (L.U i).isOpen h.1, Set.mem_iInter.2 fun _ => hη'.mem_open (L.U k).isOpen h.2⟩`. Establish `e` using `RootLine.fnOf_pull_g L V'.j hη' (fun _ => i) (fun _ => k) h' h`. Establish `e2` using `hr (fun _ => i) (fun _ => k) h'`. Use `show fnMap V'.j hη' (s i) = fnMap V'.j hη' (fnOf _ h (L.g i k : Γ(V'.X, L.U i ⊓ L.U k)) * s k)`.
+
+Rewrite using `[map_mul, hs, hs, e2]`. Use `congr 1`. Introduce `a k x hxa hxk hpx`. Establish `hf : (((Units.mk0 (s k) (hs0 k)) / (Units.map (fnMap π hπ).toMonoidHom (c' a)) ^ m : V'.X.functionFieldˣ) : V'.X.functionField) = s k / fnMap π hπ (c' a) ^ m`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hf]`. Use `set f : V'.X.functionField := s k / fnMap π hπ (c' a) ^ m with hfdef`. Use `set q := fnMap V'.j hη' f with hqdef`. Establish `hq : q = r (fun _ => k) / fnMap g hg (c a) ^ m`. Rewrite using `[hqdef, hfdef, map_div₀, map_pow, hs, hcc]`.
+
+Use `set O : V'.X.Opens := π ⁻¹ᵁ U a ⊓ L.U k with hO`. Establish `key : ∀ z : V'.G, V'.j z ∈ O → UnitAt z (V'.φ (genAt A.D (V'.π z) ^ m) * r (fun _ => k)) ∧ UnitAt z (V'.φ (genAt A.D (V'.π z)) * fnMap g hg (c a)) ∧ q * (V'.φ (genAt A.D (V'.π z)) * fnMap g hg (c a)) ^ m = V'.φ (genAt A.D (V'.π z) ^ m) * r (fun _ => k) ∧ UnitAt z q`. Introduce `z hz`. Establish `h1 : UnitAt z (V'.φ (genAt A.D (V'.π z) ^ m) * r (fun _ => k))` using `hu (fun _ => k) z (Set.mem_iInter.2 fun _ => hz.2)`. Establish `hgz : V.j (g z) ∈ U a`.
+
+Establish `: V.j (g z) = π (V'.j z)` using `by rw [← Scheme.Hom.comp_apply, hgj, Scheme.Hom.comp_apply]`. Rewrite using `[this]`. Conclude with `hz.1`. Establish `hπz : V.π (g z) = V'.π z` using `by rw [← Scheme.Hom.comp_apply, hgπ]`. Establish `h2 : UnitAt z (V'.φ (genAt A.D (V'.π z)) * fnMap g hg (c a))`.
+
+Use `RootLine.unitAt_fnMap g hg (hunit a (g z) hgz)` as an intermediate fact. Rewrite `this` using `[map_mul, ← hφ, hπz]`. Then use the resulting hypothesis. Establish `h0 : V'.φ (genAt A.D (V'.π z)) ≠ 0` using `fun e => h2.ne_zero (by rw [e, zero_mul])`. Establish `hc0 : fnMap g hg (c a) ≠ 0` using `fun e => h2.ne_zero (by rw [e, mul_zero])`. Establish `h3 : q * (V'.φ (genAt A.D (V'.π z)) * fnMap g hg (c a)) ^ m = V'.φ (genAt A.D (V'.π z) ^ m) * r (fun _ => k)`.
+
+Rewrite using `[hq, map_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts. Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations. Establish `h4 : q = V'.φ (genAt A.D (V'.π z) ^ m) * r (fun _ => k) * ((V'.φ (genAt A.D (V'.π z)) * fnMap g hg (c a)) ^ m)⁻¹`. Rewrite using `[← h3, mul_inv_cancel_right₀ (pow_ne_zero _ h2.ne_zero)]`.
+
+Rewrite using `[h4]`. Conclude with `h1.mul (unitAt_pow h2 m).inv`. Establish `hval : ∀ (v : HeightOneSpectrum (𝓞 F)), resP v = p → ∀ (e : Ext v) (y : AlgPt Y), below y.1 ∈ W → ∀ (z : Sp (AlgebraicClosure F) ⟶ V'.G) (yt : Sp e.O ⟶ V'.X), z ≫ V'.π = y.1 → spMap e.O.subtype ≫ yt = z ≫ V'.j → ⊤ ≤ yt ⁻¹ᵁ O → V'.j (below z) ∈ O ∧ e.w (valAt z q) = 1`. Introduce `v hv e y hy z yt e1 e2 hyt`. Establish `hz : V'.j (below z) ∈ O`.
+
+Establish `h1 : (z ≫ V'.j) (IsLocalRing.closedPoint _) ∈ O`. Rewrite using `[← e2]`. Conclude with `hyt (Set.mem_univ _)`. Conclude with `h1`. Use `⟨hz, ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, h2, h3, h4⟩` from `key (below z) hz`. Establish `hb : V'.π (below z) = below y.1` using `by rw [← e1]; rfl`. Rewrite `h1`, `h2`, `h3` using `[hb]`. Establish `e1' : (z ≫ g) ≫ V.π = y.1` using `by rw [Category.assoc, hgπ, e1]`. Establish `e2' : spMap e.O.subtype ≫ (yt ≫ π) = (z ≫ g) ≫ V.j`.
+
+Rewrite using `[← Category.assoc, e2, Category.assoc, Category.assoc, hgj]`. Establish `hUa : ⊤ ≤ (yt ≫ π) ⁻¹ᵁ U a` using `fun x hx => (hyt hx).1`. Establish `HV` using `hnorm v hv e y hy (z ≫ g) (yt ≫ π) e1' e2' a hUa`. Establish `hk : ⊤ ≤ yt ⁻¹ᵁ L.U k` using `fun x hx => (hyt hx).2`. Establish `HV'` using `hn v hv e y trivial z yt (fun _ => k) e1 e2 hk`.
+
+Establish `hgz : V.j (g (below z)) ∈ U a`. Establish `: V.j (g (below z)) = π (V'.j (below z))`. Rewrite using `[← Scheme.Hom.comp_apply, hgj, Scheme.Hom.comp_apply]`. Rewrite using `[this]`. Conclude with `hz.1`.
+
+Establish `hπz : V.π (g (below z)) = below y.1` using `by rw [← Scheme.Hom.comp_apply, hgπ, hb]`. Establish `hU` using `hunit a (g (below z)) hgz`. Rewrite `hU` using `[hπz]`. Rewrite `HV` using `[← valAt_fnMap g hg z hU.regAt, map_mul, ← hφ]`. Establish `hv1 : valAt z (V'.φ (genAt A.D (below y.1) ^ m) * r (fun _ => k)) = valAt z q * valAt z (V'.φ (genAt A.D (below y.1)) * fnMap g hg (c a)) ^ m`.
+
+Rewrite using `[← h3, valAt_mul h4.regAt (regAt_pow h2.regAt m), valAt_pow h2.regAt]`. Establish `w1 : 0 < e.w (valAt z (V'.φ (genAt A.D (below y.1) ^ m) * r (fun _ => k)))` using `e.w.pos (valAt_ne_zero h1)`. Establish `w2 : 0 < e.w (valAt z (V'.φ (genAt A.D (below y.1)) * fnMap g hg (c a)))` using `e.w.pos (valAt_ne_zero h2)`. Establish `hlog : Real.log (e.w (valAt z (V'.φ (genAt A.D (below y.1) ^ m) * r (fun _ => k)))) = Real.log (e.w (valAt z (V'.φ (genAt A.D (below y.1)) * fnMap g hg (c a))) ^ m)`. Rewrite using `[Real.log_pow, ← HV', ← HV]`.
+
+Establish `heq` using `Real.log_injOn_pos w1 (pow_pos w2 m) hlog`. Rewrite `heq` using `[hv1, map_mul, map_pow]`. Conclude with `(mul_eq_right₀ (pow_ne_zero m w2.ne')).1 heq`. Establish `hq1 : ∀ z : V'.G, V'.j z ∈ O → UnitAt z q` using `fun z hz => (key z hz).2.2.2`. Establish `hreg : RegAt x f`.
+
+Use `GlobalTheory.T.good_reduction_extends_regular F Y V' p hp W hW O f (fun z hz => (regAt_fnMap_iff V'.j hη').1 (hq1 z hz).regAt) ?_ x ⟨hxa, hxk⟩ hpx` and prove the remaining obligations. Introduce `v hv e y hy z yt e1 e2 hyt`. Take `⟨hz, h⟩` from `hval v hv e y hy z yt e1 e2 hyt`. Rewrite using `[← valAt_fnMap V'.j hη' z ((regAt_fnMap_iff V'.j hη').1 (hq1 _ hz).regAt), ← hqdef, h]`. Establish `hreg' : RegAt x f⁻¹`.
+
+Establish `hq1' : ∀ z : V'.G, V'.j z ∈ O → RegAt (V'.j z) f⁻¹` using `fun z hz => (regAt_fnMap_iff V'.j hη').1 (by rw [map_inv₀, ← hqdef]; exact (hq1 z hz).inv.regAt)`. Use `GlobalTheory.T.good_reduction_extends_regular F Y V' p hp W hW O f⁻¹ hq1' ?_ x ⟨hxa, hxk⟩ hpx` and prove the remaining obligations. Introduce `v hv e y hy z yt e1 e2 hyt`. Take `⟨hz, h⟩` from `hval v hv e y hy z yt e1 e2 hyt`. Rewrite using `[← valAt_fnMap V'.j hη' z (hq1' _ hz), map_inv₀, ← hqdef]`.
+
+Establish `hm : valAt z q * valAt z q⁻¹ = 1`. Rewrite using `[← valAt_mul (hq1 _ hz).regAt (hq1 _ hz).inv.regAt, mul_inv_cancel₀ (hq1 _ hz).ne_zero, valAt_one']`. Use `congrArg e.w hm` as an intermediate fact. Rewrite `this` using `[map_mul, h, one_mul, map_one]`. Rewrite using `[this]`.
+
+Establish `hf0 : f ≠ 0` using `div_ne_zero (hs0 k) (pow_ne_zero _ ((map_ne_zero _).2 (Units.ne_zero _)))`. Conclude with `(unitAt_iff hf0).2 ⟨hreg, hreg'⟩`.
+-/
 theorem GlobalTheory.FrameGlue.powOfFrames_of_normsAt : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (C : CxSt F) (A : Adl C Y) (p : ℕ), p.Prime →
   ∀ (V : Cover Y) (hη : V.j (genericPoint V.G) ⤳ genericPoint V.X) (W : Y.X.Opens) (ι : Type) (U : ι → V.X.Opens)
     (c : ι → V.G.functionFieldˣ) (c' : ι → V.X.functionFieldˣ), genericPoint Y.X ∈ W →

@@ -14,6 +14,21 @@ open GlobalTheory GlobalTheory.USep
 
 namespace GlobalTheory.CorrCover
 
+/- English proof (translation)
+Introduce `Z M S₁ _ _ sM p₁ g J h1 h2 h3 hN h5 h6 hEC U₁ hU z₁ R _ _ ev hev ξ₁ hξ`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`. Use `haveI := h5`.
+
+Use `haveI := h6`. Use `haveI := hev`. Use `set I := J.comap (p₁ ≫ g) with hIdef`. Use `set x₁ := ξ₁ (closedPoint R)`. Use `set ψ := (Scheme.stalkClosedPointTo ξ₁).hom`.
+
+Take `⟨W, f₀, hx, -, hI⟩` from `hEC x₁`. Establish `st : ∀ k : ℕ, FinalTheorems.stalkId (I ^ k) x₁ = Ideal.span {(S₁.presheaf.germ _ x₁ hx).hom f₀ ^ k}` using `fun k => by`. Rewrite using `[ReciprocityTheory.AnForm.R.ds_stalkId_eq_map _ W x₁ hx, Scheme.IdealSheafData.ideal_pow, Pi.pow_apply, hI, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, map_pow]`. Use `⟨ψ ((S₁.presheaf.germ _ x₁ hx).hom f₀), ?_, ?_⟩` and prove the remaining obligations. Use `st 1` as an intermediate fact.
+
+Rewrite `this` using `[pow_one, pow_one]`. Rewrite using `[idlAlong, this, Ideal.map_span, Set.image_singleton]`. Introduce `D e`. Take `⟨E, hE⟩` from `EffCartierData.exists_idealSheaf_eq (CoverElements.effCartier_pow hEC D)`. Take `⟨e', he'⟩` from `GlobalTheory.T.exists_correction_approximate_ideal_sections M S₁ sM p₁ hN U₁ hU E z₁ e`.
+
+Use `⟨e', fun f hf => ?_⟩` and prove the remaining obligations. Establish `hm` using `he' f (fun V _ _ _ _ hc ξ' ev' hl hc' hr => by`. Rewrite using `[hE, TorRef.idlAlong_pow]`. Conclude with `hf V hc ξ' ev' hl hc' hr)`. Take `⟨f₁, hf₁, r, hr, rfl⟩` from `Submodule.mem_sup.1 hm`.
+
+Take `⟨u, hu, hψ⟩` from `CoverElements.exists_stalk_of_map p₁ E.idealSheaf ξ₁ ev hξ hf₁`. Rewrite `hu` using `[hE, st D]`. Take `⟨h', rfl⟩` from `Ideal.mem_span_singleton'.1 hu`. Use `⟨ψ h', ⟨h', rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hmR : (maximalIdeal (M.presheaf.stalk z₁)).map ev ≤ maximalIdeal R` using `Ideal.map_le_iff_le_comap.2 fun x hx => (IsLocalRing.mem_maximalIdeal _).2 fun hu => hx (isUnit_of_map_unit ev x hu)`.
+
+Establish `: ev r ∈ maximalIdeal R ^ e` using `Ideal.pow_right_mono hmR e (by rw [← Ideal.map_pow]; exact Ideal.mem_map_of_mem ev hr)`. Rewrite using `[map_add, ← hψ, map_mul, map_pow]`. Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `add_sub_cancel_left _ _`.
+-/
 theorem exists_corr : ∀ (Z M S₁ : Scheme.{0}) [IsIntegral M] [IsIntegral S₁] (sM : M ⟶ Sp ℤ) (p₁ : S₁ ⟶ M) (g : M ⟶ Z) (J : Z.IdealSheafData), LocallyOfFiniteType sM → QuasiCompact sM → Flat (p₁ ≫ sM) → Geo.Tor.IsNormalScheme S₁ → IsProper p₁ → IsDominant p₁ → FinalTheorems.EffCartier (J.comap (p₁ ≫ g)) → ∀ (U₁ : S₁.Opens), (U₁ : Set S₁).Nonempty → ∀ (z₁ : M) (R : Type) [CommRing R] [IsLocalRing R] (ev : M.presheaf.stalk z₁ →+* R), IsLocalHom ev → ∀ ξ₁ : Sp R ⟶ S₁, ξ₁ ≫ p₁ = spMap ev ≫ M.fromSpecStalk z₁ → ∃ g₀ : R, idlAlong (J.comap (p₁ ≫ g)) ξ₁ = Ideal.span {g₀} ∧ ∀ D e : ℕ, ∃ e' : ℕ, ∀ f : M.presheaf.stalk z₁, (∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (maximalIdeal V) V → ∀ (ξ' : Sp V ⟶ S₁) (ev' : M.presheaf.stalk z₁ →+* V), IsLocalHom ev' → spMap ev' ≫ M.fromSpecStalk z₁ = ξ' ≫ p₁ → Set.range (jK V ≫ ξ') ⊆ (U₁ : Set S₁) → ev' f ∈ idlAlong (J.comap (p₁ ≫ g)) ξ' ^ D ⊔ ((maximalIdeal (M.presheaf.stalk z₁)).map ev') ^ e') → ∃ h ∈ (Scheme.stalkClosedPointTo ξ₁).hom.range, ev f - h * g₀ ^ D ∈ maximalIdeal R ^ e := by
   intro Z M S₁ _ _ sM p₁ g J h1 h2 h3 hN h5 h6 hEC U₁ hU z₁ R _ _ ev hev ξ₁ hξ
   haveI := h1; haveI := h2; haveI := h3; haveI := h5; haveI := h6; haveI := hev

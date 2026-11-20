@@ -15,6 +15,25 @@ noncomputable section
 namespace GlobalTheory.Ex.AbPartIso
 open ThetaInValues
 
+/- English proof (translation)
+Introduce `R _ _ D D' F _ _ N N' ν ν' φ w f hφ hw hc`. Take `⟨y⟩ : Nonempty (TF (R` from `R) F).left := inferInstanceAs (Nonempty (PrimeSpectrum F))`. Establish `hJ` using `good ν y`. Establish `hJ'` using `good ν' y`. Take `⟨th, ρ, hth, vth⟩` from `exists_th ν y`.
+
+Take `⟨th', ρ', -, vth'⟩` from `exists_th ν' y`. Establish `e : φ.hom.left ≫ (snd (TF (R` using `R) F) D'.P.A).left = 𝟙 _ ≫ (φ.hom ≫ snd (TF (R := R) F) D'.P.A).left := (Category.id_comp _).symm`. Set `b` to `VVRank.pullTo (φ := fun _ : Fin 1 => (snd (TF (R := R) F) D'.P.A).left) (ε := fun _ => 1) (φ' := fun _ : Fin 1 => 𝟙 _ ≫ (φ.hom ≫ snd (TF (R := R) F) D'.P.A).left) th' φ.hom.left (fun _ => e)`. Take `⟨a, ha, -⟩` from `(FieldBaseChange.isoRelM_bijective (m := 𝟙 _) (k := 1) (h₁ := 𝟙 _) (g₁ := (snd (TF (R := R) F) D.P.A).left) D.P.isLB D'.P.isLB hw rfl (𝟙 _) (Category.id_comp _) (Category.id_comp _)).2 b`. Take `⟨r, hr⟩` from `hth a`.
+
+Take `⟨r₀, rfl⟩ : ∃ r₀ : F, r = fnOf r₀` from `⟨(Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom r, (Iso.hom_inv_id_apply (Scheme.ΓSpecIso (CommRingCat.of F)) r).symm⟩`. Use `⟨r₀ * ρ * ρ'⁻¹.val, fun x => ?_⟩` and prove the remaining obligations. Establish `H` using `BoxExpansion.isoRel_val ha (ptSecT D.P.A (ν.eA x)).left y hJ hJ'`. Simplify using `only [Category.comp_id] at H`. Establish `h₁ : sval b (ptSecT D.P.A (ν.eA x)).left y ν'.J = sR y (N'.th (f x) * ρ')`.
+
+Use `(VVRank.sval_pullTo _ _ _ _ y hJ').trans (Eq.trans ?_ (vth' (f x)))` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ptSecT, hc x]`. Both sides reduce to the same expression. Establish `hm` using `hJ.mem (fun _ : Fin 1 => (snd (TF (R := R) F) D.P.A).left) (ptSecT D.P.A (ν.eA x)).left`. Establish `h₂ : sval a (ptSecT D.P.A (ν.eA x)).left y ν.J = sR y r₀ * sR y (N.th x * ρ)`.
+
+Use `(congrArg (gs _ y _) (hr _)).trans ((gs_mul _ y _ hm _ _).trans (congrArg₂ (· * ·) ?_ (vth x)))` and prove the remaining obligations. Use `(gs_res _ y _ hm _).trans ((gs_pull _ (fst (TF (R := R) F) D.P.A).left y ⊤ trivial _).trans ?_)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ptSecT, lift_fst]`. Conclude with `gs_fnOf y r₀`. Establish `p₁ : (ptSecT D.P.A (ν.eA x)).left ≫ (snd (TF (R` using `R) F) D.P.A).left = (ν.eA x).left := by`.
+
+Rewrite using `[← Over.comp_left, ptSecT, lift_snd]`. Establish `p₂ : (ptSecT D.P.A (ν.eA x)).left ≫ (φ.hom ≫ snd (TF (R` using `R) F) D'.P.A).left = (ν'.eA (f x)).left := by`. Rewrite using `[← Over.comp_left, ptSecT, ← Category.assoc, hc x, lift_snd]`. Establish `h₃ : sR y (wVal ν ν' w f x) = (BoxExpansion.pw w (ptSecT D.P.A (ν.eA x)).left y (ν.J (ν.eA x).left) (ν'.J (ν'.eA (f x)).left)).val`. Establish `m₁ : (snd (TF (R` using `R) F) D.P.A).left ((ptSecT D.P.A (ν.eA x)).left y) ∈ D.P.L.U (ν.J (ν.eA x).left) := (congrArg (fun q : (TF (R := R) F).left ⟶ D.P.A.left => q y ∈ D.P.L.U (ν.J (ν.eA x).left)) p₁).mpr (hJ _)`.
+
+Establish `m₂ : (φ.hom ≫ snd (TF (R` using `R) F) D'.P.A).left ((ptSecT D.P.A (ν.eA x)).left y) ∈ D'.P.L.U (ν'.J (ν'.eA (f x)).left) := (congrArg (fun q : (TF (R := R) F).left ⟶ D'.P.A.left => q y ∈ D'.P.L.U (ν'.J (ν'.eA (f x)).left)) p₂).mpr (hJ' _)`. Conclude with `toStk_valF (F := F) (ptSecT D.P.A (ν.eA x)).left ((D'.P.L.pull (φ.hom ≫ snd (TF (R := R) F) D'.P.A).left).U (fun _ => ν'.J (ν'.eA (f x)).left) ⊓ (D.P.L.pull (snd (TF (R := R) F) D.P.A).left).U (fun _ => ν.J (ν.eA x).left)) y ⟨mem_pull.2 m₂, mem_pull.2 m₁⟩ _`. Establish `H' : sR y (N'.th (f x) * ρ') = sR y (wVal ν ν' w f x) * (sR y r₀ * sR y (N.th x * ρ))`. Use `h₁.symm.trans (H.trans (congrArg₂ (· * ·) ?_ h₂))` and prove the remaining obligations. Rewrite using `[h₃, pow_one, p₁, p₂]`.
+
+Rewrite `H'` using `[← map_mul, ← map_mul]`. Use `haveI : Nontrivial ((TF (R := R) F).left.presheaf.stalk y) := inferInstance`. Use `(sR (R := R) y).injective H'` as an intermediate fact. Rewrite `this` using `[← Units.eq_mul_inv_iff_mul_eq]`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_th_scale : AllIso fun {_} _ _ {_} {_} {F} _ _ {N} {N'} ν ν' {_} w f =>
     ∃ lm : F, ∀ x, N'.th (f x) = lm * wVal ν ν' w f x * N.th x := by
   intro R _ _ D D' F _ _ N N' ν ν' φ w f hφ hw hc

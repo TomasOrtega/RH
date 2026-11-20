@@ -12,6 +12,11 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 
 section
 namespace UpperTheory.Lit
+/- English proof (translation)
+Establish `rowModels` using `_root_.GlobalTheory.T.exists_models_of_separating_data P`. Establish `rowStep` using `_root_.GlobalTheory.T.separating_family_extend_by_twist P (_root_.GlobalTheory.T.exists_seesaw_pair_of_theta_data P) rowModels`. Establish `rowTower` using `GlobalTheory.T.firstRowTower_multiplicitySpaces_of_arrow rowModels rowStep`. Establish `conv` using `_root_.GlobalTheory.T.convergence_of_separating_family P rowTower`. Establish `per` using `Branch.periodNe_of_eigen P.harishChandraModules P.casselmanWallach P.cuspRapidDecay realIn`.
+
+Establish `onto` using `_root_.GlobalTheory.T.twist_core_surjective P P.harishChandraFinite P.cuspRapidDecay P.discreteSeriesCover P.harishChandraModules P.casselmanWallach hHowe P.weilRepresentationUnitaryPair P.weilSiegelFormulaUnitary hSW P.doublingMethod P.unramifiedDoublingGL`. Establish `weak` using `GlobalTheory.T.rowSeparation_by_realFunctionals_of_chain_steps GlobalTheory.T.largeScaleSizes_imply_gapConditions (_root_.GlobalTheory.T.exists_separating_models P) (_root_.GlobalTheory.T.rapid_decay_of_separating_family P rowTower) per onto (GlobalTheory.T.bessel_period_nonvanis …`. Conclude with `_root_.UpperTheory.Lit.bessel_separate_of_step_gap P rowTower GlobalTheory.T.largeScaleSizes_imply_gapConditions GlobalTheory.T.goodRows_principalLevel_are_rows conv weak`.
+-/
 theorem real_functionals_separate_of_hypothesis
     (P : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hHowe : GlobalTheory.Hk3.HoweUnram)
     (hSW : GlobalTheory.Published.SiegelWeilUnitaryConvergent)

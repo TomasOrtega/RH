@@ -17,6 +17,21 @@ noncomputable section
 
 namespace GlobalTheory.GenTorsMap
 
+/- English proof (translation)
+Use `haveI : IsAffine X.left := isAffine_of_isAffineHom X.hom`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (x ≫ X.left.isoSpec.hom)`. Take `⟨c, hc⟩` from `Spec.map_surjective (X.left.isoSpec.inv ≫ X.hom)`. Establish `hfin : c.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hc]`.
+
+Use `infer_instance`. Establish `e : c ≫ φ = CommRingCat.ofHom (algebraMap K F)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ, hc, Category.assoc, Iso.hom_inv_id_assoc, hx]`. Set `σ : AlgebraicClosure K →ₐ[K] F` to `IsAlgClosed.lift`.
+
+Establish `hr : ∀ b, φ.hom b ∈ σ.range` using `fun b => by`. Establish `hi : IsIntegral K (φ.hom b)`. Take `⟨p, hp, h0⟩` from `hfin.to_isIntegral b`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Use `congrArg φ.hom h0` as an intermediate fact.
+
+Rewrite `this` using `[Polynomial.hom_eval₂, map_zero]`. Establish `e' : φ.hom.comp c.hom = algebraMap K F` using `congrArg CommRingCat.Hom.hom e`. Rewrite `this` using `[e']`. Then use the resulting hypothesis. Conclude with `hi.mem_range_algHom_of_minpoly_splits (IsAlgClosed.splits _) σ`. Establish `hσ : Function.Injective σ` using `σ.toRingHom.injective`.
+
+Set `φ' : Γ(X.left, ⊤) →+* AlgebraicClosure K` to `(AlgEquiv.ofInjective σ hσ).symm.toRingEquiv.toRingHom.comp (φ.hom.codRestrict σ.range hr)`. Establish `h1 : ∀ b, σ (φ' b) = φ.hom b` using `fun b => congrArg Subtype.val ((AlgEquiv.ofInjective σ hσ).apply_symm_apply ⟨φ.hom b, hr b⟩)`. Use `⟨σ, Over.homMk (Spec.map (CommRingCat.ofHom φ') ≫ X.left.isoSpec.inv) ?_, ?_⟩` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_ erw [← hc]` and prove the remaining obligations. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations.
+
+Use extensionality with `a`. Apply `hσ` to reduce the goal to its premises. Use `(h1 _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (σ.commutes a).symm` and prove the remaining obligations. Conclude with `congrArg (fun g => CommRingCat.Hom.hom g a) e`.
+
+Use `show x = _ ≫ _ ≫ _`. Rewrite using `[← Category.assoc, Iso.eq_comp_inv, ← hφ, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `b`. Conclude with `(h1 b).symm`.
+-/
 theorem exists_factor {K : Type} [Field K] (X : Over (Sp K)) (hX : IsFinite X.hom) (F : Type) [Field F]
     [IsAlgClosed F] [Algebra K F] (x : Sp F ⟶ X.left) (hx : x ≫ X.hom = spMap (algebraMap K F)) :
     ∃ (σ : AlgebraicClosure K →ₐ[K] F) (x' : Over.mk (spMap (algebraMap K (AlgebraicClosure K))) ⟶ X),
@@ -59,6 +74,17 @@ theorem exists_factor {K : Type} [Field K] (X : Over (Sp K)) (hX : IsFinite X.ho
     ext b
     exact (h1 b).symm
 
+/- English proof (translation)
+Use `haveI : IsAffine X.left := isAffine_of_isAffineHom X.hom`. Use `haveI : IsReduced X.left := by`. Take `⟨c, hc⟩` from `Spec.map_surjective (X.left.isoSpec.inv ≫ X.hom)`. Establish `he : c.hom.Etale`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Etale), hc]`.
+
+Use `infer_instance`. Use `letI := c.hom.toAlgebra`. Use `haveI : Algebra.Etale K Γ(X.left, ⊤) := he`. Use `haveI : _root_.IsReduced Γ(X.left, ⊤) := Algebra.FormallyUnramified.isReduced_of_field K _`. Conclude with `isReduced_of_isAffine_isReduced _`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `ext_of_fromSpecResidueField_eq _ _ Y.hom Set.univ dense_univ (fun z _ => ?_) (by simp)` and prove the remaining obligations. Set `F` to `AlgebraicClosure (X.left.residueField z)`. Set `i` to `spMap (algebraMap (X.left.residueField z) F)`. Take `⟨c, hc⟩` from `Spec.map_surjective ((i ≫ X.left.fromSpecResidueField z) ≫ X.hom)`.
+
+Use `letI : Algebra K F := c.hom.toAlgebra`. Take `⟨σ, x', e⟩` from `exists_factor X hX F _ hc.symm`. Establish `: Epi i`. Establish `: Flat i` using `inferInstance`. Establish `: Surjective i` using `⟨fun _ => ⟨(default : PrimeSpectrum F), Subsingleton.elim (α := PrimeSpectrum (X.left.residueField z)) _ _⟩⟩`.
+
+Conclude with `Flat.epi_of_flat_of_surjective _`. Rewrite using `[← cancel_epi i, ← Category.assoc, ← Category.assoc]`. Use `erw [e]`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg (fun g => _ ≫ g.left) (h x')`.
+-/
 theorem hom_ext_points {K : Type} [Field K] {X Y : Over (Sp K)} (hX : IsFinite X.hom) (hE : Etale X.hom)
     (hY : IsSeparated Y.hom) (u v : X ⟶ Y)
     (h : ∀ x : Over.mk (spMap (algebraMap K (AlgebraicClosure K))) ⟶ X, x ≫ u = x ≫ v) : u = v := by
@@ -88,6 +114,15 @@ theorem hom_ext_points {K : Type} [Field K] {X Y : Over (Sp K)} (hX : IsFinite X
   rw [Category.assoc, Category.assoc]
   exact congrArg (fun g => _ ≫ g.left) (h x')
 
+/- English proof (translation)
+Set `adj` to `Over.mapPullbackAdj j`. Set `c : (Over.map j).obj X ⟶ G` to `(adj.homEquiv _ _).symm a`. Establish `hc : c ^ k = 1`. Apply `(adj.homEquiv _ _).injective` to reduce the goal to its premises. Establish `h1 : a = adj.unit.app X ≫ (Over.pullback j).map c`.
+
+Conclude with `(Equiv.apply_symm_apply _ _).symm.trans (adj.homEquiv_unit _ _ c)`. Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit]`. Establish `h2` using `map_pow ((Over.pullback j).homMonoidHom (X := (Over.map j).obj X) (M := G)) c k`. Establish `h3` using `map_one ((Over.pullback j).homMonoidHom (X := (Over.map j).obj X) (M := G))`. Use `(congrArg (_ ≫ ·) h2).trans (Eq.trans ?_ (congrArg (_ ≫ ·) h3).symm)` and prove the remaining obligations.
+
+Rewrite using `[MonObj.comp_one, MonObj.comp_pow]`. Conclude with `(congrArg (· ^ k) h1).symm.trans ha`. Establish `: b = (Over.homMk i hi : Z ⟶ (Over.map j).obj X) ≫ c`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hb]`.
+
+Simplify using `[c, adj, Adjunction.homEquiv_counit]`. Rewrite using `[this, ← MonObj.comp_pow, hc, MonObj.comp_one]`.
+-/
 theorem pow_eq_one_of_pullback {S S' : Scheme.{0}} (j : S' ⟶ S) (G : Over S) [GrpObj G] {X : Over S'} {Z : Over S}
     (a : X ⟶ (Over.pullback j).obj G) (b : Z ⟶ G) (i : Z.left ⟶ X.left) (hi : i ≫ X.hom ≫ j = Z.hom)
     (hb : b.left = i ≫ a.left ≫ pullback.fst G.hom j) (k : ℕ) (ha : a ^ k = 1) : b ^ k = 1 := by
@@ -111,6 +146,17 @@ theorem pow_eq_one_of_pullback {S S' : Scheme.{0}} (j : S' ⟶ S) (G : Over S) [
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Establish `hr : Set.range (jK R) ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Take `⟨w, hw⟩` from `hW`. Use `W.isOpen.stableUnderGeneralization ?_ hw` and prove the remaining obligations.
+
+Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations. Introduce `r hr`. Establish `h0 : algebraMap R (FractionRing R) r ∈ (z : PrimeSpectrum (FractionRing R)).asIdeal` using `hr`. Rewrite `h0` using `[Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) z ⊥]`. Establish `: r = 0` using `(IsFractionRing.to_map_eq_zero_iff).1 h0`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Set `l` to `IsOpenImmersion.lift W.ι (jK R) hr`. Establish `hl : l ≫ W.ι = jK R` using `IsOpenImmersion.lift_fac _ _ _`. Establish `P : IsPullback (pullback.fst (overW W N).hom (jK R)) (pullback.snd (overW W N).hom (jK R)) N.hom l`.
+
+Establish `Q` using `IsPullback.of_hasPullback (overW W N).hom (jK R)`. Use `⟨⟨(cancel_mono W.ι).1 ?_⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => Q.lift s.fst s.snd ?_) (fun s => Q.lift_fst _ _ _) (fun s => Q.lift_snd _ _ _) (fun s m h1 h2 => Q.hom_ext (h1.trans (Q.lift_fst _ _ _).symm) (h2.trans (Q.lift_snd _ _ _).symm))⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hl]`. Conclude with `Q.w`. Rewrite using `[← hl, ← Category.assoc, ← s.condition, Category.assoc]`.
+
+Both sides reduce to the same expression. Conclude with `MorphismProperty.of_isPullback P hN`.
+-/
 theorem isFinite_snd {W : (Sp R).Opens} (hW : (W : Set (Sp R)).Nonempty) (N : Over W.toScheme)
     (hN : IsFinite N.hom) : IsFinite (pullback.snd (overW W N).hom (jK R)) := by
   have hr : Set.range (jK R) ⊆ Set.range W.ι := by
@@ -135,6 +181,9 @@ theorem isFinite_snd {W : (Sp R).Opens} (hW : (W : Set (Sp R)).Nonempty) (N : Ov
     · rw [← hl, ← Category.assoc, ← s.condition, Category.assoc]; rfl
   exact MorphismProperty.of_isPullback P hN
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `⟨h'.1.trans h.1.symm, h'.2.1.trans ((Category.assoc _ _ _).trans (congrArg _ h.2.1.symm)), fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Use `(val_corr hJ (h'.2.2 χ) _).trans ((val_pull hJ _ _ _).trans (Eq.symm ?_))` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ((val_corr hJ (h.2.2 χ) _).trans ((val_pull hJ _ _ _).trans ?_))` and prove the remaining obligations. Rewrite using `[Category.assoc]`.
+-/
 theorem qkExt_of_isPullF {D : DegPre R} {W : (Sp R).Opens} {ψW : PsiOn D W} {k : ℕ} {N : Over W.toScheme}
     {F F' : Type} [Field F] [Algebra (FractionRing R) F] [Field F'] [Algebra (FractionRing R) F'] (f : F →+* F')
     {x : Sp F ⟶ N.left} {x' : Sp F' ⟶ N.left} (e : x' = spMap f ≫ x) {p : QkPtW D W ψW k N}
@@ -147,6 +196,27 @@ theorem qkExt_of_isPullF {D : DegPre R} {W : (Sp R).Opens} {ψW : PsiOn D W} {k 
   refine (val_pull hJ _ _ _).trans ((val_corr hJ (h.2.2 χ) _).trans ((val_pull hJ _ _ _).trans ?_))
   rw [Category.assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ hR t P W hW _ ψW k hk y N p₀ hN`. Set `K` to `FractionRing R`. Set `C` to `AlgebraicClosure K`. Set `X : Over (Sp K)` to `Over.mk (pullback.snd (overW W N).hom (jK R))`. Establish `hX : IsFinite X.hom` using `isFinite_snd hW N hN.1.1`.
+
+Establish `hE : Etale X.hom` using `hN.1.2.2`. Take `⟨f, hf, -⟩` from `torsionIso_holds E H R _ hR t P C k hk`. Establish `hq : ∀ x : TFK (R` using `R) C ⟶ X, ∃ q : QkPt P.D.toPre C k, QkPtW.IsPullF C (x.left ≫ pullback.fst (overW W N).hom (jK R)) p₀ q := fun x => by`. Use `((FieldRestrictionTest.existsUnique_pair_iff _ p₀).2 ?_).exists` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (x.left ≫ ·) pullback.condition).trans ?_)` and prove the remaining obligations.
+
+Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ jK R) (Over.w x))`. Use `choose q hq using hq`. Establish `hext` using `TorsionExt.qkToAkU_iff_of_qkExt firstFiveLaws R _ hR P.D P.A t.G t.semi P.U C`. Take `⟨u, hu⟩` from `GaloisPoints.exists_hom_of_equivariant K X P.A.A hX hE (fun x => f (q x)) (fun σ x x' e => by`. Set `a : TFK (R` to `R) C ⟶ P.A.A := Over.homMk (spMap σ.toAlgHom.toRingHom ≫ (f (q x)).left) (by`.
+
+Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (Over.w (f (q x)))).trans ?_)` and prove the remaining obligations. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Use extensionality with `c`. Conclude with `σ.commutes c)`. Establish `h` using `(hext C σ.toAlgHom k hk (q x) (q x') (f (q x)) a (qkExt_of_isPullF _ ((congrArg (· ≫ _) e).trans (Category.assoc _ _ _)) (hq x) (hq x')) rfl).1 ((hf _ _).2 rfl)`.
+
+Conclude with `(congrArg (·.left) ((hf _ _).1 h)).symm)`. Establish `hk1 : u ^ k = 1`. Establish `: IsSeparated P.A.A.hom`. Use `P.U.separated` as an intermediate fact. Rewrite using `[← Over.w P.U.gen.inv]`.
+
+Establish `: IsSeparated ((Over.pullback (jK R)).obj t.G).hom` using `inferInstanceAs (IsSeparated (pullback.snd t.G.hom (jK R)))`. Use `infer_instance`. Use `hom_ext_points hX hE this _ _ fun x => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `P.U.ext`. Rewrite using `[MonObj.comp_one, MonObj.comp_pow, hu]`.
+
+Conclude with `((hf (q x) _).2 rfl w hw).1`. Set `v : genPart (overW W N) ⟶ t.G` to `Over.homMk (u.left ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R)) (by`. Use `Eq.trans ?_ (pullback.condition (f := (overW W N).hom) (g := jK R)).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ jK R) ((Category.assoc _ _ _).symm.trans (Over.w (u ≫ P.U.gen.inv))))`.
+
+Use `⟨v, ?_, fun F _ _ _ x hx q' hq' => ?_⟩` and prove the remaining obligations. Use `pow_eq_one_of_pullback (jK R) t.G (u ≫ P.U.gen.inv) v (𝟙 _) ((Category.id_comp _).trans pullback.condition.symm) ((Category.assoc _ _ _).symm.trans (Category.id_comp _).symm) k ?_ haveI := P.U.gen_hom haveI : IsMonHom P.U.gen.inv := inferInstance` and prove the remaining obligations. Rewrite using `[← MonObj.pow_comp, hk1, MonObj.one_comp]`. Establish `hx' : x ≫ X.hom = spMap (algebraMap K F)`. Establish `: Mono (jK R)`.
+
+Establish `: Epi (CommRingCat.ofHom (algebraMap R K))` using `IsLocalization.epi (nonZeroDivisors R) K`. Conclude with `inferInstanceAs (Mono (Scheme.Spec.map (CommRingCat.ofHom (algebraMap R K)).op))`. Rewrite using `[← cancel_mono (jK R), Category.assoc]`. Conclude with `(congrArg (x ≫ ·) pullback.condition.symm).trans hx`. Take `⟨σ, x', e⟩` from `exists_factor X hX F x hx'`.
+
+Set `a : TFK (R` to `R) F ⟶ P.A.A := (Over.homMk x hx' : TFK (R := R) F ⟶ X) ≫ u`. Use `⟨a, Category.assoc _ _ _, ?_⟩` and prove the remaining obligations. Use `(hext F σ k hk (q x') q' (f (q x')) a (qkExt_of_isPullF _ ((congrArg (· ≫ _) e).trans (Category.assoc _ _ _)) (hq x') hq') ?_).1 ((hf _ _).2 rfl)` and prove the remaining obligations. Rewrite using `[← hu x']`. Conclude with `(congrArg (· ≫ u.left) e).trans (Category.assoc _ _ _)`.
+-/
 theorem exists_genericMap : AllFlat fun {E} _ _ _ {H} {R} _ _ _ {t} P {W} ψW k => ∀ y N p₀, PairRep ψW k y N p₀ → ∃ u : genPart (overW W N) ⟶ t.G, u ^ k = 1 ∧ ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (x : Sp F ⟶ (genPart (overW W N)).left), OverGen F (genPart (overW W N)) x → ∀ q : QkPt P.D.toPre F k, QkPtW.IsPullF F (x ≫ (genι (overW W N)).left) p₀ q → IsImage P F k q (x ≫ u.left) := by
   intro E _ _ _ H R _ _ _ _ hR t P W hW _ ψW k hk y N p₀ hN
   let K := FractionRing R

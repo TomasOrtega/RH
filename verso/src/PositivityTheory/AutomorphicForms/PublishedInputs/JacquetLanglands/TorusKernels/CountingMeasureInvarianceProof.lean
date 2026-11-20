@@ -9,6 +9,11 @@ namespace UpperTheory.Esk.CountingMeasureInvariance
 variable {G Ω X : Type} [Group G] [MeasurableSpace Ω] [DiscreteMeasurableSpace Ω] [Countable Ω]
   [MeasurableSpace X] [MulAction G Ω] [MulAction G X]
 
+/- English proof (translation)
+Introduce `s hs`. Establish `: f ⁻¹' s = ⋃ ω : Ω, ({ω} : Set Ω) ×ˢ ((fun x => f (ω, x)) ⁻¹' s)`. Use extensionality with `⟨ω, x⟩`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `MeasurableSet.iUnion fun ω => (MeasurableSet.of_discrete (s := {ω})).prod (hf ω hs)`.
+-/
 theorem meas_of_left {f : Ω × X → ℝ} (hf : ∀ ω, Measurable fun x => f (ω, x)) : Measurable f := by
   intro s hs
   have : f ⁻¹' s = ⋃ ω : Ω, ({ω} : Set Ω) ×ˢ ((fun x => f (ω, x)) ⁻¹' s) := by
@@ -17,6 +22,11 @@ theorem meas_of_left {f : Ω × X → ℝ} (hf : ∀ ω, Measurable fun x => f (
   exact MeasurableSet.iUnion fun ω => (MeasurableSet.of_discrete (s := {ω})).prod (hf ω hs)
 
 omit [Countable Ω] in
+/- English proof (translation)
+Establish `hm : ∀ h : G, Measurable (fun ω : Ω => h • ω)` using `fun h => Measurable.of_discrete`. Use `⟨hm g, le_antisymm ((MulAction.injective g).map_count_le (hm g)) ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.map_map (hm g) (hm g⁻¹)]`. Simplify using `[Function.comp_def]`.
+
+Use `_ ≤ Measure.count.map (fun ω : Ω => g • ω) := Measure.map_mono ((MulAction.injective g⁻¹).map_count_le (hm _)) (hm g)`.
+-/
 theorem count_pres (g : G) :
     MeasurePreserving (fun ω : Ω => g • ω) Measure.count Measure.count := by
   have hm : ∀ h : G, Measurable (fun ω : Ω => h • ω) := fun h => Measurable.of_discrete
@@ -28,6 +38,9 @@ theorem count_pres (g : G) :
     _ ≤ Measure.count.map (fun ω : Ω => g • ω) :=
         Measure.map_mono ((MulAction.injective g⁻¹).map_count_le (hm _)) (hm g)
 
+/- English proof (translation)
+Introduce `g` and use `(count_pres g).prod (hμ g)`.
+-/
 theorem pres_prod (μ : Measure X) [SigmaFinite μ] (hμ : Pres G μ) :
     Pres G ((Measure.count : Measure Ω).prod μ) := fun g =>
   (count_pres g).prod (hμ g)
@@ -36,6 +49,21 @@ open Classical in
 
 def cut (R : Set Ω) (β : Ω → X → ℝ) (p : Ω × X) : ℝ := if p.1 ∈ R then β p.1 p.2 else 0
 
+/- English proof (translation)
+Use `meas_of_left fun ω => ?_` and prove the remaining obligations. Distinguish the cases in `h : ω ∈ R`. Simplify `(hβ ω h).meas` using `[cut, h]`. Simplify using `[cut, h]`. Use `nonneg := by`.
+
+Introduce and unpack `⟨ω, x⟩`. Unfold `cut`. Use `split_ifs with h`. Conclude with `(hβ _ h).nonneg x`. Conclude with `le_rfl`.
+
+Use `sum := by`. Introduce and unpack `⟨ω, x⟩`. Take `⟨r, ⟨hrR, g₀, hg₀'⟩, hu⟩` from `hR ω`. Establish `hg₀ : g₀ • ω = r` using `hg₀'`. Establish `key : ∀ g : G, g • ω ∈ R → g • ω = r` using `fun g hg => hu _ ⟨hg, MulAction.mem_orbit ω g⟩`.
+
+Set `e : MulAction.stabilizer G r → G` to `fun s => (s : G) * g₀`. Establish `he : Function.Injective e` using `fun s t h => Subtype.ext (mul_right_cancel h)`. Rewrite using `[← he.hasSum_iff]`. Use `(hβ r hrR).sum (g₀ • x) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`.
+
+Establish `hs : (s : G) • r = r` using `s.2`. Establish `h2 : ((s : G) * g₀) • ω = r` using `by rw [mul_smul, hg₀, hs]`. Simplify using `only [Function.comp_apply, e, cut, Prod.smul_mk, h2, mul_smul, Subgroup.smul_def]`. Use `split_ifs with hc`. Both sides reduce to the same expression.
+
+Conclude with `absurd (h2.symm ▸ hrR) hc`. Introduce `g hg`. Simplify using `only [cut, Prod.smul_mk]`. Rewrite using `[if_neg]`. Introduce `hgR`.
+
+Apply `hg` to reduce the goal to its premises. Use `⟨⟨g * g₀⁻¹, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, ← hg₀, inv_smul_smul, key g hgR, hg₀]`. Simplify using `[e]`.
+-/
 theorem cut_isCut (R : Set Ω) (hR : ∀ ω, ∃! r, r ∈ R ∧ r ∈ MulAction.orbit G ω) (β : Ω → X → ℝ)
     (hβ : ∀ r ∈ R, IsCut (MulAction.stabilizer G r) (β r)) : IsCut G (cut R β) where
   meas := by
@@ -77,6 +105,17 @@ theorem cut_isCut (R : Set Ω) (hR : ∀ ω, ∃! r, r ∈ R ∧ r ∈ MulAction
 end UpperTheory.Esk.CountingMeasureInvariance
 
 open UpperTheory.Esk.CountingMeasureInvariance in
+/- English proof (translation)
+Introduce `hC1 G Ω X _ _ _ _ _ _ _ _ μ _ hμ b hb u hu hinv hint R hR β hβ`. Establish `hP : Pres G ((Measure.count : Measure Ω).prod μ)` using `pres_prod μ hμ`. Establish `hb'` using `cut_isCut R hR β hβ`. Take `⟨hI', hE⟩` from `(hC1 G (Ω × X) ((Measure.count : Measure Ω).prod μ) hP b (cut R β) hb hb').2 u hu hinv hint`. Establish `hsec : ∀ ω, Integrable (fun x => cut R β (ω, x) • u (ω, x)) μ`.
+
+Use `hI'.prod_right_ae` as an intermediate fact. Rewrite `this` using `[Measure.ae_count_iff]`. Then use the resulting hypothesis. Establish `hF : Integrable (fun ω => ∫ x, cut R β (ω, x) • u (ω, x) ∂μ) Measure.count` using `hI'.integral_prod_left`. Establish `hsum : HasSum (fun ω => ∫ x, cut R β (ω, x) • u (ω, x) ∂μ) (∫ y, b y • u y ∂((Measure.count : Measure Ω).prod μ))`. Rewrite using `[hE, integral_prod _ hI', integral_countable hF]`.
+
+Simplify using `only [count_real_singleton, one_smul]`. Conclude with `(integrable_count_iff.mp hF).of_norm.hasSum`. Use `⟨fun r hr => by simpa [cut, hr] using hsec r, ?_⟩` and prove the remaining obligations. Establish `hsupp : Function.support (fun ω => ∫ x, cut R β (ω, x) • u (ω, x) ∂μ) ⊆ R`. Introduce `ω hω`.
+
+Assume the negation of the conclusion as `h`. Apply `hω` to reduce the goal to its premises. Simplify using `[cut, h]`. Rewrite `hsum` using `[← hasSum_subtype_iff_of_support_subset hsupp]`. Use `hsum using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `r`. Simplify using `[cut, r.2]`.
+-/
 theorem UpperTheory.Esk.counting_measure_invariance_proof : UpperTheory.Esk.C1 → UpperTheory.Esk.C4 := by
   intro hC1 G Ω X _ _ _ _ _ _ _ _ μ _ hμ b hb u hu hinv hint R hR β hβ
   have hP : Pres G ((Measure.count : Measure Ω).prod μ) := pres_prod μ hμ

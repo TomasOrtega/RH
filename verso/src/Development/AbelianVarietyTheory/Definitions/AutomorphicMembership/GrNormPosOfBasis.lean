@@ -22,9 +22,15 @@ section Lat
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {X : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp _ _).symm`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [epsMul]`.
+-/
 theorem sp_epsMul_one (R : Type) [CommRing R] : spMap (epsMul (1 : R)) = 𝟙 _ := by
   rw [← Spec.map_id]
   congr 1
@@ -43,6 +49,9 @@ def torusChar {O : Type} [CommRing O] (x : Sp O ⟶ X) (q : ℕ) (a : 𝓞 E) : 
   nat B B' _ _ _ _ _ _ φ g g' _ h :=
     (GlobalTheory.Diag.left_eq_iff φ.toRingHom (by rw [← Category.assoc, sp_comp]; congr 2; exact φ.comp_algebraMap.symm) g' g).1 h a
 
+/- English proof (translation)
+Use `(congrArg TrivSqZeroExt.snd (GlobalTheory.Diag.charVal_epsVec c a)).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem torusChar_epsVec {O : Type} [CommRing O] (x : Sp O ⟶ X) (q : ℕ) (a : 𝓞 E) (I : Ideal O) (c : 𝓞 E →+ O ⧸ I) :
     (((torusChar H x q a).χ (DualNumber (O ⧸ I)) (GlobalTheory.Diag.epsVec _ c) : (DualNumber (O ⧸ I))ˣ) :
       DualNumber (O ⧸ I)).snd = c a := by
@@ -60,19 +69,31 @@ section Comb
 
 variable {R : Type} [CommRing R] {x : Sp R ⟶ X} {m : ℕ} {u : Fin m → (Sp (DualNumber R) ⟶ t.G.left)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, isTanAtG_of _ (combT_tan _ (fun j => ovT (hu j)) (fun _ => smT_zero_ovT _) cf), (isCombAtG_iff t x (fun j => ovT (hu j)) cf _).2 rfl⟩`.
+-/
 theorem exists_comb (hu : ∀ k, IsTanAtG t x (u k)) (cf : Fin m → R) : ∃ w, IsTanAtG t x w ∧ IsCombAtG t x u cf w :=
   ⟨_, isTanAtG_of _ (combT_tan _ (fun j => ovT (hu j)) (fun _ => smT_zero_ovT _) cf),
     (isCombAtG_iff t x (fun j => ovT (hu j)) cf _).2 rfl⟩
 
+/- English proof (translation)
+The claim follows from `((isCombAtG_iff t x (fun j => ovT (hu j)) _ _).1 h).symm.trans ((isCombAtG_iff t x (fun j => ovT (hu j)) _ _).1 h')`.
+-/
 theorem comb_unique (hu : ∀ k, IsTanAtG t x (u k)) {cf : Fin m → R} {w w' : Sp (DualNumber R) ⟶ t.G.left}
     (h : IsCombAtG t x u cf w) (h' : IsCombAtG t x u cf w') : w = w' :=
   ((isCombAtG_iff t x (fun j => ovT (hu j)) _ _).1 h).symm.trans ((isCombAtG_iff t x (fun j => ovT (hu j)) _ _).1 h')
 
+/- English proof (translation)
+Take `⟨w', h1, h2⟩` from `exists_comb hu cf`. Conclude with `comb_unique hu h2 h ▸ h1`.
+-/
 theorem comb_tan (hu : ∀ k, IsTanAtG t x (u k)) {cf : Fin m → R} {w : Sp (DualNumber R) ⟶ t.G.left}
     (h : IsCombAtG t x u cf w) : IsTanAtG t x w := by
   obtain ⟨w', h1, h2⟩ := exists_comb hu cf
   exact comb_unique hu h2 h ▸ h1
 
+/- English proof (translation)
+Rewrite using `[← (isCombAtG_iff t x (fun j => ovT (hu j)) _ _).1 h]`. Conclude with `(isCombAtG_iff t x (fun j => ovT (hu j)) _ _).2 (by rw [← smT_combT]; rfl)`.
+-/
 theorem comb_smul (hu : ∀ k, IsTanAtG t x (u k)) {cf : Fin m → R} {w : Sp (DualNumber R) ⟶ t.G.left}
     (h : IsCombAtG t x u cf w) (a : R) : IsCombAtG t x u (fun k => a * cf k) (spMap (epsMul a) ≫ w) := by
   rw [← (isCombAtG_iff t x (fun j => ovT (hu j)) _ _).1 h]
@@ -82,6 +103,11 @@ variable (t x u) in
 
 def Indep : Prop := ∀ cf cf' w, IsCombAtG t x u cf w → IsCombAtG t x u cf' w → cf = cf'
 
+/- English proof (translation)
+Establish `hu` using `fun i => comb_tan hv (hA i)`. Use `⟨fun h cf cf' e => ?_, fun h cf cf' w h1 h2 => h (hi _ _ w (tanLinG v hv u A cf w hA h1) (tanLinG v hv u A cf' w hA h2))⟩` and prove the remaining obligations. Take `⟨w, -, h1⟩` from `exists_comb hu cf`. Take `⟨w', -, h2⟩` from `exists_comb hu cf'`. Establish `h3` using `comb_unique hv (tanLinG v hv u A cf w hA h1) (e ▸ tanLinG v hv u A cf' w' hA h2)`.
+
+Conclude with `h cf cf' w h1 (h3 ▸ h2)`.
+-/
 theorem indep_iff {n : ℕ} {v : Fin n → (Sp (DualNumber R) ⟶ t.G.left)} (hv : ∀ k, IsTanAtG t x (v k))
     (hi : Indep t x v) (A : Matrix (Fin n) (Fin m) R) (hA : ∀ i, IsCombAtG t x v (fun j => A j i) (u i)) :
     Indep t x u ↔ Function.Injective A.mulVec := by
@@ -93,18 +119,31 @@ theorem indep_iff {n : ℕ} {v : Fin n → (Sp (DualNumber R) ⟶ t.G.left)} (hv
   have h3 := comb_unique hv (tanLinG v hv u A cf w hA h1) (e ▸ tanLinG v hv u A cf' w' hA h2)
   exact h cf cf' w h1 (h3 ▸ h2)
 
+/- English proof (translation)
+Introduce `_ _ w h1 h2` and use `(hb w (comb_tan hu h1)).unique h1 h2`.
+-/
 theorem indep_of_basis (hu : ∀ k, IsTanAtG t x (u k))
     (hb : ∀ w, IsTanAtG t x w → ∃! cf, IsCombAtG t x u cf w) : Indep t x u :=
   fun _ _ w h1 h2 => (hb w (comb_tan hu h1)).unique h1 h2
 
 end Comb
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' A) (LinearMap.ker_eq_bot.2 h)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_toLin' A, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`.
+-/
 theorem exists_left_inv {K : Type} [Field K] {n m : ℕ} (A : Matrix (Fin n) (Fin m) K) (h : Function.Injective A.mulVec) :
     ∃ B : Matrix (Fin m) (Fin n) K, B * A = 1 := by
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective (Matrix.toLin' A) (LinearMap.ker_eq_bot.2 h)
   refine ⟨LinearMap.toMatrix' g, ?_⟩
   rw [← LinearMap.toMatrix'_toLin' A, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]
 
+/- English proof (translation)
+Take `⟨n, v, hv, hb⟩` from `GlobalTheory.LieLocBasis.exists_lie_basis_stable E H X t K x`. Establish `h1 : spMap (RingHom.id K) = 𝟙 _` using `Spec.map_id _`. Establish `h3 : spMap (dualMap (RingHom.id K)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`.
+
+Apply the tactic sequence `ext r <;> simp [dualMap]`. Establish `hb0` using `hb K (RingHom.id K)`. Simplify using `only [h1, h3, Category.id_comp] at hb0`. Use `choose a ha using fun i => (hb0 _ (hu i)).exists`. Set `A : Matrix (Fin n) (Fin m) K` to `fun j i => a i j`.
+
+Take `⟨B, hB⟩` from `exists_left_inv A ((indep_iff hv (indep_of_basis hv hb0) A ha).1 h)`. Establish `hv'` using `fun j => GlobalTheory.FactorDepth.isTanAtG_map t io (hv j)`. Use `(indep_iff hv' (indep_of_basis hv' (hb K' io)) (A.map io) fun i => GlobalTheory.LatDRFree.comb_map t io (ha i)).2 fun c c' e => ?_` and prove the remaining obligations. Establish `h4` using `congrArg (B.map io).mulVec e`. Rewrite `h4` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.map_mul, hB, Matrix.map_one _ (map_zero io) (map_one io), Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem Indep.map {K K' : Type} [Field K] [Field K'] (io : K →+* K') {x : Sp K ⟶ X} {m : ℕ}
     {u : Fin m → (Sp (DualNumber K) ⟶ t.G.left)} (hu : ∀ k, IsTanAtG t x (u k)) (h : Indep t x u) :
     Indep t (spMap io ≫ x) fun k => spMap (dualMap io) ≫ u k := by
@@ -134,8 +173,26 @@ variable (t x Λ u) in
 def grSet (i : Fin m) : Set ℝ :=
   {r | ∃ cf : Fin m → C, cf i ≠ 0 ∧ (∀ k, i < k → cf k = 0) ∧ (∃ w ∈ Λ, IsCombAtG t x u cf w) ∧ r = ‖cf i‖⁻¹}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem grNorm_eq (i : Fin m) : grNorm t x Λ u i = sInf (grSet t x Λ u i) := rfl
 
+/- English proof (translation)
+Use `choose a ha using fun i => (hb _ (hu i)).exists`. Set `A : Matrix (Fin n) (Fin m) C` to `fun j i => a i j`. Take `⟨B, hB⟩` from `exists_left_inv A ((indep_iff hv (indep_of_basis hv hb) A ha).1 hi)`. Establish `hne : (grSet t x Λ u i).Nonempty`. Establish `hs : 0 < 1 + ∑ j, ‖a i j‖` using `by positivity`.
+
+Take `⟨c, hc0, hc⟩` from `NormedField.exists_norm_lt C (inv_pos.2 hs)`. Take `⟨w, -, hw⟩` from `exists_comb hu (Pi.single i c)`. Use `⟨_, Pi.single i c, by simpa using norm_pos_iff.1 hc0, fun k hk => Pi.single_eq_of_ne hk.ne' _, ⟨w, h1 _ w (tanLinG v hv u A _ w ha hw) fun j => ?_, hw⟩, rfl⟩` and prove the remaining obligations. Establish `h5 : ‖a i j‖ ≤ 1 + ∑ j, ‖a i j‖` using `(Finset.single_le_sum (f := fun j => ‖a i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (by linarith)`. Establish `h6 : A.mulVec (Pi.single i c) j = a i j * c`.
+
+Rewrite using `[Matrix.mulVec_single]`. Both sides reduce to the same expression. Rewrite using `[h6, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨hne, ?_⟩` and prove the remaining obligations.
+
+Establish `hK : ∀ r ∈ grSet t x Λ u i, 0 < ∑ j, ‖B i j‖ * b ∧ (∑ j, ‖B i j‖ * b)⁻¹ ≤ r`. Introduce and unpack `_ ⟨cf, h0, -, ⟨w, hw, hc⟩, rfl⟩`. Establish `h7` using `h2 _ w (tanLinG v hv u A cf w ha hc) hw`. Establish `h8 : cf i = ∑ j, B i j * A.mulVec cf j`. Use `congrFun (Matrix.mulVec_mulVec cf B A) i` as an intermediate fact.
+
+Rewrite `this` using `[hB, Matrix.one_mulVec]`. Conclude with `this.symm`. Establish `h9 : ‖cf i‖ ≤ ∑ j, ‖B i j‖ * b`. Rewrite using `[h8]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (h7 j) (norm_nonneg _)`. Establish `h10` using `norm_pos_iff.2 h0`. Conclude with `⟨h10.trans_le h9, inv_anti₀ h10 h9⟩`. Take `⟨r, hr⟩` from `hne`.
+
+Conclude with `(inv_pos.2 (hK r hr).1).trans_le (le_csInf ⟨r, hr⟩ fun r hr => (hK r hr).2)`.
+-/
 theorem grNorm_pos_of_basis {n : ℕ} {v : Fin n → (Sp (DualNumber C) ⟶ t.G.left)} (hv : ∀ k, IsTanAtG t x (v k))
     (hb : ∀ w, IsTanAtG t x w → ∃! cf, IsCombAtG t x v cf w)
     (h1 : ∀ cf w, IsCombAtG t x v cf w → (∀ j, ‖cf j‖ ≤ 1) → w ∈ Λ) {b : ℝ}
@@ -176,6 +233,11 @@ theorem grNorm_pos_of_basis {n : ℕ} {v : Fin n → (Sp (DualNumber C) ⟶ t.G.
   obtain ⟨r, hr⟩ := hne
   exact (inv_pos.2 (hK r hr).1).trans_le (le_csInf ⟨r, hr⟩ fun r hr => (hK r hr).2)
 
+/- English proof (translation)
+Establish `e : ∀ k, A.mulVec cf k = ∑ j, A k j * cf j` using `fun _ => rfl`. Simplify using `only [e]`. Use `⟨fun k hk => Finset.sum_eq_zero fun j _ => ?_, Finset.sum_eq_single i (fun j _ hj => ?_) (by simp)⟩` and prove the remaining obligations. Break down `le_or_gt j i with hj | hj` into its components or cases. Rewrite using `[hA (show id j < id k from hj.trans_lt hk), zero_mul]`.
+
+Rewrite using `[h j hj, mul_zero]`. Break down `lt_or_gt_of_ne hj with hj | hj` into its components or cases. Rewrite using `[hA (show id j < id i from hj), zero_mul]`. Rewrite using `[h j hj, mul_zero]`.
+-/
 theorem tri_mulVec {K : Type} [Field K] {A : Matrix (Fin m) (Fin m) K} (hA : A.BlockTriangular id) {i : Fin m}
     {cf : Fin m → K} (h : ∀ k, i < k → cf k = 0) :
     (∀ k, i < k → A.mulVec cf k = 0) ∧ A.mulVec cf i = A i i * cf i := by
@@ -191,6 +253,19 @@ theorem tri_mulVec {K : Type} [Field K] {A : Matrix (Fin m) (Fin m) K} (hA : A.B
 
 open Pointwise in
 
+/- English proof (translation)
+Use `choose a h1 h2 h3 using h`. Set `A : Matrix (Fin m) (Fin m) C` to `fun j i => a i j`. Establish `hA : A.BlockTriangular id` using `fun j k hk => h2 k j hk`. Establish `hdet : IsUnit A.det`. Rewrite using `[Matrix.det_of_upperTriangular hA]`.
+
+Conclude with `(Finset.prod_ne_zero_iff.2 fun k _ => (h1 k).trans_ne (hd k)).isUnit`. Set `_` to `Matrix.invertibleOfIsUnitDet A hdet`. Establish `hn : ‖d i‖ ≠ 0` using `norm_ne_zero_iff.2 (hd i)`. Establish `key : grSet t x Λ u' i = ‖d i‖ • grSet t x Λ u i`. Use extensionality with `r`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨cf, h0, hz, ⟨w, hw, hc⟩, rfl⟩`. Take `⟨e1, e2⟩` from `tri_mulVec hA hz`. Rewrite `e2` using `[show A i i = d i from h1 i]`. Use `⟨_, ⟨A.mulVec cf, e2 ▸ mul_ne_zero (hd i) h0, e1, ⟨w, hw, tanLinG u hu u' A cf w h3 hc⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [e2, norm_mul, smul_eq_mul, mul_inv, mul_inv_cancel_left₀ hn]`. Introduce and unpack `⟨_, ⟨cf, h0, hz, ⟨w, hw, hc⟩, rfl⟩, rfl⟩`. Take `⟨e1, -⟩` from `tri_mulVec (Matrix.blockTriangular_inv_of_blockTriangular hA) hz`. Establish `e3 : A.mulVec (A⁻¹.mulVec cf) = cf`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv A hdet, Matrix.one_mulVec]`.
+
+Establish `e2` using `(tri_mulVec hA e1).2`. Rewrite `e2` using `[e3, show A i i = d i from h1 i]`. Take `⟨w', -, hw'⟩` from `exists_comb (fun k => comb_tan hu (h3 k)) (A⁻¹.mulVec cf)`. Establish `e4 : w' = w` using `comb_unique hu (e3 ▸ tanLinG u hu u' A _ w' h3 hw') hc`. Use `⟨A⁻¹.mulVec cf, fun e => h0 (by rw [e2, e, mul_zero]), e1, ⟨w, hw, e4 ▸ hw'⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [e2, norm_mul, smul_eq_mul, mul_inv, mul_inv_cancel_left₀ hn]`. Rewrite using `[grNorm_eq, grNorm_eq, key, Real.sInf_smul_of_nonneg (norm_nonneg _), smul_eq_mul]`.
+-/
 theorem grNorm_tri (hu : ∀ k, IsTanAtG t x (u k)) {d : Fin m → C} (hd : ∀ i, d i ≠ 0)
     (h : ∀ i, ∃ cf : Fin m → C, cf i = d i ∧ (∀ k, i < k → cf k = 0) ∧ IsCombAtG t x u cf (u' i)) (i : Fin m) :
     grNorm t x Λ u' i = ‖d i‖ * grNorm t x Λ u i := by
@@ -240,6 +315,9 @@ def flagPtEquiv : FlagPt Z Ω ≃
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Establish `h : y ≫ genStr Z = spMap (Spec.preimage (y ≫ genStr Z)).hom` using `(Spec.map_preimage _).symm`. Take `⟨f⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c O β Z Ω _ y h`. Conclude with `⟨(flagPtEquiv Z Ω).symm ⟨_, ⟨y, h⟩, f⟩, rfl⟩`.
+-/
 theorem exists_flagPt (y : Sp Ω ⟶ gen Z) : ∃ z : FlagPt Z Ω, z.y = y := by
   have h : y ≫ genStr Z = spMap (Spec.preimage (y ≫ genStr Z)).hom := (Spec.map_preimage _).symm
   obtain ⟨f⟩ := GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c O β Z Ω _ y h
@@ -247,6 +325,9 @@ theorem exists_flagPt (y : Sp Ω ⟶ gen Z) : ∃ z : FlagPt Z Ω, z.y = y := by
 
 variable {Z Ω}
 
+/- English proof (translation)
+Introduce `cf cf' w h1 h2`. Use `(y.basis τ w (comb_tan (y.tan τ) h1) fun a => ?_).unique h1 h2` and prove the remaining obligations. Rewrite using `[← (isCombAtG_iff Z.t _ (fun j => ovT (y.tan τ j)) _ _).1 h1]`. Use `Z.t.act.hom a` as an intermediate fact. Conclude with `congrArg (fun f => f.left) (combT_eig _ (fun j => ovT (y.tan τ j)) (Z.t.act.act a) _ (fun j => Over.OverMorphism.ext (y.eig τ j a)) cf)`.
+-/
 theorem indep_u (y : FlagPt Z Ω) (τ : E →+* ℂ) : Indep Z.t (y.y ≫ genι Z) (y.u τ) := by
   intro cf cf' w h1 h2
   refine (y.basis τ w (comb_tan (y.tan τ) h1) fun a => ?_).unique h1 h2
@@ -258,8 +339,16 @@ theorem indep_u (y : FlagPt Z Ω) (τ : E →+* ℂ) : Indep Z.t (y.y ≫ genι 
 def SameFlags (y y' : FlagPt Z Ω) (d : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Ωˣ) : Prop :=
   y'.y = y.y ∧ y.frame.Tri (RingHom.id Ω) y'.frame d
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, y.frame.tri_refl⟩`.
+-/
 theorem SameFlags.refl (y : FlagPt Z Ω) : SameFlags y y 1 := ⟨rfl, y.frame.tri_refl⟩
 
+/- English proof (translation)
+Establish `h3 : spMap (dualMap (RingHom.id Ω)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`. Rewrite using `[h.1]`.
+
+Use `grNorm_tri (d := fun k => io (d τ k)) (fun k => GlobalTheory.FactorDepth.isTanAtG_map _ io (y.tan τ k)) (fun k => (map_ne_zero io).2 (d τ k).ne_zero) (fun k => ?_) i` and prove the remaining obligations. Take `⟨cf, e1, e2, e3⟩` from `h.2.2.2 τ k`. Simplify using `only [h3, Category.id_comp, h.1] at e3`. Conclude with `⟨fun a => io (cf a), congrArg io e1, fun a ha => (congrArg io (e2 a ha)).trans (map_zero io), GlobalTheory.LatDRFree.comb_map _ io e3⟩`.
+-/
 theorem SameFlags.grNorm {y y' : FlagPt Z Ω} {d : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Ωˣ} (h : SameFlags y y' d)
     {C : Type} [NontriviallyNormedField C] (io : Ω →+* C) (Λ : Set (Sp (DualNumber C) ⟶ Z.t.G.left)) (τ : E →+* ℂ)
     (i : Fin (Dw.mult τ)) :
@@ -278,6 +367,13 @@ theorem SameFlags.grNorm {y y' : FlagPt Z Ω} {d : ∀ τ : E →+* ℂ, Fin (Dw
 
 end AnyBase
 
+/- English proof (translation)
+Use `@ValuationRing.mk _ _ _ ⟨fun a b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ‖(a : C)‖ ≤ ‖(b : C)‖`. Distinguish the cases in `hb : (b : C) = 0`. Use `⟨1, Or.inr (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite `h` using `[hb, norm_zero, norm_le_zero_iff]`.
+
+Simplify using `[h, hb]`. Use `⟨⟨a / b, show ‖(a / b : C)‖ ≤ 1 by rw [norm_div]; exact div_le_one_of_le₀ h (norm_nonneg _)⟩, Or.inr (Subtype.ext ?_)⟩` and prove the remaining obligations. Simplify using `[mul_div_cancel₀ _ hb]`. Establish `ha : (a : C) ≠ 0` using `fun h0 => h (by simp [h0])`. Use `⟨⟨b / a, show ‖(b / a : C)‖ ≤ 1 by rw [norm_div]; exact div_le_one_of_le₀ (le_of_not_ge h) (norm_nonneg _)⟩, Or.inl (Subtype.ext ?_)⟩` and prove the remaining obligations.
+
+Simplify using `[mul_div_cancel₀ _ ha]`.
+-/
 theorem intO_valRing (C : Type) [NormedField C] [IsUltrametricDist C] : ValuationRing (intO C) := by
   refine @ValuationRing.mk _ _ _ ⟨fun a b => ?_⟩
   by_cases h : ‖(a : C)‖ ≤ ‖(b : C)‖
@@ -293,6 +389,9 @@ theorem intO_valRing (C : Type) [NormedField C] [IsUltrametricDist C] : Valuatio
       Or.inl (Subtype.ext ?_)⟩
     simp [mul_div_cancel₀ _ ha]
 
+/- English proof (translation)
+Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Distinguish the cases in `h : ‖z‖ ≤ 1`. Conclude with `⟨⟨z, h⟩, 1, by rw [map_one, div_one]; rfl⟩`. Conclude with `⟨1, ⟨z⁻¹, show ‖z⁻¹‖ ≤ 1 by rw [norm_inv]; exact inv_le_one_of_one_le₀ (le_of_not_ge h)⟩, by rw [map_one, one_div]; exact (inv_inv z).symm⟩`.
+-/
 theorem intO_frac (C : Type) [NormedField C] [IsUltrametricDist C] : IsFractionRing (intO C) C := by
   refine IsFractionRing.of_field _ _ fun z => ?_
   by_cases h : ‖z‖ ≤ 1
@@ -302,6 +401,19 @@ theorem intO_frac (C : Type) [NormedField C] [IsUltrametricDist C] : IsFractionR
 
 variable (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
 
+/- English proof (translation)
+Use `isProper_toroidalModel_structureMap Z` as an intermediate fact. Use `intO_valRing C` as an intermediate fact. Use `intO_frac C` as an intermediate fact. Set `φ : 𝓞 c.F →+* C` to `(Spec.preimage (x ≫ Z.s)).hom`. Establish `hφ : ∀ a, φ a ∈ intO C` using `fun a => by`.
+
+Establish `h1 : IsIntegral (intO C) (φ a)` using `(RingOfIntegers.isIntegral a).map_of_comp_eq (Int.castRingHom _) φ (RingHom.ext_int _ _)`. Set `_ : GCDMonoid (intO C)` to `IsBezout.toGCDDomain _`. Establish `: IsIntegrallyClosed (intO C)` using `GCDMonoid.toIsIntegrallyClosed`. Take `⟨b, hb⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := intO C) (K := C)).1 h1`. Conclude with `hb ▸ b.2`.
+
+Establish `hv : ValuativeCriterion.Existence Z.s`. Establish `h` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed Z.s) : (ValuativeCriterion.Existence ⊓ @QuasiCompact : MorphismProperty Scheme) Z.s)`. Conclude with `h.1`. Set `S : ValuativeCommSq Z.s` to `{ R := intO C, K := C, i₁ := x, i₂ := spMap (φ.codRestrict _ hφ) commSq := ⟨by`. Rewrite using `[← Spec.map_preimage (x ≫ Z.s)]`.
+
+Conclude with `Spec.map_comp (CommRingCat.ofHom (φ.codRestrict _ hφ)) (CommRingCat.ofHom (intO C).subtype)⟩ }`. Establish `hs : ∀ a : Sp ↥(intO C) ⟶ Z.X, spMap (intO C).subtype ≫ a = x → a ≫ Z.s = S.i₂` using `fun a ha => by`. Rewrite using `[← Spec.map_preimage (a ≫ Z.s)]`. Use `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun r => Subtype.ext ?_))` and prove the remaining obligations. Establish `e : Spec.preimage (x ≫ Z.s) = Spec.preimage (a ≫ Z.s) ≫ CommRingCat.ofHom (intO C).subtype`.
+
+Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_preimage, Spec.map_preimage, ← ha, Category.assoc]`. Conclude with `(congrArg (fun f => f.hom r) e).symm`. Take `⟨⟨xO, h1, h2⟩⟩` from `(hv S).exists_lift`. Use `⟨xO, h1, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Conclude with `congrArg CommSq.LiftStruct.l ((IsSeparated.valuativeCriterion Z.s S).elim ⟨a, ha, hs a ha⟩ ⟨xO, h1, h2⟩)`.
+-/
 theorem existsUnique_ext (x : Sp C ⟶ Z.X) : ∃! xO : Sp ↥(intO C) ⟶ Z.X, spMap (intO C).subtype ≫ xO = x := by
   have := isProper_toroidalModel_structureMap Z
   have := intO_valRing C
@@ -335,6 +447,9 @@ theorem existsUnique_ext (x : Sp C ⟶ Z.X) : ∃! xO : Sp ↥(intO C) ⟶ Z.X, 
   refine ⟨xO, h1, fun a ha => ?_⟩
   exact congrArg CommSq.LiftStruct.l ((IsSeparated.valuativeCriterion Z.s S).elim ⟨a, ha, hs a ha⟩ ⟨xO, h1, h2⟩)
 
+/- English proof (translation)
+Take `⟨xO, rfl, hx⟩` from `existsUnique_ext Z x`. Take `⟨g, v, hv, hb, hL⟩` from `GlobalTheory.LatDRFree.latDR_free E H _ Z.t C xO hx`. Conclude with `grNorm_pos_of_basis hv hb (fun cf w h => (hL cf w h).2) (fun cf w h => (hL cf w h).1) hu hi i`.
+-/
 theorem grNorm_latDR_pos (x : Sp C ⟶ Z.X) {m : ℕ} {u : Fin m → (Sp (DualNumber C) ⟶ Z.t.G.left)}
     (hu : ∀ k, IsTanAtG Z.t x (u k)) (hi : Indep Z.t x u) (i : Fin m) :
     (grSet Z.t x (latDR Z.t x) u i).Nonempty ∧ 0 < grNorm Z.t x (latDR Z.t x) u i := by
@@ -342,6 +457,11 @@ theorem grNorm_latDR_pos (x : Sp C ⟶ Z.X) {m : ℕ} {u : Fin m → (Sp (DualNu
   obtain ⟨g, v, hv, hb, hL⟩ := GlobalTheory.LatDRFree.latDR_free E H _ Z.t C xO hx
   exact grNorm_pos_of_basis hv hb (fun cf w h => (hL cf w h).2) (fun cf w h => (hL cf w h).1) hu hi i
 
+/- English proof (translation)
+Take `⟨xO, rfl, hx⟩` from `existsUnique_ext Z x`. Take `⟨g, v, hv, hb, hL⟩` from `GlobalTheory.LatDRFree.latDR_free E H _ Z.t ℂ_[p] xO hx`. Establish `hn : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹` using `by simpa using PadicComplex.norm_extends' p (p : ℚ_[p])`. Take `⟨a, ha0, ha⟩` from `NormedField.exists_norm_lt ℂ_[p] (Real.rpow_pos_of_pos (Nat.cast_pos.2 hp.out.pos : (0 : ℝ) < p) (-(1 / ((p : ℝ) - 1))))`. Use `grNorm_pos_of_basis (b := ‖a‖⁻¹) hv hb (fun cf w h h' => latDR_subset_latHT _ _ _ _ _ p _ ((hL cf w h).2 h')) (fun cf w h hw j => ?_) hu hi i` and prove the remaining obligations.
+
+Establish `h1` using `(hL _ _ (comb_smul hv h a)).1 (hB E H _ Z.t p ℂ_[p] hn xO hx w hw a ha.le) j`. Rewrite `h1` using `[norm_mul]`. Rewrite using `[← one_div, le_div_iff₀ ha0, mul_comm]`. Conclude with `h1`.
+-/
 theorem grNorm_latHT_pos (hB : HTBoundSt) (p : ℕ) [hp : Fact p.Prime] (x : Sp ℂ_[p] ⟶ Z.X) {m : ℕ}
     {u : Fin m → (Sp (DualNumber ℂ_[p]) ⟶ Z.t.G.left)} (hu : ∀ k, IsTanAtG Z.t x (u k)) (hi : Indep Z.t x u)
     (i : Fin m) : (grSet Z.t x (latHT Z.t p x) u i).Nonempty ∧ 0 < grNorm Z.t x (latHT Z.t p x) u i := by
@@ -357,6 +477,9 @@ theorem grNorm_latHT_pos (hB : HTBoundSt) (p : ℕ) [hp : Fact p.Prime] (x : Sp 
   rw [← one_div, le_div_iff₀ ha0, mul_comm]
   exact h1
 
+/- English proof (translation)
+Establish `hu` using `fun k => GlobalTheory.FactorDepth.isTanAtG_map _ io (y.tan τ k)`. Establish `hi` using `(indep_u y τ).map io (y.tan τ)`. Consider the cases of `b`. Conclude with `(grNorm_latDR_pos Z _ hu hi i).2`. Conclude with `(grNorm_latHT_pos Z (hB rfl) p _ hu hi i).2`.
+-/
 theorem grNorm_lat_pos {Ω : Type} [Field Ω] (y : FlagPt Z Ω) (p : ℕ) [Fact p.Prime] (io : Ω →+* ℂ_[p]) (b : Bool)
     (hB : b = true → HTBoundSt) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     0 < grNorm Z.t (spMap io ≫ y.y ≫ genι Z) (lat Z.t p (spMap io ≫ y.y ≫ genι Z) b)
@@ -379,6 +502,9 @@ variable {Ω : Type} [Field Ω] {y y' : FlagPt Z Ω} {d : ∀ τ : E →+* ℂ, 
   (p : ℕ) [Fact p.Prime] (io : Ω →+* ℂ_[p]) (b : Bool) (hB : b = true → HTBoundSt) (τ : E →+* ℂ)
 include h hB
 
+/- English proof (translation)
+Unfold `FlagPt.lnLie diagAt`. Use `split_ifs with hk`. Rewrite using `[h.grNorm, h.1, Real.log_mul (norm_ne_zero_iff.2 ((map_ne_zero io).2 (d τ _).ne_zero)) (grNorm_lat_pos Z y p io b hB τ _).ne', add_comm]`. Simplify using the standard rewrite rules.
+-/
 theorem SameFlags.lnLie (k : ℕ) : y'.lnLie io p b τ k = y.lnLie io p b τ k + Real.log ‖io (diagAt d τ k)‖ := by
   unfold FlagPt.lnLie diagAt
   split_ifs with hk
@@ -386,6 +512,11 @@ theorem SameFlags.lnLie (k : ℕ) : y'.lnLie io p b τ k = y.lnLie io p b τ k +
       (grNorm_lat_pos Z y p io b hB τ _).ne', add_comm]
   · simp
 
+/- English proof (translation)
+Unfold `FlagPt.lnRoot rootFac`. Distinguish the cases in `hi : i < Dw.p`. Simplify using `only [if_pos hi, h.lnLie p io b hB]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg hi, h.lnLie p io b hB, Units.val_inv_eq_inv_val, map_inv₀, norm_inv, Real.log_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem SameFlags.lnRoot (i : ℕ) : y'.lnRoot io p b τ i = y.lnRoot io p b τ i + Real.log ‖io (rootFac d τ i)‖ := by
   unfold FlagPt.lnRoot rootFac
   by_cases hi : i < Dw.p
@@ -398,10 +529,16 @@ end Pts
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ)
 
+/- English proof (translation)
+The claim follows from `PtComp.compPt_surjective s k`.
+-/
 theorem exists_pt (k : s.Comp) : ∃ y : Pt s, compPt s y = k := PtComp.compPt_surjective s k
 
 instance nonempty_pt : Nonempty (Pt s) := (exists_pt s (compNe s).some).nonempty
 
+/- English proof (translation)
+The claim follows from `dif_pos hp.out`.
+-/
 theorem lnAt_eq (p : ℕ) [hp : Fact p.Prime] (b : Bool) (y : Pt s) (x : DV.Rt D.what₂.Tau N) :
     lnAt s p b y x = y.lnRoot (iotaP p) p b (DV.tauEmb D x.1) x.2 := dif_pos hp.out
 

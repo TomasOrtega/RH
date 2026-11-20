@@ -17,18 +17,30 @@ variable {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
 
 def EntD (S : Set ℂ) (f : ℂ → Matrix ι ι ℂ) : Prop := ∀ i j, DifferentiableOn ℂ (fun z => f z i j) S
 
+/- English proof (translation)
+Introduce `_ _` and use `differentiableOn_const _`.
+-/
 theorem entD_const (S : Set ℂ) (A : Matrix ι ι ℂ) : EntD S (fun _ => A) := fun _ _ => differentiableOn_const _
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.add_apply] exact (hf i j).fun_add (hg i j)`.
+-/
 theorem entD_add {S : Set ℂ} {f g : ℂ → Matrix ι ι ℂ} (hf : EntD S f) (hg : EntD S g) :
     EntD S (fun z => f z + g z) := fun i j => by
   simp only [Matrix.add_apply]
   exact (hf i j).fun_add (hg i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.mul_apply] exact DifferentiableOn.fun_sum fun k _ => (hf i k).mul (hg k j)`.
+-/
 theorem entD_mul {S : Set ℂ} {f g : ℂ → Matrix ι ι ℂ} (hf : EntD S f) (hg : EntD S g) :
     EntD S (fun z => f z * g z) := fun i j => by
   simp only [Matrix.mul_apply]
   exact DifferentiableOn.fun_sum fun k _ => (hf i k).mul (hg k j)
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply]`. Use `DifferentiableOn.fun_sum fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Units.smul_def, zsmul_eq_mul]`. Conclude with `(differentiableOn_const _).mul (DifferentiableOn.fun_finsetProd fun i _ => hf _ _)`.
+-/
 theorem det_diff {S : Set ℂ} {f : ℂ → Matrix ι ι ℂ} (hf : EntD S f) :
     DifferentiableOn ℂ (fun z => (f z).det) S := by
   simp only [Matrix.det_apply]
@@ -36,6 +48,9 @@ theorem det_diff {S : Set ℂ} {f : ℂ → Matrix ι ι ℂ} (hf : EntD S f) :
   simp only [Units.smul_def, zsmul_eq_mul]
   exact (differentiableOn_const _).mul (DifferentiableOn.fun_finsetProd fun i _ => hf _ _)
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.adjugate_apply] refine det_diff (f := fun z => (f z).updateRow j (Pi.single i 1)) (fun a b => ?_) by_cases hab : a = j · subst hab; simp only [Matrix.updateRow_self]; exact differentiableOn_const _ · simp only [Matrix.updateRow_ne hab]; exact hf a b`.
+-/
 theorem entD_adjugate {S : Set ℂ} {f : ℂ → Matrix ι ι ℂ} (hf : EntD S f) :
     EntD S (fun z => (f z).adjugate) := fun i j => by
   simp only [Matrix.adjugate_apply]
@@ -44,16 +59,29 @@ theorem entD_adjugate {S : Set ℂ} {f : ℂ → Matrix ι ι ℂ} (hf : EntD S 
   · subst hab; simp only [Matrix.updateRow_self]; exact differentiableOn_const _
   · simp only [Matrix.updateRow_ne hab]; exact hf a b
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv'] exact ((det_diff hf).inv h0).mul (entD_adjugate hf i j)`.
+-/
 theorem entD_inv {S : Set ℂ} {f : ℂ → Matrix ι ι ℂ} (hf : EntD S f) (h0 : ∀ z ∈ S, (f z).det ≠ 0) :
     EntD S (fun z => (f z)⁻¹) := fun i j => by
   simp only [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']
   exact ((det_diff hf).inv h0).mul (entD_adjugate hf i j)
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag]`. Conclude with `DifferentiableOn.fun_sum fun i _ => hf i i`.
+-/
 theorem trace_diff {S : Set ℂ} {f : ℂ → Matrix ι ι ℂ} (hf : EntD S f) :
     DifferentiableOn ℂ (fun z => (f z).trace) S := by
   simp only [Matrix.trace, Matrix.diag]
   exact DifferentiableOn.fun_sum fun i _ => hf i i
 
+/- English proof (translation)
+Introduce `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify `(by fun_prop : Differentiable ℂ (fun z : ℂ => Complex.exp (z * (X i : ℂ)))).differentiableOn` using `[aC]`.
+
+Simplify `differentiableOn_const (c := (0 : ℂ))` using `[aC, h]`. Simplify `differentiableOn_const (c := (0 : ℂ))` using `[aC]`. Simplify `differentiableOn_const (c := (0 : ℂ))` using `[aC]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify `(by fun_prop : Differentiable ℂ (fun z : ℂ => Complex.exp (-(z * (X i : ℂ))))).differentiableOn` using `[aC]`. Simplify `differentiableOn_const (c := (0 : ℂ))` using `[aC, h]`.
+-/
 theorem entD_aC (X : Fin n → ℝ) (S : Set ℂ) : EntD S (aC X) := by
   intro i j
   rcases i with i | i <;> rcases j with j | j
@@ -68,30 +96,51 @@ theorem entD_aC (X : Fin n → ℝ) (S : Set ℂ) : EntD S (aC X) := by
       simpa [aC] using (by fun_prop : Differentiable ℂ (fun z : ℂ => Complex.exp (-(z * (X i : ℂ))))).differentiableOn
     · simpa [aC, h] using differentiableOn_const (c := (0 : ℂ))
 
+/- English proof (translation)
+Introduce `i j` and use `hf (Sum.inl i) (Sum.inl j)`.
+-/
 theorem entD_toBlocks₁₁ {S : Set ℂ} {f : ℂ → Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ}
     (hf : EntD S f) : EntD S (fun z => (f z).toBlocks₁₁) :=
   fun i j => hf (Sum.inl i) (Sum.inl j)
 
+/- English proof (translation)
+Introduce `i j` and use `hf (Sum.inl i) (Sum.inr j)`.
+-/
 theorem entD_toBlocks₁₂ {S : Set ℂ} {f : ℂ → Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ}
     (hf : EntD S f) : EntD S (fun z => (f z).toBlocks₁₂) :=
   fun i j => hf (Sum.inl i) (Sum.inr j)
 
+/- English proof (translation)
+Introduce `i j` and use `hf (Sum.inr i) (Sum.inl j)`.
+-/
 theorem entD_toBlocks₂₁ {S : Set ℂ} {f : ℂ → Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ}
     (hf : EntD S f) : EntD S (fun z => (f z).toBlocks₂₁) :=
   fun i j => hf (Sum.inr i) (Sum.inl j)
 
+/- English proof (translation)
+Introduce `i j` and use `hf (Sum.inr i) (Sum.inr j)`.
+-/
 theorem entD_toBlocks₂₂ {S : Set ℂ} {f : ℂ → Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ}
     (hf : EntD S f) : EntD S (fun z => (f z).toBlocks₂₂) :=
   fun i j => hf (Sum.inr i) (Sum.inr j)
 
+/- English proof (translation)
+The claim follows from `entD_mul (entD_const _ _) (entD_aC X S)`.
+-/
 theorem bigM_diff (y : GR n) (X : Fin n → ℝ) (S : Set ℂ) : EntD S (fun z => mR y * aC X z) :=
   entD_mul (entD_const _ _) (entD_aC X S)
 
+/- English proof (translation)
+Unfold `aC`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁, det_diagonal, det_diagonal, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun j _ => by rw [← Complex.exp_add]; simp`.
+-/
 theorem det_aC (X : Fin n → ℝ) (z : ℂ) : (aC X z).det = 1 := by
   unfold aC
   rw [Matrix.det_fromBlocks_zero₂₁, det_diagonal, det_diagonal, ← Finset.prod_mul_distrib]
   exact Finset.prod_eq_one fun j _ => by rw [← Complex.exp_add]; simp
 
+/- English proof (translation)
+Rewrite using `[det_mul, det_aC, mul_one]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 y.1.isUnit).ne_zero`.
+-/
 theorem det_bigM_ne (y : GR n) (X : Fin n → ℝ) (z : ℂ) : (mR y * aC X z).det ≠ 0 := by
   rw [det_mul, det_aC, mul_one]
   exact ((Matrix.isUnit_iff_isUnit_det _).1 y.1.isUnit).ne_zero
@@ -102,6 +151,15 @@ namespace DBoundH
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `set S := stripS X`. Establish `hM` using `bigM_diff y X S`. Establish `hQ : ∀ s : ℂ, EntD S (fun z => (mR y * aC X z).toBlocks₂₁ * (s • 1) + (mR y * aC X z).toBlocks₂₂)` using `fun s => entD_add (entD_mul (entD_toBlocks₂₁ hM) (entD_const _ _)) (entD_toBlocks₂₂ hM)`. Establish `hP : ∀ s : ℂ, EntD S (fun z => (mR y * aC X z).toBlocks₁₁ * (s • 1) + (mR y * aC X z).toBlocks₁₂)` using `fun s => entD_add (entD_mul (entD_toBlocks₁₁ hM) (entD_const _ _)) (entD_toBlocks₁₂ hM)`. Establish `hd1 : ∀ z ∈ S, ((mR y * aC X z).toBlocks₂₁ * (Complex.I • 1) + (mR y * aC X z).toBlocks₂₂).det ≠ 0` using `fun z hz => (dSieg n y X z hz).2.2.1`.
+
+Establish `hd2 : ∀ z ∈ S, ((mR y * aC X z).toBlocks₂₁ * ((-Complex.I) • 1) + (mR y * aC X z).toBlocks₂₂).det ≠ 0` using `fun z hz => (dSieg n y X z hz).2.2.2`. Establish `hZ1 : EntD S (fun z => ptZ y X z Complex.I)` using `entD_mul (hP _) (entD_inv (hQ _) hd1)`. Establish `hZ2 : EntD S (fun z => ptZ y X z (-Complex.I))` using `entD_mul (hP _) (entD_inv (hQ _) hd2)`. Establish `hj : DifferentiableOn ℂ (fun z => jC e p q y X z) S`. Unfold `jC`.
+
+Use `(((det_diff hM).zpow (Or.inl fun z _ => det_bigM_ne y X z)).mul ((det_diff (hQ _)).zpow (Or.inl fun z hz => hd1 z hz))).mul ((det_diff (hQ _)).zpow (Or.inl fun z hz => hd2 z hz))` and prove the remaining obligations. Establish `hg : DifferentiableOn ℂ (fun z => gC ε t c (ptZ y X z Complex.I) (ptZ y X z (-Complex.I)) u) S`. Unfold `gC`. Use `DifferentiableOn.cexp ?_` and prove the remaining obligations. Conclude with `((trace_diff (entD_mul hZ1 (entD_const _ _))).const_mul _).sub ((trace_diff (entD_mul hZ2 (entD_const _ _))).const_mul _)`.
+
+Conclude with `hj.mul hg`.
+-/
 theorem famPQ_holo {m n : ℕ} (ε : Fin m → Bool) (t c : ℝ) (e : ℤ) (p q : ℕ) (X : Fin n → ℝ) (y : GR n)
     (u : Fin m → Fin n → ℂ) : DifferentiableOn ℂ (fun z => famPQ ε t c e p q y X z u) (stripS X) := by
   set S := stripS X
@@ -132,20 +190,32 @@ variable {n : ℕ} {T : Type} [TopologicalSpace T]
 def EntC (S : Set T) (f : T → Matrix ι ι ℂ) : Prop := ∀ i j, ContinuousOn (fun x => f x i j) S
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Introduce `_ _` and use `continuousOn_const`.
+-/
 theorem entC_const (S : Set T) (A : Matrix ι ι ℂ) : EntC S (fun _ => A) := fun _ _ => continuousOn_const
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.add_apply] exact (hf i j).add (hg i j)`.
+-/
 theorem entC_add {S : Set T} {f g : T → Matrix ι ι ℂ} (hf : EntC S f) (hg : EntC S g) :
     EntC S (fun z => f z + g z) := fun i j => by
   simp only [Matrix.add_apply]
   exact (hf i j).add (hg i j)
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.mul_apply] exact continuousOn_finset_sum _ fun k _ => (hf i k).mul (hg k j)`.
+-/
 theorem entC_mul {S : Set T} {f g : T → Matrix ι ι ℂ} (hf : EntC S f) (hg : EntC S g) :
     EntC S (fun z => f z * g z) := fun i j => by
   simp only [Matrix.mul_apply]
   exact continuousOn_finset_sum _ fun k _ => (hf i k).mul (hg k j)
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply]`. Use `continuousOn_finset_sum _ fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Units.smul_def, zsmul_eq_mul]`. Conclude with `continuousOn_const.mul (continuousOn_finset_prod _ fun i _ => hf _ _)`.
+-/
 theorem det_cont {S : Set T} {f : T → Matrix ι ι ℂ} (hf : EntC S f) :
     ContinuousOn (fun z => (f z).det) S := by
   simp only [Matrix.det_apply]
@@ -153,6 +223,9 @@ theorem det_cont {S : Set T} {f : T → Matrix ι ι ℂ} (hf : EntC S f) :
   simp only [Units.smul_def, zsmul_eq_mul]
   exact continuousOn_const.mul (continuousOn_finset_prod _ fun i _ => hf _ _)
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.adjugate_apply] refine det_cont (f := fun z => (f z).updateRow j (Pi.single i 1)) (fun a b => ?_) by_cases hab : a = j · subst hab; simp only [Matrix.updateRow_self]; exact continuousOn_const · simp only [Matrix.updateRow_ne hab]; exact hf a b`.
+-/
 theorem entC_adjugate {S : Set T} {f : T → Matrix ι ι ℂ} (hf : EntC S f) :
     EntC S (fun z => (f z).adjugate) := fun i j => by
   simp only [Matrix.adjugate_apply]
@@ -161,20 +234,32 @@ theorem entC_adjugate {S : Set T} {f : T → Matrix ι ι ℂ} (hf : EntC S f) :
   · subst hab; simp only [Matrix.updateRow_self]; exact continuousOn_const
   · simp only [Matrix.updateRow_ne hab]; exact hf a b
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv'] exact ((det_cont hf).inv₀ h0).mul (entC_adjugate hf i j)`.
+-/
 theorem entC_inv {S : Set T} {f : T → Matrix ι ι ℂ} (hf : EntC S f) (h0 : ∀ z ∈ S, (f z).det ≠ 0) :
     EntC S (fun z => (f z)⁻¹) := fun i j => by
   simp only [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']
   exact ((det_cont hf).inv₀ h0).mul (entC_adjugate hf i j)
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag]`. Conclude with `continuousOn_finset_sum _ fun i _ => hf i i`.
+-/
 theorem trace_cont {S : Set T} {f : T → Matrix ι ι ℂ} (hf : EntC S f) :
     ContinuousOn (fun z => (f z).trace) S := by
   simp only [Matrix.trace, Matrix.diag]
   exact continuousOn_finset_sum _ fun i _ => hf i i
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem mR_cont : Continuous fun y : GR n => mR y :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+Unfold `gramB evX`. Conclude with `(MvPolynomial.continuous_eval _).comp (continuous_pi fun k => by split_ifs`. Conclude with `continuous_star.comp ((continuous_apply _).comp (continuous_apply _))`. Conclude with `(continuous_apply _).comp (continuous_apply _))`.
+-/
 theorem gramB_cont {m : ℕ} (ε : Fin m → Bool) (b : Bool) (i j : Fin n) :
     Continuous fun u : Fin m → Fin n → ℂ => gramB ε b u i j := by
   unfold gramB evX
@@ -183,6 +268,19 @@ theorem gramB_cont {m : ℕ} (ε : Fin m → Bool) (b : Bool) (i j : Fin n) :
     · exact continuous_star.comp ((continuous_apply _).comp (continuous_apply _))
     · exact (continuous_apply _).comp (continuous_apply _))
 
+/- English proof (translation)
+Use `set S : Set (GR n × ℂ × (Fin m → Fin n → ℂ)) := Set.univ ×ˢ (stripS X ×ˢ Set.univ) with hS`. Establish `hzS : ∀ p' ∈ S, p'.2.1 ∈ stripS X` using `fun p' hp => hp.2.1`. Establish `hY : EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => mR p'.1)` using `fun i j => (((continuous_apply j).comp ((continuous_apply i).comp mR_cont)).comp continuous_fst).continuousOn`. Establish `hA : EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => aC X p'.2.1)`. Introduce `i j`.
+
+Use `(entD_aC X Set.univ i j).continuousOn` as an intermediate fact. Conclude with `(this.comp_continuous (continuous_fst.comp continuous_snd) (fun _ => Set.mem_univ _)).continuousOn`. Establish `hM : EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => mR p'.1 * aC X p'.2.1)` using `entC_mul hY hA`. Establish `hM' : ∀ i j, ContinuousOn (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => (mR p'.1 * aC X p'.2.1) i j) S` using `hM`. Establish `projected_block_lower_sum : EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => (mR p'.1 * aC X p'.2.1).toBlocks₂₁)` using `fun i j => hM' (Sum.inr i) (Sum.inl j)`.
+
+Establish `lowerDiagonalBlockAsGL : EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => (mR p'.1 * aC X p'.2.1).toBlocks₂₂)` using `fun i j => hM' (Sum.inr i) (Sum.inr j)`. Establish `upper_block_rank_one_update : EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => (mR p'.1 * aC X p'.2.1).toBlocks₁₁)` using `fun i j => hM' (Sum.inl i) (Sum.inl j)`. Establish `projected_block_upper_sum : EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => (mR p'.1 * aC X p'.2.1).toBlocks₁₂)` using `fun i j => hM' (Sum.inl i) (Sum.inr j)`. Establish `hQ : ∀ s : ℂ, EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => (mR p'.1 * aC X p'.2.1).toBlocks₂₁ * (s • 1) + (mR p'.1 * aC X p'.2.1).toBlocks₂₂)` using `fun s => entC_add (entC_mul projected_block_lower_sum (entC_const _ _)) lowerDiagonalBlockAsGL`. Establish `hP : ∀ s : ℂ, EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => (mR p'.1 * aC X p'.2.1).toBlocks₁₁ * (s • 1) + (mR p'.1 * aC X p'.2.1).toBlocks₁₂)` using `fun s => entC_add (entC_mul upper_block_rank_one_update (entC_const _ _)) projected_block_upper_sum`.
+
+Establish `hd1 : ∀ p' ∈ S, ((mR p'.1 * aC X p'.2.1).toBlocks₂₁ * (Complex.I • 1) + (mR p'.1 * aC X p'.2.1).toBlocks₂₂).det ≠ 0` using `fun p' hp => (dSieg n p'.1 X p'.2.1 (hzS p' hp)).2.2.1`. Establish `hd2 : ∀ p' ∈ S, ((mR p'.1 * aC X p'.2.1).toBlocks₂₁ * ((-Complex.I) • 1) + (mR p'.1 * aC X p'.2.1).toBlocks₂₂).det ≠ 0` using `fun p' hp => (dSieg n p'.1 X p'.2.1 (hzS p' hp)).2.2.2`. Establish `hZ1 : EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => ptZ p'.1 X p'.2.1 Complex.I)` using `entC_mul (hP _) (entC_inv (hQ _) hd1)`. Establish `hZ2 : EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => ptZ p'.1 X p'.2.1 (-Complex.I))` using `entC_mul (hP _) (entC_inv (hQ _) hd2)`. Establish `hG : ∀ b : Bool, EntC S (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => gramB (epsT t ε) b p'.2.2)` using `fun b i j => ((gramB_cont (epsT t ε) b i j).comp (continuous_snd.comp continuous_snd)).continuousOn`.
+
+Establish `hj : ContinuousOn (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => jC e p q p'.1 X p'.2.1) S`. Unfold `jC`. Conclude with `(((det_cont hM).zpow₀ _ fun p' _ => Or.inl (det_bigM_ne p'.1 X p'.2.1)).mul ((det_cont (hQ _)).zpow₀ _ fun p' hp => Or.inl (hd1 p' hp))).mul ((det_cont (hQ _)).zpow₀ _ fun p' hp => Or.inl (hd2 p' hp))`. Establish `hg : ContinuousOn (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => gC ε t c (ptZ p'.1 X p'.2.1 Complex.I) (ptZ p'.1 X p'.2.1 (-Complex.I)) p'.2.2) S`. Unfold `gC`.
+
+Use `ContinuousOn.cexp ?_` and prove the remaining obligations. Conclude with `(continuousOn_const.mul (trace_cont (entC_mul hZ1 (hG true)))).sub (continuousOn_const.mul (trace_cont (entC_mul hZ2 (hG false))))`. Conclude with `hj.mul hg`.
+-/
 theorem famPQ_cont {m : ℕ} (ε : Fin m → Bool) (t c : ℝ) (e : ℤ) (p q : ℕ) (X : Fin n → ℝ) :
     ContinuousOn (fun p' : GR n × ℂ × (Fin m → Fin n → ℂ) => famPQ ε t c e p q p'.1 X p'.2.1 p'.2.2)
       (Set.univ ×ˢ (stripS X ×ˢ Set.univ)) := by

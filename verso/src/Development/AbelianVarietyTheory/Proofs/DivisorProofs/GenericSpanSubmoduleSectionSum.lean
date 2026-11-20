@@ -13,6 +13,9 @@ open scoped Classical
 
 namespace GlobalTheory.GrFilt
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (he.basis h).sum_repr t]`. Simplify using `only [map_sum, QCoh.germ_smul, IsFrame.basis_apply, germ_resM]`. Simplify using `only [← he.stalkBasis_apply x (h hx)]`. Rewrite using `[← map_sum, Module.Basis.repr_sum_self]`.
+-/
 theorem stalkBasis_repr_germ_of_fintype {X : Scheme.{0}} {F : X.Modules} {κ : Type} [Fintype κ] {U V : X.Opens}
     {e : κ → Γ(F, U)} (he : IsFrame e) (h : V ≤ U) (x : X) (hx : x ∈ V) (t : Γ(F, V)) (i : κ) :
     (he.stalkBasis x (h hx)).repr (F.presheaf.germ V x hx t) i =
@@ -22,6 +25,21 @@ theorem stalkBasis_repr_germ_of_fintype {X : Scheme.{0}} {F : X.Modules} {κ : T
   simp only [← he.stalkBasis_apply x (h hx)]
   rw [← map_sum, Module.Basis.repr_sum_self]
 
+/- English proof (translation)
+Introduce `X _ F κ _ U e he Q N hN V h a`. Rewrite using `[Sub.mem_ofGeneric]`. Distinguish the cases in `hV : genericPoint X ∈ V`. Use `swap`. Use `⟨fun _ j _ => ?_, fun _ h => (hV h).elim⟩` and prove the remaining obligations.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : V = ⊥ := by`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne`. Conclude with `hV (genericPoint_mem hx)`. Conclude with `Subsingleton.elim _ _`.
+
+Establish `hsp : N = Submodule.span X.functionField ((show Module.Basis κ X.functionField (genStalk F) from he.stalkBasis _ (h hV)) '' {j | Q j})`. Use `(hN (h hV)).trans ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `z`. Conclude with `(he.stalkBasis_apply _ (h hV) z).symm`.
+
+Establish `hco (j : κ) : (he.stalkBasis _ (h hV)).repr (F.presheaf.germ V _ hV (∑ j, a j • resM F h (e j))) j = X.presheaf.germ V _ hV (a j)`. Rewrite using `[stalkBasis_repr_germ_of_fintype he h]`. Simplify using `only [← he.basis_apply h]`. Rewrite using `[Module.Basis.repr_sum_self]`. Establish `key : F.presheaf.germ V _ hV (∑ j, a j • resM F h (e j)) ∈ Submodule.span X.functionField ((show Module.Basis κ X.functionField (genStalk F) from he.stalkBasis _ (h hV)) '' {j | Q j}) ↔ ∀ j : κ, ¬ Q j → a j = 0`.
+
+Rewrite using `[Module.Basis.mem_span_image]`. Prove the components needed by the constructor for the conclusion. Introduce `H j hj`. Assume the negation of the conclusion as `hne`. Establish `h0 : X.presheaf.germ V _ hV (a j) ≠ 0` using `fun h0 => hne (germ_injective_of_isIntegral X _ hV (h0.trans (map_zero _).symm))`.
+
+Conclude with `hj (H (Finsupp.mem_support_iff.2 (fun h1 => h0 ((hco j).symm.trans h1))))`. Introduce `H j hj`. Assume the negation of the conclusion as `hn`. Use `Finsupp.mem_support_iff.1 hj ((hco j).trans ?_)` and prove the remaining obligations. Rewrite using `[H j hn, map_zero]`.
+
+Rewrite using `[← key]`. Conclude with `⟨fun H => hsp.le (H hV), fun H _ => hsp.ge H⟩`.
+-/
 theorem mem_ofGeneric_iff_of_span :
     ∀ {X : Scheme.{0}} [IsIntegral X] {F : X.Modules} {κ : Type} [Fintype κ] {V : X.Opens} (c : κ → Γ(F, V)), IsFrame c →
     ∀ (Q : κ → Prop) (N : Submodule X.functionField (genStalk F)),

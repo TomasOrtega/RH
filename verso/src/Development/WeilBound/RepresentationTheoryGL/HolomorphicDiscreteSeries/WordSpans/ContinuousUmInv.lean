@@ -15,6 +15,9 @@ def wp {V : Type} [AddCommGroup V] [Module ℂ V] {m : ℕ} (E : Fin m → Fin m
     Module.End ℂ V :=
   (w.map fun p => E p.1 p.2).prod
 
+/- English proof (translation)
+Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Unfold `hs`. Conclude with `(Finset.single_le_sum (f := fun j => ‖M i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖M i j‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i))`.
+-/
 theorem norm_entry_le {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) : ‖M i j‖ ≤ Real.sqrt (hs M) := by
   refine Real.le_sqrt_of_sq_le ?_
   unfold hs
@@ -22,9 +25,15 @@ theorem norm_entry_le {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) :
     (Finset.single_le_sum (f := fun i => ∑ j, ‖M i j‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity)
       (Finset.mem_univ i))
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity`.
+-/
 theorem hs_nonneg' {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : 0 ≤ hs M :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity
 
+/- English proof (translation)
+Establish `hg : (um g)ᴴ * Jm ε * um g = Jm ε` using `g.2`. Establish `e : um g * um g⁻¹ = 1` using `by show ((g : (Matrix (Fin m) (Fin m) ℂ)ˣ) : Matrix (Fin m) (Fin m) ℂ) * (((g⁻¹ : UJ ε) : (Matrix (Fin m) (Fin m) ℂ)ˣ) : Matrix (Fin m) (Fin m) ℂ) = 1`. Rewrite using `[Subgroup.coe_inv, Units.mul_inv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem um_inv_eq {m : ℕ} {ε : Fin m → Bool} (g : UJ ε) : um g⁻¹ = Jm ε * (um g)ᴴ * Jm ε := by
   have hg : (um g)ᴴ * Jm ε * um g = Jm ε := g.2
   have e : um g * um g⁻¹ = 1 := by
@@ -35,6 +44,11 @@ theorem um_inv_eq {m : ℕ} {ε : Fin m → Bool} (g : UJ ε) : um g⁻¹ = Jm �
     _ = Jm ε * (um g)ᴴ * Jm ε * (um g * um g⁻¹) := by simp only [Matrix.mul_assoc]
     _ = _ := by rw [e, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[um_inv_eq]`. Unfold `hs`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, norm_mul, norm_star]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem hs_inv' {m : ℕ} {ε : Fin m → Bool} (g : UJ ε) : hs (um g⁻¹) = hs (um g) := by
   rw [um_inv_eq]
   unfold hs
@@ -43,6 +57,11 @@ theorem hs_inv' {m : ℕ} {ε : Fin m → Bool} (g : UJ ε) : hs (um g⁻¹) = h
   simp only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, norm_mul, norm_star]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `j : Fin m` using `⟨0, hm⟩`. Establish `h` using `congrArg (fun M => ‖M j j‖) (show (um g)ᴴ * Jm ε * um g = Jm ε from g.2)`. Apply the tactic sequence `have h1 : ‖Jm ε j j‖ = 1 := by simp only [Jm, Matrix.diagonal_apply_eq]; split_ifs <;> simp`. Simplify using `only [h1] at h`. Establish `h2 : 1 ≤ ∑ i, ‖um g i j‖ ^ 2`.
+
+Rewrite using `[← h, Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[Jm, Matrix.mul_diagonal, norm_mul, norm_mul, Matrix.conjTranspose_apply, norm_star]`. Apply the tactic sequence `split_ifs <;> simp [sq]`. Conclude with `h2.trans (Finset.sum_le_sum fun i _ => Finset.single_le_sum (f := fun k => ‖um g i k‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j))`.
+-/
 theorem one_le_hs' {m : ℕ} {ε : Fin m → Bool} (hm : 1 ≤ m) (g : UJ ε) : 1 ≤ hs (um g) := by
   have j : Fin m := ⟨0, hm⟩
   have h := congrArg (fun M => ‖M j j‖) (show (um g)ᴴ * Jm ε * um g = Jm ε from g.2)
@@ -61,6 +80,9 @@ section Grow
 variable {m : ℕ} {ε : Fin m → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin m) (Fin m) ℂ → (H →L[ℂ] H)} {S : Submodule ℂ H} {E : Fin m → Fin m → Module.End ℂ S}
 
+/- English proof (translation)
+Establish `e : um g * um g⁻¹ = 1` using `by show ((g : (Matrix (Fin m) (Fin m) ℂ)ˣ) : Matrix (Fin m) (Fin m) ℂ) * (((g⁻¹ : UJ ε) : (Matrix (Fin m) (Fin m) ℂ)ˣ) : Matrix (Fin m) (Fin m) ℂ) = 1`. Rewrite using `[Subgroup.coe_inv, Units.mul_inv]`. Use `hU.1.2 _ g.2 _ (g⁻¹).2` as an intermediate fact. Rewrite `this` using `[e, hU.1.1]`. Conclude with `(DFunLike.congr_fun this y).symm`.
+-/
 theorem inv_cancel' (hU : IsURepOn (UJset ε) σ) (g : UJ ε) (y : H) : σ (um g) (σ (um g⁻¹) y) = y := by
   have e : um g * um g⁻¹ = 1 := by
     show ((g : (Matrix (Fin m) (Fin m) ℂ)ˣ) : Matrix (Fin m) (Fin m) ℂ) * (((g⁻¹ : UJ ε) : (Matrix (Fin m) (Fin m) ℂ)ˣ) : Matrix (Fin m) (Fin m) ℂ) = 1
@@ -69,13 +91,24 @@ theorem inv_cancel' (hU : IsURepOn (UJset ε) σ) (g : UJ ε) (y : H) : σ (um g
   rw [e, hU.1.1] at this
   exact (DFunLike.congr_fun this y).symm
 
+/- English proof (translation)
+Use `inv_cancel' hU g⁻¹ y` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem inv_cancel'' (hU : IsURepOn (UJset ε) σ) (g : UJ ε) (y : H) : σ (um g⁻¹) (σ (um g) y) = y := by
   have := inv_cancel' hU g⁻¹ y
   rwa [inv_inv] at this
 
+/- English proof (translation)
+Rewrite using `[← um_inv, inv_inv]`.
+-/
 theorem um_inv_inv (g : UJ ε) : (um g⁻¹)⁻¹ = um g := by
   rw [← um_inv, inv_inv]
 
+/- English proof (translation)
+Establish `h` using `hS.conj (um g⁻¹) (g⁻¹).2 a b ⟨σ (um g) v, hS.stab _ g.2 _ v.2⟩ v (inv_cancel'' hU g v).symm`. Rewrite `h` using `[um_inv_inv]`. Establish `h2` using `congrArg (σ (um g)) h`. Rewrite `h2` using `[inv_cancel' hU]`. Rewrite using `[h2, map_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun d _ => map_smul _ _ _`.
+-/
 theorem gen_step (hS : IsSmMod ε σ S E) (hU : IsURepOn (UJset ε) σ) (g : UJ ε) (v : S) (a b : Fin m) :
     (E a b ⟨σ (um g) v, hS.stab _ g.2 _ v.2⟩ : H) = ∑ c, ∑ d, (um g⁻¹ c a * um g b d) • σ (um g) (E c d v : H) := by
   have h := hS.conj (um g⁻¹) (g⁻¹).2 a b ⟨σ (um g) v, hS.stab _ g.2 _ v.2⟩ v (inv_cancel'' hU g v).symm
@@ -87,10 +120,35 @@ theorem gen_step (hS : IsSmMod ε σ S E) (hU : IsURepOn (UJset ε) σ) (g : UJ 
   rw [map_sum]
   exact Finset.sum_congr rfl fun d _ => map_smul _ _ _
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_um : Continuous fun g : UJ ε => um g := Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `continuous_um.comp continuous_inv`.
+-/
 theorem continuous_um_inv : Continuous fun g : UJ ε => um g⁻¹ := continuous_um.comp continuous_inv
 
+/- English proof (translation)
+Proceed by induction on `w using List.reverseRecOn with`. Consider the case `nil`. Introduce `v`. Use `⟨?_, ‖(v : H)‖, norm_nonneg _, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [wp, List.map_nil, List.prod_nil, Module.End.one_apply]`.
+
+Conclude with `(hU.2.2 v).comp_continuous continuous_um fun g => g.2`. Simplify using `only [wp, List.map_nil, List.prod_nil, Module.End.one_apply, List.length_nil, pow_zero, mul_one]`. Conclude with `le_of_eq (hU.2.1 _ g.2 v)`. Consider the case `append_singleton w p ih`. Introduce `v`.
+
+Establish `e1 : ∀ g : UJ ε, (wp E (w ++ [p]) ⟨σ (um g) v, hS.stab _ g.2 _ v.2⟩ : H) = ∑ c, ∑ d, (um g⁻¹ c p.1 * um g p.2 d) • (wp E w ⟨σ (um g) (E c d v), hS.stab _ g.2 _ (E c d v).2⟩ : H)`. Introduce `g`. Establish `hx : E p.1 p.2 ⟨σ (um g) v, hS.stab _ g.2 _ v.2⟩ = ∑ c, ∑ d, (um g⁻¹ c p.1 * um g p.2 d) • (⟨σ (um g) (E c d v), hS.stab _ g.2 _ (E c d v).2⟩ : S)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[gen_step hS hU g v p.1 p.2, Submodule.coe_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`. Both sides reduce to the same expression. Simplify using `only [wp, List.map_append, List.map_cons, List.map_nil, List.prod_append, List.prod_cons, List.prod_nil, mul_one, Module.End.mul_apply]`. Rewrite using `[hx, map_sum, Submodule.coe_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Submodule.coe_smul]`. Use `choose hc C hC0 hC using fun c d => ih (E c d v)`.
+
+Use `⟨?_, ∑ c, ∑ d, C c d, Finset.sum_nonneg fun c _ => Finset.sum_nonneg fun d _ => hC0 c d, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [e1]`. Use `continuous_finsetSum _ fun c _ => continuous_finsetSum _ fun d _ => ?_` and prove the remaining obligations. Use `Continuous.smul ?_ (hc c d)` and prove the remaining obligations. Conclude with `((continuous_um_inv.matrix_elem c p.1).mul (continuous_um.matrix_elem p.2 d))`.
+
+Rewrite using `[e1]`. Establish `hg1 : 0 ≤ hs (um g)` using `hs_nonneg' _`. Establish `hco : ∀ c d, ‖um g⁻¹ c p.1 * um g p.2 d‖ ≤ hs (um g)` using `fun c d => by`. Rewrite using `[norm_mul]`. Establish `h1` using `norm_entry_le (um g⁻¹) c p.1`.
+
+Establish `h2` using `norm_entry_le (um g) p.2 d`. Rewrite `h1` using `[hs_inv']`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[List.length_append, List.length_singleton, pow_succ, Finset.sum_mul]`.
+
+Use `Finset.sum_le_sum fun c _ => (norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun d _ => ?_` and prove the remaining obligations. Rewrite using `[norm_smul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem word_growth (hS : IsSmMod ε σ S E) (hU : IsURepOn (UJset ε) σ) (w : List (Fin m × Fin m)) :
     ∀ v : S, Continuous (fun g : UJ ε => (wp E w ⟨σ (um g) v, hS.stab _ g.2 _ v.2⟩ : H)) ∧
       ∃ C : ℝ, 0 ≤ C ∧ ∀ g : UJ ε, ‖(wp E w ⟨σ (um g) v, hS.stab _ g.2 _ v.2⟩ : H)‖ ≤ C * hs (um g) ^ w.length := by
@@ -154,18 +212,45 @@ section Span
 variable {m : ℕ} {ε : Fin m → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin m) (Fin m) ℂ → (H →L[ℂ] H)} {S : Submodule ℂ H} {E : Fin m → Fin m → Module.End ℂ S}
 
+/- English proof (translation)
+Unfold `ap`. Rewrite using `[dif_pos hx]`.
+-/
 theorem ap_of_mem (T : Module.End ℂ S) {x : H} (hx : x ∈ S) : ap T x = (T ⟨x, hx⟩ : H) := by
   unfold ap; rw [dif_pos hx]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold ap; split_ifs <;> simp`.
+-/
 theorem ap_add (T₁ T₂ : Module.End ℂ S) (x : H) : ap (T₁ + T₂) x = ap T₁ x + ap T₂ x := by
   unfold ap; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold ap; split_ifs <;> simp`.
+-/
 theorem ap_smul (c : ℂ) (T : Module.End ℂ S) (x : H) : ap (c • T) x = c • ap T x := by
   unfold ap; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold ap; split_ifs <;> simp`.
+-/
 theorem ap_zero (x : H) : ap (0 : Module.End ℂ S) x = 0 := by
   unfold ap; split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, rfl⟩` from `hx`. Introduce `v`. Take `⟨hc, C, hC0, hC⟩` from `word_growth hS hU w v`.
+
+Use `⟨?_, C, hC0, fun g => ?_⟩` and prove the remaining obligations. Establish `e : (fun g : UJ ε => ap (wp E w) (σ (um g) v)) = fun g => (wp E w ⟨σ (um g) v, hS.stab _ g.2 _ v.2⟩ : H)` using `funext fun g => ap_of_mem _ _`. Express the relevant statement in the definitionally equal form `Continuous (fun g : UJ ε => ap (wp E w) (σ (um g) v))`. Rewrite using `[e]`. Conclude with `hc`.
+
+Rewrite using `[ap_of_mem _ (hS.stab _ g.2 _ v.2)]`. Conclude with `(hC g).trans (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (one_le_hs' hm g) hw) hC0)`. Consider the case `zero`. Introduce `v`. Use `⟨?_, 0, le_rfl, fun g => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [ap_zero]`. Conclude with `continuous_const`. Simplify using `[ap_zero]`. Consider the case `add x y _ _ hx hy`. Introduce `v`.
+
+Take `⟨h1, C1, hC1, hb1⟩` from `hx v`. Take `⟨h2, C2, hC2, hb2⟩` from `hy v`. Use `⟨?_, C1 + C2, add_nonneg hC1 hC2, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [ap_add]`. Conclude with `h1.add h2`.
+
+Rewrite using `[ap_add, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hb1 g) (hb2 g))`. Consider the case `smul c x _ hx`. Introduce `v`. Take `⟨h1, C1, hC1, hb1⟩` from `hx v`.
+
+Use `⟨?_, ‖c‖ * C1, mul_nonneg (norm_nonneg _) hC1, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [ap_smul]`. Conclude with `h1.const_smul c`. Rewrite using `[ap_smul, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb1 g) (norm_nonneg _)`.
+-/
 theorem span_growth (hm : 1 ≤ m) (hS : IsSmMod ε σ S E) (hU : IsURepOn (UJset ε) σ) (L : ℕ) (T : Module.End ℂ S)
     (hT : T ∈ wordSpan E L) : ∀ v : S, Continuous (fun g : UJ ε => ap T (σ (um g) v)) ∧
       ∃ C : ℝ, 0 ≤ C ∧ ∀ g : UJ ε, ‖ap T (σ (um g) v)‖ ≤ C * hs (um g) ^ L := by
@@ -201,6 +286,19 @@ theorem span_growth (hm : 1 ≤ m) (hS : IsSmMod ε σ S E) (hU : IsURepOn (UJse
     · simp only [ap_smul]; exact h1.const_smul c
     · rw [ap_smul, norm_smul, mul_assoc]; exact mul_le_mul_of_nonneg_left (hb1 g) (norm_nonneg _)
 
+/- English proof (translation)
+Establish `gen : ∀ a b, ∀ x y : S, ⟪(y : H), (E a b x : H)⟫_ℂ = ⟪(((sgn ε a b : ℂ) • E b a y : S) : H), (x : H)⟫_ℂ`. Introduce `a b x y`. Establish `h` using `hS.unit a b x y`. Rewrite using `[← inner_conj_symm, ← Submodule.coe_inner, h, map_mul, Submodule.coe_smul, inner_smul_left, Complex.conj_ofReal, inner_conj_symm, Submodule.coe_inner]`. Establish `word : ∀ w : List (Fin m × Fin m), ∃ T' : Module.End ℂ S, ∀ x y : S, ⟪(y : H), (wp E w x : H)⟫_ℂ = ⟪(T' y : H), (x : H)⟫_ℂ`.
+
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => exact ⟨1, fun x y => by simp [wp]⟩`. Consider the case `cons p w ih`. Take `⟨T', hT'⟩` from `ih`.
+
+Use `⟨T' * ((sgn ε p.1 p.2 : ℂ) • E p.2 p.1), fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [wp, List.map_cons, List.prod_cons, Module.End.mul_apply] at hT' ⊢`. Rewrite using `[gen, hT']`. Both sides reduce to the same expression. Proceed by induction on `hT using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨w, -, rfl⟩` from `hx`. Conclude with `word w`. Consider the case `zero => exact ⟨0, fun x y => by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨T1, h1⟩` from `hx`. Take `⟨T2, h2⟩` from `hy`. Conclude with `⟨T1 + T2, fun a b => by simp [h1, h2]⟩`. Consider the case `smul c x _ hx`. Take `⟨T1, h1⟩` from `hx`.
+
+Conclude with `⟨(starRingEnd ℂ c) • T1, fun a b => by`. Simplify using `only [LinearMap.smul_apply, Submodule.coe_smul, inner_smul_right, inner_smul_left, h1, Complex.conj_conj]⟩`.
+-/
 theorem span_adj (hS : IsSmMod ε σ S E) (L : ℕ) (T : Module.End ℂ S) (hT : T ∈ wordSpan E L) :
     ∃ T' : Module.End ℂ S, ∀ x y : S, ⟪(y : H), (T x : H)⟫_ℂ = ⟪(T' y : H), (x : H)⟫_ℂ := by
   have gen : ∀ a b, ∀ x y : S, ⟪(y : H), (E a b x : H)⟫_ℂ = ⟪(((sgn ε a b : ℂ) • E b a y : S) : H), (x : H)⟫_ℂ := by
@@ -239,6 +337,11 @@ section ZeroSec
 
 variable {n : ℕ} {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {e : Fin n ⊕ Unit ≃ Fin (n + 1)}
 
+/- English proof (translation)
+Unfold `hs emb`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Rewrite using `[← Equiv.sum_comp e]`. Simplify using `only [Equiv.symm_apply_apply]`. Establish `: ∀ x : Fin n ⊕ Unit, ∑ j, ‖Matrix.fromBlocks M 0 0 (1 : Matrix Unit Unit ℂ) x (e.symm j)‖ ^ 2 = ∑ y, ‖Matrix.fromBlocks M 0 0 (1 : Matrix Unit Unit ℂ) x y‖ ^ 2` using `fun x => by`.
+
+Rewrite using `[← Equiv.sum_comp e]`. Simplify using `only [Equiv.symm_apply_apply]`. Simplify using `[this, Fintype.sum_sum_type]`.
+-/
 theorem hs_emb (M : Matrix (Fin n) (Fin n) ℂ) : hs (emb e M) = hs M + 1 := by
   unfold hs emb
   simp only [Matrix.reindex_apply, Matrix.submatrix_apply]
@@ -249,16 +352,51 @@ theorem hs_emb (M : Matrix (Fin n) (Fin n) ℂ) : hs (emb e M) = hs M + 1 := by
     rw [← Equiv.sum_comp e]; simp only [Equiv.symm_apply_apply]
   simp [this, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `continuous_emb`. Conclude with `continuous_emb.comp continuous_inv`.
+-/
 theorem continuous_embU (hF : Fits ε ε' e) : Continuous (embU hF) := by
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
   · exact continuous_emb
   · exact continuous_emb.comp continuous_inv
 
+/- English proof (translation)
+Unfold `hs`. Conclude with `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ((continuous_um.matrix_elem i j).norm).pow 2`.
+-/
 theorem continuous_hs_um {m : ℕ} {ε₀ : Fin m → Bool} : Continuous fun g : UJ ε₀ => hs (um g) := by
   unfold hs
   exact continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
     ((continuous_um.matrix_elem i j).norm).pow 2
 
+/- English proof (translation)
+Introduce `n ε ε' e H _ _ _ π S E hF hn hS hU hD ν hν c L C hc hcb hzero T hT η b`. Use `hν` as an intermediate fact. Establish `hn1 : 1 ≤ n + 1` using `by omega`. Take `⟨hFc, CT, hCT0, hCT⟩` from `span_growth hn1 hS hU L T hT η`. Establish `hIntR` using `CompanionTheory.Lime.T3.analytic_estimates.2.2.1`.
+
+Use `set a : ℝ := (n : ℝ) ^ 2 + 1 with ha`. Use `set C' : ℝ := max C 0 with hC'`. Establish `hcb' : ∀ h, ‖c h‖ ≤ C' * hs (um h) ^ (-(a + L))` using `fun h => (hcb h).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg (hs_nonneg' _) _))`. Use `set K₀ : ℝ := C' * CT * 2 ^ L with hK₀`. Establish `hC'0 : 0 ≤ C'` using `le_max_right _ _`.
+
+Establish `hK₀0 : 0 ≤ K₀` using `mul_nonneg (mul_nonneg hC'0 hCT0) (by positivity)`. Establish `hX : ∀ h : UJ ε', ‖ap T (π (emb e (um h)) η)‖ ≤ CT * 2 ^ L * hs (um h) ^ L` using `fun h => by`. Establish `h1` using `hCT (embU hF h)`. Establish `h2 : hs (um (embU hF h)) = hs (um h) + 1` using `hs_emb (um h)`. Establish `h3 : 1 ≤ hs (um h)` using `one_le_hs' hn h`.
+
+Rewrite `h1` using `[h2]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hCT0` and prove the remaining obligations. Rewrite using `[← mul_pow]`.
+
+Conclude with `pow_le_pow_left₀ (by positivity) (by linarith) L`. Establish `hXc : Continuous fun h : UJ ε' => ap T (π (emb e (um h)) η)` using `hFc.comp (continuous_embU hF)`. Establish `hrp : ∀ h : UJ ε', hs (um h) ^ (-(a + L)) * hs (um h) ^ L = hs (um h) ^ (-a)` using `fun h => by`. Establish `hpos : 0 < hs (um h)` using `lt_of_lt_of_le one_pos (one_le_hs' hn h)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hpos]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `bound : ∀ b : H, ∀ h : UJ ε', ‖c h * ⟪b, ap T (π (emb e (um h)) η)⟫_ℂ‖ ≤ K₀ * ‖b‖ * hs (um h) ^ (-a)`. Introduce `b h`. Rewrite using `[norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `integ : ∀ b : H, Integrable (fun h : UJ ε' => c h * ⟪b, ap T (π (emb e (um h)) η)⟫_ℂ) ν` using `fun b => (hIntR n ε' ν hν hn _ (K₀ * ‖b‖) a (hc.mul (continuous_const.inner hXc)) le_rfl (bound b)).1`. Establish `hw : Integrable (fun h : UJ ε' => hs (um h) ^ (-a)) ν`. Establish `hcw : Continuous fun h : UJ ε' => ((hs (um h) ^ (-a) : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp (continuous_hs_um.rpow_const fun h => Or.inl (lt_of_lt_of_le one_pos (one_le_hs' hn h)).ne')`. Use `(hIntR n ε' ν hν hn _ 1 a hcw le_rfl fun h => by` as an intermediate fact.
+
+Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (hs_nonneg' _) _), one_mul]).1`. Simplify using `using this.re`. Use `⟨integ b, ?_⟩` and prove the remaining obligations. Use `set Λ : H → ℂ := fun b => ∫ h : UJ ε', c h * ⟪b, ap T (π (emb e (um h)) η)⟫_ℂ ∂ν with hΛ`. Take `⟨T', hT'⟩` from `span_adj hS L T hT`.
+
+Establish `hS0 : ∀ b ∈ S, Λ b = 0`. Introduce `b hb`. Establish `e1 : ∀ h : UJ ε', c h * ⟪b, ap T (π (emb e (um h)) η)⟫_ℂ = c h * ⟪(T' ⟨b, hb⟩ : H), π (emb e (um h)) η⟫_ℂ` using `fun h => by`. Establish `hm : π (emb e (um h)) η ∈ S` using `hS.stab _ (embU hF h).2 _ η.2`. Rewrite using `[ap_of_mem _ hm, hT' ⟨_, hm⟩ ⟨b, hb⟩]`.
+
+Simplify using `only [hΛ, e1]`. Conclude with `hzero _ _`. Establish `hlip : ∀ b b' : H, ‖Λ b - Λ b'‖ ≤ (K₀ * ∫ h, hs (um h) ^ (-a) ∂ν) * ‖b - b'‖`. Introduce `b b'`. Establish `e1 : Λ b - Λ b' = ∫ h : UJ ε', c h * ⟪b - b', ap T (π (emb e (um h)) η)⟫_ℂ ∂ν`.
+
+Simplify using `only [hΛ]`. Rewrite using `[← integral_sub (integ b) (integ b')]`. Use `integral_congr_ae (.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [inner_sub_left, mul_sub]`. Rewrite using `[e1]`.
+
+Use `(norm_integral_le_of_norm_le (hw.const_mul (K₀ * ‖b - b'‖)) (.of_forall fun h => bound _ h)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcont : Continuous Λ`. Use `LipschitzWith.continuous (K := Real.toNNReal (K₀ * ∫ h, hs (um h) ^ (-a) ∂ν)) (LipschitzWith.of_dist_le_mul fun b b' => ?_)` and prove the remaining obligations.
+
+Rewrite using `[dist_eq_norm, dist_eq_norm, Real.coe_toNNReal _ (mul_nonneg hK₀0 (integral_nonneg fun h => Real.rpow_nonneg (hs_nonneg' _) _))]`. Conclude with `hlip b b'`. Establish `hcl : IsClosed {b : H | Λ b = 0}` using `isClosed_eq hcont continuous_const`. Establish `hall : closure (S : Set H) ⊆ {b : H | Λ b = 0}` using `closure_minimal (fun b hb => hS0 b hb) hcl`. Rewrite `hall` using `[hD.closure_eq]`.
+
+Conclude with `hall (Set.mem_univ b)`.
+-/
 theorem zero_proof : Zero := by
   intro n ε ε' e H _ _ _ π S E hF hn hS hU hD ν hν c L C hc hcb hzero T hT η b
   have := hν

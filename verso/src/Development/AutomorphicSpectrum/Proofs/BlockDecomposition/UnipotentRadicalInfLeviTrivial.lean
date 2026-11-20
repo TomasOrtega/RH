@@ -12,10 +12,18 @@ namespace GlobalTheory.CompanionTheory.QKAvg
 
 variable {D : D7} {B W : HSp D} {t : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, GlobalTheory.MixModel.mt_mul]`.
+-/
 theorem mt_mul_frame {k : ℕ} (x y : GA D B) (J : Mx D B.rank k) :
     mt B (x * y) ⬝ J = mt B x ⬝ (mt B y ⬝ J) := by
   rw [← Matrix.mul_assoc, GlobalTheory.MixModel.mt_mul]
 
+/- English proof (translation)
+Establish `h : mt B (d.nC c * d.nB b) ⬝ d.jX = mt B (d.emb0 g * d.levi a) ⬝ d.jX` using `by rw [e]`. Rewrite `h` using `[mt_mul_frame, mt_mul_frame, d.nB_jX, d.nC_jX, d.levi_jX, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX]`. Apply `Units.ext` to reduce the goal to its premises. Establish `h' : d.pX ⬝ d.jX = d.pX ⬝ (d.jX ⬝ a.1)` using `congrArg (fun M => d.pX ⬝ M) h`. Rewrite `h'` using `[← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul]`.
+
+Conclude with `h'.symm`.
+-/
 theorem levi_part_eq_one (d : HypDec B W t) {c : skewA D t} {b : Mx D t W.rank} {g : GA D W}
     {a : GL (Fin t) (AE D)} (e : d.nC c * d.nB b = d.emb0 g * d.levi a) : a = 1 := by
   have h : mt B (d.nC c * d.nB b) ⬝ d.jX = mt B (d.emb0 g * d.levi a) ⬝ d.jX := by rw [e]
@@ -25,6 +33,11 @@ theorem levi_part_eq_one (d : HypDec B W t) {c : skewA D t} {b : Mx D t W.rank} 
   rw [← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul] at h'
   exact h'.symm
 
+/- English proof (translation)
+Establish `h : mt B (d.nC c * d.nB b) ⬝ d.j0 = mt B (d.emb0 g * d.levi 1) ⬝ d.j0` using `by rw [e]`. Rewrite `h` using `[mt_mul_frame, mt_mul_frame, d.nB_j0, d.wittDecomp_levi_inclAnisotropic, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, Matrix.mul_add, d.nC_j0, ← Matrix.mul_assoc, d.nC_jX]`. Establish `h' : d.p0 ⬝ (d.j0 + d.jX ⬝ b) = d.p0 ⬝ (d.j0 ⬝ mt W g)` using `congrArg (fun M => d.p0 ⬝ M) h`. Rewrite `h'` using `[Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, d.p0_j0, d.p0_jX, Matrix.zero_mul, add_zero, Matrix.one_mul]`. Apply `GlobalTheory.MixModel.mt_injective` to reduce the goal to its premises.
+
+Rewrite using `[← h', GlobalTheory.MixModel.mt_one]`.
+-/
 theorem unitary_part_eq_one (d : HypDec B W t) {c : skewA D t} {b : Mx D t W.rank} {g : GA D W}
     (e : d.nC c * d.nB b = d.emb0 g * d.levi 1) : g = 1 := by
   have h : mt B (d.nC c * d.nB b) ⬝ d.j0 = mt B (d.emb0 g * d.levi 1) ⬝ d.j0 := by rw [e]
@@ -36,6 +49,11 @@ theorem unitary_part_eq_one (d : HypDec B W t) {c : skewA D t} {b : Mx D t W.ran
   apply GlobalTheory.MixModel.mt_injective
   rw [← h', GlobalTheory.MixModel.mt_one]
 
+/- English proof (translation)
+Introduce `D B W t d x hn hm`. Take `⟨c, b, hx⟩` from `(mem_radN d).1 hn`. Take `⟨g, a, hy⟩` from `(mem_levM d).1 hm`. Establish `e : d.nC c * d.nB b = d.emb0 g * d.levi a` using `hx.symm.trans hy`. Establish `ha` using `levi_part_eq_one d e`.
+
+Substitute `ha` using the available equality. Establish `hg` using `unitary_part_eq_one d e`. Substitute `hg` using the available equality. Establish `h1 : d.emb0 1 * d.levi 1 = 1` using `by rw [map_one, map_one, mul_one]`. Conclude with `Subtype.ext (hy.trans h1)`.
+-/
 theorem radN_disj_levM : ∀ (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t),
     ∀ x, x ∈ radN d → x ∈ levM d → x = 1 := by
   intro D B W t d x hn hm

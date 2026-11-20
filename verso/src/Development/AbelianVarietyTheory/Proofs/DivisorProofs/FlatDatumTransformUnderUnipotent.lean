@@ -23,6 +23,19 @@ noncomputable section
 
 namespace GlobalTheory.SympDatum
 
+/- English proof (translation)
+Introduce `g γ M hM hMs j m hD hC`. Take `⟨hτ, -, hF, hMet⟩` from `hD`. Take `⟨hbij, hdiff, hpt⟩` from `GlobalTheory.UnivAction.univAct g γ`. Establish `hO : IsOpen (cov (siegel g) g)` using `hτ.1.prod isOpen_univ`. Establish `hmaps : Set.MapsTo (actU γ) (cov (siegel g) g) (cov (siegel g) g)` using `hbij.mapsTo`.
+
+Establish `hlat : ∀ l ∈ M, l ᵥ* (γ⁻¹).mat ∈ stdLat g` using `fun l hl => hMs ⟨l, hl, rfl⟩`. Establish `htr : ∀ l : Fl g, ∀ P ∈ cov (siegel g) g, actU γ (transl tauU l P) = transl tauU (l ᵥ* (γ⁻¹).mat) (actU γ P)`. Introduce `l P hP`. Take `⟨hY, hta, -, -, -⟩` from `hpt P hP`. Establish `e` using `GlobalTheory.SympFlatChange.per_moeb γ hY l`.
+
+Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show (P.2 + per (tauU P.1) l) ᵥ* (den γ (tauU P.1))⁻¹ = P.2 ᵥ* (den γ (tauU P.1))⁻¹ + per (tauU (actU γ P).1) (l ᵥ* (γ⁻¹).mat)`. Rewrite using `[hta, e, Matrix.add_vecMul]`. Establish `hAs : ContDiffOn ℝ ∞ (actU γ) (cov (siegel g) g)` using `(GlobalTheory.SCV.contDiffOn_of_differentiableOn hO hdiff ∞).restrict_scalars ℝ`. Use `⟨⟨hτ, hM, ⟨fun l hl => ⟨?_, fun P hP => hF.1 _ (hlat l hl) |>.2 _ (hmaps hP)⟩, fun l hl l' hl' P hP => ?_⟩, ⟨hMet.1.comp hAs hmaps, fun P hP => hMet.2.1 _ (hmaps hP), fun l hl P hP => ?_⟩⟩, fun P hP v w => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hF.1 _ (hlat l hl)).1.comp hdiff hmaps`. Use `show j ((l + l') ᵥ* (γ⁻¹).mat) (actU γ P) = j (l ᵥ* (γ⁻¹).mat) (actU γ (transl tauU l' P)) * j (l' ᵥ* (γ⁻¹).mat) (actU γ P)`. Rewrite using `[Matrix.add_vecMul, htr l' P hP]`. Conclude with `hF.2 _ (hlat l hl) _ (hlat l' hl') _ (hmaps hP)`. Use `show m (actU γ (transl tauU l P)) * ‖j (l ᵥ* (γ⁻¹).mat) (actU γ P)‖ ^ 2 = m (actU γ P)`.
+
+Rewrite using `[htr l P hP]`. Conclude with `hMet.2.2 _ (hlat l hl) _ (hmaps hP)`. Establish `hu : ContDiffOn ℝ 2 (fun Q => Real.log (m Q)) (cov (siegel g) g)` using `(hMet.1.log fun Q hQ => (hMet.2.1 Q hQ).ne').of_le (show ((2 : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) from WithTop.coe_le_coe.2 le_top)`. Establish `e` using `GlobalTheory.ddc_comp_holomorphic _ _ (actU γ) _ hO hO hdiff hmaps hu P hP v w`. Rewrite using `[e, hC _ (hmaps hP), ← (hpt P hP).2.2.2.1]`.
+
+Simplify using `only [pull, ContinuousAlternatingMap.compContinuousLinearMap_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 theorem datum_actU : ∀ (g : ℕ) (γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g) (M : Submodule ℤ (Fl g)), IsLat M → latAct M γ ≤ stdLat g → ∀ (j : Fl g → Pt (symMat g) g → ℂ) (m : Pt (symMat g) g → ℝ), IsDatum (siegel g) tauU (stdLat g) j m → ChernIsFlat (siegel g) tauU m → IsDatum (siegel g) tauU M (fun l P => j (l ᵥ* (γ⁻¹).mat) (actU γ P)) (fun P => m (actU γ P)) ∧ ChernIsFlat (siegel g) tauU (fun P => m (actU γ P)) := by
   intro g γ M hM hMs j m hD hC
   obtain ⟨hτ, -, hF, hMet⟩ := hD

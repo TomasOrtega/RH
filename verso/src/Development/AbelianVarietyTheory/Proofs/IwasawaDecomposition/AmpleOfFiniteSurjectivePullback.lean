@@ -16,6 +16,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.NormalDescent
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `GlobalTheory.T.exists_sec_normCoeff_local' f hM t`. Use `⟨u, fun x hx => ?_, fun x k hk hx => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, _, _, τ, hxV, ht, hc⟩` from `hu x`. Take `⟨k, hk, h⟩` from `GlobalTheory.T.exists_mem_basicOpen_normCoeff_of_fibre f hV τ x hxV fun y hy => (ht y (hy ▸ hxV)).1 (hx y hy)`. Conclude with `⟨k, hk, (hc k x hxV).2 h⟩`.
+
+Take `⟨V, hV, _, _, τ, hxV, ht, hc⟩` from `hu x`. Take `⟨y, hy, rfl⟩` from `GlobalTheory.T.exists_mem_basicOpen_of_mem_basicOpen_normCoeff' f hV τ x k hxV hk ((hc k x hxV).1 hx)`. Conclude with `⟨y, (ht y hxV).2 hy, rfl⟩`.
+-/
 theorem exists_sec_image {X Y : Scheme.{0}} (f : Y ⟶ X) [IsFinite f] [Surjective f] [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] {M : LB X} (hM : M.IsLB) (t : (M.pull f).Sec) : ∃ u : ∀ k, (lbPow M k).Sec,
       (∀ x : X, (∀ y : Y, f y = x → y ∈ nonzeroLocus t) → ∃ k, 1 ≤ k ∧ x ∈ nonzeroLocus (u k)) ∧
@@ -29,6 +34,13 @@ theorem exists_sec_image {X Y : Scheme.{0}} (f : Y ⟶ X) [IsFinite f] [Surjecti
     obtain ⟨y, hy, rfl⟩ := GlobalTheory.T.exists_mem_basicOpen_of_mem_basicOpen_normCoeff' f hV τ x k hxV hk ((hc k x hxV).1 hx)
     exact ⟨y, (ht y hxV).2 hy, rfl⟩
 
+/- English proof (translation)
+Introduce `X X' f _ hN _ hs L hL h`. Use `GlobalTheory.IsNormalScheme.of_pred hN` as an intermediate fact. Establish `: Surjective f` using `⟨hs⟩`. Use `GlobalTheory.isAmpleLB_of_forall_le hL fun x U hx => ?_` and prove the remaining obligations. Establish `hfin : (f ⁻¹' {x}).Finite` using `f.finite_preimage_singleton x`.
+
+Take `⟨n, hn, s, hS, hle, -⟩` from `h.exists_affine_finite_subset hfin (U := f ⁻¹ᵁ U) (fun y (hy : f y = x) => show f y ∈ U from hy ▸ hx)`. Take `⟨t, ht⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso (LB.isLB_pull (isLB_lbPow hL n) f) (isLB_lbPow h.isLB n) (lbIso_lbPow_pull hL f n).symm s`. Take `⟨u, hu₁, hu₂⟩` from `exists_sec_image f (isLB_lbPow hL n) t`. Take `⟨k, hk, hxk⟩` from `hu₁ x fun y hy => ht.ge (hS hy)`. Establish `e` using `nonzeroLocus_secOfPowPow (u k)`.
+
+Use `⟨n * k, Nat.mul_pos hn hk, secOfPowPow (u k), e.ge hxk, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `hu₂ z k hk (e.le hz)`. Conclude with `hle (ht.le hw)`.
+-/
 theorem isAmpleLB_of_pull : ∀ (X X' : Scheme.{0}) (f : X' ⟶ X), AlgebraicGeometry.IsNoetherian X →
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → IsFinite f → Function.Surjective f →
     ∀ L : ReciprocityTheory.ChartRestriction.G.Semi.LB X, L.IsLB → GlobalTheory.IsAmpleLB (L.pull f) → GlobalTheory.IsAmpleLB L := by

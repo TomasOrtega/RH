@@ -14,18 +14,29 @@ variable {d : ℕ} {L : Type} [Field L]
 private def blkPart (c : Fin d → ℕ) (M : Matrix (Fin d) (Fin d) L) : Matrix (Fin d) (Fin d) L :=
   fun i j => if c i = c j then M i j else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blkPart, Matrix.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem blkPart_add (c : Fin d → ℕ) (M N : Matrix (Fin d) (Fin d) L) :
     blkPart c (M + N) = blkPart c M + blkPart c N := by
   ext i j
   simp only [blkPart, Matrix.add_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blkPart, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem blkPart_smul (c : Fin d → ℕ) (a : L) (M : Matrix (Fin d) (Fin d) L) :
     blkPart c (a • M) = a • blkPart c M := by
   ext i j
   simp only [blkPart, Matrix.smul_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blkPart]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Matrix.one_apply_ne h]`. Simplify using the standard rewrite rules.
+-/
 private theorem blkPart_one (c : Fin d → ℕ) : blkPart c (1 : Matrix (Fin d) (Fin d) L) = 1 := by
   ext i j
   simp only [blkPart]
@@ -33,6 +44,17 @@ private theorem blkPart_one (c : Fin d → ℕ) : blkPart c (1 : Matrix (Fin d) 
   · subst h; simp
   · rw [Matrix.one_apply_ne h]; simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Express the relevant statement in the definitionally equal form `(if c i = c j then (M * N) i j else 0) = ∑ k, (if c i = c k then M i k else 0) * (if c k = c j then N k j else 0)`. Distinguish the cases in `h : c i = c j`. Rewrite using `[if_pos h, Matrix.mul_apply]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : c i = c k`. Establish `h2 : c k = c j` using `h1.symm.trans h`. Rewrite using `[if_pos h1, if_pos h2]`. Rewrite using `[if_neg h1, zero_mul]`.
+
+Break down `lt_or_gt_of_ne h1 with h3 | h3` into its components or cases. Establish `h4 : c j < c k` using `h ▸ h3`. Rewrite using `[hN h4, mul_zero]`. Rewrite using `[hM h3, zero_mul]`. Rewrite using `[if_neg h]`.
+
+Use `symm`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : c i = c k`. Establish `h2 : ¬ c k = c j` using `fun e => h (h1.trans e)`. Rewrite using `[if_neg h2, mul_zero]`.
+
+Rewrite using `[if_neg h1, zero_mul]`.
+-/
 private theorem blkPart_mul (c : Fin d → ℕ) {M N : Matrix (Fin d) (Fin d) L}
     (hM : M.BlockTriangular c) (hN : N.BlockTriangular c) :
     blkPart c (M * N) = blkPart c M * blkPart c N := by
@@ -59,18 +81,27 @@ private theorem blkPart_mul (c : Fin d → ℕ) {M N : Matrix (Fin d) (Fin d) L}
       rw [if_neg h2, mul_zero]
     · rw [if_neg h1, zero_mul]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `Matrix.blockTriangular_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul hM`.
+-/
 private theorem blkTri_pow (c : Fin d → ℕ) {M : Matrix (Fin d) (Fin d) L}
     (hM : M.BlockTriangular c) (n : ℕ) : (M ^ n).BlockTriangular c := by
   induction n with
   | zero => rw [pow_zero]; exact Matrix.blockTriangular_one
   | succ n ih => rw [pow_succ]; exact ih.mul hM
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, blkPart_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, blkPart_mul c (blkTri_pow c hM n) hM, ih]`.
+-/
 private theorem blkPart_pow (c : Fin d → ℕ) {M : Matrix (Fin d) (Fin d) L}
     (hM : M.BlockTriangular c) (n : ℕ) : blkPart c (M ^ n) = blkPart c M ^ n := by
   induction n with
   | zero => rw [pow_zero, pow_zero, blkPart_one]
   | succ n ih => rw [pow_succ, pow_succ, blkPart_mul c (blkTri_pow c hM n) hM, ih]
 
+/- English proof (translation)
+Use `Polynomial.induction_on' P (fun p q hp hq => ?_) (fun n a => ?_)` and prove the remaining obligations. Rewrite using `[map_add, map_add, blkPart_add, hp, hq]`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, ← Algebra.smul_def, ← Algebra.smul_def, blkPart_smul, blkPart_pow c hM]`.
+-/
 private theorem blkPart_aeval (c : Fin d → ℕ) {M : Matrix (Fin d) (Fin d) L}
     (hM : M.BlockTriangular c) (P : Polynomial L) :
     blkPart c (Polynomial.aeval M P) = Polynomial.aeval (blkPart c M) P := by
@@ -82,6 +113,11 @@ private theorem blkPart_aeval (c : Fin d → ℕ) {M : Matrix (Fin d) (Fin d) L}
 end UpperTheory.Gal.Mod.BlockProjectionMultiplicative
 
 open UpperTheory.Gal.Mod.BlockProjectionMultiplicative in
+/- English proof (translation)
+Introduce `Γ L _ _ d ρ₀ ρ hG g P h0`. Take `⟨c, hc⟩` from `hG`. Take `⟨hT, hD⟩` from `hc g`. Establish `e : (ρ g : Matrix (Fin d) (Fin d) L) = blkPart c (ρ₀ g : Matrix (Fin d) (Fin d) L)`. Use extensionality with `i j`.
+
+Conclude with `hD i j`. Rewrite using `[e, ← blkPart_aeval c hT, h0]`. Use extensionality with `i j`. Simplify using `[blkPart]`.
+-/
 theorem UpperTheory.Gal.Mod.grPass :
     GrPass := by
   intro Γ L _ _ d ρ₀ ρ hG g P h0

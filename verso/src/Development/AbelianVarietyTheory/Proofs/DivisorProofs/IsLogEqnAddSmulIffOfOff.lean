@@ -16,6 +16,9 @@ namespace GlobalTheory.PairStep
 
 variable {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X]
 
+/- English proof (translation)
+Use `forall_congr' fun z => forall_congr' fun hz => ?_` and prove the remaining obligations. Establish `: (Γ + c • B) z = Γ z` using `by simp [hB z hz]`. Rewrite using `[this]`.
+-/
 theorem isLogEqn_add_smul_iff_of_off {p : X ⟶ Sp k} {n : ℕ} {Γ B : X → ℚ} (c : ℚ) {x : X}
     (hB : Off B x) (η : RatForms p n) (m : ℕ) (g : X.functionFieldˣ) :
     IsLogEqn p (Γ + c • B) η x m g ↔ IsLogEqn p Γ η x m g := by
@@ -23,6 +26,11 @@ theorem isLogEqn_add_smul_iff_of_off {p : X ⟶ Sp k} {n : ℕ} {Γ B : X → �
   have : (Γ + c • B) z = Γ z := by simp [hB z hz]
   rw [this]
 
+/- English proof (translation)
+Establish `e` using `isLogEqn_add_smul_iff_of_off (p := p) (n := n) (Γ := Γ) c hB`. Use `⟨?_, ?_, ?_, fun z hz w hw => hB w (hw.trans hz)⟩` and prove the remaining obligations. Unfold `KltAt`. Simplify using `only [e]`. Unfold `LcAt`.
+
+Simplify using `only [e]`. Unfold `IsNkltCentre`. Simplify using `only [e]`.
+-/
 theorem off_add_smul (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ)
     (n : ℕ) (Γ B : X → ℚ) (c : ℚ) (x : X) (hB : Off B x) :
     (KltAt p n (Γ + c • B) x ↔ KltAt p n Γ x) ∧ (LcAt p n (Γ + c • B) x ↔ LcAt p n Γ x) ∧
@@ -38,5 +46,8 @@ theorem off_add_smul (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p 
 
 end GlobalTheory.PairStep
 
+/- English proof (translation)
+Introduce `X _ _ p n Γ B c x hB` and use `GlobalTheory.PairStep.off_add_smul X p n Γ B c x hB`.
+-/
 example : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ) (n : ℕ), ∀ (Γ B : X → ℚ) (c : ℚ) (x : X), Off B x → (KltAt p n (Γ + c • B) x ↔ KltAt p n Γ x) ∧ (LcAt p n (Γ + c • B) x ↔ LcAt p n Γ x) ∧ (IsNkltCentre p n (Γ + c • B) x ↔ IsNkltCentre p n Γ x) ∧ ∀ z, z ⤳ x → Off B z :=
   fun X _ _ p n Γ B c x hB => GlobalTheory.PairStep.off_add_smul X p n Γ B c x hB

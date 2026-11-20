@@ -24,6 +24,11 @@ noncomputable def ratEquivFractionZP (p : Nat.Primes) : ℚ ≃+* FractionRing (
       (Ideal.span {((p : ℕ) : ℤ)}).primeCompl (ZP p) ℚ (Ideal.primeCompl_le_nonZeroDivisors _)
   fractionRingRingEquiv (ZP p) ℚ
 
+/- English proof (translation)
+Unfold `genFib extTo`. Rewrite using `[Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Use `RingHom.ext fun f => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, MvPolynomial.map_map]`.
+
+Conclude with `congrArg (fun φ : ℤ →+* FractionRing (ZP p) => MvPolynomial.map φ f) (RingHom.ext_int _ _)`.
+-/
 theorem genFib_extTo_zp {K : Type} {ι : K → Type} (P : Ideal (MRing ι ℤ)) (p : Nat.Primes) :
     genFib (extTo (ZP p) P) =
       (extTo ℚ P).map (MvPolynomial.map ((ratEquivFractionZP p : ℚ ≃+* FractionRing (ZP p)) :
@@ -35,6 +40,9 @@ theorem genFib_extTo_zp {K : Type} {ι : K → Type} (P : Ideal (MRing ι ℤ)) 
   simp only [RingHom.comp_apply, MvPolynomial.map_map]
   exact congrArg (fun φ : ℤ →+* FractionRing (ZP p) => MvPolynomial.map φ f) (RingHom.ext_int _ _)
 
+/- English proof (translation)
+Unfold `genNum`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[genFib_extTo_zp, GlobalTheory.T.intersection_number_field_equiv K ι ℚ (FractionRing (ZP p)) (ratEquivFractionZP p)]`.
+-/
 theorem genNum_zp_eq_rat (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι ℤ)) (p : Nat.Primes) (σ : Type) (cls : σ → K → ℤ) (H : MvPolynomial σ ℝ)
     (Q : List (K → ℤ)) :

@@ -19,12 +19,18 @@ variable {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {Dcf : ∀ Zs : DefS
   {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
   (R : RealT Rc P Dcf Spf Zscf S Ks)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨R0, eq_of_heq hS⟩`.
+-/
 theorem rows_transport {Z Z' : DefSub P.A3.fam3.amb3} (h : Z = Z') (R0 : IndefRows (P.A3.side3 P.P0 P.ψ0 Z))
     (S : IndefData (P.A3.side3 P.P0 P.ψ0 Z')) (hS : HEq R0.toIndefData S) :
     ∃ R0' : IndefRows (P.A3.side3 P.P0 P.ψ0 Z'), R0'.toIndefData = S := by
   subst h
   exact ⟨R0, eq_of_heq hS⟩
 
+/- English proof (translation)
+Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hOk hsep R.charW hP`. Use `⟨R.zs ▸ hR.stable, R.zs ▸ hR.inBlock, ?_, ⟨s, hOk⟩, hsep⟩` and prove the remaining obligations. Conclude with `rows_transport R.zs (primRows3 hOk hsep R.Rl R.F R.charW hP) P.S0 (by`. Rewrite using `[primRows3_data]`. Conclude with `R.s0)`.
+-/
 theorem rowsHold0 {s : ℕ} (hOk : P.A3.fam3.Ok3 s) (hsep : P.A3.fam3.TypesSep3) (hP : PrimRows3 R.Rl R.F) :
     RowsHold0_3 P := by
   have hR := complex_data_conditions_base_level_of_primitive_links hOk hsep R.charW hP
@@ -33,6 +39,9 @@ theorem rowsHold0 {s : ℕ} (hOk : P.A3.fam3.Ok3 s) (hsep : P.A3.fam3.TypesSep3)
     rw [primRows3_data]
     exact R.s0)
 
+/- English proof (translation)
+Substitute `hZ` using the available equality. Consider the cases of `eq_of_heq h0`. Consider the cases of `eq_of_heq h1`. Conclude with `h`.
+-/
 theorem level_transport {Z : DefSub P.A3.fam3.amb3} (hZ : Z = P.Zs) (S0 : IndefData (P.A3.side3 P.P0 P.ψ0 Z))
     (S1 : IndefData (P.A3.side3 P.Ps P.ψs Z)) (h0 : HEq S0 P.S0) (h1 : HEq S1 P.S1) (h : LevelLink S0 S1) :
     LevelLink P.S0 P.S1 := by
@@ -41,6 +50,9 @@ theorem level_transport {Z : DefSub P.A3.fam3.amb3} (hZ : Z = P.Zs) (S0 : IndefD
   cases eq_of_heq h1
   exact h
 
+/- English proof (translation)
+Substitute `hZ` using the available equality. Consider the cases of `eq_of_heq hDc`. Consider the cases of `eq_of_heq hSp`. Conclude with `⟨N, Sc, eq_of_heq hS, hC⟩`.
+-/
 theorem cols_transport {Z : DefSub P.A3.fam3.amb3} (hZ : Z = P.Zs) {Dc' : DefCols (P.A3.side3 P.Ps P.ψs Z)} {Sp' : SPer Dc'}
     {N : IndefNum P.A3.fam3.base3} (Sc : IndefColsR (P.A3.side3 P.Ps P.ψs Z) Dc' Sp' N) (hDc : HEq Dc' P.Dc) (hSp : HEq Sp' P.Sp)
     (hS : HEq Sc.toIndefData P.S1) (hC : HEq Sc.col P.C) :
@@ -51,6 +63,11 @@ theorem cols_transport {Z : DefSub P.A3.fam3.amb3} (hZ : Z = P.Zs) {Dc' : DefCol
   cases eq_of_heq hSp
   exact ⟨N, Sc, eq_of_heq hS, hC⟩
 
+/- English proof (translation)
+Set `Pk` to `primitivePackageFullHecke hOk hsep R.Rl R.F R.sEE (hkCan P.A3) C CH R.charW hP hI`. Use `⟨R.rowsHold0 hOk hsep hP.toPrimRows3, ?_, hbu, ?_⟩` and prove the remaining obligations. Conclude with `level_transport R.zs _ _ R.s0 R.s1 Pk.core.extra.level`. Establish `hDc : HEq (Dcf (R.Rl.toCx3 R.F).zs) P.Dc`. Establish `h : HEq (Dcf (R.Rl.toCx3 R.F).zs) (Dcf P.Zs)` using `congr_arg_heq Dcf R.zs`.
+
+Conclude with `h.trans (heq_of_eq R.dc)`. Establish `hSp : HEq (Spf (R.Rl.toCx3 R.F).zs) P.Sp`. Establish `h : HEq (Spf (R.Rl.toCx3 R.F).zs) (Spf P.Zs)` using `congr_arg_heq Spf R.zs`. Conclude with `h.trans R.sp`. Conclude with `cols_transport R.zs Pk.core.cols hDc hSp R.s1 R.col`.
+-/
 theorem rowsHold [IsTotallyComplex D.what₂.LL] {s : ℕ} (hOk : P.A3.fam3.Ok3 s) (hsep : P.A3.fam3.TypesSep3) (C CH : ℝ)
     (hP : CovolumeOntoIsometryConditions R.Rl R.F R.sEE (hkCan P.A3) C CH) (hI : PassIn3 R.Rl R.F C CH) (hbu : D.BuRational) :
     RowsHold3 P := by

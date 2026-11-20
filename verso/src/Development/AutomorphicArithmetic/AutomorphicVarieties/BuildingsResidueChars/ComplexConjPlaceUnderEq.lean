@@ -3,10 +3,16 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.B
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsConj
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w)`.
+-/
 private theorem cPl_asIdeal {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)) :
     (cPl w).asIdeal = w.asIdeal.comap (RingOfIntegers.mapRingEquiv (IsCMField.complexConj E).toRingEquiv : 𝓞 E →+* 𝓞 E) :=
   (GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w)
 
+/- English proof (translation)
+Take `⟨j⟩ : Nonempty (M →+* ℂ)` from `inferInstance`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj M j]`. Conclude with `(IsCMField.complexEmbedding_complexConj K (j.comp (algebraMap K M)) x).symm`.
+-/
 private theorem conj_algebraMap {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
     [IsCMField K] [IsCMField M] (x : K) :
     IsCMField.complexConj M (algebraMap K M x) = algebraMap K M (IsCMField.complexConj K x) := by
@@ -15,6 +21,15 @@ private theorem conj_algebraMap {K M : Type} [Field K] [NumberField K] [Field M]
   rw [IsCMField.complexEmbedding_complexConj M j]
   exact (IsCMField.complexEmbedding_complexConj K (j.comp (algebraMap K M)) x).symm
 
+/- English proof (translation)
+Introduce `K M _ _ _ _ _ _ _ w`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[cPl_asIdeal]`. Express the relevant statement in the definitionally equal form `(cPl w).asIdeal.comap (algebraMap (𝓞 K) (𝓞 M)) = (w.asIdeal.comap (algebraMap (𝓞 K) (𝓞 M))).comap _`.
+
+Rewrite using `[cPl_asIdeal, Ideal.comap_comap, Ideal.comap_comap]`. Use `congr 1`. Use extensionality with `x`. Conclude with `conj_algebraMap (x : K)`. Use `show Nat.card (𝓞 M ⧸ (cPl w).asIdeal) = Nat.card (𝓞 M ⧸ w.asIdeal)`.
+
+Use `Nat.card_congr (Ideal.quotientEquiv _ _ (RingOfIntegers.mapRingEquiv (IsCMField.complexConj M).toRingEquiv) ?_).toEquiv` and prove the remaining obligations. Rewrite using `[cPl_asIdeal]`. Conclude with `(Ideal.map_comap_of_surjective (RingOfIntegers.mapRingEquiv (IsCMField.complexConj M).toRingEquiv : 𝓞 M →+* 𝓞 M) (RingOfIntegers.mapRingEquiv _).surjective w.asIdeal).symm`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[cPl_asIdeal, cPl_asIdeal, Ideal.comap_comap]`.
+
+Use `Ideal.comap_id w.asIdeal` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Conclude with `IsCMField.complexConj_apply_apply M (x : M)`.
+-/
 theorem UpperTheory.complexConj_place_under_eq :
     UpperTheory.V.Af.Sol.ConjUnder := by
   intro K M _ _ _ _ _ _ _ w

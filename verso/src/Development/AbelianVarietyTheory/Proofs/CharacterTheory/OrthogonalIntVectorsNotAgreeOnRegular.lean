@@ -10,6 +10,9 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 
 namespace GlobalTheory.CuspGL
 
+/- English proof (translation)
+The claim follows from `|∑ k ∈ s, a k| ≤ ∑ k ∈ s, a k ^ 2 := by refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun k _ => ?_) rcases eq_or_ne (a k) 0 with h | h · simp [h] · have h1 : 1 ≤ |a k| := Int.one_le_abs h nlinarith [sq_abs (a k)]`.
+-/
 private lemma abs_sum_le_sum_sq_int (s : Finset ℕ) (a : ℕ → ℤ) :
     |∑ k ∈ s, a k| ≤ ∑ k ∈ s, a k ^ 2 := by
   refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun k _ => ?_)
@@ -18,6 +21,19 @@ private lemma abs_sum_le_sum_sq_int (s : Finset ℕ) (a : ℕ → ℤ) :
   · have h1 : 1 ≤ |a k| := Int.one_le_abs h
     nlinarith [sq_abs (a k)]
 
+/- English proof (translation)
+Introduce `q n ω a b hq hn hω ha2 hb2 hab hpos hreg`. Establish `hN : 0 < q ^ n - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow hn.ne' (by omega))`. Establish `hc2 : ∑ k ∈ Finset.range (q ^ n - 1), (a k - b k) ^ 2 = 2 * (n : ℤ)`. Establish `e : ∀ k, (a k - b k) ^ 2 = a k ^ 2 + b k ^ 2 - 2 * (a k * b k)` using `fun k => by ring`. Simplify using `only [e, Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, ha2, hb2, hab]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcoef : ∀ j : ℕ, (∀ e : ℕ, 0 < e → e < n → ¬ j * q ^ e ≡ j [MOD q ^ n - 1]) → ∑ k ∈ Finset.range (q ^ n - 1), (((a k - b k : ℤ)) : ℂ) * ω ^ (j * k) = 0`. Introduce `j hj`. Simplify using `only [Int.cast_sub, sub_mul, Finset.sum_sub_distrib, hreg j hj, sub_self]`. Distinguish the cases in `hexc : q = 2 ∧ (n = 4 ∨ n = 6)`.
+
+Take `⟨rfl, rfl | rfl⟩` from `hexc`. Use `GlobalTheory.T.false_of_sum_sq_eq_eight_of_fourier_vanish_order_15 ω (fun k => a k - b k) (by simpa using hω) (by simpa using hc2) (fun j hj h5 => by` and prove the remaining obligations. Apply the tactic sequence `simpa using hcoef j (fun e he1 he2 => by revert h5 interval_cases j <;> interval_cases e <;> decide))`. Use `GlobalTheory.T.false_of_sum_sq_eq_12_of_fourier_vanish_order_63 ω (fun k => a k - b k) (by simpa using hω) (by simpa using hc2) (fun j hj h21 h9 => by` and prove the remaining obligations. Apply the tactic sequence `simpa using hcoef j (fun e he1 he2 => by revert h21 h9 interval_cases j <;> interval_cases e <;> decide))`.
+
+Establish `hsum : |∑ k ∈ Finset.range (q ^ n - 1), (a k - b k)| ≤ (n : ℤ) - 1`. Rewrite using `[Finset.sum_sub_distrib]`. Establish `hA` using `abs_le.mp ((abs_sum_le_sum_sq_int _ a).trans ha2.le)`. Establish `hB` using `abs_le.mp ((abs_sum_le_sum_sq_int _ b).trans hb2.le)`. Apply the tactic sequence `rcases pos_and_pos_or_neg_and_neg_of_mul_pos hpos with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>`.
+
+Conclude with `abs_le.mpr ⟨by omega, by omega⟩`. Establish `h1` using `GlobalTheory.T.parseval_bound_integerVector_smallFourierSupport n (q ^ n - 1) ω (fun k => a k - b k) ((Finset.Ioo 0 (q ^ n - 1)).filter (fun j => ∃ e ∈ Finset.Ioo 0 n, j * q ^ e ≡ j [MOD q ^ n - 1])) hn hN hω hc2 hsum (fun j hj0 hjN hjS => by`. Use `hcoef j (fun e he1 he2 he => hjS ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_Ioo]`. Conclude with `⟨⟨hj0, hjN⟩, e, ⟨he1, he2⟩, he⟩)`.
+
+Establish `h2` using `GlobalTheory.T.card_nonregular_residues_mod_pow_sub_one_le q n hq hn`. Establish `h3` using `GlobalTheory.T.separation_numerical_ineq_cuspidalGL q n hq hn hexc`. Conclude with `absurd (lt_of_le_of_lt (h1.trans (Nat.add_le_add_left (Nat.mul_le_mul_left _ h2) _)) h3) (lt_irrefl _)`.
+-/
 theorem orthogonal_int_vectors_not_agree_on_regular :
     ∀ (q n : ℕ) (ω : ℂ) (a b : ℕ → ℤ), 2 ≤ q → 0 < n → IsPrimitiveRoot ω (q ^ n - 1) → ∑ k ∈ Finset.range (q ^ n - 1), a k ^ 2 = n → ∑ k ∈ Finset.range (q ^ n - 1), b k ^ 2 = n → ∑ k ∈ Finset.range (q ^ n - 1), a k * b k = 0 → 0 < (∑ k ∈ Finset.range (q ^ n - 1), a k) * (∑ k ∈ Finset.range (q ^ n - 1), b k) → (∀ j : ℕ, (∀ e : ℕ, 0 < e → e < n → ¬ j * q ^ e ≡ j [MOD q ^ n - 1]) → ∑ k ∈ Finset.range (q ^ n - 1), (a k : ℂ) * ω ^ (j * k) = ∑ k ∈ Finset.range (q ^ n - 1), (b k : ℂ) * ω ^ (j * k)) → False := by
   intro q n ω a b hq hn hω ha2 hb2 hab hpos hreg

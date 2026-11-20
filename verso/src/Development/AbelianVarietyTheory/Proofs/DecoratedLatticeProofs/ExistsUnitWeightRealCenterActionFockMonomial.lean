@@ -21,6 +21,41 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CenFockWt
 
+/- English proof (translation)
+Introduce `D ψ θ hθ S T x y hx hy k hk`. Take `⟨χS, χT, hW⟩` from `hk.weil`. Establish `hstd : IsStdChar D ψ (-1)` using `hk.vac.1`. Establish `hvth : IsThetaFunO ψ S T k.vac` using `hk.vac.2.theta`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_realCentre_character_on_definiteVacuum D ψ θ hθ S T x y hx hy k hk`.
+
+Use `set ζ : GA D S → D.what₂.Tau → ℂ := fun z τ => if h : 0 < S.rank then compAt θ τ (Formalism.L2.Theta.mt S z) ⟨0, h⟩ ⟨0, h⟩ else 1 with hζdef`. Use `set μ : GA D S → D.what₂.Tau → ℂ := fun z τ => if (x.s τ = 1 ↔ y.s τ = 1) then (ζ z τ)⁻¹ else ζ z τ with hμdef`. Use `set deg : D.what₂.Tau → (FVar D T.rank S.rank →₀ ℕ) → ℕ := fun τ α => ∑ v ∈ α.support with v.1 = τ, α v with hdeg`. Establish `hζ : ∀ z ∈ GinfC S, z ∈ Subgroup.center (GA D S) → ∀ τ, ‖ζ z τ‖ = 1 ∧ compAt θ τ (Formalism.L2.Theta.mt S z) = ζ z τ • (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ)`. Introduce `z hz hzc τ`.
+
+Take `⟨ζ', h1, h2⟩` from `GlobalTheory.T.realComponent_central_definiteUnitary_eq_unit_scalar D θ hθ S x hx z hz hzc τ`. Distinguish the cases in `h : 0 < S.rank`. Establish `e : ζ z τ = ζ'`. Simplify using `only [hζdef, dif_pos h, h2, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Rewrite using `[e]`.
+
+Conclude with `⟨h1, h2⟩`. Establish `e : ζ z τ = 1` using `by simp only [hζdef, dif_neg h]`. Use `⟨by rw [e, norm_one], ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Conclude with `absurd i.2 (by omega)`.
+
+Establish `hμ : ∀ z ∈ GinfC S, z ∈ Subgroup.center (GA D S) → ∀ τ, ‖μ z τ‖ = 1`. Introduce `z hz hzc τ`. Simplify using `only [hμdef]`. Use `split_ifs`. Rewrite using `[norm_inv, (hζ z hz hzc τ).1, inv_one]`.
+
+Conclude with `(hζ z hz hzc τ).1`. Establish `hT1 : ∀ τ, compAt θ τ (Formalism.L2.Theta.mt T 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one T _`. Establish `comb_smul : ∀ (cc : WO S T →₀ ℂ) (a : ℂ) (g : WO S T → ℂ), comb ψ S T cc (a • g) = a • comb ψ S T cc g`. Introduce `cc a g`. Unfold `comb`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Establish `: heisO ψ S T u (a • g) = a • heisO ψ S T u g`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, smul_comm]`. Use `⟨fun α z => c z * ∏ τ, μ z τ ^ deg τ α, ?_, ?_⟩` and prove the remaining obligations. Introduce `α z hz hzc`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, (hc z hz hzc).1, one_mul, norm_prod]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow, hμ z hz hzc τ, one_pow]`. Introduce `cc hcc set F := pureTensorO ψ θ S T x.s y.s x.B y.B with hF`. Establish `hcomb : ∀ g, comb ψ S T cc g = ∑ i : Fin cc.support.card, cc (cc.support.equivFin.symm i) • heisO ψ S T (cc.support.equivFin.symm i) g`.
+
+Introduce `g`. Unfold `comb`. Rewrite using `[← Finset.sum_coe_sort]`. Conclude with `(Equiv.sum_comp cc.support.equivFin.symm (fun u => cc u • heisO ψ S T u g)).symm`. Establish `key1 : ∀ g, IsThetaFunO ψ S T g → ∀ P, F (comb ψ S T cc g) P = comb ψ S T cc (F g P)`.
+
+Introduce `g hg P`. Rewrite using `[hcomb, hcomb]`. Conclude with `(GlobalTheory.T.heisenberg_combination_comm_fockPolynomialVectors D ψ θ S T hstd hθ x.s y.s x.B y.B g hg cc.support.card _ _ (fun i => hcc _ (Finset.coe_mem _)) P).1.symm`. Establish `hop` using `GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ S T χS χT k.om hW hθ x.s x.s x.B (fun τ => ζ z τ • x.B τ) y.s y.s y.B y.B z 1 (fun τ => by rw [(hζ z hz hzc τ).2, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [hT1, Matrix.mul_one, Matrix.one_mul …`. Rewrite using `[key1 k.vac hvth, GlobalTheory.T.weilOperator_sourceRealPoint_commute_heisenbergComb D ψ S T χS χT k.om hW z hz cc hcc _ hop.1, hop.2, (hc z hz hzc).2, GlobalTheory.FiniteFock.pureTensorO_smul, GlobalTheory.T.pureTensorFock_unitScaledBasis_monomial D ψ θ hstd hθ S T x y hx hy k.v …`.
+
+Introduce `χ`. Distinguish the cases in `hne : ∃ α₀, ∀ z ∈ GinfC S, z ∈ Subgroup.center (GA D S) → c z * ∏ τ, μ z τ ^ deg τ α₀ = χ z`. Take `⟨α₀, hα₀⟩` from `hne`. Use `(GlobalTheory.T.finite_monomials_with_prescribed_placeDegree D T.rank S.rank (fun τ => deg τ α₀)).subset fun α hα τ => ?_` and prove the remaining obligations. Use `show deg τ α = deg τ α₀`.
+
+Distinguish the cases in `hr : 0 < S.rank ∧ 0 < T.rank`. Take `⟨z, hz, hzc, h1, h2⟩` from `GlobalTheory.T.exists_central_realPoint_unit_scalar_single_place D θ hθ S τ (Complex.exp Complex.I) (by simpa using Complex.norm_exp_ofReal_mul_I 1)`. Establish `e` using `(hα z hz hzc).trans (hα₀ z hz hzc).symm`. Establish `hc0 : c z ≠ 0`. Introduce `h0`.
+
+Use `(hc z hz hzc).1` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Establish `e2` using `mul_left_cancel₀ hc0 e`. Establish `hζρ : ∀ ρ, ρ ≠ τ → ζ z ρ = 1`.
+
+Introduce `ρ hρ`. Simplify using `only [hζdef, dif_pos hr.1, h2 ρ hρ, Matrix.one_apply_eq]`. Establish `hζτ : ζ z τ = Complex.exp Complex.I`. Simplify using `only [hζdef, dif_pos hr.1, h1, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Establish `hμρ : ∀ ρ, ρ ≠ τ → μ z ρ = 1`.
+
+Introduce `ρ hρ`. Simplify using `only [hμdef, hζρ ρ hρ, inv_one, ite_self]`. Rewrite `e2` using `[Finset.prod_eq_single τ (fun ρ _ hρ => by rw [hμρ ρ hρ, one_pow]) (by simp), Finset.prod_eq_single τ (fun ρ _ hρ => by rw [hμρ ρ hρ, one_pow]) (by simp)]`. Conclude with `GlobalTheory.T.eq_of_pow_eq_pow_of_eq_exp_I_or_inv _ _ (μ z τ) (by`. Simplify using `only [hμdef, hζτ]`.
+
+Use `split_ifs`. Use `exacts [Or.inr rfl, Or.inl rfl]) e2`. Establish `hE : IsEmpty (FVar D T.rank S.rank)` using `⟨fun v => hr ⟨by have := v.2.2.2; omega, by have := v.2.1.2; omega⟩⟩`. Simplify using `only [hdeg, Finset.eq_empty_of_isEmpty α.support, Finset.eq_empty_of_isEmpty α₀.support, Finset.filter_empty, Finset.sum_empty]`. Use `Set.Finite.subset Set.finite_empty fun α hα => hne ⟨α, hα⟩` and prove the remaining obligations.
+-/
 theorem central_wt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (S T : HSp D) (x : DefSp S) (y : DefSp T), x.Is → y.Is → ∀ k : KerDat S T, k.Is ψ θ x y → ∃ wt : (FVar D T.rank S.rank →₀ ℕ) → GA D S → ℂ, (∀ α, ∀ z ∈ GinfC S, z ∈ Subgroup.center (GA D S) → ‖wt α z‖ = 1 ∧ ∀ c : WO S T →₀ ℂ, IsFinComb c → k.om (z, 1) (pureTensorO ψ θ S T x.s y.s x.B y.B (comb ψ S T c k.vac) (MvPolynomial.monomial α 1)) = wt α z • pureTensorO ψ θ S T x.s y.s x.B y.B (comb ψ S T c k.vac) (MvPolynomial.monomial α 1)) ∧ ∀ χ : GA D S → ℂ, {α | ∀ z ∈ GinfC S, z ∈ Subgroup.center (GA D S) → wt α z = χ z}.Finite := by
   intro D ψ θ hθ S T x y hx hy k hk
   classical

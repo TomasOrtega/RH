@@ -7,6 +7,9 @@ open scoped Topology
 
 namespace GlobalTheory.CompanionTheory.BZCore
 
+/- English proof (translation)
+Establish `hc : Continuous fun p : GL (Fin d) k × (Fin d → k) => ((p.1 : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec p.2` using `Continuous.matrix_mulVec (Units.continuous_val.comp continuous_fst) continuous_snd`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `g hg`. Establish `hK : IsCompact ((lat0 : COSub k d).sub : Set (Fin d → k))` using `lat0.isCompact`. Conclude with `hK.eventually_forall_of_forall_eventually (P := fun (h : GL (Fin d) k) (y : Fin d → k) => (h : Matrix (Fin d) (Fin d) k).mulVec y ∈ (lat0 : COSub k d).sub) fun y hy => hc.continuousAt.eventually_mem (lat0.isOpen.mem_nhds (hg y hy))`.
+-/
 theorem isOpen_preserve_standard_lattice {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {d : ℕ} :
     IsOpen {g : GL (Fin d) k | ∀ y ∈ (lat0 : COSub k d).sub,
@@ -22,6 +25,15 @@ theorem isOpen_preserve_standard_lattice {k : Type} [Field k] [ValuativeRel k] [
       (h : Matrix (Fin d) (Fin d) k).mulVec y ∈ (lat0 : COSub k d).sub)
     fun y hy => hc.continuousAt.eventually_mem (lat0.isOpen.mem_nhds (hg y hy))
 
+/- English proof (translation)
+Establish `h1` using `isOpen_preserve_standard_lattice (k := k) (d := d)`. Establish `h2` using `h1.preimage (continuous_inv (G := GL (Fin d) k))`. Use `h1.inter h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg`. Establish `hg' : (lat0 : COSub k d).act g = lat0` using `hg`. Use `⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `(COSub.mulVec_mem_act (L := (lat0 : COSub k d)) g (y := y)).2 hy` as an intermediate fact. Rewrite `this` using `[hg']`. Then use the resulting hypothesis.
+
+Establish `hy' : y ∈ ((lat0 : COSub k d).act g).sub` using `by rwa [hg']`. Conclude with `COSub.mem_act.1 hy'`. Introduce and unpack `⟨ha, hb⟩`. Use `COSub.ext (AddSubgroup.ext fun y => ?_)` and prove the remaining obligations. Rewrite using `[COSub.mem_act]`.
+
+Use `⟨fun hy => ?_, fun hy => hb y hy⟩` and prove the remaining obligations. Use `ha _ hy` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem isOpen_stabilizer_standard_lattice {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {d : ℕ} :
     IsOpen {g : GL (Fin d) k | (lat0 : COSub k d).act g = lat0} := by

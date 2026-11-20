@@ -27,6 +27,15 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 namespace GlobalTheory.LamT
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hvΨ, hv', -⟩` from `hG`. Take `⟨-, -, -, hℓ⟩` from `hL`. Use `⟨fun k => ?_, fun k => ?_⟩` and prove the remaining obligations. Use `hℓ k revert this` as an intermediate fact. Consider the cases of `L.src k with`.
+
+Consider the case `inl q => intro h1`. Rewrite using `[h1]`. Conclude with `(hvΨ q.2).1`. Consider the case `inr q => intro h1`. Rewrite using `[h1]`.
+
+Conclude with `(hv' q.2).1`. Use `hℓ k revert this` as an intermediate fact. Consider the cases of `L.src k with`. Consider the case `inl q => intro h1`. Rewrite using `[h1]`.
+
+Conclude with `hdeg.1 q.2`. Consider the case `inr q => intro h1`. Rewrite using `[h1]`. Conclude with `hdeg.2 q.2`.
+-/
 theorem letters_lines {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] {H : Host E} {l : Level H}
     {c : Coeff l} {nΨ n' f : ℕ} {o : LamF.LamObj c nΨ n'} {La t : ℝ} (hG : LamF.LamObjGood o f La)
     (L : LamF.LamLetters o) (hL : L.IsGood)
@@ -46,6 +55,21 @@ theorem letters_lines {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRi
     | inl q => intro h1; rw [h1]; exact hdeg.1 q.2
     | inr q => intro h1; rw [h1]; exact hdeg.2 q.2
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U ξ hU hξ hpq _ χ hχ a n hd F hF hint hpos k x₀ Xx hX 𝔄 h𝔄 hΛ La lam hLa hB hne`. Use `letI := H.starRing`. Establish `hstar : ∀ a : 𝓞 E, star a = H.bar a` using `fun _ => rfl`. Establish `hgood : GoodEmb c c.F.val.toRingHom` using `rfl`. Establish `hU0` using `hU _ hgood`.
+
+Establish `hr : r = Dw.p + Dw.q` using `hU0.1`. Establish `hFs : F ∈ sec Xo c a n` using `cusp_le_sec Xo c U a n hF`. Take `⟨z, σ₁, hz, hx⟩` from `GlobalTheory.T.exists_good_cmPoint_at_cmBasis_frame E H Dw l Xo c hstar r _ hU0 (by omega) k x₀ Xx hX 𝔄 h𝔄 hΛ La lam hB`. Take `⟨G, hG⟩` from `GlobalTheory.T.exists_isFramePolynomialOfRule_numberField E H Dw l Xo c z.K z.y a n F hFs`. Establish `hev : evR Xo c F ((U c.F.val.toRingHom).un k x₀) ≠ 0`.
+
+Introduce `h0`. Apply `hne` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(if h : x₀.1 ∈ ((U c.F.val.toRingHom).X k).dom then toC (evR Xo c F ((U c.F.val.toRingHom).un k ⟨x₀.1, h⟩)) else 0) = 0`. Rewrite using `[dif_pos x₀.2]`. Conclude with `h0`.
+
+Establish `hG0 : G ≠ 0` using `(GlobalTheory.T.framePolynomial_equivariant_and_ne_zero E H Dw l Xo c z.K z.y a n F hFs G hG).2 _ σ₁ _ hx hev`. Establish `hloc` using `GlobalTheory.T.localLowerBound_cmPoint_framePolynomial_every_prime E H Dw l Xo c z _ La hz a n F hFs hint G hG`. Establish `harch` using `GlobalTheory.T.archimedeanHypothesis_lowerBound_cmPoint E H Dw l Xo c r U ξ hU hξ hpq z _ La hz a n hd F hF G hG`. Take `⟨hGood, hL, -⟩` from `hz`. Establish `hdeg` using `LamF.lamDegSt_logOm GlobalTheory.thetaUnifAV_all GlobalTheory.firstFiveLaws.1 E H χ hχ l c hstar _ _ _ z.obj La hGood`.
+
+Establish `hdet` using `LamF.Ind.lamInd E H l c hstar _ _ _ z.obj La hGood z.letters hL`. Take `⟨hlg, hnd⟩` from `letters_lines hGood z.letters hL hdeg`. Take `⟨-, -, -, -, -, -, -, -, hgB, -, -, -, -, -, -, -, -, -, hTg, hLg, hkl, hka, -⟩` from `hGood`. Establish `hmr : ∀ b, Dw.mult b ≤ r`. Introduce `b`.
+
+Unfold `Datum.mult`. Apply the tactic sequence `split_ifs <;> omega`. Establish `h5` using `GlobalTheory.cmPoint_lowerBound_free z.K z.Φ.key z.Tl z.LamL (E →+* ℂ) Dw.mult z.e z.ℓ z.U G (fun b i => a (b, i)) n r La (logOm E χ).re (fun σ => supC Xo c U ξ (goodOf c (σ.comp (algebraMap c.F z.K))) a n F) hTg hLg hkl hka hlg hnd hdet hG0 hLa (by omega) hmr (fun σ => hpos _) h …`. Establish `h2` using `Formalism.L2.Pj.abelian₂.mean_restrict (K := c.F) (L := z.K) (fun τ => Real.log (supC Xo c U ξ (goodOf c τ) a n F))`. Use `beta_reduce at h5 h2`.
+
+Rewrite `h5` using `[h2]`. Establish `hg : z.Φ.key.P.g = Module.finrank ℚ E / 2 * r` using `by rw [hr]; exact hgB`. Rewrite `h5` using `[hg]`. Conclude with `h5`.
+-/
 theorem meanLogSup_lowerBound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = ξ) → 1 ≤ Dw.p + Dw.q → ∀ [NeZero H.d] (χ : DirichletCharacter ℂ H.d), IsKroneckerChar χ → ∀ a n, Dom a n → ∀ F ∈ cusp Xo c U a n, (∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v F) → (∀ σ, 0 < supC Xo c U ξ (goodOf c σ) a n F) → ∀ (k : (U c.F.val.toRingHom).Comp) (x₀ : ((U c.F.val.toRingHom).X k).dom) (Xx : FD.DataX E r) (hX : Xx.toData = (U c.F.val.toRingHom).X k) (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E), 𝔄 ≠ 0 → Xx.Λ = Submodule.span (𝓞 E) {v | ∃ a ∈ 𝔄, ∃ u ∈ Xx.L', v = a • u} → ∀ (La : ℝ) (lam : Fin r → Fin r → E), 1 ≤ La → FD.LamBasis Xx La (hX ▸ x₀.1) lam → rdU (U c.F.val.toRingHom) F k x₀.1 ≠ 0 → -((pDeg (logOm E χ).re + (1 / 2) * Real.log La) * (((∑ b : E →+* ℂ, ∑ i : Fin (Dw.mult b), a (b, i) : ℕ) : ℝ) + ((Module.finrank ℚ E / 2 * r : ℕ) : ℝ) * n)) - ((∑ b : E →+* ℂ, ∑ i : Fin (Dw.mult b), a (b, i) : ℕ) : ℝ) * Real.log ((r : ℝ) * La) ≤ (∑ σ : c.F →+* ℂ, Real.log (supC Xo c U ξ (goodOf c σ) a n F)) / (Module.finrank ℚ c.F : ℝ) := by
   intro E _ _ _ H Dw l Xo c r U ξ hU hξ hpq _ χ hχ a n hd F hF hint hpos k x₀ Xx hX 𝔄 h𝔄 hΛ La lam hLa hB hne
   classical

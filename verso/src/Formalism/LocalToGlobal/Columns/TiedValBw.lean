@@ -40,6 +40,9 @@ section Rec
 variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (u : d.what₂.Word) (i : ℕ)
   (hi : i ≤ d.R.m)
 
+/- English proof (translation)
+Introduce `w hw hs v x`. Rewrite using `[hY]`. Conclude with `hBw w hw (@of_decide_eq_true _ (Classical.propDecidable _) hs) v x`.
+-/
 theorem bwTie_of (Wv : CF.ValTied (D := d.colRec a) u (atTTied a hH u).eV i hi (classAgreement a hS hH hP u i hi))
     (hY : Wv.eY = valEY (Pr := d.Pr) d.W d.lev d.σ₀ u i (valCrd a hS hH u i hi))
     (hBw : Val.Bw (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i d.what₂.places d.plEq (valCrd a hS hH u i hi)

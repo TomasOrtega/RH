@@ -7,6 +7,9 @@ namespace GlobalTheory.DefiniteDecompObj
 
 open Formalism.BasicNotions Formalism.MainNotions.StandardLattice Formalism.L2.GlobalTheoryTheory.GenusMassVolumes
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DefiniteDecomp.defClassDecomp`.
+-/
 theorem doubleCosets_mass : ∀ D : D7, DefClassDecomp D :=
   GlobalTheory.DefiniteDecomp.defClassDecomp
 

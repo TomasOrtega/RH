@@ -10,6 +10,13 @@ open scoped Topology
 noncomputable section
 namespace GlobalTheory.SliceIntegral
 
+/- English proof (translation)
+Use `haveI := t2Space k`. Use `⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_, HasCompactSupport.intro (IsCompact.image Φ.2.2 continuous_fst) fun x hx => ?_⟩` and prove the remaining obligations. Establish `ht : Filter.Tendsto (fun x' : I₀ → k => ((x - x', (0 : I₁ → k), (0 : I₂ → k)) : (I₀ → k) × (I₁ → k) × (I₂ → k))) (𝓝 x) (𝓝 0)`. Establish `hc : Continuous (fun x' : I₀ → k => ((x - x', (0 : I₁ → k), (0 : I₂ → k)) : (I₀ → k) × (I₁ → k) × (I₂ → k)))` using `by fun_prop`. Use `hc.tendsto x` as an intermediate fact.
+
+Rewrite `this` using `[sub_self, ← Prod.zero_eq_mk, ← Prod.zero_eq_mk]`. Then use the resulting hypothesis. Use `filter_upwards [ht.eventually (GlobalTheory.SBConv.eventually_translate Φ.2)] with x' hx'`. Use `congr 1`. Use function extensionality and compare the values at `a`. Use `hx' (x, 0, a)` as an intermediate fact.
+
+Simplify using `using this`. Establish `h0 : ∀ a, Φ.1 (x, 0, a) = 0` using `fun a => image_eq_zero_of_notMem_tsupport fun h => hx ⟨_, h, rfl⟩`. Simplify using `[h0]`.
+-/
 theorem integral_slice_mem_SB (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k)
     (I₀ I₁ I₂ : Type) [Fintype I₀] [Fintype I₁] [Fintype I₂]

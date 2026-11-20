@@ -22,6 +22,15 @@ open GlobalTheory.NormRatio
 
 namespace GlobalTheory.SphMove
 
+/- English proof (translation)
+Introduce `D ψ A B χA χB om hW LA LB hA hB Sf g hg f hf hsph`. Establish `hmv : GlobalTheory.FinPl.Moves A g LA LA (fun v => v ∉ Sf)` using `(GlobalTheory.QLawPf.moves_iff_forall hA _ g).2 fun v hv => (GlobalTheory.StMoves.moves_iff_stabLoc A LA hA.1.fg v g).2 (hg v hv)`. Establish `hmi : GlobalTheory.FinPl.Moves A g⁻¹ LA LA (fun v => v ∉ Sf)` using `GlobalTheory.StMoves.moves_inv hmv`. Establish `hm1 : GlobalTheory.FinPl.Moves B (1 : GA D B)⁻¹ LB LB (fun v => v ∉ Sf)`. Introduce `y _`.
+
+Rewrite using `[inv_one, show mt B (1 : GA D B) = 1 from rfl, Matrix.one_mulVec]`. Establish `key : ∀ u ∈ latO A B (LA : Set _) (LB : Set _) (fun v => v ∉ Sf), actO A B g⁻¹ (1 : GA D B)⁻¹ u ∈ latO A B (LA : Set _) (LB : Set _) (fun v => v ∉ Sf)` using `fun u hu => GlobalTheory.MidVacLat.actO_mem_latO hA hA hB hB hmi hm1 hu`. Establish `step : ∀ w, heisO ψ A B (actO A B g⁻¹ (1 : GA D B)⁻¹ w) f = f → heisO ψ A B w (om (g, 1) f) = om (g, 1) f`. Introduce `w hw`. Establish `h` using `hW.om_heis g 1 (actO A B g⁻¹ (1 : GA D B)⁻¹ w) f hf`.
+
+Rewrite `h` using `[hw, GlobalTheory.MidVacLat.actO_actO_inv]`. Conclude with `h.symm`. Use `⟨fun u hu => step _ ?_, fun e he u hu hh => step _ ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.MidVacLat.actO_two_nsmul]`. Conclude with `hsph.1 _ (key u hu)`.
+
+Conclude with `hsph.2 e he _ (key u hu) (GlobalTheory.MidVacLat.isHalf_actO _ _ hh)`.
+-/
 theorem isSphOff_om : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (om : GlobalTheory.Core.Rk.IP.WRep A B),
   IsWeilDatumO ψ A B χA χB om → ∀ (LA : Lat A) (LB : Lat B), IsSelfDualC A LA → IsSelfDualC B LB →
   ∀ (Sf : Finset (FinPl D)) (g : GA D A), g ∈ openOff A LA Sf → ∀ f, IsThetaFunO ψ A B f → IsSphOff ψ A B LA LB Sf f →

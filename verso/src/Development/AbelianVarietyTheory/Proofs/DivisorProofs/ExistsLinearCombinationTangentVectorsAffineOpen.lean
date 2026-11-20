@@ -19,15 +19,33 @@ namespace GlobalTheory.CechKS.LinTan
 
 open GlobalTheory.FlagMod
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+-/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
+/- English proof (translation)
+The claim follows from `le_rfl`.
+-/
 theorem le_preimage_top {T Z : Scheme.{0}} (z : T ⟶ Z) : ⊤ ≤ z ⁻¹ᵁ ⊤ := le_rfl
 
+/- English proof (translation)
+Rewrite using `[← spMap_ev z hU h, ← spMap_ev z' hU h', RingHom.ext e]`.
+-/
 theorem eq_of_ev {Y : Scheme.{0}} {S : Type} [CommRing S] {U : Y.Opens} (hU : IsAffineOpen U) {z z' : Sp S ⟶ Y}
     (h : ⊤ ≤ z ⁻¹ᵁ U) (h' : ⊤ ≤ z' ⁻¹ᵁ U) (e : ∀ f, ev z U h f = ev z' U h' f) : z = z' := by
   rw [← spMap_ev z hU h, ← spMap_ev z' hU h', RingHom.ext e]
 
+/- English proof (translation)
+Introduce `p _`. Establish `hs : Function.Surjective (spMap (TrivSqZeroExt.fstHom B B (Fin n → B)).toRingHom)`. Introduce `q`. Use `⟨spMap (algebraMap B (TrivSqZeroExt B (Fin n → B))) q, ?_⟩` and prove the remaining obligations. Use `PrimeSpectrum.ext (Ideal.ext fun c ↦ ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap B (TrivSqZeroExt B (Fin n → B)) c.fst ∈ q.asIdeal ↔ c ∈ q.asIdeal`. Establish `hn : c - algebraMap B (TrivSqZeroExt B (Fin n → B)) c.fst ∈ q.asIdeal`. Use `q.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: (c - algebraMap B (TrivSqZeroExt B (Fin n → B)) c.fst) ^ 2 = 0`. Apply the tactic sequence `ext <;> simp [pow_two, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Conclude with `⟨fun hc ↦ by simpa using add_mem hn hc, fun hc ↦ by simpa using sub_mem hc hn⟩`. Take `⟨q, rfl⟩` from `hs p`. Use `h (Set.mem_univ q)` as an intermediate fact.
+
+Rewrite `this` using `[← hw]`. Conclude with `this`.
+-/
 theorem le_preimage_of_fst {Y : Scheme.{0}} {B : Type} [CommRing B] {n : ℕ} {x : Sp B ⟶ Y}
     {w : Sp (TrivSqZeroExt B (Fin n → B)) ⟶ Y}
     (hw : spMap (TrivSqZeroExt.fstHom B B (Fin n → B)).toRingHom ≫ w = x) {O : Y.Opens} (h : ⊤ ≤ x ⁻¹ᵁ O) :
@@ -49,6 +67,11 @@ theorem le_preimage_of_fst {Y : Scheme.{0}} {B : Type} [CommRing B] {n : ℕ} {x
   rw [← hw] at this
   exact this
 
+/- English proof (translation)
+Use `⟨{ toFun := fun f => TrivSqZeroExt.inl (e f) + TrivSqZeroExt.inr fun a => (d a f).snd, map_one' := ?_, map_mul' := fun f g => ?_, map_zero' := ?_, map_add' := fun f g => ?_ }, fun f => ⟨add_zero (e f), fun a => zero_add (d a f).snd⟩⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `[hd, mul_comm]`.
+
+Apply the tactic sequence `ext <;> simp`. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem exists_glue {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (e : A →+* B) (d : Fin n → (A →+* DualNumber B))
     (hd : ∀ a f, (d a f).fst = e f) : ∃ q : A →+* TrivSqZeroExt B (Fin n → B),
       ∀ f, (q f).fst = e f ∧ ∀ a, (q f).snd a = (d a f).snd := by
@@ -62,6 +85,29 @@ theorem exists_glue {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (e : A →+
   · ext <;> simp
   · ext <;> simp
 
+/- English proof (translation)
+Establish `hwY : ∀ a, ⊤ ≤ w a ⁻¹ᵁ Y₀.1` using `fun a => le_preimage_of_red (hwx a) hxY`. Take `⟨q, hq⟩` from `exists_glue (ev x Y₀.1 hxY) (fun a => ev (w a) Y₀.1 (hwY a)) (fun a f => by`. Use `ev_spMap (TrivSqZeroExt.fstHom B B B).toRingHom (w a) Y₀.1 (hwY a) (le_preimage_comp _ (hwY a))` as an intermediate fact. Rewrite `this` using `[ev_congr (hwx a) _ _ hxY]`. Rewrite using `[this]`.
+
+Use the proof step `rfl)`. Set `T : Sp (TrivSqZeroExt B (Fin n → B)) ⟶ Y` to `spMap q ≫ tau Y₀.2`. Establish `hT : ∀ {S : Type} [CommRing S] (σ : TrivSqZeroExt B (Fin n → B) →+* S) (z : Sp S ⟶ Y) (hz : ⊤ ≤ z ⁻¹ᵁ Y₀.1), (∀ f, σ (q f) = ev z Y₀.1 hz f) → spMap σ ≫ T = z` using `fun σ z hz e => by`. Rewrite using `[← spMap_ev z Y₀.2 hz, ← RingHom.ext (f := σ.comp q) e, ← spMap_comp_spMap, Category.assoc]`. Both sides reduce to the same expression.
+
+Set `σ : ((Fin n → B) →ₗ[B] B) → (TrivSqZeroExt B (Fin n → B) →+* DualNumber B)` to `fun l => (TrivSqZeroExt.map l).toRingHom`. Establish `hσ1 : ∀ l r, (σ l r).fst = r.fst` using `fun l r => TrivSqZeroExt.fst_map l r`. Establish `hσ2 : ∀ l r, (σ l r).snd = l r.snd` using `fun l r => TrivSqZeroExt.snd_map l r`. Establish `hTx : spMap (TrivSqZeroExt.fstHom B B (Fin n → B)).toRingHom ≫ T = x` using `hT _ x hxY fun f => (hq f).1`. Establish `hTw : ∀ a, spMap (σ (LinearMap.proj a)) ≫ T = w a` using `fun a => hT _ _ (hwY a) fun f => by`.
+
+Use `ext`. Rewrite using `[hσ1, (hq f).1]`. Use `ev_spMap (TrivSqZeroExt.fstHom B B B).toRingHom (w a) Y₀.1 (hwY a) (le_preimage_comp _ (hwY a))` as an intermediate fact. Rewrite `this` using `[ev_congr (hwx a) _ _ hxY]`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Rewrite using `[hσ2]`. Conclude with `(hq f).2 a`. Set `l : (Fin n → B) →ₗ[B] B` to `Fintype.linearCombination B c`. Establish `hSx : spMap (TrivSqZeroExt.fstHom B B B).toRingHom ≫ (spMap (σ l) ≫ T) = x`.
+
+Rewrite using `[← Category.assoc, spMap_comp_spMap, ← hTx]`. Use `congr 2`. Conclude with `RingHom.ext fun r => hσ1 l r`. Establish `hS : ∀ O : Y.Opens, ⊤ ≤ x ⁻¹ᵁ O → ∀ f : Γ(Y, O), (valR (spMap (σ l) ≫ T) O f).snd = ∑ a, c a * (valR (w a) O f).snd` using `fun O hO f => by`. Establish `hTO : ⊤ ≤ T ⁻¹ᵁ O` using `le_preimage_of_fst hTx hO`.
+
+Establish `key : ∀ l', valR (spMap (σ l') ≫ T) O f = σ l' (ev T O hTO f)` using `fun l' => by`. Rewrite using `[valR_eq_ev _ _ (le_preimage_comp _ hTO), ev_spMap _ _ _ hTO]`. Both sides reduce to the same expression. Rewrite using `[key, hσ2, Fintype.linearCombination_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hTw a, key, hσ2, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Use `⟨spMap (σ l) ≫ T, ?_, hSx, hS⟩` and prove the remaining obligations. Establish `hv : ∀ {S : Type} [CommRing S] (ψ : K →+* S) (f : Γ(Sp K, ⊤)), valR (spMap ψ) ⊤ f = ψ (ev (𝟙 (Sp K)) ⊤ (le_preimage_top _) f)` using `fun ψ f => by`. Rewrite using `[← Category.comp_id (spMap ψ), valR_eq_ev _ _ (le_preimage_top _), ev_spMap _ _ _ (le_preimage_top _)]`.
+
+Both sides reduce to the same expression. Use `eq_of_ev (isAffineOpen_top (Sp K)) (le_preimage_top _) (le_preimage_top _) fun f => ?_` and prove the remaining obligations. Rewrite using `[← valR_eq_ev, ← valR_eq_ev, hv]`. Use `ext`. Use `ev_spMap (TrivSqZeroExt.fstHom B B B).toRingHom ((spMap (σ l) ≫ T) ≫ p) ⊤ (le_preimage_top _) (le_preimage_top _)` as an intermediate fact.
+
+Rewrite `this` using `[ev_congr (z' := spMap φ) (by rw [← Category.assoc, hSx, hx]) _ _ (le_preimage_top _)]`. Establish `h2` using `RingHom.congr_fun this f`. Rewrite `h2` using `[← valR_eq_ev, hv]`. Rewrite using `[valR_eq_ev _ _ (le_preimage_top _)]`. Conclude with `h2.symm`.
+
+Rewrite using `[valR_comp_app, hS (p ⁻¹ᵁ ⊤) (le_preimage_top (x ≫ p))]`. Simplify using `only [← valR_comp_app, hwp, hv]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem exists_linComb {K B : Type} [CommRing K] [CommRing B] {Y : Scheme.{0}} (p : Y ⟶ Sp K) (Y₀ : Y.affineOpens)
     (φ : K →+* B) (x : Sp B ⟶ Y) (hx : x ≫ p = spMap φ) (hxY : ⊤ ≤ x ⁻¹ᵁ Y₀.1) {n : ℕ}
     (w : Fin n → (Sp (DualNumber B) ⟶ Y)) (hwp : ∀ a, w a ≫ p = spMap ((algebraMap B (DualNumber B)).comp φ))

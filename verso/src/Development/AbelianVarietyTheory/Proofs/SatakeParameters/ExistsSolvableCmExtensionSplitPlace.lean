@@ -13,6 +13,13 @@ open scoped Pointwise
 
 namespace GlobalTheory.AboveL
 
+/- English proof (translation)
+Establish `key : ((g • A : ValuationSubring Ω) : Set Ω) = ((g' • A : ValuationSubring Ω) : Set Ω)`. Rewrite using `[ValuationSubring.coe_pointwise_smul, ValuationSubring.coe_pointwise_smul]`. Use extensionality with `x`. Simplify using `only [Set.mem_smul_set, AlgEquiv.smul_def, hg]`. Unfold `Dec`.
+
+Rewrite using `[ValuationSubring.decompositionSubgroup, ValuationSubring.decompositionSubgroup, MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[← key]`.
+
+Conclude with `congrArg _ h`. Introduce `h`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[key]`. Conclude with `congrArg _ h`.
+-/
 theorem mem_dec_congr {K K' Ω : Type} [Field K] [Field K'] [Field Ω] [Algebra K Ω] [Algebra K' Ω]
     (A : ValuationSubring Ω) (g : G K Ω) (g' : G K' Ω) (hg : ∀ x, g x = g' x) :
     g ∈ Dec (F := K) A ↔ g' ∈ Dec (F := K') A := by
@@ -27,6 +34,35 @@ theorem mem_dec_congr {K K' Ω : Type} [Field K] [Field K'] [Field Ω] [Algebra 
   · intro h; apply SetLike.coe_injective; rw [← key]; exact congrArg _ h
   · intro h; apply SetLike.coe_injective; rw [key]; exact congrArg _ h
 
+/- English proof (translation)
+Introduce `Ω _ E _ _ _ _ _ A w h N hN`. Set `F` to `maximalRealSubfield E`. Use `haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.trans _ E Ω⟩`. Take `⟨x₀, hx₀, hx₀0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`. Set `v : HeightOneSpectrum (𝓞 F)` to `{ asIdeal := w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) isPrime := Ideal.IsPrime.comap _ ne_bot := Ideal.comap_ne_bot_of_integral_mem hx₀0 hx₀ (Algebra.IsIntegral.isIntegral x₀) }`.
+
+Establish `hv : IsPlaceOver A v`. Introduce `x`. Use `show _ ↔ algebraMap (𝓞 F) (𝓞 E) x ∈ w.asIdeal`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+
+Take `⟨T, hvT, hlift⟩` from `GlobalTheory.T.exists_cmField_lift_disjoint_of_real_solvable Ω E v N hN`. Set `φ` to `IsScalarTower.toAlgHom F E Ω`. Set `K : IntermediateField F Ω` to `φ.fieldRange`. Use `haveI : FiniteDimensional F K := LinearEquiv.finiteDimensional (AlgEquiv.ofInjectiveField φ).toLinearEquiv`. Establish `hK : ∀ g : G F Ω, g ∈ K.fixingSubgroup ↔ ∀ x : E, g (algebraMap E Ω x) = algebraMap E Ω x`.
+
+Introduce `g`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hg x`. Conclude with `hg _ ⟨x, rfl⟩`.
+
+Introduce and unpack `hg _ ⟨x, rfl⟩`. Conclude with `hg x`. Set `V : Subgroup (Dec (F` to `F) A) := K.fixingSubgroup.subgroupOf (Dec (F := F) A)`. Establish `hVo : IsOpen (V : Set (Dec (F` using `F) A)) := by`. Rewrite using `[Subgroup.coe_subgroupOf]`.
+
+Conclude with `K.fixingSubgroup_isOpen.preimage continuous_subtype_val`. Use `haveI : Fact (Nat.card (E ≃ₐ[F] E)).Prime := ⟨by rw [IsGalois.card_aut_eq_finrank, Algebra.IsQuadraticExtension.finrank_eq_two F E]; exact Nat.prime_two⟩`. Use `haveI : IsCyclic (E ≃ₐ[F] E) := isCyclic_of_prime_card rfl`. Establish `habel : ∀ σ τ : E ≃ₐ[F] E, σ * τ = τ * σ` using `fun σ τ => (IsCyclic.commGroup).mul_comm σ τ`. Establish `hcomm : commutator (Dec (F` using `F) A) ≤ V := by`.
+
+Rewrite using `[commutator_def, Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[commutatorElement_def, Subgroup.mem_subgroupOf, hK]`. Introduce `x`. Establish `h1 : AlgEquiv.restrictNormalHom (K₁` using `Ω) E ((a * b * a⁻¹ * b⁻¹ : Dec (F := F) A) : G F Ω) = 1 := by`.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`. Rewrite using `[habel (AlgEquiv.restrictNormalHom E (a : G F Ω)) (AlgEquiv.restrictNormalHom E (b : G F Ω))]`. Use `group`. Establish `h2` using `AlgEquiv.restrictNormal_commutes ((a * b * a⁻¹ * b⁻¹ : Dec (F := F) A) : G F Ω) E x`. Establish `h3 : AlgEquiv.restrictNormal ((a * b * a⁻¹ * b⁻¹ : Dec (F` using `F) A) : G F Ω) E = 1 := h1`.
+
+Rewrite using `[← h2, h3]`. Both sides reduce to the same expression. Take `⟨F₁, hF₁fin, hF₁ab, hF₁real, hF₁dec, hF₁T⟩` from `GlobalTheory.T.exists_abelian_totallyReal_ext_prescribedCompletion Ω F A v hv V hVo hcomm T hvT`. Take `⟨M, iM, nM, cM, aM, acM, aEM, tM, hSD, hfix, hsub⟩` from `hlift F₁ hF₁fin inferInstance (isSolvable_of_comm fun a b => hF₁ab.toIsMulCommutative.is_comm.comm a b) hF₁real hF₁T`. Establish `hkey : ∀ g : G F Ω, g ∈ Dec (F` using `F) A → (∀ z ∈ F₁, g z = z) → ∀ x : E, g (algebraMap E Ω x) = algebraMap E Ω x := by`.
+
+Introduce `g hg hz`. Conclude with `(hK g).1 (Subgroup.mem_subgroupOf.1 ((hF₁dec ⟨g, hg⟩).1 ((IntermediateField.mem_fixingSubgroup_iff _ _).2 hz)))`. Establish `hkey2 : ∀ g : G F Ω, g ∈ Dec (F` using `F) A → (∀ x : E, g (algebraMap E Ω x) = algebraMap E Ω x) → ∀ z ∈ F₁, g z = z := by`. Introduce `g hg hE`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 ((hF₁dec ⟨g, hg⟩).2 (Subgroup.mem_subgroupOf.2 ((hK g).2 hE)))`.
+
+Use `⟨M, iM, nM, cM, aM, acM, aEM, tM, hSD, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Apply `(hfix g).2` to reduce the goal to its premises. Set `g' : G F Ω` to `g.restrictScalars F`. Establish `hg' : g' ∈ Dec (F` using `F) A := (mem_dec_congr A g' g (fun _ => rfl)).2 hg`.
+
+Conclude with `hkey2 g' hg' (fun x => g.commutes x)`. Introduce `g hg`. Establish `hfixP : ∀ x ∈ maximalRealSubfield M, g (algebraMap M Ω x) = algebraMap M Ω x` using `fun x hx => g.commutes ⟨x, hx⟩`. Establish `hF1 : ∀ z ∈ F₁, g z = z`. Introduce `z hz`.
+
+Take `⟨x, hx, rfl⟩` from `hsub z hz`. Conclude with `hfixP x hx`. Establish `hFfix : ∀ y : F, g.toRingEquiv (algebraMap F Ω y) = algebraMap F Ω y` using `fun y => hF1 _ (F₁.algebraMap_mem y)`. Set `g' : G F Ω` to `AlgEquiv.ofRingEquiv (f := g.toRingEquiv) hFfix`. Establish `hg' : g' ∈ Dec (F` using `F) A := (mem_dec_congr A g' g (fun _ => rfl)).2 hg`.
+
+Establish `hE : ∀ x : E, g.toRingEquiv (algebraMap E Ω x) = algebraMap E Ω x` using `hkey g' hg' hF1`. Set `g'' : G E Ω` to `AlgEquiv.ofRingEquiv (f := g.toRingEquiv) hE`. Conclude with `(hfix g'').2 hF1`.
+-/
 theorem exists_cm_solvable_split : ∀ (Ω : Type) [Field Ω] (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w), ∀ N : Subgroup (G E Ω), IsOpen (N : Set (G E Ω)) → ∃ (M : Type) (_ : Field M) (_ : NumberField M) (_ : IsCMField M) (_ : Algebra M Ω) (_ : IsAlgClosure M Ω) (_ : Algebra E M) (_ : IsScalarTower E M Ω), SolvDisj M N ∧ (∀ g ∈ Dec (F := E) A, ∀ x : M, g (algebraMap M Ω x) = algebraMap M Ω x) ∧ ∀ g ∈ Dec (F := maximalRealSubfield M) A, ∀ x : M, g (algebraMap M Ω x) = algebraMap M Ω x := by
   intro Ω _ E _ _ _ _ _ A w h N hN
   let F := maximalRealSubfield E

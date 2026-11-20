@@ -27,6 +27,25 @@ open GlobalTheory.AdForm
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a Ch A hA k _ _ _ _ ι p β Q L hS j hj b i g hg x hx`. Take `⟨⟨e, he⟩, hS2⟩` from `hS`. Take `⟨hL, hS3⟩` from `hS2 j hj`. Take `⟨hLat, hVal⟩` from `hS3 i`. Take `⟨hX, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`.
+
+Establish `hcop : IsCoprime (X.piT u) (B.fields.conjO (X.piT u))` using `hPr.piT_cop u`. Establish `hne : X.piT u ≠ 0`. Introduce `h0`. Rewrite `hcop` using `[h0, map_zero, isCoprime_zero_left]`. Conclude with `not_isUnit_zero hcop`.
+
+Establish `hmem : X.piT u ∈ (e i).1.asIdeal` using `(Formalism.L2.Col.mem_divs hne _).1 (e i).2`. Establish `hsq : X.piT u ∉ (e i).1.asIdeal ^ 2` using `hPr.piT_notMem_sq hX u (e i).2`. Establish `hconj : B.fields.conjO (X.piT u) ∉ (e i).1.asIdeal` using `fun h => by`. Take `⟨s, t, hst⟩` from `hcop`. Establish `: (1 : 𝓞 B.fields.E) ∈ (e i).1.asIdeal`.
+
+Rewrite using `[← hst]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hmem) (Ideal.mul_mem_left _ _ h)`. Conclude with `(e i).1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 this)`. Take `⟨φ, hφ1, hφ2, hφ3, hφ4⟩` from `GlobalTheory.T.exists_splitPlace_component_ringHom_integral _ k (p i) (e i).1 (he i)`. Take `⟨⟨q, hq⟩, hc⟩` from `GlobalTheory.T.valuation_eq_uniformizer_and_unit_at_prime _ k (p i) (e i).1 (he i) (X.piT u) (B.fields.conjO (X.piT u)) hmem hsq hconj`.
+
+Establish `hlat` using `GlobalTheory.T.mem_integralVectors_component_iff_integral_frame_coords _ k (p i) _ _ (β j i) (L j) hL _ hLat`. Establish `hv6` using `GlobalTheory.T.functional_values_integral_vectors_of_integer_vectors _ k (p i) (e i).1 (he i) _ (β j i).b (β j i).b' (β j i).bb' (β j i).b'b (Q j i) hlat (B.fields.conjO (X.piT u)) (fun z hz r hr => hVal z ((hL z).2 hz) r hr)`. Establish `hn` using `rankN (I.rec7 l Z) j hj`. Take `⟨hhh, hkeep, hkeep'⟩` from `GlobalTheory.T.residuePairStabilizer_keeps_integralLastCoordDiv k _ _ hn (β j i).b (β j i).b' (β j i).bb' (β j i).b'b (Q j i) hlat _ (φ (Formalism.UG.inclE (F := (I.rec7 l Z).host.F) ((p i).v.adicCompletion (I.rec7 l Z).host.F) ((X.piT u : 𝓞 B.fields.E) : B.fields.E))) q ((congrA …`. Establish `hg1 : gramN (I.rec7 l Z) j hj = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 j hj).1`.
+
+Establish `hU` using `Formalism.UG.P.afsplit_bc_mem (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) j hj) (p i).v x.1 x.2`. Use `Subgroup.mem_inf.2 ⟨hU, ?_⟩` and prove the remaining obligations. Establish `hU1 : Formalism.UG.bc (Formalism.UG.prV (E` using `(I.rec7 l Z).host.E) (p i).v) x.1 ∈ Formalism.UG.UJ (Formalism.UG.sigR (sigD (I.rec7 l Z)) ((p i).v.adicCompletion (I.rec7 l Z).host.F)) 1 := by`. Establish `h1 : Formalism.UG.bc (Formalism.UG.prV (E` using `(I.rec7 l Z).host.E) (p i).v) x.1 ∈ Formalism.UG.UJ (Formalism.UG.sigR (sigD (I.rec7 l Z)) ((p i).v.adicCompletion (I.rec7 l Z).host.F)) ((gramN (I.rec7 l Z) j hj).map (Formalism.UG.inclE (F := (I.rec7 l Z).host.F) ((p i).v.adicCompletion (I.rec7 l Z).host.F))) := hU`. Establish `hJ : (gramN (I.rec7 l Z) j hj).map (Formalism.UG.inclE (F` using `(I.rec7 l Z).host.F) ((p i).v.adicCompletion (I.rec7 l Z).host.F)) = 1 := by`.
+
+Rewrite using `[hg1]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite `h1` using `[hJ]`. Then use the resulting hypothesis. Establish `hM : (Formalism.UG.bc (Formalism.UG.prV (E` using `(I.rec7 l Z).host.E) (p i).v) x.1).val.map φ = ((β j i).b * g.val * (β j i).b').reindex (finCongr hn) (finCongr hn) := by`. Rewrite using `[← (β j i).gl_mat g]`.
+
+Use extensionality with `r s`. Simplify using `only [Matrix.map_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`. Express the relevant statement in the definitionally equal form `φ (Formalism.UG.prV (E := (I.rec7 l Z).host.E) (p i).v (x.1.1 r s)) = _`. Rewrite using `[hx]`. Simplify using `only [finM, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]`.
+
+Rewrite using `[hφ1]`. Conclude with `GlobalTheory.T.unitary_keeps_baseLattice_of_split_components _ _ (sigD (I.rec7 l Z)) (p i).v k φ hφ4 _ (X.piT u) (A.K j hj b).lev.Lb (fun y => (hA.reads j hj).lb b y) q ((congrArg (valuation k) (hφ2 _)).trans hq) ((congrArg (valuation k) (hφ3 _)).trans hc) _ hU1 _ _ hM hhh hkeep …`.
+-/
 theorem GlobalTheory.AdForm.std_comp_mem_levelVL : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : GlobalTheory.AdForm.TwDat I l Z u a Ch), A.Is → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))
     (Q : ∀ j, ι → Pair k (Fin ((I.rec7 l Z).sp.X j).rank)) (L : ∀ j, Lat ((I.rec7 l Z).sp.X j)),

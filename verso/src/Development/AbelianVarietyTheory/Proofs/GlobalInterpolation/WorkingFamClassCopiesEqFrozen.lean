@@ -6,6 +6,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Forma
 
 namespace GlobalTheory.Fc
 
+/- English proof (translation)
+Use `⟨fun 𝒜 eps Fm => ⟨(working_classes_frozen.1 𝒜 eps Fm).2, (working_classes_frozen.1 𝒜 eps Fm).1⟩, fun eps Fm h => ?_⟩` and prove the remaining obligations. Take `⟨a, b, c, d, e, f, g⟩` from `GlobalTheory.EX.DQ.duty_seven_library eps Fm h`. Use `⟨a, b, c, d, e, f, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `g`. Conclude with `⟨x0, fun x hx hx1 i => hx0 x hx hx1 i⟩`.
+-/
 theorem copies_frozen : (∀ (𝒜 : FamClass) (eps : ℝ) (Fm : FamP eps), (GlobalTheory.Cp.D3 3 𝒜 Fm ↔ W3 𝒜 Fm) ∧
     (Formalism.MainNotions.WithTw (Formalism.MainNotions.WithSm (GlobalTheory.Cp.WithChN 𝒜)) Fm ↔ W1 𝒜 Fm)) ∧
     ∀ (eps : ℝ) (Fm : FamP eps), DQ.Duty7 Fm → GlobalTheory.Cp.Duty Fm := by

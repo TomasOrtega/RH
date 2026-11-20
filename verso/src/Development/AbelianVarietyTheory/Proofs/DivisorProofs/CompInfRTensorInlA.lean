@@ -24,6 +24,11 @@ section Lin
 
 variable {A : Type} [CommRing A] {n r : ℕ}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ColumnSumLemma.main`. Consider the case `exact _root_.GlobalTheory.ColumnSumLemma.main`. Consider the case `(apply _root_.GlobalTheory.ColumnSumLemma.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ColumnSumLemma.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ColumnSumLemma.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ColumnSumLemma.main ..)`.
+-/
 theorem mem_span_cols_iff (C : Matrix (Fin n) (Fin r) A) (I : Set (Fin r)) (y : Fin n → A) :
     y ∈ Submodule.span A ((fun i => Cᵀ i) '' I) ↔ ∃ a : Fin r → A, (∀ l, l ∉ I → a l = 0) ∧ C *ᵥ a = y := by
   first
@@ -37,6 +42,11 @@ theorem mem_span_cols_iff (C : Matrix (Fin n) (Fin r) A) (I : Set (Fin r)) (y : 
 variable (P : Fin r → Fin r → Prop) (hPt : ∀ i l j, P i l → P l j → P i j) (hPlt : ∀ i l, P i l → i < l)
 include hPt
 
+/- English proof (translation)
+Introduce `i hi`. Use `show ∑ l, Q i l * a l = 0`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hq : Q i l = 0`. Rewrite using `[hq, zero_mul]`.
+
+Rewrite using `[ha l (fun h => hi (hPt i l j (hQ i l hq) h)), mul_zero]`.
+-/
 theorem supp_mulVec (Q : Matrix (Fin r) (Fin r) A) (hQ : ∀ i l, Q i l ≠ 0 → P i l) (j : Fin r) (a : Fin r → A)
     (ha : ∀ l, ¬ P l j → a l = 0) : ∀ i, ¬ P i j → (Q *ᵥ a) i = 0 := by
   intro i hi
@@ -47,6 +57,13 @@ theorem supp_mulVec (Q : Matrix (Fin r) (Fin r) A) (hQ : ∀ i l, Q i l ≠ 0 �
   · rw [ha l (fun h => hi (hPt i l j (hQ i l hq) h)), mul_zero]
 
 include hPlt in
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i using WellFoundedGT.induction with`. Consider the case `_ i ih`. Introduce `hi`. Establish `h1 : (Q *ᵥ c) i = 0` using `by show ∑ l, Q i l * c l = 0`.
+
+Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hq : Q i l = 0`. Rewrite using `[hq, zero_mul]`. Establish `hil` using `hQ i l hq`. Rewrite using `[ih l (hPlt i l hil) (fun h => hi (hPt i l j hil h)), mul_zero]`.
+
+Use `hd i hi` as an intermediate fact. Rewrite `this` using `[Pi.add_apply, h1, add_zero]`. Then use the resulting hypothesis.
+-/
 theorem supp_of_add (Q : Matrix (Fin r) (Fin r) A) (hQ : ∀ i l, Q i l ≠ 0 → P i l) (j : Fin r) (c : Fin r → A)
     (hd : ∀ i, ¬ P i j → (c + Q *ᵥ c) i = 0) : ∀ i, ¬ P i j → c i = 0 := by
   intro i
@@ -65,6 +82,21 @@ theorem supp_of_add (Q : Matrix (Fin r) (Fin r) A) (hQ : ∀ i l, Q i l ≠ 0 �
 
 include hPlt in
 
+/- English proof (translation)
+Establish `hD : ∀ y, (1 + C * N) *ᵥ y = y + C *ᵥ (N *ᵥ y)` using `fun y => by`. Rewrite using `[add_mulVec, one_mulVec, mulVec_mulVec]`. Establish `hcol : ∀ j, N *ᵥ Cᵀ j = fun i => (N * C) i j` using `fun j => by`. Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, mul_apply]`.
+
+Use `⟨fun y => ?_, fun j => ?_, fun j y => ?_⟩` and prove the remaining obligations. Rewrite using `[hD, add_sub_cancel_left]`. Use `(mem_span_cols_iff C T _).2 ⟨N *ᵥ y, fun l hl => ?_, rfl⟩` and prove the remaining obligations. Use `show ∑ v, N l v * y v = 0`. Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : N l v = 0`. Rewrite using `[h, zero_mul]`. Conclude with `absurd (hN l v h) hl`. Rewrite using `[hD, add_sub_cancel_left, hcol]`. Use `(mem_span_cols_iff C _ _).2 ⟨_, fun l hl => ?_, rfl⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Conclude with `hl (hQ l j h)`. Rewrite using `[mem_span_cols_iff, mem_span_cols_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+
+Use `⟨a + (N * C) *ᵥ a, fun l hl => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, ha l hl, supp_mulVec P hPt _ hQ j a (fun l h => ha l h) l hl, add_zero]`. Rewrite using `[hD]`. Simplify using `only [mulVec_add, mulVec_mulVec, Matrix.mul_assoc]`. Introduce and unpack `⟨b, hb, hy⟩`.
+
+Establish `hd : N *ᵥ y + (N * C) *ᵥ (N *ᵥ y) = (N * C) *ᵥ b`. Rewrite using `[← mulVec_mulVec, ← mulVec_add, ← hD, ← hy, mulVec_mulVec]`. Establish `hc` using `supp_of_add P hPt hPlt _ hQ j (N *ᵥ y) (fun i hi => by`. Rewrite using `[hd]`. Conclude with `supp_mulVec P hPt _ hQ j b (fun l h => hb l h) i hi)`.
+
+Use `⟨b - N *ᵥ y, fun l hl => by rw [Pi.sub_apply, hb l hl, hc l hl, sub_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[mulVec_sub, hy, hD, add_sub_cancel_right]`.
+-/
 theorem core (C : Matrix (Fin n) (Fin r) A) (N : Matrix (Fin r) (Fin n) A) (T : Set (Fin r))
     (hN : ∀ i v, N i v ≠ 0 → i ∈ T) (hQ : ∀ i l, (N * C) i l ≠ 0 → P i l) :
     (∀ y, (1 + C * N) *ᵥ y - y ∈ Submodule.span A ((fun i => Cᵀ i) '' T)) ∧
@@ -124,6 +156,13 @@ variable (F E) in
 def glueInf (c : ∀ w : InfinitePlace F, w.Completion ⊗[F] E) : AF F ⊗[F] E :=
   (inlA F).rTensor E (∑ w, (sgW w).rTensor E (c w))
 
+/- English proof (translation)
+Rewrite using `[map_sum, Finset.sum_eq_single w]`. Proceed by induction on `c w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => show (evW w (sgW w a)) ⊗ₜ[F] x = a ⊗ₜ[F] x`. Use `congr 1`.
+
+Conclude with `Pi.single_eq_same w a`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Introduce `w' _ hw'`. Proceed by induction on `c w' using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a x => show (evW w (sgW w' a)) ⊗ₜ[F] x = 0`. Rewrite using `[show evW w (sgW w' a) = 0 from Pi.single_eq_of_ne (Ne.symm hw') a, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem map_evW_sum_sgW (c : ∀ w : InfinitePlace F, w.Completion ⊗[F] E) (w : InfinitePlace F) :
     Algebra.TensorProduct.map (evW w) (AlgHom.id F E) (∑ w', (sgW w').rTensor E (c w')) = c w := by
   classical
@@ -144,6 +183,9 @@ theorem map_evW_sum_sgW (c : ∀ w : InfinitePlace F, w.Completion ⊗[F] E) (w 
     | add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
   · simp
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+-/
 theorem compInf_rTensor_inlA (z : Ainf F ⊗[F] E) (w : InfinitePlace F) :
     compInf F E w ((inlA F).rTensor E z) = Algebra.TensorProduct.map (evW w) (AlgHom.id F E) z := by
   induction z using TensorProduct.induction_on with
@@ -151,10 +193,16 @@ theorem compInf_rTensor_inlA (z : Ainf F ⊗[F] E) (w : InfinitePlace F) :
   | tmul a x => rfl
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[glueInf, compInf_rTensor_inlA, map_evW_sum_sgW]`.
+-/
 theorem compInf_glueInf (c : ∀ w : InfinitePlace F, w.Completion ⊗[F] E) (w : InfinitePlace F) :
     compInf F E w (glueInf F E c) = c w := by
   rw [glueInf, compInf_rTensor_inlA, map_evW_sum_sgW]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a x => show (sndA F (inlA F a)) ⊗ₜ[F] x = 0`. Rewrite using `[show sndA F (inlA F a) = 0 from rfl, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+-/
 theorem sndA_rTensor_inlA (z : Ainf F ⊗[F] E) :
     Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) ((inlA F).rTensor E z) = 0 := by
   induction z using TensorProduct.induction_on with
@@ -164,13 +212,28 @@ theorem sndA_rTensor_inlA (z : Ainf F ⊗[F] E) :
     rw [show sndA F (inlA F a) = 0 from rfl, TensorProduct.zero_tmul]
   | add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+The claim follows from `sndA_rTensor_inlA _`.
+-/
 theorem sndA_glueInf (c : ∀ w : InfinitePlace F, w.Completion ⊗[F] E) :
     Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (glueInf F E c) = 0 :=
   sndA_rTensor_inlA _
 
+/- English proof (translation)
+Simplify using `only [glueInf, map_zero, Finset.sum_const_zero]`.
+-/
 @[simp] theorem glueInf_zero : glueInf F E (fun _ => 0) = 0 := by
   simp only [glueInf, map_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+Establish `hz : ∀ z : AF F ⊗[F] E, z = (inlA F).rTensor E (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) z) + (inrA F).rTensor E (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero, map_zero, add_zero]`. Consider the case `tmul x y => show x ⊗ₜ[F] y = (inlA F (fstA F x)) ⊗ₜ[F] y + (inrA F (sndA F x)) ⊗ₜ[F] y`.
+
+Rewrite using `[← TensorProduct.add_tmul]`. Use `congr 1`. Conclude with `Prod.ext (add_zero _).symm (zero_add _).symm`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`.
+
+Rewrite using `[add_add_add_comm, ← hx, ← hy]`. Establish `hc : ∀ (w : InfinitePlace F) (z : AF F ⊗[F] E), compInf F E w z = Algebra.TensorProduct.map (evW w) (AlgHom.id F E) (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) z)`. Introduce `w z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`.
+
+Consider the case `tmul x y => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Rewrite using `[hz z, hz z', h2, GlobalTheory.AutFunCompare.infTens_ext (fun w => (hc w z).symm.trans ((h1 w).trans (hc w z')))]`.
+-/
 theorem tens_ext {z z' : AF F ⊗[F] E} (h1 : ∀ w, compInf F E w z = compInf F E w z')
     (h2 : Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) z = Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) z') :
     z = z' := by

@@ -7,6 +7,9 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.DualRevGraded
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (congrFun h j) i` as an intermediate fact. Simplify using `only [conjTranspose_apply] at this`. Simplify using `[← this]`.
+-/
 theorem transpose_eq_map_conj {q : ℕ} {M : Matrix (Fin q) (Fin q) ℂ} (h : M.IsHermitian) :
     Mᵀ = M.map (starRingEnd ℂ) := by
   ext i j
@@ -14,10 +17,18 @@ theorem transpose_eq_map_conj {q : ℕ} {M : Matrix (Fin q) (Fin q) ℂ} (h : M.
   simp only [conjTranspose_apply] at this
   simp [← this]
 
+/- English proof (translation)
+Simplify using `[dualRev, GlobalTheory.HermFrame.dualGram, transpose_nonsing_inv]`.
+-/
 theorem dualRev_transpose {q : ℕ} (M : Matrix (Fin q) (Fin q) ℂ) :
     dualRev Mᵀ = (M⁻¹).submatrix Fin.rev Fin.rev := by
   simp [dualRev, GlobalTheory.HermFrame.dualGram, transpose_nonsing_inv]
 
+/- English proof (translation)
+Introduce `q M hM k`. Establish `hN : (dualRev Mᵀ).PosDef`. Rewrite using `[dualRev_transpose]`. Conclude with `PosDef.submatrix hM.inv Fin.rev_injective`. Rewrite using `[GlobalTheory.GradedGramRe.gradedGram_re_eq_grSq _ hN k, dualRev_transpose]`.
+
+Establish `h` using `GlobalTheory.grSq_inv_transpose_rev Mᵀ hM.transpose (Fin.rev k)`. Rewrite `h` using `[Fin.rev_rev, transpose_nonsing_inv, transpose_transpose, transpose_eq_map_conj hM.1, grSq_map_conj]`. Conclude with `h`.
+-/
 theorem gradedGram_dualRev_re : ∀ {q : ℕ} (M : Matrix (Fin q) (Fin q) ℂ), M.PosDef → ∀ k : Fin q,
     (GlobalTheory.HermFrame.gradedGram (GlobalTheory.CurvInterp.dualRev Mᵀ) k () ()).re = (GlobalTheory.GradedNorm.grSq M (Fin.rev k))⁻¹ := by
   intro q M hM k

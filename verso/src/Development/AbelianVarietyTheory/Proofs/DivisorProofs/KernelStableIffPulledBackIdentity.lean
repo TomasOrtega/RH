@@ -8,9 +8,15 @@ noncomputable section
 
 namespace GlobalTheory.UPel.HT.ES.TrStab
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Over.comp_left, ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.toUnit_left']`.
+-/
 theorem one_left' {S : Scheme.{0}} (G : Over S) [GrpObj G] (T : Over S) : (1 : T ⟶ G).left = T.hom ≫ η[G].left := by
   rw [Hom.one_def, Over.comp_left, ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.toUnit_left']
 
+/- English proof (translation)
+Use `ext`. Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hx, one_left', Category.assoc, ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left h]`. Rewrite using `[Over.w x, Over.w (1 : T ⟶ G')]`.
+-/
 theorem eq_one_of_push {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
     {θ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f θ) {T : Over S'} (x : T ⟶ G')
     (hx : x.left ≫ θ = T.hom ≫ f ≫ η[G].left) : x = 1 := by
@@ -19,6 +25,9 @@ theorem eq_one_of_push {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G
   · rw [hx, one_left', Category.assoc, ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left h]
   · rw [Over.w x, Over.w (1 : T ⟶ G')]
 
+/- English proof (translation)
+Rewrite using `[one_left', Category.assoc, ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left h]`.
+-/
 theorem push_one {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
     {θ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f θ) (T : Over S') :
     (1 : T ⟶ G').left ≫ θ = T.hom ≫ f ≫ η[G].left := by
@@ -30,6 +39,23 @@ namespace GlobalTheory.UPel.HT.ES
 
 open TrStab
 
+/- English proof (translation)
+Introduce `p _ D R _ b N T Y s₁ s t o₁ o m B₁ _ _ B _ _ θ ψ₁ ψ hB hψ`. Prove the components needed by the constructor for the conclusion. Introduce `h T' σ hσ g hg a`. Rewrite `hσ` using `[Category.comp_id]`. Substitute `hσ` using the available equality.
+
+Establish `hG : pushPt m.cart.1.w g ≫ ψ = 1`. Use `ext`. Rewrite using `[one_left', Over.comp_left]`. Use `show (g.left ≫ m.φ) ≫ ψ.left = _`. Rewrite using `[Category.assoc, hψ, ← Category.assoc, ← Over.comp_left, hg, push_one hB]`.
+
+Both sides reduce to the same expression. Establish `h2` using `h (Over.mk (T'.hom ≫ t)) T'.hom rfl (pushPt m.cart.1.w g) hG a`. Apply `eq_one_of_push hB` to reduce the goal to its premises. Establish `e` using `congrArg Over.Hom.left h2`. Rewrite `e` using `[one_left', Over.comp_left, Over.comp_left]`.
+
+Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[← hψ, ← Category.assoc (o₁.act.act a).left, m.act a, Category.assoc]`. Conclude with `e`. Introduce `h T0 σ hσ g hg a`. Establish `w : g.left ≫ o.A.hom = σ ≫ t` using `by rw [Over.w g, hσ]`.
+
+Set `g₁ : Over.mk σ ⟶ o₁.A` to `Over.homMk (m.cart.1.lift g.left σ w) (m.cart.1.lift_snd _ _ _)`. Establish `hg₁ : g₁.left ≫ m.φ = g.left` using `m.cart.1.lift_fst _ _ _`. Establish `h1 : g₁ ≫ ψ₁ = 1`. Apply `eq_one_of_push hB` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, ← hψ, ← Category.assoc, hg₁, ← Over.comp_left, hg, one_left', ← hσ, Category.assoc]`.
+
+Both sides reduce to the same expression. Establish `h2` using `h (Over.mk σ) σ (Category.comp_id σ) g₁ h1 a`. Use `ext`. Rewrite using `[one_left', Over.comp_left, Over.comp_left, ← hg₁, Category.assoc, ← Category.assoc m.φ (o.act.act a).left, ← m.act a]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[hψ]`. Establish `e : (g₁ ≫ o₁.act.act a ≫ ψ₁).left ≫ θ = (1 : Over.mk σ ⟶ B₁).left ≫ θ` using `by rw [h2]`. Rewrite `e` using `[push_one hB]`. Simplify using `only [Over.comp_left, Category.assoc] at e`. Rewrite using `[e, ← hσ, Category.assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem kerStableAt_iff_pull : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (T Y : Scheme.{0}) (s₁ : T ⟶ Sp R) (s : Y ⟶ Sp R) (t : T ⟶ Y) (o₁ : Obj b N s₁) (o : Obj b N s) (m : ObjMap o₁ o t) (B₁ : Over T) [GrpObj B₁] [IsCommMonObj B₁] (B : Over Y) [GrpObj B] [IsCommMonObj B] (θ : B₁.left ⟶ B.left) (ψ₁ : o₁.A ⟶ B₁) (ψ : o.A ⟶ B), IsGrpPullback B₁ B t θ → m.φ ≫ ψ.left = ψ₁.left ≫ θ → (KerStableAt o ψ t ↔ KerStableAt o₁ ψ₁ (𝟙 T)) := by
   intro p _ D R _ b N T Y s₁ s t o₁ o m B₁ _ _ B _ _ θ ψ₁ ψ hB hψ
   constructor

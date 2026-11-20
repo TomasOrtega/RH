@@ -5,6 +5,21 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set P : Submodule (𝓞 F) N := N₀.comap N.subtype with hP`. Establish `hPne : P ≠ ⊤`. Introduce `h`. Take `⟨v, hvN, hvN₀⟩` from `SetLike.exists_of_lt hlt`. Establish `hv : (⟨v, hvN⟩ : N) ∈ P` using `h ▸ Submodule.mem_top`.
+
+Conclude with `hvN₀ hv`. Use `haveI : Nontrivial (N ⧸ P) := Submodule.Quotient.nontrivial_iff.2 hPne`. Take `⟨p, hp⟩` from `associatedPrimes.nonempty (𝓞 F) (N ⧸ P)`. Take `⟨hprime, x, hx⟩` from `(isAssociatedPrime_iff (R := 𝓞 F) (M := N ⧸ P)).1 hp`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective P x`.
+
+Establish `hmem : ∀ r : 𝓞 F, r ∈ p ↔ r • (y : V) ∈ N₀`. Introduce `r`. Rewrite using `[hx, Submodule.mem_colon_singleton, Submodule.mem_bot, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, hP, Submodule.mem_comap]`. Both sides reduce to the same expression. Use `set n := N₀.toAddSubgroup.relIndex N.toAddSubgroup with hn`.
+
+Establish `hkill : n • (y : V) ∈ N₀`. Establish `h` using `AddSubgroup.nsmul_index_mem (N₀.toAddSubgroup.addSubgroupOf N.toAddSubgroup) (⟨y.1, y.2⟩ : N.toAddSubgroup)`. Conclude with `AddSubgroup.mem_addSubgroupOf.1 h`. Establish `hnp : ((n : ℕ) : 𝓞 F) ∈ p`. Rewrite using `[hmem, Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `hkill`. Establish `hp0 : p ≠ ⊥`. Introduce `h0`. Rewrite `hnp` using `[h0, Ideal.mem_bot]`. Conclude with `hidx (by exact_mod_cast hnp)`.
+
+Use `⟨(y : V), p, Ideal.IsPrime.isMaximal hprime hp0, y.2, ?_, fun π hπ => (hmem π).1 hπ⟩` and prove the remaining obligations. Introduce `hy`. Apply `hprime.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `r _`.
+
+Rewrite using `[hmem]`. Conclude with `N₀.smul_mem r hy`.
+-/
 theorem exists_maxIdeal_smul_mem_of_lt_of_relIndex_ne_zero (F V : Type) [Field F] [NumberField F]
     [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V]
     (N₀ N : Submodule (𝓞 F) V) (hlt : N₀ < N)

@@ -19,6 +19,9 @@ private def tensorPolyAlgEquiv (R A : Type*) [CommRing R] [CommRing A] [Algebra 
   (Algebra.TensorProduct.comm R (MvPolynomial (Fin n) R) A).trans
     ((algebraTensorAlgEquiv R A).restrictScalars R)
 
+/- English proof (translation)
+Simplify using `[tensorPolyAlgEquiv]`.
+-/
 private theorem tensorPolyAlgEquiv_tmul (p : MvPolynomial (Fin n) R) (a : A) :
     tensorPolyAlgEquiv R A n (p ⊗ₜ a) = a • MvPolynomial.map (algebraMap R A) p := by
   simp [tensorPolyAlgEquiv]
@@ -45,6 +48,13 @@ private def tensorPolyBasis {ι : Type*} (b : Module.Basis ι R A) (n : ℕ) :
 
 end DvdBasis
 
+/- English proof (translation)
+Introduce `R A _ _ _ _ _ n x p hdvd`. Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Take `⟨h, hh⟩` from `hdvd`. Set `b` to `Module.Free.chooseBasis R A`.
+
+Set `bP` to `tensorPolyBasis b n`. Establish `hmap : (p.map (algebraMap R A) : MvPolynomial (Fin n) A) = algebraMap (MvPolynomial (Fin n) R) (MvPolynomial (Fin n) A) p`. Rewrite using `[MvPolynomial.algebraMap_def]`. Establish `hnorm : Algebra.norm (MvPolynomial (Fin n) R) (algebraMap (MvPolynomial (Fin n) R) (MvPolynomial (Fin n) A) p) = p ^ Module.finrank R A`. Rewrite using `[Algebra.norm_algebraMap_of_basis bP, Module.finrank_eq_card_basis b]`.
+
+Use `⟨Algebra.norm (MvPolynomial (Fin n) R) h, ?_⟩` and prove the remaining obligations. Rewrite using `[← hnorm, ← hmap, hh, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem NormFormDvd.proof : NormFormDvd.Statement := by
   intro R A _ _ _ _ _ n x p hdvd
   classical

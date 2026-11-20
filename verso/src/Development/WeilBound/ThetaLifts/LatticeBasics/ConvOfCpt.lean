@@ -13,6 +13,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
   {B : Base F E} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {χ χ' : Chr F E} {o : Rep σ Y W} {r s r' s' : ℕ}
 
+/- English proof (translation)
+Introduce `Φ hΦ h`. Take `⟨t1, t2, -⟩` from `(hT F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p).1 Φ hΦ`. Establish `hc : Continuous fun g => theta o Φ g h` using `t1.comp (continuous_id.prodMk continuous_const)`. Take `⟨C, hC⟩` from `c.bdd hc fun γ hγ g => by simpa using t2 γ hγ 1 (one_mem _) g h`. Conclude with `Measure.integrableOn_of_bounded (M := C) (c.fin _ _ p.good.haar p.good.dom).ne hc.aestronglyMeasurable (Eventually.of_forall hC)`.
+-/
 theorem conv_of_cpt (hT : ThetaBasic) (p : IsPair B M χ χ' o r s r' s') (c : Cpt σ Y.J) : ∀ Φ ∈ schA F _, M.Conv o Φ := by
   intro Φ hΦ h
   obtain ⟨t1, t2, -⟩ := (hT F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p).1 Φ hΦ
@@ -21,6 +24,11 @@ theorem conv_of_cpt (hT : ThetaBasic) (p : IsPair B M χ χ' o r s r' s') (c : C
   exact Measure.integrableOn_of_bounded (M := C) (c.fin _ _ p.good.haar p.good.dom).ne hc.aestronglyMeasurable
     (Eventually.of_forall hC)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Establish `e : ∀ g, theta o (Φ + a • Ψ) g h = theta o Φ g h + a * theta o Ψ g h` using `fun g => by`. Simplify using `only [theta, map_add, map_smul]`. Rewrite using `[thetaSum_add F (p.weil.isUSplitting.pres _ _ hΦ) (Submodule.smul_mem _ _ (p.weil.isUSplitting.pres _ _ hΨ)), thetaSum_smul]`. Simplify using `only [Model.I, e, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[integral_add (conv_of_cpt hT p c _ hΦ h) ((conv_of_cpt hT p c _ hΨ h).const_mul a), integral_const_mul]`.
+-/
 theorem I_lin (hT : ThetaBasic) (p : IsPair B M χ χ' o r s r' s') (c : Cpt σ Y.J) {Φ Ψ : Fn F n d} (hΦ : Φ ∈ schA F _)
     (hΨ : Ψ ∈ schA F _) (a : ℂ) : M.I o (Φ + a • Ψ) = M.I o Φ + a • M.I o Ψ := by
   funext h
@@ -31,11 +39,17 @@ theorem I_lin (hT : ThetaBasic) (p : IsPair B M χ χ' o r s r' s') (c : Cpt σ 
   simp only [Model.I, e, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
   rw [integral_add (conv_of_cpt hT p c _ hΦ h) ((conv_of_cpt hT p c _ hΨ h).const_mul a), integral_const_mul]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, h1, h2, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ h1 ((h2.and hM.std).mono fun _ h => h.1.trans h.2)`.
+-/
 theorem pol_sch (hM : M.IsGood B.ψ) : PolData B M ≤ schA F _ := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨f, -, φ, h1, h2, rfl⟩
   exact GlobalTheory.TensUniq.pure_mem_schA f φ h1 ((h2.and hM.std).mono fun _ h => h.1.trans h.2)
 
+/- English proof (translation)
+Establish `h' : IsFundamentalDomain Γ ((fun x => x * g) '' D) μ`. Simplify `h.smul_of_comm (MulOpposite.op g)` using `[← Set.image_smul]`. Rewrite using `[← (measurePreserving_mul_right μ g).setIntegral_image_emb (Homeomorph.mulRight g).measurableEmbedding f D]`. Conclude with `h'.setIntegral_eq h fun γ x => hf γ γ.2 x`.
+-/
 theorem int_right {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     {μ : Measure G} [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {Γ : Subgroup G} [Countable Γ] {D : Set G}
     (h : IsFundamentalDomain Γ D μ) (f : G → ℂ) (hf : ∀ γ ∈ Γ, ∀ x, f (γ * x) = f x) (g : G) :
@@ -45,6 +59,11 @@ theorem int_right {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup 
   rw [← (measurePreserving_mul_right μ g).setIntegral_image_emb (Homeomorph.mulRight g).measurableEmbedding f D]
   exact h'.setIntegral_eq h fun γ x => hf γ γ.2 x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Take `⟨-, t2, -⟩` from `(hT F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p).1 Φ hΦ`. Use `haveI := c.cnt`. Use `haveI := p.good.haar`. Use `haveI := c.right _ p.good.haar`.
+
+Establish `e : ∀ x, theta o (o (g, 1) Φ) x h = theta o Φ (x * g) h` using `fun x => by`. Rewrite using `[theta, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [Model.I, e]`. Conclude with `int_right p.good.dom (fun x => theta o Φ x h) (fun γ hγ x => by simpa using t2 γ hγ 1 (one_mem _) x h) g`.
+-/
 theorem I_act (hT : ThetaBasic) (p : IsPair B M χ χ' o r s r' s') (c : Cpt σ Y.J) {Φ : Fn F n d} (hΦ : Φ ∈ schA F _)
     (g : UA σ Y.J) : M.I o (o (g, 1) Φ) = M.I o Φ := by
   funext h
@@ -58,16 +77,33 @@ theorem I_act (hT : ThetaBasic) (p : IsPair B M χ χ' o r s r' s') (c : Cpt σ 
   exact int_right p.good.dom (fun x => theta o Φ x h)
     (fun γ hγ x => by simpa using t2 γ hγ 1 (one_mem _) x h) g
 
+/- English proof (translation)
+Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`. Conclude with `h u`.
+-/
 theorem upd_sb {v : Pl F} {φ : ∀ u : Pl F, (Fin n × Fin d → Fv F u) → ℂ} (h : ∀ u, φ u ∈ SB _) {z} (hz : z ∈ SB _) (u : Pl F) :
     Function.update φ v z u ∈ SB _ := by
   by_cases e : u = v
   · subst e; rwa [Function.update_self]
   · rw [Function.update_of_ne e]; exact h u
 
+/- English proof (translation)
+The claim follows from `(h.and (eventually_cofinite_ne v)).mono fun _ e => by rw [Function.update_of_ne e.2]; exact e.1`.
+-/
 theorem upd_cof {v : Pl F} {φ φ' : ∀ u : Pl F, (Fin n × Fin d → Fv F u) → ℂ} (h : ∀ᶠ u in cofinite, φ u = φ' u) (z) :
     ∀ᶠ u in cofinite, Function.update φ v z u = φ' u :=
   (h.and (eventually_cofinite_ne v)).mono fun _ e => by rw [Function.update_of_ne e.2]; exact e.1
 
+/- English proof (translation)
+Establish `h3` using `(h2.and p.good.std).mono fun _ h => h.1.trans h.2`. Take `⟨t, ht, ht'⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ h3`. Establish `mem : ∀ z ∈ SB _, pure f (Function.update φ v z) ∈ schA F _` using `fun z hz => GlobalTheory.TensUniq.pure_mem_schA f _ (upd_sb h1 hz) (upd_cof h3 z)`. Establish `add : ∀ z ∈ SB _, ∀ z' ∈ SB _, ∀ a : ℂ, M.I o (pure f (Function.update φ v (z + a • z'))) = M.I o (pure f (Function.update φ v z)) + a • M.I o (pure f (Function.update φ v z'))` using `fun z hz z' hz' a => by`. Rewrite using `[← I_lin hT p c (mem z hz) (mem z' hz'), ← ht', ← ht', ← ht']`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `zero : M.I o (pure f (Function.update φ v 0)) = 0`.
+
+Use `add 0 (zero_mem _) 0 (zero_mem _) (-1)` as an intermediate fact. Simplify using `using this`. Establish `key : z ∈ SB _ ∧ M.I o (pure f (Function.update φ v z)) = 0`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Take `⟨g, -, x, hx, y, hy, a, rfl⟩` from `hz`. Use `⟨sub_mem hy hx, ?_⟩` and prove the remaining obligations. Establish `e` using `a t ⟨ht, ht' x ▸ mem x hx⟩`. Rewrite `e` using `[ht', ht']`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ x, add y hy x hx, ← e, I_act hT p c (mem x hx)]`.
+
+Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨zero_mem _, zero⟩`. Consider the case `add x y _ _ hx hy => exact ⟨add_mem hx.1 hy.1, by simpa [hx.2, hy.2] using add x hx.1 y hy.1 1⟩`. Consider the case `smul a x _ hx => exact ⟨Submodule.smul_mem _ _ hx.1, by simpa [hx.2, zero] using add 0 (zero_mem _) x hx.1 a⟩`. Simplify `add z₀ h0 z key.1 1` using `[key.2]`.
+-/
 theorem I_aug (hT : ThetaBasic) (p : IsPair B M χ χ' o r s r' s') (c : Cpt σ Y.J) (v : Pl F) (f : SInf F (Fin n × Fin d))
     {φ : ∀ u : Pl F, (Fin n × Fin d → Fv F u) → ℂ} (h1 : ∀ u, φ u ∈ SB _) (h2 : ∀ᶠ u in cofinite, φ u = M.vac u)
     {z₀ z} (h0 : z₀ ∈ SB _) (hz : z ∈ augAt o v) :
@@ -100,6 +136,17 @@ theorem I_aug (hT : ThetaBasic) (p : IsPair B M χ χ' o r s r' s') (c : Cpt σ 
     | smul a x _ hx => exact ⟨Submodule.smul_mem _ _ hx.1, by simpa [hx.2, zero] using add 0 (zero_mem _) x hx.1 a⟩
   simpa [key.2] using add z₀ h0 z key.1 1
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' h hq Φ' hΦ`. Take `⟨R, hr⟩` from `hR F E σ B a a' G X om om' h`. Take `⟨Rf, hf⟩` from `hF F E σ B a a' G X om om' h`. Take `⟨-, k1, k2, -⟩` from `(hK F E σ B a a' G X om om' R Rf ⟨h, hr, hf⟩).1 _ h.chars.good`. Establish `p` using `pairV' h`.
+
+Establish `c` using `hC F E σ B _ _ _ _ h.base (.inl p.herm) (by omega)`. Establish `le` using `pol_sch p.good`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨f, hf, φ, h1, h2, rfl⟩` from `hz`.
+
+Take `⟨y, hy, e⟩` from `k2 B.τ₁ (Rf.p' _ (φ B.v₁))`. Use `⟨pure f (Function.update φ B.v₁ y), ⟨Submodule.subset_span ⟨f, hf, _, upd_sb h1 hy.1, upd_cof h2 y, rfl⟩, Submodule.subset_span ⟨f, _, upd_sb h1 hy.1, upd_cof h2 y, by rwa [Function.update_self], rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use `I_aug hT p c B.v₁ f h1 h2 hy.1 ((k1 _ (sub_mem (h1 _) hy.1)).1 (by rw [map_sub, e, sub_self]))` as an intermediate fact. Rewrite using `[← this, add_sub_cancel, Function.update_eq_self]`. Consider the case `zero => exact ⟨0, zero_mem _, rfl⟩`.
+
+Consider the case `add x y hx hy ix iy`. Take `⟨x', mx, ex⟩` from `ix`. Take `⟨y', my, ey⟩` from `iy`. Use `⟨x' + y', add_mem mx my, ?_⟩` and prove the remaining obligations. Rewrite using `[← one_smul ℂ y, ← one_smul ℂ y', I_lin hT p c (le mx.1) (le my.1), I_lin hT p c (le hx) (le hy), ex, ey]`.
+
+Consider the case `smul t x hx ix`. Take `⟨x', mx, ex⟩` from `ix`. Use `⟨t • x', Submodule.smul_mem _ _ mx, ?_⟩` and prove the remaining obligations. Rewrite using `[← zero_add (t • x), ← zero_add (t • x'), I_lin hT p c (zero_mem _) (le mx.1), I_lin hT p c (zero_mem _) (le hx), ex]`.
+-/
 theorem toSo_of (hR : KReal) (hF : KFin) (hK : KCoinv) (hT : ThetaBasic) (hC : CptAll) : ToSo := by
   intro F E _ _ _ _ _ σ B a a' G X om om' h hq Φ' hΦ
   obtain ⟨R, hr⟩ := hR F E σ B a a' G X om om' h

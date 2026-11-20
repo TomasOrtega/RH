@@ -14,6 +14,11 @@ section Algebra
 variable {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α]
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[hM.det_fintype]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← det_submatrix_equiv_self (φ a)]`. Establish `: (M.toSquareBlock b a).submatrix (φ a) (φ a) = A a ⊗ₖ (1 : Matrix (T a) (T a) R)`. Use extensionality with `x y`.
+
+Use `(h a x y).trans ?_` and prove the remaining obligations. Simplify using `[kroneckerMap_apply, one_apply]`. Rewrite using `[this, det_kronecker]`. Simplify using the standard rewrite rules.
+-/
 theorem det_of_blocks {I : Type} [Fintype I] [DecidableEq I] (M : Matrix I I R) (b : I → α)
     (hM : M.BlockTriangular b) (T : α → Type) [∀ a, Fintype (T a)] [∀ a, DecidableEq (T a)]
     (A : ∀ a, Matrix (m a) (m a) R) (φ : ∀ a, m a × T a ≃ {p // b p = a})
@@ -45,17 +50,26 @@ def rmat (B : Matrix n n R) : Matrix (Idx e) (Idx e) R :=
   Matrix.of fun p q => if p.1.1 = q.1.1 then B q.1.2 p.1.2 else 0
 
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[ent, mat, p.2]`.
+-/
 theorem ent_mat (x : Idx e → R) : ent e (mat e x) = x := by
   funext p
   simp [ent, mat, p.2]
 
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] in
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Establish `: p.1.1 ≠ p.1.2` using `fun h => p.2.ne (by rw [h])`. Simplify using `[ent, this]`.
+-/
 theorem ent_one_add (X : Matrix n n R) : ent e (1 + X) = ent e X := by
   funext p
   have : p.1.1 ≠ p.1.2 := fun h => p.2.ne (by rw [h])
   simp [ent, this]
 
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [DecidableEq n] in
+/- English proof (translation)
+Rewrite using `[← Fintype.sum_prod_type', ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun p : n × n => blk e p.1 < blk e p.2), Finset.sum_eq_zero (s := Finset.filter (fun p => ¬ _) _), add_zero, Finset.sum_subtype (p := fun p : n × n => blk e p.1 < blk e p.2) _ (by simp)]`. Conclude with `Finset.sum_congr rfl fun q _ => by simp [mat, q.2]`. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Simplify using `[mat, hp]`.
+-/
 theorem sum_idx (f : n → n → R) (x : Idx e → R) :
     ∑ q : Idx e, f q.1.1 q.1.2 * x q = ∑ i, ∑ j, f i j * mat e x i j := by
   rw [← Fintype.sum_prod_type', ← Finset.sum_filter_add_sum_filter_not Finset.univ
@@ -67,6 +81,9 @@ theorem sum_idx (f : n → n → R) (x : Idx e → R) :
     simp [mat, hp]
 
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use `Eq.trans ?_ (sum_idx e (fun i j => if p.1.2 = j then A p.1.1 i else 0) x).symm` and prove the remaining obligations. Simplify using `[ent, mul_apply]`.
+-/
 theorem ent_mul_mat (A : Matrix n n R) (x : Idx e → R) :
     ent e (A * mat e x) = (lmat e A).mulVec x := by
   funext p
@@ -74,6 +91,9 @@ theorem ent_mul_mat (A : Matrix n n R) (x : Idx e → R) :
   simp [ent, mul_apply]
 
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use `Eq.trans ?_ (sum_idx e (fun i j => if p.1.1 = i then B j p.1.2 else 0) x).symm` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `[ent, mul_apply, mul_comm]`.
+-/
 theorem ent_mat_mul (B : Matrix n n R) (x : Idx e → R) :
     ent e (mat e x * B) = (rmat e B).mulVec x := by
   funext p
@@ -82,6 +102,11 @@ theorem ent_mat_mul (B : Matrix n n R) (x : Idx e → R) :
   simp [ent, mul_apply, mul_comm]
 
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
+/- English proof (translation)
+Rewrite using `[← ent_mul_mat]`. Use extensionality with `i j`. Distinguish the cases in `h : blk e i < blk e j`. Simplify using `[mat, h, ent]`. Simplify using `only [mat, of_apply, h, dif_neg, not_false_eq_true, mul_apply]`.
+
+Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h' : blk e l < blk e j`. Rewrite using `[hA (h'.trans_le (not_lt.1 h)), zero_mul]`. Simplify using `[h']`.
+-/
 theorem mul_mat {A : Matrix n n R} (hA : A.BlockTriangular (blk e)) (x : Idx e → R) :
     A * mat e x = mat e ((lmat e A).mulVec x) := by
   rw [← ent_mul_mat]
@@ -94,6 +119,11 @@ theorem mul_mat {A : Matrix n n R} (hA : A.BlockTriangular (blk e)) (x : Idx e �
     · rw [hA (h'.trans_le (not_lt.1 h)), zero_mul]
     · simp [h']
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `mem_unipRad.1 hu`. Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases.
+
+Simplify using `[mat, ent, h, one_apply, h.ne]`. Simplify using `[mat, h2, one_apply]`. Simplify using `[mat, h.not_gt, one_apply, h.ne', mem_parab_iff.1 h1 a b i j h]`.
+-/
 theorem eq_one_add_mat {u : GL n R} (hu : u ∈ unipRad R e) :
     (u : Matrix n n R) = 1 + mat e (ent e (u : Matrix n n R)) := by
   obtain ⟨h1, h2⟩ := mem_unipRad.1 hu
@@ -106,10 +136,18 @@ theorem eq_one_add_mat {u : GL n R} (hu : u ∈ unipRad R e) :
   · simp [mat, h.not_gt, one_apply, h.ne', mem_parab_iff.1 h1 a b i j h]
 
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] in
+/- English proof (translation)
+The claim follows from `blockTriangular_one.add fun i j h => by simp [mat, h.not_gt]`.
+-/
 theorem blockTriangular_one_add_mat (x : Idx e → R) : (1 + mat e x).BlockTriangular (blk e) :=
   blockTriangular_one.add fun i j h => by simp [mat, h.not_gt]
 
 omit [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
+/- English proof (translation)
+Rewrite using `[(blockTriangular_one_add_mat e x).det_fintype]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `: (1 + mat e x).toSquareBlock (blk e) a = 1`. Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Simplify using `[toSquareBlock_def, mat, hi, hj, one_apply]`.
+
+Rewrite using `[this, det_one]`.
+-/
 theorem det_one_add_mat (x : Idx e → R) : (1 + mat e x).det = 1 := by
   rw [(blockTriangular_one_add_mat e x).det_fintype]
   refine Finset.prod_eq_one fun a _ => ?_
@@ -127,10 +165,16 @@ def unipEquiv : unipRad R e ≃ (Idx e → R) where
   left_inv u := Subtype.ext (Units.ext (eq_one_add_mat e u.2).symm)
   right_inv x := (ent_one_add e _).trans (ent_mat e x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_unipEquiv_symm (x : Idx e → R) :
     ((((unipEquiv e).symm x : unipRad R e) : GL n R) : Matrix n n R) = 1 + mat e x := rfl
 
 omit [LinearOrder α] [∀ a, DecidableEq (m a)] [DecidableEq n] in
+/- English proof (translation)
+Rewrite using `[Fintype.card_subtype, Finset.card_filter, ← e.sum_comp, Fintype.sum_sigma, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : p b <;> simp [h]`.
+-/
 theorem card_blk (p : α → Prop) [DecidablePred p] :
     Fintype.card {j : n // p (blk e j)} = ∑ b with p b, Fintype.card (m b) := by
   rw [Fintype.card_subtype, Finset.card_filter, ← e.sum_comp, Fintype.sum_sigma, Finset.sum_filter]
@@ -155,6 +199,11 @@ def colEquiv (a : α) : m a × {j : n // blk e j < a} ≃ {p : Idx e // blk e p.
     obtain rfl : b = a := by simpa using hi
     exact ⟨(j, ⟨i, by simpa using h⟩), rfl⟩⟩
 
+/- English proof (translation)
+Rewrite using `[det_of_blocks (lmat e A) (fun p => blk e p.1.1) ?_ (fun a => {j : n // a < blk e j}) D (rowEquiv e) ?_]`. Simplify using `only [card_blk]`. Introduce `p q h`. Simplify using `[lmat, hA h]`. Introduce `a x y`.
+
+Conclude with `if_congr Subtype.ext_iff.symm (hD a x.1 y.1) rfl`.
+-/
 theorem det_lmat {A : Matrix n n R} (hA : A.BlockTriangular (blk e)) (D : ∀ a, Matrix (m a) (m a) R)
     (hD : ∀ a i j, A (e ⟨a, i⟩) (e ⟨a, j⟩) = D a i j) :
     (lmat e A).det = ∏ a, (D a).det ^ ∑ b with a < b, Fintype.card (m b) := by
@@ -166,6 +215,11 @@ theorem det_lmat {A : Matrix n n R} (hA : A.BlockTriangular (blk e)) (D : ∀ a,
   · intro a x y
     exact if_congr Subtype.ext_iff.symm (hD a x.1 y.1) rfl
 
+/- English proof (translation)
+Rewrite using `[det_of_blocks (rmat e _) (fun p => blk e p.1.2) ?_ (fun a => {j : n // blk e j < a}) (fun a => (g a : Matrix (m a) (m a) R)ᵀ) (colEquiv e) ?_]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[card_blk e (· < a), det_transpose]`. Introduce and unpack `⟨⟨i, j⟩, _⟩ ⟨⟨i', j'⟩, _⟩ h`. Take `⟨⟨a, j⟩, rfl⟩` from `e.surjective j`.
+
+Take `⟨⟨b, j'⟩, rfl⟩` from `e.surjective j'`. Establish `: b < a` using `by simpa using h`. Simplify using `[rmat, leviEmb_apply_ne R e g this.ne]`. Introduce `a x y`. Conclude with `if_congr Subtype.ext_iff.symm (leviEmb_apply_same R e g a y.1 x.1) rfl`.
+-/
 theorem det_rmat (g : Levi R m) :
     (rmat e (leviEmb R e g : Matrix n n R)).det =
       ∏ a, (g a : Matrix (m a) (m a) R).det ^ ∑ b with b < a, Fintype.card (m b) := by
@@ -181,6 +235,9 @@ theorem det_rmat (g : Levi R m) :
   · intro a x y
     exact if_congr Subtype.ext_iff.symm (leviEmb_apply_same R e g a y.1 x.1) rfl
 
+/- English proof (translation)
+Rewrite using `[← ent_mul_mat]`. Use `show ent e (((u : GL n R) : Matrix n n R) * (1 + mat e x)) = _`. Rewrite using `[mul_add, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem unipEquiv_mul (u : unipRad R e) (x : Idx e → R) :
     unipEquiv e (u * (unipEquiv e).symm x) =
       unipEquiv e u + (lmat e ((u : GL n R) : Matrix n n R)).mulVec x := by
@@ -189,6 +246,9 @@ theorem unipEquiv_mul (u : unipRad R e) (x : Idx e → R) :
   rw [mul_add, mul_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[det_lmat e (mem_unipRad.1 u.2).1 (fun _ => 1) (mem_unipRad.1 u.2).2]`. Simplify using the standard rewrite rules.
+-/
 theorem det_lmat_unip (u : unipRad R e) : (lmat e ((u : GL n R) : Matrix n n R)).det = 1 := by
   rw [det_lmat e (mem_unipRad.1 u.2).1 (fun _ => 1) (mem_unipRad.1 u.2).2]
   simp
@@ -200,6 +260,9 @@ def conj (g : Levi R m) (u : unipRad R e) : unipRad R e :=
 def cmat (g : Levi R m) : Matrix (Idx e) (Idx e) R :=
   rmat e (leviEmb R e g⁻¹ : Matrix n n R) * lmat e (leviEmb R e g : Matrix n n R)
 
+/- English proof (translation)
+Rewrite using `[cmat, ← mulVec_mulVec, ← ent_mat_mul, ← mul_mat e (leviEmb_mem_parab R e g), map_inv, ← ent_one_add e (_ * _ * _)]`. Use `show ent e ((leviEmb R e g : Matrix n n R) * (1 + mat e x) * ((leviEmb R e g)⁻¹ : GL n R).val) = _`. Rewrite using `[mul_add, mul_one, add_mul, Units.mul_inv]`.
+-/
 theorem unipEquiv_conj (g : Levi R m) (x : Idx e → R) :
     unipEquiv e (conj e g ((unipEquiv e).symm x)) = (cmat e g).mulVec x := by
   rw [cmat, ← mulVec_mulVec, ← ent_mat_mul, ← mul_mat e (leviEmb_mem_parab R e g), map_inv,
@@ -207,6 +270,9 @@ theorem unipEquiv_conj (g : Levi R m) (x : Idx e → R) :
   show ent e ((leviEmb R e g : Matrix n n R) * (1 + mat e x) * ((leviEmb R e g)⁻¹ : GL n R).val) = _
   rw [mul_add, mul_one, add_mul, Units.mul_inv]
 
+/- English proof (translation)
+Rewrite using `[cmat, det_mul, det_rmat, det_lmat e (leviEmb_mem_parab R e g) _ (leviEmb_apply_same R e g), ← Finset.prod_mul_distrib, Units.coe_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[modExp, ← Nat.cast_sum, ← Nat.cast_sum, sub_eq_neg_add, _root_.zpow_add, _root_.zpow_neg, ← _root_.inv_zpow, zpow_natCast, zpow_natCast, ← map_inv, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+-/
 theorem det_cmat (g : Levi R m) :
     ((∏ a, GeneralLinearGroup.det (g a) ^ modExp m a : Rˣ) : R) = (cmat e g).det := by
   rw [cmat, det_mul, det_rmat, det_lmat e (leviEmb_mem_parab R e g) _ (leviEmb_apply_same R e g),
@@ -236,6 +302,9 @@ def unipHomeo : unipRad R e ≃ₜ (Idx e → R) where
     show _ = Ring.inverse (1 + mat e x).det • (1 + mat e x).adjugate
     rw [det_one_add_mat, Ring.inverse_one, one_smul]
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk (by fun_prop) _`.
+-/
 theorem continuous_conj (g : Levi R m) : Continuous (conj e g) :=
   Continuous.subtype_mk (by fun_prop) _
 
@@ -249,6 +318,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace (unipRad k e)] [BorelSpace (unipRad k e)] [MeasurableSpace k] [BorelSpace k]
   (ν : Measure k) [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Establish `hΦ : Measurable (unipHomeo (R` using `k) e).symm := (unipHomeo e).symm.measurable`. Use `haveI : IsFiniteMeasureOnCompacts (Measure.map (unipHomeo (R := k) e).symm (Measure.pi fun _ : Idx e => ν)) := Measure.IsFiniteMeasureOnCompacts.map _ _`. Use `haveI : (Measure.map (unipHomeo (R := k) e).symm (Measure.pi fun _ : Idx e => ν)).IsOpenPosMeasure := (unipHomeo e).symm.continuous.isOpenPosMeasure_map (unipHomeo e).symm.surjective`.
+
+Use `haveI : (Measure.map (unipHomeo (R := k) e).symm (Measure.pi fun _ : Idx e => ν)).IsMulLeftInvariant := by`. Use `⟨fun u => ?_⟩` and prove the remaining obligations. Establish `hm : Measurable (lmat e ((u : GL n k) : Matrix n n k)).mulVec` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Establish `h1` using `WeilM.smul_map_mulVec_pi ν _ 1 (det_lmat_unip e u).symm`. Rewrite `h1` using `[map_one, ENNReal.coe_one, one_smul]`.
+
+Establish `h2 : (u * ·) ∘ (unipHomeo e).symm = (unipHomeo e).symm ∘ ((unipEquiv e u + ·) ∘ (lmat e ((u : GL n k) : Matrix n n k)).mulVec)`. Use function extensionality and compare the values at `fun x => (unipEquiv e).eq_symm_apply.2 (unipEquiv_mul e u x)`. Rewrite using `[Measure.map_map (measurable_const_mul u) hΦ, h2, ← Measure.map_map hΦ ((measurable_const_add _).comp hm), ← Measure.map_map (measurable_const_add _) hm, h1, map_add_left_eq_self]`. Conclude with `{}`.
+-/
 theorem isHaarMeasure_map :
     (Measure.map (unipHomeo e).symm (Measure.pi fun _ : Idx e => ν)).IsHaarMeasure := by
   haveI := secondCountable k
@@ -272,6 +348,13 @@ theorem isHaarMeasure_map :
       ← Measure.map_map (measurable_const_add _) hm, h1, map_add_left_eq_self]
   exact {}
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Establish `hΦ : Measurable (unipHomeo (R` using `k) e).symm := (unipHomeo e).symm.measurable`. Establish `hm : Measurable (cmat e g).mulVec` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Establish `h1` using `WeilM.smul_map_mulVec_pi ν _ _ (det_cmat e g)`.
+
+Establish `h2 : conj e g ∘ (unipHomeo e).symm = (unipHomeo e).symm ∘ (cmat e g).mulVec`. Use function extensionality and compare the values at `fun x => (unipEquiv e).eq_symm_apply.2 (unipEquiv_conj e g x)`. Establish `hc` using `(continuous_conj e g).measurable`. Rewrite using `[← Measure.map_apply hc hT, Measure.map_map hc hΦ, h2, ← Measure.map_map hΦ hm]`. Use `conv_lhs => rw [← h1, Measure.map_smul, Measure.smul_apply, smul_eq_mul]`.
+
+Use `congr 1`. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`. Simplify using `[modulus, nabs]`.
+-/
 theorem map_preimage_conj (g : Levi k m) {T : Set (unipRad k e)} (hT : MeasurableSet T) :
     Measure.map (unipHomeo e).symm (Measure.pi fun _ : Idx e => ν) T = ENNReal.ofReal (modulus k m g) *
       Measure.map (unipHomeo e).symm (Measure.pi fun _ : Idx e => ν) (conj e g ⁻¹' T) := by
@@ -291,6 +374,15 @@ theorem map_preimage_conj (g : Levi k m) {T : Set (unipRad k e)} (hT : Measurabl
 
 end Measure
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α n m _ _ _ _ _ _ e _ _ μ _ g S hS`. Use `borelize k`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI : LocallyCompactSpace (unipRad k e) := (unipHomeo e).isClosedEmbedding.locallyCompactSpace`.
+
+Use `haveI : SecondCountableTopology (unipRad k e) := (unipHomeo e).secondCountableTopology`. Use `haveI := isHaarMeasure_map e (Measure.addHaar : Measure k)`. Establish `h1 : {u : unipRad k e | ∃ s ∈ S, (u : GL n k) = leviEmb k e g * (s : GL n k) * (leviEmb k e g)⁻¹} = conj e g⁻¹ ⁻¹' S`. Use extensionality with `u`. Use `⟨?_, fun h => ⟨_, h, by simp [conj, mul_assoc]⟩⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨s, hs, h⟩`. Establish `: conj e g⁻¹ u = s` using `Subtype.ext (by simp [conj, h, mul_assoc])`. Rewrite using `[Set.mem_preimage, this]` and apply the resulting hypothesis. Establish `h2 : conj e g ⁻¹' (conj e g⁻¹ ⁻¹' S) = S`. Use extensionality with `u`.
+
+Establish `: conj e g⁻¹ (conj e g u) = u` using `Subtype.ext (by simp [conj, mul_assoc])`. Rewrite using `[Set.mem_preimage, Set.mem_preimage, this]`. Establish `h3` using `map_preimage_conj e (Measure.addHaar : Measure k) g ((continuous_conj e g⁻¹).measurable hS)`. Rewrite `h3` using `[h2]`. Rewrite using `[h1, Measure.isMulLeftInvariant_eq_smul μ (Measure.map (unipHomeo e).symm (Measure.pi fun _ : Idx e => (Measure.addHaar : Measure k))), Measure.smul_apply, Measure.smul_apply, h3, mul_smul_comm]`.
+-/
 theorem haar_conj_eq_modulus_mul : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (α n : Type) (m : α → Type) [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) [MeasurableSpace (unipRad k e)] [BorelSpace (unipRad k e)] (μ : Measure (unipRad k e)) [μ.IsHaarMeasure] (g : Levi k m) (S : Set (unipRad k e)), MeasurableSet S → μ {u | ∃ s ∈ S, (u : GL n k) = leviEmb k e g * (s : GL n k) * (leviEmb k e g)⁻¹} = ENNReal.ofReal (modulus k m g) * μ S := by
   intro k _ _ _ _ α n m _ _ _ _ _ _ e _ _ μ _ g S hS
   borelize k

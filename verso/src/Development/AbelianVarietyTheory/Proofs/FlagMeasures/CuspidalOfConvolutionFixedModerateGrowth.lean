@@ -17,6 +17,15 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.CuspFixed
 
+/- English proof (translation)
+Establish `hme : MeasurableEmbedding ι` using `hι.measurableEmbedding`. Establish `hS : ((N.map ι : Subgroup G) : Set G) = ι '' (N : Set H)` using `Subgroup.coe_map ι N`. Take `⟨hne, hfc, hnull, hinv⟩` from `hν`. Use `⟨by rw [hS]; exact hι.isClosedMap _ hN, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite `h0` using `[Measure.map_eq_zero_iff hme.measurable.aemeasurable]`. Then use the resulting hypothesis. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[hme.map_apply]`. Conclude with `hfc.lt_top_of_isCompact (hι.isCompact_preimage hK)`.
+
+Rewrite using `[hme.map_apply, Set.preimage_compl, hS, Set.preimage_image_eq _ hι.injective]`. Conclude with `hnull`. Introduce `m hm`. Rewrite `hm` using `[hS]`. Take `⟨k, hk, rfl⟩` from `hm`.
+
+Establish `hcomm : (fun z : G => ι k * z) ∘ ι = ι ∘ (fun z : H => k * z)`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, map_mul]`. Rewrite using `[Measure.map_map (continuous_mul_left (ι k)).measurable hme.measurable, hcomm, ← Measure.map_map hme.measurable (continuous_mul_left k).measurable, hinv k hk]`.
+-/
 theorem isHaarSub_map_emb {H G : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [MeasurableSpace H] [BorelSpace H] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (ι : H →* G) (hι : Topology.IsClosedEmbedding ι) (N : Subgroup H)
@@ -43,6 +52,19 @@ theorem isHaarSub_map_emb {H G : Type} [Group H] [TopologicalSpace H] [IsTopolog
     rw [Measure.map_map (continuous_mul_left (ι k)).measurable hme.measurable, hcomm,
       ← Measure.map_map hme.measurable (continuous_mul_left k).measurable, hinv k hk]
 
+/- English proof (translation)
+Establish `hmeas : Measurable (Function.uncurry fun (m g : G) => φ g * f (m * x * g))`. Apply `Measurable.mul` to reduce the goal to its premises. Conclude with `hφ.comp measurable_snd`. Conclude with `(hf.comp (by fun_prop : Continuous fun p : G × G => p.1 * x * p.2)).measurable`. Establish `hint : Integrable (Function.uncurry fun (m g : G) => φ g * f (m * x * g)) (ν.prod μ)`.
+
+Use `Integrable.mono' ((integrable_const (1 : ℝ)).mul_prod hΦ) hmeas.aestronglyMeasurable ?_` and prove the remaining obligations. Establish `hae` using `(Measure.quasiMeasurePreserving_fst (μ := ν) (ν := μ)).ae hb`. Use `filter_upwards [hae] with p hp`. Simplify `hp p.2` using `[Function.uncurry]`. Establish `hH : (fun g => ∫ m, φ g * f (m * x * g) ∂ν) = fun g => (fun y => (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y)) (x * g)`.
+
+Use function extensionality and compare the values at `g`. Use `beta_reduce`. Rewrite using `[integral_const_mul, inv_mul_cancel_left, mul_comm]`. Repeatedly rewrite using `[mul_assoc]`. Establish `hI : Integrable (fun g => ∫ m, φ g * f (m * x * g) ∂ν) μ` using `hint.integral_prod_right`.
+
+Rewrite `hI` using `[hH]`. Establish `hI2` using `hI.comp_mul_left x⁻¹`. Simplify using `only [mul_inv_cancel_left] at hI2`. Use `⟨hI2, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `m`. Conclude with `hr (m * x)`. Use `_ = ∫ g, ∫ m, φ g * f (m * x * g) ∂ν ∂μ := integral_integral_swap hint`. Use `_ = ∫ g, (fun y => (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y)) (x * g) ∂μ := by rw [hH]`.
+
+Use `_ = ∫ y, (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y) ∂μ := integral_mul_left_eq_self (fun y => (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y)) x`.
+-/
 theorem constTerm_repro {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ ν : Measure G) [SFinite μ]
     [μ.IsMulLeftInvariant] [IsFiniteMeasure ν] (f φ : G → ℂ) (hf : Continuous f) (hφ : Measurable φ) (x : G)
@@ -77,6 +99,11 @@ theorem constTerm_repro {G : Type} [Group G] [TopologicalSpace G] [IsTopological
     _ = ∫ y, (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y) ∂μ :=
         integral_mul_left_eq_self (fun y => (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y)) x
 
+/- English proof (translation)
+Establish `he : Continuous B.e` using `(rowsAut_idem_elementary B).2.2.2`. Establish `hv : ∀ v, Continuous (fun g : B.I.Ginf => B.σ v (uMat (g v)) (B.w v))`. Introduce `v`. Establish `hc` using `((hd v).2.1.2.2.1).2.2 (B.w v)`. Conclude with `hc.comp_continuous ((Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v)) (fun g => (g v).2)`.
+
+Establish `hph : Continuous (ph B d)`. Unfold `ph`. Conclude with `continuous_const.mul (continuous_star.comp (continuous_finset_prod _ fun v _ => continuous_const.inner (hv v)))`. Unfold `phe`. Conclude with `(hph.comp continuous_fst).mul (he.comp continuous_snd)`.
+-/
 theorem continuous_phe (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (hd : IsDSData B d) : Continuous (phe B d) := by
   have he : Continuous B.e := (rowsAut_idem_elementary B).2.2.2
   have hv : ∀ v, Continuous (fun g : B.I.Ginf => B.σ v (uMat (g v)) (B.w v)) := by
@@ -91,6 +118,11 @@ theorem continuous_phe (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (hd : IsD
   unfold phe
   exact (hph.comp continuous_fst).mul (he.comp continuous_snd)
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos I.n with h0 | hpos` into its components or cases. It suffices to derive a contradiction. Apply `hW.1` to reduce the goal to its premises. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `x _`.
+
+Use function extensionality and compare the values at `i`. Conclude with `absurd i.isLt (by omega)`. Conclude with `hpos`.
+-/
 theorem one_le_of_isIsot (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) (hW : I.IsIsot W) : 1 ≤ I.n := by
   rcases Nat.eq_zero_or_pos I.n with h0 | hpos
   · exfalso
@@ -106,6 +138,11 @@ open Classical in
 noncomputable def incl (I : AutInst) (v : InfinitePlace I.F) : UJ (I.ε v) →* I.GA :=
   (MonoidHom.inl I.Ginf I.Gf).comp (MonoidHom.mulSingle (fun v => UJ (I.ε v)) v)
 
+/- English proof (translation)
+Take `⟨hT2, -⟩` from `CongTop.adelic_topology I`. Use `haveI := hT2`. Use `Function.LeftInverse.isClosedEmbedding (f := fun p : I.GA => p.1 v) ?_ ?_ ?_` and prove the remaining obligations. Introduce `m`. Simplify using `[incl]`.
+
+Conclude with `(continuous_apply v).comp continuous_fst`. Conclude with `(continuous_mulSingle (A := fun w : InfinitePlace I.F => UJ (I.ε w)) v).prodMk continuous_const`.
+-/
 theorem isClosedEmbedding_incl (I : AutInst) (v : InfinitePlace I.F) : Topology.IsClosedEmbedding (incl I v) := by
   obtain ⟨hT2, -⟩ := CongTop.adelic_topology I
   haveI := hT2
@@ -116,6 +153,31 @@ theorem isClosedEmbedding_incl (I : AutInst) (v : InfinitePlace I.F) : Topology.
   · exact (continuous_apply v).comp continuous_fst
   · exact (continuous_mulSingle (A := fun w : InfinitePlace I.F => UJ (I.ε w)) v).prodMk continuous_const
 
+/- English proof (translation)
+Introduce `B d h hd hfib hloc hbig T hT y f C hfix hrep hgr`. Take `⟨hT2, hLC, hSC, -⟩` from `CongTop.adelic_topology B.I`. Use `haveI := hT2`. Use `haveI := hLC`. Use `haveI := hSC`.
+
+Use `haveI hHaar : (B.I.muA B.μf).IsHaarMeasure := by haveI h1 : ∀ w, (muG (B.I.ε w)).IsHaarMeasure := fun w => inferInstance haveI h2 : ∀ w, SigmaFinite (muG (B.I.ε w)) := fun w => inferInstance haveI h3 : (Measure.pi fun w => muG (B.I.ε w)).IsHaarMeasure := Measure.pi.isHaarMeasure …`. Unfold `AutInst.muA`. Conclude with `Measure.prod.instIsHaarMeasure _ _`. Establish `main : ∀ W, B.I.IsIsot W → ∀ ν : Measure B.I.GA, B.I.IsNQuotMeas W ν → ∀ x, ∫ m, f (m * x) ∂ν = 0`. Introduce `W hW ν hνW x`.
+
+Establish `hn : 1 ≤ B.I.n` using `one_le_of_isIsot B.I W hW`. Take `⟨⟨Φ, hΦi, hΦb⟩, hrepf⟩` from `GlobalTheory.T.reproducing_formula_fixedVector_moderateGrowth B d h hd hn hloc hbig T hT y f C hfix hrep hgr`. Take `⟨hfin, -, hconc, hinvN⟩` from `hνW`. Use `haveI := hfin`. Take `⟨c, hc0, hc⟩` from `exists_pos_le_tau1_mul_of_mem_NA_of_isIsot B.I W x hW`.
+
+Establish `hbd : ∀ᵐ m ∂ν, ∀ g, ‖phe B d g * f (m * x * g)‖ ≤ c⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f) * Φ g` using `by filter_upwards [mem_ae_iff.mpr hconc] with m hm g`. Establish `ht : c ≤ tau1 B.I (m * x)` using `hc m hm`. Establish `htpos : 0 < tau1 B.I (m * x)` using `hc0.trans_le ht`. Establish `hb1` using `hΦb (m * x) g`. Establish `hpow : 0 < (tau1 B.I (m * x))⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f)` using `pow_pos (inv_pos.mpr htpos) _`.
+
+Establish `hΦ0 : 0 ≤ Φ g` using `(mul_nonneg_iff_of_pos_left hpow).mp ((norm_nonneg _).trans hb1)`. Conclude with `hb1.trans (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (inv_nonneg.mpr htpos.le) (inv_anti₀ hc0 ht) _) hΦ0)`. Take `⟨hint, heq⟩` from `constTerm_repro (B.I.muA B.μf) ν f (phe B d) hrep.1 (continuous_phe B d hd).measurable x (fun g => c⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f) * Φ g) (hΦi.const_mul _) hbd hrepf`. Rewrite using `[heq]`. Take `⟨v⟩ : Nonempty (InfinitePlace B.I.F)` from `inferInstance`.
+
+Take `⟨Wv, hWv, hemb⟩` from `RadEmb.radical_embeds B.I W v hW`. Take `⟨νv, hνv⟩` from `exists_isHaarSub_NW (B.I.ε v) Wv`. Establish `hNcl : IsClosed ((nwSub (B.I.ε v) Wv : Subgroup (UJ (B.I.ε v))) : Set (UJ (B.I.ε v)))`. Rewrite using `[coe_nwSub]`. Conclude with `isClosed_NW _ _`.
+
+Establish `hνv' : IsHaarSub ((nwSub (B.I.ε v) Wv : Subgroup (UJ (B.I.ε v))) : Set (UJ (B.I.ε v))) νv`. Rewrite using `[coe_nwSub]`. Conclude with `hνv`. Establish `hemb'` using `isClosedEmbedding_incl B.I v`. Take `⟨hNcl', hHs⟩` from `isHaarSub_map_emb (incl B.I v) hemb' _ hNcl νv hνv'`.
+
+Use `weilVanish B.I.GA (B.I.muA B.μf) _ _ hNcl' hHs (fun z => ∫ m, f (m * z) ∂ν) (fun z => phe B d (x⁻¹ * z)) ?_ ?_ ?_ hint ?_` and prove the remaining obligations. Conclude with `(StronglyMeasurable.integral_prod_right' (ν := ν) (f := fun p : B.I.GA × B.I.GA => f (p.2 * p.1)) (hrep.1.comp (continuous_snd.mul continuous_fst)).stronglyMeasurable).measurable`. Conclude with `((continuous_phe B d hd).comp (continuous_const.mul continuous_id)).measurable`. Introduce `n hn z`. Take `⟨k, hk, rfl⟩` from `Subgroup.mem_map.mp hn`.
+
+Establish `hk' : k ∈ NW (B.I.ε v) Wv`. Rewrite using `[← coe_nwSub]`. Conclude with `hk`. Establish `hkNA : incl B.I v k ∈ B.I.NA W` using `hemb k hk'`. Establish `hsh` using `hinvN (fun m => f (m * z)) (fun γ hγ w => by show f (γ * w * z) = f (w * z)`.
+
+Rewrite using `[mul_assoc]`. Conclude with `hrep.2.1 γ hγ.1 (w * z)) (incl B.I v k) hkNA`. Use `show ∫ m, f (m * (incl B.I v k * z)) ∂ν = ∫ m, f (m * z) ∂ν`. Simplify `hsh` using `only [mul_assoc]`. Introduce `z`.
+
+Rewrite using `[hemb'.measurableEmbedding.integral_map]`. Establish `hz` using `hfib v Wv hWv νv hνv x⁻¹ z`. Simplify using `only [← mul_assoc]`. Conclude with `hz`. Use `⟨main, ?_⟩` and prove the remaining obligations.
+
+Introduce `W hW ν hνW`. Establish `hae` using `(ExtContRep.ext_ae_eq_contRep B y f hrep).2.2.2 ν hνW.1`. Use `filter_upwards [hae] with x hx`. Rewrite using `[integral_congr_ae hx]`. Conclude with `main W hW ν hνW x`.
+-/
 theorem cusp_of_fixed : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → (∀ (v : InfinitePlace B.I.F) (Wv : Submodule ℂ (Fin B.I.n → ℂ)), IsIsoC (B.I.ε v) Wv → ∀ ν : Measure (UJ (B.I.ε v)), IsHaarSub (NW (B.I.ε v) Wv) ν → ∀ x y : B.I.GA, ∫ m, phe B d (x * (open Classical in ((Pi.mulSingle v m, 1) : B.I.GA)) * y) ∂ν = 0) → LocDec B h → HBig B 40 h → ∀ T, B.I.IsRConv B.μf B.fund B.R (phe B d) T → ∀ (y : B.I.L2 B.μf B.fund) (f : B.I.GA → ℂ) (C : ℝ), T y = y → IsContRep B y f → (∀ x, ‖f x‖ ≤ C * (tau1 B.I x)⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f)) → (∀ W, B.I.IsIsot W → ∀ ν : Measure B.I.GA, B.I.IsNQuotMeas W ν → ∀ x, ∫ m, f (m * x) ∂ν = 0) ∧ B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext y) := by
   intro B d h hd hfib hloc hbig T hT y f C hfix hrep hgr
   obtain ⟨hT2, hLC, hSC, -⟩ := CongTop.adelic_topology B.I

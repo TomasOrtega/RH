@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Eq8.Chars8
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.prod_empty, MonObj.one_comp]`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.mul_comp, ih]`.
+-/
 theorem prod_comp {S : Scheme.{0}} {T G H : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj H] [IsCommMonObj H]
     (g : G ⟶ H) [IsMonHom g] {κ : Type} (s : Finset κ) (f : κ → (T ⟶ G)) :
     (∏ i ∈ s, f i) ≫ g = ∏ i ∈ s, (f i ≫ g) := by
@@ -26,6 +29,35 @@ theorem prod_comp {S : Scheme.{0}} {T G H : Over S} [GrpObj G] [IsCommMonObj G] 
   | empty => rw [Finset.prod_empty, Finset.prod_empty, MonObj.one_comp]
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.mul_comp, ih]
 
+/- English proof (translation)
+Introduce `V₁ _ _ _ hCN D₀ A₀ G₀ _ _ hG₀ U₀ D P G _ _ hG U q hq huniv`. Establish `hB : GlobalTheory.Mum.Base V₁` using `⟨⟨hCN.1, inferInstance, hCN.2.1, hCN.2.2.1⟩, hCN.2.2.2⟩`. Use `choose c hc using fun u => GlobalTheory.Poinc.HomTor.exists_torMatch V₁ hB G₀ hG₀ D₀ A₀ U₀ G hG D P U (q u) (hq u)`. Set `y : Fin 8 → Fin 8 → (G₀ ⟶ G₀)` to `fun u v => if v = u then 𝟙 G₀ else 1`. Use `choose sc hsc _ using fun u => huniv G₀ (y u)`.
+
+Establish `hscm : ∀ u, IsMonHom (sc u)` using `fun u => isMonHom_of_mul _ fun T a b => by`. Use `(huniv T (fun v => (a * b) ≫ y u v)).unique (fun v => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, hsc]`. Use `haveI := hq v`. Rewrite using `[MonObj.mul_comp, Category.assoc, Category.assoc, hsc]`.
+
+Distinguish the cases in `h : v = u`. Simplify using `only [y, h, if_true, Category.comp_id]`. Simplify using `only [y, h, if_false, comp_one, _root_.mul_one]`. Use `choose d hd using fun u => GlobalTheory.Poinc.HomTor.exists_torMatch V₁ hB G hG D P U G₀ hG₀ D₀ A₀ U₀ (sc u) (hscm u)`. Take `⟨hid₀, hone₀, -⟩` from `torMatch_id_one_mul V₁ hB G₀ hG₀ D₀ A₀ U₀ G₀ hG₀ D₀ A₀ U₀`.
+
+Take `⟨hid, hone, hmul⟩` from `torMatch_id_one_mul V₁ hB G hG D P U G hG D P U`. Establish `dc : ∀ u v, (d u).comp (c v) = if v = u then AddMonoidHom.id _ else 0`. Introduce `u v`. Establish `h` using `torMatch_comp V₁ hB G₀ hG₀ D₀ A₀ U₀ V₁ hB G hG D P U (RingHom.id V₁) (q v).left V₁ hB G₀ hG₀ D₀ A₀ U₀ (RingHom.id V₁) (sc u).left Function.injective_id (fun k hk => hk) (c v) (d u) (hc v) (hd u)`. Rewrite `h` using `[RingHom.id_comp, ← Over.comp_left, hsc]`.
+
+Distinguish the cases in `huv : v = u`. Simplify using `only [y, huv, if_true, Over.id_left] at h ⊢`. Conclude with `torMatch_unique V₁ hB G₀ hG₀ D₀ A₀ U₀ V₁ hB G₀ hG₀ D₀ A₀ U₀ (RingHom.id V₁) _ Function.injective_id _ _ h hid₀`. Simplify using `only [y, huv, if_false] at h ⊢`. Conclude with `torMatch_unique V₁ hB G₀ hG₀ D₀ A₀ U₀ V₁ hB G₀ hG₀ D₀ A₀ U₀ (RingHom.id V₁) _ Function.injective_id _ _ h hone₀`.
+
+Establish `dsum : ∀ (χ : Fin 8 → D₀.toPre.X) w, d w (∑ u, c u (χ u)) = χ w`. Introduce `χ w`. Rewrite using `[map_sum, Finset.sum_eq_single w]`. Use `DFunLike.congr_fun (dc w w) (χ w)` as an intermediate fact. Simplify using `using this`.
+
+Introduce `b _ hb`. Use `DFunLike.congr_fun (dc w b) (χ b)` as an intermediate fact. Simplify `this` using `[hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ w) h`.
+
+Establish `hprod : (∏ v, q v ≫ sc v) = 𝟙 G`. Use `(huniv G q).unique (fun w => ?_) (fun w => Category.id_comp _)` and prove the remaining obligations. Use `haveI := hq w`. Rewrite using `[prod_comp, Finset.prod_eq_single w]`. Rewrite using `[Category.assoc, hsc]`.
+
+Simplify using `only [y, if_true, Category.comp_id]`. Introduce `b _ hb`. Rewrite using `[Category.assoc, hsc]`. Simplify using `only [y, Ne.symm hb, if_false, comp_one]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ w) h`. Establish `hs : ∀ s : Finset (Fin 8), TorMatch U U (RingHom.id V₁) (∏ v ∈ s, q v ≫ sc v).left (∑ v ∈ s, (c v).comp (d v))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.sum_empty]`.
+
+Conclude with `hone`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Use `hmul _ _ _ _ ?_ ih` and prove the remaining obligations. Establish `h` using `torMatch_comp V₁ hB G hG D P U V₁ hB G₀ hG₀ D₀ A₀ U₀ (RingHom.id V₁) (sc a).left V₁ hB G hG D P U (RingHom.id V₁) (q a).left Function.injective_id (fun k hk => hk) (d a) (c a) (hd a) (hc a)`.
+
+Rewrite `h` using `[RingHom.id_comp, ← Over.comp_left]`. Then use the resulting hypothesis. Establish `hsum : (∑ v, (c v).comp (d v)) = AddMonoidHom.id _`. Establish `h` using `hs Finset.univ`. Rewrite `h` using `[hprod, Over.id_left]`. Conclude with `torMatch_unique V₁ hB G hG D P U V₁ hB G hG D P U (RingHom.id V₁) _ Function.injective_id _ _ h hid`.
+
+Use `⟨c, hc, fun χ χ' h => funext fun w => ?_, fun z => ⟨fun v => d v z, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← dsum χ w, ← dsum χ' w]`. Conclude with `congrArg (d w) h`. Use `DFunLike.congr_fun hsum z` as an intermediate fact. Rewrite `this` using `[AddMonoidHom.finset_sum_apply]`.
+
+Simplify using `using this`.
+-/
 theorem main : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → ∀ (D₀ : DegData V₁ (maximalIdeal V₁)) (A₀ : PolAV (Sp (FractionRing V₁))) (G₀ : Over (Sp V₁)) [GrpObj G₀] [IsCommMonObj G₀], IsSemiAbelian G₀ → ∀ (U₀ : Unif (maximalIdeal V₁) D₀ A₀ G₀) (D : DegData V₁ (maximalIdeal V₁)) (P : PolAV (Sp (FractionRing V₁))) (G : Over (Sp V₁)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V₁) D P G) (q : Fin 8 → (G ⟶ G₀)), (∀ u, IsMonHom (q u)) → (∀ (T' : Over (Sp V₁)) (y' : Fin 8 → (T' ⟶ G₀)), ∃! x : T' ⟶ G, ∀ u, x ≫ q u = y' u) → ∃ c : Fin 8 → (D₀.toPre.X →+ D.toPre.X), (∀ u, TorMatch U₀ U (RingHom.id V₁) (q u).left (c u)) ∧ Function.Bijective (fun χ : Fin 8 → D₀.toPre.X => ∑ u, c u (χ u)) := by
   intro V₁ _ _ _ hCN D₀ A₀ G₀ _ _ hG₀ U₀ D P G _ _ hG U q hq huniv
   have hB : GlobalTheory.Mum.Base V₁ := ⟨⟨hCN.1, inferInstance, hCN.2.1, hCN.2.2.1⟩, hCN.2.2.2⟩

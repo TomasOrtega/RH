@@ -12,16 +12,35 @@ section PairCarry
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
+/- English proof (translation)
+Establish `h` using `he.rinv x 1 u hu`. Simplify `h` using `[cf]`.
+-/
 theorem FlatFn.fin_inv {N : ℕ} {e : GA E N → ℂ} (he : FlatFn e) (x : GA E N) {u : GL (Fin N) (Af E)}
     (hu : u ∈ KO E N) : e (x * finGL E N u) = e x := by
   have h := he.rinv x 1 u hu
   simpa [cf] using h
 
+/- English proof (translation)
+Establish `h` using `he.rinv x k 1 (one_mem _)`. Simplify `h` using `[cf]`.
+-/
 theorem FlatFn.inf_inv {N : ℕ} {e : GA E N → ℂ} (he : FlatFn e) (x : GA E N) (k : Kinf E N) :
     e (x * infGL E N (Unitary.toUnits k)) = e x := by
   have h := he.rinv x k 1 (one_mem _)
   simpa [cf] using h
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ₁, h₁, φ₂, h₂, rfl⟩` from `hG`. Take `⟨ψ₁, k₁, i₁⟩` from `c₁ φ₁ h₁`. Take `⟨ψ₂, k₂, i₂⟩` from `c₂ φ₂ h₂`.
+
+Use `Submodule.subset_span ⟨ψ₁, k₁, ψ₂, k₂, funext fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [i₁, i₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Establish `: (fun x : H E a b => e₁ x.1 * e₂ x.2 * (0 : H E a b → ℂ) x) = 0`.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add G G' _ _ h h'`.
+
+Establish `: (fun x : H E a b => e₁ x.1 * e₂ x.2 * (G + G') x) = (fun x => e₁ x.1 * e₂ x.2 * G x) + fun x => e₁ x.1 * e₂ x.2 * G' x`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `Submodule.add_mem _ h h'`. Consider the case `smul c G _ h`. Establish `: (fun x : H E a b => e₁ x.1 * e₂ x.2 * (c • G) x) = c • fun x => e₁ x.1 * e₂ x.2 * G x`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c h`.
+-/
 theorem mul_mem_pairSpace (e₁ : GA E a → ℂ) (e₂ : GA E b → ℂ) (U₁ U₁' : Submodule ℂ (Sm E a))
     (U₂ U₂' : Submodule ℂ (Sm E b)) (F : H E a b → ℂ) (c₁ : Carries e₁ U₁ U₁') (c₂ : Carries e₂ U₂ U₂')
     (hF : F ∈ pairSpace U₁ U₂) : (fun x => e₁ x.1 * e₂ x.2 * F x) ∈ pairSpace U₁' U₂' := by
@@ -50,6 +69,13 @@ theorem mul_mem_pairSpace (e₁ : GA E a → ℂ) (e₂ : GA E b → ℂ) (U₁ 
     rw [this]
     exact Submodule.smul_mem _ c h
 
+/- English proof (translation)
+Use `Submodule.mem_inf.2 ⟨mul_mem_pairSpace e₁ e₂ U₁ U₁' U₂ U₂' F c₁ c₂ hF, ?_, fun x => ?_⟩` and prove the remaining obligations. Introduce `u₁ hu₁ u₂ hu₂ x`. Establish `h₁ : e₁ (x * (finGL E a u₁, finGL E b u₂)).1 = e₁ x.1` using `f₁.fin_inv x.1 hu₁.2`. Establish `h₂ : e₂ (x * (finGL E a u₁, finGL E b u₂)).2 = e₂ x.2` using `f₂.fin_inv x.2 hu₂.2`. Use `show e₁ (x * (finGL E a u₁, finGL E b u₂)).1 * e₂ (x * (finGL E a u₁, finGL E b u₂)).2 * F (x * (finGL E a u₁, finGL E b u₂)) = e₁ x.1 * e₂ x.2 * F x`.
+
+Rewrite using `[h₁, h₂, hT.1 u₁ hu₁.1 u₂ hu₂.1 x]`. Establish `h : (fun k : Kinf E a × Kinf E b => (fun y : H E a b => e₁ y.1 * e₂ y.2 * F y) (x * (infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2)))) = (e₁ x.1 * e₂ x.2) • fun k : Kinf E a × Kinf E b => F (x * (infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2)))`. Use function extensionality and compare the values at `k`. Establish `h₁ : e₁ (x * (infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2))).1 = e₁ x.1` using `f₁.inf_inv x.1 k.1`. Establish `h₂ : e₂ (x * (infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2))).2 = e₂ x.2` using `f₂.inf_inv x.2 k.2`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, h₁, h₂]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (hT.2 x)`.
+-/
 theorem pair_carry (e₁ : GA E a → ℂ) (e₂ : GA E b → ℂ) (U₁ U₁' : Submodule ℂ (Sm E a))
     (U₂ U₂' : Submodule ℂ (Sm E b)) (K₁ : Subgroup (GL (Fin a) (Af E))) (K₂ : Subgroup (GL (Fin b) (Af E)))
     (W₁ : Submodule ℂ (Kinf E a → ℂ)) (W₂ : Submodule ℂ (Kinf E b → ℂ)) (F : H E a b → ℂ)

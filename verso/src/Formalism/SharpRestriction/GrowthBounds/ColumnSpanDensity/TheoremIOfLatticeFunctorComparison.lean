@@ -28,6 +28,9 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree
 
+/- English proof (translation)
+Take `⟨T0, _, h0⟩` from `hA 4 (by norm_num)`. Take `⟨T1, _, h1⟩` from `h0 T0 le_rfl`. Take `⟨T2, _, h2⟩` from `h1 T1 T1 T1 le_rfl le_rfl le_rfl`. Take `⟨CA, Ckap, Ct, Cs, _, _, _, _, hAdm⟩` from `h2 T2 le_rfl`. Conclude with `hAdm.2.2.2.2`.
+-/
 theorem tools_of_admitted_statements (D : Formalism.BasicNotions.D7) (hA : AdmBE D) : AdmT D := by
   obtain ⟨T0, _, h0⟩ := hA 4 (by norm_num)
   obtain ⟨T1, _, h1⟩ := h0 T0 le_rfl
@@ -35,13 +38,25 @@ theorem tools_of_admitted_statements (D : Formalism.BasicNotions.D7) (hA : AdmBE
   obtain ⟨CA, Ckap, Ct, Cs, _, _, _, _, hAdm⟩ := h2 T2 le_rfl
   exact hAdm.2.2.2.2
 
+/- English proof (translation)
+The claim follows from `(threshold_fixed_weight_facts K hK).and ((threshold_density_facts K hK).and ((threshold_mean_kappa_facts K hK).and (threshold_final_facts K hK)))`.
+-/
 theorem thrFM (K : Cst) (hK : K.Pos) : TransportedAlt K (fun _ => FM K) :=
   (threshold_fixed_weight_facts K hK).and ((threshold_density_facts K hK).and ((threshold_mean_kappa_facts K hK).and (threshold_final_facts K hK)))
 
+/- English proof (translation)
+The claim follows from `restEdge_of restFunct`.
+-/
 theorem restEdge : RestEdge := restEdge_of restFunct
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ n z hz A h` and use `KP.blockSplit n z hz A h`.
+-/
 theorem blockSplit' : BlockSplit := fun _ _ _ _ _ _ n z hz A h => KP.blockSplit n z hz A h
 
+/- English proof (translation)
+Introduce `hA`. Establish `hT` using `tools_of_admitted_statements D hA`. Establish `h16 : PairedPathIndependence D` using `hT.2.2.2.2.2.2.2.2.2.2.2`. Establish `hD : RestDims` using `restDims_of D h16.1 h16.2`. Conclude with `theorem_I_of_intermediate_bounds D FM hR (midLP_of rho_lower_bound_large_conductor h62 h63) (fun K hK => midMean_of D h61a rho_upper_bound_small_depth restEdge hD K hK) thrLP thrFM hA`.
+-/
 theorem second_estimate_of_restrictions (D : Formalism.BasicNotions.D7) (hR : LPRingIndep) (h61a : RhoSumLowerBoundEdge) (h62 : CloudWeightLowerBound) (h63 : ResidueClassCount) :
     SecondPartClosed D := by
   intro hA
@@ -51,6 +66,9 @@ theorem second_estimate_of_restrictions (D : Formalism.BasicNotions.D7) (hR : LP
   exact theorem_I_of_intermediate_bounds D FM hR (midLP_of rho_lower_bound_large_conductor h62 h63)
     (fun K hK => midMean_of D h61a rho_upper_bound_small_depth restEdge hD K hK) thrLP thrFM hA
 
+/- English proof (translation)
+Introduce `hA`. Establish `hT` using `tools_of_admitted_statements D hA`. Establish `h16 : PairedPathIndependence D` using `hT.2.2.2.2.2.2.2.2.2.2.2`. Establish `h13 : TypeDecompositionsCommute D` using `hT.2.2.2.2.2.2.2.2.1`. Conclude with `second_estimate_of_restrictions D hR (rho_sum_bound_of_maps_splitting (lattice_maps_of_functor_comparison h61) blockSplit') (cloud_bound_of_maps hC h13.2.2.1 h13.1 h16.2) (tensor_bound_of_order_bound restTensor restOrdBound h13.1 h13.2.1) hA`.
+-/
 theorem theorem_I_of_finer_open_statements (D : Formalism.BasicNotions.D7) (hR : LPRingIndep) (h61 : LatticeFunctorComparison) (hC : RestCloudMaps) : SecondPartClosed D := by
   intro hA
   have hT := tools_of_admitted_statements D hA
@@ -59,14 +77,23 @@ theorem theorem_I_of_finer_open_statements (D : Formalism.BasicNotions.D7) (hR :
   exact second_estimate_of_restrictions D hR (rho_sum_bound_of_maps_splitting (lattice_maps_of_functor_comparison h61) blockSplit') (cloud_bound_of_maps hC h13.2.2.1 h13.1 h16.2)
     (tensor_bound_of_order_bound restTensor restOrdBound h13.1 h13.2.1) hA
 
+/- English proof (translation)
+Introduce `hA`. Establish `h12 : NestedTypeBound D` using `(tools_of_admitted_statements D hA).2.2.2.2.2.2.2.1`. Conclude with `theorem_I_of_finer_open_statements D (lpRingIndep_of'' h12.1 restOIso) h61 hC hA`.
+-/
 theorem theorem_I_of_lattice_functor_comparison (D : Formalism.BasicNotions.D7) (h61 : LatticeFunctorComparison) (hC : RestCloudMaps) : SecondPartClosed D := by
   intro hA
   have h12 : NestedTypeBound D := (tools_of_admitted_statements D hA).2.2.2.2.2.2.2.1
   exact theorem_I_of_finer_open_statements D (lpRingIndep_of'' h12.1 restOIso) h61 hC hA
 
+/- English proof (translation)
+The claim follows from `theorem_I_of_lattice_functor_comparison D (functor_comparison_of_single_weight_facts (single_weight_of_model_identification hTie)) hC`.
+-/
 theorem theorem_I_of_model_identification (D : Formalism.BasicNotions.D7) (hTie : TwoLetterModelIdentification) (hC : RestCloudMaps) : SecondPartClosed D :=
   theorem_I_of_lattice_functor_comparison D (functor_comparison_of_single_weight_facts (single_weight_of_model_identification hTie)) hC
 
+/- English proof (translation)
+The claim follows from `theorem_I_of_model_identification D (model_identification_of_explicit_map hPsi) hC`.
+-/
 theorem theorem_I_of_explicit_minor_map (D : Formalism.BasicNotions.D7) (hPsi : TiePsi) (hC : RestCloudMaps) : SecondPartClosed D :=
   theorem_I_of_model_identification D (model_identification_of_explicit_map hPsi) hC
 

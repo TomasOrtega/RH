@@ -5,6 +5,29 @@ open scoped ComplexConjugate nonZeroDivisors ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X _ ν δ F hδm hδ hδi hF hdec`. Establish `key : ∀ t : ℝ, ∃ C : ℝ, ∀ᵐ x ∂ν, ‖F x‖ * δ x ^ t ≤ C * δ x`. Introduce `t`. Take `⟨K, hK⟩ : ∃ K : ℕ, 1 - t ≤ K` from `exists_nat_ge (1 - t)`. Take `⟨C, hC⟩` from `hdec K`.
+
+Use `⟨C, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hC, hδ] with x hx hx'`. Take `⟨h0, h1⟩` from `hx'`. Establish `hpK : 0 < δ x ^ K` using `pow_pos h0 K`. Establish `hC0 : 0 ≤ C`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `mul_neg_of_neg_of_pos hc hpK` as an intermediate fact. Combine the linear relations using `[norm_nonneg (F x)]`. Establish `hpt : 0 ≤ δ x ^ t` using `Real.rpow_nonneg h0.le t`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hcm : ∀ s : ℂ, Measurable fun x => (δ x : ℂ) ^ s` using `fun s => (Complex.measurable_ofReal.comp hδm).pow_const s`. Establish `hmeas : ∀ s : ℂ, AEStronglyMeasurable (fun x => F x * (δ x : ℂ) ^ s) ν` using `fun s => hF.mul (hcm s).aestronglyMeasurable`. Establish `hint : ∀ s : ℂ, Integrable (fun x => F x * (δ x : ℂ) ^ s) ν`. Introduce `s`.
+
+Take `⟨C, hC⟩` from `key s.re`. Use `Integrable.mono' (hδi.const_mul C) (hmeas s) ?_` and prove the remaining obligations. Use `filter_upwards [hC, hδ] with x hx hx'`. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hx'.1]`. Conclude with `hx`.
+
+Use `⟨hint, fun s₀ => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `key (s₀.re - 2)`. Establish `hF'm : AEStronglyMeasurable (fun x => F x * ((δ x : ℂ) ^ s₀ * Complex.log (δ x))) ν` using `hF.mul ((hcm s₀).mul (Complex.measurable_log.comp (Complex.measurable_ofReal.comp hδm))).aestronglyMeasurable`. Establish `hd` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := ν) (x₀ := s₀) (F := fun s x => F x * (δ x : ℂ) ^ s) (F' := fun s x => F x * ((δ x : ℂ) ^ s * Complex.log (δ x))) (bound := fun x => C * δ x) (Metric.ball_mem_nhds s₀ zero_lt_one) (Filter.Eventually.of_forall hmeas) (hint s₀) …`. Conclude with `hd.2.differentiableAt`.
+
+Use `filter_upwards [hC, hδ] with x hx hx'`. Take `⟨h0, h1⟩` from `hx'`. Introduce `s hs`. Rewrite `hs` using `[Metric.mem_ball, Complex.dist_eq]`. Establish `hre : s₀.re - 1 ≤ s.re`.
+
+Establish `h` using `Complex.abs_re_le_norm (s - s₀)`. Rewrite `h` using `[Complex.sub_re]`. Combine the linear relations using `[neg_abs_le (s.re - s₀.re)]`. Establish `hlog : ‖Complex.log (δ x)‖ = |Real.log (δ x)|`. Rewrite using `[← Complex.ofReal_log h0.le, Complex.norm_real, Real.norm_eq_abs]`.
+
+Establish `hl` using `Real.abs_log_mul_self_lt (δ x) h0 h1`. Rewrite `hl` using `[abs_mul, abs_of_pos h0]`. Establish `e1 : δ x ^ s.re ≤ δ x ^ (s₀.re - 1)` using `Real.rpow_le_rpow_of_exponent_ge h0 h1 hre`. Establish `e2 : δ x ^ (s₀.re - 1) = δ x ^ (s₀.re - 2) * δ x`. Rewrite using `[← Real.rpow_add_one h0.ne']`.
+
+Put the polynomial expressions in normal form. Establish `hp2 : 0 ≤ δ x ^ (s₀.re - 2)` using `Real.rpow_nonneg h0.le _`. Establish `e3 : δ x ^ s.re * |Real.log (δ x)| ≤ δ x ^ (s₀.re - 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos h0, hlog]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `filter_upwards [hδ] with x hx' s _`. Conclude with `((Complex.hasStrictDerivAt_const_cpow (x := (δ x : ℂ)) (y := s) (Or.inl (Complex.ofReal_ne_zero.mpr hx'.1.ne'))).hasDerivAt).const_mul (F x)`.
+-/
 theorem integral_mul_cpow_of_rapid_decay_entire :
     ∀ (X : Type) [MeasurableSpace X] (ν : Measure X) (δ : X → ℝ) (F : X → ℂ), Measurable δ →
       (∀ᵐ x ∂ν, 0 < δ x ∧ δ x ≤ 1) → Integrable δ ν → AEStronglyMeasurable F ν →

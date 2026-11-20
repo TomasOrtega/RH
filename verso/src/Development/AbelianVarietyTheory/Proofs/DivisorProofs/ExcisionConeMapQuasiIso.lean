@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.EtC.ExcisionQis
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Apply `mappingCone.ext_from _ (n + 1) n rfl` to reduce the goal to its premises. Simplify using `[mappingCone.map, mappingCone.descShortComplex, HomComplex.Cochain.zero_cochain_comp_v]`. Simplify using `[mappingCone.map, mappingCone.descShortComplex, hg]`.
+-/
 theorem map_descShortComplex {C : Type*} [Category C] [Abelian C] {K₁ K₂ L₁ L₂ M : CochainComplex C ℤ}
     (f' : K₁ ⟶ K₂) (g' : K₂ ⟶ M) (w' : f' ≫ g' = 0) (f : L₁ ⟶ L₂) (g : L₂ ⟶ M) (w : f ≫ g = 0)
     (a : K₁ ⟶ L₁) (b : K₂ ⟶ L₂) (comm : f' ≫ b = a ≫ f) (hg : g' = b ≫ g) :
@@ -21,6 +24,29 @@ theorem map_descShortComplex {C : Type*} [Category C] [Abelian C] {K₁ K₂ L�
   · simp [mappingCone.map, mappingCone.descShortComplex, HomComplex.Cochain.zero_cochain_comp_v]
   · simp [mappingCone.map, mappingCone.descShortComplex, hg]
 
+/- English proof (translation)
+Use `haveI : Mono (biprod.lift a (-u')) := hS.mono_f`. Use `haveI : Epi (biprod.desc u b) := hS.epi_g`. Set `T : ShortComplex C` to `ShortComplex.mk u (cokernel.π u) (cokernel.condition u)`. Establish `hT : T.ShortExact` using `ShortComplex.ShortExact.mk' (ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel u)) inferInstance inferInstance`. Establish `w' : u' ≫ b ≫ cokernel.π u = 0`.
+
+Rewrite using `[← Category.assoc, comm, Category.assoc, cokernel.condition, Limits.comp_zero]`. Set `T' : ShortComplex C` to `ShortComplex.mk u' (b ≫ cokernel.π u) w'`. Establish `hmono : Mono u'`. Use `Preadditive.mono_of_cancel_zero _ fun {Q} g hg => ?_` and prove the remaining obligations. Establish `hga : g ≫ a = 0`.
+
+Rewrite using `[← cancel_mono u, Category.assoc, ← comm, ← Category.assoc, hg, Limits.zero_comp, Limits.zero_comp]`. Establish `: g ≫ biprod.lift a (-u') = 0`. Apply the tactic sequence `apply biprod.hom_ext <;> simp [hga, hg]`. Rewrite using `[← cancel_mono (biprod.lift a (-u')), this, Limits.zero_comp]`. Establish `hepi : Epi (b ≫ cokernel.π u)`.
+
+Use `Preadditive.epi_of_cancel_zero _ fun {Q} h hh => ?_` and prove the remaining obligations. Establish `h1 : biprod.desc u b ≫ cokernel.π u ≫ h = 0`. Apply `biprod.hom_ext'` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `using hh`.
+
+Establish `h2 : cokernel.π u ≫ h = 0`. Rewrite using `[← cancel_epi (biprod.desc u b), h1, Limits.comp_zero]`. Rewrite using `[← cancel_epi (cokernel.π u), h2, Limits.comp_zero]`. Establish `hexact : T'.Exact`. Rewrite using `[ShortComplex.exact_iff_exact_up_to_refinements]`.
+
+Introduce `A₀ y hy`. Establish `hy' : (y ≫ b) ≫ T.g = 0` using `by simpa using hy`. Take `⟨A₁, e₁, he₁, z, hz⟩` from `(ShortComplex.exact_iff_exact_up_to_refinements T).1 hT.exact (y ≫ b) hy'`. Establish `hw : biprod.lift (-z) (e₁ ≫ y) ≫ (ShortComplex.mk _ _ w).g = 0`. Express the relevant statement in the definitionally equal form `biprod.lift (-z) (e₁ ≫ y) ≫ biprod.desc u b = 0`.
+
+Rewrite using `[biprod.lift_desc, Preadditive.neg_comp, Category.assoc, hz]`. Conclude with `neg_add_cancel _`. Take `⟨A₂, e₂, he₂, x, hx⟩` from `(ShortComplex.exact_iff_exact_up_to_refinements _).1 hS.exact _ hw`. Use `⟨A₂, e₂ ≫ e₁, inferInstance, -x, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (· ≫ biprod.snd) hx`.
+
+Simplify using `only [Category.assoc] at h2`. Rewrite `h2` using `[biprod.lift_snd, biprod.lift_snd]`. Use `show (e₂ ≫ e₁) ≫ y = (-x) ≫ u'`. Rewrite using `[Category.assoc, h2, Preadditive.neg_comp, Preadditive.comp_neg]`. Establish `hT' : T'.ShortExact` using `ShortComplex.ShortExact.mk' hexact hmono hepi`.
+
+Establish `z1 : (singleFunctor C 0).map u ≫ (singleFunctor C 0).map (cokernel.π u) = 0`. Rewrite using `[← Functor.map_comp, cokernel.condition, Functor.map_zero]`. Establish `z2 : (singleFunctor C 0).map u' ≫ (singleFunctor C 0).map (b ≫ cokernel.π u) = 0`. Rewrite using `[← Functor.map_comp, w', Functor.map_zero]`. Establish `c2 : (singleFunctor C 0).map u' ≫ (singleFunctor C 0).map b = (singleFunctor C 0).map a ≫ (singleFunctor C 0).map u`.
+
+Rewrite using `[← Functor.map_comp, ← Functor.map_comp, comm]`. Establish `hST : (ShortComplex.mk _ _ z1).ShortExact` using `hT.map_of_exact (HomologicalComplex.single C (ComplexShape.up ℤ) 0)`. Establish `hST' : (ShortComplex.mk _ _ z2).ShortExact` using `hT'.map_of_exact (HomologicalComplex.single C (ComplexShape.up ℤ) 0)`. Use `haveI := mappingCone.quasiIso_descShortComplex hST`. Use `haveI := mappingCone.quasiIso_descShortComplex hST'`.
+
+Establish `key` using `map_descShortComplex _ _ z2 _ _ z1 ((singleFunctor C 0).map a) ((singleFunctor C 0).map b) c2 (Functor.map_comp _ _ _)`. Use `haveI : QuasiIso (mappingCone.map _ _ _ _ c2 ≫ mappingCone.descShortComplex (ShortComplex.mk _ _ z1)) := by`. Rewrite using `[key]`. Conclude with `mappingCone.quasiIso_descShortComplex hST'`. Conclude with `quasiIso_of_comp_right _ (mappingCone.descShortComplex (ShortComplex.mk _ _ z1))`.
+-/
 theorem cone_single_qis {C : Type*} [Category C] [Abelian C] {F1 F2 F3 F4 : C} (u' : F1 ⟶ F2) (u : F3 ⟶ F4)
     (a : F1 ⟶ F3) (b : F2 ⟶ F4) (comm : u' ≫ b = a ≫ u) [Mono u] (w : biprod.lift a (-u') ≫ biprod.desc u b = 0)
     (hS : (ShortComplex.mk _ _ w).ShortExact) :
@@ -83,6 +109,13 @@ theorem cone_single_qis {C : Type*} [Category C] [Abelian C] {F1 F2 F3 F4 : C} (
     rw [key]; exact mappingCone.quasiIso_descShortComplex hST'
   exact quasiIso_of_comp_right _ (mappingCone.descShortComplex (ShortComplex.mk _ _ z1))
 
+/- English proof (translation)
+Use `haveI : IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f)))) := IsOpenImmersion.of_isLocalization f`. Establish `h1 : Mono (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f)))))` using `inferInstance`. Establish `h2 : Mono ((freeP R).map (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f))))))`. Establish `happ : ∀ U, Mono (((freeP R).map (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f)))))).app U)` using `fun U => by`. Establish `hinj : Function.Injective ((yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f))))).app U)` using `(mono_iff_injective _).1 inferInstance`.
+
+Rewrite using `[ModuleCat.mono_iff_injective]`. Express the relevant statement in the definitionally equal form `Function.Injective (Finsupp.mapDomain _)`. Conclude with `Finsupp.mapDomain_injective (fun x y hxy => ULift.ext _ _ (hinj (congrArg ULift.down hxy)))`. Conclude with `NatTrans.mono_of_mono_app _`. Express the relevant statement in the definitionally equal form `Mono ((presheafToSheaf _ _).map ((freeP R).map _))`.
+
+Use `infer_instance`.
+-/
 theorem mono_free_away (R : Type) [CommRing R] (A : Type) [CommRing A] (f : A) :
     Mono ((free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f)))))) := by
   haveI : IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f)))) :=
@@ -101,6 +134,13 @@ theorem mono_free_away (R : Type) [CommRing R] (A : Type) [CommRing A] (f : A) :
   change Mono ((presheafToSheaf _ _).map ((freeP R).map _))
   infer_instance
 
+/- English proof (translation)
+Use `haveI := q₁`. Use `haveI := q₂`. Use `haveI := q₃`. Use `haveI := q₄`. Establish `key : mappingCone.map φ' ψ' e₁ e₂ h₁₂ ≫ mappingCone.map ψ' ψ α' β' c₁ = mappingCone.map φ' φ α β c₀ ≫ mappingCone.map φ ψ e₃ e₄ h₃₄`.
+
+Rewrite using `[← mappingCone.map_comp, ← mappingCone.map_comp]`. Use `congr 1`. Conclude with `h₁₃.symm`. Conclude with `h₂₄.symm`. Use `haveI := GlobalTheory.EtC.ConeRes.quasiIso_mappingCone_map φ' ψ' e₁ e₂ h₁₂`.
+
+Use `haveI := GlobalTheory.EtC.ConeRes.quasiIso_mappingCone_map φ ψ e₃ e₄ h₃₄`. Use `haveI : QuasiIso (mappingCone.map φ' ψ' e₁ e₂ h₁₂ ≫ mappingCone.map ψ' ψ α' β' c₁) := by`. Rewrite using `[key]`. Use `infer_instance`. Conclude with `quasiIso_of_comp_left (mappingCone.map φ' ψ' e₁ e₂ h₁₂) _`.
+-/
 theorem quasiIso_map_of_corners {C : Type*} [Category C] [Abelian C] {K₁ K₂ K₃ K₄ L₁ L₂ L₃ L₄ : CochainComplex C ℤ}
     (φ' : K₁ ⟶ K₂) (φ : K₃ ⟶ K₄) (α : K₁ ⟶ K₃) (β : K₂ ⟶ K₄) (c₀ : φ' ≫ β = α ≫ φ)
     (ψ' : L₁ ⟶ L₂) (ψ : L₃ ⟶ L₄) (α' : L₁ ⟶ L₃) (β' : L₂ ⟶ L₄) (c₁ : ψ' ≫ β' = α' ≫ ψ)
@@ -121,6 +161,13 @@ theorem quasiIso_map_of_corners {C : Type*} [Category C] [Abelian C] {K₁ K₂ 
     rw [key]; infer_instance
   exact quasiIso_of_comp_left (mappingCone.map φ' ψ' e₁ e₂ h₁₂) _
 
+/- English proof (translation)
+Introduce `R _ A A' _ _ _ f h`. Take `⟨e, -, he⟩` from `chains_disc_homotopyEquiv R`. Use `haveI : Algebra.Etale A A' := h.1`. Establish `comm : (free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A' (Localization.Away (algebraMap A A' f)))))) ≫ (free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A A')))) = (free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (Localization.awayMap (alge …`. Simplify using `only [← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, awayMap_comp_algebraMap]`.
+
+Establish `w : biprod.lift ((free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (Localization.awayMap (algebraMap A A') f))))) (-(free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A' (Localization.Away (algebraMap A A' f))))))) ≫ biprod.desc ((free R).map (yoneda.map (Spec. …`. Rewrite using `[biprod.lift_desc, Preadditive.neg_comp, ← comm, add_neg_cancel]`. Establish `hS` using `GlobalTheory.T.freeEtaleSheaf_excision_shortExact R A A' f ⟨h.2.1, h.2.2⟩ w`. Use `haveI := mono_free_away R A f`. Use `haveI := cone_single_qis _ _ _ _ comm w hS`.
+
+Conclude with `quasiIso_map_of_corners _ _ _ _ _ _ _ _ _ _ _ _ _ _ (e _).quasiIso_hom (e _).quasiIso_hom (e _).quasiIso_hom (e _).quasiIso_hom (he _).symm (he _).symm (he _).symm (he _).symm`.
+-/
 theorem _root_.GlobalTheory.EtC.excisionConeMap_quasiIso : ∀ (R : Type) [CommRing R] (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] (f : A), IsExcisionNbhd A A' f → QuasiIso (excisionConeMap R A A' f) := by
   intro R _ A A' _ _ _ f h
   obtain ⟨e, -, he⟩ := chains_disc_homotopyEquiv R

@@ -17,6 +17,13 @@ section Shift
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Unfold `smallSectionCount`. Establish `: Finite {s : chartLat y A.a (m + d) // IsSmallH (mCoordIdeal y) y A (m + d) (s : Ω)}` using `hfin.to_subtype`. Establish `hmap : ∀ s : {s : chartLat y A.a m // IsSmallH (mCoordIdeal y) y A m (s : Ω)}, (s.1 : Ω) * t ∈ chartLat y A.a (m + d) ∧ IsSmallH (mCoordIdeal y) y A (m + d) ((s.1 : Ω) * t)`. Introduce `s`. Use `⟨chartLat_mul s.1.2 ht, fun dg dh g h z hg hh hdeg he hz => ?_⟩` and prove the remaining obligations.
+
+Use `SectionBoundedMul.proof K ι Ω y A m d 1 1 _ t s.1.2 ht (isBoundedH_one_of_isSmallH s.2) (isBoundedH_one_of_isSmallH hts) dg dh g h z hg hh hdeg he hz` as an intermediate fact. Simplify `this` using `only [one_mul]`. Establish `hcard : Nat.card {s : chartLat y A.a m // IsSmallH (mCoordIdeal y) y A m (s : Ω)} ≤ Nat.card {s : chartLat y A.a (m + d) // IsSmallH (mCoordIdeal y) y A (m + d) (s : Ω)}` using `Nat.card_le_card_of_injective (fun s => ⟨⟨(s.1 : Ω) * t, (hmap s).1⟩, (hmap s).2⟩) fun s s' h => by`. Simplify using `only [Subtype.mk.injEq] at h`. Conclude with `Subtype.ext (Subtype.ext (mul_right_cancel₀ ht0 h))`.
+
+Break down `Nat.eq_zero_or_pos (Nat.card {s : chartLat y A.a m // IsSmallH (mCoordIdeal y) y A m (s : Ω)}) with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hcard)`.
+-/
 theorem smallSectionCount_le_shift {y : (Σ k, ι k) → Ω} {A : HermLine ι} {m d : ℕ} {t : Ω}
     (ht : t ∈ chartLat y A.a d) (ht0 : t ≠ 0) (hts : IsSmallH (mCoordIdeal y) y A d t)
     (hfin : {s : chartLat y A.a (m + d) | IsSmallH (mCoordIdeal y) y A (m + d) (s : Ω)}.Finite) :
@@ -45,6 +52,11 @@ theorem smallSectionCount_le_shift {y : (Σ k, ι k) → Ω} {A : HermLine ι} {
 
 end Shift
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun n : ℕ => (1 - (L : ℝ) / n) ^ (D + 1)) atTop (𝓝 1)`. Simplify using `using ((tendsto_const_div_atTop_nhds_zero_nat (L : ℝ)).const_sub 1).pow (D + 1)`. Use `filter_upwards [h1.eventually (lt_mem_nhds ((div_lt_one hc).2 hbc)), eventually_ge_atTop 1] with n hn hn1`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn1`. Establish `e : (n : ℝ) - L = n * (1 - L / n)` using `by field_simp`.
+
+Establish `hp : 0 < (n : ℝ) ^ (D + 1)` using `by positivity`. Rewrite using `[e, mul_pow]`. Use `(div_lt_iff₀ hc).1 hn` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem eventually_mul_pow_le_shift (D L : ℕ) {b c : ℝ} (hc : 0 < c) (hbc : b < c) :
     ∀ᶠ n : ℕ in atTop, b * (n : ℝ) ^ (D + 1) ≤ c * ((n : ℝ) - L) ^ (D + 1) := by
   have h1 : Tendsto (fun n : ℕ => (1 - (L : ℝ) / n) ^ (D + 1)) atTop (𝓝 1) := by
@@ -57,6 +69,17 @@ theorem eventually_mul_pow_le_shift (D L : ℕ) {b c : ℝ} (hc : 0 < c) (hbc : 
   have := (div_lt_iff₀ hc).1 hn
   nlinarith
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D A P0 II hII har hb hP0 hs hc hnef hgen hht ε hε`. Use `set T := II K ι (mCoordIdeal y) (D + 1) (fun _ => A)`. Establish `hfac : (0 : ℝ) < ((D + 1).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Distinguish the cases in `hT : T - ε ≤ 0`. Conclude with `Eventually.of_forall fun n => (mul_nonpos_of_nonpos_of_nonneg hT (by positivity)).trans (Real.log_natCast_nonneg _)`.
+
+Rewrite `hT` using `[not_le]`. Take `⟨a, ha, hak⟩` from `hM K ι Ω y D A P0 II hII har hb hP0 hs hc hnef hgen hht (ε / 2) (by linarith)`. Take `⟨k₀, hk₀⟩` from `eventually_atTop.1 hak`. Take `⟨n₀, hn₀⟩` from `eventually_atTop.1 (hS K ι Ω y D A P0 II hII har hb hP0 hs hc hnef hgen hht (by linarith))`. Establish `hfin` using `(hPk K ι Ω y D A (chartLat y A.a) har hb hs.1 (fun τ _ hs' c hc' => isIntegral_algebraMap (x := (⟨_, hs' c hc'⟩ : chartRingZ y c)))).1`.
+
+Use `filter_upwards [eventually_mul_pow_le_shift D (n₀ + a) (b := T - ε) (c := T - ε / 2) (by linarith) (by linarith), eventually_ge_atTop (n₀ + a + a * k₀)] with n hn hge`. Take `⟨k, r, hr, hnk⟩ : ∃ k r, r < a ∧ n = a * k + (n₀ + r)` from `⟨(n - n₀) / a, (n - n₀) % a, Nat.mod_lt _ ha, by have := Nat.div_add_mod (n - n₀) a; omega⟩`. Establish `hkk : k₀ ≤ k`. Assume the negation of the conclusion as `hlt`. Establish `: a * k + a ≤ a * k₀` using `by nlinarith`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨t, ht, ht0, hts⟩` from `hn₀ (n₀ + r) (by omega)`. Establish `hL : (n : ℝ) - ((n₀ + a : ℕ) : ℝ) ≤ ((a * k : ℕ) : ℝ)`. Establish `: (n : ℝ) ≤ ((a * k : ℕ) : ℝ) + ((n₀ + a : ℕ) : ℝ)` using `by exact_mod_cast (by omega : n ≤ a * k + (n₀ + a))`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hL0 : (0 : ℝ) ≤ (n : ℝ) - ((n₀ + a : ℕ) : ℝ)`. Establish `: ((n₀ + a : ℕ) : ℝ) ≤ n` using `by exact_mod_cast (by omega : n₀ + a ≤ n)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow` using `pow_le_pow_left₀ hL0 hL (D + 1)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem NefCountLower.proof (hM : NefCountAlongMultiples.Statement) (hS : NefSmallSectionEventually.Statement)
     (hPk : PackingStatement) : NefCountLower.Statement := by
   intro K _ ι _ Ω _ y D A P0 II hII har hb hP0 hs hc hnef hgen hht ε hε

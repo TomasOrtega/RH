@@ -6,6 +6,9 @@ open GlobalTheory.ConvSer
 namespace GlobalTheory.ConvSer
 
 variable {K : Type} [NormedField K] in
+/- English proof (translation)
+The claim follows from `Summable.of_norm_bounded (summable_geometric_of_lt_one (norm_nonneg y) hy) fun n => by rw [norm_mul, norm_pow] exact mul_le_of_le_one_left (by positivity) (hc n)`.
+-/
 private lemma summable_coeff_mul_pow [CompleteSpace K] (c : ℕ → K) (hc : ∀ n, ‖c n‖ ≤ 1) (y : K)
     (hy : ‖y‖ < 1) : Summable (fun n => c n * y ^ n) :=
   Summable.of_norm_bounded (summable_geometric_of_lt_one (norm_nonneg y) hy) fun n => by
@@ -13,6 +16,15 @@ private lemma summable_coeff_mul_pow [CompleteSpace K] (c : ℕ → K) (hc : ∀
     exact mul_le_of_le_one_left (by positivity) (hc n)
 
 variable {K : Type} [NormedField K] in
+/- English proof (translation)
+Use `⟨fun k => ∑' m, c (m + k + 1) * x ^ m, fun k => ?_, ?_, fun n => ?_⟩` and prove the remaining obligations. Use `IsUltrametricDist.norm_tsum_le_of_forall_le fun m => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (hc _) (by positivity) (pow_le_one₀ (norm_nonneg x) hx.le)`. Establish `hs` using `summable_coeff_mul_pow c hc x hx`.
+
+Rewrite `h0` using `[hs.tsum_eq_zero_add]`. Establish `: ∑' m, c (m + 1) * x ^ (m + 1) = x * ∑' m, c (m + 0 + 1) * x ^ m`. Rewrite using `[← tsum_mul_left]`. Conclude with `tsum_congr fun m => by rw [add_zero, pow_succ]; ring`. Rewrite `h0` using `[this, pow_zero, mul_one]`.
+
+Take the linear combination `h0`. Establish `hs : Summable (fun m => c (m + n + 1) * x ^ m)` using `summable_coeff_mul_pow (fun m => c (m + n + 1)) (fun m => hc _) x hx show c (n + 1) = ∑' m, c (m + n + 1) * x ^ m - x * ∑' m, c (m + (n + 1) + 1) * x ^ m`. Rewrite using `[hs.tsum_eq_zero_add, ← tsum_mul_left]`. Establish `: ∑' m, c (m + 1 + n + 1) * x ^ (m + 1) = ∑' m, x * (c (m + (n + 1) + 1) * x ^ m)` using `tsum_congr fun m => by`. Rewrite using `[show m + 1 + n + 1 = m + (n + 1) + 1 by omega, pow_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, pow_zero, mul_one, zero_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma exists_quotient_by_linear_of_zero [IsUltrametricDist K] [CompleteSpace K] (c : ℕ → K)
     (hc : ∀ n, ‖c n‖ ≤ 1) (x : K) (hx : ‖x‖ < 1) (h0 : ∑' n, c n * x ^ n = 0) :
     ∃ d : ℕ → K, (∀ n, ‖d n‖ ≤ 1) ∧ c 0 = -(x * d 0) ∧ ∀ n, c (n + 1) = d n - x * d (n + 1) := by
@@ -39,6 +51,13 @@ private lemma exists_quotient_by_linear_of_zero [IsUltrametricDist K] [CompleteS
     ring
 
 variable {K : Type} [NormedField K] in
+/- English proof (translation)
+Establish `hsc` using `summable_coeff_mul_pow c hc y hy`. Establish `hsd` using `summable_coeff_mul_pow d hd y hy`. Establish `e1 : ∑' n, c n * y ^ n = c 0 + ∑' n, c (n + 1) * y ^ (n + 1)`. Simplify using `using hsc.tsum_eq_zero_add`. Establish `e2 : ∑' n, d n * y ^ n = d 0 + ∑' n, d (n + 1) * y ^ (n + 1)`.
+
+Simplify using `using hsd.tsum_eq_zero_add`. Establish `hA : Summable (fun n => y * (d n * y ^ n))` using `hsd.mul_left y`. Establish `hB : Summable (fun n => x * (d (n + 1) * y ^ (n + 1)))` using `((summable_nat_add_iff 1).mpr hsd).mul_left x`. Establish `e3 : ∑' n, c (n + 1) * y ^ (n + 1) = y * ∑' n, d n * y ^ n - x * ∑' n, d (n + 1) * y ^ (n + 1)`. Rewrite using `[← tsum_mul_left, ← tsum_mul_left, ← hA.tsum_sub hB]`.
+
+Conclude with `tsum_congr fun n => by rw [hrel n, pow_succ]; ring`. Rewrite using `[e1, e3, h0]`. Take the linear combination `x * e2`.
+-/
 private lemma tsum_eq_sub_mul_tsum [CompleteSpace K] (c d : ℕ → K) (hd : ∀ n, ‖d n‖ ≤ 1) (x : K)
     (hc : ∀ n, ‖c n‖ ≤ 1) (h0 : c 0 = -(x * d 0)) (hrel : ∀ n, c (n + 1) = d n - x * d (n + 1))
     (y : K) (hy : ‖y‖ < 1) :
@@ -60,6 +79,31 @@ private lemma tsum_eq_sub_mul_tsum [CompleteSpace K] (c d : ℕ → K) (hd : ∀
   linear_combination x * e2
 
 variable {K : Type} [NormedField K] in
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `c hc _`. Use `⟨fun r hr0 hr1 _ k => ?_, fun h1 _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_empty]`.
+
+Conclude with `mul_le_one₀ (hc k) (by positivity) (pow_le_one₀ hr0.le hr1)`. Simplify using `using h1.symm`. Consider the case `insert x S hxS ih`. Introduce `c hc hz`. Take `⟨hx, hx0⟩` from `hz x (Finset.mem_insert_self x S)`.
+
+Take `⟨d, hd, h0, hrel⟩` from `exists_quotient_by_linear_of_zero c hc x hx hx0`. Establish `hzd : ∀ y ∈ S, ‖y‖ < 1 ∧ ∑' n, d n * y ^ n = 0`. Introduce `y hy`. Take `⟨hy1, hy0⟩` from `hz y (Finset.mem_insert_of_mem hy)`. Use `⟨hy1, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hy0` using `[tsum_eq_sub_mul_tsum c d hd x hc h0 hrel y hy1]`. Establish `hne : y - x ≠ 0` using `sub_ne_zero.mpr fun h => hxS (h ▸ hy)`. Conclude with `(mul_eq_zero.mp hy0).resolve_left hne`. Take `⟨ih1, ih2⟩` from `ih d hd hzd`. Establish `hP : 0 ≤ ∏ y ∈ S, ‖y‖` using `Finset.prod_nonneg fun _ _ => norm_nonneg _`.
+
+Use `⟨fun r hr0 hr1 hrS k => ?_, fun h1 hlt => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert hxS]`. Establish `hrx : r ≤ ‖x‖` using `hrS x (Finset.mem_insert_self x S)`. Establish `hrS' : ∀ y ∈ S, r ≤ ‖y‖` using `fun y hy => hrS y (Finset.mem_insert_of_mem hy)`. Establish `hb` using `ih1 r hr0 hr1 hrS'`.
+
+Consider the cases of `k with`. Consider the case `zero`. Rewrite using `[h0, norm_neg, norm_mul, pow_zero, mul_one]`. Use `hb 0` as an intermediate fact. Rewrite `this` using `[pow_zero, mul_one]`.
+
+Conclude with `mul_le_mul_of_nonneg_left this (norm_nonneg x)`. Consider the case `succ n`. Establish `hm : ‖c (n + 1)‖ ≤ max ‖d n‖ (‖x‖ * ‖d (n + 1)‖)`. Rewrite using `[hrel n, sub_eq_add_neg]`. Simplify `IsUltrametricDist.norm_add_le_max (d n) (-(x * d (n + 1)))` using `[norm_mul]`.
+
+Establish `e1 : ‖d n‖ * r ^ (n + 1) ≤ ‖x‖ * ∏ y ∈ S, ‖y‖`. Rewrite using `[pow_succ, ← mul_assoc, mul_comm ‖x‖]`. Conclude with `mul_le_mul (hb n) hrx hr0.le hP`. Establish `e2 : ‖x‖ * ‖d (n + 1)‖ * r ^ (n + 1) ≤ ‖x‖ * ∏ y ∈ S, ‖y‖`. Rewrite using `[mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hb (n + 1)) (norm_nonneg x)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1`, `hlt` using `[Finset.card_insert_of_notMem hxS]`. Establish `hsmall : ∀ k, ‖x * d k‖ < 1` using `fun k => by`. Rewrite using `[norm_mul]`.
+
+Conclude with `(mul_le_of_le_one_right (norm_nonneg x) (hd k)).trans_lt hx`. Establish `hdk : ∀ k, d k = c (k + 1) + x * d (k + 1)` using `fun k => by rw [hrel k]; ring`. Establish `hd1 : ‖d S.card‖ = 1`. Rewrite using `[hdk, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm, h1]`. Conclude with `max_eq_left (hsmall _).le`.
+
+Rewrite using `[h1]`. Conclude with `(hsmall _).ne'`. Establish `hdlt : ∀ k < S.card, ‖d k‖ < 1` using `fun k hk => by`. Rewrite using `[hdk]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hlt (k + 1) (by omega)) (hsmall _))`.
+
+Rewrite using `[Finset.prod_insert hxS, ih2 hd1 hdlt, h0, norm_neg, norm_mul]`.
+-/
 private lemma coeff_bounds_of_zeros [IsUltrametricDist K] [CompleteSpace K] (S : Finset K) :
     ∀ c : ℕ → K, (∀ n, ‖c n‖ ≤ 1) → (∀ x ∈ S, ‖x‖ < 1 ∧ ∑' n, c n * x ^ n = 0) →
       (∀ r : ℝ, 0 < r → r ≤ 1 → (∀ x ∈ S, r ≤ ‖x‖) → ∀ k, ‖c k‖ * r ^ k ≤ ∏ x ∈ S, ‖x‖) ∧
@@ -128,6 +172,9 @@ private lemma coeff_bounds_of_zeros [IsUltrametricDist K] [CompleteSpace K] (S :
           (max_lt (hlt (k + 1) (by omega)) (hsmall _))
       rw [Finset.prod_insert hxS, ih2 hd1 hdlt, h0, norm_neg, norm_mul]
 
+/- English proof (translation)
+Introduce `K _ _ _ h S hI hS`. Conclude with `coeff_bounds_of_zeros S (fun n => PowerSeries.coeff n h) (fun n => hI (Finsupp.single () n)) hS`.
+-/
 theorem _root_.GlobalTheory.ConvSer.norm_coeff_le_prod_zeros : ∀ (K : Type) [NormedField K]
     [IsUltrametricDist K] [CompleteSpace K] (h : PowerSeries K) (S : Finset K),
     _root_.GlobalTheory.ConvSer.Intg h → (∀ x ∈ S, ‖x‖ < 1 ∧ _root_.GlobalTheory.ConvSer.ev1 h x = 0) →

@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SplitUnipFrame.mulVec_sub_mem_span | exact GlobalTheory.SplitUnipFrame.mulVec_sub_mem_span | (intros; apply GlobalTheory.SplitUnipFrame.mulVec_sub_mem_span <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isotropic_columns_local_GL_extension : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)
     (X : Matrix (Fin n) (Fin r) E), Formalism.UG.cT (σ : E →+* E) X * J * X = 0 → r ≤ n →
     ∀ (v : HeightOneSpectrum (𝓞 F)) (t : E →ₐ[F] Fv F v) (hcm : IsCMExt F E σ) (B : GL (Fin n) (Fv F v)),

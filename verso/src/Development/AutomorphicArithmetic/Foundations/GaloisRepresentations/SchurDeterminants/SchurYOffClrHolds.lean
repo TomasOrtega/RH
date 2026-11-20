@@ -33,22 +33,67 @@ open Finset
 
 namespace UpperTheory.Gal.Schur
 
+/- English proof (translation)
+The claim follows from `(schurYClr_of tie mixDet).1`.
+-/
 theorem SchurYClr_holds : SchurYClr := (schurYClr_of tie mixDet).1
+/- English proof (translation)
+The claim follows from `(schurYClr_of tie mixDet).2`.
+-/
 theorem SchurYOffClr_holds : SchurYOffClr := (schurYClr_of tie mixDet).2
+/- English proof (translation)
+The claim follows from `vdmSplit_of pairSplit`.
+-/
 theorem VdmSplit_holds : VdmSplit := vdmSplit_of pairSplit
+/- English proof (translation)
+The claim follows from `schurY_of SchurYClr_holds VdmSplit_holds`.
+-/
 theorem SchurY_holds : SchurY := schurY_of SchurYClr_holds VdmSplit_holds
+/- English proof (translation)
+The claim follows from `schurYOff_of (offClrRed_of (offClrPow_of SchurYOffClr_holds VdmSplit_holds (pairCount_of pairSplit))) VdmSplit_holds`.
+-/
 theorem SchurYOff_holds : SchurYOff :=
   schurYOff_of (offClrRed_of (offClrPow_of SchurYOffClr_holds VdmSplit_holds (pairCount_of pairSplit)))
     VdmSplit_holds
+/- English proof (translation)
+The claim follows from `schurHomog`.
+-/
 theorem SchurHomog_holds : SchurHomog := schurHomog
+/- English proof (translation)
+The claim follows from `schurDet_of tie`.
+-/
 theorem SchurDet_holds : SchurDet := schurDet_of tie
+/- English proof (translation)
+The claim follows from `weylTie_of tie`.
+-/
 theorem WeylTie_holds : WeylTie := weylTie_of tie
+/- English proof (translation)
+The claim follows from `spanE_of eSpanMul`.
+-/
 theorem SpanE_holds : SpanE := spanE_of eSpanMul
+/- English proof (translation)
+The claim follows from `denseCoset_of denseSub spanTop denseOff`.
+-/
 theorem DenseCoset_holds : DenseCoset := denseCoset_of denseSub spanTop denseOff
+/- English proof (translation)
+The claim follows from `interp_of (spanProd_of SpanE_holds) expand extract DenseCoset_holds`.
+-/
 theorem Interp_holds : Interp := interp_of (spanProd_of SpanE_holds) expand extract DenseCoset_holds
+/- English proof (translation)
+The claim follows from `interpNF_of Interp_holds`.
+-/
 theorem InterpNF_holds : InterpNF := interpNF_of Interp_holds
+/- English proof (translation)
+The claim follows from `fibre_of SchurY_holds schurHomog SchurDet_holds`.
+-/
 theorem Fibre_holds : Fibre := fibre_of SchurY_holds schurHomog SchurDet_holds
+/- English proof (translation)
+The claim follows from `fibreOff_of SchurYOff_holds schurHomog SchurDet_holds`.
+-/
 theorem FibreOff_holds : FibreOff := fibreOff_of SchurYOff_holds schurHomog SchurDet_holds
+/- English proof (translation)
+The claim follows from `fibreSum_of InterpNF_holds Fibre_holds FibreOff_holds`.
+-/
 theorem FibreSum_holds : FibreSum := fibreSum_of InterpNF_holds Fibre_holds FibreOff_holds
 
 end UpperTheory.Gal.Schur

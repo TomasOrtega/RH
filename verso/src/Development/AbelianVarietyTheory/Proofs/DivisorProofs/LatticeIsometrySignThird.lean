@@ -33,11 +33,23 @@ section Classical
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : Data E r}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [heisG, heisS, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem heisG_smul (y : Matrix (Fin n) (Fin r) E) (c : ℂ) (φ : TF n g) :
     heisG X bas y (c • φ) = c • heisG X bas y φ := by
   funext x
   simp only [heisG, heisS, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Establish `h0 : ∀ y : Matrix (Fin n) (Fin r) E, heisG X bas y (0 : TF n g) = 0` using `fun y => by`. Use `heisG_smul (X := X) (bas := bas) y 0 (0 : TF n g)` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+
+Rewrite using `[zero_smul, zero_smul, projA, finsum_mem_eq_zero_of_forall_eq_zero, smul_zero]`. Introduce and unpack `_ ⟨y, -, rfl⟩`. Simplify using `only [h0, smul_zero]`. Establish `hi : Function.Injective fun ψ : TF n g => a • ψ` using `smul_right_injective _ ha`. Establish `e : (fun y => epsW X w y • heisG X bas y (a • φ)) '' A = (fun ψ : TF n g => a • ψ) '' ((fun y => epsW X w y • heisG X bas y φ) '' A)`.
+
+Rewrite using `[Set.image_image]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[heisG_smul, smul_comm]`. Unfold `projA`.
+
+Rewrite using `[e, Set.ncard_image_of_injective _ hi, finsum_mem_image hi.injOn, smul_comm a]`. Use `congr 1`. Rewrite using `[smul_finsum]`. Simplify using `only [smul_finsum]`.
+-/
 theorem projA_smul (w : E) (A : AddSubgroup (Matrix (Fin n) (Fin r) E)) (a : ℂ) (φ : TF n g) :
     projA X bas w A (a • φ) = a • projA X bas w A φ := by
   by_cases ha : a = 0
@@ -61,6 +73,13 @@ theorem projA_smul (w : E) (A : AddSubgroup (Matrix (Fin n) (Fin r) E)) (a : ℂ
   rw [smul_finsum]
   simp only [smul_finsum]
 
+/- English proof (translation)
+Establish `key : ∀ (a : ℂ) (ψ : TF n g), GlobalTheory.SW.IsSB ψ → thP X hq bas idx (a • ψ) P x = a * thP X hq bas idx ψ P x`. Introduce `a ψ hψ`. Use `(theta_bilinear_heisenberg E r g n X bas idx hs hn q0 hq x hx ψ hψ P).1 ψ hψ a 0` as an intermediate fact. Rewrite `this` using `[zero_smul, add_zero, zero_mul, add_zero]`. Then use the resulting hypothesis. Distinguish the cases in `hc : c = 0`.
+
+Use `key 0 _ h` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Rewrite using `[hc, zero_smul, this, zero_mul, zero_mul]`. Use `key c φ ?_` and prove the remaining obligations. Use `(isSB_algebra_haar_linear ℚ _ _ _ _ h h).2.1 c⁻¹` as an intermediate fact.
+
+Rewrite `this` using `[inv_smul_smul₀ hc]`. Then use the resulting hypothesis.
+-/
 theorem theta_smul₂ (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even n) {q0 : ℕ} (hq : X.p0 + q0 = r)
     {x : Frame X.Ψ r} (hx : x ∈ X.dom) (c : ℂ) (φ : TF n g) (h : GlobalTheory.SW.IsSB (c • φ))
     (P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) : thP X hq bas idx (c • φ) P x = c * thP X hq bas idx φ P x := by
@@ -76,6 +95,11 @@ theorem theta_smul₂ (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn :
     have := (isSB_algebra_haar_linear ℚ _ _ _ _ h h).2.1 c⁻¹
     rwa [inv_smul_smul₀ hc] at this
 
+/- English proof (translation)
+Establish `hM : l.Mb ≠ ⊥`. Introduce `h`. Establish `h₁` using `l.prod`. Rewrite `h₁` using `[h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Establish `h₂ : l.M = 0` using `by exact_mod_cast h₁`.
+
+Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `l.Mb.finiteQuotientOfFreeOfNeBot hM` as an intermediate fact. Use `Dw.fin` as an intermediate fact. Conclude with `Submodule.finite_quotient_smul l.Mb (N := (⊤ : Submodule (𝓞 E) Dw.La)) Module.Finite.fg_top`.
+-/
 theorem finite_levQ {H : Geo.Tor.Host E} (Dw : Datum H) (l : Geo.Tor.Level H) : Finite (LevQ Dw l) := by
   have hM : l.Mb ≠ ⊥ := by
     intro h
@@ -88,6 +112,9 @@ theorem finite_levQ {H : Geo.Tor.Host E} (Dw : Datum H) (l : Geo.Tor.Level H) : 
   have := Dw.fin
   exact Submodule.finite_quotient_smul l.Mb (N := (⊤ : Submodule (𝓞 E) Dw.La)) Module.Finite.fg_top
 
+/- English proof (translation)
+Rewrite using `[cc, ← H.bar_eq]`. Conclude with `congrArg (fun t : 𝓞 E => (t : E)) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)` after adjusting the coercions.
+-/
 theorem cmHost_idempotent_trace_eq_one (H : Geo.Tor.Host E) : (H.w0 : E) + cc (H.w0 : E) = 1 := by
   rw [cc, ← H.bar_eq]
   exact_mod_cast congrArg (fun t : 𝓞 E => (t : E)) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)
@@ -96,6 +123,11 @@ end Classical
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D} {r g : ℕ}
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Introduce `ρ τ hτ`. Establish `h` using `hs ρ τ hτ`. Establish `e : mat (frMove θ W rfl X k x) τ = compAt θ ρ (Formalism.L2.Theta.mt W k) * mat x τ`. Rewrite using `[← RealCoord.realM_tauE, ← hτ]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `s ρ * mat x τ = _ at h`. Express the relevant statement in the definitionally equal form `(compAt θ ρ (Formalism.L2.Theta.mt W k) * s ρ * compAt θ ρ (Formalism.L2.Theta.mt W k⁻¹)) * _ = _`. Rewrite using `[e, Matrix.mul_assoc, ← Matrix.mul_assoc (compAt θ ρ (Formalism.L2.Theta.mt W k⁻¹)), GlobalTheory.WeilVacMove.compAt_mt_inv_mul, Matrix.one_mul, Matrix.mul_assoc, h, Matrix.mul_neg, Matrix.mul_assoc]`.
+-/
 theorem isInvOf_move (hr : W.rank = r) (X : Data D.host.E r) {x : Frame X.Ψ r}
     {s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ} (hs : IsInvOf W hr X x s) (k : GA D W) :
     IsInvOf W hr X (frMove θ W hr X k x)
@@ -111,6 +143,11 @@ theorem isInvOf_move (hr : W.rank = r) (X : Data D.host.E r) {x : Frame X.Ψ r}
   rw [e, Matrix.mul_assoc, ← Matrix.mul_assoc (compAt θ ρ (Formalism.L2.Theta.mt W k⁻¹)),
     GlobalTheory.WeilVacMove.compAt_mt_inv_mul, Matrix.one_mul, Matrix.mul_assoc, h, Matrix.mul_neg, Matrix.mul_assoc]
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Introduce `ρ τ hτ j i a hi`. Establish `e : mat (frMove θ W rfl X k x) τ = compAt θ ρ (Formalism.L2.Theta.mt W k) * mat x τ`. Rewrite using `[← RealCoord.realM_tauE, ← hτ]`. Both sides reduce to the same expression.
+
+Use `Eq.trans ?_ (congrFun (congrFun e a) (rowIdx hq j)).symm` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => congrArg _ (hB ρ τ hτ j i b hi)`.
+-/
 theorem isBasOf_move (hr : W.rank = r) (X : Data D.host.E r) {q0 : ℕ} (hq : X.p0 + q0 = r) {x : Frame X.Ψ r}
     {B : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ} (hB : IsBasOf W hr X hq x B) (k : GA D W) :
     IsBasOf W hr X hq (frMove θ W hr X k x) fun τ => compAt θ τ (Formalism.L2.Theta.mt W k) * B τ := by
@@ -123,6 +160,9 @@ theorem isBasOf_move (hr : W.rank = r) (X : Data D.host.E r) {q0 : ℕ} (hq : X.
   simp only [Matrix.mul_apply]
   exact Finset.sum_congr rfl fun b _ => congrArg _ (hB ρ τ hτ j i b hi)
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨X', m, hq', hq, bas', idx', hs, -, -, -, -, -, -, hfr⟩` from `GlobalTheory.T.orthonormal_frame_reading_eq_conjugate_datum_theta D ψ θ V W g X bas idx hψ hθ he hV hM hS`. Take `⟨⟨B, hB⟩, hBx⟩` from `hfr x hx`. Take `⟨-, -, -, -, -, -, -, hmv, -⟩` from `hBx B hB`. Conclude with `(hmv k).1`.
+-/
 theorem isONFr_move (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hV : V.gram = 1) (he : Even V.rank) (hr : W.rank = r)
     (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (hM : IsMod W hr X)
     (hS : IsSympl X bas) {x : Frame X.Ψ r} (hx : IsONFr X x) (k : GA D W) : IsONFr X (frMove θ W hr X k x) := by
@@ -133,6 +173,13 @@ theorem isONFr_move (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hV : V.gram
   obtain ⟨-, -, -, -, -, -, -, hmv, -⟩ := hBx B hB
   exact (hmv k).1
 
+/- English proof (translation)
+Establish `hlin` using `reads_linear_injective D ψ θ V W r g hr X bas idx hψ hθ hV he hM hS x hx`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `(hlin _ _ _ _ hR hR).1 0 0` as an intermediate fact. Simplify using `only [zero_smul, add_zero] at this`.
+
+Conclude with `⟨GlobalTheory.OrientedHeis.theta_zero, this⟩`. Consider the case `insert q s hq ih`. Rewrite using `[Finset.sum_insert hq, Finset.sum_insert hq]`. Establish `h1` using `reads_heisO_finOf D ψ θ V W r g hr X bas idx hψ hθ hV he hM hS x hx f φ hf hR _ _ (hu q)`. Use `(hlin _ _ _ _ h1 ih.2).1 (c q) 1` as an intermediate fact.
+
+Rewrite `this` using `[one_smul, one_smul]`. Conclude with `⟨GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1.1 hψ.1.2.1 hf (hu q).1)) ih.1, this⟩`.
+-/
 theorem reads_sum (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hV : V.gram = 1) (he : Even V.rank) (hr : W.rank = r)
     (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (hM : IsMod W hr X)
     (hS : IsSympl X bas) {x : Frame X.Ψ r} (hx : IsONFr X x) {f : WO V W → ℂ} {φ : TF V.rank g}
@@ -155,6 +202,9 @@ theorem reads_sum (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hV : V.gram =
     rw [one_smul, one_smul] at this
     exact ⟨GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1.1 hψ.1.2.1 hf (hu q).1)) ih.1, this⟩
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ V W χV χW om hP.weil hP.inf (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) s (fun τ => compAt θ τ (Formalism.L2.Theta.mt W k) * s τ * compAt θ τ (Formalism.L2.Theta.mt W k⁻¹)) B (fun τ => compAt θ τ (Formalism.L2.Theta.mt W k) …`. Rewrite using `[thetaKO, h1]`. Conclude with `GlobalTheory.T.fock_pure_tensor_at_origin_eq_theta_series D ψ θ V W r g hr X bas idx hP.weil.std hP.inf hP.std hP.even hM hS q0 hq _ _ _ vr (isONFr_move hP.weil.std hP.inf hP.std hP.even hr X bas idx hM hS hx k) (isInvOf_move hr X hs k) (isBasOf_move hr X hq hB k) hvr _ φ (hP.wei …`.
+-/
 theorem kernel_of_reads {χV χW : (AE D)ˣ →* Circle} {om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)}
     (hP : IsPair ψ θ V W χV χW om) (hr : W.rank = r)
     (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (hM : IsMod W hr X)
@@ -178,6 +228,9 @@ theorem kernel_of_reads {χV χW : (AE D)ˣ →* Circle} {om : GA D V × GA D W 
     (isONFr_move hP.weil.std hP.inf hP.std hP.even hr X bas idx hM hS hx k) (isInvOf_move hr X hs k)
     (isBasOf_move hr X hq hB k) hvr _ φ (hP.weil.om_pres _ _ hf) hR P d hd
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Conclude with `⟨(yᵀ, GlobalTheory.LatVac.finTens 1 yᵀ), rfl, (GlobalTheory.VacSign.isFinOf_iff _ _).2 rfl⟩`.
+-/
 theorem exists_finOf (V W : HSp D) (hr : W.rank = r) (y : Matrix (Fin V.rank) (Fin r) D.host.E) :
     ∃ p : Matrix (Fin W.rank) (Fin V.rank) D.host.E × WO V W, colsR hr p.1 = y ∧ IsFinOf V W p.1 p.2 := by
   subst hr
@@ -185,6 +238,25 @@ theorem exists_finOf (V W : HSp D) (hr : W.rank = r) (y : Matrix (Fin V.rank) (F
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i hstd H Dw ι hι hiso`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.lattice_isometry_sign_second D G Pl0 T0 A Ks R F hC i hstd H Dw ι hι hiso`. Use `⟨δ, ?_⟩` and prove the remaining obligations. Introduce `t l₂ φ hφ hl hrt g q0 X hq bas idx x₀ vr hM hS hx hinv hbas hvr bad N h k Λ mk e Ps y hbad he hPs hh hsupp hdet hΛ htriv hlev hmk Y hY v a hv hR P d hd`. Take `⟨hP, -, hV0, hW0, hVs, hWs, hVstd⟩` from `RecPair.isPair_record D G Pl0 T0 A Ks R F hC i t hstd`.
+
+Establish `hψ` using `hP.weil.std`. Establish `hvac : IsVacO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.ΛV i) (R.ΛW i) (R.vacP i)` using `(hC.thP.vP i t).1`. Use `choose p hp using fun q => exists_finOf (Vc D i) (Wc D i) (rank_Wc i) ((δ : ℤ) • Y q)`. Establish `hdat` using `hδ t l₂ φ hφ hl bad N h k Λ mk hbad ⟨hh, e, Ps, he, hPs, hsupp⟩ hΛ htriv hlev hmk Y (fun q => (p q).1) (fun q => (p q).2) hY hp`. Use `haveI := finite_levQ Dw l₂`.
+
+Use `letI : Fintype (Fin (Vc D i).rank → LevQ Dw l₂) := Fintype.ofFinite _`. Take `⟨hhs, hks, -, hlat, hV1, -⟩` from `GlobalTheory.MovedLat.moved_lattices D _ _ _ _ hV0 hW0 hVs hWs h k`. Take `⟨-, -, hmv, -⟩` from `GlobalTheory.MovedLat.moved_lattices D _ _ _ _ hV0 hW0 hVs hWs 1 k`. Rewrite `hmv` using `[show fin (Vc D i) 1 = 1 from map_one _, hV1]`. Establish `hx'` using `isONFr_move hψ hP.inf hP.std hP.even (rank_Wc i) X bas idx hM hS hx k`.
+
+Establish `hvac'` using `GlobalTheory.WeilVacMove.isVacO_om D _ _ _ _ _ _ _ hP.weil hP.inf (fun _ => 1) (fun _ => 1) _ (fun τ => compAt R.θ τ (Formalism.L2.Theta.mt _ k) * cart (R.MW i (sg0 D A)) τ * compAt R.θ τ (Formalism.L2.Theta.mt _ k⁻¹)) _ _ _ _ 1 k (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) …`. Establish `hL : ∀ L₀ : Submodule (𝓞 D.host.E) (Fin (Wc D i).rank → D.host.E), L₀ = Submodule.span (𝓞 D.host.E) {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v ∈ Bridge.hLat (Wc D i) (fin (Wc D i) k), w = a • v} → latR (rank_Wc i) (latG (Wc D i) k) = latR (rank_Wc i) L₀` using `fun L₀ h₀ => by rw [h₀, hlat]`. Establish `hcl` using `GlobalTheory.T.weilRepresentation_split_support_projects_vacuum D _ _ _ _ _ _ _ hP _ g (rank_Wc i) X bas idx hM hS H hrt _ _ Λ.La _ hV0 hVs hks hVstd hL _ _ hx' (isInvOf_move (rank_Wc i) X hinv k) _ hvac' _ hR e Ps h y he hsupp hdet hΛ`. Rewrite `hcl` using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul, projA_smul, smul_smul]`. Take `⟨-, hsd, huni, hfg⟩` from `LatOf.isLatOf_tens D _ _ _ _ _ g (rank_Wc i) X bas idx hψ hP.inf hP.std hP.even hM hS _ _ Λ.La _ hhs hks hΛ hL`.
+
+Take `⟨hth, hsum⟩` from `reads_sum hψ hP.inf hP.std hP.even (rank_Wc i) X bas idx hM hS hx' (hP.weil.om_pres (h, k) _ hvac.2.theta) hcl (hatC l₂ φ) (fun q => (p q).1) (fun q => (p q).2) (fun q => (hp q).2) Finset.univ`. Rewrite `hdat` using `[finsum_eq_sum_of_fintype]`. Establish `hthP : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Establish `h1` using `hP.weil.om_pres (h, k)⁻¹ _ (hdat ▸ GlobalTheory.OrientedHeis.theta_smul _ hth : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.ωP i t (h, k) (R.vP i t)))`. Rewrite `h1` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+
+Establish `hrd` using `(reads_linear_injective D _ _ _ _ _ g (rank_Wc i) X bas idx hψ hP.inf hP.std hP.even hM hS _ hx' _ _ _ _ hsum hsum).1 ((Nat.card (Fin (Vc D i).rank → LevQ Dw l₂) : ℂ))⁻¹ 0`. Rewrite `hrd` using `[zero_smul, zero_smul, add_zero, add_zero, ← hdat]`. Simplify using `only [heisG_smul, (hp _).1] at hrd`. Simplify using `only [smul_comm (hatC l₂ φ _)] at hrd`. Rewrite `hrd` using `[← Finset.smul_sum, smul_smul, ← finsum_eq_sum_of_fintype]`.
+
+Rewrite using `[kernel_of_reads hP (rank_Wc i) X bas idx hM hS hq hx hinv hbas hvr hh k hthP hrd P d hd, theta_smul₂ idx hS hP.even hq hx'.mem_dom _ _ hrd.1]`. Establish `hpar` using `Parity.thP_gphi_neg _ _ g _ X bas idx hS hP.even q0 hq (H.w0 : D.host.E) H.w0.isIntegral_coe (cmHost_idempotent_trace_eq_one H) _ hsd v hv Λ huni hfg _ (hatC l₂ φ) Y P d hd _ hx'.mem_dom`. Unfold `gphi at hpar ⊢`. Break down `Int.units_eq_one_or δ with rfl | rfl` into its components or cases. Simplify using `only [Units.val_one, one_smul]`.
+
+Rewrite using `[hpar]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Units.val_neg, Units.val_one, neg_smul, one_smul, neg_neg, Int.cast_neg, Int.cast_one, ← mul_pow]`. Rewrite using `[neg_mul_neg, one_mul, one_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaKO_eq_short_series : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), VStd D i → ∀ (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)), LatEmb (Wc D i) ι → LatIsom (Wc D i) Dw.EF ι → ∃ δ : ℤˣ, ∀ (t : T0) (l₂ : Geo.Tor.Level H) (φ : (Fin (Vc D i).rank → LevQc Dw l₂) → ℂ), PhiIs R i (RingHom.id ℂ) t ι (Mfr l₂ • ⊤) φ → (∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → l₂.Mb ≤ PP.asIdeal ∧ ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → (H.rt : D.host.E) = D.host.sqrtMinusD → ∀ (g q0 : ℕ) (X : Data D.host.E D.R.r) (hq : X.p0 + q0 = D.R.r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin D.R.r) (x₀ : Frame X.Ψ D.R.r) (vr : Harm.Var X.Ψ q0 X.p0 (Fin (Vc D i).rank) ≃ FVar D (Wc D i).rank (Vc D i).rank), IsMod (Wc D i) (rank_Wc i) X → IsSympl X bas → IsONFr X x₀ → IsInvOf (Wc D i) (rank_Wc i) X x₀ (cart (R.MW i (sg0 D A))) → IsBasOf (Wc D i) (rank_Wc i) X hq x₀ (onb (R.MW i (sg0 D A))) → IsVarOf (Vc D i) (Wc D i) X q0 vr → ∀ (bad N : ℕ) (h : GA D (Vc D i)) (k : GA D (Wc D i)) (Λ : GenLat D.host.E (Vc D i).rank) (mk : Dw.La →ₗ[𝓞 D.host.E] (Fin D.R.r → D.host.E)) (e : AE D) (Ps : Finset (Formalism.L2.DIV.Pl D.host.E)) (y : (AE D)ˣ), (∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → ((bad : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → IsIdemSum e Ps → (∀ PP ∈ Ps, ((bad : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → h ∈ GfC (Vc D i) → SuppAt e (Vc D i) h → IsDetAt e (Vc D i) h y → (∀ v, v ∈ Λ.La ↔ (fun j => star (v j)) ∈ Bridge.hLat (Vc D i) (fin (Vc D i) h)) → Λ.TrivAt l₂.M → Λ.LevOK N l₂.M → MarkAd l₂ (Wc D i) (rank_Wc i) ι k mk → ∀ Y : (Fin (Vc D i).rank → LevQ Dw l₂) → Matrix (Fin (Vc D i).rank) (Fin D.R.r) D.host.E, IsRoots l₂ (latR (rank_Wc i) (latG (Wc D i) k)) mk N Y → ∀ (v : TF (Vc D i).rank g) (a : ℂ), IsVac X bas (H.w0 : D.host.E) (tens (stdL D.host.E (Vc D i).rank) (latR (rank_Wc i) (latG (Wc D i) k))) v → Reads R.θ (Vc D i) (Wc D i) (rank_Wc i) X bas idx (R.ωP i t (1, k) (R.vacP i)) (a • v) (frMove R.θ (Wc D i) (rank_Wc i) X k x₀) → ∀ (P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin (Vc D i).rank)) (d : ℕ), P.IsHomogeneous d → thetaKO (R.ωP i t) h k (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (fun _ => 1) (onb (R.MW i (sg0 D A))) (R.vP i t) (MvPolynomial.rename vr P)) = ((δ : ℤ) : ℂ) ^ d * (-1) ^ d * ((Real.sqrt (2 * Real.pi * xiR D) : ℝ) : ℂ)⁻¹ ^ d * a * ((((Lift.chrTh (R.toLevCh.mu t) R.eta ((i : ℕ) + 1)).2 y : Circle) : ℂ)⁻¹ * (Real.sqrt ((((Λ.La ⊓ Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank).toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup).index : ℝ) ^ D.R.r) : ℂ)) * ((Nat.card (Fin (Vc D i).rank → LevQ Dw l₂) : ℂ))⁻¹ * thP X hq bas idx (gphi X bas (H.w0 : D.host.E) Λ.La (latR (rank_Wc i) (latG (Wc D i) k)) v (hatC l₂ φ) Y) P (frMove R.θ (Wc D i) (rank_Wc i) X k x₀) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i hstd H Dw ι hι hiso
   obtain ⟨δ, hδ⟩ := GlobalTheory.T.lattice_isometry_sign_second D G Pl0 T0 A Ks R F hC i hstd H Dw ι hι hiso

@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.Mean4O.Cover.MaxUnit
 
+/- English proof (translation)
+Take `⟨W₀, hW₀, s, hs⟩` from `hg.exists_fnOf`. Establish `ht : ⊤ ≤ yt ⁻¹ᵁ W₀` using `HtGen.IntPt.top_le_of_closedPoint yt hW₀`. Establish `ht' : ⊤ ≤ (spMap e.O.subtype ≫ yt) ⁻¹ᵁ W₀` using `fun q _ => ht (x := spMap e.O.subtype q) trivial`. Establish `hb : below (spMap e.O.subtype ≫ yt) ∈ W₀` using `ht' trivial`. Establish `hev` using `OfModel.eval_pull e.O.subtype (𝟙 Z) (spMap e.O.subtype ≫ yt) yt (Category.comp_id _).symm (U := W₀) (W := W₀) le_rfl ht' ht s`.
+
+Establish `hid : ((𝟙 Z : Z ⟶ Z).appLE W₀ W₀ le_rfl).hom s = s`. Establish `: (𝟙 Z : Z ⟶ Z).appLE W₀ W₀ le_rfl = 𝟙 _` using `(Category.id_comp _).trans (Z.presheaf.map_id _)`. Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite `hev` using `[hid]`.
+
+Rewrite `h1` using `[← hs, OfModel.valAt_fnOf _ hb ht', hev]`. Express the relevant statement in the definitionally equal form `e.w ((_ : e.O) : AlgebraicClosure F) = 1 at h1`. Rewrite `h1` using `[HtGen.IntPt.w_eq_one_iff, RegCrit.isUnit_eval_iff yt ht s, ← unitAt_fnOf_iff hW₀ (gen_mem hW₀), hs]`. Conclude with `h1`.
+-/
 theorem unitAt_of_w_valAt_eq_one {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)}
     (e : TrueGeo.Ext v) {Z : Scheme.{0}} [IsIntegral Z] (yt : Sp e.O ⟶ Z) {g : Z.functionField}
     (hg : RegAt (yt (IsLocalRing.closedPoint e.O)) g)
@@ -33,6 +40,13 @@ theorem unitAt_of_w_valAt_eq_one {F : Type} [Field F] [NumberField F] {v : Heigh
     ← unitAt_fnOf_iff hW₀ (gen_mem hW₀), hs] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `F _ _ Y V p hp W hW U S f hgen hval x hxU hx`. Take `⟨v, e, y, z, yt, hres, hyW, hzy, hc, hU, hsp⟩` from `GlobalTheory.Mean4O.Cover.ThroughFibre.exists_algPt_through F Y V p hp W hW U x hxU hx`. Take `⟨-, s, hs⟩` from `hval v hres e y hyW z yt hzy hc hU`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use `set c := yt (IsLocalRing.closedPoint e.O) with hcdef`.
+
+Establish `hcU : c ∈ U` using `hU trivial`. Establish `hpx : (p : 𝓞 F) ∈ (V.p x).asIdeal`. Assume the negation of the conclusion as `h`. Conclude with `hx ((GlobalTheory.Mean4O.Cover.RegOverP.isUnit_natCast_stalk_iff V x p).2 h)`. Establish `hle : (V.p x).asIdeal ≤ (V.p c).asIdeal` using `(PrimeSpectrum.le_iff_specializes _ _).2 (hsp.map V.p.continuous)`.
+
+Establish `hnc : ¬ IsUnit (p : V.X.presheaf.stalk c)` using `fun h => (GlobalTheory.Mean4O.Cover.RegOverP.isUnit_natCast_stalk_iff V c p).1 h (hle hpx)`. Establish `hreg : RegAt c (f s)` using `GlobalTheory.Mean4O.Cover.RegOverP.regAt_of_values_over F Y V p hp W hW U (f s) (fun z' hz' => hgen s z' hz') (fun v' hv' e' y' hy' z' yt' h1 h2 h3 => (hval v' hv' e' y' hy' z' yt' h1 h2 h3).1 s) c hcU hnc`. Establish `hs' : e.w (valAt (spMap e.O.subtype ≫ yt) (f s)) = 1` using `by rw [hc]; exact hs`. Conclude with `GlobalTheory.NormExt.unitAt_of_specializes hsp (unitAt_of_w_valAt_eq_one e yt hreg hs')`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (p : ℕ), p.Prime → ∀ (W : Y.X.Opens), genericPoint Y.X ∈ W → ∀ (U : V.X.Opens) {S : Type} (f : S → V.X.functionField), (∀ s (z : V.G), V.j z ∈ U → RegAt (V.j z) (f s)) → (∀ v : HeightOneSpectrum (𝓞 F), resP v = p → ∀ (e : TrueGeo.Ext v) (y : AlgPt Y), below y.1 ∈ W → ∀ (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), z ≫ V.π = y.1 → spMap e.O.subtype ≫ yt = z ≫ V.j → ⊤ ≤ yt ⁻¹ᵁ U → (∀ s, e.w (valAt (z ≫ V.j) (f s)) ≤ 1) ∧ ∃ s, e.w (valAt (z ≫ V.j) (f s)) = 1) → ∀ x ∈ U, ¬ IsUnit (p : V.X.presheaf.stalk x) → ∃ s, UnitAt x (f s) := by
   intro F _ _ Y V p hp W hW U S f hgen hval x hxU hx
   obtain ⟨v, e, y, z, yt, hres, hyW, hzy, hc, hU, hsp⟩ :=

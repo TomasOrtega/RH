@@ -12,6 +12,9 @@ variable {n : ℕ}
 abbrev lb (M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) : Matrix (Fin i) (Fin i) ℂ :=
   M.submatrix (Fin.castLE i.isLt.le) (Fin.castLE i.isLt.le)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem det_lb (M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) :
     (lb M i).det = lminor M (Fin.castSucc i) := rfl
 
@@ -21,6 +24,13 @@ def wv (M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) : Fin i → ℂ :=
 def Lm (M : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun i k => if h : (k : ℕ) < i then -wv M i ⟨k, h⟩ else if k = i then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Establish `h1 : ∑ k : Fin n, N i k * M k j = ∑ k ∈ Finset.univ.filter (fun k => k ≤ i), N i k * M k j`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with hk`.
+
+Both sides reduce to the same expression. Rewrite using `[hup k (lt_of_not_ge hk), zero_mul]`. Establish `h2 : Finset.univ.filter (fun k : Fin n => k ≤ i) = insert i (Finset.univ.filter (fun k => k < i))`. Use extensionality with `k`. Simplify using `[le_iff_lt_or_eq, or_comm]`.
+
+Establish `h3 : ∑ k ∈ Finset.univ.filter (fun k : Fin n => k < i), N i k * M k j = ∑ k : Fin i, N i (Fin.castLE i.isLt.le k) * M (Fin.castLE i.isLt.le k) j`. Use `Finset.sum_bij' (fun k hk => (⟨k, (Finset.mem_filter.mp hk).2⟩ : Fin i)) (fun k _ => Fin.castLE i.isLt.le k) (fun _ _ => Finset.mem_univ _) (fun k _ => ?_) (fun _ _ => rfl) (fun _ _ => rfl) (fun _ _ => rfl)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `k.isLt`. Rewrite using `[h1, h2, Finset.sum_insert (by simp), h3, hd, one_mul, add_comm]`.
+-/
 theorem row_expand (N M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n)
     (hup : ∀ k : Fin n, i < k → N i k = 0) (hd : N i i = 1) :
     (N * M) i j = (∑ k : Fin i, N i (Fin.castLE i.isLt.le k) * M (Fin.castLE i.isLt.le k) j) + M i j := by
@@ -44,18 +54,30 @@ theorem row_expand (N M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n)
     exact k.isLt
   rw [h1, h2, Finset.sum_insert (by simp), h3, hd, one_mul, add_comm]
 
+/- English proof (translation)
+Simplify using `only [Lm, Matrix.of_apply]`. Establish `h' : ¬ ((k : ℕ) < i)` using `by rw [Fin.lt_iff_val_lt_val] at h; omega`. Rewrite using `[dif_neg h', if_neg (ne_of_gt h)]`.
+-/
 theorem Lm_up (M : Matrix (Fin n) (Fin n) ℂ) (i k : Fin n) (h : i < k) : Lm M i k = 0 := by
   simp only [Lm, Matrix.of_apply]
   have h' : ¬ ((k : ℕ) < i) := by rw [Fin.lt_iff_val_lt_val] at h; omega
   rw [dif_neg h', if_neg (ne_of_gt h)]
 
+/- English proof (translation)
+Simplify using `[Lm]`.
+-/
 theorem Lm_diag (M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) : Lm M i i = 1 := by
   simp [Lm]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular _ (fun i k h => Lm_up M i k (OrderDual.toDual_lt_toDual.mp h))]`. Simplify using `[Lm_diag]`.
+-/
 theorem Lm_det (M : Matrix (Fin n) (Fin n) ℂ) : (Lm M).det = 1 := by
   rw [Matrix.det_of_lowerTriangular _ (fun i k h => Lm_up M i k (OrderDual.toDual_lt_toDual.mp h))]
   simp [Lm_diag]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j'`. Establish `hrow` using `row_expand N M i (Fin.castLE i.isLt.le j') hup hd`. Rewrite `hrow` using `[hz _ (by simp [Fin.lt_iff_val_lt_val])]`. Simplify using `only [vecMul, dotProduct, lb, submatrix_apply, Pi.neg_apply]`. Take the linear combination `(-1 : ℂ) * hrow`.
+-/
 theorem row_sys (N M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n)
     (hup : ∀ k : Fin n, i < k → N i k = 0) (hd : N i i = 1)
     (hz : ∀ j : Fin n, j < i → (N * M) i j = 0) :
@@ -67,6 +89,13 @@ theorem row_sys (N M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n)
   simp only [vecMul, dotProduct, lb, submatrix_apply, Pi.neg_apply]
   linear_combination (-1 : ℂ) * hrow
 
+/- English proof (translation)
+Establish `hdet : IsUnit (lb M i).det` using `by rw [det_lb]; exact isUnit_iff_ne_zero.mpr (hM _)`. Rewrite using `[row_expand (Lm M) M i j (fun k hk => Lm_up M i k hk) (Lm_diag M i)]`. Establish `hL : ∀ k : Fin i, Lm M i (Fin.castLE i.isLt.le k) = -wv M i k`. Introduce `k`. Simplify using `only [Lm, Matrix.of_apply]`.
+
+Rewrite using `[dif_pos (by simp)]`. Both sides reduce to the same expression. Repeatedly rewrite using `[hL]`. Establish `key : vecMul (wv M i) (lb M i) = fun j : Fin i => M i (Fin.castLE i.isLt.le j)`. Rewrite using `[wv, vecMul_vecMul, Matrix.nonsing_inv_mul _ hdet, vecMul_one]`.
+
+Establish `hk` using `congrFun key ⟨j, h⟩`. Simplify using `only [vecMul, dotProduct, lb, submatrix_apply] at hk`. Establish `hk' : ∑ k : Fin i, wv M i k * M (Fin.castLE i.isLt.le k) j = M i j` using `hk`. Simplify using `only [neg_mul, Finset.sum_neg_distrib, hk', neg_add_cancel]`.
+-/
 theorem Lm_mul_up (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ k : Fin (n + 1), lminor M k ≠ 0)
     (i j : Fin n) (h : j < i) : (Lm M * M) i j = 0 := by
   have hdet : IsUnit (lb M i).det := by rw [det_lb]; exact isUnit_iff_ne_zero.mpr (hM _)
@@ -84,6 +113,13 @@ theorem Lm_mul_up (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ k : Fin (n + 1), lm
   have hk' : ∑ k : Fin i, wv M i k * M (Fin.castLE i.isLt.le k) j = M i j := hk
   simp only [neg_mul, Finset.sum_neg_distrib, hk', neg_add_cancel]
 
+/- English proof (translation)
+Use extensionality with `i k`. Establish `hdet : IsUnit (lb M i).det` using `by rw [det_lb]; exact isUnit_iff_ne_zero.mpr (hM _)`. Establish `h1` using `row_sys N M i (hup i) (hd i) (hz i)`. Establish `h2` using `row_sys (Lm M) M i (fun k hk => Lm_up M i k hk) (Lm_diag M i) (fun j hj => Lm_mul_up M hM i j hj)`. Establish `heq : (fun k : Fin i => N i (Fin.castLE i.isLt.le k)) = fun k => Lm M i (Fin.castLE i.isLt.le k)`.
+
+Establish `h3` using `congrArg (fun v => vecMul v (lb M i)⁻¹) (h1.trans h2.symm)`. Simplify `h3` using `only [vecMul_vecMul, Matrix.mul_nonsing_inv _ hdet, vecMul_one]`. Break down `lt_trichotomy k i with hk | rfl | hk` into its components or cases. Conclude with `congrFun heq ⟨k, hk⟩`. Rewrite using `[hd, Lm_diag]`.
+
+Rewrite using `[hup i k hk, Lm_up M i k hk]`.
+-/
 theorem Lm_unique (N M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ k : Fin (n + 1), lminor M k ≠ 0)
     (hup : ∀ i k : Fin n, i < k → N i k = 0) (hd : ∀ i, N i i = 1)
     (hz : ∀ i j : Fin n, j < i → (N * M) i j = 0) : N = Lm M := by
@@ -100,6 +136,15 @@ theorem Lm_unique (N M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ k : Fin (n + 1), 
   · rw [hd, Lm_diag]
   · rw [hup i k hk, Lm_up M i k hk]
 
+/- English proof (translation)
+Use `set e : Fin k → Fin n := Fin.castLE (Nat.le_of_lt_succ k.isLt) with he`. Establish `hmono : ∀ a b : Fin k, a < b → e a < e b` using `fun a b h => h`. Establish `hsub : (N * B).submatrix e e = N.submatrix e e * B.submatrix e e`. Use extensionality with `a b`. Simplify using `only [submatrix_apply, mul_apply]`.
+
+Use `symm`. Use `Fintype.sum_of_injective e (Fin.castLE_injective _) _ _ (fun c hc => ?_) (fun _ => rfl)` and prove the remaining obligations. Establish `hc' : (k : ℕ) ≤ c`. Assume the negation of the conclusion as `hlt`. Conclude with `hc ⟨⟨c, by omega⟩, Fin.ext rfl⟩`.
+
+Establish `hac : e a < c`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Use `show (a : ℕ) < c`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hup _ _ hac, zero_mul]`.
+
+Establish `hNt : (N.submatrix e e).BlockTriangular OrderDual.toDual` using `fun a b h => hup _ _ (hmono _ _ (OrderDual.toDual_lt_toDual.mp h))`. Establish `hBt : (B.submatrix e e).BlockTriangular id` using `fun a b h => hB (hmono _ _ h)`. Rewrite using `[lminor, ← he, hsub, det_mul, Matrix.det_of_lowerTriangular _ hNt, Matrix.det_of_upperTriangular hBt]`. Simplify using `[hd]`.
+-/
 theorem lminor_nb (N B : Matrix (Fin n) (Fin n) ℂ) (hup : ∀ i k : Fin n, i < k → N i k = 0)
     (hd : ∀ i, N i i = 1) (hB : B.BlockTriangular id) (k : Fin (n + 1)) :
     lminor (N * B) k = ∏ j : Fin k, B (Fin.castLE (Nat.le_of_lt_succ k.isLt) j)

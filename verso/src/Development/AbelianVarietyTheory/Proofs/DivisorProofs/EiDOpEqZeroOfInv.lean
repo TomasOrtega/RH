@@ -18,6 +18,17 @@ noncomputable section
 
 namespace GlobalTheory.ThK.ModelPol
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d n₁ d₁ X W X₁ W₁ B M M₁ ι ι' I e hψ hM hM₁ hE ei ev hev hl u _ hu hI f`. Establish `hg : finPr M.vac ∈ SB _` using `finPr_mem _ (fun v => (hM.vac v).1) hM.std`. Take `⟨y', hy'⟩` from `exists_finPr_ne M₁.vac (fun v => (hM₁.vac v).2.1) hM₁.std`. Take `⟨D, hD⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ B.ψ _ _ M.co hψ`. Establish `hDe : D u f = GlobalTheory.ThK.EvAt0.PolD.dOp (GlobalTheory.ThK.EvAt0.PolD.arc (M.co.e u).1) (GlobalTheory.ThK.EvAt0.PolD.arc (M.co.e u).2) f`.
+
+Use extensionality with `x`. Rewrite using `[(hD u hu f).2 x, GlobalTheory.ThK.EvAt0.PolD.dOp_apply]`. Both sides reduce to the same expression. Establish `hvac : ∀ f' : SInf F (Fin n × Fin d), e (pureA F f' (finPr M.vac)) = pureA F (ei f') (finPr M₁.vac)` using `fun f' => by`. Use `hl f' M.vac (fun v => (hM.vac v).1) (Eventually.of_forall fun _ => rfl)` as an intermediate fact.
+
+Simplify using `only [hev] at this`. Conclude with `this`. Establish `hmem : pureA F f (finPr M.vac) ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, _, hg, rfl⟩`. Rewrite using `[← hDe]`. Use `SchwartzMap.ext fun x => ?_` and prove the remaining obligations.
+
+Establish `h1` using `(hD u hu f).1 _ hg _ (GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n₁ d₁ X W X₁ W₁ M M₁ ι ι' I e hM hM₁ hE _ (proj_adm x y'))`. Establish `hc : (fun t : ℝ => ((LinearMap.proj (pt x y') : ((Fin n₁ × Fin d₁ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∘ₗ e) (M.co.rho B.ψ (realAd F t • u) (pureA F f (finPr M.vac)))) = fun _ => e (pureA F f (finPr M.vac)) (pt x y')`. Use function extensionality and compare the values at `t`. Rewrite using `[LinearMap.comp_apply, hE.inv _ (hI t) _ hmem, LinearMap.proj_apply]`. Rewrite `h1` using `[hc]`.
+
+Establish `h2` using `h1.unique (hasDerivAt_const (0 : ℝ) _)`. Rewrite `h2` using `[LinearMap.comp_apply, LinearMap.proj_apply, hvac, pureA_pt]`. Simplify using `using (mul_eq_zero.1 h2).resolve_right hy'`.
+-/
 theorem ei_dOp_eq_zero_of_inv : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} (B : Base F E)
     (M : Model σ X W) (M₁ : Model σ X₁ W₁) (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E)

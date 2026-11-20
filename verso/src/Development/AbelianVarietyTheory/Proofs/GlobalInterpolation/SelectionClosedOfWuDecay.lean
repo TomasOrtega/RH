@@ -10,6 +10,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Forma
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `𝒜 sel selS selP selDH selC selB hWu hRF selJ jOn rRows`. Establish `jGap : Closed (D3 3 𝒜) fun Fm _ => ∀ hc : D3 3 𝒜 Fm, Formalism.L2.Top4.EvSel sel Fm (d3_a hc) fun x _ _ i => Formalism.L2.SG.ConcreteSettingExists.GapHyp (Fm.D x i)` using `(Formalism.L2.SG.GapClosed.gapEv_closed_of (D3 3 𝒜) fun _ hc => hc.2.2.1).imp fun Fm _ _ h hc => by`. Take `⟨y, hy⟩` from `h hc`. Conclude with `⟨y, fun x _ _ hxy i => hy x hxy i⟩`. Establish `hM : Closed (D3 3 𝒜) fun Fm _ => ∀ hc : D3 3 𝒜 Fm, EvSel (fun Fm hc => sel Fm (d3_a hc)) Fm hc fun x hx h i => Formalism.L2.SG.JoinSISel.MIAt2 ((selIOf selB) Fm (d3_a hc) x hx h i)` using `rRows.imp fun Fm CH _ h hc => by`.
+
+Take `⟨C, _, x0, H⟩` from `h hc`. Conclude with `⟨x0, fun x hx hs hx0 i => (H x hx hs hx0 i).1.miStar⟩`. Establish `hFX` using `Formalism.L2.SG.JoinSISel.finXRow_of_gap (𝒜 := D3 3 𝒜) (sel := fun Fm hc => sel Fm (d3_a hc)) (selS := fun Fm hc => selS Fm (d3_a hc)) (Formalism.L2.SG.Pf.finXC_of hWu hRF) jGap`. Establish `hC5 : Closed (D3 3 𝒜) fun Fm _ => Formalism.MainNotions.LocalQuadraticParts.ComplementCountFamily Fm` using `Formalism.L2.SG.JoinSISel.closed_complementFiveFamily_of_evSel_imageFull (𝒜 := D3 3 𝒜) (sel := fun Fm hc => sel Fm (d3_a hc)) (selS := fun Fm hc => selS Fm (d3_a hc)) (selP := fun Fm hc => selP Fm (d3_a hc)) (selDH := fun Fm hc => selDH Fm (d3_a hc)) (selC := fun Fm hc => selC Fm …`. Conclude with `hC5`.
+-/
 theorem GlobalTheory.Top.selection_closed_of_wu_decay : ∀ (𝒜 : FamClass)
     (sel : Formalism.L2.TSel 𝒜)
     (selS : SelS 𝒜 sel)

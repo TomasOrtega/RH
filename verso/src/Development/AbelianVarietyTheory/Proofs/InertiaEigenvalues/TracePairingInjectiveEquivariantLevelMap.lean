@@ -21,6 +21,9 @@ variable {l : ℕ} [Fact l.Prime] {K : FinExt l} {LL : Type} [Field LL] [Algebra
 
 include h2 hlam in
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(h2 y).1 y.2 x x.2`. Take `⟨u, hu⟩` from `(hlam (m x y)).2 ⟨a, ha.symm⟩ 1`. Rewrite `hu` using `[map_one, mul_one]`. Rewrite using `[hu]`. Conclude with `u.norm_le_one`.
+-/
 theorem norm_le_one (x : ↥LA.T) (y : ↥LA'.T) : ‖lam (m x y)‖ ≤ 1 := by
   obtain ⟨a, ha⟩ := (h2 y).1 y.2 x x.2
   obtain ⟨u, hu⟩ := (hlam (m x y)).2 ⟨a, ha.symm⟩ 1
@@ -31,29 +34,52 @@ theorem norm_le_one (x : ↥LA.T) (y : ↥LA'.T) : ‖lam (m x y)‖ ≤ 1 := by
 def uv (x : ↥LA.T) (y : ↥LA'.T) : ℤ_[l] :=
   ⟨lam (m x y), norm_le_one h2 hlam x y⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_uv (x : ↥LA.T) (y : ↥LA'.T) :
     ((uv h2 hlam x y : ℤ_[l]) : ℚ_[l]) = lam (m x y) := rfl
 
+/- English proof (translation)
+Establish `: (l : LL) ^ r * z = ((l : ℚ_[l]) ^ r) • z`. Rewrite using `[Algebra.smul_def]`. Simplify using the standard rewrite rules. Rewrite using `[this, map_smul, smul_eq_mul]`.
+-/
 theorem lam_natPow_mul (z : LL) (r : ℕ) :
     lam ((l : LL) ^ r * z) = (l : ℚ_[l]) ^ r * lam z := by
   have : (l : LL) ^ r * z = ((l : ℚ_[l]) ^ r) • z := by
     rw [Algebra.smul_def]; simp
   rw [this, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[coe_uv]`.
+-/
 theorem uv_add_left (x x' : ↥LA.T) (y : ↥LA'.T) :
     uv h2 hlam (x + x') y = uv h2 hlam x y + uv h2 hlam x' y := by
   apply Subtype.ext; simp [coe_uv]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[coe_uv]`.
+-/
 theorem uv_add_right (x : ↥LA.T) (y y' : ↥LA'.T) :
     uv h2 hlam x (y + y') = uv h2 hlam x y + uv h2 hlam x y' := by
   apply Subtype.ext; simp [coe_uv]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[coe_uv]`.
+-/
 theorem uv_zero_left (y : ↥LA'.T) : uv h2 hlam 0 y = 0 := by
   apply Subtype.ext; simp [coe_uv]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[coe_uv]`.
+-/
 theorem uv_zero_right (x : ↥LA.T) : uv h2 hlam x 0 = 0 := by
   apply Subtype.ext; simp [coe_uv]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_uv, PadicInt.coe_mul, coe_uv]`. Establish `: (((((l : ℕ) : O) ^ r) • x : ↥LA.T) : A.V) = ((l : LL) ^ r) • (x : A.V)`. Rewrite using `[Submodule.coe_smul, ← algebraMap_smul LL]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, map_smul, LinearMap.smul_apply, smul_eq_mul, lam_natPow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem uv_smul_left (r : ℕ) (x : ↥LA.T) (y : ↥LA'.T) :
     uv h2 hlam ((((l : ℕ) : O) ^ r) • x) y = (l : ℤ_[l]) ^ r * uv h2 hlam x y := by
   apply Subtype.ext
@@ -63,6 +89,11 @@ theorem uv_smul_left (r : ℕ) (x : ↥LA.T) (y : ↥LA'.T) :
   rw [this, map_smul, LinearMap.smul_apply, smul_eq_mul, lam_natPow_mul]
   simp
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_uv, PadicInt.coe_mul, coe_uv]`. Establish `: (((((l : ℕ) : O) ^ r) • y : ↥LA'.T) : A'.V) = ((l : LL) ^ r) • (y : A'.V)`. Rewrite using `[Submodule.coe_smul, ← algebraMap_smul LL]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, map_smul, smul_eq_mul, lam_natPow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem uv_smul_right (r : ℕ) (x : ↥LA.T) (y : ↥LA'.T) :
     uv h2 hlam x ((((l : ℕ) : O) ^ r) • y) = (l : ℤ_[l]) ^ r * uv h2 hlam x y := by
   apply Subtype.ext
@@ -72,6 +103,9 @@ theorem uv_smul_right (r : ℕ) (x : ↥LA.T) (y : ↥LA'.T) :
   rw [this, map_smul, smul_eq_mul, lam_natPow_mul]
   simp
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_pow, map_natCast, ← Nat.cast_pow, ZMod.natCast_self, zero_mul]`.
+-/
 theorem toZModPow_natPow_mul (r : ℕ) (u : ℤ_[l]) :
     PadicInt.toZModPow r ((l : ℤ_[l]) ^ r * u) = 0 := by
   rw [map_mul, map_pow, map_natCast, ← Nat.cast_pow, ZMod.natCast_self, zero_mul]
@@ -79,6 +113,9 @@ theorem toZModPow_natPow_mul (r : ℕ) (u : ℤ_[l]) :
 abbrev lr (r : ℕ) {V : Type} [AddCommGroup V] [Module O V] (T : Submodule O V) : Submodule O ↥T :=
   Ideal.span {((l : ℕ) : O) ^ r} • ⊤
 
+/- English proof (translation)
+Rewrite `hx` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨x', -, hx'⟩` from `hx`. Conclude with `⟨x', hx'⟩`.
+-/
 theorem mem_lr {r : ℕ} {V : Type} [AddCommGroup V] [Module O V] {T : Submodule O V} {x : ↥T}
     (hx : x ∈ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥T)) :
     ∃ x' : ↥T, (((l : ℕ) : O) ^ r) • x' = x := by
@@ -103,6 +140,9 @@ def psi0 (r : ℕ) (y : ↥LA'.T) :
     (Submodule.Quotient.restrictScalarsEquiv ℤ
       (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)).symm.toLinearMap.toAddMonoidHom
 
+/- English proof (translation)
+Simplify using `[psi0, pr]`.
+-/
 theorem tracePairingLevelMap_mk (r : ℕ) (y : ↥LA'.T) (x : ↥LA.T) :
     psi0 h2 hlam r y (Submodule.Quotient.mk x) = PadicInt.toZModPow r (uv h2 hlam x y) := by
   simp [psi0, pr]
@@ -113,10 +153,16 @@ variable {r : ℕ} {M : Type} [AddCommGroup M] [Module (ZMod (l ^ r)) M]
 def psi1 (y : ↥LA'.T) : TDual (ZMod (l ^ r)) M :=
   TDual.mk (((psi0 h2 hlam r y).comp e.symm.toAddMonoidHom).toZModLinearMap (l ^ r))
 
+/- English proof (translation)
+Simplify using `[psi1, tracePairingLevelMap_mk]`.
+-/
 theorem tracePairingLevelDual_apply (y : ↥LA'.T) (x : ↥LA.T) :
     psi1 h2 hlam e y (e (Submodule.Quotient.mk x)) = PadicInt.toZModPow r (uv h2 hlam x y) := by
   simp [psi1, tracePairingLevelMap_mk]
 
+/- English proof (translation)
+Apply `TDual.ext` to reduce the goal to its premises. Introduce `z`. Take `⟨q, rfl⟩` from `e.surjective z`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `h x`.
+-/
 theorem tracePairingLevelDual_ext {φ φ' : TDual (ZMod (l ^ r)) M}
     (h : ∀ x : ↥LA.T, φ (e (Submodule.Quotient.mk x)) = φ' (e (Submodule.Quotient.mk x))) :
     φ = φ' := by
@@ -126,10 +172,16 @@ theorem tracePairingLevelDual_ext {φ φ' : TDual (ZMod (l ^ r)) M}
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
   exact h x
 
+/- English proof (translation)
+The claim follows from `tracePairingLevelDual_ext e fun x => by rw [tracePairingLevelDual_apply h2 hlam e, uv_zero_right, map_zero]; exact (LinearMap.zero_apply _).symm`.
+-/
 theorem tracePairingLevelDual_zero : psi1 h2 hlam e 0 = 0 :=
   tracePairingLevelDual_ext e fun x => by
     rw [tracePairingLevelDual_apply h2 hlam e, uv_zero_right, map_zero]; exact (LinearMap.zero_apply _).symm
 
+/- English proof (translation)
+The claim follows from `tracePairingLevelDual_ext e fun x => by rw [TDual.add_apply, tracePairingLevelDual_apply h2 hlam e, tracePairingLevelDual_apply h2 hlam e, tracePairingLevelDual_apply h2 hlam e, uv_add_right, map_add]`.
+-/
 theorem tracePairingLevelDual_add (y y' : ↥LA'.T) :
     psi1 h2 hlam e (y + y') = psi1 h2 hlam e y + psi1 h2 hlam e y' :=
   tracePairingLevelDual_ext e fun x => by
@@ -154,6 +206,9 @@ def psiQ : (↥LA'.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O
     (Submodule.Quotient.restrictScalarsEquiv ℤ
       (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)).symm.toLinearMap.toAddMonoidHom
 
+/- English proof (translation)
+Rewrite using `[← tracePairingLevelDual_apply h2 hlam e y x]`. Both sides reduce to the same expression.
+-/
 theorem psiQ_mk (y : ↥LA'.T) (x : ↥LA.T) :
     psiQ h2 hlam e (Submodule.Quotient.mk y) (e (Submodule.Quotient.mk x)) =
       PadicInt.toZModPow r (uv h2 hlam x y) := by
@@ -161,6 +216,25 @@ theorem psiQ_mk (y : ↥LA'.T) (x : ↥LA.T) :
   rfl
 
 include e in
+/- English proof (translation)
+Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hl : (l : LL) ≠ 0`. Introduce `h`. Apply `hl0` to reduce the goal to its premises. Establish `h' : algebraMap ℚ_[l] LL (l : ℚ_[l]) = 0` using `by rw [map_natCast]; exact h`.
+
+Conclude with `(map_eq_zero_iff _ (algebraMap ℚ_[l] LL).injective).1 h'`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Take `⟨y, hyq⟩` from `Submodule.Quotient.mk_surjective (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T) q`. Substitute `hyq` using the available equality.
+
+Establish `hx : ∀ x : ↥LA.T, ∃ c : ℤ_[l], (l : ℤ_[l]) ^ r * c = uv h2 hlam x y`. Introduce `x`. Establish `h0 : PadicInt.toZModPow r (uv h2 hlam x y) = 0`. Rewrite using `[← psiQ_mk h2 hlam e y x, hq]`. Conclude with `LinearMap.zero_apply _`.
+
+Establish `h1 : uv h2 hlam x y ∈ RingHom.ker (PadicInt.toZModPow (p` using `l) r) := h0`. Rewrite `h1` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `h1`. Conclude with `⟨c, by rw [← hc, mul_comm]⟩`. Take `⟨z, hz⟩ : ∃ z : A'.V, z = ((l : LL) ^ r)⁻¹ • (y : A'.V)` from `⟨_, rfl⟩`.
+
+Establish `hzT : z ∈ LA'.T`. Rewrite using `[h2]`. Introduce `x hxT`. It suffices to establish `hs : ∀ b : O, ∃ u : ℤ_[l], lam (m x z * algebraMap O LL b) = (u : ℚ_[l]) by`. Take `⟨a, ha⟩` from `(hlam (m x z)).1 hs`.
+
+Conclude with `⟨a, ha.symm⟩`. Introduce `b`. Take `⟨c', hc'⟩` from `hx (b • ⟨x, hxT⟩)`. Use `⟨c', ?_⟩` and prove the remaining obligations. Establish `hb : ((b • (⟨x, hxT⟩ : ↥LA.T) : ↥LA.T) : A.V) = algebraMap O LL b • x`.
+
+Rewrite using `[Submodule.coe_smul, algebraMap_smul]`. Establish `e1 : m x z * algebraMap O LL b = ((l : LL) ^ r)⁻¹ * m ((b • (⟨x, hxT⟩ : ↥LA.T) : ↥LA.T) : A.V) y`. Rewrite using `[hb, hz]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e2 : ((l : LL) ^ r)⁻¹ = algebraMap ℚ_[l] LL (((l : ℚ_[l]) ^ r)⁻¹)`. Rewrite using `[map_inv₀, map_pow, map_natCast]`. Rewrite using `[e1, e2, ← Algebra.smul_def, map_smul, smul_eq_mul, ← coe_uv h2 hlam, ← hc', PadicInt.coe_mul, PadicInt.coe_pow, PadicInt.coe_natCast, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hl0), one_mul]`. Establish `hy : (((l : ℕ) : O) ^ r) • (⟨z, hzT⟩ : ↥LA'.T) = y`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.coe_smul, ← algebraMap_smul LL, map_pow, map_natCast]`. Use `show ((l : LL) ^ r) • z = (y : A'.V)`. Rewrite using `[hz, smul_smul, mul_inv_cancel₀ (pow_ne_zero _ hl), one_smul]`. Rewrite using `[Submodule.Quotient.mk_eq_zero, ← hy]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+-/
 theorem psiQ_injective : Function.Injective (psiQ h2 hlam e) := by
   have hl0 : (l : ℚ_[l]) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero
   have hl : (l : LL) ≠ 0 := by
@@ -213,10 +287,20 @@ theorem psiQ_injective : Function.Injective (psiQ h2 hlam e) := by
   exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top
 
 omit [TopologicalSpace LL] in
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem rho_inv {G V : Type} [Group G] [AddCommGroup V] [Module LL V] (ρ : Representation LL G V)
     (h : G) (v : V) : ρ h (ρ h⁻¹ v) = v := by
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Take `⟨w, hw1, hw2⟩` from `hc ((IntermediateField.fixingSubgroupEquiv K.1).symm g)`. Rewrite `hw2` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[← hw2, ← map_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[PadicInt.coe_mul, coe_uv, coe_uv]`. Generalize the expression as in `(IntermediateField.fixingSubgroupEquiv K.1).symm g = h at hw1`. Use `show lam (m (x : A.V) (A'.ρ h y)) = (w : ℚ_[l]) * lam (m (A.ρ h⁻¹ x) y)`. Establish `key` using `h1 h (A.ρ h⁻¹ x) y`. Rewrite `key` using `[show A.ρ h (A.ρ h⁻¹ (x : A.V)) = x from rho_inv A.ρ h x]`.
+
+Rewrite using `[key, hw1, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+-/
 theorem uv_act (c : ↥(GK K) → LL)
     (h1 : ∀ g x y, m (A.ρ g x) (A'.ρ g y) = c g * m x y)
     (hc : ∀ g : ↥(GK K), ∃ w : ℤ_[l], c g = algebraMap ℚ_[l] LL (w : ℚ_[l]) ∧
@@ -242,11 +326,23 @@ theorem uv_act (c : ↥(GK K) → LL)
   rw [key, hw1, ← Algebra.smul_def, map_smul, smul_eq_mul]
 
 omit [TopologicalSpace LL] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actQ_mk' {G V : Type} [Group G] [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] {ρ : Representation LL G V}
     (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : StableSub L I) (h : G) (x : ↥L.T) :
     actQ L I hI h (Submodule.Quotient.mk x) = Submodule.Quotient.mk (actT L h x) := rfl
 
 include e in
+/- English proof (translation)
+Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H y`. Apply `tracePairingLevelDual_ext e` to reduce the goal to its premises. Introduce `x`. Establish `key : psiQ h2 hlam e (Submodule.Quotient.mk (actT LA' ((IntermediateField.fixingSubgroupEquiv K.1).symm g) y)) (e (Submodule.Quotient.mk x)) = ((Formalism.GaloisCohomology.cycK l K.1 r g : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * psiQ h2 hlam e (Submodule.Quotient.mk y) (e (Submodule.Q …`.
+
+Rewrite using `[psiQ_mk h2 hlam e, psiQ_mk h2 hlam e]`. Conclude with `uv_act h2 hlam c h1 hc g x y`. Establish `hinv : (IntermediateField.fixingSubgroupEquiv K.1).symm g⁻¹ = ((IntermediateField.fixingSubgroupEquiv K.1).symm g)⁻¹` using `map_inv _ g`. Establish `hr : rho g⁻¹ (e (Submodule.Quotient.mk x)) = e (Submodule.Quotient.mk (actT LA ((IntermediateField.fixingSubgroupEquiv K.1).symm g)⁻¹ x))`. Establish `h0` using `hrho g⁻¹ (Submodule.Quotient.mk x)`.
+
+Rewrite `h0` using `[hinv]`. Conclude with `h0.trans (congrArg e (actQ_mk' LA _ hI _ x))`. Establish `hA'` using `actQ_mk' LA' _ hI' ((IntermediateField.fixingSubgroupEquiv K.1).symm g) y`. Establish `s1` using `congrArg (fun q => psiQ h2 hlam e q (e (Submodule.Quotient.mk x))) hA'`. Establish `s2` using `congrArg (fun t => ((Formalism.GaloisCohomology.cycK l K.1 r g : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * psiQ h2 hlam e (Submodule.Quotient.mk y) t) hr`.
+
+Establish `s3` using `ReciprocityTheory.Gal.twDual_apply (Formalism.GaloisCohomology.cycK l K.1 r) rho g (psiQ h2 hlam e (Submodule.Quotient.mk y)) (e (Submodule.Quotient.mk x))`. Use `beta_reduce at s1 s2`. Conclude with `s1.trans (key.trans (s2.symm.trans s3.symm))`.
+-/
 theorem psiQ_equivariant (c : ↥(GK K) → LL)
     (h1 : ∀ g x y, m (A.ρ g x) (A'.ρ g y) = c g * m x y)
     (hc : ∀ g : ↥(GK K), ∃ w : ℤ_[l], c g = algebraMap ℚ_[l] LL (w : ℚ_[l]) ∧
@@ -294,6 +390,11 @@ namespace GlobalTheory
 
 open TraceLevel in
 
+/- English proof (translation)
+Introduce `l _ P K LL _ _ _ O _ _ A A' LA LA' m hm lam hlam r hI hI' hchi M _ _ e rho hrho`. Establish `hc : ∀ g : ↥(GK K), ∃ w : ℤ_[l], ((Formalism.MainNotions.N.cycLL (P.PD K) LL g : LLˣ) : LL) = algebraMap ℚ_[l] LL (w : ℚ_[l]) ∧ (PadicInt.toZModPow r w : ZMod (l ^ r)) = ((Formalism.GaloisCohomology.cycK l K.1 r (IntermediateField.fixingSubgroupEquiv K.1 g) : (ZMod (l ^ r))ˣ) : Z …`. Introduce `g`. Take `⟨w, hw1, hw2⟩` from `hchi g`. Conclude with `⟨w, by rw [← hw1]; rfl, hw2⟩`.
+
+Conclude with `⟨psiQ hm.2 hlam e, psiQ_injective hm.2 hlam e, psiQ_equivariant hm.2 hlam e (fun h => ((Formalism.MainNotions.N.cycLL (P.PD K) LL h : LLˣ) : LL)) hm.1.1 hc hI hI' rho hrho⟩`.
+-/
 theorem tracePairing_levelMap : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL] (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 (P.PD K) LA LA' m → ∀ (lam : LL →ₗ[ℚ_[l]] ℚ_[l]), (∀ a : LL, (∀ b : O, ∃ u : ℤ_[l], lam (a * algebraMap O LL b) = (u : ℚ_[l])) ↔ ∃ b : O, algebraMap O LL b = a) → ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)) (hI' : StableSub LA' (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)), (∀ g : ↥(GK K), ∃ u : ℤ_[l], (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) = (u : ℚ_[l]) ∧ (PadicInt.toZModPow r u : ZMod (l ^ r)) = ((Formalism.GaloisCohomology.cycK l K.1 r (IntermediateField.fixingSubgroupEquiv K.1 g) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r))) → ∀ (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M] (e : (↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)) ≃+ M) (rho : Representation (ZMod (l ^ r)) (Formalism.GaloisCohomology.GK l K.1) M), (∀ g x, rho g (e x) = e (actQ LA _ hI ((IntermediateField.fixingSubgroupEquiv K.1).symm g) x)) → ∃ Ψ : (↥LA'.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)) →+ ReciprocityTheory.Gal.TDual (ZMod (l ^ r)) M, Function.Injective Ψ ∧ ∀ g y, Ψ (actQ LA' _ hI' ((IntermediateField.fixingSubgroupEquiv K.1).symm g) y) = ReciprocityTheory.Gal.twDual (Formalism.GaloisCohomology.cycK l K.1 r) rho g (Ψ y) := by
   intro l _ P K LL _ _ _ O _ _ A A' LA LA' m hm lam hlam r hI hI' hchi M _ _ e rho hrho
   have hc : ∀ g : ↥(GK K), ∃ w : ℤ_[l],

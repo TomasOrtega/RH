@@ -26,15 +26,26 @@ def botV (z : Fin (n + n) → R) : Fin n → R := fun i => z (finSumFinEquiv (Su
 
 def joinV (y y' : Fin n → R) : Fin (n + n) → R := fun j => Sum.elim y y' (finSumFinEquiv.symm j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[topV, joinV]`.
+-/
 theorem topV_joinV (y y' : Fin n → R) : topV (joinV y y') = y := by
   funext i; simp [topV, joinV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show Sum.elim y y' (finSumFinEquiv.symm (finSumFinEquiv (Sum.inr i))) = y' i`. Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem botV_joinV (y y' : Fin n → R) : botV (joinV y y') = y' := by
   funext i
   show Sum.elim y y' (finSumFinEquiv.symm (finSumFinEquiv (Sum.inr i))) = y' i
   rw [Equiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+Introduce `j`. Use `show p (Sum.elim y y' (finSumFinEquiv.symm j))`. Generalize the expression as in `finSumFinEquiv.symm j = s`. Break down `s with i | i` into its components or cases. Conclude with `hy i`.
+
+Conclude with `hy' i`.
+-/
 theorem joinV_mem {p : R → Prop} {y y' : Fin n → R} (hy : ∀ i, p (y i)) (hy' : ∀ i, p (y' i)) :
     ∀ j, p (joinV y y' j) := by
   intro j
@@ -44,18 +55,27 @@ theorem joinV_mem {p : R → Prop} {y y' : Fin n → R} (hy : ∀ i, p (y i)) (h
   · exact hy i
   · exact hy' i
 
+/- English proof (translation)
+Unfold `blk4`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+-/
 theorem blk4_mul'' [CommRing R] (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d * blk4 a' b' c' d' =
       blk4 (a * a' + b * c') (a * b' + b * d') (c * a' + d * c') (c * b' + d * d') := by
   unfold blk4
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Simplify using `only [RingHom.mapMatrix_apply]`. Unfold `blk4`. Rewrite using `[← Matrix.submatrix_map, Matrix.fromBlocks_map]`.
+-/
 theorem mapMatrix_blk4 {S : Type} [CommRing R] [CommRing S] (f : R →+* S) (a b c d : Matrix (Fin n) (Fin n) R) :
     f.mapMatrix (blk4 a b c d) = blk4 (f.mapMatrix a) (f.mapMatrix b) (f.mapMatrix c) (f.mapMatrix d) := by
   simp only [RingHom.mapMatrix_apply]
   unfold blk4
   rw [← Matrix.submatrix_map, Matrix.fromBlocks_map]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `botV topV blk4`. Rewrite using `[Matrix.submatrix_mulVec_equiv, Function.comp_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_mulVec, Sum.elim_inr]`. Both sides reduce to the same expression.
+-/
 theorem botV_blk4_mulVec [CommRing R] (A B C D : Matrix (Fin n) (Fin n) R) (z : Fin (n + n) → R) :
     botV (blk4 A B C D *ᵥ z) = C *ᵥ topV z + D *ᵥ botV z := by
   funext i
@@ -64,6 +84,11 @@ theorem botV_blk4_mulVec [CommRing R] (A B C D : Matrix (Fin n) (Fin n) R) (z : 
     Sum.elim_inr]
   rfl
 
+/- English proof (translation)
+Establish `h1 : (blk4 0 1 (-1) 0 * blk4 1 bv 0 1 : Matrix (Fin (n + n)) (Fin (n + n)) R) = blk4 0 1 (-1) (-bv)`. Rewrite using `[blk4_mul'']`. Simplify using the standard rewrite rules. Establish `h2 : (blk4 av 0 0 dv * blk4 1 b0v 0 1 : Matrix (Fin (n + n)) (Fin (n + n)) R) = blk4 av (av * b0v) 0 dv`. Rewrite using `[blk4_mul'']`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← h1, h, h2]`.
+-/
 theorem hg_of [CommRing R] (av dv bv b0v : Matrix (Fin n) (Fin n) R) (Mk : Matrix (Fin (n + n)) (Fin (n + n)) R)
     (h : blk4 0 1 (-1) 0 * blk4 1 bv 0 1 = blk4 av 0 0 dv * blk4 1 b0v 0 1 * Mk) :
     blk4 0 1 (-1) (-bv) = blk4 av (av * b0v) 0 dv * Mk := by
@@ -73,6 +98,9 @@ theorem hg_of [CommRing R] (av dv bv b0v : Matrix (Fin n) (Fin n) R) (Mk : Matri
     rw [blk4_mul'']; simp
   rw [← h1, h, h2]
 
+/- English proof (translation)
+Establish `h : botV (blk4 0 1 (-1) (-b) *ᵥ z) = botV ((blk4 A Bm 0 d * Mk) *ᵥ z)` using `by rw [hg]`. Rewrite `h` using `[← Matrix.mulVec_mulVec, botV_blk4_mulVec, botV_blk4_mulVec, Matrix.zero_mulVec, zero_add, Matrix.neg_mulVec, Matrix.neg_mulVec, Matrix.one_mulVec]`. Rewrite using `[sub_eq_add_neg, h]`.
+-/
 theorem key_bot [CommRing R] (b d A Bm : Matrix (Fin n) (Fin n) R) (Mk : Matrix (Fin (n + n)) (Fin (n + n)) R)
     (hg : blk4 0 1 (-1) (-b) = blk4 A Bm 0 d * Mk) (z : Fin (n + n) → R) :
     -topV z - b *ᵥ botV z = d *ᵥ botV (Mk *ᵥ z) := by
@@ -81,6 +109,15 @@ theorem key_bot [CommRing R] (b d A Bm : Matrix (Fin n) (Fin n) R) (Mk : Matrix 
     Matrix.neg_mulVec, Matrix.one_mulVec] at h
   rw [sub_eq_add_neg, h]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image, SetLike.mem_coe, hO]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, y', hy', rfl⟩`. Establish `hz : ∀ j, joinV (-y) (-y') j ∈ S` using `joinV_mem (p := (· ∈ S)) (fun i => S.neg_mem (hy i)) (fun i => S.neg_mem (hy' i))`.
+
+Use `⟨botV (Mk *ᵥ joinV (-y) (-y')), fun i => (hK _).1 hz _, ?_⟩` and prove the remaining obligations. Rewrite using `[← key_bot b d A Bm Mk hg, topV_joinV, botV_joinV, Matrix.mulVec_neg, neg_neg, sub_neg_eq_add]`. Introduce and unpack `⟨u, hu, rfl⟩`. Take `⟨z, hzdef⟩ : ∃ z, z = Mk' *ᵥ joinV 0 u` from `⟨_, rfl⟩`. Establish `hMz : Mk *ᵥ z = joinV 0 u` using `by rw [hzdef, Matrix.mulVec_mulVec, hkk, Matrix.one_mulVec]`.
+
+Establish `hz : ∀ j, z j ∈ S` using `(hK z).2 (by`. Rewrite using `[hMz]`. Conclude with `joinV_mem (p := (· ∈ S)) (fun _ => S.zero_mem) hu)`. Use `⟨-topV z, fun i => S.neg_mem (hz (finSumFinEquiv (Sum.inl i))), -botV z, fun i => S.neg_mem (hz (finSumFinEquiv (Sum.inr i))), ?_⟩` and prove the remaining obligations. Establish `h` using `key_bot b d A Bm Mk hg z`.
+
+Rewrite `h` using `[hMz, botV_joinV]`. Rewrite using `[← h, Matrix.mulVec_neg, sub_eq_add_neg]`.
+-/
 theorem image_eq [CommRing R] (S : Subring R) (O : AddSubgroup (Fin n → R)) (hO : ∀ y, y ∈ O ↔ ∀ i, y i ∈ S)
     (b d A Bm : Matrix (Fin n) (Fin n) R) (Mk Mk' : Matrix (Fin (n + n)) (Fin (n + n)) R) (hkk : Mk * Mk' = 1)
     (hK : ∀ z : Fin (n + n) → R, (∀ j, z j ∈ S) ↔ ∀ j, (Mk *ᵥ z) j ∈ S)
@@ -109,6 +146,11 @@ end Blocks
 
 section Haar
 
+/- English proof (translation)
+Establish `hc` using `GlobalTheory.ModuArtin.addEquivAddHaarChar_mulVecCE B hA hR (Fin n) d hd`. Establish `hpre` using `addEquivAddHaarChar_smul_preimage lam (X := (fun y => d *ᵥ y) '' O) (GlobalTheory.ModuLR.mulVecCE d hd)`. Establish `e : ⇑(GlobalTheory.ModuLR.mulVecCE d hd) ⁻¹' ((fun y => d *ᵥ y) '' O) = O`. Establish `hf : (fun y => d *ᵥ y) = ⇑(GlobalTheory.ModuLR.mulVecCE d hd)` using `rfl`. Rewrite using `[hf]`.
+
+Conclude with `Set.preimage_image_eq O (GlobalTheory.ModuLR.mulVecCE d hd).injective`. Rewrite `hpre` using `[e, hc, ENNReal.smul_def, smul_eq_mul]`. Establish `h0 : lam O ≠ 0` using `(hOo.measure_pos lam ⟨0, hO0⟩).ne'`. Establish `ht : lam O ≠ ⊤` using `hOc.measure_lt_top.ne`. Rewrite using `[← hpre, mul_div_assoc, ENNReal.div_self h0 ht, mul_one, ENNReal.coe_toReal]`.
+-/
 theorem nu2_eq_modu {B : Type} [CommRing B] [TopologicalSpace B] [IsTopologicalRing B] [LocallyCompactSpace B]
     [T2Space B] [SecondCountableTopology B] [MeasurableSpace B] [BorelSpace B] (hA : IsArtinianRing B)
     (hR : IsReduced B) {n : ℕ} (lam : Measure (Fin n → B)) [lam.IsAddHaarMeasure] (O : Set (Fin n → B))
@@ -130,6 +172,31 @@ end Haar
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D n w hw nb hnb b p k hp hk hwk a ha v lam hlam`. Take `⟨m, u, b0, rfl, hm, hu⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_levi_unip hp a ha`. Use `haveI := hlam`. Use `haveI : IsTopologicalRing (Fv D.host.F v ⊗[D.host.F] D.host.E) := GlobalTheory.LocTateInt.isTopologicalRing_Ev v`. Use `haveI : T2Space (Fv D.host.F v ⊗[D.host.F] D.host.E) := GlobalTheory.LocTateInt.t2Space_Fv_tensor v`.
+
+Use `haveI : LocallyCompactSpace (Fv D.host.F v ⊗[D.host.F] D.host.E) := GlobalTheory.LocTateInt.locallyCompactSpace_Ev v`. Use `haveI : SecondCountableTopology (Fv D.host.F v ⊗[D.host.F] D.host.E) := GlobalTheory.LocTateInt.secondCountable_Ev v`. Use `haveI : BorelSpace (Fv D.host.F v ⊗[D.host.F] D.host.E) := ⟨rfl⟩`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ D.host.F D.host.E`. Establish `hAr : IsArtinianRing (Fv D.host.F v ⊗[D.host.F] D.host.E)` using `IsArtinianRing.of_finite (Fv D.host.F v) _`.
+
+Establish `hRd : IsReduced (Fv D.host.F v ⊗[D.host.F] D.host.E)` using `by haveI : Algebra.FormallyUnramified D.host.F D.host.E := Algebra.FormallyUnramified.of_isSeparable _ _`. Conclude with `Algebra.FormallyUnramified.isReduced_of_field (Fv D.host.F v) _`. Use `set cf := compFin D.host.F D.host.E v with hcf`. Establish `e : cf.mapMatrix (mat w * mat (nb b)) = cf.mapMatrix (mat m * mat u * mat k)`. Use `congrArg (fun g => cf.mapMatrix (mat g)) hwk` as an intermediate fact.
+
+Conclude with `this`. Simplify using `only [map_mul] at e`. Rewrite `e` using `[hw, hnb b, hm, hu]`. Simplify using `only [mapMatrix_blk4, map_zero, map_one, map_neg] at e`. Establish `hg` using `hg_of _ _ _ _ _ e`.
+
+Establish `hk' : k ∈ GlobalTheory.AdelicU.levelAll D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) 1` using `hk`. Establish `hkv` using `(GlobalTheory.AdelicU.mem_levelAll.1 hk').1 v`. Establish `hK : ∀ z : Fin (n + n) → Fv D.host.F v ⊗[D.host.F] D.host.E, (∀ j, z j ∈ intLoc D.host.F D.host.E v) ↔ ∀ j, (cf.mapMatrix (mat k) *ᵥ z) j ∈ intLoc D.host.F D.host.E v`. Introduce `z`. Establish `h` using `GlobalTheory.AdelicU.mem_stabLoc.1 hkv z`.
+
+Rewrite `h` using `[mem_latLoc_stdLattice, mem_latLoc_stdLattice]`. Conclude with `h`. Establish `hkk : cf.mapMatrix (mat k) * cf.mapMatrix (mat k⁻¹) = 1`. Rewrite using `[← map_mul, ← GlobalTheory.StdUnn.LeftInvSect.mat_mul, mul_inv_cancel, GlobalTheory.StdUnn.LeftInvSect.mat_one, map_one]`. Establish `hset` using `image_eq (intLoc D.host.F D.host.E v) (PositivityTheory.PfSWUS.SwFockk.lstd D.host.F D.host.E n v) (fun y => Iff.rfl) (cf.mapMatrix b.1) _ _ _ _ _ hkk hK hg`.
+
+Establish `hcA : ∀ z : AF D.host.F ⊗[D.host.F] D.host.E, cf (cA D z) = sigR (Fv D.host.F v) D.sp.cm.sig (cf z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Consider the case `tmul x y => rfl`. Establish `hdetinv : ((a⁻¹ : GL (Fin n) (AE D)).1).det = (((Matrix.GeneralLinearGroup.det a)⁻¹ : (AE D)ˣ) : AE D)` using `congrArg Units.val (map_inv Matrix.GeneralLinearGroup.det a)`. Establish `hadj : (adj (a⁻¹).1 : Mx D n n).det = cA D ((a⁻¹ : GL (Fin n) (AE D)).1).det` using `by show ((((a⁻¹ : GL (Fin n) (AE D)).1).map (cA D))ᵀ).det = _`. Rewrite using `[Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Establish `hdet : (cf.mapMatrix (adj (a⁻¹).1)).det = ((conjUnit D.sp.cm.sig (unitFin D.host.F D.host.E v (Matrix.GeneralLinearGroup.det a))⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ) : Fv D.host.F v ⊗[D.host.F] D.host.E)`.
+
+Rewrite using `[← RingHom.map_det, hadj, hcA, hdetinv]`. Both sides reduce to the same expression. Establish `hx : IsUnit (cf.mapMatrix (adj (a⁻¹).1)).det` using `by rw [hdet]; exact Units.isUnit _`. Establish `hmodu : (GlobalTheory.GaugeEx.modu (Fv D.host.F v ⊗[D.host.F] D.host.E) (cf.mapMatrix (adj (a⁻¹).1)).det : ℝ) = ((absEv D.host.F D.host.E v (unitFin D.host.F D.host.E v (Matrix.GeneralLinearGroup.det a)) : ℝ≥0) : ℝ)⁻¹`. Rewrite using `[GlobalTheory.GaugeEx.modu, dif_pos hx, GlobalTheory.LocTateInt.distribHaarChar_Ev, IsUnit.unit_spec, hdet, ← absEv_apply, absEv_conjUnit, map_inv, NNReal.coe_inv]`.
+
+Establish `hOset : ((PositivityTheory.PfSWUS.SwFockk.lstd D.host.F D.host.E n v : AddSubgroup _) : Set (Fin n → Fv D.host.F v ⊗[D.host.F] D.host.E)) = Set.pi Set.univ fun _ => (intLoc D.host.F D.host.E v : Set (Fv D.host.F v ⊗[D.host.F] D.host.E))`. Use extensionality with `y`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, SetLike.mem_coe]`. Conclude with `Iff.rfl`. Take `⟨hc, ho⟩` from `GlobalTheory.ThK.isCompact_isOpen_intLoc (F := D.host.F) (E := D.host.E) v`.
+
+Establish `hOo : IsOpen ((PositivityTheory.PfSWUS.SwFockk.lstd D.host.F D.host.E n v : AddSubgroup _) : Set (Fin n → Fv D.host.F v ⊗[D.host.F] D.host.E))`. Rewrite using `[hOset]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => ho`. Establish `hOc : IsCompact ((PositivityTheory.PfSWUS.SwFockk.lstd D.host.F D.host.E n v : AddSubgroup _) : Set (Fin n → Fv D.host.F v ⊗[D.host.F] D.host.E))`. Rewrite using `[hOset]`.
+
+Conclude with `isCompact_univ_pi fun _ => hc`. Unfold `PositivityTheory.SiegelWeilFormula.Gen.nu2`. Establish `hbv : PositivityTheory.SiegelWeilFormula.Gen.matV v b.1 = cf.mapMatrix b.1` using `rfl`. Rewrite using `[hbv, hset, nu2_eq_modu hAr hRd lam _ hOo hOc (PositivityTheory.PfSWUS.SwFockk.lstd D.host.F D.host.E n v).zero_mem _ hx, hmodu]`.
+-/
 theorem hwFin : PositivityTheory.PfSWUS.SwFockk.HWFin := by
   intro D n w hw nb hnb b p k hp hk hwk a ha v lam hlam
   obtain ⟨m, u, b0, rfl, hm, hu⟩ := GlobalTheory.StdUnn.LeftInvSect.exists_levi_unip hp a ha

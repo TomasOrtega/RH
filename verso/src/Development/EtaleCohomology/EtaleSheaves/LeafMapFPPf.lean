@@ -11,16 +11,25 @@ section
 variable {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω]
 
 @[reassoc]
+/- English proof (translation)
+Simplify using `only [incl, ← Spec.map_comp]`. Use `congr 1`.
+-/
 theorem incl_comp {R S T : Subalgebra k Ω} (h1 : R ≤ S) (h2 : S ≤ T) :
     incl h2 ≫ incl h1 = incl (h1.trans h2) := by
   simp only [incl, ← Spec.map_comp]
   congr 1
 
+/- English proof (translation)
+Simplify using `only [incl]`. Rewrite using `[← Spec.map_id]`. Use `congr 1`.
+-/
 theorem incl_refl (R : Subalgebra k Ω) : incl (le_refl R) = 𝟙 _ := by
   simp only [incl]
   rw [← Spec.map_id]
   congr 1
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_right (h₁₂ := pullback.fst q (incl h)) (h₂₂ := incl h) (by rw [pullback.lift_fst, toR_incl]; exact hs) (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)`.
+-/
 theorem sq {R S : Subalgebra k Ω} (h : R ≤ S) {C D : Scheme.{0}} {c : C ⟶ Sp Ω} {q : D ⟶ Sp R} {v : C ⟶ D}
     (hs : IsPullback v c q (toR R)) :
     IsPullback (pullback.lift v (c ≫ toR S) (by rw [Category.assoc, toR_incl, hs.w])) c
@@ -34,10 +43,16 @@ def dgMap {R : Subalgebra k Ω} {D1 : Scheme.{0}} (q1 : D1 ⟶ Sp R) {S T : Suba
     rw [pullback.condition, Category.assoc, incl_comp])
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+-/
 theorem dgMap_fst {R : Subalgebra k Ω} {D1 : Scheme.{0}} (q1 : D1 ⟶ Sp R) {S T : Subalgebra k Ω} (hS : R ≤ S)
     (hT : R ≤ T) (h : S ≤ T) : dgMap q1 hS hT h ≫ pullback.fst _ _ = pullback.fst _ _ := pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem dgMap_snd {R : Subalgebra k Ω} {D1 : Scheme.{0}} (q1 : D1 ⟶ Sp R) {S T : Subalgebra k Ω} (hS : R ≤ S)
     (hT : R ≤ T) (h : S ≤ T) : dgMap q1 hS hT h ≫ pullback.snd _ _ = pullback.snd _ _ ≫ incl h :=
   pullback.lift_snd _ _ _
@@ -52,6 +67,9 @@ def dgT {R : Subalgebra k Ω} {D1 : Scheme.{0}} (q1 : D1 ⟶ Sp R) : dg q1 ⟶ (
   app S := pullback.fst _ _ ≫ q1
   naturality S T f := by simp [dg]
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `erw [Category.assoc, dgMap_fst, pullback.lift_fst, pullback.lift_fst]`. Use `erw [Category.assoc, dgMap_snd, pullback.lift_snd_assoc, pullback.lift_snd, Category.assoc, toR_incl]`.
+-/
 theorem dgπ_map {R : Subalgebra k Ω} {C1 D1 : Scheme.{0}} (c1 : C1 ⟶ Sp Ω) (q1 : D1 ⟶ Sp R) (v1 : C1 ⟶ D1)
     (hs : IsPullback v1 c1 q1 (toR R)) {S T : Subalgebra k Ω} (hS : R ≤ S) (hT : R ≤ T) (h : S ≤ T) :
     pullback.lift v1 (c1 ≫ toR T) (by rw [Category.assoc, toR_incl, hs.w]) ≫ dgMap q1 hS hT h =
@@ -78,6 +96,19 @@ def LeafStagesFP : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [Alge
     (∀ S : (GlobalTheory.FGAbove R)ᵒᵖ, CompactSpace ((dg q1).obj S) ∧ QuasiSeparatedSpace ((dg q1).obj S)) ∧
     ∀ (S T : GlobalTheory.FGAbove R) (h : S.1 ≤ T.1), IsAffineHom (dgMap q1 S.2.2 T.2.2 h)
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ R hR C0 C1 c0 γ1 D0 D1 q q1 v0 v1 hq hq1 hs0 hs1`. Use `haveI := GlobalTheory.FGAbove.isFiltered hR`. Take `⟨hc⟩` from `hL k Ω R hR (γ1 ≫ c0) q1 v1 hs1 hq1`. Take `⟨hcs, haf⟩` from `hI k Ω R q1 hq1`. Use `haveI := hq.1`.
+
+Use `haveI : ∀ S : (GlobalTheory.FGAbove R)ᵒᵖ, CompactSpace ((dg q1).obj S) := fun S => (hcs S).1`. Use `haveI : ∀ S : (GlobalTheory.FGAbove R)ᵒᵖ, QuasiSeparatedSpace ((dg q1).obj S) := fun S => (hcs S).2`. Use `haveI : ∀ {S T : (GlobalTheory.FGAbove R)ᵒᵖ} (f : S ⟶ T), IsAffineHom ((dg q1).map f) := fun f => haf _ _ _`. Take `⟨S, g, hg1, hg2⟩` from `Scheme.exists_π_app_comp_eq_of_locallyOfFinitePresentation (D := dg q1) (t := dgT q1) (f := q) (c := dgCone (γ1 ≫ c0) q1 v1 hs1) hc (γ1 ≫ v0) (by`. Use extensionality with `S`.
+
+Simplify using `only [dgCone, dgT, NatTrans.comp_app, Functor.const_map_app]`. Use `erw [pullback.lift_fst_assoc]`. Rewrite using `[hs1.w]`. Simplify using `only [Category.assoc, hs0.w])`. Set `P` to `pullback q1 (incl S.unop.2.2)`.
+
+Set `g' : P ⟶ D0` to `g`. Set `w1 : C1 ⟶ P` to `pullback.lift v1 ((γ1 ≫ c0) ≫ toR S.unop.1) (by rw [Category.assoc, toR_incl, hs1.w])`. Establish `hg1' : w1 ≫ g' = γ1 ≫ v0` using `hg1`. Establish `hg2' : g' ≫ q = pullback.snd q1 (incl S.unop.2.2) ≫ incl S.unop.2.2`. Rewrite using `[show g' ≫ q = pullback.fst q1 (incl S.unop.2.2) ≫ q1 from hg2]`.
+
+Conclude with `pullback.condition`. Use `⟨S.unop.1, S.unop.2.1, pullback q (incl S.unop.2.2), P, pullback.snd _ _, pullback.lift g' (pullback.snd _ _) hg2', pullback.lift v0 (c0 ≫ toR S.unop.1) (by rw [Category.assoc, toR_incl, hs0.w]), w1, fp_snd _ _ hq, ?_, sq S.unop.2.2 hs0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pullback.lift_snd]`. Conclude with `fp_snd _ _ hq1`. Rewrite using `[pullback.lift_snd]`.
+
+Conclude with `sq S.unop.2.2 hs1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pullback.lift_fst]`. Conclude with `hg1'.symm`. Simplify using `only [Category.assoc, pullback.lift_snd, w1]`.
+-/
 theorem morphismDescent_of_isLimit (hL : LeafLimFP) (hI : LeafStagesFP) : LeafMapFP := by
   intro k _ Ω _ _ R hR C0 C1 c0 γ1 D0 D1 q q1 v0 v1 hq hq1 hs0 hs1
   haveI := GlobalTheory.FGAbove.isFiltered hR

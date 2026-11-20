@@ -16,6 +16,23 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.UpperRecord
 
+/- English proof (translation)
+Set `ρ : ∀ k, V →ₗ[ℂ] (Z k → ℂ)` to `fun k => (LinearMap.funLeft ℂ ℂ fun z : Z k => e.symm ⟨k, z⟩).comp V.subtype`. Establish `hr : ∀ k, Module.rank ℂ (LinearMap.range (ρ k)) ≤ (d k * C : ℕ)` using `fun k => by`. Use `rank_le fun s hs => ?_` and prove the remaining obligations. Establish `hs'` using `(hs.comp s.equivFin.symm s.equivFin.symm.injective).map' (LinearMap.range (ρ k)).subtype (Submodule.ker_subtype _)`. Use `choose g hg using fun q : Fin s.card => (s.equivFin.symm q).1.2`.
+
+Use `hb k s.card g ?_` and prove the remaining obligations. Establish `heq : (fun q (z : Z k) => (g q).1 (e.symm ⟨k, z⟩)) = _` using `funext hg`. Rewrite using `[heq]`. Conclude with `hs'`. Establish `hfin : ∀ k, Module.Finite ℂ (LinearMap.range (ρ k))` using `fun k => Module.rank_lt_aleph0_iff.1 ((hr k).trans_lt (Cardinal.natCast_lt_aleph0))`.
+
+Establish `hfr : ∀ k, Module.finrank ℂ (LinearMap.range (ρ k)) ≤ d k * C` using `fun k => Module.finrank_le_of_rank_le (hr k)`. Set `s : Finset ι` to `Finset.univ.image fun q => (en q).1`. Establish `hs : ∀ k, k ∉ s → d k = 0` using `fun k hk => by`. Assume the negation of the conclusion as `h0`. Conclude with `hk (Finset.mem_image.2 ⟨en.symm ⟨k, ⟨0, Nat.pos_of_ne_zero h0⟩⟩, Finset.mem_univ _, by simp⟩)`.
+
+Set `Φ : V →ₗ[ℂ] (∀ k : s, LinearMap.range (ρ k))` to `LinearMap.pi fun k => (ρ k).rangeRestrict`. Establish `hΦ : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `g hg`. Establish `hk : ∀ k, ρ k g = 0` using `fun k => by`.
+
+Distinguish the cases in `hk : k ∈ s`. Conclude with `congrArg Subtype.val (congrFun hg ⟨k, hk⟩)`. Establish `h0 : Module.finrank ℂ (LinearMap.range (ρ k)) = 0`. Use `hfr k` as an intermediate fact. Rewrite `this` using `[hs k hk]`.
+
+Use linear arithmetic over natural numbers and integers. Use `Submodule.finrank_eq_zero.1 h0` as an intermediate fact. Conclude with `(Submodule.eq_bot_iff _).1 this _ ⟨g, rfl⟩`. Use extensionality with `y`. Use `congrFun (hk (e y).1) (e y).2` as an intermediate fact.
+
+Simplify `this` using `[ρ, LinearMap.funLeft_apply]`. Establish `hsum : ∑ k : s, d k ≤ δ`. Establish `hinj : Function.Injective fun p : Σ k : s, Fin (d k) => en.symm ⟨p.1.1, p.2⟩`. Introduce and unpack `⟨⟨k, hk⟩, a⟩ ⟨⟨k', hk'⟩, a'⟩ hp`. Use `en.symm.injective hp` as an intermediate fact.
+
+Take `⟨rfl, h2⟩` from `Sigma.mk.inj_iff.1 this`. Take `rfl` from `eq_of_heq h2`. Both sides reduce to the same expression. Simplify using `using Fintype.card_le_of_injective _ hinj`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finrank_le_of_parts {Y ι : Type} {Z : ι → Type} (V : Submodule ℂ (Y → ℂ)) (e : Y ≃ Σ k, Z k)
     (d : ι → ℕ) (C δ : ℕ) (en : Fin δ ≃ Σ k, Fin (d k))
     (hb : ∀ (k : ι) (m : ℕ) (g : Fin m → V),
@@ -72,6 +89,15 @@ theorem finrank_le_of_parts {Y ι : Type} {Z : ι → Type} (V : Submodule ℂ (
     _ = (∑ k : s, d k) * C := (Finset.sum_mul _ _ _).symm
     _ ≤ δ * C := Nat.mul_le_mul_right _ hsum
 
+/- English proof (translation)
+Introduce `D T h j hj n R e hR N wL wF w Tn c1 A t Fl δ xs en _`. Use `finrank_le_of_parts _ e (fun k => (Fl.Fl k).δ) _ δ en fun k m g hg => ?_` and prove the remaining obligations. Use `choose f hf hgf using fun q => (GlobalTheory.T.mem_span_cuspReadings_iff_components D T h j hj n R e hR (addL wF wL Tn)).1 (g q).1 (g q).2`. Establish `hw` using `(GlobalTheory.T.componentModelWeight_dimension_dictionary D T h j hj k).2.2.1 wF wL Tn`. Use `GlobalTheory.UpperModel.upper _ _ _ (A.Xa k) (Fl.Fl k) m (fun q => f q k) (fun q => by` as an intermediate fact.
+
+Rewrite using `[A.hF, A.hL, A.hT, ← hw]`. Conclude with `(hf q k).1.1) (fun u hu => by`. Use function extensionality and compare the values at `q`. Use `Fintype.linearIndependent_iff.1 hg u ?_ q` and prove the remaining obligations. Use function extensionality and compare the values at `z`.
+
+Use `hu z.1 z.2` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hgf q, e.apply_symm_apply])`.
+
+Rewrite `this` using `[A.hT, A.dim]`. Then use the resulting hypothesis.
+-/
 theorem upper : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (n : SecNorm (recB h.toLawsCore)) (R : Rdg (recPlusN h j hj n)) (e : R.Y ≃ DomPt T j), IsRdgU h j hj n R e → ∀ (N : ℕ) (wL wF : WeightFamilies.Wt D j) (w : Fin N → (recB h.toLawsCore).Cusp j wL) (Tn : ℕ) (c1 : ℝ) (A : ArchAt h j w wF Tn c1) (t : Idx D j N → ℂ) (Fl : FlatAt h j A t) (δ : ℕ) (xs : Fin δ → R.Y) (en : Fin δ ≃ Σ k : (T.U j T.σ₀).Comp, Fin (Fl.Fl k).δ), (∀ q, e (xs q) = ⟨(en q).1, ⟨(Fl.Fl (en q).1).xs (en q).2, (Fl.Fl (en q).1).xs_mem _⟩⟩) → Module.finrank ℂ (R.sp (addL wF wL Tn) Set.univ) ≤ δ * (Tn + 2 * WeightFamilies.dimY D j + 6).choose (WeightFamilies.dimY D j) := by
   intro D T h j hj n R e hR N wL wF w Tn c1 A t Fl δ xs en _
   refine finrank_le_of_parts _ e (fun k => (Fl.Fl k).δ) _ δ en fun k m g hg => ?_

@@ -20,6 +20,11 @@ def TailH : Prop :=
 
 variable {m L}
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `hT S`. Establish `h2 : HasProd (fun i : {i // i ∉ S} => am m L i.1) c.toNNReal`. Use `(ENNReal.tendsto_toNNReal hc).comp h` as an intermediate fact. Unfold `HasProd at this ⊢`. Use `this using 2 with s` and compare the differences between its conclusion and the goal.
+
+Simplify using `[Function.comp, ENNReal.toNNReal_prod, am]`. Unfold `tl`. Rewrite using `[h2.tprod_eq]`. Conclude with `h2`.
+-/
 lemma hasProd_tl (hT : TailH m L) (S : Finset ι) :
     HasProd (fun i : {i // i ∉ S} => am m L i.1) (tl m L S) := by
 
@@ -33,9 +38,19 @@ lemma hasProd_tl (hT : TailH m L) (S : Finset ι) :
   rw [h2.tprod_eq]
   exact h2
 
+/- English proof (translation)
+The claim follows from `hasProd_subtype_iff_mulIndicator.mp (hasProd_tl hT S)`.
+-/
 lemma hasProd_ind (hT : TailH m L) (S : Finset ι) :
     HasProd (({i | i ∉ S} : Set ι).mulIndicator (am m L)) (tl m L S) := hasProd_subtype_iff_mulIndicator.mp (hasProd_tl hT S)
 
+/- English proof (translation)
+Establish `h1` using `hasProd_ind hT S`. Establish `h2` using `hasProd_ind hT T`. Establish `h3 : HasProd ((↑(T \ S) : Set ι).mulIndicator (am m L)) (∏ i ∈ T \ S, am m L i)`. Establish `: HasProd ((↑(T \ S) : Set ι).mulIndicator (am m L)) (∏ b ∈ T \ S, (↑(T \ S) : Set ι).mulIndicator (am m L) b)` using `hasProd_prod_of_ne_finset_one (s := T \ S) (f := (↑(T \ S) : Set ι).mulIndicator (am m L)) (fun b hb => by rw [Set.mulIndicator_apply, if_neg (by simpa using hb)])`. Rewrite `this` using `[Finset.prod_congr rfl (fun b hb => by rw [Set.mulIndicator_apply, if_pos (by simpa using hb)])]`. Then use the resulting hypothesis.
+
+Establish `h4` using `h3.mul h2`. Establish `e : ({i | i ∉ S} : Set ι).mulIndicator (am m L) = (↑(T \ S) : Set ι).mulIndicator (am m L) * ({i | i ∉ T} : Set ι).mulIndicator (am m L)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, Set.mulIndicator_apply, Set.mem_setOf_eq, Finset.coe_sdiff, Set.mem_diff, Finset.mem_coe]`. Apply the tactic sequence `by_cases hT' : i ∈ T <;> by_cases hS : i ∈ S <;> simp [hT', hS] <;> exact absurd (h hS) hT'`.
+
+Rewrite `h1` using `[e]`. Conclude with `h1.unique h4`.
+-/
 lemma tl_split [DecidableEq ι] (hT : TailH m L) {S T : Finset ι} (h : S ⊆ T) :
     tl m L S = (∏ i ∈ T \ S, am m L i) * tl m L T := by
 
@@ -57,6 +72,9 @@ lemma tl_split [DecidableEq ι] (hT : TailH m L) {S T : Finset ι} (h : S ⊆ T)
   rw [e] at h1
   exact h1.unique h4
 
+/- English proof (translation)
+Rewrite using `[tl_split hT (Finset.subset_insert i S), Finset.prod_eq_zero (i := i) (by simp [hi]) h0, zero_mul]`.
+-/
 lemma tl_zero [DecidableEq ι] (hT : TailH m L) {S : Finset ι} {i : ι} (hi : i ∉ S)
     (h0 : am m L i = 0) : tl m L S = 0 := by
 
@@ -66,6 +84,9 @@ variable (m L)
 
 def Pn (i : ι) : Measure (W i) := (m i (L i))⁻¹ • (m i).restrict (L i)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify using `only [Pn, Measure.smul_apply, Measure.restrict_apply_univ, smul_eq_mul]`. Conclude with `ENNReal.inv_mul_cancel h.1 h.2`.
+-/
 lemma Pn_prob {i : ι} (h : m i (L i) ≠ 0 ∧ m i (L i) ≠ ⊤) : IsProbabilityMeasure (Pn m L i) := by
 
   constructor
@@ -104,6 +125,9 @@ def mu (S : Finset ι) (i : ι) : Measure (W i) :=
   if i ∈ S then (m i).restrict (L i)ᶜ else (m i).restrict (L i)
 
 open Classical in
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [eS, MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd_symm_apply]`.
+-/
 lemma eS_symm_apply (S : Finset ι) (p : (∀ i : {i // i ∈ S}, W i) × (∀ i : {i // i ∉ S}, W i))
     (i : ι) : (eS S).symm p i = if h : i ∈ S then p.1 ⟨i, h⟩ else p.2 ⟨i, h⟩ := by
 
@@ -117,6 +141,17 @@ instance kap_sfin (S : Finset ι) : SFinite (kap m L S) := by unfold kap Rm; inf
 
 variable {m L}
 
+/- English proof (translation)
+Establish `hs : MeasurableSet {x : ∀ i, W i | x i ∈ A}` using `measurable_pi_apply i hA`. Unfold `kap`. Rewrite using `[Measure.map_apply (eS S).symm.measurable hs]`. Distinguish the cases in `hiS : i ∈ S`. Establish `e : (eS S).symm ⁻¹' {x | x i ∈ A} = (Function.eval (⟨i, hiS⟩ : {i // i ∈ S}) ⁻¹' A) ×ˢ Set.univ`.
+
+Use extensionality with `p`. Simplify using `[eS_symm_apply, hiS]`. Establish `h0 : ((m i).restrict (L i)ᶜ) A = 0` using `by simpa [mu, hiS] using h`. Establish `h1 : Rm m L S (Function.eval (⟨i, hiS⟩ : {i // i ∈ S}) ⁻¹' A) = 0`. Unfold `Rm`.
+
+Conclude with `Measure.pi_eval_preimage_null _ h0`. Rewrite using `[e, Measure.prod_prod, h1, zero_mul]`. Establish `e : (eS S).symm ⁻¹' {x | x i ∈ A} = Set.univ ×ˢ (Function.eval (⟨i, hiS⟩ : {i // i ∉ S}) ⁻¹' A)`. Use extensionality with `p`. Simplify using `[eS_symm_apply, hiS]`.
+
+Establish `h0 : ((m i).restrict (L i)) A = 0` using `by simpa [mu, hiS] using h`. Establish `h1 : Qm m L S (Function.eval (⟨i, hiS⟩ : {i // i ∉ S}) ⁻¹' A) = 0`. Unfold `Qm`. Use `split_ifs with hQ`. Use `haveI : ∀ j : {i // i ∉ S}, IsProbabilityMeasure (Pn m L j.1) := fun j => Pn_prob m L (hQ j.1 j.2)`.
+
+Rewrite using `[Measure.smul_apply, ← Measure.map_apply (show Measurable (Function.eval (⟨i, hiS⟩ : {i // i ∉ S}) : (∀ j : {i // i ∉ S}, W j.1) → W i) from measurable_pi_apply _) hA, Measure.infinitePi_map_eval]`. Simplify using `[Pn, h0]`. Simplify using the standard rewrite rules. Rewrite using `[e, Measure.prod_prod, h1, mul_zero]`.
+-/
 lemma kap_eval_null {S : Finset ι} {i : ι} {A : Set (W i)} (hA : MeasurableSet A)
     (h : mu m L S i A = 0) : kap m L S {x | x i ∈ A} = 0 := by
 
@@ -148,6 +183,11 @@ lemma kap_eval_null {S : Finset ι} {i : ι} {A : Set (W i)} (hA : MeasurableSet
       · simp
     rw [e, Measure.prod_prod, h1, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[ae_all_iff]`. Introduce `i`. Distinguish the cases in `hiS : i ∈ S`. Establish `h0 : kap m L S {x | x i ∈ L i} = 0` using `kap_eval_null (hLm i) (by simp [mu, hiS, Measure.restrict_apply (hLm i)])`. Rewrite using `[ae_iff]`.
+
+Simplify `h0` using `[hiS]`. Establish `h0 : kap m L S {x | x i ∈ (L i)ᶜ} = 0` using `kap_eval_null (hLm i).compl (by simp [mu, hiS, Measure.restrict_apply (hLm i).compl])`. Rewrite using `[ae_iff]`. Simplify `h0` using `[hiS]`.
+-/
 lemma kap_ae [Countable ι] (hLm : ∀ i, MeasurableSet (L i)) (S : Finset ι) :
     ∀ᵐ x ∂kap m L S, ∀ i, (i ∈ S → x i ∉ L i) ∧ (i ∉ S → x i ∈ L i) := by
 

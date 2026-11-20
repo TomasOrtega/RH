@@ -11,10 +11,16 @@ namespace ReciprocityTheory.L2DbarEstimates.Norm
 
 universe u
 
+/- English proof (translation)
+The claim follows from `normVanish_of_parts lineVanish esymmZero (symmDiff_of_holoSection hsec) symmVanish symmGrowth lineFinite`.
+-/
 theorem normVanish_of_holoSection (hsec : holoSectionStatement.{u}) : normVanishStatement.{u} :=
   normVanish_of_parts lineVanish esymmZero (symmDiff_of_holoSection hsec) symmVanish symmGrowth
     lineFinite
 
+/- English proof (translation)
+The claim follows from `normVanish_of_holoSection holoSection`.
+-/
 theorem normVanish : normVanishStatement.{u} := normVanish_of_holoSection holoSection
 
 end ReciprocityTheory.L2DbarEstimates.Norm

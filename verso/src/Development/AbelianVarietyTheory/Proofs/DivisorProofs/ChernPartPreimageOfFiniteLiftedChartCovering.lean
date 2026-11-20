@@ -27,6 +27,25 @@ variable {n : ℕ} {A B ι κ : Type} [TopologicalSpace A] [TopologicalSpace B] 
   {e : ι → OpenPartialHomeomorph A (ReciprocityTheory.L2DbarEstimates.V n)} {ρ : ι → A → ℝ≥0∞}
   {e' : κ → OpenPartialHomeomorph B (ReciprocityTheory.L2DbarEstimates.V n)} {ρ' : κ → B → ℝ≥0∞} {m : B → A}
 
+/- English proof (translation)
+Establish `hfin : ∀ y ∈ U, (m ⁻¹' {y}).Finite` using `fun y hy => finite_of_encard_eq_coe (hfib y hy)`. Establish `hcard : ∀ y (hy : y ∈ U), (hfin y hy).toFinset.card = d` using `fun y hy => by`. Establish `h` using `hfib y hy`. Rewrite `h` using `[← (hfin y hy).coe_toFinset, encard_coe_eq_coe_finsetCard]`. Conclude with `h` after adjusting the coercions.
+
+Take `⟨V, hV, hVd⟩` from `(hfin x hx).t2_separation`. Establish `hFc` using `hcard x hx`. Establish `hFm : ∀ z, z ∈ (hfin x hx).toFinset ↔ m z = x` using `fun z => by simp`. Generalize the expression as in `(hfin x hx).toFinset = F at hFc hFm`. Establish `hzF : ∀ z ∈ F, m z = x` using `fun z hz => (hFm z).1 hz`.
+
+Establish `hzU : ∀ z ∈ F, m z ∈ U` using `fun z hz => by rwa [hzF z hz]`. Establish `hsheet : ∀ z, z ∈ F → ∃ M : Set B, M ⊆ V z ∧ IsOpen M ∧ z ∈ M ∧ IsOpen (m '' M) ∧ ∀ Q : Set A, MeasurableSet Q → Q ⊆ m '' M → glueMeas e' ρ' (M ∩ m ⁻¹' Q) = glueMeas e ρ Q` using `fun z hz => GlueCover.exists_sheet hd hρ hd' hρ' hm (hch z (hzU z hz)) (hV z).2 (hV z).1`. Use `choose! M hMV hMo hzM hMi hMQ using hsheet`. Use `⟨(⋂ z ∈ F, m '' M z) ∩ U, (isOpen_biInter_finset hMi).inter hU, ⟨mem_iInter₂.2 fun z hz => ⟨z, hzM z hz, hzF z hz⟩, hx⟩, inter_subset_right, fun Q hQ hQW => ?_⟩` and prove the remaining obligations. Establish `hdisj : ∀ z₁ ∈ F, ∀ z₂ ∈ F, z₁ ≠ z₂ → Disjoint (M z₁) (M z₂)` using `fun z₁ h₁ z₂ h₂ hne => Disjoint.mono (hMV z₁ h₁) (hMV z₂ h₂) (hVd (hzF z₁ h₁) (hzF z₂ h₂) hne)`.
+
+Establish `key : m ⁻¹' Q = ⋃ z ∈ F, (M z ∩ m ⁻¹' Q)`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Establish `hWx` using `hQW hw`.
+
+Establish `hpre : ∀ z ∈ F, ∃ z', z' ∈ M z ∧ m z' = m w` using `fun z hz => by`. Take `⟨z', h₁, h₂⟩` from `mem_iInter₂.1 hWx.1 z hz`. Conclude with `⟨z', h₁, h₂⟩`. Use `haveI : Nonempty B := ⟨w⟩`. Use `choose! f hfM hfm using hpre`.
+
+Establish `hinj : InjOn f F` using `fun z₁ h₁ z₂ h₂ h12 => by`. Assume the negation of the conclusion as `hne`. Conclude with `disjoint_left.1 (hdisj z₁ h₁ z₂ h₂ hne) (hfM z₁ h₁) (h12 ▸ hfM z₂ h₂)`. Establish `hsub : F.image f ⊆ (hfin (m w) hWx.2).toFinset` using `fun v hv => by`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.1 hv`.
+
+Simplify using `using hfm z hz`. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub (by`. Rewrite using `[Finset.card_image_of_injOn hinj, hcard _ hWx.2, hFc])`. Establish `hwm : w ∈ F.image f`. Rewrite using `[heq]`.
+
+Simplify using the standard rewrite rules. Take `⟨z, hz, hzw⟩` from `Finset.mem_image.1 hwm`. Conclude with `mem_iUnion₂.2 ⟨z, hz, hzw ▸ hfM z hz, hw⟩`. Introduce `hw`. Take `⟨z, _, _, h⟩` from `mem_iUnion₂.1 hw`.
+
+Conclude with `h`. Rewrite using `[key, measure_biUnion_finset (fun z₁ h₁ z₂ h₂ hne => Disjoint.mono inter_subset_left inter_subset_left (hdisj z₁ h₁ z₂ h₂ hne)) (fun z hz => (hMo z hz).measurableSet.inter (hm.measurable hQ)), Finset.sum_congr rfl fun z hz => hMQ z hz Q hQ fun y hy => mem_iInter₂.1 (hQW hy).1 z h …`.
+-/
 theorem exists_evenly_covered_on
     (hd : ∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) (ReciprocityTheory.L2DbarEstimates.Y.ovl e i j))
     (hρ : ∀ i j y, y ∈ (e i).source → y ∈ (e j).source →
@@ -97,6 +116,17 @@ theorem exists_evenly_covered_on
       fun y hy => mem_iInter₂.1 (hQW hy).1 z hz,
     Finset.sum_const, nsmul_eq_mul, hFc]
 
+/- English proof (translation)
+Establish `hW : ∀ x : U, ∃ W : Set A, IsOpen W ∧ x.1 ∈ W ∧ W ⊆ U ∧ ∀ Q : Set A, MeasurableSet Q → Q ⊆ W → glueMeas e' ρ' (m ⁻¹' Q) = d * glueMeas e ρ Q` using `fun x => exists_evenly_covered_on hd hρ hd' hρ' hm hU hfib hch x.2`. Use `choose W hWo hxW hWU hWQ using hW`. Take `⟨C, hC, hCW⟩` from `TopologicalSpace.isOpen_iUnion_countable W hWo`. Use `haveI : Countable C := hC.to_subtype`. Establish `key : (Measure.map m (glueMeas e' ρ')).restrict U = ((d : ℝ≥0∞) • glueMeas e ρ).restrict U`.
+
+Use `Measure.ext_of_iUnion_eq_univ (s := fun o : Option C => o.elim Uᶜ fun c => W c.1) ?_ fun o => ?_` and prove the remaining obligations. Use `eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ U`. Establish `hmem : x ∈ ⋃ i ∈ C, W i`. Rewrite using `[hCW]`.
+
+Conclude with `mem_iUnion.2 ⟨⟨x, hx⟩, hxW _⟩`. Take `⟨c, hc, hxc⟩` from `mem_iUnion₂.1 hmem`. Conclude with `mem_iUnion.2 ⟨some ⟨c, hc⟩, hxc⟩`. Conclude with `mem_iUnion.2 ⟨none, hx⟩`. Consider the cases of `o with`.
+
+Consider the case `none => show ((Measure.map m (glueMeas e' ρ')).restrict U).restrict Uᶜ = (((d : ℝ≥0∞) • glueMeas e ρ).restrict U).restrict Uᶜ`. Rewrite using `[Measure.restrict_restrict hU.measurableSet.compl, Measure.restrict_restrict hU.measurableSet.compl, compl_inter_self, Measure.restrict_empty, Measure.restrict_empty]`. Consider the case `some c => show ((Measure.map m (glueMeas e' ρ')).restrict U).restrict (W c.1) = (((d : ℝ≥0∞) • glueMeas e ρ).restrict U).restrict (W c.1)`. Use extensionality with `Q hQ`. Establish `hQW` using `hQ.inter (hWo c.1).measurableSet`.
+
+Establish `hQWU` using `hQW.inter hU.measurableSet`. Rewrite using `[Measure.restrict_apply hQ, Measure.restrict_apply hQ, Measure.restrict_apply hQW, Measure.restrict_apply hQW, Measure.map_apply hm.measurable hQWU, hWQ c.1 _ hQWU fun y hy => hy.1.2, Measure.smul_apply, smul_eq_mul]`. Establish `h` using `congrArg (fun μ : Measure A => μ S) key`. Simplify using `only [Measure.restrict_apply hS, inter_eq_left.2 hSU, Measure.map_apply hm.measurable hS, Measure.smul_apply, smul_eq_mul] at h`. Conclude with `h`.
+-/
 theorem glueMeas_preimage_of_cover_on
     (hd : ∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) (ReciprocityTheory.L2DbarEstimates.Y.ovl e i j))
     (hρ : ∀ i j y, y ∈ (e i).source → y ∈ (e j).source →
@@ -152,6 +182,13 @@ theorem glueMeas_preimage_of_cover_on
 
 end Cover
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p q D hp hq σ π hπ B φ hφ ε U hU n hfib hchart hlift hdens S hS hSU`. Use `CxPts.t2Space_cxPts_of_isProjOver σ hq.isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver (σ := σ) hp.isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver (σ := σ) hq.isProjOver` as an intermediate fact. Establish `hφ'` using `hφ.pull π hπ`.
+
+Unfold `Weight.chernPart`. Use `glueMeas_preimage_of_cover_on (fun c c' => c.holo_trans c') (fun c c' y hy hy' => ?_) (fun c c' => c.holo_trans c') (fun c c' y hy hy' => ?_) (PtsOver.continuous_map π hπ _) hU hfib (fun z hz => ?_) hS hSU` and prove the remaining obligations. Rewrite using `[c.chernDens_trans c' hφ hy hy', mul_left_comm, ENNReal.ofReal_mul (sq_nonneg _)]`. Rewrite using `[c.chernDens_trans c' hφ' hy hy', mul_left_comm, ENNReal.ofReal_mul (sq_nonneg _)]`. Take `⟨c, hc⟩` from `hchart _ hz`.
+
+Take `⟨c', hz', hc'⟩` from `hlift z hz c hc`. Conclude with `⟨c, c', hz', hc, fun w hw _ => ⟨(hc' w hw).2, by rw [hdens c c' hc' w hw]⟩⟩`.
+-/
 theorem chernPart_preimage_of_cover : ∀ {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {D : ℕ}, IsArithVar p D → IsArithVar q D → ∀ {σ : k →+* ℂ} (π : Y ⟶ X) (hπ : π ≫ p = q) {B : LB X} (φ : Weight p σ B), φ.IsCInf → ∀ (ε : ℤˣ) (U : Set (CxPts p σ)), IsOpen U → ∀ (n : ℕ), (∀ y ∈ U, (PtsOver.map π hπ (spMap σ)  ⁻¹' {y}).encard = (n : ℕ∞)) → (∀ y ∈ U, ∃ c : AlgChart p σ D, y ∈ c.e.source) → (∀ z : CxPts q σ, PtsOver.map π hπ (spMap σ) z ∈ U → ∀ c : AlgChart p σ D, PtsOver.map π hπ (spMap σ) z ∈ c.e.source → ∃ c' : AlgChart q σ D, z ∈ c'.e.source ∧ ∀ w ∈ c'.e.source, PtsOver.map π hπ (spMap σ) w ∈ c.e.source ∧ c'.e w = c.e (PtsOver.map π hπ (spMap σ) w)) → (∀ (c : AlgChart p σ D) (c' : AlgChart q σ D), (∀ w ∈ c'.e.source, PtsOver.map π hπ (spMap σ) w ∈ c.e.source ∧ c'.e w = c.e (PtsOver.map π hπ (spMap σ) w)) → ∀ w ∈ c'.e.source, c'.chernDens (φ.pull π hπ) w = c.chernDens φ (PtsOver.map π hπ (spMap σ) w)) → ∀ (S : Set (CxPts p σ)), MeasurableSet S → S ⊆ U → (φ.pull π hπ).chernPart D ε (PtsOver.map π hπ (spMap σ)  ⁻¹' S) = n * φ.chernPart D ε S := by
   intro k _ X Y _ _ p q D hp hq σ π hπ B φ hφ ε U hU n hfib hchart hlift hdens S hS hSU
   have := CxPts.t2Space_cxPts_of_isProjOver σ hq.isProjOver

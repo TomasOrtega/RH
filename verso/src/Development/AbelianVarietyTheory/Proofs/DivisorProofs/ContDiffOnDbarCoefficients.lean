@@ -8,6 +8,9 @@ open scoped ComplexConjugate ContDiff
 
 namespace GlobalTheory.CxForm
 
+/- English proof (translation)
+Establish `h : ContDiffOn ℝ ∞ (fderiv ℝ f) U` using `hf.fderiv_of_isOpen hU (by simp)`. Simplify using `only [GlobalTheory.dbar_apply]`. Conclude with `ContDiffOn.const_smul _ ((h.clm_apply contDiffOn_const).add (ContDiffOn.const_smul _ (h.clm_apply contDiffOn_const)))`.
+-/
 theorem contDiffOn_dbar_const_dir {n : ℕ} {f : V n → ℂ} {U : Set (V n)} (hU : IsOpen U)
     (hf : ContDiffOn ℝ ∞ f U) (w : V n) : ContDiffOn ℝ ∞ (fun v => GlobalTheory.dbar f v w) U := by
   have h : ContDiffOn ℝ ∞ (fderiv ℝ f) U := hf.fderiv_of_isOpen hU (by simp)
@@ -15,6 +18,9 @@ theorem contDiffOn_dbar_const_dir {n : ℕ} {f : V n → ℂ} {U : Set (V n)} (h
   exact ContDiffOn.const_smul _ ((h.clm_apply contDiffOn_const).add
     (ContDiffOn.const_smul _ (h.clm_apply contDiffOn_const)))
 
+/- English proof (translation)
+Establish `key : (fun v => (bas n).repr (dbarAt γ v) T) = fun v => ∑ a, ∑ S, GlobalTheory.dbar (fun x => (bas n).repr (γ x) S) v (coordVec a) * (bas n).repr (dzb a * bas n S) T`. Use function extensionality and compare the values at `v`. Simplify using `only [dbarAt, coefwise, map_sum, Finset.mul_sum, mul_smul_comm, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]`. Rewrite using `[key]`. Conclude with `ContDiffOn.sum fun a _ => ContDiffOn.sum fun S _ => (contDiffOn_dbar_const_dir hU (hγ S) _).mul contDiffOn_const`.
+-/
 theorem contDiffOn_repr_dbarAt {n : ℕ} {γ : V n → Alt n} {U : Set (V n)} (hU : IsOpen U)
     (hγ : ∀ S, ContDiffOn ℝ ∞ (fun v => (bas n).repr (γ v) S) U) (T : Finset (Fin (n + n))) :
     ContDiffOn ℝ ∞ (fun v => (bas n).repr (dbarAt γ v) T) U := by

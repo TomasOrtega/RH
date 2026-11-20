@@ -11,6 +11,9 @@ namespace Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity
 
 def mulMt {k r : ℕ} (s x : Formalism.QuantumDeterminants.Mt k r) : Formalism.QuantumDeterminants.Mt k r := fun i j => (Matrix.of s * Matrix.of x) i j
 
+/- English proof (translation)
+Unfold `mulMt`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem continuous_mulMt {k r : ℕ} :
     Continuous (fun q : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => mulMt q.1 q.2) := by
   unfold mulMt
@@ -18,10 +21,16 @@ theorem continuous_mulMt {k r : ℕ} :
   simp only [Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Conclude with `continuous_mulMt.measurable`.
+-/
 theorem measurable_mulMt {k r : ℕ} :
     Measurable (fun q : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => mulMt q.1 q.2) := by
   exact continuous_mulMt.measurable
 
+/- English proof (translation)
+Unfold `mulMt`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 private theorem continuous_mulMt_right_const {k r : ℕ} (x : Formalism.QuantumDeterminants.Mt k r) :
     Continuous (fun s : Formalism.QuantumDeterminants.Mt k r => mulMt s x) := by
   unfold mulMt
@@ -31,6 +40,19 @@ private theorem continuous_mulMt_right_const {k r : ℕ} (x : Formalism.QuantumD
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hmm : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => f (mulMt p.2 p.1))` using `hfm.comp (measurable_mulMt.comp measurable_swap)`. Establish `hab : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => ENNReal.ofReal |f (mulMt p.2 p.1)|)` using `ENNReal.measurable_ofReal.comp (continuous_abs.measurable.comp hmm)`. Establish `hG` using `hab.lintegral_prod_right' (ν := μS)`. Establish `hqa` using `hq (fun y => ENNReal.ofReal |f y|) (ENNReal.measurable_ofReal.comp (continuous_abs.measurable.comp hfm))`. Establish `hfin : ∫⁻ x, ∫⁻ s, ENNReal.ofReal |f (mulMt s x)| ∂μS ∂νq ≠ ⊤`.
+
+Establish `h1 : ∫⁻ y, ENNReal.ofReal |f y| ∂μG < ⊤` using `hfi.abs.lintegral_lt_top`. Rewrite `h1` using `[hqa]`. Conclude with `h1.ne`. Establish `hae` using `ae_lt_top hG hfin`. Establish `hpos` using `hq (fun y => ENNReal.ofReal (f y)) (ENNReal.measurable_ofReal.comp hfm)`.
+
+Establish `hneg` using `hq (fun y => ENNReal.ofReal (-f y)) (ENNReal.measurable_ofReal.comp hfm.neg)`. Establish `heq : ∫⁻ y, ENNReal.ofReal (f y) ∂μG = ∫⁻ y, ENNReal.ofReal (-f y) ∂μG`. Rewrite using `[hpos, hneg]`. Use `lintegral_congr_ae ((hae.and hin).mono fun x hx => ?_)` and prove the remaining obligations. Take `⟨hxG, hx0⟩` from `hx`.
+
+Establish `hxG' : ∫⁻ s, ENNReal.ofReal |f (mulMt s x)| ∂μS < ⊤` using `hxG`. Establish `hmeasx : Measurable (fun s : Formalism.QuantumDeterminants.Mt k r => f (mulMt s x))` using `hfm.comp (continuous_mulMt_right_const x).measurable`. Establish `hint : Integrable (fun s => f (mulMt s x)) μS`. Use `⟨hmeasx.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_norm]`.
+
+Simplify `hxG'` using `only [Real.norm_eq_abs]`. Establish `hp : ∫⁻ s, ENNReal.ofReal (f (mulMt s x)) ∂μS ≠ ⊤` using `(lt_of_le_of_lt (lintegral_mono fun s => ENNReal.ofReal_le_ofReal (le_abs_self _)) hxG').ne`. Establish `hn : ∫⁻ s, ENNReal.ofReal (-f (mulMt s x)) ∂μS ≠ ⊤` using `(lt_of_le_of_lt (lintegral_mono fun s => ENNReal.ofReal_le_ofReal (neg_le_abs _)) hxG').ne`. Establish `h2` using `integral_eq_lintegral_pos_part_sub_lintegral_neg_part hint`. Rewrite `h2` using `[hx0]`.
+
+Conclude with `(ENNReal.toReal_eq_toReal_iff' hp hn).mp (sub_eq_zero.mp h2.symm)`. Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part hfi, heq, sub_self]`.
+-/
 theorem quot_zero_real {k r : ℕ} {μG μS νq : Measure (Formalism.QuantumDeterminants.Mt k r)} [SFinite μS]
     (hq : PI.BesselPeriodGGP.IsQuotMeas μG μS νq) (f : Formalism.QuantumDeterminants.Mt k r → ℝ) (hfm : Measurable f)
     (hfi : Integrable f μG) (hin : ∀ᵐ x ∂νq, ∫ s, f (mulMt s x) ∂μS = 0) : ∫ x, f x ∂μG = 0 := by
@@ -69,6 +91,21 @@ theorem quot_zero_real {k r : ℕ} {μG μS νq : Measure (Formalism.QuantumDete
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hmm : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => F (mulMt p.2 p.1))` using `hFm.comp (measurable_mulMt.comp measurable_swap)`. Establish `hab : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => ENNReal.ofReal ‖F (mulMt p.2 p.1)‖)` using `ENNReal.measurable_ofReal.comp hmm.norm`. Establish `hG` using `hab.lintegral_prod_right' (ν := μS)`. Establish `hqa` using `hq (fun y => ENNReal.ofReal ‖F y‖) (ENNReal.measurable_ofReal.comp hFm.norm)`. Establish `hfin : ∫⁻ x, ∫⁻ s, ENNReal.ofReal ‖F (mulMt s x)‖ ∂μS ∂νq ≠ ⊤`.
+
+Establish `h1 : ∫⁻ y, ENNReal.ofReal ‖F y‖ ∂μG < ⊤` using `hFi.norm.lintegral_lt_top`. Rewrite `h1` using `[hqa]`. Conclude with `h1.ne`. Establish `hae` using `ae_lt_top hG hfin`. Establish `hint : ∀ᵐ x ∂νq, Integrable (fun s => F (mulMt s x)) μS`.
+
+Use `hae.mono fun x hx => ⟨(hFm.comp (continuous_mulMt_right_const x).measurable).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_norm]`. Conclude with `hx`. Establish `hre` using `quot_zero_real hq (fun y => (F y).re) (Complex.measurable_re.comp hFm) (Complex.reCLM.integrable_comp hFi) ((hint.and hin).mono fun x hx => by`. Establish `e` using `Complex.reCLM.integral_comp_comm hx.1`.
+
+Simplify using `only [Complex.reCLM_apply] at e`. Use `show ∫ s, (F (mulMt s x)).re ∂μS = 0`. Rewrite using `[e, hx.2, Complex.zero_re])`. Establish `him` using `quot_zero_real hq (fun y => (F y).im) (Complex.measurable_im.comp hFm) (Complex.imCLM.integrable_comp hFi) ((hint.and hin).mono fun x hx => by`. Establish `e` using `Complex.imCLM.integral_comp_comm hx.1`.
+
+Simplify using `only [Complex.imCLM_apply] at e`. Use `show ∫ s, (F (mulMt s x)).im ∂μS = 0`. Rewrite using `[e, hx.2, Complex.zero_im])`. Establish `er` using `Complex.reCLM.integral_comp_comm hFi`. Establish `ei` using `Complex.imCLM.integral_comp_comm hFi`.
+
+Simplify using `only [Complex.reCLM_apply, Complex.imCLM_apply] at er ei`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[Complex.zero_re, ← er]`. Conclude with `hre`. Rewrite using `[Complex.zero_im, ← ei]`.
+
+Conclude with `him`.
+-/
 theorem quot_zero {k r : ℕ} {μG μS νq : Measure (Formalism.QuantumDeterminants.Mt k r)} [SFinite μS]
     (hq : PI.BesselPeriodGGP.IsQuotMeas μG μS νq) (F : Formalism.QuantumDeterminants.Mt k r → ℂ) (hFm : Measurable F)
     (hFi : Integrable F μG) (hin : ∀ᵐ x ∂νq, ∫ s, F (mulMt s x) ∂μS = 0) : ∫ x, F x ∂μG = 0 := by
@@ -112,10 +149,21 @@ section Groups
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uwset_eq (z : Fin (2 * r + k + 1) → ℂ) : Formalism.QuantumDeterminants.UWset k r z = PI.UpqRep.UWset k r z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uh_eq : Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) = PI.UpqRep.UH (PI.UpqRep.Hpk k r) := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Apply the tactic sequence `obtain ⟨s, hs⟩ : ∃ s : Fin (2 * r + k + 1), s.val = (if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val) := ⟨⟨if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val, by split_ifs <;> omega⟩, rfl⟩`. Rewrite using `[Finset.sum_eq_single s]`. Apply the tactic sequence `simp only [Formalism.QuantumDeterminants.Hpk, Matrix.one_apply, Fin.ext_iff] split_ifs at hs ⊢ <;> first | omega | norm_num`.
+
+Introduce `l _ hl`. Simplify using `only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff] at hl ⊢`. Apply the tactic sequence `split_ifs at hs ⊢ <;> first | omega | simp`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private theorem hpk_sq_lemma (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := by
   ext i j
   rw [Matrix.mul_apply]
@@ -131,6 +179,15 @@ private theorem hpk_sq_lemma (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Establish `hH : (Formalism.QuantumDeterminants.Hpk k r).det ≠ 0`. Introduce `h0`. Establish `h3` using `congrArg Matrix.det (hpk_sq_lemma k r)`. Rewrite `h3` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`.
+
+Conclude with `zero_ne_one h3`. Establish `hdet : IsUnit g.det`. Establish `h3` using `congrArg Matrix.det hg'`. Rewrite `h3` using `[Matrix.det_mul, Matrix.det_mul]`. Rewrite using `[isUnit_iff_ne_zero]`.
+
+Introduce `h0`. Rewrite `h3` using `[h0, mul_zero]`. Conclude with `hH h3.symm`. Establish `h1 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hdet`. Establish `h2 : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g hdet`.
+
+Use `⟨?_, h1, h2⟩` and prove the remaining obligations. Use `show (g⁻¹)ᴴ * Formalism.QuantumDeterminants.Hpk k r * g⁻¹ = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [h1, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 private theorem inv_mem_UH_Hpk_and_mul_inv_of_mem {k r : ℕ} {g : Formalism.FourierDecayAlt.ThreeDimData.Mx k r} (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) :
     g⁻¹ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) ∧ g * g⁻¹ = 1 ∧ g⁻¹ * g = 1 := by
   have hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r := hg
@@ -155,6 +212,9 @@ private theorem inv_mem_UH_Hpk_and_mul_inv_of_mem {k r : ℕ} {g : Formalism.Fou
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.QuantumDeterminants.Hpk k r := by rw [h1, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨hH, hfix, hz⟩` from `hh`. Take `⟨hi, h1, h2⟩` from `inv_mem_UH_Hpk_and_mul_inv_of_mem hH`. Establish `key : ∀ w, h *ᵥ w = w → h⁻¹ *ᵥ w = w` using `fun w hw => by`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨⟨hi, fun a => ⟨key _ (hfix a).1, key _ (hfix a).2⟩, key _ hz⟩, h1, h2⟩`.
+-/
 theorem uw_inv {z : Fin (2 * r + k + 1) → ℂ} {h : Formalism.FourierDecayAlt.ThreeDimData.Mx k r} (hh : h ∈ Formalism.QuantumDeterminants.UWset k r z) :
     h⁻¹ ∈ Formalism.QuantumDeterminants.UWset k r z ∧ h * h⁻¹ = 1 ∧ h⁻¹ * h = 1 := by
   obtain ⟨hH, hfix, hz⟩ := hh
@@ -164,6 +224,9 @@ theorem uw_inv {z : Fin (2 * r + k + 1) → ℂ} {h : Formalism.FourierDecayAlt.
       _ = w := by rw [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]
   exact ⟨⟨hi, fun a => ⟨key _ (hfix a).1, key _ (hfix a).2⟩, key _ hz⟩, h1, h2⟩
 
+/- English proof (translation)
+Conclude with `inv_mem_UH_Hpk_and_mul_inv_of_mem hg`.
+-/
 theorem uh_inv {g : Formalism.FourierDecayAlt.ThreeDimData.Mx k r} (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) :
     g⁻¹ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) ∧ g * g⁻¹ = 1 ∧ g⁻¹ * g = 1 := by
   exact inv_mem_UH_Hpk_and_mul_inv_of_mem hg
@@ -174,6 +237,23 @@ section Pi
 
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
 
+/- English proof (translation)
+Rewrite using `[uwset_eq]`. Take `⟨g, hg, hρ⟩` from `hπ`. Take `⟨⟨h1, hmul⟩, hunit, hcont⟩` from `hρ.2.2.1`. Establish `hgg : g * g⁻¹ = 1` using `PI.HwUniqW.mul_inv_UH hg.1`. Establish `hgg' : g⁻¹ * g = 1` using `PI.HwUniqW.inv_mul_UH' hg.1`.
+
+Establish `hT' : 0 < PI.UpqRep.Tz k r z` using `hT`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (1 : Formalism.FourierDecayAlt.ThreeDimData.Mx k r) = g * PI.UpqRep.blockW k r 1 * g⁻¹`. Rewrite using `[PI.HwUniqW.blockW_one, Matrix.mul_one, hgg]`. Rewrite using `[e]`.
+
+Conclude with `h1`. Introduce `a ha b hb`. Take `⟨x, hx, -, rfl⟩` from `PI.HwUniqW.UW_eq_conj hT' hg ha`. Take `⟨y, hy, -, rfl⟩` from `PI.HwUniqW.UW_eq_conj hT' hg hb`. Establish `e : g * PI.UpqRep.blockW k r x * g⁻¹ * (g * PI.UpqRep.blockW k r y * g⁻¹) = g * PI.UpqRep.blockW k r (x * y) * g⁻¹`.
+
+Rewrite using `[← PI.HwUniqW.blockW_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hgg', Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Rewrite using `[e]`.
+
+Conclude with `hmul x hx y hy`. Introduce `h hh w`. Take `⟨x, hx, -, rfl⟩` from `PI.HwUniqW.UW_eq_conj hT' hg hh`. Conclude with `hunit x hx w`. Introduce `w`.
+
+Establish `hc : Continuous (fun h : Formalism.FourierDecayAlt.ThreeDimData.Mx k r => PI.HwUniqW.sub k r (g⁻¹ * h * g))`. Establish `h0 : Continuous (fun h : Formalism.FourierDecayAlt.ThreeDimData.Mx k r => g⁻¹ * h * g)` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Unfold `PI.HwUniqW.sub`. Conclude with `continuous_pi fun a => continuous_pi fun b => (continuous_apply_apply (PI.HwUniqW.bl k r a) (PI.HwUniqW.bl k r b)).comp h0`. Establish `hmaps : Set.MapsTo (fun h : Formalism.FourierDecayAlt.ThreeDimData.Mx k r => PI.HwUniqW.sub k r (g⁻¹ * h * g)) (PI.UpqRep.UWset k r z) (PI.UpqRep.UJset (PI.UpqRep.allPos k))` using `fun h hh => (PI.HwUniqW.fix_block (PI.HwUniqW.conj_UH hg hh) (PI.HwUniqW.conj_fix hT' hg hh)).1`.
+
+Use `((hcont w).comp hc.continuousOn hmaps).congr ?_` and prove the remaining obligations. Introduce `h hh`. Establish `hb` using `(PI.HwUniqW.fix_block (PI.HwUniqW.conj_UH hg hh) (PI.HwUniqW.conj_fix hT' hg hh)).2`. Use `show π h w = π (g * PI.UpqRep.blockW k r (PI.HwUniqW.sub k r (g⁻¹ * h * g)) * g⁻¹) w`. Rewrite using `[← hb]`.
+
+Use `congr 2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem piW_facts {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ} {π : Formalism.FourierDecayAlt.ThreeDimData.Mx k r → (Wp →L[ℂ] Wp)}
     (hT : 0 < Formalism.QuantumDeterminants.Tz k r z) (hπ : PI.UpqRep.IsHCTypeW k r z u π) :
     π 1 = 1 ∧ (∀ a ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ b ∈ Formalism.QuantumDeterminants.UWset k r z, π (a * b) = (π a).comp (π b)) ∧
@@ -222,16 +302,29 @@ theorem piW_facts {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ} {π : Fo
     calc h = (g * g⁻¹) * h * (g * g⁻¹) := by rw [hgg, Matrix.one_mul, Matrix.mul_one]
       _ = g * (g⁻¹ * h * g) * g⁻¹ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Conclude with `(piW_facts hT hπ).2.2.1`.
+-/
 theorem piW_unitary {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ} {π : Formalism.FourierDecayAlt.ThreeDimData.Mx k r → (Wp →L[ℂ] Wp)}
     (hT : 0 < Formalism.QuantumDeterminants.Tz k r z) (hπ : PI.UpqRep.IsHCTypeW k r z u π) :
     ∀ h ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ w, ‖π h w‖ = ‖w‖ := by
   exact (piW_facts hT hπ).2.2.1
 
+/- English proof (translation)
+Conclude with `(piW_facts hT hπ).2.2.2`.
+-/
 theorem piW_cont {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ} {π : Formalism.FourierDecayAlt.ThreeDimData.Mx k r → (Wp →L[ℂ] Wp)}
     (hT : 0 < Formalism.QuantumDeterminants.Tz k r z) (hπ : PI.UpqRep.IsHCTypeW k r z u π) :
     ∀ w, ContinuousOn (fun h => π h w) (Formalism.QuantumDeterminants.UWset k r z) := by
   exact (piW_facts hT hπ).2.2.2
 
+/- English proof (translation)
+Take `⟨h1, hmul, hnorm, -⟩` from `piW_facts hT hπ`. Take `⟨hi, hhi, -⟩` from `uw_inv hh`. Establish `hm` using `hmul h hh h⁻¹ hi`. Rewrite `hm` using `[hhi, h1]`. Establish `hs : ∀ x, π h (π h⁻¹ x) = x` using `fun x => by`.
+
+Establish `h3` using `congrArg (fun T : Wp →L[ℂ] Wp => T x) hm`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply] at h3`. Conclude with `h3.symm`. Set `L : Wp →ₗᵢ[ℂ] Wp` to `{ toLinearMap := (π h : Wp →ₗ[ℂ] Wp), norm_map' := hnorm h hh }`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hs]`. Use `_ = ⟪π h⁻¹ η, w⟫_ℂ := L.inner_map_map _ _`.
+-/
 theorem piW_inner {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ} {π : Formalism.FourierDecayAlt.ThreeDimData.Mx k r → (Wp →L[ℂ] Wp)}
     (hT : 0 < Formalism.QuantumDeterminants.Tz k r z) (hπ : PI.UpqRep.IsHCTypeW k r z u π) {h : Formalism.FourierDecayAlt.ThreeDimData.Mx k r}
     (hh : h ∈ Formalism.QuantumDeterminants.UWset k r z) (η w : Wp) : ⟪η, π h w⟫_ℂ = ⟪π h⁻¹ η, w⟫_ℂ := by
@@ -255,6 +348,13 @@ section Sigma
 
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Take `⟨⟨hPu, hPJ⟩, -⟩` from `hP`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hPu`. Establish `hPPi : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`. Introduce `g hg`. Establish `hg' : gᴴ * PI.UpqRep.Hpk k r * g = PI.UpqRep.Hpk k r` using `hg`.
+
+Use `show (P * g * P⁻¹)ᴴ * PI.UpqRep.Jm ε * (P * g * P⁻¹) = PI.UpqRep.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * PI.UpqRep.Jm ε * P) * P⁻¹ := by rw [hPJ, hg']`. Use `_ = (P * P⁻¹)ᴴ * PI.UpqRep.Jm ε * (P * P⁻¹) := by`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = PI.UpqRep.Jm ε := by rw [hPPi, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem cayley_maps {ε : Fin (2 * r + k + 1) → Bool} {P : Formalism.FourierDecayAlt.ThreeDimData.Mx k r}
     (hP : PI.UpqRep.IsCayleyU k r ε P) :
     Set.MapsTo (fun g : Formalism.FourierDecayAlt.ThreeDimData.Mx k r => P * g * P⁻¹) (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))
@@ -273,6 +373,13 @@ theorem cayley_maps {ε : Fin (2 * r + k + 1) → Bool} {P : Formalism.FourierDe
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = PI.UpqRep.Jm ε := by rw [hPPi, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨P, hP, hDS⟩` from `hσ`. Take `⟨-, -, ⟨⟨h1, -⟩, hnorm, -⟩, -⟩` from `hDS`. Establish `hPu : IsUnit P` using `hP.1.1`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hPu`. Establish `hPiP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`.
+
+Use `⟨?_, fun g hg v => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_one, hPiP] at h1`. Conclude with `h1`. Establish `hmem` using `cayley_maps hP hg`. Establish `hv` using `hnorm _ hmem v`.
+
+Establish `e : P⁻¹ * (P * g * P⁻¹) * P = g`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hPiP, Matrix.one_mul, Matrix.mul_assoc, hPiP, Matrix.mul_one]`. Simplify using `only [e] at hv`. Conclude with `hv`.
+-/
 theorem sigma_facts {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Formalism.FourierDecayAlt.ThreeDimData.Mx k r → (H →L[ℂ] H)} (hσ : PI.UpqRep.IsDSHpk k r ε lam σ) :
     σ 1 = 1 ∧ ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ∀ v, ‖σ g v‖ = ‖v‖ := by
@@ -291,6 +398,19 @@ theorem sigma_facts {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 
     simp only [e] at hv
     exact hv
 
+/- English proof (translation)
+Take `⟨P, hP, hDS⟩` from `id hσ`. Take `⟨-, -, ⟨⟨h1, hmul⟩, hnorm, -⟩, -⟩` from `hDS`. Establish `hPu : IsUnit P` using `hP.1.1`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hPu`. Establish `hPiP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`.
+
+Establish `hPPi : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`. Take `⟨hgi, hggi, hgig⟩` from `uh_inv hg`. Establish `hm1` using `cayley_maps hP hg`. Establish `hm2` using `cayley_maps hP hgi`. Establish `conj : ∀ x : Formalism.FourierDecayAlt.ThreeDimData.Mx k r, P⁻¹ * (P * x * P⁻¹) * P = x` using `fun x => by`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hPiP, Matrix.one_mul, Matrix.mul_assoc, hPiP, Matrix.mul_one]`. Establish `prod : ∀ x y : Formalism.FourierDecayAlt.ThreeDimData.Mx k r, (P * x * P⁻¹) * (P * y * P⁻¹) = P * (x * y) * P⁻¹` using `fun x y => by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P⁻¹ P, hPiP, Matrix.one_mul]`. Establish `hm` using `hmul _ hm1 _ hm2`.
+
+Simplify using `only [prod, hggi, conj, Matrix.mul_one, Matrix.one_mul, hPiP, hPPi] at hm h1`. Establish `hsg : ∀ w, σ g (σ g⁻¹ w) = w` using `fun w => by`. Use `congrArg (fun T : H →L[ℂ] H => T w) hm` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply, h1, ContinuousLinearMap.one_apply] at this`. Conclude with `this.symm`.
+
+Establish `hn : ∀ w, ‖σ g w‖ = ‖w‖` using `fun w => by`. Use `hnorm _ hm1 w` as an intermediate fact. Simplify using `only [conj] at this`. Conclude with `this`. Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ g : H →ₗ[ℂ] H), norm_map' := hn }`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsg]`. Use `_ = ⟪σ g⁻¹ v, u⟫_ℂ := L.inner_map_map _ _`.
+-/
 theorem sigma_inner {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Formalism.FourierDecayAlt.ThreeDimData.Mx k r → (H →L[ℂ] H)} (hσ : PI.UpqRep.IsDSHpk k r ε lam σ)
     {g : Formalism.FourierDecayAlt.ThreeDimData.Mx k r} (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (v u : H) :

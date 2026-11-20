@@ -11,12 +11,26 @@ def primeToSub (n : O) : Submonoid O where
   one_mem' := isCoprime_one_left
   mul_mem' := fun ha hb => IsCoprime.mul_left ha hb
 
+/- English proof (translation)
+Introduce `s hs`. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Introduce and unpack `rfl`. Conclude with `hn (isCoprime_zero_left.mp hs)`.
+-/
 theorem primeToSub_le {n : O} (hn : ¬ IsUnit n) : primeToSub n ≤ nonZeroDivisors O := by
   intro s hs
   apply mem_nonZeroDivisors_of_ne_zero
   rintro rfl
   exact hn (isCoprime_zero_left.mp hs)
 
+/- English proof (translation)
+Establish `hfin : {P : Ideal O | P.IsMaximal ∧ n ∈ P}.Finite`. Establish `h0 : Ideal.span {n} ≠ 0`. Simplify `hn0` using `[Ideal.span_singleton_eq_bot]`. Use `((Ideal.finite_factors h0).image (fun v => v.asIdeal)).subset ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hP, hnP⟩`.
+
+Establish `hb : P ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hn0 (by simpa using hnP)`. Conclude with `⟨⟨P, hP.isPrime, hb⟩, Ideal.dvd_span_singleton.2 hnP, rfl⟩`. Apply `((hfin.insert ⊥).image (Ideal.map (algebraMap O (Localization (primeToSub n))))).subset` to reduce the goal to its premises.
+
+Introduce `P hP`. Establish `hP' : P.IsPrime` using `hP`. Take `⟨hQ, hdisj⟩` from `(IsLocalization.isPrime_iff_isPrime_disjoint (primeToSub n) _ P).mp hP'`. Use `⟨P.comap (algebraMap O _), ?_, IsLocalization.map_comap (primeToSub n) _ P⟩` and prove the remaining obligations. Use `set Q := P.comap (algebraMap O (Localization (primeToSub n)))`.
+
+Distinguish the cases in `hb : Q = ⊥`. Conclude with `Or.inl hb`. Establish `hmax : Q.IsMaximal` using `hQ.isMaximal hb`. Use `right`. Use `⟨hmax, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hnQ`. Take `⟨y, i, hi, hyi⟩` from `hmax.exists_inv hnQ`. Establish `hc : i ∈ primeToSub n` using `show IsCoprime i n from ⟨1, y, by linear_combination hyi⟩`. Conclude with `Set.disjoint_left.mp hdisj hc hi`.
+-/
 theorem primes_finite {n : O} (hn0 : n ≠ 0) :
     {P : Ideal (Localization (primeToSub n)) | P.IsPrime}.Finite := by
   have hfin : {P : Ideal O | P.IsMaximal ∧ n ∈ P}.Finite := by
@@ -45,6 +59,35 @@ theorem primes_finite {n : O} (hn0 : n ≠ 0) :
   have hc : i ∈ primeToSub n := show IsCoprime i n from ⟨1, y, by linear_combination hyi⟩
   exact Set.disjoint_left.mp hdisj hc hi
 
+/- English proof (translation)
+Distinguish the cases in `hu : IsUnit n`. Take `⟨u, rfl⟩` from `hu`. Use `⟨0, fun a => ⟨0, (↑u⁻¹ : O) • a, ?_⟩, fun c _ i => ⟨↑u⁻¹ * c i, by simp⟩⟩` and prove the remaining obligations. Simplify using `[smul_smul]`. Establish `hS` using `primeToSub_le hu`.
+
+Set `Loc` to `Localization (primeToSub n)`. Use `haveI : IsDomain Loc := IsLocalization.isDomain_localization hS`. Use `haveI : IsDedekindDomain Loc := IsLocalization.isDedekindDomain O hS Loc`. Use `haveI : IsPrincipalIdealRing Loc := IsPrincipalIdealRing.of_finite_primes (primes_finite hn0)`. Set `f` to `LocalizedModule.mkLinearMap (primeToSub n) M`.
+
+Use `haveI : Module.Finite Loc (LocalizedModule (primeToSub n) M) := inferInstance`. Use `haveI : Module.Free Loc (LocalizedModule (primeToSub n) M) := inferInstance`. Set `b0` to `Module.Free.chooseBasis Loc (LocalizedModule (primeToSub n) M)`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex Loc (LocalizedModule (primeToSub n) M)) = Module.finrank O M`. Rewrite using `[← Module.finrank_eq_card_basis b0, IsLocalization.finrank_eq Loc (primeToSub n) hS, IsLocalizedModule.finrank_eq (primeToSub n) f hS]`.
+
+Use `set ι := Module.Free.ChooseBasisIndex Loc (LocalizedModule (primeToSub n) M)`. Establish `hsurj : ∀ i : ι, ∃ x : M × primeToSub n, x.2 • b0 i = f x.1` using `fun i => IsLocalizedModule.surj (primeToSub n) f (b0 i)`. Use `choose x hx using hsurj`. Set `m : ι → M` to `fun i => (x i).1`. Establish `hunit : ∀ i, IsUnit (algebraMap O Loc ((x i).2 : O))` using `fun i => IsLocalization.map_units Loc (x i).2`.
+
+Set `b` to `b0.isUnitSMul hunit`. Establish `hb : ∀ i, b i = f (m i)`. Introduce `i`. Rewrite using `[Module.Basis.isUnitSMul_apply, algebraMap_smul, ← hx i, Submonoid.smul_def]`. Establish `hA : ∀ a : M, ∃ c : ι → O, ∃ w : M, a - ∑ i, c i • m i = n • w`.
+
+Introduce `a`. Take `⟨T, hT⟩` from `IsLocalization.exist_integer_multiples (primeToSub n) (Finset.univ : Finset ι) (fun i => b.repr (f a) i)`. Use `choose y hy using fun i => hT i (Finset.mem_univ i)`. Establish `h1 : f ((T : O) • a) = f (∑ i, y i • m i)`. Rewrite using `[map_smul, map_sum, ← b.sum_repr (f a), Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← hb i, ← smul_assoc, ← hy i, algebraMap_smul]`. Take `⟨u, hu⟩` from `(IsLocalizedModule.eq_iff_exists (primeToSub n) f).mp h1`. Establish `hcop : IsCoprime ((u : O) * T) n` using `(u * T).2`. Take `⟨α, β, hαβ⟩` from `hcop`.
+
+Use `⟨fun i => α * (u : O) * y i, β • a, ?_⟩` and prove the remaining obligations. Establish `h2 : ((u : O) * T) • a = ∑ i, ((u : O) * y i) • m i`. Rewrite using `[mul_smul, ← Submonoid.smul_def, hu, Submonoid.smul_def, Finset.smul_sum]`. Simplify using `only [smul_smul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hαβ, one_smul, Finset.smul_sum]`. Simplify using `only [smul_smul, mul_assoc]`. Use `_ = n • (β • a) := by`. Rewrite using `[← h2, add_smul, smul_smul, smul_smul, mul_comm β n]`. Normalize the expressions using the abelian group laws.
+
+Establish `hB : ∀ c : ι → O, (∃ w : M, ∑ i, c i • m i = n • w) → ∀ i, n ∣ c i`. Introduce and unpack `c ⟨w, hw⟩ i`. Establish `h1 : ∑ j, (algebraMap O Loc (c j) - algebraMap O Loc n * b.repr (f w) j) • b j = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_smul, ← Finset.smul_sum, b.sum_repr]`. Simplify using `only [algebraMap_smul, hb, ← map_smul, ← map_sum, hw, sub_self]`.
+
+Establish `h2` using `(Fintype.linearIndependent_iff.mp b.linearIndependent) _ h1 i`. Take `⟨⟨yy, t⟩, ht⟩` from `IsLocalization.surj (primeToSub n) (b.repr (f w) i)`. Establish `h3 : c i * t = n * yy`. Apply `IsLocalization.injective Loc hS` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← ht, sub_eq_zero.mp h2, mul_assoc]`.
+
+Conclude with `(IsCoprime.symm t.2).dvd_of_dvd_mul_right ⟨yy, h3⟩`. Set `eqv` to `Fintype.equivFinOfCardEq hcard`. Use `⟨fun j => m (eqv.symm j), fun a => ?_, fun c hc j => ?_⟩` and prove the remaining obligations. Take `⟨c, w, hw⟩` from `hA a`. Use `⟨fun j => c (eqv.symm j), w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hw, Equiv.sum_comp eqv.symm (fun i => c i • m i)]`. Use `hB (fun i => c (eqv i)) ?_ (eqv.symm j)` as an intermediate fact. Simplify using `using this`. Take `⟨w, hw⟩` from `hc`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hw]`. Conclude with `Fintype.sum_equiv eqv _ _ (fun i => by simp)`.
+-/
 theorem exists_basis_modN {M : Type*} [AddCommGroup M] [Module O M] [Module.Finite O M]
     [Module.Projective O M] {n : O} (hn0 : n ≠ 0) :
     ∃ e : Fin (Module.finrank O M) → M,

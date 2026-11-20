@@ -7,5 +7,8 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.HighWtEmb
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HighWtEmb.mem_nabK_of_toBlock | exact GlobalTheory.HighWtEmb.mem_nabK_of_toBlock | (intros; apply GlobalTheory.HighWtEmb.mem_nabK_of_toBlock <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mem_dualWeylProductSpan_of_factorwise_dualWeyl : ∀ (k : Type) [Field k] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (ν : ι → Fin N → ℕ) (P : MvPolynomial (BVar N ι) k), (∀ τ, toBlock k N τ P ∈ dualWeyl (MvPolynomial (OVar N τ) k) N N (ν τ)) → P ∈ nabK k N ν := by
   first | exact @GlobalTheory.HighWtEmb.mem_nabK_of_toBlock | exact GlobalTheory.HighWtEmb.mem_nabK_of_toBlock | (intros; apply GlobalTheory.HighWtEmb.mem_nabK_of_toBlock <;> assumption)

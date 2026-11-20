@@ -22,6 +22,9 @@ def autU (N : Submodule (𝓞 E) (Sp E n)) : Subgroup (UF E n) where
     rw [show a.1 (a⁻¹.1 x) = x from LinearEquiv.apply_symm_apply a.1 x] at h
     exact h.symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `x`. Rewrite using `[mem_gmap, ← h (γ.1.symm x), LinearEquiv.apply_symm_apply]`. Introduce `h x conv_lhs => rw [← h, mem_gmap, LinearEquiv.symm_apply_apply]`.
+-/
 theorem mem_autU {N : Submodule (𝓞 E) (Sp E n)} {γ : UF E n} : γ ∈ autU N ↔ gmap γ.1 N = N := by
   constructor
   · intro h
@@ -36,6 +39,11 @@ section Stab
 
 variable {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))}
 
+/- English proof (translation)
+Set `f : H →* autU p.deco.1.N` to `{ toFun := fun g => ⟨g.1.1, mem_autU.2 (congrArg (fun q : DecoF X.E n ST SG Q => q.deco.1.N) (hH g.1 g.2))⟩ map_one' := rfl map_mul' := fun _ _ => rfl }`. Use `Subgroup.card_dvd_of_injective f fun a b hab => ?_` and prove the remaining obligations. Establish `h1 : a.1.1 = b.1.1` using `congrArg Subtype.val hab`. Establish `ha : FrmG.incl Λ Θ a.1 • p = p` using `hH a.1 a.2`. Establish `hb : FrmG.incl Λ Θ b.1 • p = p` using `hH b.1 b.2`.
+
+Establish `h2` using `DecoSet.stab_fst_injective p.deco (a := ((FrmG.incl Λ Θ a.1).1, (FrmG.incl Λ Θ a.1).2.1)) (b := ((FrmG.incl Λ Θ b.1).1, (FrmG.incl Λ Θ b.1).2.1)) (congrArg DecoF.deco ha) (congrArg DecoF.deco hb) h1`. Conclude with `Subtype.ext (FramedForms.incl_injective Λ Θ (FramedForms.stab_inj p ha hb h1 (Prod.mk.inj h2).2))`.
+-/
 theorem card_dvd_card_autU (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (p : DecoF X.E n ST SG Q)
     (H : Subgroup (FrmG Λ Θ)) (hH : ∀ g ∈ H, g • p = p) : Nat.card H ∣ Nat.card (autU p.deco.1.N) := by
   let f : H →* autU p.deco.1.N :=
@@ -68,11 +76,17 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
   Nab := (colValF W sel mu u R.m).Nab
   Del := (colValF W sel mu u R.m).Del
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frmMem_gsd : (frmMem W sel mu L u Λ Θ).gsd = frmGSD (colValF W sel mu u R.m) Λ Θ := rfl
 
 @[reducible] def cplMem : MemOn (chF W sel mu L u (m2 + 1)) :=
   MemOn.pairs (chF W sel mu L u (m2 + 1)) b (ybCpl W sel mu cst L u m2 b hY)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cplMem_gsd : (cplMem W sel mu cst L u m2 b hY).gsd =
     cplGSD (midGSD W sel mu L u m2 b) (ybCpl W sel mu cst L u m2 b hY) := rfl
 
@@ -103,22 +117,37 @@ def levGrp : ∀ (i : ℕ) (β : (levFam W sel mu cst L u m2 b hY Λ Θ i).β),
   | _, .cpl rfl => MulEquiv.refl _
   | _, .top rfl => MulEquiv.refl _
 
+/- English proof (translation)
+Apply the tactic sequence `rcases β with _ | rfl | rfl <;> rfl`.
+-/
 theorem levPt_smul (i : ℕ) (β : (levFam W sel mu cst L u m2 b hY Λ Θ i).β) (g : (levFam W sel mu cst L u m2 b hY Λ Θ i).G β)
     (d : (levFam W sel mu cst L u m2 b hY Λ Θ i).D β) : levPt i β (g • d) = levGrp i β g • levPt i β d := by
   rcases β with _ | rfl | rfl <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases β with _ | rfl | rfl <;> rfl`.
+-/
 theorem levFam_rho (i : ℕ) (β : (levFam W sel mu cst L u m2 b hY Λ Θ i).β) (g : (levFam W sel mu cst L u m2 b hY Λ Θ i).G β) :
     (levFam W sel mu cst L u m2 b hY Λ Θ i).ρ β g = frmRho (colValF W sel mu u i) (levG i β) (levQ i β) (levGrp i β g) := by
   rcases β with _ | rfl | rfl <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases β with _ | rfl | rfl <;> rfl`.
+-/
 theorem levFam_nab (i : ℕ) (β : (levFam W sel mu cst L u m2 b hY Λ Θ i).β) (d : (levFam W sel mu cst L u m2 b hY Λ Θ i).D β) :
     (levFam W sel mu cst L u m2 b hY Λ Θ i).Nab β d = nabAtr X.emb (W.lamTrue u i) (levPt i β d).deco.1.Lsh := by
   rcases β with _ | rfl | rfl <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases β with _ | rfl | rfl <;> rfl`.
+-/
 theorem levFam_del (i : ℕ) (β : (levFam W sel mu cst L u m2 b hY Λ Θ i).β) (d : (levFam W sel mu cst L u m2 b hY Λ Θ i).D β) :
     (levFam W sel mu cst L u m2 b hY Λ Θ i).Del β d = delAtr X.emb (W.lamTrue u i) (levPt i β d).deco.1.Lsh := by
   rcases β with _ | rfl | rfl <;> rfl
 
+/- English proof (translation)
+Establish `h` using `card_dvd_card_autU (levG i β) (levQ i β) (levPt i β d) ((MulAction.stabilizer ((levFam W sel mu cst L u m2 b hY Λ Θ i).G β) d).map (levGrp i β).toMonoidHom) (by`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `(levPt_smul i β g d).symm.trans (congrArg (levPt i β) hg))`. Rewrite `h` using `[Subgroup.card_map_of_injective (levGrp i β).injective]`. Then use the resulting hypothesis.
+-/
 theorem card_stab_dvd_autU (i : ℕ) (β : (levFam W sel mu cst L u m2 b hY Λ Θ i).β) (d : (levFam W sel mu cst L u m2 b hY Λ Θ i).D β) :
     Nat.card (MulAction.stabilizer ((levFam W sel mu cst L u m2 b hY Λ Θ i).G β) d) ∣ Nat.card (autU (levPt i β d).deco.1.N) := by
   have h := card_dvd_card_autU (levG i β) (levQ i β) (levPt i β d)
@@ -127,6 +156,9 @@ theorem card_stab_dvd_autU (i : ℕ) (β : (levFam W sel mu cst L u m2 b hY Λ �
       exact (levPt_smul i β g d).symm.trans (congrArg (levPt i β) hg))
   rwa [Subgroup.card_map_of_injective (levGrp i β).injective] at h
 
+/- English proof (translation)
+The claim follows from `spFam_ok (fun j _ => hF j) (cplGSD_ok _ (hF (m2 + 1) b)) hT i`.
+-/
 theorem levFam_ok (hF : ∀ j, (chF W sel mu L u j).Ok) (hT : (frmGSD (colValF W sel mu u R.m) Λ Θ).Ok) (i : ℕ) :
     (levFam W sel mu cst L u m2 b hY Λ Θ i).Ok :=
   spFam_ok (fun j _ => hF j) (cplGSD_ok _ (hF (m2 + 1) b)) hT i

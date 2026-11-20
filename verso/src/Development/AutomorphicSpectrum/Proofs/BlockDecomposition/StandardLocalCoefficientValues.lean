@@ -18,9 +18,17 @@ namespace GlobalTheory.CompanionTheory.FexTheta.StdLocal
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Apply the tactic sequence `cases L <;> simp [LM.ct]`.
+-/
 theorem ct_one {c : HeckeCharacter K} {v : Pl} (L : LM c v) : L.ct 1 = 1 := by
   cases L <;> simp [LM.ct]
 
+/- English proof (translation)
+Consider the cases of `L with`. Consider the case `@sp w₁ w₂ h₁ h₂ Φ`. Establish `e : (((1 : (Qv v)ˣ) : Qv v), (((1 : (Qv v)ˣ)⁻¹ : (Qv v)ˣ) : Qv v)) = 1`. Simplify using `[Prod.ext_iff]`. Establish `e' : (fun x : Qv v × Qv v => Φ (x * (((1 : (Qv v)ˣ) : Qv v), (((1 : (Qv v)ˣ)⁻¹ : (Qv v)ˣ) : Qv v)))) = Φ`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[e, mul_one]`. Simplify using `only [LM.tw, e']`. Consider the case `@ns w h σ η Φ => rfl`.
+-/
 theorem tw_one {c : HeckeCharacter K} {v : Pl} (L : LM c v) : L.tw 1 = L := by
   cases L with
   | @sp w₁ w₂ h₁ h₂ Φ =>
@@ -33,6 +41,13 @@ theorem tw_one {c : HeckeCharacter K} {v : Pl} (L : LM c v) : L.tw 1 = L := by
     simp only [LM.tw, e']
   | @ns w h σ η Φ => rfl
 
+/- English proof (translation)
+Establish `hb` using `GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.algebraMap_bijective v w h1`. Establish `e : ∀ ξ : K, algebraMap (Qv v) (Kv K w) (dg1 v w ξ) = algebraMap K (Kv K w) ξ` using `fun ξ => Function.rightInverse_invFun hb.2 _`. Establish `hmul : dg1 v w (κ : K) * dg1 v w ((κ⁻¹ : Kˣ) : K) = 1`. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[map_mul, e, e, map_one, ← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`.
+
+Use `⟨left_ne_zero_of_mul_eq_one hmul, (GlobalTheory.CompanionTheory.StdSphVal.degreeOneEmbedding_mem_integers_iff v w h1 _).2 h, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right hmul]`. Use `(GlobalTheory.CompanionTheory.StdSphVal.degreeOneEmbedding_mem_integers_iff v w h1 _).2 ?_` and prove the remaining obligations. Establish `e2 : atW w κ⁻¹ = (atW w κ)⁻¹` using `map_inv _ _`. Express the relevant statement in the definitionally equal form `((atW w κ⁻¹ : (Kv K w)ˣ) : Kv K w) ∈ 𝒪[Kv K w]`.
+
+Rewrite using `[e2]`. Conclude with `h'`.
+-/
 theorem degreeOneEmbedding_integral_unit (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal]
     (h1 : Module.finrank (Qv v) (Kv K w) = 1) (κ : Kˣ)
     (h : ((atW w κ : (Kv K w)ˣ) : Kv K w) ∈ 𝒪[Kv K w])
@@ -52,6 +67,11 @@ theorem degreeOneEmbedding_integral_unit (v : Pl) (w : PlK K) [w.asIdeal.LiesOve
   rw [e2]
   exact h'
 
+/- English proof (translation)
+Establish `t0 : ((unifUnit F ^ j : Fˣ) : F) ≠ 0` using `Units.ne_zero _`. Establish `p1 : ((unifUnit F ^ j : Fˣ) : F) ∈ 𝒪[F]`. Use `mul_mem ha h1` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ ha0, one_mul]`. Then use the resulting hypothesis. Establish `p2 : ((unifUnit F ^ j : Fˣ) : F)⁻¹ ∈ 𝒪[F]`.
+
+Use `mul_mem hb h2` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ hb0, one_mul, Units.val_inv_eq_inv_val]`. Then use the resulting hypothesis. Use `GlobalTheory.CompanionTheory.SphTheta.SplitPiK.ord_of_unit t0 p1 p2` as an intermediate fact. Rewrite `this` using `[ord_unifUnit_zpow]`. Conclude with `hj this`.
+-/
 theorem not_integral {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     {a b : F} (ha0 : a ≠ 0) (hb0 : b ≠ 0) (ha : a⁻¹ ∈ 𝒪[F]) (hb : b⁻¹ ∈ 𝒪[F]) {j : ℤ} (hj : j ≠ 0)
     (h1 : a * ((unifUnit F ^ j : Fˣ) : F) ∈ 𝒪[F])
@@ -69,6 +89,17 @@ theorem not_integral {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `K _ _ h2 c v L hok hU hstd k hk κ hκ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.CompanionTheory.StdSphVal.val_std K h2 c v L hok hstd hU k hk (κ : K)).1 (fun w hw => (hκ w hw).1)`. Simplify using `only [fL, ct_one, tw_one, h, one_mul]`. Introduce `hsp j hj`.
+
+Consider the cases of `L with`. Consider the case `@ns w i σ η Φ => exact hsp.elim`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ => haveI := i₁ haveI := i₂`. Take `⟨hne, -, -⟩` from `hok`. Establish `hΦ : Φ = Set.indicator {x : Qv v × Qv v | x.1 ∈ 𝒪[Qv v] ∧ x.2 ∈ 𝒪[Qv v]} 1` using `hstd`.
+
+Substitute `hΦ` using the available equality. Take `⟨-, d₁, d₂⟩` from `GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.places_split h2 v w₁ w₂ hne`. Establish `hψ : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Take `⟨hχc, hχ1, hχ0⟩` from `(GlobalTheory.CompanionTheory.StdAddChar.isStd_inv_and_trivial_and_nontrivial (Qv v) _ hψ).1`. Establish `r₁ : IsUnramifiedChar (cAt c v w₁)` using `GlobalTheory.CompanionTheory.SphTheta.isUnramifiedChar_comp_unitsMap (Qv v) (Kv K w₁) (localChar c w₁) (hU w₁).1`.
+
+Establish `hfix` using `GlobalTheory.CompanionTheory.SphTheta.SplitPiK.piks (GlobalTheory.CompanionTheory.SphTheta.SplitRWK.rwks GlobalTheory.CompanionTheory.SplitRep.sRep) (Qv v) _ hχc hχ1 hχ0 _ r₁ k hk`. Take `⟨a0, -, a1⟩` from `degreeOneEmbedding_integral_unit v w₁ d₁ κ (hκ w₁ i₁).1 (hκ w₁ i₁).2`. Take `⟨b0, -, b1⟩` from `degreeOneEmbedding_integral_unit v w₂ d₂ κ (hκ w₂ i₂).1 (hκ w₂ i₂).2`. Establish `e` using `GlobalTheory.CompanionTheory.SplitTorus.piS_torus (Qv v) (GP.psiF v)⁻¹ hχc hχ1 (cAt c v w₁) k (Set.indicator {x : Qv v × Qv v | x.1 ∈ 𝒪[Qv v] ∧ x.2 ∈ 𝒪[Qv v]} 1) (unifUnit (Qv v) ^ j) (dg1 v w₁ (κ : K), dg1 v w₂ (κ : K))`. Establish `hnot : (dg1 v w₁ (κ : K), dg1 v w₂ (κ : K)) * (((unifUnit (Qv v) ^ j : (Qv v)ˣ) : Qv v), (((unifUnit (Qv v) ^ j)⁻¹ : (Qv v)ˣ) : Qv v)) ∉ {x : Qv v × Qv v | x.1 ∈ 𝒪[Qv v] ∧ x.2 ∈ 𝒪[Qv v]}` using `fun h => not_integral a0 b0 a1 b1 hj h.1 h.2`.
+
+Simplify using `only [fL, LM.tw, LM.val]`. Rewrite using `[e, hfix, Set.indicator_of_notMem hnot, mul_zero]`.
+-/
 theorem fL_std : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → Unr c v → L.std → ∀ k ∈ integralGL (Qv v) 2, ∀ κ : Kˣ,
   (∀ w : PlK K, w.asIdeal.LiesOver v.asIdeal → ((atW w κ : (Kv K w)ˣ) : Kv K w) ∈ 𝒪[Kv K w] ∧

@@ -65,6 +65,9 @@ def StabIntShapeC : Prop :=
 
 variable {D}
 
+/- English proof (translation)
+Consider the cases of `h : (M p).split with`. Consider the case `none => exact hL δ M p hA h a b ha hb`. Consider the case `some g => exact hG δ M p hA (by simp [h]) a b ha hb`.
+-/
 theorem loc_iff (hL : LocShapeL D) (hG : LocShapeG D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {p : PlF D} (hA : ∀ q, Agree δ M q) {a b : MatR D}
     (ha : IsLoUni a) (hb : IsUpUni b) :
@@ -74,6 +77,9 @@ theorem loc_iff (hL : LocShapeL D) (hG : LocShapeG D) {δ : ∀ p : PlF D, (D.s.
   | none => exact hL δ M p hA h a b ha hb
   | some g => exact hG δ M p hA (by simp [h]) a b ha hb
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Conclude with `⟨(hLG _ (hNZ.1 _) _).1 fun p => (h p i j hij).1, (hLG _ (hNZ.1 _) _).1 fun p => (h p i j hij).2.1, (hLG _ (hNZ.2 _) _).1 fun p => (h p i j hij).2.2⟩`. Introduce `h p i j hij`. Conclude with `⟨(hLG _ (hNZ.1 _) _).2 (h i j hij).1 p, (hLG _ (hNZ.1 _) _).2 (h i j hij).2.1 p, (hLG _ (hNZ.2 _) _).2 (h i j hij).2.2 p⟩`.
+-/
 theorem glob_iff (hLG : LocGlob D) (hNZ : ShapeNZ D) (a b : MatR D) :
     (∀ p, LocEntryShape D p a b) ↔ EntryShape D a b := by
   constructor
@@ -84,6 +90,11 @@ theorem glob_iff (hLG : LocGlob D) (hNZ : ShapeNZ D) (a b : MatR D) :
     exact ⟨(hLG _ (hNZ.1 _) _).2 (h i j hij).1 p, (hLG _ (hNZ.1 _) _).2 (h i j hij).2.1 p,
       (hLG _ (hNZ.2 _) _).2 (h i j hij).2.2 p⟩
 
+/- English proof (translation)
+Introduce `δ M hA u u' w a`. Rewrite using `[StabIntGrp.mem_stabInt_iff, StabShape.mem_stabIntSet_iff δ M u u' hA w a]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, b, hb, hW, hp⟩`. Conclude with `⟨ha, b, hb, hW, (glob_iff hLG hNZ a b).1 fun p => (loc_iff hL hG (p := p) hA ha hb).1 (hp p)⟩`.
+
+Introduce and unpack `⟨ha, b, hb, hW, he⟩`. Conclude with `⟨ha, b, hb, hW, fun p => (loc_iff hL hG (p := p) hA ha hb).2 ((glob_iff hLG hNZ a b).2 he p)⟩`.
+-/
 theorem stabIntShape_of (hL : LocShapeL D) (hG : LocShapeG D) (hLG : LocGlob D) (hNZ : ShapeNZ D) :
     StabIntShapeC D := by
   intro δ M hA u u' w a

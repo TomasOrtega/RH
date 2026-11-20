@@ -94,8 +94,14 @@ def OneDbl (ψ : AddChar k Circle) (ν : Measure k) (m₁ : Measure (GL n₁ k))
 
 end Double
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toOne_one (ν : Measure k) (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (l : A → ℂ) : toOne ν σ 1 l = l := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toOne_succ (ν : Measure k) (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (p : ℕ) (l : A → ℂ) :
     toOne ν σ (p + 2) l = toOne ν σ (p + 1) (exDown ν (p + 1) σ l) := rfl
 

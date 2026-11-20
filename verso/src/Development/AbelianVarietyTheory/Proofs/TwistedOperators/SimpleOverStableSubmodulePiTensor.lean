@@ -9,6 +9,15 @@ namespace GlobalTheory.PiSimple
 
 open GlobalTheory.TensHead
 
+/- English proof (translation)
+Introduce `N hN hKN`. Establish `hs : Stab G' (N.map (e : V →ₗ[ℂ] W))`. Introduce and unpack `g' hg' _ ⟨x, hx, rfl⟩`. Take `⟨g, hg, hc⟩` from `hG g' hg'`. Conclude with `⟨g x, hN g hg x hx, by simpa using (hc x).symm⟩`.
+
+Establish `hle : K' ≤ N.map (e : V →ₗ[ℂ] W)` using `hK ▸ Submodule.map_mono hKN`. Establish `key : ∀ P : Submodule ℂ V, (P.map (e : V →ₗ[ℂ] W)).comap (e : V →ₗ[ℂ] W) = P`. Introduce `P`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Break down `h _ hs hle with h1 | h1` into its components or cases. Use `left`. Use `congrArg (Submodule.comap (e : V →ₗ[ℂ] W)) h1` as an intermediate fact. Rewrite `this` using `[← hK, key, key]`. Then use the resulting hypothesis. Use `right`.
+
+Use `congrArg (Submodule.comap (e : V →ₗ[ℂ] W)) h1` as an intermediate fact. Rewrite `this` using `[key, Submodule.comap_top]`. Then use the resulting hypothesis.
+-/
 theorem simpleOver_of_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] (e : V ≃ₗ[ℂ] W) (G : Set (Module.End ℂ V)) (G' : Set (Module.End ℂ W))
     (K : Submodule ℂ V) (K' : Submodule ℂ W) (hK : K.map (e : V →ₗ[ℂ] W) = K')
@@ -36,6 +45,13 @@ def PP (σ : Type) : Prop :=
     (∀ i, Module.rank ℂ (M i) ≤ Cardinal.aleph0) → (∀ i, Stab (Op i) (K i)) →
     (∀ i, SimpleOver (Op i) (K i)) → SimpleOver (piOps Op) (piKer K)
 
+/- English proof (translation)
+Introduce `_ M _ _ Op K _ _ _`. Use `simpleOver_of_equiv (PiTensorProduct.isEmptyEquiv PEmpty) _ (∅ : Set (Module.End ℂ ℂ)) _ ⊥ ?_ (by simp) ?_` and prove the remaining obligations. Establish `: piKer K = ⊥`. Rewrite using `[piKer, Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨y, ⟨i, _⟩, _⟩`.
+
+Conclude with `i.elim`. Rewrite using `[this, Submodule.map_bot]`. Introduce `N _ _`. Break down `Ideal.eq_bot_or_top (N : Ideal ℂ) with h | h` into its components or cases. Conclude with `Or.inl h`.
+
+Conclude with `Or.inr h`.
+-/
 theorem pp_empty : PP PEmpty := by
   intro _ M _ _ Op K _ _ _
   refine simpleOver_of_equiv (PiTensorProduct.isEmptyEquiv PEmpty) _ (∅ : Set (Module.End ℂ ℂ))
@@ -50,6 +66,15 @@ theorem pp_empty : PP PEmpty := by
     · exact Or.inl h
     · exact Or.inr h
 
+/- English proof (translation)
+Introduce `_ M _ _ Op K _ _ hso`. Set `e` to `PiTensorProduct.subsingletonEquiv (R := ℂ) (s := M) PUnit.unit`. Use `simpleOver_of_equiv e _ (Op PUnit.unit) _ (K PUnit.unit) ?_ ?_ (hso _)` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[piKer, Submodule.map_span, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨y, ⟨i, hi⟩, rfl⟩, rfl⟩`. Consider the cases of `i`. Simplify `hi` using `[e]`. Introduce `x hx`. Use `⟨e.symm x, Submodule.subset_span ⟨_, ⟨PUnit.unit, by simpa using hx⟩, rfl⟩, by simp⟩` and prove the remaining obligations.
+
+Introduce `g hg`. Use `⟨piOp PUnit.unit g, ⟨PUnit.unit, g, hg, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `H : g ∘ₗ (e : _ →ₗ[ℂ] M PUnit.unit) = (e : _ →ₗ[ℂ] M PUnit.unit) ∘ₗ piOp PUnit.unit g`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises.
+
+Introduce `y`. Simplify using `[e, piOp, PiTensorProduct.map_tprod]`. Conclude with `LinearMap.congr_fun H x`.
+-/
 theorem pp_unit : PP PUnit := by
   intro _ M _ _ Op K _ _ hso
   let e := PiTensorProduct.subsingletonEquiv (R := ℂ) (s := M) PUnit.unit
@@ -70,6 +95,17 @@ theorem pp_unit : PP PUnit := by
       simp [e, piOp, PiTensorProduct.map_tprod]
     exact LinearMap.congr_fun H x
 
+/- English proof (translation)
+Introduce `_ M _ _ Op K hr hs hso`. Establish `H` using `hσ (fun s => M (f s)) (fun s => Op (f s)) (fun s => K (f s)) (fun s => hr _) (fun s => hs _) (fun s => hso _)`. Use `simpleOver_of_equiv (PiTensorProduct.reindex ℂ M f.symm) _ _ _ _ ?_ ?_ H` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[piKer, Submodule.map_span, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨y, ⟨i, hi⟩, rfl⟩, rfl⟩`. Take `⟨s, rfl⟩` from `f.surjective i`. Conclude with `Submodule.subset_span ⟨fun s => y (f s), ⟨s, hi⟩, by simp⟩`. Rewrite using `[piKer, Submodule.span_le]`. Introduce and unpack `_ ⟨z, ⟨s, hz⟩, rfl⟩`.
+
+Use `⟨PiTensorProduct.tprod ℂ (Equiv.piCongrLeft M f z), Submodule.subset_span ⟨_, ⟨f s, by simpa using hz⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨s, g, hg, rfl⟩`. Use `⟨piOp (f s) g, ⟨f s, g, hg, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `hu : (Function.update (fun j => (LinearMap.id : M (f j) →ₗ[ℂ] M (f j))) s g) = fun j => Function.update (fun i => (LinearMap.id : M i →ₗ[ℂ] M i)) (f s) g (f.symm.symm j)`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]`.
+
+Conclude with `(Function.update_of_ne (β := fun i => M i →ₗ[ℂ] M i) (a := f j) (a' := f s) (fun h' => h (f.injective h')) g (fun i => LinearMap.id)).symm`. Simplify using `only [piOp, LinearEquiv.coe_coe]`. Rewrite using `[hu, PiTensorProduct.map_reindex]`.
+-/
 theorem pp_of_equiv {σ ι : Type} (f : σ ≃ ι) (hσ : PP σ) : PP ι := by
   intro _ M _ _ Op K hr hs hso
   classical
@@ -99,6 +135,39 @@ theorem pp_of_equiv {σ ι : Type} (f : σ ≃ ι) (hσ : PP σ) : PP ι := by
     simp only [piOp, LinearEquiv.coe_coe]
     rw [hu, PiTensorProduct.map_reindex]
 
+/- English proof (translation)
+Establish `hA` using `hα (fun a => N (.inl a)) (fun a => Op (.inl a)) (fun a => K (.inl a)) (fun a => hr _) (fun a => hs _) (fun a => hso _)`. Establish `hB` using `hβ (fun b => N (.inr b)) (fun b => Op (.inr b)) (fun b => K (.inr b)) (fun b => hr _) (fun b => hs _) (fun b => hso _)`. Establish `hT` using `GlobalTheory.T.simpleOverStableSubmodule_tensorPureKernelSpan (piOps (fun a => Op (.inl a))) (piOps (fun b => Op (.inr b))) (piKer (fun a => K (.inl a))) (piKer (fun b => K (.inr b))) hrl (GlobalTheory.T.operatorStable_piTensorPureKernelSpan _ _ (fun a => hs _)) (GlobalTheory.T.o …`. Set `e` to `(PiTensorProduct.tmulEquivDep ℂ N).symm`. Use `simpleOver_of_equiv e _ _ _ _ ?_ ?_ hT` and prove the remaining obligations.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[piKer, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨y, ⟨i, hi⟩, rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨PiTensorProduct.tprod ℂ (fun a => y (.inl a)), PiTensorProduct.tprod ℂ (fun b => y (.inr b)), ?_, by simp [e]⟩` and prove the remaining obligations. Consider the cases of `i with`.
+
+Consider the case `inl a => exact Or.inl (Submodule.subset_span ⟨_, ⟨a, hi⟩, rfl⟩)`. Consider the case `inr b => exact Or.inr (Submodule.subset_span ⟨_, ⟨b, hi⟩, rfl⟩)`. Use `set Q := (piKer K).map e.toLinearMap with hQ`. Establish `pure : ∀ (y₁ : ∀ a, N (.inl a)) (y₂ : ∀ b, N (.inr b)), ((∃ a, y₁ a ∈ K (.inl a)) ∨ (∃ b, y₂ b ∈ K (.inr b))) → PiTensorProduct.tprod ℂ y₁ ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ y₂ ∈ Q`. Introduce `y₁ y₂ h`.
+
+Use `⟨PiTensorProduct.tprod ℂ (fun i => Sum.rec y₁ y₂ i), Submodule.subset_span ⟨_, ?_, rfl⟩, by simp [e]⟩` and prove the remaining obligations. Break down `h with ⟨a, ha⟩ | ⟨b, hb⟩` into its components or cases. Conclude with `⟨.inl a, ha⟩`. Conclude with `⟨.inr b, hb⟩`. Establish `left : ∀ (y₁ : ∀ a, N (.inl a)), (∃ a, y₁ a ∈ K (.inl a)) → ∀ z, PiTensorProduct.tprod ℂ y₁ ⊗ₜ[ℂ] z ∈ Q`.
+
+Introduce `y₁ h z`. Establish `: (⊤ : Submodule ℂ (⨂[ℂ] b, N (.inr b))) ≤ Q.comap (TensorProduct.mk ℂ _ _ (PiTensorProduct.tprod ℂ y₁))`. Rewrite using `[← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨y₂, rfl⟩`. Conclude with `pure y₁ y₂ (Or.inl h)`.
+
+Conclude with `this Submodule.mem_top`. Establish `right : ∀ (y₂ : ∀ b, N (.inr b)), (∃ b, y₂ b ∈ K (.inr b)) → ∀ x, x ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ y₂ ∈ Q`. Introduce `y₂ h x`. Establish `: (⊤ : Submodule ℂ (⨂[ℂ] a, N (.inl a))) ≤ Q.comap ((TensorProduct.mk ℂ _ _).flip (PiTensorProduct.tprod ℂ y₂))`. Rewrite using `[← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨y₁, rfl⟩`. Conclude with `pure y₁ y₂ (Or.inr h)`. Conclude with `this Submodule.mem_top`. Rewrite using `[tensKer, Submodule.span_le]`. Introduce and unpack `_ ⟨x, z, hxz, rfl⟩`.
+
+Break down `hxz with hx | hz` into its components or cases. Establish `: piKer (fun a => K (.inl a)) ≤ Q.comap ((TensorProduct.mk ℂ _ _).flip z)`. Rewrite using `[piKer, Submodule.span_le]`. Introduce and unpack `_ ⟨y₁, h, rfl⟩`. Conclude with `left y₁ h z`.
+
+Conclude with `this hx`. Establish `: piKer (fun b => K (.inr b)) ≤ Q.comap (TensorProduct.mk ℂ _ _ x)`. Rewrite using `[piKer, Submodule.span_le]`. Introduce and unpack `_ ⟨y₂, h, rfl⟩`. Conclude with `right y₂ h x`.
+
+Conclude with `this hz`. Introduce and unpack `_ (⟨_, ⟨a, g, hg, rfl⟩, rfl⟩ | ⟨_, ⟨b, g, hg, rfl⟩, rfl⟩)`. Use `⟨piOp (Sum.inl a) g, ⟨_, g, hg, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `H : (TensorProduct.map (piOp a g) LinearMap.id) ∘ₗ e.toLinearMap = e.toLinearMap ∘ₗ piOp (Sum.inl a) g`. Apply `PiTensorProduct.ext` to reduce the goal to its premises.
+
+Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [e, piOp, LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, PiTensorProduct.map_tprod, PiTensorProduct.tmulEquivDep_symm_apply, TensorProduct.map_tmul, LinearMap.id_apply]`. Use `congr 2`. Use function extensionality and compare the values at `a'`.
+
+Distinguish the cases in `h : a' = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, Function.update_of_ne (fun h' => h (Sum.inl_injective h'))]`. Use function extensionality and compare the values at `b'`.
+
+Rewrite using `[Function.update_of_ne (Sum.inr_ne_inl)]`. Both sides reduce to the same expression. Conclude with `LinearMap.congr_fun H x`. Use `⟨piOp (Sum.inr b) g, ⟨_, g, hg, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `H : (TensorProduct.map LinearMap.id (piOp b g)) ∘ₗ e.toLinearMap = e.toLinearMap ∘ₗ piOp (Sum.inr b) g`.
+
+Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [e, piOp, LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, PiTensorProduct.map_tprod, PiTensorProduct.tmulEquivDep_symm_apply, TensorProduct.map_tmul, LinearMap.id_apply]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `a'`. Rewrite using `[Function.update_of_ne (Sum.inl_ne_inr)]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `b'`. Distinguish the cases in `h : b' = b`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, Function.update_of_ne (fun h' => h (Sum.inr_injective h'))]`. Conclude with `LinearMap.congr_fun H x`.
+-/
 theorem simpleOver_sum {α β : Type} (hα : PP α) (hβ : PP β) [DecidableEq (α ⊕ β)]
     (N : α ⊕ β → Type) [∀ i, AddCommGroup (N i)] [∀ i, Module ℂ (N i)]
     (Op : ∀ i, Set (Module.End ℂ (N i))) (K : ∀ i, Submodule ℂ (N i))
@@ -203,6 +272,9 @@ theorem simpleOver_sum {α β : Type} (hα : PP α) (hβ : PP β) [DecidableEq (
           · rw [Function.update_of_ne h, Function.update_of_ne (fun h' => h (Sum.inr_injective h'))]
       exact LinearMap.congr_fun H x
 
+/- English proof (translation)
+Introduce `_ N _ _ Op K hr hs hso`. Use `simpleOver_sum pp_unit hα N Op K hr ?_ hs hso` and prove the remaining obligations. Rewrite using `[(PiTensorProduct.subsingletonEquiv (R := ℂ) (s := fun u : PUnit => N (Sum.inl u)) PUnit.unit).rank_eq]`. Conclude with `hr _`.
+-/
 theorem pp_unit_sum {α : Type} (hα : PP α) : PP (PUnit ⊕ α) := by
   intro _ N _ _ Op K hr hs hso
   refine simpleOver_sum pp_unit hα N Op K hr ?_ hs hso
@@ -210,13 +282,22 @@ theorem pp_unit_sum {α : Type} (hα : PP α) : PP (PUnit ⊕ α) := by
     PUnit.unit).rank_eq]
   exact hr _
 
+/- English proof (translation)
+The claim follows from `pp_of_equiv ((Equiv.optionEquivSumPUnit α).trans (Equiv.sumComm _ _)).symm (pp_unit_sum hα)`.
+-/
 theorem pp_option {α : Type} (hα : PP α) : PP (Option α) :=
   pp_of_equiv ((Equiv.optionEquivSumPUnit α).trans (Equiv.sumComm _ _)).symm (pp_unit_sum hα)
 
+/- English proof (translation)
+The claim follows from `Finite.induction_empty_option (P := PP) (fun f h => pp_of_equiv f h) pp_empty (fun h => pp_option h) σ`.
+-/
 theorem pp_finite (σ : Type) [Finite σ] : PP σ :=
   Finite.induction_empty_option (P := PP) (fun f h => pp_of_equiv f h) pp_empty
     (fun h => pp_option h) σ
 
+/- English proof (translation)
+Introduce `ι _ _ M _ _ Op K hr hs hso`. Conclude with `pp_finite ι M Op K hr hs hso`.
+-/
 theorem simpleOver_piKer : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {M : ι → Type}
     [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] (Op : ∀ i, Set (Module.End ℂ (M i)))
     (K : ∀ i, Submodule ℂ (M i)),

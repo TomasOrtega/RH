@@ -22,6 +22,9 @@ abbrev flatφ : K × I → (Y ⟶ X) := fun p => ψ p.1 ≫ φ p.2
 
 abbrev flatε : K × I → ℤ := fun p => ε p.1 * δ p.2
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun p => Set.mem_iInter.1 (Set.mem_iInter.1 hy p.1) p.2`.
+-/
 theorem nest_le (j : K → I → L.ι) :
     LB.wchart (LB.LinComb L φ δ) ψ j ≤ LB.wchart L (flatφ φ ψ) (fun p => j p.1 p.2) :=
   fun _ hy => Set.mem_iInter.2 fun p => Set.mem_iInter.1 (Set.mem_iInter.1 hy p.1) p.2
@@ -30,6 +33,11 @@ def nest (t : LB.Gen (LB.LinComb L (flatφ φ ψ) (flatε δ ε))) :
     LB.Gen (LB.LinComb (LB.LinComb L φ δ) ψ ε) :=
   ⟨fun j => res (nest_le L φ δ ψ j) (t.s fun p => j p.1 p.2)⟩
 
+/- English proof (translation)
+Rewrite using `[trF, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[trF, ← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show gm (r ≫ ψ k ≫ φ i) z _ (L.g (j k i) (j' k i)) ^ (ε k * δ i) = _`.
+
+Rewrite using `[mul_comm (ε k), zpow_mul, Category.assoc]`.
+-/
 theorem trF_flat (r : Z ⟶ Y) (z : Z) (j j' : K → I → L.ι) :
     trF (L := L) (flatφ φ ψ) (flatε δ ε) r z (fun p => j p.1 p.2) (fun p => j' p.1 p.2) =
       ∏ k, trF (L := L) φ δ (r ≫ ψ k) z (j k) (j' k) ^ ε k := by
@@ -42,6 +50,9 @@ theorem trF_flat (r : Z ⟶ Y) (z : Z) (j j' : K → I → L.ι) :
 
 variable {L φ δ ψ ε}
 
+/- English proof (translation)
+Introduce `j j'` and use `unit_ext fun y hy => by have hj : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart (LB.LinComb L φ δ) ψ j := hy.1 have hj' : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart (LB.LinComb L φ δ) ψ j' := hy.2 refine (gm_res _ y _ hy _).trans ((gm_res _ y _ hj _).trans ?_) refine (gen_trans ht (𝟙 Y) y (nest_le L φ δ ψ j hj) …`.
+-/
 theorem nest_isGen {t : LB.Gen (LB.LinComb L (flatφ φ ψ) (flatε δ ε))} (ht : t.IsGen) :
     (nest L φ δ ψ ε t).IsGen := fun j j' => unit_ext fun y hy => by
   have hj : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart (LB.LinComb L φ δ) ψ j := hy.1
@@ -59,6 +70,11 @@ def adj (φ : I → (W ⟶ X)) (δ : I → ℤ) (z : Z) (JP : (Z ⟶ W) → I �
     (Z.presheaf.stalk z)ˣ :=
   trF (L := L) φ δ χ z (JP χ) (fun i => J (χ ≫ φ i))
 
+/- English proof (translation)
+Establish `hm` using `hJP.mem ψ r`. Establish `e₁ : val (L` using `LB.LinComb L φ δ) (nest L φ δ ψ ε t) r z JP = gm r z (LB.wchart L (flatφ φ ψ) fun p => JP (r ≫ ψ p.1) p.2) (t.s fun p => JP (r ≫ ψ p.1) p.2) := gm_res r z _ hm _`. Establish `e₂` using `val_of t r z J (fun p => J ((r ≫ ψ p.1) ≫ φ p.2)) (fun p => by rw [Category.assoc])`. Establish `m₂ : r z ∈ LB.wchart L (flatφ φ ψ) (fun p => J ((r ≫ ψ p.1) ≫ φ p.2))`. Use `hJ.mem (flatφ φ ψ) r` as an intermediate fact.
+
+Simplify `this` using `only [Category.assoc]`. Rewrite using `[e₂]`. Use `e₁.trans ((gen_trans ht r z (nest_le L φ δ ψ _ hm) m₂).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (· * _) (trF_flat L φ δ ψ ε r z (fun k => JP (r ≫ ψ k)) (fun k i => J ((r ≫ ψ k) ≫ φ i)))`.
+-/
 theorem val_nest {t : LB.Gen (LB.LinComb L (flatφ φ ψ) (flatε δ ε))} (ht : t.IsGen) (r : Z ⟶ Y) {z : Z}
     {JP : (Z ⟶ W) → I → L.ι} (hJP : Good (LB.LinComb L φ δ) z JP) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     val (L := LB.LinComb L φ δ) (nest L φ δ ψ ε t) r z JP =
@@ -87,6 +103,13 @@ abbrev lamφ : ULift.{0} (Finset (Fin 2)) → ((G2 G).left ⟶ G.left) := fun I 
 
 abbrev lamε : ULift.{0} (Finset (Fin 2)) → ℤ := fun I => (-1) ^ (2 - I.down.card)
 
+/- English proof (translation)
+Apply the tactic sequence `have e : ∀ I : ULift.{0} (Finset (Fin 2)), (lift x y).left ≫ lamφ G I = (psum G ![x, y] I.down).left := fun I => congrArg (fun q => q.left) ((psum_hom (preHom (lift x y)) (x2 G) I.down).trans (congrArg (fun q => psum G q I.down) (funext fun i => by fin_cases i <;> simp [preHom, x …`. Use `(Fintype.prod_equiv (Equiv.ulift : ULift.{0} (Finset (Fin 2)) ≃ Finset (Fin 2)) _ (fun I => h (psum G ![x, y] I).left ^ ((-1 : ℤ) ^ (2 - I.card))) (fun I => congrArg (fun q => h q ^ lamε I) (e I))).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Establish `p₀ : psum G ![x, y] ∅ = 1` using `rfl`. Establish `p₁ : psum G ![x, y] {0} = x` using `_root_.mul_one x`.
+
+Establish `p₂ : psum G ![x, y] {1} = y` using `_root_.mul_one y`. Establish `p₃ : psum G ![x, y] {0, 1} = x * y` using `congrArg (x * ·) (_root_.mul_one y)`. Rewrite using `[p₀, p₁, p₂, p₃]`. Establish `q₀ : (-1 : ℤ) ^ (2 - (∅ : Finset (Fin 2)).card) = 1` using `by decide`. Establish `q₁ : ∀ i : Fin 2, (-1 : ℤ) ^ (2 - ({i} : Finset (Fin 2)).card) = -1` using `by decide`.
+
+Establish `q₃ : (-1 : ℤ) ^ (2 - ({0, 1} : Finset (Fin 2)).card) = 1` using `by decide`. Rewrite using `[q₀, q₁, q₁, q₃]`. Simplify using `only [zpow_neg, zpow_one]`. The two sides agree by associativity and commutativity.
+-/
 theorem prod_lam {T : Over S} (x y : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ G.left) → U) :
     ∏ I, h ((lift x y).left ≫ lamφ G I) ^ lamε I =
       h (x * y).left * (h x.left)⁻¹ * (h y.left)⁻¹ * h (1 : T ⟶ G).left := by
@@ -111,6 +134,11 @@ theorem prod_lam {T : Over S} (x y : T ⟶ G) {U : Type} [CommGroup U] (h : (T.l
   simp only [zpow_neg, zpow_one]
   ac_rfl
 
+/- English proof (translation)
+Establish `r₀ : lift a (lift b c) ≫ x3 G 0 = a` using `by simp [x3]`. Establish `r₁ : lift a (lift b c) ≫ x3 G 1 = b` using `by simp [x3]`. Establish `r₂ : lift a (lift b c) ≫ x3 G 2 = c` using `by simp [x3]`. Establish `s : lift a (lift b c) ≫ padd G (x3 G 0) (x3 G 1) = a * b` using `(MonObj.comp_mul _ _ _).trans (by rw [r₀, r₁])`. Use `(Fintype.prod_equiv Equiv.ulift _ (fun i : Fin 3 => h ((lift a (lift b c)).left ≫ law1φ G (x3 G 0) (x3 G 1) (x3 G 2) ⟨i⟩) ^ lawε ⟨i⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.prod_univ_three]`. Use `show h (lift a (lift b c) ≫ lift (padd G (x3 G 0) (x3 G 1)) (x3 G 2)).left ^ (1 : ℤ) * h (lift a (lift b c) ≫ lift (x3 G 0) (x3 G 2)).left ^ (-1 : ℤ) * h (lift a (lift b c) ≫ lift (x3 G 1) (x3 G 2)).left ^ (-1 : ℤ) = _`. Rewrite using `[comp_lift, comp_lift, comp_lift, s, r₀, r₁, r₂]`. Simplify using `only [zpow_neg, zpow_one]`.
+-/
 theorem prod_law₁ {T : Over S} (a b c : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ (G2 G).left) → U) :
     ∏ k, h ((lift a (lift b c)).left ≫ law1φ G (x3 G 0) (x3 G 1) (x3 G 2) k) ^ lawε k =
       h (lift (a * b) c).left * (h (lift a c).left)⁻¹ * (h (lift b c).left)⁻¹ := by
@@ -127,6 +155,11 @@ theorem prod_law₁ {T : Over S} (a b c : T ⟶ G) {U : Type} [CommGroup U] (h :
   rw [comp_lift, comp_lift, comp_lift, s, r₀, r₁, r₂]
   simp only [zpow_neg, zpow_one]
 
+/- English proof (translation)
+Establish `r₀ : lift a (lift b c) ≫ x3 G 0 = a` using `by simp [x3]`. Establish `r₁ : lift a (lift b c) ≫ x3 G 1 = b` using `by simp [x3]`. Establish `r₂ : lift a (lift b c) ≫ x3 G 2 = c` using `by simp [x3]`. Establish `s : lift a (lift b c) ≫ padd G (x3 G 1) (x3 G 2) = b * c` using `(MonObj.comp_mul _ _ _).trans (by rw [r₁, r₂])`. Use `(Fintype.prod_equiv Equiv.ulift _ (fun i : Fin 3 => h ((lift a (lift b c)).left ≫ law2φ G (x3 G 0) (x3 G 1) (x3 G 2) ⟨i⟩) ^ lawε ⟨i⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.prod_univ_three]`. Use `show h (lift a (lift b c) ≫ lift (x3 G 0) (padd G (x3 G 1) (x3 G 2))).left ^ (1 : ℤ) * h (lift a (lift b c) ≫ lift (x3 G 0) (x3 G 1)).left ^ (-1 : ℤ) * h (lift a (lift b c) ≫ lift (x3 G 0) (x3 G 2)).left ^ (-1 : ℤ) = _`. Rewrite using `[comp_lift, comp_lift, comp_lift, s, r₀, r₁, r₂]`. Simplify using `only [zpow_neg, zpow_one]`.
+-/
 theorem prod_law₂ {T : Over S} (a b c : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ (G2 G).left) → U) :
     ∏ k, h ((lift a (lift b c)).left ≫ law2φ G (x3 G 0) (x3 G 1) (x3 G 2) k) ^ lawε k =
       h (lift a (b * c)).left * (h (lift a b).left)⁻¹ * (h (lift a c).left)⁻¹ := by
@@ -143,9 +176,17 @@ theorem prod_law₂ {T : Over S} (a b c : T ⟶ G) {U : Type} [CommGroup U] (h :
   rw [comp_lift, comp_lift, comp_lift, s, r₀, r₁, r₂]
   simp only [zpow_neg, zpow_one]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [x3]`.
+-/
 theorem id₃ : lift (x3 G 0) (lift (x3 G 1) (x3 G 2)) = 𝟙 (G3 G) := by
   ext <;> simp [x3]
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show h (ψ k ≫ φ i) ^ (ε k * δ i) = _`.
+
+Rewrite using `[mul_comm (ε k), zpow_mul]`.
+-/
 theorem prod_flat {Y W X : Scheme.{0}} {K I : Type} [Fintype K] [Fintype I] (ψ : K → (Y ⟶ W)) (ε : K → ℤ)
     (φ : I → (W ⟶ X)) (δ : I → ℤ) {U : Type} [CommGroup U] (h : (Y ⟶ X) → U) :
     ∏ p, h (flatφ φ ψ p) ^ flatε δ ε p = ∏ k, (∏ i, h (ψ k ≫ φ i) ^ δ i) ^ ε k := by
@@ -156,6 +197,9 @@ theorem prod_flat {Y W X : Scheme.{0}} {K I : Type} [Fintype K] [Fintype I] (ψ 
   show h (ψ k ≫ φ i) ^ (ε k * δ i) = _
   rw [mul_comm (ε k), zpow_mul]
 
+/- English proof (translation)
+Introduce `U _ h` and use `by have a := prod_cub (x3 G 0) (x3 G 1) (x3 G 2) h rw [id₃] at a simp only [Over.id_left, Category.id_comp] at a have b := prod_law₁ (x3 G 0) (x3 G 1) (x3 G 2) (fun χ => ∏ i, h (χ ≫ lamφ G i) ^ lamε i) rw [id₃] at b simp only [Over.id_left, Category.id_comp, prod_lam] at b rw [a, …`.
+-/
 theorem formEq₁ : FormEq (thφ G (x3 G)) thε
     (flatφ (lamφ G) (law1φ G (x3 G 0) (x3 G 1) (x3 G 2))) (flatε lamε lawε) := fun U _ h => by
   have a := prod_cub (x3 G 0) (x3 G 1) (x3 G 2) h
@@ -169,6 +213,9 @@ theorem formEq₁ : FormEq (thφ G (x3 G)) thε
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Introduce `U _ h` and use `by have a := prod_cub (x3 G 0) (x3 G 1) (x3 G 2) h rw [id₃] at a simp only [Over.id_left, Category.id_comp] at a have b := prod_law₂ (x3 G 0) (x3 G 1) (x3 G 2) (fun χ => ∏ i, h (χ ≫ lamφ G i) ^ lamε i) rw [id₃] at b simp only [Over.id_left, Category.id_comp, prod_lam] at b rw [a, …`.
+-/
 theorem formEq₂ : FormEq (thφ G (x3 G)) thε
     (flatφ (lamφ G) (law2φ G (x3 G 0) (x3 G 1) (x3 G 2))) (flatε lamε lawε) := fun U _ h => by
   have a := prod_cub (x3 G 0) (x3 G 1) (x3 G 2) h
@@ -184,6 +231,9 @@ theorem formEq₂ : FormEq (thφ G (x3 G)) thε
 
 abbrev lamLB (L : RigLB G) : LB (G2 G).left := LB.LinComb L.L (lamφ G) lamε
 
+/- English proof (translation)
+Introduce `J j h₁ h₂ h₃` and use `unit_ext fun y hy => by have e := v (fun p => J p.1 p.2) j (fun a b q => h₁ _ _ _ _ q) h₂ (fun a b q => h₃ _ _ _ q) have hm := nest_le L.L (lamφ G) lamε ψ J hy.1 have hy' : (𝟙 _ : (G3 G).left ⟶ _) y ∈ LB.wchart L.L (flatφ (lamφ G) ψ) (fun p => J p.1 p.2) ⊓ LB.wchart L.L (thφ G (x …`.
+-/
 theorem nest_isCube (L : RigLB G) (c : CubicalStr G L) (ψ : ULift.{0} (Fin 3) → ((G3 G).left ⟶ (G2 G).left))
     (t : LB.Gen (LB.LinComb L.L (flatφ (lamφ G) ψ) (flatε lamε lawε)))
     (v : LB.Gen.Corr L.L _ _ (thφ G (x3 G)) thε t c.t) :
@@ -197,6 +247,11 @@ theorem nest_isCube (L : RigLB G) (c : CubicalStr G L) (ψ : ULift.{0} (Fin 3) �
     refine Eq.trans ?_ (gm_res _ y _ hy _).symm
     exact (gm_res _ y _ hy' _).symm.trans ((congrArg (gm _ y _) e).trans (gm_res _ y _ hy' _))
 
+/- English proof (translation)
+Take `⟨t₁, g₁, v₁⟩` from `exists_gen L.isLB (φ := thφ G (x3 G)) (ε := thε) formEq₁ c.t c.isGen`. Take `⟨t₂, g₂, v₂⟩` from `exists_gen L.isLB (φ := thφ G (x3 G)) (ε := thε) formEq₂ c.t c.isGen`. Use `⟨nest L.L _ _ _ _ t₁, nest L.L _ _ _ _ t₂, nest_isGen g₁, nest_isGen g₂, nest_isCube L c _ t₁ (corr_of_val L.isLB fun y J hJ => v₁ _ _ y J hJ), nest_isCube L c _ t₂ (corr_of_val L.isLB fun y J hJ => v₂ _ _ y J hJ), fun y JP hJP J hJ => ⟨fun a b d => ?_, fun a b d => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[val_nest g₁ _ hJP hJ, prod_law₁ a b d (adj (lamφ G) lamε y JP J), v₁ _ _ y J hJ]`. Both sides reduce to the same expression.
+
+Rewrite using `[val_nest g₂ _ hJP hJ, prod_law₂ a b d (adj (lamφ G) lamε y JP J), v₂ _ _ y J hJ]`. Both sides reduce to the same expression.
+-/
 theorem exists_laws (L : RigLB G) (c : CubicalStr G L) :
     ∃ (l₁ : LB.Gen (LB.LinComb (lamLB L) (law1φ G (x3 G 0) (x3 G 1) (x3 G 2)) lawε))
       (l₂ : LB.Gen (LB.LinComb (lamLB L) (law2φ G (x3 G 0) (x3 G 1) (x3 G 2)) lawε)), l₁.IsGen ∧ l₂.IsGen ∧

@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.FlagZ
 
+/- English proof (translation)
+Introduce `ι _ N τ`. Conclude with `⟨HermLB.icls_eq_iff.1 ((icls_flDet_eq_zero τ 0 (by simp [plDim])).trans HermLB.icls_triv.symm), HermLB.icls_eq_iff.1 ((icls_flDet_eq_zero τ (Fin.last N) (by simp [plDim])).trans HermLB.icls_triv.symm)⟩`.
+-/
 theorem flDet_zero_last_isometric_triv : ∀ (ι : Type) [Fintype ι] (N : ℕ) (τ : ι),
     (flDet τ 0 : GlobalTheory.HermLB (flStr ι N)).Isometric (GlobalTheory.HermLB.triv _) ∧
       (flDet τ (Fin.last N) : GlobalTheory.HermLB (flStr ι N)).Isometric (GlobalTheory.HermLB.triv _) := by

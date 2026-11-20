@@ -10,6 +10,17 @@ open scoped Pointwise
 section
 open Formalism.HC.Der Formalism.TwoAdicCyclotomicDecomposition
 
+/- English proof (translation)
+Use `set M := ordCompl[l] N with hM`. Establish `hMN : M ∣ N` using `Nat.ordCompl_dvd N l`. Establish `hlM : l.Coprime M` using `Nat.coprime_ordCompl (Fact.out : l.Prime) (NeZero.ne N)`. Take `⟨u0, hu0⟩` from `exists_unit_modEq (N := N) hMN l hlM`. Establish `hF : IsArithFrobAt ℤ (tauN N u0) Q` using `tauN_frob N l Q u0 hu0`.
+
+Establish `hu0' : ((ZMod.unitsMap hMN u0 : (ZMod M)ˣ) : ZMod M) = (l : ZMod M)` using `(val_modEq_iff hMN u0 l).mp hu0`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Take `⟨k, ρ, hρ, hρeq⟩` from `Decomp.stab_eq_inertia_mul l Q (tauN N u0) (tauN N u) hF hs`. Take `⟨w, rfl⟩` from `(tauN N).surjective ρ`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hw1 : ZMod.unitsMap hMN w = 1` using `(val_modEq_one_iff hMN w).mp ((tauN_inertia_iff N l Q w).mp hρ)`. Establish `huw : u = w * u0 ^ k` using `(tauN N).injective (by rw [map_mul, map_pow]; exact hρeq)`. Rewrite using `[val_modEq_iff hMN, huw, map_mul, map_pow, hw1, one_mul, Units.val_pow_eq_pow_val, hu0', Nat.cast_pow]`. Introduce and unpack `⟨k, hk⟩`.
+
+Establish `hw1 : ZMod.unitsMap hMN (u * (u0 ^ k)⁻¹) = 1`. Rewrite using `[map_mul, map_inv, map_pow, mul_inv_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[(val_modEq_iff hMN u _).mp hk, Units.val_pow_eq_pow_val, hu0', Nat.cast_pow]`. Establish `hwin` using `(tauN_inertia_iff N l Q (u * (u0 ^ k)⁻¹)).mpr ((val_modEq_one_iff hMN _).mpr hw1)`.
+
+Establish `hwst` using `Decomp.mem_stab_of _ Q (smul_mem_of_inertia _ Q hwin)`. Establish `hFst` using `IsArithFrobAt.mem_stabilizer hF`. Establish `hu : u = (u * (u0 ^ k)⁻¹) * u0 ^ k` using `by rw [inv_mul_cancel_right]`. Rewrite using `[hu, map_mul, map_pow]`. Conclude with `Subgroup.mul_mem _ hwst (Subgroup.pow_mem _ hFst k)`.
+-/
 private theorem stab_iff (N : ℕ) [NeZero N] (l : ℕ) [Fact l.Prime] (Q : Ideal (𝓞 (Cond.Cyc N))) [Q.IsPrime]
     [Q.LiesOver (span {(l : ℤ)})] (u : (ZMod N)ˣ) :
     tauN N u ∈ MulAction.stabilizer _ Q ↔ ∃ k : ℕ, (u : ZMod N).val ≡ l ^ k [MOD ordCompl[l] N] := by
@@ -42,6 +53,11 @@ private theorem stab_iff (N : ℕ) [NeZero N] (l : ℕ) [Fact l.Prime] (Q : Idea
     rw [hu, map_mul, map_pow]
     exact Subgroup.mul_mem _ hwst (Subgroup.pow_mem _ hFst k)
 
+/- English proof (translation)
+Establish `hζ` using `(zO_prim N).map_of_injective (f := algebraMap (𝓞 (Cond.Cyc N)) (Cond.Cyc N)) (FaithfulSMul.algebraMap_injective _ _)`. Establish `hJ` using `hζ.map_of_injective J.injective`. Take `⟨i, -, rfl⟩` from `hJ.eq_pow_of_pow_eq_one hx`. Establish `hg : IsCyclotomicExtension.Rat.galEquivZMod N (Cond.Cyc N) (tauN N u) = u` using `MulEquiv.apply_symm_apply _ _`. Establish `hτ : tauN N u (algebraMap (𝓞 (Cond.Cyc N)) (Cond.Cyc N) (zO N)) = (algebraMap (𝓞 (Cond.Cyc N)) (Cond.Cyc N) (zO N)) ^ (u : ZMod N).val`.
+
+Rewrite using `[IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq N (Cond.Cyc N) (tauN N u) hζ.pow_eq_one, hg]`. Rewrite using `[map_pow, h, hτ, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem act_of (N : ℕ) [NeZero N] {K : Type*} [Field K] (J : Cond.Cyc N →+* K) (σ : K →+* K) (u : (ZMod N)ˣ)
     (h : ∀ x, σ (J x) = J (tauN N u x)) (x : K) (hx : x ^ N = 1) : σ x = x ^ (u : ZMod N).val := by
   have hζ := (zO_prim N).map_of_injective (f := algebraMap (𝓞 (Cond.Cyc N)) (Cond.Cyc N))
@@ -59,6 +75,15 @@ private theorem act_of (N : ℕ) [NeZero N] {K : Type*} [Field K] (J : Cond.Cyc 
 
 end
 
+/- English proof (translation)
+Introduce `l _ M hM`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Use `haveI := Formalism.HC.Der.cyc_isGalois M`. Set `J : Cond.Cyc M →+* PadicAlgCl l` to `(IsAlgClosed.lift : Cond.Cyc M →ₐ[ℚ] PadicAlgCl l).toRingHom`. Take `⟨P, hPp, hPlo, -, hstab, hsurj, -⟩` from `UpperTheory.HF.loc_onto l (Cond.Cyc M) J`.
+
+Use `haveI := hPp`. Use `haveI := hPlo`. Prove the components needed by the constructor for the conclusion. Introduce `σ`. Take `⟨τ, hτ⟩` from `hsurj σ`.
+
+Take `⟨u, rfl⟩` from `(Formalism.HC.Der.tauN M).surjective τ`. Establish `hst : Formalism.HC.Der.tauN M u ∈ MulAction.stabilizer _ P` using `(hstab _).mpr ⟨σ, hτ⟩`. Take `⟨k, hk⟩` from `(stab_iff M l P u).mp hst`. Conclude with `⟨u, k, hk, fun x hx => act_of M J (σ : PadicAlgCl l →+* PadicAlgCl l) u hτ x hx⟩`. Introduce `u j hj`.
+
+Take `⟨σ, hσ⟩` from `(hstab (Formalism.HC.Der.tauN M u)).mp ((stab_iff M l P u).mpr ⟨j, hj⟩)`. Conclude with `⟨σ, fun x hx => act_of M J (σ : PadicAlgCl l →+* PadicAlgCl l) u hσ x hx⟩`.
+-/
 theorem UpperTheory.HF.loc_roots :
     ∀ (l : ℕ) [Fact l.Prime] (M : ℕ), 0 < M → (∀ σ : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l), ∃ (u : (ZMod M)ˣ) (j : ℕ), (u : ZMod M).val ≡ l ^ j [MOD ordCompl[l] M] ∧ ∀ x : PadicAlgCl l, x ^ M = 1 → σ x = x ^ (u : ZMod M).val) ∧ ∀ (u : (ZMod M)ˣ) (j : ℕ), (u : ZMod M).val ≡ l ^ j [MOD ordCompl[l] M] → ∃ σ : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l), ∀ x : PadicAlgCl l, x ^ M = 1 → σ x = x ^ (u : ZMod M).val := by
   intro l _ M hM

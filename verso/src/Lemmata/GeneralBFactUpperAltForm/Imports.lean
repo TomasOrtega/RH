@@ -2,6 +2,13 @@ import Mathlib
 
 namespace Bl.general_b_fact_upper_alt_form
 
+/- English proof (translation)
+Introduce `K _ n k _ _ _ _ f A hA`. Establish `hker : LinearMap.ker (Matrix.toLin' A) = ⊥` using `LinearMap.ker_eq_bot.mpr (fun x y hxy => hA (by simpa only [Matrix.toLin'_apply] using hxy))`. Take `⟨g, hg⟩` from `(Matrix.toLin' A).exists_leftInverse_of_injective hker`. Establish `hBA : LinearMap.toMatrix' g * A = 1`. Establish `h` using `congrArg LinearMap.toMatrix' hg`.
+
+Rewrite `h` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis. Establish `h1 : (LinearMap.toMatrix' g).map f * A.map f = 1`. Rewrite using `[← Matrix.map_mul, hBA, Matrix.map_one _ f.map_zero f.map_one]`. Introduce `v w hvw`. Establish `h2` using `congrArg (fun u => Matrix.mulVec ((LinearMap.toMatrix' g).map f) u) hvw`.
+
+Simplify `h2` using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+-/
 theorem goal1 :
   ∀ {K : Type} [inst : Field.{0} K] {n k : Type} [Fintype.{0} n] [DecidableEq.{1} n] [inst_3 : Fintype.{0} k]
   [DecidableEq.{1} k] (f : RingHom.{0, 0} K Complex) (A : Matrix.{0, 0, 0} n k K),

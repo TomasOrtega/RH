@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.ModuLocal
 
+/- English proof (translation)
+Establish `h` using `hu (pairA F 1 0) (by change evalV F v 0 = 0; exact map_zero _)`. Establish `h' : (1 : Ainf F) * ((u : AF F).1 - 1) = 0` using `congrArg Prod.fst h`. Rewrite `h'` using `[one_mul, sub_eq_zero]`. Rewrite using `[h']`. Both sides reduce to the same expression.
+-/
 theorem infComp_eq_one {F : Type} [Field F] [NumberField F] {v : Pl F} {u : (AF F)ˣ}
     (hu : At (evFin F v) ((u : AF F) - 1)) (w : NumberField.InfinitePlace F) : (u : AF F).1 w = 1 := by
   have h := hu (pairA F 1 0) (by change evalV F v 0 = 0; exact map_zero _)
@@ -26,6 +29,11 @@ theorem infComp_eq_one {F : Type} [Field F] [NumberField F] {v : Pl F} {u : (AF 
   rw [h']
   rfl
 
+/- English proof (translation)
+Establish `h` using `hu (pairA F 0 (GlobalTheory.AdelicU.singleFin w 1)) (by change evalV F v (GlobalTheory.AdelicU.singleFin w 1) = 0; exact GlobalTheory.AdelicU.evalV_singleFin_ne (Ne.symm hw) 1)`. Establish `h2 : GlobalTheory.AdelicU.singleFin w 1 * ((u : AF F).2 - 1) = 0` using `congrArg Prod.snd h`. Establish `h'` using `congrArg (evalV F w) h2`. Rewrite `h'` using `[map_mul, GlobalTheory.AdelicU.evalV_singleFin_self, one_mul, map_sub, map_zero, sub_eq_zero]`. Rewrite using `[← (map_one (evalV F w) : evalV F w 1 = 1)]`.
+
+Conclude with `h'`.
+-/
 theorem finComp_eq_one {F : Type} [Field F] [NumberField F] {v : Pl F} {u : (AF F)ˣ}
     (hu : At (evFin F v) ((u : AF F) - 1)) {w : HeightOneSpectrum (𝓞 F)} (hw : w ≠ v) :
     (u : AF F).2 w = 1 := by
@@ -39,6 +47,11 @@ theorem finComp_eq_one {F : Type} [Field F] [NumberField F] {v : Pl F} {u : (AF 
 
 end GlobalTheory.ModuLocal
 
+/- English proof (translation)
+Introduce `F _ _ v u hu`. Rewrite using `[GlobalTheory.ModuAdele.distribHaarChar_adeleRing F u, GroundTheory.Global.IdeleGroup.ideleModule_eq]`. Establish `hinf : (∏ w : NumberField.InfinitePlace F, ‖(u : AF F).1 w‖ ^ w.mult) = 1` using `Finset.prod_eq_one fun w _ => by rw [GlobalTheory.ModuLocal.infComp_eq_one hu w, norm_one, one_pow]`. Establish `hfin : (∏ᶠ w : HeightOneSpectrum (𝓞 F), ‖(u : AF F).2 w‖) = ‖(u : AF F).2 v‖` using `finprod_eq_single _ v fun w hw => by rw [GlobalTheory.ModuLocal.finComp_eq_one hu hw, norm_one]`. Establish `hloc` using `((GlobalTheory.CompletionNorm.norm_nabs_valuation F v).1 (Units.map (evFin F v : AF F →* Fv F v) u)).1`.
+
+Use `(congrArg₂ (· * ·) hinf hfin).trans ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `hloc`.
+-/
 theorem GlobalTheory.ModuLocal.distribHaarChar_eq_nabs_of_at : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (u : (AF F)ˣ), At (evFin F v) ((u : AF F) - 1) →
     ((MeasureTheory.distribHaarChar (AF F) u : NNReal) : ℝ) = GlobalTheory.SplitWeil.nabs (Fv F v) (Units.map (evFin F v : AF F →* Fv F v) u) := by
   intro F _ _ v u hu

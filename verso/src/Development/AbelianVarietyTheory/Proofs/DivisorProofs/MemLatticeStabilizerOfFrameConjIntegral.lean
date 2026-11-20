@@ -11,6 +11,13 @@ namespace GlobalTheory.InertKatFrame
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, -, y, -, rfl⟩` from `hx`. Introduce `u hu`. Establish `h0` using `ha u hu`.
+
+Rewrite `h0` using `[smul_eq_mul]`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[smul_smul, h0, zero_smul]`. Consider the case `zero => intro u _`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy => intro u hu`. Simplify using `[smul_add, hx u hu, hy u hu]`. Consider the case `neg x _ hx => intro u hu`. Simplify using `[smul_neg, hx u hu]`.
+-/
 theorem latAt_entry_at {n : ℕ} (X : Spc F E n) (v : Pl F) {z : Fin n → AE F E}
     (hz : z ∈ GlobalTheory.InertSph.latAt X v) (i : Fin n) : At (evFin F v) (z i) := by
   induction hz using AddSubgroup.closure_induction with
@@ -25,6 +32,17 @@ theorem latAt_entry_at {n : ℕ} (X : Spc F E n) (v : Pl F) {z : Fin n → AE F 
   | add x y _ _ hx hy => intro u hu; simp [smul_add, hx u hu, hy u hu]
   | neg x _ hx => intro u hu; simp [smul_neg, hx u hu]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩ : ∃ y : Fin n → L, z = fun i => ι (y i)` from `⟨fun i => GlobalTheory.InertLocFrame.pre ι (z i), funext fun i => (GlobalTheory.InertLocFrame.pre_spec ι ((hsurj _).1 (latAt_entry_at X v hz i))).symm⟩`. Choose the witnesses or unpack the hypotheses as in `⟨x, rfl⟩ : ∃ x : Fin n → L, y = (P : Matrix (Fin n) (Fin n) L) *ᵥ x := by`. Use `⟨((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ y, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hx` using `(hP x).2 hz`.
+
+Establish `hKx : ∀ i, (K *ᵥ x) i ∈ Formalism.UG.intL L` using `fun i => by`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hK i j) (hx j)`. Establish `key : A *ᵥ (fun i => ι (((P : Matrix (Fin n) (Fin n) L) *ᵥ x) i)) = fun i => ι (((P : Matrix (Fin n) (Fin n) L) *ᵥ (K *ᵥ x)) i)` using `by set N := (P : Matrix (Fin n) (Fin n) L) * K * ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hN set Y := (P : Matrix (Fin n) (Fin n) L) *ᵥ x with hY`. Establish `h1 : (1 - ι 1) • (fun i => ι (Y i)) = 0`.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[sub_mul, one_mul, ← hmul, one_mul, sub_self]`. Establish `h2 : N.map ι *ᵥ (fun i => ι (Y i)) = fun i => ι ((N *ᵥ Y) i)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[hmul]`. Establish `h3 : N *ᵥ Y = (P : Matrix (Fin n) (Fin n) L) *ᵥ (K *ᵥ x)`. Rewrite using `[hY, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hN, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`.
+
+Rewrite using `[hA, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, h1, zero_add, h2, h3]`. Rewrite using `[key]`. Conclude with `(hP _).1 hKx`.
+-/
 theorem mulVec_mem_latAt {n : ℕ} (X : Spc F E n) (v : Pl F) {L : Type} [Field L]
     [Valued L (WithZero (Multiplicative ℤ))] (ι : L →+ AE F E)
     (hsurj : ∀ z : AE F E, At (evFin F v) z ↔ ∃ x, ι x = z) (hmul : ∀ x y, ι (x * y) = ι x * ι y)
@@ -65,6 +83,15 @@ theorem mulVec_mem_latAt {n : ℕ} (X : Spc F E n) (v : Pl F) {L : Type} [Field 
   rw [key]
   exact (hP _).1 hKx
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ v n X L _ _ ι _hinj hsurj hmul _hint P hP g K K' hK hK' hg hg'`. Use `⟨?_, fun z hz => ⟨mulVec_mem_latAt X v ι hsurj hmul P hP K hK _ hg z hz, mulVec_mem_latAt X v ι hsurj hmul P hP K' hK' _ hg' z hz⟩⟩` and prove the remaining obligations. Establish `hsup : ∀ w u, evFin F v u = 0 → u • ι w = 0` using `fun w => (hsurj (ι w)).2 ⟨w, rfl⟩`. Introduce `u hu`. Use `set N := (P : Matrix (Fin n) (Fin n) L) * K * ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`.
+
+Establish `hm : mat g - 1 = (N - 1).map ι`. Rewrite using `[hg]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[Matrix.one_apply, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Matrix.one_apply, hij]`. Rewrite using `[hm]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.zero_apply]`. Conclude with `hsup _ u hu`.
+-/
 theorem mem_KAt_of_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (v : Pl F) (n : ℕ) (X : Spc F E n) (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ι : L →+ AE F E),
       Function.Injective ι → (∀ z : AE F E, At (evFin F v) z ↔ ∃ x, ι x = z) → (∀ x y, ι (x * y) = ι x * ι y) →
       (∀ x, x ∈ Formalism.UG.intL L ↔ ι x ∈ AddSubgroup.closure {z : AE F E | ∃ a : AF F, At (evFin F v) a ∧

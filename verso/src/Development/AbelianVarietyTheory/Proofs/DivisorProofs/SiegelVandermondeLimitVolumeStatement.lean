@@ -9,5 +9,8 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open GlobalTheory.CovTestDR
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BcFib.tendsto_sieg_sub_vdmVal | exact GlobalTheory.BcFib.tendsto_sieg_sub_vdmVal | (intros; apply GlobalTheory.BcFib.tendsto_sieg_sub_vdmVal <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.siegel_vandermonde_limit_volume : Hypotheses2 → HypothesesH → RegularAlteration → GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.Ch2HodgeVanishes → OnObj fun _ O _ _ _ _ => Tendsto (fun R : ℝ => sieg O.Y ∅ R - vdmVal O.Y R) atTop (𝓝 (O.Y.vol * bcFl O.Y)) := by
   first | exact @GlobalTheory.BcFib.tendsto_sieg_sub_vdmVal | exact GlobalTheory.BcFib.tendsto_sieg_sub_vdmVal | (intros; apply GlobalTheory.BcFib.tendsto_sieg_sub_vdmVal <;> assumption)

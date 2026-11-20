@@ -6,6 +6,23 @@ open scoped TensorProduct ENNReal nonZeroDivisors Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hspan h2`. Set `L₂ : Submodule ℤ (ι → ℝ)` to `Λ.map (LinearMap.snd ℤ (ι → ℝ) (ι → ℝ))`. Establish `hmem : ∀ b, b ∈ L₂ ↔ ∃ a, (a, b) ∈ Λ`. Introduce `b`. Simplify using `only [L₂, Submodule.mem_map, LinearMap.snd_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, b'⟩, h, rfl⟩`. Conclude with `⟨a, h⟩`. Introduce and unpack `⟨a, h⟩`. Conclude with `⟨(a, b), h, rfl⟩`.
+
+Establish `hin : ∀ x : L₂, ((0 : ι → ℝ), (2 : ℝ) • (x : ι → ℝ)) ∈ Λ`. Introduce `x`. Take `⟨a, ha⟩` from `(hmem x).1 x.2`. Conclude with `h2 a x ha`. Use `haveI : DiscreteTopology L₂ := by`.
+
+Use `DiscreteTopology.of_continuous_injective (f := fun x : L₂ => (⟨((0 : ι → ℝ), (2 : ℝ) • (x : ι → ℝ)), hin x⟩ : Λ)) ?_ ?_` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (by fun_prop) _`. Introduce `x y hxy`. Establish `h` using `congrArg (fun z : Λ => (z : (ι → ℝ) × (ι → ℝ)).2) hxy`. Simplify using `only at h`.
+
+Conclude with `Subtype.ext (smul_right_injective _ (two_ne_zero) h)`. Use `haveI : IsZLattice ℝ L₂ := by`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+
+Establish `hy : ((0 : ι → ℝ), y) ∈ Submodule.span ℝ (Λ : Set ((ι → ℝ) × (ι → ℝ)))`. Rewrite using `[hspan]`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.mem_map_of_mem (f := LinearMap.snd ℝ (ι → ℝ) (ι → ℝ)) hy` as an intermediate fact. Rewrite `this` using `[Submodule.map_span]`.
+
+Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨a, b⟩, h, rfl⟩`. Conclude with `(hmem b).2 ⟨a, h⟩`. Use `⟨latticeDomain L₂, measurableSet_latticeDomain L₂, fun y => ?_⟩` and prove the remaining obligations. Take `⟨⟨l, hl⟩, h1, h3⟩` from `existsUnique_add_mem_latticeDomain L₂ y`.
+
+Use `⟨l, ⟨(hmem l).1 hl, h1⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `m ⟨hm, hm'⟩`. Conclude with `congrArg Subtype.val (h3 ⟨m, (hmem m).2 hm⟩ hm')`.
+-/
 theorem exists_fundamentalDomain_snd_of_two_smul_mem {ι : Type} [Fintype ι]
     (Λ : Submodule ℤ ((ι → ℝ) × (ι → ℝ))) [DiscreteTopology Λ] :
     Submodule.span ℝ (Λ : Set ((ι → ℝ) × (ι → ℝ))) = ⊤ →

@@ -8,6 +8,19 @@ open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t p hp n x g g' e e' he he' c h h' hD hD' a a' w hw hw' s hsa`. Establish `hn : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]`. Set `b₀ : Fin g → ↥(intO ℂ_[p])` to `fun i => ⟨s * a i, hsa i⟩`. Take `⟨vO, hv, hbv₀⟩` from `Guard.exists_comb he.1 b₀`.
+
+Establish `heC` using `fun j => GlobalTheory.FactorDepth.isTanAtG_map t (intO ℂ_[p]).subtype (he.1 j)`. Establish `hs : spMap (dualMap (intO ℂ_[p]).subtype) ≫ vO = spMap (epsMul s) ≫ w` using `Guard.comb_unique heC (GlobalTheory.LatDRFree.comb_map t (intO ℂ_[p]).subtype hbv₀) (Guard.comb_smul heC hw s)`. Take `⟨b, hbv, hb⟩` from `GlobalTheory.HTLevel.coords he hw _ hv hs`. Take `⟨b', hbv', hb'⟩` from `GlobalTheory.HTLevel.coords he' hw' _ hv hs`. Take `⟨u, hu⟩` from `GlobalTheory.HTLevel.red_ex (Ideal.span {(p : ↥(intO ℂ_[p])) ^ n}) hv`.
+
+Establish `h1` using `hD b vO hbv u hu`. Establish `h2` using `hD' b' vO hbv' u hu`. Rewrite `h2` using `[h1, Ideal.Quotient.eq]`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 h2`. Establish `h3 : s * (∑ i, (h i : ℂ_[p]) * a i - ∑ i, (h' i : ℂ_[p]) * a' i) = (r : ℂ_[p]) * (p : ℂ_[p]) ^ n`.
+
+Use `congrArg (intO ℂ_[p]).subtype hr` as an intermediate fact. Simplify using `only [map_mul, map_pow, map_natCast, map_sum, map_sub, Subring.subtype_apply, hb, hb'] at this`. Establish `e1 : ∑ i, (h i : ℂ_[p]) * (s * a i) = s * ∑ i, (h i : ℂ_[p]) * a i`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Establish `e2 : ∑ i, (h' i : ℂ_[p]) * (s * a' i) = s * ∑ i, (h' i : ℂ_[p]) * a' i`.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Rewrite `this` using `[e1, e2]`. Take the linear combination `(-1 : ℂ_[p]) * this`. Rewrite using `[h3, norm_mul, norm_pow, hn]`. Establish `hr1 : ‖(r : ℂ_[p])‖ ≤ 1` using `r.2`.
+
+Conclude with `mul_le_of_le_one_left (by positivity) hr1`.
+-/
 theorem UpperTheory.tangent_basis_change_torsion_character :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (p : ℕ) [Fact p.Prime] (n : ℕ) (x : Sp ↥(intO ℂ_[p]) ⟶ X) (g g' : ℕ) (e : Fin g → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left)) (e' : Fin g' → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left)), IsTanBasis t x e → IsTanBasis t x e' → ∀ (χ : TorsChar t x (p ^ n)) (h : Fin g → ↥(intO ℂ_[p])) (h' : Fin g' → ↥(intO ℂ_[p])), DlogIs t p n χ e h → DlogIs t p n χ e' h' → ∀ (a : Fin g → ℂ_[p]) (a' : Fin g' → ℂ_[p]) (w : (Sp (DualNumber ℂ_[p]) ⟶ t.G.left)), IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e i) a w → IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e' i) a' w → ∀ s : ℂ_[p], (∀ i, ‖s * a i‖ ≤ 1) → ‖s * (∑ i, (h i : ℂ_[p]) * a i - ∑ i, (h' i : ℂ_[p]) * a' i)‖ ≤ (p : ℝ)⁻¹ ^ n := by
   intro E _ _ _ H X t p hp n x g g' e e' he he' c h h' hD hD' a a' w hw hw' s hsa

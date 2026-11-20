@@ -24,6 +24,9 @@ def suppQ {D : D7} (v : FinPl D) {a b : ℕ} (r : ℕ) : Set (Matrix (Fin b) (Fi
   {x | IsUnit (topL r x).det ∧ Valued.v (topL r x).det = 1 ∧ (∀ i j, x i j ∈ v.adicCompletionIntegers D.host.F) ∧
       ∀ i j, r ≤ i.val → j.val < r → Valued.v (x i j) < 1}
 
+/- English proof (translation)
+Unfold `phiQ`. Rewrite using `[dif_neg]`. Conclude with `hx`.
+-/
 theorem phiQ_eq_zero_of_not_mem {D : D7} (v : FinPl D) {a b : ℕ} (r : ℕ) (mu : (Fv D.host.F v)ˣ →* ℂˣ)
     (x : Matrix (Fin b) (Fin a) (Fv D.host.F v)) (hx : x ∉ suppQ v r) : phiQ v r mu x = 0 := by
   unfold phiQ

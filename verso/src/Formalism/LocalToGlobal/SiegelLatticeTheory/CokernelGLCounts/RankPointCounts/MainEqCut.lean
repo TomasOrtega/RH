@@ -28,10 +28,18 @@ def genT (X : PB.Terms τ Rw I H H₁) : PB.Terms τ Rw I H H₁ :=
     gener := fun t => ¬ X.gener t
     s0 := fun t t' => if X.s0 t t' = 1 ∧ X.scal t t' then 1 else 2 }
 
+/- English proof (translation)
+Use extensionality with `t`. Simplify using `[genT, PB.Terms.ngSet, PB.Terms.genSet]`.
+-/
 theorem genT_ngSet (X : PB.Terms τ Rw I H H₁) : (genT X).ngSet = X.genSet := by
   ext t
   simp [genT, PB.Terms.ngSet, PB.Terms.genSet]
 
+/- English proof (translation)
+Rewrite using `[genT_ngSet]`. Use extensionality with `p`. Simplify using `only [PB.Terms.one, PB.Terms.sc, PB.Terms.allPairs, Set.mem_setOf_eq]`. Distinguish the cases in `h : X.s0 p.1 p.2 = 1 ∧ X.scal p.1 p.2`. Establish `e : (genT X).s0 p.1 p.2 = 1` using `by simp only [genT]; rw [if_pos h]`.
+
+Rewrite using `[e]`. Conclude with `⟨fun ⟨a, _⟩ => ⟨a, h.1, h.2⟩, fun ⟨a, _, _⟩ => ⟨a, rfl⟩⟩`. Establish `e : (genT X).s0 p.1 p.2 = 2` using `by simp only [genT]; rw [if_neg h]`. Rewrite using `[e]`. Conclude with `⟨fun ⟨_, b⟩ => absurd b (by norm_num), fun ⟨_, b, c⟩ => absurd ⟨b, c⟩ h⟩`.
+-/
 theorem genT_one (X : PB.Terms τ Rw I H H₁) : (genT X).one (genT X).ngSet = X.sc X.genSet := by
   rw [genT_ngSet]
   ext p
@@ -44,6 +52,9 @@ theorem genT_one (X : PB.Terms τ Rw I H H₁) : (genT X).one (genT X).ngSet = X
     rw [e]
     exact ⟨fun ⟨_, b⟩ => absurd b (by norm_num), fun ⟨_, b, c⟩ => absurd ⟨b, c⟩ h⟩
 
+/- English proof (translation)
+Rewrite using `[genT_one]`. Both sides reduce to the same expression.
+-/
 theorem genT_pairSum (X : PB.Terms τ Rw I H H₁) :
     (genT X).pairSum ((genT X).one (genT X).ngSet) = X.pairSum (X.sc X.genSet) := by
   rw [genT_one]; rfl
@@ -192,6 +203,27 @@ namespace Formalism.L2.SG.Pf.MainEqCut
 
 open Finset
 
+/- English proof (translation)
+Introduce `E _ _ _ τ Rw I H H₁ _ _ _ _ _ _ X r Cl Nu N C1 C0 Aexp Pc gf cSt AAre e1 TB hexp hPc hgf hcSt hAA he1 hAbs hClass hAmp hNorm hPts hLoc hMeas hGen hHt hTB`. Take `⟨hStep4, hOm, hWCS, hE5⟩` from `hC`. Rewrite using `[← genT_pairSum]`. Establish `hAbs' : (genT X).AbsConv` using `hAbs`. Take `⟨hsum, heq⟩` from `hRFC hCSS τ Rw I H H₁ (genT X) E r Cl Nu N hAbs' hClass`.
+
+Rewrite using `[heq]`. Establish `hG : 0 < (genT X).Gam1` using `hAbs'.2.2`. Use `show (genT X).Gam1 * _ ≤ (genT X).Gam1 * _`. Apply `mul_le_mul_of_nonneg_left _ hG.le` to reduce the goal to its premises. Apply `hsum.tsum_le_of_sum_le` to reduce the goal to its premises.
+
+Introduce `Cs`. Establish `hW : ∀ γ, PN.IsPt (genT X) N γ → 0 < Formalism.HermitianLatticeCounting.ExpansionTerms.blockMinorWeight γ * (Pc * N.NG γ ^ 6)`. Introduce `γ hγ`. Establish `h1` using `(hHt γ hγ).1`. Use `Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.E.blockMinorWeight_pos γ` as an intermediate fact.
+
+Check the signs of the components of the expression. Establish `s1 : ∀ γ, PN.IsPt (genT X) N γ → 0 < Formalism.HermitianLatticeCounting.ExpansionTerms.blockMinorWeight γ ∧ 0 ≤ N.J2loc γ ∧ 0 ≤ N.jacobianSquareBound γ ∧ 0 ≤ N.n γ ∧ 1 ≤ N.NG γ ∧ 1 ≤ N.ND γ ∧ 1 ≤ N.Hh γ`. Introduce `γ hγ`. Take `⟨L, hB, _, _, _, _, hH, _⟩` from `hLoc γ hγ ∅`. Use `⟨Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.E.blockMinorWeight_pos γ, hAmp.2.1 γ, (hMeas γ hγ).1, (hGen γ hγ).1, (hHt γ hγ).1, (hHt γ hγ).2.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hH]`. Unfold `PN.LocalNG.Htot`. Conclude with `Finset.prod_induction _ (fun x => 1 ≤ x) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl (fun p _ => hB.2.1 p)`. Establish `s2 : ∀ γ, PN.IsPt (genT X) N γ → ∀ S : Finset (Cl × Nu), ∑ x ∈ S, N.a2 x.1 γ x.2 ≤ 1 * N.Hh γ ^ PN.e7 C1 C0 r * N.ngen γ`. Introduce `γ hγ S`.
+
+Take `⟨L, hB, hZ, hMR, hU, ha, hH, hn⟩` from `hLoc γ hγ S`. Use `hMG Cl Nu L C1 C0 r hB hZ hMR hU S` as an intermediate fact. Rewrite using `[Finset.sum_congr rfl ha, hH, hn, one_mul]`. Conclude with `this`. Use `hCCS hWCS Cl (PN.Pts E r × Nu) H₁ (fun c x => PN.grp (genT X) N c x.1 x.2) (fun x => Formalism.HermitianLatticeCounting.ExpansionTerms.blockMinorWeight x.1 * (Pc * N.NG x.1 ^ 6)) (fun c x => N.a2 c x.1 x.2 * N.J2loc x.1) _ _ (by positivity) ?_ ?_ ?_ ?_ Cs` and prove the remaining obligations.
+
+Introduce `c j hj`. Conclude with `hW j.1 ⟨c, j.2, Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.E.occ_of_ne (genT X) N c j.1 j.2 hj⟩`. Introduce `c j`. Conclude with `hAmp.2.2 c j.1 j.2`. Introduce `c T hT`.
+
+Use `hFB (PN.Pts E r) Nu Formalism.HermitianLatticeCounting.ExpansionTerms.blockMinorWeight (fun γ => Pc * N.NG γ ^ 6) (PN.Occ (genT X) N c) _ (fun γ => Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.E.blockMinorWeight_pos γ) ?_ ?_ ?_ T (fun x hx => Formalism.FourierDecayAlt.P.He …` and prove the remaining obligations. Introduce `γ ν hο`. Establish `h1` using `(hHt γ ⟨c, ν, hο⟩).1`. Check the signs of the components of the expression. Introduce `γ S hS`.
+
+Conclude with `hNorm c γ S hS`. Introduce `S hS`. Use `hE5 E r S (fun γ hγ => ?_)` and prove the remaining obligations. Take `⟨ν, hν⟩` from `hS γ hγ`. Conclude with `hPts γ ⟨c, ν, hν⟩`.
+
+Introduce `T hT`. Establish `key` using `hSB Cl (PN.Pts E r) Nu (PN.IsPt (genT X) N) N.a2 Formalism.HermitianLatticeCounting.ExpansionTerms.blockMinorWeight N.J2loc N.jacobianSquareBound N.n N.NG N.ND N.Hh N.ngen 1 cSt AAre e1 gf Pc TB (PN.e7 C1 C0 r) (PN.eN r) Aexp zero_le_one hcSt hAA he1 hgf hPc.le hexp hAmp.1 s1 s2 …`. Rewrite `key` using `[one_mul]`. Conclude with `key`.
+-/
 theorem rowGenAbstract_of (hC : PN.ExactCores) (hCSS : PN.ClassSquaresSum) (hRFC : PN.RowFromClasses)
     (hCCS : PN.ClassCS) (hFB : PN.FirstBracket) (hSB : PN.SecondBracket) (hMG : MeanAmpGen) : RowGenAbstract := by
   intro E _ _ _ τ Rw I H H₁ _ _ _ _ _ _ X r Cl Nu N C1 C0 Aexp Pc gf cSt AAre e1 TB hexp hPc hgf hcSt hAA he1
@@ -256,6 +288,21 @@ theorem rowGenAbstract_of (hC : PN.ExactCores) (hCSS : PN.ClassSquaresSum) (hRFC
     rw [one_mul] at key
     exact key
 
+/- English proof (translation)
+Introduce `C1 C0 A CB CSt Cg CT hCB hCSt hCg hCT hA`. Take `⟨hc48, hCSS, hRFC, hCCS, hFB, hSB, _, _, hNorm, hFP, hNR, hES, hNum⟩` from `hCh`. Establish `hRG` using `rowGenAbstract_of hc48 hCSS hRFC hCCS hFB hSB hMG`. Take `⟨Cn, hCn0, hCn⟩` from `hNum A CB CSt Cg CT hCB hCSt hCg hCT`. Use `⟨Cn, hCn0, ?_⟩` and prove the remaining obligations.
+
+Introduce `E _ _ _ τ Rw I H H₁ _ _ _ _ _ _ X r k Cl Nu N P _ B b rd g TT cSt e1 Irat Ire hAbs hGam hNI hFI hSz hIn`. Take `⟨hCl, hAmp, hNo, hPt, hLoc, hMe, hGM, hHt, hTB⟩` from `hIn`. Establish `hnum` using `hCn r _ b rd g TT cSt e1 hSz`. Take `⟨hf, hb, hrd, hrdb, hg1, hgb, hTT, hTTb, hcSt, hcStb, he1, he12⟩` from `hSz`. Take `⟨hAApos, hddpos⟩` from `Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.F.pos_facts B hNI.1`.
+
+Establish `hLam : 0 < PN.abelian₂ rd r k (Fintype.card (InfinitePlace E))`. Unfold `PN.abelian₂`. Check the signs of the components of the expression. Establish `hrow` using `hRG E τ Rw I H H₁ X r Cl Nu N C1 C0 (A * (r + 1) ^ 2) _ _ cSt _ e1 _ (hES C1 C0 A r hA) (by positivity) (one_le_pow₀ hg1) hcSt (le_of_lt (mul_pos hLam hAApos)) he1 hAbs hCl hAmp hNo hPt hLoc hMe hGM hHt hTB`. Establish `hnr` using `hNR hNorm hFP P B rd g r k _ Irat Ire hNI hFI`.
+
+Unfold `PB.Terms.RowMain`. Use `le_trans hrow ?_` and prove the remaining obligations. Rewrite using `[hGam]`. Generalize the expression as in `Fintype.card (InfinitePlace E) = f at *`. Use `set S : ℝ := 64 ^ (f * (r + 1)) with hS`.
+
+Use `set Pc : ℝ := rd ^ (12 * r * (r + 1) * f) * TT ^ (6 * f) with hPc`. Use `set gA : ℝ := (g ^ f) ^ (A * (r + 1) ^ 2) with hgA`. Use `set ex : ℝ := Real.exp (CB * ((2 * r + 2 : ℕ) : ℝ) ^ 5 * f * Real.log b) with hex`. Use `set vg : ℝ := (rd / 2) ^ (f * (r + 1)) * g ^ (f * (r + 1) * (2 * r + 3)) with hvg`. Use `set dd : ℝ := B.d * B.d' / B.Dstar with hdd`.
+
+Use `set AAre : ℝ := PN.abelian₂ rd r k f * B.AA with hAAre`. Use `set EX : ℝ := Real.exp (Cn * ((2 * r + 2 : ℕ) : ℝ) ^ 5 * f * Real.log b) with hEX`. Establish `hS0 : 0 ≤ S` using `by rw [hS]; positivity`. Establish `hPc0 : 0 ≤ Pc` using `by rw [hPc]; positivity`. Establish `hgA0 : 0 ≤ gA` using `by rw [hgA]; positivity`.
+
+Establish `hex0 : 0 ≤ ex` using `by rw [hex]; positivity`. Establish `hF : 0 ≤ S * cSt * e1 * Pc * gA * ex` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rowGenJoint_of (hCh : PN.NGChain) (hMG : MeanAmpGen) : RowGenJoint := by
   intro C1 C0 A CB CSt Cg CT hCB hCSt hCg hCT hA
   obtain ⟨hc48, hCSS, hRFC, hCCS, hFB, hSB, _, _, hNorm, hFP, hNR, hES, hNum⟩ := hCh
@@ -303,6 +350,13 @@ namespace Formalism.L2.SG.Pf
 
 open Formalism.L2.SG.Pf.MainEqCut
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A`. Take `⟨C1, C0n, Aexp, CB, CSt, Cgs, CTs, h1, h2, h3, h4, hA, C'₀, Cl₀, h⟩` from `hc Cg cb Cw cT CT C0 A`. Take `⟨Cn, hCn, hK⟩` from `rowGenJoint_of hCh hMG C1 C0n Aexp CB CSt Cgs CTs h1 h2 h3 h4 hA`. Use `⟨Cn, hCn, C'₀, Cl₀, fun C' Cl a b D large₂ X Y u hH hT ha => ?_⟩` and prove the remaining obligations. Take `⟨P, iP, B, cSt, e1, Irat, Ire, νL, νB, ng, _, _, hG, hdd, hN, hF, hS, hIn⟩` from `h C' Cl a b D large₂ X Y u hH hT`.
+
+Establish `hcard` using `Formalism.MainNotions.LatticeGluingRadicals.d_card D`. Establish `key` using `hK D.host.E (TauC Y u u) _ _ _ _ (Y.tO u u) D.R.rS D.R.k (Set (TauC Y u u)) (NuC D) (NOfG Y u νL νB ng) P B large₂.sc.b (2 * D.host.v) (X.B.g : ℝ) (((Tu D u : ℕ) : ℝ) * ((Tu D u : ℕ) : ℝ)) cSt e1 Irat Ire`. Rewrite `key` using `[hcard]`. Establish `r` using `key ha hG hN hF hS hIn`. Rewrite `r` using `[hdd]`.
+
+Conclude with `r`.
+-/
 theorem rowMainEqC_of_cut (hCh : PN.NGChain) (hMG : MeanAmpGen) (hc : GenCutC) : RowMainEqC := by
   intro Cg cb Cw cT CT C0 A
   obtain ⟨C1, C0n, Aexp, CB, CSt, Cgs, CTs, h1, h2, h3, h4, hA, C'₀, Cl₀, h⟩ := hc Cg cb Cw cT CT C0 A
@@ -321,6 +375,13 @@ theorem rowMainEqC_of_cut (hCh : PN.NGChain) (hMG : MeanAmpGen) (hc : GenCutC) :
 
 open Formalism.L2.SG.NormCut in
 
+/- English proof (translation)
+Introduce `D X Y u hT`. Establish `f1` using `hFo D X Y u hT.1 hT.2.2.2.2.1`. Establish `hFE` using `Formalism.L2.SG.Pf.fundExistsC_holds D X Y u u`. Establish `hOO` using `hO D X Y u u f1 f1 hFE`. Establish `hAbs` using `absConvTied_of_full hFo Formalism.L2.SG.Pf.fundExistsC_holds hO hA D X Y u u hT`.
+
+Establish `hAW'` using `hAW D X Y u u hOO`. Establish `hOF'` using `hOF D X Y u u hFE hOO`. Establish `hL : ColLatK (Y.cs u)` using `Formalism.L2.SG.Pf.colLatK (X := X) (cs := Y.cs u)`. Establish `hK : TermK (X.Fu u) (X.Fu u) (Y.cs u) (Y.cs u)` using `Formalism.L2.SG.Pf.termK (X := X) (cs := Y.cs u) (cs' := Y.cs u)`. Establish `hN : AdmN (X.Fu u) (X.Fu u) (Y.cs u) (Y.cs u)` using `adm_norm_of_fixed_frames (cs := Y.cs u) (cs' := Y.cs u) (Full.frameTie (X := X) u u) hK (Formalism.L2.SG.Pf.modGAt (X := X))`.
+
+Establish `hPar : AdmPar (X.Fu u) (X.Fu u) (Y.cs u) (Y.cs u)` using `adm_parity_of_norm (cs := Y.cs u) (cs' := Y.cs u) hK hN`. Conclude with `normExpansionOn_tOf (X.Fu u) (X.Fu u) Y.TR (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) hHS gamma_product_sum_holds psi_natural_equiv_holds _ hAbs (chiNIndep_of_lat (Y.cs u) (Y.cs u) (hB D X) hL hL) (scOf Y.TR (Y.cs u)) (scOf Y.TR (Y.cs u)) (colPhase_of Y.TR (Y.cs u) (Y.cs u) (leviCols_of …`.
+-/
 theorem normExpDegC_of (hHS : HSBlocks) (hFo : FoldOKC) (hO : OOIntAllC) (hA : AbsConvC) (hAW : AmpWellDefC)
     (hOF : OOFundIndepC) (hB : ChiNBiC) (hF : ColFreeC) (hLA : DegLeftActC) (hRA : DegRightActC) : NormExpDegC := by
   intro D X Y u hT
@@ -353,6 +414,15 @@ open Finset
 
 variable {Cl Nu : Type}
 
+/- English proof (translation)
+Establish `h : ∀ x : Cl × Nu, weightedGenericAmplitudeSq L x.1 x.2 = ∑ d, if L.dat x.1 x.2 = some d then L.rw x.1 * ‖ampGen L d‖ ^ 2 else 0`. Introduce `x`. Unfold `weightedGenericAmplitudeSq`. Consider the cases of `hd : L.dat x.1 x.2 with`. Consider the case `none => simp`.
+
+Consider the case `some d0 => simp [Finset.sum_ite_eq]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_mul]`. Use `_ ≤ ∑ d, (L.V0 * ∏ p, L.wt p (d p)) * ‖ampGen L d‖ ^ 2 := by`.
+
+Use `Finset.sum_le_sum (fun d _ => ?_)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (hU d _ ?_) (by positivity)` and prove the remaining obligations. Introduce `x hx`. Conclude with `(Finset.mem_filter.mp hx).2`. Use `_ = L.V0 * ∑ d, (∏ p, L.wt p (d p)) * ‖ampGen L d‖ ^ 2 := by`.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun d _ => by ring)`.
+-/
 theorem step1G (L : PN.LocalNG Cl Nu) (hU : L.Unfold) (S : Finset (Cl × Nu)) :
     ∑ x ∈ S, weightedGenericAmplitudeSq L x.1 x.2 ≤ L.V0 * ∑ d, (∏ p, L.wt p (d p)) * ‖ampGen L d‖ ^ 2 := by
   have h : ∀ x : Cl × Nu, weightedGenericAmplitudeSq L x.1 x.2 =
@@ -379,6 +449,9 @@ theorem step1G (L : PN.LocalNG Cl Nu) (hU : L.Unfold) (S : Finset (Cl × Nu)) :
         rw [Finset.mul_sum]
         exact Finset.sum_congr rfl (fun d _ => by ring)
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sum]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Unfold `ampGen`. Rewrite using `[norm_prod, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`.
+-/
 theorem sum_prodG (L : PN.LocalNG Cl Nu) :
     ∑ d, (∏ p, L.wt p (d p)) * ‖ampGen L d‖ ^ 2 = ∏ p, ∑ d, L.wt p d * ‖L.aZ p d‖ ^ 2 := by
   rw [Fintype.prod_sum]
@@ -386,6 +459,27 @@ theorem sum_prodG (L : PN.LocalNG Cl Nu) :
   unfold ampGen
   rw [norm_prod, ← Finset.prod_pow, ← Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Introduce `Cl Nu L C1 C0 r hb hZ hM hU S`. Establish `hH : ∀ p, 1 ≤ L.H p` using `hb.2.1`. Establish `hV : 0 ≤ L.V0` using `hb.2.2.2.2.2.1`. Establish `hng : ∀ p, 0 ≤ L.ngen p` using `fun p => Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.B.ngen_nonneg L C0 r hb hM p`. Establish `hY1 : ∀ p, (1 : ℝ) ≤ if p ∈ L.Om then 8 * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2)) else 1`.
+
+Introduce `p`. Use `split_ifs`. Establish `: 1 ≤ L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2))` using `one_le_pow₀ (hH p)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_refl _`.
+
+Establish `h3 : ∀ p, L.nn p ≤ (if p ∈ L.Om then 8 * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2)) else 1) * L.ngen p`. Introduce `p`. Use `split_ifs with hp`. Conclude with `hM.2 p hp`. Rewrite using `[one_mul, hM.1 p hp]`.
+
+Establish `hloc : ∀ p, ∑ d, L.wt p d * ‖L.aZ p d‖ ^ 2 ≤ (L.H p ^ (C1 * (r + 1) ^ 2) * (if p ∈ L.Om then 8 * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2)) else 1)) * L.ngen p`. Introduce `p`. Use `(hZ p).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h3 p) (by have := hH p; positivity)`.
+
+Establish `hprod : ∏ p, ∑ d, L.wt p d * ‖L.aZ p d‖ ^ 2 ≤ ∏ p, (L.H p ^ (C1 * (r + 1) ^ 2) * (if p ∈ L.Om then 8 * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2)) else 1)) * L.ngen p` using `Finset.prod_le_prod (fun p _ => Finset.sum_nonneg (fun d _ => mul_nonneg (hb.1 p d) (by positivity))) (fun p _ => hloc p)`. Establish `hfin` using `Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.B.finish L (fun p => L.H p ^ (C1 * (r + 1) ^ 2)) (fun p => if p ∈ L.Om then 8 * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2)) else 1) (fun p => one_le_pow₀ (hH p)) hY1 (PN.e7 C1 C0 r) (by`. Introduce `p`. Use `show (if p ∈ L.Om then (4 : ℝ) else 1) * (L.H p ^ (C1 * (r + 1) ^ 2) * (if p ∈ L.Om then 8 * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2)) else 1)) ≤ L.H p ^ (C1 * (r + 1) ^ 2 + C0 * (r + 1) ^ 2 + 2 * (2 * r + 2) + 5)`. Establish `e : L.H p ^ (C1 * (r + 1) ^ 2 + C0 * (r + 1) ^ 2 + 2 * (2 * r + 2) + 5) = L.H p ^ 5 * (L.H p ^ (C1 * (r + 1) ^ 2) * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2)))`.
+
+Rewrite using `[← pow_add, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : 1 ≤ L.H p ^ (C1 * (r + 1) ^ 2)` using `one_le_pow₀ (hH p)`. Establish `hB : 1 ≤ L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2))` using `one_le_pow₀ (hH p)`.
+
+Rewrite using `[e]`. Use `split_ifs with hp`. Establish `h2` using `Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.B.two_le_H L hb p hp`. Establish `h32 : (32 : ℝ) ≤ L.H p ^ 5`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hpos : 0 ≤ L.H p ^ (C1 * (r + 1) ^ 2) * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2))`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : 1 ≤ L.H p ^ 5` using `one_le_pow₀ (hH p)`. Rewrite using `[one_mul, mul_one]`.
+
+Use polynomial arithmetic with `[mul_le_mul h5 hB zero_le_one (le_trans zero_le_one h5)])`. Establish `h4 : (1 : ℝ) ≤ 4 ^ L.Om.card` using `one_le_pow₀ (by norm_num)`. Establish `hXY : 0 ≤ ∏ p, L.H p ^ (C1 * (r + 1) ^ 2) * (if p ∈ L.Om then 8 * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2)) else 1)` using `Finset.prod_nonneg (fun p _ => mul_nonneg (by have := hH p; positivity) (le_trans zero_le_one (hY1 p)))`. Establish `hfin' : ∏ p, L.H p ^ (C1 * (r + 1) ^ 2) * (if p ∈ L.Om then 8 * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2)) else 1) ≤ L.Htot ^ PN.e7 C1 C0 r`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hngP : 0 ≤ ∏ p, L.ngen p` using `Finset.prod_nonneg (fun p _ => hng p)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib]`. Use `_ ≤ L.V0 * (L.Htot ^ PN.e7 C1 C0 r * ∏ p, L.ngen p) := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hfin' hngP) hV`. Use `_ = L.Htot ^ PN.e7 C1 C0 r * L.ngenTot := by unfold PN.LocalNG.ngenTot; ring`.
+-/
 theorem meanAmplitudeGeneric_holds : MeanAmpGen := by
   intro Cl Nu L C1 C0 r hb hZ hM hU S
   have hH : ∀ p, 1 ≤ L.H p := hb.2.1
@@ -459,14 +553,31 @@ theorem meanAmplitudeGeneric_holds : MeanAmpGen := by
         mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hfin' hngP) hV
     _ = L.Htot ^ PN.e7 C1 C0 r * L.ngenTot := by unfold PN.LocalNG.ngenTot; ring
 
+/- English proof (translation)
+Use polynomial arithmetic with `[sq_nonneg (√a - √b), Real.sq_sqrt ha, Real.sq_sqrt hb]`.
+-/
 theorem sqrt_add_sq_le {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) : (√a + √b) ^ 2 ≤ 2 * (a + b) := by
   nlinarith [sq_nonneg (√a - √b), Real.sq_sqrt ha, Real.sq_sqrt hb]
 
+/- English proof (translation)
+Establish `h` using `Real.add_one_le_exp (16 : ℝ)`. Establish `e : Real.exp 32 = Real.exp 16 * Real.exp 16` using `by rw [← Real.exp_add]; norm_num`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem forty_le_exp : (40 : ℝ) ≤ Real.exp 32 := by
   have h := Real.add_one_le_exp (16 : ℝ)
   have e : Real.exp 32 = Real.exp 16 * Real.exp 16 := by rw [← Real.exp_add]; norm_num
   rw [e]; nlinarith
 
+/- English proof (translation)
+Establish `hL : 0 < large₂.sc.L`. Unfold `Formalism.BasicNotions.Scale.L`. Conclude with `Real.rpow_pos_of_pos (by linarith [large₂.sc.one_lt_alt]) _`. Establish `hb : 1 < large₂.sc.b`. Unfold `Formalism.BasicNotions.Scale.b`.
+
+Use `Real.add_one_lt_exp (ne_of_gt hL)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk5 : 5 ≤ D.R.k` using `by have := D.R.two_le_m; have := D.R.m_add_three_le_k; omega`. Establish `hk : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk5`. Establish `hkb : (5 : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`.
+
+Establish `h8 : (3 : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hkb 8)`. Establish `hg : ∀ i : Fin 2, (1 : ℝ) + 3 / (D.host.g i : ℝ) ≤ 2`. Introduce `i`. Establish `h3 : (3 : ℝ) ≤ D.host.g i` using `h8.trans (hK.2.1 i).1`. Establish `: 3 / (D.host.g i : ℝ) ≤ 1` using `(div_le_one (by linarith)).2 h3`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `Formalism.L2.SG.Pf.SatGram.prod_two (fun v => Fintype.card (Y.TR.Fq v)) (D.host.g 0) (D.host.g 1) D.host.g_ne (fun v => Y.TR.card_q v) (fun q : ℕ => (1 + 3 / (q : ℝ)))`. Unfold `PgC`. Rewrite using `[h2, hTC 0, hTC 1]`. Establish `e : (4 : ℝ) ^ D.R.f = 2 ^ D.R.f * 2 ^ D.R.f` using `by rw [← mul_pow]; norm_num`.
+
+Rewrite using `[e]`. Establish `p0 : 0 ≤ (1 : ℝ) + 3 / (D.host.g 0 : ℝ)` using `by positivity`. Establish `p1 : 0 ≤ (1 : ℝ) + 3 / (D.host.g 1 : ℝ)` using `by positivity`. Conclude with `mul_le_mul (pow_le_pow_left₀ p0 (hg 0) _) (pow_le_pow_left₀ p1 (hg 1) _) (by positivity) (by positivity)`.
+-/
 theorem pg_le {D : D7} {large₂ : SizeData₂ D} {Cl Cg CT : ℝ} (hK : Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoParameterConditions D large₂ Cl Cg CT) {X : HidaSetting D}
     (Y : Full X) (hTC : ∀ i : Fin 2, Fintype.card {v : Y.TR.Pl // Fintype.card (Y.TR.Fq v) = D.host.g i} = D.R.f) :
     PgC Y ≤ (4 : ℝ) ^ D.R.f := by
@@ -502,6 +613,9 @@ namespace Formalism.L2.SG.Pf
 
 open Formalism.L2.SG.Pf.MainEqCut
 
+/- English proof (translation)
+Introduce `D X Y _ i`. Rewrite using `[Formalism.L2.SG.Pf.SatGram.typed_count' (X := X) hS hRC Y.TR i]`. Establish `h` using `Formalism.L2.SG.Pf.RowDictPf.f_eq X`. Unfold `Formalism.MainNotions.S.AutInst.f at h`. Conclude with `h`.
+-/
 theorem typedCountC_of (hS : Formalism.L2.SG.Pf.SatGramLoc.SplitPrimeLoc) (hRC : Formalism.L2.SG.Pf.SatGramLoc.RedCore) :
     TypedCountC := by
   intro D X Y _ i
@@ -510,6 +624,39 @@ theorem typedCountC_of (hS : Formalism.L2.SG.Pf.SatGramLoc.SplitPrimeLoc) (hRC :
   unfold Formalism.MainNotions.S.AutInst.f at h
   exact h
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A CB C4 hCB hC4`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u _ hK2 hT hG => ?_⟩` and prove the remaining obligations. Establish `hPg` using `pg_le hK2 Y (hTC D X Y hT)`. Establish `hPg0 : 0 ≤ PgC Y` using `Finset.prod_nonneg fun v _ => by positivity`. Establish `hf1 : (1 : ℝ) ≤ D.R.f`.
+
+Establish `hc` using `Formalism.MainNotions.LatticeGluingRadicals.d_card D`. Establish `: 0 < Fintype.card (InfinitePlace D.host.E)` using `Fintype.card_pos`. Rewrite `this` using `[hc]`. Conclude with `this` after adjusting the coercions. Establish `hf1n : 1 ≤ D.R.f` using `by exact_mod_cast hf1`.
+
+Establish `hL1 : 1 < large₂.sc.L`. Unfold `Formalism.BasicNotions.Scale.L`. Conclude with `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`. Establish `hlogb : Real.log large₂.sc.b = large₂.sc.L` using `by unfold Formalism.BasicNotions.Scale.b; exact Real.log_exp _`. Establish `hm : mR D = (D.R.m : ℝ)` using `by unfold mR; exact_mod_cast D.R.rS_two`.
+
+Establish `hm2 : (2 : ℝ) ≤ mR D` using `by rw [hm]; exact_mod_cast D.R.two_le_m`. Establish `hm5 : (32 : ℝ) ≤ mR D ^ 5`. Combine the equalities or inequalities in the displayed calculation. Use `set t : ℝ := mR D ^ 5 * D.R.f * large₂.sc.L with ht`. Establish `ht32 : 32 * (D.R.f : ℝ) ≤ t`.
+
+Rewrite using `[ht]`. Establish `: (32 : ℝ) * D.R.f * 1 ≤ mR D ^ 5 * D.R.f * large₂.sc.L` using `mul_le_mul (mul_le_mul_of_nonneg_right hm5 (by positivity)) hL1.le zero_le_one (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht0 : 0 ≤ t` using `by linarith`. Use `set M : ℝ := max CB C4 with hM`.
+
+Establish `hM0 : 0 ≤ M` using `le_trans hCB (le_max_left _ _)`. Establish `hE1 : 1 ≤ Real.exp (M * t)` using `Real.one_le_exp (mul_nonneg hM0 ht0)`. Establish `hgB : gamB D large₂ CB ≤ Real.exp (M * t)`. Unfold `gamB`. Rewrite using `[hlogb]`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `: CB * mR D ^ 5 * D.R.f * large₂.sc.L = CB * t` using `by rw [ht]; ring`. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) ht0`. Establish `hgB0 : 0 ≤ gamB D large₂ CB` using `by unfold gamB; positivity`.
+
+Establish `heL : epsL D ≤ 1`. Unfold `epsL`. Rewrite using `[Real.exp_le_one_iff]`. Establish `hk : (1 : ℝ) ≤ D.R.k`. Use `D.R.two_le_m` as an intermediate fact.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(show 1 ≤ D.R.k by omega)` after adjusting the coercions. Use `Real.log_nonneg hk` as an intermediate fact. Establish `: 0 ≤ (1 / 3 : ℝ) * D.R.k * D.R.f * Real.log D.R.k` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `heL0 : 0 ≤ epsL D` using `by unfold epsL; positivity`. Establish `heN : epsNG D large₂ C4 ≤ Real.exp (M * t)`. Unfold `epsNG`. Rewrite using `[hlogb]`. Establish `h1 : ((2 : ℝ) ^ (D.R.k - 2 * D.R.rS - 5))⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ (by norm_num))`.
+
+Establish `h2 : Real.exp (C4 * mR D ^ 5 * D.R.f * large₂.sc.L) ≤ Real.exp (M * t)`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `: C4 * mR D ^ 5 * D.R.f * large₂.sc.L = C4 * t` using `by rw [ht]; ring`. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) ht0`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `heN0 : 0 ≤ epsNG D large₂ C4` using `by unfold epsNG; positivity`. Establish `hGam : (D.mem u).A.GamP = Real.exp (large₂.CGam * t)`. Rewrite using `[← Real.exp_log (lt_trans zero_lt_one (D.mem u).A.one_lt_gammaP), large₂.Gam_eq u, ht, hm]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h40 : 10 * (4 : ℝ) ^ D.R.f ≤ Real.exp t`. Establish `a1 : 10 * (4 : ℝ) ^ D.R.f ≤ (40 : ℝ) ^ D.R.f`. Establish `: (10 : ℝ) ≤ 10 ^ D.R.f`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e : (40 : ℝ) ^ D.R.f = 10 ^ D.R.f * 4 ^ D.R.f` using `by rw [← mul_pow]; norm_num`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right this (by positivity)`. Establish `a2 : (40 : ℝ) ^ D.R.f ≤ Real.exp 32 ^ D.R.f` using `pow_le_pow_left₀ (by norm_num) forty_le_exp _`. Establish `a3 : Real.exp 32 ^ D.R.f = Real.exp (D.R.f * 32)` using `(Real.exp_nat_mul _ _).symm`.
+
+Establish `a4 : Real.exp (D.R.f * 32) ≤ Real.exp t` using `Real.exp_le_exp.mpr (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hGam]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (by linarith) _ (by positivity) (by positivity)` to reduce the goal to its premises.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (10 * (4 : ℝ) ^ D.R.f) * Real.exp (M * t) := by ring`. Use `_ ≤ Real.exp t * Real.exp (M * t) := mul_le_mul_of_nonneg_right h40 (by positivity)`. Use `_ = Real.exp ((M + 1) * t) := by rw [← Real.exp_add]; ring_nf`. Use `_ ≤ Real.exp (large₂.CGam * t) := Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_right hG ht0)`.
+-/
 theorem diagNumC_of (hTC : TypedCountC) : DiagNumC := by
   intro Cg cb Cw cT CT C0 A CB C4 hCB hC4
   refine ⟨0, 0, fun C' Cl _ _ D large₂ X Y u _ hK2 hT hG => ?_⟩
@@ -598,9 +745,15 @@ theorem diagNumC_of (hTC : TypedCountC) : DiagNumC := by
     _ = Real.exp ((M + 1) * t) := by rw [← Real.exp_add]; ring_nf
     _ ≤ Real.exp (large₂.CGam * t) := Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_right hG ht0)
 
+/- English proof (translation)
+The claim follows from `typedCountC_of Formalism.L2.SG.Pf.SatGramLoc.split_prime_local_holds Formalism.L2.SG.Pf.SatGramLoc.reduction_structure_holds`.
+-/
 theorem typedCountC_holds : TypedCountC :=
   typedCountC_of Formalism.L2.SG.Pf.SatGramLoc.split_prime_local_holds Formalism.L2.SG.Pf.SatGramLoc.reduction_structure_holds
 
+/- English proof (translation)
+The claim follows from `diagNumC_of typedCountC_holds`.
+-/
 theorem diagNumC_holds : DiagNumC := diagNumC_of typedCountC_holds
 
 end Formalism.L2.SG.Pf

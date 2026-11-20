@@ -11,6 +11,11 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.AmpleDescent
 
+/- English proof (translation)
+Introduce `K₀ K _ _ i A₀ A _ _ φ L₀ L hab hpb hL₀ hL hiso hA`. Establish `: IsProper A₀.hom` using `hab.proper`. Establish `hP : IsPullback φ A.hom A₀.hom (spMap i)` using `hpb.1`. Establish `: IsProper A.hom` using `MorphismProperty.of_isPullback (P := @IsProper) hP this`. Establish `h1 : IsAmpleLB (L₀.pull φ)` using `(GlobalTheory.isAmpleLB_congr hL (pull_isLB hL₀ φ) hiso).1 ((GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine A hL).1 hA)`.
+
+Establish `: CompactSpace A₀.left` using `QuasiCompact.compactSpace_of_compactSpace A₀.hom`. Establish `: QuasiSeparatedSpace A₀.left` using `quasiSeparatedSpace_of_quasiSeparated A₀.hom`. Conclude with `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine A₀ hL₀).2 (GlobalTheory.AmpleDescent.isAmpleLB_of_pull i hP hL₀ h1)`.
+-/
 theorem relAmple_of_fieldExtension : ∀ (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K) (A₀ : Over (Sp K₀)) (A : Over (Sp K)) [GrpObj A₀] [GrpObj A] (φ : A.left ⟶ A₀.left) (L₀ : LB A₀.left) (L : LB A.left), IsAbelianScheme A₀ → IsGrpPullback A A₀ (spMap i) φ → L₀.IsLB → L.IsLB → LBIso L (L₀.pull φ) → Out.RelAmple A L → Out.RelAmple A₀ L₀ := by
   intro K₀ K _ _ i A₀ A _ _ φ L₀ L hab hpb hL₀ hL hiso hA
 

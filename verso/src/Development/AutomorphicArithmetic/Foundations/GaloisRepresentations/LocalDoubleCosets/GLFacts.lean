@@ -11,6 +11,11 @@ namespace UpperTheory.Gal.LocD
 
 variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h0 : ContinuousAt ((σ : E →+* E) : E →+ E) 0`. Rewrite using `[ContinuousAt, map_zero]`. Introduce `s hs`. Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff _).1 hs`. Use `Filter.mem_map.2 ((IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨γ, fun x hx => hγ ?_⟩)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `valuation E (σ x) < γ`. Rewrite using `[h x]`. Conclude with `hx`. Conclude with `continuous_of_continuousAt_zero ((σ : E →+* E) : E →+ E) h0`.
+-/
 private theorem continuous_of_isom (σ : E ≃+* E) (h : Isom σ) : Continuous σ := by
   have h0 : ContinuousAt ((σ : E →+* E) : E →+ E) 0 := by
     rw [ContinuousAt, map_zero]
@@ -22,6 +27,11 @@ private theorem continuous_of_isom (σ : E ≃+* E) (h : Isom σ) : Continuous �
     exact hx
   exact continuous_of_continuousAt_zero ((σ : E →+* E) : E →+ E) h0
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `h.comp (Units.continuous_val.matrix_elem i j)`. Establish `he : ∀ g : GL (Fin n) E, (((sg σ g)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = ((sg σ g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)` using `fun g => by rw [map_inv]`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+
+Simplify using `only [he, sg_val]`. Conclude with `h.comp ((Units.continuous_val.comp continuous_inv).matrix_elem i j)`.
+-/
 private theorem continuous_sg (σ : E ≃+* E) (h : Continuous σ) : Continuous (sg (n := n) σ) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · refine continuous_matrix fun i j => ?_
@@ -32,6 +42,9 @@ private theorem continuous_sg (σ : E ≃+* E) (h : Continuous σ) : Continuous 
     simp only [he, sg_val]
     exact h.comp ((Units.continuous_val.comp continuous_inv).matrix_elem i j)
 
+/- English proof (translation)
+Proceed by induction on `i generalizing g with`. Consider the case `zero => rfl`. Consider the case `succ i ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ih, sg_val]`.
+-/
 private theorem sg_iterate (σ : E ≃+* E) (i : ℕ) (g : GL (Fin n) E) (a b : Fin n) :
     (((sg σ)^[i] g : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) a b =
       σ^[i] ((g : Matrix (Fin n) (Fin n) E) a b) := by
@@ -39,6 +52,9 @@ private theorem sg_iterate (σ : E ≃+* E) (i : ℕ) (g : GL (Fin n) E) (a b : 
   | zero => rfl
   | succ i ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ih, sg_val]
 
+/- English proof (translation)
+Establish `: (borel E (Fin n) : Set (GL (Fin n) E)) = ⋂ i, ⋂ j, ⋂ _ : j < i, {g : GL (Fin n) E | g.val i j = 0}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_borel, Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (Units.continuous_val.matrix_elem i j) continuous_const`.
+-/
 private theorem isClosed_borel : IsClosed (borel E (Fin n) : Set (GL (Fin n) E)) := by
   have : (borel E (Fin n) : Set (GL (Fin n) E)) =
       ⋂ i, ⋂ j, ⋂ _ : j < i, {g : GL (Fin n) E | g.val i j = 0} := by
@@ -48,6 +64,9 @@ private theorem isClosed_borel : IsClosed (borel E (Fin n) : Set (GL (Fin n) E))
   exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ =>
     isClosed_eq (Units.continuous_val.matrix_elem i j) continuous_const
 
+/- English proof (translation)
+Establish `: (unipB E (Fin n) : Set (GL (Fin n) E)) = (⋂ i, ⋂ j, ⋂ _ : j < i, {g : GL (Fin n) E | g.val i j = 0}) ∩ ⋂ i, {g : GL (Fin n) E | g.val i i = 1}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_unipB, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[this]`. Conclude with `(isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (Units.continuous_val.matrix_elem i j) continuous_const).inter (isClosed_iInter fun i => isClosed_eq (Units.continuous_val.matrix_elem i i) continuous_const)`.
+-/
 private theorem isClosed_unipB : IsClosed (unipB E (Fin n) : Set (GL (Fin n) E)) := by
   have : (unipB E (Fin n) : Set (GL (Fin n) E)) =
       (⋂ i, ⋂ j, ⋂ _ : j < i, {g : GL (Fin n) E | g.val i j = 0}) ∩
@@ -59,6 +78,9 @@ private theorem isClosed_unipB : IsClosed (unipB E (Fin n) : Set (GL (Fin n) E))
     isClosed_eq (Units.continuous_val.matrix_elem i j) continuous_const).inter
     (isClosed_iInter fun i => isClosed_eq (Units.continuous_val.matrix_elem i i) continuous_const)
 
+/- English proof (translation)
+Establish `hs : ∑ p : Fin n × Fin n with (p.2 : ℕ) = p.1 + 1, (u' : GL (Fin n) E).val p.1 p.2 = σ (∑ p : Fin n × Fin n with (p.2 : ℕ) = p.1 + 1, (u : GL (Fin n) E).val p.1 p.2)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => by rw [h]; rfl`. Express the relevant statement in the definitionally equal form `Circle.toUnits (ψ _) = Circle.toUnits (ψ _)`. Rewrite using `[hs, hψ]`.
+-/
 private theorem whitChar_sg (σ : E ≃+* E) (ψ : AddChar E Circle) (hψ : ∀ x, ψ (σ x) = ψ x)
     (u u' : unipB E (Fin n)) (h : (u' : GL (Fin n) E) = sg σ u) : whitChar ψ n u' = whitChar ψ n u := by
   have hs : ∑ p : Fin n × Fin n with (p.2 : ℕ) = p.1 + 1, (u' : GL (Fin n) E).val p.1 p.2 =
@@ -68,6 +90,11 @@ private theorem whitChar_sg (σ : E ≃+* E) (ψ : AddChar E Circle) (hψ : ∀ 
   change Circle.toUnits (ψ _) = Circle.toUnits (ψ _)
   rw [hs, hψ]
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n`. Use `⟨isClosed_borel, isClosed_unipB, ⟨GroundTheory.Automorphic.GLnLocal.integralGL E n, GroundTheory.Automorphic.GLnLocal.isOpen_integralGL E n, GroundTheory.Automorphic.GLnLocal.isCompact_integralGL E n, fun g => ?_⟩, fun ψ hψ => GlobalTheory.Whittaker.isSmoothChar_whitChar hψ, fun …` and prove the remaining obligations. Take `⟨b, hb, k, hk, e⟩` from `GroundTheory.Automorphic.Iwasawa.exists_borel_mul_integralGL E n g`. Conclude with `⟨b, (mem_borel E).2 fun i j h => hb h, k, hk, e⟩`. Conclude with `Units.ext (Matrix.ext fun a c => by rw [sg_iterate, hq.ord])`.
+
+Conclude with `(mem_borel E).2 fun i j h => by rw [sg_val, (mem_borel E).1 hb i j h, map_zero]`.
+-/
 theorem gLFacts : GLFacts := by
   intro E _ _ _ _ n
   refine ⟨isClosed_borel, isClosed_unipB, ⟨GroundTheory.Automorphic.GLnLocal.integralGL E n,

@@ -9,6 +9,21 @@ namespace GlobalTheory.ArchFourier
 
 open scoped FourierTransform SchwartzMap
 
+/- English proof (translation)
+Set `T` to `toEuclidean (E := V)`. Take `⟨R, hR⟩` from `GlobalTheory.exists_equiv_inner_eq_form T B hs hn`. Take `⟨a, ha, haI, -⟩` from `GlobalTheory.exists_pos_integral_comp_equiv_haar T μ`. Establish `ha' : (a : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`. Set `CR` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) R`.
+
+Set `CT` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) T.symm`. Set `CRi` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) R.symm`. Set `CTi` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) T`. Set `Fo` to `SchwartzMap.fourierTransformCLM ℂ (V := EuclideanSpace ℝ (Fin (Module.finrank ℝ V))) (E := ℂ)`. Establish `h1 : ∀ g, CRi (CR g) = g` using `fun g => by ext x; simp [CRi, CR]`.
+
+Establish `h2 : ∀ g, CR (CRi g) = g` using `fun g => by ext x; simp [CRi, CR]`. Establish `h3 : ∀ g, CTi (CT g) = g` using `fun g => by ext x; simp [CTi, CT]`. Establish `h4 : ∀ g, CT (CTi g) = g` using `fun g => by ext x; simp [CTi, CT]`. Establish `h5 : ∀ g, 𝓕⁻ (Fo g) = g` using `fun g => by`. Simplify using `only [Fo, SchwartzMap.fourierTransformCLM_apply]`.
+
+Conclude with `FourierTransform.fourierInv_fourier_eq g`. Establish `h6 : ∀ g, Fo (𝓕⁻ g) = g` using `fun g => by`. Simplify using `only [Fo, SchwartzMap.fourierTransformCLM_apply]`. Conclude with `FourierTransform.fourier_fourierInv_eq g`. Use `⟨(a : ℂ) • (CR.comp (Fo.comp CT)), ?_, fun f y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Function.bijective_iff_has_inverse]`. Use `⟨fun g => (a : ℂ)⁻¹ • CTi (𝓕⁻ (CRi g)), fun f => ?_, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, map_smul, h1, h5, h3, FourierTransform.fourierInv_smul, smul_smul, inv_mul_cancel₀ ha', one_smul]`. Express the relevant statement in the definitionally equal form `(a : ℂ) • CR (Fo (CT ((a : ℂ)⁻¹ • CTi (𝓕⁻ (CRi g))))) = g`. Rewrite using `[map_smul, map_smul, map_smul, h4, h6, h2, smul_smul, mul_inv_cancel₀ ha', one_smul]`.
+
+Establish `e1 : ((a : ℂ) • (CR.comp (Fo.comp CT))) f y = (a : ℂ) * 𝓕 (fun w => f (T.symm w)) (R y)` using `rfl`. Rewrite using `[e1, Real.fourier_eq', ← haI]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearEquiv.symm_apply_apply, smul_eq_mul, hR]`. Rewrite using `[mul_comm]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_schwartz_fourier_form {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V] (B : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hs : ∀ x y, B x y = B y x)
     (hn : ∀ x, (∀ y, B x y = 0) → x = 0) (μ : Measure V) [μ.IsAddHaarMeasure] :
@@ -59,14 +74,23 @@ noncomputable def traceDot (F : Type) [Field F] [NumberField F] (κ : Type) [Fin
     (fun x y y' => by simp only [dotProduct_add, map_add])
     (fun c x y => by simp only [dotProduct_smul, map_smul, smul_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem traceDot_apply {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (x y : κ → mixedEmbedding.mixedSpace F) :
     traceDot F κ x y = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x ⬝ᵥ y) := rfl
 
+/- English proof (translation)
+Rewrite using `[traceDot_apply, traceDot_apply, dotProduct_comm]`.
+-/
 theorem traceDot_comm {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (x y : κ → mixedEmbedding.mixedSpace F) : traceDot F κ x y = traceDot F κ y x := by
   rw [traceDot_apply, traceDot_apply, dotProduct_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `GlobalTheory.ArchUniq.Coord.eq_zero_of_trace _ fun b => ?_` and prove the remaining obligations. Use `hx (Pi.single i b)` as an intermediate fact. Rewrite `this` using `[traceDot_apply, dotProduct_single]`. Then use the resulting hypothesis.
+-/
 theorem traceDot_nondeg {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (x : κ → mixedEmbedding.mixedSpace F) (hx : ∀ y, traceDot F κ x y = 0) : x = 0 := by
   classical
@@ -75,6 +99,9 @@ theorem traceDot_nondeg {F : Type} [Field F] [NumberField F] {κ : Type} [Fintyp
   have := hx (Pi.single i b)
   rwa [traceDot_apply, dotProduct_single] at this
 
+/- English proof (translation)
+Introduce `F _ _ κ _ _ _ μ _`. Conclude with `exists_schwartz_fourier_form (traceDot F κ) traceDot_comm traceDot_nondeg μ`.
+-/
 theorem exists_fourier_sInf : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)]
     [BorelSpace (κ → mixedEmbedding.mixedSpace F)] (μ : Measure (κ → mixedEmbedding.mixedSpace F)) [μ.IsAddHaarMeasure],
     ∃ ei : SInf F κ →L[ℂ] SInf F κ, Function.Bijective ei ∧ ∀ (f : SInf F κ) (y : κ → mixedEmbedding.mixedSpace F),

@@ -21,6 +21,11 @@ def at1 {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (G : Arr V n 1) (a 
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
+/- English proof (translation)
+Unfold `IsDer`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Simplify using the standard rewrite rules. Introduce `a b x y`.
+
+Simplify using the standard rewrite rules. Introduce `X _ w`. Simplify using `using hasDerivAt_const (0 : ℝ) (w : ℂ)`. Introduce `v y g₀ _`. Conclude with `⟨Set.univ, fun _ => ⟪y, (v : ℂ)⟫_ℂ, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+-/
 theorem isDer_trivial {n : ℕ} (ε : Fin n → Bool) :
     IsDer ε (fun _ : Matrix (Fin n) (Fin n) ℂ => ContinuousLinearMap.id ℂ ℂ) ⊤ (fun _ _ => 0) := by
   unfold IsDer
@@ -40,11 +45,43 @@ namespace StdDer
 def act {n : ℕ} (y : Matrix (Fin n) (Fin n) ℂ) : Module.End ℂ (⊤ : Submodule ℂ (EuclideanSpace ℂ (Fin n))) :=
   (stdRep y).toLinearMap.restrict (fun _ _ => Submodule.mem_top)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_coe {n : ℕ} (y : Matrix (Fin n) (Fin n) ℂ) (v : (⊤ : Submodule ℂ (EuclideanSpace ℂ (Fin n)))) :
     (act y v : EuclideanSpace ℂ (Fin n)) = stdRep y v := rfl
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
+/- English proof (translation)
+Establish `hmul : ∀ x y : Matrix (Fin n) (Fin n) ℂ, act x * act y = act (x * y)`. Introduce `x y`. Use extensionality with `w : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[act_coe, stdRep, map_mul]`.
+
+Establish `hsub : ∀ x y : Matrix (Fin n) (Fin n) ℂ, act x - act y = act (x - y)`. Introduce `x y`. Use extensionality with `w : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[act_coe, stdRep, map_sub]`.
+
+Establish `hzero : act (0 : Matrix (Fin n) (Fin n) ℂ) = 0`. Use extensionality with `w : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[act_coe, stdRep]`. Unfold `IsDer`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Establish `key : Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 = (if b = c then Matrix.single a d 1 else 0) - (if d = a then Matrix.single c b 1 else 0)`. Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a`. Substitute `hbc hda` using the available equality.
+
+Simplify using the standard rewrite rules. Substitute `hbc` using the available equality. Simplify using `[hda]`. Substitute `hda` using the available equality. Simplify using `[hbc]`.
+
+Simplify using `[hbc, hda]`. Rewrite using `[hmul, hmul, hsub, key, ← hsub]`. Apply the tactic sequence `split_ifs <;> simp [hzero]`. Introduce `a b x y`. Establish `hs : sgn (allPos n) a b = 1` using `by simp [sgn, allPos]`.
+
+Establish `hadj : ContinuousLinearMap.adjoint (stdRep (Matrix.single a b (1 : ℂ))) = stdRep (Matrix.single b a 1)`. Rewrite using `[← ContinuousLinearMap.star_eq_adjoint]`. Simplify using `[stdRep, ← map_star, Matrix.star_eq_conjTranspose]`. Rewrite using `[hs, Submodule.coe_inner, Submodule.coe_inner, act_coe, act_coe, ← hadj, ContinuousLinearMap.adjoint_inner_right]`. Simplify using the standard rewrite rules.
+
+Introduce `X _ w`. Establish `hX : X = ∑ a, ∑ b, X a b • Matrix.single a b (1 : ℂ)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Simplify using `[Matrix.smul_single]`. Establish `hsum : ((∑ a, ∑ b, X a b • act (Matrix.single a b (1 : ℂ)) w : (⊤ : Submodule ℂ _)) : EuclideanSpace ℂ (Fin n)) = stdRep X w`. Rewrite using `[Submodule.coe_sum]`.
+
+Use `conv_rhs => rw [hX, stdRep, map_sum, _root_.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum, map_sum, _root_.sum_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, act_coe, map_smul, _root_.smul_apply, stdRep]`.
+
+Establish `hfun : (fun t : ℝ => stdRep (NormedSpace.exp ((t : ℂ) • X)) (w : EuclideanSpace ℂ (Fin n))) = fun t : ℝ => NormedSpace.exp ((t : ℂ) • stdRep X) (w : EuclideanSpace ℂ (Fin n))`. Use function extensionality and compare the values at `t`. Simplify using `only [stdRep]`. Establish `key : Matrix.toEuclideanCLM (n` using `Fin n) (𝕜 := ℂ) (NormedSpace.exp ((t : ℂ) • X)) = NormedSpace.exp (Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ) ((t : ℂ) • X)) := by`. Rewrite using `[NormedSpace.exp_eq_tsum ℂ, NormedSpace.exp_eq_tsum ℂ]`.
+
+Conclude with `((Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ)).toAlgEquiv.toLinearEquiv.toContinuousLinearEquiv.map_tsum).trans (tsum_congr fun k => by`. Express the relevant statement in the definitionally equal form `Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ) _ = _`. Rewrite using `[map_smul, map_pow])`. Rewrite using `[key, map_smul]`. Establish `h1 : HasDerivAt (fun u : ℂ => NormedSpace.exp (u • stdRep X)) (NormedSpace.exp ((0 : ℂ) • stdRep X) * stdRep X) 0` using `hasDerivAt_exp_smul_const _ _`.
+
+Establish `h2 : HasDerivAt (fun u : ℂ => NormedSpace.exp (u • stdRep X) (w : EuclideanSpace ℂ (Fin n))) (stdRep X w) ((0 : ℝ) : ℂ)`. Simplify using `using h1.clm_apply (hasDerivAt_const (0 : ℂ) (w : EuclideanSpace ℂ (Fin n)))`. Establish `h3` using `h2.scomp (0 : ℝ) Complex.ofRealCLM.hasDerivAt`. Simplify using `only [Function.comp_def, Complex.ofRealCLM_apply, Complex.ofReal_one, one_smul] at h3`. Rewrite using `[hsum, hfun]`.
+
+Conclude with `h3`. Introduce `v y g₀ _`. Use `⟨Set.univ, fun g => ⟪y, stdRep g (v : EuclideanSpace ℂ (Fin n))⟫_ℂ, isOpen_univ, Set.mem_univ _, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Establish `hF : (fun g : Matrix (Fin n) (Fin n) ℂ => ⟪y, stdRep g (v : EuclideanSpace ℂ (Fin n))⟫_ℂ) = fun g => ∑ i, (starRingEnd ℂ) (y i) * ∑ j, g i j * (v : EuclideanSpace ℂ (Fin n)) j`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[PiLp.inner_apply, stdRep_apply, mul_comm]`. Rewrite using `[hF]`. Apply `ContDiff.contDiffOn` to reduce the goal to its premises. Conclude with `ContDiff.sum fun i _ => contDiff_const.mul (ContDiff.sum fun j _ => (contDiff_apply_apply ℝ ℂ i j).mul contDiff_const)`.
+-/
 theorem isDer (n : ℕ) :
     IsDer (allPos n) stdRep ⊤ (fun a b => act (Matrix.single a b 1)) := by
   have hmul : ∀ x y : Matrix (Fin n) (Fin n) ℂ, act x * act y = act (x * y) := by
@@ -129,6 +166,9 @@ theorem isDer (n : ℕ) :
     exact ContDiff.sum fun i _ => contDiff_const.mul
       (ContDiff.sum fun j _ => (contDiff_apply_apply ℝ ℂ i j).mul contDiff_const)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (f : Fin n → Fin n → V) (a b : Fin n) :
     at1 (arrTo V n 1 (fun α => f (α 0).1 (α 0).2)) a b = f a b := rfl
 

@@ -41,12 +41,24 @@ structure HypothesesXH : Prop where
 
 instance : Coe HypothesesXH HypothesesX := ⟨HypothesesXH.toClassicalTheoremsX⟩
 
+/- English proof (translation)
+The claim follows from `h.toClassicalTheoremsX.ks`.
+-/
 theorem HypothesesXH.ks (h : HypothesesXH) : GlobalTheory.Published.ToroidalForFanKS := h.toClassicalTheoremsX.ks
 
+/- English proof (translation)
+The claim follows from `h.toClassicalTheoremsX.lie`.
+-/
 theorem HypothesesXH.lie (h : HypothesesXH) : GlobalTheory.Published.SemiAbelianLieSeminegative := h.toClassicalTheoremsX.lie
 
+/- English proof (translation)
+The claim follows from `h.toClassicalTheoremsX.green`.
+-/
 theorem HypothesesXH.green (h : HypothesesXH) : GlobalTheory.Published.GreenCuspidal := h.toClassicalTheoremsX.green
 
+/- English proof (translation)
+The claim follows from `h.toClassicalTheoremsX.sep`.
+-/
 theorem HypothesesXH.sep (h : HypothesesXH) : GlobalTheory.Published.PointSeparationPair := h.toClassicalTheoremsX.sep
 
 end GlobalTheory.CovTop

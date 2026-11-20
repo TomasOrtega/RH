@@ -14,6 +14,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MidBlockCell.exists_map_of_midBlock | exact GlobalTheory.MidBlockCell.exists_map_of_midBlock | (intros; apply GlobalTheory.MidBlockCell.exists_map_of_midBlock <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jacquet_induced_char_filtration : GlobalTheory.Published.GeometricLemmaFiltration → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (b : Fin 2 → ℕ) (hb : b 0 + b 1 = N) (χ : Fin 2 → kˣ →* ℂˣ),
     (∀ j, IsSmoothChar (χ j)) → ∀ (l d : ℕ) (hld : l + d ≤ N) (Vy : Type) [AddCommGroup Vy] [Module ℂ Vy]

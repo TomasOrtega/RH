@@ -19,21 +19,42 @@ open UpperTheory.V.Z.Tf.GlobalTraceComparison PositivityTheory.Rg.BcB.Desc
 
 namespace UpperTheory.Zero.ConvolutionTheory.EB
 
+/- English proof (translation)
+The claim follows from `rSpec_of peakRun genSt ptOk hkMul repAlg positionTest P (rRead P h)`.
+-/
 theorem specP (P : Pred) (h : CuspReadP P) : Spec P := rSpec_of peakRun genSt ptOk hkMul repAlg positionTest P (rRead P h)
 
+/- English proof (translation)
+The claim follows from `rEndo_of arEx lvEx powRep cmbTest cmbEll repAlg powNorm P (specP P h)`.
+-/
 theorem endoP (P : Pred) (h : CuspReadP P) : EndoP P :=
   rEndo_of arEx lvEx powRep cmbTest cmbEll repAlg powNorm P (specP P h)
 
+/- English proof (translation)
+The claim follows from `rStable h2 h3 h5 (cmbPi h1 h4) P (specP P h)`.
+-/
 theorem stableP (h1 : PiTerm) (h2 : PiFin) (h3 : PiAdm) (h4 : TwTrSum) (h5 : GrowthPiJ) (P : Pred) (h : CuspReadP P) :
     StableP P := rStable h2 h3 h5 (cmbPi h1 h4) P (specP P h)
 
+/- English proof (translation)
+The claim follows from `endo_of _ (endoP _ (cuspReadP_true h))`.
+-/
 theorem endoBlock (h : CuspRead) : EndoBlock := endo_of _ (endoP _ (cuspReadP_true h))
 
+/- English proof (translation)
+The claim follows from `endoG_of (endoP _ (cuspReadP_inf h))`.
+-/
 theorem endoBlockG (h : CuspReadI) : EndoBlockG := endoG_of (endoP _ (cuspReadP_inf h))
 
+/- English proof (translation)
+The claim follows from `stable_of _ (stableP h1 h2 h3 h4 h5 _ (cuspReadP_true h))`.
+-/
 theorem stableBlock (h : CuspRead) (h1 : PiTerm) (h2 : PiFin) (h3 : PiAdm) (h4 : TwTrSum) (h5 : GrowthPiJ) : StableBlock :=
   stable_of _ (stableP h1 h2 h3 h4 h5 _ (cuspReadP_true h))
 
+/- English proof (translation)
+The claim follows from `stableG_of (stableP h1 h2 h3 h4 h5 _ (cuspReadP_inf h))`.
+-/
 theorem stableBlockG (h : CuspReadI) (h1 : PiTerm) (h2 : PiFin) (h3 : PiAdm) (h4 : TwTrSum) (h5 : GrowthPiJ) : StableBlockG :=
   stableG_of (stableP h1 h2 h3 h4 h5 _ (cuspReadP_inf h))
 

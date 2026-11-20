@@ -15,6 +15,9 @@ open MeasureTheory Set in
 open scoped ENNReal Pointwise in
 variable {H : Type} [Group H] [MeasurableSpace H] [MeasurableMul H] {ν : Measure H}
   [ν.IsMulLeftInvariant] {Γ : Subgroup H} {Y : Type} [MulAction Γ Y] {𝓕 : Set H} in
+/- English proof (translation)
+The claim follows from `hF.nullMeasurableSet.preimage (measurePreserving_mul_left ν g).quasiMeasurePreserving`.
+-/
 theorem _root_.GlobalTheory.OrbitUnfold.nullMeasurableSet_pull (hF : IsFundamentalDomain Γ 𝓕 ν) (g : H) :
     NullMeasurableSet (_root_.GlobalTheory.OrbitUnfold.pull 𝓕 g) ν :=
   hF.nullMeasurableSet.preimage (measurePreserving_mul_left ν g).quasiMeasurePreserving
@@ -23,6 +26,9 @@ open MeasureTheory Set in
 open scoped ENNReal Pointwise in
 variable {H : Type} [Group H] [MeasurableSpace H] [MeasurableMul H] {ν : Measure H}
   [ν.IsMulLeftInvariant] {Γ : Subgroup H} {Y : Type} [MulAction Γ Y] {𝓕 : Set H} in
+/- English proof (translation)
+Establish `key : ∀ c : Γ, _root_.GlobalTheory.OrbitUnfold.pull 𝓕 (c : H) = c⁻¹ • 𝓕` using `fun c => by`. Use extensionality with `x`. Simplify using `[_root_.GlobalTheory.OrbitUnfold.pull, Set.mem_smul_set_iff_inv_smul_mem, Subgroup.smul_def]`. Rewrite using `[key, key]`. Conclude with `hF.aedisjoint (inv_injective.ne hab)`.
+-/
 theorem _root_.GlobalTheory.OrbitUnfold.aedisjoint_pull (hF : IsFundamentalDomain Γ 𝓕 ν) {a b : Γ}
     (hab : a ≠ b) :
     AEDisjoint ν (_root_.GlobalTheory.OrbitUnfold.pull 𝓕 (a : H)) (_root_.GlobalTheory.OrbitUnfold.pull 𝓕 (b : H)) := by
@@ -36,6 +42,9 @@ open MeasureTheory Set in
 open scoped ENNReal Pointwise in
 variable {H : Type} [Group H] [MeasurableSpace H] [MeasurableMul H] {ν : Measure H}
   [ν.IsMulLeftInvariant] {Γ : Subgroup H} {Y : Type} [MulAction Γ Y] {𝓕 : Set H} in
+/- English proof (translation)
+The claim follows from `(measurePreserving_mul_left ν g).setIntegral_preimage_emb (measurableEmbedding_mulLeft g) f 𝓕`.
+-/
 theorem _root_.GlobalTheory.OrbitUnfold.setIntegral_pull (g : H) (f : H → ℂ) :
     ∫ h in _root_.GlobalTheory.OrbitUnfold.pull 𝓕 g, f (g * h) ∂ν = ∫ h in 𝓕, f h ∂ν :=
   (measurePreserving_mul_left ν g).setIntegral_preimage_emb (measurableEmbedding_mulLeft g) f 𝓕
@@ -44,6 +53,9 @@ open MeasureTheory Set in
 open scoped ENNReal Pointwise in
 variable {H : Type} [Group H] [MeasurableSpace H] [MeasurableMul H] {ν : Measure H}
   [ν.IsMulLeftInvariant] {Γ : Subgroup H} {Y : Type} [MulAction Γ Y] {𝓕 : Set H} in
+/- English proof (translation)
+The claim follows from `(measurePreserving_mul_left ν g).setLIntegral_comp_preimage_emb (measurableEmbedding_mulLeft g) f 𝓕`.
+-/
 theorem _root_.GlobalTheory.OrbitUnfold.setLIntegral_pull (g : H) (f : H → ℝ≥0∞) :
     ∫⁻ h in _root_.GlobalTheory.OrbitUnfold.pull 𝓕 g, f (g * h) ∂ν = ∫⁻ h in 𝓕, f h ∂ν :=
   (measurePreserving_mul_left ν g).setLIntegral_comp_preimage_emb
@@ -54,6 +66,9 @@ open scoped ENNReal Pointwise in
 variable {H : Type} [Group H] [MeasurableSpace H] [MeasurableMul H] {ν : Measure H}
   [ν.IsMulLeftInvariant] {Γ : Subgroup H} {Y : Type} [MulAction Γ Y] {𝓕 : Set H} in
 
+/- English proof (translation)
+The claim follows from `.iUnion fun a => _root_.GlobalTheory.OrbitUnfold.nullMeasurableSet_pull hF _ ae_covers := by filter_upwards [hF.ae_covers] with x ⟨γ, hγ⟩ let a : O := ⟨γ • y₀, hO γ⟩ have hs : (σ a)⁻¹ * γ ∈ MulAction.stabilizer Γ y₀ := by rw [MulAction.mem_stabilizer_iff, mul_smul, inv_smul_eq_if …`.
+-/
 theorem _root_.GlobalTheory.OrbitUnfold.isFundamentalDomain_iUnion_pull (hF : IsFundamentalDomain Γ 𝓕 ν)
     (y₀ : Y) {O : Set Y}
     [Countable O] (hO : ∀ γ : Γ, γ • y₀ ∈ O) (σ : O → Γ) (hσ : ∀ a : O, σ a • y₀ = a) :
@@ -94,6 +109,9 @@ open MeasureTheory Set in
 open scoped ENNReal Pointwise in
 variable {H : Type} [Group H] [MeasurableSpace H] [MeasurableMul H] {ν : Measure H}
   [ν.IsMulLeftInvariant] {Γ : Subgroup H} {Y : Type} [MulAction Γ Y] {𝓕 : Set H} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem selfEquivSigmaOrbits_symm_mk {G X : Type} [Group G] [MulAction G X]
     (ω : MulAction.orbitRel.Quotient G X) (x : MulAction.orbit G ω.out) :
     (MulAction.selfEquivSigmaOrbits G X).symm ⟨ω, x⟩ = x := rfl
@@ -103,6 +121,21 @@ open scoped ENNReal Pointwise in
 variable {H : Type} [Group H] [MeasurableSpace H] [MeasurableMul H] {ν : Measure H}
   [ν.IsMulLeftInvariant] {Γ : Subgroup H} {Y : Type} [MulAction Γ Y] {𝓕 : Set H} in
 
+/- English proof (translation)
+Introduce `H _ _ _ ν _ Γ _ Y _ _ 𝓕 hF Φ hmeas hinv hfin hzero`. Establish `horbit : ∀ y₀ : Y, ∑' a : MulAction.orbit Γ y₀, ∫ h in 𝓕, Φ a h ∂ν = 0`. Introduce `y₀`. Establish `hO : ∀ γ : Γ, γ • y₀ ∈ MulAction.orbit Γ y₀` using `fun γ => MulAction.mem_orbit y₀ γ`. Use `choose σ hσ using fun a : MulAction.orbit Γ y₀ => (MulAction.mem_orbit_iff.1 a.2 : ∃ g : Γ, g • y₀ = a)`.
+
+Establish `hT` using `_root_.GlobalTheory.OrbitUnfold.isFundamentalDomain_iUnion_pull hF y₀ hO σ hσ`. Establish `hshift : ∀ a : MulAction.orbit Γ y₀, ∀ h, Φ a ((σ a : H) * h) = Φ y₀ h` using `fun a h => by`. Rewrite using `[← hinv (σ a) y₀ h, hσ]`. Establish `hpt : ∀ a : MulAction.orbit Γ y₀, ∫ h in 𝓕, Φ a h ∂ν = ∫ h in _root_.GlobalTheory.OrbitUnfold.pull 𝓕 (σ a : H), Φ y₀ h ∂ν`. Introduce `a`.
+
+Rewrite using `[← _root_.GlobalTheory.OrbitUnfold.setIntegral_pull (σ a : H) (Φ a)]`. Simplify using `only [hshift]`. Establish `hlpt : ∀ a : MulAction.orbit Γ y₀, ∫⁻ h in _root_.GlobalTheory.OrbitUnfold.pull 𝓕 (σ a : H), ‖Φ y₀ h‖ₑ ∂ν = ∫⁻ h in 𝓕, ‖Φ a h‖ₑ ∂ν`. Introduce `a`. Rewrite using `[← _root_.GlobalTheory.OrbitUnfold.setLIntegral_pull (σ a : H) (fun h => ‖Φ a h‖ₑ)]`.
+
+Simplify using `only [hshift]`. Establish `hσinj : Function.Injective σ` using `fun a b hab => Subtype.ext (by rw [← hσ a, ← hσ b, hab])`. Establish `hdisj : Pairwise (Function.onFun (AEDisjoint ν) fun a : MulAction.orbit Γ y₀ => _root_.GlobalTheory.OrbitUnfold.pull 𝓕 (σ a : H))` using `fun a b hab => _root_.GlobalTheory.OrbitUnfold.aedisjoint_pull hF (hσinj.ne hab)`. Establish `hint : IntegrableOn (Φ y₀) (⋃ a : MulAction.orbit Γ y₀, _root_.GlobalTheory.OrbitUnfold.pull 𝓕 (σ a : H)) ν`. Use `⟨(hmeas y₀).aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hasFiniteIntegral_iff_enorm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hpt]`. Rewrite using `[← integral_iUnion_ae (fun a => _root_.GlobalTheory.OrbitUnfold.nullMeasurableSet_pull hF _) hdisj hint]`. Conclude with `hzero y₀ _ hT hint`.
+
+Establish `hsum : Summable fun y => ∫ h in 𝓕, Φ y h ∂ν`. Use `Summable.of_norm_bounded (ENNReal.summable_toReal hfin) fun y => ?_` and prove the remaining obligations. Rewrite using `[← toReal_enorm]`. Conclude with `ENNReal.toReal_mono (ENNReal.ne_top_of_tsum_ne_top hfin y) (enorm_integral_le_lintegral_enorm _)`. Establish `hs'` using `((MulAction.selfEquivSigmaOrbits Γ Y).symm.summable_iff (f := fun y => ∫ h in 𝓕, Φ y h ∂ν)).2 hsum`.
+
+Rewrite using `[← (MulAction.selfEquivSigmaOrbits Γ Y).symm.tsum_eq (fun y => ∫ h in 𝓕, Φ y h ∂ν)]`. Simplify using `only [Function.comp_def] at hs'`. Rewrite using `[Summable.tsum_sigma hs']`. Simplify using `only [Function.comp_apply, selfEquivSigmaOrbits_symm_mk, horbit, tsum_zero]`.
+-/
 theorem _root_.GlobalTheory.OrbitUnfold.tsum_setIntegral_eq_zero :
     ∀ (H : Type) [Group H] [MeasurableSpace H] [MeasurableMul H] (ν : Measure H)
       [ν.IsMulLeftInvariant] (Γ : Subgroup H) [Countable Γ] (Y : Type) [Countable Y]

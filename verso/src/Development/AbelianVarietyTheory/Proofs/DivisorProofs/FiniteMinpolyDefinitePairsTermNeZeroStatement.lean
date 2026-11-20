@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.TraceDef
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LKDef.FinPol.finite_pol_term_ne_zero | exact GlobalTheory.LKDef.FinPol.finite_pol_term_ne_zero | (intros; apply GlobalTheory.LKDef.FinPol.finite_pol_term_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_minpoly_definitePairs_term_ne_zero : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 →
     ∀ (L : G.Level) (f : G.GAf → ℂ), IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f →
       (∀ k ∈ L.K.toSubgroup, ∀ k' ∈ L.K.toSubgroup, ∀ g, f (k * g * k') = f g) →

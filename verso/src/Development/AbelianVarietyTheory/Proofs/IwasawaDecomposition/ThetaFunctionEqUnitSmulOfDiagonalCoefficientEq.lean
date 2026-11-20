@@ -14,6 +14,13 @@ namespace GlobalTheory.ThetaCoefficient
 
 open GlobalTheory.FinTranslate
 
+/- English proof (translation)
+Establish `hn : ∀ x, ‖f' x‖ = ‖f x‖` using `fun x => by`. Use `congrArg norm (h x x)` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_mul, norm_star, norm_star]`. Conclude with `(mul_self_inj (norm_nonneg _) (norm_nonneg _)).1 this`. Distinguish the cases in `h0 : ∀ x, f x = 0`.
+
+Use `⟨1, norm_one, funext fun x => ?_⟩` and prove the remaining obligations. Use `hn x` as an intermediate fact. Rewrite `this` using `[h0, norm_zero, norm_eq_zero]`. Simplify using `[this, h0]`. Take `⟨x, hx⟩` from `not_forall.1 h0`.
+
+Establish `hx' : f' x ≠ 0` using `fun e => hx (by rw [← norm_eq_zero, ← hn, e, norm_zero])`. Use `⟨star (f x) / star (f' x), ?_, funext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_star, norm_star, hn, div_self (norm_ne_zero_iff.2 hx)]`. Establish `hs : star (f' x) ≠ 0` using `star_ne_zero.2 hx'`. Rewrite using `[Pi.smul_apply, smul_eq_mul, div_mul_eq_mul_div, eq_div_iff hs, h x y, mul_comm]`.
+-/
 theorem exists_unit_smul {X : Type} (f f' : X → ℂ) (h : ∀ x y, f' y * star (f' x) = f y * star (f x)) :
     ∃ c : ℂ, ‖c‖ = 1 ∧ f' = c • f := by
   have hn : ∀ x, ‖f' x‖ = ‖f x‖ := fun x => by
@@ -34,6 +41,9 @@ theorem exists_unit_smul {X : Type} (f f' : X → ℂ) (h : ∀ x y, f' y * star
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Establish `h2 : algebraMap D.host.F (AF D.host.F) (1 / 2) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]`. Evaluate the numerical expressions. Unfold `symplOH`. Take the linear combination `(-symplO S T x y) * h2`.
+-/
 theorem symplO_eq (x y : WO S T) : symplO S T x y = symplOH S T x y + symplOH S T x y := by
   have h2 : algebraMap D.host.F (AF D.host.F) (1 / 2) * 2 = 1 := by
     rw [← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]
@@ -41,6 +51,11 @@ theorem symplO_eq (x y : WO S T) : symplO S T x y = symplOH S T x y + symplOH S 
   unfold symplOH
   linear_combination (-symplO S T x y) * h2
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `hγ`. Establish `h` using `hg.quasi γ (x + w)`. Use `show ψ (symplO S T x (ratW T S γ)) * (ψ (symplOH S T x w) * g (x + w)) = ψ (symplOH S T (ratW T S γ) w) * (ψ (symplOH S T x (ratW T S γ + w)) * g (x + (ratW T S γ + w)))`. Rewrite using `[add_left_comm, h]`. Simplify using `only [← mul_assoc, ← AddChar.map_add_eq_mul]`.
+
+Rewrite using `[symplO_eq, symplOH_add_right, symplOH_add_right, symplOH_skew S T x (ratW T S γ)]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem char_mul_heisO {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) {γ : WO S T} (hγ : γ ∈ ratL T S) (w x : WO S T) :
     ψ (symplO S T x γ) * heisO ψ S T w g x = ψ (symplOH S T γ w) * heisO ψ S T (γ + w) g x := by
   obtain ⟨γ, rfl⟩ := hγ
@@ -53,6 +68,27 @@ theorem char_mul_heisO {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) {γ : WO
   congr 2
   ring
 
+/- English proof (translation)
+Introduce `D ψ hψ S T μ 𝓕 hμ h𝓕 f f' hf hf' h`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`. Establish `hT` using `@GlobalTheory.ThetaClosed.isThetaFunO_heisO_all D ψ hψ S T`. Use `exists_unit_smul f f' fun x y => ?_` and prove the remaining obligations.
+
+Take `⟨w, rfl⟩ : ∃ w, y = x + w` from `⟨y - x, by abel⟩`. Establish `key` using `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero (WO S T) (ratL T S) K hK hKc (ratL T S) (fun γ x => ψ (symplO S T x γ)) (fun γ => by`. Simplify using `only [symplO_eq]`. Conclude with `hψ.1.1.comp ((continuous_symplOH S T _).add (continuous_symplOH S T _)))`. Use the proof step `(fun γ x y => by`.
+
+Simplify using `only [symplO_eq, symplOH_add_left, ← AddChar.map_add_eq_mul]`. Rewrite using `[add_add_add_comm])`. Use the proof step `(fun γ γ' x => by show ψ (symplO S T x (γ + γ')) = ψ (symplO S T x γ) * ψ (symplO S T x γ')`. Simplify using `only [symplO_eq, symplOH_add_right, ← AddChar.map_add_eq_mul]`. Rewrite using `[add_add_add_comm])`.
+
+Use the proof step `(fun x => by show ψ (symplO S T x 0) = 1`. Rewrite using `[symplO_eq, symplOH_zero_right, add_zero, AddChar.map_zero_eq_one])`. Use the proof step `(fun γ x => hψ.1.2.1 _)`. Use the proof step `(fun x => by rw [← GlobalTheory.T.rationalSymplecticPoints_self_annihilator D ψ hψ S T x]; exact Subtype.forall)`. Use `μ 𝓕 hμ h𝓕 (fun x => heisO ψ S T w f' x * star (f' x) - heisO ψ S T w f x * star (f x))`.
+
+Use the proof step `(by`. Establish `a` using `(hT hf' w).cont`. Establish `b` using `(hT hf w).cont`. Establish `a'` using `hf'.cont`. Establish `b'` using `hf.cont`.
+
+Generalize the expression as in `heisO ψ S T w f' = u at a`. Generalize the expression as in `heisO ψ S T w f = v at b`. Conclude with `(a.mul a'.star).sub (b.mul b'.star))`. Use the proof step `(fun γ hγ x => by`. Establish `a` using `GlobalTheory.Size.mul_conj_periodic hψ (hT hf' w) hf' γ hγ x`.
+
+Establish `b` using `GlobalTheory.Size.mul_conj_periodic hψ (hT hf w) hf γ hγ x`. Simplify using `only [starRingEnd_apply] at a b`. Simplify using `only [a, b])`. Use the proof step `(fun γ => by`. Establish `e : ∀ x, ψ (symplO S T x γ) * (heisO ψ S T w f' x * star (f' x) - heisO ψ S T w f x * star (f x)) = ψ (symplOH S T γ w) * (heisO ψ S T (γ + w) f' x * star (f' x) - heisO ψ S T (γ + w) f x * star (f x))` using `fun x => by`.
+
+Take the linear combination `star (f' x) * char_mul_heisO hf' γ.2 w x - star (f x) * char_mul_heisO hf γ.2 w x`. Simplify using `only [e]`. Establish `a` using `GlobalTheory.Size.integrableOn_mul_conj hψ hμ h𝓕 (hT hf' (γ + w)) hf'`. Establish `b` using `GlobalTheory.Size.integrableOn_mul_conj hψ hμ h𝓕 (hT hf (γ + w)) hf`. Rewrite using `[integral_const_mul]`.
+
+Use `mul_eq_zero_of_right _ ((integral_sub a b).trans (sub_eq_zero.2 (h _))))` and prove the remaining obligations. Establish `e` using `congrFun key x`. Establish `hne : ψ (symplOH S T x w) ≠ 0` using `fun e => by simpa [e] using hψ.1.2.1 (symplOH S T x w)`. Simplify using `only [heisO, Pi.zero_apply] at e`. Use `mul_left_cancel₀ hne ?_` and prove the remaining obligations.
+
+Take the linear combination `e`.
+-/
 theorem exists_unit_smul_of_coefficient_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∀ f f' : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → (∀ w, ∫ x in 𝓕, heisO ψ S T w f' x * star (f' x) ∂μ = ∫ x in 𝓕, heisO ψ S T w f x * star (f x) ∂μ) → ∃ c : ℂ, ‖c‖ = 1 ∧ f' = c • f := by
   intro D ψ hψ S T μ 𝓕 hμ h𝓕 f f' hf hf' h
   obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T S

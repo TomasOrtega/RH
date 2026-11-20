@@ -11,17 +11,26 @@ open UpperTheory.V.Z.J.D
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Take `⟨hc, hf, hlm, -, -, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `⟨hc, hf, (CharP.charP_iff_prime_eq_zero hl.out).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (IsLocalRing.residue c.O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hlm`.
+-/
 private theorem coef_isCoef (l : ℕ) [hl : Fact l.Prime] (c : Coef l) : Pa.IsCoef l c.O := by
   obtain ⟨hc, hf, hlm, -, -, -⟩ := UpperTheory.V.abelian₂.dvr_finite l c.O
   refine ⟨hc, hf, (CharP.charP_iff_prime_eq_zero hl.out).2 ?_⟩
   rw [← map_natCast (IsLocalRing.residue c.O), IsLocalRing.residue_eq_zero_iff]
   exact hlm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein P.loc.llc P.loc.conv P.loc.dzc P.loc.dzi P.loc.brauer P.loc.chev P.aut.art P.loc.exh P.loc.multi P.loc.cos P.loc.zel P.loc.geo P.loc.bz, P.loc.bz, P.loc.geo, GlobalTheory.Published.TameLocal_of_du …`.
+-/
 private theorem locP_of (P : GlobalTheory.Mem.LiteralAutomorphy.LitN) : Pa.LocP :=
   ⟨GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein P.loc.llc P.loc.conv P.loc.dzc P.loc.dzi P.loc.brauer P.loc.chev P.aut.art
                P.loc.exh P.loc.multi P.loc.cos P.loc.zel P.loc.geo P.loc.bz,
     P.loc.bz, P.loc.geo, GlobalTheory.Published.TameLocal_of_duality P.coh.lt⟩
 
+/- English proof (translation)
+Introduce and unpack `b ⟨k, hk⟩`. Use `h (fun _ j _ => ((j : ℕ) : ℤ)) (fun _ _ i j hij => Int.ofNat_lt.2 hij) b fun x hx _ => ?_` and prove the remaining obligations. Establish `h1 : x (b ^ k) = 0` using `hx hk`. Rewrite `h1` using `[map_pow]`. Conclude with `IsReduced.eq_zero _ ⟨k, h1⟩`.
+-/
 private theorem rad_of_dense {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {V : s.Lev} {c : Coef l} {n : ℕ} {r : Resid V.frame c.O n} (B : UniversalOrdinaryDeterminantRing r)
     (J : Ideal B.B) (h : B.Dense J) : J.IsRadical := by
@@ -31,5 +40,8 @@ private theorem rad_of_dense {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [N
   rw [map_pow] at h1
   exact IsReduced.eq_zero _ ⟨k, h1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.gf, hN.coh.ge, hN.coh.gw, hN.coh.pt, GlobalTheory.Published.TameLocal_of_duality hN.coh.lt⟩`.
+-/
 private theorem cohP_of (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) : Pa.CohP :=
   ⟨hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.gf, hN.coh.ge, hN.coh.gw, hN.coh.pt, GlobalTheory.Published.TameLocal_of_duality hN.coh.lt⟩

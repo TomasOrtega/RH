@@ -11,6 +11,15 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.Ex.Trait
 
 namespace GlobalTheory.Ex.Trait
 
+/- English proof (translation)
+Set `f' : Over.mk (f ≫ s) ⟶ Over.mk s` to `Over.homMk f`. Set `g' : Over.mk (f ≫ s) ⟶ Over.mk s` to `Over.homMk g h.symm`. Use `haveI : IsSeparated (Over.mk s).hom := ‹IsSeparated s›`. Set `d' : Over.mk (d ≫ f ≫ s) ⟶ Over.mk (f ≫ s)` to `Over.homMk d`. Establish `e : d' ≫ f' = d' ≫ g'` using `Over.OverMorphism.ext hU`.
+
+Set `l` to `equalizer.lift d' e`. Establish `hd : d = l.left ≫ (equalizer.ι f' g').left`. Rewrite using `[← Over.comp_left, equalizer.lift_ι]`. Both sides reduce to the same expression. Establish `hker : (equalizer.ι f' g').left.ker = ⊥`.
+
+Apply `le_bot_iff.1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `haveI : IsIso (equalizer.ι f' g').left := IsClosedImmersion.isIso_iff_ker_eq_bot.2 hker`. Establish `h0 : IsIso ((Over.forget Z).map (equalizer.ι f' g'))` using `(inferInstance : IsIso (equalizer.ι f' g').left)`. Establish `: IsIso (equalizer.ι f' g')` using `isIso_of_reflects_iso _ (Over.forget Z)`.
+
+Conclude with `congrArg CommaMorphism.left ((cancel_epi (equalizer.ι f' g')).1 (equalizer.condition f' g'))`.
+-/
 theorem eq_of_comp_schemeDominant {W X Y Z : Scheme.{0}} {f g : X ⟶ Y} (s : Y ⟶ Z) [IsSeparated s] (h : f ≫ s = g ≫ s)
     (d : W ⟶ X) [IsSchemeTheoreticallyDominant d] (hU : d ≫ f = d ≫ g) : f = g := by
   let f' : Over.mk (f ≫ s) ⟶ Over.mk s := Over.homMk f
@@ -30,6 +39,11 @@ theorem eq_of_comp_schemeDominant {W X Y Z : Scheme.{0}} {f g : X ⟶ Y} (s : Y 
   have : IsIso (equalizer.ι f' g') := isIso_of_reflects_iso _ (Over.forget Z)
   exact congrArg CommaMorphism.left ((cancel_epi (equalizer.ι f' g')).1 (equalizer.condition f' g'))
 
+/- English proof (translation)
+Use `haveI : IsDominant (Spec.map (CommRingCat.ofHom φ)) := by`. Rewrite using `[isDominant_iff]`. Use `show DenseRange (PrimeSpectrum.comap φ)`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot φ).1 hφ]`. Conclude with `bot_le`.
+
+Conclude with `IsSchemeTheoreticallyDominant.of_isDominant _`.
+-/
 theorem schemeDominant_spec_of_injective {A B : Type} [CommRing A] [CommRing B] [_root_.IsReduced A] (φ : A →+* B)
     (hφ : Function.Injective φ) : IsSchemeTheoreticallyDominant (Spec.map (CommRingCat.ofHom φ)) := by
   haveI : IsDominant (Spec.map (CommRingCat.ofHom φ)) := by
@@ -39,6 +53,23 @@ theorem schemeDominant_spec_of_injective {A B : Type} [CommRing A] [CommRing B] 
     exact bot_le
   exact IsSchemeTheoreticallyDominant.of_isDominant _
 
+/- English proof (translation)
+Introduce `hL h₂ E _ _ _ H R _ _ _ S s B B₀ ρ ρ₀ ψ hψ hw C _ _ _ _ n hn x h`. Use `letI := H.starRing`. Take `⟨ρ', hρ'⟩` from `polOActPull _ _ s B₀ B ψ hψ hw.symm (𝓞 E) ρ₀`. Take `⟨P, g, hg, -, hm, ht⟩` from `hL.polBaseChange _ _ (TF (R := R) C).hom B`. Establish `gp : IsGrpPullback P.A B.A (TF (R` using `R) C).hom g := ⟨hg, fun T a b a₀ b₀ ha hb => by`.
+
+Establish `e₁ : a₀ = toBase hg.w a` using `Over.OverMorphism.ext ha`. Establish `e₂ : b₀ = toBase hg.w b` using `Over.OverMorphism.ext hb`. Rewrite using `[e₁, e₂, ← hm]`. Use the proof step `rfl⟩`. Take `⟨σ, hσ⟩` from `polOActPull _ _ _ B P g gp ht (𝓞 E) ρ`.
+
+Take `⟨σ', hσ'⟩` from `polOActPull _ _ _ B P g gp ht (𝓞 E) ρ'`. Take `⟨c, hc⟩` from `exists_starNormLE_of_isCMField E (fun a => H.bar_eq a) x`. Use `set j := 4 ^ P.g * P.g.factorial * (2 * c) with hj`. Establish `hlt : j < (n ^ j) ^ 2` using `(Nat.lt_pow_self hn).trans_le (Nat.le_self_pow two_ne_zero _)`. Establish `key` using `h₂ P.g c (n ^ j) hlt C (Nat.cast_ne_zero.2 (by positivity)) P P rfl rfl (Iso.refl _) (ThetaPtDet.isPolIso_refl P) _ σ σ' x hc fun y hy => by`.
+
+Set `u : TF (R` to `R) C ⟶ Over.mk ((baseOver (Sp C)).hom ≫ (TF (R := R) C).hom) := Over.homMk (𝟙 _) ((Category.id_comp _).trans (Category.id_comp _))`. Set `z : TF (R` to `R) C ⟶ B.A := u ≫ pushHom gp _ y`. Establish `hz : z.left = y.left ≫ g` using `Category.id_comp _`. Establish `hz' : z ^ n ^ j = 1`. Rewrite using `[← MonObj.comp_pow, ← map_pow, hy, map_one, MonObj.comp_one]`.
+
+Establish `e` using `h j z hz'`. Rewrite `e` using `[← hρ', ← Category.assoc, ← Over.comp_left]`. Establish `e' : (z ≫ ρ.act x).left = (z ≫ ρ'.act x).left` using `hψ.1.hom_ext e (by rw [Over.w, Over.w])`. Rewrite using `[Iso.refl_hom, Category.comp_id, Category.id_comp]`. Use `Over.OverMorphism.ext (hg.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations.
+
+Rewrite `e'` using `[Over.comp_left _ _ _ z, Over.comp_left _ _ _ z, hz]`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hσ, hσ']`. Simplify `e'` using `only [Category.assoc]`. Rewrite `key` using `[Iso.refl_hom, Category.comp_id, Category.id_comp]`. Use `haveI : IsSchemeTheoreticallyDominant (jK R) := schemeDominant_spec_of_injective _ (IsFractionRing.injective R _)`.
+
+Use `haveI : IsSchemeTheoreticallyDominant (jFK (R := R) C) := schemeDominant_spec_of_injective _ (RingHom.injective _)`. Use `haveI : IsSchemeTheoreticallyDominant (TF (R := R) C).hom := by show IsSchemeTheoreticallyDominant (_ ≫ _); infer_instance`. Use `haveI := B.isAb.proper`. Use `haveI := B.isAb.smooth`. Use `haveI : QuasiCompact (TF (R := R) C).hom := by show QuasiCompact (spMap (algebraMap (FractionRing R) C) ≫ spMap (algebraMap R (FractionRing R))); infer_instance`.
+
+Use `haveI : IsSchemeTheoreticallyDominant g := IsSchemeTheoreticallyDominant.of_isPullback hg.flip`. Rewrite using `[← hρ', eq_of_comp_schemeDominant B.A.hom ((Over.w (ρ.act x)).trans (Over.w (ρ'.act x)).symm) g (by rw [← hσ, ← hσ', key])]`.
+-/
 theorem act_comm_of_torsion : Laws → EndDeterminedOnTorsionSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (S : Scheme.{0}) (s : Sp R ⟶ S) (B : PolAV (Sp R)) (B₀ : PolAV S) (ρ : letI := H.starRing; B.OAct (𝓞 E)) (ρ₀ : letI := H.starRing; B₀.OAct (𝓞 E)) (ψ : B.A.left ⟶ B₀.A.left), IsGrpPullback B.A B₀.A s ψ → LBIso B.L (B₀.L.pull ψ) → ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] [Algebra (FractionRing R) C] (n : ℕ), 2 ≤ n → ∀ x : 𝓞 E, (letI := H.starRing; (∀ (j : ℕ) (y : TF (R := R) C ⟶ B.A), y ^ n ^ j = 1 → (y ≫ ρ.act x).left ≫ ψ = y.left ≫ ψ ≫ (ρ₀.act x).left) → (ρ.act x).left ≫ ψ = ψ ≫ (ρ₀.act x).left) := by
   intro hL h₂ E _ _ _ H R _ _ _ S s B B₀ ρ ρ₀ ψ hψ hw C _ _ _ _ n hn x h
   letI := H.starRing

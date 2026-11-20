@@ -16,6 +16,11 @@ section Closure
 
 variable {O Ω V : Type} [CommRing O] [Field Ω] [Algebra O Ω] [AddCommGroup V] [Module Ω V]
 
+/- English proof (translation)
+Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, e, he, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨algebraMap O Ω c * a, mul_mem (R.algebraMap_mem c) ha, e, he, by rw [mul_smul]⟩`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add w₁ w₂ _ _ h₁ h₂ => rw [smul_add]`. Conclude with `add_mem h₁ h₂`. Consider the case `neg w _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+-/
 theorem const_smul_mem (R : Subalgebra O Ω) (A : AddSubgroup V) (c : O) {v : V}
     (hv : v ∈ AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ A, v = a • e}) :
     algebraMap O Ω c • v ∈ AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ A, v = a • e} := by
@@ -28,6 +33,15 @@ theorem const_smul_mem (R : Subalgebra O Ω) (A : AddSubgroup V) (c : O) {v : V}
   | add w₁ w₂ _ _ h₁ h₂ => rw [smul_add]; exact add_mem h₁ h₂
   | neg w _ h => rw [smul_neg]; exact neg_mem h
 
+/- English proof (translation)
+Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, e, he, rfl⟩` from `hw`. Take `⟨c, hc, hce⟩` from `h e he`. Conclude with `⟨c, hc, AddSubgroup.subset_closure ⟨a, ha, _, hce, smul_comm _ _ _⟩⟩`.
+
+Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add w₁ w₂ _ _ h₁ h₂`. Take `⟨c₁, hc₁, m₁⟩` from `h₁`. Take `⟨c₂, hc₂, m₂⟩` from `h₂`. Use `⟨c₁ * c₂, mul_ne_zero hc₁ hc₂, ?_⟩` and prove the remaining obligations.
+
+Establish `e : algebraMap O Ω (c₁ * c₂) • (w₁ + w₂) = algebraMap O Ω c₂ • (algebraMap O Ω c₁ • w₁) + algebraMap O Ω c₁ • (algebraMap O Ω c₂ • w₂)`. Rewrite using `[map_mul, smul_add, smul_smul, smul_smul, mul_comm]`. Rewrite using `[e]`. Conclude with `add_mem (const_smul_mem R B c₂ m₁) (const_smul_mem R B c₁ m₂)`. Consider the case `neg w _ h`.
+
+Take `⟨c, hc, m⟩` from `h`. Conclude with `⟨c, hc, by rw [smul_neg]; exact neg_mem m⟩`.
+-/
 theorem exists_const_smul_mem [IsDomain O] (R : Subalgebra O Ω) (A B : AddSubgroup V)
     (h : ∀ v ∈ A, ∃ c : O, c ≠ 0 ∧ algebraMap O Ω c • v ∈ B) {v : V}
     (hv : v ∈ AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ A, v = a • e}) :
@@ -53,6 +67,9 @@ theorem exists_const_smul_mem [IsDomain O] (R : Subalgebra O Ω) (A B : AddSubgr
     obtain ⟨c, hc, m⟩ := h
     exact ⟨c, hc, by rw [smul_neg]; exact neg_mem m⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Ydb6.main R A B c h v`.
+-/
 theorem mem_span_scaled (R : Subalgebra O Ω) (A B : AddSubgroup V) (c : Ω)
     (h : ∀ v, v ∈ B ↔ ∃ e ∈ A, v = c • e) (v : V) :
     v ∈ AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ B, v = a • e} ↔
@@ -61,6 +78,17 @@ theorem mem_span_scaled (R : Subalgebra O Ω) (A B : AddSubgroup V) (c : Ω)
 
 end Closure
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ E E' K' _ _ ι' _ z EB E'B hE hE'`. Establish `hx : ∀ s, mseg (joinCoord x z) s ≠ 0 → mseg x (restrictChart s) ≠ 0`. Introduce `s hs h`. Apply `hs` to reduce the goal to its premises. Establish `e : mseg (joinCoord x z) s = mseg x (restrictChart s) * mseg z (fun k => s (.inr k))`.
+
+Simplify using `only [mseg, Fintype.prod_sum_type]`. Both sides reduce to the same expression. Rewrite using `[e, h, zero_mul]`. Use `⟨fun h s hs => ?_, fun h s hs => ⟨fun v hv => ?_, fun v hv => ?_⟩, fun c h s hs v => ?_⟩` and prove the remaining obligations. Rewrite using `[hE s hs, hE' s hs]`.
+
+Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, e, he, rfl⟩`. Conclude with `⟨a, ha, e, h _ (hx s hs) he, rfl⟩`. Rewrite `hv` using `[hE s hs]`. Rewrite using `[hE' s hs]`.
+
+Conclude with `exists_const_smul_mem _ _ _ (h _ (hx s hs)).1 hv`. Rewrite `hv` using `[hE' s hs]`. Rewrite using `[hE s hs]`. Conclude with `exists_const_smul_mem _ _ _ (h _ (hx s hs)).2 hv`. Rewrite using `[hE s hs, hE' s hs]`.
+
+Conclude with `mem_span_scaled _ _ _ c (h _ (hx s hs)) v`.
+-/
 theorem pull_preserve : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E E' : ChartBundle O (mseg x) N V) (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω) (EB E'B : ChartBundle O (mseg (joinCoord x z)) N V), IsPull O x z E EB → IsPull O x z E' E'B → (LatLE O x E E' → LatLE O (joinCoord x z) EB E'B) ∧ (SameGeneric O x E E' → SameGeneric O (joinCoord x z) EB E'B) ∧ (∀ c : Ω, IsScaled x c E.lat E'.lat → IsScaled (joinCoord x z) c EB.lat E'B.lat) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ E E' K' _ _ ι' _ z EB E'B hE hE'
   have hx : ∀ s, mseg (joinCoord x z) s ≠ 0 → mseg x (restrictChart s) ≠ 0 := by

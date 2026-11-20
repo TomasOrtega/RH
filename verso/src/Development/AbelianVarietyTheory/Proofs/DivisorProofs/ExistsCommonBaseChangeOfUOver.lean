@@ -14,6 +14,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UPoinc
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo cf K R R' _ _ _ P P' σ σ' u h h'`. Take `⟨G, _, α, β, hα, hβ, hL⟩` from `h`. Take `⟨G', _, α', β', hα', hβ', hL'⟩` from `h'`. Take `⟨P₀, φ, hφ, hLφ⟩` from `exists_pol_baseChange P (spMap σ)`. Take `⟨e₀, _, he₀⟩` from `grpPullback_iso hφ hα`.
+
+Take `⟨e, _, he⟩` from `grpPullback_iso hβ hβ'`. Use `haveI : IsMonHom (e₀ ≪≫ e).hom := inferInstanceAs (IsMonHom (e₀.hom ≫ e.hom))`. Establish `hU` using `Xo.univ.t.PP.isLB`. Establish `X1 : LBIso (P.L.pull φ) (Xo.univ.t.PP.L.pull (e₀.hom.left ≫ β))` using `GlobalTheory.GenSpread.lbIso_pull_comp e₀.hom.left he₀.symm rfl hL`. Establish `X2 : LBIso (Xo.univ.t.PP.L.pull (e₀.hom.left ≫ β)) (P'.L.pull ((e₀.hom.left ≫ e.hom.left) ≫ α'))` using `GlobalTheory.GenSpread.lbIso_pull_comp (e₀.hom.left ≫ e.hom.left) (by rw [← he, Category.assoc]) rfl hL'.symm`.
+
+Use `⟨P₀, φ, (e₀.hom.left ≫ e.hom.left) ≫ α', hφ, ((isGrpPullback_of_iso (e₀ ≪≫ e)).comp hα').congr (Category.id_comp _) rfl, hLφ, LBIso.trans P₀.isLB (pull_isLB P.isLB _) (pull_isLB P'.isLB _) hLφ (LBIso.trans (pull_isLB P.isLB _) (pull_isLB hU _) (pull_isLB P'.isLB _) X1 X2)⟩` and prove the remaining obligations.
+-/
 theorem exists_common_baseChange_of_uOver : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (K R R' : Type) [Field K] [CommRing R] [CommRing R'] (P : PolAV (Sp R)) (P' : PolAV (Sp R')) (σ : R →+* K) (σ' : R' →+* K) (u : Sp K ⟶ Xo.XF cf), UOver Xo cf P σ u → UOver Xo cf P' σ' u → ∃ (P₀ : PolAV (Sp K)) (a : P₀.A.left ⟶ P.A.left) (a' : P₀.A.left ⟶ P'.A.left), IsGrpPullback P₀.A P.A (spMap σ) a ∧ IsGrpPullback P₀.A P'.A (spMap σ') a' ∧ LBIso P₀.L (P.L.pull a) ∧ LBIso P₀.L (P'.L.pull a') := by
   intro E _ _ _ H Dw l Xo cf K R R' _ _ _ P P' σ σ' u h h'
   obtain ⟨G, _, α, β, hα, hβ, hL⟩ := h

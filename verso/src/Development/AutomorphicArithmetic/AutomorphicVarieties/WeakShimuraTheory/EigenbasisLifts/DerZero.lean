@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Cop
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `l _ c R _ _ _ x' S hdense hS a`. Establish `hadj : ∀ b ∈ Algebra.adjoin c.O S, (x' b).snd = 0`. Introduce `b hb`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hS x hx`.
+
+Consider the case `algebraMap r`. Rewrite using `[AlgHom.commutes]`. Use `first`. Consider the case `rfl`. Consider the case `simp [TrivSqZeroExt.algebraMap_eq_inl']`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add, TrivSqZeroExt.snd_add, hx, hy, add_zero]`. Consider the case `mul x y _ _ hx hy => simp [map_mul, TrivSqZeroExt.snd_mul, hx, hy]`. Establish `hcont` using `((coPt c R).2 x').2`. Assume the negation of the conclusion as `h`. Establish `hpos : 0 < ‖(x' a).snd‖` using `norm_pos_iff.mpr h`.
+
+Take `⟨n, hn⟩` from `hcont _ (half_pos hpos)`. Take `⟨b, hb, hab⟩` from `hdense n a`. Establish `key` using `hn _ hab`. Rewrite `key` using `[map_sub, TrivSqZeroExt.snd_sub, hadj b hb, sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.V.Ws.Eb.derZero :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) (R : Type) [CommRing R] [Algebra c.O R] [IsCO c.O R] (x' : R →ₐ[c.O] DualNumber (PadicAlgCl l)) (S : Set R), (∀ (N : ℕ) (a : R), ∃ b ∈ Algebra.adjoin c.O S, a - b ∈ maximalIdeal R ^ N) → (∀ a ∈ S, (x' a).snd = 0) → ∀ a, (x' a).snd = 0 := by
   intro l _ c R _ _ _ x' S hdense hS a

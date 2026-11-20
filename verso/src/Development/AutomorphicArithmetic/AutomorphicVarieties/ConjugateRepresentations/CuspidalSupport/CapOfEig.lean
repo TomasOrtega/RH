@@ -7,6 +7,13 @@ open UpperTheory.V.Af.Fin (emb e1 e2 blk Bdd)
 open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ a φ h0 hc`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one ℂ h0`. Establish `key : ∀ t : E →+* ℂ, ∃ m : Multiset ℂ, Multiset.card m = a ∧ ∀ u : ℂ, cap t u φ = (m.map (u + ·)).prod • φ` using `fun t => by`. Take `⟨m, hm, h⟩` from `GlobalTheory.CuspRep.exists_multiset_qdet (Eop (a := a) t) (((a : ℂ) - 1) / 2) φ f hf`. Use `⟨m, hm, fun u => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, h1⟩` from `hc t u`. Establish `h2 : f (cap t u φ) = _` using `h u`. Rewrite `h2` using `[h1, map_smul, hf, smul_eq_mul, mul_one]`. Rewrite using `[h1, h2]`. Use `choose m hm h using key`.
+
+Conclude with `⟨m, fun t => ⟨hm t, h t⟩⟩`.
+-/
 theorem UpperTheory.V.Cj.S.capOfEig :
     UpperTheory.V.Cj.S.CapOfEig := by
   intro E _ _ _ a φ h0 hc

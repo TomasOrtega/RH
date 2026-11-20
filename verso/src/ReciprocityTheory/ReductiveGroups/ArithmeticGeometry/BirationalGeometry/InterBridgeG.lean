@@ -15,6 +15,9 @@ def fibSum (D : Set (Fin e → ℂ)) (Q : (Fin e → ℂ) → (Fin e → ℂ)) (
     (y : Fin e → ℂ) : ℝ :=
   ∑ᶠ u ∈ D ∩ Q ⁻¹' {y}, h u / jacN Q u
 
+/- English proof (translation)
+The claim follows from `|(f.restrictScalars ℝ).det| = ‖LinearMap.det (f : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))‖ ^ 2 := by have h : (f.restrictScalars ℝ).det = Complex.normSq (LinearMap.det (f : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))) := by show LinearMap.det ((f : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)).restrictScalars ℝ) = _ …`.
+-/
 theorem abs_det_restrictScalars (f : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) :
     |(f.restrictScalars ℝ).det| = ‖LinearMap.det (f : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))‖ ^ 2 := by
   have h : (f.restrictScalars ℝ).det =
@@ -23,6 +26,21 @@ theorem abs_det_restrictScalars (f : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) 
     rw [LinearMap.det_restrictScalars, Algebra.norm_complex_apply]
   rw [h, abs_of_nonneg (Complex.normSq_nonneg _), Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Establish `hf' : ∀ u ∈ D, HasFDerivWithinAt Q ((fderiv ℂ Q u).restrictScalars ℝ) D u` using `fun u hu => ((hQd u hu).hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`. Establish `hJpos : ∀ u ∈ D, 0 < jacN Q u` using `fun u hu => pow_pos (norm_pos_iff.mpr (hdet u hu)) 2`. Establish `hval : ∀ u ∈ D, fibSum D Q h (Q u) = h u / jacN Q u`. Introduce `u hu`. Establish `: D ∩ Q ⁻¹' {Q u} = {u}`.
+
+Use extensionality with `v`. Simplify using `only [mem_inter_iff, mem_preimage, mem_singleton_iff]`. Conclude with `⟨fun ⟨hv, hq⟩ => hinj hv hu hq, fun hv => by subst hv; exact ⟨hu, rfl⟩⟩`. Simplify using `only [fibSum, this, finsum_mem_singleton]`. Establish `hzero : ∀ y, y ∉ Q '' D → fibSum D Q h y = 0`.
+
+Introduce `y hy`. Establish `: D ∩ Q ⁻¹' {y} = ∅`. Use extensionality with `v`. Simplify using `only [mem_inter_iff, mem_preimage, mem_singleton_iff, mem_empty_iff_false, iff_false, not_and]`. Conclude with `fun hv hq => hy ⟨v, hv, hq⟩`.
+
+Simplify using `[fibSum, this]`. Establish `hdetJ : ∀ u, |((fderiv ℂ Q u).restrictScalars ℝ).det| = jacN Q u` using `fun u => abs_det_restrictScalars _`. Establish `hkey : EqOn (fun u => |((fderiv ℂ Q u).restrictScalars ℝ).det| • fibSum D Q h (Q u)) h D`. Introduce `u hu`. Simplify using `only [hval u hu, hdetJ, smul_eq_mul]`.
+
+Clear denominators, using `[(hJpos u hu).ne']` for the nonvanishing conditions. Establish `hkeyn : EqOn (fun u => |((fderiv ℂ Q u).restrictScalars ℝ).det| • ‖fibSum D Q h (Q u)‖) (fun u => ‖h u‖) D`. Introduce `u hu`. Simplify using `only [hval u hu, hdetJ, smul_eq_mul, norm_div, Real.norm_of_nonneg (hJpos u hu).le]`. Clear denominators, using `[(hJpos u hu).ne']` for the nonvanishing conditions.
+
+Establish `hint_on : IntegrableOn (fibSum D Q h) (Q '' D)`. Rewrite using `[integrableOn_image_iff_integrableOn_abs_det_fderiv_smul volume hD hf' hinj]`. Conclude with `hh.congr_fun (fun u hu => (hkey hu).symm) hD`. Establish `hint : Integrable (fibSum D Q h)` using `hint_on.integrable_of_forall_notMem_eq_zero hzero`. Use `⟨hint, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero hzero, integral_image_eq_integral_abs_det_fderiv_smul volume hD hf' hinj]`. Conclude with `setIntegral_congr_fun hD hkey`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero (s := Q '' D) (fun y hy => by rw [hzero y hy, norm_zero]), integral_image_eq_integral_abs_det_fderiv_smul volume hD hf' hinj]`. Conclude with `setIntegral_congr_fun hD hkeyn`.
+-/
 theorem piece_change {D : Set (Fin e → ℂ)} (hD : MeasurableSet D) {Q : (Fin e → ℂ) → (Fin e → ℂ)}
     (hQd : ∀ u ∈ D, DifferentiableAt ℂ Q u)
     (hdet : ∀ u ∈ D, LinearMap.det (fderiv ℂ Q u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) ≠ 0)
@@ -72,6 +90,23 @@ theorem piece_change {D : Set (Fin e → ℂ)} (hD : MeasurableSet D) {Q : (Fin 
       integral_image_eq_integral_abs_det_fderiv_smul volume hD hf' hinj]
     exact setIntegral_congr_fun hD hkeyn
 
+/- English proof (translation)
+Use `set s : Set (Set (Fin e → ℂ)) := insert ∅ {b | b ∈ TopologicalSpace.countableBasis (Fin e → ℂ) ∧ b ⊆ O ∧ InjOn Q b}`. Establish `hs : s.Countable` using `((TopologicalSpace.countable_countableBasis _).mono fun b hb => hb.1).insert ∅`. Establish `hmem : ∀ n, Set.enumerateCountable hs ∅ n ∈ s` using `Set.enumerateCountable_mem hs (Set.mem_insert _ _)`. Use `⟨Set.enumerateCountable hs ∅, fun n => ?_, fun n => ?_, fun n => ?_, ?_⟩` and prove the remaining obligations. Break down `hmem n with h | h` into its components or cases.
+
+Rewrite using `[h]`. Conclude with `isOpen_empty`. Conclude with `TopologicalSpace.isOpen_of_mem_countableBasis h.1`. Break down `hmem n with h | h` into its components or cases. Rewrite using `[h]`.
+
+Conclude with `empty_subset _`. Conclude with `h.2.1`. Break down `hmem n with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `injOn_empty _`.
+
+Conclude with `h.2.2`. Use `Subset.antisymm (iUnion_subset fun n => ?_) fun u hu => ?_` and prove the remaining obligations. Break down `hmem n with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `empty_subset _`.
+
+Conclude with `h.2.1`. Take `⟨hQa, hQd⟩` from `hQ u hu`. Use `set Ce := (fderiv ℂ Q u).toContinuousLinearEquivOfDetNeZero hQd`. Establish `hCe : (Ce : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) = fderiv ℂ Q u` using `ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero _ hQd`. Establish `hstrict : HasStrictFDerivAt Q (Ce : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) u`.
+
+Rewrite using `[hCe]`. Conclude with `hQa.hasStrictFDerivAt`. Use `set F := hstrict.toOpenPartialHomeomorph Q`. Establish `hFc : (F : (Fin e → ℂ) → (Fin e → ℂ)) = Q` using `hstrict.toOpenPartialHomeomorph_coe`. Establish `hus : u ∈ F.source` using `hstrict.mem_toOpenPartialHomeomorph_source`.
+
+Take `⟨b, hbB, hub, hbsub⟩` from `(TopologicalSpace.isBasis_countableBasis (Fin e → ℂ)).exists_subset_of_mem_open (⟨hus, hu⟩ : u ∈ F.source ∩ O) (F.open_source.inter hO)`. Establish `hbs : b ∈ s` using `Or.inr ⟨hbB, fun v hv => (hbsub hv).2, by`. Rewrite using `[← hFc]`. Conclude with `F.injOn.mono fun v hv => (hbsub hv).1⟩`. Take `⟨n, hn⟩` from `Set.subset_range_enumerate hs ∅ hbs`.
+
+Conclude with `mem_iUnion.mpr ⟨n, hn ▸ hub⟩`.
+-/
 theorem exists_inj_cover {O : Set (Fin e → ℂ)} {Q : (Fin e → ℂ) → (Fin e → ℂ)}
     (hQ : ∀ u ∈ O, AnalyticAt ℂ Q u ∧
       LinearMap.det (fderiv ℂ Q u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) ≠ 0) (hO : IsOpen O) :
@@ -114,6 +149,15 @@ theorem exists_inj_cover {O : Set (Fin e → ℂ)} {Q : (Fin e → ℂ) → (Fin
     obtain ⟨n, hn⟩ := Set.subset_range_enumerate hs ∅ hbs
     exact mem_iUnion.mpr ⟨n, hn ▸ hub⟩
 
+/- English proof (translation)
+Establish `hmeas : ∀ n, AEMeasurable (fun y => ‖F n y‖ₑ) μ` using `fun n => (hF n).aemeasurable.enorm`. Establish `hlin : ∫⁻ y, ∑' n, ‖F n y‖ₑ ∂μ ≠ ⊤`. Rewrite using `[lintegral_tsum hmeas]`. Establish `: ∀ n, ∫⁻ y, ‖F n y‖ₑ ∂μ = ENNReal.ofReal (∫ y, ‖F n y‖ ∂μ)` using `fun n => (ofReal_integral_norm_eq_lintegral_enorm (hF n)).symm`. Repeatedly rewrite using `[this]`.
+
+Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun n => integral_nonneg fun _ => norm_nonneg _) hs]`. Conclude with `ENNReal.ofReal_ne_top`. Establish `hae : ∀ᵐ y ∂μ, ∑' n, ‖F n y‖ₑ < ⊤` using `ae_lt_top' (AEMeasurable.ennreal_tsum hmeas) hlin`. Establish `hsum : ∀ᵐ y ∂μ, Summable fun n => F n y` using `by filter_upwards [hae] with y hy`. Use `Summable.of_norm ?_` and prove the remaining obligations.
+
+Establish `: (∑' n, (‖F n y‖₊ : ENNReal)) ≠ ⊤` using `hy.ne`. Conclude with `NNReal.summable_coe.mpr (ENNReal.tsum_coe_ne_top_iff_summable.mp this)`. Use `⟨aestronglyMeasurable_of_tendsto_ae atTop (f := fun N y => ∑ n ∈ Finset.range N, F n y) (fun N => Finset.aestronglyMeasurable_fun_sum _ fun n _ => (hF n).1) ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hsum] with y hy`. Conclude with `hy.hasSum.tendsto_sum_nat`.
+
+Use `lt_of_le_of_lt (lintegral_mono fun y => enorm_tsum_le_tsum_enorm) ?_` and prove the remaining obligations. Conclude with `lt_top_iff_ne_top.mpr hlin`.
+-/
 theorem integrable_tsum_of_summable {α : Type*} [MeasurableSpace α] {μ : Measure α}
     {F : ℕ → α → ℝ} (hF : ∀ n, Integrable (F n) μ) (hs : Summable fun n => ∫ y, ‖F n y‖ ∂μ) :
     Integrable (fun y => ∑' n, F n y) μ := by
@@ -138,6 +182,19 @@ theorem integrable_tsum_of_summable {α : Type*} [MeasurableSpace α] {μ : Meas
   · refine lt_of_le_of_lt (lintegral_mono fun y => enorm_tsum_le_tsum_enorm) ?_
     exact lt_top_iff_ne_top.mpr hlin
 
+/- English proof (translation)
+Establish `hsub : ∀ n, D n ⊆ O` using `fun n => hU ▸ subset_iUnion D n`. Establish `hterm : ∀ n, ∑ᶠ u ∈ D n ∩ G, f u = ∑ u ∈ hG.toFinset, if u ∈ D n then f u else 0`. Introduce `n`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum f (hG.subset fun u hu => ⟨hsub n hu.1, hu.2⟩), Finset.sum_ite, Finset.sum_const_zero, add_zero]`. Use `congr 1`.
+
+Use extensionality with `u`. Simplify using `only [Finite.mem_toFinset, Finset.mem_filter, mem_inter_iff]`. Conclude with `⟨fun h => ⟨⟨hsub n h.1, h.2⟩, h.1⟩, fun h => ⟨h.2, h.1.2⟩⟩`. Establish `hfun : ∀ u ∈ hG.toFinset, ∃ n0 : ℕ, (fun n => if u ∈ D n then f u else 0) = fun n => if n = n0 then f u else 0`. Introduce `u hu`.
+
+Establish `huO : u ∈ O` using `(hG.mem_toFinset.mp hu).1`. Take `⟨n0, hn0⟩` from `mem_iUnion.mp (hU ▸ huO : u ∈ ⋃ n, D n)`. Use `⟨n0, funext fun n => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hn : n = n0`. Substitute `hn` using the available equality.
+
+Simplify using `[hn0]`. Establish `: u ∉ D n` using `fun h => (hd hn).le_bot ⟨h, hn0⟩`. Simplify using `[this, hn]`. Repeatedly rewrite using `[hterm]`. Rewrite using `[Summable.tsum_finsetSum (fun u hu => ?_), finsum_mem_eq_finite_toFinset_sum f hG]`.
+
+Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Take `⟨n0, h⟩` from `hfun u hu`. Rewrite using `[h, tsum_ite_eq]`. Take `⟨n0, h⟩` from `hfun u hu`. Rewrite using `[h]`.
+
+Conclude with `(hasSum_ite_eq n0 (f u)).summable`.
+-/
 theorem tsum_finsum_disjointed {α : Type*} {D : ℕ → Set α} (hd : Pairwise (Disjoint on D))
     {O : Set α} (hU : ⋃ n, D n = O) {G : Set α} (hG : (O ∩ G).Finite) (f : α → ℝ) :
     ∑' n, ∑ᶠ u ∈ D n ∩ G, f u = ∑ᶠ u ∈ O ∩ G, f u := by
@@ -170,6 +227,17 @@ theorem tsum_finsum_disjointed {α : Type*} {D : ℕ → Set α} (hd : Pairwise 
     rw [h]
     exact (hasSum_ite_eq n0 (f u)).summable
 
+/- English proof (translation)
+Take `⟨W, hWo, hWO, hWinj, hWU⟩` from `exists_inj_cover hQ hO`. Use `set D := disjointed W with hDdef`. Establish `hDm : ∀ n, MeasurableSet (D n)` using `MeasurableSet.disjointed fun n => (hWo n).measurableSet`. Establish `hDsub : ∀ n, D n ⊆ W n` using `disjointed_subset W`. Establish `hDU : ⋃ n, D n = O` using `iUnion_disjointed.trans hWU`.
+
+Establish `hDd : Pairwise (Disjoint on D)` using `disjoint_disjointed W`. Establish `hDO : ∀ n, D n ⊆ O` using `fun n => (hDsub n).trans (hWO n)`. Establish `hp : ∀ n, Integrable (fibSum (D n) Q h) ∧ ∫ y, fibSum (D n) Q h y = ∫ u in D n, h u ∧ ∫ y, ‖fibSum (D n) Q h y‖ = ∫ u in D n, ‖h u‖` using `fun n => piece_change (hDm n) (fun u hu => (hQ u (hDO n hu)).1.differentiableAt) (fun u hu => (hQ u (hDO n hu)).2) ((hWinj n).mono (hDsub n)) (hh.mono_set (hDO n))`. Establish `hhO : IntegrableOn h (⋃ n, D n)` using `by rw [hDU]; exact hh`. Establish `hs1` using `hasSum_integral_iUnion hDm hDd hhO`.
+
+Establish `hs2` using `hasSum_integral_iUnion hDm hDd hhO.norm`. Establish `hn2 : ∀ n, ∫ y, ‖fibSum (D n) Q h y‖ = ∫ u in D n, ‖h u‖` using `fun n => (hp n).2.2`. Establish `hn1 : ∀ n, ∫ y, fibSum (D n) Q h y = ∫ u in D n, h u` using `fun n => (hp n).2.1`. Establish `hsumm : Summable fun n => ∫ y, ‖fibSum (D n) Q h y‖`. Repeatedly rewrite using `[hn2]`.
+
+Conclude with `hs2.summable`. Establish `htsum : ∫ y, ∑' n, fibSum (D n) Q h y = ∑' n, ∫ y, fibSum (D n) Q h y` using `(integral_tsum_of_summable_integral_norm (fun n => (hp n).1) hsumm).symm`. Establish `hae : (fun y => ∑' n, fibSum (D n) Q h y) =ᵐ[volume] fibSum O Q h` using `by filter_upwards [hfin] with y hy`. Simplify using `only [fibSum]`. Conclude with `tsum_finsum_disjointed hDd hDU hy (fun u => h u / jacN Q u)`.
+
+Use `⟨(integrable_tsum_of_summable (fun n => (hp n).1) hsumm).congr hae, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_congr_ae hae, htsum]`. Repeatedly rewrite using `[hn1]`. Rewrite using `[hs1.tsum_eq, hDU]`.
+-/
 theorem area_open {O : Set (Fin e → ℂ)} (hO : IsOpen O) {Q : (Fin e → ℂ) → (Fin e → ℂ)}
     (hQ : ∀ u ∈ O, AnalyticAt ℂ Q u ∧
       LinearMap.det (fderiv ℂ Q u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) ≠ 0)

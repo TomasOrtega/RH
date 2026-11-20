@@ -7,6 +7,11 @@ namespace RootFieldNumerics.Bh
 
 open Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover x`. Establish `h1` using `(hf j (A.chart j x) ⟨(A.chart j).map_source hj, by show (A.chart j).symm (A.chart j x) ∈ U`. Rewrite using `[(A.chart j).left_inv hj]⟩).continuousAt` and apply the resulting hypothesis. Establish `h2` using `h1.comp ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+-/
 theorem contAt_of_holoOn {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {U : Set X} {f : X → ℂ}
     (hf : A.HoloOn U f) {x : X} (hx : x ∈ U) : ContinuousAt f x := by
   obtain ⟨j, hj⟩ := A.cover x
@@ -18,6 +23,11 @@ theorem contAt_of_holoOn {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAt
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy
   simp [(A.chart j).left_inv hy]
 
+/- English proof (translation)
+Establish `h1 : IsClosed (Set.range h)` using `(isCompact_range hc).isClosed`. Establish `h2 : Dense Sᶜ` using `interior_eq_empty_iff_dense_compl.1 hd.2.1`. Establish `h3 : Sᶜ ⊆ Set.range h` using `fun x hx => by`. Take `⟨y, hy⟩` from `Set.nonempty_of_ncard_ne_zero (s := h ⁻¹' {x}) (by rw [hd.2.2.2.2.1 x hx]; exact one_ne_zero)`. Conclude with `⟨y, hy⟩`.
+
+Rewrite using `[← Set.range_eq_univ, ← h1.closure_eq]`. Conclude with `(h2.mono h3).closure_eq`.
+-/
 theorem surj_of_degree {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [T2Space X] [CompactSpace Y]
     {A : FinHolAtlas e X} {B : FinHolAtlas e Y} {h : Y → X} {S : Set X} (hc : Continuous h) (hd : IsDegreeOff A B h 1 S) :
     Function.Surjective h := by
@@ -31,19 +41,31 @@ theorem surj_of_degree {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalS
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), funext fun p => by rw [inv_mul_cancel_left₀ (hc _)]⟩`.
+-/
 theorem SO_symm {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : SameOrbit z' z := by
   obtain ⟨c, hc, rfl⟩ := h
   exact ⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), funext fun p => by rw [inv_mul_cancel_left₀ (hc _)]⟩
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Take `⟨c', hc', rfl⟩` from `h'`. Conclude with `⟨fun k => c k * c' k, fun k => mul_ne_zero (hc k) (hc' k), funext fun p => (mul_assoc _ _ _).symm⟩`.
+-/
 theorem SO_trans {z z' z'' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (h' : SameOrbit z' z'') : SameOrbit z z'' := by
   obtain ⟨c, hc, rfl⟩ := h
   obtain ⟨c', hc', rfl⟩ := h'
   exact ⟨fun k => c k * c' k, fun k => mul_ne_zero (hc k) (hc' k), funext fun p => (mul_assoc _ _ _).symm⟩
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Simplify using `[hc q.1]`.
+-/
 theorem SO_ne {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (q : Σ k, ι k) : z q ≠ 0 ↔ z' q ≠ 0 := by
   obtain ⟨c, hc, rfl⟩ := h
   simp [hc q.1]
 
+/- English proof (translation)
+Use `isOpen_iff_mem_nhds.2 fun w hw => ?_` and prove the remaining obligations. Use `filter_upwards [(R.isOpen_U w).mem_nhds (R.mem_U w), (contAt_of_holoOn (R.holo w q) (R.mem_U w)).eventually_ne hw] with w' h1 h2`. Conclude with `(SO_ne (R.compat w' w w' ⟨R.mem_U w', h1⟩) q).2 h2`.
+-/
 theorem isOpen_lift_ne {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J e) (q : Σ k, ι k) :
     IsOpen {w : R.X | R.lift w w q ≠ 0} := by
   refine isOpen_iff_mem_nhds.2 fun w hw => ?_
@@ -51,6 +73,17 @@ theorem isOpen_lift_ne {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J e) (
     (contAt_of_holoOn (R.holo w q) (R.mem_U w)).eventually_ne hw] with w' h1 h2
   exact (SO_ne (R.compat w' w w' ⟨R.mem_U w', h1⟩) q).2 h2
 
+/- English proof (translation)
+Establish `hinj : Function.Injective π` using `fun w w₁ e₀ => by`. Take `⟨O, μ, -, h1, -, h2⟩` from `key w₁`. Establish `a1` using `h2 w (e₀ ▸ h1)`. Rewrite `a1` using `[e₀]`. Use `R.inj w w₁ (fun h => ?_) (SO_trans a1 (SO_symm (h2 w₁ h1)))` and prove the remaining obligations.
+
+Simplify using `using h.2 1 (hJ ▸ Submodule.mem_top)`. Set `ψ` to `Function.surjInv hs`. Establish `r : ∀ x, π (ψ x) = x` using `Function.surjInv_eq hs`. Establish `loc : ∀ j, ∀ t ∈ (A.chart j).target, ∃ V, IsOpen V ∧ t ∈ V ∧ ContinuousOn (ψ ∘ (A.chart j).symm) V ∧ ∀ k, AnalyticOnNhd ℂ (R.A.chart k ∘ (ψ ∘ (A.chart j).symm)) (V ∩ (ψ ∘ (A.chart j).symm) ⁻¹' (R.A.chart k).source)`. Introduce `j t ht`.
+
+Take `⟨O, μ, hO, h1, h2, h3⟩` from `key (ψ ((A.chart j).symm t))`. Rewrite `h1` using `[r]`. Establish `hV : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' O)` using `(A.chart j).isOpen_inter_preimage_symm hO`. Use `⟨_, hV, ⟨ht, h1⟩, GlobalTheory.T.lift_to_log_resolution_analytic K ι P J e e R hJ _ (fun u => μ ((A.chart j).symm u)) _ hV (fun q => h2 q j) fun u hu => ?_⟩` and prove the remaining obligations. Use `h3 (ψ ((A.chart j).symm u)) (by rw [r]; exact hu.2)` as an intermediate fact.
+
+Rewrite `this` using `[r]`. Then use the resulting hypothesis. Use `⟨ψ, ⟨continuous_iff_continuousAt.2 fun x => ?_, fun j k t ht => ?_⟩, r, fun w => hinj (r _)⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover x`. Take `⟨V, hV, h1, h2, -⟩` from `loc j _ ((A.chart j).map_source hj)`. Use `((h2.continuousAt (hV.mem_nhds h1)).comp ((A.chart j).continuousAt hj)).congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`. Take `⟨V, -, h1, -, h2⟩` from `loc j t ht.1`. Conclude with `h2 k t ⟨h1, ht.2⟩`.
+-/
 theorem exists_inverse {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J e) (hJ : J = ⊤) {X : Type} [TopologicalSpace X]
     (A : FinHolAtlas e X) (π : R.X → X) (hs : Function.Surjective π)
     (key : ∀ w₁, ∃ (O : Set X) (μ : X → (Σ k, ι k) → ℂ), IsOpen O ∧ π w₁ ∈ O ∧ (∀ q, A.HoloOn O fun x => μ x q) ∧

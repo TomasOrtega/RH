@@ -30,6 +30,9 @@ open GlobalTheory.CuspMult
 variable {D : D7} {θ : D.what₂.Tau → (TensorProduct D.host.F (Ainf D.host.F) D.host.E →+* ℂ)} {V : HSp D}
   {S : D.what₂.Tau → SPar} {M : DSModel V S}
 
+/- English proof (translation)
+Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => exact (hT.aut v).cont`. Consider the case `zero => exact continuous_const`. Consider the case `add T T' _ _ ih ih' => exact ih.add ih'`. Consider the case `smul a T _ ih => exact ih.const_smul a`.
+-/
 theorem continuous_of_mem_allMaps {T : MMap M} (hT : T ∈ allMaps θ M) (v : M.Vec) : Continuous (T v) := by
   induction hT using Submodule.span_induction with
   | mem T hT => exact (hT.aut v).cont
@@ -44,30 +47,48 @@ def Represents (Φ : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V �
 
 variable {μ}
 
+/- English proof (translation)
+The claim follows from `MultilinearMap.ext fun v => (hT v).ae_eq_iff_eq μ (hT' v) |>.1 ((h v).symm.trans (h' v))`.
+-/
 theorem eq_of_represents_cont {Φ : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V μ)} {T T' : MMap M}
     (hT : ∀ v, Continuous (T v)) (hT' : ∀ v, Continuous (T' v)) (h : Represents μ Φ T) (h' : Represents μ Φ T') :
     T = T' :=
   MultilinearMap.ext fun v => (hT v).ae_eq_iff_eq μ (hT' v) |>.1 ((h v).symm.trans (h' v))
 
+/- English proof (translation)
+Introduce `_` and use `by simp only [ContinuousMultilinearMap.zero_apply, MultilinearMap.zero_apply] exact ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _)`.
+-/
 theorem represents_zero : Represents μ (0 : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V μ)) 0 := fun _ => by
   simp only [ContinuousMultilinearMap.zero_apply, MultilinearMap.zero_apply]
   exact ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _)
 
+/- English proof (translation)
+Introduce `v` and use `by simp only [ContinuousMultilinearMap.add_apply, MultilinearMap.add_apply] exact lift_add_ae (h v) (h' v)`.
+-/
 theorem Represents.add {Φ Φ' : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V μ)} {T T' : MMap M} (h : Represents μ Φ T)
     (h' : Represents μ Φ' T') : Represents μ (Φ + Φ') (T + T') := fun v => by
   simp only [ContinuousMultilinearMap.add_apply, MultilinearMap.add_apply]
   exact lift_add_ae (h v) (h' v)
 
+/- English proof (translation)
+Introduce `v` and use `by simp only [ContinuousMultilinearMap.smul_apply, MultilinearMap.smul_apply] exact lift_smul_ae c (h v)`.
+-/
 theorem Represents.smul (c : ℂ) {Φ : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V μ)} {T : MMap M} (h : Represents μ Φ T) :
     Represents μ (c • Φ) (c • T) := fun v => by
   simp only [ContinuousMultilinearMap.smul_apply, MultilinearMap.smul_apply]
   exact lift_smul_ae c (h v)
 
+/- English proof (translation)
+Introduce `v` and use `(lift_R (g : GA D V) _).trans ((measurePreserving_mul_right μ (g : GA D V)).quasiMeasurePreserving.ae (h v))`.
+-/
 theorem Represents.translate (g : GfC V) {Φ : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V μ)} {T : MMap M}
     (h : Represents μ Φ T) :
     Represents μ (postRepPi M.H ((RG V μ).comp (GfC V).subtype) g Φ) (finRep M g T) := fun v =>
   (lift_R (g : GA D V) _).trans ((measurePreserving_mul_right μ (g : GA D V)).quasiMeasurePreserving.ae (h v))
 
+/- English proof (translation)
+Introduce `v` and use `by rw [h'] exact (lift_R (g : GA D V) _).trans ((measurePreserving_mul_right μ (g : GA D V)).quasiMeasurePreserving.ae (h v))`.
+-/
 theorem Represents.translate' (g : GfC V) {Φ Φ' : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V μ)} {T : MMap M}
     (h : Represents μ Φ T) (h' : ∀ y, Φ' y = RG V μ (g : GA D V) (Φ y)) : Represents μ Φ' (finRep M g T) := fun v => by
   rw [h']
@@ -79,6 +100,9 @@ def phiOf (T : MMap M) : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift
   open Classical in
   if h : ∃ Φ, Φ ∈ homDS M (RG V μ) (GlobalTheory.Cusp.L2cusp V μ) ∧ Represents μ Φ T then h.choose else 0
 
+/- English proof (translation)
+Establish `h : ∃ Φ, Φ ∈ homDS M (RG V μ) (GlobalTheory.Cusp.L2cusp V μ) ∧ Represents μ Φ T` using `(GlobalTheory.CuspIntertwiner.existsUnique_intertwiner hP D θ hθ V S M μ T hT).exists`. Rewrite using `[phiOf, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem phiOf_spec (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) {T : MMap M} (hT : T ∈ allMaps θ M) :
     phiOf μ T ∈ homDS M (RG V μ) (GlobalTheory.Cusp.L2cusp V μ) ∧ Represents μ (phiOf μ T) T := by
   have h : ∃ Φ, Φ ∈ homDS M (RG V μ) (GlobalTheory.Cusp.L2cusp V μ) ∧ Represents μ Φ T :=
@@ -86,6 +110,9 @@ theorem phiOf_spec (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam 
   rw [phiOf, dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CuspIntertwiner.eq_of_represents (phiOf_spec hP hθ hT).2 h`.
+-/
 theorem phiOf_eq (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) {T : MMap M} (hT : T ∈ allMaps θ M)
     {Φ : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V μ)} (h : Represents μ Φ T) : phiOf μ T = Φ :=
   GlobalTheory.CuspIntertwiner.eq_of_represents (phiOf_spec hP hθ hT).2 h
@@ -104,10 +131,18 @@ def homOf (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) (f : 
     rw [map_smul]
     exact phiOf_eq hP hθ (Submodule.smul_mem _ c (hf w)) ((phiOf_spec hP hθ (hf w)).2.smul c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem homOf_apply (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) (f : W →ₗ[ℂ] MMap M)
     (hf : ∀ w, f w ∈ allMaps θ M) (w : W) : homOf μ hP hθ f hf w = phiOf μ (f w) := rfl
 
 open Classical in
+/- English proof (translation)
+Unfold `homFinDS`. Rewrite using `[mem_homTensorPi]`. Establish `hs` using `fun w => mem_homPi.1 (phiOf_spec (μ := μ) hP hθ (hf.1 w)).1`. Use `⟨fun w y => (hs w).1 y, fun g w y => ?_, fun i g w y => (hs w).2 i g y⟩` and prove the remaining obligations. Rewrite using `[homOf_apply, homOf_apply, hf.2 g w]`.
+
+Establish `hm : finRep M g (f w) ∈ allMaps θ M`. Rewrite using `[← hf.2 g w]`. Conclude with `hf.1 _`. Rewrite using `[phiOf_eq hP hθ hm ((phiOf_spec hP hθ (hf.1 w)).2.translate g)]`. Both sides reduce to the same expression.
+-/
 theorem homOf_mem (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) {f : W →ₗ[ℂ] MMap M}
     (hf : f ∈ homInto σ (finRep M) (allMaps θ M)) :
     homOf μ hP hθ f hf.1 ∈ homFinDS σ M (RG V μ) (GlobalTheory.Cusp.L2cusp V μ) := by
@@ -135,6 +170,9 @@ def toHom (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) :
     refine Subtype.ext (LinearMap.ext fun w => ?_)
     exact phiOf_eq hP hθ (Submodule.smul_mem _ c (f.2.1 w)) ((phiOf_spec hP hθ (f.2.1 w)).2.smul c)
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun f hf => Subtype.ext (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Establish `h0 : phiOf μ (f.1 w) = 0` using `congrArg (fun Ψ : homFinDS σ M (RG V μ) (GlobalTheory.Cusp.L2cusp V μ) => Ψ.1 w) hf`. Establish `hr` using `(phiOf_spec (μ := μ) hP hθ (f.2.1 w)).2`. Rewrite `hr` using `[h0]`. Conclude with `eq_of_represents_cont (continuous_of_mem_allMaps (f.2.1 w)) (fun _ => continuous_const) hr represents_zero`.
+-/
 theorem toHom_injective (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) :
     Function.Injective (toHom (σ := σ) (M := M) μ hP hθ) := by
   refine (injective_iff_map_eq_zero _).2 fun f hf => Subtype.ext (LinearMap.ext fun w => ?_)
@@ -157,6 +195,13 @@ def stab (w : W) : Subgroup (GfC V) where
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 open Classical in
+/- English proof (translation)
+Introduce `Ψ`. Establish `hΨ` using `Ψ.2`. Unfold `homFinDS at hΨ`. Rewrite `hΨ` using `[mem_homTensorPi]`. Take `⟨h1, h2, h3⟩` from `hΨ`.
+
+Establish `hΨ : ∀ w, Ψ.1 w ∈ homDS M (RG V μ) (GlobalTheory.Cusp.L2cusp V μ)` using `fun w => mem_homPi.2 ⟨h1 w, fun i g => h3 i g w⟩`. Establish `hex : ∀ w, ∃ T ∈ allMaps θ M, Represents μ (Ψ.1 w) T` using `fun w => GlobalTheory.CuspRepr.exists_allMaps D θ hθ V S M μ (Ψ.1 w) (hΨ w) (stab σ w) (hσ w) fun k hk y => by`. Establish `hk' : σ k w = w` using `hk`. Conclude with `(h2 k w y).symm.trans (congrArg (fun u => Ψ.1 u y) hk')`. Use `choose T hT hr using hex`.
+
+Establish `hc : ∀ w v, Continuous (T w v)` using `fun w => continuous_of_mem_allMaps (hT w)`. Set `f : W →ₗ[ℂ] MMap M` to `{ toFun := T map_add' := fun w w' => eq_of_represents_cont (hc _) (fun v => (hc w v).add (hc w' v)) (hr (w + w')) (by rw [map_add]; exact (hr w).add (hr w')) map_smul' := fun c w => eq_of_represents_cont (hc _) (fun v => (hc w v).const_smul c) (hr (c • w)) (by rw [map_smul]; exac …`. Establish `hf : f ∈ homInto σ (finRep M) (allMaps θ M)` using `⟨hT, fun g w => eq_of_represents_cont (hc _) (fun v => (hc w v).comp (continuous_mul_right _)) (hr (σ g w)) ((hr w).translate' g (h2 g w))⟩`. Conclude with `⟨⟨f, hf⟩, Subtype.ext (LinearMap.ext fun w => phiOf_eq hP hθ (hT w) (hr w))⟩`.
+-/
 theorem toHom_surjective (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) (hσ : GlobalTheory.PRep.IsSmooth σ) :
     Function.Surjective (toHom (σ := σ) (M := M) μ hP hθ) := by
   intro Ψ
@@ -188,6 +233,9 @@ namespace GlobalTheory.AutMult
 
 open GlobalTheory.AutMult.MultAssembly in
 
+/- English proof (translation)
+Introduce `hP _ _ D θ hθ V S M μ _ _ W _ _ σ hσ`. Conclude with `(LinearEquiv.ofBijective (toHom μ hP hθ) ⟨toHom_injective hP hθ, toHom_surjective hP hθ hσ⟩).rank_eq`.
+-/
 theorem cuspMult_eq_mCuspDS : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DixmierMalliavinFactorisation → ∀ (D : D7) (θ : D.what₂.Tau → (TensorProduct D.host.F (Ainf D.host.F) D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), GlobalTheory.PRep.IsSmooth σ → GlobalTheory.CuspMult.cuspMult θ M σ = mCuspDS μ σ M := by
   intro hP _ _ D θ hθ V S M μ _ _ W _ _ σ hσ
   exact (LinearEquiv.ofBijective (toHom μ hP hθ) ⟨toHom_injective hP hθ, toHom_surjective hP hθ hσ⟩).rank_eq

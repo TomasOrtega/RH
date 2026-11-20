@@ -24,6 +24,9 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MonomialChart
 
+/- English proof (translation)
+Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a s ha ih`. Rewrite using `[Finset.iSup_insert, Finset.iSup_insert, Scheme.IdealSheafData.comap_sup, ih]`.
+-/
 theorem comap_biSup_finset {X Y : Scheme.{u}} {ι : Type v} (f : X ⟶ Y)
     (I : ι → Y.IdealSheafData) (S : Finset ι) :
     (⨆ j ∈ S, I j).comap f = ⨆ j ∈ S, (I j).comap f := by
@@ -33,17 +36,26 @@ theorem comap_biSup_finset {X Y : Scheme.{u}} {ι : Type v} (f : X ⟶ Y)
   · intro a s ha ih
     rw [Finset.iSup_insert, Finset.iSup_insert, Scheme.IdealSheafData.comap_sup, ih]
 
+/- English proof (translation)
+The claim follows from `comap_biSup_finset U.ι I S`.
+-/
 theorem restrictIdeal_biSup_finset {X : Scheme.{u}} {ι : Type v} (U : X.Opens)
     (I : ι → X.IdealSheafData) (S : Finset ι) :
     restrictIdeal (⨆ j ∈ S, I j) U = ⨆ j ∈ S, restrictIdeal (I j) U :=
   comap_biSup_finset U.ι I S
 
+/- English proof (translation)
+Use extensionality with `U : 2`. Simplify using `[Scheme.IdealSheafData.ofIdealTop, Ideal.map_sup]`.
+-/
 private theorem ofIdealTop_sup {X : Scheme.{u}} [IsAffine X] (I J : Ideal Γ(X, ⊤)) :
     Scheme.IdealSheafData.ofIdealTop (I ⊔ J) =
       Scheme.IdealSheafData.ofIdealTop I ⊔ Scheme.IdealSheafData.ofIdealTop J := by
   ext U : 2
   simp [Scheme.IdealSheafData.ofIdealTop, Ideal.map_sup]
 
+/- English proof (translation)
+Rewrite using `[coordSubspaceIdeal_eq_ofIdealTop_span_coord, coordSubspaceIdeal_eq_ofIdealTop_span_coord, coordSubspaceIdeal_eq_ofIdealTop_span_coord, Finset.coe_insert, Set.image_insert_eq, Ideal.span_insert, Finset.coe_singleton, Set.image_singleton, ofIdealTop_sup]`.
+-/
 theorem coordSubspaceIdeal_insert (k : Type u) [Field k] (m : ℕ) (j : Fin m)
     (S : Finset (Fin m)) :
     coordSubspaceIdeal k m (insert j S) =
@@ -53,6 +65,9 @@ theorem coordSubspaceIdeal_insert (k : Type u) [Field k] (m : ℕ) (j : Fin m)
     Finset.coe_insert, Set.image_insert_eq, Ideal.span_insert, Finset.coe_singleton,
     Set.image_singleton, ofIdealTop_sup]
 
+/- English proof (translation)
+Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using `[coordSubspaceIdeal_empty]`. Introduce `a s _ ih`. Rewrite using `[coordSubspaceIdeal_insert, ih, Finset.iSup_insert]`.
+-/
 theorem coordSubspaceIdeal_eq_biSup_singleton (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) :
     coordSubspaceIdeal k m S = ⨆ j ∈ S, coordSubspaceIdeal k m {j} := by
   classical
@@ -61,6 +76,9 @@ theorem coordSubspaceIdeal_eq_biSup_singleton (k : Type u) [Field k] (m : ℕ) (
   · intro a s _ ih
     rw [coordSubspaceIdeal_insert, ih, Finset.iSup_insert]
 
+/- English proof (translation)
+Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, coordSubspaceIdeal_eq_biSup_singleton, comap_biSup_finset]`. Conclude with `iSup_congr fun j => iSup_congr fun _ => (c.coordIdeal_eq_comap_coordSubspaceIdeal {j}).symm`.
+-/
 theorem coordIdeal_eq_biSup_singleton {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (U : X.Opens) (m : ℕ) (c : EtaleChart p U m)
     (S : Finset (Fin m)) :
@@ -68,6 +86,15 @@ theorem coordIdeal_eq_biSup_singleton {X : Scheme.{u}} {k : Type u} [Field k]
   rw [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, coordSubspaceIdeal_eq_biSup_singleton, comap_biSup_finset]
   exact iSup_congr fun j => iSup_congr fun _ => (c.coordIdeal_eq_comap_coordSubspaceIdeal {j}).symm
 
+/- English proof (translation)
+Introduce `T hT D hD x hx`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hT.smooth`. Take `⟨_, hpos⟩` from `(inStrictNormalCrossingPosition_iff T.structMap T.boundary).1 hT.snc`. Take `⟨U, hxU, m, c, a, _, hnone, hsome⟩` from `(hpos x).exists_etaleChart`. Take `⟨i, hi, hDi⟩` from `List.mem_iff_getElem.1 hD`.
+
+Consider the cases of `hai : a i with`. Consider the case `none`. Use `absurd hx (notMem_support_of_mem_opens_of_restrictIdeal_eq_top D U ?_ x hxU)` and prove the remaining obligations. Rewrite using `[← hDi]`. Conclude with `hnone i hi hai`.
+
+Consider the case `some t`. Take `⟨V, m', hxV, hVU', hV, -⟩` from `exists_etaleChart_le T.structMap x U hxU`. Establish `hDU : restrictIdeal D U = c.coordIdeal {t}`. Rewrite using `[← hDi]`. Conclude with `hsome i hi t hai`.
+
+Establish `hDV : restrictIdeal D V = (c.restrict hVU').coordIdeal {t}` using `restrictIdeal_eq_restrict_coordIdeal_of_le hVU' c D {t} hDU`. Conclude with `orderAt_eq_one_of_restrictIdeal_eq_coordIdeal_singleton T.structMap hV (c.restrict hVU') t D hDV x hxV hx`.
+-/
 theorem orderAt_boundary_eq_one : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     ∀ D ∈ T.boundary, ∀ x : ↥T.scheme, x ∈ D.support → orderAt D x = 1 := by
   intro T hT D hD x hx
@@ -90,6 +117,27 @@ theorem orderAt_boundary_eq_one : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdm
       exact orderAt_eq_one_of_restrictIdeal_eq_coordIdeal_singleton T.structMap hV
         (c.restrict hVU') t D hDV x hxV hx
 
+/- English proof (translation)
+Introduce `T hT J`. Use `smooth_subschemeι_comp_of_locally_eq_coordIdeal (p := T.structMap) (intersectionIdeal T.boundary J) ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨_, hpos⟩` from `(inStrictNormalCrossingPosition_iff T.structMap T.boundary).1 hT.snc`. Take `⟨U, hxU, m, c, a, _, hnone, hsome⟩` from `(hpos x).exists_etaleChart`.
+
+Establish `hle : ∀ j ∈ J, T.boundary.get j ≤ intersectionIdeal T.boundary J`. Introduce `j hj`. Rewrite using `[intersectionIdeal_eq_iSup]`. Conclude with `le_iSup₂ (f := fun j (_ : j ∈ J) => T.boundary.get j) j hj`. Establish `hxj : ∀ j ∈ J, x ∈ (T.boundary.get j).support`.
+
+Introduce `j hj`. Rewrite using `[mem_support_iff_stalkIdeal_ne_top]`. Introduce `hcon`. Establish `h2` using `stalkIdeal_mono (hle j hj) x`. Rewrite `h2` using `[hcon]`.
+
+Conclude with `(mem_support_iff_stalkIdeal_ne_top _ _).1 hx (top_le_iff.1 h2)`. Establish `hsomej : ∀ j ∈ J, ∃ t : Fin m, a (j : ℕ) = some t`. Introduce `j hj`. Consider the cases of `haj : a (j : ℕ) with`. Consider the case `none`.
+
+Use `absurd (hxj j hj) (notMem_support_of_mem_opens_of_restrictIdeal_eq_top _ U ?_ x hxU)` and prove the remaining obligations. Rewrite using `[List.get_eq_getElem]`. Conclude with `hnone (j : ℕ) j.isLt haj`. Consider the case `some t => exact ⟨t, rfl⟩`. Use `⟨U, hxU, m, c, J.biUnion (fun j => (a (j : ℕ)).toFinset), ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : restrictIdeal (intersectionIdeal T.boundary J) U = ⨆ j ∈ J, restrictIdeal (T.boundary.get j) U`. Rewrite using `[intersectionIdeal_eq_iSup]`. Conclude with `restrictIdeal_biSup_finset U (fun j => T.boundary.get j) J`. Establish `h2 : c.coordIdeal (J.biUnion (fun j => (a (j : ℕ)).toFinset)) = ⨆ t ∈ J.biUnion (fun j => (a (j : ℕ)).toFinset), c.coordIdeal {t}` using `coordIdeal_eq_biSup_singleton T.structMap U m c _`. Rewrite using `[h1, h2]`.
+
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Use `iSup_le fun j => iSup_le fun hj => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `hsomej j hj`. Establish `hres : restrictIdeal (T.boundary.get j) U = c.coordIdeal {t}`. Rewrite using `[List.get_eq_getElem]`.
+
+Conclude with `hsome (j : ℕ) j.isLt t ht`. Establish `htS : t ∈ J.biUnion (fun j => (a (j : ℕ)).toFinset)` using `Finset.mem_biUnion.2 ⟨j, hj, by simp [ht]⟩`. Rewrite using `[hres]`. Conclude with `le_iSup₂ (f := fun t (_ : t ∈ J.biUnion (fun j => (a (j : ℕ)).toFinset)) => c.coordIdeal ({t} : Finset (Fin m))) t htS`. Use `iSup_le fun t => iSup_le fun htS => ?_` and prove the remaining obligations.
+
+Take `⟨j, hj, htj⟩` from `Finset.mem_biUnion.1 htS`. Establish `ht : a (j : ℕ) = some t` using `Option.mem_def.1 (Option.mem_toFinset.1 htj)`. Establish `hres : restrictIdeal (T.boundary.get j) U = c.coordIdeal {t}`. Rewrite using `[List.get_eq_getElem]`. Conclude with `hsome (j : ℕ) j.isLt t ht`.
+
+Rewrite using `[← hres]`. Conclude with `le_iSup₂ (f := fun j (_ : j ∈ J) => restrictIdeal (T.boundary.get j) U) j hj`.
+-/
 theorem smooth_intersectionIdeal_subscheme : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     ∀ J : Finset (Fin T.boundary.length),
       AlgebraicGeometry.Smooth ((intersectionIdeal T.boundary J).subschemeι ≫ T.structMap) := by

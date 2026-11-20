@@ -12,6 +12,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 open MeasureTheory in
 open scoped ContDiff in
+/- English proof (translation)
+Establish `hsnoc : Continuous fun p : (Fin N → ℝ) × ℝ => (Fin.snoc p.1 p.2 : Fin (N + 1) → ℝ)` using `Continuous.finSnoc (A := fun _ => ℝ) continuous_fst continuous_snd`. Establish `hF' : Continuous fun p : (Fin N → ℝ) × ℝ => F (Fin.snoc p.1 p.2)` using `hF.comp hsnoc`. Establish `hG : Continuous fun t : Fin N → ℝ => ∫ r in Set.Icc (0 : ℝ) s, F (Fin.snoc t r)` using `continuous_parametric_integral_of_continuous (f := fun t r => F (Fin.snoc t r)) hF' isCompact_Icc`. Establish `hcube : IsCompact (Set.univ.pi fun _ : Fin (N + 1) => Set.Icc (0 : ℝ) s)` using `isCompact_univ_pi fun _ => isCompact_Icc`. Establish `hcube' : IsCompact (Set.univ.pi fun _ : Fin N => Set.Icc (0 : ℝ) s)` using `isCompact_univ_pi fun _ => isCompact_Icc`.
+
+Use `set X := ∫ t in Set.univ.pi (fun _ : Fin (N + 1) => Set.Icc (0 : ℝ) s), F t with hX`. Use `set Y := ∫ t in Set.univ.pi (fun _ : Fin N => Set.Icc (0 : ℝ) s), ∫ r in Set.Icc (0 : ℝ) s, F (Fin.snoc t r) with hY`. Establish `key : ∀ e : K, (inner ℂ e X).re = (inner ℂ e Y).re`. Introduce `e`. Set `L : K →L[ℝ] ℝ` to `Complex.reCLM.comp ((innerSL ℂ e).restrictScalars ℝ)`.
+
+Establish `hL : ∀ x, L x = (inner ℂ e x).re` using `fun x => rfl`. Rewrite using `[← hL, ← hL, hX, hY, ← L.integral_comp_comm (hF.continuousOn.integrableOn_compact hcube), ← L.integral_comp_comm (hG.continuousOn.integrableOn_compact hcube'), (_root_.GlobalTheory.integral_cube_succ_last N s (fun t => L (F t)) (L.continuous.comp hF)).2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Conclude with `L.integral_comp_comm ((hF.comp (Continuous.finSnoc (A := fun _ => ℝ) continuous_const continuous_id)).continuousOn.integrableOn_compact isCompact_Icc)`. Establish `h` using `key (X - Y)`.
+
+Establish `h2 : ‖X - Y‖ ^ 2 = 0`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), inner_sub_right, map_sub]`. Simplify using `only [RCLike.re_to_complex]`. Rewrite using `[h, sub_self]`. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h2))`.
+-/
 private theorem integral_cube_succ_eq_iterated {K : Type} [NormedAddCommGroup K]
     [InnerProductSpace ℂ K] [CompleteSpace K] (N : ℕ) (s : ℝ) (F : (Fin (N + 1) → ℝ) → K)
     (hF : Continuous F) :
@@ -52,6 +61,21 @@ private theorem integral_cube_succ_eq_iterated {K : Type} [NormedAddCommGroup K]
 
 open MeasureTheory in
 open scoped ContDiff in
+/- English proof (translation)
+Establish `hg : ∀ r, HasDerivAt (fun t => ρ (c t) w) (ρ (c r) w') r`. Introduce `r`. Establish `h1 : HasDerivAt (fun t => ρ (c (t - r)) w) w' r`. Use `hd` as an intermediate fact. Rewrite `this` using `[← sub_self r]`.
+
+Conclude with `this.comp_sub_const r r`. Establish `h2` using `((ρ (c r)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt r h1`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars']`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, ← hadd, add_sub_cancel]`.
+
+Establish `hb : ∀ r : ℝ, HasDerivAt (fun t : ℝ => (((s - t) / s : ℝ) : ℂ)) (((-(1 / s)) : ℝ) : ℂ) r`. Introduce `r`. Establish `: HasDerivAt (fun t : ℝ => (s - t) / s) (-(1 / s)) r`. Simplify `((hasDerivAt_id r).const_sub s).div_const s` using `[neg_div]`. Conclude with `this.ofReal_comp`.
+
+Establish `hh : ∀ r ∈ Set.uIcc 0 s, HasDerivAt (fun t => (((s - t) / s : ℝ) : ℂ) • ρ (c t) w) ((((s - r) / s : ℝ) : ℂ) • ρ (c r) w' + (((-(1 / s)) : ℝ) : ℂ) • ρ (c r) w) r` using `fun r _ => (hb r).smul (hg r)`. Establish `hgc : Continuous fun t => ρ (c t) w` using `(hcont w).comp hc`. Establish `hg'c : Continuous fun t => ρ (c t) w'` using `(hcont w').comp hc`. Establish `hA : Continuous fun r : ℝ => (((s - r) / s : ℝ) : ℂ) • ρ (c r) w'`. Conclude with `(Complex.continuous_ofReal.comp ((continuous_const.sub continuous_id).div_const s)).smul hg'c`.
+
+Establish `hB : Continuous fun r : ℝ => (((-(1 / s)) : ℝ) : ℂ) • ρ (c r) w` using `continuous_const.smul hgc`. Establish `hE` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hh ((hA.add hB).intervalIntegrable 0 s)`. Rewrite `hE` using `[intervalIntegral.integral_add (hA.intervalIntegrable 0 s) (hB.intervalIntegrable 0 s), intervalIntegral.integral_of_le hs.le, intervalIntegral.integral_of_le hs.le]`. Simplify using `only [sub_self, zero_div, Complex.ofReal_zero, zero_smul, sub_zero, div_self hs.ne', Complex.ofReal_one, one_smul, hc0, map_one, ContinuousLinearMap.one_apply] at hE`. Rewrite using `[integral_Icc_eq_integral_Ioc, integral_Icc_eq_integral_Ioc]`.
+
+Establish `hneg : ∫ r in Set.Ioc 0 s, (((-(1 / s)) : ℝ) : ℂ) • ρ (c r) w = -∫ r in Set.Ioc 0 s, ((1 / s : ℝ) : ℂ) • ρ (c r) w`. Rewrite using `[← integral_neg]`. Use `congr 1`. Use function extensionality and compare the values at `r`. Rewrite using `[Complex.ofReal_neg, neg_smul]`.
+
+Rewrite `hE` using `[hneg]`. Establish `key : ∀ x A B : K, A + -B = 0 - x → x = B - A`. Introduce `x A B h`. Combine the equalities or inequalities in the displayed calculation. Conclude with `key _ _ _ hE`.
+-/
 private theorem eq_interval_average_sub_weighted_deriv
     {G : Type} [Group G] [TopologicalSpace G] {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K]
     [CompleteSpace K] (ρ : G →* (K →L[ℂ] K)) (hcont : ∀ v, Continuous fun g => ρ g v)
@@ -110,6 +134,33 @@ open scoped ContDiff in
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K] in
 
+/- English proof (translation)
+Introduce `G _ _ _ K _ _ _ ρ _ hcont s hs N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `c hc`. Use `⟨Unit, inferInstance, fun _ _ => 1, fun _ => [], fun _ => continuous_const, ?_⟩` and prove the remaining obligations.
+
+Introduce `d S hS v hv`. Simplify using `[Measure.real, Real.volume_Icc_pi]`. Consider the case `succ N ih`. Introduce `c hc`. Take `⟨J, hJ, κ, l, hκ, hrep⟩` from `ih (fun i => c (Fin.castSucc i)) (fun i => hc _)`.
+
+Establish `hinit : Continuous (fun t : Fin (N + 1) → ℝ => Fin.init t)` using `continuous_pi fun i => continuous_apply (Fin.castSucc i)`. Use `⟨J × Bool, inferInstance, fun p t => κ p.1 (Fin.init t) * (if p.2 then ((1 / s : ℝ) : ℂ) else -(((s - t (Fin.last N)) / s : ℝ) : ℂ)), fun p => if p.2 then (l p.1).map Fin.castSucc else Fin.last N :: (l p.1).map Fin.castSucc, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, _ | _⟩`. Simplify using `only [Bool.false_eq_true, if_false]`. Conclude with `((hκ j).comp hinit).mul (by fun_prop)`.
+
+Simplify using `only [if_true]`. Conclude with `((hκ j).comp hinit).mul continuous_const`. Introduce `d S hS v hv`. Establish `hS' : ∀ v ∈ S, ∀ i : Fin N, d (Fin.castSucc i) v ∈ S ∧ HasDerivAt (fun t : ℝ => ρ (c (Fin.castSucc i) t) v) (d (Fin.castSucc i) v) 0` using `fun v hv i => hS v hv _`. Establish `h1` using `hrep (fun i => d (Fin.castSucc i)) S hS' v hv`.
+
+Establish `hmem : ∀ l' : List (Fin N), l'.foldr (fun i => d (Fin.castSucc i)) v ∈ S`. Introduce `l'`. Proceed by induction on `l' with`. Consider the case `nil => exact hv`. Consider the case `cons a l' ihl => exact (hS _ ihl _).1`.
+
+Establish `hfold : ∀ l' : List (Fin N), (l'.map Fin.castSucc).foldr d v = l'.foldr (fun i => d (Fin.castSucc i)) v`. Introduce `l'`. Rewrite using `[List.foldr_map]`. Establish `hPc : ∀ x : K, Continuous fun t : Fin N → ℝ => ρ (List.ofFn fun i => c (Fin.castSucc i) (t i)).prod x` using `fun x => (hcont x).comp (_root_.GlobalTheory.continuous_prod_ofFn_curves N _ fun i => (hc _).1)`. Establish `hcF : ∀ (f : (Fin (N + 1) → ℝ) → ℂ) (x : K), Continuous f → Continuous fun t => f t • ρ (List.ofFn fun i => c i (t i)).prod x` using `fun f x hf => hf.smul ((hcont x).comp (_root_.GlobalTheory.continuous_prod_ofFn_curves _ c fun i => (hc i).1))`.
+
+Establish `hprod : ∀ (t : Fin N → ℝ) (r : ℝ), (List.ofFn fun i => c i ((Fin.snoc t r : Fin (N + 1) → ℝ) i)).prod = (List.ofFn fun i => c (Fin.castSucc i) (t i)).prod * c (Fin.last N) r`. Introduce `t r`. Rewrite using `[List.ofFn_succ', List.prod_concat]`. Simplify using the standard rewrite rules. Rewrite using `[Fintype.sum_prod_type]`.
+
+Use `h1.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [Fintype.sum_bool, if_true, Bool.false_eq_true, if_false, List.foldr_cons, hfold]`. Rewrite using `[integral_cube_succ_eq_iterated N s _ (hcF (fun t => κ j (Fin.init t) * ((1 / s : ℝ) : ℂ)) _ (((hκ j).comp hinit).mul continuous_const)), integral_cube_succ_eq_iterated N s _ (hcF (fun t => κ j (Fin.init t) * -(((s - t (Fin.last N)) / s : ℝ) : ℂ)) _ (((hκ j).comp hinit).mul (by f …`. Simplify using `only [Fin.init_snoc, Fin.snoc_last, hprod, map_mul, ContinuousLinearMap.mul_apply]`. Use `set u := (l j).foldr (fun i => d (Fin.castSucc i)) v with hu_def`.
+
+Establish `hu : u ∈ S` using `hmem _`. Use `set cl := c (Fin.last N) with hcl`. Establish `hA` using `eq_interval_average_sub_weighted_deriv ρ hcont hs cl (hc _).1 (hc _).2.1 (hc _).2.2 u (d (Fin.last N) u) (hS u hu _).2`. Establish `hI1 : IntegrableOn (fun r => ((1 / s : ℝ) : ℂ) • ρ (cl r) u) (Set.Icc 0 s)` using `(continuous_const.smul ((hcont u).comp (hc _).1)).continuousOn.integrableOn_compact isCompact_Icc`. Establish `hI2 : IntegrableOn (fun r => (((s - r) / s : ℝ) : ℂ) • ρ (cl r) (d (Fin.last N) u)) (Set.Icc 0 s)` using `((Complex.continuous_ofReal.comp ((continuous_const.sub continuous_id).div_const s)).smul ((hcont _).comp (hc _).1)).continuousOn.integrableOn_compact isCompact_Icc`.
+
+Establish `e1 : ∀ t : Fin N → ℝ, ∫ r in Set.Icc (0 : ℝ) s, (κ j t * ((1 / s : ℝ) : ℂ)) • ρ (List.ofFn fun i => c (Fin.castSucc i) (t i)).prod (ρ (cl r) u) = κ j t • ρ (List.ofFn fun i => c (Fin.castSucc i) (t i)).prod (∫ r in Set.Icc 0 s, ((1 / s : ℝ) : ℂ) • ρ (cl r) u)`. Introduce `t`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ hI1, ← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `r`.
+
+Rewrite using `[map_smul, smul_smul]`. Establish `e2 : ∀ t : Fin N → ℝ, ∫ r in Set.Icc (0 : ℝ) s, (κ j t * -(((s - r) / s : ℝ) : ℂ)) • ρ (List.ofFn fun i => c (Fin.castSucc i) (t i)).prod (ρ (cl r) (d (Fin.last N) u)) = -(κ j t • ρ (List.ofFn fun i => c (Fin.castSucc i) (t i)).prod (∫ r in Set.Icc 0 s, (((s - r) / s : ℝ) : ℂ) • …`. Introduce `t`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ hI2, ← integral_smul, ← integral_neg]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `r`. Rewrite using `[map_smul, smul_smul, mul_neg, neg_smul]`. Simplify using `only [e1, e2]`. Establish `hcube : IsCompact (Set.univ.pi fun _ : Fin N => Set.Icc (0 : ℝ) s)` using `isCompact_univ_pi fun _ => isCompact_Icc`. Establish `hi : ∀ x : K, IntegrableOn (fun t : Fin N → ℝ => κ j t • ρ (List.ofFn fun i => c (Fin.castSucc i) (t i)).prod x) (Set.univ.pi fun _ => Set.Icc (0 : ℝ) s)` using `fun x => ((hκ j).smul (hPc x)).continuousOn.integrableOn_compact hcube`.
+
+Rewrite using `[integral_neg, ← sub_eq_add_neg, ← integral_sub (hi _) (hi _)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← smul_sub, ← map_sub, ← hA]`.
+-/
 theorem _root_.GlobalTheory.CubeTaylor.eq_sum_integral_cube_derivatives : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Type) [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K], ∀ (ρ : G →* (K →L[ℂ] K)), (∀ g v, ‖ρ g v‖ = ‖v‖) → (∀ v, Continuous fun g => ρ g v) → ∀ (s : ℝ), 0 < s → ∀ (N : ℕ) (c : Fin N → ℝ → G), (∀ i, Continuous (c i) ∧ c i 0 = 1 ∧ ∀ a b, c i (a + b) = c i a * c i b) → ∃ (J : Type) (_ : Fintype J) (κ : J → (Fin N → ℝ) → ℂ) (l : J → List (Fin N)), (∀ j, Continuous (κ j)) ∧ ∀ (d : Fin N → K → K) (S : Set K), (∀ v ∈ S, ∀ i, d i v ∈ S ∧ HasDerivAt (fun t : ℝ => ρ (c i t) v) (d i v) 0) → ∀ v ∈ S, v = ∑ j, ∫ t in Set.pi Set.univ (fun _ : Fin N => Set.Icc (0 : ℝ) s), κ j t • ρ (List.ofFn fun i => c i (t i)).prod ((l j).foldr d v) := by
   intro G _ _ _ K _ _ _ ρ _ hcont s hs N
   induction N with

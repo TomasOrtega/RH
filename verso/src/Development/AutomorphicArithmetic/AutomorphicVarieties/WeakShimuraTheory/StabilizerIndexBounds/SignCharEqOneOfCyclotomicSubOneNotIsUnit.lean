@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 
 open IsLocalRing Polynomial Matrix UpperTheory.V
 
+/- English proof (translation)
+Establish `hd : (l : ℤ_[l]) ∣ x - 1` using `(PadicInt.norm_lt_one_iff_dvd _).mp (PadicInt.mem_nonunits.mp (mem_nonunits_iff.mpr hx))`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hb : ∀ n : ℕ, ‖x ^ l ^ n - 1‖ ≤ ((l : ℝ)⁻¹) ^ (n + 1)`. Introduce `n`. Take `⟨c, hc⟩` from `dvd_sub_pow_of_dvd_sub hd n`.
+
+Rewrite `hc` using `[one_pow]`. Rewrite using `[hc, norm_mul, norm_pow, PadicInt.norm_p]`. Combine the equalities or inequalities in the displayed calculation. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `h0 : Filter.Tendsto (fun n : ℕ => ((l : ℝ)⁻¹) ^ (n + 1)) Filter.atTop (nhds 0)`.
+
+Use `tendsto_pow_atTop_nhds_zero_of_lt_one (r := (l : ℝ)⁻¹) (by positivity) (inv_lt_one_of_one_lt₀ hl)` as an intermediate fact. Conclude with `this.comp (Filter.tendsto_add_atTop_nat 1)`. Conclude with `squeeze_zero (fun n => norm_nonneg _) hb h0`.
+-/
 private theorem UpperTheory.V.Ws.tendsto_pow_prime_pow_one (l : ℕ) [Fact l.Prime] (x : ℤ_[l]) (hx : ¬ IsUnit (x - 1)) :
     Filter.Tendsto (fun n : ℕ => x ^ l ^ n) Filter.atTop (nhds 1) := by
   have hd : (l : ℤ_[l]) ∣ x - 1 :=
@@ -23,6 +30,19 @@ private theorem UpperTheory.V.Ws.tendsto_pow_prime_pow_one (l : ℕ) [Fact l.Pri
     exact this.comp (Filter.tendsto_add_atTop_nat 1)
   exact squeeze_zero (fun n => norm_nonneg _) hb h0
 
+/- English proof (translation)
+Introduce `l _ hl2 G _ _ _ _ ε hε η hopen hker g hg`. Break down `Int.units_eq_one_or (η g) with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `hodd : Odd l` using `(Fact.out : l.Prime).odd_of_ne_two hl2`.
+
+Set `C : Set G` to `((η.ker : Set G))ᶜ`. Establish `hCc : IsCompact C` using `(isClosed_compl_iff.mpr hopen).isCompact`. Set `f : G → ℤ_[l]` to `fun h => (ε h : ℤ_[l])`. Establish `hf : Continuous f` using `Units.continuous_val.comp hε`. Establish `hK : IsClosed (f '' C)` using `(hCc.image hf).isClosed`.
+
+Establish `hmem : ∀ n : ℕ, f (g ^ l ^ n) ∈ f '' C`. Introduce `n`. Use `⟨g ^ l ^ n, ?_, rfl⟩` and prove the remaining obligations. Use `show g ^ l ^ n ∉ η.ker`. Rewrite using `[MonoidHom.mem_ker, map_pow, h, (hodd.pow).neg_one_pow]`.
+
+Evaluate the decidable proposition. Establish `hlim : Filter.Tendsto (fun n : ℕ => f (g ^ l ^ n)) Filter.atTop (nhds 1)`. Use `tendsto_pow_prime_pow_one l (ε g : ℤ_[l]) hg` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations. Simplify using `[f, map_pow]`.
+
+Establish `h1 : (1 : ℤ_[l]) ∈ f '' C` using `hK.mem_of_tendsto hlim (Filter.Eventually.of_forall hmem)`. Take `⟨k, hkC, hk1⟩` from `h1`. Apply `hkC` to reduce the goal to its premises. Apply `hker` to reduce the goal to its premises. Rewrite using `[MonoidHom.mem_ker]`.
+
+Conclude with `Units.ext hk1`.
+-/
 theorem UpperTheory.V.Ws.sign_char_eq_one_of_cyclotomic_sub_one_not_isUnit :
     ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
       (ε : G →* ℤ_[l]ˣ), Continuous ε → ∀ η : G →* ℤˣ, IsOpen (η.ker : Set G) → ε.ker ≤ η.ker →

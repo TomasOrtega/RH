@@ -16,6 +16,13 @@ def IsStable (T : Set (End ℂ M)) (p : Submodule ℂ M) : Prop :=
 def IsSimpleUnder (T : Set (End ℂ M)) : Prop :=
   Nontrivial M ∧ ∀ p : Submodule ℂ M, IsStable T p → p = ⊥ ∨ p = ⊤
 
+/- English proof (translation)
+Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem t ht => exact h t ht`. Consider the case `algebraMap c`. Introduce `x hx`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `p.smul_mem c hx`. Consider the case `add a b _ _ ha hb`. Introduce `x hx`. Rewrite using `[LinearMap.add_apply]`.
+
+Conclude with `p.add_mem (ha x hx) (hb x hx)`. Consider the case `mul a b _ _ ha hb`. Introduce `x hx`. Rewrite using `[Module.End.mul_apply]`. Conclude with `ha _ (hb x hx)`.
+-/
 theorem IsStable.adjoin {T : Set (End ℂ M)} {p : Submodule ℂ M} (h : IsStable T p) :
     ∀ a ∈ Algebra.adjoin ℂ T, ∀ x ∈ p, a x ∈ p := by
   intro a ha
@@ -34,6 +41,11 @@ theorem IsStable.adjoin {T : Set (End ℂ M)} {p : Submodule ℂ M} (h : IsStabl
     rw [Module.End.mul_apply]
     exact ha _ (hb x hx)
 
+/- English proof (translation)
+Introduce `b hb`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem t ht => exact ha t ht`. Consider the case `algebraMap c => exact (Algebra.commutes' c a).symm`. Consider the case `add b c _ _ hb hc => exact hb.add_right hc`.
+
+Consider the case `mul b c _ _ hb hc => exact hb.mul_right hc`.
+-/
 theorem commute_of_mem_adjoin {T : Set (End ℂ M)} {a : End ℂ M} (ha : ∀ t ∈ T, Commute a t) :
     ∀ b ∈ Algebra.adjoin ℂ T, Commute a b := by
   intro b hb
@@ -43,17 +55,38 @@ theorem commute_of_mem_adjoin {T : Set (End ℂ M)} {a : End ℂ M} (ha : ∀ t 
   | add b c _ _ hb hc => exact hb.add_right hc
   | mul b c _ _ hb hc => exact hb.mul_right hc
 
+/- English proof (translation)
+Introduce and unpack `t (ht | ht)`. Use `exacts [h₁ t ht, h₂ t ht]`.
+-/
 theorem IsStable.union {T₁ T₂ : Set (End ℂ M)} {p : Submodule ℂ M} (h₁ : IsStable T₁ p)
     (h₂ : IsStable T₂ p) : IsStable (T₁ ∪ T₂) p := by
   rintro t (ht | ht)
   exacts [h₁ t ht, h₂ t ht]
 
+/- English proof (translation)
+Introduce `t ht` and use `h t (hT ht)`.
+-/
 theorem IsStable.mono {T₁ T₂ : Set (End ℂ M)} {p : Submodule ℂ M} (h : IsStable T₂ p)
     (hT : T₁ ⊆ T₂) : IsStable T₁ p :=
   fun t ht => h t (hT ht)
 
 variable [FiniteDimensional ℂ M]
 
+/- English proof (translation)
+Use `h.1` as an intermediate fact. Use `set A := Algebra.adjoin ℂ T`. Establish `hsimple : IsSimpleModule A M`. Establish `: Nontrivial (Submodule A M)` using `(Submodule.nontrivial_iff A).2 h.1`. Use `{ eq_bot_or_eq_top := fun p => ?_ }` and prove the remaining obligations.
+
+Establish `hst : IsStable T (p.restrictScalars ℂ)`. Introduce `t ht x hx`. Establish `: (⟨t, Algebra.subset_adjoin ht⟩ : A) • x ∈ p` using `p.smul_mem _ hx`. Conclude with `this`. Break down `h.2 _ hst with h0 | h0` into its components or cases.
+
+Use `left`. Rewrite using `[← Submodule.restrictScalars_eq_bot_iff ℂ]`. Conclude with `h0`. Use `right`. Rewrite using `[← Submodule.restrictScalars_eq_top_iff ℂ]`.
+
+Conclude with `h0`. Establish `hb` using `IsSimpleModule.algebraMap_end_bijective_of_isAlgClosed ℂ (A := A) (V := M)`. Establish `: Module.Finite (End A M) M` using `Module.Finite.of_restrictScalars_finite ℂ (End A M) M`. Establish `hsurj` using `Module.Finite.toModuleEnd_moduleEnd_surjective (R := A) (M := M)`. Use `eq_top_iff.2 fun φ _ => ?_` and prove the remaining obligations.
+
+Establish `hφ : ∀ (f : End A M) (x : M), φ (f x) = f (φ x)`. Introduce `f x`. Take `⟨c, rfl⟩` from `hb.2 f`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Set `ψ : End (End A M) M` to `{ toFun := φ map_add' := φ.map_add map_smul' := fun f x => hφ f x }`.
+
+Take `⟨a, ha⟩` from `hsurj ψ`. Establish `: (a : End ℂ M) = φ`. Use extensionality with `x`. Use `congrArg (fun g : End (End A M) M => g x) ha` as an intermediate fact. Conclude with `this`.
+
+Rewrite using `[← this]`. Conclude with `a.2`.
+-/
 theorem adjoin_eq_top {T : Set (End ℂ M)} (h : IsSimpleUnder T) : Algebra.adjoin ℂ T = ⊤ := by
   have := h.1
   set A := Algebra.adjoin ℂ T
@@ -91,6 +124,17 @@ theorem adjoin_eq_top {T : Set (End ℂ M)} (h : IsSimpleUnder T) : Algebra.adjo
   rw [← this]
   exact a.2
 
+/- English proof (translation)
+Use `h.1` as an intermediate fact. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue φ`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hst : IsStable T (LinearMap.ker (φ - algebraMap ℂ (End ℂ M) c))`. Introduce `t ht x hx`.
+
+Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Establish `h1 : (φ - algebraMap ℂ (End ℂ M) c) * t = t * (φ - algebraMap ℂ (End ℂ M) c)` using `((hφ t ht).sub_left (Algebra.commutes' c t)).eq`. Use `congrArg (fun g : End ℂ M => g x) h1` as an intermediate fact. Simplify using `only [Module.End.mul_apply, hx, map_zero] at this`. Conclude with `this`.
+
+Break down `h.2 _ hst with h0 | h0` into its components or cases. It suffices to derive a contradiction. Apply `hc.exists_hasEigenvector.elim` to reduce the goal to its premises. Introduce `x hx`. Establish `hx1 : x ∈ LinearMap.ker (φ - algebraMap ℂ (End ℂ M) c)`.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, hx.apply_eq_smul]`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Rewrite `hx1` using `[h0, Submodule.mem_bot]`. Conclude with `hx.2 hx1`. Use extensionality with `x`.
+
+Establish `hx : x ∈ LinearMap.ker (φ - algebraMap ℂ (End ℂ M) c)` using `by rw [h0]; trivial`. Rewrite `hx` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `hx`.
+-/
 theorem exists_eq_algebraMap {T : Set (End ℂ M)} (h : IsSimpleUnder T) {φ : End ℂ M}
     (hφ : ∀ t ∈ T, Commute φ t) : ∃ c : ℂ, φ = algebraMap ℂ (End ℂ M) c := by
   have := h.1
@@ -120,6 +164,21 @@ theorem exists_eq_algebraMap {T : Set (End ℂ M)} (h : IsSimpleUnder T) {φ : E
 
 omit [FiniteDimensional ℂ M] in
 
+/- English proof (translation)
+Use `set B := Algebra.adjoin ℂ T₂`. Use `set P : Submodule ℂ M := ⨆ b : B, N.map (b : End ℂ M)`. Establish `hmap : ∀ b : B, N.map (b : End ℂ M) ≤ P` using `fun b => le_iSup (fun b : B => N.map (b : End ℂ M)) b`. Establish `hst : IsStable (T₁ ∪ T₂) P`. Introduce `t ht x hx`.
+
+Establish `hle : P ≤ P.comap t`. Use `iSup_le fun b => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Rewrite using `[Submodule.mem_comap]`. Break down `ht with ht | ht` into its components or cases.
+
+Establish `hcomm : Commute t (b : End ℂ M)` using `commute_of_mem_adjoin (fun s hs => hc t ht s hs) b b.2`. Establish `: t ((b : End ℂ M) n) = (b : End ℂ M) (t n)`. Rewrite using `[← Module.End.mul_apply, hcomm.eq, Module.End.mul_apply]`. Rewrite using `[this]`. Conclude with `hmap b ⟨t n, hNs t ht n hn, rfl⟩`.
+
+Establish `htb : t * (b : End ℂ M) ∈ B` using `B.mul_mem (Algebra.subset_adjoin ht) b.2`. Conclude with `hmap ⟨_, htb⟩ ⟨n, hn, rfl⟩`. Conclude with `hle hx`. Establish `hP : P ≠ ⊥`. Introduce `hP`.
+
+Apply `hN` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `n hn`. Establish `: n ∈ P` using `hmap 1 ⟨n, hn, by simp⟩`. Rewrite `this` using `[hP]`. Then use the resulting hypothesis.
+
+Establish `hPtop : P = ⊤` using `(h.2 P hst).resolve_left hP`. Establish `hker : P ≤ LinearMap.ker a`. Use `iSup_le fun b => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`.
+
+Establish `hcomm : Commute a (b : End ℂ M)` using `commute_of_mem_adjoin ha b b.2`. Rewrite using `[← Module.End.mul_apply, hcomm.eq, Module.End.mul_apply, h0 n hn, map_zero]`. Use extensionality with `x`. Establish `: x ∈ LinearMap.ker a` using `hker (hPtop ▸ Submodule.mem_top)`. Simplify using `using this`.
+-/
 theorem eq_zero_of_forall_mem {T₁ T₂ : Set (End ℂ M)} (h : IsSimpleUnder (T₁ ∪ T₂))
     (hc : ∀ a ∈ T₁, ∀ b ∈ T₂, Commute a b) {N : Submodule ℂ M} (hN : N ≠ ⊥) (hNs : IsStable T₁ N)
     {a : End ℂ M} (ha : ∀ b ∈ T₂, Commute a b) (h0 : ∀ x ∈ N, a x = 0) : a = 0 := by
@@ -165,6 +224,13 @@ def restrictSet (T : Set (End ℂ M)) (N : Submodule ℂ M) (hN : IsStable T N) 
 
 omit [FiniteDimensional ℂ M] in
 
+/- English proof (translation)
+Set `S : Subalgebra ℂ (End ℂ N)` to `{ carrier := {b | ∃ a ∈ Algebra.adjoin ℂ T, ∀ x : N, (b x : M) = a x} mul_mem' := by`. Introduce and unpack `b₁ b₂ ⟨a₁, ha₁, h₁⟩ ⟨a₂, ha₂, h₂⟩`. Conclude with `⟨a₁ * a₂, Subalgebra.mul_mem _ ha₁ ha₂, fun x => by`. Rewrite using `[Module.End.mul_apply, h₁, Module.End.mul_apply, h₂]⟩`. Use the proof step `add_mem' := by`.
+
+Introduce and unpack `b₁ b₂ ⟨a₁, ha₁, h₁⟩ ⟨a₂, ha₂, h₂⟩`. Conclude with `⟨a₁ + a₂, Subalgebra.add_mem _ ha₁ ha₂, fun x => by`. Rewrite using `[LinearMap.add_apply, Submodule.coe_add, h₁, h₂, LinearMap.add_apply]⟩`. Use the proof step `algebraMap_mem' := fun c => ⟨algebraMap ℂ (End ℂ M) c, Subalgebra.algebraMap_mem _ c, fun x => by simp [Algebra.algebraMap_eq_smul_one]⟩ }`. Establish `: Algebra.adjoin ℂ (restrictSet T N hN) ≤ S`.
+
+Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `⟨t, Algebra.subset_adjoin t.2, fun x => rfl⟩`. Conclude with `this hb`.
+-/
 theorem exists_of_mem_adjoin_restrictSet {T : Set (End ℂ M)} {N : Submodule ℂ M}
     (hN : IsStable T N) {b : End ℂ N} (hb : b ∈ Algebra.adjoin ℂ (restrictSet T N hN)) :
     ∃ a ∈ Algebra.adjoin ℂ T, ∀ x : N, (b x : M) = a x := by
@@ -186,6 +252,17 @@ theorem exists_of_mem_adjoin_restrictSet {T : Set (End ℂ M)} {N : Submodule �
     exact ⟨t, Algebra.subset_adjoin t.2, fun x => rfl⟩
   exact this hb
 
+/- English proof (translation)
+Establish `hex : ∃ d, ∃ N : Submodule ℂ M, N ≠ ⊥ ∧ IsStable T N ∧ Module.finrank ℂ N = d` using `⟨_, ⊤, top_ne_bot, fun _ _ _ _ => trivial, rfl⟩`. Take `⟨N, hN0, hNs, hNd⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ N' : Submodule ℂ M, N' ≠ ⊥ → IsStable T N' → Module.finrank ℂ N ≤ Module.finrank ℂ N'` using `fun N' h1 h2 => hNd ▸ Nat.find_min' hex ⟨N', h1, h2, rfl⟩`. Use `⟨N, hNs, hN0, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.nontrivial_iff_ne_bot.2 hN0`.
+
+Introduce `q hq`. Distinguish the cases in `hq0 : q = ⊥`. Conclude with `Or.inl hq0`. Use `right`. Establish `hst : IsStable T (q.map N.subtype)`.
+
+Introduce and unpack `t ht _ ⟨x, hx, rfl⟩`. Conclude with `⟨(t : End ℂ M).restrict (hNs t ht) x, hq _ ⟨⟨t, ht⟩, rfl⟩ x hx, rfl⟩`. Establish `hne : q.map N.subtype ≠ ⊥`. Introduce `h0`. Apply `hq0` to reduce the goal to its premises.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `: (x : M) ∈ q.map N.subtype` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext this)`.
+
+Establish `hle` using `hmin _ hne hst`. Rewrite `hle` using `[Submodule.finrank_map_subtype_eq]`. Conclude with `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le q) hle)`.
+-/
 theorem exists_simple_stable (T : Set (End ℂ M)) [Nontrivial M] :
     ∃ (N : Submodule ℂ M) (hN : IsStable T N), N ≠ ⊥ ∧ IsSimpleUnder (restrictSet T N hN) := by
   classical
@@ -215,6 +292,17 @@ theorem exists_simple_stable (T : Set (End ℂ M)) [Nontrivial M] :
     rw [Submodule.finrank_map_subtype_eq] at hle
     exact Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le q) hle)
 
+/- English proof (translation)
+Take `⟨N, hNs, hN0, hsimple⟩` from `exists_simple_stable T`. Use `hsimple.1` as an intermediate fact. Take `⟨n, hn⟩` from `exists_ne (0 : N)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual ℂ N, f n = 1 := by`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual ℂ N, f n ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hn ((Module.forall_dual_apply_eq_zero_iff ℂ n).1 hcon)`. Conclude with `⟨(f n)⁻¹ • f, by simp [hf]⟩`. Set `b : End ℂ N` to `f.smulRight n`.
+
+Establish `hb : b ∈ Algebra.adjoin ℂ (restrictSet T N hNs)`. Rewrite using `[adjoin_eq_top hsimple]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨p, hp, hpb⟩` from `exists_of_mem_adjoin_restrictSet hNs hb`. Use `⟨N, hN0, hNs, p, hp, n, n.2, fun h => hn (Subtype.ext h), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hpb n]`. Simplify using `[b, hf]`. Introduce `x hx`. Use `⟨f ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hpb ⟨x, hx⟩]`.
+
+Simplify using `[b]`.
+-/
 theorem exists_rankOne (T : Set (End ℂ M)) [Nontrivial M] :
     ∃ N : Submodule ℂ M, N ≠ ⊥ ∧ IsStable T N ∧ ∃ p ∈ Algebra.adjoin ℂ T, ∃ n₀ ∈ N, n₀ ≠ 0 ∧
       p n₀ = n₀ ∧ ∀ x ∈ N, ∃ c : ℂ, p x = c • n₀ := by

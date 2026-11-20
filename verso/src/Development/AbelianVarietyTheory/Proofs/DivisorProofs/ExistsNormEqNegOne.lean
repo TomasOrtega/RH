@@ -8,6 +8,17 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.C
 
 namespace GlobalTheory.IsoCols
 
+/- English proof (translation)
+Distinguish the cases in `h2 : ringChar k = 2`. Use `haveI : CharP k 2 := ringChar.of_eq h2`. Conclude with `⟨1, by rw [map_one, one_mul, CharTwo.neg_eq]⟩`. Set `k0 : Subfield k` to `RingHom.eqLocusField σ (RingHom.id k)`. Use `haveI : Fintype k0 := Fintype.ofFinite _`.
+
+Establish `hδ : σ (y - σ y) = -(y - σ y)` using `by rw [map_sub, hσ]; ring`. Set `d : k0` to `⟨(y - σ y) ^ 2, by show σ _ = _`. Rewrite using `[map_pow, hδ]`. Simplify using `only [RingHom.id_apply]`. Use the proof step `ring⟩`.
+
+Establish `hd : d ≠ 0` using `fun h => pow_ne_zero 2 hy (congrArg Subtype.val h)`. Establish `hc : ringChar k0 ≠ 2`. Introduce `h`. Use `haveI : CharP k0 2 := ringChar.of_eq h`. Use `haveI : CharP k 2 := charP_of_injective_ringHom (f := k0.subtype) Subtype.val_injective 2`.
+
+Conclude with `h2 (ringChar.eq k 2)`. Take `⟨a, b, hab⟩` from `FiniteField.exists_root_sum_quadratic (f := (Polynomial.X ^ 2 + Polynomial.C 1 : Polynomial k0)) (g := Polynomial.C (-d) * Polynomial.X ^ 2) (Polynomial.degree_X_pow_add_C (by norm_num) _) (Polynomial.degree_C_mul_X_pow 2 (neg_ne_zero.2 hd)) (FiniteField.odd_card_of_char_ne_two h …`. Establish `h : (a : k) ^ 2 + 1 + -(y - σ y) ^ 2 * (b : k) ^ 2 = 0`. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify `this` using `[d]`.
+
+Establish `ha : σ a = a` using `a.2`. Establish `hb : σ b = b` using `b.2`. Use `⟨a + b * (y - σ y), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, hδ, ha, hb]`. Take the linear combination `h`.
+-/
 theorem exists_norm_eq_neg_one {k : Type} [Field k] [Finite k] (σ : k →+* k) (hσ : ∀ x, σ (σ x) = x)
     {y : k} (hy : y - σ y ≠ 0) : ∃ a, a * σ a = -1 := by
   classical
@@ -39,6 +50,27 @@ theorem exists_norm_eq_neg_one {k : Type} [Field k] [Finite k] (σ : k →+* k) 
   rw [map_add, map_mul, hδ, ha, hb]
   linear_combination h
 
+/- English proof (translation)
+Distinguish the cases in `hs : w.comap bar = w`. Establish `hmem : ∀ x ∈ w, bar x ∈ w` using `fun x hx => by rw [← hs] at hx; exact hx`. Use `letI := Ideal.Quotient.field w`. Set `σ : R ⧸ w →+* R ⧸ w` to `Ideal.Quotient.lift w ((Ideal.Quotient.mk w).comp bar.toRingHom) fun x hx => Ideal.Quotient.eq_zero_iff_mem.2 (hmem x hx)`. Establish `hσ : ∀ x, σ (Ideal.Quotient.mk w x) = Ideal.Quotient.mk w (bar x)` using `fun x => rfl`.
+
+Establish `hσσ : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[hσ, hσ, hbb]`. Establish `hy' : Ideal.Quotient.mk w y - σ (Ideal.Quotient.mk w y) ≠ 0`. Rewrite using `[hσ, ← map_sub]`.
+
+Conclude with `fun h => hy (Ideal.Quotient.eq_zero_iff_mem.1 h)`. Take `⟨a0, ha0⟩` from `exists_norm_eq_neg_one σ hσσ hy'`. Take `⟨a0, rfl⟩` from `Ideal.Quotient.mk_surjective a0`. Take `⟨t, ht⟩` from `Ideal.Quotient.mk_surjective (I := w) (Ideal.Quotient.mk w y / (Ideal.Quotient.mk w y - σ (Ideal.Quotient.mk w y)))`. Establish `ht1 : 1 - t - bar t ∈ w`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_sub, ← hσ, ht, map_div₀, map_sub, hσσ, map_one, ← neg_sub (Ideal.Quotient.mk w y), div_neg]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Set `a : ℕ → R` to `fun n => Nat.rec a0 (fun _ x => x * (1 + (1 + x * bar x) * t)) n`. Establish `has : ∀ n, a (n + 1) = a n * (1 + (1 + a n * bar (a n)) * t)` using `fun n => rfl`.
+
+Establish `key : ∀ n, 1 + a n * bar (a n) ∈ w ^ (n + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_add, pow_one, ← Ideal.Quotient.eq_zero_iff_mem, map_add, map_mul, ← hσ]`.
+
+Use `show _ + Ideal.Quotient.mk w a0 * σ (Ideal.Quotient.mk w a0) = 0`. Rewrite using `[ha0]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Establish `ih1 : 1 + a n * bar (a n) ∈ w` using `Ideal.pow_le_self (Nat.succ_ne_zero n) ih`.
+
+Establish `e : 1 + a (n + 1) * bar (a (n + 1)) = (1 + a n * bar (a n)) * ((1 - t - bar t) + (1 + a n * bar (a n)) * (t + bar t + a n * bar (a n) * t * bar t))`. Simplify using `only [has, map_mul, map_add, map_one, hbb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pow_succ w (n + 1)]`. Conclude with `Ideal.mul_mem_mul ih (w.add_mem ht1 (w.mul_mem_right _ ih1))`.
+
+Use `⟨fun _ => 1, a, fun k => by simp, fun k => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `e : a (k + 1) - a k = (1 + a k * bar (a k)) * (a k * t)` using `by rw [has]; ring`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_le_pow_right (Nat.le_succ k) (key k))`. Simplify using `using Ideal.pow_le_pow_right (Nat.le_succ k) (key k)`.
+
+Establish `hm : (w.comap bar).IsMaximal` using `Ideal.comap_isMaximal_of_equiv bar`. Establish `hco : ∀ k, ∃ u ∈ (w.comap bar) ^ k, u - 1 ∈ w ^ k` using `fun k => by`. Establish `h : (w.comap bar) ^ k ⊔ w ^ k = ⊤` using `Ideal.pow_sup_pow_eq_top (hm.coprime_of_ne hw hs)`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 (h ▸ Submodule.mem_top (x := (1 : R)))`. Conclude with `⟨u, hu, by rw [← huv]; simpa using hv⟩`.
+
+Use `choose u hu hu1 using hco`. Use `⟨u, fun _ => 0, hu1, fun k => by simp, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [zero_mul, add_zero]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.le_comap_pow bar k (hu k))`.
+-/
 theorem exists_pair_seq {R : Type} [CommRing R] (bar : R ≃+* R) (hbb : ∀ x, bar (bar x) = x) (w : Ideal R)
     [hw : w.IsMaximal] [Finite (R ⧸ w)] {y : R} (hy : y - bar y ∉ w) :
     ∃ u a : ℕ → R, (∀ k, u k - 1 ∈ w ^ k) ∧ (∀ k, a (k + 1) - a k ∈ w ^ k) ∧
@@ -94,6 +126,27 @@ theorem exists_pair_seq {R : Type} [CommRing R] (bar : R ≃+* R) (hbb : ∀ x, 
     simp only [zero_mul, add_zero]
     exact Ideal.mul_mem_left _ _ (Ideal.le_comap_pow bar k (hu k))
 
+/- English proof (translation)
+Use `set m := IsLocalRing.maximalIdeal V`. Use `set w := m.comap φ`. Take `⟨u, a, hu, ha, hh⟩` from `exists_pair_seq bar hbb w hy`. Establish `hφ : ∀ k, ∀ x ∈ w ^ k, φ x ∈ m ^ k` using `fun k x hx => Ideal.le_comap_pow φ k hx`. Take `⟨α, hα⟩` from `IsPrecomplete.prec' (I := m) (fun k => φ (a k)) (by`.
+
+Introduce `i j hij`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Proceed by induction on `j, hij using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ j hij ih`.
+
+Establish `h1` using `Ideal.pow_le_pow_right hij (hφ j _ (ha j))`. Use `(m ^ i).sub_mem ih h1` as an intermediate fact. Rewrite `this` using `[map_sub]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring)`.
+
+Use `⟨α, fun N => ?_⟩` and prove the remaining obligations. Establish `hq0 : q ≠ 0` using `fun h => hq (by rw [h, map_zero])`. Take `⟨J, hJ, hI⟩` from `Ideal.eq_prime_pow_mul_coprime (I := Ideal.span {q ^ N}) (by simpa [Ideal.span_singleton_eq_bot] using fun h => absurd h hq0) w`. Use `set k0 := Multiset.count w (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {q ^ N}))`. Choose the witnesses or unpack the hypotheses as in `⟨k1, hk1⟩ : ∃ k1, m ^ k1 ≤ Ideal.span {φ q ^ N} := by`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨k1, h⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible (s := Ideal.span {φ q ^ N}) (by simpa [Ideal.span_singleton_eq_bot] using fun h => absurd h hq) hϖ`. Conclude with `⟨k1, by rw [h, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq]⟩`. Set `k` to `k0 + k1`. Establish `hk : ∀ x ∈ m ^ k, ∃ z, x = φ q ^ N * z` using `fun x hx => Ideal.mem_span_singleton.1 (hk1 (Ideal.pow_le_pow_right (Nat.le_add_left _ _) hx))`.
+
+Establish `h : J ⊔ w ^ k = ⊤` using `Ideal.sup_pow_eq_top (by rw [sup_comm, hJ])`. Take `⟨v, hv, v', hv', hvv⟩` from `Submodule.mem_sup.1 (h ▸ Submodule.mem_top (x := (1 : R)))`. Establish `hαk : φ (a k) - α ∈ m ^ k`. Use `hα k` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Then use the resulting hypothesis.
+
+Use `⟨v * u k, v * a k, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hk _ (hφ k _ ((w ^ k).sub_mem (hu k) (Ideal.mul_mem_right (u k) _ hv')))`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, ← map_one φ, ← map_add]`. Use `congr 1`.
+
+Take the linear combination `(u k) * hvv`. Take `⟨z, hz⟩` from `hk _ ((m ^ k).sub_mem hαk (hφ k _ (Ideal.mul_mem_right (a k) _ hv')))`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use `congrArg φ hvv` as an intermediate fact. Rewrite using `[← hz]`.
+
+Simplify using `only [map_mul, map_add, map_one] at this ⊢`. Take the linear combination `(φ (a k)) * this`. Rewrite using `[hI]`. Establish `e : v * u k * bar (v * u k) + v * a k * bar (v * a k) = (u k * bar (u k) + a k * bar (a k)) * (v * bar v)`. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_mul (Ideal.pow_le_pow_right (Nat.le_add_right _ _) (hh k)) (Ideal.mul_mem_right _ _ hv)`.
+-/
 theorem exists_pair {R V : Type} [CommRing R] [IsDedekindDomain R] [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (bar : R ≃+* R)
     (hbb : ∀ x, bar (bar x) = x) (φ : R →+* V) [((IsLocalRing.maximalIdeal V).comap φ).IsMaximal]
@@ -154,10 +207,20 @@ theorem exists_pair {R V : Type} [CommRing R] [IsDedekindDomain R] [CommRing V] 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+-/
 theorem bar_bar (H : Host E) (x : 𝓞 E) : H.bar (H.bar x) = x := by
   apply RingOfIntegers.ext
   rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `haveI := H.unram`. Establish `e : ∀ x, IsCMField.ringOfIntegersComplexConj E x = H.bar x` using `fun x => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Rewrite using `[H.bar_eq]`. Simplify using the standard rewrite rules. Establish `h` using `Algebra.FormallyUnramified.ext_of_iInf (R := 𝓞 (maximalRealSubfield E)) w (Ideal.iInf_pow_eq_bot_of_isDomain w hw) (g₁ := AlgHom.id _ (𝓞 E)) (g₂ := (IsCMField.ringOfIntegersComplexConj E).toAlgHom) (fun x => Ideal.Quotient.eq.2 (by simpa [e] using hn x))`. Apply `IsCMField.complexConj_ne_one E` to reduce the goal to its premises. Use extensionality with `x`.
+
+Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (𝓞 E) x`. Establish `h1 : ∀ a : 𝓞 E, IsCMField.complexConj E (algebraMap _ E a) = algebraMap _ E a` using `fun a => by`. Use `DFunLike.congr_fun h a` as an intermediate fact. Conclude with `(H.bar_eq a).symm.trans (congrArg _ (this.trans (e a)).symm)`. Rewrite using `[map_div₀, h1, h1, AlgEquiv.one_apply]`.
+-/
 theorem exists_sub_bar_notMem (H : Host E) {w : Ideal (𝓞 E)} (hw : w ≠ ⊤) : ∃ y, y - H.bar y ∉ w := by
   by_contra hn
   push Not at hn
@@ -177,6 +240,9 @@ theorem exists_sub_bar_notMem (H : Host E) {w : Ideal (𝓞 E)} (hw : w ≠ ⊤)
     exact (H.bar_eq a).symm.trans (congrArg _ (this.trans (e a)).symm)
   rw [map_div₀, h1, h1, AlgEquiv.one_apply]
 
+/- English proof (translation)
+Establish `h : ∀ x, ∃ z : T.V, algebraMap T.V T.Fr z = ψ x` using `fun x => IsIntegrallyClosed.algebraMap_eq_of_integral ((RingOfIntegers.isIntegral x).map_of_comp_eq (Int.castRingHom T.V) ψ (RingHom.ext_int _ _))`. Use `choose φ hφ using h`. Establish `inj` using `IsFractionRing.injective T.V T.Fr`. Conclude with `⟨{ toFun := φ map_one' := inj (by simp [hφ]) map_mul' := fun x y => inj (by simp [hφ]) map_zero' := inj (by simp [hφ]) map_add' := fun x y => inj (by simp [hφ]) }, hφ⟩`.
+-/
 theorem exists_lift (T : CDVR) (ψ : 𝓞 E →+* T.Fr) : ∃ φ : 𝓞 E →+* T.V, ∀ x, algebraMap T.V T.Fr (φ x) = ψ x := by
   have h : ∀ x, ∃ z : T.V, algebraMap T.V T.Fr z = ψ x := fun x =>
     IsIntegrallyClosed.algebraMap_eq_of_integral
@@ -191,6 +257,25 @@ theorem exists_lift (T : CDVR) (ψ : 𝓞 E →+* T.Fr) : ∃ φ : 𝓞 E →+* 
 
 variable {H : Host E} {l : Level H}
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `exists_lift T (io.comp (embK c τ))`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hb : (IsLocalRing.maximalIdeal T.V).comap φ ≠ ⊥` using `fun h => by`. Establish `: (p : 𝓞 E) ∈ (IsLocalRing.maximalIdeal T.V).comap φ`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+
+Conclude with `hp`. Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `hp0 (by exact_mod_cast this)`. Use `haveI hm : ((IsLocalRing.maximalIdeal T.V).comap φ).IsMaximal := Ideal.IsPrime.isMaximal inferInstance hb`. Use `haveI : Finite (𝓞 E ⧸ (IsLocalRing.maximalIdeal T.V).comap φ) := Ideal.finiteQuotientOfFreeOfNeBot _ hb`.
+
+Take `⟨y, hy⟩` from `exists_sub_bar_notMem H hm.ne_top`. Take `⟨α, hα⟩` from `exists_pair H.bar (bar_bar H) φ hy (q := p) (by rw [map_natCast]; exact_mod_cast hp0)`. Set `c1 : Fin i → Fin n` to `fun b => g ⟨b, by omega⟩`. Set `c2 : Fin i → Fin n` to `fun b => g ⟨i + b, by omega⟩`. Establish `h11 : ∀ b b', c1 b = c1 b' ↔ b = b'` using `fun b b' => by simp [c1, hg.eq_iff, Fin.ext_iff]`.
+
+Establish `h22 : ∀ b b', c2 b = c2 b' ↔ b = b'` using `fun b b' => by simp [c2, hg.eq_iff, Fin.ext_iff]`. Establish `h12 : ∀ b b', c1 b ≠ c2 b'` using `fun b b' h => by`. Use `congrArg Fin.val (hg h)` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h21 : ∀ b b', c2 b ≠ c1 b'` using `fun b b' => (h12 b' b).symm`. Establish `hS : ∀ b j, j ∉ Set.range g → j ≠ c1 b ∧ j ≠ c2 b` using `fun b j hj => ⟨fun h => hj ⟨_, h.symm⟩, fun h => hj ⟨_, h.symm⟩⟩`. Use `⟨fun b j => if j = c1 b then 1 else if j = c2 b then α else 0, fun b j hj => ?_, ⟨c1, ?_⟩, fun N => ?_⟩` and prove the remaining obligations. Simplify using `[hS b j hj]`. Establish `: (Matrix.of fun b b' => if c1 b' = c1 b then (1 : T.V) else if c1 b' = c2 b then α else 0) = 1`.
+
+Use extensionality with `b b'`. Simplify using `[h11, h12, Matrix.one_apply, eq_comm]`. Rewrite using `[this, Matrix.det_one]`. Conclude with `isUnit_one`. Take `⟨u, a, ⟨z1, hz1⟩, ⟨z2, hz2⟩, hh⟩` from `hα N`.
+
+Rewrite `hz1`, `hz2` using `[map_natCast]`. Use `⟨fun b j => if j = c1 b then u else if j = c2 b then a else 0, fun b j hj => ?_, fun b j => ?_, fun b b' => ?_⟩` and prove the remaining obligations. Simplify using `[hS b j hj]`. Simplify using `only split_ifs`. Conclude with `⟨z1, by rw [← hz1, hφ]; rfl⟩`.
+
+Conclude with `⟨z2, by rw [← hz2, hφ]; rfl⟩`. Conclude with `⟨0, by simp⟩`. Simplify using `only`. Rewrite using `[Fintype.sum_eq_add (c1 b) (c2 b) (h12 b b) fun j hj => by simp [hj.1, hj.2]]`. Distinguish the cases in `hbb : b = b'`.
+
+Substitute `hbb` using the available equality. Simplify `hh` using `[h21]`. Simplify using `[h11, h12, h21, h22, hbb]`.
+-/
 theorem exists_isIsoCols (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (p : ℕ) [Fact p.Prime]
     (hp : ¬ IsUnit (p : T.V)) (τ : E →+* ℂ) {i n : ℕ} (g : Fin (2 * i) → Fin n) (hg : Function.Injective g) :
     ∃ B : Fin i → Fin n → T.V, IsIsoCols c T io p τ (Set.range g) B := by
@@ -241,6 +326,13 @@ theorem exists_isIsoCols (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (p : ℕ
       simpa [h21] using hh
     · simp [h11, h12, h21, h22, hbb]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l _ c p _ la T io e ho cx n hn`. Establish `hp` using `not_isUnit_of_overLa la ho`. Choose the witnesses or unpack the hypotheses as in `⟨blk⟩ : Nonempty ((Σ f : {f : Lt1 Dw // cx f ≠ 0}, Fin (2 * rk f.1)) ↪ Fin n) := by`. Apply `Function.Embedding.nonempty_of_card_le` to reduce the goal to its premises. Rewrite using `[Fintype.card_sigma, Fintype.card_fin]`.
+
+Simplify using `only [Fintype.card_fin]`. Rewrite `hn` using `[← Finset.sum_filter]`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun f => cx f ≠ 0) (by simp) (fun f : Lt1 Dw => 2 * rk f)]` and apply the resulting hypothesis. Use `choose B hB using fun f : {f : Lt1 Dw // cx f ≠ 0} => exists_isIsoCols c T io p hp f.1.1 (fun j => blk ⟨f, j⟩) fun j j' h => by simpa using blk.injective h`. Use `⟨fun f => if h : cx f ≠ 0 then B ⟨f, h⟩ else 0, blk, fun f => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [dif_pos f.2]`. Conclude with `hB f`.
+-/
 theorem exists_isCols : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la.1 T.V io e → ∀ (cx : Lt1 Dw → ℕ) (n : ℕ), (∑ f : Lt1 Dw, if cx f ≠ 0 then 2 * rk f else 0) ≤ n → ∃ B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T.V, IsCols c T io p cx B := by
   intro E _ _ _ H Dw l _ c p _ la T io e ho cx n hn
   classical

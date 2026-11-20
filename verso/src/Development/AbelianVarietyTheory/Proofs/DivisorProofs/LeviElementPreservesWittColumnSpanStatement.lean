@@ -8,6 +8,9 @@ open GlobalTheory.Doubling (absE conjUnit)
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdTorus.levi_mulVec_col | exact GlobalTheory.IdTorus.levi_mulVec_col | (intros; apply GlobalTheory.IdTorus.levi_mulVec_col <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.levi_element_preserves_witt_column_span : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ {S : Finset (Fin r)}, (∀ k ∈ S, ∀ i, i ≤ k → i ∈ S) →
     ∀ {g : GAd σ J}, g ∈ levi σ J X Y S → ∀ k ∈ S,

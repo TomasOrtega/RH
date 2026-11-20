@@ -13,6 +13,11 @@ namespace GlobalTheory
 
 open CategoryTheory.Limits
 
+/- English proof (translation)
+Set `𝒰` to `X.openCoverOfIsOpenCover U hU`. Establish `hc : ∀ a b, pullback.fst (U a).ι (U b).ι ≫ f a = pullback.snd (U a).ι (U b).ι ≫ f b`. Introduce `a b`. Establish `P` using `isPullback_opens_inf (U a) (U b)`. Rewrite using `[← cancel_epi P.isoPullback.hom, IsPullback.isoPullback_hom_fst_assoc, IsPullback.isoPullback_hom_snd_assoc]`.
+
+Conclude with `hf a b`. Conclude with `⟨𝒰.glueMorphisms f hc, fun k => 𝒰.ι_glueMorphisms f hc k⟩`.
+-/
 theorem glue_homs_of_opens_cover {X Y : Scheme.{0}} {κ : Type} (U : κ → X.Opens) (hU : ⨆ k, U k = ⊤)
     (f : ∀ k, (U k).toScheme ⟶ Y)
     (hf : ∀ k l, X.homOfLE (inf_le_left : U k ⊓ U l ≤ U k) ≫ f k =

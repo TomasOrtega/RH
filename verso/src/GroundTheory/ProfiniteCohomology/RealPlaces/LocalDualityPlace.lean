@@ -18,6 +18,15 @@ variable {K : FiniteSubfield} (v : InfinitePlace K.1) (hv : v.IsReal)
 
 include hv in
 
+/- English proof (translation)
+Take `⟨F, hF, w, ⟨e⟩⟩` from `exists_infCompletion_algEquiv v`. Establish `: (w : InfinitePlace F.1).LiesOver v` using `w.2`. Use `⟨F, hF, w, ?_, ⟨e⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hw`. Establish `h1 : Module.finrank v.Completion (AlgebraicClosure v.Completion) = 1`.
+
+Rewrite using `[← e.toLinearEquiv.finrank_eq]`. Conclude with `(GroundTheory.Global.InfinitePlace.finrank_completion_eq_one_iff (w : InfinitePlace F.1)).2 fun h => hw h.2`. Establish `hbt` using `Subalgebra.bot_eq_top_of_finrank_eq_one h1`. Take `⟨i, hi⟩` from `IsAlgClosed.exists_pow_nat_eq (-1 : AlgebraicClosure v.Completion) (n := 2) (by norm_num)`. Establish `hmem : i ∈ (⊥ : Subalgebra v.Completion (AlgebraicClosure v.Completion))`.
+
+Rewrite using `[hbt]`. Conclude with `Algebra.mem_top`. Take `⟨x, hx⟩` from `Algebra.mem_bot.1 hmem`. Establish `hx2 : x ^ 2 = -1`. Apply `(algebraMap v.Completion (AlgebraicClosure v.Completion)).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_pow, hx, hi, map_neg, map_one]`. Establish `h` using `congrArg (InfinitePlace.Completion.extensionEmbeddingOfIsReal hv) hx2`. Rewrite `h` using `[map_pow, map_neg, map_one]`. Use polynomial arithmetic with `[sq_nonneg (InfinitePlace.Completion.extensionEmbeddingOfIsReal hv x)]`.
+-/
 theorem exists_isComplex_infCompletion_algEquiv : ∃ (F : FiniteSubfield) (_ : Fact (K ≤ F))
     (w : v.placesOver F.1), (w : InfinitePlace F.1).IsComplex ∧
       Nonempty ((w : InfinitePlace F.1).Completion ≃ₐ[v.Completion] AlgebraicClosure v.Completion) := by
@@ -45,6 +54,9 @@ theorem exists_isComplex_infCompletion_algEquiv : ∃ (F : FiniteSubfield) (_ : 
 
 include hv in
 
+/- English proof (translation)
+Take `⟨F, _, w, hw, ⟨e⟩⟩` from `exists_isComplex_infCompletion_algEquiv v hv`. Establish `: (w : InfinitePlace F.1).LiesOver v` using `w.2`. Rewrite using `[← e.toLinearEquiv.finrank_eq]`. Conclude with `(GroundTheory.Global.InfinitePlace.finrank_completion_eq_two_iff (w : InfinitePlace F.1)).2 ⟨hv, hw⟩`.
+-/
 theorem finrank_infAlgClosure_of_isReal :
     Module.finrank v.Completion (AlgebraicClosure v.Completion) = 2 := by
   obtain ⟨F, _, w, hw, ⟨e⟩⟩ := exists_isComplex_infCompletion_algEquiv v hv
@@ -54,6 +66,11 @@ theorem finrank_infAlgClosure_of_isReal :
 
 include hv in
 
+/- English proof (translation)
+Take `⟨F, _, w, hw, ⟨e⟩⟩` from `exists_isComplex_infCompletion_algEquiv v hv`. Establish `: (w : InfinitePlace F.1).LiesOver v` using `w.2`. Establish `hy' : e.symm y ≠ 0` using `(map_ne_zero e.symm).2 hy`. Establish `hn : Algebra.norm v.Completion y ≠ 0` using `Algebra.norm_ne_zero_iff.2 hy`. Establish `hmem : Units.mk0 _ hn ∈ GroundTheory.Global.InfinitePlace.normSubgroup v (w : InfinitePlace F.1)` using `⟨Units.mk0 _ hy', Units.ext (by`.
+
+Rewrite using `[Units.coe_map, Units.val_mk0, Units.val_mk0]`. Conclude with `Algebra.norm_eq_of_algEquiv e.symm y)⟩`. Conclude with `(GroundTheory.Global.InfinitePlace.mem_normSubgroup_iff hv hw _).1 hmem`.
+-/
 theorem extensionEmbeddingOfIsReal_norm_pos (y : AlgebraicClosure v.Completion) (hy : y ≠ 0) :
     0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal hv (Algebra.norm v.Completion y) := by
   obtain ⟨F, _, w, hw, ⟨e⟩⟩ := exists_isComplex_infCompletion_algEquiv v hv
@@ -68,6 +85,11 @@ theorem extensionEmbeddingOfIsReal_norm_pos (y : AlgebraicClosure v.Completion) 
 
 include hv in
 
+/- English proof (translation)
+Introduce and unpack `⟨y, hy⟩`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[Algebra.norm_zero]`. Conclude with `zero_ne_one (neg_eq_zero.1 hy.symm).symm`.
+
+Establish `h` using `extensionEmbeddingOfIsReal_norm_pos v hv y hy0`. Rewrite `h` using `[hy, map_neg, map_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem neg_one_not_mem_range_norm_infAlgClosure :
     (-1 : v.Completion) ∉ Set.range (Algebra.norm v.Completion :
       AlgebraicClosure v.Completion → v.Completion) := by
@@ -81,11 +103,17 @@ theorem neg_one_not_mem_range_norm_infAlgClosure :
   linarith
 
 include hv in
+/- English proof (translation)
+Rewrite using `[← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, finrank_infAlgClosure_of_isReal v hv]`.
+-/
 theorem card_realGal_eq_two :
     Fintype.card Gal(AlgebraicClosure v.Completion / v.Completion) = 2 := by
   rw [← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, finrank_infAlgClosure_of_isReal v hv]
 
 include hv in
+/- English proof (translation)
+Establish `h` using `card_realGal_eq_two v hv`. Take `⟨c, d, hcd⟩` from `Fintype.exists_pair_of_one_lt_card (by omega : 1 < Fintype.card Gal(AlgebraicClosure v.Completion / v.Completion))`. Distinguish the cases in `hc : c = 1`. Conclude with `⟨d, fun hd => hcd (hc.trans hd.symm)⟩`. Conclude with `⟨c, hc⟩`.
+-/
 theorem exists_ne_one_gal_infAlgClosure :
     ∃ c : Gal(AlgebraicClosure v.Completion / v.Completion), c ≠ 1 := by
   have h := card_realGal_eq_two v hv
@@ -98,9 +126,15 @@ theorem exists_ne_one_gal_infAlgClosure :
 def realConj : Gal(AlgebraicClosure v.Completion / v.Completion) :=
   (exists_ne_one_gal_infAlgClosure v hv).choose
 
+/- English proof (translation)
+The claim follows from `(exists_ne_one_gal_infAlgClosure v hv).choose_spec`.
+-/
 theorem realConj_ne_one : realConj v hv ≠ 1 :=
   (exists_ne_one_gal_infAlgClosure v hv).choose_spec
 
+/- English proof (translation)
+Distinguish the cases in `hg : g = 1`. Conclude with `Or.inl hg`. Conclude with `Or.inr (eq_of_ne_one_of_card_eq_two (card_realGal_eq_two v hv) hg (realConj_ne_one v hv))`.
+-/
 theorem eq_one_or_eq_realConj (g : Gal(AlgebraicClosure v.Completion / v.Completion)) :
     g = 1 ∨ g = realConj v hv := by
   by_cases hg : g = 1
@@ -108,6 +142,15 @@ theorem eq_one_or_eq_realConj (g : Gal(AlgebraicClosure v.Completion / v.Complet
   · exact Or.inr (eq_of_ne_one_of_card_eq_two (card_realGal_eq_two v hv) hg
       (realConj_ne_one v hv))
 
+/- English proof (translation)
+Establish `hu0 : (u : AlgebraicClosure v.Completion) ≠ 0` using `Units.ne_zero _`. Establish `hprod : algebraMap v.Completion (AlgebraicClosure v.Completion) (Algebra.norm v.Completion (u : AlgebraicClosure v.Completion)) = (u : AlgebraicClosure v.Completion) * realConj v hv u`. Rewrite using `[Algebra.norm_eq_prod_automorphisms]`. Establish `huniv : (Finset.univ : Finset Gal(AlgebraicClosure v.Completion / v.Completion)) = {1, realConj v hv}`. Use extensionality with `g`.
+
+Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]`. Conclude with `eq_one_or_eq_realConj v hv g`. Rewrite using `[huniv, Finset.prod_pair (realConj_ne_one v hv).symm, AlgEquiv.one_apply]`. Establish `hr : Algebra.norm v.Completion (u : AlgebraicClosure v.Completion) = 1`. Establish `hpos` using `extensionEmbeddingOfIsReal_norm_pos v hv u hu0`.
+
+Establish `hpow : (InfinitePlace.Completion.extensionEmbeddingOfIsReal hv (Algebra.norm v.Completion (u : AlgebraicClosure v.Completion))) ^ k = 1`. Rewrite using `[← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, huk, Units.val_one, map_one, map_one]`. Establish `h1` using `(pow_eq_one_iff_of_nonneg hpos.le hk.ne').1 hpow`. Apply `(InfinitePlace.Completion.extensionEmbeddingOfIsReal hv).injective` to reduce the goal to its premises. Rewrite using `[h1, map_one]`.
+
+Rewrite `hprod` using `[hr, map_one]`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `eq_inv_of_mul_eq_one_right hprod.symm`.
+-/
 theorem realConj_apply_of_pow_eq_one (u : (AlgebraicClosure v.Completion)ˣ) {k : ℕ} (hk : 0 < k)
     (huk : u ^ k = 1) : realConj v hv (u : AlgebraicClosure v.Completion) = ((u⁻¹ : (AlgebraicClosure v.Completion)ˣ) : AlgebraicClosure v.Completion) := by
   classical
@@ -134,6 +177,11 @@ theorem realConj_apply_of_pow_eq_one (u : (AlgebraicClosure v.Completion)ˣ) {k 
   rw [Units.val_inv_eq_inv_val]
   exact eq_inv_of_mul_eq_one_right hprod.symm
 
+/- English proof (translation)
+Take `⟨k, hk, hkζ⟩` from `hζ`. Take `⟨u, rfl⟩ : ∃ u : (AlgebraicClosure v.Completion)ˣ, (Additive.ofMul u : Additive (AlgebraicClosure v.Completion)ˣ) = ζ` from `⟨Additive.toMul (ζ : Additive (AlgebraicClosure v.Completion)ˣ), rfl⟩`. Establish `huk : u ^ k = 1`. Express the relevant statement in the definitionally equal form `k • (Additive.ofMul u : Additive (AlgebraicClosure v.Completion)ˣ) = 0 at hkζ`. Rewrite `hkζ` using `[← ofMul_pow, ofMul_eq_zero]`. Then use the resulting hypothesis.
+
+Use `show Additive.ofMul (galUnitsHom v.Completion (AlgebraicClosure v.Completion) (realConj v hv) u) = Additive.ofMul u⁻¹`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_galUnitsHom_apply]`. Conclude with `realConj_apply_of_pow_eq_one v hv u hk huk`.
+-/
 theorem realConj_galUnits_of_torsion (ζ : galUnits.{0} v.Completion (AlgebraicClosure v.Completion))
     (hζ : ∃ k : ℕ, 0 < k ∧ k • ζ = 0) :
     (galUnits.{0} v.Completion (AlgebraicClosure v.Completion)).ρ (realConj v hv) ζ = -ζ := by
@@ -151,10 +199,16 @@ theorem realConj_galUnits_of_torsion (ζ : galUnits.{0} v.Completion (AlgebraicC
   rw [coe_galUnitsHom_apply]
   exact realConj_apply_of_pow_eq_one v hv u hk huk
 
+/- English proof (translation)
+The claim follows from `nonempty_addEquiv_galRootsOfUnity (Nat.cast_ne_zero.2 hk.ne')`.
+-/
 theorem nonempty_addEquiv_galRootsOfUnity_infAlgClosure (k : ℕ) (hk : 0 < k) :
     Nonempty (galRootsOfUnity.{0} v.Completion (AlgebraicClosure v.Completion) k ≃+ ZMod k) :=
   nonempty_addEquiv_galRootsOfUnity (Nat.cast_ne_zero.2 hk.ne')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem realInv_eq_placeInv
     (x : cohomology (galUnits.{0} v.Completion (AlgebraicClosure v.Completion)) 2) :
     realInv v.Completion (AlgebraicClosure v.Completion) (infAlgClosure_finrank_le_two v)

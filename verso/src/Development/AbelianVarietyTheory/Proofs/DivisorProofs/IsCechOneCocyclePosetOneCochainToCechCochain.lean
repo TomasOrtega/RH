@@ -14,6 +14,11 @@ namespace GlobalTheory.CechCmp
 variable {I : Type} [Finite I] {X : Scheme.{0}} {R : Type} [CommRing R] (s : X ⟶ Sp R) (U : I → X.Opens)
   (hU : ∀ i, IsAffineOpen (U i)) (hinf : ∀ V W : X.Opens, IsAffineOpen V → IsAffineOpen W → IsAffineOpen (V ⊓ W))
 
+/- English proof (translation)
+Establish `e` using `Z1.comp ⟨f, hf⟩ (homOfLE hxP).op (homOfLE hPK).op`. Establish `hc : (homOfLE hxP).op ≫ (homOfLE hPK).op = (homOfLE hxK).op` using `Subsingleton.elim _ _`. Rewrite `e` using `[hc]`. Establish `e'` using `congrArg (fun b => rsT (cv s U hU hinf (op K) b) W) e`. Simplify using `only [map_add, GlobalTheory.KS.rsT_add] at e'`.
+
+Rewrite `e'` using `[cv_mp s U hU hinf (homOfLE hPK).op]`. Rewrite `e'` using `[GlobalTheory.KS.rsT_rsT (O₁ := cap U (op K).unop) (cap_mono U hPK) hW]`. Rewrite using `[e']`. Normalize the expressions using the abelian group laws.
+-/
 theorem toCech_cocycle_read (f : GlobalTheory.CatCoh.C1 (capF s U hU hinf)) (hf : f ∈ Z1 (capF s U hU hinf))
     (x : I) (P K : NE I) (hxP : P ≤ NE.single x) (hPK : K ≤ P) (hxK : K ≤ NE.single x)
     (W : X.Opens) (hW : W ≤ cap U K) :
@@ -30,6 +35,15 @@ theorem toCech_cocycle_read (f : GlobalTheory.CatCoh.C1 (capF s U hU hinf)) (hf 
   rw [e']
   abel
 
+/- English proof (translation)
+Introduce `i j k`. Set `K : NE I` to `OrderDual.toDual ⟨{i, j, k}, Set.insert_nonempty i {j, k}⟩`. Establish `hi : i ∈ K.set` using `Set.mem_insert i _`. Establish `hj : j ∈ K.set` using `Set.mem_insert_of_mem i (Set.mem_insert j _)`. Establish `hk : k ∈ K.set` using `Set.mem_insert_of_mem i (Set.mem_insert_of_mem j rfl)`.
+
+Establish `sgl : ∀ {a : I}, a ∈ K.set → K ≤ NE.single a` using `fun ha => NE.le_iff.2 (Set.singleton_subset_iff.2 ha)`. Establish `pr : ∀ {a b : I}, a ∈ K.set → b ∈ K.set → K ≤ NE.pair a b` using `fun ha hb => NE.le_iff.2 (Set.insert_subset ha (Set.singleton_subset_iff.2 hb))`. Establish `hW : U i ⊓ U j ⊓ U k ≤ cap U K` using `le_iInf₂ fun x hx => by`. Break down `hx with rfl | rfl | rfl` into its components or cases. Conclude with `inf_le_left.trans inf_le_left`.
+
+Conclude with `inf_le_left.trans inf_le_right`. Conclude with `inf_le_right`. Establish `hij : U i ⊓ U j ⊓ U k ≤ U i ⊓ U j` using `inf_le_left`. Establish `hjk : U i ⊓ U j ⊓ U k ≤ U j ⊓ U k` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `hik : U i ⊓ U j ⊓ U k ≤ U i ⊓ U k` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`.
+
+Simplify using `only [toCech_apply, GlobalTheory.KS.rsT_sub]`. Rewrite using `[GlobalTheory.KS.rsT_rsT (cap_pair U i j).ge hij, GlobalTheory.KS.rsT_rsT (cap_pair U i j).ge hij, GlobalTheory.KS.rsT_rsT (cap_pair U j k).ge hjk, GlobalTheory.KS.rsT_rsT (cap_pair U j k).ge hjk, GlobalTheory.KS.rsT_rsT (cap_pair U i k).ge hik, GlobalTheory.KS.rsT_rsT (cap_pair …`. Rewrite using `[toCech_cocycle_read s U hU hinf f hf i _ K _ (pr hi hj) (sgl hi) _ hW, toCech_cocycle_read s U hU hinf f hf j _ K _ (pr hi hj) (sgl hj) _ hW, toCech_cocycle_read s U hU hinf f hf j _ K _ (pr hj hk) (sgl hj) _ hW, toCech_cocycle_read s U hU hinf f hf k _ K _ (pr hj hk) (sgl hk) _ …`. Normalize the expressions using the abelian group laws.
+-/
 theorem toCech_isCoc (f : GlobalTheory.CatCoh.C1 (capF s U hU hinf)) (hf : f ∈ Z1 (capF s U hU hinf)) :
     IsCoc U (toCech s U hU hinf f) := by
   intro i j k
@@ -60,6 +74,9 @@ theorem toCech_isCoc (f : GlobalTheory.CatCoh.C1 (capF s U hU hinf)) (hf : f ∈
     toCech_cocycle_read s U hU hinf f hf k _ K _ (pr hi hk) (sgl hk) _ hW]
   abel
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ s U hU hinf f hf` and use `toCech_isCoc s U hU hinf f hf`.
+-/
 theorem isCoc_toCech : ∀ (I : Type) [Finite I] (X : Scheme.{0}) (R : Type) [CommRing R] (s : X ⟶ Sp R) (U : I → X.Opens) (hU : ∀ i, IsAffineOpen (U i)) (hinf : ∀ V W : X.Opens, IsAffineOpen V → IsAffineOpen W → IsAffineOpen (V ⊓ W)), ∀ f : GlobalTheory.CatCoh.C1 (capF s U hU hinf), f ∈ Z1 (capF s U hU hinf) → IsCoc U (toCech s U hU hinf f) :=
   fun _ _ _ _ _ s U hU hinf f hf => toCech_isCoc s U hU hinf f hf
 

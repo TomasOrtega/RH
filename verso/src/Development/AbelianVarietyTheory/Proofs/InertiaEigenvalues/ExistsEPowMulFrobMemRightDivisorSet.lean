@@ -17,6 +17,25 @@ def boundedCoeffSeries (O K : Type) [CommRing O] [NormedField K] [IsUltrametricD
   add_mem' hf hg := Hom.bdd_add hf hg
   algebraMap_mem' c := ⟨1, (A O K).algebraMap_mem c⟩
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ _ _ P Q F`. Establish `key : ∀ {μ : Type} [Fintype μ] (Y : ZMod a → Matrix μ μ K⟦X⟧), (∀ τ i j, Y τ i j ∈ invE l e (A O K)) → ∃ n : ℕ, ∀ τ i j, E K l e ^ n * Y τ i j ∈ A O K`. Introduce `μ _ Y hY`. Use `choose n hn using fun p : ZMod a × μ × μ => hY p.1 p.2.1 p.2.2`. Use `⟨Finset.univ.sup n, fun τ i j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) (Finset.mem_univ (τ, i, j)))`. Rewrite using `[hc, pow_add, mul_assoc]`. Conclude with `mul_mem (pow_mem (E_mem l e _) c) (hn (τ, i, j))`. Take `⟨n₁, hn₁⟩` from `key P.mx P.mx_mem`. Take `⟨n₂, hn₂⟩` from `key Q.mxInv Q.mxInv_mem`.
+
+Use `⟨n₁ + n₂, fun τ h hh => ?_⟩` and prove the remaining obligations. Take `⟨hb, Y, ⟨c, hc⟩, hF⟩` from `hh`. Establish `hA : ∀ f ∈ A O K, f ∈ boundedCoeffSeries O K` using `fun f hf => ⟨1, hf⟩`. Establish `hfr : ∀ f ∈ boundedCoeffSeries O K, frob K l f ∈ boundedCoeffSeries O K`. Introduce and unpack `f ⟨d, hd⟩`.
+
+Use `⟨d, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_frob]`. Use `split_ifs`. Conclude with `hd _`. Simplify using `using (norm_nonneg _).trans (hd 0)`.
+
+Establish `hE : E K l e ∈ A O K` using `E_mem l e _`. Use `⟨mul_mem (hA _ (pow_mem hE _)) (hfr _ hb), (E K l e ^ n₁ • P.mx τ) * Y.map (frob K l) * (E K l e ^ n₂ • Q.mxInv τ), ?_, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ i j, ((E K l e ^ n₁ • P.mx τ) * Y.map (frob K l) * (E K l e ^ n₂ • Q.mxInv τ)) i j ∈ boundedCoeffSeries O K`. Introduce `i j`. Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`.
+
+Conclude with `sum_mem fun k _ => mul_mem (sum_mem fun m _ => mul_mem (hA _ (hn₁ τ i m)) (hfr _ ⟨c, fun n => hc m k n⟩)) (hA _ (hn₂ τ k j))`. Use `choose d hd using hmem`. Take `⟨D, hD⟩` from `Finite.exists_le (fun p : ι × κ => d p.1 p.2)`. Conclude with `⟨D, fun i j n => (hd i j n).trans (hD (i, j))⟩`. Establish `hmap : (F.mat (τ - 1)).map (frob K l) * Y.map (frob K l) = frob K l h • (1 : Matrix κ κ K⟦X⟧)`.
+
+Establish `h1 : (F.mat (τ - 1) * Y).map (frob K l) = (F.mat (τ - 1)).map (frob K l) * Y.map (frob K l)` using `Matrix.map_mul (f := (frob K l).toRingHom)`. Rewrite using `[← h1, hF]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc, mul_comm]`. Use `_ = (E K l e ^ n₁ * E K l e ^ n₂) • (Q.mx τ * ((F.mat (τ - 1)).map (frob K l) * Y.map (frob K l)) * Q.mxInv τ) := by`. Rewrite using `[F.comm, Matrix.mul_assoc (Q.mx τ)]`. Use `_ = (E K l e ^ (n₁ + n₂) * frob K l h) • (1 : Matrix κ κ K⟦X⟧) := by`.
+
+Rewrite using `[hmap, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Q.mx_mul_mxInv, smul_smul, pow_add]`.
+-/
 theorem Hom.exists_E_pow_mul_frob_mem_rdivSet : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (κ : Type) [Fintype κ] [DecidableEq κ] (P : PhiMod O K l e a ι) (Q : PhiMod O K l e a κ) (F : GlobalTheory.BK.Hom P Q), ∃ M : ℕ, ∀ τ, ∀ h ∈ F.rdivSet (τ - 1), E K l e ^ M * frob K l h ∈ F.rdivSet τ := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ _ _ P Q F
   have key : ∀ {μ : Type} [Fintype μ] (Y : ZMod a → Matrix μ μ K⟦X⟧),

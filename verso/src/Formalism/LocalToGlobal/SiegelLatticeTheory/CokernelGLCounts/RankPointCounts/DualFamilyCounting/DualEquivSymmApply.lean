@@ -11,6 +11,9 @@ open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.Cnt
 variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F]
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`.
+-/
 theorem mem_dual {Y : Type} [AddCommGroup Y] [Module K Y] [Module (𝓞 K) Y] [IsScalarTower (𝓞 K) K Y]
     {B : Y →ₗ⋆[K] Y →ₗ[K] K} {L : Submodule (𝓞 K) Y} {x : Y} :
     x ∈ Formalism.HermitianLatticesTheory.dual B L ↔ ∀ y ∈ L, B y x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -19,6 +22,11 @@ theorem mem_dual {Y : Type} [AddCommGroup Y] [Module K Y] [Module (𝓞 K) Y] [I
 
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {X : Submodule K V}
 
+/- English proof (translation)
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨x.2, mem_dual.mpr ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `mem_dual.mp hx.2 y hy`. Introduce and unpack `⟨hvX, hv⟩`. Use `⟨⟨v, hvX⟩, ⟨by simp, mem_dual.mpr fun y hy => ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `mem_dual.mp hv _ (coe_mem_push.mpr hy)`.
+-/
 theorem push_dualIn (L : Submodule (𝓞 K) ↥X) :
     push X (dualIn (formOn h X) ⊤ L) = dualIn h X (push X L) := by
   ext v
@@ -33,6 +41,9 @@ theorem push_dualIn (L : Submodule (𝓞 K) ↥X) :
 
 variable {𝔭 : Ideal (𝓞 F)}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `push X _ = _`. Rewrite using `[push_locF X hp, push_dualIn]`.
+-/
 theorem map_incl_dual (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X) :
     (locF 𝔭 (dualIn (formOn h X) ⊤ L)).map (incl X) = locF 𝔭 (dualIn h X (push X L)) := by
   change push X _ = _
@@ -43,10 +54,16 @@ def dualEquiv (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X) :
   (Submodule.equivMapOfInjective (incl X) (incl_injective X) _).trans
     (LinearEquiv.ofEq _ _ (map_incl_dual hp L))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualEquiv_apply (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X)
     (x : ↥(locF 𝔭 (dualIn (formOn h X) ⊤ L))) :
     ((dualEquiv (h := h) hp L x : ↥(locF 𝔭 (dualIn h X (push X L)))) : V) = ((x : ↥X) : V) := rfl
 
+/- English proof (translation)
+Use `dualEquiv_apply hp L ((dualEquiv (h := h) hp L).symm y)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+-/
 theorem dualEquiv_symm_apply (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X)
     (y : ↥(locF 𝔭 (dualIn h X (push X L)))) :
     ((((dualEquiv (h := h) hp L).symm y : ↥(locF 𝔭 (dualIn (formOn h X) ⊤ L))) : ↥X) : V) = (y : V) := by
@@ -54,6 +71,9 @@ theorem dualEquiv_symm_apply (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X)
   rw [LinearEquiv.apply_symm_apply] at this
   exact this.symm
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_equiv_eq_comap_symm]`. Use extensionality with `y`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply]`. Rewrite using `[← coe_mem_push (X := X), push_locF X hp]`. Conclude with `Iff.of_eq (congrArg (fun v => v ∈ locF 𝔭 (push X L)) (dualEquiv_symm_apply (h := h) hp L y))`.
+-/
 theorem map_dualEquiv (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X) :
     ((locF 𝔭 L).comap (locF 𝔭 (dualIn (formOn h X) ⊤ L)).subtype).map
         (dualEquiv (h := h) hp L : _ →ₗ[𝓞 K] _) =
@@ -68,10 +88,16 @@ def discEquiv (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X) :
     DiscMod (formOn h X) ⊤ L 𝔭 ≃ₗ[𝓞 K] DiscMod h X (push X L) 𝔭 :=
   Submodule.Quotient.equiv _ _ (dualEquiv (h := h) hp L) (map_dualEquiv (h := h) hp L)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem discEquiv_mk (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X)
     (x : ↥(locF 𝔭 (dualIn (formOn h X) ⊤ L))) :
     discEquiv (h := h) hp L (Submodule.Quotient.mk x) = Submodule.Quotient.mk (dualEquiv (h := h) hp L x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem discEquiv_symm_mk (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X)
     (y : ↥(locF 𝔭 (dualIn h X (push X L)))) :
     (discEquiv (h := h) hp L).symm (Submodule.Quotient.mk y) =
@@ -90,6 +116,17 @@ def endEquiv (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X) :
     intro z
     simp
 
+/- English proof (translation)
+Unfold `discAut`. Use `symm`. Use `Nat.card_congr (Equiv.subtypeEquiv (endEquiv (h := h) hp L) ?_)` and prove the remaining obligations. Introduce `P`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H x y x' y' hx hy`. Establish `hx' : Submodule.Quotient.mk ((dualEquiv (h` using `h) hp L).symm x') = P (Submodule.Quotient.mk ((dualEquiv (h := h) hp L).symm x)) := by`. Rewrite using `[← discEquiv_symm_mk, hx, ← discEquiv_symm_mk]`. Express the relevant statement in the definitionally equal form `(discEquiv (h := h) hp L).symm ((discEquiv (h := h) hp L) (P ((discEquiv (h := h) hp L).symm _))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+
+Establish `hy' : Submodule.Quotient.mk ((dualEquiv (h` using `h) hp L).symm y') = P (Submodule.Quotient.mk ((dualEquiv (h := h) hp L).symm y)) := by`. Rewrite using `[← discEquiv_symm_mk, hy, ← discEquiv_symm_mk]`. Express the relevant statement in the definitionally equal form `(discEquiv (h := h) hp L).symm ((discEquiv (h := h) hp L) (P ((discEquiv (h := h) hp L).symm _))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Use `H _ _ _ _ hx' hy'` as an intermediate fact.
+
+Simplify `this` using `only [formOn_apply, dualEquiv_symm_apply]`. Introduce `H x y x' y' hx hy`. Establish `hx' : Submodule.Quotient.mk (dualEquiv (h` using `h) hp L x') = (endEquiv (h := h) hp L P) (Submodule.Quotient.mk (dualEquiv (h := h) hp L x)) := by`. Express the relevant statement in the definitionally equal form `_ = (discEquiv (h := h) hp L) (P ((discEquiv (h := h) hp L).symm (Submodule.Quotient.mk _)))`. Rewrite using `[discEquiv_symm_mk, LinearEquiv.symm_apply_apply, ← hx, discEquiv_mk]`.
+
+Establish `hy' : Submodule.Quotient.mk (dualEquiv (h` using `h) hp L y') = (endEquiv (h := h) hp L P) (Submodule.Quotient.mk (dualEquiv (h := h) hp L y)) := by`. Express the relevant statement in the definitionally equal form `_ = (discEquiv (h := h) hp L) (P ((discEquiv (h := h) hp L).symm (Submodule.Quotient.mk _)))`. Rewrite using `[discEquiv_symm_mk, LinearEquiv.symm_apply_apply, ← hy, discEquiv_mk]`. Use `H _ _ _ _ hx' hy'` as an intermediate fact. Simplify `this` using `only [formOn_apply, dualEquiv_apply]`.
+-/
 theorem discAut_push (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) ↥X) :
     discAut h X (push X L) 𝔭 = discAut (formOn h X) ⊤ L 𝔭 := by
   unfold discAut

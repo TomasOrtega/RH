@@ -13,6 +13,9 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace
 open GlobalTheory.ArithmeticHeightTower GlobalTheory.CompanionTheory.MPDict ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MPSmooth.ptP_chart | exact GlobalTheory.CompanionTheory.MPSmooth.ptP_chart | (intros; apply GlobalTheory.CompanionTheory.MPSmooth.ptP_chart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.projective_point_chart_ratio : ∀ (N : ℕ) (c : Fin (N + 1)) (w : Fin (N + 1) → ℂ), w c ≠ 0 →
   (∀ i, GlobalTheory.CompanionTheory.MPSmooth.ptP N c w ∈ ptsIn (PSpace.str ℤ N) σ₀ (chart ℤ N i) ↔ w i ≠ 0) ∧
   ∀ i j, GlobalTheory.CompanionTheory.MPSmooth.ptP N c w ∈ ptsIn (PSpace.str ℤ N) σ₀ (chart ℤ N i) →

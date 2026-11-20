@@ -11,6 +11,11 @@ section Fit
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Establish `hv : ∀ j : ι, ∃ v : ι → R, M.mulVecLin v = N.mulVecLin (Pi.single j 1)` using `fun j => h (LinearMap.mem_range_self _ _)`. Use `choose v hv using hv`. Use `⟨Matrix.of fun i j => v j i, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `hij` using `congrFun (hv j) i`.
+
+Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_single_one] at hij`. Rewrite using `[Matrix.mul_apply]`. Use `hij using 1` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mulVec, dotProduct]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_mul_eq_of_range_le {ι : Type*} [Fintype ι] [DecidableEq ι] (M N : Matrix ι ι R)
     (h : LinearMap.range N.mulVecLin ≤ LinearMap.range M.mulVecLin) : ∃ G : Matrix ι ι R, M * G = N := by
   classical
@@ -26,6 +31,15 @@ theorem exists_mul_eq_of_range_le {ι : Type*} [Fintype ι] [DecidableEq ι] (M 
   · simp [Matrix.mulVec, dotProduct]
   · simp
 
+/- English proof (translation)
+Take `⟨G, hG⟩` from `exists_mul_eq_of_range_le M N h.le`. Take `⟨H, hH⟩` from `exists_mul_eq_of_range_le N M h.ge`. Establish `hGH : G * H = 1`. Establish `h1 : M * (G * H) = M * 1` using `by rw [← Matrix.mul_assoc, hG, hH, Matrix.mul_one]`. Establish `h2 : (M.adjugate * M) * (G * H) = (M.adjugate * M) * 1`.
+
+Rewrite using `[Matrix.mul_assoc, h1, ← Matrix.mul_assoc]`. Rewrite `h2` using `[Matrix.adjugate_mul]`. Use extensionality with `i j`. Establish `h3` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.smul_mul, Matrix.one_mul, Matrix.mul_one, Matrix.smul_apply, smul_eq_mul] at h3`.
+
+Establish `h4 : M.det * ((G * H) i j - (1 : Matrix ι ι R) i j) = 0` using `by rw [mul_sub, h3, sub_self]`. Conclude with `sub_eq_zero.mp (hM _ h4)`. Establish `hu : IsUnit G.det`. Establish `h5` using `congrArg Matrix.det hGH`. Rewrite `h5` using `[Matrix.det_mul, Matrix.det_one]`.
+
+Conclude with `⟨⟨G.det, H.det, h5, by rw [mul_comm]; exact h5⟩, rfl⟩`. Conclude with `⟨hu.unit, by rw [IsUnit.unit_spec, ← hG, Matrix.det_mul]⟩`.
+-/
 theorem det_assoc_of_range_eq {ι : Type*} [Fintype ι] [DecidableEq ι] (M N : Matrix ι ι R)
     (h : LinearMap.range N.mulVecLin = LinearMap.range M.mulVecLin) (hM : ∀ x, M.det * x = 0 → x = 0) :
     ∃ u : Rˣ, N.det = M.det * u := by
@@ -47,6 +61,31 @@ theorem det_assoc_of_range_eq {ι : Type*} [Fintype ι] [DecidableEq ι] (M N : 
     exact ⟨⟨G.det, H.det, h5, by rw [mul_comm]; exact h5⟩, rfl⟩
   exact ⟨hu.unit, by rw [IsUnit.unit_spec, ← hG, Matrix.det_mul]⟩
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `Module.projective_lifting_property (Submodule.mkQ (LinearMap.range Z'.mulVecLin)) ((φ : _ →ₗ[R] _) ∘ₗ Submodule.mkQ (LinearMap.range Z.mulVecLin)) (Submodule.mkQ_surjective _)`. Establish `hA' : ∀ v, Submodule.mkQ (LinearMap.range Z'.mulVecLin) (LinearMap.toMatrix' A *ᵥ v) = φ (Submodule.mkQ (LinearMap.range Z.mulVecLin) v)`. Introduce `v`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Conclude with `LinearMap.congr_fun hA v`.
+
+Take `⟨B, hB⟩` from `Module.projective_lifting_property (Submodule.mkQ (LinearMap.range Z.mulVecLin)) ((φ.symm : _ →ₗ[R] _) ∘ₗ Submodule.mkQ (LinearMap.range Z'.mulVecLin)) (Submodule.mkQ_surjective _)`. Establish `hB' : ∀ v, Submodule.mkQ (LinearMap.range Z.mulVecLin) (LinearMap.toMatrix' B *ᵥ v) = φ.symm (Submodule.mkQ (LinearMap.range Z'.mulVecLin) v)`. Introduce `v`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Conclude with `LinearMap.congr_fun hB v`.
+
+Use `set a := LinearMap.toMatrix' A`. Use `set b := LinearMap.toMatrix' B`. Set `M1 : Matrix (n ⊕ n) (n ⊕ n) R` to `fromBlocks 1 0 (-a) Z'`. Set `M2 : Matrix (n ⊕ n) (n ⊕ n) R` to `fromBlocks Z (-b) 0 1`. Establish `c1 : ∀ u : n ⊕ n → R, u ∈ LinearMap.range M1.mulVecLin ↔ Submodule.mkQ (LinearMap.range Z'.mulVecLin) (a *ᵥ (u ∘ Sum.inl) + u ∘ Sum.inr) = 0`.
+
+Introduce `u`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨y ∘ Sum.inr, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mulVecLin_apply, M1, Matrix.fromBlocks_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.neg_mulVec]`. Introduce and unpack `⟨y, hy⟩`. Use `⟨Sum.elim (u ∘ Sum.inl) y, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mulVecLin_apply] at hy ⊢`. Simplify using `only [M1, Matrix.fromBlocks_mulVec]`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Simplify using the standard rewrite rules.
+
+Simplify using `only [Sum.elim_inr, Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.one_mulVec, Matrix.zero_mulVec, add_zero, Matrix.neg_mulVec, hy]`. Simplify using the standard rewrite rules. Establish `c2 : ∀ u : n ⊕ n → R, u ∈ LinearMap.range M2.mulVecLin ↔ Submodule.mkQ (LinearMap.range Z.mulVecLin) (u ∘ Sum.inl + b *ᵥ (u ∘ Sum.inr)) = 0`. Introduce `u`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨y ∘ Sum.inl, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, M2, Matrix.fromBlocks_mulVec]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.neg_mulVec]`. Introduce and unpack `⟨y, hy⟩`. Use `⟨Sum.elim y (u ∘ Sum.inr), ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply] at hy ⊢`. Simplify using `only [M2, Matrix.fromBlocks_mulVec]`.
+
+Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Simplify using `only [Sum.elim_inl, Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.neg_mulVec, hy]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Establish `key : LinearMap.range M1.mulVecLin = LinearMap.range M2.mulVecLin`. Use extensionality with `u`. Rewrite using `[c1, c2, map_add, hA', ← φ.apply_symm_apply (Submodule.mkQ _ (u ∘ Sum.inr)), ← hB', ← map_add, ← map_add, LinearEquiv.map_eq_zero_iff]`. Establish `d1 : M1.det = Z'.det` using `by simp [M1, Matrix.det_fromBlocks_zero₁₂]`. Establish `d2 : M2.det = Z.det` using `by simp [M2]`.
+
+Take `⟨u, hu⟩` from `det_assoc_of_range_eq M2 M1 key (by rw [d2]; exact hZ)`. Conclude with `⟨u, by rw [← d1, hu, d2]⟩`.
+-/
 theorem det_assoc_of_cok {n : Type*} [Fintype n] [DecidableEq n] (Z Z' : Matrix n n R)
     (φ : ((n → R) ⧸ LinearMap.range Z.mulVecLin) ≃ₗ[R] ((n → R) ⧸ LinearMap.range Z'.mulVecLin))
     (hZ : ∀ x, Z.det * x = 0 → x = 0) : ∃ u : Rˣ, Z'.det = Z.det * u := by
@@ -122,6 +161,11 @@ section Pts
 
 variable {K S : Type} [Zero K] [CommRing S]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => intro i j`. Simplify using `[Formalism.MainNotions.S.Loc.ptEntryL, ptEntry]`. Consider the case `cons b L ih`. Introduce `i j`.
+
+Take `⟨t, s⟩` from `b`. Simplify using `only [Formalism.MainNotions.S.Loc.ptEntryL, List.map_cons, ptEntry, ih]`.
+-/
 theorem ptEntryL_eq (L : List (Sˣ × ℕ+)) : ∀ i j : ℕ,
     Formalism.MainNotions.S.Loc.ptEntryL L i j = ptEntry (L.map fun b => ((b.1 : S), (b.2 : ℕ))) i j := by
   induction L with
@@ -131,6 +175,9 @@ theorem ptEntryL_eq (L : List (Sˣ × ℕ+)) : ∀ i j : ℕ,
     obtain ⟨t, s⟩ := b
     simp only [Formalism.MainNotions.S.Loc.ptEntryL, List.map_cons, ptEntry, ih]
 
+/- English proof (translation)
+The claim follows from `| [], a, L, h => by simp only [modBlocks, Option.some.injEq] at h subst h; rfl | (t, s) :: l, a, L, h => by simp only [modBlocks] at h split_ifs at h with hu obtain ⟨L1, hL1, rfl⟩ := Option.map_eq_some_iff.1 h simp only [List.map_cons, mapBlocks, modBlocks_map f l (a + s) L1 hL1] …`.
+-/
 theorem modBlocks_map {A : Type} (f : ℕ → ℕ → A → S) : ∀ (l : List (A × ℕ)) (a : ℕ) (L : List (Sˣ × ℕ+)),
     modBlocks f a l = some L → L.map (fun b => ((b.1 : S), (b.2 : ℕ))) = mapBlocks f a l
   | [], a, L, h => by
@@ -143,17 +190,26 @@ theorem modBlocks_map {A : Type} (f : ℕ → ℕ → A → S) : ∀ (l : List (
     simp only [List.map_cons, mapBlocks, modBlocks_map f l (a + s) L1 hL1]
     rfl
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | (t, s) :: l, a => by simp [mapBlocks, mapBlocks_snd f l (a + s)]`.
+-/
 theorem mapBlocks_snd {A B : Type} (f : ℕ → ℕ → A → B) : ∀ (l : List (A × ℕ)) (a : ℕ),
     (mapBlocks f a l).map Prod.snd = l.map Prod.snd
   | [], _ => rfl
   | (t, s) :: l, a => by simp [mapBlocks, mapBlocks_snd f l (a + s)]
 
+/- English proof (translation)
+The claim follows from `| [], l1, a => by simp [mapBlocks] | (t, s) :: l0, l1, a => by simp only [List.cons_append, mapBlocks, mapBlocks_append f l0 l1 (a + s), List.map_cons, List.sum_cons, add_assoc]`.
+-/
 theorem mapBlocks_append {A B : Type} (f : ℕ → ℕ → A → B) : ∀ (l0 l1 : List (A × ℕ)) (a : ℕ),
     mapBlocks f a (l0 ++ l1) = mapBlocks f a l0 ++ mapBlocks f (a + (l0.map Prod.snd).sum) l1
   | [], l1, a => by simp [mapBlocks]
   | (t, s) :: l0, l1, a => by
     simp only [List.cons_append, mapBlocks, mapBlocks_append f l0 l1 (a + s), List.map_cons, List.sum_cons, add_assoc]
 
+/- English proof (translation)
+The claim follows from `| [], l1, i, j, _ => by simp | (t, s) :: l0, l1, i, j, hi => by simp only [List.map_cons, List.sum_cons] at hi ⊢ simp only [List.cons_append, ptEntry] rw [if_neg (by omega)] by_cases h2 : s ≤ j · rw [if_pos ⟨by omega, h2⟩, ptEntry_append_ge l0 l1 (i - s) (j - s) (by omega)] by_ca …`.
+-/
 theorem ptEntry_append_ge {L : Type} [Zero L] : ∀ (l0 l1 : List (L × ℕ)) (i j : ℕ), (l0.map Prod.snd).sum ≤ i →
     ptEntry (l0 ++ l1) i j = if (l0.map Prod.snd).sum ≤ j then
       ptEntry l1 (i - (l0.map Prod.snd).sum) (j - (l0.map Prod.snd).sum) else 0
@@ -175,6 +231,9 @@ section Scale
 
 variable {K S : Type} [Field K] [CommRing S]
 
+/- English proof (translation)
+The claim follows from `| [], a, i, j, _, _, _, _ => by simp [mapBlocks, ptEntry] | (t, s) :: l, a, i, j, ha, hi, hj, hn => by simp only [mapBlocks, ptEntry] by_cases h1 : i < s ∧ j < s · rw [if_pos h1, if_pos h1] by_cases h2 : i + j + 1 = s · rw [if_pos h2, if_pos h2] exact H a s t _ _ ha (by omega) (b …`.
+-/
 theorem ptEntry_scale (ι : K →+* S) (g : ℕ → ℕ → K → S) (ρ : ℕ → S) (κ : S) (r : ℕ)
     (H : ∀ a s t x y, 1 ≤ a → a - 1 ≤ x → a - 1 ≤ y → x + y + 1 = 2 * (a - 1) + s → x ≤ r → y ≤ r →
       ¬ (x = r ∧ y = r) → g a s t = ρ x * ρ y * κ * ι t) :
@@ -198,6 +257,11 @@ theorem ptEntry_scale (ι : K →+* S) (g : ℕ → ℕ → K → S) (ρ : ℕ �
         rw [e1, e2]
       · rw [if_neg h2, if_neg h2]; simp
 
+/- English proof (translation)
+Establish `h : (Matrix.of fun x y => ρ x * ρ y * κ * ι (P x y)) = Matrix.diagonal ρ * (κ • (P.map ι)) * Matrix.diagonal ρ`. Use extensionality with `x y`. Simplify using `only [Matrix.of_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : (P.map ι).det = ι P.det` using `by rw [RingHom.map_det, RingHom.mapMatrix_apply]`.
+
+Rewrite using `[h, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_smul, hm, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_scaled {n : ℕ} (ι : K →+* S) (ρ : Fin n → S) (κ : S) (P : Matrix (Fin n) (Fin n) K) :
     (Matrix.of fun x y => ρ x * ρ y * κ * ι (P x y)).det = (∏ x, ρ x) ^ 2 * κ ^ n * ι P.det := by
   have h : (Matrix.of fun x y => ρ x * ρ y * κ * ι (P x y)) =
@@ -210,6 +274,17 @@ theorem det_scaled {n : ℕ} (ι : K →+* S) (ρ : Fin n → S) (κ : S) (P : M
   rw [h, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_smul, hm, Fintype.card_fin]
   ring
 
+/- English proof (translation)
+Take `⟨c, hc⟩ : ∃ c, c = A (Fin.last n) (Fin.last n) - B (Fin.last n) (Fin.last n)` from `⟨_, rfl⟩`. Rewrite using `[← hc]`. Establish `hA : A = B.updateRow (Fin.last n) (B (Fin.last n) + c • (Pi.single (Fin.last n) (1 : S) : Fin (n + 1) → S))`. Use extensionality with `x y`. Distinguish the cases in `hx : x = Fin.last n`.
+
+Substitute `hx` using the available equality. Distinguish the cases in `hy : y = Fin.last n`. Substitute `hy` using the available equality. Simplify using `[hc]`. Simplify using `[Matrix.updateRow_apply, Pi.single_apply, hy, h _ y (fun hh => hy hh.2)]`.
+
+Simplify using `[Matrix.updateRow_apply, hx, h x y (fun hh => hx hh.1)]`. Rewrite using `[hA, Matrix.det_updateRow_add, Matrix.updateRow_eq_self, Matrix.det_updateRow_smul]`. Use `congr 2`. Rewrite using `[Matrix.det_succ_row _ (Fin.last n), Finset.sum_eq_single (Fin.last n)]`. Rewrite using `[Matrix.updateRow_self, Pi.single_eq_same, Matrix.submatrix_updateRow_succAbove, Fin.succAbove_last, Fin.val_last, Even.neg_one_pow (⟨n, rfl⟩ : Even (n + n))]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hj`. Rewrite using `[Matrix.updateRow_self, Pi.single_eq_of_ne hj]`. Expand and normalize the polynomial expressions, which then agree. Introduce `hn`.
+
+Conclude with `absurd (Finset.mem_univ _) hn`.
+-/
 theorem det_corner {n : ℕ} (A B : Matrix (Fin (n + 1)) (Fin (n + 1)) S)
     (h : ∀ x y, ¬ (x = Fin.last n ∧ y = Fin.last n) → A x y = B x y) :
     A.det = B.det + (A (Fin.last n) (Fin.last n) - B (Fin.last n) (Fin.last n)) *
@@ -245,6 +320,11 @@ section LocLemmas
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Rewrite `h` using `[Loc.Model.Kk_succ]`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Establish `e : (fun c => Mo.BB a c * (starRingEnd ℂ) (Mo.BB b c) / (Mo.nAut c : ℂ)) = fun _ => 0`.
+
+Use function extensionality and compare the values at `c`. Distinguish the cases in `h1 : Mo.BB a c = 0`. Simplify using `[h1]`. Simplify using `[hc c h1]`. Rewrite using `[e, tsum_zero]`.
+-/
 theorem kk_ne (Mo : Loc.Model F E) {m : ℕ} (a b : Loc.Pt E (m + 1)) (h : Mo.Kk (m + 1) a b ≠ 0) :
     ∃ c, Mo.BB a c ≠ 0 ∧ Mo.BB b c ≠ 0 := by
   rw [Loc.Model.Kk_succ] at h
@@ -258,6 +338,11 @@ theorem kk_ne (Mo : Loc.Model F E) {m : ℕ} (a b : Loc.Pt E (m + 1)) (h : Mo.Kk
     · simp [hc c h1]
   rw [e, tsum_zero]
 
+/- English proof (translation)
+Establish `hlt : Matrix.BlockTriangular (Loc.uLow x) OrderDual.toDual`. Introduce `i j hij`. Establish `hij' : i < j` using `hij`. Simplify using `only [Loc.uLow]`. Rewrite using `[if_neg (ne_of_lt hij'), dif_neg (lt_asymm hij')]`.
+
+Rewrite using `[Matrix.det_of_lowerTriangular _ hlt]`. Simplify using `[Loc.uLow]`.
+-/
 theorem det_uLow {n : ℕ} (x : Loc.IL n → E) : (Loc.uLow x).det = 1 := by
   have hlt : Matrix.BlockTriangular (Loc.uLow x) OrderDual.toDual := by
     intro i j hij
@@ -267,6 +352,11 @@ theorem det_uLow {n : ℕ} (x : Loc.IL n → E) : (Loc.uLow x).det = 1 := by
   rw [Matrix.det_of_lowerTriangular _ hlt]
   simp [Loc.uLow]
 
+/- English proof (translation)
+Establish `hut : Matrix.BlockTriangular (Loc.uUp w y) id`. Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Simplify using `only [Loc.uUp]`. Rewrite using `[if_neg (ne_of_gt hij'), dif_neg (fun h => lt_asymm hij' h.1)]`.
+
+Rewrite using `[Matrix.det_of_upperTriangular hut]`. Simplify using `[Loc.uUp]`.
+-/
 theorem det_uUp {n : ℕ} (w : Loc.Pt E n) (y : Loc.IN w → E) : (Loc.uUp w y).det = 1 := by
   have hut : Matrix.BlockTriangular (Loc.uUp w y) id := by
     intro i j hij
@@ -276,6 +366,15 @@ theorem det_uUp {n : ℕ} (w : Loc.Pt E n) (y : Loc.IN w → E) : (Loc.uUp w y).
   rw [Matrix.det_of_upperTriangular hut]
   simp [Loc.uUp]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨xy, hxy⟩ : ∃ xy, Mo.bbIntegrand w c xy ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Unfold `Loc.Model.BB`.
+
+Simplify using `[hc]`. Unfold `Loc.Model.bbIntegrand at hxy`. Simplify using `only at hxy`. Use `split_ifs at hxy with hZ`. Establish `h1` using `left_ne_zero_of_mul hxy`.
+
+Rewrite `h1` using `[Nat.cast_ne_zero]`. Unfold `Loc.Model.nIso at h1`. Use `⟨_, ?_, (Nat.card_ne_zero.1 h1).1⟩` and prove the remaining obligations. Use `show (Loc.uLow xy.1 * w.mat * Loc.uUp w xy.2).det = w.mat.det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, det_uLow, det_uUp, one_mul, mul_one]`.
+
+Conclude with `absurd rfl hxy`.
+-/
 theorem bb_ne (Mo : Loc.Model F E) {m : ℕ} (w : Loc.Pt E (m + 1)) (c : Mo.Cls m) (h : Mo.BB w c ≠ 0) :
     ∃ ZZ : Mo.Mat (m + 1), (ZZ.Z.map Mo.R.subtype).det = w.mat.det ∧ Nonempty (Mo.Iso ZZ (Quotient.out c)) := by
   obtain ⟨xy, hxy⟩ : ∃ xy, Mo.bbIntegrand w c xy ≠ 0 := by
@@ -295,6 +394,13 @@ theorem bb_ne (Mo : Loc.Model F E) {m : ℕ} (w : Loc.Pt E (m + 1)) (c : Mo.Cls 
     rw [Matrix.det_mul, Matrix.det_mul, det_uLow, det_uUp, one_mul, mul_one]
   · exact absurd rfl hxy
 
+/- English proof (translation)
+Unfold `Loc.Model.modK`. Use `congr 2`. Use extensionality with `z`. Simplify using `only [Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨((u : Mo.R) : E) * y, Mo.R.mul_mem (u : Mo.R).2 hy, by ring⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨(((u⁻¹ : (Mo.R)ˣ) : Mo.R) : E) * y, Mo.R.mul_mem (((u⁻¹ : (Mo.R)ˣ) : Mo.R)).2 hy, ?_⟩` and prove the remaining obligations. Establish `e : ((u : Mo.R) : E) * (((u⁻¹ : (Mo.R)ˣ) : Mo.R) : E) = 1`.
+
+Rewrite using `[← MulMemClass.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem modK_mul_unit (Mo : Loc.Model F E) (x : E) (u : (Mo.R)ˣ) : Mo.modK (x * ((u : Mo.R) : E)) = Mo.modK x := by
   unfold Loc.Model.modK
   congr 2
@@ -311,6 +417,13 @@ theorem modK_mul_unit (Mo : Loc.Model F E) (x : E) (u : (Mo.R)ˣ) : Mo.modK (x *
         = x * (((u : Mo.R) : E) * (((u⁻¹ : (Mo.R)ˣ) : Mo.R) : E)) * y := by ring
       _ = x * y := by rw [e, mul_one]
 
+/- English proof (translation)
+Take `⟨c, hc1, hc2⟩` from `kk_ne Mo a b h`. Take `⟨Z1, hZ1, i1⟩` from `bb_ne Mo a c hc1`. Take `⟨Z2, hZ2, i2⟩` from `bb_ne Mo b c hc2`. Establish `hreg : ∀ x, Z1.Z.det * x = 0 → x = 0`. Introduce `x hx`.
+
+Establish `e` using `congrArg Mo.R.subtype hx`. Rewrite `e` using `[map_mul, RingHom.map_det, map_zero]`. Establish `e2` using `(Z1.unit.mul_right_eq_zero).1 e`. Conclude with `Subtype.val_injective (e2.trans (map_zero Mo.R.subtype).symm)`. Take `⟨u, hu⟩` from `det_assoc_of_cok Z1.Z Z2.Z ((Classical.choice i1).1.trans (Classical.choice i2).1.symm) hreg`.
+
+Use `⟨hZ1 ▸ Z1.unit, u, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Mo.R.subtype hu`. Rewrite `e` using `[map_mul, RingHom.map_det, RingHom.map_det]`. Rewrite using `[← hZ1, ← hZ2]`. Conclude with `e`.
+-/
 theorem det_assoc_pts (Mo : Loc.Model F E) {m : ℕ} (a b : Loc.Pt E (m + 1)) (h : Mo.Kk (m + 1) a b ≠ 0) :
     IsUnit a.mat.det ∧ ∃ u : (Mo.R)ˣ, b.mat.det = a.mat.det * ((u : Mo.R) : E) := by
   obtain ⟨c, hc1, hc2⟩ := kk_ne Mo a b h
@@ -340,6 +453,9 @@ def tw (p : PlF D) (n : ℕ) : (D.s.atP p).Ep :=
   | some sg => sg.e.symm (1, (-1) ^ n)
   | none => 1
 
+/- English proof (translation)
+Unfold `twist tw`. Break down `hs : (D.s.atP p).split with _ | sg` into its components or cases. Simplify using the standard rewrite rules. Apply `sg.e.injective` to reduce the goal to its premises. Apply the tactic sequence `ext <;> simp [map_mul]`.
+-/
 theorem twist_eq (p : PlF D) (s : ℕ) (x : (D.s.atP p).Ep) : twist p s x = tw p s * x := by
   unfold twist tw
   rcases hs : (D.s.atP p).split with _ | sg
@@ -347,6 +463,9 @@ theorem twist_eq (p : PlF D) (s : ℕ) (x : (D.s.atP p).Ep) : twist p s x = tw p
   · apply sg.e.injective
     ext <;> simp [map_mul]
 
+/- English proof (translation)
+Unfold `tw`. Break down `hs : (D.s.atP p).split with _ | sg` into its components or cases. Simplify using the standard rewrite rules. Simplify using `only`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul, pow_add]`.
+-/
 theorem tw_add (p : PlF D) (m n : ℕ) : tw p (m + n) = tw p m * tw p n := by
   unfold tw
   rcases hs : (D.s.atP p).split with _ | sg
@@ -354,6 +473,11 @@ theorem tw_add (p : PlF D) (m n : ℕ) : tw p (m + n) = tw p m * tw p n := by
   · simp only
     rw [← map_mul, Prod.mk_mul_mk, one_mul, pow_add]
 
+/- English proof (translation)
+Unfold `tw`. Break down `hs : (D.s.atP p).split with _ | sg` into its components or cases. Simplify using the standard rewrite rules. Simplify using `only`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul, ← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+
+Conclude with `map_one _`.
+-/
 theorem tw_mul_self (p : PlF D) (n : ℕ) : tw p n * tw p n = 1 := by
   unfold tw
   rcases hs : (D.s.atP p).split with _ | sg
@@ -370,6 +494,17 @@ def rho (δ : ∀ p, (D.s.atP p).Fp) (p : PlF D) (x : ℕ) : (D.s.atP p).Ep :=
 
 def kap (p : PlF D) : (D.s.atP p).Ep := tw p 1 * Ring.inverse (qE p)
 
+/- English proof (translation)
+Introduce `a s t x y ha hx hy hxy hxr hyr hn`. Establish `hc : ¬ (a + s - 1 = D.R.rS + 1 ∧ s = 1)`. Introduce and unpack `⟨h1, h2⟩`. Apply `hn` to reduce the goal to its premises. Apply the tactic sequence `constructor <;> omega`.
+
+Unfold `blkTop`. Rewrite using `[if_neg hc]`. Unfold `blkMod`. Rewrite using `[if_neg hc, sub_zero]`. Unfold `tMod`.
+
+Rewrite using `[twist_eq]`. Establish `hν : nu D.R.rS a (a + s - 1) = (D.R.rS - x) + (D.R.rS - y)`. Unfold `nu`. Use linear arithmetic over natural numbers and integers. Establish `htw : tw p x * tw p y * tw p 1 = tw p s`.
+
+Rewrite using `[← tw_add, ← tw_add]`. Establish `e : x + y + 1 = a - 1 + (a - 1) + s` using `by omega`. Rewrite using `[e, tw_add, tw_add, tw_mul_self, one_mul]`. Rewrite using `[hν, ← Ring.inverse_pow, pow_add, ← htw]`. Simplify using `only [rho, kap, cB]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blkTop_eq (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) :
     ∀ a s t x y, 1 ≤ a → a - 1 ≤ x → a - 1 ≤ y → x + y + 1 = 2 * (a - 1) + s → x ≤ D.R.rS → y ≤ D.R.rS →
       ¬ (x = D.R.rS ∧ y = D.R.rS) → blkTop δ T T' p a s t = rho δ p x * rho δ p y * kap p * (D.s.atP p).ιE t := by
@@ -395,6 +530,13 @@ theorem blkTop_eq (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) :
   simp only [rho, kap, cB]
   ring
 
+/- English proof (translation)
+Unfold `modPt at ha`. Consider the cases of `hm : modBlocks (blkTop δ T T' p) 1 w.1 with`. Consider the case `none => rw [hm] at ha`. Simplify using `at ha`. Consider the case `some l`.
+
+Rewrite `ha` using `[hm]`. Simplify using `only at ha`. Use `split_ifs at ha with hsz`. Simplify using `only [Option.some.injEq] at ha`. Substitute `ha` using the available equality.
+
+Conclude with `modBlocks_map (blkTop δ T T' p) w.1 1 l hm`.
+-/
 theorem modPt_blocks (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) {n : ℕ} (w : Point D.host.E n)
     (a : Loc.Pt (D.s.atP p).Ep n) (ha : modPt δ T T' p w = some a) :
     a.blocks.map (fun b => ((b.1 : (D.s.atP p).Ep), (b.2 : ℕ))) = mapBlocks (blkTop δ T T' p) 1 w.1 := by
@@ -409,6 +551,11 @@ theorem modPt_blocks (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) {n : 
     subst ha
     exact modBlocks_map (blkTop δ T T' p) w.1 1 l hm
 
+/- English proof (translation)
+Establish `hx` using `x.isLt`. Establish `hy` using `y.isLt`. Establish `h1` using `ptEntry_scale (D.s.atP p).ιE (blkTop δ T T' p) (rho δ p) (kap p) D.R.rS (blkTop_eq δ T T' p) w.1 1 x y le_rfl (by omega) (by omega) (fun h => hn ⟨Fin.ext (by simp only [Fin.val_last]; omega), Fin.ext (by simp only [Fin.val_last]; omega)⟩)`. Use `show Formalism.MainNotions.S.Loc.ptEntryL a.blocks x y = _`. Rewrite using `[ptEntryL_eq, modPt_blocks δ T T' p w a ha, h1]`.
+
+Simplify using `[ptMat]`.
+-/
 theorem amat_eq (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1))
     (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)) (ha : modPt δ T T' p w = some a) (x y : Fin (D.R.rS + 1))
     (hn : ¬ (x = Fin.last D.R.rS ∧ y = Fin.last D.R.rS)) :
@@ -422,17 +569,30 @@ theorem amat_eq (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) (w : Point
   rw [ptEntryL_eq, modPt_blocks δ T T' p w a ha, h1]
   simp [ptMat]
 
+/- English proof (translation)
+Unfold `Dmin`. Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression.
+-/
 theorem dmin_top (w : Point D.host.E (D.R.rS + 1)) : Dmin w (D.R.rS + 1) = (ptMat w).det := by
   unfold Dmin
   rw [dif_pos le_rfl]
   rfl
 
+/- English proof (translation)
+Unfold `Dmin`. Rewrite using `[dif_pos (Nat.le_succ _)]`. Both sides reduce to the same expression.
+-/
 theorem dmin_r (w : Point D.host.E (D.R.rS + 1)) :
     Dmin w D.R.rS = ((ptMat w).submatrix Fin.castSucc Fin.castSucc).det := by
   unfold Dmin
   rw [dif_pos (Nat.le_succ _)]
   rfl
 
+/- English proof (translation)
+Use `set B : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep := Matrix.of fun x y => rho δ p x * rho δ p y * kap p * (D.s.atP p).ιE (ptMat w x y) with hBdef`. Establish `hc` using `det_corner a.mat B (fun x y hxy => by rw [amat_eq δ T T' p w a ha x y hxy]; rfl)`. Establish `hBd : B.det = ((∏ x : Fin (D.R.rS + 1), rho δ p x) ^ 2 * kap p ^ (D.R.rS + 1)) * (D.s.atP p).ιE (Dmin w (D.R.rS + 1))`. Rewrite using `[hBdef, det_scaled, dmin_top]`. Establish `hm : B.submatrix Fin.castSucc Fin.castSucc = Matrix.of fun x y : Fin D.R.rS => rho δ p x * rho δ p y * kap p * (D.s.atP p).ιE (((ptMat w).submatrix Fin.castSucc Fin.castSucc) x y)`.
+
+Use extensionality with `x y`. Simplify using `[hBdef]`. Establish `hBm : (B.submatrix Fin.castSucc Fin.castSucc).det = ((∏ x : Fin D.R.rS, rho δ p x) ^ 2 * kap p ^ D.R.rS) * (D.s.atP p).ιE (Dmin w D.R.rS)`. Rewrite using `[hm, det_scaled, dmin_r]`. Establish `hBl : B (Fin.last _) (Fin.last _) = rho δ p D.R.rS * rho δ p D.R.rS * kap p * (D.s.atP p).ιE (ptMat w (Fin.last _) (Fin.last _))`.
+
+Simplify using `[hBdef]`. Rewrite using `[hc, hBd, hBm, hBl]`.
+-/
 theorem det_amat (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1))
     (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)) (ha : modPt δ T T' p w = some a) :
     a.mat.det = ((∏ x : Fin (D.R.rS + 1), rho δ p x) ^ 2 * kap p ^ (D.R.rS + 1)) *
@@ -459,6 +619,19 @@ theorem det_amat (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) (w : Poin
     simp [hBdef]
   rw [hc, hBd, hBm, hBl]
 
+/- English proof (translation)
+Establish `hne : w.1 ≠ []`. Introduce `h`. Use `w.2.2` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+
+Take `⟨l0, b, hb⟩ : ∃ l0 b, w.1 = l0 ++ [b]` from `⟨w.1.dropLast, w.1.getLast hne, (List.dropLast_append_getLast hne).symm⟩`. Take `⟨t, s⟩` from `b`. Establish `hmem` using `w.2.1 (t, s) (by rw [hb]; simp)`. Establish `hsum : (l0.map Prod.snd).sum + s = D.R.rS + 1`. Use `w.2.2` as an intermediate fact.
+
+Rewrite `this` using `[hb]`. Simplify using `using this`. Distinguish the cases in `hs : s = 1`. Substitute `hs` using the available equality. Conclude with `⟨l0, t, hb, by omega⟩`.
+
+It suffices to derive a contradiction. Apply `hD` to reduce the goal to its premises. Rewrite using `[dmin_r]`. Apply `Matrix.det_eq_zero_of_row_eq_zero ⟨(l0.map Prod.snd).sum, by have := hmem.2; omega⟩` to reduce the goal to its premises. Introduce `j`.
+
+Apply the tactic sequence `show ptEntry w.1 (l0.map Prod.snd).sum j.val = 0`. Rewrite using `[hb, ptEntry_append_ge _ _ _ _ le_rfl]`. Use `split_ifs with hj`. Use `j.isLt` as an intermediate fact. Use `hmem.2` as an intermediate fact.
+
+Simplify using `only [ptEntry, Nat.sub_self]`. Rewrite using `[if_pos ⟨by omega, by omega⟩, if_neg (by omega)]`. Both sides reduce to the same expression.
+-/
 theorem last_one (w : Point D.host.E (D.R.rS + 1)) (hD : Dmin w D.R.rS ≠ 0) :
     ∃ l0 t, w.1 = l0 ++ [(t, 1)] ∧ (l0.map Prod.snd).sum = D.R.rS := by
   have hne : w.1 ≠ [] := by
@@ -490,6 +663,9 @@ theorem last_one (w : Point D.host.E (D.R.rS + 1)) (hD : Dmin w D.R.rS ≠ 0) :
       rw [if_pos ⟨by omega, by omega⟩, if_neg (by omega)]
     · rfl
 
+/- English proof (translation)
+Apply the tactic sequence `show ptEntry w.1 (Fin.last D.R.rS).val (Fin.last D.R.rS).val = t`. Rewrite using `[hb, Fin.val_last, ptEntry_append_ge l0 [(t, 1)] D.R.rS D.R.rS (by omega), if_pos (by omega), hs, Nat.sub_self]`. Simplify using `[ptEntry]`.
+-/
 theorem ptMat_last (w : Point D.host.E (D.R.rS + 1)) (l0 : List (D.host.E × ℕ)) (t : D.host.E)
     (hb : w.1 = l0 ++ [(t, 1)]) (hs : (l0.map Prod.snd).sum = D.R.rS) :
     ptMat w (Fin.last _) (Fin.last _) = t := by
@@ -498,6 +674,17 @@ theorem ptMat_last (w : Point D.host.E (D.R.rS + 1)) (l0 : List (D.host.E × ℕ
     Nat.sub_self]
   simp [ptEntry]
 
+/- English proof (translation)
+Rewrite using `[dmin_top, dmin_r]`. Establish `hrow : ∀ j : Fin (D.R.rS + 1), j ≠ Fin.last _ → ptMat w (Fin.last _) j = 0`. Introduce `j hj`. Apply the tactic sequence `show ptEntry w.1 _ _ = 0`. Rewrite using `[hb, Fin.val_last, ptEntry_append_ge l0 [(t, 1)] _ _ (by omega), if_neg]`.
+
+Introduce `hle`. Apply `hj` to reduce the goal to its premises. Use `ext`. Simplify using `only [Fin.val_last]`. Use `j.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Set `B : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E` to `Matrix.of fun x y => if x = Fin.last _ ∧ y = Fin.last _ then 0 else ptMat w x y`. Establish `hB0 : B.det = 0` using `Matrix.det_eq_zero_of_row_eq_zero (Fin.last _) (fun j => by`. Distinguish the cases in `hj : j = Fin.last _`. Simplify using `[B, hj]`.
+
+Simplify using `[B, hj, hrow j hj])`. Establish `hc` using `det_corner (ptMat w) B (fun x y hxy => by`. Simplify using `only [B, Matrix.of_apply]`. Rewrite using `[if_neg hxy])`. Establish `hsub : B.submatrix Fin.castSucc Fin.castSucc = (ptMat w).submatrix Fin.castSucc Fin.castSucc`.
+
+Use extensionality with `x y`. Simplify using `[B, Fin.castSucc_ne_last]`. Establish `hBl : B (Fin.last _) (Fin.last _) = 0` using `by simp [B]`. Rewrite using `[hc, hB0, hsub, ptMat_last w l0 t hb hs, hBl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dmin_snoc (w : Point D.host.E (D.R.rS + 1)) (l0 : List (D.host.E × ℕ)) (t : D.host.E)
     (hb : w.1 = l0 ++ [(t, 1)]) (hs : (l0.map Prod.snd).sum = D.R.rS) :
     Dmin w (D.R.rS + 1) = Dmin w D.R.rS * t := by
@@ -528,6 +715,9 @@ theorem dmin_snoc (w : Point D.host.E (D.R.rS + 1)) (l0 : List (D.host.E × ℕ)
   rw [hc, hB0, hsub, ptMat_last w l0 t hb hs, hBl]
   ring
 
+/- English proof (translation)
+Use `show Formalism.MainNotions.S.Loc.ptEntryL a.blocks (Fin.last D.R.rS).val (Fin.last D.R.rS).val = _`. Rewrite using `[ptEntryL_eq, modPt_blocks δ T T' p w a ha, hb, mapBlocks_append, Fin.val_last, ptEntry_append_ge _ _ _ _ (by rw [mapBlocks_snd]; omega), if_pos (by rw [mapBlocks_snd]; omega), mapBlocks_snd, hs, Nat.sub_self]`. Simplify using `[mapBlocks, ptEntry, Nat.add_comm 1 D.R.rS]`.
+-/
 theorem amat_last (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1))
     (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)) (ha : modPt δ T T' p w = some a) (l0 : List (D.host.E × ℕ))
     (t : D.host.E) (hb : w.1 = l0 ++ [(t, 1)]) (hs : (l0.map Prod.snd).sum = D.R.rS) :
@@ -538,6 +728,9 @@ theorem amat_last (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) (w : Poi
     mapBlocks_snd, hs, Nat.sub_self]
   simp [mapBlocks, ptEntry, Nat.add_comm 1 D.R.rS]
 
+/- English proof (translation)
+Unfold `zetaOf`. Rewrite using `[dmin_snoc w l0 t hb hs, mul_div_cancel_left₀ t h0]`.
+-/
 theorem zeta_snoc (w : Point D.host.E (D.R.rS + 1)) (h0 : Dmin w D.R.rS ≠ 0) (l0 : List (D.host.E × ℕ))
     (t : D.host.E) (hb : w.1 = l0 ++ [(t, 1)]) (hs : (l0.map Prod.snd).sum = D.R.rS) : zetaOf w = t := by
   unfold zetaOf
@@ -545,6 +738,31 @@ theorem zeta_snoc (w : Point D.host.E (D.R.rS + 1)) (h0 : Dmin w D.R.rS ≠ 0) (
 
 end Spec
 
+/- English proof (translation)
+Introduce `δ M p _hA T T' w w' hk hK`. Establish `hl : locK M δ T T' p (D.R.rS + 1) w w' ≠ 0`. Introduce `h0`. Apply `hK` to reduce the goal to its premises. Unfold `KtopP`.
+
+Rewrite using `[h0, mul_zero, zero_mul]`. Unfold `locK at hl`. Use `split at hl`. Name the introduced variables `a b ha hb`. Take `⟨haU, u, hdet⟩` from `det_assoc_pts (M p) a b hl`.
+
+Establish `ea` using `det_amat δ T T' p w a ha`. Establish `eb` using `det_amat δ T T' p w' b hb`. Distinguish the cases in `h0 : Dmin w D.R.rS = 0`. Establish `h0' : Dmin w' D.R.rS = 0`. Unfold `kind at hk`.
+
+Rewrite `hk` using `[if_pos h0]`. Assume the negation of the conclusion as `hne`. Rewrite `hk` using `[if_neg hne]`. Conclude with `absurd hk (by simp)`. Rewrite `ea` using `[h0, map_zero, mul_zero, mul_zero, add_zero]`.
+
+Rewrite `eb` using `[h0', map_zero, mul_zero, mul_zero, add_zero]`. Establish `hL : IsUnit ((∏ x : Fin (D.R.rS + 1), rho δ p x) ^ 2 * kap p ^ (D.R.rS + 1))` using `isUnit_of_mul_isUnit_left (ea ▸ haU)`. Establish `hX : (D.s.atP p).ιE (Dmin w' (D.R.rS + 1)) = (D.s.atP p).ιE (Dmin w (D.R.rS + 1)) * (((u : (M p).R)) : (D.s.atP p).Ep)`. Apply `hL.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← eb, hdet, ea]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, by rw [h0, h0']⟩` and prove the remaining obligations. Rewrite using `[hX, modK_mul_unit]`. Establish `h0' : Dmin w' D.R.rS ≠ 0`. Unfold `kind at hk`.
+
+Rewrite `hk` using `[if_neg h0]`. Introduce `hne`. Rewrite `hk` using `[if_pos hne]`. Conclude with `absurd hk (by simp)`. Establish `hz : zetaOf w = zetaOf w'`.
+
+Unfold `kind at hk`. Rewrite `hk` using `[if_neg h0, if_neg h0']`. Conclude with `Option.some.inj hk`. Take `⟨l0, t, hb0, hs0⟩` from `last_one w h0`. Take `⟨l0', t', hb0', hs0'⟩` from `last_one w' h0'`.
+
+Establish `htt : t' = t`. Rewrite using `[← zeta_snoc w h0 l0 t hb0 hs0, ← zeta_snoc w' h0' l0' t' hb0' hs0', hz]`. Substitute `htt` using the available equality. Establish `hL1 : (∏ x : Fin (D.R.rS + 1), rho δ p x) ^ 2 * kap p ^ (D.R.rS + 1) = ((∏ x : Fin D.R.rS, rho δ p x) ^ 2 * kap p ^ D.R.rS) * (rho δ p D.R.rS * rho δ p D.R.rS * kap p)`. Rewrite using `[Fin.prod_univ_castSucc]`.
+
+Simplify using `only [Fin.val_castSucc, Fin.val_last]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `ea` using `[amat_last δ T T' p w a ha l0 t' hb0 hs0, ptMat_last w l0 t' hb0 hs0, dmin_snoc w l0 t' hb0 hs0, hL1, map_mul]`. Rewrite `eb` using `[amat_last δ T T' p w' b hb l0' t' hb0' hs0', ptMat_last w' l0' t' hb0' hs0', dmin_snoc w' l0' t' hb0' hs0', hL1, map_mul]`. Establish `ea' : a.mat.det = (((∏ x : Fin D.R.rS, rho δ p x) ^ 2 * kap p ^ D.R.rS) * blkTop δ T T' p (D.R.rS + 1) 1 t') * (D.s.atP p).ιE (Dmin w D.R.rS)` using `by rw [ea]; ring`.
+
+Establish `eb' : b.mat.det = (((∏ x : Fin D.R.rS, rho δ p x) ^ 2 * kap p ^ D.R.rS) * blkTop δ T T' p (D.R.rS + 1) 1 t') * (D.s.atP p).ιE (Dmin w' D.R.rS)` using `by rw [eb]; ring`. Establish `hL : IsUnit (((∏ x : Fin D.R.rS, rho δ p x) ^ 2 * kap p ^ D.R.rS) * blkTop δ T T' p (D.R.rS + 1) 1 t')` using `isUnit_of_mul_isUnit_left (ea' ▸ haU)`. Establish `hY : (D.s.atP p).ιE (Dmin w' D.R.rS) = (D.s.atP p).ιE (Dmin w D.R.rS) * (((u : (M p).R)) : (D.s.atP p).Ep)`. Apply `hL.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← eb', hdet, ea']`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, by rw [hY, modK_mul_unit]⟩` and prove the remaining obligations. Rewrite using `[dmin_snoc w l0 t' hb0 hs0, dmin_snoc w' l0' t' hb0' hs0', map_mul, map_mul, hY]`. Rewrite using `[show (D.s.atP p).ιE (Dmin w D.R.rS) * (((u : (M p).R)) : (D.s.atP p).Ep) * (D.s.atP p).ιE t' = (D.s.atP p).ιE (Dmin w D.R.rS) * (D.s.atP p).ιE t' * (((u : (M p).R)) : (D.s.atP p).Ep) by ring, modK_mul_unit]`. Conclude with `absurd rfl hl`.
+-/
 theorem localSupport_holds (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.SupportG.SupportLoc D := by
   intro δ M p _hA T T' w w' hk hK
   have hl : locK M δ T T' p (D.R.rS + 1) w w' ≠ 0 := by

@@ -17,6 +17,11 @@ open GlobalTheory.Hk3
 
 variable {D : D7} {V : HSp D} {P : Pl D.host.E}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = ((χ k : ℂˣ) : ℂ) • ρ γ (F h)) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hF`. Use `⟨fun h k => ?_, fun γ h => ?_⟩` and prove the remaining obligations. Simplify using `using hF 1 h k`.
+
+Simplify using `using hF γ h 1`. Introduce and unpack `⟨hR, hL⟩ γ h k`. Rewrite using `[hR, hL]`.
+-/
 theorem adForms_iff {G Γ W : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (ι : Γ →* G)
     (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (F : G → W) :
     F ∈ Bridge.AdForms ι ρ J χ ↔
@@ -34,6 +39,11 @@ def hkG {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (φ : GA D V →*
     (F : G → W) : G → W :=
   fun h => c.sum fun d z => z • ∑ γ ∈ GlobalTheory.Hk3.rep V P d, F (h * φ γ)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LevOp.hk_apply]`. Use `show l (c.sum fun d z => z • ∑ γ ∈ GlobalTheory.Hk3.rep V P d, F (φ x * φ γ)) = _`. Rewrite using `[map_finsuppSum, Finsupp.sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_sum, smul_eq_mul]`.
+
+Use `congr 1`. Use `show _ = ∑ γ ∈ GlobalTheory.Hk3.rep V P d, l (F (φ (x * γ)))`. Simplify using `only [map_mul]`.
+-/
 theorem dual_hkG {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (φ : GA D V →* G) (l : W →ₗ[ℂ] ℂ) (c : List ℤ →₀ ℂ)
     (F : G → W) (x : GA D V) : l (hkG φ P c F (φ x)) = hk V P c (fun y => l (F (φ y))) x := by
   rw [GlobalTheory.LevOp.hk_apply]
@@ -45,6 +55,11 @@ theorem dual_hkG {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (φ : GA
   show _ = ∑ γ ∈ GlobalTheory.Hk3.rep V P d, l (F (φ (x * γ)))
   simp only [map_mul]
 
+/- English proof (translation)
+Use `show (c.sum fun d z => z • ∑ γ ∈ GlobalTheory.Hk3.rep V P d, F (g * h * φ γ)) = T (c.sum fun d z => z • ∑ γ ∈ GlobalTheory.Hk3.rep V P d, F (h * φ γ))`. Rewrite using `[map_finsuppSum]`. Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, hF]`.
+-/
 theorem hkG_left {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (φ : GA D V →* G) (c : List ℤ →₀ ℂ)
     (F : G → W) (g : G) (T : W →ₗ[ℂ] W) (hF : ∀ h, F (g * h) = T (F h)) (h : G) :
     hkG φ P c F (g * h) = T (hkG φ P c F h) := by
@@ -57,6 +72,13 @@ theorem hkG_left {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (φ : GA
   refine Finset.sum_congr rfl fun γ _ => ?_
   rw [mul_assoc, hF]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `hφ h`. Rewrite using `[← map_mul φ x (k₁ * k₂), ← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, map_smul, dual_hkG, dual_hkG, sub_eq_zero, smul_eq_mul]`. Establish `hinv : ∀ k ∈ hyp V P, ∀ y, (fun y => l (F (φ y))) (y * k) = (fun y => l (F (φ y))) y`.
+
+Introduce `k hk y`. Use `show l (F (φ (y * k))) = l (F (φ y))`. Rewrite using `[map_mul, hF k hk]`. Rewrite using `[GlobalTheory.LevOp.hk_translate hP hJ c hinv hk₁ s₁ s₂ x]`. Establish `hsc : (fun y => (fun y => l (F (φ y))) (y * (k₁ * k₂))) = z • fun y => l (F (φ y))`.
+
+Use function extensionality and compare the values at `y`. Use `show l (F (φ (y * (k₁ * k₂)))) = z * l (F (φ y))`. Rewrite using `[map_mul φ y (k₁ * k₂), hz, map_smul, smul_eq_mul]`. Rewrite using `[hsc, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem hkG_right {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (φ : GA D V →* G) (hφ : Function.Surjective φ)
     {e f : Formalism.L2.Theta.AE D} (hP : IsPrimeIdem P e f) {J : Subgroup (GA D V)}
     (hJ : ∀ g, SuppF V f g → (g ∈ J ↔ g ∈ KsphC V ∅)) (c : List ℤ →₀ ℂ) (F : G → W)
@@ -81,6 +103,19 @@ theorem hkG_right {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (φ : G
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨e, f, hP⟩` from `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.1 P`. Establish `hPf` using `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e f hP`. Take `⟨hJf, hχf, hsplit⟩` from `(GlobalTheory.T.level_hyperspecial_trivialCharacter_splits_off_places V β Λ N (flag1L L) hB).2 P e f hP hN hPP`. Establish `hFl` using `(adForms_iff (Bridge.ratF V) ρ (levEnv V β L).J χ' F).1 hF`. Establish `hinv : ∀ k ∈ hyp V P, ∀ h, F (h * (finHom V).rangeRestrict k) = F h`.
+
+Introduce and unpack `k ⟨hkK, e', f', hP', hk⟩ h`. Take `⟨-, rfl⟩` from `hPf.2.2.2.1 e' f' hP'`. Establish `hkJ : k ∈ levG V β (flag1L L)` using `(hJf k hk).2 hkK`. Establish `hmem : (finHom V).rangeRestrict k ∈ (levEnv V β L).J` using `(GlobalTheory.SplitHeckeAdj.mem_J V β L (hPf.2.2.1 k hk)).2 hkJ`. Establish `h1 : (((levEnv V β L).χ ⟨_, hmem⟩ : ℂˣ) : ℂ) = 1`.
+
+Rewrite using `[GlobalTheory.SplitHeckeAdj.chi_eq V β L hmem]`. Conclude with `hχf k hkJ hk`. Rewrite using `[hFl.1 h ⟨_, hmem⟩, hχ' _ h1, one_smul]`. Use `⟨hinv, (adForms_iff (Bridge.ratF V) ρ (levEnv V β L).J χ' _).2 ⟨fun h k => ?_, fun γ h => ?_⟩⟩` and prove the remaining obligations. Take `⟨g, hgG, hg⟩` from `GlobalTheory.SplitHeckeAdj.fin_lift V (k : Bridge.Gf V)`.
+
+Establish `hgJ : g ∈ levG V β (flag1L L)`. Use `(GlobalTheory.SplitHeckeAdj.mem_J V β L hgG).1 ?_` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `k.2`. Take `⟨k₁, hk₁, k₂, -, s₁, s₂, rfl⟩` from `hsplit g hgJ`.
+
+Establish `hz : ∀ h', F (h' * (finHom V).rangeRestrict (k₁ * k₂)) = ((χ' k : ℂˣ) : ℂ) • F h'`. Introduce `h'`. Rewrite using `[show (finHom V).rangeRestrict (k₁ * k₂) = (k : Bridge.Gf V) from hg]`. Conclude with `hFl.1 h' k`. Establish `key` using `hkG_right (P := P) (finHom V).rangeRestrict (MonoidHom.rangeRestrict_surjective _) hP (J := levG V β (flag1L L)) hJf c F hinv hk₁ s₁ s₂ _ hz h`.
+
+Rewrite `key` using `[show (finHom V).rangeRestrict (k₁ * k₂) = (k : Bridge.Gf V) from hg]`. Conclude with `key`. Conclude with `hkG_left (P := P) (finHom V).rangeRestrict c F (Bridge.ratF V γ) (ρ γ) (hFl.2 γ) h`.
+-/
 theorem adForms_spherical (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ)
     (L : LevDat D.host.E ℂ V.rank) (hB : IsBaseFrame V β Λ N) (hN : ((N : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal)
     (hPP : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → PP ≠ P ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP P)
@@ -122,6 +157,19 @@ theorem adForms_spherical (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (�
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hR i σ c c₁ H j c₀ hC P hG cV y`. Take `⟨χ', hχc, hIs⟩` from `hC.model`. Take `⟨-, hrange, -⟩` from `hIs`. Establish `hSD : ∃ c, IsBaseFrame (Vc D i) (R.βV i) (R.ΛV i) (1 ^ c)` using `hR.βV i`. Take `⟨n, hB⟩` from `hSD`.
+
+Establish `hN : (((1 ^ n : ℕ) : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Rewrite using `[one_pow, Nat.cast_one]`. Conclude with `fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `htriv : ∀ k, (((levEnv (Vc D i) (R.βV i) (R.datVt i A.μ0)).χ k : ℂˣ) : ℂ) = 1 → ((χ' k : ℂˣ) : ℂ) = 1`. Introduce `k hk`.
+
+Take `⟨a, ha, hb⟩` from `hχc k`. Establish `ha1 : a = 1` using `D.what₂.embLL.injective (by rw [ha, hk, map_one])`. Rewrite using `[← hb, ha1, map_one]`. Establish `hPP : ∀ PP, PP ∈ (R.datVt i A.μ0).Pg ∨ PP ∈ (R.datVt i A.μ0).Q → PP ≠ P ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP P` using `hG`. Establish `key` using `adForms_spherical (V := Vc D i) (P := P) (R.βV i) (R.ΛV i) (1 ^ n) (R.datVt i A.μ0) hB hN hPP c.coef.ρ χ' htriv (F := H.e y) (by`.
+
+Establish `h0` using `LinearMap.mem_range_self H.e y`. Rewrite `h0` using `[hrange]`. Conclude with `h0) cV`. Establish `k1 : ∀ k ∈ GlobalTheory.Hk3.hyp (Vc D i) P, ∀ h, H.e y (h * (finHom (Vc D i)).rangeRestrict k) = H.e y h`. Introduce `k hk h`.
+
+Conclude with `key.1 k hk h`. Use `⟨fun k hk h => Eq.trans ?_ (k1 k hk h), ?_⟩` and prove the remaining obligations. Use `congr! 2`. Establish `h3 : GlobalTheory.Hk3.hkF (Vc D i) P cV (H.e y) ∈ Bridge.AdForms (Bridge.ratF (Vc D i)) c.coef.ρ (levJ R i A.μ0) χ'` using `key.2`. Establish `h4 : GlobalTheory.Hk3.hkF (Vc D i) P cV (H.e y) ∈ LinearMap.range H.e` using `(SetLike.ext_iff.mp hrange _).mpr h3`.
+
+Take `⟨y', hy'⟩` from `h4`. Conclude with `⟨y', hy'⟩`.
+-/
 theorem conjForms_spherical : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W) (H : HMod (Bridge.Gf (Vc D i) → c.W)) (j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H), ∀ c₀, GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsConjForms R i σ c₀ c c₁ H j → ∀ P, GlobalTheory.Hk3.Good R A.μ0 P → ∀ cV (y : H.H), (∀ k ∈ GlobalTheory.Hk3.hyp (Vc D i) P, ∀ h, H.e y (h * (finHom _).rangeRestrict k) = H.e y h) ∧ ∃ y' : H.H, H.e y' = GlobalTheory.Hk3.hkF (Vc D i) P cV (H.e y) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R hR i σ c c₁ H j c₀ hC P hG cV y
   obtain ⟨χ', hχc, hIs⟩ := hC.model

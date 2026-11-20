@@ -11,6 +11,31 @@ open scoped TensorProduct
 
 namespace GlobalTheory.SemiCharValue
 
+/- English proof (translation)
+Establish `Kadd : ∀ x y, K x → K y → K (x + y)` using `fun x y hx hy => by`. Use `Ksub x (0 - y) hx (Ksub 0 y K0 hy)` as an intermediate fact. Rewrite `this` using `[zero_sub, sub_neg_eq_add]`. Then use the resulting hypothesis. Establish `skew : ∀ x y, B x y + B y x = 0` using `fun x y => by`. Use `ha (x + y)` as an intermediate fact.
+
+Rewrite `this` using `[hl, hr, hr, ha, ha, zero_add, add_zero]`. Then use the resulting hypothesis. Set `χ : G → ℂ` to `fun x => if h : ∃ l ∈ L, K (x - l) then ψ (B (p h.choose) h.choose) else 0`. Establish `hn : ∀ x, (¬ ∃ l ∈ L, K (x - l)) → χ x = 0` using `fun x h => dif_neg h`. Establish `hy : ∀ x, ∀ l ∈ L, K (x - l) → χ x = ψ (B (p l) l)` using `fun x l hl' hk => by`. Establish `h : ∃ l ∈ L, K (x - l)` using `⟨l, hl', hk⟩`.
+
+Establish `e : h.choose = l`. Establish `h1` using `Ksub _ _ hk h.choose_spec.2`. Rewrite `h1` using `[sub_sub_sub_cancel_left]`. Conclude with `sub_eq_zero.1 (hKL _ (L.sub_mem h.choose_spec.1 hl') h1)`. Use `show dite _ _ _ = _`.
+
+Rewrite using `[dif_pos h, e]`. Establish `gen : ∀ u ∈ L, (∀ l ∈ L, ψ (B l u) * ψ (B (p (l + u)) (l + u)) = ψ (B (p l) l)) → ∀ x, ψ (B x u) * χ (x + u) = χ x` using `fun u hu H x => by`. Distinguish the cases in `h : ∃ l ∈ L, K (x - l)`. Take `⟨l, hl', hk⟩` from `h`. Establish `e : B x u = B l u`.
+
+Use `hl (x - l) l u` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, hB _ hk u hu, zero_add]`. Then use the resulting hypothesis. Rewrite using `[hy x l hl' hk, hy (x + u) (l + u) (L.add_mem hl' hu) (by rwa [add_sub_add_right_eq_sub]), e, H l hl']`. Rewrite using `[hn x h, hn (x + u), mul_zero]`. Introduce and unpack `⟨l, hl', hk⟩`.
+
+Conclude with `h ⟨l - u, L.sub_mem hl' hu, by rwa [← sub_add, sub_add_eq_add_sub]⟩`. Use `⟨χ, hn, fun x => ?_, ?_, fun x y hk => ?_, fun u hu => ?_, fun u hu h0 => ?_, fun l hl' => hy l l hl' (by rwa [sub_self])⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ l ∈ L, K (x - l)`. Take `⟨l, hl', hk⟩` from `h`. Rewrite using `[hy x l hl' hk]`.
+
+Conclude with `hψ _`. Rewrite using `[hn x h]`. Simplify using the standard rewrite rules. Rewrite using `[hy 0 0 L.zero_mem (by rwa [sub_zero])]`. Establish `: B (p 0) 0 = 0`.
+
+Use `hr (p 0) 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`. Rewrite using `[this, AddChar.map_zero_eq_one]`. Distinguish the cases in `h : ∃ l ∈ L, K (x - l)`.
+
+Take `⟨l, hl', hk⟩` from `h`. Rewrite using `[hy x l hl' hk, hy (x + y) l hl' (by rw [← sub_add_eq_add_sub]; exact Kadd _ _ hk ‹_›)]`. Rewrite using `[hn x h, hn (x + y)]`. Introduce and unpack `⟨l, hl', hk'⟩`. Use `h ⟨l, hl', ?_⟩` and prove the remaining obligations.
+
+Use `Ksub _ _ hk' hk` as an intermediate fact. Rewrite `this` using `[show x + y - l - y = x - l by abel]`. Then use the resulting hypothesis. Use `gen _ (L.nsmul_mem hu 2) fun l hl' => ?_` and prove the remaining obligations. Establish `e : B (p (l + 2 • u)) (l + 2 • u) = B (p l) l + (B (p l) u + B (p l) u) + (B (p u) (l + 2 • u) + B (p u) (l + 2 • u))` using `by conv_lhs => rw [padd, hl, hr, two_nsmul, hr, padd, hl]`. Rewrite using `[two_nsmul]`.
+
+Rewrite using `[e, two_nsmul, hr, h2 l hl' u hu, one_mul, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, h2 _ (pL l hl') u hu, h2 _ (pL u hu) _ (L.add_mem hl' (L.add_mem hu hu)), mul_one, mul_one]`. Use `gen _ hu fun l hl' => ?_` and prove the remaining obligations. Establish `e : B l u + B (p (l + u)) (l + u) = B (p l) l + (B (p l) u + B (p l) u)`. Establish `e1 : B l u = B (p l) u + B (q l) u` using `by rw [← hl, pq]`. Establish `e2` using `skew u (q l)`.
+
+Rewrite using `[padd, hl, hr, hr, h0, adj u l, e1]`. Rewrite using `[← sub_eq_zero]`. Use `Eq.trans ?_ e2` and prove the remaining obligations. Normalize the expressions using the abelian group laws. Rewrite using `[← AddChar.map_add_eq_mul, e, AddChar.map_add_eq_mul, h2 _ (pL l hl') u hu, mul_one]`.
+-/
 theorem exists_abstract_value {G R : Type} [AddCommGroup G] [AddCommGroup R] (ψ : AddChar R ℂ) (hψ : ∀ r, ‖ψ r‖ ≤ 1)
     (B : G → G → R) (hl : ∀ x y z, B (x + y) z = B x z + B y z) (hr : ∀ x y z, B x (y + z) = B x y + B x z)
     (ha : ∀ x, B x x = 0) (L : AddSubgroup G) (K : G → Prop) (K0 : K 0) (Ksub : ∀ x y, K x → K y → K (x - y))
@@ -87,6 +112,19 @@ theorem exists_abstract_value {G R : Type} [AddCommGroup G] [AddCommGroup R] (ψ
       abel
     rw [← AddChar.map_add_eq_mul, e, AddChar.map_add_eq_mul, h2 _ (pL l hl') u hu, mul_one]
 
+/- English proof (translation)
+Introduce `D ψ S T ΛS ΛT hψ hS hT b hb`. Establish `hinf` using `GlobalTheory.SemiChar.latO_inf S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True`. Take `⟨f1, f2, f3, f4, -, -, f7, f8, f9⟩` from `GlobalTheory.T.homSymplecticHalfForm_algebraic_laws_continuous D S T`. Establish `g` using `(GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T ΛS ΛT hψ hS hT).1`. Take `⟨χ, -, -, -, -, c5, c6, c7⟩` from `exists_abstract_value ψ (fun r => (hψ.1.2.1 r).le) (symplOH S T) f1 f2 f3 (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) (fun x => x.map (finPart D) = 0) (by funext i j; exact (finPart D).map_zero) (fun x y hx hy => by`.
+
+Use function extensionality and compare the values at `i j`. Establish `h1 : finPart D (x i j) = 0` using `congrFun (congrFun hx i) j`. Establish `h2 : finPart D (y i j) = 0` using `congrFun (congrFun hy i) j`. Use `show finPart D (x i j - y i j) = 0`. Rewrite using `[RingHom.map_sub, h1, h2, sub_zero])`.
+
+Use the proof step `(fun l hl hk => by`. Use function extensionality and compare the values at `i j`. Conclude with `GlobalTheory.FockCompare.RealChart.adele_tensor_ext (l i j) (congrFun (congrFun (hinf l hl) i) j) (congrFun (congrFun hk i) j))`. Use the proof step `(fun x hx l hl => f9 x l hx (hinf l hl))`. Use the proof step `(fun a ha u hu => by rw [f4]; exact (g a (hinf a ha)).1 ha u hu)`.
+
+Use the proof step `(fun x => x.map fun z => incA D (b : D.host.E) * z) (fun x => x.map fun z => cA D (incA D (b : D.host.E)) * z)`. Use the proof step `(GlobalTheory.SemiChar.map_mul_add _)`. Use the proof step `(fun x => by`. Use function extensionality and compare the values at `i j`. Use `show incA D (b : D.host.E) * x i j + incA D (star (b : D.host.E)) * x i j = x i j`.
+
+Rewrite using `[← add_mul, ← RingHom.map_add, hb, RingHom.map_one, one_mul])`. Use the proof step `(f7 _) (GlobalTheory.SemiChar.latO_mul_int S T _ _ _ b)`. Use `⟨χ, ⟨fun u hu => ?_, fun e he u hu hh => ?_⟩, c7⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Conclude with `c5 u hu x`.
+
+Use function extensionality and compare the values at `x`. Conclude with `c6 u hu (f8 e _ u he.2.1 hh) x`.
+-/
 theorem exists_semichar_value : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsStdChar D ψ (-1) → IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ b : 𝓞 D.host.E, (b : D.host.E) + star (b : D.host.E) = 1 → ∃ χ : WO S T → ℂ, IsLatVac (heisO ψ S T) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) χ ∧ ∀ l ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True), χ l = ψ (symplOH S T (l.map fun z => incA D (b : D.host.E) * z) l) := by
   intro D ψ S T ΛS ΛT hψ hS hT b hb
   have hinf := GlobalTheory.SemiChar.latO_inf S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True

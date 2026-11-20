@@ -10,6 +10,9 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 open GlobalTheory GlobalTheory.PointQuot
 
+/- English proof (translation)
+Use extensionality with `: 1`. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `c`. Use `congrArg Over.Hom.left (h c)` as an intermediate fact. Conclude with `this`.
+-/
 private theorem constObj_hom_ext {S : Scheme} {I : Type} {Z : Over S} (f₁ f₂ : constObj S I ⟶ Z)
     (h : ∀ c, PointQuot.constPt S c ≫ f₁ = PointQuot.constPt S c ≫ f₂) : f₁ = f₂ := by
   ext : 1
@@ -18,6 +21,27 @@ private theorem constObj_hom_ext {S : Scheme} {I : Type} {Z : Over S} (f₁ f₂
   have := congrArg Over.Hom.left (h c)
   exact this
 
+/- English proof (translation)
+Introduce `K _ A _ hsep Γ hfin`. Establish `hinj : Function.Injective (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A))` using `Subtype.val_injective`. Use `haveI hmono : Mono (constDesc (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A))) := mono_constDesc _ hinj`. Take `⟨hG, hmon⟩` from `exists_grpObj_constObj (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A)) Γ Subtype.range_coe`. Establish `hsplit : FinEt.IsSplitOfRank (constObj (Sp K) Γ).hom (Nat.card Γ)`.
+
+Rewrite using `[FinEt.isSplitOfRank_iff_exists_iso]`. Use `⟨Sigma.reindex (Finite.equivFin Γ).symm (fun _ => Sp K), ?_⟩` and prove the remaining obligations. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `j`. Establish `h` using `Sigma.ι_reindex_hom (Finite.equivFin Γ).symm (fun _ : Γ => Sp K) j`.
+
+Simplify using `only [constObj, Over.mk_hom]`. Rewrite using `[← Category.assoc]`. Use `erw [h]`. Simplify using the standard rewrite rules. Use `haveI := hsplit.isFinite`.
+
+Use `haveI := hsplit.etale`. Use `⟨constObj (Sp K) Γ, hG, constDesc (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A)), hmon, hmono, hsplit.isFinite, hsplit.etale, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨hsplit.isFinite, (inferInstance : Flat (constObj (Sp K) Γ).hom), ?_, hsplit.finrank_eq⟩` and prove the remaining obligations. Set `c0 : Γ` to `⟨1, Γ.one_mem⟩`. Establish `hw : (PointQuot.constPt (Sp K) c0).left ≫ (toUnit (constObj (Sp K) Γ)).left = 𝟙 _`.
+
+Rewrite using `[← Over.comp_left]`. Simplify using the standard rewrite rules. Use `⟨fun y => ⟨(PointQuot.constPt (Sp K) c0).left y, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hw]`. Both sides reduce to the same expression.
+
+Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Set `z : (𝟙_ (Over (Sp K))).left` to `(⊥ : PrimeSpectrum K)`. Take `⟨V, hzV, c, hc⟩` from `locally_const_desc (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A)) y z`.
+
+Use `haveI : Nonempty (openObj (𝟙_ (Over (Sp K))) V).left := ⟨⟨z, hzV⟩⟩`. Use `haveI := epi_toUnit (openObj (𝟙_ (Over (Sp K))) V)`. Establish `e : openι (𝟙_ (Over (Sp K))) V = toUnit _` using `toUnit_unique _ _`. Rewrite `hc` using `[hy, e]`. Use `(cancel_epi _).1 hc` as an intermediate fact.
+
+Rewrite using `[this]`. Conclude with `c.2`. Introduce `hg`. Conclude with `⟨PointQuot.constPt (Sp K) (⟨g, hg⟩ : Γ), constPt_desc _ _⟩`. Introduce `α hα`.
+
+Apply `constObj_hom_ext` to reduce the goal to its premises. Introduce `c`. Rewrite using `[← Category.assoc, constPt_desc]`. Conclude with `(hα _ c.2).trans (comp_one _).symm`. Introduce `α hα`.
+
+Use `⟨constDesc (fun c : Γ => PointQuot.constPt (Sp K) (⟨c.1 ≫ α, hα _ c.2⟩ : Γ)), ?_⟩` and prove the remaining obligations. Apply `constObj_hom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [← Category.assoc, constPt_desc]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.constSub_of : ConstSub := by
   intro K _ A _ hsep Γ hfin
   have hinj : Function.Injective (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A)) := Subtype.val_injective

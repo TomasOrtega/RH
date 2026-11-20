@@ -8,6 +8,21 @@ open Metric Matrix Topology Filter
 
 noncomputable section
 
+/- English proof (translation)
+Establish `e₀ : Complex.exp (g z₀) = h z₀` using `he.self_of_nhds`. Establish `h0 : h z₀ ≠ 0` using `e₀ ▸ Complex.exp_ne_zero _`. Use `set L : E → ℂ := fun z => g z₀ + Complex.log (h z / h z₀) with hLdef`. Establish `hL : AnalyticAt ℂ L z₀`. Use `analyticAt_const.add ((hh.div analyticAt_const h0).clog ?_)` and prove the remaining obligations.
+
+Simplify using `[h0]`. Use `hL.congr ?_` and prove the remaining obligations. Establish `hLz : L z₀ = g z₀` using `by simp [hLdef, h0]`. Establish `hg' : ∀ᶠ z in 𝓝 z₀, ‖g z - g z₀‖ < Real.pi`. Use `hg.eventually (Metric.ball_mem_nhds (g z₀) Real.pi_pos)` as an intermediate fact.
+
+Use `filter_upwards [this] with z hz`. Simplify `hz` using `[dist_eq_norm]`. Establish `hL' : ∀ᶠ z in 𝓝 z₀, ‖L z - g z₀‖ < Real.pi`. Use `hL.continuousAt.eventually (Metric.ball_mem_nhds (L z₀) Real.pi_pos)` as an intermediate fact. Use `filter_upwards [this] with z hz`.
+
+Simplify `hz` using `[dist_eq_norm, hLz]`. Use `filter_upwards [hg', hL', he] with z hgz hLz' hez`. Establish `hz0 : h z ≠ 0` using `hez ▸ Complex.exp_ne_zero _`. Establish `hexp : Complex.exp (L z) = Complex.exp (g z)`. Simplify using `only [hLdef, Complex.exp_add, e₀, hez]`.
+
+Rewrite using `[Complex.exp_log (div_ne_zero hz0 h0)]`. Clear the denominators using the available nonvanishing facts. Take `⟨m, hm⟩` from `Complex.exp_eq_exp_iff_exists_int.mp hexp`. Establish `hnorm : ‖(m : ℂ) * (2 * Real.pi * Complex.I)‖ < 2 * Real.pi`. Establish `: (m : ℂ) * (2 * Real.pi * Complex.I) = (L z - g z₀) - (g z - g z₀)` using `by rw [hm]; ring`.
+
+Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation. Establish `hm0 : m = 0`. Establish `hpi` using `Real.pi_pos`. Simplify using `only [norm_mul, Complex.norm_intCast, Complex.norm_I, mul_one, Complex.norm_ofNat, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hpi] at hnorm`.
+
+Establish `h1 : |(m : ℝ)| < 1` using `by nlinarith`. Rewrite `h1` using `[← Int.cast_abs]`. Conclude with `Int.abs_lt_one_iff.mp (by exact_mod_cast h1)`. Rewrite using `[hm, hm0]`. Simplify using the standard rewrite rules.
+-/
 theorem analyticAt_of_exp_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {g h : E → ℂ}
     {z₀ : E} (hg : ContinuousAt g z₀) (hh : AnalyticAt ℂ h z₀)
     (he : ∀ᶠ z in 𝓝 z₀, Complex.exp (g z) = h z) : AnalyticAt ℂ g z₀ := by
@@ -49,6 +64,13 @@ theorem analyticAt_of_exp_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ
   rw [hm, hm0]
   simp
 
+/- English proof (translation)
+Establish `: ContractibleSpace U` using `hc.contractibleSpace hne`. Establish `: LocallyPathConnectedSpace U` using `hU.locallyPathConnectedSpace`. Take `⟨z₀, hz₀⟩` from `hne`. Set `f : C(U, ℂ)` to `⟨U.domRestrict h, hh.continuousOn.domRestrict⟩`. Take `⟨F, ⟨-, hF⟩, -⟩` from `Complex.isCoveringMapOn_exp.existsUnique_continuousMap_lifts f (a₀ := ⟨z₀, hz₀⟩) (e₀ := Complex.log (h z₀)) (by simp [f, Complex.exp_log (h0 z₀ hz₀)]) (fun x => h0 x x.2)`.
+
+Set `G : E → ℂ` to `fun z => if hz : z ∈ U then F ⟨z, hz⟩ else 0`. Establish `hGe : ∀ z ∈ U, Complex.exp (G z) = h z` using `fun z hz => by`. Simplify `congrFun hF ⟨z, hz⟩` using `[G, hz, f]`. Establish `hGc : ContinuousOn G U`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`.
+
+Use `F.continuous using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[G, x.2]`. Use `⟨G, fun z hz => analyticAt_of_exp_eq (hGc.continuousAt (hU.mem_nhds hz)) (hh z hz) ?_, hGe⟩` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hz] with y hy using hGe y hy`.
+-/
 theorem exists_analytic_log {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {U : Set E}
     (hU : IsOpen U) (hc : Convex ℝ U) (hne : U.Nonempty) {h : E → ℂ} (hh : AnalyticOnNhd ℂ h U)
     (h0 : ∀ z ∈ U, h z ≠ 0) :
@@ -72,6 +94,11 @@ theorem exists_analytic_log {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ 
   refine ⟨G, fun z hz => analyticAt_of_exp_eq (hGc.continuousAt (hU.mem_nhds hz)) (hh z hz) ?_, hGe⟩
   filter_upwards [hU.mem_nhds hz] with y hy using hGe y hy
 
+/- English proof (translation)
+Establish `: ContractibleSpace W` using `hc.contractibleSpace ⟨w₀, hw₀⟩`. Establish `: LocallyPathConnectedSpace W` using `hW.locallyPathConnectedSpace`. Set `f : C(W, ℂ)` to `⟨fun x => Complex.exp (g₁ x), Complex.continuous_exp.comp h₁.domRestrict⟩`. Take `⟨F, -, huniq⟩` from `Complex.isCoveringMapOn_exp.existsUnique_continuousMap_lifts f (a₀ := ⟨w₀, hw₀⟩) (e₀ := g₁ w₀) rfl (fun x => Complex.exp_ne_zero _)`. Establish `e₁` using `huniq ⟨W.domRestrict g₁, h₁.domRestrict⟩ ⟨rfl, rfl⟩`.
+
+Establish `e₂` using `huniq ⟨W.domRestrict g₂, h₂.domRestrict⟩ ⟨h₀.symm, funext fun x => (he x x.2).symm⟩`. Introduce `w hw`. Conclude with `congrArg (fun F : C(W, ℂ) => F ⟨w, hw⟩) (e₁.trans e₂.symm)`.
+-/
 theorem eqOn_of_exp_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {W : Set E}
     (hW : IsOpen W) (hc : Convex ℝ W) {g₁ g₂ : E → ℂ} (h₁ : ContinuousOn g₁ W)
     (h₂ : ContinuousOn g₂ W) (he : ∀ w ∈ W, Complex.exp (g₁ w) = Complex.exp (g₂ w)) {w₀ : E}
@@ -87,6 +114,13 @@ theorem eqOn_of_exp_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {W
   intro w hw
   exact congrArg (fun F : C(W, ℂ) => F ⟨w, hw⟩) (e₁.trans e₂.symm)
 
+/- English proof (translation)
+Establish `h1 : IsOpen {w : Fin n → ℂ | ∀ i : Fin a, (w (Fin.castLE h i)).re < 0}`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_lt (Complex.continuous_re.comp (continuous_apply _)) continuous_const`. Establish `h2 : IsOpen {w : Fin n → ℂ | ∀ k : Fin n, a ≤ k.val → ‖w k‖ < 1}`. Simplify using `only [Set.ofPred_forall]`.
+
+Use `isOpen_iInter_of_finite fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : a ≤ k.val`. Simplify using `only [hk, Set.iInter_true]`. Conclude with `isOpen_lt (f := fun w : Fin n → ℂ => ‖w k‖) (by fun_prop) continuous_const`. Simplify using `[hk]`.
+
+Conclude with `h1.inter h2`.
+-/
 theorem isOpen_logCover {n a : ℕ} (h : a ≤ n) : IsOpen (logCover h) := by
   have h1 : IsOpen {w : Fin n → ℂ | ∀ i : Fin a, (w (Fin.castLE h i)).re < 0} := by
     simp only [Set.ofPred_forall]
@@ -101,6 +135,11 @@ theorem isOpen_logCover {n a : ℕ} (h : a ≤ n) : IsOpen (logCover h) := by
     · simp [hk]
   exact h1.inter h2
 
+/- English proof (translation)
+Introduce `x hx y hy s t hs ht hst`. Use `⟨fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Use `convex_Iio (0 : ℝ) (hx.1 i) (hy.1 i) hs ht hst` as an intermediate fact. Simplify using `using this`. Use `convex_ball (0 : ℂ) 1 (mem_ball_zero_iff.2 (hx.2 k hk)) (mem_ball_zero_iff.2 (hy.2 k hk)) hs ht hst` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem convex_logCover {n a : ℕ} (h : a ≤ n) : Convex ℝ (logCover h) := by
   intro x hx y hy s t hs ht hst
   refine ⟨fun i => ?_, fun k hk => ?_⟩
@@ -110,16 +149,27 @@ theorem convex_logCover {n a : ℕ} (h : a ≤ n) : Convex ℝ (logCover h) := b
       (mem_ball_zero_iff.2 (hy.2 k hk)) hs ht hst
     simpa using this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun k => if k.val < a then -1 else 0, fun i => by simp [Fin.castLE, i.isLt], fun k hk => by simp [not_lt.2 hk]⟩`.
+-/
 theorem logCover_nonempty {n a : ℕ} (h : a ≤ n) : (logCover h).Nonempty :=
   ⟨fun k => if k.val < a then -1 else 0,
     fun i => by simp [Fin.castLE, i.isLt], fun k hk => by simp [not_lt.2 hk]⟩
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun k => by unfold expCover split_ifs exacts [Complex.continuous_exp.comp (continuous_apply k), continuous_apply k]`.
+-/
 theorem continuous_expCover {n : ℕ} (a : ℕ) : Continuous (expCover (n := n) a) :=
   continuous_pi fun k => by
     unfold expCover
     split_ifs
     exacts [Complex.continuous_exp.comp (continuous_apply k), continuous_apply k]
 
+/- English proof (translation)
+Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `k`. Distinguish the cases in `hk : k.val < a`. Establish `hre` using `hw.1 ⟨k.val, hk⟩`. Establish `hkk : Fin.castLE h ⟨k.val, hk⟩ = k` using `Fin.ext rfl`.
+
+Rewrite `hre` using `[hkk]`. Simplify using `only [expCover, hk, if_true, Complex.norm_exp]`. Simplify using `using Real.exp_lt_exp.mpr hre`. Simplify using `only [expCover, hk, if_false]`. Conclude with `hw.2 k (not_lt.1 hk)`.
+-/
 theorem expCover_mem_ball {n a : ℕ} (h : a ≤ n) {w : Fin n → ℂ} (hw : w ∈ logCover h) :
     expCover a w ∈ ball (0 : Fin n → ℂ) 1 := by
   rw [mem_ball_zero_iff, pi_norm_lt_iff one_pos]
@@ -133,16 +183,39 @@ theorem expCover_mem_ball {n a : ℕ} (h : a ≤ n) {w : Fin n → ℂ} (hw : w 
   · simp only [expCover, hk, if_false]
     exact hw.2 k (not_lt.1 hk)
 
+/- English proof (translation)
+Simplify using `[expCover, i.isLt]`.
+-/
 theorem expCover_castLE {n a : ℕ} (h : a ≤ n) (w : Fin n → ℂ) (i : Fin a) :
     expCover a w (Fin.castLE h i) = Complex.exp (w (Fin.castLE h i)) := by
   simp [expCover, i.isLt]
 
+/- English proof (translation)
+Simplify using `only [intQuad, dotProduct, mulVec, map_apply]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem intQuad_cast {R : Type*} [CommRing R] {g : ℕ} (B : Matrix (Fin g) (Fin g) ℤ) (v : Fin g → ℤ) :
     ((intQuad B v : ℤ) : R) = (fun k => (v k : R)) ⬝ᵥ B.map (Int.cast : ℤ → R) *ᵥ fun k => (v k : R) := by
   simp only [intQuad, dotProduct, mulVec, map_apply]
   push_cast
   rfl
 
+/- English proof (translation)
+Use `.of_dotProduct_mulVec_nonneg ?_ fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(B.map (Int.cast : ℤ → ℝ))ᴴ = _`. Rewrite using `[conjTranspose, ← transpose_map, hB]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[star_trivial]`. Use `set M := B.map (Int.cast : ℤ → ℝ)`. Use `set q : (Fin g → ℝ) → ℝ := fun y => y ⬝ᵥ M *ᵥ y with hq`. Establish `hqc : Continuous q`. Simplify using `only [hq, dotProduct, mulVec]`.
+
+Use `fun_prop`. Set `m : ℕ → Fin g → ℤ` to `fun N k => ⌊(N : ℝ) * x k⌋`. Set `y : ℕ → Fin g → ℝ` to `fun N => ((N : ℝ)⁻¹) • fun k => ((m N k : ℤ) : ℝ)`. Establish `hy : Tendsto y atTop (𝓝 x)`. Use `tendsto_pi_nhds.2 fun k => ?_` and prove the remaining obligations.
+
+Establish `hlow : Tendsto (fun N : ℕ => x k - 1 / (N : ℝ)) atTop (𝓝 (x k))`. Simplify using `using (tendsto_const_nhds : Tendsto (fun _ : ℕ => x k) atTop (𝓝 (x k))).sub tendsto_one_div_atTop_nhds_zero_nat`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' hlow tendsto_const_nhds ?_ ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with N hN`. Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`.
+
+Use `Int.lt_floor_add_one ((N : ℝ) * x k)` as an intermediate fact. Simplify using `only [y, m, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[sub_le_iff_le_add, one_div, ← mul_add_one, inv_mul_eq_div, le_div_iff₀ hN']`. Use the polynomial consequences of the given equalities and inequalities. Use `filter_upwards [eventually_gt_atTop 0] with N hN`.
+
+Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`. Use `Int.floor_le ((N : ℝ) * x k)` as an intermediate fact. Simplify using `only [y, m, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[inv_mul_eq_div, div_le_iff₀ hN']`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hnn : ∀ N, 0 ≤ q (y N)` using `fun N => by`. Simplify using `only [hq, y, smul_dotProduct, mulVec_smul, dotProduct_smul, smul_eq_mul]`. Use `intQuad_cast (R := ℝ) B (m N)` as an intermediate fact. Rewrite using `[← this, ← mul_assoc]`. Conclude with `mul_nonneg (mul_self_nonneg _) (by exact_mod_cast h (m N))`.
+
+Conclude with `ge_of_tendsto' ((hqc.tendsto x).comp hy) hnn`.
+-/
 theorem posSemidef_of_intQuad_nonneg {g : ℕ} (B : Matrix (Fin g) (Fin g) ℤ) (hB : Bᵀ = B)
     (h : ∀ v, 0 ≤ intQuad B v) : (B.map (Int.cast : ℤ → ℝ)).PosSemidef := by
   refine .of_dotProduct_mulVec_nonneg ?_ fun x => ?_
@@ -187,6 +260,9 @@ namespace PeriodPolydisc
 
 variable {n a g : ℕ} (P : PeriodPolydisc n a g)
 
+/- English proof (translation)
+Simplify using `only [tau0, sub_mulVec, dotProduct_sub, Matrix.sum_mulVec, dotProduct_sum, smul_mulVec, dotProduct_smul, smul_eq_mul, intQuad_cast]`.
+-/
 theorem quadratic_tau_shifted (v : Fin g → ℤ) (w : Fin n → ℂ) :
     (fun k => (v k : ℂ)) ⬝ᵥ P.tau0 w *ᵥ (fun k => (v k : ℂ)) =
       (fun k => (v k : ℂ)) ⬝ᵥ P.τ w *ᵥ (fun k => (v k : ℂ)) -
@@ -195,6 +271,13 @@ theorem quadratic_tau_shifted (v : Fin g → ℤ) (w : Fin n → ℂ) :
   simp only [tau0, sub_mulVec, dotProduct_sub, Matrix.sum_mulVec, dotProduct_sum, smul_mulVec,
     dotProduct_smul, smul_eq_mul, intQuad_cast]
 
+/- English proof (translation)
+Establish `hk : ∀ i, ((intQuad (P.B i) v : ℤ) : ℂ) = (((intQuad (P.B i) v).toNat : ℕ) : ℂ)` using `fun i => by`. Conclude with `(Int.toNat_of_nonneg (hnn i)).symm` after adjusting the coercions. Establish `hprod : ∏ i : Fin a, expCover a w (Fin.castLE P.a_le i) ^ (intQuad (P.B i) v).toNat ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => by`. Rewrite using `[expCover_castLE]`. Conclude with `pow_ne_zero _ (Complex.exp_ne_zero _)`.
+
+Establish `hsum : Complex.exp (2 * Real.pi * Complex.I * ∑ i : Fin a, w (Fin.castLE P.a_le i) / (2 * Real.pi * Complex.I) * ((intQuad (P.B i) v : ℤ) : ℂ)) = ∏ i : Fin a, expCover a w (Fin.castLE P.a_le i) ^ (intQuad (P.B i) v).toNat`. Rewrite using `[Finset.mul_sum, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[expCover_castLE, ← Complex.exp_nat_mul, hk i]`. Use `congr 1`.
+
+Clear denominators, using `[two_pi_I_ne_zero]` for the nonvanishing conditions. Rewrite using `[quadratic_tau_shifted, mul_sub, Complex.exp_sub, hw, hsum]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exp_quadratic_tau_shifted (v : Fin g → ℤ) (hnn : ∀ i, 0 ≤ intQuad (P.B i) v) (h : (Fin n → ℂ) → ℂ)
     (w : Fin n → ℂ)
     (hw : Complex.exp (2 * Real.pi * Complex.I *
@@ -220,10 +303,24 @@ theorem exp_quadratic_tau_shifted (v : Fin g → ℤ) (hnn : ∀ i, 0 ≤ intQua
   rw [quadratic_tau_shifted, mul_sub, Complex.exp_sub, hw, hsum]
   field_simp
 
+/- English proof (translation)
+Simplify using `only [tau0, transpose_sub, transpose_sum, transpose_smul, ← transpose_map, P.B_symm, P.symm w hw]`.
+-/
 theorem tau_shifted_transpose {w : Fin n → ℂ} (hw : w ∈ logCover P.a_le) : (P.tau0 w)ᵀ = P.tau0 w := by
   simp only [tau0, transpose_sub, transpose_sum, transpose_smul, ← transpose_map, P.B_symm,
     P.symm w hw]
 
+/- English proof (translation)
+Take `⟨hnn, h, hha, hh0, hhe⟩` from `h0 n a g P v`. Take `⟨G, hGa, hGe⟩` from `exists_analytic_log isOpen_ball (convex_ball 0 1) ⟨0, mem_ball_self one_pos⟩ hha hh0`. Use `set F : (Fin n → ℂ) → ℂ := fun w => 2 * Real.pi * Complex.I * ((fun k => (v k : ℂ)) ⬝ᵥ P.tau0 w *ᵥ fun k => (v k : ℂ)) with hFdef`. Establish `hFe : ∀ w ∈ logCover P.a_le, Complex.exp (F w) = h (expCover a w)` using `fun w hw => P.exp_quadratic_tau_shifted v hnn h w (hhe w hw)`. Establish `hent : ∀ p q, ContinuousOn (fun w => P.tau0 w p q) (logCover P.a_le)` using `fun p q => by`.
+
+Establish `: (fun w => P.tau0 w p q) = fun w => P.τ w p q - ∑ i : Fin a, w (Fin.castLE P.a_le i) / (2 * Real.pi * Complex.I) * ((P.B i p q : ℤ) : ℂ)`. Use function extensionality and compare the values at `w`. Simplify using `[tau0, Matrix.sum_apply]`. Rewrite using `[this]`. Conclude with `(P.analytic p q).continuousOn.sub (continuousOn_finsetSum _ fun i _ => (((continuous_apply _).continuousOn).div_const _).mul continuousOn_const)`.
+
+Establish `hFc : ContinuousOn F (logCover P.a_le)`. Simplify using `only [hFdef, dotProduct, mulVec]`. Conclude with `continuousOn_const.mul (continuousOn_finsetSum _ fun p _ => continuousOn_const.mul (continuousOn_finsetSum _ fun q _ => (hent p q).mul continuousOn_const))`. Establish `hmaps : Set.MapsTo (expCover a) (logCover P.a_le) (ball 0 1)` using `fun w hw => expCover_mem_ball P.a_le hw`. Take `⟨w₀, hw₀⟩` from `logCover_nonempty P.a_le`.
+
+Use `set c := F w₀ - G (expCover a w₀) with hc`. Establish `hGc : ContinuousOn (fun w => G (expCover a w) + c) (logCover P.a_le)` using `(hGa.continuousOn.comp (continuous_expCover a).continuousOn hmaps).add continuousOn_const`. Establish `key` using `eqOn_of_exp_eq (isOpen_logCover P.a_le) (convex_logCover P.a_le) hFc hGc (fun w hw => by`. Rewrite using `[Complex.exp_add, hc, Complex.exp_sub, hGe _ (hmaps hw), hGe _ (hmaps hw₀), hFe w hw, hFe w₀ hw₀]`. Clear denominators, using `[hh0 _ (hmaps hw₀)])` for the nonvanishing conditions.
+
+Use `hw₀ (by rw [hc]; ring)`. Use `⟨fun z => (G z + c) / (2 * Real.pi * Complex.I), (hGa.add analyticOnNhd_const).div analyticOnNhd_const fun _ _ => two_pi_I_ne_zero, fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← key w hw, hFdef]`. Clear denominators, using `[two_pi_I_ne_zero]` for the nonvanishing conditions.
+-/
 theorem exists_quad_ext (h0 : ExpQuadMonomial.Statement) (v : Fin g → ℤ) :
     ∃ Q : (Fin n → ℂ) → ℂ, AnalyticOnNhd ℂ Q (ball 0 1) ∧ ∀ w ∈ logCover P.a_le,
       Q (expCover a w) = (fun k => (v k : ℂ)) ⬝ᵥ P.tau0 w *ᵥ fun k => (v k : ℂ) := by
@@ -267,6 +364,15 @@ theorem exists_quad_ext (h0 : ExpQuadMonomial.Statement) (v : Fin g → ℤ) :
 
 end PeriodPolydisc
 
+/- English proof (translation)
+Establish `hc : ∀ r : Fin g, (fun k => ((Pi.single r 1 : Fin g → ℤ) k : ℂ)) = Pi.single r 1` using `fun r => by`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = r`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hk]`. Establish `hadd : (fun k => ((Pi.single p 1 + Pi.single q 1 : Fin g → ℤ) k : ℂ)) = Pi.single p 1 + Pi.single q 1`. Rewrite using `[← hc p, ← hc q]`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+
+Establish `hqp : M q p = M p q`. Use `congrFun (congrFun hM p) q` as an intermediate fact. Simplify `this` using `[transpose_apply]`. Rewrite using `[hadd, hc p, hc q]`. Simplify using `only [mulVec_add, dotProduct_add, add_dotProduct, mulVec_single_one, single_one_dotProduct, col_apply, hqp]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polarise {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (hM : Mᵀ = M) (p q : Fin g) :
     (((fun k => ((Pi.single p 1 + Pi.single q 1 : Fin g → ℤ) k : ℂ)) ⬝ᵥ
           M *ᵥ fun k => ((Pi.single p 1 + Pi.single q 1 : Fin g → ℤ) k : ℂ)) -
@@ -292,6 +398,11 @@ theorem polarise {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (hM : Mᵀ = M) (p q
     col_apply, hqp]
   ring
 
+/- English proof (translation)
+Introduce `n a g P`. Use `⟨fun i => posSemidef_of_intQuad_nonneg (P.B i) (P.B_symm i) fun v => (h0 n a g P v).1 i, ?_⟩` and prove the remaining obligations. Use `choose Q hQa hQe using P.exists_quad_ext h0`. Use `⟨fun z p q => (Q (Pi.single p 1 + Pi.single q 1) z - Q (Pi.single p 1) z - Q (Pi.single q 1) z) / 2, fun p q => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `(((hQa _).sub (hQa _)).sub (hQa _)).div analyticOnNhd_const fun _ _ => two_ne_zero`.
+
+Use extensionality with `p q`. Simplify using `only [hQe _ w hw]`. Conclude with `(polarise _ (P.tau_shifted_transpose hw) p q).symm`.
+-/
 theorem Tau0Holomorphic.proof (h0 : ExpQuadMonomial.Statement) : Tau0Holomorphic.Statement := by
   intro n a g P
   refine ⟨fun i => posSemidef_of_intQuad_nonneg (P.B i) (P.B_symm i) fun v => (h0 n a g P v).1 i,

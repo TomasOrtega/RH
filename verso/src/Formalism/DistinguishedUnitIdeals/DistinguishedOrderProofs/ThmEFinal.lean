@@ -13,10 +13,28 @@ namespace Formalism.ExponentWindows.E.JumpSetWindowBounds
 
 open PowerSeries
 
+/- English proof (translation)
+Apply the tactic sequence `cases k <;> rfl`.
+-/
 theorem HK_eq (g G₀ Sz η : ℕ) (k : Kind) (b : ℕ) :
     Formalism.ExponentWindows.G.HK g G₀ Sz η k b = g + hJ G₀ Sz η k b := by
   cases k <;> rfl
 
+/- English proof (translation)
+Take `⟨⟨t₀, t₁, ht⟩, hw⟩` from `h`. Distinguish the cases in `hd : ∀ s < ell, kind s ≠ Kind.down`. Conclude with `Or.inl hd`. Simplify using `only [not_forall, not_not] at hd`. Take `⟨sd, hsd, hkd⟩` from `hd`.
+
+Establish `hso : ∃ so, ∀ s < ell, s ≠ sd → s ≠ so → kind s = Kind.thin`. Distinguish the cases in `h0 : sd = t₀`. Conclude with `⟨t₁, fun s hs h1 h2 => ht s hs (h0 ▸ h1) h2⟩`. Distinguish the cases in `h1 : sd = t₁`. Conclude with `⟨t₀, fun s hs h2 h3 => ht s hs h3 (h1 ▸ h2)⟩`.
+
+Conclude with `absurd (ht sd hsd h0 h1) (by rw [hkd]; decide)`. Take `⟨so, hso⟩` from `hso`. Distinguish the cases in `hthin : so < ell ∧ so ≠ sd ∧ kind so ≠ Kind.thin`. Take `⟨h1, h2, h3⟩` from `hthin`. Break down `lt_or_gt_of_ne h2 with hlt | hgt` into its components or cases.
+
+Consider the cases of `hk : kind so with`. Consider the case `thin => exact absurd hk h3`. Consider the case `up`. Conclude with `Or.inr (Or.inr (Or.inl ⟨so, sd, hlt, hsd, hkd, hk, fun s hs a b => hso s hs b a, (hw so sd hlt hsd).1 hkd hk⟩))`. Consider the case `down`.
+
+Conclude with `Or.inr (Or.inr (Or.inr (Or.inl ⟨so, sd, hlt, hsd, hkd, hk, fun s hs a b => hso s hs b a⟩)))`. Consider the cases of `hk : kind so with`. Consider the case `thin => exact absurd hk h3`. Consider the case `up`. Conclude with `Or.inr (Or.inr (Or.inr (Or.inr ⟨sd, so, hgt, h1, hk, hkd, hso, ((hw sd so hgt h1).2 hk hkd).1, ((hw sd so hgt h1).2 hk hkd).2⟩)))`.
+
+Consider the case `down`. Conclude with `Or.inr (Or.inr (Or.inr (Or.inl ⟨sd, so, hgt, h1, hk, hkd, hso⟩)))`. Use `Or.inr (Or.inl ⟨sd, hsd, hkd, fun s hs hne => ?_⟩)` and prove the remaining obligations. Distinguish the cases in `hs' : s = so`. Substitute `hs'` using the available equality.
+
+Assume the negation of the conclusion as `hk`. Conclude with `hthin ⟨hs, hne, hk⟩`. Conclude with `hso s hs hne hs'`.
+-/
 theorem primWord {ℓ ell a₀ : ℕ} {b : ℕ → ℕ} {kind : ℕ → Kind} (h : TextWord ℓ ell a₀ b kind) :
     PrimWord ℓ ell a₀ b kind := by
   obtain ⟨⟨t₀, t₁, ht⟩, hw⟩ := h
@@ -56,6 +74,11 @@ theorem primWord {ℓ ell a₀ : ℕ} {b : ℕ → ℕ} {kind : ℕ → Kind} (h
       exact hthin ⟨hs, hne, hk⟩
     · exact hso s hs hne hs'
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Apply `hk` to reduce the goal to its premises. Establish `h1` using `hthin _ (Cu.prev_mem c hc) (Cu.ell c - s) (by omega) (by omega)`. Establish `h2 : c - (Cu.ell c : ZMod n) + ((Cu.ell c - s : ℕ) : ZMod n) = c - (s : ZMod n)`. Rewrite using `[Nat.cast_sub hs.le]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+-/
 theorem thick_lt {n : ℕ} {Cu : Cuts n} {kd : ZMod n → Kind} {j : ℕ}
     (hthin : ∀ c ∈ Cu.cuts, ∀ k : ℕ, 1 ≤ k → k ≤ j → kd (c + (k : ZMod n)) = Kind.thin)
     {c : ZMod n} (hc : c ∈ Cu.cuts) {s : ℕ} (hs : s < Cu.ell c) (hk : kindAt kd c s ≠ Kind.thin) :
@@ -69,6 +92,11 @@ theorem thick_lt {n : ℕ} {Cu : Cuts n} {kd : ZMod n → Kind} {j : ℕ}
   rw [h2] at h1
   exact h1
 
+/- English proof (translation)
+Use `⟨fun i hi => ?_, fun i hi => (h i hi).2⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_biUnion]`. Break down `(h i hi).1 with h0 | h1 | h2` into its components or cases. Conclude with `⟨0, Finset.mem_univ _, by simpa [Finset.mem_Ico] using h0⟩`. Conclude with `⟨1, Finset.mem_univ _, by simpa [Finset.mem_Ico] using h1⟩`.
+
+Conclude with `⟨2, Finset.mem_univ _, by simpa [Finset.mem_Ico] using h2⟩`.
+-/
 theorem inWindows3 {JS : Finset ℤ} {a0 a1 a2 : ℤ} {y0 y1 y2 R : ℕ}
     (h : ∀ i ∈ JS, ((a0 ≤ i ∧ i < a0 + (y0 : ℤ)) ∨ (a1 ≤ i ∧ i < a1 + (y1 : ℤ)) ∨
       (a2 ≤ i ∧ i < a2 + (y2 : ℤ))) ∧ |i| ≤ (R : ℤ)) :
@@ -92,10 +120,18 @@ def st4 (k : Kind) (g Sz b : ℤ) : ℤ :=
   | Kind.up => -b - Sz - g
   | Kind.down => b - g
 
+/- English proof (translation)
+Apply the tactic sequence `cases k <;> simp only [win2, st2, Finset.mem_union, Finset.mem_Icc] at hi ⊢ <;> omega`.
+-/
 theorem exponent_window_subset_short {k : Kind} {g b i : ℤ} (hi : i ∈ win2 k g b) :
     (-g ≤ i ∧ i < -g + g) ∨ (st2 k g b ≤ i ∧ i < st2 k g b + g) := by
   cases k <;> simp only [win2, st2, Finset.mem_union, Finset.mem_Icc] at hi ⊢ <;> omega
 
+/- English proof (translation)
+Rewrite using `[abs_le]`. Consider the cases of `k`. Simplify using `only [win2, Finset.mem_Icc] at hi`. Use linear arithmetic over natural numbers and integers. Use `hb (by decide)` as an intermediate fact.
+
+Simplify using `only [win2, Finset.mem_union, Finset.mem_Icc] at hi`. Use linear arithmetic over natural numbers and integers. Use `hb (by decide)` as an intermediate fact. Simplify using `only [win2, Finset.mem_union, Finset.mem_Icc] at hi`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem second_window_abs_le {k : Kind} {g b Sz hh : ℕ} {i : ℤ} (hg : g ≤ hh) (hb : k ≠ Kind.thin → b + Sz ≤ hh)
     (hi : i ∈ win2 k g b) : |i| ≤ ((2 * hh : ℕ) : ℤ) := by
   rw [abs_le]
@@ -109,11 +145,17 @@ theorem second_window_abs_le {k : Kind} {g b Sz hh : ℕ} {i : ℤ} (hg : g ≤ 
     simp only [win2, Finset.mem_union, Finset.mem_Icc] at hi
     omega
 
+/- English proof (translation)
+Apply the tactic sequence `cases k <;> simp only [win4, st4, Finset.mem_union, Finset.mem_Icc] at hi ⊢ <;> omega`.
+-/
 theorem exponent_window_subset_long {k : Kind} {g G₀ Sz η b i : ℤ} (hG : G₀ ≤ g) (hS : Sz ≤ g) (hη : η ≤ g)
     (hi : i ∈ win4 k g G₀ Sz η b) :
     (-(2 * g) ≤ i ∧ i < -(2 * g) + 3 * g) ∨ (st4 k g Sz b ≤ i ∧ i < st4 k g Sz b + 2 * g) := by
   cases k <;> simp only [win4, st4, Finset.mem_union, Finset.mem_Icc] at hi ⊢ <;> omega
 
+/- English proof (translation)
+The claim follows from `|i| ≤ ((2 * hh : ℕ) : ℤ) := by rw [abs_le] cases k · simp only [win4, Finset.mem_Icc] at hi omega · have := hb (by decide) simp only [win4, Finset.mem_union, Finset.mem_Icc] at hi omega · have := hb (by decide) simp only [win4, Finset.mem_union, Finset.mem_Icc] at hi omega`.
+-/
 theorem fourth_window_abs_le {k : Kind} {g G₀ Sz η b hh : ℕ} {i : ℤ} (hG : G₀ ≤ g) (hη : η ≤ g) (hg : g ≤ hh)
     (hb : k ≠ Kind.thin → b + Sz ≤ hh) (hi : i ∈ win4 k g G₀ Sz η b) :
     |i| ≤ ((2 * hh : ℕ) : ℤ) := by
@@ -128,6 +170,13 @@ theorem fourth_window_abs_le {k : Kind} {g G₀ Sz η b hh : ℕ} {i : ℤ} (hG 
     simp only [win4, Finset.mem_union, Finset.mem_Icc] at hi
     omega
 
+/- English proof (translation)
+Apply `inWindows3` to reduce the goal to its premises. Introduce `i hi`. Take `⟨s, hs, his⟩` from `Finset.mem_biUnion.1 hi`. Rewrite `hs` using `[Finset.mem_range]`. Use `⟨?_, second_window_abs_le hg (hb s hs) his⟩` and prove the remaining obligations.
+
+Break down `exponent_window_subset_short his with h | h` into its components or cases. Conclude with `Or.inl h`. Distinguish the cases in `h0 : s = t₀`. Substitute `h0` using the available equality. Conclude with `Or.inr (Or.inl h)`.
+
+Distinguish the cases in `h1 : s = t₁`. Substitute `h1` using the available equality. Conclude with `Or.inr (Or.inr h)`. Rewrite `h` using `[ht s hs h0 h1]`. Conclude with `Or.inl h`.
+-/
 theorem second_jump_set_in_windows {ell g Sz hh : ℕ} {kind : ℕ → Kind} {b : ℕ → ℕ} (hg : g ≤ hh)
     (hb : ∀ s < ell, kind s ≠ Kind.thin → b s + Sz ≤ hh) {t₀ t₁ : ℕ}
     (ht : ∀ s < ell, s ≠ t₀ → s ≠ t₁ → kind s = Kind.thin) :
@@ -149,6 +198,15 @@ theorem second_jump_set_in_windows {ell g Sz hh : ℕ} {kind : ℕ → Kind} {b 
       · rw [ht s hs h0 h1] at h
         exact Or.inl h
 
+/- English proof (translation)
+Apply `inWindows3` to reduce the goal to its premises. Introduce `i hi`. Take `⟨s, hs, his⟩` from `Finset.mem_biUnion.1 hi`. Rewrite `hs` using `[Finset.mem_range]`. Use `⟨?_, fourth_window_abs_le hG hη hg (hb s hs) his⟩` and prove the remaining obligations.
+
+Establish `hw` using `exponent_window_subset_long (by exact_mod_cast hG) (by exact_mod_cast hS) (by exact_mod_cast hη) his`. Use `push_cast`. Break down `hw with h | h` into its components or cases. Conclude with `Or.inl h`. Distinguish the cases in `h0 : s = t₀`.
+
+Substitute `h0` using the available equality. Conclude with `Or.inr (Or.inl h)`. Distinguish the cases in `h1 : s = t₁`. Substitute `h1` using the available equality. Conclude with `Or.inr (Or.inr h)`.
+
+Rewrite `h` using `[ht s hs h0 h1]`. Use `Or.inl ⟨h.1, ?_⟩` and prove the remaining obligations. Use `h.2` as an intermediate fact. Simplify using `only [st4] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem kappa_of_kappa_bound {ell g G₀ Sz η hh : ℕ} {kind : ℕ → Kind} {b : ℕ → ℕ} (hG : G₀ ≤ g)
     (hS : Sz ≤ g) (hη : η ≤ g) (hg : g ≤ hh)
     (hb : ∀ s < ell, kind s ≠ Kind.thin → b s + Sz ≤ hh) {t₀ t₁ : ℕ}
@@ -177,12 +235,18 @@ theorem kappa_of_kappa_bound {ell g G₀ Sz η hh : ℕ} {kind : ℕ → Kind} {
         simp only [st4] at this
         omega
 
+/- English proof (translation)
+Use `Finset.mem_biUnion.2 ⟨s, Finset.mem_range.2 hs, ?_⟩` and prove the remaining obligations. Use `revert hi`. Apply the tactic sequence `cases kind s <;> simp only [G.Win2, win2, Finset.mem_union, Finset.mem_Icc] <;> exact id`.
+-/
 theorem mem_second_jump_set {ell g : ℕ} {kind : ℕ → Kind} {b : ℕ → ℕ} {s : ℕ} (hs : s < ell) {i : ℤ}
     (hi : G.Win2 (kind s) g (b s) i) : i ∈ jumpWindows ell g kind b := by
   refine Finset.mem_biUnion.2 ⟨s, Finset.mem_range.2 hs, ?_⟩
   revert hi
   cases kind s <;> simp only [G.Win2, win2, Finset.mem_union, Finset.mem_Icc] <;> exact id
 
+/- English proof (translation)
+Use `Finset.mem_biUnion.2 ⟨s, Finset.mem_range.2 hs, ?_⟩` and prove the remaining obligations. Use `revert hJ`. Apply the tactic sequence `cases kind s <;> simp only [G.Jumps, win4, Finset.mem_union, Finset.mem_Icc] <;> intro hJ <;>`. Apply the tactic sequence `have := hJ v hv <;> omega`.
+-/
 theorem mem_fourth_jump_set {LL D : Type} [Field LL] [AddCommGroup D] [Module LL D] {ell g G₀ Sz η : ℕ}
     {kind : ℕ → Kind} {b : ℕ → ℕ} {s : ℕ} (hs : s < ell) {Fil : ℤ → Submodule LL D}
     (hJ : G.Jumps (kind s) G₀ Sz η (b s) Fil) {v z : ℤ} (hv : Fil v ≠ Fil (v + 1)) (h1 : 1 ≤ z)
@@ -192,6 +256,11 @@ theorem mem_fourth_jump_set {LL D : Type} [Field LL] [AddCommGroup D] [Module LL
   cases kind s <;> simp only [G.Jumps, win4, Finset.mem_union, Finset.mem_Icc] <;> intro hJ <;>
     have := hJ v hv <;> omega
 
+/- English proof (translation)
+Establish `h1 : ((ell - 1 : ℕ) : ℝ) ≤ ((ellmax - 1 : ℕ) : ℝ)`. Conclude with `Nat.sub_le_sub_right hle 1` after adjusting the coercions. Establish `h2 : (0 : ℝ) ≤ 7 * (g : ℝ)` using `by positivity`. Establish `h3` using `mul_le_mul_of_nonneg_left (add_le_add_right (add_le_add_right h1 1) (1 / ((ℓ : ℝ) - 1))) h2`. Unfold `kapOf at hk`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem kap_mono {ℓ ell ellmax g hh kap : ℕ} (hle : ell ≤ ellmax)
     (hk : kapOf ℓ (ellmax - 1) g hh ≤ (kap : ℝ)) :
     ((ell - 1 : ℕ) : ℝ) + 7 * (g : ℝ) * (((ell - 1 : ℕ) : ℝ) + 1 + 1 / ((ℓ : ℝ) - 1)) +
@@ -204,6 +273,17 @@ theorem kap_mono {ℓ ell ellmax g hh kap : ℕ} (hle : ell ≤ ellmax)
   unfold kapOf at hk
   linarith
 
+/- English proof (translation)
+Take `⟨⟨t₀, t₁, ht⟩, -⟩` from `hw`. Establish `hk'` using `kap_mono hle hk`. Establish `hl : (0 : ℝ) ≤ ((ell - 1 : ℕ) : ℝ) + 1 + 1 / ((ℓ : ℝ) - 1)`. Establish `: (1 : ℝ) < (ℓ : ℝ)` using `by exact_mod_cast hp.one_lt`. Establish `: (0 : ℝ) < (ℓ : ℝ) - 1` using `by linarith`.
+
+Check the signs of the components of the expression. Establish `key : ∀ z : Fin 3 → ℕ, ∑ m, z m ≤ 7 * g → kapWin ℓ (ell - 1) 3 z (2 * hh) ≤ (kap : ℝ)`. Introduce `z hz`. Establish `hz' : (∑ m, (z m : ℝ)) ≤ 7 * (g : ℝ)` using `by exact_mod_cast hz`. Establish `h1` using `mul_le_mul_of_nonneg_left hz' hl`.
+
+Unfold `kapWin`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Establish `h2` using `(kappa_exponent_in_window ℓ (ell - 1) _ 3 _ _ (2 * hh) hp (second_jump_set_in_windows hg hb ht)).trans (key _ (by`.
+
+Simplify using `only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]`. Use the proof step `omega))`. Conclude with `h2` after adjusting the coercions. Establish `h4` using `(kappa_exponent_in_window ℓ (ell - 1) _ 3 _ _ (2 * hh) hp (kappa_of_kappa_bound hG hS hη hg hb ht)).trans (key _ (by`. Simplify using `only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]`.
+
+Use the proof step `omega))`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem kapExp_le {ℓ ell ellmax g G₀ Sz η hh kap a₀ : ℕ} {kind : ℕ → Kind} {b : ℕ → ℕ}
     (hp : ℓ.Prime) (hG : G₀ ≤ g) (hS : Sz ≤ g) (hη : η ≤ g) (hg : g ≤ hh)
     (hb : ∀ s < ell, kind s ≠ Kind.thin → b s + Sz ≤ hh) (hw : TextWord ℓ ell a₀ b kind)
@@ -236,6 +316,9 @@ theorem kapExp_le {ℓ ell ellmax g G₀ Sz η hh kap a₀ : ℕ} {kind : ℕ �
         omega))
     exact_mod_cast h4
 
+/- English proof (translation)
+Use `polynomial_valuation_holds O u ℓ E kap JS JS' hp hV ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h`. Unfold `kapExp at h1 h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ppval {O : Type} [CommRing O] (u : Oˣ) {ℓ E kap : ℕ} {JS JS' : Finset ℤ} (hp : ℓ.Prime)
     (hV : FactVval u ℓ) (h : kapExp ℓ E JS ≤ kap ∧ kapExp ℓ E JS' ≤ kap) :
     PPval ℓ kap (G.PPoly u ℓ E JS) (G.PPoly u ℓ E JS') := by
@@ -253,6 +336,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : B
   {R : G.LevelModel S LL Ks Δ D} {ϖ : O} {u : Oˣ} {j M g G₀ Sz η : ℕ} {kind : ℕ → Kind}
   {b : ℕ → ℕ} {e : Fin r → V} {lam : Fin r → D} {U : ℕ → Submodule O (Fin r → O)}
 
+/- English proof (translation)
+The claim follows from `hX invP := fun s _ => hP s p9 := h9 p5h := h5 hh_le := fun s hs => by rw [hH s hs, HK_eq]; omega span := hF.span mem := hF.mem pa1b := hF.pa1b locReg := hF.locReg k1b := hF.k1b unitsAt := hF.unitsAt compl := hF.compl flDef := hF.flDef locLIs := hF.locLIs lamInd := hF.lamInd ell_n …`.
+-/
 theorem partModel (hF : FinalLevels L c ell H S R ϖ u j M g G₀ Sz η kind b e lam U) {hh : ℕ}
     (hX : L.Inv X) (hP : ∀ s, L.Inv (B.p s)) (h9 : L.P9)
     (h5 : ∀ s < ell, L.FrobeniusCobounded (c - (s : ZMod n)) (hJ G₀ Sz η (kind s) (b s)))
@@ -287,6 +373,9 @@ theorem partModel (hF : FinalLevels L c ell H S R ϖ u j M g G₀ Sz η kind b e
     rw [hF.kind_eq s hs, hF.b_eq s hs, hF.η_eq]
     exact ⟨hF.filt s hs, hF.jumps s hs⟩
 
+/- English proof (translation)
+The claim follows from `G.reduction_degree_holds filtration_rounding O B n V L c ell _ r S LL Ks Δ D R G₀ Sz g hF.k1b hG hS (by rw [hF.η_eq]; exact hη) (fun s hs => by rw [hF.kind_eq s hs, hF.b_eq s hs, hF.η_eq] exact ⟨hF.filt s hs, hb s hs, hF.jumps s hs⟩)`.
+-/
 theorem rd (hF : FinalLevels L c ell H S R ϖ u j M g G₀ Sz η kind b e lam U) (hG : G₀ ≤ g)
     (hS : Sz ≤ g) (hη : η ≤ g) (hb : ∀ s < ell, kind s ≠ Kind.thin → g < b s) : S.RD g :=
   G.reduction_degree_holds filtration_rounding O B n V L c ell _ r S LL Ks Δ D R G₀ Sz g hF.k1b hG hS
@@ -294,11 +383,19 @@ theorem rd (hF : FinalLevels L c ell H S R ϖ u j M g G₀ Sz η kind b e lam U)
       rw [hF.kind_eq s hs, hF.b_eq s hs, hF.η_eq]
       exact ⟨hF.filt s hs, hb s hs, hF.jumps s hs⟩)
 
+/- English proof (translation)
+Introduce `s hs` and use `factorial_bound_holds O LL (Ks s) Δ (R.lev s) u B.ℓ (hF.hasU s hs) (by rwa [map_natCast] at hne) hV`.
+-/
 theorem factV (hF : FinalLevels L c ell H S R ϖ u j M g G₀ Sz η kind b e lam U)
     (hne : algebraMap O LL (B.ℓ : O) ≠ 0) (hV : FactVval u B.ℓ) : ∀ s < ell, (R.lev s).FactV :=
   fun s hs => factorial_bound_holds O LL (Ks s) Δ (R.lev s) u B.ℓ (hF.hasU s hs)
     (by rwa [map_natCast] at hne) hV
 
+/- English proof (translation)
+Introduce `s hs v hv`. Rewrite `hv`, the goal using `[hF.uIs s hs]`. Establish `h1 : ∑ k, algebraMap O LL ((ϖ • v) k) • lam k = algebraMap O LL ϖ • ∑ k, algebraMap O LL (v k) • lam k`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, mul_smul]`. Rewrite `hv` using `[h1]`. Conclude with `(Submodule.smul_mem_iff _ hϖ).1 hv`.
+-/
 theorem sat (hF : FinalLevels L c ell H S R ϖ u j M g G₀ Sz η kind b e lam U)
     (hϖ : algebraMap O LL ϖ ≠ 0) : ∀ s < ell, Saturated ϖ (U s) := by
   intro s hs v hv
@@ -311,6 +408,9 @@ theorem sat (hF : FinalLevels L c ell H S R ϖ u j M g G₀ Sz η kind b e lam U
   rw [h1] at hv
   exact (Submodule.smul_mem_iff _ hϖ).1 hv
 
+/- English proof (translation)
+The claim follows from `hfr kind_eq := hF.kind_eq b_eq := hF.b_eq η_eq := hF.η_eq k1b := hF.k1b unitsAt := hF.unitsAt compl := hF.compl locLIs := hF.locLIs lamInd := hF.lamInd lamSpan := hF.lamSpan uIs := hF.uIs`.
+-/
 theorem bridgeItems (hF : FinalLevels L c ell H S R ϖ u j M g G₀ Sz η kind b e lam U)
     (hfr : IsFractionRing O LL) : G.BridgeItems R ϖ η kind b lam U where
   frac := hfr
@@ -325,6 +425,9 @@ theorem bridgeItems (hF : FinalLevels L c ell H S R ϖ u j M g G₀ Sz η kind b
   lamSpan := hF.lamSpan
   uIs := hF.uIs
 
+/- English proof (translation)
+The claim follows from `G.lattice_transfer_holds O ϖ hϖ B n V L c ell H r S LL Ks Δ D R η kind b lam U (bridgeItems hF hfr)`.
+-/
 theorem bridge (hϖ : Irreducible ϖ)
     (hF : FinalLevels L c ell H S R ϖ u j M g G₀ Sz η kind b e lam U)
     (hfr : IsFractionRing O LL) : S.Bridge ϖ H b kind U :=
@@ -337,6 +440,27 @@ variable {O : Type} [CommRing O] {B : Base O} {n : ℕ} {V₁ V₂ : Type} [AddC
   [Module (PowerSeries O) V₁] [AddCommGroup V₂] [Module (PowerSeries O) V₂]
   {L₁ : Lat B n V₁} {L₂ : Lat B n V₂}
 
+/- English proof (translation)
+Introduce `v`. Establish `he₂ : ∀ l, e₂ l ∈ L₂.N c'` using `fun l => hs₂ ▸ Submodule.subset_span ⟨l, rfl⟩`. Establish `hsum : ∀ d : Fin r₂ → PowerSeries O, ∑ l, d l • e₂ l ∈ L₂.N c'` using `fun d => Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (he₂ l)`. Take `⟨y, hy, hyx⟩` from `hW (∑ l, C (v l) • e₂ l) (hsum _)`. Rewrite `hy` using `[← hs₁]`.
+
+Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (PowerSeries O)).1 hy`. Use `⟨fun k => constantCoeff (a k), ?_⟩` and prove the remaining obligations. Use `set v₁ : Fin r₁ → O := fun k => constantCoeff (a k) with hv₁`. Establish `h1 : ∀ k, a k • h.f (e₁ k) - C (v₁ k) • ∑ l, C (LinearMap.toMatrix' prL l k) • e₂ l ∈ sm (X : PowerSeries O) (L₂.N c')`. Introduce `k`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a', ha'⟩ : ∃ a' : PowerSeries O, a k - C (v₁ k) = X * a' := by`. Establish `: (X : PowerSeries O) ∣ a k - C (v₁ k)`. Rewrite using `[X_dvd_iff]`. Simplify using `[hv₁]`. Conclude with `this`.
+
+Establish `e : a k • h.f (e₁ k) - C (v₁ k) • ∑ l, C (LinearMap.toMatrix' prL l k) • e₂ l = a k • (h.f (e₁ k) - ∑ l, C (LinearMap.toMatrix' prL l k) • e₂ l) + (X : PowerSeries O) • (a' • ∑ l, C (LinearMap.toMatrix' prL l k) • e₂ l)`. Rewrite using `[← mul_smul, ← ha', smul_sub, sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (hp k)) (IdempotentNormalFormsRhoFacts.smul_mem_sm _ (Submodule.smul_mem _ _ (hsum _)))`.
+
+Establish `h2 : ∑ k, C (v₁ k) • ∑ l, C (LinearMap.toMatrix' prL l k) • e₂ l = ∑ l, C (prL v₁ l) • e₂ l`. Simplify using `only [Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_mulVec prL v₁, Matrix.mulVec, dotProduct, map_sum, Finset.sum_smul]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_smul, ← map_mul, mul_comm]`. Establish `h3 : h.f (∑ k, a k • e₁ k) - ∑ l, C (prL v₁ l) • e₂ l ∈ sm (X : PowerSeries O) (L₂.N c')`. Rewrite using `[← h2, map_sum, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Conclude with `h1 k`. Rewrite `h3` using `[hyx]`. Take `⟨w, hw, hw'⟩` from `IdempotentNormalFormsRhoFacts.mem_sm.1 h3`. Rewrite `hw` using `[← hs₂]`.
+
+Take `⟨b, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (PowerSeries O)).1 hw`. Establish `h4 : ∑ l, (X * b l - (C ((B.ℓ : O) ^ rr * v l) - C (prL v₁ l))) • e₂ l = 0`. Establish `: ∑ l, (X * b l - (C ((B.ℓ : O) ^ rr * v l) - C (prL v₁ l))) • e₂ l = (X : PowerSeries O) • ∑ l, b l • e₂ l - (B.lc ^ rr • ∑ l, C (v l) • e₂ l - ∑ l, C (prL v₁ l) • e₂ l)`. Simplify using `only [Finset.smul_sum, ← Finset.sum_sub_distrib, sub_smul, mul_smul, map_mul, map_pow, Base.lc]`. Rewrite using `[this, hw', sub_self]`.
+
+Establish `h5` using `Fintype.linearIndependent_iff.1 hi _ h4`. Use function extensionality and compare the values at `l`. Establish `h6` using `congrArg constantCoeff (h5 l)`. Simplify using `only [map_sub, map_mul, constantCoeff_X, zero_mul, constantCoeff_C, map_zero, zero_sub, neg_sub] at h6`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `sub_eq_zero.1 h6`.
+-/
 theorem lLift_of {h : LatHom L₁ L₂} {c' : ZMod n} {r₁ r₂ : ℕ} {e₁ : Fin r₁ → V₁} {e₂ : Fin r₂ → V₂}
     {prL : (Fin r₁ → O) →ₗ[O] (Fin r₂ → O)} {rr : ℕ}
     (hs₁ : Submodule.span (PowerSeries O) (Set.range e₁) = L₁.N c')
@@ -410,10 +534,34 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : B
   {LL : Type} [Field LL] [Algebra O LL] {Ks : ℕ → Type} [∀ s, CommRing (Ks s)]
   [∀ s, Algebra LL (Ks s)] {Δ : Type}
 
+/- English proof (translation)
+The claim follows from `XDivisibilityOfActions.bij_Lam L (fun _ => g) ell fun s _ => hP s`.
+-/
 theorem inv_Th {V : Type} [AddCommGroup V] [Module (PowerSeries O) V] (L : Lat B n V)
     (hP : ∀ s, L.Inv (B.p s)) (ell g : ℕ) : L.Inv (B.Th ell g) :=
   XDivisibilityOfActions.bij_Lam L (fun _ => g) ell fun s _ => hP s
 
+/- English proof (translation)
+Take `⟨A, hP⟩` from `hA`. Establish `hpB` using `hB.prim`. Establish `hℓ2 : 2 ≤ B.ℓ` using `by have := hpB.three_le; omega`. Establish `hdvd : ϖ ∣ (B.ℓ : O)` using `Prim.dvd_ell hpB.one_le_e hpB.assoc`. Establish `hnu : ¬ IsUnit (B.ℓ : O)` using `Prim.ell_nonunit hϖ hpB.one_le_e hpB.assoc`.
+
+Establish `hV : FactVval u B.ℓ` using `factorial_valuation_holds O B.ℓ u x hpB.prime hpB.three_le hnu hB.u_eq`. Establish `hinj : Function.Injective (algebraMap O LL)` using `haveI := hB.frac IsFractionRing.injective O LL`. Establish `hne : algebraMap O LL (B.ℓ : O) ≠ 0` using `(map_ne_zero_iff _ hinj).2 (hpB.assoc.ne_zero_iff.2 (pow_ne_zero _ hϖ.ne_zero))`. Establish `hϖ0 : algebraMap O LL ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`. Establish `hgb : ∀ s < Cu.ell c, kindAt kd c s ≠ Kind.thin → g < sizeAt bb c s` using `fun s _ hk => hN.g_lt_b _ hk`.
+
+Establish `hbh : ∀ s < Cu.ell c, kindAt kd c s ≠ Kind.thin → sizeAt bb c s + Sz ≤ hh` using `fun s _ hk => hN.b_le_h _ hk`. Establish `hnum : G.HeightNumerics (Cu.ell c) j B.ℓ (parM B.ℓ hh g) g G₀ Sz η hh (kindAt kd c) (sizeAt bb c)` using `⟨Prim.lt_parM B.ℓ hh g hℓ2, hN.G_le_g, hN.S_le_g, hN.η_le_g, hN.g_le_h, fun s hs hk => ⟨hbh s hs hk, thick_lt hN.thin_after hc hs hk⟩⟩`. Establish `hE : Cu.ell c ≤ Cu.ell c - 1 + 1` using `by omega`. Take `⟨p4c₁, p4a₁, p4b₁, pt₁, p3₁, -⟩` from `G.partners_model_holds O ϖ B n V₁ L₁ c (Cu.ell c) _ _ A.r₁ A.S₁ LL Ks Δ A.D₁ A.R₁ j (parM B.ℓ hh g) g G₀ Sz hh sig A.e₁ A.lam₁ hϖ hdvd hpB.prime hpB.three_le hpB.e3 hpB.e4 hN.one_le_j (hN.j_le_ell c hc) hN.sigOK (partModel hP.lev₁ hL₁.invX hL₁.invP hL₁.prim.p9 (fun s _ => hL₁.p5h …`. Take `⟨p4c₂, p4a₂, p4b₂, pt₂, p3₂, flr₂⟩` from `G.partners_model_holds O ϖ B n V₂ L₂ c (Cu.ell c) _ _ A.r₂ A.S₂ LL Ks Δ A.D₂ A.R₂ j (parM B.ℓ hh g) g G₀ Sz hh sig A.e₂ A.lam₂ hϖ hdvd hpB.prime hpB.three_le hpB.e3 hpB.e4 hN.one_le_j (hN.j_le_ell c hc) hN.sigOK (partModel hP.lev₂ hL₂.invX hL₂.invP hL₂.prim.p9 (fun s _ => hL₂.p5h …`.
+
+Use `⟨A.r₁, A.r₂, A.S₁, A.S₂, A.m, sizeAt bb c, kindAt kd c, A.U₁, A.U₂, G.PPoly u B.ℓ (Cu.ell c - 1) (jumpWindows (Cu.ell c) g (kindAt kd c) (sizeAt bb c)), G.PPoly u B.ℓ (Cu.ell c - 1) (wideWindows (Cu.ell c) g G₀ Sz η (kindAt kd c) (sizeAt bb c)), ?_⟩` and prove the remaining obligations. Conclude with `{ p4c₁ := p4c₁ p4c₂ := p4c₂ equiv₁ := hP.lev₁.equiv equiv₂ := hP.lev₂.equiv k2iii := G.graded_third_clause_holds O B n V₂ L₂ c (Cu.ell c) _ A.r₂ A.S₂ LL Ks Δ A.D₂ A.R₂ B.ℓ (by omega) (fun s hs => ⟨hP.lev₂.k1c s hs, factV hP.lev₂ hne hV s hs⟩) rd₁ := rd hP.lev₁ hN.G_le_g hN.S_le_g …`. Rewrite using `[hP.lev₂.kind_eq s hs, hP.lev₂.b_eq s hs]`. Conclude with `⟨hgb s hs, fun i hi => mem_second_jump_set hs hi⟩)`. Use `k3a4 := G.constant_term_fourth_form O B n V₁ L₁ c (Cu.ell c) _ A.r₁ A.S₁ LL Ks Δ A.D₁ A.R₁ u B.ℓ (Cu.ell c - 1) g _ hP.lev₁.k1b hP.lev₁.hasU hE (fun s hs => ⟨hP.lev₁.k1c s hs, hP.lev₁.k1d s hs⟩) (fun s hs => (hP.lev₁.filt s hs).1) (fun s hs v z hv h1 hz => mem_fourth_jump_set hs …`.
+
+Use `dcFix := G.descent_fixed_points_holds O B n V₁ L₁ c (Cu.ell c) _ A.r₁ A.S₁ LL Ks Δ A.D₁ A.R₁`. Use `partner₁ := pt₁`. Use `partner₂ := pt₂`. Use `p3₁ := p3₁`. Use `p3₂ := p3₂`.
+
+Use `flReg := flr₂`. Use `p4a₁ := p4a₁`. Use `p4a₂ := p4a₂`. Use `p4b₁ := p4b₁`. Use `p4b₂ := p4b₂`.
+
+Use `bridge₁ := bridge hϖ hP.lev₁ hB.frac`. Use `bridge₂ := bridge hϖ hP.lev₂ hB.frac`. Use `mapFl := hP.mapFl`. Use `p4d := partner_fourth_fourth_form O B n V₁ V₂ L₁ L₂ h c (Cu.ell c) g rr (inv_Th L₁ hL₁.invP _ _) (inv_Th L₂ hL₂.invP _ _) (hW c hc)`. Use `lLift := lLift_of hP.lev₁.span hP.lev₂.span hP.lev₂.ind hP.prLIs (hW _ (Cu.prev_mem c hc))`.
+
+Use `cMap := hP.cMap`. Use `ppval := ppval u hpB.prime hV (hN.kapOK c hc)`. Use `sat₁ := sat hP.lev₁ hϖ0`. Use `sat₂ := sat hP.lev₂ hϖ0`. Use `b_le_H := fun s _ hk => by`.
+
+Express the relevant statement in the definitionally equal form `sizeAt bb c s ≤ Formalism.ExponentWindows.G.HK g G₀ Sz η (kindAt kd c s) (sizeAt bb c s)`. Rewrite using `[HK_eq, hk]`. Simplify using `only [hJ]`. Use linear arithmetic over natural numbers and integers. Use `g_lt_b := hgb`.
+
+Use `word := primWord (hN.word c hc) }`.
+-/
 theorem primArc {ϖ : O} (hϖ : Irreducible ϖ) {eO : ℕ} {u x : Oˣ} (hB : FinalBase B ϖ eO u x LL)
     {Cu : Cuts n} {kd : ZMod n → Kind} {bb : ZMod n → ℕ} {j g G₀ Sz η hh sig rr kap ellmax : ℕ}
     (hN : FinalNum B.ℓ Cu kd bb j g G₀ Sz η hh sig rr kap ellmax)
@@ -506,10 +654,16 @@ end Formalism.ExponentWindows.E.JumpSetWindowBounds
 
 namespace Formalism.ExponentWindows.E
 
+/- English proof (translation)
+Introduce `ℓ n Cu kd bb g G₀ Sz η hh kap ellmax a₀ hp hG hS hη hg hb hle hw hk c hc`. Conclude with `JumpSetWindowBounds.kapExp_le hp hG hS hη hg (fun s _ hs => hb _ hs) (hw c hc) (hle c hc) hk`.
+-/
 theorem aux_statement_1 : KapOfKAP := by
   intro ℓ n Cu kd bb g G₀ Sz η hh kap ellmax a₀ hp hG hS hη hg hb hle hw hk c hc
   exact JumpSetWindowBounds.kapExp_le hp hG hS hη hg (fun s _ hs => hb _ hs) (hw c hc) (hle c hc) hk
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ B eO n _ Cu kd bb j g G₀ Sz η hh sig rr kap ellmax u x LL _ _ Ks _ _ Δ V₁ V₂ V₀ _ _ _ _ _ _ L₁ L₂ L₀ e₀ h Zf₁ Zf₂ hB hN hL₁ hL₂ hU hK hW hA`. Conclude with `theorem_E_primitive_form O ϖ hϖ B eO n Cu (HArc g G₀ Sz η kd bb) j g G₀ hh sig rr kap ellmax V₁ V₂ V₀ L₁ L₂ L₀ e₀ h Zf₁ Zf₂ hB.prim ⟨hN.G_le_g, hN.g_le_h, hN.one_le_j, hN.j_le_ell, hN.ell_le, hN.sigOK⟩ hL₁.prim hL₂.prim hU hK (fun c hc => JumpSetWindowBounds.primArc hϖ hB hN hL₁ …`.
+-/
 theorem theorem_E_final_form : ThmEFinal := by
   intro O _ _ _ ϖ hϖ B eO n _ Cu kd bb j g G₀ Sz η hh sig rr kap ellmax u x LL _ _ Ks _ _ Δ
     V₁ V₂ V₀ _ _ _ _ _ _ L₁ L₂ L₀ e₀ h Zf₁ Zf₂ hB hN hL₁ hL₂ hU hK hW hA

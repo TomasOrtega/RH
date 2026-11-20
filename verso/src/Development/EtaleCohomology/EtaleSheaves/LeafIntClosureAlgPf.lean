@@ -9,6 +9,13 @@ open LateralTheory.E.LeafNormalModelPf
 
 variable {Ω L : Type} [Field Ω] [Field L] [Algebra Ω L]
 
+/- English proof (translation)
+Take `⟨r, s, rfl⟩` from `(IntermediateField.mem_adjoin_simple_iff (F := Ω) (α := u) x).1 hx`. Use `set R := Algebra.adjoin Ω {u}`. Establish `hr : aeval u r ∈ R` using `by rw [show R = _ from Algebra.adjoin_singleton_eq_range_aeval Ω u]; exact ⟨r, rfl⟩`. Establish `hs : aeval u s ∈ R` using `by rw [show R = _ from Algebra.adjoin_singleton_eq_range_aeval Ω u]; exact ⟨s, rfl⟩`. Distinguish the cases in `h0 : aeval u s = 0`.
+
+Rewrite using `[h0, div_zero]`. Conclude with `isAlgebraic_zero`. Use `⟨C (⟨aeval u s, hs⟩ : R) * X - C ⟨aeval u r, hr⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Use `congrArg (fun p => p.coeff 1) h` as an intermediate fact.
+
+Simplify using `only [coeff_sub, coeff_C_mul, coeff_X_one, mul_one, coeff_C, one_ne_zero, if_false, sub_zero, coeff_zero] at this`. Conclude with `h0 (congrArg Subtype.val this)`. Simplify using `only [map_sub, map_mul, aeval_C, aeval_X]`. Express the relevant statement in the definitionally equal form `aeval u s * (aeval u r / aeval u s) - aeval u r = 0`. Rewrite using `[mul_div_cancel₀ _ h0, sub_self]`.
+-/
 theorem isAlgebraic_of_mem_adjoin (u x : L) (hx : x ∈ IntermediateField.adjoin Ω {u}) :
     IsAlgebraic (Algebra.adjoin Ω {u}) x := by
   obtain ⟨r, s, rfl⟩ := (IntermediateField.mem_adjoin_simple_iff (F := Ω) (α := u) x).1 hx
@@ -28,6 +35,11 @@ theorem isAlgebraic_of_mem_adjoin (u x : L) (hx : x ∈ IntermediateField.adjoin
     rw [mul_div_cancel₀ _ h0, sub_self]
 
 variable (Ω) in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `z`. Use `set K := IntermediateField.adjoin Ω {u}`. Establish `h1 : IsAlgebraic K z` using `Algebra.IsAlgebraic.isAlgebraic z`. Establish `h2 : IsAlgebraic K.toSubalgebra z` using `h1`.
+
+Establish `h3 : IsAlgebraic (Algebra.adjoin Ω (K : Set L)) z` using `h2.tower_top_of_subalgebra_le (fun y hy => Algebra.subset_adjoin hy)`. Use `IsAlgebraic.adjoin_of_forall_isAlgebraic (fun y hy => ?_) h3` and prove the remaining obligations. Conclude with `isAlgebraic_of_mem_adjoin u y hy.1`.
+-/
 theorem isAlgebraic_adjoin (u : L) [FiniteDimensional (IntermediateField.adjoin Ω {u}) L] :
     Algebra.IsAlgebraic (Algebra.adjoin Ω {u}) L := by
   constructor
@@ -41,6 +53,11 @@ theorem isAlgebraic_adjoin (u : L) [FiniteDimensional (IntermediateField.adjoin 
   exact isAlgebraic_of_mem_adjoin u y hy.1
 
 variable (Ω) in
+/- English proof (translation)
+Use `isAlgebraic_adjoin Ω u` as an intermediate fact. Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Take `⟨y, hy, hint⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := Algebra.adjoin Ω {u}) z).exists_integral_multiple`. Establish `hy' : (y : L) ≠ 0` using `fun h => hy (Subtype.ext h)`. Use `⟨⟨y • z, hint⟩, ⟨(y : L), isIntegral_algebraMap (R := Algebra.adjoin Ω {u}) (x := y)⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `z = y • z / (y : L)`. Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `z = (y : L) * z / (y : L)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem isFractionRing_intClosure (u : L) [FiniteDimensional (IntermediateField.adjoin Ω {u}) L] :
     IsFractionRing (integralClosure (Algebra.adjoin Ω {u}) L) L := by
   have := isAlgebraic_adjoin Ω u
@@ -55,6 +72,9 @@ theorem isFractionRing_intClosure (u : L) [FiniteDimensional (IntermediateField.
   field_simp
 
 variable (Ω) in
+/- English proof (translation)
+Use `isFractionRing_intClosure Ω u` as an intermediate fact. Rewrite using `[isIntegrallyClosed_iff L]`. Introduce `x hx`. Conclude with `⟨⟨x, isIntegral_trans x hx⟩, rfl⟩`.
+-/
 theorem isIntegrallyClosed_intClosure (u : L) [FiniteDimensional (IntermediateField.adjoin Ω {u}) L] :
     IsIntegrallyClosed (integralClosure (Algebra.adjoin Ω {u}) L) := by
   have := isFractionRing_intClosure Ω u
@@ -62,6 +82,9 @@ theorem isIntegrallyClosed_intClosure (u : L) [FiniteDimensional (IntermediateFi
   intro x hx
   exact ⟨⟨x, isIntegral_trans x hx⟩, rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective (A := Algebra.adjoin Ω {u}) (B := integralClosure (Algebra.adjoin Ω {u}) L) (fun a b h => Subtype.ext (congrArg (Subtype.val : integralClosure (Algebra.adjoin Ω {u}) L → L) h))`. Establish `h2` using `ringKrullDim_eq_of_ringEquiv (Polynomial.algEquivOfTranscendental Ω u hu).toRingEquiv`. Rewrite using `[h1, ← h2]`. Conclude with `IsPrincipalIdealRing.ringKrullDim_eq_one _ (Polynomial.not_isField Ω)`.
+-/
 theorem ringKrullDim_intClosure (u : L) (hu : Transcendental Ω u) :
     ringKrullDim (integralClosure (Algebra.adjoin Ω {u}) L) = 1 := by
   have h1 := ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective (A := Algebra.adjoin Ω {u})
@@ -74,6 +97,9 @@ def LeafIntClFinite : Prop := ∀ (Ω L : Type) [Field Ω] [Field L] [Algebra Ω
   Transcendental Ω u → FiniteDimensional (IntermediateField.adjoin Ω {u}) L →
     Module.Finite (Algebra.adjoin Ω {u}) (integralClosure (Algebra.adjoin Ω {u}) L)
 
+/- English proof (translation)
+Establish `h1 : Algebra.FiniteType Ω (Algebra.adjoin Ω {u})` using `(Subalgebra.fg_iff_finiteType _).1 ⟨{u}, by rw [Finset.coe_singleton]⟩`. Establish `h2 : Algebra.FiniteType (Algebra.adjoin Ω {u}) (integralClosure (Algebra.adjoin Ω {u}) L)` using `inferInstance`. Establish `h3 : Algebra.FiniteType Ω (integralClosure (Algebra.adjoin Ω {u}) L)` using `Algebra.FiniteType.trans (S := Algebra.adjoin Ω {u}) h1 h2`. Conclude with `h3`.
+-/
 theorem finiteType_intCl (u : L) (h : Module.Finite (Algebra.adjoin Ω {u}) (integralClosure (Algebra.adjoin Ω {u}) L)) :
     Algebra.FiniteType Ω (intCl Ω u) := by
   have h1 : Algebra.FiniteType Ω (Algebra.adjoin Ω {u}) :=
@@ -83,6 +109,9 @@ theorem finiteType_intCl (u : L) (h : Module.Finite (Algebra.adjoin Ω {u}) (int
     Algebra.FiniteType.trans (S := Algebra.adjoin Ω {u}) h1 h2
   exact h3
 
+/- English proof (translation)
+Introduce `Ω L _ _ _ u hu hfd`. Use `⟨finiteType_intCl u (h Ω L u hu hfd), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isIntegrallyClosed_intClosure Ω u`. Conclude with `ringKrullDim_intClosure u hu`. Conclude with `isFractionRing_intClosure Ω u`.
+-/
 theorem LeafIntClosureAlg_of (h : LeafIntClFinite) : LeafIntClosureAlg := by
   intro Ω L _ _ _ u hu hfd
   refine ⟨finiteType_intCl u (h Ω L u hu hfd), ?_, ?_, ?_⟩

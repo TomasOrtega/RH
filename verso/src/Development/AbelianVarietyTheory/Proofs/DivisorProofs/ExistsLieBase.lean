@@ -47,12 +47,32 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
   {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l}
 
+/- English proof (translation)
+Use `h.isIntegral` as an intermediate fact. Establish `h0 : CharZero Γ(X, ⊤)` using `(flat_int_iff_charZero _).1 h.flat`. Conclude with `(resG X (le_top : U ≤ ⊤)).charZero_iff (map_injective_of_isIntegral X (homOfLE le_top)) |>.1 h0`.
+-/
 theorem charZero_sec {k : Type} [CommRing k] {X : Scheme.{0}} {q : X ⟶ Sp k} {d : ℕ} (h : IsArithVar q d)
     (U : X.Opens) [Nonempty U] : CharZero Γ(X, U) := by
   have := h.isIntegral
   have h0 : CharZero Γ(X, ⊤) := (flat_int_iff_charZero _).1 h.flat
   exact (resG X (le_top : U ≤ ⊤)).charZero_iff (map_injective_of_isIntegral X (homOfLE le_top)) |>.1 h0
 
+/- English proof (translation)
+Use `choose U u hx hU hfr hlat using h`. Establish `hcov : ∀ x : X, ∃ i, x ∈ U i` using `fun x => ⟨x, hx x⟩`. Establish `haff : IsAffineHom jB` using `MorphismProperty.of_isPullback hpb.flip (isAffineHom_of_isAffine _)`. Establish `hsep : X.IsSeparated`. Establish `: IsProper q` using `projProper _ _ _ hq.isProjOver`.
+
+Conclude with `⟨by rw [← Limits.terminal.comp_from q]; infer_instance⟩`. Establish `hc` using `GlobalTheory.T.integrality_criterion_normal_model F X W q _ jB d hq hn hpb`. Use `choose A hA using fun i j => GlobalTheory.T.arithmetic_model_flag_height_first E H Dw l Xo c Oz β Z F e X W jB πB haff hc r τ kind (U i) (U j) (u i) (u j) ((hU i).inf (hU j)) (hfr i) (hfr j) (hlat i) (hlat j)`. Take `⟨h1, h2⟩` from `GlobalTheory.T.arithmetic_model_flag_height_second E H Dw l Xo c Oz β Z F e X W q jB πB d hq hpb r τ X U u A hfr hA`. Choose the witnesses or unpack the hypotheses as in `⟨M, f, hf, hm⟩ : ∃ (M : X.Modules) (f : ∀ i, Fin r → Γ(M, U i)) (hf : ∀ i, VB.IsFrame (f i)), ∀ i j, FramesMatch Z jB πB dual (hf i) (f j) (u i) (u j) := by`.
+
+Consider the cases of `dual with`. Consider the case `false`. Take `⟨M, f, hf, hm⟩` from `GlobalTheory.T.vector_bundle_gluing_cocycle X r X U A hcov h1 h2`. Use `⟨M, f, hf, fun i j K _ x h₁ h₂ h₃ a => ?_⟩` and prove the remaining obligations. Simplify using `only [cond_false, hm]`.
+
+Conclude with `hA i j K x h₁ h₂ h₃ a`. Consider the case `true`. Establish `hres : ∀ (U₁ U₂ U₃ : X.Opens) (h₁ : U₂ ≤ U₁) (h₂ : U₃ ≤ U₂) (s : Γ(X, U₁)), resG X h₂ (resG X h₁ s) = resG X (h₂.trans h₁) s` using `fun U₁ U₂ U₃ h₁ h₂ s => by`. Use `X.presheaf.map_comp (homOfLE h₁).op (homOfLE h₂).op` as an intermediate fact. Conclude with `(congrArg (fun φ => φ.hom s) this).symm`.
+
+Take `⟨M, f, hf, hm⟩` from `GlobalTheory.T.vector_bundle_gluing_cocycle X r X U (fun i j => ((A j i).map (resG X (inf_comm (U i) (U j)).le)).transpose) hcov (fun i => by rw [h1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]) (fun i j k V hij hjk hik => by`. Use `congrArg Matrix.transpose (h2 k j i V (hjk.trans (inf_comm _ _).le) (hij.trans (inf_comm _ _).le) (hik.trans (inf_comm _ _).le))` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul]`. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `congr 1 <;> ext a b <;> exact hres _ _ _ _ _ _`.
+
+Use extensionality with `a b`. Conclude with `hres _ _ _ _ _ _)`. Use `⟨M, f, hf, fun i j K _ x h₁ h₂ h₃ a => ?_⟩` and prove the remaining obligations. Simplify using `only [cond_true, hm, Matrix.transpose_apply, Matrix.map_apply]`. Establish `h₄ : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ (U j ⊓ U i)` using `inf_comm (U i) (U j) ▸ h₃`.
+
+Simplify using `only [TangentOrigin.evalPt_res (x ≫ jB) _ h₄ h₃]`. Conclude with `hA j i K x h₂ h₁ h₄ a`. Take `⟨uu, huu, hag⟩` from `GlobalTheory.T.arithmetic_model_flag_height_third E H Dw l Xo c Oz β Z F e X W jB πB M r τ dual X U f hf u hcov hfr hm`. Use `⟨M, uu, fun x => ⟨U x, f x, hx x, hf x⟩, huu, GlobalTheory.T.arithmetic_model_flag_height_fourth E H Dw l Xo c Oz β Z F e X W jB πB M r τ dual kind X U f hf uu hcov huu fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hag]`.
+
+Conclude with `hlat i`.
+-/
 theorem exists_bundle {Oz : Type} [CommRing Oz] {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) {F : Type}
     [Field F] [NumberField F] (e : F ≃+* c.F) {X W : Scheme.{0}} {q : X ⟶ Sp (𝓞 F)} {jB : W ⟶ X} {πB : W ⟶ gen Z}
     {d : ℕ} (hq : IsArithVar q d) (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X)
@@ -109,6 +129,23 @@ theorem exists_bundle {Oz : Type} [CommRing Oz] {β : Oz →+* c.F} (Z : Recipro
 
 variable (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F))
 
+/- English proof (translation)
+Take `⟨V, g, e, hx, he⟩` from `GlobalTheory.LineNorm.exists_affine_isTanBasis E H Z.X Z.t X ρ x`. Use `⟨V, hx, fun τ => ?_⟩` and prove the remaining obligations. Establish `: Nonempty V.1` using `⟨⟨x, hx⟩⟩`. Use `h0 V.1` as an intermediate fact. Establish `: IsProper Z.s` using `projProper _ _ _ Z.proj`.
+
+Establish `: FiniteDimensional ℚ c.F` using `c.fin`. Establish `: NumberField c.F` using `{}`. Establish `: IsLocallyNoetherian Z.X` using `LocallyOfFiniteType.isLocallyNoetherian Z.s`. Establish `hsep : Z.X.IsSeparated` using `⟨by rw [← Limits.terminal.comp_from Z.s]; infer_instance⟩`. Establish `: IsFractionRing Γ(X, V.1) X.functionField` using `functionField_isFractionRing_of_isAffineOpen X V.1 V.2`.
+
+Establish `: CharZero X.functionField` using `charZero_of_injective_algebraMap (IsFractionRing.injective Γ(X, V.1) _)`. Establish `: IsIntegrallyClosed Γ(X, V.1)` using `haveI : GlobalTheory.IsNormalScheme X := ⟨fun x => (hn x).1, fun x => (hn x).2⟩ GlobalTheory.IsNormalScheme.isIntegrallyClosed_of_isAffineOpen V.2`. Establish `hgen : spMap (algebraMap Γ(X, V.1) X.functionField) ≫ V.2.fromSpec ≫ ρ = X.fromSpecStalk (genericPoint X) ≫ ρ`. Rewrite using `[← Category.assoc]`. Use `congr 1`.
+
+Conclude with `V.2.fromSpecStalk_eq_fromSpecStalk (((genericPoint_spec X).mem_open_set_iff V.1.isOpen).2 ⟨x, trivial, hx⟩)`. Take `⟨M, h, hP⟩` from `GlobalTheory.T.split_torus_cyclotomic_point E H Z.X Z.t hsep S hS Γ(X, V.1) X.functionField (V.2.fromSpec ≫ ρ) hζ (hgen ▸ hs) g e he`. Take `⟨M', h', hP'⟩ : ∃ (M' : ℕ) (h' : Fin M' → Fin g → Γ(X, V.1)), LatPres Z.t (R` from `Γ(X, V.1)) (V.2.fromSpec ≫ ρ) (ArIn.ind S) (scOf H τ (ArIn.ind S)) e h' := by`. Distinguish the cases in `hτ : τ (H.rt : E) = H.rt0`. Take `⟨m, d, ⟨n, hn0, hn⟩, hd'⟩` from `GlobalTheory.T.different_ideal_p_adic_norm E inferInstance`.
+
+Set `κ : 𝓞 c.F →+* Γ(X, V.1)` to `(Spec.preimage (V.2.fromSpec ≫ ρ ≫ Z.s)).hom`. Set `i : 𝓞 E →+* Γ(X, V.1)` to `κ.comp (RingOfIntegers.mapRingHom (embF c τ))`. Use `GlobalTheory.T.tangent_basis_lattice_presentation E H Z.X Z.t _ _ _ _ g M e h he hP m (fun k => i (d k)) ⟨n, hn0, ?_⟩ fun p _ φ => ?_` and prove the remaining obligations. Use `Ideal.mem_map_of_mem i hn` as an intermediate fact. Rewrite `this` using `[map_natCast, Ideal.map_span, ← Set.range_comp]`. Then use the resulting hypothesis.
+
+Use `(hd' p (φ.comp i)).trans ?_` and prove the remaining obligations. Use `congr 2`. Distinguish the cases in `hp : p ∈ S`. Simplify using `[scOf, ArIn.ind, hp, hτ]`. Establish `: ¬ p ∣ (NumberField.discr E).natAbs` using `fun h => hp (hd p Fact.out h)`.
+
+Simplify using `[scOf, ArIn.ind, hp, vDiff, padicValNat.eq_zero_of_not_dvd this]`. Use `⟨M, h, ?_⟩` and prove the remaining obligations. Establish `: scOf H τ (ArIn.ind S) = fun _ => 0` using `funext fun p => by simp [scOf, hτ]`. Rewrite using `[this]` and apply the resulting hypothesis. Take `⟨D, P, hD, hPr, hrk⟩` from `GlobalTheory.T.moduli_point_tangent_frame_complex E H Dw l Xo c Z _ _ τ g e he`.
+
+Take `⟨n, m, A, hn0, hA, hsp⟩` from `GlobalTheory.T.projective_module_rank_generic_spread _ g M' (Dw.mult τ) D P h' hD hPr.1 hrk hP'.1`. Use `⟨n, m, A, hn0, hA, fun R' _ _ _ ψ hk => ?_⟩` and prove the remaining obligations. Take `⟨N, U, I, hN, hU⟩` from `hsp R' ψ hk`. Conclude with `GlobalTheory.T.moduli_tangent_frame_base_change E H Dw l Xo c _ _ Z _ R' ψ _ τ _ _ g M' _ D N e h' P U I hD hN he hPr hP' hU`.
+-/
 theorem exists_chart [IsGalois ℚ E] {X : Scheme.{0}} [IsIntegral X] (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X)
     (h0 : ∀ (U : X.Opens) [Nonempty U], CharZero Γ(X, U)) (ρ : X ⟶ Z.X) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime)
     (hd : ∀ p : ℕ, p.Prime → p ∣ (NumberField.discr E).natAbs → p ∈ S)
@@ -162,6 +199,25 @@ theorem exists_chart [IsGalois ℚ E] {X : Scheme.{0}} [IsIntegral X] (hn : Reci
   obtain ⟨N, U, I, hN, hU⟩ := hsp R' ψ hk
   exact GlobalTheory.T.moduli_tangent_frame_base_change E H Dw l Xo c _ _ Z _ R' ψ _ τ _ _ g M' _ D N e h' P U I hD hN he hPr hP' hU
 
+/- English proof (translation)
+Take `⟨X₀, W₀, q₀, j₀, π₀, ρ₀, h₀⟩` from `GlobalTheory.T.arithmetic_model_closed_subvariety F c.F e Z.X Z.s Z.proj V j hj d hdim`. Use `h₀.1.isIntegral` as an intermediate fact. Establish `: IsProper Z.s` using `projProper _ _ _ Z.proj`. Establish `: FiniteDimensional ℚ c.F` using `c.fin`. Establish `: NumberField c.F` using `{}`.
+
+Establish `: IsLocallyNoetherian Z.X` using `LocallyOfFiniteType.isLocallyNoetherian Z.s`. Establish `: CharZero X₀.functionField`. Use `charZero_sec h₀.1 ⊤` as an intermediate fact. Conclude with `charZero_of_injective_ringHom (f := (X₀.germToFunctionField ⊤).hom) (X₀.germToFunctionField_injective ⊤)`. Establish `hn0 : ∏ p ∈ S, p ≠ 0` using `Finset.prod_ne_zero_iff.2 fun p hp => (hS p hp).ne_zero`.
+
+Set `x₀ : Sp X₀.functionField ⟶ Z.X` to `X₀.fromSpecStalk (genericPoint X₀) ≫ ρ₀`. Take `⟨K, i1, i2, i3, hfin, hinj, -, ⟨ζ, hζ⟩, hs⟩` from `GlobalTheory.T.exists_finite_extension_splitting_torsion E H Z.X Z.t X₀.functionField x₀ _ hn0`. Establish `hK : IsField K`. Establish `: Algebra.IsIntegral X₀.functionField K` using `Algebra.IsIntegral.of_finite _ _`. Conclude with `(Algebra.IsIntegral.isField_iff_isField hinj).1 (Field.toIsField _)`.
+
+Use `letI : Field K := hK.toField`. Take `⟨X₁, W₁, _, ν₁, j₁, π₁, κ, h₁, hn₁, hκ⟩` from `GlobalTheory.T.arithmetic_model_finite_extension F _ _ _ _ d _ X₀ W₀ q₀ j₀ π₀ ρ₀ h₀ K hfin`. Establish `hsK : GlobalTheory.HtGen.SplitK Z.t (K` using `X₁.functionField) (X₁.fromSpecStalk (genericPoint X₁) ≫ ν₁ ≫ ρ₀) (∏ p ∈ S, p) := GlobalTheory.HtGen.SplitCover.splitK_of_splitTors Z.t _ κ _ (by rw [reassoc_of% hκ]) hs`. Use `choose V hV hch using exists_chart Z hn₁ (fun U _ => charZero_sec h₁.1 U) (ν₁ ≫ ρ₀) S hS hd ⟨κ ζ, hζ.map_of_injective κ.injective⟩ hsK`. Use `choose n m A hn hA hR using hch`.
+
+Establish `: IsProper (ν₁ ≫ q₀)` using `projProper _ _ _ h₁.1.isProjOver`. Establish `: CompactSpace X₁` using `QuasiCompact.compactSpace_of_compactSpace (ν₁ ≫ q₀)`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x : X₁ => ((V x).1 : Set X₁)) (fun x => (V x).1.isOpen) fun x _ => Set.mem_iUnion.2 ⟨x, hV x⟩`. Set `ε` to `(Fintype.equivFin (t × (E →+* ℂ))).symm`. Take `⟨X₂, W₂, b, j₂, π₂, h₂, hb⟩` from `GlobalTheory.T.arithmetic_model_affine_cover_radical F _ _ _ _ d _ X₁ W₁ _ j₁ π₁ _ h₁ _ (fun k => (V (ε k).1).1) (fun k => m (ε k).1 (ε k).2) (fun k => A (ε k).1 (ε k).2) (fun k => n (ε k).1 (ε k).2) (fun k => (V _).2) (fun k => hn _ _) (fun k => hA _ _)`.
+
+Use `h₂.1.isIntegral` as an intermediate fact. Take `⟨X₃, W₃, _, ν₃, j₃, π₃, -, h₃, hn₃, -⟩` from `GlobalTheory.T.arithmetic_model_finite_extension F _ _ _ _ d _ X₂ W₂ _ j₂ π₂ _ h₂ X₂.functionField inferInstance`. Use `⟨X₃, W₃, _, j₃, π₃, _, h₃, hn₃, fun τ w => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hw⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ ((ν₃ ≫ b) w)))`. Take `⟨k, hk⟩` from `ε.surjective (⟨x, hx⟩, τ)`.
+
+Establish `hw' : (ν₃ ≫ b) w ∈ (V (ε k).1).1` using `by rw [hk]; exact hw`. Take `⟨U, hU, hwU, hUa, hdv⟩` from `hb X₃ ν₃ w k hw'`. Establish `: Nonempty U` using `⟨⟨w, hwU⟩⟩`. Use `charZero_sec h₃.1 U` as an intermediate fact. Establish `hRB` using `hR (ε k).1 (ε k).2 Γ(X₃, U) _ hdv`.
+
+Establish `e₁ : spMap ((ν₃ ≫ b).appLE (V (ε k).1).1 U hU).hom ≫ (V (ε k).1).2.fromSpec ≫ ν₁ ≫ ρ₀ = hUa.fromSpec ≫ ν₃ ≫ b ≫ ν₁ ≫ ρ₀`. Use `IsAffineOpen.SpecMap_appLE_fromSpec (ν₃ ≫ b) (V (ε k).1).2 hUa hU` as an intermediate fact. Rewrite using `[← Category.assoc]`. Use `(congrArg (· ≫ ν₁ ≫ ρ₀) this).trans ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`.
+
+Establish `hτ : (ε k).2 = τ` using `by rw [hk]`. Rewrite `hRB` using `[e₁, hτ]`. Take `⟨u, hu⟩` from `GlobalTheory.T.arithmetic_model_flag_compactification E H Dw l Xo c _ _ Z F e X₃ W₃ j₃ π₃ _ h₃.2.2.2.2 U hUa τ _ _ hRB`. Conclude with `⟨U, u, hwU, hUa, hu⟩`.
+-/
 theorem exists_base [IsGalois ℚ E] {F : Type} [Field F] [NumberField F] (e : F ≃+* c.F) {V : Scheme.{0}} [IsIntegral V]
     (j : V ⟶ gen Z) (hj : IsClosedImmersion j) {d : ℕ} (hdim : topologicalKrullDim V = d) (S : Finset ℕ)
     (hS : ∀ p ∈ S, p.Prime) (hd : ∀ p : ℕ, p.Prime → p ∣ (NumberField.discr E).natAbs → p ∈ S) :
@@ -227,6 +283,15 @@ theorem exists_base [IsGalois ℚ E] {F : Type} [Field F] [NumberField F] (e : F
 
 end Free
 
+/- English proof (translation)
+Establish `hsm` using `O.s.T.smooth`. Take `⟨X, j, hoi, hj, hr⟩` from `GlobalTheory.CompOfVar.exists_var_comp _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e hsm (O.Φ.C c).Y (O.Φ.C c).π (O.Φ.C c).π_str`. Set `f : (O.Φ.C c).Y.X ⟶ X.X` to `IsOpenImmersion.lift j (O.Φ.C c).π hr`. Establish `hf : f ≫ j = (O.Φ.C c).π` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hrange : Set.range j = Set.range (O.Φ.C c).π`.
+
+Use `Set.Subset.antisymm ?_ hr` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨K, _, _, x, t, rfl⟩` from `GlobalTheory.FlagCptBase.exists_geomPt _ z`. Set `χ : O.κ.c.F →+* K` to `(Spec.preimage (x ≫ j ≫ genStr O.s.T.Z)).hom`. Establish `hχ : x ≫ j ≫ genStr O.s.T.Z = spMap χ` using `(Spec.map_preimage _).symm`.
+
+Take `⟨g⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame _ _ _ _ _ _ _ _ O.s.T.Z K χ (x ≫ j) (by rw [Category.assoc, hχ])`. Rewrite `g` using `[Category.assoc]`. Take `⟨p, ⟨hp, -⟩, -⟩` from `GlobalTheory.CarryAll.carries_everywhere _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e _ _ _ O.Φ c X j hoi hj f hf K χ x hχ g`. Use `⟨p t, ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, ← hp]`.
+
+Simplify using `only [Scheme.Hom.comp_apply]`. Use `⟨X.X, inferInstance, j, IsClosedImmersion.of_isPreimmersion _ (hrange ▸ GlobalTheory.FlagCptBase.isClosed_range_π (O.Φ.C c)), ?_, hrange⟩` and prove the remaining obligations. Establish `h : SmoothOfRelativeDimension (0 + O.S.Dw.dim) (j ≫ genStr O.s.T.Z)` using `inferInstance`. Rewrite using `[GlobalTheory.HSApp.BigMoving.dim_eq _ X.X _ _ h, zero_add, Datum.dim, dimGr, GlobalTheory.ShFam.CmDim.card_tau, O.S.p_eq, show O.S.Dw.q = O.N - O.j by have := O.S.rank_eq; have := O.S.p_eq; omega, mul_assoc]`.
+-/
 theorem exists_comp {D : D7} (O : Setup D) (c : O.s.Comp) :
     ∃ (V : Scheme.{0}) (_ : IsIntegral V) (j : V ⟶ gen O.s.T.Z), IsClosedImmersion j ∧
       topologicalKrullDim V = (dimGr D.what₂.Tau O.N O.j : ℕ) ∧ Set.range j = Set.range (O.Φ.C c).π := by
@@ -254,6 +319,17 @@ theorem exists_comp {D : D7} (O : Setup D) (c : O.s.Comp) :
   rw [GlobalTheory.HSApp.BigMoving.dim_eq _ X.X _ _ h, zero_add, Datum.dim, dimGr, GlobalTheory.ShFam.CmDim.card_tau, O.S.p_eq,
     show O.S.Dw.q = O.N - O.j by have := O.S.rank_eq; have := O.S.p_eq; omega, mul_assoc]
 
+/- English proof (translation)
+Introduce `D O ⟨x, P, hc⟩ B R hR c`. Establish `: IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Take `⟨V, _, j, hj, hdim, hr⟩` from `exists_comp O c`. Establish `hd0 : 2 * (NumberField.discr D.host.E).natAbs ≠ 0` using `mul_ne_zero two_ne_zero (Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _))`. Take `⟨X, W, q, jB, πB, ρ, ⟨hq, hpb, hfin, hrg, -⟩, hn, hloc⟩` from `exists_base O.s.T.Z O.κ.e j hj hdim (FlagAr.setB O.Y B) (fun p hp => by`.
+
+Rewrite `hp` using `[O.setB_eq]`. Break down `Finset.mem_union.1 hp with h | h` into its components or cases. Use `exacts [(Finset.mem_filter.1 h).2, Nat.prime_of_mem_primeFactors h])`. Use the proof step `(fun p hp h => Finset.mem_union_right _ (Finset.mem_union_left _ (Nat.mem_primeFactors.2 ⟨hp, h.mul_left 2, hd0⟩)))`. Establish `hrk : ∀ a : D.what₂.Tau × Bool, rkB D.what₂.Tau O.N O.j a = O.S.Dw.mult (embB D a)`.
+
+Introduce and unpack `⟨τ, _ | _⟩`. Use `O.S.rank_eq` as an intermediate fact. Use `O.S.p_eq` as an intermediate fact. Express the relevant statement in the definitionally equal form `O.N - O.j = O.S.Dw.mult (conjEmb (DV.tauEmb D τ))`. Rewrite using `[GlobalTheory.Harm.mult_conjEmb_of_mem O.S.Dw (Amb.cm O.A τ)]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `((GlobalTheory.Harm.mult_of_mem O.S.Dw (Amb.cm O.A τ)).trans O.S.p_eq).symm`. Use `choose E uu hvb hfr hlat using fun a : D.what₂.Tau × Bool => exists_bundle O.s.T.Z O.κ.e hq hn hpb (rkB D.what₂.Tau O.N O.j a) (embB D a) (ArIn.ind (FlagAr.setB O.Y B)) (!a.2) (by rw [hrk]; exact hloc _)`. Set `G : ∀ σ', EigMet O.s.T.Z σ'` to `fun σ' => x.eigMetAt σ' (some R)`. Establish `hG : EigConj O.s.T.Z G` using `fun σ σ' y y' g g' τ hσ e hg => GlobalTheory.ShFam.ConjMet.eigMetAt_conj x hσ e hg τ _`.
+
+Use `choose h hh using fun a : D.what₂.Tau × Bool => GlobalTheory.T.arithmetic_model_flag_height_fifth _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e X W q jB πB hpb (E a) _ _ _ (hrk a) (uu a) G (hvb a) (hfr a) hG`. Establish `hsm` using `O.s.T.smooth`. Use `⟨X, hq.isIntegral, q, hq, hn, E, h, fun a => GlobalTheory.T.arithmetic_model_smooth_flag_height _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e X W q jB πB hpb (E a) _ _ _ (hrk a) (uu a) G (h a) (hfr a) (fun σ' => ToroidalCompactificationData.smoothOn_eigMetAt_some _ _ _ _ _ _ _ x σ' R hR (Toroi …` and prove the remaining obligations. Rewrite using `[hc.hm_eq]`. Both sides reduce to the same expression.
+-/
 theorem exists_lieBase : ∀ (D : D7) (O : Setup D), O.Core → ∀ B : ℝ, ∀ R : ℝ, 2 ≤ R → ∀ c : O.s.Comp,
     ∃ (Bs : Scheme.{0}) (_ : IsIntegral Bs) (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (_ : IsArithVar q (dimGr D.what₂.Tau O.N O.j))
       (_ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Bs) (E : D.what₂.Tau × Bool → Bs.Modules)

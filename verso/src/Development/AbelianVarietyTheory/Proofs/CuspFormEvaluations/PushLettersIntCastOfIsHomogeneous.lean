@@ -15,6 +15,11 @@ noncomputable def basisComponent (b : Module.Basis ι R S) (i : ι) (P : MvPolyn
     MvPolynomial σ R :=
   ∑ m ∈ P.support, monomial m (b.repr (coeff m P) i)
 
+/- English proof (translation)
+Rewrite using `[basisComponent, coeff_sum, Finset.sum_eq_single m]`. Simplify using the standard rewrite rules. Introduce `m' _ h`. Simplify using `[coeff_monomial, h]`. Introduce `h`.
+
+Simplify using `[notMem_support_iff.1 h]`.
+-/
 theorem coeff_basisComponent (b : Module.Basis ι R S) (i : ι) (P : MvPolynomial σ S)
     (m : σ →₀ ℕ) : coeff m (basisComponent b i P) = b.repr (coeff m P) i := by
   classical
@@ -23,6 +28,11 @@ theorem coeff_basisComponent (b : Module.Basis ι R S) (i : ι) (P : MvPolynomia
   · intro m' _ h; simp [coeff_monomial, h]
   · intro h; simp [notMem_support_iff.1 h]
 
+/- English proof (translation)
+Use `⟨P.support.biUnion fun m => (b.repr (coeff m P)).support, ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Simplify using `only [coeff_sum, coeff_smul, coeff_map, coeff_basisComponent, smul_eq_mul]`. Use `conv_lhs => rw [← b.linearCombination_repr (coeff m P), Finsupp.linearCombination_apply]`. Rewrite using `[Finsupp.sum_of_support_subset (s := P.support.biUnion fun m => (b.repr (coeff m P)).support)]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [Algebra.smul_def, mul_comm]`. Distinguish the cases in `hm : m ∈ P.support`. Conclude with `Finset.subset_biUnion_of_mem (fun m => (b.repr (coeff m P)).support) hm`. Simplify using `[notMem_support_iff.1 hm]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_eq_sum_basisComponent (b : Module.Basis ι R S) (P : MvPolynomial σ S) :
     ∃ J : Finset ι, P = ∑ i ∈ J, b i • MvPolynomial.map (algebraMap R S) (basisComponent b i P) := by
   classical
@@ -37,6 +47,9 @@ theorem exists_eq_sum_basisComponent (b : Module.Basis ι R S) (P : MvPolynomial
     · simp [notMem_support_iff.1 hm]
   · simp
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `only [coeff_basisComponent, coeff_sum, coeff_smul, coeff_map, smul_eq_mul, mul_comm (b _), ← Algebra.smul_def, map_sum, map_smul, Module.Basis.repr_self, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply]`. Apply the tactic sequence `rw [Finset.sum_eq_single i] <;> simp +contextual [hi]`.
+-/
 theorem basisComponent_sum (b : Module.Basis ι R S) (J : Finset ι) (Q : ι → MvPolynomial σ R)
     {i : ι} (hi : i ∈ J) :
     basisComponent b i (∑ j ∈ J, b j • MvPolynomial.map (algebraMap R S) (Q j)) = Q i := by
@@ -49,6 +62,17 @@ theorem basisComponent_sum (b : Module.Basis ι R S) (J : Finset ι) (Q : ι →
 
 variable {T : Type*} {p q : ℕ} {κ : Type*} [Fintype κ] {c : T → Fin p → ℕ} {c' : T → Fin q → ℕ}
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃⟩` from `mem_rowHighest_iff_rowAdd.1 hP`. Take `⟨J, hJ⟩` from `exists_eq_sum_basisComponent b P`. Distinguish the cases in `hi : i ∈ J`. Use `swap`. Establish `: basisComponent b i P = 0`.
+
+Rewrite using `[← basisComponent_sum b (insert i J) (fun j => if j = i then 0 else basisComponent b j P) (Finset.mem_insert_self i J) |>.trans (if_pos rfl)]`. Use `congr 1`. Rewrite using `[Finset.sum_insert hi, if_pos rfl, map_zero, smul_zero, zero_add]`. Use `hJ.trans (Finset.sum_congr rfl fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[if_neg (by rintro rfl; exact hi hj)]`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Use `mem_rowHighest_iff_rowAdd.2 ⟨fun t a b' => ?_, fun t r m hm => h₂ t r fun e => hm ?_, fun t r r' hr s => ?_⟩` and prove the remaining obligations. Use `h₁ t a b'` as an intermediate fact. Rewrite `this` using `[hJ, map_sum]`.
+
+Simplify using `only [map_smul, ← map_laplacian] at this`. Rewrite using `[← basisComponent_sum b J (fun j => laplacian t a b' (basisComponent b j P)) hi, this]`. Simplify using `[basisComponent]`. Rewrite using `[coeff_basisComponent, e]`. Simplify using the standard rewrite rules.
+
+Use `h₃ t r r' hr s conv_lhs at this => rw [hJ, map_sum]` as an intermediate fact. Simplify using `only [map_smul, ← map_intCast (algebraMap R S), ← map_rowAdd] at this`. Rewrite using `[← basisComponent_sum b J (fun j => rowAdd t r r' (s : R) (basisComponent b j P)) hi, this]`.
+-/
 theorem basisComponent_mem_rowHighest (b : Module.Basis ι R S) (i : ι) {P : Poly S T p q κ}
     (hP : P ∈ rowHighest S c c') : basisComponent b i P ∈ rowHighest R c c' := by
   classical
@@ -80,6 +104,11 @@ theorem basisComponent_mem_rowHighest (b : Module.Basis ι R S) (i : ι) {P : Po
 
 variable (R S c c') in
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Conclude with `map_mem_rowHighest _ hP`. Introduce `P hP`.
+
+Set `b` to `Module.Free.chooseBasis R S`. Take `⟨J, hJ⟩` from `exists_eq_sum_basisComponent b P`. Rewrite using `[hJ]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, basisComponent_mem_rowHighest b i hP, rfl⟩)`.
+-/
 theorem span_map_rowHighest [Module.Free R S] :
     Submodule.span S (MvPolynomial.map (algebraMap R S) ''
       (rowHighest R (κ := κ) c c' : Set (Poly R T p q κ))) = rowHighest S c c' := by
@@ -100,6 +129,11 @@ section Scale
 
 variable {R : Type*} [CommRing R] {T : Type*} {p q : ℕ} {κ : Type*}
 
+/- English proof (translation)
+Use `conv_lhs => rw [P.as_sum]`. Use `conv_rhs => rw [P.as_sum]`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ v ∈ m.support, m v = d`.
+
+Rewrite using `[← hP (mem_support_iff.1 hm), Finsupp.weight_apply]`. Simplify using `[Finsupp.sum]`. Rewrite using `[aeval_monomial, monomial_eq, smul_eq_C_mul, ← hd]`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_pow, algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_C_mul_X_of_isHomogeneous {σ : Type*} (r : R) {P : MvPolynomial σ R} {d : ℕ}
     (hP : P.IsHomogeneous d) : aeval (fun v => (C r * X v : MvPolynomial σ R)) P = r ^ d • P := by
   conv_lhs => rw [P.as_sum]
@@ -123,8 +157,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {K : Type*} [Field K
 noncomputable abbrev ccHom (E : Type) [Field E] [NumberField E] [IsCMField E] : E →+* E :=
   (IsCMField.complexConj E : E ≃ₐ[_] E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ccHom_apply (x : E) : ccHom E x = cc x := rfl
 
+/- English proof (translation)
+Simplify using `[herm, Matrix.one_apply]`.
+-/
 theorem herm_one_eq_sum (x y : Fin n → E) : herm 1 x y = ∑ k, x k * cc (y k) := by
   simp [herm, Matrix.one_apply]
 
@@ -143,16 +183,28 @@ noncomputable def Ha (τ : T → E →+* K) (c : T → Fin p → ℕ) (c' : T �
 variable (τ : T → E →+* K) {c : T → Fin p → ℕ} {c' : T → Fin q → ℕ}
   {Λ Λ' : Submodule (𝓞 E) (Fin n → E)} {P : Poly K T p q (Fin n)}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Ha : P ∈ Ha τ c c' Λ ↔ P ∈ rowHighest K c c' ∧ P ∈ symO p q τ Λ := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin (Or.inl ⟨t, a, v, hv, rfl⟩)`.
+-/
 theorem xForm_mem_symO (t : T) (a : Fin p) {v : Fin n → E} (hv : v ∈ Λ) :
     (xForm t a fun k => τ t (v k)) ∈ symO p q τ Λ :=
   Algebra.subset_adjoin (Or.inl ⟨t, a, v, hv, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin (Or.inr ⟨t, b, v, hv, rfl⟩)`.
+-/
 theorem yForm_mem_symO (t : T) (b : Fin q) {v : Fin n → E} (hv : v ∈ Λ) :
     (yForm t b fun k => τ t (cc (v k))) ∈ symO p q τ Λ :=
   Algebra.subset_adjoin (Or.inr ⟨t, b, v, hv, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[symO, Algebra.adjoin_le_iff, Set.union_subset_iff]`. Use `and_congr ⟨fun h t a v hv => h ⟨t, a, v, hv, rfl⟩, ?_⟩ ⟨fun h t a v hv => h ⟨t, a, v, hv, rfl⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals rintro h _ ⟨t, a, v, hv, rfl⟩`. Conclude with `h t a v hv`.
+-/
 theorem symO_le_iff {A : Subalgebra (𝓞 K) (Poly K T p q (Fin n))} :
     symO p q τ Λ ≤ A ↔ (∀ t a, ∀ v ∈ Λ, (xForm t a fun k => τ t (v k)) ∈ A) ∧
       ∀ t b, ∀ v ∈ Λ, (yForm t b fun k => τ t (cc (v k))) ∈ A := by
@@ -161,13 +213,22 @@ theorem symO_le_iff {A : Subalgebra (𝓞 K) (Poly K T p q (Fin n))} :
     ⟨fun h t a v hv => h ⟨t, a, v, hv, rfl⟩, ?_⟩
   all_goals rintro h _ ⟨t, a, v, hv, rfl⟩; exact h t a v hv
 
+/- English proof (translation)
+The claim follows from `(symO_le_iff τ).2 ⟨fun t a _ hv => xForm_mem_symO τ t a (h hv), fun t b _ hv => yForm_mem_symO τ t b (h hv)⟩`.
+-/
 theorem symO_mono (h : Λ ≤ Λ') : symO p q τ Λ ≤ symO p q τ Λ' :=
   (symO_le_iff τ).2 ⟨fun t a _ hv => xForm_mem_symO τ t a (h hv),
     fun t b _ hv => yForm_mem_symO τ t b (h hv)⟩
 
+/- English proof (translation)
+Introduce `_ hP` and use `⟨hP.1, symO_mono τ h hP.2⟩`.
+-/
 theorem Ha_mono (h : Λ ≤ Λ') : Ha τ c c' Λ ≤ Ha τ c c' Λ' :=
   fun _ hP => ⟨hP.1, symO_mono τ h hP.2⟩
 
+/- English proof (translation)
+Rewrite using `[det_apply']`. Conclude with `B.sum_mem fun s _ => B.mul_mem (intCast_mem B _) (B.prod_mem fun i _ => h _ _)`.
+-/
 theorem det_mem_subalgebra {R A ι : Type*} [CommRing R] [CommRing A] [Algebra R A] [Fintype ι]
     [DecidableEq ι] (B : Subalgebra R A) {M : Matrix ι ι A} (h : ∀ i j, M i j ∈ B) : M.det ∈ B := by
   rw [det_apply']
@@ -175,6 +236,9 @@ theorem det_mem_subalgebra {R A ι : Type*} [CommRing R] [CommRing A] [Algebra R
 
 variable (c c') in
 
+/- English proof (translation)
+The claim follows from `Subalgebra.prod_mem _ fun t _ => Subalgebra.mul_mem _ (Subalgebra.prod_mem _ fun _ _ => Subalgebra.pow_mem _ (det_mem_subalgebra _ fun _ _ => xForm_mem_symO τ t _ (he t _)) _) (Subalgebra.prod_mem _ fun _ _ => Subalgebra.pow_mem _ (det_mem_subalgebra _ fun _ _ => yForm_mem_symO τ …`.
+-/
 theorem minorProd_mem_symO [Fintype T] {e : T → Fin p → Fin n → E} {f : T → Fin q → Fin n → E}
     (he : ∀ t a, e t a ∈ Λ) (hf : ∀ t b, f t b ∈ Λ) :
     minorProd c c' (fun t a k => τ t (e t a k)) (fun t b k => τ t (cc (f t b k))) ∈
@@ -187,6 +251,9 @@ theorem minorProd_mem_symO [Fintype T] {e : T → Fin p → Fin n → E} {f : T 
 
 variable (c c') in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨minorProd_mem_rowHighest c c' fun t a b => by have := congrArg (τ t) (h t a b) rw [herm_one_eq_sum] at this simpa [dotProduct] using this, minorProd_mem_symO τ c c' he hf⟩`.
+-/
 theorem minorProd_mem_Ha [Fintype T] {e : T → Fin p → Fin n → E} {f : T → Fin q → Fin n → E}
     (he : ∀ t a, e t a ∈ Λ) (hf : ∀ t b, f t b ∈ Λ) (h : ∀ t a b, herm 1 (e t a) (f t b) = 0) :
     minorProd c c' (fun t a k => τ t (e t a k)) (fun t b k => τ t (cc (f t b k))) ∈ Ha τ c c' Λ :=
@@ -197,6 +264,9 @@ theorem minorProd_mem_Ha [Fintype T] {e : T → Fin p → Fin n → E} {f : T �
 
 variable (c c') in
 
+/- English proof (translation)
+Establish `hcc (x : E) : cc (cc x) = x` using `IsCMField.complexConj_apply_apply E x`. Use `minorProd_mem_Ha τ c c' (e := fun t a k => cc (e t a k)) (f := fun t b k => cc (f t b k)) (fun t a => hΛ _ (he t a)) (fun t b => hΛ _ (hf t b)) fun t a b => by` as an intermediate fact. Rewrite using `[← h t a b, herm_one_eq_sum, herm_one_eq_sum]`. Simplify using `only [hcc, mul_comm]`. Simplify `this` using `only [hcc]`.
+-/
 theorem minorProd_conj_mem_Ha [Fintype T] (hΛ : ∀ v ∈ Λ, (fun k => cc (v k)) ∈ Λ')
     {e : T → Fin p → Fin n → E} {f : T → Fin q → Fin n → E}
     (he : ∀ t a, e t a ∈ Λ) (hf : ∀ t b, f t b ∈ Λ) (h : ∀ t a b, herm 1 (f t b) (e t a) = 0) :
@@ -215,17 +285,28 @@ noncomputable def pushLetters (A : Matrix (Fin n) (Fin n) E) :
     Poly K T p q (Fin n) →ₐ[K] Poly K T p q (Fin n) :=
   colSubst (fun t => (A.map (τ t))ᵀ) fun t => A.map ((τ t).comp (ccHom E))
 
+/- English proof (translation)
+Rewrite using `[pushLetters, colSubst_xForm, vecMul_transpose]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[mulVec, dotProduct]`.
+-/
 theorem pushLetters_xForm (A : Matrix (Fin n) (Fin n) E) (t : T) (a : Fin p) (v : Fin n → E) :
     pushLetters p q τ A (xForm t a fun k => τ t (v k)) = xForm t a fun k => τ t ((A *ᵥ v) k) := by
   rw [pushLetters, colSubst_xForm, vecMul_transpose]
   congr 1; funext k; simp [mulVec, dotProduct]
 
+/- English proof (translation)
+Rewrite using `[pushLetters, colSubst_yForm]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[mulVec, dotProduct, ← ccHom_apply]`.
+-/
 theorem pushLetters_yForm (A : Matrix (Fin n) (Fin n) E) (t : T) (b : Fin q) (v : Fin n → E) :
     pushLetters p q τ A (yForm t b fun k => τ t (cc (v k))) =
       yForm t b fun k => τ t (cc ((A *ᵥ v) k)) := by
   rw [pushLetters, colSubst_yForm]
   congr 1; funext k; simp [mulVec, dotProduct, ← ccHom_apply]
 
+/- English proof (translation)
+Use `MvPolynomial.algHom_ext fun ⟨t, r, k⟩ => ?_` and prove the remaining obligations. Establish `h₁ : (fun l => τ t ((Pi.single k 1 : Fin n → E) l)) = Pi.single k 1`. Use function extensionality and compare the values at `l`. Simplify using `[Pi.single_apply, apply_ite (τ t)]`. Establish `h₂ : (fun l => τ t (cc ((Pi.single k 1 : Fin n → E) l))) = Pi.single k 1`.
+
+Apply the tactic sequence `funext l; rw [← ccHom_apply]; by_cases h : l = k <;> simp [h]`. Break down `r with a | b` into its components or cases. Rewrite using `[← xForm_single, ← h₁, hx, pushLetters_xForm]`. Rewrite using `[← yForm_single, ← h₂, hy, pushLetters_yForm]`.
+-/
 theorem eq_pushLetters (A : Matrix (Fin n) (Fin n) E)
     (F : Poly K T p q (Fin n) →ₐ[K] Poly K T p q (Fin n))
     (hx : ∀ t a (v : Fin n → E), F (xForm t a fun k => τ t (v k)) =
@@ -241,12 +322,22 @@ theorem eq_pushLetters (A : Matrix (Fin n) (Fin n) E)
   · rw [← xForm_single, ← h₁, hx, pushLetters_xForm]
   · rw [← yForm_single, ← h₂, hy, pushLetters_yForm]
 
+/- English proof (translation)
+The claim follows from `(eq_pushLetters τ _ _ (fun t a v => by rw [AlgHom.comp_apply, pushLetters_xForm, pushLetters_xForm, mulVec_mulVec]) fun t b v => by rw [AlgHom.comp_apply, pushLetters_yForm, pushLetters_yForm, mulVec_mulVec]).symm`.
+-/
 theorem pushLetters_mul (A B : Matrix (Fin n) (Fin n) E) :
     pushLetters p q τ (A * B) = (pushLetters p q τ A).comp (pushLetters p q τ B) :=
   (eq_pushLetters τ _ _
     (fun t a v => by rw [AlgHom.comp_apply, pushLetters_xForm, pushLetters_xForm, mulVec_mulVec])
     fun t b v => by rw [AlgHom.comp_apply, pushLetters_yForm, pushLetters_yForm, mulVec_mulVec]).symm
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Subalgebra.map_le, symO_le_iff]`. Use `⟨fun t a v hv => ?_, fun t b v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.mem_comap, AlgHom.restrictScalars_apply, pushLetters_xForm]`. Conclude with `xForm_mem_symO τ t a (Submodule.mem_map_of_mem hv)`.
+
+Rewrite using `[Subalgebra.mem_comap, AlgHom.restrictScalars_apply, pushLetters_yForm]`. Conclude with `yForm_mem_symO τ t b (Submodule.mem_map_of_mem hv)`. Rewrite using `[symO_le_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `t a _ ⟨v, hv, rfl⟩`.
+
+Conclude with `⟨_, xForm_mem_symO τ t a hv, pushLetters_xForm τ A t a v⟩`. Introduce and unpack `t b _ ⟨v, hv, rfl⟩`. Conclude with `⟨_, yForm_mem_symO τ t b hv, pushLetters_yForm τ A t b v⟩`.
+-/
 theorem map_pushLetters_symO (A : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E)) :
     (symO p q τ Λ).map ((pushLetters p q τ A).restrictScalars (𝓞 K)) =
       symO p q τ (Λ.map (A.mulVecLin.restrictScalars (𝓞 E))) := by
@@ -264,12 +355,20 @@ theorem map_pushLetters_symO (A : Matrix (Fin n) (Fin n) E) (Λ : Submodule (�
     · rintro t b _ ⟨v, hv, rfl⟩
       exact ⟨_, yForm_mem_symO τ t b hv, pushLetters_yForm τ A t b v⟩
 
+/- English proof (translation)
+Use `symO_mono τ (Λ := Λ.map (A.mulVecLin.restrictScalars (𝓞 E))) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `h v hv`. Rewrite using `[← map_pushLetters_symO]`. Conclude with `⟨P, hP, rfl⟩`.
+-/
 theorem pushLetters_mem_symO {A : Matrix (Fin n) (Fin n) E} (h : ∀ v ∈ Λ, A *ᵥ v ∈ Λ')
     (hP : P ∈ symO p q τ Λ) : pushLetters p q τ A P ∈ symO p q τ Λ' := by
   refine symO_mono τ (Λ := Λ.map (A.mulVecLin.restrictScalars (𝓞 E))) ?_ ?_
   · rintro _ ⟨v, hv, rfl⟩; exact h v hv
   · rw [← map_pushLetters_symO]; exact ⟨P, hP, rfl⟩
 
+/- English proof (translation)
+Establish `: (aeval fun v => C (M : K) * X v) = pushLetters p q τ ((M : E) • (1 : Matrix (Fin n) (Fin n) E))`. Use `eq_pushLetters τ _ _ (fun t a v => ?_) fun t b v => ?_` and prove the remaining obligations. Simplify using `[xForm_apply, smul_mulVec, mul_left_comm, mul_assoc]`. Simplify using `[yForm_apply, smul_mulVec, mul_left_comm, mul_assoc, ← ccHom_apply]`. Rewrite using `[← this, aeval_C_mul_X_of_isHomogeneous _ hP]`.
+
+Express the relevant statement in the definitionally equal form `_ = algebraMap (𝓞 K) K ((M : 𝓞 K) ^ d) • P`. Rewrite using `[map_pow, map_intCast]`.
+-/
 theorem pushLetters_intCast_of_isHomogeneous (M : ℤ) {d : ℕ} (hP : P.IsHomogeneous d) :
     pushLetters p q τ ((M : E) • 1) P = (M : 𝓞 K) ^ d • P := by
   have : (aeval fun v => C (M : K) * X v) =
@@ -281,23 +380,37 @@ theorem pushLetters_intCast_of_isHomogeneous (M : ℤ) {d : ℕ} (hP : P.IsHomog
   change _ = algebraMap (𝓞 K) K ((M : 𝓞 K) ^ d) • P
   rw [map_pow, map_intCast]
 
+/- English proof (translation)
+Rewrite using `[← pushLetters_intCast_of_isHomogeneous τ M hd]`. Use `pushLetters_mem_symO τ (fun v hv => ?_) hP` and prove the remaining obligations. Rewrite using `[smul_mulVec, one_mulVec, Int.cast_smul_eq_zsmul]`. Conclude with `h v hv`.
+-/
 theorem pow_smul_mem_symO {M : ℤ} (h : ∀ v ∈ Λ, M • v ∈ Λ') {d : ℕ} (hd : P.IsHomogeneous d)
     (hP : P ∈ symO p q τ Λ) : (M : 𝓞 K) ^ d • P ∈ symO p q τ Λ' := by
   rw [← pushLetters_intCast_of_isHomogeneous τ M hd]
   refine pushLetters_mem_symO τ (fun v hv => ?_) hP
   rw [smul_mulVec, one_mulVec, Int.cast_smul_eq_zsmul]; exact h v hv
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((rowHighest K c c').restrictScalars (𝓞 K)).smul_mem _ hP.1, pow_smul_mem_symO τ h (isHomogeneous_of_mem_rowHighest hP.1) hP.2⟩`.
+-/
 theorem pow_smul_mem_Ha [Fintype T] {M : ℤ} (h : ∀ v ∈ Λ, M • v ∈ Λ') (hP : P ∈ Ha τ c c' Λ) :
     (M : 𝓞 K) ^ typeDegree c c' • P ∈ Ha τ c c' Λ' :=
   ⟨((rowHighest K c c').restrictScalars (𝓞 K)).smul_mem _ hP.1,
     pow_smul_mem_symO τ h (isHomogeneous_of_mem_rowHighest hP.1) hP.2⟩
 
+/- English proof (translation)
+Use `pow_smul_mem_Ha τ h hP` as an intermediate fact. Rewrite `this` using `[← Int.cast_pow]`. Conclude with `(Int.cast_smul_eq_zsmul (𝓞 K) (M ^ typeDegree c c') P) ▸ this`.
+-/
 theorem pow_zsmul_mem_Ha [Fintype T] {M : ℤ} (h : ∀ v ∈ Λ, M • v ∈ Λ') (hP : P ∈ Ha τ c c' Λ) :
     M ^ typeDegree c c' • P ∈ Ha τ c c' Λ' := by
   have := pow_smul_mem_Ha τ h hP
   rw [← Int.cast_pow] at this
   exact (Int.cast_smul_eq_zsmul (𝓞 K) (M ^ typeDegree c c') P) ▸ this
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `hA (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[herm_one_eq_sum, herm_one_eq_sum]`. Simplify using `only [mulVec_single_one, col_apply, ← ccHom_apply] at this`. Rewrite using `[mul_apply]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i = j <;> simp [Pi.single_apply, one_apply, h, eq_comm]`.
+-/
 theorem transpose_mul_map_ccHom_eq_one {A : Matrix (Fin n) (Fin n) E}
     (hA : ∀ x y, herm 1 (A *ᵥ x) (A *ᵥ y) = herm 1 x y) : Aᵀ * A.map (ccHom E) = 1 := by
   ext i j
@@ -308,6 +421,11 @@ theorem transpose_mul_map_ccHom_eq_one {A : Matrix (Fin n) (Fin n) E}
   refine this.trans ?_
   by_cases h : i = j <;> simp [Pi.single_apply, one_apply, h, eq_comm]
 
+/- English proof (translation)
+Rewrite using `[colAct_apply, pushLetters]`. Use `congr 2`. Use function extensionality and compare the values at `t`. Use `(Units.inv_eq_of_mul_eq_one_left ?_).symm` and prove the remaining obligations. Use `congrArg (fun B => B.map (τ t)) (transpose_mul_map_ccHom_eq_one hγ)` as an intermediate fact.
+
+Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at this`. Conclude with `this`.
+-/
 theorem pushLetters_eq_colAct {γ : GL (Fin n) E}
     (hγ : ∀ x y, herm 1 (γ.val *ᵥ x) (γ.val *ᵥ y) = herm 1 x y) (P : Poly K T p q (Fin n)) :
     pushLetters p q τ γ.val P = colAct K T p q (Fin n)
@@ -320,6 +438,9 @@ theorem pushLetters_eq_colAct {γ : GL (Fin n) E}
   simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[pushLetters_eq_colAct τ hγ, colAct_mem_rowHighest_iff]`.
+-/
 theorem pushLetters_mem_rowHighest_iff {γ : GL (Fin n) E}
     (hγ : ∀ x y, herm 1 (γ.val *ᵥ x) (γ.val *ᵥ y) = herm 1 x y) :
     pushLetters p q τ γ.val P ∈ rowHighest K c c' ↔ P ∈ rowHighest K c c' := by
@@ -327,6 +448,11 @@ theorem pushLetters_mem_rowHighest_iff {γ : GL (Fin n) E}
 
 variable (c c') in
 
+/- English proof (translation)
+Use extensionality with `Q`. Rewrite using `[mem_Ha, ← map_pushLetters_symO]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, rfl⟩`. Conclude with `⟨(pushLetters_mem_rowHighest_iff τ hγ).2 hP.1, P, hP.2, rfl⟩`.
+
+Introduce and unpack `⟨hQ, P, hP, rfl⟩`. Conclude with `⟨P, ⟨(pushLetters_mem_rowHighest_iff τ hγ).1 hQ, hP⟩, rfl⟩`.
+-/
 theorem map_pushLetters_Ha {γ : GL (Fin n) E}
     (hγ : ∀ x y, herm 1 (γ.val *ᵥ x) (γ.val *ᵥ y) = herm 1 x y)
     (Λ : Submodule (𝓞 E) (Fin n → E)) :
@@ -342,6 +468,17 @@ theorem map_pushLetters_Ha {γ : GL (Fin n) E}
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact ⟨1, one_ne_zero, by simpa using hv⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add v w _ _ hv hw`. Take `⟨M, hM, hv⟩` from `hv`.
+
+Take `⟨N, hN, hw⟩` from `hw`. Use `⟨M * N, mul_ne_zero hM hN, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `zsmul_mem hv N`. Rewrite using `[mul_smul]`. Conclude with `zsmul_mem hw M`. Consider the case `smul r v _ hv`. Take `⟨N, hN, hv⟩` from `hv`.
+
+Establish `: Algebra.IsAlgebraic ℤ E` using `(IsFractionRing.comap_isAlgebraic_iff (K := ℚ)).2 inferInstance`. Take `⟨M, hM, hr⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) r).exists_integral_multiple`. Use `⟨M * N, mul_ne_zero hM hN, ?_⟩` and prove the remaining obligations. Use `Λ.smul_mem (⟨M • r, hr⟩ : 𝓞 E) hv` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Express the relevant statement in the definitionally equal form `_ = (M • r) • N • v`. Rewrite using `[smul_assoc, smul_comm r N v, mul_smul]`.
+-/
 theorem exists_zsmul_mem_of_mem_span {v : Fin n → E} (hv : v ∈ Submodule.span E (Λ : Set _)) :
     ∃ N : ℤ, N ≠ 0 ∧ N • v ∈ Λ := by
   induction hv using Submodule.span_induction with
@@ -367,6 +504,13 @@ theorem exists_zsmul_mem_of_mem_span {v : Fin n → E} (hv : v ∈ Submodule.spa
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hΛ`. Use `choose N hN hN' using fun v => exists_zsmul_mem_of_mem_span (Λ := Λ') (v := v) (hΛ' ▸ trivial)`. Use `⟨∏ w ∈ s, N w, Finset.prod_ne_zero_iff.2 fun w _ => hN w, fun v hv => ?_⟩` and prove the remaining obligations. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => rw [← Finset.prod_erase_mul s N hv, mul_smul]`.
+
+Conclude with `zsmul_mem (hN' v) _`. Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `add_mem hv hw`. Consider the case `smul r v _ hv => rw [smul_comm]`.
+
+Conclude with `Λ'.smul_mem r hv`.
+-/
 theorem exists_zsmul_le (hΛ : Λ.FG) (hΛ' : Submodule.span E (Λ' : Set (Fin n → E)) = ⊤) :
     ∃ N : ℤ, N ≠ 0 ∧ ∀ v ∈ Λ, N • v ∈ Λ' := by
   classical
@@ -381,6 +525,9 @@ theorem exists_zsmul_le (hΛ : Λ.FG) (hΛ' : Submodule.span E (Λ' : Set (Fin n
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Simplify using `only [Submodule.mem_pi, Set.mem_univ, forall_const, Submodule.mem_one]`. Conclude with `forall_congr' fun k => ⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨_, h⟩, rfl⟩⟩`.
+-/
 theorem mem_pi_one_iff {v : Fin n → E} :
     v ∈ Submodule.pi Set.univ (fun _ : Fin n => (1 : Submodule (𝓞 E) E)) ↔
       ∀ k, IsIntegral ℤ (v k) := by
@@ -389,6 +536,13 @@ theorem mem_pi_one_iff {v : Fin n → E} :
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `mem_pi_one_iff.2 fun l => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : l = k <;> simp [h, isIntegral_one, isIntegral_zero]`.
+
+Introduce `v hv`. Rewrite using `[← Finset.univ_sum_single v]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Submodule.mem_one.1 (hv k trivial)`. Establish `: (Pi.single k (v k) : Fin n → E) = y • (Pi.single k 1 : Fin n → E)`.
+
+Rewrite using `[← Pi.single_smul', Algebra.smul_def, mul_one, hy]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ y (Submodule.subset_span ⟨k, rfl⟩)`.
+-/
 theorem span_range_single_eq_pi_one :
     Submodule.span (𝓞 E) (Set.range fun k : Fin n => (Pi.single k 1 : Fin n → E)) =
       Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E) := by
@@ -408,16 +562,27 @@ theorem span_range_single_eq_pi_one :
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+The claim follows from `span_range_single_eq_pi_one (E := E) ▸ Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem fg_pi_one : (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E)).FG :=
   span_range_single_eq_pi_one (E := E) ▸ Submodule.fg_span (Set.finite_range _)
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Rewrite using `[← span_range_single_eq_pi_one, Submodule.span_span_of_tower, ← (Pi.basisFun E (Fin n)).span_eq]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+-/
 theorem span_pi_one_eq_top : Submodule.span E
     (Submodule.pi Set.univ (fun _ : Fin n => (1 : Submodule (𝓞 E) E)) : Set (Fin n → E)) = ⊤ := by
   rw [← span_range_single_eq_pi_one, Submodule.span_span_of_tower, ← (Pi.basisFun E (Fin n)).span_eq]
   congr 2; funext k; simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, rfl⟩ m`. Rewrite using `[coeff_map]`. Conclude with `(coeff m Q).isIntegral_coe`. Introduce `h`.
+
+Use `⟨∑ m ∈ P.support, monomial m ⟨_, h m⟩, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => map_monomial _ _ _`.
+-/
 theorem mem_range_map_ringOfIntegers_iff {σ : Type*} {P : MvPolynomial σ K} :
     (∃ Q, MvPolynomial.map (algebraMap (𝓞 K) K) Q = P) ↔ ∀ m, IsIntegral ℤ (coeff m P) := by
   constructor
@@ -429,6 +594,19 @@ theorem mem_range_map_ringOfIntegers_iff {σ : Type*} {P : MvPolynomial σ K} :
     rw [map_sum]
     exact Finset.sum_congr rfl fun m _ => map_monomial _ _ _
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `(symO_le_iff τ).2 ⟨fun t a v hv => ?_, fun t b v hv => ?_⟩` and prove the remaining obligations. Conclude with `⟨xForm t a fun k => ⟨_, map_isIntegral_int (τ t) (mem_pi_one_iff.1 hv k)⟩, map_xForm (algebraMap (𝓞 K) K) t a _⟩`. Conclude with `⟨yForm t b fun k => ⟨_, map_isIntegral_int ((τ t).comp (ccHom E)) (mem_pi_one_iff.1 hv k)⟩, map_yForm (algebraMap (𝓞 K) K) t b _⟩`. Introduce and unpack `_ ⟨Q, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `mapAlgHom (Algebra.ofId (𝓞 K) K) Q ∈ _`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C r => rw [← algebraMap_eq, AlgHom.commutes]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `add P Q hP hQ => rw [map_add]`.
+
+Conclude with `add_mem hP hQ`. Consider the case `mul_X P v hP`. Rewrite using `[map_mul]`. Use `mul_mem hP ?_` and prove the remaining obligations. Take `⟨t, r, k⟩` from `v`.
+
+Establish `hk : (Pi.single k 1 : Fin n → E) ∈ Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E)` using `span_range_single_eq_pi_one (E := E) ▸ Submodule.subset_span ⟨k, rfl⟩`. Establish `h₁ : (fun l => τ t ((Pi.single k 1 : Fin n → E) l)) = Pi.single k 1`. Use function extensionality and compare the values at `l`. Simplify using `[Pi.single_apply, apply_ite (τ t)]`. Establish `h₂ : (fun l => τ t (cc ((Pi.single k 1 : Fin n → E) l))) = Pi.single k 1`.
+
+Apply the tactic sequence `funext l; rw [← ccHom_apply]; by_cases h : l = k <;> simp [h]`. Express the relevant statement in the definitionally equal form `MvPolynomial.map (algebraMap (𝓞 K) K) _ ∈ _`. Rewrite using `[map_X]`. Break down `r with a | b` into its components or cases. Rewrite using `[← xForm_single, ← h₁]`.
+
+Conclude with `xForm_mem_symO τ t a hk`. Rewrite using `[← yForm_single, ← h₂]`. Conclude with `yForm_mem_symO τ t b hk`.
+-/
 theorem symO_pi_one : symO p q τ (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E)) =
     (mapAlgHom (σ := Var T p q (Fin n)) (Algebra.ofId (𝓞 K) K)).range := by
   apply le_antisymm
@@ -460,6 +638,9 @@ theorem symO_pi_one : symO p q τ (Submodule.pi Set.univ fun _ : Fin n => (1 : S
       · rw [← xForm_single, ← h₁]; exact xForm_mem_symO τ t a hk
       · rw [← yForm_single, ← h₂]; exact yForm_mem_symO τ t b hk
 
+/- English proof (translation)
+Rewrite using `[symO_pi_one, ← mem_range_map_ringOfIntegers_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_symO_pi_one_iff :
     P ∈ symO p q τ (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E)) ↔
       ∀ m, IsIntegral ℤ (coeff m P) := by
@@ -467,6 +648,11 @@ theorem mem_symO_pi_one_iff :
 
 variable (c c') in
 
+/- English proof (translation)
+Use extensionality with `P`. Rewrite using `[mem_Ha, symO_pi_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, Q, rfl⟩`. Conclude with `⟨Q, (map_mem_rowHighest_iff (FaithfulSMul.algebraMap_injective (𝓞 K) K)).1 hP, rfl⟩`.
+
+Introduce and unpack `⟨Q, hQ, rfl⟩`. Conclude with `⟨map_mem_rowHighest (algebraMap (𝓞 K) K) hQ, Q, rfl⟩`.
+-/
 theorem Ha_pi_one_eq_map :
     Ha τ c c' (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E)) =
       (rowHighest (𝓞 K) c c').map
@@ -483,6 +669,11 @@ variable [NumberField K]
 
 variable (c c') in
 
+/- English proof (translation)
+Rewrite using `[Ha_pi_one_eq_map, ← span_map_rowHighest ℤ (𝓞 K), Submodule.map_span, Set.image_image]`. Use `congr 2`. Use function extensionality and compare the values at `P`. Express the relevant statement in the definitionally equal form `MvPolynomial.map (algebraMap (𝓞 K) K) _ = _`. Rewrite using `[MvPolynomial.map_map]`.
+
+Use `congr 2`.
+-/
 theorem Ha_pi_one_eq_span :
     Ha τ c c' (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E)) =
       Submodule.span (𝓞 K) (MvPolynomial.map (Int.castRingHom K) ''
@@ -498,6 +689,11 @@ variable [Fintype T]
 
 variable (c c') in
 
+/- English proof (translation)
+Take `⟨N, hN, h⟩` from `exists_zsmul_le hΛ (span_pi_one_eq_top (E := E))`. Establish `h₀ : (Ha τ c c' (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E))).FG`. Rewrite using `[Ha_pi_one_eq_map]`. Conclude with `(Module.Finite.iff_fg.1 inferInstance).map _`. Establish `hd : (N : 𝓞 K) ^ typeDegree c c' ≠ 0` using `pow_ne_zero _ (Int.cast_ne_zero.2 hN)`.
+
+Use `Submodule.fg_of_fg_map_injective (LinearMap.lsmul (𝓞 K) (Poly K T p q (Fin n)) ((N : 𝓞 K) ^ typeDegree c c')) (LinearMap.lsmul_injective hd) (h₀.of_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Conclude with `pow_smul_mem_Ha τ h hP`.
+-/
 theorem fg_Ha (hΛ : Λ.FG) : (Ha τ c c' Λ).FG := by
   obtain ⟨N, hN, h⟩ := exists_zsmul_le hΛ (span_pi_one_eq_top (E := E))
   have h₀ : (Ha τ c c' (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E))).FG := by
@@ -510,6 +706,13 @@ theorem fg_Ha (hΛ : Λ.FG) : (Ha τ c c' Λ).FG := by
   rintro _ ⟨P, hP, rfl⟩
   exact pow_smul_mem_Ha τ h hP
 
+/- English proof (translation)
+Take `⟨N, hN, h⟩` from `exists_zsmul_le (fg_pi_one (E := E)) hΛ`. Establish `: Algebra.IsAlgebraic ℤ K` using `(IsFractionRing.comap_isAlgebraic_iff (K := ℚ)).2 inferInstance`. Take `⟨M, hM, hM'⟩` from `Algebra.IsAlgebraic.exists_integral_multiples ℤ (P.support.image fun m => coeff m P)`. Establish `h₀ : M • P ∈ Ha τ c c' (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E))`. Use `⟨zsmul_mem hP M, (mem_symO_pi_one_iff τ).2 fun m => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coeff_smul]`. Distinguish the cases in `hm : m ∈ P.support`. Conclude with `hM' _ (Finset.mem_image_of_mem _ hm)`. Rewrite using `[notMem_support_iff.1 hm, smul_zero]`. Conclude with `isIntegral_zero`.
+
+Use `⟨N ^ typeDegree c c' * M, mul_ne_zero (pow_ne_zero _ hN) hM, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `pow_zsmul_mem_Ha τ h h₀`.
+-/
 theorem exists_zsmul_mem_Ha (hΛ : Submodule.span E (Λ : Set (Fin n → E)) = ⊤)
     (hP : P ∈ rowHighest K c c') : ∃ N : ℤ, N ≠ 0 ∧ N • P ∈ Ha τ c c' Λ := by
   classical
@@ -529,6 +732,9 @@ theorem exists_zsmul_mem_Ha (hΛ : Submodule.span E (Λ : Set (Fin n → E)) = �
 
 variable (c c') in
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 fun P hP => hP.1) fun P hP => ?_` and prove the remaining obligations. Take `⟨N, hN, h⟩` from `exists_zsmul_mem_Ha τ hΛ hP`. Rewrite using `[← Submodule.smul_mem_iff _ (Int.cast_ne_zero.2 hN : (N : K) ≠ 0), Int.cast_smul_eq_zsmul]`. Conclude with `Submodule.subset_span h`.
+-/
 theorem span_Ha (hΛ : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) :
     Submodule.span K (Ha τ c c' Λ : Set (Poly K T p q (Fin n))) = rowHighest K c c' := by
   refine le_antisymm (Submodule.span_le.2 fun P hP => hP.1) fun P hP => ?_
@@ -538,6 +744,9 @@ theorem span_Ha (hΛ : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) :
 
 variable (c c') in
 
+/- English proof (translation)
+Introduce `e` and use `rowHighest_ne_bot (R := K) h c c' (by rw [← span_Ha τ c c' hΛ, e]; simp)`.
+-/
 theorem Ha_ne_bot (h : p + q ≤ n) (hΛ : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) :
     Ha τ c c' Λ ≠ ⊥ := fun e =>
   rowHighest_ne_bot (R := K) h c c' (by rw [← span_Ha τ c c' hΛ, e]; simp)
@@ -545,6 +754,9 @@ theorem Ha_ne_bot (h : p + q ≤ n) (hΛ : Submodule.span E (Λ : Set (Fin n →
 omit [NumberField K] in
 variable (c c') in
 
+/- English proof (translation)
+Use `⟨hM.pow_left, fun P hP => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Conclude with `pow_zsmul_mem_Ha τ h hP`. Conclude with `pow_zsmul_mem_Ha τ h' hP`.
+-/
 theorem pow_zsmul_Ha_of_isCoprime {ℓ M : ℤ} (hM : IsCoprime M ℓ) (h : ∀ v ∈ Λ, M • v ∈ Λ')
     (h' : ∀ v ∈ Λ', M • v ∈ Λ) :
     IsCoprime (M ^ typeDegree c c') ℓ ∧
@@ -556,6 +768,11 @@ theorem pow_zsmul_Ha_of_isCoprime {ℓ M : ℤ} (hM : IsCoprime M ℓ) (h : ∀ 
 
 variable (c c' Λ) in
 
+/- English proof (translation)
+Use `⟨fun e f => minorProd_mem_Ha τ c c', ⟨fg_Ha τ c c' hfg, span_Ha τ c c' hspan⟩, ⟨fun P => mem_symO_pi_one_iff τ, Ha_pi_one_eq_span τ c c'⟩, ?_, fun Λ' M h P hP => ?_⟩` and prove the remaining obligations. Introduce and unpack `γ hγ _ rfl`. Simplify using `only [← pushLetters_eq_colAct τ hγ, pushLetters_xForm, pushLetters_yForm, pushLetters_mem_rowHighest_iff τ hγ, implies_true, true_and]`. Rewrite using `[← map_pushLetters_Ha τ c c' hγ]`. Both sides reduce to the same expression.
+
+Conclude with `pow_zsmul_mem_Ha τ h hP`.
+-/
 theorem integral_harmonic_on_lattice (hfg : Λ.FG)
     (hspan : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) :
     (∀ (e : T → Fin p → Fin n → E) (f : T → Fin q → Fin n → E), (∀ t a, e t a ∈ Λ) →

@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.HTGlue
 
+/- English proof (translation)
+Establish `K` using `(homMor (dp0 k) (𝟙 _) g).comp (GlobalTheory.FODef.constMorV k V A₀)`. Establish `e1` using `GrpMor.pull_pull (GlobalTheory.FODef.constMorV k V A₀) (homMor (divided₂ (GlobalTheory.FODef.sqZero k V)) (spMap (TrivSqZeroExt.fstHom k k V).toRingHom) g) K (fun _ ↦ rfl) (by simp) q`. Establish `e2` using `GrpMor.pull_pull (homMor (dp0 k) (𝟙 _) g) (GlobalTheory.FODef.constMorV k V A₀) K (fun _ ↦ rfl) rfl q`. Conclude with `e1.trans e2.symm`.
+-/
 theorem primPull_constMorV_pull {k : Type} [Field k] (V : Type) [AddCommGroup V] [Module k V] [Module kᵐᵒᵖ V]
     [IsCentralScalar k V] (A₀ : Over (Sp k)) [GrpObj A₀] (g : A₀ ⟶ A₀) [IsMonHom g] (q : primDR A₀) :
     primPull (divided₂ (GlobalTheory.FODef.sqZero k V)) (spMap (TrivSqZeroExt.fstHom k k V).toRingHom) g
@@ -23,6 +26,13 @@ theorem primPull_constMorV_pull {k : Type} [Field k] (V : Type) [AddCommGroup V]
     (fun _ ↦ rfl) rfl q
   exact e1.trans e2.symm
 
+/- English proof (translation)
+Introduce `p _ D R _ b N _ _ k _ _ t o₀ β _ φ _ d f hf c e he`. Use `haveI := o₀.act.hom c`. Take `⟨x, hx, z, hz, hxz⟩` from `he`. Set `g : HdR o₀.A →ₗ[k] HdR o₀.A` to `GlobalTheory.HTCount.crysAct o₀ c`. Establish `hg : ∀ h, g h = push (dp0 k) (𝟙 _) (o₀.act.act c) h` using `fun _ ↦ rfl`.
+
+Use `⟨g x, push_mem_Fil _ hx, fun j ↦ g (z j) - (f j (g x) - g (f j x)), fun j ↦ sub_mem (push_mem_Fil _ (hz j)) ((hf j).1 c x hx), fun q ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[push_apply, primPull_constMorV_pull, hxz]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Rewrite using `[← push_apply, ← hg]`.
+
+Simplify using `only [map_add, LinearMap.add_apply, LinearMap.sub_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem push_mem_glueFil : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → ∀ (d : ℕ) (f : Fin d → (HdR o₀.A →ₗ[k] HdR o₀.A)), (∀ j, IsKS (GlobalTheory.HTCount.crysAct o₀) φ (Fil o₀.A) (GlobalTheory.HTCount.lieZ o₀ β) (f j)) → (∀ (c : D.O), ∀ e ∈ (GlobalTheory.HTGlue.glueFil o₀.A f), (haveI := o₀.act.hom (c); push (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) (o₀.act.act (c)) (e)) ∈ (GlobalTheory.HTGlue.glueFil o₀.A f)) := by
   intro p _ D R _ b N _ _ k _ _ t o₀ β _ φ _ d f hf c e he
   haveI := o₀.act.hom c

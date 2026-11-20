@@ -23,6 +23,15 @@ namespace GlobalTheory.IntegralBox
 
 open GlobalTheory.BoxIndep GlobalTheory.FieldBaseChange
 
+/- English proof (translation)
+Use `choose w hw using fun a => hb (t a)`. Set `A : Matrix I I V` to `Matrix.of w`. Establish `hA : IsUnit A.det`. Rewrite using `[← residue_ne_zero_iff_isUnit, RingHom.map_det]`. Introduce `h`.
+
+Take `⟨c, hc, hc'⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h`. Use `hc (ht c ?_)` and prove the remaining obligations. Establish `e : ∀ i, ∑ a, c a * residue V (w a i) = 0` using `fun i => congrFun hc' i`. Simplify using `only [hw, map_sum, map_smulₛₗ, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_eq_zero fun i _ => by rw [← Finset.sum_smul, e, zero_smul]`. Take `⟨d, rfl⟩` from `hb s`. Use `⟨Matrix.vecMul d A⁻¹, ?_⟩` and prove the remaining obligations. Establish `e : ∀ i, ∑ a, Matrix.vecMul d A⁻¹ a * w a i = d i` using `fun i => congrFun (show Matrix.vecMul (Matrix.vecMul d A⁻¹) A = d by`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hA, Matrix.vecMul_one]) i`.
+
+Simplify using `only [hw, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [← Finset.sum_smul, e]`.
+-/
 theorem span_of_indep_residue {V M M' : Type} [CommRing V] [IsLocalRing V] [AddCommGroup M] [Module V M]
     [AddCommGroup M'] [Module (ResidueField V) M'] (π : M →ₛₗ[residue V] M') {I : Type} [Fintype I]
     (b t : I → M) (hb : ∀ s, ∃ c : I → V, s = ∑ i, c i • b i)
@@ -49,6 +58,13 @@ theorem span_of_indep_residue {V M M' : Type} [CommRing V] [IsLocalRing V] [AddC
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => by rw [← Finset.sum_smul, e]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Use `⟨F, inferInstance, inferInstance, fun i => i.elim0, ?_⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_unique_iff]`. Simplify using the standard rewrite rules.
+
+Consider the case `succ j ih`. Take `⟨B, _, _, em, h⟩` from `ih (fun i => β i.succ) (fun i => hβ _)`. Use `⟨TensorProduct F O B, inferInstance, inferInstance, Fin.cons Algebra.TensorProduct.includeLeft (fun i => (Algebra.TensorProduct.includeRight).comp (em i)), ?_⟩` and prove the remaining obligations. Establish `h2` using `((hβ 0).tmul_of_isDomain h).comp (Fin.consEquiv (fun _ : Fin (j+1) => Fin m)).symm (Equiv.injective _)`. Use `(congrArg (fun v : (Fin (j + 1) → Fin m) → TensorProduct F O B => LinearIndependent F v) (funext fun a => ?_)).mpr h2` and prove the remaining obligations.
+
+Simplify using `only [Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, AlgHom.comp_apply, Function.comp_apply]`. Rewrite using `[← map_prod, Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_tensor_pow (F O : Type) [Field F] [CommRing O] [Algebra F O] {m : ℕ} (j : ℕ)
     (β : Fin j → Fin m → O) (hβ : ∀ i, LinearIndependent F (β i)) :
     ∃ (B : Type) (_ : CommRing B) (_ : Algebra F B) (em : Fin j → (O →ₐ[F] B)),
@@ -74,6 +90,15 @@ theorem exists_tensor_pow (F O : Type) [Field F] [CommRing O] [Algebra F O] {m :
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Set `: Algebra F (X.presheaf.stalk x)` to `(germOf p x).toAlgebra`. Establish `hβ : ∀ i, LinearIndependent F (fun l => gs (𝟙 X) x (U i) (s i l))` using `fun i => Fintype.linearIndependent_iff.2 fun c hc => congrFun (hs i c (by simp only [Algebra.smul_def] at hc; exact hc))`. Take `⟨B, _, _, em, h⟩` from `exists_tensor_pow F _ j _ hβ`. Use `⟨Spec (CommRingCat.of B), Spec.map (CommRingCat.ofHom (algebraMap F B)), fun i => (Spec.map (CommRingCat.ofHom (em i).toRingHom) : _ ⟶ Spec (X.presheaf.stalk x)) ≫ X.fromSpecStalk x, fun i => ?_, fun i z => fromSpecStalk_mem x (hx i) _, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, fromSpecStalk_comp]`.
+
+Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Use extensionality with `a`. Conclude with `(em i).commutes a`. Use function extensionality and compare the values at `a`. Use `Fintype.linearIndependent_iff.1 h c (eq_zero_of_germOf (B := CommRingCat.of B) _ fun z => ?_) a` and prove the remaining obligations.
+
+Rewrite using `[← hc z, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_prod]`. Use `congr 1`. Rewrite using `[← Category.id_comp (Spec.map _), germOf_map]`.
+
+Both sides reduce to the same expression. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_fromSpecStalk x (hx i)]`. Conclude with `(germOf_map (B := X.presheaf.stalk x) (𝟙 _) (CommRingCat.ofHom (em i).toRingHom) z _).symm`.
+-/
 theorem exists_test {F : Type} [Field F] (p : X ⟶ Spec (CommRingCat.of F)) (x : X) {j : ℕ} {U : Fin j → X.Opens}
     (hx : ∀ i, x ∈ U i) {m : ℕ} (s : ∀ i, Fin m → Γ(X, U i))
     (hs : ∀ i (c : Fin m → F), ∑ l, germOf p x (c l) * gs (𝟙 X) x (U i) (s i l) = 0 → c = 0) :
@@ -102,6 +127,9 @@ theorem exists_test {F : Type} [Field F] (p : X ⟶ Spec (CommRingCat.of F)) (x 
       rw [gs_fromSpecStalk x (hx i)]
       exact (germOf_map (B := X.presheaf.stalk x) (𝟙 _) (CommRingCat.ofHom (em i).toRingHom) z _).symm
 
+/- English proof (translation)
+Use `SecOps.sec_ext fun jj => fn_ext fun y hy => congrArg _ ?_` and prove the remaining obligations. Establish `hy' : genericPoint Y ∈ LB.wchart L φ jj` using `((genericPoint_spec _).mem_open_set_iff (TopologicalSpace.Opens.isOpen _)).mpr ⟨y, trivial, hy⟩`. Apply `germ_injective_of_isIntegral _ _ hy'` to reduce the goal to its premises. Use `(gs_eq (𝟙 _) _ _ hy' _).symm.trans (Eq.trans ?_ (map_zero _).symm)` and prove the remaining obligations. Conclude with `(sec_trans s (𝟙 _) _ hy' (hJ.mem φ _)).trans ((congrArg _ h).trans (mul_zero _))`.
+-/
 theorem eq_zero_of_generic [IsIntegral Y] {R : Type} [CommRing R] (π : Y ⟶ Spec (CommRingCat.of R)) {L : LB X}
     {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : SecOver π (LB.LinComb L φ ε)) {J}
     (hJ : Good L (genericPoint Y) J) (h : sval s (𝟙 Y) (genericPoint Y) J = 0) : s = 0 := by
@@ -112,6 +140,9 @@ theorem eq_zero_of_generic [IsIntegral Y] {R : Type} [CommRing R] (π : Y ⟶ Sp
   refine (gs_eq (𝟙 _) _ _ hy' _).symm.trans (Eq.trans ?_ (map_zero _).symm)
   exact (sec_trans s (𝟙 _) _ hy' (hJ.mem φ _)).trans ((congrArg _ h).trans (mul_zero _))
 
+/- English proof (translation)
+Rewrite using `[sval_sum' hJ]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [sval_smul' hJ, germOf_apply]; rfl`.
+-/
 theorem sval_comb {R : Type} [CommRing R] (π : Y ⟶ Spec (CommRingCat.of R)) {L : LB X}
     {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} {I : Type} [Fintype I] (c : I → R)
     (s : I → SecOver π (LB.LinComb L φ ε)) (r : Z ⟶ Y) {z : Z} {J} (hJ : Good L z J) :
@@ -124,6 +155,9 @@ section Box
 
 variable {V : Type} [CommRing V] [IsDomain V] {R : Type} [CommRing R] (φ : V →+* R) (D : DegPre V)
 
+/- English proof (translation)
+The claim follows from `(IsPullback.of_hasPullback (spMap φ) D.P.A.hom).flip`.
+-/
 theorem isPullback_snd : IsPullback (snd (Over.mk (spMap φ)) D.P.A).left (fst (Over.mk (spMap φ)) D.P.A).left
     D.P.A.hom (spMap φ) := (IsPullback.of_hasPullback (spMap φ) D.P.A.hom).flip
 
@@ -136,11 +170,21 @@ abbrev SecModBC (k : ℕ) (α : D.X) : Type :=
 noncomputable def pullBC (k : ℕ) (α : D.X) : SecMod D k α →ₛₗ[φ] SecModBC φ D k α :=
   pullOver D.P.L (DegPre.famε k) (isPullback_snd φ D).w (fun _ => rfl)
 
+/- English proof (translation)
+The claim follows from `sval_pullOver (isPullback_snd φ D).w (fun _ => rfl) s r hJ`.
+-/
 theorem sval_pullBC {k : ℕ} {α : D.X} (s : SecMod D k α) (r : Z ⟶ (Over.mk (spMap φ) ⊗ D.P.A).left) {z : Z} {J}
     (hJ : Good D.P.L z J) :
     sval (pullBC φ D k α s) r z J = sval s (r ≫ (snd (Over.mk (spMap φ)) D.P.A).left) z J :=
   sval_pullOver (isPullback_snd φ D).w (fun _ => rfl) s r hJ
 
+/- English proof (translation)
+Establish `hL` using `D.P.isLB`. Take `⟨m, b, rfl, hb⟩` from `hT V D k hk α`. Establish `H₀ : IsPullback (𝟙 D.P.A.left) D.P.A.hom D.P.A.hom (spMap (RingHom.id V))`. Establish `: spMap (RingHom.id V) = 𝟙 _` using `by simp [spMap]`. Rewrite using `[this]`.
+
+Conclude with `IsPullback.id_horiz _`. Establish `hψ₀ : ∀ k, D.famφB α k = 𝟙 _ ≫ D.famφB α k` using `fun k => (Category.id_comp _).symm`. Establish `h0` using `ZH.BasisBaseChange.basis_of_isPullback (RingHom.id V) hL (D.famφB α) (DegPre.famε k) b (hb V (RingHom.id V) _ fun _ _ => rfl) H₀ hψ₀`. Establish `e0 : ∀ i, pullOver D.P.L (DegPre.famε k) H₀.w hψ₀ (b i) = b i` using `fun i => sec_ext' hL fun y J hJ => (sval_pullOver H₀.w hψ₀ _ _ hJ).trans (by rw [Category.comp_id])`. Simplify using `only [e0] at h0`.
+
+Establish `h1` using `ZH.BasisBaseChange.basis_of_isPullback φ hL (D.famφB α) (DegPre.famε k) b (hb R φ _ fun _ _ => rfl) (isPullback_snd φ D) (fun _ => rfl) (0 : SecModBC φ D k α)`. Conclude with `⟨b, fun s => (h0 s).exists, fun c hc => h1.unique hc.symm (Finset.sum_eq_zero fun i _ => zero_smul R _).symm⟩`.
+-/
 theorem exists_basis [IsLocalRing V] [IsNoetherianRing V] (hT : TwistBaseChangeStatement) {k : ℕ} (hk : 1 ≤ k)
     (α : D.X) : ∃ b : Fin (k ^ D.P.g) → SecMod D k α, (∀ s, ∃ c : Fin (k ^ D.P.g) → V, s = ∑ i, c i • b i) ∧
       ∀ c : Fin (k ^ D.P.g) → R, ∑ i, c i • pullBC φ D k α (b i) = 0 → c = 0 := by
@@ -163,6 +207,23 @@ theorem exists_basis [IsLocalRing V] [IsNoetherianRing V] (hT : TwistBaseChangeS
 
 end Box
 
+/- English proof (translation)
+Set `T₀ : Over (Spec (CommRingCat.of V))` to `Over.mk (spMap φ)`. Use `D.P.isAb.smooth` as an intermediate fact. Use `D.P.isAb.geomConnected` as an intermediate fact. Establish `hg` using `geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres D.P.A.hom`. Establish `hint : IsIntegral (T₀ ⊗ D.P.A).left` using `hg.geometrically_isIntegral _ _ _ (isPullback_snd φ D)`.
+
+Use `choose J₀ hJ₀ using fun χ : (T₀ ⊗ D.P.A).left ⟶ D.P.A.left => exists_chart D.P.isLB (χ (genericPoint (T₀ ⊗ D.P.A).left))`. Establish `hJ₀ : Good D.P.L _ J₀` using `hJ₀`. Take `⟨Z, q, r, hq, hr, H⟩` from `exists_test (F := F) (fst T₀ D.P.A).left _ (fun i => hJ₀.mem (fun a => (snd T₀ D.P.A).left ≫ D.famφB (pD.xe α' i) a) (𝟙 _)) (fun i l => (pullBC φ D k (pD.xe α' i) (b _ l)).f _) (fun i c hc => hb _ c (eq_zero_of_generic _ _ hJ₀ ((sval_comb _ c _ (𝟙 _) hJ₀).trans (by`. Rewrite using `[Category.id_comp]`. Conclude with `hc))))`.
+
+Set `T : Over (Spec (CommRingCat.of V))` to `Over.mk (q ≫ T₀.hom)`. Set `q' : T ⟶ T₀` to `Over.homMk q rfl`. Set `r' : Fin j → (T ⟶ T₀ ⊗ D.P.A)` to `fun i => Over.homMk (r i) (by`. Rewrite using `[← Over.w (fst T₀ D.P.A), ← Category.assoc, hq]`. Use the proof step `rfl)`.
+
+Set `ρ : T ⟶ T₀ ⊗ D'.P.A` to `lift q' (Fan.IsLimit.lift pD.pw.lim fun i => r' i ≫ snd _ _)`. Establish `hρ : ∀ i, (ρ ≫ snd _ _) ≫ pD.pw.pr i = r' i ≫ snd _ _` using `fun i => by`. Rewrite using `[lift_snd]`. Conclude with `Fan.IsLimit.fac pD.pw.lim _ i`. Establish `hρ' : ∀ i, ((ρ.left : Z ⟶ _) ≫ (snd T₀ D'.P.A).left) ≫ (pD.pw.pr i).left = r i ≫ (snd T₀ D.P.A).left` using `fun i => congrArg (fun g => g.left) (hρ i)`.
+
+Establish `hρq : (ρ.left : Z ⟶ _) ≫ (fst T₀ D'.P.A).left = q` using `congrArg (fun g => g.left) (lift_fst q' (Fan.IsLimit.lift pD.pw.lim fun i => r' i ≫ snd _ _))`. Use `H c fun z => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : Z ⟶ D.P.A.left => exists_chart D.P.isLB (ψ z)`. Establish `hJ : Good D.P.L z J` using `hJ`. Use `choose J' hJ' using fun ψ : Z ⟶ D'.P.A.left => exists_chart D'.P.isLB (ψ z)`.
+
+Establish `hJ' : Good D'.P.L z J'` using `hJ'`. Establish `E` using `(sval_comb _ c _ (ρ.left : Z ⟶ _) hJ').symm.trans ((congrArg (fun s : SecModBC φ D' k α' => sval (Z := Z) s ρ.left z J') hc).trans (sval_zero' hJ' _))`. Rewrite `E` using `[hρq]`. Take `⟨u, hu⟩ : ∃ u : Z.presheaf.stalk z, ∀ a : Fin j → Fin m, u * sval (Z` from `Z) (pullBC φ D' k α' (boxFamB pD k (fun i α => b α (a i)) α')) ρ.left z J' = ∏ i, sval (pullBC φ D k (pD.xe α' i) (b _ (a i))) (r i) z J := by`. Use `⟨(∏ a, bw pD.w (((ρ.left : Z ⟶ _) ≫ (snd T₀ D'.P.A).left) ≫ D'.famφB α' a) z (fun i => J ((((ρ.left : Z ⟶ _) ≫ (snd T₀ D'.P.A).left) ≫ D'.famφB α' a) ≫ (pD.pw.pr i).left)) (J' (((ρ.left : Z ⟶ _) ≫ (snd T₀ D'.P.A).left) ≫ D'.famφB α' a)) ^ DegPre.famε k a).val, fun a => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hψ, H'⟩` from `isBoxFamB_boxFamB pD k (fun i α => b α (a i)) α'`. Use `(congrArg _ (sval_pullBC φ D' _ _ hJ')).trans ((BoxFamScalar.box_sval pD.w hψ _ _ _ H' _ z hJ hJ').trans (Finset.prod_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[sval_pullBC φ D _ _ hJ]`. Conclude with `congrArg (fun g => sval (b _ (a i)) g z J) (hρ' i)`. Take `⟨v, hv⟩ : ∃ v : Fin j → Z.presheaf.stalk z, ∀ i l, gs (r i) z (LB.wchart D.P.L (fun a => (snd T₀ D.P.A).left ≫ D.famφB (pD.xe α' i) a) (fun a => J₀ (𝟙 _ ≫ (snd T₀ D.P.A).left ≫ D.famφB (pD.xe α' i) a))) ((pullBC φ D k (pD.xe α' i) (b _ l)).f (fun a => J₀ (𝟙 _ ≫ (snd T₀ D.P.A).lef …` from `⟨_, fun i l => sec_trans _ (r i) z (hr i z) (hJ.mem _ (r i))⟩`.
+
+Use `Eq.trans (Finset.sum_congr rfl fun a _ => ?_) ((Finset.mul_sum _ _ ((∏ i, v i) * u)).symm.trans ((congrArg _ E).trans (mul_zero _)))` and prove the remaining obligations. Use `Eq.trans (congrArg _ (((Finset.prod_congr rfl fun i _ => hv i (a i)).trans Finset.prod_mul_distrib).trans (congrArg _ (hu a).symm))) ?_` and prove the remaining obligations. Conclude with `(congrArg _ (_root_.mul_assoc _ _ _).symm).trans (mul_left_comm _ _ _)`.
+-/
 theorem box_indep {V : Type} [CommRing V] [IsDomain V] {F : Type} [Field F] (φ : V →+* F) {j : ℕ}
     {D D' : DegPre V} (pD : IsPowDeg D' D j) {k m : ℕ} (b : ∀ α, Fin m → SecMod D k α)
     (hb : ∀ α (c : Fin m → F), ∑ i, c i • pullBC φ D k α (b α i) = 0 → c = 0) (α' : D'.X)
@@ -225,6 +286,13 @@ theorem box_indep {V : Type} [CommRing V] [IsDomain V] {F : Type} [Field F] (φ 
     (congrArg _ (hu a).symm))) ?_
   exact (congrArg _ (_root_.mul_assoc _ _ _).symm).trans (mul_left_comm _ _ _)
 
+/- English proof (translation)
+Introduce `_ _ _ hT V _ _ _ _ j D D' pD k hk α' β'`. Use `choose b _ hb using exists_basis (residue V) D hT hk`. Take `⟨b', hb', -⟩` from `exists_basis (residue V) D' hT hk α'`. Establish `hg` using `(rank_and_g_of_isPowDeg V j D D' pD).2`. Set `e : Fin (k ^ D'.P.g) ≃ (Fin j → Fin (k ^ D.P.g))` to `Fintype.equivOfCardEq (by`.
+
+Simplify using `[hg, ← pow_mul, mul_comm])`. Take `⟨c, hc⟩` from `span_of_indep_residue (pullBC (residue V) D' k α') b' (fun n => boxFamB pD k (fun i α => b α (e n i)) α') hb' (fun c hc => by`. Use `box_indep (residue V) pD b hb α' (fun a => c (e.symm a)) (by` as an intermediate fact. Rewrite using `[← hc, ← e.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply])`.
+
+Use function extensionality and compare the values at `n`. Simplify using `using congrFun this (e n)) β'`. Conclude with `⟨_, c, fun n i α => b α (e n i), fun n => boxFamB pD k (fun i α => b α (e n i)), fun n => isBoxFamB_boxFamB pD k _, (ZH.BasisBaseChange.isLin_iff D'.P.A.hom _ c β').2 hc⟩`.
+-/
 theorem main : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (j : ℕ) (D D' : DegPre V) (pD : IsPowDeg D' D j) (k : ℕ), 1 ≤ k → ∀ (α' : D'.X) (β' : D'.SecB k α'), ∃ (l : ℕ) (c : Fin l → V) (f : Fin l → Fin j → ∀ α : D.X, D.SecB k α) (f' : Fin l → ∀ α : D'.X, D'.SecB k α), (∀ a, IsBoxFamB pD k (f' a) (f a)) ∧ ∀ jj, β'.f jj = ∑ a, constFn D'.P.A.hom _ (c a) * (f' a α').f jj := by
   intro _ _ _ hT V _ _ _ _ j D D' pD k hk α' β'
   choose b _ hb using exists_basis (residue V) D hT hk

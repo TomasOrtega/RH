@@ -17,6 +17,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ} {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
   {Φ' : Type} [Field Φ'] {y' : (Σ k, ι' k) → Φ'}
 
+/- English proof (translation)
+Introduce `h` and use `hF.1 k (by have h1 : (X ⟨k, F.c k⟩ : MRing (baseIdx ι M.blk)) ∈ mCoordIdeal M.x := by show mConeMap M.x (X ⟨k, F.c k⟩) = 0 rw [mConeMap, aeval_X, h, map_zero, zero_mul] have h2 : zb ⟨k, F.c k⟩ = 0 := by simpa using hz.2 _ h1 show mConeMap zb (X ⟨k, F.c k⟩) = 0 rw [mConeMap, aeval …`.
+-/
 theorem x_chart_ne_of_pt (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk}
     {zb : (Σ k, baseIdx ι M.blk k) → ℂ} (hz : zb ∈ mcPts (mCoordIdeal M.x)) (hF : M.GoodAt F (mCoordIdeal zb))
     (k : NonPluckerBlocks M.blk) : M.x ⟨k, F.c k⟩ ≠ 0 := fun h => hF.1 k (by
@@ -27,6 +30,11 @@ theorem x_chart_ne_of_pt (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.
   show mConeMap zb (X ⟨k, F.c k⟩) = 0
   rw [mConeMap, aeval_X, h2, map_zero, zero_mul])
 
+/- English proof (translation)
+Establish `e : ∀ m : ι k, transPt Cv ⟨k, m⟩ = y' ⟨(Cv.v ⟨⟨k, h⟩, m⟩).1.1, (Cv.v ⟨⟨k, h⟩, m⟩).2⟩` using `fun m => by`. Establish `h1` using `transPt_base Cv ⟨⟨k, h⟩, m⟩`. Rewrite `h1` using `[← Cv.x_eq, ← M'.y_base]`. Conclude with `h1`. Rewrite using `[e, e]`.
+
+Use `IntermediateField.subset_adjoin _ _ ⟨_, _, ?_, rfl⟩` and prove the remaining obligations. Use `show (Cv.v ⟨⟨k, h⟩, i⟩).1.1 = (Cv.v ⟨⟨k, h⟩, i₂⟩).1.1`. Rewrite using `[Cv.block.2.2.1, Cv.block.2.2.1]`.
+-/
 theorem transPt_ratio_base [CharZero Φ'] {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     (k : K) (h : ∀ p, M.blk p ≠ some k) (i i₂ : ι k) :
     transPt Cv ⟨k, i⟩ / transPt Cv ⟨k, i₂⟩ ∈ blockFnField y' := by
@@ -39,6 +47,17 @@ theorem transPt_ratio_base [CharZero Φ'] {M : FlagModel y Ψ N j} {M' : FlagMod
   show (Cv.v ⟨⟨k, h⟩, i⟩).1.1 = (Cv.v ⟨⟨k, h⟩, i₂⟩).1.1
   rw [Cv.block.2.2.1, Cv.block.2.2.1]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨k', hk'⟩ : ∃ k', M'.blk p = some k' := by`. Break down `e : M'.blk p with _ | k'` into its components or cases. Establish `h2` using `(M.blk_none p).2 ((M'.blk_none p).1 e)`. Rewrite `h2` using `[hp]`. Consider the cases of `h2`.
+
+Conclude with `⟨k', rfl⟩`. Take `⟨zb, hzb⟩` from `GlobalTheory.T.multiprojective_points_nonempty _ _ _ M'.x M'.x_ne`. Establish `hzv` using `GlobalTheory.T.flag_cover_base_point_maps_to_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv zb hzb`. Take `⟨F', hF', hG'⟩` from `(GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').2.1 zb hzb`. Take `⟨F, hF, hG⟩` from `(GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M).2.1 _ hzv`.
+
+Take `⟨c, hc, hcs⟩` from `GlobalTheory.T.flag_cover_frames_pullback K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv F' F hF' hF (fun k => x_chart_ne_of_pt M' hzb hG' k) (fun k => x_chart_ne_of_pt M hzv hG k) p k k' hp hk'`. Take `⟨c', hc'⟩` from `hy k'`. Establish `hreg : ∀ (q : Σ k, ι k) (r : Σ k, ι' k), algebraMap M'.Ω Φ' (coE Cv F' F p q r) ∈ blockFnField y'` using `fun q r => GlobalTheory.T.regular_function_in_block_field K' ι' Φ' y' Ψ N j M' zb _ hzb (GlobalTheory.T.flag_cover_frames_at_base_point K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv zb F' F hzb hF' hF hG' hG p q r).1`. Set `S : ι k → Φ'` to `fun m => ∑ m' : ι' k', algebraMap M'.Ω Φ' (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) * (y' ⟨k', m'⟩ / y' ⟨k', c'⟩)`. Establish `hS : ∀ m, S m ∈ blockFnField y'` using `fun m => sum_mem fun m' _ => mul_mem (hreg _ _) (IntermediateField.subset_adjoin _ _ ⟨⟨k', m'⟩, ⟨k', c'⟩, rfl, rfl⟩)`.
+
+Establish `e : ∀ m, transPt Cv ⟨k, m⟩ = (c * y' ⟨k', c'⟩) * S m` using `fun m => by`. Rewrite using `[hcs m, mul_assoc]`. Use `congr 1`. Simplify using `only [S]`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, e, mul_div_mul_left _ _ (mul_ne_zero hc hc')]`. Conclude with `div_mem (hS _) (hS _)`.
+-/
 theorem transPt_ratio_step [CharZero Φ'] {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     (hy : ∀ k, ∃ i, y' ⟨k, i⟩ ≠ 0) (p : Ψ × Fin N) (k : K) (hp : M.blk p = some k) (i i₂ : ι k) :
     transPt Cv ⟨k, i⟩ / transPt Cv ⟨k, i₂⟩ ∈ blockFnField y' := by
@@ -75,6 +94,13 @@ theorem transPt_ratio_step [CharZero Φ'] {M : FlagModel y Ψ N j} {M' : FlagMod
 
 end
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv _ hy`. Apply `le_antisymm` to reduce the goal to its premises. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `t ⟨p, q, h, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨inrV p, inrV q, by simp only [inrV, h], rfl⟩`.
+
+Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `t ⟨⟨k | k, i⟩, ⟨k₂ | k₂, i₂⟩, h, rfl⟩`. Take `rfl : k = k₂` from `Sum.inl.inj h show transPt Cv ⟨k, i⟩ / transPt Cv ⟨k, i₂⟩ ∈ blockFnField y'`. Distinguish the cases in `hb : ∀ p, M.blk p ≠ some k`. Conclude with `transPt_ratio_base Cv k hb i i₂`.
+
+Conclude with `transPt_ratio_step Cv hy (stepOf M k hb) k (blk_stepOf M k hb) i i₂`. Consider the cases of `h`. Consider the cases of `h`. Take `rfl : k = k₂` from `Sum.inr.inj h`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨k, i⟩, ⟨k, i₂⟩, rfl, rfl⟩`.
+-/
 theorem blockFnField_pair_transPt : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) [CharZero Φ'], (∀ k, ∃ i, y' ⟨k, i⟩ ≠ 0) → blockFnField y' = blockFnField (pairV (transPt Cv) y') := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv _ hy
   apply le_antisymm

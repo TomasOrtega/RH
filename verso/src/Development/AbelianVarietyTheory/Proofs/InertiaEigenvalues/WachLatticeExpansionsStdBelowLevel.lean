@@ -16,6 +16,11 @@ section Series
 
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M]
 
+/- English proof (translation)
+Unfold `conv`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `j hj`. Assume the negation of the conclusion as `h`. Simplify using `only [Finset.coe_range, Set.mem_Iio, not_lt] at h`.
+
+Apply `hj` to reduce the goal to its premises. Establish `: k - (j : ℤ) < m` using `by omega`. Simplify using `[hm _ this]`.
+-/
 theorem conv_eq_sum (e : PowerSeries L) {u : ℤ → M} {m : ℤ} (hm : ∀ k < m, u k = 0) (k : ℤ) (N : ℕ)
     (hN : k - m < N) :
     conv e u k = ∑ j ∈ Finset.range N, PowerSeries.coeff j e • u (k - (j : ℤ)) := by
@@ -28,12 +33,24 @@ theorem conv_eq_sum (e : PowerSeries L) {u : ℤ → M} {m : ℤ} (hm : ∀ k < 
   have : k - (j : ℤ) < m := by omega
   simp [hm _ this]
 
+/- English proof (translation)
+Introduce `k hk`. Rewrite using `[conv_eq_sum e hm k 0 (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem conv_van (e : PowerSeries L) {u : ℤ → M} {m : ℤ} (hm : ∀ k < m, u k = 0) :
     ∀ k < m, conv e u k = 0 := by
   intro k hk
   rw [conv_eq_sum e hm k 0 (by omega)]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Use `set N := (k - m).toNat + 1 with hN`. Rewrite using `[conv_eq_sum _ hm k N (by omega), conv_eq_sum _ (conv_van b hm) k N (by omega)]`. Establish `h1 : ∀ i ∈ Finset.range N, PowerSeries.coeff i a • conv b u (k - (i : ℤ)) = ∑ j ∈ Finset.range (N - i), (PowerSeries.coeff i a * PowerSeries.coeff j b) • u (k - ((i + j : ℕ) : ℤ))`. Introduce `i hi`.
+
+Use `Finset.mem_range.1 hi` as an intermediate fact. Rewrite using `[conv_eq_sum _ hm _ (N - i) (by omega), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl h1, ← Finset.sum_range_diag_flip N (fun i j => (PowerSeries.coeff i a * PowerSeries.coeff j b) • u (k - ((i + j : ℕ) : ℤ)))]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_smul]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `Finset.mem_range.1 hi` as an intermediate fact. Establish `h2 : i + (n - i) = n` using `by omega`. Rewrite using `[h2]`.
+-/
 theorem conv_mul (a b : PowerSeries L) {u : ℤ → M} {m : ℤ} (hm : ∀ k < m, u k = 0) :
     conv (a * b) u = conv a (conv b u) := by
   funext k
@@ -64,11 +81,22 @@ def tw (c : L) (Φ : M →ₗ[L] M) : (ℤ → M) →ₗ[L] (ℤ → M) where
   map_add' f g := by funext k; simp
   map_smul' a f := by funext k; simp [smul_comm a]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tw_apply (c : L) (Φ : M →ₗ[L] M) (f : ℤ → M) (k : ℤ) : tw c Φ f k = c ^ k • Φ (f k) := rfl
 
+/- English proof (translation)
+Introduce `k hk` and use `by simp [tw_apply, hm k hk]`.
+-/
 theorem tw_van (c : L) (Φ : M →ₗ[L] M) {u : ℤ → M} {m : ℤ} (hm : ∀ k < m, u k = 0) :
     ∀ k < m, tw c Φ u k = 0 := fun k hk => by simp [tw_apply, hm k hk]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Use `set N := (k - m).toNat + 1 with hN`. Rewrite using `[tw_apply, conv_eq_sum _ hm k N (by omega), conv_eq_sum _ (tw_van c Φ hm) k N (by omega), map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[tw_apply, map_smul, smul_smul, smul_smul, PowerSeries.coeff_rescale, zpow_sub₀ hc, zpow_natCast]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem tw_conv {c : L} (hc : c ≠ 0) (Φ : M →ₗ[L] M) (a : PowerSeries L) {u : ℤ → M} {m : ℤ}
     (hm : ∀ k < m, u k = 0) :
     tw c Φ (conv a u) = conv (PowerSeries.rescale c a) (tw c Φ u) := by
@@ -81,6 +109,41 @@ theorem tw_conv {c : L} (hc : c ≠ 0) (Φ : M →ₗ[L] M) (a : PowerSeries L) 
   congr 1
   field_simp
 
+/- English proof (translation)
+Establish `hv' : ∀ x, ∀ k < (0 : ℤ), e' x k = 0` using `fun x => ((h' _).1 (mem_latSpan _ x)).2`. Establish `hinv : ∀ m : ℕ, ∃ w : PowerSeries L, w * lev (Q ^ m) = 1` using `fun m => by`. Rewrite using `[map_pow]`. Conclude with `(hQ.pow m).exists_left_inv`. Establish `hspan : ∀ z ∈ Submodule.span A (φ '' (N : Set DD)), ∃ (m : ℕ) (hz : Q ^ m • z ∈ N), ∀ k < (0 : ℤ), e ⟨Q ^ m • z, hz⟩ k = 0`.
+
+Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Take `⟨m, hm⟩` from `hφ x hx`.
+
+Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[heφ ⟨x, hx⟩ m hm]`. Conclude with `conv_van _ (tw_van c Φ (hv' _))`. Consider the case `zero`. Use `⟨0, by simp, fun k _ => ?_⟩` and prove the remaining obligations.
+
+Establish `: (⟨Q ^ 0 • (0 : DD), by simp⟩ : ↥N) = 0` using `Subtype.ext (by simp)`. Rewrite using `[this, map_zero]`. Both sides reduce to the same expression. Consider the case `add z z' _ _ hz hz'`. Take `⟨m, hm, hz⟩` from `hz`.
+
+Take `⟨m', hm', hz'⟩` from `hz'`. Establish `key : Q ^ (m + m') • (z + z') = ((Q ^ m' • (⟨_, hm⟩ : ↥N) + Q ^ m • (⟨_, hm'⟩ : ↥N) : ↥N) : DD)`. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, smul_add, smul_smul, ← pow_add, add_comm m' m]`. Use `⟨m + m', key ▸ Subtype.mem _, fun k hk => ?_⟩` and prove the remaining obligations. Establish `: (⟨Q ^ (m + m') • (z + z'), key ▸ Subtype.mem _⟩ : ↥N) = Q ^ m' • (⟨_, hm⟩ : ↥N) + Q ^ m • (⟨_, hm'⟩ : ↥N)` using `Subtype.ext key`.
+
+Rewrite using `[this, map_add, hsm, hsm, Pi.add_apply, conv_van _ hz k hk, conv_van _ hz' k hk, add_zero]`. Consider the case `smul a z _ hz`. Take `⟨m, hm, hz⟩` from `hz`. Establish `key : Q ^ m • (a • z) = ((a • (⟨_, hm⟩ : ↥N) : ↥N) : DD)`. Simplify using `only [Submodule.coe_smul, smul_smul, mul_comm]`.
+
+Use `⟨m, key ▸ Subtype.mem _, fun k hk => ?_⟩` and prove the remaining obligations. Establish `: (⟨Q ^ m • (a • z), key ▸ Subtype.mem _⟩ : ↥N) = a • (⟨_, hm⟩ : ↥N)` using `Subtype.ext key`. Rewrite using `[this, hsm, conv_van _ hz k hk]`. Establish `hv : ∀ x, ∀ k < (0 : ℤ), e x k = 0`. Introduce `y`.
+
+Take `⟨j, hj⟩` from `hφinv y y.2`. Take `⟨m, hm, hz⟩` from `hspan _ hj`. Establish `: (⟨Q ^ m • Q ^ j • (y : DD), hm⟩ : ↥N) = Q ^ (m + j) • y` using `Subtype.ext (by simp only [Submodule.coe_smul, smul_smul, pow_add])`. Rewrite `hz` using `[this, hsm]`. Take `⟨w, hw⟩` from `hinv (m + j)`.
+
+Take `⟨b, hb⟩` from `hs y`. Establish `h2` using `conv_van w hz`. Rewrite `h2` using `[← conv_mul _ _ hb, hw, conv_one]`. Then use the resulting hypothesis. Establish `hmap : ∀ g ∈ latSpan (LL` using `L) e', tw c Φ g ∈ latSpan (LL := L) e := by`. Introduce `g hg`.
+
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨a, x, rfl⟩` from `hg`. Take `⟨m, hm⟩` from `hφ x x.2`. Take `⟨w, hw⟩` from `hinv m`.
+
+Use `Submodule.subset_span ⟨PowerSeries.rescale c a * w, ⟨_, hm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[heφ x m hm, ← conv_mul _ _ (tw_van c Φ (hv' x)), mul_assoc, hw, mul_one, tw_conv hc Φ a (hv' x)]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add f g _ _ hf hg => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hf hg`. Consider the case `smul a f _ hf => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hf`. Introduce `f`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hf`. Use `⟨(latSpan_coeff _ D hD hs f hf).1, ?_⟩` and prove the remaining obligations. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨a, x, rfl⟩` from `hf`.
+
+Conclude with `conv_van a (hv x)`. Consider the case `zero => exact fun _ _ => rfl`. Consider the case `add f g _ _ hf hg => intro k hk`. Simplify using `[hf k hk, hg k hk]`. Consider the case `smul a f _ hf => intro k hk`.
+
+Simplify using `[hf k hk]`. Introduce and unpack `⟨h1, h2⟩`. Establish `: ∀ k, ∃ d ∈ D', Φ d = f k ∧ (k < 0 → d = 0)`. Introduce `k`. Distinguish the cases in `hk : k < 0`.
+
+Conclude with `⟨0, D'.zero_mem, by rw [map_zero, h2 k hk], fun _ => rfl⟩`. Take `⟨d, hd, hd'⟩` from `hΦ.surjOn (h1 k)`. Conclude with `⟨d, hd, hd', fun h => absurd h hk⟩`. Use `choose d hd hd1 hd2 using this`. Establish `hg : (fun k => (c ^ k)⁻¹ • d k) ∈ latSpan (LL` using `L) e' := (h' _).2 ⟨fun k => D'.smul_mem _ (hd k), fun k hk => by simp [hd2 k hk]⟩`.
+
+Establish `h3` using `hmap _ hg`. Establish `: tw c Φ (fun k => (c ^ k)⁻¹ • d k) = f`. Use function extensionality and compare the values at `k`. Rewrite using `[tw_apply, map_smul, smul_smul, mul_inv_cancel₀ (zpow_ne_zero k hc), one_smul, hd1]`. Rewrite `h3` using `[this]`. Then use the resulting hypothesis.
+-/
 theorem std_step {A DD : Type} [CommRing A] [AddCommGroup DD] [Module A DD] (N : Submodule A DD)
     (φ : DD → DD) (Q : A) (lev : A →* PowerSeries L) (hQ : IsUnit (lev Q))
     (e e' : ↥N →+ (ℤ → M)) (D D' : Submodule L M) (c : L) (hc : c ≠ 0) (Φ : M →ₗ[L] M)
@@ -183,6 +246,19 @@ end Series
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D HW F Cm l hl K s LL h W E C T hT`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `main : ∀ (j : ℕ) (i : Let K) (ζ : ↥LL.1), ζ ^ (l ^ j) = 1 → ζ ^ (l ^ (s - 1)) = 1 → Std (Di (HW l) h T i) (Lat C h T i ζ)`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero`. Introduce `i ζ h1 _`. Take `rfl : ζ = 1` from `by simpa using h1`. Conclude with `GlobalTheory.T.wach_lattice_eq_std_powerSeries_at_zero D HW F Cm l K s LL h T hT i`. Consider the case `succ j ih`.
+
+Introduce `i ζ h1 h2`. Establish `hprim : ∃ j : ℕ, IsPrimitiveRoot ζ (l ^ j)`. Take `⟨r, -, hr⟩` from `(Nat.dvd_prime_pow hl.out).1 (orderOf_dvd_of_pow_eq_one h1)`. Conclude with `⟨r, hr ▸ IsPrimitiveRoot.orderOf ζ⟩`. Establish `ih'` using `ih (i - 1) (ζ ^ l) (by rw [← pow_mul, ← pow_succ', h1]) (by rw [← pow_mul, mul_comm, pow_mul, h2, one_pow])`.
+
+Establish `hQ : IsUnit (W.lev i ζ W.Q)` using `((GlobalTheory.T.wachLevel_expansion_at_root_of_unity D HW l K s LL h i ζ hprim).2.2.1 h2).2`. Establish `hΦ` using `(GlobalTheory.T.crystallineFrobenius_bijOn_letters_directSum D HW l K s LL h T hT).1 i`. Establish `hc : (l : ↥LL.1) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`. Use `std_step (W.N T) (W.φD T) W.Q (MonoidHomClass.toMonoidHom (W.lev i ζ)) hQ ((C.C K s LL h).tie.levB T i ζ) ((C.C K s LL h).tie.levB T (i - 1) (ζ ^ l)) (Di (HW l) h T i) (Di (HW l) h T (i - 1)) (l : ↥LL.1) hc _ hΦ ((C.C K s LL h).tie.levB_mem T i ζ) ((C.C K s LL h).tie.levB_supp T …` and prove the remaining obligations. Introduce `x m hx`.
+
+Use function extensionality and compare the values at `k`. Use `(C.C K s LL h).tie.levB_φ T hT i ζ (by rw [hp]; exact hprim) x m hx k` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `this`. Introduce `i ζ hζ`.
+
+Conclude with `main (s - 1) i ζ hζ hζ`.
+-/
 theorem lat_low : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; let C := Cm l; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ (i : Let K) (ζ : ↥LL.1), ζ ^ (l ^ (s - 1)) = 1 → Std (Di (HW l) h T i) (Lat C h T i ζ) := by
   intro D HW F Cm l hl K s LL h W E C T hT
   have hp : ((D.loc l).PD K).p = l := (D.loc l).PD_p K

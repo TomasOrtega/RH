@@ -13,6 +13,11 @@ open GlobalTheory.CompanionTheory.FexTheta
 
 namespace GlobalTheory.CompanionTheory.FexTheta
 
+/- English proof (translation)
+Introduce `K _ _ _ v w i hu ξ`. Use `haveI : Unique (SemiLocal.PlacesOver K v) := ⟨⟨⟨w, i⟩⟩, fun x => Subtype.ext (hu x.1 x.2)⟩`. Establish `h` using `SemiLocal.algebraMap_norm_eq_prod (K := ℚ) (L := K) v ξ`. Rewrite `h` using `[Fintype.prod_unique]`. Establish `hd : (default : SemiLocal.PlacesOver K v) = ⟨w, i⟩` using `Subsingleton.elim _ _`.
+
+Rewrite `h` using `[hd]`. Use `h.symm.trans ?_` and prove the remaining obligations. Conclude with `eq_ratCast (@algebraMap ℚ (Qv v) _ _ (HeightOneSpectrum.instAlgebraAdicCompletion (𝓞 ℚ) ℚ v)) _`.
+-/
 theorem local_norm_eq_of_unique_place : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal],
   (∀ w' : PlK K, w'.asIdeal.LiesOver v.asIdeal → w' = w) → ∀ ξ : K,
     Algebra.norm (Qv v) (algebraMap K (Kv K w) ξ) = ((Algebra.norm ℚ ξ : ℚ) : Qv v) := by

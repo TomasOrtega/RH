@@ -7,6 +7,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+The claim follows from `szRow_lStar`.
+-/
 theorem szRow_sizeLstar : SzRow (fun _ _ L => SizeLstar L) := szRow_lStar
 
 end GlobalTheory.EX

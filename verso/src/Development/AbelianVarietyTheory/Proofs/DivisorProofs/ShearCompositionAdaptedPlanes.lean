@@ -25,6 +25,13 @@ namespace GlobalTheory.RationalShear
 
 open GlobalTheory.MidLineParam
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d d₁ e J H' H₂ h1 h2 nn hn c`. Take `⟨hx, hx2, hy2, hy, hι⟩` from `hn (inclR (F := F) (AF F) c)`. Use `mem_ratU_of_mulVec _ fun v => ?_` and prove the remaining obligations. Take `⟨a, b, u, rfl⟩` from `h1 v`. Take `⟨a', b', u', rfl⟩` from `h2 u`.
+
+Establish `hc : cA σ (inclR (F` using `F) (AF F) c) = inclR (F := F) (AF F) (σ c) := GlobalTheory.PlaneLevi.cA_inclR σ c`. Establish `hu : mat (nn (inclR (F` using `F) (AF F) c)) *ᵥ incV F (H'.ι *ᵥ (H₂.ι *ᵥ u')) = incV F (H'.ι *ᵥ (H₂.ι *ᵥ u')) := by`. Rewrite using `[Matrix.mulVec_mulVec, ← incM_mulVec, Matrix.mulVec_mulVec, hι]`. Use `⟨a • H'.x + (a' • (H'.ι *ᵥ H₂.x + c • H'.x) + H'.ι *ᵥ (H₂.ι *ᵥ u') + b' • (H'.ι *ᵥ H₂.y)) + b • (H'.y - σ c • (H'.ι *ᵥ H₂.y)), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add H'.ι, Matrix.mulVec_add H'.ι, Matrix.mulVec_smul H'.ι, Matrix.mulVec_smul H'.ι]`.
+
+Simplify using `only [incV_add, incV_sub, incV_smul]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul]`. Rewrite using `[hx, hx2, hy2, hy, hu, hc]`.
+-/
 theorem shear_mem_ratU : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ e : ℕ)
     (J : Matrix (Fin d) (Fin d) E) (H' : Plane E d d₁) (H₂ : Plane E d₁ e),
     (∀ v : Fin d → E, ∃ (a b : E) (u : Fin d₁ → E), v = a • H'.x + H'.ι *ᵥ u + b • H'.y) →

@@ -5,6 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearAct
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightEqOfFinitePartNeBot
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC Formalism.BasicNotions GlobalTheory.DefU GlobalTheory.FrameAut Formalism.CohomologicalDescent.DepthNonnegative
 
+/- English proof (translation)
+Set `e : ∀ τ, U τ ≃ₗ[ℂ] Module.Dual ℂ (V τ)` to `fun τ => LinearEquiv.ofBijective (P τ).flip (hP τ)`. Set `Q : PiTensorProduct ℂ U ≃ₗ[ℂ] Module.Dual ℂ (PiTensorProduct ℂ V)` to `(PiTensorProduct.congr e).trans PiTensorProduct.dualDistribEquiv`. Use `⟨(LinearMap.flip Q.toLinearMap).compMultilinearMap (PiTensorProduct.tprod ℂ), fun u hu => ?_, fun v u => ?_⟩` and prove the remaining obligations. Apply `Q.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `v`. Conclude with `hu v`. Express the relevant statement in the definitionally equal form `PiTensorProduct.dualDistrib (PiTensorProduct.congr e (PiTensorProduct.tprod ℂ u)) (PiTensorProduct.tprod ℂ v) = _`. Rewrite using `[PiTensorProduct.congr_tprod, PiTensorProduct.dualDistrib_apply]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem exists_Q {ι : Type} [Fintype ι] [DecidableEq ι] {V U : ι → Type} [∀ τ, AddCommGroup (V τ)]
     [∀ τ, Module ℂ (V τ)] [∀ τ, AddCommGroup (U τ)] [∀ τ, Module ℂ (U τ)] [∀ τ, FiniteDimensional ℂ (V τ)]
     (P : ∀ τ, V τ →ₗ[ℂ] U τ →ₗ[ℂ] ℂ) (hP : ∀ τ, Function.Bijective (P τ).flip) :
@@ -24,6 +31,13 @@ private theorem exists_Q {ι : Type} [Fintype ι] [DecidableEq ι] {V U : ι →
     rw [PiTensorProduct.congr_tprod, PiTensorProduct.dualDistrib_apply]
     rfl
 
+/- English proof (translation)
+Introduce `n ι _ _ mu sh lam hl`. Use `choose P1 hb hi using fun τ => UpperTheory.exists_invariant_perfect_pairing_nablaSq_dualWeyl n (Formalism.CohomologicalDescent.LD.res n (mu τ)) (sh τ) (lam τ) (fun a => hl τ a)`. Take `⟨F, hF0, hF⟩` from `exists_Q P1 hb`. Take `⟨P, hP, -⟩` from `GlobalTheory.T.dualWeylModule_tensor_coefficient_universal ι n lam (NablaT ℂ n mu →ₗ[ℂ] ℂ) F`. Use `⟨P, fun u hu => hF0 u fun v => by rw [← hP]; exact hu _, fun g v u => ?_⟩` and prove the remaining obligations.
+
+Establish `key : (P ∘ₗ Formalism.L2.DIV.rhoK lam g).compl₂ (wtOp ℂ n mu sh g) = P`. Use `(GlobalTheory.T.dualWeylModule_tensor_coefficient_universal ι n lam (NablaT ℂ n mu →ₗ[ℂ] ℂ) F).unique (fun w => ?_) hP` and prove the remaining obligations. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `P (Formalism.L2.DIV.rhoK lam g (GlobalTheory.CoefIrred.tenMul lam w)) (wtOp ℂ n mu sh g (PiTensorProduct.tprod ℂ x)) = F w (PiTensorProduct.tprod ℂ x)`.
+
+Rewrite using `[rhoK_tenMul, hP, wtOp_apply, GlobalTheory.SemilinTransport.grp_tprod, map_smul, hF, hF]`. Simplify using `only [hi]`. Rewrite using `[Finset.prod_mul_distrib, smul_eq_mul, ← mul_assoc, ← Units.coe_prod, ← Units.val_mul, ← Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules. Conclude with `LinearMap.congr_fun (LinearMap.congr_fun key v) u`.
+-/
 theorem UpperTheory.exists_invariant_nondegenerate_pairing_weightRep_nablaT :
     ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (mu : ι → ℕ → ℕ) (sh : ι → ℤ) (lam : ι → DomWeight n),
         (∀ τ (a : Fin n), (lam τ).w a = (mu τ a : ℤ) + sh τ) →

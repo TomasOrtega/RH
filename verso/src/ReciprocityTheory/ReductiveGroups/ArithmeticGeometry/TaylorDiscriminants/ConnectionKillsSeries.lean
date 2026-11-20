@@ -107,6 +107,9 @@ def AdmissibilitySecond : Prop :=
       dotProduct (u l') ((bilinPart k (h' - h)).mulVec ((dAct k B w0).mulVec (u l)))) P = 0 →
     ∀ f : PS k 1 d, B.nabVal k h w0 m f u P = B.nabVal k h' w0 m f u P
 
+/- English proof (translation)
+Unfold `IsRQ`. Use `⟨(algebraMap ℤ ℚ).injective_int, fun y => ⟨y.num, y.den, Nat.pos_of_ne_zero y.den_nz, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_intCast]`. Conclude with `Rat.den_mul_eq_num y`.
+-/
 theorem isRQ_int : IsRQ (R := ℤ) ℚ := by
   unfold IsRQ
   refine ⟨(algebraMap ℤ ℚ).injective_int, fun y => ⟨y.num, y.den, Nat.pos_of_ne_zero y.den_nz, ?_⟩⟩
@@ -130,6 +133,9 @@ def oactZero (R : Type) [CommRing R] : OAct ℤ (fglZero R) where
 
 def fbZero : FB ℤ 0 ℤ := FB.triv (fglZero ℤ) (oactZero ℤ)
 
+/- English proof (translation)
+Simplify using `only [Hset, Set.mem_setOf_eq]`. Conclude with `⟨0, 0, Prod.ext (funext fun i => i.elim0) (funext fun i => i.elim0)⟩`.
+-/
 theorem zero_mem_Hset (h : PS ℚ 2 0) : (0 : (Fin 0 → ℚ) × (Fin 0 → ℚ)) ∈ Hset (R := ℤ) ℚ h := by
   simp only [Hset, Set.mem_setOf_eq]
   exact ⟨0, 0, Prod.ext (funext fun i => i.elim0) (funext fun i => i.elim0)⟩

@@ -23,6 +23,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FrameEval
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H Dw l Xo c p A j y₀ π X s u hj hU`. Take `⟨B, q, Y, r, hYd, hYz, hY⟩` from `GlobalTheory.T.exists_triangularFrameRing_over_testRing c.F (E →+* ℂ) (fun τ => Dw.mult τ) A`. Take `⟨uB, huB⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hS E H Dw l Xo c A.R B.R q u`. Take `⟨uB', huB', -⟩` from `GlobalTheory.T.existsUnique_frameChangeByMatrices E H Dw l Xo c B.R uB Y r fun τ => lowerTri_isUnit_det _ (hYz τ) (hYd τ)`. Establish `hux : u.x = spMap π.toRingHom ≫ y₀.x`.
+
+Take `⟨-, u₀, h₀, h₁⟩` from `hU`. Conclude with `h₁.1.trans h₀.1`. Establish `hx' : uB'.x = spMap (q.comp π).toRingHom ≫ y₀.x`. Rewrite using `[huB'.1, huB.1, hux, spMap_algHom_comp, Category.assoc]`. Take `⟨q', ⟨-, hq'⟩, -⟩` from `GlobalTheory.T.universalFrame_classifies_framedPoints hS E H Dw l Xo c p.R A.R y₀ π X s u hU B.R uB' (q.comp π) hx'`.
+
+Use `⟨B, uB, uB', fun k => match k with` and prove the remaining obligations. Consider the case `none => r`. Consider the case `some ⟨τ, i⟩ => (hYd τ i).unit, q, q', huB, hq',`. Use the proof step `(frBor_iff_frChg uB uB' _).2 ⟨Y, hYz, fun τ i => (hYd τ i).unit_spec.symm, huB'⟩, ?_⟩`. Introduce `T _ _ a a' z z' t hz hz' hb`.
+
+Take `⟨g, hgz, hgd, hgc⟩` from `(frBor_iff_frChg z z' t).1 hb`. Take `⟨b, ⟨hb1, hb2, hb3⟩, -⟩` from `hY T a g (t none) (fun τ i => by rw [hgd]; exact Units.isUnit _) hgz`. Establish `h1 : FrMap b uB z` using `frMap_cancel (Xo := Xo) (c := c) _ _ _ q b u uB z huB (by rw [hb1]; exact hz)`. Establish `h2 : FrMap b uB' z'`. Use `(GlobalTheory.T.frameChange_comm_baseChange E H Dw l Xo c B.R T b uB uB' z z' Y r huB' h1).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hb3, funext hb2]`. Conclude with `hgc`. Establish `h3 : FrMap (b.comp q') u z'` using `frMap_trans (Xo := Xo) (c := c) _ _ _ q' b u uB' z' hq' h2`. Use `⟨b, hb1, GlobalTheory.T.universalFrame_classifies_unique_openChart hS E H Dw l Xo c p.R A.R j y₀ π X s u hj hU T _ _ z' h3 hz', ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | ⟨τ, i⟩)`.
+
+Conclude with `hb3`. Use `show b (Y τ i i) = _`. Rewrite using `[← hgd, ← hb2 τ]`. Both sides reduce to the same expression.
+-/
 theorem univFrame_borelPairs : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p A : TRing c.F) (j : Sp p.R ⟶ Xo.XF c) (y₀ : FrPt Xo c p.R) (π : p.R →ₐ[c.F] A.R) (X : (∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) A.R)) (s : (A.R)ˣ) (u : FrPt Xo c A.R), OpenChart j y₀ → UnivFrame y₀ π X s u → ∃ (B : TRing c.F) (uB uB' : FrPt Xo c B.R) (tB : Ix Dw → (B.R)ˣ) (q q' : A.R →ₐ[c.F] B.R), FrMap q u uB ∧ FrMap q' u uB' ∧ FrBor tB uB uB' ∧ ∀ (T : Type) [CommRing T] [Algebra c.F T] (a a' : A.R →ₐ[c.F] T) (z z' : FrPt Xo c T) (t : Ix Dw → Tˣ), FrMap a u z → FrMap a' u z' → FrBor t z z' → ∃ b : B.R →ₐ[c.F] T, b.comp q = a ∧ b.comp q' = a' ∧ ∀ i, b (tB i : B.R) = (t i : T) := by
   intro hS E _ _ _ H Dw l Xo c p A j y₀ π X s u hj hU
   obtain ⟨B, q, Y, r, hYd, hYz, hY⟩ := GlobalTheory.T.exists_triangularFrameRing_over_testRing c.F (E →+* ℂ) (fun τ => Dw.mult τ) A
@@ -62,12 +75,20 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use `⟨pullback.lift w.x (spMap (algebraMap c.F S)) ?_, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩` and prove the remaining obligations. Rewrite using `[w.x_over, spMap_comp_ring]`. Both sides reduce to the same expression.
+-/
 theorem ChartCover.exists_lift {S : Type} [CommRing S] [Algebra c.F S] (w : FrPt Xo c S) :
     ∃ xF : Sp S ⟶ Xo.XF c, xF ≫ pullback.fst _ _ = w.x ∧ xF ≫ pullback.snd _ _ = spMap (algebraMap c.F S) := by
   refine ⟨pullback.lift w.x (spMap (algebraMap c.F S)) ?_, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
   rw [w.x_over, spMap_comp_ring]
   rfl
 
+/- English proof (translation)
+Take `⟨g, hg, hT⟩` from `openChart_factor_near_prime E H Dw l Xo c R j y₀ hj S xF h2 p hp`. Use `⟨g, hg, fun T _ _ lam hl => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `hT T lam hl`. Take `⟨z, hz⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hS E H Dw l Xo c S T lam w`. Establish `hx : z.x = spMap ψ.toRingHom ≫ y₀.x`.
+
+Rewrite using `[hz.1, ← h1, ← hj.2.1, ← Category.assoc, hψ, Category.assoc]`. Take `⟨a, ⟨_, ha⟩, _⟩` from `GlobalTheory.T.universalFrame_classifies_framedPoints hS E H Dw l Xo c R A y₀ π X s u hu T z ψ hx`. Conclude with `⟨z, a, hz, ha⟩`.
+-/
 theorem ChartCover.near (hS : Out.SecBaseChangeSt) {R A : Type} [CommRing R] [Algebra c.F R] [CommRing A]
     [Algebra c.F A] {j : Sp R ⟶ Xo.XF c} {y₀ : FrPt Xo c R} {π : R →ₐ[c.F] A}
     {X : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) A} {s : Aˣ} {u : FrPt Xo c A}
@@ -85,6 +106,15 @@ theorem ChartCover.near (hS : Out.SecBaseChangeSt) {R A : Type} [CommRing R] [Al
   obtain ⟨a, ⟨_, ha⟩, _⟩ := GlobalTheory.T.universalFrame_classifies_framedPoints hS E H Dw l Xo c R A y₀ π X s u hu T z ψ hx
   exact ⟨z, a, hz, ha⟩
 
+/- English proof (translation)
+Take `⟨g, hg, hT⟩` from `ChartCover.near hS hj hu w xF h1 h2 (⟨m, hm⟩ : PrimeSpectrum S) hp`. Take `⟨z, a, hz, ha⟩` from `hT (Localization.AtPrime m) (locM c.F m) (IsLocalization.map_units (Localization.AtPrime m) (⟨g, hg⟩ : m.primeCompl))`. Use `⟨a, ⟨z, hz, ha⟩, ?_⟩` and prove the remaining obligations. Introduce `p φ y hy`. Take `⟨yF, k1, k2⟩` from `ChartCover.exists_lift y`.
+
+Establish `e : spMap φ.toRingHom ≫ yF = xF`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, k1, h1, hy.1]`. Rewrite using `[Category.assoc, k2, h2, spMap_comp_ring]`. Use `congr 1`.
+
+Conclude with `φ.comp_algebraMap`. Establish `hq : yF (spMap φ.toRingHom (⟨m, hm⟩ : PrimeSpectrum S)) ∈ Set.range j`. Rewrite `hp` using `[← e]`. Conclude with `hp`. Take `⟨g', hg', hT'⟩` from `ChartCover.near hS hj hu y yF k1 k2 _ hq`.
+
+Take `⟨p', lam, hl, hlam⟩` from `GlobalTheory.testRing_localizationAway c.F p g'`. Take `⟨z', a', hz', ha'⟩` from `hT' p'.R lam hl`. Conclude with `⟨g', hg', p', lam, z', a', hlam, hz', ha'⟩`.
+-/
 theorem ChartCover.cls_loc (hS : Out.SecBaseChangeSt) {R : Type} [CommRing R] [Algebra c.F R] {A : TRing c.F}
     {j : Sp R ⟶ Xo.XF c} {y₀ : FrPt Xo c R} {π : R →ₐ[c.F] A.R}
     {X : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) A.R} {s : (A.R)ˣ} {u : FrPt Xo c A.R}
@@ -117,6 +147,11 @@ theorem ChartCover.cls_loc (hS : Out.SecBaseChangeSt) {R : Type} [CommRing R] [A
 
 end
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H Dw l Xo c S _ _ w w' hw m hm`. Take `⟨xF, h1, h2⟩` from `ChartCover.exists_lift w`. Take `⟨p, j, y₀, hj, hp⟩` from `GlobalTheory.T.exists_openChart_framedPoint_testRing hS E H Dw l Xo c (xF (⟨m, hm.isPrime⟩ : PrimeSpectrum S))`. Take `⟨A, π, X, s, u, hu⟩` from `GlobalTheory.T.exists_universalFrame_testRing hS E H Dw l Xo c p y₀`. Take `⟨cw, hc, hl⟩` from `ChartCover.cls_loc hS hj hu w xF h1 h2 m hp`.
+
+Take `⟨cw', hc', hl'⟩` from `ChartCover.cls_loc hS hj hu w' xF (h1.trans hw.symm) h2 m hp`. Conclude with `⟨A, u, cw, cw', GlobalTheory.T.universalFrame_classifies_unique_openChart hS E H Dw l Xo c p.R A.R j y₀ π X s u hj hu, univFrame_borelPairs hS E H Dw l Xo c p A j y₀ π X s u hj hu, hc, hl, hc', hl'⟩`.
+-/
 theorem chartCoverF_of_secBaseChange : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ChartCoverF Xo c := by
   intro hS E _ _ _ H Dw l Xo c S _ _ w w' hw m hm
   obtain ⟨xF, h1, h2⟩ := ChartCover.exists_lift w
@@ -127,6 +162,11 @@ theorem chartCoverF_of_secBaseChange : Out.SecBaseChangeSt → ∀ (E : Type) [F
   exact ⟨A, u, cw, cw', GlobalTheory.T.universalFrame_classifies_unique_openChart hS E H Dw l Xo c p.R A.R j y₀ π X s u hj hu,
     univFrame_borelPairs hS E H Dw l Xo c p A j y₀ π X s u hj hu, hc, hl, hc', hl'⟩
 
+/- English proof (translation)
+Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Establish `hWD : EvalWD (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) := evalWD_fr (frChartF_of (chartCoverF_of_secBaseChange hS E H Dw l Xo c))`. Establish `hT1 : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y₁ := GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l Xo c _ y₁`. Establish `hT2 : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y₂ := by`. Take `⟨p, ψ, y', hy'⟩` from `hT1`.
+
+Conclude with `⟨p, φ.comp ψ, y', frMap_trans (Xo := Xo) (c := c) _ _ _ ψ φ y' y₁ y₂ hy' hm⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos hT2, dif_pos hT1]`. Conclude with `hWD f hf K₂ _ _ _ _ _ _ y₂ hT2.choose_spec.choose_spec.choose_spec (frMap_trans (Xo := Xo) (c := c) _ _ _ _ φ _ y₁ y₂ hT1.choose_spec.choose_spec.choose_spec hm)`.
+-/
 theorem evR_frMap_of_isReduced (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (f : Rul Xo c)
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
@@ -145,6 +185,9 @@ theorem evR_frMap_of_isReduced (E : Type) [Field E] [NumberField E] [IsCMField E
   exact hWD f hf K₂ _ _ _ _ _ _ y₂ hT2.choose_spec.choose_spec.choose_spec
     (frMap_trans (Xo := Xo) (c := c) _ _ _ _ φ _ y₁ y₂ hT1.choose_spec.choose_spec.choose_spec hm)
 
+/- English proof (translation)
+Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Establish `hall : AllTest Xo c` using `GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l Xo c`. Conclude with `wtAll_of_borChart (borChartF_of_cover (chartCoverF_of_secBaseChange hS E H Dw l Xo c)) (Formalism.L2.Pj.ex Dw a n) hf.1 hf.2 S t y y' (hall S y) (hall S y') hb`.
+-/
 theorem evR_frBor (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] [_root_.IsReduced S]
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c) (hf : f ∈ sec Xo c a n) (t : Formalism.L2.Pj.Ix Dw → Sˣ)

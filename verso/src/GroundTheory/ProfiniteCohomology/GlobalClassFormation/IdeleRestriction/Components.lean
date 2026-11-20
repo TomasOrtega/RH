@@ -19,6 +19,9 @@ variable {v : HeightOneSpectrum (𝓞 K.1)} (ι : ℚ̄ →ₐ[K.1] AlgebraicClo
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `h : finiteComponent (placeOfEmbedding ι F) n ≫ localInfl ι F n = levelInfl K F n ≫ idelesLocalRes ι n`. Rewrite using `[finiteComponent, localInfl, levelInfl, idelesLocalRes, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (MonoidHom.ext fun σ => coe_localDecompHom_eq_restrictHom ι F σ) (fun u : Additive (IdeleGroup F.1) => congrArg Additive.ofMul (idelesProj_of ι F u.toMul).symm) n`. Conclude with `congrArg (fun φ => φ.hom y) h`.
+-/
 theorem localInfl_finiteComponent_eq_idelesLocalRes (n : ℕ) (y : cohomology (ideleRep K.1 F.1) n) :
     (localInfl ι F n).hom ((finiteComponent (placeOfEmbedding ι F) n).hom y) =
       (idelesLocalRes ι n).hom ((levelInfl K F n).hom y) := by
@@ -39,6 +42,9 @@ variable {v : InfinitePlace K.1} (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Comp
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `h : infiniteComponent (infPlaceOfEmbedding ι F) n ≫ infLocalInfl ι F n = levelInfl K F n ≫ infIdelesLocalRes ι n`. Rewrite using `[infiniteComponent, infLocalInfl, levelInfl, infIdelesLocalRes, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (MonoidHom.ext fun σ => coe_infLocalDecompHom_eq_restrictHom ι F σ) (fun u : Additive (IdeleGroup F.1) => congrArg Additive.ofMul (infIdelesProj_of ι F u.toMul).symm) n`. Conclude with `congrArg (fun φ => φ.hom y) h`.
+-/
 theorem infLocalInfl_infiniteComponent_eq_infIdelesLocalRes (n : ℕ) (y : cohomology (ideleRep K.1 F.1) n) :
     (infLocalInfl ι F n).hom ((infiniteComponent (infPlaceOfEmbedding ι F) n).hom y) =
       (infIdelesLocalRes ι n).hom ((levelInfl K F n).hom y) := by
@@ -60,6 +66,9 @@ variable (ι : LocalEmbeddings K) {n : ℕ} (hn : 1 ≤ n)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨p, z, rfl⟩` from `exists_levelInfl_eq n y`. Rewrite using `[idelesLimitCohomologyEquiv_levelInfl]`. Express the relevant statement in the definitionally equal form `(localInfl (ι.fin v) p.1 n).hom (ι.places.shapiro n (.inr v) p ((cohomologyMap (placeProj (.inr v)) n).hom z)) = _`. Rewrite using `[CompatiblePlaces.shapiro_placeProj_inr]`. Conclude with `localInfl_finiteComponent_eq_idelesLocalRes (ι.fin v) p.1 n z`.
+-/
 theorem idelesLimitCohomologyEquiv_apply_inr (v : HeightOneSpectrum (𝓞 K.1)) (y : cohomology (limitRep K) n) :
     idelesLimitCohomologyEquiv ι hn y (.inr v) = (idelesLocalRes (ι.fin v) n).hom y := by
   obtain ⟨p, z, rfl⟩ := exists_levelInfl_eq n y
@@ -71,6 +80,9 @@ theorem idelesLimitCohomologyEquiv_apply_inr (v : HeightOneSpectrum (𝓞 K.1)) 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨p, z, rfl⟩` from `exists_levelInfl_eq n y`. Rewrite using `[idelesLimitCohomologyEquiv_levelInfl]`. Express the relevant statement in the definitionally equal form `(infLocalInfl (ι.inf v) p.1 n).hom (ι.places.shapiro n (.inl v) p ((cohomologyMap (placeProj (.inl v)) n).hom z)) = _`. Rewrite using `[CompatiblePlaces.shapiro_placeProj_inl]`. Conclude with `infLocalInfl_infiniteComponent_eq_infIdelesLocalRes (ι.inf v) p.1 n z`.
+-/
 theorem idelesLimitCohomologyEquiv_apply_inl (v : InfinitePlace K.1) (y : cohomology (limitRep K) n) :
     idelesLimitCohomologyEquiv ι hn y (.inl v) = (infIdelesLocalRes (ι.inf v) n).hom y := by
   obtain ⟨p, z, rfl⟩ := exists_levelInfl_eq n y

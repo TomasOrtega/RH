@@ -4,6 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing
 
+/- English proof (translation)
+Establish `hJI : Ideal.span (Set.range (fun a => ∑ b, M a b * v b)) ≤ I`. Rewrite using `[hI]`. Conclude with `Ideal.span_mono Set.subset_union_left`. Take `⟨Q, hQ, hQP⟩` from `Ideal.exists_minimalPrimes_le (hJI.trans I.le_radical)`. Establish `hQprime : Q.IsPrime` using `hQ.1.1`.
+
+Establish `key : Matrix.mulVec (Matrix.adjugate (Matrix.of M)) (Matrix.mulVec (Matrix.of M) v) 0 = Matrix.det (Matrix.of M) * v 0`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Simplify using the standard rewrite rules. Establish `hdv : Matrix.det (Matrix.of M) * v 0 ∈ Q`. Rewrite using `[← key]`.
+
+Apply `hQ.1.2` to reduce the goal to its premises. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Use `Ideal.sum_mem _ fun b _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨b, rfl⟩)` and prove the remaining obligations. Establish `hdet : Matrix.det (Matrix.of M) ∈ Q`. Break down `hQprime.mem_or_mem hdv with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd (hQP h) hv`. Establish `hIQ : I ≤ Q`. Rewrite using `[hI, Ideal.span_le]`. Introduce and unpack `x (⟨a, rfl⟩ | hx)`.
+
+Conclude with `hQ.1.2 (Ideal.subset_span ⟨a, rfl⟩)`. Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `hdet`. Establish `hPQ : I.radical = Q` using `le_antisymm (by rw [← hQprime.radical]; exact Ideal.radical_mono hIQ) hQP`. Rewrite using `[hPQ]`.
+
+Establish `hQ' : Q ∈ (Ideal.span ((Finset.univ.image fun a => ∑ b, M a b * v b : Finset A) : Set A)).minimalPrimes`. Simplify using `using hQ`. Use `(Ideal.height_le_card_of_mem_minimalPrimes_span_finset hQ').trans ?_` and prove the remaining obligations. Conclude with `Finset.card_image_le.trans (by simp)` after adjusting the coercions.
+-/
 private theorem UpperTheory.V.CA.detps_height {A : Type} [CommRing A] [IsNoetherianRing A] (n : ℕ)
     (M : Fin (n + 1) → Fin (n + 1) → A) (v : Fin (n + 1) → A) (I : Ideal A)
     (hI : I = Ideal.span (Set.range (fun a => ∑ b, M a b * v b) ∪ {Matrix.det (Matrix.of M)}))
@@ -42,6 +55,21 @@ private theorem UpperTheory.V.CA.detps_height {A : Type} [CommRing A] [IsNoether
   refine (Ideal.height_le_card_of_mem_minimalPrimes_span_finset hQ').trans ?_
   exact_mod_cast Finset.card_image_le.trans (by simp)
 
+/- English proof (translation)
+Introduce `R _ _ _ n A I`. Establish `hd` using `UpperTheory.V.CA.g_detrad R n`. Simplify using `only at hd`. Take `⟨hP, hX0, -, hhom⟩` from `hd`. Use `set Ip : Ideal (MvPolynomial ((Fin (n + 1) × Fin (n + 1)) ⊕ Fin (n + 1)) R) := Ideal.span (Set.range (fun a : Fin (n + 1) => ∑ b : Fin (n + 1), MvPolynomial.X (Sum.inl (a, b)) * MvPolynomial.X (Sum.inr b)) ∪ {Matrix.det (Matrix.of fun a b : Fin (n + 1) => MvPolynomial.X (Sum.inl …`.
+
+Use `set φ := (MvPolynomial.coeToMvPowerSeries.ringHom : MvPolynomial ((Fin (n + 1) × Fin (n + 1)) ⊕ Fin (n + 1)) R →+* A) with hφ`. Establish `hmap : Ideal.map φ Ip = I`. Rewrite using `[hIp, Ideal.map_span, Set.image_union, Set.image_singleton, ← Set.range_comp]`. Use `congr 3`. Use function extensionality and compare the values at `a`.
+
+Simplify using `[φ, map_sum]`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[φ]`.
+
+Take `⟨hmp, hcomap⟩` from `UpperTheory.V.CA.g_homprime R _ Ip.radical hP hhom`. Establish `hrad : I.radical = Ideal.map φ Ip.radical`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hmp.radical]`. Apply `Ideal.radical_mono` to reduce the goal to its premises.
+
+Rewrite using `[← hmap]`. Conclude with `Ideal.map_mono Ip.le_radical`. Rewrite using `[← hmap]`. Conclude with `Ideal.map_radical_le φ`. Establish `hIprime : I.radical.IsPrime`.
+
+Rewrite using `[hrad]`. Conclude with `hmp`. Use `⟨hIprime, ?_⟩` and prove the remaining obligations. Use `UpperTheory.V.CA.detps_height n (fun a b => (MvPowerSeries.X (Sum.inl (a, b)) : A)) (fun b => (MvPowerSeries.X (Sum.inr b) : A)) I rfl hIprime ?_` and prove the remaining obligations. Rewrite using `[hrad]`.
+
+Introduce `h`. Apply `hX0` to reduce the goal to its premises. Rewrite using `[← hcomap, Ideal.mem_comap]`. Simplify `h` using `[φ]`.
+-/
 theorem UpperTheory.V.CA.g_detps :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (n : ℕ),
       let A := MvPowerSeries ((Fin (n + 1) × Fin (n + 1)) ⊕ Fin (n + 1)) R

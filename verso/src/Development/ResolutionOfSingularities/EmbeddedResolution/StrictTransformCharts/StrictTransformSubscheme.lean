@@ -24,12 +24,18 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Introduce `a`. Use `⟨CommRingCat.Hom.hom e.hom a, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 private theorem surjective_hom_iso_inv {A B : CommRingCat.{u}} (e : A ≅ B) :
     Function.Surjective (CommRingCat.Hom.hom e.inv) := by
   intro a
   refine ⟨CommRingCat.Hom.hom e.hom a, ?_⟩
   simp
 
+/- English proof (translation)
+Rewrite using `[Scheme.IdealSheafData.subschemeι_app, CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.coe_comp]`. Conclude with `(surjective_hom_iso_inv (I.subschemeObjIso U)).comp Ideal.Quotient.mk_surjective`.
+-/
 private theorem surjective_subschemeι_app {Y : Scheme.{u}} (I : Y.IdealSheafData)
     (U : Y.affineOpens) :
     Function.Surjective (CommRingCat.Hom.hom (I.subschemeι.app (U : Y.Opens))) := by
@@ -37,6 +43,13 @@ private theorem surjective_subschemeι_app {Y : Scheme.{u}} (I : Y.IdealSheafDat
     RingHom.coe_comp]
   exact (surjective_hom_iso_inv (I.subschemeObjIso U)).comp Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+Use `isLocallyNoetherian_of_affine_cover (S := fun U : Y.affineOpens => (⟨I.subschemeι ⁻¹ᵁ (U : Y.Opens), isAffineOpen_preimage_subschemeι I U.2⟩ : I.subscheme.affineOpens)) ?_ ?_` and prove the remaining obligations. Use extensionality with `x`. Use `⟨fun _ => trivial, fun _ => ?_⟩` and prove the remaining obligations. Establish `hx : I.subschemeι.base x ∈ (⨆ V : Y.affineOpens, (V : Y.Opens))`. Rewrite using `[iSup_affineOpens_eq_top Y]`.
+
+Discharge the goal by the elementary cases of `trivial`. Take `⟨V, hV⟩` from `Opens.mem_iSup.mp hx`. Conclude with `Opens.mem_iSup.mpr ⟨V, hV⟩`. Introduce `U`. Use `IsLocallyNoetherian.component_noetherian U` as an intermediate fact.
+
+Conclude with `isNoetherianRing_of_surjective _ _ _ (surjective_subschemeι_app I U)`.
+-/
 theorem isLocallyNoetherian_subscheme {Y : Scheme.{u}} [IsLocallyNoetherian Y]
     (I : Y.IdealSheafData) : IsLocallyNoetherian I.subscheme := by
   refine isLocallyNoetherian_of_affine_cover
@@ -54,10 +67,16 @@ theorem isLocallyNoetherian_subscheme {Y : Scheme.{u}} [IsLocallyNoetherian Y]
     have := IsLocallyNoetherian.component_noetherian U
     exact isNoetherianRing_of_surjective _ _ _ (surjective_subschemeι_app I U)
 
+/- English proof (translation)
+The claim follows from `Scheme.IdealSheafData.notMem_support_of_comap_ι_eq_top D h hx`.
+-/
 theorem notMem_support_of_restrictIdeal_eq_top {Y : Scheme.{u}} (D : Y.IdealSheafData)
     (U : Y.Opens) (x : Y) (hx : x ∈ U) (h : restrictIdeal D U = ⊤) : x ∉ D.support :=
   Scheme.IdealSheafData.notMem_support_of_comap_ι_eq_top D h hx
 
+/- English proof (translation)
+Establish `key : ∀ K : Ideal R, Ideal.map (CommRingCat.Hom.hom g) (Ideal.map (CommRingCat.Hom.hom f) K) = K`. Introduce `K`. Rewrite using `[Ideal.map_map, ← CommRingCat.hom_comp, hfg, CommRingCat.hom_id, Ideal.map_id]`. Rewrite using `[← key I, hIJ, key J]`.
+-/
 private theorem ideal_eq_of_map_eq_of_comp_eq_id {R S : CommRingCat.{u}} (f : R ⟶ S) (g : S ⟶ R)
     (hfg : f ≫ g = 𝟙 R) {I J : Ideal R}
     (hIJ : Ideal.map (CommRingCat.Hom.hom f) I = Ideal.map (CommRingCat.Hom.hom f) J) : I = J := by
@@ -67,17 +86,30 @@ private theorem ideal_eq_of_map_eq_of_comp_eq_id {R S : CommRingCat.{u}} (f : R 
     rw [Ideal.map_map, ← CommRingCat.hom_comp, hfg, CommRingCat.hom_id, Ideal.map_id]
   rw [← key I, hIJ, key J]
 
+/- English proof (translation)
+Establish `hf : f = 𝟙 P` using `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Rewrite using `[hf, CategoryTheory.Functor.map_id]`.
+-/
 private theorem presheaf_map_eq_id {Y : Scheme.{u}} {P : (Y.Opens)ᵒᵖ} (f : P ⟶ P) :
     Y.presheaf.map f = 𝟙 (Y.presheaf.obj P) := by
   have hf : f = 𝟙 P := Quiver.Hom.unop_inj (Subsingleton.elim _ _)
   rw [hf, CategoryTheory.Functor.map_id]
 
+/- English proof (translation)
+Rewrite using `[← Y.presheaf.map_comp, ← Y.presheaf.map_comp]`. Conclude with `presheaf_map_eq_id _`.
+-/
 private theorem presheaf_map_comp_comp_eq_id {Y : Scheme.{u}} {P Q R : (Y.Opens)ᵒᵖ}
     (f : P ⟶ Q) (g : Q ⟶ R) (h : R ⟶ P) :
     (Y.presheaf.map f ≫ Y.presheaf.map g) ≫ Y.presheaf.map h = 𝟙 (Y.presheaf.obj P) := by
   rw [← Y.presheaf.map_comp, ← Y.presheaf.map_comp]
   exact presheaf_map_eq_id _
 
+/- English proof (translation)
+Establish `: IsAffine (Scheme.Opens.toScheme (V : Y.Opens))` using `V.2`. Establish `e : (⊤ : (Scheme.Opens.toScheme (V : Y.Opens)).Opens) ≤ Scheme.Opens.ι (V : Y.Opens) ⁻¹ᵁ (V : Y.Opens)`. Introduce `x _`. Conclude with `x.2`. Establish `h' : A.comap (Scheme.Opens.ι (V : Y.Opens)) = B.comap (Scheme.Opens.ι (V : Y.Opens))`.
+
+Simplify `h` using `only [restrictIdeal_eq_comap_ι]`. Establish `hA` using `AlgebraicGeometry.Scheme.IdealSheafData.comap_ideal_eq_map_appLE A (Scheme.Opens.ι (V : Y.Opens)) V ⟨⊤, isAffineOpen_top _⟩ e`. Establish `hB` using `AlgebraicGeometry.Scheme.IdealSheafData.comap_ideal_eq_map_appLE B (Scheme.Opens.ι (V : Y.Opens)) V ⟨⊤, isAffineOpen_top _⟩ e`. Rewrite `hA` using `[h']`. Use `(ideal_eq_of_map_eq_of_comp_eq_id (Scheme.Hom.appLE (Scheme.Opens.ι (V : Y.Opens)) (V : Y.Opens) ⊤ e) (Scheme.Opens.topIso (V : Y.Opens)).hom ?_ (hB.symm.trans hA)).symm` and prove the remaining obligations.
+
+Simplify using `[AlgebraicGeometry.Scheme.Hom.appLE]`. Conclude with `presheaf_map_comp_comp_eq_id _ _ _`.
+-/
 theorem ideal_eq_of_restrictIdeal_eq {Y : Scheme.{u}} (A B : Y.IdealSheafData)
     (V : Y.affineOpens) (h : restrictIdeal A (V : Y.Opens) = restrictIdeal B (V : Y.Opens)) :
     A.ideal V = B.ideal V := by
@@ -114,9 +146,19 @@ private def colonSpanSingleton {R : Type*} [CommRing R] (J : Ideal R) (x : R) : 
     rw [smul_eq_mul, mul_assoc]
     exact J.mul_mem_left c ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_colonSpanSingleton {R : Type*} [CommRing R] (J : Ideal R) (x r : R) :
     r ∈ colonSpanSingleton J x ↔ r * x ∈ J := Iff.rfl
 
+/- English proof (translation)
+Rewrite `hx` using `[IsLocalization.mem_map_algebraMap_iff (Submonoid.powers f) S]`. Take `⟨⟨a, m⟩, hxa⟩` from `hx`. Rewrite `hxa` using `[← map_mul]`. Take `⟨c, hcx⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers f) S).mp hxa`. Take `⟨q, hq⟩` from `m.2`.
+
+Take `⟨p, hp⟩` from `c.2`. Use `⟨p + q, ?_⟩` and prove the remaining obligations. Establish `key : f ^ (p + q) * x = (c : R) * (x * (m : R))`. Rewrite using `[← hp, ← hq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[key, hcx]`. Conclude with `J.mul_mem_left _ a.2`.
+-/
 private theorem exists_pow_mul_mem_of_algebraMap_mem_map_of_isLocalizationAway {R S : Type*} [CommRing R] [CommRing S]
     [Algebra R S] (f : R) [IsLocalization.Away f S] (J : Ideal R) (x : R)
     (hx : algebraMap R S x ∈ Ideal.map (algebraMap R S) J) : ∃ n : ℕ, f ^ n * x ∈ J := by
@@ -132,6 +174,21 @@ private theorem exists_pow_mul_mem_of_algebraMap_mem_map_of_isLocalizationAway {
   rw [key, hcx]
   exact J.mul_mem_left _ a.2
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hV : IsAffineOpen (V : Y.Opens)` using `V.2`. Take `⟨T, hT⟩ : ∃ T : Ideal ↑(Y.presheaf.obj (Opposite.op (V : Y.Opens))), ∀ r, r ∈ T ↔ r * x ∈ B.ideal V` from `⟨colonSpanSingleton (B.ideal V) x, mem_colonSpanSingleton (B.ideal V) x⟩`. Establish `hcover : (V : Y.Opens) ≤ ⨆ g : (T : Set ↑(Y.presheaf.obj (Opposite.op (V : Y.Opens)))), Y.basicOpen (g : ↑(Y.presheaf.obj (Opposite.op (V : Y.Opens))))`. Introduce `y hy`.
+
+Establish `hy' : y ∈ (⨆ i, U i)` using `by rw [hU]; trivial`. Take `⟨i, hyi⟩` from `Opens.mem_iSup.mp hy'`. Take `⟨f, hfle, hyf⟩` from `hV.exists_basicOpen_le (⟨y, hyi⟩ : ↥(U i)) hy`. Establish `hAB : A.ideal (Y.affineBasicOpen f) = B.ideal (Y.affineBasicOpen f)` using `ideal_eq_of_restrictIdeal_eq A B (Y.affineBasicOpen f) (restrictIdeal_eq_of_le_of_eq hfle (h i))`. Use `hV.isLocalization_basicOpen f` as an intermediate fact.
+
+Establish `halg : algebraMap ↑(Y.presheaf.obj (Opposite.op (V : Y.Opens))) ↑(Y.presheaf.obj (Opposite.op (Y.basicOpen f))) = (Y.presheaf.map (CategoryTheory.homOfLE (Y.basicOpen_le f)).op).hom` using `rfl`. Establish `hmem : algebraMap ↑(Y.presheaf.obj (Opposite.op (V : Y.Opens))) ↑(Y.presheaf.obj (Opposite.op (Y.basicOpen f))) x ∈ Ideal.map (algebraMap ↑(Y.presheaf.obj (Opposite.op (V : Y.Opens))) ↑(Y.presheaf.obj (Opposite.op (Y.basicOpen f)))) (B.ideal V)`. Rewrite using `[halg, B.map_ideal_basicOpen V f, ← hAB, ← A.map_ideal_basicOpen V f]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Take `⟨n, hn⟩` from `exists_pow_mul_mem_of_algebraMap_mem_map_of_isLocalizationAway f (B.ideal V) x hmem`.
+
+Establish `hgT : f ^ (n + 1) ∈ T`. Establish `hmul : f ^ (n + 1) * x ∈ B.ideal V`. Establish `hfx : f ^ (n + 1) * x = f * (f ^ n * x)` using `by ring`. Rewrite using `[hfx]`. Conclude with `Ideal.mul_mem_left _ _ hn`.
+
+Conclude with `(hT _).mpr hmul`. Establish `hyg : y ∈ Y.basicOpen (f ^ (n + 1))`. Rewrite using `[AlgebraicGeometry.Scheme.basicOpen_pow]`. Conclude with `hyf`. Conclude with `Nat.succ_pos n`.
+
+Conclude with `Opens.mem_iSup.mpr ⟨⟨f ^ (n + 1), hgT⟩, hyg⟩`. Establish `hspan : Ideal.span (T : Set ↑(Y.presheaf.obj (Opposite.op (V : Y.Opens)))) = ⊤` using `hV.self_le_iSup_basicOpen_iff.mp hcover`. Establish `hTtop : T = ⊤`. Rewrite using `[← Ideal.span_eq T, hspan]`. Establish `h1 : (1 : ↑(Y.presheaf.obj (Opposite.op (V : Y.Opens)))) ∈ T`.
+
+Rewrite using `[hTtop]`. Conclude with `Submodule.mem_top`. Establish `h2` using `(hT 1).mp h1`. Rewrite `h2` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 private theorem ideal_le_of_restrictIdeal_eq_of_iSup_eq_top {Y : Scheme.{u}} {ι : Type*}
     (A B : Y.IdealSheafData) (U : ι → Y.Opens) (hU : (⨆ i, U i) = ⊤)
     (h : ∀ i, restrictIdeal A (U i) = restrictIdeal B (U i))
@@ -183,6 +240,9 @@ private theorem ideal_le_of_restrictIdeal_eq_of_iSup_eq_top {Y : Scheme.{u}} {ι
   have h2 := (hT 1).mp h1
   rwa [one_mul] at h2
 
+/- English proof (translation)
+The claim follows from `AlgebraicGeometry.Scheme.IdealSheafData.ext (funext fun V => le_antisymm (ideal_le_of_restrictIdeal_eq_of_iSup_eq_top A B U hU h V) (ideal_le_of_restrictIdeal_eq_of_iSup_eq_top B A U hU (fun i => (h i).symm) V))`.
+-/
 theorem eq_of_restrictIdeal_eq_of_iSup_eq_top {Y : Scheme.{u}} {ι : Type*}
     (A B : Y.IdealSheafData) (U : ι → Y.Opens) (hU : (⨆ i, U i) = ⊤)
     (h : ∀ i, restrictIdeal A (U i) = restrictIdeal B (U i)) : A = B :=
@@ -191,6 +251,9 @@ theorem eq_of_restrictIdeal_eq_of_iSup_eq_top {Y : Scheme.{u}} {ι : Type*}
       le_antisymm (ideal_le_of_restrictIdeal_eq_of_iSup_eq_top A B U hU h V)
         (ideal_le_of_restrictIdeal_eq_of_iSup_eq_top B A U hU (fun i => (h i).symm) V))
 
+/- English proof (translation)
+Use `choose U hxU hAB using h`. Use `eq_of_restrictIdeal_eq_of_iSup_eq_top A B U ?_ hAB` and prove the remaining obligations. Use extensionality with `x`. Use `⟨fun _ => trivial, fun _ => ?_⟩` and prove the remaining obligations. Conclude with `Opens.mem_iSup.mpr ⟨x, hxU x⟩`.
+-/
 theorem eq_of_locally_restrictIdeal_eq {Y : Scheme.{u}} (A B : Y.IdealSheafData)
     (h : ∀ x : Y, ∃ U : Y.Opens, x ∈ U ∧ restrictIdeal A U = restrictIdeal B U) : A = B := by
   choose U hxU hAB using h
@@ -199,6 +262,9 @@ theorem eq_of_locally_restrictIdeal_eq {Y : Scheme.{u}} (A B : Y.IdealSheafData)
   refine ⟨fun _ => trivial, fun _ => ?_⟩
   exact Opens.mem_iSup.mpr ⟨x, hxU x⟩
 
+/- English proof (translation)
+Establish `happ : (CommRingCat.Hom.hom (I.subschemeι.app (U : Y.Opens))) t = 0`. Rewrite using `[Scheme.IdealSheafData.subschemeι_app, CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, Ideal.Quotient.eq_zero_iff_mem.mpr ht, map_zero]`. Establish `hcomp : I.subschemeι.appLE (U : Y.Opens) V e = I.subschemeι.app (U : Y.Opens) ≫ I.subscheme.presheaf.map (homOfLE e).op` using `rfl`. Rewrite using `[hcomp, CommRingCat.hom_comp, RingHom.comp_apply, happ, map_zero]`.
+-/
 private theorem appLE_subschemeι_apply_eq_zero_of_mem {Y : Scheme.{u}} (I : Y.IdealSheafData)
     (U : Y.affineOpens) (V : I.subscheme.Opens)
     (e : V ≤ (Opens.map I.subschemeι.base).obj (U : Y.Opens))
@@ -211,6 +277,11 @@ private theorem appLE_subschemeι_apply_eq_zero_of_mem {Y : Scheme.{u}} (I : Y.I
       I.subschemeι.app (U : Y.Opens) ≫ I.subscheme.presheaf.map (homOfLE e).op := rfl
   rw [hcomp, CommRingCat.hom_comp, RingHom.comp_apply, happ, map_zero]
 
+/- English proof (translation)
+Establish `happ : (CommRingCat.Hom.hom (I.subschemeι.app (U : Y.Opens))) 1 = 0`. Rewrite using `[map_one]`. Conclude with `h1`. Rewrite `happ` using `[Scheme.IdealSheafData.subschemeι_app, CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom]`. Establish `h2` using `congrArg (CommRingCat.Hom.hom (I.subschemeObjIso U).hom) happ`.
+
+Establish `h4 : (CommRingCat.Hom.hom (I.subschemeObjIso U).hom) 0 = 0` using `map_zero _`. Establish `h5` using `CommRingCat.hom_inv_apply (I.subschemeObjIso U) ((Ideal.Quotient.mk (I.ideal U)) (1 : ↑(Y.presheaf.obj (Opposite.op (U : Y.Opens)))))`. Establish `h3 : (Ideal.Quotient.mk (I.ideal U)) (1 : ↑(Y.presheaf.obj (Opposite.op (U : Y.Opens)))) = 0` using `h5.symm.trans (h2.trans h4)`. Conclude with `(Ideal.eq_top_iff_one _).mpr (Ideal.Quotient.eq_zero_iff_mem.mp h3)`.
+-/
 private theorem ideal_eq_top_of_one_eq_zero {Y : Scheme.{u}} (I : Y.IdealSheafData)
     (U : Y.affineOpens)
     (h1 : (1 : ↑(I.subscheme.presheaf.obj
@@ -230,6 +301,15 @@ private theorem ideal_eq_top_of_one_eq_zero {Y : Scheme.{u}} (I : Y.IdealSheafDa
     h5.symm.trans (h2.trans h4)
   exact (Ideal.eq_top_iff_one _).mpr (Ideal.Quotient.eq_zero_iff_mem.mp h3)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `ha`. Take `⟨i, hi⟩` from `exists_complOrderEmb_eq m S ha`. Establish `hHid` using `c.ideal_eq_span_coord hU H {a} hH`. Establish `hmemH : c.coord a ∈ H.ideal ⟨U, hU⟩`. Rewrite using `[hHid]`.
+
+Use `Ideal.subset_span ⟨a, ?_, rfl⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hmem : c.coord a ∈ Z.ideal ⟨U, hU⟩` using `hHZ ⟨U, hU⟩ hmemH`. Establish `hV : IsAffineOpen ((Opens.map Z.subschemeι.base).obj U)` using `isAffineOpen_preimage_subschemeι Z hU`. Establish `hcoord : (c.restrictToSubscheme hU Z S hZ).coord i = 0`.
+
+Rewrite using `[EtaleChart.restrictToSubscheme_coord, hi]`. Conclude with `appLE_subschemeι_apply_eq_zero_of_mem Z ⟨U, hU⟩ _ _ hmem`. Establish `hnz` using `coord_mem_nonZeroDivisors hV (c.restrictToSubscheme hU Z S hZ) i`. Establish `h1` using `(mem_nonZeroDivisors_iff.mp hnz).1 1 (by rw [hcoord, zero_mul])`. Establish `htop : Z.ideal ⟨U, hU⟩ = ⊤` using `ideal_eq_top_of_one_eq_zero Z ⟨U, hU⟩ h1`.
+
+Conclude with `notMem_support_of_restrictIdeal_eq_top Z U x hxU ((Scheme.IdealSheafData.comap_ι_eq_top_iff_ideal_eq_top Z hU).mpr htop) hxZ`.
+-/
 theorem mem_of_restrictIdeal_eq_coordIdeal_of_le {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (hU : IsAffineOpen U)
     (c : EtaleChart p U m) (Z H : X.IdealSheafData) (S : Finset (Fin m)) (a : Fin m)
@@ -255,6 +335,9 @@ theorem mem_of_restrictIdeal_eq_coordIdeal_of_le {X : Scheme.{u}} {k : Type u} [
   exact notMem_support_of_restrictIdeal_eq_top Z U x hxU
     ((Scheme.IdealSheafData.comap_ι_eq_top_iff_ideal_eq_top Z hU).mpr htop) hxZ
 
+/- English proof (translation)
+Substitute `hker` using the available equality. Conclude with `exists_comp_eq_strictTransform_subschemeι_comp j π Z`.
+-/
 private theorem exists_strictTransform_lift_of_ker_eq {X X₁ S : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData)
     (j : S ⟶ X) [AlgebraicGeometry.IsClosedImmersion j] (H : X.IdealSheafData)
     (hker : j.ker = H) :
@@ -263,6 +346,9 @@ private theorem exists_strictTransform_lift_of_ker_eq {X X₁ S : Scheme.{u}} (�
   subst hker
   exact exists_comp_eq_strictTransform_subschemeι_comp j π Z
 
+/- English proof (translation)
+The claim follows from `exists_strictTransform_lift_of_ker_eq π Z H.subschemeι H (AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι H)`.
+-/
 theorem exists_strictTransformSubschemeLift {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z H : X.IdealSheafData) :
     ∃ q : (Blowup.strictTransform π Z H).subscheme ⟶ H.subscheme,
       q ≫ H.subschemeι = (Blowup.strictTransform π Z H).subschemeι ≫ π :=
@@ -273,10 +359,18 @@ def strictTransformSubschemeLift {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z H : 
     (Blowup.strictTransform π Z H).subscheme ⟶ H.subscheme :=
   (exists_strictTransformSubschemeLift π Z H).choose
 
+/- English proof (translation)
+The claim follows from `(exists_strictTransformSubschemeLift π Z H).choose_spec`.
+-/
 theorem strictTransformSubschemeLift_comp_subschemeι {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z H : X.IdealSheafData) :
     strictTransformSubschemeLift π Z H ≫ H.subschemeι = (Blowup.strictTransform π Z H).subschemeι ≫ π :=
   (exists_strictTransformSubschemeLift π Z H).choose_spec
 
+/- English proof (translation)
+Substitute `hker` using the available equality. Establish `h2 : q ≫ j = strictTransformLiftOfClosedImmersion j π Z ≫ j`. Rewrite using `[hq, strictTransformLiftOfClosedImmersion_comp]`. Establish `hqq : q = strictTransformLiftOfClosedImmersion j π Z` using `(cancel_mono j).mp h2`. Rewrite using `[hqq]`.
+
+Conclude with `isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion j π Z hπ`.
+-/
 private theorem isBlowupAlongIdealSheaf_comap_of_ker_eq {X X₁ S : Scheme.{u}} [IsLocallyNoetherian X₁]
     (π : X₁ ⟶ X) (Z : X.IdealSheafData) (j : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion j] (H : X.IdealSheafData) (hker : j.ker = H)
@@ -290,6 +384,9 @@ private theorem isBlowupAlongIdealSheaf_comap_of_ker_eq {X X₁ S : Scheme.{u}} 
   rw [hqq]
   exact isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion j π Z hπ
 
+/- English proof (translation)
+The claim follows from `isBlowupAlongIdealSheaf_comap_of_ker_eq π Z H.subschemeι H (AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι H) hπ (strictTransformSubschemeLift π Z H) (strictTransformSubschemeLift_comp_subschemeι π Z H)`.
+-/
 theorem isBlowupAlongIdealSheaf_strictTransformSubschemeLift {X X₁ : Scheme.{u}} [IsLocallyNoetherian X₁]
     (π : X₁ ⟶ X) (Z H : X.IdealSheafData) (hπ : Blowup.IsBlowupAlongIdealSheaf π Z) :
     Blowup.IsBlowupAlongIdealSheaf (strictTransformSubschemeLift π Z H) (Z.comap H.subschemeι) :=
@@ -297,11 +394,17 @@ theorem isBlowupAlongIdealSheaf_strictTransformSubschemeLift {X X₁ : Scheme.{u
     (AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι H) hπ
     (strictTransformSubschemeLift π Z H) (strictTransformSubschemeLift_comp_subschemeι π Z H)
 
+/- English proof (translation)
+Rewrite using `[← AlgebraicGeometry.Scheme.IdealSheafData.range_subschemeι]`. Conclude with `Set.mem_range_self x`.
+-/
 private theorem subschemeι_base_mem_support {X : Scheme.{u}} (I : X.IdealSheafData)
     (x : I.subscheme) : I.subschemeι.base x ∈ (I.support : Set X) := by
   rw [← AlgebraicGeometry.Scheme.IdealSheafData.range_subschemeι]
   exact Set.mem_range_self x
 
+/- English proof (translation)
+Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]`. Conclude with `congrArg (fun f => (coordSubspaceIdeal k m T).comap f) h`.
+-/
 private theorem coordIdeal_eq_of_map_eq {X : Scheme.{u}} {k : Type u} [Field k]
     {p₁ p₂ : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ}
     (c₁ : EtaleChart p₁ U m) (c₂ : EtaleChart p₂ U m) (h : c₁.map = c₂.map) (T : Finset (Fin m)) :
@@ -309,6 +412,23 @@ private theorem coordIdeal_eq_of_map_eq {X : Scheme.{u}} {k : Type u} [Field k]
   rw [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]
   exact congrArg (fun f => (coordSubspaceIdeal k m T).comap f) h
 
+/- English proof (translation)
+Take `⟨U, hyU, m, c, av, S, hinj, hnone, hsome, hZ⟩` from `hsnc y hy`. Take `⟨i, hi, hEi⟩ : ∃ (i : ℕ) (h : i < E.length), E[i] = D` from `List.mem_iff_getElem.mp hD`. Establish `hlt0 : 0 < (H :: E).length` using `by rw [List.length_cons]; omega`. Establish `hlti : i + 1 < (H :: E).length` using `by rw [List.length_cons]; omega`. Establish `hH0 : ∀ t : Fin m, av 0 = some t → restrictIdeal H U = c.coordIdeal {t}`.
+
+Introduce `t ht`. Establish `h` using `hsome 0 hlt0 t ht`. Rewrite `h` using `[List.getElem_cons_zero]`. Conclude with `h`. Establish `hHn : av 0 = none → restrictIdeal H U = ⊤`.
+
+Introduce `ht`. Establish `h` using `hnone 0 hlt0 ht`. Rewrite `h` using `[List.getElem_cons_zero]`. Conclude with `h`. Establish `hD0 : ∀ t : Fin m, av (i + 1) = some t → restrictIdeal D U = c.coordIdeal {t}`.
+
+Introduce `t ht`. Establish `h` using `hsome (i + 1) hlti t ht`. Simplify using `only [List.getElem_cons_succ] at h`. Rewrite `h` using `[hEi]`. Conclude with `h`.
+
+Establish `hDn : av (i + 1) = none → restrictIdeal D U = ⊤`. Introduce `ht`. Establish `h` using `hnone (i + 1) hlti ht`. Simplify using `only [List.getElem_cons_succ] at h`. Rewrite `h` using `[hEi]`.
+
+Conclude with `h`. Take `⟨V, hVaff, hyV, hVle⟩` from `AlgebraicGeometry.exists_isAffineOpen_mem_and_subset hyU`. Use `⟨V, hyV, hVaff, m, c.restrict hVle, S, restrictIdeal_eq_restrict_coordIdeal_of_le hVle c Z S hZ, ?_⟩` and prove the remaining obligations. Consider the cases of `h0 : av 0 with`. Consider the case `none => exact Or.inl (restrictIdeal_eq_top_of_le H hVle (hHn h0))`.
+
+Consider the case `some t`. Use `Or.inr ⟨t, restrictIdeal_eq_restrict_coordIdeal_of_le hVle c H {t} (hH0 t h0), ?_⟩` and prove the remaining obligations. Consider the cases of `h1 : av (i + 1) with`. Consider the case `none => exact Or.inl (restrictIdeal_eq_top_of_le D hVle (hDn h1))`. Consider the case `some t'`.
+
+Use `Or.inr ⟨t', ?_, restrictIdeal_eq_restrict_coordIdeal_of_le hVle c D {t'} (hD0 t' h1)⟩` and prove the remaining obligations. Introduce `htt`. Substitute `htt` using the available equality. Establish `hz` using `hinj 0 hlt0 (i + 1) hlti t' h0 h1`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem exists_etaleChart_of_hasStrictNormalCrossingsWith {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (Z H : X.IdealSheafData) (E : List X.IdealSheafData)
     (hsnc : HasStrictNormalCrossingsWith p Z (H :: E)) (D : X.IdealSheafData) (hD : D ∈ E) (y : X)
@@ -359,6 +479,9 @@ private theorem exists_etaleChart_of_hasStrictNormalCrossingsWith {X : Scheme.{u
           have hz := hinj 0 hlt0 (i + 1) hlti t' h0 h1
           omega
 
+/- English proof (translation)
+Take `⟨s, hs, hmem⟩` from `exists_mem_domain_blowupChart_of_isBlowupAlongIdealSheaf π c S hπ hZ ((Blowup.strictTransform π Z H).subschemeι.base x) hxU`. Establish `htop : restrictIdeal (Blowup.strictTransform π Z H) (blowupChartOfIsBlowup π c S hπ hZ s hs).domain = ⊤` using `(blowupChartOfIsBlowup π c S hπ hZ s hs).restrictIdeal_strictTransform_of_eq_top Z H hHtop`. Conclude with `notMem_support_of_restrictIdeal_eq_top (Blowup.strictTransform π Z H) (blowupChartOfIsBlowup π c S hπ hZ s hs).domain ((Blowup.strictTransform π Z H).subschemeι.base x) hmem htop (subschemeι_base_mem_support (Blowup.strictTransform π Z H) x)`.
+-/
 private theorem false_of_mem_preimage_of_restrictIdeal_eq_top {X X₁ : Scheme.{u}} {k : Type u}
     [Field k] {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X)
     (Z H : X.IdealSheafData) (hπ : Blowup.IsBlowupAlongIdealSheaf π Z)
@@ -376,6 +499,15 @@ private theorem false_of_mem_preimage_of_restrictIdeal_eq_top {X X₁ : Scheme.{
     ((Blowup.strictTransform π Z H).subschemeι.base x) hmem htop
     (subschemeι_base_mem_support (Blowup.strictTransform π Z H) x)
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian (Blowup.strictTransform π Z H).subscheme` using `isLocallyNoetherian_subscheme _`. Use `quasiCompact_strictTransformι_of_isLocallyNoetherian π Z D` as an intermediate fact. Use `quasiCompact_strictTransformι_of_isLocallyNoetherian q (Z.comap H.subschemeι) (D.comap H.subschemeι)` as an intermediate fact. Establish `hZcomap : (Z.comap H.subschemeι).comap q = (Z.comap π).comap (Blowup.strictTransform π Z H).subschemeι`. Rewrite using `[← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, hq]`.
+
+Establish `hVmem : ∀ z : X₁, z ∈ (π ⁻¹ᵁ Z.support.compl) → π.base z ∉ Z.support` using `fun z hz => hz`. Establish `hWmem : ∀ z : (Blowup.strictTransform π Z H).subscheme, z ∈ ((Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ (π ⁻¹ᵁ Z.support.compl)) → q.base z ∉ (Z.comap H.subschemeι).support`. Introduce `z hz hmem`. Establish `h1 : z ∈ ((Z.comap H.subschemeι).comap q).support`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`.
+
+Conclude with `hmem`. Rewrite `h1` using `[hZcomap, AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`. Establish `h2 : (Blowup.strictTransform π Z H).subschemeι.base z ∈ (Z.comap π).support` using `h1`. Rewrite `h2` using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`. Establish `h3 : π.base ((Blowup.strictTransform π Z H).subschemeι.base z) ∈ Z.support` using `h2`.
+
+Establish `hz' : π.base ((Blowup.strictTransform π Z H).subschemeι.base z) ∉ Z.support` using `hz`. Conclude with `hz' h3`. Use `⟨(Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ (π ⁻¹ᵁ Z.support.compl), hx, ?_⟩` and prove the remaining obligations. Rewrite using `[restrictIdeal_comap_eq_comap_resLE_restrictIdeal (Blowup.strictTransform π Z H).subschemeι (Blowup.strictTransform π Z D) (π ⁻¹ᵁ Z.support.compl) ((Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ (π ⁻¹ᵁ Z.support.compl)) le_rfl, restrictIdeal_strictTransform_eq_comap_of_notMem_supp …`.
+-/
 private theorem exists_restrictIdeal_eq_of_notMem_support {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     [IsLocallyNoetherian X₁] (Z H : X.IdealSheafData)
     (q : (Blowup.strictTransform π Z H).subscheme ⟶ H.subscheme)
@@ -421,6 +553,29 @@ private theorem exists_restrictIdeal_eq_of_notMem_support {X X₁ : Scheme.{u}} 
     ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp,
     ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, hq]
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian (Blowup.strictTransform π Z H).subscheme` using `isLocallyNoetherian_subscheme _`. Use `quasiCompact_strictTransformι_of_isLocallyNoetherian π Z D` as an intermediate fact. Use `quasiCompact_strictTransformι_of_isLocallyNoetherian π Z H` as an intermediate fact. Use `quasiCompact_strictTransformι_of_isLocallyNoetherian q (Z.comap H.subschemeι) (D.comap H.subschemeι)` as an intermediate fact. Establish `hsa : s ∉ ({a} : Finset (Fin m))`.
+
+Simplify using `only [Finset.mem_singleton]`. Conclude with `fun h => has h.symm`. Take `⟨s', hs'⟩` from `exists_complOrderEmb_eq m ({a} : Finset (Fin m)) hsa`. Establish `hs'S : s' ∈ complEmbPreimage m S a` using `mem_complEmbPreimage_of_complOrderEmb_eq m S a hs hs'`. Establish `hZ' : restrictIdeal (Z.comap H.subschemeι) (H.subschemeι ⁻¹ᵁ U) = (c.restrictToSubscheme hU H {a} hH).coordIdeal (complEmbPreimage m S a)` using `restrictIdeal_comap_subschemeι_eq_coordIdeal c hU Z H S a hZ hH`.
+
+Establish `hFa : restrictIdeal (Blowup.strictTransform π Z H) B.domain = B.chart.coordIdeal {a}` using `B.restrictIdeal_strictTransform_of_mem_of_ne Z H hs hZ a ha has hH`. Establish `hBmap : (B.restrictToStrictTransform hU hB Z H hs hZ a ha has hH s' hs' q hq).chart.map = (B.chart.restrictToSubscheme hB (Blowup.strictTransform π Z H) {a} hFa).map` using `B.restrictToStrictTransform_chart_map hU hB Z H hs hZ a ha has hH s' hs' q hq`. Break down `hDd with hDtop | ⟨b, hba, hDb⟩` into its components or cases. Establish `hL : restrictIdeal ((Blowup.strictTransform π Z D).comap (Blowup.strictTransform π Z H).subschemeι) ((Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ B.domain) = ⊤` using `restrictIdeal_comap_subschemeι_eq_top (Blowup.strictTransform π Z H) B.domain (Blowup.strictTransform π Z D) (B.restrictIdeal_strictTransform_of_eq_top Z D hDtop)`. Establish `hR : restrictIdeal (Blowup.strictTransform q (Z.comap H.subschemeι) (D.comap H.subschemeι)) ((Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ B.domain) = ⊤`.
+
+Establish `h` using `(B.restrictToStrictTransform hU hB Z H hs hZ a ha has hH s' hs' q hq).restrictIdeal_strictTransform_of_eq_top (Z.comap H.subschemeι) (D.comap H.subschemeι) (restrictIdeal_comap_subschemeι_eq_top H U D hDtop)`. Conclude with `h`. Rewrite using `[hL, hR]`. Establish `hb : b ∉ ({a} : Finset (Fin m))`. Simplify using `only [Finset.mem_singleton]`.
+
+Conclude with `hba`. Take `⟨b', hb'⟩` from `exists_complOrderEmb_eq m ({a} : Finset (Fin m)) hb`. Establish `hDb' : restrictIdeal D U = c.coordIdeal {complOrderEmb m {a} b'}`. Rewrite using `[hb']`. Conclude with `hDb`.
+
+Establish `hRD : restrictIdeal (D.comap H.subschemeι) (H.subschemeι ⁻¹ᵁ U) = (c.restrictToSubscheme hU H {a} hH).coordIdeal {b'}` using `EtaleChart.restrictToSubscheme_coordIdeal_singleton c hU H {a} hH b' D hDb'`. Establish `hiff : (b = s) ↔ (b' = s')`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `(complOrderEmb m ({a} : Finset (Fin m))).injective` to reduce the goal to its premises.
+
+Rewrite using `[hb', hs', h]`. Introduce `h`. Rewrite using `[← hb', ← hs', h]`. Distinguish the cases in `hbs : b = s`. Establish `hL : restrictIdeal ((Blowup.strictTransform π Z D).comap (Blowup.strictTransform π Z H).subschemeι) ((Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ B.domain) = ⊤`.
+
+Use `restrictIdeal_comap_subschemeι_eq_top (Blowup.strictTransform π Z H) B.domain (Blowup.strictTransform π Z D) ?_` and prove the remaining obligations. Rewrite using `[B.restrictIdeal_strictTransform_coordIdeal Z D hs hZ b hDb, if_pos hbs]`. Establish `hR : restrictIdeal (Blowup.strictTransform q (Z.comap H.subschemeι) (D.comap H.subschemeι)) ((Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ B.domain) = ⊤`. Establish `h` using `(B.restrictToStrictTransform hU hB Z H hs hZ a ha has hH s' hs' q hq).restrictIdeal_strictTransform_coordIdeal (Z.comap H.subschemeι) (D.comap H.subschemeι) hs'S hZ' b' hRD`. Rewrite `h` using `[if_pos (hiff.mp hbs)]`.
+
+Conclude with `h`. Rewrite using `[hL, hR]`. Establish `hL : restrictIdeal ((Blowup.strictTransform π Z D).comap (Blowup.strictTransform π Z H).subschemeι) ((Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ B.domain) = (B.chart.restrictToSubscheme hB (Blowup.strictTransform π Z H) {a} hFa).coordIdeal {b'}`. Use `EtaleChart.restrictToSubscheme_coordIdeal_singleton B.chart hB (Blowup.strictTransform π Z H) {a} hFa b' (Blowup.strictTransform π Z D) ?_` and prove the remaining obligations. Rewrite using `[B.restrictIdeal_strictTransform_coordIdeal Z D hs hZ b hDb, if_neg hbs, hb']`.
+
+Establish `hR : restrictIdeal (Blowup.strictTransform q (Z.comap H.subschemeι) (D.comap H.subschemeι)) ((Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ B.domain) = (B.restrictToStrictTransform hU hB Z H hs hZ a ha has hH s' hs' q hq).chart.coordIdeal {b'}`. Establish `h` using `(B.restrictToStrictTransform hU hB Z H hs hZ a ha has hH s' hs' q hq).restrictIdeal_strictTransform_coordIdeal (Z.comap H.subschemeι) (D.comap H.subschemeι) hs'S hZ' b' hRD`. Rewrite `h` using `[if_neg (fun hxx => hbs (hiff.mpr hxx))]`. Conclude with `h`. Rewrite using `[hL, hR]`.
+
+Conclude with `coordIdeal_eq_of_map_eq (B.chart.restrictToSubscheme hB (Blowup.strictTransform π Z H) {a} hFa) (B.restrictToStrictTransform hU hB Z H hs hZ a ha has hH s' hs' q hq).chart hBmap.symm {b'}`.
+-/
 private theorem restrictIdeal_comap_strictTransform_eq_of_blowupChart {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {π : X₁ ⟶ X} [IsLocallyNoetherian X₁]
     {U : X.Opens} {m : ℕ} {c : EtaleChart p U m} {S : Finset (Fin m)} {s : Fin m}
@@ -518,6 +673,13 @@ private theorem restrictIdeal_comap_strictTransform_eq_of_blowupChart {X X₁ : 
         (B.restrictToStrictTransform hU hB Z H hs hZ a ha has hH s' hs' q hq).chart
         hBmap.symm {b'}
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian (Blowup.strictTransform π Z H).subscheme` using `isLocallyNoetherian_subscheme _`. Use `quasiCompact_strictTransformι_of_isLocallyNoetherian π Z H` as an intermediate fact. Take `⟨s, hs, hmem⟩` from `exists_mem_domain_blowupChart_of_isBlowupAlongIdealSheaf π c S hπ hZ ((Blowup.strictTransform π Z H).subschemeι.base x) hxU`. Establish `has : a ≠ s`. Introduce `hasEq`.
+
+Establish `hH' : restrictIdeal H U = c.coordIdeal {s}` using `by rw [hH, hasEq]`. Establish `hbot` using `(blowupChartOfIsBlowup π c S hπ hZ s hs).strictTransform_subschemeι_preimage_domain_eq_bot Z H hs hZ hH'`. Establish `hx0 : x ∈ (Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ (blowupChartOfIsBlowup π c S hπ hZ s hs).domain` using `hmem`. Rewrite `hx0` using `[hbot]`. Conclude with `hx0`.
+
+Take `⟨V, hVle, hVaff, hxV⟩` from `(blowupChartOfIsBlowup π c S hπ hZ s hs).exists_isAffineOpen_mem_le_domain ((Blowup.strictTransform π Z H).subschemeι.base x) hmem`. Use `⟨(Blowup.strictTransform π Z H).subschemeι ⁻¹ᵁ V, hxV, ?_⟩` and prove the remaining obligations. Conclude with `restrictIdeal_comap_strictTransform_eq_of_blowupChart ((blowupChartOfIsBlowup π c S hπ hZ s hs).restrict V hVle) hU hVaff Z H hs hZ a ha has hH D hDd q hq`.
+-/
 private theorem exists_restrictIdeal_eq_of_mem_preimage {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X) [IsLocallyNoetherian X₁]
     (Z H : X.IdealSheafData) (hπ : Blowup.IsBlowupAlongIdealSheaf π Z)
@@ -553,6 +715,11 @@ private theorem exists_restrictIdeal_eq_of_mem_preimage {X X₁ : Scheme.{u}} {k
   exact restrictIdeal_comap_strictTransform_eq_of_blowupChart ((blowupChartOfIsBlowup π c S hπ hZ s hs).restrict V hVle)
     hU hVaff Z H hs hZ a ha has hH D hDd q hq
 
+/- English proof (translation)
+Use `eq_of_locally_restrictIdeal_eq _ _ (fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : π.base ((Blowup.strictTransform π Z H).subschemeι.base x) ∈ Z.support`. Take `⟨U, hyU, hU, m, c, S, hZc, hcase⟩` from `exists_etaleChart_of_hasStrictNormalCrossingsWith p Z H E hsnc D hD (π.base ((Blowup.strictTransform π Z H).subschemeι.base x)) hx`. Break down `hcase with hHtop | ⟨a, hH, hDd⟩` into its components or cases. Conclude with `(false_of_mem_preimage_of_restrictIdeal_eq_top π Z H hπ c hZc hHtop x hyU).elim`.
+
+Conclude with `exists_restrictIdeal_eq_of_mem_preimage π Z H hπ q hq D hU c hZc (mem_of_restrictIdeal_eq_coordIdeal_of_le hU c Z H S a hHZ hH hZc (π.base ((Blowup.strictTransform π Z H).subschemeι.base x)) hyU hx) hH hDd x hyU`. Conclude with `exists_restrictIdeal_eq_of_notMem_support π Z H q hq D x hx`.
+-/
 theorem comap_strictTransform_eq_strictTransform_of_comp_eq {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X) [IsLocallyNoetherian X₁]
     (Z H : X.IdealSheafData) (E : List X.IdealSheafData)
@@ -574,6 +741,9 @@ theorem comap_strictTransform_eq_strictTransform_of_comp_eq {X X₁ : Scheme.{u}
           (π.base ((Blowup.strictTransform π Z H).subschemeι.base x)) hyU hx) hH hDd x hyU
   · exact exists_restrictIdeal_eq_of_notMem_support π Z H q hq D x hx
 
+/- English proof (translation)
+The claim follows from `comap_strictTransform_eq_strictTransform_of_comp_eq p π Z H E hsnc hHZ hπ (strictTransformSubschemeLift π Z H) (strictTransformSubschemeLift_comp_subschemeι π Z H) D hD`.
+-/
 theorem comap_strictTransform_eq_strictTransformSubschemeLift {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X) [IsLocallyNoetherian X₁]
     (Z H : X.IdealSheafData) (E : List X.IdealSheafData)

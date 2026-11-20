@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsFundamental
 
 namespace GlobalTheory.VolIndepClosed
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.VolIndepCompare.volumeIndependence_iff D).1 (GlobalTheory.VolumeIndep.volumeIndependence D)`.
+-/
 theorem volIndep (D : Formalism.BasicNotions.D7) : GlobalTheory.IndefiniteRowSideFullHecke.IsometryTransportFrames.VolIndep D :=
   (GlobalTheory.VolIndepCompare.volumeIndependence_iff D).1 (GlobalTheory.VolumeIndep.volumeIndependence D)
 

@@ -9,6 +9,17 @@ namespace GlobalTheory.Pass.FinDesc
 open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 open Polynomial Module TensorProduct GlobalTheory.Pass
 
+/- English proof (translation)
+Use `haveI : Fintype (G ⧸ H) := Fintype.ofFinite _`. Establish `hq : ∀ g : G, c (Quotient.out (g : G ⧸ H)) = c g`. Introduce `g`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H g`. Rewrite using `[hh, hc, h0 _ h.2, map_zero, add_zero]`.
+
+Use `set S : M := ∑ q : G ⧸ H, c q.out with hS`. Establish `hn : ((Fintype.card (G ⧸ H) : ℕ) : L) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Use `⟨-(((Fintype.card (G ⧸ H) : ℕ) : L)⁻¹ • S), fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : S = ∑ q : G ⧸ H, c (g • q).out` using `(Equiv.sum_comp (MulAction.toPerm g) (fun q : G ⧸ H => c q.out)).symm`. Establish `h2 : ∀ q : G ⧸ H, c (g • q).out = c g + a g (c q.out)`.
+
+Introduce `q`. Rewrite using `[← hc, ← hq (g * q.out)]`. Use `congr 2`. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+
+Simplify using `only [h2, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, ← map_sum] at h1`. Rewrite `h1` using `[← hS, ← Nat.cast_smul_eq_nsmul L]`. Establish `h3 : c g = ((Fintype.card (G ⧸ H) : ℕ) : L)⁻¹ • (S - a g S)`. Rewrite using `[eq_inv_smul_iff₀ hn, eq_sub_iff_add_eq]`. Conclude with `h1.symm`.
+
+Rewrite using `[h3, map_neg, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cob_of_vanish {G : Type} [Group G] (H : Subgroup G) [H.FiniteIndex] {L M : Type} [Field L] [CharZero L]
     [AddCommGroup M] [Module L M] (a : G → M →ₗ[L] M) (c : G → M)
     (hc : ∀ g h, c (g * h) = c g + a g (c h)) (h0 : ∀ h ∈ H, c h = 0) :
@@ -53,6 +64,9 @@ def extRep (ρ : Representation LL G V) (f : G → V) (hf : ∀ g h, f (g * h) =
     simp [hf]
     abel
 
+/- English proof (translation)
+Simplify using `[extRep]`.
+-/
 theorem extRep_apply (ρ : Representation LL G V) (f : G → V) (hf : ∀ g h, f (g * h) = f g + ρ g (f h))
     (g : G) (z : V × LL) : extRep ρ f hf g z = (ρ g z.1 + z.2 • f g, z.2) := by
   simp [extRep]
@@ -71,13 +85,22 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actVB_tmul (ρ : Representation LL G V) (g : G) (v : V) (b : B) :
     actVB PD ρ g (v ⊗ₜ[Qp] b) = ρ g v ⊗ₜ[Qp] PD.actB g b := rfl
 
+/- English proof (translation)
+Simplify using `[Dcris, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_Dcris (ρ : Representation LL G V) (z : V ⊗[Qp] B) :
     z ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g z = z := by
   simp [Dcris, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB_tmul]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+-/
 theorem actVB_mul (ρ : Representation LL G V) (g h : G) (z : V ⊗[Qp] B) :
     actVB PD ρ (g * h) z = actVB PD ρ g (actVB PD ρ h z) := by
   induction z using TensorProduct.induction_on with
@@ -88,6 +111,9 @@ theorem actVB_mul (ρ : Representation LL G V) (g h : G) (z : V ⊗[Qp] B) :
 abbrev tB (B : Type) [CommRing B] [Algebra Qp B] (u : V →ₗ[LL] V') : V ⊗[Qp] B →ₗ[LL] V' ⊗[Qp] B :=
   AlgebraTensorModule.map u (LinearMap.id : B →ₗ[Qp] B)
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB_tmul, hu]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tB_act (ρ : Representation LL G V) (ρ' : Representation LL G V') (u : V →ₗ[LL] V')
     (hu : ∀ g x, u (ρ g x) = ρ' g (u x)) (g : G) (z : V ⊗[Qp] B) :
     tB B u (actVB PD ρ g z) = actVB PD ρ' g (tB B u z) := by
@@ -96,6 +122,9 @@ theorem tB_act (ρ : Representation LL G V) (ρ' : Representation LL G V') (u : 
   | tmul v b => simp [actVB_tmul, hu]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem fst_inl (z : V ⊗[Qp] B) :
     tB B (LinearMap.fst LL V LL) (tB B (LinearMap.inl LL V LL) z) = z := by
   induction z using TensorProduct.induction_on with
@@ -103,6 +132,9 @@ theorem fst_inl (z : V ⊗[Qp] B) :
   | tmul v b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+-/
 theorem snd_inl (z : V ⊗[Qp] B) :
     tB B (LinearMap.snd LL V LL) (tB B (LinearMap.inl LL V LL) z) = 0 := by
   induction z using TensorProduct.induction_on with
@@ -110,6 +142,9 @@ theorem snd_inl (z : V ⊗[Qp] B) :
   | tmul v b => simp
   | add x y hx hy => simp only [map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [← add_tmul]`. Consider the case `add x y hx hy => simp only [map_add]`. Rewrite using `[add_add_add_comm, hx, hy]`.
+-/
 theorem decomp (z : (V × LL) ⊗[Qp] B) :
     tB B (LinearMap.inl LL V LL) (tB B (LinearMap.fst LL V LL) z) +
       tB B (LinearMap.inr LL V LL) (tB B (LinearMap.snd LL V LL) z) = z := by
@@ -118,6 +153,35 @@ theorem decomp (z : (V × LL) ⊗[Qp] B) :
   | tmul v b => simp [← add_tmul]
   | add x y hx hy => simp only [map_add]; rw [add_add_add_comm, hx, hy]
 
+/- English proof (translation)
+Use `haveI := PD.finK₀`. Establish `hn : 0 < finrank Qp K₀` using `Module.finrank_pos`. Unfold `IsCrys at h0 h1 h2`. Rewrite `h1` using `[Module.finrank_prod, Module.finrank_self]`. Rewrite `h2` using `[Module.finrank_self]`.
+
+Use `haveI : Module.Finite LL ↥(Dcris PD (extRep ρ f hf)) := Module.finite_of_finrank_pos (by rw [h1]; positivity)`. Use `haveI : Module.Finite LL ↥(Dcris PD (Representation.trivial LL G LL)) := Module.finite_of_finrank_pos (by rw [h2]; positivity)`. Establish `ei : ∀ g x, LinearMap.inl LL V LL (ρ g x) = extRep ρ f hf g (LinearMap.inl LL V LL x)`. Introduce `g x`. Simplify using `[extRep_apply]`.
+
+Establish `es : ∀ g x, LinearMap.snd LL V LL (extRep ρ f hf g x) = Representation.trivial LL G LL g (LinearMap.snd LL V LL x)`. Introduce `g x`. Simplify using `[extRep_apply]`. Set `s : ↥(Dcris PD (extRep ρ f hf)) →ₗ[LL] ↥(Dcris PD (Representation.trivial LL G LL))` to `(tB B (LinearMap.snd LL V LL)).restrict fun z hz => by`. Rewrite `hz`, the goal using `[mem_Dcris]`.
+
+Introduce `g`. Rewrite using `[← tB_act PD _ _ _ es, hz]`. Set `p : ↥(LinearMap.ker s) →ₗ[LL] ↥(Dcris PD ρ)` to `((tB B (LinearMap.fst LL V LL)).comp ((Submodule.subtype _).comp (Submodule.subtype _))).codRestrict _ fun z => by`. Rewrite using `[mem_Dcris]`. Introduce `g`.
+
+Establish `hz : tB B (LinearMap.snd LL V LL) z.1.1 = 0` using `congrArg Subtype.val z.2`. Establish `hd` using `decomp (B := B) (Qp := Qp) z.1.1`. Rewrite `hd` using `[hz, map_zero, add_zero]`. Establish `h3` using `(mem_Dcris PD _ _).1 z.1.2 g`. Rewrite `h3` using `[← hd, ← tB_act PD _ _ _ ei]`.
+
+Establish `h4` using `congrArg (tB B (LinearMap.fst LL V LL)) h3`. Rewrite `h4` using `[fst_inl, fst_inl]`. Conclude with `h4`. Establish `hpb : Function.Bijective p`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z h`. Establish `hz : tB B (LinearMap.snd LL V LL) z.1.1 = 0` using `congrArg Subtype.val z.2`. Establish `hz' : tB B (LinearMap.fst LL V LL) z.1.1 = 0` using `congrArg Subtype.val h`. Establish `hd` using `decomp (B := B) (Qp := Qp) z.1.1`.
+
+Rewrite `hd` using `[hz, hz', map_zero, map_zero, add_zero]`. Conclude with `Subtype.ext (Subtype.ext hd.symm)`. Introduce `y`. Use `⟨⟨⟨tB B (LinearMap.inl LL V LL) y.1, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_Dcris]`.
+
+Introduce `g`. Rewrite using `[← tB_act PD _ _ _ ei, (mem_Dcris PD _ _).1 y.2 g]`. Conclude with `Subtype.ext (snd_inl y.1)`. Conclude with `Subtype.ext (fst_inl y.1)`. Establish `hk : finrank LL ↥(LinearMap.ker s) = finrank LL ↥(Dcris PD ρ)` using `(LinearEquiv.ofBijective p hpb).finrank_eq`.
+
+Establish `hr` using `s.finrank_range_add_finrank_ker`. Establish `hr' : LinearMap.range s = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite `hr` using `[hk, h0, h1, mul_add]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hone : ((1 : LL) ⊗ₜ[Qp] (1 : B)) ∈ Dcris PD (Representation.trivial LL G LL)`. Rewrite using `[mem_Dcris]`. Introduce `g`. Simplify using `[actVB_tmul]`. Take `⟨z, hz⟩` from `LinearMap.range_eq_top.1 hr' ⟨_, hone⟩`.
+
+Establish `hz1 : tB B (LinearMap.snd LL V LL) z.1 = (1 : LL) ⊗ₜ[Qp] (1 : B)` using `congrArg Subtype.val hz`. Establish `hd` using `decomp (B := B) (Qp := Qp) z.1`. Rewrite `hd` using `[hz1]`. Use `⟨-tB B (LinearMap.fst LL V LL) z.1, fun g => ?_⟩` and prove the remaining obligations. Establish `h3` using `(mem_Dcris PD _ _).1 z.2 g`.
+
+Rewrite `h3` using `[← hd, map_add, ← tB_act PD _ _ _ ei]`. Establish `h4` using `congrArg (tB B (LinearMap.fst LL V LL)) h3`. Rewrite `h4` using `[map_add, map_add, fst_inl, fst_inl]`. Establish `h5 : tB B (LinearMap.fst LL V LL) (actVB PD (extRep ρ f hf) g (tB B (LinearMap.inr LL V LL) ((1 : LL) ⊗ₜ[Qp] (1 : B)))) = f g ⊗ₜ[Qp] (1 : B)`. Simplify using `[actVB_tmul, extRep_apply]`.
+
+Establish `h6 : tB B (LinearMap.fst LL V LL) (tB B (LinearMap.inr LL V LL) ((1 : LL) ⊗ₜ[Qp] (1 : B))) = 0`. Simplify using the standard rewrite rules. Rewrite `h4` using `[h5, h6, add_zero]`. Rewrite using `[map_neg, sub_neg_eq_add, eq_neg_add_iff_add_eq]`. Conclude with `h4`.
+-/
 theorem split_of_crys [FiniteDimensional LL V] (ρ : Representation LL G V) (f : G → V)
     (hf : ∀ g h, f (g * h) = f g + ρ g (f h)) (h0 : IsCrys PD ρ) (h1 : IsCrys PD (extRep ρ f hf))
     (h2 : IsCrys PD (Representation.trivial LL G LL)) :
@@ -245,6 +309,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] [IsTopologicalRing LL]
 
 omit [IsTopologicalRing LL] in
+/- English proof (translation)
+Use `⟨?_, fun g h => hj ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `j.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hj)`. Establish `: f = fun g => r (A.ρ g x + -x)`. Use function extensionality and compare the values at `g`. Rewrite using `[← sub_eq_add_neg, ← hf]`.
+
+Conclude with `(LinearMap.congr_fun hr (f g)).symm`. Rewrite using `[this]`. Use `haveI : ContinuousSMul LL W.V := IsModuleTopology.toContinuousSMul LL _`. Conclude with `(IsModuleTopology.continuous_of_linearMap r).comp ((A.cont x).add continuous_const)`. Rewrite using `[map_add, he, hf, hf, hf, map_mul, map_sub, Module.End.mul_apply]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem cocycle_of_inj (A W : GRep G Qp LL O) (j : W.V →ₗ[LL] A.V) (hj : Function.Injective j)
     (he : ∀ g v, j (W.ρ g v) = A.ρ g (j v)) (x : A.V) (f : G → W.V) (hf : ∀ g, j (f g) = A.ρ g x - x) :
     f ∈ continuousCocycles W.ρ := by
@@ -260,6 +331,21 @@ theorem cocycle_of_inj (A W : GRep G Qp LL O) (j : W.V →ₗ[LL] A.V) (hj : Fun
   · rw [map_add, he, hf, hf, hf, map_mul, map_sub, Module.End.mul_apply]
     abel
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ LinearMap.range j`. Take `⟨w, rfl⟩` from `hx`. Use `⟨w ⊗ₜ[Qp] (1 : B), fun g => ?_⟩` and prove the remaining obligations. Establish `: f g = W.ρ g w - w` using `hj (by rw [hf, map_sub, he])`. Rewrite using `[this, actVB_tmul, map_one, sub_tmul]`.
+
+Take `⟨hc, hz⟩` from `cocycle_of_inj A W j hj he x f hf`. Set `u : (W.V × LL) →ₗ[LL] A.V` to `j.coprod (LinearMap.toSpanSingleton LL A.V x)`. Establish `hu : ∀ g z, u (extRep W.ρ f hz g z) = A.ρ g (u z)`. Introduce `g z`. Simplify using `[u, extRep_apply, he, hf, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Establish `hui : Function.Injective u`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨w, c⟩ h`. Establish `h' : j w + c • x = 0` using `by simpa [u] using h`.
+
+Establish `hc0 : c = 0`. Assume the negation of the conclusion as `hne`. Apply `hx` to reduce the goal to its premises. Use `⟨-(c⁻¹ • w), ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, map_smul, eq_neg_of_add_eq_zero_left h', smul_neg, neg_neg, inv_smul_smul₀ hne]`.
+
+Substitute `hc0` using the available equality. Rewrite `h'` using `[zero_smul, add_zero, map_eq_zero_iff j hj]`. Substitute `h'` using the available equality. Both sides reduce to the same expression. Establish `hS : ∀ g, LinearMap.range u ≤ (LinearMap.range u).comap (A.ρ g)`.
+
+Introduce and unpack `g _ ⟨z, rfl⟩`. Conclude with `⟨_, hu g z⟩`. Establish `h1` using `(hcl (extG W f hz hc) A (quotG A _ hS) u (LinearMap.range u).mkQ hu (fun g z => rfl) hui (Submodule.mkQ_surjective _) (Submodule.ker_mkQ _).symm hA).1`. Establish `ei : ∀ g z, LinearMap.inl LL W.V LL (W.ρ g z) = extRep W.ρ f hz g (LinearMap.inl LL W.V LL z)`. Introduce `g z`.
+
+Simplify using `[extRep_apply]`. Establish `er : LinearMap.range (LinearMap.inl LL W.V LL) = LinearMap.ker (LinearMap.snd LL W.V LL)` using `(LinearMap.ker_snd LL W.V LL).symm`. Establish `es : Function.Surjective (LinearMap.snd LL W.V LL)` using `LinearMap.snd_surjective`. Establish `h2` using `hcl W (extG W f hz hc) (trivG G Qp LL O) (LinearMap.inl LL W.V LL) (LinearMap.snd LL W.V LL) ei (fun g z => rfl) LinearMap.inl_injective es er h1`. Conclude with `split_of_crys PD W.ρ f hz h2.1 h1 h2.2`.
+-/
 theorem split_of_closure
     (hcl : ∀ (A₀ A₁ A₂ : GRep G Qp LL O) (ι : A₀.V →ₗ[LL] A₁.V) (π : A₁.V →ₗ[LL] A₂.V),
       (∀ g x, ι (A₀.ρ g x) = A₁.ρ g (ι x)) → (∀ g x, π (A₁.ρ g x) = A₂.ρ g (π x)) → Function.Injective ι →
@@ -309,6 +395,9 @@ theorem split_of_closure
   exact split_of_crys PD W.ρ f hz h2.1 h1 h2.2
 
 omit [TopologicalSpace G] [TopologicalSpace LL] [IsTopologicalRing LL] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul v b => rw [actVB_tmul, actVB_tmul, h1, h2]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 theorem actVB_congr {G' : Type} [Group G'] {K₀' K' : Type} [Field K₀'] [Field K']
     [Algebra Qp K₀'] [Algebra Qp K'] [Algebra K₀' K'] [IsScalarTower Qp K₀' K']
     [Algebra K₀' B] [IsScalarTower Qp K₀' B] [Algebra K₀' BdR] [Algebra K' BdR] [IsScalarTower Qp K' BdR]
@@ -323,6 +412,11 @@ theorem actVB_congr {G' : Type} [Group G'] {K₀' K' : Type} [Field K₀'] [Fiel
 
 omit [TopologicalSpace G] [TopologicalSpace LL] [IsTopologicalRing LL] in
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `cob_of_vanish H (actVB PD ρ) (fun g => f g ⊗ₜ[Qp] (1 : B) - (actVB PD ρ g y - y)) (fun g k => by`. Rewrite using `[hf, actVB_mul, add_tmul, map_sub, map_sub, actVB_tmul, map_one]`. Use the proof step `abel)`. Use the proof step `(fun g hg => sub_eq_zero.2 (hy g hg))`. Use `⟨w + y, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, sub_eq_iff_eq_add.1 (hw g)]`. Normalize the expressions using the abelian group laws.
+-/
 theorem descend [CharZero LL] (H : Subgroup G) [H.FiniteIndex]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V) (f : G → V) (hf : ∀ g h, f (g * h) = f g + ρ g (f h)) (y : V ⊗[Qp] B)
@@ -340,6 +434,13 @@ theorem descend [CharZero LL] (H : Subgroup G) [H.FiniteIndex]
 
 end Closure
 
+/- English proof (translation)
+Introduce `l _ P K K' LL h _ hF hcl A W j hj he hA x f hf`. Establish `hZ` using `cocycle_of_inj A W j hj he x f hf`. Use `⟨hZ, ?_⟩` and prove the remaining obligations. Establish `hi : Continuous (Subgroup.inclusion (GK_le h))` using `continuous_inclusion (GK_le h)`. Set `ρ' : Representation ↥LL.1 ↥(GK K') W.V` to `W.ρ.comp (Subgroup.inclusion (GK_le h))`.
+
+Take `⟨y', hy⟩ : ∃ y : W.V ⊗[ℚ_[l]] P.R.B, ∀ g, f (Subgroup.inclusion (GK_le h) g) ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K') ρ' g y - y` from `split_of_closure (P.PD K') hcl (resG _ hi A) (resG _ hi W) j hj (fun g v => he _ v) hA x (fun g => f (Subgroup.inclusion (GK_le h) g)) (fun g => hf _)`. Establish `hact : ∀ (g : ↥(GK K')) (z : W.V ⊗[ℚ_[l]] P.R.B), actVB (P.PD K') ρ' g z = actVB (P.PD K) W.ρ (Subgroup.inclusion (GK_le h) g) z`. Introduce `g z`. Conclude with `actVB_congr (P.PD K') (P.PD K) ρ' W.ρ g _ rfl (fun b => (P.PD_actB K' g b).trans (P.PD_actB K (Subgroup.inclusion (GK_le h) g) b).symm) z`. Use `haveI : CharZero ↥LL.1 := algebraRat.charZero _`.
+
+Conclude with `descend (P.PD K) (GKin h) W.ρ f hZ.2 y' fun g hg => (hy ⟨g.1, hg⟩).trans (congrArg (· - y') (hact ⟨g.1, hg⟩ y'))`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K K' LL : FinExt l) (h : K.1 ≤ K'.1), (GKin h).Normal → (GKin h).FiniteIndex → (∀ (A₀ A₁ A₂ : GRep ↥(GK K') ℚ_[l] ↥LL.1 ↥(OL LL)) (ι : A₀.V →ₗ[↥LL.1] A₁.V) (π : A₁.V →ₗ[↥LL.1] A₂.V), (∀ g x, ι (A₀.ρ g x) = A₁.ρ g (ι x)) → (∀ g x, π (A₁.ρ g x) = A₂.ρ g (π x)) → Function.Injective ι → Function.Surjective π → LinearMap.range ι = LinearMap.ker π → IsCrys (P.PD K') A₁.ρ → IsCrys (P.PD K') A₀.ρ ∧ IsCrys (P.PD K') A₂.ρ) → ∀ (A W : GRep ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (j : W.V →ₗ[↥LL.1] A.V), Function.Injective j → (∀ g v, j (W.ρ g v) = A.ρ g (j v)) → IsCrys (P.PD K') (A.ρ.comp (Subgroup.inclusion (GK_le h))) → ∀ (x : A.V) (f : ↥(GK K) → W.V), (∀ g, j (f g) = A.ρ g x - x) → f ∈ finiteCocycles (P.PD K) W.ρ := by
   intro l _ P K K' LL h _ hF hcl A W j hj he hA x f hf
   have hZ := cocycle_of_inj A W j hj he x f hf

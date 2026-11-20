@@ -3,6 +3,11 @@ import GroundTheory.AutomorphicForms.TensorProductTheorem.KProjApplyEqSelfIff
 
 open GroundTheory.Automorphic
 
+/- English proof (translation)
+Distinguish the cases in `h : isotypicComponent R B S = ⊥`. Conclude with `Or.inl h`. Use `right`. Choose the witnesses or unpack the hypotheses as in `⟨m, ⟨e⟩, -⟩ : ∃ m ∈ {m : Submodule R B | Nonempty (m ≃ₗ[R] S)}, m ≠ ⊥ := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `h (sSup_eq_bot.mpr hc)`. Use `haveI : IsSimpleModule R m := IsSimpleModule.congr e`. Conclude with `⟨m, inferInstance, e.isotypicComponent_eq.symm⟩`.
+-/
 private theorem UpperTheory.V.KernelIndexFullLattice.homFin_comp {R B S : Type} [Ring R] [AddCommGroup B] [Module R B]
     [AddCommGroup S] [Module R S] [IsSimpleModule R S] :
     isotypicComponent R B S = ⊥ ∨ isotypicComponent R B S ∈ isotypicComponents R B := by
@@ -16,6 +21,37 @@ private theorem UpperTheory.V.KernelIndexFullLattice.homFin_comp {R B S : Type} 
     haveI : IsSimpleModule R m := IsSimpleModule.congr e
     exact ⟨m, inferInstance, e.isotypicComponent_eq.symm⟩
 
+/- English proof (translation)
+Introduce `C M X _ _ _ _ _ _ _ _ _ _ σ hσ τ hτ F hF`. Establish `hτK : CompactRep.IsKFinite τ` using `⟨fun _ => inferInstance, hτ⟩`. Use `haveI : IsSemisimpleModule (MonoidAlgebra ℂ C) τ.asModule := CompactRep.isSemisimpleModule_asModule hτK`. Use `haveI : IsNoetherian ℂ τ.asModule := inferInstanceAs (IsNoetherian ℂ X)`. Use `haveI hτT : IsScalarTower ℂ (MonoidAlgebra ℂ C) τ.asModule := by`.
+
+Use `⟨fun c a v => ?_⟩` and prove the remaining obligations. Use `show τ.asAlgebraHom (c • a) _ = c • τ.asAlgebraHom a _`. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Use `haveI hσT : IsScalarTower ℂ (MonoidAlgebra ℂ C) σ.asModule := by`.
+
+Use `⟨fun c a v => ?_⟩` and prove the remaining obligations. Use `show σ.asAlgebraHom (c • a) _ = c • σ.asAlgebraHom a _`. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Use `haveI : IsNoetherian (MonoidAlgebra ℂ C) τ.asModule := isNoetherian_of_tower ℂ inferInstance`.
+
+Take `⟨t, ht, htop⟩` from `CompleteLattice.WellFoundedGT.isSupFiniteCompact (Submodule (MonoidAlgebra ℂ C) τ.asModule) {m | IsSimpleModule (MonoidAlgebra ℂ C) m}`. Rewrite `htop` using `[IsSemisimpleModule.sSup_simples_eq_top]`. Set `W : Submodule (MonoidAlgebra ℂ C) τ.asModule → Submodule ℂ M` to `fun m => F ⊓ ((isotypicComponent (MonoidAlgebra ℂ C) σ.asModule m).restrictScalars ℂ : Submodule ℂ σ.asModule)`. Use `⟨t.sup W, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.sup_induction (p := fun N : Submodule ℂ M => FiniteDimensional ℂ N) ?_ ?_ ?_` and prove the remaining obligations.
+
+Conclude with `inferInstance`. Introduce `a ha b hb`. Conclude with `Submodule.finiteDimensional_sup a b`. Introduce `m hm haveI : IsSimpleModule (MonoidAlgebra ℂ C) m := ht hm`. Break down `UpperTheory.V.KernelIndexFullLattice.homFin_comp (R := MonoidAlgebra ℂ C) (B := σ.asModule) (S := m) with h | hc` into its components or cases.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := ⊥) ?_` and prove the remaining obligations. Introduce `v hv`. Establish `hv2 : (show σ.asModule from v) ∈ isotypicComponent (MonoidAlgebra ℂ C) σ.asModule m` using `hv.2`. Rewrite `hv2` using `[h]`. Establish `hv0 : (show σ.asModule from v) = 0` using `(Submodule.mem_bot (MonoidAlgebra ℂ C)).1 hv2`.
+
+Conclude with `(Submodule.mem_bot ℂ).2 hv0`. Use `haveI := hF _ hc`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range (CompactRep.kProj hσ hc ∘ₗ F.subtype)) ?_` and prove the remaining obligations. Introduce `v hv`. Conclude with `⟨⟨v, hv.1⟩, (CompactRep.kProj_apply_eq_self_iff hσ hc).2 hv.2⟩`.
+
+Introduce `f hf hFf x`. Set `f' : τ.asModule →ₗ[ℂ] σ.asModule` to `σ.asModuleEquiv.symm.toLinearMap ∘ₗ f ∘ₗ τ.asModuleEquiv.toLinearMap`. Set `g : τ.asModule →ₗ[MonoidAlgebra ℂ C] σ.asModule` to `MonoidAlgebra.equivariantOfLinearOfComm f' (fun k v => by`. Simplify using `[f']`. Conclude with `hf k v)`.
+
+Establish `hg : ∀ y : τ.asModule, g y = f y` using `fun y => rfl`. Establish `one : ∀ m ∈ t, ∀ y ∈ m, g y ∈ t.sup W`. Introduce `m hm y hy`. Use `haveI : IsSimpleModule (MonoidAlgebra ℂ C) m := ht hm`. Use `Finset.le_sup (f := W) hm ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hg]`. Conclude with `hFf y`. Use `show g y ∈ isotypicComponent (MonoidAlgebra ℂ C) σ.asModule m`. Break down `(g.domRestrict m).injective_or_eq_zero with hi | h0` into its components or cases. Establish `hle : LinearMap.range (g.domRestrict m) ≤ isotypicComponent (MonoidAlgebra ℂ C) σ.asModule m` using `le_sSup ⟨(LinearEquiv.ofInjective _ hi).symm⟩`.
+
+Conclude with `hle ⟨⟨y, hy⟩, rfl⟩`. Establish `h1 : g y = 0` using `by simpa using LinearMap.congr_fun h0 ⟨y, hy⟩`. Rewrite using `[h1]`. Conclude with `zero_mem _`. Establish `key : ∀ s : Finset (Submodule (MonoidAlgebra ℂ C) τ.asModule), s ⊆ t → ∀ y ∈ s.sup id, g y ∈ t.sup W`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ y hy`. Establish `hy0 : y = 0` using `by simpa using hy`.
+
+Rewrite using `[hy0, map_zero]`. Conclude with `zero_mem _`. Consider the case `insert a s ha ih`. Introduce `hs y hy`. Rewrite `hy` using `[Finset.sup_insert]`.
+
+Take `⟨y1, hy1, y2, hy2, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[map_add]`. Conclude with `add_mem (one a (hs (Finset.mem_insert_self a s)) y1 hy1) (ih ((Finset.subset_insert a s).trans hs) y2 hy2)`. Establish `hx : (show τ.asModule from x) ∈ t.sup id` using `htop ▸ Submodule.mem_top`. Use `key t subset_rfl _ hx` as an intermediate fact.
+
+Rewrite `this` using `[hg]`. Conclude with `this`.
+-/
 theorem UpperTheory.V.KernelIndexFullLattice.homFin_holds :
     UpperTheory.V.KernelIndexFullLattice.HomFin := by
   intro C M X _ _ _ _ _ _ _ _ _ _ σ hσ τ hτ F hF

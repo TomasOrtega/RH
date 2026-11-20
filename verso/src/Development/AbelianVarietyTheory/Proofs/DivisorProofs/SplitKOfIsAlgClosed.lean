@@ -38,6 +38,9 @@ def pairDet {R J : Type} [CommRing R] {g m k : ℕ} (h : J → Fin g → R) (a :
     (σ : Fin k → J) : R :=
   (Matrix.of fun r l : Fin k => ∑ i, h (σ r) i * a (Fin.castLE hk l) i).det
 
+/- English proof (translation)
+Rewrite using `[pairDet, RingHom.map_det]`. Use `congr 1`. Use extensionality with `r l`. Simplify using the standard rewrite rules.
+-/
 theorem map_pairDet {R S J : Type} [CommRing R] [CommRing S] (φ : R →+* S) {g m k : ℕ} (h : J → Fin g → R)
     (a : Fin m → Fin g → R) (hk : k ≤ m) (σ : Fin k → J) :
     φ (pairDet h a hk σ) = pairDet (fun j i => φ (h j i)) (fun l i => φ (a l i)) hk σ := by
@@ -78,6 +81,11 @@ def CharFam {S : Scheme.{0}} (ρ : S ⟶ X) (p : ℕ) [Fact p.Prime] (n : ℕ) :
         ∀ (x : Γ(S, U) →+* ↥(intO ℂ_[p])) (y : Sp ↥(intO ℂ_[p]) ⟶ S), spMap x ≫ hU.fromSpec = y →
           ∀ j, DlogIs t p n (c j y) (fun i => spMap (dualMap x) ≫ e i) (fun i => x (h j i))
 
+/- English proof (translation)
+Introduce `Ω _ io w hw`. Set `ε` to `(FractionRing.algEquiv K K).toRingEquiv`. Establish `: IsAlgClosed (FractionRing K)` using `IsAlgClosed.of_ringEquiv K _ ε.symm`. Establish `e : (io.comp ε.toRingHom).comp (algebraMap K (FractionRing K)) = io` using `RingHom.ext fun a => congrArg io ((FractionRing.algEquiv K K).commutes a)`. Establish `h` using `splitTors_of_isAlgClosed E H X t K ξ q hq Ω (io.comp ε.toRingHom)`.
+
+Rewrite `h` using `[e]`. Take `⟨w₀, h₀⟩` from `h w hw`. Use `⟨spMap ε.toRingHom ≫ w₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← h₀, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem splitK_of_isAlgClosed [IsLocallyNoetherian X] {K : Type} [Field K] [IsAlgClosed K] (ξ : Sp K ⟶ X) {q : ℕ}
     (hq : q ≠ 0) : SplitK t ξ q := by
   intro Ω _ io w hw

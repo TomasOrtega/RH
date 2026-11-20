@@ -31,12 +31,18 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a t ih => simp [Scheme.IdealSheafData.comap_id]`.
+-/
 private theorem map_comap_id {W : Scheme.{u}} (l : List W.IdealSheafData) :
     List.map (fun D : W.IdealSheafData => D.comap (𝟙 W)) l = l := by
   induction l with
   | nil => rfl
   | cons a t ih => simp [Scheme.IdealSheafData.comap_id]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hlen : (A.eraseIdx j).length = A.length - 1`. Rewrite using `[List.length_eraseIdx, if_pos hj]`. Rewrite using `[List.eraseIdx_append_of_lt_length hj, ← hlen, List.take_left]`.
+-/
 private theorem take_eraseIdx_append_singleton {α : Type*} (A : List α) (e : α) (j n : ℕ)
     (hj : j < A.length) (hn : n = A.length - 1) :
     List.take n ((A ++ [e]).eraseIdx j) = A.eraseIdx j := by
@@ -45,16 +51,25 @@ private theorem take_eraseIdx_append_singleton {α : Type*} (A : List α) (e : �
     rw [List.length_eraseIdx, if_pos hj]
   rw [List.eraseIdx_append_of_lt_length hj, ← hlen, List.take_left]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Use `List.take_of_length_le ?_` and prove the remaining obligations. Rewrite using `[List.length_eraseIdx, if_pos hj]`.
+-/
 private theorem take_length_sub_one_eraseIdx {α : Type*} (A : List α) (j n : ℕ) (hj : j < A.length)
     (hn : n = A.length - 1) : List.take n (A.eraseIdx j) = A.eraseIdx j := by
   subst hn
   refine List.take_of_length_le ?_
   rw [List.length_eraseIdx, if_pos hj]
 
+/- English proof (translation)
+Rewrite using `[← Scheme.IdealSheafData.one_eq_top, one_pow]`.
+-/
 private theorem top_pow {Y : Scheme.{u}} (m : ℕ) :
     (⊤ : Y.IdealSheafData) ^ m = ⊤ := by
   rw [← Scheme.IdealSheafData.one_eq_top, one_pow]
 
+/- English proof (translation)
+Establish `hdown : F ^ m * residualByPow A F m = A` using `pow_mul_residualByPow A F m hex`. Establish `hup : F' ^ m * (residualByPow A F m).comap g = A.comap g`. Rewrite using `[hF', ← Scheme.IdealSheafData.comap_pow, ← Scheme.IdealSheafData.comap_mul, hdown]`. Establish `hup2 : F' ^ m * residualByPow (A.comap g) F' m = A.comap g` using `pow_mul_residualByPow (A.comap g) F' m ⟨_, hup⟩`. Conclude with `(hcart.pow m).eq_of_mul_eq_mul (hup2.trans hup.symm)`.
+-/
 private theorem residualByPow_comap_of_isLocallyGeneratedByNonZeroDivisor {X Y : Scheme.{u}} (g : Y ⟶ X)
     (A F : X.IdealSheafData) (F' : Y.IdealSheafData) (m : ℕ) (hF' : F' = F.comap g)
     (hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor F') (hex : ∃ B : X.IdealSheafData, F ^ m * B = A) :
@@ -66,6 +81,13 @@ private theorem residualByPow_comap_of_isLocallyGeneratedByNonZeroDivisor {X Y :
     pow_mul_residualByPow (A.comap g) F' m ⟨_, hup⟩
   exact (hcart.pow m).eq_of_mul_eq_mul (hup2.trans hup.symm)
 
+/- English proof (translation)
+Use `hX` as an intermediate fact. Use `hY` as an intermediate fact. Use `hflat` as an intermediate fact. Substitute `hZ'` using the available equality. Establish `hst : ∀ D : X.IdealSheafData, (Blowup.strictTransform (𝟙 X) Z D).comap g = Blowup.strictTransform (𝟙 Y) (Z.comap g) (D.comap g)` using `fun D => comap_strictTransform_of_flat_of_isLocallyNoetherian (𝟙 X) g (𝟙 Y) g (CategoryTheory.IsPullback.id_vert g) Z D hZ`.
+
+Establish `hcomp : List.map ((fun D : X.IdealSheafData => D.comap g) ∘ Blowup.strictTransform (𝟙 X) Z) B = List.map (Blowup.strictTransform (𝟙 Y) (Z.comap g)) (List.map (fun D : X.IdealSheafData => D.comap g) B)`. Rewrite using `[List.map_map]`. Conclude with `List.map_congr_left (fun D _ => hst D)`. Rewrite using `[map_comap_id, map_comap_id, take_eraseIdx_append_singleton (List.map (Blowup.strictTransform (𝟙 Y) (Z.comap g)) E) (Blowup.exceptionalIdeal (𝟙 Y) (Z.comap g)) j (E.length - 1) (by simpa using hjE) (by simp), take_eraseIdx_append_singleton (List.map (Blowup.strictTransform (𝟙 X) …`. Use `((MarkedIdealWithBoundary.SameNontrivialBoundary.map (Blowup.strictTransform (𝟙 Y) (Z.comap g)) (strictTransform_top (𝟙 Y) (Z.comap g)) hBE).eraseIdx j ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[← List.map_take, ← List.map_take, ← List.map_take, htake, List.map_take]`.
+-/
 private theorem sameNontrivialBoundary_eraseIdx_strictTransform_comap_of_flat {X Y : Scheme.{u}} (g : Y ⟶ X)
     (hX : AlgebraicGeometry.IsNoetherian X) (hY : AlgebraicGeometry.IsNoetherian Y)
     (hflat : AlgebraicGeometry.Flat g)
@@ -107,6 +129,13 @@ private theorem sameNontrivialBoundary_eraseIdx_strictTransform_comap_of_flat {X
     (strictTransform_top (𝟙 Y) (Z.comap g)) hBE).eraseIdx j ?_).symm
   rw [← List.map_take, ← List.map_take, ← List.map_take, htake, List.map_take]
 
+/- English proof (translation)
+Introduce `T hV Y q h hsm hq E' hBE j hj hjE htake hV' hO hpre`. Establish `hOx : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).1 hO`. Establish `hex : ∃ B : T.scheme.IdealSheafData, containedComponentsIdeal T j hj ^ T.mult * B = T.ideal`. Take `⟨B, hB⟩` from `htwist T hV hOx j hj`. Conclude with `⟨B, by rw [mul_comm]; exact hB⟩`.
+
+Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor (containedComponentsIdeal ((T.pullbackAlong Y q h).withBoundary E') j hjE)`. Establish `hb` using `hblow ((T.pullbackAlong Y q h).withBoundary E') hV' j hjE`. Establish `hc` using `isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal hb`. Rewrite `hc` using `[Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]`. Then use the resulting hypothesis. Establish `key` using `residualByPow_comap_of_isLocallyGeneratedByNonZeroDivisor h T.ideal (containedComponentsIdeal T j hj) (containedComponentsIdeal ((T.pullbackAlong Y q h).withBoundary E') j hjE) T.mult hpre hcart hex`.
+
+Simplify using `only [lowerIdealAfterBlowup, Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]`. Conclude with `key`.
+-/
 theorem lowerIdealAfterBlowup_pullbackAlong_of_smooth
     (htwist : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
       (∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) →
@@ -141,6 +170,9 @@ theorem lowerIdealAfterBlowup_pullbackAlong_of_smooth
   simp only [lowerIdealAfterBlowup, Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]
   exact key
 
+/- English proof (translation)
+Introduce `T hV Y q h hsm hq E' hBE j hj hjE htake hV' hO hpre`. Establish `hsmooth : AlgebraicGeometry.Smooth h` using `hsm`. Establish `hbdry : (T.pullbackAlong Y q h).boundary = List.map (fun D : T.scheme.IdealSheafData => D.comap h) T.boundary` using `MarkedIdealWithBoundary.pullbackAlong_boundary T Y q h`. Rewrite `hBE`, `htake` using `[hbdry]`. Conclude with `sameNontrivialBoundary_eraseIdx_strictTransform_comap_of_flat h hV.isNoetherian hV'.isNoetherian inferInstance (containedComponentsIdeal T j hj) (hblow T hV j hj) (containedComponentsIdeal ((T.pullbackAlong Y q h).withBoundary E') j hjE) hpre T.boundary E' hBE j hj hjE htake`.
+-/
 theorem lowerBoundaryAfterBlowup_sameNontrivialBoundary_of_smooth
     (_htwist : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
       (∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) →
@@ -174,6 +206,11 @@ theorem lowerBoundaryAfterBlowup_sameNontrivialBoundary_of_smooth
     (containedComponentsIdeal ((T.pullbackAlong Y q h).withBoundary E') j hjE) hpre
     T.boundary E' hBE j hj hjE htake
 
+/- English proof (translation)
+Establish `hex : ∃ B : T.scheme.IdealSheafData, containedComponentsIdeal T j hj ^ T.mult * B = T.ideal`. Take `⟨B, hB⟩` from `htwist T hV hO j hj`. Conclude with `⟨B, by rw [mul_comm]; exact hB⟩`. Establish `hdown : containedComponentsIdeal T j hj ^ T.mult * residualByPow T.ideal (containedComponentsIdeal T j hj) T.mult = T.ideal` using `pow_mul_residualByPow T.ideal (containedComponentsIdeal T j hj) T.mult hex`. Establish `hup` using `congrArg (fun I : T.scheme.IdealSheafData => I.comap h) hdown`.
+
+Simplify using `only [Scheme.IdealSheafData.comap_mul, Scheme.IdealSheafData.comap_pow, htop, top_pow, Scheme.IdealSheafData.top_mul] at hup`. Simplify using `only [lowerIdealAfterBlowup, lowerIdealWithoutBlowup, Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]`. Conclude with `hup`.
+-/
 theorem comap_lowerIdealAfterBlowup_eq_comap_lowerIdealWithoutBlowup
     (htwist : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
       (∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) →
@@ -198,6 +235,15 @@ theorem comap_lowerIdealAfterBlowup_eq_comap_lowerIdealWithoutBlowup
     Scheme.IdealSheafData.comap_id]
   exact hup
 
+/- English proof (translation)
+Establish `hnoT : AlgebraicGeometry.IsNoetherian T.scheme` using `hV.isNoetherian`. Establish `hstT : ∀ D : T.scheme.IdealSheafData, (Blowup.strictTransform (𝟙 T.scheme) (containedComponentsIdeal T j hj) D).comap h = D.comap h`. Introduce `D`. Establish `hg : ((containedComponentsIdeal T j hj).comap (𝟙 T.scheme)).comap h = ⊤`. Rewrite using `[Scheme.IdealSheafData.comap_id]`.
+
+Conclude with `htop`. Establish `h2` using `strictTransform_comap_of_comap_center_eq_top (𝟙 T.scheme) (containedComponentsIdeal T j hj) D h hg`. Rewrite using `[h2, Scheme.IdealSheafData.comap_id]`. Establish `hR0 : lowerBoundaryAfterBlowup T j hj = List.map (Blowup.strictTransform (𝟙 T.scheme) (containedComponentsIdeal T j hj)) (List.map (fun D : T.scheme.IdealSheafData => D.comap (𝟙 T.scheme)) T.boundary) ++ [Blowup.exceptionalIdeal (𝟙 T.scheme) (containedComponentsIdeal T j hj)]` using `rfl`. Establish `hR : lowerBoundaryAfterBlowup T j hj = List.map (Blowup.strictTransform (𝟙 T.scheme) (containedComponentsIdeal T j hj)) T.boundary ++ [Blowup.exceptionalIdeal (𝟙 T.scheme) (containedComponentsIdeal T j hj)]`.
+
+Rewrite using `[hR0, map_comap_id]`. Establish `key : List.map (fun D : T.scheme.IdealSheafData => D.comap h) ((List.map (Blowup.strictTransform (𝟙 T.scheme) (containedComponentsIdeal T j hj)) T.boundary).eraseIdx j) = List.map (fun D : T.scheme.IdealSheafData => D.comap h) (T.boundary.eraseIdx j)`. Rewrite using `[← List.eraseIdx_map, ← List.eraseIdx_map, List.map_map]`. Use `congr 1`. Conclude with `List.map_congr_left (fun D _ => hstT D)`.
+
+Rewrite using `[hR, lowerBoundaryWithoutBlowup_eq T, take_eraseIdx_append_singleton (List.map (Blowup.strictTransform (𝟙 T.scheme) (containedComponentsIdeal T j hj)) T.boundary) (Blowup.exceptionalIdeal (𝟙 T.scheme) (containedComponentsIdeal T j hj)) j (T.boundary.length - 1) (by simpa using hj …`. Conclude with `MonomialCenter.sameNontrivialBoundary_refl _`.
+-/
 theorem comap_lowerBoundaryAfterBlowup_sameNontrivialBoundary_of_eq_top
     (_htwist : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
       (∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) →
@@ -243,6 +289,11 @@ theorem comap_lowerBoundaryAfterBlowup_sameNontrivialBoundary_of_eq_top
     take_length_sub_one_eraseIdx T.boundary j (T.boundary.length - 1) hj rfl, key]
   exact MonomialCenter.sameNontrivialBoundary_refl _
 
+/- English proof (translation)
+Establish `hex : ∃ B : T.scheme.IdealSheafData, containedComponentsIdeal T j hj ^ T.mult * B = T.ideal`. Take `⟨B, hB⟩` from `htwist T hV hO j hj`. Conclude with `⟨B, by rw [mul_comm]; exact hB⟩`. Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor (containedComponentsIdeal ((T.baseChange K f).withBoundary E') j hjE)`. Establish `hb` using `hblow ((T.baseChange K f).withBoundary E') hV' j hjE`.
+
+Establish `hc` using `isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal hb`. Rewrite `hc` using `[Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]`. Then use the resulting hypothesis. Establish `key` using `residualByPow_comap_of_isLocallyGeneratedByNonZeroDivisor (fieldBaseChangeProjection T K f) T.ideal (containedComponentsIdeal T j hj) (containedComponentsIdeal ((T.baseChange K f).withBoundary E') j hjE) T.mult hpre hcart hex`. Simplify using `only [lowerIdealAfterBlowup, Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]`. Conclude with `key`.
+-/
 theorem lowerIdealAfterBlowup_fieldBaseChange
     (htwist : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
       (∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) →
@@ -275,6 +326,9 @@ theorem lowerIdealAfterBlowup_fieldBaseChange
   simp only [lowerIdealAfterBlowup, Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]
   exact key
 
+/- English proof (translation)
+Establish `hbdry : (T.baseChange K f).boundary = List.map (fun D : T.scheme.IdealSheafData => D.comap (fieldBaseChangeProjection T K f)) T.boundary` using `MarkedIdealWithBoundary.baseChange_boundary T K f`. Rewrite `hBE`, `htake` using `[hbdry]`. Conclude with `sameNontrivialBoundary_eraseIdx_strictTransform_comap_of_flat (fieldBaseChangeProjection T K f) hV.isNoetherian hV'.isNoetherian inferInstance (containedComponentsIdeal T j hj) (hblow T hV j hj) (containedComponentsIdeal ((T.baseChange K f).withBoundary E') j hjE) hpre T.boundary …`.
+-/
 theorem lowerBoundaryAfterBlowup_fieldBaseChange
     (_htwist : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
       (∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) →

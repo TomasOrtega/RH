@@ -13,6 +13,11 @@ namespace SectionQuotientLocal
 
 variable {T : Type} {K' : Type} [Field K'] (y : (Σ _ : Unit, T) → K')
 
+/- English proof (translation)
+Use `show ∀ c : Unit → T, (∀ k, y ⟨k, c k⟩ ≠ 0) → _ ∈ chartRingZ y c`. Introduce `c _`. Establish `hg : y ⟨(), t⟩ / y ⟨(), c ()⟩ ∈ chartRingZ y c`. Unfold `chartRingZ`. Conclude with `Algebra.subset_adjoin ⟨⟨(), t⟩, rfl⟩`.
+
+Simplify `hg` using `[div_eq_mul_inv]`.
+-/
 theorem coord_mem_sectionMod (t : T) : y ⟨(), t⟩ ∈ sectionMod y := by
   show ∀ c : Unit → T, (∀ k, y ⟨k, c k⟩ ≠ 0) → _ ∈ chartRingZ y c
   intro c _
@@ -21,6 +26,17 @@ theorem coord_mem_sectionMod (t : T) : y ⟨(), t⟩ ∈ sectionMod y := by
     exact Algebra.subset_adjoin ⟨⟨(), t⟩, rfl⟩
   simpa [div_eq_mul_inv] using hg
 
+/- English proof (translation)
+Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨⟨⟨⟩, u⟩, rfl⟩` from `hx`. Conclude with `h u`. Consider the case `algebraMap r`.
+
+Use `⟨(r : curveRing y), 1, (Ideal.ne_top_iff_one m).mp hm.ne_top, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `add x z _ _ hx hz`. Take `⟨a₁, b₁, hb₁, e₁⟩` from `hx`. Take `⟨a₂, b₂, hb₂, e₂⟩` from `hz`.
+
+Use `⟨b₂ * a₁ + b₁ * a₂, b₁ * b₂, fun hmem => (hm.mem_or_mem hmem).elim hb₁ hb₂, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← e₁, ← e₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x z _ _ hx hz`.
+
+Take `⟨a₁, b₁, hb₁, e₁⟩` from `hx`. Take `⟨a₂, b₂, hb₂, e₂⟩` from `hz`. Use `⟨a₁ * a₂, b₁ * b₂, fun hmem => (hm.mem_or_mem hmem).elim hb₁ hb₂, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← e₁, ← e₂]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_mul_mem_of_mem_chartRingZ (m : Ideal (curveRing y)) (hm : m.IsPrime) (t : T)
     (h : ∀ u : T, ∃ a b : curveRing y, b ∉ m ∧ (b : K') * (y ⟨(), u⟩ / y ⟨(), t⟩) = a)
     {z : K'} (hz : z ∈ chartRingZ y (fun _ => t)) :
@@ -51,6 +67,37 @@ end SectionQuotientLocal
 
 open SectionQuotientLocal in
 
+/- English proof (translation)
+Introduce `T _ K' _ _ y s _hy hs hsP m t hm hrat a b hb hba`. Use `set x := aeval y s with hx_def`. Establish `hx0 : x ≠ 0` using `SectionQuotientFinite.aeval_ne_zero y hs hsP`. Establish `hyt : y ⟨(), t⟩ ≠ 0`. Introduce `h0`.
+
+Rewrite `hba` using `[h0, mul_zero]`. Break down `mul_eq_zero.mp hba with h | h` into its components or cases. Establish `hb0 : b = 0` using `by exact_mod_cast h`. Conclude with `hb (hb0 ▸ m.zero_mem)`. Conclude with `hx0 h`.
+
+Set `e : sectionMod y` to `⟨y ⟨(), t⟩, coord_mem_sectionMod y t⟩`. Set `φ : curveRing y →ₗ[curveRing y] sectionQuot y x` to `LinearMap.toSpanSingleton (curveRing y) _ (Submodule.Quotient.mk e)`. Establish `hφ : ∀ β : curveRing y, φ β = Submodule.Quotient.mk (β • e)` using `fun β => by`. Simplify using `[φ, Submodule.Quotient.mk_smul]`. Establish `hφ0 : ∀ β : curveRing y, φ β = 0 ↔ ∃ γ : curveRing y, (γ : K') * x = β * y ⟨(), t⟩`.
+
+Introduce `β`. Rewrite using `[hφ, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.mem_span_singleton]`. Both sides reduce to the same expression. Establish `hle : Ideal.span {a} ≤ LinearMap.ker φ`. Rewrite using `[Ideal.span_singleton_le_iff_mem, LinearMap.mem_ker, hφ0]`.
+
+Conclude with `⟨b, hba⟩`. Set `ψ : (curveRing y ⧸ Ideal.span {a}) →ₗ[curveRing y] sectionQuot y x` to `(Ideal.span {a}).liftQ φ hle`. Establish `hker : ∀ q, ψ q = 0 → b • q = 0`. Introduce `q hq`. Take `⟨β, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+
+Take `⟨γ, hγ⟩` from `(hφ0 β).mp hq`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul, Ideal.mem_span_singleton']`. Use `⟨γ, Subtype.ext ?_⟩` and prove the remaining obligations. Use `push_cast`. Apply `mul_right_cancel₀ hyt` to reduce the goal to its premises.
+
+Rewrite using `[mul_assoc, ← hba, mul_assoc, ← hγ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsurj0 : ∀ n : sectionMod y, ∃ r : curveRing y, r ∉ m ∧ ∃ β : curveRing y, r • n = β • e`. Introduce `n`. Establish `hn : (n : K') ∈ chartLat y (fun _ => 1) 1` using `n.2`.
+
+Establish `hnt : (n : K') * (y ⟨(), t⟩)⁻¹ ∈ chartRingZ y (fun _ => t)`. Simplify using `using hn (fun _ => t) (fun _ => hyt)`. Take `⟨β, r, hr, hβ⟩` from `exists_mul_mem_of_mem_chartRingZ y m hm t hrat hnt`. Use `⟨r, hr, β, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (r : K') * n = β * y ⟨(), t⟩`.
+
+Rewrite using `[← hβ]`. Clear the denominators using the available nonvanishing facts. Set `S` to `m.primeCompl`. Set `Φ` to `IsLocalizedModule.map S (LocalizedModule.mkLinearMap S (curveRing y ⧸ Ideal.span {a})) (LocalizedModule.mkLinearMap S (sectionQuot y x)) ψ`. Establish `hΦ : ∀ q (r : S), Φ (LocalizedModule.mk q r) = LocalizedModule.mk (ψ q) r` using `fun q r => IsLocalizedModule.map_LocalizedModules S _ q r`.
+
+Establish `hinj : Function.Injective Φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z`. Use `LocalizedModule.induction_on (β := fun z => Φ z = 0 → z = 0) (fun q r hz => ?_) z` and prove the remaining obligations. Rewrite `hz` using `[hΦ, ← LocalizedModule.zero_mk r, LocalizedModule.mk_eq]`.
+
+Take `⟨u, hu⟩` from `hz`. Simplify using `only [smul_zero, Submonoid.smul_def] at hu`. Rewrite `hu` using `[← map_smul, ← map_smul]`. Establish `hq` using `hker _ hu`. Rewrite using `[← LocalizedModule.zero_mk r, LocalizedModule.mk_eq]`.
+
+Use `⟨⟨b * u, S.mul_mem hb u.2⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_zero, Submonoid.smul_def, mul_smul]`. Conclude with `hq`. Establish `hsurj : Function.Surjective Φ`. Introduce `z`.
+
+Use `LocalizedModule.induction_on (β := fun z => ∃ w, Φ w = z) (fun n r => ?_) z` and prove the remaining obligations. Take `⟨n', rfl⟩` from `Submodule.Quotient.mk_surjective _ n`. Take `⟨r', hr', β, hβ⟩` from `hsurj0 n'`. Use `⟨LocalizedModule.mk (Submodule.Quotient.mk β) (⟨r', hr'⟩ * r), ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ]`.
+
+Establish `hψ : ψ (Submodule.Quotient.mk β) = Submodule.Quotient.mk (β • e)`. Rewrite using `[← hφ]`. Both sides reduce to the same expression. Rewrite using `[hψ, ← hβ, Submodule.Quotient.mk_smul]`. Conclude with `LocalizedModule.mk_cancel_common_left ⟨r', hr'⟩ r _`.
+
+Use `hm` as an intermediate fact. Set `E` to `(LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩).extendScalarsOfIsLocalization S (Localization.AtPrime m)`. Unfold `locLen`. Rewrite using `[dif_pos hm, dif_pos hm, E.length_eq]`.
+-/
 theorem SectionQuotLocal.proof : SectionQuotLocal.Statement := by
   intro T _ K' _ _ y s _hy hs hsP m t hm hrat a b hb hba
   set x := aeval y s with hx_def

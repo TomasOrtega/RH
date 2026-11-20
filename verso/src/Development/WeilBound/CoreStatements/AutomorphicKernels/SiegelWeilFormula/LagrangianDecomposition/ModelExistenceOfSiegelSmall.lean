@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace PositivityTheory.SiegelWeilFormula.Ald
 
+/- English proof (translation)
+The claim follows from `modelEx_wired PositivityTheory.SiegelWeilFormula.Ldexa.sDarb partCharInv chartFacts hG hS`.
+-/
 theorem model_existence_of_siegel_small (hG : SiegelSmall) (hS : SmallS) : ModelEx :=
   modelEx_wired PositivityTheory.SiegelWeilFormula.Ldexa.sDarb partCharInv chartFacts hG hS
 

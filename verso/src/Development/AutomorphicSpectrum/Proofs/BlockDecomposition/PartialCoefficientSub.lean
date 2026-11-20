@@ -11,6 +11,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.PcAdd
 
+/- English proof (translation)
+Establish `key : ∀ c : X → Z → ℂ, ∀ C : ℝ, (∀ x, Continuous (c x)) → (∀ z, Continuous fun x => c x z) → (∀ x z, ‖c x z‖ ≤ C) → (∀ x, Integrable (c x) l) ∧ Integrable (fun x => ∫ z, c x z ∂l) u`. Introduce `c C hc hc' hC`. Establish `hi : ∀ x, Integrable (c x) l` using `fun x => Integrable.of_bound (hc x).aestronglyMeasurable C (Eventually.of_forall (hC x))`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Establish `hcont : Continuous fun x => ∫ z, c x z ∂l` using `continuous_of_dominated (bound := fun _ => C) (fun x => (hc x).aestronglyMeasurable) (fun x => Eventually.of_forall (hC x)) (integrable_const C) (Eventually.of_forall hc')`.
+
+Use `Integrable.of_bound hcont.aestronglyMeasurable (C * l.real Set.univ) (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Conclude with `norm_integral_le_of_norm_le_const (Eventually.of_forall (hC x))`. Take `⟨i1, j1⟩` from `key a A ha ha' hA`. Take `⟨i2, j2⟩` from `key b B hb hb' hB`. Rewrite using `[← integral_sub j1 j2]`.
+
+Conclude with `integral_congr_ae (Eventually.of_forall fun x => integral_sub (i1 x) (i2 x))`.
+-/
 theorem iterated_sub {Z X : Type*} [TopologicalSpace Z] [MeasurableSpace Z] [OpensMeasurableSpace Z]
     [TopologicalSpace X] [FirstCountableTopology X] [MeasurableSpace X] [OpensMeasurableSpace X]
     (l : Measure Z) (u : Measure X) [IsFiniteMeasure l] [IsFiniteMeasure u] (a b : X → Z → ℂ) (A B : ℝ)
@@ -35,9 +42,25 @@ theorem iterated_sub {Z X : Type*} [TopologicalSpace Z] [MeasurableSpace Z] [Ope
   rw [← integral_sub j1 j2]
   exact integral_congr_ae (Eventually.of_forall fun x => integral_sub (i1 x) (i2 x))
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem firstCountable_of_second (X : Type*) [TopologicalSpace X] [SecondCountableTopology X] :
     FirstCountableTopology X := inferInstance
 
+/- English proof (translation)
+Introduce `hP D n ρ p hn M m ψ hψ b₀ F F' hF hFi hF' hFi' y g`. Take `⟨C, hC, hCm, -⟩` from `(hP D n ρ p hn M m ψ hψ b₀).2 (g)`. Use `haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D ρ) := Subtype.borelSpace _`.
+
+Use `haveI : SecondCountableTopology (Mx D ρ p) := (GlobalTheory.MixModel.lattice_Mx D ρ p).2.2.1`. Use `haveI : FirstCountableTopology (Mx D ρ p) := firstCountable_of_second _`. Use `haveI h1 : IsFiniteMeasure (m.lz.restrict m.𝓖) := ⟨by rw [Measure.restrict_apply_univ, m.hz.2.2]; exact ENNReal.one_lt_top⟩`. Use `haveI h2 : IsFiniteMeasure (m.μ.restrict m.𝓕) := ⟨by rw [Measure.restrict_apply_univ, m.hμ.2.2]; exact ENNReal.one_lt_top⟩`. Establish `hchz : Continuous fun z : hermA D ρ => conj (chz ψ b₀ z)` using `Complex.continuous_conj.comp (hψ.1.comp ((GlobalTheory.CompanionTheory.FourierN.continuous_pr b₀.1).comp continuous_subtype_val))`.
+
+Establish `hnorm : ∀ z, ‖conj (chz ψ b₀ z)‖ = 1` using `fun z => by`. Rewrite using `[RCLike.norm_conj]`. Conclude with `hψ.2.1 _`. Establish `hz : ∀ x, Continuous fun z : hermA D ρ => M.nzx z 0 * (M.nzx 0 x * (M.sh y * g))` using `fun x => (M.nzx_cont.comp (continuous_id.prodMk continuous_const)).mul continuous_const`. Establish `hx : ∀ z, Continuous fun x : Mx D ρ p => M.nzx z 0 * (M.nzx 0 x * (M.sh y * g))` using `fun z => continuous_const.mul ((M.nzx_cont.comp (continuous_const.prodMk continuous_id)).mul continuous_const)`.
+
+Establish `bd : ∀ Φ : G D n → ℂ, Continuous Φ → LeftInv (GF D n) Φ → ∃ B : ℝ, ∀ x z, ‖Φ (M.nzx z 0 * (M.nzx 0 x * (M.sh y * g))) * conj (chz ψ b₀ z)‖ ≤ B`. Introduce `Φ hΦ hi`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hΦ.continuousOn`. Use `⟨B, fun x z => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hc⟩` from `hCm z x y`.
+
+Rewrite using `[norm_mul, hnorm, mul_one, ← hi γ hγ]`. Conclude with `hB _ hc`. Take `⟨A, hA⟩` from `bd F hF hFi`. Take `⟨B, hB⟩` from `bd F' hF' hFi'`. Establish `key` using `iterated_sub (m.lz.restrict m.𝓖) (m.μ.restrict m.𝓕) (fun x z => F (M.nzx z 0 * (M.nzx 0 x * (M.sh y * g))) * conj (chz ψ b₀ z)) (fun x z => F' (M.nzx z 0 * (M.nzx 0 x * (M.sh y * g))) * conj (chz ψ b₀ z)) A B (fun x => (hF.comp (hz x)).mul hchz) (fun x => (hF'.comp (hz x)).mul hc …`.
+
+Simplify using `only [PositivityTheory.Rg.Rsw.pc, PositivityTheory.Rg.Rsw.zc, Pi.sub_apply, sub_mul]`. Conclude with `key`.
+-/
 theorem pc_sub : PcBound → ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D hn) (m : Meas D ρ p)
     (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (b₀ : HermE D ρ) (F F' : G D n → ℂ), Continuous F →
     LeftInv (GF D n) F → Continuous F' → LeftInv (GF D n) F' → ∀ (y : Mx D ρ p) (g : G D n),

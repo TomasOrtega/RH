@@ -21,6 +21,9 @@ section Additive
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Use extensionality with `U x`. Both sides reduce to the same expression.
+-/
 lemma modulesAbMap_add {F G : X.Modules} (φ ψ : F ⟶ G) :
     modulesAbMap (φ + ψ) = modulesAbMap φ + modulesAbMap ψ := by
   ext U x
@@ -29,27 +32,42 @@ lemma modulesAbMap_add {F G : X.Modules} (φ ψ : F ⟶ G) :
 variable [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{u})]
   (A : Type*) [CommRing A] [Algebra A Γ(X, ⊤)]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [H.linearMap_apply, LinearMap.add_apply, modulesAbMap_add, Sheaf.H.map_add_apply]`.
+-/
 lemma H.linearMap_add {F G : X.Modules} (φ ψ : F ⟶ G) (p : ℕ) :
     H.linearMap.{w'} A (φ + ψ) p = H.linearMap A φ p + H.linearMap A ψ p := by
   ext x
   simp only [H.linearMap_apply, LinearMap.add_apply, modulesAbMap_add, Sheaf.H.map_add_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [H.linearMap_apply, LinearMap.comp_apply, modulesAbMap_comp, Sheaf.H.map_comp_apply]`.
+-/
 lemma H.linearMap_comp {F G K : X.Modules} (φ : F ⟶ G) (ψ : G ⟶ K) (p : ℕ) :
     H.linearMap.{w'} A (φ ≫ ψ) p = (H.linearMap A ψ p).comp (H.linearMap A φ p) := by
   ext x
   simp only [H.linearMap_apply, LinearMap.comp_apply, modulesAbMap_comp, Sheaf.H.map_comp_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [H.linearMap_apply, LinearMap.id_apply, modulesAbMap_id, Sheaf.H.map_id_apply]`.
+-/
 lemma H.linearMap_id (F : X.Modules) (p : ℕ) :
     H.linearMap.{w'} A (𝟙 F) p = LinearMap.id := by
   ext x
   simp only [H.linearMap_apply, LinearMap.id_apply, modulesAbMap_id, Sheaf.H.map_id_apply]
 
+/- English proof (translation)
+Establish `h` using `H.linearMap_add.{w'} A (0 : F ⟶ G) 0 p`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_add.mp h`.
+-/
 lemma H.linearMap_zero (F G : X.Modules) (p : ℕ) :
     H.linearMap.{w'} A (0 : F ⟶ G) p = 0 := by
   have h := H.linearMap_add.{w'} A (0 : F ⟶ G) 0 p
   rw [add_zero] at h
   exact left_eq_add.mp h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [H.linearMap_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.linearMap_add, ih]`.
+-/
 lemma H.linearMap_sum {F G : X.Modules} {ι : Type*} (s : Finset ι) (φ : ι → (F ⟶ G)) (p : ℕ) :
     H.linearMap.{w'} A (∑ i ∈ s, φ i) p = ∑ i ∈ s, H.linearMap A (φ i) p := by
   classical
@@ -73,6 +91,9 @@ def abSC (S : ShortComplex X.Modules) :
     rw [← modulesAbMap_comp, S.zero]
     exact (SheafOfModules.toSheaf X.ringCatSheaf).map_zero _ _)
 
+/- English proof (translation)
+The claim follows from `shortExact_abShortComplex hS`.
+-/
 lemma shortExact_abSC {S : ShortComplex X.Modules} (hS : S.ShortExact) : (abSC S).ShortExact :=
   shortExact_abShortComplex hS
 
@@ -94,6 +115,9 @@ def H.δLinear (p : ℕ) :
   map_smul' a x :=
     H.δ_naturality hS hS (abSmulEnd S (algebraMap A Γ(X, ⊤) a)) p (p + 1) rfl x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma H.δLinear_apply (p : ℕ) (x : Sheaf.H.{w'} (modulesAb S.X₃) p) :
     H.δLinear A hS p x = H.δ hS p (p + 1) rfl x := rfl
 
@@ -101,6 +125,15 @@ end Delta
 
 section Finite
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker g ≤ LinearMap.range f` using `fun y hy => hfg y hy`. Establish `hN3 : IsNoetherian R M₃` using `isNoetherian_of_isNoetherianRing_of_finite R M₃`. Establish `hrg : (LinearMap.range g).FG` using `IsNoetherian.noetherian _`. Establish `hrf : (LinearMap.range f).FG`. Rewrite using `[LinearMap.range_eq_map]`.
+
+Conclude with `Module.Finite.fg_top.map f`. Establish `hN : IsNoetherian R (LinearMap.range f)` using `isNoetherian_of_fg_of_noetherian _ hrf`. Establish `hkf : (LinearMap.ker g).FG`. Establish `h0 : ((LinearMap.ker g).comap (LinearMap.range f).subtype).FG` using `IsNoetherian.noetherian _`. Establish `h` using `h0.map (LinearMap.range f).subtype`.
+
+Rewrite `h` using `[Submodule.map_comap_eq, Submodule.range_subtype, inf_eq_right.mpr hker]`. Then use the resulting hypothesis. Use `⟨Submodule.fg_of_fg_map_of_fg_inf_ker g ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_top]`. Conclude with `hrg`. Rewrite using `[top_inf_eq]`.
+
+Conclude with `hkf`.
+-/
 theorem finite_of_exact_noetherian {R M₁ M₂ M₃ : Type*} [CommRing R] [IsNoetherianRing R]
     [AddCommGroup M₁] [AddCommGroup M₂] [AddCommGroup M₃] [Module R M₁] [Module R M₂] [Module R M₃]
     [Module.Finite R M₁] [Module.Finite R M₃] (f : M₁ →ₗ[R] M₂) (g : M₂ →ₗ[R] M₃)
@@ -130,6 +163,9 @@ variable {X : Scheme.{u}}
 
 include hS in
 
+/- English proof (translation)
+The claim follows from `finite_of_exact_noetherian (H.linearMap A S.g p) (H.δLinear A (shortExact_abSC hS) p) fun y hy => H.exact₃ (shortExact_abSC hS) rfl y hy`.
+-/
 theorem finite_H_X₃ [IsNoetherianRing A] (p : ℕ)
     [Module.Finite A (Sheaf.H.{w'} (modulesAb S.X₂) p)]
     [Module.Finite A (Sheaf.H.{w'} (modulesAb S.X₁) (p + 1))] :
@@ -139,6 +175,11 @@ theorem finite_H_X₃ [IsNoetherianRing A] (p : ℕ)
 
 include hS in
 
+/- English proof (translation)
+Establish `key : ∀ y : Sheaf.H.{w'} (modulesAb S.X₃) p, y = 0` using `fun y => by`. Establish `: Subsingleton (Sheaf.H.{w'} (abSC S).X₁ (p + 1))` using `‹Subsingleton (Sheaf.H.{w'} (modulesAb S.X₁) (p + 1))›`. Take `⟨x, hx⟩` from `H.exact₃ (shortExact_abSC hS) rfl y (Subsingleton.elim _ _)`. Establish `: Subsingleton (Sheaf.H.{w'} (abSC S).X₂ p)` using `‹Subsingleton (Sheaf.H.{w'} (modulesAb S.X₂) p)›`. Rewrite using `[← hx, Subsingleton.elim x 0, map_zero]`.
+
+Both sides reduce to the same expression. Conclude with `⟨fun y z => (key y).trans (key z).symm⟩`.
+-/
 theorem subsingleton_H_X₃ (p : ℕ) [Subsingleton (Sheaf.H.{w'} (modulesAb S.X₂) p)]
     [Subsingleton (Sheaf.H.{w'} (modulesAb S.X₁) (p + 1))] :
     Subsingleton (Sheaf.H.{w'} (modulesAb S.X₃) p) := by
@@ -160,11 +201,17 @@ variable {A : Type u} [CommRing A] {n : ℕ}
 abbrev twistEquiv (k : ℤ) : (projectiveSpace A n).Modules ≌ (projectiveSpace A n).Modules :=
   tensorEquivOfInvertible (isInvertibleSheaf_twistingSheaf (A := A) (n := n) k)
 
+/- English proof (translation)
+Rewrite using `[twistEquiv, tensorEquivOfInvertible_functor]`. Both sides reduce to the same expression.
+-/
 lemma twistEquiv_obj (k : ℤ) (M : (projectiveSpace A n).Modules) :
     (twistEquiv k).functor.obj M = twist M k := by
   rw [twistEquiv, tensorEquivOfInvertible_functor]
   rfl
 
+/- English proof (translation)
+The claim follows from `Functor.additive_of_preserves_binary_products _`.
+-/
 lemma twistEquiv_additive (k : ℤ) : (twistEquiv (A := A) (n := n) k).functor.Additive :=
   Functor.additive_of_preserves_binary_products _
 
@@ -179,12 +226,18 @@ def ιP {I : Type u} (i : I) : 𝟙_ (projectiveSpace A n).Modules ⟶ freeP A n
 def πP {I : Type u} [DecidableEq I] (i : I) : freeP A n I ⟶ 𝟙_ (projectiveSpace A n).Modules :=
   Cofan.IsColimit.desc (SheafOfModules.isColimitFreeCofan I) fun j => if j = i then 𝟙 _ else 0
 
+/- English proof (translation)
+The claim follows from `Cofan.IsColimit.hom_ext (SheafOfModules.isColimitFreeCofan I) f g fun j => by rw [SheafOfModules.freeCofan_inj] exact h j`.
+-/
 lemma freeSheaf_hom_ext {I : Type u} {M : (projectiveSpace A n).Modules} (f g : freeP A n I ⟶ M)
     (h : ∀ j, ιP j ≫ f = ιP j ≫ g) : f = g :=
   Cofan.IsColimit.hom_ext (SheafOfModules.isColimitFreeCofan I) f g fun j => by
     rw [SheafOfModules.freeCofan_inj]
     exact h j
 
+/- English proof (translation)
+Use `Cofan.IsColimit.fac (SheafOfModules.isColimitFreeCofan (R := (projectiveSpace A n).ringCatSheaf) I) (fun j => if j = i then 𝟙 _ else 0) j` as an intermediate fact. Rewrite `this` using `[SheafOfModules.freeCofan_inj]`. Conclude with `this`.
+-/
 lemma ιP_πP {I : Type u} [DecidableEq I] (i j : I) :
     ιP (A := A) (n := n) j ≫ πP i = if j = i then 𝟙 _ else 0 := by
   have := Cofan.IsColimit.fac (SheafOfModules.isColimitFreeCofan
@@ -192,6 +245,11 @@ lemma ιP_πP {I : Type u} [DecidableEq I] (i j : I) :
   rw [SheafOfModules.freeCofan_inj] at this
   exact this
 
+/- English proof (translation)
+Use `freeSheaf_hom_ext _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[Preadditive.comp_sum, Category.comp_id, Finset.sum_eq_single j]`. Rewrite using `[← Category.assoc, ιP_πP, if_pos rfl, Category.id_comp]`. Introduce `b _ hb`. Rewrite using `[← Category.assoc, ιP_πP, if_neg (Ne.symm hb), zero_comp]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 lemma free_total {I : Type u} [Fintype I] [DecidableEq I] :
     ∑ i, πP (A := A) (n := n) i ≫ ιP i = 𝟙 (freeP A n I) := by
   refine freeSheaf_hom_ext _ _ fun j => ?_
@@ -202,6 +260,11 @@ lemma free_total {I : Type u} [Fintype I] [DecidableEq I] :
   · intro h
     exact absurd (Finset.mem_univ j) h
 
+/- English proof (translation)
+Set `one : Γ(𝟙_ (projectiveSpace A n).Modules, U)` to `(show Γ(projectiveSpace A n, U) from 1)`. Use `⟨⟨{one}, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[Finset.coe_singleton, Submodule.mem_span_singleton]`.
+
+Conclude with `⟨(show Γ(projectiveSpace A n, U) from x), mul_one (show Γ(projectiveSpace A n, U) from x)⟩`.
+-/
 lemma finite_sections_unit (U : (projectiveSpace A n).Opens) :
     Module.Finite Γ(projectiveSpace A n, U) Γ(𝟙_ (projectiveSpace A n).Modules, U) := by
   let one : Γ(𝟙_ (projectiveSpace A n).Modules, U) := (show Γ(projectiveSpace A n, U) from 1)
@@ -211,6 +274,11 @@ lemma finite_sections_unit (U : (projectiveSpace A n).Opens) :
   rw [Finset.coe_singleton, Submodule.mem_span_singleton]
   exact ⟨(show Γ(projectiveSpace A n, U) from x), mul_one (show Γ(projectiveSpace A n, U) from x)⟩
 
+/- English proof (translation)
+Establish `: (twistEquiv (A` using `A) (n := n) k).functor.Additive := twistEquiv_additive k`. Use `set F := (twistEquiv (A := A) (n := n) k).functor`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Functor.map_comp]`. Use `_ = F.map (∑ i, πP (A := A) (n := n) i ≫ ιP i) := (F.map_sum _ _).symm`.
+
+Use `_ = F.map (𝟙 _) := congrArg F.map free_total`. Use `_ = 𝟙 _ := F.map_id _`.
+-/
 lemma twist_total (k : ℤ) {I : Type u} [Fintype I] [DecidableEq I] :
     ∑ i, (twistEquiv (A := A) (n := n) k).functor.map (πP i) ≫
       (twistEquiv k).functor.map (ιP i) = 𝟙 ((twistEquiv k).functor.obj (freeP A n I)) := by
@@ -223,6 +291,9 @@ lemma twist_total (k : ℤ) {I : Type u} [Fintype I] [DecidableEq I] :
     _ = F.map (𝟙 _) := congrArg F.map free_total
     _ = 𝟙 _ := F.map_id _
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => simp [Finset.sum_insert ha, ih]`.
+-/
 lemma sum_app_apply {M N : (projectiveSpace A n).Modules} {ι : Type*} (s : Finset ι)
     (φ : ι → (M ⟶ N)) (U : (projectiveSpace A n).Opens) (x : Γ(M, U)) :
     (∑ i ∈ s, φ i).app U x = ∑ i ∈ s, (φ i).app U x := by
@@ -231,6 +302,11 @@ lemma sum_app_apply {M N : (projectiveSpace A n).Modules} {ι : Type*} (s : Fins
   | empty => simp
   | insert a s ha ih => simp [Finset.sum_insert ha, ih]
 
+/- English proof (translation)
+Use `Fintype.ofFinite I` as an intermediate fact. Use `⟨inferInstanceAs (SheafOfModules.free I).IsQuasicoherent, fun U _ => ?_⟩` and prove the remaining obligations. Use `finite_sections_unit (A := A) (n := n) U` as an intermediate fact. Set `ιL : I → Γ(𝟙_ (projectiveSpace A n).Modules, U) →ₗ[Γ(projectiveSpace A n, U)] Γ(freeP A n I, U)` to `fun i => { toFun := (ιP i).app U map_add' := map_add _ map_smul' := fun r x => Scheme.Modules.Hom.app_smul _ r x }`. Set `Φ : (I → Γ(𝟙_ (projectiveSpace A n).Modules, U)) →ₗ[Γ(projectiveSpace A n, U)] Γ(freeP A n I, U)` to `∑ i, (ιL i).comp (LinearMap.proj i)`.
+
+Use `Module.Finite.of_surjective Φ fun x => ⟨fun i => (πP i).app U x, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun φ => Scheme.Modules.Hom.app φ U x) (free_total (A := A) (n := n) (I := I))`. Simplify using `only [sum_app_apply, Scheme.Modules.Hom.comp_app, Scheme.Modules.Hom.id_app, ConcreteCategory.comp_apply, ConcreteCategory.id_apply] at h`. Simplify using `only [Φ, ιL, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.coe_mk, AddHom.coe_mk]`. Conclude with `h`.
+-/
 theorem isCoherent_freeP (I : Type u) [Finite I] : IsCoherent (freeP A n I) := by
   classical
   have := Fintype.ofFinite I
@@ -256,6 +332,9 @@ variable [HasExt.{w'} (Sheaf (Opens.grothendieckTopology (projectiveSpace A n).t
 
 attribute [local instance] algebraOfOver
 
+/- English proof (translation)
+Use `conv_lhs => rw [← LinearMap.id_apply (R := A) x, ← H.linearMap_id, ← twist_total k]`. Rewrite using `[H.linearMap_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[H.linearMap_comp, LinearMap.comp_apply]`.
+-/
 lemma H_twist_free_eq {I : Type u} [Fintype I] [DecidableEq I] (k : ℤ) (p : ℕ)
     (x : Sheaf.H.{w'} (modulesAb ((twistEquiv (A := A) (n := n) k).functor.obj (freeP A n I))) p) :
     x = ∑ i, H.linearMap A ((twistEquiv k).functor.map (ιP i)) p
@@ -271,6 +350,11 @@ def H_twistUnitEquiv (k : ℤ) (p : ℕ) :
       Sheaf.H.{w'} (modulesAb (twistingSheaf (grading A n) k)) p :=
   H.linearEquivOfIso A (eqToIso (twistEquiv_obj k _) ≪≫ λ_ _) p
 
+/- English proof (translation)
+Use `Fintype.ofFinite I` as an intermediate fact. Establish `h1 : Module.Finite A (Sheaf.H.{w'} (modulesAb ((twistEquiv (A` using `A) (n := n) k).functor.obj (𝟙_ (projectiveSpace A n).Modules))) p) :=`. Use `finite_H_twistingSheaf.{w'} (A := A) (n := n) k p` as an intermediate fact. Use the proof step `Module.Finite.equiv (H_twistUnitEquiv (A := A) (n := n) k p).symm`. Set `Φ : (I → Sheaf.H.{w'} (modulesAb ((twistEquiv (A` to `A) (n := n) k).functor.obj (𝟙_ (projectiveSpace A n).Modules))) p) →ₗ[A] Sheaf.H.{w'} (modulesAb ((twistEquiv (A := A) (n := n) k).functor.obj (freeP A n I))) p := ∑ i, (H.linearMap A ((twistEquiv k).functor.map (ιP i)) p).comp (LinearMap.proj i)`.
+
+Use `Module.Finite.of_surjective Φ fun x => ⟨fun i => H.linearMap A ((twistEquiv k).functor.map (πP i)) p x, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [H_twist_free_eq k p x]`. Simplify using `[Φ, LinearMap.sum_apply]`.
+-/
 lemma finite_H_twist_free (I : Type u) [Finite I] (k : ℤ) (p : ℕ) :
     Module.Finite A (Sheaf.H.{w'}
       (modulesAb ((twistEquiv (A := A) (n := n) k).functor.obj (freeP A n I))) p) := by
@@ -289,6 +373,11 @@ lemma finite_H_twist_free (I : Type u) [Finite I] (k : ℤ) (p : ℕ) :
   conv_rhs => rw [H_twist_free_eq k p x]
   simp [Φ, LinearMap.sum_apply]
 
+/- English proof (translation)
+Use `Fintype.ofFinite I` as an intermediate fact. Establish `h1 : Subsingleton (Sheaf.H.{w'} (modulesAb ((twistEquiv (A` using `A) (n := n) k).functor.obj (𝟙_ (projectiveSpace A n).Modules))) p) :=`. Use `subsingleton_H_twistingSheaf.{w'} (A := A) (n := n) hk hp` as an intermediate fact. Use the proof step `(H_twistUnitEquiv (A := A) (n := n) k p).toEquiv.subsingleton`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[H_twist_free_eq k p x, H_twist_free_eq k p y]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (H.linearMap A ((twistEquiv k).functor.map (πP i)) p x) (H.linearMap A ((twistEquiv k).functor.map (πP i)) p y)]`.
+-/
 lemma subsingleton_H_twist_free (I : Type u) [Finite I] {k : ℤ} (hk : 0 ≤ k) {p : ℕ}
     (hp : 0 < p) : Subsingleton (Sheaf.H.{w'}
       (modulesAb ((twistEquiv (A := A) (n := n) k).functor.obj (freeP A n I))) p) := by

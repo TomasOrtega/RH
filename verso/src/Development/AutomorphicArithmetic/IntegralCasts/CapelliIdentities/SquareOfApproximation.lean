@@ -3,6 +3,11 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.SquareOfApproximation
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Filter Topology in
+/- English proof (translation)
+Establish `hg : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0` using `MonoidWithZeroHom.ValueGroup₀.embedding_unit_ne_zero γ`. Take `⟨k, hk⟩ : ∃ k : ℤ, MonoidWithZeroHom.ValueGroup₀.embedding γ.1 = exp k` from `⟨log _, (exp_log hg).symm⟩`. Use `⟨(-k + 1).toNat, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, hk]`. Use `lt_of_le_of_lt hx ?_` and prove the remaining obligations.
+
+Rewrite using `[exp_lt_exp]`. Use `Int.self_le_toNat (-k + 1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma small_power_bound {A : Type*} [Ring A] [_i : Valued A (WithZero (Multiplicative ℤ))]
     (γ : (MonoidWithZeroHom.ValueGroup₀ (.ofClass _i.v))ˣ) :
     ∃ N : ℕ, ∀ x : A, Valued.v x ≤ exp (-(N : ℤ)) → _i.v.restrict x < γ.1 := by
@@ -18,6 +23,23 @@ private lemma small_power_bound {A : Type*} [Ring A] [_i : Valued A (WithZero (M
   omega
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Filter Topology in
+/- English proof (translation)
+Use `set f : ℕ → v.adicCompletion K := fun m => algebraMap K (v.adicCompletion K) (algebraMap R K (b m)) with hf`. Use `set D := algebraMap K (v.adicCompletion K) (algebraMap R K d) with hD`. Establish `hval : ∀ (r : R) (m : ℕ), r ∈ v.asIdeal ^ m → Valued.v (algebraMap K (v.adicCompletion K) (algebraMap R K r)) ≤ exp (-(m : ℤ))`. Introduce `r m hr`. Establish `h1 : Valued.v (algebraMap K (v.adicCompletion K) (algebraMap R K r)) = v.valuation K (algebraMap R K r)` using `valuedAdicCompletion_eq_valuation' v _`.
+
+Rewrite using `[h1, valuation_of_algebraMap]`. Conclude with `(intValuation_le_pow_iff_mem v r m).2 hr`. Establish `hcau : CauchySeq f`. Rewrite using `[CauchySeq, Valued.cauchy_iff]`. Use `⟨inferInstance, fun γ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨N, hN⟩` from `small_power_bound γ`. Use `⟨f '' Set.Ici N, Filter.image_mem_map (Filter.mem_atTop N), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩ _ ⟨k, hk, rfl⟩`. Apply `hN` to reduce the goal to its premises. Establish `hm' : N ≤ m` using `hm`.
+
+Establish `hk' : N ≤ k` using `hk`. Establish `: b k - b m ∈ v.asIdeal ^ N`. Break down `le_total m k with h | h` into its components or cases. Conclude with `Ideal.pow_le_pow_right hm' (hb m k h)`. Use `Ideal.pow_le_pow_right hk' (hb k m h)` as an intermediate fact.
+
+Rewrite using `[← neg_sub]`. Conclude with `neg_mem this`. Establish `h2` using `hval _ _ this`. Simplify `h2` using `[hf, map_sub]`. Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hcau`.
+
+Establish `h0 : Tendsto (fun m => f m * f m - D) atTop (𝓝 0)`. Rewrite using `[(Valued.hasBasis_nhds_zero _ _).tendsto_right_iff]`. Introduce `γ _`. Take `⟨N, hN⟩` from `small_power_bound γ`. Use `filter_upwards [Filter.eventually_ge_atTop N] with m hm`.
+
+Apply `hN` to reduce the goal to its premises. Use `hval _ _ (Ideal.pow_le_pow_right hm (hd m))` as an intermediate fact. Simplify `this` using `[hf, hD, map_sub, map_mul]`. Establish `h1 : Tendsto (fun m => f m * f m - D) atTop (𝓝 (L * L - D))` using `(hL.mul hL).sub_const D`. Establish `h2 : L * L - D = 0` using `tendsto_nhds_unique h1 h0`.
+
+Conclude with `⟨L, (sub_eq_zero.1 h2).symm⟩`.
+-/
 private lemma square_of_approx {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K]
     [Algebra R K] [IsFractionRing R K] (v : HeightOneSpectrum R) (b : ℕ → R) (d : R)
     (hb : ∀ m k, m ≤ k → b k - b m ∈ v.asIdeal ^ m)
@@ -63,6 +85,21 @@ private lemma square_of_approx {R K : Type*} [CommRing R] [IsDedekindDomain R] [
   have h2 : L * L - D = 0 := tendsto_nhds_unique h1 h0
   exact ⟨L, (sub_eq_zero.1 h2).symm⟩
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective σ` using `fun x => ⟨σ x, hσ x⟩`. Establish `hP'max : (P.comap σ).IsMaximal` using `Ideal.comap_isMaximal_of_surjective σ hsurj`. Establish `hne' : P ≠ P.comap σ`. Introduce `h`. Choose the witnesses or unpack the hypotheses as in `⟨x, hxQ, hxP⟩ : ∃ x ∈ Q, x ∉ P := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hne ((hQ.eq_of_le hP.ne_top hcon).symm)`. Take `⟨r, hr⟩` from `hnm x`. Establish `h1 : r ∈ Q.comap (algebraMap R S)`.
+
+Rewrite using `[Ideal.mem_comap, hr]`. Conclude with `Q.mul_mem_right _ hxQ`. Rewrite `h1` using `[← hc, Ideal.mem_comap, hr]`. Break down `hP.isPrime.mem_or_mem h1 with h2 | h2` into its components or cases. Conclude with `hxP h2`.
+
+Apply `hxP` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `h2`. Establish `hcop : IsCoprime (P ^ n) ((P.comap σ) ^ n)` using `IsCoprime.pow ((Ideal.isCoprime_iff_sup_eq).2 (Ideal.IsMaximal.coprime_of_ne hP hP'max hne'))`. Take `⟨p, hp, q, hq, hpq⟩` from `Ideal.isCoprime_iff_exists.1 hcop`.
+
+Take `⟨a, ha⟩` from `htr (t * q)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hsq : σ q ∈ P ^ n`. Establish `h1 : σ q ∈ ((P.comap σ) ^ n).map σ` using `Ideal.mem_map_of_mem σ hq`. Rewrite `h1` using `[Ideal.map_pow]`.
+
+Conclude with `Ideal.pow_right_mono (Ideal.map_comap_le) n h1`. Rewrite using `[ha, map_mul]`. Establish `h3 : t - (t * q + σ t * σ q) = t * p - σ t * σ q`. Establish `: q = 1 - p` using `by rw [← hpq]; ring`. Rewrite using `[this]`.
+
+Simplify using `only [map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Conclude with `sub_mem (Ideal.mul_mem_left _ _ hp) (Ideal.mul_mem_left _ _ hsq)`.
+-/
 private lemma approx {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] (σ : S →+* S)
     (hσ : ∀ x, σ (σ x) = x)
     (htr : ∀ y, ∃ r : R, algebraMap R S r = y + σ y)
@@ -102,6 +139,43 @@ private lemma approx {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] (σ :
   exact sub_mem (Ideal.mul_mem_left _ _ hp) (Ideal.mul_mem_left _ _ hsq)
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero in
+/- English proof (translation)
+Establish `hsp' : ∀ x : E, ∃ u w : F, x = algebraMap F E u + algebraMap F E w * θ`. Introduce `x`. Take `⟨u, w, h⟩` from `hsp x`. Conclude with `⟨u, w, by rw [h, Algebra.smul_def, Algebra.smul_def, mul_one]⟩`. Establish `hθ0 : θ ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hd` to reduce the goal to its premises. Establish `h0 : algebraMap F E d = 0` using `by rw [← hθ]; simp`. Conclude with `(map_eq_zero (algebraMap F E)).1 h0`. Establish `hσσ : ∀ x, σ (σ x) = x`.
+
+Introduce `x`. Take `⟨u, w, rfl⟩` from `hsp' x`. Simplify using `only [map_add, map_mul, AlgHom.commutes, hσ, map_neg, mul_neg, neg_neg]`. Establish `hfix : ∀ x, σ x = x → ∃ u : F, x = algebraMap F E u`. Introduce `x hx`.
+
+Take `⟨u, w, rfl⟩` from `hsp' x`. Simplify using `only [map_add, map_mul, AlgHom.commutes, hσ, mul_neg] at hx`. Establish `h2 : (2 : E) * (algebraMap F E w * θ) = 0`. Establish `h3` using `add_left_cancel hx`. Take the linear combination `-h3`.
+
+Establish `hw : w = 0`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `absurd h two_ne_zero`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `(map_eq_zero (algebraMap F E)).1 h`.
+
+Conclude with `absurd h hθ0`. Conclude with `⟨u, by simp [hw]⟩`. Set `s : 𝓞 E →+* 𝓞 E` to `RingOfIntegers.mapRingHom (σ : E →+* E)`. Establish `hs : ∀ y : 𝓞 E, ((s y : 𝓞 E) : E) = σ y` using `fun y => rfl`. Establish `hss : ∀ y, s (s y) = y`.
+
+Introduce `y`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hs, hs, hσσ]`. Establish `hfixO : ∀ y : 𝓞 E, s y = y → ∃ r : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) r = y`. Introduce `y hy`.
+
+Take `⟨u, hu⟩` from `hfix (y : E) (by rw [← hs, hy])`. Establish `hint : IsIntegral ℤ u`. Establish `h1 : IsIntegral ℤ (algebraMap F E u)` using `hu ▸ RingOfIntegers.isIntegral_coe y`. Conclude with `(isIntegral_algebraMap_iff (algebraMap F E).injective).1 h1`. Use `⟨⟨u, hint⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `hu.symm`. Establish `htr : ∀ y, ∃ r : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) r = y + s y` using `fun y => hfixO _ (by rw [map_add, hss, add_comm])`. Establish `hnm : ∀ y, ∃ r : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) r = y * s y` using `fun y => hfixO _ (by rw [map_mul, hss, mul_comm])`. Establish `hint : IsIntegral ℤ θ`.
+
+Establish `h1 : IsIntegral ℤ (θ ^ 2)`. Rewrite using `[pow_two, hθ]`. Conclude with `(RingOfIntegers.isIntegral_coe d).algebraMap`. Conclude with `h1.of_pow (by norm_num)`. Set `t : 𝓞 E` to `⟨θ, hint⟩`.
+
+Establish `ht : t * t = algebraMap (𝓞 F) (𝓞 E) d`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `hθ`. Use `haveI := P.isMaximal`. Use `haveI := Q.isMaximal`.
+
+Establish `hne' : P.asIdeal ≠ Q.asIdeal` using `fun h => hne (HeightOneSpectrum.ext h)`. Use `choose a ha using approx (R := 𝓞 F) s hss htr hnm P.asIdeal Q.asIdeal hne' (hP.trans hQ.symm) t`. Use `haveI : P.asIdeal.LiesOver v.asIdeal := ⟨hP.symm⟩`. Establish `he : v.asIdeal.ramificationIdx' P.asIdeal ≠ 0` using `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver P.asIdeal v.ne_bot`. Use `set e := v.asIdeal.ramificationIdx' P.asIdeal with he'`.
+
+Establish `hdown : ∀ (x : 𝓞 F) (m : ℕ), algebraMap (𝓞 F) (𝓞 E) x ∈ P.asIdeal ^ (e * m) → x ∈ v.asIdeal ^ m`. Introduce `x m hx`. Rewrite `hx`, the goal using `[← intValuation_le_pow_iff_mem]`. Rewrite `hx` using `[← intValuation_liesOver v P x]`. Establish `h1 : exp (-((e * m : ℕ) : ℤ)) = (exp (-(m : ℤ))) ^ e`.
+
+Rewrite using `[← exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Rewrite `hx` using `[h1]`. Conclude with `(pow_le_pow_iff_left₀ zero_le' zero_le' he).1 hx`.
+
+Establish `hb : ∀ m k, m ≤ k → a (e * k) - a (e * m) ∈ v.asIdeal ^ m`. Introduce `m k hmk`. Apply `hdown` to reduce the goal to its premises. Establish `h1` using `ha (e * m)`. Establish `h2` using `Ideal.pow_le_pow_right (Nat.mul_le_mul_left e hmk) (ha (e * k))`.
+
+Establish `h3` using `sub_mem h1 h2`. Establish `h4 : t - algebraMap (𝓞 F) (𝓞 E) (a (e * m)) - (t - algebraMap (𝓞 F) (𝓞 E) (a (e * k))) = algebraMap (𝓞 F) (𝓞 E) (a (e * k) - a (e * m))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis.
+
+Establish `hdd : ∀ m, a (e * m) * a (e * m) - d ∈ v.asIdeal ^ m`. Introduce `m`. Apply `hdown` to reduce the goal to its premises. Establish `h1` using `Ideal.mul_mem_left _ (-(t + algebraMap (𝓞 F) (𝓞 E) (a (e * m)))) (ha (e * m))`. Establish `h2 : -(t + algebraMap (𝓞 F) (𝓞 E) (a (e * m))) * (t - algebraMap (𝓞 F) (𝓞 E) (a (e * m))) = algebraMap (𝓞 F) (𝓞 E) (a (e * m) * a (e * m) - d)`.
+
+Rewrite using `[map_sub, map_mul, ← ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Conclude with `square_of_approx v (fun m => a (e * m)) d hb hdd`.
+-/
 private theorem core {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {θ : E} {d : 𝓞 F} (hd : (d : F) ≠ 0) (hσ : σ θ = -θ)
     (hθ : θ * θ = algebraMap F E d)
@@ -296,6 +370,9 @@ noncomputable def UpperTheory.Reformulated.B.SquareOfApproximation.IsCMExt :
                       (@Semiring.toNonAssocSemiring Complex Complex.instSemiring))
                     τ x)))))
 
+/- English proof (translation)
+Introduce `F E _ _`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.SquareOfApproximation.aux2 :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E],
       @RingHomClass
@@ -458,6 +535,9 @@ noncomputable def UpperTheory.Reformulated.B.SquareOfApproximation.IsSplit :
         inst (@NumberField.RingOfIntegers.instAlgebra_1 F inst)
         (@NumberField.RingOfIntegers.instIsFractionRing F inst inst_1) v
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ θ d hd hσ hθ hsp v hv`. Take `⟨P, Q, hne, hP, hQ⟩` from `hv`. Conclude with `UpperTheory.Reformulated.B.SquareOfApproximation.core σ hd hσ hθ hsp P Q hne hP hQ`.
+-/
 theorem UpperTheory.Reformulated.B.SquareOfApproximation.main :
     ∀ {F E : Type} [inst : Field F] [inst_1 : @NumberField F inst] [inst_2 : Field E] [inst_3 : @NumberField E inst_2]
       [inst_4 :

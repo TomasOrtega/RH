@@ -31,11 +31,19 @@ def NefRiemannRoch : Prop :=
 
 def NefNumerics : Prop := NefProductNonneg ∧ NefBigIff ∧ NefRiemannRoch
 
+/- English proof (translation)
+The claim follows from `(topologicalKrullDim_eq_of_isEmbedding hU.fromSpec.isOpenEmbedding.isEmbedding hU.range_fromSpec).trans (PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := Γ(X, U)))`.
+-/
 theorem dim_affineOpen {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) :
     topologicalKrullDim (U : Set X) = ringKrullDim Γ(X, U) :=
   (topologicalKrullDim_eq_of_isEmbedding hU.fromSpec.isOpenEmbedding.isEmbedding
     hU.range_fromSpec).trans (PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := Γ(X, U)))
 
+/- English proof (translation)
+Use `topologicalKrullDim_le_of_forall_exists_isOpen fun y => ?_` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hy, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (π y)) isOpen_univ`. Use `⟨(π ⁻¹ᵁ U : Y.Opens), (π ⁻¹ᵁ U).isOpen, hy, ?_⟩` and prove the remaining obligations. Use `le_trans ?_ (topologicalKrullDim_subspace_le X (U : Set X))` and prove the remaining obligations. Rewrite using `[dim_affineOpen (hU.preimage π), dim_affineOpen hU]`.
+
+Use `letI := (π.app U).hom.toAlgebra`. Establish `: Algebra.IsIntegral Γ(X, U) Γ(Y, π ⁻¹ᵁ U)` using `⟨IsIntegralHom.isIntegral_app π U hU⟩`. Conclude with `Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap Γ(X, U) Γ(Y, π ⁻¹ᵁ U))) fun I J h => Ideal.IsIntegral.comap_lt_comap (I := I.asIdeal) (J := J.asIdeal) h`.
+-/
 theorem dim_le_of_isIntegralHom {X Y : Scheme.{0}} (π : Y ⟶ X) [IsIntegralHom π] :
     topologicalKrullDim Y ≤ topologicalKrullDim X := by
   refine topologicalKrullDim_le_of_forall_exists_isOpen fun y => ?_
@@ -49,6 +57,15 @@ theorem dim_le_of_isIntegralHom {X Y : Scheme.{0}} (π : Y ⟶ X) [IsIntegralHom
   exact Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap Γ(X, U) Γ(Y, π ⁻¹ᵁ U)))
     fun I J h => Ideal.IsIntegral.comap_lt_comap (I := I.asIdeal) (J := J.asIdeal) h
 
+/- English proof (translation)
+Take `⟨f, rfl⟩ : ∃ f : X ⟶ Sp k, a = algebraΓOfHom f` from `⟨strHom k X, Algebra.algebra_ext _ _ (algebraMap_eq_strHom k X)⟩`. Use `letI := algebraΓOfHom f`. Rewrite `hp` using `[strHom_eq (f := f) fun _ => rfl]`. Establish `H` using `IsPullback.of_hasPullback f (spMap (algebraMap k (AlgebraicClosure k)))`. Use `set π := pullback.fst f (spMap (algebraMap k (AlgebraicClosure k)))`.
+
+Use `set f' := pullback.snd f (spMap (algebraMap k (AlgebraicClosure k)))`. Use `letI := algebraΓOfHom f'`. Take `⟨hpr, A, hA⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB f).1 hp`. Establish `: IsIntegralHom (spMap (algebraMap k (AlgebraicClosure k)))` using `IsIntegralHom.SpecMap_iff.mpr (algebraMap_isIntegral_iff.mpr inferInstance)`. Establish `: IsIntegralHom π` using `MorphismProperty.of_isPullback (P := @IsIntegralHom) H.flip this`.
+
+Establish `: IsProper (strHom k X)` using `by rwa [strHom_eq (f := f) fun _ => rfl]`. Use `⟨_, algebraΓOfHom f', π, ?_, ?_, fun L h => ?_, fun L hL => ?_, fun d L hL => ?_⟩` and prove the remaining obligations. Rewrite using `[strHom_eq (f := f') fun _ => rfl]`. Conclude with `PosBaseChange.isProjOver_of_isPullback H hp`. Conclude with `(dim_le_of_isIntegralHom π).antisymm (PosBaseChange.dim_le_of_isClosedMap π.isClosedMap (PosBaseChange.surjective_proj H))`.
+
+Conclude with `PosBaseChange.isNef_pull h hA (hA.pull_of_isAffineHom π) π π.isClosedMap`. Conclude with `FieldChangeInter.hdim_pull H hL 0`. Conclude with `FieldChangeInter.interNum_pull H hL`.
+-/
 theorem exists_algClosed_baseChange {k : Type} [Field k] {X : Scheme.{0}} [a : Algebra k Γ(X, ⊤)]
     (hp : IsProjOver (strHom k X)) :
     ∃ (X' : Scheme.{0}) (_ : Algebra (AlgebraicClosure k) Γ(X', ⊤)) (π : X' ⟶ X),
@@ -85,6 +102,9 @@ section AnyField
 
 variable {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] {D : ℕ}
 
+/- English proof (translation)
+Take `⟨X', _, π, hp', hd, hn, -, hi⟩` from `exists_algClosed_baseChange hp`. Rewrite using `[← hi D N fun i => (hN i).isLB]`. Conclude with `h _ X' D hp' (hd.trans hD) _ fun i => hn _ (hN i)`.
+-/
 theorem NefProductNonneg.interNum_nonneg (h : NefProductNonneg) (hp : IsProjOver (strHom k X))
     (hD : topologicalKrullDim X = D) {N : Fin D → LB X} (hN : ∀ i, IsNef k (N i)) :
     0 ≤ interNum k (structureModule X) N := by
@@ -92,6 +112,11 @@ theorem NefProductNonneg.interNum_nonneg (h : NefProductNonneg) (hp : IsProjOver
   rw [← hi D N fun i => (hN i).isLB]
   exact h _ X' D hp' (hd.trans hD) _ fun i => hn _ (hN i)
 
+/- English proof (translation)
+Use `letI := algebraΓAlong k i`. Establish `hi` using `appTop_algebraMap_along k i`. Rewrite using `[interNumOn_eq_interNum_pull hi fun j => (hN j).isLB]`. Use `h.interNum_nonneg ?_ hD fun j => (hN j).pull_of_isClosedImmersion i hi` and prove the remaining obligations. Take `⟨n, e, he, hs⟩` from `hp`.
+
+Conclude with `⟨n, i ≫ e, inferInstance, by rw [Category.assoc, hs, comp_strHom hi]⟩`.
+-/
 theorem NefProductNonneg.interNumOn_nonneg (h : NefProductNonneg) (hp : IsProjOver (strHom k X))
     {Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] (hD : topologicalKrullDim Z = D)
     {N : Fin D → LB X} (hN : ∀ j, IsNef k (N j)) : 0 ≤ interNumOn k i N := by
@@ -102,11 +127,17 @@ theorem NefProductNonneg.interNumOn_nonneg (h : NefProductNonneg) (hp : IsProjOv
   obtain ⟨n, e, he, hs⟩ := hp
   exact ⟨n, i ≫ e, inferInstance, by rw [Category.assoc, hs, comp_strHom hi]⟩
 
+/- English proof (translation)
+The claim follows from `h.interNumOn_nonneg hp (redι Z) ((topologicalKrullDim_red Z).trans hD) hN`.
+-/
 theorem NefProductNonneg.interNumRed_nonneg (h : NefProductNonneg) (hp : IsProjOver (strHom k X))
     {Z : Closeds X} (hD : topologicalKrullDim (Z : Set X) = D)
     {N : Fin D → LB X} (hN : ∀ j, IsNef k (N j)) : 0 ≤ interNumRed k Z N :=
   h.interNumOn_nonneg hp (redι Z) ((topologicalKrullDim_red Z).trans hD) hN
 
+/- English proof (translation)
+Take `⟨X', _, π, hp', hd, hn, h0, hi⟩` from `exists_algClosed_baseChange hp`. Establish `hL'` using `LB.isLB_pull hL.isLB π`. Use `(h _ X' D hp' (hd.trans hD) _ (hn _ hL)).congr_left fun m => ?_` and prove the remaining obligations. Rewrite using `[lineBundleGlobalSectionsDim_congr_picardClass (isLB_lbPow hL' m) (LB.isLB_pull (isLB_lbPow hL.1 m) π) (by rw [cls_lbPow hL', cls_pull hL.1, cls_pull (isLB_lbPow hL.1 m), cls_lbPow hL.1, map_nsmul]), h0 _ (isLB_lbPow hL.1 m), topSelf_def, hi D (fun _ => L) fun _ => hL.1, topSelf_ …`.
+-/
 theorem NefRiemannRoch.isBigO (h : NefRiemannRoch) (hp : IsProjOver (strHom k X))
     (hD : topologicalKrullDim X = D) {L : LB X} (hL : IsNef k L) :
     (fun m : ℕ => (lbH0 k (lbPow L m) : ℝ) - (topSelfIntersection k L D : ℝ) * (m : ℝ) ^ D / D.factorial)
@@ -118,6 +149,13 @@ theorem NefRiemannRoch.isBigO (h : NefRiemannRoch) (hp : IsProjOver (strHom k X)
     (by rw [cls_lbPow hL', cls_pull hL.1, cls_pull (isLB_lbPow hL.1 m), cls_lbPow hL.1, map_nsmul]),
     h0 _ (isLB_lbPow hL.1 m), topSelf_def, hi D (fun _ => L) fun _ => hL.1, topSelf_def]
 
+/- English proof (translation)
+Establish `ho : (fun m : ℕ => (m : ℝ) ^ ((D : ℤ) - 1)) =o[atTop] fun m : ℕ => (m : ℝ) ^ D`. Use `(isLittleO_iff_tendsto' ?_).2 ((tendsto_inv_atTop_nhds_zero_nat (𝕜 := ℝ)).congr' ?_)` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with m hm h0`. Conclude with `absurd h0 (by positivity)`. Use `filter_upwards [eventually_gt_atTop 0] with m hm`.
+
+Establish `: (m : ℝ) ≠ 0` using `by positivity`. Rewrite using `[zpow_sub_one₀ this, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Establish `ht` using `((h.isBigO hp hD hL).trans_isLittleO ho).tendsto_div_nhds_zero.add_const ((topSelfIntersection k L D : ℝ) / D.factorial)`. Rewrite `ht` using `[zero_add]`.
+
+Use `ht.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with m hm`. Establish `: (m : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem NefRiemannRoch.tendsto (h : NefRiemannRoch) (hp : IsProjOver (strHom k X))
     (hD : topologicalKrullDim X = D) {L : LB X} (hL : IsNef k L) :
     Tendsto (fun m : ℕ => (lbH0 k (lbPow L m) : ℝ) / (m : ℝ) ^ D) atTop
@@ -139,12 +177,20 @@ theorem NefRiemannRoch.tendsto (h : NefRiemannRoch) (hp : IsProjOver (strHom k X
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h0` using `ge_of_tendsto' (h.tendsto hp hD hL) fun m => (by positivity : (0 : ℝ) ≤ _)`. Establish `hf : (0 : ℝ) < D.factorial` using `by positivity`. Conclude with `(div_nonneg_iff.1 h0).elim And.left fun h' => absurd h'.2 hf.not_ge` after adjusting the coercions.
+-/
 theorem NefRiemannRoch.topSelf_nonneg (h : NefRiemannRoch) (hp : IsProjOver (strHom k X))
     (hD : topologicalKrullDim X = D) {L : LB X} (hL : IsNef k L) : 0 ≤ topSelfIntersection k L D := by
   have h0 := ge_of_tendsto' (h.tendsto hp hD hL) fun m => (by positivity : (0 : ℝ) ≤ _)
   have hf : (0 : ℝ) < D.factorial := by positivity
   exact_mod_cast (div_nonneg_iff.1 h0).elim And.left fun h' => absurd h'.2 hf.not_ge
 
+/- English proof (translation)
+Establish `ht` using `h.tendsto hp hD hL`. Establish `hf : (0 : ℝ) < D.factorial` using `by positivity`. Rewrite using `[GlobalTheory.isBig_iff (algebraMap_eq_strHom k X) hp hD, ← Int.cast_pos (R := ℝ), ← div_pos_iff_of_pos_right hf]`. Use `⟨fun ⟨_, c, hc, hm⟩ => hc.trans_le (ge_of_tendsto_of_frequently ht ((hm.and_eventually (eventually_gt_atTop 0)).mono fun m hm => ?_)), fun ha => ⟨hL.isLB, _, half_pos ha, Eventually.frequently ?_⟩⟩` and prove the remaining obligations. Use `hm.2` as an intermediate fact.
+
+Conclude with `(le_div_iff₀ (by positivity)).2 hm.1`. Use `filter_upwards [ht.eventually_const_le (half_lt_self ha), eventually_gt_atTop 0] with m h₁ h₂`. Conclude with `(le_div_iff₀ (by positivity)).1 h₁`.
+-/
 theorem NefRiemannRoch.isBig_iff (h : NefRiemannRoch) (hp : IsProjOver (strHom k X))
     (hD : topologicalKrullDim X = D) {L : LB X} (hL : IsNef k L) :
     IsBig k L ↔ 0 < topSelfIntersection k L D := by
@@ -162,11 +208,17 @@ theorem NefRiemannRoch.isBig_iff (h : NefRiemannRoch) (hp : IsProjOver (strHom k
 
 end AnyField
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ hp hD _ hL` and use `h.isBig_iff hp hD hL`.
+-/
 theorem NefRiemannRoch.nefBigIff (h : NefRiemannRoch) : NefBigIff :=
   fun _ _ _ _ _ _ _ hp hD _ hL => h.isBig_iff hp hD hL
 
 open GlobalTheory.ProjSpace in
 
+/- English proof (translation)
+Rewrite using `[strHom_eq (algebraMap_top_eq k (d + 1))]`. Conclude with `⟨inferInstance, isProjOver_str k _, topologicalKrullDim_eq k _, isNef_twistingSheaf k _, isBig_twistingSheaf k _, (triv_nef_not_big k d).1, (triv_nef_not_big k d).2.2⟩`.
+-/
 example (k : Type) [Field k] (d : ℕ) :
     IsIntegral (PSpace k (d + 1)) ∧ IsProjOver (strHom k (PSpace k (d + 1))) ∧
     topologicalKrullDim (PSpace k (d + 1)) = (d + 1 : ℕ) ∧

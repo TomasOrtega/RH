@@ -12,6 +12,11 @@ namespace Formalism.L2.SG.KappaOffDiagonal.PgLe
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `e1 : Module.finrank ℚ X.B.I.E = Module.finrank ℚ D.host.E` using `(X.ιE.toRatAlgEquiv).toLinearEquiv.finrank_eq`. Establish `e2 : Module.finrank ℚ X.B.I.F * Module.finrank X.B.I.F X.B.I.E = Module.finrank ℚ X.B.I.E` using `Module.finrank_mul_finrank ℚ X.B.I.F X.B.I.E`. Establish `e3 : Module.finrank X.B.I.F X.B.I.E = 2` using `X.B.I.cm.deg2`. Establish `e4 : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`.
+
+Unfold `Ranks.f Ranks.n`. Put the polynomial expressions in normal form. Rewrite `e2` using `[e3]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_F {D : D7} (X : HidaSetting D) : Module.finrank ℚ X.B.I.F = D.R.f := by
   have e1 : Module.finrank ℚ X.B.I.E = Module.finrank ℚ D.host.E :=
     (X.ιE.toRatAlgEquiv).toLinearEquiv.finrank_eq
@@ -25,6 +30,15 @@ theorem finrank_F {D : D7} (X : HidaSetting D) : Module.finrank ℚ X.B.I.F = D.
   rw [e3] at e2
   omega
 
+/- English proof (translation)
+Establish `hk0 : 0 ≤ k` using `by linarith`. Establish `hkb : 2 * k ≤ k * b` using `by nlinarith`. Establish `hkb2 : 2 ≤ k * b` using `by linarith`. Establish `h7 : (2:ℝ) ^ 7 ≤ (k * b) ^ 7` using `by gcongr`. Establish `h9 : (k * b) * 2 ^ 7 ≤ (k * b) * (k * b) ^ 7` using `mul_le_mul_of_nonneg_left h7 (by linarith)`.
+
+Establish `h8 : (k * b) ^ 8 = (k * b) * (k * b) ^ 7` using `by ring`. Establish `hg12 : 12 * (f : ℝ) ≤ g` using `by nlinarith`. Establish `hgpos : 0 < g` using `by nlinarith`. Establish `hx : 1 + 3 / g ≤ Real.exp (3 / g)`. Use `Real.add_one_le_exp (3 / g)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : 0 ≤ 1 + 3 / g` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `he : (f : ℝ) * (3 / g) = 3 * f / g` using `by ring`.
+
+Rewrite using `[he, div_le_iff₀ hgpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_factor (k b g : ℝ) (f : ℕ) (hk : 1 ≤ k) (hb : 2 ≤ b) (hg : (k * b) ^ 8 ≤ g) (hf : (f : ℝ) ≤ k) :
     (1 + 3 / g) ^ f ≤ Real.exp (1 / 4) := by
   have hk0 : 0 ≤ k := by linarith
@@ -47,6 +61,11 @@ theorem one_factor (k b g : ℝ) (f : ℕ) (hk : 1 ≤ k) (hb : 2 ≤ b) (hg : (
         rw [he, div_le_iff₀ hgpos]
         linarith
 
+/- English proof (translation)
+Rewrite using `[← Real.exp_add]`. Establish `h : Real.exp (1 / 4 + 1 / 4) ^ 2 = Real.exp 1`. Rewrite using `[← Real.exp_nat_mul]`. Evaluate the numerical expressions. Establish `h1` using `Real.exp_one_lt_d9`.
+
+Establish `hpos` using `Real.exp_pos (1 / 4 + 1 / 4)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exp_quarter_mul_exp_quarter_le_two : Real.exp (1 / 4) * Real.exp (1 / 4) ≤ 2 := by
   rw [← Real.exp_add]
   have h : Real.exp (1 / 4 + 1 / 4) ^ 2 = Real.exp 1 := by
@@ -56,6 +75,13 @@ theorem exp_quarter_mul_exp_quarter_le_two : Real.exp (1 / 4) * Real.exp (1 / 4)
   have hpos := Real.exp_pos (1 / 4 + 1 / 4)
   nlinarith
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y hH => ?_⟩` and prove the remaining obligations. Establish `hPg` using `Formalism.L2.SG.Pf.SatGram.tt_eq' hS hRC Y.TR`. Unfold `Formalism.L2.SG.RowsConc.PgC`. Rewrite using `[hPg, finrank_F X]`.
+
+Take `⟨⟨hS0, -, -⟩, hP⟩` from `hH`. Take `⟨-, -, -, hfk, -⟩` from `hS0`. Establish `hg` using `hP.2.1`. Establish `hb` using `Formalism.MainNotions.KappaEndpoints.two_le_scale_b D large₂`. Establish `hk : (1 : ℝ) ≤ D.R.k`.
+
+Use `D.R.m_add_three_le_k; exact_mod_cast (by omega : 1 ≤ D.R.k)` as an intermediate fact. Establish `hf : (D.R.f : ℝ) ≤ D.R.k` using `by exact_mod_cast hfk`. Establish `h0` using `one_factor (D.R.k : ℝ) large₂.sc.b (D.host.g 0 : ℝ) D.R.f hk hb (hg 0).1 hf`. Establish `h1` using `one_factor (D.R.k : ℝ) large₂.sc.b (D.host.g 1 : ℝ) D.R.f hk hb (hg 1).1 hf`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pgLeC_of (hS : Formalism.L2.SG.Pf.SatGramLoc.SplitPrimeLoc) (hRC : Formalism.L2.SG.Pf.SatGramLoc.RedCore) : PgLeC := by
   intro Cg cb Cw cT CT C0
   refine ⟨0, 0, fun C' Cl _ _ D large₂ X Y hH => ?_⟩

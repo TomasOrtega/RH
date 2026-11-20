@@ -8,6 +8,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.TorsionForm.FlatAcyc
 
+/- English proof (translation)
+Introduce `E _ _ g B τ hτ b hb z v w`. Establish `hv` using `GlobalTheory.FlatVert.dflat_vert hτ b hb z v`. Establish `hw` using `GlobalTheory.FlatVert.dflat_vert hτ b hb z w`. Use `show riem _ _ = _`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply]`.
+
+Simplify using `[hv, hw]`.
+-/
 theorem curvature_vertical : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ : IsPeriodMap B τ) {b : E} (hb : b ∈ B)
     (z v w : Fin g → ℂ),

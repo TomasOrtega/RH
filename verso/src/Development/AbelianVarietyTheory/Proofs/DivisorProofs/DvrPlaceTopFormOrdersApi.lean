@@ -13,6 +13,11 @@ namespace GlobalTheory.FieldPair
 open CategoryTheory AlgebraicGeometry TopologicalSpace in
 open scoped TensorProduct in
 
+/- English proof (translation)
+Use `letI : Algebra k K := c.toAlgebra`. Establish `hb : IsTranscendenceBasis k x` using `hx`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap k K).injective`. Use `haveI : Algebra.IsAlgebraic (IntermediateField.adjoin k (Set.range x)) K := hb.isAlgebraic_field`. Use `haveI : Algebra.IsSeparable (IntermediateField.adjoin k (Set.range x)) K := Algebra.IsAlgebraic.isSeparable_of_perfectField`.
+
+Take `⟨b, hbx⟩` from `_root_.GlobalTheory.exists_basis_kaehler_of_algebraicIndependent hb.1`. Conclude with `_root_.GlobalTheory.TopForm.isFreeGen_dForm x b (fun i => by rw [hbx i])`.
+-/
 theorem _root_.GlobalTheory.FieldPair.isFreeGen_dForm_of_trBasis {k K : Type} [Field k] [CharZero k]
     [Field K] (c : k →+* K) {n : ℕ} {x : Fin n → K} (hx : _root_.GlobalTheory.FieldPair.TrBasis c x) :
     _root_.GlobalTheory.TopForm.IsFreeGen K (_root_.GlobalTheory.TopForm.dForm c x) := by
@@ -29,6 +34,11 @@ theorem _root_.GlobalTheory.FieldPair.isFreeGen_dForm_of_trBasis {k K : Type} [F
 open CategoryTheory AlgebraicGeometry TopologicalSpace in
 open scoped TensorProduct in
 
+/- English proof (translation)
+Introduce `k K _ _ _ c n x hx`. Use `⟨_root_.GlobalTheory.FieldPair.isFreeGen_dForm_of_trBasis c hx, fun E => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `E.exists_isFreeGen hx`. Introduce `η hη`. Conclude with `E.isFormOrd_formOrd hx hη`.
+
+Introduce `η f hη hf`. Conclude with `E.formOrd_smul hx hη hf`. Introduce `η a _ h`. Conclude with `h.formOrd_eq`.
+-/
 theorem _root_.GlobalTheory.FieldPair.formOrd_api : ∀ {k K : Type} [Field k] [CharZero k] [Field K]
     (c : k →+* K) (n : ℕ) (x : Fin n → K), _root_.GlobalTheory.FieldPair.TrBasis c x →
   _root_.GlobalTheory.TopForm.IsFreeGen K (_root_.GlobalTheory.TopForm.dForm c x) ∧

@@ -12,6 +12,55 @@ universe u
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C _ I H _ _ m _ E hE hsum A _ σ hσ O _ ρ hρ e he heE F hIF hFE hFe a χ G₀ M₀ hGM hGM' hσG hGF hLie`. Establish `mul_ap : ∀ (f g : Module.End C H) x, (f * g) x = f (g x)` using `fun _ _ _ => rfl`. Establish `app : ∀ i j k l x, E i j (E k l x) = if j = k then E i l x else 0`. Introduce `i j k l x`. Apply the tactic sequence `rw [← mul_ap, hE]; split_ifs <;> simp`.
+
+Establish `eapp : ∀ i j x, E i j (e x) = e (E i j x)`. Introduce `i j x`. Rewrite using `[← mul_ap, heE, mul_ap]`. Establish `sigcomm : ∀ i j c x, σ c (E i j x) = E i j (σ c x)`. Introduce `i j c x`.
+
+Rewrite using `[← mul_ap, ← hσ, mul_ap]`. Establish `ee : ∀ x, e (e x) = e x` using `fun x => by rw [← mul_ap, he]`. Establish `memRe : ∀ x, x ∈ LinearMap.range e ↔ e x = x`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `ee y`. Introduce `h`. Conclude with `⟨x, h⟩`. Establish `memR00 : ∀ x, x ∈ LinearMap.range (E 0 0 * e) ↔ E 0 0 x = x ∧ e x = x`.
+
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Simplify using `only [mul_ap]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[app]`. Simplify using the standard rewrite rules. Rewrite using `[← eapp, ee]`. Introduce and unpack `⟨h1, h2⟩; exact ⟨x, by rw [mul_ap, h2, h1]⟩`. Establish `decomp : ∀ x, ∑ i, E i 0 (E 0 i x) = x`.
+
+Introduce `x`. Combine the equalities or inequalities in the displayed calculation. Establish `E0i_mem : ∀ i x, e x = x → E 0 i x ∈ LinearMap.range (E 0 0 * e)`. Introduce `i x hx`. Rewrite using `[memR00]`.
+
+Conclude with `⟨by rw [app]; simp, by rw [← eapp, hx]⟩`. Establish `hG0R : ∀ x ∈ G₀, E 0 0 x = x ∧ e x = x` using `fun x hx => (memR00 x).1 (by rw [← hGM']; exact Submodule.mem_sup_left hx)`. Establish `hM0R : ∀ x ∈ M₀, E 0 0 x = x ∧ e x = x` using `fun x hx => (memR00 x).1 (by rw [← hGM']; exact Submodule.mem_sup_right hx)`. Establish `hG₀F : ∀ g ∈ G₀, g ∈ F` using `fun g hg => by`. Establish `h : g ∈ G₀ ⊔ I • LinearMap.range (E 0 0 * e)` using `Submodule.mem_sup_left hg`.
+
+Rewrite `h` using `[hGF]`. Conclude with `h.1`. Establish `spread_in : ∀ (N : Submodule C H) k, ∀ g ∈ N, E k 0 g ∈ ⨆ i, N.map (E i 0)` using `fun N k g hg => Submodule.mem_iSup_of_mem k (Submodule.mem_map_of_mem hg)`. Establish `spread_all : ∀ (N P : Submodule C H), (∀ k, ∀ g ∈ N, E k 0 g ∈ P) → (⨆ i, N.map (E i 0)) ≤ P` using `fun N P h => iSup_le fun k => Submodule.map_le_iff_le_comap.2 fun g hg => h k g hg`. Establish `spread_key : ∀ N : Submodule C H, (∀ x ∈ N, E 0 0 x = x) → ∀ j, ∀ x ∈ ⨆ i, N.map (E i 0), E 0 j x ∈ N`.
+
+Introduce `N hN j x hx`. Establish `: (⨆ i, N.map (E i 0)) ≤ N.comap (E 0 j)`. Use `spread_all N _ fun k g hg => ?_` and prove the remaining obligations. Simplify using `only [Submodule.mem_comap]`. Rewrite using `[app]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[hN g hg]`. Conclude with `hg`. Conclude with `N.zero_mem`.
+
+Conclude with `this hx`. Establish `spread_e : ∀ (N : Submodule C H), (∀ x ∈ N, e x = x) → (⨆ i, N.map (E i 0)) ≤ LinearMap.range e` using `fun N hN => spread_all N _ fun k g hg => (memRe _).2 (by rw [← eapp, hN g hg])`. Use `⟨⨆ i, G₀.map (E i 0), ⨆ i, M₀.map (E i 0), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hxG, hxM⟩`.
+
+Establish `h0 : ∀ i, E 0 i x = 0` using `fun i => by`. Establish `: E 0 i x ∈ G₀ ⊓ M₀` using `⟨spread_key G₀ (fun y hy => (hG0R y hy).1) i x hxG, spread_key M₀ (fun y hy => (hM0R y hy).1) i x hxM⟩`. Rewrite `this` using `[hGM]`. Conclude with `(Submodule.mem_bot C).1 this`. Rewrite using `[Submodule.mem_bot, ← decomp x]`.
+
+Simplify using `[h0]`. Use `le_antisymm (sup_le (spread_e G₀ fun y hy => (hG0R y hy).2) (spread_e M₀ fun y hy => (hM0R y hy).2)) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[memRe]`. Rewrite using `[← decomp x]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : E 0 i x ∈ G₀ ⊔ M₀` using `by rw [hGM']; exact E0i_mem i x hx`. Take `⟨g, hg, n, hn, hgn⟩` from `Submodule.mem_sup.1 h1`. Rewrite using `[← hgn, map_add]`. Conclude with `Submodule.add_mem_sup (spread_in G₀ i g hg) (spread_in M₀ i n hn)`.
+
+Introduce `c x hx`. Establish `key : ∀ j, E 0 j (ρ c x) ∈ G₀`. Introduce `j`. Establish `: (⨆ i, G₀.map (E i 0)) ≤ G₀.comap (E 0 j * ρ c)` using `spread_all G₀ _ fun k g hg => hρ c j k G₀ hσG g hg (hG0R g hg).1`. Conclude with `this hx`.
+
+Rewrite using `[← decomp (ρ c x)]`. Conclude with `Submodule.sum_mem _ fun j _ => spread_in G₀ j _ (key j)`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ (inf_le_inf_right _ hIF)` and prove the remaining obligations. Use `spread_all G₀ _ fun k g hg => ⟨hFE k 0 g (hG₀F g hg), ?_⟩` and prove the remaining obligations.
+
+Conclude with `(memRe _).2 (by rw [← eapp, (hG0R g hg).2])`. Introduce and unpack `x ⟨hxF, hxe⟩ replace hxe := (memRe x).1 hxe`. Rewrite using `[← decomp x]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : E 0 i x ∈ F ⊓ LinearMap.range (E 0 0 * e)` using `⟨hFE 0 i x hxF, E0i_mem i x hxe⟩`.
+
+Rewrite `h1` using `[← hGF]`. Take `⟨g, hg, t, ht, hgt⟩` from `Submodule.mem_sup.1 h1`. Rewrite using `[← hgt, map_add]`. Use `Submodule.add_mem_sup (spread_in G₀ i g hg) ?_` and prove the remaining obligations. Establish `: I • LinearMap.range (E 0 0 * e) ≤ (I • ⊤ ⊓ LinearMap.range e).comap (E i 0)`.
+
+Rewrite using `[Submodule.smul_le]`. Introduce `r hr n hn`. Rewrite using `[Submodule.mem_comap, map_smul]`. Use `⟨Submodule.smul_mem_smul hr Submodule.mem_top, ?_⟩` and prove the remaining obligations. Conclude with `(memRe _).2 (by rw [map_smul, ← eapp, ((memR00 n).1 hn).2])`.
+
+Conclude with `this ht`. Introduce `d hd`. Rewrite `hd` using `[memRe]`. Establish `hw : ∀ i, ∃ w : Fin a → H, (∀ j c, σ c (w j) - χ j c • w j ∈ G₀) ∧ E 0 i d - ∑ j, w j ∈ G₀` using `fun i => hLie _ (E0i_mem i d hd)`. Use `choose w hw1 hw2 using hw`.
+
+Use `⟨fun j => ∑ i, E i 0 (w i j), ?_, ?_⟩` and prove the remaining obligations. Introduce `j c`. Establish `: σ c (∑ i, E i 0 (w i j)) - χ j c • ∑ i, E i 0 (w i j) = ∑ i, E i 0 (σ c (w i j) - χ j c • w i j)`. Simplify using `only [map_sum, map_sub, map_smul, Finset.smul_sum, Finset.sum_sub_distrib, sigcomm]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => spread_in G₀ i _ (hw1 i j c)`. Establish `: d - ∑ j, ∑ i, E i 0 (w i j) = ∑ i, E i 0 (E 0 i d - ∑ j, w i j)` using `by conv_lhs => rw [← decomp d]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [map_sub, map_sum, Finset.sum_sub_distrib]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => spread_in G₀ i _ (hw2 i)`.
+-/
 theorem morita_spread_stable_summand_lie : ∀ {C : Type} [CommRing C] (I : Ideal C) {H : Type u} [AddCommGroup H] [Module C H]
   (m : ℕ) [NeZero m] (E : Fin m → Fin m → Module.End C H),
   (∀ i j k l, E i j * E k l = if j = k then E i l else 0) → ∑ i, E i i = 1 →

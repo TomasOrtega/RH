@@ -22,6 +22,11 @@ def restrictRep (π : K →* (X →L[ℂ] X)) (Y : Submodule ℂ X) (hY : ∀ g,
   map_one' := by ext v; simp
   map_mul' g h := by ext v; simp
 
+/- English proof (translation)
+Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨g * k, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[map_mul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `smul c x _ hx => simpa using Submodule.smul_mem _ c hx`.
+-/
 theorem span_orbit_stable' (π : K →* (X →L[ℂ] X)) (F : X) (g : K) :
     ∀ v ∈ Submodule.span ℂ (Set.range fun k : K => π k F),
       π g v ∈ Submodule.span ℂ (Set.range fun k : K => π k F) := by
@@ -37,6 +42,37 @@ theorem span_orbit_stable' (π : K →* (X →L[ℂ] X)) (F : X) (g : K) :
 
 end Abstract
 
+/- English proof (translation)
+Introduce `E _ _ _ a μ _ _ H hH hI F hFH hK`. Take `⟨hSo, hfd⟩` from `hK`. Take `⟨K0, hK0o, hK0c⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact E a`. Set `S : Subgroup (GL (Fin a) (Af E))` to `{ carrier := {k | R (latticeGL E a) μ (finGL E a k) F = F} mul_mem' := fun {x y} hx hy => by`. Establish `hx' : R (latticeGL E a) μ (finGL E a x) F = F` using `hx`.
+
+Establish `hy' : R (latticeGL E a) μ (finGL E a y) F = F` using `hy`. Express the relevant statement in the definitionally equal form `R (latticeGL E a) μ (finGL E a (x * y)) F = F`. Rewrite using `[map_mul, map_mul, ContinuousLinearMap.mul_apply, hy', hx']`. Use the proof step `one_mem' := by`. Express the relevant statement in the definitionally equal form `R (latticeGL E a) μ (finGL E a 1) F = F`.
+
+Simplify using the standard rewrite rules. Use the proof step `inv_mem' := fun {x} hx => by`. Establish `hx' : R (latticeGL E a) μ (finGL E a x) F = F` using `hx`. Express the relevant statement in the definitionally equal form `R (latticeGL E a) μ (finGL E a x⁻¹) F = F`. Use `conv_lhs => rw [← hx']`.
+
+Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel]`. Simplify using `}`. Establish `hSo' : IsOpen (S : Set (GL (Fin a) (Af E)))` using `hSo`. Set `U : Subgroup (GL (Fin a) (Af E))` to `K0 ⊓ S`. Establish `hUo : IsOpen (U : Set (GL (Fin a) (Af E)))` using `hK0o.inter hSo'`.
+
+Establish `hUc : IsCompact (U : Set (GL (Fin a) (Af E)))` using `hK0c.inter_right (S.isClosed_of_isOpen hSo')`. Set `π : Kinf E a →* (L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ)` to `(R (latticeGL E a) μ).comp ((infGL E a).comp Unitary.toUnits)`. Establish `hcomm : ∀ (u : GL (Fin a) (Af E)) (k : Kinf E a) (v : L2 (latticeGL E a) μ), R (latticeGL E a) μ (finGL E a u) (π k v) = π k (R (latticeGL E a) μ (finGL E a u) v)`. Introduce `u k v`. Establish `e` using `congrArg (fun g => R (latticeGL E a) μ g v) (infGL_comm (E := E) (a := a) (Unitary.toUnits k) u)`.
+
+Simplify using `only [map_mul, ContinuousLinearMap.mul_apply] at e`. Conclude with `e.symm`. Set `Y : Submodule ℂ (L2 (latticeGL E a) μ)` to `Submodule.span ℂ (Set.range fun k : Kinf E a => π k F)`. Use `haveI : FiniteDimensional ℂ Y := hfd`. Establish `hYs : ∀ g, ∀ v ∈ Y, π g v ∈ Y` using `span_orbit_stable' π F`.
+
+Establish `hFY : F ∈ Y` using `Submodule.subset_span ⟨1, by simp⟩`. Establish `hYP : ∀ v ∈ Y, v ∈ H ∧ ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) v = v`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨k, rfl⟩` from `hx`. Use `⟨hI.1.2 _ _ hFH, fun u hu => ?_⟩` and prove the remaining obligations. Conclude with `(hcomm u k F).trans (congrArg (π k) hu.2)`. Consider the case `zero => exact ⟨H.zero_mem, fun _ _ => map_zero _⟩`. Consider the case `add x y _ _ hx hy`.
+
+Conclude with `⟨H.add_mem hx.1 hy.1, fun u hu => by rw [map_add, hx.2 u hu, hy.2 u hu]⟩`. Consider the case `smul c x _ hx`. Conclude with `⟨H.smul_mem c hx.1, fun u hu => by rw [map_smul, hx.2 u hu]⟩`. Set `ρ : Representation ℂ (Kinf E a) Y` to `restrictRep π Y hYs`. Set `C : (Y →ₗ[ℂ] L2 (latticeGL E a) μ) → Prop` to `fun T => (∀ k w, T (ρ k w) = R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) (T w)) ∧ ∀ w, T w ∈ H ∧ ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) (T w) = T w`.
+
+Set `X : Submodule ℂ (L2 (latticeGL E a) μ)` to `⨆ (T : Y →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : C T), LinearMap.range T`. Establish `hXf : FiniteDimensional ℂ X` using `GlobalTheory.T.cuspidal_K_type_finite E a μ H hH hI U hUo Y ρ`. Establish `hmem : ∀ T, C T → ∀ w, T w ∈ X` using `fun T hT w => (le_iSup₂_of_le (f := fun (T : Y →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : C T) => LinearMap.range T) T hT le_rfl) ⟨w, rfl⟩`. Establish `hXP : ∀ v ∈ X, v ∈ H ∧ ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) v = v`. Introduce `v hv`.
+
+Set `P : Submodule ℂ (L2 (latticeGL E a) μ)` to `{ carrier := {v | v ∈ H ∧ ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) v = v} zero_mem' := ⟨H.zero_mem, fun _ _ => map_zero _⟩ add_mem' := fun {x y} hx hy => ⟨H.add_mem hx.1 hy.1, fun u hu => by rw [map_add, hx.2 u hu, hy.2 u hu]⟩ smul_mem' := fun c x hx => ⟨H.smul_mem c hx.1, fun …`. Establish `hle : X ≤ P` using `iSup₂_le fun T hT => by`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `hT.2 w`. Conclude with `hle hv`.
+
+Use `⟨U, hUo, hUc, X, hXf, ?_, fun v hv => (hXP v hv).1, ?_, fun u hu v hv => (hXP v hv).2 u hu, ?_⟩` and prove the remaining obligations. Conclude with `hmem Y.subtype ⟨fun k w => rfl, fun w => hYP _ w.2⟩ ⟨F, hFY⟩`. Introduce `k v hv`. Establish `hle : X ≤ X.comap ((R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) : L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ) : L2 (latticeGL E a) μ →ₗ[ℂ] L2 (latticeGL E a) μ)` using `iSup₂_le fun T hT => by`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) (T w) ∈ X`. Rewrite using `[← hT.1 k w]`. Conclude with `hmem T hT _`. Conclude with `hle hv`. Introduce `B hB1 hB2 v hv`.
+
+Establish `hle : X ≤ X.comap B` using `iSup₂_le fun T hT => by`. Introduce and unpack `_ ⟨w, rfl⟩`. Use `hmem (B ∘ₗ T) ⟨fun k w => ?_, fun w => hB2 _ (hT.2 w).1 (hT.2 w).2⟩ w` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B (T (ρ k w)) = _`. Rewrite using `[hT.1 k w, hB1]`.
+
+Both sides reduce to the same expression. Conclude with `hle hv`.
+-/
 theorem exists_typeSpace : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (H : Submodule ℂ (L2 (latticeGL E a) μ)), H ≤ L2cusp μ → IsIrredSubrep (R (latticeGL E a) μ) H → ∀ F ∈ H, IsKFinL2 μ F → ∃ U : Subgroup (GL (Fin a) (Af E)), IsOpen (U : Set (GL (Fin a) (Af E))) ∧ IsCompact (U : Set (GL (Fin a) (Af E))) ∧ ∃ X : Submodule ℂ (L2 (latticeGL E a) μ), FiniteDimensional ℂ X ∧ F ∈ X ∧ X ≤ H ∧ (∀ (k : Kinf E a), ∀ v ∈ X, R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) v ∈ X) ∧ (∀ u ∈ U, ∀ v ∈ X, R (latticeGL E a) μ (finGL E a u) v = v) ∧ ∀ B : L2 (latticeGL E a) μ →ₗ[ℂ] L2 (latticeGL E a) μ, (∀ (k : Kinf E a) v, B (R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) v) = R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) (B v)) → (∀ v ∈ H, (∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) v = v) → B v ∈ H ∧ ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) (B v) = B v) → ∀ v ∈ X, B v ∈ X := by
   intro E _ _ _ a μ _ _ H hH hI F hFH hK
   obtain ⟨hSo, hfd⟩ := hK

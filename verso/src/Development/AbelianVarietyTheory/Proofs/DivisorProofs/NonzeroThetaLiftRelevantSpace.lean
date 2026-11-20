@@ -15,6 +15,23 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThKReV
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' V V' W hT hT' _ hex`. Take `⟨Φ₀, hΦ₀, hne⟩` from `hex`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises.
+
+Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hWc` using `GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP (Or.inl (GlobalTheory.ThK.Check.conv_range hT.geo))`. Establish `hpres` using `(IsUWeilPair.isUSplitting hT.weil).pres`. Establish `hconv : ∀ Φ ∈ schA F (Fin a × Fin (a + a')), G.M.Conv om Φ` using `fun Ψ hΨ => (hWc.1 Ψ hΨ).1`. Establish `hD : Dense ((G.M.Pol B.ψ B.emb : Submodule ℂ (SInf F (Fin a × Fin (a + a')))) : Set (SInf F (Fin a × Fin (a + a'))))` using `GlobalTheory.T.polynomial_fock_dense_good F E σ B a (a + a') G.V G.W G.M _ _ _ _ hT.base hT.geo.hV hT.geo.hW`.
+
+Establish `hgen : ∀ (f : SInf F (Fin a × Fin (a + a'))) φ, GlobalTheory.BigNZ.Fam G.M φ → G.M.I om (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = 0`. Introduce `f φ hφ`. Use function extensionality and compare the values at `h`. Establish `hc` using `hWc.2 _ (hφ.sb hT.geo.hM) h`. Establish `e` using `Continuous.ext_on hD hc continuous_const (fun f' hf' => by`.
+
+Establish `hm : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f' φ ∈ PolData B G.M` using `Submodule.subset_span ⟨f', hf', φ, hφ.1, hφ.2, rfl⟩`. Conclude with `congrFun (hcon _ hm) h)`. Conclude with `congrFun e f`. Establish `hS : ∀ Φ ∈ PolData B (reG G V V' W).M, Φ ∈ schA F (Fin a × Fin (a + a'))` using `fun Φ hΦ => GlobalTheory.ThK.SqIntCont.polData_le_schA hT'.geo.hM hΦ`. Establish `key : ∀ Φ (hΦ : Φ ∈ PolData B (reG G V V' W).M), G.M.I om Φ = 0`.
+
+Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, -, φ, h1, h2, rfl⟩` from `hx`. Conclude with `hgen f φ ⟨h1, h2⟩`.
+
+Consider the case `zero`. Use function extensionality and compare the values at `h`. Simplify using `[Model.I, theta, thetaSum]`. Consider the case `add x y hx hy ihx ihy`. Use function extensionality and compare the values at `h`.
+
+Establish `ex` using `congrFun ihx h`. Establish `ey` using `congrFun ihy h`. Simplify using `only [Model.I, Pi.zero_apply] at ex ey ⊢`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall fun g => GlobalTheory.ThK.SqIntCont.theta_add om hpres (hS x hx) (hS y hy) g h), integral_add (hconv _ (hS x hx) h) (hconv _ (hS y hy) h), ex, ey, add_zero]`. Consider the case `smul c x hx ih`.
+
+Use function extensionality and compare the values at `h`. Establish `ex` using `congrFun ih h`. Simplify using `only [Model.I, Pi.zero_apply] at ex ⊢`. Simplify using `only [GlobalTheory.ThK.SqIntCont.theta_smul, integral_const_mul, ex, mul_zero]`. Conclude with `key Φ₀ hΦ₀`.
+-/
 theorem nonzero_of_reG : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (V : Spc F E a) (V' : Spc F E a') (W : Spc F E (a + a')), IsTriple B G X om om' →
     IsTriple B (reG G V V' W) X om om' → G.p = 0 → (∃ Φ ∈ PolData B (reG G V V' W).M, (reG G V V' W).M.I om Φ ≠ 0) →

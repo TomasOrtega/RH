@@ -28,6 +28,9 @@ open CategoryTheory MonObj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `e : ∀ a, Xo.univ.eta (f a) = Xo.univ.eta (g a)` using `fun a => by`. Establish `h1` using `Xo.univ.eta_add (g a) (f a - g a)`. Rewrite `h1` using `[add_sub_cancel, Xo.univ.eta_ker _ (h a), _root_.mul_one]`. Then use the resulting hypothesis. Unfold `levR IsLevMove`. Simplify using `only [e]`.
+-/
 theorem levR_congr {f g k : Dw.La →ₗ[𝓞 E] Dw.La}
     (h : ∀ a, f a - g a ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) {S : Type} [CommRing S] [Algebra c.F S]
     (y y' : FrPt Xo c S) : levR (f, k) y y' ↔ levR (g, k) y y' := by
@@ -43,6 +46,11 @@ section Half
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Establish `h : a ∈ (l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) • (⊤ : Submodule (𝓞 E) Dw.La)`. Rewrite using `[l.coprime, Submodule.top_smul]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `h` using `[Submodule.sup_smul]`. Take `⟨x, hx, b, hb, rfl⟩` from `Submodule.mem_sup.1 h`.
+
+Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, show (l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)).mkQ x = 0 from (Submodule.Quotient.mk_eq_zero _).2 hx, zero_add]`.
+-/
 theorem exists_half (a : Dw.La) : ∃ b ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La),
     (l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)).mkQ b = (l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)).mkQ a := by
   have h : a ∈ (l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) • (⊤ : Submodule (𝓞 E) Dw.La) := by
@@ -52,12 +60,20 @@ theorem exists_half (a : Dw.La) : ∃ b ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 
   refine ⟨b, hb, ?_⟩
   rw [map_add, show (l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)).mkQ x = 0 from (Submodule.Quotient.mk_eq_zero _).2 hx, zero_add]
 
+/- English proof (translation)
+Establish `h` using `Submodule.mem_map_of_mem (f := f) ha`. Rewrite `h` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h`.
+-/
 theorem map_mem_smul_top {I : Ideal (𝓞 E)} (f : Dw.La →ₗ[𝓞 E] Dw.La) {a : Dw.La}
     (ha : a ∈ I • (⊤ : Submodule (𝓞 E) Dw.La)) : f a ∈ I • (⊤ : Submodule (𝓞 E) Dw.La) := by
   have h := Submodule.mem_map_of_mem (f := f) ha
   rw [Submodule.map_smul''] at h
   exact Submodule.smul_mono le_rfl le_top h
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `l.prod`. Rewrite `h1` using `[h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Use `l.three_le` as an intermediate fact. Establish `h2 : l.M = 0` using `by exact_mod_cast h1`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem half_ne_bot (l : Level H) : l.Mb ≠ ⊥ := by
   intro h
   have h1 := l.prod
@@ -66,6 +82,11 @@ theorem half_ne_bot (l : Level H) : l.Mb ≠ ⊥ := by
   have h2 : l.M = 0 := by exact_mod_cast h1
   omega
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg a ha a' ha' e`. Rewrite using `[hC a ha a' ha', e, hg]`. Introduce `hg q`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ q`.
+
+Take `⟨a, ha, e⟩` from `exists_half (l := l) x`. Establish `ha'` using `map_mem_smul_top (liftLa γ) ha`. Rewrite using `[← e, ← liftLa_spec]`. Conclude with `(hC a ha _ ha').1 (hg a ha _ ha' (liftLa_spec _ a))`.
+-/
 theorem graph_iff {r : ℕ} (φ : LaMod Dw l ≃ₗ[𝓞 E] (Fin r → 𝓞 E ⧸ l.Mb)) (Y : Matrix (Fin r) (Fin r) (𝓞 E ⧸ l.Mb))
     (C : Dw.La → Dw.La → Prop)
     (hC : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La),
@@ -86,6 +107,11 @@ theorem graph_iff {r : ℕ} (φ : LaMod Dw l ≃ₗ[𝓞 E] (Fin r → 𝓞 E �
     rw [← e, ← liftLa_spec]
     exact (hC a ha _ ha').1 (hg a ha _ ha' (liftLa_spec _ a))
 
+/- English proof (translation)
+Take `⟨a, ha, e⟩` from `exists_half (l := l) x`. Establish `e1` using `(hC a ha _ (map_mem_smul_top f ha)).1 (hf a ha)`. Rewrite `e1` using `[← hγ, φ.injective.eq_iff, e, ← liftLa_spec]`. Establish `e2 : f x - f a ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)`. Rewrite using `[← map_sub]`.
+
+Conclude with `map_mem_smul_top f ((Submodule.Quotient.eq _).1 e.symm)`. Establish `e3` using `add_mem e2 ((Submodule.Quotient.eq _).1 e1)`. Rewrite `e3` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem sub_liftLa_mem {r : ℕ} (φ : LaMod Dw l ≃ₗ[𝓞 E] (Fin r → 𝓞 E ⧸ l.Mb)) (Y : Matrix (Fin r) (Fin r) (𝓞 E ⧸ l.Mb))
     (C : Dw.La → Dw.La → Prop)
     (hC : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La),
@@ -105,6 +131,27 @@ theorem sub_liftLa_mem {r : ℕ} (φ : LaMod Dw l ≃ₗ[𝓞 E] (Fin r → 𝓞
 
 end Half
 
+/- English proof (translation)
+Establish `hMb : (M : O) ∈ I` using `Ideal.mul_le_left (I := I) (J := J) (by rw [hIJ]; exact Ideal.mem_span_singleton_self _)`. Establish `hπM : ∀ s : S, π (M • s) = 0` using `fun s => (hπ0 _).2 (by`. Rewrite using `[nsmul_eq_mul, ← map_natCast o]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hMb))`. Establish `hmem : ∀ K : Ideal O, ∀ a ∈ K • (⊤ : Submodule O La), ∀ i, ρ a i ∈ K.map o` using `fun K a ha i => by`.
+
+Use `Submodule.smul_induction_on (p := fun a => ρ a i ∈ K.map o) ha ?_ ?_` and prove the remaining obligations. Introduce `b hb x _`. Rewrite using `[hlin]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hb)`. Introduce `x y hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Set `f : La →ₗ[O] (Fin r → O ⧸ I)` to `{ toFun := fun a i => π (ρ a i) map_add' := fun a b => funext fun i => by simp map_smul' := fun b a => funext fun i => by`. Rewrite using `[hlin, Pi.smul_apply, smul_eq_mul, map_mul, hπ]`. Use `rfl }`.
+
+Establish `hk : LinearMap.ker f = I • (⊤ : Submodule O La)`. Use extensionality with `a`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `⟨fun h => hker a fun i => (hπ0 _).1 (congrFun h i), fun h => funext fun i => (hπ0 _).2 (hmem _ a h i)⟩`. Establish `hs : Function.Surjective f` using `fun x => by choose b hb using fun i => Ideal.Quotient.mk_surjective (x i)`.
+
+Take `⟨a, s', e⟩` from `hsur fun i => o (b i)`. Use `⟨a, funext fun i => ?_⟩` and prove the remaining obligations. Use `congrArg π (congrFun e i)` as an intermediate fact. Rewrite `this` using `[Pi.add_apply, map_add, Pi.smul_apply, hπM, add_zero, hπ, hb]`. Conclude with `this.symm`.
+
+Use `⟨(Submodule.quotEquivOfEq _ _ hk.symm).trans (f.quotKerEquivOfSurjective hs), fun y a ha a' ha' => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ f a' = (y.map π).mulVec (f a)`. Establish `hv : ∀ i, ((y.map π).mulVec (f a)) i = π (y.mulVec (ρ a) i)` using `fun i => (RingHom.map_mulVec π y (ρ a) i).symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, e⟩`.
+
+Use function extensionality and compare the values at `i`. Use `congrArg π (congrFun e i)` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply, map_sub, Pi.smul_apply, hπM, sub_eq_zero]`. Rewrite using `[hv]`. Conclude with `this.symm`.
+
+Introduce `e`. Establish `h1 : ∀ i, (y.mulVec (ρ a) - ρ a') i ∈ Ideal.span {(M : S)}` using `fun i => by`. Establish `hb : (y.mulVec (ρ a) - ρ a') i ∈ I.map o`. Rewrite using `[← hπ0, Pi.sub_apply, map_sub, sub_eq_zero, ← hv, ← e]`. Both sides reduce to the same expression.
+
+Establish `hc : (y.mulVec (ρ a) - ρ a') i ∈ J.map o`. Use `sub_mem ?_ (hmem _ a' ha' i)` and prove the remaining obligations. Conclude with `Ideal.sum_mem _ (t := Finset.univ) (f := fun k => y i k * ρ a k) fun k _ => Ideal.mul_mem_left _ _ (hmem _ a ha k)`. Establish `hco' : I.map o ⊔ J.map o = ⊤` using `by rw [← Ideal.map_sup, hco, Ideal.map_top]`. Establish `hi` using `Submodule.mem_inf.2 ⟨hb, hc⟩`.
+
+Rewrite `hi` using `[← Ideal.mul_eq_inf_of_coprime hco', ← Ideal.map_mul, hIJ, Ideal.map_span, Set.image_singleton, map_natCast]`. Then use the resulting hypothesis. Use `choose s hs using fun i => Ideal.mem_span_singleton'.1 (h1 i)`. Conclude with `⟨s, funext fun i => by rw [← hs i, Pi.smul_apply, nsmul_eq_mul, mul_comm]⟩`.
+-/
 theorem exists_coord_of {O S La : Type} [CommRing O] [CommRing S] [AddCommGroup La] [Module O La] (o : O →+* S)
     {I J : Ideal O} {M r : ℕ} (hIJ : I * J = Ideal.span {(M : O)}) (hco : I ⊔ J = ⊤) (π : S →+* O ⧸ I)
     (hπ : ∀ a, π (o a) = Ideal.Quotient.mk I a) (hπ0 : ∀ s, π s = 0 ↔ s ∈ I.map o) (ρ : La →+ (Fin r → S))
@@ -172,6 +219,9 @@ theorem exists_coord_of {O S La : Type} [CommRing O] [CommRing S] [AddCommGroup 
     choose s hs using fun i => Ideal.mem_span_singleton'.1 (h1 i)
     exact ⟨s, funext fun i => by rw [← hs i, Pi.smul_apply, nsmul_eq_mul, mul_comm]⟩
 
+/- English proof (translation)
+Rewrite using `[Units.ext_iff]`. Use `Eq.congr_left ?_` and prove the remaining obligations. Use extensionality with `i k`. Conclude with `(factor_resI_eq_resS hI w hle _).symm`.
+-/
 theorem redAt_eq_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {r : ℕ}
     (β : GL (Fin r) (E ⊗[F] Formalism.L2.Herm.Af F)) {I : Ideal (𝓞 E)} (hI : I ≠ ⊥) (w : Formalism.L2.DIV.Pl E) (hle : I ≤ w.asIdeal)
     (x : Formalism.L2.DIV.St β) (g : GL (Fin r) (Formalism.L2.DIV.kP w)) :
@@ -193,6 +243,11 @@ def Cong (V : HSp D) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨ρ, hlin, hsur, hker, hcong⟩` from `GlobalTheory.T.exists_integral_adelic_coordinates_lattice_mod D V r hr β hβ Dw.La ι hι l.M (by have := l.three_le; omega)`. Take `⟨φ, hφ⟩` from `exists_coord_of (Formalism.L2.DIV.oToS D.host.F D.host.E) l.prod l.coprime (resI D.host.F l.Mb (half_ne_bot l)) (resI_oToS _ _) (resI_eq_zero_iff _ _) ρ hlin hsur (hker _ _ l.prod)`. Use `⟨φ, fun κ h a ha a' ha' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hcong κ _ (Formalism.L2.DIV.frGL_pullFr β ⟨_, h⟩).symm a a'`. Establish `h2` using `hφ (Formalism.L2.DIV.pullFr β ⟨_, h⟩).1 a ha a' ha'`.
+
+Establish `h3` using `h1.trans h2`. Conclude with `h3`.
+-/
 theorem exists_coord (l : Level H) (V : HSp D) {r : ℕ} (hr : V.rank = r) (β : GL (Fin r) (EAf D))
     (hβ : LatticeBasisLifts.IsLatBasis V hr β) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (hι : LatEmb V ι) :
     ∃ φ : LaMod Dw l ≃ₗ[𝓞 D.host.E] (Fin r → 𝓞 D.host.E ⧸ l.Mb),
@@ -212,6 +267,15 @@ theorem exists_coord (l : Level H) (V : HSp D) {r : ℕ} (hr : V.rank = r) (β :
   have h3 := h1.trans h2
   exact h3
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `exists_coord l V hr β hβ _ hι`. Take `⟨ψ, h1, h2⟩` from `GlobalTheory.T.level_group_matrix_isomorphism D.host.E H Dw l Pg hP hle r φ`. Establish `hred : ∀ (g : Formalism.L2.DIV.G0 Pg r) (x : Formalism.L2.DIV.St β), (∀ w : ↥Pg, Formalism.L2.DIV.redAt β w.1 x = g w) ↔ ∀ q, φ (ψ g q) = ((Formalism.L2.DIV.pullFr β x).1.map (resI D.host.F l.Mb (half_ne_bot l))).mulVec (φ q)`. Introduce `g x`. Establish `e1` using `h1 g ((Formalism.L2.DIV.pullFr β x).1.map (resI D.host.F l.Mb (half_ne_bot l)))`.
+
+Establish `e2` using `fun w : ↥Pg => redAt_eq_iff β (half_ne_bot l) w.1 (hle w) x (g w)`. Conclude with `⟨fun h => e1.2 fun w => (e2 w).1 (h w), fun h w => (e2 w).2 (e1.1 h w)⟩`. Establish `hlift : ∀ g κ, LatticeBasisLifts.IsLift V hr β Pg g κ ↔ LevelLiftConditions.IsLevLift l V (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ ι₀) (ψ g) κ`. Introduce `g κ`. Establish `hst` using `GlobalTheory.T.completedLattice_stabilizer_iff_basis_integral D V r hr β hβ κ`.
+
+Establish `hgr` using `fun h => (hred g ⟨_, h⟩).trans (graph_iff φ _ _ (hφ κ h) (ψ g))`. Conclude with `and_congr_right fun _ => ⟨fun ⟨h, hg⟩ => ⟨hst.2 h, (hgr h).1 hg⟩, fun ⟨h, hg⟩ => ⟨hst.1 h, (hgr (hst.1 h)).2 hg⟩⟩`. Use `⟨ψ, hlift, fun K _ χ g => ?_, fun g κ hκ a ha => ?_, fun g γ ⟨κ, hκ⟩ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[chiProd_apply, LatticeBasisLifts.chiDetG0_apply]`. Conclude with `Finset.prod_congr rfl fun w _ => congrArg (χ w) (h2 g w)`.
+
+Conclude with `((hlift g κ).1 hκ).2.2 a ha _ (map_mem_smul_top _ ha) (liftLa_spec _ a)`. Take `⟨h, hg⟩` from `hκ.2`. Establish `h3` using `sub_liftLa_mem φ _ _ (hφ κ h) (ψ g) ((hred g ⟨_, h⟩).1 hg) γ`. Conclude with `h3 (hγ κ hκ)`.
+-/
 theorem exists_groupEquiv (l : Level H) (V : HSp D) {r : ℕ} (hr : V.rank = r) (β : GL (Fin r) (EAf D))
     (hβ : LatticeBasisLifts.IsLatBasis V hr β) (ι₀ : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E))
     (hι : LatEmb V (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ ι₀))
@@ -248,6 +312,23 @@ theorem exists_groupEquiv (l : Level H) (V : HSp D) {r : ℕ} (hr : V.rank = r) 
     have h3 := sub_liftLa_mem φ _ _ (hφ κ h) (ψ g) ((hred g ⟨_, h⟩).1 hg) γ
     exact h3 (hγ κ hκ)
 
+/- English proof (translation)
+Establish `key : ∀ (g : G) {S : Type} [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S), levActR (Xo` using `Xo) (c := c) (LatticeBasisLifts.levOf γ) g y y' ↔ levActR (Xo := Xo) (c := c) (levFull Dw l) (ψ g) y y' := fun g S _ _ y y' => levR_congr (h g) y y'`. Establish `key' : ∀ (g : LevelLiftConditions.LevGrp Dw l) {S : Type} [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S), levActR (Xo` using `Xo) (c := c) (levFull Dw l) g y y' ↔ levActR (Xo := Xo) (c := c) (LatticeBasisLifts.levOf γ) (ψ.symm g) y y' := fun g S _ _ y y' => by`. Rewrite using `[key, ψ.apply_symm_apply]`. Use `⟨fun g => ?_, fun L => ⟨?_, ?_, ?_, ?_, ?_, ?_⟩, fun L => ⟨?_, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `LinearMap.ext fun f => funext fun p => funext fun y => ?_` and prove the remaining obligations.
+
+Establish `e : (fun y' => levActR (Xo` using `Xo) (c := c) (LatticeBasisLifts.levOf γ) g y y') = fun y' => levActR (Xo := Xo) (c := c) (levFull Dw l) (ψ g) y y' := funext fun y' => propext (key g y y')`. Establish `gen : ∀ P Q : FrPt Xo c p.R → Prop, P = Q → (open Classical in if h : ∃ y', P y' then h.choose else y) = (open Classical in if h : ∃ y', Q y' then h.choose else y)` using `fun P Q e => by subst e; rfl`. Conclude with `congrArg (f p) (gen _ _ e)`. Introduce `g S _ _ y`. Simplify `L.total (ψ.symm g) S y` using `only [key']`.
+
+Introduce `g S _ _ y y' y'' a b`. Conclude with `L.func _ S y y' y'' ((key' _ _ _).1 a) ((key' _ _ _).1 b)`. Introduce `S _ _ y`. Use `(key' 1 y y).2 ?_` and prove the remaining obligations. Rewrite using `[map_one]`.
+
+Conclude with `L.one S y`. Introduce `g k S _ _ y y' y'' a b`. Use `(key' _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `L.mul _ _ S y y' y'' ((key' _ _ _).1 a) ((key' _ _ _).1 b)`.
+
+Introduce `g S T _ _ _ _ φ y y' z z' m a b`. Conclude with `L.nat _ S T φ y y' z z' m ((key' _ _ _).1 a) ((key' _ _ _).1 b)`. Introduce `g S _ _ t y y' z z' m a b`. Conclude with `L.bor _ S t y y' z z' m ((key' _ _ _).1 a) ((key' _ _ _).1 b)`. Introduce `g S _ _ y`.
+
+Simplify `L.total (ψ g) S y` using `only [key]`. Introduce `g S _ _ y y' y'' a b`. Conclude with `L.func _ S y y' y'' ((key _ _ _).1 a) ((key _ _ _).1 b)`. Introduce `S _ _ y`. Use `(key 1 y y).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[map_one]`. Conclude with `L.one S y`. Introduce `g k S _ _ y y' y'' a b`. Use `(key _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `L.mul _ _ S y y' y'' ((key _ _ _).1 a) ((key _ _ _).1 b)`. Introduce `g S T _ _ _ _ φ y y' z z' m a b`. Conclude with `L.nat _ S T φ y y' z z' m ((key _ _ _).1 a) ((key _ _ _).1 b)`. Introduce `g S _ _ t y y' z z' m a b`. Conclude with `L.bor _ S t y y' z z' m ((key _ _ _).1 a) ((key _ _ _).1 b)`.
+-/
 theorem act_transport {Xo : Moduli Dw l} (c : Coeff l) {G : Type} [Group G] (ψ : G ≃* LevelLiftConditions.LevGrp Dw l)
     (γ : G → Dw.La →ₗ[𝓞 D.host.E] Dw.La)
     (h : ∀ g a, γ g a - liftLa (ψ g) a ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)) :
@@ -302,10 +383,26 @@ theorem act_transport {Xo : Moduli Dw l} (c : Coeff l) {G : Type} [Group G] (ψ 
 
 end Dict
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem readAd_eq (T : CoreJ D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (c : (T.U j σ).Comp → ℂ) (a : (D.host.E →+* ℂ) × ℕ → ℕ)
     (f : T.R j) (h : GA D (T.V j σ)) :
     LatticeBasisLifts.readAd T.toCore j σ c a f h = (lieFac (T.Q.Dw j) (xiR D) a : ℂ) * LevelLiftConditions.adFn T j σ c f h := rfl
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `act_transport (Xo := T.Q.Xo j) T.Q.c ψ γ hγ`. Establish `hg : ∀ g, LatticeBasisLifts.geoAct T.toCore j γ g = LevelLiftConditions.geo T j (ψ g)` using `h1`. Establish `h0 : ∀ a, (lieFac (T.Q.Dw j) (xiR D) a : ℂ) ≠ 0` using `fun a => Complex.ofReal_ne_zero.2 (lieFac_pos _ _ _).ne'`. Prove the components needed by the constructor for the conclusion. Introduce `L`.
+
+Use `⟨h2.1 L.act, fun a n hd g => ?_, fun σ hσ hr g => ?_, fun σ hσ hr n hn => ?_, fun a n hd g => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `ψ.surjective g`. Conclude with `hg g ▸ L.cusp a n hd g`. Take `⟨g, rfl⟩` from `ψ.surjective g`. Conclude with `(L.lift σ hσ hr g).imp fun κ => (hl σ hσ hr g κ).1`.
+
+Take `⟨c, hc, H⟩` from `L.read σ hσ hr n hn`. Use `⟨c, hc, fun a hd f hf g κ hκ x => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `ψ.surjective g`. Establish `e` using `H a hd g κ ((hl σ hσ hr g κ).2 hκ) f hf x`. Rewrite `e` using `[readAd_eq, readAd_eq, hg, ← hχ, mul_left_comm]`.
+
+Conclude with `mul_left_cancel₀ (h0 a) e`. Take `⟨g, rfl⟩` from `ψ.surjective g`. Conclude with `hg g ▸ L.integral a n hd g`. Introduce `L`. Use `⟨h2.2 L.laws, fun a n hd g => ?_, fun σ hσ hr g => ?_, fun σ hσ hr n hn => ?_, fun a n hd g => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hg g ▸ L.keeps a n hd (ψ g)`. Conclude with `(L.lifts σ hσ hr (ψ g)).imp fun κ => (hl σ hσ hr g κ).2`. Take `⟨c, hc, H⟩` from `L.equiv σ hσ hr n hn`. Use `⟨c, hc, fun a hd g κ hκ f hf x => ?_⟩` and prove the remaining obligations. Rewrite using `[readAd_eq, readAd_eq, hg, H a hd f hf (ψ g) κ ((hl σ hσ hr g κ).1 hκ) x, hχ, mul_left_comm]`.
+
+Conclude with `hg g ▸ L.integral a n hd (ψ g)`.
+-/
 theorem laws_iff (T : CoreJ D) (j : ℕ) (β : GL (Fin D.R.r) (EAf D)) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E))
     (χ : ∀ w : ↥Pg, (Formalism.L2.DIV.kP w.1)ˣ →* (T.Q.c.F)ˣ) (χ' : (𝓞 D.host.E ⧸ T.Q.l.Mb)ˣ →* (T.Q.c.F)ˣ)
     (ψ : Formalism.L2.DIV.G0 Pg D.R.r ≃* LevelLiftConditions.LevGrp (T.Q.Dw j) T.Q.l)
@@ -342,6 +439,9 @@ theorem laws_iff (T : CoreJ D) (j : ℕ) (β : GL (Fin D.R.r) (EAf D)) (Pg : Fin
       rw [readAd_eq, readAd_eq, hg, H a hd f hf (ψ g) κ ((hl σ hσ hr g κ).1 hκ) x, hχ, mul_left_comm]
     · exact hg g ▸ L.integral a n hd (ψ g)
 
+/- English proof (translation)
+Use `GlobalTheory.CoverHalf.eq_prod_of_squarefree ?_ Pg hPg` and prove the remaining obligations. Establish `h` using `GlobalTheory.CoverHalf.squarefree_span_g D`. Rewrite `h` using `[← hT.pins.2.1.1, ← T.Q.l.prod]`. Conclude with `h.of_mul_left`.
+-/
 theorem half_eq_prod {T : CoreJ D} (hT : LawsJ T) {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (hPg : ∀ w, w ∈ Pg ↔ T.Q.l.Mb ≤ w.asIdeal) : T.Q.l.Mb = ∏ w ∈ Pg, w.asIdeal := by
   refine GlobalTheory.CoverHalf.eq_prod_of_squarefree ?_ Pg hPg
@@ -349,6 +449,11 @@ theorem half_eq_prod {T : CoreJ D} (hT : LawsJ T) {Pg : Finset (Formalism.L2.DIV
   rw [← hT.pins.2.1.1, ← T.Q.l.prod] at h
   exact h.of_mul_left
 
+/- English proof (translation)
+Establish `h` using `(hT.muVal j hj T.σ₀ T.toCore.good_σ₀).2 1`. Establish `hroot : ∀ y : (AE D)ˣ, cA D (y : AE D) = y → IsDetRoot (T.V j T.σ₀) 1 y` using `fun y hy => by`. Unfold `IsDetRoot`. Rewrite using `[map_one, Units.val_one, Matrix.det_one, one_mul]`. Conclude with `hy.symm`.
+
+Establish `e` using `(h x (hroot x hx)).symm.trans (h 1 (hroot 1 (by rw [Units.val_one, map_one])))`. Rewrite `e` using `[map_one]`. Conclude with `Circle.ext e`.
+-/
 theorem chiW_fixed {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) (x : (AE D)ˣ) (hx : cA D (x : AE D) = x) :
     T.chiW j T.σ₀ x = 1 := by
   have h := (hT.muVal j hj T.σ₀ T.toCore.good_σ₀).2 1
@@ -360,6 +465,9 @@ theorem chiW_fixed {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) (x : (A
   rw [map_one] at e
   exact Circle.ext e
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.T.tame_product_character_inverse D T.Q.H T.Q.l Pg hle _ _ _ χ, GlobalTheory.T.tame_character_from_product D T.Q.H T.Q.l Pg hle _ _ _ χ (chiW_fixed hT hj)⟩`.
+-/
 theorem isInvTame_iff {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (hle : ∀ w : ↥Pg, T.Q.l.Mb ≤ w.1.asIdeal) (χ : ∀ w : ↥Pg, (Formalism.L2.DIV.kP w.1)ˣ →* (T.Q.c.F)ˣ) :
     LatticeBasisLifts.IsInvTame T.toCore.σ₀ Pg (T.chiW j T.toCore.σ₀) χ ↔
@@ -367,6 +475,15 @@ theorem isInvTame_iff {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) {Pg 
         (chiProd hle χ) :=
   ⟨GlobalTheory.T.tame_product_character_inverse D T.Q.H T.Q.l Pg hle _ _ _ χ, GlobalTheory.T.tame_character_from_product D T.Q.H T.Q.l Pg hle _ _ _ χ (chiW_fixed hT hj)⟩
 
+/- English proof (translation)
+Establish `hV` using `hT.spaceW j hj`. Establish `hι : LatEmb (D.sp.W j) (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ T.iota j)`. Take `⟨hr₀, -, -, -, -, -, -, h, -⟩` from `hT.adPin j hj T.σ₀ T.toCore.good_σ₀`. Establish `gen : ∀ (V : HSp D) (hV : V.rank = D.R.r), V = D.sp.W j → LatEmb V (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hV) ∘ₗ T.iota j) → LatEmb (D.sp.W j) (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ T.iota j)`. Introduce and unpack `V _ rfl h`.
+
+Conclude with `h`. Conclude with `gen _ hr₀ (hV _ T.toCore.good_σ₀) h`. Take `⟨ψ, h1, h2, h3, h4⟩` from `exists_groupEquiv T.Q.l (D.sp.W j) hr β hβ (T.iota j) hι Pg (half_eq_prod hT hPg) (fun w => (hPg w.1).1 w.2)`. Establish `gen : ∀ (V : HSp D) (hV : V.rank = D.R.r), V = D.sp.W j → (∀ g κ, LatticeBasisLifts.IsLift V hV β Pg g κ ↔ LevelLiftConditions.IsLevLift T.Q.l V (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hV) ∘ₗ T.iota j) (ψ g) κ) ∧ ∀ g, (∃ κ, LatticeBasisLifts.IsLift V hV β Pg g κ) → ∃ κ …`. Introduce and unpack `V _ rfl`.
+
+Conclude with `⟨h1, fun _ h => h⟩`. Establish `hiff` using `laws_iff T j β Pg χ _ ψ (fun σ hσ hr' => (gen _ hr' (hV σ hσ)).1) (h2 _ χ)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, H⟩`. Conclude with `(hiff _ fun g a => by rw [sub_self]; exact zero_mem _).1 (H (fun g => liftLa (ψ g)) h3)`.
+
+Introduce `L`. Use `⟨fun g => ⟨_, h3 g⟩, fun γ hγ => (hiff γ fun g => h4 g _ ?_ (hγ g)).2 L⟩` and prove the remaining obligations. Establish `hr₀ : (T.V j T.σ₀).rank = D.R.r` using `by rw [hV _ T.toCore.good_σ₀]; exact hr`. Establish `G` using `gen _ hr₀ (hV _ T.toCore.good_σ₀)`. Conclude with `G.2 g ((L.lifts T.σ₀ T.toCore.good_σ₀ hr₀ (ψ g)).imp fun κ => (G.1 g κ).2)`.
+-/
 theorem conclusion_iff {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) (hr : (D.sp.W j).rank = D.R.r)
     {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)} (hPg : ∀ w, w ∈ Pg ↔ T.Q.l.Mb ≤ w.asIdeal) (β : GL (Fin D.R.r) (EAf D))
     (hβ : LatticeBasisLifts.IsLatBasis (D.sp.W j) hr β) (χ : ∀ w : ↥Pg, (Formalism.L2.DIV.kP w.1)ˣ →* (T.Q.c.F)ˣ) :
@@ -402,6 +519,13 @@ theorem conclusion_iff {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) (hr
     have G := gen _ hr₀ (hV _ T.toCore.good_σ₀)
     exact G.2 g ((L.lifts T.σ₀ T.toCore.good_σ₀ hr₀ (ψ g)).imp fun κ => (G.1 g κ).2)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H χ' hχ'`. Establish `hr : (D.sp.W j).rank = D.R.r` using `D.sp.W_rank j hj.1 hj.2`. Take `⟨β, hβ⟩` from `GlobalTheory.T.exists_lattice_basis_hermitian_space D (D.sp.W j) _ hr`. Set `Pg` to `(Ideal.finite_factors (I := T.Q.l.Mb) (half_ne_bot T.Q.l)).toFinset`.
+
+Establish `hPg : ∀ w, w ∈ Pg ↔ T.Q.l.Mb ≤ w.asIdeal` using `fun w => by`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Ideal.dvd_iff_le`. Take `⟨χ, rfl⟩` from `exists_chiProd_eq (half_eq_prod hT hPg) (fun w => (hPg w.1).1 w.2) χ'`. Conclude with `(conclusion_iff hT hj hr hPg β hβ χ).1 (H hr Pg hPg β hβ χ ((isInvTame_iff hT hj _ χ).2 hχ'))`.
+
+Introduce `H hr Pg hPg β hβ χ hχ`. Conclude with `(conclusion_iff hT hj hr hPg β hβ χ).2 (H _ ((isInvTame_iff hT hj _ χ).1 hχ))`.
+-/
 theorem at_iff {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) :
     (∀ (hr : (D.sp.W j).rank = D.R.r) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)),
       (∀ w, w ∈ Pg ↔ T.Q.l.Mb ≤ w.asIdeal) →
@@ -428,6 +552,9 @@ theorem at_iff {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) :
   · intro H hr Pg hPg β hβ χ hχ
     exact (conclusion_iff hT hj hr hPg β hβ χ).2 (H _ ((isInvTame_iff hT hj _ χ).1 hχ))
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun hT => forall_congr' fun _ => forall_congr' fun hj => at_iff hT hj`.
+-/
 theorem geoLevelAction_iff_geoAct : LatticeBasisLifts.GeoLevelAction ↔ LevelLiftConditions.GeoAct :=
   forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun hT => forall_congr' fun _ => forall_congr' fun hj =>
     at_iff hT hj

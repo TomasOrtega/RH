@@ -10,6 +10,9 @@ open Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hc : Continuous (fun z : Fin n → ℂ => cuspCoord h z j)` using `continuous_apply _`. Establish `hne : ∀ z ∈ puncturedChart h U, ‖cuspCoord h z j‖ ≠ 0` using `fun z hz => norm_ne_zero_iff.mpr (hz.2 j)`. Establish `hinv : ContinuousOn (fun z => ‖cuspCoord h z j‖⁻¹) (puncturedChart h U)` using `hc.norm.continuousOn.inv₀ hne`. Conclude with `continuousOn_const.mul (hinv.log fun z hz => inv_ne_zero (hne z hz))`.
+-/
 theorem cuspTime_continuousOn {n a : ℕ} (h : a ≤ n) (U : Set (Fin n → ℂ)) (j : Fin a) :
     ContinuousOn (fun z => cuspTime h z j) (puncturedChart h U) := by
   have hc : Continuous (fun z : Fin n → ℂ => cuspCoord h z j) := continuous_apply _
@@ -19,6 +22,11 @@ theorem cuspTime_continuousOn {n a : ℕ} (h : a ≤ n) (U : Set (Fin n → ℂ)
     hc.norm.continuousOn.inv₀ hne
   exact continuousOn_const.mul (hinv.log fun z hz => inv_ne_zero (hne z hz))
 
+/- English proof (translation)
+Introduce `D`. Establish `hsub : D.Ustar ⊆ D.U` using `fun z hz => hz.1`. Establish `hτ : ∀ k l, ContinuousOn (fun z => (D.τ0 z k l).im) D.Ustar` using `fun k l => Complex.continuous_im.comp_continuousOn ((D.τ0_analytic k l).continuousOn.mono hsub)`. Establish `ht : ∀ j, ContinuousOn (fun z => cuspTime D.a_le z j) D.Ustar` using `fun j => cuspTime_continuousOn D.a_le D.U j`. Use `show ContinuousOn (fun z => chartImag D.a_le D.τ0 D.B z) D.Ustar`.
+
+Use `continuousOn_pi.mpr fun k => continuousOn_pi.mpr fun l => ?_` and prove the remaining obligations. Simplify using `only [chartImag, Matrix.add_apply, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(hτ k l).add (continuousOn_finsetSum _ fun j _ => (ht j).mul continuousOn_const)`.
+-/
 theorem ChartImagContinuous.proof : ChartImagContinuous.Statement := by
   intro D
   have hsub : D.Ustar ⊆ D.U := fun z hz => hz.1

@@ -16,6 +16,13 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ThK.SympVan
 
+/- English proof (translation)
+Establish `h2 : ∀ j, ∑ i, (P * w) i j * (∑ k, JA i k * c (u k)) = 0`. Introduce `j`. Use `congrFun (Matrix.vecMul_vecMul (fun i => ∑ k, JA i k * c (u k)) P w) j` as an intermediate fact. Rewrite `this` using `[h, Matrix.zero_vecMul]`. Simplify `this.symm` using `[Matrix.vecMul, dotProduct, mul_comm]`.
+
+Unfold `hTens`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `e : ∀ i, (∑ k, ∑ l, (P * w) i j * JA i k * JB j l * c ((a • Matrix.vecMulVec u v) k l)) = (∑ k, (P * w) i j * (JA i k * c (u k))) * ∑ l, JB j l * c a * c (v l)`. Introduce `i`.
+
+Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, ← Finset.mul_sum, ← Finset.sum_mul, h2, zero_mul]`.
+-/
 theorem hTens_mul_vecMulVec {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
     {α β μ : Type} [Fintype α] [Fintype β] [Fintype μ] (JA : Matrix α α A) (JB : Matrix β β A)
     (P : Matrix α μ A) (w : Matrix μ β A) (a : A) (u : α → A) (v : β → A)
@@ -42,6 +49,13 @@ end GlobalTheory.ThK.SympVan
 
 open GlobalTheory.ThK.SympVan in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC z l`. Unfold `symp`. Rewrite using `[Matrix.mul_assoc, shiftA, hTens_mul_vecMulVec, mul_zero, map_zero]`. Use extensionality with `m`. Establish `h0` using `((hC.hH).orth (Pi.single m 1)).1`.
+
+Establish `e : (fun i => ∑ k, incM F G.V.J i k * cA σ (incV F H.x k)) ᵥ* incM F H.ι = fun m => inclR (F` using `F) (AF F) (form σ G.V.J (H.ι *ᵥ Pi.single m 1) H.x) := by`. Use extensionality with `m`. Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun _ => rfl`. Simplify using `only [Matrix.vecMul, dotProduct, incM, incV, Matrix.map_apply, hc, ← map_mul, ← map_sum]`. Use `congr 1`.
+
+Simplify using `only [form, Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Rewrite using `[e]`. Simplify using `only [h0, map_zero, Pi.zero_apply]`.
+-/
 theorem GlobalTheory.ThK.symp_shiftA_vanish : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')),
     CfgA B G G₁ H H' → ∀ (z : Matrix (Fin b) (Fin (b + a')) (AE F E)) (l : (AE F E)ˣ),

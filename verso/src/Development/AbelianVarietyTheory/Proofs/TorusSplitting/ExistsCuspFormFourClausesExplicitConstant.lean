@@ -11,10 +11,38 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.EtaAn
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[wtA, wEt, WeightAlgebra.wscalar, Formalism.L2.Pj.ext0]`.
+-/
 theorem wtA_wEt_eq_zero (D : D7) (j i : ℕ) : wtA (wEt D j i) = 0 := by
   funext x
   simp [wtA, wEt, WeightAlgebra.wscalar, Formalism.L2.Pj.ext0]
 
+/- English proof (translation)
+Introduce `j h1 h2`. Establish `hj : InR D j` using `⟨h1, h2.le⟩`. Establish `hdat` using `h.pins.2.2.2 j hj`. Establish `hq : (T.Q.Dw j).q ≤ D.R.m`. Rewrite using `[hdat.2.1]`.
+
+Simplify using `[Ranks.sigW]`. Establish `hr : 2 ≤ D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨i, J, fJ, cf, xs, f, hi, hcard, hsp, hrule, hcusp, hne, -, hnzd, harch, hsup⟩` from `GlobalTheory.T.exists_product_cuspForm_ne_zero_arch_supNorm_bounds D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (fun σ => Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) T.σ₀ (fun σ hσ => h.unf j hj σ hσ) T.good_σ₀ (h.allTest j hj) hr 5 (by decide) (by norm_num) DF q D.R.m R0 h …`. Establish `hw` using `wtA_wEt_eq_zero D j i`. Establish `hn : (wEt D j i).n = 2 * 5 ^ 4 * D.R.r * i` using `rfl`. Establish `hmemC : f ∈ T.C j (wEt D j i)`. Express the relevant statement in the definitionally equal form `f ∈ cusp (T.Q.Xo j) T.Q.c (T.U j) (wtA (wEt D j i)) (wEt D j i).n`.
+
+Rewrite using `[hw, hn]`. Conclude with `hcusp`. Establish `hmem : f ∈ cutR T.C j (wEt D j i)` using `by rw [cutR_eq T.C hj]; exact hmemC`. Establish `hpj` using `hp j hj`. Establish `hi' : (0 : ℝ) < i` using `by exact_mod_cast hi`.
+
+Use `⟨i, hi, ⟨f, hmem⟩, ⟨fun h0 => hne (congrArg Subtype.val h0), ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w' G hFG`. Establish `hGc : (G : T.R j) ∈ T.C j w'` using `cutR_le T.C j w' G.2`. Establish `hm : f * (G : T.R j) ∈ cutR T.C j (WeightAlgebra.wadd (wEt D j i) w')`. Rewrite using `[cutR_eq T.C hj]`.
+
+Conclude with `h.toLawsCore.mul j hj _ w' _ hmemC _ hGc`. Establish `hval : f * (G : T.R j) = 0`. Establish `e1 : incG deg (cutR T.C j) (wEt D j i) ⟨f, hmem⟩ * incG deg (cutR T.C j) w' G = 0` using `hFG`. Rewrite `e1` using `[incG_mul deg (cutR T.C j) (deg_wadd (wEt D j i) w') ⟨f, hmem⟩ G hm]`. Establish `e2` using `incG_inj deg (cutR T.C j) _ (e1.trans (map_zero _).symm)`.
+
+Conclude with `congrArg Subtype.val e2`. Conclude with `Subtype.ext (hnzd _ _ _ (dom_wtA w') (cusp_le_sec _ _ _ _ _ hGc) hval)`. Conclude with `GlobalTheory.T.etaProductForm_valuation_bound D T h j h1 h2 i ⟨f, hmem⟩ J D.R.r cf xs hcard hsp hrule`. Introduce `σ`. Establish `e : (recB h.toLawsCore).supN j _ σ ⟨f, hmem⟩ = supC (T.Q.Xo j) T.Q.c (T.U j) (xiR D) (goodOf T.Q.c σ) 0 (2 * 5 ^ 4 * D.R.r * i) f`.
+
+Express the relevant statement in the definitionally equal form `cutN T.C T.Ns j (wEt D j i) σ ⟨f, hmem⟩ = _`. Unfold `cutN`. Rewrite using `[if_pos hj]`. Unfold `Core.Ns`. Rewrite using `[hw, hn]`.
+
+Establish `hs0` using `(recB h.toLawsCore).supN_nonneg j _ σ ⟨f, hmem⟩`. Establish `hb` using `hsup (goodOf T.Q.c σ) (xiR D) (goodEmb_goodOf _ σ)`. Establish `hb' : (recB h.toLawsCore).supN j _ σ ⟨f, hmem⟩ ≤ Real.exp (i * P)`. Rewrite using `[e]`. Use `le_trans hb (Real.exp_le_exp.mpr ?_)` and prove the remaining obligations.
+
+Conclude with `mul_le_mul_of_nonneg_left (hpj.trans (min_le_left _ _)) hi'.le`. Rewrite using `[div_le_iff₀ hi', mul_comm]`. Break down `hs0.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0, Real.log_zero]`. Check the signs of the components of the expression.
+
+Conclude with `(Real.log_le_iff_le_exp h0).mpr hb'`. Introduce `σ hσ k x hx`. Establish `hb` using `harch σ hσ k x hx`. Establish `hl : lieFac (T.Q.Dw j) (xiR D) 0 = 1` using `by simp [lieFac]`. Rewrite using `[hw, hn, hl, one_mul]`.
+
+Use `le_trans hb (Real.exp_le_exp.mpr ?_)` and prove the remaining obligations. Use `hpj.trans (min_le_right _ _)` as an intermediate fact. Use `mul_le_mul_of_nonpos_left ?_ (by linarith)` and prove the remaining obligations. Conclude with `sub_le_sub_left this _`.
+-/
 theorem exists_form_four_clauses (D : D7) (T : Top D) (h : LawsP T) (DF q : ℕ) (R0 P tableLineDegreeTwo : ℝ)
     (hrun : RunOK D.host.E D.R.r DF q R0 D.R.m)
     (hp : ∀ j, InR D j → p16 D.host.E D.R.r q D.R.m 5

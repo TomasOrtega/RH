@@ -6,6 +6,19 @@ open scoped NNReal ENNReal TensorProduct
 
 namespace GlobalTheory.ModuLR
 
+/- English proof (translation)
+Use `set μ₁ : Measure G₁ := Measure.addHaar`. Use `set μ₂ : Measure G₂ := Measure.addHaar`. Use `set μ : Measure (G₁ × G₂) := μ₁.prod μ₂`. Establish `hμ : μ.IsAddHaarMeasure` using `by infer_instance`. Establish `hreg : μ.Regular` using `by infer_instance`.
+
+Use `set φ := prodCE e₁ e₂`. Establish `h1` using `addEquivAddHaarChar_smul_map μ₁ e₁`. Establish `h2` using `addEquivAddHaarChar_smul_map μ₂ e₂`. Establish `h` using `addEquivAddHaarChar_smul_map μ φ`. Establish `hm1 : (μ₁.map e₁).IsAddHaarMeasure` using `e₁.isAddHaarMeasure_map μ₁`.
+
+Establish `hm2 : (μ₂.map e₂).IsAddHaarMeasure` using `e₂.isAddHaarMeasure_map μ₂`. Establish `hmap : μ.map φ = (μ₁.map e₁).prod (μ₂.map e₂)`. Use `Measure.map_prod_map μ₁ μ₂ e₁.continuous.measurable e₂.continuous.measurable` as an intermediate fact. Conclude with `this.symm`. Establish `hc : (addEquivAddHaarChar e₁ * addEquivAddHaarChar e₂) • μ.map φ = μ`.
+
+Rewrite using `[hmap]`. Use `conv_rhs => rw [show μ = μ₁.prod μ₂ from rfl, ← h1, ← h2]`. Rewrite using `[mul_smul]`. Rewrite using `[Measure.prod_smul_left, Measure.prod_smul_right]`. Establish `hν : (μ.map φ).IsAddHaarMeasure` using `φ.isAddHaarMeasure_map μ`.
+
+Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds (0 : G₁ × G₂)`. Establish `hpos : (μ.map φ) K ≠ 0` using `(Measure.measure_pos_of_mem_nhds _ hK0).ne'`. Establish `hfin : (μ.map φ) K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `key` using `congrArg (fun m : Measure (G₁ × G₂) => m K) (h.trans hc.symm)`. Simplify using `only [Measure.smul_apply, Measure.nnreal_smul_coe_apply] at key`.
+
+Use `(ENNReal.mul_left_inj hpos hfin).1 key` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem addEquivAddHaarChar_prodCE (G₁ G₂ : Type) [AddCommGroup G₁] [TopologicalSpace G₁]
     [IsTopologicalAddGroup G₁] [LocallyCompactSpace G₁] [T2Space G₁] [SecondCountableTopology G₁]
     [MeasurableSpace G₁] [BorelSpace G₁] [AddCommGroup G₂] [TopologicalSpace G₂]

@@ -6,6 +6,19 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k k' _ _ X X' f f' p q e e' hf hP he he' hq`. Establish `hN : IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian f`. Use `set x : X := e (IsLocalRing.closedPoint k) with hx`. Use `set x' : X' := e' (IsLocalRing.closedPoint k') with hx'`. Establish `hopen : IsOpen (connectedComponent x)` using `GlobalTheory.T.isOpen_connectedComponent_of_isLocallyNoetherian' X hN x`.
+
+Set `U : X.Opens` to `⟨connectedComponent x, hopen⟩`. Establish `hsub : Subsingleton (Spec (CommRingCat.of k))` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Establish `hrange : Set.range e ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, Subsingleton.elim y (IsLocalRing.closedPoint k)]`.
+
+Conclude with `mem_connectedComponent`. Set `eU : Spec (CommRingCat.of k) ⟶ U.toScheme` to `IsOpenImmersion.lift U.ι e hrange`. Establish `heU : eU ≫ U.ι = e` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hUc : ConnectedSpace U.toScheme` using `isConnected_iff_connectedSpace.mp (isConnected_connectedComponent (x := x))`. Establish `hgc : GeometricallyConnected (U.ι ≫ f)` using `GlobalTheory.T.geometricallyConnected_of_smooth_of_section' k U.toScheme (U.ι ≫ f) eU inferInstance (by rw [← Category.assoc, heU, he]) hUc`.
+
+Establish `hP1 : IsPullback (q ∣_ U) (q ⁻¹ᵁ U).ι U.ι q` using `isPullback_morphismRestrict q U`. Establish `hP2 : IsPullback (q ∣_ U) ((q ⁻¹ᵁ U).ι ≫ f') (U.ι ≫ f) p` using `hP1.paste_vert hP`. Establish `hc : ConnectedSpace (q ⁻¹ᵁ U).toScheme` using `GeometricallyConnected.geometrically_connectedSpace (f := U.ι ≫ f) p _ _ hP2`. Establish `hc' : _root_.IsConnected (q ⁻¹' connectedComponent x)` using `isConnected_iff_connectedSpace.mpr hc`. Establish `hmem : x' ∈ q ⁻¹' connectedComponent x`.
+
+Establish `: q x' = x`. Establish `h1 : q x' = (e' ≫ q) (IsLocalRing.closedPoint k')` using `rfl`. Establish `h2 : (p ≫ e) (IsLocalRing.closedPoint k') = e (p (IsLocalRing.closedPoint k'))` using `rfl`. Rewrite using `[h1, hq, h2]`. Conclude with `congrArg e (Subsingleton.elim _ _)`.
+
+Rewrite using `[Set.mem_preimage, this]`. Conclude with `mem_connectedComponent`. Establish `hclopen : IsClopen (q ⁻¹' connectedComponent x)` using `IsClopen.preimage ⟨isClosed_connectedComponent, hopen⟩ q.continuous`. Conclude with `Set.Subset.antisymm (hc'.subset_connectedComponent hmem) (hclopen.connectedComponent_subset hmem)`.
+-/
 theorem preimage_connectedComponent_rationalPoint_baseChange : ∀ (k k' : Type) [Field k] [Field k'] (X X' : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of k)) (f' : X' ⟶ Spec (CommRingCat.of k')) (p : Spec (CommRingCat.of k') ⟶ Spec (CommRingCat.of k)) (q : X' ⟶ X) (e : Spec (CommRingCat.of k) ⟶ X) (e' : Spec (CommRingCat.of k') ⟶ X'), Smooth f → IsPullback q f' f p → e ≫ f = 𝟙 _ → e' ≫ f' = 𝟙 _ → e' ≫ q = p ≫ e → q ⁻¹' connectedComponent (e (IsLocalRing.closedPoint k)) = connectedComponent (e' (IsLocalRing.closedPoint k')) := by
   intro k k' _ _ X X' f f' p q e e' hf hP he he' hq
   have hN : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian f

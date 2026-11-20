@@ -8,6 +8,9 @@ namespace Formalism.MainNotions.J
 
 open Formalism.BasicNotions
 
+/- English proof (translation)
+Establish `h' : p ∣ ∏ q ∈ (Finset.range (n + 2)).filter Nat.Prime, q ^ Formalism.HermitianLatticeCounting.S6.minkowskiExp n q` using `h`. Break down `(Prime.dvd_finset_prod_iff hp.prime _).1 h' with ⟨q, hq, hdvd⟩` into its components or cases. Rewrite `hq` using `[Finset.mem_filter, Finset.mem_range]`. Establish `hpq` using `(Nat.prime_dvd_prime_iff_eq hp hq.2).1 (hp.dvd_of_dvd_pow hdvd)`. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma prime_le_succ_of_dvd_minkM' {n p : ℕ} (hp : p.Prime) (h : p ∣ minkM n) : p ≤ n + 1 := by
   have h' : p ∣ ∏ q ∈ (Finset.range (n + 2)).filter Nat.Prime, q ^ Formalism.HermitianLatticeCounting.S6.minkowskiExp n q := h
   rcases (Prime.dvd_finset_prod_iff hp.prime _).1 h' with ⟨q, hq, hdvd⟩
@@ -15,6 +18,9 @@ private lemma prime_le_succ_of_dvd_minkM' {n p : ℕ} (hp : p.Prime) (h : p ∣ 
   have hpq := (Nat.prime_dvd_prime_iff_eq hp hq.2).1 (hp.dvd_of_dvd_pow hdvd)
   omega
 
+/- English proof (translation)
+Take `⟨x0, hx0⟩` from `h`. Conclude with `⟨x0, fun x hx i u p hp hpd => prime_le_succ_of_dvd_minkM' hp (dvd_trans hpd (hx0 x hx i u))⟩`.
+-/
 theorem dGamSmooth_of_dvd {eps : ℝ} (Fm : FamP eps)
     (h : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u,
       ((Fm.D x i).mem u).C.DGam ∣ minkM (2 * (Fm.D x i).R.f * (Fm.D x i).R.N (Fm.D x i).R.m)) :

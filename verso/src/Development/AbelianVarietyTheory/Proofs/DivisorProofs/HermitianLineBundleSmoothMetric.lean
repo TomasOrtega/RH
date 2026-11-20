@@ -23,6 +23,11 @@ namespace GlobalTheory.HermLB
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Establish `hy : y ∈ ptsIn p σ (L.B.U i ⊓ L.B.U j)` using `mem_ptsIn_inf.2 ⟨hi, hj⟩`. Establish `e` using `congrArg (logSq y _) (ht i j)`. Rewrite `e` using `[logSq_res _ hy, logSq_mul hy, logSq_res _ hy]`. Establish `e2` using `(L.φ σ).trans i j y hi hj`. Express the relevant statement in the definitionally equal form `_ = _ - logSq y _ (L.B.g i j) at e2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem genWt_chart_eq (L : HermLB p) (t : LB.Gen L.B) (ht : t.IsGen) (σ : k →+* ℂ) {i j : L.B.ι}
     {y : CxPts p σ} (hi : y ∈ ptsIn p σ (L.B.U i)) (hj : y ∈ ptsIn p σ (L.B.U j)) :
     (L.φ σ).φ i y - logSq y _ (t.s i) = (L.φ σ).φ j y - logSq y _ (t.s j) := by
@@ -36,11 +41,17 @@ theorem genWt_chart_eq (L : HermLB p) (t : LB.Gen L.B) (ht : t.IsGen) (σ : k �
 def genWt (L : HermLB p) (t : LB.Gen L.B) (σ : k →+* ℂ) (y : CxPts p σ) : ℝ :=
   (L.φ σ).φ (pick L.isLB y) y - logSq y _ (t.s (pick L.isLB y))
 
+/- English proof (translation)
+The claim follows from `genWt_chart_eq L t ht σ (mem_pick L.isLB y) hj`.
+-/
 theorem genWt_eq (L : HermLB p) (t : LB.Gen L.B) (ht : t.IsGen) (σ : k →+* ℂ) {j : L.B.ι}
     {y : CxPts p σ} (hj : y ∈ ptsIn p σ (L.B.U j)) :
     genWt L t σ y = (L.φ σ).φ j y - logSq y _ (t.s j) :=
   genWt_chart_eq L t ht σ (mem_pick L.isLB y) hj
 
+/- English proof (translation)
+Establish `hs : ContDiff ℝ ∞ fun v : Unit → ℂ => ‖v ()‖ ^ 2` using `(contDiff_apply ℝ ℂ ()).norm_sq ℂ`. Use `⟨U, Unit, inferInstance, fun _ => u.val, fun v => Real.log (‖v ()‖ ^ 2), {v | ‖v ()‖ ^ 2 ≠ 0}, hy, isOpen_ne_fun hs.continuous continuous_const, ?_, hs.contDiffOn.log fun _ h => h, Filter.Eventually.of_forall fun _ => rfl⟩` and prove the remaining obligations. Conclude with `pow_ne_zero _ (norm_ne_zero_iff.2 (ev_ne_zero hy u.isUnit))`.
+-/
 theorem cInfAt_logSq {σ : k →+* ℂ} {U : X.Opens} (u : Γ(X, U)ˣ) {y : CxPts p σ}
     (hy : y ∈ ptsIn p σ U) : CInfAt (fun z => logSq z U u) y := by
   have hs : ContDiff ℝ ∞ fun v : Unit → ℂ => ‖v ()‖ ^ 2 := (contDiff_apply ℝ ℂ ()).norm_sq ℂ
@@ -49,6 +60,9 @@ theorem cInfAt_logSq {σ : k →+* ℂ} {U : X.Opens} (u : Γ(X, U)ˣ) {y : CxPt
     hs.contDiffOn.log fun _ h => h, Filter.Eventually.of_forall fun _ => rfl⟩
   exact pow_ne_zero _ (norm_ne_zero_iff.2 (ev_ne_zero hy u.isUnit))
 
+/- English proof (translation)
+Establish `hj` using `mem_pick L.isLB y`. Use `((L.cInf σ _ y hj).add (cInfAt_logSq (t.s (pick L.isLB y)) hj).neg).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn (p := p) (σ := σ) _).mem_nhds hj] with z hz`. Rewrite using `[genWt_eq L t ht σ hz, sub_eq_add_neg]`.
+-/
 theorem cInfAt_genWt (L : HermLB p) (t : LB.Gen L.B) (ht : t.IsGen) (σ : k →+* ℂ) (y : CxPts p σ) :
     CInfAt (genWt L t σ) y := by
   have hj := mem_pick L.isLB y
@@ -56,6 +70,11 @@ theorem cInfAt_genWt (L : HermLB p) (t : LB.Gen L.B) (ht : t.IsGen) (σ : k →+
   filter_upwards [(isOpen_ptsIn (p := p) (σ := σ) _).mem_nhds hj] with z hz
   rw [genWt_eq L t ht σ hz, sub_eq_add_neg]
 
+/- English proof (translation)
+Introduce `i y y' h _`. Express the relevant statement in the definitionally equal form `genWt L t σ' y' = genWt L t σ y`. Establish `hj` using `mem_pick L.isLB y`. Establish `hj' : y' ∈ ptsIn p σ' (L.B.U (pick L.isLB y))`. Express the relevant statement in the definitionally equal form `⊤ ≤ y'.1 ⁻¹ᵁ _`.
+
+Rewrite using `[h]`. Conclude with `fun x _ => hj (Set.mem_univ _)`. Rewrite using `[genWt_eq L t ht σ' hj', genWt_eq L t ht σ hj, L.conj σ σ' _ y y' h hj]`. Use `congr 1`. Simplify using `only [logSq, CxPts.ev_conj h hj, RCLike.norm_conj]`.
+-/
 theorem isConj_genWt (L : HermLB p) (t : LB.Gen L.B) (ht : t.IsGen) (σ σ' : k →+* ℂ) :
     (Weight.ofFun (genWt L t σ)).IsConj (Weight.ofFun (genWt L t σ')) := by
   intro i y y' h _
@@ -69,6 +88,13 @@ theorem isConj_genWt (L : HermLB p) (t : LB.Gen L.B) (ht : t.IsGen) (σ σ' : k 
   congr 1
   simp only [logSq, CxPts.ev_conj h hj, RCLike.norm_conj]
 
+/- English proof (translation)
+Introduce `k _ X p L t ht`. Use `⟨genWt L t, fun σ y => cInfAt_genWt L t ht σ y, fun σ σ' => isConj_genWt L t ht σ σ', ?_⟩` and prove the remaining obligations. Use `isometric_of_local L.B.U (exists_chart L.isLB) id (fun _ => PUnit.unit) (fun _ => le_rfl) (fun _ => le_top) t.s (fun x j j' hj hj' => ?_) (fun σ j y hy => ?_)` and prove the remaining obligations. Establish `e` using `congrArg (gm (𝟙 X) x _) (ht j j')`. Establish `hx : (𝟙 X : X ⟶ X) x ∈ L.B.U j ⊓ L.B.U j'` using `⟨hj, hj'⟩`.
+
+Rewrite `e` using `[map_mul, gm_res _ x _ hx, gm_res _ x _ hx]`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `_ = _ * (gm (𝟙 X) x _ (1 : Γ(X, ⊤ ⊓ ⊤)ˣ))⁻¹ * _`. Rewrite using `[map_one, inv_one, mul_one]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `_ = genWt L t σ y + _`. Rewrite using `[genWt_eq L t ht σ hy]`. Express the relevant statement in the definitionally equal form `(L.φ σ).φ j y = _ - _ + _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isometric_fnB_of_gen : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (L : HermLB p)
     (t : LB.Gen L.B), t.IsGen → ∃ (c : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) (hc : ∀ σ y, CxPts.CInfAt (c σ) y)
       (hcc : ∀ σ σ', (Weight.ofFun (c σ)).IsConj (Weight.ofFun (c σ'))), (fnB c hc hcc).Isometric L := by

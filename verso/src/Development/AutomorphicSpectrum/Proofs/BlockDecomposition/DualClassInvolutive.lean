@@ -12,18 +12,30 @@ namespace GlobalTheory.CompanionTheory.Zcore
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Conclude with `hA k x.1 _ x.rep x.2.rep.smooth x.2.rep.irr`.
+-/
 theorem isAdmissible_rep (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (x : IrrGL k) : IsAdmissible x.rep := by
   exact hA k x.1 _ x.rep x.2.rep.smooth x.2.rep.irr
 
+/- English proof (translation)
+Conclude with `GlobalTheory.ContraRefl.contra_isIrreducible (GlobalTheory.SqIntUnit.compactOpen_basis k x.1) (isAdmissible_rep hA x) x.2.rep.irr`.
+-/
 theorem isIrreducible_contra_rep (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (x : IrrGL k) :
     (contra x.rep).IsIrreducible := by
   exact GlobalTheory.ContraRefl.contra_isIrreducible (GlobalTheory.SqIntUnit.compactOpen_basis k x.1) (isAdmissible_rep hA x) x.2.rep.irr
 
+/- English proof (translation)
+Unfold `dualCl`. Rewrite using `[dif_pos (isIrreducible_contra_rep hA x)]`.
+-/
 theorem dualCl_eq_of (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (x : IrrGL k) :
     dualCl x = IrrGL.of (contra x.rep) (isSmooth_smoothRep _) (isIrreducible_contra_rep hA x) := by
   unfold dualCl
   rw [dif_pos (isIrreducible_contra_rep hA x)]
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Rewrite using `[dualCl_eq_of hA]`. Use `conv_rhs => rw [← IrrGL.of_rep x]`. Conclude with `IrrGL.of_eq_of.mpr ⟨(GlobalTheory.ContraRefl.contraEquiv (IrrGL.equivOf (contra x.rep) _ _)).trans (GlobalTheory.ContraRefl.evEquiv (GlobalTheory.SqIntUnit.compactOpen_basis k x.1) (isAdmissible_rep hA x)).symm⟩`.
+-/
 private theorem dualCl_eq_of_eq_contra (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (x y : IrrGL k)
     (hy : y = IrrGL.of (contra x.rep) (isSmooth_smoothRep _) (isIrreducible_contra_rep hA x)) :
     dualCl y = x := by
@@ -33,6 +45,9 @@ private theorem dualCl_eq_of_eq_contra (hA : GlobalTheory.Published.IrreducibleA
   exact IrrGL.of_eq_of.mpr ⟨(GlobalTheory.ContraRefl.contraEquiv (IrrGL.equivOf (contra x.rep) _ _)).trans
     (GlobalTheory.ContraRefl.evEquiv (GlobalTheory.SqIntUnit.compactOpen_basis k x.1) (isAdmissible_rep hA x)).symm⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA x`. Conclude with `dualCl_eq_of_eq_contra hA x _ (dualCl_eq_of hA x)`.
+-/
 theorem dualCl_dualCl : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (x : IrrGL k),
     dualCl (dualCl x) = x := by

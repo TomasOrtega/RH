@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ManyTorsionProper.isProper_of_many_torsion_charZero | exact GlobalTheory.ManyTorsionProper.isProper_of_many_torsion_charZero | (intros; apply GlobalTheory.ManyTorsionProper.isProper_of_many_torsion_charZero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isProper_of_many_torsion_points_charZero : ∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (G : Over (Sp k)) [GrpObj G], GlobalTheory.SS.SmConn G → ∀ g : ℕ, SmoothOfRelativeDimension g G.hom → ∀ m : ℕ, ∀ s : Finset (𝟙_ (Over (Sp k)) ⟶ G), (∀ x ∈ s, x ^ m = 1) → m ^ (2 * g) < m * s.card → IsProper G.hom := by
   first | exact @GlobalTheory.ManyTorsionProper.isProper_of_many_torsion_charZero | exact GlobalTheory.ManyTorsionProper.isProper_of_many_torsion_charZero | (intros; apply GlobalTheory.ManyTorsionProper.isProper_of_many_torsion_charZero <;> assumption)

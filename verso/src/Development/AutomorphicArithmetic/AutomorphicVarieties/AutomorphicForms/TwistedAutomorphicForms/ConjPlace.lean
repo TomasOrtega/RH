@@ -4,6 +4,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsConj
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Af
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `F L Ω _ _ _ _ _ _ _ _ _ _ _ h g hg w w' A hA hne hun`. Use `haveI : Algebra.IsQuadraticExtension F L := ⟨h⟩`. Establish `hc : Nat.card (L ≃ₐ[F] L) = 2` using `(IsGalois.card_aut_eq_finrank F L).trans h`. Take `⟨t, -, hu⟩` from `(Nat.card_eq_two_iff' (1 : L ≃ₐ[F] L)).1 hc`. Establish `h1 : g.restrictNormal L = t`.
+
+Use `hu _ fun h1 => hg ?_` and prove the remaining obligations. Use `⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun y => ?_, AlgEquiv.ext fun _ => rfl⟩` and prove the remaining obligations. Use `AlgEquiv.restrictNormal_commutes g L y` as an intermediate fact. Rewrite `this` using `[h1]`. Conclude with `this.symm`.
+
+Establish `hlift : ∀ x : L, g (algebraMap L Ω x) = algebraMap L Ω (t x)` using `fun x => by`. Rewrite using `[← h1]`. Conclude with `(AlgEquiv.restrictNormal_commutes g L x).symm`. Use `haveI := w.isPrime`. Use `haveI := w'.isPrime`.
+
+Use `haveI : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩`. Use `haveI : w'.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨congrArg HeightOneSpectrum.asIdeal hun.symm⟩`. Take `⟨σ, hσ⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup (w.under (𝓞 F)).asIdeal w.asIdeal w'.asIdeal (L ≃ₐ[F] L)`. Take `rfl : σ = t` from `hu σ fun h0 => hne (HeightOneSpectrum.ext (by rw [← hσ, h0, one_smul]))`. Establish `hA' : ∀ x, g.toRingEquiv x ∈ g • A ↔ x ∈ A` using `fun x => ValuationSubring.smul_mem_pointwise_smul_iff`.
+
+Use `⟨g • A, fun x => ?_, fun s s' hs => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `MulAction.surjective σ x`. Rewrite using `[← hσ, Ideal.smul_mem_pointwise_smul_iff, ← hA y, ← val_lt_one hA']`. Establish `h2 : g.toRingEquiv (algebraMap L Ω (y : L)) = algebraMap L Ω ((σ • y : 𝓞 L) : L)` using `hlift y`. Rewrite using `[h2]`.
+
+Establish `hss : ∀ x, s' (g x) = g (s x)` using `fun x => by`. Use `(DFunLike.congr_fun hs (g x)).trans ?_` and prove the remaining obligations. Use `show g (s (g.symm (g x))) = _`. Rewrite using `[AlgEquiv.symm_apply_apply]`. Establish `hD : s ∈ Dec (F` using `L) A → s' ∈ Dec (F := L) (g • A) := fun hs0 => by`.
+
+Use `mem_Dec.2 ?_` and prove the remaining obligations. Use `show resG F L Ω s' • g • A = g • A`. Establish `h3 : resG F L Ω s • A = A` using `mem_Dec.1 hs0`. Rewrite using `[hs, ← mul_smul, inv_mul_cancel_right, mul_smul, h3]`. Establish `hle : ∀ y, (g • A).valuation (g y) ≤ 1 → A.valuation y ≤ 1` using `fun y hy => (A.valuation_le_one_iff _).2 ((hA' y).1 (((g • A).valuation_le_one_iff _).1 hy))`.
+
+Use `⟨fun hI => ⟨hD hI.1, fun x hx => ?_⟩, fun q hF => ⟨hD hF.1, fun x hx => ?_⟩⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `g.surjective x`. Rewrite using `[hss, ← map_sub]`. Conclude with `(val_lt_one hA' _).2 (hI.2 y (hle y hx))`. Take `⟨y, rfl⟩` from `g.surjective x`.
+
+Rewrite using `[hss, ← map_pow, ← map_sub]`. Conclude with `(val_lt_one hA' _).2 (hF.2 y (hle y hx))`.
+-/
 theorem UpperTheory.V.Af.Tw.conjPlace :
     UpperTheory.V.Af.Tw.ConjPlace := by
   intro F L Ω _ _ _ _ _ _ _ _ _ _ _ h g hg w w' A hA hne hun

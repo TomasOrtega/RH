@@ -14,6 +14,9 @@ def CP : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} (ZMod q)) where
       map_add' := fun _ _ => rfl
       map_smul' := fun _ _ => rfl }
 
+/- English proof (translation)
+Apply `Presheaf.IsSheaf.of_le (le_trans Scheme.etaleTopology_le_proetaleTopology Scheme.proetaleTopology_le_fpqcTopology)` to reduce the goal to its premises. Use `haveI : ReflectsLimitsOfSize.{0, 1} (forget (ModuleCat.{1} (ULift.{1} (ZMod q)))) := reflectsLimitsOfSize_shrink.{1, 1, 0, 1} _`. Apply `Presheaf.isSheaf_of_isSheaf_comp _ _ (forget (ModuleCat.{1} (ULift.{1} (ZMod q))))` to reduce the goal to its premises. Conclude with `isSheaf_fpqcTopology_continuousMapPresheaf (ULift.{1} (ZMod q))`.
+-/
 theorem isSheaf_etaleTopology_continuousMaps : Presheaf.IsSheaf Scheme.etaleTopology.{0} (CP q) := by
   apply Presheaf.IsSheaf.of_le (le_trans Scheme.etaleTopology_le_proetaleTopology Scheme.proetaleTopology_le_fpqcTopology)
   haveI : ReflectsLimitsOfSize.{0, 1} (forget (ModuleCat.{1} (ULift.{1} (ZMod q)))) :=
@@ -57,6 +60,9 @@ def aug (T : Scheme.{0}) : Sec (tw q 0) T →+ LocallyConstant T (ZMod q) :=
       erw [LinearMap.map_add]
       rfl)
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun h => (ModuleCat.Hom.hom h) x) ((augS q).naturality g.op)`. Use extensionality with `t`. Simplify using `only [aug, AddMonoidHom.mk'_apply, LocallyConstant.coe_mk, LocallyConstant.coe_comap, Function.comp_apply]`. Conclude with `congrArg (fun k : C(V, ULift.{1} (ZMod q)) => (k t).down) h`.
+-/
 theorem aug_nat {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec (tw q 0) U) :
     aug q V (Sec.res g x) = (aug q U x).comap g.base.hom := by
   have h := congrArg (fun h => (ModuleCat.Hom.hom h) x) ((augS q).naturality g.op)
@@ -64,6 +70,11 @@ theorem aug_nat {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec (tw q 0) U) :
   simp only [aug, AddMonoidHom.mk'_apply, LocallyConstant.coe_mk, LocallyConstant.coe_comap, Function.comp_apply]
   exact congrArg (fun k : C(V, ULift.{1} (ZMod q)) => (k t).down) h
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun h => (ModuleCat.Hom.hom (NatTrans.app h (Opposite.op U))) (Submodule.Quotient.mk (Finsupp.single ζ 1))) (toSheafify_sheafifyLift Scheme.etaleTopology.{0} (augP q) (isSheaf_etaleTopology_continuousMaps q))`. Use extensionality with `t`. Simplify using `only [aug, AddMonoidHom.mk'_apply, LocallyConstant.coe_mk, LocallyConstant.coe_one, Pi.one_apply]`. Establish `h2` using `congrArg (fun k : C(U, ULift.{1} (ZMod q)) => (k t).down) h`. Use `h2.trans ?_` and prove the remaining obligations.
+
+Simplify using `only [augP, augA]`. Use `erw [ModuleCat.hom_ofHom, Submodule.liftQ_apply, Finsupp.linearCombination_single]`. Simplify using the standard rewrite rules.
+-/
 theorem aug_gen (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) : aug q U (twGen 0 ζ) = 1 := by
   have h := congrArg (fun h => (ModuleCat.Hom.hom (NatTrans.app h (Opposite.op U))) (Submodule.Quotient.mk (Finsupp.single ζ 1)))
     (toSheafify_sheafifyLift Scheme.etaleTopology.{0} (augP q) (isSheaf_etaleTopology_continuousMaps q))
@@ -75,8 +86,14 @@ theorem aug_gen (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) : aug q U (twGen 0 ζ)
   erw [ModuleCat.hom_ofHom, Submodule.liftQ_apply, Finsupp.linearCombination_single]
   simp
 
+/- English proof (translation)
+Introduce `q` and use `⟨aug q, fun g x => aug_nat q g x, aug_gen q⟩`.
+-/
 theorem Aug_holds : LateralTheory.E.TateTwistZeroAugmentationBijective.Aug := fun q => ⟨aug q, fun g x => aug_nat q g x, aug_gen q⟩
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.TateTwistZeroAugmentationBijective.Tw0_of Aug_holds hB`.
+-/
 theorem Tw0_of (hB : LateralTheory.E.TateTwistZeroAugmentationBijective.AugBij) : LateralTheory.E.LCIsoPf.Tw0 := LateralTheory.E.TateTwistZeroAugmentationBijective.Tw0_of Aug_holds hB
 
 end LateralTheory.E.TateTwistZeroAugmentationSheaf

@@ -17,6 +17,15 @@ section Alg
 
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] [Algebra R R']
 
+/- English proof (translation)
+Establish `hne : ∀ d : R, d ≠ 0 → algebraMap R (FractionRing R) d ≠ 0` using `fun d hd => by`. Simplify using `using hd`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 1, one_ne_zero, by simp⟩`. Consider the case `tmul r k`.
+
+Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := R) k`. Use `⟨a • r, d, nonZeroDivisors.ne_zero hd, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, div_eq_mul_inv, Algebra.smul_def]`. Consider the case `add x y hx hy`. Take `⟨r₁, d₁, h₁, rfl⟩` from `hx`.
+
+Take `⟨r₂, d₂, h₂, rfl⟩` from `hy`. Use `⟨d₂ • r₁ + d₁ • r₂, d₁ * d₂, mul_ne_zero h₁ h₂, ?_⟩` and prove the remaining obligations. Establish `i₁` using `hne d₁ h₁`. Establish `i₂` using `hne d₂ h₂`. Rewrite using `[TensorProduct.add_tmul, TensorProduct.smul_tmul, TensorProduct.smul_tmul]`.
+
+Apply the tactic sequence `congr 2 <;> (simp only [Algebra.smul_def, map_mul]; field_simp)`.
+-/
 lemma tensor_frac_form (u : R' ⊗[R] FractionRing R) :
     ∃ (r : R') (d : R), d ≠ 0 ∧ u = r ⊗ₜ[R] (algebraMap R (FractionRing R) d)⁻¹ := by
   have hne : ∀ d : R, d ≠ 0 → algebraMap R (FractionRing R) d ≠ 0 := fun d hd => by
@@ -47,6 +56,13 @@ def kapL (κ : FractionRing R →+* FractionRing R')
     simp only [Algebra.smul_def, map_mul, RingHom.id_apply, this,
       IsScalarTower.algebraMap_apply R R' (FractionRing R')]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`. Take `⟨r, d, hd, rfl⟩` from `tensor_frac_form u`. Rewrite `hu` using `[LinearMap.liftBaseChange_tmul]`. Establish `h1 : algebraMap R (FractionRing R) d ≠ 0` using `by simpa using hd`.
+
+Establish `h2 : κ (algebraMap R (FractionRing R) d)⁻¹ ≠ 0` using `(map_ne_zero κ).2 (inv_ne_zero h1)`. Establish `h3 : r = 0`. Establish `h4 : algebraMap R' (FractionRing R') r * κ (algebraMap R (FractionRing R) d)⁻¹ = 0`. Rewrite using `[← Algebra.smul_def]`. Conclude with `hu`.
+
+Use `(mul_eq_zero.1 h4).resolve_right h2` as an intermediate fact. Simplify using `using this`. Simplify using `[h3]`.
+-/
 lemma inj_one (κ : FractionRing R →+* FractionRing R')
     (hκ : κ.comp (algebraMap R _) = (algebraMap R' _).comp (algebraMap R R')) :
     Function.Injective ((kapL κ hκ).liftBaseChange R') := by
@@ -64,6 +80,13 @@ lemma inj_one (κ : FractionRing R →+* FractionRing R')
     simpa using this
   simp [h3]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Establish `key : ∀ (y : R' ⊗[R] (T → FractionRing R)) (h : T), (kapL κ hκ).liftBaseChange R' (TensorProduct.piRight R R' R' (fun _ : T => FractionRing R) y h) = (((kapL κ hκ).compLeft T).liftBaseChange R' y) h`. Introduce `y h`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul r f => simp [TensorProduct.piRight_apply, LinearMap.liftBaseChange_tmul]`. Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]`. Apply `(TensorProduct.piRight R R' R' (fun _ : T => FractionRing R)).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Use function extensionality and compare the values at `h`. Apply `inj_one κ hκ` to reduce the goal to its premises. Rewrite using `[key, hy]`. Simplify using the standard rewrite rules.
+-/
 lemma inj_pi {T : Type} [Fintype T] [DecidableEq T] (κ : FractionRing R →+* FractionRing R')
     (hκ : κ.comp (algebraMap R _) = (algebraMap R' _).comp (algebraMap R R')) :
     Function.Injective (((kapL κ hκ).compLeft T).liftBaseChange R') := by
@@ -84,6 +107,13 @@ lemma inj_pi {T : Type} [Fintype T] [DecidableEq T] (κ : FractionRing R →+* F
   rw [key, hy]
   simp
 
+/- English proof (translation)
+Establish `key : ∀ (y : R' ⊗[R] (T → Q)) (t : T), TensorProduct.piRight R R' R' (fun _ : T => Q) y t = (LinearMap.proj t : (T → Q) →ₗ[R] Q).lTensor R' y`. Introduce `y t`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r f => simp [TensorProduct.piRight_apply]`.
+
+Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]`. Apply `(TensorProduct.piRight R R' R' (fun _ : T => Q)).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `t`. Rewrite using `[key, h]`.
+
+Both sides reduce to the same expression.
+-/
 lemma tensor_pi_ext {T Q : Type} [Fintype T] [DecidableEq T] [AddCommGroup Q] [Module R Q]
     (y : R' ⊗[R] (T → Q)) (h : ∀ t, (LinearMap.proj t : (T → Q) →ₗ[R] Q).lTensor R' y = 0) : y = 0 := by
   have key : ∀ (y : R' ⊗[R] (T → Q)) (t : T),
@@ -100,6 +130,39 @@ lemma tensor_pi_ext {T Q : Type} [Fintype T] [DecidableEq T] [AddCommGroup Q] [M
   rw [key, h]
   rfl
 
+/- English proof (translation)
+Consider the cases of `nonempty_fintype T`. Set `a : T → ((T → R) →ₗ[R] (T → FractionRing R))` to `fun t => ((Algebra.linearMap R (FractionRing R)).compLeft T) ∘ₗ (LinearMap.funLeft R R (fun h => t * h))`. Establish `ha : ∀ t f h, a t f h = algebraMap R (FractionRing R) (f (t * h))` using `fun _ _ _ => rfl`. Set `b : (T → R) →ₗ[R] (T → (T → FractionRing R) ⧸ N)` to `LinearMap.pi fun t => N.mkQ ∘ₗ a t`. Establish `hex : Function.Exact M.subtype b`.
+
+Introduce `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Establish `hfM : f ∈ M` using `(hM f).2 fun t => by`. Establish `h1 : N.mkQ (a t f) = 0` using `congrFun hf t`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero N).1 h1`. Conclude with `⟨⟨f, hfM⟩, rfl⟩`. Introduce and unpack `⟨m, rfl⟩`. Use function extensionality and compare the values at `t`. Conclude with `(Submodule.Quotient.mk_eq_zero N).2 ((hM _).1 m.2 t)`.
+
+Establish `hexS` using `Module.Flat.lTensor_exact R' hex`. Establish `hexN` using `Module.Flat.lTensor_exact R' (LinearMap.exact_subtype_mkQ N)`. Set `z : R' ⊗[R] (T → R)` to `∑ h, g h ⊗ₜ[R] (Pi.single h 1 : T → R)`. Set `cW` to `((kapL κ hκ).compLeft T).liftBaseChange R'`. Establish `hc : ∀ t, cW ((a t).lTensor R' z) = fun h => algebraMap R' (FractionRing R') (g (t * h))`.
+
+Introduce `t`. Use function extensionality and compare the values at `h`. Simplify using `only [z, map_sum, LinearMap.lTensor_tmul, cW, LinearMap.liftBaseChange_tmul, Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[Finset.sum_eq_single (t * h)]`. Use `congr($hκ 1)` as an intermediate fact.
+
+Simplify using `[LinearMap.compLeft_apply, ha, kapL, Algebra.smul_def]`. Introduce `b' _ hb'`. Simplify using `[LinearMap.compLeft_apply, ha, kapL, Ne.symm hb']`. Simplify using the standard rewrite rules. Establish `hN : ∀ t, ∃ y : R' ⊗[R] N, cW (N.subtype.lTensor R' y) = fun h => algebraMap R' (FractionRing R') (g (t * h))`.
+
+Introduce `t`. Set `cN` to `(((kapL κ hκ).compLeft T) ∘ₗ N.subtype).liftBaseChange R'`. Establish `e1 : ∀ y, cN y = cW (N.subtype.lTensor R' y)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul r n => simp [cN, cW, LinearMap.liftBaseChange_tmul]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Establish `hle : Submodule.span R' {w : T → FractionRing R' | ∃ n ∈ N, w = fun h => κ (n h)} ≤ LinearMap.range cN`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨n, hn, rfl⟩`. Use `⟨(1 : R') ⊗ₜ[R] (⟨n, hn⟩ : N), ?_⟩` and prove the remaining obligations. Simplify using `only [cN, LinearMap.liftBaseChange_tmul, one_smul]`. Both sides reduce to the same expression. Take `⟨y, hy⟩` from `hle (hg t)`.
+
+Conclude with `⟨y, by rw [← e1, hy]⟩`. Establish `hz : b.lTensor R' z = 0`. Apply `tensor_pi_ext` to reduce the goal to its premises. Introduce `t`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp]`.
+
+Establish `e2 : (LinearMap.proj t : (T → (T → FractionRing R) ⧸ N) →ₗ[R] _) ∘ₗ b = N.mkQ ∘ₗ a t` using `rfl`. Rewrite using `[e2, LinearMap.lTensor_comp, LinearMap.comp_apply]`. Take `⟨y, hy⟩` from `hN t`. Establish `e3 : (a t).lTensor R' z = N.subtype.lTensor R' y` using `inj_pi κ hκ ((hc t).trans hy.symm)`. Rewrite using `[e3]`.
+
+Conclude with `(hexN _).2 ⟨y, rfl⟩`. Take `⟨y, hy⟩` from `(hexS z).1 hz`. Set `e` to `((Algebra.linearMap R R').compLeft T).liftBaseChange R'`. Establish `hez : e z = g`. Use function extensionality and compare the values at `h`.
+
+Simplify using `only [z, e, map_sum, LinearMap.liftBaseChange_tmul, Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[Finset.sum_eq_single h]`. Simplify using `[LinearMap.compLeft_apply]`. Introduce `b' _ hb'`. Simplify using `[LinearMap.compLeft_apply, Ne.symm hb']`.
+
+Simplify using the standard rewrite rules. Establish `hall : ∀ y : R' ⊗[R] M, e (M.subtype.lTensor R' y) ∈ Submodule.span R' {g : T → R' | ∃ f ∈ M, g = fun t => algebraMap R R' (f t)}`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul r m`. Simplify using `only [LinearMap.lTensor_tmul, e, LinearMap.liftBaseChange_tmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, m.2, rfl⟩)`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add]`.
+
+Conclude with `Submodule.add_mem _ hp hq`. Rewrite using `[← hez, ← hy]`. Conclude with `hall y`.
+-/
 theorem alg_core {T : Type} [CommGroup T] [Finite T] [Module.Flat R R']
     (κ : FractionRing R →+* FractionRing R')
     (hκ : κ.comp (algebraMap R _) = (algebraMap R' _).comp (algebraMap R R'))
@@ -200,26 +263,44 @@ end Alg
 
 section Sch
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 lemma top_le_pre {X Y : Scheme.{0}} (x : X ⟶ Y) : (⊤ : X.Opens) ≤ x ⁻¹ᵁ ⊤ := by simp
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 lemma valAt_congr {B : Type} [CommRing B] {X : Scheme.{0}} {x y : Spec (CommRingCat.of B) ⟶ X} (e : x = y)
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ y ⁻¹ᵁ U) (s : Γ(X, U)) : valAt x U h s = valAt y U h' s := by
   subst e; rfl
 
+/- English proof (translation)
+Simplify using `[valAt]`.
+-/
 lemma valAt_add {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X)
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (s s' : Γ(X, U)) :
     valAt x U h (s + s') = valAt x U h s + valAt x U h s' := by
   simp [valAt]
 
+/- English proof (translation)
+Simplify using `[valAt]`.
+-/
 lemma valAt_mul {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X)
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (s s' : Γ(X, U)) :
     valAt x U h (s * s') = valAt x U h s * valAt x U h s' := by
   simp [valAt]
 
+/- English proof (translation)
+Simplify using `[valAt]`.
+-/
 lemma valAt_zero {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X)
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) : valAt x U h 0 = 0 := by
   simp [valAt]
 
+/- English proof (translation)
+Simplify using `only [valAt]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE x f U V ⊤ hV h]`. Both sides reduce to the same expression.
+-/
 lemma valAt_comp {B : Type} [CommRing B] {X Y : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ Y) (f : Y ⟶ X)
     (U : X.Opens) (V : Y.Opens) (hV : V ≤ f ⁻¹ᵁ U) (h : ⊤ ≤ x ⁻¹ᵁ V) (h' : ⊤ ≤ (x ≫ f) ⁻¹ᵁ U) (s : Γ(X, U)) :
     valAt (x ≫ f) U h' s = valAt x V h ((f.appLE U V hV).hom s) := by
@@ -227,6 +308,11 @@ lemma valAt_comp {B : Type} [CommRing B] {X Y : Scheme.{0}} (x : Spec (CommRingC
   rw [← Scheme.Hom.appLE_comp_appLE x f U V ⊤ hV h]
   rfl
 
+/- English proof (translation)
+Establish `e : (Spec.map (CommRingCat.ofHom κ)).appLE ⊤ ⊤ h = (Spec.map (CommRingCat.ofHom κ)).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Simplify using `only [valAt]`. Rewrite using `[e]`.
+
+Use `congr(($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom κ))).hom c)` as an intermediate fact. Conclude with `this`.
+-/
 lemma valAt_spec {A B : Type} [CommRing A] [CommRing B] (κ : A →+* B)
     (h : ⊤ ≤ (Spec.map (CommRingCat.ofHom κ)) ⁻¹ᵁ ⊤) (c : Γ(Spec (CommRingCat.of A), ⊤)) :
     valAt (Spec.map (CommRingCat.ofHom κ)) ⊤ h c = κ ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom c) := by
@@ -238,6 +324,9 @@ lemma valAt_spec {A B : Type} [CommRing A] [CommRing B] (κ : A →+* B)
   have := congr(($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom κ))).hom c)
   exact this
 
+/- English proof (translation)
+Rewrite using `[valAt_comp _ y U ⊤ h (top_le_pre _), valAt_spec]`. Both sides reduce to the same expression.
+-/
 lemma valAt_map {A B : Type} [CommRing A] [CommRing B] (κ : A →+* B) {X : Scheme.{0}}
     (y : Spec (CommRingCat.of A) ⟶ X) (U : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U)
     (h' : ⊤ ≤ (Spec.map (CommRingCat.ofHom κ) ≫ y) ⁻¹ᵁ U) (s : Γ(X, U)) :
@@ -247,6 +336,9 @@ lemma valAt_map {A B : Type} [CommRing A] [CommRing B] (κ : A →+* B) {X : Sch
 
 variable {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T]
 
+/- English proof (translation)
+Establish `e : (Γ.pt t).left ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))` using `Over.w (Γ.pt t)`. Rewrite using `[← valAt_comp (Γ.pt t).left Γ.G.hom ⊤ ⊤ h' h (top_le_pre _), valAt_congr e _ _ (top_le_pre _), valAt_spec]`.
+-/
 lemma valAt_const (Γ : QFGroup R T) (t : T) (h : ⊤ ≤ (Γ.pt t).left ⁻¹ᵁ ⊤) (h' : ⊤ ≤ Γ.G.hom ⁻¹ᵁ ⊤)
     (c : Γ(Spec (CommRingCat.of R), ⊤)) :
     valAt (Γ.pt t).left ⊤ h ((Γ.G.hom.appLE ⊤ ⊤ h').hom c) =
@@ -269,6 +361,9 @@ def secFn (Γ : QFGroup R T) : Submodule R (T → FractionRing R) where
     rw [valAt_mul, valAt_const, hs]
     simp [Algebra.smul_def]
 
+/- English proof (translation)
+Rewrite using `[PositivityTheory.HtPt.Twhopf.mem_order R T Γ ⊤ f]`. Use `forall_congr' fun t => ?_` and prove the remaining obligations. Use `PositivityTheory.HtPt.Twhopf.reg_iff R T Γ ⊤ (fun h => algebraMap R (FractionRing R) (f (t * h)))` as an intermediate fact. Conclude with `this`.
+-/
 lemma mem_btOrder_iff [Finite T] (Γ : QFGroup R T) (f : T → R) :
     f ∈ Γ.btOrder ⊤ ↔ ∀ t, (fun h => algebraMap R (FractionRing R) (f (t * h))) ∈ secFn Γ := by
   rw [PositivityTheory.HtPt.Twhopf.mem_order R T Γ ⊤ f]
@@ -276,6 +371,13 @@ lemma mem_btOrder_iff [Finite T] (Γ : QFGroup R T) (f : T → R) :
   have := PositivityTheory.HtPt.Twhopf.reg_iff R T Γ ⊤ (fun h => algebraMap R (FractionRing R) (f (t * h)))
   exact this
 
+/- English proof (translation)
+Use `letI : Algebra A B := a.hom.toAlgebra`. Use `letI : Algebra A C := c.hom.toAlgebra`. Use `letI : Algebra B D := b.hom.toAlgebra`. Use `letI : Algebra C D := d.hom.toAlgebra`. Use `letI : Algebra A D := (a ≫ b).hom.toAlgebra`.
+
+Use `haveI : IsScalarTower A B D := .of_algebraMap_eq fun r => rfl`. Use `haveI : IsScalarTower A C D := .of_algebraMap_eq fun r => congr($(h.w).hom r)`. Establish `hpo : Algebra.IsPushout A C B D` using `CommRingCat.isPushout_iff_isPushout.mp h.flip`. Proceed by induction on `x using hpo.out.inductionOn with`. Consider the case `zero => exact h0`.
+
+Consider the case `tmul y => exact h1 y`. Consider the case `smul s n hn => exact h2 s n hn`. Consider the case `add x y hx hy => exact h3 x y hx hy`.
+-/
 lemma pushout_induction {A B C D : CommRingCat.{0}} {a : A ⟶ B} {c : A ⟶ C} {b : B ⟶ D} {d : C ⟶ D}
     (h : IsPushout a c b d) (P : D → Prop) (h0 : P 0) (h1 : ∀ x, P (b.hom x))
     (h2 : ∀ s n, P n → P (d.hom s * n)) (h3 : ∀ x y, P x → P y → P (x + y)) (x : D) : P x := by
@@ -295,6 +397,19 @@ lemma pushout_induction {A B C D : CommRingCat.{0}} {a : A ⟶ B} {c : A ⟶ C} 
 
 variable {R' : Type} [CommRing R'] [IsDomain R'] [Algebra R R']
 
+/- English proof (translation)
+Use `haveI := Γ.quasiCompact`. Use `haveI := Γ.separated`. Use `haveI : Flat (Spec.map (CommRingCat.ofHom (algebraMap R R'))) := Flat.SpecMap_iff.mpr (RingHom.flat_algebraMap_iff.mpr inferInstance)`. Establish `H` using `hbc.cart`. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := ⊤) (UY := ⊤) (top_le_pre _) (top_le_pre _) (by simp)).1 (isIso_pushoutSection_of_isQuasiSeparated_of_flat_right H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) (Γ.G.hom.isCompact_preimage (isAffineOpen_top _).isCompact) (Γ. …`.
+
+Use `pushout_induction po (fun y => (fun t => valAt (Γ'.pt t).left ⊤ (top_le_pre _) y) ∈ Submodule.span R' {w : T → FractionRing R' | ∃ n ∈ secFn Γ, w = fun h => κ (n h)}) ?_ ?_ ?_ ?_ x` and prove the remaining obligations. Establish `: (fun t => valAt (Γ'.pt t).left ⊤ (top_le_pre _) (0 : Γ(Γ'.G.left, ⊤))) = 0`. Use function extensionality and compare the values at `t`. Conclude with `valAt_zero _ _ _`. Rewrite using `[this]`.
+
+Conclude with `Submodule.zero_mem _`. Introduce `s`. Use `Submodule.subset_span ⟨fun t => valAt (Γ.pt t).left ⊤ (top_le_pre _) s, ⟨s, fun _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Rewrite using `[← valAt_comp (Γ'.pt t).left F ⊤ ⊤ _ (top_le_pre _) (top_le_pre _), valAt_congr (GlobalTheory.T.base_change_points_compat R T Γ R' Γ' F hbc κ hκ t) _ _ (top_le_pre _), valAt_map κ _ _ (top_le_pre _)]`.
+
+Introduce `c n hn`. Establish `: (fun t => valAt (Γ'.pt t).left ⊤ (top_le_pre _) (((Γ'.G.hom.appLE ⊤ ⊤ (top_le_pre _)).hom c) * n)) = ((Scheme.ΓSpecIso (CommRingCat.of R')).hom.hom c) • (fun t => valAt (Γ'.pt t).left ⊤ (top_le_pre _) n)`. Use function extensionality and compare the values at `t`. Rewrite using `[valAt_mul, valAt_const]`. Simplify using `[Algebra.smul_def]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hn`. Introduce `p q hp hq`. Establish `: (fun t => valAt (Γ'.pt t).left ⊤ (top_le_pre _) (p + q)) = (fun t => valAt (Γ'.pt t).left ⊤ (top_le_pre _) p) + (fun t => valAt (Γ'.pt t).left ⊤ (top_le_pre _) q)`. Use function extensionality and compare the values at `t`.
+
+Conclude with `valAt_add _ _ _ _ _`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hp hq`.
+-/
 theorem val_mem_span [Finite T] [Module.Flat R R'] (Γ : QFGroup R T) (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left)
     (hbc : Γ'.IsBaseChange Γ (algebraMap R R') F)
     (κ : FractionRing R →+* FractionRing R')
@@ -340,6 +455,11 @@ theorem val_mem_span [Finite T] [Module.Flat R R'] (Γ : QFGroup R T) (Γ' : QFG
     rw [this]
     exact Submodule.add_mem _ hp hq
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `hr0`. Establish `hreg : IsSMulRegular R' r` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hr0)`. Establish `h1 : r • (1 : R') = r • (0 : R')` using `by rw [Algebra.smul_def, hr]; simp`.
+
+Conclude with `one_ne_zero (hreg h1)`.
+-/
 lemma flat_inj [Module.Flat R R'] : Function.Injective (algebraMap R R') := by
   rw [injective_iff_map_eq_zero]
   intro r hr
@@ -349,6 +469,9 @@ lemma flat_inj [Module.Flat R R'] : Function.Injective (algebraMap R R') := by
   have h1 : r • (1 : R') = r • (0 : R') := by rw [Algebra.smul_def, hr]; simp
   exact one_ne_zero (hreg h1)
 
+/- English proof (translation)
+Establish `hinj : Function.Injective ((algebraMap R' (FractionRing R')).comp (algebraMap R R'))` using `(IsFractionRing.injective R' (FractionRing R')).comp hφ`. Use `⟨IsFractionRing.lift (K := FractionRing R) hinj, ?_⟩` and prove the remaining obligations. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Conclude with `IsFractionRing.lift_algebraMap (K := FractionRing R) hinj r`.
+-/
 lemma exists_kappa (hφ : Function.Injective (algebraMap R R')) :
     ∃ κ : FractionRing R →+* FractionRing R',
       κ.comp (algebraMap R _) = (algebraMap R' _).comp (algebraMap R R') := by
@@ -359,6 +482,11 @@ lemma exists_kappa (hφ : Function.Injective (algebraMap R R')) :
   intro r
   exact IsFractionRing.lift_algebraMap (K := FractionRing R) hinj r
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite using `[PositivityTheory.HtPt.Htat.ext_span]`. Use `alg_core κ hκ (secFn Γ) (Subalgebra.toSubmodule (Γ.btOrder ⊤)) (fun f => mem_btOrder_iff Γ f) g ?_` and prove the remaining obligations. Introduce `t`. Take `⟨x, hx⟩` from `(mem_btOrder_iff Γ' g).1 hg t`.
+
+Establish `e : (fun h => algebraMap R' (FractionRing R') (g (t * h))) = fun h => valAt (Γ'.pt h).left ⊤ (top_le_pre _) x`. Use function extensionality and compare the values at `h`. Conclude with `(hx h _).symm`. Rewrite using `[e]`. Conclude with `val_mem_span Γ Γ' F hbc κ hκ x`.
+-/
 lemma btOrder_le_ext [Finite T] [Module.Flat R R'] (Γ : QFGroup R T) (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left)
     (hbc : Γ'.IsBaseChange Γ (algebraMap R R') F)
     (κ : FractionRing R →+* FractionRing R')
@@ -376,6 +504,11 @@ lemma btOrder_le_ext [Finite T] [Module.Flat R R'] (Γ : QFGroup R T) (Γ' : QFG
   rw [e]
   exact val_mem_span Γ Γ' F hbc κ hκ x
 
+/- English proof (translation)
+Establish `hκ' : ∀ r, κ (algebraMap R _ r) = algebraMap R' (FractionRing R') (algebraMap R R' r)` using `fun r => congr($hκ r)`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `(mem_btOrder_iff Γ' _).2 fun t => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `(mem_btOrder_iff Γ f).1 hf t`.
+
+Use `⟨(F.appLE ⊤ ⊤ (top_le_pre _)).hom s, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[← valAt_comp (Γ'.pt h).left F ⊤ ⊤ _ _ (top_le_pre _), valAt_congr (GlobalTheory.T.base_change_points_compat R T Γ R' Γ' F hbc κ hκ h) _ _ (top_le_pre _), valAt_map κ _ _ (top_le_pre _), hs h, hκ']`.
+-/
 lemma ext_le_btOrder [Finite T] (Γ : QFGroup R T) (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left)
     (hbc : Γ'.IsBaseChange Γ (algebraMap R R') F)
     (κ : FractionRing R →+* FractionRing R')
@@ -394,6 +527,9 @@ lemma ext_le_btOrder [Finite T] (Γ : QFGroup R T) (Γ' : QFGroup R' T) (F : Γ'
 
 end Sch
 
+/- English proof (translation)
+Introduce `R _ _ T _ _ Γ R' _ _ _ Γ' F hbc hflat`. Take `⟨κ, hκ⟩` from `exists_kappa (flat_inj (R := R) (R' := R'))`. Conclude with `le_antisymm (btOrder_le_ext Γ Γ' F hbc κ hκ) (ext_le_btOrder Γ Γ' F hbc κ hκ)`.
+-/
 theorem btOrder_flat_baseChange : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ (algebraMap R R') F → Module.Flat R R' → Γ'.btOrder ⊤ = extOrder (algebraMap R R') (Γ.btOrder ⊤) := by
   intro R _ _ T _ _ Γ R' _ _ _ Γ' F hbc hflat
   obtain ⟨κ, hκ⟩ := exists_kappa (flat_inj (R := R) (R' := R'))
@@ -401,5 +537,8 @@ theorem btOrder_flat_baseChange : ∀ (R : Type) [CommRing R] [IsDomain R] (T : 
 
 end PositivityTheory.HtPt.Htat.ValuationInjectivePi
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.HtPt.Htat.ValuationInjectivePi.btOrder_flat_baseChange`.
+-/
 theorem PositivityTheory.HtPt.Htat.bt_flat_bc : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ (algebraMap R R') F → Module.Flat R R' → Γ'.btOrder ⊤ = extOrder (algebraMap R R') (Γ.btOrder ⊤) :=
   @PositivityTheory.HtPt.Htat.ValuationInjectivePi.btOrder_flat_baseChange

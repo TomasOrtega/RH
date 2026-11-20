@@ -13,6 +13,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.MBLow.DiscNorm
 
+/- English proof (translation)
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V) k`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hk`. Use `set g : V →+* C := f.comp (algebraMap V _)`. Establish `key : ∀ x : V, x ≠ 0 → ∃ m : ℕ, ‖g x‖ = ‖g ϖ‖ ^ m` using `fun x hx => by`.
+
+Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hϖ`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, map_pow, norm_pow, GlobalTheory.Ex.IntVal.norm_unit g hf u.isUnit, _root_.one_mul]`. Take `⟨ma, ea⟩` from `key a ha0`. Take `⟨mb, eb⟩` from `key b hb0`.
+
+Establish `ht : ‖g ϖ‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`. Introduce `h`. Conclude with `hϖ.ne_zero (IsFractionRing.injective V (FractionRing V) (f.injective (by simpa [g] using h)))`. Use `⟨(ma : ℤ) - mb, ?_⟩` and prove the remaining obligations.
+
+Use `show ‖f (algebraMap V _ a / algebraMap V _ b)‖ = ‖g ϖ‖ ^ ((ma : ℤ) - mb)`. Rewrite using `[map_div₀, norm_div]`. Use `show ‖g a‖ / ‖g b‖ = _`. Rewrite using `[zpow_sub₀ ht, zpow_natCast, zpow_natCast]`. Conclude with `congrArg₂ (· / ·) ea eb`.
+-/
 theorem norm_eq_zpow {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ)
     {C : Type} [NormedField C] (f : FractionRing V →+* C) (hf : ∀ r : V, ‖f (algebraMap V _ r)‖ ≤ 1)
     {k : FractionRing V} (hk : k ≠ 0) : ∃ n : ℤ, ‖f k‖ = ‖f (algebraMap V _ ϖ)‖ ^ n := by
@@ -37,6 +46,13 @@ theorem norm_eq_zpow {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRi
   rw [zpow_sub₀ ht, zpow_natCast, zpow_natCast]
   exact congrArg₂ (· / ·) ea eb
 
+/- English proof (translation)
+Use `set W := LB.wchart L φ (fun k => J (jFK (R := R) F ≫ φ k))`. Establish `h' : ⊤ ≤ (𝟙 (TK R).left) ⁻¹ᵁ W`. Introduce `x _`. Take `⟨y⟩ : Nonempty (Sp F)` from `inferInstance`. Establish `hy` using `hW (Set.mem_univ y)`.
+
+Establish `hs : Subsingleton (PrimeSpectrum (FractionRing R))` using `inferInstance`. Establish `: (jFK (R` using `R) F).base y = x := @Subsingleton.elim (PrimeSpectrum (FractionRing R)) hs _ _`. Rewrite using `[← this]`. Conclude with `hy`. Use `⟨GlobalTheory.Ex.IntVal.evR (𝟙 _) W h' (t.s _).val, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `((Units.isUnit _).map _).ne_zero`. Use `GlobalTheory.Ex.IntVal.valF_comp (algebraMap (FractionRing R) F) (𝟙 (TK R).left) W h' (t.s _).val` as an intermediate fact. Establish `e : spMap (algebraMap (FractionRing R) F) ≫ 𝟙 (TK R).left = jFK (R` using `R) F := Category.comp_id _`. Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem vF_eq_alg {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F]
     {X : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → ((TK R).left ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (J : (Sp F ⟶ X) → L.ι)
@@ -57,6 +73,15 @@ theorem vF_eq_alg {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Alg
     rw [e] at this
     exact this
 
+/- English proof (translation)
+Introduce `V _ _ _ ϖ hϖ D C _ _ _ hC N ν hν`. Take `⟨S, hS, hI⟩` from `hν`. Set `f : V →+* C` to `toF V C`. Set `g : V →+* S` to `f.codRestrict S fun x => (hS _).2 (hC.1 x)`. Establish `hg : spMap S.subtype ≫ spMap g = (TF (R` using `V) C).hom := by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hrig : ‖ν.rg‖ = 1` using `GlobalTheory.Ex.IntVal.norm_vF hS hI _ _ (spMap g) hg fun _ => (congrArg ((TF (R := V) C).hom ≫ ·) (Over.w η[D.toPre.P.A])).trans (Category.comp_id _)`. Use `⟨hrig, fun χ => ?_⟩` and prove the remaining obligations. Establish `hW : ⊤ ≤ jFK (R` using `V) C ⁻¹ᵁ LB.wchart D.toPre.P.L (fun _ : PUnit => D.toPre.xK (ν.eX χ)) (fun _ => ν.J (jFK (R := V) C ≫ D.toPre.xK (ν.eX χ))) := fun y hy => Set.mem_iInter.2 fun _ => ν.good _ hy`.
+
+Take `⟨k, hk, ek⟩` from `vF_eq_alg (D.toPre.psi (ν.eX χ)) ν.J hW`. Take `⟨n, hn⟩` from `norm_eq_zpow hϖ (algebraMap (FractionRing V) C) hC.1 hk`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[ν.ψ_eq, norm_mul]`. Express the relevant statement in the definitionally equal form `_ * ‖ν.rg‖ = _`.
+
+Rewrite using `[hrig, _root_.mul_one, ek, hn]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (IsLocalRing.maximalIdeal V)) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [Algebra (FractionRing V) C], CExt V (IsLocalRing.maximalIdeal V) C → ∀ (N : NumD C) (ν : NumOf D.toPre C N), ν.IntN → ‖ν.rg‖ = 1 ∧ ∀ χ, ∃ n : ℤ, ‖(N.ψ χ : C)‖ = ‖toF V C ϖ‖ ^ n := by
   intro V _ _ _ ϖ hϖ D C _ _ _ hC N ν hν
   obtain ⟨S, hS, hI⟩ := hν

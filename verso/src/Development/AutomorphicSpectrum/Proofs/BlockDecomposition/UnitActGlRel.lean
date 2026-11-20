@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SmoothVecGl
 
+/- English proof (translation)
+Introduce `n ε H _ _ σ hσ`. Establish `key : ∀ a b (u : smoothVec ε σ), ∀ g ∈ UJset ε, σ g (unitAct hσ a b u) = EabV ε a b (fun g => σ g u) g` using `fun a b u g hg => rep_eabV hσ u.2 a b hg`. Introduce `a b c d`. Use extensionality with `u`. Establish `h` using `eabGlV_of (rdLinV_of vector_right_derivative_extends) (rdBracketV_of vector_right_derivative_extends (rdSmoothV_of vector_right_derivative_extends)) (rdSmoothV_of vector_right_derivative_extends) n ε H (fun g => σ g u) a b c d 1 u.2 inUJ_one`.
+
+Rewrite `h` using `[← eabV_congr (key c d u) a b inUJ_one, ← eabV_congr (key a b u) c d inUJ_one]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub]`. Rewrite using `[unitAct_coe hσ a b, unitAct_coe hσ c d (unitAct hσ a b u), h]`. Apply the tactic sequence `split_ifs <;> simp [unitAct_coe]`.
+-/
 theorem unitAct_glRel : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ),

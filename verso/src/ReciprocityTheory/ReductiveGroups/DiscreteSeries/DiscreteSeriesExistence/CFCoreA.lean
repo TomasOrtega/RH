@@ -26,14 +26,23 @@ def lowWt (μ : Fin n → ℝ) : List (Fin n × Fin n) → Fin n → ℝ
 def kLowSpan (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (y : M) : Submodule ℂ M :=
   Submodule.span ℂ {x | ∃ l : List (Fin n × Fin n), (∀ p ∈ l, IsKLow ε p) ∧ x = lowWord E y l}
 
+/- English proof (translation)
+Unfold `kLowSpan`. Conclude with `Submodule.subset_span ⟨l, hl, rfl⟩`.
+-/
 theorem lowWord_mem {y : M} {l : List (Fin n × Fin n)} (hl : ∀ p ∈ l, IsKLow ε p) :
     lowWord E y l ∈ kLowSpan ε E y := by
   unfold kLowSpan
   exact Submodule.subset_span ⟨l, hl, rfl⟩
 
+/- English proof (translation)
+Conclude with `lowWord_mem (ε := ε) (E := E) (y := y) (l := []) (fun p hp => by simp at hp)`.
+-/
 theorem self_mem_kLowSpan (y : M) : y ∈ kLowSpan ε E y := by
   exact lowWord_mem (ε := ε) (E := E) (y := y) (l := []) (fun p hp => by simp at hp)
 
+/- English proof (translation)
+The claim follows from `| [], a => by simpa [lowWord, lowWt] using hy a | p :: l, a => by obtain ⟨c, d⟩ := p have h := congrArg (fun X : Module.End ℂ M => X (lowWord E y l)) (hE a a c d) simp only [LinearMap.sub_apply, Module.End.mul_apply] at h rw [lowWord_wt hE hy l a, map_smul, sub_eq_iff_eq_add] at …`.
+-/
 theorem lowWord_wt (hE : IsGlRep E) {μ : Fin n → ℝ} {y : M} (hy : ∀ a, E a a y = (μ a : ℂ) • y) :
     ∀ (l : List (Fin n × Fin n)) (a : Fin n),
       E a a (lowWord E y l) = (lowWt μ l a : ℂ) • lowWord E y l
@@ -58,6 +67,11 @@ theorem lowWord_wt (hE : IsGlRep E) {μ : Fin n → ℝ} {y : M} (hy : ∀ a, E 
       module
     · simp [hac, had, Ne.symm had]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hle : kLowSpan ε E y ≤ (kLowSpan ε E y).comap T`. Unfold `kLowSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨l, hl, rfl⟩`.
+
+Conclude with `h l hl`. Conclude with `hle hx`.
+-/
 private lemma mem_kLowSpan_of_map_lowWord_mem {y : M} (T : Module.End ℂ M)
     (h : ∀ l : List (Fin n × Fin n), (∀ p ∈ l, IsKLow ε p) → T (lowWord E y l) ∈ kLowSpan ε E y) :
     ∀ x ∈ kLowSpan ε E y, T x ∈ kLowSpan ε E y := by
@@ -69,6 +83,11 @@ private lemma mem_kLowSpan_of_map_lowWord_mem {y : M} (T : Module.End ℂ M)
     exact h l hl
   exact hle hx
 
+/- English proof (translation)
+Conclude with `mem_kLowSpan_of_map_lowWord_mem (E c d) (fun l hl => lowWord_mem (ε := ε) (E := E) (y := y) (l := (c, d) :: l) (by`. Introduce `p hp`. Break down `List.mem_cons.mp hp with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hcd`.
+
+Conclude with `hl p h))`.
+-/
 theorem kLowSpan_low_stable {y : M} {c d : Fin n} (hcd : IsKLow ε (c, d)) :
     ∀ x ∈ kLowSpan ε E y, E c d x ∈ kLowSpan ε E y := by
   exact mem_kLowSpan_of_map_lowWord_mem (E c d) (fun l hl => lowWord_mem (ε := ε) (E := E) (y := y) (l := (c, d) :: l) (by
@@ -77,6 +96,11 @@ theorem kLowSpan_low_stable {y : M} {c d : Fin n} (hcd : IsKLow ε (c, d)) :
     · rw [h]; exact hcd
     · exact hl p h))
 
+/- English proof (translation)
+Break down `hab.lt_or_eq with h | h` into its components or cases. Conclude with `lowWord_mem (ε := ε) (E := E) (y := y) (l := (a, b) :: l) (by`. Introduce `p hp`. Break down `List.mem_cons.mp hp with hp | hp` into its components or cases. Rewrite using `[hp]`.
+
+Conclude with `And.intro h hε`. Conclude with `hl p hp)`. Rewrite using `[h, lowWord_wt hE hy l a]`. Conclude with `Submodule.smul_mem _ _ (lowWord_mem hl)`.
+-/
 theorem lowWord_mem_of_ge (hE : IsGlRep E) {μ : Fin n → ℝ} {y : M} (hy : ∀ a, E a a y = (μ a : ℂ) • y)
     {l : List (Fin n × Fin n)} (hl : ∀ p ∈ l, IsKLow ε p) {a b : Fin n} (hab : b ≤ a) (hε : ε a = ε b) :
     E a b (lowWord E y l) ∈ kLowSpan ε E y := by
@@ -89,6 +113,9 @@ theorem lowWord_mem_of_ge (hE : IsGlRep E) {μ : Fin n → ℝ} {y : M} (hy : �
   · rw [h, lowWord_wt hE hy l a]
     exact Submodule.smul_mem _ _ (lowWord_mem hl)
 
+/- English proof (translation)
+The claim follows from `| [], _, a, b, hab, hε => by simp only [lowWord] rw [hy.2 a b hab hε] exact Submodule.zero_mem _ | p :: l, hl, a, b, hab, hε => by obtain ⟨c, d⟩ := p have hcd : IsKLow ε (c, d) := hl _ (List.mem_cons_self ..) have hl' : ∀ p ∈ l, IsKLow ε p := fun p hp => hl p (List.mem_cons_of_me …`.
+-/
 theorem lowWord_raise (hE : IsGlRep E) {μ : Fin n → ℝ} {y : M} (hy : IsKHWVec ε E μ y) :
     ∀ (l : List (Fin n × Fin n)), (∀ p ∈ l, IsKLow ε p) → ∀ a b : Fin n, a < b → ε a = ε b →
       E a b (lowWord E y l) ∈ kLowSpan ε E y
@@ -119,6 +146,11 @@ theorem lowWord_raise (hE : IsGlRep E) {μ : Fin n → ℝ} {y : M} (hy : IsKHWV
       · subst hda; exact key c b (hcd.2.trans hε)
       · simp
 
+/- English proof (translation)
+Establish `hy' : (∀ a, E a a y = (μ a : ℂ) • y) ∧ ∀ a b, a < b → ε a = ε b → E a b y = 0` using `hy`. Introduce `a b hab`. Conclude with `mem_kLowSpan_of_map_lowWord_mem (E a b) (fun l hl => by`. Break down `lt_or_ge a b with h | h` into its components or cases. Conclude with `lowWord_raise hE hy l hl a b h hab`.
+
+Conclude with `lowWord_mem_of_ge hE hy'.1 hl h hab)`.
+-/
 theorem kLowSpan_kStable (hE : IsGlRep E) {μ : Fin n → ℝ} {y : M} (hy : IsKHWVec ε E μ y) :
     IsKStableSub ε E (kLowSpan ε E y) := by
   have hy' : (∀ a, E a a y = (μ a : ℂ) • y) ∧ ∀ a b, a < b → ε a = ε b → E a b y = 0 := hy
@@ -128,6 +160,13 @@ theorem kLowSpan_kStable (hE : IsGlRep E) {μ : Fin n → ℝ} {y : M} (hy : IsK
     · exact lowWord_raise hE hy l hl a b h hab
     · exact lowWord_mem_of_ge hE hy'.1 hl h hab)
 
+/- English proof (translation)
+Establish `hW : ∀ l : List (Fin n × Fin n), (∀ p ∈ l, IsKLow ε p) → lowWord E y l ∈ T`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _`. Conclude with `hy`.
+
+Consider the case `cons p l ih`. Introduce `hl`. Establish `hp : p.2 < p.1 ∧ ε p.1 = ε p.2` using `hl p (by simp)`. Conclude with `hT p.1 p.2 hp.2 _ (ih fun q hq => hl q (List.mem_cons_of_mem _ hq))`. Unfold `kLowSpan`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Conclude with `hW l hl`.
+-/
 theorem kLowSpan_le {y : M} {T : Submodule ℂ M} (hT : IsKStableSub ε E T) (hy : y ∈ T) :
     kLowSpan ε E y ≤ T := by
   have hW : ∀ l : List (Fin n × Fin n), (∀ p ∈ l, IsKLow ε p) → lowWord E y l ∈ T := by
@@ -143,6 +182,9 @@ theorem kLowSpan_le {y : M} {T : Submodule ℂ M} (hT : IsKStableSub ε E T) (hy
   rintro _ ⟨l, hl, rfl⟩
   exact hW l hl
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simp [lowWt] | p :: l, hl => by have ih := lowWt_ht μ l fun q hq => hl q (List.mem_cons_of_mem _ hq) have hp := (hl p (List.mem_cons_self ..)).1 have hr : ∑ i : Fin n, ((i : ℕ) : ℝ) * root p.1 p.2 i = (p.1 : ℝ) - (p.2 : ℝ) := by simp [root, mul_sub, Finset.sum_sub_d …`.
+-/
 theorem lowWt_ht (μ : Fin n → ℝ) :
     ∀ l : List (Fin n × Fin n), (∀ p ∈ l, IsKLow ε p) →
       (∑ i : Fin n, ((i : ℕ) : ℝ) * μ i) + l.length ≤ ∑ i : Fin n, ((i : ℕ) : ℝ) * lowWt μ l i
@@ -157,6 +199,11 @@ theorem lowWt_ht (μ : Fin n → ℝ) :
     push_cast
     linarith
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `lowWt_ht (ε := ε) μ l hl`. Rewrite `h2` using `[h]`. Consider the cases of `l with`. Consider the case `nil => exact hne rfl`.
+
+Consider the case `cons p l`. Rewrite `h2` using `[List.length_cons, Nat.cast_add, Nat.cast_one]`. Establish `: (0 : ℝ) ≤ l.length` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lowWt_ne {μ : Fin n → ℝ} {l : List (Fin n × Fin n)} (hl : ∀ p ∈ l, IsKLow ε p) (hne : l ≠ []) :
     lowWt μ l ≠ μ := by
   intro h
@@ -176,6 +223,11 @@ section Unitary
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin n → Bool}
   {E : Fin n → Fin n → Module.End ℂ M}
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Function.ne_iff.mp hne`. Establish `h` using `hU a a u v`. Establish `hs : adjSign ε a a = 1` using `by simp [adjSign]`. Rewrite `h` using `[hu a, hv a, inner_smul_left, inner_smul_right, hs, one_mul, Complex.conj_ofReal]`. Establish `h3 : ((μ a : ℂ) - (ν a : ℂ)) * inner ℂ u v = 0` using `by rw [sub_mul, h, sub_self]`.
+
+Establish `h5 : (μ a : ℂ) - (ν a : ℂ) ≠ 0`. Rewrite using `[sub_ne_zero]`. Conclude with `Ne.symm ha` after adjusting the coercions. Conclude with `(mul_eq_zero.mp h3).resolve_left h5`.
+-/
 private lemma inner_eq_zero_of_distinct_weights (hU : IsInfUnitary ε E) {μ ν : Fin n → ℝ} {u v : M}
     (hu : ∀ a, E a a u = (μ a : ℂ) • u) (hv : ∀ a, E a a v = (ν a : ℂ) • v) (hne : ν ≠ μ) :
     inner ℂ u v = 0 := by
@@ -189,6 +241,19 @@ private lemma inner_eq_zero_of_distinct_weights (hU : IsInfUnitary ε E) {μ ν 
     exact_mod_cast Ne.symm ha
   exact (mul_eq_zero.mp h3).resolve_left h5
 
+/- English proof (translation)
+Establish `hy' : (∀ a, E a a y = (μ a : ℂ) • y) ∧ ∀ a b, a < b → ε a = ε b → E a b y = 0` using `hy`. Take `⟨W, hW⟩ : ∃ W : Submodule ℂ M, W = Submodule.span ℂ {x | ∃ l : List (Fin n × Fin n), (∀ p ∈ l, IsKLow ε p) ∧ l ≠ [] ∧ x = lowWord E y l}` from `⟨_, rfl⟩`. Establish `hle : kLowSpan ε E y ≤ Submodule.span ℂ {y} ⊔ W`. Unfold `kLowSpan`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨l, hl, rfl⟩`. Break down `l with _ | ⟨p, l⟩` into its components or cases. Conclude with `Submodule.mem_sup_left (Submodule.mem_span_singleton_self y)`. Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Rewrite using `[hW]`.
+
+Conclude with `Submodule.subset_span ⟨p :: l, hl, List.cons_ne_nil _ _, rfl⟩`. Establish `horth : ∀ u : M, (∀ a, E a a u = (μ a : ℂ) • u) → ∀ g ∈ W, inner ℂ u g = 0`. Introduce `u hu g hg`. Establish `hWle : W ≤ (Submodule.span ℂ {u})ᗮ`. Rewrite using `[hW, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨l, hl, hne, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right]`. Conclude with `inner_eq_zero_of_distinct_weights hU hu (lowWord_wt hE hy'.1 l) (lowWt_ne hl hne)`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.mp (hWle hg)`. Take `⟨y', hy'', w, hw, hzw'⟩` from `Submodule.mem_sup.mp (hle hz)`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hy''`. Establish `h1` using `horth z hzw w hw`. Establish `h2` using `horth y hy'.1 w hw`. Establish `hww : inner ℂ w w = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hw0 : w = 0` using `inner_self_eq_zero.mp hww`. Conclude with `⟨c, by rw [← hzw', hw0, add_zero]⟩`.
+-/
 theorem kLowSpan_line (hE : IsGlRep E) (hU : IsInfUnitary ε E) {μ : Fin n → ℝ} {y : M}
     (hy : IsKHWVec ε E μ y) (hy0 : y ≠ 0) {z : M} (hz : z ∈ kLowSpan ε E y)
     (hzw : ∀ a, E a a z = (μ a : ℂ) • z) : ∃ c : ℂ, z = c • y := by
@@ -222,6 +287,13 @@ theorem kLowSpan_line (hE : IsGlRep E) (hU : IsInfUnitary ε E) {μ : Fin n → 
   have hw0 : w = 0 := inner_self_eq_zero.mp hww
   exact ⟨c, by rw [← hzw', hw0, add_zero]⟩
 
+/- English proof (translation)
+Establish `hS' : FiniteDimensional ℂ S ∧ IsKStableSub ε E S ∧ (∀ S' : Submodule ℂ M, S' ≤ S → IsKStableSub ε E S' → S' = ⊥ ∨ S' = S) ∧ ∃ w ∈ S, w ≠ 0 ∧ IsKHWVec ε E μ w` using `hS`. Take `⟨_, hSt, hirr, _⟩` from `hS'`. Establish `hx1 : (∀ a, E a a x = (μ a : ℂ) • x) ∧ ∀ a b, a < b → ε a = ε b → E a b x = 0` using `hxw`. Establish `hle : kLowSpan ε E y ≤ S` using `kLowSpan_le hSt hy`. Establish `heq : kLowSpan ε E y = S`.
+
+Break down `hirr _ hle (kLowSpan_kStable hE hyw) with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hy0` to reduce the goal to its premises. Establish `hmem : y ∈ kLowSpan ε E y` using `self_mem_kLowSpan y`. Rewrite `hmem` using `[h]`.
+
+Conclude with `(Submodule.mem_bot ℂ).mp hmem`. Conclude with `h`. Conclude with `kLowSpan_line hE hU hyw hy0 (by rw [heq]; exact hx) hx1.1`.
+-/
 theorem khw_line_of_kIrrHW (hE : IsGlRep E) (hU : IsInfUnitary ε E) {μ : Fin n → ℝ} {S : Submodule ℂ M}
     (hS : IsKIrrHW ε E μ S) {x y : M} (hx : x ∈ S) (hy : y ∈ S) (hxw : IsKHWVec ε E μ x)
     (hyw : IsKHWVec ε E μ y) (hy0 : y ≠ 0) : ∃ c : ℂ, x = c • y := by
@@ -241,6 +313,23 @@ theorem khw_line_of_kIrrHW (hE : IsGlRep E) (hU : IsInfUnitary ε E) {μ : Fin n
     · exact h
   exact kLowSpan_line hE hU hyw hy0 (by rw [heq]; exact hx) hx1.1
 
+/- English proof (translation)
+Establish `hy' : (∀ a, E a a y = (μ a : ℂ) • y) ∧ ∀ a b, a < b → ε a = ε b → E a b y = 0` using `hy`. Use `⟨hfin, kLowSpan_kStable hE hy, ?_, y, self_mem_kLowSpan y, hy0, hy⟩` and prove the remaining obligations. Introduce `S' hS'le hS'st`. Use `haveI : FiniteDimensional ℂ S' := Submodule.finiteDimensional_of_le hS'le`. Establish `hperp : IsKStableSub ε E S'ᗮ`.
+
+Introduce `a b hab v hv`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Establish `h` using `hU b a u v`. Establish `hs : adjSign ε b a = 1` using `by simp [adjSign, hab]`.
+
+Rewrite `h` using `[hs, one_mul]`. Rewrite using `[← h]`. Conclude with `(Submodule.mem_orthogonal _ _).mp hv _ (hS'st b a hab.symm u hu)`. Establish `hzero : ∀ x, x ∈ S' → x ∈ S'ᗮ → x = 0` using `fun x h1 h2 => inner_self_eq_zero.mp (Submodule.inner_right_of_mem_orthogonal h1 h2)`. Take `⟨y1, hy1, y2, hy2, hsum⟩` from `S'.exists_add_mem_mem_orthogonal y`.
+
+Establish `hy1w : ∀ a, E a a y1 = (μ a : ℂ) • y1`. Introduce `a`. Establish `h` using `hy'.1 a`. Rewrite `h` using `[hsum, map_add, smul_add]`. Establish `hm : E a a y1 - (μ a : ℂ) • y1 = (μ a : ℂ) • y2 - E a a y2`.
+
+Rewrite using `[sub_eq_sub_iff_add_eq_add, h, add_comm]`. Establish `h0` using `hzero _ (sub_mem (hS'st a a rfl y1 hy1) (Submodule.smul_mem _ _ hy1)) (by rw [hm]; exact sub_mem (Submodule.smul_mem _ _ hy2) (hperp a a rfl y2 hy2))`. Conclude with `sub_eq_zero.mp h0`. Take `⟨c, hc⟩` from `kLowSpan_line hE hU hy hy0 (hS'le hy1) hy1w`. Distinguish the cases in `hc0 : c = 0`.
+
+Use `left`. Rewrite `hc` using `[hc0, zero_smul]`. Establish `hyperp : y ∈ S'ᗮ` using `by rw [hsum, hc, zero_add]; exact hy2`. Establish `hle2 : kLowSpan ε E y ≤ S'ᗮ` using `kLowSpan_le hperp hyperp`. Rewrite using `[Submodule.eq_bot_iff]`.
+
+Introduce `x hx`. Conclude with `hzero x hx (hle2 (hS'le hx))`. Use `right`. Establish `hyS : y ∈ S'`. Establish `hyc : y = c⁻¹ • y1` using `by rw [hc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+
+Rewrite using `[hyc]`. Conclude with `Submodule.smul_mem _ _ hy1`. Conclude with `le_antisymm hS'le (kLowSpan_le hS'st hyS)`.
+-/
 theorem kLowSpan_kIrrHW (hE : IsGlRep E) (hU : IsInfUnitary ε E) {μ : Fin n → ℝ} {y : M}
     (hy : IsKHWVec ε E μ y) (hy0 : y ≠ 0) (hfin : FiniteDimensional ℂ (kLowSpan ε E y)) :
     IsKIrrHW ε E μ (kLowSpan ε E y) := by

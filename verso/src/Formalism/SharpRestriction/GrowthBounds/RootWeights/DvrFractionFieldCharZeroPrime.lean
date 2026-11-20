@@ -12,6 +12,13 @@ section Arith
 
 variable {p : ℕ} {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `hc' : (c : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 h)`. Establish `key : ((c.gcd p : ℕ) : ℤ) = (c : ℤ) * c.gcdA p + (p : ℤ) * c.gcdB p` using `Nat.gcd_eq_gcd_ab c p`. Rewrite `key` using `[Nat.Coprime.gcd_eq_one hc, Nat.cast_one]`. Establish `key' : (1 : O) = (c : O) * ((c.gcdA p : ℤ) : O) + (p : O) * ((c.gcdB p : ℤ) : O)`.
+
+Use `congrArg (Int.cast : ℤ → O) key` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h1 : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[key']`.
+
+Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hc') (Ideal.mul_mem_right _ _ S.p_mem)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+-/
 theorem natCast_unit_of_coprime (S : UniformizedDVR p O) {c : ℕ} (hc : Nat.Coprime c p) : IsUnit (c : O) := by
   by_contra h
   have hc' : (c : O) ∈ IsLocalRing.maximalIdeal O :=
@@ -27,6 +34,11 @@ theorem natCast_unit_of_coprime (S : UniformizedDVR p O) {c : ℕ} (hc : Nat.Cop
     exact Ideal.add_mem _ (Ideal.mul_mem_right _ _ hc') (Ideal.mul_mem_right _ _ S.p_mem)
   exact (IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
+/- English proof (translation)
+Use `charZero_of_inj_zero (fun n hn => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨e, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hne p hp.ne_one`. Rewrite `hn` using `[Nat.cast_mul, Nat.cast_pow]`. Establish `hpe : (p : O) ^ e ≠ 0` using `pow_ne_zero _ S.p_ne`.
+
+Establish `hm0 : (m : O) = 0` using `(mul_eq_zero.1 hn).resolve_left hpe`. Establish `hu` using `natCast_unit_of_coprime S ((Nat.Prime.coprime_iff_not_dvd hp).2 hm).symm`. Rewrite `hu` using `[hm0]`. Conclude with `not_isUnit_zero hu`.
+-/
 theorem dvr_charZero_of_prime (S : UniformizedDVR p O) (hp : p.Prime) : CharZero O := by
   refine charZero_of_inj_zero (fun n hn => ?_)
   by_contra hne
@@ -38,6 +50,11 @@ theorem dvr_charZero_of_prime (S : UniformizedDVR p O) (hp : p.Prime) : CharZero
   rw [hm0] at hu
   exact not_isUnit_zero hu
 
+/- English proof (translation)
+Use `haveI := dvr_charZero_of_prime S hp`. Use `charZero_of_inj_zero (fun n hn => ?_)` and prove the remaining obligations. Establish `h1 : algebraMap O (KK O) (n : O) = algebraMap O (KK O) 0`. Rewrite using `[map_natCast, map_zero]`. Conclude with `hn`.
+
+Establish `h2 : (n : O) = 0` using `IsFractionRing.injective O (KK O) h1`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem dvr_fraction_field_charZero_prime (S : UniformizedDVR p O) (hp : p.Prime) : CharZero (KK O) := by
   haveI := dvr_charZero_of_prime S hp
   refine charZero_of_inj_zero (fun n hn => ?_)
@@ -46,6 +63,11 @@ theorem dvr_fraction_field_charZero_prime (S : UniformizedDVR p O) (hp : p.Prime
   have h2 : (n : O) = 0 := IsFractionRing.injective O (KK O) h1
   exact_mod_cast h2
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `natCast_unit_of_coprime S (c := N / p ^ N.factorization p) (Nat.Coprime.symm (Nat.coprime_ordCompl hp hN))`. Use `⟨(p : O) ^ (de - N.factorization p) * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Establish `hN' : (N : O) = (p : O) ^ (N.factorization p) * ((N / p ^ N.factorization p : ℕ) : O)` using `by conv_lhs => rw [← Nat.ordProj_mul_ordCompl_eq_self N p]`. Rewrite using `[Nat.cast_mul, Nat.cast_pow]`. Rewrite using `[hN', ← hu]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_mul_natCast_eq_prime_pow (S : UniformizedDVR p O) (hp : p.Prime) {N de : ℕ} (hN : N ≠ 0) (hv : N.factorization p ≤ de) :
     ∃ o : O, o * (N : O) = (p : O) ^ de := by
   obtain ⟨u, hu⟩ := natCast_unit_of_coprime S (c := N / p ^ N.factorization p)
@@ -63,6 +85,13 @@ end Arith
 
 section Order
 
+/- English proof (translation)
+Unfold `N0`. Rewrite using `[← Finset.sum_range_id, ← Fin.sum_univ_eq_sum_range (fun i => i) n]`. Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := Prod.snd) (t := univ) (fun _ _ => mem_univ _)]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[← Fin.card_Iio b]`.
+
+Use `Finset.card_bij (fun ab _ => ab.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `ab h`. Simplify using `only [mem_filter, mem_univ, true_and] at h`. Rewrite using `[Finset.mem_Iio, ← h.2]`. Conclude with `h.1`.
+
+Introduce `x hx y hy hxy`. Simplify using `only [mem_filter, mem_univ, true_and] at hx hy`. Conclude with `Prod.ext hxy (hx.2.trans hy.2.symm)`. Introduce `a ha`. Conclude with `⟨(a, b), by simpa using ha, rfl⟩`.
+-/
 theorem card_ordered_pairs_lt (n : ℕ) : (univ.filter fun ab : Fin n × Fin n => ab.1 < ab.2).card = N0 n := by
   unfold N0
   rw [← Finset.sum_range_id, ← Fin.sum_univ_eq_sum_range (fun i => i) n]
@@ -80,6 +109,11 @@ theorem card_ordered_pairs_lt (n : ℕ) : (univ.filter fun ab : Fin n × Fin n =
   · intro a ha
     exact ⟨(a, b), by simpa using ha, rfl⟩
 
+/- English proof (translation)
+Take `⟨hnd, hlt, hall, -⟩` from `h`. Rewrite using `[← card_ordered_pairs_lt n, ← List.toFinset_card_of_nodup hnd]`. Use `congr 1`. Use extensionality with `ab`. Simplify using `only [List.mem_toFinset, mem_filter, mem_univ, true_and]`.
+
+Conclude with `⟨hlt ab, fun h => hall ab.1 ab.2 h⟩`.
+-/
 theorem normal_order_length_eq {n : ℕ} {ord : List (Fin n × Fin n)} (h : NormalOrder n ord) : ord.length = N0 n := by
   obtain ⟨hnd, hlt, hall, -⟩ := h
   rw [← card_ordered_pairs_lt n, ← List.toFinset_card_of_nodup hnd]
@@ -88,6 +122,17 @@ theorem normal_order_length_eq {n : ℕ} {ord : List (Fin n × Fin n)} (h : Norm
   simp only [List.mem_toFinset, mem_filter, mem_univ, true_and]
   exact ⟨hlt ab, fun h => hall ab.1 ab.2 h⟩
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp at hx`. Consider the case `cons a t ih`. Rewrite `hl` using `[List.pairwise_cons]`. Simplify using `only [List.idxOf_cons, beq_iff_eq, cond_eq_if]`.
+
+Distinguish the cases in `hax : a = x`. Substitute `hax` using the available equality. Distinguish the cases in `hay : a = y`. Substitute `hay` using the available equality. Conclude with `absurd hxy (hasym _ _ hxy)`.
+
+Simplify using `[hay]`. Establish `hxt : x ∈ t`. Break down `List.mem_cons.1 hx with h | h` into its components or cases. Conclude with `absurd h.symm hax`. Conclude with `h`.
+
+Distinguish the cases in `hay : a = y`. Substitute `hay` using the available equality. Conclude with `absurd (hl.1 x hxt) (hasym _ _ hxy)`. Establish `hyt : y ∈ t`. Break down `List.mem_cons.1 hy with h | h` into its components or cases.
+
+Conclude with `absurd h.symm hay`. Conclude with `h`. Use `ih hl.2 hxt hyt` as an intermediate fact. Simplify using `[List.idxOf_cons, hax, hay]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pairwise_list_index_lt {α : Type*} [BEq α] [LawfulBEq α] (r : α → α → Prop) (hasym : ∀ x y, r x y → ¬ r y x)
     (l : List α) (hl : l.Pairwise r) {x y : α} (hx : x ∈ l) (hy : y ∈ l) (hxy : r x y) :
     l.idxOf x < l.idxOf y := by
@@ -115,6 +160,21 @@ theorem pairwise_list_index_lt {α : Type*} [BEq α] [LawfulBEq α] (r : α → 
         simp [List.idxOf_cons, hax, hay]
         omega
 
+/- English proof (translation)
+Set `R : Fin n × Fin n → Fin n × Fin n → Prop` to `fun p q => p.1 < q.1 ∨ (p.1 = q.1 ∧ p.2 < q.2)`. Establish `hasym : ∀ x y, R x y → ¬ R y x`. Introduce `x y h h'`. Apply the tactic sequence `rcases h with h | ⟨e, h⟩ <;> rcases h' with h' | ⟨e', h'⟩`. Conclude with `lt_asymm h h'`.
+
+Rewrite `h` using `[e']`. Conclude with `lt_irrefl _ h`. Rewrite `h'` using `[e]`. Conclude with `lt_irrefl _ h'`. Conclude with `lt_asymm h h'`.
+
+Set `L : List (Fin n × Fin n)` to `(List.finRange n).flatMap (fun a => ((List.finRange n).filter (fun b => decide (a < b))).map (fun b => (a, b)))`. Establish `hmem : ∀ ab : Fin n × Fin n, ab ∈ L ↔ ab.1 < ab.2`. Introduce and unpack `⟨a, b⟩`. Simplify using `[L]`. Establish `hpw : L.Pairwise R`.
+
+Simplify using `only [L, List.pairwise_flatMap]`. Use `⟨fun a _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.pairwise_map]`. Use `List.Pairwise.imp (fun {b c} h => Or.inr ⟨rfl, h⟩) ?_` and prove the remaining obligations. Conclude with `(List.pairwise_lt_finRange n).filter _`.
+
+Use `List.Pairwise.imp (fun {a₁ a₂} h => ?_) (List.pairwise_lt_finRange n)` and prove the remaining obligations. Introduce `x hx y hy`. Simplify using `only [List.mem_map] at hx hy`. Take `⟨b, -, rfl⟩` from `hx`. Take `⟨c, -, rfl⟩` from `hy`.
+
+Conclude with `Or.inl h`. Use `⟨L, ?_, fun ab h => (hmem ab).1 h, fun a b h => (hmem (a, b)).2 h, ?_⟩` and prove the remaining obligations. Conclude with `hpw.imp (fun {x y} h e => by subst e; exact hasym x x h h)`. Introduce `a b c hab hbc left`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `pairwise_list_index_lt R hasym L hpw ((hmem _).2 hab) ((hmem _).2 (lt_trans hab hbc)) (Or.inr ⟨rfl, hbc⟩)`. Conclude with `pairwise_list_index_lt R hasym L hpw ((hmem _).2 (lt_trans hab hbc)) ((hmem _).2 hbc) (Or.inl hab)`.
+-/
 theorem exists_normalOrder (n : ℕ) : ∃ ord, NormalOrder n ord := by
   let R : Fin n × Fin n → Fin n × Fin n → Prop := fun p q => p.1 < q.1 ∨ (p.1 = q.1 ∧ p.2 < q.2)
   have hasym : ∀ x y, R x y → ¬ R y x := by

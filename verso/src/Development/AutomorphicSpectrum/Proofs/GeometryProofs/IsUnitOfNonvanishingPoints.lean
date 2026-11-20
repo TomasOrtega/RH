@@ -19,6 +19,11 @@ open GlobalTheory.CompanionTheory.Ar.Flat.GagaC
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.GagaC
 
+/- English proof (translation)
+Take `⟨M, hM, haM⟩` from `Ideal.exists_le_maximal (Ideal.span {a}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hmem : a ∈ M` using `haM (Ideal.mem_span_singleton_self a)`. Use `letI := Ideal.Quotient.field M`. Use `haveI : Algebra.FiniteType ℂ (T ⧸ M) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ M) (Ideal.Quotient.mkₐ_surjective ℂ M)`. Use `haveI : Module.Finite ℂ (T ⧸ M) := finite_of_finite_type_of_isJacobsonRing ℂ (T ⧸ M)`.
+
+Establish `hbij : Function.Bijective (algebraMap ℂ (T ⧸ M))` using `⟨(algebraMap ℂ (T ⧸ M)).injective, IsSepClosed.algebraMap_surjective ℂ (T ⧸ M)⟩`. Set `e : ℂ ≃ₐ[ℂ] T ⧸ M` to `AlgEquiv.ofBijective (Algebra.ofId ℂ (T ⧸ M)) hbij`. Use `⟨e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ ℂ M), ?_⟩` and prove the remaining obligations. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.2 hmem]`.
+-/
 theorem exists_algHom_eq_zero_of_not_isUnit {T : Type} [CommRing T] [Algebra ℂ T] [Algebra.FiniteType ℂ T]
     (a : T) (h : ¬ IsUnit a) : ∃ χ : T →ₐ[ℂ] ℂ, χ a = 0 := by
   obtain ⟨M, hM, haM⟩ := Ideal.exists_le_maximal (Ideal.span {a}) (by rwa [Ne, Ideal.span_singleton_eq_top])
@@ -33,12 +38,20 @@ theorem exists_algHom_eq_zero_of_not_isUnit {T : Type} [CommRing T] [Algebra ℂ
   refine ⟨e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ ℂ M), ?_⟩
   simp [Ideal.Quotient.eq_zero_iff_mem.2 hmem]
 
+/- English proof (translation)
+Rewrite using `[Spec.map_comp, ← IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top _) hV (fun _ _ => trivial)]`. Use `congr 1`. Rewrite using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`.
+-/
 theorem fromSpec_comp_structure {X : Scheme.{0}} (s : X ⟶ Sp ℂ) {V : X.Opens} (hV : IsAffineOpen V) :
     hV.fromSpec ≫ s = Spec.map ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ s.appLE ⊤ V (fun _ _ => trivial)) := by
   rw [Spec.map_comp, ← IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top _) hV (fun _ _ => trivial)]
   congr 1
   rw [IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]
 
+/- English proof (translation)
+Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Use `erw [Scheme.Hom.germ_stalkMap_assoc]`. Rewrite using `[IsAffineOpen.fromSpec_app_self, Category.assoc]`. Use `erw [TopCat.Presheaf.germ_res_assoc]`. Use `erw [Scheme.germ_stalkClosedPointTo_Spec]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem germ_comp_stalkClosedPointTo_eq {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V)
     (χ : Γ(X, V) ⟶ CommRingCat.of ℂ)
     (hp : (Spec.map χ ≫ hV.fromSpec) (IsLocalRing.closedPoint (CommRingCat.of ℂ)) ∈ V) :
@@ -50,6 +63,19 @@ private theorem germ_comp_stalkClosedPointTo_eq {X : Scheme.{0}} {V : X.Opens} (
   erw [Scheme.germ_stalkClosedPointTo_Spec]
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hr`. Set `φ : CommRingCat.of ℂ ⟶ Γ(X, V)` to `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ s.appLE ⊤ V (fun _ _ => trivial)`. Use `letI : Algebra ℂ Γ(X, V) := φ.hom.toAlgebra`. Use `haveI : Algebra.FiniteType ℂ Γ(X, V) := by`. Establish `h1 : (s.appLE ⊤ V (fun _ _ => trivial)).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ _`.
+
+Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso _).2`. Conclude with `h1.comp h2`. Take `⟨χ, hχ⟩` from `exists_algHom_eq_zero_of_not_isUnit (X.presheaf.map (homOfLE hVU).op a) hr`. Set `χ' : Γ(X, V) ⟶ CommRingCat.of ℂ` to `CommRingCat.ofHom χ.toRingHom`. Set `x : Sp ℂ ⟶ X` to `Spec.map χ' ≫ hV.fromSpec`.
+
+Establish `hxs : x ≫ s = 𝟙 _`. Establish `hc : φ ≫ χ' = 𝟙 _`. Use extensionality with `z`. Conclude with `χ.commutes z`. Simplify using `only [x, Category.assoc, fromSpec_comp_structure s hV]`.
+
+Rewrite using `[← Spec.map_comp]`. Conclude with `(congrArg Spec.map hc).trans (Spec.map_id _)`. Establish `hxV : (Spec.map χ' ≫ hV.fromSpec) (IsLocalRing.closedPoint (CommRingCat.of ℂ)) ∈ V`. Establish `hr' : (Spec.map χ' ≫ hV.fromSpec) (IsLocalRing.closedPoint (CommRingCat.of ℂ)) ∈ Set.range hV.fromSpec` using `⟨_, rfl⟩`. Rewrite `hr'` using `[hV.range_fromSpec]`. Then use the resulting hypothesis.
+
+Establish `hxU : centre x ∈ U` using `hVU hxV`. Apply `h x hxs hxU` to reduce the goal to its premises. Rewrite using `[← val_germ x U hxU a]`. Establish `e1` using `congrArg (fun f => f.hom (X.presheaf.map (homOfLE hVU).op a)) (germ_comp_stalkClosedPointTo_eq hV χ' hxV)`. Establish `e2` using `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE hVU) _ hxV a`.
+
+Simplify using `only [CommRingCat.comp_apply] at e1`. Use `erw [← e2]`. Conclude with `e1.trans hχ`.
+-/
 theorem isUnit_res_of_forall_point {X : Scheme.{0}} (s : X ⟶ Sp ℂ) [LocallyOfFiniteType s] {U V : X.Opens}
     (hV : IsAffineOpen V) (hVU : V ≤ U) (a : Γ(X, U))
     (h : ∀ x : Sp ℂ ⟶ X, x ≫ s = 𝟙 _ → centre x ∈ U → valAt' x U a ≠ 0) :
@@ -87,6 +113,11 @@ theorem isUnit_res_of_forall_point {X : Scheme.{0}} (s : X ⟶ Sp ℂ) [LocallyO
   erw [← e2]
   exact e1.trans hχ
 
+/- English proof (translation)
+Use `RingedSpace.isUnit_of_isUnit_germ X.toRingedSpace U a fun p hp => ?_` and prove the remaining obligations. Take `⟨V, hV, hpV, hVU⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) hp`. Use `haveI := hs`. Establish `hu` using `isUnit_res_of_forall_point s hV hVU a h`. Establish `e` using `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE hVU) p hpV a`.
+
+Use `hu.map (X.presheaf.germ V p hpV).hom` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem isUnit_of_forall_complexPoint (X : Scheme.{0}) (s : X ⟶ Sp ℂ) (U : X.Opens) (a : Γ(X, U))
     (hs : LocallyOfFiniteType s)
     (h : ∀ x : Sp ℂ ⟶ X, x ≫ s = 𝟙 _ → centre x ∈ U → valAt' x U a ≠ 0) : IsUnit a := by

@@ -171,11 +171,17 @@ def ClassSumReal (D : D7) : Prop :=
     ∀ Φ : GA D V → ℂ, IsContAut V Φ → (∀ κ ∈ Formalism.IndefR.Lev.levA V K, ∀ h, Φ (h * κ) = Φ h) →
       ∫ h in 𝓕, Φ h ∂μ = ∑ i, ((Nat.card (GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.classGroupAt V K (y i)) : ℂ))⁻¹ * ∫ x : GinfC V, Φ (z i * x) ∂ν
 
+/- English proof (translation)
+Establish `h : ∀ a, p.e * p.sec a = p.sec a` using `fun a => by rw [← p.sec_pr, p.pr_sec]`. Establish `h2` using `p.sec_pr (p.sec a * p.sec b)`. Rewrite `h2` using `[map_mul, p.pr_sec, p.pr_sec, ← mul_assoc, h]`. Then use the resulting hypothesis.
+-/
 theorem SplitPt.sec_mul (p : SplitPt D k) (a b : k) : p.sec (a * b) = p.sec a * p.sec b := by
   have h : ∀ a, p.e * p.sec a = p.sec a := fun a => by rw [← p.sec_pr, p.pr_sec]
   have h2 := p.sec_pr (p.sec a * p.sec b)
   rwa [map_mul, p.pr_sec, p.pr_sec, ← mul_assoc, h] at h2
 
+/- English proof (translation)
+Rewrite using `[← map_one p.pr, p.sec_pr, mul_one]`.
+-/
 theorem SplitPt.sec_one (p : SplitPt D k) : p.sec 1 = p.e := by
   rw [← map_one p.pr, p.sec_pr, mul_one]
 
@@ -187,11 +193,17 @@ def SplitPt.idele (p : SplitPt D k) : kˣ →* (AE D)ˣ :=
         rw [show a * b - 1 = (a - 1) + (b - 1) + (a - 1) * (b - 1) by ring, map_add, map_add, p.sec_mul]
         ring }
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `1 + p.sec (a - 1) = _`. Rewrite using `[map_sub, p.sec_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem SplitPt.idele_val (p : SplitPt D k) (a : kˣ) : (p.idele a : AE D) = 1 - p.e + p.sec a := by
   change 1 + p.sec (a - 1) = _
   rw [map_sub, p.sec_one]
   ring
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `p.pr (1 + p.sec (a - 1)) = _`. Rewrite using `[map_add, map_one, p.pr_sec, add_sub_cancel]`.
+-/
 theorem SplitPt.pr_idele (p : SplitPt D k) (a : kˣ) : p.pr (p.idele a) = a := by
   change p.pr (1 + p.sec (a - 1)) = _
   rw [map_add, map_one, p.pr_sec, add_sub_cancel]
@@ -200,6 +212,11 @@ def IsGlueConst (p : ι → SplitPt D k) (q : Unif k) (I : List ι) (N : ℕ) {r
   ∃ (a : ℤ) (m : Fin r → ℤ), c = (I.map fun i => ((resCard k : ℂ) ^ N - 1) * ((√(resCard k : ℝ) : ℝ) : ℂ) ^ a *
     ∏ j, ((μ j ((p i).idele (Units.mk0 _ q.ne_zero)) ^ m j : Circle) : ℂ)).prod
 
+/- English proof (translation)
+Take `⟨a, m, rfl⟩` from `h`. Use `⟨a, ?_⟩` and prove the remaining obligations. Proceed by induction on `I with`. Consider the case `nil => simp`. Consider the case `cons i I ih`.
+
+Rewrite using `[List.map_cons, List.prod_cons, norm_mul, ih, List.length_cons, pow_succ', norm_mul, norm_mul, norm_prod]`. Simplify using `only [Circle.norm_coe, Finset.prod_const_one, mul_one, norm_zpow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]`.
+-/
 theorem IsGlueConst.norm {q : Unif k} {I : List ι} {N r : ℕ} {μ : Fin r → ((AE D)ˣ →* Circle)} {c : ℂ}
     (h : IsGlueConst p q I N μ c) :
     ∃ a : ℤ, ‖c‖ = (‖(resCard k : ℂ) ^ N - 1‖ * √(resCard k : ℝ) ^ a) ^ I.length := by
@@ -212,6 +229,11 @@ theorem IsGlueConst.norm {q : Unif k} {I : List ι} {N r : ℕ} {μ : Fin r → 
     simp only [Circle.norm_coe, Finset.prod_const_one, mul_one, norm_zpow, Complex.norm_real, Real.norm_eq_abs,
       abs_of_nonneg (Real.sqrt_nonneg _)]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `h.norm`. Establish `h1 : 1 < resCard k` using `Finite.one_lt_card`. Establish `h2 : (resCard k : ℂ) ^ N - 1 ≠ 0`. Rewrite using `[sub_ne_zero]`. Conclude with `(Nat.one_lt_pow hN.ne' h1).ne'` after adjusting the coercions.
+
+Establish `h3 : 0 < √(resCard k : ℝ)` using `Real.sqrt_pos.2 (by exact_mod_cast one_pos.trans h1)`. Rewrite using `[← norm_pos_iff, ha]`. Conclude with `pow_pos (mul_pos (norm_pos_iff.2 h2) (zpow_pos h3 a)) _`.
+-/
 theorem IsGlueConst.ne_zero {q : Unif k} {I : List ι} {N r : ℕ} {μ : Fin r → ((AE D)ˣ →* Circle)} {c : ℂ}
     (h : IsGlueConst p q I N μ c) (hN : 0 < N) : c ≠ 0 := by
   obtain ⟨a, ha⟩ := h.norm
@@ -227,6 +249,9 @@ variable (k) in
 
 def sgnRes (s : ℤˣ) : 𝓀[k]ˣ := Units.map (Int.castRingHom 𝓀[k]).toMonoidHom s
 
+/- English proof (translation)
+Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Conclude with `Or.inl (map_one _)`. Conclude with `Or.inr (Units.ext (by simp [sgnRes]))`.
+-/
 theorem sgnRes_eq (s : ℤˣ) : sgnRes k s = 1 ∨ sgnRes k s = -1 := by
   rcases Int.units_eq_one_or s with rfl | rfl
   · exact Or.inl (map_one _)
@@ -276,6 +301,11 @@ def ValueLastExact (D : D7) : Prop :=
           ∀ φ, a.Ram φ → ∀ F, IsContAut T F →
             t.Q φ Φ₁ Φ₂ F = c * t.Q (a.sAll q (fun i => resChar (χ i) (hχ i) q) (fun _ => 1) I φ) Φ₁' Φ₂ F
 
+/- English proof (translation)
+Take `⟨s, h⟩` from `h`. Introduce `k _ _ _ _ ι p q ψ χ hχ hp`. Use `⟨fun _ => sgnRes k s, fun _ => sgnRes_eq s, ?_⟩` and prove the remaining obligations. Introduce `n n' n'' _ _ _ _ _ _ σ B J B' s₁ s₂ l vL Λ P a b a' hS I hI hI'`. Take `⟨c, c', -, -, -, -, h'⟩` from `h k ι p q ψ χ hχ hp n n' n'' σ B J B' s₁ s₂ l vL Λ P a b a' hS I hI hI'`.
+
+Conclude with `⟨c, c', h'⟩`.
+-/
 theorem ValueDoubleExact.valueDouble (h : ValueDoubleExact D) : ValueDouble D := by
   obtain ⟨s, h⟩ := h
   intro k _ _ _ _ ι p q ψ χ hχ hp
@@ -284,6 +314,9 @@ theorem ValueDoubleExact.valueDouble (h : ValueDoubleExact D) : ValueDouble D :=
   obtain ⟨c, c', -, -, -, -, h'⟩ := h k ι p q ψ χ hχ hp n n' n'' σ B J B' s₁ s₂ l vL Λ P a b a' hS I hI hI'
   exact ⟨c, c', h'⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ι p q χ hχ n n' _ _ _ _ ψ T B t o ho a b L₁ L₂ L₃ h1 h2 h3 h4 h5 I hI hI'`. Take `⟨c, -, -, h'⟩` from `h k ι p q χ hχ n n' ψ T B t o ho a b L₁ L₂ L₃ h1 h2 h3 h4 h5 I hI hI'`. Conclude with `⟨c, h'⟩`.
+-/
 theorem ValueLastExact.valueLast (h : ValueLastExact D) : ValueLast D := by
   intro k _ _ _ _ ι p q χ hχ n n' _ _ _ _ ψ T B t o ho a b L₁ L₂ L₃ h1 h2 h3 h4 h5 I hI hI'
   obtain ⟨c, -, -, h'⟩ := h k ι p q χ hχ n n' ψ T B t o ho a b L₁ L₂ L₃ h1 h2 h3 h4 h5 I hI hI'
@@ -309,11 +342,20 @@ def FlatUnit (D : D7) : Prop :=
       (LW₀ : Lat B.V₀), (∀ v, P v → AdaptFB ψ J B LV LV₀ LW LW₀ v) →
       UnitLaw s J.d B.d (xLast B.d (vecB B.o B.ζ)) 0 LV LV₀ LW LW₀ P
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : StepFB ψ J B) (Φ w) :
     flatFB s Φ w = ∫ u, flatFun ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (xLast B.d (vecB B.o B.ζ)) 0 Φ w u ∂s.vU.ν := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, ![], by simp⟩`.
+-/
 example (q : Unif k) (i : ι) : IsGlueConst p q [i] 1 ![] ((resCard k : ℂ) - 1) := ⟨0, ![], by simp⟩
 
+/- English proof (translation)
+Introduce `h` and use `h.ne_zero one_pos rfl`.
+-/
 example (q : Unif k) (I : List ι) : ¬ IsGlueConst p q I 1 ![] 0 := fun h => h.ne_zero one_pos rfl
 
 end GlobalTheory.FinPl

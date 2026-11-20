@@ -17,6 +17,15 @@ namespace GlobalTheory.InertLagUniq
 
 open GlobalTheory.LatVac GlobalTheory.InertVacLag
 
+/- English proof (translation)
+Set `B : LinearMap.BilinForm K ((κ → K) × (κ → K))` to `LinearMap.mk₂ K (fun a b => a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2) (fun a a' b => by simp only [Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]; ring) (fun c a b => by simp only [Prod.smul_fst, Prod.smul_snd, smul_dotProduct, dotProduct_smul, smul_eq_mul]; ring) (fun a b b' => by s …`. Establish `hB : ∀ a b, B a b = a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2` using `fun _ _ => rfl`. Establish `hker : LinearMap.ker B = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `a ha`.
+
+Establish `ha' : ∀ b, B a b = 0` using `fun b => by rw [LinearMap.mem_ker.1 ha]; rfl`. Use `(Submodule.mem_bot _).2 (Prod.ext (funext fun k => ?_) (funext fun k => ?_))` and prove the remaining obligations. Use `ha' (0, Pi.single k 1)` as an intermediate fact. Simplify `this` using `[hB]`. Use `ha' (Pi.single k 1, 0)` as an intermediate fact.
+
+Simplify `this` using `[hB]`. Establish `h1` using `LinearMap.BilinForm.finrank_add_finrank_orthogonal' (B := B) Λ`. Rewrite `h1` using `[hker, inf_bot_eq, finrank_bot, add_zero, Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`. Establish `h2 : Λ ≤ B.orthogonal Λ` using `fun b hb a ha => by show B a b = 0`. Rewrite using `[hB, h a ha b hb, sub_self]`.
+
+Establish `h3` using `Submodule.finrank_mono h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_le_of_isotropic {K : Type} [Field K] {κ : Type} [Fintype κ] (Λ : Submodule K ((κ → K) × (κ → K)))
     (h : ∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) : Module.finrank K Λ ≤ Fintype.card κ := by
   classical
@@ -44,6 +53,9 @@ theorem finrank_le_of_isotropic {K : Type} [Field K] {κ : Type} [Fintype κ] (�
   have h3 := Submodule.finrank_mono h2
   omega
 
+/- English proof (translation)
+Establish `h1` using `finrank_le_of_isotropic Λ h`. Establish `h2` using `finrank_le_of_isotropic Λ' h'`. Establish `h3` using `Submodule.finrank_sup_add_finrank_inf_eq Λ Λ'`. Rewrite `h3` using `[hs, finrank_top, Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_eq_of_isotropic {K : Type} [Field K] {κ : Type} [Fintype κ] (Λ Λ' : Submodule K ((κ → K) × (κ → K)))
     (h : ∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) (h' : ∀ a ∈ Λ', ∀ b ∈ Λ', a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2)
     (hs : Λ ⊔ Λ' = ⊤) : Module.finrank K Λ = Fintype.card κ := by
@@ -55,6 +67,11 @@ theorem finrank_eq_of_isotropic {K : Type} [Field K] {κ : Type} [Fintype κ] (�
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hker : ∀ y ∈ v.adicCompletionIntegers F, psiAt ψ v y = 1` using `fun y hy => by`. Use `(h 1).2 (one_mem _) y hy` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations.
+
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Rewrite using `[← map_add_left_nhds_zero, Filter.eventually_map]`. Use `filter_upwards [hO.mem_nhds (zero_mem _)] with s hs`. Rewrite using `[AddChar.map_add_eq_mul, hker s hs, mul_one]`.
+-/
 theorem continuous_psiAt (ψ : AddChar (AF F) ℂ) (v : Pl F) (h : PsiUnr ψ v) : Continuous (psiAt ψ v) := by
   have hker : ∀ y ∈ v.adicCompletionIntegers F, psiAt ψ v y = 1 := fun y hy => by
     have := (h 1).2 (one_mem _) y hy
@@ -67,6 +84,11 @@ theorem continuous_psiAt (ψ : AddChar (AF F) ℂ) (v : Pl F) (h : PsiUnr ψ v) 
   filter_upwards [hO.mem_nhds (zero_mem _)] with s hs
   rw [AddChar.map_add_eq_mul, hker s hs, mul_one]
 
+/- English proof (translation)
+Introduce `h1`. Establish `hall : ∀ x : Fv F v, x ∈ v.adicCompletionIntegers F` using `fun x => (h x).1 fun y _ => by`. Rewrite using `[← psiAt_apply, h1]`. Both sides reduce to the same expression. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`.
+
+Establish `h2` using `hall (algebraMap F (Fv F v) π⁻¹)`. Rewrite `h2` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `erw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at h2`. Rewrite `h2` using `[map_inv₀, map_inv₀, Algebra.algebraMap_self_apply, hπ, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem psiAt_ne_one (ψ : AddChar (AF F) ℂ) (v : Pl F) (h : PsiUnr ψ v) : psiAt ψ v ≠ 1 := by
   intro h1
   have hall : ∀ x : Fv F v, x ∈ v.adicCompletionIntegers F := fun x => (h x).1 fun y _ => by
@@ -78,18 +100,29 @@ theorem psiAt_ne_one (ψ : AddChar (AF F) ℂ) (v : Pl F) (h : PsiUnr ψ v) : ps
   rw [map_inv₀, map_inv₀, Algebra.algebraMap_self_apply, hπ, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp] at h2
   omega
 
+/- English proof (translation)
+Establish `h` using `hu (1 - liftV v 1) (by rw [map_sub, map_one, evFin_liftV, sub_self])`. Rewrite `h` using `[sub_smul, one_smul]`. Conclude with `(sub_eq_zero.1 h).symm`.
+-/
 theorem liftV_one_smul {M : Type} [AddCommGroup M] [Module (AF F) M] (v : Pl F) (u : M) (hu : At (evFin F v) u) :
     liftV v (1 : Fv F v) • u = u := by
   have h := hu (1 - liftV v 1) (by rw [map_sub, map_one, evFin_liftV, sub_self])
   rw [sub_smul, one_smul] at h
   exact (sub_eq_zero.1 h).symm
 
+/- English proof (translation)
+Establish `h` using `at_liftV v (1 : Fv F v) (x - liftV v (evFin F v x)) (by rw [map_sub, evFin_liftV, sub_self])`. Establish `h2` using `liftV_one_smul v _ (at_liftV v (evFin F v x))`. Rewrite `h`, `h2` using `[smul_eq_mul]`. Take the linear combination `h + h2`.
+-/
 theorem liftV_one_mul (v : Pl F) (x : AF F) : liftV v (1 : Fv F v) * x = liftV v (evFin F v x) := by
   have h := at_liftV v (1 : Fv F v) (x - liftV v (evFin F v x)) (by rw [map_sub, evFin_liftV, sub_self])
   have h2 := liftV_one_smul v _ (at_liftV v (evFin F v x))
   rw [smul_eq_mul] at h h2
   linear_combination h + h2
 
+/- English proof (translation)
+Establish `key : ∀ a : AE F E, liftV v (1 : Fv F v) • a = (liftV v).rTensor E (compFin F E v a)`. Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x e`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, liftV_one_mul]`. Simplify using `[compFin]`. Consider the case `add x y hx hy => rw [smul_add, hx, hy, map_add, map_add]`. Rewrite using `[key, ha, map_zero]`.
+-/
 theorem liftV_one_smul_eq_zero (v : Pl F) (a : AE F E) (ha : compFin F E v a = 0) : liftV v (1 : Fv F v) • a = 0 := by
   have key : ∀ a : AE F E, liftV v (1 : Fv F v) • a = (liftV v).rTensor E (compFin F E v a) := by
     intro a
@@ -101,6 +134,11 @@ theorem liftV_one_smul_eq_zero (v : Pl F) (a : AE F E) (ha : compFin F E v a = 0
     | add x y hx hy => rw [smul_add, hx, hy, map_add, map_add]
   rw [key, ha, map_zero]
 
+/- English proof (translation)
+Use `⟨A.map ((liftV v).rTensor E), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Proceed by induction on `A i j using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul x e => simp [compFin, evFin_liftV]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem exists_map_compFin (v : Pl F) {α β : Type} (A : Matrix α β (Fv F v ⊗[F] E)) :
     ∃ C : Matrix α β (AE F E), C.map (compFin F E v) = A := by
   refine ⟨A.map ((liftV v).rTensor E), ?_⟩
@@ -111,6 +149,13 @@ theorem exists_map_compFin (v : Pl F) {α β : Type} (A : Matrix α β (Fv F v �
   | tmul x e => simp [compFin, evFin_liftV]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Establish `h0 : liftV v (1 : Fv F v) • (N - 1) = 0`. Use extensionality with `i j`. Use `liftV_one_smul_eq_zero v _ ?_` and prove the remaining obligations. Use `congrFun (congrFun hN i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`.
+
+Rewrite using `[Matrix.sub_apply, map_sub, this]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`.
+
+Establish `h1 : u * (N - 1) = 0`. Rewrite using `[← liftV_one_smul v u hu, Matrix.smul_mul, ← Matrix.mul_smul, h0, Matrix.mul_zero]`. Rewrite `h1` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem mul_eq_self {n d : ℕ} (v : Pl F) (u : Matrix (Fin n) (Fin d) (AE F E)) (hu : At (evFin F v) u)
     (N : Matrix (Fin d) (Fin d) (AE F E)) (hN : N.map (compFin F E v) = 1) : u * N = u := by
   have h0 : liftV v (1 : Fv F v) • (N - 1) = 0 := by
@@ -126,10 +171,20 @@ theorem mul_eq_self {n d : ℕ} (v : Pl F) (u : Matrix (Fin n) (Fin d) (AE F E))
     rw [← liftV_one_smul v u hu, Matrix.smul_mul, ← Matrix.mul_smul, h0, Matrix.mul_zero]
   rwa [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero] at h1
 
+/- English proof (translation)
+Introduce `t ht` and use `by rw [← Matrix.smul_mul, hu t ht, Matrix.zero_mul]`.
+-/
 theorem at_mul {α β γ : Type} [Fintype β] (v : Pl F) (u : Matrix α β (AE F E)) (hu : At (evFin F v) u)
     (A : Matrix β γ (AE F E)) : At (evFin F v) (u * A) := fun t ht => by
   rw [← Matrix.smul_mul, hu t ht, Matrix.zero_mul]
 
+/- English proof (translation)
+Take `⟨h0, Cx, M, hx, h1, h2⟩` from `hC`. Take `⟨C', hC'⟩` from `exists_map_compFin v Cx`. Take `⟨M₁, hM₁⟩` from `exists_map_compFin v M.toRows₁`. Take `⟨M₂, hM₂⟩` from `exists_map_compFin v M.toRows₂`. Rewrite `h1`, `h2` using `[← Matrix.fromRows_toRows M]`.
+
+Rewrite `h1` using `[Matrix.fromCols_mul_fromRows]`. Rewrite `h2` using `[Matrix.fromRows_mul_fromCols, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Use `⟨C', ⟨by rw [hC']; exact hx, _, Matrix.fromRows M.toRows₂ M.toRows₁, h0, ?_, ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hC', Matrix.fromCols_mul_fromRows, add_comm, h1]`. Rewrite using `[hC', Matrix.fromRows_mul_fromCols, h2.1, h2.2.1, h2.2.2.1, h2.2.2.2, Matrix.fromBlocks_one]`.
+
+Establish `hN : ((C * M₁ + C' * M₂)ᵀ).map (compFin F E v) = 1`. Rewrite using `[Matrix.transpose_map, Matrix.map_add _ (map_add _), Matrix.map_mul, Matrix.map_mul, hC', hM₁, hM₂, h1, Matrix.transpose_one]`. Use `⟨u * M₁ᵀ * Cᵀ, ⟨at_mul v _ (at_mul v u hu _) _, _, rfl⟩, u * M₂ᵀ * C'ᵀ, ⟨at_mul v _ (at_mul v u hu _) _, _, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_add, ← Matrix.transpose_mul, ← Matrix.transpose_mul, ← Matrix.transpose_add, mul_eq_self v u hu _ hN]`.
+-/
 theorem exists_compl (σ : E →ₐ[F] E) {d m : ℕ} (W : Spc F E d) (v : Pl F) (C : Matrix (Fin d) (Fin m) (AE F E))
     (hC : IsLagrAt σ W v C) (n : ℕ) : ∃ C' : Matrix (Fin d) (Fin m) (AE F E), IsLagrAt σ W v C' ∧
       ∀ u : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) u → ∃ x ∈ lagAt v C, ∃ y ∈ lagAt v C', u = x + y := by
@@ -151,6 +206,11 @@ theorem exists_compl (σ : E →ₐ[F] E) {d m : ℕ} (W : Spc F E d) (v : Pl F)
     rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_add, ← Matrix.transpose_mul, ← Matrix.transpose_mul,
       ← Matrix.transpose_add, mul_eq_self v u hu _ hN]
 
+/- English proof (translation)
+Use `⟨co.e.symm (fun k => liftV v (p.1 k), fun k => liftV v (p.2 k)), ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Rewrite using `[← LinearEquiv.map_smul]`. Establish `h0 : r • ((fun k => liftV v (p.1 k), fun k => liftV v (p.2 k)) : (κ → AF F) × (κ → AF F)) = 0` using `Prod.ext (funext fun k => at_liftV v (p.1 k) r hr) (funext fun k => at_liftV v (p.2 k) r hr)`. Rewrite using `[h0, map_zero]`.
+
+Use `show ((fun k => evFin F v ((co.e _).1 k)), fun k => evFin F v ((co.e _).2 k)) = p`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `Prod.ext (funext fun k => evFin_liftV v _) (funext fun k => evFin_liftV v _)`.
+-/
 theorem exists_at_locCo {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : Darboux B κ) (v : Pl F) (p : (κ → Fv F v) × (κ → Fv F v)) :
     ∃ u : W, At (evFin F v) u ∧ locCo co v u = p := by
@@ -179,6 +239,11 @@ def lagCo (M : Model σ X W) (v : Pl F) {m : ℕ} (C : Matrix (Fin d) (Fin m) (A
       by rw [Matrix.smul_mul]⟩, ?_⟩
     ext k <;> simp [locCo, evFin_liftV, -Matrix.smul_mul]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨u, hu, rfl⟩ _ ⟨u', hu', rfl⟩`. Establish `h0` using `GlobalTheory.T.symplecticForm_eq_zero_of_lagrangianAtPlace σ X.J W v C hC (-1) u u' hu hu'`. Rewrite `h0` using `[M.co.form]`. Establish `h1` using `congrArg (evFin F v) h0`. Rewrite using `[← sub_eq_zero]`.
+
+Simplify `h1` using `[locCo, dotProduct, map_sum, map_mul, map_sub]`.
+-/
 theorem lagCo_isotropic (M : Model σ X W) (v : Pl F) {m : ℕ} (C : Matrix (Fin d) (Fin m) (AE F E))
     (hC : IsLagrAt σ W v C) : ∀ a ∈ lagCo M v C, ∀ b ∈ lagCo M v C, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2 := by
   rintro _ ⟨u, hu, rfl⟩ _ ⟨u', hu', rfl⟩
@@ -188,6 +253,11 @@ theorem lagCo_isotropic (M : Model σ X W) (v : Pl F) {m : ℕ} (C : Matrix (Fin
   rw [← sub_eq_zero]
   simpa [locCo, dotProduct, map_sum, map_mul, map_sub] using h1
 
+/- English proof (translation)
+Take `⟨C', hC', hdec⟩` from `exists_compl σ W v C hC n`. Use `finrank_eq_of_isotropic _ (lagCo M v C') (lagCo_isotropic M v C hC) (lagCo_isotropic M v C' hC') ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `p _`. Take `⟨u, hu, rfl⟩` from `exists_at_locCo M.co v p`.
+
+Take `⟨x, hx, y, hy, rfl⟩` from `hdec u hu`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩`.
+-/
 theorem finrank_lagCo (M : Model σ X W) (v : Pl F) {m : ℕ} (C : Matrix (Fin d) (Fin m) (AE F E))
     (hC : IsLagrAt σ W v C) : Module.finrank (Fv F v) (lagCo M v C) = Fintype.card (Fin n × Fin d) := by
   obtain ⟨C', hC', hdec⟩ := exists_compl σ W v C hC n
@@ -199,6 +269,13 @@ theorem finrank_lagCo (M : Model σ X W) (v : Pl F) {m : ℕ} (C : Matrix (Fin d
   rw [map_add]
   exact Submodule.add_mem_sup ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ v hψ m C hC`. Establish `hc` using `continuous_psiAt ψ v hψ`. Establish `hinv : ∀ l, HeisInv M ψ v C l → ∀ w ∈ lagCo M v C, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), l (schr (psiAt ψ v) w φ) = l φ`. Introduce and unpack `l hl _ ⟨u, hu, rfl⟩ φ hφ`. Conclude with `hl u hu φ hφ _ (GlobalTheory.SchrSBFin.schr_mem_SB v _ hc _ φ hφ) (GlobalTheory.VacBridge.rho_acts_locCo M.co ψ v u hu.1 φ)`.
+
+Distinguish the cases in `hex : ∃ l₂, HeisInv M ψ v C l₂ ∧ ∃ φ ∈ SB (Fin n × Fin d → Fv F v), l₂ φ ≠ 0`. Take `⟨l₂, hl₂, φ₀, hφ₀, hne⟩` from `hex`. Use `⟨φ₀, hφ₀, fun l hl h0 φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨c, hcl⟩` from `GlobalTheory.T.lagrangian_invariant_forms_proportional_finitePlace F v (psiAt ψ v) hc (psiAt_ne_one ψ v hψ) _ (lagCo M v C) (lagCo_isotropic M v C hC) (finrank_lagCo M v C hC) l l₂ (hinv l hl) (hinv l₂ hl₂) ⟨φ₀, hφ₀, hne⟩`. Establish `hc0 : c = 0` using `(mul_eq_zero.1 ((hcl φ₀ hφ₀).symm.trans h0)).resolve_right hne`.
+
+Rewrite using `[hcl φ hφ, hc0, zero_mul]`. Use `⟨0, zero_mem _, fun l hl _ φ hφ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hex ⟨l, hl, φ, hφ, hne⟩`.
+-/
 theorem exists_test : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F), PsiUnr ψ v →
     ∀ (m : ℕ) (C : Matrix (Fin d) (Fin m) (AE F E)), GlobalTheory.InertVacLag.IsLagrAt σ W v C →

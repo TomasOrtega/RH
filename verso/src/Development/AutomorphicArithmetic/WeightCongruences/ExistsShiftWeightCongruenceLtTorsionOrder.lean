@@ -3,6 +3,23 @@ import Development.AutomorphicArithmetic.WeightCongruences.ProdNegOneZpow
 
 open NumberField IsDedekindDomain
 
+/- English proof (translation)
+Introduce `E K _ _ _ ι _ _ φ e i₀`. Take `⟨μ, hμ⟩ : ∃ μ : NumberField.Units.torsion E, orderOf μ = NumberField.Units.torsionOrder E` from `IsCyclic.exists_ofOrder_eq_natCard`. Rewrite `hμ` using `[← IsPrimitiveRoot.iff_orderOf, ← IsPrimitiveRoot.coe_submonoidClass_iff, ← IsPrimitiveRoot.coe_units_iff]`. Use `replace hμ := hμ.map_of_injective (FaithfulSMul.algebraMap_injective (NumberField.RingOfIntegers E) E)`. Take `⟨ζ, hζ⟩ : ∃ ζ : E, IsPrimitiveRoot ζ (NumberField.Units.torsionOrder E)` from `⟨_, hμ⟩`.
+
+Establish `hw0 : 0 < NumberField.Units.torsionOrder E` using `NumberField.Units.torsionOrder_pos E`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero hw0.ne'`. Establish `hψ : IsPrimitiveRoot (φ i₀ ζ) (NumberField.Units.torsionOrder E)` using `hζ.map_of_injective (φ i₀).injective`. Establish `hc0 : (∏ i, (φ i ζ) ^ e i) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => zpow_ne_zero _ ((map_ne_zero _).mpr hζ0)`. Establish `hcw : ((∏ i, (φ i ζ) ^ e i)⁻¹) ^ (NumberField.Units.torsionOrder E) = 1`.
+
+Rewrite using `[inv_pow, ← Finset.prod_pow]`. Establish `h1 : ∀ i ∈ (Finset.univ : Finset ι), ((φ i ζ) ^ e i) ^ (NumberField.Units.torsionOrder E) = 1`. Introduce `i _`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, ← map_pow, hζ.pow_eq_one, map_one, one_zpow]`. Rewrite using `[Finset.prod_eq_one h1, inv_one]`.
+
+Take `⟨s, hs, hsc⟩` from `hψ.eq_pow_of_pow_eq_one hcw`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `key : ∏ i, (φ i ζ) ^ (e i + if i = i₀ then (s : ℤ) else 0) = 1`. Establish `hsplit : ∀ i, (φ i ζ) ^ (e i + if i = i₀ then (s : ℤ) else 0) = (φ i ζ) ^ e i * (if i = i₀ then (φ i ζ) ^ s else 1)`. Introduce `i`.
+
+Rewrite using `[zpow_add₀ ((map_ne_zero _).mpr hζ0)]`. Apply the tactic sequence `split_ifs <;> simp`. Repeatedly rewrite using `[hsplit]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_ite_eq', if_pos (Finset.mem_univ _), hsc, mul_inv_cancel₀ hc0]`. Introduce `z hz`.
+
+Take `⟨m, hm, hzm⟩` from `hz`. Establish `hzw : z ^ (NumberField.Units.torsionOrder E) = 1`. Establish `hpos : 0 < orderOf z` using `orderOf_pos_iff.mpr (isOfFinOrder_iff_pow_eq_one.mpr ⟨m, hm, hzm⟩)`. Use `haveI : NeZero (orderOf z) := ⟨hpos.ne'⟩`. Take `⟨k, hk⟩` from `NumberField.Units.dvd_torsionOrder_of_isPrimitiveRoot (IsPrimitiveRoot.orderOf z)`.
+
+Rewrite using `[hk, pow_mul, pow_orderOf_eq_one, one_pow]`. Take `⟨j, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hzw`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`. Use `_ = 1 := by rw [key, one_pow]`.
+-/
 theorem UpperTheory.exists_shift_weightCongruence_lt_torsionOrder :
     ∀ (E K : Type) [Field E] [NumberField E] [Field K] (ι : Type) [Fintype ι] [DecidableEq ι] (φ : ι → E →+* K) (e : ι → ℤ) (i₀ : ι),
       ∃ s : ℕ, s < NumberField.Units.torsionOrder E ∧ UpperTheory.MU φ (fun i => e i + if i = i₀ then (s : ℤ) else 0) := by

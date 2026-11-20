@@ -23,13 +23,22 @@ section SlopeTestRemainingChoices
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [cf, map_mul, finAt_mul]`.
+-/
 private theorem cf_mul (w : Pl K) (x y : AdelicGLn.FiniteAdelicGL K n) : cf w (x * y) = cf w x * cf w y := by
   simp only [cf, map_mul, finAt_mul]
 
+/- English proof (translation)
+The claim follows from `(UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.1 y`.
+-/
 private theorem cf_loc (w : Pl K) (y : GL (Fin n) (w.adicCompletion K)) :
     cf w (AdelicGLn.localEmbedding (K := K) (n := n) w y) = y :=
   (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.1 y
 
+/- English proof (translation)
+The claim follows from `(UpperTheory.ConvolutionTheory.Tf.locEmb K n v).2.2.1 w h y`.
+-/
 private theorem cf_loc_ne {w v : Pl K} (h : w ≠ v) (y : GL (Fin n) (v.adicCompletion K)) :
     cf w (AdelicGLn.localEmbedding (K := K) (n := n) v y) = 1 :=
   (UpperTheory.ConvolutionTheory.Tf.locEmb K n v).2.2.1 w h y
@@ -38,6 +47,11 @@ private noncomputable def ltr (a : AdelicGLn.FiniteAdelicGL K n) (e : TF K n) : 
   ⟨⟨fun x => e (a * x), e.continuous.comp (continuous_const.mul continuous_id)⟩,
     e.hasCompactSupport.comp_homeomorph (Homeomorph.mulLeft a)⟩
 
+/- English proof (translation)
+Proceed by induction on `Q using Finset.induction_on with`. Consider the case `empty => exact ⟨0, fun x => by simp⟩`. Consider the case `insert c Q hc ih`. Take `⟨e, he⟩` from `ih`. Use `⟨e + ltr (AdelicGLn.localEmbedding w c.out⁻¹) e₀, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ltr (AdelicGLn.localEmbedding w c.out⁻¹) e₀ x = r x * (J : Set (GL (Fin n) (w.adicCompletion K))).indicator (1 : GL (Fin n) (w.adicCompletion K) → ℂ) (c.out⁻¹ * cf w x)` using `by show e₀ (AdelicGLn.localEmbedding w c.out⁻¹ * x) = _`. Rewrite using `[h₀, hr, cf_mul, cf_loc]`. Rewrite using `[Finset.sum_insert hc, CompactlySupportedContinuousMap.add_apply, he, h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_sum (w : Pl K) (J : Subgroup (GL (Fin n) (w.adicCompletion K)))
     (r : AdelicGLn.FiniteAdelicGL K n → ℂ) (hr : Free w r) (e₀ : TF K n)
     (h₀ : ∀ x, e₀ x = r x * (J : Set (GL (Fin n) (w.adicCompletion K))).indicator 1 (cf w x))
@@ -57,6 +71,17 @@ private theorem exists_sum (w : Pl K) (J : Subgroup (GL (Fin n) (w.adicCompletio
     rw [Finset.sum_insert hc, CompactlySupportedContinuousMap.add_apply, he, h1]
     ring
 
+/- English proof (translation)
+Use `haveI : DiscreteTopology (GL (Fin n) (w.adicCompletion K) ⧸ J) := QuotientGroup.discreteTopology hJ`. Establish `hmk : Continuous (QuotientGroup.mk : GL (Fin n) (w.adicCompletion K) → GL (Fin n) (w.adicCompletion K) ⧸ J)` using `continuous_quotient_mk'`. Establish `hfin : ((QuotientGroup.mk : GL (Fin n) (w.adicCompletion K) → GL (Fin n) (w.adicCompletion K) ⧸ J) '' S).Finite` using `(hS.image hmk).finite_of_discrete`. Take `⟨e, he⟩` from `exists_sum w J r hr e₀ h₀ hfin.toFinset`. Use `⟨e, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he]`. Use `congr 1`. Use `set g := cf w x`. Establish `hcos : ∀ c : GL (Fin n) (w.adicCompletion K) ⧸ J, c.out⁻¹ * g ∈ J ↔ c = QuotientGroup.mk g` using `fun c => by`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`.
+
+Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem hg, Finset.sum_eq_single (QuotientGroup.mk g)]`. Establish `hm : (QuotientGroup.mk g : GL (Fin n) (w.adicCompletion K) ⧸ J).out⁻¹ * g ∈ (J : Set (GL (Fin n) (w.adicCompletion K)))` using `(hcos _).2 rfl`. Rewrite using `[Set.indicator_of_mem hm]`. Both sides reduce to the same expression.
+
+Introduce `c _ hc`. Conclude with `Set.indicator_of_notMem (fun h => hc ((hcos c).1 h)) _`. Introduce `h`. Conclude with `absurd (hfin.mem_toFinset.2 ⟨g, hg, rfl⟩) h`. Rewrite using `[Set.indicator_of_notMem hg]`.
+
+Use `Finset.sum_eq_zero fun c hc => Set.indicator_of_notMem (fun h => hg ?_) _` and prove the remaining obligations. Take `⟨t, ht, rfl⟩` from `hfin.mem_toFinset.1 hc`. Establish `h2` using `(hcos _).1 h`. Establish `h3 : t⁻¹ * g ∈ J` using `QuotientGroup.eq.1 h2`. Simplify using `using hSJ t ht _ h3`.
+-/
 private theorem exists_mid (w : Pl K) (J : Subgroup (GL (Fin n) (w.adicCompletion K)))
     (hJ : IsOpen (J : Set (GL (Fin n) (w.adicCompletion K))))
     (S : Set (GL (Fin n) (w.adicCompletion K))) (hS : IsCompact S) (hSJ : ∀ g ∈ S, ∀ k ∈ J, g * k ∈ S)
@@ -93,6 +118,15 @@ private theorem exists_mid (w : Pl K) (J : Subgroup (GL (Fin n) (w.adicCompletio
     have h3 : t⁻¹ * g ∈ J := QuotientGroup.eq.1 h2
     simpa using hSJ t ht _ h3
 
+/- English proof (translation)
+Establish `key : ∀ a b : LL μ, ⟪a, Ofin μ m e b⟫_ℂ = ∫ h, e h * ⟪a, rhoF μ h b⟫_ℂ ∂m`. Introduce `a b`. Unfold `Ofin`. Rewrite using `[UnitaryRep.inner_integrated]`. Use `integral_congr_ae ((RightCosetSpace.coeFn_compactSupportToL1 m e).mono fun g hg => ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg (· * _) hg`. Use `ext_inner_left ℂ fun a => ?_` and prove the remaining obligations. Establish `hadj : ⟪a, rhoF μ u (Ofin μ m e v)⟫_ℂ = ⟪rhoF μ u⁻¹ a, Ofin μ m e v⟫_ℂ`. Rewrite using `[← (UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.2.2.1 u, ContinuousLinearMap.adjoint_inner_left]`. Rewrite using `[hadj, key, key]`.
+
+Establish `h1 : ∀ h, e h * ⟪rhoF μ u⁻¹ a, rhoF μ h v⟫_ℂ = (fun h => e h * ⟪a, rhoF μ h v⟫_ℂ) (u * h)`. Introduce `h`. Establish `: rhoF μ (u * h) v = rhoF μ u (rhoF μ h v)`. Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.1 u h]`. Both sides reduce to the same expression.
+
+Use `show _ = e (u * h) * _`. Rewrite using `[he, this, ← (UpperTheory.ConvolutionTheory.Tf.commPrj K n μ ⊥).2.2.2.2.2.2.2.1 u, ContinuousLinearMap.adjoint_inner_left]`. Repeatedly rewrite using `[h1]`. Conclude with `integral_mul_left_eq_self (fun h => e h * ⟪a, rhoF μ h v⟫_ℂ) u`.
+-/
 private theorem ofin_left (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure] (u : AdelicGLn.FiniteAdelicGL K n)
     (e : TF K n) (he : ∀ x, e (u * x) = e x) (v : LL μ) : rhoF μ u (Ofin μ m e v) = Ofin μ m e v := by
@@ -121,6 +155,11 @@ section Aux2
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, b, hb, e⟩`. Conclude with `⟨a⁻¹ * c, mul_mem (inv_mem ha) hc, b, hb, by`. Simplify using `only [mul_assoc] at e ⊢`. Rewrite using `[← e, inv_mul_cancel_left]⟩`.
+
+Introduce and unpack `⟨c, hc, b, hb, rfl⟩`. Conclude with `⟨a * c, mul_mem ha hc, b, hb, by simp only [mul_assoc]⟩`.
+-/
 private theorem iw_left (w : Pl K) (ν : Fin n → ℤ) {a : GL (Fin n) (w.adicCompletion K)}
     (ha : a ∈ GLnLocal.iwahori (w.adicCompletion K) n) (g : GL (Fin n) (w.adicCompletion K)) :
     a * g ∈ iwCoset w ν ↔ g ∈ iwCoset w ν := by
@@ -132,6 +171,9 @@ private theorem iw_left (w : Pl K) (ν : Fin n → ℤ) {a : GL (Fin n) (w.adicC
   · rintro ⟨c, hc, b, hb, rfl⟩
     exact ⟨a * c, mul_mem ha hc, b, hb, by simp only [mul_assoc]⟩
 
+/- English proof (translation)
+Simplify using `only [Set.indicator_apply, iw_left w ν ha g, Pi.one_apply]`.
+-/
 private theorem iw_ind (w : Pl K) (ν : Fin n → ℤ) {a : GL (Fin n) (w.adicCompletion K)}
     (ha : a ∈ GLnLocal.iwahori (w.adicCompletion K) n) (g : GL (Fin n) (w.adicCompletion K)) :
     (iwCoset w ν).indicator (1 : GL (Fin n) (w.adicCompletion K) → ℂ) (a * g) =
@@ -139,11 +181,19 @@ private theorem iw_ind (w : Pl K) (ν : Fin n → ℤ) {a : GL (Fin n) (w.adicCo
   classical
   simp only [Set.indicator_apply, iw_left w ν ha g, Pi.one_apply]
 
+/- English proof (translation)
+Take `⟨c, hc, b, hb, rfl⟩` from `hg`. Conclude with `⟨c, hc, b * k, mul_mem hb hk, by simp only [mul_assoc]⟩`.
+-/
 private theorem iw_right (w : Pl K) (ν : Fin n → ℤ) {g k : GL (Fin n) (w.adicCompletion K)}
     (hg : g ∈ iwCoset w ν) (hk : k ∈ GLnLocal.iwahori (w.adicCompletion K) n) : g * k ∈ iwCoset w ν := by
   obtain ⟨c, hc, b, hb, rfl⟩ := hg
   exact ⟨c, hc, b * k, mul_mem hb hk, by simp only [mul_assoc]⟩
 
+/- English proof (translation)
+Establish `e : iwCoset w ν = (fun q : GL (Fin n) (w.adicCompletion K) × GL (Fin n) (w.adicCompletion K) => q.1 * Cartan.diagPow (w.adicCompletion K) n ν * q.2) '' ((GLnLocal.iwahori (w.adicCompletion K) n : Set (GL (Fin n) (w.adicCompletion K))) ×ˢ (GLnLocal.iwahori (w.adicCompletion K) n : …`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨(a, b), ⟨ha, hb⟩, rfl⟩`.
+
+Introduce and unpack `⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩`. Conclude with `⟨a, ha, b, hb, rfl⟩`. Rewrite using `[e]`. Conclude with `(hI.prod hI).image ((continuous_fst.mul continuous_const).mul continuous_snd)`.
+-/
 private theorem iw_compact (w : Pl K) (ν : Fin n → ℤ)
     (hI : IsCompact (GLnLocal.iwahori (w.adicCompletion K) n : Set (GL (Fin n) (w.adicCompletion K)))) :
     IsCompact (iwCoset w ν) := by
@@ -160,6 +210,11 @@ private theorem iw_compact (w : Pl K) (ν : Fin n → ℤ)
   rw [e]
   exact (hI.prod hI).image ((continuous_fst.mul continuous_const).mul continuous_snd)
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Rewrite using `[GroundTheory.Automorphic.Parabolic.diagPow_zero, mul_one]`. Conclude with `mul_mem ha hb`.
+
+Introduce `hg`. Conclude with `⟨g, hg, 1, one_mem _, by rw [GroundTheory.Automorphic.Parabolic.diagPow_zero, mul_one, mul_one]⟩`.
+-/
 private theorem iw_zero (w : Pl K) :
     iwCoset w (0 : Fin n → ℤ) = (GLnLocal.iwahori (w.adicCompletion K) n : Set (GL (Fin n) (w.adicCompletion K))) := by
   ext g
@@ -172,12 +227,22 @@ private theorem iw_zero (w : Pl K) :
 
 variable {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
 
+/- English proof (translation)
+The claim follows from `(UpperTheory.ConvolutionTheory.Tf.hopBasic K n μ w J x ho hc).2.2.2.2.1 B fun g => hB _`.
+-/
 private theorem comm_hop (B : LL μ →L[ℂ] LL μ) (hB : ∀ h, Commute B (rhoF μ h)) (w : Pl K)
     (J : Subgroup (GL (Fin n) (w.adicCompletion K))) (x : GL (Fin n) (w.adicCompletion K))
     (ho : IsOpen (J : Set (GL (Fin n) (w.adicCompletion K)))) (hc : IsCompact (J : Set (GL (Fin n) (w.adicCompletion K)))) :
     Commute B (Hop μ w J x) :=
   (UpperTheory.ConvolutionTheory.Tf.hopBasic K n μ w J x ho hc).2.2.2.2.1 B fun g => hB _
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [atPl, rename_C, map_C]`. Rewrite using `[hev.const a]`. Conclude with `(Commute.one_right B).smul_right a`.
+
+Consider the case `add p q hp hq`. Simplify using `only [atPl, map_add] at hp hq ⊢`. Conclude with `hp.add_right hq`. Consider the case `mul_X p i hp`. Simplify using `only [atPl, map_mul, rename_X, map_X] at hp ⊢`.
+
+Use `hp.mul_right ?_` and prove the remaining obligations. Rewrite using `[hev.hecke w hw i]`. Conclude with `(comm_hop B hB w _ _ (GLnLocal.isOpen_integralGL _ n) (GLnLocal.isCompact_integralGL _ n)).smul_right _`.
+-/
 private theorem comm_ev (𝔞 : Amp μ) {ev : PR K n →+* (LL μ →L[ℂ] LL μ)} (hev : 𝔞.IsEv ev)
     (B : LL μ →L[ℂ] LL μ) (hB : ∀ h, Commute B (rhoF μ h)) {w : Pl K} (hw : w ∉ 𝔞.S)
     (q : MvPolynomial (Fin n) ℂ) : Commute B (ev (map C (atPl w q))) := by
@@ -198,6 +263,39 @@ private theorem comm_ev (𝔞 : Amp μ) {ev : PR K n →+* (LL μ →L[ℂ] LL �
 end Aux2
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `K _ _ _ n hn μ _ 𝔞 ev hev w₀ hw₀ ν hν T hT p h hsph r hr₀ hrT hU j wd e₀ e₁ h₀ h₁`. Take `⟨m, hm, hC⟩` from `(UpperTheory.ConvolutionTheory.Tf.compatEx K n hn).2.1 μ 𝔞.ν`. Use `haveI := hm`. Establish `hne : ∀ w ∈ T, w ≠ w₀` using `fun w hw e => hT w hw (e ▸ hw₀)`. Establish `hI` using `UpperTheory.ConvolutionTheory.Tf.uiwPow K n μ w₀ ν ν hν hν`.
+
+Establish `hIo` using `hI.2.2.1`. Establish `hIc` using `hI.2.2.2.1`. Establish `hcf : ∀ w ∈ T, ∀ (y : GL (Fin n) (w₀.adicCompletion K)) (x : AdelicGLn.FiniteAdelicGL K n), cf w (AdelicGLn.localEmbedding w₀ y * x) = cf w x` using `fun w hw y x => by`. Rewrite using `[cf_mul, cf_loc_ne (hne w hw), one_mul]`. Establish `hcf' : ∀ w ∈ T, ∀ (y : GL (Fin n) (w.adicCompletion K)) (x : AdelicGLn.FiniteAdelicGL K n), cf w₀ (AdelicGLn.localEmbedding w y * x) = cf w₀ x` using `fun w hw y x => by`.
+
+Rewrite using `[cf_mul, cf_loc_ne (hne w hw).symm, one_mul]`. Use `set ind : AdelicGLn.FiniteAdelicGL K n → ℂ := fun x => ∏ w ∈ T, (GLnLocal.integralGL (w.adicCompletion K) n : Set _).indicator 1 (cf w x) with hind`. Establish `hindF : Free w₀ ind` using `fun y x => Finset.prod_congr rfl fun w hw => by rw [hcf w hw]`. Establish `hfree : Free w₀ (fun x => r x * ind x)` using `fun y x => by show r _ * ind _ = _`. Rewrite using `[hr₀ y x, hindF y x]`.
+
+Take `⟨e', he'⟩` from `exists_mid w₀ (GLnLocal.iwahori (w₀.adicCompletion K) n) hIo (iwCoset w₀ fun i => (j : ℤ) * ν i) (iw_compact w₀ _ hIc) (fun g hg k hk => iw_right w₀ _ hg hk) (fun x => r x * ind x) hfree e₀ (fun x => by rw [h₀, iw_zero]; ring)`. Establish `hH` using `UpperTheory.ConvolutionTheory.GM.heckeFin K n hn μ m 𝔞 ev hev T hT p h hsph (fun x => r x * (iwCoset w₀ fun i => (j : ℤ) * ν i).indicator 1 (cf w₀ x)) (fun w hw y x => by show r _ * _ = r _ * _`. Rewrite using `[hrT w hw y x, hcf' w hw]) e' e₁ (fun x => by rw [he']; ring) h₁`. Establish `hUf` using `UpperTheory.ConvolutionTheory.GM.uiwFin K n hn μ m w₀ ν hν j (fun x => r x * ind x) hfree e₀ e' (fun x => by rw [h₀]; ring) he'`. Establish `cp` using `UpperTheory.ConvolutionTheory.Tf.commPrj K n μ 𝔞.U`.
+
+Establish `hinv : ∀ u ∈ 𝔞.U, ∀ x, e₁ (u * x) = e₁ x` using `fun u hu x => by`. Take `⟨hu₁, hu₂⟩` from `hU u hu`. Establish `hint : ∀ w, cf w u ∈ GLnLocal.integralGL (w.adicCompletion K) n` using `(AdelicGLn.mem_integralFiniteGL_iff_forall K n).1 (𝔞.le hu)`. Rewrite using `[h₁, h₁, hu₂, cf_mul]`. Use `congr 1`.
+
+Use `congr 1`. Conclude with `iw_ind w₀ _ hu₁ _`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[cf_mul]`. Conclude with `(((UpperTheory.ConvolutionTheory.GM.sphEx K n hn w).2.2 (p w) (h w) (hsph w hw)).2.2 _ (hint w) _).1`.
+
+Establish `hP : prj (fixF μ 𝔞.U) * Ofin μ m e₁ = Ofin μ m e₁` using `ContinuousLinearMap.ext fun v => cp.2.2.2.1 _ ((cp.2.1 _).2 fun u hu => ofin_left μ m u e₁ (hinv u hu) v)`. Establish `hR` using `fun β : TI K n => (UpperTheory.ConvolutionTheory.Tf.opAlg K n μ 𝔞.ν m).2.2.2.2.2.2.2.2 β`. Establish `hOP : ∀ β : TI K n, Commute (Oinf μ 𝔞.ν β) (prj (fixF μ 𝔞.U))` using `fun β => cp.2.2.2.2.2.2.2.2 _ fun u _ => hR β u`. Establish `hconv : ∀ β γ : TI K n, Oinf μ 𝔞.ν (GM.conv 𝔞.ν β γ) = Oinf μ 𝔞.ν β * Oinf μ 𝔞.ν γ` using `fun β γ => (UpperTheory.ConvolutionTheory.GM.convSpec K n hn 𝔞.ν β γ).2 μ`. Establish `hlet : ∀ x, ev (C (X x)) = Oinf μ 𝔞.ν (letter 𝔞.a₀ x) * prj (fixF μ 𝔞.U)`.
+
+Introduce and unpack `(_ | x)`. Conclude with `hev.amp`. Conclude with `hev.cen x`. Establish `hW : ∀ wd : List (Option (Ix K n)), Oinf μ 𝔞.ν (word 𝔞.ν 𝔞.a₀ wd) * Ofin μ m e₁ = ev (C (mono wd)) * (Oinf μ 𝔞.ν 𝔞.a₀ * Ofin μ m e₁)`. Introduce `wd`.
+
+Proceed by induction on `wd with`. Consider the case `nil => simp [word, mono]`. Consider the case `cons x w ih`. Establish `hm1 : mono (x :: w) = X x * mono w` using `by simp [mono]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hP, word, hconv, mul_assoc]`. Use `_ = ev (C (X x)) * (Oinf μ 𝔞.ν (word 𝔞.ν 𝔞.a₀ w) * Ofin μ m e₁) := by`. Rewrite using `[hlet, ← mul_assoc (Oinf μ 𝔞.ν (word 𝔞.ν 𝔞.a₀ w)), (hOP _).eq]`. Simplify using `only [mul_assoc]`. Use `_ = ev (C (mono (x :: w))) * (Oinf μ 𝔞.ν 𝔞.a₀ * Ofin μ m e₁) := by`.
+
+Rewrite using `[ih, hm1, C_mul, map_mul, mul_assoc]`. Establish `hEv : Commute (Oinf μ 𝔞.ν 𝔞.a₀) (ev (map C (∏ w ∈ T, atPl w (p w))))`. Use `Finset.prod_induction _ (fun q => Commute (Oinf μ 𝔞.ν 𝔞.a₀) (ev (map C q))) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb`. Rewrite using `[map_mul, map_mul]`.
+
+Conclude with `ha.mul_right hb`. Rewrite using `[map_one, map_one]`. Conclude with `Commute.one_right _`. Conclude with `fun w hw => comm_ev 𝔞 hev _ (hR _) (hT w hw) _`. Establish `hUj : Commute (Oinf μ 𝔞.ν 𝔞.a₀) (Uiw μ w₀ ν ^ j)` using `(comm_hop _ (hR _) w₀ _ _ hIo hIc).pow_right j`.
+
+Establish `hrr` using `fun β : TI K n => fun e : TF K n => UpperTheory.ConvolutionTheory.Tf.rrTens K n hn μ 𝔞.ν m hC β e`. Rewrite using `[hrr, hrr]`. Use `show Oinf μ 𝔞.ν (word 𝔞.ν 𝔞.a₀ (none :: wd)) * Ofin μ m e₁ = 𝔞.A * ((ev (C (mono wd) * map C (∏ w ∈ T, atPl w (p w))) * Uiw μ w₀ ν ^ j) * (Oinf μ 𝔞.ν 𝔞.a₀ * Ofin μ m e₀))`. Establish `hB : Ofin μ m e₁ = ev (map C (∏ w ∈ T, atPl w (p w))) * (Uiw μ w₀ ν ^ j * Ofin μ m e₀)`. Rewrite using `[hH, hUf]`.
+
+Both sides reduce to the same expression. Establish `hA : 𝔞.A = Oinf μ 𝔞.ν 𝔞.a₀ * prj (fixF μ 𝔞.U)` using `rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP, word, hconv, mul_assoc]`. Both sides reduce to the same expression.
+
+Use `_ = 𝔞.A * (Oinf μ 𝔞.ν (word 𝔞.ν 𝔞.a₀ wd) * Ofin μ m e₁) := by`. Rewrite using `[hA, ← mul_assoc (Oinf μ 𝔞.ν (word 𝔞.ν 𝔞.a₀ wd)), (hOP _).eq]`. Simplify using `only [mul_assoc]`. Use `_ = 𝔞.A * (ev (C (mono wd)) * (Oinf μ 𝔞.ν 𝔞.a₀ * Ofin μ m e₁)) := by rw [hW]`. Use `_ = 𝔞.A * (ev (C (mono wd)) * (ev (map C (∏ w ∈ T, atPl w (p w))) * (Uiw μ w₀ ν ^ j * (Oinf μ 𝔞.ν 𝔞.a₀ * Ofin μ m e₀)))) := by`.
+
+Rewrite using `[hB, ← mul_assoc (Oinf μ 𝔞.ν 𝔞.a₀), hEv.eq, mul_assoc, ← mul_assoc (Oinf μ 𝔞.ν 𝔞.a₀), hUj.eq, mul_assoc]`. Use `_ = 𝔞.A * ((ev (C (mono wd) * map C (∏ w ∈ T, atPl w (p w))) * Uiw μ w₀ ν ^ j) * (Oinf μ 𝔞.ν 𝔞.a₀ * Ofin μ m e₀)) := by`. Rewrite using `[map_mul]`. Simplify using `only [mul_assoc]`.
+-/
 theorem UpperTheory.ConvolutionTheory.GM.repOne :
     RepOne := by
   intro K _ _ _ n hn μ _ 𝔞 ev hev w₀ hw₀ ν hν T hT p h hsph r hr₀ hrT hU j wd e₀ e₁ h₀ h₁

@@ -28,6 +28,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.PointCompare
 section Val
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {F : Type} [Field F] {z : Sp F ⟶ X}
 
+/- English proof (translation)
+Take `⟨hs, s, e1, e2⟩` from `h`. Take `⟨_, s', e1', e2'⟩` from `h'`. Establish `f2 : RootHt.Pick.valMap z s = r` using `e2`. Establish `f2' : RootHt.Pick.valMap z s' = r'` using `e2'`. Use `⟨hs, s * s', by rw [map_mul, e1, e1'], ?_⟩` and prove the remaining obligations.
+
+Use `show RootHt.Pick.valMap z (s * s') = r * r'`. Rewrite using `[map_mul, f2, f2']`.
+-/
 theorem val_mul {a a' : Ω} {r r' : F} (h : ValAt ξ z a r) (h' : ValAt ξ z a' r') : ValAt ξ z (a * a') (r * r') := by
   obtain ⟨hs, s, e1, e2⟩ := h
   obtain ⟨_, s', e1', e2'⟩ := h'
@@ -37,6 +42,13 @@ theorem val_mul {a a' : Ω} {r r' : F} (h : ValAt ξ z a r) (h' : ValAt ξ z a' 
   show RootHt.Pick.valMap z (s * s') = r * r'
   rw [map_mul, f2, f2']
 
+/- English proof (translation)
+Establish `: ∀ i j, ∃ s : X.presheaf.stalk (centre z), genMap ξ ⟨centre z, h⟩ s = P i j ∧ (Scheme.stalkClosedPointTo z).hom s = A i j` using `fun i j => by`. Take `⟨_, s, e1, e2⟩` from `hP i j`. Conclude with `⟨s, e1, e2⟩`. Use `choose s e1 e2 using this`. Use `⟨h, (Matrix.of s).det, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `e1 i j`. Use `show RootHt.Pick.valMap z _ = A.det`.
+
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `e2 i j`.
+-/
 theorem val_det (h : genPt ξ ⤳ centre z) {n : ℕ} {P : Matrix (Fin n) (Fin n) Ω} {A : Matrix (Fin n) (Fin n) F}
     (hP : ∀ i j, ValAt ξ z (P i j) (A i j)) : ValAt ξ z P.det A.det := by
   have : ∀ i j, ∃ s : X.presheaf.stalk (centre z), genMap ξ ⟨centre z, h⟩ s = P i j ∧
@@ -60,9 +72,19 @@ end Val
 section Gen
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {F : Type} [Field F] {x : Sp F ⟶ S}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, fun i => LieTangent.epsScale x (cf i) ≫ v i, fun _ => rfl, rfl⟩`.
+-/
 theorem exists_comb {n : ℕ} (cf : Fin n → F) (v : Fin n → (epsAt x ⟶ G)) : ∃ w, IsComb cf v w :=
   ⟨_, fun i => LieTangent.epsScale x (cf i) ≫ v i, fun _ => rfl, rfl⟩
 
+/- English proof (translation)
+Establish `: ∀ i, ∃ cf, IsComb cf v' (v i)` using `fun i => (hv'.2 _ (hv.1 i)).exists`. Use `choose C hC using this`. Establish `ht : ∀ i, IsTanAt G x (v i)` using `fun i => (hv.1 i).1`. Establish `h1` using `GlobalTheory.T.is_comb_matrix_mul S G F x n n n v v' v (Matrix.of C) A ht hA hC`. Establish `h2` using `GlobalTheory.T.is_comb_identity_matrix S G F x n v ht`.
+
+Establish `h3 : Matrix.of C * A = 1`. Use extensionality with `i j`. Use `(hv.2 _ (hv.1 i)).unique (h1 i) (h2 i)` as an intermediate fact. Conclude with `congrFun this j`. Introduce `h0`.
+
+Use `congrArg Matrix.det h3` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+-/
 theorem frame_det {P : Type} [CommRing P] {act : OAct P G} {σ : P →+* F} {n : ℕ} {v v' : Fin n → (epsAt x ⟶ G)}
     {A : Matrix (Fin n) (Fin n) F} (hv : IsEigFrame act x σ v) (hv' : IsEigFrame act x σ v')
     (hA : ∀ i, IsComb (A i) v (v' i)) : A.det ≠ 0 := by
@@ -86,6 +108,21 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {U : Set (Xo.XF c)}
 
+/- English proof (translation)
+Establish `hb : ∀ i, b₁ i ∈ Z.eig σ ⟨_, h⟩` using `fun i => by`. Take `⟨v', hv', -⟩` from `h₁ i`. Conclude with `⟨RootHt.Pick.mem_lat_of_val Z.M hv' h, he i⟩`. Establish `hco : ∀ i, ∃ P : Fin n → regAt (Z.ξ₀ ≫ Y.j) ⟨_, h⟩, ∑ j, P j • c₀ j = b₁ i` using `fun i => by`. Use `hb i` as an intermediate fact.
+
+Rewrite `this` using `[hc.2]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun _).1 this`. Use `choose P hP using hco`. Establish `hval : ∀ i j, ∃ r : F, ValAt (Z.ξ₀ ≫ Y.j) (y ≫ Y.j) (P i j : Z.Ω) r` using `fun i j => RootHt.Pick.exists_valAt (P i j).2`. Use `choose A hA using hval`.
+
+Set `Pm : Matrix (Fin n) (Fin n) Z.Ω` to `fun i j => (P i j : Z.Ω)`. Establish `hb' : b₁ = fun i => ∑ j, Pm i j • c₀ j`. Use function extensionality and compare the values at `i`. Rewrite using `[← hP i]`. Both sides reduce to the same expression.
+
+Establish `hdet : t = Pm.det`. Establish `h1` using `GlobalTheory.T.iota_multi_change_of_basis_det Z.Ω Z.V n c₀ Pm`. Rewrite `h1` using `[← hb', hw]`. Establish `h2 : (t - Pm.det) • exteriorPower.ιMulti Z.Ω n c₀ = 0`. Rewrite using `[sub_smul, h1, sub_self]`.
+
+Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h2).resolve_right (GlobalTheory.T.iota_multi_ne_zero_of_lin_indep Z.Ω Z.V n c₀ hc.1))`. Establish `hcomb : ∀ i, IsComb (Matrix.of A i) v₀ (v i)` using `fun i => by`. Take `⟨w, hw'⟩` from `exists_comb (Matrix.of A i) v₀`. Take `⟨w', hw₁, hw₂⟩` from `GlobalTheory.T.component_specialization_tangent_comb E H D l Xo c O β Y U Z F y n c₀ v₀ (Pm i) (Matrix.of A i) w h h₀ (hA i) hw'`. Take `⟨v', hv₁, hv₂⟩` from `h₁ i`.
+
+Establish `e : ∑ j, Pm i j • c₀ j = b₁ i` using `by rw [hb']`. Rewrite `hw₁` using `[e]`. Establish `e'` using `LieModel.ValAt.unique Z.gen hw₁ hv₁`. Substitute `e'` using the available equality. Rewrite using `[← SameVec.unique_left hw₂ hv₂]`.
+
+Conclude with `hw'`. Use `⟨Matrix.of A, hcomb, frame_det hf₀ hf hcomb, ?_⟩` and prove the remaining obligations. Rewrite using `[hdet]`. Conclude with `val_det h hA`.
+-/
 theorem expand (Z : CptOver Y U) {F : Type} [Field F] {y : Sp F ⟶ Xo.XF c}
     (h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)) (σ : E →+* ℂ) (σ' : 𝓞 E →+* F) {n : ℕ} {c₀ b₁ : Fin n → Z.V}
     {v₀ v : Vecs y n} {t : Z.Ω} (hc : (Z.eig σ).IsFrameAt c₀ ⟨_, h⟩) (h₀ : Rep.IsValFam Z y c₀ v₀)
@@ -132,6 +169,11 @@ theorem expand (Z : CptOver Y U) {F : Type} [Field F] {y : Sp F ⟶ Xo.XF c}
 
 end Main
 
+/- English proof (translation)
+Take `⟨hp, s, hs, hr⟩` from `h`. Establish `hdom : Dominates ξ' ξ π (RingHom.id Ω)`. Express the relevant statement in the definitionally equal form `ξ' ≫ π = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ ξ`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp, hd]`. Use `⟨hq, (π.stalkMap (centre y')).hom s, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(RegAtDom.genMap_stalkMap hdom (centre y') hq hp s).trans hs`. Rewrite using `[← hr, Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression.
+-/
 theorem valAt_pull {X X' : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {ξ' : Sp Ω ⟶ X'} {π : X' ⟶ X}
     (hd : ξ' ≫ π = ξ) {y' : Sp ℂ ⟶ X'} (hq : genPt ξ' ⤳ centre y') {a : Ω} {r : ℂ}
     (h : ValAt ξ (y' ≫ π) a r) : ValAt ξ' y' a r := by
@@ -144,6 +186,11 @@ theorem valAt_pull {X X' : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X}
   · rw [← hr, Scheme.stalkClosedPointTo_comp]
     rfl
 
+/- English proof (translation)
+Establish `hdom : Dominates ξ' ξ π (RingHom.id Ω)`. Express the relevant statement in the definitionally equal form `ξ' ≫ π = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ ξ`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp, hd]`. Use `hq.map π.continuous` as an intermediate fact. Rewrite `this` using `[RegAtDom.map_genPt hdom]`.
+
+Conclude with `this`.
+-/
 theorem genPt_specializes {X X' : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {ξ' : Sp Ω ⟶ X'} {π : X' ⟶ X}
     (hd : ξ' ≫ π = ξ) {y' : Sp ℂ ⟶ X'} (hq : genPt ξ' ⤳ centre y') : genPt ξ ⤳ centre (y' ≫ π) := by
   have hdom : Dominates ξ' ξ π (RingHom.id Ω) := by
@@ -153,6 +200,17 @@ theorem genPt_specializes {X X' : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω
   rw [RegAtDom.map_genPt hdom] at this
   exact this
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y U Z τ σ Φ b₁ v₁ b₂ v₂ X' π ξ' y' yy v vz w wz α κ r hξ hgen hyy hΦ hf hfz hb₁ hb₂ hz₁ hz₂ hfr he₁ he₂ hα hκ hw₁ hw₂ hr`. Take `⟨hq, -⟩` from `id hr`. Establish `h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (yy ≫ Y.j)`. Rewrite using `[hyy]`. Conclude with `genPt_specializes hξ hq`.
+
+Take `⟨hfr₁, hfr₂⟩` from `hfr ⟨_, h⟩ rfl`. Establish `hw₁' : exteriorPower.ιMulti Z.Ω D.p b₁ = α⁻¹ • exteriorPower.ιMulti Z.Ω D.p v₁`. Rewrite using `[hw₁, smul_smul, inv_mul_cancel₀ hα, one_smul]`. Establish `hw₂' : exteriorPower.ιMulti Z.Ω D.q b₂ = κ⁻¹ • exteriorPower.ιMulti Z.Ω D.q v₂`. Rewrite using `[hw₂, smul_smul, inv_mul_cancel₀ hκ, one_smul]`.
+
+Take `⟨A, hA, hA0, hAv⟩` from `expand Z h τ (σ.comp (tauIn c τ)) hfr₁ hz₁ hb₁ he₁ hfz.2.2.1 hf.2.2.1 hw₁'`. Take `⟨B, hB, -, hBv⟩` from `expand Z h (ComplexEmbedding.conjugate τ) (σ.comp (tauIn c (ComplexEmbedding.conjugate τ))) hfr₂ hz₂ hb₂ he₂ hfz.2.2.2 hf.2.2.2 hw₂'`. Rewrite `hAv`, `hBv` using `[hyy]`. Establish `hA'` using `valAt_pull hξ hq hAv`. Establish `hB'` using `valAt_pull hξ hq hBv`.
+
+Establish `hm` using `val_mul hr hA'`. Establish `e : α / κ * α⁻¹ = κ⁻¹` using `by field_simp`. Rewrite `hm` using `[e]`. Establish `hdet : r * A.det = B.det` using `LieTangent.valAt_unique hgen hm hB'`. Establish `hc` using `hΦ.chg yy vz wz v w A B hfz hf hA hB`.
+
+Rewrite `hc` using `[← hdet]`. Rewrite `hc` using `[← _root_.mul_assoc]`. Conclude with `mul_right_cancel₀ hA0 hc`.
+-/
 theorem point_compare : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ) (σ : c.F →+* ℂ) (Φ : CFn Xo c) (b₁ v₁ : Fin D.p → Z.V) (b₂ v₂ : Fin D.q → Z.V) (X' : Scheme.{0}) (π : X' ⟶ Y.X) (ξ' : Sp Z.Ω ⟶ X') (y' : Sp ℂ ⟶ X') (yy : Sp ℂ ⟶ Xo.XF c) (v vz : Vecs yy D.p) (w wz : Vecs yy D.q) (α κ : Z.Ω) (r : ℂ), ξ' ≫ π = Z.ξ₀ ≫ Y.j → IsCptGen ξ' → yy ≫ Y.j = y' ≫ π → IsUnitAn τ σ Φ → IsFramed Set.univ τ σ yy v w → IsFramed Set.univ τ σ yy vz wz → (∀ i, ∃ v', Z.M.ValAt (yy ≫ Y.j) (b₁ i) v' ∧ SameVec Y yy (v i) v') → (∀ j, ∃ w', Z.M.ValAt (yy ≫ Y.j) (b₂ j) w' ∧ SameVec Y yy (w j) w') → (∀ i, ∃ v', Z.M.ValAt (yy ≫ Y.j) (v₁ i) v' ∧ SameVec Y yy (vz i) v') → (∀ j, ∃ w', Z.M.ValAt (yy ≫ Y.j) (v₂ j) w' ∧ SameVec Y yy (wz j) w') → (∀ q : Cpt (Z.ξ₀ ≫ Y.j), q.1 = centre (yy ≫ Y.j) → (Z.eig τ).IsFrameAt v₁ q ∧ (Z.eig (ComplexEmbedding.conjugate τ)).IsFrameAt v₂ q) → (∀ i, b₁ i ∈ eigSp Z.ρ (Z.inc.comp (tauIn c τ))) → (∀ j, b₂ j ∈ eigSp Z.ρ (Z.inc.comp (tauIn c (ComplexEmbedding.conjugate τ)))) → α ≠ 0 → κ ≠ 0 → exteriorPower.ιMulti Z.Ω D.p v₁ = α • exteriorPower.ιMulti Z.Ω D.p b₁ → exteriorPower.ιMulti Z.Ω D.q v₂ = κ • exteriorPower.ιMulti Z.Ω D.q b₂ → ValAt ξ' y' (α / κ) r → Φ yy v w = Φ yy vz wz * r := by
   intro E _ _ _ H D l Xo c O _ β Y U Z τ σ Φ b₁ v₁ b₂ v₂ X' π ξ' y' yy v vz w wz α κ r hξ hgen hyy hΦ hf hfz hb₁ hb₂
     hz₁ hz₂ hfr he₁ he₂ hα hκ hw₁ hw₂ hr

@@ -27,15 +27,24 @@ noncomputable def smulPairing (M : TRep ℤ G) [DiscreteTopology M.V] : Pairing 
   cont := continuous_of_discreteTopology
   equiv g m n := (@LinearMap.map_smul ℤ M.V M.V _ _ _ M.mod M.mod (M.rho g) (show ℤ from n) m).symm
 
+/- English proof (translation)
+The claim follows from `int_smul_eq_zsmul M.mod n x`.
+-/
 theorem smulPairing_apply (M : TRep ℤ G) [DiscreteTopology M.V] (x : M.V) (n : ℤ) :
     (smulPairing M).β x n = n • x := int_smul_eq_zsmul M.mod n x
 
+/- English proof (translation)
+Take `⟨z, hz, hzm⟩` from `exists_defect_cocycle (trivRep G ℤ) (a := (1 : ℤ)) (fun _ => rfl) ht hm`. Conclude with `⟨z, hz, fun g => (hzm g).trans (mul_one (m g))⟩`.
+-/
 theorem exists_int_cocycle (t : G → ℚ) (m : (Fin 2 → G) → ℤ) (ht : IsLocallyConstant t)
     (hm : ∀ g, (m g : ℚ) = t (g 0) + t (g 1) - t (g 0 * g 1)) :
     ∃ (y : (trivRep G ℤ).coch.X 2), (trivRep G ℤ).coch.d 2 y = 0 ∧ ∀ g, y.1 g = m g := by
   obtain ⟨z, hz, hzm⟩ := exists_defect_cocycle (trivRep G ℤ) (a := (1 : ℤ)) (fun _ => rfl) ht hm
   exact ⟨z, hz, fun g => (hzm g).trans (mul_one (m g))⟩
 
+/- English proof (translation)
+Unfold `cupFun`. Rewrite using `[show (fun i : Fin 0 => g (Fin.castAdd 2 i)) = ![] from Subsingleton.elim _ _, show (fun j : Fin 2 => g (Fin.natAdd 0 j)) = g from funext fun j => congrArg g (Fin.ext (by simp))]`. Simplify using the standard rewrite rules.
+-/
 theorem cupFun_zero_two {M N P : TRep ℤ G} (b : Pairing M N P) (f : (Fin 0 → G) → M.V) (f' : (Fin 2 → G) → N.V)
     (g : Fin (0 + 2) → G) : cupFun b 0 2 f f' g = b.β (f ![]) (f' g) := by
   unfold cupFun
@@ -43,10 +52,24 @@ theorem cupFun_zero_two {M N P : TRep ℤ G} (b : Pairing M N P) (f : (Fin 0 →
     show (fun j : Fin 2 => g (Fin.natAdd 0 j)) = g from funext fun j => congrArg g (Fin.ext (by simp))]
   simp
 
+/- English proof (translation)
+The claim follows from `LowDeg.dn_zero_apply M.rho f v`.
+-/
 theorem trep_dn_zero {R : Type} [CommRing R] (M : TRep R G) (f : (Fin 0 → G) → M.V) (v : Fin 1 → G) :
     ReciprocityTheory.Gal.dn M.rho 0 f v = M.rho (v 0) (f ![]) - f ![] :=
   LowDeg.dn_zero_apply M.rho f v
 
+/- English proof (translation)
+Set `bP` to `smulPairing M`. Set `bU : Pairing (M.resSub U) ((trivRep G ℤ).resSub U) (M.resSub U)` to `⟨bP.β, bP.cont, fun g m n => bP.equiv g.1 m n⟩`. Set `x0 : (M.resSub U).coch.X 0` to `⟨fun _ => x, continuous_const⟩`. Establish `hx0 : (M.resSub U).coch.d 0 x0 = 0`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations.
+
+Use `(trep_dn_zero (M.resSub U) x0.1 g).trans ?_` and prove the remaining obligations. Use `show M.rho (g 0).1 x - x = 0`. Rewrite using `[hx _ (g 0).2, sub_self]`. Establish `hry : ((trivRep G ℤ).resSub U).coch.d 2 ((Pair.res (trivRep G ℤ) U.subtype continuous_subtype_val).hom.f 2 y) = 0` using `Cx.Hom.d_f_eq_zero _ hy`. Establish `hcx : M.coch.d 0 (cor.f 0 x0) = 0` using `Cx.Hom.d_f_eq_zero _ hx0`.
+
+Establish `key : cor.H (0 + 2) (cupCoh bU 0 2 ((M.resSub U).coch.cls 0 x0 hx0) (((trivRep G ℤ).resSub U).coch.cls 2 _ hry)) = cupCoh bP 0 2 (M.coch.cls 0 (cor.f 0 x0) hcx) ((trivRep G ℤ).coch.cls 2 y hy)` using `cupCor_holds ℤ G M (trivRep G ℤ) M U bP bU (cupCoh bP) (cupCoh bU) cor cor hU rfl (cupCoh_isCup bP) (cupCoh_isCup bU) hcor hcor 0 2 ((M.resSub U).coch.cls 0 x0 hx0) ((trivRep G ℤ).coch.cls 2 y hy)`. Take `⟨zU', hzU', hzU1', hzU2'⟩` from `cupCoh_isCup bU 0 2 x0 _ hx0 hry`. Take `⟨w, hw, hw1, hw2⟩` from `cupCoh_isCup bP 0 2 (cor.f 0 x0) y hcx hy`. Rewrite `key` using `[hzU2', hw2]`. Establish `e1 : zU' = zU`.
+
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[hzU1', cupFun_zero_two]`. Conclude with `(smulPairing_apply M x _).trans (hzU1 g).symm`. Establish `e2 : w = z`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hw1, cupFun_zero_two, hcor, hx']`. Conclude with `(smulPairing_apply M x' _).trans (hz1 g).symm`. Substitute `e1 e2` using the available equality. Conclude with `key`.
+-/
 theorem cor_smul_cocycle (M : TRep ℤ G) [DiscreteTopology M.V] (U : Subgroup G) [U.FiniteIndex]
     (hU : IsOpen (U : Set G)) (cor : Cx.Hom (M.resSub U).coch M.coch) (hcor : IsCor M U cor)
     (x : M.V) (hx : ∀ g ∈ U, M.rho g x = x) (x' : M.V) (hx' : corFun M U 0 (fun _ => x) ![] = x')
@@ -88,6 +111,11 @@ theorem cor_smul_cocycle (M : TRep ℤ G) [DiscreteTopology M.V] (U : Subgroup G
 
 end general
 
+/- English proof (translation)
+Use `finite_GalLK (p := p) (K := K) hL` as an intermediate fact. Use `Fintype.ofFinite (GK p K ⧸ subG p K L)` as an intermediate fact. Rewrite using `[normHom_apply, ← finsum_eq_sum_of_fintype, ← finsum_comp_equiv (QuotientGroup.quotientRightRelEquivQuotientLeftRel (subG p K L))]`. Unfold `corFun`. Simplify using `only [hf]`.
+
+Use `finsum_congr fun c => ?_` and prove the remaining obligations. Establish `h1 : QuotientGroup.quotientRightRelEquivQuotientLeftRel (subG p K L) c = (QuotientGroup.mk (c.out⁻¹) : GK p K ⧸ subG p K L)` using `by conv_lhs => rw [← Quotient.out_eq c]`. Both sides reduce to the same expression. Rewrite using `[h1, kbarRep_out y hy]`. Both sides reduce to the same expression.
+-/
 theorem corFun_zero_eq_normHom (hL : FiniteDimensional ℚ_[p] L) (y : KbarMult p) (hy : y ∈ multOf p L)
     (f : (Fin 0 → subG p K L) → (kbarT p K).V) (hf : ∀ g, f g = y) (g : Fin 0 → GK p K) :
     corFun (kbarT p K) (subG p K L) 0 f g = normHom p K L y := by

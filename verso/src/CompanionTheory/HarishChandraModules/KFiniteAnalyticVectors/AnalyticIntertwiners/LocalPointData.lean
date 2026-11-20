@@ -23,6 +23,17 @@ variable {n : ℕ} {ε : Fin n → Bool} {H₁ H₂ : Type} [NormedAddCommGroup 
   {D₁ : Submodule ℂ H₁} {D₂ : Submodule ℂ H₂}
   {E₁ : Fin n → Fin n → Module.End ℂ D₁} {E₂ : Fin n → Fin n → Module.End ℂ D₂}
 
+/- English proof (translation)
+Set `κ : N →ₗ[ℂ] sD D₁ D₂` to `ofP ∘ₗ κ₁.prod κ₂`. Establish `hκ : ∀ a b w, sE E₁ E₂ a b (κ w) = κ (F a b w)` using `fun a b w => by show ofP (E₁ a b (κ₁ w), E₂ a b (κ₂ w)) = ofP (κ₁ (F a b w), κ₂ (F a b w))`. Rewrite using `[e₁, e₂]`. Establish `c₁ : ∀ w, casimir E₁ (κ₁ w) = κ₁ (casimir F w)` using `fun w => by`. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, map_sum, e₁]`.
+
+Establish `cF : ∀ w, casimir F w = (c : ℂ) • w` using `fun w => hi (by rw [← c₁, hc, map_smul])`. Establish `cκ : ∀ w, casimir (sE E₁ E₂) (κ w) = (c : ℂ) • κ w` using `fun w => by`. Rewrite using `[← map_smul, ← cF]`. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, map_sum, hκ]`. Set `Γ : Submodule ℂ (WithLp 2 (H₁ × H₂))` to `{ carrier := {x | U (ofLp x).1 = (ofLp x).2} add_mem' := fun {a b} ha hb => by show U ((ofLp a).1 + (ofLp b).1) = (ofLp a).2 + (ofLp b).2`.
+
+Rewrite using `[map_add, show U (ofLp a).1 = (ofLp a).2 from ha, show U (ofLp b).1 = (ofLp b).2 from hb]`. Use the proof step `zero_mem' := map_zero U`. Use the proof step `smul_mem' := fun r a ha => by show U (r • (ofLp a).1) = r • (ofLp a).2`. Rewrite using `[map_smul, show U (ofLp a).1 = (ofLp a).2 from ha] }`. Establish `hL : Continuous (ofLp : WithLp 2 (H₁ × H₂) → H₁ × H₂)` using `(WithLp.prodContinuousLinearEquiv 2 ℂ H₁ H₂).continuous`.
+
+Establish `hΓ : IsClosed (Γ : Set (WithLp 2 (H₁ × H₂)))` using `isClosed_eq (U.continuous.comp (continuous_fst.comp hL)) (continuous_snd.comp hL)`. Establish `hle : genSub (sE E₁ E₂) (W.map κ) ≤ LinearMap.range κ` using `sInf_le ⟨LinearMap.map_le_range, by rintro a b _ ⟨u, rfl⟩; exact ⟨_, (hκ a b u).symm⟩⟩`. Establish `hle' : ((genSub (sE E₁ E₂) (W.map κ)).map (sD D₁ D₂).subtype).topologicalClosure ≤ Γ`. Use `Submodule.topologicalClosure_minimal _ ?_ hΓ` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Take `⟨u, rfl⟩` from `hle hx`. Conclude with `hU u`. Use `closure_genSub_stable (isURepOn_sσ h₁ h₂) (isDerivedOn_sσ hD₁ hD₂) (V := W.map κ) (c := c) inferInstance (by rintro a b hab _ ⟨u, hu, rfl⟩; exact ⟨_, hWK a b hab u hu, (hκ a b u).symm⟩) (by rintro _ ⟨u, -, rfl⟩; exact cκ u) g hg (κ w : WithLp 2 (H₁ × H₂)) (Submodule.le_topologica …` as an intermediate fact. Conclude with `hle' this`.
+-/
 theorem graphD [CompleteSpace H₁] [CompleteSpace H₂] (h₁ : IsURepOn (UJset ε) σ₁) (h₂ : IsURepOn (UJset ε) σ₂)
     (hD₁ : IsDerivedOn ε σ₁ D₁ E₁) (hD₂ : IsDerivedOn ε σ₂ D₂ E₂) {N : Type} [AddCommGroup N] [Module ℂ N]
     (F : Fin n → Fin n → Module.End ℂ N) (κ₁ : N →ₗ[ℂ] D₁) (κ₂ : N →ₗ[ℂ] D₂) (hi : Function.Injective κ₁)
@@ -74,6 +85,11 @@ section Twist
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Establish `hm : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Establish `hd` using `congrArg (fun A => ‖Matrix.det A‖) hm`. Establish `hJ : ‖(Formalism.REAL.Jm ε).det‖ ≠ 0` using `norm_ne_zero_iff.2 ((Matrix.isUnit_iff_isUnit_det _).1 (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).ne_zero`. Simplify using `only [Matrix.det_mul, Matrix.det_conjTranspose, norm_mul, norm_star] at hd`. Establish `h2 : ‖g.det‖ ^ 2 = 1` using `mul_right_cancel₀ hJ (by nlinarith)`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h2`.
+-/
 theorem norm_detD {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.MainNotions.S.UJset ε) : ‖g.det‖ = 1 := by
   have hm : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε := hg
   have hd := congrArg (fun A => ‖Matrix.det A‖) hm
@@ -86,6 +102,9 @@ theorem norm_detD {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.MainNot
 def twD (m : ℕ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H) :=
   fun g => g.det ^ m • σ g
 
+/- English proof (translation)
+Use `⟨⟨by simp [twD, h.1.1], fun a ha b hb => ?_⟩, fun g hg v => ?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [twD]`. Rewrite using `[h.1.2 a ha b hb, det_mul, mul_pow, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_smul]`. Simplify using `only [twD, ContinuousLinearMap.smul_apply, norm_smul, norm_pow, norm_detD hg, one_pow, one_mul, h.2.1 g hg]`. Conclude with `((continuous_id.matrix_det).pow m).continuousOn.smul (h.2.2 v)`.
+-/
 theorem twD_rep (m : ℕ) (h : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) :
     Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) (twD m σ) := by
   refine ⟨⟨by simp [twD, h.1.1], fun a ha b hb => ?_⟩, fun g hg v => ?_, fun v => ?_⟩
@@ -94,11 +113,17 @@ theorem twD_rep (m : ℕ) (h : Formalism.MainNotions.S.IsURepOn (Formalism.MainN
   · simp only [twD, ContinuousLinearMap.smul_apply, norm_smul, norm_pow, norm_detD hg, one_pow, one_mul, h.2.1 g hg]
   · exact ((continuous_id.matrix_det).pow m).continuousOn.smul (h.2.2 v)
 
+/- English proof (translation)
+Introduce `S hS hinv` and use `h S hS fun g hg v hv => by have h0 : g.det ^ m ≠ 0 := pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [norm_detD hg]; exact one_ne_zero)) exact (S.smul_mem_iff h0).1 (hinv g hg v hv)`.
+-/
 theorem twD_irr (m : ℕ) (h : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) σ) :
     Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) (twD m σ) := fun S hS hinv => h S hS fun g hg v hv => by
   have h0 : g.det ^ m ≠ 0 := pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [norm_detD hg]; exact one_ne_zero))
   exact (S.smul_mem_iff h0).1 (hinv g hg v hv)
 
+/- English proof (translation)
+Take `⟨S, h1, h2, h3⟩` from `h`. Conclude with `⟨S, h1, h2, fun g hg u hu => S.smul_mem _ (h3 g hg u hu)⟩`.
+-/
 theorem twD_kfin (m : ℕ) {v : H} (h : Formalism.MainNotions.S.IsKFin ε σ v) : Formalism.MainNotions.S.IsKFin ε (twD m σ) v := by
   obtain ⟨S, h1, h2, h3⟩ := h
   exact ⟨S, h1, h2, fun g hg u hu => S.smul_mem _ (h3 g hg u hu)⟩
@@ -109,12 +134,24 @@ section Cover
 
 variable {p q : ℕ} {T : GrpData p q} {πU : URep T} {M : GKMod p q} {io : M.V →ₗ[ℂ] πU.H}
 
+/- English proof (translation)
+Introduce `Y hY v w` and use `by have h1 := (h.2.2 Y hY v).inner ℂ (h.2.2 Y hY w) simp only [inner_piC, zero_smul, T.expt_zero, map_one, ContinuousLinearMap.one_apply] at h1 have h2 := h1.unique (hasDerivAt_const _ _) linear_combination h2`.
+-/
 theorem skewD (h : IsHCMod πU M io) : SkewD M io := fun Y hY v w => by
   have h1 := (h.2.2 Y hY v).inner ℂ (h.2.2 Y hY w)
   simp only [inner_piC, zero_smul, T.expt_zero, map_one, ContinuousLinearMap.one_apply] at h1
   have h2 := h1.unique (hasDerivAt_const _ _)
   linear_combination h2
 
+/- English proof (translation)
+Establish `hd : ∀ s : ℝ, HasDerivAt (fun r : ℝ => πU.π (T.expt (r • X)) (io v)) (c • πU.π (T.expt (s • X)) (io v)) s`. Introduce `s`. Establish `h0 : HasDerivAt (fun r : ℝ => πU.π (T.expt (r • X)) (io v)) (io (M.act X v)) (s - s)`. Rewrite using `[sub_self]`. Conclude with `h.2.2 X hX v`.
+
+Establish `h1` using `((πU.π (T.expt (s • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s (h0.comp_sub_const s s)`. Rewrite `h1` using `[hv, map_smul]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r show _ = πU.π (T.expt (s • X)) (πU.π (T.expt ((r - s) • X)) (io v))`. Rewrite using `[← pi_mulC, ← T.expt_add X hX, add_sub_cancel]`.
+
+Conclude with `(map_smul _ _ _).symm`. Establish `hg : ∀ s : ℝ, HasDerivAt (fun r : ℝ => Complex.exp (-(c * r)) • πU.π (T.expt (r • X)) (io v)) 0 s`. Introduce `s`. Establish `h1` using `(((hasDerivAt_id s).ofReal_comp.const_mul c).fun_neg.cexp).fun_smul (hd s)`. Use `h1.congr_deriv ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, ← add_smul, Complex.ofReal_one, show ∀ x : ℂ, x * c + x * -(c * 1) = 0 from fun x => by ring, zero_smul]`. Establish `h2` using `is_const_of_deriv_eq_zero (fun s => (hg s).differentiableAt) (fun s => (hg s).deriv) t 0`. Simplify using `only [Complex.ofReal_zero, mul_zero, neg_zero, Complex.exp_zero, zero_smul, T.expt_zero, map_one, ContinuousLinearMap.one_apply, one_smul] at h2`. Use `conv_rhs => rw [← h2]`. Rewrite using `[smul_smul, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_smul]`.
+-/
 theorem eigD (h : IsHCMod πU M io) {X : Mat p q} (hX : X ∈ upq p q) {v : M.V} {c : ℂ} (hv : M.act X v = c • v)
     (t : ℝ) : πU.π (T.expt (t • X)) (io v) = Complex.exp (c * t) • io v := by
   have hd : ∀ s : ℝ, HasDerivAt (fun r : ℝ => πU.π (T.expt (r • X)) (io v)) (c • πU.π (T.expt (s • X)) (io v)) s := by
@@ -140,10 +177,22 @@ theorem eigD (h : IsHCMod πU M io) {X : Mat p q} (hX : X ∈ upq p q) {v : M.V}
   conv_rhs => rw [← h2]
   rw [smul_smul, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_smul]
 
+/- English proof (translation)
+The claim follows from `mem_upq_of_adjZD (by rw [adjZ_smulD, adjZ_singleD a a (sameBlock_reflD a), show star Complex.I = -Complex.I from Complex.conj_I, neg_smul])`.
+-/
 theorem iE_memD (a : Formalism.BasicNotions.TH.Ix p q) : Complex.I • Eab a a ∈ upq p q :=
   mem_upq_of_adjZD (by
     rw [adjZ_smulD, adjZ_singleD a a (sameBlock_reflD a), show star Complex.I = -Complex.I from Complex.conj_I, neg_smul])
 
+/- English proof (translation)
+Establish `e : ((2 * Real.pi : ℝ) : ℂ) • rx (Complex.I • Eab a a) = diagonal fun i => if i = finSumFinEquiv a then 2 * Real.pi * Complex.I else 0`. Use extensionality with `i k`. Take `⟨b, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨d, rfl⟩` from `finSumFinEquiv.surjective k`. Simplify using `only [rx, Eab, Matrix.smul_apply, reindex_apply, submatrix_apply, Equiv.symm_apply_apply, Matrix.single_apply, diagonal_apply, Equiv.apply_eq_iff_eq, smul_eq_mul]`.
+
+Distinguish the cases in `h1 : b = d`. Substitute `h1` using the available equality. Distinguish the cases in `h2 : b = a`. Substitute `h2` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h2, Ne.symm h2]`. Rewrite using `[if_neg h1, if_neg (fun h => h1 (h.1.symm.trans h.2))]`. Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.exp_diagonal, ← diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Pi.coe_exp, ← Complex.exp_eq_exp_ℂ]`. Use `split_ifs`. Conclude with `Complex.exp_two_pi_mul_I`. Conclude with `Complex.exp_zero`.
+-/
 theorem exp_twoPiD (a : Formalism.BasicNotions.TH.Ix p q) :
     NormedSpace.exp (((2 * Real.pi : ℝ) : ℂ) • rx (Complex.I • Eab a a)) = 1 := by
   have e : ((2 * Real.pi : ℝ) : ℂ) • rx (Complex.I • Eab a a) =
@@ -167,6 +216,11 @@ theorem exp_twoPiD (a : Formalism.BasicNotions.TH.Ix p q) :
   · exact Complex.exp_two_pi_mul_I
   · exact Complex.exp_zero
 
+/- English proof (translation)
+Establish `e` using `eigD h (iE_memD a) (v := v) (c := Complex.I * c) (by rw [map_smul, LinearMap.smul_apply, hv, smul_smul]) (2 * Real.pi)`. Rewrite `e` using `[(hex _ (iE_memD a)).2, exp_twoPiD, h1, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply]`. Establish `hne : io v ≠ 0` using `fun h0 => hv0 (h.1 (h0.trans (map_zero io).symm))`. Rewrite using `[← smul_left_injective ℂ hne e, ← Complex.exp_pi_mul_I, ← Complex.exp_nat_mul, trace_smul, Eab, trace_single_eq_same]`. Use `congr 1`.
+
+Use `push_cast`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem signD (h : IsHCMod πU M io) {j : ℕ} {σ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ → (πU.H →L[ℂ] πU.H)}
     (h1 : σ 1 = 1) (hex : ∀ X ∈ upq p q, inG (epq p q) (rx X) ∧ ∀ t : ℝ,
       πU.π (T.expt (t • X)) = Complex.exp ((j : ℂ) * (t * X.trace / 2)) • σ (NormedSpace.exp ((t : ℂ) • rx X)))
@@ -183,6 +237,19 @@ theorem signD (h : IsHCMod πU M io) {j : ℕ} {σ : Matrix (Fin (p + q)) (Fin (
   simp only [smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `hτ` using `twD_rep m hσ`. Take `⟨hsm, -⟩` from `hS _ _ _ (twD m σ) hτ (twD_irr m hσi)`. Establish `hder` using `isDerivedOn_smE (ε := epq p q) (σ := twD m σ) hτ`. Set `κ : M.V →ₗ[ℂ] smD (epq p q) (twD m σ)` to `io.codRestrict _ fun v => hsm _ (twD_kfin m ((hkf _).1 ((h.2.1 _).1 ⟨v, rfl⟩)))`. Use `⟨κ, fun _ => rfl, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ Y ∈ upq p q, ∀ v, actLC (smE (epq p q) (twD m σ)) (rx Y) (κ v) = κ (M.act Y v + (((m : ℂ) - j / 2) * Y.trace) • v)`. Introduce `Y hY v`. Use `Subtype.ext ((hder.deriv _ (hex Y hY).1 (κ v)).unique ?_)` and prove the remaining obligations. Apply the tactic sequence `have d1 : HasDerivAt (fun t : ℝ => (NormedSpace.exp (t • rx Y)).det) (rx Y).trace 0 := PI.UnitaryCorollaryDerivatives.DjC.hasDerivAt_det_of_one _ _ (by simp) fun a b => PI.UnitaryCorollaryDerivatives.DjC.hasDerivAt_exp_entry (rx Y) a b`. Establish `d2` using `((((hasDerivAt_id (0 : ℝ)).ofReal_comp.mul_const Y.trace).div_const 2).const_mul (j : ℂ)).fun_neg.cexp`.
+
+Establish `d3` using `((d1.fun_pow m).fun_mul d2).fun_smul (h.2.2 Y hY v)`. Use `d3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Rewrite using `[(hex Y hY).2, ContinuousLinearMap.smul_apply, smul_smul, mul_assoc, ← Complex.exp_add]`. Simplify using `only [id, neg_add_cancel, Complex.exp_zero, mul_one, twD, ContinuousLinearMap.smul_apply, Complex.coe_smul]`.
+
+Both sides reduce to the same expression. Use `show io _ = _`. Simplify using `only [map_add, map_smul, id, zero_smul, NormedSpace.exp_zero, det_one, one_pow, Complex.ofReal_zero, zero_mul, zero_div, mul_zero, neg_zero, Complex.exp_zero, mul_one, one_mul, one_smul, T.expt_zero, map_one, ContinuousLinearMap.one_apply, trace_rxC, Complex.ofReal_one]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `Z v`. Take `⟨Y₁, h₁, Y₂, h₂, e, -⟩` from `upq_decC Z`. Use `show actLC _ (rx Z) (κ v) = _`. Rewrite using `[e, show rx (Y₁ + Complex.I • Y₂) = rx Y₁ + Complex.I • rx Y₂ from rfl]`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, key Y₁ h₁, key Y₂ h₂, trace_add, trace_smul, smul_eq_mul]`.
+
+Use `module`.
+-/
 theorem dictD (hS : KFSm) (h : IsHCMod πU M io) {j : ℕ} (m : ℕ)
     {σ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ → (πU.H →L[ℂ] πU.H)}
     (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset (epq p q)) σ) (hσi : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset (epq p q)) σ)
@@ -226,6 +293,39 @@ theorem dictD (hS : KFSm) (h : IsHCMod πU M io) {j : ℕ} (m : ℕ)
 
 end Cover
 
+/- English proof (translation)
+Introduce `p q hpq T π₁ π₂ i₁ i₂ M₁ M₂ io₁ io₂ m₁ m₂ e he`. Take `⟨hA, hI⟩` from `(h1 p q hpq T π₁ i₁).2.2 M₁ io₁ m₁`. Take `⟨c, hc, hB⟩` from `form_propD io₁ (io₂ ∘ₗ e.toLinearMap) m₁.1 (m₂.1.comp e.injective) (skewD m₁) (fun Y hY v w => by show ⟪io₂ (e (M₁.act Y v)), io₂ (e w)⟫_ℂ = -⟪io₂ (e v), io₂ (e (M₁.act Y w))⟫_ℂ`. Rewrite using `[he, he]`. Conclude with `skewD m₂ Y hY _ _) hI hA`.
+
+Establish `hs : 0 < √c` using `Real.sqrt_pos.2 hc`. Take `⟨r, hr⟩ : ∃ r : ℂ, r = (((√c)⁻¹ : ℝ) : ℂ)` from `⟨_, rfl⟩`. Establish `hr0 : r ≠ 0` using `by rw [hr]; exact Complex.ofReal_ne_zero.2 (inv_pos.2 hs).ne'`. Establish `dense : ∀ (π : URep T) (M : GKMod p q) (io : M.V →ₗ[ℂ] π.H), IsHCMod π M io → DenseRange io` using `fun π M io m => (kfinDense_coverC (fun _ _ _ _ _ _ _ hσ => kfinDense_UJC hσ) π).mono fun x hx => (m.2.1 x).2 hx`. Establish `d₁` using `dense π₁ M₁ io₁ m₁`.
+
+Establish `d₂ : DenseRange (r • io₂)` using `(dense π₂ M₂ io₂ m₂).mono (by`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨r⁻¹ • v, by rw [LinearMap.smul_apply, map_smul, smul_smul, mul_inv_cancel₀ hr0, one_smul]⟩)`. Establish `hn : ∀ v, ‖(r • io₂) (e v)‖ = ‖io₁ v‖` using `fun v => by`. Establish `h2 : ‖io₂ (e v)‖ ^ 2 = c * ‖io₁ v‖ ^ 2`.
+
+Use `congrArg Complex.re (hB v v)` as an intermediate fact. Rewrite `this` using `[Complex.re_ofReal_mul]`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), ← inner_self_eq_norm_sq (𝕜 := ℂ)]`. Conclude with `this`. Establish `h3 : ‖io₂ (e v)‖ = √c * ‖io₁ v‖`.
+
+Rewrite using `[← Real.sqrt_sq (norm_nonneg (io₂ (e v))), h2, Real.sqrt_mul hc.le, Real.sqrt_sq (norm_nonneg _)]`. Rewrite using `[LinearMap.smul_apply, norm_smul, hr, Complex.norm_real, Real.norm_of_nonneg (inv_pos.2 hs).le, h3, inv_mul_cancel_left₀ hs.ne']`. Apply the tactic sequence `let U := e.extendOfIsometry io₁ (r • io₂) d₁ d₂ hn`. Establish `hU : ∀ v, U (io₁ v) = r • io₂ (e v)` using `LinearEquiv.extendOfIsometry_eq e io₁ (r • io₂) d₁ d₂ hn`. Take `⟨j₁, σ₁, ⟨hσ₁, hπ₁⟩, hi₁, hk₁, hx₁⟩` from `hDe p q T π₁ i₁`.
+
+Take `⟨j₂, σ₂, ⟨hσ₂, hπ₂⟩, hi₂, hk₂, hx₂⟩` from `hDe p q T π₂ i₂`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : Even (j₁ + j₂) := by`. Take `⟨μ, v, hv, hv0⟩` from `exists_hwD hI.1`. Establish `a : Formalism.BasicNotions.TH.Ix p q` using `finSumFinEquiv.symm ⟨0, hpq⟩`. Establish `hw` using `mem_wtSubD.1 (Submodule.mem_inf.1 hv).1 a`.
+
+Establish `s₁` using `signD m₁ hσ₁.1.1 hx₁ a hv0 hw`. Establish `s₂` using `signD m₂ hσ₂.1.1 hx₂ a (v := e v) (e.map_ne_zero_iff.2 hv0) (by rw [← he, hw, map_smul])`. Use `(neg_one_pow_eq_one_iff_even (R := ℂ) (by norm_num)).1 ?_` and prove the remaining obligations. Rewrite using `[pow_add, ← s₁, s₂, ← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions.
+
+Take `⟨κ₁, hκ₁, a₁⟩` from `dictD hS m₁ m hσ₁ hi₁ hk₁ hx₁`. Take `⟨κ₂, hκ₂, a₂⟩` from `dictD hS m₂ j₂ hσ₂ hi₂ hk₂ hx₂`. Establish `hmj : (m : ℂ) - j₁ / 2 = j₂ / 2`. Establish `: (j₁ : ℂ) + j₂ = m + m` using `by exact_mod_cast hm`. Take the linear combination `(-1 / 2 : ℂ) * this`.
+
+Set `F : Fin (p + q) → Fin (p + q) → Module.End ℂ M₁.V` to `fun a b => M₁.act (ixC (single a b 1)) + ((j₂ / 2 : ℂ) * (ixC (single a b (1 : ℂ))).trace) • 1`. Take `⟨cs, hcs⟩` from `hC _ _ _ (twD m σ₁) (twD_rep m hσ₁) (twD_irr m hi₁)`. Establish `hone : ∀ {N : Type} [AddCommGroup N] [Module ℂ N] (E : Fin (p + q) → Fin (p + q) → Module.End ℂ N) a b, E a b = actM E (rx (ixC (single a b 1)))` using `fun E a b => by`. Rewrite using `[rx_ixC]`. Conclude with `((actLC_single E a b 1).trans (one_smul _ _)).symm`.
+
+Establish `main : ∀ g ∈ Formalism.MainNotions.S.UJset (epq p q), ∀ w, U (twD m σ₁ g (io₁ w)) = twD j₂ σ₂ g (U (io₁ w))`. Introduce `g hg w`. Take `⟨W, hWf, hw, hWs⟩` from `M₁.kfin w`. Use `graphD (ε := epq p q) (twD_rep m hσ₁) (twD_rep j₂ hσ₂) (isDerivedOn_smE (twD_rep m hσ₁)) (isDerivedOn_smE (twD_rep j₂ hσ₂)) F κ₁ (r • (κ₂ ∘ₗ e.toLinearMap)) (fun a b h => m₁.1 (by rw [← hκ₁, ← hκ₁, h])) (fun a b w => by rw [hone (smE _ _) a b, a₁, hmj]; rfl) (fun a b w => by show …` as an intermediate fact. Rewrite using `[map_smul, hone (smE _ _) a b, a₂, map_add e, map_smul e, he, show (j₂ : ℂ) - j₂ / 2 = j₂ / 2 by ring])`.
+
+Use `hcs U.toContinuousLinearEquiv.toContinuousLinearMap`. Use the proof step `(fun w => by show U (κ₁ w) = r • (κ₂ (e w) : π₂.H)`. Rewrite using `[hκ₁, hκ₂, hU])`. Use `hWf (fun a b hab u hu => add_mem (hWs _ (fun c d hcd => ?_) u hu) (W.smul_mem _ hu)) hw hg`. Establish `e2 : ((r • (κ₂ ∘ₗ e.toLinearMap)) w : π₂.H) = U (io₁ w)`.
+
+Rewrite using `[hU, ← hκ₂]`. Both sides reduce to the same expression. Rewrite `this` using `[e2, hκ₁]`. Conclude with `this`. Use `show single a b (1 : ℂ) (finSumFinEquiv c) (finSumFinEquiv d) = 0`.
+
+Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `only [epq, Equiv.symm_apply_apply] at hab`. Apply the tactic sequence `rcases c with c | c <;> rcases d with d | d <;> simp_all [sameBlock]`. Use `⟨U, fun x => ?_⟩` and prove the remaining obligations.
+
+Use `d₁.induction ?_ (isClosed_eq (U.continuous.comp (π₁.π x).continuous) ((π₂.π x).continuous.comp U.continuous))` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `h0 : ((T.sq x : ℂˣ) : ℂ) ^ j₂ ≠ 0` using `pow_ne_zero _ (Units.ne_zero _)`. Establish `h` using `main _ (mem_UJC T x) w`. Simplify using `only [twD, ContinuousLinearMap.smul_apply, det_rxC, ← sq_sqC, ← pow_mul] at h`.
+
+Use `smul_right_injective _ h0 ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← map_smul U, hπ₁, hπ₂]`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_smul, ← pow_add]`. Rewrite using `[show j₂ + j₁ = 2 * m by omega, show j₂ + j₂ = 2 * j₂ by omega]`.
+
+Conclude with `h`.
+-/
 theorem clause2_of (h1 : Clause1) (hS : KFSm) (hC : CasScal) (hDe : Descend) : Clause2 := by
   intro p q hpq T π₁ π₂ i₁ i₂ M₁ M₂ io₁ io₂ m₁ m₂ e he
   obtain ⟨hA, hI⟩ := (h1 p q hpq T π₁ i₁).2.2 M₁ io₁ m₁

@@ -13,6 +13,23 @@ noncomputable section
 
 namespace GlobalTheory.SqTop.OneSqProof
 
+/- English proof (translation)
+Establish `hq0 : ∀ k ∈ range q, ρ ((e : ℤ) + k + 1) ≠ 0` using `fun k hk => by`. Rewrite using `[mem_range] at hk; exact hρ0 _ (by omega) (by omega)`. Establish `hp0 : ∀ k ∈ range p, ρ ((e : ℤ) + q - k) ≠ 0` using `fun k hk => by`. Rewrite using `[mem_range] at hk; exact hρ0 _ (by omega) (by omega)`. Establish `hI0 : ∀ s ∈ Icc (1 - (e0 : ℤ)) (h0 : ℤ), ρ s ≠ 0` using `fun s hs => by`.
+
+Rewrite using `[mem_Icc] at hs; exact hρ0 _ hs.1 (by omega)`. Establish `hT : ∀ k ∈ (univ : Finset (Fin (p + q))), tk k ≠ 0` using `fun k _ => (ht k).1`. Establish `hPq` using `prod_ne_zero_iff.2 hq0`. Establish `hPp` using `prod_ne_zero_iff.2 hp0`. Establish `hPT` using `prod_ne_zero_iff.2 hT`.
+
+Establish `hPI` using `prod_ne_zero_iff.2 hI0`. Establish `hR : ζ * (∏ k, tk k) * γ * ∏ k ∈ range p, ρ ((e : ℤ) + q - k) ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero hζ.1 hPT) hγ) hPp`. Establish `hrq : rq ≠ 0`. Introduce and unpack `rfl`. Rewrite `heq` using `[zero_mul]`.
+
+Conclude with `hR heq.symm`. Use `⟨hrq, ?_⟩` and prove the remaining obligations. Establish `hv` using `congrArg (vw w) heq`. Rewrite `hv` using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ hrq hPq, Formalism.PairingDivisionLocalBalance.vw_prod w _ _ hq0, Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ (mul_ne_zero (mul_ne_zero hζ.1 hPT) hγ) hPp, Formalism.DivisionValues.ValuationRepresenta …`. Establish `hz` using `Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ hzA hPI`.
+
+Rewrite `hz` using `[Formalism.PairingDivisionLocalBalance.vw_prod w _ _ hI0]`. Rewrite `hγv` using `[hz]`. Establish `hc` using `GlobalTheory.Square.count_factors e p q e0 h0 he hle (fun s => (vw w (ρ s) : ℝ)) a n0 er her (fun s h1 h2 => hs s h1 h2) (fun s h1 h2 => by simp only [hsym s h1 h2])`. Establish `hvR : (vw w rq : ℝ) + ∑ k ∈ range q, (vw w (ρ ((e : ℤ) + k + 1)) : ℝ) = (∑ k, (vw w (tk k) : ℝ)) + vw w γ + ∑ k ∈ range p, (vw w (ρ ((e : ℤ) + q - k)) : ℝ)`. Use `congrArg (fun x : ℤ => (x : ℝ)) hv` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTB : (∑ k, (vw w (tk k) : ℝ)) ≤ ((p + q : ℕ) : ℝ) * B`. Combine the equalities or inequalities in the displayed calculation. Establish `hIc : ((∑ s ∈ Icc (1 - (e0 : ℤ)) (h0 : ℤ), vw w (ρ s) : ℤ) : ℝ) = ∑ s ∈ Icc (1 - (e0 : ℤ)) (h0 : ℤ), (vw w (ρ s) : ℝ)` using `by push_cast; rfl`.
+
+Establish `hγv' : (vw w γ : ℝ) ≤ vw w zA + (∑ s ∈ Icc (1 - (e0 : ℤ)) (h0 : ℤ), (vw w (ρ s) : ℝ)) + vw w zA' + 6 * dl`. Use `hγv` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a1` using `le_abs_self (vw w zA : ℝ)`.
+
+Establish `a2` using `le_abs_self (vw w zA' : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vw_ratio_le {K : Type} [Field K] [NumberField K] [StarRing K] (w : Formalism.PairingDivisionLocalBalance.Pl K) (e p q e0 h0 : ℕ)
     (he : e0 + p = e + q) (hle : e0 ≤ h0) (rq ζ γ zA zA' : K) (tk : Fin (p + q) → K) (ρ : ℤ → K) (a n0 : ℤ → ℝ)
     (er dl B : ℝ)
@@ -74,6 +91,15 @@ end GlobalTheory.SqTop.OneSqProof
 
 namespace GlobalTheory.SqTop.OneSqProof
 
+/- English proof (translation)
+Unfold `Formalism.PairingDivisionLocalBalance.wt`. Distinguish the cases in `h : l ∈ S`. Use `sum_eq_single_of_mem l h fun l' hl' hne => ?_` and prove the remaining obligations. Establish `hn : (l' : 𝓞 K) ∉ w.asIdeal` using `fun h' => hne (GlobalTheory.FunObj.SqNum.prime_unique (hS l' hl') hl h' hw)`. Use `GlobalTheory.Square.vw_eq_zero_of_notMem w hn` as an intermediate fact.
+
+Simplify using `only [map_natCast] at this`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[hc h, zero_mul]`. Use `sum_eq_zero fun l' hl' => ?_` and prove the remaining obligations.
+
+Establish `hne : l' ≠ l` using `fun e => h (e ▸ hl')`. Establish `hn : (l' : 𝓞 K) ∉ w.asIdeal` using `fun h' => hne (GlobalTheory.FunObj.SqNum.prime_unique (hS l' hl') hl h' hw)`. Use `GlobalTheory.Square.vw_eq_zero_of_notMem w hn` as an intermediate fact. Simplify using `only [map_natCast] at this`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem wt_at {K : Type} [Field K] [NumberField K] [StarRing K] (w : Formalism.PairingDivisionLocalBalance.Pl K) {S : Finset ℕ} {c : ℕ → ℝ} {l : ℕ}
     (hS : ∀ l' ∈ S, l'.Prime) (hl : l.Prime) (hw : (l : 𝓞 K) ∈ w.asIdeal) (hc : l ∉ S → c l = 0) :
     Formalism.PairingDivisionLocalBalance.wt S c w = c l * (vw w (l : K) : ℝ) := by
@@ -92,6 +118,9 @@ theorem wt_at {K : Type} [Field K] [NumberField K] [StarRing K] (w : Formalism.P
     simp only [map_natCast] at this
     rw [this]; simp
 
+/- English proof (translation)
+The claim follows from `sum_nonneg fun l hl => mul_nonneg (hc l hl) (GlobalTheory.Square.TwoStep.vw_natCast_nonneg w l)`.
+-/
 theorem wt_nonneg {K : Type} [Field K] [NumberField K] [StarRing K] (w : Formalism.PairingDivisionLocalBalance.Pl K) {S : Finset ℕ} {c : ℕ → ℝ}
     (hc : ∀ l ∈ S, 0 ≤ c l) : 0 ≤ Formalism.PairingDivisionLocalBalance.wt S c w :=
   sum_nonneg fun l hl => mul_nonneg (hc l hl) (GlobalTheory.Square.TwoStep.vw_natCast_nonneg w l)
@@ -100,6 +129,9 @@ end GlobalTheory.SqTop.OneSqProof
 
 namespace GlobalTheory.SqTop.OneSqProof
 
+/- English proof (translation)
+Use `w.isMaximal` as an intermediate fact. Establish `: Finite (𝓞 K ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Use `letI := Ideal.Quotient.field w.asIdeal`. Use `⟨ringChar (𝓞 K ⧸ w.asIdeal), CharP.char_is_prime (𝓞 K ⧸ w.asIdeal) _, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (by simpa using CharP.cast_eq_zero (𝓞 K ⧸ w.asIdeal) (ringChar _))`.
+-/
 theorem exists_prime_mem' {K : Type} [Field K] [NumberField K] (w : Formalism.PairingDivisionLocalBalance.Pl K) :
     ∃ l : ℕ, l.Prime ∧ (l : 𝓞 K) ∈ w.asIdeal := by
   have := w.isMaximal

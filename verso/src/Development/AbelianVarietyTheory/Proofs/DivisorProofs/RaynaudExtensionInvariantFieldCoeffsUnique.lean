@@ -25,6 +25,15 @@ open GlobalTheory.KS (rsT_self eq_of_rsT_eq)
 
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Establish `: GlobalTheory.SqZero.lieExp (fun i => GlobalTheory.VertCoeffRing.tvE (u i)) e (fun i => he i i) * z = z`. Simplify using `[GlobalTheory.SqZero.lieExp]`. Rewrite using `[this]`.
+
+Conclude with `⟨h, fun f => by simp⟩`. Consider the case `succ m ih`. Take `⟨h₁, H₁⟩` from `ih (fun i => u i.succ) (fun i => dd i.succ) (fun i => hd i.succ) (fun i => e i.succ) (fun i j => he _ _)`. Take `⟨h₂, H₂⟩` from `GlobalTheory.VertCoeffRing.evalPt_tvE_mul (hd 0) (e 0) (he 0 0) _ O h₁`. Establish `: GlobalTheory.SqZero.lieExp (fun i => GlobalTheory.VertCoeffRing.tvE (u i)) e (fun i => he i i) * z = (ReciprocityTheory.ChartRestriction.G.Chart.spMap (GlobalTheory.SqZero.epsTo R (e 0) (he 0 0)) ≫ GlobalTheory.VertCoeffRing.tvE (u 0)) * (GlobalTheory.SqZero.lieExp (fun i => Gl …`.
+
+Rewrite using `[GlobalTheory.SqZero.lieExp, GlobalTheory.SqZero.lieExp, Fin.prod_univ_succ, _root_.mul_assoc]`. Rewrite using `[this]`. Use `⟨h₂, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[H₂, H₁, H₁, Fin.sum_univ_succ, mul_add, Finset.mul_sum]`. Simplify using `only [← _root_.mul_assoc, he, zero_mul, Finset.sum_const_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evalPt_lieExp_comb {m : ℕ} (u : Fin m → TanM (𝟙 (Sp R)) G) (dd : Fin m → Fld G.left)
     (hd : ∀ i, IsInv G (u i) (dd i)) (B : Type) [CommRing B] [Algebra R B] (e : Fin m → B)
     (he : ∀ i j, e i * e j = 0) (z : ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := R) B ⟶ G) (O : G.left.Opens)
@@ -52,6 +61,15 @@ theorem evalPt_lieExp_comb {m : ℕ} (u : Fin m → TanM (𝟙 (Sp R)) G) (dd : 
     simp only [← _root_.mul_assoc, he, zero_mul, Finset.sum_const_zero]
     ring
 
+/- English proof (translation)
+Set `J` to `{V : G.left.Opens // IsAffineOpen V ∧ V ≤ W}`. Establish `hcov : W ≤ ⨆ k : J, k.1`. Introduce `x hx`. Take `⟨V, hV, hxV, hVW⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 (G.left.isBasis_affineOpens)) hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨V, hV, hVW⟩, hxV⟩`.
+
+Use `eq_of_rsT_eq (fun k : J => k.1) (fun k => k.2.2) hcov _ _ fun k => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.KS.rsT_zero]`. Take `⟨V, hV, hVW⟩` from `k`. Establish `hu` using `GlobalTheory.VertCoeffRing.existsUnique_coeff_affine_ring (fun a => GlobalTheory.VertCoeffRing.tvE (v a)) (GlobalTheory.VertCoeffRing.isLieBasis_tvE v) dd (fun B _ _ e he z O h => evalPt_lieExp_comb (fun a => v a) dd hd B e he z O h) V V hV hV le_rfl (fun _ => 0) (fun _ _ => by s …`. Establish `h1 : ∀ f, (fun _ => (0 : Γ(G.left, V))) f = ∑ a, (fun a => rsT (c a) V) a * rsT (dd a V f) V`.
+
+Introduce `f`. Simplify using `only [rsT_self]`. Conclude with `(hc V hVW f).symm`. Establish `h0 : ∀ f, (fun _ => (0 : Γ(G.left, V))) f = ∑ a, (fun _ => (0 : Γ(G.left, V))) a * rsT (dd a V f) V`. Introduce `f`.
+
+Simplify using the standard rewrite rules. Conclude with `congrFun (hu.unique h1 h0) a`.
+-/
 theorem coeff_eq_zero [Smooth G.hom] {n : ℕ} (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G))
     (dd : Fin n → Fld G.left) (hd : ∀ a, IsInv G (v a) (dd a)) (W : G.left.Opens) (c : Fin n → Γ(G.left, W))
     (hc : ∀ Wo : G.left.Opens, Wo ≤ W → ∀ f, ∑ a, rsT (c a) Wo * dd a Wo f = 0) (a : Fin n) : c a = 0 := by
@@ -77,6 +95,9 @@ theorem coeff_eq_zero [Smooth G.hom] {n : ℕ} (v : Module.Basis (Fin n) R (TanM
 
 end GlobalTheory.HxUniq
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y n v dd hd W c hc a`. Establish `: Smooth Y.H.hom` using `(GlobalTheory.isSemiAbelian_of_isGt _ _ _ Y.isGt).smooth`. Conclude with `GlobalTheory.HxUniq.coeff_eq_zero v dd hd W c hc a`.
+-/
 theorem GlobalTheory.HxUniq.raynaud_coeff_eq_zero : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∀ (W : Y.H.left.Opens) (c : Fin n → Γ(Y.H.left, W)), (∀ Wo : Y.H.left.Opens, Wo ≤ W → ∀ f, ∑ a, rsT (c a) Wo * dd a Wo f = 0) → ∀ a, c a = 0 := by
   intro R _ _ Q O _ _ _ oa Y n v dd hd W c hc a
   have : Smooth Y.H.hom := (GlobalTheory.isSemiAbelian_of_isGt _ _ _ Y.isGt).smooth

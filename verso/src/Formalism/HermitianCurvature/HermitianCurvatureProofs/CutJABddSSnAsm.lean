@@ -8,6 +8,17 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn
 
 open NumberField Formalism.FourierDecayAlt.P.CutMP
 
+/- English proof (translation)
+Introduce `hG hR`. Take `⟨K1, hK1, hG⟩` from `hG`. Take `⟨K2, hK2, hR⟩` from `hR`. Use `⟨max K1 K2, le_max_of_le_left hK1, ?_⟩` and prove the remaining obligations. Introduce `Cc Cb hCc hCb E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e hFr hGa hQQ l hl`.
+
+Take `⟨a, a', ι, hD⟩` from `hG Cc Cb (le_trans (le_max_left _ _) hCc) (le_trans (le_max_left _ _) hCb) E Wp Wq S T f χ ν' m₀ top A₀ hB v`. Take `⟨Φ, Φa, hΦ⟩` from `hR Cc (le_trans (le_max_right _ _) hCc) E Wp Wq S T f χ ν' m₀ top A₀ hB v e hFr hGa hQQ l hl`. Establish `hCb0 : 0 ≤ Cb` using `le_trans (le_max_of_le_left hK1) hCb`. Establish `hBg : 0 ≤ Cb * ((S.G.r : ℝ) + 1)` using `mul_nonneg hCb0 (by positivity)`. Take `⟨c, ca, hadj, hc, hca, he, hea, hb, hba, hcv⟩` from `hC E Wp Wq S T v _ a a' ι Φ Φa hBg hD ⟨hΦ.1, hΦ.2.1, hΦ.2.2.1, hΦ.2.2.2.1⟩`.
+
+Use `⟨c, ca, hadj, hc, hca, he, hea, hb, hba, ?_⟩` and prove the remaining obligations. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Formalism.QuantumDeterminants.Tz S.G.k S.G.r (T v).base.z * Formalism.QuantumDeterminants.Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`. Both sides reduce to the same expression.
+
+Introduce `q hq ρ π`. Establish `hqD : q ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `⟨hq.1, hTT ▸ hq.2⟩`. Establish `hG'` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hqD`. Establish `hpos : B.gq (T v).base q ∈ B.GPos (T v).base` using `⟨hG'.1, hG'.2.2⟩`. Take `⟨h1, h2, h3⟩` from `hD.2.2.2.2.2.2.2 q hq`.
+
+Rewrite using `[hcv _ hpos, h1, h2, h3]`. Conclude with `hΦ.2.2.2.2 q hq ρ π`.
+-/
 theorem sSnAssemble_of (hC : JA.DatumCompose) : SSnAssemble := by
   intro hG hR
   obtain ⟨K1, hK1, hG⟩ := hG

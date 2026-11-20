@@ -5,6 +5,9 @@ import Formalism.FilteredPoleLength.LocalDescentLevels.LatticeIndexBis
 
 namespace Formalism.LatticeBaseChangeAlt
 
+/- English proof (translation)
+The claim follows from `localStepDescent_of finrank_span_image_alt inter_baseChange_lattice index_baseChange_lattice`.
+-/
 theorem localStepDescent : LocalStepDescent :=
   localStepDescent_of finrank_span_image_alt inter_baseChange_lattice index_baseChange_lattice
 

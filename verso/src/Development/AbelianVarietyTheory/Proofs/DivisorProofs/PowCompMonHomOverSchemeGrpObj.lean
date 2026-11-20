@@ -18,6 +18,9 @@ namespace GlobalTheory.KerCalc
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, zero_smul, h.evc_one hP]`. Consider the case `succ n ih => rw [pow_succ, (isAdditive_iff hP).1 h, ih, succ_nsmul]`.
+-/
 theorem evc_pow_left {S : Scheme.{0}} {A B Y : Over S} [GrpObj A] [GrpObj B] {P : LB (A ⊗ B).left}
     (hP : P.IsLB) (h : IsAdditive P) (a : Y ⟶ A) (b : Y ⟶ B) (n : ℕ) :
     evc hP (a ^ n) b = n • evc hP a b := by

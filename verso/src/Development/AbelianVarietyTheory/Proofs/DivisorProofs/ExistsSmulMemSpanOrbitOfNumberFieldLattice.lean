@@ -13,6 +13,25 @@ open scoped Matrix
 
 namespace GlobalTheory.CyclicLattice
 
+/- English proof (translation)
+Set `K` to `FractionRing R`. Set `f` to `algebraMap R K`. Establish `hf : Function.Injective f` using `IsFractionRing.injective R K`. Set `gK` to `g.map f`. Set `Φ : Matrix (Fin r) (Fin r) R →ₗ[R] Matrix (Fin r) (Fin r) K` to `(Algebra.linearMap R K).mapMatrix`.
+
+Establish `hΦ : Function.Injective Φ` using `fun a a' h => by`. Use extensionality with `i j`. Conclude with `hf (congrFun (congrFun h i) j)`. Establish `hgK : LinearIndependent K (fun i : Fin r => gK ^ (i : ℕ))`. Establish `h1` using `hg.map' Φ (LinearMap.ker_eq_bot.2 hΦ)`.
+
+Establish `h2 : (Φ ∘ fun i : Fin r => g ^ (i : ℕ)) = fun i : Fin r => gK ^ (i : ℕ)`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, gK, ← Matrix.map_pow]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`.
+
+Conclude with `(LinearIndependent.iff_fractionRing R K).mp h1`. Take `⟨w, hw⟩` from `GlobalTheory.CyclicVector.exists_linearIndependent_iterates_of_linearIndependent_pow gK hgK`. Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors R) w`. Use `choose u hu using hs`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+
+Set `Ψ : (Fin r → R) →ₗ[R] (Fin r → K)` to `LinearMap.pi (fun i => (Algebra.linearMap R K).comp (LinearMap.proj i))`. Establish `hΨ : Function.Injective Ψ` using `fun a a' h => funext fun i => hf (congrFun h i)`. Establish `hfu : (f ∘ u) = (f s) • w` using `funext fun j => by`. Simplify `hu j` using `[Algebra.smul_def]`. Establish `key : (Ψ ∘ fun i : Fin r => g ^ (i : ℕ) *ᵥ u) = fun i : Fin r => (f s) • (gK ^ (i : ℕ) *ᵥ w)`.
+
+Use function extensionality and compare the values at `i`. Use extensionality with `k`. Establish `e1` using `RingHom.map_mulVec f (g ^ (i : ℕ)) u k`. Simplify using `only [Function.comp_apply]`. Express the relevant statement in the definitionally equal form `f ((g ^ (i : ℕ) *ᵥ u) k) = _`.
+
+Rewrite using `[e1, Matrix.map_pow, hfu, Matrix.mulVec_smul]`. Establish `hsK : f s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Establish `h3 : LinearIndependent K (fun i : Fin r => (f s) • (gK ^ (i : ℕ) *ᵥ w))`. Use `hw.units_smul (fun _ => Units.mk0 (f s) hsK)` as an intermediate fact. Establish `e : (fun i : Fin r => (f s) • (gK ^ (i : ℕ) *ᵥ w)) = (fun _ : Fin r => Units.mk0 (f s) hsK) • (fun i : Fin r => gK ^ (i : ℕ) *ᵥ w)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Units.smul_def]`. Rewrite using `[e]`. Conclude with `this`. Establish `h4` using `(LinearIndependent.iff_fractionRing R K).mpr h3`.
+
+Rewrite `h4` using `[← key]`. Conclude with `h4.of_comp`.
+-/
 theorem exists_linearIndependent_mulVec_pow {R : Type} [CommRing R] [IsDomain R] {r : ℕ}
     (g : Matrix (Fin r) (Fin r) R) (hg : LinearIndependent R (fun i : Fin r => g ^ (i : ℕ))) :
     ∃ v : Fin r → R, LinearIndependent R (fun i : Fin r => (g ^ (i : ℕ)) *ᵥ v) := by
@@ -65,6 +84,15 @@ theorem exists_linearIndependent_mulVec_pow {R : Type} [CommRing R] [IsDomain R]
   rw [← key] at h4
   exact h4.of_comp
 
+/- English proof (translation)
+Set `N : Matrix (Fin r) (Fin r) R` to `b.toMatrix w`. Establish `hsum : ∀ z : Fin r → R, b.equivFun (∑ j, z j • w j) = N *ᵥ z`. Introduce `z`. Use extensionality with `i`. Simplify using `[N, Module.Basis.toMatrix_apply, Matrix.mulVec, dotProduct, mul_comm]`.
+
+Establish `hdet : N.det ≠ 0`. Introduce `h0`. Take `⟨z, hz0, hz⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hz0` to reduce the goal to its premises. Establish `: ∑ j, z j • w j = 0` using `b.equivFun.injective (by rw [hsum, hz, map_zero])`.
+
+Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 hw z this j`. Use `⟨N.det, hdet, fun t => ?_⟩` and prove the remaining obligations. Establish `: N.det • t = ∑ j, (N.adjugate *ᵥ b.equivFun t) j • w j`. Apply `b.equivFun.injective` to reduce the goal to its premises.
+
+Rewrite using `[hsum, map_smul, Matrix.mulVec_mulVec, Matrix.mul_adjugate, Matrix.smul_mulVec, Matrix.one_mulVec]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem exists_smul_mem_span_of_linearIndependent {R M : Type} [CommRing R] [IsDomain R]
     [AddCommGroup M] [Module R M] {r : ℕ} (b : Module.Basis (Fin r) R M) (w : Fin r → M)
     (hw : LinearIndependent R w) :
@@ -90,6 +118,21 @@ theorem exists_smul_mem_span_of_linearIndependent {R M : Type} [CommRing R] [IsD
   rw [this]
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Introduce `l _ T _ _ _ _ O F _ _ _ _ _ ρ hrank hind`. Take `⟨α, hα⟩` from `GlobalTheory.exists_pow_linearIndependent_of_isFractionRing O F`. Use `set n := Module.finrank ℚ F with hn`. Set `b : Module.Basis (Fin n) ℤ_[l] T` to `Module.finBasisOfFinrankEq ℤ_[l] T hrank`. Use `set φ := ρ α with hφdef`.
+
+Use `set g := LinearMap.toMatrix b b φ with hgdef`. Establish `hpow : ∀ i : ℕ, LinearMap.toMatrix b b (φ ^ i) = g ^ i` using `fun i => by`. Proceed by induction on `i with`. Consider the case `zero => simp [LinearMap.toMatrix_one]`. Consider the case `succ k ih => rw [pow_succ, LinearMap.toMatrix_mul, ih, pow_succ]`.
+
+Establish `hφ : LinearIndependent ℤ_[l] (fun i : Fin n => φ ^ (i : ℕ))`. Use `hind n (fun i => α ^ (i : ℕ)) hα` as an intermediate fact. Simplify `this` using `[φ, map_pow]`. Establish `hg : LinearIndependent ℤ_[l] (fun i : Fin n => g ^ (i : ℕ))`. Use `hφ.map' (LinearMap.toMatrix b b).toLinearMap (LinearMap.toMatrix b b).ker` as an intermediate fact.
+
+Simplify `this` using `[Function.comp_def, hpow]`. Take `⟨u, hu⟩` from `exists_linearIndependent_mulVec_pow g hg`. Use `set v : T := b.equivFun.symm u with hv`. Establish `hw : ∀ i : ℕ, b.equivFun ((φ ^ i) v) = g ^ i *ᵥ u`. Introduce `i`.
+
+Establish `hu' : u = ⇑(b.repr v)`. Rewrite using `[hv, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[← hpow, hu', LinearMap.toMatrix_mulVec_repr, Module.Basis.equivFun_apply]`. Establish `hli : LinearIndependent ℤ_[l] (fun i : Fin n => (φ ^ (i : ℕ)) v)`. Establish `hfun : (fun i : Fin n => (φ ^ (i : ℕ)) v) = b.equivFun.symm.toLinearMap ∘ (fun i : Fin n => g ^ (i : ℕ) *ᵥ u)`.
+
+Use function extensionality and compare the values at `i`. Apply `b.equivFun.injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, hw]`. Rewrite using `[hfun]`. Conclude with `hu.map' _ b.equivFun.symm.ker`.
+
+Take `⟨c, hc, hct⟩` from `exists_smul_mem_span_of_linearIndependent b _ hli`. Use `⟨v, c, hc, fun t => Submodule.span_mono ?_ (hct t)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨α ^ (i : ℕ), by simp [φ, map_pow]⟩`.
+-/
 theorem exists_smul_mem_span_orbit : ∀ (l : ℕ) [Fact l.Prime] (T : Type) [AddCommGroup T] [Module ℤ_[l] T] [Module.Free ℤ_[l] T] [Module.Finite ℤ_[l] T] (O F : Type) [CommRing O] [Field F] [NumberField F] [Algebra O F] [IsFractionRing O F] (ρ : O →+* Module.End ℤ_[l] T), Module.finrank ℤ_[l] T = Module.finrank ℚ F → (∀ (n : ℕ) (a : Fin n → O), LinearIndependent ℚ (fun i => algebraMap O F (a i)) → LinearIndependent ℤ_[l] (fun i => ρ (a i))) → ∃ (v : T) (c : ℤ_[l]), c ≠ 0 ∧ ∀ t : T, c • t ∈ Submodule.span ℤ_[l] (Set.range fun a => ρ a v) := by
   intro l _ T _ _ _ _ O F _ _ _ _ _ ρ hrank hind
   obtain ⟨α, hα⟩ := GlobalTheory.exists_pow_linearIndependent_of_isFractionRing O F

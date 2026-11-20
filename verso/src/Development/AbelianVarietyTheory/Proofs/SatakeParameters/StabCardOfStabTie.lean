@@ -25,6 +25,9 @@ noncomputable section
 
 namespace GlobalTheory.KFormsCmp
 
+/- English proof (translation)
+Set `G : α → M` to `fun x => if hx : x ∈ s ∪ t then F ⟨x, hx⟩ else 1`. Establish `h0 : ∏ x, F x = ∏ x : ↥(s ∪ t), G x.1` using `Finset.prod_congr rfl fun x _ => by simp only [G, dif_pos x.2]`. Establish `h1 : (∏ a : s, F ⟨a.1, Finset.mem_union_left _ a.2⟩) = ∏ a : s, G a.1` using `Finset.prod_congr rfl fun x _ => by simp only [G, dif_pos (Finset.mem_union_left t x.2)]`. Establish `h2 : (∏ a : t, F ⟨a.1, Finset.mem_union_right _ a.2⟩) = ∏ a : t, G a.1` using `Finset.prod_congr rfl fun x _ => by simp only [G, dif_pos (Finset.mem_union_right s x.2)]`. Rewrite using `[h0, h1, h2, Finset.prod_coe_sort (s ∪ t) G, Finset.prod_coe_sort s G, Finset.prod_coe_sort t G, Finset.prod_union h]`.
+-/
 theorem prod_union_sub {α M : Type} [DecidableEq α] [CommMonoid M] {s t : Finset α} (h : Disjoint s t)
     (F : ↥(s ∪ t) → M) :
     ∏ x, F x = (∏ a : s, F ⟨a.1, Finset.mem_union_left _ a.2⟩) * ∏ b : t, F ⟨b.1, Finset.mem_union_right _ b.2⟩ := by
@@ -67,6 +70,13 @@ def congSub (M : AddSubgroup V) (c : E) : Subgroup (V ≃ₗ[E] V) where
       rw [e]
       exact neg_mem h2⟩
 
+/- English proof (translation)
+Establish `hg' : ∀ x, g⁻¹ x ∈ M ↔ x ∈ M` using `fun x => by`. Use `hg (g⁻¹ x)` as an intermediate fact. Rewrite `this` using `[show g (g⁻¹ x) = x from g.apply_symm_apply x]`. Conclude with `this.symm`. Use `⟨fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use `show g (k (g⁻¹ x)) ∈ M ↔ _`. Rewrite using `[hg, hk.1, hg']`. Establish `e : c⁻¹ • ((g * k * g⁻¹) x - x) = g (c⁻¹ • (k (g⁻¹ x) - g⁻¹ x))`. Rewrite using `[map_smul, map_sub, show g (g⁻¹ x) = x from g.apply_symm_apply x]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, hg]`. Conclude with `hk.2 _ ((hg' x).2 hx)`.
+-/
 theorem congSub_conj {M : AddSubgroup V} {c : E} {g k : V ≃ₗ[E] V} (hg : ∀ x, g x ∈ M ↔ x ∈ M)
     (hk : k ∈ congSub M c) : g * k * g⁻¹ ∈ congSub M c := by
   have hg' : ∀ x, g⁻¹ x ∈ M ↔ x ∈ M := fun x => by
@@ -88,31 +98,58 @@ section Red
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+The claim follows from `mem_localization_standardLattice P x`.
+-/
 theorem mem_std (x : Sp E n) : x ∈ stdAt E n P ↔ ∀ i, IntAt P (x i) := mem_localization_standardLattice P x
 
 omit [StarRing E] in
+/- English proof (translation)
+Use `(IntAt.coe P (-1)).mul h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem intAt_neg {a : E} (h : IntAt P a) : IntAt P (-a) := by
   have := (IntAt.coe P (-1)).mul h
   simpa using this
 
 omit [StarRing E] in
+/- English proof (translation)
+Establish `h` using `reduction_add (ha.add (intAt_neg hb)) hb`. Rewrite `h` using `[← sub_eq_add_neg, sub_add_cancel]`. Rewrite using `[h, add_sub_cancel_right]`.
+-/
 theorem reduction_sub {a b : E} (ha : IntAt P a) (hb : IntAt P b) : redP P (a - b) = redP P a - redP P b := by
   have h := reduction_add (ha.add (intAt_neg hb)) hb
   rw [← sub_eq_add_neg, sub_add_cancel] at h
   rw [h, add_sub_cancel_right]
 
 omit [StarRing E] in
+/- English proof (translation)
+Introduce `h` and use `P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+-/
 theorem qOf_ne (P : HeightOneSpectrum (𝓞 E)) : qOf P ≠ 0 := fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
 
 omit [StarRing E] in
+/- English proof (translation)
+The claim follows from `Ideal.absNorm_mem _`.
+-/
 theorem qOf_mem (P : HeightOneSpectrum (𝓞 E)) : ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal := Ideal.absNorm_mem _
 
 omit [StarRing E] in
+/- English proof (translation)
+Establish `h` using `reduction_mul (IntAt.coe P ((qOf P : ℕ) : 𝓞 E)) ha`. Rewrite `h` using `[reduction_coe, Ideal.Quotient.eq_zero_iff_mem.2 (qOf_mem P), zero_mul]`. Simplify using `using h`.
+-/
 theorem reduction_absNorm_mul_eq_zero {a : E} (ha : IntAt P a) : redP P ((qOf P : E) * a) = 0 := by
   have h := reduction_mul (IntAt.coe P ((qOf P : ℕ) : 𝓞 E)) ha
   rw [reduction_coe, Ideal.Quotient.eq_zero_iff_mem.2 (qOf_mem P), zero_mul] at h
   simpa using h
 
+/- English proof (translation)
+Establish `hq0 : (qOf P : E) ≠ 0` using `Nat.cast_ne_zero.2 (qOf_ne P)`. Use `and_congr_right fun hk => forall₂_congr fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ∈ stdAt E n P` using `hx`. Establish `hkx : k x ∈ stdAt E n P` using `(hk x).2 hx`. Use `show _ ∈ stdAt E n P ↔ _`.
+
+Rewrite `hx'`, `hkx`, the goal using `[mem_std]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `i`. Establish `h1` using `reduction_absNorm_mul_eq_zero (h i)`.
+
+Rewrite `h1` using `[Pi.smul_apply, smul_eq_mul, mul_inv_cancel_left₀ hq0, Pi.sub_apply, reduction_sub (hkx i) (hx' i)]`. Conclude with `sub_eq_zero.1 h1`. Introduce `h i`. Establish `h1 : redP P (k x i - x i) = 0`. Rewrite using `[reduction_sub (hkx i) (hx' i)]`.
+
+Conclude with `sub_eq_zero.2 (congrFun h i)`. Use `hq _ (by rw [sub_eq_add_neg]; exact (hkx i).add (intAt_neg (hx' i))) h1` as an intermediate fact. Rewrite `this` using `[div_eq_inv_mul]`. Then use the resulting hypothesis.
+-/
 theorem cong_iff (hq : ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / (qOf P : E))) (k : Sp E n ≃ₗ[E] Sp E n) :
     k ∈ congSub (stdAt E n P).toAddSubgroup (qOf P : E) ↔
       k ∈ GLint E n P ∧ ∀ x ∈ stdAt E n P, redV P (k x) = redV P x := by
@@ -135,6 +172,11 @@ theorem cong_iff (hq : ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / (q
     have := hq _ (by rw [sub_eq_add_neg]; exact (hkx i).add (intAt_neg (hx' i))) h1
     rwa [div_eq_inv_mul] at this
 
+/- English proof (translation)
+Establish `e : (LinearMap.pi fun l : Fin (n + 0) => ((q : E) ^ LocE.scE n ex l.1)⁻¹ • (LinearMap.proj l : Sp E (n + 0) →ₗ[E] E)) x = x`. Use function extensionality and compare the values at `l`. Establish `: l.1 < n` using `l.2`. Simplify using `[LocE.scE, this]`. Use `show (LinearMap.pi fun l : Fin (n + 0) => ((q : E) ^ LocE.scE n ex l.1)⁻¹ • (LinearMap.proj l : Sp E (n + 0) →ₗ[E] E)) x ∈ stdAt E (n + 0) P ↔ _`.
+
+Rewrite using `[e]`.
+-/
 theorem lamY_zero (q : ℕ) (ex : ℕ → ℕ) (x : Sp E (n + 0)) : x ∈ LocE.lamY P q n 0 ex ↔ x ∈ stdAt E (n + 0) P := by
   have e : (LinearMap.pi fun l : Fin (n + 0) => ((q : E) ^ LocE.scE n ex l.1)⁻¹ • (LinearMap.proj l : Sp E (n + 0) →ₗ[E] E)) x = x := by
     funext l
@@ -149,6 +191,17 @@ section Primes
 
 variable {X : Fields} {Pr : Primes X} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
 
+/- English proof (translation)
+Introduce `hm`. Unfold `QE at hP`. Use `split_ifs at hP with hf`. Use `swap`. Simplify using `at hP`.
+
+Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hP`. Establish `hv' : v ∈ Qprime (mu : Chr X.F X.E X.K)` using `(Set.Finite.mem_toFinset hf).1 hv`. Establish `hg : GoodPl X.E S v`. Assume the negation of the conclusion as `hn`. Use `(Subgroup.mem_inf.1 mu.2).2` as an intermediate fact.
+
+Conclude with `hv' (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 this v) hn)`. Apply `hg.2.2` to reduce the goal to its premises. Establish `h1 : (p : 𝓞 X.F) ∈ v.asIdeal`. Rewrite using `[← hs v, Ideal.mem_under]`. Simplify using `using hm`.
+
+Establish `h2 : ((p : ℕ) : 𝓞 X.F ⧸ v.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk v.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h1`. Establish `h3` using `(ringChar.spec _ p).1 h2`. Establish `h4 : ringChar (𝓞 X.F ⧸ v.asIdeal) = p` using `((Nat.dvd_prime hp).1 h3).resolve_left CharP.ringChar_ne_one`.
+
+Use `show ringChar (𝓞 X.F ⧸ v.asIdeal) ∈ S`. Rewrite using `[h4]` and apply the resulting hypothesis.
+-/
 theorem notMem_of_QE (hs : IsSel X sel) (mu : Tup X.F X.E X.K S) {P : HeightOneSpectrum (𝓞 X.E)}
     (hP : P ∈ QE sel (mu : Chr X.F X.E X.K)) {p : ℕ} (hp : p.Prime) (hS : p ∈ S) : (p : 𝓞 X.E) ∉ P.asIdeal := by
   classical
@@ -176,6 +229,9 @@ theorem notMem_of_QE (hs : IsSel X sel) (mu : Tup X.F X.E X.K S) {P : HeightOneS
   show ringChar (𝓞 X.F ⧸ v.asIdeal) ∈ S
   rwa [h4]
 
+/- English proof (translation)
+Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Conclude with `⟨0, hP.g_mem h⟩`. Conclude with `⟨1, hP.g_mem h⟩`.
+-/
 theorem g_mem_of_vGs (hP : Pr.Ok) {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vGs) :
     ∃ k, (Pr.g k : 𝓞 X.E) ∈ w.asIdeal := by
   classical
@@ -183,11 +239,21 @@ theorem g_mem_of_vGs (hP : Pr.Ok) {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈
   · exact ⟨0, hP.g_mem h⟩
   · exact ⟨1, hP.g_mem h⟩
 
+/- English proof (translation)
+Introduce `hw` and use `by obtain ⟨k, hk⟩ := g_mem_of_vGs hP hw exact notMem_of_QE hs mu hQ (hP.g_prime k) (hg k) hk`.
+-/
 theorem disj (hP : Pr.Ok) (hs : IsSel X sel) (mu : Tup X.F X.E X.K S) (hg : ∀ k, Pr.g k ∈ S)
     {P : HeightOneSpectrum (𝓞 X.E)} (hQ : P ∈ QE sel (mu : Chr X.F X.E X.K)) : P ∉ Pr.vGs := fun hw => by
   obtain ⟨k, hk⟩ := g_mem_of_vGs hP hw
   exact notMem_of_QE hs mu hQ (hP.g_prime k) (hg k) hk
 
+/- English proof (translation)
+Introduce `h`. Establish `hT' : (Pr.T u : 𝓞 X.E) ∈ P.1.asIdeal`. Rewrite using `[← hP.piT_norm u]`. Conclude with `Ideal.mul_mem_right _ _ h`. Break down `Finset.mem_union.1 P.2 with hw | hw` into its components or cases.
+
+Take `⟨k, hk⟩` from `g_mem_of_vGs hP hw`. Establish `hc : Nat.Coprime (Pr.T u) (Pr.g k)` using `(Nat.coprime_primes (hP.T_prime u) (hP.g_prime k)).2 (hP.T_ne_g u k)`. Establish `hc' : IsCoprime ((Pr.T u : ℕ) : 𝓞 X.E) ((Pr.g k : ℕ) : 𝓞 X.E)` using `Nat.Coprime.cast hc`. Take `⟨a, b, hab⟩` from `hc'`. Conclude with `one_notMem P.1 (hab ▸ add_mem (Ideal.mul_mem_left _ _ hT') (Ideal.mul_mem_left _ _ hk))`.
+
+Conclude with `notMem_of_QE hs mu hw (hP.T_prime u) hT hT'`.
+-/
 theorem pi_notMem (hP : Pr.Ok) (hs : IsSel X sel) (mu : Tup X.F X.E X.K S) (u : Pr.Word) (hT : Pr.T u ∈ S)
     (P : rowSG Pr sel mu) : Pr.piT u ∉ P.1.asIdeal := by
   classical
@@ -209,20 +275,40 @@ section Top
 
 variable {E : Type} [Field E] {a n : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpy_apply (a b : ℕ) (x : Sp E a) (l : Fin b) : cpy E a b x l = atNL E a l.1 x := rfl
 
+/- English proof (translation)
+Simplify using `[atNL, h]`.
+-/
 theorem atNL_lt (x : Sp E n) {l : ℕ} (h : l < n) : atNL E n l x = x ⟨l, h⟩ := by simp [atNL, h]
 
+/- English proof (translation)
+Simplify using `[atNL, h]`.
+-/
 theorem atNL_ge (x : Sp E n) {l : ℕ} (h : ¬ l < n) : atNL E n l x = 0 := by simp [atNL, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Establish `h : l.1 < n` using `by have := l.2; omega`. Rewrite using `[cpy_apply, atNL_lt _ h, cpy_apply, atNL_lt _ l.2]`.
+-/
 theorem cpy_cpy (hn : n = a + 1) (y : Sp E (a + 0)) : cpy E n (a + 0) (cpy E (a + 0) n y) = y := by
   funext l
   have h : l.1 < n := by have := l.2; omega
   rw [cpy_apply, atNL_lt _ h, cpy_apply, atNL_lt _ l.2]
 
+/- English proof (translation)
+Rewrite using `[atNL_lt _ (by omega : a < n), cpy_apply, atNL_ge _ (by simp)]`.
+-/
 theorem last_cpy (hn : n = a + 1) (y : Sp E (a + 0)) : atNL E n a (cpy E (a + 0) n y) = 0 := by
   rw [atNL_lt _ (by omega : a < n), cpy_apply, atNL_ge _ (by simp)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Establish `h0` using `l.2`. Establish `h : l.1 < n` using `by omega`. Rewrite using `[cpy_apply, atNL_lt _ h]`. Establish `: l.1 ≠ a` using `by omega`.
+
+Simplify using `[Loc.eN, this]`.
+-/
 theorem cpy_eN (hn : n = a + 1) : cpy E n (a + 0) (Loc.eN E n a) = 0 := by
   funext l
   have h0 := l.2
@@ -231,10 +317,18 @@ theorem cpy_eN (hn : n = a + 1) : cpy E n (a + 0) (Loc.eN E n a) = 0 := by
   have : l.1 ≠ a := by omega
   simp [Loc.eN, this]
 
+/- English proof (translation)
+Rewrite using `[atNL_lt _ (by omega : a < n)]`. Simplify using `[Loc.eN]`.
+-/
 theorem last_eN (hn : n = a + 1) : atNL E n a (Loc.eN E n a) = 1 := by
   rw [atNL_lt _ (by omega : a < n)]
   simp [Loc.eN]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l.1 < a`. Use `congrFun h1 ⟨l.1, h⟩` as an intermediate fact. Rewrite `this` using `[cpy_apply, cpy_apply, atNL_lt _ l.2, atNL_lt _ l.2]`. Then use the resulting hypothesis. Establish `hl : l = ⟨a, by omega⟩` using `Fin.ext (by have := l.2; simp only; omega)`.
+
+Rewrite `h2` using `[atNL_lt _ (by omega : a < n), atNL_lt _ (by omega : a < n)]`. Rewrite using `[hl]`. Conclude with `h2`.
+-/
 theorem ext_top (hn : n = a + 1) {x y : Sp E n} (h1 : cpy E n (a + 0) x = cpy E n (a + 0) y)
     (h2 : atNL E n a x = atNL E n a y) : x = y := by
   funext l
@@ -246,6 +340,9 @@ theorem ext_top (hn : n = a + 1) {x y : Sp E n} (h1 : cpy E n (a + 0) x = cpy E 
     rw [hl]
     exact h2
 
+/- English proof (translation)
+Apply `ext_top hn` to reduce the goal to its premises. Rewrite using `[map_add, map_smul, cpy_cpy hn, cpy_eN hn, smul_zero]`. Conclude with `(add_zero _).symm`. Rewrite using `[map_add, map_smul, last_cpy hn, last_eN hn, zero_add, smul_eq_mul, mul_one]`.
+-/
 theorem decomp (hn : n = a + 1) (x : Sp E n) :
     x = cpy E (a + 0) n (cpy E n (a + 0) x) + atNL E n a x • Loc.eN E n a := by
   apply ext_top hn
@@ -256,6 +353,13 @@ theorem decomp (hn : n = a + 1) (x : Sp E n) :
 def Ext (a : ℕ) (jx : Sp E n ≃ₗ[E] Sp E n) (j : Sp E (a + 0) ≃ₗ[E] Sp E (a + 0)) : Prop :=
   (∀ x, cpy E n (a + 0) (jx x) = j (cpy E n (a + 0) x)) ∧ ∀ x, atNL E n a (jx x) = atNL E n a x
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun y => ext_top hn ?_ ?_, ext_top hn ?_ (h2 _)⟩` and prove the remaining obligations. Rewrite using `[h1, cpy_cpy hn, cpy_cpy hn]`. Rewrite using `[h2, last_cpy hn, last_cpy hn]`.
+
+Rewrite using `[h1, cpy_eN hn, map_zero]`. Introduce and unpack `⟨h1, h2⟩`. Establish `e : ∀ x, jx x = cpy E (a + 0) n (j (cpy E n (a + 0) x)) + atNL E n a x • Loc.eN E n a` using `fun x => by conv_lhs => rw [decomp hn x]`. Rewrite using `[map_add, map_smul, h1, h2]`. Use `⟨fun x => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, map_add, map_smul, cpy_cpy hn, cpy_eN hn, smul_zero]`. Conclude with `add_zero _`. Rewrite using `[e, map_add, map_smul, last_cpy hn, last_eN hn, zero_add, smul_eq_mul, mul_one]`.
+-/
 theorem ext_iff' (hn : n = a + 1) (jx : Sp E n ≃ₗ[E] Sp E n) (j : Sp E (a + 0) ≃ₗ[E] Sp E (a + 0)) :
     Ext a jx j ↔ (∀ y, jx (cpy E (a + 0) n y) = cpy E (a + 0) n (j y)) ∧ jx (Loc.eN E n a) = Loc.eN E n a := by
   constructor
@@ -273,12 +377,23 @@ theorem ext_iff' (hn : n = a + 1) (jx : Sp E n ≃ₗ[E] Sp E n) (j : Sp E (a + 
       exact add_zero _
     · rw [e, map_add, map_smul, last_cpy hn, last_eN hn, zero_add, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ => rfl⟩`.
+-/
 theorem Ext.one : Ext a (1 : Sp E n ≃ₗ[E] Sp E n) 1 := ⟨fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => (h.1 (jx' x)).trans (congrArg j (h'.1 x)), fun x => (h.2 (jx' x)).trans (h'.2 x)⟩`.
+-/
 theorem Ext.mul {jx jx' : Sp E n ≃ₗ[E] Sp E n} {j j' : Sp E (a + 0) ≃ₗ[E] Sp E (a + 0)} (h : Ext a jx j)
     (h' : Ext a jx' j') : Ext a (jx * jx') (j * j') :=
   ⟨fun x => (h.1 (jx' x)).trans (congrArg j (h'.1 x)), fun x => (h.2 (jx' x)).trans (h'.2 x)⟩
 
+/- English proof (translation)
+Use `⟨fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `h.1 (jx⁻¹ x)` as an intermediate fact. Rewrite `this` using `[show jx (jx⁻¹ x) = x from jx.apply_symm_apply x]`. Rewrite using `[this]`. Conclude with `(j.symm_apply_apply _).symm`.
+
+Use `h.2 (jx⁻¹ x)` as an intermediate fact. Rewrite `this` using `[show jx (jx⁻¹ x) = x from jx.apply_symm_apply x]`. Conclude with `this.symm`.
+-/
 theorem Ext.inv {jx : Sp E n ≃ₗ[E] Sp E n} {j : Sp E (a + 0) ≃ₗ[E] Sp E (a + 0)} (h : Ext a jx j) :
     Ext a jx⁻¹ j⁻¹ := by
   refine ⟨fun x => ?_, fun x => ?_⟩
@@ -290,6 +405,13 @@ theorem Ext.inv {jx : Sp E n ≃ₗ[E] Sp E n} {j : Sp E (a + 0) ≃ₗ[E] Sp E 
     rw [show jx (jx⁻¹ x) = x from jx.apply_symm_apply x] at this
     exact this.symm
 
+/- English proof (translation)
+Rewrite using `[mem_std, mem_std, atNL_lt _ (by omega : a < n)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun l => ?_, h _⟩` and prove the remaining obligations. Rewrite using `[cpy_apply, atNL_lt _ (by have := l.2; omega : l.1 < n)]`.
+
+Conclude with `h _`. Introduce and unpack `⟨h1, h2⟩ l`. Distinguish the cases in `h : l.1 < a`. Use `h1 ⟨l.1, h⟩` as an intermediate fact. Rewrite `this` using `[cpy_apply, atNL_lt _ l.2]`. Then use the resulting hypothesis.
+
+Establish `hl : l = ⟨a, by omega⟩` using `Fin.ext (by have := l.2; simp only; omega)`. Rewrite using `[hl]`. Conclude with `h2`.
+-/
 theorem std_top [NumberField E] [StarRing E] (hn : n = a + 1) (P : HeightOneSpectrum (𝓞 E)) (x : Sp E n) :
     x ∈ stdAt E n P ↔ cpy E n (a + 0) x ∈ stdAt E (a + 0) P ∧ IntAt P (atNL E n a x) := by
   rw [mem_std, mem_std, atNL_lt _ (by omega : a < n)]
@@ -321,6 +443,9 @@ structure Hyp : Prop where
   hL : T.L.Ok T.Ch T.sel T.xi T.cst T.G (D.R.m - 2)
   hTop : T.TopTie
 
+/- English proof (translation)
+The claim follows from `N_m_succ D.R`.
+-/
 theorem Nm (D : D7) : D.R.N D.R.m = (D.R.N D.R.m - 1) + 1 := N_m_succ D.R
 
 open Classical in
@@ -346,6 +471,13 @@ def LocB (i : ℕ) (b : Option (T.L.β i)) (P : T.SB) (κ : T.AutX i) (v : T.X.K
         jx (Loc.eN T.X.E (D.R.N i) (D.R.N D.R.m - 1)) = Loc.eN T.X.E (D.R.N i) (D.R.N D.R.m - 1) ∧
         T.InTopCong i P k ∧ κ = jx * k) ∧ v = T.lamM P j
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `some al`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, h, rfl⟩`. Conclude with `⟨_, fun P => ⟨r P, h P, rfl⟩, rfl⟩`.
+
+Introduce and unpack `⟨v, h, rfl⟩ choose r h1 h2 using h`. Take `rfl` from `funext h2`. Conclude with `⟨r, h1, rfl⟩`. Consider the case `none`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨j, jx, k, h, rfl⟩`. Conclude with `⟨_, fun P => ⟨j P, jx P, k P, h P, rfl⟩, rfl⟩`. Introduce and unpack `⟨v, h, rfl⟩ choose j jx k h1 h2 using h`. Take `rfl` from `funext h2`. Conclude with `⟨j, jx, k, h1, rfl⟩`.
+-/
 theorem inLev_iff (i : ℕ) (b : Option (T.L.β i)) (κ : T.SB → T.AutX i) (a : ℂ) :
     T.InLev i b κ a ↔ ∃ v : T.SB → T.X.K, (∀ P, LocB T i b P (κ P) (v P)) ∧ a = (T.s.σ₀ (∏ P, v P))⁻¹ := by
   cases b with
@@ -366,6 +498,11 @@ theorem inLev_iff (i : ℕ) (b : Option (T.L.β i)) (κ : T.SB → T.AutX i) (a 
       obtain rfl := funext h2
       exact ⟨j, jx, k, h1, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, jx, k, ⟨h1, h2, h3, h4, h5⟩, h6⟩`. Conclude with `⟨j, h1, jx, k, h4, (ext_iff' (Nm D) jx j).2 ⟨h2, h3⟩, h5, h6⟩`. Introduce and unpack `⟨j, h1, jx, k, h4, h, h5, h6⟩`. Take `⟨h2, h3⟩` from `(ext_iff' (Nm D) jx j).1 h`.
+
+Conclude with `⟨j, jx, k, ⟨h1, h2, h3, h4, h5⟩, h6⟩`.
+-/
 theorem locB_top (P : T.SB) (κ : T.AutX D.R.m) (v : T.X.K) :
     LocB T D.R.m none P κ v ↔ ∃ j ∈ T.Jtop P, ∃ jx : T.AutX D.R.m, ∃ k ∈ topK T D.R.m P,
       Ext (D.R.N D.R.m - 1) jx j ∧ κ = jx * k ∧ v = T.lamM P j := by
@@ -378,6 +515,15 @@ theorem locB_top (P : T.SB) (κ : T.AutX D.R.m) (v : T.X.K) :
 
 variable {T}
 
+/- English proof (translation)
+Use `show T.InTopLat _ P _ ↔ T.InTopLat _ P _`. Unfold `ChainData.InTopLat`. Rewrite using `[h.1, h.2]`. Use `and_congr_left fun _ => ?_` and prove the remaining obligations. Distinguish the cases in `hw : P.1 ∈ T.Pr.vGs`.
+
+Rewrite using `[if_pos hw]`. Unfold `ChainData.Jtop at hj`. Rewrite `hj` using `[if_pos hw]`. Use `split_ifs at hj`. Rewrite using `[← lamY_zero (qOf P.1) (fun i => i + 1), ← lamY_zero (qOf P.1) (fun i => i + 1)]`.
+
+Conclude with `(Subgroup.mem_inf.1 hj).1 _`. Rewrite using `[← lamY_zero (qOf P.1) (fun i => i + 1), ← lamY_zero (qOf P.1) (fun i => i + 1)]`. Conclude with `(Subgroup.mem_inf.1 hj).1 _`. Rewrite using `[if_neg hw]`. Establish `h2` using `(H.hTop P hw).2.1`.
+
+Use `⟨fun hx => ?_, h2 j hj _⟩` and prove the remaining obligations. Use `h2 j⁻¹ (inv_mem hj) _ hx` as an intermediate fact. Rewrite `this` using `[show j⁻¹ (j _) = _ from j.symm_apply_apply _]`. Then use the resulting hypothesis.
+-/
 theorem Hyp.stab (H : Hyp T) {P : T.SB} {j : T.XP ≃ₗ[T.X.E] T.XP} (hj : j ∈ T.Jtop P) {jx : T.AutX D.R.m}
     (h : Ext (D.R.N D.R.m - 1) jx j) (x : Sp T.X.E (D.R.N D.R.m)) : jx x ∈ topM T D.R.m P ↔ x ∈ topM T D.R.m P := by
   classical
@@ -400,6 +546,11 @@ theorem Hyp.stab (H : Hyp T) {P : T.SB} {j : T.XP ≃ₗ[T.X.E] T.XP} (hj : j �
     have := h2 j⁻¹ (inv_mem hj) _ hx
     rwa [show j⁻¹ (j _) = _ from j.symm_apply_apply _] at this
 
+/- English proof (translation)
+Establish `hr` using `rank_X'_eq D.R`. Unfold `ChainData.Jtop at hj`. Unfold `ChainData.lamM`. Use `split_ifs at hj ⊢`. Use `GlobalTheory.T.lambda_char_sym_mul_inv_eq_one _ _ P.1 _ (qOf_ne _) (qOf_mem _) _ _ _ D.R.rS _ _ _ _ ?_ hr.ge j hj` and prove the remaining obligations.
+
+Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r Ranks.rS`. Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.T.lambda_char_mul_inv_eq_one _ _ P.1 _ (qOf_ne _) (qOf_mem _) _ _ _ _ _ _ _ hr.ge j hj`. Conclude with `GlobalTheory.T.lambda_quotient_char_mul_inv_eq_one _ _ P.1 _ (qOf_ne _) (qOf_mem _) _ _ _ j hj`.
+-/
 theorem lamM_inv (P : T.SB) {j : T.XP ≃ₗ[T.X.E] T.XP} (hj : j ∈ T.Jtop P) : T.lamM P j * T.lamM P j⁻¹ = 1 := by
   classical
   have hr := rank_X'_eq D.R
@@ -413,15 +564,28 @@ theorem lamM_inv (P : T.SB) {j : T.XP ≃ₗ[T.X.E] T.XP} (hj : j ∈ T.Jtop P) 
   · exact GlobalTheory.T.lambda_char_mul_inv_eq_one _ _ P.1 _ (qOf_ne _) (qOf_mem _) _ _ _ _ _ _ _ hr.ge j hj
   · exact GlobalTheory.T.lambda_quotient_char_mul_inv_eq_one _ _ P.1 _ (qOf_ne _) (qOf_mem _) _ _ _ j hj
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `some al => exact ⟨_, 1, ⟨one_mem _, fun _ => rfl⟩, rfl⟩`. Consider the case `none => exact ⟨_, 1, 1, 1, ⟨one_mem _, fun _ => rfl, rfl, one_mem (topK T i P), rfl⟩, rfl⟩`.
+-/
 theorem locB_one (i : ℕ) (b : Option (T.L.β i)) (P : T.SB) : ∃ v, LocB T i b P 1 v := by
   cases b with
   | some al => exact ⟨_, 1, ⟨one_mem _, fun _ => rfl⟩, rfl⟩
   | none => exact ⟨_, 1, 1, 1, ⟨one_mem _, fun _ => rfl, rfl, one_mem (topK T i P), rfl⟩, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, r, h, _⟩ => ⟨r, h.1, h.2⟩, fun ⟨r, h1, h2⟩ => ⟨_, r, ⟨h1, h2⟩, rfl⟩⟩`.
+-/
 theorem locB_some {i : ℕ} (al : T.L.β i) (P : T.SB) (κ : T.AutX i) :
     (∃ v, LocB T i (some al) P κ v) ↔ κ ∈ prCat (Pr := T.Pr) T.cst.sharp i P.1 (T.L.h i al P) :=
   ⟨fun ⟨_, r, h, _⟩ => ⟨r, h.1, h.2⟩, fun ⟨r, h1, h2⟩ => ⟨_, r, ⟨h1, h2⟩, rfl⟩⟩
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `some al`. Rewrite `h`, `h'`, the goal using `[locB_some]`. Conclude with `mul_mem (inv_mem h) h'`. Consider the case `none`.
+
+Take `rfl` from `hb rfl`. Take `⟨v, h⟩` from `h`. Take `⟨v', h'⟩` from `h'`. Take `⟨j, hj, jx, k, hk, he, rfl, -⟩` from `(locB_top T P κ v).1 h`. Take `⟨j', hj', jx', k', hk', he', rfl, -⟩` from `(locB_top T P κ' v').1 h'`.
+
+Establish `hJ : (j⁻¹ * j')⁻¹ ∈ T.Jtop P` using `inv_mem (mul_mem (inv_mem hj) hj')`. Establish `hE` using `(he.inv.mul he').inv`. Use `⟨_, (locB_top T P _ _).2 ⟨j⁻¹ * j', mul_mem (inv_mem hj) hj', jx⁻¹ * jx', (jx⁻¹ * jx')⁻¹ * k⁻¹ * ((jx⁻¹ * jx')⁻¹)⁻¹ * k', mul_mem (congSub_conj (H.stab hJ hE) (inv_mem hk)) hk', he.inv.mul he', by group, rfl⟩⟩` and prove the remaining obligations.
+-/
 theorem Hyp.locB_div (H : Hyp T) {i : ℕ} {b : Option (T.L.β i)} (hb : b = none → i = D.R.m) {P : T.SB}
     {κ κ' : T.AutX i} (h : ∃ v, LocB T i b P κ v) (h' : ∃ v, LocB T i b P κ' v) : ∃ v, LocB T i b P (κ⁻¹ * κ') v := by
   cases b with
@@ -461,6 +625,9 @@ structure Over (i : ℕ) (a : APt T i) (p : T.Lab i) : Prop where
   cos : i + 1 = D.R.m → p.2.2 = a.2.2
   cos' : i + 1 ≠ D.R.m → a.2.2 = ∅ ∧ p.2.2 = Set.univ
 
+/- English proof (translation)
+Unfold `frsF`. Use `split_ifs with h`. Conclude with `(GlobalTheory.T.decoration_lift_std_lattice_reduction _ _ _ _ a.deco ⟨P.1, h⟩).1 x`. Conclude with `a.2 ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩ x`.
+-/
 theorem frsF_spec {i : ℕ} (a : ChPt (R := D.R) T.sel T.xi T.w i) (P : T.SB) (x : Sp T.X.E (D.R.N i)) :
     frsF T.sel T.xi a P x ∈ a.deco.1.at P.1 ↔ x ∈ stdAt T.X.E (D.R.N i) P.1 := by
   classical
@@ -477,15 +644,24 @@ def up (i : ℕ) (a : APt T i) : T.Lab i :=
 
 variable {T}
 
+/- English proof (translation)
+The claim follows from `KFormsCmp.disj H.hP H.hs T.xi H.hg P.2`.
+-/
 theorem Hyp.disj (H : Hyp T) (P : QE T.sel (T.xi : Chr T.X.F T.X.E T.X.K)) : P.1 ∉ T.Pr.vGs :=
   KFormsCmp.disj H.hP H.hs T.xi H.hg P.2
 
+/- English proof (translation)
+Break down `Finset.mem_union.1 P.2 with h | h` into its components or cases. Conclude with `Or.inl ⟨⟨P.1, h⟩, rfl⟩`. Conclude with `Or.inr ⟨⟨P.1, h⟩, rfl⟩`.
+-/
 theorem sb_cases (P : T.SB) : (∃ w, P = inG T w) ∨ ∃ Q, P = inQ T Q := by
   classical
   rcases Finset.mem_union.1 P.2 with h | h
   · exact Or.inl ⟨⟨P.1, h⟩, rfl⟩
   · exact Or.inr ⟨⟨P.1, h⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `rfl lat := rfl fT := rfl frG w x hx := by show a.1.deco.1.be w (frsF T.sel T.xi a.1 (inG T w) x) = _ unfold frsF rw [dif_pos w.2] exact (GlobalTheory.T.decoration_lift_std_lattice_reduction _ _ _ _ a.1.deco w).2 x hx frQ P := by show frsF T.sel T.xi a.1 (inQ T P) = _ unfold frsF …`.
+-/
 theorem Hyp.over_up (H : Hyp T) {i : ℕ} (a : APt T i) (ha : i + 1 ≠ D.R.m → a.2.2 = ∅) : Over T i a (up T i a) where
   idx := rfl
   lat := rfl
@@ -502,6 +678,9 @@ theorem Hyp.over_up (H : Hyp T) {i : ℕ} (a : APt T i) (ha : i + 1 ≠ D.R.m �
   cos h := if_pos h
   cos' h := ⟨ha h, if_neg h⟩
 
+/- English proof (translation)
+Take `⟨d, h1, h2, h3⟩` from `GlobalTheory.T.exists_decoration_extension_at_primes _ _ _ T.Pr.vGs p.2.1.deco (fun w => p.2.1.fr (inG T w)) fun w x => p.2.1.2 (inG T w) x`. Use `⟨(⟨(d, fun P => p.2.1.fr (inQ T P)), fun P x => ?_⟩, p.1, if i + 1 = D.R.m then p.2.2 else ∅), rfl, h1.symm, h2.symm, h3, fun _ => rfl, fun h => (if_pos h).symm, fun h => ⟨if_neg h, hp h⟩⟩` and prove the remaining obligations. Use `show _ ∈ localization₂ P.1.asIdeal d.1.N ↔ _`. Rewrite using `[h1]`. Conclude with `p.2.1.2 (inQ T P) x`.
+-/
 theorem exists_down {i : ℕ} (p : T.Lab i) (hp : i + 1 ≠ D.R.m → p.2.2 = Set.univ) : ∃ a, Over T i a p := by
   classical
   obtain ⟨d, h1, h2, h3⟩ := GlobalTheory.T.exists_decoration_extension_at_primes _ _ _ T.Pr.vGs p.2.1.deco (fun w => p.2.1.fr (inG T w))
@@ -512,9 +691,15 @@ theorem exists_down {i : ℕ} (p : T.Lab i) (hp : i + 1 ≠ D.R.m → p.2.2 = Se
   rw [h1]
   exact p.2.1.2 (inQ T P) x
 
+/- English proof (translation)
+The claim follows from `p.2 P x`.
+-/
 theorem fr_spec {i : ℕ} (p : T.Pt i) (P : T.SB) (x : Sp T.X.E (D.R.N i)) :
     p.fr P x ∈ localization₂ P.1.asIdeal p.deco.1.N ↔ x ∈ stdAt T.X.E (D.R.N i) P.1 := p.2 P x
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[← fr_spec p P, ← fr_spec p' P x, hN, mem_localization_gmap, h]`. Use `show _ ↔ γ.1.symm (γ.1 (p.fr P (κ x))) ∈ _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+-/
 theorem glint_of {i : ℕ} {p p' : T.Pt i} {γ : UF T.X.E (D.R.N i)} (hN : p'.deco.1.N = gmap γ.1 p.deco.1.N)
     {P : T.SB} {κ : T.AutX i} (h : p'.fr P = γ.1 * p.fr P * κ) : κ ∈ GLint T.X.E (D.R.N i) P.1 := by
   intro x
@@ -522,6 +707,23 @@ theorem glint_of {i : ℕ} {p p' : T.Pt i} {γ : UF T.X.E (D.R.N i)} (hN : p'.de
   show _ ↔ γ.1.symm (γ.1 (p.fr P (κ x))) ∈ _
   rw [LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `e`. Establish `e1 : a'.1.deco.1 = a.1.deco.1.act γ.1 g` using `congrArg (fun q => (DecoF.deco q).1) e`. Establish `e2 : ∀ P, a'.1.fr P = γ.1 * a.1.fr P * ((c P)⁻¹).1` using `fun P => congrArg (fun q => DecoF.fr q P) e`. Establish `hN : p'.2.1.deco.1.N = gmap γ.1 p.2.1.deco.1.N` using `by rw [h'.lat, h.lat, e1]; rfl`.
+
+Use `⟨Subtype.ext (Deco.ext hN ?_ ?_), fun w x hx => ?_, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[h'.fT, e1] show _ = fun P x => p.2.1.deco.1.f P (γ.1.symm x)`. Rewrite using `[h.fT]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `w`.
+
+Conclude with `absurd w.2 (Finset.notMem_empty _)`. Rewrite using `[← h'.frG w x hx, e1, hκ] show (g w).1.mulVec (a.1.deco.1.be w (γ.1.symm (γ.1 (p.2.1.fr (inG T w) (κ (inG T w) x))))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply, h.frG w (κ (inG T w) x) ((glint_of hN (hκ (inG T w)) x).2 hx)]`. Use `hκ (inQ T P)` as an intermediate fact. Rewrite `this` using `[h'.frQ, h.frQ, e2]`.
+
+Conclude with `(mul_left_cancel this).symm`. Introduce and unpack `⟨e, hG, hQ⟩`. Establish `hN : p'.2.1.deco.1.N = gmap γ.1 p.2.1.deco.1.N` using `by rw [e]; rfl`. Establish `hN' : a'.1.deco.1.N = gmap γ.1 a.1.deco.1.N` using `by rw [← h'.lat, ← h.lat, hN]`. Use `Subtype.ext (Prod.ext (Subtype.ext (Deco.ext hN' ?_ ?_)) ?_)` and prove the remaining obligations.
+
+Use `show a'.1.deco.1.f = fun P x => a.1.deco.1.f P (γ.1.symm x)`. Rewrite using `[← h'.fT, ← h.fT, e]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `w y show a'.1.deco.1.be w y = (g w).1.mulVec (a.1.deco.1.be w (γ.1.symm y))`. Distinguish the cases in `hy : y ∈ a'.1.deco.1.at w.1`.
+
+Take `⟨x, rfl⟩` from `(p'.2.1.fr (inG T w)).surjective y`. Establish `hx : x ∈ stdAt T.X.E (D.R.N i) w.1`. Rewrite using `[← fr_spec p'.2.1 (inG T w) x, h'.lat]`. Conclude with `hy`. Rewrite using `[h'.frG w x hx, hκ]`.
+
+Use `show _ = (g w).1.mulVec (a.1.deco.1.be w (γ.1.symm (γ.1 (p.2.1.fr (inG T w) (κ (inG T w) x)))))`. Rewrite using `[LinearEquiv.symm_apply_apply, h.frG w (κ (inG T w) x) ((glint_of hN (hκ (inG T w)) x).2 hx)]`. Conclude with `hG w x hx`. Rewrite using `[a'.1.deco.2.be_off w y hy, a.1.deco.2.be_off w _ fun hh => hy (by show y ∈ localization₂ w.1.asIdeal a'.1.deco.1.N`. Rewrite using `[hN', mem_localization_gmap]`.
+
+Conclude with `hh), Matrix.mulVec_zero]`. Use function extensionality and compare the values at `P show a'.1.fr P = γ.1 * a.1.fr P * ((c P)⁻¹).1`. Rewrite using `[← h'.frQ, ← h.frQ, hκ, hQ]`.
+-/
 theorem act_iff {i : ℕ} {a a' : APt T i} {p p' : T.Lab i} (h : Over T i a p) (h' : Over T i a' p')
     (γ : UF T.X.E (D.R.N i)) (g : GLG T.X.E (D.R.N i) T.Pr.vGs)
     (c : GLQ T.X.E (D.R.N i) (QE T.sel (T.xi : Chr T.X.F T.X.E T.X.K))) (κ : T.SB → T.AutX i)
@@ -579,6 +781,9 @@ end Points
 
 section Moves
 
+/- English proof (translation)
+Rewrite using `[piChar, MonoidHom.finset_prod_apply, Units.coe_prod]`. Both sides reduce to the same expression.
+-/
 theorem piChar_val {K ι : Type} [Field K] [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgroup (G i))
     (lam : ∀ i, ↥(H i) →* Kˣ) (x : ∀ i, G i) (hx : x ∈ Subgroup.pi Set.univ H) :
     ((piChar H lam ⟨x, hx⟩ : Kˣ) : K) = ∏ i, ((lam i ⟨x i, hx i (Set.mem_univ _)⟩ : Kˣ) : K) := by
@@ -604,6 +809,17 @@ def LocQ (i : ℕ) (b : Option (T.L.β i)) (P : QE T.sel (T.xi : Chr T.X.F T.X.E
   | some al => ∃ hc : c ∈ (T.L.levQ i al P).H, z = (((T.L.levQ i al P).lam ⟨c, hc⟩ : T.X.Kˣ) : T.X.K)
   | none => AmbientLatticeAvoidance.TopLev T.Ch T.xi (D.R.N i) ((T.Pr.piT T.w : 𝓞 T.X.E) : T.X.E) abelian₂ dep T.cst.sharp P.1 c.1 z
 
+/- English proof (translation)
+Unfold `AmbientLatticeAvoidance.Mov`. Use `and_congr_right fun _ => and_congr_right fun _ => exists_congr fun g => exists_congr fun c => and_congr_right fun _ => ?_` and prove the remaining obligations. Generalize the expression as in `a.2.1 = b`. Consider the cases of `b with`. Consider the case `none => exact ⟨fun h => h.2 rfl, fun h => ⟨fun _ hb => (Option.some_ne_none _ hb.symm).elim, fun _ => h⟩⟩`.
+
+Consider the case `some al`. Establish `e : ∀ (hh : g ∈ (T.L.levG i al).grp) (hc : c ∈ (T.L.levQ i al).grp), (((T.L.levG i al).chr ⟨g, hh⟩ * (T.L.levQ i al).chr ⟨c, hc⟩ : T.X.Kˣ) : T.X.K) = (∏ w, (((T.L.levG i al w).lam ⟨g w, hh w (Set.mem_univ _)⟩ : T.X.Kˣ) : T.X.K)) * ∏ P, (((T.L.levQ i al P).lam ⟨c P, hc P (Set.mem_ …` using `fun hh hc => by`. Rewrite using `[Units.val_mul]`. Conclude with `congrArg₂ (· * ·) (piChar_val (fun w => (T.L.levG i al w).H) (fun w => (T.L.levG i al w).lam) g hh) (piChar_val (fun w => (T.L.levQ i al w).H) (fun w => (T.L.levQ i al w).lam) c hc)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h, -⟩`. Take `⟨hh, hc, rfl⟩` from `h al rfl`. Conclude with `⟨_, _, fun w => ⟨_, rfl⟩, fun P => ⟨_, rfl⟩, e hh hc⟩`. Introduce and unpack `⟨zG, zQ, h1, h2, rfl⟩ choose hh h1 using h1 choose hc h2 using h2`. Take `rfl` from `funext h1`.
+
+Take `rfl` from `funext h2`. Use `⟨fun b hb => ?_, fun hb => (Option.some_ne_none _ hb).elim⟩` and prove the remaining obligations. Take `rfl` from `Option.some.inj hb`. Establish `hh' : g ∈ (T.L.levG i al).grp` using `fun w _ => hh w`. Establish `hc' : c ∈ (T.L.levQ i al).grp` using `fun P _ => hc P`.
+
+Conclude with `⟨hh', hc', (e hh' hc').symm⟩`.
+-/
 theorem mov_iff_loc {i : ℕ} (γ : UF T.X.E (D.R.N i)) (a a' : APt T i) (z : T.X.K) :
     AmbientLatticeAvoidance.Mov T.Ch T.sel T.xi T.cst T.L abelian₂ dep γ a a' z ↔
       a'.2.1 = a.2.1 ∧ a'.2.2 = (fun v => γ.1 v) '' a.2.2 ∧
@@ -644,8 +860,14 @@ theorem mov_iff_loc {i : ℕ} (γ : UF T.X.E (D.R.N i)) (a a' : APt T i) (z : T.
 
 variable {T abelian₂ dep}
 
+/- English proof (translation)
+The claim follows from `pi_notMem H.hP H.hs T.xi T.w H.hT P`.
+-/
 theorem Hyp.pi (H : Hyp T) (P : T.SB) : T.Pr.piT T.w ∉ P.1.asIdeal := pi_notMem H.hP H.hs T.xi T.w H.hT P
 
+/- English proof (translation)
+Use extensionality with `x`. Use `show T.InTopLat _ P x ↔ x ∈ stdAt T.X.E (D.R.N D.R.m) P.1`. Unfold `ChainData.InTopLat`. Rewrite using `[if_pos hw, std_top (Nm D)]`.
+-/
 theorem Hyp.topM_G (H : Hyp T) (P : T.SB) (hw : P.1 ∈ T.Pr.vGs) :
     topM T D.R.m P = (stdAt T.X.E (D.R.N D.R.m) P.1).toAddSubgroup := by
   ext x
@@ -653,6 +875,13 @@ theorem Hyp.topM_G (H : Hyp T) (P : T.SB) (hw : P.1 ∈ T.Pr.vGs) :
   unfold ChainData.InTopLat
   rw [if_pos hw, std_top (Nm D)]
 
+/- English proof (translation)
+Unfold `AmbientLatticeAvoidance.latTop`. Use `split_ifs with hw`. Rewrite using `[H.topM_G P hw]`. Both sides reduce to the same expression. Use `show _ ↔ T.InTopLat _ P x`.
+
+Unfold `ChainData.InTopLat`. Rewrite using `[if_neg hw, (hS P).1]`. Use `and_congr_right fun _ => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h0 : ((T.Pr.piT T.w : 𝓞 T.X.E) : T.X.E) ≠ 0` using `fun h0 => H.pi P (by`. Rewrite using `[show T.Pr.piT T.w = 0 from RingOfIntegers.ext h0]`.
+
+Conclude with `zero_mem _)`. Use `(IntAt.coe P.1 (T.Pr.piT T.w)).mul h` as an intermediate fact. Rewrite `this` using `[show algebraMap (𝓞 T.X.E) T.X.E (T.Pr.piT T.w) = ((T.Pr.piT T.w : 𝓞 T.X.E) : T.X.E) from rfl, mul_inv_cancel_left₀ h0]`. Then use the resulting hypothesis. Use `h.div_of_notMem (H.pi P)` as an intermediate fact. Rewrite `this` using `[div_eq_inv_mul]`. Then use the resulting hypothesis.
+-/
 theorem Hyp.latTop (H : Hyp T) (hS : TopSame T abelian₂ dep) (P : T.SB) (x : Sp T.X.E (D.R.N D.R.m)) :
     x ∈ AmbientLatticeAvoidance.latTop T.Pr D.R (D.R.N D.R.m) ((T.Pr.piT T.w : 𝓞 T.X.E) : T.X.E) abelian₂ P.1 ↔ x ∈ topM T D.R.m P := by
   classical
@@ -673,6 +902,11 @@ theorem Hyp.latTop (H : Hyp T) (hS : TopSame T abelian₂ dep) (P : T.SB) (x : S
     · have := h.div_of_notMem (H.pi P)
       rwa [div_eq_inv_mul] at this
 
+/- English proof (translation)
+Rewrite using `[locB_top]`. Unfold `AmbientLatticeAvoidance.TopLev`. Simplify using `only [H.latTop hS P, ← (hS P).2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, jx, k, h1, h2, h3, h4, h5, h6⟩`.
+
+Conclude with `⟨j, hj, jx, k, ⟨h3, h4⟩, ⟨h1, h2⟩, h5, h6⟩`. Introduce and unpack `⟨j, hj, jx, k, ⟨h3, h4⟩, ⟨h1, h2⟩, h5, h6⟩`. Conclude with `⟨j, hj, jx, k, h1, h2, h3, h4, h5, h6⟩`.
+-/
 theorem Hyp.topLev (H : Hyp T) (hS : TopSame T abelian₂ dep) (P : T.SB) (κ : T.AutX D.R.m) (z : T.X.K) :
     AmbientLatticeAvoidance.TopLev T.Ch T.xi (D.R.N D.R.m) ((T.Pr.piT T.w : 𝓞 T.X.E) : T.X.E) abelian₂ dep T.cst.sharp P.1 κ z ↔
       LocB T D.R.m none P κ z := by
@@ -685,12 +919,18 @@ theorem Hyp.topLev (H : Hyp T) (hS : TopSame T abelian₂ dep) (P : T.SB) (κ : 
   · rintro ⟨j, hj, jx, k, ⟨h3, h4⟩, ⟨h1, h2⟩, h5, h6⟩
     exact ⟨j, hj, jx, k, h1, h2, h3, h4, h5, h6⟩
 
+/- English proof (translation)
+Take `⟨j, hj, jx, k, hk, he, rfl, rfl⟩` from `(locB_top T P κ v).1 h`. Conclude with `⟨_, (locB_top T P _ _).2 ⟨j⁻¹, inv_mem hj, jx⁻¹, jx * k⁻¹ * jx⁻¹ * k₀, mul_mem (congSub_conj (H.stab hj he) (inv_mem hk)) h₀, he.inv, by group, rfl⟩, lamM_inv P hj⟩`.
+-/
 theorem Hyp.top_inv (H : Hyp T) {P : T.SB} {κ k₀ : T.AutX D.R.m} {v : T.X.K} (h : LocB T D.R.m none P κ v)
     (h₀ : k₀ ∈ topK T D.R.m P) : ∃ v', LocB T D.R.m none P (κ⁻¹ * k₀) v' ∧ v * v' = 1 := by
   obtain ⟨j, hj, jx, k, hk, he, rfl, rfl⟩ := (locB_top T P κ v).1 h
   exact ⟨_, (locB_top T P _ _).2 ⟨j⁻¹, inv_mem hj, jx⁻¹, jx * k⁻¹ * jx⁻¹ * k₀,
     mul_mem (congSub_conj (H.stab hj he) (inv_mem hk)) h₀, he.inv, by group, rfl⟩, lamM_inv P hj⟩
 
+/- English proof (translation)
+Take `⟨j, hj, jx, k, hk, he, rfl, rfl⟩` from `(locB_top T P κ v).1 h`. Introduce `x`. Establish `h1` using `(H.stab hj he (k x)).trans (hk.1 x)`. Rewrite `h1` using `[H.topM_G P hw]`. Then use the resulting hypothesis.
+-/
 theorem Hyp.top_glint (H : Hyp T) {P : T.SB} (hw : P.1 ∈ T.Pr.vGs) {κ : T.AutX D.R.m} {v : T.X.K}
     (h : LocB T D.R.m none P κ v) : κ ∈ GLint T.X.E (D.R.N D.R.m) P.1 := by
   obtain ⟨j, hj, jx, k, hk, he, rfl, rfl⟩ := (locB_top T P κ v).1 h
@@ -698,6 +938,9 @@ theorem Hyp.top_glint (H : Hyp T) {P : T.SB} (hw : P.1 ∈ T.Pr.vGs) {κ : T.Aut
   have h1 := (H.stab hj he (k x)).trans (hk.1 x)
   rwa [H.topM_G P hw] at h1
 
+/- English proof (translation)
+Unfold `topK`. Rewrite using `[if_pos hw, pow_one, H.topM_G P hw]`. Conclude with `(cong_iff (GlobalTheory.T.integral_div_uniformizer_of_red_zero _ _ H.hX H.hP _ hw) k).2 ⟨h1, h2⟩`.
+-/
 theorem Hyp.mem_topK (H : Hyp T) {P : T.SB} (hw : P.1 ∈ T.Pr.vGs) {k : T.AutX D.R.m}
     (h1 : k ∈ GLint T.X.E (D.R.N D.R.m) P.1) (h2 : ∀ x ∈ stdAt T.X.E (D.R.N D.R.m) P.1, redV P.1 (k x) = redV P.1 x) :
     k ∈ topK T D.R.m P := by
@@ -705,15 +948,36 @@ theorem Hyp.mem_topK (H : Hyp T) {P : T.SB} (hw : P.1 ∈ T.Pr.vGs) {k : T.AutX 
   rw [if_pos hw, pow_one, H.topM_G P hw]
   exact (cong_iff (GlobalTheory.T.integral_div_uniformizer_of_red_zero _ _ H.hX H.hP _ hw) k).2 ⟨h1, h2⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mem_parahoric_of_trivial_reduction _ _ _ _ _ _ hw (GlobalTheory.T.integral_div_uniformizer_of_red_zero _ _ H.hX H.hP _ hw) _ (H.hL.stabG i al P hw) k h1 h2`.
+-/
 theorem Hyp.mem_prC (H : Hyp T) {i : ℕ} (al : T.L.β i) {P : T.SB} (hw : P.1 ∈ T.Pr.vGs) {k : T.AutX i}
     (h1 : k ∈ GLint T.X.E (D.R.N i) P.1) (h2 : ∀ x ∈ stdAt T.X.E (D.R.N i) P.1, redV P.1 (k x) = redV P.1 x) :
     k ∈ prCat (Pr := T.Pr) T.cst.sharp i P.1 (T.L.h i al P) :=
   GlobalTheory.T.mem_parahoric_of_trivial_reduction _ _ _ _ _ _ hw (GlobalTheory.T.integral_div_uniformizer_of_red_zero _ _ H.hX H.hP _ hw) _ (H.hL.stabG i al P hw) k h1 h2
 
+/- English proof (translation)
+Rewrite using `[e, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem mulVec_inv {R : Type} [CommRing R] {n : ℕ} (h : GL (Fin n) R) {x y : Fin n → R} (e : x = h.1.mulVec y) :
     y = (h⁻¹).1.mulVec x := by
   rw [e, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `hr' : ∀ x ∈ stdAt T.X.E (D.R.N i) w.1, redV w.1 (κ x) = (h⁻¹).1.mulVec (redV w.1 x)` using `fun x hx => mulVec_inv h (hr x hx)`. Consider the cases of `b with`. Consider the case `some al`. Establish `key : ∀ (hh : h ∈ (T.L.levG i al w).H) (r : AutY T.X D.R i), r ∈ Loc.Cbe (Jat (Pr` using `T.Pr) T.cst.sharp i w.1) (T.L.h i al (inG T w)) → (∀ x, r (Loc.inX T.X.E (D.R.N i) (cOf D.R i) x) = Loc.inX T.X.E (D.R.N i) (cOf D.R i) (κ x)) → chiInv T.Ch T.sel T.xi T.cst i (inG T w) (T.L.h i al (inG T w)) r * (((T.L.levG i al w).lam ⟨h, hh⟩ : T.X.Kˣ) : T.X.K) = 1 := fun hh r …`. Rewrite using `[← H.hL.chrG i al w (⟨h, hh⟩ : (T.L.levG i al w).H)⁻¹ κ r h1 h2 hr', ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `z ⟨hh, rfl⟩`. Take `⟨g, hg, hgr⟩` from `(H.hL.grpG i al w h⁻¹).1 (inv_mem hh)`. Establish `hgi : g ∈ GLint T.X.E (D.R.N i) w.1` using `H.hL.int i al (inG T w) hg`. Establish `hk : κ * g⁻¹ ∈ prCat (Pr` using `T.Pr) T.cst.sharp i w.1 (T.L.h i al (inG T w)) := H.mem_prC al (P := inG T w) w.2 (mul_mem hκ (inv_mem hgi)) fun x hx => by`.
+
+Establish `hx' : g⁻¹ x ∈ stdAt T.X.E (D.R.N i) w.1` using `(inv_mem hgi x).2 hx`. Use `show redV w.1 (κ (g⁻¹ x)) = _`. Rewrite using `[hr' _ hx', ← hgr _ hx', show g (g⁻¹ x) = x from g.apply_symm_apply x]`. Establish `hκ'` using `mul_mem hk hg`. Rewrite `hκ'` using `[inv_mul_cancel_right]`.
+
+Take `⟨r, h1, h2⟩` from `hκ'`. Conclude with `⟨_, ⟨r, ⟨h1, h2⟩, rfl⟩, key hh r h1 h2⟩`. Introduce and unpack `v ⟨r, ⟨h1, h2⟩, rfl⟩`. Establish `hh : h ∈ (T.L.levG i al w).H` using `inv_mem_iff.1 ((H.hL.grpG i al w h⁻¹).2 ⟨κ, ⟨r, h1, h2⟩, hr'⟩)`. Conclude with `⟨_, ⟨hh, rfl⟩, key hh r h1 h2⟩`.
+
+Consider the case `none`. Take `rfl` from `hb rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `z ⟨κ₀, h1, h2⟩ replace h1 := (H.topLev hS (inG T w) κ₀ z).1 h1`. Establish `hk : κ₀ * κ ∈ topK T D.R.m (inG T w)` using `H.mem_topK (P := inG T w) w.2 (mul_mem (H.top_glint (P := inG T w) w.2 h1) hκ) fun x hx => by show redV w.1 (κ₀ (κ x)) = _`.
+
+Rewrite using `[h2 _ ((hκ x).2 hx), ← hr x hx]`. Take `⟨v, h3, h4⟩` from `H.top_inv h1 hk`. Rewrite `h3` using `[inv_mul_cancel_left]`. Conclude with `⟨v, h3, by rw [mul_comm, h4]⟩`. Introduce `v h1`.
+
+Take `⟨z, h3, h4⟩` from `H.top_inv h1 (one_mem _)`. Rewrite `h3` using `[mul_one]`. Use `⟨z, ⟨κ⁻¹, (H.topLev hS (inG T w) _ z).2 h3, fun x hx => ?_⟩, h4⟩` and prove the remaining obligations. Rewrite using `[hr _ ((inv_mem hκ x).2 hx), show κ (κ⁻¹ x) = x from κ.apply_symm_apply x]`.
+-/
 theorem Hyp.locG (H : Hyp T) (hS : TopSame T abelian₂ dep) {i : ℕ} {b : Option (T.L.β i)} (hb : b = none → i = D.R.m)
     (w : T.Pr.vGs) (h : GL (Fin (D.R.N i)) (𝓞 T.X.E ⧸ w.1.asIdeal)) {κ : T.AutX i}
     (hκ : κ ∈ GLint T.X.E (D.R.N i) w.1)
@@ -765,6 +1029,19 @@ theorem Hyp.locG (H : Hyp T) (hS : TopSame T abelian₂ dep) {i : ℕ} {b : Opti
       refine ⟨z, ⟨κ⁻¹, (H.topLev hS (inG T w) _ z).2 h3, fun x hx => ?_⟩, h4⟩
       rw [hr _ ((inv_mem hκ x).2 hx), show κ (κ⁻¹ x) = x from κ.apply_symm_apply x]
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `some al`. Establish `key : ∀ (hc : c ∈ (T.L.levQ i al P).H) (r : AutY T.X D.R i), r ∈ Loc.Cbe (Jat (Pr` using `T.Pr) T.cst.sharp i P.1) (T.L.h i al (inQ T P)) → (∀ x, r (Loc.inX T.X.E (D.R.N i) (cOf D.R i) x) = Loc.inX T.X.E (D.R.N i) (cOf D.R i) ((c⁻¹).1 x)) → chiInv T.Ch T.sel T.xi T.cst i (inQ T P) (T.L.h i al (inQ T P)) r * (((T.L.levQ i al P).lam ⟨c, hc⟩ : T.X.Kˣ) : T.X.K) = 1 := fun …`. Rewrite using `[← H.hL.chrQ i al P (⟨c, hc⟩ : (T.L.levQ i al P).H)⁻¹ r h1 h2, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `z ⟨hc, rfl⟩`. Establish `h0` using `inv_mem hc`. Rewrite `h0` using `[H.hL.grpQ i al P, Subgroup.mem_subgroupOf]`. Take `⟨r, h1, h2⟩` from `h0`. Conclude with `⟨_, ⟨r, ⟨h1, h2⟩, rfl⟩, key hc r h1 h2⟩`.
+
+Introduce and unpack `v ⟨r, ⟨h1, h2⟩, rfl⟩`. Establish `hc : c ∈ (T.L.levQ i al P).H`. Rewrite using `[← inv_mem_iff, H.hL.grpQ i al P, Subgroup.mem_subgroupOf]`. Conclude with `⟨r, h1, h2⟩`. Conclude with `⟨_, ⟨hc, rfl⟩, key hc r h1 h2⟩`.
+
+Consider the case `none`. Take `rfl` from `hb rfl`. Prove the components needed by the constructor for the conclusion. Introduce `z h1 replace h1 := (H.topLev hS (inQ T P) c.1 z).1 h1`. Take `⟨v, h3, h4⟩` from `H.top_inv h1 (one_mem _)`.
+
+Rewrite `h3` using `[mul_one]`. Conclude with `⟨v, h3, by rw [mul_comm, h4]⟩`. Introduce `v h1`. Take `⟨z, h3, h4⟩` from `H.top_inv h1 (one_mem _)`. Rewrite `h3` using `[mul_one, Subgroup.coe_inv, inv_inv]`.
+
+Conclude with `⟨z, (H.topLev hS (inQ T P) _ z).2 h3, h4⟩`.
+-/
 theorem Hyp.locQ (H : Hyp T) (hS : TopSame T abelian₂ dep) {i : ℕ} {b : Option (T.L.β i)} (hb : b = none → i = D.R.m)
     (P : QE T.sel (T.xi : Chr T.X.F T.X.E T.X.K)) (c : GLint T.X.E (D.R.N i) P.1) :
     (∀ z, LocQ T abelian₂ dep i b P c z → ∃ v, LocB T i b (inQ T P) (c⁻¹).1 v ∧ v * z = 1) ∧
@@ -802,6 +1079,9 @@ theorem Hyp.locQ (H : Hyp T) (hS : TopSame T abelian₂ dep) {i : ℕ} {b : Opti
       rw [mul_one, Subgroup.coe_inv, inv_inv] at h3
       exact ⟨z, (H.topLev hS (inQ T P) _ z).2 h3, h4⟩
 
+/- English proof (translation)
+Establish `hd : Disjoint T.Pr.vGs (QE T.sel (T.xi : Chr T.X.F T.X.E T.X.K))` using `Finset.disjoint_right.2 fun P hP => H.disj ⟨P, hP⟩`. Establish `e : (∏ P, v P) * ((∏ w, zG w) * ∏ P, zQ P) = 1`. Rewrite using `[prod_union_sub hd v, mul_mul_mul_comm, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, Finset.prod_eq_one fun w _ => h1 w, Finset.prod_eq_one fun w _ => h2 w, mul_one]`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← map_mul, e, map_one]`.
+-/
 theorem Hyp.prod_eq (H : Hyp T) {v : T.SB → T.X.K} {zG : T.Pr.vGs → T.X.K}
     {zQ : QE T.sel (T.xi : Chr T.X.F T.X.E T.X.K) → T.X.K} (h1 : ∀ w, v (inG T w) * zG w = 1)
     (h2 : ∀ P, v (inQ T P) * zQ P = 1) : (T.s.σ₀ (∏ P, v P))⁻¹ = T.s.σ₀ ((∏ w, zG w) * ∏ P, zQ P) := by
@@ -814,6 +1094,23 @@ theorem Hyp.prod_eq (H : Hyp T) {v : T.SB → T.X.K} {zG : T.Pr.vGs → T.X.K}
   apply inv_eq_of_mul_eq_one_right
   rw [← map_mul, e, map_one]
 
+/- English proof (translation)
+Establish `hc : p'.2.2 = (fun v => γ.1 v) '' p.2.2 ↔ a'.2.2 = (fun v => γ.1 v) '' a.2.2`. Distinguish the cases in `hm : i + 1 = D.R.m`. Rewrite using `[h.cos hm, h'.cos hm]`. Rewrite using `[(h.cos' hm).1, (h.cos' hm).2, (h'.cos' hm).1, (h'.cos' hm).2, Set.image_empty, Set.image_univ, γ.1.surjective.range_eq]`. Conclude with `iff_of_true rfl rfl`.
+
+Simplify using `only [mov_iff_loc]`. Unfold `ChainData.Moves`. Rewrite using `[hc, h.idx, h'.idx]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, κ, h4, h5⟩`.
+
+Take `⟨v, hv, rfl⟩` from `(inLev_iff T i _ κ α).1 h4`. Establish `hN : p'.2.1.deco.1.N = gmap γ.1 p.2.1.deco.1.N` using `by rw [h2]; rfl`. Establish `hκ : ∀ P, κ P ∈ GLint T.X.E (D.R.N i) P.1` using `fun P => glint_of hN (h5 P)`. Use `choose g hg using fun w : T.Pr.vGs => GlobalTheory.T.integral_gl_reduction_mod_prime _ _ w.1 (κ (inG T w))⁻¹ (inv_mem (hκ (inG T w)))`. Establish `hg' : ∀ w : T.Pr.vGs, ∀ x ∈ stdAt T.X.E (D.R.N i) w.1, redV w.1 x = (g w).1.mulVec (redV w.1 (κ (inG T w) x))` using `fun w x hx => by`.
+
+Rewrite using `[← hg w _ ((hκ (inG T w) x).2 hx), show (κ (inG T w))⁻¹ (κ (inG T w) x) = x from LinearEquiv.symm_apply_apply _ x]`. Set `c : GLQ T.X.E (D.R.N i) (QE T.sel (T.xi : Chr T.X.F T.X.E T.X.K))` to `fun P => (⟨κ (inQ T P), hκ (inQ T P)⟩)⁻¹`. Establish `hcq : ∀ P, κ (inQ T P) = ((c P)⁻¹).1` using `fun P => by simp only [c, inv_inv]`. Use `choose zG hz1 hz2 using fun w => (H.locG hS hb w (g w) (hκ (inG T w)) (hg' w)).2 _ (hv (inG T w))`. Use `choose zQ hz3 hz4 using fun P => (H.locQ hS hb P (c P)).2 (v (inQ T P)) (hcq P ▸ hv (inQ T P))`.
+
+Conclude with `⟨_, ⟨h1, h3, g, c, (act_iff h h' γ g c κ h5).2 ⟨h2, hg', hcq⟩, zG, zQ, hz1, hz3, rfl⟩, H.prod_eq hz2 hz4⟩`. Introduce and unpack `⟨z, ⟨h1, h3, g, c, h2, zG, zQ, hz1, hz3, rfl⟩, rfl⟩`. Set `κ : T.SB → T.AutX i` to `fun P => (γ.1 * p.2.1.fr P)⁻¹ * p'.2.1.fr P`. Establish `h5 : ∀ P, p'.2.1.fr P = γ.1 * p.2.1.fr P * κ P` using `fun P => by simp only [κ, mul_inv_cancel_left]`. Take `⟨e, hG, hQ⟩` from `(act_iff h h' γ g c κ h5).1 h2`.
+
+Establish `hN : p'.2.1.deco.1.N = gmap γ.1 p.2.1.deco.1.N` using `by rw [e]; rfl`. Establish `hκ : ∀ P, κ P ∈ GLint T.X.E (D.R.N i) P.1` using `fun P => glint_of hN (h5 P)`. Use `choose vG hv1 hv2 using fun w => (H.locG hS hb w (g w) (hκ (inG T w)) (hG w)).1 _ (hz1 w)`. Use `choose vQ hv3 hv4 using fun P => (H.locQ hS hb P (c P)).1 _ (hz3 P)`. Set `v : T.SB → T.X.K` to `fun P => if hw : P.1 ∈ T.Pr.vGs then vG ⟨P.1, hw⟩ else vQ ⟨P.1, (Finset.mem_union.mp P.2).resolve_left hw⟩`.
+
+Establish `e1 : ∀ w, v (inG T w) = vG w` using `fun w => dif_pos w.2`. Establish `e2 : ∀ P, v (inQ T P) = vQ P` using `fun P => dif_neg (H.disj P)`. Use `⟨h1, e, h3, κ, (inLev_iff T i _ κ _).2 ⟨v, fun P => ?_, (H.prod_eq (fun w => by rw [e1, hv2]) fun P => by rw [e2, hv4]).symm⟩, h5⟩` and prove the remaining obligations. Break down `sb_cases P with ⟨w, rfl⟩ | ⟨Q, rfl⟩` into its components or cases. Rewrite using `[e1]`.
+
+Conclude with `hv1 w`. Rewrite using `[e2, hQ]`. Conclude with `hv3 Q`.
+-/
 theorem Hyp.moves_iff (H : Hyp T) (hS : TopSame T abelian₂ dep) {i : ℕ} {a a' : APt T i} {p p' : T.Lab i}
     (h : Over T i a p) (h' : Over T i a' p') (hb : a.2.1 = none → i = D.R.m) (γ : UF T.X.E (D.R.N i)) (α : ℂ) :
     T.Moves i p p' γ α ↔ ∃ z, AmbientLatticeAvoidance.Mov T.Ch T.sel T.xi T.cst T.L abelian₂ dep γ a a' z ∧ α = T.s.σ₀ z := by
@@ -869,11 +1166,25 @@ variable {D : D7} {u : D.what₂.Word} {μ : D.what₂.Tup} {T : ChainData D u �
   {abelian₂ : HeightOneSpectrum (𝓞 T.X.E) → Submodule (𝓞 T.X.E) (Sp T.X.E (AmbientLatticeAvoidance.rkTop D.R))}
   {dep : HeightOneSpectrum (𝓞 T.X.E) → ℕ}
 
+/- English proof (translation)
+Use `choose v hv using fun P => locB_one (T := T) i x.1 P`. Use `⟨_, rfl, (one_smul _ x.2.1.deco).symm, (Set.image_id _).symm, fun _ => 1, (inLev_iff T i _ _ _).2 ⟨v, hv, rfl⟩, fun P => rfl⟩` and prove the remaining obligations.
+-/
 theorem moves_refl {i : ℕ} (x : T.Lab i) : ∃ a, T.Moves i x x 1 a := by
   choose v hv using fun P => locB_one (T := T) i x.1 P
   refine ⟨_, rfl, (one_smul _ x.2.1.deco).symm, (Set.image_id _).symm, fun _ => 1,
     (inLev_iff T i _ _ _).2 ⟨v, hv, rfl⟩, fun P => rfl⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, κ, h4, h5⟩` from `h`. Take `⟨h1', h2', h3', κ', h4', h5'⟩` from `h'`. Take `⟨v, hv, -⟩` from `(inLev_iff T i _ κ a).1 h4`. Take `⟨v', hv', -⟩` from `(inLev_iff T i _ κ' a').1 h4'`. Establish `e : x'.1 = x.1` using `h1'.symm.trans h1`.
+
+Rewrite `hv'` using `[e]`. Establish `hl : ∀ P, ∃ w, LocB T i x.1 P (κ P * (κ' P)⁻¹) w` using `fun P => by`. Use `H.locB_div hb (H.locB_div hb ⟨_, hv P⟩ (locB_one i _ P)) (H.locB_div hb ⟨_, hv' P⟩ (locB_one i _ P))` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one, inv_inv]`. Then use the resulting hypothesis. Use `choose w hw using hl`.
+
+Use `⟨_, e, ?_, ?_, fun P => κ P * (κ' P)⁻¹, (inLev_iff T i _ _ _).2 ⟨w, hw, rfl⟩, fun P => ?_⟩` and prove the remaining obligations. Establish `: ((γ'⁻¹ * γ, 1) : UF T.X.E (D.R.N i) × GLG T.X.E (D.R.N i) ∅) = (γ', 1)⁻¹ * (γ, 1)` using `by simp`. Rewrite using `[this, mul_smul, ← h2, h2', inv_smul_smul]`. Establish `: (fun v => (γ'⁻¹ * γ).1 v) '' x.2.2 = (fun v => γ'.1.symm v) '' ((fun v => γ.1 v) '' x.2.2)`. Rewrite using `[Set.image_image]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, ← h3, h3', Set.image_image]`. Simplify using the standard rewrite rules. Use `(h5' P).symm.trans (h5 P)` as an intermediate fact. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Hyp.moves_eucl (H : Hyp T) {i : ℕ} {x x' y : T.Lab i} (hb : x.1 = none → i = D.R.m)
     {γ γ' : UF T.X.E (D.R.N i)} {a a' : ℂ} (h : T.Moves i x y γ a) (h' : T.Moves i x' y γ' a') :
     ∃ a'', T.Moves i x x' (γ'⁻¹ * γ) a'' := by
@@ -900,6 +1211,13 @@ theorem Hyp.moves_eucl (H : Hyp T) {i : ℕ} {x x' y : T.Lab i} (hb : x.1 = none
     calc x'.2.1.fr P = γ'.1⁻¹ * (γ'.1 * x'.2.1.fr P * κ' P) * (κ' P)⁻¹ := by group
       _ = _ := by rw [this]; group
 
+/- English proof (translation)
+Take `⟨y, hy, hYd⟩` from `hY`. Establish `h0 : repY Y ∈ Y` using `Classical.epsilon_spec (p := fun z => z ∈ Y) ⟨y, by simp [hYd]⟩`. Establish `h1` using `(mem_locLat _ _ _ _).1 hy P`. Establish `h2` using `(mem_locLat _ _ _ _).1 (hYd.le h0) P`. Rewrite `h1`, `h2` using `[if_pos hw]`.
+
+Rewrite `h1` using `[zpow_neg, zpow_one, inv_inv]`. Rewrite `h2` using `[zpow_zero, inv_one, one_smul]`. Establish `h3` using `Submodule.smul_mem _ ((qOf P.1 : ℕ) : 𝓞 T.X.E) h2`. Rewrite `h3` using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul T.X.E]`. Use `add_mem h3 h1` as an intermediate fact.
+
+Rewrite `this` using `[← smul_add, sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem repY_mem {n : ℕ} {N : Submodule (𝓞 T.X.E) (Sp T.X.E n)} {Y : Set (Sp T.X.E n)}
     (hY : Y ∈ ybSet T.sel T.xi T.cst N) {P : T.SB} (hw : P.1 ∈ T.Pr.vGs) :
     (qOf P.1 : T.X.E) • repY Y ∈ localization₂ P.1.asIdeal N := by
@@ -915,6 +1233,17 @@ theorem repY_mem {n : ℕ} {N : Submodule (𝓞 T.X.E) (Sp T.X.E n)} {Y : Set (S
   have := add_mem h3 h1
   rwa [← smul_add, sub_add_cancel] at this
 
+/- English proof (translation)
+Break down `sb_cases P with ⟨w, rfl⟩ | ⟨Q, rfl⟩` into its components or cases. Establish `hf : frsF T.sel T.xi a.1 (inG T w) = a.1.deco.1.liftFr w` using `dif_pos w.2`. Take `⟨s1, s2⟩` from `GlobalTheory.T.decoration_lift_std_lattice_reduction _ _ _ _ a.1.deco w`. Establish `hq0 : (qOf w.1 : T.X.E) ≠ 0` using `Nat.cast_ne_zero.2 (qOf_ne w.1)`. Set `k : T.AutX (D.R.m - 2 + 1)` to `(a.1.deco.1.liftFr w)⁻¹ * p.2.1.fr (inG T w)`.
+
+Establish `hk0 : ∀ x, a.1.deco.1.liftFr w (k x) = p.2.1.fr (inG T w) x` using `fun x => LinearEquiv.apply_symm_apply _ _`. Establish `hk1 : k ∈ GLint T.X.E _ w.1` using `fun x => by`. Rewrite using `[← s1, hk0, ← fr_spec p.2.1 (inG T w) x, h.lat]`. Establish `hk` using `(cong_iff (GlobalTheory.T.integral_div_uniformizer_of_red_zero _ _ H.hX H.hP _ w.2) k).2 ⟨hk1, fun x hx => by`. Rewrite using `[← s2 _ ((hk1 x).2 hx), hk0, h.frG w x hx]⟩`.
+
+Establish `hx : (qOf w.1 : T.X.E) • (p.2.1.fr (inG T w)).symm (repY Y) ∈ stdAt T.X.E _ w.1`. Rewrite using `[← fr_spec p.2.1 (inG T w), map_smul, LinearEquiv.apply_symm_apply, h.lat]`. Conclude with `repY_mem hY (P := inG T w) w.2`. Establish `h3` using `hk.2 _ hx`. Rewrite `h3` using `[map_smul, ← smul_sub, inv_smul_smul₀ hq0]`.
+
+Establish `h4 : k ((p.2.1.fr (inG T w)).symm (repY Y)) = (a.1.deco.1.liftFr w).symm (repY Y)`. Rewrite using `[LinearEquiv.eq_symm_apply, hk0, LinearEquiv.apply_symm_apply]`. Rewrite `h3` using `[h4]`. Establish `h5` using `H.hL.psiInv al (inG T w) x₀ ((p.2.1.fr (inG T w)).symm (repY Y)) _ fun l => by`. Rewrite using `[if_pos w.2, pow_zero, inv_one, one_mul]`.
+
+Conclude with `(mem_std _).1 h3 l`. Rewrite `h5` using `[add_sub_cancel]`. Rewrite using `[hf, h5]`. Establish `hf : frsF T.sel T.xi a.1 (inQ T Q) = a.1.fr Q` using `dif_neg (H.disj Q)`. Rewrite using `[hf, h.frQ]`.
+-/
 theorem Hyp.psi_eq (H : Hyp T) {a : APt T (D.R.m - 2 + 1)} {p : T.Lab (D.R.m - 2 + 1)} (h : Over T _ a p)
     {Y : Set (Sp T.X.E (D.R.N (D.R.m - 2 + 1)))} (hY : Y ∈ ybSet T.sel T.xi T.cst a.1.deco.1.N) (P : T.SB)
     (al : T.L.β (D.R.m - 2)) (x₀ : HomE T.X.E (D.R.N (D.R.m - 2)) (D.R.N (D.R.m - 2 + 1))) :
@@ -947,6 +1276,13 @@ theorem Hyp.psi_eq (H : Hyp T) {a : APt T (D.R.m - 2 + 1)} {p : T.Lab (D.R.m - 2
   · have hf : frsF T.sel T.xi a.1 (inQ T Q) = a.1.fr Q := dif_neg (H.disj Q)
     rw [hf, h.frQ]
 
+/- English proof (translation)
+Establish `hm` using `D.R.two_le_m`. Establish `key : i + 1 = D.R.m → (AmbientLatticeAvoidance.YbOk T.Ch T.sel T.xi T.cst T.L a.1 a.2.2 ↔ p.2.2 ∈ ybSet T.sel T.xi T.cst p.2.1.deco.1.N ∧ ∀ P : T.SB, ∃ (al : T.L.β (D.R.m - 2)) (x₀ : HomE T.X.E (D.R.N (D.R.m - 2)) (D.R.N (D.R.m - 2 + 1))), PsiAt T.Ch T.sel T.xi T.cst (D.R.m - 2) …` using `fun h1 => by`. Establish `h2` using `h.cos h1`. Take `rfl : i = D.R.m - 2 + 1` from `by omega`. Unfold `AmbientLatticeAvoidance.YbOk`.
+
+Rewrite using `[h2, h.lat]`. Use `and_congr_right fun hY => forall_congr' fun P => exists_congr fun al => exists_congr fun x₀ => ?_` and prove the remaining obligations. Rewrite using `[cpy_self, ← H.psi_eq h hY P al x₀, show ∀ y, AmbientLatticeAvoidance.reix T.X.E _ _ y = cpy T.X.E _ _ y from fun _ => rfl, cpy_self]`. Unfold `AmbientLatticeAvoidance.Pt.Valid ChainData.Admissible`. Rewrite using `[h.idx, Option.isSome_iff_ne_none]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, -⟩`. Conclude with `⟨h1, fun e => h2 e.ge, fun e => (h.cos' e).2, fun e => (key e).1 (h3 e)⟩`. Introduce and unpack `⟨h1, h2, -, h4⟩`. Conclude with `⟨h1, fun e => h2 (le_antisymm hi e), fun e => (key e).2 (h4 e), fun e => (h.cos' e).1⟩`.
+-/
 theorem Hyp.valid_iff (H : Hyp T) {i : ℕ} (hi : i ≤ D.R.m) {a : APt T i} {p : T.Lab i} (h : Over T i a p) :
     AmbientLatticeAvoidance.Pt.Valid T.Ch T.sel T.xi T.cst T.L a ↔ T.Admissible i p := by
   have hm := D.R.two_le_m
@@ -969,6 +1305,9 @@ theorem Hyp.valid_iff (H : Hyp T) {i : ℕ} (hi : i ≤ D.R.m) {a : APt T i} {p 
   · rintro ⟨h1, h2, -, h4⟩
     exact ⟨h1, fun e => h2 (le_antisymm hi e), fun e => (key e).2 (h4 e), fun e => (h.cos' e).1⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `h.1 (lt_of_le_of_ne hi hn)` as an intermediate fact. Rewrite `this` using `[e]`. Simplify using `at this`.
+-/
 theorem none_top {i : ℕ} (hi : i ≤ D.R.m) {p : T.Lab i} (h : T.Admissible i p) (e : p.1 = none) : i = D.R.m := by
   by_contra hn
   have := h.1 (lt_of_le_of_ne hi hn)
@@ -981,6 +1320,17 @@ def RepOver (rep : ∀ i, (D.chTw u μ).cls i → APt T i) : Prop := ∀ i ≤ D
 
 variable {rep : ∀ i, (D.chTw u μ).cls i → APt T i}
 
+/- English proof (translation)
+Use `forall₂_congr fun i hi => ?_` and prove the remaining obligations. Establish `hv : (∀ c, AmbientLatticeAvoidance.Pt.Valid T.Ch T.sel T.xi T.cst T.L (rep i c)) ↔ ∀ c, T.Admissible i (T.rep i c)` using `forall_congr' fun c => H.valid_iff hi (hr i hi c)`. Rewrite using `[hv]`. Use `and_congr_right fun hA => ?_` and prove the remaining obligations. Establish `hb : ∀ c, (rep i c).2.1 = none → i = D.R.m` using `fun c e => none_top hi (hA c) ((hr i hi c).idx.trans e)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ x hx`. Take `⟨a, ha⟩` from `exists_down x hx.2.2.1`. Take `⟨c, γ, z, hc⟩` from `h2 a ((H.valid_iff hi ha).2 hx)`. Establish `hc'` using `(H.moves_iff hS (hr i hi c) ha (hb c) γ _).2 ⟨z, hc, rfl⟩`.
+
+Use `⟨c, ⟨γ, _, hc'⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `c' ⟨γ', a', h'⟩`. Take `⟨a'', h''⟩` from `H.moves_eucl (none_top hi (hA c')) h' hc'`. Take `⟨z', hz, -⟩` from `(H.moves_iff hS (hr i hi c') (hr i hi c) (hb c') _ _).1 h''`. Conclude with `h1 _ _ _ _ hz`.
+
+Introduce `h`. Use `⟨fun c c' γ z hz => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `(h _ (hA c')).unique ⟨γ, _, (H.moves_iff hS (hr i hi c) (hr i hi c') (hb c) γ _).2 ⟨z, hz, rfl⟩⟩ ⟨1, moves_refl _⟩`. Establish `ho` using `H.over_up a ha.2.2.2`. Take `⟨c, ⟨γ, α, hc⟩, -⟩` from `h _ ((H.valid_iff hi ho).1 ha)`.
+
+Take `⟨z, hz, -⟩` from `(H.moves_iff hS (hr i hi c) ho (hb c) γ α).1 hc`. Conclude with `⟨c, γ, z, hz⟩`.
+-/
 theorem Hyp.cls_iff (H : Hyp T) (hS : TopSame T abelian₂ dep) (hr : RepOver T rep) :
     AmbientLatticeAvoidance.ClsTie T.Ch T.sel T.xi T.cst T.L abelian₂ dep (D.chTw u μ) T.w rep ↔
       ∀ i ≤ D.R.m, (∀ c, T.Admissible i (T.rep i c)) ∧

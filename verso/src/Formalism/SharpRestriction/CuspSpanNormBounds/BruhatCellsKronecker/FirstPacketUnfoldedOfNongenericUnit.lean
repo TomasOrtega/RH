@@ -20,6 +20,11 @@ def ngLoop (u u' : D.what₂.Word) : Set (D.s.Pair u u') :=
 def ngOne (u u' : D.what₂.Word) : Set (D.s.Pair u u') :=
   {p | p ∈ pairsIn D.s (famNG D.s) ∧ D.s.s0 p < 2}
 
+/- English proof (translation)
+Use extensionality with `p`. Simplify using `only [ngLoop, ngOne, Set.mem_union, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `le_or_gt 2 (D.s.s0 p) with h2 | h2` into its components or cases.
+
+Conclude with `Or.inl ⟨h, h2⟩`. Conclude with `Or.inr ⟨h, h2⟩`. Apply the tactic sequence `rintro (h | h) <;> exact h.1`.
+-/
 theorem nongeneric_pairs_eq_loop_union_unit (u u' : D.what₂.Word) :
     (pairsIn D.s (famNG D.s) : Set (D.s.Pair u u')) = ngLoop D u u' ∪ ngOne D u u' := by
   ext p
@@ -31,12 +36,23 @@ theorem nongeneric_pairs_eq_loop_union_unit (u u' : D.what₂.Word) :
     · exact Or.inr ⟨h, h2⟩
   · rintro (h | h) <;> exact h.1
 
+/- English proof (translation)
+The claim follows from `Set.disjoint_left.2 fun _ h1 h2 => absurd h1.2 (not_le.2 h2.2)`.
+-/
 theorem disjoint_nongeneric_loop_unit (u u' : D.what₂.Word) : Disjoint (ngLoop D u u') (ngOne D u u') :=
   Set.disjoint_left.2 fun _ h1 h2 => absurd h1.2 (not_le.2 h2.2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.1.2.1, h.1.2.2.1, Or.inl h.2⟩`.
+-/
 theorem loop_pair_of_nongeneric_loop {u u' : D.what₂.Word} {p : D.s.Pair u u'} (h : p ∈ ngLoop D u u') : loopP D.s p :=
   ⟨h.1.1.2.1, h.1.2.2.1, Or.inl h.2⟩
 
+/- English proof (translation)
+Rewrite using `[gaG_eq D h0 h1]`. Establish `key : ∀ j : Fin 2, 0 < ∏ i ∈ Finset.Icc 1 D.R.k, ((D.host.g j : ℝ) ^ i - 1)`. Introduce `j`. Use `Finset.prod_pos fun i hi => ?_` and prove the remaining obligations. Establish `hg : (2 : ℝ) ≤ (D.host.g j : ℝ)` using `by exact_mod_cast (D.host.g_prime j).two_le`.
+
+Establish `hi1 : 1 ≤ i` using `(Finset.mem_Icc.1 hi).1`. Establish `: (1 : ℝ) < (D.host.g j : ℝ) ^ i` using `one_lt_pow₀ (by linarith) (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_pos (pow_pos (key 0) _) (pow_pos (key 1) _)`.
+-/
 theorem gamma_factor_pos (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 1)) : 0 < gaG D := by
   rw [gaG_eq D h0 h1]
   have key : ∀ j : Fin 2, 0 < ∏ i ∈ Finset.Icc 1 D.R.k, ((D.host.g j : ℝ) ^ i - 1) := by
@@ -48,6 +64,15 @@ theorem gamma_factor_pos (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g
     linarith
   exact mul_pos (pow_pos (key 0) _) (pow_pos (key 1) _)
 
+/- English proof (translation)
+Unfold `UnitaryVolumeMass.f3`. Rewrite using `[finprod_typedPl D h0 h1 (fun q => 1 + 3 / q)]`. Establish `key : ∀ j : Fin 2, 0 ≤ 1 + 3 / (D.host.g j : ℝ) ∧ 1 + 3 / (D.host.g j : ℝ) ≤ Real.exp (3 / 2)`. Introduce `j`. Establish `hg : (2 : ℝ) ≤ (D.host.g j : ℝ)` using `by exact_mod_cast (D.host.g_prime j).two_le`.
+
+Establish `h3 : 3 / (D.host.g j : ℝ) ≤ 3 / 2`. Rewrite using `[div_le_div_iff₀ (by linarith) (by norm_num)]; linarith`. Establish `hp : 0 ≤ 3 / (D.host.g j : ℝ)` using `by positivity`. Use `⟨by linarith, ?_⟩` and prove the remaining obligations. Use `Real.add_one_le_exp (3 / 2 : ℝ)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨mul_nonneg (pow_nonneg (key 0).1 _) (pow_nonneg (key 1).1 _), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cubic_factor_bounds (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 1)) :
     0 ≤ UnitaryVolumeMass.f3 D ∧ UnitaryVolumeMass.f3 D ≤ Real.exp (3 * (D.R.f : ℝ)) := by
   unfold UnitaryVolumeMass.f3
@@ -76,9 +101,21 @@ def NGOneAt (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C : ℝ) : Prop 
       Real.exp (C * (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ) * large₂.sc.L) *
       ((D.duS u : ℝ) * (D.duS u' : ℝ)) / D.what₂.Dstar
 
+/- English proof (translation)
+Rewrite using `[← D.Dstar_eq u]`. Conclude with `(D.mem u).A.Dstar_pos`.
+-/
 theorem Dstar_pos' (u : D.what₂.Word) : 0 < D.what₂.Dstar := by
   rw [← D.Dstar_eq u]; exact (D.mem u).A.Dstar_pos
 
+/- English proof (translation)
+Establish `hg` using `gamma_factor_pos D h0 h1`. Use `set R : ℝ := Real.exp (-(c * (D.R.k : ℝ) * (D.R.f : ℝ) * Real.log (D.R.k : ℝ))) * ((D.duS u : ℝ) * (D.duS u' : ℝ)) / D.what₂.Dstar with hR`. Establish `hfin : ∀ s : Finset (ngLoop D u u'), ∑ p ∈ s, ‖D.s.pval p.1‖ ≤ R / gaG D`. Introduce `s`. Establish `h` using `hB (s.map (Function.Embedding.subtype _)) (by`.
+
+Introduce `p hp`. Take `⟨q, _, rfl⟩` from `Finset.mem_map.1 hp`. Conclude with `loop_pair_of_nongeneric_loop D q.2)`. Rewrite `h` using `[Finset.sum_map]`. Rewrite using `[le_div_iff₀ hg, mul_comm]`.
+
+Conclude with `h`. Establish `hs : Summable (fun p : ngLoop D u u' => ‖D.s.pval p.1‖)` using `summable_of_sum_le (fun _ => norm_nonneg _) hfin`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Use `hs.tsum_le_of_sum_le hfin` as an intermediate fact. Rewrite `this` using `[le_div_iff₀ hg, mul_comm]`.
+
+Conclude with `this`.
+-/
 theorem nongeneric_loop_sum_bound (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 1)) {u u' : D.what₂.Word} {c : ℝ}
     (hB : UnitaryVolumeMass.LoopPairSumBound D u u' c) :
     Summable (fun p : ngLoop D u u' => ‖D.s.pval p.1‖) ∧
@@ -104,6 +141,29 @@ theorem nongeneric_loop_sum_bound (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D 
   rw [le_div_iff₀ hg, mul_comm] at this
   exact this
 
+/- English proof (translation)
+Introduce `u u'`. Take `⟨hA, hAb⟩` from `nongeneric_loop_sum_bound D h0 h1 (hB3 u u')`. Take `⟨hB, hBb⟩` from `hN u u'`. Establish `hg` using `gamma_factor_pos D h0 h1`. Take `⟨hf0, hf1⟩` from `cubic_factor_bounds D h0 h1`.
+
+Establish `hdis` using `disjoint_nongeneric_loop_unit D u u'`. Establish `hUn` using `HasSum.add_disjoint (f := fun q : D.s.Pair u u' => ‖D.s.pval q‖) hdis hA.hasSum hB.hasSum`. Establish `hUc` using `HasSum.add_disjoint (f := fun q : D.s.Pair u u' => D.s.pval q) hdis (Summable.of_norm hA).hasSum (Summable.of_norm hB).hasSum`. Establish `hsumP : Summable (fun p : (pairsIn D.s (famNG D.s) : Set (D.s.Pair u u')) => ‖D.s.pval p.1‖)`. Rewrite using `[nongeneric_pairs_eq_loop_union_unit D u u']`.
+
+Conclude with `hUn.summable`. Establish `hts : (∑' p : (pairsIn D.s (famNG D.s) : Set (D.s.Pair u u')), D.s.pval p.1) = (∑' p : ngLoop D u u', D.s.pval p.1) + ∑' p : ngOne D u u', D.s.pval p.1`. Rewrite using `[nongeneric_pairs_eq_loop_union_unit D u u']`. Conclude with `hUc.tsum_eq`. Establish `hle` using `h2a u u' (famNG D.s) (Or.inr (Or.inl rfl)) (fun t ht => ht.2.1) hsumP`.
+
+Rewrite `hle` using `[hts, Complex.add_re]`. Establish `hre : (∑' p : ngLoop D u u', D.s.pval p.1).re ≤ ∑' p : ngLoop D u u', ‖D.s.pval p.1‖` using `(Complex.re_le_norm _).trans (norm_tsum_le_tsum_norm hA)`. Use `set Q : ℝ := ((D.duS u : ℝ) * (D.duS u' : ℝ)) / D.what₂.Dstar with hQ`. Establish `hQ0 : 0 ≤ Q` using `div_nonneg (by positivity) (Dstar_pos' D u).le`. Use `set X : ℝ := (D.R.k : ℝ) * (D.R.f : ℝ) * Real.log (D.R.k : ℝ) with hX`.
+
+Use `set Y : ℝ := (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ) * large₂.sc.L with hY`. Use `set P2 : ℝ := (2 : ℝ) ^ (-((D.R.k : ℝ) - 2 * (D.R.rS : ℝ) - 5)) with hP2`. Establish `hP20 : 0 ≤ P2` using `by positivity`. Establish `hf : (0 : ℝ) ≤ (D.R.f : ℝ)` using `Nat.cast_nonneg _`. Establish `e1 : Real.exp (3 * (D.R.f : ℝ)) * Real.exp (-(cL * X)) ≤ Real.exp (-(c * X))`.
+
+Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `: 3 * (D.R.f : ℝ) ≤ ((cL - c) * (D.R.k : ℝ) * Real.log (D.R.k : ℝ)) * (D.R.f : ℝ)` using `mul_le_mul_of_nonneg_right hk hf`. Rewrite using `[hX]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `e2 : Real.exp (3 * (D.R.f : ℝ)) * Real.exp (C * Y) ≤ Real.exp ((C + 1) * Y)`. Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `: 3 * (D.R.f : ℝ) ≤ ((D.R.m : ℝ) ^ 5 * large₂.sc.L) * (D.R.f : ℝ)` using `mul_le_mul_of_nonneg_right hL hf`. Rewrite using `[hY]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `a1 : gaG D * (∑' p : ngLoop D u u', D.s.pval p.1).re ≤ Real.exp (-(cL * X)) * Q`. Use `(mul_le_mul_of_nonneg_left hre hg.le).trans hAb` as an intermediate fact. Rewrite `this` using `[mul_div_assoc]`. Establish `hx : cL * (D.R.k : ℝ) * (D.R.f : ℝ) * Real.log (D.R.k : ℝ) = cL * X` using `by rw [hX]; ring`.
+
+Rewrite `this` using `[hx]`. Then use the resulting hypothesis. Establish `a2 : gaG D * (∑' p : ngOne D u u', D.s.pval p.1).re ≤ P2 * Real.exp (C * Y) * Q`. Use `hBb` as an intermediate fact. Rewrite `this` using `[mul_div_assoc]`. Establish `hy : C * (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ) * large₂.sc.L = C * Y` using `by rw [hY]; ring`.
+
+Rewrite `this` using `[hy]`. Then use the resulting hypothesis. Establish `hx' : c * (D.R.k : ℝ) * (D.R.f : ℝ) * Real.log (D.R.k : ℝ) = c * X` using `by rw [hX]; ring`. Establish `hy' : (C + 1) * (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ) * large₂.sc.L = (C + 1) * Y` using `by rw [hY]; ring`. Unfold `UnitaryVolumeMass.Kng`. Rewrite using `[hx', hy', mul_div_assoc]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem first_packet_bound_of_unit_bounds (large₂ : SizeData₂ D) {cL c C : ℝ}
     (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 1))
     (h2a : UnitaryVolumeMass.c2aG D) (hB3 : ∀ u u', UnitaryVolumeMass.LoopPairSumBound D u u' cL) (hN : ∀ u u', NGOneAt D large₂ u u' C)
@@ -174,21 +234,36 @@ theorem first_packet_bound_of_unit_bounds (large₂ : SizeData₂ D) {cL c C : �
           (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left e2 hP20) hQ0)
     _ = (Real.exp (-(c * X)) + P2 * Real.exp ((C + 1) * Y)) * Q := by ring
 
+/- English proof (translation)
+The claim follows from `BesselShellMomentBounds.theorem_B_second_bound_ge_64 D C hC`.
+-/
 theorem theorem_B_second_bound_of_large {C : ℝ} (hC : 64 ≤ C) : UniformConstantsAndStatements.ConjugateSelfDualCharacter D C := BesselShellMomentBounds.theorem_B_second_bound_ge_64 D C hC
 
+/- English proof (translation)
+The claim follows from `BesselShellMomentBounds.theorem_B_first_bound_one_place hCg hO`.
+-/
 theorem theorem_B_first_bound_of_one_place {Ch Cg CK : ℝ} {A : ℕ} (hCg : 2 ≤ Cg)
     (hO : BesselShellMomentBounds.OnePlace D Ch Cg 0 (fun _ _ _ _ => True) A CK 4 0) : UniformConstantsAndStatements.TelescopingFormStatement D Ch Cg (CK + 6) :=
   BesselShellMomentBounds.theorem_B_first_bound_one_place hCg hO
 
+/- English proof (translation)
+The claim follows from `BesselShellMomentBounds.theorem_B_weighted_bound_one_place hCg hO`.
+-/
 theorem theorem_B_third_bound_of_one_place {Aw Ch Cg CK : ℝ} {A : ℕ} (hCg : 2 ≤ Cg)
     (hO : BesselShellMomentBounds.OnePlace D Ch Cg 0
       (fun _ _ _ X => ∀ v, ThB.AllGaps (X.L v).lam (Cg * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4)) A CK 5
       (Aw * ((D.R.rS : ℝ) + 1) ^ 2)) : UniformConstantsAndStatements.TheoremBWeightedBound D Aw Ch Cg (CK + 6) :=
   BesselShellMomentBounds.theorem_B_weighted_bound_one_place hCg hO
 
+/- English proof (translation)
+The claim follows from `(X.hL v).2.2.1`.
+-/
 theorem bessel_datum_character_eq {Ch Cg : ℝ} {T T' : ℕ} {b dist : ℝ} (X : ThB.BData D Ch Cg T T' b dist) (v : D.what₂.Tau) :
     (X.L v).c = cOfDpsi ((Bridge.kaS D : ℝ) : ℂ) := (X.hL v).2.2.1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hS.subtype _, hb⟩`.
+-/
 theorem NGOneAt_of_pairAbs (large₂ : SizeData₂ D) {u u' : D.what₂.Word} {C : ℝ}
     (hS : Summable (fun p : D.s.Pair u u' => ‖D.s.pval p‖))
     (hb : gaG D * (∑' p : ngOne D u u', D.s.pval p.1).re ≤
@@ -197,6 +272,9 @@ theorem NGOneAt_of_pairAbs (large₂ : SizeData₂ D) {u u' : D.what₂.Word} {C
         ((D.duS u : ℝ) * (D.duS u' : ℝ)) / D.what₂.Dstar) : NGOneAt D large₂ u u' C :=
   ⟨hS.subtype _, hb⟩
 
+/- English proof (translation)
+Introduce `u` and use `⟨(Summable.of_norm (hS u)).subtype _, hb u⟩`.
+-/
 theorem second_packet_bound_of_summable (large₂ : SizeData₂ D) {C : ℝ}
     (hS : ∀ u : D.what₂.Word, Summable (fun p : D.s.Pair u u => ‖D.s.pval p‖))
     (hb : ∀ u : D.what₂.Word, ‖(gaG D : ℂ) * ∑' p : UnitaryVolumeMass.scalG D u u, D.s.pval p.1‖ ≤
@@ -204,6 +282,17 @@ theorem second_packet_bound_of_summable (large₂ : SizeData₂ D) {C : ℝ}
     UnitaryVolumeMass.GenericScalarPairSum D large₂ C :=
   fun u => ⟨(Summable.of_norm (hS u)).subtype _, hb u⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, _⟩` from `hH`. Establish `hC' : 0 < C'` using `by have := large₂.CGam_pos; linarith`. Establish `hL : 0 ≤ large₂.sc.L`. Unfold `Scale.L; exact Real.rpow_nonneg (by have := large₂.sc.one_lt_alt; linarith) _`. Establish `hm2 : (2 : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast D.R.two_le_m`.
+
+Establish `hf : (D.R.m : ℝ) ^ 4 ≤ (D.R.f : ℝ)` using `by exact_mod_cast h3`. Establish `hlog : 1 ≤ Real.log (D.R.k : ℝ)`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hk0 : (0 : ℝ) ≤ (D.R.k : ℝ)` using `by linarith`. Establish `s1 : (D.R.k : ℝ) ≤ (D.R.k : ℝ) * Real.log (D.R.k : ℝ)` using `by nlinarith`. Establish `hm6 : 0 ≤ (D.R.m : ℝ) ^ 6 * large₂.sc.L` using `by positivity`. Establish `s2 : C' * (D.R.m : ℝ) ^ 5 * (D.R.m : ℝ) ^ 4 * large₂.sc.L ≤ C' * (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ) * large₂.sc.L`. Apply `mul_le_mul_of_nonneg_right _ hL` to reduce the goal to its premises.
+
+Conclude with `mul_le_mul_of_nonneg_left hf (by positivity)`. Establish `s3 : Cl * ((D.R.m : ℝ) ^ 6 * large₂.sc.L) ≤ C' * (D.R.m : ℝ) ^ 5 * (D.R.m : ℝ) ^ 4 * large₂.sc.L`. Establish `e : C' * (D.R.m : ℝ) ^ 5 * (D.R.m : ℝ) ^ 4 * large₂.sc.L = (C' * (D.R.m : ℝ) * (D.R.m : ℝ) ^ 2) * ((D.R.m : ℝ) ^ 6 * large₂.sc.L)` using `by ring`. Rewrite using `[e]`. Apply `mul_le_mul_of_nonneg_right _ hm6` to reduce the goal to its premises.
+
+Establish `hp : 0 ≤ C' * (D.R.m : ℝ)` using `by positivity`. Establish `h4 : (1 : ℝ) ≤ (D.R.m : ℝ) ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear relations using `[h2]`.
+-/
 theorem loop_hypothesis_of_scale_le (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : ℝ} (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hm : Cl ≤ C' * (D.R.m : ℝ)) (hk3 : (3 : ℝ) ≤ (D.R.k : ℝ)) :
     Cl * ((D.R.m : ℝ) ^ 6 * large₂.sc.L) ≤ (D.R.k : ℝ) * Real.log (D.R.k : ℝ) := by
@@ -239,6 +328,15 @@ section Chain
 
 open scoped ENNReal
 
+/- English proof (translation)
+Set `_ : MeasurableSpace ι` to `⊤`. Establish `hpq : (2 : ℝ).HolderConjugate 2` using `Real.HolderConjugate.two_two`. Establish `H` using `ENNReal.lintegral_mul_le_Lp_mul_Lq (MeasureTheory.Measure.count : MeasureTheory.Measure ι) hpq (f := fun i => (W i) ^ (-(1 / 2 : ℝ))) (g := fun i => (W i) ^ (1 / 2 : ℝ) * x i) (measurable_from_top.aemeasurable) (measurable_from_top.aemeasurable)`. Simplify using `only [MeasureTheory.lintegral_count, Pi.mul_apply] at H`. Establish `e1 : ∀ i, (W i) ^ (-(1 / 2 : ℝ)) * ((W i) ^ (1 / 2 : ℝ) * x i) = x i`.
+
+Introduce `i`. Rewrite using `[← mul_assoc, ← ENNReal.rpow_add _ _ (h0 i) (ht i)]`. Evaluate the numerical expressions. Establish `e2 : ∀ i, ((W i) ^ (-(1 / 2 : ℝ))) ^ (2 : ℝ) = (W i)⁻¹`. Introduce `i`.
+
+Rewrite using `[← ENNReal.rpow_mul]`. Evaluate the numerical expressions using `[ENNReal.rpow_neg_one]`. Establish `e3 : ∀ i, ((W i) ^ (1 / 2 : ℝ) * x i) ^ (2 : ℝ) = W i * x i ^ 2`. Introduce `i`. Rewrite using `[ENNReal.mul_rpow_of_nonneg _ _ (by norm_num), ← ENNReal.rpow_mul]`.
+
+Evaluate the numerical expressions. Simplify using `only [e1, e2, e3] at H`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← ENNReal.rpow_natCast, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+-/
 theorem cauchy_schwarz_weighted_tsum {ι : Type} (x W : ι → ℝ≥0∞) (h0 : ∀ i, W i ≠ 0) (ht : ∀ i, W i ≠ ⊤) :
     (∑' i, x i) ^ 2 ≤ (∑' i, (W i)⁻¹) * ∑' i, W i * x i ^ 2 := by
   let _ : MeasurableSpace ι := ⊤
@@ -266,6 +364,13 @@ theorem cauchy_schwarz_weighted_tsum {ι : Type} (x W : ι → ℝ≥0∞) (h0 :
         rw [mul_pow, ← ENNReal.rpow_natCast, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul, ← ENNReal.rpow_mul]
         norm_num
 
+/- English proof (translation)
+Establish `step : ∀ c, wC c * (∑' γ, t c γ) ^ 2 ≤ (∑' γ, (W γ)⁻¹) * ∑' γ, wC c * (W γ * (nu γ * a c γ * J γ))`. Introduce `c`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.tsum_mul_left, ENNReal.tsum_comm]`. Use `_ = (∑' γ, (W γ)⁻¹) * ∑' γ, W γ * (nu γ * ∑' c, wC c * a c γ) * J γ := by`. Use `congr 1`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations.
+
+Establish `: ∀ c, wC c * (W γ * (nu γ * a c γ * J γ)) = (W γ * nu γ * J γ) * (wC c * a c γ)` using `fun c => by ring`. Repeatedly rewrite using `[this]`. Rewrite using `[ENNReal.tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (∑' γ, (W γ)⁻¹) * ∑' γ, W γ * M γ * J γ := mul_le_mul' le_rfl (ENNReal.tsum_le_tsum fun γ => mul_le_mul' (mul_le_mul' le_rfl (h2 γ)) le_rfl)`.
+-/
 theorem weighted_cauchy_schwarz_chain {Cls Pt : Type} (wC : Cls → ℝ≥0∞) (t a : Cls → Pt → ℝ≥0∞) (nu J W M : Pt → ℝ≥0∞)
     (h0 : ∀ γ, W γ ≠ 0) (ht : ∀ γ, W γ ≠ ⊤)
     (h1 : ∀ c γ, t c γ ^ 2 ≤ nu γ * a c γ * J γ)
@@ -321,6 +426,15 @@ def StepB (O : NGObj D u u') (p B2 : ℝ) (MM : ℝ≥0∞) : Prop :=
   ∑' γ : PtB D u u', ENNReal.ofReal (ThB.wPt D γ.1 * ptWeightG D (rhoReal D) (Lat.Tu D u) (Lat.Tu D u') γ.1.1 *
       ThB.normWt D (Lat.Tu D u) (Lat.Tu D u') γ.1 ^ p) * O.Jsq γ ≤ ENNReal.ofReal B2 * MM
 
+/- English proof (translation)
+Establish `hw : ∀ γ : PtB D u u', 0 < ThB.wPt D γ.1` using `fun γ => BesselShellMomentBounds.wPt_pos D γ.1`. Establish `hch` using `weighted_cauchy_schwarz_chain O.wC O.t O.a O.nu O.Jsq (fun γ => ENNReal.ofReal (ThB.wPt D γ.1)) (fun γ => ENNReal.ofReal (G1 * cc * (ptWeightG D (rhoReal D) (Lat.Tu D u) (Lat.Tu D u') γ.1.1 * ThB.normWt D (Lat.Tu D u) (Lat.Tu D u') γ.1 ^ p))) (fun γ => (ENNReal.ofReal_pos.2 (hw γ …`. Establish `e1 : ∀ γ : PtB D u u', (ENNReal.ofReal (ThB.wPt D γ.1))⁻¹ = ENNReal.ofReal (ThB.wPt D γ.1)⁻¹` using `fun γ => (ENNReal.ofReal_inv_of_pos (hw γ)).symm`. Establish `e2 : ∀ γ : PtB D u u', ENNReal.ofReal (ThB.wPt D γ.1) * ENNReal.ofReal (G1 * cc * (ptWeightG D (rhoReal D) (Lat.Tu D u) (Lat.Tu D u') γ.1.1 * ThB.normWt D (Lat.Tu D u) (Lat.Tu D u') γ.1 ^ p)) * O.Jsq γ = ENNReal.ofReal (G1 * cc) * (ENNReal.ofReal (ThB.wPt D γ.1 * ptWeightG D (rho …`. Introduce `γ`.
+
+Rewrite using `[ENNReal.ofReal_mul (mul_nonneg hG1 hcc), mul_assoc (ThB.wPt D γ.1), ENNReal.ofReal_mul (hw γ).le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hch` using `[e1, e2]`. Rewrite `hch` using `[ENNReal.tsum_mul_left]`. Establish `hfin : ENNReal.ofReal (gaG D * S) ≤ ENNReal.ofReal (G1 * B2 * B3 * B4)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul hG1, ENNReal.ofReal_mul hg]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ENNReal.ofReal G1 * ENNReal.ofReal B2 * ENNReal.ofReal B3 * ENNReal.ofReal B4 := mul_le_mul' le_rfl hM`. Use `_ = ENNReal.ofReal (G1 * B2 * B3 * B4) := by`.
+
+Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul hG1]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 hfin`.
+-/
 theorem weighted_sum_bound_of_factor_estimates (O : NGObj D u u') {S G1 cc p B2 B3 B4 : ℝ} {MM : ℝ≥0∞}
     (hG1 : 0 ≤ G1) (hcc : 0 ≤ cc) (hB2 : 0 ≤ B2) (hB3 : 0 ≤ B3) (hB4 : 0 ≤ B4) (hg : 0 ≤ gaG D)
     (h1 : StepClass O S) (h24 : StepMean O G1 cc p) (hB : StepB O p B2 MM)
@@ -378,6 +492,37 @@ def MainCount (D : D7) (u u' : D.what₂.Word) (C cInf : ℝ) (constP : HeightOn
         ENNReal.ofReal (cInf * (∏' p, constP p) * (∏' p, dens Z p) *
           ∏ τ, Cnt.Gz D (Tr D u) (Tr D u') Z τ ^ ((D.R.k : ℝ) - 1)))
 
+/- English proof (translation)
+Establish `hb : ∀ t : ℝ, large₂.sc.b ^ t = Real.exp (large₂.sc.L * t)` using `fun t => by unfold Scale.b; rw [Real.exp_mul]`. Establish `hL1 : 1 ≤ large₂.sc.L`. Unfold `Scale.L`. Conclude with `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hL0 : 0 ≤ large₂.sc.L` using `by linarith`.
+
+Establish `hm2 : (2 : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast D.R.two_le_m`. Establish `hm1 : (1 : ℝ) ≤ (D.R.m : ℝ)` using `by linarith`. Establish `hf1 : (1 : ℝ) ≤ (D.R.f : ℝ)`. Establish `: 1 ≤ D.R.f`. Establish `h1 : 0 < D.R.n` using `D.R.ord_pos`.
+
+Establish `h2 : D.R.f = 2 * D.R.n` using `rfl`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hf0 : (0 : ℝ) ≤ (D.R.f : ℝ)` using `by linarith`. Use `set y : ℝ := (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ) * large₂.sc.L with hy`.
+
+Establish `hm45 : (D.R.m : ℝ) ^ 4 ≤ (D.R.m : ℝ) ^ 5` using `pow_le_pow_right₀ hm1 (by norm_num)`. Establish `hm25 : (D.R.m : ℝ) ^ 2 ≤ (D.R.m : ℝ) ^ 5` using `pow_le_pow_right₀ hm1 (by norm_num)`. Establish `hm15 : (D.R.m : ℝ) ≤ (D.R.m : ℝ) ^ 5`. Combine the equalities or inequalities in the displayed calculation. Establish `y4 : (D.R.m : ℝ) ^ 4 * (D.R.f : ℝ) * large₂.sc.L ≤ y` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hm45 hf0) hL0`.
+
+Establish `y2 : (D.R.m : ℝ) ^ 2 * (D.R.f : ℝ) * large₂.sc.L ≤ y` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hm25 hf0) hL0`. Establish `y1 : 1 ≤ y`. Establish `h5 : (1 : ℝ) ≤ (D.R.m : ℝ) ^ 5` using `one_le_pow₀ hm1`. Combine the equalities or inequalities in the displayed calculation. Establish `F1 : large₂.sc.b ^ (K * (D.R.m : ℝ) ^ 4 * (D.R.f : ℝ)) ≤ Real.exp (K * y)`.
+
+Rewrite using `[hb]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `F4b : large₂.sc.b ^ (CM * (D.R.m : ℝ) ^ 2 * (D.R.f : ℝ)) ≤ Real.exp (CM * y)`. Rewrite using `[hb]`.
+
+Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hr : ((D.R.rS + 1 : ℕ) : ℝ) ≤ (D.R.m : ℝ)`. Establish `: D.R.rS + 1 ≤ D.R.m`. Use `D.R.two_le_m` as an intermediate fact.
+
+Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `F3 : secondBesselConstant ^ (D.R.f * (D.R.rS + 1)) ≤ Real.exp (Real.log secondBesselConstant * y)`. Establish `hlog : 0 ≤ Real.log secondBesselConstant` using `Real.log_nonneg hCB2`.
+
+Use `conv_lhs => rw [← Real.exp_log (show 0 < secondBesselConstant by linarith)]`. Rewrite using `[← Real.exp_nat_mul]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `hn : ((D.R.f * (D.R.rS + 1) : ℕ) : ℝ) ≤ y`. Use `push_cast`.
+
+Establish `h1 : (D.R.f : ℝ) * ((D.R.rS : ℝ) + 1) ≤ (D.R.f : ℝ) * (D.R.m : ℝ) ^ 5`. Apply `mul_le_mul_of_nonneg_left _ hf0` to reduce the goal to its premises. Establish `: ((D.R.rS : ℝ) + 1) ≤ (D.R.m : ℝ)` using `by exact_mod_cast hr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (D.R.f : ℝ) * (D.R.m : ℝ) ^ 5 ≤ y`.
+
+Rewrite using `[hy]`. Establish `: 0 ≤ (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `F4a : θ ^ (2 * D.R.f) ≤ Real.exp (2 * Cn * y)`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `F4c : 1 + e ≤ Real.exp y`. Use `Real.add_one_le_exp y` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e5 : Cb * (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ) * large₂.sc.L = Cb * y` using `by rw [hy]; ring`. Establish `e6 : (K + Cb + Real.log secondBesselConstant + 2 * Cn + CM + 1) * (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ) * large₂.sc.L = K * y + Cb * y + Real.log secondBesselConstant * y + (2 * Cn * y + CM * y + y)` using `by rw [hy]; ring`.
+
+Rewrite using `[e5, e6, Real.exp_add, Real.exp_add, Real.exp_add, Real.exp_add, Real.exp_add]`. Establish `hb0 : ∀ t : ℝ, 0 ≤ large₂.sc.b ^ t` using `fun t => by rw [hb]; positivity`. Combine the equalities or inequalities in the displayed calculation. Use `hb0 (K * (D.R.m : ℝ) ^ 4 * (D.R.f : ℝ))` as an intermediate fact. Use `hb0 (CM * (D.R.m : ℝ) ^ 2 * (D.R.f : ℝ))` as an intermediate fact.
+
+Use `gcongr`. Use `_ = gain * (Real.exp (K * y) * Real.exp (Cb * y) * Real.exp (Real.log secondBesselConstant * y) * (Real.exp (2 * Cn * y) * Real.exp (CM * y) * Real.exp y)) * Q := by ring`.
+-/
 theorem size_product_bound (D : D7) (large₂ : SizeData₂ D) {K Cb secondBesselConstant Cn CM e θ gain Q : ℝ}
     (hK : 0 ≤ K) (hCB2 : 1 ≤ secondBesselConstant) (hCn : 0 ≤ Cn) (hCM : 0 ≤ CM) (he0 : 0 ≤ e) (he : e ≤ 1) (hθ0 : 0 ≤ θ)
     (hθ : θ ≤ large₂.sc.b ^ (Cn * (D.R.m : ℝ) ^ 2)) (hgain : 0 ≤ gain) (hQ : 0 ≤ Q) :
@@ -470,6 +615,17 @@ theorem size_product_bound (D : D7) (large₂ : SizeData₂ D) {K Cb secondBesse
     _ = gain * (Real.exp (K * y) * Real.exp (Cb * y) * Real.exp (Real.log secondBesselConstant * y) *
         (Real.exp (2 * Cn * y) * Real.exp (CM * y) * Real.exp y)) * Q := by ring
 
+/- English proof (translation)
+Take `⟨cInf, constP, dens, a1, a2, a3, a4, a5, a6, a7⟩` from `h8 hH u u'`. Establish `hD : StandingNumericalData D h.C0` using `hH.1`. Establish `hg` using `gamma_factor_pos D hD.2.2.2.2.2.2.2.2.2.2.1 hD.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hbpos : 0 < large₂.sc.b` using `by unfold Scale.b; positivity`. Establish `hθ0 : 0 < Y.θ` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hbpos _) Y.θ_win.1`.
+
+Establish `hM` using `a7 Y.θ hθ0 Y.W Y.goodW Y.A Y.goodS Y.deg_eq μsec hsec`. Establish `hT : 1 ≤ Lat.Tu D u` using `(D.mem u).A.T_prime.one_lt.le`. Establish `hT' : 1 ≤ Lat.Tu D u'` using `(D.mem u').A.T_prime.one_lt.le`. Establish `h7` using `h7b (Lat.Tu D u) (Lat.Tu D u') hT hT'`. Use `set Q : ℝ := ((D.duS u : ℝ) * (D.duS u' : ℝ)) / D.what₂.Dstar with hQ`.
+
+Establish `hQ0 : 0 ≤ Q` using `div_nonneg (by positivity) (Dstar_pos' D u).le`. Rewrite `hM`, `h7` using `[D.what₂.card_Tau]`. Establish `hrow` using `weighted_sum_bound_of_factor_estimates O (B4 := Y.θ ^ (2 * D.R.f) * large₂.sc.b ^ (CM * (D.R.m : ℝ) ^ 2 * (D.R.f : ℝ)) * ((1 + eSum D Ce) * ((D.duS u : ℝ) * (D.duS u' : ℝ)) / D.what₂.Dstar)) (mul_nonneg hgain (Real.rpow_nonneg hbpos.le _)) (mul_pos a1 a4).le (Real.exp_pos _).le ( …`. Rewrite using `[mul_div_assoc]`. Establish `: 0 ≤ large₂.sc.b ^ (CM * (D.R.m : ℝ) ^ 2 * (D.R.f : ℝ))` using `Real.rpow_nonneg hbpos.le _`.
+
+Use the proof step `positivity)`. Use the proof step `hg.le h1 (h24 cInf constP dens ⟨a1, a2, a3, a4, a5, a6⟩) hB h7 hM`. Rewrite using `[mul_div_assoc]`. Use `hrow.trans ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc (1 + eSum D Ce)]`.
+
+Conclude with `size_product_bound D large₂ hK hCB2 hCn hCM he0 he hθ0.le Y.θ_win.2 hgain hQ0`.
+-/
 theorem nongeneric_object_bound_of_estimates {D : D7} (large₂ : SizeData₂ D) (h : UniformConstantsAndStatements.LargenessConstants) {u u' : D.what₂.Word} {Cn : ℝ} {X : TermTie D}
     (Y : LoopTie D large₂ X u u' Cn) (μsec : D.what₂.Tau → ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ)
     (hsec : ∀ τ, Formalism.QuantumDeterminants.IsSection D.R.k D.R.rS (Y.W τ).z (Y.W τ).z' (μsec τ))
@@ -510,6 +666,9 @@ theorem nongeneric_object_bound_of_estimates {D : D7} (large₂ : SizeData₂ D)
   rw [mul_div_assoc (1 + eSum D Ce)]
   exact size_product_bound D large₂ hK hCB2 hCn hCM he0 he hθ0.le Y.θ_win.2 hgain hQ0
 
+/- English proof (translation)
+The claim follows from `nongeneric_object_bound_of_estimates large₂ h Y μsec hsec hH h8 h7b O h1 h24 hB (by positivity) hK hCB2 hCn hCM he0 he`.
+-/
 theorem nongeneric_unit_bound_of_estimates {D : D7} (large₂ : SizeData₂ D) (h : UniformConstantsAndStatements.LargenessConstants) {u u' : D.what₂.Word} {Cn : ℝ} {X : TermTie D}
     (Y : LoopTie D large₂ X u u' Cn) (μsec : D.what₂.Tau → ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ)
     (hsec : ∀ τ, Formalism.QuantumDeterminants.IsSection D.R.k D.R.rS (Y.W τ).z (Y.W τ).z' (μsec τ))
@@ -527,6 +686,9 @@ theorem nongeneric_unit_bound_of_estimates {D : D7} (large₂ : SizeData₂ D) (
         ((D.duS u : ℝ) * (D.duS u' : ℝ)) / D.what₂.Dstar :=
   nongeneric_object_bound_of_estimates large₂ h Y μsec hsec hH h8 h7b O h1 h24 hB (by positivity) hK hCB2 hCn hCM he0 he
 
+/- English proof (translation)
+Establish `hD : StandingNumericalData D h.C0` using `hH.1`. Establish `hg` using `gamma_factor_pos D hD.2.2.2.2.2.2.2.2.2.2.1 hD.2.2.2.2.2.2.2.2.2.2.2.1`. Use `nongeneric_object_bound_of_estimates large₂ h Y μsec hsec hH h8 h7b O h1 h24 hB zero_le_one hK hCB2 hCn hCM he0 he` as an intermediate fact. Rewrite using `[hS, ← Complex.ofReal_mul, Complex.norm_real, Real.norm_of_nonneg (mul_nonneg hg.le hS0), sq]`. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem second_packet_bound_of_estimates {D : D7} (large₂ : SizeData₂ D) (h : UniformConstantsAndStatements.LargenessConstants) {u : D.what₂.Word} {Cn : ℝ} {X : TermTie D}
     (Y : LoopTie D large₂ X u u Cn) (μsec : D.what₂.Tau → ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ)
     (hsec : ∀ τ, Formalism.QuantumDeterminants.IsSection D.R.k D.R.rS (Y.W τ).z (Y.W τ).z' (μsec τ))
@@ -554,6 +716,9 @@ section P29cFamily
 
 variable {eps : ℝ} (Fm : FamP eps) (g : UniformConstantsAndStatements.Given)
 
+/- English proof (translation)
+Take `⟨x, -, hx, -, ⟨i⟩⟩` from `Fm.toFamCore.exists_pt 0`. Use `(Fm.params _ hx i).CkLow_pos` as an intermediate fact. Rewrite `this` using `[Fm.params_CkLow]`. Conclude with `this`.
+-/
 theorem scaled_constant_pos (Fm : FamP eps) : 0 < sC' Fm := by
   obtain ⟨x, -, hx, -, ⟨i⟩⟩ := Fm.toFamCore.exists_pt 0
   have := (Fm.params _ hx i).CkLow_pos
@@ -564,6 +729,25 @@ def NGOneF (C : ℝ) : Prop :=
   OwnEv Fm fun C' Cl x i => UniformConstantsAndStatements.Hyp (Fm.D x i) (Fm.L x i) (g.wth C' Cl) →
     ∀ u u', NGOneAt (Fm.D x i) (Fm.L x i) u u' C
 
+/- English proof (translation)
+Take `⟨x4, H4⟩` from `h4`. Take `⟨x9, H9⟩` from `h9`. Take `⟨xN, HN⟩` from `hN`. Take `⟨xk, _, Hk⟩` from `ev_k Fm (max 3 (3 / (cL - c)))`. Take `⟨xm, _, Hm⟩` from `ev_m Fm (sCl Fm / sC' Fm)`.
+
+Use `ownEv_intro Fm (max (max x4 x9) (max xN (max xk xm))) fun x hx hx1 i => ?_` and prove the remaining obligations. Establish `g4 : x4 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `g9 : x9 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `gN : xN ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `gk : xk ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hx`.
+
+Establish `gm : xm ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hx`. Introduce `hH`. Establish `hD : StandingNumericalData (Fm.D x i) g.C0` using `hH.1`. Establish `h0` using `hD.2.2.2.2.2.2.2.2.2.2.1`. Establish `h1` using `hD.2.2.2.2.2.2.2.2.2.2.2.1`.
+
+Establish `hk` using `Hk x gk i`. Establish `hk3 : (3 : ℝ) ≤ ((Fm.D x i).R.k : ℝ)` using `le_trans (le_max_left _ _) hk`. Establish `hkc : 3 / (cL - c) ≤ ((Fm.D x i).R.k : ℝ)` using `le_trans (le_max_right _ _) hk`. Establish `hcc : 0 < cL - c` using `by linarith`. Establish `hlog : 1 ≤ Real.log ((Fm.D x i).R.k : ℝ)`.
+
+Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk' : 3 ≤ (cL - c) * ((Fm.D x i).R.k : ℝ) * Real.log ((Fm.D x i).R.k : ℝ)`. Establish `a1 : 3 ≤ (cL - c) * ((Fm.D x i).R.k : ℝ)`.
+
+Rewrite `hkc` using `[div_le_iff₀ hcc]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish `hL1 : 1 ≤ (Fm.L x i).sc.L`. Rewrite using `[sc_L Fm hx1]`.
+
+Conclude with `Real.one_le_rpow (one_lt_of Fm hx1).le (eps_pos Fm).le`. Establish `hm2 : (2 : ℝ) ≤ ((Fm.D x i).R.m : ℝ)` using `by exact_mod_cast (Fm.D x i).R.two_le_m`. Establish `hL : 3 ≤ ((Fm.D x i).R.m : ℝ) ^ 5 * (Fm.L x i).sc.L`. Establish `: (32 : ℝ) ≤ ((Fm.D x i).R.m : ℝ) ^ 5`. Combine the equalities or inequalities in the displayed calculation.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hmm : sCl Fm ≤ sC' Fm * ((Fm.D x i).R.m : ℝ)`. Use `Hm x gm i` as an intermediate fact. Rewrite `this` using `[div_le_iff₀ (scaled_constant_pos Fm)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hprem` using `loop_hypothesis_of_scale_le (Fm.D x i) (Fm.L x i) hH.2.1 hmm hk3`. Conclude with `first_packet_bound_of_unit_bounds (Fm.D x i) (Fm.L x i) h0 h1 (H4 x g4 i hH) (H9 x g9 i hH hprem) (HN x gN i hH) hk' hL`.
+-/
 theorem first_packet_bound_of_nongeneric_unit {cL c C : ℝ} (hc : c < cL) (h4 : UniformConstantsAndStatements.admF4 Fm g) (h9 : UniformConstantsAndStatements.admF9 Fm g cL)
     (hN : NGOneF Fm g C) : UniformConstantsAndStatements.ConclusionF1 Fm g c (C + 1) := by
   obtain ⟨x4, H4⟩ := h4
@@ -609,10 +793,16 @@ theorem first_packet_bound_of_nongeneric_unit {cL c C : ℝ} (hc : c < cL) (h4 :
   have hprem := loop_hypothesis_of_scale_le (Fm.D x i) (Fm.L x i) hH.2.1 hmm hk3
   exact first_packet_bound_of_unit_bounds (Fm.D x i) (Fm.L x i) h0 h1 (H4 x g4 i hH) (H9 x g9 i hH hprem) (HN x gN i hH) hk' hL
 
+/- English proof (translation)
+Introduce `hA` and use `first_packet_bound_of_nongeneric_unit Fm g hc hA.2.1 hA.2.2.2.2.2.2.2 hN`.
+-/
 theorem first_packet_unfolded_of_nongeneric_unit (a : UniformConstantsAndStatements.AdmC) {c C : ℝ} (hc : c < a.cL) (hN : NGOneF Fm g C) :
     UniformConstantsAndStatements.FirstFiltrationHypotheses Fm g a → UniformConstantsAndStatements.ConclusionF1 Fm g c (C + 1) :=
   fun hA => first_packet_bound_of_nongeneric_unit Fm g hc hA.2.1 hA.2.2.2.2.2.2.2 hN
 
+/- English proof (translation)
+Introduce `_ _` and use `theorem_B_second_bound_of_large _ hC`.
+-/
 theorem theorem_B_second_bound_family {C : ℝ} (hC : 64 ≤ C) : UniformConstantsAndStatements.FamilyWeightedBoundSecond Fm C := fun _ _ => theorem_B_second_bound_of_large _ hC
 
 def NGOneBdF (C : ℝ) : Prop :=
@@ -628,18 +818,30 @@ def SecondPacketFamilyInequality (C : ℝ) : Prop :=
       Real.exp (C * ((Fm.D x i).R.m : ℝ) ^ 5 * ((Fm.D x i).R.f : ℝ) * (Fm.L x i).sc.L) *
         ((Fm.D x i).duS u : ℝ) ^ 2 / (Fm.D x i).what₂.Dstar
 
+/- English proof (translation)
+The claim follows from `hP g.C0 g.Cg g.cb g.Cu g.cT g.CT`.
+-/
 theorem pair_values_abs_summable_eventually (hP : PX.PairAbsF Fm) :
     OwnEv Fm fun C' Cl x i => UniformConstantsAndStatements.Hyp (Fm.D x i) (Fm.L x i) (g.wth C' Cl) → PX.PairAbs (Fm.D x i) :=
   hP g.C0 g.Cg g.cb g.Cu g.cT g.CT
 
+/- English proof (translation)
+The claim follows from `((pair_values_abs_summable_eventually Fm g hP).and hb).mono fun _ _ _ _ h hH u u' => NGOneAt_of_pairAbs _ _ (h.1 hH u u') (h.2 hH u u')`.
+-/
 theorem NGOneF_of_pairAbs {C : ℝ} (hP : PX.PairAbsF Fm) (hb : NGOneBdF Fm g C) : NGOneF Fm g C :=
   ((pair_values_abs_summable_eventually Fm g hP).and hb).mono fun _ _ _ _ h hH u u' =>
     NGOneAt_of_pairAbs _ _ (h.1 hH u u') (h.2 hH u u')
 
+/- English proof (translation)
+The claim follows from `first_packet_bound_of_nongeneric_unit Fm g hc h4 h9 (NGOneF_of_pairAbs Fm g hP hb)`.
+-/
 theorem first_packet_bound_of_pair_abs {cL c C : ℝ} (hc : c < cL) (h4 : UniformConstantsAndStatements.admF4 Fm g) (h9 : UniformConstantsAndStatements.admF9 Fm g cL)
     (hP : PX.PairAbsF Fm) (hb : NGOneBdF Fm g C) : UniformConstantsAndStatements.ConclusionF1 Fm g c (C + 1) :=
   first_packet_bound_of_nongeneric_unit Fm g hc h4 h9 (NGOneF_of_pairAbs Fm g hP hb)
 
+/- English proof (translation)
+The claim follows from `((pair_values_abs_summable_eventually Fm g hP).and hb).mono fun _ _ _ _ h hH => second_packet_bound_of_summable _ _ (fun u => h.1 hH u u) (h.2 hH)`.
+-/
 theorem second_packet_bound_of_pair_abs {C : ℝ} (hP : PX.PairAbsF Fm) (hb : SecondPacketFamilyInequality Fm g C) : UniformConstantsAndStatements.ConclusionF2 Fm g C :=
   ((pair_values_abs_summable_eventually Fm g hP).and hb).mono fun _ _ _ _ h hH =>
     second_packet_bound_of_summable _ _ (fun u => h.1 hH u u) (h.2 hH)
@@ -648,22 +850,39 @@ def FirstPacketRemainder (a : UniformConstantsAndStatements.AdmC) (C : ℝ) : Pr
 
 def SecondPacketRemainder (a : UniformConstantsAndStatements.AdmC) (C : ℝ) : Prop := UniformConstantsAndStatements.SecondFiltrationHypotheses Fm g a → SecondPacketFamilyInequality Fm g C
 
+/- English proof (translation)
+Introduce `hA` and use `first_packet_unfolded_of_nongeneric_unit Fm g a hc (hR hA) hA`.
+-/
 theorem first_packet_unfolded_of_remainder (a : UniformConstantsAndStatements.AdmC) {c C : ℝ} (hc : c < a.cL) (hR : FirstPacketRemainder Fm g a C) :
     UniformConstantsAndStatements.FirstFiltrationHypotheses Fm g a → UniformConstantsAndStatements.ConclusionF1 Fm g c (C + 1) :=
   fun hA => first_packet_unfolded_of_nongeneric_unit Fm g a hc (hR hA) hA
 
+/- English proof (translation)
+Introduce `hA` and use `second_packet_bound_of_pair_abs Fm g hP (hR hA)`.
+-/
 theorem second_packet_unfolded_of_remainder (a : UniformConstantsAndStatements.AdmC) {C : ℝ} (hP : PX.PairAbsF Fm) (hR : SecondPacketRemainder Fm g a C) :
     UniformConstantsAndStatements.SecondFiltrationHypotheses Fm g a → UniformConstantsAndStatements.ConclusionF2 Fm g C :=
   fun hA => second_packet_bound_of_pair_abs Fm g hP (hR hA)
 
+/- English proof (translation)
+The claim follows from `first_packet_unfolded_of_remainder Fm g a hc hR`.
+-/
 theorem first_packet_of_remainder (a : UniformConstantsAndStatements.AdmC) {c C : ℝ} (hc : c < a.cL) (hR : FirstPacketRemainder Fm g a C) :
     UniformConstantsAndStatements.PeriodFamilyStatement Fm g a c (C + 1) := first_packet_unfolded_of_remainder Fm g a hc hR
 
+/- English proof (translation)
+The claim follows from `second_packet_unfolded_of_remainder Fm g a hP hR`.
+-/
 theorem second_packet_of_remainder (a : UniformConstantsAndStatements.AdmC) {C : ℝ} (hP : PX.PairAbsF Fm) (hR : SecondPacketRemainder Fm g a C) :
     UniformConstantsAndStatements.DeterminantValueFamily Fm g a C := second_packet_unfolded_of_remainder Fm g a hP hR
 
 end P29cFamily
 
+/- English proof (translation)
+Introduce `g CNG secondBesselConstant CM Ce cL hcL`. Take `⟨Aw, Ch, H⟩` from `h g CNG secondBesselConstant CM Ce cL hcL`. Use `⟨Aw, Ch, fun Cg Cb Cgw Cbw => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hcl⟩` from `H Cg Cb Cgw Cbw`. Use `⟨cL / 2, by linarith, C + 1, by linarith, hcl.imp fun Fm _ _ hR => ?_⟩` and prove the remaining obligations.
+
+Conclude with `first_packet_of_remainder Fm g _ (show cL / 2 < cL by linarith) hR`.
+-/
 theorem closed_first_packet_of_remainder (𝒞 : FamClass)
     (h : ∀ (g : UniformConstantsAndStatements.Given) (CNG secondBesselConstant CM Ce cL : ℝ), 0 < cL → ∃ Aw Ch : ℝ, ∀ Cg Cb Cgw Cbw : ℝ, ∃ C : ℝ, 0 ≤ C ∧
       Closed 𝒞 fun Fm _ => FirstPacketRemainder Fm g ⟨CNG, Ch, Cg, Cb, secondBesselConstant, Aw, Cgw, Cbw, CM, Ce, 0, cL⟩ C) :

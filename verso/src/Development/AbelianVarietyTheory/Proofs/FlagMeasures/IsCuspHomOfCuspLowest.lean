@@ -15,6 +15,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RowLev
 
+/- English proof (translation)
+Introduce `B hDS hw A hA hcusp`. Take `⟨S, hS, hSc, hSR, -⟩` from `GlobalTheory.CuspSubspace.cuspidal_closed_stable B`. Take `⟨-, -, -, -, hirr⟩` from `GlobalTheory.HilbTensorRep.tensor_rep_rows B fun v => ⟨(hDS v).2.2.1, (hDS v).2.2.2.1⟩`. Take `⟨T₀, hT₀, rfl⟩` from `Submodule.mem_map.mp hA`. Establish `hT₀' : ∀ g : B.I.Ginf, T₀.comp (B.σs g) = (B.R (g, 1)).comp T₀` using `hT₀`.
+
+Establish `hRe` using `(GlobalTheory.IdemProj.re_orth_proj B).2.1`. Establish `hint : ∀ (g : B.I.Ginf) (u : B.Hs), B.Re (T₀ (B.σs g u)) = B.R (g, 1) (B.Re (T₀ u))`. Introduce `g u`. Establish `h1` using `congrArg (fun L => L u) (hT₀' g)`. Establish `h2` using `congrArg (fun L => L (T₀ u)) (hRe g)`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply] at h1 h2`. Rewrite using `[h1, h2]`. Set `P : Submodule ℂ B.Hs` to `S.comap (B.Re.comp T₀ : B.Hs →L[ℂ] B.I.L2 B.μf B.fund).toLinearMap`. Establish `hPc : IsClosed (P : Set B.Hs)` using `hSc.preimage (B.Re.comp T₀).continuous`. Establish `hPs : ∀ g, ∀ u ∈ P, B.σs g u ∈ P`.
+
+Introduce `g u hu`. Express the relevant statement in the definitionally equal form `B.Re (T₀ (B.σs g u)) ∈ S`. Rewrite using `[hint]`. Conclude with `hSR _ _ hu`. Establish `hw0 : B.tens B.w ∈ P`.
+
+Express the relevant statement in the definitionally equal form `B.Re (T₀ (B.tens B.w)) ∈ S`. Rewrite using `[hS]`. Simplify `hcusp` using `[ContinuousLinearMap.compL_apply]`. Establish `hne : B.tens B.w ≠ 0`. Introduce `h0`.
+
+Establish `hn` using `GlobalTheory.HilbTensorRep.norm_tens B.tens_spec.1 B.w`. Rewrite `hn` using `[h0, norm_zero]`. Simplify using `[hw] at hn`. Break down `hirr P hPc hPs with hbot | htop` into its components or cases. Conclude with `absurd ((Submodule.mem_bot ℂ).mp (hbot ▸ hw0)) hne`.
+
+Introduce `u`. Establish `hu : u ∈ P` using `htop ▸ Submodule.mem_top`. Establish `: B.Re (T₀ u) ∈ S` using `hu`. Simplify `(hS _).mp this` using `[ContinuousLinearMap.compL_apply]`.
+-/
 theorem isCuspHom_of_cusp_lowest : ∀ (B : RowsAut), (∀ v, IsDS (B.I.ε v) (B.lam v) (B.σ v)) → (∀ v, ‖B.w v‖ = 1) → ∀ A ∈ B.I.eHom B.σs B.μf B.fund B.R B.Re, B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext (A (B.tens B.w))) → IsCuspHom B.I A := by
   intro B hDS hw A hA hcusp
   obtain ⟨S, hS, hSc, hSR, -⟩ := GlobalTheory.CuspSubspace.cuspidal_closed_stable B

@@ -11,6 +11,9 @@ def bi : List ℕ → ℕ → ℕ
   | [], _ => 0
   | s :: S, p => if p < s then 0 else 1 + bi S (p - s)
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | (t, s) :: L, p => by simp only [Formalism.MainNotions.S.blockIdx, bi, List.map_cons] split_ifs · rfl · rw [blockIdx_eq_bi L (p - s)]`.
+-/
 theorem blockIdx_eq_bi : ∀ (L : List (ℂ × ℕ)) (p : ℕ), Formalism.MainNotions.S.blockIdx L p = bi (L.map Prod.snd) p
   | [], _ => rfl
   | (t, s) :: L, p => by
@@ -22,6 +25,11 @@ theorem blockIdx_eq_bi : ∀ (L : List (ℂ × ℕ)) (p : ℕ), Formalism.MainNo
 def PS (S : List ℕ) : Finset (ℕ × ℕ) :=
   ((range S.sum) ×ˢ (range S.sum)).filter (fun q => q.1 < q.2 ∧ bi S q.1 = bi S q.2)
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_filter, Finset.prod_product_right]`. Use `Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Use `congr 1`. Use extensionality with `a`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_range] at hb ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem prod_tri {M : Type*} [CommMonoid M] (s : ℕ) (f : ℕ × ℕ → M) :
     ∏ q ∈ ((range s) ×ˢ (range s)).filter (fun q => q.1 < q.2), f q = ∏ b ∈ range s, ∏ a ∈ range b, f (a, b) := by
   rw [Finset.prod_filter, Finset.prod_product_right]
@@ -32,6 +40,19 @@ theorem prod_tri {M : Type*} [CommMonoid M] (s : ℕ) (f : ℕ × ℕ → M) :
   simp only [Finset.mem_filter, Finset.mem_range] at hb ⊢
   omega
 
+/- English proof (translation)
+Rewrite using `[prod_tri]`. Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ s ih`. Rewrite using `[Finset.prod_range_succ, ih]`.
+
+Establish `hG : ∏ a ∈ range s, F (s - a) = ∏ m ∈ Ico 1 (s + 1), F m`. Rewrite using `[Finset.prod_Ico_eq_prod_range, Nat.add_sub_cancel]`. Rewrite using `[← Finset.prod_range_reflect (fun j => F (1 + j)) s]`. Use `Finset.prod_congr rfl fun a ha => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at ha`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hG]`. Break down `Nat.eq_zero_or_pos s with h0 | hpos` into its components or cases. Substitute `h0` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `e1 : ∏ m ∈ Ico 1 (s + 1), F m ^ (s + 1 - m) = (∏ m ∈ Ico 1 (s + 1), F m ^ (s - m)) * ∏ m ∈ Ico 1 (s + 1), F m`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun m hm => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_Ico] at hm`.
+
+Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `e2 : ∏ m ∈ Ico 1 (s + 1), F m ^ (s - m) = ∏ m ∈ Ico 1 s, F m ^ (s - m)`. Rewrite using `[Finset.prod_Ico_succ_top (by omega), Nat.sub_self, pow_zero, mul_one]`.
+
+Rewrite using `[e1, e2]`.
+-/
 theorem prod_block {M : Type*} [CommMonoid M] (F : ℕ → M) (s : ℕ) :
     ∏ q ∈ ((range s) ×ˢ (range s)).filter (fun q => q.1 < q.2), F (q.2 - q.1) = ∏ m ∈ Ico 1 s, F m ^ (s - m) := by
   rw [prod_tri]
@@ -60,6 +81,9 @@ theorem prod_block {M : Type*} [CommMonoid M] (F : ℕ → M) (s : ℕ) :
         rw [Finset.prod_Ico_succ_top (by omega), Nat.sub_self, pow_zero, mul_one]
       rw [e1, e2]
 
+/- English proof (translation)
+The claim follows from `| [] => by simp [PS] | s :: S => by have hsplit : PS (s :: S) = (((range s) ×ˢ (range s)).filter (fun q => q.1 < q.2)).disjUnion ((PS S).image fun q => (q.1 + s, q.2 + s)) (by rw [Finset.disjoint_left] rintro ⟨a, b⟩ h1 h2 simp only [Finset.mem_filter, Finset.mem_product, Finset.m …`.
+-/
 theorem prod_PS {M : Type*} [CommMonoid M] (F : ℕ → M) :
     ∀ S : List ℕ, ∏ q ∈ PS S, F (q.2 - q.1) = (S.map fun s => ∏ m ∈ Ico 1 s, F m ^ (s - m)).prod
   | [] => by simp [PS]
@@ -99,6 +123,17 @@ theorem prod_PS {M : Type*} [CommMonoid M] (F : ℕ → M) :
     congr 1
     omega
 
+/- English proof (translation)
+Establish `hsum : (γ.1.map Prod.snd).sum = r + 1` using `γ.2.2`. Establish `himg : (Formalism.MainNotions.S.rootPat γ).image (fun q : Fin (r + 1) × Fin (r + 1) => (q.1.val, q.2.val)) = PS (γ.1.map Prod.snd)`. Use extensionality with `⟨a, b⟩`. Unfold `PS`. Rewrite using `[Finset.mem_image, Finset.mem_filter]`.
+
+Simplify using `only [Finset.mem_product, Finset.mem_range, hsum, Formalism.MainNotions.S.rootPat, Finset.mem_filter, Finset.mem_univ, true_and, Prod.mk.injEq, Prod.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a', b', ⟨hab, hbi⟩, rfl, rfl⟩`. Use `⟨⟨a'.isLt, b'.isLt⟩, hab, ?_⟩` and prove the remaining obligations. Rewrite using `[← blockIdx_eq_bi, ← blockIdx_eq_bi]`.
+
+Conclude with `hbi`. Introduce and unpack `⟨⟨ha, hb⟩, hab, hbi⟩`. Use `⟨⟨a, ha⟩, ⟨b, hb⟩, ⟨hab, ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[blockIdx_eq_bi, blockIdx_eq_bi]`. Conclude with `hbi`.
+
+Establish `h1` using `prod_PS F (γ.1.map Prod.snd)`. Rewrite using `[← himg, Finset.prod_image (fun x _ y _ h => by`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext (Fin.ext h.1) (Fin.ext h.2))] at h1`. Rewrite `h1` using `[List.map_map]`.
+
+Conclude with `h1`.
+-/
 theorem prod_rootPat {M : Type*} [CommMonoid M] {r : ℕ} (γ : Formalism.MainNotions.S.Point ℂ (r + 1)) (F : ℕ → M) :
     ∏ q ∈ Formalism.MainNotions.S.rootPat γ, F (q.2.val - q.1.val) =
       (γ.1.map fun b => ∏ m ∈ Ico 1 b.2, F m ^ (b.2 - m)).prod := by

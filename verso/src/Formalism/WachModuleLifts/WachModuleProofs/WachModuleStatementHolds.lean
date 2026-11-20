@@ -9,6 +9,9 @@ variable {p : ℕ} [Fact p.Prime] {A : Type} [CommRing A] [Algebra ℤ_[p] A] {B
   {D : Type} [AddCommGroup D] [Module A D] [Module ℤ_[p] D] [IsScalarTower ℤ_[p] A D]
   {D' : Type} [AddCommGroup D'] [Module A D'] [Module ℤ_[p] D'] [IsScalarTower ℤ_[p] A D']
 
+/- English proof (translation)
+The claim follows from `W.φ_N x hx`.
+-/
 lemma Q_φ (W : WachMod B η D) {x : D} (hx : x ∈ W.N) : W.QInv (W.φ x) := W.φ_N x hx
 
 end Lift
@@ -28,6 +31,15 @@ def QS (W : WachMod B η D) : Submodule ℤ_[p] D where
 end Claim
 
 section Gamma
+/- English proof (translation)
+Introduce `p _ A _ _ B η D _ _ _ _ W u a hyp`. It suffices to establish `h : ∀ j, j ≤ a → ∀ n ∈ W.N, ∃ x ∈ W.N, ∃ z' ∈ W.N, (∏ i ∈ Finset.Icc 1 j, (1 - u ^ i)) • (B.π₀ • n) = (W.γ (B.π₀ • x) - B.π₀ • x) + B.π₀ ^ (j + 1) • z' from h a le_rfl`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _ n hn; exact ⟨0, W.N.zero_mem, n, hn, by simp⟩`.
+
+Consider the case `succ j ih`. Introduce `hj n hn`. Take `⟨x, hx, m, hm, he⟩` from `ih (by omega) n hn`. Take `⟨n', hn', hg⟩` from `hyp (j+1) (by omega) hj m hm`. Use `⟨(1 - u^(j+1)) • x - B.π₀ ^ j • m, ?_, n', hn', ?_⟩` and prove the remaining obligations.
+
+Conclude with `W.N.sub_mem (W.N.smul_of_tower_mem _ hx) (W.N.smul_mem _ hm)`. Rewrite using `[Finset.prod_Icc_succ_top (by omega), mul_comm, mul_smul, he]`. Establish `e1 : B.π₀ • ((1 - u^(j+1)) • x - B.π₀ ^ j • m) = (1 - u^(j+1)) • (B.π₀ • x) - B.π₀ ^ (j+1) • m`. Rewrite using `[smul_sub, smul_comm, smul_smul, ← pow_succ']`. Rewrite using `[e1, map_sub, LinearMap.map_smul, hg]`.
+
+Establish `e2 : B.π₀ ^ (j + 1 + 1) • n' = B.π₀ ^ (j+1+1) • n'` using `rfl`. Simplify using `only [smul_sub, smul_add, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem gammaImageProduct_holds : GammaOnto := by
   intro p _ A _ _ B η D _ _ _ _ W u a hyp
   suffices h : ∀ j, j ≤ a → ∀ n ∈ W.N, ∃ x ∈ W.N, ∃ z' ∈ W.N,
@@ -59,6 +71,9 @@ variable (p : ℕ) [Fact p.Prime]
 
 abbrev K := FractionRing (Polynomial ℤ_[p])
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsScalarTower ℤ_[p] (Polynomial ℤ_[p]) (K p) := inferInstance
 
 def polyW : WachMod (polyBase p) 0 (K p) where
@@ -87,6 +102,11 @@ def polyW : WachMod (polyBase p) 0 (K p) where
   γ_N := by intro x hx; exact ⟨0, Submodule.zero_mem _, by simp⟩
   γ_qN := by intro y hy; exact ⟨0, by simp, by simp⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: (1 : K p) ∈ (polyW p).N` using `⟨1, by simp⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `one_ne_zero this`.
+
+Simplify using `only [polyBase]`. Conclude with `Polynomial.not_isUnit_X`.
+-/
 theorem polyW_nondeg : (polyW p).N ≠ ⊥ ∧ ¬ IsUnit (polyBase p).π₀ := by
   constructor
   · intro h
@@ -96,6 +116,9 @@ theorem polyW_nondeg : (polyW p).N ≠ ⊥ ∧ ¬ IsUnit (polyBase p).π₀ := b
 
 end Wit
 
+/- English proof (translation)
+Introduce `p _` and use `⟨polyW p, polyW_nondeg p⟩`.
+-/
 theorem wach_module_nonempty : WachNonempty := fun p _ => ⟨polyW p, polyW_nondeg p⟩
 
 end Formalism.CL.W

@@ -13,12 +13,26 @@ open PI.PhMeasCore
 
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Use `CCRuleCW.exp_mem_UH Hm _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]`.
+-/
 theorem ex_mem_of_lie {Hm X : Mat n} (hX : Xᴴ * Hm + Hm * X = 0) (t : ℝ) :
     (ex X t)ᴴ * Hm * ex X t = Hm := by
   refine CCRuleCW.exp_mem_UH Hm _ ?_
   rw [Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul,
     Matrix.mul_smul, ← smul_add, hX, smul_zero]
 
+/- English proof (translation)
+Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).mp hP`. Establish `e1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ hdet`. Establish `e2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `e3 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, e2, conjTranspose_one]`. Establish `hc : ∀ a : Mat n, P⁻¹ * (P * a * P⁻¹) * P = a` using `fun a => by`.
+
+Rewrite using `[show P⁻¹ * (P * a * P⁻¹) * P = (P⁻¹ * P) * a * (P⁻¹ * P) by simp only [Matrix.mul_assoc], e1, Matrix.one_mul, Matrix.mul_one]`. Establish `hJ : ∀ a : Mat n, aᴴ * Hm * a = Hm → (P * a * P⁻¹)ᴴ * J * (P * a * P⁻¹) = J`. Introduce `a ha`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = ((P⁻¹)ᴴ * Pᴴ) * J * (P * P⁻¹) := by`. Rewrite using `[hPJ, ha, ← hPJ]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [e3, e2, Matrix.one_mul, Matrix.mul_one]`. Use `⟨by simp, fun a ha b hb => CCRuleCW.UH_mul Hm a b ha hb, ?_, fun a ha b hb => ?_⟩` and prove the remaining obligations.
+
+Rewrite `h1` using `[Matrix.mul_one, e1]`. Then use the resulting hypothesis. Use `hm _ (hJ a ha) _ (hJ b hb)` as an intermediate fact. Rewrite `this` using `[hc, hc]`. Rewrite using `[← this]`. Use `congr 1`.
+
+Rewrite using `[show P⁻¹ * (P * a * P⁻¹ * (P * b * P⁻¹)) * P = (P⁻¹ * P) * a * (P⁻¹ * P) * b * (P⁻¹ * P) by`. Simplify using `only [Matrix.mul_assoc], e1]`. Simplify using the standard rewrite rules.
+-/
 theorem repOn_of_conj {J Hm P : Mat n} {σ : Mat n → (H →L[ℂ] H)} (hP : IsUnit P)
     (hPJ : Pᴴ * J * P = Hm) (h1 : σ (P⁻¹ * 1 * P) = 1)
     (hm : ∀ a, aᴴ * J * a = J → ∀ b, bᴴ * J * b = J →

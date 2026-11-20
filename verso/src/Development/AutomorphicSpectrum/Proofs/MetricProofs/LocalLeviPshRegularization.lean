@@ -14,12 +14,20 @@ section OneChart
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Establish `: ReciprocityTheory.AnForm.A.coordDiv S = ⋃ i ∈ S, {z : Fin D → ℂ | z i = 0}`. Use extensionality with `z`. Simplify using `[ReciprocityTheory.AnForm.A.coordDiv]`. Rewrite using `[this]`. Conclude with `isClosed_biUnion_finset fun i _ => isClosed_eq (continuous_apply i) continuous_const`.
+-/
 lemma oc_isClosed_coordDiv (S : Finset (Fin D)) : IsClosed (ReciprocityTheory.AnForm.A.coordDiv S) := by
   have : ReciprocityTheory.AnForm.A.coordDiv S = ⋃ i ∈ S, {z : Fin D → ℂ | z i = 0} := by
     ext z; simp [ReciprocityTheory.AnForm.A.coordDiv]
   rw [this]
   exact isClosed_biUnion_finset fun i _ => isClosed_eq (continuous_apply i) continuous_const
 
+/- English proof (translation)
+Establish `hsub : closedBall (0 : Fin D → ℂ) (3 / 2) ⊆ ball 0 2` using `closedBall_subset_ball (by norm_num)`. Establish `hc : IsCompact (closedBall (0 : Fin D → ℂ) (3 / 2))` using `isCompact_closedBall _ _`. Take `⟨a, ha⟩` from `hc.exists_bound_of_continuousOn (hq.continuousOn.mono hsub)`. Take `⟨b, hb⟩` from `hc.exists_bound_of_continuousOn ((hq.continuousOn_fderiv_of_isOpen isOpen_ball (by simp)).mono hsub)`. Use `⟨max (max a b) 0, le_max_right _ _, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `hz'` using `ball_subset_closedBall hz`. Establish `h1 : |q z| ≤ a` using `by simpa using ha z hz'`. Conclude with `⟨h1.trans ((le_max_left _ _).trans (le_max_left _ _)), (hb z hz').trans ((le_max_right _ _).trans (le_max_left _ _))⟩`.
+-/
 lemma oc_q_bounds {q : (Fin D → ℂ) → ℝ} (hq : ContDiffOn ℝ ∞ q (ball (0 : Fin D → ℂ) 2)) :
     ∃ Q : ℝ, 0 ≤ Q ∧ ∀ z ∈ ball (0 : Fin D → ℂ) (3 / 2), |q z| ≤ Q ∧ ‖fderiv ℝ q z‖ ≤ Q := by
   have hsub : closedBall (0 : Fin D → ℂ) (3 / 2) ⊆ ball 0 2 :=
@@ -34,6 +42,11 @@ lemma oc_q_bounds {q : (Fin D → ℂ) → ℝ} (hq : ContDiffOn ℝ ∞ q (ball
   exact ⟨h1.trans ((le_max_left _ _).trans (le_max_left _ _)),
     (hb z hz').trans ((le_max_right _ _).trans (le_max_left _ _))⟩
 
+/- English proof (translation)
+Establish `hd : ∀ {f : (Fin D → ℂ) → ℝ}, ContDiffOn ℝ ∞ f W → ∀ x ∈ W, DifferentiableAt ℝ f x` using `fun hf x hx => (hf.differentiableOn (by simp)).differentiableAt (hW.mem_nhds hx)`. Establish `hd2 : ∀ f : (Fin D → ℂ) → ℝ, ContDiffOn ℝ ∞ f W → DifferentiableAt ℝ (fderiv ℝ f) z` using `fun f hf => by`. Establish `h2 : ContDiffOn ℝ 2 f W` using `by exact_mod_cast contDiffOn_infty.1 hf 2`. Conclude with `((h2.fderiv_of_isOpen (m := 1) hW one_add_one_eq_two.le).differentiableOn (by simp)).differentiableAt (hW.mem_nhds hz)`. Establish `he : ∀ x ∈ W, fderiv ℝ (fun x => q x + p x) x = fderiv ℝ q x + fderiv ℝ p x` using `fun x hx => fderiv_fun_add (hd hq x hx) (hd hp x hx)`.
+
+Use `⟨he z hz, ?_⟩` and prove the remaining obligations. Establish `hev : fderiv ℝ (fun x => q x + p x) =ᶠ[𝓝 z] fun x => fderiv ℝ q x + fderiv ℝ p x` using `Filter.eventually_of_mem (hW.mem_nhds hz) he`. Rewrite using `[hev.fderiv_eq]`. Conclude with `fderiv_fun_add (hd2 q hq) (hd2 p hp)`.
+-/
 lemma fderiv_add_and_second_fderiv_add {W : Set (Fin D → ℂ)} (hW : IsOpen W) {q p : (Fin D → ℂ) → ℝ}
     (hq : ContDiffOn ℝ ∞ q W) (hp : ContDiffOn ℝ ∞ p W) {z : Fin D → ℂ} (hz : z ∈ W) :
     fderiv ℝ (fun x => q x + p x) z = fderiv ℝ q z + fderiv ℝ p z ∧
@@ -54,6 +67,11 @@ lemma fderiv_add_and_second_fderiv_add {W : Set (Fin D → ℂ)} (hW : IsOpen W)
   rw [hev.fderiv_eq]
   exact fderiv_fun_add (hd2 q hq) (hd2 p hp)
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Use `filter_upwards [h ε hε, he] with t ht hte z hz`. Use `ht z hz` as an intermediate fact. Rewrite `this`, the goal using `[dist_comm, dist_eq_norm]`.
+
+Rewrite using `[hte z hz]`. Conclude with `this`.
+-/
 lemma oc_tuo {E ι : Type*} [NormedAddCommGroup E] {l : Filter ι} {X : Type*} {K : Set X}
     {F G : ι → X → E} {f g : X → E} (h : TendstoUniformlyOn F f l K)
     (he : ∀ᶠ t in l, ∀ z ∈ K, G t z - g z = F t z - f z) : TendstoUniformlyOn G g l K := by
@@ -65,6 +83,11 @@ lemma oc_tuo {E ι : Type*} [NormedAddCommGroup E] {l : Filter ι} {X : Type*} {
   rw [hte z hz]
   exact this
 
+/- English proof (translation)
+Establish `h1 : Real.exp 1 ≤ Real.log (1 / t)`. Rewrite using `[one_div, Real.log_inv]`. Use `Real.log_le_log ht hte` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `Real.log_le_log (Real.exp_pos 1) h1` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis.
+-/
 lemma oc_ell {t : ℝ} (ht : 0 < t) (hte : t ≤ Real.exp (-Real.exp 1)) :
     Real.exp 1 ≤ Real.log (1 / t) ∧ 1 ≤ Real.log (Real.log (1 / t)) := by
   have h1 : Real.exp 1 ≤ Real.log (1 / t) := by
@@ -76,6 +99,11 @@ lemma oc_ell {t : ℝ} (ht : 0 < t) (hte : t ≤ Real.exp (-Real.exp 1)) :
   have := Real.log_le_log (Real.exp_pos 1) h1
   rwa [Real.log_exp] at this
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `oc_ell ht hte`. Establish `he1 : 1 ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `hℓ : 0 < Real.log (1 / t)` using `by linarith`. Unfold `epsT`. Prove the components needed by the constructor for the conclusion.
+
+Apply `div_le_div_of_nonneg_right _ hℓ.le` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right hC (by linarith)`. Rewrite using `[div_le_iff₀ hℓ]`. Establish `: 0 ≤ C₁ * Real.log (Real.log (1 / t))` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma oc_eps {t C₁ C : ℝ} (ht : 0 < t) (hte : t ≤ Real.exp (-Real.exp 1)) (hC₁ : 1 ≤ C₁)
     (hC : C₁ ≤ C) : epsT C₁ t ≤ epsT C t ∧ epsT C₁ t ≤ C₁ * Real.log (Real.log (1 / t)) := by
   obtain ⟨h1, h2⟩ := oc_ell ht hte
@@ -89,6 +117,9 @@ lemma oc_eps {t C₁ C : ℝ} (ht : 0 < t) (hte : t ≤ Real.exp (-Real.exp 1)) 
     have : 0 ≤ C₁ * Real.log (Real.log (1 / t)) := by positivity
     nlinarith
 
+/- English proof (translation)
+Establish `h` using `RegularChartScaling.rLoc_ge S m (RegularChartScaling.norm_coord_le_of_ball (R := 3 / 2) (by norm_num) hz)`. Establish `he1 : 1 ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Use `⟨he1.trans h, ?_⟩` and prove the remaining obligations. Use `Real.log_le_log (Real.exp_pos 1) h` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis.
+-/
 lemma oc_rLoc_ge (S : Finset (Fin D)) (m : Fin D → ℕ) {z : Fin D → ℂ}
     (hz : z ∈ ball (0 : Fin D → ℂ) (3 / 2)) :
     1 ≤ rLoc S m z ∧ 1 ≤ Real.log (rLoc S m z) := by
@@ -99,6 +130,11 @@ lemma oc_rLoc_ge (S : Finset (Fin D)) (m : Fin D → ℕ) {z : Fin D → ℂ}
   have := Real.log_le_log (Real.exp_pos 1) h
   rwa [Real.log_exp] at this
 
+/- English proof (translation)
+Unfold `rLoc`. Use `continuousOn_const.add (continuousOn_finset_sum _ fun i hi => ?_)` and prove the remaining obligations. Use `continuousOn_const.mul (ContinuousOn.log ?_ ?_)` and prove the remaining obligations. Use `continuousOn_const.div (by fun_prop) ?_` and prove the remaining obligations. Introduce `z hz`.
+
+Establish `: z i ≠ 0` using `fun h0 => hz ⟨i, hi, h0⟩`. Check the signs of the components of the expression. Introduce `z hz`. Establish `: z i ≠ 0` using `fun h0 => hz ⟨i, hi, h0⟩`. Check the signs of the components of the expression.
+-/
 lemma oc_rLoc_cont (S : Finset (Fin D)) (m : Fin D → ℕ) :
     ContinuousOn (rLoc S m) (ReciprocityTheory.AnForm.A.coordDiv S)ᶜ := by
   unfold rLoc
@@ -112,6 +148,11 @@ lemma oc_rLoc_cont (S : Finset (Fin D)) (m : Fin D → ℕ) :
     have : z i ≠ 0 := fun h0 => hz ⟨i, hi, h0⟩
     positivity
 
+/- English proof (translation)
+Establish `h1 : r ^ C₅ ≤ r ^ (C₅ + Q)` using `Real.rpow_le_rpow_of_exponent_le hr (by linarith)`. Establish `h2 : 1 ≤ r ^ (C₅ + Q)` using `Real.one_le_rpow hr (by linarith)`. Establish `h3 : 1 ≤ Real.exp (r / 2)` using `Real.one_le_exp (by linarith)`. Establish `h4 : 1 ≤ r ^ (C₅ + Q) * Real.exp (r / 2)` using `by nlinarith`. Establish `h5 : C₅ * r ^ C₅ * Real.exp (r / 2) ≤ C₅ * (r ^ (C₅ + Q) * Real.exp (r / 2))`.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right h1 (by positivity)) hC₅`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma oc_grad {r C₅ Q a b : ℝ} (hr : 1 ≤ r) (hC₅ : 0 ≤ C₅) (hQ : 0 ≤ Q) (ha : a ≤ Q)
     (hb : b ≤ C₅ * r ^ C₅ * Real.exp (r / 2)) :
     a + b ≤ (C₅ + Q) * r ^ (C₅ + Q) * Real.exp (r / 2) := by
@@ -126,6 +167,61 @@ lemma oc_grad {r C₅ Q a b : ℝ} (hr : 1 ≤ r) (hC₅ : 0 ≤ C₅) (hQ : 0 �
 
 end OneChart
 
+/- English proof (translation)
+Introduce `D S m q ph C₅ K hm hq hph hL hb hg`. Establish `hAc` using `oc_isClosed_coordDiv S`. Establish `hC₅ : 0 ≤ C₅` using `RegularChartScaling.fifth_volume_constant_nonneg m le_rfl (by norm_num) hb`. Take `⟨Q, hQ0, hQ⟩` from `oc_q_bounds hq`. Establish `hsub : ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S ⊆ ball 0 2 \ ReciprocityTheory.AnForm.A.coordDiv S` using `Set.diff_subset_diff_left (ball_subset_ball (by norm_num))`.
+
+Establish `hqA : ContDiffOn ℝ ∞ q (ball (0 : Fin D → ℂ) 2 \ ReciprocityTheory.AnForm.A.coordDiv S)` using `hq.mono Set.diff_subset`. Establish `huS : ContDiffOn ℝ ∞ (fun z => q z + ph z) (ball (0 : Fin D → ℂ) 2 \ ReciprocityTheory.AnForm.A.coordDiv S)` using `hqA.add hph`. Establish `hO2 : IsOpen (ball (0 : Fin D → ℂ) 2 \ ReciprocityTheory.AnForm.A.coordDiv S)` using `isOpen_ball.sdiff hAc`. Establish `hO3 : IsOpen (ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S)` using `isOpen_ball.sdiff hAc`. Establish `hucont : ContinuousOn (fun z => q z + ph z) (ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S)` using `huS.continuousOn.mono hsub`.
+
+Establish `hupsh : ReciprocityTheory.AnForm.A.IsPsh (ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S) (fun z => q z + ph z)` using `(ReciprocityTheory.AnForm.A.isPsh_iff_isLeviPsh_thm D _ _ hO3 (hL.1.mono hsub)).2 ⟨hL.1.mono hsub, fun z hz w => hL.2 z (hsub hz) w⟩`. Establish `hubd : ∀ z ∈ ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S, -(C₅ + Q) * Real.log (rLoc S m z) ≤ q z + ph z ∧ q z + ph z ≤ C₅ + Q`. Introduce `z hz`. Take `⟨h1, h2⟩` from `hb z (hsub hz)`. Establish `h3` using `abs_le.1 (hQ z hz.1).1`.
+
+Establish `h4` using `(oc_rLoc_ge S m hz.1).2`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hugrad : ∀ z ∈ ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S, ‖fderiv ℝ (fun z => q z + ph z) z‖ ≤ (C₅ + Q) * rLoc S m z ^ (C₅ + Q) * Real.exp (rLoc S m z / 2)`.
+
+Introduce `z hz`. Rewrite using `[(fderiv_add_and_second_fderiv_add hO2 hqA hph (hsub hz)).1]`. Conclude with `(norm_add_le _ _).trans (oc_grad (oc_rLoc_ge S m hz.1).1 hC₅ hQ0 (hQ z hz.1).2 (hg z hz))`. Take `⟨ρ⟩` from `ReciprocityTheory.AnForm.A.mollifierInhabit_thm D`. Take `⟨C₁, t₁, w, hC₁, ht₁, ht₁e, ht₁8, hW⟩` from `GlobalTheory.T.local_psh_regularization_log_bound D S m (fun z => q z + ph z) (C₅ + Q) ρ hucont hupsh hubd`.
+
+Take `⟨t₂, ht₂, hN⟩` from `GlobalTheory.T.local_regularization_gradient_bound D S m (fun z => q z + ph z) (C₅ + Q) K hm ((huS.differentiableOn (by simp)).mono hsub) hugrad`. Take `⟨phT, hphT⟩ : ∃ phT : ℝ → (Fin D → ℂ) → ℝ, ∀ t z, phT t z = ReciprocityTheory.AnForm.A.molli ρ t (w t) z - q z` from `⟨_, fun _ _ => rfl⟩`. Establish `hphF : ∀ t, phT t = fun z => ReciprocityTheory.AnForm.A.molli ρ t (w t) z - q z` using `fun t => funext (hphT t)`. Establish `hgF : ∀ t, ReciprocityTheory.AnForm.A.molli ρ t (w t) = fun z => q z + phT t z`. Introduce `t`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[hphT]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq54 : ∀ z ∈ ball (0 : Fin D → ℂ) (5 / 4), z ∈ ball (0 : Fin D → ℂ) (3 / 2)` using `fun z hz => ball_subset_ball (by norm_num) hz`. Establish `hqs : ContDiffOn ℝ ∞ q (ball (0 : Fin D → ℂ) (5 / 4))` using `hq.mono (ball_subset_ball (by norm_num))`.
+
+Establish `hsmooth : ∀ t, 0 < t → t ≤ t₁ → ContDiffOn ℝ ∞ (phT t) (ball (0 : Fin D → ℂ) (5 / 4))`. Introduce `t ht htt`. Rewrite using `[hphF]`. Conclude with `(hW t ht htt).2.1.sub hqs`. Establish `hC1 : C₁ ≤ 2 * C₁ + 2 * Q + C₅ + 1` using `by linarith`.
+
+Use `⟨2 * C₁ + 2 * Q + C₅ + 1, min t₁ t₂, phT, by linarith, lt_min ht₁ ht₂, (min_le_left _ _).trans ht₁e, fun t ht htt => ?_, fun K' hK' hcK' => ?_⟩` and prove the remaining obligations. Establish `ht1 : t ≤ t₁` using `htt.trans (min_le_left _ _)`. Establish `ht2 : t ≤ t₂` using `htt.trans (min_le_right _ _)`. Establish `hte` using `ht1.trans ht₁e`. Take `⟨-, hs, hl, hge, hM⟩` from `hW t ht ht1`.
+
+Take `⟨hℓ1, hℓ2⟩` from `oc_ell ht hte`. Take `⟨he1, he2⟩` from `oc_eps ht hte hC₁ hC1`. Establish `hcb : ∀ s, s ≤ t₁ → ∀ z ∈ ball (0 : Fin D → ℂ) (5 / 4), closedBall z s ⊆ ball 0 (3 / 2)` using `fun s hs z hz => RegularChartScaling.closedBall_sub_of hz (by linarith)`. Use `⟨hsmooth t ht ht1, ?_, fun z hz => ?_, fun z hz => ?_, fun z hz => ?_, fun t' htt' ht' z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← hgF]`.
+
+Conclude with `hl`. Take `⟨h1, h2, h3⟩` from `hM z hz`. Establish `hup : polyMaxOff S (fun z => q z + ph z) z t ≤ C₅ + Q` using `RegularChartScaling.pmo_le z ht fun x hx => (hubd x ⟨hcb t ht1 z hz hx.1, hx.2⟩).2`. Establish `hqz` using `abs_le.1 (hQ z (hq54 z hz)).1`. Rewrite using `[hphT]`.
+
+Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Take `⟨h1, h2, h3⟩` from `hM z hz.1`. Use `⟨?_, fun hr => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hphT]`. Use `hge z hz` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hphT]`. Establish `h4` using `hN t ht ht2 z hz hr`.
+
+Establish `h5 : 0 < t ^ ((1 : ℝ) / 3)` using `Real.rpow_pos_of_pos ht _`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨h1, h2, h3⟩` from `hM z hz`. Rewrite using `[hphT]`. Apply the tactic sequence `constructor <;> linarith`.
+
+Establish `ht'0 : 0 < t'` using `ht.trans_le htt'`. Establish `ht'1 : t' ≤ t₁` using `ht'.trans (min_le_left _ _)`. Establish `ht'e` using `ht'1.trans ht₁e`. Take `⟨-, -, -, -, hM'⟩` from `hW t' ht'0 ht'1`. Take `⟨h1, h2, h3⟩` from `hM z hz`.
+
+Take `⟨h1', h2', h3'⟩` from `hM' z hz`. Take `⟨he1', -⟩` from `oc_eps ht'0 ht'e hC₁ hC1`. Establish `hmono : polyMaxOff S (fun z => q z + ph z) z t ≤ polyMaxOff S (fun z => q z + ph z) z t'` using `RegularChartScaling.pmo_mono (fun x hx => (hubd x hx).2) ht htt' (hcb t' ht'1 z hz)`. Rewrite using `[hphT, hphT]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hK2 : K' ⊆ (ReciprocityTheory.AnForm.A.coordDiv S)ᶜ` using `fun z hz => (hK' hz).2`. Take `⟨B, hB⟩` from `(hcK'.image_of_continuousOn ((oc_rLoc_cont S m).mono hK2)).bddAbove`. Take `⟨V, hVdef⟩ : ∃ V : Set (Fin D → ℂ), V = (ReciprocityTheory.AnForm.A.coordDiv S)ᶜ ∩ rLoc S m ⁻¹' Set.Iio (B + 1) ∩ ball 0 (5 / 4)` from `⟨_, rfl⟩`. Establish `hV : IsOpen V`. Rewrite using `[hVdef]`.
+
+Conclude with `((oc_rLoc_cont S m).isOpen_inter_preimage hAc.isOpen_compl isOpen_Iio).inter isOpen_ball`. Establish `hVsub : V ⊆ ball (0 : Fin D → ℂ) 2 \ ReciprocityTheory.AnForm.A.coordDiv S`. Rewrite using `[hVdef]`. Conclude with `fun z hz => ⟨ball_subset_ball (by norm_num) hz.2, hz.1.1⟩`. Establish `hKV : K' ⊆ V`.
+
+Rewrite using `[hVdef]`. Introduce `z hz`. Establish `: rLoc S m z ≤ B` using `hB (Set.mem_image_of_mem _ hz)`. Conclude with `⟨⟨hK2 hz, by simp only [Set.mem_preimage, Set.mem_Iio]; linarith⟩, (hK' hz).1⟩`. Establish `hlog : Tendsto (fun t : ℝ => Real.log (Real.log (1 / t))) (𝓝[>] 0) atTop`.
+
+Establish `h : Tendsto (fun t : ℝ => 1 / t) (𝓝[>] 0) atTop`. Simplify `tendsto_inv_nhdsGT_zero` using `only [one_div]`. Conclude with `Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp h)`. Establish `hsmall : ∀ᶠ t in 𝓝[>] (0 : ℝ), t < min t₁ t₂` using `nhdsWithin_le_nhds (Iio_mem_nhds (lt_min ht₁ ht₂))`. Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), Set.EqOn (w t) (fun z => q z + ph z) V` using `by filter_upwards [self_mem_nhdsWithin, hsmall, hlog.eventually_ge_atTop ((C₅ + Q) * Real.log (B + 1) / C₁)] with t ht htt hbig z hz`.
+
+Establish `ht0 : 0 < t` using `ht`. Establish `ht1 : t ≤ t₁` using `htt.le.trans (min_le_left _ _)`. Establish `hzV` using `hz`. Rewrite `hz` using `[hVdef]`. Establish `hz3` using `hq54 z hz.2`.
+
+Establish `hzB : z ∈ ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S` using `⟨hz3, hz.1.1⟩`. Rewrite using `[(hW t ht0 ht1).1 z hzB]`. Use `max_eq_left ?_` and prove the remaining obligations. Establish `hr` using `oc_rLoc_ge S m hz3`. Establish `hr2 : rLoc S m z < B + 1` using `hz.1.2`.
+
+Establish `hl : Real.log (rLoc S m z) ≤ Real.log (B + 1)` using `Real.log_le_log (by linarith) hr2.le`. Establish `h1` using `(hubd z hzB).1`. Establish `hC₁0 : 0 < C₁` using `by linarith`. Rewrite `hbig` using `[div_le_iff₀ hC₁0]`. Establish `hCQ : 0 ≤ C₅ + Q` using `by linarith`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `huV : ContDiffOn ℝ ∞ (fun z => q z + ph z) V` using `huS.mono hVsub`. Take `⟨h1, h2, h3, M, h4⟩` from `mollify_converges_C2_rate D ρ V K' (fun z => q z + ph z) (fun t => w t) hV hcK' hKV huV hev`. Establish `hO : IsOpen (ball (0 : Fin D → ℂ) (5 / 4) \ ReciprocityTheory.AnForm.A.coordDiv S)` using `isOpen_ball.sdiff hAc`. Establish `hOsub : ball (0 : Fin D → ℂ) (5 / 4) \ ReciprocityTheory.AnForm.A.coordDiv S ⊆ ball 0 2 \ ReciprocityTheory.AnForm.A.coordDiv S` using `Set.diff_subset_diff_left (ball_subset_ball (by norm_num))`.
+
+Establish `hd : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ K', fderiv ℝ (phT t) z - fderiv ℝ ph z = fderiv ℝ (ReciprocityTheory.AnForm.A.molli ρ t (w t)) z - fderiv ℝ (fun z => q z + ph z) z ∧ fderiv ℝ (fderiv ℝ (phT t)) z - fderiv ℝ (fderiv ℝ ph) z = fderiv ℝ (fderiv ℝ (ReciprocityTheory.AnForm.A.molli ρ …` using `by filter_upwards [self_mem_nhdsWithin, hsmall] with t ht htt z hz`. Establish `ht0 : 0 < t` using `ht`. Establish `hs` using `hsmooth t ht0 (htt.le.trans (min_le_left _ _))`. Establish `hzO` using `hK' hz`. Take `⟨a1, a2⟩` from `fderiv_add_and_second_fderiv_add hO (hqs.mono Set.diff_subset) (hs.mono Set.diff_subset) hzO`.
+
+Take `⟨b1, b2⟩` from `fderiv_add_and_second_fderiv_add hO (hqs.mono Set.diff_subset) (hph.mono hOsub) hzO`. Rewrite using `[hgF t, a1, a2, b1, b2]`. Apply the tactic sequence `constructor <;> abel`. Use `⟨oc_tuo h1 ?_, oc_tuo h2 (hd.mono fun t ht z hz => (ht z hz).1), oc_tuo h3 (hd.mono fun t ht z hz => (ht z hz).2), M, ?_⟩` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun t z _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hphT]`. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [h4, hd] with t ht htd z hz`. Rewrite using `[(htd z hz).1]`. Conclude with `ht z hz`.
+-/
 theorem regularise_one_chart :
     ∀ (D : ℕ) (S : Finset (Fin D)) (m : Fin D → ℕ) (q ph : (Fin D → ℂ) → ℝ) (C₅ K : ℝ), (∀ i ∈ S, 1 ≤ m i) → ContDiffOn ℝ ∞ q (ball (0 : Fin D → ℂ) (2)) → ContDiffOn ℝ ∞ ph (ball (0 : Fin D → ℂ) (2) \ ReciprocityTheory.AnForm.A.coordDiv S) → ReciprocityTheory.AnForm.A.IsLeviPsh (ball (0 : Fin D → ℂ) (2) \ ReciprocityTheory.AnForm.A.coordDiv S) (fun z => q z + ph z) → (∀ z ∈ ball (0 : Fin D → ℂ) (2) \ ReciprocityTheory.AnForm.A.coordDiv S, -C₅ * Real.log (rLoc S m z) ≤ ph z ∧ ph z ≤ C₅) → (∀ z ∈ ball (0 : Fin D → ℂ) (3 / 2) \ ReciprocityTheory.AnForm.A.coordDiv S, ‖fderiv ℝ ph z‖ ≤ C₅ * rLoc S m z ^ C₅ * Real.exp (rLoc S m z / 2)) → ∃ (C t₀ : ℝ) (phT : ℝ → (Fin D → ℂ) → ℝ), 1 ≤ C ∧ 0 < t₀ ∧ t₀ ≤ Real.exp (-Real.exp 1) ∧ (∀ t, 0 < t → t ≤ t₀ → ContDiffOn ℝ ∞ (phT t) (ball (0 : Fin D → ℂ) (5 / 4)) ∧ ReciprocityTheory.AnForm.A.IsLeviPsh (ball (0 : Fin D → ℂ) (5 / 4)) (fun z => q z + phT t z) ∧ (∀ z ∈ ball (0 : Fin D → ℂ) (5 / 4), phT t z ≤ C ∧ -C * Real.log (Real.log (1 / t)) ≤ phT t z) ∧ (∀ z ∈ ball (0 : Fin D → ℂ) (5 / 4) \ ReciprocityTheory.AnForm.A.coordDiv S, ph z ≤ phT t z ∧ (rLoc S m z ≤ Real.log (1 / t) + K → phT t z ≤ ph z + t ^ ((1 : ℝ) / 3))) ∧ (∀ z ∈ ball (0 : Fin D → ℂ) (5 / 4), polyMaxOff S (fun x => q x + ph x) z t - epsT C t ≤ q z + phT t z ∧ q z + phT t z ≤ polyMaxOff S (fun x => q x + ph x) z t) ∧ ∀ t', t ≤ t' → t' ≤ t₀ → ∀ z ∈ ball (0 : Fin D → ℂ) (5 / 4), phT t z ≤ phT t' z + epsT C t') ∧ ∀ K' ⊆ ball (0 : Fin D → ℂ) (5 / 4) \ ReciprocityTheory.AnForm.A.coordDiv S, IsCompact K' → TendstoUniformlyOn (fun t => phT t) (ph) (𝓝[>] 0) K' ∧ TendstoUniformlyOn (fun t => fderiv ℝ (phT t)) (fderiv ℝ (ph)) (𝓝[>] 0) K' ∧ TendstoUniformlyOn (fun t => fderiv ℝ (fderiv ℝ (phT t))) (fderiv ℝ (fderiv ℝ (ph))) (𝓝[>] 0) K' ∧ ∃ M : ℝ, ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ K', ‖fderiv ℝ (phT t) z - fderiv ℝ (ph) z‖ ≤ M * t := by
   intro D S m q ph C₅ K hm hq hph hL hb hg

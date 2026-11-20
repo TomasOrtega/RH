@@ -13,14 +13,23 @@ namespace UpperTheory.V.Z.Kato.Nb.EulerSystemNorms
 
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+The claim follows from `(Continuous.units_map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom ((continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val)).comp (continuous_cycZ ℚ Ω l)`.
+-/
 private theorem cont_bar : Continuous (cycBar ℚ Ω l) :=
   (Continuous.units_map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom
     ((continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val)).comp (continuous_cycZ ℚ Ω l)
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨h, (h.comp continuous_inv).congr fun s => by simp⟩`.
+-/
 private theorem cont_hom {M : Type} [Monoid M] [TopologicalSpace M] (f : G ℚ Ω →* Mˣ) (h : Continuous fun s => (f s : M)) :
     Continuous f :=
   Units.continuous_iff.2 ⟨h, (h.comp continuous_inv).congr fun s => by simp⟩
 
+/- English proof (translation)
+Use `(IsLocallyConstant.comp ((IsLocallyConstant.iff_exists_open _).2 fun s => ?_) δ).continuous` and prove the remaining obligations. Use `⟨(fun t => s⁻¹ * t) ⁻¹' ((Chr.cls ℚ Ω N).ker : Set (G ℚ Ω)), (Chr.clsFacts ℚ Ω N).1.preimage (continuous_const.mul continuous_id), by simp, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h : Chr.cls ℚ Ω N (s⁻¹ * t) = 1` using `ht`. Rewrite `h` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h.symm`.
+-/
 private theorem cont_cls [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (δ : (ZMod N)ˣ → Qbar l) :
     Continuous fun s => δ (Chr.cls ℚ Ω N s) := by
   refine (IsLocallyConstant.comp ((IsLocallyConstant.iff_exists_open _).2 fun s => ?_) δ).continuous
@@ -30,6 +39,13 @@ private theorem cont_cls [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (δ : (ZMod 
   rw [map_mul, map_inv, inv_mul_eq_one] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `hd : (g : Matrix (Fin 2) (Fin 2) k).det ≠ 0` using `(Matrix.isUnits_det_units g).ne_zero`. Generalize the expression as in `(g : Matrix (Fin 2) (Fin 2) k) = m at h hd`. Establish `e` using `fun i j => congrFun (congrFun h i) j`. Establish `e00` using `e 0 0`. Establish `e01` using `e 0 1`.
+
+Simplify using `[pow_two, Matrix.mul_apply, Fin.sum_univ_two, Matrix.det_fin_two] at e00 e01`. Rewrite `hd` using `[Matrix.det_fin_two]`. Rewrite using `[Matrix.trace_fin_two]`. Establish `e10` using `e 1 0`. Establish `e11` using `e 1 1`.
+
+Simplify using `[pow_two, Matrix.mul_apply, Fin.sum_univ_two, Matrix.det_fin_two] at e10 e11`. Apply `mul_right_cancel₀ hd` to reduce the goal to its premises. Take the linear combination `m 1 1 * e00 - m 1 0 * e01`.
+-/
 private theorem trace_eq {k : Type} [Field k] (g : GL (Fin 2) k) (a : k)
     (h : (g : Matrix (Fin 2) (Fin 2) k) ^ 2 - a • (g : Matrix (Fin 2) (Fin 2) k) + (g : Matrix (Fin 2) (Fin 2) k).det • 1 = 0) :
     (g : Matrix (Fin 2) (Fin 2) k).trace = a := by
@@ -47,10 +63,18 @@ private theorem trace_eq {k : Type} [Field k] (g : GL (Fin 2) k) (a : k)
   apply mul_right_cancel₀ hd
   linear_combination m 1 1 * e00 - m 1 0 * e01
 
+/- English proof (translation)
+The claim follows from `(h.2.2 U le_top fun s v hv => hU s v hv).resolve_left h0`.
+-/
 private theorem stable_top {W : R2 Ω l} (h : IsIrr (W.comp (H0g W).subtype)) (U : Submodule (Qbar l) (Fin 2 → Qbar l))
     (h0 : U ≠ ⊥) (hU : ∀ s, ∀ v ∈ U, mat W s *ᵥ v ∈ U) : U = ⊤ :=
   (h.2.2 U le_top fun s v hv => hU s v hv).resolve_left h0
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `h1` using `stable_top h (Submodule.span (Qbar l) {![1, 0]}) (by simp) fun s v hv => by`. Take `⟨t, ht⟩` from `hn s`. Rewrite using `[ht, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+
+Conclude with `Submodule.smul_mem _ _ hv`. Establish `h2 : (![0, 1] : Fin 2 → Qbar l) ∈ Submodule.span (Qbar l) {(![1, 0] : Fin 2 → Qbar l)}` using `h1 ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 h2`. Simplify using `using congrFun hc 1`.
+-/
 private theorem not_scalar {W : R2 Ω l} (h : IsIrr (W.comp (H0g W).subtype)) : ∃ s, ∀ t : Qbar l, mat W s ≠ t • 1 := by
   by_contra hn
   push Not at hn
@@ -62,6 +86,11 @@ private theorem not_scalar {W : R2 Ω l} (h : IsIrr (W.comp (H0g W).subtype)) : 
   obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 h2
   simpa using congrFun hc 1
 
+/- English proof (translation)
+Establish `hu : IsUnit (q : ℤ_[l])` using `PadicInt.isUnit_iff.2 (PadicInt.norm_natCast_eq_one_iff.2 h.symm)`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `e` using `congrArg (algebraMap ℤ_[l] (Qbar l)) hy`. Rewrite `e` using `[map_mul, map_natCast, map_one]`. Rewrite using `[← eq_inv_of_mul_eq_one_right e]`.
+
+Conclude with `cf.O.algebraMap_mem y`.
+-/
 private theorem inv_mem (cf : Coef l) {q : ℕ} (h : Nat.Coprime q l) : ((q : Qbar l))⁻¹ ∈ cf.O := by
   have hu : IsUnit (q : ℤ_[l]) := PadicInt.isUnit_iff.2 (PadicInt.norm_natCast_eq_one_iff.2 h.symm)
   obtain ⟨y, hy⟩ := hu.exists_right_inv
@@ -73,6 +102,47 @@ private theorem inv_mem (cf : Coef l) {q : ℕ} (h : Nat.Coprime q l) : ((q : Qb
 end UpperTheory.V.Z.Kato.Nb.EulerSystemNorms
 
 open UpperTheory.V.Z.Kato.Nb.EulerSystemNorms in
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf hA he hlN S hNf hint`. Take `⟨-, -, -, -, hO, -, -⟩` from `sInteg l Ω ι e gN A W ε X pr N x c d gm ψ cf hA he hint`. Establish `hD` using `sDiamChar l Ω ι e gN A W ε X pr N x c d gm ψ cf hA he hlN`. Take `⟨hc, hd, -, -, hadd, hsm, -, hgal, ⟨δ', hT⟩, -, -, χ₀, -, -, hχ⟩` from `hA`. Establish `hl : l.Prime` using `Fact.out`.
+
+Establish `hN : 0 < N` using `NeZero.pos N`. Take `⟨S0, hES⟩` from `sEs l Ω ε X hNf.l_odd N (2 * e - 1) hN`. Set `ρ : R2 Ω l` to `tw W (cycBar ℚ Ω l ^ e * χ₀⁻¹)`. Establish `hρ : ∀ s, mat ρ s = rhoK W e ψ s` using `fun s => by`. Rewrite using `[mat, tw_val, rhoK, thK, ← hχ]`.
+
+Simplify using `[mul_comm]`. Establish `hn0 : l * N * c * d ≠ 0`. Use `hl.pos` as an intermediate fact. Check the signs of the components of the expression. Establish `key : ∀ w : Pl, w ∉ S → normV w ∉ S0 → Nat.Coprime (normV w) (l * N) → ∃ a δ : Qbar l, (∀ b ∈ X.B N l (2 * e - 1), pr (X.heckeT N l (normV w) b) = a • pr b ∧ pr (X.diam N l (normV w) b) = δ • pr b) ∧ ∀ (B : ValuationSubring Ω) (σ : G ℚ Ω), IsPlaceOver B w → IsFrob B (normV w) σ → …`.
+
+Distinguish the cases in `hz : ∃ b ∈ X.B N l (2 * e - 1), pr b ≠ 0`. Take `⟨δ, hδ⟩` from `hD hz`. Set `χ : G ℚ Ω →* (Qbar l)ˣ` to `cycBar ℚ Ω l ^ (2 * e) * δ.comp (Chr.cls ℚ Ω N)`. Establish `hspan : Submodule.span (Qbar l) (pr '' (X.B N l (2 * e - 1) : Set (X.Fn l))) = ⊤`. Use `stable_top hNf.irr _ (fun h => ?_) fun s v hv => ?_` and prove the remaining obligations.
+
+Take `⟨b, hb, hb0⟩` from `hz`. Conclude with `hb0 ((Submodule.span_eq_bot.1 h) _ ⟨b, hb, rfl⟩)`. Establish `h1 : mat W s = ((cycBar ℚ Ω l ^ e * χ₀⁻¹) s⁻¹ : Qbar l) • mat ρ s`. Rewrite using `[mat, mat, tw_val, smul_smul, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_smul]`. Rewrite using `[h1, Matrix.smul_mulVec]`.
+
+Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Use `(Submodule.span_le (p := (Submodule.span (Qbar l) (pr '' (X.B N l (2 * e - 1) : Set (X.Fn l)))).comap (Matrix.mulVecLin (mat ρ s)))).2 ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Use `Submodule.subset_span ⟨_, (sBStab Ω ε X l N _ hN b hb).1 s, ?_⟩` and prove the remaining obligations. Rewrite using `[hgal s b hb, ← hρ]`.
+
+Both sides reduce to the same expression. Establish `hχF : ∀ (w : Pl), Nat.Coprime (normV w) (l * N) → ∀ (B : ValuationSubring Ω) (σ : G ℚ Ω), IsPlaceOver B w → IsFrob B (normV w) σ → (χ σ : Qbar l) = (normV w : Qbar l) ^ (2 * e) * δ (Chr.cls ℚ Ω N σ)` using `fun w hw B σ hB hσ => by`. Rewrite using `[← eps_frobAt l ((normV_prime w).coprime_iff_not_dvd.1 hw.coprime_mul_right_right) hB hσ]`. Simplify using `[χ]`. Establish `hrel : ∀ (w : Pl), normV w ∉ S0 → Nat.Coprime (normV w) (l * N) → ∀ (B : ValuationSubring Ω) (σ : G ℚ Ω), IsPlaceOver B w → IsFrob B (normV w) σ → mat ρ σ ^ 2 - ι.symm (gN.a (normV w)) • mat ρ σ + (χ σ : Qbar l) • 1 = 0` using `fun w hw0 hw B σ hB hσ => by`.
+
+Establish `hnd` using `(normV_prime w).coprime_iff_not_dvd.1 hw`. Establish `h1 : Matrix.mulVecLin (mat ρ σ - ι.symm (gN.a (normV w)) • 1 + (χ σ : Qbar l) • mat ρ σ⁻¹) = 0`. Use `LinearMap.ext_on hspan ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `hb'` using `(sBStab Ω ε X l N _ hN b hb).1 σ⁻¹`.
+
+Establish `h2` using `congrArg pr (hES w B σ hw0 (normV_prime w) hB hσ b hb)`. Rewrite `h2` using `[(hT _ (normV_prime w) hnd b hb).1, hadd, hsm, hgal σ b hb, hδ _ _ (normV_prime w) hnd (cls_frobAt N hw.coprime_mul_left_right.symm hB hσ) _ hb', hgal _ b hb, smul_smul, show 2 * e - 1 + 1 = 2 * e by omega, ← hρ, ← hρ]`. Rewrite using `[hχF w hw B σ hB hσ, Matrix.mulVecLin_apply, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, h2]`. Simplify using the standard rewrite rules. Establish `h3 : mat ρ σ - ι.symm (gN.a (normV w)) • 1 + (χ σ : Qbar l) • mat ρ σ⁻¹ = 0` using `Matrix.toLin'.injective (h1.trans (map_zero _).symm)`.
+
+Establish `h4` using `congrArg (· * mat ρ σ) h3`. Simplify using `only [add_mul, sub_mul, smul_mul_assoc, one_mul, zero_mul, mat, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one] at h4`. Rewrite using `[pow_two, mat, ← Units.val_mul, ← map_mul]`. Conclude with `h4`. Establish `hc0 : Continuous fun s => (χ₀ s : Qbar l)`.
+
+Simplify using `only [hχ]`. Conclude with `((GlobalTheory.KZ.IwC.isLocallyConstant_cycMod 1).comp fun u : (ZMod (l ^ 1))ˣ => ψ (((u : ZMod (l ^ 1)).val : ℕ) : ZMod l)).continuous`. Establish `hcρ : Continuous ρ` using `cont_hom _ (by`. Simplify using `only [ρ, tw_val]`. Conclude with `(Units.continuous_val.comp ((cont_bar.pow e).mul (cont_hom χ₀ hc0).inv)).smul (Units.continuous_val.comp hNf.cont))`.
+
+Establish `hcχ : Continuous χ` using `(cont_bar.pow (2 * e)).mul (cont_hom (δ.comp (Chr.cls ℚ Ω N)) (cont_cls (Ω := Ω) N fun u => (δ u : Qbar l)))`. Establish `hdet` using `sDetChar l Ω ρ χ hcρ hcχ (by`. Take `⟨s, hs⟩` from `not_scalar hNf.irr`. Use `⟨s, fun t ht => hs (((cycBar ℚ Ω l ^ e * χ₀⁻¹) s : Qbar l)⁻¹ * t) ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← ht, tw_val, smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]) (S0 ∪ (l * N).primeFactors)`.
+
+Use `fun v B σ hv hB hσ => ⟨_, hrel v (fun h => hv (Finset.mem_union_left _ h)) ((normV_prime v).coprime_iff_not_dvd.2 fun h => hv (Finset.mem_union_right _ (Nat.mem_primeFactors.2 ⟨normV_prime v, h, (mul_pos hl.pos hN).ne'⟩))) B σ hB hσ⟩`. Introduce `w _ hw0 hw`. Establish `hnd` using `(normV_prime w).coprime_iff_not_dvd.1 hw`. Use `⟨ι.symm (gN.a (normV w)), δ (ZMod.unitOfCoprime _ hw.coprime_mul_left_right), fun b hb => ⟨(hT _ (normV_prime w) hnd b hb).1, hδ _ _ (normV_prime w) hnd (ZMod.coe_unitOfCoprime _ _) b hb⟩, fun B σ hB hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hρ]`.
+
+Use `⟨trace_eq _ _ (by rw [hdet]; exact hrel w hw0 hw B σ hB hσ), ?_⟩` and prove the remaining obligations. Rewrite using `[hdet, hχF w hw B σ hB hσ]`. Use `congr 3`. Conclude with `Units.ext ((cls_frobAt N hw.coprime_mul_left_right.symm hB hσ).trans (ZMod.coe_unitOfCoprime _ _).symm)`. Use `push Not at hz`.
+
+Introduce `w hwS _ hw`. Establish `hnd` using `(normV_prime w).coprime_iff_not_dvd.1 hw`. Establish `hnl` using `(normV_prime w).coprime_iff_not_dvd.1 hw.coprime_mul_right_right`. Establish `hq : ((normV w : ℕ) : Qbar l) ^ (2 * e) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (normV_prime w).ne_zero)`. Take `⟨B₀, σ₀, hB₀, hσ₀⟩` from `exists_frobAt Ω w`.
+
+Use `⟨(rhoK W e ψ σ₀).trace, (((normV w : ℕ) : Qbar l) ^ (2 * e))⁻¹ * (rhoK W e ψ σ₀).det, fun b hb => ?_, fun B σ hB hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[(hT _ (normV_prime w) hnd b hb).1, (hT _ (normV_prime w) hnd b hb).2, hz b hb]`. Simplify using the standard rewrite rules. Establish `hm` using `fun h => hnl ((mem_place_iff w l).1 h)`. Establish `h1 : cycZ ℚ Ω l σ = cycZ ℚ Ω l σ₀` using `Units.ext ((cycZ_of_isFrob hm hB hσ).trans (cycZ_of_isFrob hm hB₀ hσ₀).symm)`.
+
+Establish `h2 : thK l e ψ σ = thK l e ψ σ₀`. Simplify using `only [thK, eps, cycBar, cycMod, MonoidHom.comp_apply, h1]`. Take `⟨h3, h4⟩` from `frobInv hNf hwS hB hσ hB₀ hσ₀`. Rewrite using `[mul_inv_cancel_left₀ hq]`. Simplify using `only [rhoK, Matrix.trace_smul, Matrix.det_smul, h2, h3, h4, and_self]`.
+
+Use `⟨S ∪ ((finite_normV S0).union (finite_dvd hn0)).toFinset, Finset.subset_union_left, fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_union, Set.mem_setOf_eq, not_or] at hw`. Establish `hcop` using `(normV_prime w).coprime_iff_not_dvd.2 hw.2.2`. Establish `hw' : Nat.Coprime (normV w) (l * N)` using `hcop.coprime_mul_right_right.coprime_mul_right_right`. Take `⟨a, δ, h1, h2⟩` from `key w hw.1 hw.2.1 hw'`.
+
+Take `⟨B₀, σ₀, hB₀, hσ₀⟩` from `exists_frobAt Ω w`. Take `⟨h3, h4⟩` from `h2 B₀ σ₀ hB₀ hσ₀`. Establish `hq : ((normV w : ℕ) : Qbar l) ^ (2 * e) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (normV_prime w).ne_zero)`. Use `⟨normV_prime w, hcop, a, δ, ?_, ?_, h1, fun B σ hB hσ => ⟨eps_frobAt l ((normV_prime w).coprime_iff_not_dvd.1 hw'.coprime_mul_right_right) hB hσ, h2 B σ hB hσ⟩⟩` and prove the remaining obligations. Rewrite using `[← h3, Matrix.trace_fin_two]`.
+
+Conclude with `add_mem (hO _ _ _) (hO _ _ _)`. Rewrite using `[← inv_mul_cancel_left₀ hq δ, ← h4, ← inv_pow, Matrix.det_fin_two]`. Conclude with `mul_mem (pow_mem (inv_mem cf hw'.coprime_mul_right_right) _) (sub_mem (mul_mem (hO _ _ _) (hO _ _ _)) (mul_mem (hO _ _ _) (hO _ _ _)))`.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.sEuler :
     UpperTheory.V.Z.Kato.Nb.SEuler := by
   intro l _ Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf hA he hlN S hNf hint

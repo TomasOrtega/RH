@@ -20,10 +20,46 @@ open GlobalTheory.Cartier GlobalTheory.CxPts ReciprocityTheory.ChartRestriction.
 
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F}
 
+/- English proof (translation)
+Use `CartierDiv.isEqn_iff_generatesAt_inv.1 ((Base.isEqn_eqn D x).nsmul k)` as an intermediate fact. Rewrite `this` using `[Units.val_pow_eq_pow_val, ← inv_pow, ← Units.val_inv_eq_inv_val]`. Then use the resulting hypothesis.
+-/
 theorem generatesAt_genAt_pow (D : Y.Dv) (k : ℕ) (x : Y.X) : (k • D).GeneratesAt x (genAt D x ^ k) := by
   have := CartierDiv.isEqn_iff_generatesAt_inv.1 ((Base.isEqn_eqn D x).nsmul k)
   rwa [Units.val_pow_eq_pow_val, ← inv_pow, ← Units.val_inv_eq_inv_val] at this
 
+/- English proof (translation)
+Use `haveI := M.ar.isIntegral`. Take `⟨-, r, hr, h₁, h₂⟩` from `hA`. Take `⟨hη, e⟩` from `V.φ_eq_fnMap`. Use `set ψ := SmallSec.fnMap V.π hη with hψ`. Establish `hφ : ∀ t, V.φ t = ψ t` using `fun t => by rw [e]`.
+
+Establish `hg (x : Y.X)` using `generatesAt_genAt_pow A.D k x`. Establish `hch : ∀ (i : ((L.pull b hb).B.pull V.j).ι), ∀ x ∈ ((L.pull b hb).B.pull V.j).U i, V.π x ∈ (L.B.pull M.j).U (fun _ => i PUnit.unit PUnit.unit)`. Introduce `i x hx`. Establish `h1` using `Set.mem_iInter.1 (InducedPull.chart_le L.B b V.j i hx) PUnit.unit`. Establish `h2 : (V.j ≫ b) x = M.j (V.π x)` using `by rw [hj]; rfl`.
+
+Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show M.j (V.π x) ∈ L.B.U _`. Rewrite using `[← h2]`. Conclude with `h1`. Set `r' : ((L.pull b hb).B.pull V.j).ι → V.G.functionFieldˣ` to `fun i => Units.map ψ.toMonoidHom (r fun _ => i PUnit.unit PUnit.unit)`.
+
+Establish `hr' : ∀ i, (r' i : V.G.functionField) = ψ (r fun _ => i PUnit.unit PUnit.unit)` using `fun _ => rfl`. Use `⟨r', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `hmem : V.π (genericPoint V.G) ∈ (L.B.pull M.j).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (L.B.pull M.j).U (fun _ => j PUnit.unit PUnit.unit)` using `⟨hch i _ hij.1, hch j _ hij.2⟩`. Establish `h0 : genericPoint Y.X ∈ (L.B.pull M.j).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (L.B.pull M.j).U (fun _ => j PUnit.unit PUnit.unit)` using `(genericPoint_specializes _).mem_open (TopologicalSpace.Opens.isOpen _) hmem`.
+
+Establish `le : ((L.pull b hb).B.pull V.j).U i ⊓ ((L.pull b hb).B.pull V.j).U j ≤ V.π ⁻¹ᵁ ((L.B.pull M.j).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (L.B.pull M.j).U (fun _ => j PUnit.unit PUnit.unit))` using `fun x hx => ⟨hch i x hx.1, hch j x hx.2⟩`. Rewrite using `[hr', hr', hr.isRatSec _ _ h0, map_mul, ← ProjSpace.fnOf_appLE V.π hη le h0 hij]`. Use `congr 2`. Establish `k1` using `InducedPull.val_pull_g L.B M.j (fun _ => i PUnit.unit PUnit.unit) (fun _ => j PUnit.unit PUnit.unit) (InducedPull.inf_le _ _ _ _)`. Establish `k2` using `InducedPull.val_pull_g (L.B.pull b) V.j i j (InducedPull.inf_le _ _ _ _)`.
+
+Establish `k3` using `InducedPull.val_pull_g L.B b (i PUnit.unit) (j PUnit.unit) (InducedPull.inf_le _ _ _ _)`. Use `(congrArg _ k1).trans (k2.trans ?_).symm` and prove the remaining obligations. Use `(congrArg _ k3).trans ?_` and prove the remaining obligations. Rewrite using `[← RingHom.comp_apply, ← RingHom.comp_apply, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_apply_congr hj _ _ _ _ _`.
+
+Introduce `i x hx`. Establish `hU` using `(hr.isEqn _ _ (hch i x hx)).generatesAt_iff.1 (hg (V.π x))`. Rewrite using `[hr', hφ, ← map_pow, ← map_mul]`. Conclude with `unitAt_fnMap_of V.π hη hU`. Introduce `σ z y y' i e₁ e₂ hi`.
+
+Express the relevant statement in the definitionally equal form `(Real.exp (-(2 * ((A.n : ℕ) : ℝ) * (A.ci (InfinitePlace.mk σ) + 0))) * C.pn Y σ A.D (A.m σ) (C.cx Y σ (genAt A.D (under y))) y) ^ (k : ℕ) = ‖ratVal (V.φ (genAt A.D (under y)) ^ (k : ℕ) * (r' i : V.G.functionField)) z‖ ^ 2 * Real.exp (-((L.pull b hb).φ _).φ (i PUnit.unit) y')`. Set `y₀` to `Points.PtsOver.map b hb _ y'`. Establish `e₂' : y₀.1 = y.1 ≫ M.j` using `by show y'.1 ≫ b = y.1 ≫ M.j`. Rewrite using `[e₂, e₁, Category.assoc, hj, Category.assoc]`. Establish `hπ₀ : V.π (under z) = under y` using `by show _ = y.1 _`.
+
+Rewrite using `[e₁]`. Both sides reduce to the same expression. Establish `hi₀ : under y ∈ (L.B.pull M.j).U (fun _ => i PUnit.unit PUnit.unit)` using `hπ₀ ▸ hch i _ hi`. Establish `H` using `h₁ σ y y₀ (fun _ => i PUnit.unit PUnit.unit) _ e₂' hi₀ (hg _).regularAt`. Rewrite `H` using `[C.pn_mPow Y σ A.D k _ _ y (generatesAt_genAt _ _)]`.
+
+Establish `hU` using `(hr.isEqn _ _ hi₀).generatesAt_iff.1 (hg (under y))`. Establish `hw : ((L.pull b hb).φ _).φ (i PUnit.unit) y' = (L.φ _).φ (i PUnit.unit PUnit.unit) y₀` using `(L.φ _).pull_φ b hb (i PUnit.unit) y'`. Establish `hv : ratVal (V.φ (genAt A.D (under y)) ^ (k : ℕ) * (r' i : V.G.functionField)) z = ratVal (genAt A.D (under y) ^ (k : ℕ) * (r fun _ => i PUnit.unit PUnit.unit : Y.Fn)) y`. Establish `hU' : RegAt (V.π (under z)) (genAt A.D (under y) ^ (k : ℕ) * (r fun _ => i PUnit.unit PUnit.unit : Y.Fn))`. Rewrite using `[hπ₀]`.
+
+Conclude with `hU.regAt`. Rewrite using `[hr', hφ, ← map_pow, ← map_mul, SmallSec.ratVal_eq_valAt z (ProjSpace.regAt_fnMap_of V.π hη hU'), SmallSec.ratVal_eq_valAt y hU.regAt, SmallSec.valAt_fnMap V.π hη z.1 hU', ← e₁]`. Rewrite using `[hw, hv, ← H, add_zero, mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `v e y z yt i e₁ e₂ hi`. Express the relevant statement in the definitionally equal form `((k : ℕ) : ℝ) * (A.lg v e y - ((A.n : ℕ) : ℝ) * (-cf) v) = Real.log (e.w (valAt z (V.φ (genAt A.D (below y.1)) ^ (k : ℕ) * (r' i : V.G.functionField))))`. Establish `e₂' : spMap e.O.subtype ≫ (yt ≫ b) = y.1 ≫ M.j`. Rewrite using `[← Category.assoc, e₂, Category.assoc, hj, ← Category.assoc, e₁]`. Establish `hi' : ⊤ ≤ (yt ≫ b) ⁻¹ᵁ L.B.U (i PUnit.unit PUnit.unit)` using `fun x hx => Set.mem_iInter.1 (hi hx) PUnit.unit`.
+
+Establish `H` using `h₂ v e y (yt ≫ b) (fun _ => i PUnit.unit PUnit.unit) e₂' hi'`. Establish `hmem : below y.1 ∈ (L.B.pull M.j).U (fun _ => i PUnit.unit PUnit.unit)`. Establish `h1 : (y.1 ≫ M.j) (IsLocalRing.closedPoint _) ∈ L.B.U (i PUnit.unit PUnit.unit)`. Rewrite using `[← e₂']`. Conclude with `hi' (Set.mem_univ _)`.
+
+Conclude with `Set.mem_iInter.2 fun _ => h1`. Establish `hU` using `(hr.isEqn _ _ hmem).generatesAt_iff.1 (hg (below y.1))`. Establish `hπ₀ : V.π (below z) = below y.1`. Rewrite using `[← e₁]`. Both sides reduce to the same expression.
+
+Establish `hU' : RegAt (V.π (below z)) (genAt A.D (below y.1) ^ (k : ℕ) * (r fun _ => i PUnit.unit PUnit.unit : Y.Fn))`. Rewrite using `[hπ₀]`. Conclude with `hU.regAt`. Rewrite `H` using `[Units.val_mul, Units.val_pow_eq_pow_val]`. Rewrite using `[hr', hφ, ← map_pow, ← map_mul, SmallSec.valAt_fnMap V.π hη z hU', e₁, Pi.neg_apply]`.
+
+Combine the linear relations using `[H]`.
+-/
 theorem induces_twist_of_induced {A : Adl C Y} {M : TrueGeo.Model Y} {L : HermLB M.p} {k : ℕ+}
     {cf : HeightOneSpectrum (𝓞 F) → ℝ} (hA : A.Induced M L k cf) (V : Cover Y) (b : V.X ⟶ M.X) (hb : b ≫ M.p = V.p)
     (hj : V.j ≫ b = V.π ≫ M.j) : V.Induces (A.twist 0 (-cf)) (L.pull b hb) k := by
@@ -123,6 +159,9 @@ theorem induces_twist_of_induced {A : Adl C Y} {M : TrueGeo.Model Y} {L : HermLB
 
 end Induces
 
+/- English proof (translation)
+Introduce `F _ _ C Y A M L k cf hA V b hb hj`. Use `(norms_of_induces (induces_twist_of_induced hA V b hb hj)).congr (fun _ => rfl) (fun σ y => ?_) fun v e y => ?_` and prove the remaining obligations. Simplify using `only [lnAdl, Adl.twist, Pi.add_apply, Pi.zero_apply, add_zero]`. Simplify using `only [Adl.twist, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norms_pull_of_induced : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (M : TrueGeo.Model Y) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.Induced M L k cf → ∀ (V : Cover Y) (b : V.X ⟶ M.X) (hb : b ≫ M.p = V.p), V.j ≫ b = V.π ≫ M.j → Norms V (L.pull b hb) (fun x => genAt A.D x ^ (k : ℕ)) (fun σ y => ((k : ℕ) : ℝ) * lnAdl A σ y) (fun v e y => ((k : ℕ) : ℝ) * A.lg v e y + ((k : ℕ) : ℝ) * ((A.n : ℕ) : ℝ) * cf v) := by
   intro F _ _ C Y A M L k cf hA V b hb hj
   refine (norms_of_induces (induces_twist_of_induced hA V b hb hj)).congr (fun _ => rfl) (fun σ y => ?_) fun v e y => ?_

@@ -4,6 +4,17 @@ open scoped MatrixGroups ModularForm Manifold
 
 namespace GlobalTheory.Hk
 
+/- English proof (translation)
+Establish `him : 0 < ((q : ℂ) * (τ : ℂ)).im`. Establish `: ((q : ℂ) * (τ : ℂ)).im = (q : ℝ) * τ.im` using `by simp`. Rewrite using `[this]; exact mul_pos (by exact_mod_cast hq) τ.im_pos`. Use `set τ' : ℍ := ofComplex ((q : ℂ) * τ) with hτ'`. Establish `hc : (τ' : ℂ) = (q : ℂ) * τ`.
+
+Rewrite using `[hτ', ofComplex_apply_of_im_pos him]`. Establish `hqp : Function.Periodic.qParam 1 (τ' : ℂ) = Function.Periodic.qParam 1 (τ : ℂ) ^ q`. Simplify using `only [Function.Periodic.qParam, hc, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hf τ'`. Unfold `vOp`. Rewrite using `[← hτ']`. Use `(Function.Injective.hasSum_iff (g := fun m : ℕ => q * m) (fun x y h => Nat.eq_of_mul_eq_mul_left hq h) ?_).mp ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `: ¬ q ∣ x`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `hx ⟨c, rfl⟩`. Simplify using `[this]`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `only [Function.comp, dvd_mul_right, if_true, Nat.mul_div_cancel_left _ hq, hqp, ← pow_mul]`.
+-/
 theorem vOp_hasSum (q : ℕ) (f : ℍ → ℂ) (a : ℕ → ℂ) (hq : 0 < q)
     (hf : ∀ τ : ℍ, HasSum (fun m => a m • Function.Periodic.qParam 1 τ ^ m) (f τ)) (τ : ℍ) :
     HasSum (fun m => (if q ∣ m then a (m / q) else 0) • Function.Periodic.qParam 1 τ ^ m)

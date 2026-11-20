@@ -18,9 +18,17 @@ def thetaLinForm {g : ℕ} (n : Fin g → ℤ) : (Fin g → ℂ) →ₗ[ℂ] ℂ
   map_add' z w := by rw [dotProduct_add, mul_add]
   map_smul' c z := by simp only [dotProduct_smul, smul_eq_mul, RingHom.id_apply]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaLinForm_apply {g : ℕ} (n : Fin g → ℤ) (z : Fin g → ℂ) :
     thetaLinForm n z = -(2 * Real.pi * Complex.I) * (ofIntVec n ⬝ᵥ z) := rfl
 
+/- English proof (translation)
+Establish `key : ∀ x y : ℂ, eC (x - y) = eC x * cexp (-(2 * Real.pi * Complex.I) * y)`. Introduce `x y`. Rewrite using `[eC, eC, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [autFactor]`. Rewrite using `[key (-(ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n)) / 2) (ofIntVec n ⬝ᵥ z), dotProduct_zero, sub_zero, thetaLinForm_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem autFactor_eq_zero_mul_exp {g : ℕ} (a b : Fin g → ℝ) (τ : Matrix (Fin g) (Fin g) ℂ) (n n' : Fin g → ℤ)
     (z : Fin g → ℂ) : autFactor a b τ n n' z = autFactor a b τ n n' 0 * cexp (thetaLinForm n z) := by
   have key : ∀ x y : ℂ, eC (x - y) = eC x * cexp (-(2 * Real.pi * Complex.I) * y) := by
@@ -33,17 +41,28 @@ theorem autFactor_eq_zero_mul_exp {g : ℕ} (a b : Fin g → ℝ) (τ : Matrix (
     thetaLinForm_apply]
   ring
 
+/- English proof (translation)
+Simplify using `only [autFactor, eC]`. Conclude with `mul_ne_zero (Complex.exp_ne_zero _) (Complex.exp_ne_zero _)`.
+-/
 theorem autFactor_ne_zero' {g : ℕ} (a b : Fin g → ℝ) (τ : Matrix (Fin g) (Fin g) ℂ) (n n' : Fin g → ℤ)
     (z : Fin g → ℂ) : autFactor a b τ n n' z ≠ 0 := by
   simp only [autFactor, eC]
   exact mul_ne_zero (Complex.exp_ne_zero _) (Complex.exp_ne_zero _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Break down `eq_or_ne j i with rfl | h` into its components or cases. Simplify using `[ofIntVec]`. Simplify using `[ofIntVec, h]`.
+-/
 theorem ofIntVec_single' {g : ℕ} (i : Fin g) : ofIntVec (Pi.single i 1 : Fin g → ℤ) = Pi.single i 1 := by
   funext j
   rcases eq_or_ne j i with rfl | h
   · simp [ofIntVec]
   · simp [ofIntVec, h]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finset.univ_sum_single z]`. Rewrite using `[map_sum]`. Simplify using `only [dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hs : (Pi.single i (z i) : Fin g → ℂ) = z i • Pi.single i 1`.
+
+Use extensionality with `j`. Break down `eq_or_ne j i with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[hs, map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem linForm_eq_dotProduct {g : ℕ} (lam : (Fin g → ℂ) →ₗ[ℂ] ℂ) (z : Fin g → ℂ) :
     lam z = (fun i => lam (Pi.single i 1)) ⬝ᵥ z := by
   conv_lhs => rw [← Finset.univ_sum_single z]
@@ -57,9 +76,23 @@ theorem linForm_eq_dotProduct {g : ℕ} (lam : (Fin g → ℂ) →ₗ[ℂ] ℂ) 
     · simp [h]
   rw [hs, map_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+-/
 theorem two_pi_I_ne_zero' : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := by
   simp [Real.pi_ne_zero, Complex.I_ne_zero]
 
+/- English proof (translation)
+Establish `hk : ∀ j, ∃ k : ℤ, lam (Pi.single j 1) = k * (2 * Real.pi * Complex.I)`. Introduce `j`. Establish `hj` using `h 0 (Pi.single j 1)`. Rewrite `hj` using `[thetaLinForm_apply, ofIntVec_zero, zero_dotProduct, mul_zero, Complex.exp_zero, mulVec_zero, zero_add, ofIntVec_single']`. Conclude with `Complex.exp_eq_one_iff.mp hj.symm`.
+
+Use `choose k hk using hk`. Establish `hm : ∀ i, ∃ m : ℤ, -(2 * Real.pi * Complex.I) * w i = (2 * Real.pi * Complex.I) * (τ *ᵥ ofIntVec k) i + m * (2 * Real.pi * Complex.I)`. Introduce `i`. Establish `hi` using `h (Pi.single i 1) 0`. Rewrite `hi` using `[thetaLinForm_apply, ofIntVec_single', single_dotProduct, _root_.one_mul, ofIntVec_zero, add_zero, linForm_eq_dotProduct lam]`.
+
+Take `⟨m, hm⟩` from `Complex.exp_eq_exp_iff_exists_int.mp hi`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Use `congr 1`. Simplify using `only [dotProduct, mulVec, hk, ofIntVec, Pi.single_apply, mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hτ.apply i j]`. Expand and normalize the polynomial expressions, which then agree. Use `choose m hm using hm`. Use `⟨-k, -m, funext fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ofIntVec_neg, ofIntVec_neg, mulVec_neg]`. Use `show w i = -(τ *ᵥ ofIntVec k) i + -((m i : ℤ) : ℂ)`. Apply `mul_left_cancel₀ two_pi_I_ne_zero'` to reduce the goal to its premises. Take the linear combination `(-1 : ℂ) * hm i`.
+-/
 theorem mem_periodLattice_of_exp_thetaLinForm {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm)
     (w : Fin g → ℂ) (lam : (Fin g → ℂ) →ₗ[ℂ] ℂ)
     (h : ∀ n n' : Fin g → ℤ, cexp (thetaLinForm n w) = cexp (lam (τ *ᵥ ofIntVec n + ofIntVec n'))) :
@@ -95,6 +128,11 @@ theorem mem_periodLattice_of_exp_thetaLinForm {g : ℕ} {τ : Matrix (Fin g) (Fi
   apply mul_left_cancel₀ two_pi_I_ne_zero'
   linear_combination (-1 : ℂ) * hm i
 
+/- English proof (translation)
+Establish `hlam : (fun j => lam (Pi.single j 1)) = 0`. Use function extensionality and compare the values at `j`. Establish `hj` using `h 0 (Pi.single j 1)`. Rewrite `hj` using `[thetaLinForm_apply, ofIntVec_zero, zero_dotProduct, mul_zero, mulVec_zero, zero_add, ofIntVec_single']`. Conclude with `hj.symm`.
+
+Use function extensionality and compare the values at `i`. Establish `hi` using `h (Pi.single i 1) 0`. Rewrite `hi` using `[thetaLinForm_apply, ofIntVec_single', single_dotProduct, _root_.one_mul, ofIntVec_zero, add_zero, linForm_eq_dotProduct lam, hlam, zero_dotProduct]`. Conclude with `(mul_eq_zero.mp hi).resolve_left (neg_ne_zero.mpr two_pi_I_ne_zero')`.
+-/
 theorem eq_zero_of_thetaLinForm {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
     (w : Fin g → ℂ) (lam : (Fin g → ℂ) →ₗ[ℂ] ℂ)
     (h : ∀ n n' : Fin g → ℤ, thetaLinForm n w = lam (τ *ᵥ ofIntVec n + ofIntVec n')) : w = 0 := by
@@ -110,6 +148,23 @@ theorem eq_zero_of_thetaLinForm {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
     linForm_eq_dotProduct lam, hlam, zero_dotProduct] at hi
   exact (mul_eq_zero.mp hi).resolve_left (neg_ne_zero.mpr two_pi_I_ne_zero')
 
+/- English proof (translation)
+Establish `hbase : ∀ c', fderiv ℂ (θ c') z w = (fderiv ℂ (θ c) z w / θ c z) * θ c' z`. Introduce `c'`. Establish `hev : ∀ᶠ y in 𝓝 z, θ c y ≠ 0` using `(hθ c).continuous.continuousAt.eventually_ne hc`. Establish `hq : DifferentiableAt ℂ (fun y => θ c' y / θ c y) z`. Establish `h3` using `((hθ c') z).mul (((hθ c) z).inv hc)`.
+
+Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[div_eq_mul_inv]`. Establish `hvq : v c' =ᶠ[𝓝 z] fun y => θ c' y / θ c y` using `hev.mono fun y hy => hv c' y hy`. Establish `hvd : DifferentiableAt ℂ (v c') z` using `hq.congr_of_eventuallyEq hvq`. Establish `hprod : θ c' =ᶠ[𝓝 z] fun y => v c' y * θ c y` using `by filter_upwards [hev] with y hy`.
+
+Rewrite using `[hv c' y hy, div_mul_cancel₀ _ hy]`. Establish `hd` using `(hvd.hasFDerivAt.mul ((hθ c) z).hasFDerivAt).congr_of_eventuallyEq hprod`. Rewrite using `[hd.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hw c', mul_zero, add_zero]`. Rewrite using `[hv c' z hc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ f ∈ Submodule.span ℂ (Set.range θ), Differentiable ℂ f ∧ fderiv ℂ f z w = (fderiv ℂ (θ c) z w / θ c z) * f z`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨c', rfl⟩` from `hx`. Conclude with `⟨hθ c', hbase c'⟩`. Consider the case `zero`. Use `⟨differentiable_const 0, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy`. Use `⟨hx.1.add hy.1, ?_⟩` and prove the remaining obligations. Establish `hs : HasFDerivAt (x + y) (fderiv ℂ x z + fderiv ℂ y z) z` using `((hx.1 z).hasFDerivAt.add (hy.1 z).hasFDerivAt)`. Rewrite using `[hs.fderiv, ContinuousLinearMap.add_apply, hx.2, hy.2, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `smul a x _ hx`. Use `⟨hx.1.const_smul a, ?_⟩` and prove the remaining obligations. Establish `hs : HasFDerivAt (a • x) (a • fderiv ℂ x z) z` using `(hx.1 z).hasFDerivAt.const_smul a`. Rewrite using `[hs.fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul, hx.2, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `(key f hf).2`.
+-/
 theorem fderiv_eq_mul_of_ratio {E κ : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (θ : κ → E → ℂ)
     (hθ : ∀ c, Differentiable ℂ (θ c)) (c : κ) (z w : E) (hc : θ c z ≠ 0) (v : κ → E → ℂ)
     (hv : ∀ c' y, θ c y ≠ 0 → v c' y = θ c' y / θ c y) (hw : ∀ c', fderiv ℂ (v c') z w = 0)
@@ -158,6 +213,31 @@ theorem fderiv_eq_mul_of_ratio {E κ : Type*} [NormedAddCommGroup E] [NormedSpac
       ring
   exact (key f hf).2
 
+/- English proof (translation)
+Introduce `hLat hSep hInd hSpan hCoord hKT hFT hLoc hUni g τ hτ N hN X ex D hX _ _ _ _ a₀ b₀ _ _ L u hL hu hAb hSm`. Take `⟨hex, hΛ, hfr, -⟩` from `hu`. Substitute `hex` using the available equality. Take `⟨-, -, -, -, -, hD, hcov⟩` from `hX`. Establish `huniq : ∀ n n' m m' : Fin g → ℤ, τ *ᵥ ofIntVec n + ofIntVec n' = τ *ᵥ ofIntVec m + ofIntVec m' → n = m ∧ n' = m'`.
+
+Introduce `n n' m m' h`. Establish `h0` using `(hLat g τ hτ).2.2 (n - m) (n' - m') (by`. Rewrite using `[sub_eq_add_neg, sub_eq_add_neg, ofIntVec_add, ofIntVec_add, ofIntVec_neg, ofIntVec_neg, mulVec_add, mulVec_neg]`. Rewrite `h` using `[← sub_eq_zero]`. Rewrite using `[← h]`.
+
+Use the proof step `abel)`. Conclude with `⟨sub_eq_zero.mp h0.1, sub_eq_zero.mp h0.2⟩`. Establish `hmem : ∀ l : u.Λ, ∃ p : (Fin g → ℤ) × (Fin g → ℤ), (l : Fin g → ℂ) = τ *ᵥ ofIntVec p.1 + ofIntVec p.2`. Introduce `l`. Take `⟨n, n', hn⟩` from `(hΛ l).1 l.2`.
+
+Conclude with `⟨(n, n'), hn⟩`. Use `choose p hp using hmem`. Establish `hpn : ∀ n n' : Fin g → ℤ, ∀ hl : τ *ᵥ ofIntVec n + ofIntVec n' ∈ u.Λ, (p ⟨_, hl⟩).1 = n`. Introduce `n n' hl`. Conclude with `((huniq _ _ _ _ (hp ⟨_, hl⟩)).1).symm`.
+
+Establish `hlat : ∀ n n' : Fin g → ℤ, τ *ᵥ ofIntVec n + ofIntVec n' ∈ u.Λ` using `fun n n' => (hΛ _).2 ⟨n, n', rfl⟩`. Set `θ : (Fin g → Fin N) → (Fin g → ℂ) → ℂ` to `fun c z => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)`. Establish `hsub : ∀ y y' : PrimeSpectrum ℂ, y = y'` using `fun y y' => Subsingleton.elim y y'`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, ⊤ ≤ (u.ex 0).left ⁻¹ᵁ D c := by`. Set `x₀ : PrimeSpectrum ℂ` to `⟨⊥, Ideal.isPrime_bot⟩`.
+
+Establish `hx : (u.ex 0).left.base x₀ ∈ (⨆ c, D c)`. Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c, hc⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Use `⟨c, fun y _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsub y x₀]`. Conclude with `hc`. Establish `hsep : ∀ w : Fin g → ℂ, (∀ (U : X.left.Opens) (f : Γ(X.left, U)), ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U → fderiv ℂ (fun z => valAt' (u.ex z).left U f) 0 w = 0) → w = 0`. Introduce `w hw`. Establish `hθc : θ c 0 ≠ 0` using `((hD c).2.2.1 0).mp hc`.
+
+Take `⟨r, hr, -⟩` from `(hD c).2.2.2`. Establish `hdiff` using `(hInd g τ hτ N (by omega)).1`. Use `hSep g τ hτ N hN 0 w (fderiv ℂ (θ c) 0 w / θ c 0) fun f hf => ?_` and prove the remaining obligations. Conclude with `fderiv_eq_mul_of_ratio θ (fun c' => (hdiff c').1) c 0 w hθc (fun c' y => valAt' (u.ex y).left (D c) (r c')) (fun c' y hy => hr c' y hy) (fun c' => hw (D c) (r c') hc) f (hSpan g τ hτ N (by omega) f hf)`. Establish `hcoord` using `hCoord X L g u hSm hsep`.
+
+Establish `hane : ∀ l : u.Λ, autFactor a₀ b₀ τ (p l).1 (p l).2 0 ≠ 0` using `fun l => autFactor_ne_zero' _ _ _ _ _ _`. Establish `hrel : ∀ (l : u.Λ) i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i → u.fr i z = autFactor a₀ b₀ τ (p l).1 (p l).2 0 * cexp (thetaLinForm (p l).1 z) * u.fr i (z + l)`. Introduce `l i z hz`. Rewrite using `[← autFactor_eq_zero_mul_exp, hp l, ← add_assoc]`. Conclude with `hfr _ _ i z hz`.
+
+Establish `hunimod : ∀ (w : Fin g → ℂ) (lam : (Fin g → ℂ) →ₗ[ℂ] ℂ), (∀ l : u.Λ, cexp (thetaLinForm (p l).1 w) = cexp (lam l)) → w ∈ u.Λ`. Introduce `w lam hl`. Rewrite using `[hΛ]`. Use `mem_periodLattice_of_exp_thetaLinForm hτ.1 w lam fun n n' => ?_` and prove the remaining obligations. Establish `h1` using `hl ⟨_, hlat n n'⟩`.
+
+Rewrite `h1` using `[hpn n n' (hlat n n')]`. Then use the resulting hypothesis. Establish `hnondeg : ∀ (w : Fin g → ℂ) (lam : (Fin g → ℂ) →ₗ[ℂ] ℂ), (∀ l : u.Λ, thetaLinForm (p l).1 w = lam l) → w = 0`. Introduce `w lam hl`. Use `eq_zero_of_thetaLinForm (τ := τ) w lam fun n n' => ?_` and prove the remaining obligations. Establish `h1` using `hl ⟨_, hlat n n'⟩`.
+
+Rewrite `h1` using `[hpn n n' (hlat n n')]`. Then use the resulting hypothesis. Conclude with `hKT X L hAb hL (hFT X L hAb hL (hLoc X L hAb hL (hUni X L hAb hL g u (fun l => autFactor a₀ b₀ τ (p l).1 (p l).2 0) (fun l => thetaLinForm (p l).1) hcoord hane hrel hunimod hnondeg)))`.
+-/
 theorem thetaBundle_kTriv :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → DiscreteTopology (periodLattice
         τ) ∧ Submodule.span ℝ (periodLattice τ : Set (Fin g →

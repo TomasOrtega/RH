@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `h` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Establish `hd` using `congrArg Finsupp.degree h`. Rewrite `hd` using `[map_add, Finsupp.degree_single]`.
+
+Distinguish the cases in `h1 : Finsupp.degree p.1 = 0`. Rewrite using `[(Finsupp.degree_eq_zero_iff _).1 h1, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf, zero_mul]`. Establish `h2 : Finsupp.degree p.2 = 0` using `by omega`. Rewrite using `[(Finsupp.degree_eq_zero_iff _).1 h2, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hg, mul_zero]`.
+-/
 private theorem nz_coeff_mul {τ E : Type} [CommRing E] (i : τ) (f g : MvPowerSeries τ E)
     (hf : MvPowerSeries.constantCoeff f = 0) (hg : MvPowerSeries.constantCoeff g = 0) :
     MvPowerSeries.coeff (Finsupp.single i 1) (f * g) = 0 := by
@@ -16,6 +21,11 @@ private theorem nz_coeff_mul {τ E : Type} [CommRing E] (i : τ) (f g : MvPowerS
   · have h2 : Finsupp.degree p.2 = 0 := by omega
     rw [(Finsupp.degree_eq_zero_iff _).1 h2, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hg, mul_zero]
 
+/- English proof (translation)
+Take `⟨f, hf, -⟩` from `h.onto i`. Rewrite `hf` using `[← DirectSum.sum_support_decompose 𝒜 f, map_sum, map_sum]`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hf`. Establish `hm` using `(DirectSum.decompose 𝒜 f j).2`. Establish `hw : wt i = j`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hj (h.graded j _ hm _ (by simpa [Finsupp.weight_single] using hne))`. Conclude with `⟨_, hw ▸ hm, hj⟩`.
+-/
 private theorem nz_comp {O A τ : Type} [CommRing O] [IsDomain O] [CommRing A] [Algebra O A]
     (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] (x : A →ₐ[O] O) (wt : τ → ℤ)
     (φ : A →ₐ[O] MvPowerSeries τ (FractionRing O)) (h : IsChart0 𝒜 x wt φ) (i : τ) :
@@ -30,6 +40,27 @@ private theorem nz_comp {O A τ : Type} [CommRing O] [IsDomain O] [CommRing A] [
     exact hj (h.graded j _ hm _ (by simpa [Finsupp.weight_single] using hne))
   exact ⟨_, hw ▸ hm, hj⟩
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ A _ _ 𝒜 _ _ x hW r s r' s' m Q τ _ wt φ hφ hn hp hS a ha`. Distinguish the cases in `h0 : φ a = 0`. Use `swap`. Conclude with `⟨a, ha, by simp, rfl, h0⟩`. Take `⟨⟨i, hi⟩⟩` from `(Nat.card_pos_iff.1 hn).1`.
+
+Take `⟨⟨i', hi'⟩⟩` from `(Nat.card_pos_iff.1 hp).1`. Take `⟨f, hf, hf0⟩` from `nz_comp 𝒜 x wt φ hφ i`. Take `⟨g, hg, hg0⟩` from `nz_comp 𝒜 x wt φ hφ i'`. Rewrite `hf` using `[hi]`. Rewrite `hg` using `[hi']`.
+
+Establish `hg1 : φ g ≠ 0` using `fun h => hg0 (by rw [h, map_zero])`. Establish `hinj : ∀ c : O, c ≠ 0 → ∀ y : FractionRing O, c • y = 0 → y = 0` using `fun c hc y hy => by`. Rewrite `hy` using `[Algebra.smul_def]`. Conclude with `(mul_eq_zero.1 hy).resolve_left fun h => hc (IsFractionRing.injective O _ (h.trans (map_zero _).symm))`. Establish `hF : ∃ k, φ (Q.F k) ≠ 0`.
+
+Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Set `L : A →ₗ[O] FractionRing O` to `((MvPowerSeries.coeff (Finsupp.single i 1)).restrictScalars O) ∘ₗ φ.toLinearMap`. Establish `hL : ∀ y, L y = MvPowerSeries.coeff (Finsupp.single i 1) (φ y)` using `fun _ => rfl`. Establish `hsq : ∀ y ∈ RingHom.ker x ^ 2, L y = 0`.
+
+Introduce `y hy`. Rewrite `hy` using `[sq]`. Use `Submodule.mul_induction_on hy (fun u hu v hv => ?_) (fun u v hu hv => by rw [map_add, hu, hv, add_zero])` and prove the remaining obligations. Establish `hu' : x u = 0` using `hu`. Establish `hv' : x v = 0` using `hv`.
+
+Rewrite using `[hL, map_mul]`. Conclude with `nz_coeff_mul _ _ _ (by rw [hφ.const, hu', map_zero]) (by rw [hφ.const, hv', map_zero])`. Establish `hk : satSq x ≤ LinearMap.ker L`. Introduce and unpack `y ⟨c, hc, hy⟩`. Use `hsq _ hy` as an intermediate fact.
+
+Rewrite `this` using `[map_smul]`. Conclude with `hinj c hc _ this`. Establish `hsp : cotSpan x Q.F ≤ LinearMap.ker ((satSq x).liftQ L hk)`. Rewrite using `[cotSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Use `show L (Q.F k) = 0`. Rewrite using `[hL, hall k, map_zero]`. Take `⟨c, hc, hcf⟩` from `hS ((satSq x).mkQ f) ⟨f, ⟨hf, hW.fixed (-1) (by norm_num) f hf⟩, rfl⟩`. Use `hsp hcf` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_smul]`.
+
+Conclude with `hf0 (hinj c hc _ this)`. Take `⟨k, hk⟩` from `hF`. Establish `hm : g * Q.F k ∈ 𝒜 0` using `by simpa using SetLike.GradedMul.mul_mem hg (Q.hF k)`. Use `⟨a + g * Q.F k, add_mem ha hm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_cancel_left]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))`. Rewrite using `[map_add, map_mul, hW.fixed 1 one_ne_zero g hg, zero_mul, add_zero]`. Rewrite using `[map_add, h0, zero_add, map_mul]`. Conclude with `mul_ne_zero hg1 hk`.
+-/
 theorem UpperTheory.V.Alg.M.nz_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]
       (A : Type) [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] [IsCO O (𝒜 0)] (x : A →ₐ[O] O), IsWRing 𝒜 x →

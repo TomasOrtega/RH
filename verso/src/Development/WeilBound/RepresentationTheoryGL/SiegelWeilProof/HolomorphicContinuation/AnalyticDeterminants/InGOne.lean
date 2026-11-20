@@ -12,8 +12,16 @@ open PositivityTheory.Rg.Sw
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Simplify using `[InG]`.
+-/
 theorem inG_one {n : ℕ} : InG (1 : M2 n) := by simp [InG]
 
+/- English proof (translation)
+Unfold `GoodSig at h`. Break down `h with h | h | h | h` into its components or cases. Conclude with `⟨min q n, min_le_right _ _, by omega, by omega, by omega, by omega⟩`. Conclude with `⟨n - min p n, Nat.sub_le _ _, by omega, by omega, by omega, by omega⟩`. Conclude with `⟨0, Nat.zero_le _, by omega, by omega, by omega, by omega⟩`.
+
+Conclude with `⟨n, le_refl _, by omega, by omega, by omega, by omega⟩`.
+-/
 private theorem exists_split_avoiding_of_goodSig (n p q : ℕ) (h : GoodSig n p q) :
     ∃ j ≤ n, (∀ i < j, i ≠ q) ∧ (∀ i < n - j, i ≠ p) ∧ (∀ i < j, i + p ≠ n) ∧ (∀ i < n - j, i + q ≠ n) := by
   unfold GoodSig at h
@@ -23,6 +31,23 @@ private theorem exists_split_avoiding_of_goodSig (n p q : ℕ) (h : GoodSig n p 
   · exact ⟨0, Nat.zero_le _, by omega, by omega, by omega, by omega⟩
   · exact ⟨n, le_refl _, by omega, by omega, by omega, by omega⟩
 
+/- English proof (translation)
+Establish `hKk : ∀ k, InK (ι k)` using `fun k => (hK _).2 ⟨k, rfl⟩`. Establish `hU : ∀ k, wM (ι k) ∈ Matrix.unitaryGroup (Fin n) ℂ`. Introduce `k`. Establish `h1` using `first_cayley_block_unitary (hKk k)`. Establish `h2` using `second_cayley_block_unitary (hKk k)`.
+
+Establish `hu1 : u1 (ι k) ∈ Matrix.unitaryGroup (Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff.2 h1`. Establish `hu2 : u2 (ι k) ∈ Matrix.unitaryGroup (Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff.2 h2`. Establish `hi : (u2 (ι k))⁻¹ = star (u2 (ι k))` using `Matrix.inv_eq_right_inv h2`. Unfold `wM`. Rewrite using `[hi]`.
+
+Conclude with `mul_mem (Unitary.star_mem hu2) hu1`. Use `set g : Kg → ℝ := fun k => Complex.normSq (minorOn (blkA j) (wM (ι k))) * Complex.normSq (minorOn (blkB j) (wM (ι k))) with hg`. Establish `hpt : ∀ k, minorOn (blkA j) (wM (ι k)) * minorOn (blkB j) (wM (ι k))⁻¹ * (minorOn (blkA j) (wM (ι k))⁻¹ * minorOn (blkB j) (wM (ι k))) = ((g k : ℝ) : ℂ)`. Introduce `k`. Rewrite using `[minorOn_inv_of_unitary (hU k), minorOn_inv_of_unitary (hU k)]`.
+
+Simplify using `only [hg, Complex.ofReal_mul, ← Complex.mul_conj, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), integral_complex_ofReal]`. Establish `hw1 : wM (1 : M2 n) = 1`. Establish `h1 : (1 : M2 n) = Matrix.fromBlocks 1 0 0 1` using `Matrix.fromBlocks_one.symm`.
+
+Unfold `wM u1 u2`. Rewrite using `[h1, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂]`. Simplify using the standard rewrite rules. Establish `hm1 : ∀ s : Finset (Fin n), minorOn s (1 : Matrix (Fin n) (Fin n) ℂ) = 1`. Introduce `s`.
+
+Unfold `minorOn`. Rewrite using `[Matrix.submatrix_one _ Subtype.val_injective]`. Simplify using the standard rewrite rules. Establish `hcw : Continuous fun k => wM (ι k)` using `continuousOn_wM.comp_continuous hι (fun k => det_second_cayley_block_ne_zero (hKk k).1)`. Establish `hgc : Continuous g`.
+
+Rewrite using `[hg]`. Conclude with `((Complex.continuous_normSq.comp ((continuous_minorOn _).comp hcw))).mul (Complex.continuous_normSq.comp ((continuous_minorOn _).comp hcw))`. Establish `hpos : 0 < ∫ k, g k ∂μ`. Use `hgc.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (HasCompactSupport.of_compactSpace _) (fun k => ?_) ?_` and prove the remaining obligations. Conclude with `mul_nonneg (Complex.normSq_nonneg _) (Complex.normSq_nonneg _)`.
+
+Simplify using `[hg, map_one, hw1, hm1]`. Conclude with `hpos.ne'` after adjusting the coercions.
+-/
 private theorem integral_minorOn_wM_ne_zero {n : ℕ} (j : ℕ) (Kg : Type) [Group Kg] [TopologicalSpace Kg] [IsTopologicalGroup Kg] [CompactSpace Kg] [MeasurableSpace Kg] [BorelSpace Kg] (μ : Measure Kg) [μ.IsHaarMeasure] (ι : Kg →* M2 n) (hι : Continuous ι) (hK : ∀ g, InK g ↔ ∃ k, ι k = g) :
     ∫ k, minorOn (blkA j) (wM (ι k)) * minorOn (blkB j) (wM (ι k))⁻¹ * (minorOn (blkA j) (wM (ι k))⁻¹ * minorOn (blkB j) (wM (ι k))) ∂μ ≠ 0 := by
   have hKk : ∀ k, InK (ι k) := fun k => (hK _).2 ⟨k, rfl⟩
@@ -65,6 +90,57 @@ private theorem integral_minorOn_wM_ne_zero {n : ℕ} (j : ℕ) (Kg : Type) [Gro
     · simp [hg, map_one, hw1, hm1]
   exact_mod_cast hpos.ne'
 
+/- English proof (translation)
+Introduce `n p q hsig Kg _ _ _ _ _ _ μ _ ι hι hK`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨j, hjn, hj1, hj2, hj3, hj4⟩` from `exists_split_avoiding_of_goodSig n p q hsig`. Establish `hC : ((∏ i ∈ Finset.range j, (-((q:ℤ):ℂ) + (i:ℂ))) * ∏ i ∈ Finset.range (n - j), (-((p:ℤ):ℂ) + (i:ℂ))) ≠ 0`.
+
+Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Use `rising_product_ne_zero (-(q:ℤ)) j (fun i hi => by have := hj1 i hi; omega)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Use `rising_product_ne_zero (-(p:ℤ)) (n - j) (fun i hi => by have := hj2 i hi; omega)` as an intermediate fact.
+
+Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Establish `hC' : ((∏ i ∈ Finset.range j, (((p:ℤ):ℂ) - (n:ℂ) + (i:ℂ))) * ∏ i ∈ Finset.range (n - j), (((q:ℤ):ℂ) - (n:ℂ) + (i:ℂ))) ≠ 0`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Use `rising_product_ne_zero ((p:ℤ) - n) j (fun i hi => by have := hj3 i hi; omega)` as an intermediate fact.
+
+Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Use `rising_product_ne_zero ((q:ℤ) - n) (n - j) (fun i hi => by have := hj4 i hi; omega)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`.
+
+Establish `hKk : ∀ k, InK (ι k)` using `fun k => (hK _).2 ⟨k, rfl⟩`. Establish `hGk : ∀ k, InG (ι k)` using `fun k => (hKk k).1`. Establish `hfv : ∀ k, (f0 (p:ℤ) (q:ℤ) (ι k))⁻¹ = fV (p:ℤ) (q:ℤ) (ι k)` using `fun k => (eq_inv_of_mul_eq_one_right (scalar_section_mul_conjugate_section (hKk k) _ _)).symm`. Use `set Ω : Set (M2 n) := {x : M2 n | ∀ k, ι k * x ∈ Dom n} with hΩdef`. Establish `hΩ : IsOpen Ω` using `isOpen_domK Kg ι hι`.
+
+Establish `hGΩ : ∀ g : M2 n, InG g → g ∈ Ω` using `fun g hg k => gset_sub_dom (inG_mul (hGk k) hg)`. Establish `hf0 : ContDiffOn ℂ ∞ (f0 (p:ℤ) (q:ℤ)) (Dom n)` using `(contDiffOn_scalar_section (n := n) _ _).mono (fun x hx => dom_sub x hx)`. Establish `hcV : Continuous fun k => fV (p:ℤ) (q:ℤ) (ι k)` using `cont_on_K _ (contDiffOn_fV _ _) Kg ι hι (fun k => gset_sub_dom (hGk k))`. Establish `hk_cd : ∀ (F : M2 n → ℂ), ContDiffOn ℂ ∞ F (Dom n) → ∀ k : Kg, ContDiffOn ℂ ∞ (fun y => F (ι k * y) * fV (p:ℤ) (q:ℤ) (ι k)) Ω`. Introduce `F hF k`.
+
+Conclude with `(hF.comp (contDiff_mulLeft (ι k)).contDiffOn (fun y (hy : y ∈ Ω) => hy k)).mul contDiffOn_const`. Use `set Φ : M2 n → ℂ := fun y => ∫ k, f0 (p:ℤ) (q:ℤ) (ι k * y) * fV (p:ℤ) (q:ℤ) (ι k) ∂μ with hΦdef`. Establish `hΦ : ContDiffOn ℂ ∞ Φ Ω` using `(hHI n Kg μ Ω (fun k y => f0 (p:ℤ) (q:ℤ) (ι k * y) * fV (p:ℤ) (q:ℤ) (ι k)) hΩ (cont_translate' _ _ isOpen_dom hf0 Kg ι hι _ hcV) (hk_cd _ hf0)).1`. Establish `hD1 : ∀ a b : M2 n, InG a → InG b → detD (fun H : Matrix (Fin n) (Fin n) ℂ => Φ (a * nU H * b)) = 0`. Introduce `a b ha hb`.
+
+Establish `hS : IsOpen ((fun H : Matrix (Fin n) (Fin n) ℂ => a * nU H * b) ⁻¹' Ω)` using `hΩ.preimage (contDiff_nU_sandwich a b).continuous`. Establish `h0 : (0 : Matrix (Fin n) (Fin n) ℂ) ∈ (fun H : Matrix (Fin n) (Fin n) ℂ => a * nU H * b) ⁻¹' Ω`. Establish `hn0 : nU (0 : Matrix (Fin n) (Fin n) ℂ) = 1`. Unfold `nU`. Conclude with `Matrix.fromBlocks_one`.
+
+Use `show a * nU 0 * b ∈ Ω`. Rewrite using `[hn0, mul_one]`. Conclude with `hGΩ _ (inG_mul ha hb)`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hS 0 h0`. Use `hSD n _ r hr (hΦ.comp (contDiff_nU_sandwich a b).contDiffOn (fun H hH => hball hH)) ?_` and prove the remaining obligations.
+
+Introduce `ψ hψ`. Establish `h` using `hne ψ a b hψ ha hb`. Rewrite `h` using `[fubini_step (p:ℤ) (q:ℤ) Kg μ ι hι hK a b ha hb ψ hψ]`. Simplify using `only [hfv] at h`. Conclude with `h`.
+
+Establish `hTop` using `hTC n j Φ Ω hΩ (fun g hg => hGΩ g hg) hΦ (by`. Introduce `x P S _ _ hP hS`. Use `show ∫ k, f0 (p:ℤ) (q:ℤ) (ι k * (x * mX (1 + P) 0 0 (1 + S))) * fV (p:ℤ) (q:ℤ) (ι k) ∂μ = ∫ k, f0 (p:ℤ) (q:ℤ) (ι k * x) * fV (p:ℤ) (q:ℤ) (ι k) ∂μ`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[← mul_assoc, scalar_section_compact_block_invariant hU j _ _ _ P S hP hS]) hD1`. Establish `hLQ : ∀ (M x : M2 n) (T : Matrix (blkA j) (blkA j) ℂ), LQ (blkA j) (M * x) T = M * LQ (blkA j) x T`. Introduce `M x T`. Rewrite using `[LQ_apply, LQ_apply, mul_assoc]`. Establish `hLR : ∀ (M x : M2 n) (S : Matrix (blkB j) (blkB j) ℂ), LR (blkB j) (M * x) S = M * LR (blkB j) x S`.
+
+Introduce `M x S`. Rewrite using `[LR_apply, LR_apply, mul_assoc]`. Establish `hm : ∀ (y : M2 n) (T : Matrix (blkA j) (blkA j) ℂ) (S : Matrix (blkB j) (blkB j) ℂ), y * mX 1 (embOn (blkA j) T) (embOn (blkB j) S) 1 = y + LQ (blkA j) y T + LR (blkB j) y S`. Introduce `y T S`. Rewrite using `[mX_eq, WD_split, LQ_apply, LR_apply, mul_add, mul_add, mul_one, add_assoc]`.
+
+Establish `key : ∀ y ∈ Dom n, (detD fun T : Matrix (blkA j) (blkA j) ℂ => detD fun S : Matrix (blkB j) (blkB j) ℂ => f0 (p:ℤ) (q:ℤ) (y + LQ (blkA j) y T + LR (blkB j) y S)) = ((∏ i ∈ Finset.range j, (-((q:ℤ):ℂ) + (i:ℂ))) * ∏ i ∈ Finset.range (n - j), (-((p:ℤ):ℂ) + (i:ℂ))) * hF j p q y`. Introduce `y hy`. Establish `h` using `hDj n j p q y hjn (dom_sub y hy).1 (dom_sub y hy).2`. Simplify using `only [hm] at h`. Rewrite using `[h]`.
+
+Unfold `hF`. Expand and normalize the polynomial expressions, which then agree. Use `set Ψ : M2 n → ℂ := fun y => ∫ k, hF j (p:ℤ) (q:ℤ) (ι k * y) * fV (p:ℤ) (q:ℤ) (ι k) ∂μ with hΨdef`. Establish `hΨ0 : ∀ g ∈ GSet n, Ψ g = 0`. Introduce `g hg`.
+
+Establish `h` using `hTop g hg`. Simplify using `only [hm] at h`. Rewrite `h` using `[show (detD fun T : Matrix (blkA j) (blkA j) ℂ => detD fun S : Matrix (blkB j) (blkB j) ℂ => Φ (g + LQ (blkA j) g T + LR (blkB j) g S)) = _ from spherical_detD hHI (f0 (p:ℤ) (q:ℤ)) hf0 μ ι hι _ hcV (LQ (blkA j)) (LR (blkB j)) hLQ hLR g (fun k => hGΩ g hg k)]`. Establish `hc : (∫ k, (detD fun T : Matrix (blkA j) (blkA j) ℂ => detD fun S : Matrix (blkB j) (blkB j) ℂ => f0 (p:ℤ) (q:ℤ) (ι k * g + LQ (blkA j) (ι k * g) T + LR (blkB j) (ι k * g) S)) * fV (p:ℤ) (q:ℤ) (ι k) ∂μ) = ∫ k, ((∏ i ∈ Finset.range j, (-((q:ℤ):ℂ) + (i:ℂ))) * ∏ i ∈ Finset.range (n …`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[key _ (hGΩ g hg k)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hc, integral_const_mul]`. Conclude with `(mul_eq_zero.1 h).resolve_left hC`.
+
+Establish `hΨc : ContDiffOn ℂ ∞ Ψ Ω` using `(hHI n Kg μ Ω (fun k y => hF j (p:ℤ) (q:ℤ) (ι k * y) * fV (p:ℤ) (q:ℤ) (ι k)) hΩ (cont_translate' _ _ isOpen_dom (contDiffOn_hF j _ _) Kg ι hι _ hcV) (hk_cd _ (contDiffOn_hF j _ _))).1`. Establish `hΨd : ∀ N : ℕ, iteratedFDeriv ℂ N Ψ 1 = 0` using `fun N => hHZ n Ω Ψ hΩ (fun g hg => hGΩ g hg) hΨc hΨ0 N 1 inG_one`. Establish `hLR' : ∀ (M x : M2 n) (T : Matrix (blkA j) (blkA j) ℂ), LR (blkA j) (M * x) T = M * LR (blkA j) x T`. Introduce `M x T`. Rewrite using `[LR_apply, LR_apply, mul_assoc]`.
+
+Establish `hLQ' : ∀ (M x : M2 n) (S : Matrix (blkB j) (blkB j) ℂ), LQ (blkB j) (M * x) S = M * LQ (blkB j) x S`. Introduce `M x S`. Rewrite using `[LQ_apply, LQ_apply, mul_assoc]`. Establish `hsph` using `spherical_detD hHI (hF j (p:ℤ) (q:ℤ)) (contDiffOn_hF j _ _) μ ι hι _ hcV (LR (blkA j)) (LQ (blkB j)) hLR' hLQ' 1 (fun k => hGΩ 1 inG_one k)`. Establish `hzero : (detD fun T : Matrix (blkA j) (blkA j) ℂ => detD fun S : Matrix (blkB j) (blkB j) ℂ => Ψ (1 + LR (blkA j) 1 T + LQ (blkB j) 1 S)) = 0`.
+
+Rewrite using `[detD_detD_comp Ψ Ω hΩ hΨc 1 (hGΩ 1 inG_one) (LR (blkA j) 1) (LQ (blkB j) 1)]`. Simplify using `[hΨd]`. Rewrite `hzero` using `[show (detD fun T : Matrix (blkA j) (blkA j) ℂ => detD fun S : Matrix (blkB j) (blkB j) ℂ => Ψ (1 + LR (blkA j) 1 T + LQ (blkB j) 1 S)) = _ from hsph]`. Establish `htr` using `transpose_detD hII (hF j (p:ℤ) (q:ℤ)) (fV (p:ℤ) (q:ℤ)) (c1 (p:ℤ) (q:ℤ)) (c2 (p:ℤ) (q:ℤ)) (contDiffOn_hF j _ _) (contDiffOn_fV _ _) (fun P x hP hx => hF_law j _ _ hP hx) (fun P x hP hx => fV_law _ _ hP hx) (fun P hP => modulus_characters_product _ _ hP) Kg μ ι hι hK (LR (blkA j) 1 …`. Introduce `T T' S S'`.
+
+Simplify using `only [LR_apply, LQ_apply, one_mul]`. Rewrite using `[add_comm (WD 0 _), add_comm (WD 0 _), ← WD_add, ← WD_add, add_zero, zero_add, add_zero, zero_add]`. Conclude with `WD_mul_WD_B_A j T S T' S')`. Establish `e1 : ∀ (k : Kg) (T : Matrix (blkA j) (blkA j) ℂ) (S : Matrix (blkB j) (blkB j) ℂ), ι k * 1 + LR (blkA j) (ι k * 1) T + LQ (blkB j) (ι k * 1) S = ι k + ι k * LR (blkA j) 1 T + ι k * LQ (blkB j) 1 S`. Introduce `k T S`.
+
+Simplify using `only [LR_apply, LQ_apply, mul_one, one_mul]`. Simplify using `only [e1] at hzero`. Rewrite `hzero` using `[htr]`. Establish `e2 : ∀ (y : M2 n) (T : Matrix (blkA j) (blkA j) ℂ) (S : Matrix (blkB j) (blkB j) ℂ), y + y * LR (blkA j) 1 T + y * LQ (blkB j) 1 S = y * mX 1 (embOn (blkB j) S) (embOn (blkA j) T) 1`. Introduce `y T S`.
+
+Rewrite using `[mX_eq, WD_split, LR_apply, LQ_apply, one_mul, one_mul, mul_add, mul_add, mul_one, add_assoc, add_comm (y * WD 0 _)]`. Simplify using `only [e2] at hzero`. Establish `hc : (∫ k, hF j (p:ℤ) (q:ℤ) (ι k) * (detD fun T : Matrix (blkA j) (blkA j) ℂ => detD fun S : Matrix (blkB j) (blkB j) ℂ => fV (p:ℤ) (q:ℤ) (ι k * mX 1 (embOn (blkB j) S) (embOn (blkA j) T) 1)) ∂μ) = ∫ k, ((∏ i ∈ Finset.range j, (((p:ℤ):ℂ) - (n:ℂ) + (i:ℂ))) * ∏ i ∈ Finset.range (n …`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[hDp n j p q (ι k) hjn (hGk k)]`. Establish `h1` using `scalar_section_mul_conjugate_section (hKk k) (p:ℤ) (q:ℤ)`. Unfold `hF`. Take the linear combination `((∏ i ∈ Finset.range j, (((p:ℤ):ℂ) - (n:ℂ) + (i:ℂ))) * ∏ i ∈ Finset.range (n - j), (((q:ℤ):ℂ) - (n:ℂ) + (i:ℂ))) * (minorOn (blkA j) (wM (ι k)) * minorOn (blkB j) (wM (ι k))⁻¹ * (minorOn (blkA j) (wM (ι k))⁻¹ * minorOn (blkB j) (wM (ι k)))) * h1`. Rewrite `hzero` using `[hc, integral_const_mul]`.
+
+Conclude with `integral_minorOn_wM_ne_zero j Kg μ ι hι hK ((mul_eq_zero.1 ((mul_eq_zero.1 hzero).resolve_left (pow_ne_zero _ (by norm_num)))).resolve_left hC')`.
+-/
 theorem lv_of (hC : Cayley) (hU : UAct) (hDj : DjSec) (hDp : DpDual) (hHI : HolInt) (hHZ : HolZero)
     (hSD : SingToDiff) (hTC : TopComp) (hII : InfInv) : LV := by
   intro n p q hsig Kg _ _ _ _ _ _ μ _ ι hι hK

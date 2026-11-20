@@ -10,6 +10,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LeviDesc.LeviBlockConjugation
 
+/- English proof (translation)
+Establish `hU : IsUnit (Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`. Conclude with `(m.1.isUnit.map Matrix.detMonoidHom).mul (m.2.isUnit.map Matrix.detMonoidHom)`. Unfold `blk`. Simplify using `only [dif_pos hU, IsUnit.unit_spec]`.
+-/
 theorem blk_val {E : Type} [Field E] [NumberField E] {n a b : ℕ} (h : a + b = n) (w : Pl E)
     (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
     (blk h w m X).val = Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h))
@@ -21,6 +24,11 @@ theorem blk_val {E : Type} [Field E] [NumberField E] {n a b : ℕ} (h : a + b = 
   unfold blk
   simp only [dif_pos hU, IsUnit.unit_spec]
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, inv_mul_eq_iff_eq_mul]`. Use extensionality with `: 1`. Simplify using `only [Units.val_mul, blk_val, Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`. Use `congr 1`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+
+Simplify using `only [Prod.fst_one, Prod.snd_one, Units.val_one, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.fromBlocks_inj, true_and, and_true]`. Simplify using `only [adL, LinearMap.coe_mk, AddHom.coe_mk, Matrix.mul_sub, ← Matrix.mul_assoc]`. Rewrite using `[show m.1.val * (m.1⁻¹ : GL (Fin a) _).val = 1 from by simp]`. Simplify using `[Matrix.one_mul, add_sub_cancel]`.
+-/
 theorem conj_blk (E : Type) [Field E] [NumberField E] (n a b : ℕ) (h : a + b = n) (w : Pl E)
     (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
     (blk h w 1 X)⁻¹ * blk h w m 0 * blk h w 1 X = blk h w m (GlobalTheory.LeviDesc.adL m.1 m.2.val X) := by

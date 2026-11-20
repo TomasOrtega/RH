@@ -18,12 +18,28 @@ def scaleHom (a : L) :
   eval₂Hom ((C : MvPolynomial Unit L →+* MvPolynomial Unit (MvPolynomial Unit L)).comp
       (aeval fun _ : Unit => C a * X ()).toRingHom) fun _ => C (C a⁻¹) * X ()
 
+/- English proof (translation)
+Simplify using `[scaleHom]`.
+-/
 theorem scaleHom_CC (a c : L) : scaleHom a (C (C c)) = C (C c) := by simp [scaleHom]
 
+/- English proof (translation)
+Simplify using `[scaleHom]`.
+-/
 theorem scaleHom_S (a : L) : scaleHom a (C (X ())) = C (C a) * C (X ()) := by simp [scaleHom]
 
+/- English proof (translation)
+Simplify using `[scaleHom]`.
+-/
 theorem scaleHom_alt (a : L) : scaleHom a (X ()) = C (C a⁻¹) * X () := by simp [scaleHom]
 
+/- English proof (translation)
+Establish `hC : ((scaleHom a⁻¹).comp (scaleHom a)).comp C = (C : MvPolynomial Unit L →+* MvPolynomial Unit (MvPolynomial Unit L))`. Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun v => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, scaleHom_CC]`. Consider the cases of `v`. Simplify using `only [RingHom.comp_apply, scaleHom_S, map_mul, scaleHom_CC]`.
+
+Rewrite using `[← mul_assoc, ← map_mul, ← map_mul, ← C_mul, mul_inv_cancel₀ ha, C_1, one_mul]`. Use `MvPolynomial.ringHom_ext (fun p => ?_) (fun u => ?_)` and prove the remaining obligations. Conclude with `RingHom.congr_fun hC p`. Consider the cases of `u`. Simplify using `only [RingHom.comp_apply, scaleHom_alt, map_mul, scaleHom_CC, RingHom.id_apply]`.
+
+Rewrite using `[← mul_assoc, ← map_mul, ← map_mul, inv_inv, inv_mul_cancel₀ ha, map_one, map_one, one_mul]`.
+-/
 theorem scaleHom_comp {a : L} (ha : a ≠ 0) : (scaleHom a⁻¹).comp (scaleHom a) = RingHom.id _ := by
   have hC : ((scaleHom a⁻¹).comp (scaleHom a)).comp C =
       (C : MvPolynomial Unit L →+* MvPolynomial Unit (MvPolynomial Unit L)) := by
@@ -38,6 +54,9 @@ theorem scaleHom_comp {a : L} (ha : a ≠ 0) : (scaleHom a⁻¹).comp (scaleHom 
     simp only [RingHom.comp_apply, scaleHom_alt, map_mul, scaleHom_CC, RingHom.id_apply]
     rw [← mul_assoc, ← map_mul, ← map_mul, inv_inv, inv_mul_cancel₀ ha, map_one, map_one, one_mul]
 
+/- English proof (translation)
+The claim follows from `Function.LeftInverse.injective (g := scaleHom a⁻¹) fun p => RingHom.congr_fun (scaleHom_comp ha) p`.
+-/
 theorem scaleHom_injective {a : L} (ha : a ≠ 0) : Function.Injective (scaleHom a) :=
   Function.LeftInverse.injective (g := scaleHom a⁻¹) fun p => RingHom.congr_fun (scaleHom_comp ha) p
 
@@ -48,10 +67,22 @@ def scale {a : L} (ha : a ≠ 0) :
     (g := (algebraMap _ (FractionRing (MvPolynomial Unit (MvPolynomial Unit L)))).comp (scaleHom a))
     ((IsFractionRing.injective _ _).comp (scaleHom_injective ha))
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap _ p`.
+-/
 theorem scale_algebraMap {a : L} (ha : a ≠ 0) (p : MvPolynomial Unit (MvPolynomial Unit L)) :
     scale ha (algebraMap _ _ p) = algebraMap _ _ (scaleHom a p) :=
   IsFractionRing.lift_algebraMap _ p
 
+/- English proof (translation)
+Introduce and unpack `⟨p, hp0, hp⟩`. Rewrite `hp` using `[Polynomial.aeval_def]`. Establish `hroot : ∀ n : ℕ, Polynomial.eval₂ (algebraMap A Ω) (((n : Ω) + 1) * z) p = 0`. Introduce `n`. Take `⟨σ, hfix, hσz⟩` from `h n`.
+
+Establish `hcomp : σ.comp (algebraMap A Ω) = algebraMap A Ω` using `RingHom.ext fun y => hfix y y.2`. Establish `h'` using `Polynomial.hom_eval₂ p (algebraMap A Ω) σ z`. Rewrite `h'` using `[hp, map_zero, hcomp, hσz]`. Conclude with `h'.symm`. Establish `hq : p.map (algebraMap A Ω) ≠ 0` using `(Polynomial.map_ne_zero_iff fun x y h => Subtype.ext h).mpr hp0`.
+
+Use `hq (Polynomial.eq_zero_of_infinite_isRoot _ ?_)` and prove the remaining obligations. Use `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => ((n : Ω) + 1) * z) (fun n m hnm => ?_) fun n => ?_` and prove the remaining obligations. Conclude with `Nat.cast_injective (add_right_cancel (mul_right_cancel₀ hz hnm))`. Express the relevant statement in the definitionally equal form `Polynomial.IsRoot _ _`. Rewrite using `[Polynomial.IsRoot, Polynomial.eval_map]`.
+
+Conclude with `hroot n`.
+-/
 theorem transcendental_of_scale {R Ω : Type} [CommRing R] [Field Ω] [CharZero Ω] [Algebra R Ω]
     (A : Subalgebra R Ω) {z : Ω} (hz : z ≠ 0)
     (h : ∀ n : ℕ, ∃ σ : Ω →+* Ω, (∀ y ∈ A, σ y = y) ∧ σ z = ((n : Ω) + 1) * z) : Transcendental A z := by
@@ -74,26 +105,41 @@ theorem transcendental_of_scale {R Ω : Type} [CommRing R] [Field Ω] [CharZero 
 
 variable {K : Type} [Field K] {i : ℕ}
 
+/- English proof (translation)
+Simplify using `only [dualStdModelEmb, RingHom.comp_apply, scale_algebraMap, scaleHom_CC]`.
+-/
 theorem scale_emb {a : ProjField K i} (ha : a ≠ 0) (x : ProjField K i) :
     scale ha (dualStdModelEmb K i x) = dualStdModelEmb K i x := by
   simp only [dualStdModelEmb, RingHom.comp_apply, scale_algebraMap, scaleHom_CC]
 
+/- English proof (translation)
+Simplify using `only [dualStdModelS, dualStdModelEmb, RingHom.comp_apply, scale_algebraMap, scaleHom_S, map_mul]`.
+-/
 theorem scale_S {a : ProjField K i} (ha : a ≠ 0) :
     scale ha (dualStdModelS K i) = dualStdModelEmb K i a * dualStdModelS K i := by
   simp only [dualStdModelS, dualStdModelEmb, RingHom.comp_apply, scale_algebraMap, scaleHom_S, map_mul]
 
+/- English proof (translation)
+Simplify using `only [dualStdModelT, dualStdModelEmb, RingHom.comp_apply, scale_algebraMap, scaleHom_alt, map_mul]`.
+-/
 theorem scale_alt {a : ProjField K i} (ha : a ≠ 0) :
     scale ha (dualStdModelT K i) = dualStdModelEmb K i a⁻¹ * dualStdModelT K i := by
   simp only [dualStdModelT, dualStdModelEmb, RingHom.comp_apply, scale_algebraMap, scaleHom_alt, map_mul]
 
 variable [NumberField K] {F : HermLattice K i} {T : Type} (b : Module.Basis T ℤ (dualLattice F))
 
+/- English proof (translation)
+Simplify using `only [dualStdModelPt, map_mul, scale_emb, scale_S]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scale_inl {a : ProjField K i} (ha : a ≠ 0) (t : T) :
     scale ha (dualStdModelPt b (⟨Sum.inl (), t⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k)) =
       dualStdModelEmb K i a * dualStdModelPt b (⟨Sum.inl (), t⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k) := by
   simp only [dualStdModelPt, map_mul, scale_emb, scale_S]
   ring
 
+/- English proof (translation)
+Establish `h : dualStdModelEmb K i a * dualStdModelEmb K i a⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ ha, map_one]`. Simplify using `only [dualStdModelPt, map_mul, scale_emb, scale_S, scale_alt]`. Take the linear combination `(dualStdModelEmb K i (algebraMap (MvPolynomial (Fin i) K) (ProjField K i) (X j)) * dualStdModelS K i * dualStdModelT K i) * h`.
+-/
 theorem scale_inr {a : ProjField K i} (ha : a ≠ 0) (j : PBlk i ()) :
     scale ha (dualStdModelPt b (⟨Sum.inr (), j⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k)) =
       dualStdModelPt b (⟨Sum.inr (), j⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k) := by
@@ -108,6 +154,17 @@ end StandardDualModelTranscendence
 
 open DualArithmeticVariety StandardDualModelTranscendence in
 
+/- English proof (translation)
+Introduce `K _ _ i T _ _ b Φ₀ _ _ hΦ _ c`. Establish `hy : dualLatticeCoord b ⟨(), c⟩ ≠ 0`. Rewrite using `[dualLatticeCoord_eq]`. Conclude with `evalForm_ne_zero fun h => b.ne_zero c (Subtype.ext h)`. Establish `hS : dualStdModelS K i ≠ 0`.
+
+Introduce `h`. Establish `h'` using `IsFractionRing.injective (MvPolynomial Unit (MvPolynomial Unit (ProjField K i))) (dualStdModelField K i) (h.trans (map_zero _).symm)`. Simplify using `at h'`. Use `transcendental_of_scale _ (mul_ne_zero ((map_ne_zero _).mpr hy) hS) fun n => ?_` and prove the remaining obligations. Establish `ha : ((n : ProjField K i) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero n`.
+
+Establish `hΦfix : ∀ x : Φ₀, scale ha (algebraMap Φ₀ _ x) = algebraMap Φ₀ _ x`. Introduce `x`. Establish `hx : algebraMap Φ₀ (dualStdModelField K i) x ∈ Subfield.closure (Set.range (dualStdModelPt b ∘ inrV (ι` using `dualBlocks T) (ι₂ := PBlk i))) := hΦ ▸ RingHom.mem_fieldRange.mpr ⟨x, rfl⟩`. Use `RingHom.eqOn_field_closure (g := RingHom.id _) ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨u, j⟩, rfl⟩`.
+
+Consider the cases of `u`. Conclude with `scale_inr b ha j`. Set `σ : dualStdModelField K i →ₐ[Φ₀] dualStdModelField K i` to `{ scale ha with commutes' := hΦfix }`. Use `⟨scale ha, fun y hyA => AlgHom.adjoin_le_equalizer σ (AlgHom.id Φ₀ _) ?_ hyA, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `scale ha _ = _`. Rewrite using `[map_div₀, scale_inl b ha, scale_inl b ha, mul_div_mul_left _ _ ((map_ne_zero _).mpr ha)]`. Both sides reduce to the same expression. Rewrite using `[scale_inl b ha]`. Simplify using the standard rewrite rules.
+-/
 theorem DualStdModelTransc.proof : DualStdModelTransc.Statement := by
   intro K _ _ i T _ _ b Φ₀ _ _ hΦ _ c
   have hy : dualLatticeCoord b ⟨(), c⟩ ≠ 0 := by

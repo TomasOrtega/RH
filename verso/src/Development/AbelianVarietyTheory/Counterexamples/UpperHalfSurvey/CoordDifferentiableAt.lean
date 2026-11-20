@@ -7,6 +7,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.Chart
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Unfold `Data.tt`. Generalize the expression as in `X.c τ * X.maj x τ (Data.emb τ.1 ξ) = h`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `hp : 0 < h`.
+
+Assume the negation of the conclusion as `hn`. Establish `: 1 / h ≤ 0` using `div_nonpos_of_nonneg_of_nonpos zero_le_one (not_lt.1 hn)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨hp, by rwa [le_div_iff₀ hp, one_mul] at h1⟩`. Introduce and unpack `⟨hp, h1⟩`.
+
+Rewrite using `[le_div_iff₀ hp, one_mul]` and apply the resulting hypothesis.
+-/
 theorem one_le_tt_iff (X : Data E r) (ξ : Fin r → E) (x : Frame X.Ψ r) (τ : X.Ψ) :
     1 ≤ X.tt ξ x τ ↔ 0 < X.c τ * X.maj x τ (Data.emb τ.1 ξ) ∧ X.c τ * X.maj x τ (Data.emb τ.1 ξ) ≤ 1 := by
   unfold Data.tt
@@ -21,6 +28,13 @@ theorem one_le_tt_iff (X : Data E r) (ξ : Fin r → E) (x : Frame X.Ψ r) (τ :
   · rintro ⟨hp, h1⟩
     rwa [le_div_iff₀ hp, one_mul]
 
+/- English proof (translation)
+Distinguish the cases in `h2 : η < 1 / 2`. Conclude with `h.2 η hη h2`. Take `⟨C, A', hC⟩` from `h.1`. Use `⟨C, A', fun x hx ξ _ ht => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ ⨅ τ, X.tt ξ x τ` using `Real.iInf_nonneg fun τ => zero_le_one.trans (ht τ)`.
+
+Establish `h1 : 0 ≤ 8 * Real.pi * (2 * η - 1) * a * ⨅ τ, X.tt ξ x τ`. Use `Real.pi_pos` as an intermediate fact. Establish `: 0 ≤ 2 * η - 1` using `by linarith`. Check the signs of the components of the expression. Use `hC x hx` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem cfwM_all_eta (X : Data E r) {ps : Frame X.Ψ r → ℝ} {a : ℝ} (h : cfwM X ps a) (ha : 0 ≤ a)
     (η : ℝ) (hη : 0 < η) : ∃ C A' : ℝ, ∀ x ∈ X.dom, ∀ ξ : Fin r → E, X.IsIso ξ →
     (∀ τ, 1 ≤ X.tt ξ x τ) →
@@ -37,6 +51,9 @@ theorem cfwM_all_eta (X : Data E r) {ps : Frame X.Ψ r → ℝ} {a : ℝ} (h : c
     have := hC x hx
     nlinarith
 
+/- English proof (translation)
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.AR.multiLt, Finset.mem_biUnion, Finset.mem_range, Finset.Nat.mem_antidiagonalTuple] at hα`. Take `⟨d, hd, hs⟩` from `hα`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_le_of_mem_multiLt {n a0 T : ℕ} (h : a0 ≤ T + 1) {α : Fin n → ℕ}
     (hα : α ∈ ReciprocityTheory.ChartRestriction.G.AR.multiLt n a0) : (∑ q, α q) + (T - ∑ q, α q) = T := by
   simp only [ReciprocityTheory.ChartRestriction.G.AR.multiLt, Finset.mem_biUnion, Finset.mem_range,
@@ -44,6 +61,11 @@ theorem sum_le_of_mem_multiLt {n a0 T : ℕ} (h : a0 ≤ T + 1) {α : Fin n → 
   obtain ⟨d, hd, hs⟩ := hα
   omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `h` using `Fl.coord j`. Rewrite `h` using `[fderiv_zero_of_not_differentiableAt hn]`. Apply `h` to reduce the goal to its premises. Establish `h2` using `Xa.n_ge`.
+
+Use `haveI : Nonempty (Fin (nd X)) := ⟨⟨0, by omega⟩⟩`. Establish `b` using `(EuclideanSpace.basisFun (Fin (nd X)) ℂ).toBasis`. Simplify using `only [ContinuousLinearMap.det, ContinuousLinearMap.coe_zero]`. Conclude with `LinearMap.det_zero' b`.
+-/
 theorem coord_differentiableAt (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (j : Fin Fl.δ) :
     DifferentiableAt ℂ (fun z : V (nd X) => (WithLp.toLp 2 fun k =>
       Fl.s k (cpt X (Fl.xs j) z) / Fl.w0 (cpt X (Fl.xs j) z) : V (nd X))) 0 := by
@@ -57,6 +79,9 @@ theorem coord_differentiableAt (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa)
   simp only [ContinuousLinearMap.det, ContinuousLinearMap.coe_zero]
   exact LinearMap.det_zero' b
 
+/- English proof (translation)
+Introduce `x hx`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Take `⟨j, -⟩` from `(Fl.S_eq x hx).1 hn`. Conclude with `absurd j.2 (by omega)`.
+-/
 theorem exists_s_ne_of_empty (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (h : Fl.δ = 0) :
     ∀ x ∈ X.dom, ∃ k, Fl.s k x ≠ 0 := by
   intro x hx

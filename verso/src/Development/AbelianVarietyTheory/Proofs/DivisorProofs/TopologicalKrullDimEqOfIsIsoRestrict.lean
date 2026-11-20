@@ -11,6 +11,15 @@ noncomputable section
 
 namespace GlobalTheory.OpenDim
 
+/- English proof (translation)
+Set `` to `(Spec.preimage (Y.fromSpecStalk (genericPoint Y) ≫ f)).hom.toAlgebra`. Establish `: Nonempty U` using `⟨⟨hne.some, hne.some_mem⟩⟩`. Set `φ` to `Spec.preimage (hU.fromSpec ≫ f)`. Establish `hφ : Spec.map φ = hU.fromSpec ≫ f` using `Spec.map_preimage _`. Set `: Algebra F Γ(Y, U)` to `φ.hom.toAlgebra`.
+
+Establish `hft : Algebra.FiniteType F Γ(Y, U)` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := φ)).mp (hφ ▸ inferInstance)`. Establish `hη : genericPoint Y ∈ U` using `((genericPoint_spec Y).mem_open_set_iff U.isOpen).mpr (by simpa using ‹Nonempty U›)`. Establish `hcomp : φ ≫ Y.presheaf.germ U _ hη = Spec.preimage (Y.fromSpecStalk (genericPoint Y) ≫ f)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ, Spec.map_preimage, ← hU.fromSpecStalk_eq_fromSpecStalk hη, IsAffineOpen.fromSpecStalk, Category.assoc]`.
+
+Establish `: IsScalarTower F Γ(Y, U) Y.functionField` using `IsScalarTower.of_algebraMap_eq fun a ↦ congr($(hcomp).hom a).symm`. Use `functionField_isFractionRing_of_isAffineOpen Y U hU` as an intermediate fact. Establish `: Algebra.IsAlgebraic Γ(Y, U) Y.functionField` using `IsLocalization.isAlgebraic _ (nonZeroDivisors _)`. Establish `: FaithfulSMul F Γ(Y, U)` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (algebraMap F Γ(Y, U)).injective`. Take `⟨d, h₁, h₂⟩` from `exists_ringKrullDim_eq_and_trdeg_eq F Γ(Y, U)`.
+
+Conclude with `⟨d, h₁, (trdeg_eq_of_isAlgebraic_top F Γ(Y, U) Y.functionField).trans h₂⟩`.
+-/
 theorem ringKrullDim_affineOpen (F : Type) [Field F] {Y : Scheme.{0}} [IsIntegral Y]
     (f : Y ⟶ Sp F) [LocallyOfFiniteType f] {U : Y.Opens} (hU : IsAffineOpen U)
     (hne : (U : Set Y).Nonempty) :
@@ -40,6 +49,15 @@ theorem ringKrullDim_affineOpen (F : Type) [Field F] {Y : Scheme.{0}} [IsIntegra
   obtain ⟨d, h₁, h₂⟩ := exists_ringKrullDim_eq_and_trdeg_eq F Γ(Y, U)
   exact ⟨d, h₁, (trdeg_eq_of_isAlgebraic_top F Γ(Y, U) Y.functionField).trans h₂⟩
 
+/- English proof (translation)
+Set `` to `(Spec.preimage (Y.fromSpecStalk (genericPoint Y) ≫ f)).hom.toAlgebra`. Establish `chart : ∀ (V : Y.Opens) (x : Y), x ∈ V → ∃ U : Y.Opens, IsAffineOpen U ∧ x ∈ U ∧ U ≤ V` using `fun V x hx ↦ by`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUV⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hx V.isOpen`. Conclude with `⟨U, hU, hxU, hUV⟩`. Take `⟨x₀, hx₀⟩` from `hne`.
+
+Take `⟨U₀, hU₀, hx₀U₀, -⟩` from `chart V x₀ hx₀`. Take `⟨d₀, -, hd₀⟩` from `ringKrullDim_affineOpen F f hU₀ ⟨x₀, hx₀U₀⟩`. Establish `affDim : ∀ U : Y.Opens, IsAffineOpen U → (U : Set Y).Nonempty → topologicalKrullDim (U : Set Y) = d₀` using `fun U hU hUne ↦ by`. Take `⟨d, h₁, h₂⟩` from `ringKrullDim_affineOpen F f hU hUne`. Take `rfl : d = d₀` from `by exact_mod_cast h₂.symm.trans hd₀`.
+
+Rewrite using `[← h₁, ← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim]`. Conclude with `topologicalKrullDim_eq_of_isEmbedding hU.fromSpec.isOpenEmbedding.isEmbedding hU.range_fromSpec`. Establish `openDim : ∀ V : Y.Opens, (V : Set Y).Nonempty → topologicalKrullDim (V : Set Y) = d₀` using `fun V hV ↦ topologicalKrullDim_eq_of_forall_exists_isOpen hV fun x hx ↦ by`. Take `⟨U, hU, hxU, hUV⟩` from `chart V x hx`. Use `⟨U, U.isOpen, hxU, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.inter_eq_left.mpr hUV]`. Conclude with `affDim U hU ⟨x, hxU⟩`. Establish `htop` using `openDim ⊤ ⟨x₀, trivial⟩`. Rewrite using `[openDim V ⟨x₀, hx₀⟩, ← htop]`. Conclude with `(topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id (Z := ((⊤ : Y.Opens) : Set Y)) (by simp))`.
+-/
 theorem topologicalKrullDim_open (F : Type) [Field F] {Y : Scheme.{0}} [IsIntegral Y]
     (f : Y ⟶ Sp F) [LocallyOfFiniteType f] (V : Y.Opens) (hne : (V : Set Y).Nonempty) :
     topologicalKrullDim (V : Set Y) = topologicalKrullDim Y := by
@@ -71,6 +89,13 @@ theorem topologicalKrullDim_open (F : Type) [Field F] {Y : Scheme.{0}} [IsIntegr
   exact (topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id
     (Z := ((⊤ : Y.Opens) : Set Y)) (by simp))
 
+/- English proof (translation)
+Introduce `F _ W W' _ _ p q h hp hq _ U hU hiso`. Establish `hsurj : Function.Surjective (h ∣_ U)` using `(h ∣_ U).surjective`. Establish `e₁ : topologicalKrullDim (U : Set W) = topologicalKrullDim (h ⁻¹ᵁ U)`. Use `topologicalKrullDim_eq_of_isEmbedding ((h ∣_ U) ≫ U.ι).isOpenEmbedding.isEmbedding ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, hsurj.range_eq, Set.image_univ, Scheme.Opens.range_ι]`.
+
+Establish `e₂ : topologicalKrullDim ((h ⁻¹ᵁ U : W'.Opens) : Set W') = topologicalKrullDim (h ⁻¹ᵁ U)` using `topologicalKrullDim_eq_of_isEmbedding (h ⁻¹ᵁ U).ι.isOpenEmbedding.isEmbedding (Scheme.Opens.range_ι _)`. Establish `hne : ((h ⁻¹ᵁ U : W'.Opens) : Set W').Nonempty`. Take `⟨u, hu⟩` from `hU`. Take `⟨y, -⟩` from `hsurj ⟨u, hu⟩`. Conclude with `⟨(h ⁻¹ᵁ U).ι y, by rw [← Scheme.Opens.range_ι]; exact ⟨y, rfl⟩⟩`.
+
+Rewrite using `[← topologicalKrullDim_open F q (h ⁻¹ᵁ U) hne, ← topologicalKrullDim_open F p U hU, e₁, e₂]`.
+-/
 theorem topologicalKrullDim_eq_of_isIso_restrict : ∀ (F : Type) [Field F] (W W' : Scheme.{0})
     [IsIntegral W] [IsIntegral W'] (p : W ⟶ Sp F) (q : W' ⟶ Sp F) (h : W' ⟶ W),
     LocallyOfFiniteType p → LocallyOfFiniteType q → h ≫ p = q → ∀ U : W.Opens,

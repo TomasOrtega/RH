@@ -12,6 +12,13 @@ open PositivityTheory.Rg.BcB.N3 PositivityTheory.Rg.BcB.N3.Pse
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Set `ρ : Representation ℂ (Levi k fun _ : Fin n => Unit) ℂ` to `(ofChar μ).comp (leviTorus k (Fin n)).symm.toMonoidHom`. Set `φ : (jac (points (Fin n)) π).IntertwiningMap ρ` to `⟨l, fun g => LinearMap.ext fun x => by`. Take `⟨t, rfl⟩` from `(leviTorus k (Fin n)).surjective g`. Establish `e : (ρ (leviTorus k (Fin n) t)) (l x) = (μ t : ℂ) * l x` using `by show ofChar μ ((leviTorus k (Fin n)).symm (leviTorus k (Fin n) t)) _ = _`. Rewrite using `[MulEquiv.symm_apply_apply, ofChar_apply]`.
+
+Conclude with `(hl t x).trans e.symm⟩`. Take `⟨f, hf⟩` from `(GlobalTheory.SmGL.Model.evalOne_bijective (points (Fin n)) hπ ρ).2 φ`. Use `⟨f, fun h0 => hl0 (LinearMap.ext fun x => ?_)⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : φ (Submodule.Quotient.mk v) = (f v).1.1 1` using `by rw [← hf]; rfl`.
+
+Establish `h2 : l (Submodule.Quotient.mk v) = φ (Submodule.Quotient.mk v)` using `rfl`. Rewrite using `[h2, h1, h0]`. Both sides reduce to the same expression.
+-/
 theorem exists_map_of_eigenform {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin n) k) V} (hπ : IsSmooth π)
     (μ : (Fin n → kˣ) →* ℂˣ) (l : Jacquet π (unipB k (Fin n)) →ₗ[ℂ] ℂ) (hl0 : l ≠ 0)
@@ -34,6 +41,15 @@ theorem exists_map_of_eigenform {n : ℕ} {V : Type} [AddCommGroup V] [Module �
   rw [h2, h1, h0]
   rfl
 
+/- English proof (translation)
+Introduce `n V _ _ π hs hi hsph`. Establish `hadm : IsAdmissible π` using `(GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).1 (Fin n) V π hs hi`. Establish `hI : fixed π (iwahori k (Fin n)) ≠ ⊥`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hsph`. Use `(Submodule.ne_bot_iff _).2 ⟨v, fun h => ?_, hv0⟩` and prove the remaining obligations.
+
+Conclude with `hv ⟨h.1, iwahori_le_KO k _ h.2⟩`. Take `⟨χ, l, hl0, hl, hχ⟩` from `GlobalTheory.SatakeExists.exists_eigenform_jacBU hadm hI`. Set `δ : (Fin n → kˣ) →* ℂˣ` to `(deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom`. Take `⟨α, hα⟩` from `GlobalTheory.SatakeExists.exists_eq_torusChar (χ * δ⁻¹) fun t ht => by`. Establish `: δ t = 1` using `GlobalTheory.SmGL.UnramFixed.deltaHalf_torusO k ht`.
+
+Simplify using `[hχ t ht, this]`. Take `⟨f, hf⟩` from `exists_map_of_eigenform hadm.1 (χ * δ⁻¹) l hl0 fun t x => by`. Rewrite using `[GlobalTheory.SmGL.UnramFixed.jacB_apply, map_smul, hl, smul_eq_mul, MonoidHom.mul_apply, Units.val_mul, MonoidHom.inv_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨α, ?_⟩` and prove the remaining obligations.
+
+Use `show ∃ f : π.IntertwiningMap (indB (ofChar (torusChar fun i => unrChar k (α i)))), f ≠ 0`. Rewrite using `[hα]`. Conclude with `⟨f, hf⟩`.
+-/
 theorem expSph : ExpSph k := by
   intro n V _ _ π hs hi hsph
   have hadm : IsAdmissible π := (GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).1 (Fin n) V π hs hi

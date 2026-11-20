@@ -9,6 +9,17 @@ noncomputable section
 
 namespace GlobalTheory.Mem.CharRat
 
+/- English proof (translation)
+Introduce `D X α`. Use `set y : X.B.I.E := X.ιE.symm (α : D.host.E) with hy`. Use `set q : X.B.I.E := algebraMap X.B.I.F X.B.I.E ((X.B.g : X.B.I.F)⁻¹) * y with hq`. Establish `hdiv : divN X.B.I X.B.g (Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) y) = Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) q := by`. Unfold `divN`.
+
+Rewrite using `[hq, map_mul, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression. Establish `hgq : algebraMap X.B.I.F X.B.I.E ((X.B.g : X.B.I.F)⁻¹) = algebraMap ℚ X.B.I.E ((X.B.g : ℚ)⁻¹)`. Rewrite using `[map_inv₀, map_inv₀, map_natCast, map_natCast]`. Establish `htrq : Algebra.trace ℚ X.B.I.E q = (X.B.g : ℚ)⁻¹ * Algebra.trace ℚ X.B.I.E y`.
+
+Rewrite using `[hq, hgq, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul]`. Establish `htr : Algebra.trace ℚ X.B.I.E y = Algebra.trace ℚ D.host.E (α : D.host.E)` using `by conv_rhs => rw [← X.ιE.apply_symm_apply (α : D.host.E)]`. Conclude with `(Algebra.trace_eq_of_algEquiv X.ιE.toRatAlgEquiv y).symm`. Establish `hint : ((Algebra.intTrace ℤ (𝓞 D.host.E) α : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (α : D.host.E)` using `Algebra.algebraMap_intTrace (A := ℤ) (K := ℚ) (L := D.host.E) (B := 𝓞 D.host.E) α`. Rewrite using `[hdiv, eq_inv_of_mul_eq_one_left (X.psiEf_rat q), GlobalTheory.St.G.psiEinf_eq_exp_trace, htrq, htr, ← hint, ← Complex.exp_neg]`.
+
+Express the relevant statement in the definitionally equal form `(starRingEnd ℂ) _ = _`. Rewrite using `[← Complex.exp_conj]`. Use `congr 1`. Simplify using `only [map_neg, map_mul, Complex.conj_ofReal, Complex.conj_I, map_ofNat, map_ratCast]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem star_psiEf_divN_inclE : ∀ (D : D7) (X : HidaSetting D) (α : 𝓞 D.host.E), star (X.psiEf (divN X.B.I X.B.g (Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (X.ιE.symm (α : D.host.E))))) = Complex.exp (2 * Real.pi * Complex.I * ((Algebra.intTrace ℤ (𝓞 D.host.E) α : ℤ) : ℂ) / ((X.B.g : ℕ) : ℂ)) := by
   intro D X α
   set y : X.B.I.E := X.ιE.symm (α : D.host.E) with hy

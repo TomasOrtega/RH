@@ -84,11 +84,21 @@ section Field
 variable {σ : E →+* E} {n r : ℕ} {J s Y : Matrix (Fin n) (Fin n) E} {P P' : Matrix (Fin n) (Fin (r + 1)) E}
   {u v A Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
 
+/- English proof (translation)
+Use `⟨h.1, (strict_conj (up_inv hu) hu h.2.1).1, ?_, by simpa [perpX_mul hu, spanX_mul hu] using h.2.2.2⟩` and prove the remaining obligations. Use `congrArg (· * u⁻¹) h.2.2.1` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, up_mul_inv hu, Matrix.mul_one]`.
+-/
 theorem LieN.of_mul (hu : IsUp u) (h : LieN σ J (P * u) Y A) : LieN σ J P Y (u * A * u⁻¹) := by
   refine ⟨h.1, (strict_conj (up_inv hu) hu h.2.1).1, ?_, by simpa [perpX_mul hu, spanX_mul hu] using h.2.2.2⟩
   have := congrArg (· * u⁻¹) h.2.2.1
   simpa only [Matrix.mul_assoc, up_mul_inv hu, Matrix.mul_one] using this
 
+/- English proof (translation)
+Establish `hu` using `isUnit_det_of_isUn hJ hs`. Establish `l` using `Matrix.nonsing_inv_mul s hu`. Establish `e1 : J * s⁻¹ = cT σ s * J` using `by conv_lhs => rw [← hs, Matrix.mul_assoc, Matrix.mul_nonsing_inv s hu, Matrix.mul_one]`. Establish `e2 : cT σ s⁻¹ * J = J * s` using `by conv_rhs => rw [← isUn_inv hJ hs, Matrix.mul_assoc, l, Matrix.mul_one]`. Use `⟨?_, h.2.1, ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun W => cT σ s * W * s) h.1` as an intermediate fact. Rewrite using `[cT_mul, cT_mul, Matrix.mul_assoc, Matrix.mul_assoc, e2, ← Matrix.mul_assoc J, ← Matrix.mul_assoc J, e1]`. Simplify `this` using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h.2.2.1, Matrix.mul_assoc, ← Matrix.mul_assoc, l, Matrix.one_mul]`. Use `mulVec_mem_spanX (s := s⁻¹) (h.2.2.2 _ ((mulVec_mem_perpX hs P x).2 hx))` as an intermediate fact.
+
+Rewrite `this` using `[← Matrix.mul_assoc, l, Matrix.one_mul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem LieN.of_isom (hJ : IsUnit J.det) (hs : IsUn σ J s) (h : LieN σ J (s * P) Y A) :
     LieN σ J P (s⁻¹ * Y * s) A := by
   have hu := isUnit_det_of_isUn hJ hs
@@ -105,14 +115,23 @@ theorem LieN.of_isom (hJ : IsUnit J.det) (hs : IsUn σ J s) (h : LieN σ J (s * 
   · have := mulVec_mem_spanX (s := s⁻¹) (h.2.2.2 _ ((mulVec_mem_perpX hs P x).2 hx))
     rwa [← Matrix.mul_assoc, l, Matrix.one_mul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec] at this
 
+/- English proof (translation)
+Introduce `Y A A' h1 h2`. Use `h _ _ _ (h1.of_mul hu) (h2.of_mul hv)` as an intermediate fact. Rewrite `this` using `[(strict_conj (up_inv hu) hu h1.2.1).2, (strict_conj (up_inv hv) hv h2.2.1).2]`. Then use the resulting hypothesis.
+-/
 theorem Relevant.mul (h : Relevant σ J P P') (hu : IsUp u) (hv : IsUp v) : Relevant σ J (P * u) (P' * v) := by
   intro Y A A' h1 h2
   have := h _ _ _ (h1.of_mul hu) (h2.of_mul hv)
   rwa [(strict_conj (up_inv hu) hu h1.2.1).2, (strict_conj (up_inv hv) hv h2.2.1).2] at this
 
+/- English proof (translation)
+Introduce `_ _ _ h1 h2` and use `h _ _ _ (h1.of_isom hJ hs) (h2.of_isom hJ hs)`.
+-/
 theorem Relevant.isom (hJ : IsUnit J.det) (hs : IsUn σ J s) (h : Relevant σ J P P') :
     Relevant σ J (s * P) (s * P') := fun _ _ _ h1 h2 => h _ _ _ (h1.of_isom hJ hs) (h2.of_isom hJ hs)
 
+/- English proof (translation)
+Introduce `Y A A' h1 h2`. Take `⟨L, hL⟩` from `hP`. Use `congrArg (L * ·) (h1.2.2.1.symm.trans h2.2.2.1)` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, hL, Matrix.one_mul] at this`. Simplify using `[this]`.
+-/
 theorem relevant_self (hP : Free P) : Relevant σ J P P := by
   intro Y A A' h1 h2
   obtain ⟨L, hL⟩ := hP
@@ -120,11 +139,19 @@ theorem relevant_self (hP : Free P) : Relevant σ J P P := by
   simp only [← Matrix.mul_assoc, hL, Matrix.one_mul] at this
   simp [this]
 
+/- English proof (translation)
+Rewrite using `[eps, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use extensionality with `b`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem eps_mul_eps : eps E r * eps E r = 1 := by
   rw [eps, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1; ext b
   rw [← mul_pow]; simp
 
+/- English proof (translation)
+Take `⟨l, a, hl, ha, e⟩` from `h`. Use `⟨v * l, a * (eps E r * u * eps E r), lo_mul hv hl, up_mul ha fun i j => ⟨fun h => ?_, fun h => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[eps, (hu i j).1 h]`. Substitute `h` using the available equality. Simplify using `[eps, (hu i i).2 rfl, ← mul_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (eps E r) (eps E r), eps_mul_eps, Matrix.one_mul]`. Use `_ = _ := by rw [e]; simp only [Matrix.mul_assoc]`.
+-/
 theorem LiesAt.mul {w : Formalism.MainNotions.S.Point E (r + 1)} (h : LiesAt w Z) (hv : IsLo v) (hu : IsUp u) :
     LiesAt w (v * Z * u) := by
   obtain ⟨l, a, hl, ha, e⟩ := h
@@ -135,9 +162,15 @@ theorem LiesAt.mul {w : Formalism.MainNotions.S.Point E (r + 1)} (h : LiesAt w Z
           simp only [Matrix.mul_assoc]; rw [← Matrix.mul_assoc (eps E r) (eps E r), eps_mul_eps, Matrix.one_mul]
       _ = _ := by rw [e]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[ptOfMat, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem liesAt_ptOfMat (h : ∃ w, LiesAt w Z) : LiesAt (ptOfMat Z) Z := by
   rw [ptOfMat, dif_pos h]; exact h.choose_spec
 
+/- English proof (translation)
+Establish `e : (fun w => LiesAt w Z) = fun w => LiesAt w Z'` using `funext fun w => propext (h w)`. Establish `k (p q : Formalism.MainNotions.S.Point E (r + 1) → Prop) (e : p = q) [Decidable (∃ w, p w)] [Decidable (∃ w, q w)] : (if h : ∃ w, p w then h.choose else onePt E r) = if h : ∃ w, q w then h.choose else onePt E r`. Substitute `e` using the available equality. Reduce the equality to equality of the corresponding arguments. Conclude with `@k _ _ e (Classical.propDecidable _) (Classical.propDecidable _)`.
+-/
 theorem ptOfMat_congr {Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (h : ∀ w, LiesAt w Z ↔ LiesAt w Z') :
     ptOfMat Z = ptOfMat Z' := by
   have e : (fun w => LiesAt w Z) = fun w => LiesAt w Z' := funext fun w => propext (h w)
@@ -146,13 +179,24 @@ theorem ptOfMat_congr {Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (h : ∀ w, Li
     subst e; congr
   exact @k _ _ e (Classical.propDecidable _) (Classical.propDecidable _)
 
+/- English proof (translation)
+Simplify using `only [Gq, Matrix.det_mul, lo_det hv, up_det hu, one_mul, mul_one, lead_mul_up _ hu, lead_lo_mul _ hv]`.
+-/
 theorem Gq_mul (T T' : E) (hv : IsLo v) (hu : IsUp u) : Gq σ T T' (v * Z * u) = Gq σ T T' Z := by
   simp only [Gq, Matrix.det_mul, lo_det hv, up_det hu, one_mul, mul_one, lead_mul_up _ hu, lead_lo_mul _ hv]
 
+/- English proof (translation)
+Simplify using `only [Gq, map_sub, map_mul, hσ, hT, hT']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_Gq (hσ : ∀ x, σ (σ x) = x) {T T' : E} (hT : σ T = T) (hT' : σ T' = T') :
     σ (Gq σ T T' Z) = Gq σ T T' Z := by
   simp only [Gq, map_sub, map_mul, hσ, hT, hT']; ring
 
+/- English proof (translation)
+Establish `h1 : (TF r T).det = 0 ^ r * -T`. Simplify using `[TF, Fin.prod_univ_castSucc, (Fin.castSucc_lt_last _).ne]`. Establish `h2 : SgAlg.lead (TF r T) r (Nat.le_succ r) = 0 ^ r`. Rewrite using `[SgAlg.lead, TF, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Use `(Finset.prod_congr rfl (g := fun _ => (0 : E)) fun i _ => ?_).trans (by simp)` and prove the remaining obligations.
+
+Conclude with `if_neg (Fin.castSucc_lt_last i).ne`. Rewrite using `[Gq, h1, h2, map_mul, map_neg, hT]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Gq_TF {T : E} (hT : σ T = T) : Gq σ T T (TF r T) = 0 := by
   have h1 : (TF r T).det = 0 ^ r * -T := by
     simp [TF, Fin.prod_univ_castSucc, (Fin.castSucc_lt_last _).ne]
@@ -162,6 +206,9 @@ theorem Gq_TF {T : E} (hT : σ T = T) : Gq σ T T (TF r T) = 0 := by
     exact if_neg (Fin.castSucc_lt_last i).ne
   rw [Gq, h1, h2, map_mul, map_neg, hT]; ring
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `h`. Simplify `congrFun (congrFun (hP'.2.symm.trans (isFrame_mul hP ha).2) (Fin.last r)) (Fin.last r)` using `[TF]`.
+-/
 theorem Unip.norm_eq {T T' : E} (h : Unip P P') (hP : IsFrame σ J T P) (hP' : IsFrame σ J T' P') : T' = T := by
   obtain ⟨a, ha, rfl⟩ := h
   simpa [TF] using congrFun (congrFun (hP'.2.symm.trans (isFrame_mul hP ha).2) (Fin.last r)) (Fin.last r)
@@ -174,11 +221,25 @@ variable [NumberField E] {σ : E →+* E} {n r g : ℕ} {J s : Matrix (Fin n) (F
   {P P' A B C : Matrix (Fin n) (Fin (r + 1)) E} {u v : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
   {Λ Λ' Λ'' M : Submodule (𝓞 E) (Fin n → E)} {T T' : E}
 
+/- English proof (translation)
+Simplify using `only [defLat, Submodule.mem_inf, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem mem_defLat (x : Fin n → E) :
     x ∈ defLat g Λ P P' ↔ x ∈ Λ ∧ (g : E) • x ∈ frameLat P ⊔ frameLat P' := by
   simp only [defLat, Submodule.mem_inf, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply,
     Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Establish `hg' : (g : E) ≠ 0` using `Nat.cast_ne_zero.2 hg`. Rewrite using `[defLat, ← frameLat_mul (P := P) hu, ← defLat]`. Rewrite `hP` using `[← frameLat_mul (P := P) hu]`. Generalize the expression as in `P * u = Q at *`. Use `le_antisymm (fun x hx => ?_) (sup_le (fun x hx => ?_) fun x hx => ?_)` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `(mem_defLat x).1 hx`. Take `⟨y, hy, y', hy', e⟩` from `Submodule.mem_sup.1 h2`. Take `⟨a, ha, rfl⟩` from `(Iota.mem_frameLat _ _).1 hy`. Take `⟨a', ha', rfl⟩` from `(Iota.mem_frameLat _ _).1 hy'`. Establish `k : ((g : E)⁻¹ • (P' - Q)) *ᵥ a' ∈ frameLat ((g : E)⁻¹ • (P' - Q))` using `(Iota.mem_frameLat _ _).2 ⟨a', ha', rfl⟩`.
+
+Establish `e2 : x - ((g : E)⁻¹ • (P' - Q)) *ᵥ a' = Q *ᵥ ((g : E)⁻¹ • (a + a'))`. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_smul, Matrix.sub_mulVec, Matrix.mulVec_add, ← inv_smul_smul₀ hg' x, ← e, ← smul_sub]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[← sub_add_cancel x (((g : E)⁻¹ • (P' - Q)) *ᵥ a')]`.
+
+Conclude with `add_mem (Submodule.mem_sup_left (hP.2 _ (sub_mem h1 (h k)) ((Iota.mem_span_frameLat _ _).2 ⟨_, e2.symm⟩))) (Submodule.mem_sup_right k)`. Conclude with `(mem_defLat x).2 ⟨hP.1 hx, Submodule.mem_sup_left (by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hx g)⟩`. Use `(mem_defLat x).2 ⟨h hx, ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha, rfl⟩` from `(Iota.mem_frameLat _ _).1 hx`. Rewrite using `[Matrix.smul_mulVec, smul_inv_smul₀ hg', Matrix.sub_mulVec]`. Conclude with `sub_mem (Submodule.mem_sup_right ((Iota.mem_frameLat _ _).2 ⟨a, ha, rfl⟩)) (Submodule.mem_sup_left ((Iota.mem_frameLat _ _).2 ⟨a, ha, rfl⟩))`.
+-/
 theorem defLat_eq_pairLat (hg : g ≠ 0) (hP : PrimIn (frameLat P) Λ) (hu : u ∈ UO E r)
     (h : Cong g Λ (P * u) P') : defLat g Λ P P' = pairLat g (P * u) P' := by
   have hg' : (g : E) ≠ 0 := Nat.cast_ne_zero.2 hg
@@ -207,6 +268,11 @@ theorem defLat_eq_pairLat (hg : g ≠ 0) (hP : PrimIn (frameLat P) Λ) (hu : u �
     exact sub_mem (Submodule.mem_sup_right ((Iota.mem_frameLat _ _).2 ⟨a, ha, rfl⟩))
       (Submodule.mem_sup_left ((Iota.mem_frameLat _ _).2 ⟨a, ha, rfl⟩))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨x, x.2.1, x.2.2, fun a ha h => hx a ha ((Submodule.Quotient.mk_eq_zero _).2 h)⟩`. Introduce and unpack `⟨x, h1, h2, h3⟩`.
+
+Conclude with `⟨Submodule.Quotient.mk ⟨x, h1, h2⟩, fun a ha h => h3 a ha ((Submodule.Quotient.mk_eq_zero (M.submoduleOf (satLat M Λ))).1 h)⟩`.
+-/
 theorem defectAt_iff (F : Type) [Field F] [Algebra F E] (p : HeightOneSpectrum (𝓞 F)) :
     DefectAt F M Λ p ↔ ∃ x ∈ Λ, x ∈ Submodule.span E (M : Set (Fin n → E)) ∧
       ∀ a : 𝓞 F, a ∉ p.asIdeal → algebraMap (𝓞 F) (𝓞 E) a • x ∉ M := by
@@ -218,10 +284,18 @@ theorem defectAt_iff (F : Type) [Field F] [Algebra F E] (p : HeightOneSpectrum (
     exact ⟨Submodule.Quotient.mk ⟨x, h1, h2⟩, fun a ha h => h3 a ha
       ((Submodule.Quotient.mk_eq_zero (M.submoduleOf (satLat M Λ))).1 h)⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.subsingleton_iff, eq_top_iff]`. Conclude with `⟨fun k x _ => k.2 x x.2.1 x.2.2, fun k => ⟨h, fun x h1 h2 => k (x := ⟨x, h1, h2⟩) trivial⟩⟩`.
+-/
 theorem primIn_iff_subsingleton (h : M ≤ Λ) : PrimIn M Λ ↔ Subsingleton (Defect M Λ) := by
   rw [Submodule.Quotient.subsingleton_iff, eq_top_iff]
   exact ⟨fun k x _ => k.2 x x.2.1 x.2.2, fun k => ⟨h, fun x h1 h2 => k (x := ⟨x, h1, h2⟩) trivial⟩⟩
 
+/- English proof (translation)
+Simplify using `only [defectAt_iff]`. Use `⟨fun k p ⟨x, h1, h2, h3⟩ => h3 1 ((Ideal.ne_top_iff_one _).1 p.isPrime.ne_top) (by simpa using k.2 x h1 h2), fun k => ⟨h, fun x h1 h2 => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx`. Set `I : Ideal (𝓞 F)` to `(M.colon {x}).comap (algebraMap (𝓞 F) (𝓞 E))`. Establish `hI (a : 𝓞 F) : a ∈ I ↔ algebraMap (𝓞 F) (𝓞 E) a • x ∈ M`.
+
+Simplify using `[I, Submodule.mem_colon_singleton]`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal I fun e => hx (by simpa using (hI 1).1 (e ▸ trivial))`. Conclude with `k ⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField F)⟩ ⟨x, h1, h2, fun a ha e => ha (hle ((hI a).2 e))⟩`.
+-/
 theorem primIn_iff_defectAt (F : Type) [Field F] [NumberField F] [Algebra F E] (h : M ≤ Λ) :
     PrimIn M Λ ↔ ∀ p, ¬ DefectAt F M Λ p := by
   simp only [defectAt_iff]
@@ -235,12 +309,20 @@ theorem primIn_iff_defectAt (F : Type) [Field F] [NumberField F] [Algebra F E] (
   exact k ⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField F)⟩
     ⟨x, h1, h2, fun a ha e => ha (hle ((hI a).2 e))⟩
 
+/- English proof (translation)
+Establish `hsur` using `Matrix.mulVec_surjective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 hs)`. Rewrite using `[defectAt_iff, defectAt_iff, hsur.exists]`. Simplify using `only [← Matrix.mulVec_smul, mulVec_mem_latMap hs, mulVec_mem_span hs]`.
+-/
 theorem defectAt_latMap (F : Type) [Field F] [Algebra F E] (hs : IsUnit s.det) (p : HeightOneSpectrum (𝓞 F)) :
     DefectAt F (latMap s M) (latMap s Λ) p ↔ DefectAt F M Λ p := by
   have hsur := Matrix.mulVec_surjective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 hs)
   rw [defectAt_iff, defectAt_iff, hsur.exists]
   simp only [← Matrix.mulVec_smul, mulVec_mem_latMap hs, mulVec_mem_span hs]
 
+/- English proof (translation)
+Take `⟨-, a, ha, e⟩` from `inS_iff.1 hs`. Use `⟨a, mem_UO_of_le hP ha fun x hx => h'.2 x ?_ ?_, e⟩` and prove the remaining obligations. Rewrite `hx` using `[← e, frameLat_isom]`. Conclude with `Submodule.map_mono h.1 hx`. Take `⟨c, -, rfl⟩` from `(Iota.mem_frameLat _ _).1 hx`.
+
+Conclude with `(Iota.mem_span_frameLat _ _).2 ⟨_, Matrix.mulVec_mulVec _ _ _⟩`.
+-/
 theorem exists_UO (hP : Free P) (h : PrimIn (frameLat P) Λ) (h' : PrimIn (frameLat P) (latMap s Λ))
     (hs : InS σ J P s) : ∃ a ∈ UO E r, s * P = P * a := by
   obtain ⟨-, a, ha, e⟩ := inS_iff.1 hs
@@ -250,6 +332,9 @@ theorem exists_UO (hP : Free P) (h : PrimIn (frameLat P) Λ) (h' : PrimIn (frame
   · obtain ⟨c, -, rfl⟩ := (Iota.mem_frameLat _ _).1 hx
     exact (Iota.mem_span_frameLat _ _).2 ⟨_, Matrix.mulVec_mulVec _ _ _⟩
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `h`. Use `⟨a, mem_UO_of_le hP.1.1 ha fun x hx => hP.2.2 x (hP' hx) ?_, rfl⟩` and prove the remaining obligations. Take `⟨c, -, rfl⟩` from `(Iota.mem_frameLat _ _).1 hx`. Conclude with `(Iota.mem_span_frameLat _ _).2 ⟨_, Matrix.mulVec_mulVec _ _ _⟩`.
+-/
 theorem Unip.exists_UO (h : Unip P P') (hP : IntFrame σ J T Λ P) (hP' : frameLat P' ≤ Λ) :
     ∃ a ∈ UO E r, P' = P * a := by
   obtain ⟨a, ha, rfl⟩ := h
@@ -257,24 +342,41 @@ theorem Unip.exists_UO (h : Unip P P') (hP : IntFrame σ J T Λ P) (hP' : frameL
   obtain ⟨c, -, rfl⟩ := (Iota.mem_frameLat _ _).1 hx
   exact (Iota.mem_span_frameLat _ _).2 ⟨_, Matrix.mulVec_mulVec _ _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, 1, one_mem_UO, fun x hx => by obtain ⟨a, -, rfl⟩ := (Iota.mem_frameLat _ _).1 hx simp⟩`.
+-/
 theorem tower_admissible_self (h : IntFrame σ J T Λ P) : admitted σ J T g Λ P P :=
   ⟨h, 1, one_mem_UO, fun x hx => by
     obtain ⟨a, -, rfl⟩ := (Iota.mem_frameLat _ _).1 hx
     simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, inS_one, latMap_one _, 1, one_mem_UO, by simp⟩`.
+-/
 theorem Transp.refl : Transp σ J P Λ A Λ A := ⟨1, inS_one, latMap_one _, 1, one_mem_UO, by simp⟩
 
+/- English proof (translation)
+Take `⟨s, hs, rfl, u, hu, rfl⟩` from `h`. Establish `l` using `Matrix.nonsing_inv_mul s (isUnit_det_of_isUn hJ hs.1)`. Use `⟨s⁻¹, inS_inv hJ hs, by rw [← latMap_mul, l, latMap_one], u⁻¹, UO_inv hu, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, up_mul_inv hu.1, Matrix.mul_one, ← Matrix.mul_assoc, l, Matrix.one_mul]`.
+-/
 theorem Transp.symm (hJ : IsUnit J.det) (h : Transp σ J P Λ A Λ' B) : Transp σ J P Λ' B Λ A := by
   obtain ⟨s, hs, rfl, u, hu, rfl⟩ := h
   have l := Matrix.nonsing_inv_mul s (isUnit_det_of_isUn hJ hs.1)
   refine ⟨s⁻¹, inS_inv hJ hs, by rw [← latMap_mul, l, latMap_one], u⁻¹, UO_inv hu, ?_⟩
   rw [Matrix.mul_assoc, Matrix.mul_assoc, up_mul_inv hu.1, Matrix.mul_one, ← Matrix.mul_assoc, l, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨s, hs, rfl, u, hu, rfl⟩` from `h`. Take `⟨t, ht, rfl, v, hv, rfl⟩` from `k`. Conclude with `⟨t * s, inS_mul ht hs, latMap_mul _ _ _, u * v, UO_mul hu hv, by simp only [Matrix.mul_assoc]⟩`.
+-/
 theorem Transp.trans (h : Transp σ J P Λ A Λ' B) (k : Transp σ J P Λ' B Λ'' C) : Transp σ J P Λ A Λ'' C := by
   obtain ⟨s, hs, rfl, u, hu, rfl⟩ := h
   obtain ⟨t, ht, rfl, v, hv, rfl⟩ := k
   exact ⟨t * s, inS_mul ht hs, latMap_mul _ _ _, u * v, UO_mul hu hv, by simp only [Matrix.mul_assoc]⟩
 
+/- English proof (translation)
+Use `⟨fun A => ⟨1, ⟨inN_one, latMap_one _⟩, 1, one_mem_UO, by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `A _ ⟨s, ⟨hs, e⟩, u, hu, rfl⟩`. Establish `l` using `Matrix.nonsing_inv_mul s (isUnit_det_of_isUn hJ hs.1)`. Use `⟨s⁻¹, ⟨inN_inv hJ hs, by conv_lhs => rw [← e, ← latMap_mul, l, latMap_one]⟩, u⁻¹, UO_inv hu, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, up_mul_inv hu.1, Matrix.mul_one, ← Matrix.mul_assoc, l, Matrix.one_mul]`.
+
+Introduce and unpack `A _ _ ⟨s, ⟨hs, e⟩, u, hu, rfl⟩ ⟨t, ⟨ht, f⟩, v, hv, rfl⟩`. Conclude with `⟨t * s, ⟨inN_mul ht hs, by rw [latMap_mul, e, f]⟩, u * v, UO_mul hu hv, by`. Simplify using `only [Matrix.mul_assoc]⟩`.
+-/
 theorem move_equivalence (hJ : IsUnit J.det) : Equivalence (Move σ J Λ P) := by
   refine ⟨fun A => ⟨1, ⟨inN_one, latMap_one _⟩, 1, one_mem_UO, by simp⟩, ?_, ?_⟩
   · rintro A _ ⟨s, ⟨hs, e⟩, u, hu, rfl⟩
@@ -286,10 +388,16 @@ theorem move_equivalence (hJ : IsUnit J.det) : Equivalence (Move σ J Λ P) := b
     exact ⟨t * s, ⟨inN_mul ht hs, by rw [latMap_mul, e, f]⟩, u * v, UO_mul hu hv, by
       simp only [Matrix.mul_assoc]⟩
 
+/- English proof (translation)
+Take `⟨s, hs, u, hu, e⟩` from `h`. Conclude with `⟨s, inS_of_inN hP hs.1, hs.2, u, hu, e⟩`.
+-/
 theorem Move.transp (hP : IsFrame σ J T P) (h : Move σ J Λ P A B) : Transp σ J P Λ A Λ B := by
   obtain ⟨s, hs, u, hu, e⟩ := h
   exact ⟨s, inS_of_inN hP hs.1, hs.2, u, hu, e⟩
 
+/- English proof (translation)
+Take `⟨s, hs, -, u, hu, rfl⟩` from `h`. Take `⟨h1, a, ha, e⟩` from `inS_iff.1 hs`. Use `⟨cT σ a⁻¹, u, lo_cT σ (up_inv ha), hu.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← pairM_isom (P' := A) h1, ← pairM_mul, e, Matrix.mul_assoc P, up_mul_inv ha, Matrix.mul_one]`.
+-/
 theorem Transp.pairM_eq (h : Transp σ J P Λ A Λ' B) :
     ∃ l u, IsLo l ∧ IsUp u ∧ pairM σ J B P = l * pairM σ J A P * u := by
   obtain ⟨s, hs, -, u, hu, rfl⟩ := h
@@ -297,22 +405,36 @@ theorem Transp.pairM_eq (h : Transp σ J P Λ A Λ' B) :
   refine ⟨cT σ a⁻¹, u, lo_cT σ (up_inv ha), hu.1, ?_⟩
   rw [← pairM_isom (P' := A) h1, ← pairM_mul, e, Matrix.mul_assoc P, up_mul_inv ha, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨l, u, hl, hu, e⟩` from `h.pairM_eq`. Rewrite using `[e, Gq_mul T T' hl hu]`.
+-/
 theorem Transp.Gq_eq (h : Transp σ J P Λ A Λ' B) (T T' : E) :
     Gq σ T T' (pairM σ J B P) = Gq σ T T' (pairM σ J A P) := by
   obtain ⟨l, u, hl, hu, e⟩ := h.pairM_eq
   rw [e, Gq_mul T T' hl hu]
 
+/- English proof (translation)
+Take `⟨a, u, ha, hu, e⟩` from `h.pairM_eq`. Rewrite using `[e, lead_mul_up _ hu, lead_lo_mul _ ha]`.
+-/
 theorem Transp.lead_eq (h : Transp σ J P Λ A Λ' B) (l : ℕ) (hl : l ≤ r + 1) :
     SgAlg.lead (pairM σ J B P) l hl = SgAlg.lead (pairM σ J A P) l hl := by
   obtain ⟨a, u, ha, hu, e⟩ := h.pairM_eq
   rw [e, lead_mul_up _ hu, lead_lo_mul _ ha]
 
+/- English proof (translation)
+Take `⟨a, u, ha, hu, e⟩` from `h.pairM_eq`. Take `⟨b, v, hb, hv, f⟩` from `(h.symm hJ).pairM_eq`. Conclude with `⟨fun k => f ▸ k.mul hb hv, fun k => e ▸ k.mul ha hu⟩`.
+-/
 theorem Transp.liesAt_iff (hJ : IsUnit J.det) (h : Transp σ J P Λ A Λ' B) (w : Formalism.MainNotions.S.Point E (r + 1)) :
     LiesAt w (pairM σ J B P) ↔ LiesAt w (pairM σ J A P) := by
   obtain ⟨a, u, ha, hu, e⟩ := h.pairM_eq
   obtain ⟨b, v, hb, hv, f⟩ := (h.symm hJ).pairM_eq
   exact ⟨fun k => f ▸ k.mul hb hv, fun k => e ▸ k.mul ha hu⟩
 
+/- English proof (translation)
+Establish `k {Λ Λ' : Submodule (𝓞 E) (Fin n → E)} {A B : Matrix (Fin n) (Fin (r + 1)) E} (h : Transp σ J P Λ A Λ' B) (hA : Relevant σ J P A) : Relevant σ J P B`. Take `⟨s, hs, -, u, hu, rfl⟩` from `h`. Take `⟨h1, a, ha, e⟩` from `inS_iff.1 hs`. Use `(hA.isom hJ h1).mul (up_inv ha) hu.1` as an intermediate fact. Rewrite `this` using `[e, Matrix.mul_assoc P, up_mul_inv ha, Matrix.mul_one]`. Then use the resulting hypothesis.
+
+Conclude with `⟨k (h.symm hJ), k h⟩`.
+-/
 theorem Transp.relevant_iff (hJ : IsUnit J.det) (h : Transp σ J P Λ A Λ' B) :
     Relevant σ J P B ↔ Relevant σ J P A := by
   have k {Λ Λ' : Submodule (𝓞 E) (Fin n → E)} {A B : Matrix (Fin n) (Fin (r + 1)) E}
@@ -323,6 +445,11 @@ theorem Transp.relevant_iff (hJ : IsUnit J.det) (h : Transp σ J P Λ A Λ' B) :
     rwa [e, Matrix.mul_assoc P, up_mul_inv ha, Matrix.mul_one] at this
   exact ⟨k (h.symm hJ), k h⟩
 
+/- English proof (translation)
+Establish `k {Λ Λ' : Submodule (𝓞 E) (Fin n → E)} {A B : Matrix (Fin n) (Fin (r + 1)) E} (h : Transp σ J P Λ A Λ' B) (hA : Unip P A) : Unip P B`. Take `⟨s, hs, -, u, hu, rfl⟩` from `h`. Take `⟨h1, a, ha, e⟩` from `inS_iff.1 hs`. Take `⟨b, hb, rfl⟩` from `hA`. Conclude with `⟨a * b * u, up_mul (up_mul ha hb) hu.1, by rw [← Matrix.mul_assoc s, e]; simp only [Matrix.mul_assoc]⟩`.
+
+Conclude with `⟨k (h.symm hJ), k h⟩`.
+-/
 theorem Transp.unip_iff (hJ : IsUnit J.det) (h : Transp σ J P Λ A Λ' B) : Unip P B ↔ Unip P A := by
   have k {Λ Λ' : Submodule (𝓞 E) (Fin n → E)} {A B : Matrix (Fin n) (Fin (r + 1)) E}
       (h : Transp σ J P Λ A Λ' B) (hA : Unip P A) : Unip P B := by
@@ -332,6 +459,11 @@ theorem Transp.unip_iff (hJ : IsUnit J.det) (h : Transp σ J P Λ A Λ' B) : Uni
     exact ⟨a * b * u, up_mul (up_mul ha hb) hu.1, by rw [← Matrix.mul_assoc s, e]; simp only [Matrix.mul_assoc]⟩
   exact ⟨k (h.symm hJ), k h⟩
 
+/- English proof (translation)
+Establish `k {Λ Λ' : Submodule (𝓞 E) (Fin n → E)} {A B : Matrix (Fin n) (Fin (r + 1)) E} (h : Transp σ J P Λ A Λ' B) (hA : SameFlag P A) : SameFlag P B`. Take `⟨s, hs, -, u, hu, rfl⟩` from `h`. Take `⟨h1, a, ha, e⟩` from `inS_iff.1 hs`. Take `⟨b, hb, hd, rfl⟩` from `hA`. Conclude with `⟨a * b * u, ((up_tri ha).mul hb).mul (up_tri hu.1), by simpa [up_det ha, up_det hu.1] using hd, by rw [← Matrix.mul_assoc s, e]; simp only [Matrix.mul_assoc]⟩`.
+
+Conclude with `⟨k (h.symm hJ), k h⟩`.
+-/
 theorem Transp.sameFlag_iff (hJ : IsUnit J.det) (h : Transp σ J P Λ A Λ' B) : SameFlag P B ↔ SameFlag P A := by
   have k {Λ Λ' : Submodule (𝓞 E) (Fin n → E)} {A B : Matrix (Fin n) (Fin (r + 1)) E}
       (h : Transp σ J P Λ A Λ' B) (hA : SameFlag P A) : SameFlag P B := by
@@ -342,6 +474,11 @@ theorem Transp.sameFlag_iff (hJ : IsUnit J.det) (h : Transp σ J P Λ A Λ' B) :
       by rw [← Matrix.mul_assoc s, e]; simp only [Matrix.mul_assoc]⟩
   exact ⟨k (h.symm hJ), k h⟩
 
+/- English proof (translation)
+Take `⟨s, hs, rfl, u, hu, rfl⟩` from `h`. Take `⟨a, ha, e⟩` from `exists_UO hP h1 h2 hs`. Take `⟨⟨k1, k2⟩, w, hw, k3⟩` from `hA`. Use `⟨⟨isFrame_mul (isFrame_isom hJ k1 hs.1) hu.1, ?_⟩, a * w * u, UO_mul (UO_mul ha hw) hu, ?_⟩` and prove the remaining obligations. Rewrite using `[frameLat_mul hu, frameLat_isom, primIn_latMap (isUnit_det_of_isUn hJ hs.1)]` and apply the resulting hypothesis.
+
+Establish `: (g : E)⁻¹ • (s * A * u - P * (a * w * u)) = s * ((g : E)⁻¹ • (A - P * w)) * u`. Rewrite using `[← Matrix.mul_assoc P, ← Matrix.mul_assoc P, ← e]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]`. Rewrite using `[Cong, this, frameLat_mul hu, frameLat_isom]`. Conclude with `Submodule.map_mono k3`.
+-/
 theorem Transp.adm (hJ : IsUnit J.det) (hP : Free P) (h1 : PrimIn (frameLat P) Λ) (h2 : PrimIn (frameLat P) Λ')
     (h : Transp σ J P Λ A Λ' B) (hA : admitted σ J T' g Λ P A) : admitted σ J T' g Λ' P B := by
   obtain ⟨s, hs, rfl, u, hu, rfl⟩ := h
@@ -355,6 +492,11 @@ theorem Transp.adm (hJ : IsUnit J.det) (hP : Free P) (h1 : PrimIn (frameLat P) �
     rw [Cong, this, frameLat_mul hu, frameLat_isom]
     exact Submodule.map_mono k3
 
+/- English proof (translation)
+Take `⟨s, hs, rfl, u, hu, rfl⟩` from `h`. Take `⟨a, ha, e⟩` from `exists_UO hP h1 h2 hs`. Establish `hd` using `isUnit_det_of_isUn hJ hs.1`. Establish `hsur` using `Matrix.mulVec_surjective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 hd)`. Use `⟨s, hd, rfl, Submodule.ext (hsur.forall.2 fun x => ?_)⟩` and prove the remaining obligations.
+
+Establish `k : frameLat P ⊔ frameLat (s * A * u) = latMap s (frameLat P ⊔ frameLat A)`. Rewrite using `[frameLat_mul hu, frameLat_isom, latMap, latMap, Submodule.map_sup, ← latMap, ← latMap, ← frameLat_isom (P := P), e, frameLat_mul ha]`. Rewrite using `[mulVec_mem_latMap hd, mem_defLat, mem_defLat, k, ← Matrix.mulVec_smul, mulVec_mem_latMap hd, mulVec_mem_latMap hd]`.
+-/
 theorem Transp.defLat_eq (hJ : IsUnit J.det) (hP : Free P) (h1 : PrimIn (frameLat P) Λ)
     (h2 : PrimIn (frameLat P) Λ') (h : Transp σ J P Λ A Λ' B) :
     ∃ s, IsUnit s.det ∧ latMap s Λ = Λ' ∧ latMap s (defLat g Λ P A) = defLat g Λ' P B := by

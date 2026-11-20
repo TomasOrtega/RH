@@ -25,9 +25,25 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {R S : Type} [CommRing R] [CommRing S] {N : ℕ} {ρ : R →+* S} {J : Type} {ξ : J → Fin (N + 1) → S}
   {ℓ : J → Fin (N + 1) → R}
 
+/- English proof (translation)
+Simplify using `[lin, eval₂_sum]`.
+-/
 theorem eval₂_lin' (a : Fin (N + 1) → R) (w : Fin (N + 1) → S) : eval₂ ρ w (lin a) = ∑ q, ρ (a q) * w q := by
   simp [lin, eval₂_sum]
 
+/- English proof (translation)
+Establish `h1 : eval₂Hom ρ (ξ j) (lin (ℓ j)) = 1` using `by rw [coe_eval₂Hom, eval₂_lin', hc.one]`. Establish `hu : IsUnit (eval₂Hom ρ (ξ j) (lin (ℓ j)))` using `h1 ▸ isUnit_one`. Establish `hm : lin (ℓ j) ∈ grading R N 1` using `lin_hom _`. Establish `e : pt ρ (ξ j) hv = _` using `ProjPoint.ofHom_eq_awayι _ _ _ one_pos hm hu`. Establish `hs : Function.Surjective (ProjPoint.awayLift (grading R N) (eval₂Hom ρ (ξ j)) _ hu)`.
+
+Introduce `p`. Take `⟨F, rfl⟩` from `hc.gen j p`. Express the relevant statement in the definitionally equal form `_ ∈ (ProjPoint.awayLift (grading R N) (eval₂Hom ρ (ξ j)) _ hu).range`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a`.
+
+Use `ProjPoint.awayLift_mk_mul (grading R N) _ hu hm 0 (C a) (isHomogeneous_C _ a)` as an intermediate fact. Rewrite `this` using `[pow_zero, mul_one]`. Conclude with `⟨_, this⟩`. Consider the case `add F G hF hG => rw [map_add]`. Conclude with `add_mem hF hG`.
+
+Consider the case `mul_X F k hF`. Rewrite using `[map_mul]`. Use `mul_mem hF ?_` and prove the remaining obligations. Use `ProjPoint.awayLift_mk_mul (grading R N) _ hu hm 1 (X k) (isHomogeneous_X R k)` as an intermediate fact. Rewrite `this` using `[h1, one_pow, mul_one]`.
+
+Conclude with `⟨_, this⟩`. Establish `hcl : IsClosedImmersion (Spec.map (CommRingCat.ofHom (ProjPoint.awayLift (grading R N) _ _ hu)))` using `IsClosedImmersion.spec_of_surjective _ hs`. Use `⟨by rw [e]; infer_instance, ?_⟩` and prove the remaining obligations. Take `⟨T, hT, hT'⟩` from `(Proj.awayι (grading R N) _ hm one_pos).isOpenEmbedding.isInducing.isClosed_iff.1 (Spec.map (CommRingCat.ofHom (ProjPoint.awayLift (grading R N) _ _ hu))).isClosedEmbedding.isClosed_range`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations.
+
+Establish `hr : Set.range (Proj.awayι (grading R N) _ hm one_pos) = Proj.basicOpen (grading R N) (lin (ℓ j))` using `congrArg (fun U : (PSpace R N).Opens => (U : Set (PSpace R N))) (Proj.opensRange_awayι _ _ hm one_pos)`. Rewrite using `[e, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, ← hT', Set.image_preimage_eq_inter_range, hr]`.
+-/
 theorem cell_immersion (hc : Cells ρ ξ ℓ) (j : J) (hv) :
     IsImmersion (pt ρ (ξ j) hv) ∧ ∃ T : Set (PSpace R N), IsClosed T ∧
       Set.range (pt ρ (ξ j) hv) = T ∩ (Proj.basicOpen (grading R N) (lin (ℓ j)) : Set (PSpace R N)) := by
@@ -61,6 +77,17 @@ theorem cell_immersion (hc : Cells ρ ξ ℓ) (j : J) (hv) :
     congrArg (fun U : (PSpace R N).Opens => (U : Set (PSpace R N))) (Proj.opensRange_awayι _ _ hm one_pos)
   rw [e, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, ← hT', Set.image_preimage_eq_inter_range, hr]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Establish `hy : y.asIdeal.IsPrime` using `y.isPrime`. Set `K : Type` to `y.asIdeal.ResidueField`. Set `ψ' : S →+* K` to `algebraMap S K`. Establish `h2 : eval₂ ρ (ξ j') (lin (ℓ j)) ∉ y.asIdeal`.
+
+Rewrite using `[← mem_spOpen, ← pt_preimage_basicOpen ρ (ξ j') (hv j') one_pos (lin_hom _)]`. Conclude with `h`. Establish `h3 : ∑ q, ψ' (ρ (ℓ j q)) * ψ' (ξ j' q) ≠ 0`. Introduce `h0`. Apply `h2` to reduce the goal to its premises.
+
+Rewrite using `[eval₂_lin', ← Ideal.algebraMap_residueField_eq_zero, map_sum]`. Simplify `h0` using `only [map_mul]`. Take `⟨ψ, u, hb, hu⟩` from `hc.ovl K j j' ψ' h3`. Set `z : Sp K` to `IsLocalRing.closedPoint K`. Establish `hz : spMap ψ' z = y`.
+
+Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap ψ' (IsLocalRing.maximalIdeal K) = y.asIdeal`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, ← RingHom.ker_eq_comap_bot]`. Conclude with `Ideal.ker_algebraMap_residueField _`. Establish `e : spMap ψ ≫ pt ρ (ξ j) (hv j) = spMap ψ' ≫ pt ρ (ξ j') (hv j')`.
+
+Rewrite using `[spMap_pt, spMap_pt, hb]`. Conclude with `(pt_eq_pt_iff _ _ _).2 ⟨u, hu⟩`. Use `⟨spMap ψ z, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply, hz]`.
+-/
 theorem cell_overlap (hc : Cells ρ ξ ℓ) (hv : ∀ j, Ideal.span (Set.range (ξ j)) = ⊤) {j j' : J} {x : PSpace R N}
     (hx : x ∈ Set.range (pt ρ (ξ j') (hv j'))) (h : x ∈ Proj.basicOpen (grading R N) (lin (ℓ j))) :
     x ∈ Set.range (pt ρ (ξ j) (hv j)) := by
@@ -89,6 +116,23 @@ theorem cell_overlap (hc : Cells ρ ξ ℓ) (hv : ∀ j, Ideal.span (Set.range (
   refine ⟨spMap ψ z, ?_⟩
   rw [← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply, hz]
 
+/- English proof (translation)
+Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `y hy`. Distinguish the cases in `h : ∃ j, y ∈ Proj.basicOpen (grading R N) (lin (ℓ j))`. Take `⟨j, hj⟩` from `h`. Take `⟨T, hT, e⟩` from `(cell_immersion hc j (hv j)).2`.
+
+Establish `hyT : y ∉ T` using `fun h' => hy (Set.mem_iUnion.2 ⟨j, e ▸ ⟨h', hj⟩⟩)`. Use `Filter.mem_of_superset ((hT.isOpen_compl.inter (Proj.basicOpen (grading R N) (lin (ℓ j))).isOpen).mem_nhds ⟨hyT, hj⟩) ?_` and prove the remaining obligations. Introduce and unpack `z ⟨h1, h2⟩ hz`. Take `⟨j', hz⟩` from `Set.mem_iUnion.1 hz`. Use `cell_overlap hc hv hz h2` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `h1 this.1`. Use `push_neg at h`. Take `⟨q, hq⟩` from `exists_mem_chart R N y`. Take `⟨T, _, jj, a, ha⟩` from `hc.lin q`.
+
+Set `F : MvPolynomial (Fin (N + 1)) R` to `X q - ∑ t, C (a t) * lin (ℓ (jj t))`. Establish `hF : F.IsHomogeneous 1`. Use `(isHomogeneous_X R q).sub (IsHomogeneous.sum _ _ _ fun t _ => ?_)` and prove the remaining obligations. Simplify using `using (isHomogeneous_C _ (a t)).mul (lin_hom (ℓ (jj t)))`. Establish `hyF : y ∈ Proj.basicOpen (grading R N) F`.
+
+Introduce `hmem`. Use `hq ?_` and prove the remaining obligations. Establish `h4 : ∑ t, C (a t) * lin (ℓ (jj t)) ∈ y.asHomogeneousIdeal` using `sum_mem fun t _ => Ideal.mul_mem_left _ _ (not_not.1 (h (jj t)))`. Use `add_mem hmem h4` as an intermediate fact. Simplify `this` using `[F]`.
+
+Use `Filter.mem_of_superset ((Proj.basicOpen (grading R N) F).isOpen.mem_nhds hyF) ?_` and prove the remaining obligations. Introduce `z hz hz'`. Take `⟨j', w, rfl⟩` from `Set.mem_iUnion.1 hz'`. Establish `h5 : w ∈ pt ρ (ξ j') (hv j') ⁻¹ᵁ Proj.basicOpen (grading R N) F` using `hz`. Rewrite `h5` using `[pt_preimage_basicOpen ρ (ξ j') (hv j') one_pos hF, mem_spOpen]`.
+
+Use `h5 ?_` and prove the remaining obligations. Establish `h6 : eval₂ ρ (ξ j') F = 0`. Simplify using `only [F, eval₂_sub, eval₂_X, eval₂_sum, eval₂_mul, eval₂_C, eval₂_lin']`. Rewrite using `[ha j']`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h6]`. Conclude with `zero_mem _`.
+-/
 theorem isClosed_iUnion_cell (hc : Cells ρ ξ ℓ) (hv : ∀ j, Ideal.span (Set.range (ξ j)) = ⊤) :
     IsClosed (⋃ j, Set.range (pt ρ (ξ j) (hv j))) := by
   rw [← isOpen_compl_iff, isOpen_iff_mem_nhds]
@@ -131,6 +175,25 @@ theorem isClosed_iUnion_cell (hc : Cells ρ ξ ℓ) (hv : ∀ j, Ideal.span (Set
     rw [h6]
     exact zero_mem _
 
+/- English proof (translation)
+Introduce `O _ Z P s N p₁ p₂ hP R S _ _ χ g ρ J ξ ℓ i hχ hg hc hi₁ hi₂`. Establish `hb` using `isPullback_baseChange N g`. Rewrite `hb` using `[← hg]`. Set `e : PSpace R N ⟶ P` to `hP.flip.lift (baseChange N g) (PSpace.str R N ≫ χ) (by rw [hb.w, Category.assoc])`. Establish `he : IsPullback e (PSpace.str R N) p₁ χ` using `hb.of_right' hP.flip`.
+
+Establish `he₂ : e ≫ p₂ = baseChange N g` using `hP.flip.lift_fst _ _ _`. Establish `heo : IsOpenImmersion e` using `MorphismProperty.of_isPullback he.flip hχ`. Establish `hr : Set.range e = p₁ ⁻¹' Set.range χ`. Rewrite using `[← Scheme.Pullback.range_fst, ← he.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp]`. Conclude with `he.isoPullback.hom.surjective.range_comp _`.
+
+Use `choose hv hi₂ using hi₂`. Establish `hj : ∀ j, i j = pt ρ (ξ j) (hv j) ≫ e` using `fun j => hP.hom_ext (by rw [hi₁, Category.assoc, he.w, pt_str_assoc]) (by rw [hi₂, Category.assoc, he₂, pt_baseChange])`. Establish `hm : ∀ j, Set.range (i j) = e '' Set.range (pt ρ (ξ j) (hv j))` using `fun j => by`. Rewrite using `[hj, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp]`. Establish `hinj` using `e.isOpenEmbedding.injective`.
+
+Use `⟨fun j => ?_, fun j => ⟨e ''ᵁ Proj.basicOpen (grading R N) (lin (ℓ j)), Set.ext fun x => ?_⟩, (e '' (⋃ j, Set.range (pt ρ (ξ j) (hv j)))ᶜ)ᶜ, (e.isOpenEmbedding.isOpenMap _ (isClosed_iUnion_cell hc hv).isOpen_compl).isClosed_compl, Set.ext fun x => ?_⟩` and prove the remaining obligations. Use `(cell_immersion hc j (hv j)).1` as an intermediate fact. Rewrite using `[hj]`. Use `infer_instance`. Simplify using `only [Set.mem_inter_iff, Set.mem_iUnion, hm]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨T, -, eT⟩` from `(cell_immersion hc j (hv j)).2`. Establish `hy₂` using `hy`. Rewrite `hy₂` using `[eT]`.
+
+Conclude with `⟨⟨j, y, hy, rfl⟩, y, hy₂.2, rfl⟩`. Introduce and unpack `⟨⟨j', y, hy, rfl⟩, y', hy', e'⟩`. Take `rfl` from `hinj e'`. Conclude with `⟨y', cell_overlap hc hv hy hy', rfl⟩`. Simplify using `only [Set.mem_inter_iff, Set.mem_iUnion, hm, ← hr]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, y, hy, rfl⟩`. Use `⟨?_, y, rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨y', hy', e'⟩`. Take `rfl` from `hinj e'`.
+
+Conclude with `hy' (Set.mem_iUnion.2 ⟨j, hy⟩)`. Introduce and unpack `⟨hx, y, rfl⟩`. Assume the negation of the conclusion as `hn`. Use `hx ⟨y, fun hy => hn ?_, rfl⟩` and prove the remaining obligations. Take `⟨j, hy⟩` from `Set.mem_iUnion.1 hy`.
+
+Conclude with `⟨j, y, hy, rfl⟩`.
+-/
 theorem cells_immersed : ∀ (O : Type) [CommRing O] (Z P : Scheme.{0}) (s : Z ⟶ Sp O) (N : ℕ) (p₁ : P ⟶ Z) (p₂ : P ⟶ PSpace O N), IsPullback p₁ p₂ s (PSpace.str O N) → ∀ (R S : Type) [CommRing R] [CommRing S] (χ : Sp R ⟶ Z) (g : O →+* R) (ρ : R →+* S) (J : Type) (ξ : J → Fin (N + 1) → S) (ℓ : J → Fin (N + 1) → R) (i : J → (Sp S ⟶ P)), IsOpenImmersion χ → χ ≫ s = spMap g → Cells ρ ξ ℓ → (∀ j, i j ≫ p₁ = spMap ρ ≫ χ) → (∀ j, ∃ hv, i j ≫ p₂ = pt (ρ.comp g) (ξ j) hv) → (∀ j, IsImmersion (i j)) ∧ (∀ j, ∃ U : P.Opens, Set.range (i j) = (⋃ j', Set.range (i j')) ∩ (U : Set P)) ∧ ∃ T : Set P, IsClosed T ∧ ⋃ j, Set.range (i j) = T ∩ p₁ ⁻¹' Set.range χ := by
   intro O _ Z P s N p₁ p₂ hP R S _ _ χ g ρ J ξ ℓ i hχ hg hc hi₁ hi₂
   have hb := isPullback_baseChange N g

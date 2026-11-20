@@ -14,6 +14,13 @@ section Moves
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, hab⟩` from `exists_coprime hQ`. Establish `hmk : Ideal.Quotient.mk P.1.asIdeal a = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk P.1.asIdeal), Ideal.Quotient.eq, ← hab]`. Simplify using `using Ideal.neg_mem_iff _ |>.2 hb`. Use `⟨a • x, Submodule.smul_mem_smul ha hx, d.N.smul_mem a hx, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hd.f_smul P a x (le_locP _ _ hx), hmk, hfx, one_mul]`. Apply `Deco.up_congr` to reduce the goal to its premises. Establish `: x - a • x = b • x`. Rewrite using `[show b = 1 - a by rw [← hab]; ring, sub_smul, one_smul]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem_smul hb hx`.
+-/
 theorem Deco.Ok.up_rep {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (q : 𝓞 E) {Q : HeightOneSpectrum (𝓞 E)}
     (hQ : Q ≠ P.1) {x : Sp E n} (hx : x ∈ d.N) (hfx : d.f P x = 1) :
     ∃ y ∈ Q.asIdeal • d.N, y ∈ d.N ∧ d.f P y = 1 ∧ d.up P q x = d.up P q y := by
@@ -29,21 +36,39 @@ theorem Deco.Ok.up_rep {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (q : 𝓞 E) {Q
     rw [this]
     exact Submodule.smul_mem_smul hb hx
 
+/- English proof (translation)
+Take `⟨x, hx, -, rfl⟩` from `h`. Conclude with `(upN_spec hd.lat hd.uni P.1 hP.ne hx).2.2.1 Q hQ hQ'`.
+-/
 theorem Deco.IsUp.sameAt {d d' : Deco E n ST SG} (hd : d.Ok) {P : ST} (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (h : Deco.IsUp P q d d') {Q : HeightOneSpectrum (𝓞 E)} (hQ : Q ≠ P.1) (hQ' : Q ≠ conjPrime₂ P.1) :
     SameAt Q d.N d'.N := by
   obtain ⟨x, hx, -, rfl⟩ := h
   exact (upN_spec hd.lat hd.uni P.1 hP.ne hx).2.2.1 Q hQ hQ'
 
+/- English proof (translation)
+Take `⟨x, _, _, rfl⟩` from `h`. Simplify using `only [Deco.up, Function.update, dif_neg hQ]`.
+-/
 theorem Deco.IsUp.f_ne {d d' : Deco E n ST SG} {P : ST} {q : 𝓞 E} (h : Deco.IsUp P q d d') {Q : ST}
     (hQ : Q ≠ P) : d'.f Q = d.f Q := by
   obtain ⟨x, _, _, rfl⟩ := h
   simp only [Deco.up, Function.update, dif_neg hQ]
 
+/- English proof (translation)
+Take `⟨x, _, _, rfl⟩` from `h`. Both sides reduce to the same expression.
+-/
 theorem Deco.IsUp.be_eq {d d' : Deco E n ST SG} {P : ST} {q : 𝓞 E} (h : Deco.IsUp P q d d') : d'.be = d.be := by
   obtain ⟨x, _, _, rfl⟩ := h
   rfl
 
+/- English proof (translation)
+Take `⟨x₀', hx₀', hfx₀', rfl⟩` from `h1`. Take `⟨x₀, hx₀, hfx₀, rfl⟩` from `h2`. Take `⟨x, hxQ, hx, hfx, e⟩` from `hd₀.up_rep P q (hP'.st P).symm hx₀ hfx₀`. Take `⟨x', hxQ', hx', hfx', e'⟩` from `hd₀.up_rep P' q' (hP.st P').symm hx₀' hfx₀'`. Rewrite using `[e, e']`.
+
+Take `⟨-, -, -, -, ge⟩` from `upN_spec hd₀.lat hd₀.uni P.1 hP.ne hx`. Take `⟨-, -, -, -, ge'⟩` from `upN_spec hd₀.lat hd₀.uni P'.1 hP'.ne hx'`. Establish `hx1 : x ∈ upN P'.1.asIdeal d₀.N x'` using `ge' (Submodule.smul_mono le_rfl (le_sup_left : d₀.N ≤ upA P'.1.asIdeal d₀.N x') hxQ)`. Establish `hx1' : x' ∈ upN P.1.asIdeal d₀.N x` using `ge (Submodule.smul_mono le_rfl (le_sup_left : d₀.N ≤ upA P.1.asIdeal d₀.N x) hxQ')`. Establish `ok2 : (d₀.up P q x).Ok` using `hd₀.up P hP hq hq2 hx hfx`.
+
+Establish `f2 : (d₀.up P q x).f P' x' = 1`. Rewrite using `[Deco.up_f_ne _ _ _ _ hne.symm]`. Conclude with `hfx'`. Establish `f1 : (d₀.up P' q' x').f P x = 1`. Rewrite using `[Deco.up_f_ne _ _ _ _ hne]`.
+
+Conclude with `hfx`. Conclude with `⟨(d₀.up P q x).up P' q' x', ok2.up P' hP' hq' hq2' hx1' f2, ⟨x, hx1, f1, hd₀.up_up_comm hP hP' hne q q' hx hx' hx1 hx1'⟩, ⟨x', hx1', f2, rfl⟩⟩`.
+-/
 theorem Deco.IsUp.pushout {d₀ d d₂ : Deco E n ST SG} (hd₀ : d₀.Ok) {P P' : ST} (hP : MoveHyp ST SG P)
     (hP' : MoveHyp ST SG P') (hne : P ≠ P') {q q' : 𝓞 E} (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2)
     (hq' : q' ∈ P'.1.asIdeal) (hq2' : q' ∉ P'.1.asIdeal ^ 2) (h1 : Deco.IsUp P' q' d₀ d)
@@ -69,6 +94,11 @@ theorem Deco.IsUp.pushout {d₀ d d₂ : Deco E n ST SG} (hd₀ : d₀.Ok) {P P'
   exact ⟨(d₀.up P q x).up P' q' x', ok2.up P' hP' hq' hq2' hx1' f2,
     ⟨x, hx1, f1, hd₀.up_up_comm hP hP' hne q q' hx hx' hx1 hx1'⟩, ⟨x', hx1', f2, rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨a, ha, a', ha', h1, h2⟩` from `hs`. Apply `le_antisymm` to reduce the goal to its premises. Use `localization_le_of_smul_mem ha' fun x hx => ?_` and prove the remaining obligations. Take `⟨hxN, hx0⟩` from `(hd.mem_kerAt P' x).1 hx`. Rewrite using `[hd₁.mem_kerAt, hf, hd.f_smul P' a' x (le_locP _ _ hxN), hx0, mul_zero]`.
+
+Conclude with `⟨h2 x hxN, rfl⟩`. Use `localization_le_of_smul_mem ha fun x hx => ?_` and prove the remaining obligations. Take `⟨hxN, hx0⟩` from `(hd₁.mem_kerAt P' x).1 hx`. Rewrite using `[hd.mem_kerAt, ← hf, hd₁.f_smul P' a x (le_locP _ _ hxN), hx0, mul_zero]`. Conclude with `⟨h1 x hxN, rfl⟩`.
+-/
 theorem locP_kerAt_eq_of_sameAt {d d₁ : Deco E n ST SG} (hd : d.Ok) (hd₁ : d₁.Ok) (P' : ST)
     (hs : SameAt P'.1 d.N d₁.N) (hf : d₁.f P' = d.f P') :
     localization₂ P'.1.asIdeal (d.kerAt P') = localization₂ P'.1.asIdeal (d₁.kerAt P') := by
@@ -83,6 +113,35 @@ theorem locP_kerAt_eq_of_sameAt {d d₁ : Deco E n ST SG} (hd : d.Ok) (hd₁ : d
     rw [hd.mem_kerAt, ← hf, hd₁.f_smul P' a x (le_locP _ _ hxN), hx0, mul_zero]
     exact ⟨h1 x hxN, rfl⟩
 
+/- English proof (translation)
+Establish `hne1 : P'.1 ≠ P.1` using `fun h => hne (Subtype.ext h).symm`. Establish `hd₁ : d₁.Ok`. Take `⟨x, hx, hfx, rfl⟩` from `h1`. Conclude with `hd.up P hP hq hq2 hx hfx`. Establish `hs : SameAt P'.1 d.N d₁.N` using `h1.sameAt hd hP hne1 (hP.st P')`.
+
+Establish `hf : d₁.f P' = d.f P'` using `h1.f_ne hne.symm`. Take `⟨dn1, dn2⟩` from `h2.isDn hd₂ hP' hq' hq2'`. Establish `hN2 : d₂.N = d₁.dnN P'` using `congrArg Deco.N dn1`. Establish `hloc : localization₂ P'.1.asIdeal (d.dnN P') = localization₂ P'.1.asIdeal d₂.N`. Rewrite using `[hN2, (hd.dnN_spec P' hP'.ne).2.2.2, (hd₁.dnN_spec P' hP'.ne).2.2.2]`.
+
+Conclude with `locP_kerAt_eq_of_sameAt hd hd₁ P' hs hf`. Establish `ok0 : (d.dn P' (d₂.f P')).Ok`. Use `hd.dn P' hP' ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[hloc]`.
+
+Conclude with `hd₂.f_add P' x hx y hy`. Introduce `a x hx`. Rewrite `hx` using `[hloc]`. Conclude with `hd₂.f_smul P' a x hx`. Introduce `x hx`.
+
+Rewrite `hx` using `[hloc]`. Conclude with `hd₂.f_off P' x hx`. Take `⟨x, hx, hx0⟩` from `hd₂.f_ne P'`. Establish `hx' : x ∈ localization₂ P'.1.asIdeal (d.dnN P')`. Rewrite using `[hloc]`.
+
+Conclude with `le_locP _ _ hx`. Take `⟨s, hs, hsx⟩` from `(mem_locP _ _ _).1 hx'`. Use `⟨s • x, hsx, ?_⟩` and prove the remaining obligations. Rewrite using `[hd₂.f_smul P' s x (le_locP _ _ hx)]`. Conclude with `mul_ne_zero (mk_ne_zero hs) hx0`.
+
+Establish `f0 : (d.dn P' (d₂.f P')).f P' = d₂.f P'` using `by simp [Deco.dn]`. Establish `dn0 : Deco.IsDn P' q' d (d.dn P' (d₂.f P'))`. Use `⟨by rw [f0], ?_⟩` and prove the remaining obligations. Introduce `e he hfe`. Rewrite using `[f0]`.
+
+Take `⟨a, ha, a', ha', k1, k2⟩` from `hs`. Use `P'.1.isMaximal` as an intermediate fact. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv (mk_ne_zero ha')`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `hmem : (t * a') • e ∈ d₁.N`.
+
+Rewrite using `[mul_smul]`. Conclude with `d₁.N.smul_mem t (k2 e he)`. Establish `hmk : Ideal.Quotient.mk P'.1.asIdeal (t * a') = 1`. Rewrite using `[map_mul, mul_comm]`. Conclude with `hb`.
+
+Establish `hval : d₁.f P' ((t * a') • e) = 1`. Rewrite using `[hf, hd.f_smul P' _ e (le_locP _ _ he), hmk, hfe, one_mul]`. Establish `h3` using `dn2 _ hmem hval`. Establish `hqe : q' • e ∈ d₂.at P'.1`. Use `(mem_locP _ _ _).2 ⟨t * a', ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `hm`. Establish `: Ideal.Quotient.mk P'.1.asIdeal (t * a') = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hm`. Rewrite `this` using `[hmk]`. Conclude with `one_ne_zero this`. Rewrite using `[smul_comm, hN2]`.
+
+Use `(le_sup_left : d₁.kerAt P' ≤ d₁.dnN P') ?_` and prove the remaining obligations. Rewrite using `[hd₁.mem_kerAt]`. Use `⟨d₁.N.smul_mem q' hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[hd₁.f_smul P' q' _ (le_locP _ _ hmem), Ideal.Quotient.eq_zero_iff_mem.2 hq', zero_mul]`. Rewrite `h3` using `[smul_comm, hd₂.f_smul P' _ _ hqe, hmk, one_mul]`.
+
+Conclude with `h3`. Establish `up0 : Deco.IsUp P' q' (d.dn P' (d₂.f P')) d` using `dn0.isUp ok0 hd hP' hq' hq2'`. Take `⟨e₂, oke, k1, k2⟩` from `Deco.IsUp.diamond ok0 hP' hP hne.symm hq' hq2' hq hq2 up0 h1`. Establish `he : e₂ = d₂`. Establish `a` using `(k2.isDn oke hP' hq' hq2').1`.
+
+Establish `b : e₂.f P' = d₂.f P'` using `(k1.f_ne hne.symm).trans f0`. Rewrite using `[a, b]`. Conclude with `dn1.symm`. Conclude with `⟨_, ok0, up0, he ▸ k1⟩`.
+-/
 theorem Deco.IsUp.pullback {d d₁ d₂ : Deco E n ST SG} (hd : d.Ok) (hd₂ : d₂.Ok) {P P' : ST}
     (hP : MoveHyp ST SG P) (hP' : MoveHyp ST SG P') (hne : P ≠ P') {q q' : 𝓞 E} (hq : q ∈ P.1.asIdeal)
     (hq2 : q ∉ P.1.asIdeal ^ 2) (hq' : q' ∈ P'.1.asIdeal) (hq2' : q' ∉ P'.1.asIdeal ^ 2)
@@ -160,6 +219,15 @@ theorem Deco.IsUp.pullback {d d₁ d₂ : Deco E n ST SG} (hd : d.Ok) (hd₂ : d
     exact dn1.symm
   exact ⟨_, ok0, up0, he ▸ k1⟩
 
+/- English proof (translation)
+Establish `hne1 : P'.1 ≠ P.1` using `fun h => hne (Subtype.ext h).symm`. Establish `atP' : SameAt P'.1 d₁.N e₁.N` using `(h1.sameAt hd hP hne1 (hP.st P')).symm.trans (k1.sameAt hd hP hne1 (hP.st P'))`. Use `ext1`. Use `isUnimodular_eq_of_sameAt hd₁.uni he₁.uni fun Q => ?_` and prove the remaining obligations. Distinguish the cases in `c1 : Q = P'.1`.
+
+Conclude with `Or.inl (c1 ▸ atP')`. Distinguish the cases in `c2 : Q = conjPrime₂ P'.1`. Use `right`. Rewrite using `[c2, conjP_conjP_eq]`. Conclude with `atP'`.
+
+Conclude with `Or.inl ((h2.sameAt hd₂ hP' c1 c2).symm.trans (k2.sameAt hd₂ hP' c1 c2))`. Use function extensionality and compare the values at `Q`. Distinguish the cases in `c : Q = P'`. Substitute `c` using the available equality. Rewrite using `[h1.f_ne hne.symm, k1.f_ne hne.symm]`.
+
+Rewrite using `[h2.f_ne c, k2.f_ne c]`. Rewrite using `[h1.be_eq, k1.be_eq]`.
+-/
 theorem Deco.IsUp.top_unique {d d₂ d₁ e₁ : Deco E n ST SG} (hd : d.Ok) (hd₂ : d₂.Ok) (hd₁ : d₁.Ok) (he₁ : e₁.Ok)
     {P P' : ST} (hP : MoveHyp ST SG P) (hP' : MoveHyp ST SG P') (hne : P ≠ P') {q q' : 𝓞 E}
     (h1 : Deco.IsUp P q d d₁) (h2 : Deco.IsUp P' q' d₂ d₁) (k1 : Deco.IsUp P q d e₁)
@@ -182,6 +250,9 @@ theorem Deco.IsUp.top_unique {d d₂ d₁ e₁ : Deco E n ST SG} (hd : d.Ok) (hd
     · rw [h2.f_ne c, k2.f_ne c]
   · rw [h1.be_eq, k1.be_eq]
 
+/- English proof (translation)
+Establish `a1` using `(h1.isDn hd₀ hP' hq' hq2').1`. Establish `a2` using `(k1.isDn he₀ hP' hq' hq2').1`. Rewrite using `[a1, a2, ← h2.f_ne hne.symm, ← k2.f_ne hne.symm]`.
+-/
 theorem Deco.IsUp.bot_unique {d d₂ d₀ e₀ : Deco E n ST SG} (hd₀ : d₀.Ok) (he₀ : e₀.Ok) {P P' : ST}
     (hP' : MoveHyp ST SG P') (hne : P ≠ P') {q q' : 𝓞 E} (hq' : q' ∈ P'.1.asIdeal)
     (hq2' : q' ∉ P'.1.asIdeal ^ 2) (h1 : Deco.IsUp P' q' d₀ d) (h2 : Deco.IsUp P q d₀ d₂)
@@ -190,6 +261,25 @@ theorem Deco.IsUp.bot_unique {d d₂ d₀ e₀ : Deco E n ST SG} (hd₀ : d₀.O
   have a2 := (k1.isDn he₀ hP' hq' hq2').1
   rw [a1, a2, ← h2.f_ne hne.symm, ← k2.f_ne hne.symm]
 
+/- English proof (translation)
+Establish `hup : ∀ a b : DecoSet E n ST SG, b ∈ (DecoSet.upSet_finite a P q).toFinset ↔ Deco.IsUp P q a.1 b.1` using `fun a b => by rw [Set.Finite.mem_toFinset]; rfl`. Establish `hdn : ∀ a b : DecoSet E n ST SG, b ∈ (DecoSet.dnSetA_finite a P' q' 1).toFinset ↔ Deco.IsUp P' q' b.1 a.1` using `fun a b => by`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨fun h => Deco.IsDn.isUp b.2 a.2 hP' hq' hq2' h, fun h => Deco.IsUp.isDn b.2 hP' hq' hq2' h⟩`. Rewrite using `[Finset.sum_sigma', Finset.sum_sigma']`.
+
+Establish `PB : ∀ x ∈ (DecoSet.upSet_finite d P q).toFinset.sigma (fun d₁ => (DecoSet.dnSetA_finite d₁ P' q' 1).toFinset), ∃ d₀ : DecoSet E n ST SG, Deco.IsUp P' q' d₀.1 d.1 ∧ Deco.IsUp P q d₀.1 x.2.1`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_sigma, hup, hdn]`. Take `⟨d₀, h0, h1, h2⟩` from `Deco.IsUp.pullback d.2 x.2.2 hP hP' hne hq hq2 hq' hq2' hx.1 hx.2`. Conclude with `⟨⟨d₀, h0⟩, h1, h2⟩`.
+
+Establish `PO : ∀ y ∈ (DecoSet.dnSetA_finite d P' q' 1).toFinset.sigma (fun d₀ => (DecoSet.upSet_finite d₀ P q).toFinset), ∃ d₁ : DecoSet E n ST SG, Deco.IsUp P q d.1 d₁.1 ∧ Deco.IsUp P' q' y.2.1 d₁.1`. Introduce `y hy`. Rewrite `hy` using `[Finset.mem_sigma, hdn, hup]`. Take `⟨d₁, h0, h1, h2⟩` from `Deco.IsUp.pushout y.1.2 hP hP' hne hq hq2 hq' hq2' hy.1 hy.2`. Conclude with `⟨⟨d₁, h0⟩, h1, h2⟩`.
+
+Establish `PBs : ∀ x hx, Deco.IsUp P' q' (PB x hx).choose.1 d.1 ∧ Deco.IsUp P q (PB x hx).choose.1 x.2.1` using `fun x hx => (PB x hx).choose_spec`. Establish `POs : ∀ y hy, Deco.IsUp P q d.1 (PO y hy).choose.1 ∧ Deco.IsUp P' q' y.2.1 (PO y hy).choose.1` using `fun y hy => (PO y hy).choose_spec`. Use `Finset.sum_bij' (fun x hx => ⟨(PB x hx).choose, x.2⟩) (fun y hy => ⟨(PO y hy).choose, y.2⟩) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Finset.mem_sigma, hdn, hup]`.
+
+Conclude with `⟨(PB x hx).choose_spec.1, (PB x hx).choose_spec.2⟩`. Introduce `y hy`. Rewrite using `[Finset.mem_sigma, hup, hdn]`. Conclude with `⟨(PO y hy).choose_spec.1, (PO y hy).choose_spec.2⟩`. Introduce and unpack `⟨x1, x2⟩ hx`.
+
+Establish `hx'` using `hx`. Rewrite `hx'` using `[Finset.mem_sigma, hup, hdn]`. Establish `key : ∀ e : DecoSet E n ST SG, Deco.IsUp P q d.1 e.1 → Deco.IsUp P' q' x2.1 e.1 → e = x1` using `fun e k1 k2 => Subtype.ext (Deco.IsUp.top_unique d.2 x2.2 e.2 x1.2 hP hP' hne k1 k2 hx'.1 hx'.2)`. Use `Sigma.ext ?_ HEq.rfl` and prove the remaining obligations. Apply `key` to reduce the goal to its premises.
+
+Conclude with `(POs _ ((Finset.mem_sigma (a := (⟨(PB ⟨x1, x2⟩ hx).choose, x2⟩ : (_ : DecoSet E n ST SG) × DecoSet E n ST SG))).mpr ⟨(hdn _ _).mpr (PBs _ hx).1, (hup _ _).mpr (PBs _ hx).2⟩)).1`. Conclude with `(POs _ ((Finset.mem_sigma (a := (⟨(PB ⟨x1, x2⟩ hx).choose, x2⟩ : (_ : DecoSet E n ST SG) × DecoSet E n ST SG))).mpr ⟨(hdn _ _).mpr (PBs _ hx).1, (hup _ _).mpr (PBs _ hx).2⟩)).2`. Introduce and unpack `⟨y1, y2⟩ hy`. Establish `hy'` using `hy`. Rewrite `hy'` using `[Finset.mem_sigma, hdn, hup]`.
+
+Establish `key : ∀ e : DecoSet E n ST SG, Deco.IsUp P' q' e.1 d.1 → Deco.IsUp P q e.1 y2.1 → e = y1` using `fun e k1 k2 => Subtype.ext (Deco.IsUp.bot_unique e.2 y1.2 hP' hne hq' hq2' k1 k2 hy'.1 hy'.2)`. Use `Sigma.ext ?_ HEq.rfl` and prove the remaining obligations. Apply `key` to reduce the goal to its premises. Conclude with `(PBs _ ((Finset.mem_sigma (a := (⟨(PO ⟨y1, y2⟩ hy).choose, y2⟩ : (_ : DecoSet E n ST SG) × DecoSet E n ST SG))).mpr ⟨(hup _ _).mpr (POs _ hy).1, (hdn _ _).mpr (POs _ hy).2⟩)).1`. Conclude with `(PBs _ ((Finset.mem_sigma (a := (⟨(PO ⟨y1, y2⟩ hy).choose, y2⟩ : (_ : DecoSet E n ST SG) × DecoSet E n ST SG))).mpr ⟨(hup _ _).mpr (POs _ hy).1, (hdn _ _).mpr (POs _ hy).2⟩)).2`.
+
+Introduce `x hx`. Both sides reduce to the same expression.
+-/
 theorem DecoSet.sum_up_dn {M : Type*} [AddCommMonoid M] {P P' : ST} (hP : MoveHyp ST SG P)
     (hP' : MoveHyp ST SG P') (hne : P ≠ P') {q q' : 𝓞 E} (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2)
     (hq' : q' ∈ P'.1.asIdeal) (hq2' : q' ∉ P'.1.asIdeal ^ 2) (d : DecoSet E n ST SG)
@@ -261,6 +351,9 @@ section Ops
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG)
 
+/- English proof (translation)
+Use `LinearMap.ext fun φ => Subtype.ext (funext fun d => ?_)` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, UG, DG, DaG, LocOp.op, LocOp.app, LocOp.ofNbr, LinearMap.coe_mk, AddHom.coe_mk]`. Simplify using `only [Finsupp.sum_indicator_index, LinearMap.zero_apply, implies_true, Finset.sum_attach, LinearMap.id_apply]`. Conclude with `DecoSet.sum_up_dn hP hP' hne hq hq2 hq' hq2' d (fun e => φ.1 e)`.
+-/
 theorem UG_DG_comm {P P' : ST} (hP : MoveHyp ST SG P) (hP' : MoveHyp ST SG P') (hne : P ≠ P') {q q' : 𝓞 X.E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) (hq' : q' ∈ P'.1.asIdeal)
     (hq2' : q' ∉ P'.1.asIdeal ^ 2) : UG C Λ P q * DG C Λ P' q' = DG C Λ P' q' * UG C Λ P q := by
@@ -276,6 +369,9 @@ section Cols
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
 
+/- English proof (translation)
+Establish `h1` using `T_unif hX hPr u P`. Establish `h2` using `T_unif hX hPr u P'`. Conclude with `UG_DG_comm _ _ (moveHyp_of_ok hPr u P) (moveHyp_of_ok hPr u P') hne h1.1 h1.2 h2.1 h2.2`.
+-/
 theorem UOp_DOp_commute (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (j : ℕ) {P P' : {P // P ∈ Pr.vT u}} (hne : P ≠ P') :
     Commute (UOp W Ch u j P) (DOp W Ch u j P') := by
   have h1 := T_unif hX hPr u P

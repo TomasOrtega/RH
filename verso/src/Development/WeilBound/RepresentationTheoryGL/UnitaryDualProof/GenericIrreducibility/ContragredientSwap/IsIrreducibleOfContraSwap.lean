@@ -16,6 +16,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Establish `e : (π.comp (invT : GL (Fin N) k →* GL (Fin N) k)).comp (invT : GL (Fin N) k →* GL (Fin N) k) = π` using `MonoidHom.ext fun g => congrArg (⇑π) (invT_invT g)`. Conclude with `GlobalTheory.SwapTwo.isIrreducible_of_comp (invT : GL (Fin N) k →* GL (Fin N) k) (by rw [e]; exact h)`.
+-/
 theorem isIrreducible_comp_invT {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (h : π.IsIrreducible) :
     Representation.IsIrreducible (π.comp (invT : GL (Fin N) k →* GL (Fin N) k)) := by
@@ -23,6 +26,9 @@ theorem isIrreducible_comp_invT {N : ℕ} {V : Type} [AddCommGroup V] [Module �
     MonoidHom.ext fun g => congrArg (⇑π) (invT_invT g)
   exact GlobalTheory.SwapTwo.isIrreducible_of_comp (invT : GL (Fin N) k →* GL (Fin N) k) (by rw [e]; exact h)
 
+/- English proof (translation)
+Take `⟨κ⟩` from `ind₂_swap_equiv_comp_invT (k := k) (stdSum h) (stdSum h') (extTensor A B)`. Take `⟨τ⟩` from `nonempty_extTensor_swap A B`. Take `⟨ga⟩` from `nonempty_comp_invT_equiv_contra A hAa hAi`. Take `⟨gb⟩` from `nonempty_comp_invT_equiv_contra B hBa hBi`. Conclude with `GlobalTheory.Parabolic.isIrreducible_of_equiv (((compEquiv eX _).trans κ.symm).trans ((ind₂Equiv _ (τ.trans (extTensorCongr gb ga))).trans eY)) (isIrreducible_comp_invT _ hX)`.
+-/
 theorem isIrreducible_of_contra_swap {r t N : ℕ} {V W X Y : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     (A : Representation ℂ (GL (Fin r) k) V) (B : Representation ℂ (GL (Fin t) k) W)
@@ -40,6 +46,17 @@ theorem isIrreducible_of_contra_swap {r t N : ℕ} {V W X Y : Type} [AddCommGrou
     (((compEquiv eX _).trans κ.symm).trans ((ind₂Equiv _ (τ.trans (extTensorCongr gb ga))).trans eY))
     (isIrreducible_comp_invT _ hX)
 
+/- English proof (translation)
+Establish `hA` using `PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Establish `h : (F 0).1 + (F 1).1 = N` using `(Fin.sum_univ_two _).symm.trans hd`. Establish `h' : (G 0).1 + (G 1).1 = N` using `(Fin.sum_univ_two _).symm.trans hd'`. Establish `h'' : (F 1).1 + (F 0).1 = N` using `by rw [← e₀, ← e₁]; exact h'`. Establish `aX` using `hA k N _ _ (isSmooth_prodIrr _ hd) hX`.
+
+Establish `a0` using `hA k _ _ (F 0).rep (F 0).2.rep.smooth (F 0).2.rep.irr`. Establish `a1` using `hA k _ _ (F 1).rep (F 1).2.rep.smooth (F 1).2.rep.irr`. Establish `R0` using `GlobalTheory.ContraRefl.contra_irreducible_reflexive (GL (Fin (F 0).1) k) (GlobalTheory.LocalThetaGL.compact_open_basis _) _ _ _ _ a0 a0`. Establish `R1` using `GlobalTheory.ContraRefl.contra_irreducible_reflexive (GL (Fin (F 1).1) k) (GlobalTheory.LocalThetaGL.compact_open_basis _) _ _ _ _ a1 a1`. Establish `RX` using `GlobalTheory.ContraRefl.contra_irreducible_reflexive (GL (Fin N) k) (GlobalTheory.LocalThetaGL.compact_open_basis _) _ _ _ _ aX aX`.
+
+Establish `c0i` using `R0.1 (F 0).2.rep.irr`. Establish `c1i` using `R1.1 (F 1).2.rep.irr`. Establish `c0a` using `hA k _ _ (contra (F 0).rep) (isSmooth_contra _) c0i`. Establish `c1a` using `hA k _ _ (contra (F 1).rep) (isSmooth_contra _) c1i`. Take `⟨ε⟩` from `nonempty_ind₂_contra_equiv hA F hd h`.
+
+Establish `e0` using `R0.2.1.some`. Establish `e1` using `R1.2.1.some`. Take `⟨m⟩` from `nonempty_ind₂_equiv_multiProd (k := k) (d := fun a => (G a).1) hd' h' fun a => (G a).rep`. Establish `E₃ : ∀ (u v : IrrGL k), u = F 1 → v = F 0 → ∀ h₁ : u.1 + v.1 = N, Nonempty ((ind₂ (stdSum h'') (extTensor (F 1).rep (F 0).rep)).Equiv (ind₂ (stdSum h₁) (extTensor u.rep v.rep)))`. Introduce and unpack `_ _ rfl rfl _`.
+
+Conclude with `⟨.refl _⟩`. Establish `e₄` using `(E₃ _ _ e₀ e₁ h').some`. Conclude with `isIrreducible_of_contra_swap (contra (F 0).rep) (contra (F 1).rep) c0a c0i c1a c1i h h'' (contra (prodIrr F hd)) (prodIrr G hd') ε.symm (((ind₂Equiv _ (extTensorCongr e1.symm e0.symm)).trans e₄).trans m) (RX.1 hX)`.
+-/
 theorem prodIrr_swap_isIrreducible (F G : Fin 2 → IrrGL k) (e₀ : G 0 = F 1) (e₁ : G 1 = F 0) {N : ℕ}
     (hd : ∑ a, (F a).1 = N) (hd' : ∑ a, (G a).1 = N) (hX : (prodIrr F hd).IsIrreducible) :
     (prodIrr G hd').IsIrreducible := by
@@ -76,6 +93,9 @@ theorem prodIrr_swap_isIrreducible (F G : Fin 2 → IrrGL k) (e₀ : G 0 = F 1) 
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `x y N hd hd' hX`. Conclude with `prodIrr_swap_isIrreducible ![x, y] ![y, x] rfl rfl hd hd' hX`.
+-/
 theorem comm2Irr (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     PositivityTheory.RgUd.Exp.Comm2Irr k := by
   intro x y N hd hd' hX

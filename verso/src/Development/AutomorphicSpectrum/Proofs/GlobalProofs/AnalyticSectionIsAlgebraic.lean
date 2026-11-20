@@ -9,6 +9,19 @@ open GlobalTheory GlobalTheory.CxPts
 
 namespace GlobalTheory.CompanionTheory.Gaga
 
+/- English proof (translation)
+Introduce `Y p D hs hp R B hB s hsec`. Establish `hcont (j : B.ι) : ContinuousOn (s j) (ptsIn p (RingHom.id ℂ) (B.U j))` using `(hsec.2 j).continuousOn (isOpen_ptsIn _)`. Establish `loc (i : B.ι) (x : B.U i) : ∃ V : Y.Opens, x.1 ∈ V ∧ V ≤ B.U i ∧ ∃ c : Γ(Y, V), ∀ y ∈ ptsIn p (RingHom.id ℂ) V, ev p (RingHom.id ℂ) V c y = s i y`. Take `⟨U, hxU, hU⟩` from `GlobalTheory.exists_open_isDomain_of_smooth_complex Y p D hs x`. Take `⟨V, hVa, hx, hV⟩` from `Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (U := U ⊓ B.U i) (x := x.1) ⟨hxU, x.2⟩`.
+
+Establish `ha : IsAffineOpen V` using `hVa`. Establish `hi` using `hV.trans inf_le_right`. Establish `hd` using `hU V (hV.trans inf_le_left) hx`. Establish `hh` using `(hsec.2 i).mono (ptsIn_mono hi)`. Take `⟨n, u, C, m, hC⟩` from `GlobalTheory.T.holomorphic_section_moderate_growth Y p hp B hB s hsec.1 hcont i V ha hi`.
+
+Take `⟨a, b, hb, e⟩` from `SerreSections.exists_mul_eq_of_polynomial_growth Y p D hs R V ha hd _ hh n u C m hC`. Conclude with `⟨V, hx, hi, GlobalTheory.exists_ev_eq_of_continuousOn_quotient Y p D hs V ha hd _ (hh.continuousOn (isOpen_ptsIn _)) a b hb e⟩`. Use `choose V hx hV c hc using loc`. Establish `glue (i : B.ι) : ∃ f : Γ(Y, B.U i), ∀ y ∈ ptsIn p (RingHom.id ℂ) (B.U i), ev p (RingHom.id ℂ) _ f y = s i y`. Take `⟨f, hf, -⟩` from `TopCat.Sheaf.existsUnique_gluing' Y.sheaf (V i) (B.U i) (fun x => homOfLE (hV i x)) (fun x h => Opens.mem_iSup.2 ⟨⟨x, h⟩, hx i _⟩) (c i) fun x x' => GlobalTheory.eq_of_ev_eq_of_smoothOfRelativeDimension Y p D hs (V i x ⊓ V i x') _ _ fun y hy => ((ev_res inf_le_left hy _).trans (h …`.
+
+Use `⟨f, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : y ∈ ptsIn p (RingHom.id ℂ) (V i ⟨_, mem_ptsIn.1 hy⟩)` using `mem_ptsIn.2 (hx i _)`. Rewrite using `[← hc i _ y hy', ← hf]`. Conclude with `(ev_res _ hy' _).symm`. Use `choose f hf using glue`.
+
+Use `⟨⟨f, fun i j => GlobalTheory.eq_of_ev_eq_of_smoothOfRelativeDimension Y p D hs _ _ _ fun y hy => ?_⟩, funext₂ fun i y => ?_⟩` and prove the remaining obligations. Establish `h` using `mem_ptsIn_inf.1 hy`. Use `(ev_res inf_le_left hy _).trans (Eq.trans ?_ (ev_mul _ _ _).symm)` and prove the remaining obligations. Rewrite using `[hf i y h.1, hsec.1.1 i j y h.1 h.2, ← hf j y h.2]`. Conclude with `congrArg _ (ev_res inf_le_right hy _).symm`.
+
+Distinguish the cases in `h : y ∈ ptsIn p (RingHom.id ℂ) (B.U i)`. Conclude with `hf i y h`. Conclude with `(ev_of_notMem h _).trans (hsec.1.2 i y h).symm`.
+-/
 theorem holomorphicSections_algebraic_of_isProper : ∀ (Y : Scheme.{0}) (p : Y ⟶ Sp ℂ) (D : ℕ), SmoothOfRelativeDimension D p → IsProper p → ∀ (R : AnRead p (RingHom.id ℂ) D) (B : LB Y), B.IsLB → ∀ s ∈ R.holSec B, ∃ t : B.Sec, secVal p (RingHom.id ℂ) t = s := by
   intro Y p D hs hp R B hB s hsec
   have hcont (j : B.ι) : ContinuousOn (s j) (ptsIn p (RingHom.id ℂ) (B.U j)) :=

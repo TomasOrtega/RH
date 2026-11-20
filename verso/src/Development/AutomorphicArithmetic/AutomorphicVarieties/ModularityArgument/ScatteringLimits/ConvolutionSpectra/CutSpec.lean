@@ -4,6 +4,15 @@ import GroundTheory.AutomorphicForms.TraceNormComp
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `V _ _ _ _ s hs`. Establish `hm : ∀ u : L V, MemLp (s.indicator (u : ℝ → V)) 2 volume` using `fun u => (Lp.memLp u).indicator hs`. Set `A : L V →ₗ[ℂ] L V` to `{ toFun := fun u => (hm u).toLp _ map_add' := fun u v => Lp.ext (by filter_upwards [(hm (u + v)).coeFn_toLp, (hm u).coeFn_toLp, (hm v).coeFn_toLp, Lp.coeFn_add u v, Lp.coeFn_add ((hm u).toLp _) ((hm v).toLp _)] with x h1 h2 h3 h4 h5`. Rewrite using `[h1, h5, Pi.add_apply, h2, h3]`. Distinguish the cases in `hx : x ∈ s`.
+
+Simplify using `only [indicator_of_mem hx]`. Conclude with `h4`. Simplify using `[hx])`. Use the proof step `map_smul' := fun c u => Lp.ext (by filter_upwards [(hm (c • u)).coeFn_toLp, (hm u).coeFn_toLp, Lp.coeFn_smul c u, Lp.coeFn_smul c ((hm u).toLp _)] with x h1 h2 h4 h5`. Rewrite using `[h1, RingHom.id_apply, h5, Pi.smul_apply, h2]`.
+
+Apply the tactic sequence `by_cases hx : x ∈ s <;> simp [hx, h4]) }`. Establish `hb : ∀ u, ‖A u‖ ≤ 1 * ‖u‖` using `fun u => by`. Rewrite using `[one_mul]`. Use `Lp.norm_le_norm_of_ae_le ?_` and prove the remaining obligations. Use `filter_upwards [(hm u).coeFn_toLp] with x h`.
+
+Use `show ‖((hm u).toLp _ : ℝ → V) x‖ ≤ _`. Rewrite using `[h]`. Conclude with `norm_indicator_le_norm_self _ _`. Conclude with `Classical.epsilon_spec (p := fun C : L V →L[ℂ] L V => ∀ u, ∀ᵐ x : ℝ, C u x = s.indicator u x) ⟨A.mkContinuous 1 hb, fun u => (hm u).coeFn_toLp⟩`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.cutSpec :
     ∀ {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] (s : Set ℝ), MeasurableSet s → ∀ u : L V, ∀ᵐ x : ℝ, cut V s u x = s.indicator u x := by
   intro V _ _ _ _ s hs

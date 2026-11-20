@@ -14,6 +14,15 @@ namespace GlobalTheory.SphTheta.AvgHecke
 
 open GlobalTheory.PRep
 
+/- English proof (translation)
+Introduce `G _ K hK M _ _ ρ s w hs hw hspan`. Establish `hx : s ∈ fixed ρ K` using `GlobalTheory.LGrp.mem_fixed.2 hs`. Establish `hy : w ∈ fixed ρ K` using `GlobalTheory.LGrp.mem_fixed.2 hw`. Establish `hr : w ∈ LinearMap.range (GlobalTheory.LFun.HeckeScalar.orbitMap ρ K s)`. Use `Submodule.span_le.2 ?_ hspan` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨Finsupp.single (g : G ⧸ K) 1, by rw [GlobalTheory.LFun.HeckeScalar.orbitMap_single hx, one_smul]⟩`. Take `⟨φ, rfl⟩` from `hr`. Take `⟨ψ, hψ, e⟩` from `GlobalTheory.LFun.HeckeScalar.exists_fixed_preimage _ (GlobalTheory.LFun.HeckeScalar.orbitMap_permRep hx) (GlobalTheory.LFun.HeckeScalar.mem_finOrbit hK φ) hy`. Use `⟨fun g => ψ g, ⟨fun a b g => ?_, ψ.support.image Quotient.out, fun g hg => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.LFun.HeckeScalar.permRep_apply (a : G) ψ (g : G ⧸ K)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.LGrp.mem_fixed.1 hψ _ a.2]`. Simplify using `using this`. Take `⟨j, hj⟩` from `QuotientGroup.mk_out_eq_mul K g`. Conclude with `⟨_, Finset.mem_image_of_mem _ (Finsupp.mem_support_iff.2 hg), 1, j⁻¹, by simp [hj]⟩`.
+
+Rewrite using `[← e, heckeVec, GlobalTheory.LFun.HeckeScalar.orbitMap, Finsupp.linearCombination_apply, Finsupp.sum, finsum_eq_sum_of_support_subset (s := ψ.support)]`. Simplify using the standard rewrite rules. Introduce `c hc`. Assume the negation of the conclusion as `h`. Conclude with `hc (by simp [Finsupp.notMem_support_iff.1 h])`.
+-/
 theorem exists_hecke_of_mem_span : ∀ (G : Type) [Group G] (K : Subgroup G), IsCommensurated K → ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ G M) (s w : M), (∀ k ∈ K, ρ k s = s) → (∀ k ∈ K, ρ k w = w) → w ∈ Submodule.span ℂ (Set.range fun g => ρ g s) → ∃ h ∈ Hecke ℂ K, heckeVec ρ K h s = w := by
   classical
   intro G _ K hK M _ _ ρ s w hs hw hspan

@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 
 open Polynomial UpperTheory.V.W
 
+/- English proof (translation)
+Introduce `Γ R _ _ _ _ I hI f`. Rewrite `hI` using `[isAdic_iff]`. Take `⟨hopen, hsmall⟩` from `hI`. Unfold `UpperTheory.V.Alg.AdicCont`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hf`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Rewrite using `[ContinuousAt, tendsto_sub_nhds_zero_iff.symm]`. Introduce `s hs`.
+
+Take `⟨N, hN⟩` from `hsmall s hs`. Establish `hloc` using `(IsLocallyConstant.iff_eventually_eq _).mp (hf N) g`. Rewrite using `[Filter.mem_map]`. Use `filter_upwards [hloc] with y hy`. Conclude with `hN (Ideal.Quotient.eq.mp hy)`.
+
+Introduce `hf N`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Establish `hO : IsOpen {r : R | r - f g ∈ I ^ N}` using `(hopen N).preimage (continuous_id.sub continuous_const)`. Establish `hmem : f g ∈ {r : R | r - f g ∈ I ^ N}`.
+
+Simplify using the standard rewrite rules. Use `filter_upwards [hf.continuousAt (hO.mem_nhds hmem)] with y hy`. Conclude with `Ideal.Quotient.eq.mpr hy`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.adicContIff :
     ∀ {Γ R : Type} [TopologicalSpace Γ] [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] (I : Ideal R), IsAdic I →
     ∀ f : Γ → R, UpperTheory.V.Alg.AdicCont I f ↔ Continuous f := by

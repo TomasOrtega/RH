@@ -12,6 +12,31 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.PeriodAction
 
 open GroundTheory.Heights₂.Heights.Regular
 
+/- English proof (translation)
+Set `T : (J → ℝ) →ₗ[ℝ] V` to `∑ i, (LinearMap.proj i : (J → ℝ) →ₗ[ℝ] ℝ).smulRight (v x₀ i)`. Establish `hT : ∀ r, T r = ∑ i, r i • v x₀ i` using `fun r => by simp [T, LinearMap.sum_apply]`. Establish `hker : LinearMap.ker T = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `r hr`.
+
+Conclude with `hind r (by rw [← hT]; exact hr)`. Take `⟨K, hK0, hK⟩` from `T.exists_antilipschitzWith hker`. Establish `hKpos : (0 : ℝ) < K` using `by exact_mod_cast hK0`. Establish `hb : ∀ r, ‖r‖ ≤ K * ‖T r‖` using `fun r => by`. Simplify `hK.le_mul_dist r 0` using `[dist_zero_right]`.
+
+Take `⟨N, hNdef⟩ : ∃ N : ℝ, N = Fintype.card J + 1` from `⟨_, rfl⟩`. Establish `hN : 0 < N` using `by rw [hNdef]; positivity`. Take `⟨δ, hδdef⟩ : ∃ δ : ℝ, δ = 1 / (2 * K * N)` from `⟨_, rfl⟩`. Establish `hδ : 0 < δ` using `by rw [hδdef]; positivity`. Use `⟨1 / (2 * K), by positivity, ?_⟩` and prove the remaining obligations.
+
+Establish `hev : ∀ᶠ x in 𝓝 x₀, ∀ i, ‖v x i - v x₀ i‖ < δ`. Use `eventually_all.2 fun i => ?_` and prove the remaining obligations. Use `(Metric.tendsto_nhds.1 (hv i).tendsto) δ hδ` as an intermediate fact. Simplify `this` using `[dist_eq_norm]`. Use `filter_upwards [hev] with x hx m hm`.
+
+Take `⟨r, hr⟩ : ∃ r : J → ℝ, r = fun i => (m i : ℝ)` from `⟨_, rfl⟩`. Establish `hm' : ‖∑ i, r i • v x i‖ < 1 / (2 * K)` using `by rw [hr]; exact hm`. Establish `hsplit : T r = ∑ i, r i • v x i - ∑ i, r i • (v x i - v x₀ i)`. Rewrite using `[hT, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws. Establish `herr : ‖∑ i, r i • (v x i - v x₀ i)‖ ≤ N * (‖r‖ * δ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul]`.
+
+Conclude with `mul_le_mul (norm_le_pi_norm r i) (hx i).le (norm_nonneg _) (norm_nonneg _)`. Use `_ = (Fintype.card J : ℝ) * (‖r‖ * δ) := by simp`. Use `_ ≤ N * (‖r‖ * δ) := by`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[hNdef]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ‖r‖ ≤ K * (‖∑ i, r i • v x i‖ + N * (‖r‖ * δ))`. Use `(hb r).trans (mul_le_mul_of_nonneg_left ?_ hKpos.le)` and prove the remaining obligations. Rewrite using `[hsplit]`. Conclude with `(norm_sub_le _ _).trans (by linarith)`.
+
+Establish `h2 : K * (N * (‖r‖ * δ)) = ‖r‖ / 2`. Rewrite using `[hδdef]`. Clear the denominators using the available nonvanishing facts. Establish `h3 : K * ‖∑ i, r i • v x i‖ < 1 / 2`. Use `mul_lt_mul_of_pos_left hm' hKpos` as an intermediate fact.
+
+Establish `h4 : K * (1 / (2 * K)) = 1 / 2` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : ‖r‖ < 1`. Rewrite `h1` using `[mul_add, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use function extensionality and compare the values at `i`. Establish `h6 : |(m i : ℝ)| < 1`. Use `(norm_le_pi_norm r i).trans_lt h5` as an intermediate fact. Rewrite `this` using `[hr]`. Simplify `this` using `[Real.norm_eq_abs]`.
+
+Establish `h7 : |m i| < 1` using `by exact_mod_cast h6`. Simplify using `using Int.abs_lt_one_iff.1 h7`.
+-/
 theorem exists_eventually_int_eq_zero {X V J : Type*} [TopologicalSpace X] [NormedAddCommGroup V]
     [NormedSpace ℝ V] [Fintype J] (v : X → J → V) (x₀ : X)
     (hv : ∀ i, ContinuousAt (fun x => v x i) x₀)
@@ -76,6 +101,11 @@ theorem exists_eventually_int_eq_zero {X V J : Type*} [TopologicalSpace X] [Norm
 
 variable {n a g : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.LogPeriods n a g Λ)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Apply `L.unimod.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations.
+
+Establish `h` using `L.im w hw x y`. Rewrite `h` using `[hx]`. Simplify using `at h`. Conclude with `h.symm` after adjusting the coercions.
+-/
 theorem P_injective {w : Fin n → ℂ} (hw : w ∈ logCover L.a_le) : Function.Injective (L.P w) := by
   rw [injective_iff_map_eq_zero]
   intro x hx
@@ -87,6 +117,13 @@ theorem P_injective {w : Fin n → ℂ} (hw : w ∈ logCover L.a_le) : Function.
   simp at h
   exact_mod_cast h.symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Take `⟨u, hu⟩` from `L.unimod.2 (b.coord j)`. Set `ψ : (Fin g → ℂ) →ₗ[ℝ] ℝ` to `{ toFun := fun v => (L.P w u ⬝ᵥ L.H (expCover a w) *ᵥ star v).im map_add' := fun v v' => by simp [star_add, mulVec_add, dotProduct_add] map_smul' := fun t v => by simp [star_smul, mulVec_smul, dotProduct_smul] }`. Establish `h1 : ∀ i, ψ (L.P w (b i)) = if i = j then 1 else 0` using `fun i => by`. Establish `h2` using `L.im w hw u (b i)`.
+
+Express the relevant statement in the definitionally equal form `(L.P w u ⬝ᵥ L.H (expCover a w) *ᵥ star (L.P w (b i))).im = _`. Rewrite using `[h2, hu]`. Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply]`. Establish `h2` using `congrArg ψ h`. Simplify using `only [map_sum, map_smul, h1, map_zero, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`.
+
+Simplify using `using h2`.
+-/
 theorem real_indep {J : Type*} [Fintype J] (b : Module.Basis J ℤ Λ) {w : Fin n → ℂ}
     (hw : w ∈ logCover L.a_le) (r : J → ℝ) (h : ∑ i, r i • L.P w (b i) = 0) : r = 0 := by
   classical
@@ -106,10 +143,18 @@ theorem real_indep {J : Type*} [Fintype J] (b : Module.Basis J ℤ Λ) {w : Fin 
     Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2
   simpa using h2
 
+/- English proof (translation)
+The claim follows from `(L.hol x).continuousOn.continuousAt ((isOpen_logCover L.a_le).mem_nhds hw)`.
+-/
 theorem continuousAt_P (x : Λ) {w₀ : Fin n → ℂ} (hw : w₀ ∈ logCover L.a_le) :
     ContinuousAt (fun w => L.P w x) w₀ :=
   (L.hol x).continuousOn.continuousAt ((isOpen_logCover L.a_le).mem_nhds hw)
 
+/- English proof (translation)
+Establish `hP` using `continuousAt_P L x hw`. Establish `hexp : ContinuousAt (expCover (n` using `n) a) w₀ := (continuous_expCover a).continuousAt`. Establish `hAe : ∀ v, ContinuousAt (fun w => A (expCover a w) v) w₀` using `fun v => ContinuousAt.comp (f := expCover a) (g := fun z => A z v) ((hA v).continuousOn.continuousAt (Metric.isOpen_ball.mem_nhds (expCover_mem_ball L.a_le hw))) hexp`. Establish `h1 : (fun w => A (expCover a w) (L.P w x)) = fun w => ∑ i, (L.P w x i) • A (expCover a w) (fun j => if i = j then 1 else 0)`. Use function extensionality and compare the values at `w`.
+
+Conclude with `LinearMap.pi_apply_eq_sum_univ _ _`. Rewrite using `[h1]`. Conclude with `tendsto_finset_sum _ fun i _ => (((continuous_apply i).continuousAt.comp hP).smul (hAe _))`.
+-/
 theorem continuousAt_apply (A : (Fin n → ℂ) → Module.End ℂ (Fin g → ℂ))
     (hA : ∀ x, DifferentiableOn ℂ (fun z => A z x) (Metric.ball 0 1)) (x : Λ)
     {w₀ : Fin n → ℂ} (hw : w₀ ∈ logCover L.a_le) :
@@ -129,6 +174,15 @@ theorem continuousAt_apply (A : (Fin n → ℂ) → Module.End ℂ (Fin g → �
   exact tendsto_finset_sum _ fun i _ =>
     (((continuous_apply i).continuousAt.comp hP).smul (hAe _))
 
+/- English proof (translation)
+Use `haveI := L.free`. Use `haveI := L.fin`. Take `⟨b⟩ : Nonempty (Module.Basis (Module.Free.ChooseBasisIndex ℤ Λ) ℤ Λ)` from `⟨Module.Free.chooseBasis ℤ Λ⟩`. Take `⟨ε, hε, hev⟩` from `exists_eventually_int_eq_zero (fun w i => L.P w (b i)) w₀ (fun i => continuousAt_P L (b i) hw) (real_indep L b hw)`. Establish `hD : ContinuousAt (fun w => A (expCover a w) (L.P w x) - L.P w y) w₀` using `(continuousAt_apply L A hA x hw).sub (continuousAt_P L y hw)`.
+
+Establish `hsmall : ∀ᶠ w in 𝓝 w₀, ‖A (expCover a w) (L.P w x) - L.P w y‖ < ε`. Establish `h0` using `(Metric.tendsto_nhds.1 hD.tendsto) ε hε`. Simplify `h0` using `[h, dist_eq_norm]`. Use `filter_upwards [hev, hsmall, (isOpen_logCover L.a_le).mem_nhds hw] with w h1 h2 hwC`. Take `⟨y', hy'⟩` from `hex w hwC x`.
+
+Establish `hk : L.P w (y' - y) = ∑ i, ((b.repr (y' - y) i : ℤ) : ℝ) • L.P w (b i)` using `by conv_lhs => rw [← b.sum_repr (y' - y)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Conclude with `(Int.cast_smul_eq_zsmul ℝ _ _).symm`.
+
+Establish `hm` using `h1 (fun i => b.repr (y' - y) i) (by rw [← hk, map_sub, hy']; exact h2)`. Establish `h0 : y' - y = 0` using `b.repr.map_eq_zero_iff.1 (Finsupp.ext fun i => congrFun hm i)`. Rewrite using `[← sub_eq_zero.1 h0, hy']`.
+-/
 theorem eventually_eq (A : (Fin n → ℂ) → Module.End ℂ (Fin g → ℂ))
     (hA : ∀ x, DifferentiableOn ℂ (fun z => A z x) (Metric.ball 0 1))
     (hex : ∀ w ∈ logCover L.a_le, ∀ x, ∃ y, L.P w y = A (expCover a w) (L.P w x))
@@ -158,6 +212,13 @@ theorem eventually_eq (A : (Fin n → ℂ) → Module.End ℂ (Fin g → ℂ))
   have h0 : y' - y = 0 := b.repr.map_eq_zero_iff.1 (Finsupp.ext fun i => congrFun hm i)
   rw [← sub_eq_zero.1 h0, hy']
 
+/- English proof (translation)
+Use `choose φ hφ using fun w : logCover L.a_le => hex w.1 w.2 x`. Establish `hlc : IsLocallyConstant φ`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `w`. Establish `h2` using `(continuous_subtype_val.continuousAt (x := w)).eventually (eventually_eq L A hA hex x (φ w) w.2 (hφ w))`.
+
+Use `filter_upwards [h2] with w' hw'`. Conclude with `P_injective L w'.2 ((hφ w').trans hw'.symm)`. Use `haveI : PreconnectedSpace (logCover L.a_le) := Subtype.preconnectedSpace (convex_logCover L.a_le).isPreconnected`. Establish `h2` using `hlc.apply_eq_of_preconnectedSpace ⟨w₀, h0⟩ ⟨w₁, h1⟩`. Establish `hy : φ ⟨w₀, h0⟩ = y` using `P_injective L h0 ((hφ ⟨w₀, h0⟩).trans h.symm)`.
+
+Rewrite using `[← hy, h2]`. Conclude with `hφ ⟨w₁, h1⟩`.
+-/
 theorem eq_of_mem (A : (Fin n → ℂ) → Module.End ℂ (Fin g → ℂ))
     (hA : ∀ x, DifferentiableOn ℂ (fun z => A z x) (Metric.ball 0 1))
     (hex : ∀ w ∈ logCover L.a_le, ∀ x, ∃ y, L.P w y = A (expCover a w) (L.P w x))
@@ -180,6 +241,13 @@ theorem eq_of_mem (A : (Fin n → ℂ) → Module.End ℂ (Fin g → ℂ))
   rw [← hy, h2]
   exact hφ ⟨w₁, h1⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ n a g Λ _ L B hB hex`. Take `⟨w₀, hw₀⟩` from `logCover_nonempty L.a_le`. Use `choose f hf using fun c x => hex w₀ hw₀ c x`. Establish `key : ∀ w ∈ logCover L.a_le, ∀ c x, L.P w (f c x) = B (expCover a w) c (L.P w x)` using `fun w hw c x => eq_of_mem L (fun z => B z c) (fun x => hB c x) (fun w hw x => hex w hw c x) x (f c x) hw₀ hw (hf c x)`. Establish `inj` using `P_injective L hw₀`.
+
+Establish `e1 : ∀ x, f 1 x = x` using `fun x => inj (by rw [hf]; simp)`. Establish `e2 : ∀ c d x, f (c * d) x = f c (f d x)` using `fun c d x => inj (by`. Rewrite using `[hf, hf, hf, map_mul, Module.End.mul_apply])`. Establish `e3 : ∀ c, f c 0 = 0` using `fun c => inj (by rw [hf]; simp)`. Establish `e4 : ∀ c x y, f c (x + y) = f c x + f c y` using `fun c x y => inj (by`.
+
+Rewrite using `[map_add, hf, hf, hf, map_add, map_add])`. Establish `e5 : ∀ c d x, f (c + d) x = f c x + f d x` using `fun c d x => inj (by`. Rewrite using `[map_add, hf, hf, hf, map_add, LinearMap.add_apply])`. Establish `e6 : ∀ x, f 0 x = 0` using `fun x => inj (by rw [hf]; simp)`. Conclude with `⟨{ smul := f, one_smul := e1, mul_smul := e2, smul_zero := e3, smul_add := e4, add_smul := e5, zero_smul := e6 }, key⟩`.
+-/
 theorem exists_module_of_period_action : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] (L : Flat.LogPeriods n a g Λ) (B : (Fin n → ℂ) → (𝓞 E →+* Module.End ℂ (Fin g → ℂ))), (∀ c x, DifferentiableOn ℂ (fun z => B z c x) (Metric.ball 0 1)) → (∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L.a_le, ∀ c x, ∃ y, L.P w y = B (GroundTheory.Heights₂.Heights.Regular.expCover a w) c (L.P w x)) → ∃ _ : Module (𝓞 E) Λ, ∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L.a_le, ∀ (c : 𝓞 E) x, L.P w (c • x) = B (GroundTheory.Heights₂.Heights.Regular.expCover a w) c (L.P w x) := by
   intro E _ _ _ n a g Λ _ L B hB hex
   obtain ⟨w₀, hw₀⟩ := logCover_nonempty L.a_le

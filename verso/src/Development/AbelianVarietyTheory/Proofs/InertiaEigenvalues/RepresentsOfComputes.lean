@@ -18,6 +18,9 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {Γ : Type} [Group Γ] [Topolo
   [ContinuousConstSMul R M] [ContinuousConstSMul R' M]
   (rho : Representation R Γ M) (rho' : Representation R' Γ M) (h : ∀ g m, rho g m = rho' g m)
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq]`. Conclude with `mem_coboundaries1 rho _`.
+-/
 theorem mk_eq_mk_iff (z w : Z1 rho) : (Submodule.Quotient.mk z : H1 rho) = Submodule.Quotient.mk w ↔
     ∃ m, ∀ g, z.1 g - w.1 g = rho g m - m := by
   rw [Submodule.Quotient.eq]
@@ -30,16 +33,28 @@ def chg : H1 rho → H1 rho' :=
     obtain ⟨m, hm⟩ := (mk_eq_mk_iff rho z w).1 (Quotient.sound' hzw)
     exact Quotient.exact' ((mk_eq_mk_iff rho' _ _).2 ⟨m, fun g => by rw [← h]; exact hm g⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chg_mk (z : Z1 rho) : chg rho rho' h (Submodule.Quotient.mk z) = Submodule.Quotient.mk (chgZ rho rho' h z) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chg_zero : chg rho rho' h 0 = 0 := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H w => rfl`.
+-/
 theorem chg_add (x y : H1 rho) : chg rho rho' h (x + y) = chg rho rho' h x + chg rho rho' h y := by
   induction x using Submodule.Quotient.induction_on with
   | H z =>
   induction y using Submodule.Quotient.induction_on with
   | H w => rfl
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Rewrite using `[← Submodule.Quotient.mk_smul, chg_mk, chg_mk, ← Submodule.Quotient.mk_smul]`. Conclude with `congrArg _ (Subtype.ext (funext fun g => ha _))`.
+-/
 theorem chg_smul (a : R) (a' : R') (ha : ∀ m : M, a • m = a' • m) (x : H1 rho) :
     chg rho rho' h (a • x) = a' • chg rho rho' h x := by
   induction x using Submodule.Quotient.induction_on with
@@ -47,6 +62,11 @@ theorem chg_smul (a : R) (a' : R') (ha : ∀ m : M, a • m = a' • m) (x : H1 
     rw [← Submodule.Quotient.mk_smul, chg_mk, chg_mk, ← Submodule.Quotient.mk_smul]
     exact congrArg _ (Subtype.ext (funext fun g => ha _))
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => rw [chg_zero]`. Conclude with `T.zero_mem`. Consider the case `add x y _ _ hx hy => rw [chg_add]`.
+
+Conclude with `T.add_mem hx hy`. Consider the case `smul a x _ hx`. Take `⟨a', ha⟩` from `hs a`. Rewrite using `[chg_smul _ _ _ a a' ha]`. Conclude with `T.smul_mem a' hx`.
+-/
 theorem chg_mem_span (hs : ∀ a : R, ∃ a' : R', ∀ m : M, a • m = a' • m) {S : Set (H1 rho)} {T : Submodule R' (H1 rho')}
     (hS : ∀ x ∈ S, chg rho rho' h x ∈ T) {x : H1 rho} (hx : x ∈ Submodule.span R S) : chg rho rho' h x ∈ T := by
   induction hx using Submodule.span_induction with
@@ -58,16 +78,25 @@ theorem chg_mem_span (hs : ∀ a : R, ∃ a' : R', ∀ m : M, a • m = a' • m
     rw [chg_smul _ _ _ a a' ha]
     exact T.smul_mem a' hx
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => rfl`.
+-/
 theorem chg_chg (x : H1 rho) : chg rho' rho (fun g m => (h g m).symm) (chg rho rho' h x) = x := by
   induction x using Submodule.Quotient.induction_on with
   | H z => rfl
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => rfl`.
+-/
 theorem res_chg {H : Type} [Group H] [TopologicalSpace H] (phi : H →* Γ) (hphi : Continuous phi) (x : H1 rho) :
     resH1 rho' phi hphi (chg rho rho' h x) =
       chg (rho.comp phi) (rho'.comp phi) (fun g m => h (phi g) m) (resH1 rho phi hphi x) := by
   induction x using Submodule.Quotient.induction_on with
   | H z => rfl
 
+/- English proof (translation)
+Establish `h0 : resH1 rho J.subtype continuous_subtype_val x = 0` using `hx`. Conclude with `(res_chg rho rho' h J.subtype continuous_subtype_val x).trans ((congrArg _ h0).trans (chg_zero _ _ _))`.
+-/
 theorem chg_ur (J : Subgroup Γ) (x : H1 rho) (hx : x ∈ H1ur rho J) : chg rho rho' h x ∈ H1ur rho' J := by
   have h0 : resH1 rho J.subtype continuous_subtype_val x = 0 := hx
   exact (res_chg rho rho' h J.subtype continuous_subtype_val x).trans
@@ -88,6 +117,11 @@ variable {r : ℕ} (ρ : GE N →* GL (Fin r) (X.O0 i)) {Λ Λ' : Type} [CommRin
 
 include hs ho
 
+/- English proof (translation)
+Unfold `bkOn at hx ⊢`. Use `split_ifs at hx ⊢ with hv`. Use `chg_mem_span _ _ _ (fun a => (hs a).imp fun a' ha m => funext fun c => ha (m c)) ?_ hx` and prove the remaining obligations. Introduce and unpack `x ⟨z, c, y, b, hc, hy, hz, rfl⟩`. Conclude with `Submodule.subset_span ⟨chgZ _ _ (fun g m => h g.1 m) z, c, y, b, hc, hy, fun g a => (hz g a).trans (ho _ _), rfl⟩`.
+
+Rewrite `hx`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hx]`. Conclude with `chg_zero _ _ _`.
+-/
 theorem chg_mem_bkOn (v : PlE D.host) (x : H1 ((repOn ρ κ B).comp (DecV N v).subtype))
     (hx : x ∈ bkOn bkP i ρ κ B v) :
     chg _ ((repOn ρ κ' B).comp (DecV N v).subtype) (fun g m => h g.1 m) x ∈ bkOn bkP i ρ κ' B v := by
@@ -101,6 +135,11 @@ theorem chg_mem_bkOn (v : PlE D.host) (x : H1 ((repOn ρ κ B).comp (DecV N v).s
     rw [hx]
     exact chg_zero _ _ _
 
+/- English proof (translation)
+Use `(mem_Sel _ _ _ _ _).2 fun v => ?_` and prove the remaining obligations. Establish `hv` using `(mem_Sel _ _ _ _ _).1 hx v`. Use `(res_chg (repOn ρ κ B) (repOn ρ κ' B) h (Dec (F := D.host.E) (N.plOm.1 v)).subtype continuous_subtype_val x) ▸ ?_` and prove the remaining obligations. Unfold `Formalism.GaloisCohomology.bkCond at hv ⊢`. Use `split_ifs at hv ⊢ with h1 h2`.
+
+Conclude with `chg_mem_bkOn bkP i ρ κ κ' h hs ho v _ hv`. Conclude with `Submodule.mem_top`. Conclude with `chg_ur _ _ _ _ _ hv`.
+-/
 theorem chg_mem_selOn (Q : Finset (PlE D.host)) (x : H1 (repOn ρ κ B))
     (hx : x ∈ selOn bkP i ρ κ B Q) : chg _ (repOn ρ κ' B) h x ∈ selOn bkP i ρ κ' B Q := by
   refine (mem_Sel _ _ _ _ _).2 fun v => ?_
@@ -130,6 +169,23 @@ def Represents {r : ℕ} (ρ : GE N →* GL (Fin r) (X.O0 i)) {R : Type} [CommRi
 
 variable {bkP i}
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hΦ`. Establish `tor : ∀ (B : Type) [AddCommGroup B] [Module R B], ∀ b : B, ∃ n : ℕ, (X.l i ^ n) • b = 0` using `fun B _ _ b => ⟨n, by rw [← Nat.cast_smul_eq_nsmul R, hn, zero_smul]⟩`. Set `inst : ∀ (B : Type) [AddCommGroup B] [Module R B], Module (abelian₂ X i M ι) B` to `fun B _ _ => Module.compHom B p.toRingHom`. Establish `hsm : ∀ (B : Type) [AddCommGroup B] [Module R B] (x : abelian₂ X i M ι) (b : B), x • b = p x • b` using `fun _ _ _ _ _ => rfl`. Establish `hk : ∀ (B : Type) [AddCommGroup B] [Module R B] (u : Fin a → B), matAct (Φ.map p) u = matAct Φ u` using `fun _ _ _ _ => rfl`.
+
+Establish `ho : ∀ (B : Type) [AddCommGroup B] [Module R B] (y : X.O0 i) (b : B), algebraMap (X.O0 i) (abelian₂ X i M ι) y • b = algebraMap (X.O0 i) R y • b` using `fun B _ _ y b => by`. Rewrite using `[hsm, AlgHom.commutes]`. Establish `hr : ∀ (B : Type) [AddCommGroup B] [Module R B] g m, repOn (Tgl i s) (delInv i M d) B g m = repOn (Tgl i s) κ B g m` using `fun B _ _ g m => by`. Use function extensionality and compare the values at `c`. Express the relevant statement in the definitionally equal form `(delInv i M d g : abelian₂ X i M ι) • ∑ j, algebraMap (X.O0 i) (abelian₂ X i M ι) _ • m j = (κ g : R) • ∑ j, algebraMap (X.O0 i) R _ • m j`.
+
+Rewrite using `[hsm, hκ]`. Simplify using `only [ho]`. Use `⟨fun B _ _ _ _ u => if h : matAct Φ u = 0 then chg _ _ (hr B) (e B (tor B) ⟨u, h⟩).1 else 0, fun B _ _ _ _ u hu => ?_, fun B _ _ _ _ u u' hu hu' huu => ?_, fun B _ _ _ _ y hy => ?_, fun B B' _ _ _ _ _ _ _ _ f u hu => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[hk]`. Simplify using `only [dif_pos hu]`.
+
+Conclude with `chg_mem_selOn bkP i _ _ _ (hr B) (fun x => ⟨p x, hsm B x⟩) (ho B) Q _ (e B (tor B) ⟨u, hu⟩).2`. Rewrite `hu`, `hu'` using `[hk]`. Simplify using `only [dif_pos hu, dif_pos hu'] at huu`. Establish `h1` using `congrArg (chg _ _ fun g m => (hr B g m).symm) huu`. Rewrite `h1` using `[chg_chg, chg_chg]`.
+
+Conclude with `congrArg Subtype.val ((e B (tor B)).injective (Subtype.ext h1))`. Establish `h1` using `chg_mem_selOn bkP i _ _ _ (fun g m => (hr B g m).symm) (fun x => by obtain ⟨x', rfl⟩ := hp x; exact ⟨x', fun b => (hsm B x' b).symm⟩) (fun y b => (ho B y b).symm) Q y hy`. Take `⟨u, hu⟩` from `(e B (tor B)).surjective ⟨_, h1⟩`. Establish `hu0 : matAct Φ u.1 = 0` using `u.2`. Use `⟨u.1, hu0, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [dif_pos hu0]`. Rewrite using `[show (⟨u.1, hu0⟩ : LinearMap.ker (matAct (M := B) Φ)) = u from rfl, hu]`. Conclude with `chg_chg _ _ _ y`. Rewrite `hu` using `[hk]`. Set `f' : B →ₗ[abelian₂ X i M ι] B'` to `⟨f.toAddHom, fun x b => f.map_smul (p x) b⟩`.
+
+Establish `hu' : matAct Φ (fun c => f (u c)) = 0` using `by show matAct Φ (fun c => f' (u c)) = 0`. Use function extensionality and compare the values at `c`. Use `congrArg f' (congrFun hu c)` as an intermediate fact. Simplify `this` using `[matAct, map_sum]`. Simplify using `only [dif_pos hu, dif_pos hu']`.
+
+Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (e B (tor B) ⟨u, hu⟩).1`. Rewrite using `[he B B' (tor B) (tor B') f' ⟨u, hu⟩ ⟨_, hu'⟩ z (cocycles1MapOfEquivariant _ _ (f'.compLeft _) continuous_of_discreteTopology (repOn_map _ _ f') z) (fun _ => rfl) (fun _ _ => rfl) hz.symm, ← hz]`. Both sides reduce to the same expression.
+-/
 theorem represents_of_computes {s : X.Sig i} {M : ℕ} {ι : Type} {d : ι → (GE N →* Multiplicative (ZMod (X.l i ^ M)))}
     {Q : Finset (PlE D.host)} {a : ℕ} {Φ : Matrix (Fin a) (Fin a) (abelian₂ X i M ι)} (hΦ : Computes bkP i s M d Q Φ)
     {R : Type} [CommRing R] [Algebra (X.O0 i) R] (p : abelian₂ X i M ι →ₐ[X.O0 i] R) (hp : Function.Surjective p)

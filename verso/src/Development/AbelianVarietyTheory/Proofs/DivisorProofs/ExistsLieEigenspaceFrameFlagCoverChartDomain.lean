@@ -34,6 +34,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
 
+/- English proof (translation)
+Introduce `u u' huu`. Take `⟨cv, rfl⟩` from `(vec M x h).surjective u`. Take `⟨cv', rfl⟩` from `(vec M x h).surjective u'`. Rewrite `huu` using `[tanPull_vec M ρ e h h', tanPull_vec M ρ e h h']`. Use `(vec M x' h').injective huu` as an intermediate fact.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `hρ (congrFun this j)`.
+-/
 theorem tanPull_injective_of_chart {V K : Type} [CommRing V] [CommRing K] (ρ : V →+* K) (hρ : Function.Injective ρ)
     (M : MChart Y) {x : Sp V ⟶ Y.X} {x' : Sp K ⟶ Y.X} (e : spMap ρ ≫ x = x') (h : ⊤ ≤ x ⁻¹ᵁ M.U)
     (h' : ⊤ ≤ x' ⁻¹ᵁ M.U) : Function.Injective (tanPull (G := Y.t.G) ρ e) := by
@@ -46,6 +51,25 @@ theorem tanPull_injective_of_chart {V K : Type} [CommRing V] [CommRing K] (ρ : 
   funext j
   exact hρ (congrFun this j)
 
+/- English proof (translation)
+Establish `hx : ⊤ ≤ (q ≫ X.π) ⁻¹ᵁ (X.F.M k).toMChart.U` using `X.F.inM hz rfl`. Establish `hx' : ⊤ ≤ ((spMap ρ ≫ q) ≫ X.π) ⁻¹ᵁ (X.F.M k).toMChart.U` using `X.F.inM hz' rfl`. Establish `e : spMap ρ ≫ (q ≫ X.π) = (spMap ρ ≫ q) ≫ X.π` using `(Category.assoc _ _ _).symm`. Establish `hinj` using `tanPull_injective_of_chart ρ hρ (X.F.M k).toMChart e hx hx'`. Establish `hpull : ∀ τ i, tanPull ρ e (X.F.vecAt k q hz rfl τ i) = X.F.vecAt k (spMap ρ ≫ q) hz' rfl τ i` using `fun τ i => X.F.tanPull_vecAt k ρ q hz hz' rfl rfl e τ i`.
+
+Establish `hmem : ∀ τ i, X.F.vecAt k (spMap ρ ≫ q) hz' rfl τ i ∈ eigLie c ((spMap ρ ≫ q) ≫ X.π) τ` using `fun τ i => by`. Rewrite using `[← htop τ]`. Conclude with `Submodule.subset_span ⟨i, i.2, rfl⟩`. Establish `hsmul : ∀ (τ : E →+* ℂ) (a : 𝓞 E) (w : TanM (q ≫ X.π) Y.t.G), tanPull ρ e (φ (embK c τ a) • w) = algebraMap c.F K (embK c τ a) • tanPull ρ e w` using `fun τ a w => by`. Rewrite using `[map_smulₛₗ, ← hφ]`.
+
+Both sides reduce to the same expression. Use `⟨GlobalTheory.ShFam.EigFrame.ofVec (fun τ i => X.F.vecAt k q hz rfl τ i) (fun τ i a => ?_) (fun τ w hw => ?_), fun τ i => rfl⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[tanPull_actR, hsmul, hpull]`. Conclude with `hmem τ i a`.
+
+Establish `hw' : tanPull ρ e w ∈ eigLie c ((spMap ρ ≫ q) ≫ X.π) τ` using `fun a => by`. Rewrite using `[← tanPull_actR, hw a, hsmul]`. Rewrite `hw'` using `[← htop τ]`. Take `⟨a, -, ha⟩` from `mem_initSpan.1 hw'`. Take `⟨W, hW⟩` from `X.F.uAt_split k q hz τ`.
+
+Take `⟨cv, rfl⟩` from `(vec (X.F.M k).toMChart (q ≫ X.π) hx).surjective w`. Rewrite `ha` using `[X.F.sum_vecAt, tanPull_vec (X.F.M k).toMChart ρ e hx hx']`. Establish `hc` using `(vec (X.F.M k).toMChart _ hx').injective ha`. Rewrite `hc` using `[X.F.uAt_spMap k ρ q hz hz']`. Establish `hWρ : W.map ρ * (X.F.uAt k q hz τ).map ρ = 1`.
+
+Rewrite using `[← Matrix.map_mul, hW, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `ha2 : (W.map ρ).mulVec (fun j => ρ (cv j)) = a`. Rewrite using `[← hc, Matrix.mulVec_mulVec, hWρ, Matrix.one_mulVec]`. Use `⟨W.mulVec cv, ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `show _ = ∑ i, _ • X.F.vecAt k q hz rfl τ i`.
+
+Rewrite using `[X.F.sum_vecAt]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply `hρ` to reduce the goal to its premises. Rewrite using `[RingHom.map_mulVec]`.
+
+Establish `: (ρ ∘ W.mulVec cv) = a`. Rewrite using `[← ha2]`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec ρ W cv i`. Rewrite using `[this, hc]`.
+
+Establish `hb' : vec (X.F.M k).toMChart (q ≫ X.π) hx cv = vec (X.F.M k).toMChart (q ≫ X.π) hx ((X.F.uAt k q hz τ).mulVec b)`. Rewrite using `[← X.F.sum_vecAt]`. Conclude with `hb`. Use `(vec (X.F.M k).toMChart _ hx).injective hb'` as an intermediate fact. Rewrite using `[this, Matrix.mulVec_mulVec, hW, Matrix.one_mulVec]`.
+-/
 theorem exists_eigFrame_of_top {X : FlagCover Y} {V K : Type} [CommRing V] [CommRing K] [Algebra c.F K]
     (ρ : V →+* K) (hρ : Function.Injective ρ) (φ : c.F →+* V) (hφ : ρ.comp φ = algebraMap c.F K)
     (q : Sp V ⟶ X.YY) (k : X.F.J) (hz : ⊤ ≤ q ⁻¹ᵁ X.F.U k) (hz' : ⊤ ≤ (spMap ρ ≫ q) ⁻¹ᵁ X.F.U k)
@@ -101,6 +125,11 @@ theorem exists_eigFrame_of_top {X : FlagCover Y} {V K : Type} [CommRing V] [Comm
       have := (vec (X.F.M k).toMChart _ hx).injective hb'
       rw [this, Matrix.mulVec_mulVec, hW, Matrix.one_mulVec]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y X V K _ _ _ _ _ _ φ hφ q k hz yF hyF hpt`. Establish `hz' : ⊤ ≤ (spMap (algebraMap V K) ≫ q) ⁻¹ᵁ X.F.U k` using `le_preimage_comp _ hz`. Establish `key : ∀ (x'' : Sp K ⟶ Y.X) (hx : (spMap (algebraMap V K) ≫ q) ≫ X.π = x''), (∀ σ, initSpan K (X.F.vecAt k _ hz' hx σ) (Dw.mult σ) = eigLie c x'' σ) → ∀ σ, initSpan K (X.F.vecAt k _ hz' rfl σ) (Dw.mult σ) = eigLie c ((spMap (algebraMap V K) ≫ q) ≫ X.π) σ`. Introduce and unpack `x'' rfl h`. Conclude with `h`.
+
+Conclude with `exists_eigFrame_of_top (algebraMap V K) (IsFractionRing.injective V K) φ hφ q k hz hz' (key _ hpt fun σ => X.top K yF hyF _ hpt k hz' σ)`.
+-/
 theorem exists_eigFrame_vecAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (X : FlagCover Y) (V K : Type) [CommRing V] [IsDomain V] [Field K] [Algebra V K] [IsFractionRing V K] [Algebra c.F K] (φ : c.F →+* V), (algebraMap V K).comp φ = algebraMap c.F K → ∀ (q : Sp V ⟶ X.YY) (k : X.F.J) (hz : ⊤ ≤ q ⁻¹ᵁ X.F.U k) (yF : Sp K ⟶ Xo.XF c), yF ≫ pullback.snd _ _ = spMap (algebraMap c.F K) → (spMap (algebraMap V K) ≫ q) ≫ X.π = yF ≫ Y.j → ∃ f : GlobalTheory.ShFam.EigFrame Y φ (q ≫ X.π), ∀ τ i, f.v τ i = (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv (X.F.vecAt k q hz rfl τ i)).left := by
   intro E _ _ _ H Dw l Xo c O _ β Y X V K _ _ _ _ _ _ φ hφ q k hz yF hyF hpt
   have hz' : ⊤ ≤ (spMap (algebraMap V K) ≫ q) ⁻¹ᵁ X.F.U k := le_preimage_comp _ hz

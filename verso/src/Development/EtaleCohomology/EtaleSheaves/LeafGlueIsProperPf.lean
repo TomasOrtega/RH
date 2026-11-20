@@ -22,6 +22,11 @@ def cov {hAD hBD} (G : Glued Ω L A B (Dr Ω A u) hAD hBD) : G.C0.OpenCover :=
     (by intro b; cases b <;> [exact G.hiB; exact G.hiA])
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Use `IsZariskiLocalAtSource.of_openCover (P := @AlgebraicGeometry.LocallyOfFiniteType) (cov G) ?_` and prove the remaining obligations. Introduce `b`. Consider the cases of `b`. Use `show LocallyOfFiniteType (G.iB ≫ G.c0)`. Rewrite using `[G.hcB, HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`.
+
+Conclude with `RingHom.finiteType_algebraMap.mpr h.2.2.2.2.1`. Use `show LocallyOfFiniteType (G.iA ≫ G.c0)`. Rewrite using `[G.hcA, HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.finiteType_algebraMap.mpr h.2.2.2.1`.
+-/
 theorem lft (h : GH Ω L A B u) {hAD hBD} (G : Glued Ω L A B (Dr Ω A u) hAD hBD) :
     LocallyOfFiniteType G.c0 := by
   refine IsZariskiLocalAtSource.of_openCover (P := @AlgebraicGeometry.LocallyOfFiniteType) (cov G) ?_
@@ -35,6 +40,9 @@ theorem lft (h : GH Ω L A B u) {hAD hBD} (G : Glued Ω L A B (Dr Ω A u) hAD hB
     exact RingHom.finiteType_algebraMap.mpr h.2.2.2.1
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Rewrite using `[HasAffineProperty.iff_of_isAffine (P := @AlgebraicGeometry.QuasiCompact)]`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← G.cover]`. Conclude with `(isCompact_range G.iA.base.hom.continuous).union (isCompact_range G.iB.base.hom.continuous)`.
+-/
 theorem qc {hAD hBD} (G : Glued Ω L A B (Dr Ω A u) hAD hBD) : QuasiCompact G.c0 := by
   rw [HasAffineProperty.iff_of_isAffine (P := @AlgebraicGeometry.QuasiCompact)]
   refine ⟨?_⟩
@@ -49,6 +57,11 @@ def LeafGlueExistence : Prop := ∀ (Ω L : Type) [Field Ω] [Field L] [Algebra 
   (h : GH Ω L A B u) (G : Glued Ω L A B (Dr Ω A u) (le_Dr_A A u) (le_Dr_B A B u h.2.2.2.2.2.2.2.2.2.2.2.1)),
   ValuativeCriterion.Existence G.c0
 
+/- English proof (translation)
+Introduce `Ω L _ _ _ A B u h G`. Use `hS Ω L A B u h G` as an intermediate fact. Use `qc G` as an intermediate fact. Use `lft h G` as an intermediate fact. Establish `: UniversallyClosed G.c0` using `UniversallyClosed.of_valuativeCriterion _ (hE Ω L A B u h G)`.
+
+Conclude with `{}`.
+-/
 theorem LeafGlueIsProper_of (hS : LeafGlueSep) (hE : LeafGlueExistence) : LeafGlueIsProper := by
   intro Ω L _ _ _ A B u h G
   have := hS Ω L A B u h G

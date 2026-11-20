@@ -22,10 +22,16 @@ def affSec (s : X ⟶ Sp k) (q : ℕ) : AffOp X ⥤ ModuleCat.{0} k :=
   letI := algΓ s
   (affIncl X).op ⋙ sectionsPresheaf k (Omega s q)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_sec_eq (s : X ⟶ Sp k) (U : X.Opens) (r : k) :
     letI := algΓ s
     algebraMap k (Sec s U) r = restrictGlobal X U (algebraMap k Γ(X, ⊤) r) := rfl
 
+/- English proof (translation)
+Use `letI := algΓ s`. Rewrite using `[algebra_compatible_smul (Sec s U) r x, map_smul, algebraMap_sec_eq]`. Both sides reduce to the same expression.
+-/
 theorem toOm_smul_k (s : X ⟶ Sp k) (q : ℕ) (U : X.Opens) (r : k) (x : OmU s U q) :
     letI := algΓ s
     toOm s q U (r • x) = restrictGlobal X U (algebraMap k Γ(X, ⊤) r) • toOm s q U x := by
@@ -43,6 +49,9 @@ def omSecEquiv (s : X ⟶ Sp k) (q : ℕ) (U : X.affineOpens) :
       rw [toOm_smul_k, sectionsOn.toΓ_smul]
       rfl) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toΓ_omSecEquiv (s : X ⟶ Sp k) (q : ℕ) (U : X.affineOpens) (x : OmU s U.1 q) :
     letI := algΓ s
     sectionsOn.toΓ (Omega s q) U.1 (omSecEquiv s q U x) = toOm s q U.1 x := rfl
@@ -54,6 +63,9 @@ def omSecIso (s : X ⟶ Sp k) (q : ℕ) : OmF (OAff s) q ≅ affSec s q :=
     apply (sectionsOn.toΓ (Omega s q) V.unop.1).injective
     exact (res_toOm s q (leOfHom a.unop) x).symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toΓ_omSecIso_hom (s : X ⟶ Sp k) (q : ℕ) (U : AffOp X) (x : OmU s U.unop.1 q) :
     letI := algΓ s
     sectionsOn.toΓ (Omega s q) U.unop.1 (((omSecIso s q).hom.app U).hom x) = toOm s q U.unop.1 x := rfl
@@ -90,6 +102,9 @@ def pairPtθ (hf : f ≫ s = s') : (pairPtX hf).G ⟶ (pairPtX' hf).G where
   naturality p q a := AffPt.hom_ext (CommAlgCat.hom_ext (AlgHom.ext fun b ↦
     ((pairPull (over_id hf)).naturality a b)))
 
+/- English proof (translation)
+The claim follows from `SemiHom.mOm_mOm _ _ _ (fun _ ↦ rfl) x`.
+-/
 theorem pairPtθ_compat (hf : f ≫ s = s') (q : ℕ) (p : (Pair f)ᵒᵖ)
     (x : (OmF (OPt s) q).obj ((pairPtX hf).G.obj p)) :
     (omMor (pairPtX' hf) q).τ p (((OmF (OPt s) q).map ((pairPtθ hf).app p)).hom x) =
@@ -114,6 +129,9 @@ def pairSecMor (hf : f ≫ s = s') (q : ℕ) :
         (appTop_algebraMap hf) (omegaPull hf q) (Pair.le_snd (leOfHom a.unop)) x)).trans
         ((sectionsOn.res_res k _ _ _ _).trans (sectionsOn.res_res k _ _ _ _).symm) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toΓ_pairSecMor (hf : f ≫ s = s') (q : ℕ) (p : (Pair f)ᵒᵖ)
     (x : (affSec s q).obj ((pairSnd f).obj p)) :
     letI := algΓ s

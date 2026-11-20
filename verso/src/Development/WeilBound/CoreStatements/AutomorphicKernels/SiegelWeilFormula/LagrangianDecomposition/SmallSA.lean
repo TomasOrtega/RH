@@ -12,14 +12,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def cmbE (bs : Module.Basis (Fin 2) F E) (c : Fin 2 → AF F) : AE F E := ∑ t, c t • ((1 : AF F) ⊗ₜ[F] bs t)
 
+/- English proof (translation)
+Simplify using `[cmbE, Algebra.TensorProduct.basis_apply]`.
+-/
 theorem cmbE_eq (bs : Module.Basis (Fin 2) F E) (c : Fin 2 → AF F) :
     cmbE bs c = ∑ t, c t • (Algebra.TensorProduct.basis (AF F) bs) t := by
   simp [cmbE, Algebra.TensorProduct.basis_apply]
 
+/- English proof (translation)
+Rewrite using `[cmbE_eq, Module.Basis.repr_sum_self]`.
+-/
 theorem repr_cmbE_apply (bs : Module.Basis (Fin 2) F E) (c : Fin 2 → AF F) (t : Fin 2) :
     (Algebra.TensorProduct.basis (AF F) bs).repr (cmbE bs c) t = c t := by
   rw [cmbE_eq, Module.Basis.repr_sum_self]
 
+/- English proof (translation)
+Rewrite using `[cmbE_eq]`. Conclude with `(Algebra.TensorProduct.basis (AF F) bs).sum_repr z`.
+-/
 theorem cmbE_repr (bs : Module.Basis (Fin 2) F E) (z : AE F E) :
     cmbE bs (fun t => (Algebra.TensorProduct.basis (AF F) bs).repr z t) = z := by
   rw [cmbE_eq]
@@ -28,11 +37,17 @@ theorem cmbE_repr (bs : Module.Basis (Fin 2) F E) (z : AE F E) :
 def cmbB {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (y : Fin m × Fin n × Fin 2 → AF F) : Mx F E m n :=
   fun a i => cmbE bs fun t => y (a, i, t)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [crdB, cmbB, repr_cmbE_apply]`.
+-/
 theorem crdB_cmbB {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (y : Fin m × Fin n × Fin 2 → AF F) :
     crdB bs (cmbB bs y) = y := by
   funext k
   simp only [crdB, cmbB, repr_cmbE_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `only [cmbB, crdB, cmbE_repr]`.
+-/
 theorem cmbB_crdB {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (X : Mx F E m n) : cmbB bs (crdB bs X) = X := by
   funext a i
   simp only [cmbB, crdB, cmbE_repr]
@@ -40,16 +55,28 @@ theorem cmbB_crdB {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (X : Mx F E m n) :
 def Lk {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (M : Matrix (Fin m) (Fin m) (AE F E)) (y : Fin m × Fin n × Fin 2 → AF F) :
     Fin m × Fin n × Fin 2 → AF F := crdB bs (M * cmbB bs y)
 
+/- English proof (translation)
+Rewrite using `[Lk, cmbB_crdB]`.
+-/
 theorem Lk_crdB {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (M : Matrix (Fin m) (Fin m) (AE F E)) (X : Mx F E m n) :
     Lk bs M (crdB bs X) = crdB bs (M * X) := by rw [Lk, cmbB_crdB]
 
+/- English proof (translation)
+Rewrite using `[Lk, Matrix.one_mul, crdB_cmbB]`.
+-/
 theorem Lk_one {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (y : Fin m × Fin n × Fin 2 → AF F) : Lk bs 1 y = y := by
   rw [Lk, Matrix.one_mul, crdB_cmbB]
 
+/- English proof (translation)
+Rewrite using `[Lk, Lk, Lk, cmbB_crdB, Matrix.mul_assoc]`.
+-/
 theorem Lk_mul {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (M M' : Matrix (Fin m) (Fin m) (AE F E))
     (y : Fin m × Fin n × Fin 2 → AF F) : Lk bs (M * M') y = Lk bs M (Lk bs M' y) := by
   rw [Lk, Lk, Lk, cmbB_crdB, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `: cmbB (m` using `m) (n := n) bs 0 = 0 := by`. Use function extensionality and compare the values at `a i`. Simplify using `[cmbB, cmbE]`. Use function extensionality and compare the values at `k`. Simplify using `[Lk, this, crdB]`.
+-/
 theorem Lk_zero {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (M : Matrix (Fin m) (Fin m) (AE F E)) :
     Lk (n := n) bs M 0 = 0 := by
   have : cmbB (m := m) (n := n) bs 0 = 0 := by
@@ -61,19 +88,33 @@ def Lc {m : ℕ} (bs : Module.Basis (Fin 2) F E) (M : Matrix (Fin m) (Fin m) (AE
     Fin m × Fin 2 → AF F :=
   fun p => (Algebra.TensorProduct.basis (AF F) bs).repr ((M *ᵥ fun a => cmbE bs fun t => v (a, t)) p.1) p.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Establish `hz : (fun _ : Fin m => (0 : AE F E)) = 0` using `rfl`. Simplify using `[Lc, cmbE, hz, Matrix.mulVec_zero]`.
+-/
 theorem Lc_zero {m : ℕ} (bs : Module.Basis (Fin 2) F E) (M : Matrix (Fin m) (Fin m) (AE F E)) : Lc bs M 0 = 0 := by
   funext p
   have hz : (fun _ : Fin m => (0 : AE F E)) = 0 := rfl
   simp [Lc, cmbE, hz, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Rewrite using `[Equiv.symm_apply_eq]`. Both sides reduce to the same expression.
+-/
 theorem triple_index_symm_embedded {m n N : ℕ} (h : n + 1 = N) (a : Fin m) (j : Fin n) (t : Fin 2) :
     (eK m h).symm (a, em0 h j, t) = Sum.inl (a, j, t) := by
   rw [Equiv.symm_apply_eq]; rfl
 
+/- English proof (translation)
+Rewrite using `[Equiv.symm_apply_eq]`. Both sides reduce to the same expression.
+-/
 theorem triple_index_symm_last {m n N : ℕ} (h : n + 1 = N) (a : Fin m) (t : Fin 2) :
     (eK m h).symm (a, i0 h, t) = Sum.inr (a, t) := by
   rw [Equiv.symm_apply_eq]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Break down `k with ⟨a, j, t⟩ | ⟨a, t⟩` into its components or cases. Establish `hk : eK m h (Sum.inl (a, j, t)) = (a, em0 h j, t)` using `rfl`. Simplify using `only [Function.comp_apply, hk, Sum.elim_inl, Lk, crdB, cmbB, Matrix.mul_apply, triple_index_symm_embedded]`. Establish `hk : eK m h (Sum.inr (a, t)) = (a, i0 h, t)` using `rfl`.
+
+Simplify using `only [Function.comp_apply, hk, Sum.elim_inr, Lk, Lc, crdB, cmbB, Matrix.mul_apply, Matrix.mulVec, dotProduct, triple_index_symm_last]`.
+-/
 theorem Lk_eK {m n N : ℕ} (h : n + 1 = N) (bs : Module.Basis (Fin 2) F E) (M : Matrix (Fin m) (Fin m) (AE F E))
     (x : K1 m n → AF F) :
     Lk bs M (x ∘ (eK m h).symm) ∘ eK m h = Sum.elim (Lk bs M (x ∘ Sum.inl)) (Lc bs M (x ∘ Sum.inr)) := by

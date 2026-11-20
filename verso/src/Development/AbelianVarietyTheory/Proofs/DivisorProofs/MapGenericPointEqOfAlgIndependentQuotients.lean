@@ -11,6 +11,27 @@ namespace GlobalTheory.GenericImage
 
 open scoped GlobalTheory.ProjSpace
 
+/- English proof (translation)
+Introduce `k _ X _ p D _ π hπ x hx0 ⟨h, hx⟩ hinj`. Use `set W := π ⁻¹ᵁ ProjSpace.chart k D 0 with hW`. Set `Φ : Γ(PSpace k D, ProjSpace.chart k D 0) →+* X.functionField` to `(X.presheaf.germ W (genericPoint X) h).hom.comp (π.appLE (ProjSpace.chart k D 0) W le_rfl).hom`. Establish `hconst : (X.presheaf.germ W (genericPoint X) h).hom.comp (GlobalTheory.QCoh.Qcqs.baseRingHom (π ≫ PSpace.str k D) W).hom = GlobalTheory.toFunctionField p`. Substitute `hπ` using the available equality.
+
+Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.QCoh.Qcqs.baseRingHom, GlobalTheory.toFunctionField, Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply X.presheaf _ _ _ _`. Establish `key : ∀ a : Γ(PSpace k D, ProjSpace.chart k D 0), a ≠ 0 → Φ a ≠ 0`. Introduce `a ha`.
+
+Take `⟨P, rfl⟩` from `ProjSpace.aeval_ratio_surjective k D 0 a`. Set `s : Fin (D + 1) → MvPolynomial (Fin D) k` to `Fin.cons 1 MvPolynomial.X`. Establish `e1 : ∀ (A : Type) [CommRing A] (c : k →+* A) (r : Fin (D + 1) → A), r 0 = 1 → MvPolynomial.eval₂Hom c r P = MvPolynomial.eval₂Hom c (fun j : Fin D => r j.succ) (MvPolynomial.bind₁ s P)`. Introduce `A _ c r hr`. Rewrite using `[MvPolynomial.eval₂Hom_bind₁]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[s, hr]`. Simplify using `[s]`.
+
+Establish `e2 : Φ (MvPolynomial.aeval (ProjSpace.ratio k D 0) P) = MvPolynomial.eval₂Hom (GlobalTheory.toFunctionField p) (fun j => x j / x 0) P`. Use `congrArg (fun t => t P) (ProjSpace.appLE_comp_aeval_ratio (φ := π) (W := W) (i := 0) (hi := le_rfl))` as an intermediate fact. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe] at this`. Simplify using `only [Φ, RingHom.comp_apply]`. Use `erw [this]`.
+
+Rewrite using `[MvPolynomial.map_eval₂Hom, hconst]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `hx j`. Rewrite using `[e2, e1 _ _ _ (div_self hx0)]`.
+
+Introduce `h0`. Establish `hQ : MvPolynomial.bind₁ s P = 0` using `hinj (h0.trans (map_zero _).symm)`. Apply `ha` to reduce the goal to its premises. Rewrite using `[MvPolynomial.aeval_def, ← MvPolynomial.coe_eval₂Hom, e1 _ _ _ (by rw [ProjSpace.ratio, ProjSpace.ratioOn_self]), hQ, map_zero]`. Establish `hmem : ∀ a : Γ(PSpace k D, ProjSpace.chart k D 0), a ≠ 0 → π (genericPoint X) ∈ (PSpace k D).basicOpen a`.
+
+Introduce `a ha`. Establish `h1 : genericPoint X ∈ X.basicOpen ((π.appLE (ProjSpace.chart k D 0) W le_rfl).hom a)`. Rewrite using `[Scheme.mem_basicOpen X _ _ h]`. Conclude with `(key a ha).isUnit`. Establish `h2` using `(Scheme.basicOpen_appLE π W _ le_rfl a).le h1`.
+
+Conclude with `h2.2`. Use `IsGenericPoint.eq ?_ (genericPoint_spec _)` and prove the remaining obligations. Use `Dense.closure_eq (dense_iff_inter_open.2 fun U hU hne => ?_)` and prove the remaining obligations. Take `⟨y, -, hyU, hyc⟩` from `(IrreducibleSpace.isIrreducible_univ (PSpace k D)).2 U (ProjSpace.chart k D 0 : Set (PSpace k D)) hU (ProjSpace.chart k D 0).2 (by simpa using hne) ⟨π (genericPoint X), trivial, h⟩`. Take `⟨f, hf, hyf⟩` from `(ProjSpace.isAffineOpen_chart k D 0).exists_basicOpen_le (V := ⟨U, hU⟩) ⟨y, hyU⟩ hyc`.
+
+Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Rewrite `hyf` using `[Scheme.basicOpen_zero]`. Conclude with `hyf`. Conclude with `⟨_, hf (hmem f hf0), rfl⟩`.
+-/
 theorem map_genericPoint_eq : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) [IsIntegral (PSpace k D)] (π : X ⟶ PSpace k D), π ≫ PSpace.str k D = p → ∀ x : Fin (D + 1) → X.functionField, x 0 ≠ 0 → (∃ h : genericPoint X ∈ π ⁻¹ᵁ ProjSpace.chart k D 0, ∀ j, X.presheaf.germ (π ⁻¹ᵁ ProjSpace.chart k D 0) (genericPoint X) h (ProjSpace.pullRatio π (π ⁻¹ᵁ ProjSpace.chart k D 0) 0 le_rfl j) = x j / x 0) → Function.Injective (MvPolynomial.eval₂Hom (GlobalTheory.toFunctionField p) fun j : Fin D => x j.succ / x 0) → π (genericPoint X) = genericPoint (PSpace k D) := by
   intro k _ X _ p D _ π hπ x hx0 ⟨h, hx⟩ hinj
   set W := π ⁻¹ᵁ ProjSpace.chart k D 0 with hW

@@ -16,10 +16,18 @@ variable {E : Type} [Field E] [NumberField E] {n N : ℕ}
 def imL (b : Matrix (Fin N) (Fin N) E) : AddSubgroup (Fin N → E) :=
   (stdL E N).toAddSubgroup.map (Matrix.toLin' b).toAddMonoidHom
 
+/- English proof (translation)
+Simplify using `[imL]`.
+-/
 theorem mem_imL {b : Matrix (Fin N) (Fin N) E} {x : Fin N → E} :
     x ∈ imL b ↔ ∃ v ∈ stdL E N, b *ᵥ v = x := by
   simp [imL]
 
+/- English proof (translation)
+Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure]`. Use extensionality with `x`. Rewrite using `[Submodule.mem_toAddSubgroup, Submodule.mem_toAddSubgroup, Base.mem_stdL, Module.Basis.mem_span_iff_repr_mem, Sigma.forall]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Simplify using `only [Pi.basis_repr]`.
+
+Rewrite using `[← Module.Basis.mem_span_iff_repr_mem, mem_span_integralBasis]`. Conclude with `⟨fun h => ⟨⟨_, h⟩, rfl⟩, fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe⟩`.
+-/
 theorem std_eq_closure : (stdL E N).toAddSubgroup =
     AddSubgroup.closure (Set.range (Pi.basis fun _ : Fin N => integralBasis E)) := by
   rw [← Submodule.span_int_eq_addSubgroupClosure]
@@ -31,6 +39,13 @@ theorem std_eq_closure : (stdL E N).toAddSubgroup =
   rw [← Module.Basis.mem_span_iff_repr_mem, mem_span_integralBasis]
   exact ⟨fun h => ⟨⟨_, h⟩, rfl⟩, fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe⟩
 
+/- English proof (translation)
+Set `B` to `Pi.basis fun _ : Fin N => integralBasis E`. Establish `key : ∀ b : Matrix (Fin N) (Fin N) E, b.det ≠ 0 → ∃ B' : Module.Basis _ ℚ (Fin N → E), imL b = AddSubgroup.closure (Set.range B') ∧ B.det B' = Algebra.norm ℚ b.det`. Introduce `b hb`. Establish `hd : LinearMap.det (Matrix.toLin' b) ≠ 0` using `by rwa [LinearMap.det_toLin']`. Use `⟨B.map (((Matrix.toLin' b).equivOfDetNeZero hd).restrictScalars ℚ), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[imL, std_eq_closure, AddMonoidHom.map_closure, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[← LinearMap.det_toLin', ← LinearMap.det_restrictScalars]`. Use `B.det_comp ((Matrix.toLin' b).restrictScalars ℚ) B` as an intermediate fact. Rewrite `this` using `[B.det_self, mul_one]`.
+
+Conclude with `this`. Take `⟨B₁, e₁, d₁⟩` from `key b₁ h₁`. Take `⟨B₂, e₂, d₂⟩` from `key b₂ h₂`. Rewrite using `[AddSubgroup.relIndex_eq_abs_det _ _ hle B₁ B₂ e₁ e₂, ← d₁, ← d₂, ← abs_mul, mul_comm, Module.Basis.det_mul_det]`.
+-/
 theorem relIndex_imL {b₁ b₂ : Matrix (Fin N) (Fin N) E} (h₁ : b₁.det ≠ 0) (h₂ : b₂.det ≠ 0)
     (hle : imL b₁ ≤ imL b₂) :
     ((imL b₁).relIndex (imL b₂) : ℚ) * |Algebra.norm ℚ b₂.det| = |Algebra.norm ℚ b₁.det| := by
@@ -51,6 +66,25 @@ theorem relIndex_imL {b₁ b₂ : Matrix (Fin N) (Fin N) E} (h₁ : b₁.det ≠
   rw [AddSubgroup.relIndex_eq_abs_det _ _ hle B₁ B₂ e₁ e₂, ← d₁, ← d₂, ← abs_mul, mul_comm,
     Module.Basis.det_mul_det]
 
+/- English proof (translation)
+Establish `hs : ((t : E) • (1 : Matrix (Fin N) (Fin N) E)).det ≠ 0`. Rewrite using `[Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 ht.ne')`. Use `set s := (t : E) • (1 : Matrix (Fin N) (Fin N) E) with hsd`. Establish `h1 : imL (1 : Matrix (Fin N) (Fin N) E) = (stdL E N).toAddSubgroup`.
+
+Use extensionality with `x`. Simplify using `[mem_imL]`. Establish `hKX : imL s ≤ 𝔛.toAddSubgroup` using `fun x hx => by`. Take `⟨v, hv, rfl⟩` from `mem_imL.1 hx`. Simplify `h v hv` using `[hsd, Matrix.smul_mulVec]`.
+
+Establish `hKL : imL s ≤ (stdL E N).toAddSubgroup` using `fun x hx => by`. Take `⟨v, hv, rfl⟩` from `mem_imL.1 hx`. Simplify `nat_smul_mem _ t hv` using `[hsd, Matrix.smul_mulVec]`. Establish `e1` using `relIndex_imL hs hb (hKX.trans hX)`. Establish `e2` using `relIndex_imL hs (b₂ := 1) (by simp) (h1 ▸ hKL)`.
+
+Rewrite `e2` using `[h1, Matrix.det_one, map_one, abs_one, mul_one]`. Establish `hn : 0 < |Algebra.norm ℚ s.det|` using `abs_pos.2 (Algebra.norm_ne_zero_iff.2 hs)`. Establish `n1 : (imL s).relIndex (imL b) ≠ 0` using `fun h0 => by`. Rewrite using `[h0] at e1; simp at e1; exact hn.ne' (by simpa using e1.symm)`. Establish `l1` using `AddSubgroup.relIndex_le_of_le_right (H := imL s) hX n1`.
+
+Establish `m1` using `AddSubgroup.relIndex_mul_relIndex _ _ _ (le_inf hKL hKX) (inf_le_right : (stdL E N).toAddSubgroup ⊓ 𝔛.toAddSubgroup ≤ _)`. Establish `m2` using `AddSubgroup.relIndex_mul_relIndex _ _ _ (le_inf hKL hKX) (inf_le_left : (stdL E N).toAddSubgroup ⊓ 𝔛.toAddSubgroup ≤ _)`. Rewrite `m1` using `[AddSubgroup.inf_relIndex_right]`. Rewrite `m2` using `[AddSubgroup.inf_relIndex_left]`. Rewrite `l1` using `[← m1]`.
+
+Rewrite `e2` using `[← m2]`. Unfold `gidx`. Generalize the expression as in `(imL s).relIndex ((stdL E N).toAddSubgroup ⊓ 𝔛.toAddSubgroup) = k at *`. Generalize the expression as in `(stdL E N).toAddSubgroup.relIndex 𝔛.toAddSubgroup = p at *`. Generalize the expression as in `𝔛.toAddSubgroup.relIndex (stdL E N).toAddSubgroup = q at *`.
+
+Establish `hkq : (0 : ℚ) < (k * q : ℕ)` using `e2 ▸ hn`. Establish `hk : 0 < k` using `Nat.pos_of_mul_pos_right (by exact_mod_cast hkq)`. Establish `hq : 0 < q` using `Nat.pos_of_mul_pos_left (by exact_mod_cast hkq)`. Establish `l2 : ((k * p : ℕ) : ℚ) * |Algebra.norm ℚ b.det| ≤ (k * q : ℕ)`. Rewrite using `[e2, ← e1]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast l1) (abs_nonneg _)`. Establish `l3 : (p : ℚ) * |Algebra.norm ℚ b.det| ≤ q`. Move the coercions through the operations in `at l2`. Rewrite `l2` using `[mul_assoc]`. Conclude with `le_of_mul_le_mul_left l2 (by exact_mod_cast hk)`.
+
+Rewrite using `[div_mul_eq_mul_div, div_le_one (by exact_mod_cast hq)]`. Conclude with `l3` after adjusting the coercions.
+-/
 theorem gidx_mul_le {𝔛 : Lt E N} {t : ℕ} (ht : 0 < t) (h : ∀ v ∈ stdL E N, (t : E) • v ∈ 𝔛)
     {b : Matrix (Fin N) (Fin N) E} (hb : b.det ≠ 0) (hX : 𝔛.toAddSubgroup ≤ imL b) :
     gidx 𝔛 * |(Algebra.norm ℚ b.det : ℝ)| ≤ 1 := by
@@ -98,6 +132,17 @@ theorem gidx_mul_le {𝔛 : Lt E N} {t : ℕ} (ht : 0 < t) (h : ∀ v ∈ stdL E
   rw [div_mul_eq_mul_div, div_le_one (by exact_mod_cast hq)]
   exact_mod_cast l3
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `NearPrim.exists_reduce E`. Take `⟨M, hM⟩` from `NearPrim.exists_approx E`. Use `⟨M.factorial ^ N, pow_pos M.factorial_pos _, fun 𝔛 t ht h1 h2 => ?_⟩` and prove the remaining obligations. Establish `ht0 : (t : E) ≠ 0` using `Nat.cast_ne_zero.2 ht.ne'`. Set `L : AddSubgroup (Fin N → E)` to `{ carrier := {s | (t : E) • s ∈ 𝔛} add_mem' := fun {s t} hs ht => by`.
+
+Rewrite using `[Set.mem_setOf_eq, smul_add]`. Conclude with `add_mem hs ht`. Use the proof step `zero_mem' := by simp`. Use the proof step `neg_mem' := fun {s} hs => by rw [Set.mem_setOf_eq, smul_neg]; exact neg_mem hs }`. Establish `hO : ∀ s : Fin N → E, (∀ i, IsIntegral ℤ (s i)) → s ∈ L` using `fun s hs => h2 s ((Base.mem_stdL s).2 hs)`.
+
+Establish `hsm : ∀ y : E, IsIntegral ℤ y → ∀ s ∈ L, y • s ∈ L` using `fun y hy s hs => by`. Express the relevant statement in the definitionally equal form `(t : E) • y • s ∈ 𝔛`. Rewrite using `[smul_comm]`. Conclude with `𝔛.smul_mem (⟨y, hy⟩ : 𝓞 E) hs`. Establish `hden : ∀ s ∈ L, ∀ i, IsIntegral ℤ (((t * t : ℤ) : E) * s i)` using `fun s hs i => by`.
+
+Use `(Base.mem_stdL _).1 (h1 _ hs) i` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Use `choose a haL ha0 hai haC hmin using NearPrim.exists_rows L hO (t * t) (by positivity) hden C hC`. Use `⟨(t : E) • (Matrix.of a)ᵀ, ?_, fun v hv => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_smul, Matrix.det_transpose, Matrix.det_of_lowerTriangular (Matrix.of a) (fun i j h => ha0 i j h)]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ ht0) (Finset.prod_ne_zero_iff.2 fun i _ => hai i)`. Conclude with `colsIn_mulVec (fun j => haL j) hv`. Rewrite `hu` using `[Matrix.smul_mulVec, Matrix.mulVec_transpose]`. Conclude with `(Base.mem_stdL _).2 (NearPrim.integral_coord L hsm M hM (Matrix.of a) haL ha0 hai hmin N le_rfl u (fun j hj => absurd j.2 (not_lt.2 hj)) hu)`.
+-/
 theorem exists_frame (E : Type) [Field E] [NumberField E] (N : ℕ) : ∃ c : ℕ, 0 < c ∧
     ∀ (𝔛 : Lt E N) (t : ℕ), 0 < t → (∀ v ∈ 𝔛, (t : E) • v ∈ stdL E N) →
       (∀ v ∈ stdL E N, (t : E) • v ∈ 𝔛) → ∃ b : Matrix (Fin N) (Fin N) E, b.det ≠ 0 ∧
@@ -134,6 +179,17 @@ theorem exists_frame (E : Type) [Field E] [NumberField E] (N : ℕ) : ∃ c : �
 
 variable [IsCMField E]
 
+/- English proof (translation)
+Establish `hex` using `exists_mult hφ.pos.2 hA`. Use `⟨⟨hφ.pos.1, Nat.mul_pos hφ.pos.2 hc0⟩, ?_, fun Λ hΛ => (twist_level hφ hA a c h1 h2 hΛ).1, fun Λ hΛ => (twist_level hφ hA a c h1 h2 hΛ).2, ?_⟩` and prove the remaining obligations. Introduce `h hh Λ hΛ Λ' hΛ' hm x`. Take `⟨R', hR'⟩` from `twist_adm hφ hA`. Use `hR'.equiv h hh Λ hΛ Λ' hΛ' hm (x * a)` as an intermediate fact.
+
+Rewrite `this` using `[← Matrix.mul_assoc]`. Then use the resulting hypothesis. Introduce `Λ hΛ Λ' hΛ' ⟨u, hu, hc, h3, h4⟩ x hx hx'`. Establish `hct : u.Coprime (c * c)`. Establish `: u.Coprime c` using `hc.coprime_dvd_right ⟨R * M, by ring⟩`. Conclude with `this.mul_right this`.
+
+Establish `key : ∀ A B : Lt E n, (∀ v ∈ A, (u : E) • v ∈ B) → ColsIn B (((R * c : ℕ) : E) • x) → (∀ ξ ∈ 𝔛, (R : E) • ((x * a) *ᵥ ξ) ∈ A) → ∀ ξ ∈ 𝔛, (R : E) • ((x * a) *ᵥ ξ) ∈ B`. Introduce `A B hAB hB h ξ hξ`. Use `mem_of_coprime B hct (hAB _ (h ξ hξ)) ?_` and prove the remaining obligations. Use `colsIn_mulVec hB (h2 ξ hξ)` as an intermediate fact. Rewrite `this` using `[Matrix.smul_mulVec, Matrix.mulVec_smul, smul_smul, Matrix.mulVec_mulVec]`.
+
+Rewrite using `[smul_smul]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [twist_eq φ hex]`.
+
+Distinguish the cases in `h : ∀ ξ ∈ 𝔛, (R : E) • ((x * a) *ᵥ ξ) ∈ Λ`. Establish `h'` using `key Λ Λ' h3 hx' h`. Rewrite using `[if_pos h, if_pos h']`. Conclude with `hφ.loc Λ hΛ Λ' hΛ' ⟨u, hu, hc.coprime_dvd_right ⟨c, by ring⟩, h3, h4⟩ _ (cols_of_cond hex.choose_spec.2 h) (cols_of_cond hex.choose_spec.2 h')`. Rewrite using `[if_neg h, if_neg (fun h' => h (key Λ' Λ h4 hx h'))]`.
+-/
 theorem admissibleLatticeFamily_moved_by_rational_matrix {M R : ℕ} {φ : Fam E n N} {𝔛 : Lt E N} (hφ : admitted M R φ)
     (hA : Agree (R * M) 𝔛 (stdL E N)) (a : Matrix (Fin N) (Fin N) E) {c : ℕ} (hc0 : 0 < c)
     (h1 : ∀ v ∈ stdL E N, ∃ ξ ∈ 𝔛, a *ᵥ ξ = (c : E) • v)
@@ -173,6 +229,17 @@ end GlobalTheory.SW.TwistMove
 
 open GlobalTheory.SW.TwistMove in
 
+/- English proof (translation)
+Introduce `E _ _ _ N`. Take `⟨c, hc, H⟩` from `exists_frame E N`. Establish `hc0 : (c : E) ≠ 0` using `Nat.cast_ne_zero.2 hc.ne'`. Use `⟨c, |(Algebra.norm ℚ ((c : E) ^ N) : ℝ)|, hc, fun n M R φ 𝔛 hφ _ hA => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, -, h1, h2⟩` from `id hA`.
+
+Take `⟨b, hb, hb1, hb2⟩` from `H 𝔛 t ht h1 h2`. Establish `hu : IsUnit b.det` using `hb.isUnit`. Establish `ha : b⁻¹.det ≠ 0` using `(Matrix.isUnit_nonsing_inv_det b hu).ne_zero`. Establish `k2 : ∀ ξ ∈ 𝔛, (c : E) • (b⁻¹ *ᵥ ξ) ∈ stdL E N` using `fun ξ hξ => hb2 _ (by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec])` and apply the resulting hypothesis.
+
+Use `⟨b⁻¹, ha, ?_, admissibleLatticeFamily_moved_by_rational_matrix hφ hA b⁻¹ hc (fun v hv => ⟨b *ᵥ ((c : E) • v), hb1 _ (TwistAdm.nat_smul_mem _ c hv), by` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]⟩) k2⟩`. Establish `hd : ((c : E)⁻¹ • b).det * ((c : E) ^ N * b⁻¹.det) = 1`. Rewrite using `[Matrix.det_smul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', Fintype.card_fin, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hle` using `gidx_mul_le ht h2 (left_ne_zero_of_mul_eq_one hd) (fun ξ hξ => mem_imL.2 ⟨_, k2 ξ hξ, by`. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_smul, smul_smul, inv_mul_cancel₀ hc0, one_smul, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]⟩)`. Establish `hn` using `congrArg (fun z : E => |((Algebra.norm ℚ z : ℚ) : ℝ)|) hd`. Simplify using `only [map_mul, Rat.cast_mul, abs_mul, map_one, Rat.cast_one, abs_one] at hn`. Use `mul_le_mul_of_nonneg_right hle (mul_nonneg (abs_nonneg (Algebra.norm ℚ ((c : E) ^ N) : ℝ)) (abs_nonneg (Algebra.norm ℚ b⁻¹.det : ℝ)))` as an intermediate fact.
+
+Rewrite `this` using `[mul_assoc, hn, mul_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.SW.twist_move_adm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ), ∃ (c : ℕ) (C : ℝ), 0 < c ∧ ∀ (n M R : ℕ) (φ : Fam E n N) (𝔛 : Lt E N), admitted M R φ → 𝔛.FG → Agree (R * M) 𝔛 (stdL E N) → ∃ a : Matrix (Fin N) (Fin N) E, a.det ≠ 0 ∧ gidx 𝔛 ≤ C * |(Algebra.norm ℚ a.det : ℝ)| ∧ admitted M (R * c) (fun Λ x => twist R 𝔛 φ Λ (x * a)) := by
   intro E _ _ _ N
   obtain ⟨c, hc, H⟩ := exists_frame E N

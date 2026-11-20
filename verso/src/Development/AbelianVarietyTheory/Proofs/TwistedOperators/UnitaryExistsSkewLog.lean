@@ -5,6 +5,17 @@ namespace GlobalTheory
 
 open scoped Matrix.Norms.L2Operator in
 
+/- English proof (translation)
+Establish `hspec` using `spectrum.subset_circle_of_unitary (𝕜 := ℂ) hk`. Establish `hfin` using `Matrix.finite_spectrum k`. Establish `hcont : ∀ f : ℂ → ℂ, ContinuousOn f (spectrum ℂ k)` using `fun f => hfin.continuousOn f`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p : Polynomial ℂ, ∀ z ∈ spectrum ℂ k, p.eval z = Complex.log z := by`. Use `⟨Lagrange.interpolate hfin.toFinset id Complex.log, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Use `Lagrange.eval_interpolate_at_node (s := hfin.toFinset) (v := id) (i := z) Complex.log (Set.injOn_id _) (by simpa using hz)` as an intermediate fact. Simplify using `using this`. Use `⟨cfc Complex.log k, p, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cfc_star, ← cfc_neg]`. Use `cfc_congr fun z hz => ?_` and prove the remaining obligations.
+
+Establish `h1 : ‖z‖ = 1` using `by simpa using hspec hz`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.log_re, Complex.log_im, h1]`. Rewrite using `[← CFC.complex_exp_eq_normedSpace_exp, ← cfc_comp Complex.exp Complex.log k (hg := (Set.Finite.image _ hfin).continuousOn _) (hf := hcont _)]`. Establish `h0 : ∀ z ∈ spectrum ℂ k, (Complex.exp ∘ Complex.log) z = id z`. Introduce `z hz`.
+
+Establish `h1 : ‖z‖ = 1` using `by simpa using hspec hz`. Establish `: z ≠ 0` using `by rintro rfl; simp at h1`. Simplify using `[Complex.exp_log this]`. Rewrite using `[cfc_congr h0, cfc_id ℂ k]`. Rewrite using `[← cfc_polynomial p k]`.
+
+Conclude with `cfc_congr fun z hz => (hp z hz).symm`.
+-/
 theorem unitary_submonoid_exists_skewAdjoint_log_polynomial (n : ℕ) (k : Matrix (Fin n) (Fin n) ℂ)
     (hk : k ∈ unitary (Matrix (Fin n) (Fin n) ℂ)) :
     ∃ (X : Matrix (Fin n) (Fin n) ℂ) (p : Polynomial ℂ),
@@ -34,6 +45,9 @@ theorem unitary_submonoid_exists_skewAdjoint_log_polynomial (n : ℕ) (k : Matri
   · rw [← cfc_polynomial p k]
     exact cfc_congr fun z hz => (hp z hz).symm
 
+/- English proof (translation)
+Establish `hmem : k ∈ unitary (Matrix (Fin n) (Fin n) ℂ)` using `⟨hk, mul_eq_one_comm.mp hk⟩`. Take `⟨X, p, h1, h2, h3⟩` from `unitary_submonoid_exists_skewAdjoint_log_polynomial n k hmem`. Conclude with `⟨X, p, h1, h2, h3⟩`.
+-/
 theorem unitary_exists_skew_log (n : ℕ) (k : Matrix (Fin n) (Fin n) ℂ) (hk : kᴴ * k = 1) :
     ∃ (X : Matrix (Fin n) (Fin n) ℂ) (p : Polynomial ℂ),
       Xᴴ = -X ∧ NormedSpace.exp X = k ∧ X = Polynomial.aeval k p := by

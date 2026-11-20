@@ -28,6 +28,13 @@ def LeafExtTens : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) {S T : Cx (ZMod q)}
     Sec.map (ι.f w) (σ.mul U s t w h a b) = τ.mul U s t w h (Sec.map ((resAug (tw q 0)).f s) a) b) →
   ∀ u : S ⟶ res _ (tw q i), ∃ g : T ⟶ res _ (tw q i), ι ≫ g = u
 
+/- English proof (translation)
+Introduce `q _ i lam`. Set `σ` to `LateralTheory.E.LeafTwTensExPf.tau (sgl (tw q 0)) (res _ (tw q i))`. Set `τ` to `LateralTheory.E.LeafTwTensExPf.tau (res _ (tw q 0)) (res _ (tw q i))`. Establish `hσ : σ.IsTensor` using `LateralTheory.E.LeafTwTensExPf.tau_isTensor _ _`. Establish `hτ : τ.IsTensor` using `LateralTheory.E.LeafTwTensExPf.tau_isTensor _ _`.
+
+Take `⟨u, hu⟩` from `hup _ σ hσ lam`. Take `⟨ι, hι⟩` from `hup _ σ hσ (pre τ (resAug (tw q 0)))`. Take `⟨g, hg⟩` from `hext q i σ τ hσ hτ ι hι u`. Use `⟨post τ g, fun U t x b => ?_⟩` and prove the remaining obligations. Establish `e : Sec.map (ι.f t) (σ.mul U 0 t t (zero_add t) x b) = τ.mul U 0 t t (zero_add t) (Sec.map ((resAug (tw q 0)).f 0) x) b` using `hι U 0 t t (zero_add t) x b`.
+
+Rewrite using `[post_mul, ← e, map_map, ← HomologicalComplex.comp_f, hg, hu]`.
+-/
 theorem LeafExtAlongAug_of (hup : LeafTensUP) (hext : LeafExtTens) : LeafExtAlongAug := by
   intro q _ i lam
   let σ := LateralTheory.E.LeafTwTensExPf.tau (sgl (tw q 0)) (res _ (tw q i))

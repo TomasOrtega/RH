@@ -8,6 +8,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Cardinal
 
 noncomputable section
 
+/- English proof (translation)
+Set `M` to `MvPolynomial ℂ F`. Set `E` to `FractionRing M`. Set `L` to `AlgebraicClosure E`. Establish `: CharZero M` using `charZero_of_injective_algebraMap (R := F) (MvPolynomial.C_injective _ _)`. Establish `: CharZero E` using `charZero_of_injective_algebraMap (R := M) (IsFractionRing.injective M E)`.
+
+Establish `: CharZero L` using `charZero_of_injective_algebraMap (R := E) (algebraMap E L).injective`. Establish `hM : #M ≤ 𝔠`. Use `MvPolynomial.cardinalMk_le_max.trans ?_` and prove the remaining obligations. Rewrite using `[mk_complex]`. Conclude with `max_le (max_le hF le_rfl) aleph0_le_continuum`.
+
+Establish `hE : #E = #M` using `Cardinal.mk_fractionRing M`. Establish `hL : #L ≤ 𝔠` using `(Algebra.IsAlgebraic.cardinalMk_le_max E L).trans (max_le (hE ▸ hM) aleph0_le_continuum)`. Establish `hinj : Function.Injective (fun c : ℂ => algebraMap E L (algebraMap M E (X c)))` using `(algebraMap E L).injective.comp ((IsFractionRing.injective M E).comp MvPolynomial.X_injective)`. Establish `hLc : #L = #ℂ` using `le_antisymm (hL.trans_eq mk_complex.symm) (Cardinal.mk_le_of_injective hinj)`. Take `⟨σ⟩` from `IsAlgClosed.ringEquiv_of_equiv_of_charZero (K := L) (L := ℂ) (by rw [hLc, mk_complex]; exact aleph0_lt_continuum) (Cardinal.eq.1 hLc)`.
+
+Conclude with `⟨σ.toRingHom.comp ((algebraMap E L).comp ((algebraMap M E).comp C))⟩`.
+-/
 theorem exists_ringHom_complex_of_charZero (F : Type) [Field F] [CharZero F] (hF : #F ≤ 𝔠) :
     Nonempty (F →+* ℂ) := by
   let M := MvPolynomial ℂ F
@@ -31,6 +40,25 @@ theorem exists_ringHom_complex_of_charZero (F : Type) [Field F] [CharZero F] (hF
     (by rw [hLc, mk_complex]; exact aleph0_lt_continuum) (Cardinal.eq.1 hLc)
   exact ⟨σ.toRingHom.comp ((algebraMap E L).comp ((algebraMap M E).comp C))⟩
 
+/- English proof (translation)
+Take `⟨_, ⟨hprime, -, hrel⟩, hhor, -⟩` from `hP`. Take `⟨g, hgJ, hgP⟩` from `SetLike.not_le_iff_exists.mp hJ`. Use `hprime` as an intermediate fact. Set `Q` to `MRing ι ⧸ P`. Set `F` to `FractionRing Q`.
+
+Establish `hQ : Function.Injective (algebraMap ℤ Q)`. Establish `e : algebraMap ℤ Q = (Ideal.Quotient.mk P).comp C` using `RingHom.ext_int _ _`. Rewrite using `[e, injective_iff_map_eq_zero]`. Introduce `n hn`. Establish `hn0 : (C n : MRing ι) ∈ P` using `Ideal.Quotient.eq_zero_iff_mem.mp hn`.
+
+Establish `hn' : n ∈ P.comap (C : ℤ →+* MRing ι)` using `hn0`. Rewrite `hhor` using `[IsHorizontal]`. Rewrite `hn'` using `[hhor]`. Conclude with `(Ideal.mem_bot).mp hn'`. Establish `: CharZero Q` using `charZero_of_injective_algebraMap hQ`.
+
+Establish `: CharZero F` using `charZero_of_injective_algebraMap (R := Q) (IsFractionRing.injective Q F)`. Establish `hcard : #F ≤ 𝔠`. Rewrite using `[Cardinal.mk_fractionRing]`. Use `(Cardinal.mk_le_of_surjective (Ideal.Quotient.mk_surjective (I := P))).trans ?_` and prove the remaining obligations. Use `MvPolynomial.cardinalMk_le_max.trans ?_` and prove the remaining obligations.
+
+Conclude with `max_le (max_le (mk_int.le.trans aleph0_le_continuum) (Cardinal.mk_le_aleph0.trans aleph0_le_continuum)) aleph0_le_continuum`. Take `⟨ψ⟩` from `exists_ringHom_complex_of_charZero F hcard`. Set `φ : MRing ι →+* ℂ` to `(ψ.comp (algebraMap Q F)).comp (Ideal.Quotient.mk P)`. Establish `hker : ∀ f, φ f = 0 ↔ f ∈ P`. Introduce `f`.
+
+Establish `hi : Function.Injective (ψ.comp (algebraMap Q F))` using `ψ.injective.comp (IsFractionRing.injective Q F)`. Rewrite using `[show φ f = (ψ.comp (algebraMap Q F)) (Ideal.Quotient.mk P f) from rfl, map_eq_zero_iff _ hi, Ideal.Quotient.eq_zero_iff_mem]`. Set `z : (Σ k, ι k) → ℂ` to `fun p => φ (X p)`. Establish `hev : ∀ f : MRing ι, eval z (map (Int.castRingHom ℂ) f) = φ f`. Introduce `f`.
+
+Establish `h : (eval z).comp (map (Int.castRingHom ℂ)) = φ`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun i => ?_)` and prove the remaining obligations. Conclude with `RingHom.congr_fun (RingHom.ext_int (((eval z).comp (map (Int.castRingHom ℂ))).comp C) (φ.comp C)) r`. Simplify using `[z]`. Conclude with `RingHom.congr_fun h f`.
+
+Use `⟨z, ⟨fun k => ?_, fun f hf => ?_⟩, fun hz => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hrel k`. Conclude with `⟨i, fun h => hi ((hker _).mp h)⟩`. Rewrite using `[hev]`. Conclude with `(hker f).mpr hf`.
+
+Conclude with `hgP ((hker g).mp (by rw [← hev]; exact hz.2 g hgJ))`.
+-/
 theorem exists_mcPts_not_mem_mcPts {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P J : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d) (hJ : ¬ J ≤ P) :
     ∃ z, z ∈ mcPts P ∧ z ∉ mcPts J := by

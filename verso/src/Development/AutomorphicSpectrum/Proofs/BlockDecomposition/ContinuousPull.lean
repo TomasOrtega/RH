@@ -16,6 +16,9 @@ namespace GlobalTheory.CompanionTheory.MM
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC GlobalTheory.CompanionTheory.IwaAd PositivityTheory.PfSWUS GlobalTheory.CompanionTheory.SiegelND
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Establish `harg : Complex.arg ((x : ℝ) : ℂ) ≠ Real.pi`. Rewrite using `[Complex.arg_ofReal_of_nonneg (NNReal.coe_nonneg x)]`. Conclude with `Real.pi_pos.ne`. Unfold `npow`. Rewrite using `[Complex.ofReal_inv, Complex.inv_cpow _ _ harg, Complex.cpow_neg, inv_inv]`.
+-/
 theorem npow_inv (x : ℝ≥0) (t : ℂ) : (((((x : ℝ))⁻¹ : ℝ)) : ℂ) ^ (-t) = npow x t := by
   have harg : Complex.arg ((x : ℝ) : ℂ) ≠ Real.pi := by
     rw [Complex.arg_ofReal_of_nonneg (NNReal.coe_nonneg x)]
@@ -23,10 +26,20 @@ theorem npow_inv (x : ℝ≥0) (t : ℂ) : (((((x : ℝ))⁻¹ : ℝ)) : ℂ) ^ 
   unfold npow
   rw [Complex.ofReal_inv, Complex.inv_cpow _ _ harg, Complex.cpow_neg, inv_inv]
 
+/- English proof (translation)
+Unfold `npow`. Conclude with `Complex.cpow_add _ _ (by exact_mod_cast hx)`.
+-/
 theorem npow_add_of (x : ℝ≥0) (hx : x ≠ 0) (s t : ℂ) : npow x (s + t) = npow x s * npow x t := by
   unfold npow
   exact Complex.cpow_add _ _ (by exact_mod_cast hx)
 
+/- English proof (translation)
+Take `⟨k1, -, -, -, -, -⟩` from `lattice_Mx D V.rank n`. Use `haveI : IsTopologicalAddGroup (Mx D V.rank n) := k1`. Use `haveI : BorelSpace (Mx D V.rank n) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fin n → Fin V.rank → AE D) := borel_tup`. Take `⟨j1, -⟩` from `Formalism.IndefR.Eqv.ae_facts D`.
+
+Unfold `PositivityTheory.PfSWUS.Loc.jtR Jt`. Rewrite using `[integral_map_of tupInv tupOf tupOf_tupInv tupInv_tupOf tupInv_add continuous_tupInv continuous_tupOf]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hg : gramR (AF D.host.F) D.sp.cm.sig V.gram (tupInv y) = GlobalTheory.StdUnn.inner V y y`. Use extensionality with `a c`.
+
+Conclude with `hR_tup V y y a c`. Express the relevant statement in the definitionally equal form `φ y * ψ (PositivityTheory.PfSWUS.Loc.trPair _ b.1 (gramR (AF D.host.F) D.sp.cm.sig V.gram (tupInv y))) = _`. Rewrite using `[hg]`. Both sides reduce to the same expression.
+-/
 theorem jtR_hermTo (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D V.rank n)) (φ : Mx D V.rank n → ℂ)
     (b : hermA D n) :
     PositivityTheory.PfSWUS.Loc.jtR (HeckeCharacterZeroLocus.SiegelWeilU.AF D.host.F) D.sp.cm.sig (HSpace.gram V) ψ (μ.map tupInv)
@@ -46,6 +59,13 @@ theorem jtR_hermTo (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (M
   rw [hg]
   rfl
 
+/- English proof (translation)
+Establish `h1 : adj (a⁻¹).1 * adj a.1 = 1`. Rewrite using `[← adj_mul]`. Establish `: a.1 * (a⁻¹).1 = 1` using `by simp`. Rewrite using `[this]`. Simplify using `[adj]`.
+
+Establish `h2 : a.1 * (a⁻¹).1 = 1` using `by simp`. Use `show Matrix.trace (adj a.1 * B * a.1 * ((a⁻¹).1 * b.1 * adj (a⁻¹).1)) = Matrix.trace (B * b.1)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.trace ((B * ((a.1 * (a⁻¹).1) * b.1 * adj (a⁻¹).1)) * adj a.1) := Matrix.trace_mul_comm _ _`.
+
+Use `_ = Matrix.trace (B * b.1 * (adj (a⁻¹).1 * adj a.1)) := by`. Rewrite using `[h2]`. Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Use `_ = Matrix.trace (B * b.1) := by rw [h1, Matrix.mul_one]`.
+-/
 theorem trace_pull (a : GL (Fin n) (AE D)) (B : Mx D n n) (b : hermA D n) :
     Matrix.trace (HMul.hMul (adj a.1 * B * a.1) (pull a b).1 : Mx D n n) = Matrix.trace (HMul.hMul B b.1 : Mx D n n) := by
   have h1 : adj (a⁻¹).1 * adj a.1 = 1 := by
@@ -70,6 +90,11 @@ namespace GlobalTheory.CompanionTheory.MM
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC GlobalTheory.CompanionTheory.IwaAd PositivityTheory.PfSWUS GlobalTheory.CompanionTheory.SiegelND
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Use `⟨?_, GlobalTheory.CompanionTheory.IfrAdd.mem_schwartzA_of_isMonoFock hθ hl hs hφ⟩` and prove the remaining obligations. Take `⟨e, c, g, d, bs, gv, hp, rfl⟩` from `hφ`. Establish `hg : g ∈ GlobalTheory.WeilM.SB (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)`. Establish `h1` using `GlobalTheory.CompanionTheory.IfrAdd.mem_SB_of_isPureFin bs (Φf := fun X => g fun i j => X j i) (Φv := gv) hp`. Establish `h2` using `GlobalTheory.CompanionTheory.SiegelND.SchGlue.isSB_swap (D := D) h1`.
+
+Conclude with `⟨h2.1, h2.2⟩`. Conclude with `Submodule.subset_span ⟨_, g, hg, rfl⟩`.
+-/
 theorem mono_mem (D : D7) (n : ℕ) (V : HSp D) (θ : InfFam D) (l : D.what₂.Tau → ℝ)
     (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : Mx D V.rank n → ℂ)
     (hθ : IsInfFam θ) (hl : ∀ τ, l τ ≠ 0) (hs : ∀ τ, IsCartanInv (gramAt D V τ) (s τ)) (hφ : IsMonoFock θ V l s φ) :
@@ -82,6 +107,11 @@ theorem mono_mem (D : D7) (n : ℕ) (V : HSp D) (θ : InfFam D) (l : D.what₂.T
     exact ⟨h2.1, h2.2⟩
   exact Submodule.subset_span ⟨_, g, hg, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[mul_one]`. Unfold `sect Jt`. Use `congr 1`. Rewrite using `[map_mul, Module.End.mul_apply, hω.weyl w hw]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Establish `h0 : GlobalTheory.StdUnn.inner V (0 : Mx D V.rank n) y = 0`. Simplify using `[GlobalTheory.StdUnn.inner, adj]`. Use `show (ω (nb b) Φ).1 y * ψ (trA (Matrix.trace (GlobalTheory.StdUnn.inner V 0 y))) = _`. Rewrite using `[h0, hω.unip (nb b) b.1 (hnb b)]`. Simplify using `[mul_comm]`.
+-/
 theorem sect_w (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D)
     (μ : Measure (Mx D V.rank n)) (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)) (H : G D n → ℝ≥0)
     (hω : IsWeilSch ψ χ θ V μ ω) (nb : hermA D n → G D n) (hnb : IsNMap nb) (w : G D n) (hw : mat w = blk4 0 1 (-1) 0)
@@ -98,6 +128,19 @@ theorem sect_w (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (
   rw [h0, hω.unip (nb b) b.1 (hnb b)]
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `hr0 : absA D (Matrix.GeneralLinearGroup.det a) ≠ 0` using `((Group.isUnit (Matrix.GeneralLinearGroup.det a)).map (absA D)).ne_zero`. Establish `key` using `GlobalTheory.RightMulJac.integral_mul_right D V.rank n μ 𝓕 hμ a (fun x => φ x * ψ (halfTr (Matrix.trace (HMul.hMul (pull a b).1 (GlobalTheory.StdUnn.inner V x x) : Mx D n n))))`. Establish `e : ∀ y : Mx D V.rank n, Matrix.trace (HMul.hMul (pull a b).1 (GlobalTheory.StdUnn.inner V (HMul.hMul y a.1) (HMul.hMul y a.1)) : Mx D n n) = Matrix.trace (HMul.hMul b.1 (GlobalTheory.StdUnn.inner V y y) : Mx D n n)`. Introduce `y`. Establish `h1 : adj (a⁻¹).1 * adj a.1 = 1` using `(astar a).val_inv`.
+
+Establish `h2 : a.1 * (a⁻¹).1 = 1` using `by simp`. Establish `hin : GlobalTheory.StdUnn.inner V (HMul.hMul y a.1) (HMul.hMul y a.1) = adj a.1 * GlobalTheory.StdUnn.inner V y y * a.1`. Unfold `GlobalTheory.StdUnn.inner`. Rewrite using `[adj_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[hin]`. Use `show Matrix.trace ((a⁻¹).1 * b.1 * adj (a⁻¹).1 * (adj a.1 * GlobalTheory.StdUnn.inner V y y * a.1)) = Matrix.trace (b.1 * GlobalTheory.StdUnn.inner V y y)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.trace ((b.1 * ((adj (a⁻¹).1 * adj a.1) * GlobalTheory.StdUnn.inner V y y * a.1)) * (a⁻¹).1) := Matrix.trace_mul_comm _ _`.
+
+Use `_ = Matrix.trace (b.1 * GlobalTheory.StdUnn.inner V y y * (a.1 * (a⁻¹).1)) := by`. Rewrite using `[h1]`. Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Use `_ = Matrix.trace (b.1 * GlobalTheory.StdUnn.inner V y y) := by rw [h2, Matrix.mul_one]`. Unfold `Jt`.
+
+Simplify using `only [e] at key`. Rewrite using `[key, ← mul_assoc]`. Establish `: npow (absA D (Matrix.GeneralLinearGroup.det a)) (V.rank : ℂ) * npow (absA D (Matrix.GeneralLinearGroup.det a)) (-(V.rank : ℂ)) = 1`. Unfold `npow`. Rewrite using `[← Complex.cpow_add _ _ (by exact_mod_cast hr0), add_neg_cancel, Complex.cpow_zero]`.
+
+Rewrite using `[this, one_mul]`.
+-/
 theorem jt_pull (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D V.rank n))
     (𝓕 : Set (Mx D V.rank n)) (hμ : IsCovolOne (ratMx D V.rank n) μ 𝓕) (φ : Mx D V.rank n → ℂ) (a : GL (Fin n) (AE D))
     (b : hermA D n) :
@@ -140,6 +183,11 @@ namespace GlobalTheory.CompanionTheory.MM
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC GlobalTheory.CompanionTheory.IwaAd PositivityTheory.PfSWUS GlobalTheory.CompanionTheory.SiegelND GlobalTheory.CompanionTheory.SiegelND.ThetaGlue
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Establish `hrank : ∀ (δ : GL (Fin V.rank) D.host.E) (ξ : Matrix (Fin V.rank) (Fin r) D.host.E), (δ.1 * ξ).rank = ξ.rank` using `fun δ ξ => Matrix.rank_mul_eq_right_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 δ.isUnit)`. Establish `hL` using `GlobalTheory.CompanionTheory.SplitGram.leftInv_subtypeSum V φ (fun x : Matrix (Fin V.rank) (Fin r) D.host.E => x.rank = r ∧ gramQ V x = β.1) (fun δ hδ ξ h => ⟨(hrank δ ξ).trans h.1, (GlobalTheory.CompanionTheory.SplitGram.gramQ_mul V hδ ξ).trans h.2⟩)`. Establish `hI` using `average_eq_meanC V ν μH hν hμ 𝓕 h𝓕 _ hL`. Establish `hS : HeckeCharacterZeroLocus.SiegelWeilU.thetaS D.host.F D.host.E D.sp.cm.sig V.rank V.gram (fun X => φ (tupOf X)) {X | HeckeCharacterZeroLocus.SiegelWeilU.gramE D.sp.cm.sig V.gram X = β.1} = fun h => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β. …`. Use function extensionality and compare the values at `h`.
+
+Use `(tsum_congr fun X => ?_).trans ((fibEquiv V β hβ).tsum_eq fun x => φ (GlobalTheory.SiegelFormula.invPt V h x.1))` and prove the remaining obligations. Conclude with `congrArg φ (tupOf_actW V h X.1)`. Rewrite using `[hS]`. Conclude with `hI`.
+-/
 theorem ifrB_eq_meanC (D : D7) (r : ℕ) (V : HSp D) (ν : Measure (GA D V)) (hν : ν.IsHaarMeasure)
     (φ : Mx D V.rank r → ℂ) (μH : Measure (GA D V)) (𝓕 : Set (GA D V)) (hμ : μH.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μH) (β : HermE D r) (hβ : β.1.det ≠ 0) :
@@ -192,6 +240,9 @@ def pullE (a : GL (Fin n) (AE D)) : hermA D n ≃+ hermA D n where
 
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Take `⟨j1, -⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Conclude with `(((continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const)).subtype_mk _`.
+-/
 theorem continuous_pull (a : GL (Fin n) (AE D)) : Continuous (pull a) := by
   obtain ⟨j1, -⟩ := Formalism.IndefR.Eqv.ae_facts D
   haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -199,6 +250,17 @@ theorem continuous_pull (a : GL (Fin n) (AE D)) : Continuous (pull a) := by
 
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D n n`. Use `haveI : IsTopologicalAddGroup (Mx D n n) := i1`. Use `haveI : LocallyCompactSpace (Mx D n n) := i2`. Use `haveI : SecondCountableTopology (Mx D n n) := i3`. Use `haveI : T2Space (Mx D n n) := i4`.
+
+Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space (hermA D n) := Topology.IsEmbedding.subtypeVal.t2Space`. Use `haveI : LocallyCompactSpace (hermA D n) := (GlobalTheory.CompanionTheory.HermVol.isClosed_hermA (D := D) (r := n)).locallyCompactSpace`. Use `haveI : BorelSpace (hermA D n) := Subtype.borelSpace _`.
+
+Use `haveI : IsTopologicalAddGroup (Matrix (Fin n) (Fin n) (AE D)) := i1`. Use `haveI := hl`. Establish `hc : Continuous (pullE a)` using `continuous_pull a`. Establish `hc' : Continuous (pullE a).symm` using `continuous_pull a⁻¹`. Set `M : hermA D n ≃ₜ hermA D n` to `{ toEquiv := (pullE a).toEquiv, continuous_toFun := hc, continuous_invFun := hc' }`.
+
+Use `haveI hH : (lam.map (pullE a)).IsAddHaarMeasure := (pullE a).isAddHaarMeasure_map lam hc hc'`. Establish `e` using `Measure.isAddLeftInvariant_eq_smul (lam.map (pullE a)) lam`. Establish `h1 : Integrable F (lam.map (pullE a))`. Rewrite using `[e]`. Conclude with `hF.smul_measure ENNReal.coe_ne_top`.
+
+Establish `hemb : MeasurableEmbedding (pullE a)` using `M.measurableEmbedding`. Conclude with `hemb.integrable_map_iff.1 h1`.
+-/
 theorem integrable_pull (D : D7) (n : ℕ) (lam : Measure (hermA D n)) (hl : lam.IsAddHaarMeasure)
     (a : GL (Fin n) (AE D)) (F : hermA D n → ℂ) (hF : Integrable F lam) : Integrable (fun b => F (pull a b)) lam := by
   obtain ⟨i1, i2, i3, i4, -, -⟩ := lattice_Mx D n n

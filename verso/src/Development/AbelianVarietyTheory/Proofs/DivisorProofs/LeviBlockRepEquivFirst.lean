@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.DiagCell
 
+/- English proof (translation)
+Use `mem_parab_iff.2 fun a b i j hab => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = a₀`. Establish `hb : b ≠ a₀` using `fun e => by rw [e, ha] at hab; exact lt_irrefl _ hab`. Conclude with `absurd j.2 (by have := j.2; have := h0 b hb; omega)`. Conclude with `absurd i.2 (by have := i.2; have := h0 a ha; omega)`.
+-/
 theorem mem_parab_of_single {R : Type} [CommRing R] {β : Type} [LinearOrder β] {n : β → ℕ} {t : Type}
     [Fintype t] [DecidableEq t]
     (e : (Σ j, Fin (n j)) ≃ t) (a₀ : β) (h0 : ∀ j, j ≠ a₀ → n j = 0) (x : GL t R) :
@@ -21,6 +24,13 @@ theorem mem_parab_of_single {R : Type} [CommRing R] {β : Type} [LinearOrder β]
     exact absurd j.2 (by have := j.2; have := h0 b hb; omega)
   · exact absurd i.2 (by have := i.2; have := h0 a ha; omega)
 
+/- English proof (translation)
+Take `⟨-, h2⟩` from `mem_unipRad.1 hg`. Use `Units.ext (Matrix.ext fun x y => ?_)` and prove the remaining obligations. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective x`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective y`. Distinguish the cases in `ha : a = a₀`.
+
+Distinguish the cases in `hb : b = a₀`. Take `rfl : b = a` from `hb.trans ha.symm`. Rewrite using `[h2 b i j]`. Simplify using `[Matrix.one_apply]`. Conclude with `absurd j.2 (by have := j.2; have := h0 b hb; omega)`.
+
+Conclude with `absurd i.2 (by have := i.2; have := h0 a ha; omega)`.
+-/
 theorem eq_one_of_mem_unipRad_single {R : Type} [CommRing R] {β : Type} [Fintype β] [LinearOrder β]
     {n : β → ℕ} {t : Type} [Fintype t] [DecidableEq t] (e : (Σ j, Fin (n j)) ≃ t) (a₀ : β)
     (h0 : ∀ j, j ≠ a₀ → n j = 0) {g : GL t R} (hg : g ∈ unipRad R e) : g = 1 := by
@@ -40,6 +50,37 @@ end GlobalTheory.DiagCell
 
 namespace GlobalTheory.DiagCell
 
+/- English proof (translation)
+Introduce `k _ _ _ _ m _ _ b h01 h10 W _ _ ρ hsm`. Establish `hrz : ∀ i j, j ≠ i → b.1 i j = 0`. Introduce `i j hj`. Apply the tactic sequence `cases i <;> cases j <;> simp_all`. Establish `hcz : ∀ j i, i ≠ j → b.1 i j = 0` using `fun j i hi => hrz i j (Ne.symm hi)`.
+
+Establish `hcard : ∀ i, Fintype.card (Fin (b.1 i i)) = Fintype.card (Two (Fin 1) m i)`. Introduce `i`. Establish `r` using `b.2.1 i`. Rewrite `r` using `[Fintype.sum_bool]`. Apply the tactic sequence `cases i <;> simp_all`.
+
+Set `E : ∀ i, Fin (b.1 i i) ≃ Two (Fin 1) m i` to `fun i => Fintype.equivOfCardEq (hcard i)`. Set `f : ∀ i, (Σ j, Fin (b.1 i j)) ≃ Two (Fin 1) m i` to `fun i => (OneBlockCell.valEquiv (n := fun j => b.1 i j) i rfl (fun j hj => hrz i j hj)).trans (E i)`. Set `g : ∀ j, (Σ i, Fin (b.1 i j)) ≃ Two (Fin 1) m j` to `fun j => (OneBlockCell.valEquiv (n := fun i => b.1 i j) j rfl (fun i hi => hcz j i hi)).trans (E j)`. Use `⟨f, g, ?_⟩` and prove the remaining obligations. Establish `hbot : twKer ρ (relUnip k f) 1 = ⊥`.
+
+Use `eq_bot_iff.2 (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Establish `: (n : Levi k (Two (Fin 1) m)) = 1` using `funext fun i => eq_one_of_mem_unipRad_single (f i) i (fun j hj => hrz i j hj) (n.2 i trivial)`. Simplify using `[this]`. Establish `hδ : ∀ z, relDeltaHalf k (fun i j => Fin (b.1 i j)) z = 1` using `fun z => by`.
+
+Rewrite using `[relDeltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun i _ => OneBlockCell.deltaHalf_eq_one_of_single i (fun j hj => hrz i j hj) (z i)`. Establish `hδ' : ∀ z, relDeltaHalf k (fun j i => Fin (b.1 i j)) z = 1` using `fun z => by`. Rewrite using `[relDeltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun j _ => OneBlockCell.deltaHalf_eq_one_of_single j (fun i hi => hcz j i hi) (z j)`.
+
+Establish `hP : ∀ x, x ∈ relParab k g` using `fun x j _ => mem_parab_of_single (g j) j (fun i hi => hcz j i hi) (x j)`. Establish `hfg : ∀ i (t : Fin (b.1 i i)), f i ⟨i, t⟩ = g i ⟨i, t⟩` using `fun i t => rfl`. Establish `hγ : ∀ (p : relParab k g), relEmb k f (swapBlocks k (fun i j => Fin (b.1 i j)) (relProj k g p)) = (p : Levi k (Two (Fin 1) m))`. Introduce `p`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[relEmb_apply]`. Use `Units.ext (Matrix.ext fun x y => ?_)` and prove the remaining obligations. Take `⟨⟨a, t⟩, rfl⟩` from `(f i).surjective x`. Take `⟨⟨a', s⟩, rfl⟩` from `(f i).surjective y`. Establish `ha : a = i`.
+
+Assume the negation of the conclusion as `hne`. Establish `h1` using `hrz i a hne`. Establish `h2` using `t.2`. Use linear arithmetic over natural numbers and integers. Establish `ha' : a' = i`.
+
+Assume the negation of the conclusion as `hne`. Establish `h1` using `hrz i a' hne`. Establish `h2` using `s.2`. Use linear arithmetic over natural numbers and integers. Substitute `ha` using the available equality.
+
+Substitute `ha'` using the available equality. Rewrite using `[leviEmb_apply_same, hfg, hfg]`. Both sides reduce to the same expression. Set `Ψ : W ≃ₗ[ℂ] Jacquet ρ (relUnip k f)` to `(Submodule.quotEquivOfEqBot _ hbot).symm`. Establish `hΨ : ∀ u, Ψ u = Submodule.Quotient.mk u` using `fun u => rfl`.
+
+Set `τ` to `(twist ((relJac f ρ).comp (swapBlocks k (fun i j => Fin (b.1 i j)))) (relDeltaHalf k (fun j i => Fin (b.1 i j)))).comp (relProj k g)`. Establish `law : ∀ (p : relParab k g) u, τ p (Ψ u) = Ψ (ρ p u)`. Introduce `p u`. Rewrite using `[MonoidHom.comp_apply, twist_apply, MonoidHom.comp_apply, hΨ, relJac_mk, hδ, hδ', hΨ, hγ p]`. Simplify using `only [inv_one, Units.val_one, one_smul]`.
+
+Set `F : ρ.IntertwiningMap (cellFunctor f g ρ)` to `{ toFun := fun u => ⟨⟨fun x => Ψ (ρ x u), fun p x => by show Ψ (ρ (↑p * x) u) = _`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `(law p _).symm⟩,`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hsm u).mem_nhds (by simp)) fun x hx => by`. Establish `hx' : ρ x u = u` using `hx`.
+
+Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show Ψ (ρ (y * x) u) = Ψ (ρ y u)`. Rewrite using `[map_mul, Module.End.mul_apply, hx'])⟩`. Use the proof step `map_add' := fun u w => Subtype.ext (Subtype.ext (funext fun x => by simp))`. Use the proof step `map_smul' := fun c u => Subtype.ext (Subtype.ext (funext fun x => by simp))`.
+
+Use the proof step `isIntertwining' := fun h => LinearMap.ext fun u => Subtype.ext (Subtype.ext (funext fun x => by show Ψ (ρ x (ρ h u)) = Ψ (ρ (x * h) u)`. Rewrite using `[map_mul, Module.End.mul_apply])) }`. Use `⟨(LocGL.equivOfBijective F ⟨fun u w hw => ?_, fun φ => ⟨Ψ.symm (φ.1.1 1), Subtype.ext (Subtype.ext (funext fun x => ?_))⟩⟩).symm⟩` and prove the remaining obligations. Establish `h1 : Ψ (ρ 1 u) = Ψ (ρ 1 w)` using `congrArg (fun φ => φ.1.1 1) hw`. Simplify using `using h1`.
+
+Use `show Ψ (ρ x (Ψ.symm (φ.1.1 1))) = φ.1.1 x`. Use `(law ⟨x, hP x⟩ (Ψ.symm (φ.1.1 1))).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (τ ⟨x, hP x⟩) (Ψ.apply_symm_apply (φ.1.1 1))).trans ?_` and prove the remaining obligations. Use `(φ.1.2 ⟨x, hP x⟩ 1).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg φ.1.1 (mul_one x)`.
+-/
 theorem cellFunctor_diag_equiv : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {m : Type} [Fintype m] [DecidableEq m] (b : SizeMatrix (Two (Fin 1) m) (Two (Fin 1) m)),
     b.1 false true = 0 → b.1 true false = 0 →

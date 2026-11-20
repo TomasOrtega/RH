@@ -8,6 +8,9 @@ namespace GlobalTheory.QuotRightInv
 
 open PI
 
+/- English proof (translation)
+Apply `Continuous.measurable` to reduce the goal to its premises. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem measurable_mul_left {m : ℕ} (x : MtM m) :
     Measurable (fun s : MtM m => (fun i j => (Matrix.of s * Matrix.of x) i j : MtM m)) := by
   apply Continuous.measurable
@@ -15,12 +18,18 @@ theorem measurable_mul_left {m : ℕ} (x : MtM m) :
   simp only [Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Apply `Continuous.measurable` to reduce the goal to its premises. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [rmulQ, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem measurable_rmulQ {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) : Measurable (rmulQ g) := by
   apply Continuous.measurable
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [rmulQ, Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Establish `hc : IsClosed {x : MtM m | Matrix.of x ∈ G}`. Establish `hof : Continuous (fun x : MtM m => (Matrix.of x : Matrix (Fin m) (Fin m) ℂ))` using `continuous_id`. Conclude with `hG.1.preimage hof`. Conclude with `hc.measurableSet.compl`.
+-/
 theorem measurableSet_not_mem {m : ℕ} {G : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : IsMatGroup G) :
     MeasurableSet {x : MtM m | Matrix.of x ∉ G} := by
   have hc : IsClosed {x : MtM m | Matrix.of x ∈ G} := by
@@ -28,6 +37,11 @@ theorem measurableSet_not_mem {m : ℕ} {G : Set (Matrix (Fin m) (Fin m) ℂ)} (
     exact hG.1.preimage hof
   exact hc.measurableSet.compl
 
+/- English proof (translation)
+Introduce `hsx`. Apply `hx` to reduce the goal to its premises. Take `⟨hinv, hone⟩` from `hG.2.2.2 s (hSG hs)`. Establish `hleft : s⁻¹ * s = 1` using `mul_eq_one_comm.mp hone`. Establish `h1` using `hG.2.2.1 _ hinv _ hsx`.
+
+Rewrite `h1` using `[← Matrix.mul_assoc, hleft, Matrix.one_mul]`. Then use the resulting hypothesis.
+-/
 private lemma mul_not_mem_of_mem_of_not_mem {m : ℕ} {G S : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : IsMatGroup G)
     (hSG : S ⊆ G) {s x : Matrix (Fin m) (Fin m) ℂ} (hs : s ∈ S) (hx : x ∉ G) : s * x ∉ G := by
   intro hsx
@@ -37,12 +51,30 @@ private lemma mul_not_mem_of_mem_of_not_mem {m : ℕ} {G S : Set (Matrix (Fin m)
   have h1 := hG.2.2.1 _ hinv _ hsx
   rwa [← Matrix.mul_assoc, hleft, Matrix.one_mul] at h1
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 private lemma continuous_mul_swap_pair {m : ℕ} :
     Continuous (fun p : MtM m × MtM m => (fun i j => (Matrix.of p.2 * Matrix.of p.1) i j : MtM m)) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Take `⟨hG, hS, hSG, hHG, hHS, -, -, hQ⟩` from `h`. Establish `: SigmaFinite μS` using `hHS.1`. Establish `hBm : MeasurableSet {x : MtM m | Matrix.of x ∉ G}` using `measurableSet_not_mem hG`. Establish `hSm : MeasurableSet {x : MtM m | Matrix.of x ∈ S}`. Establish `h1` using `(measurableSet_not_mem hS).compl`.
+
+Simplify `h1` using `only [Set.compl_setOf, not_not]`. Establish `hf : Measurable ({x : MtM m | Matrix.of x ∉ G}.indicator (1 : MtM m → ℝ≥0∞))` using `measurable_one.indicator hBm`. Establish `h0` using `hQ _ hf`. Rewrite `h0` using `[lintegral_indicator_one hBm, hHG.2.2.1]`. Establish `hinner : Measurable fun x : MtM m => ∫⁻ s, {x : MtM m | Matrix.of x ∉ G}.indicator (1 : MtM m → ℝ≥0∞) (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS` using `Measurable.lintegral_prod_right (hf.comp continuous_mul_swap_pair.measurable)`.
+
+Establish `hae` using `(lintegral_eq_zero_iff hinner).mp h0.symm`. Establish `hSpos : μS {s : MtM m | Matrix.of s ∈ S} ≠ 0`. Introduce `hz`. Apply `hHS.2.1` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`.
+
+Establish `hu` using `measure_union_le (μ := μS) {s : MtM m | Matrix.of s ∈ S} {s : MtM m | Matrix.of s ∈ S}ᶜ`. Rewrite `hu` using `[Set.union_compl_self]`. Establish `hc : μS {s : MtM m | Matrix.of s ∈ S}ᶜ = 0` using `hHS.2.2.1`. Rewrite `hu` using `[hz, hc, add_zero]`. Conclude with `le_antisymm hu zero_le`.
+
+Use `filter_upwards [hae] with x hx`. Assume the negation of the conclusion as `hxG`. Apply `hSpos` to reduce the goal to its premises. Use `le_antisymm ?_ zero_le` and prove the remaining obligations. Use `le_trans ?_ (le_of_eq hx)` and prove the remaining obligations.
+
+Rewrite using `[← lintegral_indicator_one hSm]`. Use `lintegral_mono fun s => ?_` and prove the remaining obligations. Distinguish the cases in `hs : Matrix.of s ∈ S`. Establish `hs' : s ∈ {s : MtM m | Matrix.of s ∈ S}` using `hs`. Establish `hmem : (fun i j => (Matrix.of s * Matrix.of x) i j : MtM m) ∈ {x : MtM m | Matrix.of x ∉ G}` using `mul_not_mem_of_mem_of_not_mem hG hSG hs hxG`.
+
+Establish `e1 : {s : MtM m | Matrix.of s ∈ S}.indicator (1 : MtM m → ℝ≥0∞) s = 1` using `Set.indicator_of_mem hs' _`. Establish `e2 : {x : MtM m | Matrix.of x ∉ G}.indicator (1 : MtM m → ℝ≥0∞) (fun i j => (Matrix.of s * Matrix.of x) i j) = 1` using `Set.indicator_of_mem hmem _`. Conclude with `(e1.trans e2.symm).le`. Establish `e1 : {s : MtM m | Matrix.of s ∈ S}.indicator (1 : MtM m → ℝ≥0∞) s = 0` using `Set.indicator_apply_eq_zero.mpr fun h' => absurd h' hs`. Conclude with `e1.trans_le zero_le`.
+-/
 theorem ae_mem_of_quot {m : ℕ} {G S : Set (Matrix (Fin m) (Fin m) ℂ)} {μG μS ν : Measure (MtM m)}
     (h : QuotientSetting G S μG μS ν) : ∀ᵐ x ∂ν, Matrix.of x ∈ G := by
   obtain ⟨hG, hS, hSG, hHG, hHS, -, -, hQ⟩ := h
@@ -89,6 +121,13 @@ theorem ae_mem_of_quot {m : ℕ} {G S : Set (Matrix (Fin m) (Fin m) ℂ)} {μG �
       Set.indicator_apply_eq_zero.mpr fun h' => absurd h' hs
     exact e1.trans_le zero_le
 
+/- English proof (translation)
+Establish `hνG` using `ae_mem_of_quot h`. Take `⟨hG, hS, hSG, hHG, hHS, hRG, hRS, hQ⟩` from `h`. Rewrite using `[hQ (fun x => φ x * F x) (hφ.mul hF)]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hνG] with x hx`.
+
+Establish `hSae : ∀ᵐ s ∂μS, Matrix.of s ∈ S` using `ae_iff.mpr hHS.2.2.1`. Establish `e : ∫⁻ s, φ (fun i j => (Matrix.of s * Matrix.of x) i j) * F (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS = ∫⁻ s, φ (fun i j => (Matrix.of s * Matrix.of x) i j) * F x ∂μS`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hSae] with s hs`. Rewrite using `[hFS _ hs x hx]`.
+
+Rewrite using `[e, lintegral_mul_const (f := fun s : MtM m => φ (fun i j => (Matrix.of s * Matrix.of x) i j)) _ (hφ.comp (measurable_mul_left x)), hφ1 x hx, one_mul]`.
+-/
 theorem lintegral_eq_cutoff {m : ℕ} {G S : Set (Matrix (Fin m) (Fin m) ℂ)} {μG μS ν : Measure (MtM m)}
     (h : QuotientSetting G S μG μS ν) (φ : MtM m → ℝ≥0∞) (hφ : Measurable φ)
     (hφ1 : ∀ x : MtM m, Matrix.of x ∈ G →
@@ -111,6 +150,19 @@ theorem lintegral_eq_cutoff {m : ℕ} {G S : Set (Matrix (Fin m) (Fin m) ℂ)} {
   rw [e, lintegral_mul_const (f := fun s : MtM m => φ (fun i j => (Matrix.of s * Matrix.of x) i j)) _
     (hφ.comp (measurable_mul_left x)), hφ1 x hx, one_mul]
 
+/- English proof (translation)
+Introduce `m G S μG μS ν h F hF hFS g hg`. Take `⟨φ, hφ, hφ1⟩` from `GlobalTheory.T.exists_normalised_cutoff' m G S μS h.1 h.2.1 h.2.2.1 h.2.2.2.2.1 h.2.2.2.2.2.2.1`. Establish `hG : IsMatGroup G` using `h.1`. Establish `hxg : ∀ x : MtM m, Matrix.of x ∈ G → Matrix.of (fun i j => (Matrix.of x * g) i j : MtM m) ∈ G` using `fun x hx => hG.2.2.1 _ hx _ hg`. Establish `hφ' : Measurable (fun x : MtM m => φ (fun i j => (Matrix.of x * g) i j))` using `hφ.comp (measurable_rmulQ g)`.
+
+Establish `hφ'1 : ∀ x : MtM m, Matrix.of x ∈ G → ∫⁻ s, (fun x : MtM m => φ (fun i j => (Matrix.of x * g) i j)) (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS = 1`. Introduce `x hx`. Rewrite using `[← hφ1 _ (hxg x hx)]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Use `show φ _ = φ _`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `(Matrix.of s * Matrix.of x) * g = Matrix.of s * (Matrix.of x * g)`. Conclude with `Matrix.mul_assoc _ _ _`. Establish `hFg : Measurable (fun x : MtM m => F (fun i j => (Matrix.of x * g) i j))` using `hF.comp (measurable_rmulQ g)`. Establish `hFgS : ∀ s ∈ S, ∀ x : MtM m, Matrix.of x ∈ G → (fun x : MtM m => F (fun i j => (Matrix.of x * g) i j)) (fun i j => (s * Matrix.of x) i j) = (fun x : MtM m => F (fun i j => (Matrix.of x * g) i j)) x`.
+
+Introduce `s hs x hx`. Establish `key` using `hFS s hs _ (hxg x hx)`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `show F _ = F _`. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `(s * Matrix.of x) * g = s * (Matrix.of x * g)`. Conclude with `Matrix.mul_assoc _ _ _`. Establish `e1` using `lintegral_eq_cutoff h _ hφ' hφ'1 _ hFg hFgS`. Establish `e2` using `lintegral_eq_cutoff h φ hφ hφ1 F hF hFS`. Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem quotInv : PI.QuotInv := by
   intro m G S μG μS ν h F hF hFS g hg
   obtain ⟨φ, hφ, hφ1⟩ := GlobalTheory.T.exists_normalised_cutoff' m G S μS h.1 h.2.1 h.2.2.1 h.2.2.2.2.1 h.2.2.2.2.2.2.1

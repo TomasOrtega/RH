@@ -11,6 +11,11 @@ open scoped IntermediateField BigOperators Topology
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hlt : a < c` using `lt_of_le_of_ne ha hne`. Establish `hc0 : 0 < c` using `zero_lt_iff.mpr hc`. Establish `h1 : a ^ 2 * b ≤ a ^ 2 * c` using `by gcongr`. Establish `h2 : a ^ 2 < c ^ 2` using `pow_lt_pow_left₀ hlt zero_le' two_ne_zero`.
+
+Establish `h3 : a ^ 2 * c < c ^ 2 * c` using `mul_lt_mul_of_pos_right h2 hc0`. Establish `h4 : c ^ 2 * c = c ^ 3` using `by rw [pow_succ c 2]`. Rewrite `h3` using `[h4]`. Rewrite `h1` using `[h]`. Conclude with `lt_irrefl _ (lt_of_le_of_lt h1 h3)`.
+-/
 theorem eq_of_sq_mul_eq_cube {α : Type*} [LinearOrderedCommGroupWithZero α] {a b c : α} (hc : c ≠ 0)
     (ha : a ≤ c) (hb : b ≤ c) (h : a ^ 2 * b = c ^ 3) : a = c := by
   by_contra hne
@@ -24,12 +29,20 @@ theorem eq_of_sq_mul_eq_cube {α : Type*} [LinearOrderedCommGroupWithZero α] {a
   rw [h] at h1
   exact lt_irrefl _ (lt_of_le_of_lt h1 h3)
 
+/- English proof (translation)
+Establish `e : (N : ℂ) * ((k : ℂ) * z) = k • ((N : ℂ) * z)` using `by rw [zsmul_eq_mul]; ring`. Rewrite using `[e]`. Conclude with `L.lattice.smul_mem k hN`.
+-/
 theorem natCast_mul_intCast_mul_mem (L : PeriodPair) {N : ℕ} {z : ℂ} (hN : (N : ℂ) * z ∈ L.lattice) (k : ℤ) :
     (N : ℂ) * ((k : ℂ) * z) ∈ L.lattice := by
   have e : (N : ℂ) * ((k : ℂ) * z) = k • ((N : ℂ) * z) := by rw [zsmul_eq_mul]; ring
   rw [e]
   exact L.lattice.smul_mem k hN
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.mpr hNk`. Establish `hab' : (a : ℂ) * (N : ℂ) + (b : ℂ) * (k : ℂ) = 1` using `by exact_mod_cast hab`. Establish `e : z = a • ((N : ℂ) * z) + b • ((k : ℂ) * z)`. Rewrite using `[zsmul_eq_mul, zsmul_eq_mul]`. Take the linear combination `(-z) * hab'`.
+
+Rewrite using `[e]`. Conclude with `L.lattice.add_mem (L.lattice.smul_mem a hN) (L.lattice.smul_mem b hk)`.
+-/
 theorem mem_lattice_of_coprime (L : PeriodPair) {N k : ℕ} (hNk : Nat.Coprime N k) {z : ℂ}
     (hN : (N : ℂ) * z ∈ L.lattice) (hk : (k : ℂ) * z ∈ L.lattice) : z ∈ L.lattice := by
   obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.mpr hNk
@@ -40,6 +53,19 @@ theorem mem_lattice_of_coprime (L : PeriodPair) {N k : ℕ} (hNk : Nat.Coprime N
   rw [e]
   exact L.lattice.add_mem (L.lattice.smul_mem a hN) (L.lattice.smul_mem b hk)
 
+/- English proof (translation)
+Introduce `L β u V N hβ hβim hu hN hodd h3 z hz hNz`. Establish `cop2 : Nat.Coprime N 2` using `(Nat.coprime_two_left.mpr hodd).symm`. Establish `cop3 : Nat.Coprime N 3` using `((Nat.Prime.coprime_iff_not_dvd Nat.prime_three).mpr h3).symm`. Establish `h2z : 2 * z ∉ L.lattice` using `fun h => hz (mem_lattice_of_coprime L cop2 hNz (by push_cast; exact h))`. Establish `h3z : 3 * z ∉ L.lattice` using `fun h => hz (mem_lattice_of_coprime L cop3 hNz (by push_cast; exact h))`.
+
+Establish `hN2z : (N : ℂ) * (2 * z) ∈ L.lattice`. Simplify using `using natCast_mul_intCast_mul_mem L hNz 2`. Establish `hN3z : (N : ℂ) * (3 * z) ∈ L.lattice`. Simplify using `using natCast_mul_intCast_mul_mem L hNz 3`. Use `⟨h2z, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : 2 * z - z = z` using `by ring`. Establish `e2 : 2 * z + z = 3 * z` using `by ring`. Establish `hd` using `GlobalTheory.T.weierstrassP_sub_sq_mul_add_sub_eq_neg_deriv_mul L (2 * z) z h2z hz (by rw [e1]; exact hz) (by rw [e2]; exact h3z)`. Rewrite `hd` using `[e1, e2]`. Establish `d1` using `GlobalTheory.T.valuation_derivWeierstrassP_oddTorsion L β u V N hβ hβim hu hN hodd z hz hNz`.
+
+Establish `d2` using `GlobalTheory.T.valuation_derivWeierstrassP_oddTorsion L β u V N hβ hβim hu hN hodd (2 * z) h2z hN2z`. Establish `m1` using `(GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring L β u V N hβ hβim hu hN z (2 * z) hz h2z hNz hN2z).2`. Establish `m2` using `(GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring L β u V N hβ hβim hu hN (3 * z) z h3z hz hN3z hNz).2`. Establish `hv : V.valuation u ≠ 0`. Introduce `h`.
+
+Rewrite `hu` using `[h, zero_pow (by norm_num)]`. Conclude with `latticeCurve_Δ_ne_zero L ((Valuation.zero_iff _).mp hu.symm)`. Establish `hv2 : 0 < V.valuation u ^ 2` using `zero_lt_iff.mpr (pow_ne_zero 2 hv)`. Rewrite `m1`, `m2` using `[← ValuationSubring.valuation_le_one_iff, map_div₀, map_pow, div_le_one₀ hv2]`. Establish `hval` using `congrArg V.valuation hd`.
+
+Rewrite `hval` using `[map_mul, map_pow, Valuation.map_neg, map_mul, d1, d2, Valuation.map_sub_swap V.valuation (L.weierstrassP (2 * z))]`. Use `eq_of_sq_mul_eq_cube (pow_ne_zero 2 hv) m1 m2 ?_` and prove the remaining obligations. Rewrite using `[hval, ← pow_add, ← pow_mul]`.
+-/
 theorem weierstrassP_sub_two_mul_unit : ∀ (L : PeriodPair) (β u : ℂ) (V : ValuationSubring ℂ) (N : ℕ), MulStable L β → β.im ≠ 0 → V.valuation u ^ 12 = V.valuation (latticeCurve L).Δ → V.valuation (N : ℂ) = 1 → Odd N → ¬ 3 ∣ N → ∀ z, z ∉ L.lattice → (N : ℂ) * z ∈ L.lattice → 2 * z ∉ L.lattice ∧ V.valuation (L.weierstrassP z - L.weierstrassP (2 * z)) = V.valuation u ^ 2 := by
   intro L β u V N hβ hβim hu hN hodd h3 z hz hNz
   have cop2 : Nat.Coprime N 2 := (Nat.coprime_two_left.mpr hodd).symm

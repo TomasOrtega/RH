@@ -17,6 +17,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Establish `e : z = algebraMap R _ z.fst + algebraMap R _ z.snd * DualNumber.eps`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[e, map_add, map_add, map_mul, map_mul, h, h, he]`.
+-/
 theorem dualNumber_ringHom_ext {R S : Type} [CommRing R] [CommRing S] {F G : DualNumber R →+* S}
     (h : ∀ a, F (algebraMap R _ a) = G (algebraMap R _ a)) (he : F DualNumber.eps = G DualNumber.eps) : F = G := by
   refine RingHom.ext fun z => ?_
@@ -28,6 +31,13 @@ section Sec
 
 variable {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h Z r z j k hj hk`. Establish `hy : r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `hle : (L.pull F).U (fun _ => j) ⊓ L'.U k ≤ F ⁻¹ᵁ L.U j` using `fun y hy => mem_pull.1 hy.1`. Use `(gs_appLE F _ _ hle r z hy _).symm.trans ((congrArg (gs r z _) (h (fun _ => j) k hle)).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[gs_mul _ z _ hy, gs_res _ z _ hy]`. Conclude with `congrArg (· * _) (gs_unit _ z _ hy _)`. Introduce `h j i hle`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `(gs_appLE F _ _ hle (𝟙 _) y hy _).trans ((h _ (𝟙 _) y _ i (mem_pull.1 hy.1) hy.2).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[gs_mul _ y _ hy, gs_res _ y _ hy]`. Conclude with `congrArg (· * _) (gs_unit _ y _ hy _).symm`.
+-/
 theorem appLE_eq_iff_stalk (w : LB.Iso L' (L.pull F)) (s : L.Sec) (s' : L'.Sec) :
     (∀ (j : (L.pull F).ι) (i : L'.ι) (hle : (L.pull F).U j ⊓ L'.U i ≤ F ⁻¹ᵁ L.U (j PUnit.unit)),
       (F.appLE _ _ hle).hom (s.f (j PUnit.unit)) =
@@ -49,6 +59,25 @@ theorem appLE_eq_iff_stalk (w : LB.Iso L' (L.pull F)) (s : L.Sec) (s' : L'.Sec) 
 
 end Sec
 
+/- English proof (translation)
+Introduce `R R' R'' _ _ _ x x' x'' f f' ⟨φ, he, w, hg, F, hc, hw, hr, hs, hF, hFe, hv⟩ ⟨φ'', he'', w'', hg'', F'', hc'', hw'', hr'', hs'', hF'', hFe'', hv''⟩`. Establish `hsp : spMap (f'.comp f) = spMap f' ≫ spMap f` using `by show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hp` using `hc.1`. Take `⟨φ', hφ, hw0⟩ : ∃ φ' : x''.P.A.left ⟶ x'.P.A.left, φ' ≫ φ = φ'' ∧ φ' ≫ x'.P.A.hom = x''.P.A.hom ≫ spMap f'` from `⟨hp.lift φ'' (x''.P.A.hom ≫ spMap f') (by rw [hc''.1.w, Category.assoc, hsp]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`.
+
+Substitute `hφ` using the available equality. Establish `he' : eSec x''.P.A ≫ φ' = spMap f' ≫ eSec x'.P.A`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, he'', hsp, Category.assoc, Category.assoc, he]`. Establish `a₁ : eSec x''.P.A ≫ x''.P.A.hom = 𝟙 _` using `Over.w η[x''.P.A]`.
+
+Establish `a₂ : eSec x'.P.A ≫ x'.P.A.hom = 𝟙 _` using `Over.w η[x'.P.A]`. Rewrite using `[Category.assoc, hw0, ← Category.assoc, a₁, Category.assoc, a₂]`. Simplify using the standard rewrite rules. Establish `g` using `(isGen_iff w).1 hw`. Establish `g''` using `(isGen_iff w'').1 hw''`.
+
+Take `⟨w', T⟩` from `exists_cancel x.P.isLB w w'' g g'' x'.P.isLB x''.P.isLB`. Establish `r` using `(maps_iff w _ (fun _ => eSec x.P.A) _ x'.rig x.rig (spMap f) _ (rigPull_le φ (spMap f) he x.P.L) (fun _ => rfl)).1 hr`. Establish `r''` using `(maps_iff w'' _ (fun _ => eSec x.P.A) _ x''.rig x.rig (spMap (f'.comp f)) _ (rigPull_le (φ' ≫ φ) (spMap (f'.comp f)) he'' x.P.L) (fun _ => rfl)).1 hr''`. Rewrite `r''` using `[hsp]`. Establish `hFF : (Chart.dualMapR f').comp F = F''` using `dualNumber_ringHom_ext (fun a => by`.
+
+Rewrite using `[RingHom.comp_apply, hF, hF'']`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])`. Use the proof step `(by`. Rewrite using `[RingHom.comp_apply, hFe, hFe'']`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR])`.
+
+Use `⟨φ', he', w', hg''.trans hg.symm, Chart.dualMapR f', hc.cancel (hc''.congr hsp rfl) hw0, (isGen_iff w').2 (T.pgen_cancel x.P.isLB g g''), (maps_iff w' _ (fun _ => eSec x'.P.A) _ x''.rig x'.rig (spMap f') _ (rigPull_le φ' (spMap f') he' x'.P.L) (fun _ => rfl)).2 (T.pmaps_cancel x. …` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart x.P.isLB (φ (φ' (q z)))`. Establish `a` using `(appLE_eq_iff_stalk w x.th x'.th).1 hs Z (q ≫ φ') z j i hj hi`. Establish `b` using `(appLE_eq_iff_stalk w'' x.th x''.th).1 hs'' Z q z j k hj hk`. Rewrite `b` using `[T Z q z j i k hj hi hk, ← Category.assoc, a, Units.val_mul, _root_.mul_assoc]`.
+
+Conclude with `(Units.mul_right_inj _).1 b`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hv'', Category.assoc, hv, ← hFF, ← Category.assoc]`.
+
+Use `congr 1`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[Category.assoc, hw0, ← Category.assoc, Over.w, Category.assoc, Over.w] show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `congr 2`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem keyPB_cancel : ∀ (R R' R'' : Type) [CommRing R] [CommRing R'] [CommRing R''] (x : KeyIn R) (x' : KeyIn R')
     (x'' : KeyIn R'') (f : R →+* R') (f' : R' →+* R''), KeyPB x' x f → KeyPB x'' x (f'.comp f) → KeyPB x'' x' f' := by
   intro R R' R'' _ _ _ x x' x'' f f' ⟨φ, he, w, hg, F, hc, hw, hr, hs, hF, hFe, hv⟩

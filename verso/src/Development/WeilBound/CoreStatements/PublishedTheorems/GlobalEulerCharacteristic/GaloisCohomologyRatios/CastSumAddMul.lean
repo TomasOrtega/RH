@@ -13,12 +13,20 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
   (hM : ∀ (g : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) (m : M), M.ρ g m = m)
   (hΓ : Nat.Coprime (Nat.card (L.1 ≃ₐ[K.1] L.1)) ℓ)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem cast_sum_add_mul {ι : Type*} [Fintype ι] (f : ι → ℕ) (c n m : ℕ) (h : n = m) :
     (((∑ i, f i) + c * n : ℕ) : ℤ) = ∑ i, (f i : ℤ) + (c : ℤ) * (m : ℤ) := by
   subst h; push_cast; rfl
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `: IsGalois K.1 L.1` using `⟨⟩`. Establish `hT : Module.finrank (ZMod ℓ) (gsRootsZMod S ℓ) = 1` using `finrank_gsRootsZMod ℓ hℓS`. Establish `hN : Module.finrank (ZMod ℓ) (homRep (gsRootsZMod S ℓ) M) = Module.finrank (ZMod ℓ) M`. Express the relevant statement in the definitionally equal form `Module.finrank (ZMod ℓ) (gsRootsZMod S ℓ →ₗ[ZMod ℓ] M) = _`. Rewrite using `[Module.finrank_linearMap, hT, one_mul]`.
+
+Establish `key` using `finrank_invariants_funPermRep_infinitePlace (k := ZMod ℓ) S ιr hL (nRep hL hζ M hM)`. Establish `e1 : dInf (dN hL hζ M hM hΓ) = (Module.finrank (ZMod ℓ) ((funPermRep (ZMod ℓ) (L.1 ≃ₐ[K.1] L.1) (NumberField.InfinitePlace L.1)).tprod (nRep hL hζ M hM)).invariants : ℤ)` using `AdditiveFunction.invariantsTensor_apply _ _ _ _ _ _`. Conclude with `e1.trans ((congrArg (Nat.cast (R := ℤ)) key).trans (cast_sum_add_mul _ _ _ _ hN))`.
+-/
 theorem dInf_eq (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal) :
     dInf (dN hL hζ M hM hΓ) =

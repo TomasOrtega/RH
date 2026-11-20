@@ -14,9 +14,21 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+The claim follows from `le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => abs_nonneg _)`.
+-/
 theorem one_le_logSize_lb {n : ℕ} (a : ℕ) (z : Fin n → ℂ) : 1 ≤ logSize a z :=
   le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => abs_nonneg _)
 
+/- English proof (translation)
+Establish `h1 : ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), |Real.log ‖(c • z) i‖| ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), (|Real.log ‖c‖| + |Real.log ‖z i‖|)`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `hi' : z i ≠ 0` using `hz i (Finset.mem_filter.mp hi).2`. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, Real.log_mul (norm_ne_zero_iff.mpr hc) (norm_ne_zero_iff.mpr hi')]`. Conclude with `abs_add_le _ _`.
+
+Rewrite `h1` using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`. Establish `h2 : ((Finset.univ.filter (fun i : Fin n => i.val < a)).card : ℝ) ≤ n`. Use `Finset.card_filter_le (Finset.univ : Finset (Fin n)) (fun i : Fin n => i.val < a)` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `this` after adjusting the coercions.
+
+Establish `h3 : 0 ≤ |Real.log ‖c‖|` using `abs_nonneg _`. Establish `h4 : 0 ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), |Real.log ‖z i‖|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `h5` using `mul_le_mul_of_nonneg_right h2 h3`. Establish `h6 : 0 ≤ (n : ℝ) * |Real.log ‖c‖| * ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), |Real.log ‖z i‖|` using `by positivity`. Unfold `logSize`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem logSize_smul_le_lb {n : ℕ} (a : ℕ) (c : ℂ) (hc : c ≠ 0) (z : Fin n → ℂ)
     (hz : ∀ i : Fin n, i.val < a → z i ≠ 0) :
     logSize a (c • z) ≤ (1 + n * |Real.log ‖c‖|) * logSize a z := by
@@ -40,6 +52,9 @@ theorem logSize_smul_le_lb {n : ℕ} (a : ℕ) (c : ℂ) (hc : c ≠ 0) (z : Fin
   unfold logSize
   nlinarith
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, Matrix.mul_apply, dotProduct, Matrix.mulVec, Matrix.conjTranspose_apply, Pi.star_apply]`.
+-/
 theorem hermForm_rows_lb {m g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (F : Matrix (Fin m) (Fin g) ℂ) (i j : Fin m) :
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (F i) (F j) = (F * Hm * F.conjTranspose) i j := by
   rw [Matrix.mul_assoc]
@@ -49,6 +64,31 @@ theorem hermForm_rows_lb {m g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (F : Matr
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ n a C h1 h2 m u hu`. Take `⟨ρ, Λ, _, L, hρ, hρ1, hR⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.exists_logPeriods_isRiem E H D l Xo σ n a C h1 h2`. Set `F : (Fin n → ℂ) → Matrix (Fin m) (Fin C.g) ℂ` to `fun z => Matrix.of fun i b => C.ψ ((ρ : ℂ) • z) (u i b)`. Establish `hFc : ContinuousAt F 0`. Use `continuousAt_pi.mpr fun i => continuousAt_pi.mpr fun b => ?_` and prove the remaining obligations.
+
+Establish `hd : DifferentiableOn ℂ (fun z => C.ψ z (u i b)) (Metric.ball 0 1)` using `C.hol.2 (u i b)`. Establish `hc : ContinuousAt (fun z => C.ψ z (u i b)) ((ρ : ℂ) • (0 : Fin n → ℂ))`. Rewrite using `[smul_zero]`. Conclude with `hd.continuousOn.continuousAt (Metric.ball_mem_nhds _ one_pos)`. Conclude with `ContinuousAt.comp (f := fun z : Fin n → ℂ => (ρ : ℂ) • z) hc (continuous_const_smul _).continuousAt`.
+
+Establish `hFr : (F 0).rank = m`. Establish `: LinearIndependent ℂ (F 0).row`. Establish `e : (F 0).row = fun i b => C.ψ 0 (u i b)`. Use function extensionality and compare the values at `i b`. Simplify using `[F, Matrix.row]`.
+
+Rewrite using `[e]`. Conclude with `hu`. Simplify using `using this.rank_matrix`. Take `⟨ρ', K, N, hρ', hρ'1, hB⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.logPeriods_subframe_det_bounds n a C.g Λ L m F hFc hFr`. Establish `hρc : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`.
+
+Use `set c : ℝ := 1 + n * |Real.log ‖(ρ : ℂ)⁻¹‖| with hcdef`. Establish `hc1 : 1 ≤ c` using `le_add_of_nonneg_right (by positivity)`. Use `⟨ρ * ρ', K * Real.pi ^ m * c ^ N, N, mul_pos hρ hρ', mul_le_one₀ hρ1 hρ'.le hρ'1, ?_⟩` and prove the remaining obligations. Introduce `z hz v hv`. Take `⟨hz1, hz2⟩` from `hz`.
+
+Establish `hw1 : (ρ : ℂ)⁻¹ • z ∈ Metric.ball (0 : Fin n → ℂ) ρ'`. Rewrite `hz1`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hρ.le, inv_mul_lt_iff₀ hρ]`. Conclude with `hz1`. Establish `hw2 : ∀ i : Fin n, i.val < a → ((ρ : ℂ)⁻¹ • z) i ≠ 0` using `fun i hi => mul_ne_zero (inv_ne_zero hρc) (hz2 i hi)`.
+
+Establish `hwz : (ρ : ℂ) • (ρ : ℂ)⁻¹ • z = z` using `smul_inv_smul₀ hρc z`. Establish `hRz` using `hR ((ρ : ℂ)⁻¹ • z) ⟨Metric.ball_subset_ball hρ'1 hw1, hw2⟩`. Rewrite `hRz` using `[hwz]`. Take `⟨hB1, hB2⟩` from `hB _ hw1 hw2`. Establish `hG : ∀ Γ, IsHodgeGram C.t.G C.t.PP.L (spMap (C.ψ z)) v Γ ↔ Γ = (Real.pi : ℂ) • (F ((ρ : ℂ)⁻¹ • z) * L.H ((ρ : ℂ)⁻¹ • z) * (F ((ρ : ℂ)⁻¹ • z)).conjTranspose)`.
+
+Introduce `Γ`. Rewrite using `[hRz m u v Γ hv, ← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← hermForm_rows_lb]`. Simplify using `only [F, hwz]`.
+
+Both sides reduce to the same expression. Use `⟨⟨_, (hG _).mpr rfl⟩, fun Γ hΓ => ?_⟩` and prove the remaining obligations. Rewrite using `[(hG Γ).mp hΓ, Matrix.det_smul, Fintype.card_fin, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg Real.pi_pos.le]`. Establish `hS` using `logSize_smul_le_lb a _ (inv_ne_zero hρc) z hz2`. Rewrite `hS` using `[← hcdef]`.
+
+Express the relevant statement in the definitionally equal form `1 ≤ K * logSize a ((ρ : ℂ)⁻¹ • z) ^ N * _ at hB2`. Establish `hd0` using `norm_nonneg (F ((ρ : ℂ)⁻¹ • z) * L.H ((ρ : ℂ)⁻¹ • z) * (F ((ρ : ℂ)⁻¹ • z)).conjTranspose).det`. Generalize the expression as in `‖(F ((ρ : ℂ)⁻¹ • z) * L.H ((ρ : ℂ)⁻¹ • z) * (F ((ρ : ℂ)⁻¹ • z)).conjTranspose).det‖ = d at hB1 hB2 hd0 ⊢`. Establish `hs0` using `one_le_logSize_lb a ((ρ : ℂ)⁻¹ • z)`. Establish `hs1` using `one_le_logSize_lb a z`.
+
+Establish `hp : 1 ≤ Real.pi ^ m` using `one_le_pow₀ (by linarith [Real.pi_gt_three])`. Establish `hcN : 1 ≤ c ^ N` using `one_le_pow₀ hc1`. Establish `hpow : logSize a ((ρ : ℂ)⁻¹ • z) ^ N ≤ c ^ N * logSize a z ^ N`. Rewrite using `[← mul_pow]; exact pow_le_pow_left₀ (by linarith) hS N`. Establish `hK : 0 ≤ K` using `hd0.trans hB1`.
+
+Establish `hp0 : 0 ≤ Real.pi ^ m` using `by positivity`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hodgeGram_det_log_bounds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : BdryChart Xo σ n a), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → ∀ (m : ℕ) (u : Fin m → Fin C.g → C.R), LinearIndependent ℂ (fun i b => C.ψ 0 (u i b)) → ∃ (ρ K : ℝ) (N : ℕ), 0 < ρ ∧ ρ ≤ 1 ∧ ∀ z ∈ punct n a ρ, ∀ v, C.IsVal z u v → (∃ Γ, IsHodgeGram C.t.G C.t.PP.L (spMap (C.ψ z)) v Γ) ∧ ∀ Γ, IsHodgeGram C.t.G C.t.PP.L (spMap (C.ψ z)) v Γ → ‖Γ.det‖ ≤ K ∧ 1 ≤ K * logSize a z ^ N * ‖Γ.det‖ := by
   intro E _ _ _ H D l Xo σ n a C h1 h2 m u hu
   obtain ⟨ρ, Λ, _, L, hρ, hρ1, hR⟩ := GlobalTheory.CompanionTheory.Ar.Flat.exists_logPeriods_isRiem E H D l Xo σ n a C h1 h2

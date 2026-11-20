@@ -15,8 +15,16 @@ namespace LineKernel
 
 def radii (ε : ℝ) (j : ℕ) : ℝ := ε / 2 ^ (j + 3)
 
+/- English proof (translation)
+Unfold `radii`. Check the signs of the components of the expression.
+-/
 theorem radii_pos {ε : ℝ} (hε : 0 < ε) (j : ℕ) : 0 < radii ε j := by unfold radii; positivity
 
+/- English proof (translation)
+Establish `e : ∀ j, 2 * radii ε j = ε / 4 * (1 / 2) ^ j`. Introduce `j`. Unfold `radii`. Rewrite using `[pow_add, one_div_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Evaluate the numerical expressions. Unfold `Rs`. Repeatedly rewrite using `[e, ← Finset.mul_sum]`. Use `sum_geometric_two_le (n + 1)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem Rs_radii_le {ε : ℝ} (hε : 0 < ε) (n : ℕ) : Rs (radii ε) n ≤ ε / 2 := by
   have e : ∀ j, 2 * radii ε j = ε / 4 * (1 / 2) ^ j := by
     intro j; unfold radii; rw [pow_add, one_div_pow]; field_simp; norm_num
@@ -27,17 +35,28 @@ theorem Rs_radii_le {ε : ℝ} (hε : 0 < ε) (n : ℕ) : Rs (radii ε) n ≤ ε
 
 def weight (M : ℕ → ℝ) (p : ℕ) : ℝ := if p = 0 then 1 else (1 / 2) ^ p / max 1 |M p|
 
+/- English proof (translation)
+Unfold `weight`. Use `split_ifs`. Conclude with `one_pos`. Conclude with `div_pos (by positivity) (lt_of_lt_of_le one_pos (le_max_left _ _))`.
+-/
 theorem weight_pos (M : ℕ → ℝ) (p : ℕ) : 0 < weight M p := by
   unfold weight; split_ifs
   · exact one_pos
   · exact div_pos (by positivity) (lt_of_lt_of_le one_pos (le_max_left _ _))
 
+/- English proof (translation)
+Unfold `weight`. Use `split_ifs`. Conclude with `le_rfl`. Rewrite using `[div_le_one (lt_of_lt_of_le one_pos (le_max_left _ _))]`. Conclude with `(pow_le_one₀ (by norm_num) (by norm_num)).trans (le_max_left _ _)`.
+-/
 theorem weight_le_one (M : ℕ → ℝ) (p : ℕ) : weight M p ≤ 1 := by
   unfold weight; split_ifs
   · exact le_rfl
   · rw [div_le_one (lt_of_lt_of_le one_pos (le_max_left _ _))]
     exact (pow_le_one₀ (by norm_num) (by norm_num)).trans (le_max_left _ _)
 
+/- English proof (translation)
+Unfold `weight`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `hm : 0 < max 1 |M p|` using `lt_of_lt_of_le one_pos (le_max_left _ _)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ hm]`. Conclude with `mul_le_mul_of_nonneg_left (le_max_right _ _) (by positivity)`. Use `_ ≤ (1 / 2) ^ p * max 1 |M 0| := le_mul_of_one_le_right (by positivity) (le_max_left _ _)`.
+-/
 theorem weight_mul_abs_le (M : ℕ → ℝ) (p : ℕ) :
     weight M p * |M p| ≤ (1 / 2) ^ p * max 1 |M 0| := by
   unfold weight; split_ifs with h
@@ -55,6 +74,13 @@ def Good (M : ℕ → ℝ) (ε : ℝ) (j : ℕ) (x : ℝ) : Prop :=
       ‖iteratedDeriv q (rem x (radii ε j)) t‖ ≤ (1 / 2) ^ j / (j + 2)) ∧
     exp (-x * radii ε j) ≤ (1 / 2) ^ j
 
+/- English proof (translation)
+Establish `hr` using `radii_pos hε j`. Use `(eventually_gt_atTop 0).and (((eventually_all_finset _).2 fun p _ => ?_).and (((eventually_all_finset _).2 fun q _ => ?_).and ?_))` and prove the remaining obligations. Establish `hc : 0 < (1 / 2 : ℝ) ^ (j + 1) * weight M p`. Use `weight_pos M p` as an intermediate fact. Check the signs of the components of the expression.
+
+Use `filter_upwards [eventually_ge_atTop (weight M (p - 1) / ((1 / 2) ^ (j + 1) * weight M p)), eventually_gt_atTop 0] with x hx hx0 _`. Rewrite using `[inv_mul_le_iff₀ hx0]`. Rewrite `hx` using `[div_le_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `eventually_norm_iteratedDeriv_rem_le hr q (by positivity)`.
+
+Establish `ht : Tendsto (fun x : ℝ => exp (-x * radii ε j)) atTop (𝓝 0)`. Use `tendsto_exp_neg_atTop_nhds_zero.comp (tendsto_id.atTop_mul_const hr)` as an intermediate fact. Use `this.congr fun x => ?_` and prove the remaining obligations. Simplify using `[neg_mul]`. Conclude with `ht.eventually (ge_mem_nhds (by positivity))`.
+-/
 theorem eventually_good (M : ℕ → ℝ) {ε : ℝ} (hε : 0 < ε) (j : ℕ) :
     ∀ᶠ x in atTop, Good M ε j x := by
   have hr := radii_pos hε j
@@ -73,6 +99,9 @@ theorem eventually_good (M : ℕ → ℝ) {ε : ℝ} (hε : 0 < ε) (j : ℕ) :
       simp [neg_mul]
     exact ht.eventually (ge_mem_nhds (by positivity))
 
+/- English proof (translation)
+Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero (s := Icc 0 c) fun t ht => by`. Establish `: f t = 0` using `by by_contra h; exact ht (hs h)`. Simplify using `[this]]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integral_norm_le_of_support {f : ℝ → ℂ} (hf : Continuous f) {c D : ℝ} (hc : 0 ≤ c)
     (hs : support f ⊆ Icc 0 c) (hD : ∀ t ∈ Icc 0 c, ‖f t‖ ≤ D) : ∫ t, ‖f t‖ ≤ D * c := by
   rw [← setIntegral_eq_integral_of_forall_compl_eq_zero (s := Icc 0 c) fun t ht => by
@@ -83,6 +112,11 @@ theorem integral_norm_le_of_support {f : ℝ → ℂ} (hf : Continuous f) {c D :
           measurableSet_Icc hD
     _ = D * c := by simp [hc, mul_comm]
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `isCompact_Icc.exists_bound_of_continuousOn (s := Icc 0 c) hφ.continuousOn`. Use `Integrable.mono' (hK.norm.const_mul B) (hφ.aestronglyMeasurable.mul hK.aestronglyMeasurable) (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Distinguish the cases in `hu : K u = 0`. Simplify using `[hu]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hB u (hs hu)) (norm_nonneg _)`.
+-/
 theorem integrable_mul_of_support {φ K : ℝ → ℂ} (hφ : Continuous φ) (hK : Integrable K) {c : ℝ}
     (hs : support K ⊆ Icc 0 c) : Integrable fun u => φ u * K u := by
   obtain ⟨B, hB⟩ := isCompact_Icc.exists_bound_of_continuousOn (s := Icc 0 c) hφ.continuousOn
@@ -98,12 +132,31 @@ section Sequence
 variable {M : ℕ → ℝ} {ε : ℝ} (hε : 0 < ε) {a : ℕ → ℝ} (hg : ∀ j, Good M ε j (a j))
 include hε hg
 
+/- English proof (translation)
+The claim follows from `(hg j).1`.
+-/
 theorem good_pos (j : ℕ) : 0 < a j := (hg j).1
 
+/- English proof (translation)
+Use `coef_le_of (fun j => (hg j).1) (by simp [weight]) (fun p => (weight_pos M p).le) (fun n p hp hpn => (hg n).2.1 p (Finset.mem_range.2 (by omega)) hp) n p` and prove the remaining obligations.
+-/
 theorem coef_le_weight (n p : ℕ) : coef a n p ≤ weight M p := by
   refine coef_le_of (fun j => (hg j).1) (by simp [weight]) (fun p => (weight_pos M p).le)
     (fun n p hp hpn => (hg n).2.1 p (Finset.mem_range.2 (by omega)) hp) n p
 
+/- English proof (translation)
+Establish `ha` using `fun j => (hg j).1`. Establish `hr` using `radii_pos hε`. Establish `hS` using `fun q => norm_iteratedDeriv_rem_le (hr (n + 1)) q`. Use `choose S hS0 hS using hS`. Use `set δ : ℝ := (1 / 2) ^ (n + 1) / ((n + 1 : ℕ) + 2 : ℝ) with hδ`.
+
+Use `set B : ℕ → ℝ := fun q => if q < 2 * (n + 1) + 3 then δ else 2 ^ q * (1 + a (n + 1)) ^ q * exp (-a (n + 1) * radii ε (n + 1)) * S q with hB`. Establish `hBq : ∀ q t, ‖iteratedDeriv q (rem (a (n + 1)) (radii ε (n + 1))) t‖ ≤ B q`. Introduce `q t`. Simplify using `only [hB]`. Use `split_ifs with hq`.
+
+Conclude with `(hg (n + 1)).2.2.1 q (Finset.mem_range.2 hq) t`. Conclude with `hS q (a (n + 1)) (ha _).le t`. Use `(norm_iteratedDeriv_ρ_succ_le ha hr n k hBq t).trans ?_` and prove the remaining obligations. Establish `h1 : ∀ p ∈ Finset.range (n + 2), coef a (n + 1) p * B (p + k) ≤ δ`. Introduce `p hp`.
+
+Establish `hp'` using `Finset.mem_range.1 hp`. Establish `hB' : B (p + k) = δ` using `by simp only [hB]; rw [if_pos (by omega)]`. Rewrite using `[hB']`. Establish `hδ0 : 0 ≤ δ` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `(Finset.sum_le_sum h1).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul, hδ]`. Establish `: ((n + 2 : ℕ) : ℝ) ≤ ((n + 1 : ℕ) + 2 : ℝ)` using `by push_cast; linarith`. Rewrite using `[mul_div_assoc']`. Rewrite using `[div_le_iff₀ (by positivity)]`.
+
+Establish `h2 : (0 : ℝ) ≤ (1 / 2) ^ (n + 1)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_iteratedDeriv_ρ_succ_le_half_pow (n k : ℕ) (hk : k ≤ n + 1) (t : ℝ) :
     ‖iteratedDeriv k (ρ a (radii ε) (n + 1)) t‖ ≤ (1 / 2) ^ (n + 1) := by
   have ha := fun j => (hg j).1
@@ -137,6 +190,9 @@ theorem norm_iteratedDeriv_ρ_succ_le_half_pow (n k : ℕ) (hk : k ≤ n + 1) (t
   have h2 : (0 : ℝ) ≤ (1 / 2) ^ (n + 1) := by positivity
   nlinarith
 
+/- English proof (translation)
+Establish `ha` using `fun j => (hg j).1`. Establish `hr` using `radii_pos hε`. Establish `hc : HasCompactSupport (ρ a (radii ε) j)` using `HasCompactSupport.of_support_subset_isCompact isCompact_Icc (support_ρ_subset ha hr j)`. Take `⟨C, hC⟩` from `(hasCompactSupport_iteratedDeriv hc k).exists_bound_of_continuous ((contDiff_ρ ha hr j).continuous_iteratedDeriv k (by exact_mod_cast le_top))`. Conclude with `⟨max C 0, le_max_right _ _, fun t => (hC t).trans (le_max_left _ _)⟩`.
+-/
 theorem exists_bound_iteratedDeriv_ρ (k j : ℕ) :
     ∃ C, 0 ≤ C ∧ ∀ t, ‖iteratedDeriv k (ρ a (radii ε) j) t‖ ≤ C := by
   have ha := fun j => (hg j).1
@@ -150,11 +206,19 @@ theorem exists_bound_iteratedDeriv_ρ (k j : ℕ) :
 def majorant (k j : ℕ) : ℝ :=
   (1 / 2) ^ j + if j ≤ k then (exists_bound_iteratedDeriv_ρ hε hg k j).choose else 0
 
+/- English proof (translation)
+Use `(summable_geometric_two).add (summable_of_ne_finset_zero (s := Finset.range (k + 1)) fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[if_neg]`. Rewrite `hj` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem summable_majorant (k : ℕ) : Summable (majorant hε hg k) := by
   refine (summable_geometric_two).add (summable_of_ne_finset_zero (s := Finset.range (k + 1))
     fun j hj => ?_)
   rw [if_neg]; rw [Finset.mem_range] at hj; omega
 
+/- English proof (translation)
+Establish `hC` using `(exists_bound_iteratedDeriv_ρ hε hg k j).choose_spec`. Unfold `majorant`. Use `split_ifs with hjk`. Combine the linear relations using `[hC.2 t, pow_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 2) j]`. Take `⟨n, rfl⟩ : ∃ n, j = n + 1` from `⟨j - 1, by omega⟩`.
+
+Use `norm_iteratedDeriv_ρ_succ_le_half_pow hε hg n k (by omega) t` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_iteratedDeriv_ρ_le_majorant (k j : ℕ) (t : ℝ) :
     ‖iteratedDeriv k (ρ a (radii ε) j) t‖ ≤ majorant hε hg k j := by
   have hC := (exists_bound_iteratedDeriv_ρ hε hg k j).choose_spec
@@ -167,6 +231,9 @@ theorem norm_iteratedDeriv_ρ_le_majorant (k j : ℕ) (t : ℝ) :
 
 def remSum (t : ℝ) : ℂ := ∑' j, ρ a (radii ε) j t
 
+/- English proof (translation)
+Establish `ha` using `fun j => (hg j).1`. Establish `hr` using `radii_pos hε`. Use `contDiff_tsum (fun j => contDiff_ρ ha hr j) (fun k _ => summable_majorant hε hg k) fun k j t _ => ?_` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Conclude with `norm_iteratedDeriv_ρ_le_majorant hε hg k j t`.
+-/
 theorem contDiff_remSum : ContDiff ℝ ∞ (remSum (ε := ε) (a := a)) := by
   have ha := fun j => (hg j).1
   have hr := radii_pos hε
@@ -175,10 +242,18 @@ theorem contDiff_remSum : ContDiff ℝ ∞ (remSum (ε := ε) (a := a)) := by
   rw [norm_iteratedFDeriv_eq_norm_iteratedDeriv]
   exact norm_iteratedDeriv_ρ_le_majorant hε hg k j t
 
+/- English proof (translation)
+The claim follows from `Summable.of_norm_bounded (summable_majorant hε hg 0) fun j => by simpa using norm_iteratedDeriv_ρ_le_majorant hε hg 0 j t`.
+-/
 theorem summable_ρ (t : ℝ) : Summable fun j => ρ a (radii ε) j t :=
   Summable.of_norm_bounded (summable_majorant hε hg 0) fun j => by
     simpa using norm_iteratedDeriv_ρ_le_majorant hε hg 0 j t
 
+/- English proof (translation)
+Introduce `t ht`. Assume the negation of the conclusion as `h`. Apply `ht` to reduce the goal to its premises. Unfold `remSum`. Use `(tsum_congr fun j => ?_).trans tsum_zero` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hj`. Establish `h1` using `support_ρ_subset (fun j => (hg j).1) (radii_pos hε) j hj`. Conclude with `h ⟨h1.1, h1.2.trans (Rs_radii_le hε j)⟩`.
+-/
 theorem support_remSum_subset : support (remSum (ε := ε) (a := a)) ⊆ Icc 0 (ε / 2) := by
   intro t ht
   by_contra h
@@ -189,6 +264,17 @@ theorem support_remSum_subset : support (remSum (ε := ε) (a := a)) ⊆ Icc 0 (
   have h1 := support_ρ_subset (fun j => (hg j).1) (radii_pos hε) j hj
   exact h ⟨h1.1, h1.2.trans (Rs_radii_le hε j)⟩
 
+/- English proof (translation)
+Establish `ha` using `fun j => (hg j).1`. Establish `hr` using `radii_pos hε`. Establish `hint : ∀ j, Integrable fun t => F t * ρ a (radii ε) j t` using `fun j => (hF.mul (contDiff_ρ ha hr j).continuous).integrable_of_hasCompactSupport (HasCompactSupport.of_support_subset_isCompact isCompact_Icc (support_ρ_subset ha hr j)).mul_left`. Establish `hbound : ∀ j, ∫ t, ‖F t * ρ a (radii ε) j t‖ ≤ (B * majorant hε hg 0 j) * (ε / 2)`. Introduce `j`.
+
+Use `integral_norm_le_of_support (hF.mul (contDiff_ρ ha hr j).continuous) (by positivity) ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Establish `h1 : t ∈ support (ρ a (radii ε) j)` using `fun h => ht (by simp [h])`. Establish `h2` using `support_ρ_subset ha hr j h1`. Conclude with `⟨h2.1, h2.2.trans (Rs_radii_le hε j)⟩`.
+
+Introduce `t ht`. Rewrite using `[Pi.mul_apply, norm_mul]`. Establish `h1` using `hB t ⟨by linarith [ht.1], by linarith [ht.2]⟩`. Establish `h2 : ‖ρ a (radii ε) j t‖ ≤ majorant hε hg 0 j`. Simplify using `using norm_iteratedDeriv_ρ_le_majorant hε hg 0 j t`.
+
+Conclude with `mul_le_mul h1 h2 (norm_nonneg _) ((norm_nonneg _).trans h1)`. Establish `hsum : Summable fun j => ∫ t, ‖F t * ρ a (radii ε) j t‖` using `Summable.of_nonneg_of_le (fun j => integral_nonneg fun t => norm_nonneg _) hbound (((summable_majorant hε hg 0).mul_left B).mul_right (ε / 2))`. Use `hasSum_integral_of_summable_integral_norm hint hsum` as an intermediate fact. Establish `e : ∫ t, F t * remSum (ε` using `ε) (a := a) t = ∫ t, ∑' j, F t * ρ a (radii ε) j t := by`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[remSum, tsum_mul_left]`. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem hasSum_integral_remSum {F : ℝ → ℂ} (hF : Continuous F) {B : ℝ}
     (hB : ∀ t ∈ Icc (-ε) ε, ‖F t‖ ≤ B) :
     HasSum (fun j => ∫ t, F t * ρ a (radii ε) j t) (∫ t, F t * remSum (ε := ε) (a := a) t) := by
@@ -221,6 +307,13 @@ theorem hasSum_integral_remSum {F : ℝ → ℂ} (hF : Continuous F) {B : ℝ}
 
 end Sequence
 
+/- English proof (translation)
+Establish `h1 : 1 + x ≤ 2 * max 1 x`. Break down `le_total 1 x with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_left h]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (max 1 x) ^ m ≤ 1 + x ^ m`. Break down `le_total 1 x with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Combine the linear relations using `[pow_nonneg hx m]`.
+
+Rewrite using `[max_eq_left h, one_pow]`. Combine the linear relations using `[pow_nonneg hx m]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_add_pow_le (x : ℝ) (hx : 0 ≤ x) (m : ℕ) : (1 + x) ^ m ≤ 2 ^ m * (1 + x ^ m) := by
   have h1 : 1 + x ≤ 2 * max 1 x := by
     rcases le_total 1 x with h | h
@@ -239,6 +332,13 @@ section Limit
 variable {M : ℕ → ℝ} {ε : ℝ} (hε : 0 < ε) {a : ℕ → ℝ} (hg : ∀ j, Good M ε j (a j))
 include hε hg
 
+/- English proof (translation)
+Establish `ha` using `fun j => (hg j).1`. Establish `hr` using `radii_pos hε`. Establish `hd : ∀ N, dist (𝓕 (KC a (radii ε) N) ξ) (𝓕 (KC a (radii ε) N.succ) ξ) ≤ 4 * π * |ξ| * (ε / 16) * (1 / 2) ^ N + (1 / 2) ^ (N + 1)`. Introduce `N`. Rewrite using `[dist_comm, dist_eq_norm]`.
+
+Use `(norm_fourier_KC_succ_sub_le ha hr N ξ).trans (add_le_add (le_of_eq ?_) ?_)` and prove the remaining obligations. Unfold `radii`. Rewrite using `[pow_add, pow_add, one_div_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `(hg (N + 1)).2.2.2`. Establish `hs : Summable fun N : ℕ => 4 * π * |ξ| * (ε / 16) * (1 / 2 : ℝ) ^ N + (1 / 2) ^ (N + 1)` using `(summable_geometric_two.mul_left _).add (summable_geometric_two.comp_injective (add_left_injective 1))`. Conclude with `cauchySeq_tendsto_of_complete (cauchySeq_of_dist_le_of_summable _ hd hs)`.
+-/
 theorem tendsto_fourier_Kc (ξ : ℝ) : ∃ l : ℂ,
     Tendsto (fun N => 𝓕 (fun t => (Kc a (radii ε) N t : ℂ)) ξ) atTop (𝓝 l) := by
   have ha := fun j => (hg j).1
@@ -255,6 +355,13 @@ theorem tendsto_fourier_Kc (ξ : ℝ) : ∃ l : ℂ,
       (add_left_injective 1))
   exact cauchySeq_tendsto_of_complete (cauchySeq_of_dist_le_of_summable _ hd hs)
 
+/- English proof (translation)
+Establish `ha` using `fun j => (hg j).1`. Establish `hr` using `radii_pos hε`. Use `set P := ∏ j ∈ Finset.range m, (a j / π) with hP`. Use `⟨2 ^ m * (1 + P), m, fun N hN ξ => ?_⟩` and prove the remaining obligations. Establish `h1` using `abs_pow_mul_norm_fourier_KC_le ha hr N m (by omega) ξ`.
+
+Establish `h2` using `norm_fourier_KC_le_one ha hr N ξ`. Establish `h3` using `one_add_pow_le |ξ| (abs_nonneg ξ) m`. Establish `hpos : 0 < (1 + |ξ|) ^ m` using `by positivity`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ hpos]`. Express the relevant statement in the definitionally equal form `‖𝓕 (KC a (radii ε) N) ξ‖ * (1 + |ξ|) ^ m ≤ _`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem decay_fourier_Kc (m : ℕ) : ∃ C N₀, ∀ N ≥ N₀, ∀ ξ : ℝ,
     ‖𝓕 (fun t => (Kc a (radii ε) N t : ℂ)) ξ‖ ≤ C * (1 + |ξ|) ^ (-(m : ℝ)) := by
   have ha := fun j => (hg j).1
@@ -275,16 +382,28 @@ theorem decay_fourier_Kc (m : ℕ) : ∃ C N₀, ∀ N ≥ N₀, ∀ ξ : ℝ,
 
 def climit (p : ℕ) : ℝ := ⨆ n, coef a n p
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨weight M p, by rintro _ ⟨n, rfl⟩; exact coef_le_weight hε hg n p⟩`.
+-/
 theorem bddAbove_coef (p : ℕ) : BddAbove (Set.range fun n => coef a n p) :=
   ⟨weight M p, by rintro _ ⟨n, rfl⟩; exact coef_le_weight hε hg n p⟩
 
+/- English proof (translation)
+The claim follows from `tendsto_atTop_ciSup (monotone_nat_of_le_succ fun n => coef_mono (fun j => (hg j).1) n p) (bddAbove_coef hε hg p)`.
+-/
 theorem tendsto_coef (p : ℕ) : Tendsto (fun n => coef a n p) atTop (𝓝 (climit (a := a) p)) :=
   tendsto_atTop_ciSup (monotone_nat_of_le_succ fun n => coef_mono (fun j => (hg j).1) n p)
     (bddAbove_coef hε hg p)
 
+/- English proof (translation)
+The claim follows from `ciSup_le fun n => coef_le_weight hε hg n p`.
+-/
 theorem climit_le_weight (p : ℕ) : climit (a := a) p ≤ weight M p :=
   ciSup_le fun n => coef_le_weight hε hg n p
 
+/- English proof (translation)
+The claim follows from `(coef_nonneg (fun j => (hg j).1) 0 p).trans (le_ciSup (bddAbove_coef hε hg p) 0)`.
+-/
 theorem climit_nonneg (p : ℕ) : 0 ≤ climit (a := a) p :=
   (coef_nonneg (fun j => (hg j).1) 0 p).trans (le_ciSup (bddAbove_coef hε hg p) 0)
 
@@ -294,6 +413,33 @@ end LineKernel
 
 open LineKernel in
 
+/- English proof (translation)
+Use `choose a hg using fun j => (eventually_good M hε j).exists`. Establish `ha` using `fun j => (hg j).1`. Establish `hr` using `radii_pos hε`. Establish `hKs : ∀ N, support (Kc a (radii ε) N) ⊆ Icc 0 (ε / 2)` using `fun N t ht => ⟨(support_Kc_subset ha hr N ht).1, (support_Kc_subset ha hr N ht).2.trans (Rs_radii_le hε N)⟩`. Take `⟨g, hgs, hgt, hgl⟩` from `exists_smooth_weak_limit (K := Kc a (radii ε)) (a := 0) (b := ε / 2) (integrable_Kc ha hr) (Kc_nonneg ha hr) (integral_Kc_le_one ha hr) hKs (tendsto_fourier_Kc hε hg) (decay_fourier_Kc hε hg)`.
+
+Establish `hsub : Icc 0 (ε / 2) ⊆ Icc (-ε) ε` using `Icc_subset_Icc (by linarith) (by linarith)`. Use `⟨fun p => (-1) ^ p * climit (a := a) p, g, remSum (ε := ε) (a := a), hgs, contDiff_remSum hε hg, hgt.trans hsub, (closure_minimal (support_remSum_subset hε hg) isClosed_Icc).trans hsub, ?_, ?_⟩` and prove the remaining obligations. Use `Summable.of_norm_bounded (summable_geometric_two.mul_right (max 1 |M 0|)) fun p => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_mul, abs_abs, abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul, abs_of_nonneg (climit_nonneg hε hg p)]`. Conclude with `(mul_le_mul_of_nonneg_right (climit_le_weight hε hg p) (abs_nonneg _)).trans (weight_mul_abs_le M p)`.
+
+Introduce `F hF hFM`. Establish `hA : Tendsto (fun n => ∑ j ∈ Finset.range (n + 1), ∫ t, F t * ρ a (radii ε) j t) atTop (𝓝 (∫ t, F t * remSum (ε` using `ε) (a := a) t)) := ((hasSum_integral_remSum hε hg hF.continuous (fun t ht => by`. Simplify using `using hFM 0 t ht)).tendsto_sum_nat).comp (tendsto_add_atTop_nat 1)`. Establish `hB : Tendsto (fun n => ∫ u, opT a (n + 1) F u * KC a (radii ε) n u) atTop (𝓝 (∑' p, (((-1) ^ p * climit (a` using `a) p : ℝ) : ℂ) * ∫ t, iteratedDeriv p F t * g t)) := by`. Establish `hcont : ∀ p, Continuous (iteratedDeriv p F)` using `fun p => hF.continuous_iteratedDeriv p (by exact_mod_cast le_top)`.
+
+Establish `hKsC : ∀ n, support (KC a (radii ε) n) ⊆ Icc 0 (ε / 2)` using `fun n u hu => hKs n (by simpa [KC] using hu)`. Establish `hsplit : ∀ n, ∫ u, opT a (n + 1) F u * KC a (radii ε) n u = ∑' p, sc a (n + 1) p * ∫ u, iteratedDeriv p F u * KC a (radii ε) n u`. Introduce `n`. Rewrite using `[tsum_eq_sum (s := Finset.range (n + 2)) fun p hp => by`. Rewrite `hp` using `[Finset.mem_range, not_lt]`.
+
+Simplify using `[sc, coef_eq_zero a (by omega : n + 1 < p)]]`. Simplify using `only [opT, Finset.sum_mul]`. Rewrite using `[integral_finsetSum (Finset.range (n + 1 + 1)) (f := fun p u => sc a (n + 1) p * iteratedDeriv p F u * KC a (radii ε) n u) fun p _ => integrable_mul_of_support (φ := fun u => sc a (n + 1) p * iteratedDeriv p F u) (continuous_const.mul (hcont p)) (integrable_KC ha hr n) (hKsC n)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show (fun n => ∫ u, opT a (n + 1) F u * KC a (radii ε) n u) = fun n => ∑' p, sc a (n + 1) p * ∫ u, iteratedDeriv p F u * KC a (radii ε) n u from`. Use function extensionality and compare the values at `hsplit]`.
+
+Use `tendsto_tsum_of_dominated_convergence (bound := fun p => weight M p * |M p|) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Summable.of_nonneg_of_le (fun p => mul_nonneg (weight_pos M p).le (abs_nonneg _)) (weight_mul_abs_le M) (summable_geometric_two.mul_right _)`. Introduce `p`. Establish `h1 : Tendsto (fun n => sc a (n + 1) p) atTop (𝓝 ((((-1) ^ p * climit (a` using `a) p : ℝ) : ℂ))) := by`. Use `((Complex.continuous_ofReal.tendsto _).comp ((tendsto_coef hε hg p).comp (tendsto_add_atTop_nat 1))).const_mul ((-1 : ℂ) ^ p)` as an intermediate fact.
+
+Simplify `this` using `[sc, Function.comp_def]`. Conclude with `h1.mul (hgl _ (hcont p))`. Use `Eventually.of_forall fun n p => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `hsc : ‖sc a (n + 1) p‖ ≤ weight M p`.
+
+Simplify using `only [sc, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (coef_nonneg ha _ _)]`. Conclude with `coef_le_weight hε hg _ _`. Establish `hint : ‖∫ u, iteratedDeriv p F u * KC a (radii ε) n u‖ ≤ |M p|`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `integral_mono (integrable_mul_of_support (hcont p) (integrable_KC ha hr n) (hKsC n)).norm ((integrable_Kc ha hr n).const_mul _) fun u => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Simplify using `only [KC, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Kc_nonneg ha hr n u)]`. Distinguish the cases in `hu : Kc a (radii ε) n u = 0`. Simplify using `[hu]`.
+
+Conclude with `mul_le_mul_of_nonneg_right ((hFM p u (hsub (hKs n hu))).trans (le_abs_self _)) (Kc_nonneg ha hr n u)`. Use `_ = |M p| * ∫ u, Kc a (radii ε) n u := integral_const_mul _ _`. Use `_ ≤ |M p| := by`. Use `integral_Kc_le_one ha hr n` as an intermediate fact. Establish `h0 : 0 ≤ |M p|` using `abs_nonneg _`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `mul_le_mul hsc hint (norm_nonneg _) (weight_pos M p).le`. Establish `hlim` using `hB.add hA`. Establish `hconst : (fun n => F 0) = fun n => (∫ u, opT a (n + 1) F u * KC a (radii ε) n u) + ∑ j ∈ Finset.range (n + 1), ∫ t, F t * ρ a (radii ε) j t`. Use function extensionality and compare the values at `fun n => stage_identity ha hr hF n`.
+
+Rewrite `hlim` using `[← hconst]`. Conclude with `tendsto_nhds_unique tendsto_const_nhds hlim`.
+-/
 theorem exists_dixmierMalliavin_line (M : ℕ → ℝ) {ε : ℝ} (hε : 0 < ε) :
     ∃ (c : ℕ → ℝ) (g h : ℝ → ℂ), ContDiff ℝ ∞ g ∧ ContDiff ℝ ∞ h ∧
       tsupport g ⊆ Set.Icc (-ε) ε ∧ tsupport h ⊆ Set.Icc (-ε) ε ∧

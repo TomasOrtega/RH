@@ -18,6 +18,11 @@ namespace TubeDeepAreaCount
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+
+Consider the case `mul_X p i hp`. Simplify using `only [map_mul, eval_X]`. Conclude with `hp.mul (differentiable_apply i)`.
+-/
 theorem differentiable_eval {k : ℕ} (P : MvPolynomial (Fin k) ℂ) :
     Differentiable ℂ fun y : Fin k → ℂ => eval y P := by
   induction P using MvPolynomial.induction_on with
@@ -29,6 +34,9 @@ theorem differentiable_eval {k : ℕ} (P : MvPolynomial (Fin k) ℂ) :
     simp only [map_mul, eval_X]
     exact hp.mul (differentiable_apply i)
 
+/- English proof (translation)
+Use `differentiableOn_pi.2 fun j => ?_` and prove the remaining obligations. Consider the cases of `j using Fin.cases with`. Consider the case `zero => simpa [deepMap] using (differentiable_eval P).differentiableOn`. Consider the case `succ i => simpa [deepMap] using differentiableOn_pi.1 hs (I i)`.
+-/
 theorem differentiableOn_deepMap (P : MvPolynomial (Fin (d + 1)) ℂ) {s : (Fin (d + 1) → ℂ) → Fin n → ℂ}
     (I : Fin d → Fin n) {U : Set (Fin (d + 1) → ℂ)} (hs : DifferentiableOn ℂ s U) :
     DifferentiableOn ℂ (deepMap P s I) U := by
@@ -37,6 +45,11 @@ theorem differentiableOn_deepMap (P : MvPolynomial (Fin (d + 1)) ℂ) {s : (Fin 
   | zero => simpa [deepMap] using (differentiable_eval P).differentiableOn
   | succ i => simpa [deepMap] using differentiableOn_pi.1 hs (I i)
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Consider the cases of `j using Fin.cases with`. Consider the case `zero => simpa [deepMap] using (MvPolynomial.continuous_eval P).measurable`. Consider the case `succ i`. Simplify using `only [deepMap, Matrix.cons_val_succ]`.
+
+Conclude with `(measurable_pi_apply (I i)).comp hs`.
+-/
 theorem measurable_deepMap (P : MvPolynomial (Fin (d + 1)) ℂ) {s : (Fin (d + 1) → ℂ) → Fin n → ℂ}
     (I : Fin d → Fin n) (hs : Measurable s) : Measurable (deepMap P s I) := by
   refine measurable_pi_lambda _ fun j => ?_
@@ -46,10 +59,16 @@ theorem measurable_deepMap (P : MvPolynomial (Fin (d + 1)) ℂ) {s : (Fin (d + 1
     simp only [deepMap, Matrix.cons_val_succ]
     exact (measurable_pi_apply (I i)).comp hs
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.continuous_det.measurable.comp (measurable_fderiv ℂ (deepMap P s I))`.
+-/
 theorem measurable_deepJacDet (P : MvPolynomial (Fin (d + 1)) ℂ) (s : (Fin (d + 1) → ℂ) → Fin n → ℂ)
     (I : Fin d → Fin n) : Measurable (deepJacDet P s I) :=
   ContinuousLinearMap.continuous_det.measurable.comp (measurable_fderiv ℂ (deepMap P s I))
 
+/- English proof (translation)
+The claim follows from `|(L.restrictScalars ℝ).det| = ‖L.det‖ ^ 2 := by have h : (L.restrictScalars ℝ).det = Complex.normSq L.det := by rw [ContinuousLinearMap.det, ContinuousLinearMap.coe_restrictScalars, LinearMap.det_restrictScalars, Algebra.norm_complex_apply] rw [h, abs_of_nonneg (Complex.normSq_no …`.
+-/
 theorem abs_det_restrictScalars {m : ℕ} (L : (Fin m → ℂ) →L[ℂ] (Fin m → ℂ)) :
     |(L.restrictScalars ℝ).det| = ‖L.det‖ ^ 2 := by
   have h : (L.restrictScalars ℝ).det = Complex.normSq L.det := by
@@ -61,6 +80,11 @@ def phiPoly (A : Matrix (Fin (d + 1)) (Fin n) ℂ) (P : MvPolynomial (Fin (d + 1
     Fin (d + 1) → MvPolynomial (Fin n) ℂ :=
   vecCons (pullback A P) fun i => X (I i)
 
+/- English proof (translation)
+Establish `h : (eval x).comp (pullback A).toRingHom = eval (A *ᵥ x)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[pullback]`. Introduce `i`.
+
+Simplify using `[pullback, linPoly, Matrix.mulVec, dotProduct]`. Conclude with `congrArg (fun f : MvPolynomial (Fin (d + 1)) ℂ →+* ℂ => f P) h`.
+-/
 theorem eval_pullback (A : Matrix (Fin (d + 1)) (Fin n) ℂ) (P : MvPolynomial (Fin (d + 1)) ℂ)
     (x : Fin n → ℂ) : eval x (pullback A P) = eval (A *ᵥ x) P := by
   have h : (eval x).comp (pullback A).toRingHom = eval (A *ᵥ x) := by
@@ -69,6 +93,9 @@ theorem eval_pullback (A : Matrix (Fin (d + 1)) (Fin n) ℂ) (P : MvPolynomial (
     · intro i; simp [pullback, linPoly, Matrix.mulVec, dotProduct]
   exact congrArg (fun f : MvPolynomial (Fin (d + 1)) ℂ →+* ℂ => f P) h
 
+/- English proof (translation)
+Rewrite using `[funext_iff]`. Use `forall_congr' fun k => ?_` and prove the remaining obligations. Consider the cases of `k using Fin.cases with`. Consider the case `zero => simp [phiPoly, eval_pullback]`. Consider the case `succ i => simp [phiPoly]`.
+-/
 theorem eval_phiPoly_iff (A : Matrix (Fin (d + 1)) (Fin n) ℂ) (P : MvPolynomial (Fin (d + 1)) ℂ)
     (I : Fin d → Fin n) (x : Fin n → ℂ) (z : Fin (d + 1) → ℂ) :
     (∀ k, eval x (phiPoly A P I k) = z k) ↔ vecCons (eval (A *ᵥ x) P) (fun i => x (I i)) = z := by
@@ -78,6 +105,17 @@ theorem eval_phiPoly_iff (A : Matrix (Fin (d + 1)) (Fin n) ℂ) (P : MvPolynomia
   | zero => simp [phiPoly, eval_pullback]
   | succ i => simp [phiPoly]
 
+/- English proof (translation)
+Take `⟨U, hU, hxU, hsd, hsx, hsec, V, hV, hVs⟩` from `hsh`. Establish `hFa : AnalyticAt ℂ (deepMap P s I) (A *ᵥ x)` using `AnalyticAt.pi fun i => ReciprocityTheory.AnForm.Osgood.osgood (d + 1) U (fun w => deepMap P s I w i) hU (differentiableOn_pi.1 (differentiableOn_deepMap P I hsd) i) (A *ᵥ x) hxU`. Establish `hdet' : (fderiv ℂ (deepMap P s I) (A *ᵥ x)).det ≠ 0` using `hdet`. Establish `hL : HasStrictFDerivAt (deepMap P s I) (((fderiv ℂ (deepMap P s I) (A *ᵥ x)).toContinuousLinearEquivOfDetNeZero hdet' : (Fin (d + 1) → ℂ) ≃L[ℂ] (Fin (d + 1) → ℂ)) : (Fin (d + 1) → ℂ) →L[ℂ] (Fin (d + 1) → ℂ)) (A *ᵥ x)`. Rewrite using `[ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero]`.
+
+Conclude with `hFa.hasStrictFDerivAt`. Establish `hye` using `hL.mem_toOpenPartialHomeomorph_source`. Establish `hAc : Continuous fun z : Fin n → ℂ => A *ᵥ z` using `by fun_prop`. Establish `hmap : ∀ w ∈ U, deepMap P s I w = vecCons (eval (A *ᵥ s w) P) (fun i => s w (I i))`. Introduce `w hw`.
+
+Rewrite using `[(hsec w hw).1]`. Both sides reduce to the same expression. Use `⟨?_, (eval_phiPoly_iff A P I x _).2 ?_, V ∩ (fun z => A *ᵥ z) ⁻¹' ((hL.toOpenPartialHomeomorph (deepMap P s I)).source ∩ U), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsx]`. Conclude with `(hsec _ hxU).2`.
+
+Rewrite using `[hmap _ hxU, hsx]`. Conclude with `Filter.inter_mem hV ((((hL.toOpenPartialHomeomorph (deepMap P s I)).open_source.inter hU).preimage hAc).mem_nhds ⟨hye, hxU⟩)`. Introduce and unpack `x' ⟨hx'Z, hx'V, hx'e, hx'U⟩ hx'`. Establish `hx's : x' = s (A *ᵥ x')` using `hVs x' ⟨hx'Z, hx'V⟩ hx'U`. Establish `hFeq : deepMap P s I (A *ᵥ x') = deepMap P s I (A *ᵥ x)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmap _ hx'U, ← hx's]`. Use `_ = deepMap P s I (A *ᵥ x) := (eval_phiPoly_iff A P I x' _).1 hx'`. Establish `hAx : A *ᵥ x' = A *ᵥ x` using `(hL.toOpenPartialHomeomorph (deepMap P s I)).injOn hx'e hye (by simpa using hFeq)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mem_isolatedFibrePts {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (d + 1)) (Fin n) ℂ}
     (P : MvPolynomial (Fin (d + 1)) ℂ) (I : Fin d → Fin n) {x : Fin n → ℂ}
     {s : (Fin (d + 1) → ℂ) → Fin n → ℂ} (hsh : IsSheetAt J A x s)
@@ -123,6 +161,85 @@ end TubeDeepAreaCount
 
 open TubeDeepAreaCount SheetAreaCompare in
 
+/- English proof (translation)
+Introduce `n d J A P R _ _ _`. Use `choose N₀ hN₀ using fun I : Fin d → Fin n => hB n (d + 1) J (phiPoly A P I)`. Use `⟨∑ I, N₀ I, fun g hg hg0 => ?_⟩` and prove the remaining obligations. Use `set K : Set (Fin (d + 1) → ℂ) := {z | ∀ i : Fin d, ‖z i.succ‖ ≤ R} with hK`. Establish `hKm : MeasurableSet K`.
+
+Establish `: IsClosed K`. Simplify using `only [hK, Set.ofPred_forall]`. Conclude with `isClosed_iInter fun i => isClosed_le (by fun_prop) continuous_const`. Conclude with `this.measurableSet`. Establish `hgm : Measurable fun z => ENNReal.ofReal (g z)` using `ENNReal.measurable_ofReal.comp hg`.
+
+Use `set Bl : Set (Fin n → ℂ) := Metric.closedBall 0 R with hBl`. Use `choose σ U W hU hW hσd hσsec hWsh hxW using fun x : Fin n → ℂ => exists_sheet_nhds (J := J) (A := A) x`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable W hW`. Take `⟨e, he⟩` from `(hTc.insert 0).exists_eq_range (Set.insert_nonempty 0 T)`. Establish `hcover : ∀ x, (∃ s, IsSheetAt J A x s) → ∃ k, x ∈ W (e k)`.
+
+Introduce `x hx`. Establish `: x ∈ ⋃ i ∈ T, W i` using `hTU ▸ Set.mem_iUnion.2 ⟨x, hxW x hx⟩`. Take `⟨i, hiT, hxi⟩` from `Set.mem_iUnion₂.1 this`. Take `⟨k, rfl⟩ : i ∈ Set.range e` from `he ▸ Set.mem_insert_of_mem 0 hiT`. Conclude with `⟨k, hxi⟩`.
+
+Use `set E : ℕ → Set (Fin n → ℂ) := fun k => (zeroSet J ∩ Bl) ∩ disjointed (fun k => W (e k)) k with hE`. Establish `hEm : ∀ k, MeasurableSet (E k)` using `fun k => ((SheetSumMeasurable.isClosed_zeroSet J).measurableSet.inter Metric.isClosed_closedBall.measurableSet).inter (MeasurableSet.disjointed (fun k => (hW (e k)).measurableSet) k)`. Establish `hEW : ∀ k, E k ⊆ zeroSet J ∩ W (e k)` using `fun k x hx => ⟨hx.1.1, disjointed_subset (fun k => W (e k)) k hx.2⟩`. Establish `hEBl : ∀ k, E k ⊆ Bl` using `fun k x hx => hx.1.2`. Establish `hEdisj : Pairwise fun k k' => Disjoint (E k) (E k')` using `fun k k' hkk' => (disjoint_disjointed (fun k => W (e k)) hkk').mono Set.inter_subset_right Set.inter_subset_right`.
+
+Establish `hEcover : ∀ x, (∃ s, IsSheetAt J A x s) → x ∈ Bl → ∃ k, x ∈ E k`. Introduce `x hx hxB`. Take `⟨m, hm⟩` from `hcover x hx`. Establish `hxZ : x ∈ zeroSet J`. Take `⟨s, U₀, -, hxU₀, -, hsx, hsec, -⟩` from `hx`.
+
+Rewrite using `[← hsx]`. Conclude with `(hsec _ hxU₀).2`. Establish `: x ∈ ⋃ k, disjointed (fun k => W (e k)) k`. Rewrite using `[iUnion_disjointed]`. Conclude with `Set.mem_iUnion.2 ⟨m, hm⟩`.
+
+Take `⟨k, hk⟩` from `Set.mem_iUnion.1 this`. Conclude with `⟨k, ⟨hxZ, hxB⟩, hk⟩`. Use `set σ' : ℕ → (Fin (d + 1) → ℂ) → Fin n → ℂ := fun k => (U (e k)).piecewise (σ (e k)) fun _ => 0 with hσ'`. Establish `hσ'm : ∀ k, Measurable (σ' k)` using `fun k => (hσd (e k)).continuousOn.measurable_piecewise continuousOn_const (hU (e k)).measurableSet`. Establish `hσ'eq : ∀ k, ∀ y ∈ U (e k), σ' k y = σ (e k) y` using `fun k y hy => by`.
+
+Simplify using `[hσ', Set.piecewise_eq_of_mem _ _ _ hy]`. Establish `hσ'deep : ∀ k I, ∀ y ∈ U (e k), deepMap P (σ' k) I y = deepMap P (σ (e k)) I y` using `fun k I y hy => by`. Simplify using `only [deepMap, hσ'eq k y hy]`. Use `set B : ℕ → Set (Fin (d + 1) → ℂ) := fun k => U (e k) ∩ σ' k ⁻¹' E k with hB`. Establish `hBm : ∀ k, MeasurableSet (B k)` using `fun k => (hU (e k)).measurableSet.inter (hσ'm k (hEm k))`.
+
+Establish `hBmem : ∀ k y, y ∈ B k ↔ y ∈ U (e k) ∧ σ (e k) y ∈ E k`. Introduce `k y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hy'⟩`. Conclude with `⟨hy, by simpa [Set.mem_preimage, hσ'eq k y hy] using hy'⟩`.
+
+Introduce and unpack `⟨hy, hy'⟩`. Conclude with `⟨hy, by simpa [Set.mem_preimage, hσ'eq k y hy] using hy'⟩`. Use `set G : ℕ → (Fin (d + 1) → ℂ) → ℝ≥0∞ := fun k y => ∑ I : Fin d → Fin n, ENNReal.ofReal (‖deepJacDet P (σ (e k)) I y‖ ^ 2) * ENNReal.ofReal (g (deepMap P (σ' k) I y)) with hG`. Establish `hGm : ∀ k, Measurable (G k)` using `fun k => Finset.measurable_sum _ fun I _ => (ENNReal.measurable_ofReal.comp ((measurable_deepJacDet P _ I).norm.pow_const 2)).mul (hgm.comp (measurable_deepMap P I (hσ'm k)))`. Use `set t : (Fin (d + 1) → ℂ) → (Fin n → ℂ) → ℝ := fun y x => if hx : ∃ s, IsSheetAt J A x s then Bl.indicator (fun _ => (1 : ℝ)) x * ∑ I : Fin d → Fin n, ‖deepJacDet P hx.choose I y‖ ^ 2 * g (deepMap P hx.choose I y) else 0 with ht`.
+
+Establish `ht0 : ∀ y x, 0 ≤ t y x`. Introduce `y x`. Simplify using `only [ht]`. Use `split_ifs`. Conclude with `mul_nonneg (Set.indicator_nonneg (fun _ _ => zero_le_one) _) (Finset.sum_nonneg fun I _ => mul_nonneg (sq_nonneg _) (hg0 _))`.
+
+Conclude with `le_rfl`. Establish `htE : ∀ k x, x ∈ E k → ENNReal.ofReal (t (A *ᵥ x) x) = G k (A *ᵥ x) ∧ A *ᵥ x ∈ B k ∧ σ (e k) (A *ᵥ x) = x`. Introduce `k x hx`. Take `⟨hAU, hsh⟩` from `hWsh (e k) x (hEW k hx)`. Establish `hsx : σ (e k) (A *ᵥ x) = x`.
+
+Take `⟨-, -, -, -, hsx, -⟩` from `hsh`. Conclude with `hsx`. Establish `hex : ∃ s, IsSheetAt J A x s` using `⟨_, hsh⟩`. Establish `hev` using `SheetSumMeasurable.sheet_eventuallyEq hsh hex.choose_spec`. Establish `hmev : ∀ I, deepMap P hex.choose I =ᶠ[𝓝 (A *ᵥ x)] deepMap P (σ (e k)) I` using `fun I => by filter_upwards [hev] with w hw`.
+
+Simplify using `only [deepMap, hw]`. Establish `hJ : ∀ I, deepJacDet P hex.choose I (A *ᵥ x) = deepJacDet P (σ (e k)) I (A *ᵥ x)` using `fun I => by`. Unfold `deepJacDet`. Rewrite using `[(hmev I).fderiv_eq]`. Establish `hM : ∀ I, deepMap P hex.choose I (A *ᵥ x) = deepMap P (σ' k) I (A *ᵥ x)` using `fun I => by`.
+
+Rewrite using `[(hmev I).eq_of_nhds, hσ'deep k I _ hAU]`. Use `⟨?_, (hBmem k _).2 ⟨hAU, hsx.symm ▸ hx⟩, hsx⟩` and prove the remaining obligations. Simplify using `only [ht, dif_pos hex, Set.indicator_of_mem (hEBl k hx), one_mul, hG, hJ, hM]`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg fun I _ => mul_nonneg (sq_nonneg _) (hg0 _)]`. Conclude with `Finset.sum_congr rfl fun I _ => ENNReal.ofReal_mul (sq_nonneg _)`.
+
+Establish `hpt : ∀ y, ENNReal.ofReal (sheetSum J A (fun x s => Bl.indicator (fun _ => (1 : ℝ)) x * ∑ I : Fin d → Fin n, ‖deepJacDet P s I y‖ ^ 2 * g (deepMap P s I y)) y) ≤ ∑' k, (B k).indicator (G k) y`. Introduce `y`. Establish `hS : sheetSum J A (fun x s => Bl.indicator (fun _ => (1 : ℝ)) x * ∑ I : Fin d → Fin n, ‖deepJacDet P s I y‖ ^ 2 * g (deepMap P s I y)) y = ∑ᶠ x, (fibre J A y).indicator (t y) x`. Unfold `sheetSum`. Rewrite using `[finsum_mem_def]`.
+
+Establish `hnn : ∀ x, 0 ≤ (fibre J A y).indicator (t y) x` using `fun x => Set.indicator_nonneg (fun x _ => ht0 y x) x`. Rewrite using `[hS]`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hxf : x ∈ fibre J A y`.
+
+Distinguish the cases in `hx : (∃ s, IsSheetAt J A x s) ∧ x ∈ Bl`. Take `⟨k, hk⟩` from `hEcover x hx.1 hx.2`. Rewrite using `[Set.indicator_of_mem hxf]`. Conclude with `(Set.indicator_of_mem (show x ∈ E k ∩ fibre J A y from ⟨hk, hxf⟩) (fun x => ENNReal.ofReal (t y x))).symm.le.trans (ENNReal.le_tsum k)`. Establish `: t y x = 0`.
+
+Simplify using `only [ht]`. Use `split_ifs with h`. Rewrite using `[Set.indicator_of_notMem (fun hB => hx ⟨h, hB⟩), zero_mul]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_mem hxf, this, ENNReal.ofReal_zero]`.
+
+Conclude with `zero_le`. Rewrite using `[Set.indicator_of_notMem hxf, ENNReal.ofReal_zero]`. Conclude with `zero_le`. Use `_ = ∑' k, ∑' x, (E k ∩ fibre J A y).indicator (fun x => ENNReal.ofReal (t y x)) x := ENNReal.tsum_comm`. Use `_ ≤ ∑' k, (B k).indicator (G k) y := by`.
+
+Use `ENNReal.tsum_le_tsum fun k => ?_` and prove the remaining obligations. Rewrite using `[tsum_eq_single (σ (e k) y)]`. Distinguish the cases in `hm : σ (e k) y ∈ E k ∩ fibre J A y`. Rewrite using `[Set.indicator_of_mem hm]`. Take `⟨h1, h2, -⟩` from `htE k _ hm.1`.
+
+Establish `hAy : A *ᵥ σ (e k) y = y` using `hm.2.2`. Rewrite `h1`, `h2` using `[hAy]`. Rewrite using `[h1, Set.indicator_of_mem h2]`. Rewrite using `[Set.indicator_of_notMem hm]`. Conclude with `zero_le`.
+
+Introduce `x hne`. Use `Set.indicator_of_notMem (fun hx => hne ?_) _` and prove the remaining obligations. Take `⟨-, -, hsx⟩` from `htE k x hx.1`. Establish `hAx : A *ᵥ x = y` using `hx.2.2`. Rewrite using `[← hAx, hsx]`.
+
+Use `set C : ℕ → (Fin d → Fin n) → Set (Fin (d + 1) → ℂ) := fun k I => B k ∩ {y | deepJacDet P (σ (e k)) I y ≠ 0} with hC`. Establish `hCm : ∀ k I, MeasurableSet (C k I)` using `fun k I => (hBm k).inter ((measurable_deepJacDet P _ I) (measurableSet_singleton 0).compl)`. Use `set cnt : ℕ → (Fin d → Fin n) → (Fin (d + 1) → ℂ) → ℝ≥0∞ := fun k I z => (({y ∈ C k I | deepMap P (σ (e k)) I y = z}.encard : ℕ∞) : ℝ≥0∞) with hcnt`. Establish `hdiff : ∀ k I, ∀ y ∈ C k I, HasFDerivWithinAt (deepMap P (σ (e k)) I) ((fderiv ℂ (deepMap P (σ (e k)) I) y).restrictScalars ℝ) (C k I) y` using `fun k I y hy => (((differentiableOn_deepMap P I (hσd (e k))).differentiableAt ((hU (e k)).mem_nhds hy.1.1)).hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`. Establish `hAW : ∀ k I, AEMeasurable (cnt k I) ∧ ∀ g₀ : (Fin (d + 1) → ℂ) → ℝ≥0∞, Measurable g₀ → ∫⁻ y in C k I, g₀ (deepMap P (σ (e k)) I y) * ENNReal.ofReal |((fderiv ℂ (deepMap P (σ (e k)) I) y).restrictScalars ℝ).det| = ∫⁻ z, cnt k I z * g₀ z` using `fun k I => AreaMultiplicityWeight.proof (Fin (d + 1) → ℂ) volume (C k I) (deepMap P (σ (e k)) I) (fun y => (fderiv ℂ (deepMap P (σ (e k)) I) y).restrictScalars ℝ) (hCm k I) (hdiff k I)`.
+
+Establish `hpiece : ∀ k, ∫⁻ y, (B k).indicator (G k) y = ∑ I, ∫⁻ z, cnt k I z * ENNReal.ofReal (g z)`. Introduce `k`. Rewrite using `[lintegral_indicator (hBm k)]`. Simplify using `only [hG]`. Use `(lintegral_finsetSum _ fun I _ => ?_).trans (Finset.sum_congr rfl fun I _ => ?_)` and prove the remaining obligations.
+
+Conclude with `(ENNReal.measurable_ofReal.comp ((measurable_deepJacDet P _ I).norm.pow_const 2)).mul (hgm.comp (measurable_deepMap P I (hσ'm k)))`. Rewrite using `[← (hAW k I).2 _ hgm, ← lintegral_indicator (hBm k), ← lintegral_indicator (hCm k I)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hyC : y ∈ C k I`. Rewrite using `[Set.indicator_of_mem hyC.1, Set.indicator_of_mem hyC, abs_det_restrictScalars, hσ'deep k I y hyC.1.1, mul_comm]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hyC]`. Distinguish the cases in `hyB : y ∈ B k`. Rewrite using `[Set.indicator_of_mem hyB]`. Establish `: deepJacDet P (σ (e k)) I y = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hyC ⟨hyB, h⟩`. Simplify using `[this]`. Rewrite using `[Set.indicator_of_notMem hyB]`. Establish `hcount : ∀ I z, ∑' k, cnt k I z ≤ K.indicator (fun _ => (N₀ I : ℝ≥0∞)) z`.
+
+Introduce `I z`. Use `set S : ℕ → Set (Fin (d + 1) → ℂ) := fun k => {y ∈ C k I | deepMap P (σ (e k)) I y = z} with hS`. Establish `hinj : ∀ k, Set.InjOn (σ (e k)) (S k)` using `fun k y hy y' hy' h =>`. Combine the equalities or inequalities in the displayed calculation. Establish `himg : ∀ k, σ (e k) '' S k ⊆ isolatedFibrePts J (phiPoly A P I) z ∩ E k`.
+
+Introduce and unpack `k _ ⟨y, hy, rfl⟩`. Establish `hyU : y ∈ U (e k)` using `hy.1.1.1`. Establish `hxE : σ (e k) y ∈ E k` using `((hBmem k y).1 hy.1.1).2`. Take `⟨-, hsh⟩` from `hWsh (e k) _ (hEW k hxE)`. Establish `hAy : A *ᵥ σ (e k) y = y` using `(hσsec (e k) y hyU).1`.
+
+Use `mem_isolatedFibrePts P I hsh (by rw [hAy]; exact hy.1.2)` as an intermediate fact. Rewrite `this` using `[hAy, hy.2]`. Conclude with `⟨this, hxE⟩`. Establish `hK' : ∀ k, ∀ y ∈ S k, z ∈ K`. Introduce `k y hy i`.
+
+Establish `hball : σ (e k) y ∈ Bl` using `hEBl k ((hBmem k y).1 hy.1.1).2`. Rewrite using `[← hy.2]`. Simplify using `only [deepMap, Matrix.cons_val_succ]`. Conclude with `(norm_le_pi_norm (σ (e k) y) (I i)).trans (mem_closedBall_zero_iff.1 hball)`. Establish `hcS : ∀ k, cnt k I z = (((σ (e k) '' S k).encard : ℕ∞) : ℝ≥0∞)` using `fun k => by`.
+
+Rewrite using `[(hinj k).encard_image]`. Distinguish the cases in `hz : z ∈ K`. Rewrite using `[Set.indicator_of_mem hz, tsum_congr hcS, ← encard_iUnion_nat_eq_tsum _ (fun k k' hkk' => (hEdisj hkk').mono ((himg k).trans Set.inter_subset_right) ((himg k').trans Set.inter_subset_right))]`. Establish `hsub : (⋃ k, σ (e k) '' S k) ⊆ isolatedFibrePts J (phiPoly A P I) z` using `Set.iUnion_subset fun k => (himg k).trans Set.inter_subset_left`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `Set.encard_le_encard hsub` after adjusting the coercions. Use `_ ≤ (N₀ I : ℝ≥0∞) := by exact_mod_cast hN₀ I z`. Rewrite using `[Set.indicator_of_notMem hz]`. Establish `h0 : ∀ k, cnt k I z = 0` using `fun k => by`. Establish `: S k = ∅` using `Set.eq_empty_of_forall_notMem fun y hy => hz (hK' k y hy)`.
+
+Rewrite using `[hcS k, this]`. Simplify using the standard rewrite rules. Simplify using `[h0]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← lintegral_tsum (f := fun k z => cnt k I z * ENNReal.ofReal (g z)) fun k => (hAW k I).1.mul hgm.aemeasurable]`. Repeatedly rewrite using `[ENNReal.tsum_mul_right]`. Use `_ ≤ ∑ I, ∫⁻ z, K.indicator (fun _ => (N₀ I : ℝ≥0∞)) z * ENNReal.ofReal (g z) := Finset.sum_le_sum fun I _ => lintegral_mono fun z => by gcongr`. Conclude with `hcount I z`. Use `_ = ∑ I, (N₀ I : ℝ≥0∞) * ∫⁻ z in K, ENNReal.ofReal (g z) := by`.
+
+Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul _ hgm, ← lintegral_indicator hKm]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hz : z ∈ K <;> simp [hz]`. Use `_ = ((∑ I, N₀ I : ℕ) : ℝ≥0∞) * ∫⁻ z in K, ENNReal.ofReal (g z) := by`.
+
+Rewrite using `[Nat.cast_sum, Finset.sum_mul]`.
+-/
 theorem TubeDeepAreaCount.proof (hB : IsolatedPointsCount.Statement) : TubeDeepAreaCount.Statement := by
   classical
   intro n d J A P R _ _ _

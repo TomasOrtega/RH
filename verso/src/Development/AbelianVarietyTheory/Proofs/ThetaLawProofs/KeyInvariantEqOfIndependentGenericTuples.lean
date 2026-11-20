@@ -29,9 +29,19 @@ section Sec
 
 variable {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X}
 
+/- English proof (translation)
+Simplify using `only [gs_eq r z U h, map_pow]`.
+-/
 theorem gs_pow' {Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)) (n : ℕ) :
     gs r z U (a ^ n) = gs r z U a ^ n := by simp only [gs_eq r z U h, map_pow]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h Z r z j k hj hk`. Establish `hy : r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `hle : (L.pull F).U (fun _ => j) ⊓ L'.U k ≤ F ⁻¹ᵁ L.U j` using `fun y hy => mem_pull.1 hy.1`. Use `(gs_appLE F _ _ hle r z hy _).symm.trans ((congrArg (gs r z _) (h (fun _ => j) k hle)).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[gs_mul _ z _ hy, gs_res _ z _ hy, gs_pow' _ z _ hy]`. Conclude with `congrArg (· ^ l * _) (gs_unit _ z _ hy _)`. Introduce `h j i hle`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `(gs_appLE F _ _ hle (𝟙 _) y hy _).trans ((h _ (𝟙 _) y _ i (mem_pull.1 hy.1) hy.2).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[gs_mul _ y _ hy, gs_res _ y _ hy, gs_pow' _ y _ hy]`. Conclude with `congrArg (· ^ l * _) (gs_unit _ y _ hy _).symm`.
+-/
 theorem via_iff_stalk (w : LB.Iso L' (L.pull F)) (l : ℕ) (a' : ∀ i, Γ(X', L'.U i)) (a : ∀ j, Γ(X, L.U j)) :
     GlobalTheory.KeyVia.Via w l a' a ↔
     ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) j k, F (r z) ∈ L.U j → r z ∈ L'.U k →
@@ -51,6 +61,27 @@ theorem via_iff_stalk (w : LB.Iso L' (L.pull F)) (l : ℕ) (a' : ∀ i, Γ(X', L
 
 end Sec
 
+/- English proof (translation)
+Take `⟨he, hg, F, hc, hw, hr, hs, hF, hFe, hv⟩` from `h`. Take `⟨he'', hg'', F'', hc'', hw'', hr'', hs'', hF'', hFe'', hv''⟩` from `h''`. Establish `hsp : spMap (f'.comp f) = spMap f' ≫ spMap f` using `by show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hp` using `hc.1`.
+
+Take `⟨φ', hφ, hw0⟩ : ∃ φ' : x''.P.A.left ⟶ x'.P.A.left, φ' ≫ φ = φ'' ∧ φ' ≫ x'.P.A.hom = x''.P.A.hom ≫ spMap f'` from `⟨hp.lift φ'' (x''.P.A.hom ≫ spMap f') (by rw [hc''.1.w, Category.assoc, hsp]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Substitute `hφ` using the available equality. Establish `he' : eSec x''.P.A ≫ φ' = spMap f' ≫ eSec x'.P.A`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, he'', hsp, Category.assoc, Category.assoc, he]`.
+
+Establish `a₁ : eSec x''.P.A ≫ x''.P.A.hom = 𝟙 _` using `Over.w η[x''.P.A]`. Establish `a₂ : eSec x'.P.A ≫ x'.P.A.hom = 𝟙 _` using `Over.w η[x'.P.A]`. Rewrite using `[Category.assoc, hw0, ← Category.assoc, a₁, Category.assoc, a₂]`. Simplify using the standard rewrite rules. Establish `g` using `(isGen_iff w).1 hw`.
+
+Establish `g''` using `(isGen_iff w'').1 hw''`. Take `⟨w', T⟩` from `exists_cancel x.P.isLB w w'' g g'' x'.P.isLB x''.P.isLB`. Establish `r` using `(maps_iff w _ (fun _ => eSec x.P.A) _ x'.rig x.rig (spMap f) _ (rigPull_le φ (spMap f) he x.P.L) (fun _ => rfl)).1 hr`. Establish `r''` using `(maps_iff w'' _ (fun _ => eSec x.P.A) _ x''.rig x.rig (spMap (f'.comp f)) _ (rigPull_le (φ' ≫ φ) (spMap (f'.comp f)) he'' x.P.L) (fun _ => rfl)).1 hr''`. Rewrite `r''` using `[hsp]`.
+
+Establish `hFF : (Chart.dualMapR f').comp F = F''` using `GlobalTheory.KeyCancel.dualNumber_ringHom_ext (fun a => by`. Rewrite using `[RingHom.comp_apply, hF, hF'']`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])`. Use the proof step `(by`. Rewrite using `[RingHom.comp_apply, hFe, hFe'']`.
+
+Apply the tactic sequence `ext <;> simp [Chart.dualMapR])`. Use `⟨φ', w', ⟨he', hg''.trans hg.symm, Chart.dualMapR f', hc.cancel (hc''.congr hsp rfl) hw0, (isGen_iff w').2 (T.pgen_cancel x.P.isLB g g''), (maps_iff w' _ (fun _ => eSec x'.P.A) _ x''.rig x'.rig (spMap f') _ (rigPull_le φ' (spMap f') he' x'.P.L) (fun _ => rfl)).2 (T.pmaps_cancel x …` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart x.P.isLB (φ (φ' (q z)))`. Establish `a` using `(GlobalTheory.KeyCancel.appLE_eq_iff_stalk w x.th x'.th).1 hs Z (q ≫ φ') z j i hj hi`. Establish `b` using `(GlobalTheory.KeyCancel.appLE_eq_iff_stalk w'' x.th x''.th).1 hs'' Z q z j k hj hk`.
+
+Rewrite `b` using `[T Z q z j i k hj hi hk, ← Category.assoc, a, Units.val_mul, _root_.mul_assoc]`. Conclude with `(Units.mul_right_inj _).1 b`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`. Apply `hp.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hv'', Category.assoc, hv, ← hFF, ← Category.assoc]`. Use `congr 1`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[Category.assoc, hw0, ← Category.assoc, Over.w, Category.assoc, Over.w] show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Take `⟨j, hj⟩` from `exists_chart x.P.isLB (φ (φ' (q z)))`. Establish `a` using `(via_iff_stalk w l s'.f s.f).1 hs' Z (q ≫ φ') z j i hj hi`.
+
+Establish `b` using `(via_iff_stalk w'' l s''.f s.f).1 hs'' Z q z j k hj hk`. Rewrite `b` using `[T Z q z j i k hj hi hk, ← Category.assoc, a, Units.val_mul, mul_pow, _root_.mul_assoc]`. Conclude with `((Units.isUnit _).pow l).mul_left_cancel b`.
+-/
 theorem keyVia_cancel {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {x : KeyIn R} {x' : KeyIn R'}
     {x'' : KeyIn R''} {f : R →+* R'} {f' : R' →+* R''} {φ w φ'' w''} (h : KeyVia x' x f φ w)
     (h'' : KeyVia x'' x (f'.comp f) φ'' w'') :
@@ -117,6 +148,9 @@ theorem keyVia_cancel {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''
     rw [T Z q z j i k hj hi hk, ← Category.assoc, a, Units.val_mul, mul_pow, _root_.mul_assoc] at b
     exact ((Units.isUnit _).pow l).mul_left_cancel b
 
+/- English proof (translation)
+Use `⟨⟨fun i => ∑ k, GlobalTheory.AbLaw.cst x.P.A.hom (x.P.L.U i) (c k) * (show Γ(x.P.A.left, x.P.L.U i) from (b k).f i), fun i j => ?_⟩, fun i => rfl⟩` and prove the remaining obligations. Use `(map_sum _ _ _).trans (Eq.trans ?_ (congrArg (_ * ·) (map_sum _ _ _).symm))` and prove the remaining obligations. Use `Eq.trans (Finset.sum_congr rfl fun k _ => ?_) (Finset.mul_sum _ _ _).symm` and prove the remaining obligations. Use `(map_mul _ _ _).trans (Eq.trans ?_ (congrArg (_ * ·) (map_mul _ _ _).symm))` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ((rs_cst _ _ _).trans (rs_cst _ _ _).symm) ((b k).compat i j)).trans (mul_left_comm _ _ _)` and prove the remaining obligations.
+-/
 theorem exists_coords {R : Type} [CommRing R] (x : KeyIn R) {l N : ℕ} (b : Fin N → RR x l) (c : Fin N → R) :
     ∃ s : RR x l, Coords x b c s.f := by
   refine ⟨⟨fun i => ∑ k, GlobalTheory.AbLaw.cst x.P.A.hom (x.P.L.U i) (c k) * (show Γ(x.P.A.left, x.P.L.U i) from (b k).f i),
@@ -126,6 +160,9 @@ theorem exists_coords {R : Type} [CommRing R] (x : KeyIn R) {l N : ℕ} (b : Fin
   refine (map_mul _ _ _).trans (Eq.trans ?_ (congrArg (_ * ·) (map_mul _ _ _).symm))
   refine (congrArg₂ (· * ·) ((rs_cst _ _ _).trans (rs_cst _ _ _).symm) ((b k).compat i j)).trans (mul_left_comm _ _ _)
 
+/- English proof (translation)
+Use `haveI : Finite (Sp K) := inferInstanceAs (Finite (PrimeSpectrum K))`. Use `(Set.finite_range fun q : Fin d × Sp K => (z q.1).left q.2).subset fun y hy => ?_` and prove the remaining obligations. Take `⟨a, p, e⟩` from `h.2.2.2.2 y hy`. Conclude with `⟨(a, p), e⟩`.
+-/
 theorem finZ_of_etZ {K : Type} [Field K] {x : KeyIn K} {n d : ℕ} {s : Fin x.P.g → RR x n} {z : Fin d → Pt x}
     {ch : Fin d → x.P.L.ι} (h : EtZ x s z ch) : FinZ x s := by
   haveI : Finite (Sp K) := inferInstanceAs (Finite (PrimeSpectrum K))
@@ -133,6 +170,9 @@ theorem finZ_of_etZ {K : Type} [Field K] {x : KeyIn K} {n d : ℕ} {s : Fin x.P.
   obtain ⟨a, p, e⟩ := h.2.2.2.2 y hy
   exact ⟨(a, p), e⟩
 
+/- English proof (translation)
+Use `Finset.prod_ne_zero_iff.2 fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j * n ≤ g * n` using `Nat.mul_le_mul_right _ (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))`. Take `⟨-, h₁, h₂, -⟩` from `h`. Conclude with `mul_ne_zero (by omega) (by omega)`.
+-/
 theorem degProd_ne_zero {g n l l' : ℕ} {al : ℕ → Matrix (Fin 4) (Fin 4) ℤ} (h : admitted g n l l' al) :
     degProd g n l l' ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun j hj => ?_
@@ -140,6 +180,11 @@ theorem degProd_ne_zero {g n l l' : ℕ} {al : ℕ → Matrix (Fin 4) (Fin 4) �
   obtain ⟨-, h₁, h₂, -⟩ := h
   exact mul_ne_zero (by omega) (by omega)
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `AlgebraicIndependent.sumElim_iff.1 h`. Establish `h₃` using `IntermediateField.algebraicIndependent_adjoin_iff.2 h₂`. Set `A` to `IntermediateField.adjoin k (Set.range U)`. Establish `h₄ : AlgebraicIndependent (algebraicClosure A K) V` using `h₃.algebraicClosure`. Use `⟨(algebraicClosure A K).restrictScalars k, fun i => ⟨U i, ?_⟩, (algebraicClosure.isAlgClosure A K).isAlgClosed, fun _ => rfl, ?_, h₄⟩` and prove the remaining obligations.
+
+Conclude with `(algebraicClosure A K).algebraMap_mem ⟨U i, IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩⟩`. Conclude with `AlgebraicIndependent.of_comp (IntermediateField.val _) h₁`.
+-/
 theorem exists_field {k K I I' : Type} [Field k] [Field K] [IsAlgClosed K] [Algebra k K] {U : I → K} {V : I' → K}
     (h : AlgebraicIndependent k (Sum.elim V U)) :
     ∃ (E : IntermediateField k K) (U' : I → E), IsAlgClosed E ∧ (∀ i, (U' i : K) = U i) ∧
@@ -153,6 +198,11 @@ theorem exists_field {k K I I' : Type} [Field k] [Field K] [IsAlgClosed K] [Alge
   · exact (algebraicClosure A K).algebraMap_mem ⟨U i, IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩⟩
   · exact AlgebraicIndependent.of_comp (IntermediateField.val _) h₁
 
+/- English proof (translation)
+Take `⟨σ, hσ, -⟩` from `((GlobalTheory.KeyVia.main R R' x x' f).2 φ w h).1 l s`. Establish `e` using `((GlobalTheory.KeyVia.main R R' x x' f).2 φ w h).2.2 l N b b' s σ c hb hσ hs`. Establish `e' : σ.f = s'.f` using `funext fun i => (e i).trans (hs' i).symm`. Take `⟨tf, _⟩` from `σ`. Take `⟨sf, _⟩` from `s'`.
+
+Take `rfl : tf = sf` from `e'`. Conclude with `hσ`.
+-/
 theorem secVia_of_coords {R R' : Type} [CommRing R] [CommRing R'] {x : KeyIn R} {x' : KeyIn R'} {f : R →+* R'} {φ w}
     (h : KeyVia x' x f φ w) {l N : ℕ} {b : Fin N → RR x l} {b' : Fin N → RR x' l} (hb : ∀ j, SecVia x' x φ w (b' j) (b j))
     {c : Fin N → R} {s : RR x l} {s' : RR x' l} (hs : Coords x b c s.f) (hs' : Coords x' b' (fun j => f (c j)) s'.f) :
@@ -165,6 +215,9 @@ theorem secVia_of_coords {R R' : Type} [CommRing R] [CommRing R'] {x : KeyIn R} 
   obtain rfl : tf = sf := e'
   exact hσ
 
+/- English proof (translation)
+Substitute `hG` using the available equality. Take `⟨d, z, ch, H⟩` from `GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent hL k K x x' φ w n b b' T s hn h hb hb' hT hs`. Conclude with `finZ_of_etZ H`.
+-/
 theorem finZ_of_generic (hL : Out.Laws) {k K : Type} [Field k] [Field K] [IsAlgClosed K] [Algebra k K] {x : KeyIn k}
     {x' : KeyIn K} {φ w} {n G : ℕ} (hG : x'.P.g = G) {b : Fin (n ^ x.P.g) → RR x n} {b' : Fin (n ^ x.P.g) → RR x' n}
     {T : Fin G × Fin (n ^ x.P.g) → K} {s : Fin G → RR x' n} (hn : 4 ≤ n) (h : KeyVia x' x (algebraMap k K) φ w)
@@ -174,6 +227,19 @@ theorem finZ_of_generic (hL : Out.Laws) {k K : Type} [Field k] [Field K] [IsAlgC
   obtain ⟨d, z, ch, H⟩ := GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent hL k K x x' φ w n b b' T s hn h hb hb' hT hs
   exact finZ_of_etZ H
 
+/- English proof (translation)
+Take `⟨E, U', hE, hU', hUi, hVi⟩` from `exists_field hT`. Take `⟨y, hy⟩` from `GlobalTheory.KeyPow.keyIn_baseChange hL.polBaseChange k E x (algebraMap k E)`. Take `⟨φ₁, w₁, h₁⟩` from `(GlobalTheory.KeyVia.main k E x y _).1.1 hy`. Establish `h' : KeyVia x' x ((algebraMap E K).comp (algebraMap k E)) φ w`. Rewrite using `[← IsScalarTower.algebraMap_eq]`.
+
+Conclude with `h`. Take `⟨φ₂, w₂, h₂, hc⟩` from `keyVia_cancel h₁ h'`. Use `choose b₁ hb₁ using fun j => (((GlobalTheory.KeyVia.main k E x y _).2 φ₁ w₁ h₁).1 n (b j)).exists`. Establish `hb₂ : ∀ j, SecVia x' y φ₂ w₂ (b' j) (b₁ j)` using `fun j => hc n _ _ _ (hb₁ j) (hb' j)`. Establish `hB : IsBasis y b₁` using `(GlobalTheory.KeyBasis.main hL k x n (by omega)).2 b hb E _ y φ₁ w₁ b₁ h₁ hb₁`.
+
+Use `choose r hr using fun i : Fin x'.P.g => exists_coords y b₁ fun j => U' (i, j)`. Establish `hg₁ : y.P.g = x.P.g` using `h₁.2.1`. Establish `hg₂ : x'.P.g = y.P.g` using `h₂.2.1`. Establish `hfin : FinZ y r` using `finZ_of_generic hL hg₂.symm hn h₁ hb hb₁ hUi hr`. Establish `hrs : ∀ i, SecVia x' y φ₂ w₂ (s i) (r i)` using `fun i => secVia_of_coords h₂ hb₂ (hr i) <| by`.
+
+Establish `e : (fun j => algebraMap E K (U' (i, j))) = fun j => U (i, j)` using `funext fun j => hU' _`. Rewrite using `[e]`. Conclude with `hs i`. Establish `key : ∀ (N : ℕ) (_ : n ^ y.P.g = N) (b₁ : Fin N → RR y n) (b' : Fin N → RR x' n) (V : Fin N → K), IsBasis y b₁ → (∀ j, SecVia x' y φ₂ w₂ (b' j) (b₁ j)) → AlgebraicIndependent E V → Coords x' b' V s₁.f → FinZ x' σ`. Introduce and unpack `N rfl b₁ b' V hB hb₂ hVi hs₁`.
+
+Use `GlobalTheory.KeyKa.finZ_of_line_towards_generic hL E K y x' φ₂ w₂ n b₁ b' _ r σ i₀ (s i₀) s₁ V t hn h₂ hB hb₂ hfin hVi (fun i hi => ?_) (hrs i₀) hs₁ hσ₀` and prove the remaining obligations. Establish `e` using `hσ i hi`. Introduce `j a hh`. Rewrite using `[e]`. Conclude with `hrs i j a hh`.
+
+Conclude with `key _ (by rw [hg₁]) b₁ b' V hB hb₂ hVi hs₁`.
+-/
 theorem finZ_line (hL : Out.Laws) {k K : Type} [Field k] [Field K] [IsAlgClosed K] [Algebra k K] {x : KeyIn k}
     {x' : KeyIn K} {φ w} {n : ℕ} {b : Fin (n ^ x.P.g) → RR x n} {b' : Fin (n ^ x.P.g) → RR x' n}
     {U : Fin x'.P.g × Fin (n ^ x.P.g) → K} {V : Fin (n ^ x.P.g) → K} {s σ : Fin x'.P.g → RR x' n} {s₁ : RR x' n}
@@ -211,6 +277,25 @@ theorem finZ_line (hL : Out.Laws) {k K : Type} [Field k] [Field K] [IsAlgClosed 
     exact hrs i j a hh
   exact key _ (by rw [hg₁]) b₁ b' V hB hb₂ hVi hs₁
 
+/- English proof (translation)
+Introduce `hL k K _ _ _ _ _ x x' φ w n l l' al b b' T T' s s' κ κ' hA h hb hb' hT hs hs' hκ hκ'`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap k K).injective`. Establish `hg : x'.P.g = x.P.g` using `h.2.1`. Establish `hA' : admitted x'.P.g n l l' al` using `by rw [hg]; exact hA`. Establish `hn : 4 ≤ n` using `hA.1`.
+
+Set `sl : Finset (Fin x'.P.g) → Fin x'.P.g × Fin (n ^ x.P.g) → (Fin x'.P.g × Fin (n ^ x.P.g)) ⊕ (Fin x'.P.g × Fin (n ^ x.P.g))` to `fun S p => if p.1 ∈ S then Sum.inr p else Sum.inl p`. Establish `hsl : ∀ S p, Sum.elim id id (sl S p) = p` using `fun S p => by`. Apply the tactic sequence `by_cases hp : p.1 ∈ S <;> simp [sl, hp]`. Establish `hco : ∀ S i, Coords x' b' (fun j => Sum.elim T T' (sl S (i, j))) (S.piecewise s' s i).f` using `fun S i => by`. Distinguish the cases in `hp : i ∈ S`.
+
+Simplify `hs' i` using `[sl, hp]`. Simplify `hs i` using `[sl, hp]`. Establish `main : ∀ (S : Finset (Fin x'.P.g)) (ρ : Kˣ), KaVal x' n l l' al (S.piecewise s' s) ρ → κ = ρ`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`.
+
+Consider the case `empty`. Introduce `ρ hρ`. Rewrite `hρ` using `[Finset.piecewise_empty]`. Use `GlobalTheory.KeyLine.kaVal_eq_of_line hL K x' n l l' al s s κ ρ hA' (fun t σ hσ => ?_) hκ hρ` and prove the remaining obligations. Use `finZ_of_generic hL rfl hn h hb hb' (T := T) (hT.comp Sum.inl Sum.inl_injective) fun i c => ?_` and prove the remaining obligations.
+
+Use `(hσ i c).trans (Eq.trans ?_ (hs i c))` and prove the remaining obligations. Rewrite using `[← add_mul, ← map_add, sub_add_cancel, map_one, _root_.one_mul]`. Consider the case `insert i₀ S hi ih`. Introduce `ρ hρ`. Establish `hinj : Function.Injective (sl S)` using `Function.LeftInverse.injective (hsl S)`.
+
+Take `⟨d, z, ch, H⟩` from `GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent hL k K x x' φ w n b b' (Sum.elim T T' ∘ sl S) _ hn h hb hb' (hT.comp _ hinj) (hco S)`. Take `⟨ν, hν⟩` from `GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed hL K x' n l l' al d _ z ch hA' (Nat.cast_ne_zero.2 (degProd_ne_zero hA')) H`. Use `(ih ν hν).trans (GlobalTheory.KeyLine.kaVal_eq_of_line hL K x' n l l' al _ _ ν ρ hA' (fun t σ hσ => ?_) hν hρ)` and prove the remaining obligations. Establish `hinj' : Function.Injective (Sum.elim (fun j => Sum.inr (i₀, j)) (sl S))`. Use `Function.Injective.sumElim (fun j j' e => by simpa using e) hinj fun j p e => ?_` and prove the remaining obligations.
+
+Establish `e' : (i₀, j) = p` using `(congrArg (Sum.elim id id) e).trans (hsl S p)`. Substitute `e'` using the available equality. Simplify using `[sl, hi] at e`. Establish `hT' : AlgebraicIndependent k (Sum.elim (fun j => T' (i₀, j)) (Sum.elim T T' ∘ sl S))`. Use `hT.comp _ hinj'` as an intermediate fact.
+
+Rewrite `this` using `[Sum.comp_elim]`. Then use the resulting hypothesis. Use `finZ_line hL hn h hb hb' hT' (hco S) (hs' i₀) i₀ t (fun i hi' => funext fun c => (hσ i c).trans ?_) fun c => ?_` and prove the remaining obligations. Rewrite using `[Finset.piecewise_insert_of_ne _ _ _ hi', ← add_mul, ← map_add, sub_add_cancel, map_one, _root_.one_mul]`. Use `hσ i₀ c` as an intermediate fact. Rewrite `this` using `[Finset.piecewise_insert_self]`. Then use the resulting hypothesis.
+
+Conclude with `main Finset.univ κ' (by rwa [Finset.piecewise_univ])`.
+-/
 theorem kaVal_eq_of_generic : Out.Laws → ∀ (k K : Type) [Field k] [CharZero k] [Field K] [IsAlgClosed K] [Algebra k K] (x : KeyIn k) (x' : KeyIn K) φ w (n l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ) (b : Fin (n ^ x.P.g) → RR x n) (b' : Fin (n ^ x.P.g) → RR x' n) (T T' : Fin x'.P.g × Fin (n ^ x.P.g) → K) (s s' : Fin x'.P.g → RR x' n) (κ κ' : Kˣ), admitted x.P.g n l l' al → KeyVia x' x (algebraMap k K) φ w → IsBasis x b → (∀ j, SecVia x' x φ w (b' j) (b j)) → AlgebraicIndependent k (Sum.elim T T') → (∀ i, Coords x' b' (fun j => T (i, j)) (s i).f) → (∀ i, Coords x' b' (fun j => T' (i, j)) (s' i).f) → KaVal x' n l l' al s κ → KaVal x' n l l' al s' κ' → κ = κ' := by
   intro hL k K _ _ _ _ _ x x' φ w n l l' al b b' T T' s s' κ κ' hA h hb hb' hT hs hs' hκ hκ'
   classical

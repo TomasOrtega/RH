@@ -17,11 +17,17 @@ namespace GSD
 
 variable (S : GSD K)
 
+/- English proof (translation)
+Unfold `CSD.wt`. Conclude with `Fintype.card_eq_nat_card`.
+-/
 theorem wt_eq (h : S.Ok) (s : S.Sec) (c : S.Cl) :
     (S.toCSDOf h s).wt c = Nat.card (MulAction.stabilizer S.G (s.rep c)) := by
   unfold CSD.wt
   exact Fintype.card_eq_nat_card
 
+/- English proof (translation)
+Use `Nat.card_congr { toFun := fun x => ⟨g⁻¹ * (x : S.G) * g, ?_⟩ invFun := fun y => ⟨g * (y : S.G) * g⁻¹, ?_⟩ left_inv := fun x => ?_ right_inv := fun y => ?_ }` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, MulAction.mem_stabilizer_iff.mp x.2, inv_smul_smul]`. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, inv_smul_smul, MulAction.mem_stabilizer_iff.mp y.2]`. Conclude with `Subtype.ext (by simp [mul_assoc])`. Conclude with `Subtype.ext (by simp [mul_assoc])`.
+-/
 theorem card_stab_smul (g : S.G) (d : S.D) :
     Nat.card (MulAction.stabilizer S.G (g • d)) = Nat.card (MulAction.stabilizer S.G d) := by
   refine Nat.card_congr
@@ -34,6 +40,9 @@ theorem card_stab_smul (g : S.G) (d : S.D) :
   · exact Subtype.ext (by simp [mul_assoc])
   · exact Subtype.ext (by simp [mul_assoc])
 
+/- English proof (translation)
+Unfold `ipOf CSD.csum`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[S.wt_eq h s c]`.
+-/
 theorem ipOf_eq_sum (h : S.Ok) (s : S.Sec) (φ ψ : S.D → S.V) :
     S.ipOf h s φ ψ = letI := h.fintypeCl
       ∑ c : S.Cl, ((Nat.card (MulAction.stabilizer S.G (s.rep c)) : K))⁻¹ * S.pair (φ (s.rep c)) (ψ (s.rep c)) := by
@@ -41,6 +50,11 @@ theorem ipOf_eq_sum (h : S.Ok) (s : S.Sec) (φ ψ : S.D → S.V) :
   refine Finset.sum_congr rfl fun c _ => ?_
   rw [S.wt_eq h s c]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hφ c`. Conclude with `hφ (s.rep c)`. Introduce `hφ d`. Establish `e` using `s.mv_smul d`.
+
+Rewrite using `[← e, φ.2, hN]`. Conclude with `Submodule.mem_map_of_mem (hφ (S.cls d))`.
+-/
 theorem mem_intOf_iff (N : S.D → Submodule (𝓞 K) S.V)
     (hN : ∀ (g : S.G) (d : S.D), N (g • d) = (N d).map ((S.ρ g).restrictScalars (𝓞 K))) (s : S.Sec)
     (φ : S.EqFun) : φ ∈ S.intOf N ↔ ∀ c, (φ : S.D → S.V) (s.rep c) ∈ N (s.rep c) := by
@@ -52,10 +66,16 @@ theorem mem_intOf_iff (N : S.D → Submodule (𝓞 K) S.V)
     rw [← e, φ.2, hN]
     exact Submodule.mem_map_of_mem (hφ (S.cls d))
 
+/- English proof (translation)
+Conclude with `S.mem_intOf_iff S.Nab h.nab_smul s φ`.
+-/
 theorem mem_intNab_iff (h : S.Ok) (s : S.Sec) (φ : S.EqFun) :
     φ ∈ S.intNab ↔ ∀ c, (φ : S.D → S.V) (s.rep c) ∈ S.Nab (s.rep c) := by
   exact S.mem_intOf_iff S.Nab h.nab_smul s φ
 
+/- English proof (translation)
+Conclude with `S.mem_intOf_iff S.Del h.del_smul s φ`.
+-/
 theorem mem_intDel_iff (h : S.Ok) (s : S.Sec) (φ : S.EqFun) :
     φ ∈ S.intDel ↔ ∀ c, (φ : S.D → S.V) (s.rep c) ∈ S.Del (s.rep c) := by
   exact S.mem_intOf_iff S.Del h.del_smul s φ
@@ -63,6 +83,9 @@ theorem mem_intDel_iff (h : S.Ok) (s : S.Sec) (φ : S.EqFun) :
 def coordOf (h : S.Ok) (s : S.Sec) : S.EqFun ≃ₗ[K] (Fin (S.toCSDOf h s).dim → K) :=
   (S.resOf h s).trans (S.toCSDOf h s).basis.equivFun
 
+/- English proof (translation)
+Use `show (((S.toCSDOf h s).basis.equivFun.symm ((S.toCSDOf h s).basis.equivFun (S.resOf h s φ)) : (S.toCSDOf h s).Forms) : S.Cl → S.V) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem I_coordOf (h : S.Ok) (s : S.Sec) (φ : S.EqFun) :
     (S.toCSDOf h s).I (S.coordOf h s φ) = fun c => (φ : S.D → S.V) (s.rep c) := by
   show (((S.toCSDOf h s).basis.equivFun.symm ((S.toCSDOf h s).basis.equivFun (S.resOf h s φ)) :
@@ -70,18 +93,29 @@ theorem I_coordOf (h : S.Ok) (s : S.Sec) (φ : S.EqFun) :
   rw [LinearEquiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+Unfold `CSD.nabLat valLatF`. Rewrite using `[Submodule.mem_comap, LinearMap.restrictScalars_apply, S.I_coordOf h s φ, Submodule.mem_pi, S.mem_intNab_iff h s φ]`. Conclude with `⟨fun H c => H c (Set.mem_univ c), fun H c _ => H c⟩`.
+-/
 theorem coordOf_mem_nabLat (h : S.Ok) (s : S.Sec) (φ : S.EqFun) :
     S.coordOf h s φ ∈ (S.toCSDOf h s).nabLat ↔ φ ∈ S.intNab := by
   unfold CSD.nabLat valLatF
   rw [Submodule.mem_comap, LinearMap.restrictScalars_apply, S.I_coordOf h s φ, Submodule.mem_pi, S.mem_intNab_iff h s φ]
   exact ⟨fun H c => H c (Set.mem_univ c), fun H c _ => H c⟩
 
+/- English proof (translation)
+Unfold `CSD.delLat valLatF`. Rewrite using `[Submodule.mem_comap, LinearMap.restrictScalars_apply, S.I_coordOf h s φ, Submodule.mem_pi, S.mem_intDel_iff h s φ]`. Conclude with `⟨fun H c => H c (Set.mem_univ c), fun H c _ => H c⟩`.
+-/
 theorem coordOf_mem_delLat (h : S.Ok) (s : S.Sec) (φ : S.EqFun) :
     S.coordOf h s φ ∈ (S.toCSDOf h s).delLat ↔ φ ∈ S.intDel := by
   unfold CSD.delLat valLatF
   rw [Submodule.mem_comap, LinearMap.restrictScalars_apply, S.I_coordOf h s φ, Submodule.mem_pi, S.mem_intDel_iff h s φ]
   exact ⟨fun H c => H c (Set.mem_univ c), fun H c _ => H c⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨φ, hφ, rfl⟩` from `Submodule.mem_map.mp hx`. Conclude with `(S.coordOf_mem_nabLat h s φ).mpr hφ`.
+
+Introduce `hx`. Use `Submodule.mem_map.mpr ⟨(S.coordOf h s).symm x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← S.coordOf_mem_nabLat h s, LinearEquiv.apply_symm_apply]`. Conclude with `hx`. Simplify using the standard rewrite rules.
+-/
 theorem map_intNab (h : S.Ok) (s : S.Sec) :
     S.intNab.map ((S.coordOf h s : S.EqFun →ₗ[K] (Fin (S.toCSDOf h s).dim → K)).restrictScalars (𝓞 K)) =
       (S.toCSDOf h s).nabLat := by
@@ -96,6 +130,11 @@ theorem map_intNab (h : S.Ok) (s : S.Sec) :
       exact hx
     · simp
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨φ, hφ, rfl⟩` from `Submodule.mem_map.mp hx`. Conclude with `(S.coordOf_mem_delLat h s φ).mpr hφ`.
+
+Introduce `hx`. Use `Submodule.mem_map.mpr ⟨(S.coordOf h s).symm x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← S.coordOf_mem_delLat h s, LinearEquiv.apply_symm_apply]`. Conclude with `hx`. Simplify using the standard rewrite rules.
+-/
 theorem map_intDel (h : S.Ok) (s : S.Sec) :
     S.intDel.map ((S.coordOf h s : S.EqFun →ₗ[K] (Fin (S.toCSDOf h s).dim → K)).restrictScalars (𝓞 K)) =
       (S.toCSDOf h s).delLat := by
@@ -110,6 +149,11 @@ theorem map_intDel (h : S.Ok) (s : S.Sec) :
       exact hx
     · simp
 
+/- English proof (translation)
+Establish `e` using `(S.toCSDOf h s).csum_sum (S.coordOf h s φ) (S.coordOf h s ψ)`. Rewrite `e` using `[S.I_coordOf, S.I_coordOf]`. Unfold `ipOf`. Rewrite using `[e]`. Unfold `hform`.
+
+Rewrite using `[Matrix.toLinearMapₛₗ₂'_apply]`. Simplify using `only [starRingEnd_apply, RingHom.id_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ipOf_coord (h : S.Ok) (s : S.Sec) (φ ψ : S.EqFun) :
     S.ipOf h s φ ψ = hform (S.toCSDOf h s).H (S.coordOf h s φ) (S.coordOf h s ψ) := by
   have e := (S.toCSDOf h s).csum_sum (S.coordOf h s φ) (S.coordOf h s ψ)
@@ -122,28 +166,46 @@ theorem ipOf_coord (h : S.Ok) (s : S.Sec) (φ ψ : S.EqFun) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `CSD.dim`. Conclude with `(S.resOf h s).finrank_eq`.
+-/
 theorem finrank_EqFun (h : S.Ok) (s : S.Sec) : finrank K S.EqFun = (S.toCSDOf h s).dim := by
   unfold CSD.dim
   exact (S.resOf h s).finrank_eq
 
+/- English proof (translation)
+Use `letI := h.fintypeCl`. Use `haveI : Module.Finite K S.V := Module.Finite.of_basis S.bV`. Conclude with `LinearEquiv.finiteDimensional (S.resOf h S.outSec).symm`.
+-/
 theorem finiteDimensional_EqFun (h : S.Ok) : FiniteDimensional K S.EqFun := by
   letI := h.fintypeCl
   haveI : Module.Finite K S.V := Module.Finite.of_basis S.bV
   exact LinearEquiv.finiteDimensional (S.resOf h S.outSec).symm
 
 variable {S} in
+/- English proof (translation)
+Conclude with `(S.cls_eq_iff _ _).mp ((s'.spec c).trans (s.spec c).symm)`.
+-/
 theorem Sec.exists_smul (s s' : S.Sec) (c : S.Cl) : ∃ g : S.G, g • s.rep c = s'.rep c := by
   exact (S.cls_eq_iff _ _).mp ((s'.spec c).trans (s.spec c).symm)
 
+/- English proof (translation)
+Rewrite using `[S.ipOf_eq_sum h s, S.ipOf_eq_sum h s']`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `Sec.exists_smul s s' c`. Rewrite using `[← hg, φ.2, ψ.2, h.inv, card_stab_smul]`.
+-/
 theorem ipOf_indep (h : S.Ok) (s s' : S.Sec) (φ ψ : S.EqFun) : S.ipOf h s φ ψ = S.ipOf h s' φ ψ := by
   rw [S.ipOf_eq_sum h s, S.ipOf_eq_sum h s']
   refine Finset.sum_congr rfl fun c _ => ?_
   obtain ⟨g, hg⟩ := Sec.exists_smul s s' c
   rw [← hg, φ.2, ψ.2, h.inv, card_stab_smul]
 
+/- English proof (translation)
+Conclude with `(S.ipOf_indep h s S.outSec φ ψ).trans rfl`.
+-/
 theorem ipOf_eq_ip (h : S.Ok) (s : S.Sec) (φ ψ : S.EqFun) : S.ipOf h s φ ψ = S.ip h φ ψ := by
   exact (S.ipOf_indep h s S.outSec φ ψ).trans rfl
 
+/- English proof (translation)
+Unfold `CSD.dim`. Conclude with `((S.resOf h s).symm.trans (S.resOf h s')).finrank_eq`.
+-/
 theorem dim_indep (h : S.Ok) (s s' : S.Sec) : (S.toCSDOf h s).dim = (S.toCSDOf h s').dim := by
   unfold CSD.dim
   exact ((S.resOf h s).symm.trans (S.resOf h s')).finrank_eq
@@ -151,6 +213,9 @@ theorem dim_indep (h : S.Ok) (s s' : S.Sec) : (S.toCSDOf h s).dim = (S.toCSDOf h
 def chgSec (h : S.Ok) (s s' : S.Sec) : (S.toCSDOf h s).Forms ≃ₗ[K] (S.toCSDOf h s').Forms :=
   (S.resOf h s).symm.trans (S.resOf h s')
 
+/- English proof (translation)
+Establish `e1` using `S.ipOf_indep h s s' ((S.resOf h s).symm f) ((S.resOf h s).symm f')`. Establish `e2 : ∀ g : (S.toCSDOf h s).Forms, (fun c => (((S.resOf h s).symm g : S.EqFun) : S.D → S.V) (s.rep c)) = (g : S.Cl → S.V)` using `fun g => congrArg Subtype.val ((S.resOf h s).apply_symm_apply g)`. Unfold `ipOf at e1`. Rewrite `e1` using `[e2 f, e2 f']`. Conclude with `e1.symm`.
+-/
 theorem chgSec_csum (h : S.Ok) (s s' : S.Sec) (f f' : (S.toCSDOf h s).Forms) :
     (S.toCSDOf h s').csum (S.chgSec h s s' f).1 (S.chgSec h s s' f').1 = (S.toCSDOf h s).csum f.1 f'.1 := by
   have e1 := S.ipOf_indep h s s' ((S.resOf h s).symm f) ((S.resOf h s).symm f')
@@ -161,6 +226,9 @@ theorem chgSec_csum (h : S.Ok) (s s' : S.Sec) (f f' : (S.toCSDOf h s).Forms) :
   rw [e2 f, e2 f'] at e1
   exact e1.symm
 
+/- English proof (translation)
+Establish `e2 : f.1 = fun c => (((S.resOf h s).symm f : S.EqFun) : S.D → S.V) (s.rep c)` using `(congrArg Subtype.val ((S.resOf h s).apply_symm_apply f)).symm`. Rewrite using `[e2]`. Conclude with `(S.mem_intNab_iff h s' ((S.resOf h s).symm f)).symm.trans (S.mem_intNab_iff h s ((S.resOf h s).symm f))`.
+-/
 theorem chgSec_nab (h : S.Ok) (s s' : S.Sec) (f : (S.toCSDOf h s).Forms) :
     (∀ c, (S.chgSec h s s' f).1 c ∈ S.Nab (s'.rep c)) ↔ ∀ c, f.1 c ∈ S.Nab (s.rep c) := by
   have e2 : f.1 = fun c => (((S.resOf h s).symm f : S.EqFun) : S.D → S.V) (s.rep c) :=
@@ -174,6 +242,11 @@ namespace ClsKer
 
 variable {S S' : GSD K} (A : ClsKer S S')
 
+/- English proof (translation)
+Establish `e1 : ∀ y, S.ρ g⁻¹ (S.ρ g y) = y` using `fun y => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `h1` using `A.equiv g 1 d d'`. Rewrite `h1` using `[one_smul, map_one]`. Rewrite using `[h1, φ.2]`.
+
+Simplify using `only [LinearMap.comp_apply, Module.End.one_apply, e1]`.
+-/
 theorem term_smul (φ : S.EqFun) (g : S.G) (d : S.D) (d' : S'.D) :
     A.k (g • d) d' ((φ : S.D → S.V) (g • d)) = A.k d d' ((φ : S.D → S.V) d) := by
   have e1 : ∀ y, S.ρ g⁻¹ (S.ρ g y) = y := fun y => by
@@ -183,6 +256,9 @@ theorem term_smul (φ : S.EqFun) (g : S.G) (d : S.D) (d' : S'.D) :
   rw [h1, φ.2]
   simp only [LinearMap.comp_apply, Module.End.one_apply, e1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `d'`. Unfold `appOf`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `GSD.Sec.exists_smul s s' c`. Rewrite using `[S.wt_eq h s c, S.wt_eq h s' c, ← hg, S.card_stab_smul, A.term_smul]`.
+-/
 theorem appOf_indep (h : S.Ok) (s s' : S.Sec) (φ : S.EqFun) : A.appOf h s φ = A.appOf h s' φ := by
   funext d'
   unfold appOf
@@ -190,9 +266,15 @@ theorem appOf_indep (h : S.Ok) (s s' : S.Sec) (φ : S.EqFun) : A.appOf h s φ = 
   obtain ⟨g, hg⟩ := GSD.Sec.exists_smul s s' c
   rw [S.wt_eq h s c, S.wt_eq h s' c, ← hg, S.card_stab_smul, A.term_smul]
 
+/- English proof (translation)
+Conclude with `LinearMap.ext fun φ => Subtype.ext (A.appOf_indep h s s' φ)`.
+-/
 theorem opOf_indep (h : S.Ok) (s s' : S.Sec) : A.opOf h s = A.opOf h s' := by
   exact LinearMap.ext fun φ => Subtype.ext (A.appOf_indep h s s' φ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resOf_opOf (h : S.Ok) (h' : S'.Ok) (s : S.Sec) (s' : S'.Sec) (φ : S.EqFun) :
     (S'.resOf h' s' (A.opOf h s φ)).1 = letI := h.fintypeCl
       Formalism.ThetaLiftIndependence.kerOpM (fun c => (((S.toCSDOf h s).wt c : K))⁻¹) (A.atReps s s') (S.resOf h s φ).1 := rfl
@@ -205,6 +287,9 @@ variable (S : GSD K)
 
 def Free : Prop := ∀ (d : S.D) (g : S.G), g • d = d → g = 1
 
+/- English proof (translation)
+Use `eq_top_iff.mpr fun f _ => ?_` and prove the remaining obligations. Introduce `c γ`. Establish `hγ : ((γ : MulAction.stabilizer S.G (s.rep c)) : S.G) = 1` using `hf _ _ (MulAction.mem_stabilizer_iff.mp γ.2)`. Use `show S.ρ ((γ : MulAction.stabilizer S.G (s.rep c)) : S.G) (f c) = f c`. Rewrite using `[hγ, map_one, Module.End.one_apply]`.
+-/
 theorem forms_eq_top (h : S.Ok) (s : S.Sec) (hf : S.Free) : (S.toCSDOf h s).Forms = ⊤ := by
   refine eq_top_iff.mpr fun f _ => ?_
   intro c γ
@@ -213,6 +298,9 @@ theorem forms_eq_top (h : S.Ok) (s : S.Sec) (hf : S.Free) : (S.toCSDOf h s).Form
   show S.ρ ((γ : MulAction.stabilizer S.G (s.rep c)) : S.G) (f c) = f c
   rw [hγ, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Rewrite using `[S.wt_eq h s c, Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun a b => Subtype.ext ?_⟩, ⟨1⟩⟩` and prove the remaining obligations. Rewrite using `[hf _ _ (MulAction.mem_stabilizer_iff.mp a.2), hf _ _ (MulAction.mem_stabilizer_iff.mp b.2)]`.
+-/
 theorem wt_eq_one (h : S.Ok) (s : S.Sec) (hf : S.Free) (c : S.Cl) : (S.toCSDOf h s).wt c = 1 := by
   rw [S.wt_eq h s c, Nat.card_eq_one_iff_unique]
   refine ⟨⟨fun a b => Subtype.ext ?_⟩, ⟨1⟩⟩
@@ -221,9 +309,15 @@ theorem wt_eq_one (h : S.Ok) (s : S.Sec) (hf : S.Free) (c : S.Cl) : (S.toCSDOf h
 def resFree (h : S.Ok) (s : S.Sec) (hf : S.Free) : S.EqFun ≃ₗ[K] (S.Cl → S.V) :=
   (S.resOf h s).trans (LinearEquiv.ofTop _ (S.forms_eq_top h s hf))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resFree_apply (h : S.Ok) (s : S.Sec) (hf : S.Free) (φ : S.EqFun) (c : S.Cl) :
     S.resFree h s hf φ c = (φ : S.D → S.V) (s.rep c) := rfl
 
+/- English proof (translation)
+Rewrite using `[S.ipOf_eq_sum h s]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← S.wt_eq h s c, S.wt_eq_one h s hf c]`. Simplify using `only [Nat.cast_one, inv_one, one_mul]`.
+-/
 theorem ipOf_free (h : S.Ok) (s : S.Sec) (hf : S.Free) (φ ψ : S.D → S.V) :
     S.ipOf h s φ ψ = letI := h.fintypeCl
       ∑ c : S.Cl, S.pair (φ (s.rep c)) (ψ (s.rep c)) := by
@@ -232,6 +326,13 @@ theorem ipOf_free (h : S.Ok) (s : S.Sec) (hf : S.Free) (φ ψ : S.D → S.V) :
   rw [← S.wt_eq h s c, S.wt_eq_one h s hf c]
   simp only [Nat.cast_one, inv_one, one_mul]
 
+/- English proof (translation)
+Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨φ, hφ, rfl⟩` from `Submodule.mem_map.mp hx`. Rewrite using `[Submodule.mem_pi]`.
+
+Introduce `c _`. Conclude with `hφ (s.rep c)`. Introduce `hx`. Use `Submodule.mem_map.mpr ⟨(S.resFree h s hf).symm f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[S.mem_intNab_iff h s]`.
+
+Introduce `c`. Rewrite using `[← S.resFree_apply h s hf, LinearEquiv.apply_symm_apply]`. Conclude with `(Submodule.mem_pi.mp hx) c (Set.mem_univ c)`. Simplify using the standard rewrite rules.
+-/
 theorem map_intNab_free (h : S.Ok) (s : S.Sec) (hf : S.Free) :
     S.intNab.map ((S.resFree h s hf : S.EqFun →ₗ[K] (S.Cl → S.V)).restrictScalars (𝓞 K)) =
       Submodule.pi Set.univ fun c => S.Nab (s.rep c) := by
@@ -250,6 +351,13 @@ theorem map_intNab_free (h : S.Ok) (s : S.Sec) (hf : S.Free) :
       exact (Submodule.mem_pi.mp hx) c (Set.mem_univ c)
     · simp
 
+/- English proof (translation)
+Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨φ, hφ, rfl⟩` from `Submodule.mem_map.mp hx`. Rewrite using `[Submodule.mem_pi]`.
+
+Introduce `c _`. Conclude with `hφ (s.rep c)`. Introduce `hx`. Use `Submodule.mem_map.mpr ⟨(S.resFree h s hf).symm f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[S.mem_intDel_iff h s]`.
+
+Introduce `c`. Rewrite using `[← S.resFree_apply h s hf, LinearEquiv.apply_symm_apply]`. Conclude with `(Submodule.mem_pi.mp hx) c (Set.mem_univ c)`. Simplify using the standard rewrite rules.
+-/
 theorem map_intDel_free (h : S.Ok) (s : S.Sec) (hf : S.Free) :
     S.intDel.map ((S.resFree h s hf : S.EqFun →ₗ[K] (S.Cl → S.V)).restrictScalars (𝓞 K)) =
       Submodule.pi Set.univ fun c => S.Del (s.rep c) := by
@@ -268,6 +376,9 @@ theorem map_intDel_free (h : S.Ok) (s : S.Sec) (hf : S.Free) :
       exact (Submodule.mem_pi.mp hx) c (Set.mem_univ c)
     · simp
 
+/- English proof (translation)
+Use `letI := h.fintypeCl`. Use `haveI : Module.Finite K S.V := Module.Finite.of_basis S.bV`. Rewrite using `[(S.resFree h S.outSec hf).finrank_eq, Module.finrank_pi_fintype, Finset.sum_const, smul_eq_mul, Finset.card_univ, Nat.card_eq_fintype_card]`.
+-/
 theorem finrank_free (h : S.Ok) (hf : S.Free) : finrank K S.EqFun = Nat.card S.Cl * finrank K S.V := by
   letI := h.fintypeCl
   haveI : Module.Finite K S.V := Module.Finite.of_basis S.bV
@@ -280,9 +391,15 @@ namespace GSD.Iso
 
 variable {S S' : GSD K} (e : GSD.Iso S S')
 
+/- English proof (translation)
+Rewrite using `[Equiv.symm_apply_eq, e.smul, MulEquiv.apply_symm_apply, Equiv.apply_symm_apply]`.
+-/
 theorem symm_smul (g' : S'.G) (d' : S'.D) : e.eD.symm (g' • d') = e.eG.symm g' • e.eD.symm d' := by
   rw [Equiv.symm_apply_eq, e.smul, MulEquiv.apply_symm_apply, Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem onCl_cls (d : S.D) : e.onCl (S.cls d) = S'.cls (e.eD d) := rfl
 
 def stabEquiv (d : S.D) : MulAction.stabilizer S.G d ≃ MulAction.stabilizer S'.G (e.eD d) :=
@@ -290,10 +407,18 @@ def stabEquiv (d : S.D) : MulAction.stabilizer S.G d ≃ MulAction.stabilizer S'
     show g ∈ MulAction.stabilizer S.G d ↔ e.eG g ∈ MulAction.stabilizer S'.G (e.eD d)
     rw [MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff, ← e.smul, e.eD.apply_eq_iff_eq]
 
+/- English proof (translation)
+Conclude with `Nat.card_congr (e.stabEquiv d).symm`.
+-/
 theorem card_stab (d : S.D) :
     Nat.card (MulAction.stabilizer S'.G (e.eD d)) = Nat.card (MulAction.stabilizer S.G d) := by
   exact Nat.card_congr (e.stabEquiv d).symm
 
+/- English proof (translation)
+Take `⟨d, rfl⟩` from `e.eD.surjective d'`. Take `⟨g, rfl⟩` from `e.eG.surjective g'`. Rewrite using `[← e.smul, hc, hc, hN, ← Submodule.map_comp, ← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Conclude with `e.rho g x`.
+-/
 theorem iso_integral_structure_equivariant (N : S.D → Submodule (𝓞 K) S.V) (N' : S'.D → Submodule (𝓞 K) S'.V)
     (hN : ∀ (g : S.G) (d : S.D), N (g • d) = (N d).map ((S.ρ g).restrictScalars (𝓞 K)))
     (hc : ∀ d : S.D, N' (e.eD d) = (N d).map ((e.eV : S.V →ₗ[K] S'.V).restrictScalars (𝓞 K)))
@@ -308,6 +433,13 @@ theorem iso_integral_structure_equivariant (N : S.D → Submodule (𝓞 K) S.V) 
 
 include e in
 
+/- English proof (translation)
+Use `h.fin_orb` as an intermediate fact. Conclude with `Finite.of_equiv _ e.onCl`. Use `fin_stab := by`. Introduce `d'`. Take `⟨d, rfl⟩` from `e.eD.surjective d'`.
+
+Use `h.fin_stab d` as an intermediate fact. Conclude with `Finite.of_equiv _ (e.stabEquiv d)`. Use `nab_smul := e.iso_integral_structure_equivariant S.Nab S'.Nab h.nab_smul e.nab`. Use `del_smul := e.iso_integral_structure_equivariant S.Del S'.Del h.del_smul e.del`. Use `inv := by`.
+
+Introduce `g' x' y'`. Take `⟨g, rfl⟩` from `e.eG.surjective g'`. Take `⟨x, rfl⟩` from `e.eV.surjective x'`. Take `⟨y, rfl⟩` from `e.eV.surjective y'`. Rewrite using `[← e.rho, ← e.rho, e.pair, e.pair, h.inv]`.
+-/
 theorem ok (h : S.Ok) : S'.Ok where
   fin_orb := by
     have := h.fin_orb
@@ -326,6 +458,13 @@ theorem ok (h : S.Ok) : S'.Ok where
     obtain ⟨y, rfl⟩ := e.eV.surjective y'
     rw [← e.rho, ← e.rho, e.pair, e.pair, h.inv]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hφ d`. Establish `h1 : e.eV ((φ : S.D → S.V) (e.eD.symm (e.eD d))) ∈ N' (e.eD d)` using `hφ (e.eD d)`. Rewrite `h1` using `[Equiv.symm_apply_apply, hc]`. Take `⟨y, hy, hxy⟩` from `Submodule.mem_map.mp h1`.
+
+Establish `hy' : y = (φ : S.D → S.V) d` using `e.eV.injective hxy`. Rewrite using `[← hy']`. Conclude with `hy`. Introduce `hφ d' show e.eV ((φ : S.D → S.V) (e.eD.symm d')) ∈ N' d'`. Establish `h2` using `hc (e.eD.symm d')`.
+
+Rewrite `h2` using `[Equiv.apply_symm_apply]`. Rewrite using `[h2]`. Conclude with `Submodule.mem_map_of_mem (hφ _)`.
+-/
 theorem iso_onForms_mem_integral_iff (N : S.D → Submodule (𝓞 K) S.V) (N' : S'.D → Submodule (𝓞 K) S'.V)
     (hc : ∀ d : S.D, N' (e.eD d) = (N d).map ((e.eV : S.V →ₗ[K] S'.V).restrictScalars (𝓞 K))) (φ : S.EqFun) :
     e.onForms φ ∈ S'.intOf N' ↔ φ ∈ S.intOf N := by
@@ -344,9 +483,15 @@ theorem iso_onForms_mem_integral_iff (N : S.D → Submodule (𝓞 K) S.V) (N' : 
     rw [h2]
     exact Submodule.mem_map_of_mem (hφ _)
 
+/- English proof (translation)
+Conclude with `e.iso_onForms_mem_integral_iff S.Nab S'.Nab e.nab φ`.
+-/
 theorem mem_intNab (φ : S.EqFun) : e.onForms φ ∈ S'.intNab ↔ φ ∈ S.intNab := by
   exact e.iso_onForms_mem_integral_iff S.Nab S'.Nab e.nab φ
 
+/- English proof (translation)
+Conclude with `e.iso_onForms_mem_integral_iff S.Del S'.Del e.del φ`.
+-/
 theorem mem_intDel (φ : S.EqFun) : e.onForms φ ∈ S'.intDel ↔ φ ∈ S.intDel := by
   exact e.iso_onForms_mem_integral_iff S.Del S'.Del e.del φ
 
@@ -356,6 +501,11 @@ def mapSec (s : S.Sec) : S'.Sec where
     intro c'
     rw [← e.onCl_cls, s.spec, Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Set `_` to `h.fintypeCl`. Set `_` to `h'.fintypeCl`. Rewrite using `[S'.ipOf_indep h' s' (e.mapSec s), GSD.ipOf_eq_sum, GSD.ipOf_eq_sum]`. Use `Fintype.sum_equiv e.onCl.symm _ _ fun c' => ?_` and prove the remaining obligations. Use `show ((Nat.card (MulAction.stabilizer S'.G (e.eD (s.rep (e.onCl.symm c')))) : K))⁻¹ * S'.pair (e.eV ((φ : S.D → S.V) (e.eD.symm (e.eD (s.rep (e.onCl.symm c')))))) (e.eV ((ψ : S.D → S.V) (e.eD.symm (e.eD (s.rep (e.onCl.symm c')))))) = _`.
+
+Rewrite using `[e.card_stab, Equiv.symm_apply_apply, e.pair]`.
+-/
 theorem ipOf_onForms (h : S.Ok) (h' : S'.Ok) (s : S.Sec) (s' : S'.Sec) (φ ψ : S.EqFun) :
     S'.ipOf h' s' (e.onForms φ) (e.onForms ψ) = S.ipOf h s φ ψ := by
   let _ := h.fintypeCl
@@ -368,6 +518,9 @@ theorem ipOf_onForms (h : S.Ok) (h' : S'.Ok) (s : S.Sec) (s' : S'.Sec) (φ ψ : 
   rw [e.card_stab, Equiv.symm_apply_apply, e.pair]
 
 include e in
+/- English proof (translation)
+Unfold `CSD.dim`. Conclude with `(((S'.resOf h' s').symm.trans e.onForms.symm).trans (S.resOf h s)).finrank_eq`.
+-/
 theorem dim_eq (h : S.Ok) (h' : S'.Ok) (s : S.Sec) (s' : S'.Sec) :
     (S'.toCSDOf h' s').dim = (S.toCSDOf h s).dim := by
   unfold CSD.dim
@@ -377,6 +530,9 @@ def coord (h : S.Ok) (h' : S'.Ok) (s : S.Sec) (s' : S'.Sec) :
     (Fin (S.toCSDOf h s).dim → K) ≃ₗ[K] (Fin (S'.toCSDOf h' s').dim → K) :=
   ((S.coordOf h s).symm.trans e.onForms).trans (S'.coordOf h' s')
 
+/- English proof (translation)
+Establish `e1` using `S'.ipOf_coord h' s' (e.onForms ((S.coordOf h s).symm x)) (e.onForms ((S.coordOf h s).symm y))`. Establish `e2` using `S.ipOf_coord h s ((S.coordOf h s).symm x) ((S.coordOf h s).symm y)`. Rewrite `e2` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite `e1` using `[e.ipOf_onForms h h' s s']`. Conclude with `e1.symm.trans e2`.
+-/
 theorem hform_coord (h : S.Ok) (h' : S'.Ok) (s : S.Sec) (s' : S'.Sec) (x y : Fin (S.toCSDOf h s).dim → K) :
     hform (S'.toCSDOf h' s').H (e.coord h h' s s' x) (e.coord h h' s s' y) = hform (S.toCSDOf h s).H x y := by
   have e1 := S'.ipOf_coord h' s' (e.onForms ((S.coordOf h s).symm x)) (e.onForms ((S.coordOf h s).symm y))
@@ -385,11 +541,17 @@ theorem hform_coord (h : S.Ok) (h' : S'.Ok) (s : S.Sec) (s' : S'.Sec) (x y : Fin
   rw [e.ipOf_onForms h h' s s'] at e1
   exact e1.symm.trans e2
 
+/- English proof (translation)
+Use `show S'.coordOf h' s' (e.onForms ((S.coordOf h s).symm x)) ∈ _ ↔ _`. Rewrite using `[S'.coordOf_mem_nabLat h' s', e.mem_intNab, ← S.coordOf_mem_nabLat h s, LinearEquiv.apply_symm_apply]`.
+-/
 theorem coord_mem_nabLat (h : S.Ok) (h' : S'.Ok) (s : S.Sec) (s' : S'.Sec) (x : Fin (S.toCSDOf h s).dim → K) :
     e.coord h h' s s' x ∈ (S'.toCSDOf h' s').nabLat ↔ x ∈ (S.toCSDOf h s).nabLat := by
   show S'.coordOf h' s' (e.onForms ((S.coordOf h s).symm x)) ∈ _ ↔ _
   rw [S'.coordOf_mem_nabLat h' s', e.mem_intNab, ← S.coordOf_mem_nabLat h s, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use `show S'.coordOf h' s' (e.onForms ((S.coordOf h s).symm x)) ∈ _ ↔ _`. Rewrite using `[S'.coordOf_mem_delLat h' s', e.mem_intDel, ← S.coordOf_mem_delLat h s, LinearEquiv.apply_symm_apply]`.
+-/
 theorem coord_mem_delLat (h : S.Ok) (h' : S'.Ok) (s : S.Sec) (s' : S'.Sec) (x : Fin (S.toCSDOf h s).dim → K) :
     e.coord h h' s s' x ∈ (S'.toCSDOf h' s').delLat ↔ x ∈ (S.toCSDOf h s).delLat := by
   show S'.coordOf h' s' (e.onForms ((S.coordOf h s).symm x)) ∈ _ ↔ _
@@ -419,6 +581,11 @@ def refl (S : GSD K) : GSD.Iso S S where
     · exact one_mem _
     · exact zero_mem _
 
+/- English proof (translation)
+Establish `h2` using `hc (e.eD.symm d')`. Rewrite `h2` using `[Equiv.apply_symm_apply]`. Establish `hid : ((e.eV.symm : S'.V →ₗ[K] S.V).restrictScalars (𝓞 K)).comp ((e.eV : S.V →ₗ[K] S'.V).restrictScalars (𝓞 K)) = LinearMap.id`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h2, ← Submodule.map_comp, hid, Submodule.map_id]`.
+-/
 theorem transpose_form_mul_involution (N : S.D → Submodule (𝓞 K) S.V) (N' : S'.D → Submodule (𝓞 K) S'.V)
     (hc : ∀ d : S.D, N' (e.eD d) = (N d).map ((e.eV : S.V →ₗ[K] S'.V).restrictScalars (𝓞 K))) (d' : S'.D) :
     N (e.eD.symm d') = (N' d').map ((e.eV.symm : S'.V →ₗ[K] S.V).restrictScalars (𝓞 K)) := by
@@ -446,6 +613,9 @@ def symm : GSD.Iso S' S where
   rat := e.rat_symm
   rat_symm := e.rat
 
+/- English proof (translation)
+Rewrite using `[← b'.sum_repr (f (b j))]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `sum_mem fun k _ => mul_mem (h k j) (h' i k)`.
+-/
 theorem rat_comp {ι ι' ι'' V V' V'' : Type} [Fintype ι'] [AddCommGroup V] [Module K V] [AddCommGroup V']
     [Module K V'] [AddCommGroup V''] [Module K V''] (b : Basis ι K V) (b' : Basis ι' K V') (b'' : Basis ι'' K V'')
     (f : V →ₗ[K] V') (f' : V' →ₗ[K] V'') (F : Subfield K) (h : ∀ i j, b'.repr (f (b j)) i ∈ F)
@@ -490,6 +660,13 @@ namespace LocOp
 
 variable {S S' : GSD K}
 
+/- English proof (translation)
+Establish `e1 : ∀ y, S.ρ g (S.ρ g⁻¹ y) = y` using `fun y => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `e2 : ∀ y, S'.ρ g'⁻¹ (S'.ρ g' y) = y` using `fun y => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hk`. Use extensionality with `x`. Establish `h1` using `LinearMap.congr_fun hk (S.ρ g⁻¹ x)`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, e1] at h1`. Establish `h2` using `congrArg (S'.ρ g'⁻¹) h1`.
+
+Rewrite `h2` using `[e2, map_zero]`. Rewrite using `[h2, LinearMap.zero_apply]`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+-/
 theorem conj_eq_zero_iff (g : S.G) (g' : S'.G) (k : S.V →ₗ[K] S'.V) :
     (S'.ρ g') ∘ₗ k ∘ₗ (S.ρ g) = 0 ↔ k = 0 := by
   have e1 : ∀ y, S.ρ g (S.ρ g⁻¹ y) = y := fun y => by
@@ -507,6 +684,13 @@ theorem conj_eq_zero_iff (g : S.G) (g' : S'.G) (k : S.V →ₗ[K] S'.V) :
   · rintro rfl
     simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hA`. Use extensionality with `y`. Rewrite using `[LinearMap.zero_apply]`. Use `hn.2 _ fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hadj, hA, LinearMap.zero_apply, map_zero, LinearMap.zero_apply]`. Introduce `hB`. Use extensionality with `x`. Rewrite using `[LinearMap.zero_apply]`. Use `hn'.1 _ fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[hadj, hB, LinearMap.zero_apply, map_zero]`.
+-/
 theorem ker_eq_zero_iff (A : LocOp S S') (B : LocOp S' S) (hn : S.pair.Nondegenerate)
     (hn' : S'.pair.Nondegenerate)
     (hadj : ∀ d d' x y, S'.pair (A.ker d' d x) y = S.pair x (B.ker d d' y)) (d : S.D) (d' : S'.D) :
@@ -523,6 +707,31 @@ theorem ker_eq_zero_iff (A : LocOp S S') (B : LocOp S' S) (hn : S.pair.Nondegene
     refine hn'.1 _ fun y => ?_
     rw [hadj, hB, LinearMap.zero_apply, map_zero]
 
+/- English proof (translation)
+Set `_` to `h.fintypeCl`. Set `_` to `h'.fintypeCl`. Set `act : MulAction S.G S'.D` to `MulAction.compHom S'.D (e : S.G →* S'.G)`. Establish `hact : ∀ (γ : S.G) (b : S'.D), γ • b = e γ • b` using `fun _ _ => rfl`. Establish `hstab : ∀ b : S'.D, (MulAction.stabilizer S.G b) ≃ (MulAction.stabilizer S'.G b)` using `fun b => Equiv.subtypeEquiv e.toEquiv fun γ => Iff.rfl`.
+
+Establish `hinj : Function.Injective s.rep` using `fun c c' hc => by rw [← s.spec c, hc, s.spec]`. Establish `hinj' : Function.Injective s'.rep` using `fun c c' hc => by rw [← s'.spec c, hc, s'.spec]`. Establish `key` using `Formalism.HermitianLattices.RamifiedLatticeOperators.count_of_orbits S.G S.D S'.D K (fun a => (B.ker a).support) (fun b => (A.ker b).support) (fun a b => S.pair ((φ : S.D → S.V) a) (B.ker a b ((ψ : S'.D → S'.V) b))) (Finset.univ.image s.rep) (Finset.univ.image s'.rep) (by`. Introduce `a b`. Rewrite using `[Finsupp.mem_support_iff, Finsupp.mem_support_iff, not_iff_not]`.
+
+Conclude with `(hsupp a b).symm)`. Use the proof step `(by`. Introduce `γ a b hb`. Rewrite `hb`, the goal using `[Finsupp.mem_support_iff]`. Rewrite using `[hact, ← hB, B.equiv, Ne, conj_eq_zero_iff]`.
+
+Conclude with `hb)`. Use the proof step `(by`. Introduce `γ a b _`. Use `show S.pair ((φ : S.D → S.V) (γ • a)) (B.ker (γ • a) (γ • b) ((ψ : S'.D → S'.V) (γ • b))) = _`. Rewrite using `[hact, ← hB, B.equiv, φ.2, ψ.2]`.
+
+Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← Module.End.mul_apply (S'.ρ (B.tr γ)⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, h.inv])`. Use the proof step `h.fin_stab`. Use the proof step `(by`. Introduce `b`.
+
+Use `h'.fin_stab b` as an intermediate fact. Conclude with `Finite.of_equiv _ (hstab b).symm)`. Use the proof step `(by`. Introduce `a`. Use `⟨s.rep (S.cls a), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(S.cls_eq_iff _ _).mp (s.spec _)`. Introduce and unpack `r ⟨hr, hr2⟩`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.mp hr`. Establish `h1 : S.cls (s.rep c) = S.cls a` using `(S.cls_eq_iff _ _).mpr hr2`. Rewrite using `[← h1, s.spec])`.
+
+Use the proof step `(by`. Introduce `b`. Use `⟨s'.rep (S'.cls b), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨g', hg'⟩` from `(S'.cls_eq_iff _ _).mp (s'.spec (S'.cls b))`. Conclude with `⟨e.symm g', by show e (e.symm g') • b = _; rw [MulEquiv.apply_symm_apply, hg']⟩`.
+
+Introduce and unpack `r ⟨hr, γ, hγ⟩`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.mp hr`. Establish `h1 : S'.cls (s'.rep c) = S'.cls b` using `(S'.cls_eq_iff _ _).mpr ⟨e γ, hγ⟩`. Rewrite using `[← h1, s'.spec])`. Rewrite `key` using `[Finset.sum_image (fun c _ c' _ hc => hinj hc), Finset.sum_image (fun c _ c' _ hc => hinj' hc)]`.
+
+Rewrite using `[GSD.ipOf_eq_sum, GSD.ipOf_eq_sum]`. Use `Eq.trans ?_ (key.symm.trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.card_congr (hstab (s'.rep c')), Rat.smul_def, Rat.cast_inv, Rat.cast_natCast]`. Use `congr 1`.
+
+Unfold `app`. Rewrite using `[Finsupp.sum, map_sum, LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun d _ => hadj _ _ _ _`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def, Rat.cast_inv, Rat.cast_natCast]`.
+
+Use `congr 1`. Unfold `app`. Rewrite using `[Finsupp.sum, map_sum]`.
+-/
 theorem adjoint (A : LocOp S S') (B : LocOp S' S) (h : S.Ok) (h' : S'.Ok) (e : S.G ≃* S'.G)
     (hB : ∀ g, B.tr g = e g)
     (hsupp : ∀ d d', A.ker d' d = 0 ↔ B.ker d d' = 0)
@@ -595,6 +804,9 @@ theorem adjoint (A : LocOp S S') (B : LocOp S' S) (h : S.Ok) (h' : S'.Ok) (e : S
     unfold app
     rw [Finsupp.sum, map_sum]
 
+/- English proof (translation)
+Conclude with `A.adjoint B h h' e hB (fun d d' => A.ker_eq_zero_iff B hn hn' hadj d d') hadj s s' φ ψ`.
+-/
 theorem adjoint_of_nondeg (A : LocOp S S') (B : LocOp S' S) (h : S.Ok) (h' : S'.Ok) (e : S.G ≃* S'.G)
     (hB : ∀ g, B.tr g = e g) (hn : S.pair.Nondegenerate)
     (hn' : S'.pair.Nondegenerate)
@@ -603,6 +815,19 @@ theorem adjoint_of_nondeg (A : LocOp S S') (B : LocOp S' S) (h : S.Ok) (h' : S'.
     S'.ipOf h' s' (A.app φ) ψ = S.ipOf h s φ (B.app ψ) := by
   exact A.adjoint B h h' e hB (fun d d' => A.ker_eq_zero_iff B hn hn' hadj d d') hadj s s' φ ψ
 
+/- English proof (translation)
+Establish `hk : ∀ d d', (ofNbr (e.symm : S'.G →* S.G) nb T hn hT).ker d' d = if d ∈ nb d' then T else 0`. Introduce `d d'`. Use `show Finsupp.indicator (nb d') (fun _ _ => T) d = _`. Rewrite using `[Finsupp.indicator_apply]`. Distinguish the cases in `hd : d ∈ nb d'`.
+
+Rewrite using `[dif_pos hd, if_pos hd]`. Rewrite using `[dif_neg hd, if_neg hd]`. Establish `hk' : ∀ d d', (ofNbr (e : S.G →* S'.G) nb' T' hn' hT').ker d d' = if d ∈ nb d' then T' else 0`. Introduce `d d'`. Use `show Finsupp.indicator (nb' d) (fun _ _ => T') d' = _`.
+
+Rewrite using `[Finsupp.indicator_apply]`. Distinguish the cases in `hd : d ∈ nb d'`. Rewrite using `[dif_pos ((htr d d').mp hd), if_pos hd]`. Rewrite using `[dif_neg (fun H => hd ((htr d d').mpr H)), if_neg hd]`. Use `adjoint _ _ h h' e (fun _ => rfl) ?_ ?_ s s' φ ψ` and prove the remaining obligations.
+
+Introduce `d d'`. Rewrite using `[hk, hk']`. Distinguish the cases in `hd : d ∈ nb d'`. Rewrite using `[if_pos hd, if_pos hd, h0]`. Rewrite using `[if_neg hd, if_neg hd]`.
+
+Conclude with `⟨fun _ => rfl, fun _ => rfl⟩`. Introduce `d d' x y`. Rewrite using `[hk, hk']`. Distinguish the cases in `hd : d ∈ nb d'`. Rewrite using `[if_pos hd, if_pos hd, hadj]`.
+
+Rewrite using `[if_neg hd, if_neg hd]`. Simplify using the standard rewrite rules.
+-/
 theorem ofNbr_adjoint (h : S.Ok) (h' : S'.Ok) (e : S.G ≃* S'.G)
     (nb : S'.D → Finset S.D) (nb' : S.D → Finset S'.D) (T : S.V →ₗ[K] S'.V) (T' : S'.V →ₗ[K] S.V)
     (hn : ∀ g d' d, (e.symm : S'.G →* S.G) g • d ∈ nb (g • d') ↔ d ∈ nb d')
@@ -660,11 +885,17 @@ variable (S : GSD K)
   Nab := fun t => S.Nab (t : S.D)
   Del := fun t => S.Del (t : S.D)
 
+/- English proof (translation)
+Rewrite using `[GSD.cls_eq_iff, GSD.cls_eq_iff]`. Conclude with `exists_congr fun g => ⟨fun e => congrArg Subtype.val e, fun e => Subtype.ext e⟩`.
+-/
 theorem restr_cls_eq_iff (T : SubMulAction S.G S.D) (t t' : T) :
     (S.restr T).cls t = (S.restr T).cls t' ↔ S.cls (t : S.D) = S.cls (t' : S.D) := by
   rw [GSD.cls_eq_iff, GSD.cls_eq_iff]
   exact exists_congr fun g => ⟨fun e => congrArg Subtype.val e, fun e => Subtype.ext e⟩
 
+/- English proof (translation)
+Use `Nat.card_congr (Equiv.subtypeEquivRight fun g => ?_)` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff]`. Conclude with `⟨fun e => congrArg Subtype.val e, fun e => Subtype.ext e⟩`.
+-/
 theorem restr_card_stab (T : SubMulAction S.G S.D) (t : T) :
     Nat.card (MulAction.stabilizer (S.restr T).G (show (S.restr T).D from t)) =
       Nat.card (MulAction.stabilizer S.G (t : S.D)) := by
@@ -672,6 +903,13 @@ theorem restr_card_stab (T : SubMulAction S.G S.D) (t : T) :
   rw [MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff]
   exact ⟨fun e => congrArg Subtype.val e, fun e => Subtype.ext e⟩
 
+/- English proof (translation)
+Use `h.fin_orb` as an intermediate fact. Set `f : (S.restr T).Cl → S.Cl` to `fun c => S.cls (((S.restr T).outSec.rep c : T) : S.D)`. Use `Finite.of_injective f fun c c' hc => ?_` and prove the remaining obligations. Establish `h1` using `(S.restr_cls_eq_iff T _ _).mpr hc`. Rewrite `h1` using `[(S.restr T).outSec.spec, (S.restr T).outSec.spec]`. Then use the resulting hypothesis.
+
+Use `fin_stab := by`. Introduce `t`. Use `h.fin_stab ((t : T) : S.D)` as an intermediate fact. Establish `E : MulAction.stabilizer S.G (t : T) ≃ MulAction.stabilizer S.G ((t : T) : S.D)` using `Equiv.subtypeEquiv (Equiv.refl S.G) fun (g : S.G) => (⟨fun H => congrArg Subtype.val H, fun H => Subtype.ext H⟩ : g • (t : T) = t ↔ g • ((t : T) : S.D) = ((t : T) : S.D))`. Conclude with `Finite.of_equiv _ E.symm`.
+
+Use `nab_smul := fun g t => h.nab_smul g ((t : T) : S.D)`. Use `del_smul := fun g t => h.del_smul g ((t : T) : S.D)`. Use `inv := h.inv`.
+-/
 theorem restr_ok (h : S.Ok) (T : SubMulAction S.G S.D) : (S.restr T).Ok where
   fin_orb := by
     have := h.fin_orb
@@ -699,6 +937,23 @@ structure Slice where
 
 def FreeOnCl : Prop := ∀ (a : A) (d : S.D), S.cls (a • d) = S.cls d → a = 1
 
+/- English proof (translation)
+Use `SMulCommClass.symm A S.G S.D` as an intermediate fact. Set `r : Setoid S.D` to `{ r := fun d d' => ∃ (a : A) (g : S.G), a • g • d' = d iseqv := { refl := fun d => ⟨1, 1, by rw [one_smul, one_smul]⟩`. Use symmetry as in `:= by`. Introduce and unpack `d d' ⟨a, g, rfl⟩`. Conclude with `⟨a⁻¹, g⁻¹, by rw [smul_comm a⁻¹ g⁻¹, inv_smul_smul, inv_smul_smul]⟩`.
+
+Use `trans := by`. Introduce and unpack `d d' d'' ⟨a, g, rfl⟩ ⟨a', g', rfl⟩`. Conclude with `⟨a * a', g * g', by rw [mul_smul, mul_smul, smul_comm g a' (g' • d'')]⟩ } }`. Set `o : S.D → S.D` to `fun d => Quotient.out (Quotient.mk r d)`. Establish `ho : ∀ d, ∃ (a : A) (g : S.G), a • g • d = o d` using `fun d => Quotient.exact (Quotient.out_eq (Quotient.mk r d))`.
+
+Establish `hog : ∀ (g : S.G) d, o (g • d) = o d`. Introduce `g d`. Establish `: Quotient.mk r (g • d) = Quotient.mk r d` using `Quotient.sound ⟨1, g, by rw [one_smul]⟩`. Use `show Quotient.out (Quotient.mk r (g • d)) = _`. Rewrite using `[this]`.
+
+Establish `hoa : ∀ (a : A) d, o (a • d) = o d`. Introduce `a d`. Establish `: Quotient.mk r (a • d) = Quotient.mk r d` using `Quotient.sound ⟨a, 1, by rw [one_smul]⟩`. Use `show Quotient.out (Quotient.mk r (a • d)) = _`. Rewrite using `[this]`.
+
+Use `⟨⟨{ carrier := {d | S.cls d = S.cls (o d)}, smul_mem' := ?_ }, ?_⟩⟩` and prove the remaining obligations. Introduce `g d hd show S.cls (g • d) = S.cls (o (g • d))`. Rewrite using `[hog, S.cls_smul]`. Conclude with `hd`. Introduce `d`.
+
+Take `⟨a, g, hag⟩` from `ho d`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Use `show S.cls (a • d) = S.cls (o (a • d))`. Rewrite using `[hoa, ← hag, smul_comm, S.cls_smul]`. Introduce `b hb`.
+
+Establish `hb' : S.cls (b • d) = S.cls (o (b • d))` using `hb`. Establish `ha' : S.cls (a • d) = S.cls (o d)` using `by rw [← hag, smul_comm, S.cls_smul]`. Rewrite `hb'` using `[hoa, ← ha']`. Establish `h1 : (b * a⁻¹) • (a • d) = b • d` using `by rw [mul_smul, inv_smul_smul]`. Rewrite `hb'` using `[← h1]`.
+
+Establish `h2` using `hf _ _ hb'`. Conclude with `mul_inv_eq_one.mp h2`.
+-/
 theorem exists_slice [SMulCommClass A S.G S.D] (hf : S.FreeOnCl A) : Nonempty (S.Slice A) := by
   have := SMulCommClass.symm A S.G S.D
   let r : Setoid S.D :=
@@ -748,15 +1003,26 @@ variable {S A} (σ : S.Slice A)
 
 def a (d : S.D) : A := (σ.uniq d).choose
 
+/- English proof (translation)
+Conclude with `(σ.uniq d).choose_spec.1`.
+-/
 theorem a_mem (d : S.D) : σ.a d • d ∈ σ.T := by
   exact (σ.uniq d).choose_spec.1
 
+/- English proof (translation)
+Conclude with `((σ.uniq d).choose_spec.2 b hb).symm`.
+-/
 theorem a_eq {d : S.D} {b : A} (hb : b • d ∈ σ.T) : σ.a d = b := by
   exact ((σ.uniq d).choose_spec.2 b hb).symm
 
 def glue (F : A → (S.restr σ.T).EqFun) (d : S.D) : S.V :=
   ((F (σ.a d)⁻¹ : (S.restr σ.T).EqFun) : σ.T → S.V) ⟨σ.a d • d, σ.a_mem d⟩
 
+/- English proof (translation)
+Establish `e` using `σ.a_eq hb`. Establish `aux : ∀ (c : A) (_ : b = c) (t' : σ.T) (_ : (t' : S.D) = b • d), ((F c⁻¹ : (S.restr σ.T).EqFun) : σ.T → S.V) t' = ((F b⁻¹ : (S.restr σ.T).EqFun) : σ.T → S.V) ⟨b • d, hb⟩`. Introduce and unpack `_ rfl t' ht`. Take `rfl : t' = ⟨b • d, hb⟩` from `Subtype.ext ht`. Both sides reduce to the same expression.
+
+Conclude with `aux _ e.symm _ (show σ.a d • d = b • d by rw [e])`.
+-/
 theorem glue_eq (F : A → (S.restr σ.T).EqFun) (d : S.D) (b : A) (hb : b • d ∈ σ.T) :
     σ.glue F d = ((F b⁻¹ : (S.restr σ.T).EqFun) : σ.T → S.V) ⟨b • d, hb⟩ := by
   have e := σ.a_eq hb
@@ -805,12 +1071,18 @@ def split : S.EqFun ≃ₗ[K] (A → (S.restr σ.T).EqFun) where
       rfl
     exact aux _ (inv_inv b) _ (Subtype.ext (inv_smul_smul _ _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem split_apply (φ : S.EqFun) (b : A) (t : σ.T) :
     ((σ.split φ b : (S.restr σ.T).EqFun) : σ.T → S.V) t = (φ : S.D → S.V) (b • (t : S.D)) := rfl
 
 def dia (S : GSD K) {A : Type} [Group A] [MulAction A S.D] [SMulCommClass A S.G S.D] (b : A) : LocOp S S :=
   LocOp.ofMap (MonoidHom.id S.G) (fun d => b • d) LinearMap.id (fun g d => smul_comm b g d) (fun _ _ => rfl)
 
+/- English proof (translation)
+Use `show (Finsupp.single (b • d) (LinearMap.id : S.V →ₗ[K] S.V)).sum (fun d k => k ((φ : S.D → S.V) d)) = _`. Rewrite using `[Finsupp.sum_single_index]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem dia_apply (b : A) (φ : S.EqFun) (d : S.D) :
     (((dia S b).op φ : S.EqFun) : S.D → S.V) d = (φ : S.D → S.V) (b • d) := by
   show (Finsupp.single (b • d) (LinearMap.id : S.V →ₗ[K] S.V)).sum (fun d k => k ((φ : S.D → S.V) d)) = _
@@ -818,12 +1090,20 @@ theorem dia_apply (b : A) (φ : S.EqFun) (d : S.D) :
   · rfl
   · simp
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Use `show (((dia S b).op φ : S.EqFun) : S.D → S.V) (c • (t : S.D)) = (φ : S.D → S.V) ((b * c) • (t : S.D))`. Rewrite using `[dia_apply, mul_smul]`.
+-/
 theorem split_dia (b c : A) (φ : S.EqFun) : σ.split ((dia S b).op φ) c = σ.split φ (b * c) := by
   apply Subtype.ext
   funext t
   show (((dia S b).op φ : S.EqFun) : S.D → S.V) (c • (t : S.D)) = (φ : S.D → S.V) ((b * c) • (t : S.D))
   rw [dia_apply, mul_smul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hφ b t show (φ : S.D → S.V) (b • (t : S.D)) ∈ N (t : S.D)`. Rewrite using `[← hN b]`. Conclude with `hφ _`. Introduce `H d`.
+
+Establish `h1 : (φ : S.D → S.V) ((σ.a d)⁻¹ • σ.a d • d) ∈ N (σ.a d • d)` using `H (σ.a d)⁻¹ ⟨σ.a d • d, σ.a_mem d⟩`. Rewrite `h1` using `[inv_smul_smul, hN]`. Conclude with `h1`.
+-/
 theorem split_mem_intOf (N : S.D → Submodule (𝓞 K) S.V) (hN : ∀ (b : A) (d : S.D), N (b • d) = N d) (φ : S.EqFun) :
     φ ∈ S.intOf N ↔ ∀ b, σ.split φ b ∈ (S.restr σ.T).intOf (fun t => N ((t : σ.T) : S.D)) := by
   constructor
@@ -836,14 +1116,23 @@ theorem split_mem_intOf (N : S.D → Submodule (𝓞 K) S.V) (hN : ∀ (b : A) (
     rw [inv_smul_smul, hN] at h1
     exact h1
 
+/- English proof (translation)
+Conclude with `σ.split_mem_intOf S.Nab hN φ`.
+-/
 theorem split_mem_intNab (hN : ∀ (b : A) (d : S.D), S.Nab (b • d) = S.Nab d) (φ : S.EqFun) :
     φ ∈ S.intNab ↔ ∀ b, σ.split φ b ∈ (S.restr σ.T).intNab := by
   exact σ.split_mem_intOf S.Nab hN φ
 
+/- English proof (translation)
+Conclude with `σ.split_mem_intOf S.Del hN φ`.
+-/
 theorem split_mem_intDel (hN : ∀ (b : A) (d : S.D), S.Del (b • d) = S.Del d) (φ : S.EqFun) :
     φ ∈ S.intDel ↔ ∀ b, σ.split φ b ∈ (S.restr σ.T).intDel := by
   exact σ.split_mem_intOf S.Del hN φ
 
+/- English proof (translation)
+Establish `hs : MulAction.stabilizer S.G (b • d) = MulAction.stabilizer S.G d`. Use extensionality with `g`. Rewrite using `[MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff, ← smul_comm b g d, smul_left_cancel_iff]`. Rewrite using `[hs]`.
+-/
 theorem card_stab_smul' (b : A) (d : S.D) :
     Nat.card (MulAction.stabilizer S.G (b • d)) = Nat.card (MulAction.stabilizer S.G d) := by
   have hs : MulAction.stabilizer S.G (b • d) = MulAction.stabilizer S.G d := by
@@ -886,6 +1175,11 @@ def sec (sT : (S.restr σ.T).Sec) : S.Sec where
   rep := fun c => ((σ.clEquiv sT).symm c).1 • ((sT.rep ((σ.clEquiv sT).symm c).2 : σ.T) : S.D)
   spec := fun c => (σ.clEquiv sT).apply_symm_apply c
 
+/- English proof (translation)
+Set `_` to `h.fintypeCl`. Set `_` to `(S.restr_ok h σ.T).fintypeCl`. Rewrite using `[S.ipOf_indep h s (σ.sec sT), GSD.ipOf_eq_sum]`. Simplify using `only [GSD.ipOf_eq_sum]`. Rewrite using `[← Fintype.sum_prod_type']`.
+
+Use `Fintype.sum_equiv (σ.clEquiv sT).symm _ _ fun c => ?_` and prove the remaining obligations. Use `show ((Nat.card (MulAction.stabilizer S.G (((σ.clEquiv sT).symm c).1 • ((sT.rep ((σ.clEquiv sT).symm c).2 : σ.T) : S.D))) : K))⁻¹ * _ = _`. Rewrite using `[card_stab_smul', ← S.restr_card_stab σ.T]`. Both sides reduce to the same expression.
+-/
 theorem ipOf_split [Fintype A] (h : S.Ok) (s : S.Sec) (sT : (S.restr σ.T).Sec) (φ ψ : S.EqFun) :
     S.ipOf h s φ ψ = ∑ b : A, (S.restr σ.T).ipOf (S.restr_ok h σ.T) sT (σ.split φ b) (σ.split ψ b) := by
   let _ := h.fintypeCl
@@ -949,6 +1243,11 @@ def orbitsFib (rep : MulAction.orbitRel.Quotient G D₀ → D₀)
         refine ⟨⟨Quotient.mk'' (pr d), Quotient.mk'' ⟨g • d, (hpr g d).trans hg⟩⟩, ?_⟩
         exact Quotient.sound' ⟨g, rfl⟩)
 
+/- English proof (translation)
+Establish `h1 : ∀ γ : MulAction.stabilizer (MulAction.stabilizer G x) y, ((γ : MulAction.stabilizer G x) : G) ∈ MulAction.stabilizer G (y : D)` using `fun γ => MulAction.mem_stabilizer_iff.mpr (congrArg Subtype.val (MulAction.mem_stabilizer_iff.mp γ.2))`. Establish `hy : pr (y : D) = x` using `y.2`. Establish `h2 : ∀ g : MulAction.stabilizer G (y : D), (g : G) ∈ MulAction.stabilizer G x`. Introduce `g`. Establish `hg : (g : G) • (y : D) = y` using `MulAction.mem_stabilizer_iff.mp g.2`.
+
+Use `MulAction.mem_stabilizer_iff.mpr ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ∀ g : MulAction.stabilizer G (y : D), (⟨(g : G), h2 g⟩ : MulAction.stabilizer G x) ∈ MulAction.stabilizer (MulAction.stabilizer G x) y` using `fun g => MulAction.mem_stabilizer_iff.mpr (Subtype.ext (MulAction.mem_stabilizer_iff.mp g.2))`. Conclude with `Nat.card_congr ⟨fun γ => ⟨_, h1 γ⟩, fun g => ⟨_, h3 g⟩, fun γ => rfl, fun g => rfl⟩`.
+-/
 theorem fibre_card_stab (x : D₀) (y : fibre pr hpr x) :
     Nat.card (MulAction.stabilizer (MulAction.stabilizer G x) y) = Nat.card (MulAction.stabilizer G (y : D)) := by
   have h1 : ∀ γ : MulAction.stabilizer (MulAction.stabilizer G x) y,
@@ -970,6 +1269,17 @@ theorem fibre_card_stab (x : D₀) (y : fibre pr hpr x) :
 
 end Fib
 
+/- English proof (translation)
+Set `_` to `h.fintypeCl`. Unfold `GSD.ip`. Rewrite using `[GSD.ipOf_eq_sum]`. Establish `hs : Subsingleton (GSD.triv K G PUnit).Cl`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `a using Quotient.inductionOn' with`. Consider the case `h x`. Proceed by induction on `b using Quotient.inductionOn' with`. Consider the case `h y => rfl`. Rewrite using `[Fintype.sum_subsingleton _ ((GSD.triv K G PUnit).cls PUnit.unit)]`.
+
+Establish `h2 : ∀ x : PUnit, Nat.card (MulAction.stabilizer G x) = Nat.card G`. Introduce `x`. Establish `h1 : MulAction.stabilizer G x = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `g _`.
+
+Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `Subgroup.card_top`. Establish `h3` using `h2 ((GSD.triv K G PUnit).outSec.rep ((GSD.triv K G PUnit).cls PUnit.unit))`. Use `Eq.trans (congrArg (fun n : ℕ => ((n : K))⁻¹ * _) h3) ?_` and prove the remaining obligations.
+
+Use `show ((Nat.card G : K))⁻¹ * (star (1 : K) * 1) = _`. Simplify using the standard rewrite rules.
+-/
 theorem GSD.triv_point_ip (K : Type) [Field K] [NumberField K] [StarRing K] (G : Type) [Group G]
     (h : (GSD.triv K G PUnit).Ok) :
     (GSD.triv K G PUnit).ip h (GSD.trivOne K G PUnit) (GSD.trivOne K G PUnit) = ((Nat.card G : K))⁻¹ := by
@@ -996,6 +1306,9 @@ theorem GSD.triv_point_ip (K : Type) [Field K] [NumberField K] [StarRing K] (G :
   show ((Nat.card G : K))⁻¹ * (star (1 : K) * 1) = _
   simp
 
+/- English proof (translation)
+Introduce `d'`. Use `show ∑ d ∈ (A.ker d').support, (A.ker d' d) ((φ : S.D → S.V) d) ∈ N' d'`. Conclude with `sum_mem fun d _ => hk d' d _ (hφ d)`.
+-/
 theorem LocOp.op_mem_intOf {S S' : GSD K} (A : LocOp S S') (N : S.D → Submodule (𝓞 K) S.V)
     (N' : S'.D → Submodule (𝓞 K) S'.V) (hk : ∀ d' d, ∀ x ∈ N d, A.ker d' d x ∈ N' d') (φ : S.EqFun)
     (hφ : φ ∈ S.intOf N) : A.op φ ∈ S'.intOf N' := by
@@ -1003,6 +1316,13 @@ theorem LocOp.op_mem_intOf {S S' : GSD K} (A : LocOp S S') (N : S.D → Submodul
   show ∑ d ∈ (A.ker d').support, (A.ker d' d) ((φ : S.D → S.V) d) ∈ N' d'
   exact sum_mem fun d _ => hk d' d _ (hφ d)
 
+/- English proof (translation)
+Introduce `d'`. Use `show (n : 𝓞 K) • A.appOf h s φ d' ∈ N' d'`. Unfold `ClsKer.appOf`. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations.
+
+Take `⟨m, hm⟩` from `hn c`. Establish `hw : (((S.toCSDOf h s).wt c : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr (by unfold CSD.wt; exact @Fintype.card_ne_zero _ ((S.toCSDOf h s).finGam c) ⟨1⟩)`. Establish `e1 : ((n : 𝓞 K) • ((((S.toCSDOf h s).wt c : ℕ) : K))⁻¹) = ((m : ℕ) : K)`. Rewrite using `[Algebra.smul_def, map_natCast, hm, Nat.cast_mul, mul_comm, ← mul_assoc, inv_mul_cancel₀ hw, one_mul]`. Rewrite using `[← smul_assoc, e1, Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `(N' d').nsmul_mem (hk _ d' _ (hφ _)) m`.
+-/
 theorem ClsKer.opOf_mem_intOf {S S' : GSD K} (A : ClsKer S S') (h : S.Ok) (s : S.Sec)
     (N : S.D → Submodule (𝓞 K) S.V) (N' : S'.D → Submodule (𝓞 K) S'.V)
     (hk : ∀ d d', ∀ x ∈ N d, A.k d d' x ∈ N' d') (n : ℕ) (hn : ∀ c, (S.toCSDOf h s).wt c ∣ n) (φ : S.EqFun)
@@ -1019,6 +1339,9 @@ theorem ClsKer.opOf_mem_intOf {S S' : GSD K} (A : ClsKer S S') (h : S.Ok) (s : S
   rw [← smul_assoc, e1, Nat.cast_smul_eq_nsmul]
   exact (N' d').nsmul_mem (hk _ d' _ (hφ _)) m
 
+/- English proof (translation)
+Use `letI := h.fintypeCl`. Conclude with `A.opOf_mem_intOf h s N N' hk _ (fun c => by unfold CSD.DGam; exact Finset.dvd_lcm (Finset.mem_univ c)) φ hφ`.
+-/
 theorem ClsKer.opOf_mem_intOf_DGam {S S' : GSD K} (A : ClsKer S S') (h : S.Ok) (s : S.Sec)
     (N : S.D → Submodule (𝓞 K) S.V) (N' : S'.D → Submodule (𝓞 K) S'.V)
     (hk : ∀ d d', ∀ x ∈ N d, A.k d d' x ∈ N' d') (φ : S.EqFun) (hφ : φ ∈ S.intOf N) :
@@ -1030,6 +1353,9 @@ namespace GSD
 
 variable (S : GSD K)
 
+/- English proof (translation)
+Unfold `csOf`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `Sec.exists_smul s s' c`. Rewrite using `[S.wt_eq h s c, S.wt_eq h s' c, ← hg, S.card_stab_smul, hF]`.
+-/
 theorem csOf_indep (h : S.Ok) (s s' : S.Sec) {M : Type} [AddCommGroup M] [Module K M] (F : S.D → M)
     (hF : ∀ (g : S.G) (d : S.D), F (g • d) = F d) : S.csOf h s F = S.csOf h s' F := by
   unfold csOf
@@ -1037,9 +1363,17 @@ theorem csOf_indep (h : S.Ok) (s s' : S.Sec) {M : Type} [AddCommGroup M] [Module
   obtain ⟨g, hg⟩ := Sec.exists_smul s s' c
   rw [S.wt_eq h s c, S.wt_eq h s' c, ← hg, S.card_stab_smul, hF]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ipOf_eq_csOf (h : S.Ok) (s : S.Sec) (φ ψ : S.D → S.V) :
     S.ipOf h s φ ψ = S.csOf h s fun d => S.pair (φ d) (ψ d) := rfl
 
+/- English proof (translation)
+Unfold `csOf`. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hn c`. Establish `hw : (((S.toCSDOf h s).wt c : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr (by unfold CSD.wt; exact @Fintype.card_ne_zero _ ((S.toCSDOf h s).finGam c) ⟨1⟩)`.
+
+Establish `e1 : ((n : 𝓞 K) • ((((S.toCSDOf h s).wt c : ℕ) : K))⁻¹) = ((m : ℕ) : K)`. Rewrite using `[Algebra.smul_def, map_natCast, hm, Nat.cast_mul, mul_comm, ← mul_assoc, inv_mul_cancel₀ hw, one_mul]`. Rewrite using `[← smul_assoc, e1, Nat.cast_smul_eq_nsmul]`. Conclude with `N.nsmul_mem (hF _) m`.
+-/
 theorem csOf_mem (h : S.Ok) (s : S.Sec) {M : Type} [AddCommGroup M] [Module K M] [Module (𝓞 K) M]
     [IsScalarTower (𝓞 K) K M] (N : Submodule (𝓞 K) M) (F : S.D → M) (hF : ∀ d, F d ∈ N) (n : ℕ)
     (hn : ∀ c, (S.toCSDOf h s).wt c ∣ n) : (n : 𝓞 K) • S.csOf h s F ∈ N := by
@@ -1055,6 +1389,9 @@ theorem csOf_mem (h : S.Ok) (s : S.Sec) {M : Type} [AddCommGroup M] [Module K M]
 
 end GSD
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ClsKer.appOf_eq_csOf {S S' : GSD K} (A : ClsKer S S') (h : S.Ok) (s : S.Sec) (φ : S.D → S.V) (d' : S'.D) :
     A.appOf h s φ d' = S.csOf h s fun d => A.k d d' (φ d) := rfl
 
@@ -1062,19 +1399,31 @@ namespace BiPair
 
 variable {S S' : GSD K} (P : BiPair S S')
 
+/- English proof (translation)
+Rewrite using `[P.hp, φ.2, ψ.2, P.inv]`.
+-/
 theorem term_smul (φ : S.EqFun) (ψ : S'.EqFun) (g : S'.G) (d' : S'.D) :
     P.B ((φ : S.D → S.V) (P.p (g • d'))) ((ψ : S'.D → S'.V) (g • d')) =
       P.B ((φ : S.D → S.V) (P.p d')) ((ψ : S'.D → S'.V) d') := by
   rw [P.hp, φ.2, ψ.2, P.inv]
 
+/- English proof (translation)
+Unfold `sumOf`. Conclude with `S'.csOf_indep h' s s' _ (fun g d' => P.term_smul φ ψ g d')`.
+-/
 theorem sumOf_indep (h' : S'.Ok) (s s' : S'.Sec) (φ : S.EqFun) (ψ : S'.EqFun) :
     P.sumOf h' s φ ψ = P.sumOf h' s' φ ψ := by
   unfold sumOf
   exact S'.csOf_indep h' s s' _ (fun g d' => P.term_smul φ ψ g d')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formOf_apply (h' : S'.Ok) (s' : S'.Sec) (φ : S.EqFun) (ψ : S'.EqFun) :
     P.formOf h' s' φ ψ = P.sumOf h' s' φ ψ := rfl
 
+/- English proof (translation)
+Unfold `sumOf`. Conclude with `S'.csOf_mem h' s' 1 _ (fun d' => hB d' _ (hφ (P.p d')) _ (hψ d')) n hn`.
+-/
 theorem sumOf_mem (h' : S'.Ok) (s' : S'.Sec) (N : S.D → Submodule (𝓞 K) S.V) (N' : S'.D → Submodule (𝓞 K) S'.V)
     (hB : ∀ d', ∀ x ∈ N (P.p d'), ∀ y ∈ N' d', P.B x y ∈ (1 : Submodule (𝓞 K) K)) (n : ℕ)
     (hn : ∀ c, (S'.toCSDOf h' s').wt c ∣ n) (φ : S.EqFun) (hφ : φ ∈ S.intOf N) (ψ : S'.EqFun)
@@ -1088,9 +1437,15 @@ namespace GFam
 
 variable (F : GFam K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wt_eq (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (c : F.Cl) :
     (F.toCSDOf h s).wt c = ((F.mem c.1).toCSDOf (h c.1) (s c.1)).wt c.2 := rfl
 
+/- English proof (translation)
+Use `letI : ∀ b, Fintype (F.mem b).Cl := fun b => (h b).fintypeCl`. Unfold `ipOf CSD.csum`. Rewrite using `[← Finset.univ_sigma_univ, Finset.sum_sigma]`. Both sides reduce to the same expression.
+-/
 theorem ipOf_eq_csum (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ ψ : F.Forms) :
     F.ipOf h s φ ψ = (F.toCSDOf h s).csum (F.resOf h s φ).1 (F.resOf h s ψ).1 := by
   letI : ∀ b, Fintype (F.mem b).Cl := fun b => (h b).fintypeCl
@@ -1098,15 +1453,24 @@ theorem ipOf_eq_csum (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ ψ : F.Forms) :
   rw [← Finset.univ_sigma_univ, Finset.sum_sigma]
   rfl
 
+/- English proof (translation)
+Unfold `ipOf`. Conclude with `Finset.sum_congr rfl fun b _ => (F.mem b).ipOf_indep (h b) (s b) (s' b) (φ b) (ψ b)`.
+-/
 theorem ipOf_indep (h : F.Ok) (s s' : ∀ b, (F.mem b).Sec) (φ ψ : F.Forms) : F.ipOf h s φ ψ = F.ipOf h s' φ ψ := by
   unfold ipOf
   exact Finset.sum_congr rfl fun b _ => (F.mem b).ipOf_indep (h b) (s b) (s' b) (φ b) (ψ b)
 
+/- English proof (translation)
+Unfold `intNab`. Rewrite using `[Submodule.mem_pi]`. Conclude with `⟨fun H b => H b (Set.mem_univ b), fun H b _ => H b⟩`.
+-/
 theorem mem_intNab (φ : F.Forms) : φ ∈ F.intNab ↔ ∀ b, φ b ∈ (F.mem b).intNab := by
   unfold intNab
   rw [Submodule.mem_pi]
   exact ⟨fun H b => H b (Set.mem_univ b), fun H b _ => H b⟩
 
+/- English proof (translation)
+Unfold `intDel`. Rewrite using `[Submodule.mem_pi]`. Conclude with `⟨fun H b => H b (Set.mem_univ b), fun H b _ => H b⟩`.
+-/
 theorem mem_intDel (φ : F.Forms) : φ ∈ F.intDel ↔ ∀ b, φ b ∈ (F.mem b).intDel := by
   unfold intDel
   rw [Submodule.mem_pi]
@@ -1115,12 +1479,18 @@ theorem mem_intDel (φ : F.Forms) : φ ∈ F.intDel ↔ ∀ b, φ b ∈ (F.mem b
 def coordOf (h : F.Ok) (s : ∀ b, (F.mem b).Sec) : F.Forms ≃ₗ[K] (Fin (F.toCSDOf h s).dim → K) :=
   (F.resOf h s).trans (F.toCSDOf h s).basis.equivFun
 
+/- English proof (translation)
+Use `show (((F.toCSDOf h s).basis.equivFun.symm ((F.toCSDOf h s).basis.equivFun (F.resOf h s φ)) : (F.toCSDOf h s).Forms) : F.Cl → F.V) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+-/
 theorem I_coordOf (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ : F.Forms) :
     (F.toCSDOf h s).I (F.coordOf h s φ) = (F.resOf h s φ).1 := by
   show (((F.toCSDOf h s).basis.equivFun.symm ((F.toCSDOf h s).basis.equivFun (F.resOf h s φ)) :
     (F.toCSDOf h s).Forms) : F.Cl → F.V) = _
   rw [LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Unfold `CSD.nabLat valLatF`. Rewrite using `[Submodule.mem_comap, LinearMap.restrictScalars_apply, F.I_coordOf h s φ, Submodule.mem_pi, F.mem_intNab]`. Simplify using `only [Set.mem_univ, true_implies, Sigma.forall]`. Conclude with `forall_congr' fun b => ((F.mem b).mem_intNab_iff (h b) (s b) (φ b)).symm`.
+-/
 theorem coordOf_mem_nabLat (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ : F.Forms) :
     F.coordOf h s φ ∈ (F.toCSDOf h s).nabLat ↔ φ ∈ F.intNab := by
   unfold CSD.nabLat valLatF
@@ -1128,6 +1498,9 @@ theorem coordOf_mem_nabLat (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ : F.Forms) 
   simp only [Set.mem_univ, true_implies, Sigma.forall]
   exact forall_congr' fun b => ((F.mem b).mem_intNab_iff (h b) (s b) (φ b)).symm
 
+/- English proof (translation)
+Unfold `CSD.delLat valLatF`. Rewrite using `[Submodule.mem_comap, LinearMap.restrictScalars_apply, F.I_coordOf h s φ, Submodule.mem_pi, F.mem_intDel]`. Simplify using `only [Set.mem_univ, true_implies, Sigma.forall]`. Conclude with `forall_congr' fun b => ((F.mem b).mem_intDel_iff (h b) (s b) (φ b)).symm`.
+-/
 theorem coordOf_mem_delLat (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ : F.Forms) :
     F.coordOf h s φ ∈ (F.toCSDOf h s).delLat ↔ φ ∈ F.intDel := by
   unfold CSD.delLat valLatF
@@ -1135,6 +1508,11 @@ theorem coordOf_mem_delLat (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ : F.Forms) 
   simp only [Set.mem_univ, true_implies, Sigma.forall]
   exact forall_congr' fun b => ((F.mem b).mem_intDel_iff (h b) (s b) (φ b)).symm
 
+/- English proof (translation)
+Rewrite using `[F.ipOf_eq_csum h s, ← F.I_coordOf h s φ, ← F.I_coordOf h s ψ, (F.toCSDOf h s).csum_sum]`. Unfold `hform`. Rewrite using `[Matrix.toLinearMapₛₗ₂'_apply]`. Simplify using `only [starRingEnd_apply, RingHom.id_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ipOf_coord (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ ψ : F.Forms) :
     F.ipOf h s φ ψ = hform (F.toCSDOf h s).H (F.coordOf h s φ) (F.coordOf h s ψ) := by
   rw [F.ipOf_eq_csum h s, ← F.I_coordOf h s φ, ← F.I_coordOf h s ψ, (F.toCSDOf h s).csum_sum]
@@ -1144,6 +1522,9 @@ theorem ipOf_coord (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ ψ : F.Forms) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `CSD.dim`. Use `haveI : ∀ b, Module.Finite K (F.mem b).EqFun := fun b => (F.mem b).finiteDimensional_EqFun (h b)`. Rewrite using `[← (F.resOf h s).finrank_eq, Module.finrank_pi_fintype]`.
+-/
 theorem dim_eq_sum (h : F.Ok) (s : ∀ b, (F.mem b).Sec) :
     (F.toCSDOf h s).dim = ∑ b, finrank K (F.mem b).EqFun := by
   unfold CSD.dim
@@ -1152,6 +1533,9 @@ theorem dim_eq_sum (h : F.Ok) (s : ∀ b, (F.mem b).Sec) :
 
 def Good (n : ℕ) : Prop := ∀ b, (F.mem b).Good n
 
+/- English proof (translation)
+The claim follows from `(G (Classical.arbitrary F.β)).symm nondeg := (G (Classical.arbitrary F.β)).nondeg inv := fun c γ x y => ((F.mem c.1).toCSDOf_good (G c.1) (s c.1)).inv c.2 γ x y nab_lat := fun c => (G c.1).nab_lat _ del_le := fun c => (G c.1).del_le _ del_stable := fun c γ y hy => ((F.mem c.1).to …`.
+-/
 theorem toCSDOf_good {n : ℕ} [Nonempty F.β] (G : F.Good n) (s : ∀ b, (F.mem b).Sec) :
     (F.toCSDOf (fun b => (G b).ok) s).Good n where
   symm := (G (Classical.arbitrary F.β)).symm
@@ -1164,22 +1548,36 @@ theorem toCSDOf_good {n : ℕ} [Nonempty F.β] (G : F.Good n) (s : ∀ b, (F.mem
   dual_le := fun c => (G c.1).dual_le _
   del_dual := fun c => (G c.1).del_dual _
 
+/- English proof (translation)
+The claim follows from `(R (Classical.arbitrary F.β)).pair_rat act_rat := fun c γ i j => (R c.1).act_rat (γ : F.G c.1) i j pos := (R (Classical.arbitrary F.β)).pos`.
+-/
 theorem toCSDOf_rat [Nonempty F.β] (h : F.Ok) (R : ∀ b, (F.mem b).Rat) (s : ∀ b, (F.mem b).Sec) :
     (F.toCSDOf h s).Rat where
   pair_rat := (R (Classical.arbitrary F.β)).pair_rat
   act_rat := fun c γ i j => (R c.1).act_rat (γ : F.G c.1) i j
   pos := (R (Classical.arbitrary F.β)).pos
 
+/- English proof (translation)
+Simplify using `only [Mat.opOf, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`.
+-/
 theorem Mat.opOf_apply {F F' : GFam K} (M : Mat F F') (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ : F.Forms)
     (b' : F'.β) : M.opOf h s φ b' = ∑ b, (M b b').opOf (h b) (s b) (φ b) := by
   simp only [Mat.opOf, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]
 
+/- English proof (translation)
+Use `LinearMap.ext fun φ => funext fun b' => ?_` and prove the remaining obligations. Rewrite using `[M.opOf_apply h s, M.opOf_apply h s']`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [(M b b').opOf_indep (h b) (s b) (s' b)]`.
+-/
 theorem Mat.opOf_indep {F F' : GFam K} (M : Mat F F') (h : F.Ok) (s s' : ∀ b, (F.mem b).Sec) :
     M.opOf h s = M.opOf h s' := by
   refine LinearMap.ext fun φ => funext fun b' => ?_
   rw [M.opOf_apply h s, M.opOf_apply h s']
   exact Finset.sum_congr rfl fun b _ => by rw [(M b b').opOf_indep (h b) (s b) (s' b)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c'`. Use `letI : ∀ b, Fintype (F.mem b).Cl := fun b => (h b).fintypeCl`. Use `show ((M.opOf h s φ c'.1 : (F'.mem c'.1).EqFun) : (F'.mem c'.1).D → F'.V) ((s' c'.1).rep c'.2) = _`. Rewrite using `[M.opOf_apply h s φ c'.1, Submodule.coe_sum, Finset.sum_apply]`. Simplify using `only [Formalism.ThetaLiftIndependence.kerOpM]`.
+
+Rewrite using `[← Finset.univ_sigma_univ, Finset.sum_sigma]`. Both sides reduce to the same expression.
+-/
 theorem Mat.resOf_opOf {F F' : GFam K} (M : Mat F F') (h : F.Ok) (h' : F'.Ok) (s : ∀ b, (F.mem b).Sec)
     (s' : ∀ b', (F'.mem b').Sec) (φ : F.Forms) :
     (F'.resOf h' s' (M.opOf h s φ)).1 = letI := h.fintypeCl
@@ -1205,6 +1603,9 @@ def twSgn : ℤˣ →* Module.End K K where
     ext
     simp [mul_comm]
 
+/- English proof (translation)
+Use `show (((g : ℤ) : K) • (1 : Module.End K K)) x = ((g : ℤ) : K) * x`. Rewrite using `[LinearMap.smul_apply, Module.End.one_apply, smul_eq_mul]`.
+-/
 theorem twSgn_apply (g : ℤˣ) (x : K) : twSgn K g x = ((g : ℤ) : K) * x := by
   show (((g : ℤ) : K) • (1 : Module.End K K)) x = ((g : ℤ) : K) * x
   rw [LinearMap.smul_apply, Module.End.one_apply, smul_eq_mul]
@@ -1220,6 +1621,13 @@ abbrev tw : GSD K where
   Nab := fun _ => 1
   Del := fun _ => 1
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Submodule.mem_map, LinearMap.restrictScalars_apply, twSgn_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨((g : ℤ) : K) * x, ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `Submodule.mem_one.mp hx`. Conclude with `Submodule.mem_one.mpr ⟨((g : ℤ) : 𝓞 K) * y, by simp⟩`. Rewrite using `[← mul_assoc, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one, one_mul]`. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨z, rfl⟩` from `Submodule.mem_one.mp hy`.
+
+Conclude with `Submodule.mem_one.mpr ⟨((g : ℤ) : 𝓞 K) * z, by simp⟩`.
+-/
 theorem map_twSgn (g : ℤˣ) :
     (1 : Submodule (𝓞 K) K) = (1 : Submodule (𝓞 K) K).map ((twSgn K g).restrictScalars (𝓞 K)) := by
   ext x
@@ -1234,6 +1642,13 @@ theorem map_twSgn (g : ℤˣ) :
     obtain ⟨z, rfl⟩ := Submodule.mem_one.mp hy
     exact Submodule.mem_one.mpr ⟨((g : ℤ) : 𝓞 K) * z, by simp⟩
 
+/- English proof (translation)
+Use `show Finite (MulAction.orbitRel.Quotient ℤˣ (Option ℤˣ))`. Conclude with `Quotient.finite _`. Use `fin_stab := by`. Introduce `d`. Use `show Finite (MulAction.stabilizer ℤˣ (d : Option ℤˣ))`.
+
+Use `infer_instance`. Use `nab_smul := fun g _ => map_twSgn K g`. Use `del_smul := fun g _ => map_twSgn K g`. Use `inv := by`. Introduce `g x y`.
+
+Use `show CSD.pairOne K (twSgn K g x) (twSgn K g y) = CSD.pairOne K x y`. Rewrite using `[CSD.pairOne_apply, CSD.pairOne_apply]`. Use `erw [twSgn_apply, twSgn_apply]`. Apply the tactic sequence `rcases Int.units_eq_one_or g with rfl | rfl <;> simp`.
+-/
 theorem tw_ok : (tw K).Ok where
   fin_orb := by
     show Finite (MulAction.orbitRel.Quotient ℤˣ (Option ℤˣ))
@@ -1251,6 +1666,11 @@ theorem tw_ok : (tw K).Ok where
     erw [twSgn_apply, twSgn_apply]
     rcases Int.units_eq_one_or g with rfl | rfl <;> simp
 
+/- English proof (translation)
+Establish `h2 : (φ.1 : Option ℤˣ → K) none = -(φ.1 : Option ℤˣ → K) none`. Establish `h1` using `φ.2 (-1) none`. Rewrite `h1` using `[twSgn_apply]`. Apply the tactic sequence `convert h1 using 1 <;> first | rfl | simp`. Establish `h3 : (2 : K) * (φ.1 : Option ℤˣ → K) none = 0`.
+
+Rewrite using `[two_mul]`. Use `nth_rewrite 2 [h2]`. Conclude with `add_neg_cancel _`. Conclude with `(mul_eq_zero.mp h3).resolve_left two_ne_zero`.
+-/
 theorem tw_none (φ : (tw K).EqFun) : (φ.1 : Option ℤˣ → K) none = 0 := by
   have h2 : (φ.1 : Option ℤˣ → K) none = -(φ.1 : Option ℤˣ → K) none := by
     have h1 := φ.2 (-1) none
@@ -1275,6 +1695,9 @@ def twForm : (tw K).EqFun := ⟨fun d => match d with
     rw [twSgn_apply]
     simp⟩
 
+/- English proof (translation)
+Introduce `d`. Consider the cases of `d with`. Consider the case `none => exact zero_mem _`. Consider the case `some g => exact Submodule.mem_one.mpr ⟨((g : ℤ) : 𝓞 K), map_intCast _ _⟩`.
+-/
 theorem twForm_mem : twForm K ∈ (tw K).intDel := by
   intro d
   cases d with
@@ -1303,12 +1726,27 @@ def twEquiv : (tw K).EqFun ≃ₗ[K] K where
     show a * (((1 : ℤˣ) : ℤ) : K) = a
     simp
 
+/- English proof (translation)
+Conclude with `(twEquiv K).finrank_eq.trans (Module.finrank_self K)`.
+-/
 theorem tw_finrank : finrank K (tw K).EqFun = 1 := by
   exact (twEquiv K).finrank_eq.trans (Module.finrank_self K)
 
+/- English proof (translation)
+Conclude with `((tw K).finrank_EqFun (tw_ok K) (tw K).outSec).symm.trans (tw_finrank K)`.
+-/
 theorem tw_dim : ((tw K).toCSD (tw_ok K)).dim = 1 := by
   exact ((tw K).finrank_EqFun (tw_ok K) (tw K).outSec).symm.trans (tw_finrank K)
 
+/- English proof (translation)
+Introduce `(i : Unit) (j : Unit)`. Use `show CSD.pairOne K ((Basis.singleton Unit K) i) ((Basis.singleton Unit K) j) ∈ cmMax K`. Rewrite using `[CSD.pairOne_apply, Basis.singleton_apply, star_one, one_mul]`. Conclude with `(cmMax K).one_mem`. Use `act_rat := by`.
+
+Introduce `g (i : Unit) (j : Unit)`. Use `show (Basis.singleton Unit K).repr ((1 : Module.End K K) ((Basis.singleton Unit K) j)) i ∈ cmMax K`. Rewrite using `[Module.End.one_apply, Basis.repr_self]`. Consider the cases of `i`. Consider the cases of `j`.
+
+Simplify using the standard rewrite rules. Use `pos := by`. Introduce `v`. Establish `: ((GSD.triv K G D).gramV.map v.embedding) = (1 : Matrix Unit Unit ℂ)`. Use extensionality with `(i : Unit) (j : Unit)`.
+
+Use `show v.embedding (CSD.pairOne K ((Basis.singleton Unit K) i) ((Basis.singleton Unit K) j)) = _`. Rewrite using `[CSD.pairOne_apply, Basis.singleton_apply, star_one, one_mul, map_one]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Matrix.PosDef.one`.
+-/
 theorem triv_rat (G D : Type) [Group G] [MulAction G D] : (GSD.triv K G D).Rat where
   pair_rat := by
     intro (i : Unit) (j : Unit)
@@ -1333,6 +1771,9 @@ theorem triv_rat (G D : Type) [Group G] [MulAction G D] : (GSD.triv K G D).Rat w
 
 abbrev tv : GSD K := GSD.triv K ℤˣ (Option ℤˣ)
 
+/- English proof (translation)
+Use `⟨inferInstance, fun _ => inferInstance, fun g _ => ?_, fun g _ => ?_, fun g x y => rfl⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.one_apply]`. Conclude with `(Submodule.map_id _).symm`. Rewrite using `[MonoidHom.one_apply]`. Conclude with `(Submodule.map_id _).symm`.
+-/
 theorem tv_ok : (tv K).Ok := by
   refine ⟨inferInstance, fun _ => inferInstance, fun g _ => ?_, fun g _ => ?_, fun g x y => rfl⟩
   · rw [MonoidHom.one_apply]
@@ -1363,17 +1804,26 @@ def eCl : (tv K).Cl ≃ Bool := Equiv.ofBijective (isS K) ⟨by
   · exact ⟨(tv K).cls none, rfl⟩
   · exact ⟨(tv K).cls (some 1), rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `((tv K).cls_eq_iff _ _).mp (s.spec ((tv K).cls d))`. Rewrite using `[← hg]`. Conclude with `(tv K).card_stab_smul g d`.
+-/
 theorem card_rep (s : (tv K).Sec) (d : Option ℤˣ) :
     Nat.card (MulAction.stabilizer ℤˣ (s.rep ((tv K).cls d))) = Nat.card (MulAction.stabilizer ℤˣ d) := by
   obtain ⟨g, hg⟩ := ((tv K).cls_eq_iff _ _).mp (s.spec ((tv K).cls d))
   rw [← hg]
   exact (tv K).card_stab_smul g d
 
+/- English proof (translation)
+Rewrite using `[show MulAction.stabilizer ℤˣ (none : Option ℤˣ) = ⊤ from (Subgroup.eq_top_iff' _).mpr fun g => rfl, Subgroup.card_top, Nat.card_eq_fintype_card]`. Apply the tactic sequence `first | rfl | decide | simp`.
+-/
 theorem card_none : Nat.card (MulAction.stabilizer ℤˣ (none : Option ℤˣ)) = 2 := by
   rw [show MulAction.stabilizer ℤˣ (none : Option ℤˣ) = ⊤ from (Subgroup.eq_top_iff' _).mpr fun g => rfl,
     Subgroup.card_top, Nat.card_eq_fintype_card]
   first | rfl | decide | simp
 
+/- English proof (translation)
+Establish `hb : MulAction.stabilizer ℤˣ (some 1 : Option ℤˣ) = ⊥`. Use `(Subgroup.eq_bot_iff_forall _).mpr fun g hg => ?_` and prove the remaining obligations. Establish `h1 : (some (g • (1 : ℤˣ)) : Option ℤˣ) = some 1` using `hg`. Simplify using `using h1`. Rewrite using `[hb, Subgroup.card_bot]`.
+-/
 theorem card_some : Nat.card (MulAction.stabilizer ℤˣ (some 1 : Option ℤˣ)) = 1 := by
   have hb : MulAction.stabilizer ℤˣ (some 1 : Option ℤˣ) = ⊥ := by
     refine (Subgroup.eq_bot_iff_forall _).mpr fun g hg => ?_
@@ -1381,6 +1831,11 @@ theorem card_some : Nat.card (MulAction.stabilizer ℤˣ (some 1 : Option ℤˣ)
     simpa using h1
   rw [hb, Subgroup.card_bot]
 
+/- English proof (translation)
+Unfold `GSD.ip`. Rewrite using `[GSD.ipOf_eq_sum]`. Set `_` to `(tv_ok K).fintypeCl`. Rewrite using `[← (eCl K).symm.sum_comp, Fintype.sum_bool]`. Establish `e1 : (eCl K).symm true = (tv K).cls (some 1)` using `(eCl K).symm_apply_eq.mpr rfl`.
+
+Establish `e0 : (eCl K).symm false = (tv K).cls none` using `(eCl K).symm_apply_eq.mpr rfl`. Rewrite using `[e1, e0, card_rep, card_rep, card_none, card_some, CSD.pairOne_apply]`. Evaluate the numerical expressions.
+-/
 theorem triv_mass : (tv K).ip (tv_ok K) (fun _ => (1 : K)) (fun _ => (1 : K)) = 3 / 2 := by
   unfold GSD.ip
   rw [GSD.ipOf_eq_sum]
@@ -1391,6 +1846,13 @@ theorem triv_mass : (tv K).ip (tv_ok K) (fun _ => (1 : K)) (fun _ => (1 : K)) = 
   rw [e1, e0, card_rep, card_rep, card_none, card_some, CSD.pairOne_apply]
   norm_num
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `hxy' : (x : Γ × H).1 = (y : Γ × H).1` using `hxy`. Use `set z : Γ × H := (x : Γ × H)⁻¹ * (y : Γ × H) with hzdef`. Establish `hz : z • d = d`. Rewrite using `[hzdef, mul_smul, MulAction.mem_stabilizer_iff.mp y.2, inv_smul_eq_iff, MulAction.mem_stabilizer_iff.mp x.2]`.
+
+Establish `h1 : z.1 = 1`. Rewrite using `[hzdef, Prod.fst_mul, Prod.fst_inv, ← hxy', inv_mul_cancel]`. Establish `h3 : ((1, z.2) : Γ × H) = z` using `Prod.ext h1.symm rfl`. Establish `h2 : z.2 = 1` using `free z.2 d (by rw [h3]; exact hz)`. Establish `h4 : z = 1` using `Prod.ext h1 h2`.
+
+Conclude with `Subtype.ext (inv_mul_eq_one.mp h4)`.
+-/
 theorem stab_inj {Γ H D : Type} [Group Γ] [Group H] [MulAction (Γ × H) D]
     (free : ∀ (h : H) (d : D), ((1, h) : Γ × H) • d = d → h = 1) (d : D) :
     Function.Injective (fun x : MulAction.stabilizer (Γ × H) d => (x : Γ × H).1) := by

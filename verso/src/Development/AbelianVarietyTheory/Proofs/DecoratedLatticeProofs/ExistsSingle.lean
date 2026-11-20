@@ -16,6 +16,9 @@ def midDiag {k : Type} [CommRing k] (n ρ κ : ℕ) (s c : k) : Matrix (Fin n) (
 def IsScal {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (m : GL (Fin n) K) : Prop :=
   ∃ (c : Kˣ) (x : GL (Fin n) O), (m : Matrix (Fin n) (Fin n) K) = (c : K) • ((bc O.subtype x : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)
 
+/- English proof (translation)
+Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `: i ≠ j` using `fun e => by unfold symEdge at h; rw [e] at h; omega`. Simplify using `[Matrix.one_apply_ne this]`. Both sides reduce to the same expression.
+-/
 theorem edgeVal_one {k : Type} [CommRing k] {n : ℕ} (ρ κ : ℕ) (a : Fin n → Fin n → k) : edgeVal ρ κ a 1 = 0 := by
   refine Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_
   split_ifs with h
@@ -50,36 +53,59 @@ namespace PlaceSys
 variable {A : Type} [CommRing A] {S : Subring A} {P : Type} {k : P → Type} [∀ Q, Field (k Q)] {r : ∀ Q, S →+* k Q}
   (Z : PlaceSys A S P k r)
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (Z.ext _ fun Q => by rw [map_sub, h Q, sub_self])`.
+-/
 theorem ext' {a b : A} (h : ∀ Q, Z.p Q a = Z.p Q b) : a = b :=
   sub_eq_zero.1 (Z.ext _ fun Q => by rw [map_sub, h Q, sub_self])
 
+/- English proof (translation)
+The claim follows from `(Z.int _).2 fun Q' => by by_cases h : Q' = Q · subst h; rw [Z.e_self]; exact one_mem _ · rw [Z.e_ne Q Q' h]; exact zero_mem _`.
+-/
 theorem e_mem (Q : P) : Z.e Q ∈ S := (Z.int _).2 fun Q' => by
   by_cases h : Q' = Q
   · subst h; rw [Z.e_self]; exact one_mem _
   · rw [Z.e_ne Q Q' h]; exact zero_mem _
 
+/- English proof (translation)
+Use `⟨fun h => by simpa [Z.e_self] using congrArg (Z.p Q) h, fun h => Z.ext' fun Q' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h' : Q' = Q`. Substitute `h'` using the available equality. Rewrite using `[map_mul, map_mul, h]`. Rewrite using `[map_mul, map_mul, Z.e_ne Q Q' h', zero_mul, zero_mul]`.
+-/
 theorem e_mul_eq_iff (Q : P) (a b : A) : Z.e Q * a = Z.e Q * b ↔ Z.p Q a = Z.p Q b := by
   refine ⟨fun h => by simpa [Z.e_self] using congrArg (Z.p Q) h, fun h => Z.ext' fun Q' => ?_⟩
   by_cases h' : Q' = Q
   · subst h'; rw [map_mul, map_mul, h]
   · rw [map_mul, map_mul, Z.e_ne Q Q' h', zero_mul, zero_mul]
 
+/- English proof (translation)
+Use `(Z.e_mul_eq_iff Q (Z.e Q) 1).2 (by rw [Z.e_self, map_one])` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+-/
 theorem e_idem (Q : P) : Z.e Q * Z.e Q = Z.e Q := by
   have := (Z.e_mul_eq_iff Q (Z.e Q) 1).2 (by rw [Z.e_self, map_one])
   rwa [mul_one] at this
 
+/- English proof (translation)
+Use `⟨fun h => by simpa [Z.e_self] using (Z.int _).1 h Q, fun h => (Z.int _).2 fun Q' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h' : Q' = Q`. Substitute `h'` using the available equality. Rewrite using `[map_mul, Z.e_self, one_mul]` and apply the resulting hypothesis. Rewrite using `[map_mul, Z.e_ne Q Q' h', zero_mul]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem e_mul_mem_iff (Q : P) (a : A) : Z.e Q * a ∈ S ↔ Z.p Q a ∈ Z.O Q := by
   refine ⟨fun h => by simpa [Z.e_self] using (Z.int _).1 h Q, fun h => (Z.int _).2 fun Q' => ?_⟩
   by_cases h' : Q' = Q
   · subst h'; rwa [map_mul, Z.e_self, one_mul]
   · rw [map_mul, Z.e_ne Q Q' h', zero_mul]; exact zero_mem _
 
+/- English proof (translation)
+Introduce `Q Q' h` and use `by by_contra hne have h1 := Z.e_self Q rw [h, Z.e_ne Q' Q hne] at h1 exact zero_ne_one h1`.
+-/
 theorem e_injective : Function.Injective Z.e := fun Q Q' h => by
   by_contra hne
   have h1 := Z.e_self Q
   rw [h, Z.e_ne Q' Q hne] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `Z.surj Q x`. Conclude with `⟨Z.e Q * b, by rw [map_mul, Z.e_self, one_mul, hb], fun Q' h => by rw [map_mul, Z.e_ne Q Q' h, zero_mul]⟩`.
+-/
 theorem exists_single (Q : P) (x : Z.K Q) : ∃ a : A, Z.p Q a = x ∧ ∀ Q', Q' ≠ Q → Z.p Q' a = 0 := by
   obtain ⟨b, hb⟩ := Z.surj Q x
   exact ⟨Z.e Q * b, by rw [map_mul, Z.e_self, one_mul, hb], fun Q' h => by rw [map_mul, Z.e_ne Q Q' h, zero_mul]⟩
@@ -87,8 +113,14 @@ theorem exists_single (Q : P) (x : Z.K Q) : ∃ a : A, Z.p Q a = x ∧ ∀ Q', Q
 def pO (Q : P) : S →+* Z.O Q :=
   ((Z.p Q).comp S.subtype).codRestrict (Z.O Q) fun s => (Z.int _).1 s.2 Q
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pO_coe (Q : P) (s : S) : (Z.pO Q s : Z.K Q) = Z.p Q s := rfl
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨a, h1, h2⟩ := Z.exists_single Q x refine ⟨⟨a, (Z.int _).2 fun Q' => ?_⟩, Subtype.ext h1⟩ by_cases h' : Q' = Q · subst h'; rw [h1]; exact x.2 · rw [h2 Q' h']; exact zero_mem _`.
+-/
 theorem pO_surj (Q : P) : Function.Surjective (Z.pO Q) := fun x => by
   obtain ⟨a, h1, h2⟩ := Z.exists_single Q x
   refine ⟨⟨a, (Z.int _).2 fun Q' => ?_⟩, Subtype.ext h1⟩
@@ -96,6 +128,11 @@ theorem pO_surj (Q : P) : Function.Surjective (Z.pO Q) := fun x => by
   · subst h'; rw [h1]; exact x.2
   · rw [h2 Q' h']; exact zero_mem _
 
+/- English proof (translation)
+Establish `hk : RingHom.ker (Z.pO Q) ≤ RingHom.ker (r Q)` using `fun s hs => by`. Establish `h0 : Z.p Q s = 0` using `congrArg Subtype.val (RingHom.mem_ker.1 hs)`. Rewrite using `[RingHom.mem_ker, Z.r_ker, h0, map_zero]`. Conclude with `zero_lt_one`. Use `⟨(Z.pO Q).liftOfSurjective (Z.pO_surj Q) ⟨r Q, hk⟩, fun y => ?_, fun s => RingHom.liftOfSurjective_comp_apply _ _ _ _⟩` and prove the remaining obligations.
+
+Take `⟨s, rfl⟩` from `Z.r_surj Q y`. Conclude with `⟨Z.pO Q s, RingHom.liftOfSurjective_comp_apply _ _ _ _⟩`.
+-/
 theorem exists_res (Q : P) : ∃ ρ : Z.O Q →+* k Q, Function.Surjective ρ ∧ ∀ s, ρ (Z.pO Q s) = r Q s := by
   have hk : RingHom.ker (Z.pO Q) ≤ RingHom.ker (r Q) := fun s hs => by
     have h0 : Z.p Q s = 0 := congrArg Subtype.val (RingHom.mem_ker.1 hs)
@@ -105,14 +142,29 @@ theorem exists_res (Q : P) : ∃ ρ : Z.O Q →+* k Q, Function.Surjective ρ �
   obtain ⟨s, rfl⟩ := Z.r_surj Q y
   exact ⟨Z.pO Q s, RingHom.liftOfSurjective_comp_apply _ _ _ _⟩
 
+/- English proof (translation)
+Take `⟨ρ, -, hρ⟩` from `Z.exists_res Q`. Rewrite using `[← hρ, ← hρ, show Z.pO Q s = Z.pO Q t from Subtype.ext h]`.
+-/
 theorem r_congr (Q : P) {s t : S} (h : Z.p Q s = Z.p Q t) : r Q s = r Q t := by
   obtain ⟨ρ, -, hρ⟩ := Z.exists_res Q
   rw [← hρ, ← hρ, show Z.pO Q s = Z.pO Q t from Subtype.ext h]
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => Z.ext' fun Q => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun g : GL (Fin n) (Z.K Q) => (g : Matrix (Fin n) (Fin n) (Z.K Q)) i j) (h Q)`.
+-/
 theorem gl_ext {n : ℕ} {x y : GL (Fin n) A} (h : ∀ Q, bc (Z.p Q) x = bc (Z.p Q) y) : x = y := by
   refine Units.ext (Matrix.ext fun i j => Z.ext' fun Q => ?_)
   exact congrArg (fun g : GL (Fin n) (Z.K Q) => (g : Matrix (Fin n) (Fin n) (Z.K Q)) i j) (h Q)
 
+/- English proof (translation)
+Establish `key : ∀ {x : GL (Fin n) A}, (∀ Q, ∃ y : GL (Fin n) (Z.O Q), bc (Z.O Q).subtype y = bc (Z.p Q) x) → ∀ i j, (x : Matrix (Fin n) (Fin n) A) i j ∈ S` using `fun {x} h i j => (Z.int _).2 fun Q => by`. Take `⟨y, hy⟩` from `h Q`. Use `congrArg (fun g : GL (Fin n) (Z.K Q) => (g : Matrix (Fin n) (Fin n) (Z.K Q)) i j) hy` as an intermediate fact. Conclude with `(show _ = Z.p Q _ from this) ▸ ((y : Matrix (Fin n) (Fin n) (Z.O Q)) i j).2`. Establish `h1` using `key h`.
+
+Establish `h2` using `key (x := x⁻¹) fun Q => by`. Take `⟨y, hy⟩` from `h Q`. Conclude with `⟨y⁻¹, by rw [map_inv, map_inv, hy]⟩`. Establish `inj : Function.Injective fun M : Matrix (Fin n) (Fin n) S => M.map S.subtype` using `Matrix.map_injective S.subtype_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations.
+
+Use `show Matrix.map _ S.subtype = Matrix.map _ S.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `x.mul_inv`. Use `show Matrix.map _ S.subtype = Matrix.map _ S.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `x.inv_mul`.
+-/
 theorem gl_int {n : ℕ} {x : GL (Fin n) A} (h : ∀ Q, ∃ y : GL (Fin n) (Z.O Q), bc (Z.O Q).subtype y = bc (Z.p Q) x) :
     ∃ y : GL (Fin n) S, bc S.subtype y = x := by
   have key : ∀ {x : GL (Fin n) A}, (∀ Q, ∃ y : GL (Fin n) (Z.O Q), bc (Z.O Q).subtype y = bc (Z.p Q) x) →
@@ -133,6 +185,15 @@ theorem gl_int {n : ℕ} {x : GL (Fin n) A} (h : ∀ Q, ∃ y : GL (Fin n) (Z.O 
     rw [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
     exact x.inv_mul
 
+/- English proof (translation)
+Use `choose j hj hj' using Z.exists_single Q`. Set `g : Matrix (Fin n) (Fin n) (Z.K Q) → Matrix (Fin n) (Fin n) A` to `fun M => 1 + (M - 1).map j`. Establish `g1 : ∀ M, (Z.p Q).mapMatrix (g M) = M` using `fun M => by`. Rewrite using `[map_add, map_one]`. Establish `: (Z.p Q).mapMatrix ((M - 1).map j) = M - 1` using `by ext a b; exact hj _`.
+
+Rewrite using `[this, add_sub_cancel]`. Establish `g2 : ∀ M Q', Q' ≠ Q → (Z.p Q').mapMatrix (g M) = 1` using `fun M Q' h => by`. Rewrite using `[map_add, map_one]`. Establish `: (Z.p Q').mapMatrix ((M - 1).map j) = 0` using `by ext a b; exact hj' _ Q' h`. Rewrite using `[this, add_zero]`.
+
+Establish `gm : ∀ M N, M * N = 1 → g M * g N = 1` using `fun M N h => Matrix.ext fun a b => Z.ext' fun Q' => by`. Establish `: (Z.p Q').mapMatrix (g M * g N) = (Z.p Q').mapMatrix 1`. Rewrite using `[map_mul, map_one]`. Distinguish the cases in `h' : Q' = Q`. Substitute `h'` using the available equality.
+
+Rewrite using `[g1, g1, h]`. Rewrite using `[g2 _ _ h', g2 _ _ h', one_mul]`. Conclude with `congrFun (congrFun this a) b`. Conclude with `⟨⟨g y.1, g (y⁻¹).1, gm _ _ y.mul_inv, gm _ _ y.inv_mul⟩, Units.ext (g1 _), fun Q' h => Units.ext (g2 _ Q' h)⟩`.
+-/
 theorem gl_single {n : ℕ} (Q : P) (y : GL (Fin n) (Z.K Q)) :
     ∃ x : GL (Fin n) A, bc (Z.p Q) x = y ∧ ∀ Q', Q' ≠ Q → bc (Z.p Q') x = 1 := by
   choose j hj hj' using Z.exists_single Q
@@ -156,6 +217,19 @@ theorem gl_single {n : ℕ} (Q : P) (y : GL (Fin n) (Z.K Q)) :
 
 variable {σ : A →+* A}
 
+/- English proof (translation)
+Establish `h0 : ∀ Q, σ (Z.e Q) ≠ 0` using `fun Q h => by`. Establish `h1` using `Z.e_self Q`. Rewrite `h1` using `[← hσ (Z.e Q), h, map_zero, map_zero]`. Conclude with `zero_ne_one h1`. Establish `h01 : ∀ Q Q', Z.p Q' (σ (Z.e Q)) ≠ 0 → Z.p Q' (σ (Z.e Q)) = 1` using `fun Q Q' h => mul_left_cancel₀ h (by rw [← map_mul, ← map_mul, Z.e_idem, mul_one])`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨Q', hQ'⟩ : ∃ Q', Z.p Q' (σ (Z.e Q)) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h0 Q (Z.ext _ hc)`. Establish `e1 : Z.e Q' * σ (Z.e Q) = Z.e Q' * 1` using `(Z.e_mul_eq_iff _ _ _).2 (by rw [h01 _ _ hQ', map_one])`.
+
+Establish `e2 : σ (Z.e Q') * Z.e Q = σ (Z.e Q')` using `by simpa [hσ] using congrArg σ e1`. Establish `e3 : ∀ Q'', Q'' ≠ Q → Z.p Q'' (σ (Z.e Q')) = 0` using `fun Q'' h => by`. Rewrite using `[← e2, map_mul, Z.e_ne Q Q'' h, mul_zero]`. Establish `e4 : Z.p Q (σ (Z.e Q')) = 1` using `h01 _ _ fun h => h0 Q' (Z.ext _ fun Q'' => by`. Distinguish the cases in `h' : Q'' = Q`.
+
+Substitute `h'` using the available equality. Conclude with `h`. Conclude with `e3 _ h')`. Use `⟨Q', ?_⟩` and prove the remaining obligations. Rewrite using `[← hσ (Z.e Q')]`.
+
+Use `congr 1`. Use `Z.ext' fun Q'' => ?_` and prove the remaining obligations. Distinguish the cases in `h' : Q'' = Q`. Substitute `h'` using the available equality. Rewrite using `[e4, Z.e_self]`.
+
+Rewrite using `[e3 _ h', Z.e_ne Q Q'' h']`.
+-/
 theorem exists_bar (hσ : ∀ a, σ (σ a) = a) (Q : P) : ∃ Q', σ (Z.e Q) = Z.e Q' := by
   have h0 : ∀ Q, σ (Z.e Q) ≠ 0 := fun Q h => by
     have h1 := Z.e_self Q
@@ -183,6 +257,11 @@ theorem exists_bar (hσ : ∀ a, σ (σ a) = a) (Q : P) : ∃ Q', σ (Z.e Q) = Z
   · subst h'; rw [e4, Z.e_self]
   · rw [e3 _ h', Z.e_ne Q Q'' h']
 
+/- English proof (translation)
+Establish `hk : RingHom.ker (Z.p Q) ≤ RingHom.ker ((Z.p Q').comp σ)` using `fun a ha => by`. Establish `h1 : Z.e Q * a = Z.e Q * 0` using `(Z.e_mul_eq_iff _ _ _).2 (by rw [RingHom.mem_ker.1 ha, map_zero])`. Establish `h2 : Z.e Q' * σ a = Z.e Q' * 0` using `by simpa [h] using congrArg σ h1`. Simplify using `using (Z.e_mul_eq_iff _ _ _).1 h2`. Establish `hs : ∀ a, (Z.p Q).liftOfSurjective (Z.surj Q) ⟨(Z.p Q').comp σ, hk⟩ (Z.p Q a) = Z.p Q' (σ a)` using `fun a => RingHom.liftOfSurjective_comp_apply _ _ _ _`.
+
+Use `⟨_, hs, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Z.surj Q x`. Rewrite using `[hs, ← Z.e_mul_mem_iff, ← h, ← map_mul]`. Conclude with `hS _ ((Z.e_mul_mem_iff _ _).2 hx)`.
+-/
 theorem exists_conj (hS : ∀ a ∈ S, σ a ∈ S) {Q Q' : P} (h : σ (Z.e Q) = Z.e Q') :
     ∃ s : Z.K Q →+* Z.K Q', (∀ a, s (Z.p Q a) = Z.p Q' (σ a)) ∧ ∀ x ∈ Z.O Q, s x ∈ Z.O Q' := by
   have hk : RingHom.ker (Z.p Q) ≤ RingHom.ker ((Z.p Q').comp σ) := fun a ha => by
@@ -196,6 +275,13 @@ theorem exists_conj (hS : ∀ a ∈ S, σ a ∈ S) {Q Q' : P} (h : σ (Z.e Q) = 
   rw [hs, ← Z.e_mul_mem_iff, ← h, ← map_mul]
   exact hS _ ((Z.e_mul_mem_iff _ _).2 hx)
 
+/- English proof (translation)
+Take `⟨t, ht, htO⟩` from `Z.exists_conj hS (Q := Q') (Q' := Q) (by rw [← h, hσ])`. Rewrite `hs`, the goal using `[Z.r_ker]`. Assume the negation of the conclusion as `hc`. Establish `hm : Z.p Q' (σ s) ∈ Z.O Q'` using `(Z.int _).1 (hS _ s.2) Q'`. Establish `h1 : (Z.O Q').valuation (Z.p Q' (σ s)) = 1` using `le_antisymm (((Z.O Q').valuation_le_one_iff _).2 hm) (not_lt.1 hc)`.
+
+Establish `h0 : Z.p Q' (σ s) ≠ 0` using `fun e => by rw [e, map_zero] at h1; exact zero_ne_one h1`. Establish `h2 : (Z.p Q' (σ s))⁻¹ ∈ Z.O Q'` using `by rw [← ValuationSubring.valuation_le_one_iff, map_inv₀, h1, inv_one]`. Establish `h3` using `htO _ h2`. Rewrite `h3` using `[map_inv₀, ht, hσ, ← ValuationSubring.valuation_le_one_iff, map_inv₀]`. Establish `h4 : Z.p Q s ≠ 0` using `by rw [← hσ s, ← ht]; exact (map_ne_zero t).2 h0`.
+
+Establish `h5 : 0 < (Z.O Q).valuation (Z.p Q s)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 h4)`. Conclude with `absurd hs (not_lt.2 ((inv_le_one₀ h5).1 h3))`.
+-/
 theorem r_conj (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S) {Q Q' : P} (h : σ (Z.e Q) = Z.e Q') (s : S) (hs : r Q s = 0) :
     r Q' ⟨σ s, hS _ s.2⟩ = 0 := by
   obtain ⟨t, ht, htO⟩ := Z.exists_conj hS (Q := Q') (Q' := Q) (by rw [← h, hσ])

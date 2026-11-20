@@ -30,20 +30,32 @@ def selfIso : SpAlg k k ≅ Over.mk (𝟙 (Sp k)) :=
 variable {Dw : Datum H} {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k}
   (tw : GG.TorsionTower t.G) (I : GeomTate Dw t)
 
+/- English proof (translation)
+Rewrite using `[← MonObj.comp_pow, (I.onto (p ^ n) (pow_pos (Fact.out : p.Prime).pos n) _).2 ⟨x, rfl⟩, MonObj.comp_one]`.
+-/
 theorem latPt_pow (n : ℕ) (x : Dw.La) : (selfIso.hom ≫ I.ev (p ^ n) x) ^ p ^ n = 1 := by
   rw [← MonObj.comp_pow, (I.onto (p ^ n) (pow_pos (Fact.out : p.Prime).pos n) _).2 ⟨x, rfl⟩, MonObj.comp_one]
 
 def latPt (n : ℕ) (x : Dw.La) : GG.A n →ₐ[k] k := tw.lift n _ (latPt_pow I n x)
 
+/- English proof (translation)
+The claim follows from `tw.lift_y n _ _`.
+-/
 theorem latPt_y (n : ℕ) (x : Dw.La) : spOver (latPt tw I n x) ≫ tw.y n = selfIso.hom ≫ I.ev (p ^ n) x :=
   tw.lift_y n _ _
 
+/- English proof (translation)
+Use `tw.inj n k _ _ ?_` and prove the remaining obligations. Rewrite using `[← spOver_comp, Category.assoc, tw.mulP_y, MonObj.comp_pow, latPt_y, latPt_y, ← MonObj.comp_pow, pow_succ, I.tower (p ^ n) p (pow_pos (Fact.out : p.Prime).pos n) (Fact.out : p.Prime).pos]`.
+-/
 theorem latPt_compat (n : ℕ) (x : Dw.La) :
     (latPt tw I (n + 1) x).comp (GG.mulP n : GG.A n →ₐ[k] GG.A (n + 1)) = latPt tw I n x := by
   refine tw.inj n k _ _ ?_
   rw [← spOver_comp, Category.assoc, tw.mulP_y, MonObj.comp_pow, latPt_y, latPt_y, ← MonObj.comp_pow, pow_succ,
     I.tower (p ^ n) p (pow_pos (Fact.out : p.Prime).pos n) (Fact.out : p.Prime).pos]
 
+/- English proof (translation)
+Use `TorsionTower.pts_injective tw n k ?_` and prove the remaining obligations. Rewrite using `[map_mul, TorsionTower.pts_apply, TorsionTower.pts_apply, TorsionTower.pts_apply]`. Simplify using `only [WithConv.ofConv_toConv, latPt_y, I.add, MonObj.comp_mul]`.
+-/
 theorem latPt_add (n : ℕ) (x y : Dw.La) :
     toConv (latPt tw I n (x + y)) = toConv (latPt tw I n x) * toConv (latPt tw I n y) := by
   refine TorsionTower.pts_injective tw n k ?_
@@ -54,21 +66,33 @@ def tau : Dw.La →+ GG.Tate :=
   AddMonoidHom.mk' (fun x => ⟨fun n => latPt tw I n x, fun n => latPt_compat tw I n x⟩) fun x y =>
     TateOver.ext_conv fun n => latPt_add tw I n x y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tau_pt (x : Dw.La) (n : ℕ) : (tau tw I x).pt n = latPt tw I n x := rfl
 
 variable (p) in
 
+/- English proof (translation)
+The claim follows from `IsPrimitiveRoot.coe_units_iff.2 (I.ζ_prim _ (pow_pos (Fact.out : p.Prime).pos n))`.
+-/
 theorem zeta_prim (n : ℕ) : IsPrimitiveRoot (I.ζ (p ^ n) : k) (p ^ n) :=
   IsPrimitiveRoot.coe_units_iff.2 (I.ζ_prim _ (pow_pos (Fact.out : p.Prime).pos n))
 
 variable (p) in
 
+/- English proof (translation)
+Rewrite using `[pow_succ, ← Units.val_pow_eq_pow_val, I.ζ_pow (p ^ n) p (pow_pos (Fact.out : p.Prime).pos n) (Fact.out : p.Prime).pos]`.
+-/
 theorem zeta_succ_pow (n : ℕ) : (I.ζ (p ^ (n + 1)) : k) ^ p = I.ζ (p ^ n) := by
   rw [pow_succ, ← Units.val_pow_eq_pow_val,
     I.ζ_pow (p ^ n) p (pow_pos (Fact.out : p.Prime).pos n) (Fact.out : p.Prime).pos]
 
 variable (p) in
 
+/- English proof (translation)
+Simplify using `using zeta_prim p I 0`.
+-/
 theorem zeta_zero : (I.ζ (p ^ 0) : k) = 1 := by
   simpa using zeta_prim p I 0
 
@@ -76,6 +100,9 @@ variable (p) in
 
 def eps : (mu p k).Tate := muTate k (fun n => (I.ζ (p ^ n) : k)) (zeta_zero p I) (zeta_succ_pow p I)
 
+/- English proof (translation)
+The claim follows from `muRoot_muTate ..`.
+-/
 @[simp] theorem muRoot_eps (n : ℕ) : muRoot (eps p I) n = I.ζ (p ^ n) := muRoot_muTate ..
 
 end GlobalTheory.GroupBplus.Closed

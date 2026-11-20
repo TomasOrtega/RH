@@ -10,6 +10,29 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 noncomputable section
 namespace GlobalTheory.CoefDuty
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `D cf jE A M C tup big L hB j w i i' hi hi' x x'`. Take `⟨Sp, ⟨Au⟩, -⟩` from `hB`. Establish `hiC : ∀ (a : L.X.nd.Loc) (ha : a ∈ L.X.nd.locs j w) (z : L.X.nd.O a), iotaO L.X.nd L.Y.naut a z = Sp.iotaC j w (Sp.phO j w a ha z)`. Introduce `a ha z`. Rewrite using `[← Sp.iotaC_coh j w a ha z]`.
+
+Use `show ((L.Y.naut.iotaQC a).toRingHom.comp (L.Y.naut.iotaQ a)) (algebraMap _ _ z) = _`. Rewrite using `[RingHom.comp_apply, Au.iotaQ, Au.iotaQC]`. Both sides reduce to the same expression. Establish `key : ∀ (a : L.X.nd.Loc) (ha : a ∈ L.X.nd.locs j w) (y : L.X.nd.O a), iotaO L.X.nd L.Y.naut a y ∈ (A.pl.plB w).nonunits ↔ y ∈ IsLocalRing.maximalIdeal (L.X.nd.O a)`. Introduce `a ha y`.
+
+Establish `hw : L.X.nd.w a = w` using `((L.X.nd.locs_mem j w a).1 ha).2`. Substitute `hw` using the available equality. Take `⟨h, e⟩` from `Au.kFbar a y`. Rewrite using `[ValuationSubring.mem_nonunits_iff]`. Establish `e1 : (A.pl.plB (L.X.nd.w a)).valuation (iotaO L.X.nd L.Y.naut a y) = (A.pl.plB (L.X.nd.w a)).valuation ((⟨_, h⟩ : A.pl.plB (L.X.nd.w a)) : ℂ)` using `rfl`.
+
+Rewrite using `[e1, ← ValuationSubring.valuation_lt_one_iff, ← IsLocalRing.residue_eq_zero_iff, ← IsLocalRing.residue_eq_zero_iff, ← map_eq_zero (L.Y.naut.kFbar a), ← e]`. Simplify using `only [EmbeddingLike.map_eq_zero_iff]`. Establish `gen : ∀ v k, GenAt D (D.what₂.places.resChar w) (C.Q w) v k ↔ GenAt D (D.what₂.places.resChar w) (Sp.B.Qc j w) v k`. Introduce `v k`. Rewrite using `[Sp.Qc_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl v k hvk`. Establish `hvk'` using `(gen v k).1 hvk`. Establish `e1` using `Sp.ptX_hT j w i hi x v k hvk'`. Establish `e2` using `Sp.ptX_hT j w i hi' x' v k hvk'`.
+
+Establish `hc : Formalism.L2.NCov.cls (Sp.ptX j w i hi x).1 = Formalism.L2.NCov.cls (Sp.ptX j w i hi' x').1` using `(Sp.ptX j w i hi x).2.1.trans (Sp.ptX j w i hi' x').2.1.symm`. Generalize the expression as in `(Sp.ptX j w i hi x).1 = ψ at e1 hc`. Generalize the expression as in `(Sp.ptX j w i hi' x').1 = ψ' at e2 hc`. Generalize the expression as in `(⟨Sp.B.hK j w v k, Algebra.subset_adjoin ⟨v, k, hvk', rfl⟩⟩ : heckeAlg Sp.B j w) = t at e1 e2`. Establish `hmem : t - algebraMap _ _ (ψ t) ∈ Formalism.L2.NCov.cls ψ'`.
+
+Rewrite using `[← hc, Formalism.L2.NCov.cls, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `IsLocalRing.residue _ (ψ (t - algebraMap _ _ (ψ t))) = 0`. Rewrite using `[map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self, map_zero]`. Rewrite `hmem` using `[Formalism.L2.NCov.cls, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `IsLocalRing.residue _ (ψ' (t - algebraMap _ _ (ψ t))) = 0 at hmem`.
+
+Rewrite `hmem` using `[map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, map_sub, sub_eq_zero, ← e1, ← e2]`. Establish `r` using `GlobalTheory.PtLocalEig.residue_map_equiv (Sp.phO j w i hi).symm hmem`. Simplify using `only [RingEquiv.symm_apply_apply] at r`. Rewrite using `[← map_sub]`. Use `(key i hi _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, r, sub_self]`. Introduce `H`. Apply `Sp.mx_inj j w hi hi'` to reduce the goal to its premises. Rewrite using `[← (Sp.ptX j w i hi x).2.1, ← (Sp.ptX j w i' hi' x').2.1]`. Use `GlobalTheory.PtLocalEig.cls_eq_of_residue _ _ _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨v, k, hvk, rfl⟩`. Rewrite using `[← Sp.ptX_hT j w i hi x v k hvk, ← Sp.ptX_hT j w i' hi' x' v k hvk]`. Establish `h1` using `H v k ((gen v k).2 hvk)`. Establish `hz : iotaO L.X.nd L.Y.naut i' ((L.X.nd.hT i' v k : L.X.nd.X i' → L.X.nd.O i') x') = iotaO L.X.nd L.Y.naut i ((Sp.phO j w i hi).symm (Sp.phO j w i' hi' ((L.X.nd.hT i' v k : L.X.nd.X i' → L.X.nd.O i') x')))`. Rewrite using `[hiC i hi, hiC i' hi', RingEquiv.apply_symm_apply]`.
+
+Rewrite `h1` using `[hz, ← map_sub, key i hi, ← IsLocalRing.residue_eq_zero_iff, map_sub, sub_eq_zero]`. Establish `h2` using `GlobalTheory.PtLocalEig.residue_map_equiv (Sp.phO j w i hi) h1`. Rewrite `h2` using `[RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem sameLoc_iff_heckeCong_alt : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE) (M : MtFam D) (C : NChoice D) (tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E) (big : D.what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 D)), _root_.GlobalTheory.CoefDuty.BuiltAlt A M C tup big L → ∀ (j : ℕ) (w : D.what₂.places.Pl) (i i' : L.X.nd.Loc), i ∈ L.X.nd.locs j w → i' ∈ L.X.nd.locs j w → ∀ (x : L.X.nd.X i) (x' : L.X.nd.X i'), (i = i' ↔ ∀ (v : PlE D.host) (k : ℕ), GenAt D (D.what₂.places.resChar w) (C.Q w) v k → iotaO L.X.nd L.Y.naut i ((L.X.nd.hT i v k : L.X.nd.X i → L.X.nd.O i) x) - iotaO L.X.nd L.Y.naut i' ((L.X.nd.hT i' v k : L.X.nd.X i' → L.X.nd.O i') x') ∈ (A.pl.plB w).nonunits) := by
   intro D cf jE A M C tup big L hB j w i i' hi hi' x x'
   obtain ⟨Sp, ⟨Au⟩, -⟩ := hB

@@ -16,6 +16,9 @@ section Basic
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
   {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw]`.
+-/
 theorem realize_apply0 (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (x : V)
     (v : InfinitePlace K) (i : ι) :
     (Formalism.HermitianLatticesTheory.realize b X x) (v, i, 0) = (Formalism.HermitianLatticesTheory.fcoord b X v x i).re := by
@@ -23,6 +26,9 @@ theorem realize_apply0 (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι 
   | rfl
   | simp [Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw]`.
+-/
 theorem realize_apply1 (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (x : V)
     (v : InfinitePlace K) (i : ι) :
     (Formalism.HermitianLatticesTheory.realize b X x) (v, i, 1) = (Formalism.HermitianLatticesTheory.fcoord b X v x i).im := by
@@ -30,6 +36,17 @@ theorem realize_apply1 (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι 
   | rfl
   | simp [Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨v⟩ : Nonempty (InfinitePlace K)` from `inferInstance`. Establish `hf : ∀ i, Formalism.HermitianLatticesTheory.fcoord b X v x i = 0`. Introduce `i`.
+
+Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[← realize_apply0, hx]`. Simplify using the standard rewrite rules. Rewrite using `[← realize_apply1, hx]`. Simplify using the standard rewrite rules.
+
+Establish `hvec : Formalism.HermitianLatticesTheory.vecAt b v x = 0`. Establish `h1 : (X v)⁻¹ *ᵥ Formalism.HermitianLatticesTheory.vecAt b v x = 0` using `funext hf`. Establish `h2` using `congrArg (fun w => X v *ᵥ w) h1`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mulVec_zero] at h2`. Rewrite `h2` using `[Matrix.mul_nonsing_inv _ (hX v), Matrix.one_mulVec]`. Then use the resulting hypothesis.
+
+Establish `hrep : b.repr x = 0`. Use extensionality with `i`. Use `congrFun hvec i` as an intermediate fact. Simplify using `only [Formalism.HermitianLatticesTheory.vecAt, Pi.zero_apply] at this`. Simplify using `using this`.
+
+Simplify using `using hrep`.
+-/
 theorem realize_injective (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) : Function.Injective (Formalism.HermitianLatticesTheory.realize b X) := by
   rw [injective_iff_map_eq_zero]
@@ -52,6 +69,9 @@ theorem realize_injective (b : Basis ι K V) (X : InfinitePlace K → Matrix ι 
     simpa using this
   simpa using hrep
 
+/- English proof (translation)
+Establish `h : Formalism.HermitianLatticesTheory.vecAt b v (a • x) = v.embedding a • Formalism.HermitianLatticesTheory.vecAt b v x`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Simplify using `only [Formalism.HermitianLatticesTheory.fcoord, h, Matrix.mulVec_smul]`.
+-/
 theorem fcoord_smul (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (a : K) (x : V) : Formalism.HermitianLatticesTheory.fcoord b X v (a • x) = v.embedding a • Formalism.HermitianLatticesTheory.fcoord b X v x := by
   have h : Formalism.HermitianLatticesTheory.vecAt b v (a • x) = v.embedding a • Formalism.HermitianLatticesTheory.vecAt b v x := by
@@ -59,6 +79,9 @@ theorem fcoord_smul (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ
     simp [Formalism.HermitianLatticesTheory.vecAt]
   simp only [Formalism.HermitianLatticesTheory.fcoord, h, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Simplify using `only [PiLp.inner_apply, RCLike.inner_apply, conj_trivial, Fintype.sum_prod_type, Fin.sum_univ_two, Formalism.HermitianLatticesTheory.majAt, Complex.re_sum, realize_apply0, realize_apply1]`. Use `Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_realize (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (x y : V) :
     inner ℝ (Formalism.HermitianLatticesTheory.realize b X x) (Formalism.HermitianLatticesTheory.realize b X y) =
       ∑ v, (Formalism.HermitianLatticesTheory.majAt b X v x y).re := by
@@ -68,6 +91,9 @@ theorem inner_realize (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
   simp only [Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im]
   ring
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.majAt, fcoord_smul, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem majAt_smul (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (a a' : K) (x y : V) :
     Formalism.HermitianLatticesTheory.majAt b X v (a • x) (a' • y) =
@@ -86,6 +112,23 @@ def realif (G : Matrix n n ℂ) : Matrix (Fin 2 × n) (Fin 2 × n) ℝ :=
   Matrix.of fun p q => if p.1 = 0 then (if q.1 = 0 then (G p.2 q.2).re else -(G p.2 q.2).im)
     else (if q.1 = 0 then (G p.2 q.2).im else (G p.2 q.2).re)
 
+/- English proof (translation)
+Set `e : Fin 2 × n ≃ n ⊕ n` to `{ toFun := fun p => if p.1 = 0 then Sum.inl p.2 else Sum.inr p.2 invFun := fun s => Sum.elim (fun i => ((0 : Fin 2), i)) (fun i => ((1 : Fin 2), i)) s left_inv := by`. Introduce and unpack `⟨k, i⟩`. Apply the tactic sequence `fin_cases k <;> rfl`. Use `right_inv := by`. Apply the tactic sequence `rintro (i | i) <;> rfl }`.
+
+Set `Gre : Matrix n n ℂ` to `G.map fun z => ((z.re : ℝ) : ℂ)`. Set `Gim : Matrix n n ℂ` to `G.map fun z => ((z.im : ℝ) : ℂ)`. Set `R : Matrix (n ⊕ n) (n ⊕ n) ℂ` to `((realif G).map Complex.ofRealHom).submatrix e.symm e.symm`. Establish `hR : R = Matrix.fromBlocks Gre (-Gim) Gim Gre`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [R, e, Gre, Gim, realif]`.
+
+Set `U : Matrix (n ⊕ n) (n ⊕ n) ℂ` to `Matrix.fromBlocks 1 1 ((-Complex.I) • (1 : Matrix n n ℂ)) (Complex.I • (1 : Matrix n n ℂ))`. Set `D : Matrix (n ⊕ n) (n ⊕ n) ℂ` to `Matrix.fromBlocks G 0 0 (G.map star)`. Establish `hRU : R * U = U * D`. Rewrite using `[hR]`. Simplify using `only [U, D, Matrix.fromBlocks_multiply, Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_smul, Matrix.smul_mul, add_zero, zero_add]`.
+
+Apply the tactic sequence `congr 1 <;> ext i j <;> apply Complex.ext <;> simp [Gre, Gim]`. Establish `hU : U.det ≠ 0`. Simplify using `only [U, Matrix.det_fromBlocks_one₁₁, Matrix.mul_one]`. Rewrite using `[neg_smul, sub_neg_eq_add, ← add_smul, Matrix.det_smul, Matrix.det_one, mul_one]`. Use `pow_ne_zero _ ?_` and prove the remaining obligations.
+
+Rewrite using `[← two_mul]`. Conclude with `mul_ne_zero two_ne_zero Complex.I_ne_zero`. Establish `hdet : R.det = D.det`. Establish `h` using `congrArg Matrix.det hRU`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul]`.
+
+Conclude with `mul_right_cancel₀ hU (h.trans (mul_comm _ _))`. Establish `hD : D.det = G.det * star G.det`. Establish `hc : G.map star = Gᴴᵀ`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+
+Simplify using `only [D, Matrix.det_fromBlocks_zero₂₁, hc, Matrix.det_transpose, Matrix.det_conjTranspose]`. Establish `hR' : R.det = ((realif G).det : ℂ)`. Simplify using `only [R, Matrix.det_submatrix_equiv_self]`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Both sides reduce to the same expression.
+
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← hR', hdet, hD, Complex.star_def, Complex.mul_conj]`.
+-/
 theorem det_realif (G : Matrix n n ℂ) : (realif G).det = Complex.normSq G.det := by
   let e : Fin 2 × n ≃ n ⊕ n :=
     { toFun := fun p => if p.1 = 0 then Sum.inl p.2 else Sum.inr p.2
@@ -147,6 +190,11 @@ def bmat (G : P → Matrix (Fin j) (Fin j) ℂ) :
     Matrix ((P × Fin 2) × Fin j) ((P × Fin 2) × Fin j) ℝ :=
   Matrix.of fun x y => if x.1.1 = y.1.1 then realif (G x.1.1) (x.1.2, x.2) (y.1.2, y.2) else 0
 
+/- English proof (translation)
+Set `f : (P × Fin 2) × Fin j ≃ (Fin 2 × Fin j) × P` to `{ toFun := fun x => ((x.1.2, x.2), x.1.1) invFun := fun y => ((y.2, y.1.1), y.1.2) left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `h : (bmat G).submatrix f.symm f.symm = Matrix.blockDiagonal fun v => realif (G v)`. Use extensionality with `⟨⟨s, k⟩, v⟩ ⟨⟨t, k'⟩, w⟩`. Simplify using `only [Matrix.submatrix_apply, Matrix.blockDiagonal_apply, bmat, Matrix.of_apply, f, Equiv.coe_fn_symm_mk]`. Apply the tactic sequence `<;> split_ifs <;> simp_all`.
+
+Rewrite using `[← Matrix.det_submatrix_equiv_self f.symm (bmat G), h, Matrix.det_blockDiagonal]`. Simplify using `only [det_realif]`.
+-/
 theorem det_bmat (G : P → Matrix (Fin j) (Fin j) ℂ) :
     (bmat G).det = ∏ v, Complex.normSq (G v).det := by
   let f : (P × Fin 2) × Fin j ≃ (Fin 2 × Fin j) × P :=
@@ -162,6 +210,13 @@ theorem det_bmat (G : P → Matrix (Fin j) (Fin j) ℂ) :
   rw [← Matrix.det_submatrix_equiv_self f.symm (bmat G), h, Matrix.det_blockDiagonal]
   simp only [det_realif]
 
+/- English proof (translation)
+Use extensionality with `⟨p, k⟩ ⟨q, k'⟩`. Simplify using `only [Matrix.submatrix_apply, Equiv.prodCongr_apply, Prod.map_apply, Equiv.refl_apply, gmat, Matrix.of_apply]`. Use `conv_rhs =>`. Simplify using `[amat, bmat, realif, Matrix.mul_apply, Matrix.kroneckerMap_apply, Matrix.one_apply, Fintype.sum_prod_type, Fin.sum_univ_two, ite_add_ite, Finset.sum_mul, Finset.mul_sum]`. Use `first`.
+
+Consider the case `(refine Finset.sum_congr rfl fun v _ => ?_`. Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.star_def, Complex.conj_re, Complex.conj_im]`. Use the proof step `ring)`. Consider the case `(simp only [Complex.mul_re, Complex.mul_im, Complex.star_def, Complex.conj_re, Complex.conj_im, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Use the proof step `ring)`.
+-/
 theorem gmat_eq (lam : P → S → ℂ) (G : P → Matrix (Fin j) (Fin j) ℂ) (eS : S ≃ P × Fin 2) :
     (gmat lam G).submatrix (Equiv.prodCongr eS.symm (Equiv.refl (Fin j)))
         (Equiv.prodCongr eS.symm (Equiv.refl (Fin j))) =
@@ -188,6 +243,9 @@ section DetG
 
 variable {P S : Type} [Fintype P] [DecidableEq P] [Fintype S] [DecidableEq S] {j : ℕ}
 
+/- English proof (translation)
+Establish `h` using `congrArg Matrix.det (gmat_eq lam G eS)`. Simplify using `only [Matrix.det_submatrix_equiv_self, Matrix.det_mul, Matrix.det_transpose, Matrix.det_kronecker, Matrix.det_one, one_pow, mul_one, det_bmat, Fintype.card_fin] at h`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_gmat (lam : P → S → ℂ) (G : P → Matrix (Fin j) (Fin j) ℂ) (eS : S ≃ P × Fin 2) :
     (gmat lam G).det = (amat lam eS).det ^ (2 * j) * ∏ v, Complex.normSq (G v).det := by
   have h := congrArg Matrix.det (gmat_eq lam G eS)
@@ -202,6 +260,9 @@ section NT
 
 variable (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun w => (InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w.1)) w.2⟩`.
+-/
 theorem isEmpty_real : IsEmpty {w : InfinitePlace K // w.IsReal} := ⟨fun w => (InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w.1)) w.2⟩
 
 attribute [local instance] isEmpty_real
@@ -215,6 +276,9 @@ def lamK (v : InfinitePlace K) (m : Free.ChooseBasisIndex ℤ (𝓞 K)) : ℂ :=
 
 open scoped Classical in
 open MeasureTheory ZSpan in
+/- English proof (translation)
+The claim follows from `|(amat (lamK K) eS).det| = (2⁻¹) ^ InfinitePlace.nrComplexPlaces K * √|(discr K : ℝ)| := by classical let e' : mixedEmbedding.index K ≃ Free.ChooseBasisIndex ℤ (𝓞 K) := (idxE K).trans eS.symm let A' := (mixedEmbedding.stdBasis K).toMatrix ((mixedEmbedding.latticeBasis K).reindex …`.
+-/
 theorem abs_det_amat (eS : Free.ChooseBasisIndex ℤ (𝓞 K) ≃ InfinitePlace K × Fin 2) :
     |(amat (lamK K) eS).det| = (2⁻¹) ^ InfinitePlace.nrComplexPlaces K * √|(discr K : ℝ)| := by
   classical
@@ -249,6 +313,13 @@ section Main
 variable {K : Type} [Field K] [NumberField K]
   {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Establish `hω : ∀ p : Free.ChooseBasisIndex ℤ (𝓞 K) × ι', integralBasis K p.1 • e p.2 = (RingOfIntegers.basis K p.1) • e p.2` using `fun p => by`. Rewrite using `[integralBasis_apply, algebraMap_smul]`. Establish `hspan : (Submodule.span (𝓞 K) (Set.range e)).restrictScalars ℤ = Submodule.span ℤ (Set.range fun p : Free.ChooseBasisIndex ℤ (𝓞 K) × ι' => integralBasis K p.1 • e p.2)`. Rewrite using `[← Submodule.span_smul_of_span_eq_top (RingOfIntegers.basis K).span_eq (Set.range e), Set.range_smul_range]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_range, hω]`. Establish `hz : zl ρ (Submodule.span (𝓞 K) (Set.range e)) = ((Submodule.span (𝓞 K) (Set.range e)).restrictScalars ℤ).map ρ.toIntLinearMap`. Use extensionality with `x`. Use `first`.
+
+Consider the case `exact Iff.rfl`. Consider the case `simp [zl]`. Rewrite using `[hz, hspan, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem zl_span_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (ρ : V →+ E) {ι' : Type} [Fintype ι'] (e : ι' → V) :
     zl ρ (Submodule.span (𝓞 K) (Set.range e)) =
@@ -274,6 +345,9 @@ theorem zl_span_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   rw [hz, hspan, Submodule.map_span, ← Set.range_comp]
   rfl
 
+/- English proof (translation)
+Establish `hω : LinearIndependent ℤ (integralBasis K)` using `by first`. Consider the case `exact (integralBasis K).linearIndependent.restrict_scalars (by intro a b h; simpa using h)`. Consider the case `exact (integralBasis K).linearIndependent.restrict_scalars'`. Establish `he' : LinearIndependent ℤ (fun p : Free.ChooseBasisIndex ℤ (𝓞 K) × ι' => integralBasis K p.1 • e p.2)` using `linearIndependent_smul hω he`. Conclude with `he'.map' ρ.toIntLinearMap (LinearMap.ker_eq_bot.2 hρ)`.
+-/
 theorem linIndep_int {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (ρ : V →+ E) (hρ : Function.Injective ρ) {ι' : Type} [Fintype ι']
     (e : ι' → V) (he : LinearIndependent K e) :
@@ -288,6 +362,9 @@ theorem linIndep_int {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E
     linearIndependent_smul hω he
   exact he'.map' ρ.toIntLinearMap (LinearMap.ker_eq_bot.2 hρ)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `AddSubgroup.mem_map.1 hx`. Conclude with `AddSubgroup.mem_map.2 ⟨y, h hy, rfl⟩`.
+-/
 theorem zl_mono {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (ρ : V →+ E) {N L : Submodule (𝓞 K) V} (h : N ≤ L) :
     zl ρ N ≤ zl ρ L := by
@@ -295,6 +372,9 @@ theorem zl_mono {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   obtain ⟨y, hy, rfl⟩ := AddSubgroup.mem_map.1 hx
   exact AddSubgroup.mem_map.2 ⟨y, h hy, rfl⟩
 
+/- English proof (translation)
+Unfold `rkK`. Rewrite using `[Submodule.span_span_of_tower, finrank_span_eq_card he, Fintype.card_fin]`.
+-/
 theorem rkK_span {j : ℕ} (e : Fin j → V) (he : LinearIndependent K e) :
     rkK (Submodule.span (𝓞 K) (Set.range e)) = j := by
   unfold rkK
@@ -302,6 +382,13 @@ theorem rkK_span {j : ℕ} (e : Fin j → V) (he : LinearIndependent K e) :
 
 end Main
 
+/- English proof (translation)
+Establish `h1 : (√D) ^ j = D ^ ((j : ℝ) / 2)`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul hD.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : D ^ (-(j : ℝ) / 2) * D ^ ((j : ℝ) / 2) = 1`.
+
+Rewrite using `[← Real.rpow_add hD, neg_div, neg_add_cancel, Real.rpow_zero]`. Rewrite using `[mul_pow, h1, ← pow_mul, inv_pow]`. Establish `h3 : (2 : ℝ) ^ (f * j) ≠ 0` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = 1 := by rw [mul_inv_cancel₀ h3, h2, one_mul]`.
+-/
 theorem factor_one (f j : ℕ) {D : ℝ} (hD : 0 < D) :
     (2 : ℝ) ^ (f * j) * D ^ (-(j : ℝ) / 2) * (((2 : ℝ)⁻¹) ^ f * √D) ^ j = 1 := by
   have h1 : (√D) ^ j = D ^ ((j : ℝ) / 2) := by
@@ -317,6 +404,13 @@ theorem factor_one (f j : ℕ) {D : ℝ} (hD : 0 < D) :
     _ = 1 := by rw [mul_inv_cancel₀ h3, h2, one_mul]
 
 open scoped ComplexOrder in
+/- English proof (translation)
+Establish `hpsd : (gramPl b X v e).PosSemidef`. Set `B : Matrix ι (Fin j) ℂ` to `Matrix.of fun i a => Formalism.HermitianLatticesTheory.fcoord b X v (e a) i`. Establish `hB : gramPl b X v e = Bᴴ * B`. Use extensionality with `a c`. Simplify using `[B, gramPl, Formalism.HermitianLatticesTheory.majAt, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+
+Rewrite using `[hB]`. Conclude with `Matrix.posSemidef_conjTranspose_mul_self B`. Establish `h0` using `hpsd.det_nonneg`. Take `⟨hre, him⟩` from `Complex.nonneg_iff.1 h0`. Establish `hz : (gramPl b X v e).det = ((gramPl b X v e).det.re : ℂ)` using `Complex.ext (by simp) (by simp [← him])`.
+
+Use `conv_lhs => rw [hz]`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hre]`.
+-/
 theorem norm_det_gramPl {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V]
     [Module K V] [Fintype ι] [DecidableEq ι] (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) {j : ℕ} (e : Fin j → V) :
@@ -338,6 +432,29 @@ theorem norm_det_gramPl {K V ι : Type} [Field K] [NumberField K] [StarRing K] [
 end HeightGram
 
 open HeightGram in
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e he`. Use `set N := Submodule.span (𝓞 K) (Set.range e) with hNdef`. Establish `hNfg : N.FG` using `Submodule.fg_span (Set.finite_range e)`. Establish `hρ` using `realize_injective b X hX`. Establish `hrkN : rkK N = j` using `rkK_span e he`.
+
+Establish `hmain : ht b X N = ∏ v, (gramPl b X v e).det.re`. Take `⟨⟨_, hdisc⟩, _, _⟩` from `h1 K V ι b X hX N hNfg`. Use `haveI := hdisc`. Establish `hli` using `linIndep_int (Formalism.HermitianLatticesTheory.realize b X) hρ e he`. Establish `hsp` using `zl_span_eq (K := K) (Formalism.HermitianLatticesTheory.realize b X) e`.
+
+Set `bN : Basis _ ℤ (zl (Formalism.HermitianLatticesTheory.realize b X) N)` to `(Basis.span hli).map (LinearEquiv.ofEq _ _ hsp.symm)`. Establish `hbN : ∀ p, (bN p : EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)) = Formalism.HermitianLatticesTheory.realize b X (integralBasis K p.1 • e p.2)`. Introduce `p`. Simplify using `[bN, Basis.span_apply]`. Establish `hcov` using `Formalism.F.covolEqGram _ (zl (Formalism.HermitianLatticesTheory.realize b X) N) _ bN`.
+
+Establish `hgram : Matrix.gram ℝ (fun p => (bN p : EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2))) = gmat (lamK K) (fun v => gramPl b X v e)`. Use extensionality with `p q`. Simplify using `only [Matrix.gram_apply, hbN, inner_realize, gmat, Matrix.of_apply, majAt_smul, gramPl, lamK]`. Establish `hcard : Fintype.card (Free.ChooseBasisIndex ℤ (𝓞 K)) = Fintype.card (InfinitePlace K × Fin 2)`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank, IsTotallyComplex.finrank, Fintype.card_prod, Fintype.card_fin, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, zero_add, mul_comm]`.
+
+Set `eS` to `Fintype.equivOfCardEq hcard`. Establish `hdet` using `det_gmat (lamK K) (fun v => gramPl b X v e) eS`. Rewrite `hdet` using `[← hgram]`. Establish `hsq : (Matrix.gram ℝ (fun p => (bN p : EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)))).det = (|(amat (lamK K) eS).det| ^ j * ∏ v, ‖(gramPl b X v e).det‖) ^ 2`. Rewrite using `[hdet, mul_pow, ← Finset.prod_pow]`.
+
+Use `congr 1`. Rewrite using `[← pow_mul, mul_comm j 2, pow_mul, pow_mul, sq_abs]`. Conclude with `Finset.prod_congr rfl fun v _ => Complex.normSq_eq_norm_sq _`. Establish `hcov2 : Formalism.F.covol (zl (Formalism.HermitianLatticesTheory.realize b X) N) = |(amat (lamK K) eS).det| ^ j * ∏ v, ‖(gramPl b X v e).det‖`. Rewrite using `[hcov, hsq, Real.sqrt_sq (by positivity)]`.
+
+Establish `hnPl : nPl K = InfinitePlace.nrComplexPlaces K`. Unfold `nPl`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]`. Establish `hD : (0 : ℝ) < |(NumberField.discr K : ℝ)|` using `abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero K))`. Unfold `ht`.
+
+Rewrite using `[hcov2, abs_det_amat K eS, hrkN, hnPl]`. Simplify using `only [norm_det_gramPl]`. Rewrite using `[← mul_assoc, factor_one _ _ hD, one_mul]`. Use `⟨hmain, ?_⟩` and prove the remaining obligations. Introduce `L hLfg hNL hrkL`.
+
+Take `⟨⟨_, hdiscN⟩, hrkNZ, _⟩` from `h1 K V ι b X hX N hNfg`. Take `⟨⟨_, hdiscL⟩, hrkLZ, _⟩` from `h1 K V ι b X hX L hLfg`. Use `haveI := hdiscL`. Establish `hle` using `zl_mono (Formalism.HermitianLatticesTheory.realize b X) hNL`. Establish `hrkeq : Formalism.F.rk (zl (Formalism.HermitianLatticesTheory.realize b X) N) = Formalism.F.rk (zl (Formalism.HermitianLatticesTheory.realize b X) L)`.
+
+Establish `h3 : rk (Formalism.HermitianLatticesTheory.realize b X) N = rk (Formalism.HermitianLatticesTheory.realize b X) L`. Rewrite using `[hrkNZ, hrkLZ, hrkN, hrkL]`. Conclude with `h3`. Establish `hcov` using `Formalism.RankSupermodularCovolume.covol_eq_relIndex_mul_covol _ _ hle hrkeq`. Establish `hidx : (zl (Formalism.HermitianLatticesTheory.realize b X) N).toAddSubgroup.relIndex (zl (Formalism.HermitianLatticesTheory.realize b X) L).toAddSubgroup = N.toAddSubgroup.relIndex L.toAddSubgroup`.
+
+Simplify using `only [zl, AddSubgroup.toIntSubmodule_toAddSubgroup]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ hρ`. Unfold `ht`. Rewrite using `[hrkN, hrkL, hcov, hidx]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem htGram_of (h1 : PlLat) : HtGram := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e he
   classical
@@ -408,6 +525,9 @@ theorem htGram_of (h1 : PlLat) : HtGram := by
   rw [hrkN, hrkL, hcov, hidx]
   ring
 
+/- English proof (translation)
+The claim follows from `htGram_of place_lattice_structure`.
+-/
 theorem height_gram_determinant : HtGram := htGram_of place_lattice_structure
 
 end Formalism.HN

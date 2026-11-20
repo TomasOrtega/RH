@@ -1,5 +1,20 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `K M _ _ _ _ _ J T hT _ U _ hU hst`. Set `A : Subalgebra K (Module.End K M)` to `Algebra.adjoin K (Set.range T)`. Establish `hA : ∀ a ∈ A, (∀ x ∈ U, a x ∈ U) ∧ ∀ j, a * T j = T j * a`. Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`.
+
+Consider the case `mem a h => obtain ⟨i, rfl⟩ := h`. Conclude with `⟨hst i, hT i⟩`. Consider the case `algebraMap r => exact ⟨fun x hx => U.smul_mem r hx, fun j => Algebra.commutes r _⟩`. Consider the case `add a b _ _ ha hb`. Conclude with `⟨fun x hx => U.add_mem (ha.1 x hx) (hb.1 x hx), fun j => by rw [add_mul, mul_add, ha.2, hb.2]⟩`.
+
+Consider the case `mul a b _ _ ha hb`. Conclude with `⟨fun x hx => ha.1 _ (hb.1 x hx), fun j => by rw [mul_assoc, hb.2, ← mul_assoc, ha.2, mul_assoc]⟩`. Set `U' : Submodule A M` to `{ carrier := U add_mem' := fun hx hy => U.add_mem hx hy zero_mem' := U.zero_mem smul_mem' := fun a x hx => (hA a.1 a.2).1 x hx }`. Establish `hU' : U' ≠ ⊥`. Introduce `h`.
+
+Apply `hU` to reduce the goal to its premises. Rewrite `h`, the goal using `[Submodule.eq_bot_iff]`. Conclude with `h`. Use `haveI : IsArtinian A M := isArtinian_of_tower K inferInstance`. Take `⟨S, hS, hSU⟩` from `(eq_bot_or_exists_atom_le U').resolve_left hU'`.
+
+Use `haveI : IsSimpleModule A S := isSimpleModule_iff_isAtom.2 hS`. Use `haveI : FiniteDimensional K S := FiniteDimensional.of_injective (S.subtype.restrictScalars K) Subtype.val_injective`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS.1`. Use `⟨v, hSU hv, hv0, fun j => ?_⟩` and prove the remaining obligations. Set `t : A` to `⟨T j, Algebra.subset_adjoin ⟨j, rfl⟩⟩`.
+
+Set `f : Module.End A S` to `{ toFun := fun x => t • x map_add' := fun x y => smul_add t x y map_smul' := fun a x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(LinearMap.congr_fun ((hA a.1 a.2).2 j) (x : M)).symm }`. Take `⟨c, hc⟩` from `(IsSimpleModule.algebraMap_end_bijective_of_isAlgClosed K (A := A) (V := S)).2 f`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `congrArg Subtype.val (LinearMap.congr_fun hc ⟨v, hv⟩)`. Conclude with `h.symm`.
+-/
 theorem UpperTheory.V.LinAlg.simEig :
     ∀ {K M : Type} [Field K] [IsAlgClosed K] [AddCommGroup M] [Module K M] [FiniteDimensional K M]
         {J : Type} (T : J → Module.End K M), (∀ i j : J, T i * T j = T j * T i) →

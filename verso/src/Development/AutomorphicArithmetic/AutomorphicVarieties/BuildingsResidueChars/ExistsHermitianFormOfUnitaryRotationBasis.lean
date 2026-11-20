@@ -7,26 +7,41 @@ variable {K : Type} [Field K] {Δ τ : K}
 
 private def hh (x y : Fin 3 → Lsq K Δ) : Lsq K Δ := ∑ i, x i * star (y i)
 
+/- English proof (translation)
+Simplify using `only [hh, star_sum, star_mul', star_star]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 private theorem hh_star (x y : Fin 3 → Lsq K Δ) : star (hh x y) = hh y x := by
   simp only [hh, star_sum, star_mul', star_star]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(N *ᵥ x) ⬝ᵥ star (N *ᵥ y) = x ⬝ᵥ star y`. Rewrite using `[Matrix.star_mulVec, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff').1 hN, Matrix.one_mulVec, dotProduct_comm]`.
+-/
 private theorem hh_unitary {N : Matrix (Fin 3) (Fin 3) (Lsq K Δ)} (hN : N ∈ Matrix.unitaryGroup (Fin 3) (Lsq K Δ))
     (x y : Fin 3 → Lsq K Δ) : hh (N *ᵥ x) (N *ᵥ y) = hh x y := by
   change (N *ᵥ x) ⬝ᵥ star (N *ᵥ y) = x ⬝ᵥ star y
   rw [Matrix.star_mulVec, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.star_eq_conjTranspose,
     (Matrix.mem_unitaryGroup_iff').1 hN, Matrix.one_mulVec, dotProduct_comm]
 
+/- English proof (translation)
+Simplify using `only [hh, Fin.sum_univ_three, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, star_sub, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hh_right (x y z : Fin 3 → Lsq K Δ) (r : Lsq K Δ) :
     hh x (r • y - z) = star r * hh x y - hh x z := by
   simp only [hh, Fin.sum_univ_three, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, star_sub, star_mul']
   ring
 
+/- English proof (translation)
+Simplify using `only [hh, Fin.sum_univ_three, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hh_left (x y z : Fin 3 → Lsq K Δ) (r : Lsq K Δ) :
     hh (r • y - z) x = r * hh y x - hh z x := by
   simp only [hh, Fin.sum_univ_three, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [hh, Fin.sum_univ_three, Pi.add_apply, Pi.smul_apply, smul_eq_mul, star_add, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hh_expand (e v w : Fin 3 → Lsq K Δ) (x0 p q y0 r s : Lsq K Δ) :
     hh (x0 • e + p • v + q • w) (y0 • e + r • v + s • w) =
       x0 * star y0 * hh e e + x0 * star r * hh e v + x0 * star s * hh e w +
@@ -35,6 +50,9 @@ private theorem hh_expand (e v w : Fin 3 → Lsq K Δ) (x0 p q y0 r s : Lsq K Δ
   simp only [hh, Fin.sum_univ_three, Pi.add_apply, Pi.smul_apply, smul_eq_mul, star_add, star_mul']
   ring
 
+/- English proof (translation)
+Simplify using `only [QuadraticAlgebra.trace_def, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star, sigL]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem trace_form (m x y : EL Δ τ) :
     QuadraticAlgebra.trace (m * x * star (sigL y)) =
       x.re * star y.re * (2 * m.re + algebraMap K (Lsq K Δ) τ * m.im) +
@@ -46,6 +64,9 @@ private theorem trace_form (m x y : EL Δ τ) :
     QuadraticAlgebra.re_star, QuadraticAlgebra.im_star, sigL]
   ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_mul, Matrix.det_conjTranspose]`. Conclude with `h.mul (h.star)`.
+-/
 private theorem gram_unit {M : Matrix (Fin 3) (Fin 3) (Lsq K Δ)} (h : IsUnit M.det) :
     IsUnit (M * Mᴴ).det := by
   rw [Matrix.det_mul, Matrix.det_conjTranspose]
@@ -53,6 +74,51 @@ private theorem gram_unit {M : Matrix (Fin 3) (Fin 3) (Lsq K Δ)} (h : IsUnit M.
 
 end UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Introduce `K _ _ Δ τ hτ N hN e v hNe hNv hdet`. Take `⟨w, hw⟩ : ∃ w, w = N *ᵥ v` from `⟨_, rfl⟩`. Rewrite `hNv`, `hdet`, the goal using `[← hw]`. Take `⟨t, ht⟩ : ∃ t, t = algebraMap K (Lsq K Δ) τ` from `⟨_, rfl⟩`. Establish `hst : star t = t`.
+
+Apply the tactic sequence `rw [ht]; ext <;> simp`. Take `⟨u, hu⟩ : ∃ u, u = algebraMap K (Lsq K Δ) (τ ^ 2 - 4)⁻¹` from `⟨_, rfl⟩`. Establish `hsu : star u = u`. Apply the tactic sequence `rw [hu]; ext <;> simp`. Establish `hut : u * (t ^ 2 - 4) = 1`.
+
+Establish `: algebraMap K (Lsq K Δ) ((τ ^ 2 - 4)⁻¹ * (τ ^ 2 - 4)) = 1`. Rewrite using `[inv_mul_cancel₀ hτ, map_one]`. Rewrite `this` using `[map_mul, map_sub, map_pow, map_ofNat]`. Rewrite using `[hu, ht]`. Conclude with `this`.
+
+Establish `h2t : IsUnit (2 - t)`. Use `IsUnit.of_mul_eq_one (-(2 + t) * u) ?_` and prove the remaining obligations. Take the linear combination `hut`. Establish `hvw : hh e v = hh e w` using `by conv_lhs => rw [← hh_unitary hN e v, hNe, ← hw]`. Establish `hew0 : hh e w = hh e (t • w - v)` using `by conv_lhs => rw [← hh_unitary hN e w, hNe, hNv, ← ht]`.
+
+Rewrite `hew0` using `[hh_right, hst]`. Establish `hew : hh e w = 0`. Establish `: (2 - t) * hh e w = 0` using `by linear_combination hew0 - hvw`. Conclude with `(h2t.mul_right_eq_zero).1 this`. Establish `hev : hh e v = 0` using `hvw.trans hew`.
+
+Establish `hwe : hh w e = 0` using `by rw [← hh_star, hew, star_zero]`. Establish `hve : hh v e = 0` using `by rw [← hh_star, hev, star_zero]`. Establish `hww : hh w w = hh v v` using `by rw [hw, hh_unitary hN]`. Establish `hsa : star (hh v v) = hh v v` using `hh_star _ _`. Establish `hsc : star (hh e e) = hh e e` using `hh_star _ _`.
+
+Establish `hb : hh w v = t * hh w w - hh v w`. Establish `h` using `hh_unitary hN w v`. Rewrite `h` using `[← hw, hNv, ← ht, hh_left]`. Conclude with `h.symm`. Establish `hG : IsUnit (hh e e * (hh v v * hh v v - hh v w * hh w v))`.
+
+Establish `h` using `gram_unit hdet`. Establish `e1 : (Matrix.of ![e, v, w] * (Matrix.of ![e, v, w])ᴴ) = !![hh e e, hh e v, hh e w; hh v e, hh v v, hh v w; hh w e, hh w v, hh w w]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, hh, Fin.sum_univ_three, Matrix.conjTranspose_apply]`.
+
+Rewrite `h` using `[e1, Matrix.det_fin_three]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.cons_val_fin_one, hev, hew, hve, hwe, hww] at h`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hc : IsUnit (hh e e)` using `isUnit_of_mul_isUnit_left hG`.
+
+Establish `hq : IsUnit (hh v v * hh v v - hh v w * hh w v)` using `isUnit_of_mul_isUnit_right hG`. Establish `him : (hh e e).im = 0`. Establish `h` using `congrArg QuadraticAlgebra.im hsc`. Rewrite `h` using `[QuadraticAlgebra.im_star]`. Establish `h2 : (2 : K) * (hh e e).im = 0` using `by linear_combination -h`.
+
+Simplify using `using h2`. Establish `hce : hh e e = algebraMap K (Lsq K Δ) (hh e e).re`. Apply the tactic sequence `ext <;> simp [him]`. Establish `hc0 : (hh e e).re ≠ 0`. Introduce `h0`.
+
+Rewrite `hc` using `[hce, h0, map_zero]`. Conclude with `not_isUnit_zero hc`. Take `⟨a, ha⟩ : ∃ a, a = hh v v` from `⟨_, rfl⟩`. Take `⟨b, hb'⟩ : ∃ b, b = hh w v` from `⟨_, rfl⟩`. Establish `hvw' : hh v w = t * a - b`.
+
+Rewrite `hb` using `[hww, ← ha, ← hb']`. Take the linear combination `hb`. Establish `hsb : star b = t * a - b`. Rewrite using `[hb', hh_star, ← hb', hvw']`. Establish `hsa' : star a = a` using `by rw [ha, hsa]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : EL Δ τ, m = ⟨u * ((t ^ 2 - 2) * a - t * b), u * (2 * b - t * a)⟩ := by`. Rewrite using `[ht]`. Conclude with `⟨_, rfl⟩`. Substitute `ht` using the available equality. Establish `hm0 : m.re = u * (((algebraMap K (Lsq K Δ) τ) ^ 2 - 2) * a - algebraMap K (Lsq K Δ) τ * b)` using `by rw [hm]`.
+
+Establish `hm1 : m.im = u * (2 * b - algebraMap K (Lsq K Δ) τ * a)` using `by rw [hm]`. Establish `hT0 : 2 * m.re + algebraMap K (Lsq K Δ) τ * m.im = a`. Rewrite using `[hm0, hm1]`. Take the linear combination `a * hut`. Establish `hT1 : algebraMap K (Lsq K Δ) τ * m.re + ((algebraMap K (Lsq K Δ) τ) ^ 2 - 2) * m.im = b`.
+
+Rewrite using `[hm0, hm1]`. Take the linear combination `b * hut`. Establish `hs0 : star m.re = u * (algebraMap K (Lsq K Δ) τ * b - 2 * a)`. Rewrite using `[hm0]`. Simplify using `only [star_mul', star_sub, star_pow, hsu, hst, hsa', hsb, star_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hs1 : star m.im = u * (algebraMap K (Lsq K Δ) τ * a - 2 * b)`. Rewrite using `[hm1]`. Simplify using `only [star_mul', star_sub, hsu, hst, hsa', hsb, star_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨Units.mk0 _ hc0, m, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[QuadraticAlgebra.isUnit_iff_norm_isUnit]`. Establish `hn : (4 - (algebraMap K (Lsq K Δ) τ) ^ 2) * QuadraticAlgebra.norm m = a * a - (algebraMap K (Lsq K Δ) τ * a - b) * b`. Rewrite using `[QuadraticAlgebra.norm_def, hm0, hm1]`. Take the linear combination `(u * ((algebraMap K (Lsq K Δ) τ) ^ 2 - 4) + 1) * (a * a - (algebraMap K (Lsq K Δ) τ * a - b) * b) * hut`.
+
+Rewrite `hq` using `[hvw', ← hb', ← ha]`. Rewrite `hq` using `[← hn]`. Conclude with `isUnit_of_mul_isUnit_right hq`. Use `QuadraticAlgebra.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[QuadraticAlgebra.re_star]`.
+
+Express the relevant statement in the definitionally equal form `star m.re + algebraMap K (Lsq K Δ) τ * star m.im = m.re`. Rewrite using `[hs0, hs1, hm0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[QuadraticAlgebra.im_star]`. Express the relevant statement in the definitionally equal form `-star m.im = m.im`.
+
+Rewrite using `[hs1, hm1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y`. Express the relevant statement in the definitionally equal form `herm _ m x y = hh _ _`. Rewrite using `[hh_expand, herm, trace_form, hT0, hT1, hev, hew, hve, hwe, hww, hvw', ← ha, ← hb', Units.val_mk0, ← hce]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.exists_hermitian_form_of_unitary_rotation_basis :
     ∀ (K : Type) [Field K] [CharZero K] (Δ τ : K), τ ^ 2 - 4 ≠ 0 → ∀ N : Matrix (Fin 3) (Fin 3) (Lsq K Δ), N ∈ Matrix.unitaryGroup (Fin 3) (Lsq K Δ) →
         ∀ e v : Fin 3 → Lsq K Δ, N *ᵥ e = e → N *ᵥ (N *ᵥ v) = algebraMap K (Lsq K Δ) τ • (N *ᵥ v) - v →

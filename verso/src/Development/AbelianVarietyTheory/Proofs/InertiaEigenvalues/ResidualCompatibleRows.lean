@@ -38,11 +38,21 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open GlobalTheory.EigTie (ResTied IsRowPar plRed resTied_of_plSide)
 open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf Zbar GalE OnW)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify `hf` using `[qCast]`.
+-/
 theorem continuous_qCast {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) (ι : Qbar p ≃+* ℂ) {Y : Type} [TopologicalSpace Y]
     {f : Y → Qbar q} (hf : Continuous f) : Continuous fun y => ι.symm (qCast h ι (f y)) := by
   subst h
   simpa [qCast] using hf
 
+/- English proof (translation)
+Take `⟨f, hf, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `hne : D.what₂.thetaT (D.what₂.muTw w) j f ≠ 0` using `fun e => by`. Establish `h1` using `(h σ).1 f hf`. Establish `hl : ((D.what₂.lamP (D.what₂.muTw w) j σ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast ((h σ).2 hσ).ne'`. Rewrite `h1` using `[e, map_zero]`.
+
+Conclude with `hf0 ((smul_eq_zero.1 h1.symm).resolve_left hl)`. Set `b` to `Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)`. Establish `hidx : Nonempty (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j))`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nonempty_iff]`.
+
+Establish `h3` using `(D.what₂.jMt_basis (D.what₂.muTw w) j b).2`. Rewrite `h3` using `[Set.range_eq_empty, Submodule.span_empty]`. Conclude with `hne ((Submodule.mem_bot ℂ).1 (h3 ▸ Submodule.mem_top))`. Take `⟨k⟩` from `hidx`. Conclude with `⟨⟨_, 0, (B.iV_basis j w b).1.ne_zero k⟩⟩`.
+-/
 theorem nontrivial_V {D : D7} {M : MtFam D} (B : NLocBase D M) {j : ℕ} {w : D.what₂.places.Pl}
     (h : GlobalTheory.RowCopy.LamPos D (D.what₂.muTw w) j) {σ : D.what₂.FT} (hσ : D.what₂.isot j σ ≠ ⊥) : Nontrivial (B.V j w) := by
   obtain ⟨f, hf, hf0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hσ
@@ -61,6 +71,11 @@ theorem nontrivial_V {D : D7} {M : MtFam D} (B : NLocBase D M) {j : ℕ} {w : D.
   obtain ⟨k⟩ := hidx
   exact ⟨⟨_, 0, (B.iV_basis j w b).1.ne_zero k⟩⟩
 
+/- English proof (translation)
+Establish `e : D.what₂.muTw w = D.what₂.muAt w` using `((D.what₂.muAt_or w).resolve_left hw).symm`. Use `haveI := nontrivial_V Sp.B (hl.at (Or.inr ⟨w, e⟩) h1 h2) hσ`. Use `haveI : Nontrivial (Formalism.L2.heckeAlg Sp.B j w) := inferInstance`. Take `⟨I, hI⟩` from `Ideal.exists_maximal (Formalism.L2.heckeAlg Sp.B j w)`. Take `⟨i, hi, -⟩` from `Sp.mx_all j w h1 h2 hw I hI`.
+
+Conclude with `⟨i, (X.nd.locs_mem _ _ _).1 hi⟩`.
+-/
 theorem exists_loc {D : D7} {Pl : PlSide D} {M : MtFam D} {C : NChoice D} {big : D.what₂.places.Pl → Finset ℂ}
     {X : LocNd (lay0 D)} {T : LocTw X} (Sp : NdSpec Pl M C big X T) (hl : GlobalTheory.NRows.LamUsed D) {j : ℕ} (h1 : 1 ≤ j)
     (h2 : j ≤ D.R.m) {σ : D.what₂.FT} (hσ : D.what₂.isot j σ ≠ ⊥) {w : D.what₂.places.Pl} (hw : D.what₂.muAt w ≠ D.what₂.mu0) :
@@ -72,6 +87,15 @@ theorem exists_loc {D : D7} {Pl : PlSide D} {M : MtFam D} {C : NChoice D} {big :
   obtain ⟨i, hi, -⟩ := Sp.mx_all j w h1 h2 hw I hI
   exact ⟨i, (X.nd.locs_mem _ _ _).1 hi⟩
 
+/- English proof (translation)
+Establish `hc : Continuous (ι.symm.toRingHom.comp (iotaO D.nd D.naut i))`. Use `continuous_qCast (D.nd.w_l i) ι (GlobalTheory.TypeLeaf.iotaOQ_continuous_injective D i).1` as an intermediate fact. Rewrite `this` using `[← hι]`. Conclude with `this`. Establish `hfin : (placesOver D.host.E (D.what₂.places.resChar (D.nd.w i)) ∪ ⋃ k, placesOver D.host.E (D.host.g k)).Finite` using `(Formalism.L2.TwC.placesOver_finite' _ _ (D.what₂.places.resChar_prime _).ne_zero).union (Set.finite_iUnion fun k => Formalism.L2.TwC.placesOver_finite' _ _ (D.host.g_prime k).ne_zero)`.
+
+Establish `hall` using `Filter.eventually_cofinite.1 (hR.2.2.and hfin.eventually_cofinite_notMem)`. Rewrite using `[← Matrix.charpoly_map]`. Use `GlobalTheory.TypeLeaf.charpoly_eq_of_dense _ (Qbar (D.what₂.places.resChar (D.nd.w i))) D.R.r (fun g => ((ρ g : GL (Fin D.R.r) (D.nd.O i)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).map (ι.symm.toRingHom.comp (iotaO D.nd D.naut i))) (fun g => ((r g : GL (Fin D.R.r) (Qbar (D.wha …` and prove the remaining obligations. Introduce and unpack `y ⟨w, hw, hs, B, hB, hy⟩`. Rewrite `hw` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not]`.
+
+Take `⟨h1, h2⟩` from `hw`. Simplify using `only [Set.mem_union, Set.mem_iUnion, not_or, not_exists] at h2`. Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises. Establish `e : ι.toRingHom.comp (ι.symm.toRingHom.comp (iotaO D.nd D.naut i)) = iotaO D.nd D.naut i`. Use extensionality with `z`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.charpoly_map, Polynomial.map_map, e, h1 B y hB hy, (hr.2.2 w h2.1).2.2 (hπ.1.unr w h2.2) B y hB hy, hP.2.2 w hs, hW w, hπ.2 w hs]`.
+-/
 theorem charpoly_lattice {D : D7} (hC : GlobalTheory.RowTie.ChebSplit D.nd) {Rw : RowSide D} (i : D.nd.Loc)
     (ι : Qbar (D.what₂.places.resChar (D.nd.w i)) ≃+* ℂ) (hι : D.naut.iotaQC i = qCast (D.nd.w_l i) ι)
     {σ : D.what₂.FT} (hW : ∀ w, D.naut.locW i σ w = Rw.locR σ w) {Sig : List (Formalism.BasicNotions.Part D.naut.CG)}
@@ -108,6 +132,15 @@ theorem charpoly_lattice {D : D7} (hC : GlobalTheory.RowTie.ChebSplit D.nd) {Rw 
   rw [Matrix.charpoly_map, Polynomial.map_map, e, h1 B y hB hy, (hr.2.2 w h2.1).2.2 (hπ.1.unr w h2.2) B y hB hy,
     hP.2.2 w hs, hW w, hπ.2 w hs]
 
+/- English proof (translation)
+Use `resTied_of_plSide hI fun w hw σ π r hg ⟨j, h1, h2, hσ⟩ hπ hr => ?_` and prove the remaining obligations. Take `⟨i, rfl, rfl⟩` from `hL j h1 h2 σ hσ w hw`. Take `⟨Sig, ρ, hP, hR, -⟩` from `hrep i σ hσ hg`. Take `⟨hss, hcp⟩` from `D.rbar_tie i σ Sig ρ hP hR`. Use `⟨hss, fun g => ?_⟩` and prove the remaining obligations.
+
+Set `φ : D.nd.O i →+* Zbar (D.what₂.places.resChar (D.nd.w i))` to `((Pl.ι (D.nd.w i)).symm.toRingHom.comp (iotaO D.nd D.naut i)).codRestrict _ fun y => (Pl.plB_eq _ _).1 (hk i y).1`. Use `⟨((ρ g : GL (Fin D.R.r) (D.nd.O i)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).charpoly.map φ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.map_map]`. Conclude with `charpoly_lattice hC i _ (hι i) (hW i σ) hP hR hπ hr g`. Apply `Polynomial.map_injective (fbCast (D.nd.w_l i) (D.what₂.places.resChar_prime (D.nd.w i)) (D.nd.lPrime i).out).toRingHom (RingEquiv.injective _)` to reduce the goal to its premises.
+
+Rewrite using `[hcp g, Polynomial.map_map, Polynomial.map_map]`. Use `congr 1`. Use extensionality with `y`. Take `⟨h, e⟩` from `hk i y`. Use `Eq.trans ?_ e` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `fbCast _ _ _ (Pl.plκ (D.nd.w i) (IsLocalRing.residue (Pl.plB (D.nd.w i)) ⟨_, _⟩)) = _`. Use `congr 4`. Conclude with `(Pl.ι (D.nd.w i)).apply_symm_apply _`.
+-/
 theorem resTied_of_lattices {D : D7} (hC : GlobalTheory.RowTie.ChebSplit D.nd) (Rw : RowSide D) (Pl : PlSide D) (hI : IotaOk D Pl)
     (hι : ∀ i : D.nd.Loc, D.naut.iotaQC i = qCast (D.nd.w_l i) (Pl.ι (D.nd.w i)))
     (hk : ∀ (i : D.nd.Loc) (y : D.nd.O i), ∃ h : iotaO D.nd D.naut i y ∈ Pl.plB (D.nd.w i),
@@ -144,6 +177,9 @@ def plL {D : D7} (L : LocAll (lay0 D)) (Pl : PlSide D) : PlSide (withLoc L) := �
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `resTied_of_lattices (D := withLoc L) hC Rw (plL L A.pl) A.iota Au.iotaQC Au.kFbar (fun i σ w => (Au.locW i σ w).trans (hRw σ w).symm) (fun _ h1 h2 _ hσ _ hw => exists_loc Sp hlam h1 h2 hσ hw) hrep`.
+-/
 theorem resTied_withLoc (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (M : MtFam D) (C : NChoice D)
     (tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E) (big : D.what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 D))
     (Sp : NdSpec A.pl M C big L.X L.T) (Au : AutSpec A M tup Sp.iq L.Y L.C) (hC : GlobalTheory.RowTie.ChebSplit D.nd)
@@ -155,6 +191,9 @@ theorem resTied_withLoc (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨D₀, cf, jE, A, _, _, _, _, _, _, _, _, _, _, _, M, C, tp, _, _, big, L, Sp, Au, _, rfl⟩` from `b`. Conclude with `resTied_withLoc D₀ cf jE A M C tp.tup big L Sp Au (GlobalTheory.ChebSplitDense.chebSplit hC D₀.nd) hlam hrep Rw fun σ w => congrFun (congrFun (eq_of_heq hRw) σ) w`.
+-/
 theorem resTied_built (hC : GlobalTheory.Published.ChebotarevDegreeOne) {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (b : NBuilt hL D)
     (hlam : GlobalTheory.NRows.LamUsed D) (hrep : GlobalTheory.RowTie.RowRepAtG D) (Rw : RowSide D) (hRw : HEq Rw.locR b.A.row.locR) :
     ResTied D Rw := by
@@ -162,16 +201,35 @@ theorem resTied_built (hC : GlobalTheory.Published.ChebotarevDegreeOne) {hL : Gl
   exact resTied_withLoc D₀ cf jE A M C tp.tup big L Sp Au (GlobalTheory.ChebSplitDense.chebSplit hC D₀.nd) hlam hrep Rw
     fun σ w => congrFun (congrFun (eq_of_heq hRw) σ) w
 
+/- English proof (translation)
+The claim follows from `resTied_built hC b hlam (GlobalTheory.RowRepOcc.rowRepAtG_of_rowPoint D hA.tie0 hA.a2 hA.a5 h42 hρ hA.gsp hP) Rw hRw`.
+-/
 theorem resTied_built_of_rows (hC : GlobalTheory.Published.ChebotarevDegreeOne) {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (b : NBuilt hL D)
     (hlam : GlobalTheory.NRows.LamUsed D) (hA : GlobalTheory.NRows.RowsA D) (h42 : SumRepresentations.Conclusion42 D) (hρ : GlobalDatumResidualRepCondition D)
     (hP : GlobalTheory.SplitRead.RowPoint D.nd D.naut) (Rw : RowSide D) (hRw : HEq Rw.locR b.A.row.locR) : ResTied D Rw :=
   resTied_built hC b hlam (GlobalTheory.RowRepOcc.rowRepAtG_of_rowPoint D hA.tie0 hA.a2 hA.a5 h42 hρ hA.gsp hP) Rw hRw
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨r, hr⟩`.
+-/
 theorem exists_galRep_cast {D : D7} {a p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) {ι : Qbar p ≃+* ℂ} {π : D.naut.CG a}
     {r : GalE D →* GL (Fin a) (Qbar p)} (hr : IsGaloisRepOf D π p ι r) : ∃ r', IsGaloisRepOf D π q (qCast h ι) r' := by
   subst h
   exact ⟨r, hr⟩
 
+/- English proof (translation)
+Use `resTied_of_plSide hI fun w hw σ π r hg ⟨j, h1, h2, hσ⟩ hπ hr => ?_` and prove the remaining obligations. Take `⟨i, P, x, rfl, hPσ, hx⟩` from `hL j h1 h2 σ hσ w hw`. Take `⟨r', hr'⟩` from `exists_galRep_cast (D.nd.w_l i) hr`. Rewrite `hr'` using `[← hι i]`. Take `⟨ρ, hR⟩` from `lattice_of_point D.nd D.naut hLaw hO hXi i x P hx π (fun v hv => by rw [hpair i σ P hPσ v hv, hW, hπ.2 v hv]) hπ.1.unr r' hr'.1 hr'.2.1 (fun v hv hu B s hB hs => by rw [Matrix.charpoly_map]; exact (hr'.2.2 v hv).2.2 hu B s hB hs)`.
+
+Establish `hr1 : 1 ≤ D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hP : HasParamW D.nd D.naut i σ [⟨D.R.r, π, 1⟩]` using `⟨by simp [hr1], by simp [rankIso], fun v hv => by rw [GlobalTheory.RowRepOcc.isoLoc_one, hW, hπ.2 v hv]⟩`. Take `⟨hss, hcp⟩` from `D.rbar_tie i σ _ ρ hP hR`. Use `⟨hss, fun g => ?_⟩` and prove the remaining obligations. Set `φ : D.nd.O i →+* Zbar (D.what₂.places.resChar (D.nd.w i))` to `((Pl.ι (D.nd.w i)).symm.toRingHom.comp (iotaO D.nd D.naut i)).codRestrict _ fun y => (Pl.plB_eq _ _).1 (hk i y).1`. Use `⟨((ρ g : GL (Fin D.R.r) (D.nd.O i)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).charpoly.map φ, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.map_map]`. Conclude with `charpoly_lattice hC i _ (hι i) (hW i σ) hP hR hπ hr g`. Apply `Polynomial.map_injective (fbCast (D.nd.w_l i) (D.what₂.places.resChar_prime (D.nd.w i)) (D.nd.lPrime i).out).toRingHom (RingEquiv.injective _)` to reduce the goal to its premises. Rewrite using `[hcp g, Polynomial.map_map, Polynomial.map_map]`. Use `congr 1`.
+
+Use extensionality with `y`. Take `⟨h, e⟩` from `hk i y`. Use `Eq.trans ?_ e` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fbCast _ _ _ (Pl.plκ (D.nd.w i) (IsLocalRing.residue (Pl.plB (D.nd.w i)) ⟨_, _⟩)) = _`. Use `congr 4`.
+
+Conclude with `(Pl.ι (D.nd.w i)).apply_symm_apply _`.
+-/
 theorem resTied_of_points {D : D7} (hC : GlobalTheory.RowTie.ChebSplit D.nd) (Rw : RowSide D) (Pl : PlSide D) (hI : IotaOk D Pl)
     (hι : ∀ i : D.nd.Loc, D.naut.iotaQC i = qCast (D.nd.w_l i) (Pl.ι (D.nd.w i)))
     (hk : ∀ (i : D.nd.Loc) (y : D.nd.O i), ∃ h : iotaO D.nd D.naut i y ∈ Pl.plB (D.nd.w i),
@@ -214,6 +272,11 @@ theorem resTied_of_points {D : D7} (hC : GlobalTheory.RowTie.ChebSplit D.nd) (Rw
     congr 4
     exact (Pl.ι (D.nd.w i)).apply_symm_apply _
 
+/- English proof (translation)
+Take `⟨J⟩` from `GlobalTheory.T.nonempty_join_of_agreement hH hD hL D X.P X.X X.agree`. Establish `hRM : ∀ i : D.nd.Loc, Nonempty (GlobalTheory.NPin.RowMod D X.P.rep (D.nd.j i))` using `fun i => ⟨J.rowM i⟩`. Take `⟨S, hT, hLaws, -⟩` from `GlobalTheory.T.exists_true_reading_with_laws hP.fin hL D X.P hRM`. Establish `hU` using `GlobalTheory.RowUnitProof.rowUnit_of_isTrue hL D X.P hRM S hT`. Establish `hPR` using `GlobalTheory.T.pair_reading_of_join hP.bz hL D X.P J S hT hU`.
+
+Conclude with `⟨GlobalTheory.RowLaws.paramLaws_of_tie X.P.T, xiOverO D X.P.cf X.P.C X.P.tp X.P.chr X.P.val (GlobalTheory.AutomorphismSplitting.tieAut_and_split hP.fin hL D X.P).1 (GlobalTheory.T.adm2_of_prints_localLanglands hP hL D X.P) (GlobalTheory.ChebSplitDense.chebSplit hP.cheb D.nd), Glo …`.
+-/
 theorem points_of_tied (hP : GlobalTheory.NRows.Hypotheses₂) (hH : GlobalTheory.Published.HarishChandraFinite) (hD : GlobalTheory.Published.CuspRapidDecay)
     {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (X : GlobalTheory.NRows.Tied hL D) :
     GlobalTheory.ThetaExh.ParamLaws D.nd D.naut ∧ GlobalTheory.SplitRead.XiOverO D.nd D.naut ∧ (∀ i, GlobalTheory.RowTie.PairLift D.nd D.naut i) ∧
@@ -233,6 +296,11 @@ theorem points_of_tied (hP : GlobalTheory.NRows.Hypotheses₂) (hH : GlobalTheor
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4⟩` from `points_of_tied hP hH hD X`. Establish `hpt : ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ σ, D.what₂.isot j σ ≠ ⊥ → ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → ∃ (i : D.nd.Loc) (P : D.naut.AV i) (x : D.nd.X i), D.nd.w i = w ∧ GlobalTheory.ThetaExh.Pairs D.nd D.naut i σ P ∧ D.naut.ptV i P = some x`. Introduce `j h1 h2 σ hσ w hw`. Take `⟨i, rfl, rfl⟩` from `hloc w hw j h1 h2 σ hσ`. Take `⟨i', P, x, -, e, h⟩` from `a4 i σ (exists_thetaT_ne hd h1 h2 hσ (by rw [D.nd.mu_w i]; exact hpos _ hw _ h1 h2 σ hσ))`.
+
+Conclude with `⟨i', P, x, e, h⟩`. Use `clear X hd hpos hloc a4`. Take `⟨D₀, cf, jE, A, _, _, _, _, _, _, _, _, _, _, _, M, C, tp, _, _, big, L, Sp, Au, _, rfl⟩` from `b`. Conclude with `resTied_of_points (D := withLoc L) (GlobalTheory.ChebSplitDense.chebSplit hP.cheb D₀.nd) Rw (plL L A.pl) A.iota Au.iotaQC Au.kFbar (fun i σ w => (Au.locW i σ w).trans (congrFun (congrFun (eq_of_heq hRw) σ) w).symm) a1 hO a2 a3 hpt`.
+-/
 theorem resTied_built_of_tied (hP : GlobalTheory.NRows.Hypotheses₂) (hH : GlobalTheory.Published.HarishChandraFinite) (hD : GlobalTheory.Published.CuspRapidDecay)
     {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (b : NBuilt hL D) (X : GlobalTheory.NRows.Tied hL D) (hO : SumRepresentations.hypO D) (hd : DV.LamDef D)
     (hpos : ∀ v, TwistedAt D v → ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ σ, D.what₂.isot j σ ≠ ⊥ → 0 < D.what₂.lamP (D.what₂.muTw v) j σ)
@@ -260,6 +328,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP hL`. Use `EvG.imp (Model.AtMem.and (Model.AtMem.and (GlobalTheory.T.exists_tied_realization_place hP hL) (GlobalTheory.T.twisted_place_weight_positive hP hL)) (GlobalTheory.T.twisted_place_local_index hP hL)) fun _ _ _ _ _ hK => large₂.imp hK fun B f T _ H kp w Z Wt p0 t nch n xd c hE hX h …` and prove the remaining obligations. Take `⟨⟨⟨X, -⟩, hpos⟩, hloc⟩` from `H kp w Z Wt p0 t nch n xd c hE hX hp`. Take `⟨e⟩` from `hE`. Conclude with `resTied_built_of_tied hP.what₂ hP.hc hP.decay c.a.nt.toNBuilt X (e : NMore (D := (w.st Z).toD7) c.row t.r.z.geo xd).large.1 t.r.Y.lam hpos hloc Rw hRw`.
+-/
 theorem resTied_atMem : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c => ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.EigTie.ResTied (w.D Z) Rw := by
   intro hP hL
   refine EvG.imp (Model.AtMem.and (Model.AtMem.and (GlobalTheory.T.exists_tied_realization_place hP hL) (GlobalTheory.T.twisted_place_weight_positive hP hL)) (GlobalTheory.T.twisted_place_local_index hP hL))

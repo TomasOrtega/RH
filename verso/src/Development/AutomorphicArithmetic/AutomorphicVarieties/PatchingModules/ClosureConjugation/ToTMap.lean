@@ -4,11 +4,35 @@ import Mathlib.LinearAlgebra.TensorProduct.RightExactness
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.CA UpperTheory.V.Pa Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h` using `toT_ofT (A := B) (S := C) (1 ⊗ₜ y)`. Rewrite `h` using `[ofT_tmul, one_smul]`. Then use the resulting hypothesis.
+-/
 private theorem toT_map {B G : Type} [CommRing B] [Group G] (C : Type) [CommRing C] [Algebra B C]
     (y : MonoidAlgebra B G) : toT B G C (MonoidAlgebra.mapRingHom G (algebraMap B C) y) = 1 ⊗ₜ y := by
   have h := toT_ofT (A := B) (S := C) (1 ⊗ₜ y)
   rwa [ofT_tmul, one_smul] at h
 
+/- English proof (translation)
+Introduce `n B G E _ _ _ _ D DE π C _ _ hπ hD`. Set `m : C ⊗[B] MonoidAlgebra B G →ₐ[C] C ⊗[B] E` to `Algebra.TensorProduct.map (AlgHom.id C C) π`. Establish `hm : ∀ x, m x = π.toLinearMap.lTensor C x` using `fun x => by`. Proceed by induction on `x with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul s y => rfl`. Establish `h2 : ∀ y, m (toT B G C (MonoidAlgebra.mapRingHom G (algebraMap B C) y)) = 1 ⊗ₜ π y` using `fun y => by`. Rewrite using `[toT_map]`. Both sides reduce to the same expression.
+
+Use `⟨m.comp (toT B G C), fun w => ?_, h2, fun y => ⟨fun hy => ?_, fun hy => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `LinearMap.lTensor_surjective C (g := π.toLinearMap) hπ w`. Conclude with `⟨ofT B G C x, by rw [AlgHom.comp_apply, toT_ofT, hm, hx]⟩`. Rewrite `hy` using `[AlgHom.comp_apply, hm]`. Take `⟨x, hx⟩` from `(lTensor_exact C (LinearMap.exact_subtype_ker_map π.toLinearMap) hπ _).1 hy`.
+
+Rewrite using `[← ofT_toT (A := B) y, ← hx]`. Use `clear hx`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add]`.
+
+Conclude with `add_mem ha hb`. Consider the case `tmul s z`. Rewrite using `[LinearMap.lTensor_tmul, ofT_tmul, Algebra.smul_def]`. Conclude with `TwoSidedIdeal.mul_mem_left _ _ _ (TwoSidedIdeal.subset_span ⟨z, z.2, rfl⟩)`. Establish `hle : TwoSidedIdeal.span (MonoidAlgebra.mapRingHom G (algebraMap B C) '' {z | π z = 0}) ≤ TwoSidedIdeal.ker (m.comp (toT B G C))`.
+
+Rewrite using `[TwoSidedIdeal.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `(TwoSidedIdeal.mem_ker _).2 ((h2 z).trans ?_)` and prove the remaining obligations. Rewrite using `[show π z = 0 from hz, TensorProduct.tmul_zero]`. Conclude with `(TwoSidedIdeal.mem_ker _).1 (hle hy)`.
+
+Rewrite using `[d_toDet_map, ← hD]`. Use `Det.ext' fun S _ _ x => ?_` and prove the remaining obligations. Use `letI : Algebra B S := ((algebraMap C S).comp (algebraMap B C)).toAlgebra`. Use `haveI : IsScalarTower B C S := .of_algebraMap_eq fun _ => rfl`. Establish `h : Det.cancel B E C S (Algebra.TensorProduct.map (AlgHom.id S S) (m.comp (toT B G C)) x) = Algebra.TensorProduct.map (AlgHom.id S S) π (Det.cancel B (MonoidAlgebra B G) C S (Algebra.TensorProduct.map (AlgHom.id S S) (toT B G C) x))`.
+
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul s y`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, AlgHom.comp_apply]`.
+
+Generalize the expression as in `toT B G C y = w`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [TensorProduct.tmul_add, map_add, ha, hb]`. Consider the case `tmul c z => simp [m, Det.cancel_tmul]`.
+
+Conclude with `congrArg (DE.D S) h`.
+-/
 theorem UpperTheory.V.Pa.tens :
     ∀ {n : ℕ} {B G E : Type} [CommRing B] [Group G] [Ring E] [Algebra B E] (D : GDet n B G) (DE : Det n B E) (π : MonoidAlgebra B G →ₐ[B] E) (C : Type) [CommRing C] [Algebra B C], Function.Surjective π → DE.pull π = D.toDet → ∃ ι : MonoidAlgebra C G →ₐ[C] C ⊗[B] E, Function.Surjective ι ∧ (∀ y, ι (MonoidAlgebra.mapRingHom G (algebraMap B C) y) = 1 ⊗ₜ π y) ∧ (∀ y, ι y = 0 ↔ y ∈ TwoSidedIdeal.span (MonoidAlgebra.mapRingHom G (algebraMap B C) '' {z | π z = 0})) ∧ (DE.baseChange C).pull ι = (D.map (algebraMap B C)).toDet := by
   intro n B G E _ _ _ _ D DE π C _ _ hπ hD

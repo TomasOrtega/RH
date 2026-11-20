@@ -2,6 +2,19 @@ import Mathlib
 
 namespace GlobalTheory.LeftTransversalSum
 
+/- English proof (translation)
+Introduce `h hh`. Establish `hex : ∀ s : G, ∃ t : G, s ∈ S → t ∈ S ∧ t⁻¹ * (h * s) ∈ N`. Introduce `s`. Distinguish the cases in `hs : s ∈ S`. Take `⟨t, ht, -⟩` from `huniq _ (H.mul_mem hh (hS s hs))`.
+
+Conclude with `⟨t, fun _ => ht⟩`. Conclude with `⟨s, fun h' => absurd h' hs⟩`. Use `choose σ hσ using hex`. Establish `uniq : ∀ x ∈ H, ∀ t ∈ S, ∀ t' ∈ S, t⁻¹ * x ∈ N → t'⁻¹ * x ∈ N → t = t'` using `fun x hx t ht t' ht' h1 h2 => (huniq x hx).unique ⟨ht, h1⟩ ⟨ht', h2⟩`. Use `Finset.sum_nbij σ (fun s hs => (hσ s hs).1) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `s hs s' hs' he`. Establish `n1` using `(hσ s hs).2`. Establish `n2` using `(hσ s' hs').2`. Rewrite `n2` using `[← he]`. Establish `hss : s⁻¹ * s' ∈ N`.
+
+Use `N.mul_mem (N.inv_mem n1) n2 using 1` and compare the differences between its conclusion and the goal. Use `group`. Conclude with `uniq s' (hS s' hs') s hs s' hs' hss (by simp)`. Introduce `t ht`. Take `⟨s, ⟨hs, hsN⟩, -⟩` from `huniq (h⁻¹ * t) (H.mul_mem (H.inv_mem hh) (hS t ht))`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Use `uniq (h * s) (H.mul_mem hh (hS s hs)) _ (hσ s hs).1 t ht (hσ s hs).2 ?_` and prove the remaining obligations. Use `N.inv_mem hsN using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce `s hs`.
+
+Establish `e` using `hf (σ s) ((σ s)⁻¹ * (h * s)) (hσ s hs).2`. Rewrite `e` using `[mul_inv_cancel_left]`. Conclude with `e`.
+-/
 theorem sum_mul_left_transversal {G M : Type} [Group G] [AddCommMonoid M] (H N : Subgroup G)
     (S : Finset G) (hS : ∀ s ∈ S, s ∈ H) (huniq : ∀ h ∈ H, ∃! s : G, s ∈ S ∧ s⁻¹ * h ∈ N)
     (f : G → M) (hf : ∀ (g n : G), n ∈ N → f (g * n) = f g) :

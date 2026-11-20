@@ -14,12 +14,31 @@ section GTLipPf
 
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
+/- English proof (translation)
+Unfold `rho`. Conclude with `Real.smoothTransition.nonneg _`.
+-/
 private theorem rho_nonneg' (x : ℝ) : 0 ≤ rho x := by
   unfold rho; exact Real.smoothTransition.nonneg _
 
+/- English proof (translation)
+Unfold `rho`. Conclude with `Real.smoothTransition.le_one _`.
+-/
 private theorem rho_le_one' (x : ℝ) : rho x ≤ 1 := by
   unfold rho; exact Real.smoothTransition.le_one _
 
+/- English proof (translation)
+Take `⟨K, hK⟩` from `(Real.smoothTransition.contDiff (n := 1)).contDiffOn.exists_lipschitzOnWith (s := Set.Icc (0 : ℝ) 1) one_ne_zero (convex_Icc 0 1) isCompact_Icc`. Establish `hc : ∀ x : ℝ, Real.smoothTransition x = Real.smoothTransition (max 0 (min 1 x))`. Introduce `x`. Break down `le_total x 0 with hx | hx` into its components or cases. Rewrite using `[Real.smoothTransition.zero_of_nonpos hx, Real.smoothTransition.zero_of_nonpos]`.
+
+Conclude with `max_le le_rfl (min_le_of_right_le hx)`. Break down `le_total x 1 with hx1 | hx1` into its components or cases. Rewrite using `[min_eq_right hx1, max_eq_right hx]`. Rewrite using `[Real.smoothTransition.one_of_one_le hx1, Real.smoothTransition.one_of_one_le]`. Rewrite using `[min_eq_left hx1, max_eq_right zero_le_one]`.
+
+Establish `hcl : ∀ x y : ℝ, |max 0 (min 1 x) - max 0 (min 1 y)| ≤ |x - y|`. Introduce `x y`. Establish `h1` using `abs_max_sub_max_le_abs (min 1 x) (min 1 y) (0 : ℝ)`. Rewrite `h1` using `[max_comm (min 1 x), max_comm (min 1 y)]`. Establish `h2` using `abs_min_sub_min_le_max (1 : ℝ) x 1 y`.
+
+Rewrite `h2` using `[sub_self, abs_zero, max_eq_right (abs_nonneg _)]`. Conclude with `h1.trans h2`. Use `⟨K / 3, by positivity, fun x y => ?_⟩` and prove the remaining obligations. Unfold `rho`. Rewrite using `[hc, hc ((4 - y) / 3)]`.
+
+Establish `hm : ∀ t : ℝ, max 0 (min 1 t) ∈ Set.Icc (0 : ℝ) 1` using `fun t => ⟨le_max_left _ _, max_le zero_le_one (min_le_left _ _)⟩`. Use `hK.dist_le_mul _ (hm ((4 - x) / 3)) _ (hm ((4 - y) / 3))` as an intermediate fact. Rewrite `this` using `[Real.dist_eq, Real.dist_eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (4 - x) / 3 - (4 - y) / 3 = -(x - y) / 3 by ring, abs_div, abs_neg]`.
+
+Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_lipschitz_const_rho : ∃ K : ℝ, 0 ≤ K ∧ ∀ x y : ℝ, |rho x - rho y| ≤ K * |x - y| := by
   obtain ⟨K, hK⟩ := (Real.smoothTransition.contDiff (n := 1)).contDiffOn.exists_lipschitzOnWith
     (s := Set.Icc (0 : ℝ) 1) one_ne_zero (convex_Icc 0 1) isCompact_Icc
@@ -53,6 +72,11 @@ private theorem exists_lipschitz_const_rho : ∃ K : ℝ, 0 ≤ K ∧ ∀ x y : 
       norm_num
       ring
 
+/- English proof (translation)
+Use `letI := M.toSeminormedAddCommGroup hM`. Use `letI := M.toInnerProductSpace hM`. Establish `h1` using `inner_mul_inner_self_le (𝕜 := ℂ) u v`. Establish `e : ∀ x y : n → ℂ, (inner ℂ x y : ℂ) = star x ⬝ᵥ M *ᵥ y` using `fun x y => by show (M *ᵥ y) ⬝ᵥ star x = _`. Conclude with `dotProduct_comm _ _`.
+
+Establish `e4 : ‖(inner ℂ v u : ℂ)‖ = ‖(inner ℂ u v : ℂ)‖` using `norm_inner_symm _ _`. Rewrite `h1` using `[e4, e u v, e u u, e v v]`. Simplify `h1` using `[sq]`.
+-/
 private theorem norm_inner_sq_le_of_posSemidef {n : Type} [Fintype n] (M : Matrix n n ℂ) (hM : M.PosSemidef)
     (u v : n → ℂ) :
     ‖star u ⬝ᵥ M *ᵥ v‖ ^ 2 ≤ (star u ⬝ᵥ M *ᵥ u).re * (star v ⬝ᵥ M *ᵥ v).re := by
@@ -66,15 +90,27 @@ private theorem norm_inner_sq_le_of_posSemidef {n : Type} [Fintype n] (M : Matri
   rw [e4, e u v, e u u, e v v] at h1
   simpa [sq] using h1
 
+/- English proof (translation)
+Simplify using `[qR, mat_smul, Matrix.smul_mulVec, dotProduct_smul, Finset.mul_sum]`.
+-/
 private theorem qR_smul_left (h : HS L N) (z : VR L N) (c : ℝ) : qR (c • h) z = c * qR h z := by
   simp [qR, mat_smul, Matrix.smul_mulVec, dotProduct_smul, Finset.mul_sum]
 
+/- English proof (translation)
+Simplify using `[qR, mat_add, Matrix.add_mulVec, dotProduct_add, Finset.sum_add_distrib]`.
+-/
 private theorem qR_add_left (h k : HS L N) (z : VR L N) : qR (h + k) z = qR h z + qR k z := by
   simp [qR, mat_add, Matrix.add_mulVec, dotProduct_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[qR, mat_zero]`.
+-/
 private theorem qR_zero_left (z : VR L N) : qR (0 : HS L N) z = 0 := by
   simp [qR, mat_zero]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [qR_zero_left]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, qR_add_left, ih, Finset.sum_insert ha]`.
+-/
 private theorem qR_finset_sum_left {ι : Type} (S : Finset ι) (f : ι → HS L N) (z : VR L N) :
     qR (∑ i ∈ S, f i) z = ∑ i ∈ S, qR (f i) z := by
   classical
@@ -82,6 +118,11 @@ private theorem qR_finset_sum_left {ι : Type} (S : Finset ι) (f : ι → HS L 
   | empty => simp [qR_zero_left]
   | insert a S ha ih => rw [Finset.sum_insert ha, qR_add_left, ih, Finset.sum_insert ha]
 
+/- English proof (translation)
+Unfold `qR`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: mat (rk p v) w = vecMulVec (mat p w *ᵥ toR v w) (star (mat p w *ᵥ toR v w))` using `rfl`. Rewrite using `[this, Matrix.vecMulVec_mulVec, op_smul_eq_smul, dotProduct_smul, smul_eq_mul]`. Establish `hd : star (mat p w *ᵥ toR v w) ⬝ᵥ z w = (starRingEnd ℂ) (star (z w) ⬝ᵥ mat p w *ᵥ toR v w)`.
+
+Rewrite using `[starRingEnd_apply, Matrix.star_dotProduct]`. Rewrite using `[hd, Complex.conj_mul']`. Use `norm_cast`.
+-/
 private theorem qR_rk_eq_sum_norm_sq_inner (p : HS L N) (v : UpperTheory.V.KT.Lat L N) (z : VR L N) :
     qR (rk p v) z = ∑ w, ‖star (z w) ⬝ᵥ mat p w *ᵥ toR v w‖ ^ 2 := by
   unfold qR
@@ -94,6 +135,13 @@ private theorem qR_rk_eq_sum_norm_sq_inner (p : HS L N) (v : UpperTheory.V.KT.La
   rw [hd, Complex.conj_mul']
   norm_cast
 
+/- English proof (translation)
+Establish `h1 : zed s p = ∑ v ∈ S, rho (q p v / s)` using `by show (∑ᶠ v, rho (q p v / s)) = _`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Conclude with `hv (hS v hvS)`.
+
+Establish `h2 : (∑ᶠ v, rho (q p v / s) • rk p v) = ∑ v ∈ S, rho (q p v / s) • rk p v`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Conclude with `hv (by simp [hS v hvS])`.
+
+Establish `h3 : term s p = (s ^ 2 * zed s p)⁻¹ • ∑ᶠ v, rho (q p v / s) • rk p v` using `rfl`. Rewrite using `[h3, h2, h1, qR_smul_left, qR_finset_sum_left]`. Use `congr 1`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[qR_smul_left, qR_rk_eq_sum_norm_sq_inner]`.
+-/
 private theorem qR_term_eq_normalized_weighted_sum (s : ℝ) (p : HS L N) (z : VR L N) (S : Finset (UpperTheory.V.KT.Lat L N))
     (hS : ∀ v, v ∉ S → rho (q p v / s) = 0) :
     qR (term s p) z = (s ^ 2 * ∑ v ∈ S, rho (q p v / s))⁻¹ *
@@ -115,10 +163,18 @@ private theorem qR_term_eq_normalized_weighted_sum (s : ℝ) (p : HS L N) (z : V
   refine Finset.sum_congr rfl fun v _ => ?_
   rw [qR_smul_left, qR_rk_eq_sum_norm_sq_inner]
 
+/- English proof (translation)
+Establish `hp' : ∀ w, (mat p w).PosDef` using `hp`. Conclude with `Finset.sum_nonneg fun w _ => (hp' w).posSemidef.re_dotProduct_nonneg (y w)`.
+-/
 private theorem qR_nonneg_VR_of_mem_Pos (p : HS L N) (hp : p ∈ Pos L N) (y : VR L N) : 0 ≤ qR p y := by
   have hp' : ∀ w, (mat p w).PosDef := hp
   exact Finset.sum_nonneg fun w _ => (hp' w).posSemidef.re_dotProduct_nonneg (y w)
 
+/- English proof (translation)
+Establish `hp' : ∀ w, (mat p w).PosDef` using `hp`. Establish `hX : ∀ w, 0 ≤ (star (z w) ⬝ᵥ mat p w *ᵥ z w).re` using `fun w => (hp' w).posSemidef.re_dotProduct_nonneg (z w)`. Establish `hY : ∀ w, 0 ≤ (star (toR v w) ⬝ᵥ mat p w *ᵥ toR v w).re` using `fun w => (hp' w).posSemidef.re_dotProduct_nonneg (toR v w)`. Use `show _ ≤ (∑ w, (star (z w) ⬝ᵥ mat p w *ᵥ z w).re) * ∑ w, (star (toR v w) ⬝ᵥ mat p w *ᵥ toR v w).re`. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Use `(norm_inner_sq_le_of_posSemidef _ (hp' w).posSemidef _ _).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (Finset.single_le_sum (f := fun w => (star (toR v w) ⬝ᵥ mat p w *ᵥ toR v w).re) (fun w _ => hY w) (Finset.mem_univ w)) (hX w)`.
+-/
 private theorem sum_norm_sq_inner_mat_toR_le_qR_mul_q (p : HS L N) (hp : p ∈ Pos L N) (z : VR L N)
     (v : UpperTheory.V.KT.Lat L N) :
     ∑ w, ‖star (z w) ⬝ᵥ mat p w *ᵥ toR v w‖ ^ 2 ≤ qR p z * q p v := by
@@ -136,6 +192,9 @@ private theorem sum_norm_sq_inner_mat_toR_le_qR_mul_q (p : HS L N) (hp : p ∈ P
     (Finset.single_le_sum (f := fun w => (star (toR v w) ⬝ᵥ mat p w *ᵥ toR v w).re)
       (fun w _ => hY w) (Finset.mem_univ w)) (hX w)
 
+/- English proof (translation)
+The claim follows from `|∑ w, ‖star (z w) ⬝ᵥ mat k w *ᵥ toR v w‖ ^ 2 - ∑ w, ‖star (z w) ⬝ᵥ mat h w *ᵥ toR v w‖ ^ 2| ≤ 5 * δ * (qR h z * q h v) := by have hp' : ∀ w, (mat h w).PosDef := hp have hX : ∀ w, 0 ≤ (star (z w) ⬝ᵥ mat h w *ᵥ z w).re := fun w => (hp' w).posSemidef.re_dotProduct_nonneg (z w) have …`.
+-/
 private theorem place_form_perturbation_bound_of_sq_le (h k : HS L N) (hp : h ∈ Pos L N) (δ : ℝ) (hδ0 : 0 ≤ δ)
     (hδ : δ ≤ 1 / 4)
     (h5 : ∀ (w : InfinitePlace L) (u v : Fin N → ℂ),
@@ -200,6 +259,11 @@ private theorem place_form_perturbation_bound_of_sq_le (h k : HS L N) (hp : h �
     (Finset.single_le_sum (f := fun w => (star (toR v w) ⬝ᵥ mat h w *ᵥ toR v w).re)
       (fun w _ => hY w) (Finset.mem_univ w)) (hX w)
 
+/- English proof (translation)
+Establish `h0 : toR (0 : UpperTheory.V.KT.Lat L N) = 0`. Use function extensionality and compare the values at `w a`. Simplify using `[toR]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`.
+
+Establish `: mat (rk p 0) w = mat 0 w` using `by show vecMulVec (mat p w *ᵥ toR 0 w) (star (mat p w *ᵥ toR 0 w)) = _`. Simplify using `[h0, mat_zero]`. Unfold `mat at this`. Conclude with `this`.
+-/
 private theorem rk_zero_right_of_hs (p : HS L N) : rk p 0 = 0 := by
   have h0 : toR (0 : UpperTheory.V.KT.Lat L N) = 0 := by
     funext w a
@@ -212,6 +276,9 @@ private theorem rk_zero_right_of_hs (p : HS L N) : rk p 0 = 0 := by
   unfold mat at this
   exact this
 
+/- English proof (translation)
+The claim follows from `|(s ^ 2 * FinalFormK)⁻¹ * Ak - (s ^ 2 * Zh)⁻¹ * Ah| ≤ (160 * K + 40) * C1 * δ / s * Q := by have e : (s ^ 2 * FinalFormK)⁻¹ * Ak - (s ^ 2 * Zh)⁻¹ * Ah = ((Ak - Ah) * Zh + Ah * (Zh - FinalFormK)) / (s ^ 2 * FinalFormK * Zh) := by field_simp ring have hden : (0 : ℝ) < s ^ 2 * Final …`.
+-/
 private theorem abs_ratio_perturbation_bound_of_estimates (s Zh FinalFormK Ah Ak Q δ M C1 K : ℝ) (hs : 0 < s) (hZh : 0 < Zh)
     (hZk : 0 < FinalFormK) (hAh0 : 0 ≤ Ah) (hAh : Ah ≤ 4 * s * Q * Zh)
     (hA : |Ak - Ah| ≤ (128 * K + 40) * δ * s * Q * M) (hZ : |FinalFormK - Zh| ≤ 8 * K * δ * M)
@@ -236,6 +303,73 @@ private theorem abs_ratio_perturbation_bound_of_estimates (s Zh FinalFormK Ah Ak
         field_simp
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Unfold `GTLip Basic Count TLip`. Introduce `hB hC L _ _ N hN`. Take `⟨K, hK0, hK⟩` from `exists_lipschitz_const_rho`. Take `⟨C1, hC1pos, hC1⟩` from `hC L N 10`. Use `⟨(160 * K + 40) * C1, fun s hs h hh z => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hP, -, -, hCl, h5, -⟩` from `hB L N hN`. Take `⟨-, hlam, -, -, hfin⟩` from `hP h hh`. Establish `hQ : 0 ≤ qR h z` using `qR_nonneg_VR_of_mem_Pos h hh z`. Establish `hr1 : ∀ x : ℝ, x ≤ 1 → rho x = 1` using `fun x hx => by`. Unfold `rho`.
+
+Conclude with `Real.smoothTransition.one_of_one_le (by linarith)`. Establish `hr0 : ∀ x : ℝ, 4 ≤ x → rho x = 0` using `fun x hx => by`. Unfold `rho`. Conclude with `Real.smoothTransition.zero_of_nonpos (by linarith)`. Establish `hrn : ∀ x, 0 ≤ rho x` using `rho_nonneg'`.
+
+Establish `hrl : ∀ x, rho x ≤ 1` using `rho_le_one'`. Establish `hq0 : q h 0 = 0`. Establish `h0 : toR (0 : UpperTheory.V.KT.Lat L N) = 0`. Use function extensionality and compare the values at `w a`. Simplify using `[toR]`.
+
+Use `show qR h (toR 0) = 0`. Rewrite using `[h0]`. Simplify using `[qR]`. Use `set S := (hfin (8 * s)).toFinset with hSdef`. Establish `hmemS : ∀ v, v ∈ S ↔ q h v ≤ 8 * s` using `fun v => by simp [S]`.
+
+Use `set T := (hfin (4 / 5 * s)).toFinset with hTdef`. Establish `hmemT : ∀ v, v ∈ T ↔ q h v ≤ 4 / 5 * s` using `fun v => by simp [T]`. Establish `hTS : T ⊆ S` using `fun v hv => by`. Rewrite using `[hmemS]`. Rewrite `hv` using `[hmemT]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTcard : (1 : ℝ) ≤ T.card`. Establish `: 0 < T.card` using `Finset.card_pos.2 ⟨0, by rw [hmemT, hq0]; positivity⟩`. Conclude with `this` after adjusting the coercions. Establish `hSh : ∀ v, v ∉ S → rho (q h v / s) = 0` using `fun v hv => by`.
+
+Rewrite `hv` using `[hmemS, not_le]`. Conclude with `hr0 _ (by rw [le_div_iff₀ hs]; linarith)`. Use `set ah : UpperTheory.V.KT.Lat L N → ℝ := fun v => ∑ w, ‖star (z w) ⬝ᵥ mat h w *ᵥ toR v w‖ ^ 2 with hah`. Establish `hah0 : ∀ v, 0 ≤ ah v` using `fun v => Finset.sum_nonneg fun w _ => by positivity`. Establish `hahle : ∀ v, ah v ≤ qR h z * q h v` using `fun v => sum_norm_sq_inner_mat_toR_le_qR_mul_q h hh z v`.
+
+Establish `hZh : (T.card : ℝ) ≤ ∑ v ∈ S, rho (q h v / s)`. Establish `e1 : ∀ v ∈ T, rho (q h v / s) = 1` using `fun v hv => by`. Rewrite `hv` using `[hmemT]`. Conclude with `hr1 _ (by rw [div_le_one hs]; linarith)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_congr rfl e1]`. Simplify using the standard rewrite rules. Use `_ ≤ ∑ v ∈ S, rho (q h v / s) := Finset.sum_le_sum_of_subset_of_nonneg hTS fun _ _ _ => hrn _`. Establish `hZhpos : 0 < ∑ v ∈ S, rho (q h v / s)` using `by linarith`. Establish `hAh0 : 0 ≤ ∑ v ∈ S, rho (q h v / s) * ah v` using `Finset.sum_nonneg fun v _ => mul_nonneg (hrn _) (hah0 v)`.
+
+Establish `hAh : ∑ v ∈ S, rho (q h v / s) * ah v ≤ 4 * s * qR h z * ∑ v ∈ S, rho (q h v / s)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : q h v ≤ 4 * s`. Establish `h1` using `hahle v`.
+
+Establish `h2 : qR h z * q h v ≤ qR h z * (4 * s)` using `mul_le_mul_of_nonneg_left hv hQ`. Establish `h3` using `hrn (q h v / s)`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hr0 _ (by rw [le_div_iff₀ hs]; linarith)]`. Simplify using the standard rewrite rules.
+
+Establish `hTh` using `qR_term_eq_normalized_weighted_sum s h z S hSh`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hTh]`. Conclude with `mul_nonneg (inv_nonneg.2 (by positivity)) hAh0`. Rewrite using `[hTh, inv_mul_le_iff₀ (by positivity)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Introduce `hl show (s ^ 2 * zed s h)⁻¹ • ∑ᶠ v, rho (q h v / s) • rk h v = 0`. Establish `e : ∀ v, rho (q h v / s) • rk h v = 0`. Introduce `v`.
+
+Distinguish the cases in `hv : v = 0`. Rewrite using `[hv, rk_zero_right_of_hs, smul_zero]`. Rewrite using `[hr0 _ (by rw [le_div_iff₀ hs]; linarith [hlam v hv]), zero_smul]`. Simplify using `only [e, finsum_zero, smul_zero]`. Introduce `δ hδ0 hδ k hk`.
+
+Establish `hkP : k ∈ Pos L N` using `(hCl δ hδ0 (by linarith) h hh k hk).1`. Establish `h5'` using `h5 δ hδ0 h hh k hk`. Establish `hClz : ∀ y, |qR k y - qR h y| ≤ δ * qR h y` using `hk`. Establish `hqk : ∀ v, (1 - δ) * q h v ≤ q k v ∧ q k v ≤ (1 + δ) * q h v` using `fun v => by`. Use `abs_le.1 (hClz (toR v))` as an intermediate fact.
+
+Prove the components needed by the constructor for the conclusion. Use `show (1 - δ) * qR h (toR v) ≤ qR k (toR v)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show qR k (toR v) ≤ (1 + δ) * qR h (toR v)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hqh0 : ∀ v, 0 ≤ q h v` using `fun v => qR_nonneg_VR_of_mem_Pos h hh _`. Establish `hSk : ∀ v, v ∉ S → rho (q k v / s) = 0` using `fun v hv => by`. Rewrite `hv` using `[hmemS, not_le]`. Use `(hqk v).1` as an intermediate fact. Conclude with `hr0 _ (by rw [le_div_iff₀ hs]; nlinarith)`.
+
+Use `set ak : UpperTheory.V.KT.Lat L N → ℝ := fun v => ∑ w, ‖star (z w) ⬝ᵥ mat k w *ᵥ toR v w‖ ^ 2 with hak`. Establish `hak0 : ∀ v, 0 ≤ ak v` using `fun v => Finset.sum_nonneg fun w _ => by positivity`. Establish `hTk` using `qR_term_eq_normalized_weighted_sum s k z S hSk`. Establish `hZk : (T.card : ℝ) ≤ ∑ v ∈ S, rho (q k v / s)`. Establish `e1 : ∀ v ∈ T, rho (q k v / s) = 1` using `fun v hv => by`.
+
+Rewrite `hv` using `[hmemT]`. Use `(hqk v).2` as an intermediate fact. Use `hqh0 v` as an intermediate fact. Conclude with `hr1 _ (by rw [div_le_one hs]; nlinarith)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_congr rfl e1]`. Simplify using the standard rewrite rules. Use `_ ≤ ∑ v ∈ S, rho (q k v / s) := Finset.sum_le_sum_of_subset_of_nonneg hTS fun _ _ _ => hrn _`. Establish `hZkpos : 0 < ∑ v ∈ S, rho (q k v / s)` using `by linarith`. Establish `hM : (S.card : ℝ) ≤ C1 * ∑ v ∈ S, rho (q k v / s)`.
+
+Use `hC1 h hh (4 / 5 * s) (by positivity)` as an intermediate fact. Rewrite `this` using `[show (10 : ℝ) * (4 / 5 * s) = 8 * s by ring]`. Rewrite `this` using `[Set.ncard_eq_toFinset_card _ (hfin _), Set.ncard_eq_toFinset_card _ (hfin _)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hρd : ∀ v ∈ S, |rho (q k v / s) - rho (q h v / s)| ≤ 8 * K * δ` using `fun v hv => by`.
+
+Rewrite `hv` using `[hmemS]`. Establish `h1` using `hK (q k v / s) (q h v / s)`. Establish `h2 : |q k v / s - q h v / s| ≤ 8 * δ`. Rewrite using `[← sub_div, abs_div, abs_of_pos hs, div_le_iff₀ hs]`. Use `hClz (toR v)` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hZ : |∑ v ∈ S, rho (q k v / s) - ∑ v ∈ S, rho (q h v / s)| ≤ 8 * K * δ * S.card`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations.
+
+Use `(Finset.sum_le_sum hρd).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Put the polynomial expressions in normal form. Both sides reduce to the same expression. Establish `hA : |∑ v ∈ S, rho (q k v / s) * ak v - ∑ v ∈ S, rho (q h v / s) * ah v| ≤ (128 * K + 40) * δ * s * qR h z * S.card`.
+
+Rewrite using `[← Finset.sum_sub_distrib]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Establish `hv' : ∀ v ∈ S, |rho (q k v / s) * ak v - rho (q h v / s) * ah v| ≤ (128 * K + 40) * δ * s * qR h z` using `fun v hv => by`. Establish `hvS` using `(hmemS v).1 hv`. Establish `hd` using `hρd v hv`.
+
+Establish `hakle : ak v ≤ 16 * s * qR h z`. Establish `h1` using `sum_norm_sq_inner_mat_toR_le_qR_mul_q k hkP z v`. Establish `h2` using `(hqk v).2`. Establish `h3 : qR k z ≤ (1 + δ) * qR h z`. Use `abs_le.1 (hClz z)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `qR_nonneg_VR_of_mem_Pos k hkP z`. Establish `h5` using `hqh0 v`. Establish `h6 : q k v ≤ (1 + δ) * (8 * s)` using `h2.trans (mul_le_mul_of_nonneg_left hvS (by linarith))`. Establish `h7 : 0 ≤ q k v` using `qR_nonneg_VR_of_mem_Pos k hkP _`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hd2 : (1 + δ) * (1 + δ) ≤ 2` using `by nlinarith`. Conclude with `mul_le_mul_of_nonneg_right hd2 (by positivity)`. Use `_ = 16 * s * qR h z := by ring`. Establish `hdiff` using `place_form_perturbation_bound_of_sq_le h k hh δ hδ0 hδ h5' z v`.
+
+Establish `hdiff' : |ak v - ah v| ≤ 40 * δ * s * qR h z`. Use `hdiff.trans ?_` and prove the remaining obligations. Establish `h1` using `mul_le_mul_of_nonneg_left hvS hQ`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 (by positivity : (0 : ℝ) ≤ 5 * δ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e : rho (q k v / s) * ak v - rho (q h v / s) * ah v = (rho (q k v / s) - rho (q h v / s)) * ak v + rho (q h v / s) * (ak v - ah v)` using `by ring`. Rewrite using `[e]`. Use `(abs_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_mul, abs_mul, abs_of_nonneg (hak0 v), abs_of_nonneg (hrn _)]`. Establish `t1 : |rho (q k v / s) - rho (q h v / s)| * ak v ≤ 8 * K * δ * (16 * s * qR h z)` using `mul_le_mul hd hakle (hak0 v) (by positivity)`.
+
+Establish `t2 : rho (q h v / s) * |ak v - ah v| ≤ 1 * (40 * δ * s * qR h z)` using `mul_le_mul (hrl _) hdiff' (abs_nonneg _) zero_le_one`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(Finset.sum_le_sum hv').trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Put the polynomial expressions in normal form.
+
+Both sides reduce to the same expression. Rewrite using `[hTk, hTh]`. Conclude with `abs_ratio_perturbation_bound_of_estimates s _ _ _ _ (qR h z) δ S.card C1 K hs hZhpos hZkpos hAh0 hAh hA hZ hM hδ0 hQ hK0 (Nat.cast_nonneg _)`.
+-/
 theorem pf_GTLip : GTLip := by
   unfold GTLip Basic Count TLip
   intro hB hC L _ _ N hN

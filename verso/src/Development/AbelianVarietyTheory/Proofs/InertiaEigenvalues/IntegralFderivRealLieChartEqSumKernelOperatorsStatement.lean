@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralFderiv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumLieCoord
 open NumberField MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.JSW
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.JSW.integral_fderiv_chart_eq | exact GlobalTheory.JSW.integral_fderiv_chart_eq | (intros; apply GlobalTheory.JSW.integral_fderiv_chart_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_fderiv_realLieChart_eq_sum_kernelOperators : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (X : Type) [MeasurableSpace X] (ν : Measure X)
     (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)), IsRapidInf ν k γ → ∀ φ : Sm E a,
     (∀ i, ∃ C : ℝ, ∀ g, ‖(lie E a (lieBasis E a i) φ).1 g‖ ≤ C) → ∀ g,

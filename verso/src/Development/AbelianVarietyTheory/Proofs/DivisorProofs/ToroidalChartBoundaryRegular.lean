@@ -19,6 +19,11 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
 namespace GlobalTheory.ArchLim
 
+/- English proof (translation)
+Unfold `valR`. Distinguish the cases in `h : ⊤ ≤ z ⁻¹ᵁ g ⁻¹ᵁ U`. Establish `h' : ⊤ ≤ (z ≫ g) ⁻¹ᵁ U` using `h`. Rewrite using `[dif_pos h, dif_pos h']`. Establish `e` using `Scheme.Hom.appLE_comp_appLE z g U (g ⁻¹ᵁ U) ⊤ le_rfl h`.
+
+Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg (fun q => (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (q.hom f)) e`. Establish `h' : ¬ ⊤ ≤ (z ≫ g) ⁻¹ᵁ U` using `h`. Rewrite using `[dif_neg h, dif_neg h']`.
+-/
 theorem valR_app_eq {A : Type} [CommRing A] {X X' : Scheme.{0}} (z : Sp A ⟶ X) (g : X ⟶ X') (U : X'.Opens)
     (f : Γ(X', U)) : valR z (g ⁻¹ᵁ U) ((g.app U).hom f) = valR (z ≫ g) U f := by
   unfold valR
@@ -31,6 +36,23 @@ theorem valR_app_eq {A : Type} [CommRing A] {X X' : Scheme.{0}} (z : Sp A ⟶ X)
   · have h' : ¬ ⊤ ≤ (z ≫ g) ⁻¹ᵁ U := h
     rw [dif_neg h, dif_neg h']
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Z σ Y q jm hq n ch W f v hv`. Use `set y := ch.e.symm v with hy`. Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (show jm (y.1 (IsLocalRing.closedPoint ℂ)) ∈ (⊤ : Z.X.Opens) from trivial)`. Establish `: IsAffineHom (genι Z)` using `MorphismProperty.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback Z.s (spMap (algebraMap (𝓞 c.F) c.F))).flip inferInstance`. Establish `hU : IsAffineOpen (genι Z ⁻¹ᵁ V)` using `hV.preimage (genι Z)`.
+
+Establish `key_mem : ∀ y' : CxPts q (σ.comp (algebraMap (𝓞 c.F) c.F)), up jm hq σ y' ∈ ptsIn (genStr Z) σ (genι Z ⁻¹ᵁ V) ↔ y' ∈ ptsIn q (σ.comp (algebraMap (𝓞 c.F) c.F)) (jm ⁻¹ᵁ V)`. Introduce `y'`. Rewrite using `[mem_ptsIn, mem_ptsIn]`. Establish `e : genι Z ((up jm hq σ y').1 (IsLocalRing.closedPoint ℂ)) = jm (y'.1 (IsLocalRing.closedPoint ℂ))` using `congrArg (fun g : Sp ℂ ⟶ Z.X => g (IsLocalRing.closedPoint ℂ)) (up_ι jm hq σ y')`. Express the relevant statement in the definitionally equal form `genι Z _ ∈ V ↔ jm _ ∈ V`.
+
+Rewrite using `[e]`. Establish `hev : ∀ (y' : CxPts q (σ.comp (algebraMap (𝓞 c.F) c.F))) (x : Γ(Z.X, V)), ev (genStr Z) σ (genι Z ⁻¹ᵁ V) (((genι Z).app V).hom x) (up jm hq σ y') = ev q (σ.comp (algebraMap (𝓞 c.F) c.F)) (jm ⁻¹ᵁ V) ((jm.app V).hom x) y'`. Introduce `y' x`. Express the relevant statement in the definitionally equal form `valR (up jm hq σ y').1 _ _ = valR y'.1 _ _`. Rewrite using `[valR_app_eq, valR_app_eq, up_ι]`.
+
+Set `` to `((genι Z).app V).hom.toAlgebra`. Establish `hloc` using `GlobalTheory.QCoh.Qcqs.isLocalization_app (R := CommRingCat.of (𝓞 c.F)) (L := CommRingCat.of c.F) (nonZeroDivisors (𝓞 c.F)) (IsPullback.of_hasPullback Z.s (spMap (algebraMap (𝓞 c.F) c.F))) hV`. Use `set T := ch.e.target ∩ ch.e.symm ⁻¹' ptsIn q (σ.comp (algebraMap (𝓞 c.F) c.F)) (jm ⁻¹ᵁ V) with hT`. Establish `hTo : IsOpen T` using `ch.e.isOpen_inter_preimage_symm (isOpen_ptsIn _)`. Establish `hs : ∀ w ∈ T, (up jm hq σ ∘ ch.e.symm) w ∈ ptsIn (genStr Z) σ (genι Z ⁻¹ᵁ V)` using `fun w hw => (key_mem _).2 hw.2`.
+
+Establish `hd : ∀ a : Γ(gen Z, genι Z ⁻¹ᵁ V), DifferentiableOn ℂ (ev (genStr Z) σ (genι Z ⁻¹ᵁ V) a ∘ (up jm hq σ ∘ ch.e.symm)) T`. Introduce `a`. Take `⟨⟨r, ⟨m, hm⟩⟩, hr⟩` from `IsLocalization.surj (S := Γ(gen Z, genι Z ⁻¹ᵁ V)) ((nonZeroDivisors (𝓞 c.F)).map (GlobalTheory.QCoh.Qcqs.baseRingHom Z.s V).hom) a`. Take `⟨b, hb, rfl⟩` from `hm`. Simplify using `only [RingHom.algebraMap_toAlgebra] at hr`.
+
+Establish `hb0 : σ (algebraMap (𝓞 c.F) c.F b) ≠ 0` using `(map_ne_zero σ).2 (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb)`. Use `(((ch.holo (jm ⁻¹ᵁ V) ((jm.app V).hom r)).mono fun w hw => hw).mul_const (σ (algebraMap (𝓞 c.F) c.F b))⁻¹).congr fun w hw => ?_` and prove the remaining obligations. Establish `hw' : up jm hq σ (ch.e.symm w) ∈ ptsIn (genStr Z) σ (genι Z ⁻¹ᵁ V)` using `(key_mem _).2 hw.2`. Establish `e` using `congrArg (fun t => ev (genStr Z) σ (genι Z ⁻¹ᵁ V) t (up jm hq σ (ch.e.symm w))) hr`. Simplify using `only [ev_mul, hev] at e`.
+
+Establish `eb : (jm.app V).hom ((GlobalTheory.QCoh.Qcqs.baseRingHom Z.s V).hom b) = algX q (jm ⁻¹ᵁ V) b`. Rewrite using `[GlobalTheory.QCoh.Qcqs.app_baseRingHom, hq]`. Both sides reduce to the same expression. Rewrite `e` using `[eb, ev_algX hw.2]`. Simplify using `only [Function.comp_apply, RingHom.comp_apply] at e ⊢`.
+
+Rewrite using `[← e, mul_assoc, mul_inv_cancel₀ hb0, mul_one]`. Take `⟨-, hh⟩` from `holo_of_affine hU hTo hs hd`. Establish `hyV : y ∈ ptsIn q (σ.comp (algebraMap (𝓞 c.F) c.F)) (jm ⁻¹ᵁ V)` using `mem_ptsIn.2 hxV`. Establish `hO : IsOpen (ch.e.target ∩ ch.e.symm ⁻¹' (ptsIn q (σ.comp (algebraMap (𝓞 c.F) c.F)) (jm ⁻¹ᵁ V) ∩ up jm hq σ ⁻¹' ptsIn (genStr Z) σ W))` using `ch.e.isOpen_inter_preimage_symm ((isOpen_ptsIn _).inter ((isOpen_ptsIn W).preimage (continuous_up jm hq σ)))`. Conclude with `(((hh W f).mono fun w hw => ⟨⟨hw.1, hw.2.1⟩, hw.2.2⟩).differentiableAt (hO.mem_nhds ⟨hv.1, hyV, hv.2⟩)).differentiableWithinAt`.
+-/
 theorem differentiableOn_ev_up : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (σ : c.F →+* ℂ) (Y : Scheme.{0}) (q : Y ⟶ Sp (𝓞 c.F)) (jm : Y ⟶ Z.X) (hq : jm ≫ Z.s = q) (n : ℕ) (ch : AlgChart q (σ.comp (algebraMap (𝓞 c.F) c.F)) n) (W : (gen Z).Opens) (f : Γ(gen Z, W)), DifferentiableOn ℂ (ev (genStr Z) σ W f ∘ up jm hq σ ∘ ch.e.symm) (ch.e.target ∩ ch.e.symm ⁻¹' (up jm hq σ ⁻¹' ptsIn (genStr Z) σ W)) := by
   intro E _ _ _ H Dw l Xo c Z σ Y q jm hq n ch W f v hv
   set y := ch.e.symm v with hy

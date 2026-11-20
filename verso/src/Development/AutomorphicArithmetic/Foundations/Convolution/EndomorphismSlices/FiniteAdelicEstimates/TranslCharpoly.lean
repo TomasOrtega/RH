@@ -22,6 +22,9 @@ open PositivityTheory.Rg.Tf.Loc (twConj)
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `congrArg (GeneralLinearGroup.map (pFin E)) (adeleqof_twist translAd_holds hu d x)`. Simplify using `only [map_mul, map_inv, adeleqof_pFin_thetaGL, adeleqof_pFin_ratGL] at h`. Rewrite using `[map_mul (ratF E n), map_inv]`. Conclude with `h`.
+-/
 private theorem transl_eq {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E) (x : GA E n) :
     gFin (twConj (thetaA E n) x (ratGL E n d)) * (ratF E n u)⁻¹ =
       (GeneralLinearGroup.map (pFin E) x)⁻¹ * ratF E n (d * u⁻¹) * thF E n (GeneralLinearGroup.map (pFin E) x) := by
@@ -30,6 +33,11 @@ private theorem transl_eq {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E
   rw [map_mul (ratF E n), map_inv]
   exact h
 
+/- English proof (translation)
+Rewrite using `[transl_eq hu]`. Use `set c := GeneralLinearGroup.map (pFin E) x`. Use `set r := ratF E n (d * u⁻¹) with hr0`. Use `set s := ratF E n (thE E n (d * u⁻¹)) with hs0`. Establish `hr : thF E n r = s`.
+
+Rewrite using `[hr0, hs0, GlobalTheory.EulerTw.Comm.thF_ratF]`. Rewrite using `[← poleq_norm E n u hu d, map_mul (ratF E n), ← hr0, ← hs0, map_mul, map_mul, map_inv, GlobalTheory.EulerTw.Comm.thF_thF, hr]`. Use `group`.
+-/
 private theorem transl_norm {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E) (x : GA E n) :
     (gFin (twConj (thetaA E n) x (ratGL E n d)) * (ratF E n u)⁻¹) *
         thF E n (gFin (twConj (thetaA E n) x (ratGL E n d)) * (ratF E n u)⁻¹) =
@@ -44,6 +52,9 @@ private theorem transl_norm {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n)
     GlobalTheory.EulerTw.Comm.thF_thF, hr]
   group
 
+/- English proof (translation)
+Rewrite using `[transl_norm hu, map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`. Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+-/
 private theorem transl_charpoly (w : Pl E) {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E) (x : GA E n) :
     (GeneralLinearGroup.map (pLoc E w) ((gFin (twConj (thetaA E n) x (ratGL E n d)) * (ratF E n u)⁻¹) *
         thF E n (gFin (twConj (thetaA E n) x (ratGL E n d)) * (ratF E n u)⁻¹))).val.charpoly =
@@ -53,6 +64,11 @@ private theorem transl_charpoly (w : Pl E) {u : GL (Fin n) E} (hu : IsTransl u) 
   rw [← Matrix.charpoly_map]
   rfl
 
+/- English proof (translation)
+Establish `hf` using `GlobalTheory.CompanionTheory.SuppFinTw.factors_ne h₁ h₂ y hne w hwS`. Establish `hs` using `hreg (atW w y) (atW w (thP E a b y)) hf.1 (hf.2 hsp)`. Establish `e₁ : (atW w y * atW w (thP E a b y)).1 = GeneralLinearGroup.map (pLoc E w) (y.1 * thF E a y.1)` using `(map_mul _ _ _).symm`. Establish `e₂ : (atW w y * atW w (thP E a b y)).2 = GeneralLinearGroup.map (pLoc E w) (y.2 * thF E b y.2)` using `(map_mul _ _ _).symm`. Rewrite `hs` using `[e₁, e₂]`.
+
+Conclude with `⟨Polynomial.Separable.of_mul_left hs, Polynomial.Separable.of_mul_right hs⟩`.
+-/
 private theorem sep_of {a b : ℕ} {S : Set (Pl E)} {φ₁ φ₂ : ∀ w : Pl E, LF a b w} (h₁ : IsTestP φ₁) (h₂ : IsTestP φ₂)
     {w : Pl E} (hwS : w ∈ S) (hsp : IsSplitAt w)
     (hreg : ∀ y z, φ₁ w y ≠ 0 → φ₂ w z ≠ 0 → ((y * z).1.val.charpoly * (y * z).2.val.charpoly).Separable)
@@ -68,6 +84,13 @@ private theorem sep_of {a b : ℕ} {S : Set (Pl E)} {φ₁ φ₂ : ∀ w : Pl E,
   rw [e₁, e₂] at hs
   exact ⟨Polynomial.Separable.of_mul_left hs, Polynomial.Separable.of_mul_right hs⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ a b S u₁ u₂ hu₁ hu₂ φ₁ φ₂ h₁ h₂ hw`. Take `⟨w, hwS, hsp, hreg⟩` from `hw`. Use `⟨fun d x h₂' hne => ?_, fun d x h₁' hne => ?_⟩` and prove the remaining obligations. Establish `hs` using `(sep_of h₁ h₂ hwS hsp hreg _ hne).1`. Simplify using `only [Prod.fst_mul, Prod.fst_inv] at hs`.
+
+Rewrite `hs` using `[transl_charpoly w hu₁]`. Conclude with `(Polynomial.separable_map _).1 hs`. Establish `hs` using `(sep_of h₁ h₂ hwS hsp hreg _ hne).2`. Simplify using `only [Prod.snd_mul, Prod.snd_inv] at hs`. Rewrite `hs` using `[transl_charpoly w hu₂]`.
+
+Conclude with `(Polynomial.separable_map _).1 hs`.
+-/
 theorem _root_.UpperTheory.Zero.ConvolutionTheory.EB.regS : RegS := by
   intro E _ _ _ a b S u₁ u₂ hu₁ hu₂ φ₁ φ₂ h₁ h₂ hw
   obtain ⟨w, hwS, hsp, hreg⟩ := hw

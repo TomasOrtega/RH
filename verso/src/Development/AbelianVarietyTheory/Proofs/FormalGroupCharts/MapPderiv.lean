@@ -19,11 +19,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FormalTorsion
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[MvPowerSeries.coeff_map, MvPowerSeries.coeff_pderiv]`.
+-/
 theorem map_pderiv {R S σ : Type} [CommRing R] [CommRing S] (φ : R →+* S) (f : MvPowerSeries σ R) (s : σ) :
     MvPowerSeries.map φ (MvPowerSeries.pderiv R s f) = MvPowerSeries.pderiv S s (MvPowerSeries.map φ f) := by
   ext n
   simp [MvPowerSeries.coeff_map, MvPowerSeries.coeff_pderiv]
 
+/- English proof (translation)
+Establish `h2` using `Ideal.map_mono (f := MvPowerSeries.map φ) h`. Rewrite `h2` using `[Ideal.map_pow, Ideal.map_span, Ideal.map_sup, Ideal.map_span, Ideal.map_map]`. Establish `e1 : (MvPowerSeries.map φ) '' Set.range (MvPowerSeries.X : σ → MvPowerSeries σ R) = Set.range (MvPowerSeries.X : σ → MvPowerSeries σ S)`. Rewrite using `[← Set.range_comp]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `s`. Simplify using `[MvPowerSeries.map_X]`. Establish `e2 : (MvPowerSeries.map φ) '' Set.range f = Set.range fun j => MvPowerSeries.map φ (f j)`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+
+Establish `e3 : (MvPowerSeries.map φ).comp (MvPowerSeries.C : R →+* MvPowerSeries σ R) = (MvPowerSeries.C : S →+* MvPowerSeries σ S).comp φ`. Use extensionality with `a`. Simplify using `[MvPowerSeries.map_C]`. Rewrite `h2` using `[e1, e2, e3]`. Rewrite using `[Ideal.map_map]`.
+
+Conclude with `h2`.
+-/
 theorem map_bound {R S σ κ : Type} [CommRing R] [CommRing S] (φ : R →+* S) (f : κ → MvPowerSeries σ R)
     (I : Ideal R) (M : ℕ)
     (h : Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ R)) ^ M ≤
@@ -50,6 +62,29 @@ theorem map_bound {R S σ κ : Type} [CommRing R] [CommRing S] (φ : R →+* S) 
   rw [Ideal.map_map]
   exact h2
 
+/- English proof (translation)
+Introduce `p _`. Unfold `FHSt`. Introduce `T _ _ _ _ _ _ hp G _ _ D A hU d F x hx C _ _ _ v O _ _ hv _ _ iota hiota m`. Unfold `QF`. Establish `hp0 : p ≠ 0` using `Nat.Prime.ne_zero Fact.out`.
+
+Establish `hN1 : 1 ≤ p ^ m` using `Nat.one_le_pow _ _ (Nat.Prime.pos Fact.out)`. Establish `hNd : (p ^ m) ^ d ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ hp0)`. Set `e : Fin d ≃ Fin 1 × Fin d` to `{ toFun := fun j => (0, j), invFun := fun q => q.2, left_inv := fun _ => rfl, right_inv := fun q => Prod.ext (Subsingleton.elim _ _) rfl }`. Set `_ : Algebra T O` to `iota.toAlgebra`. Establish `: IsDomain O` using `hv.hom_inj.isDomain`.
+
+Establish `: ValuationRing O` using `ValuationRing.of_integers v hv`. Establish `: IsFractionRing O C` using `hv.isFractionRing`. Establish `hc : ∀ j, MvPowerSeries.constantCoeff (mulF F.F (p ^ m) j) = 0` using `fun j => (GlobalTheory.FormalMul.mulF_const_and_map T O iota d F (p ^ m) j).1`. Establish `hmap : ∀ j, mulF (F.mapF iota) (p ^ m) j = MvPowerSeries.map iota (mulF F.F (p ^ m) j)` using `fun j => (GlobalTheory.FormalMul.mulF_const_and_map T O iota d F (p ^ m) j).2`. Take `⟨M, hM⟩` from `GlobalTheory.T.formalGroupLaw_chart_finiteHeight_specialFibre T G D A hU d F x hx (p ^ m) hN1`.
+
+Take `⟨hFree, hFin⟩` from `GlobalTheory.FiniteColength.free_finite_quotient T inferInstance (Fin 1 × Fin d) d e (mulF F.F (p ^ m)) hc ⟨M, hM⟩`. Establish `hMT` using `GlobalTheory.span_X_pow_le_sup_of_residue T (Fin 1 × Fin d) (Fin d) (mulF F.F (p ^ m)) M hM`. Establish `hFGT : (maximalIdeal T).FG` using `IsNoetherian.noetherian _`. Establish `hJfg : ((maximalIdeal T).map iota).FG` using `hFGT.map iota`. Establish `hJle : (maximalIdeal T).map iota ≤ maximalIdeal O` using `Ideal.map_le_iff_le_comap.2 fun a ha => map_nonunit iota a ha`.
+
+Establish `hJne : (maximalIdeal T).map iota ≠ ⊤` using `fun h => (IsLocalRing.maximalIdeal.isMaximal O).ne_top (top_le_iff.1 (h ▸ hJle))`. Establish `hpT : (p : T) ∈ maximalIdeal T` using `(IsLocalRing.mem_maximalIdeal _).2 hp`. Establish `hpJ : (p : O) ∈ (maximalIdeal T).map iota`. Simplify using `using Ideal.mem_map_of_mem iota hpT`. Establish `hJc : IsAdicComplete ((maximalIdeal T).map iota) O` using `GlobalTheory.isAdicComplete_of_fg_of_natCast_mem C v O hv p hp0 inferInstance _ hJfg hJne hpJ`.
+
+Take `⟨eqv⟩` from `GlobalTheory.QuotientBaseChange.nonempty_tensor_quotient_equiv T O (maximalIdeal T) hFGT hJc (Fin 1 × Fin d) (Fin d) (mulF F.F (p ^ m)) M hMT hFree hFin`. Establish `hspan : (Set.range fun j => MvPowerSeries.map (algebraMap T O) (mulF F.F (p ^ m) j)) = Set.range (mulF (F.mapF iota) (p ^ m))`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(hmap j).symm`.
+
+Rewrite `eqv` using `[hspan]`. Establish `hFO : Module.Free O (MvPowerSeries (Fin 1 × Fin d) O ⧸ Ideal.span (Set.range (mulF (F.mapF iota) (p ^ m))))` using `Module.Free.of_equiv eqv.toLinearEquiv`. Establish `hFinO : Module.Finite O (MvPowerSeries (Fin 1 × Fin d) O ⧸ Ideal.span (Set.range (mulF (F.mapF iota) (p ^ m))))` using `Module.Finite.equiv eqv.toLinearEquiv`. Establish `hMO` using `map_bound iota (mulF F.F (p ^ m)) (maximalIdeal T) M hMT`. Establish `hfun : (fun j => MvPowerSeries.map iota (mulF F.F (p ^ m) j)) = mulF (F.mapF iota) (p ^ m)`.
+
+Use function extensionality and compare the values at `fun j => (hmap j).symm`. Rewrite `hMO` using `[hfun]`. Take `⟨U, hU8⟩` from `GlobalTheory.T.det_jacobian_formalMulN_eq_pow_mul_unit T d F (p ^ m)`. Establish `h2 : Matrix.of (fun i j : Fin d => MvPowerSeries.pderiv O (e j) (mulF (F.mapF iota) (p ^ m) i)) = (MvPowerSeries.map iota).mapMatrix (Matrix.of fun i j : Fin d => MvPowerSeries.pderiv T ((0 : Fin 1), j) (mulF F.F (p ^ m) i))`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[map_pderiv, hmap]`. Both sides reduce to the same expression. Establish `hdet : Matrix.det (Matrix.of fun i j : Fin d => MvPowerSeries.pderiv O (e j) (mulF (F.mapF iota) (p ^ m) i)) = (((p ^ m) ^ d : ℕ) : MvPowerSeries (Fin 1 × Fin d) O) * (Units.map (MvPowerSeries.map iota).toMonoidHom U : (MvPowerSeries (Fin 1 × Fin d) O)ˣ)`. Rewrite using `[h2, ← RingHom.map_det, hU8, map_mul, map_pow, map_natCast]`.
+
+Simplify using `only [Nat.cast_pow]`. Both sides reduce to the same expression. Establish `hdn` using `GlobalTheory.NoTangent.algHom_dualNumber_ext C v O hv p hp0 inferInstance _ hJfg hJne hpJ (Fin 1 × Fin d) d e (mulF (F.mapF iota) (p ^ m)) M ((p ^ m) ^ d) _ hNd hMO hdet`. Take `⟨-, hsep, -⟩` from `GlobalTheory.finEtale_main C O (MvPowerSeries (Fin 1 × Fin d) O ⧸ Ideal.span (Set.range (mulF (F.mapF iota) (p ^ m)))) v hv hdn`. Establish `hred : IsReduced (MvPowerSeries (Fin 1 × Fin d) O ⧸ Ideal.span (Set.range (mulF (F.mapF iota) (p ^ m))))` using `⟨fun q hq => hsep q fun φ => (hq.map φ).eq_zero⟩`.
+
+Conclude with `⟨hFO, hFinO, GlobalTheory.isReduced_genericFibre_of_isReduced O C _ hred, hsep⟩`.
+-/
 theorem fhSt : ∀ (p : ℕ) [Fact p.Prime], FHSt p := by
   intro p _
   unfold FHSt

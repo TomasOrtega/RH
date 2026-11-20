@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.CechPer
 
+/- English proof (translation)
+Introduce `A _ g L u hA U b w`. Establish `hs` using `GlobalTheory.AHPos.smoothOfRelativeDimension_of_holUnif hA u`. Take `⟨v, ⟨hv, hd⟩, -⟩` from `(GlobalTheory.TorusTransfer.tangent_bijective u hs).2 w`. Take `⟨d, -, hdv⟩` from `GlobalTheory.KS.exists_locDer_of_isDiff A u w v hv hd`. Conclude with `⟨d U b, fun z hz => (hdv U b z hz).symm⟩`.
+-/
 theorem isReg_fderiv_val : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A →
     ∀ (U : A.left.Opens) (b : Γ(A.left, U)) (w : Fin g → ℂ), IsReg u.ex U fun z => fderiv ℂ (val u.ex U b) z w := by
   intro A _ g L u hA U b w

@@ -12,6 +12,11 @@ open scoped Pointwise
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `h : (colSub (d` using `d) u).comp (colSub v) = colSub (fun τ => u τ * v τ) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [AlgHom.comp_apply, colSub, aeval_X, map_sum, map_mul, algHom_C, algebraMap_eq, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, C_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg (fun φ : Pol ι d a →ₐ[ℂ] Pol ι d a => φ P) h`.
+-/
 theorem colSub_comp {d a : ℕ} (u v : ι → Matrix (Fin a) (Fin a) ℂ) (P : Pol ι d a) :
     colSub u (colSub v P) = colSub (fun τ => u τ * v τ) P := by
   have h : (colSub (d := d) u).comp (colSub v) = colSub (fun τ => u τ * v τ) := by
@@ -24,6 +29,11 @@ theorem colSub_comp {d a : ℕ} (u v : ι → Matrix (Fin a) (Fin a) ℂ) (P : P
     ring
   exact congrArg (fun φ : Pol ι d a →ₐ[ℂ] Pol ι d a => φ P) h
 
+/- English proof (translation)
+Establish `h : (colSub (d` using `d) (fun _ : ι => (1 : Matrix (Fin a) (Fin a) ℂ))) = AlgHom.id ℂ _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`. Simplify using `[colSub, Matrix.one_apply]`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem colSub_one {d a : ℕ} (P : Pol ι d a) :
     colSub (fun _ : ι => (1 : Matrix (Fin a) (Fin a) ℂ)) P = P := by
   have h : (colSub (d := d) (fun _ : ι => (1 : Matrix (Fin a) (Fin a) ℂ))) = AlgHom.id ℂ _ := by
@@ -32,6 +42,15 @@ theorem colSub_one {d a : ℕ} (P : Pol ι d a) :
     simp [colSub, Matrix.one_apply]
   rw [h]; rfl
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨(C c : Pol ι d a).support, fun u => by rw [algHom_C]; rfl⟩`. Consider the case `add p q hp hq`. Take `⟨S, hS⟩` from `hp`. Take `⟨T, hT⟩` from `hq`.
+
+Conclude with `⟨S ∪ T, fun u => by rw [map_add]; exact support_add.trans (Finset.union_subset_union (hS u) (hT u))⟩`. Consider the case `mul_X p y hp`. Take `⟨S, hS⟩` from `hp`. Use `⟨S + Finset.univ.image (fun j : Fin a => Finsupp.single (y.1, y.2.1, j) 1), fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Use `(support_mul _ _).trans (Finset.add_subset_add (hS u) ?_)` and prove the remaining obligations. Simplify using `only [colSub, aeval_X]`. Use `support_sum.trans ?_` and prove the remaining obligations. Introduce `m hm`. Simplify using `only [Finset.mem_biUnion] at hm`.
+
+Take `⟨j, _, hj⟩` from `hm`. Rewrite `hj` using `[C_mul_X_eq_monomial]`. Use `support_monomial_subset hj` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Conclude with `Finset.mem_image.2 ⟨j, Finset.mem_univ _, this.symm⟩`.
+-/
 theorem support_colSub_bdd {d a : ℕ} (P : Pol ι d a) :
     ∃ S : Finset (Var ι d a →₀ ℕ), ∀ u : ι → Matrix (Fin a) (Fin a) ℂ, (colSub u P).support ⊆ S := by
   induction P using MvPolynomial.induction_on with
@@ -59,6 +78,19 @@ section Meas
 
 variable {K : Type} [Group K] [MeasurableSpace K] {a d : ℕ}
 
+/- English proof (translation)
+Establish `hmul : ∀ p q : Pol ι d a, (∀ m, Measurable (fun g => coeff m (colSub (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ)) p)) ∧ ∃ C : ℝ, ∀ g, ‖coeff m (colSub (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ)) p)‖ ≤ C) → (∀ m, Measurable (fun g => coeff m (colSub (fun τ => (ρ g τ : Matrix (F …`. Introduce `p q hp hq m`. Establish `hpb : ∀ m, ∃ C : ℝ, ∀ g, ‖coeff m (colSub (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ)) p)‖ ≤ C` using `fun m => (hp m).2`. Establish `hqb : ∀ m, ∃ C : ℝ, ∀ g, ‖coeff m (colSub (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ)) q)‖ ≤ C` using `fun m => (hq m).2`. Use `choose Cp hCp using hpb`.
+
+Use `choose Cq hCq using hqb`. Simplify using `only [map_mul, coeff_mul]`. Use `⟨Finset.measurable_sum _ fun x _ => (hp x.1).1.mul (hq x.2).1, ∑ x ∈ Finset.HasAntidiagonal.antidiagonal m, Cp x.1 * Cq x.2, fun g => ?_⟩` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun x _ => ?_)` and prove the remaining obligations. Use `(norm_mul_le _ _).trans ?_` and prove the remaining obligations.
+
+Conclude with `mul_le_mul (hCp _ g) (hCq _ g) (norm_nonneg _) ((norm_nonneg _).trans (hCp _ g))`. Introduce `m`. Proceed by induction on `P using MvPolynomial.induction_on generalizing m with`. Consider the case `C c`. Simplify using `only [algHom_C, algebraMap_eq]`.
+
+Conclude with `⟨measurable_const, _, fun _ => le_rfl⟩`. Consider the case `add p q hp hq`. Simplify using `only [map_add, coeff_add]`. Take `⟨hpm, Cp, hCp⟩` from `hp m`. Take `⟨hqm, Cq, hCq⟩` from `hq m`.
+
+Conclude with `⟨hpm.add hqm, Cp + Cq, fun g => (norm_add_le _ _).trans (add_le_add (hCp g) (hCq g))⟩`. Consider the case `mul_X p y hp`. Use `hmul p (X y) hp (fun m' => ?_) m` and prove the remaining obligations. Simplify using `only [colSub, aeval_X, coeff_sum, coeff_C_mul]`. Use `⟨Finset.measurable_sum _ fun j _ => (hρ _ _ _).mul measurable_const, ∑ j : Fin a, ‖coeff m' (X (y.1, y.2.1, j) : Pol ι d a)‖, fun g => ?_⟩` and prove the remaining obligations.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (entry_norm_bound_of_unitary (ρ g y.1).2 _ _)`.
+-/
 theorem coeff_colSub_good (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ))
     (hρ : ∀ τ i j, Measurable fun g => (ρ g τ : Matrix (Fin a) (Fin a) ℂ) i j) (P : Pol ι d a) :
     ∀ m, Measurable (fun g => coeff m (colSub (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ)) P)) ∧
@@ -118,25 +150,42 @@ def Mg (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ)) (g : K) : ι → M
 def cc (n : ι → ℕ) (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ)) (g : K) : ℂ :=
   ∏ τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ^ (-(n τ : ℤ))
 
+/- English proof (translation)
+The claim follows from `CStarRing.norm_of_mem_unitary (Matrix.det_of_mem_unitary U.2)`.
+-/
 theorem det_unitary_norm (U : Matrix.unitaryGroup (Fin a) ℂ) : ‖(U : Matrix (Fin a) (Fin a) ℂ).det‖ = 1 :=
   CStarRing.norm_of_mem_unitary (Matrix.det_of_mem_unitary U.2)
 
+/- English proof (translation)
+Introduce `h`. Use `det_unitary_norm U` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+-/
 theorem det_unitary_ne_zero (U : Matrix.unitaryGroup (Fin a) ℂ) : (U : Matrix (Fin a) (Fin a) ℂ).det ≠ 0 := by
   intro h
   have := det_unitary_norm U
   rw [h, norm_zero] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Rewrite using `[cc, norm_prod]`. Conclude with `Finset.prod_eq_one fun τ _ => by rw [norm_zpow, det_unitary_norm, one_zpow]`.
+-/
 theorem norm_cc (n : ι → ℕ) (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ)) (g : K) : ‖cc n ρ g‖ = 1 := by
   rw [cc, norm_prod]
   exact Finset.prod_eq_one fun τ _ => by rw [norm_zpow, det_unitary_norm, one_zpow]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `only [Mg, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem Mg_mul (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ)) (g0 g : K) :
     Mg ρ (g0 * g) = fun τ => Mg ρ g0 τ * Mg ρ g τ := by
   funext τ
   simp only [Mg, map_mul]
   rfl
 
+/- English proof (translation)
+Establish `h` using `Mg_mul ρ g0 g`. Simplify using `only [cc, detChar]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hτ : (ρ (g0 * g) τ : Matrix (Fin a) (Fin a) ℂ) = Mg ρ g0 τ * Mg ρ g τ` using `congrFun h τ`.
+
+Establish `h0 : (Mg ρ g0 τ).det ≠ 0` using `det_unitary_ne_zero _`. Rewrite using `[hτ, Matrix.det_mul, mul_zpow, ← mul_assoc, zpow_neg ((Mg ρ g0 τ).det), zpow_natCast, mul_inv_cancel₀ (pow_ne_zero _ h0), one_mul]`. Both sides reduce to the same expression.
+-/
 theorem cc_mul (n : ι → ℕ) (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ)) (g0 g : K) :
     cc n ρ g = detChar n (Mg ρ g0) * cc n ρ (g0 * g) := by
   have h := Mg_mul ρ g0 g
@@ -149,12 +198,18 @@ theorem cc_mul (n : ι → ℕ) (ρ : K →* (ι → Matrix.unitaryGroup (Fin a)
     mul_inv_cancel₀ (pow_ne_zero _ h0), one_mul]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Conclude with `Finset.measurable_sum _ fun σ _ => measurable_const.mul (Finset.measurable_prod _ fun i _ => hρ _ _ _)`.
+-/
 theorem measurable_det (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ))
     (hρ : ∀ τ i j, Measurable fun g => (ρ g τ : Matrix (Fin a) (Fin a) ℂ) i j) (τ : ι) :
     Measurable fun g => (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det := by
   simp only [Matrix.det_apply']
   exact Finset.measurable_sum _ fun σ _ => measurable_const.mul (Finset.measurable_prod _ fun i _ => hρ _ _ _)
 
+/- English proof (translation)
+Unfold `cc`. Use `Finset.measurable_prod _ fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [zpow_neg, zpow_natCast]`. Conclude with `((measurable_det ρ hρ τ).pow_const _).inv`.
+-/
 theorem measurable_cc (n : ι → ℕ) (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ))
     (hρ : ∀ τ i j, Measurable fun g => (ρ g τ : Matrix (Fin a) (Fin a) ℂ) i j) : Measurable (cc n ρ) := by
   unfold cc
@@ -162,6 +217,9 @@ theorem measurable_cc (n : ι → ℕ) (ρ : K →* (ι → Matrix.unitaryGroup 
   simp only [zpow_neg, zpow_natCast]
   exact ((measurable_det ρ hρ τ).pow_const _).inv
 
+/- English proof (translation)
+Take `⟨hm, C, hC⟩` from `coeff_colSub_good ρ hρ P m`. Use `Integrable.of_bound ((measurable_cc n ρ hρ).mul hm).aestronglyMeasurable C (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_cc, one_mul]`. Conclude with `hC g`.
+-/
 theorem integrable_term (ν : Measure K) [IsProbabilityMeasure ν] (n : ι → ℕ)
     (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ))
     (hρ : ∀ τ i j, Measurable fun g => (ρ g τ : Matrix (Fin a) (Fin a) ℂ) i j) (P : Pol ι d a) (m : Var ι d a →₀ ℕ) :
@@ -172,6 +230,15 @@ theorem integrable_term (ν : Measure K) [IsProbabilityMeasure ν] (n : ι → �
   rw [norm_mul, norm_cc, one_mul]
   exact hC g
 
+/- English proof (translation)
+Establish `hmono : ∀ (m : Var ι d a →₀ ℕ) (c : ℂ), ℓ (monomial m c) = c * ℓ (monomial m 1)`. Introduce `m c`. Establish `: (monomial m c : Pol ι d a) = c • monomial m 1` using `by rw [smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, smul_eq_mul]`. Establish `hexp : ∀ Q : Pol ι d a, Q.support ⊆ S → ℓ Q = ∑ m ∈ S, coeff m Q * ℓ (monomial m 1)`.
+
+Introduce `Q hQ`. Use `conv_lhs => rw [Q.as_sum]`. Rewrite using `[Finset.sum_subset hQ (fun m _ hm => by rw [notMem_support_iff.1 hm, monomial_zero]), map_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => hmono m _`. Establish `hL : ∀ g, cc n ρ g * ℓ (colSub (Mg ρ g) P) = ∑ m ∈ S, (cc n ρ g * coeff m (colSub (Mg ρ g) P)) * ℓ (monomial m 1)`.
+
+Introduce `g`. Rewrite using `[hexp _ (hS _), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hL), integral_finset_sum _ (fun m _ => (integrable_term ν n ρ hρ P m).mul_const _), map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_mul_const]`. Conclude with `(hmono m _).symm`.
+-/
 theorem integral_eq_lin (ν : Measure K) [IsProbabilityMeasure ν] (n : ι → ℕ)
     (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ))
     (hρ : ∀ τ i j, Measurable fun g => (ρ g τ : Matrix (Fin a) (Fin a) ℂ) i j) (P : Pol ι d a)
@@ -198,6 +265,11 @@ theorem integral_eq_lin (ν : Measure K) [IsProbabilityMeasure ν] (n : ι → �
   rw [integral_mul_const]
   exact (hmono m _).symm
 
+/- English proof (translation)
+Establish `hmap : ν.map (g0 * ·) = ν` using `map_mul_left_eq_self ν g0`. Establish `hae : AEMeasurable (g0 * ·) ν`. Assume the negation of the conclusion as `h`. Establish `h0` using `Measure.map_of_not_aemeasurable h`. Rewrite `h0` using `[hmap]`.
+
+Conclude with `IsProbabilityMeasure.ne_zero ν h0`. Use `integral_map hae hF.aestronglyMeasurable (μ := ν)` as an intermediate fact. Rewrite `this` using `[hmap]`. Conclude with `this.symm`.
+-/
 theorem integral_mul_left_inv (ν : Measure K) [IsProbabilityMeasure ν] [ν.IsMulLeftInvariant] (F : K → ℂ)
     (hF : Measurable F) (g0 : K) : ∫ g, F (g0 * g) ∂ν = ∫ g, F g ∂ν := by
   have hmap : ν.map (g0 * ·) = ν := map_mul_left_eq_self ν g0
@@ -210,6 +282,25 @@ theorem integral_mul_left_inv (ν : Measure K) [IsProbabilityMeasure ν] [ν.IsM
   rw [hmap] at this
   exact this.symm
 
+/- English proof (translation)
+Introduce `ι _ a d n K _ _ ν hν hinv ρ hρ hsurj Λ P hP`. Take `⟨S, hS⟩` from `support_colSub_bdd P`. Use `set Q : Pol ι d a := ∑ m ∈ S, monomial m (∫ g, cc n ρ g * coeff m (colSub (Mg ρ g) P) ∂ν) with hQdef`. Establish `hav : ∀ ℓ : Pol ι d a →ₗ[ℂ] ℂ, ∫ g, cc n ρ g * ℓ (colSub (Mg ρ g) P) ∂ν = ℓ Q` using `fun ℓ => integral_eq_lin ν n ρ hρ P S hS ℓ`. Establish `hcoef : ∀ m, coeff m Q = ∫ g, cc n ρ g * coeff m (colSub (Mg ρ g) P) ∂ν` using `fun m => (hav (lcoeff ℂ m)).symm`.
+
+Establish `hQinv : Q ∈ inv a d n`. Introduce `u`. Take `⟨g0, rfl⟩` from `hsurj u`. Express the relevant statement in the definitionally equal form `colSub (Mg ρ g0) Q = detChar n (Mg ρ g0) • Q`. Use extensionality with `m`.
+
+Rewrite using `[coeff_smul, smul_eq_mul]`. Establish `h1` using `hav ((lcoeff ℂ m).comp (colSub (Mg ρ g0)).toLinearMap)`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, lcoeff_apply] at h1`. Rewrite using `[← h1, hcoef m]`. Establish `hF : Measurable fun g => cc n ρ g * coeff m (colSub (Mg ρ g) P)` using `(measurable_cc n ρ hρ).mul (coeff_colSub_good ρ hρ P m).1`.
+
+Rewrite using `[← integral_mul_left_inv ν _ hF g0, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[colSub_comp, ← Mg_mul, cc_mul n ρ g0 g]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `horth : ∀ I ∈ inv a d n, Formalism.L2.DIV.fockS I Q = 0`. Introduce `I hI`. Establish `key : ∀ g, Formalism.L2.DIV.fockS I (colSub (Mg ρ g) P) = 0`. Introduce `g`. Establish `hIu : colSub (fun τ => ((ρ g)⁻¹ τ : Matrix (Fin a) (Fin a) ℂ)) I = detChar n (fun τ => ((ρ g)⁻¹ τ : Matrix (Fin a) (Fin a) ℂ)) • I` using `hI (ρ g)⁻¹`.
+
+Establish `hI' : colSub (Mg ρ g) (colSub (fun τ => ((ρ g)⁻¹ τ : Matrix (Fin a) (Fin a) ℂ)) I) = I`. Rewrite using `[colSub_comp]`. Establish `h1 : (fun τ => Mg ρ g τ * ((ρ g)⁻¹ τ : Matrix (Fin a) (Fin a) ℂ)) = fun _ => (1 : Matrix (Fin a) (Fin a) ℂ)`. Use function extensionality and compare the values at `τ`. Simplify using `[Mg]`.
+
+Rewrite using `[h1, colSub_one]`. Rewrite using `[← hI', show Mg ρ g = fun τ => ((ρ g τ : Matrix.unitaryGroup (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) from rfl, GlobalTheory.T.fockS_fockColumnSubstitution_unitary, hIu, ← Formalism.L2.DIV.fockL_apply, LinearMap.map_smulₛₗ₂, Formalism.L2.DIV.fockL_apply, hP I hI, smul_zero]`. Rewrite using `[← Formalism.L2.DIV.fockL_apply, ← hav]`. Simplify using `only [Formalism.L2.DIV.fockL_apply, key, mul_zero, integral_zero]`. Establish `hQ0 : Q = 0`.
+
+Assume the negation of the conclusion as `hne`. Use `fockS_self_re_pos hne` as an intermediate fact. Rewrite `this` using `[horth Q hQinv, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Express the relevant statement in the definitionally equal form `∫ g, cc n ρ g * Λ (colSub (Mg ρ g) P) ∂ν = 0`.
+
+Rewrite using `[hav Λ, hQ0, map_zero]`.
+-/
 theorem avg_perp : ∀ {ι : Type} [Fintype ι] (a d : ℕ) (n : ι → ℕ) {K : Type} [Group K] [MeasurableSpace K] (ν : Measure K), IsProbabilityMeasure ν → ν.IsMulLeftInvariant →
   ∀ (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ)), (∀ τ i j, Measurable fun g => (ρ g τ : Matrix (Fin a) (Fin a) ℂ) i j) →
     Function.Surjective ρ →

@@ -35,6 +35,9 @@ def reTr {X : HidaSetting D} {u : D.what₂.Word} {F : Forms0 D u} {F' : Forms0 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c z`. Use `show T.J (shP X u x.1 (T.hc c)) (F'.val0.eY z) = T.J (shP X u x.1 (T.hc c)) (F.val0.eY z)`. Rewrite using `[he]`. Both sides reduce to the same expression.
+-/
 theorem colDictL_reTr {X : HidaSetting D} {u : D.what₂.Word} {F : Forms0 D u} {F' : Forms0 (reD D Z) u} (T : Transport X u F)
     (hy : F'.cls0.y = F.cls0.y) (he : F'.val0.eY = F.val0.eY) (hK : X.LevelSubgroupCharacter) (x : Cu X u hK) :
     colDictL (reX Z X) (reTr Z T hy he) hK x = colDictL X T hK x := by

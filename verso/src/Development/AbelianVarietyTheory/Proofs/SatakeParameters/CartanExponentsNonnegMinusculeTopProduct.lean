@@ -7,11 +7,17 @@ noncomputable section
 
 namespace GlobalTheory.Hk3.MinuscTopLocal
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) (K := F) v).trans Iff.rfl`.
+-/
 theorem ov_eq (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     Formalism.UG.Ov F v = Formalism.UG.intL (v.adicCompletion F) := by
   ext x
   exact (HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) (K := F) v).trans Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[← ov_eq]`. Use `show ϖ ^ m ∈ v.adicCompletionIntegers F ↔ 0 ≤ m`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_zpow₀, hϖ, ← WithZero.coe_zpow, ← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zsmul, ← ofAdd_zero, Multiplicative.ofAdd_le, smul_eq_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem zpow_int {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)}
     {ϖ : v.adicCompletion F} (hϖ : Formalism.UG.IsUnifV F v ϖ) (m : ℤ) :
     ϖ ^ m ∈ Formalism.UG.intL (v.adicCompletion F) ↔ 0 ≤ m := by
@@ -32,12 +38,18 @@ def dU {L : Type} [Field L] {n : ℕ} {ϖ : L} (h0 : ϖ ≠ 0) (e : Fin n → �
     rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
     congr 1; funext i; rw [← zpow_add₀ h0]; simp
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact sum_mem fun l _ => mul_mem (hA _ _) (hB _ _)`.
+-/
 theorem intM_mul {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
     {A B : Matrix (Fin n) (Fin n) L} (hA : ∀ i j, A i j ∈ Formalism.UG.intL L) (hB : ∀ i j, B i j ∈ Formalism.UG.intL L) :
     ∀ i j, (A * B) i j ∈ Formalism.UG.intL L := fun i j => by
   rw [Matrix.mul_apply]
   exact sum_mem fun l _ => mul_mem (hA _ _) (hB _ _)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.diagonal_apply] split_ifs with h · exact (zpow_int hϖ _).2 (he i) · exact zero_mem _`.
+-/
 theorem intM_diag {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} {n : ℕ}
     {ϖ : v.adicCompletion F} (hϖ : Formalism.UG.IsUnifV F v ϖ) {e : Fin n → ℤ} (he : ∀ i, 0 ≤ e i) :
     ∀ i j, (Matrix.diagonal fun i => ϖ ^ e i) i j ∈ Formalism.UG.intL (v.adicCompletion F) := fun i j => by
@@ -46,12 +58,44 @@ theorem intM_diag {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (�
   · exact (zpow_int hϖ _).2 (he i)
   · exact zero_mem _
 
+/- English proof (translation)
+Introduce `h`. Rewrite `hϖ` using `[Formalism.UG.IsUnifV, h, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`.
+-/
 theorem unif_ne_zero {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)}
     {ϖ : v.adicCompletion F} (hϖ : Formalism.UG.IsUnifV F v ϖ) : ϖ ≠ 0 := by
   intro h
   rw [Formalism.UG.IsUnifV, h, map_zero] at hϖ
   exact WithZero.zero_ne_coe hϖ
 
+/- English proof (translation)
+Introduce `F _ _ v n ϖ hϖ d k hd hd0 hk a₁ ha₁ a₂ ha₂ a₃ ha₃ d' hd' k₁ hk₁ k₂ hk₂ e`. Establish `h0 : ϖ ≠ 0` using `unif_ne_zero hϖ`. Rewrite `ha₁`, `ha₂`, `ha₃`, `hk₁`, `hk₂` using `[ov_eq]`. Establish `hm0 : ∀ i, 0 ≤ (fun i => if 0 < d i then d i - 1 else d i) i` using `fun i => by`. Apply the tactic sequence `have := hd0 i; dsimp only; split_ifs <;> omega`.
+
+Apply the tactic sequence `have hw0 : ∀ i : Fin n, 0 ≤ (fun i : Fin n => if (i : ℕ) < k then (1 : ℤ) else 0) i := fun i => by dsimp only; split_ifs <;> omega`. Establish `hG : a₁ * dU h0 (fun i => if 0 < d i then d i - 1 else d i) * a₂ * dU h0 (fun i : Fin n => if (i : ℕ) < k then (1 : ℤ) else 0) * a₃ = k₁ * dU h0 d' * k₂` using `Units.ext (by simp only [Units.val_mul]; exact e)`. Establish `hD : k₁⁻¹ * (a₁ * dU h0 (fun i => if 0 < d i then d i - 1 else d i) * a₂ * dU h0 (fun i : Fin n => if (i : ℕ) < k then (1 : ℤ) else 0) * a₃) * k₂⁻¹ = dU h0 d'`. Rewrite using `[hG]`. Use `group`.
+
+Establish `hd'0 : ∀ i, 0 ≤ d' i`. Introduce `i`. Establish `hI : ∀ a b, ((k₁⁻¹ * (a₁ * dU h0 (fun i => if 0 < d i then d i - 1 else d i) * a₂ * dU h0 (fun i : Fin n => if (i : ℕ) < k then (1 : ℤ) else 0) * a₃) * k₂⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) a b ∈ Formalism.UG.intL (v.adicCompletion F)`. Simplify using `only [Units.val_mul]`. Apply the tactic sequence `refine intM_mul (intM_mul (GlobalTheory.Hk3.MinuscTop.glint_entry (inv_mem hk₁)) ?_) (GlobalTheory.Hk3.MinuscTop.glint_entry (inv_mem hk₂))`.
+
+Apply the tactic sequence `refine intM_mul (intM_mul (intM_mul (intM_mul (GlobalTheory.Hk3.MinuscTop.glint_entry ha₁) ?_) (GlobalTheory.Hk3.MinuscTop.glint_entry ha₂)) ?_) (GlobalTheory.Hk3.MinuscTop.glint_entry ha₃)`. Conclude with `intM_diag hϖ hm0`. Conclude with `intM_diag hϖ hw0`. Use `hI i i` as an intermediate fact. Rewrite `this` using `[hD]`.
+
+Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun i => ϖ ^ d' i) i i ∈ _ at this`. Rewrite `this` using `[Matrix.diagonal_apply_eq]`. Conclude with `(zpow_int hϖ _).1 this`. Take `⟨dN, hdN⟩ : ∃ f : Fin n → ℕ, ∀ i, (f i : ℤ) = d i` from `⟨fun i => (d i).toNat, fun i => Int.toNat_of_nonneg (hd0 i)⟩`. Take `⟨d'N, hd'N⟩ : ∃ f : Fin n → ℕ, ∀ i, (f i : ℤ) = d' i` from `⟨fun i => (d' i).toNat, fun i => Int.toNat_of_nonneg (hd'0 i)⟩`.
+
+Establish `hdA : Antitone dN` using `fun i j h => by have := hd h; have := hdN i; have := hdN j; omega`. Establish `hd'A : Antitone d'N` using `fun i j h => by have := hd' h; have := hd'N i; have := hd'N j; omega`. Establish `hkN : ∀ i : Fin n, 0 < dN i ↔ (i : ℕ) < k` using `fun i => by rw [← hk i, ← hdN i]; omega`. Establish `hg : ∃ l₁ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL (v.adicCompletion F)), ∃ l₂ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL (v.adicCompletion F)), ((l₁ * (a₁ * dU h0 (fun i => if 0 < d i then d i - 1 else d i) * a₂) * l₂ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) = Mat …`. Use `⟨a₁⁻¹, inv_mem ha₁, a₂⁻¹, inv_mem ha₂, ?_⟩` and prove the remaining obligations.
+
+Establish `: a₁⁻¹ * (a₁ * dU h0 (fun i => if 0 < d i then d i - 1 else d i) * a₂) * a₂⁻¹ = dU h0 (fun i => if 0 < d i then d i - 1 else d i)` using `by group`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun i => ϖ ^ (if 0 < d i then d i - 1 else d i)) = _`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[← zpow_natCast]`. Use `congr 1`. Use `hdN i` as an intermediate fact. Apply the tactic sequence `split_ifs <;> omega`. Establish `ha : ∃ l₁ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL (v.adicCompletion F)), ∃ l₂ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL (v.adicCompletion F)), ((l₁ * (dU h0 (fun i : Fin n => if (i : ℕ) < k then (1 : ℤ) else 0) * a₃) * l₂ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) …`.
+
+Use `⟨1, one_mem _, a₃⁻¹, inv_mem ha₃, ?_⟩` and prove the remaining obligations. Establish `: 1 * (dU h0 (fun i : Fin n => if (i : ℕ) < k then (1 : ℤ) else 0) * a₃) * a₃⁻¹ = dU h0 (fun i : Fin n => if (i : ℕ) < k then (1 : ℤ) else 0)` using `by group`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun i : Fin n => ϖ ^ (if (i : ℕ) < k then (1 : ℤ) else 0)) = _`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hga : ∃ l₁ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL (v.adicCompletion F)), ∃ l₂ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL (v.adicCompletion F)), ((l₁ * ((a₁ * dU h0 (fun i => if 0 < d i then d i - 1 else d i) * a₂) * (dU h0 (fun i : Fin n => if (i : ℕ) < k then (1 : …`. Use `⟨k₁⁻¹, inv_mem hk₁, k₂⁻¹, inv_mem hk₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc (a₁ * _ * a₂), hD]`.
+
+Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun i => ϖ ^ d' i) = _`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← hd'N i, zpow_natCast]`. Establish `key` using `GlobalTheory.Hk3.MinuscTop.elemDiv_mul_minuscule (v.adicCompletion F) ϖ n hϖ dN k hdA hkN _ _ hg ha d'N hd'A hga`.
+
+Use `⟨hd'0, ?_⟩` and prove the remaining obligations. Establish `s1 : ∑ i, d' i = ((∑ i, d'N i : ℕ) : ℤ)` using `by push_cast; exact Finset.sum_congr rfl fun i _ => (hd'N i).symm`. Establish `s2 : ∑ i, d i = ((∑ i, dN i : ℕ) : ℤ)` using `by push_cast; exact Finset.sum_congr rfl fun i _ => (hdN i).symm`. Establish `s3 : ∑ i, d' i ^ 2 = ((∑ i, d'N i ^ 2 : ℕ) : ℤ)` using `by push_cast; exact Finset.sum_congr rfl fun i _ => by rw [hd'N i]`. Establish `s4 : ∑ i, d i ^ 2 = ((∑ i, dN i ^ 2 : ℕ) : ℤ)` using `by push_cast; exact Finset.sum_congr rfl fun i _ => by rw [hdN i]`.
+
+Break down `key with h | ⟨h1, h2⟩` into its components or cases. Use `left`. Use function extensionality and compare the values at `i`. Rewrite using `[← hd'N i, ← hdN i, h]`. Use `right`.
+
+Rewrite using `[s1, s2, s3, s4]`. Conclude with `⟨by exact_mod_cast h1, by exact_mod_cast h2⟩`.
+-/
 theorem cartan_top_step : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) (ϖ : v.adicCompletion F), Formalism.UG.IsUnifV F v ϖ → ∀ (d : Fin n → ℤ) (k : ℕ), Antitone d → (∀ i, 0 ≤ d i) → (∀ i : Fin n, 0 < d i ↔ (i : ℕ) < k) → ∀ a₁ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v), ∀ a₂ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v), ∀ a₃ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v), ∀ d' : Fin n → ℤ, Antitone d' → ∀ k₁ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v), ∀ k₂ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v), (a₁ : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * Formalism.UG.diagPow F v ϖ (fun i => if 0 < d i then d i - 1 else d i) * (a₂ : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * Formalism.UG.diagPow F v ϖ (fun i => if (i : ℕ) < k then 1 else 0) * (a₃ : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = (k₁ : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * Formalism.UG.diagPow F v ϖ d' * (k₂ : Matrix (Fin n) (Fin n) (v.adicCompletion F)) → (∀ i, 0 ≤ d' i) ∧ (d' = d ∨ (∑ i, d' i = ∑ i, d i ∧ ∑ i, d' i ^ 2 < ∑ i, d i ^ 2)) := by
   intro F _ _ v n ϖ hϖ d k hd hd0 hk a₁ ha₁ a₂ ha₂ a₃ ha₃ d' hd' k₁ hk₁ k₂ hk₂ e
   have h0 : ϖ ≠ 0 := unif_ne_zero hϖ

@@ -26,12 +26,20 @@ open scoped TensorProduct
 section
 variable {R : Type} [CommRing R] {G G' : Over (Spec (CommRingCat.of R))} [GrpObj G] [GrpObj G']
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[MonObj.mul_comp]`. Simplify using `[MonObj.mul_comp]`.
+-/
 theorem lift_mul' {X : Over (Spec (CommRingCat.of R))} (a b : X ⟶ G) (a' b' : X ⟶ G') :
     lift (a * b) (a' * b') = lift a a' * lift b b' := by
   apply CartesianMonoidalCategory.hom_ext
   · simp [MonObj.mul_comp]
   · simp [MonObj.mul_comp]
 
+/- English proof (translation)
+Establish `key : z ^ p = lift ((z ≫ fst G G') ^ p) ((z ≫ snd G G') ^ p)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.pow_comp]`. Establish `one : (1 : X ⟶ G ⊗ G') = lift 1 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.one_comp]`. Rewrite using `[key, one]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨by simpa using congrArg (· ≫ fst G G') h, by simpa using congrArg (· ≫ snd G G') h⟩`. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[h1, h2]`.
+-/
 theorem pow_eq_one_iff' {X : Over (Spec (CommRingCat.of R))} (z : X ⟶ G ⊗ G') (p : ℕ) :
     z ^ p = 1 ↔ (z ≫ fst G G') ^ p = 1 ∧ (z ≫ snd G G') ^ p = 1 := by
   have key : z ^ p = lift ((z ≫ fst G G') ^ p) ((z ≫ snd G G') ^ p) := by
@@ -45,6 +53,9 @@ theorem pow_eq_one_iff' {X : Over (Spec (CommRingCat.of R))} (z : X ⟶ G ⊗ G'
   · rintro ⟨h1, h2⟩
     rw [h1, h2]
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.lift_comp_includeRight f g h`.
+-/
 theorem lift_right {A B S : Type} [CommRing A] [CommRing B] [CommRing S] [Algebra R A] [Algebra R B]
     [Algebra R S] (f : A →ₐ[R] S) (g : B →ₐ[R] S) (h : ∀ x y, Commute (f x) (g y)) :
     (Algebra.TensorProduct.lift f g h).comp Algebra.TensorProduct.includeRight = g :=
@@ -56,6 +67,11 @@ def prodPt (T : TorsRep G p) (T' : TorsRep G' p) : sp (R₀ := R) (T.A ⊗[R] T'
   lift (spMap (Algebra.TensorProduct.includeLeft : T.A →ₐ[R] T.A ⊗[R] T'.A) ≫ T.y)
     (spMap (Algebra.TensorProduct.includeRight : T'.A →ₐ[R] T.A ⊗[R] T'.A) ≫ T'.y)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[prodPt, Category.assoc, lift_fst, ← Category.assoc, Chart.spMap_comp]`. Rewrite using `[prodPt, Category.assoc, lift_snd, ← Category.assoc, Chart.spMap_comp]`.
+
+Introduce and unpack `⟨h1, h2⟩`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[prodPt, Category.assoc, lift_fst, ← Category.assoc, Chart.spMap_comp, h1]`. Rewrite using `[prodPt, Category.assoc, lift_snd, ← Category.assoc, Chart.spMap_comp, h2]`.
+-/
 theorem prodPt_iff (T : TorsRep G p) (T' : TorsRep G' p) {S : Type} [CommRing S] [Algebra R S]
     (φ : T.A ⊗[R] T'.A →ₐ[R] S) (z : sp (R₀ := R) S ⟶ G ⊗ G') :
     spMap φ ≫ prodPt T T' = z ↔
@@ -101,6 +117,15 @@ def prodRep (T : TorsRep G p) (T' : TorsRep G' p) : TorsRep (G ⊗ G') p where
         exact uφ _ h
       · exact (uψ _ h').trans (Algebra.TensorProduct.lift_comp_includeRight _ _ _).symm
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, a'⟩ ⟨b, b'⟩ e`. Establish `e1` using `congrArg (· ≫ fst G G') e`. Establish `e2` using `congrArg (· ≫ snd G G') e`. Simplify using `only [lift_fst, lift_snd] at e1 e2`.
+
+Conclude with `Prod.ext (h.inj e1) (h'.inj e2)`. Introduce and unpack `⟨a, a'⟩ ⟨b, b'⟩`. Simplify using `only [Prod.fst_add, Prod.snd_add, h.add, h'.add]`. Conclude with `lift_mul' _ _ _ _`. Introduce `z`.
+
+Rewrite using `[pow_eq_one_iff', h.range, h'.range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Use `⟨(a, b), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [ha, hb]`.
+
+Introduce and unpack `⟨⟨a, b⟩, rfl⟩`. Conclude with `⟨⟨a, by simp⟩, ⟨b, by simp⟩⟩`.
+-/
 theorem isTorsPts_prod {N N' : Type} [AddCommGroup N] [AddCommGroup N']
     {pt : N → (sp (R₀ := R) R ⟶ G)} {pt' : N' → (sp (R₀ := R) R ⟶ G')}
     (h : IsTorsPts G p pt) (h' : IsTorsPts G' p pt') :
@@ -123,12 +148,20 @@ theorem isTorsPts_prod {N N' : Type} [AddCommGroup N] [AddCommGroup N']
     · rintro ⟨⟨a, b⟩, rfl⟩
       exact ⟨⟨a, by simp⟩, ⟨b, by simp⟩⟩
 
+/- English proof (translation)
+Use `choose e he ue using fun x => T.univ R (pt x) ((h.range _).2 ⟨x, rfl⟩)`. Conclude with `⟨e, he, ue⟩`.
+-/
 theorem exists_ev (T : TorsRep G p) {N : Type} [AddCommGroup N] {pt : N → (sp (R₀ := R) R ⟶ G)}
     (h : IsTorsPts G p pt) : ∃ e : N → (T.A →ₐ[R] R), (∀ x, spMap (e x) ≫ T.y = pt x) ∧
       ∀ x φ, spMap φ ≫ T.y = pt x → φ = e x := by
   choose e he ue using fun x => T.univ R (pt x) ((h.range _).2 ⟨x, rfl⟩)
   exact ⟨e, he, ue⟩
 
+/- English proof (translation)
+Use `show (∃ a : T.A, ∀ x φ, spMap φ ≫ T.y = pt x → f x = algebraMap R C (φ a)) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, funext fun x => ha x (e x) (he x)⟩`. Introduce and unpack `⟨a, rfl⟩`.
+
+Use `⟨a, fun x φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[ue x φ hφ]`.
+-/
 theorem mem_torsFun_iff {C : Type} [Field C] [Algebra R C] (T : TorsRep G p) {N : Type}
     {pt : N → (sp (R₀ := R) R ⟶ G)} {e : N → (T.A →ₐ[R] R)} (he : ∀ x, spMap (e x) ≫ T.y = pt x)
     (ue : ∀ x φ, spMap φ ≫ T.y = pt x → φ = e x) (f : N → C) :
@@ -141,6 +174,31 @@ theorem mem_torsFun_iff {C : Type} [Field C] [Algebra R C] (T : TorsRep G p) {N 
     refine ⟨a, fun x φ hφ => ?_⟩
     rw [ue x φ hφ]
 
+/- English proof (translation)
+Take `⟨e, he, ue⟩` from `exists_ev T h`. Take `⟨e', he', ue'⟩` from `exists_ev T' h'`. Set `E : N × N' → (T.A ⊗[R] T'.A →ₐ[R] R)` to `fun z => Algebra.TensorProduct.lift (e z.1) (e' z.2) (fun _ _ => Commute.all _ _)`. Establish `hE : ∀ z, spMap (E z) ≫ (prodRep T T').y = lift (pt z.1) (pt' z.2)`. Introduce `z`.
+
+Use `show spMap (E z) ≫ prodPt T T' = _`. Rewrite using `[prodPt_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [E]`. Rewrite using `[Algebra.TensorProduct.lift_comp_includeLeft, he, lift_fst]`.
+
+Simplify using `only [E]`. Rewrite using `[lift_right, he', lift_snd]`. Establish `uE : ∀ z (φ : T.A ⊗[R] T'.A →ₐ[R] R), spMap φ ≫ (prodRep T T').y = lift (pt z.1) (pt' z.2) → φ = E z`. Introduce `z φ hφ`. Take `⟨h1, h2⟩` from `(prodPt_iff T T' φ _).1 hφ`.
+
+Rewrite `h1` using `[lift_fst]`. Rewrite `h2` using `[lift_snd]`. Apply `Algebra.TensorProduct.ext` to reduce the goal to its premises. Simplify using `only [E]`. Rewrite using `[Algebra.TensorProduct.lift_comp_includeLeft]`.
+
+Conclude with `ue _ _ h1`. Conclude with `(ue' _ _ h2).trans (lift_right (e z.1) (e' z.2) (fun _ _ => Commute.all _ _)).symm`. Establish `hS` using `mem_torsFun_iff (C := C) T he ue`. Establish `hS'` using `mem_torsFun_iff (C := C) T' he' ue'`. Establish `hP` using `mem_torsFun_iff (C := C) (prodRep T T') hE uE`.
+
+Establish `hten : ∀ (z : N × N') (a : T.A) (b : T'.A), algebraMap R C (E z (a ⊗ₜ[R] b)) = algebraMap R C (e z.1 a) * algebraMap R C (e' z.2 b)`. Introduce `z a b`. Simplify using `[E]`. Establish `aux : ∀ t : T.A ⊗[R] T'.A, (fun z : N × N' => algebraMap R C (E z t)) ∈ tens (torsFun C T pt) (torsFun C T' pt')`. Introduce `t`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero`. Establish `h0 : (fun z : N × N' => algebraMap R C (E z 0)) = 0`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h0]`. Conclude with `zero_mem _`. Consider the case `tmul a b`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun x => algebraMap R C (e x a), (hS _).2 ⟨a, rfl⟩, fun x => algebraMap R C (e' x b), (hS' _).2 ⟨b, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `z`. Conclude with `hten z a b`. Consider the case `add s t hs ht`. Establish `h2 : (fun z : N × N' => algebraMap R C (E z (s + t))) = (fun z => algebraMap R C (E z s)) + (fun z => algebraMap R C (E z t))`. Use function extensionality and compare the values at `z`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h2]`. Conclude with `add_mem hs ht`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`.
+
+Take `⟨t, rfl⟩` from `(hP f).1 hf`. Conclude with `aux t`. Unfold `tens`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `F ⟨g, hg, k, hk, rfl⟩`.
+
+Take `⟨a, rfl⟩` from `(hS g).1 hg`. Take `⟨b, rfl⟩` from `(hS' k).1 hk`. Conclude with `(hP _).2 ⟨(a ⊗ₜ[R] b : T.A ⊗[R] T'.A), funext fun z => (hten z a b).symm⟩`.
+-/
 theorem torsFun_prod (C : Type) [Field C] [Algebra R C] (T : TorsRep G p) (T' : TorsRep G' p)
     {N N' : Type} [AddCommGroup N] [AddCommGroup N']
     {pt : N → (sp (R₀ := R) R ⟶ G)} {pt' : N' → (sp (R₀ := R) R ⟶ G')}

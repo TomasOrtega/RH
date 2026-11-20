@@ -30,6 +30,9 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
 end Frame
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic PadicComplexHost.isAdicComplete
 end GlobalTheory.CovHt.FrameCmp
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _` and use `GlobalTheory.CovHt.FrameCmp.htCmp`.
+-/
 theorem GlobalTheory.CovHt.cover_height_comparison : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     [IsGalois ℚ E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l),
     HTCmp Xo c := fun _ _ _ _ _ _ _ _ _ _ _ => GlobalTheory.CovHt.FrameCmp.htCmp

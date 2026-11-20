@@ -13,6 +13,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LBDescent
 
+/- English proof (translation)
+Introduce `X Y f _ _ _ _ L hL φ hc hcoc`. Use `GlobalTheory.T.exists_lineBundle_of_descentInvariant_frames f L hL φ fun y => ?_` and prove the remaining obligations. Take `⟨V, hy, t, ht⟩` from `GlobalTheory.T.exists_lineBundle_trivial_near_fibre_finite f L hL y`. Take `⟨c, hct, hcc⟩` from `GlobalTheory.T.descentDatum_frame_cocycle_unit f L hL φ hc hcoc V t ht`. Take `⟨V', hle, hy', u, hu⟩` from `GlobalTheory.T.finiteFlat_unitCocycle_locally_coboundary f V c hcc y hy`.
+
+Conclude with `⟨V', hy', GlobalTheory.T.twisted_frame_invariant_under_descentDatum f L φ V t ht c hct V' hle u hu⟩`.
+-/
 theorem exists_descent : ∀ (X Y : Scheme.{0}) (f : X ⟶ Y) [IsFinite f] [Flat f] [Surjective f] [IsLocallyNoetherian Y] (L : LB X), L.IsLB → ∀ (φ : ∀ i j, Γ(pullback f f, GlobalTheory.LBDescent.chart f L i j)ˣ), GlobalTheory.LBDescent.DescCompat f L φ → GlobalTheory.LBDescent.DescCocycle f L φ → ∃ L' : LB Y, L'.IsLB ∧ LBIso L (L'.pull f) := by
   intro X Y f _ _ _ _ L hL φ hc hcoc
   refine GlobalTheory.T.exists_lineBundle_of_descentInvariant_frames f L hL φ fun y => ?_

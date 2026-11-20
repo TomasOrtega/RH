@@ -15,6 +15,23 @@ open scoped TensorProduct Matrix GlobalTheory.VacAny
 noncomputable section
 namespace GlobalTheory.VacUniqInert
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨X₀, hX₀⟩ : ∃ X₀, η X₀ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hη0 (funext h)`. Establish `hne : ∀ t, ψ₀ t ≠ 0` using `fun t h => by`.
+
+Establish `e` using `AddChar.map_add_eq_mul ψ₀ t (-t)`. Rewrite `e` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero e`. Use `⟨f X₀ / η X₀, funext fun X => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Distinguish the cases in `hu : ∀ i, (L i).1 = 0 → ψ₀ ((X - X₀) ⬝ᵥ (L i).2) = 1`. Take `⟨i, hi⟩` from `hD _ hu`. Establish `hX : X₀ + (L i).1 = X` using `by rw [hi]; abel`. Establish `e1` using `congrFun (hf i) X₀`. Establish `e2` using `congrFun (hη i) X₀`.
+
+Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, hX] at e1 e2`. Establish `hA` using `hne (X₀ ⬝ᵥ (L i).2 + ⅟(2 : K) * ((L i).1 ⬝ᵥ (L i).2))`. Clear the denominators using the available nonvanishing facts. Use `mul_left_cancel₀ hA ?_` and prove the remaining obligations. Take the linear combination `η X₀ * e1 - f X₀ * e2`.
+
+Use `push_neg at hu`. Take `⟨i, hi0, hne1⟩` from `hu`. Establish `key : ∀ g : (κ → K) → ℂ, schr ψ₀ (L i) g = c i • g → ∀ Y, ψ₀ (Y ⬝ᵥ (L i).2) * g Y = c i * g Y`. Introduce `g hg Y`. Establish `e` using `congrFun hg Y`.
+
+Simplify `e` using `[schr, hi0]`. Establish `hc : ψ₀ (X₀ ⬝ᵥ (L i).2) = c i` using `mul_right_cancel₀ hX₀ (key η (hη i) X₀)`. Establish `hz : ∀ g : (κ → K) → ℂ, schr ψ₀ (L i) g = c i • g → g X = 0`. Introduce `g hg`. Assume the negation of the conclusion as `hgX`.
+
+Establish `h1 : ψ₀ (X ⬝ᵥ (L i).2) = ψ₀ (X₀ ⬝ᵥ (L i).2)`. Rewrite using `[hc]`. Conclude with `mul_right_cancel₀ hgX (key g hg X)`. Apply `hne1` to reduce the goal to its premises. Establish `e : X ⬝ᵥ (L i).2 = (X - X₀) ⬝ᵥ (L i).2 + X₀ ⬝ᵥ (L i).2` using `by rw [sub_dotProduct]; ring`.
+
+Rewrite `h1` using `[e, AddChar.map_add_eq_mul]`. Conclude with `mul_right_cancel₀ (hne _) (h1.trans (one_mul _).symm)`. Rewrite using `[hz f (hf i), hz η (hη i), mul_zero]`.
+-/
 theorem eq_smul_of_eigen {K κ : Type} [Field K] [Fintype κ] [Invertible (2 : K)] (ψ₀ : AddChar K ℂ) {ι : Type}
     (L : ι → (κ → K) × (κ → K)) (c : ι → ℂ)
     (hD : ∀ u : κ → K, (∀ i, (L i).1 = 0 → ψ₀ (u ⬝ᵥ (L i).2) = 1) → ∃ i, (L i).1 = u)
@@ -58,6 +75,17 @@ theorem eq_smul_of_eigen {K κ : Type} [Field K] [Fintype κ] [Invertible (2 : K
       exact mul_right_cancel₀ (hne _) (h1.trans (one_mul _).symm)
     rw [hz f (hf i), hz η (hη i), mul_zero]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w hin θ _ hvac φ hφ hfix`. Establish `hat : ∀ γ ∈ latAtV G.V' G.W v, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable G.V' G.W v).1`. Set `cf : latAtV G.V' G.W v → ℂ` to `fun γ => B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) γ γ)`. Establish `hloc : ∀ f ∈ SB (Fin a' × Fin (a + a') → Fv F v), (∀ γ ∈ latAtV G.V' G.W v, Acts (evFin F v) (G.M'.co.rho B.ψ γ) f (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) γ γ) • f)) → ∀ γ : latAtV G.V' G.W v, schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M'.co v γ) f = cf γ • f := by`. Introduce `f hf h γ`.
+
+Conclude with `GlobalTheory.TensUniq.eq_of_tens_eq v f _ _ hf fun r hr => (GlobalTheory.VacBridge.rho_acts_locCo G.M'.co B.ψ v γ (hat γ γ.2) f r hr).symm.trans (h γ γ.2 r hr)`. Establish `hsd : ∀ z, z ∈ (latAtV G.V' G.W v).map (GlobalTheory.LatVac.locCo G.M'.co v) ↔ ∀ l ∈ (latAtV G.V' G.W v).map (GlobalTheory.LatVac.locCo G.M'.co v), GlobalTheory.LatVac.psiAt B.ψ v (z.1 ⬝ᵥ l.2 - l.1 ⬝ᵥ z.2) = 1` using `GlobalTheory.LatVac.DualLoc.map_selfDual v G.M'.co B.ψ (latAtV G.V' G.W v) hat (fun z hz => GlobalTheory.T.inertPlace_tensorLattice_selfDual_symplectic F E σ B hTr.base G.V' G.W _ _ _ _ hTr.geo.hV' hTr.geo.hW v w hin z hz)`. Establish `hst : ∀ t ∈ v.adicCompletionIntegers F, ∀ l ∈ (latAtV G.V' G.W v).map (GlobalTheory.LatVac.locCo G.M'.co v), t • l ∈ (latAtV G.V' G.W v).map (GlobalTheory.LatVac.locCo G.M'.co v)`. Introduce and unpack `t ht _ ⟨γ, hγ, rfl⟩`. Use `⟨GlobalTheory.LatVac.liftV v t • γ, (GlobalTheory.LatVac.latAtV_at_stable G.V' G.W v).2 t ht γ hγ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.LatOpenCpt.locCo_smul, GlobalTheory.LatVac.evFin_liftV]`. Establish `hbd : ∃ c : Fv F v, c ≠ 0 ∧ ∀ l ∈ (latAtV G.V' G.W v).map (GlobalTheory.LatVac.locCo G.M'.co v), ∀ i, c * l.1 i ∈ v.adicCompletionIntegers F`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.LatBound.locCo_latAtV_bounded G.V' G.W v G.M'.co hTr.geo.hV'.lat hTr.geo.hW.lat`. Conclude with `⟨c, hc0, by rintro _ ⟨γ, hγ, rfl⟩ i; exact (hc γ hγ i).1⟩`. Establish `hD` using `GlobalTheory.T.exists_second_coordinate_of_orthogonal_selfDual v (GlobalTheory.LatVac.psiAt B.ψ v) _ hsd hst hbd`.
+
+Use `eq_smul_of_eigen (GlobalTheory.LatVac.psiAt B.ψ v) (fun γ : latAtV G.V' G.W v => GlobalTheory.LatVac.locCo G.M'.co v γ) cf (fun u hu => ?_) φ (G.M'.vac v) (hloc φ hφ hfix) (hloc _ (hTr.geo.hM'.vac v).1 hvac) (hTr.geo.hM'.vac v).2.1` and prove the remaining obligations. Take `⟨y', γ, hγ, he⟩` from `hD u (by`. Introduce and unpack `y ⟨γ, hγ, he⟩`. Establish `h1` using `hu ⟨γ, hγ⟩ (congrArg Prod.fst he)`. Establish `h2 : (GlobalTheory.LatVac.locCo G.M'.co v γ).2 = y` using `congrArg Prod.snd he`.
+
+Simplify using `only at h1`. Rewrite `h1` using `[h2]`. Conclude with `h1)`. Conclude with `⟨⟨γ, hγ⟩, congrArg Prod.fst he⟩`.
+-/
 theorem vac_unique : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → ∀ (θ : 𝓞 E), (θ : E) + σ θ = 1 →

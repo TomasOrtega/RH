@@ -33,6 +33,9 @@ def nerveM (m : CH.Mor F F' (RingHom.id R)) (τ : ι' → ι) (hτ : ∀ α T, U
   τ T := m.τ T.1
   nat φ x := m.nat φ.1 x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nerveM_face (m : CH.Mor F F' (RingHom.id R)) (τ : ι' → ι) (hτ : ∀ α T, U' α T → U (τ α) (m.G.obj T))
     (p q : ℕ) (k : Fin (p + 2)) (x : CH.Cn (CH.elF (CH.cech (idxπ U hU) p) F) q) :
     (CH.elMor (CH.cechMap (idxπ U' hU') k.succAbove) F').pullC q ((nerveM (hU := hU) (hU' := hU') m τ hτ p).pullC q x) =
@@ -51,10 +54,16 @@ def dblHom (m : CH.Mor F F' (RingHom.id R)) (τ : ι' → ι) (hτ : ∀ α T, U
     exact congrArg _ (nerveM_face m τ hτ p q k x)
   cv p q x := (nerveM m τ hτ p).d_pullC q x
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cls_eq_of_eq {K : Cx.{1} R} {n : ℕ} {a b : K.X n} (h : a = b) (ha : K.d n a = 0) (hb : K.d n b = 0) :
     K.cls a ha = K.cls b hb := by
   subst h; rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : p = a ∧ q = b`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[K.sgl_self, L.sgl_self]`. Rewrite using `[K.sgl_ne _ (by omega), L.sgl_ne _ (by omega), map_zero]`.
+-/
 theorem dblHom_sgl {K L : DCx.{1} R} (φ : DCx.Hom K L (RingHom.id R)) (a b : ℕ) (y : K.X a b) (p q : ℕ) :
     φ.f p q (K.sgl a b y p q) = L.sgl a b (φ.f a b y) p q := by
   by_cases h : p = a ∧ q = b
@@ -64,6 +73,11 @@ theorem dblHom_sgl {K L : DCx.{1} R} (φ : DCx.Hom K L (RingHom.id R)) (a b : �
 
 end MorDbl
 
+/- English proof (translation)
+Introduce `R _ C C' _ _ F F' ι ι' U U' hU hU' m τ hτ`. Use `⟨dblHom m τ hτ, fun n x => ?_, fun p q x i => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `(P.cls_surj (CH.cx F) n).1 x`. Use `cls_eq_of_eq (Subtype.ext (funext fun p => funext fun q => ?_)) _ _` and prove the remaining obligations. Conclude with `dblHom_sgl (dblHom m τ hτ) 0 n _ p q`.
+
+Take `⟨a, ha, rfl⟩` from `(P.cls_surj ((dbl U hU F).col p) q).1 x`. Conclude with `cls_eq_of_eq rfl _ _`.
+-/
 theorem dbl_mor : ∀ {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} C'] (F : C ⥤ ModuleCat.{0} R)
     (F' : C' ⥤ ModuleCat.{0} R) {ι ι' : Type} (U : ι → ObjectProperty C) (U' : ι' → ObjectProperty C') (hU : ∀ α, Cosieve (U α))
     (hU' : ∀ α, Cosieve (U' α)) (m : CH.Mor F F' (RingHom.id R)) (τ : ι' → ι) (hτ : ∀ α T, U' α T → U (τ α) (m.G.obj T)),

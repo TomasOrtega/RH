@@ -15,6 +15,27 @@ section place
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Use `set A := C.nAux P.k P.r 0 (fun _ _ => 1) 1 a with hAdef`. Use `set A' := C.nAux P.k P.r 0 (fun _ _ => 1) 1 a' with hA'def`. Establish `hA : 0 ≤ A` using `TBBx5.weighted_auxiliary_norm_nonneg P P.r le_rfl a ha`. Establish `hA' : 0 ≤ A'` using `TBBx5.weighted_auxiliary_norm_nonneg P P.r le_rfl a' ha'`. Establish `hn : ∀ (b : C.LPt), D.IsLocPt b P.r → TBB.nPt P.k P.r (TBB.TTp p) (b ++ [(1, c)]) = C.nAux P.k P.r 0 (fun _ _ => 1) 1 b * C.nAux P.k P.r (D.ptGG (TBB.TTp p) (b ++ [(1, c)])) (fun _ _ => 1) (1 + P.r) [(1, c)]`.
+
+Introduce `b hb`. Unfold `TBB.nPt`. Rewrite using `[Formalism.FourierDecayAlt.P.PBD.weight_product_append, hb.2, Formalism.FourierDecayAlt.P.PBD.weight_product_indep_of_real_parameter P.k P.r _ 0 (fun _ _ => 1) b 1 le_rfl (by rw [hb.2]; omega)]`. Unfold `TBB.NP`. Rewrite using `[hn a ha, hn a' ha']`.
+
+Distinguish the cases in `hc2 : Complex.normSq c ≤ Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z'`. Establish `h0 : p.RR F (P.r + 1) w (a ++ [(1, c)]) (a' ++ [(1, c)]) = 0` using `Formalism.FourierDecayAlt.P.PBD.rrTop_zero P p.l0 p.T p.ν' p.m₀ p.Θ p.TP (M.sgn P p.l0) F w a (a' ++ [(1, c)]) c ha.2 hc2`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Use `push Not at hc2`.
+
+Establish `hT : Tz P.k P.r p.T.base.z = P.T` using `p.hP.2.2.2.1`. Establish `hT' : Tz P.k P.r p.T.base.z' = P.T'` using `p.hP.2.2.2.2.1`. Establish `hlast : ∀ b : C.LPt, D.ptGG (TBB.TTp p) (b ++ [(1, c)]) = Complex.normSq c - TBB.TTp p`. Introduce `b`. Simplify using `[D.ptGG, D.ptLast]`.
+
+Establish `hTT : TBB.TTp p = P.T * P.T'`. Unfold `TBB.TTp`. Rewrite using `[hT, hT']`. Establish `hfac : ∀ b : C.LPt, C.nAux P.k P.r (D.ptGG (TBB.TTp p) (b ++ [(1, c)])) (fun _ _ => 1) (1 + P.r) [(1, c)] = KB.levW P (P.r + 1) c`. Introduce `b`.
+
+Rewrite using `[hlast, hTT]`. Rewrite `hc2` using `[hT, hT']`. Simplify using `only [C.nAux, KB.levW, B2.zWeight, if_pos hc2.le]`. Rewrite using `[if_pos ⟨by omega, trivial⟩]`. Simplify using the standard rewrite rules.
+
+Establish `hlev : 0 ≤ KB.levW P (P.r + 1) c`. Rewrite using `[← hfac a, hlast]`. Simplify using `only [C.nAux]`. Rewrite using `[if_pos ⟨by omega, trivial⟩]`. Establish `: 0 ≤ Complex.normSq c - TBB.TTp p`.
+
+Unfold `TBB.TTp`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `using pow_nonneg this _`. Rewrite using `[hfac a, hfac a', Real.sqrt_mul hA, Real.sqrt_mul hA']`. Establish `hs : √(KB.levW P (P.r + 1) c) * √(KB.levW P (P.r + 1) c) = KB.levW P (P.r + 1) c` using `Real.mul_self_sqrt hlev`.
+
+Establish `: √A * √(KB.levW P (P.r + 1) c) * (√A' * √(KB.levW P (P.r + 1) c)) / TBB.normC nn w = √A * √A' / TBB.normC nn w * KB.levW P (P.r + 1) c`. Establish `e : √A * √(KB.levW P (P.r + 1) c) * (√A' * √(KB.levW P (P.r + 1) c)) / TBB.normC nn w = √A * √A' / TBB.normC nn w * (√(KB.levW P (P.r + 1) c) * √(KB.levW P (P.r + 1) c))` using `by ring`. Rewrite using `[e, hs]`. Rewrite using `[this]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem np_top_two (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (a a' : C.LPt)
     (ha : D.IsLocPt a P.r) (ha' : D.IsLocPt a' P.r) (w : List C.Letter) (c : ℂ) :
     ((√(C.nAux P.k P.r 0 (fun _ _ => 1) 1 a) * √(C.nAux P.k P.r 0 (fun _ _ => 1) 1 a') / TBB.normC nn w : ℝ) : ℂ) *
@@ -76,6 +97,15 @@ theorem np_top_two (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r →
 
 end place
 
+/- English proof (translation)
+Introduce `hA Wp Wq _ _ _ _ _ _ P p nn F w Cb hCb hF hw a a' ha ha'`. Establish `hPS : KB.PStd` using `Formalism.FourierDecayAlt.P.standard_pairing_of_heads Formalism.FourierDecayAlt.P.radial_head Formalism.FourierDecayAlt.P.head_top`. Use `set A := C.nAux P.k P.r 0 (fun _ _ => 1) 1 a with hAdef`. Use `set A' := C.nAux P.k P.r 0 (fun _ _ => 1) 1 a' with hA'def`. Use `set κ : ℝ := √A * √A' / TBB.normC nn w with hκ`.
+
+Prove the components needed by the constructor for the conclusion. Take `⟨φ, -, hφi, hφ, -⟩` from `hPS hA Wp Wq P p F P.r le_rfl w a a ha ha Cb hCb hF hw`. Use `(hφi.const_mul ((√A * √A / TBB.normC nn w : ℝ) : ℂ)).congr ?_` and prove the remaining obligations. Use `filter_upwards [PBL.ae_ne_zero_complex] with c hc`. Rewrite using `[← np_top_two p nn F a a ha ha w c, hφ c hc]`.
+
+Take `⟨φ, -, -, hφ, hφs⟩` from `hPS hA Wp Wq P p F P.r le_rfl w a a' ha ha' Cb hCb hF hw`. Establish `h0` using `hφs 0`. Simplify using `only [PBASM.waveG_zero_eq_self] at h0`. Establish `hf0 : ∀ c : ℂ, P5.fsv 0 c = 1` using `fun c => by simp [P5.fsv]`. Simplify using `only [hf0, one_mul] at h0`.
+
+Rewrite using `[TBBx5.li_np p nn F P.r le_rfl w a a' ha ha', TBBx5.wv_nPt p P.r le_rfl a ha, TBBx5.wv_nPt p P.r le_rfl a' ha', ← h0, ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBL.ae_ne_zero_complex] with c hc`. Rewrite using `[← np_top_two p nn F a a' ha ha' w c, hφ c hc]`.
+-/
 theorem top_level_fibre : FibreTop := by
   intro hA Wp Wq _ _ _ _ _ _ P p nn F w Cb hCb hF hw a a' ha ha'
   have hPS : KB.PStd := Formalism.FourierDecayAlt.P.standard_pairing_of_heads Formalism.FourierDecayAlt.P.radial_head Formalism.FourierDecayAlt.P.head_top

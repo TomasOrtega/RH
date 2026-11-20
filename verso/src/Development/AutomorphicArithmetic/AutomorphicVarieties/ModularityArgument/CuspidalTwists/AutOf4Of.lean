@@ -12,6 +12,11 @@ open UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZe
 
 namespace UpperTheory.V.Cu.AutomorphyOfRankFourLift
 
+/- English proof (translation)
+Unfold `Irr at hr ⊢`. Rewrite using `[eq_top_iff, ← hr, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y, u, e⟩` from `h x`. Rewrite using `[SetLike.mem_coe, e]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, rfl⟩)`.
+-/
 theorem irr_cover {H H' K : Type} [Group H] [Group H'] [Field K] {n : Type} [Fintype n] [DecidableEq n]
     (r : H →* Matrix n n K) (r' : H' →* Matrix n n K) (h : ∀ x, ∃ y, ∃ u : K, r x = u • r' y) (hr : Irr r) :
     Irr r' := by
@@ -24,6 +29,9 @@ theorem irr_cover {H H' K : Type} [Group H] [Group H'] [Field K] {n : Type} [Fin
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [PD.map_r, Matrix.map_apply, Dat.Q, MonoidHom.comp_apply, mapRep_apply, Matrix.smul_apply, smul_eq_mul, rep4, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.one_apply, Units.val_one, one_smul, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem q_apply (d : Dat Ω l) (T : Tower d.D) (g : G T.F Ω) :
     ((d.Q T).map (algebraMap d.c₁.O (PadicAlgCl l))).r g =
       ((toB d.δ (resQ T.F g) : (Qbar l)ˣ) : Qbar l) •
@@ -36,6 +44,25 @@ theorem q_apply (d : Dat Ω l) (T : Tower d.D) (g : G T.F Ω) :
 end UpperTheory.V.Cu.AutomorphyOfRankFourLift
 
 open UpperTheory.V.Cu.AutomorphyOfRankFourLift in
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ d T hT hok hirr`. Establish `h1 : Irr ((mapRep (algebraMap d.c₁.O (PadicAlgCl l)) (rep4 1 d.ρ₁ d.τ)).comp (resQ T.L))`. Use `irr_cover _ _ (fun x => ?_) hirr` and prove the remaining obligations. Establish `hfix : ∀ z ∈ T.L, (x : G T.F Ω) z = z`. Introduce `z hz`.
+
+Establish `hz' : z ∈ T.F ⊔ T.K` using `T.hL ▸ hz`. Establish `hle : T.F ⊔ T.K ≤ IntermediateField.fixedField (Subgroup.zpowers (resQ T.F x))`. Rewrite using `[sup_le_iff, IntermediateField.le_iff_le, IntermediateField.le_iff_le, Subgroup.zpowers_le, Subgroup.zpowers_le]`. Use `⟨?_, x.2.1⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+
+Conclude with `fun y hy => x.1.commutes ⟨y, hy⟩`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 (hle hz') _ (Subgroup.mem_zpowers _)`. Set `y : G T.L Ω` to `{ (x : G T.F Ω).toRingEquiv with commutes' := fun z => hfix z.1 z.2 }`. Use `⟨y, ((toB d.δ (resQ T.F x) : (Qbar l)ˣ) : Qbar l), ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, q_apply, show resQ T.L y = resQ T.F (x : G T.F Ω) from AlgEquiv.ext fun _ => rfl]`.
+
+Both sides reduce to the same expression. Establish `hL : IsIrr ((tenB d.ρ₁ d.τ).comp (resQ T.L))`. Use `((irrIff (Qbar l)).1 _).1 h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g : 2`.
+
+Both sides reduce to the same expression. Establish `hkL : ¬ d.K' ≤ T.L` using `fun hle => by`. Take `⟨g, hg, hn⟩` from `hne Ω l d T hT hok`. Use `hn (IntermediateField.fixingSubgroup_le hle ?_)` and prove the remaining obligations. Rewrite using `[T.hL, IntermediateField.fixingSubgroup_sup]`.
+
+Conclude with `⟨(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy => g.commutes ⟨y, hy⟩, hg.1⟩`. Use `haveI : Algebra.IsQuadraticExtension ℚ T.K := { finrank_eq_two' := T.degK }`. Establish `hK : IsAbelianGalois ℚ T.K` using `IsAbelianGalois.of_isCyclic ℚ T.K`. Establish `hLa : IsAbelianGalois ℚ T.L`. Establish `h` using `@GroundTheory.Global.isAbelianGalois_sup ℚ Ω _ _ _ _ T.F T.K T.nF.to_finiteDimensional T.nK.to_finiteDimensional T.abF hK`.
+
+Rewrite `h` using `[← T.hL]`. Conclude with `h`. Take `⟨π, hreg, hatt⟩` from `d.aut T.L hLa hkL (goodOf4 Ω l d.c d.D d.T₀ T d.ctx.1 hT d.K' d.quad.splS d.quad.off d.w d.θ d.wp d.wsp d.wunr d.k _ d.ρ d.c₁ d.h d.ρ₁ d.x d.mod) hL`. Use `⟨π, hreg, ?_⟩` and prove the remaining obligations. Establish `key : Af.tw (((d.Q T).map (algebraMap d.c₁.O (PadicAlgCl l))).r.comp (resLe T.F_le)).toHomUnits ((toB d.δ).comp (resQ T.L))⁻¹ = (tenB d.ρ₁ d.τ).comp (resQ T.L)`.
+
+Use extensionality with `g : 2`. Rewrite using `[tw_val]`. Express the relevant statement in the definitionally equal form `_ • ((d.Q T).map (algebraMap d.c₁.O (PadicAlgCl l))).r (resLe T.F_le g) = _`. Rewrite using `[q_apply, smul_smul]`. Simplify using `only [MonoidHom.inv_apply, MonoidHom.comp_apply]`.
+
+Rewrite using `[show resQ T.F (resLe T.F_le g) = resQ T.L g from AlgEquiv.ext fun _ => rfl, Units.inv_mul, one_smul]`. Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `hatt`.
+-/
 theorem UpperTheory.V.Cu.autOf4_of (hne : AlNe) : AutOf4 := by
   intro Ω _ _ _ l _ d T hT hok hirr
   have h1 : Irr ((mapRep (algebraMap d.c₁.O (PadicAlgCl l)) (rep4 1 d.ρ₁ d.τ)).comp (resQ T.L)) := by

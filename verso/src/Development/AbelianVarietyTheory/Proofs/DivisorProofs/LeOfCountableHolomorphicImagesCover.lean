@@ -6,6 +6,21 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set S : ℕ → Set (Fin d → ℂ) := fun n => {x | ∀ y, dist y x < 1 / ((n : ℝ) + 1) → dist (f y) (f x) ≤ ((n : ℝ) + 1) * dist y x} with hS`. Establish `hcov : f '' U ⊆ ⋃ n, f '' S n`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hd : DifferentiableAt ℂ f x` using `(hf x hx).differentiableAt (hU.mem_nhds hx)`. Take `⟨C, hC, hCw⟩` from `hd.hasFDerivAt.isBigO_sub.exists_pos`.
+
+Take `⟨ε, hε, hεb⟩` from `Metric.eventually_nhds_iff.1 hCw.bound`. Take `⟨n, hn⟩` from `exists_nat_gt (max C (1 / ε))`. Use `Set.mem_iUnion.2 ⟨n, x, ?_, rfl⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hn1 : C < (n : ℝ) + 1` using `by linarith [le_max_left C (1 / ε)]`.
+
+Establish `hn2 : 1 / ε < (n : ℝ) + 1` using `by linarith [le_max_right C (1 / ε)]`. Establish `hy' : dist y x < ε`. Use `lt_of_lt_of_le hy ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by positivity)]`. Rewrite `hn2` using `[div_lt_iff₀ hε]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `hεb hy'` as an intermediate fact. Rewrite using `[dist_eq_norm, dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hSn : ∀ n, dimH (f '' S n) ≤ dimH (S n)`.
+
+Introduce `n`. Apply `dimH_image_le_of_locally_lipschitzOn` to reduce the goal to its premises. Introduce `x _`. Use `⟨((n : NNReal) + 1), S n ∩ Metric.ball x (1 / (2 * ((n : ℝ) + 1))), inter_mem_nhdsWithin _ (Metric.ball_mem_nhds _ (by positivity)), ?_⟩` and prove the remaining obligations. Use `LipschitzOnWith.of_dist_le_mul fun a ha b hb => ?_` and prove the remaining obligations.
+
+Establish `hab : dist a b < 1 / ((n : ℝ) + 1)`. Establish `h1` using `Metric.mem_ball.1 ha.2`. Establish `h2` using `Metric.mem_ball'.1 hb.2`. Combine the equalities or inequalities in the displayed calculation. Use `hb.1 a hab` as an intermediate fact.
+
+Simplify using `using this`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dimH_image_le_of_differentiableOn_complex {d d' : ℕ} {U : Set (Fin d → ℂ)}
     {f : (Fin d → ℂ) → (Fin d' → ℂ)} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U) :
     dimH (f '' U) ≤ (Module.finrank ℝ (Fin d → ℂ) : ENNReal) := by
@@ -52,6 +67,13 @@ theorem dimH_image_le_of_differentiableOn_complex {d d' : ℕ} {U : Set (Fin d �
         iSup_le fun n => (hSn n).trans (dimH_mono (Set.subset_univ _))
     _ = _ := Real.dimH_univ_eq_finrank _
 
+/- English proof (translation)
+Introduce `d d' K _ U f W hU hf hW hne hcov`. Take `⟨w, hw⟩` from `hne`. Establish `h1 : dimH W = (Module.finrank ℝ (Fin d' → ℂ) : ENNReal)` using `Real.dimH_of_mem_nhds (hW.mem_nhds hw)`. Establish `h2 : dimH W ≤ (Module.finrank ℝ (Fin d → ℂ) : ENNReal)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `h2` using `[h1]`. Establish `h3 : Module.finrank ℝ (Fin d' → ℂ) ≤ Module.finrank ℝ (Fin d → ℂ)`. Conclude with `h2` after adjusting the coercions. Rewrite `h3` using `[Module.finrank_pi_fintype, Module.finrank_pi_fintype]`. Simplify using `at h3`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_of_countable_holomorphic_images_cover :
     ∀ (d d' : ℕ) (K : Type) [Countable K] (U : K → Set (Fin d → ℂ))
       (f : K → (Fin d → ℂ) → (Fin d' → ℂ)) (W : Set (Fin d' → ℂ)),

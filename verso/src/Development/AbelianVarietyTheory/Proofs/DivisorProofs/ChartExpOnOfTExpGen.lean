@@ -11,6 +11,19 @@ noncomputable section
 
 namespace GlobalTheory.MumMult
 
+/- English proof (translation)
+Set `S : Finset D.toPre.X` to `(hF e).toFinset`. Establish `hS : ∀ α ∉ S, Van I (F α) e` using `fun α hα => by_contra fun h => hα ((hF e).mem_toFinset.2 h)`. Use `⟨S, fun α hα j => fn_ext fun y hy => ?_, ?_⟩` and prove the remaining obligations. Use `choose J hJ using fun ψ : (thickObj R I e G).left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ y)`. Use `(gs_pull (𝟙 _) _ y _ hy _).trans (Eq.trans ?_ (DVR.gs_zero (𝟙 _) y _ hy).symm)` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp]`. Establish `h0 : sval (f α) (DVR.pGl U e) y J = 0` using `(hf α _ _ y J hJ).trans (hS α hα _ (U.gt e).q.left y J hJ)`. Conclude with `(sec_trans (f α) _ y hy (Good.mem hJ _ _)).trans ((congrArg _ h0).trans (mul_zero _))`. Introduce and unpack `⟨p₁, p₂⟩ jf jt hj hc`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨J, hJ, eJ⟩` from `exists_good D.toPre.P.L D.toPre.P.isLB y _ _ hc (by`. Introduce and unpack `(a | a | a)`. Use `exacts [mem_pull.1 hy.1.1.1.1, Set.mem_iInter.1 (U.expW_le_f e _ _ jf jt a.1.2 hy.1) a.2, Set.mem_iInter.1 (U.expWeight_le_chart_weight e _ _ jf jt a.1.2 hy.1) a.2])`. Take `⟨J', hJ', eJ'⟩` from `exists_good U.LG.L U.LG.isLB y (K := PUnit.{1}) (fun _ => 𝟙 _ ≫ (fstG I e G).left) (fun _ => p₂ PUnit.unit) (fun _ _ _ => rfl) (fun _ => mem_pull.1 hy.1.1.1.2)`. Establish `e₀ : J (𝟙 _ ≫ (U.gt e).pG.left) = p₁ PUnit.unit` using `by rw [Category.id_comp]; exact eJ (.inl PUnit.unit)`.
+
+Establish `e₁ : J' (𝟙 _ ≫ (fstG I e G).left) = p₂ PUnit.unit` using `eJ' PUnit.unit`. Establish `H` using `hτ S hS _ (𝟙 _) y J J' hJ hJ'`. Rewrite `H` using `[evalE, zpow_zero, _root_.mul_one, zpow_natCast, e₀, e₁]`. Use `((gs_mul (𝟙 _) y _ hy _ _).trans (congrArg₂ (· * ·) ?_ ((gs_res (𝟙 _) y inf_le_right hy g).trans (hg y J' hy.2 hJ' (e₁.trans hj.symm))))).trans (H.trans (Eq.symm ?_))` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, gs_unit (𝟙 _) y _ hy, map_pow]`.
+
+Conclude with `congrArg (fun u => (u ^ n).val) (gm_res (𝟙 _) y _ hy _)`. Use `(DVR.gs_fsum (𝟙 _) y _ hy _ _).trans (Eq.trans (Finset.sum_congr rfl fun α _ => ?_) (Finset.sum_attach S _))` and prove the remaining obligations. Establish `l₁ : U.expW e (p₁, p₂) i' S jf jt ⊓ W ≤ _` using `inf_le_left.trans (U.expW_le_f e (p₁, p₂) i' jf jt α.2)`. Establish `l₂ : U.expW e (p₁, p₂) i' S jf jt ⊓ W ≤ _` using `inf_le_left.trans (U.expWeight_le_chart_weight e (p₁, p₂) i' jf jt α.2)`. Establish `a₁` using `(gs_res (𝟙 _) y l₁ hy (((DVR.pGl U e).app _).hom ((f α.1).f (jf α.1)))).trans (gs_pull (𝟙 _) (DVR.pGl U e) y (LB.wchart D.toPre.P.L (D.toPre.famφB α.1) (jf α.1)) (l₁ hy) ((f α.1).f (jf α.1)))`.
+
+Establish `a₂` using `(gs_unit (𝟙 _) y _ hy (res l₂ ((DVR.tG U e α.1).s (jt α.1)))).trans (congrArg Units.val (gm_res (𝟙 _) y l₂ hy _))`. Establish `b₁` using `sval_of (f α.1) (𝟙 _ ≫ DVR.pGl U e) y J (jf α.1) (fun a => by rw [Category.id_comp]; exact eJ (.inr (.inl (α, a))))`. Establish `b₂` using `val_of (DVR.tG U e α.1) (𝟙 _) y J (jt α.1) (fun a => by rw [Category.id_comp]; exact eJ (.inr (.inr (α, a))))`. Conclude with `(gs_mul (𝟙 _) y _ hy _ _).trans (congrArg₂ (· * ·) (a₁.trans (b₁.symm.trans (hf α.1 _ _ y J hJ))) (a₂.trans (congrArg Units.val b₂.symm)))`.
+-/
 theorem chartExpOn_of_tExp_gen {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {a : D.toPre.P.A ⟶ D.toPre.P.A} {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
     (U : UnifPre I D A G) (e : ℕ) (b : thickObj R I e G ⟶ thickObj R I e G) (n : ℕ)
@@ -61,6 +74,9 @@ theorem chartExpOn_of_tExp_gen {R : Type} [CommRing R] [IsDomain R] {I : Ideal R
       exact (gs_mul (𝟙 _) y _ hy _ _).trans (congrArg₂ (· * ·) (a₁.trans (b₁.symm.trans (hf α.1 _ _ y J hJ)))
         (a₂.trans (congrArg Units.val b₂.symm)))
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ U e b n F f τ hF hf hτ i' W g hg` and use `chartExpOn_of_tExp_gen U.toUnifPre e b n F f τ hF hf hτ i' W g hg`.
+-/
 theorem chartExpOn_of_tExp : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a : D.toPre.P.A ⟶ D.toPre.P.A), ∀ (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal R) D A G), ∀ (e : ℕ) (b : thickObj R (maximalIdeal R) e G ⟶ thickObj R (maximalIdeal R) e G), ∀ (n : ℕ) (F : ∀ β, SecT D.toPre a n 0 β) (f : ∀ β, D.toPre.SecB n β) (τ : SecE U.toUnifPre b n 0), Small (maximalIdeal R) (w := id) F → (∀ β, (∀ (Z : Scheme.{0}) (x : Z ⟶ D.toPre.P.A.left) (z : Z) (J), Good D.toPre.P.L z J → sval (f β) x z J = sval (F β) x z J)) → TExp U.toUnifPre τ (w := id) F → ∀ (i' : Fin 1 → U.LG.L.ι) (W : (thickObj R (maximalIdeal R) e G).left.Opens) (g : Γ((thickObj R (maximalIdeal R) e G).left, W)), (∀ (z : (thickObj R (maximalIdeal R) e G).left) (J'), z ∈ W → Good U.LG.L z J' → J' (𝟙 _ ≫ (fstG (maximalIdeal R) e G).left) = i' 0 → gs (𝟙 _) z W g = sval τ (𝟙 _) z J') → GlobalTheory.MumMult.ChartExpOn U.toUnifPre e n i' W g f :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ U e b n F f τ hF hf hτ i' W g hg =>
     chartExpOn_of_tExp_gen U.toUnifPre e b n F f τ hF hf hτ i' W g hg

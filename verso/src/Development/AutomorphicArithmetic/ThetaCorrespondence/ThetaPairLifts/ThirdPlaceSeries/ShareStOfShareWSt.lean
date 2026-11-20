@@ -33,6 +33,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 end Point
 end GlobalTheory.ShareOn.Comparison₂
 namespace GlobalTheory.ShareOn
+/- English proof (translation)
+Introduce `h`. Unfold `_root_.GlobalTheory.ShareOn.SharedWeightStatement _root_.GlobalTheory.BigOn.ForallTwoRuns _root_.GlobalTheory.BigOn.AtPtsAlt at h`. Unfold `_root_.GlobalTheory.BigOn.ShareStatement _root_.GlobalTheory.BigOn.ForallRecordObjects`. Use `Closed.imp h fun Fm CH _ H => ⟨0, fun c _ _ => ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `H`.
+
+Conclude with `⟨x0, fun x hx hle i p hp hm r O hR => Comparison₂.leafShareI_of_shareW p hR (hx0 x hx hle i p hp hm r hR.1.ok hR.2)⟩`.
+-/
 theorem shareSt_of_shareWSt_alt : _root_.GlobalTheory.ShareOn.SharedWeightStatement → _root_.GlobalTheory.BigOn.ShareStatement := by
   intro h
   unfold _root_.GlobalTheory.ShareOn.SharedWeightStatement _root_.GlobalTheory.BigOn.ForallTwoRuns _root_.GlobalTheory.BigOn.AtPtsAlt at h

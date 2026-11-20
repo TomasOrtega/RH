@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.HtPt.Htat.lie_fin`.
+-/
 theorem lieModel_finite_projective : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [Smooth G.hom] (R : Type) [CommRing R] (x : Sp R ⟶ S) (E : Type) [AddCommGroup E] [Module R E] (M : LieModel G x E), Module.Finite R E ∧ Module.Projective R E :=
   PositivityTheory.HtPt.Htat.lie_fin
 

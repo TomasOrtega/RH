@@ -18,6 +18,13 @@ def FiniteIntegralOrbitSumFormula (M : Loc.Model F E) {m : ℕ} (a : Loc.Pt E (m
     ∀ g : Set (Matrix (Fin (m + 1)) (Fin (m + 1)) E) → (Loc.IL (m + 1) → E) × (Loc.IN a → E),
       (∀ O ∈ S, zAt a (g O) ∈ O) → ∑ O ∈ S, M.bbIntegrand a c (g O) * (wtZ M a O : ℂ) = M.BB a c
 
+/- English proof (translation)
+Introduce `k V hV0 hV`. Take `⟨S, hSZ, hoff, hsum⟩` from `h`. Use `choose! g hg hgV using hV`. Establish `hne : ∀ O ∉ S, V O = 0`. Introduce `O hO`.
+
+Distinguish the cases in `hZ : IsZO M a O`. Rewrite using `[hgV O hZ, mul_assoc, hoff O hZ hO (g O) (hg O hZ), mul_zero]`. Conclude with `hV0 O hZ`. Establish `hsumV : ∑ O ∈ S, V O = k * M.BB a c`. Rewrite using `[← hsum g (fun O hO => hg O (hSZ O hO)), Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun O hO => ?_` and prove the remaining obligations. Rewrite using `[hgV O (hSZ O hO), mul_assoc]`. Use `⟨hsumV ▸ hasSum_sum_of_ne_finset_zero hne, ?_⟩` and prove the remaining obligations. Conclude with `summable_of_ne_finset_zero (s := S) fun O hO => by rw [hne O hO, norm_zero]`.
+-/
 theorem orbCut_of (M : Loc.Model F E) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cls m) (h : FiniteIntegralOrbitSumFormula M a c) :
     OrbCut M a c := by
   intro k V hV0 hV
@@ -37,59 +44,102 @@ theorem orbCut_of (M : Loc.Model F E) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cl
 
 section Orb
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `R.sum_mem fun k _ => R.mul_mem (hA i k) (hB k j)`.
+-/
 theorem int_mul (R : Subring E) {n : ℕ} {A B : Matrix (Fin n) (Fin n) E} (hA : ∀ i j, A i j ∈ R)
     (hB : ∀ i j, B i j ∈ R) (i j : Fin n) : (A * B) i j ∈ R := by
   rw [Matrix.mul_apply]
   exact R.sum_mem fun k _ => R.mul_mem (hA i k) (hB k j)
 
+/- English proof (translation)
+Establish `e : l = R.subtype.mapMatrix (Matrix.of fun a b => (⟨l a b, h a b⟩ : R))` using `by ext; rfl`. Rewrite using `[e, ← RingHom.map_adjugate, RingHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `Subtype.property _`.
+-/
 theorem adj_int (R : Subring E) {n : ℕ} (l : Matrix (Fin n) (Fin n) E) (h : ∀ a b, l a b ∈ R) (i j : Fin n) :
     l.adjugate i j ∈ R := by
   have e : l = R.subtype.mapMatrix (Matrix.of fun a b => (⟨l a b, h a b⟩ : R)) := by ext; rfl
   rw [e, ← RingHom.map_adjugate, RingHom.mapMatrix_apply, Matrix.map_apply]
   exact Subtype.property _
 
+/- English proof (translation)
+Rewrite using `[Matrix.inv_def, hd, Ring.inverse_one, one_smul]`. Conclude with `adj_int R l h i j`.
+-/
 theorem inv_int (R : Subring E) {n : ℕ} (l : Matrix (Fin n) (Fin n) E) (h : ∀ a b, l a b ∈ R) (hd : l.det = 1)
     (i j : Fin n) : l⁻¹ i j ∈ R := by
   rw [Matrix.inv_def, hd, Ring.inverse_one, one_smul]
   exact adj_int R l h i j
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j hij => h.2.1 i j hij, h.1⟩`.
+-/
 theorem lowUni_of (M : Loc.Model F E) {n : ℕ} {l : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntLow M l) :
     Formalism.DoubleCosetMeasures.IsLowUni l := ⟨fun i j hij => h.2.1 i j hij, h.1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j hij => h.2.1 i j hij, h.1⟩`.
+-/
 theorem upUni_of (M : Loc.Model F E) {n : ℕ} {l : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntUp M l) :
     Formalism.DoubleCosetMeasures.IsUpUni l := ⟨fun i j hij => h.2.1 i j hij, h.1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_lt h), fun a b => by by_cases h : a = b <;> simp [Matrix.one_apply, h, M.R.one_mem, M.R.zero_mem]⟩`.
+-/
 theorem intLow_one (M : Loc.Model F E) {n : ℕ} : Formalism.MainNotions.S.TieN.IntLow M (1 : Matrix (Fin n) (Fin n) E) :=
   ⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_lt h), fun a b => by
     by_cases h : a = b <;> simp [Matrix.one_apply, h, M.R.one_mem, M.R.zero_mem]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_gt h), fun a b => by by_cases h : a = b <;> simp [Matrix.one_apply, h, M.R.one_mem, M.R.zero_mem]⟩`.
+-/
 theorem intUp_one (M : Loc.Model F E) {n : ℕ} : Formalism.MainNotions.S.TieN.IntUp M (1 : Matrix (Fin n) (Fin n) E) :=
   ⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_gt h), fun a b => by
     by_cases h : a = b <;> simp [Matrix.one_apply, h, M.R.one_mem, M.R.zero_mem]⟩
 
+/- English proof (translation)
+Establish `u` using `Formalism.DoubleCosetMeasures.isLowUni_mul E (lowUni_of M h) (lowUni_of M h')`. Conclude with `⟨u.2, fun a b hab => u.1 hab, int_mul M.R h.2.2 h'.2.2⟩`.
+-/
 theorem intLow_mul (M : Loc.Model F E) {n : ℕ} {l l' : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntLow M l)
     (h' : Formalism.MainNotions.S.TieN.IntLow M l') : Formalism.MainNotions.S.TieN.IntLow M (l * l') := by
   have u := Formalism.DoubleCosetMeasures.isLowUni_mul E (lowUni_of M h) (lowUni_of M h')
   exact ⟨u.2, fun a b hab => u.1 hab, int_mul M.R h.2.2 h'.2.2⟩
 
+/- English proof (translation)
+Establish `u` using `Formalism.DoubleCosetMeasures.isUpUni_mul E (upUni_of M h) (upUni_of M h')`. Conclude with `⟨u.2, fun a b hab => u.1 hab, int_mul M.R h.2.2 h'.2.2⟩`.
+-/
 theorem intUp_mul (M : Loc.Model F E) {n : ℕ} {l l' : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntUp M l)
     (h' : Formalism.MainNotions.S.TieN.IntUp M l') : Formalism.MainNotions.S.TieN.IntUp M (l * l') := by
   have u := Formalism.DoubleCosetMeasures.isUpUni_mul E (upUni_of M h) (upUni_of M h')
   exact ⟨u.2, fun a b hab => u.1 hab, int_mul M.R h.2.2 h'.2.2⟩
 
+/- English proof (translation)
+Establish `u` using `Formalism.DoubleCosetMeasures.isLowUni_inv E (lowUni_of M h)`. Conclude with `⟨u.2, fun a b hab => u.1 hab, inv_int M.R l h.2.2 (Formalism.DoubleCosetMeasures.isLowUni_det E (lowUni_of M h))⟩`.
+-/
 theorem intLow_inv (M : Loc.Model F E) {n : ℕ} {l : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntLow M l) :
     Formalism.MainNotions.S.TieN.IntLow M l⁻¹ := by
   have u := Formalism.DoubleCosetMeasures.isLowUni_inv E (lowUni_of M h)
   exact ⟨u.2, fun a b hab => u.1 hab, inv_int M.R l h.2.2 (Formalism.DoubleCosetMeasures.isLowUni_det E (lowUni_of M h))⟩
 
+/- English proof (translation)
+Establish `u` using `Formalism.DoubleCosetMeasures.isUpUni_inv E (upUni_of M h)`. Conclude with `⟨u.2, fun a b hab => u.1 hab, inv_int M.R l h.2.2 (Formalism.DoubleCosetMeasures.isUpUni_det E (upUni_of M h))⟩`.
+-/
 theorem intUp_inv (M : Loc.Model F E) {n : ℕ} {l : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntUp M l) :
     Formalism.MainNotions.S.TieN.IntUp M l⁻¹ := by
   have u := Formalism.DoubleCosetMeasures.isUpUni_inv E (upUni_of M h)
   exact ⟨u.2, fun a b hab => u.1 hab, inv_int M.R l h.2.2 (Formalism.DoubleCosetMeasures.isUpUni_det E (upUni_of M h))⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 1, intLow_one M, intUp_one M, by simp⟩`.
+-/
 theorem mem_orbR (M : Loc.Model F E) {n : ℕ} (Z : Matrix (Fin n) (Fin n) E) : Z ∈ orbR M Z :=
   ⟨1, 1, intLow_one M, intUp_one M, by simp⟩
 
+/- English proof (translation)
+Take `⟨l, ρ, hl, hρ, rfl⟩` from `h`. Establish `hlu : IsUnit l.det` using `by rw [Formalism.DoubleCosetMeasures.isLowUni_det E (lowUni_of M hl)]; exact isUnit_one`. Establish `hρu : IsUnit ρ.det` using `by rw [Formalism.DoubleCosetMeasures.isUpUni_det E (upUni_of M hρ)]; exact isUnit_one`. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨l', ρ', hl', hρ', rfl⟩`. Conclude with `⟨l' * l, ρ * ρ', intLow_mul M hl' hl, intUp_mul M hρ hρ', by simp only [Matrix.mul_assoc]⟩`. Introduce and unpack `⟨l', ρ', hl', hρ', rfl⟩`. Use `⟨l' * l⁻¹, ρ⁻¹ * ρ', intLow_mul M hl' (intLow_inv M hl), intUp_mul M (intUp_inv M hρ) hρ', ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc l⁻¹ l, Matrix.nonsing_inv_mul _ hlu, Matrix.one_mul, ← Matrix.mul_assoc ρ ρ⁻¹, Matrix.mul_nonsing_inv _ hρu, Matrix.one_mul]`.
+-/
 theorem orbR_eq (M : Loc.Model F E) {n : ℕ} {Z Z' : Matrix (Fin n) (Fin n) E} (h : Z' ∈ orbR M Z) :
     orbR M Z' = orbR M Z := by
   obtain ⟨l, ρ, hl, hρ, rfl⟩ := h
@@ -105,16 +155,25 @@ theorem orbR_eq (M : Loc.Model F E) {n : ℕ} {Z Z' : Matrix (Fin n) (Fin n) E} 
     rw [← Matrix.mul_assoc l⁻¹ l, Matrix.nonsing_inv_mul _ hlu, Matrix.one_mul, ← Matrix.mul_assoc ρ ρ⁻¹,
       Matrix.mul_nonsing_inv _ hρu, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨l, ρ, hl, hρ, rfl⟩` from `h`. Conclude with `int_mul M.R (int_mul M.R hl.2.2 hZ) hρ.2.2`.
+-/
 theorem int_of_mem (M : Loc.Model F E) {n : ℕ} {Z Z' : Matrix (Fin n) (Fin n) E} (hZ : ∀ i j, Z i j ∈ M.R)
     (h : Z' ∈ orbR M Z) : ∀ i j, Z' i j ∈ M.R := by
   obtain ⟨l, ρ, hl, hρ, rfl⟩ := h
   exact int_mul M.R (int_mul M.R hl.2.2 hZ) hρ.2.2
 
+/- English proof (translation)
+Take `⟨xy, _, rfl⟩` from `hO`. Conclude with `orbR_eq M hZ`.
+-/
 theorem isZO_eq (M : Loc.Model F E) {m : ℕ} {a : Loc.Pt E (m + 1)} {O : Set (Matrix (Fin (m + 1)) (Fin (m + 1)) E)}
     (hO : IsZO M a O) {Z : Matrix (Fin (m + 1)) (Fin (m + 1)) E} (hZ : Z ∈ O) : orbR M Z = O := by
   obtain ⟨xy, _, rfl⟩ := hO
   exact orbR_eq M hZ
 
+/- English proof (translation)
+Take `⟨xy, hi, rfl⟩` from `hO`. Conclude with `int_of_mem M hi hZ`.
+-/
 theorem isZO_int (M : Loc.Model F E) {m : ℕ} {a : Loc.Pt E (m + 1)} {O : Set (Matrix (Fin (m + 1)) (Fin (m + 1)) E)}
     (hO : IsZO M a O) {Z : Matrix (Fin (m + 1)) (Fin (m + 1)) E} (hZ : Z ∈ O) : ∀ i j, Z i j ∈ M.R := by
   obtain ⟨xy, hi, rfl⟩ := hO
@@ -141,6 +200,15 @@ def valQ (M : Loc.Model F E) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cls m)
     (q : Formalism.FourierDecayAlt.A5.Cos M.R (Formalism.MainNotions.LocalModelPeriodLattices.tr a)) : ℂ :=
   Formalism.MainNotions.LocalOrbitGerms.Cls.GG M c (zQ M.R a q) (phQ M.R a q)
 
+/- English proof (translation)
+Take `⟨μ₁, μ₂, hi1, hi2, hs1, hs2, hv1, hv2, hint⟩` from `Formalism.MainNotions.LocalOrbitGerms.ctAll F E M hOK (m + 1) a`. Establish `hψ : ∀ x ∈ M.R, M.psiR x = 1` using `fun r hr => by`. Simplify using `using (Formalism.MainNotions.LocalModelPeriodLattices.selfDual_of_core M hOK 1).2 M.R.one_mem r hr`. Establish `hD` using `Formalism.MainNotions.LocalModelPeriodLattices.datum_of_OK M hOK`. Use `haveI := hD.t2`.
+
+Use `haveI := hi1`. Use `haveI := hi2`. Use `haveI := hs1`. Use `haveI := hs2`. Establish `hcs` using `Formalism.DoubleCosetMeasures.Final.suppCompact E M.R hD.isOpen hD.isCompact (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 M.psiR (M.Cok (Quotient.out c)) (M.eCls (Quotient.out c)) (Formalism.MainNotions.LocalOrbit …`.
+
+Establish `hval : ∀ q, valQ M a c q = Formalism.DoubleCosetMeasures.phi M.R (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 M.psiR (M.Cok (Quotient.out c)) (M.eCls (Quotient.out c)) (Formalism.MainNotions.LocalOrbitGerms.Cls.la …` using `fun q => Formalism.MainNotions.LocalOrbitGerms.Cls.GG_eq_phi M a c _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(Formalism.DoubleCosetMeasures.Final.bbFinite E M.R hD.isOpen _ _ M.psiR hψ μ₁ μ₂ _ _ _ hcs).1`. Establish `e : valQ M a c = fun q => Formalism.DoubleCosetMeasures.phi M.R (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 M.psiR (M.Cok (Quotient.out c)) (M.eCls (Quotient.out c)) (Formalism.MainNotions.LocalOrbitGerms.Cls.lam …` using `funext hval`. Rewrite using `[e]`.
+
+Conclude with `h`. Rewrite using `[Formalism.MainNotions.LocalOrbitGerms.Cls.BB_eq M a μ₁ μ₂ hint c, Formalism.DoubleCosetMeasures.Final.bbNorm E M.R hD.isOpen _ _ M.psiR hψ μ₁ μ₂ hv1 hv2 _ _ _ hcs]`. Conclude with `finsum_congr fun q => (hval q).symm`.
+-/
 theorem bb_eq_sum (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cls m) :
     (Function.support (valQ M a c)).Finite ∧ M.BB a c = ∑ᶠ q, valQ M a c q := by
   obtain ⟨μ₁, μ₂, hi1, hi2, hs1, hs2, hv1, hv2, hint⟩ := Formalism.MainNotions.LocalOrbitGerms.ctAll F E M hOK (m + 1) a
@@ -188,6 +256,9 @@ def IntegrandConstantOnOrbit (M : Loc.Model F E) {m : ℕ} (a : Loc.Pt E (m + 1)
   ∀ (q : Formalism.FourierDecayAlt.A5.Cos M.R (Formalism.MainNotions.LocalModelPeriodLattices.tr a)) xy, (∀ i j, zAt a xy i j ∈ M.R) →
     zQ M.R a q ∈ orbR M (zAt a xy) → valQ M a c q = M.bbIntegrand a c xy
 
+/- English proof (translation)
+Unfold `valQ Formalism.MainNotions.LocalOrbitGerms.Cls.GG at h`. Use `split_ifs at h with hI`. Conclude with `hI.1`. Conclude with `absurd rfl h`.
+-/
 theorem int_of_valQ (M : Loc.Model F E) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cls m)
     (q : Formalism.FourierDecayAlt.A5.Cos M.R (Formalism.MainNotions.LocalModelPeriodLattices.tr a)) (h : valQ M a c q ≠ 0) : ∀ i j, zQ M.R a q i j ∈ M.R := by
   unfold valQ Formalism.MainNotions.LocalOrbitGerms.Cls.GG at h
@@ -195,6 +266,9 @@ theorem int_of_valQ (M : Loc.Model F E) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.
   · exact hI.1
   · exact absurd rfl h
 
+/- English proof (translation)
+Unfold `Loc.Model.bbIntegrand at h`. Simplify using `only at h`. Use `split_ifs at h with hI`. Conclude with `hI.1`. Conclude with `absurd rfl h`.
+-/
 theorem int_of_bb (M : Loc.Model F E) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cls m) xy
     (h : M.bbIntegrand a c xy ≠ 0) : ∀ i j, zAt a xy i j ∈ M.R := by
   unfold Loc.Model.bbIntegrand at h
@@ -203,6 +277,31 @@ theorem int_of_bb (M : Loc.Model F E) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cl
   · exact hI.1
   · exact absurd rfl h
 
+/- English proof (translation)
+Take `⟨hfin, hBB⟩` from `bb_eq_sum M hOK a c`. Use `set T := hfin.toFinset with hT`. Establish `memT : ∀ q, q ∈ T ↔ valQ M a c q ≠ 0` using `fun q => by simp [hT]`. Use `⟨T.image (fun q => orbR M (zQ M.R a q)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `O hO`.
+
+Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 hO`. Conclude with `hR q (int_of_valQ M a c q ((memT q).1 hq))`. Introduce `O hO hOS xy hxy`. Assume the negation of the conclusion as `hne`. Establish `hF : M.bbIntegrand a c xy ≠ 0` using `left_ne_zero_of_mul hne`.
+
+Establish `hw : (wtZ M a O : ℂ) ≠ 0` using `right_ne_zero_of_mul hne`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q, zQ M.R a q ∈ O := by`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Apply `hw` to reduce the goal to its premises.
+
+Rewrite using `[(hW O hO).2]`. Conclude with `finsum_eq_zero_of_forall_eq_zero fun q => if_neg (hno q)`. Establish `hxyO` using `isZO_eq M hO hxy`. Establish `hv` using `hV q xy (int_of_bb M a c xy hF) (hxyO ▸ hq)`. Apply `hOS` to reduce the goal to its premises.
+
+Use `Finset.mem_image.2 ⟨q, (memT q).2 (hv ▸ hF), isZO_eq M hO hq⟩` and prove the remaining obligations. Introduce `g hg`. Rewrite using `[hBB]`. Establish `hsum : ∀ O ∈ T.image (fun q => orbR M (zQ M.R a q)), M.bbIntegrand a c (g O) * (wtZ M a O : ℂ) = ∑ᶠ q, M.bbIntegrand a c (g O) * (if zQ M.R a q ∈ O then (1 : ℂ) else 0)`. Introduce `O hO`.
+
+Take `⟨q0, hq0, rfl⟩` from `Finset.mem_image.1 hO`. Establish `hZO` using `hR q0 (int_of_valQ M a c q0 ((memT q0).1 hq0))`. Rewrite using `[(hW _ hZO).2, mul_finsum]`. Rewrite using `[Finset.sum_congr rfl hsum, ← finsum_sum_comm]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hex : ∃ O ∈ T.image (fun q => orbR M (zQ M.R a q)), zQ M.R a q ∈ O`. Take `⟨O, hO, hqO⟩` from `hex`. Take `⟨q0, hq0, hOe⟩` from `Finset.mem_image.1 hO`. Establish `hZO : IsZO M a O` using `hOe ▸ hR q0 (int_of_valQ M a c q0 ((memT q0).1 hq0))`. Rewrite using `[Finset.sum_eq_single O]`.
+
+Rewrite using `[if_pos hqO, mul_one]`. Establish `hgO` using `hg O hO`. Use `(hV q (g O) (isZO_int M hZO hgO) ?_).symm` and prove the remaining obligations. Rewrite using `[isZO_eq M hZO hgO]`. Conclude with `hqO`.
+
+Introduce `O' hO' hne`. Take `⟨q1, hq1, hOe'⟩` from `Finset.mem_image.1 hO'`. Establish `hZO' : IsZO M a O'` using `hOe' ▸ hR q1 (int_of_valQ M a c q1 ((memT q1).1 hq1))`. Rewrite using `[if_neg, mul_zero]`. Introduce `hqO'`.
+
+Conclude with `hne ((isZO_eq M hZO' hqO').symm.trans (isZO_eq M hZO hqO))`. Introduce `h`. Conclude with `absurd hO h`. Use `push Not at hex`. Rewrite using `[Finset.sum_eq_zero fun O hO => by rw [if_neg (hex O hO), mul_zero]]`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hex _ (Finset.mem_image.2 ⟨q, (memT q).2 (Ne.symm hne), rfl⟩) (mem_orbR M _)`. Introduce `O hO`. Take `⟨q0, hq0, rfl⟩` from `Finset.mem_image.1 hO`. Establish `hZO` using `hR q0 (int_of_valQ M a c q0 ((memT q0).1 hq0))`.
+
+Conclude with `(hW _ hZO).1.subset (Function.support_mul_subset_right _ _)`.
+-/
 theorem orbFin_of (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cls m)
     (hW : OrbitMeasureCosetCount M a) (hR : IntegralOrbitOfCoset M a) (hV : IntegrandConstantOnOrbit M a c) : FiniteIntegralOrbitSumFormula M a c := by
   obtain ⟨hfin, hBB⟩ := bb_eq_sum M hOK a c
@@ -264,6 +363,9 @@ theorem orbFin_of (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 
       have hZO := hR q0 (int_of_valQ M a c q0 ((memT q0).1 hq0))
       exact (hW _ hZO).1.subset (Function.support_mul_subset_right _ _)
 
+/- English proof (translation)
+The claim follows from `orbCut_of M a c (orbFin_of M hOK a c hW hR hV)`.
+-/
 theorem orbitDecomposition_of_three (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cls m)
     (hW : OrbitMeasureCosetCount M a) (hR : IntegralOrbitOfCoset M a) (hV : IntegrandConstantOnOrbit M a c) : OrbCut M a c :=
   orbCut_of M a c (orbFin_of M hOK a c hW hR hV)
@@ -274,6 +376,23 @@ section Wt
 
 open Formalism.DoubleCosetMeasures Formalism.DoubleCosetMeasures.P.Supp Matrix Topology in
 
+/- English proof (translation)
+Take `⟨Ph, Pu, hPh, hPu, hP⟩` from `lu_rec (K := K) (n := s.sum)`. Take `⟨wi, h1, h2⟩ : ∃ wi : Matrix (Fin s.sum) (Fin s.sum) K, wi * Formalism.DoubleCosetMeasures.pt s t = 1 ∧ Formalism.DoubleCosetMeasures.pt s t * wi = 1` from `⟨Formalism.DoubleCosetMeasures.pt s (fun b => (t b)⁻¹), pt_mul_pt s _ _ (fun b => by simp), pt_mul_pt s _ _ (fun b => by simp)⟩`. Establish `hV : Continuous fun Z : Matrix (Fin s.sum) (Fin s.sum) K => Formalism.DoubleCosetMeasures.pt s t * Ph (wi * Z) * wi` using `(continuous_const.mul (hPh.comp (continuous_const.mul continuous_id))).mul continuous_const`. Establish `hU : Continuous fun Z : Matrix (Fin s.sum) (Fin s.sum) K => Pu (wi * Z)` using `hPu.comp (continuous_const.mul continuous_id)`. Set `Φ : Matrix (Fin s.sum) (Fin s.sum) K → (Matrix (Fin s.sum) (Fin s.sum) K × (Matrix (Fin s.sum) (Fin s.sum) K)ᵐᵒᵖ) × (Matrix (Fin s.sum) (Fin s.sum) K × (Matrix (Fin s.sum) (Fin s.sum) K)ᵐᵒᵖ)` to `fun Z => ((Formalism.DoubleCosetMeasures.pt s t * Ph (wi * Z) * wi, MulOpposite.op (Formalism.DoubleCosetMeasures.pt s t * Ph (wi * Z) * wi).adjugate), (Pu (wi * Z), MulOpposite.op (Pu (wi * Z)).adjugate))`.
+
+Establish `hΦ : Continuous Φ` using `(hV.prodMk (MulOpposite.continuous_op.comp hV.matrix_adjugate)).prodMk (hU.prodMk (MulOpposite.continuous_op.comp hU.matrix_adjugate))`. Set `ι : Formalism.DoubleCosetMeasures.lowW K s t × Formalism.DoubleCosetMeasures.upUniG K s.sum → (Matrix (Fin s.sum) (Fin s.sum) K × (Matrix (Fin s.sum) (Fin s.sum) K)ᵐᵒᵖ) × (Matrix (Fin s.sum) (Fin s.sum) K × (Matrix (Fin s.sum) (Fin s.sum) K)ᵐᵒᵖ)` to `fun p => (Units.embedProduct _ (p.1 : GL (Fin s.sum) K), Units.embedProduct _ (p.2 : GL (Fin s.sum) K))`. Establish `hι : IsClosedEmbedding ι` using `(Units.isClosedEmbedding_embedProduct.comp (isClosed_lowW s t wi h1 h2).isClosedEmbedding_subtypeVal).prodMap (Units.isClosedEmbedding_embedProduct.comp (isClosed_upUniG (K := K) s.sum).isClosedEmbedding_subtypeVal)`. Set `Mset : Set (Matrix (Fin s.sum) (Fin s.sum) K)` to `{Z | Formalism.DoubleCosetMeasures.IsInt R Z}`. Establish `hMc : IsCompact Mset`.
+
+Establish `key : Mset = Set.univ.pi fun _ => Set.univ.pi fun _ => (R : Set K)`. Use extensionality with `Z`. Use `show (∀ a b, Z a b ∈ R) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => h i j`. Introduce `h a b`. Conclude with `Set.mem_univ_pi.1 (Set.mem_univ_pi.1 h a) b`. Rewrite using `[key]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hRc`.
+
+Set `S : Set (Formalism.DoubleCosetMeasures.lowW K s t × Formalism.DoubleCosetMeasures.upUniG K s.sum)` to `{p | Formalism.DoubleCosetMeasures.IsInt R (((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * Formalism.DoubleCosetMeasures.pt s t * ((p.2 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K))}`. Establish `hScl : IsClosed S` using `hMc.isClosed.preimage (((Units.continuous_val.comp (continuous_subtype_val.comp continuous_fst)).mul continuous_const).mul (Units.continuous_val.comp (continuous_subtype_val.comp continuous_snd)))`. Establish `hSsub : S ⊆ ι ⁻¹' (Φ '' Mset)`. Introduce `p hp`. Use `⟨_, hp, ?_⟩` and prove the remaining obligations.
+
+Take `⟨hv1, hv2⟩` from `(mem_lowW_iff s t wi h1 h2 p.1.1).1 p.1.2`. Establish `hu : Formalism.DoubleCosetMeasures.IsUpUni ((p.2 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K)` using `p.2.2`. Take `⟨e1, e2⟩` from `hP _ _ hv2 hu`. Establish `eY : wi * (((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * Formalism.DoubleCosetMeasures.pt s t * ((p.2 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K)) = (wi * ((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * Formalism.DoubleCosetMeasures.p …`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `eV : Formalism.DoubleCosetMeasures.pt s t * (wi * ((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * Formalism.DoubleCosetMeasures.pt s t) * wi = ((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K)`. Simplify using `only [← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`. Simplify using `only [Φ, ι, eY, e1, e2, eV, Units.embedProduct_apply]`. Rewrite using `[coe_inv_of_det _ (isLowUni_det K hv1), coe_inv_of_det _ (isUpUni_det K hu)]`.
+
+Establish `hS : IsCompact S` using `(hι.isCompact_preimage (hMc.image hΦ)).of_isClosed_subset hScl hSsub`. Conclude with `⟨hS, hScl⟩`.
+-/
 theorem isCompact_intLocus (K : Type) [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [T2Space K]
     (R : Subring K) (hRc : IsCompact (R : Set K)) (s : List ℕ) (t : ℕ → Kˣ) :
     IsCompact {p : lowW K s t × upUniG K s.sum | IsInt R (((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) *
@@ -346,6 +465,13 @@ theorem isCompact_intLocus (K : Type) [CommRing K] [TopologicalSpace K] [IsTopol
   have hS : IsCompact S := (hι.isCompact_preimage (hMc.image hΦ)).of_isClosed_subset hScl hSsub
   exact ⟨hS, hScl⟩
 
+/- English proof (translation)
+Establish `e : {l : Matrix (Fin n) (Fin n) E | Formalism.MainNotions.S.TieN.IntLow M l} = (⋂ a, {l | l a a = 1}) ∩ (⋂ a, ⋂ b, {l | a < b → l a b = 0}) ∩ ⋂ a, ⋂ b, {l | l a b ∈ M.R}`. Use extensionality with `l`. Simplify using `[Formalism.MainNotions.S.TieN.IntLow, and_assoc]`. Establish `hmid : ∀ a b : Fin n, IsClosed {l : Matrix (Fin n) (Fin n) E | a < b → l a b = 0}`. Introduce `a b`.
+
+Distinguish the cases in `hab : a < b`. Simplify using `only [hab, true_implies]`. Conclude with `isClosed_eq (continuous_id.matrix_elem a b) continuous_const`. Simplify using `only [hab, false_implies, Set.setOf_true]`. Conclude with `isClosed_univ`.
+
+Rewrite using `[e]`. Conclude with `((isClosed_iInter fun a => isClosed_eq (continuous_id.matrix_elem a a) continuous_const).inter (isClosed_iInter fun a => isClosed_iInter fun b => hmid a b)).inter (isClosed_iInter fun a => isClosed_iInter fun b => hRcl.preimage (continuous_id.matrix_elem a b))`.
+-/
 theorem isClosed_intLow [T2Space E] (M : Loc.Model F E) (hRcl : IsClosed (M.R : Set E)) {n : ℕ} :
     IsClosed {l : Matrix (Fin n) (Fin n) E | Formalism.MainNotions.S.TieN.IntLow M l} := by
   have e : {l : Matrix (Fin n) (Fin n) E | Formalism.MainNotions.S.TieN.IntLow M l} =
@@ -364,6 +490,13 @@ theorem isClosed_intLow [T2Space E] (M : Loc.Model F E) (hRcl : IsClosed (M.R : 
     (isClosed_iInter fun a => isClosed_iInter fun b => hmid a b)).inter
     (isClosed_iInter fun a => isClosed_iInter fun b => hRcl.preimage (continuous_id.matrix_elem a b))
 
+/- English proof (translation)
+Establish `e : {l : Matrix (Fin n) (Fin n) E | Formalism.MainNotions.S.TieN.IntUp M l} = (⋂ a, {l | l a a = 1}) ∩ (⋂ a, ⋂ b, {l | b < a → l a b = 0}) ∩ ⋂ a, ⋂ b, {l | l a b ∈ M.R}`. Use extensionality with `l`. Simplify using `[Formalism.MainNotions.S.TieN.IntUp, and_assoc]`. Establish `hmid : ∀ a b : Fin n, IsClosed {l : Matrix (Fin n) (Fin n) E | b < a → l a b = 0}`. Introduce `a b`.
+
+Distinguish the cases in `hab : b < a`. Simplify using `only [hab, true_implies]`. Conclude with `isClosed_eq (continuous_id.matrix_elem a b) continuous_const`. Simplify using `only [hab, false_implies, Set.setOf_true]`. Conclude with `isClosed_univ`.
+
+Rewrite using `[e]`. Conclude with `((isClosed_iInter fun a => isClosed_eq (continuous_id.matrix_elem a a) continuous_const).inter (isClosed_iInter fun a => isClosed_iInter fun b => hmid a b)).inter (isClosed_iInter fun a => isClosed_iInter fun b => hRcl.preimage (continuous_id.matrix_elem a b))`.
+-/
 theorem isClosed_intUp [T2Space E] (M : Loc.Model F E) (hRcl : IsClosed (M.R : Set E)) {n : ℕ} :
     IsClosed {l : Matrix (Fin n) (Fin n) E | Formalism.MainNotions.S.TieN.IntUp M l} := by
   have e : {l : Matrix (Fin n) (Fin n) E | Formalism.MainNotions.S.TieN.IntUp M l} =
@@ -382,6 +515,13 @@ theorem isClosed_intUp [T2Space E] (M : Loc.Model F E) (hRcl : IsClosed (M.R : S
     (isClosed_iInter fun a => isClosed_iInter fun b => hmid a b)).inter
     (isClosed_iInter fun a => isClosed_iInter fun b => hRcl.preimage (continuous_id.matrix_elem a b))
 
+/- English proof (translation)
+Establish `hRcl` using `hRc.isClosed`. Establish `hB : IsCompact (Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin n => (M.R : Set E))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hRc`. Establish `hL : IsCompact {l : Matrix (Fin n) (Fin n) E | Formalism.MainNotions.S.TieN.IntLow M l}` using `hB.of_isClosed_subset (isClosed_intLow M hRcl) fun l hl => Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => hl.2.2 i j`. Establish `hU : IsCompact {l : Matrix (Fin n) (Fin n) E | Formalism.MainNotions.S.TieN.IntUp M l}` using `hB.of_isClosed_subset (isClosed_intUp M hRcl) fun l hl => Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => hl.2.2 i j`. Establish `e : orbR M Z = (fun p : Matrix (Fin n) (Fin n) E × Matrix (Fin n) (Fin n) E => p.1 * Z * p.2) '' ({l | Formalism.MainNotions.S.TieN.IntLow M l} ×ˢ {ρ | Formalism.MainNotions.S.TieN.IntUp M ρ})`.
+
+Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, ρ, hl, hρ, rfl⟩`. Conclude with `⟨(l, ρ), ⟨hl, hρ⟩, rfl⟩`. Introduce and unpack `⟨⟨l, ρ⟩, ⟨hl, hρ⟩, rfl⟩`.
+
+Conclude with `⟨l, ρ, hl, hρ, rfl⟩`. Rewrite using `[e]`. Conclude with `((hL.prod hU).image ((continuous_fst.matrix_mul continuous_const).matrix_mul continuous_snd)).isClosed`.
+-/
 theorem isClosed_orbR [T2Space E] [IsTopologicalRing E] (M : Loc.Model F E) (hRc : IsCompact (M.R : Set E)) {n : ℕ}
     (Z : Matrix (Fin n) (Fin n) E) : IsClosed (orbR M Z) := by
   have hRcl := hRc.isClosed
@@ -406,6 +546,13 @@ theorem isClosed_orbR [T2Space E] [IsTopologicalRing E] (M : Loc.Model F E) (hRc
 
 variable [IsTopologicalRing E]
 
+/- English proof (translation)
+Establish `h1 : Continuous fun xy : (Loc.IL (m + 1) → E) × (Loc.IN a → E) => Loc.uLow xy.1`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Loc.uLow]`. Use `split_ifs with h h'`. Conclude with `continuous_const`.
+
+Conclude with `(continuous_apply _).comp continuous_fst`. Conclude with `continuous_const`. Establish `h2 : Continuous fun xy : (Loc.IL (m + 1) → E) × (Loc.IN a → E) => Loc.uUp a xy.2`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Loc.uUp]`.
+
+Use `split_ifs with h h'`. Conclude with `continuous_const`. Conclude with `(continuous_apply _).comp continuous_snd`. Conclude with `continuous_const`. Conclude with `(h1.matrix_mul continuous_const).matrix_mul h2`.
+-/
 theorem continuous_zAt {m : ℕ} (a : Loc.Pt E (m + 1)) : Continuous (zAt (E := E) a) := by
   have h1 : Continuous fun xy : (Loc.IL (m + 1) → E) × (Loc.IN a → E) => Loc.uLow xy.1 := by
     refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -423,16 +570,27 @@ theorem continuous_zAt {m : ℕ} (a : Loc.Pt E (m + 1)) : Continuous (zAt (E := 
     · exact continuous_const
   exact (h1.matrix_mul continuous_const).matrix_mul h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => hA.2 _, fun i j hij => hA.1 hij, fun i j => hI _ _⟩`.
+-/
 theorem sub_intLow (M : Loc.Model F E) {k n : ℕ} (h : k = n) {A : Matrix (Fin n) (Fin n) E}
     (hA : Formalism.DoubleCosetMeasures.IsLowUni A) (hI : Formalism.DoubleCosetMeasures.IsInt M.R A) :
     Formalism.MainNotions.S.TieN.IntLow M (A.submatrix (finCongr h) (finCongr h)) :=
   ⟨fun i => hA.2 _, fun i j hij => hA.1 hij, fun i j => hI _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => hA.2 _, fun i j hij => hA.1 hij, fun i j => hI _ _⟩`.
+-/
 theorem sub_intUp (M : Loc.Model F E) {k n : ℕ} (h : k = n) {A : Matrix (Fin n) (Fin n) E}
     (hA : Formalism.DoubleCosetMeasures.IsUpUni A) (hI : Formalism.DoubleCosetMeasures.IsInt M.R A) :
     Formalism.MainNotions.S.TieN.IntUp M (A.submatrix (finCongr h) (finCongr h)) :=
   ⟨fun i => hA.2 _, fun i j hij => hA.1 hij, fun i j => hI _ _⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e2 : orbR M (l * Z * ρ) = orbR M Z` using `orbR_eq M ⟨l, ρ, hl, hρ, rfl⟩`. Rewrite using `[← orbR_eq M h, e2]`. Conclude with `mem_orbR M Z`.
+
+Introduce `h`. Rewrite using `[← orbR_eq M h]`. Conclude with `⟨l, ρ, hl, hρ, rfl⟩`.
+-/
 theorem mem_iff_orb (M : Loc.Model F E) {n : ℕ} (Z0 : Matrix (Fin n) (Fin n) E) {l ρ Z : Matrix (Fin n) (Fin n) E}
     (hl : Formalism.MainNotions.S.TieN.IntLow M l) (hρ : Formalism.MainNotions.S.TieN.IntUp M ρ) : l * Z * ρ ∈ orbR M Z0 ↔ Z ∈ orbR M Z0 := by
   constructor
@@ -444,6 +602,25 @@ theorem mem_iff_orb (M : Loc.Model F E) {n : ℕ} (Z0 : Matrix (Fin n) (Fin n) E
     rw [← orbR_eq M h]
     exact ⟨l, ρ, hl, hρ, rfl⟩
 
+/- English proof (translation)
+Use `set O := orbR M Z0 with hOdef`. Take `⟨μ₁, μ₂, hi1, hi2, hs1, hs2, hv1, hv2, hint⟩` from `Formalism.MainNotions.LocalOrbitGerms.ctAll F E M hOK (m + 1) a`. Establish `hD` using `Formalism.MainNotions.LocalModelPeriodLattices.datum_of_OK M hOK`. Use `haveI := hD.t2`. Use `haveI := hi1`.
+
+Use `haveI := hi2`. Use `haveI := hs1`. Use `haveI := hs2`. Use `haveI := hOK.borel`. Use `haveI := Formalism.MainNotions.LocalOrbitGerms.secondCountable_of_OK M hOK`.
+
+Set `e` to `finCongr (Formalism.MainNotions.LocalModelPeriodLattices.tr_sum a).symm`. Set `f : Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 × Formalism.DoubleCosetMeasures.upUniG E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum → ℂ` to `fun p => if (Formalism.FourierDecayAlt.A5.orbZ (Formalism.MainNotions.LocalModelPeriodLattices.tr a) p).submatrix e e ∈ O then 1 else 0`. Establish `hinv : ∀ x ∈ Formalism.DoubleCosetMeasures.intSub M.R (Formalism.DoubleCosetMeasures.lowW E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2), ∀ y ∈ Formalism.DoubleCosetMeasures.intSub M.R (Formalism.DoubleCosetMeasu …`. Introduce `x hx y hy v u`. Establish `e1 : Formalism.FourierDecayAlt.A5.orbZ (Formalism.MainNotions.LocalModelPeriodLattices.tr a) (x * v, u * y) = ((x : GL (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) E) : Matrix (Fin (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum) (Fin (Formalism.M …`.
+
+Simplify using `only [Formalism.FourierDecayAlt.A5.orbZ, Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]`. Simplify using `only [f]`. Rewrite using `[e1, ← Matrix.submatrix_mul_equiv _ _ _ e _, ← Matrix.submatrix_mul_equiv _ _ _ e _, mem_iff_orb M Z0 (sub_intLow M _ x.2.1 hx.1) (sub_intUp M _ y.2 hy.1)]`. Establish `hcs : HasCompactSupport f`. Take `⟨hK, hKc⟩` from `isCompact_intLocus E M.R hD.isCompact (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2`.
+
+Use `HasCompactSupport.intro' hK hKc fun p hp => ?_` and prove the remaining obligations. Simplify using `only [f]`. Rewrite using `[if_neg]`. Introduce `hpO`. Apply `hp` to reduce the goal to its premises.
+
+Introduce `i j`. Use `int_of_mem M hZ0 hpO (e.symm i) (e.symm j)` as an intermediate fact. Simplify `this` using `[Matrix.submatrix_apply, Formalism.FourierDecayAlt.A5.orbZ]`. Establish `key` using `Formalism.DoubleCosetMeasures.Final.intTwoSided _ _ μ₁ μ₂ _ _ (Formalism.DoubleCosetMeasures.P.isOpen_intSub M.R hD.isOpen _) (Formalism.DoubleCosetMeasures.P.isOpen_intSub M.R hD.isOpen _) ℂ f hinv hcs`. Use `⟨key.1, ?_⟩` and prove the remaining obligations.
+
+Establish `hA : MeasurableSet {xy | zAt a xy ∈ O}`. Conclude with `((isClosed_orbR M hD.isCompact _).preimage (continuous_zAt a)).measurableSet`. Establish `step1 : (wtZ M a O : ℂ) = ∫ xy, (if zAt a xy ∈ O then (1 : ℂ) else 0) ∂(muA M a)`. Establish `: (fun xy => if zAt a xy ∈ O then (1 : ℂ) else 0) = fun xy => ((Set.indicator {xy | zAt a xy ∈ O} (1 : (Loc.IL (m + 1) → E) × (Loc.IN a → E) → ℝ) xy : ℝ) : ℂ)`. Use function extensionality and compare the values at `xy`.
+
+Apply the tactic sequence `by_cases h : zAt a xy ∈ O <;> simp [h]`. Rewrite using `[this, integral_complex_ofReal, integral_indicator_one hA]`. Both sides reduce to the same expression. Establish `step2 : ∫ xy, (if zAt a xy ∈ O then (1 : ℂ) else 0) ∂(muA M a) = ∫ p, f p ∂(μ₁.prod μ₂)` using `hint (fun Z _ => if Z ∈ O then (1 : ℂ) else 0)`. Rewrite using `[step1, step2, key.2, hv1, hv2]`.
+
+Simplify using `only [ENNReal.toReal_one, mul_one, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem wt_gen (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1)) (Z0 : Matrix (Fin (m + 1)) (Fin (m + 1)) E)
     (hZ0 : ∀ i j, Z0 i j ∈ M.R) :
     (Function.support (fun q : Formalism.FourierDecayAlt.A5.Cos M.R (Formalism.MainNotions.LocalModelPeriodLattices.tr a) =>
@@ -503,11 +680,21 @@ theorem wt_gen (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1))
   simp only [ENNReal.toReal_one, mul_one, one_smul]
   rfl
 
+/- English proof (translation)
+Introduce `O hO`. Take `⟨xy0, hi, rfl⟩` from `hO`. Conclude with `wt_gen M hOK a _ hi`.
+-/
 theorem wt (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1)) : OrbitMeasureCosetCount M a := by
   intro O hO
   obtain ⟨xy0, hi, rfl⟩ := hO
   exact wt_gen M hOK a _ hi
 
+/- English proof (translation)
+Introduce `q hq`. Take `⟨hfin, hsum⟩` from `wt_gen M hOK a _ hq`. Establish `hne : (wtZ M a (orbR M (zQ M.R a q)) : ℂ) ≠ 0`. Rewrite using `[hsum, finsum_eq_sum_of_support_subset _ hfin.coe_toFinset.ge, Finset.sum_boole]`. Use `Nat.cast_ne_zero.2 (Finset.card_ne_zero_of_mem (a := q) ?_)` and prove the remaining obligations.
+
+Use `Finset.mem_filter.2 ⟨?_, mem_orbR M _⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Simplify using `[mem_orbR M (zQ M.R a q)]`. Choose the witnesses or unpack the hypotheses as in `⟨xy, hxy⟩ : ∃ xy, zAt a xy ∈ orbR M (zQ M.R a q) := by`. Assume the negation of the conclusion as `hno`.
+
+Use `push Not at hno`. Apply `hne` to reduce the goal to its premises. Establish `h0 : {xy | zAt a xy ∈ orbR M (zQ M.R a q)} = ∅` using `Set.eq_empty_of_forall_notMem fun xy h => hno xy h`. Simplify using `[wtZ, h0]`. Conclude with `⟨xy, int_of_mem M hq hxy, (orbR_eq M hxy).symm⟩`.
+-/
 theorem rep (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1)) : IntegralOrbitOfCoset M a := by
   intro q hq
   obtain ⟨hfin, hsum⟩ := wt_gen M hOK a _ hq
@@ -525,6 +712,9 @@ theorem rep (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1)) : 
     simp [wtZ, h0]
   exact ⟨xy, int_of_mem M hq hxy, (orbR_eq M hxy).symm⟩
 
+/- English proof (translation)
+The claim follows from `orbitDecomposition_of_three M hOK a c (wt M hOK a) (rep M hOK a) hV`.
+-/
 theorem orbitDecomposition_of_integrand (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cls m)
     (hV : IntegrandConstantOnOrbit M a c) : OrbCut M a c :=
   orbitDecomposition_of_three M hOK a c (wt M hOK a) (rep M hOK a) hV

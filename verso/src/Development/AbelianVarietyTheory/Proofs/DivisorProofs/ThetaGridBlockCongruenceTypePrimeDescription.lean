@@ -22,16 +22,25 @@ variable {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h i j => by simpa using h (e i) (e j), fun h _ _ => h _ _⟩`.
+-/
 theorem intM_submatrix_iff (e : a ≃ b) (M : Matrix a a k) :
     GlobalTheory.StepData.IntM (M.submatrix e.symm e.symm) ↔ GlobalTheory.StepData.IntM M :=
   ⟨fun h i j => by simpa using h (e i) (e j), fun h _ _ => h _ _⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.StepData.mem_KO, GlobalTheory.StepData.mem_KO, ← map_inv, reGL_val, reGL_val, intM_submatrix_iff, intM_submatrix_iff]`.
+-/
 theorem reGL_mem_KO_iff (e : a ≃ b) (g : GL a k) : reGL e g ∈ KO k b ↔ g ∈ KO k a := by
   rw [GlobalTheory.StepData.mem_KO, GlobalTheory.StepData.mem_KO, ← map_inv, reGL_val, reGL_val,
     intM_submatrix_iff, intM_submatrix_iff]
 
 omit [Fintype a] [Fintype b] [DecidableEq b] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Simplify using `[reGL_symm_val, Matrix.one_apply]`.
+-/
 theorem symm_sub_one_apply [Fintype a] [Fintype b] [DecidableEq b] (e : a ≃ b) (h : GL b k) (x y : a) :
     (((reGL e).symm h).val - 1) x y = (h.val - 1) (e x) (e y) := by
   simp [reGL_symm_val, Matrix.one_apply]
@@ -42,17 +51,57 @@ section Iter
 variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {r t : Type*} [Fintype r] [DecidableEq r] [Fintype t] [DecidableEq t]
 
+/- English proof (translation)
+Break down `x with x | ⟨c, s⟩` into its components or cases. Simplify using `[Ix.blk]`. Simplify `c.2` using `[Ix.blk]`.
+-/
 theorem blk_le {j : ℕ} (x : Ix r t j) : Ix.blk x ≤ j := by
   rcases x with x | ⟨c, s⟩
   · simp [Ix.blk]
   · simpa [Ix.blk] using c.2
 
+/- English proof (translation)
+Apply the tactic sequence `rcases x with x | ⟨c, s⟩ <;> simp [Ix.blk, ixSucc]`.
+-/
 theorem blk_ixSucc_inl {j : ℕ} (x : Ix r t j) : Ix.blk (ixSucc r t j (Sum.inl x)) = Ix.blk x := by
   rcases x with x | ⟨c, s⟩ <;> simp [Ix.blk, ixSucc]
 
+/- English proof (translation)
+Simplify using `[Ix.blk, ixSucc]`.
+-/
 theorem blk_ixSucc_inr {j : ℕ} (s : t) : Ix.blk (ixSucc r t j (Sum.inr s)) = j + 1 := by
   simp [Ix.blk, ixSucc]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[TypeDatum.iter_zero]`. Establish `hK : (reGL (ixZero r t)).symm h ∈ KO k r ↔ h ∈ KO k (Ix r t 0)`. Rewrite using `[← reGL_mem_KO_iff (ixZero r t), MulEquiv.apply_symm_apply]`.
+
+Establish `mem : h ∈ ((TypeDatum.principal k r).reindex (ixZero r t)).J ↔ (reGL (ixZero r t)).symm h ∈ KOne k r` using `Iff.rfl`. Rewrite using `[mem, GlobalTheory.StepData.mem_KOne]`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Use `⟨hK.1 (GlobalTheory.StepData.KOne_le_KO (GlobalTheory.StepData.mem_KOne.2 hh)), fun a b hab => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+
+Break down `a with a | ⟨c, _⟩` into its components or cases. Simplify using `[Ix.blk] at hab`. Conclude with `c.elim0`. Use `hh a b` as an intermediate fact. Rewrite `this` using `[symm_sub_one_apply]`. Then use the resulting hypothesis.
+
+Introduce and unpack `⟨-, -, h3⟩ a b`. Rewrite using `[symm_sub_one_apply]`. Conclude with `h3 a b`. Consider the case `succ j ih`. Rewrite using `[TypeDatum.iter_succ]`.
+
+Establish `hK : (reGL (ixSucc r t j)).symm h ∈ KO k (Ix r t j ⊕ t) ↔ h ∈ KO k (Ix r t (j + 1))`. Rewrite using `[← reGL_mem_KO_iff (ixSucc r t j), MulEquiv.apply_symm_apply]`. Establish `mem : h ∈ ((((TypeDatum.principal k r).iter t μ hμ j).step t (μ (j + 1)) (hμ _)).reindex (ixSucc r t j)).J ↔ (reGL (ixSucc r t j)).symm h ∈ ((TypeDatum.principal k r).iter t μ hμ j).stepJ t` using `Iff.rfl`. Establish `ent : ∀ x y, ((reGL (ixSucc r t j)).symm h).val x y = h.val (ixSucc r t j x) (ixSucc r t j y)` using `fun _ _ => rfl`. Rewrite using `[mem, TypeDatum.mem_stepJ_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, ⟨g, hg, eg⟩, hC⟩`. Take `⟨-, g2, g3⟩` from `(ih g).1 hg`. Establish `eg' : ∀ x y, g.val x y = h.val (ixSucc r t j (Sum.inl x)) (ixSucc r t j (Sum.inl y))` using `fun x y => by`. Rewrite using `[eg]`.
+
+Both sides reduce to the same expression. Use `⟨hK.1 h0, fun a b hab => ?_, fun a b => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(ixSucc r t j).surjective a`. Take `⟨y, rfl⟩` from `(ixSucc r t j).surjective b`. Apply the tactic sequence `rcases x with x | s <;> rcases y with y | s'`.
+
+Rewrite `hab` using `[blk_ixSucc_inl, blk_ixSucc_inl]`. Rewrite using `[← eg']`. Conclude with `g2 x y hab`. Rewrite `hab` using `[blk_ixSucc_inl, blk_ixSucc_inr]`. Use `blk_le x` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `hC s y` as an intermediate fact. Rewrite `this` using `[toBlocks₂₁, Matrix.of_apply, ent]`. Then use the resulting hypothesis. Rewrite `hab` using `[blk_ixSucc_inr, blk_ixSucc_inr]`. Use linear arithmetic over natural numbers and integers.
+
+Use `g3 a b` as an intermediate fact. Establish `e1 : ∀ c : r, (Sum.inl c : Ix r t (j + 1)) = ixSucc r t j (Sum.inl (Sum.inl c))` using `fun c => rfl`. Rewrite using `[e1 a, e1 b, ← symm_sub_one_apply, Matrix.sub_apply, ent]`. Rewrite `this` using `[Matrix.sub_apply, eg']`. Simplify `this` using `[Matrix.one_apply]`.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Establish `h0` using `hK.2 h1`. Establish `hC : GlobalTheory.StepData.MaxM ((reGL (ixSucc r t j)).symm h).val.toBlocks₂₁` using `fun s y => by`. Rewrite using `[toBlocks₂₁, Matrix.of_apply, ent]`. Use `h2 _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[blk_ixSucc_inl, blk_ixSucc_inr]`. Use `blk_le y` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨⟨g, hg, eg⟩, -⟩` from `GlobalTheory.StepData.exists_diag_blocks h0 hC`. Establish `eg' : ∀ x y, g.val x y = h.val (ixSucc r t j (Sum.inl x)) (ixSucc r t j (Sum.inl y))` using `fun x y => by`.
+
+Rewrite using `[eg]`. Both sides reduce to the same expression. Use `⟨h0, ⟨g, (ih g).2 ⟨hg, fun a b hab => ?_, fun a b => ?_⟩, eg⟩, hC⟩` and prove the remaining obligations. Rewrite using `[eg']`. Use `h2 _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[blk_ixSucc_inl, blk_ixSucc_inl]` and apply the resulting hypothesis. Use `h3 a b` as an intermediate fact. Establish `e1 : ∀ c : r, (Sum.inl c : Ix r t (j + 1)) = ixSucc r t j (Sum.inl (Sum.inl c))` using `fun c => rfl`. Rewrite `this` using `[e1 a, e1 b, ← symm_sub_one_apply, Matrix.sub_apply, ent]`. Rewrite using `[Matrix.sub_apply, eg']`.
+
+Simplify `this` using `[Matrix.one_apply]`.
+-/
 theorem mem_iter_J (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (j : ℕ) (h : GL (Ix r t j) k) :
     h ∈ ((TypeDatum.principal k r).iter t μ hμ j).J ↔ h ∈ KO k (Ix r t j) ∧
       (∀ a b, Ix.blk b < Ix.blk a → valuation k (h.val a b) < 1) ∧
@@ -131,6 +180,11 @@ theorem mem_iter_J (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (j
 
 end Iter
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `ixFin_val G t w j`. Break down `x with a | ⟨c, b⟩` into its components or cases. Simplify using `[Formalism.L2.DIV.blkOf, h1, Ix.blk]`. Establish `hb` using `b.2`. Establish `hpos : 0 < D.R.t` using `by omega`.
+
+Establish `hdiv : (b.val + D.R.t * c.val) / D.R.t = c.val`. Rewrite using `[Nat.add_mul_div_left _ _ hpos, Nat.div_eq_of_lt hb, zero_add]`. Simplify using `[Formalism.L2.DIV.blkOf, h2, Ix.blk, hdiv]`.
+-/
 theorem blkOf_ixFin {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E) (j : ℕ)
     (x : Ix (Fin D.R.r) (Fin D.R.t) j) :
     Formalism.L2.DIV.blkOf D.R.r D.R.t (ixFin G t w j x) = Ix.blk x := by
@@ -143,6 +197,19 @@ theorem blkOf_ixFin {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridD
       rw [Nat.add_mul_div_left _ _ hpos, Nat.div_eq_of_lt hb, zero_add]
     simp [Formalism.L2.DIV.blkOf, h2, Ix.blk, hdiv]
 
+/- English proof (translation)
+Introduce `D T L sc G t w hw j g`. Establish `hmap : g ∈ (stepGroup L t w j).map (reGL (ixFin G t w j)).toMonoidHom ↔ (reGL (ixFin G t w j)).symm g ∈ stepGroup L t w j`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`.
+
+Introduce `hx`. Conclude with `⟨_, hx, by simp⟩`. Establish `hK : (reGL (ixFin G t w j)).symm g ∈ KO (Kw w) (Ix (Fin D.R.r) (Fin D.R.t) j) ↔ g ∈ KO (Kw w) (Fin ((locGrid G t w).rank (0, j)))`. Rewrite using `[← reGL_mem_KO_iff (ixFin G t w j), MulEquiv.apply_symm_apply]`. Rewrite using `[hmap, stepGroup, if_pos hw, mem_iter_J, hK]`.
+
+Use `and_congr_right fun _ => and_congr ?_ ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h a b hab`. Take `⟨x, rfl⟩` from `(ixFin G t w j).surjective a`. Take `⟨y, rfl⟩` from `(ixFin G t w j).surjective b`.
+
+Rewrite `hab` using `[blkOf_ixFin, blkOf_ixFin]`. Conclude with `h x y hab`. Introduce `h x y hxy`. Use `h _ _ ?_` and prove the remaining obligations. Rewrite using `[blkOf_ixFin, blkOf_ixFin]` and apply the resulting hypothesis.
+
+Take `⟨h1, -⟩` from `ixFin_val G t w j`. Prove the components needed by the constructor for the conclusion. Introduce `h a b ha hb`. Establish `e : ∀ (c : Fin ((locGrid G t w).rank (0, j))) (hc : c.val < D.R.r), ixFin G t w j (Sum.inl ⟨c.val, hc⟩) = c` using `fun c hc => Fin.ext (h1 _)`. Use `h ⟨a.val, ha⟩ ⟨b.val, hb⟩` as an intermediate fact.
+
+Rewrite `this` using `[symm_sub_one_apply, e, e]`. Then use the resulting hypothesis. Introduce `h a b`. Rewrite using `[symm_sub_one_apply]`. Conclude with `h _ _ (by rw [h1]; exact a.2) (by rw [h1]; exact b.2)`.
+-/
 theorem mem_stepGroup_map_iff : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E), w ∈ L.Pg → ∀ (j : ℕ) (g : GL (Fin ((locGrid G t w).rank (0, j))) (Kw w)), g ∈ (stepGroup L t w j).map (reGL (ixFin G t w j)).toMonoidHom ↔ g ∈ KO (Kw w) (Fin ((locGrid G t w).rank (0, j))) ∧ (∀ a b, Formalism.L2.DIV.blkOf D.R.r D.R.t b < Formalism.L2.DIV.blkOf D.R.r D.R.t a → valuation (Kw w) (g.1 a b) < 1) ∧ ∀ a b : Fin ((locGrid G t w).rank (0, j)), a.val < D.R.r → b.val < D.R.r → valuation (Kw w) ((g.1 - 1) a b) < 1 := by
   intro D T L sc G t w hw j g
   have hmap : g ∈ (stepGroup L t w j).map (reGL (ixFin G t w j)).toMonoidHom ↔
@@ -194,6 +261,9 @@ open GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SplitFlip GlobalTheor
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.FunObj.borelKw GlobalTheory.FunObj.borelSpaceKw
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @IteratedIwahori.GlobalTheory.CompanionTheory.IterJ.mem_stepGroup_map_iff | exact IteratedIwahori.GlobalTheory.CompanionTheory.IterJ.mem_stepGroup_map_iff | (intros; apply IteratedIwahori.GlobalTheory.CompanionTheory.IterJ.mem_stepGroup_map_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.Adopt.thetaGridBlockCongruence_typePrime_description : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E), w ∈ L.Pg → ∀ (j : ℕ) (g : GL (Fin ((locGrid G t w).rank (0, j))) (Kw w)), g ∈ (stepGroup L t w j).map (reGL (ixFin G t w j)).toMonoidHom ↔ g ∈ KO (Kw w) (Fin ((locGrid G t w).rank (0, j))) ∧ (∀ a b, Formalism.L2.DIV.blkOf D.R.r D.R.t b < Formalism.L2.DIV.blkOf D.R.r D.R.t a → valuation (Kw w) (g.1 a b) < 1) ∧ ∀ a b : Fin ((locGrid G t w).rank (0, j)), a.val < D.R.r → b.val < D.R.r → valuation (Kw w) ((g.1 - 1) a b) < 1 := by
   first | exact @IteratedIwahori.GlobalTheory.CompanionTheory.IterJ.mem_stepGroup_map_iff | exact IteratedIwahori.GlobalTheory.CompanionTheory.IterJ.mem_stepGroup_map_iff | (intros; apply IteratedIwahori.GlobalTheory.CompanionTheory.IterJ.mem_stepGroup_map_iff <;> assumption)
 

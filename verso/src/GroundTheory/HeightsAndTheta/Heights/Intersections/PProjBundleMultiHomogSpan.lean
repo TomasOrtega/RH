@@ -17,11 +17,17 @@ def toFn (P : Ideal (MRing ι)) : MRing ι →+* FnField P :=
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Rewrite using `[toFn, RingHom.ker_comp_of_injective _ (IsFractionRing.injective _ _), Ideal.mk_ker]`.
+-/
 theorem ker_toFn (P : Ideal (MRing ι)) : RingHom.ker (toFn P) = P := by
   rw [toFn, RingHom.ker_comp_of_injective _ (IsFractionRing.injective _ _), Ideal.mk_ker]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Rewrite using `[evalAt, eval_map]`. Establish `h : eval₂Hom (Int.castRingHom (FnField P)) (genPt P) = toFn P` using `MvPolynomial.ringHom_ext (fun z => by simp) (fun p => by simp [genPt, toFn])`. Conclude with `RingHom.congr_fun h f`.
+-/
 theorem evalAt_genPt (P : Ideal (MRing ι)) (f : MRing ι) : evalAt (genPt P) f = toFn P f := by
   rw [evalAt, eval_map]
   have h : eval₂Hom (Int.castRingHom (FnField P)) (genPt P) = toFn P :=
@@ -36,6 +42,15 @@ def genMap (P : Ideal (MRing ι)) {N1 : ℕ} {S : Type} [Fintype S] (v : S → F
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use `choose G hG using fun s' => (Submodule.mem_span_range_iff_exists_fun (FnField P)).mp (h s')`. Set `σ : MvPolynomial S (FnField P) →+* MvPolynomial S' (FnField P)` to `(aeval fun s => ∑ s', C (G s' s) * X s' : MvPolynomial S (FnField P) →ₐ[FnField P] _).toRingHom`. Establish `key : genMap P v' = σ.comp (genMap P v)`. Use `MvPolynomial.ringHom_ext (fun z => by simp) ?_` and prove the remaining obligations. Introduce and unpack `⟨k | u, i⟩`.
+
+Simplify using `[genMap, σ]`. Express the relevant statement in the definitionally equal form `Fin N1 at i`. Simplify using `only [genMap, RingHom.coe_comp, Function.comp_apply, eval₂Hom_X', map_sum, map_mul, σ, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_C, aeval_X, algebraMap_eq]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Establish `hGi` using `congrFun (hG s') i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at hGi`. Rewrite using `[← hGi, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `f hf`. Rewrite `hf`, the goal using `[RingHom.mem_ker]`. Rewrite using `[key, RingHom.comp_apply, hf, map_zero]`.
+-/
 theorem ker_genMap_le (P : Ideal (MRing ι)) {N1 : ℕ} {S S' : Type} [Fintype S] [Fintype S']
     (v : S → Fin N1 → FnField P) (v' : S' → Fin N1 → FnField P)
     (h : ∀ s', v' s' ∈ Submodule.span (FnField P) (Set.range v)) :
@@ -65,6 +80,27 @@ theorem ker_genMap_le (P : Ideal (MRing ι)) {N1 : ℕ} {S S' : Type} [Fintype S
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use `set w := NumbersDVR.blockWeight ι`. Use `choose δ hδ using fun a => IsLocalization.exist_integer_multiples (nonZeroDivisors (MRing ι ⧸ P)) (Finset.univ : Finset (Fin N1)) (B a)`. Establish `hlift : ∀ a j, ∃ L : MRing ι, toFn P L = (δ a : MRing ι ⧸ P) • B a j`. Introduce `a j`. Take `⟨r, hr⟩` from `hδ a j (Finset.mem_univ j)`.
+
+Take `⟨L, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Conclude with `⟨L, hr⟩`. Use `choose L hL using hlift`. Establish `hL' : ∀ a j, toFn P (L a j) = algebraMap (MRing ι ⧸ P) (FnField P) (δ a) * B a j` using `fun a j => by rw [hL a j]; exact Algebra.smul_def (δ a : MRing ι ⧸ P) (B a j)`. Establish `hrow : ∀ a r, ∑ j, c r j * L a j ∈ P`.
+
+Introduce `a r`. Establish `h0 : ∑ j, evalAt (genPt P) (c r j) * B a j = 0`. Use `congrFun (LinearMap.mem_ker.mp (hB a)) r` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Rewrite using `[← ker_toFn P, RingHom.mem_ker, map_sum]`.
+
+Simplify using `only [map_mul, hL', ← evalAt_genPt]`. Rewrite using `[show ∑ j, evalAt (genPt P) (c r j) * (algebraMap (MRing ι ⧸ P) (FnField P) (δ a) * B a j) = algebraMap (MRing ι ⧸ P) (FnField P) (δ a) * ∑ j, evalAt (genPt P) (c r j) * B a j by`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring]`. Rewrite using `[h0, mul_zero]`.
+
+Set `D : Finset (K → ℕ)` to `Finset.univ.biUnion fun aj : Fin n × Fin N1 => (L aj.1 aj.2).support.image (Finsupp.weight w)`. Establish `hsum : ∀ a j, ∑ γ ∈ D, weightedHomogeneousComponent w γ (L a j) = L a j`. Introduce `a j`. Use `conv_rhs => rw [← sum_weightedHomogeneousComponent w (L a j)]`. Use `(finsum_eq_sum_of_support_subset _ fun γ hγ => ?_).symm` and prove the remaining obligations.
+
+Rewrite `hγ` using `[Function.mem_support]`. Assume the negation of the conclusion as `hD`. Use `hγ (weightedHomogeneousComponent_eq_zero' γ (L a j) fun d hd hdγ => hD ?_)` and prove the remaining obligations. Conclude with `Finset.mem_biUnion.mpr ⟨(a, j), Finset.mem_univ _, Finset.mem_image.mpr ⟨d, hd, hdγ⟩⟩`. Use `⟨Fin n × D, inferInstance, fun s j => weightedHomogeneousComponent w s.2 (L s.1 j), fun s => s.2, fun s j => weightedHomogeneousComponent_isWeightedHomogeneous _ _, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `s`. Rewrite using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Use function extensionality and compare the values at `r`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply, evalAt_genPt, ← map_mul, ← map_sum]`. Rewrite using `[← RingHom.mem_ker, ker_toFn]`.
+
+Rewrite using `[show ∑ j, c r j * weightedHomogeneousComponent w s.2 (L s.1 j) = weightedHomogeneousComponent w (s.2 + m) (∑ j, c r j * L s.1 j) by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (weightedHomogeneousComponent_mul_of_left (hc r j) _ _).symm]`. Conclude with `hP _ (hrow s.1 r) _`. Introduce `a`.
+
+Establish `hδ0 : algebraMap (MRing ι ⧸ P) (FnField P) (δ a) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (δ a).2`. Establish `hBa : B a = (algebraMap (MRing ι ⧸ P) (FnField P) (δ a))⁻¹ • ∑ γ : D, fun j => toFn P (weightedHomogeneousComponent w γ (L a j))`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, ← map_sum]`. Rewrite using `[Finset.sum_coe_sort D (fun γ => weightedHomogeneousComponent w γ (L a j)), hsum, hL', ← mul_assoc, inv_mul_cancel₀ hδ0, one_mul]`.
+
+Rewrite using `[hBa]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun γ _ => Submodule.subset_span ⟨(a, γ), rfl⟩)`.
+-/
 theorem exists_homog_span [DecidableEq K] (P : Ideal (MRing ι)) [P.IsPrime]
     (hP : ∀ f ∈ P, ∀ b, weightedHomogeneousComponent (NumbersDVR.blockWeight ι) b f ∈ P)
     {t N1 n : ℕ} (c : Fin t → Fin N1 → MRing ι) (m : K → ℕ)

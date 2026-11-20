@@ -49,8 +49,14 @@ open scoped Manifold Real
 
 def eta6 (z : ℍ) : ℂ := ModularForm.eta z ^ 6
 
+/- English proof (translation)
+The claim follows from `pow_ne_zero _ (eta_ne_zero z.2)`.
+-/
 lemma eta_six_ne_zero (z : ℍ) : eta6 z ≠ 0 := pow_ne_zero _ (eta_ne_zero z.2)
 
+/- English proof (translation)
+Simplify using `only [eta6, ModularForm.eta, mul_pow]`. Reduce the equality to equality of the corresponding arguments. Simplify using `[Periodic.qParam, ← Complex.exp_nsmul, nsmul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma eta_six_product_formula (z : ℍ) : eta6 z = Periodic.qParam 4 z * (∏' n, (1 - eta_q n z)) ^ 6 := by
   simp only [eta6, ModularForm.eta, mul_pow]
   congr
@@ -58,6 +64,15 @@ lemma eta_six_product_formula (z : ℍ) : eta6 z = Periodic.qParam 4 z * (∏' n
   congr 1
   ring
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[SL_slash_apply, ModularGroup.denom_apply, modular_T_smul]`. Establish `h1 : ∀ n, eta_q n (((1 : ℝ) +ᵥ z : ℍ) : ℂ) = eta_q n z`. Introduce `n`. Simplify using `only [eta_q, Periodic.qParam, coe_vadd]`.
+
+Rewrite using `[← exp_periodic (2 * π * Complex.I * z / ((1:ℝ):ℂ))]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Periodic.qParam 4 (((1 : ℝ) +ᵥ z : ℍ) : ℂ) = Complex.I * Periodic.qParam 4 z`.
+
+Simplify using `only [Periodic.qParam, coe_vadd]`. Rewrite using `[← exp_pi_div_two_mul_I, ← Complex.exp_add, exp_pi_div_two_mul_I]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [eta_six_product_formula, h1, h2, Pi.smul_apply, smul_eq_mul]`. Simplify using `[ModularGroup.T, mul_assoc]`.
+-/
 lemma eta6_slash_three_T_eq_I_smul : eta6 ∣[(3 : ℤ)] ModularGroup.T = (Complex.I : ℂ) • eta6 := by
   ext z
   rw [SL_slash_apply, ModularGroup.denom_apply, modular_T_smul]
@@ -75,11 +90,19 @@ lemma eta6_slash_three_T_eq_I_smul : eta6 ∣[(3 : ℤ)] ModularGroup.T = (Compl
   simp only [eta_six_product_formula, h1, h2, Pi.smul_apply, smul_eq_mul]
   simp [ModularGroup.T, mul_assoc]
 
+/- English proof (translation)
+Establish `: Complex.sqrt z ^ 2 = z`. Simplify using `[Complex.sqrt]`. Rewrite using `[show 6 = 2 * 3 by rfl, pow_mul, this]`.
+-/
 lemma sqrt_pow_six (z : ℂ) : Complex.sqrt z ^ 6 = z ^ 3 := by
   have : Complex.sqrt z ^ 2 = z := by
     simp [Complex.sqrt]
   rw [show 6 = 2 * 3 by rfl, pow_mul, this]
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[SL_slash_apply, UpperHalfPlane.modular_S_smul, ModularGroup.denom_S]`. Establish `he : η (-(↑z)⁻¹) = (Complex.sqrt Complex.I)⁻¹ * (Complex.sqrt z * η z)`. Simplify `eta_comp_eq_csqrt_I_inv z.2` using `[neg_div]`. Establish `hz` using `z.ne_zero`.
+
+Simplify using `only [eta6, inv_neg, he, mul_pow, inv_pow, sqrt_pow_six, Pi.smul_apply, smul_eq_mul]`. Establish `: (Complex.I : ℂ) ^ 3 = -Complex.I` using `by rw [pow_succ, I_sq]; ring`. Rewrite using `[this, zpow_neg, inv_neg, inv_I]`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma eta_six_slash_S : eta6 ∣[(3 : ℤ)] ModularGroup.S = (Complex.I : ℂ) • eta6 := by
   ext z
   rw [SL_slash_apply, UpperHalfPlane.modular_S_smul, ModularGroup.denom_S]
@@ -91,6 +114,17 @@ lemma eta_six_slash_S : eta6 ∣[(3 : ℤ)] ModularGroup.S = (Complex.I : ℂ) �
   rw [this, zpow_neg, inv_neg, inv_I]
   field_simp
 
+/- English proof (translation)
+Establish `hγ : γ ∈ Subgroup.closure ({ModularGroup.S, ModularGroup.T} : Set SL(2, ℤ))`. Rewrite using `[SpecialLinearGroup.SL2Z_generators]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hγ using Subgroup.closure_induction with`. Consider the case `mem x hx`.
+
+Break down `hx with rfl | rfl` into its components or cases. Conclude with `⟨Complex.I, I_pow_four, eta_six_slash_S⟩`. Conclude with `⟨Complex.I, I_pow_four, eta6_slash_three_T_eq_I_smul⟩`. Consider the case `one => exact ⟨1, by simp, by simp⟩`. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨a, ha, hx⟩` from `hx`. Take `⟨b, hb, hy⟩` from `hy`. Use `⟨a * b, by rw [mul_pow, ha, hb, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[SlashAction.slash_mul, hx, SL_smul_slash, hy, smul_smul]`. Consider the case `inv x _ hx`.
+
+Take `⟨a, ha, hx⟩` from `hx`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at ha`. Use `⟨a⁻¹, by rw [inv_pow, ha, inv_one], ?_⟩` and prove the remaining obligations. Establish `: eta6 = a • eta6 ∣[(3 : ℤ)] x⁻¹`. Rewrite using `[← SL_smul_slash, ← hx, ← SlashAction.slash_mul, mul_inv_cancel, SlashAction.slash_one]`.
+
+Use `conv_rhs => rw [this]`. Rewrite using `[smul_smul, inv_mul_cancel₀ ha0, one_smul]`.
+-/
 lemma eta_six_slash_root_of_unity (γ : SL(2, ℤ)) : ∃ c : ℂ, c ^ 4 = 1 ∧ eta6 ∣[(3 : ℤ)] γ = c • eta6 := by
   have hγ : γ ∈ Subgroup.closure ({ModularGroup.S, ModularGroup.T} : Set SL(2, ℤ)) := by
     rw [SpecialLinearGroup.SL2Z_generators]; trivial
@@ -116,9 +150,15 @@ lemma eta_six_slash_root_of_unity (γ : SL(2, ℤ)) : ∃ c : ℂ, c ^ 4 = 1 ∧
 
 def eta6MultiplierFunction (γ : SL(2, ℤ)) : ℂ := (eta6 ∣[(3 : ℤ)] γ) UpperHalfPlane.I / eta6 UpperHalfPlane.I
 
+/- English proof (translation)
+Simplify using `[eta6MultiplierFunction, h, eta_six_ne_zero]`.
+-/
 lemma eta6Mult0_eq {γ : SL(2, ℤ)} {c : ℂ} (h : eta6 ∣[(3 : ℤ)] γ = c • eta6) : eta6MultiplierFunction γ = c := by
   simp [eta6MultiplierFunction, h, eta_six_ne_zero]
 
+/- English proof (translation)
+Take `⟨c, -, h⟩` from `eta_six_slash_root_of_unity γ`. Rewrite using `[eta6Mult0_eq h, h]`.
+-/
 lemma eta_six_slash_multiplier (γ : SL(2, ℤ)) : eta6 ∣[(3 : ℤ)] γ = eta6MultiplierFunction γ • eta6 := by
   obtain ⟨c, -, h⟩ := eta_six_slash_root_of_unity γ
   rw [eta6Mult0_eq h, h]
@@ -129,31 +169,57 @@ def eta6Mult : SL(2, ℤ) →* ℂ where
   map_mul' x y := eta6Mult0_eq (by
     rw [SlashAction.slash_mul, eta_six_slash_multiplier, SL_smul_slash, eta_six_slash_multiplier, smul_smul])
 
+/- English proof (translation)
+The claim follows from `eta6Mult0_eq eta6_slash_three_T_eq_I_smul`.
+-/
 lemma eta6Mult_T_eq_I : eta6Mult ModularGroup.T = Complex.I := eta6Mult0_eq eta6_slash_three_T_eq_I_smul
 
+/- English proof (translation)
+The claim follows from `eta6Mult0_eq eta_six_slash_S`.
+-/
 lemma eta6Mult_S : eta6Mult ModularGroup.S = Complex.I := eta6Mult0_eq eta_six_slash_S
 
+/- English proof (translation)
+Establish `: (-1 : SL(2, ℤ)) = ModularGroup.S * ModularGroup.S` using `by decide`. Rewrite using `[this, map_mul, eta6Mult_S, I_mul_I]`.
+-/
 lemma eta6Mult_neg_one : eta6Mult (-1) = -1 := by
   have : (-1 : SL(2, ℤ)) = ModularGroup.S * ModularGroup.S := by decide
   rw [this, map_mul, eta6Mult_S, I_mul_I]
 
 def eta6Group : Subgroup SL(2, ℤ) := eta6Mult.toHomUnits.ker
 
+/- English proof (translation)
+Simplify using `[eta6Group, MonoidHom.mem_ker, Units.ext_iff]`.
+-/
 lemma mem_eta6Group (γ : SL(2, ℤ)) : γ ∈ eta6Group ↔ eta6Mult γ = 1 := by
   simp [eta6Group, MonoidHom.mem_ker, Units.ext_iff]
 
+/- English proof (translation)
+Rewrite using `[mem_eta6Group, map_pow, eta6Mult_T_eq_I, I_pow_four]`.
+-/
 lemma T_pow_four_mem_eta6Group : ModularGroup.T ^ 4 ∈ eta6Group := by
   rw [mem_eta6Group, map_pow, eta6Mult_T_eq_I, I_pow_four]
 
+/- English proof (translation)
+Rewrite using `[mem_eta6Group, eta6Mult_neg_one]`. Evaluate the numerical expressions.
+-/
 lemma neg_one_not_mem_eta6Group : (-1 : SL(2, ℤ)) ∉ eta6Group := by
   rw [mem_eta6Group, eta6Mult_neg_one]; norm_num
 
+/- English proof (translation)
+Rewrite using `[UpperHalfPlane.mdifferentiable_iff]`. Use `.congr (fun z hz ↦ (differentiableAt_eta_of_mem_upperHalfPlaneSet hz).pow 6 |>.differentiableWithinAt) fun z hz ↦ ?_` and prove the remaining obligations. Simplify using `[eta6, ofComplex_apply_of_im_pos hz]`.
+-/
 lemma eta_six_holomorphic : MDiff eta6 := by
   rw [UpperHalfPlane.mdifferentiable_iff]
   refine .congr (fun z hz ↦ (differentiableAt_eta_of_mem_upperHalfPlaneSet hz).pow
     6 |>.differentiableWithinAt) fun z hz ↦ ?_
   simp [eta6, ofComplex_apply_of_im_pos hz]
 
+/- English proof (translation)
+Establish `h` using `discriminant_isZeroAtImInfty`. Unfold `IsZeroAtImInfty Filter.ZeroAtFilter at *`. Rewrite `*` using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `h2` using `h.rpow_const (p := (1/4 : ℝ)) (Or.inr (by norm_num))`. Rewrite `h2` using `[Real.zero_rpow (by norm_num)]`.
+
+Use `h2.congr fun z => ?_` and prove the remaining obligations. Establish `: ModularForm.discriminant z = eta6 z ^ 4`. Simplify using `[ModularForm.discriminant, eta6, ← pow_mul]`. Rewrite using `[this, norm_pow, show (1/4 : ℝ) = ((4 : ℕ) : ℝ)⁻¹ by norm_num, Real.pow_rpow_inv_natCast (norm_nonneg _) (by norm_num)]`.
+-/
 lemma eta_six_zero_at_infinity : IsZeroAtImInfty eta6 := by
   have h := discriminant_isZeroAtImInfty
   unfold IsZeroAtImInfty Filter.ZeroAtFilter at *
@@ -182,8 +248,16 @@ def eta6Form : ModularForm eta6Group (3 : ℤ) where
     rw [eta_six_slash_multiplier]
     exact (eta_six_zero_at_infinity.isBoundedAtImInfty).smul _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma coe_eta6Form : (eta6Form : ℍ → ℂ) = eta6 := rfl
 
+/- English proof (translation)
+Introduce `q hq`. Distinguish the cases in `hq0 : q = 0`. Simplify `eta_six_zero_at_infinity.cuspFunction_apply_zero (by norm_num)` using `[hq0]`. Establish `him` using `Periodic.im_invQParam_pos_of_norm_lt_one (h := 4) (by norm_num) (by simpa [dist_zero_right] using hq) hq0`. Establish `h4 : Periodic.qParam 1 (Periodic.invQParam 4 q) = q ^ 4` using `by conv_rhs => rw [← Periodic.qParam_right_inv (h := 4) (by norm_num) hq0]`.
+
+Simplify using `only [Periodic.qParam, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[cuspFunction, Periodic.cuspFunction_eq_of_nonzero 4 _ hq0, ofComplex_apply_of_im_pos him, eta_six_product_formula ⟨_, him⟩, Periodic.qParam_right_inv (h := 4) (by norm_num) hq0, eta_q, h4]`.
+-/
 lemma eta_six_cusp_function : Set.EqOn (cuspFunction 4 eta6)
     (fun q ↦ q * (∏' i, (1 - (q ^ 4) ^ (i + 1))) ^ 6) (Metric.ball 0 1) := by
   intro q hq
@@ -199,6 +273,9 @@ lemma eta_six_cusp_function : Set.EqOn (cuspFunction 4 eta6)
       ofComplex_apply_of_im_pos him, eta_six_product_formula ⟨_, him⟩,
       Periodic.qParam_right_inv (h := 4) (by norm_num) hq0, eta_q, h4]
 
+/- English proof (translation)
+Use `DifferentiableOn.fun_pow ?_ 6` and prove the remaining obligations. Use `differentiableOn_tprod_one_sub_pow.comp (f := fun q : ℂ => q ^ 4) (by fun_prop) ?_` and prove the remaining obligations. Introduce `q hq`. Simplify using `only [Metric.mem_ball, dist_zero_right, norm_pow] at hq ⊢`. Conclude with `pow_lt_one₀ (norm_nonneg _) hq (by norm_num)`.
+-/
 lemma eta_six_product_differentiable :
     DifferentiableOn ℂ (fun q : ℂ ↦ (∏' i, (1 - (q ^ 4) ^ (i + 1))) ^ 6) (Metric.ball 0 1) := by
   refine DifferentiableOn.fun_pow ?_ 6
@@ -207,6 +284,11 @@ lemma eta_six_product_differentiable :
   simp only [Metric.mem_ball, dist_zero_right, norm_pow] at hq ⊢
   exact pow_lt_one₀ (norm_nonneg _) hq (by norm_num)
 
+/- English proof (translation)
+Establish `hmem : (0 : ℂ) ∈ Metric.ball (0 : ℂ) 1` using `Metric.mem_ball_self one_pos`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[qExpansion_coeff, ← derivWithin_of_isOpen Metric.isOpen_ball hmem]`. Use `_ = derivWithin (fun q ↦ q * (∏' i, (1 - (q ^ 4) ^ (i + 1))) ^ 6) (Metric.ball 0 1) 0 := derivWithin_congr eta_six_cusp_function (eta_six_cusp_function hmem)`. Use `_ = 1 := by`.
+
+Rewrite using `[derivWithin_fun_mul differentiableWithinAt_fun_id (eta_six_product_differentiable _ hmem), derivWithin_id' _ _ (Metric.isOpen_ball.uniqueDiffWithinAt hmem)]`. Simplify using the standard rewrite rules.
+-/
 lemma eta_six_first_coefficient : (qExpansion 4 eta6).coeff 1 = 1 := by
   have hmem : (0 : ℂ) ∈ Metric.ball (0 : ℂ) 1 := Metric.mem_ball_self one_pos
   calc (qExpansion 4 eta6).coeff 1
@@ -234,8 +316,17 @@ def eta6Frame : Frame eta6Group 4 1 where
     rw [show ((1 : Fin 4) : ℕ) = 1 from rfl, eta_six_first_coefficient] at this
     exact this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : eta6Frame.wt 0 = 3 := rfl
+/- English proof (translation)
+The claim follows from `eta6Mult_T_eq_I`.
+-/
 example : eta6Mult ModularGroup.T = Complex.I := eta6Mult_T_eq_I
+/- English proof (translation)
+The claim follows from `neg_one_not_mem_eta6Group`.
+-/
 example : (-1 : SL(2, ℤ)) ∉ eta6Group := neg_one_not_mem_eta6Group
 
 end EtaSix

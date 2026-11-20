@@ -10,6 +10,23 @@ open scoped NNReal Topology Pointwise
 
 namespace GlobalTheory.WeilM
 
+/- English proof (translation)
+Establish `hind : ∀ U : Set X, IsClopen U → ∀ φ ∈ SB X, U.indicator φ ∈ SB X`. Introduce `U hU φ hφ`. Establish `: U.indicator φ = U.indicator 1 * φ`. Apply the tactic sequence `funext x; by_cases hx : x ∈ U <;> simp [hx]`. Rewrite using `[this]`.
+
+Conclude with `⟨(LocallyConstant.indicator (1 : LocallyConstant X ℂ) hU).isLocallyConstant.mul hφ.1, hφ.2.mul_left⟩`. Establish `hsupp : IsClopen (Function.support φ)` using `(hφ.1.isClopen_fiber 0).compl`. Establish `hc : IsCompact (Function.support φ)`. Use `hφ.2` as an intermediate fact. Rewrite `this` using `[HasCompactSupport, tsupport, hsupp.isClosed.closure_eq]`. Then use the resulting hypothesis.
+
+Establish `key : ∃ U : Set X, IsClopen U ∧ Function.support φ ⊆ U ∧ ∀ φ' ∈ SB X, Function.support φ' ⊆ U → l φ' = 0`. Use `hc.induction_on (p := fun s => ∃ U : Set X, IsClopen U ∧ s ⊆ U ∧ ∀ φ' ∈ SB X, Function.support φ' ⊆ U → l φ' = 0) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `⟨∅, isClopen_empty, le_rfl, fun φ' _ h0 => ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[Set.subset_empty_iff, Function.support_eq_empty_iff]`. Rewrite using `[h0, map_zero]`.
+
+Introduce and unpack `s t hst ⟨U, hU, htU, h'⟩`. Conclude with `⟨U, hU, hst.trans htU, h'⟩`. Introduce and unpack `s t ⟨U, hU, hsU, h1⟩ ⟨V, hV, htV, h2⟩`. Use `⟨U ∪ V, hU.union hV, Set.union_subset_union hsU htV, fun φ' hφ' hs => ?_⟩` and prove the remaining obligations. Rewrite using `[← Set.indicator_self_add_compl U φ', map_add, h1 _ (hind U hU _ hφ') Set.support_indicator_subset, h2 _ (hind _ hU.compl _ hφ'), add_zero]`.
+
+Rewrite using `[Set.support_indicator]`. Introduce and unpack `x ⟨hx, hx'⟩`. Conclude with `(hs hx').resolve_left hx`. Introduce `x hx`. Take `⟨f, hf, hfx⟩` from `h x hx`.
+
+Establish `hU` using `(hS f hf).isClopen_fiber (f x)`. Use `⟨_, mem_nhdsWithin_of_mem_nhds (hU.isOpen.mem_nhds rfl), _, hU, le_rfl, fun φ' hφ' hs => ?_⟩` and prove the remaining obligations. Establish `h1 : f * φ' = f x • φ'`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : φ' y = 0`.
+
+Simplify using `[hy]`. Establish `: f y = f x` using `hs hy`. Simplify using `[this]`. Establish `h2` using `hl f hf φ' hφ'`. Rewrite `h2` using `[h1, map_smul, smul_eq_mul]`.
+
+Establish `h3 : (f x - 1) * l φ' = 0` using `by rw [sub_mul, h2, one_mul, sub_self]`. Conclude with `(mul_eq_zero.mp h3).resolve_left (sub_ne_zero.mpr hfx)`. Take `⟨U, -, hU, h'⟩` from `key`. Conclude with `h' φ hφ hU`.
+-/
 theorem eq_zero_of_mul_invariant {X : Type} [TopologicalSpace X] (l : (X → ℂ) →ₗ[ℂ] ℂ) (S : Set (X → ℂ))
     (hS : ∀ f ∈ S, IsLocallyConstant f) (hl : ∀ f ∈ S, ∀ φ ∈ SB X, l (f * φ) = l φ)
     {φ : X → ℂ} (hφ : φ ∈ SB X) (h : ∀ x, φ x ≠ 0 → ∃ f ∈ S, f x ≠ 1) : l φ = 0 := by
@@ -56,6 +73,11 @@ theorem eq_zero_of_mul_invariant {X : Type} [TopologicalSpace X] (l : (X → ℂ
   obtain ⟨U, -, hU, h'⟩ := key
   exact h' φ hφ hU
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PowerTwoNormLowerBound.main`. Consider the case `exact _root_.GlobalTheory.PowerTwoNormLowerBound.main`. Consider the case `(apply _root_.GlobalTheory.PowerTwoNormLowerBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PowerTwoNormLowerBound.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PowerTwoNormLowerBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PowerTwoNormLowerBound.main ..)`.
+-/
 theorem eq_one_of_forall_pow_near {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   first
   | exact @_root_.GlobalTheory.PowerTwoNormLowerBound.main
@@ -65,6 +87,11 @@ theorem eq_one_of_forall_pow_near {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 
   | (intros; apply @_root_.GlobalTheory.PowerTwoNormLowerBound.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.PowerTwoNormLowerBound.main ..)
 
+/- English proof (translation)
+Establish `h0 : {x | ‖ψ x - 1‖ < 1 / 2} ∈ 𝓝 (0 : V)` using `(isOpen_lt (by fun_prop) continuous_const).mem_nhds (by simp)`. Take `⟨K, hK⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ h0`. Establish `h1 : ∀ x ∈ K, ψ x = 1` using `fun x hx => eq_one_of_forall_pow_near fun n => by`. Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Conclude with `hK (nsmul_mem hx n)`.
+
+Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_` and prove the remaining obligations. Establish `: (fun z => -x + z) ⁻¹' (K : Set V) ∈ 𝓝 x` using `(K.isOpen.preimage (by fun_prop)).mem_nhds (by simp)`. Use `filter_upwards [this] with z hz`. Establish `h2 : z = x + (-x + z)` using `by abel`. Rewrite using `[h2, AddChar.map_add_eq_mul, h1 _ hz, mul_one]`.
+-/
 theorem isLocallyConstant_addChar {V : Type} [AddCommGroup V] [TopologicalSpace V] [NonarchimedeanAddGroup V]
     (ψ : AddChar V ℂ) (hψ : Continuous ψ) : IsLocallyConstant ψ := by
   have h0 : {x | ‖ψ x - 1‖ < 1 / 2} ∈ 𝓝 (0 : V) :=
@@ -82,12 +109,18 @@ theorem isLocallyConstant_addChar {V : Type} [AddCommGroup V] [TopologicalSpace 
 
 variable (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `SplitWeil.exists_cball_subset hU`. Conclude with `⟨⟨⟨⟨⟨SplitWeil.cball s, SplitWeil.add_mem_cball⟩, by simp [SplitWeil.cball]⟩, SplitWeil.neg_mem_cball⟩, SplitWeil.isOpen_cball s⟩, hs⟩`.
+-/
 theorem nonarch_field : NonarchimedeanAddGroup F where
   is_nonarchimedean U hU := by
     obtain ⟨s, hs⟩ := SplitWeil.exists_cball_subset hU
     exact ⟨⟨⟨⟨⟨SplitWeil.cball s, SplitWeil.add_mem_cball⟩, by simp [SplitWeil.cball]⟩, SplitWeil.neg_mem_cball⟩,
       SplitWeil.isOpen_cball s⟩, hs⟩
 
+/- English proof (translation)
+Use `haveI := nonarch_field F`. Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hs⟩` from `hU`. Use `choose K hK using fun i => NonarchimedeanAddGroup.is_nonarchimedean (G := F) (t i) (ht i)`. Conclude with `⟨⟨AddSubgroup.pi Set.univ fun i => (K i : AddSubgroup F), isOpen_set_pi Set.finite_univ fun i _ => (K i).isOpen⟩, fun x hx => hs fun i _ => hK i (hx i trivial)⟩`.
+-/
 theorem nonarch_pi (κ : Type) [Fintype κ] : NonarchimedeanAddGroup (κ → F) where
   is_nonarchimedean U hU := by
     haveI := nonarch_field F
@@ -102,6 +135,21 @@ section Cov
 variable {F} [MeasurableSpace F] [BorelSpace F] (ν : Measure F) [ν.IsAddHaarMeasure]
   {κ : Type} [Fintype κ] [DecidableEq κ]
 
+/- English proof (translation)
+Use `haveI := SplitWeil.secondCountable F`. Use `haveI := SplitWeil.t2Space F`. Establish `hm : ∀ A : Matrix κ κ F, Measurable A.mulVec` using `fun A => (continuous_const.matrix_mulVec continuous_id).measurable`. Establish `hM : M.det ≠ 0` using `hu ▸ u.ne_zero`. Use `revert u`.
+
+Apply `diagonal_transvection_induction_of_det_ne_zero _ M hM` to reduce the goal to its premises. Introduce `D hD u hu`. Use `(Measure.pi_eq fun s hs => ?_).symm` and prove the remaining obligations. Rewrite `hD`, `hu` using `[det_diagonal]`. Establish `A : ∀ i, D i ≠ 0` using `fun i => Finset.prod_ne_zero_iff.1 hD i (Finset.mem_univ i)`.
+
+Establish `hu' : u = ∏ i, Units.mk0 (D i) (A i)` using `Units.ext (by simp [hu])`. Rewrite using `[Measure.smul_apply, Measure.map_apply (hm _) (MeasurableSet.univ_pi hs)]`. Establish `: ((diagonal D).mulVec ⁻¹' Set.pi Set.univ fun i : κ => s i) = Set.pi Set.univ fun i : κ => (Units.mk0 (D i) (A i))⁻¹ • s i`. Use extensionality with `f`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, mulVec_diagonal]`.
+
+Conclude with `forall_congr' fun i => (Set.mem_inv_smul_set_iff (a := Units.mk0 (D i) (A i))).symm`. Rewrite using `[this, Measure.pi_pi, hu', map_prod, ENNReal.coe_finset_prod, smul_eq_mul, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[distribHaarChar_mul, smul_inv_smul]`. Introduce `t u hu`.
+
+Establish `hu' : u = 1` using `Units.ext (by simp [hu])`. Rewrite using `[hu', map_one, ENNReal.coe_one, one_smul]`. Use `(Measure.pi_eq fun s hs ↦ ?_).symm` and prove the remaining obligations. Establish `h2s : MeasurableSet (Set.univ.pi s)` using `.pi Set.countable_univ fun i _ ↦ hs i`. Repeatedly rewrite using `[← Measure.pi_pi, ← lintegral_indicator_one h2s]`.
+
+Rewrite using `[lintegral_map (measurable_one.indicator h2s) (hm _)]`. Use `lintegral_eq_of_lmarginal_eq {t.i} ((measurable_one.indicator h2s).comp (hm _)) (measurable_one.indicator h2s) ?_` and prove the remaining obligations. Repeatedly rewrite using `[lmarginal_singleton]`. Use extensionality with `x`. Consider the cases of `t with | mk t_i t_j t_hij t_c =>`.
+
+Simplify using `[transvection, add_mulVec, single_mulVec, t_hij.symm, ← Function.update_add, lintegral_add_right_eq_self fun xᵢ ↦ Set.indicator (Set.univ.pi s) 1 (Function.update x t_i xᵢ)]`. Introduce `A B hA hB IHA IHB u hu`. Establish `hu' : u = Units.mk0 _ hA * Units.mk0 _ hB` using `Units.ext (by simp [hu])`. Establish `e : (A * B).mulVec = A.mulVec ∘ B.mulVec` using `funext fun x => (mulVec_mulVec x A B).symm`. Rewrite using `[hu', map_mul, ENNReal.coe_mul, mul_smul, e, ← Measure.map_map (hm _) (hm _), ← Measure.map_smul, IHB _ rfl, IHA _ rfl]`.
+-/
 theorem smul_map_mulVec_pi (M : Matrix κ κ F) (u : Fˣ) (hu : (u : F) = M.det) :
     (distribHaarChar F u : ENNReal) • Measure.map M.mulVec (Measure.pi fun _ : κ => ν) = Measure.pi fun _ : κ => ν := by
   haveI := SplitWeil.secondCountable F
@@ -145,6 +193,11 @@ theorem smul_map_mulVec_pi (M : Matrix κ κ F) (u : Fˣ) (hu : (u : F) = M.det)
     rw [hu', map_mul, ENNReal.coe_mul, mul_smul, e, ← Measure.map_map (hm _) (hm _), ← Measure.map_smul,
       IHB _ rfl, IHA _ rfl]
 
+/- English proof (translation)
+Use `haveI := SplitWeil.secondCountable F`. Establish `hm : ∀ A : Matrix κ κ F, Measurable A.mulVec` using `fun A => (continuous_const.matrix_mulVec continuous_id).measurable`. Set `e : (κ → F) ≃ᵐ (κ → F)` to `{ toFun := g.val.mulVec, invFun := (g⁻¹).val.mulVec left_inv := fun x => by rw [mulVec_mulVec, Units.inv_mul, one_mulVec] right_inv := fun x => by rw [mulVec_mulVec, Units.mul_inv, one_mulVec] measurable_toFun := hm _, measurable_invFun := hm _ }`. Use `conv_rhs => rw [← smul_map_mulVec_pi ν g.val (Matrix.GeneralLinearGroup.det g) rfl, integral_smul_measure]`. Rewrite using `[show g.val.mulVec = e from rfl, integral_map_equiv]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem integral_comp_mulVec (g : GL κ F) (f : (κ → F) → ℂ) :
     ((distribHaarChar F (Matrix.GeneralLinearGroup.det g) : ℝ) : ℂ) *
       ∫ x, f (g.val.mulVec x) ∂(Measure.pi fun _ : κ => ν) = ∫ x, f x ∂(Measure.pi fun _ : κ => ν) := by

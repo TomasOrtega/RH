@@ -11,6 +11,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ}
 
+/- English proof (translation)
+Use `haveI hs : Subsingleton (LaJ Xo c (noDelta Xo c nab m n)) := by`. Apply `Submodule.Quotient.subsingleton_iff.2` to reduce the goal to its premises. Use `show Ideal.map _ ⊤ • ⊤ = ⊤`. Rewrite using `[Ideal.map_top, Submodule.top_smul]`. Use `⟨fun _ _ _ => rfl, fun _ _ => Subsingleton.elim _ _, fun _ _ _ _ => by simp, rfl, Subsingleton.elim _ _, fun q => ?_⟩` and prove the remaining obligations.
+
+Use `haveI : Unique (Fin n → LaJ Xo c (noDelta Xo c nab m n)) := uniqueOfSubsingleton (fun _ => 0)`. Rewrite using `[finsum_unique]`. Establish `hz : ((⟨zeta l.M', c.zeta_mem⟩ : c.F) ^ (l.M' / 1)) = 1`. Establish `h0 : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[Nat.div_one]`. Conclude with `(Complex.isPrimitiveRoot_exp _ h0).pow_eq_one`. Use `show (noDelta Xo c nab m n).eF 1 = (noDelta Xo c nab m n).eF 1 * ((⟨zeta l.M', c.zeta_mem⟩ : c.F) ^ (l.M' / 1)) ^ _`. Rewrite using `[hz]`. Conclude with `((congrArg _ (one_zpow _)).trans (mul_one _)).symm`.
+-/
 theorem noDelta_phiPin (nab : NabV Xo c) (m : SABMap Xo.univ.t Xo.univ.t (𝟙 Xo.X)) :
     (noDelta Xo c nab m n).PhiPin (fun _ => 1) 1 (fun _ => 0) := by
   haveI hs : Subsingleton (LaJ Xo c (noDelta Xo c nab m n)) := by

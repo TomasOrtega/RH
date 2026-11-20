@@ -20,6 +20,17 @@ namespace GlobalTheory.HorComp
 
 open CategoryTheory AlgebraicGeometry Limits
 
+/- English proof (translation)
+Establish `hfl : Flat (spMap f)`. Rewrite using `[spMap, HasRingHomProperty.Spec_iff (P := @Flat)]`. Use `letI := f.toAlgebra`. Establish `: FaithfulSMul R ℂ` using `(faithfulSMul_iff_algebraMap_injective R ℂ).2 hf`. Establish `: Module.Flat R ℂ` using `inferInstance`.
+
+Conclude with `RingHom.flat_algebraMap_iff.2 this`. Establish `hCc : IsClosed C` using `isClosed_of_mem_irreducibleComponents C hC`. Establish `hξ : IsGenericPoint hC.1.genericPoint C` using `hC.1.isGenericPoint_genericPoint hCc`. Take `⟨ξ', hξ', e⟩` from `Flat.generalizingMap (pullback.fst q (spMap f)) (genericPoint_specializes (pullback.fst q (spMap f) hC.1.genericPoint))`. Establish `hξ'C : ξ' ∈ C`.
+
+Establish `h : C ⊆ closure ({ξ'} : Set _)`. Rewrite using `[← hξ.def]`. Conclude with `specializes_iff_closure_subset.mp hξ'`. Conclude with `hC.2 isIrreducible_singleton.closure h (subset_closure rfl)`. Establish `hO : IsOpen (pullback.fst q (spMap f) ⁻¹' Tᶜ)` using `hT.isOpen_compl.preimage (pullback.fst q (spMap f)).continuous`.
+
+Take `⟨y, hyC, hyT⟩` from `GlobalTheory.IrrAn.ptsOf_nonempty R Y q f (C ∩ pullback.fst q (spMap f) ⁻¹' Tᶜ) (hCc.isLocallyClosed.inter hO.isLocallyClosed) ⟨ξ', hξ'C, by show pullback.fst q (spMap f) ξ' ∉ T`. Rewrite using `[e]`. Conclude with `hη⟩`. Use `⟨y, hyC, ?_⟩` and prove the remaining obligations. Establish `e' : pullback.fst q (spMap f) (GlobalTheory.IrrAn.pt q f y (IsLocalRing.closedPoint ℂ)) = y.1 (IsLocalRing.closedPoint ℂ)` using `congrArg (fun g : Sp ℂ ⟶ Y => g (IsLocalRing.closedPoint ℂ)) (pullback.lift_fst _ _ _)`.
+
+Rewrite using `[← e']`. Conclude with `hyT`.
+-/
 theorem exists_cxPt_component_notMem {R : Type} [CommRing R] [IsDedekindDomain R] (f : R →+* ℂ)
     (hf : Function.Injective f) {Y : Scheme.{0}} [IsIntegral Y] (q : Y ⟶ Sp R) [LocallyOfFiniteType q]
     (C : Set (pullback q (spMap f) : Scheme.{0})) (hC : C ∈ irreducibleComponents (pullback q (spMap f) : Scheme.{0}))
@@ -59,6 +70,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {Y : Scheme.{0}} {q : Y ⟶ Sp Oz}
 
+/- English proof (translation)
+Establish `e : (pullback.lift (up j hj σ y).1 (𝟙 _) ((up j hj σ y).2.trans (Category.id_comp _).symm) : Sp ℂ ⟶ genCx Z σ) = GlobalTheory.IrrAn.pt q (σ.comp β) y ≫ toGenCx j hj σ`. Establish `a1 : toGenCx j hj σ ≫ pullback.fst _ _ = toGen j hj σ` using `pullback.lift_fst _ _ _`. Establish `a2 : toGenCx j hj σ ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Establish `b1 : toGen j hj σ ≫ pullback.fst Z.s (spMap β) = pullback.fst _ _ ≫ j` using `pullback.lift_fst _ _ _`. Establish `b2 : toGen j hj σ ≫ pullback.snd Z.s (spMap β) = pullback.snd _ _ ≫ spMap σ` using `pullback.lift_snd _ _ _`.
+
+Establish `c1 : GlobalTheory.IrrAn.pt q (σ.comp β) y ≫ pullback.fst _ _ = y.1` using `pullback.lift_fst _ _ _`. Establish `c2 : GlobalTheory.IrrAn.pt q (σ.comp β) y ≫ pullback.snd _ _ = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `d1 : (up j hj σ y).1 ≫ pullback.fst Z.s (spMap β) = y.1 ≫ j` using `pullback.lift_fst _ _ _`. Establish `d2 : (up j hj σ y).1 ≫ pullback.snd Z.s (spMap β) = spMap σ` using `pullback.lift_snd _ _ _`. Establish `e1 : (up j hj σ y).1 = GlobalTheory.IrrAn.pt q (σ.comp β) y ≫ toGen j hj σ`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[d1, Category.assoc, b1, ← Category.assoc, c1]`. Rewrite using `[d2, Category.assoc, b2, ← Category.assoc, c2, Category.id_comp]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, a1, ← e1]`.
+
+Conclude with `pullback.lift_fst _ _ _`. Rewrite using `[Category.assoc, a2, c2]`. Conclude with `pullback.lift_snd _ _ _`. Conclude with `congrArg (fun g : Sp ℂ ⟶ genCx Z σ => g (IsLocalRing.closedPoint ℂ)) e`.
+-/
 theorem ptOf_up_eq_toGenCx_pt (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) (y : CxPts q (σ.comp β)) :
     ptOf Z (up j hj σ y) = toGenCx j hj σ (GlobalTheory.IrrAn.pt q (σ.comp β) y (IsLocalRing.closedPoint ℂ)) := by
   have e : (pullback.lift (up j hj σ y).1 (𝟙 _) ((up j hj σ y).2.trans (Category.id_comp _).symm) :
@@ -82,6 +102,11 @@ theorem ptOf_up_eq_toGenCx_pt (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →
 
 end
 
+/- English proof (translation)
+Introduce `D A N j S κ s σ Y _ q jm _ hq n hY C hC T hT hη`. Establish `: LocallyOfFiniteType q`. Take `⟨m, i, hi, e⟩` from `hY.isProjOver`. Rewrite using `[← e]`. Use `isProper_str (𝓞 κ.c.F) m` as an intermediate fact.
+
+Use `infer_instance`. Take `⟨y, hyC, hyT⟩` from `exists_cxPt_component_notMem (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F)) (σ.injective.comp (RingOfIntegers.coe_injective)) q C hC T hT hη`. Conclude with `⟨y, ⟨_, hyC, (ptOf_up_eq_toGenCx_pt jm hq σ y).symm⟩, hyT⟩`.
+-/
 theorem exists_up_mem_ptsOf_component : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ) (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp (𝓞 κ.c.F)) (jm : Y ⟶ s.T.Z.X) [IsClosedImmersion jm] (hq : jm ≫ s.T.Z.s = q) (n : ℕ), IsArithVar q n → ∀ C ∈ irreducibleComponents (cxFib (algebraMap (𝓞 κ.c.F) κ.c.F) q σ), ∀ T : Set Y, IsClosed T → genericPoint Y ∉ T → ∃ y : CxPts q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F)), up jm hq σ y ∈ ptsOf s.T.Z (toGenCx jm hq σ '' C) ∧ y.1 (IsLocalRing.closedPoint ℂ) ∉ T := by
   intro D A N j S κ s σ Y _ q jm _ hq n hY C hC T hT hη
   have : LocallyOfFiniteType q := by

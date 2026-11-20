@@ -7,5 +7,8 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Set
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CxPts
 
+/- English proof (translation)
+Introduce `_ p _` and use `DifferentiableLines.Cpt.compactSpace_of_isProper p (RingHom.id ℂ)`.
+-/
 theorem DifferentiableLines.compactSpace_complex_points_of_proper : ∀ (Y : Scheme.{0}) (p : Y ⟶ Sp ℂ), IsProper p → CompactSpace (CxPts p (RingHom.id ℂ)) := fun _ p _ =>
   DifferentiableLines.Cpt.compactSpace_of_isProper p (RingHom.id ℂ)

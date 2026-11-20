@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory Topology PositivityTheory.Rg.Tf.Loc
 open scoped ENNReal
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ H H' y hy μ hμ`. Set `e : H ≃ₜ* H'` to `{ toFun := fun x => ⟨y⁻¹ * x * y, (hy x).1 x.2⟩ invFun := fun z => ⟨y * z * y⁻¹, (hy _).2 (by simp [mul_assoc])⟩ left_inv := fun x => Subtype.ext (by simp [mul_assoc]) right_inv := fun x => Subtype.ext (by simp [mul_assoc]) map_mul' := fun a b => Subtype.ext (by simp [mul_assoc]) …`. Use `⟨μ.map e, e.isHaarMeasure_map μ, ?_⟩` and prove the remaining obligations. Establish `he : Measurable (e : H → H')` using `(map_continuous e).measurable`. Conclude with `(Measure.map_map (g := fun x : H' => (x : G)) measurable_subtype_coe he).symm`.
+-/
 theorem UpperTheory.V.Z.Tf.Orb.haarConj :
     UpperTheory.V.Z.Tf.Orb.HaarConj := by
   intro G _ _ _ _ _ _ _ _ H H' y hy μ hμ

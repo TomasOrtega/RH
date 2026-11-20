@@ -13,6 +13,11 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D w l _ hl z B hz hB`. Take `⟨y, rfl⟩` from `hz`. Use `⟨y, rfl, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = 0`. Conclude with `Or.inl hy`.
+
+Use `right`. Establish `key` using `GlobalTheory.PadicPlaceBound.neg_mul_vw_le_vw D.what₂.LL D.what₂.embLL y l w B hy hl (fun lam => (hB lam).2)`. Rewrite `key` using `[mul_comm]`. Conclude with `key`.
+-/
 theorem UpperTheory.WildA.bdLoss :
     ∀ (D : D7) (w : PlL D) (l : ℕ) [Fact l.Prime], (l : 𝓞 D.what₂.LL) ∈ w.asIdeal → ∀ (z : ℂ) (B : ℝ), z ∈ Set.range D.what₂.embLL →
       (∀ lam : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[l], GlobalTheory.NormSum.Term.Bd lam ((l : ℝ) ^ B) z) → LossLe w z ((vw w ((l : ℕ) : D.what₂.LL) : ℝ) * B) := by

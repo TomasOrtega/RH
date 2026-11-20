@@ -11,5 +11,8 @@ open GlobalTheory.VB
 open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PushTwistChi.eventually_isFiniteQC_and_chi_pushforward_twist | exact GlobalTheory.PushTwistChi.eventually_isFiniteQC_and_chi_pushforward_twist | (intros; apply GlobalTheory.PushTwistChi.eventually_isFiniteQC_and_chi_pushforward_twist <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_pushforward_euler_char_twist : ∀ (k : Type) [Field k] (T T' : Scheme.{0}) [Algebra k Γ(T, ⊤)] [Algebra k Γ(T', ⊤)], IsProjSurface k T → IsProjSurface k T' → ∀ (ρ : T' ⟶ T), ρ ≫ strHom k T = strHom k T' → ∀ (L : LB T'), IsAmpleLB L → ∀ (H : T'.Modules), QCoh.IsFiniteQC H → ∀ᶠ n in atTop, QCoh.IsFiniteQC ((Scheme.Modules.pushforward ρ).obj (twist H (lbPow L n))) ∧ chi k ((Scheme.Modules.pushforward ρ).obj (twist H (lbPow L n))) = chi k (twist H (lbPow L n)) := by
   first | exact @GlobalTheory.PushTwistChi.eventually_isFiniteQC_and_chi_pushforward_twist | exact GlobalTheory.PushTwistChi.eventually_isFiniteQC_and_chi_pushforward_twist | (intros; apply GlobalTheory.PushTwistChi.eventually_isFiniteQC_and_chi_pushforward_twist <;> assumption)

@@ -20,6 +20,19 @@ open MvPolynomial
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hl : ∀ k, HasDerivAt (fun t : ℝ => (v + (t : ℂ) • c) k) (c k) t` using `fun k => by`. Use `((Complex.ofRealCLM.hasDerivAt (x := t)).mul_const (c k)).const_add (v k)` as an intermediate fact. Simplify `this` using `[Complex.ofRealCLM_apply]`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using hasDerivAt_const t (eval (v + (t : ℂ) • c) (C a))`.
+
+Consider the case `add p q hp hq`. Simplify using `only [map_add, mul_add, Finset.sum_add_distrib]`. Conclude with `hp.add hq`. Consider the case `mul_X p k hp`. Simplify using `only [map_mul, eval_X, Derivation.leibniz, pderiv_X, smul_eq_mul, map_add, mul_add]`.
+
+Establish `h` using `hp.mul (hl k)`. Use `h.congr_deriv ?_` and prove the remaining obligations. Establish `hs : ∀ j, eval (v + (t : ℂ) • c) (Pi.single (M` using `fun _ : σ => MvPolynomial σ ℂ) j 1 k) = if j = k then 1 else 0 := by`. Introduce `j`. Distinguish the cases in `hj : j = k`.
+
+Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, Ne.symm hj, hj]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_mul]`. Use `conv_rhs => rw [add_comm]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hs, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_eval_line {σ : Type} [Fintype σ] [DecidableEq σ] (p : MvPolynomial σ ℂ) (v c : σ → ℂ) (t : ℝ) :
     HasDerivAt (fun t : ℝ => eval (v + (t : ℂ) • c) p) (∑ k, c k * eval (v + (t : ℂ) • c) (pderiv k p)) t := by
   have hl : ∀ k, HasDerivAt (fun t : ℝ => (v + (t : ℂ) • c) k) (c k) t := fun k => by
@@ -57,6 +70,27 @@ open Classical in
 def dirAt {m : ℕ} (τ : D.what₂.Tau) (X : Matrix (Fin m) (Fin n) ℂ) : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ :=
   fun τ' => if τ' = τ then X else 0
 
+/- English proof (translation)
+Use `set Y := dirAt τ X with hY`. Use `set M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun τ' => gramAt D V τ' * s τ' with hMdef`. Use `set a : D.what₂.Tau → ℂ := fun τ' => Matrix.trace ((z τ')ᴴ * M τ' * z τ') with ha`. Use `set b : D.what₂.Tau → ℂ := fun τ' => Matrix.trace ((Y τ')ᴴ * M τ' * z τ') + Matrix.trace ((z τ')ᴴ * M τ' * Y τ') with hb`. Use `set d : D.what₂.Tau → ℂ := fun τ' => Matrix.trace ((Y τ')ᴴ * M τ' * Y τ') with hd`.
+
+Establish `key : ∀ τ' (t : ℝ), Matrix.trace ((z τ' + (t : ℂ) • Y τ')ᴴ * M τ' * (z τ' + (t : ℂ) • Y τ')) = a τ' + (t : ℂ) * b τ' + (t : ℂ) * (t : ℂ) * d τ'`. Introduce `τ' t`. Simplify using `only [ha, hb, hd, Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_add, Matrix.trace_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfun : (fun t : ℝ => gauss V l s (z + (t : ℂ) • Y)) = fun t : ℝ => Complex.exp (-(2 * Real.pi) * ∑ τ', ((|l τ'| : ℝ) : ℂ) * (a τ' + (t : ℂ) * b τ' + (t : ℂ) * (t : ℂ) * d τ'))`.
+
+Use function extensionality and compare the values at `t`. Unfold `gauss`. Use `congr 2`. Use `Finset.sum_congr rfl fun τ' _ => ?_` and prove the remaining obligations. Rewrite using `[← key τ' t]`.
+
+Both sides reduce to the same expression. Establish `ho : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 0`. Use `(hasDerivAt_id (0 : ℝ)).ofReal_comp` as an intermediate fact. Simplify using `using this`. Establish `hterm : ∀ τ' ∈ (Finset.univ : Finset D.what₂.Tau), HasDerivAt (fun t : ℝ => ((|l τ'| : ℝ) : ℂ) * (a τ' + (t : ℂ) * b τ' + (t : ℂ) * (t : ℂ) * d τ')) (((|l τ'| : ℝ) : ℂ) * b τ') 0`.
+
+Introduce `τ' _`. Establish `h` using `(((ho.mul_const (b τ')).const_add (a τ')).add ((ho.mul ho).mul_const (d τ'))).const_mul ((|l τ'| : ℝ) : ℂ)`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hsum` using `(HasDerivAt.fun_sum hterm).const_mul (-(2 * Real.pi : ℂ))`.
+
+Establish `hexp` using `hsum.cexp`. Establish `hb0 : ∀ τ' ≠ τ, b τ' = 0` using `fun τ' h => by simp [hb, hY, dirAt, h]`. Establish `hsb : ∑ τ', ((|l τ'| : ℝ) : ℂ) * b τ' = ((|l τ| : ℝ) : ℂ) * b τ` using `Finset.sum_eq_single τ (fun τ' _ h => by rw [hb0 τ' h, mul_zero]) (by simp)`. Establish `hz` using `congrFun hfun 0`. Simplify using `only [Complex.ofReal_zero, zero_smul, add_zero, zero_mul, mul_zero] at hz`.
+
+Rewrite using `[hfun]`. Use `hexp.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[hsb]`. Simplify using `only [Complex.ofReal_zero, zero_mul, add_zero, mul_zero]`. Rewrite using `[← hz]`.
+
+Establish `hbτ : b τ = ((2 * (Matrix.trace (Xᴴ * (gramAt D V τ * s τ) * z τ)).re : ℝ) : ℂ)`. Rewrite using `[← Complex.add_conj]`. Simplify using `only [hb, hY, dirAt, if_true, hMdef]`. Use `congr 1`. Rewrite using `[← Complex.star_def, ← Matrix.trace_conjTranspose]`.
+
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, (hM τ).eq, Matrix.conjTranspose_conjTranspose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hbτ]`. Unfold `linF`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_gauss (hM : ∀ τ, (gramAt D V τ * s τ).IsHermitian) (z : D.what₂.Tau → Matrix (Fin V.rank) (Fin n) ℂ)
     (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => gauss V l s (z + (t : ℂ) • dirAt τ X)) (-(linF V l s τ X (z τ)) * gauss V l s z) 0 := by
@@ -114,12 +148,18 @@ theorem hasDerivAt_gauss (hM : ∀ τ, (gramAt D V τ * s τ).IsHermitian) (z : 
 
 variable {θ : InfFam D}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [compAt, Matrix.map_apply, Matrix.add_apply]`. Rewrite using `[(infPart D).map_add, (θ τ).map_add]`.
+-/
 theorem compAt_add' (τ : D.what₂.Tau) {m : ℕ} (x y : Mx D m n) :
     compAt θ τ (x + y) = compAt θ τ x + compAt θ τ y := by
   ext i j
   simp only [compAt, Matrix.map_apply, Matrix.add_apply]
   rw [(infPart D).map_add, (θ τ).map_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ'`. Rewrite using `[compAt_add', (GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ X).2.2 t τ']`. Simplify using `only [Pi.add_apply, Pi.smul_apply, dirAt]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem compAt_add_lineAt (hθ : IsInfFam θ) {m : ℕ} (x : Mx D m n) (τ : D.what₂.Tau) (X : Matrix (Fin m) (Fin n) ℂ) (t : ℝ) :
     (fun τ' => compAt θ τ' (x + lineAt θ τ X t)) = (fun τ' => compAt θ τ' x) + (t : ℂ) • dirAt τ X := by
   funext τ'
@@ -127,6 +167,9 @@ theorem compAt_add_lineAt (hθ : IsInfFam θ) {m : ℕ} (x : Mx D m n) (τ : D.w
   simp only [Pi.add_apply, Pi.smul_apply, dirAt]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `h` using `congrFun (congrFun ((GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ X).2.1 t) i) j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at h`. Rewrite using `[Matrix.add_apply, (finPart D).map_add, h, add_zero]`.
+-/
 theorem finPart_add_lineAt (hθ : IsInfFam θ) {m : ℕ} (x : Mx D m n) (τ : D.what₂.Tau) (X : Matrix (Fin m) (Fin n) ℂ) (t : ℝ) :
     (fun i j => finPart D ((x + lineAt θ τ X t) i j)) = fun i j => finPart D (x i j) := by
   funext i j
@@ -143,9 +186,15 @@ variable {θ : InfFam D} (V : HSp D) {n : ℕ} (l : D.what₂.Tau → ℝ) (s : 
 def ptOf {m : ℕ} (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) : D.what₂.Tau × Fin m × Fin n × Bool → ℂ :=
   fun k => if k.2.2.2 then conj (z k.1 k.2.1 k.2.2.1) else z k.1 k.2.1 k.2.2.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalPoly_eq {m : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ)
     (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) : evalPoly p z = eval (ptOf z) p := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [ptOf, Pi.add_apply, Pi.smul_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [Complex.conj_ofReal]`.
+-/
 theorem ptOf_add_smul {m : ℕ} (z Y : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) (t : ℝ) :
     ptOf (z + (t : ℂ) • Y) = ptOf z + (t : ℂ) • ptOf Y := by
   funext k
@@ -165,6 +214,11 @@ def lowDeg (N : ℕ) : Submodule ℂ (Mx D V.rank n → ℂ) :=
   Submodule.span ℂ {φ | ∃ e g, Finsupp.degree e < N ∧ φ = gen θ V l s e g}
 
 open Classical in
+/- English proof (translation)
+Establish `hfun : (fun t : ℝ => gen θ V l s e g (x + lineAt θ τ X t)) = fun t : ℝ => eval (ptOf (fun τ' => compAt θ τ' x) + (t : ℂ) • ptOf (dirAt τ X)) (monomial e 1) * gauss V l s ((fun τ' => compAt θ τ' x) + (t : ℂ) • dirAt τ X) * g (fun i j => finPart D (x i j))`. Use function extensionality and compare the values at `t`. Simplify using `only [gen]`. Rewrite using `[compAt_add_lineAt hθ, finPart_add_lineAt hθ, evalPoly_eq, ptOf_add_smul]`. Rewrite using `[hfun]`.
+
+Establish `h` using `((hasDerivAt_eval_line (monomial e 1) (ptOf (fun τ' => compAt θ τ' x)) (ptOf (dirAt τ X)) 0).mul (hasDerivAt_gauss V l s hM (fun τ' => compAt θ τ' x) τ X)).mul_const (g (fun i j => finPart D (x i j)))`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [gen, evalPoly_eq, Complex.ofReal_zero, zero_smul, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_gen (hθ : IsInfFam θ) (hM : ∀ τ, (gramAt D V τ * s τ).IsHermitian)
     (e : D.what₂.Tau × Fin V.rank × Fin n × Bool →₀ ℕ) (g : (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ)
     (x : Mx D V.rank n) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin n) ℂ) :
@@ -186,6 +240,11 @@ theorem hasDerivAt_gen (hθ : IsInfFam θ) (hM : ∀ τ, (gramAt D V τ * s τ).
   ring
 
 open Classical in
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Unfold `annS`. Rewrite using `[(hasDerivAt_gen V l s hθ hM e g x τ X).deriv, sub_add_cancel, Finset.sum_apply, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, gen, evalPoly_eq, pderiv_monomial, eval_monomial]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem annS_gen (hθ : IsInfFam θ) (hM : ∀ τ, (gramAt D V τ * s τ).IsHermitian)
     (e : D.what₂.Tau × Fin V.rank × Fin n × Bool →₀ ℕ) (g : (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ)
     (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin n) ℂ) :
@@ -198,6 +257,11 @@ theorem annS_gen (hθ : IsInfFam θ) (hM : ∀ τ, (gramAt D V τ * s τ).IsHerm
   simp only [Pi.smul_apply, smul_eq_mul, gen, evalPoly_eq, pderiv_monomial, eval_monomial]
   ring
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨e, g, -, rfl⟩` from `h`. Conclude with `(hasDerivAt_gen V l s hθ hM e g x τ X).differentiableAt`. Consider the case `zero => exact differentiableAt_const _`.
+
+Consider the case `add a b _ _ ha hb => exact ha.add hb`. Consider the case `smul c a _ ha => exact ha.const_mul c`.
+-/
 theorem differentiableAt_of_mem (hθ : IsInfFam θ) (hM : ∀ τ, (gramAt D V τ * s τ).IsHermitian) {N : ℕ}
     {φ : Mx D V.rank n → ℂ} (hφ : φ ∈ lowDeg θ V n l s N) (x : Mx D V.rank n) (τ : D.what₂.Tau)
     (X : Matrix (Fin V.rank) (Fin n) ℂ) : DifferentiableAt ℝ (fun t : ℝ => φ (x + lineAt θ τ X t)) 0 := by
@@ -209,6 +273,11 @@ theorem differentiableAt_of_mem (hθ : IsInfFam θ) (hM : ∀ τ, (gramAt D V τ
   | add a b _ _ ha hb => exact ha.add hb
   | smul c a _ ha => exact ha.const_mul c
 
+/- English proof (translation)
+Establish `h1 : Finsupp.single k 1 ≤ e`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : e = (e - Finsupp.single k 1) + Finsupp.single k 1` using `(tsub_add_cancel_of_le h1).symm`. Establish `h3 : Finsupp.degree e = Finsupp.degree (e - Finsupp.single k 1) + 1` using `by conv_lhs => rw [h2]`.
+
+Rewrite using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem degree_sub_single_lt {σ : Type} {N : ℕ} (e : σ →₀ ℕ) (k : σ) (he : Finsupp.degree e < N + 1) (hk : e k ≠ 0) :
     Finsupp.degree (e - Finsupp.single k 1) < N := by
   have h1 : Finsupp.single k 1 ≤ e := by
@@ -220,6 +289,21 @@ theorem degree_sub_single_lt {σ : Type} {N : ℕ} (e : σ →₀ ℕ) (k : σ) 
     rw [map_add, Finsupp.degree_single]
   omega
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨e, g, he, rfl⟩` from `h`. Rewrite using `[annS_gen V l s hθ hM]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hk : e k = 0`. Rewrite using `[hk, Nat.cast_zero, mul_zero, zero_smul]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, g, degree_sub_single_lt e k he hk, rfl⟩)`. Consider the case `zero`.
+
+Establish `: annS V l s θ τ X (0 : Mx D V.rank n → ℂ) = 0`. Use function extensionality and compare the values at `x`. Simplify using `[annS]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add a b ha' hb' ha hb`. Establish `: annS V l s θ τ X (a + b) = annS V l s θ τ X a + annS V l s θ τ X b`. Use function extensionality and compare the values at `x`. Simplify using `only [annS, Pi.add_apply]`. Rewrite using `[deriv_fun_add (differentiableAt_of_mem V l s hθ hM ha' x τ X) (differentiableAt_of_mem V l s hθ hM hb' x τ X)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Establish `: annS V l s θ τ X (c • a) = c • annS V l s θ τ X a`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [annS, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[deriv_const_mul_field']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ ha`.
+-/
 theorem annS_mem (hθ : IsInfFam θ) (hM : ∀ τ, (gramAt D V τ * s τ).IsHermitian) {N : ℕ}
     {φ : Mx D V.rank n → ℂ} (hφ : φ ∈ lowDeg θ V n l s (N + 1)) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin n) ℂ) :
     annS V l s θ τ X φ ∈ lowDeg θ V n l s N := by
@@ -255,12 +339,29 @@ theorem annS_mem (hθ : IsInfFam θ) (hM : ∀ τ, (gramAt D V τ * s τ).IsHerm
     rw [this]
     exact Submodule.smul_mem _ _ ha
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨e, g, he, hφ⟩ => ⟨e, g, lt_of_lt_of_le he h, hφ⟩`.
+-/
 theorem lowDeg_mono {N M : ℕ} (h : N ≤ M) : lowDeg θ V n l s N ≤ lowDeg θ V n l s M :=
   Submodule.span_mono fun _ ⟨e, g, he, hφ⟩ => ⟨e, g, lt_of_lt_of_le he h, hφ⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_eq_bot.2 fun _ ⟨_, _, he, _⟩ => absurd he (Nat.not_lt_zero _)`.
+-/
 theorem lowDeg_zero : lowDeg θ V n l s 0 = ⊥ :=
   Submodule.span_eq_bot.2 fun _ ⟨_, _, he, _⟩ => absurd he (Nat.not_lt_zero _)
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨p, g, -, rfl⟩` from `h`. Use `⟨p.totalDegree + 1, ?_⟩` and prove the remaining obligations. Establish `hsum : (fun x : Mx D V.rank n => evalPoly p (fun τ => compAt θ τ x) * gauss V l s (fun τ => compAt θ τ x) * g (fun i j => finPart D (x i j))) = ∑ e ∈ p.support, coeff e p • gen θ V l s e g`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [gen, Pi.smul_apply, smul_eq_mul, evalPoly_eq]`. Use `conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum, Finset.sum_mul, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[eval_monomial, eval_monomial]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun e he => Submodule.smul_mem _ _ (Submodule.subset_span ⟨e, g, Nat.lt_succ_of_le (le_totalDegree he), rfl⟩)`.
+
+Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨N, hN⟩` from `ha`. Take `⟨M, hM⟩` from `hb`. Conclude with `⟨max N M, Submodule.add_mem _ (lowDeg_mono V l s (le_max_left N M) hN) (lowDeg_mono V l s (le_max_right N M) hM)⟩`.
+
+Consider the case `smul c a _ ha`. Take `⟨N, hN⟩` from `ha`. Conclude with `⟨N, Submodule.smul_mem _ _ hN⟩`.
+-/
 theorem exists_lowDeg {φ : Mx D V.rank n → ℂ} (hφ : φ ∈ fockA θ V n l s) : ∃ N, φ ∈ lowDeg θ V n l s N := by
   induction hφ using Submodule.span_induction with
   | mem φ h =>
@@ -292,6 +393,15 @@ end Span
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Introduce `D θ hθ V n l s hs φ hφ`. Establish `hM : ∀ τ, (gramAt D V τ * s τ).IsHermitian` using `fun τ => (hs τ).2.2.isHermitian`. Take `⟨N, hN⟩` from `exists_lowDeg V l s hφ`. Establish `key : ∀ (L : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin n) ℂ)) (M : ℕ), φ ∈ lowDeg θ V n l s (L.length + M) → L.foldr (fun q g => annS V l s θ q.1 q.2 g) φ ∈ lowDeg θ V n l s M`. Introduce `L`.
+
+Proceed by induction on `L with`. Consider the case `nil => intro M h`. Simplify using `using h`. Consider the case `cons q L ih`. Introduce `M h`.
+
+Rewrite using `[List.foldr_cons]`. Use `annS_mem V l s hθ hM (ih (M + 1) ?_) q.1 q.2` and prove the remaining obligations. Simplify `h` using `[List.length_cons, Nat.add_assoc, Nat.add_comm 1 M]`. Use `⟨N, fun L hL => ?_⟩` and prove the remaining obligations. Establish `h` using `key L 0 (by rw [hL, Nat.add_zero]; exact hN)`.
+
+Rewrite `h` using `[lowDeg_zero]`. Conclude with `(Submodule.mem_bot ℂ).1 h`.
+-/
 theorem fockA_killed_by_annS : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (n : ℕ) (l : D.what₂.Tau → ℝ) (s : RealMat V), (∀ τ, IsCartanInv (gramAt D V τ) (s τ)) → ∀ φ ∈ fockA θ V n l s, ∃ N : ℕ, ∀ L : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin n) ℂ), L.length = N → L.foldr (fun q g => annS V l s θ q.1 q.2 g) φ = 0 := by
   intro D θ hθ V n l s hs φ hφ
   have hM : ∀ τ, (gramAt D V τ * s τ).IsHermitian := fun τ => (hs τ).2.2.isHermitian

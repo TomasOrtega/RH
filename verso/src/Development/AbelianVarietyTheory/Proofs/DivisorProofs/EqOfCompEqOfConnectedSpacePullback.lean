@@ -10,6 +10,15 @@ noncomputable section
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Take `⟨⟨y, a⟩, rfl⟩` from `(Scheme.SpecToEquivOfField k X).symm.surjective q`. Take `⟨⟨y', a'⟩, rfl⟩` from `(Scheme.SpecToEquivOfField k X).symm.surjective q'`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hq hq' h ⊢`. Choose the witnesses or unpack the hypotheses as in `rfl : y = y' := by`. Establish `k₁ : ∀ (y : X) (p : Spec (X.residueField y)), X.fromSpecResidueField y p = y` using `fun y p => Set.mem_singleton_iff.1 (X.range_fromSpecResidueField y ▸ Set.mem_range_self p)`.
+
+Conclude with `(k₁ y _).symm.trans (h.trans (k₁ y' _))`. Take `⟨c, hc⟩` from `Spec.map_surjective (X.fromSpecResidueField y ≫ p)`. Establish `key : ∀ b : X.residueField y ⟶ CommRingCat.of k, (Spec.map b ≫ X.fromSpecResidueField y) ≫ p = 𝟙 _ → ∀ o, b.hom (c.hom o) = o` using `fun b hb o => by`. Rewrite `hb` using `[Category.assoc, ← hc, ← Spec.map_comp]`. Use `Spec.map_injective (hb.trans (Spec.map_id _).symm)` as an intermediate fact.
+
+Simplify using `using RingHom.congr_fun (congrArg CommRingCat.Hom.hom this) o`. Choose the witnesses or unpack the hypotheses as in `rfl : a = a' := by`. Use extensionality with `u`. Establish `hu : c.hom (a.hom u) = u` using `a.hom.injective (key a hq _)`. Rewrite using `[← hu, key a hq, key a' hq']`.
+
+Both sides reduce to the same expression.
+-/
 theorem section_eq_of_apply_eq {k : Type} [Field k] {X : Scheme.{0}} (p : X ⟶ Sp k) (q q' : Sp k ⟶ X)
     (hq : q ≫ p = 𝟙 _) (hq' : q' ≫ p = 𝟙 _) (h : q (closedPoint k) = q' (closedPoint k)) : q = q' := by
   obtain ⟨⟨y, a⟩, rfl⟩ := (Scheme.SpecToEquivOfField k X).symm.surjective q
@@ -31,6 +40,17 @@ theorem section_eq_of_apply_eq {k : Type} [Field k] {X : Scheme.{0}} (p : X ⟶ 
     rw [← hu, key a hq, key a' hq']
   rfl
 
+/- English proof (translation)
+Introduce `P Q b hb Ω _ _ ν ξ₁ ξ₂ h₁ h₂ hc`. Use `haveI := hb`. Establish `hsub : ∀ x y : (pullback b ν : Scheme.{0}), x = y`. Introduce `x y`. Establish `hopen : ∀ z : (pullback b ν : Scheme.{0}), IsOpen ({z} : Set (pullback b ν : Scheme.{0}))`.
+
+Introduce `z`. Establish `hd` using `(pullback.snd b ν).isDiscrete_preimage_singleton (pullback.snd b ν z)`. Take `⟨U, hU, hUz⟩` from `isDiscrete_iff_forall_exists_isOpen.mp hd z rfl`. Establish `hU' : U ∩ (pullback.snd b ν) ⁻¹' {pullback.snd b ν z} = U` using `Set.inter_eq_left.mpr fun w _ => Subsingleton.elim _ _`. Rewrite `hUz` using `[hU']`.
+
+Conclude with `hUz ▸ hU`. Establish `hcl : IsClopen ({x} : Set (pullback b ν : Scheme.{0}))`. Use `⟨?_, hopen x⟩` and prove the remaining obligations. Rewrite using `[← isOpen_compl_iff, ← Set.biUnion_of_singleton ({x}ᶜ : Set (pullback b ν : Scheme.{0}))]`. Conclude with `isOpen_biUnion fun z _ => hopen z`.
+
+Break down `isClopen_iff.mp hcl with h | h` into its components or cases. Conclude with `absurd h (Set.singleton_ne_empty x)`. Establish `: y ∈ ({x} : Set (pullback b ν : Scheme.{0}))` using `h ▸ Set.mem_univ y`. Conclude with `(Set.mem_singleton_iff.mp this).symm`. Establish `e₁ : ξ₁ ≫ b = 𝟙 (Sp Ω) ≫ ν` using `by rw [h₁, Category.id_comp]`.
+
+Establish `e₂ : ξ₂ ≫ b = 𝟙 (Sp Ω) ≫ ν` using `by rw [h₂, Category.id_comp]`. Establish `hσ` using `section_eq_of_apply_eq (pullback.snd b ν) (pullback.lift ξ₁ (𝟙 _) e₁) (pullback.lift ξ₂ (𝟙 _) e₂) (pullback.lift_snd _ _ _) (pullback.lift_snd _ _ _) (hsub _ _)`. Use `congrArg (fun σ => σ ≫ pullback.fst b ν) hσ` as an intermediate fact. Simplify using `only [pullback.lift_fst] at this`. Conclude with `this`.
+-/
 theorem eq_of_comp_eq_of_connectedSpace_pullback : ∀ (P Q : Scheme.{0}) (b : P ⟶ Q), LocallyQuasiFinite b → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ν : Sp Ω ⟶ Q) (ξ₁ ξ₂ : Sp Ω ⟶ P), ξ₁ ≫ b = ν → ξ₂ ≫ b = ν → ConnectedSpace (pullback b ν : Scheme.{0}) → ξ₁ = ξ₂ := by
   intro P Q b hb Ω _ _ ν ξ₁ ξ₂ h₁ h₂ hc
   haveI := hb

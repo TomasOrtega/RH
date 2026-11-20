@@ -22,6 +22,19 @@ noncomputable section
 
 namespace GlobalTheory.TypeExpand
 
+/- English proof (translation)
+Introduce `hU D θ V S M τ _ m k hk B hB φ hφ x g hg`. Take `⟨H', _, _, σ, lam, ε, P, hen, hds, hPu, hPg, hx⟩` from `hφ`. Take `⟨v, -, ℓ, -, -, hsum⟩` from `hx x`. Take `⟨hl, he⟩` from `GlobalTheory.SignedParTest.isEnum_unique (M.enum τ) hen`. Substitute `hl he` using the available equality.
+
+Take `⟨U, hU'⟩` from `hU _ (M.ε τ) (M.lam τ) (GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS (M.enum τ).1 (M.ds τ)) _ (M.fr τ) P (M.fr_unit τ) hPu (M.fr_gram τ) hPg _ _ (M.σ τ) σ (M.ds τ) hds`. Use `set A : ℕ → (M.H τ →ₗ[ℂ] M.H τ) := fun i => ((ℓ i).comp (U.symm.toLinearEquiv.toLinearMap)).smulRight (U (v i)) with hA`. Establish `key : ∀ i, ∀ h ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ℓ i (σ (P * h * P⁻¹) (v i)) = LinearMap.trace ℂ (M.H τ) ((M.rep τ h : M.H τ →ₗ[ℂ] M.H τ) ∘ₗ A i)`. Introduce `i h hh`. Establish `e1 : (M.rep τ h : M.H τ →ₗ[ℂ] M.H τ) ∘ₗ A i = ((ℓ i).comp (U.symm.toLinearEquiv.toLinearMap)).smulRight (M.rep τ h (U (v i)))`.
+
+Use extensionality with `w`. Simplify using `[hA]`. Rewrite using `[e1, LinearMap.trace_smulRight]`. Establish `e2 : M.rep τ h (U (v i)) = U (σ (P * h * P⁻¹) (v i))` using `(hU' h hh (v i)).symm`. Rewrite using `[e2]`.
+
+Simplify using the standard rewrite rules. Establish `h1 : HasSum (fun i => ∑ j, LinearMap.trace ℂ (M.H τ) ((M.rep τ (k j) : M.H τ →ₗ[ℂ] M.H τ) ∘ₗ A i) * LinearMap.trace ℂ (M.H τ) ((M.rep τ g : M.H τ →ₗ[ℂ] M.H τ) ∘ₗ B j)) (∑ j, φ (x * atTau θ V τ (k j)) * LinearMap.trace ℂ (M.H τ) ((M.rep τ g : M.H τ →ₗ[ℂ] M.H τ) ∘ₗ B j))`. Use `hasSum_sum fun j _ => ?_` and prove the remaining obligations. Use `HasSum.mul_right _ ?_` and prove the remaining obligations. Use `hsum (k j) (hk j)` as an intermediate fact.
+
+Use `this.congr_fun ?_` and prove the remaining obligations. Introduce `i`. Conclude with `(key i (k j) (hk j)).symm`. Establish `h2 : HasSum (fun i => ∑ j, LinearMap.trace ℂ (M.H τ) ((M.rep τ (k j) : M.H τ →ₗ[ℂ] M.H τ) ∘ₗ A i) * LinearMap.trace ℂ (M.H τ) ((M.rep τ g : M.H τ →ₗ[ℂ] M.H τ) ∘ₗ B j)) (φ (x * atTau θ V τ g))`. Use `(hsum g hg).congr_fun ?_` and prove the remaining obligations.
+
+Introduce `i`. Rewrite using `[key i g hg, hB (A i) g hg]`. Conclude with `h2.unique h1`.
+-/
 theorem typeAt_expand : ∀ (hU : GlobalTheory.Published.DiscreteSeriesHermitianUnique) {D : D7} (θ : InfFam D) {V : HSp D}
     {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) [FiniteDimensional ℂ (M.H τ)]
     {m : ℕ} (k : Fin m → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hk : ∀ j, k j ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ))

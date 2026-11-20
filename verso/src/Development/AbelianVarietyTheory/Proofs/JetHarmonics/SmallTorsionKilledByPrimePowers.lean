@@ -11,11 +11,19 @@ namespace GlobalTheory.MomOne.SmallTors
 
 variable {q : ℕ} [hq : Fact q.Prime]
 
+/- English proof (translation)
+Unfold `zc`. Rewrite using `[norm_algebraMap']`. Both sides reduce to the same expression.
+-/
 lemma norm_zc' (a : ℤ_[q]) : ‖zc a‖ = ‖a‖ := by
   unfold zc
   rw [norm_algebraMap']
   rfl
 
+/- English proof (translation)
+Establish `h0 : (m : ℂ_[q]) = zc (m : ℤ_[q])` using `by simp [zc]`. Rewrite using `[h0, norm_zc']`. Establish `h1 : ¬ ‖((m : ℤ) : ℤ_[q])‖ < 1`. Rewrite using `[PadicInt.norm_int_lt_one_iff_dvd]`. Use `(Nat.Prime.coprime_iff_not_dvd hq.out).1 hm.symm` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Move the coercions through the operations in `at h1`. Conclude with `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 h1)`.
+-/
 lemma norm_nat_coprime {m : ℕ} (hm : Nat.Coprime m q) : ‖(m : ℂ_[q])‖ = 1 := by
   have h0 : (m : ℂ_[q]) = zc (m : ℤ_[q]) := by simp [zc]
   rw [h0, norm_zc']
@@ -26,15 +34,26 @@ lemma norm_nat_coprime {m : ℕ} (hm : Nat.Coprime m q) : ‖(m : ℂ_[q])‖ = 
   push_cast at h1
   exact le_antisymm (PadicInt.norm_le_one _) (not_lt.1 h1)
 
+/- English proof (translation)
+Establish `h0 : (q : ℂ_[q]) ^ n = zc ((q : ℤ_[q]) ^ n)` using `by simp [zc]`. Rewrite using `[h0, norm_zc', PadicInt.norm_p_pow]`.
+-/
 lemma norm_q_pow (n : ℕ) : ‖((q : ℂ_[q])) ^ n‖ = (q : ℝ) ^ (-(n : ℤ)) := by
   have h0 : (q : ℂ_[q]) ^ n = zc ((q : ℤ_[q]) ^ n) := by simp [zc]
   rw [h0, norm_zc', PadicInt.norm_p_pow]
 
+/- English proof (translation)
+Establish `: ξ = (ξ - 1) + 1` using `by ring`. Rewrite using `[this, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact h.ne), norm_one]`. Conclude with `max_eq_right h.le`.
+-/
 lemma norm_eq_one {ξ : ℂ_[q]} (h : ‖ξ - 1‖ < 1) : ‖ξ‖ = 1 := by
   have : ξ = (ξ - 1) + 1 := by ring
   rw [this, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact h.ne), norm_one]
   exact max_eq_right h.le
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `: ξ ^ (n + 1) - 1 = ξ * (ξ ^ n - 1) + (ξ - 1)` using `by ring`. Rewrite using `[this]`.
+
+Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ h)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_eq_one h, one_mul]`. Conclude with `ih`.
+-/
 lemma norm_pow_sub_one {ξ : ℂ_[q]} (h : ‖ξ - 1‖ < 1) (n : ℕ) : ‖ξ ^ n - 1‖ < 1 := by
   induction n with
   | zero => simp
@@ -44,6 +63,11 @@ lemma norm_pow_sub_one {ξ : ℂ_[q]} (h : ‖ξ - 1‖ < 1) (n : ℕ) : ‖ξ ^
     refine (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ h)
     rw [norm_mul, norm_eq_one h, one_mul]; exact ih
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `: ∑ i ∈ Finset.range (n + 1), ξ ^ i - ((n + 1 : ℕ) : ℂ_[q]) = (∑ i ∈ Finset.range n, ξ ^ i - n) + (ξ ^ n - 1)`. Rewrite using `[Finset.sum_range_succ]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ih (norm_pow_sub_one h n))`.
+-/
 lemma norm_geom_sub {ξ : ℂ_[q]} (h : ‖ξ - 1‖ < 1) (n : ℕ) :
     ‖∑ i ∈ Finset.range n, ξ ^ i - n‖ < 1 := by
   induction n with
@@ -55,6 +79,11 @@ lemma norm_geom_sub {ξ : ℂ_[q]} (h : ‖ξ - 1‖ < 1) (n : ℕ) :
     rw [this]
     exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ih (norm_pow_sub_one h n))
 
+/- English proof (translation)
+Establish `h2` using `geom_sum_mul ξ m`. Rewrite `h2` using `[h1, sub_self, mul_eq_zero]`. Break down `h2 with h2 | h2` into its components or cases. Establish `h3` using `norm_geom_sub h m`. Rewrite `h3` using `[h2, zero_sub, norm_neg, norm_nat_coprime hm]`.
+
+Conclude with `absurd h3 (lt_irrefl _)`. Conclude with `sub_eq_zero.1 h2`.
+-/
 lemma eq_one_of_pow {ξ : ℂ_[q]} (h : ‖ξ - 1‖ < 1) {m : ℕ} (hm : Nat.Coprime m q) (h1 : ξ ^ m = 1) :
     ξ = 1 := by
   have h2 := geom_sum_mul ξ m
@@ -65,8 +94,14 @@ lemma eq_one_of_pow {ξ : ℂ_[q]} (h : ‖ξ - 1‖ < 1) {m : ℕ} (hm : Nat.Co
     exact absurd h3 (lt_irrefl _)
   · exact sub_eq_zero.1 h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨k, 0, by simp⟩`.
+-/
 lemma inOK_int (d : ℕ) (k : ℤ) : InOK d (k : ℂ) := ⟨k, 0, by simp⟩
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 lemma inOK_of_eq {d : ℕ} {x y : ℂ} (h : InOK d x) (e : x = y) : InOK d y := e ▸ h
 
 end GlobalTheory.MomOne.SmallTors
@@ -74,6 +109,47 @@ end GlobalTheory.MomOne.SmallTors
 namespace GlobalTheory.MomOne
 open SmallTors
 
+/- English proof (translation)
+Introduce `d q hq M ω hd hd16 hsp hL hM`. Take `⟨hadd, hcm⟩` from `GlobalTheory.T.multiplicativeCoord_add_and_complexMul q M ω hM`. Take `⟨hex, hex', huniq, hlat, h10⟩` from `GlobalTheory.T.smallPoint_multiplicativeCoordinate_existsUnique q M ω hM`. Take `⟨⟨-, -, hring⟩, halg, -, -, hhalf, -, -⟩` from `okArith d q M.ι hd hd16 hsp`. Establish `iadd : ∀ {a b}, InOK d a → InOK d b → InOK d (a + b)` using `fun ha hb => (hring _ _ ha hb).1`.
+
+Establish `imul : ∀ {a b}, InOK d a → InOK d b → InOK d (a * b)` using `fun ha hb => (hring _ _ ha hb).2.1`. Establish `iconj : ∀ {a}, InOK d a → InOK d (conj a)` using `fun ha => (hring _ _ ha ha).2.2.2`. Establish `one_iff : ∀ p, M.At ω 1 p ↔ InOK d p`. Introduce `p`. Rewrite using `[hlat 1 0 p h10, zero_sub, neg_mem_iff, hL]`.
+
+Establish `hpow : ∀ ζ p (N : ℕ), M.At ω ζ p → M.At ω (ζ ^ N) ((N : ℂ) * p)`. Introduce `ζ p N h`. Proceed by induction on `N with`. Consider the case `zero => simpa using h10`. Consider the case `succ N ih`.
+
+Use `hadd _ _ _ _ ih h` as an intermediate fact. Rewrite using `[pow_succ]`. Use `push_cast`. Rewrite using `[add_mul, one_mul]`. Conclude with `this`.
+
+Establish `htors : ∀ ζ p (N : ℕ), M.At ω ζ p → InOK d ((N : ℂ) * p) → ζ ^ N = 1` using `fun ζ p N h hN => huniq _ _ _ (hpow ζ p N h) ((one_iff _).2 hN)`. Establish `h2 : ∀ (p : ℂ) (N : ℕ), 0 < N → InOK d ((N : ℂ) * p) → M.Small p → ∃ (n : ℕ) (ζ : ℂ_[q]), ζ ^ (q ^ n) = 1 ∧ M.At ω ζ p ∧ ∀ α, InOK d α → ‖M.ι α‖ ≤ (q : ℝ) ^ (-(n : ℤ)) → InOK d (α * p)`. Introduce `p N hN hNp hp`. Take `⟨ζ, hζ⟩` from `hex' p hp`. Take `⟨n, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN.ne' q hq.out.ne_one`.
+
+Establish `hm' : Nat.Coprime m q` using `((Nat.Prime.coprime_iff_not_dvd hq.out).2 hm).symm`. Establish `hz : ζ ^ (q ^ n) = 1`. Use `eq_one_of_pow (norm_pow_sub_one hζ.2.1 _) hm' ?_` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Conclude with `htors _ _ _ hζ hNp`.
+
+Use `⟨n, ζ, hz, hζ, fun α hα hn => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, ha⟩, -⟩` from `halg α hα`. Use `hcm α a n 0 ζ p (fun l hl => (hL _).2 (imul hα ((hL _).1 hl))) ha (by rw [ha, norm_zc'] at hn; simpa using hn) hz hζ` as an intermediate fact. Rewrite `this` using `[pow_zero]`. Conclude with `(one_iff _).1 this`.
+
+Use `⟨?_, h2, ?_, ?_⟩` and prove the remaining obligations. Introduce `p p' hp hp'`. Take `⟨ζ, hζ⟩` from `hex' p hp`. Take `⟨ζ', hζ'⟩` from `hex' p' hp'`. Use `⟨(hadd _ _ _ _ hζ hζ').1, ?_⟩` and prove the remaining obligations.
+
+Establish `hn : ‖ζ‖ = 1` using `norm_eq_one hζ.2.1`. Establish `h0 : ζ ≠ 0` using `by rintro rfl; simp at hn`. Establish `hinv : ‖ζ⁻¹ - 1‖ < 1`. Establish `: ζ⁻¹ - 1 = -(ζ⁻¹ * (ζ - 1))` using `by field_simp; ring`. Rewrite using `[this, norm_neg, norm_mul, norm_inv, hn, inv_one, one_mul]`.
+
+Conclude with `hζ.2.1`. Take `⟨r, hr⟩` from `hex _ hinv`. Establish `h3` using `hadd _ _ _ _ hr hζ`. Rewrite `h3` using `[inv_mul_cancel₀ h0, one_iff, ← hL]`. Conclude with `((hlat _ r (-p) hr).2 (by rwa [sub_neg_eq_add])).1`.
+
+Introduce and unpack `p ⟨s, -, hsq, hsp⟩ hp`. Take `⟨ζ, hζ⟩` from `hex' p hp`. Use `eq_one_of_pow hζ.2.1 hsq (htors _ _ _ hζ hsp)` as an intermediate fact. Substitute `this` using the available equality. Conclude with `(one_iff _).1 hζ`.
+
+Introduce and unpack `p α s hα hα0 ⟨t, ht, htq, hts⟩ hin hp`. Take `⟨-, ⟨N, hN⟩, -⟩` from `halg α hα`. Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Establish `: α * conj α = 0` using `by simpa using hN.symm`.
+
+Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `hα0 h`. Conclude with `hα0 (by simpa using h)`. Establish `h2t : InOK d (((2 * t : ℕ) : ℂ) * (s - 1 / 2))` using `inOK_of_eq (iadd (imul (inOK_int d 2) hts) (inOK_int d (-t))) (by push_cast; ring)`. Establish `hNp : InOK d (((2 * t * N : ℕ) : ℂ) * p)`.
+
+Use `inOK_of_eq (imul (iconj hα) (iadd (imul (inOK_int d (2 * t)) hin) (imul (inOK_int d (-1)) h2t))) ?_` and prove the remaining obligations. Use `push_cast`. Rewrite using `[hN]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨n, ζ, -, -, hk⟩` from `h2 p _ (by positivity) hNp hp`.
+
+Establish `hβ : ∀ β, InOK d β → ‖M.ι β‖ ≤ (q : ℝ) ^ (-(n : ℤ)) → InOK d (β * (s - 1 / 2))`. Introduce `β hβ hn`. Use `inOK_of_eq (iadd (imul hβ hin) (imul (inOK_int d (-1)) (imul hα (hk β hβ hn)))) ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hq2 : q ≠ 2`. Introduce `h`. Take `⟨β, hβ1, hβ2, hβ3⟩` from `hhalf n`. Apply `hβ3` to reduce the goal to its premises. Establish `hodd : Odd t`.
+
+Rewrite `htq` using `[h]`. Conclude with `Nat.coprime_two_right.1 htq`. Take `⟨k, hk'⟩` from `hodd`. Establish `hk2 : (t : ℂ) = 2 * k + 1` using `by exact_mod_cast hk'`. Use `inOK_of_eq (iadd (iadd (imul hβ1 hts) (imul (inOK_int d (-t)) (hβ β hβ1 hβ2))) (imul (inOK_int d (-k)) hβ1)) ?_` and prove the remaining obligations.
+
+Use `push_cast`. Rewrite using `[hk2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hq2, ?_⟩` and prove the remaining obligations. Establish `hc : Nat.Coprime (2 * t) (q ^ n)`.
+
+Use `Nat.Coprime.pow_right n (Nat.Coprime.mul_left ?_ htq)` and prove the remaining obligations. Conclude with `(Nat.coprime_primes Nat.prime_two hq.out).2 hq2.symm`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hc`. Establish `hab' : (a : ℂ) * ((2 * t : ℕ) : ℂ) + b * (q : ℂ) ^ n = 1` using `by exact_mod_cast hab`. Establish `h3` using `hβ ((q : ℂ) ^ n) (inOK_of_eq (inOK_int d (q ^ n)) (by push_cast; rfl)) (by rw [map_pow, map_natCast, norm_q_pow])`.
+
+Use `inOK_of_eq (iadd (imul (inOK_int d a) h2t) (imul (inOK_int d b) h3)) ?_` and prove the remaining obligations. Take the linear combination `(s - 1 / 2) * hab'`.
+-/
 theorem smallTors : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q]), d.Prime → d % 16 = 7 → Split d q → IsOK d M.L → M.MChart ω → (∀ p p', M.Small p → M.Small p' → M.Small (p + p') ∧ M.Small (-p)) ∧ (∀ (p : ℂ) (N : ℕ), 0 < N → InOK d ((N : ℂ) * p) → M.Small p → ∃ (n : ℕ) (ζ : ℂ_[q]), ζ ^ (q ^ n) = 1 ∧ M.At ω ζ p ∧ ∀ α, InOK d α → ‖M.ι α‖ ≤ (q : ℝ) ^ (-(n : ℤ)) → InOK d (α * p)) ∧ (∀ p, PrimeTo d q p → M.Small p → InOK d p) ∧ ∀ (p α s : ℂ), InOK d α → α ≠ 0 → PrimeTo d q s → InOK d (α * p + s - 1 / 2) → M.Small p → q ≠ 2 ∧ InOK d (s - 1 / 2) := by
   intro d q hq M ω hd hd16 hsp hL hM
   obtain ⟨hadd, hcm⟩ := GlobalTheory.T.multiplicativeCoord_add_and_complexMul q M ω hM

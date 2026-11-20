@@ -10,6 +10,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace UpperTheory.Cb.TwSec
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 private theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U)
     (y : Sec F U) : Sec.res (k ≫ g) y = Sec.res k (Sec.res g y) := by
   simp [Sec.res]
@@ -18,11 +21,17 @@ private noncomputable def gsec {q : ℕ} (i : ℤ) (U : Scheme.{0}) :
     (Prim q Γ(U, ⊤) →₀ ULift.{1} (ZMod q)) →ₗ[ULift.{1} (ZMod q)] Sec (tw q i) U :=
   ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op U)).hom ∘ₗ (twRel q i Γ(U, ⊤)).mkQ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem gsec_one {q : ℕ} (i : ℤ) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) :
     gsec i U (Finsupp.single ζ 1) = twGen i ζ := rfl
 
 end UpperTheory.Cb.TwSec
 
+/- English proof (translation)
+Rewrite using `[← Submodule.Quotient.mk_smul, Finsupp.smul_single_one, Submodule.Quotient.eq]`. Conclude with `Submodule.subset_span ⟨ζ, ξ, a, h, rfl⟩`.
+-/
 private theorem twRel_mk_single_eq_zpow_smul_mk_single_of_eq_pow {q : ℕ} (i : ℤ) {A : Type} [CommRing A] (ζ ξ : Prim q A) (a : (ZMod q)ˣ)
     (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) :
     (Submodule.Quotient.mk (Finsupp.single ξ 1) : (Prim q A →₀ ULift.{1} (ZMod q)) ⧸ twRel q i A) =
@@ -30,6 +39,9 @@ private theorem twRel_mk_single_eq_zpow_smul_mk_single_of_eq_pow {q : ℕ} (i : 
   rw [← Submodule.Quotient.mk_smul, Finsupp.smul_single_one, Submodule.Quotient.eq]
   exact Submodule.subset_span ⟨ζ, ξ, a, h, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Use `congr 1`. Apply `ULift.ext` to reduce the goal to its premises. Rewrite using `[ULift.down_natCast, ZMod.natCast_zmod_val]`.
+-/
 private theorem ulift_zmod_smul_eq_val_nsmul {q : ℕ} [NeZero q] {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M]
     (s : ULift.{1} (ZMod q)) (x : M) : s • x = s.down.val • x := by
   rw [← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]
@@ -37,6 +49,13 @@ private theorem ulift_zmod_smul_eq_val_nsmul {q : ℕ} [NeZero q] {M : Type*} [A
   apply ULift.ext
   rw [ULift.down_natCast, ZMod.natCast_zmod_val]
 
+/- English proof (translation)
+Establish `key : ∀ ξ, ∃ c : ℕ, (Submodule.Quotient.mk (Finsupp.single ξ (f ξ)) : (Prim q A →₀ ULift.{1} (ZMod q)) ⧸ twRel q i A) = c • Submodule.Quotient.mk (Finsupp.single ζ 1)`. Introduce `ξ`. Distinguish the cases in `hξ : f ξ = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hξ, Finsupp.single_zero, zero_smul]`.
+
+Conclude with `Submodule.Quotient.mk_zero _`. Take `⟨a, ha⟩` from `hf ξ (Finsupp.mem_support_iff.mpr hξ)`. Use `⟨(f ξ * ULift.up (((a ^ i : (ZMod q)ˣ) : ZMod q))).down.val, ?_⟩` and prove the remaining obligations. Rewrite using `[← ulift_zmod_smul_eq_val_nsmul, mul_smul, ← twRel_mk_single_eq_zpow_smul_mk_single_of_eq_pow i ζ ξ a ha, ← Submodule.Quotient.mk_smul, Finsupp.smul_single_one]`. Use `choose c hc using key`.
+
+Use `⟨∑ ξ ∈ f.support, c ξ, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Finsupp.sum_single f]`. Rewrite using `[Finsupp.sum, Finset.sum_smul, ← Finset.sum_congr rfl (fun ξ _ => hc ξ)]`. Conclude with `map_sum (twRel q i A).mkQ _ _`.
+-/
 private theorem exists_twRel_mk_eq_nsmul_mk_single_of_support_pow {q : ℕ} [NeZero q] (i : ℤ) {A : Type} [CommRing A] (ζ : Prim q A)
     (f : Prim q A →₀ ULift.{1} (ZMod q)) (hf : ∀ ξ ∈ f.support, ∃ a : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (a : ZMod q).val) :
     ∃ c : ℕ, (Submodule.Quotient.mk f : (Prim q A →₀ ULift.{1} (ZMod q)) ⧸ twRel q i A) =
@@ -57,12 +76,18 @@ private theorem exists_twRel_mk_eq_nsmul_mk_single_of_support_pow {q : ℕ} [NeZ
   rw [Finsupp.sum, Finset.sum_smul, ← Finset.sum_congr rfl (fun ξ _ => hc ξ)]
   exact map_sum (twRel q i A).mkQ _ _
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => φ.hom (Submodule.Quotient.mk f : (Prim q Γ(U, ⊤) →₀ ULift.{1} (ZMod q)) ⧸ twRel q i Γ(U, ⊤))) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).naturality g.op)`. Conclude with `h.symm`.
+-/
 private theorem sec_res_gsec_eq_gsec_mapDomain {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (f : Prim q Γ(U, ⊤) →₀ ULift.{1} (ZMod q)) :
     Sec.res g (UpperTheory.Cb.TwSec.gsec i U f) = UpperTheory.Cb.TwSec.gsec i V (Finsupp.mapDomain (Prim.map g.appTop.hom) f) := by
   have h := congrArg (fun φ => φ.hom (Submodule.Quotient.mk f : (Prim q Γ(U, ⊤) →₀ ULift.{1} (ZMod q)) ⧸ twRel q i Γ(U, ⊤)))
     ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).naturality g.op)
   exact h.symm
 
+/- English proof (translation)
+Rewrite using `[← map_smul]`. Establish `e : (twRel q i Γ(U, ⊤)).mkQ (Finsupp.single ξ 1) = (twRel q i Γ(U, ⊤)).mkQ ((ULift.up (((a ^ i : (ZMod q)ˣ) : ZMod q)) : ULift.{1} (ZMod q)) • Finsupp.single ζ 1)`. Rewrite using `[map_smul, Submodule.mkQ_apply, Submodule.mkQ_apply]`. Conclude with `twRel_mk_single_eq_zpow_smul_mk_single_of_eq_pow i ζ ξ a h`. Conclude with `congrArg (fun t => ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op U)).hom t) e`.
+-/
 private theorem gsec_single_eq_zpow_smul_gsec_single_of_eq_pow {q : ℕ} (i : ℤ) {U : Scheme.{0}} (ζ ξ : Prim q Γ(U, ⊤)) (a : (ZMod q)ˣ)
     (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) :
     UpperTheory.Cb.TwSec.gsec i U (Finsupp.single ξ 1) =
@@ -74,6 +99,11 @@ private theorem gsec_single_eq_zpow_smul_gsec_single_of_eq_pow {q : ℕ} (i : �
     exact twRel_mk_single_eq_zpow_smul_mk_single_of_eq_pow i ζ ξ a h
   exact congrArg (fun t => ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op U)).hom t) e
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_twRel_mk_eq_nsmul_mk_single_of_support_pow i ζ f hf`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← UpperTheory.Cb.TwSec.gsec_one, ← map_nsmul]`. Establish `e : (twRel q i Γ(U, ⊤)).mkQ f = (twRel q i Γ(U, ⊤)).mkQ (c • Finsupp.single ζ 1)`. Rewrite using `[map_nsmul]`.
+
+Conclude with `hc`. Conclude with `congrArg (fun t => ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op U)).hom t) e`.
+-/
 private theorem exists_gsec_eq_nsmul_twGen_of_support_pow {q : ℕ} [NeZero q] (i : ℤ) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤))
     (f : Prim q Γ(U, ⊤) →₀ ULift.{1} (ZMod q)) (hf : ∀ ξ ∈ f.support, ∃ a : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (a : ZMod q).val) :
     ∃ c : ℕ, UpperTheory.Cb.TwSec.gsec i U f = c • twGen i ζ := by
@@ -85,6 +115,53 @@ private theorem exists_gsec_eq_nsmul_twGen_of_support_pow {q : ℕ} [NeZero q] (
     exact hc
   exact congrArg (fun t => ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op U)).hom t) e
 
+/- English proof (translation)
+Introduce `q _ i`. Establish `h4 : ∀ (V U : Scheme.{0}) (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)), Sec.res g (twGen i ζ) = twGen i (ζ.map g.appTop.hom)`. Introduce `V U g ζ`. Rewrite using `[← UpperTheory.Cb.TwSec.gsec_one, ← UpperTheory.Cb.TwSec.gsec_one, sec_res_gsec_eq_gsec_mapDomain, Finsupp.mapDomain_single]`. Establish `h5 : ∀ (U : Scheme.{0}) (ζ ξ : Prim q Γ(U, ⊤)) (a : (ZMod q)ˣ), ξ.1 = ζ.1 ^ (a : ZMod q).val → twGen i ξ = ((a ^ i : (ZMod q)ˣ) : ZMod q).val • twGen i ζ`.
+
+Introduce `U ζ ξ a h`. Rewrite using `[← UpperTheory.Cb.TwSec.gsec_one, ← UpperTheory.Cb.TwSec.gsec_one, gsec_single_eq_zpow_smul_gsec_single_of_eq_pow i ζ ξ a h, ulift_zmod_smul_eq_val_nsmul]`. Establish `L` using `GlobalTheory.T.etaleLocal_property_calculus_rules`. Establish `S` using `GlobalTheory.T.etaleToSheafify_locally_bijective_and_lift (ZMod q) (Scheme.Γ ⋙ twF q i)`. Establish `h2 : ∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (y : Sec (tw q i) U), Loc U fun V g => ∃ c : ℕ, Sec.res g y = c • twGen i (ζ.map g.appTop.hom)` using `by classical`.
+
+Introduce `U ζ y`. Apply `L.2.2.2.2.1` to reduce the goal to its premises. Use `L.2.1 U _ _ (S.1 U y) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨x, hx⟩`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Establish `hx' : Sec.res g y = UpperTheory.Cb.TwSec.gsec i V f` using `hx.symm`. Establish `hl` using `L.2.2.2.2.2.1 V (↥f.support) _ (fun ξ => (GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q V).2.1 (ζ.map g.appTop.hom) ξ.1)`. Use `L.2.1 V _ _ hl ?_` and prove the remaining obligations. Introduce `W k hk`. Take `⟨c, hc⟩` from `exists_gsec_eq_nsmul_twGen_of_support_pow i ((ζ.map g.appTop.hom).map k.appTop.hom) (Finsupp.mapDomain (Prim.map k.appTop.hom) f) (by`.
+
+Introduce `ξ' hξ'`. Take `⟨ξ, hξ, rfl⟩` from `Finset.mem_image.mp (Finsupp.mapDomain_support hξ')`. Take `⟨a, ha⟩` from `hk ⟨ξ, hξ⟩`. Conclude with `⟨a, ha⟩)`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Establish `e : twGen i ((ζ.map g.appTop.hom).map k.appTop.hom) = twGen i (ζ.map (k ≫ g).appTop.hom)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h4, h4]`. Use `_ = twGen i (ζ.map (k ≫ g).appTop.hom) := by`. Rewrite using `[← UpperTheory.Cb.TwSec.res_comp, h4]`.
+
+Rewrite `hc` using `[e]`. Rewrite using `[UpperTheory.Cb.TwSec.res_comp, hx']`. Conclude with `(sec_res_gsec_eq_gsec_mapDomain i k f).trans hc`. Establish `h1 : ∀ (U : Scheme.{0}) (y : Sec (tw q i) U), Loc U fun V g => Sec.res g y = 0 ∨ ∃ (ζ : Prim q Γ(V, ⊤)) (c : ℕ), Sec.res g y = c • twGen i ζ`. Introduce `U y`.
+
+Apply `L.2.2.2.2.1` to reduce the goal to its premises. Use `L.2.1 U _ _ (S.1 U y) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨x, hx⟩`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hx' : Sec.res g y = UpperTheory.Cb.TwSec.gsec i V f` using `hx.symm`.
+
+Distinguish the cases in `hP : Nonempty (Prim q Γ(V, ⊤))`. Take `⟨ζ⟩` from `hP`. Use `L.2.1 V _ _ (h2 V ζ (Sec.res g y)) ?_` and prove the remaining obligations. Introduce and unpack `W k ⟨c, hc⟩`. Conclude with `Or.inr ⟨_, c, by rw [UpperTheory.Cb.TwSec.res_comp]; exact hc⟩`.
+
+Apply `L.1` to reduce the goal to its premises. Introduce `W k`. Use `left`. Establish `hf : f = 0`. Use extensionality with `ξ`.
+
+Conclude with `(hP ⟨ξ⟩).elim`. Rewrite using `[UpperTheory.Cb.TwSec.res_comp, hx', hf]`. Conclude with `(congrArg (Sec.res k) (map_zero (UpperTheory.Cb.TwSec.gsec i V))).trans (map_zero ((tw q i).obj.map k.op).hom)`. Establish `h3 : ∀ (U : Scheme.{0}) [Nonempty U] (ζ : Prim q Γ(U, ⊤)) (c : ℕ), c • twGen i ζ = 0 → q ∣ c`. Introduce `U _ ζ c h`.
+
+Establish `hz : UpperTheory.Cb.TwSec.gsec i U (c • Finsupp.single ζ 1) = 0`. Rewrite using `[map_nsmul, UpperTheory.Cb.TwSec.gsec_one]`. Conclude with `h`. Establish `hl` using `S.2.1 U ((twRel q i Γ(U, ⊤)).mkQ (c • Finsupp.single ζ 1)) hz`. Take `⟨u⟩` from `‹Nonempty U›`.
+
+Establish `hmono : ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V), ((Scheme.Γ ⋙ twF q i).map g.op).hom ((twRel q i Γ(U, ⊤)).mkQ (c • Finsupp.single ζ 1)) = 0 → ((Scheme.Γ ⋙ twF q i).map (k ≫ g).op).hom ((twRel q i Γ(U, ⊤)).mkQ (c • Finsupp.single ζ 1)) = 0`. Introduce `V W g k hg`. Express the relevant statement in the definitionally equal form `((Scheme.Γ ⋙ twF q i).map (g.op ≫ k.op)).hom _ = 0`. Rewrite using `[Functor.map_comp, ModuleCat.hom_comp]`. Conclude with `(congrArg (ModuleCat.Hom.hom ((Scheme.Γ ⋙ twF q i).map k.op)) hg).trans (map_zero _)`.
+
+Take `⟨V, g, -, -, ⟨v, -⟩, hV⟩` from `(GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover U _ hmono).mp hl u`. Establish `hV' : (c • Submodule.Quotient.mk (Finsupp.single (ζ.map g.appTop.hom) 1) : (Prim q Γ(V, ⊤) →₀ ULift.{1} (ZMod q)) ⧸ twRel q i Γ(V, ⊤)) = 0`. Use `Eq.trans ?_ hV` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map g.appTop.hom) (c • Finsupp.single ζ 1))`. Rewrite using `[Finsupp.smul_single, Finsupp.mapDomain_single, ← Finsupp.smul_single, Submodule.Quotient.mk_smul]`.
+
+Use `haveI : Nonempty (⊤ : V.Opens) := ⟨⟨v, trivial⟩⟩`. Use `haveI : Nontrivial Γ(V, ⊤) := Scheme.component_nontrivial V ⊤`. Take `⟨φ, hφ⟩` from `(GlobalTheory.T.tateTwistModule_free_and_generator_summand q i Γ(V, ⊤)).2 (ζ.map g.appTop.hom)`. Establish `hc` using `congrArg φ hV'`. Rewrite `hc` using `[map_nsmul, hφ, map_zero, nsmul_eq_mul, mul_one]`.
+
+Establish `hd` using `congrArg ULift.down hc`. Rewrite `hd` using `[ULift.down_natCast]`. Conclude with `(ZMod.natCast_eq_zero_iff c q).mp hd`. Establish `h6 : ∀ (M : Shv (ZMod q)) (e : ∀ U : Scheme.{0}, Prim q Γ(U, ⊤) → Sec M U), (∀ (V U : Scheme.{0}) (g : V ⟶ U) ζ, Sec.res g (e U ζ) = e V (ζ.map g.appTop.hom)) → (∀ (U : Scheme.{0}) (ζ ξ : Prim q Γ(U, ⊤)) (a : (ZMod q)ˣ), ξ.1 = ζ.1 ^ (a : ZMod q).val → e U ξ = ((a ^ i : (ZMod q)ˣ) …`. Introduce `M e hnat hrel`.
+
+Set `lin : ∀ U : Scheme.{0}, (Prim q Γ(U, ⊤) →₀ ULift.{1} (ZMod q)) →ₗ[ULift.{1} (ZMod q)] M.obj.obj (op U)` to `fun U => Finsupp.linearCombination (ULift.{1} (ZMod q)) (e U)`. Establish `lin_single : ∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)), lin U (Finsupp.single ζ 1) = e U ζ`. Introduce `U ζ`. Simplify using `only [lin, Finsupp.linearCombination_single, one_smul]`. Establish `hker : ∀ U : Scheme.{0}, twRel q i Γ(U, ⊤) ≤ LinearMap.ker (lin U)`.
+
+Introduce `U`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨ζ, ξ, a, h, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, lin_single, ← Finsupp.smul_single_one, map_smul, lin_single, hrel U ζ ξ a h, ulift_zmod_smul_eq_val_nsmul, sub_self]`. Set `φ0 : Scheme.Γ ⋙ twF q i ⟶ M.obj` to `{ app := fun X => ModuleCat.ofHom ((twRel q i Γ(X.unop, ⊤)).liftQ (lin X.unop) (hker X.unop)) naturality := by`.
+
+Introduce `X Y f`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Apply `Finsupp.lhom_ext'` to reduce the goal to its premises. Introduce `ξ`.
+
+Apply `LinearMap.ext_ring` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `lin Y.unop (Finsupp.mapDomain (Prim.map f.unop.appTop.hom) (Finsupp.single ξ 1)) = (M.obj.map f).hom (lin X.unop (Finsupp.single ξ 1))`. Use `erw [Finsupp.mapDomain_single]`. Rewrite using `[lin_single]`. Conclude with `((congrArg (M.obj.map f).hom (lin_single X.unop ξ)).trans (hnat Y.unop X.unop f.unop ξ)).symm }`.
+
+Take `⟨ψ, hψ, huniq⟩` from `S.2.2 M φ0`. Use `⟨ψ, fun U ζ => ?_, fun φ' hφ' => huniq φ' ?_⟩` and prove the remaining obligations. Use `congrArg (fun t => (t.app (op U)).hom (Submodule.Quotient.mk (p := twRel q i Γ(U, ⊤)) (Finsupp.single ζ 1))) hψ` as an intermediate fact. Conclude with `this.trans (lin_single U ζ)`. Apply `NatTrans.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `X`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Apply `Finsupp.lhom_ext'` to reduce the goal to its premises. Introduce `ξ`.
+
+Apply `LinearMap.ext_ring` to reduce the goal to its premises. Conclude with `(hφ' X.unop ξ).trans (lin_single X.unop ξ).symm`. Conclude with `⟨h1, h2, h3, h4, h5, h6⟩`.
+-/
 theorem UpperTheory.Cb.tateTwist_sections_locally_generated :
     ∀ (q : ℕ) [NeZero q] (i : ℤ), (∀ (U : Scheme.{0}) (y : Sec (tw q i) U), Loc U fun V g => Sec.res g y = 0 ∨ ∃ (ζ : Prim q Γ(V, ⊤)) (c : ℕ), Sec.res g y = c • twGen i ζ) ∧ (∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (y : Sec (tw q i) U), Loc U fun V g => ∃ c : ℕ, Sec.res g y = c • twGen i (ζ.map g.appTop.hom)) ∧ (∀ (U : Scheme.{0}) [Nonempty U] (ζ : Prim q Γ(U, ⊤)) (c : ℕ), c • twGen i ζ = 0 → q ∣ c) ∧ (∀ (V U : Scheme.{0}) (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)), Sec.res g (twGen i ζ) = twGen i (ζ.map g.appTop.hom)) ∧ (∀ (U : Scheme.{0}) (ζ ξ : Prim q Γ(U, ⊤)) (a : (ZMod q)ˣ), ξ.1 = ζ.1 ^ (a : ZMod q).val → twGen i ξ = ((a ^ i : (ZMod q)ˣ) : ZMod q).val • twGen i ζ) ∧ ∀ (M : Shv (ZMod q)) (e : ∀ U : Scheme.{0}, Prim q Γ(U, ⊤) → Sec M U), (∀ (V U : Scheme.{0}) (g : V ⟶ U) ζ, Sec.res g (e U ζ) = e V (ζ.map g.appTop.hom)) → (∀ (U : Scheme.{0}) (ζ ξ : Prim q Γ(U, ⊤)) (a : (ZMod q)ˣ), ξ.1 = ζ.1 ^ (a : ZMod q).val → e U ξ = ((a ^ i : (ZMod q)ˣ) : ZMod q).val • e U ζ) → ∃! φ : tw q i ⟶ M, ∀ U ζ, Sec.map φ (twGen i ζ) = e U ζ := by
   intro q _ i

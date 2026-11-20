@@ -12,6 +12,9 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.Jacquet
 
 namespace CompanionTheory.RgExh.Dec.J
 
+/- English proof (translation)
+Conclude with `labels_of GlobalTheory.CompanionTheory.LocFinFilt.locFin GlobalTheory.CompanionTheory.TensStep.tensDecomp GlobalTheory.CompanionTheory.RgTransport.transport GlobalTheory.CompanionTheory.CoefFilt.famFilt GlobalTheory.CompanionTheory.RgStepFam.stepFam GlobalTheory.CompanionTheory.B …`.
+-/
 theorem exhaustion_labels : CompanionTheory.RgExh.Dec.Labels := by
   exact labels_of GlobalTheory.CompanionTheory.LocFinFilt.locFin GlobalTheory.CompanionTheory.TensStep.tensDecomp GlobalTheory.CompanionTheory.RgTransport.transport
     GlobalTheory.CompanionTheory.CoefFilt.famFilt GlobalTheory.CompanionTheory.RgStepFam.stepFam GlobalTheory.CompanionTheory.BaseFamily.baseFam GlobalTheory.CompanionTheory.RgStartOne.start1

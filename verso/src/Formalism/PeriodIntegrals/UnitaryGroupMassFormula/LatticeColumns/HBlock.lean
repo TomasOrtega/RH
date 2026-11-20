@@ -20,12 +20,23 @@ def hEmbGL : GL (Fin k) A →* GL (Idx r k) A where
   map_one' := Units.ext (by simp [MassDataIdxStIm.hEmb_one])
   map_mul' g h := Units.ext (by simp [MassDataIdxStIm.hEmb_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hEmbGL_val (g : GL (Fin k) A) :
     ((hEmbGL r k g : GL (Idx r k) A) : Matrix (Idx r k) (Idx r k) A) = hEmb r (g : Matrix (Fin k) (Fin k) A) := rfl
 
+/- English proof (translation)
+Introduce `g h e` and use `Units.ext (MassDataIdxStIm.hEmb_inj (congrArg Units.val e))`.
+-/
 theorem hEmbGL_injective : Function.Injective (hEmbGL (A := A) r k) :=
   fun g h e => Units.ext (MassDataIdxStIm.hEmb_inj (congrArg Units.val e))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `h (Sum.inr (Sum.inl (Sum.inl i))) (Sum.inr (Sum.inl (Sum.inl j)))` as an intermediate fact. Simplify `this` using `[hEmb, midEmb, Matrix.one_apply]`. Introduce `h a b`.
+
+Apply the tactic sequence `rcases a with a | ((a | a) | a) <;> rcases b with b | ((b | b) | b) <;>`. Apply the tactic sequence `simp [hEmb, midEmb, Matrix.one_apply] <;>`. Conclude with `h a b`.
+-/
 theorem hEmb_sub_one_mem_iff (I : Ideal A) (B : Matrix (Fin k) (Fin k) A) :
     (∀ a b, (hEmb r B - 1) a b ∈ I) ↔ ∀ i j, (B - 1) i j ∈ I := by
   constructor
@@ -39,6 +50,9 @@ theorem hEmb_sub_one_mem_iff (I : Ideal A) (B : Matrix (Fin k) (Fin k) A) :
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Introduce `a b`. Rewrite using `[Matrix.mul_apply]`. Use `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun m _ => Ideal.mul_mem_left _ _ (hM m l)`.
+-/
 theorem entries_mul_mem (I : Ideal A) (P M Q : Matrix n n A) (hM : ∀ a b, M a b ∈ I) :
     ∀ a b, (P * M * Q) a b ∈ I := by
   intro a b
@@ -47,6 +61,13 @@ theorem entries_mul_mem (I : Ideal A) (P M Q : Matrix n n A) (hM : ∀ a b, M a 
   rw [Matrix.mul_apply]
   exact Ideal.sum_mem _ fun m _ => Ideal.mul_mem_left _ _ (hM m l)
 
+/- English proof (translation)
+Establish `e : ((c⁻¹ : GL n A) : Matrix n n A) * M * (c : Matrix n n A) - 1 = ((c⁻¹ : GL n A) : Matrix n n A) * (M - 1) * (c : Matrix n n A)`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Units.inv_mul]`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h2` using `entries_mul_mem I (c : Matrix n n A) _ ((c⁻¹ : GL n A) : Matrix n n A) h`. Establish `e2 : (c : Matrix n n A) * (((c⁻¹ : GL n A) : Matrix n n A) * (M - 1) * (c : Matrix n n A)) * ((c⁻¹ : GL n A) : Matrix n n A) = M - 1`. Simplify using `only [← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite `h2` using `[e2]`. Then use the resulting hypothesis.
+
+Introduce `h`. Conclude with `entries_mul_mem I _ _ _ h`.
+-/
 theorem conj_sub_one_mem_iff (I : Ideal A) (c : GL n A) (M : Matrix n n A) :
     (∀ a b, (((c⁻¹ : GL n A) : Matrix n n A) * M * (c : Matrix n n A) - 1) a b ∈ I) ↔ ∀ a b, (M - 1) a b ∈ I := by
   have e : ((c⁻¹ : GL n A) : Matrix n n A) * M * (c : Matrix n n A) - 1 =
@@ -82,6 +103,17 @@ def inclH (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X) : KvH X u p.1 �
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Set `φ : KvH X u p.1 →* GL (Idx D.R.rS D.R.k) (MassDataIdxSteps.Op X p)` to `(MulAut.conj c⁻¹).toMonoidHom.comp (ψ.comp (inclH X u p))`. Establish `hφv : ∀ x, φ x = c⁻¹ * ψ (inclH X u p x) * c` using `fun x => by show c⁻¹ * ψ (inclH X u p x) * c⁻¹⁻¹ = _`. Rewrite using `[inv_inv]`. Establish `hφ : ∀ x, φ x ∈ (hEmbGL (A` using `MassDataIdxSteps.Op X p) D.R.rS D.R.k).range := fun x => by`. Rewrite using `[hφv]`.
+
+Conclude with `(hH (inclH X u p x)).1 (x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)).2`. Set `e` to `MonoidHom.ofInjective (hEmbGL_injective (A := MassDataIdxSteps.Op X p) D.R.rS D.R.k)`. Set `ψH : KvH X u p.1 →* GL (Fin D.R.k) (MassDataIdxSteps.Op X p)` to `e.symm.toMonoidHom.comp (φ.codRestrict _ hφ)`. Establish `key : ∀ x, hEmbGL D.R.rS D.R.k (ψH x) = φ x` using `fun x => by`. Rewrite using `[← MonoidHom.ofInjective_apply (hEmbGL_injective (A := MassDataIdxSteps.Op X p) D.R.rS D.R.k) (x := ψH x)]`.
+
+Use `show ((e (e.symm ⟨φ x, hφ x⟩) : (hEmbGL D.R.rS D.R.k).range) : GL (Idx D.R.rS D.R.k) (MassDataIdxSteps.Op X p)) = φ x`. Rewrite using `[MulEquiv.apply_symm_apply]`. Use `⟨ψH, fun B => ?_, fun x => by rw [key, hφv], fun x => ?_⟩` and prove the remaining obligations. Take `⟨x', hx'⟩` from `hs (c * hEmbGL D.R.rS D.R.k B * c⁻¹)`. Establish `hconj : c⁻¹ * ψ x' * c = hEmbGL D.R.rS D.R.k B` using `by rw [hx']; group`.
+
+Establish `hxH : (x' : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) ∈ Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)` using `(hH x').2 ⟨B, hconj.symm⟩`. Set `x : KvH X u p.1` to `⟨⟨(x' : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J), hxH⟩, x'.2⟩`. Use `⟨x, hEmbGL_injective D.R.rS D.R.k ?_⟩` and prove the remaining obligations. Rewrite using `[key, hφv]`. Establish `: inclH X u p x = x'` using `rfl`.
+
+Rewrite using `[this, hconj]`. Establish `h1` using `hEmb_sub_one_mem_iff (A := MassDataIdxSteps.Op X p) D.R.rS D.R.k (Ideal.span {((gOf p : ℕ) : MassDataIdxSteps.Op X p)}) (ψH x : Matrix (Fin D.R.k) (Fin D.R.k) (MassDataIdxSteps.Op X p))`. Rewrite using `[← h1, ← hEmbGL_val, key, hφv, Units.val_mul, Units.val_mul, conj_sub_one_mem_iff, hk]`. Both sides reduce to the same expression.
+-/
 theorem psiH_exists (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X)
     (ψ : KvA X p.1 →* GL (Idx D.R.rS D.R.k) (MassDataIdxSteps.Op X p)) (c : GL (Idx D.R.rS D.R.k) (MassDataIdxSteps.Op X p))
     (hs : Function.Surjective ψ)
@@ -123,6 +155,9 @@ theorem psiH_exists (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X)
     rw [← h1, ← hEmbGL_val, key, hφv, Units.val_mul, Units.val_mul, conj_sub_one_mem_iff, hk]
     rfl
 
+/- English proof (translation)
+Take `⟨ψ, c, hs, hk, hH⟩` from `h`. Take `⟨ψH, hsH, -, hkH⟩` from `psiH_exists X u p ψ c hs hk hH`. Conclude with `⟨ψH, hsH, hkH⟩`.
+-/
 theorem hLatGL_of_model (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X) (h : HModel X u p) : HLatGL X u p := by
   obtain ⟨ψ, c, hs, hk, hH⟩ := h
   obtain ⟨ψH, hsH, -, hkH⟩ := psiH_exists X u p ψ c hs hk hH

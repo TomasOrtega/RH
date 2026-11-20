@@ -23,6 +23,11 @@ namespace GlobalTheory.Heat.WtPres
 variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X]
   {oa : Q.OAct O} {Y : Ray oa}
 
+/- English proof (translation)
+Introduce `S _ φ x x' c a a' ha ha' hV hV' hq hc`. Establish `e : ∀ b : Sp S ⟶ Y.H.left, ⊤ ≤ b ⁻¹ᵁ V → valR b V u * valR b V u' = 1` using `fun b hb => by`. Rewrite using `[← WtAlg.valR_mul'' _ _ hb, h, WtAlg.valR_eq' _ _ hb, map_one, map_one]`. Establish `e₁` using `e a hV`. Establish `e₂` using `e a' hV'`.
+
+Rewrite `e₂` using `[hu S φ x x' c a a' ha ha' hV hV' hq hc]`. Rewrite using `[WtAlg.valR_mul'' _ _ hV', WtAlg.valR_mul'' _ _ hV, hf S φ x x' c a a' ha ha' hV hV' hq hc, WtAlg.c_zero x x' c hc, Units.val_one, _root_.one_mul]`. Take the linear combination `valR a V f * valR a V u' * e₂ - c α * valR a V f * valR a' V u' * e₁`.
+-/
 theorem isWt_div {α : Q.X} {V : Y.H.left.Opens} {f u u' : Γ(Y.H.left, V)} (hf : IsWt Y α V f) (hu : IsWt Y α V u)
     (h : u * u' = 1) : IsWt Y 0 V (f * u') := by
   intro S _ φ x x' c a a' ha ha' hV hV' hq hc

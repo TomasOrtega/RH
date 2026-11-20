@@ -7,6 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Cu
 
+/- English proof (translation)
+Use `⟨?_, h.cont.map _ fun y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `h.pair.map (f : R →+* R')`. Rewrite `h1` using `[← RingHom.comp_assoc, AlgHom.comp_algebraMap]`. Then use the resulting hypothesis. Use `show f y ∈ maximalIdeal R'`. Rewrite using `[← res_eq_zero_iff Λ, res_map, res_eq_zero_iff]`.
+
+Conclude with `hy`. Rewrite using `[PD.map_map, ← h.red]`. Use `congr 1`. Conclude with `RingHom.ext fun x => res_map f x`.
+-/
 private theorem lifts_map {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ]
     [IsLocalRing Λ] {a : O →+* Λ} {c : PD Φ.ι Γ (ResidueField Λ)} {R R' : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R]
     [CommRing R'] [Algebra Λ R'] [IsCO Λ R'] {P : PD Φ.ι Γ R} (h : Φ.Lifts a c P) (f : R →ₐ[Λ] R') :
@@ -21,6 +26,11 @@ private theorem lifts_map {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpac
     congr 1
     exact RingHom.ext fun x => res_map f x
 
+/- English proof (translation)
+Establish `hm : ∀ x : DualNumber k, x ∈ maximalIdeal (DualNumber k) → x.fst = 0` using `fun x hx => by`. Rewrite `hx` using `[mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst, isUnit_iff_ne_zero, not_not]`. Then use the resulting hypothesis. Establish `h2 : maximalIdeal (DualNumber k) ^ 2 = ⊥`. Rewrite using `[sq, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`.
+
+Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hm x hx, hm y hy]`. Use `IsLocallyConstant.desc f _ (h 2) fun x y e => ?_` and prove the remaining obligations. Rewrite `e` using `[Ideal.Quotient.eq, h2, Ideal.mem_bot, sub_eq_zero]`. Conclude with `e`.
+-/
 private theorem lc_dual {Γ k : Type} [TopologicalSpace Γ] [Field k] {f : Γ → DualNumber k}
     (h : AdicCont (maximalIdeal (DualNumber k)) f) : IsLocallyConstant f := by
   have hm : ∀ x : DualNumber k, x ∈ maximalIdeal (DualNumber k) → x.fst = 0 := fun x hx => by
@@ -34,6 +44,11 @@ private theorem lc_dual {Γ k : Type} [TopologicalSpace Γ] [Field k] {f : Γ �
   rw [Ideal.Quotient.eq, h2, Ideal.mem_bot, sub_eq_zero] at e
   exact e
 
+/- English proof (translation)
+Establish `hD' : ∀ f g, D (f * g) = x f • D g + x g • D f` using `hD`. Establish `h1 : D 1 = 0`. Use `hD' 1 1` as an intermediate fact. Simplify using `only [mul_one, map_one, one_smul] at this`. Conclude with `left_eq_add.1 this`.
+
+Use `⟨{ toFun := fun f => (x f, D f) map_one' := TrivSqZeroExt.ext (map_one x) h1 map_mul' := fun f g => TrivSqZeroExt.ext (map_mul x f g) ?_ map_zero' := TrivSqZeroExt.ext (map_zero x) (map_zero D) map_add' := fun f g => TrivSqZeroExt.ext (map_add x f g) (map_add D f g) commutes' := …` and prove the remaining obligations. Use `Eq.trans ?_ (DualNumber.snd_mul ((x f, D f) : DualNumber k) (x g, D g)).symm show D (f * g) = x f * D g + D f * x g` and prove the remaining obligations. Rewrite using `[hD', smul_eq_mul, smul_eq_mul, mul_comm (D f)]`. Use `show D (algebraMap O A t) = 0`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]`.
+-/
 private theorem hom_of_der {O A k : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing k] [Algebra O k]
     (x : A →ₐ[O] k) (D : A →ₗ[O] k) (hD : D ∈ PtDer x k) :
     ∃ y : A →ₐ[O] DualNumber k, ∀ f, (y f).fst = x f ∧ (y f).snd = D f := by
@@ -54,6 +69,37 @@ private theorem hom_of_der {O A k : Type} [CommRing O] [CommRing A] [Algebra O A
   · show D (algebraMap O A t) = 0
     rw [Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]
 
+/- English proof (translation)
+Introduce `htan`. Unfold `RedTanA at htan`. Unfold `RedA`. Introduce `O Γ _ _ _ _ _ _ Φ l _ Λ _ _ _ _ _ a hstd d C hB c hc hA hent R _ _ _ P hP S hS hY`. Use `set I := redIdeal S P.r with hI`.
+
+Distinguish the cases in `htop : I = ⊤`. Use `haveI : Subsingleton (R ⧸ I) := Ideal.Quotient.subsingleton_iff.2 htop`. Rewrite using `[ringKrullDim_eq_bot_of_subsingleton]`. Conclude with `bot_le`. Use `haveI : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.2 htop`.
+
+Set `p : R →ₐ[Λ] R ⧸ I` to `Ideal.Quotient.mkₐ Λ I`. Establish `hp : Function.Surjective p` using `Ideal.Quotient.mkₐ_surjective Λ I`. Use `haveI : IsCO Λ (R ⧸ I) := co_quot Λ R (R ⧸ I) p hp`. Use `haveI : IsCO Λ (DualNumber (ResidueField Λ)) := (co_res Λ).2`. Establish `hr : ∀ g i j, res Λ R (P.r g i j) = c.r g i j` using `fun g i j => congrArg (fun Q : PD Φ.ι Γ (ResidueField Λ) => Q.r g i j) hP.1.red`.
+
+Establish `hn : ∀ v i j, res Λ R (P.n v i j) = c.n v i j` using `fun v i j => congrArg (fun Q : PD Φ.ι Γ (ResidueField Λ) => Q.n v i j) hP.1.red`. Establish `hz : ∀ g i j, i ≠ j → wt i j ∉ S → p (P.r g i j) = 0` using `fun g i j h1 h2 => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨g, i, j, h1, h2, rfl⟩)`. Establish `hsupp : Supp S c.r` using `fun g i j h1 h2 => by rw [← hr, ← res_map p, hz g i j h1 h2, map_zero]`. Use `redDim (Λ := Λ) (R ⧸ I) (d + 20 * C) ?_` and prove the remaining obligations. Set `L : PtDer (res Λ (R ⧸ I)) (ResidueField Λ) →ₗ[ResidueField Λ] (Γ → M4 (ResidueField Λ)) × (Φ.ι → M4 (ResidueField Λ))` to `{ toFun := fun D => (fun g => (P.r g).map (fun x => D.1 (p x)) * c.r g⁻¹, fun v => (P.n v).map (fun x => D.1 (p x)) * adj (c.n v)) map_add' := fun D D' => Prod.ext (_root_.funext fun g => add_mul ((P.r g).map fun x => D.1 (p x)) ((P.r g).map fun x => D'.1 (p x)) _) (_root_.funext …`.
+
+Establish `hy : ∀ D : PtDer (res Λ (R ⧸ I)) (ResidueField Λ), ∃ y : (R ⧸ I) →ₐ[Λ] DualNumber (ResidueField Λ), ∀ f, (y f).fst = res Λ (R ⧸ I) f ∧ (y f).snd = D.1 f` using `fun D => hom_of_der _ D.1 D.2`. Establish `hmem : ∀ D, L D ∈ Submodule.span (ResidueField Λ) (Φ.Tan S c)` using `fun D => by`. Take `⟨y, hy⟩` from `hy D`. Establish `hl` using `lifts_map hP.1 (y.comp p)`. Establish `h` using `redDual Φ _ S c _ (fun _ => rfl) hl.pair (fun i j => lc_dual (hl.cont i j)) (fun g i j => ((hy _).1.trans (res_map p _)).trans (hr g i j)) (fun v i j => ((hy _).1.trans (res_map p _)).trans (hn v i j)) (fun g i j h1 h2 => by show y (p (P.r g i j)) = 0`.
+
+Rewrite using `[hz g i j h1 h2, map_zero])`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal. Use `Prod.ext (_root_.funext fun g => ?_) (_root_.funext fun v => ?_)` and prove the remaining obligations. Conclude with `congrArg (· * c.r g⁻¹) (Matrix.ext fun i j => (hy _).2.symm)`.
+
+Conclude with `congrArg (· * adj (c.n v)) (Matrix.ext fun i j => (hy _).2.symm)`. Establish `hinj : Function.Injective L`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `D hD`. Take `⟨y, h1⟩` from `hy D`.
+
+Take `⟨y0, h0⟩` from `hy 0`. Establish `e1 : ∀ g i j, D.1 (p (P.r g i j)) = 0` using `fun g i j => by`. Establish `e : (P.r g).map (fun x => D.1 (p x)) * c.r g⁻¹ = 0` using `congrFun (congrArg Prod.fst hD) g`. Establish `e'` using `congrArg (· * c.r g) e`. Simplify using `only [mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one, zero_mul] at e'`.
+
+Conclude with `congrFun (congrFun e' i) j`. Establish `e2 : ∀ v i j, D.1 (p (P.n v i j)) = 0` using `fun v i j => by`. Establish `e : (P.n v).map (fun x => D.1 (p x)) * adj (c.n v) = 0` using `congrFun (congrArg Prod.snd hD) v`. Establish `e'` using `congrArg (· * c.n v) e`. Establish `hu : adj (c.n v) * c.n v = 1` using `(hc.pair.low v).1.trans (one_smul _ _)`.
+
+Simplify using `only [mul_assoc, hu, mul_one, zero_mul] at e'`. Conclude with `congrFun (congrFun e' i) j`. Establish `key : ∀ x, D.1 x = 0 → y x = y0 x` using `fun x hx => TrivSqZeroExt.ext ((h1 x).1.trans (h0 x).1.symm) (((h1 x).2.trans hx).trans (h0 x).2.symm)`. Establish `e : y.comp p = y0.comp p`. Use `(hP.2 _ _ (lifts_map hP.1 (y0.comp p))).unique ?_ rfl` and prove the remaining obligations.
+
+Conclude with `PD.ext (MonoidHom.ext fun g => Matrix.ext fun i j => key _ (e1 g i j)) (_root_.funext fun v => Matrix.ext fun i j => key _ (e2 v i j))`. Use `Subtype.ext (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hp x`. Establish `e3 : y (p x) = y0 (p x)` using `AlgHom.congr_fun e x`. Rewrite using `[← (h1 _).2, e3, (h0 _).2]`.
+
+Establish `hle` using `LinearMap.rank_le_of_injective (L.codRestrict _ hmem) fun x x' e => hinj (congrArg Subtype.val e)`. Establish `hmemS : ∀ w : ℤ × ℤ, w ≠ (0, 0) → Ent c.r w → w ∈ S`. Introduce and unpack `w hw ⟨g, i, j, hij, hne⟩`. Assume the negation of the conclusion as `hS'`. Establish `hij' : i ≠ j`.
+
+Introduce and unpack `rfl`. Apply `hw` to reduce the goal to its premises. Rewrite using `[← hij]`. Simplify using `[wt]`. Conclude with `hne (hsupp g i j hij' (by rw [hij]; exact hS'))`.
+
+Establish `hcond : -wPs ∈ S ∨ (-wBe ∈ S ∧ -wTh ∈ S ∧ S ≠ yY)`. Break down `hent with h | ⟨h1, h2⟩` into its components or cases. Conclude with `Or.inl (hmemS _ (by decide) h)`. Conclude with `Or.inr ⟨hmemS _ (by decide) h1, hmemS _ (by decide) h2, hY⟩`. Use `hle.trans ((htan Φ _ hstd.ok d C hB c hc hA S hS hcond hsupp).trans ?_)` and prove the remaining obligations.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Cu.redA_of : RedTanA → RedA := by
   intro htan
   unfold RedTanA at htan

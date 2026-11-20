@@ -23,29 +23,47 @@ section Map
 
 variable {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE a x, LinearMap.map_smul, algebraMap_smul]`.
+-/
 theorem map_smulA (a : LetA O n) (x : W.DD T₁) : W.map F (a • x) = a • W.map F x := by
   rw [← algebraMap_smul W.EE a x, LinearMap.map_smul, algebraMap_smul]
 
+/- English proof (translation)
+The claim follows from `W.map_γ F W.gam x`.
+-/
 theorem map_γ' (x : W.DD T₁) : W.map F (W.γ T₁ x) = W.γ T₂ (W.map F x) := W.map_γ F W.gam x
 
 variable (hc₁ : IsCrys PD T₁.ρ) (hc₂ : IsCrys PD T₂.ρ)
 include hc₁ hc₂
 
+/- English proof (translation)
+Take `⟨y, hy, hΔ, rfl⟩` from `h`. Conclude with `⟨W.map F y, W.map_N F hc₁ hc₂ y hy, fun δ hδ => by rw [← W.map_γ, hΔ δ hδ], map_smulA W F _ y⟩`.
+-/
 theorem inPN_map {k : ℕ} {x : W.DD T₁} (h : Formalism.MainNotions.CrystallineLiftingInputs.InPN W T₁ k x) :
     Formalism.MainNotions.CrystallineLiftingInputs.InPN W T₂ k (W.map F x) := by
   obtain ⟨y, hy, hΔ, rfl⟩ := h
   exact ⟨W.map F y, W.map_N F hc₁ hc₂ y hy, fun δ hδ => by rw [← W.map_γ, hΔ δ hδ],
     map_smulA W F _ y⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [← map_smulA, h.1], fun δ hδ => by rw [← W.map_γ, h.2 δ hδ]⟩`.
+-/
 theorem dl_map {i : ZMod n} {x : W.DD T₁} (h : Formalism.MainNotions.CrystallineLiftingInputs.DL W T₁ i x) :
     Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ i (W.map F x) :=
   ⟨by rw [← map_smulA, h.1], fun δ hδ => by rw [← W.map_γ, h.2 δ hδ]⟩
 
+/- English proof (translation)
+Take `⟨k, K, hK⟩` from `h`. Conclude with `⟨k, K, by rw [← map_smulA]; exact W.map_N F hc₁ hc₂ _ hK⟩`.
+-/
 theorem polesFin_map {x : W.DD T₁} (h : Formalism.MainNotions.CrystallineLiftingInputs.PolesFin W T₁ x) :
     Formalism.MainNotions.CrystallineLiftingInputs.PolesFin W T₂ (W.map F x) := by
   obtain ⟨k, K, hK⟩ := h
   exact ⟨k, K, by rw [← map_smulA]; exact W.map_N F hc₁ hc₂ _ hK⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨dl_map W F hc₁ hc₂ h1, polesFin_map W F hc₁ hc₂ h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_γ', ← map_sub]`. Conclude with `inPN_map W F hc₁ hc₂ h3`.
+-/
 theorem inI_map {i : ZMod n} {x : W.DD T₁} (h : Formalism.MainNotions.CrystallineLiftingInputs.InI W T₁ i x) :
     Formalism.MainNotions.CrystallineLiftingInputs.InI W T₂ i (W.map F x) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -55,6 +73,9 @@ theorem inI_map {i : ZMod n} {x : W.DD T₁} (h : Formalism.MainNotions.Crystall
 
 end Map
 
+/- English proof (translation)
+Simplify using `only [LocWach.wachCocyclesDelta, herrZ1Δ, herrCocycles, Submodule.mem_inf, LinearMap.mem_ker, LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.neg_apply, Submodule.mem_iInf, LinearMap.prodMap_apply, Prod.ext_iff, Prod.fst_sub, Prod.snd_sub, Prod.fst_zero …`.
+-/
 theorem mem_Z1DΔ_iff (T : LocLat G Qp LL O) (p : W.DD T × W.DD T) :
     p ∈ W.wachCocyclesDelta T ↔ (W.γD T W.gamK p.1 - p.1 = W.φD T p.2 - p.2) ∧
       ∀ δ ∈ W.DelF, W.γD T δ p.1 = p.1 ∧ W.γD T δ p.2 = p.2 := by
@@ -63,6 +84,11 @@ theorem mem_Z1DΔ_iff (T : LocLat G Qp LL O) (p : W.DD T × W.DD T) :
     Submodule.mem_iInf, LinearMap.prodMap_apply, Prod.ext_iff, Prod.fst_sub, Prod.snd_sub,
     Prod.fst_zero, Prod.snd_zero, sub_zero, add_neg_eq_zero, sub_eq_zero]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_Z1DΔ_iff W T₁ _).1 p.2`. Use `(mem_Z1DΔ_iff W T₂ _).2 ⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← W.map_γ, ← W.map_φ, ← map_sub, ← map_sub, h1]`. Simplify using `only`.
+
+Rewrite using `[← W.map_γ, ← W.map_γ, (h2 δ hδ).1, (h2 δ hδ).2]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem map_mem_Z1DΔ {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (p : ↥(W.wachCocyclesDelta T₁)) :
     ((W.map F (p : W.DD T₁ × W.DD T₁).1, W.map F (p : W.DD T₁ × W.DD T₁).2) : W.DD T₂ × W.DD T₂) ∈
       W.wachCocyclesDelta T₂ := by
@@ -74,12 +100,20 @@ theorem map_mem_Z1DΔ {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) 
     rw [← W.map_γ, ← W.map_γ, (h2 δ hδ).1, (h2 δ hδ).2]
     exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`.
+-/
 theorem letE_mul_self' (c : ZMod n) : (letE c : LetA O n) * letE c = letE c := by
   funext i
   by_cases h : i = c
   · subst h; simp [letE]
   · simp [letE, h]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.CrystallineLiftingInputs.pullJ at hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, ⟨-, hyD⟩, rfl⟩` from `hx`. Rewrite using `[pow_one]`.
+
+Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.letter_phi W T (c + 1) (by rw [add_sub_cancel_right]; exact hyD.1)`. Consider the case `zero => exact smul_zero _`. Consider the case `add x y _ _ hx hy => rw [smul_add, hx, hy]`. Consider the case `smul a x _ hx => rw [smul_comm, hx]`.
+-/
 theorem pullJ_letter (T : LocLat G Qp LL O) (c : ZMod n) {P : W.DD T}
     (hP : P ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T c 1) : (letE (c + 1) : LetA O n) • P = P := by
   unfold Formalism.MainNotions.CrystallineLiftingInputs.pullJ at hP
@@ -92,6 +126,9 @@ theorem pullJ_letter (T : LocLat G Qp LL O) (c : ZMod n) {P : W.DD T}
   | add x y _ _ hx hy => rw [smul_add, hx, hy]
   | smul a x _ hx => rw [smul_comm, hx]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.CrystallineLiftingInputs.pullJ LocWach.φpull`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨hy, -⟩, rfl⟩`. Conclude with `⟨y, hy, by rw [pow_one]⟩`.
+-/
 theorem pullJ_le_φpull (T : LocLat G Qp LL O) (c : ZMod n) :
     Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T c 1 ≤ W.φpull T := by
   unfold Formalism.MainNotions.CrystallineLiftingInputs.pullJ LocWach.φpull
@@ -99,6 +136,11 @@ theorem pullJ_le_φpull (T : LocLat G Qp LL O) (c : ZMod n) :
   rintro _ ⟨y, ⟨hy, -⟩, rfl⟩
   exact ⟨y, hy, by rw [pow_one]⟩
 
+/- English proof (translation)
+Take `⟨cs, r, s, hser, -, rfl⟩` from `hz`. Establish `hφ : ∀ y : W.DD T, (letE c : LetA O n) • y = y → (letE (c + 1) : LetA O n) • ((W.φD T) ^ 1) y = ((W.φD T) ^ 1) y`. Introduce `y hy`. Rewrite using `[pow_one]`. Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.letter_phi W T (c + 1) (by rw [add_sub_cancel_right]; exact hy)`.
+
+Rewrite using `[smul_sub, smul_comm, hφ w hw, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, hφ _ (hser.2.1 y).1.1]`.
+-/
 theorem trunc_letter (T : LocLat G Qp LL O) (c : ZMod n) {M X σ : ℕ} {w z : W.DD T}
     (hw : (letE c : LetA O n) • w = w) (hz : Formalism.MainNotions.CrystallineLiftingInputs.IsTrunc W T c 1 M X σ w z) :
     (letE (c + 1) : LetA O n) • z = z := by
@@ -113,9 +155,27 @@ theorem trunc_letter (T : LocLat G Qp LL O) (c : ZMod n) {M X σ : ℕ} {w z : W
   refine Finset.sum_congr rfl fun y _ => ?_
   rw [smul_comm, hφ _ (hser.2.1 y).1.1]
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.LiftingTheory.pk, pow_succ', AlgHom.mul_apply]`.
+-/
 theorem pk_succ (j : ℕ) : W.φA (Formalism.MainNotions.LiftingTheory.pk W j) = Formalism.MainNotions.LiftingTheory.pk W (j + 1) := by
   simp only [Formalism.MainNotions.LiftingTheory.pk, pow_succ', AlgHom.mul_apply]
 
+/- English proof (translation)
+Take `⟨⟨hwc, -⟩, ⟨k, K, hK⟩, -⟩` from `hw`. Use `set P := z - ((PD.p : ℕ) : O) ^ σ • ((W.φD T) ^ 1) w with hPdef`. Establish `hwl : (letE (c + 1) : LetA O n) • W.φD T w = W.φD T w` using `Formalism.MainNotions.N.Pv.LocalLengthBound.letter_phi W T (c + 1) (by rw [add_sub_cancel_right]; exact hwc)`. Establish `hPl : (letE (c + 1) : LetA O n) • P = P` using `pullJ_letter W T c hpull`. Establish `hP : Formalism.MainNotions.LiftingTheory.qp W ^ η • P ∈ W.N T` using `h4 P (pullJ_le_φpull W T c hpull) hPl`.
+
+Use `set a : LetA O n := (∏ j ∈ Finset.range k, Formalism.MainNotions.LiftingTheory.pk W j) ^ K with ha`. Use `set Pq : LetA O n := ∏ j ∈ Finset.range k, Formalism.MainNotions.LiftingTheory.pk W (j + 1) with hPq`. Establish `hφa : W.φD T (a • w) = Pq ^ K • W.φD T w`. Establish `e` using `Formalism.MainNotions.UnusedSlot80.Relay2.φpow_smul W T 1 a w`. Rewrite `e` using `[pow_one, pow_one]`.
+
+Rewrite using `[e, ha, map_pow, map_prod]`. Simplify using `only [pk_succ, hPq]`. Establish `hφN : Pq ^ K • W.φD T w ∈ W.φpull T`. Rewrite using `[← hφa]`. Conclude with `Submodule.subset_span ⟨a • w, hK, rfl⟩`.
+
+Establish `hφl : (letE (c + 1) : LetA O n) • (Pq ^ K • W.φD T w) = Pq ^ K • W.φD T w`. Rewrite using `[smul_comm, hwl]`. Establish `hφq : Formalism.MainNotions.LiftingTheory.qp W ^ η • (Pq ^ K • W.φD T w) ∈ W.N T` using `h4 _ hφN hφl`. Use `⟨k + 1, K + η, ?_⟩` and prove the remaining obligations. Establish `hprod : ∏ j ∈ Finset.range (k + 1), Formalism.MainNotions.LiftingTheory.pk W j = Pq * Formalism.MainNotions.LiftingTheory.qp W`.
+
+Rewrite using `[Finset.prod_range_succ']`. Simplify using `[Formalism.MainNotions.LiftingTheory.pk, hPq]`. Rewrite using `[hprod]`. Establish `hz' : z = P + ((PD.p : ℕ) : O) ^ σ • W.φD T w` using `by rw [hPdef, pow_one, sub_add_cancel]`. Rewrite using `[hz', smul_add]`.
+
+Use `(W.N T).add_mem ?_ ?_` and prove the remaining obligations. Establish `e : (Pq * Formalism.MainNotions.LiftingTheory.qp W) ^ (K + η) = (Pq ^ (K + η) * Formalism.MainNotions.LiftingTheory.qp W ^ K) * Formalism.MainNotions.LiftingTheory.qp W ^ η` using `by ring`. Rewrite using `[e, mul_smul]`. Conclude with `(W.N T).smul_mem _ hP`. Establish `e : (Pq * Formalism.MainNotions.LiftingTheory.qp W) ^ (K + η) = (Pq ^ η * Formalism.MainNotions.LiftingTheory.qp W ^ K) * (Formalism.MainNotions.LiftingTheory.qp W ^ η * Pq ^ K)` using `by ring`.
+
+Rewrite using `[e, smul_comm _ (((PD.p : ℕ) : O) ^ σ), mul_smul]`. Use `Submodule.smul_of_tower_mem _ _ ((W.N T).smul_mem _ ?_)` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `hφq`.
+-/
 theorem trunc_polesFin (T : LocLat G Qp LL O) (c : ZMod n) (η σ : ℕ) {w z : W.DD T}
     (hw : Formalism.MainNotions.CrystallineLiftingInputs.InI W T c w)
     (hz : (letE (c + 1) : LetA O n) • z = z)
@@ -161,6 +221,11 @@ theorem trunc_polesFin (T : LocLat G Qp LL O) (c : ZMod n) (η σ : ℕ) {w z : 
     rw [mul_smul]
     exact hφq
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hu`. Establish `hunit : IsUnit (algebraMap (LetA O n) W.EE (W.π₀ ^ M))`. Rewrite using `[map_pow, hu, map_mul, map_pow]`. Conclude with `IsUnit.pow _ (IsUnit.mul (u.isUnit.map _) (W.EE_π.pow _))`. Rewrite `h` using `[← algebraMap_smul W.EE (W.π₀ ^ M) y, ← algebraMap_smul W.EE (W.π₀ ^ M) y']`.
+
+Conclude with `(hunit.smul_left_cancel).1 h`.
+-/
 theorem pi0_pow_smul_injective (T : LocLat G Qp LL O)
     (hu : ∃ u : (LetA O n)ˣ, W.π₀ = (u : LetA O n) * letπ ^ (PD.p - 1)) (M : ℕ) {y y' : W.DD T}
     (h : W.π₀ ^ M • y = W.π₀ ^ M • y') : y = y' := by
@@ -171,11 +236,17 @@ theorem pi0_pow_smul_injective (T : LocLat G Qp LL O)
   rw [← algebraMap_smul W.EE (W.π₀ ^ M) y, ← algebraMap_smul W.EE (W.π₀ ^ M) y'] at h
   exact (hunit.smul_left_cancel).1 h
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
   rfl
 
+/- English proof (translation)
+Use `⟨y, hy, fun δ hδ => pi0_pow_smul_injective W T hu M ?_, hx⟩` and prove the remaining obligations. Use `hxΔ δ hδ` as an intermediate fact. Rewrite `this` using `[hx, γD_smulA, map_pow, hΔπ δ hδ]`. Conclude with `this`.
+-/
 theorem inPN_of_inv (T : LocLat G Qp LL O)
     (hu : ∃ u : (LetA O n)ˣ, W.π₀ = (u : LetA O n) * letπ ^ (PD.p - 1))
     (hΔπ : ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀) (M : ℕ) {x y : W.DD T} (hy : y ∈ W.N T)
@@ -186,6 +257,13 @@ theorem inPN_of_inv (T : LocLat G Qp LL O)
   rw [hx, γD_smulA, map_pow, hΔπ δ hδ] at this
   exact this
 
+/- English proof (translation)
+Take `⟨x, hx, hxp⟩` from `h`. Take `⟨c, hc, rfl⟩` from `Submodule.mem_map.1 hx`. Establish `hcZ : (c : G → T₁.V) ∈ latticeCocycles T₁.L` using `c.2`. Establish `h0 : (Submodule.Quotient.mk (p - ⟨F.post c, F.post_Z1T c hcZ⟩) : LatticeCohomology T₂.L) = 0`. Rewrite using `[Submodule.Quotient.mk_sub, ← hxp]`.
+
+Simplify using `only [Submodule.mkQ_apply]`. Rewrite using `[sub_eq_zero]`. Both sides reduce to the same expression. Rewrite `h0` using `[Submodule.Quotient.mk_eq_zero]`. Establish `h2 : (p : G → T₂.V) = F.post c + ((p - ⟨F.post c, F.post_Z1T c hcZ⟩ : ↥(latticeCocycles T₂.L)) : G → T₂.V)`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h2]`. Conclude with `Submodule.add_mem_sup (Submodule.mem_map_of_mem hc) h0`.
+-/
 theorem mem_ImF_of_cls {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (p : ↥(latticeCocycles T₂.L))
     (h : Submodule.Quotient.mk p ∈ (latticeFiniteCohomology PD T₁.L).map F.H1map) : (p : G → T₂.V) ∈ F.ImF PD := by
   obtain ⟨x, hx, hxp⟩ := h

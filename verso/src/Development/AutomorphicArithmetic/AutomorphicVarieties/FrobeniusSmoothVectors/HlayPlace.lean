@@ -6,6 +6,15 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Tota
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
+/- English proof (translation)
+Establish `hmem : (p : Ω) ∈ (⊥ : Subring Ω)` using `Subring.mem_bot.mpr ⟨p, by simp⟩`. Use `set x : (⊥ : Subring Ω) := ⟨p, hmem⟩`. Establish `hI : Ideal.span {x} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce and unpack `⟨u, hu⟩`.
+
+Take `⟨b, hb⟩` from `Subring.mem_bot.mp (u⁻¹ : (⊥ : Subring Ω)ˣ).1.2`. Establish `h1 : (u : (⊥ : Subring Ω)) * (↑u⁻¹ : (⊥ : Subring Ω)) = 1` using `u.mul_inv`. Establish `h2 : ((p : ℤ) * b : ℤ) = (1 : Ω)`. Use `congrArg Subtype.val h1` as an intermediate fact. Simplify using `only [Subring.coe_mul, Subring.coe_one] at this`.
+
+Rewrite `this` using `[hu]`. Use `push_cast`. Rewrite using `[hb]`. Conclude with `this`. Establish `h3 : (p : ℤ) * b = 1` using `by exact_mod_cast h2`.
+
+Establish `h4 : (p : ℤ) ∣ 1` using `⟨b, h3.symm⟩`. Establish `: p ∣ 1` using `by exact_mod_cast h4`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.mp this)`. Take `⟨B, -, hB⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hI`. Conclude with `⟨B, (ValuationSubring.mem_nonunits_iff B).mp (hB ⟨x, Ideal.subset_span rfl, rfl⟩)⟩`.
+-/
 private theorem hlay_place (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) (hp : p.Prime) :
     ∃ A : ValuationSubring Ω, A.valuation (p : Ω) < 1 := by
   have hmem : (p : Ω) ∈ (⊥ : Subring Ω) := Subring.mem_bot.mpr ⟨p, by simp⟩
@@ -29,8 +38,14 @@ private theorem hlay_place (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) (hp : 
   obtain ⟨B, -, hB⟩ := Ideal.image_subset_nonunits_valuationSubring _ hI
   exact ⟨B, (ValuationSubring.mem_nonunits_iff B).mp (hB ⟨x, Ideal.subset_span rfl, rfl⟩)⟩
 
+/- English proof (translation)
+The claim follows from `Nat.Coprime.pow_left m ((Nat.coprime_self_sub_right hl.out.one_le).mpr (Nat.coprime_one_right _))`.
+-/
 private theorem hlay_cop (l : ℕ) [hl : Fact l.Prime] (m : ℕ) : (l ^ m).Coprime (l - 1) := Nat.Coprime.pow_left m ((Nat.coprime_self_sub_right hl.out.one_le).mpr (Nat.coprime_one_right _))
 
+/- English proof (translation)
+Use `haveI := ZMod.isCyclic_units_of_prime_pow l hl.out h2 (m + 1)`. Rewrite using `[← MonoidHom.range_eq_map, IsCyclic.card_powMonoidHom_range, Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ hl.out]`. Establish `hpos : 0 < l - 1` using `Nat.sub_pos_of_lt hl.out.one_lt`. Rewrite using `[Nat.gcd_comm, Nat.gcd_mul_left_right]`. Conclude with `Nat.mul_div_cancel _ hpos`.
+-/
 private theorem hlay_card (l : ℕ) [hl : Fact l.Prime] (m : ℕ) (h2 : l ≠ 2) :
     Nat.card ((⊤ : Subgroup (ZMod (l ^ (m + 1)))ˣ).map (powMonoidHom (l - 1))) = l ^ m := by
   haveI := ZMod.isCyclic_units_of_prime_pow l hl.out h2 (m + 1)
@@ -40,6 +55,19 @@ private theorem hlay_card (l : ℕ) [hl : Fact l.Prime] (m : ℕ) (h2 : l ≠ 2)
   rw [Nat.gcd_comm, Nat.gcd_mul_left_right]
   exact Nat.mul_div_cancel _ hpos
 
+/- English proof (translation)
+Use `set x := KStar.TotallyRealRoots.redPow l (m + 1) u with hx`. Establish `hd : l ^ 1 ∣ l ^ (m + 1)` using `pow_dvd_pow l (by omega)`. Use `set f := ZMod.unitsMap hd`. Establish `hfx : f x = 1`. Establish `: f x = KStar.TotallyRealRoots.redPow l 1 u`.
+
+Use `ext`. Simplify using `only [f, hx, ZMod.unitsMap, KStar.TotallyRealRoots.redPow, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `congrArg (fun g => g (u : ℤ_[l])) (PadicInt.zmod_cast_comp_toZModPow 1 (m + 1) (by omega))`. Rewrite using `[this]`. Conclude with `h1`.
+
+Establish `hsurj : Function.Surjective f` using `ZMod.unitsMap_surjective hd`. Establish `hcardG : Nat.card (ZMod (l ^ (m + 1)))ˣ = l ^ m * (l - 1)`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ hl.out]`. Establish `hcardH : Nat.card (ZMod (l ^ 1))ˣ = l - 1`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, pow_one, Nat.totient_prime hl.out]`.
+
+Establish `hker : Nat.card f.ker = l ^ m`. Establish `e` using `Subgroup.card_mul_index f.ker`. Rewrite `e` using `[Subgroup.index_ker, MonoidHom.range_eq_top.mpr hsurj, Subgroup.card_top, hcardH, hcardG]`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.sub_pos_of_lt hl.out.one_lt) e`. Establish `hpow : x ^ (l ^ m) = 1`.
+
+Use `pow_card_eq_one' (G := f.ker) (x := ⟨x, hfx⟩)` as an intermediate fact. Rewrite `this` using `[hker]`. Conclude with `congrArg Subtype.val this`. Establish `hdvd : orderOf x ∣ Nat.gcd (l ^ m) (l - 1)` using `Nat.dvd_gcd (orderOf_dvd_of_pow_eq_one hpow) (orderOf_dvd_of_pow_eq_one h)`. Rewrite `hdvd` using `[hlay_cop l m, Nat.dvd_one, orderOf_eq_one_iff]`.
+
+Conclude with `hdvd`.
+-/
 private theorem hlay_inf {l : ℕ} [hl : Fact l.Prime] (m : ℕ) (u : ℤ_[l]ˣ) (h1 : u ∈ KStar.TotallyRealRoots.princ l 1)
     (h : KStar.TotallyRealRoots.redPow l (m + 1) u ^ (l - 1) = 1) : KStar.TotallyRealRoots.redPow l (m + 1) u = 1 := by
   set x := KStar.TotallyRealRoots.redPow l (m + 1) u with hx
@@ -70,6 +98,29 @@ private theorem hlay_inf {l : ℕ} [hl : Fact l.Prime] (m : ℕ) (u : ℤ_[l]ˣ)
   rw [hlay_cop l m, Nat.dvd_one, orderOf_eq_one_iff] at hdvd
   exact hdvd
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ m h2`. Take `⟨A, hA⟩` from `hlay_place Ω l Fact.out`. Establish `hsurjIne : ∀ B' : ValuationSubring Ω, B'.valuation (l : Ω) < 1 → ∀ r, (Ine (F` using `ℚ) B').map (cycMod ℚ Ω l r) = ⊤ := by`. Introduce `B' hB' r`. Rewrite using `[eq_top_iff]`.
+
+Introduce and unpack `y -`. Take `⟨v, rfl⟩` from `KStar.TotallyRealRoots.redPow_surjective (l := l) r y`. Take `⟨σ, hσ, hσv⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l B' hB' v`. Conclude with `⟨σ, hσ, by rw [← hσv]; rfl⟩`. Establish `hidx : ∀ K : Subgroup (G ℚ Ω), K.map (cycMod ℚ Ω l (m + 1)) = ⊤ → (Hlay Ω l m).relIndex K = l ^ m`.
+
+Introduce `K hK`. Establish `hsub : (Hlay Ω l m).subgroupOf K = ((cycMod ℚ Ω l (m + 1) ^ (l - 1)).comp K.subtype).ker`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[Subgroup.relIndex, hsub, Subgroup.index_ker]`.
+
+Establish `hr : ((cycMod ℚ Ω l (m + 1) ^ (l - 1)).comp K.subtype).range = (⊤ : Subgroup (ZMod (l ^ (m + 1)))ˣ).map (powMonoidHom (l - 1))`. Use extensionality with `y`. Simplify using `only [MonoidHom.mem_range, Subgroup.mem_map, Subgroup.mem_top, true_and, MonoidHom.comp_apply, Subgroup.coe_subtype, MonoidHom.pow_apply, powMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`.
+
+Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨z, rfl⟩`. Establish `hz : z ∈ K.map (cycMod ℚ Ω l (m + 1))` using `hK ▸ Subgroup.mem_top z`. Take `⟨k, hk, rfl⟩` from `hz`. Conclude with `⟨⟨k, hk⟩, rfl⟩`.
+
+Rewrite using `[hr]`. Conclude with `hlay_card l m h2`. Establish `hcont` using `(UpperTheory.V.Base.contTw ℚ Ω l).1`. Establish `hkerle : (cycMod ℚ Ω l (m + 1)).ker ≤ Hlay Ω l m`. Introduce `σ hσ`.
+
+Use `show (cycMod ℚ Ω l (m + 1) σ) ^ (l - 1) = 1`. Rewrite using `[MonoidHom.mem_ker.mp hσ, one_pow]`. Use `⟨?_, ?_, ?_, ?_, ?_, fun B' hB' => ⟨hidx _ (hsurjIne B' hB' _), hsurjIne B' hB'⟩⟩` and prove the remaining obligations. Apply `Subgroup.isOpen_mono hkerle` to reduce the goal to its premises. Establish `hset : ((cycMod ℚ Ω l (m + 1)).ker : Set (G ℚ Ω)) = cycZ ℚ Ω l ⁻¹' (KStar.TotallyRealRoots.princ l (m + 1) : Set ℤ_[l]ˣ)`.
+
+Use extensionality with `σ`. Both sides reduce to the same expression. Rewrite using `[hset]`. Conclude with `(KStar.TotallyRealRoots.isOpen_princ (m + 1)).preimage hcont`. Conclude with `Abelianization.commutator_subset_ker _`.
+
+Rewrite using `[← Subgroup.relIndex_top_right]`. Conclude with `hidx ⊤ (top_unique ((hsurjIne A hA _).symm.le.trans (Subgroup.map_mono le_top)))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `σ ⟨h1, h1'⟩`. Conclude with `hlay_inf m (cycZ ℚ Ω l σ) h1' h1`.
+
+Introduce `σ hσ`. Conclude with `⟨hkerle hσ, KStar.TotallyRealRoots.princ_anti (by omega) hσ⟩`. Introduce `B' hB'`. Use `((UpperTheory.V.Base.places ℚ Ω l B').2.2.2 hB').trans ?_` and prove the remaining obligations. Introduce `σ hσ`.
+
+Apply `hkerle` to reduce the goal to its premises. Use `show KStar.TotallyRealRoots.redPow l (m + 1) (cycZ ℚ Ω l σ) = 1`. Rewrite using `[MonoidHom.mem_ker.mp hσ, map_one]`.
+-/
 theorem UpperTheory.V.Fr.hlay :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (m : ℕ), l ≠ 2 → IsOpen (Hlay Ω l m : Set (G ℚ Ω)) ∧ commutator (G ℚ Ω) ≤ Hlay Ω l m ∧ (Hlay Ω l m).index = l ^ m ∧ Hlay Ω l m ⊓ (cycMod ℚ Ω l 1).ker = (cycMod ℚ Ω l (m + 1)).ker ∧ (∀ B' : ValuationSubring Ω, ¬ B'.valuation (l : Ω) < 1 → Ine (F := ℚ) B' ≤ Hlay Ω l m) ∧ ∀ B' : ValuationSubring Ω, B'.valuation (l : Ω) < 1 → (Hlay Ω l m).relIndex (Ine (F := ℚ) B') = l ^ m ∧ ∀ r, (Ine (F := ℚ) B').map (cycMod ℚ Ω l r) = ⊤ := by
   intro Ω _ _ _ l _ m h2

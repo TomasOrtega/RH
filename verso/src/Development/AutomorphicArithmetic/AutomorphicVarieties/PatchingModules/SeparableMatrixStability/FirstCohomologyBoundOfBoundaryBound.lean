@@ -6,6 +6,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.SeparableMatrixStability.AmFin
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Use `haveI : Finite (S : Set M) := hS`. Use `choose s hs using (Ideal.Quotient.mk_surjective (I := I))`. Set `f : ↥(B : Set M) × (Fin e → A ⧸ I) → ↥(S : Set M)` to `fun p => ⟨φ (fun i => s (p.2 i)) + p.1, S.add_mem (hφ _) (hBS p.1.2)⟩`. Establish `hf : Function.Injective f`. Introduce and unpack `⟨b, c⟩ ⟨b', c'⟩ hh`.
+
+Establish `h1 : φ (fun i => s (c i)) + b = φ (fun i => s (c' i)) + b'` using `congrArg Subtype.val hh`. Establish `h2 : φ ((fun i => s (c i)) - fun i => s (c' i)) ∈ B`. Rewrite using `[hsub]`. Establish `: φ (fun i => s (c i)) - φ (fun i => s (c' i)) = (b' : M) - b`. Rewrite using `[sub_eq_sub_iff_add_eq_add, h1, add_comm]`.
+
+Rewrite using `[this]`. Conclude with `B.sub_mem b'.2 b.2`. Establish `h3 : c = c'`. Use function extensionality and compare the values at `i`. Rewrite using `[← hs (c i), ← hs (c' i)]`.
+
+Conclude with `Ideal.Quotient.eq.2 (hI _ h2 i)`. Substitute `h3` using the available equality. Conclude with `Prod.ext (Subtype.ext (add_left_cancel h1)) rfl`. Use `Nat.card_le_card_of_injective f hf` as an intermediate fact. Rewrite `this` using `[Nat.card_prod, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin e), Fintype.card_fin, Nat.card_coe_set_eq, Nat.card_coe_set_eq]`. Then use the resulting hypothesis.
+-/
 private theorem card_submodule_mul_quotient_le {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (S B : Submodule A M)
     (hBS : (B : Set M) ⊆ S) (hS : (S : Set M).Finite) (I : Ideal A) (e : ℕ) (φ : (Fin e → A) → M)
     (hφ : ∀ c, φ c ∈ S) (hsub : ∀ c c', φ (c - c') = φ c - φ c') (hI : ∀ c, φ c ∈ B → ∀ i, c i ∈ I) :
@@ -33,6 +42,23 @@ private theorem card_submodule_mul_quotient_le {A M : Type} [CommRing A] [AddCom
   rwa [Nat.card_prod, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin e), Fintype.card_fin,
     Nat.card_coe_set_eq, Nat.card_coe_set_eq] at this
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x k D0 hfg hB e z hz hind`. Take `⟨C, hC⟩` from `coefficients_bounded_of_selmer_boundary l L G G0 h n x k e z hfg hz hind`. Take `⟨C', hC'⟩` from `hB`. Take `⟨⟨S0, hS0⟩, -⟩` from `sel_lin l G.frame n x.A (DD x.A k.g) x.t (fun g => k.ρ1 x.A (h.p₀ g)) (k.w1 x.A) (k.wi1 x.A) (W1 n x.A x.A k.g x.a)`. Establish `hS0' : (S0 : Set _) = Sel1 h x.A k` using `hS0`.
+
+Establish `key : ∀ m, (m - C) * e ≤ m * D0 + C'`. Introduce `m`. Take `⟨⟨S, hS⟩, ⟨B, hB⟩⟩` from `sel_lin l G.frame n x.A (DD (x.Am m) k.g) x.t (fun g => k.ρ1 (x.Am m) (h.p₀ g)) (k.w1 (x.Am m)) (k.wi1 (x.Am m)) (W1 n x.A (x.Am m) k.g x.a)`. Establish `hS' : (S : Set _) = Sel1 h (x.Am m) k` using `hS`. Establish `hB' : (B : Set _) = Bd1 h (x.Am m) k` using `hB`.
+
+Take `⟨hfin, hle⟩` from `hC' m`. Establish `hBS` using `coboundary_first_subset_selmer_first l L G G0 h n x k (x.Am m)`. Rewrite `hfin`, `hle`, `hBS` using `[← hS']`. Rewrite `hle`, `hBS` using `[← hB']`. Establish `hc` using `card_submodule_mul_quotient_le S B hBS hfin (Ideal.span {x.t ^ (m - C)}) e (fun c g => ((∑ i, c i • z i) g).map (x.redD k.g m)) (fun c => by`.
+
+Establish `h1 : (∑ i, c i • z i) ∈ Sel1 h x.A k`. Rewrite using `[← hS0']`. Conclude with `S0.sum_mem fun i _ => S0.smul_mem _ (by rw [← SetLike.mem_coe, hS0']; exact hz i)`. Establish `h2` using `(sel_red l L G G0 h n x k x.A (x.Am m) (Ideal.Quotient.mkₐ x.A _)).2.1 _ h1`. Rewrite `h2` using `[← hS']`.
+
+Conclude with `h2)`. Use the proof step `(fun c c' => by`. Use function extensionality and compare the values at `g`. Use `ext1 a b`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, Matrix.map_apply, Matrix.sub_apply, map_sub])`.
+
+Use the proof step `(fun c hc => hC m c (by rw [← hB']; exact hc))`. Establish `hcard : Nat.card (x.A ⧸ Ideal.span {x.t ^ (m - C)}) = Nat.card x.K ^ (m - C)` using `(am_fin l G0.frame n x (m - C) 0).2.1`. Establish `hpos : 0 < Set.ncard (SetLike.coe B)` using `(Set.ncard_pos (hfin.subset hBS)).2 ⟨0, B.zero_mem⟩`. Rewrite `hc` using `[hcard, ← pow_mul]`. Establish `h3` using `Nat.le_of_mul_le_mul_left (hc.trans hle) hpos`.
+
+Conclude with `(Nat.pow_le_pow_iff_right (am_fin l G0.frame n x 0 0).2.2.2.2.2).1 h3`. Assume the negation of the conclusion as `hlt`. Establish `h1 : D0 + 1 ≤ e` using `by omega`. Establish `h2` using `key (C + (C * D0 + C' + 1))`. Rewrite `h2` using `[Nat.add_sub_cancel_left]`.
+
+Establish `h3` using `(Nat.mul_le_mul_left (C * D0 + C' + 1) h1).trans h2`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem UpperTheory.V.Pa.firstCohomologyBound_of_boundaryBound :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (D0 : ℕ), TopFG G.Γ → FirstSelmerCardBoundAtAllLevels h k D0 → K1 h k D0 := by
   intro l _ L G G0 h n x k D0 hfg hB e z hz hind

@@ -14,10 +14,22 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Z.Desc.W
 section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
+/- English proof (translation)
+Take `⟨x, hx⟩` from `ValuativeRel.valuation_surjective (K := k) (ValuativeRel.uniformizer k)`. Establish `h0 : x ≠ 0` using `fun e => ValuativeRel.uniformizer_ne_zero (R := k) (by rw [← hx, e, map_zero])`. Conclude with `⟨_, eq_unrChar h (ϖ := Units.mk0 x h0) hx⟩`.
+-/
 private theorem exists_unr {ξ : kˣ →* ℂˣ} (h : IsUnram ξ) : ∃ a : ℂˣ, ξ = GlobalTheory.SmGL.unrChar k a := by
   obtain ⟨x, hx⟩ := ValuativeRel.valuation_surjective (K := k) (ValuativeRel.uniformizer k)
   have h0 : x ≠ 0 := fun e => ValuativeRel.uniformizer_ne_zero (R := k) (by rw [← hx, e, map_zero])
   exact ⟨_, eq_unrChar h (ϖ := Units.mk0 x h0) hx⟩
+/- English proof (translation)
+Take `⟨hρ, hq⟩` from `(UpperTheory.Gal.LocD.ofSupport_holds k n V ρ ξ hξ).1 hs`. Set `y : Fin n → IrrGL k` to `fun i => IrrGL.ofChar (ξ i) (hξ i)`. Establish `hy : ∀ i, (y i).IsCusp` using `fun i => IrrGL.isCusp_ofChar _ _`. Establish `hd : ∑ i, (y i).1 = n` using `by simp [y, IrrGL.ofChar]`. Establish `hmem : ∀ i, y i ∈ GlobalTheory.RoadU.chars ξ hξ` using `fun i => Multiset.mem_map_of_mem _ (Finset.mem_univ i)`.
+
+Establish `hnl : ∀ i j, ¬ (Segment.single (y i) (hy i)).Linked (Segment.single (y j) (hy j))` using `fun i j => GlobalTheory.CompanionTheory.BZPair.not_linked_single (hy i) (hy j) (hu _ (hmem j) _ (hmem i)) (hu _ (hmem i) _ (hmem j))`. Establish `hP : (prodIrr y hd).IsIrreducible` using `GlobalTheory.RgGu.Holds.lUnlinkedIrr_holds k n n (fun i => Segment.single (y i) (hy i)) y hd hnl (fun i => (single_spec (hy i)).2.1)`. Take `⟨p⟩` from `(Placing.parInd_jac_placing k _ _ _ (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) (stdBlocks (fun i => (y i).1) hd) _).1 (piTensor fun i => detRep (Fin 1) (ξ i))`. Set `q` to `multiProdEquiv (stdBlocks (fun i => (y i).1) hd) fun i => equivRep (IrrRep.det (Fin 1) (ξ i) (hξ i))`. Establish `hM : (multiProd (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) fun i => detRep (Fin 1) (ξ i)).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv (p.trans q).symm hP`.
+
+Use `haveI := nontrivial_of_irreducible hM`. Use `haveI := GlobalTheory.TypeTwo.PowIrrProof.nontrivial_of_isSubquotient (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) ξ)`. Take `⟨e1⟩` from `GlobalTheory.TypeTwo.PowIrrProof.equiv_of_isSubquotient (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n ξ) hM`. Take `⟨e⟩` from `hq.nonempty_equiv hρ (GlobalTheory.Parabolic.isIrreducible_of_equiv e1 hM)`. Establish `φ : ρ.Equiv (prodIrr y hd)` using `(e.symm.trans e1.symm).trans (p.trans q)`.
+
+Conclude with `⟨⟨e.symm⟩, n, y, hd, ⟨fun i => Segment.single (y i) (hy i), ⟨Fin.univ_val_map _, fun i j _ hp => hnl i j hp.1⟩, fun i => (single_spec (hy i)).2.1⟩, (isCosocle_self hρ).of_equiv (.refl _) φ⟩`.
+-/
 private theorem full_chars [CharZero k] {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) k) V)
     (ξ : Fin n → kˣ →* ℂˣ) (hξ : ∀ i, IsSmoothChar (ξ i)) (hs : HasSupport ρ (GlobalTheory.RoadU.chars ξ hξ))
     (hu : GlobalTheory.RoadU.Unlinked (GlobalTheory.RoadU.chars ξ hξ)) : Nonempty (ρ.Equiv (prinSeries ξ)) ∧
@@ -50,6 +62,13 @@ end Loc
 section WD
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
+/- English proof (translation)
+Establish `h1 : ∀ i g, (WD.lpOfChar h (c i) (hc i)).charPol g = X - C (c i g : ℂ)` using `fun i g => by`. Rewrite using `[WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`. Simplify using the standard rewrite rules. Establish `h2 : ((sumList (List.ofFn fun i => WD.lpOfChar h (c i) (hc i))).charPol (ineIncl h t)).IsRoot (c i (ineIncl h t) : ℂ)`. Rewrite using `[GlobalTheory.LocLanglands.CuspExt.charPol_sumList, List.map_ofFn, List.prod_ofFn]`.
+
+Use `IsRoot.dvd ?_ (Finset.dvd_prod_of_mem _ (Finset.mem_univ i))` and prove the remaining obligations. Simplify using `[h1]`. Generalize the expression as in `sumList (List.ofFn fun i => WD.lpOfChar h (c i) (hc i)) = x at hu h2`. Take `⟨m, b, rfl⟩` from `x.exists_rep`. Rewrite `hu` using `[WD.unr_mk]`.
+
+Rewrite `h2` using `[WD.charPol_mk, hu.2 t, ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`. Take `⟨v, hv⟩` from `h2.exists_hasEigenvector`. Establish `h3` using `hv.apply_eq_smul`. Use `Units.ext (smul_left_injective ℂ hv.2 ?_)` and prove the remaining obligations. Simplify using `using h3.symm`.
+-/
 private theorem eq_one_of_unr {n : ℕ} (c : Fin n → Weil h →* ℂˣ) (hc : ∀ i, GlobalTheory.WeilDeligne.IsSmooth (c i))
     (hu : (sumList (List.ofFn fun i => WD.lpOfChar h (c i) (hc i))).unr) (i : Fin n) (t : Ine (F := E) A) :
     c i (ineIncl h t) = 1 := by
@@ -69,6 +88,19 @@ private theorem eq_one_of_unr {n : ℕ} (c : Fin n → Weil h →* ℂˣ) (hc : 
   refine Units.ext (smul_left_injective ℂ hv.2 ?_)
   simpa using h3.symm
 end WD
+/- English proof (translation)
+Introduce `_ F Ω _ _ _ _ _ l _ ι n r _ w hl A h hI rc ⟨a, ha, L⟩ σ hP hx`. Use `haveI : CharZero (w.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F _).injective`. Establish `e0` using `hx.wdOf_eq hl`. Take `⟨t, ht, φ, hφ, N, b, hN, -, -⟩` from `id hx`. Establish `hxu : (rc (algNorm σ)).unr` using `e0 ▸ (hN.unr_wdOf_iff hl ht ι).2 hI`.
+
+Take `⟨ξ, hξ, hs, hu⟩` from `GlobalTheory.RoadU.plainTor_exists_chars _ _ hP`. Establish `hs' : HasSupport σ.ρ (GlobalTheory.RoadU.chars ξ hξ)` using `hs.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm`. Take `⟨⟨e⟩, hL0⟩` from `full_chars (n := n) σ.ρ ξ hξ hs' hu`. Establish `hL` using `hL0.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred)`. Establish `hr : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = sumList (List.ofFn fun i => WD.lpOfChar h ((ξ i).comp a) (ha.smooth (hξ i)))`.
+
+Rewrite using `[L.langlands _ _ hL, segSum, List.map_ofFn]`. Use `congr 1`. Use `List.ofFn_inj.mpr (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Segment.single, Segment.first_ofFirst, Segment.len_ofFirst, Nat.cast_one, sub_self, zero_div, WD.lpTw_zero, Test.lpChar_lpSp_one, L.one]`. Rewrite `hxu` using `[algNorm, L.nu, hr, WD.unr_tw]`.
+
+Establish `hun : ∀ i, IsUnram (ξ i)` using `fun i u hu1 => by`. Take `⟨g, rfl⟩` from `ha.surj u`. Establish `h0 : deg g = 0`. Establish `h1` using `ha.ord_eq g`. Rewrite `h1` using `[ord_eq_zero_iff.2 hu1]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `eq_one_of_unr _ _ hxu i ⟨g, deg_eq_zero_iff.1 h0⟩`. Use `choose α hα using fun i => exists_unr (hun i)`. Take `rfl : ξ = fun i => GlobalTheory.SmGL.unrChar _ (α i)` from `funext hα`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 (GlobalTheory.PrinSat.hasSatGL_of_equiv e (GlobalTheory.PrinSat.hasSatGL_prinSeries w α)).1`.
+
+Conclude with `⟨v, hv0, GlobalTheory.LGrp.mem_fixed.1 hv⟩`.
+-/
 theorem sphT_alt : _root_.UpperTheory.V.Z.Desc.W.SphTAlt := by
   intro _ F Ω _ _ _ _ _ l _ ι n r _ w hl A h hI rc ⟨a, ha, L⟩ σ hP hx
   haveI : CharZero (w.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F _).injective

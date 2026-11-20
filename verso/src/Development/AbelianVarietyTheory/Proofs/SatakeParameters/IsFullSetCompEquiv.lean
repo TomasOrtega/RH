@@ -26,6 +26,11 @@ namespace GlobalTheory.LevDict
 
 open GlobalTheory.UPel.HT GlobalTheory.DrinLev.HT
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨(Equiv.finite_iff e).2 h1, ?_, fun c f => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr e]`. Conclude with `h2`. Rewrite using `[h3 c f]`.
+
+Conclude with `(finprod_comp_equiv e (f := fun i => c.ev (P i) f)).symm`.
+-/
 theorem isFullSet_comp_equiv {S : Scheme.{0}} {Z : Over S} {J J' : Type} {P : J → (𝟙_ (Over S) ⟶ Z)}
     (h : GlobalTheory.DrinLev.IsFullSet Z P) (e : J' ≃ J) : GlobalTheory.DrinLev.IsFullSet Z (P ∘ e) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -46,6 +51,9 @@ def htLevelAct {o : Obj b N s} {w : Ideal (𝓞 D.F)} {m : ℕ} {e : D.O} (L : H
     obtain ⟨G, β, hβ, hf⟩ := L.full
     exact ⟨G, fun x => β (GlobalTheory.VDiv.glEquiv g x), fun x => hβ (GlobalTheory.VDiv.glEquiv g x), isFullSet_comp_equiv hf (GlobalTheory.VDiv.glEquiv g).toEquiv⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem htLevelAct_α {o : Obj b N s} {w : Ideal (𝓞 D.F)} {m : ℕ} {e : D.O} (L : HTLevel o w m e)
     (g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) (x : Fin D.n → 𝓞 D.F ⧸ w ^ m) :
     (htLevelAct L g).α x = L.α (g.val.mulVec x) := rfl

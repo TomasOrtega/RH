@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.MixedLagrGram
 
+/- English proof (translation)
+Simplify using `only [hTens, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `conv_rhs => enter [2, j, 2, l]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => enter [2, j]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hTens_eq_trace {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E)
     {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
     (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
@@ -23,6 +28,9 @@ theorem hTens_eq_trace {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c :
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[hTens_eq_trace, hTens_eq_trace, ← h, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, Matrix.transpose_map]`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem hTens_restrict {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E)
     {α β γ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype γ] [DecidableEq γ]
     (JA : Matrix α α E) (JB : Matrix β β E) (JB₁ : Matrix γ γ E) (ι : Matrix β γ E)
@@ -35,12 +43,20 @@ theorem hTens_restrict {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c :
   rw [Matrix.trace_mul_comm]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, cA, inclR]`.
+-/
 theorem incM_map_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {m k : Type} (J : Matrix m k E) :
     (incM F J).map (cA σ) = incM F (J.map σ) := by
   ext i j
   simp [incM, cA, inclR]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d d₁ JX JW JW₁ ι h z z'`. Establish `hA : (incM F ι)ᵀ * incM F JW * (incM F ι).map (cA σ) = incM F JW₁`. Rewrite using `[incM_map_cA, ← h]`. Simplify using `only [incM, Matrix.map_mul, Matrix.transpose_map]`. Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1`.
+
+Simplify using `only [incM, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[h1, Matrix.one_mul, Matrix.one_mul]`. Simplify using `only [symp]`. Rewrite using `[hTens_restrict _ _ _ _ _ hA]`.
+-/
 theorem symp_restrict_gram : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d d₁ : ℕ) (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E) (JW₁ : Matrix (Fin d₁) (Fin d₁) E)
     (ι : Matrix (Fin d) (Fin d₁) E), ιᵀ * JW * ι.map σ = JW₁ → ∀ z z' : Matrix (Fin n) (Fin d₁) (AE F E),

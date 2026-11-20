@@ -53,10 +53,20 @@ def polySubst (p : D.what₂.Tau → ℕ) (k₁ : complexSquareMatrixFamily D p)
     MvPolynomial (FVar D m n) ℂ →ₐ[ℂ] MvPolynomial (FVar D m n) ℂ :=
   MvPolynomial.bind₁ (substVar p k₁ k₂ h)
 
+/- English proof (translation)
+Simplify using `[polySubst]`.
+-/
 theorem polySubst_X (p : D.what₂.Tau → ℕ) (k₁ : complexSquareMatrixFamily D p) (k₂ : complementBlockMatrixFamily D m p) (h : HFam D n) (x : FVar D m n) :
     polySubst p k₁ k₂ h (MvPolynomial.X x) = substVar p k₁ k₂ h x := by
   simp [polySubst]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨τ, i, c⟩`. Establish `hi` using `i.isLt`. Establish `e : ∀ k : ℕ, Matrix.map (1 : Matrix (Fin k) (Fin k) ℂ) (MvPolynomial.C : ℂ →+* MvPolynomial (FVar D m n) ℂ) = 1` using `fun k => Matrix.map_one _ (map_zero _) (map_one _)`. Distinguish the cases in `hx : (i : ℕ) < p τ`. Simplify using `[substVar, hx, zPlusS, zPlus, varF, e, hi]`.
+
+Establish `h3 : p τ + ((i : ℕ) - p τ) < m` using `by omega`. Simplify using `only [substVar, hx, zMinusS, zMinus, varF, e, dif_neg, not_false_eq_true, transpose_one, Matrix.map_one, map_zero, map_one, Matrix.one_mul, Matrix.mul_one, Matrix.of_apply]`. Rewrite using `[dif_pos (by omega)]`. Use `congr 1`. Simplify using `only [Prod.mk.injEq, Fin.ext_iff, true_and, and_true]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem substVar_one (p : D.what₂.Tau → ℕ) :
     substVar (m := m) (n := n) p (fun τ => (1 : Matrix (Fin (p τ)) (Fin (p τ)) ℂ))
       (fun τ => (1 : Matrix (Fin (m - p τ)) (Fin (m - p τ)) ℂ)) (fun _ => 1) = MvPolynomial.X := by

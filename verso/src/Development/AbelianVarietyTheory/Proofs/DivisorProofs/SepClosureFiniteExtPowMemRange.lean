@@ -7,6 +7,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Published.AbVarRed
 
+/- English proof (translation)
+Introduce `K L Ω Ω' _ _ _ _ _ _ _ _ _ _ _ _ j y`. Use `haveI : IsSepClosed Ω := IsSepClosure.sep_closed K`. Use `haveI : Algebra.IsSeparable L Ω' := IsSepClosure.separable`. Use `haveI : Algebra.IsAlgebraic K L := Algebra.IsAlgebraic.of_finite K L`. Use `haveI : Algebra.IsAlgebraic K Ω' := Algebra.IsAlgebraic.trans K L Ω'`.
+
+Use `set S := separableClosure K Ω'`. Use `set q := ringExpChar K`. Use `haveI : ExpChar Ω' q := expChar_of_injective_algebraMap (algebraMap K Ω').injective q`. Use `haveI : ExpChar S q := expChar_of_injective_algebraMap (algebraMap K S).injective q`. Take `⟨n, ⟨z, hz⟩⟩` from `(isPurelyInseparable_iff_pow_mem S q).1 inferInstance y`.
+
+Establish `hzsep : IsSeparable K (z : Ω')` using `mem_separableClosure_iff.1 z.2`. Establish `hsplit : ((minpoly K (z : Ω')).map (algebraMap K Ω)).Splits` using `IsSepClosed.splits_codomain _ hzsep`. Establish `hroot : (((minpoly K (z : Ω')).map (algebraMap K Ω)).map (j : Ω →+* Ω')).IsRoot (z : Ω')`. Rewrite using `[Polynomial.map_map, AlgHom.comp_algebraMap]`. Simplify using `[Polynomial.IsRoot, Polynomial.eval_map_algebraMap]`.
+
+Take `⟨x, hx⟩` from `hsplit.mem_range_of_isRoot (Polynomial.map_ne_zero (minpoly.ne_zero hzsep.isIntegral)) hroot`. Use `⟨q ^ n, x, pow_pos (expChar_pos K q) n, ?_, fun a b => sub_pow_expChar_pow a b n⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Simplify using `using hx.symm`.
+-/
 theorem sepClosure_finiteExt_pow_mem_range :
     ∀ (K L Ω Ω' : Type) [Field K] [Field L] [Field Ω] [Field Ω'] [Algebra K L]
       [FiniteDimensional K L] [Algebra K Ω] [IsSepClosure K Ω] [Algebra L Ω'] [IsSepClosure L Ω']

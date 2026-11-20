@@ -18,10 +18,18 @@ section Generic
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ]
 
+/- English proof (translation)
+Introduce `m hm`. Simplify using `at hm`.
+-/
 theorem homog_zero (a : K → ℕ) : IsMultiHomog (0 : MRing ι) a := by
   intro m hm
   simp at hm
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_one]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `absurd rfl hm`.
+-/
 theorem homog_one : IsMultiHomog (1 : MRing ι) 0 := by
   classical
   intro m hm k
@@ -31,6 +39,9 @@ theorem homog_one : IsMultiHomog (1 : MRing ι) 0 := by
     simp
   · exact absurd rfl hm
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.1 (MvPolynomial.support_add hm) with h | h` into its components or cases. Use `exacts [hf m h k, hg m h k]`.
+-/
 theorem homog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
   classical
@@ -38,6 +49,9 @@ theorem homog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg :
   rcases Finset.mem_union.1 (MvPolynomial.support_add hm) with h | h
   exacts [hf m h k, hg m h k]
 
+/- English proof (translation)
+Introduce `m hm`. Rewrite `hm` using `[mem_support_iff, coeff_neg, neg_ne_zero, ← mem_support_iff]`. Conclude with `hf m hm`.
+-/
 theorem homog_neg {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) : IsMultiHomog (-f) a := by
   intro m hm
   rw [mem_support_iff, coeff_neg, neg_ne_zero, ← mem_support_iff] at hm
@@ -68,11 +82,21 @@ def fracPairs (c c' : (Σ k, ι k) → Φ) : Subring (Φ × Φ) where
     rintro w ⟨γ, r, q, hr, hq, h, h', e, e'⟩
     exact ⟨γ, -r, q, homog_neg hr, hq, h, h', by simp [e], by simp [e']⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨γ, r, q, hr, hq, h, h', e, e'⟩`.
+-/
 theorem mem_fracPairs_of {c c' : (Σ k, ι k) → Φ} {γ : K → ℕ} {r q : MRing ι} {y y' : Φ} (hr : IsMultiHomog r γ)
     (hq : IsMultiHomog q γ) (h : aeval c q ≠ 0) (h' : aeval c' q ≠ 0) (e : aeval c r = aeval c q * y)
     (e' : aeval c' r = aeval c' q * y') : (y, y') ∈ fracPairs c c' :=
   ⟨γ, r, q, hr, hq, h, h', e, e'⟩
 
+/- English proof (translation)
+Take `⟨γ₁, r₁, q₁, hr₁, hq₁, h₁, h₁', e₁, e₁'⟩` from `hp`. Take `⟨γ₂, r₂, q₂, hr₂, hq₂, h₂, h₂', e₂, e₂'⟩` from `hp'`. Use `⟨γ₁ + γ₂, r₁ * q₂, q₁ * r₂, exHomog_mul hr₁ hq₂, exHomog_mul hq₁ hr₂, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, e₂]`. Conclude with `mul_ne_zero h₁ (mul_ne_zero h₂ h0)`.
+
+Rewrite using `[map_mul, e₂']`. Conclude with `mul_ne_zero h₁' (mul_ne_zero h₂' h0)`. Rewrite using `[map_mul, map_mul, e₁, e₂]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[map_mul, map_mul, e₁', e₂']`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem fracPairs_div {c c' : (Σ k, ι k) → Φ} {p p' : Φ} (hp : (p, p) ∈ fracPairs c c')
     (hp' : (p', p') ∈ fracPairs c c') (h0 : p' ≠ 0) : (p / p', p / p') ∈ fracPairs c c' := by
   obtain ⟨γ₁, r₁, q₁, hr₁, hq₁, h₁, h₁', e₁, e₁'⟩ := hp
@@ -87,6 +111,9 @@ theorem fracPairs_div {c c' : (Σ k, ι k) → Φ} {p p' : Φ} (hp : (p, p) ∈ 
   · rw [map_mul, map_mul, e₁', e₂']
     field_simp
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C y => simpa using hf y`. Consider the case `add p q hp hq => simpa using add_mem hp hq`. Consider the case `mul_X p j hp => simpa using mul_mem hp (hz j)`.
+-/
 theorem eval₂_mem_fracPairs {R : Type} [CommRing R] (f : R →+* Φ) {c c' : (Σ k, ι k) → Φ}
     (hf : ∀ y, (f y, f y) ∈ fracPairs c c') {n : Type} (z z' : n → Φ) (hz : ∀ j, (z j, z' j) ∈ fracPairs c c')
     (G : MvPolynomial n R) : (eval₂ f z G, eval₂ f z' G) ∈ fracPairs c c' := by
@@ -95,6 +122,9 @@ theorem eval₂_mem_fracPairs {R : Type} [CommRing R] (f : R →+* Φ) {c c' : (
   | add p q hp hq => simpa using add_mem hp hq
   | mul_X p j hp => simpa using mul_mem hp (hz j)
 
+/- English proof (translation)
+Establish `h1` using `congrArg (MvPolynomial.eval u) (DiagRAux.multiConeMap_of_homog c s β hs)`. Establish `h2 : (MvPolynomial.eval u).comp (T.multiConeMap c) = (aeval (fun p => u p.1 * c p) : MRing ι →ₐ[ℤ] Φ).toRingHom` using `MvPolynomial.ringHom_ext (fun r => by simp [T.multiConeMap]) (fun p => by simp [T.multiConeMap, mul_comm])`. Rewrite `h1` using `[← RingHom.comp_apply, h2, map_mul, eval_C, map_prod]`. Simplify using `only [map_pow, eval_X, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h1`. Rewrite using `[h1, mul_comm]`.
+-/
 theorem aeval_scale (u : K → Φ) (c : (Σ k, ι k) → Φ) (s : MRing ι) (β : K → ℕ) (hs : IsMultiHomog s β) :
     aeval (fun p => u p.1 * c p) s = (∏ k, u k ^ β k) * aeval c s := by
   have h1 := congrArg (MvPolynomial.eval u) (DiagRAux.multiConeMap_of_homog c s β hs)
@@ -107,6 +137,13 @@ theorem aeval_scale (u : K → Φ) (c : (Σ k, ι k) → Φ) (s : MRing ι) (β 
 
 end Generic
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq`. Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `dvd_add hp hq`.
+
+Consider the case `mul_X p n hp`. Rewrite using `[map_mul, aeval_X]`. Establish `e : p * X n - aeval (fun _ => (X 0 : MvPolynomial (Fin 2) R)) p * X 0 = (p - aeval (fun _ => (X 0 : MvPolynomial (Fin 2) R)) p) * X n + aeval (fun _ => (X 0 : MvPolynomial (Fin 2) R)) p * (X n - X 0)` using `by ring`. Rewrite using `[e]`. Use `dvd_add (dvd_mul_of_dvd_left hp _) (dvd_mul_of_dvd_right ?_ _)` and prove the remaining obligations.
+
+Use `fin_cases n`. Simplify using the standard rewrite rules. Conclude with `dvd_rfl`.
+-/
 theorem X_sub_X_dvd {R : Type} [CommRing R] (P : MvPolynomial (Fin 2) R) :
     (X 1 - X 0 : MvPolynomial (Fin 2) R) ∣ P - aeval (fun _ => (X 0 : MvPolynomial (Fin 2) R)) P := by
   induction P using MvPolynomial.induction_on with
@@ -125,6 +162,9 @@ theorem X_sub_X_dvd {R : Type} [CommRing R] (P : MvPolynomial (Fin 2) R) :
     · simp
     · exact dvd_rfl
 
+/- English proof (translation)
+Rewrite using `[show (Finset.univ : Finset T.WBlk) = {.base, .det, .line0, .line1} from rfl]`. Simplify using `[Finset.prod_insert, mul_assoc]`.
+-/
 theorem prod_wblk {M : Type} [CommMonoid M] (g : T.WBlk → M) :
     ∏ k, g k = g .base * g .det * g .line0 * g .line1 := by
   rw [show (Finset.univ : Finset T.WBlk) = {.base, .det, .line0, .line1} from rfl]
@@ -148,12 +188,24 @@ def blockScale {M : Type} (u₁ u₂ u₃ u₄ : M) : T.WBlk → M
   | .line0 => u₃
   | .line1 => u₄
 
+/- English proof (translation)
+Simplify using `only [T.lineVal, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lineVal_comb (e : Module.Basis (Fin 2) Ω E) (φ₀ φ₁ : E →ₗ[Ω] Ω) (c₀ c₁ : Ω) (b : Φ) :
     T.lineVal e (c₀ • φ₀ + c₁ • φ₁) b =
       algebraMap Ω Φ c₀ * T.lineVal e φ₀ b + algebraMap Ω Φ c₁ * T.lineVal e φ₁ b := by
   simp only [T.lineVal, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, map_add, map_mul]
   ring
 
+/- English proof (translation)
+Establish `hx' : algebraMap Ω Φ (x i) ≠ 0` using `(map_ne_zero _).2 hx`. Establish `hδ' : algebraMap Ω Φ (δ l₀) ≠ 0` using `(map_ne_zero _).2 hδ`. Use function extensionality and compare the values at `p`. Break down `p with ⟨_ | _ | _ | _, j⟩` into its components or cases. Simplify using `only [T.wwCoord, blockScale, ratioPoly, eval₂_C, RingHom.comp_apply, Subfield.coe_subtype]`.
+
+Rewrite using `[hxb j, map_div₀]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [T.wwCoord, blockScale, ratioPoly, eval₂_C, RingHom.comp_apply, Subfield.coe_subtype]`. Rewrite using `[hε j, map_div₀]`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `only [T.wwCoord, blockScale, ratioPoly, eval₂_add, eval₂_mul, eval₂_C, eval₂_X, RingHom.comp_apply, Subfield.coe_subtype, hw₀]`. Rewrite using `[hc j, lineVal_comb]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [T.wwCoord, blockScale, ratioPoly, eval₂_add, eval₂_mul, eval₂_C, eval₂_X, RingHom.comp_apply, Subfield.coe_subtype, hw₁]`. Rewrite using `[hc j, lineVal_comb]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem wwCoord_eq (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω) (F : Subfield Ω)
     (i : ι) (l₀ : ν) (k₀ k₁ : κ) (hx : x i ≠ 0) (hδ : δ l₀ ≠ 0) (xb : ι → F) (ε : ν → F) (c₀ c₁ : κ → F)
     (hxb : ∀ j, (xb j : Ω) = x j / x i) (hε : ∀ l, (ε l : Ω) = δ l / δ l₀)
@@ -183,6 +235,9 @@ theorem wwCoord_eq (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω
     rw [hc j, lineVal_comb]
     field_simp
 
+/- English proof (translation)
+Establish `h : (eval₂Hom f w).comp (aeval g : MvPolynomial σ ℤ →ₐ[ℤ] MvPolynomial n R).toRingHom = (aeval (fun p => eval₂ f w (g p)) : MvPolynomial σ ℤ →ₐ[ℤ] Φ).toRingHom` using `MvPolynomial.ringHom_ext (fun r => by simp) (fun p => by simp)`. Conclude with `(RingHom.congr_fun h s).symm`.
+-/
 theorem aeval_comp_eval₂ {σ n R : Type} [CommRing R] (f : R →+* Φ) (w : n → Φ) (g : σ → MvPolynomial n R)
     (s : MvPolynomial σ ℤ) : aeval (fun p => eval₂ f w (g p)) s = eval₂ f w (aeval g s) := by
   have h : (eval₂Hom f w).comp (aeval g : MvPolynomial σ ℤ →ₐ[ℤ] MvPolynomial n R).toRingHom =
@@ -190,6 +245,9 @@ theorem aeval_comp_eval₂ {σ n R : Type} [CommRing R] (f : R →+* Φ) (w : n 
     MvPolynomial.ringHom_ext (fun r => by simp) (fun p => by simp)
   exact (RingHom.congr_fun h s).symm
 
+/- English proof (translation)
+Establish `h` using `exHomog_mul (exHomog_mul (exHomog_mul (exHomog_pow (exHomog_X (ι := T.wwIdx ι ν κ) T.WBlk.base i) n₁) (exHomog_pow (exHomog_X (ι := T.wwIdx ι ν κ) T.WBlk.det l) n₂)) (exHomog_pow (exHomog_X (ι := T.wwIdx ι ν κ) T.WBlk.line0 k) n₃)) (exHomog_pow (exHomog_X (ι := T.wwIdx ι ν κ) T.W …`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`. Apply the tactic sequence `cases b <;> simp [blockScale]`.
+-/
 theorem homog_monomial (i : ι) (l : ν) (k : κ) (n₁ n₂ n₃ n₄ : ℕ) :
     IsMultiHomog (X ⟨.base, i⟩ ^ n₁ * X ⟨.det, l⟩ ^ n₂ * X ⟨.line0, k⟩ ^ n₃ * X ⟨.line1, k⟩ ^ n₄ :
       MRing (T.wwIdx ι ν κ)) (blockScale n₁ n₂ n₃ n₄) := by
@@ -201,6 +259,15 @@ theorem homog_monomial (i : ι) (l : ν) (k : κ) (n₁ n₂ n₃ n₄ : ℕ) :
   funext b
   cases b <;> simp [blockScale]
 
+/- English proof (translation)
+Establish `hq` using `exHomog_mul (exHomog_X (ι := T.wwIdx ι ν κ) T.WBlk.line0 k₀) (exHomog_X T.WBlk.line1 k₀)`. Prove the components needed by the constructor for the conclusion. Use `mem_fracPairs_of (exHomog_mul (exHomog_X T.WBlk.line0 k₁) (exHomog_X T.WBlk.line1 k₀)) hq ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, aeval_X, T.wwCoord]`. Conclude with `mul_ne_zero h₀ h₁`.
+
+Simplify using `only [map_mul, aeval_X, T.wwCoord]`. Conclude with `mul_ne_zero h₀ h₀`. Simplify using `only [map_mul, aeval_X, T.wwCoord]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [map_mul, aeval_X, T.wwCoord]`.
+
+Clear the denominators using the available nonvanishing facts. Use `mem_fracPairs_of (exHomog_mul (exHomog_X T.WBlk.line0 k₀) (exHomog_X T.WBlk.line1 k₁)) hq ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, aeval_X, T.wwCoord]`. Conclude with `mul_ne_zero h₀ h₁`. Simplify using `only [map_mul, aeval_X, T.wwCoord]`.
+
+Conclude with `mul_ne_zero h₀ h₀`. Simplify using `only [map_mul, aeval_X, T.wwCoord]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [map_mul, aeval_X, T.wwCoord]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem line_mem_fracPairs (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω) (k₀ k₁ : κ)
     (b₀ b₁ : Φ) (h₀ : T.lineVal e (φ k₀) b₀ ≠ 0) (h₁ : T.lineVal e (φ k₀) b₁ ≠ 0) :
     (T.lineVal e (φ k₁) b₀ / T.lineVal e (φ k₀) b₀, T.lineVal e (φ k₁) b₀ / T.lineVal e (φ k₀) b₀) ∈
@@ -234,6 +301,51 @@ end DiagonalFormDivisor
 
 open DiagonalFormDivisor in
 
+/- English proof (translation)
+Introduce `Ω _ ι ν κ _ _ _ E _ _ Φ _ _ x B e φ δ hS hG hD hx a ha α d hd hdΔ`. Take `⟨i, hi⟩` from `hx`. Take `⟨l₀, k₀, k₁, hδ, hDet, hε, ⟨c₀, c₁, hc₀, hc₁, hc⟩, hκ⟩` from `hF Ω ι ν κ E x B e φ δ hS hG hD i hi`. Take `⟨hL, hind⟩` from `MobiusAlgIndep.proof Ω Φ 2 a (φ k₁ (e 0)) (φ k₁ (e 1)) (φ k₀ (e 0)) (φ k₀ (e 1)) ha (fun h => hDet (by linear_combination -h))`. Establish `hL' : ∀ j, T.lineVal e (φ k₀) (a j) ≠ 0` using `hL`.
+
+Establish `hx' : algebraMap Ω Φ (x i) ≠ 0` using `(map_ne_zero _).2 hi`. Establish `hδ' : algebraMap Ω Φ (δ l₀) ≠ 0` using `(map_ne_zero _).2 hδ`. Set `F` to `chartFunField x i`. Set `f : F →+* Φ` to `(algebraMap Ω Φ).comp F.subtype`. Set `z : Fin 2 → Φ` to `fun j => T.lineVal e (φ k₁) (a j) / T.lineVal e (φ k₀) (a j)`.
+
+Set `zΔ : Fin 2 → Φ` to `fun _ => z 0`. Establish `hindF : ∀ Q : MvPolynomial (Fin 2) F, eval₂ f z Q = 0 → Q = 0`. Introduce `Q hQ`. Establish `h1 : aeval z (map F.subtype Q) = 0`. Rewrite using `[aeval_def, eval₂_map]`.
+
+Conclude with `hQ`. Establish `h2 : map F.subtype Q = 0` using `algebraicIndependent_iff_injective_aeval.mp hind (h1.trans (map_zero _).symm)`. Conclude with `map_injective _ (fun u v h => Subtype.ext h) (h2.trans (map_zero _).symm)`. Set `xb : ι → F` to `fun j => ⟨x j / x i, Subfield.subset_closure ⟨j, rfl⟩⟩`. Set `ε : ν → F` to `fun l => ⟨δ l / δ l₀, hε l⟩`.
+
+Set `C₀ : κ → F` to `fun k => ⟨c₀ k, hc₀ k⟩`. Set `C₁ : κ → F` to `fun k => ⟨c₁ k, hc₁ k⟩`. Establish `hev : ∀ (b₀ b₁ : Φ) (w : Fin 2 → Φ), T.lineVal e (φ k₀) b₀ ≠ 0 → T.lineVal e (φ k₀) b₁ ≠ 0 → w 0 = T.lineVal e (φ k₁) b₀ / T.lineVal e (φ k₀) b₀ → w 1 = T.lineVal e (φ k₁) b₁ / T.lineVal e (φ k₀) b₁ → aeval (T.wwCoord x δ e φ b₀ b₁) d = (∏ k, blockScale (algebraMap Ω Φ (x i)) (al …`. Introduce `b₀ b₁ w h₀ h₁ hw₀ hw₁`. Rewrite using `[wwCoord_eq x δ e φ F i l₀ k₀ k₁ hi hδ xb ε C₀ C₁ (fun _ => rfl) (fun _ => rfl) hc b₀ b₁ w h₀ h₁ hw₀ hw₁]`.
+
+Conclude with `(aeval_scale _ (fun p => eval₂ f w (ratioPoly xb ε C₀ C₁ p)) d α hd).trans (by rw [aeval_comp_eval₂])`. Establish `hc1` using `hev (a 0) (a 1) z (hL' 0) (hL' 1) rfl rfl`. Establish `hcΔ` using `hev (a 0) (a 0) zΔ (hL' 0) (hL' 0) rfl rfl`. Establish `hU : ∀ u₀ u₁ : Φ, u₀ ≠ 0 → u₁ ≠ 0 → (∏ k, blockScale (algebraMap Ω Φ (x i)) (algebraMap Ω Φ (δ l₀)) u₀ u₁ k ^ α k) ≠ 0`. Introduce `u₀ u₁ h₀ h₁`.
+
+Use `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ ?_` and prove the remaining obligations. Apply the tactic sequence `cases k <;> assumption`. Establish `h0 : aeval (T.wwCoord x δ e φ (a 0) (a 0)) d = 0`. Assume the negation of the conclusion as `h`. Conclude with `(DiagRAux.not_mem_ker_iff_aeval_ne _ d α hd).2 h hdΔ`.
+
+Establish `hPΔ : eval₂ f zΔ (aeval (ratioPoly xb ε C₀ C₁) d) = 0`. Rewrite `h0` using `[hcΔ]`. Conclude with `(mul_eq_zero.1 h0).resolve_left (hU _ _ (hL' 0) (hL' 0))`. Establish `hP₀ : aeval (fun _ : Fin 2 => (X 0 : MvPolynomial (Fin 2) F)) (aeval (ratioPoly xb ε C₀ C₁) d) = 0`. Apply `hindF` to reduce the goal to its premises.
+
+Rewrite using `[aeval_eq_bind₁, ← coe_eval₂Hom, eval₂Hom_bind₁]`. Simplify using `only [coe_eval₂Hom, eval₂_X]`. Conclude with `hPΔ`. Take `⟨G, hGP⟩` from `X_sub_X_dvd (aeval (ratioPoly xb ε C₀ C₁) d)`. Rewrite `hGP` using `[hP₀, sub_zero]`.
+
+Establish `hPz : eval₂ f z (aeval (ratioPoly xb ε C₀ C₁) d) = (z 1 - z 0) * eval₂ f z G`. Rewrite using `[hGP]`. Simplify using the standard rewrite rules. Establish `htD : T.diagSec a * algebraMap Ω Φ (φ k₀ (e 0) * φ k₁ (e 1) - φ k₁ (e 0) * φ k₀ (e 1)) = (z 1 - z 0) * (T.lineVal e (φ k₀) (a 0) * T.lineVal e (φ k₀) (a 1))`. Establish `h0'` using `hL' 0`.
+
+Establish `h1'` using `hL' 1`. Simplify using `only [z]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [T.diagSec, T.lineVal, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hκx : algebraMap Ω Φ ((φ k₀ (e 0) * φ k₁ (e 1) - φ k₁ (e 0) * φ k₀ (e 1)) * δ l₀ / x i ^ 3) * algebraMap Ω Φ (x i) ^ 3 = algebraMap Ω Φ (φ k₀ (e 0) * φ k₁ (e 1) - φ k₁ (e 0) * φ k₀ (e 1)) * algebraMap Ω Φ (δ l₀)`. Rewrite using `[← map_pow, ← map_mul, ← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hsub : Subring.closure (Set.range fun j => x j / x i) ≤ (fracPairs (T.wwCoord x δ e φ (a 0) (a 1)) (T.wwCoord x δ e φ (a 0) (a 0))).comap (RingHom.prod (algebraMap Ω Φ) (algebraMap Ω Φ))`.
+
+Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap]`. Use `⟨Pi.single T.WBlk.base 1, X ⟨.base, j⟩, X ⟨.base, i⟩, exHomog_X _ _, exHomog_X _ _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `hx'` using `[T.wwCoord]`.
+
+Simplify `hx'` using `[T.wwCoord]`. Simplify using `only [aeval_X, T.wwCoord, RingHom.prod_apply, map_div₀]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [aeval_X, T.wwCoord, RingHom.prod_apply, map_div₀]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hFmem : ∀ y : F, (f y, f y) ∈ fracPairs (T.wwCoord x δ e φ (a 0) (a 1)) (T.wwCoord x δ e φ (a 0) (a 0))`. Introduce `y`. Take `⟨p, hp, p', hp', hy⟩` from `Subfield.mem_closure_iff.1 y.2`. Establish `h1` using `hsub hp`. Establish `h2` using `hsub hp'`.
+
+Rewrite `h1`, `h2` using `[Subring.mem_comap, RingHom.prod_apply]`. Establish `hfy : f y = algebraMap Ω Φ p / algebraMap Ω Φ p'`. Rewrite using `[← map_div₀, hy]`. Both sides reduce to the same expression. Rewrite using `[hfy]`.
+
+Distinguish the cases in `hp0 : p' = 0`. Rewrite using `[hp0, map_zero, div_zero]`. Conclude with `zero_mem _`. Conclude with `fracPairs_div h1 h2 ((map_ne_zero _).2 hp0)`. Take `⟨hz0, hz1⟩` from `line_mem_fracPairs x δ e φ k₀ k₁ (a 0) (a 1) (hL' 0) (hL' 1)`.
+
+Establish `hzmem : ∀ j, (z j, zΔ j) ∈ fracPairs (T.wwCoord x δ e φ (a 0) (a 1)) (T.wwCoord x δ e φ (a 0) (a 0))`. Introduce `j`. Use `fin_cases j`. Use `exacts [hz0, hz1]`. Establish `hGmem` using `eval₂_mem_fracPairs f hFmem z zΔ hzmem G`.
+
+Establish `hκmem` using `hFmem ⟨_, hκ⟩`. Take `⟨γ', r', q', hr', hq', -, hq'Δ, e', -⟩` from `mul_mem hκmem hGmem`. Establish `hfκ : f ⟨_, hκ⟩ = algebraMap Ω Φ ((φ k₀ (e 0) * φ k₁ (e 1) - φ k₁ (e 0) * φ k₀ (e 1)) * δ l₀ / x i ^ 3)`. Both sides reduce to the same expression. Rewrite `e'` using `[Prod.fst_mul, hfκ]`.
+
+Establish `hs` using `exHomog_mul hq' (homog_monomial i l₀ k₀ 0 1 1 1)`. Establish `hr` using `exHomog_mul hr' (homog_monomial i l₀ k₀ (α .base + 3) (α .det) (α .line0) (α .line1))`. Use `⟨_, _, _, _, hs, hr, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Apply the tactic sequence `cases k <;> simp only [Pi.add_apply, blockScale, T.wwDeg] <;> omega`.
+
+Rewrite using `[T.wwIdeal, DiagRAux.not_mem_ker_iff_aeval_ne _ _ _ hs]`. Simplify using `only [map_mul, aeval_X, T.wwCoord, pow_zero, pow_one, one_mul]`. Conclude with `mul_ne_zero hq'Δ (mul_ne_zero (mul_ne_zero hδ' (hL' 0)) (hL' 0))`. Rewrite using `[hc1, hPz]`. Simplify using `only [map_mul, map_pow, aeval_X, T.wwCoord, prod_wblk, blockScale, pow_zero, pow_one, one_mul]`.
+
+Rewrite using `[e']`. Take the linear combination `(-(algebraMap Ω Φ (x i) ^ α .base * algebraMap Ω Φ (δ l₀) ^ α .det * T.lineVal e (φ k₀) (a 0) ^ α .line0 * T.lineVal e (φ k₀) (a 1) ^ α .line1 * eval₂ f z G * aeval (T.wwCoord x δ e φ (a 0) (a 1)) q' * algebraMap Ω Φ (δ l₀))) * htD + (-(T.diagSec a * aeval (T.wwCoord x δ e φ (a 0 …`.
+-/
 theorem DiagFormDiv.proof (hF : ChartFormsRational.Statement) : DiagFormDiv.Statement := by
   intro Ω _ ι ν κ _ _ _ E _ _ Φ _ _ x B e φ δ hS hG hD hx a ha α d hd hdΔ
   obtain ⟨i, hi⟩ := hx

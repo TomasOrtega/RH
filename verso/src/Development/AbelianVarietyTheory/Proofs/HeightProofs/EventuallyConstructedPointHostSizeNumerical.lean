@@ -10,12 +10,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Plug
 
+/- English proof (translation)
+Take `⟨sp, hT, hY, hA, hV, hz, rfl, -⟩` from `h`. Conclude with `⟨K.ok.arith.1, K.ok.arith.2.1, K.ok.arith.2.2.1, (Pre.ofCh K.P K.Lv sp hT hY hA hV hz).level_split⟩`.
+-/
 theorem hostArith_of_over {K : Ctx} {B : Pre} (h : K.Over B) : HostArith B.host := by
   obtain ⟨sp, hT, hY, hA, hV, hz, rfl, -⟩ := h
   exact ⟨K.ok.arith.1, K.ok.arith.2.1, K.ok.arith.2.2.1, (Pre.ofCh K.P K.Lv sp hT hY hA hV hz).level_split⟩
 
+/- English proof (translation)
+The claim follows from `hostArith_of_over β.c.isOver`.
+-/
 theorem hostArith_bpt {K : Ctx} (β : BPt K) : HostArith β.D.host := hostArith_of_over β.c.isOver
 
+/- English proof (translation)
+Use `EvP.of_ev ⟨1, one_pos, fun eps C8 he _ he52 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hStd _ _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c1, hN⟩` from `szRow_numAt eps he he52 C hStd`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, hN⟩` from `hN cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x0, hN⟩` from `hN ch hch`. Use `⟨max x0 (max (C.T.CP ^ 20) ((10 : ℝ) ^ 60)), fun K h1 h2 h3 h4 hx β => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨hy0, hyP, hy60⟩` from `hx`. Establish `hsc : β.O.L.sc = K.s` using `β.sc`.
+
+Establish `hsx : β.O.L.sc.x = K.s.x` using `by rw [hsc]`. Establish `hse : β.O.L.sc.eps = eps` using `by rw [hsc, h4]`. Establish `hv : Val C cD ch β.O.L`. Rewrite using `[← h1, ← h2, ← h3]`. Conclude with `β.p.pt_val β.val`.
+
+Take `⟨⟨N⟩, -, -⟩` from `hN _ _ hse (hy0.trans hsx.ge) hv (hostArith_bpt β)`. Establish `hCP : N.parT.CP = C.T.CP` using `(List.cons.inj N.parT_K).1`. Establish `hg : ∀ j, Real.log (β.D.host.g j) ≤ 9 * β.O.L.sc.L + 1`. Introduce `j`. Establish `hlo : 0 < ((β.D.host.g j : ℕ) : ℝ)`.
+
+Conclude with `(β.D.host.g_prime j).pos` after adjusting the coercions. Use `(Real.log_le_iff_le_exp hlo).2 (N.g_le j)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hH, hS⟩` from `GlobalTheory.FieldSize.hostSz_of_sizes β.D β.O.L N.params N.parT N.sizes hg (hy60.trans hsx.ge)`. Use `⟨hH, fun Cf hT => ⟨β.O.ex.kap_def, ⟨N.params, N.parT, N.sizes, N.CnW_eq.trans hStd.1.2.2.2.2.2.2.2.1, hg, ?_, ?_, hsx.ge⟩, hS (hT.small _ hH)⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hCP]`. Conclude with `hStd.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Rewrite using `[hCP]`. Conclude with `hyP.trans (hsx.ge.trans (x_le_zBase_of_pow_le_n β.O.L N.win.1.1))`.
+-/
 theorem eventually_hostSize_and_numAt : EvP fun _ K => ∀ β : BPt K, GlobalTheory.FieldSize.HostSz β.D.host β.O.L.sc.L ∧
     ∀ C, FieldTies β.D C → NumAtL β.O.L K.s.x := by
   refine EvP.of_ev ⟨1, one_pos, fun eps C8 he _ he52 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hStd _ _ => ?_⟩⟩

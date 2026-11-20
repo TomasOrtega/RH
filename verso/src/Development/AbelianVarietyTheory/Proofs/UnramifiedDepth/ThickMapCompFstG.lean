@@ -17,11 +17,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _ |>.trans (Category.comp_id _)`.
+-/
 private theorem thickMap_comp_fstG {R : Type} [CommRing R] (I : Ideal R) (e : ℕ)
     (G : Over (Spec (CommRingCat.of R))) :
     Out.thickMap R I e G ≫ (Out.fstG I (e + 1) G).left = (Out.fstG I e G).left :=
   pullback.lift_fst _ _ _ |>.trans (Category.comp_id _)
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U k S _ _ z y h`. Take `⟨w, h₁, h₂⟩` from `h`. Use `⟨w ≫ Out.thickMap R I k G, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (w ≫ ·) (thickMap_comp_fstG I k G)).trans h₁)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (w ≫ ·) (U.gt_q k)).trans h₂)`.
+-/
 theorem qRel_succ : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : Out.DegData R I) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Out.UnifPre I D A G) (k : ℕ) (S : Type) [CommRing S] [Algebra R S] z y, QRel (U.gt k) S z y → QRel (U.gt (k + 1)) S z y := by
   intro R _ _ I D A G _ _ U k S _ _ z y h
   obtain ⟨w, h₁, h₂⟩ := h

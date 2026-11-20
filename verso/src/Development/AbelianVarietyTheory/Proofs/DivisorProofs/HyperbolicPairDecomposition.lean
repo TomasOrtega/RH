@@ -11,23 +11,38 @@ namespace GlobalTheory.UnipMass.StdMat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[cA, inclR]`.
+-/
 theorem cA_inclR_eq (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (AF F) e) = inclR (AF F) (σ e) := by
   simp [cA, inclR]
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [cA, hσ]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem cA_cA_eq (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (a : AE F E) : cA σ (cA σ a) = a := by
   induction a using TensorProduct.induction_on with
   | zero => simp
   | tmul r e => simp [cA, hσ]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[incM, incV, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+-/
 theorem incM_mulVec_incV_eq {m n : ℕ} (A : Matrix (Fin m) (Fin n) E) (v : Fin n → E) :
     incM F A *ᵥ incV F v = incV F (A *ᵥ v) := by
   ext i; simp [incM, incV, Matrix.mulVec, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[incV, cA_inclR_eq]`.
+-/
 theorem cA_incV_eq (σ : E →ₐ[F] E) {n : ℕ} (x : Fin n → E) :
     (fun i => cA σ (incV F x i)) = incV F (fun i => σ (x i)) := by
   funext i; simp [incV, cA_inclR_eq]
 
+/- English proof (translation)
+Rewrite using `[hA, cA_incV_eq, incM_mulVec_incV_eq]`. Simplify using `[form, incV, dotProduct, map_sum, map_mul]`.
+-/
 theorem hA_incV_eq (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b : Fin n → E) :
     hA σ J (incV F a) (incV F b) = inclR (AF F) (form σ J a b) := by
   rw [hA, cA_incV_eq, incM_mulVec_incV_eq]
@@ -35,22 +50,39 @@ theorem hA_incV_eq (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Simplify using `[hA, add_dotProduct]`.
+-/
 theorem hA_add_l (v v' w : Fin n → AE F E) : hA σ J (v + v') w = hA σ J v w + hA σ J v' w := by
   simp [hA, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hA, smul_dotProduct]`.
+-/
 theorem hA_smul_l (a : AE F E) (v w : Fin n → AE F E) : hA σ J (a • v) w = a * hA σ J v w := by
   simp [hA, smul_dotProduct]
 
+/- English proof (translation)
+Establish `: (fun i => cA σ ((w + w') i)) = (fun i => cA σ (w i)) + (fun i => cA σ (w' i))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[hA, this, Matrix.mulVec_add, dotProduct_add]`. Both sides reduce to the same expression.
+-/
 theorem hA_add_r (v w w' : Fin n → AE F E) : hA σ J v (w + w') = hA σ J v w + hA σ J v w' := by
   have : (fun i => cA σ ((w + w') i)) = (fun i => cA σ (w i)) + (fun i => cA σ (w' i)) := by
     funext i; simp
   rw [hA, this, Matrix.mulVec_add, dotProduct_add]; rfl
 
+/- English proof (translation)
+Establish `: (fun i => cA σ ((a • w) i)) = cA σ a • (fun i => cA σ (w i))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[hA, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem hA_smul_r (a : AE F E) (v w : Fin n → AE F E) : hA σ J v (a • w) = cA σ a * hA σ J v w := by
   have : (fun i => cA σ ((a • w) i)) = cA σ a • (fun i => cA σ (w i)) := by
     funext i; simp
   rw [hA, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]; rfl
 
+/- English proof (translation)
+Simplify using `only [hA, dotProduct, Matrix.mulVec, incM, Matrix.map_apply, map_sum, map_mul, cA_cA_eq σ hσ, cA_inclR_eq, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Simplify using `only [map_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hA_skew_eq (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = -J i j) (v w : Fin n → AE F E) :
     hA σ J w v = -cA σ (hA σ J v w) := by
   simp only [hA, dotProduct, Matrix.mulVec, incM, Matrix.map_apply, map_sum, map_mul, cA_cA_eq σ hσ, cA_inclR_eq,
@@ -65,6 +97,11 @@ namespace GlobalTheory.UnipMass.StdMat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J` using `g.2`. Establish `hc : (fun i => cA σ ((mat g *ᵥ w) i)) = (mat g).map (cA σ) *ᵥ fun i => cA σ (w i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (cA σ).toRingHom (mat g) w i`. Rewrite using `[hA, hA, hc, ← Matrix.vecMul_transpose (mat g) v, ← Matrix.dotProduct_mulVec]`.
+
+Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[← Matrix.mul_assoc, hg]`.
+-/
 theorem hA_mat_eq (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) (v w : Fin n → AE F E) :
     hA σ J (mat g *ᵥ v) (mat g *ᵥ w) = hA σ J v w := by
   have hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J := g.2
@@ -74,6 +111,11 @@ theorem hA_mat_eq (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} 
   simp only [Matrix.mulVec_mulVec]
   rw [← Matrix.mul_assoc, hg]
 
+/- English proof (translation)
+Establish `hq : ιᵀ *ᵥ (J *ᵥ fun i => σ (w i)) = 0`. Use function extensionality and compare the values at `k`. Use `h (Pi.single k 1)` as an intermediate fact. Rewrite `this` using `[form, Matrix.mulVec_single_one]`. Conclude with `this`.
+
+Rewrite using `[hA, cA_incV_eq, incM_mulVec_incV_eq, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, show (incM F ι)ᵀ = incM F ιᵀ from rfl, incM_mulVec_incV_eq, hq]`. Establish `: incV F (0 : Fin d₁ → E) = 0` using `by funext i; simp [incV]`. Rewrite using `[this, dotProduct_zero]`.
+-/
 theorem hA_ι_incV_eq (σ : E →ₐ[F] E) {d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E) (ι : Matrix (Fin d) (Fin d₁) E)
     (w : Fin d → E) (h : ∀ u, form σ J (ι *ᵥ u) w = 0) (z : Fin d₁ → AE F E) :
     hA σ J (incM F ι *ᵥ z) (incV F w) = 0 := by
@@ -87,12 +129,23 @@ theorem hA_ι_incV_eq (σ : E →ₐ[F] E) {d d₁ : ℕ} (J : Matrix (Fin d) (F
   have : incV F (0 : Fin d₁ → E) = 0 := by funext i; simp [incV]
   rw [this, dotProduct_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+-/
 theorem incV_add_eq {n : ℕ} (a b : Fin n → E) : incV F (a + b) = incV F a + incV F b := by
   funext i; simp [incV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+-/
 theorem incV_smul_eq {n : ℕ} (s : E) (a : Fin n → E) : incV F (s • a) = inclR (F := F) (AF F) s • incV F a := by
   funext i; simp [incV]
 
+/- English proof (translation)
+Use `choose s t u hu using fun i => hdec (Pi.single i 1)`. Establish `he : ∀ i, incV F (Pi.single i (1 : E)) = inclR (F` using `F) (AF F) (s i) • incV F x + incM F ι *ᵥ incV F (u i) + inclR (F := F) (AF F) (t i) • incV F y := by`. Introduce `i`. Rewrite using `[hu i, incV_add_eq, incV_add_eq, incV_smul_eq, incV_smul_eq, incM_mulVec_incV_eq]`. Establish `hv : v = ∑ i, v i • incV F (Pi.single i (1 : E))`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[incV, Finset.sum_apply, Pi.single_apply]`. Use `⟨∑ i, v i * inclR (F := F) (AF F) (s i), ∑ i, v i * inclR (F := F) (AF F) (t i), ∑ i, v i • incV F (u i), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [he, smul_add, smul_smul, Finset.sum_add_distrib, Finset.sum_smul, Matrix.mulVec_sum, Matrix.mulVec_smul]`.
+-/
 theorem decomp_eq {d d₁ : ℕ} (x y : Fin d → E) (ι : Matrix (Fin d) (Fin d₁) E)
     (hdec : ∀ v : Fin d → E, ∃ (s t : E) (u : Fin d₁ → E), v = s • x + ι *ᵥ u + t • y) (v : Fin d → AE F E) :
     ∃ (s t : AE F E) (z : Fin d₁ → AE F E), v = s • incV F x + incM F ι *ᵥ z + t • incV F y := by
@@ -108,6 +161,19 @@ theorem decomp_eq {d d₁ : ℕ} (x y : Fin d → E) (ι : Matrix (Fin d) (Fin d
     _ = _ := by
       simp only [he, smul_add, smul_smul, Finset.sum_add_distrib, Finset.sum_smul, Matrix.mulVec_sum, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Unfold `unip at hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem u hu => exact hu`. Consider the case `one => exact ⟨by simp [mat], fun z => ⟨0, by simp [mat]⟩⟩`. Consider the case `mul u v _ _ hu hv`.
+
+Establish `hm : mat (u * v) = mat u * mat v` using `rfl`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, ← Matrix.mulVec_mulVec, hv.1, hu.1]`. Take `⟨a, ha⟩` from `hv.2 z`. Take `⟨b, hb⟩` from `hu.2 z`.
+
+Use `⟨b + a, ?_⟩` and prove the remaining obligations. Rewrite using `[hm, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_add, Matrix.mulVec_smul, hb, hu.1, add_smul]`. Normalize the expressions using the abelian group laws. Consider the case `inv u _ hu`. Establish `h1 : mat u⁻¹ * mat u = 1`.
+
+Rewrite using `[show mat u⁻¹ * mat u = mat (u⁻¹ * u) from rfl, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hx : mat u⁻¹ *ᵥ incV F H'.x = incV F H'.x` using `by conv_lhs => rw [← hu.1]`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Use `⟨hx, fun z => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `hu.2 z`. Establish `key : mat u⁻¹ *ᵥ (incM F H'.ι *ᵥ z + a • incV F H'.x) = incM F H'.ι *ᵥ z`. Rewrite using `[← ha, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite `key` using `[Matrix.mulVec_add, Matrix.mulVec_smul, hx]`. Use `⟨-a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_sub_of_add_eq key, neg_smul, sub_eq_add_neg]`.
+-/
 theorem mem_unip_std (σ : E →ₐ[F] E) {d d₁ : ℕ} (W : Spc F E d) (H' : Plane E d d₁) (g : UA σ W.J)
     (hg : g ∈ unip σ W H') :
     mat g *ᵥ incV F H'.x = incV F H'.x ∧
@@ -143,6 +209,27 @@ end GlobalTheory.UnipMass.StdMat
 
 namespace GlobalTheory.UnipMass.StdMat
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d d₁ W H' hJ hxx hyy hxy horth hdec g hg`. Establish `hXX : hA σ W.J (incV F H'.x) (incV F H'.x) = 0` using `by rw [hA_incV_eq, hxx, map_zero]`. Establish `hYY : hA σ W.J (incV F H'.y) (incV F H'.y) = 0` using `by rw [hA_incV_eq, hyy, map_zero]`. Establish `hXY : hA σ W.J (incV F H'.x) (incV F H'.y) = 1` using `by rw [hA_incV_eq, hxy, map_one]`. Establish `hYX : hA σ W.J (incV F H'.y) (incV F H'.x) = -1`.
+
+Rewrite using `[hA_skew_eq σ W.J hσ hJ, hXY, map_one]`. Establish `hιX : ∀ z, hA σ W.J (incM F H'.ι *ᵥ z) (incV F H'.x) = 0` using `hA_ι_incV_eq σ W.J H'.ι H'.x (fun u => (horth u).1)`. Establish `hιY : ∀ z, hA σ W.J (incM F H'.ι *ᵥ z) (incV F H'.y) = 0` using `hA_ι_incV_eq σ W.J H'.ι H'.y (fun u => (horth u).2)`. Establish `hXι : ∀ z, hA σ W.J (incV F H'.x) (incM F H'.ι *ᵥ z) = 0` using `fun z => by`. Rewrite using `[hA_skew_eq σ W.J hσ hJ, hιX, map_zero, neg_zero]`.
+
+Establish `hYι : ∀ z, hA σ W.J (incV F H'.y) (incM F H'.ι *ᵥ z) = 0` using `fun z => by`. Rewrite using `[hA_skew_eq σ W.J hσ hJ, hιY, map_zero, neg_zero]`. Take `⟨hgX, hgι⟩` from `mem_unip_std σ W H' g hg`. Establish `inv : ∀ v w, hA σ W.J (mat g *ᵥ v) (mat g *ᵥ w) = hA σ W.J v w` using `hA_mat_eq σ g`. Establish `dec` using `decomp_eq (F := F) H'.x H'.y H'.ι hdec`.
+
+Take `⟨α, γ, β, hgY⟩` from `dec (mat g *ᵥ incV F H'.y)`. Establish `hγ : γ = 1`. Establish `h` using `inv (incV F H'.y) (incV F H'.x)`. Rewrite `h` using `[hgX, hgY]`. Simplify using `only [hA_add_l, hA_smul_l, hXX, hιX, hYX] at h`.
+
+Take the linear combination `-h`. Substitute `hγ` using the available equality. Establish `ha : ∀ z (a : AE F E), mat g *ᵥ (incM F H'.ι *ᵥ z) = incM F H'.ι *ᵥ z + a • incV F H'.x → a = -hA σ W.J (incM F H'.ι *ᵥ z) (incM F H'.ι *ᵥ β)`. Introduce `z a h`. Establish `h2` using `inv (incM F H'.ι *ᵥ z) (incV F H'.y)`.
+
+Rewrite `h2` using `[h, hgY]`. Simplify using `only [hA_add_l, hA_add_r, hA_smul_l, hA_smul_r, hXX, hXY, hιX, hιY, hXι, mul_zero, mul_one, zero_add, add_zero, one_smul] at h2`. Take the linear combination `h2`. Establish `hα : α - cA σ α = -hA σ W.J (incM F H'.ι *ᵥ β) (incM F H'.ι *ᵥ β)`. Establish `h3` using `inv (incV F H'.y) (incV F H'.y)`.
+
+Rewrite `h3` using `[hgY]`. Simplify using `only [hA_add_l, hA_add_r, hA_smul_l, hA_smul_r, hXX, hXY, hYX, hYY, hιX, hιY, hXι, hYι, mul_zero, mul_one, zero_add, add_zero, one_smul, one_mul] at h3`. Take the linear combination `h3`. Use `⟨β, α, hα, ?_⟩` and prove the remaining obligations. Establish `key : ∀ v, mat g *ᵥ v = nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ β) α *ᵥ v`.
+
+Introduce `v`. Take `⟨s, t, z, rfl⟩` from `dec v`. Take `⟨a, hz⟩` from `hgι z`. Establish `ha'` using `ha z a hz`. Rewrite using `[nmat_mulVec]`.
+
+Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, hgX, hz, hgY, hA_add_l, hA_smul_l, hXX, hιX, hYX, hXι, hYι, mul_zero, zero_add, add_zero, one_smul]`. Rewrite using `[ha']`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use extensionality with `i j`. Establish `h4` using `congrFun (key (Pi.single j 1)) i`. Simplify `h4` using `[Matrix.mulVec_single_one]`.
+-/
 theorem unip_eq_nmat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), (∀ a, σ (σ a) = a) → ∀ (d d₁ : ℕ) (W : Spc F E d) (H' : Plane E d d₁), (∀ i j, σ (W.J j i) = -W.J i j) → form σ W.J H'.x H'.x = 0 → form σ W.J H'.y H'.y = 0 → form σ W.J H'.x H'.y = 1 → (∀ u, form σ W.J (H'.ι *ᵥ u) H'.x = 0 ∧ form σ W.J (H'.ι *ᵥ u) H'.y = 0) → (∀ v : Fin d → E, ∃ (s t : E) (u : Fin d₁ → E), v = s • H'.x + H'.ι *ᵥ u + t • H'.y) → ∀ g ∈ unip σ W H', ∃ (b : Fin d₁ → AE F E) (c : AE F E), c - cA σ c = -hA σ W.J (incM F H'.ι *ᵥ b) (incM F H'.ι *ᵥ b) ∧ mat g = nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ b) c := by
   intro F E _ _ _ _ _ σ hσ d d₁ W H' hJ hxx hyy hxy horth hdec g hg
   have hXX : hA σ W.J (incV F H'.x) (incV F H'.x) = 0 := by rw [hA_incV_eq, hxx, map_zero]

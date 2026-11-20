@@ -12,12 +12,22 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.HtPull
 
+/- English proof (translation)
+Introduce `B _ Z Z' x φ W h h' s`. Unfold `secVal`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+-/
 theorem seccomp : ∀ (B : Type) [CommRing B] (Z Z' : Scheme.{0}) (x : Spec (CommRingCat.of B) ⟶ Z') (φ : Z' ⟶ Z) (W : Z.Opens) (h : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ W)) (h' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ W) (s : Γ(Z, W)), secVal x (φ ⁻¹ᵁ W) h (φ.app W s) = secVal (x ≫ φ) W h' s := by
   intro B _ Z Z' x φ W h h' s
   unfold secVal
   rw [Scheme.Hom.comp_appLE]
   rfl
 
+/- English proof (translation)
+Introduce `B B' _ _ ψ Z x W h h' s`. Unfold `secVal`. Establish `e : (spMap ψ ≫ x).appLE W ⊤ h' = x.appLE W ⊤ h ≫ (spMap ψ).appTop`. Establish `e₁ : (spMap ψ).appTop = (spMap ψ).appLE ⊤ ⊤ le_top`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+
+Both sides reduce to the same expression. Rewrite using `[e₁]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap ψ) x W ⊤ ⊤ h _).symm`. Rewrite using `[e]`. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ)`.
+
+Establish `n' : (Scheme.ΓSpecIso (CommRingCat.of B')).hom.hom ((spMap ψ).appTop.hom ((x.appLE W ⊤ h).hom s)) = ψ ((Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom ((x.appLE W ⊤ h).hom s))` using `(ConcreteCategory.congr_hom n.symm ((x.appLE W ⊤ h).hom s)).symm`. Conclude with `n'`.
+-/
 theorem secring : ∀ (B B' : Type) [CommRing B] [CommRing B'] (ψ : B →+* B') (Z : Scheme.{0}) (x : Spec (CommRingCat.of B) ⟶ Z) (W : Z.Opens) (h : ⊤ ≤ x ⁻¹ᵁ W) (h' : ⊤ ≤ (spMap ψ ≫ x) ⁻¹ᵁ W) (s : Γ(Z, W)), secVal (spMap ψ ≫ x) W h' s = ψ (secVal x W h s) := by
   intro B B' _ _ ψ Z x W h h' s
   unfold secVal
@@ -34,6 +44,11 @@ theorem secring : ∀ (B B' : Type) [CommRing B] [CommRing B'] (ψ : B →+* B')
     (ConcreteCategory.congr_hom n.symm ((x.appLE W ⊤ h).hom s)).symm
   exact n'
 
+/- English proof (translation)
+Introduce `X X' G _ G' _ f φ h`. Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over X'))))`. Establish `e₁ : (1 : 𝟙_ (Over X') ⟶ G') = η[G']` using `by rw [Hom.one_def]; simp`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations.
+
+Use `show (toUnit _ ≫ η[G]).left = _`. Simplify using the standard rewrite rules.
+-/
 theorem eta : ∀ (X X' : Scheme.{0}) (G : Over X) [GrpObj G] (G' : Over X') [GrpObj G'] (f : X' ⟶ X) (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → (η[G']).left ≫ φ = f ≫ (η[G]).left := by
   intro X X' G _ G' _ f φ h
   have e := congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over X'))))
@@ -43,6 +58,13 @@ theorem eta : ∀ (X X' : Scheme.{0}) (G : Over X) [GrpObj G] (G' : Over X') [Gr
   show (toUnit _ ≫ η[G]).left = _
   simp
 
+/- English proof (translation)
+Introduce `X G _ q v hv W hq z _`. Take `⟨p, rfl⟩` from `LieCarrier.surjective_fst z`. Establish `h1 : (1 : Over.mk (X.fromSpecStalk q) ⟶ G).left = X.fromSpecStalk q ≫ (η[G]).left`. Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules.
+
+Establish `e : v.left (Spec.map _ p) = (η[G]).left (X.fromSpecStalk q p)` using `congrArg (fun g => g p) (hv.trans h1)`. Use `show v.left _ ∈ W`. Use `e.symm ▸ ?_` and prove the remaining obligations. Establish `h3 : X.fromSpecStalk q p ⤳ q`. Establish `: X.fromSpecStalk q p ∈ Set.range (X.fromSpecStalk q)` using `⟨p, rfl⟩`.
+
+Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Conclude with `(h3.map (η[G]).left.continuous).mem_open W.isOpen hq`.
+-/
 theorem tanin : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (q : X) (v : epsAt (X.fromSpecStalk q) ⟶ G), IsTanAt G _ v → ∀ W : G.left.Opens, (η[G]).left q ∈ W → ⊤ ≤ v.left ⁻¹ᵁ W := by
   intro X G _ q v hv W hq z _
   obtain ⟨p, rfl⟩ := LieCarrier.surjective_fst z
@@ -57,6 +79,9 @@ theorem tanin : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (q : X) (v : epsAt 
     rwa [Scheme.range_fromSpecStalk] at this
   exact (h3.map (η[G]).left.continuous).mem_open W.isOpen hq
 
+/- English proof (translation)
+Establish `key : ∀ (t : Spec (CommRingCat.of B') ⟶ Z) (_ : t = spMap ψ ≫ x) (h2 : ⊤ ≤ t ⁻¹ᵁ W), secVal t W h2 s = ψ (secVal x W h0 s)`. Introduce and unpack `_ rfl h2`. Conclude with `secring B B' ψ Z x W h0 h2 s`. Rewrite using `[seccomp B' Z Z' x' φ W h h s]`. Conclude with `key _ hx h`.
+-/
 theorem comp_ring {B B' : Type} [CommRing B] [CommRing B'] (ψ : B →+* B') {Z Z' : Scheme.{0}}
     (x' : Spec (CommRingCat.of B') ⟶ Z') (x : Spec (CommRingCat.of B) ⟶ Z) (φ : Z' ⟶ Z) (hx : x' ≫ φ = spMap ψ ≫ x)
     (W : Z.Opens) (h : ⊤ ≤ x' ⁻¹ᵁ (φ ⁻¹ᵁ W)) (h0 : ⊤ ≤ x ⁻¹ᵁ W) (s : Γ(Z, W)) :
@@ -68,6 +93,9 @@ theorem comp_ring {B B' : Type} [CommRing B] [CommRing B'] (ψ : B →+* B') {Z 
   rw [seccomp B' Z Z' x' φ W h h s]
   exact key _ hx h
 
+/- English proof (translation)
+Simplify using `[dualMap]`.
+-/
 theorem dualMap_snd {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') (a : DualNumber R) :
     (dualMap φ a).snd = φ a.snd := by
   simp [dualMap]

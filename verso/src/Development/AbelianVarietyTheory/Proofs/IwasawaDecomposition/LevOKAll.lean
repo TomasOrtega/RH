@@ -7,6 +7,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.LevelOK
 
+/- English proof (translation)
+Introduce `D V β L`. Take `⟨hO, hC, hS, U, hU, hk⟩` from `GlobalTheory.Mem.LevelSmooth.level_open_compact_smooth D V β L`. Use `⟨⟨hC, ?_⟩, U, hU, fun k hkU hkG => ?_⟩` and prove the remaining obligations. Establish `: (((Lev.levA V (lev D.sp.cm (HSpace.gram V) β L)).subgroupOf (GfC V)) : Set (GfC V)) = Subtype.val ⁻¹' ((Subgroup.comap (Lev.finE V) (lev D.sp.cm (HSpace.gram V) β L)) : Set (GA D V))`. Use extensionality with `x`.
+
+Simplify using `[Subgroup.mem_subgroupOf, Lev.levA, x.2]`. Rewrite using `[this]`. Conclude with `hO.preimage continuous_subtype_val`. Take `⟨h1, h2⟩` from `hk k hkU hkG`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem levOK_all : ∀ D : D7, LevOK D := by
   intro D V β L
   obtain ⟨hO, hC, hS, U, hU, hk⟩ := GlobalTheory.Mem.LevelSmooth.level_open_compact_smooth D V β L

@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.CoverNorm
 
+/- English proof (translation)
+Introduce `F _ _ Y V L₁ L₂ f a l c h₁ h₂ v`. Take `⟨e⟩` from `(ExtConj.main F).1 v`. Take `⟨y⟩` from `ValGroup.nonempty_algPt Y`. Take `⟨z, hz⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_lift_pt V.π y.1`. Take `⟨yt, hyt, hU⟩` from `V.exists_valuationRing_point e y z hz`.
+
+Take `⟨r₁, -, hu₁, -, hf₁⟩` from `h₁`. Take `⟨r₂, -, hu₂, -, hf₂⟩` from `h₂`. Establish `chart (B : HermLB V.p) : ∃ i, yt (IsLocalRing.closedPoint e.O) ∈ B.B.U i` using `TopologicalSpace.Opens.mem_iSup.1 (B.isLB.cover.ge (Set.mem_univ _))`. Take `⟨i, hi⟩` from `chart L₁`. Take `⟨i', hi'⟩` from `chart L₂`.
+
+Establish `k₁` using `hf₁ v e y z yt (fun _ => i) hz hyt (hU _ hi)`. Establish `k₂` using `hf₂ v e y z yt (fun _ => i') hz hyt (hU _ hi')`. Establish `hx : ∀ (B : HermLB V.p) (j : B.B.ι), yt (IsLocalRing.closedPoint e.O) ∈ B.B.U j → below z ∈ (B.B.pull V.j).U (fun _ => j)`. Introduce `B j hj`. Establish `h1 : (spMap e.O.subtype) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ yt ⁻¹ᵁ B.B.U j` using `hU _ hj trivial`.
+
+Establish `h2 : (z ≫ V.j) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ B.B.U j`. Rewrite using `[← hyt]`. Conclude with `h1`. Conclude with `Set.mem_iInter.2 fun _ => h2`. Establish `hb : V.π (below z) = below y.1` using `by rw [← hz]; rfl`.
+
+Establish `n₁` using `(Base.valAt_zpow z (hb ▸ hu₁ (fun _ => i) (below z) (hx L₁ i hi))).1`. Establish `n₂` using `(Base.valAt_zpow z (hb ▸ hu₂ (fun _ => i') (below z) (hx L₂ i' hi'))).1`. Establish `key : c v = Real.log (e.w (TrueGeo.valAt z (V.φ (f (below y.1)) * ((r₂ fun _ => i' : V.G.functionFieldˣ) : V.G.functionField)) / TrueGeo.valAt z (V.φ (f (below y.1)) * ((r₁ fun _ => i : V.G.functionFieldˣ) : V.G.functionField))))`. Rewrite using `[map_div₀, Real.log_div (e.w.ne_zero n₂) (e.w.ne_zero n₁), ← k₁]`. Simplify using `only at k₂`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m, q, hm, hq⟩` from `GlobalTheory.ExtValueGroup.log_w_rat F v e _ (div_ne_zero n₂ n₁)`. Conclude with `⟨m, q, hm, by rw [key]; exact hq⟩`.
+-/
 theorem const_rat : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (L₁ L₂ : HermLB V.p) (f : Y.X → Y.Fn) (a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ) (l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ) (c : HeightOneSpectrum (𝓞 F) → ℝ), Norms V L₁ f a l → Norms V L₂ f a (fun v e y => l v e y + c v) → ∀ v, ∃ (m : ℕ) (z : ℤ), 0 < m ∧ (m : ℝ) * c v = (z : ℝ) * Real.log (Ideal.absNorm v.asIdeal : ℝ) := by
   intro F _ _ Y V L₁ L₂ f a l c h₁ h₂ v
   obtain ⟨e⟩ := (ExtConj.main F).1 v

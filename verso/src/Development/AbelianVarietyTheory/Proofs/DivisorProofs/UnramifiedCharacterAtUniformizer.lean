@@ -14,6 +14,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 local instance locField (v : Pl F) : IsNonarchimedeanLocalField (Fv F v) := GlobalTheory.LocalData.isLocalField v
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `e` using `ValuativeRel.isEquiv (valuation (Fv F v)) (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ)))`. Establish `hu : valuation (Fv F v) ((unifAt v : (Fv F v)ˣ) : Fv F v) = uniformizer (Fv F v)` using `(GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec`. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `hπv : Valued.v ((π : F) : Fv F v) = WithZero.exp (-1 : ℤ)`.
+
+Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]`. Establish `hlt : Valued.v ((unifAt v : (Fv F v)ˣ) : Fv F v) < 1` using `e.lt_one_iff_lt_one.1 (hu ▸ uniformizer_lt_one)`. Establish `h0 : Valued.v ((unifAt v : (Fv F v)ˣ) : Fv F v) ≠ 0` using `by simp`. Establish `hle1 : valuation (Fv F v) ((π : F) : Fv F v) ≤ valuation (Fv F v) ((unifAt v : (Fv F v)ˣ) : Fv F v)`. Rewrite using `[hu, le_uniformizer_iff]`.
+
+Conclude with `e.lt_one_iff_lt_one.2 (by rw [hπv, ← WithZero.exp_zero, WithZero.exp_lt_exp]; omega)`. Establish `hge : WithZero.exp (-1 : ℤ) ≤ Valued.v ((unifAt v : (Fv F v)ˣ) : Fv F v)` using `hπv ▸ (e _ _).1 hle1`. Rewrite `hlt`, `hge`, the goal using `[← WithZero.exp_log h0]`. Rewrite `hlt` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite `hge` using `[WithZero.exp_le_exp]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem valued_unifAt (v : Pl F) : Valued.v ((unifAt v : (Fv F v)ˣ) : Fv F v) = WithZero.exp (-1 : ℤ) := by
   haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
   have e := ValuativeRel.isEquiv (valuation (Fv F v)) (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ)))
@@ -35,6 +44,9 @@ theorem valued_unifAt (v : Pl F) : Valued.v ((unifAt v : (Fv F v)ˣ) : Fv F v) =
   congr 1
   omega
 
+/- English proof (translation)
+Use `h.locChar_eq_val ?_` and prove the remaining obligations. Use `show Valued.v (complMap (splitPrime_under t) ((unifAt v : (Fv F v)ˣ) : Fv F v)) = WithZero.exp (-1 : ℤ)`. Rewrite using `[GlobalTheory.LFun.SplitTie.valued_complMap t (splitPrime_under t), valued_unifAt]`.
+-/
 theorem chrW_unifAt (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (χ : Chr F E)
     (v : Pl F) (t : E →ₐ[F] Fv F v) (h : UnrAt χ (splitPrime t)) : chrW χ t (unifAt v) = val χ (splitPrime t) := by
   refine h.locChar_eq_val ?_

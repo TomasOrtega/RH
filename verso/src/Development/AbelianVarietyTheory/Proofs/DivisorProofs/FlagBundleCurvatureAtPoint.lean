@@ -31,6 +31,23 @@ noncomputable section
 
 namespace GlobalTheory.LineChart
 
+/- English proof (translation)
+Take `⟨W, hW, n, hSp, hMax⟩` from `exists_cellLocus B Y π ι r E fl hE U eU heU`. Set `A` to `CommRingCat.of (MvPolynomial (Σ a, Low (r a)) Γ(B, U))`. Set `g : Spec A ⟶ B` to `Spec.map (CommRingCat.ofHom (MvPolynomial.C : Γ(B, U) →+* MvPolynomial (Σ a, Low (r a)) Γ(B, U))) ≫ hU.fromSpec`. Establish `hgU : (⊤ : (Spec A).Opens) ≤ g ⁻¹ᵁ U`. Simplify using `[g, Scheme.Hom.comp_preimage, hU.fromSpec_preimage_self]`.
+
+Set `n' : (Σ a, Low (r a)) → Γ(Spec A, ⊤)` to `fun s => (Scheme.ΓSpecIso A).inv.hom (MvPolynomial.X s)`. Establish `hfr : ∀ a, IsFrame (pullCol g (eU a) hgU (uniR fun s => n' ⟨a, s⟩))` using `fun a => UniColFrame.isFrame_pullCol_uniR _ _ g (E a) (r a) (hE a) U (eU a) (heU a) ⊤ hgU _`. Use `choose fl' hfl' using fun a => exists_flag_spans_of_frame (Spec A) _ (r a) _ (hfr a)`. Take `⟨ψ, ⟨w, hC⟩, -⟩` from `hfl (Spec A) g fl'`. Establish `hψ : (⊤ : (Spec A).Opens) ≤ ψ ⁻¹ᵁ W`.
+
+Introduce `t _`. Take `⟨V, hV, n₀, ht, hV'⟩` from `CellOpen.spans_uniR_near_image B Y π ι r E fl hE U eU heU (Spec A) ψ g w fl' hC ⊤ hgU n' hfl' t trivial`. Take `⟨hVW, -⟩` from `hMax V hV n₀ hV'`. Conclude with `hVW ht`. Establish `hn : ∀ s, (ψ.appLE W ⊤ hψ).hom (n s) = (Scheme.ΓSpecIso A).inv.hom (MvPolynomial.X s)`.
+
+Introduce and unpack `⟨a, s⟩`. Establish `h1` using `spans_pullCol_of_carries B Y (Spec A) π ι r E fl ψ g w fl' hC U a (eU a) W hW (uniR fun s => n ⟨a, s⟩) ⊤ hψ hgU (hSp a)`. Rewrite `h1` using `[map_uniR]`. Conclude with `congrFun (low_eq_of_spans_pullCol (Spec A) B g (E a) (r a) (hE a) U (eU a) (heU a) (fl' a) ⊤ hgU _ _ h1 (hfl' a)) s`. Set `φ : W.toScheme ⟶ Spec A` to `W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n))`.
+
+Take `⟨hφg, hφn⟩` from `cellToSpec B Y π U hU W hW _ n`. Establish `hφg' : φ ≫ g = W.ι ≫ π` using `by simpa only [φ, g, Category.assoc] using hφg`. Establish `hWU : (⊤ : W.toScheme.Opens) ≤ (W.ι ≫ π) ⁻¹ᵁ U`. Introduce `x _`. Conclude with `hW x.2`.
+
+Establish `h₁ : (⊤ : W.toScheme.Opens) ≤ φ ⁻¹ᵁ ⊤` using `le_top.trans (by simp)`. Establish `h₂ : (⊤ : W.toScheme.Opens) ≤ W.ι ⁻¹ᵁ W` using `fun x _ => x.2`. Establish `hφC : Carries g E r fl' φ (W.ι ≫ π) hφg' (carried π E r fl W.ι (W.ι ≫ π) rfl)`. Introduce `a i`. Establish `k₁` using `spans_pullCol_of_carries _ _ _ g ι r E fl' φ (W.ι ≫ π) hφg' _ (carries_carried g E r fl' φ (W.ι ≫ π) hφg') U a (eU a) ⊤ hgU (uniR fun s => n' ⟨a, s⟩) ⊤ h₁ hWU (hfl' a)`.
+
+Establish `k₂` using `spans_pullCol_of_carries _ _ _ π ι r E fl W.ι (W.ι ≫ π) rfl _ (carries_carried π E r fl W.ι (W.ι ≫ π) rfl) U a (eU a) W hW (uniR fun s => n ⟨a, s⟩) ⊤ h₂ hWU (hSp a)`. Rewrite `k₁`, `k₂` using `[map_uniR]`. Establish `e : (fun s => (φ.appLE ⊤ ⊤ h₁).hom (n' ⟨a, s⟩)) = fun s => (W.ι.appLE W ⊤ h₂).hom (n ⟨a, s⟩)`. Use function extensionality and compare the values at `fun s => hφn h₁ h₂ _`. Rewrite `k₁` using `[e]`.
+
+Take `⟨e, he⟩` from `steps_iso_of_spans_top _ _ _ _ _ _ k₁ k₂ i`. Conclude with `⟨e, by simpa [carried, Vert.Flag.ofIso, Vert.Flag.pull] using he⟩`. Establish `huniq : W.ι = φ ≫ ψ` using `(hfl W.toScheme (W.ι ≫ π) (carried π E r fl W.ι (W.ι ≫ π) rfl)).unique ⟨rfl, carries_carried π E r fl W.ι (W.ι ≫ π) rfl⟩ ⟨by rw [Category.assoc, w, hφg'], carries_comp π E r fl ψ g w fl' φ (W.ι ≫ π) hφg' _ _ hC hφC⟩`. Take `⟨hAff, hBij⟩` from `isAffineOpen_and_bijective_of_section B Y π U hU W hW _ n ψ w hψ hn (by simpa only [φ, Category.assoc] using huniq.symm)`. Conclude with `⟨W, hW, hAff, n, hBij, hSp, fun V hV n₁ h => (hMax V hV n₁ h).1⟩`.
+-/
 theorem exists_cell (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (r : ι → ℕ) (E : ι → B.Modules)
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)) (hfl : IsFlagBundle π E r fl)
     (hE : ∀ a, IsVB (E a) (r a)) (U : B.Opens) (hU : IsAffineOpen U) (eU : ∀ a, Fin (r a) → Γ(E a, U))
@@ -94,6 +111,19 @@ theorem exists_cell (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (
 
 open MvPolynomial in
 
+/- English proof (translation)
+Set `ι : MvPolynomial (Fin (d+1)) k →+* MvPolynomial N (MvPolynomial (Fin d) k)` to `eval₂Hom (C.comp C) (Fin.snoc (α := fun _ => MvPolynomial N (MvPolynomial (Fin d) k)) (fun j => C (X j)) (X s₀))`. Set `κ : MvPolynomial N (MvPolynomial (Fin d) k) →+* MvPolynomial (Fin (d+1)) k` to `eval₂Hom (eval₂Hom C (fun j => X j.castSucc)) (fun _ => X (Fin.last d))`. Establish `h1 : κ.comp ι = RingHom.id _`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+
+Simplify using `[ι, κ]`. Introduce `j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) j <;> simp [ι, κ]`. Establish `h2 : ι.comp κ = RingHom.id _`. Apply `MvPolynomial.ringHom_ext'` to reduce the goal to its premises.
+
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[ι, κ]`. Introduce `j`. Simplify using `[ι, κ]`.
+
+Introduce `j`. Simplify using `[ι, κ, hs j]`. Establish `hι : Function.Bijective ι` using `Function.bijective_iff_has_inverse.2 ⟨κ, fun x => DFunLike.congr_fun h1 x, fun x => DFunLike.congr_fun h2 x⟩`. Establish `key : eval₂Hom (f.comp α) (Fin.snoc (α` using `fun _ => R) (fun j => f (t j)) (n s₀)) = (eval₂Hom f n).comp ((MvPolynomial.map (eval₂Hom α t)).comp ι) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+
+Introduce `r`. Simplify using `[ι]`. Introduce `j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) j <;> simp [ι]`. Rewrite using `[key]`.
+
+Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective hι) (etale_mvPolynomial_map_of_etale _ hg)) (RingHom.Etale.of_bijective hΦ)`.
+-/
 theorem etale_snoc {k A R N : Type} [CommRing k] [CommRing A] [CommRing R] (α : k →+* A) {d : ℕ} (t : Fin d → A)
     (f : A →+* R) (n : N → R) (s₀ : N) (hs : ∀ s, s = s₀) (hg : (eval₂Hom α t).Etale)
     (hΦ : Function.Bijective (eval₂Hom f n)) :
@@ -130,6 +160,13 @@ theorem etale_snoc {k A R N : Type} [CommRing k] [CommRing A] [CommRing R] (α :
 
 variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Establish `hy0 : y ∈ ptsIn q σ c₀.U` using `c₀.source_subset hy`. Take `⟨f, hfV, hf⟩` from `c₀.affine.exists_basicOpen_le (V := V) ⟨_, mem_ptsIn.1 hV⟩ (mem_ptsIn.1 hy0)`. Establish `hle : B.basicOpen f ≤ c₀.U` using `B.basicOpen_le f`. Establish `hE : (MvPolynomial.eval₂Hom (algX q (B.basicOpen f)) (fun a => resG B hle (c₀.x a))).Etale`. Establish `e : MvPolynomial.eval₂Hom (algX q (B.basicOpen f)) (fun a => resG B hle (c₀.x a)) = (resG B hle).comp (MvPolynomial.eval₂Hom (algX q c₀.U) c₀.x)`.
+
+Rewrite using `[MvPolynomial.comp_eval₂Hom, GlobalTheory.TopForm.resG_comp_algX]`. Rewrite using `[e]`. Establish `hR : (resG B hle).Etale`. Use `letI : Algebra Γ(B, c₀.U) Γ(B, B.basicOpen f) := (resG B hle).toAlgebra`. Use `haveI : IsLocalization.Away f Γ(B, B.basicOpen f) := c₀.affine.isLocalization_basicOpen f`.
+
+Conclude with `RingHom.etale_algebraMap.2 (Algebra.Etale.of_isLocalizationAway f)`. Conclude with `RingHom.Etale.stableUnderComposition _ _ c₀.etale hR`. Take `⟨c, hc, hU, -⟩` from `AlgChart.exists_of_etale (c₀.affine.basicOpen f) _ hE (mem_ptsIn.2 hf)`. Conclude with `⟨c, hc, hU ▸ hfV⟩`.
+-/
 theorem exists_chart_le {d : ℕ} (c₀ : AlgChart q σ d) {y : CxPts q σ} (hy : y ∈ c₀.e.source) (V : B.Opens)
     (hV : y ∈ ptsIn q σ V) : ∃ c : AlgChart q σ d, y ∈ c.e.source ∧ c.U ≤ V := by
   have hy0 : y ∈ ptsIn q σ c₀.U := c₀.source_subset hy
@@ -148,12 +185,22 @@ theorem exists_chart_le {d : ℕ} (c₀ : AlgChart q σ d) {y : CxPts q σ} (hy 
   obtain ⟨c, hc, hU, -⟩ := AlgChart.exists_of_etale (c₀.affine.basicOpen f) _ hE (mem_ptsIn.2 hf)
   exact ⟨c, hc, hU ▸ hfV⟩
 
+/- English proof (translation)
+Substitute `w` using the available equality. Establish `e` using `Scheme.Hom.appLE_comp_appLE π q ⊤ U W le_top hW`. Conclude with `congrArg (fun f ↦ (CommRingCat.Hom.hom f).comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom) e`.
+-/
 theorem comp_algX (π : Y ⟶ B) (w : π ≫ q = p) {U : B.Opens} {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ U) :
     (π.appLE U W hW).hom.comp (algX q U) = algX p W := by
   subst w
   have e := Scheme.Hom.appLE_comp_appLE π q ⊤ U W le_top hW
   exact congrArg (fun f ↦ (CommRingCat.Hom.hom f).comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom) e
 
+/- English proof (translation)
+Establish `h` using `etale_snoc (algX q c.U) c.x (π.appLE c.U W hW).hom n s₀ hs c.etale hΦ`. Rewrite `h` using `[comp_algX π w hW]`. Take `⟨c', hc', hU, hx⟩` from `AlgChart.exists_of_etale hWa _ h hy`. Substitute `hU` using the available equality. Use `⟨c', hc', c'.source_subset, fun z hz => ⟨?_, fun hb => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[LineCos.fib, c'.apply_eq z hz, hx]`. Simplify using the standard rewrite rules. Use extensionality with `a`. Rewrite using `[c.apply_eq _ hb]`. Express the relevant statement in the definitionally equal form `c'.e z a.castSucc = _`.
+
+Rewrite using `[c'.apply_eq z hz, hx]`. Simplify using `only [Fin.snoc_castSucc]`. Conclude with `valR_appLE z.1 π hW (c'.source_subset hz) _`.
+-/
 theorem exists_chart_over (π : Y ⟶ B) (w : π ≫ q = p) {d : ℕ} (c : AlgChart q σ d) {W : Y.Opens}
     (hW : W ≤ π ⁻¹ᵁ c.U) (hWa : IsAffineOpen W) {N : Type} (n : N → Γ(Y, W)) (s₀ : N) (hs : ∀ s, s = s₀)
     (hΦ : Function.Bijective (MvPolynomial.eval₂Hom (π.appLE c.U W hW).hom n)) {y : CxPts p σ}
@@ -175,6 +222,9 @@ theorem exists_chart_over (π : Y ⟶ B) (w : π ≫ q = p) {d : ℕ} (c : AlgCh
     simp only [Fin.snoc_castSucc]
     exact valR_appLE z.1 π hW (c'.source_subset hz) _
 
+/- English proof (translation)
+Take `⟨s, hs, hv⟩` from `h (Fin.last m)`. Use `fl.isIso_last` as an intermediate fact. Establish `e : v = fun j => (fl.ι (Fin.last m)).app V (s j)` using `funext fun j => (hv j).symm`. Rewrite using `[e]`. Conclude with `hs.map_iso _`.
+-/
 theorem isFrame_of_spans {X : Scheme.{0}} {F : X.Modules} {m : ℕ} {fl : Vert.Flag F m} {V : X.Opens}
     {v : Fin m → Γ(F, V)} (h : Spans fl V v) : IsFrame v := by
   obtain ⟨s, hs, hv⟩ := h (Fin.last m)
@@ -183,11 +233,19 @@ theorem isFrame_of_spans {X : Scheme.{0}} {F : X.Modules} {m : ℕ} {fl : Vert.F
   rw [e]
   exact hs.map_iso _
 
+/- English proof (translation)
+Take `⟨W, hW, u, -, hs⟩` from `FlagZ.Loc.exists_nested_frames fl x (Fin.last m)`. Conclude with `⟨W, hW, fun j => (fl.ι (Fin.last _)).app W (u j), fun l => hs l l.is_le⟩`.
+-/
 theorem exists_spans {X : Scheme.{0}} {F : X.Modules} {m : ℕ} (fl : Vert.Flag F m) (x : X) :
     ∃ V : X.Opens, x ∈ V ∧ ∃ v : Fin m → Γ(F, V), Spans fl V v := by
   obtain ⟨W, hW, u, -, hs⟩ := FlagZ.Loc.exists_nested_frames fl x (Fin.last m)
   exact ⟨W, hW, fun j => (fl.ι (Fin.last _)).app W (u j), fun l => hs l l.is_le⟩
 
+/- English proof (translation)
+Establish `hb` using `CellOpen.isFrame_pullbackSections π he hV`. Establish `hu` using `(hb.detUnit h le_rfl le_rfl).isUnit`. Rewrite `hu` using `[IsFrame.val_detUnit, Module.Basis.det_apply]`. Use `hu using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+
+Establish `e₁ : resM _ le_rfl (pullCol π e hV A j) = ∑ l, A l j • hb.basis le_rfl l`. Simplify using `only [IsFrame.basis_apply, resM_self, pullCol]`. Rewrite using `[Module.Basis.toMatrix_apply, e₁, Module.Basis.repr_sum_self]`.
+-/
 theorem isUnit_det_of_isFrame (π : Y ⟶ B) {E : B.Modules} [E.IsQuasicoherent] {U : B.Opens} {m : ℕ}
     {e : Fin m → Γ(E, U)} (he : IsFrame e) {V : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U) {A : Matrix (Fin m) (Fin m) Γ(Y, V)}
     (h : IsFrame (pullCol π e hV A)) : IsUnit A.det := by
@@ -200,6 +258,17 @@ theorem isUnit_det_of_isFrame (π : Y ⟶ B) {E : B.Modules} [E.IsQuasicoherent]
     simp only [IsFrame.basis_apply, resM_self, pullCol]
   rw [Module.Basis.toMatrix_apply, e₁, Module.Basis.repr_sum_self]
 
+/- English proof (translation)
+Establish `h₁ : Y.basicOpen (A 0 0) ≤ V` using `Y.basicOpen_le _`. Establish `hunit : ∀ l : Fin (2 + 1), IsUnit ((A.map (resG Y h₁)).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det`. Introduce `l`. Rewrite using `[Matrix.submatrix_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Use `fin_cases l`.
+
+Conclude with `(show IsUnit (Matrix.det (n := Fin 0) _) by rw [Matrix.det_fin_zero]; exact isUnit_one).map _`. Use `CellOpen.isUnit_resG_of_le_basicOpen (A 0 0) le_rfl` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Conclude with `Matrix.det_fin_one _`. Conclude with `hd.map _`.
+
+Take `⟨n, M₁, hM₁t, hM₁d, hM₁⟩` from `exists_lu _ 2 _ hunit`. Use `⟨_, h₁.trans hV, n, hy, ?_⟩` and prove the remaining obligations. Establish `hs' : Spans fl _ (pullCol π e (h₁.trans hV) (uniR n * M₁))`. Establish `hs` using `hA.res h₁`. Use `hs using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[pullCol_res, hM₁]`. Use `haveI := M₁.invertibleOfIsUnitDet hM₁d`. Use `Spans.mul_upper Y _ 2 fl _ _ M₁⁻¹ hs' (Matrix.blockTriangular_inv_of_blockTriangular hM₁t) (Matrix.isUnit_nonsing_inv_det _ hM₁d)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[CellOpen.sum_smul_pullCol, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hM₁d, Matrix.mul_one]`.
+-/
 theorem exists_uni (π : Y ⟶ B) {E : B.Modules} {U : B.Opens} (e : Fin 2 → Γ(E, U))
     {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2} {V : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U)
     {A : Matrix (Fin 2) (Fin 2) Γ(Y, V)} (hA : Spans fl V (pullCol π e hV A)) (hd : IsUnit A.det) {y : Y}
@@ -232,6 +301,17 @@ theorem exists_uni (π : Y ⟶ B) {E : B.Modules} {U : B.Opens} (e : Fin 2 → �
 
 def sw (s : Bool) : Fin 2 ≃ Fin 2 := if s then Equiv.swap 0 1 else Equiv.refl _
 
+/- English proof (translation)
+Use `hE.isQuasicoherent` as an intermediate fact. Take `⟨W, hyW, v, hv⟩` from `exists_spans fl y`. Establish `hV : π ⁻¹ᵁ U ⊓ W ≤ π ⁻¹ᵁ U` using `inf_le_left`. Take `⟨A, hA⟩` from `CellOpen.exists_pullCol π he hV fun j => resM _ inf_le_right (v j)`. Establish `hs : Spans fl _ (pullCol π e hV A)`.
+
+Use `hv.res (inf_le_right : π ⁻¹ᵁ U ⊓ W ≤ W)` as an intermediate fact. Rewrite `this` using `[funext hA]`. Then use the resulting hypothesis. Establish `hd` using `isUnit_det_of_isFrame π he hV (isFrame_of_spans hs)`. Distinguish the cases in `h₀ : y ∈ Y.basicOpen (A 0 0)`. Conclude with `⟨false, exists_uni π e hV hs hd h₀⟩`.
+
+Establish `h₁ : y ∈ Y.basicOpen (A 1 0)`. Assume the negation of the conclusion as `h₁`. Establish `hyV : y ∈ π ⁻¹ᵁ U ⊓ W` using `⟨hy, hyW⟩`. Establish `hu` using `hd.map (Y.presheaf.germ _ y hyV).hom`. Rewrite `h₀`, `h₁` using `[Y.mem_basicOpen _ _ hyV, ← mem_nonunits_iff, ← IsLocalRing.mem_maximalIdeal]`.
+
+Rewrite `hu` using `[Matrix.det_fin_two, map_sub, map_mul, map_mul]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 (sub_mem (Ideal.mul_mem_right _ _ h₀) (Ideal.mul_mem_left _ _ h₁)) hu`. Establish `e₁ : pullCol π (e ∘ sw true) hV (A.submatrix (Equiv.swap 0 1) id) = pullCol π e hV A`. Use function extensionality and compare the values at `j`. Conclude with `Equiv.sum_comp (Equiv.swap (0 : Fin 2) 1) fun l => A l j • pullbackSections π E hV (e l)`.
+
+Use `⟨true, exists_uni π _ hV (e₁ ▸ hs) ?_ h₁⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_permute]`. Conclude with `(Units.isUnit _ |>.map (Int.castRingHom _)).mul hd`.
+-/
 theorem exists_uni_sw (π : Y ⟶ B) {E : B.Modules} (hE : IsVB E 2) {U : B.Opens} {e : Fin 2 → Γ(E, U)}
     (he : IsFrame e) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2) {y : Y} (hy : y ∈ π ⁻¹ᵁ U) :
     ∃ (s : Bool) (V : Y.Opens) (hV : V ≤ π ⁻¹ᵁ U) (n : Low 2 → Γ(Y, V)),
@@ -263,11 +343,31 @@ theorem exists_uni_sw (π : Y ⟶ B) {E : B.Modules} (hE : IsVB E 2) {U : B.Open
 
 def low : Low 2 := ⟨(1, 0), by decide⟩
 
+/- English proof (translation)
+Take `⟨⟨a, b⟩, h⟩` from `s`. Use `revert a b`. Evaluate the decidable proposition.
+-/
 theorem eq_low (s : Low 2) : s = low := by
   obtain ⟨⟨a, b⟩, h⟩ := s
   revert a b
   decide
 
+/- English proof (translation)
+Take `⟨t, -, ht⟩` from `hs 1`. Take `⟨m, -, hm⟩` from `hB 1`. Set `M : Matrix (Fin 2) (Fin 2) Γ(Y, W)` to `if s then !![n low, 1; 1, 0] else !![1, 1; n low, 0]`. Establish `e₀ : (fl.ι 1).app W (t ⟨0, Nat.one_pos⟩) = pullCol π cE.e hW M 0`. Use `(ht _).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `pullCol π (cE.e ∘ sw s) hW (uniR n) 0 = _`. Simplify using `only [pullCol, Fin.sum_univ_two]`. Consider the cases of `s`. Both sides reduce to the same expression. Conclude with `add_comm _ _`.
+
+Establish `e₁ : ((Scheme.Modules.pullback π).map (flB.ι 1)).app W (pullbackSections π _ hW (m ⟨0, Nat.one_pos⟩)) = pullCol π cE.e hW M 1`. Rewrite using `[QCoh.pullback_map_app_pullbackSections, hm]`. Apply the tactic sequence `have h₀ : M 0 1 = 1 := by cases s <;> rfl`. Apply the tactic sequence `have h₁ : M 1 1 = 0 := by cases s <;> rfl`. Simplify using `only [pullCol, Fin.sum_univ_two, h₀, h₁, one_smul, zero_smul, add_zero]`.
+
+Both sides reduce to the same expression. Establish `key` using `hv.symm W (pullbackSections π _ hW (m ⟨0, Nat.one_pos⟩)) (t ⟨0, Nat.one_pos⟩) y hy`. Rewrite `key` using `[e₀, e₁, form_pullCol π w h cE hW M hy, form_pullCol π w h cE hW M hy, form_pullCol π w h cE hW M hy]`. Establish `hb : PtsOver.map π w (spMap σ) y ∈ ptsIn q σ cE.U` using `le_preimage_comp y.1 π hW hy`. Establish `hG` using `h.posDef cE _ hb`.
+
+Generalize the expression as in `h.G cE (PtsOver.map π w (spMap σ) y) = G at key hG ⊢`. Establish `c₀ : (fun i => ev p σ W (M i 0) y) = LineCos.lineVec s (ev p σ W (n low) y)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases s <;> fin_cases i <;> simp [M, LineCos.lineVec, ev_eq hy]`. Establish `c₁ : (fun i => ev p σ W (M i 1) y) = Pi.single 0 1`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases s <;> fin_cases i <;> simp [M, ev_eq hy]`. Establish `hf (a b : Fin 2 → ℂ) : HermFrame.form G a b = LineCos.hform G a b`. Rewrite using `[HermFrame.form_eq_sum, LineCos.hform]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_right_comm _ _ _`.
+
+Simplify using `only [HermFrame.chg_apply, Matrix.of_apply, c₀, c₁, hf] at key`. Establish `h00 : LineCos.hform G (Pi.single 0 1) (Pi.single 0 1) = G 0 0`. Simplify using `[LineCos.hform, Fin.sum_univ_two]`. Establish `hp` using `mul_pos (LineCos.re_hform_pos hG (LineCos.lineVec_ne_zero s (ev p σ W (n low) y))) (LineCos.re_corner_pos hG)`. Rewrite using `[LineCos.cosSq, key, h00, eq_div_iff hp.ne']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cos_eq (π : Y ⟶ B) (w : π ≫ q = p) {E : B.Modules} (h : Met q σ E 2) {flB : Vert.Flag E 2}
     {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2} (cE : Chart E 2) (hB : Spans flB cE.U cE.e) (s : Bool)
     {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Low 2 → Γ(Y, W))
@@ -314,6 +414,17 @@ theorem cos_eq (π : Y ⟶ B) (w : π ≫ q = p) {E : B.Modules} (h : Met q σ E
   rw [LineCos.cosSq, key, h00, eq_div_iff hp.ne']
   ring
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p d hB _ π w E h H flB fl hfl σ v hv y`. Set `πσ : CxPts p σ → CxPts q σ` to `PtsOver.map π w (spMap σ)`. Establish `hπ : Continuous πσ` using `PtsOver.continuous_map π w _`. Take `⟨U₀, hU₀, e₀, he₀⟩` from `exists_spans flB ((πσ y).1 (IsLocalRing.closedPoint ℂ))`. Take `⟨c₀, hc₀⟩` from `(hB.atlas σ).cover (πσ y)`.
+
+Take `⟨c, hc, hcU⟩` from `exists_chart_le (d := d) c₀ hc₀ U₀ (mem_ptsIn.2 hU₀)`. Establish `he` using `he₀.res hcU`. Set `cE : Chart E 2` to `⟨c.U, _, isFrame_of_spans he⟩`. Take `⟨s, V, hV, n', hyV, hn'⟩` from `exists_uni_sw π h.isVB cE.isFrame fl (y := y.1 (IsLocalRing.closedPoint ℂ)) (mem_ptsIn.1 (c.source_subset hc))`. Take `⟨W, hW, hWa, n, hn, hs, hmax⟩` from `exists_cell B Y π Unit (fun _ => 2) (fun _ => E) (fun _ => fl) hfl (fun _ => h.isVB) c.U c.affine (fun _ => cE.e ∘ sw s) fun _ => cE.isFrame.comp_equiv _`.
+
+Establish `hyW : y ∈ ptsIn p σ W` using `mem_ptsIn.2 (hmax V hV (fun a => n' a.2) (fun _ => hn') hyV)`. Take `⟨c', hy', hsrc, hc'⟩` from `exists_chart_over π w c hW hWa n ⟨(), low⟩ (fun ⟨_, a⟩ => by rw [eq_low a]) hn hyW`. Establish `hO : IsOpen (πσ ⁻¹' c.e.source)` using `c.e.open_source.preimage hπ`. Establish `hz : ∀ z ∈ c'.e.target ∩ c'.e.symm ⁻¹' (πσ ⁻¹' c.e.source), c.e.symm (WithLp.toLp 2 (LineCos.base z)) = πσ (c'.e.symm z)` using `fun z hz => by`. Use `(hc' _ (c'.e.map_target hz.1)).2 hz.2` as an intermediate fact.
+
+Rewrite `this` using `[c'.e.right_inv hz.1]`. Rewrite using `[this, c.e.left_inv hz.2]`. Use `⟨c', fun b => (h.met σ).G cE (c.e.symm (WithLp.toLp 2 b)), s, c'.e.target ∩ c'.e.symm ⁻¹' (πσ ⁻¹' c.e.source), hy', ChartGlue.isOpen_over c'.e hO, ChartGlue.mem_over c'.e hy' hc, Set.inter_subset_left, ?_, fun z hz' => ?_⟩` and prove the remaining obligations. Use `ContinuousOn.congr (f := fun z => (h.met σ).G cE (πσ (c'.e.symm z))) (fun z hz' => ?_) fun z hz' => by simp only [hz z hz']` and prove the remaining obligations. Establish `h₁ : ContinuousAt ((h.met σ).G cE) (πσ (c'.e.symm z))` using `continuousAt_pi.2 fun a => continuousAt_pi.2 fun b => (H σ cE _ (c.source_subset hz'.2) a b).continuousAt`.
+
+Conclude with `(h₁.comp (f := fun z => πσ (c'.e.symm z)) (hπ.continuousAt.comp (c'.e.continuousAt_symm hz'.1))).continuousWithinAt`. Establish `h₁` using `(hc' _ (c'.e.map_target hz'.1)).1`. Rewrite `h₁` using `[c'.e.right_inv hz'.1]`. Simplify using `only [hz z hz', h₁]`. Conclude with `⟨(h.met σ).posDef cE _ (c.source_subset hz'.2), cos_eq π w (h.met σ) cE he s hW (fun a => n ⟨(), a⟩) (hs ()) hv (hsrc (c'.e.map_target hz'.1))⟩`.
+-/
 theorem exists_chart_cosSq : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)
     (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2),

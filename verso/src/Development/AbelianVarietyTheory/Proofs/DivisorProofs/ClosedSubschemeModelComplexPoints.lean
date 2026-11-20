@@ -16,6 +16,13 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 
 namespace GlobalTheory.ClopenPush
 
+/- English proof (translation)
+Take `⟨W', hW', hWW⟩` from `j.isClosedEmbedding.isInducing.isOpen_iff.1 W.isOpen`. Establish `hx' : j x ∈ (⟨W', hW'⟩ : X.Opens)`. Establish `: x ∈ j ⁻¹' W'` using `hWW ▸ hx`. Conclude with `this`. Take `⟨U, hU, hxU, hle⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens hx'`.
+
+Establish `e : j ⁻¹ᵁ U ≤ W` using `fun z hz => by`. Establish `: z ∈ j ⁻¹' W'` using `hle hz`. Rewrite `this` using `[hWW]`. Conclude with `this`. Take `⟨G, hG⟩` from `j.app_surjective U hU (resG Y e g)`.
+
+Conclude with `⟨U, e, G, hxU, hG⟩`.
+-/
 theorem exists_app_eq_res {X Y : Scheme.{0}} (j : Y ⟶ X) [IsClosedImmersion j] (W : Y.Opens) (g : Γ(Y, W))
     (x : Y) (hx : x ∈ W) :
     ∃ (U : X.Opens) (e : j ⁻¹ᵁ U ≤ W) (G : Γ(X, U)), j x ∈ U ∧ j.app U G = resG Y e g := by
@@ -31,6 +38,13 @@ theorem exists_app_eq_res {X Y : Scheme.{0}} (j : Y ⟶ X) [IsClosedImmersion j]
   obtain ⟨G, hG⟩ := j.app_surjective U hU (resG Y e g)
   exact ⟨U, e, G, hxU, hG⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z Y q j _ hj σ W g y hy`. Take `⟨U, e, G, hU, hG⟩` from `exists_app_eq_res j W g _ (mem_ptsIn.1 hy)`. Establish `key (y' : CxPts q (σ.comp β)) : up j hj σ y' ∈ ptsIn (genStr Z) σ (genι Z ⁻¹ᵁ U) ↔ y' ∈ ptsIn q (σ.comp β) (j ⁻¹ᵁ U)`. Establish `h : genι Z ((up j hj σ y').1 (IsLocalRing.closedPoint ℂ)) = j (y'.1 (IsLocalRing.closedPoint ℂ))` using `congrArg (fun g : Sp ℂ ⟶ Z.X => g (IsLocalRing.closedPoint ℂ)) (up_ι j hj σ y')`. Rewrite using `[mem_ptsIn, mem_ptsIn]`.
+
+Express the relevant statement in the definitionally equal form `genι Z _ ∈ U ↔ j _ ∈ U`. Rewrite using `[h]`. Use `⟨genι Z ⁻¹ᵁ U, (genι Z).app U G, (key y).2 (mem_ptsIn.2 hU), fun y' hy' => ?_⟩` and prove the remaining obligations. Establish `h'` using `(key y').1 hy'`. Use `⟨ptsIn_mono e h', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ev_res e h' g, ← hG]`. Use `(Points.valR_comp (up j hj σ y').1 (genι Z) U G).symm.trans ?_` and prove the remaining obligations. Rewrite using `[up_ι]`. Conclude with `Points.valR_comp y'.1 j U G`.
+-/
 theorem liftsFns_of_isClosedImmersion : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ), ClopenPush.LiftsFns j hj σ := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z Y q j _ hj σ W g y hy
   obtain ⟨U, e, G, hU, hG⟩ := exists_app_eq_res j W g _ (mem_ptsIn.1 hy)

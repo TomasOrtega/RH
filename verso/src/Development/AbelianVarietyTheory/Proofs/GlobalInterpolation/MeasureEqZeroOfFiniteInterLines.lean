@@ -3,6 +3,15 @@ open MeasureTheory Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `ν : Measure K` to `Measure.addHaar`. Establish `hc : Continuous (fun p : V × K => p.1 + p.2 • y)` using `by fun_prop`. Establish `hS : MeasurableSet {p : V × K | p.1 + p.2 • y ∈ Z}` using `hc.measurable hZ`. Establish `h1 : (μ.prod ν) {p : V × K | p.1 + p.2 • y ∈ Z} = 0`. Rewrite using `[Measure.measure_prod_null hS]`.
+
+Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Conclude with `(h x).measure_zero ν`. Rewrite `h1` using `[Measure.prod_apply_symm hS]`. Establish `h2 : ∀ t : K, μ ((fun x => (x, t)) ⁻¹' {p : V × K | p.1 + p.2 • y ∈ Z}) = μ Z`. Introduce `t`.
+
+Conclude with `measure_preimage_add_right μ (t • y) Z`. Simplify using `only [h2, lintegral_const, mul_eq_zero] at h1`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd h1 (by`.
+
+Rewrite using `[Measure.measure_univ_eq_zero]`. Conclude with `NeZero.ne ν)`.
+-/
 theorem measure_eq_zero_of_finite_inter_lines
     (K V : Type) [NontriviallyNormedField K] [IsUltrametricDist K] [ProperSpace K]
     [MeasurableSpace K] [BorelSpace K] [AddCommGroup V] [Module K V] [TopologicalSpace V]

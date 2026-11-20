@@ -6,6 +6,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.ZRank
 
+/- English proof (translation)
+Rewrite using `[← (TensorProduct.isBaseChange ℤ X ℚ).finrank_eq, ← (TensorProduct.isBaseChange (𝓞 E) X E).finrank_eq, Module.finrank_mul_finrank, (Algebra.IsPushout.cancelBaseChange ℤ ℚ (𝓞 E) E X).finrank_eq]`.
+-/
 theorem finrank_int_eq_mul (E : Type) [Field E] [NumberField E] (X : Type) [AddCommGroup X] [Module (𝓞 E) X] :
     Module.finrank ℤ X = Module.finrank ℚ E * Module.finrank (𝓞 E) X := by
   rw [← (TensorProduct.isBaseChange ℤ X ℚ).finrank_eq, ← (TensorProduct.isBaseChange (𝓞 E) X E).finrank_eq,
@@ -13,6 +16,11 @@ theorem finrank_int_eq_mul (E : Type) [Field E] [NumberField E] (X : Type) [AddC
 
 end GlobalTheory.ZRank
 
+/- English proof (translation)
+Introduce `E _ _ X _ _ _ _`. Use `haveI : Module.Finite ℤ X := Module.Finite.trans (𝓞 E) X`. Use `haveI : Module.Projective ℤ X := by`. Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' (𝓞 E) X`. Take `⟨h, hh⟩` from `Module.projective_lifting_property r LinearMap.id hr`.
+
+Conclude with `Module.Projective.of_split (h.restrictScalars ℤ) (r.restrictScalars ℤ) (LinearMap.ext fun x => LinearMap.congr_fun hh x)`. Conclude with `⟨inferInstance, (GlobalTheory.ZRank.finrank_int_eq_mul E X).le⟩`.
+-/
 theorem GlobalTheory.ZRank.free_int_and_finrank_le : ∀ (E : Type) [Field E] [NumberField E] (X : Type) [AddCommGroup X] [Module (NumberField.RingOfIntegers E) X]
     [Module.Finite (NumberField.RingOfIntegers E) X] [Module.Projective (NumberField.RingOfIntegers E) X],
     Module.Free ℤ X ∧ Module.finrank ℤ X ≤ Module.finrank ℚ E * Module.finrank (NumberField.RingOfIntegers E) X := by

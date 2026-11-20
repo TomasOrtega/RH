@@ -14,6 +14,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberFie
 
 namespace GlobalTheory.UnramCover
 
+/- English proof (translation)
+Introduce `hP D T j Y e o hL hj hY`. Establish `hLaws` using `GlobalTheory.T.complexUniformizationLaws_of_goodDeepCover D T j Y e o hL hj hY`. Take `⟨-, hr, -, -⟩` from `GlobalTheory.Member.exists_iotaOK D T.Q hL.pins j hj`. Establish `h6 : 6 ≤ D.R.r`. Establish `h1` using `D.R.two_le_m`.
+
+Establish `h2` using `D.R.m_add_three_le_k`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.T.unramified_points_good_level hP _ T.Q.H (T.Q.Dw j) Y.d.l₂ Y.d.Xo₂ Y.d.c₂ (by omega) (Or.inr (Or.inr ⟨by omega, hLaws.line⟩)) hLaws.good`.
+-/
 theorem unramPts_deep : Hypotheses2 → ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), LawsJ T →
     InR D j → Y.Good e o → UnramPts Y.d.Xo₂ Y.d.c₂ (badPrimes T.Q.H Y.d.l₂) := by
   intro hP D T j Y e o hL hj hY

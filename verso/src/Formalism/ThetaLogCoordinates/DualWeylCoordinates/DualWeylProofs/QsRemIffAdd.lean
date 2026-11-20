@@ -14,18 +14,39 @@ def qs_rem (D : Finset ℤ) (K : ℤ → Finset (Fin n)) (m : ↥D → Fin n) : 
 def qs_add (D : Finset ℤ) (J : ℤ → Finset (Fin n)) (a : ↥D → Fin n) : ℤ → Finset (Fin n) :=
   fun c => if h : c ∈ D then insert (a ⟨c, h⟩) (J c) else J c
 
+/- English proof (translation)
+Simplify using `[qs_rem, c.2]`.
+-/
 lemma qs_rem_mem (D : Finset ℤ) (K : ℤ → Finset (Fin n)) (m : ↥D → Fin n) (c : ↥D) :
     qs_rem D K m c.1 = (K c.1).erase (m c) := by simp [qs_rem, c.2]
 
+/- English proof (translation)
+Simplify using `[qs_rem, hc]`.
+-/
 lemma qs_rem_not (D : Finset ℤ) (K : ℤ → Finset (Fin n)) (m : ↥D → Fin n) {c : ℤ} (hc : c ∉ D) :
     qs_rem D K m c = K c := by simp [qs_rem, hc]
 
+/- English proof (translation)
+Simplify using `[qs_add, c.2]`.
+-/
 lemma qs_add_mem (D : Finset ℤ) (K : ℤ → Finset (Fin n)) (m : ↥D → Fin n) (c : ↥D) :
     qs_add D K m c.1 = insert (m c) (K c.1) := by simp [qs_add, c.2]
 
+/- English proof (translation)
+Simplify using `[qs_add, hc]`.
+-/
 lemma qs_add_not (D : Finset ℤ) (K : ℤ → Finset (Fin n)) (m : ↥D → Fin n) {c : ℤ} (hc : c ∉ D) :
     qs_add D K m c = K c := by simp [qs_add, hc]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, rfl⟩`. Use `⟨fun c => by rw [qs_rem_mem]; simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c ∈ D`.
+
+Use `qs_add_mem D (qs_rem D K m) m ⟨c, hc⟩` as an intermediate fact. Establish `h2` using `qs_rem_mem D K m ⟨c, hc⟩`. Simplify using `only at this h2`. Rewrite using `[this, h2, Finset.insert_erase (h1 ⟨c, hc⟩)]`. Rewrite using `[qs_add_not _ _ _ hc, qs_rem_not _ _ _ hc]`.
+
+Introduce and unpack `⟨h1, rfl⟩`. Use `⟨fun c => by rw [qs_add_mem]; simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c ∈ D`. Use `qs_rem_mem D (qs_add D J m) m ⟨c, hc⟩` as an intermediate fact.
+
+Establish `h2` using `qs_add_mem D J m ⟨c, hc⟩`. Simplify using `only at this h2`. Rewrite using `[this, h2, Finset.erase_insert (h1 ⟨c, hc⟩)]`. Rewrite using `[qs_rem_not _ _ _ hc, qs_add_not _ _ _ hc]`.
+-/
 lemma qs_rem_iff_add (D : Finset ℤ) (J K : ℤ → Finset (Fin n)) (m : ↥D → Fin n) :
     ((∀ c : ↥D, m c ∈ K c.1) ∧ J = qs_rem D K m) ↔ ((∀ c : ↥D, m c ∉ J c.1) ∧ K = qs_add D J m) := by
   constructor
@@ -50,10 +71,18 @@ lemma qs_rem_iff_add (D : Finset ℤ) (J K : ℤ → Finset (Fin n)) (m : ↥D �
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_sdiff hD, Finset.prod_coe_sort]`.
+-/
 lemma qs_prod_split (S D : Finset ℤ) (hD : D ⊆ S) (F : ℤ → R) :
     ∏ c ∈ S, F c = (∏ c ∈ S \ D, F c) * ∏ c : ↥D, F c.1 := by
   rw [← Finset.prod_sdiff hD, Finset.prod_coe_sort]
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_ite_zero]`. Use `split_ifs with h`. Rewrite using `[qs_prod_split S D hD, Finset.prod_congr rfl (hF1 m), Finset.prod_congr rfl (fun c _ => hF2 m c), Finset.prod_mul_distrib, Finset.prod_mul_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`.
+-/
 lemma qs_sum_choices (S D : Finset ℤ) (hD : D ⊆ S) (u : ℤ → R) (p : ↥D → Fin n → Prop) [∀ c x, Decidable (p c x)]
     (s w : ↥D → Fin n → R) (F : (↥D → Fin n) → ℤ → R)
     (hF1 : ∀ m, ∀ c ∈ S \ D, F m c = u c) (hF2 : ∀ m (c : ↥D), F m c.1 = w c (m c))
@@ -71,6 +100,13 @@ lemma qs_sum_choices (S D : Finset ℤ) (hD : D ⊆ S) (u : ℤ → R) (p : ↥D
 
 variable (g : Matrix (Fin n) (Fin n) R)
 
+/- English proof (translation)
+Rewrite using `[qs_sum_choices S D hD (fun c => qs_mn g (J c) (K c)) (fun c x => x ∈ K c.1) (fun c x => ((qs_sg ((K c.1).erase x) x : ℤ) : R)) (fun c x => qs_mn g (J c.1) ((K c.1).erase x)) (fun m c => qs_mn g (J c) (qs_rem D K m c)) (fun m c hc => by rw [qs_rem_not _ _ _ (Finset.mem_sdiff.1 hc …`. Establish `h1 : ∀ c : ↥D, (∑ x, if x ∈ K c.1 then ((qs_sg ((K c.1).erase x) x : ℤ) : R) * qs_mn g (J c.1) ((K c.1).erase x) * g (a c) x else 0) = if a c ∉ J c.1 then ((qs_sg (J c.1) (a c) : ℤ) : R) * qs_mn g (insert (a c) (J c.1)) (K c.1) else 0`. Introduce `c`. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, qs_laplace, ite_not]`. Rewrite using `[Finset.prod_congr rfl (fun c _ => h1 c), Fintype.prod_ite_zero]`.
+
+Use `split_ifs with h`. Establish `e1 : ∏ c ∈ S \ D, qs_mn g (qs_add D J a c) (K c) = ∏ c ∈ S \ D, qs_mn g (J c) (K c)` using `Finset.prod_congr rfl (fun c hc => by rw [qs_add_not _ _ _ (Finset.mem_sdiff.1 hc).2])`. Establish `e2 : ∏ c : ↥D, qs_mn g (qs_add D J a c.1) (K c.1) = ∏ c : ↥D, qs_mn g (insert (a c) (J c.1)) (K c.1)` using `Finset.prod_congr rfl (fun c _ => by rw [qs_add_mem])`. Rewrite using `[qs_prod_split S D hD (fun c => qs_mn g (qs_add D J a c) (K c)), e1, e2, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[mul_zero]`.
+-/
 theorem qs_core (S D : Finset ℤ) (hD : D ⊆ S) (J K : ℤ → Finset (Fin n)) (a : ↥D → Fin n) :
     ∑ m : ↥D → Fin n, (if ∀ c : ↥D, m c ∈ K c.1 then
         (∏ c : ↥D, ((qs_sg ((K c.1).erase (m c)) (m c) : ℤ) : R)) * (∏ c ∈ S, qs_mn g (J c) (qs_rem D K m c)) *
@@ -96,6 +132,13 @@ theorem qs_core (S D : Finset ℤ) (hD : D ⊆ S) (J K : ℤ → Finset (Fin n))
     ring
   · rw [mul_zero]
 
+/- English proof (translation)
+Establish `h1 : ∀ m, (if m ∉ K then ((qs_sg K m : ℤ) : R) * qs_mn g J (insert m K) * g' m a else 0) = ∑ k ∈ J, ((qs_sg (J.erase k) k : ℤ) : R) * qs_mn g (J.erase k) K * (g k m * g' m a)`. Introduce `m`. Use `qs_laplace_col g J K m` as an intermediate fact. Rewrite `this` using `[← ite_not]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_congr rfl (fun m _ => h1 m), Finset.sum_comm]`. Establish `h2 : ∀ k, ∑ m, g k m * g' m a = if k = a then 1 else 0`. Introduce `k`. Use `congrFun (congrFun hg k) a` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Conclude with `this`. Repeatedly rewrite using `[← Finset.mul_sum, h2]`. Simplify using `[Finset.sum_ite_eq']`.
+-/
 theorem qs_laplace_inv (g' : Matrix (Fin n) (Fin n) R) (hg : g * g' = 1) (J K : Finset (Fin n)) (a : Fin n) :
     ∑ m, (if m ∉ K then ((qs_sg K m : ℤ) : R) * qs_mn g J (insert m K) * g' m a else 0) =
       if a ∈ J then ((qs_sg (J.erase a) a : ℤ) : R) * qs_mn g (J.erase a) K else 0 := by
@@ -116,6 +159,11 @@ theorem qs_laplace_inv (g' : Matrix (Fin n) (Fin n) R) (hg : g * g' = 1) (J K : 
   simp_rw [← Finset.mul_sum, h2]
   simp [Finset.sum_ite_eq']
 
+/- English proof (translation)
+Rewrite using `[qs_sum_choices S D hD (fun c => qs_mn g (J c) (K c)) (fun c x => x ∉ K c.1) (fun c x => ((qs_sg (K c.1) x : ℤ) : R)) (fun c x => qs_mn g (J c.1) (insert x (K c.1))) (fun m c => qs_mn g (J c) (qs_add D K m c)) (fun m c hc => by rw [qs_add_not _ _ _ (Finset.mem_sdiff.1 hc).2]) (fu …`. Rewrite using `[Finset.prod_congr rfl (fun c _ => qs_laplace_inv g g' hg (J c.1) (K c.1) (a c)), Fintype.prod_ite_zero]`. Use `split_ifs with h`. Establish `e1 : ∏ c ∈ S \ D, qs_mn g (qs_rem D J a c) (K c) = ∏ c ∈ S \ D, qs_mn g (J c) (K c)` using `Finset.prod_congr rfl (fun c hc => by rw [qs_rem_not _ _ _ (Finset.mem_sdiff.1 hc).2])`. Establish `e2 : ∏ c : ↥D, qs_mn g (qs_rem D J a c.1) (K c.1) = ∏ c : ↥D, qs_mn g ((J c.1).erase (a c)) (K c.1)` using `Finset.prod_congr rfl (fun c _ => by rw [qs_rem_mem])`.
+
+Rewrite using `[qs_prod_split S D hD (fun c => qs_mn g (qs_rem D J a c) (K c)), e1, e2, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`.
+-/
 theorem qs_core_inv (g' : Matrix (Fin n) (Fin n) R) (hg : g * g' = 1) (S D : Finset ℤ) (hD : D ⊆ S)
     (J K : ℤ → Finset (Fin n)) (a : ↥D → Fin n) :
     ∑ m : ↥D → Fin n, (if ∀ c : ↥D, m c ∉ K c.1 then

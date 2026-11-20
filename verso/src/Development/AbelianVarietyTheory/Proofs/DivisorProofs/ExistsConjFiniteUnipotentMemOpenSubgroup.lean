@@ -9,6 +9,15 @@ namespace GlobalTheory.FinConj
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
 
+/- English proof (translation)
+Establish `k1 : ∀ (c : Ad E) (x y : Af E), (c - sFin E y + sFin E x).1 = c.1 - 0 + 0` using `fun _ _ _ => rfl`. Establish `k2 : ∀ (c : Ad E) (x y : Af E), (c - sFin E y + sFin E x).2 = c.2 - y + x` using `fun _ _ _ => rfl`. Apply `(AdelicGLn.prodEquiv E a).injective` to reduce the goal to its premises. Rewrite using `[prodEquiv_finEmb]`. Use `Prod.ext (Units.ext (Matrix.ext fun i j => ?_)) (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations.
+
+Rewrite using `[AdelicGLn.prodEquiv_apply_fst]`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (InfiniteAdeleRing E)) i j = ((1 : Matrix (Fin a) (Fin a) (Ad E)) i j - (sFin E) ((1 : Matrix (Fin a) (Fin a) (Af E)) i j) + sFin E (l i j)).1`. Rewrite using `[k1, sub_zero, add_zero, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Rewrite using `[AdelicGLn.prodEquiv_apply_snd]`. Express the relevant statement in the definitionally equal form `(l : Matrix (Fin a) (Fin a) (Af E)) i j = ((1 : Matrix (Fin a) (Fin a) (Ad E)) i j - (sFin E) ((1 : Matrix (Fin a) (Fin a) (Af E)) i j) + sFin E (l i j)).2`. Rewrite using `[k2, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`.
+
+Rewrite using `[adele_one_snd, sub_self, zero_add]`. Rewrite using `[adele_zero_snd, sub_self, zero_add]`.
+-/
 theorem finEmb_eq_finGL (E : Type) [Field E] [NumberField E] (a : ℕ) (l : GL (Fin a) (Af E)) :
     finEmb E a l = finGL E a l := by
   have k1 : ∀ (c : Ad E) (x y : Af E), (c - sFin E y + sFin E x).1 = c.1 - 0 + 0 := fun _ _ _ => rfl
@@ -29,9 +38,17 @@ theorem finEmb_eq_finGL (E : Type) [Field E] [NumberField E] (a : ℕ) (l : GL (
     · rw [adele_one_snd, sub_self, zero_add]
     · rw [adele_zero_snd, sub_self, zero_add]
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem unip_eq_unipGL (E : Type) [Field E] [NumberField E] (a r : ℕ) (z : BlockIx a r → Ad E) :
     (unip z : GA E a) = unipGL z := Units.ext rfl
 
+/- English proof (translation)
+Introduce `E _ _ a r L hL ω hω`. Use `set U : Subgroup (AdelicGLn.integralFiniteGL E a) := L.comap (AdelicGLn.integralFiniteGL E a).subtype`. Establish `hU : IsOpen (U : Set (AdelicGLn.integralFiniteGL E a))` using `hL.preimage continuous_subtype_val`. Take `⟨M, hM, h⟩` from `exists_natCast_conj_unipGL_mem (K := E) (n := a) U hU hω r`. Use `⟨M, hM, fun b hb ρ hρ k hk z hz1 hz2 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu⟩` from `h b hb ρ hρ k hk z hz1 hz2`. Use `⟨((u : AdelicGLn.integralFiniteGL E a) : GL (Fin a) (Af E)), u.2, ?_⟩` and prove the remaining obligations. Rewrite using `[unip_eq_unipGL, ← finEmb_eq_finGL]`. Conclude with `hu`.
+-/
 theorem exists_conj_unip_mem :
     ∀ (E : Type) [Field E] [NumberField E] (a r : ℕ) (L : Subgroup (GL (Fin a) (Af E))),
     IsOpen (L : Set (GL (Fin a) (Af E))) → ∀ ω : Set (GA E a), IsCompact ω →

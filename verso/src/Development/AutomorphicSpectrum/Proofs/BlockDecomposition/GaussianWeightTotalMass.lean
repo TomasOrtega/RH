@@ -10,12 +10,20 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.FSCrofton
 
+/- English proof (translation)
+Establish `h` using `GaussianFourier.integral_rexp_neg_mul_sq_norm (V := ℂ) (b := 1) one_pos`. Establish `hd : (Module.finrank ℝ ℂ : ℝ) / 2 = 1` using `by simp [Complex.finrank_real_complex]`. Simplify using `only [one_mul, div_one, hd, Real.rpow_one, neg_mul] at h`. Conclude with `h`.
+-/
 theorem integral_exp_neg_norm_sq : ∫ z : ℂ, Real.exp (-‖z‖ ^ 2) = Real.pi := by
   have h := GaussianFourier.integral_rexp_neg_mul_sq_norm (V := ℂ) (b := 1) one_pos
   have hd : (Module.finrank ℝ ℂ : ℝ) / 2 = 1 := by simp [Complex.finrank_real_complex]
   simp only [one_mul, div_one, hd, Real.rpow_one, neg_mul] at h
   exact h
 
+/- English proof (translation)
+Establish `hi : Integrable (fun z : ℂ => Real.exp (-‖z‖ ^ 2))`. Assume the negation of the conclusion as `hn`. Establish `h0` using `integral_undef hn`. Rewrite `h0` using `[integral_exp_neg_norm_sq]`. Conclude with `Real.pi_ne_zero h0`.
+
+Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hi (Filter.Eventually.of_forall fun z => (Real.exp_pos _).le), integral_exp_neg_norm_sq]`.
+-/
 theorem lintegral_exp_neg_norm_sq :
     ∫⁻ z : ℂ, ENNReal.ofReal (Real.exp (-‖z‖ ^ 2)) = ENNReal.ofReal Real.pi := by
   have hi : Integrable (fun z : ℂ => Real.exp (-‖z‖ ^ 2)) := by
@@ -26,6 +34,13 @@ theorem lintegral_exp_neg_norm_sq :
   rw [← ofReal_integral_eq_lintegral_ofReal hi
     (Filter.Eventually.of_forall fun z => (Real.exp_pos _).le), integral_exp_neg_norm_sq]
 
+/- English proof (translation)
+Establish `hw : ∀ C : Fin d → α → ℂ, gW d α C = ∏ k, ∏ j, ENNReal.ofReal (Real.exp (-‖C k j‖ ^ 2))`. Introduce `C`. Unfold `gW`. Simplify using `only [← Finset.sum_neg_distrib, Real.exp_sum]`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => (Real.exp_pos _).le]`.
+
+Conclude with `Finset.prod_congr rfl fun k _ => ENNReal.ofReal_prod_of_nonneg fun _ _ => (Real.exp_pos _).le`. Establish `hm : Measurable fun z : ℂ => ENNReal.ofReal (Real.exp (-‖z‖ ^ 2))` using `by fun_prop`. Establish `hrow : ∫⁻ r : α → ℂ, ∏ j, ENNReal.ofReal (Real.exp (-‖r j‖ ^ 2)) = ENNReal.ofReal Real.pi ^ Fintype.card α`. Rewrite using `[volume_pi, GlobalTheory.RestrMeas.lintegral_fintype_prod_eq_prod (fun _ => hm.aemeasurable)]`. Simplify using `[lintegral_exp_neg_norm_sq]`.
+
+Establish `hmr : Measurable fun r : α → ℂ => ∏ j, ENNReal.ofReal (Real.exp (-‖r j‖ ^ 2))` using `Finset.measurable_prod _ fun j _ => hm.comp (measurable_pi_apply j)`. Simplify using `only [hw]`. Rewrite using `[volume_pi, GlobalTheory.RestrMeas.lintegral_fintype_prod_eq_prod (fun _ => hmr.aemeasurable)]`. Simplify using `only [hrow, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← pow_mul, mul_comm, ENNReal.ofReal_pow Real.pi_pos.le, mul_comm]`.
+-/
 theorem lintegral_gW (d : ℕ) (α : Type) [Fintype α] :
     ∫⁻ C : Fin d → α → ℂ, gW d α C = ENNReal.ofReal (Real.pi ^ (d * Fintype.card α)) := by
   have hw : ∀ C : Fin d → α → ℂ, gW d α C =

@@ -13,6 +13,9 @@ variable {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω]
 
 abbrev Idx (R1 : Subalgebra k Ω) : Type := {S : Subalgebra k Ω // R1 ≤ S ∧ S.FG}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b => ⟨⟨a.1 ⊔ b.1, a.2.1.trans le_sup_left, a.2.2.sup b.2.2⟩, le_sup_left (a := a.1), le_sup_right (b := b.1)⟩⟩`.
+-/
 theorem idx_directed (R1 : Subalgebra k Ω) : IsDirected (Idx R1) (· ≤ ·) :=
   ⟨fun a b => ⟨⟨a.1 ⊔ b.1, a.2.1.trans le_sup_left, a.2.2.sup b.2.2⟩, le_sup_left (a := a.1), le_sup_right (b := b.1)⟩⟩
 
@@ -24,6 +27,13 @@ def ringC (R1 : Subalgebra k Ω) : Cocone (ringF R1) where
   pt := CommRingCat.of Ω
   ι := { app := fun S => CommRingCat.ofHom (algebraMap S.1 Ω) }
 
+/- English proof (translation)
+Use `haveI := idx_directed R1`. Use `haveI : Nonempty (Idx R1) := ⟨⟨R1, le_rfl, hR1⟩⟩`. Use `haveI : IsFiltered (Idx R1) := inferInstance`. Use `haveI : ReflectsColimitsOfShape (Idx R1) (forget CommRingCat) := reflectsColimitsOfShape_of_reflectsIsomorphisms`. Use `⟨isColimitOfReflects (forget CommRingCat) ?_⟩` and prove the remaining obligations.
+
+Use `Types.FilteredColimit.isColimitOf _ _ ?_ ?_` and prove the remaining obligations. Introduce `x`. Set `S : Idx R1` to `⟨R1 ⊔ Algebra.adjoin k {x}, le_sup_left, hR1.sup (Subalgebra.fg_def.2 ⟨{x}, Set.finite_singleton x, rfl⟩)⟩`. Establish `hx : x ∈ S.1` using `(le_sup_right : _ ≤ R1 ⊔ Algebra.adjoin k {x}) (Algebra.subset_adjoin rfl)`. Conclude with `⟨S, ⟨x, hx⟩, rfl⟩`.
+
+Introduce `i j xi xj h`. Use `⟨⟨i.1 ⊔ j.1, i.2.1.trans le_sup_left, i.2.2.sup j.2.2⟩, homOfLE (le_sup_left (a := i.1)), homOfLE (le_sup_right (b := j.1)), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h`.
+-/
 theorem ringC_isColimit (R1 : Subalgebra k Ω) (hR1 : R1.FG) : Nonempty (IsColimit (ringC R1)) := by
   haveI := idx_directed R1
   haveI : Nonempty (Idx R1) := ⟨⟨R1, le_rfl, hR1⟩⟩
@@ -46,6 +56,9 @@ def baseD (R1 : Subalgebra k Ω) : (Idx R1)ᵒᵖ ⥤ Scheme.{0} := (ringF R1).o
 
 def baseC (R1 : Subalgebra k Ω) : Cone (baseD R1) := Scheme.Spec.mapCone (ringC R1).op
 
+/- English proof (translation)
+Take `⟨hc⟩` from `ringC_isColimit R1 hR1`. Conclude with `⟨isLimitOfPreserves Scheme.Spec hc.op⟩`.
+-/
 theorem baseC_isLimit (R1 : Subalgebra k Ω) (hR1 : R1.FG) : Nonempty (IsLimit (baseC R1)) := by
   obtain ⟨hc⟩ := ringC_isColimit R1 hR1
   exact ⟨isLimitOfPreserves Scheme.Spec hc.op⟩
@@ -54,16 +67,25 @@ instance (R1 : Subalgebra k Ω) {i j : (Idx R1)ᵒᵖ} (f : i ⟶ j) : IsAffineH
   show IsAffineHom (Spec.map _)
   infer_instance
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem lvl_fst {A B D0 : Subalgebra k Ω} (hA : D0 ≤ A) (hB : D0 ≤ B) (hAB : A ≤ B)
     {D : Scheme.{0}} (q : D ⟶ Sp D0) :
     lvl hA hB hAB q ≫ pullback.fst q (incl hA) = pullback.fst q (incl hB) :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem lvl_snd {A B D0 : Subalgebra k Ω} (hA : D0 ≤ A) (hB : D0 ≤ B) (hAB : A ≤ B)
     {D : Scheme.{0}} (q : D ⟶ Sp D0) :
     lvl hA hB hAB q ≫ pullback.snd q (incl hA) = pullback.snd q (incl hB) ≫ incl hAB :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, lvl_fst, lvl_fst, lvl_fst]`. Rewrite using `[Category.assoc, lvl_snd, reassoc_of% (lvl_snd hB hC hBC q), lvl_snd, incl_comp hAB (hAB.trans hBC) hBC]`.
+-/
 theorem lvl_comp {A B C D0 : Subalgebra k Ω} (hA : D0 ≤ A) (hB : D0 ≤ B) (hC : D0 ≤ C) (hAB : A ≤ B) (hBC : B ≤ C)
     {D : Scheme.{0}} (q : D ⟶ Sp D0) :
     lvl hB hC hBC q ≫ lvl hA hB hAB q = lvl hA hC (hAB.trans hBC) q := by
@@ -71,6 +93,11 @@ theorem lvl_comp {A B C D0 : Subalgebra k Ω} (hA : D0 ≤ A) (hB : D0 ≤ B) (h
   · rw [Category.assoc, lvl_fst, lvl_fst, lvl_fst]
   · rw [Category.assoc, lvl_snd, reassoc_of% (lvl_snd hB hC hBC q), lvl_snd, incl_comp hAB (hAB.trans hBC) hBC]
 
+/- English proof (translation)
+Establish `h : incl (le_refl A) = 𝟙 (Sp A)`. Rewrite using `[incl, show CommRingCat.ofHom (Subalgebra.inclusion (le_refl A)).toRingHom = 𝟙 _ from by ext; rfl]`. Conclude with `Scheme.Spec.map_id _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[lvl_fst, Category.id_comp]`.
+
+Rewrite using `[lvl_snd, h, Category.comp_id, Category.id_comp]`.
+-/
 theorem lvl_self {A D0 : Subalgebra k Ω} (hA : D0 ≤ A) {D : Scheme.{0}} (q : D ⟶ Sp D0) :
     lvl hA hA le_rfl q = 𝟙 _ := by
   have h : incl (le_refl A) = 𝟙 (Sp A) := by
@@ -80,6 +107,9 @@ theorem lvl_self {A D0 : Subalgebra k Ω} (hA : D0 ≤ A) {D : Scheme.{0}} (q : 
   · rw [lvl_fst, Category.id_comp]
   · rw [lvl_snd, h, Category.comp_id, Category.id_comp]
 
+/- English proof (translation)
+Use `IsPullback.of_right (h₁₂ := pullback.fst q (incl hA)) (v₁₃ := q) (h₂₂ := incl hA) ?_ (lvl_snd hA hB hAB q) (IsPullback.of_hasPullback q (incl hA))` and prove the remaining obligations. Rewrite using `[lvl_fst, incl_comp hA hB hAB]`. Conclude with `IsPullback.of_hasPullback q (incl hB)`.
+-/
 theorem lvl_isPullback {A B D0 : Subalgebra k Ω} (hA : D0 ≤ A) (hB : D0 ≤ B) (hAB : A ≤ B)
     {D : Scheme.{0}} (q : D ⟶ Sp D0) :
     IsPullback (lvl hA hB hAB q) (pullback.snd q (incl hB)) (pullback.snd q (incl hA)) (incl hAB) := by
@@ -105,6 +135,13 @@ def stageC {R R1 : Subalgebra k Ω} (h1 : R ≤ R1) {Y D : Scheme.{0}} {g : Y �
          naturality := fun S T f => (Category.id_comp _).trans
           (bcLift_lvl (h1.trans T.unop.2.1) (h1.trans S.unop.2.1) (leOfHom f.unop) w).symm }
 
+/- English proof (translation)
+Use `haveI := idx_directed R1`. Use `haveI : Nonempty (Idx R1) := ⟨⟨R1, le_rfl, hR1⟩⟩`. Use `haveI : IsFiltered (Idx R1) := inferInstance`. Use `haveI : IsCofiltered (Idx R1)ᵒᵖ := inferInstance`. Use `haveI : IsConnected (Idx R1)ᵒᵖ := IsCofiltered.isConnected _`.
+
+Take `⟨hc⟩` from `baseC_isLimit R1 hR1`. Use `⟨isLimitOfIsPullbackOfIsConnected (stageP h1 q) _ (baseC R1) ⟨g, ?_⟩ ?_ hc⟩` and prove the remaining obligations. Introduce `S`. Conclude with `(pullback.lift_snd _ _ _).symm`. Introduce `S`.
+
+Conclude with `bcLift_isPullback _ hp`.
+-/
 theorem stageC_isLimit {R R1 : Subalgebra k Ω} (h1 : R ≤ R1) (hR1 : R1.FG) {Y D : Scheme.{0}} {g : Y ⟶ Sp Ω}
     {q : D ⟶ Sp R} {v : Y ⟶ D} (hp : IsPullback v g q (toR R)) : Nonempty (IsLimit (stageC h1 hp.w)) := by
   haveI := idx_directed R1
@@ -125,15 +162,24 @@ variable {R R1 : Subalgebra k Ω} (h1 : R ≤ R1) {DU DW : Scheme.{0}} (qU : DU 
   (hψ : ψ ≫ pullback.snd qU (incl h1) = pullback.snd qW (incl h1))
 
 include h1 in
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem descMap_fst {A : Subalgebra k Ω} (hA : R ≤ A) (h1A : R1 ≤ A) :
     descMap h1 hA h1A qU qW ψ hψ ≫ pullback.fst qU (incl hA) =
       lvl h1 hA h1A qW ≫ ψ ≫ pullback.fst qU (incl h1) :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem descMap_snd {A : Subalgebra k Ω} (hA : R ≤ A) (h1A : R1 ≤ A) :
     descMap h1 hA h1A qU qW ψ hψ ≫ pullback.snd qU (incl hA) = pullback.snd qW (incl hA) :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, lvl_fst, descMap_fst, descMap_fst, reassoc_of% (lvl_comp h1 hA hB h1A hAB qW)]`. Rewrite using `[Category.assoc, Category.assoc, lvl_snd, descMap_snd, reassoc_of% (descMap_snd h1 qU qW ψ hψ hB h1B), lvl_snd]`.
+-/
 theorem descMap_lvl {A B : Subalgebra k Ω} (hA : R ≤ A) (hB : R ≤ B) (h1A : R1 ≤ A) (h1B : R1 ≤ B) (hAB : A ≤ B) :
     lvl hA hB hAB qW ≫ descMap h1 hA h1A qU qW ψ hψ = descMap h1 hB h1B qU qW ψ hψ ≫ lvl hA hB hAB qU := by
   apply pullback.hom_ext
@@ -141,6 +187,9 @@ theorem descMap_lvl {A B : Subalgebra k Ω} (hA : R ≤ A) (hB : R ≤ B) (h1A :
       reassoc_of% (lvl_comp h1 hA hB h1A hAB qW)]
   · rw [Category.assoc, Category.assoc, lvl_snd, descMap_snd, reassoc_of% (descMap_snd h1 qU qW ψ hψ hB h1B), lvl_snd]
 
+/- English proof (translation)
+Use `IsPullback.of_bot (v₂₁ := pullback.snd qU (incl hB)) (v₂₂ := pullback.snd qU (incl hA)) (h₃₁ := incl hAB) ?_ (descMap_lvl h1 qU qW ψ hψ hA hB h1A h1B hAB) (lvl_isPullback hA hB hAB qU)` and prove the remaining obligations. Rewrite using `[descMap_snd, descMap_snd]`. Conclude with `lvl_isPullback hA hB hAB qW`.
+-/
 theorem descMap_isPullback {A B : Subalgebra k Ω} (hA : R ≤ A) (hB : R ≤ B) (h1A : R1 ≤ A) (h1B : R1 ≤ B)
     (hAB : A ≤ B) :
     IsPullback (lvl hA hB hAB qW) (descMap h1 hB h1B qU qW ψ hψ) (descMap h1 hA h1A qU qW ψ hψ)
@@ -155,20 +204,32 @@ def stageA : stageD h1 qW ⟶ stageD h1 qU where
   naturality {S T} f := descMap_lvl h1 qU qW ψ hψ (h1.trans T.unop.2.1) (h1.trans S.unop.2.1) T.unop.2.1 S.unop.2.1
     (leOfHom f.unop) |>.symm ▸ rfl
 
+/- English proof (translation)
+Use extensionality with `S : 2`. Conclude with `descMap_snd h1 qU qW ψ hψ _ _`.
+-/
 theorem stageA_comp : stageA h1 qU qW ψ hψ ≫ stageP h1 qU = stageP h1 qW := by
   ext S : 2
   exact descMap_snd h1 qU qW ψ hψ _ _
 
 end
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem bcLift_fst {R A : Subalgebra k Ω} (h : R ≤ A) {Y D : Scheme.{0}} {g : Y ⟶ Sp Ω} {q : D ⟶ Sp R} {v : Y ⟶ D}
     (w : v ≫ q = g ≫ toR R) : bcLift h w ≫ pullback.fst q (incl h) = v :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem bcLift_snd {R A : Subalgebra k Ω} (h : R ≤ A) {Y D : Scheme.{0}} {g : Y ⟶ Sp Ω} {q : D ⟶ Sp R} {v : Y ⟶ D}
     (w : v ≫ q = g ≫ toR R) : bcLift h w ≫ pullback.snd q (incl h) = g ≫ toR A :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Take `⟨-, h2, h3⟩` from `hp`. Conclude with `⟨QuasiCompact.compactSpace_of_compactSpace p, quasiSeparatedSpace_of_quasiSeparated p⟩`.
+-/
 theorem fp_stage {E : Scheme.{0}} {A : Type} [CommRing A] (p : E ⟶ Sp A) (hp : FP p) :
     CompactSpace E ∧ QuasiSeparatedSpace E := by
   obtain ⟨-, h2, h3⟩ := hp
@@ -177,6 +238,21 @@ theorem fp_stage {E : Scheme.{0}} {A : Type} [CommRing A] (p : E ⟶ Sp A) (hp :
 end UpperTheory.Cb.StagedBaseChange
 
 open UpperTheory.Cb.StagedBaseChange in
+/- English proof (translation)
+Introduce `k _ Ω _ _ X f hf U W hWU R hR DU DW qU qW vU vW hqU hqW hU hW R1 h1 hR1 ψ hψ hc`. Use `haveI := idx_directed R1`. Use `haveI : Nonempty (Idx R1) := ⟨⟨R1, le_rfl, hR1⟩⟩`. Use `haveI : IsFiltered (Idx R1) := inferInstance`. Use `haveI : IsCofiltered (Idx R1)ᵒᵖ := inferInstance`.
+
+Set `i0 : (Idx R1)ᵒᵖ` to `op ⟨R1, le_rfl, hR1⟩`. Take `⟨hcZ⟩` from `stageC_isLimit h1 hR1 hW`. Take `⟨hcY⟩` from `stageC_isLimit h1 hR1 hU`. Establish `hZ : ∀ {i j : (Idx R1)ᵒᵖ} (e : i ⟶ j), IsPullback ((stageD h1 qW).map e) ((stageP h1 qW).app i) ((stageP h1 qW).app j) ((baseD R1).map e)` using `fun {i j} e => lvl_isPullback (h1.trans j.unop.2.1) (h1.trans i.unop.2.1) (leOfHom e.unop) qW`. Establish `hY : ∀ {i j : (Idx R1)ᵒᵖ} (e : i ⟶ j), IsPullback ((stageD h1 qU).map e) ((stageP h1 qU).app i) ((stageP h1 qU).app j) ((baseD R1).map e)` using `fun {i j} e => lvl_isPullback (h1.trans j.unop.2.1) (h1.trans i.unop.2.1) (leOfHom e.unop) qU`.
+
+Establish `sZ : ∀ i : (Idx R1)ᵒᵖ, FP ((stageP h1 qW).app i)` using `fun i => fp_snd _ _ hqW`. Establish `sY : ∀ i : (Idx R1)ᵒᵖ, FP ((stageP h1 qU).app i)` using `fun i => fp_snd _ _ hqU`. Establish `cZ` using `fun i => (fp_stage _ (sZ i)).1`. Establish `qZ` using `fun i => (fp_stage _ (sZ i)).2`. Establish `cY` using `fun i => (fp_stage _ (sY i)).1`.
+
+Establish `qY` using `fun i => (fp_stage _ (sY i)).2`. Establish `hm : ∀ i, (stageC h1 hW.w).π.app i ≫ (stageA h1 qU qW ψ hψ).app i = X.homOfLE hWU ≫ (stageC h1 hU.w).π.app i`. Introduce `i`. Express the relevant statement in the definitionally equal form `bcLift _ hW.w ≫ descMap h1 _ i.unop.2.1 qU qW ψ hψ = X.homOfLE hWU ≫ bcLift _ hU.w`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc, descMap_fst, bcLift_fst, reassoc_of% (bcLift_lvl h1 (h1.trans i.unop.2.1) i.unop.2.1 hW.w), reassoc_of% hc, bcLift_fst]`. Rewrite using `[Category.assoc, Category.assoc, descMap_snd, bcLift_snd, bcLift_snd]`. Simplify using `only [Category.assoc, Scheme.homOfLE_ι_assoc]`. Use `haveI : IsOpenImmersion (X.homOfLE hWU) := by haveI : IsOpenImmersion (X.homOfLE hWU ≫ U.ι) := by`. Rewrite using `[Scheme.homOfLE_ι]`.
+
+Use `infer_instance`. Conclude with `IsOpenImmersion.of_comp _ U.ι`. Set `m : (stageC h1 hW.w).pt ⟶ (stageC h1 hU.w).pt` to `X.homOfLE hWU`. Use `haveI hmo : IsOpenImmersion m := ‹IsOpenImmersion (X.homOfLE hWU)›`. Take `⟨j, e, V, hV, hα, hπ⟩` from `UpperTheory.limit_of_cofiltered_affine_base_change_squares _ (baseD R1) (stageD h1 qW) (stageD h1 qU) (stageA h1 qU qW ψ hψ) (stageP h1 qW) (stageP h1 qU) (stageA_comp h1 qU qW ψ hψ) hZ hY _ hcZ _ hcY cZ qZ cY qY i0 m hm`.
+
+Take `⟨l, e2, hl⟩` from `UpperTheory.limit_compact_of_cofiltered_cartesian_affine_transition _ (baseD R1) (stageD h1 qW) (stageD h1 qU) (stageA h1 qU qW ψ hψ) (stageP h1 qW) (stageP h1 qU) (stageA_comp h1 qU qW ψ hψ) hZ hY _ hcZ _ hcY cZ qZ cY qY i0 (sZ i0).1 (by haveI := (sY i0).1; infer_instance) m hm …`. Use `⟨l.unop.1, l.unop.2.1, l.unop.2.2, fun R'' h h1' hle => ?_⟩` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @IsOpenImmersion) (descMap_isPullback h1 qU qW ψ hψ (h1.trans l.unop.2.1) h l.unop.2.1 h1' hle) hl`.
+-/
 theorem UpperTheory.Cb.isOpenImmersion_inclusion_of_piecewise : LateralTheory.E.LeafInclPiecePf.LeafInclOpen := by
   intro k _ Ω _ _ X f hf U W hWU R hR DU DW qU qW vU vW hqU hqW hU hW R1 h1 hR1 ψ hψ hc
   haveI := idx_directed R1

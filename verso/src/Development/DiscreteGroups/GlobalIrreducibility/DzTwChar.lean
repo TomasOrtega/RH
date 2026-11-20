@@ -21,10 +21,26 @@ def resMap : IsLocalRing.ResidueField 𝒪[w.adicCompletion E] →+* ZMod g :=
     rw [← RingHom.mem_ker, DzIso.ker_redO i hi]
     exact ha
 
+/- English proof (translation)
+Rewrite using `[← PadicInt.norm_def]`. Conclude with `PadicInt.isUnit_iff.1 u.isUnit`.
+-/
 theorem norm_unit (u : ℤ_[g]ˣ) : ‖((u : ℤ_[g]) : ℚ_[g])‖ = 1 := by
   rw [← PadicInt.norm_def]
   exact PadicInt.isUnit_iff.1 u.isUnit
 
+/- English proof (translation)
+Establish `hne : ((g : ℕ) : w.adicCompletion E) ≠ 0` using `fun h => by`. Use `DzIso.valuation_natCast_eq_uniformizer i hi` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `uniformizer_ne_zero this.symm`. Establish `hϖ : valuation (w.adicCompletion E) ((Units.mk0 _ hne : (w.adicCompletion E)ˣ) : w.adicCompletion E) = uniformizer (w.adicCompletion E)`.
+
+Rewrite using `[Units.val_mk0]`. Conclude with `DzIso.valuation_natCast_eq_uniformizer i hi`. Take `⟨χ, hl, h1⟩` from `GlobalTheory.LocGL.exists_isTameLift (k := w.adicCompletion E) (χ₀.comp (Units.map (resMap i hi).toMonoidHom)) hϖ 1`. Use `⟨χ, GlobalTheory.LocGL.isSmoothChar_of_isTame hl.isTame, fun u x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hv : valuation (w.adicCompletion E) (x : w.adicCompletion E) = 1`.
+
+Rewrite using `[hx]`. Use `le_antisymm ((DzIso.valuation_le_iff i hi _).2 (norm_unit i hi u).le) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Use `(DzIso.valuation_lt_iff i hi _).1 hlt` as an intermediate fact. Rewrite `this` using `[norm_unit i hi u]`. Conclude with `lt_irrefl _ this`.
+
+Take `⟨v, hv'⟩` from `GlobalTheory.LocGL.valuation_eq_one_iff.1 hv`. Establish `hx' : ((v : 𝒪[w.adicCompletion E]) : w.adicCompletion E) = (x : w.adicCompletion E)` using `congrArg Units.val hv'`. Rewrite using `[← hv', hl v]`. Use `show χ₀ _ = χ₀ _`. Use `congrArg χ₀ (Units.ext ?_)` and prove the remaining obligations.
+
+Use `show PadicInt.toZMod (DzIso.toInt i hi (v : 𝒪[w.adicCompletion E])) = PadicInt.toZMod (u : ℤ_[g])`. Use `congr 1`. Apply `PadicInt.ext` to reduce the goal to its premises. Rewrite using `[DzIso.coe_toInt, hx', hx, RingEquiv.symm_apply_apply]`. Establish `: x = Units.mk0 _ hne` using `Units.ext (by rw [hx, Units.val_mk0])`.
+
+Rewrite using `[this, h1]`.
+-/
 theorem exists_liftsChar (χ₀ : (ZMod g)ˣ →* ℂˣ) :
     ∃ χ : (w.adicCompletion E)ˣ →* ℂˣ, IsSmoothChar χ ∧ DiscreteGroups.sglob.DzType.LiftsChar i χ₀ χ := by
   have hne : ((g : ℕ) : w.adicCompletion E) ≠ 0 := fun h => by

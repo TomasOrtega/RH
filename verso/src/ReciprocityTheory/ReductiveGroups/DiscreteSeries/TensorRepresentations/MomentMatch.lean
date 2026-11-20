@@ -6,6 +6,11 @@ open Finset Polynomial
 
 namespace ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Simplify using `only [Polynomial.eval_eq_sum_range, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Use `_ = Q.coeff k * ∑ s, r s * a s ^ k := by rw [h k]`. Use `_ = ∑ s, r s * (Q.coeff k * a s ^ k) := by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem moment_poly {ι κ : Type*} [Fintype ι] [Fintype κ] (b : ι → ℂ) (u : ι → ℂ) (a : κ → ℂ)
     (r : κ → ℂ) (h : ∀ k : ℕ, ∑ i, u i * b i ^ k = ∑ s, r s * a s ^ k) (Q : ℂ[X]) :
     ∑ i, u i * Q.eval (b i) = ∑ s, r s * Q.eval (a s) := by
@@ -19,6 +24,15 @@ theorem moment_poly {ι κ : Type*} [Fintype ι] [Fintype κ] (b : ι → ℂ) (
     _ = ∑ s, r s * (Q.coeff k * a s ^ k) := by
         rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Use `set S : Finset ℂ := (univ.image b ∪ univ.image a).erase p with hS`. Establish `hne : (∏ s ∈ S, (p - s)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun s hs => sub_ne_zero.mpr (Finset.ne_of_mem_erase hs).symm`. Set `Q : ℂ[X]` to `C (∏ s ∈ S, (p - s))⁻¹ * ∏ s ∈ S, (X - C s)`. Establish `hQ : ∀ x, x ∈ univ.image b ∪ univ.image a → Q.eval x = if x = p then 1 else 0`. Introduce `x hx`.
+
+Simplify using `only [Q, eval_mul, eval_C, eval_prod, eval_sub, eval_X]`. Use `split_ifs with hxp`. Substitute `hxp` using the available equality. Conclude with `inv_mul_cancel₀ hne`. Rewrite using `[Finset.prod_eq_zero (i := x) (Finset.mem_erase.mpr ⟨hxp, hx⟩) (sub_self x), mul_zero]`.
+
+Establish `e` using `moment_poly b u a r h Q`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQ (b i) (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ _)))]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Use `_ = ∑ s, r s * Q.eval (a s) := e`. Use `_ = _ := Finset.sum_congr rfl fun s _ => by`. Rewrite using `[hQ (a s) (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ _)))]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem moment_fibre {ι κ : Type*} [Fintype ι] [Fintype κ] (b : ι → ℂ) (u : ι → ℂ) (a : κ → ℂ)
     (r : κ → ℂ) (h : ∀ k : ℕ, ∑ i, u i * b i ^ k = ∑ s, r s * a s ^ k) (p : ℂ) :
     ∑ i ∈ univ.filter (fun i => b i = p), u i = ∑ s ∈ univ.filter (fun s => a s = p), r s := by
@@ -47,6 +61,15 @@ theorem moment_fibre {ι κ : Type*} [Fintype ι] [Fintype κ] (b : ι → ℂ) 
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `⟨fun i => ?_, fun s => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon push_neg at hcon`. Establish `e` using `moment_fibre b (fun i => (w i : ℂ)) a r h (b i)`. Establish `e0 : univ.filter (fun s => a s = b i) = ∅` using `Finset.filter_eq_empty_iff.mpr fun t _ h' => hcon t h'.symm`. Rewrite `e` using `[e0, Finset.sum_empty]`.
+
+Establish `hpos : 0 < ∑ j ∈ univ.filter (fun j => b j = b i), w j` using `Finset.sum_pos (fun j _ => hw j) ⟨i, by simp⟩`. Establish `e' : ((∑ j ∈ univ.filter (fun j => b j = b i), w j : ℝ) : ℂ) = 0`. Use `push_cast`. Conclude with `e`. Conclude with `hpos.ne' (by exact_mod_cast e')`.
+
+Establish `e` using `moment_fibre b (fun i => (w i : ℂ)) a r h (a s)`. Establish `e1 : univ.filter (fun t => a t = a s) = {s}`. Use extensionality with `t`. Simplify using `[ha.eq_iff]`. Rewrite `e` using `[e1, Finset.sum_singleton]`.
+
+Conclude with `e.symm`.
+-/
 theorem moment_match {ι : Type*} [Fintype ι] (b : ι → ℂ) (w : ι → ℝ) (hw : ∀ i, 0 < w i) (a : Fin n → ℂ)
     (ha : Function.Injective a) (r : Fin n → ℂ)
     (h : ∀ k : ℕ, ∑ i, (w i : ℂ) * b i ^ k = ∑ s, r s * a s ^ k) :

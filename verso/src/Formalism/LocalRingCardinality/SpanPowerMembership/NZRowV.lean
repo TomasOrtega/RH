@@ -8,6 +8,27 @@ open Formalism.BasicNotions MvPolynomial
 
 section Det
 
+/- English proof (translation)
+Use `split_ifs with h`. Establish `: (Matrix.of fun i k : Fin p => if (i : ℕ) = (I k : ℕ) then (1 : C) else 0) = 1`. Use extensionality with `i k`. Simplify using `only [Matrix.of_apply, Matrix.one_apply, h k, Fin.val_inj]`. Rewrite using `[this, Matrix.det_one]`.
+
+Use `push Not at h`. Take `⟨k, hk⟩` from `h`. Establish `hge : ∀ j : Fin p, (j : ℕ) ≤ (I j : ℕ)` using `fun j => by`. Use `StrictMono.id_le (f := fun n : ℕ => if hn : n < p then (I ⟨n, hn⟩ : ℕ) + 0 else n + N) (by` as an intermediate fact. Introduce `a b hab`.
+
+Distinguish the cases in `hb : b < p`. Establish `ha : a < p` using `lt_trans hab hb`. Simplify using `only [dif_pos ha, dif_pos hb, add_zero]`. Conclude with `I.strictMono (show (⟨a, ha⟩ : Fin p) < ⟨b, hb⟩ from hab)`. Simplify using `only [dif_neg hb]`.
+
+Distinguish the cases in `ha : a < p`. Simplify using `only [dif_pos ha, add_zero]`. Use `(I ⟨a, ha⟩).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [dif_neg ha]`.
+
+Use the proof step `omega) j`. Simplify `this` using `[j.2]`. Establish `hp : 0 < p` using `Nat.lt_of_le_of_lt (Nat.zero_le _) k.2`. Set `last : Fin p` to `⟨p - 1, by omega⟩`. Establish `hlast : p ≤ (I last : ℕ)`.
+
+Establish `h1 : (k : ℕ) < (I k : ℕ)` using `lt_of_le_of_ne (hge k) (Ne.symm hk)`. Establish `h2 : ∀ n : ℕ, ∀ hn : (k : ℕ) + n < p, (I k : ℕ) + n ≤ (I ⟨k + n, hn⟩ : ℕ)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro hn`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `hn`. Establish `h3` using `ih (by omega)`. Establish `hlt : (I ⟨k + n, by omega⟩ : ℕ) < (I ⟨k + (n + 1), hn⟩ : ℕ)` using `I.strictMono (show (⟨k + n, by omega⟩ : Fin p) < ⟨k + (n + 1), hn⟩ from by`.
+
+Rewrite using `[Fin.lt_iff_val_lt_val]`. Use the proof step `simp)`. Use linear arithmetic over natural numbers and integers. Establish `h4` using `h2 (p - 1 - k) (by omega)`. Establish `e : (⟨k + (p - 1 - k), by omega⟩ : Fin p) = last` using `Fin.ext (by simp [last]; omega)`.
+
+Rewrite `h4` using `[e]`. Use linear arithmetic over natural numbers and integers. Use `Matrix.det_eq_zero_of_column_eq_zero last fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Rewrite using `[if_neg]`.
+
+Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem det_ind {p N : ℕ} (I : Fin p ↪o Fin N) {C : Type} [CommRing C] :
     (Matrix.of fun i k : Fin p => if (i : ℕ) = (I k : ℕ) then (1 : C) else 0).det =
       if ∀ k, (I k : ℕ) = k then 1 else 0 := by
@@ -73,6 +94,11 @@ def ThE : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l] := fun μ =>
   if ∀ k ∈ μ.support, zS N0 N1 l k = 1 then (μ.prod fun _ n => (n.factorial : ℂ_[l]))⁻¹ else 0
 
 open Classical in
+/- English proof (translation)
+Use `split_ifs with h`. Conclude with `Finset.prod_eq_one fun k hk => by show t k ^ μ k = 1; rw [h k hk, one_pow]`. Use `push Not at h`. Take `⟨k, hk, hne⟩` from `h`. Establish `h0 : t k = 0` using `(ht k).resolve_right hne`.
+
+Conclude with `Finset.prod_eq_zero hk (by show t k ^ μ k = 0; rw [h0, zero_pow (Finsupp.mem_support_iff.mp hk)])`.
+-/
 theorem prod_ind {σ : Type} (t : σ → ℂ_[l]) (ht : ∀ k, t k = 0 ∨ t k = 1) (μ : σ →₀ ℕ) :
     (μ.prod fun k e => t k ^ e) = if ∀ k ∈ μ.support, t k = 1 then 1 else 0 := by
   split_ifs with h
@@ -82,10 +108,18 @@ theorem prod_ind {σ : Type} (t : σ → ℂ_[l]) (ht : ∀ k, t k = 0 ∨ t k =
     have h0 : t k = 0 := (ht k).resolve_right hne
     exact Finset.prod_eq_zero hk (by show t k ^ μ k = 0; rw [h0, zero_pow (Finsupp.mem_support_iff.mp hk)])
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`.
+-/
 theorem fac_ne (μ : (Lt × Fin N0 × Fin N1) →₀ ℕ) : (μ.prod fun _ n => (n.factorial : ℂ_[l])) ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)
 
 open Classical in
+/- English proof (translation)
+Apply the tactic sequence `rw [prod_ind l (zS N0 N1 l) (fun k => by unfold zS; split_ifs <;> simp) μ]`. Use `show _ * ThE N0 N1 l μ = _`. Unfold `ThE`. Use `split_ifs`. Conclude with `mul_inv_cancel₀ (fac_ne N0 N1 l μ)`.
+
+Conclude with `mul_zero _`.
+-/
 theorem fac_ThE (μ : (Lt × Fin N0 × Fin N1) →₀ ℕ) :
     (μ.prod fun _ n => (n.factorial : ℂ_[l])) * MvPowerSeries.coeff μ (ThE N0 N1 l) =
       μ.prod fun k e => zS N0 N1 l k ^ e := by
@@ -96,6 +130,13 @@ theorem fac_ThE (μ : (Lt × Fin N0 × Fin N1) →₀ ℕ) :
   · exact mul_inv_cancel₀ (fac_ne N0 N1 l μ)
   · exact mul_zero _
 
+/- English proof (translation)
+Unfold `KM.applyAt0`. Rewrite using `[map_sum, MvPolynomial.eval₂_eq]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval_monomial]`. Use `set e := Finsupp.sumFinsuppEquivProdFinsupp μ with he`.
+
+Establish `hμ : μ = Finsupp.sumElim e.1 e.2`. Rewrite using `[he]`. Use extensionality with `k`. Apply the tactic sequence `cases k <;> rfl`. Establish `hprod : (∏ i ∈ μ.support, Sum.elim (xS N0 l) (zS N0 N1 l) i ^ μ i) = (e.1.prod fun k n => xS N0 l k ^ n) * (e.2.prod fun k n => zS N0 N1 l k ^ n)` using `by show μ.prod (fun i n => Sum.elim (xS N0 l) (zS N0 N1 l) i ^ n) = _ conv_lhs => rw [hμ]`.
+
+Rewrite using `[Finsupp.prod_sumElim]`. Both sides reduce to the same expression. Rewrite using `[hprod, ← fac_ThE N0 N1 l e.2]`. Simplify using `only [eq_intCast, Int.cast_id]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_applyAt0 (P : MvPolynomial (KM.XZ Lt N0 N1) ℤ) :
     MvPolynomial.eval (xS N0 l) (KM.applyAt0 N0 N1 l (ThE N0 N1 l) P) =
       MvPolynomial.eval₂ (Int.castRingHom ℂ_[l]) (Sum.elim (xS N0 l) (zS N0 N1 l)) P := by
@@ -118,6 +159,11 @@ theorem eval_applyAt0 (P : MvPolynomial (KM.XZ Lt N0 N1) ℤ) :
   simp only [eq_intCast, Int.cast_id]
   ring
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single ⟨i, lt_of_lt_of_le i.2 hp⟩]`. Simplify using `[xS, zS]`. Introduce `a _ ha`. Establish `: (i : ℕ) ≠ (a : ℕ)` using `fun h => ha (Fin.ext h.symm)`. Simplify using `[xS, this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sum_xz {p : ℕ} (hp : p ≤ N0) (s : Lt) (i : Fin p) (b : Fin N1) :
     (∑ a : Fin N0, xS N0 l (s, (i : ℕ), a) * zS N0 N1 l (s, a, b)) = if (i : ℕ) = (b : ℕ) then 1 else 0 := by
   rw [Finset.sum_eq_single ⟨i, lt_of_lt_of_le i.2 hp⟩]
@@ -130,6 +176,13 @@ theorem sum_xz {p : ℕ} (hp : p ≤ N0) (s : Lt) (i : Fin p) (b : Fin N1) :
 variable [Fintype Lt] [DecidableEq Lt]
 
 open Classical in
+/- English proof (translation)
+Unfold `KM.Gxz`. Rewrite using `[← MvPolynomial.coe_eval₂Hom, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Unfold `KM.minorXZ`. Establish `hM : (MvPolynomial.eval₂Hom (Int.castRingHom ℂ_[l]) (Sum.elim (xS N0 l) (zS N0 N1 l))).mapMatrix (Matrix.of fun i k : Fin ((nu s).colLen c) => ∑ a : Fin N0, MvPolynomial.X (Sum.inl (s, (i : ℕ), a)) * MvPolynomial.X (Sum.inr (s, a, I s c k))) = Matrix.of fun i k : Fin ((nu s).colL …`. Use extensionality with `i k`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply, map_sum]`. Simplify using `only [map_mul, MvPolynomial.eval₂Hom_X', Sum.elim_inl, Sum.elim_inr]`.
+
+Conclude with `sum_xz N0 N1 l (hnu s c) s i (I s c k)`. Rewrite using `[RingHom.map_det, hM, det_ind]`.
+-/
 theorem eval_Gxz (nu : Lt → YoungDiagram) (hnu : ∀ s c, (nu s).colLen c ≤ N0) (I : KM.ColChoice N1 nu) :
     MvPolynomial.eval₂ (Int.castRingHom ℂ_[l]) (Sum.elim (xS N0 l) (zS N0 N1 l)) (KM.Gxz N0 N1 nu I) =
       ∏ s, ∏ c : Fin ((nu s).rowLen 0), if ∀ k, (I s c k : ℕ) = k then 1 else 0 := by
@@ -150,6 +203,11 @@ theorem eval_Gxz (nu : Lt → YoungDiagram) (hnu : ∀ s c, (nu s).colLen c ≤ 
   rw [RingHom.map_det, hM, det_ind]
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_map]`. Unfold `KM.nablaX`. Rewrite using `[← MvPolynomial.coe_eval₂Hom, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`.
+
+Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, ← det_ind (C := ℂ_[l]) (J s c)]`. Use `congr 1`. Use extensionality with `i k`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X, xS]`.
+-/
 theorem eval_nablaX (nu : Lt → YoungDiagram) (J : KM.ColChoice N0 nu) :
     MvPolynomial.eval (xS N0 l) (MvPolynomial.map (Int.castRingHom ℂ_[l]) (KM.nablaX N0 nu J)) =
       ∏ s, ∏ c : Fin ((nu s).rowLen 0), if ∀ k, (J s c k : ℕ) = k then 1 else 0 := by

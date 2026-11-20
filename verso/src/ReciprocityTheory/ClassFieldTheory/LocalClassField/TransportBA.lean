@@ -9,9 +9,27 @@ open _root_.Neutral.B1 ValuativeRel Function ReciprocityTheory.Neutral.Cmp
 
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] {p : ℕ} [Fact p.Prime] (m : Model K p)
 
+/- English proof (translation)
+The claim follows from `m.comm _`.
+-/
 theorem Model.E_algebraMap_integer (c : 𝒪[K]) :
     m.E (algebraMap 𝒪[K] (AlgebraicClosure K) c) = (m.e (c : K) : PadicAlgCl p) := m.comm _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hPm, hP⟩`. Set `f : 𝒪[K] →+* PadicAlgCl p` to `(m.E : AlgebraicClosure K →+* PadicAlgCl p).comp (algebraMap 𝒪[K] (AlgebraicClosure K))`. Use `norm_le_one_of_monic_root (P.map f) (hPm.map f) (fun i => ?_) ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map] show ‖m.E (algebraMap 𝒪[K] (AlgebraicClosure K) (P.coeff i))‖ ≤ 1`.
+
+Rewrite using `[m.E_algebraMap_integer]`. Conclude with `(m.int _).1 (P.coeff i).2`. Use `congrArg (m.E : AlgebraicClosure K →+* PadicAlgCl p) hP` as an intermediate fact. Rewrite `this` using `[map_zero, Polynomial.hom_eval₂]`. Rewrite using `[Polynomial.eval_map]`.
+
+Conclude with `this`. Introduce `hy`. Take `⟨q, hqm, hq⟩` from `(norm_le_one_iff_isIntegral (m.E x)).1 hy`. Set `ψ : PadicInt.subring p →+* 𝒪[K]` to `((m.e.symm : m.K' →+* K).comp ((algebraMap ℚ_[p] m.K').comp (PadicInt.subring p).subtype)).codRestrict 𝒪[K] (fun c => (m.int _).2 (by show ‖((m.e (m.e.symm (algebraMap ℚ_[p] m.K' (c : ℚ_[p]))) : m.K') : PadicAlgCl p)‖ ≤ 1`. Rewrite using `[RingEquiv.apply_symm_apply]`.
+
+Use `show ‖algebraMap ℚ_[p] (PadicAlgCl p) (c : ℚ_[p])‖ ≤ 1`. Rewrite using `[norm_algebraMap']`. Conclude with `c.2))`. Use `⟨q.map ψ, hqm.map ψ, ?_⟩` and prove the remaining obligations. Apply `m.E.injective` to reduce the goal to its premises.
+
+Rewrite using `[Polynomial.eval₂_map, map_zero]`. Use `Polynomial.hom_eval₂ q ((algebraMap 𝒪[K] (AlgebraicClosure K)).comp ψ) (m.E : AlgebraicClosure K →+* PadicAlgCl p) x` as an intermediate fact. Express the relevant statement in the definitionally equal form `(m.E : AlgebraicClosure K →+* PadicAlgCl p) _ = 0`. Rewrite using `[this, ← hq]`. Use `congr 1`.
+
+Use extensionality with `c`. Use `show m.E (algebraMap 𝒪[K] (AlgebraicClosure K) (ψ c)) = _`. Rewrite using `[m.E_algebraMap_integer]`. Use `show ((m.e (m.e.symm (algebraMap ℚ_[p] m.K' (c : ℚ_[p]))) : m.K') : PadicAlgCl p) = _`. Rewrite using `[RingEquiv.apply_symm_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Model.mem_integral_closure_iff_norm (x : AlgebraicClosure K) : x ∈ integersBar K ↔ ‖m.E x‖ ≤ 1 := by
   constructor
   · rintro ⟨P, hPm, hP⟩
@@ -51,6 +69,11 @@ theorem Model.mem_integral_closure_iff_norm (x : AlgebraicClosure K) : x ∈ int
     rw [RingEquiv.apply_symm_apply]
     rfl
 
+/- English proof (translation)
+Use `show (x ∈ integersBar K ∧ (x = 0 ∨ x⁻¹ ∉ integersBar K)) ↔ _`. Rewrite using `[m.mem_integral_closure_iff_norm, m.mem_integral_closure_iff_norm]`. Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Establish `hn : 0 < ‖m.E x‖` using `norm_pos_iff.2 (by simpa using h0)`.
+
+Rewrite using `[map_inv₀, norm_inv]`. Simplify using `only [h0, false_or, not_le]`. Rewrite using `[one_lt_inv_iff₀]`. Conclude with `⟨fun h => h.2.2, fun h => ⟨h.le, hn, h⟩⟩`.
+-/
 theorem Model.mem_maximal_ideal_closure_iff_norm (x : AlgebraicClosure K) : x ∈ maxIdealBar K ↔ ‖m.E x‖ < 1 := by
   show (x ∈ integersBar K ∧ (x = 0 ∨ x⁻¹ ∉ integersBar K)) ↔ _
   rw [m.mem_integral_closure_iff_norm, m.mem_integral_closure_iff_norm]
@@ -65,6 +88,11 @@ theorem Model.mem_maximal_ideal_closure_iff_norm (x : AlgebraicClosure K) : x �
 noncomputable def Model.toOK : 𝒪[K] →+* OK p m.K' :=
   ((m.e : K →+* m.K').comp 𝒪[K].subtype).codRestrict _ (fun c => (mem_OK_iff p m.K' _).2 ((m.int _).1 c.2))
 
+/- English proof (translation)
+Introduce `y`. Use `⟨⟨m.e.symm y, (m.int _).2 ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `(mem_OK_iff p m.K' _).1 y.2`. Apply `Subtype.ext show m.e (m.e.symm y) = y` to reduce the goal to its premises.
+
+Rewrite using `[RingEquiv.apply_symm_apply]`.
+-/
 theorem Model.toOK_surjective : Surjective m.toOK := by
   intro y
   refine ⟨⟨m.e.symm y, (m.int _).2 ?_⟩, ?_⟩
@@ -74,6 +102,9 @@ theorem Model.toOK_surjective : Surjective m.toOK := by
     show m.e (m.e.symm y) = y
     rw [RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Set `f : 𝒪[K] →+* resK p m.K'` to `(redK p m.K').comp m.toOK`. Establish `hf : Surjective f` using `(redK_surjective p m.K').comp m.toOK_surjective`. Establish `hker : RingHom.ker f = IsLocalRing.maximalIdeal 𝒪[K]` using `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective f hf)`. Rewrite using `[qK]`. Conclude with `Nat.card_congr ((Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hf)).toEquiv`.
+-/
 theorem Model.card_residue_field_model [IsNonarchimedeanLocalField K] : Nat.card 𝓀[K] = qK p m.K' := by
   let f : 𝒪[K] →+* resK p m.K' := (redK p m.K').comp m.toOK
   have hf : Surjective f := (redK_surjective p m.K').comp m.toOK_surjective
@@ -82,10 +113,22 @@ theorem Model.card_residue_field_model [IsNonarchimedeanLocalField K] : Nat.card
   rw [qK]
   exact Nat.card_congr ((Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hf)).toEquiv
 
+/- English proof (translation)
+Rewrite using `[m.int, ← norm_le_one_iff_vK p m.K' m.fin]`. Both sides reduce to the same expression.
+-/
 theorem Model.mem_integer_iff_vK (x : Kˣ) : (x : K) ∈ 𝒪[K] ↔ 0 ≤ vK p m.K' (m.eU x) := by
   rw [m.int, ← norm_le_one_iff_vK p m.K' m.fin]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`. Establish `h1 : ((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K]).1 = ((x⁻¹ : Kˣ) : K)`. Rewrite using `[Units.val_inv_eq_inv_val]`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises.
+
+Establish `h2 : ((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) * (u : 𝒪[K]) = 1` using `u.inv_mul`. Rewrite `h2` using `[hu]`. Conclude with `congrArg Subtype.val h2`. Establish `h3 : ((x⁻¹ : Kˣ) : K) ∈ 𝒪[K]` using `h1 ▸ ((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K]).2`. Rewrite `h3` using `[m.mem_integer_iff_vK, map_inv, vK_inv]`.
+
+Rewrite `hx` using `[m.mem_integer_iff_vK]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `h3 : ((x⁻¹ : Kˣ) : K) ∈ 𝒪[K]`. Rewrite using `[m.mem_integer_iff_vK, map_inv, vK_inv, h]`.
+
+Simplify using the standard rewrite rules. Conclude with `IsUnit.of_mul_eq_one ⟨_, h3⟩ (Subtype.ext (by simp))`.
+-/
 theorem Model.isUnit_integer_iff (x : Kˣ) (hx : (x : K) ∈ 𝒪[K]) :
     IsUnit (⟨x, hx⟩ : 𝒪[K]) ↔ vK p m.K' (m.eU x) = 0 := by
   constructor
@@ -105,6 +148,21 @@ theorem Model.isUnit_integer_iff (x : Kˣ) (hx : (x : K) ∈ 𝒪[K]) :
       rw [m.mem_integer_iff_vK, map_inv, vK_inv, h]; simp
     exact IsUnit.of_mul_eq_one ⟨_, h3⟩ (Subtype.ext (by simp))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hπ, hirr⟩`. Take `⟨ϖ', hϖ'⟩` from `exists_vK_eq_one p m.K' m.fin`. Take `⟨ϖ, rfl⟩` from `m.eU.surjective ϖ'`. Establish `h0` using `(m.mem_integer_iff_vK π).1 hπ`.
+
+Establish `h1 : vK p m.K' (m.eU π) ≠ 0` using `fun h => hirr.not_isUnit ((m.isUnit_integer_iff π hπ).2 h)`. Establish `hϖ : (ϖ : K) ∈ 𝒪[K]` using `by rw [m.mem_integer_iff_vK, hϖ']; exact zero_le_one`. Establish `hv : vK p m.K' (m.eU (ϖ⁻¹ * π)) = vK p m.K' (m.eU π) - 1`. Rewrite using `[map_mul, vK_mul, map_inv, vK_inv, hϖ']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hq : ((ϖ⁻¹ * π : Kˣ) : K) ∈ 𝒪[K]`. Rewrite using `[m.mem_integer_iff_vK, hv]`. Use linear arithmetic over natural numbers and integers. Establish `hmul : (⟨π, hπ⟩ : 𝒪[K]) = ⟨ϖ, hϖ⟩ * ⟨_, hq⟩` using `Subtype.ext (by simp)`. Break down `hirr.isUnit_or_isUnit hmul with h | h` into its components or cases.
+
+Rewrite `h` using `[m.isUnit_integer_iff, hϖ']`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[m.isUnit_integer_iff, hv]`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+
+Establish `hπ : (π : K) ∈ 𝒪[K]` using `by rw [m.mem_integer_iff_vK, h]; exact zero_le_one`. Use `⟨hπ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[m.isUnit_integer_iff, h]`. Use linear arithmetic over natural numbers and integers. Introduce `a b hab`.
+
+Establish `hab' : (π : K) = a.1 * b.1` using `congrArg Subtype.val hab`. Establish `ha0 : a.1 ≠ 0` using `fun h0 => π.ne_zero (by rw [hab', h0, zero_mul])`. Establish `hb0 : b.1 ≠ 0` using `fun h0 => π.ne_zero (by rw [hab', h0, mul_zero])`. Establish `hπab : π = Units.mk0 a.1 ha0 * Units.mk0 b.1 hb0` using `Units.ext hab'`. Establish `ha` using `(m.mem_integer_iff_vK (Units.mk0 a.1 ha0)).1 a.2`.
+
+Establish `hb` using `(m.mem_integer_iff_vK (Units.mk0 b.1 hb0)).1 b.2`. Rewrite `h` using `[hπab, map_mul, vK_mul]`. Establish `h2 : vK p m.K' (m.eU (Units.mk0 a.1 ha0)) = 0 ∨ vK p m.K' (m.eU (Units.mk0 b.1 hb0)) = 0` using `by omega`. Conclude with `h2.imp (fun h => (m.isUnit_integer_iff (Units.mk0 a.1 ha0) a.2).2 h) (fun h => (m.isUnit_integer_iff (Units.mk0 b.1 hb0) b.2).2 h)`.
+-/
 theorem Model.isUniformiser_iff_valuation_one (π : Kˣ) : IsUniformiser K (π : K) ↔ vK p m.K' (m.eU π) = 1 := by
   constructor
   · rintro ⟨hπ, hirr⟩
@@ -137,6 +195,9 @@ theorem Model.isUniformiser_iff_valuation_one (π : Kˣ) : IsUniformiser K (π :
       exact h2.imp (fun h => (m.isUnit_integer_iff (Units.mk0 a.1 ha0) a.2).2 h)
         (fun h => (m.isUnit_integer_iff (Units.mk0 b.1 hb0) b.2).2 h)
 
+/- English proof (translation)
+Establish `h1 : Continuous m.eU` using `Continuous.units_map (m.e : K →* m.K') m.homeo.continuous`. Establish `h2 : Continuous m.eU.symm` using `Continuous.units_map (m.e.symm : m.K' →* K) (m.e.toEquiv.toHomeomorphOfContinuousOpen m.homeo.continuous m.homeo.isOpenMap).symm.continuous`. Conclude with `(Homeomorph.mk m.eU.toEquiv h1 h2).isHomeomorph`.
+-/
 theorem Model.isHomeomorph_units_model : IsHomeomorph m.eU := by
   have h1 : Continuous m.eU := Continuous.units_map (m.e : K →* m.K') m.homeo.continuous
   have h2 : Continuous m.eU.symm :=

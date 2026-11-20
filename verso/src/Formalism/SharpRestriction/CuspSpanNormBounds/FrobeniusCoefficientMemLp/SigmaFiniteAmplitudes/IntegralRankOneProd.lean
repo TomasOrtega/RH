@@ -19,10 +19,16 @@ variable {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] {μ : Measure
   {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
   [NormedAddCommGroup F] [InnerProductSpace ℂ F] [CompleteSpace F]
 
+/- English proof (translation)
+Rewrite using `[← ofReal_norm, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _), ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm]`.
+-/
 theorem enorm_rankOne (w : E) (u : F) : ‖(innerSL ℂ w).smulRight u‖ₑ = ‖w‖ₑ * ‖u‖ₑ := by
   rw [← ofReal_norm, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _),
     ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm]
 
+/- English proof (translation)
+Use extensionality with `η`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, _root_.smul_apply, inner_smul_left, smul_smul, starRingEnd_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rankOne_smul (w : E) (u : F) (c d : ℂ) :
     (innerSL ℂ (d • w)).smulRight (c • u) = (c * star d) • (innerSL ℂ w).smulRight u := by
   ext η
@@ -31,12 +37,20 @@ theorem rankOne_smul (w : E) (u : F) (c d : ℂ) :
   congr 1
   ring
 
+/- English proof (translation)
+Establish `h1 : (fun x => ⟪f x, η⟫_ℂ) = fun x => (starRingEnd ℂ) ⟪η, f x⟫_ℂ`. Use function extensionality and compare the values at `x`. Rewrite using `[inner_conj_symm]`. Rewrite using `[h1, integral_conj, integral_inner hf, inner_conj_symm]`.
+-/
 theorem integral_inner_left {f : α → E} (hf : Integrable f μ) (η : E) :
     ∫ x, ⟪f x, η⟫_ℂ ∂μ = ⟪∫ x, f x ∂μ, η⟫_ℂ := by
   have h1 : (fun x => ⟪f x, η⟫_ℂ) = fun x => (starRingEnd ℂ) ⟪η, f x⟫_ℂ := by
     funext x; rw [inner_conj_symm]
   rw [h1, integral_conj, integral_inner hf, inner_conj_symm]
 
+/- English proof (translation)
+Use extensionality with `η`. Rewrite using `[ContinuousLinearMap.integral_apply hI η]`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`. Establish `hI' : Integrable (fun q : α × β => ⟪b q.2, η⟫_ℂ • a q.1) (μ.prod ν)`. Simplify `hI.apply_continuousLinearMap η` using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`.
+
+Rewrite using `[integral_prod (fun q : α × β => ⟪b q.2, η⟫_ℂ • a q.1) hI']`. Simplify using `only`. Repeatedly rewrite using `[integral_smul_const]`. Rewrite using `[integral_inner_left hb, integral_smul]`.
+-/
 theorem integral_rankOne_prod [SFinite μ] [SFinite ν] {a : α → F} {b : β → E} (ha : Integrable a μ)
     (hb : Integrable b ν) (hI : Integrable (fun q : α × β => (innerSL ℂ (b q.2)).smulRight (a q.1)) (μ.prod ν)) :
     ∫ q, (innerSL ℂ (b q.2)).smulRight (a q.1) ∂(μ.prod ν) = (innerSL ℂ (∫ y, b y ∂ν)).smulRight (∫ x, a x ∂μ) := by
@@ -57,6 +71,9 @@ section Pt
 variable {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup Wp]
   [InnerProductSpace ℂ Wp]
 
+/- English proof (translation)
+Establish `g : (Matrix.of p1.1)⁻¹ * (Matrix.of p1.2)⁻¹ * t ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hp1.1) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hp2.1)) ht`. Establish `e1 : cM σ v w0 (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.invM p1.1) (Formalism.FourierDecayAlt.P.B7.invM p1.2)) (t : Mt k r)) = ⟪v, σ ((Matrix.of p1.1)⁻¹ * (Matrix.of p1.2)⁻¹ * t) w0⟫_ℂ` using `Set.indicator_of_mem (s := {g : Mt k r | Matrix.of g ∈ UH (Hpk k r)}) g _`. Establish `e2 : piV z π ξ p1.1 = π (Matrix.of p1.1) ξ` using `Set.indicator_of_mem (s := {h : Mt k r | Matrix.of h ∈ UWset k r z}) hp1 _`. Simplify using `only [aM, aVec]`. Rewrite using `[e1, e2]`.
+-/
 theorem aM_eq (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ)
     (π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp))
     (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)) (w0 v : H) (ξ : Wp)
@@ -74,6 +91,11 @@ theorem aM_eq (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ)
   simp only [aM, aVec]
   rw [e1, e2]
 
+/- English proof (translation)
+Establish `hs` using `sm_aM hσ hT hπ c w0 v ξ (t := fun _ : Mt k r × Mt k r => (t : Mt k r)) (p1 := id) measurable_const measurable_id`. Use `hs.aestronglyMeasurable.congr ?_` and prove the remaining obligations. Establish `h1' : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae h1`. Establish `h2' : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae h2`. Use `filter_upwards [h1', h2'] with p hp1 hp2`.
+
+Conclude with `aM_eq z c π σ w0 v ξ ht hp1 hp2`.
+-/
 theorem aesm_aVec [FiniteDimensional ℂ Wp] {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
     (hσ : PI.UpqRep.IsDSHpk k r ε lam σ) {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ}
@@ -93,14 +115,41 @@ theorem aesm_aVec [FiniteDimensional ℂ Wp] {ε : Fin (2 * r + k + 1) → Bool}
 
 end Pt
 
+/- English proof (translation)
+Use extensionality with `η`. Simplify using the standard rewrite rules.
+-/
 theorem rankOne_zero_right {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] (w : E) : (innerSL ℂ w).smulRight (0 : F) = 0 := by
   ext η; simp
 
+/- English proof (translation)
+Use extensionality with `η`. Simplify using the standard rewrite rules.
+-/
 theorem rankOne_zero_left {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] (u : F) : (innerSL ℂ (0 : E)).smulRight u = 0 := by
   ext η; simp
 
+/- English proof (translation)
+Establish `hσ : PI.UpqRep.IsDSHpk k r L.ε L.lam L.σ` using `L.hσ`. Use `set a := aVec L.z L.c L.π L.σ w0 v ξ (γ * Matrix.of x) with ha_def`. Use `set b := aVec L.z' L.c L.π' L.σ w0 v' ξ' (Matrix.of x) with hb_def`. Establish `hPsi : (fun p => Psi L w0 v v' ξ ξ' γ p x) = fun q : PairSp k r => (innerSL ℂ (b q.2)).smulRight (a q.1)` using `rfl`. Establish `hpm : pairMeas L = (L.μW.prod L.μN).prod (L.μW'.prod L.μN)` using `rfl`.
+
+Establish `haS : AEStronglyMeasurable a (L.μW.prod L.μN)` using `aesm_aVec hσ L.hz.2 L.hπ L.c w0 v ξ hγx hW1 hN1`. Establish `hbS : AEStronglyMeasurable b (L.μW'.prod L.μN)` using `aesm_aVec hσ L.hz'.2 L.hπ' L.c w0 v' ξ' hx hW1' hN1`. Establish `ha_eq` using `fun hA => int_a_eq hσ L.hz.1 L.hz.2 L.hπ L.c w0 v ξ hγx hιW hιN hW1 hN1 l hbe hA`. Establish `hb_eq` using `fun hB => int_a_eq hσ L.hz'.1 L.hz'.2 L.hπ' L.c w0 v' ξ' hx hιW' hιN hW1' hN1 l' hbe' hB`. Establish `hRHS : (⟪l v, ξ⟫_ℂ * ⟪ξ', l' v'⟫_ℂ) • (innerSL ℂ (l' (L.σ (Matrix.of x) w0))).smulRight (l (L.σ (γ * Matrix.of x) w0)) = (innerSL ℂ (⟪l' v', ξ'⟫_ℂ • l' (L.σ (Matrix.of x) w0))).smulRight (⟪l v, ξ⟫_ℂ • l (L.σ (γ * Matrix.of x) w0))`.
+
+Rewrite using `[rankOne_smul]`. Use `congr 2`. Rewrite using `[← starRingEnd_apply, inner_conj_symm]`. Rewrite using `[hRHS, hPsi, hpm]`. Rewrite `hI` using `[hpm, hPsi]`.
+
+Establish `hprod : ∫⁻ q : PairSp k r, ‖(innerSL ℂ (b q.2)).smulRight (a q.1)‖ₑ ∂((L.μW.prod L.μN).prod (L.μW'.prod L.μN)) = (∫⁻ p, ‖a p‖ₑ ∂(L.μW.prod L.μN)) * ∫⁻ p, ‖b p‖ₑ ∂(L.μW'.prod L.μN)`. Repeatedly rewrite using `[enorm_rankOne, mul_comm (‖b _‖ₑ)]`. Conclude with `lintegral_prod_mul haS.enorm hbS.enorm`. Establish `hfin : (∫⁻ p, ‖a p‖ₑ ∂(L.μW.prod L.μN)) * ∫⁻ p, ‖b p‖ₑ ∂(L.μW'.prod L.μN) < ⊤`. Rewrite using `[← hprod]`.
+
+Conclude with `hI.2`. Distinguish the cases in `hA0 : ∫⁻ p, ‖a p‖ₑ ∂(L.μW.prod L.μN) = 0`. Establish `hz : ∀ᵐ p ∂(L.μW.prod L.μN), a p = 0` using `((lintegral_eq_zero_iff' haS.enorm).mp hA0).mono fun p hp => enorm_eq_zero.mp hp`. Establish `e` using `ha_eq (Or.inr hz)`. Rewrite `e` using `[integral_eq_zero_of_ae hz]`.
+
+Rewrite using `[← e, rankOne_zero_right]`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae hz] with q hq`. Rewrite using `[hq, rankOne_zero_right]`. Both sides reduce to the same expression.
+
+Distinguish the cases in `hB0 : ∫⁻ p, ‖b p‖ₑ ∂(L.μW'.prod L.μN) = 0`. Establish `hz : ∀ᵐ p ∂(L.μW'.prod L.μN), b p = 0` using `((lintegral_eq_zero_iff' hbS.enorm).mp hB0).mono fun p hp => enorm_eq_zero.mp hp`. Establish `e` using `hb_eq (Or.inr hz)`. Rewrite `e` using `[integral_eq_zero_of_ae hz]`. Rewrite using `[← e, rankOne_zero_left]`.
+
+Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [Measure.quasiMeasurePreserving_snd.ae hz] with q hq`. Rewrite using `[hq, rankOne_zero_left]`. Both sides reduce to the same expression. Establish `hAB` using `ENNReal.mul_lt_top_iff.mp hfin`.
+
+Establish `hlt : (∫⁻ p, ‖a p‖ₑ ∂(L.μW.prod L.μN)) < ⊤ ∧ (∫⁻ p, ‖b p‖ₑ ∂(L.μW'.prod L.μN)) < ⊤`. Break down `hAB with h | h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hA0`. Conclude with `absurd h hB0`.
+
+Establish `haI : Integrable a (L.μW.prod L.μN)` using `⟨haS, hlt.1⟩`. Establish `hbI : Integrable b (L.μW'.prod L.μN)` using `⟨hbS, hlt.2⟩`. Rewrite using `[integral_rankOne_prod haI hbI hI, ha_eq (Or.inl haI), hb_eq (Or.inl hbI)]`.
+-/
 theorem pair_split (L : LocBessel k r) [SFinite L.μW] [SFinite L.μW'] [SFinite L.μN]
     (hιW : MeasurePreserving (Formalism.FourierDecayAlt.P.B7.invM (k := k) (r := r)) L.μW L.μW)
     (hιW' : MeasurePreserving (Formalism.FourierDecayAlt.P.B7.invM (k := k) (r := r)) L.μW' L.μW')

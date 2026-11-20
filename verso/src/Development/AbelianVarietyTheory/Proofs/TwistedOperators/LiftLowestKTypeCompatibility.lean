@@ -21,6 +21,13 @@ namespace GlobalTheory.ThetaProjEquiv
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hL : actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) = 0`. Use extensionality with `F h`. Use `show actG0 _ _ _ _ F h = 0`. Rewrite using `[GlobalTheory.ProjComm.levelGroupAction_eq_zero_of_no_lift hn F]`. Both sides reduce to the same expression.
+
+Establish `h1 : (R.HW i σ).e (R.gW i σ g x) = 0`. Rewrite using `[hg i σ g x, hL]`. Use extensionality with `v h`. Both sides reduce to the same expression. Establish `h2 : R.gW i σ g x = 0` using `(hW i σ).1 (by rw [h1, map_zero])`.
+
+Establish `h3` using `congrArg (R.gW i σ g⁻¹) h2`. Rewrite `h3` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem eq_zero_of_no_lift (R : RealDat D A Ks) (hW : R.models_HW) (hg : R.models_gW) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ)
     (g : G) (hn : ¬ ∃ κ, IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) κ) (x : (R.HW i σ).H) : x = 0 := by
   have hL : actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) = 0 := by
@@ -36,6 +43,9 @@ theorem eq_zero_of_no_lift (R : RealDat D A Ks) (hW : R.models_HW) (hg : R.model
   have h3 := congrArg (R.gW i σ g⁻¹) h2
   rwa [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, map_zero] at h3
 
+/- English proof (translation)
+Unfold `levChi Formalism.L2.DIV.levFn`. Simplify using `[flagL, withP, LevCh.datWp, datY, Formalism.L2.DIV.ext1, Formalism.L2.DIV.LevelP.full]`. Conclude with `dite_eq_right_iff.mpr fun _ => rfl`.
+-/
 theorem realDatum_coeffFlagLevelCharacter_eq_one (R : RealDat D A Ks) (i : Fin D.R.m) (κ : GA D (Wc D i)) :
     levChi (Wc D i) (R.βW i) (flagL (R.datWp i R.triv)) κ = 1 := by
   classical
@@ -43,6 +53,9 @@ theorem realDatum_coeffFlagLevelCharacter_eq_one (R : RealDat D A Ks) (i : Fin D
   simp [flagL, withP, LevCh.datWp, datY, Formalism.L2.DIV.ext1, Formalism.L2.DIV.LevelP.full]
   exact dite_eq_right_iff.mpr fun _ => rfl
 
+/- English proof (translation)
+Establish `h1 : f (p γ * p h) = ρ γ (f (p h))`. Establish `h0 : f (p γ * p h * 1) = ((χ 1 : ℂˣ) : ℂ) • ρ γ (f (p h))` using `hy ⟨γ, hγ⟩ (p h) 1`. Simplify using `using h0`. Rewrite using `[map_mul p, h1, mul_inv_rev, map_mul ρ, Module.End.mul_apply, ← Module.End.mul_apply (ρ γ⁻¹), ← map_mul ρ, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem left_abs {H Gf W : Type} [Group H] [Group Gf] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (Γ : Subgroup H)
     (p : H →* Gf) (ρ : H →* Module.End ℂ W) (f : Gf → W) (J : Subgroup Gf) (χ : J →* ℂˣ)
     (hy : f ∈ Bridge.AdForms (p.comp Γ.subtype) (ρ.comp Γ.subtype) J χ) (γ : H) (hγ : γ ∈ Γ) (h : H) :
@@ -53,6 +66,9 @@ theorem left_abs {H Gf W : Type} [Group H] [Group Gf] [NormedAddCommGroup W] [In
   rw [map_mul p, h1, mul_inv_rev, map_mul ρ, Module.End.mul_apply, ← Module.End.mul_apply (ρ γ⁻¹), ← map_mul ρ,
     inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Rewrite using `[Pi.smul_apply, hy, smul_smul, mul_inv_cancel₀ ha, one_smul, map_mul p, mul_inv_rev, map_mul ρ, Module.End.mul_apply, hκ, Module.End.one_apply]`.
+-/
 theorem shift_abs {H Gf W : Type} [Group H] [Group Gf] [AddCommGroup W] [Module ℂ W]
     (p : H →* Gf) (ρ : H →* Module.End ℂ W) (κ : H) (hκ : ρ κ⁻¹ = 1) (a : ℂ) (ha : a ≠ 0) (f f' : Gf → W)
     (hy : ∀ h, f' h = a⁻¹ • f (h * p κ)) (h : H) :
@@ -60,18 +76,27 @@ theorem shift_abs {H Gf W : Type} [Group H] [Group Gf] [AddCommGroup W] [Module 
   rw [Pi.smul_apply, hy, smul_smul, mul_inv_cancel₀ ha, one_smul, map_mul p, mul_inv_rev, map_mul ρ,
     Module.End.mul_apply, hκ, Module.End.one_apply]
 
+/- English proof (translation)
+Use `show c.ρ (γ * h)⁻¹ (f ((finHom V).rangeRestrict (γ * h))) = c.ρ h⁻¹ (f ((finHom V).rangeRestrict h))`. Conclude with `left_abs (GQ V) (finHom V).rangeRestrict c.ρ f J χ hy γ hγ h`.
+-/
 theorem ext_left {V : HSp D} (c : CoefA V) (f : Bridge.Gf V → c.W) (J : Subgroup (Bridge.Gf V)) (χ : J →* ℂˣ)
     (hy : f ∈ Bridge.AdForms (W := c.W) (Bridge.ratF V) (c.ρ.comp (GQ V).subtype) J χ)
     (γ : GA D V) (hγ : γ ∈ GQ V) (h : GA D V) : c.ext f (γ * h) = c.ext f h := by
   show c.ρ (γ * h)⁻¹ (f ((finHom V).rangeRestrict (γ * h))) = c.ρ h⁻¹ (f ((finHom V).rangeRestrict h))
   exact left_abs (GQ V) (finHom V).rangeRestrict c.ρ f J χ hy γ hγ h
 
+/- English proof (translation)
+Use `show c.ρ h⁻¹ ((a • f') ((finHom V).rangeRestrict h)) = c.ρ (h * κ)⁻¹ (f ((finHom V).rangeRestrict (h * κ)))`. Conclude with `shift_abs (finHom V).rangeRestrict c.ρ κ (hc.1 _ (inv_mem hκ)) a ha f f' hy h`.
+-/
 theorem ext_shift {V : HSp D} (c : CoefA V) (hc : c.Is) (κ : GA D V) (hκ : κ ∈ GfC V) (a : ℂ) (ha : a ≠ 0)
     (f f' : Bridge.Gf V → c.W) (hy : ∀ h, f' h = a⁻¹ • f (h * (finHom V).rangeRestrict κ)) (h : GA D V) :
     c.ext (a • f') h = c.ext f (h * κ) := by
   show c.ρ h⁻¹ ((a • f') ((finHom V).rangeRestrict h)) = c.ρ (h * κ)⁻¹ (f ((finHom V).rangeRestrict (h * κ)))
   exact shift_abs (finHom V).rangeRestrict c.ρ κ (hc.1 _ (inv_mem hκ)) a ha f f' hy h
 
+/- English proof (translation)
+Establish `h3` using `LinearMap.mem_range_self (R.HV i t).e y`. Rewrite `h3` using `[(hV i t).2.1]`. Use `show (R.cV i).ext ((R.HV i t).e y) (γ * h) = (R.cV i).ext ((R.HV i t).e y) h`. Conclude with `ext_left (R.cV i) _ _ _ h3 γ hγ h`.
+-/
 theorem extV_left (R : RealDat D A Ks) (hV : R.models_HV) (i : Fin D.R.m) (t : T0) (y : (R.HV i t).H)
     (γ : GA D (Vc D i)) (hγ : γ ∈ GQ (Vc D i)) (h : GA D (Vc D i)) : R.extV i t y (γ * h) = R.extV i t y h := by
   have h3 := LinearMap.mem_range_self (R.HV i t).e y
@@ -79,6 +104,9 @@ theorem extV_left (R : RealDat D A Ks) (hV : R.models_HV) (i : Fin D.R.m) (t : T
   show (R.cV i).ext ((R.HV i t).e y) (γ * h) = (R.cV i).ext ((R.HV i t).e y) h
   exact ext_left (R.cV i) _ _ _ h3 γ hγ h
 
+/- English proof (translation)
+Use `show (R.cV i).ext ((R.HV i t).e (c • y')) h = (R.cV i).ext ((R.HV i t).e y) (h * κ)`. Rewrite using `[map_smul]`. Conclude with `ext_shift (R.cV i) (hc i) κ hκ c hc0 _ _ hy h`.
+-/
 theorem extV_shift (R : RealDat D A Ks) (hc : R.models_cV) (i : Fin D.R.m) (t : T0) (κ : GA D (Vc D i))
     (hκ : κ ∈ GfC (Vc D i)) (c : ℂ) (hc0 : c ≠ 0) (y y' : (R.HV i t).H)
     (hy : ∀ h, (R.HV i t).e y' h = c⁻¹ • (R.HV i t).e y (h * (finHom (Vc D i)).rangeRestrict κ)) (h : GA D (Vc D i)) :
@@ -87,6 +115,13 @@ theorem extV_shift (R : RealDat D A Ks) (hc : R.models_cV) (i : Fin D.R.m) (t : 
   rw [map_smul]
   exact ext_shift (R.cV i) (hc i) κ hκ c hc0 _ _ hy h
 
+/- English proof (translation)
+Take `⟨htg, hlc, hsc, -, hbo, -⟩` from `GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D V`. Take `⟨-, -, -, hct⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable V`. Take `⟨hK, hlift⟩` from `GlobalTheory.ParahoricCompact.isCompact_flag_and_lift V β L`. Use `haveI := htg`. Use `haveI := hlc`.
+
+Use `haveI := hsc`. Use `haveI := hbo`. Use `haveI := hct`. Use `haveI := hν`. Establish `hmap` using `GlobalTheory.haar_map_mul_right_of_mem_compact_subgroup ν _ hK κ (hlift g0 κ hκ)`.
+
+Conclude with `(GlobalTheory.fundamentalDomain_setIntegral_mul_right (GQ V) ν 𝓕 hfd κ hmap f hf hi).2`.
+-/
 theorem integral_shift (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (g0 : G0 L.Pg L.r)
     (κ : GA D V) (hκ : IsLevelLift V β L g0 κ) (ν : Measure (GA D V)) (hν : ν.IsHaarMeasure) (𝓕 : Set (GA D V))
     (hfd : IsFundamentalDomain (GQ V) 𝓕 ν) (f : GA D V → ℂ) (hf : ∀ γ ∈ GQ V, ∀ h, f (γ * h) = f h)
@@ -103,6 +138,13 @@ theorem integral_shift (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDa
   have hmap := GlobalTheory.haar_map_mul_right_of_mem_compact_subgroup ν _ hK κ (hlift g0 κ hκ)
   exact (GlobalTheory.fundamentalDomain_setIntegral_mul_right (GQ V) ν 𝓕 hfd κ hmap f hf hi).2
 
+/- English proof (translation)
+Establish `hA : thP f e (g * k') = ∫ h in 𝓕, th (g * k') h (pt (io e ((f : H' → Tau) h))) ∂ν` using `hP.eq f e (g * k')`. Establish `hB : thP (c • f') e g = ∫ h in 𝓕, th g h (pt (io e (((c • f' : B) : H' → Tau) h))) ∂ν` using `hP.eq (c • f') e g`. Establish `hF` using `hsh (fun h => th (g * k') h (pt (io e ((f : H' → Tau) h)))) (fun γ hγ h => by`. Rewrite using `[hf γ hγ h]`. Conclude with `hl _ γ hγ _ _)`.
+
+Use the proof step `(hP.integ f e (g * k'))`. Rewrite using `[hA, ← hF]`. Simplify using `only [hr]`. Rewrite using `[integral_const_mul]`. Establish `hfk : ∀ h, (f : H' → Tau) (h * k) = ((c • f' : B) : H' → Tau) h` using `fun h => (hf' h).symm`.
+
+Simplify using `only [hfk]`. Rewrite using `[← hB, map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`.
+-/
 theorem thetaLift_shift {G' H' S' Sinf TK Tau : Type} [Group G'] [Group H'] [MeasurableSpace H']
     [AddCommGroup Sinf] [Module ℂ Sinf] [AddCommGroup TK] [Module ℂ TK] [AddCommGroup Tau] [Module ℂ Tau]
     {ν : Measure H'} {𝓕 : Set H'} {th : G' → H' → S' → ℂ} {pt : Sinf → S'} {io : TK →ₗ[ℂ] Tau →ₗ[ℂ] Sinf}
@@ -131,6 +173,9 @@ theorem thetaLift_shift {G' H' S' Sinf TK Tau : Type} [Group G'] [Group H'] [Mea
   simp only [hfk]
   rw [← hB, map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]
 
+/- English proof (translation)
+Introduce `κ hκ h`. Establish `hmem : R.thF i t y ∈ Mult R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv))` using `hm i t y`. Conclude with `(GlobalTheory.mult_value_left_cont_level R.θ _ _ _ _ hmem v).2.2 κ hκ h`.
+-/
 theorem thF_type (R : RealDat D A Ks) (hm : R.thP_thF_mem) (i : Fin D.R.m) (t : T0) (y : (R.HV i t).H)
     (v : (R.MW i (sg0 D A)).Vec) : HasType (Wc D i) (R.βW i) (R.datWp i R.triv) (R.thF i t y v) := by
   intro κ hκ h
@@ -138,6 +183,13 @@ theorem thF_type (R : RealDat D A Ks) (hm : R.thP_thF_mem) (i : Fin D.R.m) (t : 
       (levChi _ (R.βW i) (R.datWp i R.triv)) := hm i t y
   exact (GlobalTheory.mult_value_left_cont_level R.θ _ _ _ _ hmem v).2.2 κ hκ h
 
+/- English proof (translation)
+Establish `hex : ∃ κ, IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) g0 κ` using `⟨κ', hκ'⟩`. Establish `hchi : ∀ k, levChi (Wc D i) (R.βW i) (R.datWp i R.triv) k = 1`. Introduce `k`. Unfold `levChi Formalism.L2.DIV.levFn`. Simplify using `[LevCh.datWp, datY, Formalism.L2.DIV.ext1, Formalism.L2.DIV.LevelP.triv]`.
+
+Conclude with `dite_eq_right_iff.mpr fun _ => rfl`. Establish `hmem` using `lift_div_mem hκ' hex.choose_spec`. Establish `hfl : flag1L (R.datWp i R.triv) = R.datWp i R.triv` using `rfl`. Rewrite `hmem` using `[hfl]`. Establish `hx` using `hT _ hmem (x * κ')`.
+
+Rewrite `hx` using `[hchi, one_mul, ← mul_assoc, mul_inv_cancel_right]`. Use `show actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) g0 f x = f (x * κ')`. Unfold `actG0`. Rewrite using `[dif_pos hex, realDatum_coeffFlagLevelCharacter_eq_one, inv_one, one_mul]`. Conclude with `hx`.
+-/
 theorem finiteGroup_acts_by_lift_translation_principalType (R : RealDat D A Ks) (i : Fin D.R.m) (g0 : G0 R.Pg D.R.r) (κ' : GA D (Wc D i))
     (hκ' : IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) g0 κ') (f : GA D (Wc D i) → ℂ)
     (hT : HasType (Wc D i) (R.βW i) (R.datWp i R.triv) f) (x : GA D (Wc D i)) :

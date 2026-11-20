@@ -5,6 +5,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsKillIdeal
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PtClosed
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PtClosed.represents_of_away_cover | exact GlobalTheory.PtClosed.represents_of_away_cover | (intros; apply GlobalTheory.PtClosed.represents_of_away_cover; all_goals assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idealRepresents_of_away_cover : ∀ (A : Type) [CommRing A] (Q : ∀ (R' : Type) [CommRing R'], (A →+* R') → Prop),
   (∀ (R' : Type) [CommRing R'] (R'' : Type) [CommRing R''] (g : R' →+* R'') (f : A →+* R'),
     Q R' f → Q R'' (g.comp f)) →

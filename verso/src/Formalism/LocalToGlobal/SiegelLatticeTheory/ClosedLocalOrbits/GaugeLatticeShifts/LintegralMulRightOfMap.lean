@@ -29,10 +29,16 @@ def JacMeas : Prop :=
     ∀ μS μS' : Measure (Formalism.REAL.UJ ε), IsHaarS (SLoc ε e z) μS → IsHaarS (SLoc ε e z') μS' →
     ∀ h, IsSecLoc ε sc e z z' T T' h → Measurable h → ∃ C, 0 < C ∧ DisintLoc ε k T T' μS μS' h C
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hF.dim, hF.k_pos, hF.sig, hF.e_li, hF.ee, hF.ez', hF.ez, hF.zz', hF.zz, hF.T'_pos, hF.T_pos⟩`.
+-/
 theorem frameLoc_swap {n r k : ℕ} {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z z' : Fin n → ℂ} {T T' : ℝ}
     (hF : FrameLoc ε k e z z' T T') : FrameLoc ε k e z' z T' T :=
   ⟨hF.dim, hF.k_pos, hF.sig, hF.e_li, hF.ee, hF.ez', hF.ez, hF.zz', hF.zz, hF.T'_pos, hF.T_pos⟩
 
+/- English proof (translation)
+Establish `hE : MeasurableEmbedding (fun x : Formalism.REAL.UJ ε => x * t)` using `(MeasurableEquiv.mulRight t).measurableEmbedding`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_mul_right_of_map {n : ℕ} {ε : Fin n → Bool} (μ : Measure (Formalism.REAL.UJ ε))
     (t : Formalism.REAL.UJ ε) (hμ : μ.map (fun x => x * t) = μ) (F : Formalism.REAL.UJ ε → ℝ≥0∞) :
     ∫⁻ x, F (x * t) ∂μ = ∫⁻ x, F x ∂μ := by
@@ -41,6 +47,11 @@ theorem lintegral_mul_right_of_map {n : ℕ} {ε : Fin n → Bool} (μ : Measure
   calc ∫⁻ x, F (x * t) ∂μ = ∫⁻ x, F x ∂(μ.map (fun x => x * t)) := (hE.lintegral_map F).symm
     _ = ∫⁻ x, F x ∂μ := by rw [hμ]
 
+/- English proof (translation)
+Establish `key : ∀ s s' : Formalism.REAL.UJ ε, φ (s * (s₁ * g * s₁'⁻¹) * s'⁻¹) = φ ((s * s₁) * g * (s' * s₁')⁻¹)`. Introduce `s s'`. Use `congr 1`. Use `group`. Establish `inner : ∀ x : Formalism.REAL.UJ ε, ∫⁻ s', φ (x * g * (s' * s₁')⁻¹) ∂μS' = ∫⁻ s', φ (x * g * s'⁻¹) ∂μS'` using `fun x => lintegral_mul_right_of_map μS' s₁' h₁' (fun y => φ (x * g * y⁻¹))`.
+
+Repeatedly rewrite using `[key, inner]`. Conclude with `lintegral_mul_right_of_map μS s₁ h₁ (fun x => ∫⁻ s', φ (x * g * s'⁻¹) ∂μS')`.
+-/
 theorem inner_dc {n : ℕ} {ε : Fin n → Bool} (μS μS' : Measure (Formalism.REAL.UJ ε))
     (s₁ s₁' g : Formalism.REAL.UJ ε) (h₁ : μS.map (fun x => x * s₁) = μS)
     (h₁' : μS'.map (fun x => x * s₁') = μS') (φ : Formalism.REAL.UJ ε → ℝ≥0∞) :
@@ -56,6 +67,15 @@ theorem inner_dc {n : ℕ} {ε : Fin n → Bool} (μS μS' : Measure (Formalism.
   simp_rw [key, inner]
   exact lintegral_mul_right_of_map μS s₁ h₁ (fun x => ∫⁻ s', φ (x * g * s'⁻¹) ∂μS')
 
+/- English proof (translation)
+Establish `hD : ∀ l, Continuous fun c : Fin (r + 1) → ℂ => Dl (Matrix.diagonal c) l`. Introduce `l`. Distinguish the cases in `h : l ≤ r + 1`. Simplify using `only [Dl, dif_pos h]`. Conclude with `(continuous_id.matrix_diagonal.matrix_submatrix _ _).matrix_det`.
+
+Simplify using `only [Dl, dif_neg h]`. Conclude with `continuous_const`. Establish `hG : Continuous fun c : Fin (r + 1) → ℂ => Gv T T' (Matrix.diagonal c)`. Simplify using `only [Gv]`. Conclude with `((hD (r + 1)).norm.pow 2).sub (continuous_const.mul ((hD r).norm.pow 2))`.
+
+Establish `h0 : MeasurableSet {c : Fin (r + 1) → ℂ | ∀ l, c l ≠ 0}`. Rewrite using `[Set.ofPred_forall]`. Conclude with `MeasurableSet.iInter fun l => (measurable_pi_apply l) (measurableSet_singleton 0).compl`. Unfold `GoodLoc`. Rewrite using `[Set.ofPred_and]`.
+
+Conclude with `h0.inter (measurableSet_lt measurable_const hG.measurable)`.
+-/
 theorem measurableSet_goodLoc (r : ℕ) (T T' : ℝ) : MeasurableSet (GoodLoc (r := r) T T') := by
   have hD : ∀ l, Continuous fun c : Fin (r + 1) → ℂ => Dl (Matrix.diagonal c) l := by
     intro l

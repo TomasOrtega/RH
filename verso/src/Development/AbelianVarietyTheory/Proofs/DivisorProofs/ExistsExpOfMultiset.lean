@@ -20,6 +20,33 @@ open Formalism.L2.Host
 
 namespace GlobalTheory.HenQ
 
+/- English proof (translation)
+Take `⟨x, hx0, hxK, hcard, hT⟩` from `hB.exists_vec`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.LFun.exists_isUnifV w`. Use `set q := Formalism.UG.qV E w with hqdef`. Establish `hq2 : 2 ≤ q` using `GlobalTheory.LFun.one_lt_absNorm w`. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast (show 1 ≤ q by omega)`.
+
+Establish `he : ∀ j, 1 ≤ j → j ≤ n → ‖(B.map fun b : ℂˣ => (b : ℂ)).esymm j‖ ≤ (q : ℝ) ^ (n * n)`. Introduce `j _ hjn`. Take `⟨hfin, hc⟩` from `GlobalTheory.T.heckeTj_cosets_finite_card_le E w n ϖ hϖ j hjn`. Establish `hh : ∀ g, ‖Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j g‖ ≤ 1` using `fun g => by`. Unfold `Formalism.UG.Tj`.
+
+Conclude with `(norm_indicator_le_norm_self _ _).trans (by simp)`. Establish `k1` using `GlobalTheory.T.norm_heckeEigenvalue_le_card_cosets _ (GlobalTheory.LFun.KGL w n) V ρ Bf h1 h2 h3 _ x _ hh hfin hx0 (hT ϖ hϖ j hjn)`. Establish `k2 : ‖(B.map fun b : ℂˣ => (b : ℂ)).esymm j‖ ≤ ‖GlobalTheory.LFun.satEig q n B j‖`. Unfold `GlobalTheory.LFun.satEig`. Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos (by omega)]`.
+
+Use `le_mul_of_one_le_left (norm_nonneg _) (Real.one_le_rpow hq1 ?_)` and prove the remaining obligations. Establish `: (((j : ℂ) * ((n : ℂ) - j)) / 2).re = (j : ℝ) * ((n : ℝ) - j) / 2` using `by simp`. Rewrite using `[this]`. Establish `: (j : ℝ) ≤ n` using `by exact_mod_cast hjn`. Check the signs of the components of the expression.
+
+Use `k2.trans (k1.trans ?_)` and prove the remaining obligations. Use `le_trans ((Nat.cast_le (α := ℝ)).2 hc) ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `pow_le_pow_right₀ hq1 (Nat.mul_le_mul_left n hjn)`. Establish `hnq : (n : ℝ) ≤ (q : ℝ) ^ n`.
+
+Establish `: n < 2 ^ n` using `Nat.lt_two_pow_self`. Establish `h2n : (2 : ℝ) ^ n ≤ (q : ℝ) ^ n` using `pow_le_pow_left₀ (by norm_num) (by exact_mod_cast hq2) n`. Establish `: (n : ℝ) ≤ 2 ^ n` using `by exact_mod_cast this.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hup : ∀ b ∈ B, ‖(b : ℂ)‖ ≤ (q : ℝ) ^ (n * n + n)`.
+
+Introduce `b hb`. Use `(GlobalTheory.T.norm_root_le_card_mul_bound_of_esymm_norm_le n B _ hcard (one_le_pow₀ hq1) he b hb).trans ?_` and prove the remaining obligations. Rewrite using `[pow_add, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left hnq (by positivity)`. Use `fun b hb => ⟨hup b hb, ?_⟩` and prove the remaining obligations.
+
+Take `⟨g, hg⟩` from `GlobalTheory.T.heckeTn_scalar_uniformiser_single_translation E w n V ρ ϖ hϖ x hxK`. Establish `hn` using `hT ϖ hϖ n le_rfl`. Establish `hsat : GlobalTheory.LFun.satEig q n B n = (B.map fun b : ℂˣ => (b : ℂ)).prod`. Unfold `GlobalTheory.LFun.satEig`. Simplify using `only [sub_self, mul_zero, zero_div, Complex.cpow_zero, one_mul]`.
+
+Establish `: (B.map fun b : ℂˣ => (b : ℂ)).card = n` using `by rw [Multiset.card_map, hcard]`. Rewrite using `[← this, Multiset.esymm, Multiset.powersetCard_self]`. Simplify using the standard rewrite rules. Rewrite `hn` using `[hg, hsat]`. Establish `hp : ‖(B.map fun b : ℂˣ => (b : ℂ)).prod‖ = 1` using `by set c := (B.map fun b : ℂˣ => (b : ℂ)).prod`.
+
+Establish `e` using `h3 g x x`. Rewrite `e` using `[hn, map_smul, map_smulₛₗ, LinearMap.smul_apply]`. Establish `hx : Bf x x ≠ 0` using `fun h0 => by simpa [h0] using h2 x hx0`. Simplify using `only [smul_eq_mul] at e`. Establish `e2 : starRingEnd ℂ c * c = 1`.
+
+Use `mul_right_cancel₀ hx ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `nth_rewrite 2 [← e]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ‖c‖ ^ 2 = 1`.
+
+Rewrite using `[← Complex.normSq_eq_norm_sq]`. Establish `: (Complex.normSq c : ℂ) = 1` using `by rw [Complex.normSq_eq_conj_mul_self]; exact e2`. Conclude with `this` after adjusting the coercions. Use polynomial arithmetic with `[norm_nonneg c]`. Use `GlobalTheory.T.norm_inv_le_pow_card_of_norm_prod_eq_one' B _ (one_le_pow₀ hq1) hup hp b hb` as an intermediate fact.
+
+Rewrite `this` using `[hcard]`. Then use the resulting hypothesis.
+-/
 theorem local_bound (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (V : Type)
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V)
     (Bf : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ) (h1 : ∀ x y, Bf y x = starRingEnd ℂ (Bf x y)) (h2 : ∀ x, x ≠ 0 → 0 < (Bf x x).re)

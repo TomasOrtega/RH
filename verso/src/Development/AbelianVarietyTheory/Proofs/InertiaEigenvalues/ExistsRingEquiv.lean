@@ -12,6 +12,17 @@ open NumberField IsDedekindDomain GlobalTheory.MomOne PeriodPair
 
 namespace GlobalTheory.CompRat.Inertia
 
+/- English proof (translation)
+Set `Ω` to `algebraicClosure ℚ ℂ`. Establish `: IsAlgClosure ℚ Ω` using `algebraicClosure.isAlgClosure ℚ ℂ`. Set `B : ValuationSubring Ω` to `A.comap (algebraMap Ω ℂ)`. Establish `hB : B.valuation (p : Ω) < 1`. Rewrite `*` using `[← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or]`.
+
+Use `hA.imp (fun h => absurd (by exact_mod_cast h) hp.out.ne_zero) fun h h' => h ?_` and prove the remaining obligations. Establish `: algebraMap Ω ℂ (p : Ω)⁻¹ ∈ A` using `h'`. Simplify using `using this`. Establish `hpr : Prime (p : 𝓞 ℚ)`. Use `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm).2 (Nat.prime_iff_prime_int.1 hp.out)` as an intermediate fact.
+
+Simplify using `using this`. Set `w : HeightOneSpectrum (𝓞 ℚ)` to `⟨Ideal.span {(p : 𝓞 ℚ)}, (Ideal.span_singleton_prime hpr.ne_zero).2 hpr, by simpa using hpr.ne_zero⟩`. Take `⟨j, hj⟩` from `GlobalTheory.PlaceBridge.exists_embedding (l := p) ℚ Ω w B (Ideal.mem_span_singleton_self _) fun x => by`. Take `⟨n, rfl⟩` from `Rat.ringOfIntegersEquiv.symm.surjective x`. Establish `e : algebraMap ℚ Ω ((Rat.ringOfIntegersEquiv.symm n : 𝓞 ℚ) : ℚ) = (n : Ω)` using `by simp`.
+
+Rewrite using `[e, GlobalTheory.PlaceBridge.val_int_lt_one_iff B hp.out hB]`. Express the relevant statement in the definitionally equal form `_ ↔ _ ∈ Ideal.span _`. Rewrite using `[Ideal.mem_span_singleton, ← map_dvd_iff Rat.ringOfIntegersEquiv]`. Simplify using the standard rewrite rules. Take `⟨ι, hι⟩` from `GlobalTheory.PadicComplexIso.exists_ringEquiv_extending p ((algebraMap (PadicAlgCl p) ℂ_[p]).comp j)`.
+
+Use `⟨ι, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e` using `hι ⟨x, mem_algebraicClosure_iff.2 hx⟩`. Rewrite using `[show ι x = _ from e, RingHom.comp_apply, ← PadicComplex.coe_eq, PadicComplex.norm_extends, ← hj]`. Both sides reduce to the same expression.
+-/
 theorem exists_ringEquiv (p : ℕ) [hp : Fact p.Prime] (A : ValuationSubring ℂ) (hA : (p : ℂ) ∈ A.nonunits) :
     ∃ ι : ℂ ≃+* ℂ_[p], ∀ x : ℂ, IsAlgebraic ℚ x → (x ∈ A ↔ ‖ι x‖ ≤ 1) := by
   let Ω := algebraicClosure ℚ ℂ
@@ -40,6 +51,23 @@ theorem exists_ringEquiv (p : ℕ) [hp : Fact p.Prime] (A : ValuationSubring ℂ
   rw [show ι x = _ from e, RingHom.comp_apply, ← PadicComplex.coe_eq, PadicComplex.norm_extends, ← hj]
   rfl
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨ι, hι⟩` from `exists_ringEquiv p A hA`. Take `⟨M, rfl, rfl, hM, h₁, h₂, h₃, h₄, h₆⟩` from `exists_model d p ι L hd hd' hL`. Take `⟨t1, t2⟩` from `TorsionReduction.torsion_integral_and_distinct p M N hM ((Nat.Prime.coprime_iff_not_dvd hp).2 hN).symm`. Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero (by rintro rfl; exact hN (dvd_zero _))`.
+
+Set `K` to `algebraicClosure ℚ ℂ_[p]`. Establish `tr : ∀ y : ℂ, M.ι y ∈ K → y ∈ algebraicClosure ℚ ℂ` using `fun y hy => mem_algebraicClosure_iff.2 ((isAlgebraic_algHom_iff (M.ι : ℂ →+* ℂ_[p]).toRatAlgHom M.ι.injective).1 (mem_algebraicClosure_iff.1 hy))`. Set `W₀ : WeierstrassCurve K` to `⟨⟨_, mem_algebraicClosure_iff.2 h₁⟩, ⟨_, mem_algebraicClosure_iff.2 h₂⟩, ⟨_, mem_algebraicClosure_iff.2 h₃⟩, ⟨_, mem_algebraicClosure_iff.2 h₄⟩, ⟨_, mem_algebraicClosure_iff.2 h₆⟩⟩`. Establish `hW : W₀.map (algebraMap K ℂ_[p]) = M.W` using `rfl`. Establish `hb : M.W.b₂ ∈ K` using `by rw [← hW, WeierstrassCurve.map_b₂]; exact W₀.b₂.2`.
+
+Establish `h4 : M.W.c₄ ∈ K` using `by rw [← hW, WeierstrassCurve.map_c₄]; exact W₀.c₄.2`. Establish `h6 : M.W.c₆ ∈ K` using `by rw [← hW, WeierstrassCurve.map_c₆]; exact W₀.c₆.2`. Establish `hh` using `isHomothetic_scalePeriods M.L M.c hM.1`. Generalize the expression as in `scalePeriods M.L M.c hM.1 = L' at hh`. Establish `g2 : L'.g₂ ∈ algebraicClosure ℚ ℂ` using `tr _ (by`.
+
+Rewrite using `[hh.g₂_eq, inv_mul_eq_div, ← hM.2.2.2.2.2.2.2.1]`. Conclude with `K.div_mem h4 (ofNat_mem K 12))`. Establish `g3 : L'.g₃ ∈ algebraicClosure ℚ ℂ` using `tr _ (by`. Rewrite using `[hh.g₃_eq, inv_mul_eq_div, ← hM.2.2.2.2.2.2.2.2]`. Conclude with `K.div_mem h6 (ofNat_mem K 216))`.
+
+Establish `alg : ∀ z, (N : ℂ) * z ∈ M.L.lattice → z ∉ M.L.lattice → M.x z ∈ algebraicClosure ℚ ℂ` using `fun z hz hz' => by`. Establish `h` using `(GlobalTheory.CurveAlgebraic.weierstrassP_mem L' (t := M.c * z) g2 g3 hN0 (by rwa [hh]) (by rwa [mul_left_comm, hh])).1`. Rewrite `h` using `[hh.weierstrassP_mul, inv_mul_eq_div]`. Conclude with `sub_mem h (tr _ (by rw [RingEquiv.apply_symm_apply]; exact K.div_mem hb (ofNat_mem K 12)))`. Use `⟨M.x, (M.c ^ 2)⁻¹, -M.ι.symm (M.W.b₂ / 12), inv_ne_zero (pow_ne_zero _ hM.1), fun z => ?_, fun z hz hz' => ?_, fun z z' hz hz' h h' hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Mdl.x]`. Expand and normalize the polynomial expressions, which then agree. Establish `ha` using `mem_algebraicClosure_iff.1 (alg z hz hz')`. Conclude with `⟨ha, (hι _ ha).2 (t1 z hz hz')⟩`. Assume the negation of the conclusion as `hc`.
+
+Rewrite `hc` using `[not_or]`. Establish `e` using `t2 z z' hz hz' h h' hc.2 hc.1`. Rewrite `e` using `[← map_sub]`. Break down `(ValuationSubring.mem_nonunits_iff_or A).1 hx with h0 | h0` into its components or cases. Simplify using `[h0] at e`.
+
+Conclude with `h0 ((hι _ (mem_algebraicClosure_iff.1 (inv_mem (sub_mem (alg z hz h) (alg z' hz' h'))))).2 (by rw [map_inv₀, norm_inv, e, inv_one]))`.
+-/
 theorem exists_coord {d : ℕ} (hd : d.Prime) (hd' : d % 16 = 7) {L : PeriodPair} (hL : IsOK d L) {p : ℕ} (hp : p.Prime)
     (A : ValuationSubring ℂ) (hA : (p : ℂ) ∈ A.nonunits) {N : ℕ} (hN : ¬ p ∣ N) :
     ∃ (x : ℂ → ℂ) (α β : ℂ), α ≠ 0 ∧ (∀ z, x z = α * ℘[L] z + β) ∧

@@ -21,6 +21,11 @@ section Val
 variable {K L : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
 
+/- English proof (translation)
+Use `⟨GlobalTheory.LocalTraceSum.tendsto_pow, fun h => ?_⟩` and prove the remaining obligations. Establish `hO` using `GlobalTheory.LocalTraceSum.isOpen_lt (K := K) 1`. Take `⟨n, hn⟩` from `(h.eventually (hO.mem_nhds (by simp))).exists`. Assume the negation of the conclusion as `hx`. Establish `h2 : 1 ≤ valuation K (x ^ n)` using `by rw [map_pow]; exact one_le_pow₀ (not_lt.1 hx)`.
+
+Conclude with `absurd hn (not_lt.2 h2)`.
+-/
 theorem val_lt_one_iff (x : K) : valuation K x < 1 ↔ Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0) := by
   refine ⟨GlobalTheory.LocalTraceSum.tendsto_pow, fun h => ?_⟩
   have hO := GlobalTheory.LocalTraceSum.isOpen_lt (K := K) 1
@@ -33,11 +38,20 @@ end Val
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← p.π_ι x, ← p.π_ι y, ← RingHom.map_mul, p.ι_π, ← mul_assoc, e_ι]`.
+-/
 theorem ι_mul (p : Place D k) (x y : k) : p.ι (x * y) = p.ι x * p.ι y := by
   conv_lhs => rw [← p.π_ι x, ← p.π_ι y, ← RingHom.map_mul, p.ι_π, ← mul_assoc, e_ι]
 
+/- English proof (translation)
+Rewrite using `[← p.π.map_one, p.ι_π, mul_one]`.
+-/
 theorem ι_one (p : Place D k) : p.ι 1 = p.e := by rw [← p.π.map_one, p.ι_π, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← ι_one, p.π_ι]`.
+-/
 theorem π_e (p : Place D k) : p.π p.e = 1 := by rw [← ι_one, p.π_ι]
 
 def compare {k' : Type} [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
@@ -76,6 +90,9 @@ variable [MeasurableSpace k] [BorelSpace k] {c : ℕ}
 
 end Local
 
+/- English proof (translation)
+Rewrite using `[ι_mul]`. Express the relevant statement in the definitionally equal form `p.ι (p.π _) * _ = _`. Rewrite using `[p.ι_π, mul_comm p.e, mul_assoc, e_ι]`.
+-/
 theorem ι_xi (p : Place D k) (x : k) : p.ι (p.xi * x) = incA D D.host.xi0 * p.ι x := by
   rw [ι_mul]
   change p.ι (p.π _) * _ = _

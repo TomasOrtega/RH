@@ -1,6 +1,35 @@
 import Mathlib
 open scoped BigOperators
 
+/- English proof (translation)
+Introduce `P _ _ _ J E l hE h`. Establish `tr : ∀ (η : P →ₗ[ℂ] ℂ) (u : P), LinearMap.trace ℂ P (η.smulRight u) = η u`. Introduce `η u`. Establish `h0` using `LinearMap.trace_eq_contract_apply ℂ P (TensorProduct.tmul ℂ (show Module.Dual ℂ P from η) u)`. Establish `h1 : dualTensorHom ℂ P P (TensorProduct.tmul ℂ (show Module.Dual ℂ P from η) u) = η.smulRight u`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Simplify using `[dualTensorHom_apply]`. Rewrite `h0` using `[h1]`. Rewrite using `[h0]`.
+
+Simplify using `[contractLeft_apply]`. Establish `key : ∀ (u x : P) (η ξ : P →ₗ[ℂ] ℂ), ξ (J x) * l (η.smulRight u) = η (J u) * l (ξ.smulRight x)`. Introduce `u x η ξ`. Establish `hc : (η.smulRight (J x)) * J = J * ((η ∘ₗ J).smulRight x)`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `y`. Simplify using `[Module.End.mul_apply]`. Establish `h1` using `h ((η ∘ₗ J).smulRight x) (η.smulRight (J x)) (ξ.smulRight u) hc`. Establish `e1 : ξ.smulRight u * η.smulRight (J x) = ξ (J x) • η.smulRight u`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `y`. Simplify using `[Module.End.mul_apply, smul_smul, mul_comm]`. Establish `e2 : (η ∘ₗ J).smulRight x * ξ.smulRight u = η (J u) • ξ.smulRight x`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`.
+
+Simplify using `[Module.End.mul_apply, smul_smul, mul_comm]`. Rewrite `h1` using `[e1, e2, map_smul, map_smul]`. Simplify `h1` using `[smul_eq_mul]`. Establish `hJ : ∃ x, J x ≠ 0`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Establish `hJ0 : J = 0` using `LinearMap.ext hne`. Rewrite `hE` using `[hJ0]`. Simplify using `at hE`. Take `⟨x₀, hx₀⟩` from `hJ`.
+
+Establish `hφ : ∃ φ : Module.Dual ℂ P, φ (J x₀) ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hx₀ ((Module.forall_dual_apply_eq_zero_iff ℂ (J x₀)).1 hne)`. Take `⟨φ, hφ⟩` from `hφ`.
+
+Take `⟨ξ₀, hξ₀⟩ : ∃ ξ₀ : P →ₗ[ℂ] ℂ, ξ₀ (J x₀) = 1` from `⟨(φ (J x₀))⁻¹ • φ, by simp [hφ]⟩`. Establish `rank1 : ∀ (η : P →ₗ[ℂ] ℂ) (u : P), l (η.smulRight u) = l (ξ₀.smulRight x₀) * LinearMap.trace ℂ P (η.smulRight u * J)`. Introduce `η u`. Establish `e : η.smulRight u * J = (η ∘ₗ J).smulRight u`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `y`. Simplify using `[Module.End.mul_apply]`. Establish `hk` using `key u x₀ η ξ₀`. Rewrite `hk` using `[hξ₀, one_mul]`. Rewrite using `[e, tr, hk]`.
+
+Simplify using `[mul_comm]`. Establish `all : ∀ b : Module.End ℂ P, l b = l (ξ₀.smulRight x₀) * LinearMap.trace ℂ P (b * J)`. Introduce `b`. Take `⟨t, rfl⟩` from `(dualTensorHomEquiv ℂ P P).surjective b`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul η u`. Establish `h1 : dualTensorHomEquiv ℂ P P (TensorProduct.tmul ℂ η u) = LinearMap.smulRight (show P →ₗ[ℂ] ℂ from η) u`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`.
+
+Simplify using `[dualTensorHomEquiv, dualTensorHom_apply]`. Rewrite using `[h1]`. Conclude with `rank1 η u`. Consider the case `add s t hs ht`. Rewrite using `[map_add, map_add, add_mul, map_add, mul_add, hs, ht]`.
+
+Introduce `b`. Establish `hκ` using `all E`. Rewrite `hκ` using `[hE, mul_one]`. Rewrite using `[hκ]`. Conclude with `all b`.
+-/
 theorem UpperTheory.linearForm_eq_mul_trace_of_twisted_invariant :
     ∀ (P : Type) [AddCommGroup P] [Module ℂ P] [FiniteDimensional ℂ P] (J E : Module.End ℂ P) (l : Module.End ℂ P →ₗ[ℂ] ℂ), LinearMap.trace ℂ P (E * J) = 1 → (∀ a a' b : Module.End ℂ P, a' * J = J * a → l (b * a') = l (a * b)) → ∀ b, l b = l E * LinearMap.trace ℂ P (b * J) := by
   intro P _ _ _ J E l hE h

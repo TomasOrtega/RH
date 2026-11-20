@@ -24,6 +24,17 @@ noncomputable section
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact fun d => ⟨1, by simp, fun l => l.elim0⟩`. Consider the case `succ m ih`. Introduce `d`.
+
+Take `⟨δ, hδ, hl⟩` from `ih (Fin.tail d)`. Distinguish the cases in `ha : (δ : ℂ_[p]) * d 0 ∈ 𝓞_ℂ_[p]`. Use `⟨δ, hδ, fun l => ?_⟩` and prove the remaining obligations. Use `Fin.cases ha (fun l => ?_) l` and prove the remaining obligations. Conclude with `hl l`.
+
+Establish `hne : (δ : ℂ_[p]) * d 0 ≠ 0` using `fun h => ha (h ▸ (𝓞_ℂ_[p]).zero_mem)`. Establish `hinv : ((δ : ℂ_[p]) * d 0)⁻¹ ∈ 𝓞_ℂ_[p]` using `((𝓞_ℂ_[p]).mem_or_inv_mem _).resolve_left ha`. Use `⟨δ * ⟨_, hinv⟩, ?_, fun l => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(δ : ℂ_[p]) * ((δ : ℂ_[p]) * d 0)⁻¹ ≠ 0`. Conclude with `mul_ne_zero hδ (inv_ne_zero hne)`.
+
+Express the relevant statement in the definitionally equal form `(δ : ℂ_[p]) * ((δ : ℂ_[p]) * d 0)⁻¹ * d l ∈ 𝓞_ℂ_[p]`. Use `Fin.cases ?_ (fun l => ?_) l` and prove the remaining obligations. Rewrite using `[show (δ : ℂ_[p]) * ((δ : ℂ_[p]) * d 0)⁻¹ * d 0 = 1 by`. Rewrite using `[_root_.mul_comm (δ : ℂ_[p]), _root_.mul_assoc]`. Conclude with `inv_mul_cancel₀ hne]`.
+
+Conclude with `(𝓞_ℂ_[p]).one_mem`. Rewrite using `[show (δ : ℂ_[p]) * ((δ : ℂ_[p]) * d 0)⁻¹ * d l.succ = ((δ : ℂ_[p]) * d 0)⁻¹ * ((δ : ℂ_[p]) * Fin.tail d l) by`. Simplify using `only [Fin.tail]`. Use the proof step `ring]`. Conclude with `(𝓞_ℂ_[p]).mul_mem _ _ hinv (hl l)`.
+-/
 theorem exists_denom (p : ℕ) [Fact p.Prime] : ∀ (m : ℕ) (d : Fin m → ℂ_[p]), ∃ δ : 𝓞_ℂ_[p],
     (δ : ℂ_[p]) ≠ 0 ∧ ∀ l, (δ : ℂ_[p]) * d l ∈ 𝓞_ℂ_[p] := by
   intro m
@@ -50,6 +61,9 @@ theorem exists_denom (p : ℕ) [Fact p.Prime] : ∀ (m : ℕ) (d : Fin m → ℂ
             simp only [Fin.tail]; ring]
           exact (𝓞_ℂ_[p]).mul_mem _ _ hinv (hl l)
 
+/- English proof (translation)
+Introduce `p _ m d`. Take `⟨δ, hδ, hl⟩` from `exists_denom p m d`. Conclude with `⟨δ, hδ, fun l => ⟨⟨_, hl l⟩, rfl⟩⟩`.
+-/
 theorem exists_denom_alg : ∀ (p : ℕ) [Fact p.Prime] (m : ℕ) (d : Fin m → ℂ_[p]), ∃ δ : 𝓞_ℂ_[p],
     algebraMap 𝓞_ℂ_[p] ℂ_[p] δ ≠ 0 ∧ ∀ l, ∃ e : 𝓞_ℂ_[p], algebraMap 𝓞_ℂ_[p] ℂ_[p] e = algebraMap 𝓞_ℂ_[p] ℂ_[p] δ * d l := by
   intro p _ m d
@@ -58,6 +72,31 @@ theorem exists_denom_alg : ∀ (p : ℕ) [Fact p.Prime] (m : ℕ) (d : Fin m →
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle hOI p _ _ _ yb yy P π ψ y hHT z gm am x hchg hx β hβ g e _ xb hxb σ U hU`. Take `⟨hPt, hTs, hptF, hHC⟩` from `hHT`. Take `⟨u0, hu0c, hu0t⟩` from `GlobalTheory.T.exists_combination_lie_group_pullback E H Y.X Y.t p P yb π hPt.2.1 g e xb hxb U`. Establish `hu0e` using `hU u0 hu0c`. Take `⟨w, hw1, hw2, hw3, hwt⟩` from `GlobalTheory.T.point_on_model_pullback_compatible E H Dw l' Xo' c' W Y p yb yy P π ψ hPt _ u0 hu0t`.
+
+Establish `hbc` using `GlobalTheory.T.isCombAtG_base_change E H Y.X Y.t 𝓞_ℂ_[p] ℂ_[p] (algebraMap 𝓞_ℂ_[p] ℂ_[p]) yb g e U (β.comp (embV c' W σ)) u0`. Establish `hA : IsCombAtG Y.t (yy ≫ Y.j) (bcV Y.t (algebraMap 𝓞_ℂ_[p] ℂ_[p]) e) (fun b => (U b : ℂ_[p])) (w ≫ Y.m.φ)`. Rewrite using `[hw1, ← hPt.1]`. Conclude with `hbc.1 hu0c`. Establish `hemb` using `GlobalTheory.T.integral_model_p_adic_comparison E H Dw l l' Xo Xo' c c' W Y r ν hle hOI p yb yy P π ψ y ⟨hPt, hTs, hptF, hHC⟩ β hβ σ`.
+
+Establish `hE : ∀ a : 𝓞 E, (w ≫ Y.m.φ) ≫ (Y.t.act.act a).left = spMap (epsMul (algebraMap c.F ℂ_[p] (embK c σ a))) ≫ w ≫ Y.m.φ`. Introduce `a`. Establish `h` using `hbc.2 hu0e a`. Establish `hs : algebraMap 𝓞_ℂ_[p] ℂ_[p] (β (embV c' W σ a)) = algebraMap c.F ℂ_[p] (embK c σ a)`. Rewrite using `[← algebraMap_embInt P.integers σ a, ← hemb]`.
+
+Both sides reduce to the same expression. Rewrite using `[hw1, h, RingHom.comp_apply, RingHom.comp_apply, hs]`. Take `⟨hT, hEig⟩` from `GlobalTheory.T.padic_point_model_abelian_map E H Dw l l' Xo Xo' c c' W Y r ν p yy y hptF w hw2 hw3 σ hE`. Take `⟨cf, hcf, -⟩` from `y.basis σ (w ≫ ν.φ) hT hEig`. Use `⟨w, cf, hA, hcf, ?_⟩` and prove the remaining obligations.
+
+Establish `hyx : y.x = yy ≫ r ≫ pullback.fst _ _`. Rewrite using `[← Category.assoc, ← hptF]`. Conclude with `(pullback.lift_fst _ _ _).symm`. Establish `hzx : y.x = z.x` using `hchg.1`. Establish `hψ' : IsGrpPullback P.A.A Xo.univ.t.G z.x (ψ ≫ ν.φ)`.
+
+Rewrite using `[← hzx, hyx]`. Conclude with `hPt.2.2.2.1.comp ν.cart`. Establish `hXt : LieTie P (ψ ≫ ν.φ) (lieComb P.Gt U xb) (w ≫ ν.φ)`. Take `⟨xG, u', h1, h2, h3⟩` from `hwt`. Conclude with `⟨xG, u', h1, by rw [← h2, Category.assoc], h3⟩`.
+
+Establish `hdc : IsCombAtG Xo.univ.t z.x (z.u σ) ((Matrix.of fun l j => gm σ j l).mulVec cf) (w ≫ ν.φ)` using `tanLinG (z.u σ) (fun j => z.tan σ j) (y.u σ) (Matrix.of fun l j => gm σ j l) cf (w ≫ ν.φ) (fun j => hchg.2.1 σ j) (hzx ▸ hcf)`. Take `⟨δ, hδ0, hδ⟩` from `exists_denom_alg p _ ((Matrix.of fun l j => gm σ j l).mulVec cf)`. Use `choose ee hee using hδ`. Establish `hsc : IsCombAtG Xo.univ.t z.x (z.u σ) (fun l => algebraMap 𝓞_ℂ_[p] ℂ_[p] (ee l)) (spMap (epsMul (algebraMap 𝓞_ℂ_[p] ℂ_[p] δ)) ≫ (w ≫ ν.φ))`. Establish `h` using `(isCombAtG_iff Xo.univ.t z.x (fun j => ovT (z.tan σ j)) _ (w ≫ ν.φ)).1 hdc`.
+
+Use `(isCombAtG_iff Xo.univ.t z.x (fun j => ovT (z.tan σ j)) _ _).2 ?_` and prove the remaining obligations. Rewrite using `[show (fun l => algebraMap 𝓞_ℂ_[p] ℂ_[p] (ee l)) = fun l => algebraMap 𝓞_ℂ_[p] ℂ_[p] δ * (Matrix.of fun l j => gm σ j l).mulVec cf l from funext hee, ← smT_combT, smT_left, h]`. Establish `hL1` using `hXt.scale δ`. Establish `hL2` using `GlobalTheory.T.isGrpPullback_tangent_combination E H Xo.X Xo.univ.t p P z.x (ψ ≫ ν.φ) hψ' _ (x σ) (z.u σ) ee _ (hx σ) hsc`. Establish `heq` using `hL1.unique hψ'.1 hL2`.
+
+Establish `hb` using `congrArg P.bLie heq`. Rewrite `hb` using `[P.bLie_scale, bLie_lieComb, bLie_lieComb]`. Establish `hb' : algebraMap 𝓞_ℂ_[p] ℂ_[p] δ • ∑ b, (U b : ℂ_[p]) • P.bLie (xb b) = algebraMap 𝓞_ℂ_[p] ℂ_[p] δ • ∑ l, (Matrix.of fun l j => gm σ j l).mulVec cf l • P.bLie (x σ l)`. Establish `e1 : algebraMap 𝓞_ℂ_[p] ℂ_[p] δ • ∑ b, (U b : ℂ_[p]) • P.bLie (xb b) = δ • ∑ b, U b • P.bLie (xb b)`. Rewrite using `[algebraMap_smul]`.
+
+Use `congr 1`. Establish `e2 : ∑ l, ee l • P.bLie (x σ l) = algebraMap 𝓞_ℂ_[p] ℂ_[p] δ • ∑ l, (Matrix.of fun l j => gm σ j l).mulVec cf l • P.bLie (x σ l)`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← hee, algebraMap_smul]`.
+
+Rewrite using `[e1, hb, e2]`. Establish `h2` using `smul_right_injective P.V hδ0 hb'`. Rewrite using `[h2]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem htComb_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)
     (Y : Model Xo' c' (c'.V W).subtype) (r : Xo'.XF c' ⟶ Xo.XF c)

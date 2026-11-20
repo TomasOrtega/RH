@@ -5,6 +5,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.GraphIntertwiner
 
+/- English proof (translation)
+Apply `Submodule.eq_starProjection_of_mem_orthogonal (hsΓ _ (Γ.starProjection_apply_mem x))` to reduce the goal to its premises. Rewrite using `[← map_sub, Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[← hst u, hs]`. Conclude with `(Submodule.mem_orthogonal _ _).1 (Submodule.sub_starProjection_mem_orthogonal x) _ (htΓ u hu)`.
+-/
 theorem starProjection_comm {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     (Γ : Submodule ℂ E) [Γ.HasOrthogonalProjection] (s t : E →L[ℂ] E)
     (hs : ∀ u v, ⟪s u, s v⟫_ℂ = ⟪u, v⟫_ℂ) (hst : ∀ v, s (t v) = v)
@@ -27,15 +30,52 @@ noncomputable def sumL {H V : Type} [NormedAddCommGroup H] [InnerProductSpace �
   (WithLp.prodContinuousLinearEquiv 2 ℂ H V).symm.toContinuousLinearMap.comp
     ((a.prodMap b).comp (WithLp.prodContinuousLinearEquiv 2 ℂ H V).toContinuousLinearMap)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inlL_apply {H V : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] (x : H) :
     inlL H V x = WithLp.toLp 2 (x, 0) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sumL_apply {H V : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] (a : H →L[ℂ] H) (b : V →L[ℂ] V)
     (z : WithLp 2 (H × V)) :
     sumL a b z = WithLp.toLp 2 (a z.ofLp.1, b z.ofLp.2) := rfl
 
+/- English proof (translation)
+Take `⟨⟨hρ1, hρm⟩, hρn, -⟩` from `hρ`. Take `⟨⟨hπ1, hπm⟩, hπn, -⟩` from `hπ`. Establish `hρi : ∀ g ∈ G, ∀ u v, ⟪ρ g u, ρ g v⟫_ℂ = ⟪u, v⟫_ℂ` using `fun g hg => (LinearMap.norm_map_iff_inner_map_map (ρ g)).1 (hρn g hg)`. Establish `hπi : ∀ g ∈ G, ∀ u v, ⟪π g u, π g v⟫_ℂ = ⟪u, v⟫_ℂ` using `fun g hg => (LinearMap.norm_map_iff_inner_map_map (π g)).1 (hπn g hg)`. Set `S : Set (WithLp 2 (H × V))` to `{z | ∃ g ∈ G, ∃ y ∈ Y₀, z = WithLp.toLp 2 (ρ g y, π g (T y))}`.
+
+Set `Γ : Submodule ℂ (WithLp 2 (H × V))` to `(Submodule.span ℂ S).topologicalClosure`. Establish `hΓc : IsClosed (Γ : Set (WithLp 2 (H × V)))` using `Submodule.isClosed_topologicalClosure _`. Establish `hSΓ : ∀ z ∈ S, z ∈ Γ` using `fun z hz => Submodule.le_topologicalClosure _ (Submodule.subset_span hz)`. Establish `hle : ∀ K : Submodule ℂ (WithLp 2 (H × V)), IsClosed (K : Set (WithLp 2 (H × V))) → (∀ z ∈ S, z ∈ K) → Γ ≤ K` using `fun K hK hS => Submodule.topologicalClosure_minimal _ (Submodule.span_le.2 hS) hK`. Use `haveI : CompleteSpace Γ := hΓc.completeSpace_coe`.
+
+Establish `hinvt : ∀ g ∈ G, ∀ v ∈ Γ, sumL (ρ g) (π g) v ∈ Γ`. Introduce `g hg`. Use `hle (Γ.comap (sumL (ρ g) (π g)).toLinearMap) (hΓc.preimage (sumL (ρ g) (π g)).continuous) ?_` and prove the remaining obligations. Introduce and unpack `z ⟨h, hh, y, hy, rfl⟩`. Use `hSΓ _ ⟨g * h, hmul g hg h hh, y, hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hρm g hg h hh, hπm g hg h hh]`. Both sides reduce to the same expression. Establish `hcomm : ∀ g ∈ G, ∀ x, Γ.starProjection (sumL (ρ g) (π g) x) = sumL (ρ g) (π g) (Γ.starProjection x)`. Introduce `g hg x`. Take `⟨b, hb, hgb⟩` from `hinv g hg`.
+
+Use `starProjection_comm Γ _ (sumL (ρ b) (π b)) ?_ ?_ (hinvt g hg) (hinvt b hb) x` and prove the remaining obligations. Introduce `u v`. Simplify using `only [sumL_apply, WithLp.prod_inner_apply, hρi g hg, hπi g hg]`. Introduce `v`. Establish `e1 : ∀ w, ρ g (ρ b w) = w` using `fun w => by`.
+
+Use `congrArg (fun f : H →L[ℂ] H => f w) (hρm g hg b hb)` as an intermediate fact. Simplify `this.symm` using `[hgb, hρ1]`. Establish `e2 : ∀ w, π g (π b w) = w` using `fun w => by`. Use `congrArg (fun f : V →L[ℂ] V => f w) (hπm g hg b hb)` as an intermediate fact. Simplify `this.symm` using `[hgb, hπ1]`.
+
+Simplify using `only [sumL_apply, e1, e2]`. Establish `hy₀Γ : WithLp.toLp 2 (y₀, T y₀) ∈ Γ` using `hSΓ _ ⟨1, h1, y₀, hy₀, by simp [hρ1, hπ1]⟩`. Establish `horth : ∀ z ∈ Γ, ⟪WithLp.toLp 2 (a₀, -T y₀), z⟫_ℂ = 0`. Introduce `z hz`. Use `hle (ℂ ∙ (WithLp.toLp 2 (a₀, -T y₀) : WithLp 2 (H × V)))ᗮ (Submodule.isClosed_orthogonal _) (by` as an intermediate fact.
+
+Introduce and unpack `z ⟨g, hg, y, hy, rfl⟩`. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Simplify using `[WithLp.prod_inner_apply, hco y hy g hg]) hz`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.1 this`. Establish `hinl : ∀ g, ∀ x, inlL H V (ρ g x) = sumL (ρ g) (π g) (inlL H V x)`.
+
+Introduce `g x`. Simplify using `[inlL_apply, sumL_apply]`. Use `⟨(WithLp.sndL 2 ℂ H V).comp (Γ.starProjection.comp (inlL H V)), ?_, ?_⟩` and prove the remaining obligations. Introduce `hB`. Establish `hB' : ∀ x, (Γ.starProjection (inlL H V x)).ofLp.2 = 0` using `fun x => congrArg (fun f : H →L[ℂ] V => f x) hB`.
+
+Break down `hirr (Γ.comap (inlL H V).toLinearMap) (hΓc.preimage (inlL H V).continuous) (fun g hg v hv => by` into its components or cases. Establish `: inlL H V (ρ g v) ∈ Γ` using `by rw [hinl]; exact hinvt g hg _ hv`. Conclude with `this) with hL | hL`. Establish `hP : Γ.starProjection (inlL H V y₀) = 0`. Establish `e : Γ.starProjection (inlL H V y₀) = inlL H V (Γ.starProjection (inlL H V y₀)).ofLp.1`.
+
+Rewrite using `[inlL_apply (Γ.starProjection (inlL H V y₀)).ofLp.1, ← hB' y₀]`. Establish `hm : (Γ.starProjection (inlL H V y₀)).ofLp.1 ∈ Γ.comap (inlL H V).toLinearMap`. Use `Γ.starProjection_apply_mem (inlL H V y₀)` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+
+Rewrite `hm` using `[hL, Submodule.mem_bot]`. Rewrite using `[e, hm, map_zero]`. Establish `ho` using `Submodule.sub_starProjection_mem_orthogonal (K := Γ) (inlL H V y₀)`. Rewrite `ho` using `[hP, sub_zero]`. Establish `h0` using `(Submodule.mem_orthogonal _ _).1 ho _ hy₀Γ`.
+
+Establish `h0' : ⟪y₀, y₀⟫_ℂ = 0`. Simplify `h0` using `only [inlL_apply, WithLp.prod_inner_apply, inner_zero_right, add_zero]`. Conclude with `hT (by rw [inner_self_eq_zero.1 h0', map_zero])`. Establish `hm : a₀ ∈ Γ.comap (inlL H V).toLinearMap` using `by rw [hL]; trivial`. Establish `h0` using `horth _ hm`.
+
+Establish `h0' : ⟪a₀, a₀⟫_ℂ = 0`. Establish `e : (inlL H V).toLinearMap a₀ = WithLp.toLp 2 (a₀, 0)` using `rfl`. Simplify `h0` using `only [e, WithLp.prod_inner_apply, inner_zero_right, add_zero]`. Establish `h2` using `hco y₀ hy₀ 1 h1`. Rewrite `h2` using `[inner_self_eq_zero.1 h0', inner_zero_left, hπ1]`.
+
+Conclude with `hT (inner_self_eq_zero.1 h2.symm)`. Introduce `g hg x show (Γ.starProjection (inlL H V (ρ g x))).ofLp.2 = π g (Γ.starProjection (inlL H V x)).ofLp.2`. Rewrite using `[hinl, hcomm g hg, sumL_apply]`.
+-/
 theorem exists_intertwiner_of_group {n : ℕ} (G : Set (Matrix (Fin n) (Fin n) ℂ)) (h1 : 1 ∈ G)
     (hmul : ∀ a ∈ G, ∀ b ∈ G, a * b ∈ G) (hinv : ∀ a ∈ G, ∃ b ∈ G, a * b = 1)
     (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -132,6 +172,9 @@ theorem exists_intertwiner_of_group {n : ℕ} (G : Set (Matrix (Fin n) (Fin n) �
     show (Γ.starProjection (inlL H V (ρ g x))).ofLp.2 = π g (Γ.starProjection (inlL H V x)).ofLp.2
     rw [hinl, hcomm g hg, sumL_apply]
 
+/- English proof (translation)
+Unfold `Jm`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem Jm_mul_Jm {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
   rw [diagonal_mul_diagonal, ← diagonal_one]
@@ -139,6 +182,11 @@ theorem Jm_mul_Jm {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   funext a
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `h1 : (Jm ε * gᴴ * Jm ε) * g = 1`. Rewrite using `[← Jm_mul_Jm ε]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `mul_eq_one_comm.1 h1`.
+
+Use `⟨_, ?_, h2⟩` and prove the remaining obligations. Generalize the expression as in `Jm ε * gᴴ * Jm ε = b at h2`. Use `show bᴴ * Jm ε * b = Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_right_inv {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ)
     (hg : g ∈ UJset ε) : ∃ b ∈ UJset ε, g * b = 1 := by
   have hg' : gᴴ * Jm ε * g = Jm ε := hg
@@ -154,6 +202,13 @@ theorem exists_right_inv {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fi
     _ = (g * b)ᴴ * Jm ε * (g * b) := by simp only [conjTranspose_mul, Matrix.mul_assoc]
     _ = Jm ε := by rw [h2]; simp
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ ρ V _ _ _ π hρ hirr hπ T Y₀ y₀ a₀ hy₀ hT hco`. Use `exists_intertwiner_of_group (UJset ε) ?_ ?_ (exists_right_inv ε) H ρ V π hρ hirr hπ T Y₀ y₀ a₀ hy₀ hT hco` and prove the remaining obligations. Use `show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules. Introduce `a ha b hb`.
+
+Establish `ha' : aᴴ * Jm ε * a = Jm ε` using `ha`. Establish `hb' : bᴴ * Jm ε * b = Jm ε` using `hb`. Use `show (a * b)ᴴ * Jm ε * (a * b) = Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Jm ε := by rw [ha', hb']`.
+-/
 theorem exists_intertwiner : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (π : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)), IsURepOn (UJset ε) ρ → IsIrredOn (UJset ε) ρ → IsURepOn (UJset ε) π → ∀ (T : H →ₗ[ℂ] V) (Y₀ : Set H) (y₀ a₀ : H), y₀ ∈ Y₀ → T y₀ ≠ 0 → (∀ y ∈ Y₀, ∀ g ∈ UJset ε, ⟪a₀, ρ g y⟫_ℂ = ⟪T y₀, π g (T y)⟫_ℂ) → ∃ B : H →L[ℂ] V, B ≠ 0 ∧ ∀ g ∈ UJset ε, ∀ x, B (ρ g x) = π g (B x) := by
   intro n ε H _ _ _ ρ V _ _ _ π hρ hirr hπ T Y₀ y₀ a₀ hy₀ hT hco
   refine exists_intertwiner_of_group (UJset ε) ?_ ?_ (exists_right_inv ε) H ρ V π hρ hirr hπ T Y₀ y₀ a₀

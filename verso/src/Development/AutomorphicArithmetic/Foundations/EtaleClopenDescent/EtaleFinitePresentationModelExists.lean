@@ -15,6 +15,13 @@ namespace UpperTheory.Cb
 private def rho (R : Type) [CommRing R] (V : (Spec (CommRingCat.of R)).Opens) : R →+* Γ(Spec (CommRingCat.of R), V) :=
   ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (Spec (CommRingCat.of R)).presheaf.map (homOfLE le_top : V ⟶ ⊤).op).hom
 
+/- English proof (translation)
+Establish `hb : V = (Spec (CommRingCat.of R)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv f)`. Rewrite using `[basicOpen_eq_of_affine]`. Conclude with `Opens.ext hV`. Establish `h` using `(isAffineOpen_top (Spec (CommRingCat.of R))).isLocalization_of_eq_basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv f) (homOfLE le_top : V ⟶ ⊤) hb`. Set `φ : R ≃+* Γ(Spec (CommRingCat.of R), ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv`.
+
+Use `letI := ((Spec (CommRingCat.of R)).presheaf.map (homOfLE le_top : V ⟶ ⊤).op).hom.toAlgebra`. Establish `h2` using `(IsLocalization.isLocalization_iff_of_base_ringEquiv (Submonoid.powers ((Scheme.ΓSpecIso (CommRingCat.of R)).inv f)) Γ(Spec (CommRingCat.of R), V) φ.symm).1 h`. Establish `hp : Submonoid.map φ.symm (Submonoid.powers ((Scheme.ΓSpecIso (CommRingCat.of R)).inv f)) = Submonoid.powers f`. Rewrite using `[Submonoid.map_powers]`. Conclude with `congrArg Submonoid.powers (φ.symm_apply_apply f)`.
+
+Rewrite `h2` using `[hp]`. Conclude with `h2`.
+-/
 private theorem away_rho (R : Type) [CommRing R] (f : R) (V : (Spec (CommRingCat.of R)).Opens)
     (hV : ((show Opens (PrimeSpectrum R) from V) : Set (PrimeSpectrum R)) = (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum R))) :
     @IsLocalization.Away R _ f Γ(Spec (CommRingCat.of R), V) _ (rho R V).toAlgebra := by
@@ -32,6 +39,15 @@ private theorem away_rho (R : Type) [CommRing R] (f : R) (V : (Spec (CommRingCat
   rw [hp] at h2
   exact h2
 
+/- English proof (translation)
+Take `⟨e, he, hVe⟩` from `UpperTheory.isCompact_open_eq_basicOpen_idempotent_of_prodACF hW V hV`. Take `⟨T, hT, hTL⟩` from `UpperTheory.exists_idempotent_submonoid_isLocalization_atPrime hW q`. Set `j` to `Spec.map (CommRingCat.ofHom (algebraMap W (Localization.AtPrime q.asIdeal)))`. Use `letI : Algebra W Γ(Spec (CommRingCat.of W), V) := (rho W V).toAlgebra`. Use `letI : Algebra (Localization.AtPrime q.asIdeal) Γ(Spec (CommRingCat.of (Localization.AtPrime q.asIdeal)), j ⁻¹ᵁ V) := (rho _ (j ⁻¹ᵁ V)).toAlgebra`.
+
+Use `haveI : IsLocalization.Away e Γ(Spec (CommRingCat.of W), V) := away_rho W e V hVe`. Use `haveI : IsLocalization.Away (algebraMap W (Localization.AtPrime q.asIdeal) e) Γ(Spec (CommRingCat.of (Localization.AtPrime q.asIdeal)), j ⁻¹ᵁ V) := by`. Use `away_rho (Localization.AtPrime q.asIdeal) (algebraMap W (Localization.AtPrime q.asIdeal) e) (j ⁻¹ᵁ V) ?_` and prove the remaining obligations. Use extensionality with `x`. Use `Set.ext_iff.1 hVe (PrimeSpectrum.comap (algebraMap W (Localization.AtPrime q.asIdeal)) x)` as an intermediate fact.
+
+Conclude with `this`. Use `UpperTheory.exists_idempotent_submonoid_isLocalization_away (L := Localization.AtPrime q.asIdeal) e he T (fun s hs => (hT s hs).1) (j.app V).hom ?_` and prove the remaining obligations. Introduce `r`. Establish `h1` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap W (Localization.AtPrime q.asIdeal)))`. Establish `key : (Scheme.ΓSpecIso (CommRingCat.of W)).inv ≫ (Spec (CommRingCat.of W)).presheaf.map (homOfLE le_top : V ⟶ ⊤).op ≫ j.app V = CommRingCat.ofHom (algebraMap W (Localization.AtPrime q.asIdeal)) ≫ (Scheme.ΓSpecIso (CommRingCat.of (Localization.AtPrime q.asIdeal))).inv ≫ (Spec (Com …`.
+
+Rewrite using `[j.naturality, reassoc_of% h1]`. Both sides reduce to the same expression. Conclude with `congr($key r)`.
+-/
 private theorem loc_part {W : Type} [CommRing W] (hW : ProdACF W) (q : PrimeSpectrum W)
     (V : (Spec (CommRingCat.of W)).Opens) (hV : IsCompact (V : Set (Spec (CommRingCat.of W)))) :
     ∃ S : Submonoid Γ(Spec (CommRingCat.of W), V), (∀ s ∈ S, IsIdempotentElem s) ∧
@@ -64,6 +80,13 @@ private theorem loc_part {W : Type} [CommRing W] (hW : ProdACF W) (q : PrimeSpec
     rfl
   exact congr($key r)
 
+/- English proof (translation)
+Use `letI := (f.app U).hom.toAlgebra`. Establish `h` using `f.normalizationObjIso_hom_val hU`. Establish `h2 : f.toNormalization.appLE _ _ hle = _` using `h.symm`. Rewrite using `[h2]`. Establish `hb` using `ConcreteCategory.bijective_of_isIso (f.normalizationObjIso hU).hom`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Conclude with `hb.1 (Subtype.ext hxy)`. Introduce `b`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, rfl⟩`. Conclude with `((f.normalizationObjIso hU).hom.hom x).2`. Introduce `hbi`. Take `⟨x, hx⟩` from `hb.2 ⟨b, hbi⟩`. Conclude with `⟨x, congrArg Subtype.val hx⟩`.
+-/
 private theorem sec_part {X Y : Scheme.{0}} (f : X ⟶ Y) [QuasiCompact f] [QuasiSeparated f] {U : Y.Opens} (hU : IsAffineOpen U)
     (hle : f ⁻¹ᵁ U ≤ f.toNormalization ⁻¹ᵁ (f.fromNormalization ⁻¹ᵁ U)) :
     Function.Injective (f.toNormalization.appLE _ _ hle).hom ∧
@@ -84,18 +107,33 @@ private theorem sec_part {X Y : Scheme.{0}} (f : X ⟶ Y) [QuasiCompact f] [Quas
       obtain ⟨x, hx⟩ := hb.2 ⟨b, hbi⟩
       exact ⟨x, congrArg Subtype.val hx⟩
 
+/- English proof (translation)
+Establish `h : f.toNormalization ⁻¹ᵁ (f.fromNormalization ⁻¹ᵁ U) = f ⁻¹ᵁ U`. Rewrite using `[← Scheme.Hom.comp_preimage, Scheme.Hom.toNormalization_fromNormalization]`. Conclude with `h.ge`.
+-/
 private theorem hleN {X Y : Scheme.{0}} (f : X ⟶ Y) [QuasiCompact f] [QuasiSeparated f] (U : Y.Opens) :
     f ⁻¹ᵁ U ≤ f.toNormalization ⁻¹ᵁ (f.fromNormalization ⁻¹ᵁ U) := by
   have h : f.toNormalization ⁻¹ᵁ (f.fromNormalization ⁻¹ᵁ U) = f ⁻¹ᵁ U := by
     rw [← Scheme.Hom.comp_preimage, Scheme.Hom.toNormalization_fromNormalization]
   exact h.ge
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem appLE_eq {X Y : Scheme.{0}} {f g : X ⟶ Y} (h : f = g) (U : Y.Opens) (V : X.Opens) (e : V ≤ f ⁻¹ᵁ U) :
     f.appLE U V e = g.appLE U V (h ▸ e) := by
   subst h; rfl
 
 end UpperTheory.Cb
 
+/- English proof (translation)
+Introduce `_ _ _ P _ _ W _ w hW q`. Set `j` to `Spec.map (CommRingCat.ofHom (algebraMap W (Localization.AtPrime q.asIdeal)))`. Set `m` to `GlobalTheory.normalizationLift (j ≫ w) (j ≫ w.toNormalization) w.fromNormalization (𝟙 P) (by simp)`. Establish `e1 : j ≫ w.toNormalization = (j ≫ w).toNormalization ≫ m` using `(GlobalTheory.toNormalization_normalizationLift _ _ _ _ _).symm`. Establish `e2 : m ≫ w.fromNormalization = (j ≫ w).fromNormalization` using `(GlobalTheory.normalizationLift_comp (j ≫ w) (j ≫ w.toNormalization) w.fromNormalization (𝟙 P) (by simp)).trans (Category.comp_id _)`.
+
+Establish `hmi : IsIntegralHom m` using `GlobalTheory.isIntegralHom_normalizationLift _ _ _ _ _`. Take `⟨hmono, hflat⟩` from `UpperTheory.mono_flat_of_affine_appLE_flat_epi w.fromNormalization (j ≫ w).fromNormalization m e2 (fun U hU hle => by`. Take `⟨S, hS, hL⟩` from `loc_part hW q (w ⁻¹ᵁ U) (w.isCompact_preimage hU.isCompact)`. Take `⟨ht, hr⟩` from `sec_part w hU (hleN w U)`. Take `⟨ht', hr'⟩` from `sec_part (j ≫ w) hU (hleN (j ≫ w) U)`.
+
+Establish `key : w.toNormalization.appLE _ _ (hleN w U) ≫ j.app (w ⁻¹ᵁ U) = m.appLE _ _ hle ≫ (j ≫ w).toNormalization.appLE _ _ (hleN (j ≫ w) U)`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_eq e1 _ _ _`. Use `UpperTheory.integralClosure_range_isLocalization_idempotent (w.app U).hom (j.app (w ⁻¹ᵁ U)).hom _ _ _ ht ht' hr (fun b => (hr' b).trans Iff.rfl) ?_ S hS hL` and prove the remaining obligations. Introduce `c`.
+
+Conclude with `congr($key c))`. Conclude with `⟨m, e1, e2, hmono, hflat, inferInstance⟩`.
+-/
 theorem UpperTheory.Cb.etale_finite_presentation_model_exists :
     LateralTheory.E.BuildCut.LimInt → LateralTheory.E.t_E2Cut.Cont → LateralTheory.E.t_E2Cut.MV → LateralTheory.E.SysFMPf.FMex := by
   intro _ _ _ P _ _ W _ w hW q

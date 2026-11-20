@@ -25,11 +25,21 @@ def act {R : Type} [CommRing R] {m : ℕ} (vec : Bool) (g : Matrix (Fin (m + 1))
     Matrix (Fin (m + 1)) (Fin (m + 1)) R :=
   if vec then g else g.adjugate.transpose
 
+/- English proof (translation)
+Use extensionality with `a s`. Simplify using `only [Matrix.map_apply, genM, Matrix.of_apply, Matrix.mul_apply, rowAct, MvPolynomial.aeval_X]`.
+-/
 theorem genM_map_rowAct (R : Type) [CommRing R] (m : ℕ) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) R) :
     (genM R m).map (rowAct R g) = (g.map C) * genM R m := by
   ext a s
   simp only [Matrix.map_apply, genM, Matrix.of_apply, Matrix.mul_apply, rowAct, MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Consider the cases of `vec with`. Consider the case `true`. Simplify using `only [Nv, act, ↓reduceIte, rowAct, MvPolynomial.aeval_X]`. Consider the case `false`. Simplify using `only [Nv, act, Bool.false_eq_true, ↓reduceIte]`.
+
+Establish `h1 : (rowAct R g) ((genM R m).adjugate (Fin.last m) c) = ((genM R m).map (rowAct R g)).adjugate (Fin.last m) c` using `congrFun (congrFun (RingHom.map_adjugate (rowAct R g).toRingHom (genM R m)) (Fin.last m)) c`. Establish `h2` using `RingHom.map_adjugate (MvPolynomial.C : R →+* MvPolynomial (Fin (m + 1) × Fin (m + 1)) R) g`. Simplify using `only [RingHom.mapMatrix_apply] at h2`. Rewrite using `[h1, genM_map_rowAct, Matrix.adjugate_mul_distrib, Matrix.mul_apply, ← h2]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.map_apply, Matrix.transpose_apply, mul_comm]`.
+-/
 theorem rowAct_Nv (R : Type) [CommRing R] (m : ℕ) (vec : Bool) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) R)
     (c : Fin (m + 1)) :
     rowAct R g (Nv R m vec c) = ∑ b, C (act vec g c b) * Nv R m vec b := by
@@ -51,6 +61,11 @@ def lin {R : Type} [CommRing R] {k : ℕ} (M : Matrix (Fin k) (Fin k) R) :
     MvPolynomial (Fin k) R →ₐ[R] MvPolynomial (Fin k) R :=
   aeval fun c => ∑ b, C (M c b) * X b
 
+/- English proof (translation)
+Establish `h : (rowAct R g).comp (theta R m vec) = (theta R m vec).comp (lin (act vec g))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [AlgHom.comp_apply, theta, lin, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]`. Conclude with `rowAct_Nv R m vec g c`.
+
+Conclude with `AlgHom.congr_fun h P`.
+-/
 theorem rowAct_theta (R : Type) [CommRing R] (m : ℕ) (vec : Bool) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) R)
     (P : MvPolynomial (Fin (m + 1)) R) :
     rowAct R g (theta R m vec P) = theta R m vec (lin (act vec g) P) := by
@@ -65,6 +80,9 @@ theorem rowAct_theta (R : Type) [CommRing R] (m : ℕ) (vec : Bool) (g : Matrix 
 def psiM (R : Type) [CommRing R] (m : ℕ) : Matrix (Fin (m + 1)) (Fin (m + 1)) (MvPolynomial (Fin (m + 1)) R) :=
   Matrix.of fun a s => (if a = s then X (Fin.last m) else 0) - (if a = Fin.last m ∧ s ≠ Fin.last m then X s else 0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiM_apply (R : Type) [CommRing R] (m : ℕ) (a s : Fin (m + 1)) : psiM R m a s =
     (if a = s then X (Fin.last m) else 0) - (if a = Fin.last m ∧ s ≠ Fin.last m then X s else 0) := rfl
 
@@ -75,6 +93,11 @@ def psi (R : Type) [CommRing R] (m : ℕ) (vec : Bool) :
 def qf (R : Type) [CommRing R] (m : ℕ) (vec : Bool) : MvPolynomial (Fin (m + 1)) R :=
   if vec then 1 else X (Fin.last m) ^ (m - 1)
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular]`. Simplify using `[psiM_apply, Finset.prod_const]`. Introduce `i j h`. Establish `hij : i < j` using `OrderDual.toDual_lt_toDual.mp h`. Establish `h1 : i ≠ j` using `ne_of_lt hij`.
+
+Establish `h2 : i ≠ Fin.last m` using `ne_of_lt (lt_of_lt_of_le hij (Fin.le_last j))`. Simplify using `[psiM_apply, h1, h2]`.
+-/
 theorem psiM_det (R : Type) [CommRing R] (m : ℕ) : (psiM R m).det = X (Fin.last m) ^ (m + 1) := by
   rw [Matrix.det_of_lowerTriangular]
   · simp [psiM_apply, Finset.prod_const]
@@ -84,6 +107,25 @@ theorem psiM_det (R : Type) [CommRing R] (m : ℕ) : (psiM R m).det = X (Fin.las
     have h2 : i ≠ Fin.last m := ne_of_lt (lt_of_lt_of_le hij (Fin.le_last j))
     simp [psiM_apply, h1, h2]
 
+/- English proof (translation)
+Consider the cases of `vec with`. Consider the case `true => simp [psi, Nv, qf]`. Consider the case `false`. Simplify using `only [Nv, qf, Bool.false_eq_true, ↓reduceIte]`. Establish `hmap : (genM R m).map (psi R m false) = psiM R m`.
+
+Use extensionality with `a s`. Simplify using `[genM, psi]`. Establish `h1 : (psi R m false) ((genM R m).adjugate (Fin.last m) c) = ((genM R m).map (psi R m false)).adjugate (Fin.last m) c` using `congrFun (congrFun (RingHom.map_adjugate (psi R m false).toRingHom (genM R m)) (Fin.last m)) c`. Rewrite using `[h1, hmap]`. Establish `ht : (X (Fin.last m) : MvPolynomial (Fin (m + 1)) R) ≠ 0` using `MvPolynomial.X_ne_zero _`.
+
+Establish `hrow : ∀ s, ∑ a, (psiM R m).adjugate (Fin.last m) a * psiM R m a s = if Fin.last m = s then X (Fin.last m) ^ (m + 1) else 0`. Introduce `s`. Establish `k` using `congrFun (congrFun (Matrix.adjugate_mul (psiM R m)) (Fin.last m)) s`. Rewrite `k` using `[Matrix.mul_apply, psiM_det]`. Rewrite using `[k, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`.
+
+Establish `hsum : ∀ s, ∑ a, (psiM R m).adjugate (Fin.last m) a * psiM R m a s = (psiM R m).adjugate (Fin.last m) s * X (Fin.last m) - (if s ≠ Fin.last m then (psiM R m).adjugate (Fin.last m) (Fin.last m) * X s else 0)`. Introduce `s`. Simplify using `only [psiM_apply, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]`. Use `congr 1`. Distinguish the cases in `hs : s = Fin.last m`.
+
+Simplify using `[hs]`. Simplify using `[hs]`. Establish `hlast : (psiM R m).adjugate (Fin.last m) (Fin.last m) = X (Fin.last m) ^ m`. Establish `e` using `(hsum (Fin.last m)).symm.trans (hrow (Fin.last m))`. Simplify using `only [ne_eq, not_true_eq_false, ↓reduceIte, sub_zero] at e`.
+
+Apply `mul_right_cancel₀ ht` to reduce the goal to its premises. Rewrite using `[e, pow_succ]`. Distinguish the cases in `hc : c = Fin.last m`. Substitute `hc` using the available equality. Rewrite using `[hlast, ← pow_succ]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `e` using `(hsum c).symm.trans (hrow c)`. Establish `hc' : Fin.last m ≠ c` using `Ne.symm hc`. Simplify using `only [hc, hc', ne_eq, not_false_eq_true, ↓reduceIte] at e`.
+
+Rewrite `e` using `[hlast, sub_eq_zero]`. Apply `mul_right_cancel₀ ht` to reduce the goal to its premises. Rewrite using `[e]`. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_Nv (R : Type) [CommRing R] [IsDomain R] (m : ℕ) (hm : 1 ≤ m) (vec : Bool) (c : Fin (m + 1)) :
     psi R m vec (Nv R m vec c) = qf R m vec * X c := by
   cases vec with

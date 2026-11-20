@@ -15,9 +15,15 @@ open scoped GlobalTheory.VacAny
 noncomputable section
 namespace GlobalTheory.SchrLocModel
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.schwartzBruhat_span_box_indicator_schrodinger`.
+-/
 theorem box_mem : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (ψ : AddChar (Fv F v) ℂ), (∀ x : Fv F v, (∀ y ∈ v.adicCompletionIntegers F, ψ (x * y) = 1) ↔ x ∈ v.adicCompletionIntegers F) → ∀ (κ : Type) [Fintype κ] (s : (κ → Fv F v) → ℂ), s ∈ SB (κ → Fv F v) → s ≠ 0 → ∃ (x₀ : κ → Fv F v) (N₀ : ℕ), ∀ N ≥ N₀, Set.indicator {x : κ → Fv F v | ∀ i, Valued.v (x i - x₀ i) ≤ WithZero.exp (-(N : ℤ))} (1 : (κ → Fv F v) → ℂ) ∈ Submodule.span ℂ (Set.range fun w : (κ → Fv F v) × (κ → Fv F v) => schr ψ w s) :=
   GlobalTheory.T.schwartzBruhat_span_box_indicator_schrodinger
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.schwartzBruhat_mem_span_coordinateBox_indicators`.
+-/
 theorem decomp : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (κ : Type) [Fintype κ] (φ : (κ → Fv F v) → ℂ), φ ∈ SB (κ → Fv F v) → ∃ N₀ : ℕ, ∀ N ≥ N₀, φ ∈ Submodule.span ℂ (Set.range fun c : κ → Fv F v => Set.indicator {x : κ → Fv F v | ∀ i, Valued.v (x i - c i) ≤ WithZero.exp (-(N : ℤ))} (1 : (κ → Fv F v) → ℂ)) :=
   GlobalTheory.T.schwartzBruhat_mem_span_coordinateBox_indicators
 
@@ -32,10 +38,18 @@ def rhoSB {F : Type} [Field F] [NumberField F] (v : Pl F) (ψ : AddChar (Fv F v)
     simp only [schr, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoSB_apply {F : Type} [Field F] [NumberField F] (v : Pl F) (ψ : AddChar (Fv F v) ℂ) (hψ : Continuous ψ)
     {κ : Type} [Fintype κ] (w : (κ → Fv F v) × (κ → Fv F v)) (φ : SB (κ → Fv F v)) :
     ((rhoSB v ψ hψ w φ : SB (κ → Fv F v)) : (κ → Fv F v) → ℂ) = schr ψ w φ := rfl
 
+/- English proof (translation)
+Set `L : ((κ → R) → ℂ) →ₗ[ℂ] ((κ → R) → ℂ)` to `{ toFun := schr ψ w map_add' := fun a b => by funext x; simp only [schr, Pi.add_apply, mul_add] map_smul' := fun c a => by funext x; simp only [schr, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring }`. Establish `hle : Submodule.span ℂ (Set.range fun w : (κ → R) × (κ → R) => schr ψ w s) ≤ (Submodule.span ℂ (Set.range fun w : (κ → R) × (κ → R) => schr ψ w s)).comap L`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w', rfl⟩`. Use `show schr ψ w (schr ψ w' s) ∈ Submodule.span ℂ (Set.range fun w : (κ → R) × (κ → R) => schr ψ w s)`.
+
+Rewrite using `[schr_schr]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨w + w', rfl⟩)`. Conclude with `hle hf`.
+-/
 theorem schr_mem_span {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (s : (κ → R) → ℂ) (w : (κ → R) × (κ → R)) {f : (κ → R) → ℂ}
     (hf : f ∈ Submodule.span ℂ (Set.range fun w : (κ → R) × (κ → R) => schr ψ w s)) :
@@ -53,10 +67,20 @@ theorem schr_mem_span {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨w + w', rfl⟩)
   exact hle hf
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[schr]`.
+-/
 theorem schr_fst {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (a : κ → R) (f : (κ → R) → ℂ) : schr ψ (a, 0) f = fun x => f (x + a) := by
   funext x; simp [schr]
 
+/- English proof (translation)
+Introduce `φ hφ`. Take `⟨x₀, N₀, hN₀⟩` from `box_mem F v ψ hu κ s hs hs0`. Take `⟨N₁, hN₁⟩` from `decomp F v κ φ hφ`. Use `Submodule.span_le.mpr ?_ (hN₁ (max N₀ N₁) (le_max_right _ _))` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`.
+
+Establish `h` using `schr_mem_span ψ s (x₀ - c, 0) (hN₀ (max N₀ N₁) (le_max_left _ _))`. Rewrite `h` using `[schr_fst]`. Rewrite using `[SetLike.mem_coe]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Establish `e : ∀ i, x i + (x₀ i - c i) - x₀ i = x i - c i` using `fun i => by ring`. Simplify using `only [Set.indicator_apply, Set.mem_setOf_eq, Pi.add_apply, Pi.sub_apply, e, Pi.one_apply]`.
+-/
 theorem span_schr (F : Type) [Field F] [NumberField F] (v : Pl F) (ψ : AddChar (Fv F v) ℂ)
     (hu : ∀ x : Fv F v, (∀ y ∈ v.adicCompletionIntegers F, ψ (x * y) = 1) ↔ x ∈ v.adicCompletionIntegers F)
     (κ : Type) [Fintype κ] (s : (κ → Fv F v) → ℂ) (hs : s ∈ SB (κ → Fv F v)) (hs0 : s ≠ 0) :
@@ -79,6 +103,15 @@ end GlobalTheory.SchrLocModel
 
 namespace GlobalTheory.SchrLocModel
 
+/- English proof (translation)
+Use `set p : (κ → AF F) × (κ → AF F) := (fun k => GlobalTheory.LatVac.liftV v (w.1 k), fun k => GlobalTheory.LatVac.liftV v (w.2 k)) with hp`. Establish `hzat : At (evFin F v) (co.e.symm p)`. Introduce `u hu`. Establish `hp0 : u • p = 0`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.LatVac.at_liftV v (w.1 k) u hu`. Conclude with `GlobalTheory.LatVac.at_liftV v (w.2 k) u hu`. Rewrite using `[← map_smul, hp0, map_zero]`. Take `⟨x, hx⟩` from `(hX _).1 hzat`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hx]`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Use `show evFin F v ((co.e (co.e.symm p)).1 k) = w.1 k`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.LatVac.evFin_liftV v (w.1 k)`.
+
+Use `show evFin F v ((co.e (co.e.symm p)).2 k) = w.2 k`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.LatVac.evFin_liftV v (w.2 k)`.
+-/
 theorem locCo_onto {F : Type} [Field F] [NumberField F] (v : Pl F) {Wm : Type} [AddCommGroup Wm] [Module (AF F) Wm]
     {Bf : Wm → Wm → AF F} {κ : Type} [Fintype κ] (co : Darboux Bf κ) {Y : Type} [AddCommGroup Y] (Xm : Y →+ Wm)
     (hX : ∀ z : Wm, At (evFin F v) z ↔ ∃ y, Xm y = z) (w : (κ → Fv F v) × (κ → Fv F v)) :
@@ -102,6 +135,25 @@ theorem locCo_onto {F : Type} [Field F] [NumberField F] (v : Pl F) {Wm : Type} [
     rw [LinearEquiv.apply_symm_apply]
     exact GlobalTheory.LatVac.evFin_liftV v (w.2 k)
 
+/- English proof (translation)
+Introduce `F _ _ v ψ hstd hunr Wm _ _ Bf κ _ co Y _ Xm χ hX hχ`. Establish `hc : Continuous (GlobalTheory.LatVac.psiAt ψ v)`. Establish `h : Continuous (GlobalTheory.LatVac.liftV v)`. Express the relevant statement in the definitionally equal form `Continuous fun a => ((0 : Ainf F), GlobalTheory.AdelicU.singleFin v a)`. Conclude with `continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)`.
+
+Conclude with `hstd.1.comp h`. Establish `hat : ∀ x, At (evFin F v) (Xm x)` using `fun x => (hX (Xm x)).2 ⟨x, rfl⟩`. Use `⟨fun x => rhoSB v (GlobalTheory.LatVac.psiAt ψ v) hc (GlobalTheory.LatVac.locCo co v (Xm x)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Simplify using `[rhoSB, schr]`. Introduce `x y`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show schr (GlobalTheory.LatVac.psiAt ψ v) (GlobalTheory.LatVac.locCo co v (Xm x)) (schr (GlobalTheory.LatVac.psiAt ψ v) (GlobalTheory.LatVac.locCo co v (Xm y)) φ) = χ x y • schr (GlobalTheory.LatVac.psiAt ψ v) (GlobalTheory.LatVac.locCo co v (Xm (x + y))) φ`. Rewrite using `[schr_schr, map_add Xm, map_add (GlobalTheory.LatVac.locCo co v), ← hχ]`. Use `congr 1`.
+
+Rewrite using `[GlobalTheory.VacIndic.psi_of_at ψ (GlobalTheory.VacAny.at_mul_left _ (GlobalTheory.LatVac.DualLoc.at_form co v (hat x) (Xm y))), map_mul (evFin F v), GlobalTheory.VacAny.evFin_invOf_two, GlobalTheory.LatVac.DualLoc.evFin_form co v]`. Both sides reduce to the same expression. Introduce `x φ`. Conclude with `GlobalTheory.VacBridge.rho_acts_locCo co ψ v (Xm x) (hat x) φ`. Introduce `s hs`.
+
+Rewrite using `[eq_top_iff]`. Introduce and unpack `t -`. Establish `key` using `span_schr F v (GlobalTheory.LatVac.psiAt ψ v) (fun z => hunr z) κ s s.2 (fun h => hs (Subtype.ext h)) t t.2`. Establish `hmap : Submodule.span ℂ (Set.range fun w : (κ → Fv F v) × (κ → Fv F v) => schr (GlobalTheory.LatVac.psiAt ψ v) w (s : (κ → Fv F v) → ℂ)) = (Submodule.span ℂ (Set.range fun x => rhoSB v (GlobalTheory.LatVac.psiAt ψ v) hc (GlobalTheory.LatVac.locCo co v (Xm x)) s)).map (SB (κ → Fv …`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+
+Use `congr 1`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Take `⟨x, hx⟩` from `locCo_onto v co Xm hX w`.
+
+Conclude with `⟨x, by simp only [Function.comp_apply, Submodule.subtype_apply, rhoSB_apply, hx]⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, rfl⟩`. Rewrite `key` using `[hmap]`. Take `⟨u, hu, hut⟩` from `key`.
+
+Rewrite `hu` using `[show u = t from Subtype.ext hut]`. Then use the resulting hypothesis.
+-/
 theorem exists_locRho : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (ψ : AddChar (AF F) ℂ), IsStd ψ → PsiUnr ψ v →
     ∀ {Wm : Type} [AddCommGroup Wm] [Module (AF F) Wm] {Bf : Wm → Wm → AF F} {κ : Type} [Fintype κ] (co : Darboux Bf κ)
       (Y : Type) [AddCommGroup Y] (Xm : Y →+ Wm) (χ : Y → Y → ℂ),

@@ -6,6 +6,15 @@ open scoped Matrix nonZeroDivisors
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : herm G (∑ i, u i • e i) (∑ j, v j • e j) = ∑ i, ∑ j, u i * cc (v j) * herm G (e i) (e j)`. Establish `h1 : ∀ (y : Fin r → E), herm G (∑ i, u i • e i) y = ∑ i, u i * herm G (e i) y`. Introduce `y`. Simplify using `only [herm, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin ρ)))]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `h2 : ∀ (x : Fin r → E), herm G x (∑ j, v j • e j) = ∑ j, cc (v j) * herm G x (e j)`. Introduce `x`.
+
+Simplify using `only [herm, cc, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin ρ)))]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+
+Simplify using `only [h1, h2, Finset.mul_sum, mul_assoc]`. Rewrite using `[key]`. Simplify using `[h]`.
+-/
 theorem herm_comb_eq_zero_of_iso {E : Type} [Field E] [NumberField E] [IsCMField E] {r ρ : ℕ}
     (G : Matrix (Fin r) (Fin r) E) (e : Fin ρ → Fin r → E)
     (h : ∀ a b, herm G (e a) (e b) = 0) (u v : Fin ρ → E) :
@@ -32,6 +41,23 @@ theorem herm_comb_eq_zero_of_iso {E : Type} [Field E] [NumberField E] [IsCMField
   rw [key]
   simp [h]
 
+/- English proof (translation)
+Introduce `E _ _ _ r ρ X cu₀`. Set `T : (Fin ρ → E) →ₗ[E] (Fin r → E)` to `Fintype.linearCombination E cu₀.e`. Establish `hT : ∀ v, T v = ∑ i, v i • cu₀.e i` using `fun v => Fintype.linearCombination_apply E cu₀.e v`. Take `⟨Ψ, hΨ⟩` from `FJ.exists_crdMap cu₀`. Establish `hinj : Function.Injective T`.
+
+Use `Function.LeftInverse.injective (g := Ψ) fun v => ?_` and prove the remaining obligations. Rewrite using `[hT, hΨ]`. Set `L : Submodule (𝓞 E) (Fin ρ → E)` to `X.Λ.comap (T.restrictScalars (𝓞 E))`. Establish `hL : ∀ v, v ∈ L ↔ T v ∈ X.Λ` using `fun v => Iff.rfl`. Establish `hfg : L.FG`.
+
+Use `Submodule.FG.of_le (X.Λ_fg.map (Ψ.restrictScalars (𝓞 E))) fun v hv => ?_` and prove the remaining obligations. Use `⟨T v, (hL v).1 hv, ?_⟩` and prove the remaining obligations. Use `show Ψ (T v) = v`. Rewrite using `[hT, hΨ]`. Establish `hsp : Submodule.span E (L : Set (Fin ρ → E)) = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce `w _`. Take `⟨c, hc, hcw⟩` from `FJ.exists_smul_mem X (T w)`. Establish `hcE : algebraMap (𝓞 E) E c ≠ 0` using `fun h => hc (IsFractionRing.injective (𝓞 E) E (by rw [map_zero]; exact h))`. Establish `hm : algebraMap (𝓞 E) E c • w ∈ L`.
+
+Rewrite using `[hL, map_smul, algebraMap_smul]`. Conclude with `hcw`. Use `Submodule.smul_mem (Submodule.span E (L : Set (Fin ρ → E))) (algebraMap (𝓞 E) E c)⁻¹ (Submodule.subset_span hm)` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hcE, one_smul]`. Then use the resulting hypothesis. Take `⟨s, e, c, hc, hmem, -⟩` from `exists_pseudoBasis_adapted E ρ L ⊤ hfg hsp`.
+
+Establish `hsum : ∀ a : Fin ρ → E, ∑ b, a b • T (e b) = T (∑ b, a b • e b)`. Introduce `a`. Simplify using `only [map_sum, map_smul]`. Use `⟨⟨fun b => T (e b), e.linearIndependent.map' T (LinearMap.ker_eq_bot.2 hinj), ?_⟩, (e.toMatrix (Pi.basisFun E (Fin ρ)))ᵀ, c, ?_, ?_, hc, ?_⟩` and prove the remaining obligations. Introduce `a b`.
+
+Simplify using `only [hT]`. Conclude with `herm_comb_eq_zero_of_iso _ _ cu₀.iso _ _`. Rewrite using `[Matrix.det_transpose]`. Conclude with `e.isUnit_det _`. Introduce `a show cu₀.e a = ∑ b, e.repr (Pi.basisFun E (Fin ρ) a) b • T (e b)`.
+
+Rewrite using `[hsum, e.sum_repr, hT]`. Simplify using `[Pi.single_apply]`. Introduce `a show ∑ b, a b • T (e b) ∈ X.Λ ↔ _`. Rewrite using `[hsum, ← hL, hmem]`. Simplify using `only [e.repr_sum_self]`.
+-/
 theorem exists_cusp_pseudoBasis :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (X : Data E r) (cu₀ : FJ.CuspFD X ρ), ∃ (cu : FJ.CuspFD X ρ) (P : Matrix (Fin ρ) (Fin ρ) E) (cc' : Fin ρ → FractionalIdeal (𝓞 E)⁰ E), IsUnit P.det ∧ (∀ a, cu₀.e a = ∑ b, P a b • cu.e b) ∧ (∀ b, cc' b ≠ 0) ∧ (∀ a : Fin ρ → E, (∑ b, a b • cu.e b) ∈ X.Λ ↔ ∀ b, a b ∈ cc' b) := by
   intro E _ _ _ r ρ X cu₀

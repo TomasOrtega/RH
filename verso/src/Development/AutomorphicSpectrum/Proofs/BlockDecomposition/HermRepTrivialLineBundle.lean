@@ -16,6 +16,13 @@ open GlobalTheory
 
 namespace GlobalTheory.CompanionTheory.MPDict
 
+/- English proof (translation)
+Introduce `m n`. Use `⟨fun _ _ => 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j c`. Simplify using `only [map_one, mul_one]`. Conclude with `(map_one (Semi.res _)).symm`.
+
+Introduce `i c c'`. Simplify using `[GlobalTheory.CompanionTheory.Ar.Top.trivLine]`. Introduce `i c y z _ hy`. Establish `e : CxPts.ev (mpStr ℤ m n) σ₀ ((HermLB.triv (mpStr ℤ m n)).B.U i ⊓ mchart c) (((1 : Γ(MP ℤ m n, (HermLB.triv (mpStr ℤ m n)).B.U i ⊓ mchart c)ˣ)) : Γ(MP ℤ m n, (HermLB.triv (mpStr ℤ m n)).B.U i ⊓ mchart c)) y = 1`. Rewrite using `[CxPts.ev_eq hy, Units.val_one, map_one]`.
+
+Rewrite using `[e]`. Simplify using `[GlobalTheory.CompanionTheory.Ar.Top.trivLine, HermLB.triv, Weight.ofFun]`.
+-/
 theorem isHermRep_triv : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ), IsHermRep (HermLB.triv (mpStr ℤ m n)) (GlobalTheory.CompanionTheory.Ar.Top.trivLine (Bk n)) := by
   intro m n
   refine ⟨fun _ _ => 1, ?_, ?_, ?_⟩

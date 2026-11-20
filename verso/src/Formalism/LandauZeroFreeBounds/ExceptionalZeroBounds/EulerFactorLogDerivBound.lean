@@ -6,6 +6,21 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `hp1 : (1 : ℝ) ≤ p` using `by linarith`. Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hw : ‖(p : ℂ) ^ (-s)‖ = (p : ℝ) ^ (-s.re)`. Rewrite using `[Complex.norm_natCast_cpow_of_pos hp.pos, Complex.neg_re]`.
+
+Establish `hx : (p : ℝ) ^ (-s.re) ≤ 1 / 2`. Establish `h1 : (p : ℝ) ^ (-s.re) ≤ (p : ℝ) ^ (-1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hp1 (by linarith)`. Rewrite `h1` using `[Real.rpow_neg_one]`. Establish `h2 : (p : ℝ)⁻¹ ≤ 1 / 2`. Rewrite using `[inv_eq_one_div]`.
+
+Conclude with `one_div_le_one_div_of_le (by norm_num) hp2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx0 : 0 ≤ (p : ℝ) ^ (-s.re)` using `Real.rpow_nonneg (by linarith) _`. Establish `hden : 1 / 2 ≤ ‖1 - (p : ℂ) ^ (-s)‖`. Use `norm_sub_norm_le (1 : ℂ) ((p : ℂ) ^ (-s))` as an intermediate fact.
+
+Rewrite `this` using `[norm_one, hw]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : (1 - (p : ℂ) ^ (-s)) ≠ 0`. Introduce `h`. Rewrite `hden` using `[h, norm_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hder : HasDerivAt (fun z : ℂ => 1 - (p : ℂ) ^ (-z)) ((p : ℂ) ^ (-s) * Complex.log p) s`. Establish `h1 : HasDerivAt (fun z : ℂ => (p : ℂ) ^ (-z)) ((p : ℂ) ^ (-s) * Complex.log p * (-1)) s` using `(hasDerivAt_id s).neg.const_cpow (Or.inl hp0)`. Establish `h2` using `(hasDerivAt_const s (1 : ℂ)).sub h1`. Conclude with `h2.congr_deriv (by ring)`.
+
+Use `⟨hne, hder.differentiableAt, ?_⟩` and prove the remaining obligations. Establish `hL : 0 ≤ Real.log p` using `Real.log_nonneg hp1`. Establish `hlog : Complex.log (p : ℂ) = ((Real.log p : ℝ) : ℂ)` using `Complex.natCast_log.symm`. Rewrite using `[logDeriv_apply, hder.deriv, norm_div, norm_mul, hw, hlog, Complex.norm_of_nonneg hL]`. Establish `hdpos : 0 < ‖1 - (p : ℂ) ^ (-s)‖` using `by linarith`.
+
+Rewrite using `[div_le_iff₀ hdpos]`. Establish `hxd : (p : ℝ) ^ (-s.re) ≤ ‖1 - (p : ℂ) ^ (-s)‖` using `by linarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hxd hL]`.
+-/
 lemma euler_factor_logDeriv_bound (p : ℕ) (hp : p.Prime) (s : ℂ) (hs : 1 < s.re) :
     (1 - (p : ℂ) ^ (-s)) ≠ 0 ∧ DifferentiableAt ℂ (fun z : ℂ => 1 - (p : ℂ) ^ (-z)) s ∧
     ‖logDeriv (fun z : ℂ => 1 - (p : ℂ) ^ (-z)) s‖ ≤ Real.log p := by
@@ -46,6 +61,19 @@ lemma euler_factor_logDeriv_bound (p : ℕ) (hp : p.Prime) (s : ℂ) (hs : 1 < s
   have hxd : (p : ℝ) ^ (-s.re) ≤ ‖1 - (p : ℂ) ^ (-s)‖ := by linarith
   nlinarith [mul_le_mul_of_nonneg_left hxd hL]
 
+/- English proof (translation)
+Establish `hs1 : s ≠ 1`. Introduce and unpack `rfl`. Simplify using `at hs`. Establish `hfac : ∀ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-s)) ≠ 0 ∧ DifferentiableAt ℂ (fun z : ℂ => 1 - (p : ℂ) ^ (-z)) s ∧ ‖logDeriv (fun z : ℂ => 1 - (p : ℂ) ^ (-z)) s‖ ≤ Real.log p` using `fun p hp => euler_factor_logDeriv_bound p (Nat.prime_of_mem_primeFactors hp) s hs`. Establish `heq : DirichletCharacter.LFunction (1 : DirichletCharacter ℂ q) =ᶠ[𝓝 s] fun z => (∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-z))) * riemannZeta z` using `by filter_upwards [isOpen_compl_singleton.mem_nhds hs1] with z hz`.
+
+Conclude with `DirichletCharacter.LFunctionTrivChar_eq_mul_riemannZeta (N := q) (Set.mem_compl_singleton_iff.mp hz)`. Establish `hPne : (∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-s))) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun p hp => (hfac p hp).1`. Establish `hPd : DifferentiableAt ℂ (fun z : ℂ => ∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-z))) s` using `DifferentiableAt.fun_finsetProd fun p hp => (hfac p hp).2.1`. Establish `hζ : riemannZeta s ≠ 0` using `riemannZeta_ne_zero_of_one_lt_re hs`. Establish `hζd : DifferentiableAt ℂ riemannZeta s` using `differentiableAt_riemannZeta hs1`.
+
+Establish `hmul : logDeriv (fun z => (∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-z))) * riemannZeta z) s = logDeriv (fun z : ℂ => ∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-z))) s + logDeriv riemannZeta s` using `logDeriv_mul (f := fun z : ℂ => ∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-z))) (g := riemannZeta) s hPne hζ hPd hζd`. Establish `hprod : logDeriv (fun z : ℂ => ∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-z))) s = ∑ p ∈ q.primeFactors, logDeriv (fun z : ℂ => 1 - (p : ℂ) ^ (-z)) s` using `logDeriv_prod (f := fun (p : ℕ) (z : ℂ) => 1 - (p : ℂ) ^ (-z)) (fun p hp => (hfac p hp).1) (fun p hp => (hfac p hp).2.1)`. Establish `hneg : negLD (1 : DirichletCharacter ℂ q) s = -(logDeriv (DirichletCharacter.LFunction (1 : DirichletCharacter ℂ q)) s)` using `rfl`. Establish `hS : ‖∑ p ∈ q.primeFactors, logDeriv (fun z : ℂ => 1 - (p : ℂ) ^ (-z)) s‖ ≤ Real.log q`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.log_prod]`. Introduce `p hp`. Conclude with `(Nat.prime_of_mem_primeFactors hp).ne_zero` after adjusting the coercions. Use `_ ≤ Real.log q := by`. Apply `Real.log_le_log` to reduce the goal to its premises.
+
+Conclude with `Finset.prod_pos fun p hp => by`. Conclude with `(Nat.prime_of_mem_primeFactors hp).pos` after adjusting the coercions. Rewrite using `[← Nat.cast_prod]`. Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne q)) (Nat.prod_primeFactors_dvd q)` after adjusting the coercions. Establish `hre` using `RCLike.abs_re_le_norm (∑ p ∈ q.primeFactors, logDeriv (fun z : ℂ => 1 - (p : ℂ) ^ (-z)) s)`.
+
+Establish `hre'` using `neg_abs_le (∑ p ∈ q.primeFactors, logDeriv (fun z : ℂ => 1 - (p : ℂ) ^ (-z)) s).re`. Rewrite using `[hneg, (logDeriv_congr_nhds heq).eq_of_nhds, hmul, hprod, logDeriv_apply]`. Simplify using `only [Complex.neg_re, Complex.add_re]`. Simplify using `only [RCLike.re_to_complex] at hre`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma re_negLogDeriv_le (q : ℕ) [NeZero q] (s : ℂ) (hs : 1 < s.re) :
     (negLD (1 : DirichletCharacter ℂ q) s).re ≤
       (-(deriv riemannZeta s / riemannZeta s)).re + Real.log q := by

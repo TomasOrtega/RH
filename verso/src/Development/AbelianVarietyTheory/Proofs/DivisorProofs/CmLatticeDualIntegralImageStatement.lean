@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.PolarisationModu
 open NumberField GlobalTheory.CMVal GlobalTheory.LatJet GlobalTheory.RealMult
 open GlobalTheory.IndefiniteRowSideFullHecke.PolarisationModuleIndex (latMod polMod dualLat TrInt bar)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CxDescent.mem_range_of_int_pairing | exact GlobalTheory.CxDescent.mem_range_of_int_pairing | (intros; apply GlobalTheory.CxDescent.mem_range_of_int_pairing <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cm_lattice_dual_integral_image : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (Φ : E →ₗ[ℚ] (Fin n → ℂ)) (L : Set E) (ρ : ℝ), ρ ≠ 0 →
     Submodule.span ℝ (Φ '' L) = ⊤ →
     (∀ x y : E, ∃ q : ℚ, (∑ j, (ρ : ℂ) * Φ x j * starRingEnd ℂ (Φ y j)).im = q) →

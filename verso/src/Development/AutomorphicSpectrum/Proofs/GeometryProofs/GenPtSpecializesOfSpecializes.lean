@@ -8,6 +8,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar TopologicalSpace
 
+/- English proof (translation)
+Establish `hfin : (irreducibleComponents α).Finite` using `NoetherianSpace.finite_irreducibleComponents`. Establish `hT : IsClosed (⋃₀ {C ∈ irreducibleComponents α | Disjoint C S})`. Rewrite using `[Set.sUnion_eq_biUnion]`. Conclude with `(hfin.subset fun C (h : C ∈ {C ∈ irreducibleComponents α | Disjoint C S}) => h.1).isClosed_biUnion fun C h => isClosed_of_mem_irreducibleComponents C h.1`. Establish `e : Sᶜ = ⋃₀ {C ∈ irreducibleComponents α | Disjoint C S}`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨irreducibleComponent x, ⟨irreducibleComponent_mem_irreducibleComponents x, ?_⟩, mem_irreducibleComponent⟩` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`.
+
+Introduce `s hsC hsS`. Establish `hC` using `isIrreducible_irreducibleComponent (x := x)`. Establish `hcl : IsClosed (irreducibleComponent x)` using `isClosed_irreducibleComponent`. Take `⟨c, hcg⟩` from `QuasiSober.sober hC hcl`. Establish `hcs : c ∈ S` using `hs c s (hcg.specializes hsC) hsS`.
+
+Conclude with `hx (hc.closure_subset_iff.2 (Set.singleton_subset_iff.2 hcs) (by`. Rewrite using `[hcg.def]`. Conclude with `mem_irreducibleComponent))`. Introduce and unpack `⟨C, ⟨-, hd⟩, hx⟩ hxS`. Conclude with `Set.disjoint_left.1 hd hx hxS`.
+
+Rewrite using `[← isClosed_compl_iff, e]`. Conclude with `hT`.
+-/
 theorem isOpen_of_isClosed_of_generizing {α : Type*} [TopologicalSpace α] [NoetherianSpace α] [QuasiSober α]
     (S : Set α) (hc : IsClosed S) (hs : ∀ x y : α, x ⤳ y → y ∈ S → x ∈ S) : IsOpen S := by
   have hfin : (irreducibleComponents α).Finite := NoetherianSpace.finite_irreducibleComponents
@@ -36,6 +47,13 @@ theorem isOpen_of_isClosed_of_generizing {α : Type*} [TopologicalSpace α] [Noe
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Use `haveI := CptInh.dom ξ h ⟨p, hp⟩`. Use `haveI : IsDomain (X.presheaf.stalk p) := this`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : genPt ξ ∈ Set.range (X.fromSpecStalk p) := by`. Rewrite using `[Scheme.range_fromSpecStalk]` and apply the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : y ∈ Set.range (X.fromSpecStalk p) := by`.
+
+Rewrite using `[Scheme.range_fromSpecStalk]` and apply the resulting hypothesis. Set `o : Spec (CommRingCat.of (X.presheaf.stalk p))` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (X.presheaf.stalk p))`. Establish `hoc : ∀ c : Spec (CommRingCat.of (X.presheaf.stalk p)), o ⤳ c` using `fun c => (PrimeSpectrum.le_iff_specializes (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (X.presheaf.stalk p)) c).1 bot_le`. Establish `h1 : X.fromSpecStalk p o ⤳ genPt ξ`. Rewrite using `[← ha]`.
+
+Conclude with `(hoc a).map (X.fromSpecStalk p).continuous`. Establish `h2 : X.fromSpecStalk p o ⤳ y`. Rewrite using `[← hb]`. Conclude with `(hoc b).map (X.fromSpecStalk p).continuous`. Rewrite `h2` using `[CptInh.nogen ξ h _ h1]`. Then use the resulting hypothesis.
+-/
 theorem genPt_specializes_of_specializes (ξ : Spec (CommRingCat.of Ω) ⟶ X) (h : IsCptGen ξ) {p y : X}
     (hp : genPt ξ ⤳ p) (hy : y ⤳ p) : genPt ξ ⤳ y := by
   haveI := CptInh.dom ξ h ⟨p, hp⟩
@@ -54,6 +72,13 @@ theorem genPt_specializes_of_specializes (ξ : Spec (CommRingCat.of Ω) ⟶ X) (
     rw [← hb]; exact (hoc b).map (X.fromSpecStalk p).continuous
   rwa [CptInh.nogen ξ h _ h1] at h2
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `p hp`. Choose the witnesses or unpack the hypotheses as in `⟨W, hpW⟩ : ∃ W : X.affineOpens, p ∈ W.1 := by`. Take `⟨W, hW, hpW, -⟩` from `exists_isAffineOpen_mem_and_subset (x := p) (U := ⊤) trivial`. Conclude with `⟨⟨W, hW⟩, hpW⟩`.
+
+Use `haveI : IsNoetherianRing Γ(X, W.1) := IsLocallyNoetherian.component_noetherian W`. Use `haveI : NoetherianSpace (W.1 : X.Opens) := noetherianSpace_of_isAffineOpen W.1 W.2`. Use `haveI : QuasiSober (W.1 : X.Opens) := inferInstanceAs (QuasiSober (W.1 : X.Opens).toScheme)`. Establish `ho : IsOpen (Subtype.val ⁻¹' (closure {genPt ξ}) : Set (W.1 : X.Opens))` using `isOpen_of_isClosed_of_generizing _ (isClosed_closure.preimage continuous_subtype_val) fun x y hxy hy => by`. Establish `hy' : genPt ξ ⤳ y.1` using `specializes_iff_mem_closure.2 hy`.
+
+Conclude with `specializes_iff_mem_closure.1 (genPt_specializes_of_specializes ξ h hy' (hxy.map continuous_subtype_val))`. Use `⟨Subtype.val '' (Subtype.val ⁻¹' (closure {genPt ξ}) : Set (W.1 : X.Opens)), ?_, W.1.isOpen.isOpenMap_subtype_val _ ho, ⟨⟨p, hpW⟩, hp, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`.
+-/
 theorem isOpen_closure_genPt (ξ : Spec (CommRingCat.of Ω) ⟶ X) [IsLocallyNoetherian X] (h : IsCptGen ξ) :
     IsOpen (closure {genPt ξ}) := by
   rw [isOpen_iff_forall_mem_open]
@@ -75,6 +100,11 @@ theorem isOpen_closure_genPt (ξ : Spec (CommRingCat.of Ω) ⟶ X) [IsLocallyNoe
   rintro _ ⟨x, hx, rfl⟩
   exact hx
 
+/- English proof (translation)
+Introduce `X Ω _ ξ _ h`. Set `U : X.Opens` to `⟨closure {genPt ξ}, isOpen_closure_genPt ξ h⟩`. Establish `hU : ∀ q : X, q ∈ U ↔ genPt ξ ⤳ q` using `fun q => specializes_iff_mem_closure.symm`. Use `⟨U, hU, isClosed_closure, ?_⟩` and prove the remaining obligations. Use `haveI : IrreducibleSpace U.toScheme := Subtype.irreducibleSpace (isIrreducible_singleton (x := genPt ξ)).closure`.
+
+Use `haveI : ∀ x : U.toScheme, _root_.IsReduced (U.toScheme.presheaf.stalk x) := fun x => by haveI := CptInh.dom ξ h ⟨U.ι x, (hU _).1 x.2⟩`. Establish `e` using `(asIso (U.ι.stalkMap x)).commRingCatIsoToRingEquiv`. Conclude with `isReduced_of_injective e.symm.toRingHom e.symm.injective`. Use `haveI : IsReduced U.toScheme := isReduced_of_isReduced_stalk _`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`.
+-/
 theorem cpt_open_integral : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     [IsLocallyNoetherian X], IsCptGen ξ → ∃ U : X.Opens, (∀ q : X, q ∈ U ↔ genPt ξ ⤳ q) ∧
       IsClosed (U : Set X) ∧ IsIntegral U.toScheme := by

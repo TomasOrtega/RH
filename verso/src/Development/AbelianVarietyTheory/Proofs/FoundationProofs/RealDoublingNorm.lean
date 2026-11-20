@@ -14,6 +14,15 @@ namespace GlobalTheory.RealDoubling
 open scoped TensorProduct NNReal Matrix
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership
 
+/- English proof (translation)
+Take `⟨hX, k₁, k₂, hk₁, hk₂, rfl⟩` from `h`. Establish `h2 : k₂ * k₂ᴴ = 1`. Use `Matrix.mem_unitaryGroup_iff.mp hk₂.1` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `h1 : k₁ * k₁ᴴ = 1`.
+
+Use `Matrix.mem_unitaryGroup_iff.mp hk₁.1` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `h1' : k₁ᴴ * k₁ = 1`. Use `Matrix.mem_unitaryGroup_iff'.mp hk₁.1` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+
+Establish `he : (NormedSpace.exp X)ᴴ = NormedSpace.exp X`. Rewrite using `[← Matrix.exp_conjTranspose, hX.1.eq]`. Establish `e : (2 : ℂ)⁻¹ • (1 + k₁ * NormedSpace.exp X * k₂ * (k₁ * NormedSpace.exp X * k₂)ᴴ) = k₁ * ((2 : ℂ)⁻¹ • (1 + NormedSpace.exp X * NormedSpace.exp X)) * k₁ᴴ`. Simplify using `only [Matrix.conjTranspose_mul, he, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, h1]`. Use `congr 2`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc k₂, h2, Matrix.one_mul]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, h1', Matrix.det_one, one_mul]`.
+-/
 theorem det_cartan {n : ℕ} {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan ε g X) :
     ((2 : ℂ)⁻¹ • (1 + g * gᴴ)).det = ((2 : ℂ)⁻¹ • (1 + NormedSpace.exp X * NormedSpace.exp X)).det := by
   obtain ⟨hX, k₁, k₂, hk₁, hk₂, rfl⟩ := h
@@ -34,13 +43,34 @@ theorem det_cartan {n : ℕ} {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n)
     rw [← Matrix.mul_assoc k₂, h2, Matrix.one_mul]
   rw [e, Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, h1', Matrix.det_one, one_mul]
 
+/- English proof (translation)
+Introduce `n ε g hg` and use `⟨GlobalTheory.T.exists_cartan_decomposition n ε g hg, fun X hX => (det_cartan hX).trans (GlobalTheory.T.cosh_product_det n ε X hX.1)⟩`.
+-/
 theorem gramDet : GramDet := fun n ε g hg =>
   ⟨GlobalTheory.T.exists_cartan_decomposition n ε g hg, fun X hX => (det_cartan hX).trans (GlobalTheory.T.cosh_product_det n ε X hX.1)⟩
 
+/- English proof (translation)
+Rewrite using `[Real.inv_rpow (by positivity), ← Real.rpow_natCast, ← Real.rpow_mul hc.le, Real.rpow_neg hc.le]`. Evaluate the numerical expressions.
+-/
 theorem rpow_inv_sq {c : ℝ} (hc : 0 < c) (t : ℝ) : ((c ^ 2)⁻¹) ^ t = c ^ (-(2 * t)) := by
   rw [Real.inv_rpow (by positivity), ← Real.rpow_natCast, ← Real.rpow_mul hc.le, Real.rpow_neg hc.le]
   norm_num
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hc n J hJ Q h w τ ε b hb g`. Establish `hI : HasIwasawa σ Q (KArch σ Q w b)` using `GlobalTheory.Core.Rk.IwArch.hasIwasawa_KArch hc h w b ε hb`. Take `⟨p, k, hk, e⟩` from `hI (ioH _ σ h (g, 1))`. Establish `hU : IsInU ε (inFrame σ J τ b g)` using `GlobalTheory.T.sign_frame_in_unitary F E σ hc n J w τ ε b hb g`. Establish `key : ∀ X, IsCartan ε (inFrame σ J τ b g) X → ∀ (p' : siegelH w.Completion σ Q) (k' : GArch σ Q w), k' ∈ KArch σ Q w b → ioH _ σ h (g, 1) = p' * k' → ‖infEmb τ (aH w.Completion σ Q p').1‖ = (coshProd ε X)⁻¹`.
+
+Introduce `X hX p' k' hk' e'`. Establish `h1` using `GlobalTheory.T.siegel_stabilizer_arch F E σ hc n J hJ.2 Q h w τ b g p' k' hk' e'`. Rewrite `h1` using `[(gramDet n ε _ hU).2 X hX, Complex.norm_real, Real.norm_eq_abs]`. Establish `hc1` using `one_le_coshProd ε X`. Establish `hpos : 0 < coshProd ε X` using `lt_of_lt_of_le one_pos hc1`.
+
+Rewrite `h1` using `[abs_of_pos (by positivity)]`. Establish `h2 : ‖infEmb τ (aH w.Completion σ Q p').1‖ ^ 2 = ((coshProd ε X)⁻¹) ^ 2` using `by field_simp; linarith`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (inv_nonneg.2 hpos.le) two_ne_zero).1 h2`. Establish `hval : ∀ X, IsCartan ε (inFrame σ J τ b g) X → (hgtArch σ Q w b (ioH _ σ h (g, 1)) : ℝ) = (coshProd ε X ^ 2)⁻¹`. Introduce `X hX`.
+
+Rewrite using `[e, hgtArch_mul hc p hk, absEw_eq_sq hc τ, NNReal.coe_pow, coe_nnnorm, key X hX p k hk e, inv_pow]`. Take `⟨X0, hX0⟩` from `(gramDet n ε _ hU).1`. Use `⟨⟨p, k, hk, e⟩, GlobalTheory.Core.Rk.HgtArch.hgtArch_ioH_le_one hc hJ.2 h b g, ⟨X0, hX0⟩, fun X hX => ⟨hval X hX, key X hX, ?_⟩⟩` and prove the remaining obligations. Introduce `μ s₀ s Φ hΦ C hC`. Establish `hpos : 0 < coshProd ε X` using `lt_of_lt_of_le one_pos (one_le_coshProd ε X)`.
+
+Establish `hra : hgtH σ Q (absEw F E w) (KArch σ Q w b) (ioH _ σ h (g, 1)) = absEw F E w (aH _ σ Q p)`. Rewrite using `[e]`. Conclude with `hgtArch_mul hc p hk`. Establish `hr0 : 0 < absEw F E w (aH _ σ Q p)` using `by rw [← hra]; exact hgtH_pos _`. Establish `hrv : (absEw F E w (aH _ σ Q p) : ℝ) = (coshProd ε X ^ 2)⁻¹` using `by rw [← hra]; exact hval X hX`.
+
+Establish `hlaw` using `(mem_degPSH.1 hΦ).1 p k`. Establish `hCk : ‖Φ k‖ ≤ C` using `hC k hk`. Rewrite using `[flatArch, flatH_apply, hra, e, hlaw, norm_mul, norm_mul, norm_mul, norm_npow hr0, norm_npow hr0, Circle.norm_coe, one_mul, hrv]`. Establish `ht : ((coshProd ε X ^ 2)⁻¹) ^ (s₀ + (n : ℂ) / 2).re * ((coshProd ε X ^ 2)⁻¹) ^ (s - s₀).re = coshProd ε X ^ (-(2 * s.re + (n : ℝ)))`. Rewrite using `[← Real.rpow_add (by positivity), rpow_inv_sq hpos]`.
+
+Use `congr 1`. Simplify using `only [Complex.add_re, Complex.sub_re, Complex.div_ofNat_re, Complex.natCast_re]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem doubledAbs : DoubledAbs := by
   intro F E _ _ _ _ _ σ hc n J hJ Q h w τ ε b hb g
   have hI : HasIwasawa σ Q (KArch σ Q w b) := GlobalTheory.Core.Rk.IwArch.hasIwasawa_KArch hc h w b ε hb
@@ -87,6 +117,9 @@ theorem doubledAbs : DoubledAbs := by
         mul_le_mul_of_nonneg_right hCk (by positivity)
     _ = C * coshProd ε X ^ (-(2 * s.re + (n : ℝ))) := by rw [ht]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gramDet, doubledAbs⟩`.
+-/
 theorem realDoublingNorm : RealDoublingNorm := ⟨gramDet, doubledAbs⟩
 
 end GlobalTheory.RealDoubling

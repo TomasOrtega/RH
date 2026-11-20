@@ -9,6 +9,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F hsep hglue Ix U x inj hW cov`. Establish `hF : Presieve.IsSheaf Scheme.zariskiTopology F` using `GlobalTheory.T.isSheaf_of_open_immersion_local_glue F hsep hglue`. Set `W : ∀ (_ : Ix) (Z : Scheme.{0}), F.obj (op Z) → Z.Opens` to `fun i Z y => Classical.choose (hW i Z y)`. Establish `hWs : ∀ i (Z : Scheme.{0}) (y : F.obj (op Z)) (Y : Scheme.{0}) (a : Y ⟶ Z), (∃ u : Y ⟶ U i, F.map a.op y = F.map u.op (x i)) ↔ ∀ q, a q ∈ W i Z y` using `fun i Z y => Classical.choose_spec (hW i Z y)`. Establish `hrep : F.IsRepresentable`.
+
+Use `GeneratorFunctor.isRepresentable_of_charts F hF U x W ?_ ?_ ?_` and prove the remaining obligations. Introduce `j Z y Z' a`. Rewrite using `[Set.range_subset_iff]`. Use `((hWs j Z y Z' a).symm.trans ?_)` and prove the remaining obligations. Conclude with `⟨fun ⟨u, hu⟩ => ⟨u, hu.symm⟩, fun ⟨u, hu⟩ => ⟨u, hu.symm⟩⟩`.
+
+Introduce `j Z g g' h`. Conclude with `inj j Z g g' h`. Introduce `Z y z`. Take `⟨i, Y, a, u, ⟨q, rfl⟩, h⟩` from `cov Z y z`. Conclude with `⟨i, (hWs i Z y Y a).1 ⟨u, h⟩ q⟩`.
+
+Use `⟨F.reprX, F.reprx, fun T y => ?_⟩` and prove the remaining obligations. Use `⟨F.representableBy.homEquiv.symm y, ?_, ?_⟩` and prove the remaining obligations. Use `F.representableBy.homEquiv_eq (F.representableBy.homEquiv.symm y)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this.symm`.
+
+Introduce `g hg`. Apply `F.representableBy.homEquiv.injective` to reduce the goal to its premises. Rewrite using `[Equiv.apply_symm_apply, F.representableBy.homEquiv_eq, ← hg]`. Both sides reduce to the same expression.
+-/
 theorem exists_universal_of_charts : ∀ (F : Scheme.{0}ᵒᵖ ⥤ Type), (∀ (T : Scheme.{0}) (y y' : F.obj (op T)), (∀ p : T, ∃ (Z : Scheme.{0}) (z : Z ⟶ T), IsOpenImmersion z ∧ p ∈ Set.range z ∧ F.map z.op y = F.map z.op y') → y = y') → (∀ (T : Scheme.{0}) (J : Type) (Z : J → Scheme.{0}) (z : ∀ i, Z i ⟶ T) (y : ∀ i, F.obj (op (Z i))), (∀ i, IsOpenImmersion (z i)) → (∀ p : T, ∃ i, p ∈ Set.range (z i)) → (∀ (i k : J) (Y : Scheme.{0}) (a : Y ⟶ Z i) (b : Y ⟶ Z k), a ≫ z i = b ≫ z k → F.map a.op (y i) = F.map b.op (y k)) → ∃ y₀ : F.obj (op T), ∀ i, F.map (z i).op y₀ = y i) → ∀ (Ix : Type) (U : Ix → Scheme.{0}) (x : ∀ i, F.obj (op (U i))), (∀ (i : Ix) (Y : Scheme.{0}) (u u' : Y ⟶ U i), F.map u.op (x i) = F.map u'.op (x i) → u = u') → (∀ (i : Ix) (T : Scheme.{0}) (y : F.obj (op T)), ∃ W : T.Opens, ∀ (Y : Scheme.{0}) (a : Y ⟶ T), (∃ u : Y ⟶ U i, F.map a.op y = F.map u.op (x i)) ↔ ∀ q, a q ∈ W) → (∀ (T : Scheme.{0}) (y : F.obj (op T)) (p : T), ∃ (i : Ix) (Y : Scheme.{0}) (a : Y ⟶ T) (u : Y ⟶ U i), p ∈ Set.range a ∧ F.map a.op y = F.map u.op (x i)) → ∃ (B : Scheme.{0}) (x₀ : F.obj (op B)), (∀ (T : Scheme.{0}) (y : F.obj (op T)), ∃! g : T ⟶ B, F.map g.op x₀ = y) := by
   intro F hsep hglue Ix U x inj hW cov
   have hF : Presieve.IsSheaf Scheme.zariskiTopology F := GlobalTheory.T.isSheaf_of_open_immersion_local_glue F hsep hglue

@@ -21,10 +21,16 @@ def IsoPair (σ : A →+* A) (J : Matrix n n A) (J' : Matrix m m A) (T : Matrix 
     (T' : Matrix n m A) : Prop :=
   T * T' = 1 ∧ T' * T = 1 ∧ cT σ T * J' * T = J ∧ cT σ T' * J * T' = J'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.2.1, h.1, h.2.2.2, h.2.2.1⟩`.
+-/
 theorem IsoPair.symm {σ : A →+* A} {J : Matrix n n A} {J' : Matrix m m A} {T : Matrix m n A}
     {T' : Matrix n m A} (h : IsoPair σ J J' T T') : IsoPair σ J' J T' T :=
   ⟨h.2.1, h.1, h.2.2.2, h.2.2.1⟩
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, h.1, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← Matrix.map_mul, h.2.1, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_map _ _ _ hf, ← Matrix.map_mul, ← Matrix.map_mul, h.2.2.1]`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_map _ _ _ hf, ← Matrix.map_mul, ← Matrix.map_mul, h.2.2.2]`.
+-/
 theorem IsoPair.map {B : Type} [CommRing B] {σ : A →+* A} {σ' : B →+* B} (f : A →+* B)
     (hf : ∀ x, σ' (f x) = f (σ x)) {J : Matrix n n A} {J' : Matrix m m A} {T : Matrix m n A}
     {T' : Matrix n m A} (h : IsoPair σ J J' T T') :
@@ -58,9 +64,15 @@ def conjU (h : IsoPair σ J J' T T') : UJ σ J →* UJ σ J' :=
         = cT σ T' * (cT σ x * (cT σ T * J' * T) * x) * T' := by simp only [Matrix.mul_assoc]
       _ = J' := by rw [h.2.2.1, hg, h.2.2.2])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjU_val (h : IsoPair σ J J' T T') (g : UJ σ J) :
     ((conjU h g : GL m A) : Matrix m m A) = T * ((g : GL n A) : Matrix n n A) * T' := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[conjU_val, conjU_val]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conjU_conjU (h : IsoPair σ J J' T T') (g : UJ σ J) : conjU h.symm (conjU h g) = g := by
   apply Subtype.ext
   apply Units.ext
@@ -74,6 +86,9 @@ def conjE (h : IsoPair σ J J' T T') : UJ σ J ≃* UJ σ J' :=
     left_inv := conjU_conjU h
     right_inv := conjU_conjU h.symm }
 
+/- English proof (translation)
+Apply `Continuous.subtype_mk` to reduce the goal to its premises. Establish `hc : Continuous (conjM h)` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Conclude with `(Continuous.units_map (conjM h) hc).comp continuous_subtype_val`.
+-/
 theorem conjU_continuous [TopologicalSpace A] [IsTopologicalRing A] (h : IsoPair σ J J' T T') :
     Continuous (conjU h) := by
   apply Continuous.subtype_mk
@@ -90,6 +105,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {T : Matrix (Fin N) (Fin M) E} {T' : Matrix (Fin M) (Fin N) E}
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `h.map (inclR (F := F) (AF F)) (fun _ => rfl)`.
+-/
 theorem IsoPair.adelic (h : IsoPair (σ : E →+* E) J J' T T') :
     IsoPair (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (JR (AF F) J) (JR (AF F) J')
       (T.map (inclR (F := F) (AF F))) (T'.map (inclR (F := F) (AF F))) :=
@@ -99,20 +117,34 @@ def conjA (h : IsoPair (σ : E →+* E) J J' T T') : HA (AF F) σ J ≃* HA (AF 
   conjE h.adelic
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjA_symm (h : IsoPair (σ : E →+* E) J J' T T') : (conjA h).symm = conjA h.symm := rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjA_mat (h : IsoPair (σ : E →+* E) J J' T T') (g : HA (AF F) σ J) :
     ((HA.mat (AF F) σ J' (conjA h g) : GL _ _) : Matrix (Fin N) (Fin N) (AF F ⊗[F] E)) =
       T.map (inclR (F := F) (AF F)) *
         ((HA.mat (AF F) σ J g : GL _ _) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) *
         T'.map (inclR (F := F) (AF F)) := rfl
 
+/- English proof (translation)
+Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := F) (E := E)`. Conclude with `conjU_continuous h.adelic`.
+-/
 theorem conjA_continuous (h : IsoPair (σ : E →+* E) J J' T T') : Continuous (conjA h) := by
   haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := F) (E := E)
   exact conjU_continuous h.adelic
 
 omit [NumberField E] in
+/- English proof (translation)
+Take `⟨γ, hγ, e⟩` from `hg`. Use `⟨(conjU h ⟨γ, hγ⟩ : GL _ _), (conjU h ⟨γ, hγ⟩).2, Units.ext ?_⟩` and prove the remaining obligations. Establish `e' : ((HA.mat (AF F) σ J g : GL _ _) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) = (γ : Matrix (Fin M) (Fin M) E).map (inclR (F` using `F) (AF F)) := (congrArg Units.val e).symm`. Use `Eq.trans ?_ (conjA_mat h g).symm` and prove the remaining obligations. Rewrite using `[e', ← Matrix.map_mul, ← Matrix.map_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem conjA_rat (h : IsoPair (σ : E →+* E) J J' T T') (g : HA (AF F) σ J)
     (hg : g ∈ HFinIn (AF F) σ J) : conjA h g ∈ HFinIn (AF F) σ J' := by
   obtain ⟨γ, hγ, e⟩ := hg
@@ -124,6 +156,11 @@ theorem conjA_rat (h : IsoPair (σ : E →+* E) J J' T T') (g : HA (AF F) σ J)
   rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Unfold `finMat`. Rewrite using `[conjA_mat]`. Use `fun {a b c : ℕ} (X : Matrix (Fin a) (Fin b) (AF F ⊗[F] E)) (Y : Matrix (Fin b) (Fin c) (AF F ⊗[F] E)) => Matrix.map_mul (L := X) (M := Y) (f := (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom)` as an intermediate fact. Use `(this _ _).trans ?_` and prove the remaining obligations. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem conjA_finMat (h : IsoPair (σ : E →+* E) J J' T T') (g : HA (AF F) σ J) :
     finMat σ J' (conjA h g) =
       T.map (inclR (F := F) (Af F)) * finMat σ J g * T'.map (inclR (F := F) (Af F)) := by
@@ -137,6 +174,11 @@ theorem conjA_finMat (h : IsoPair (σ : E →+* E) J J' T T') (g : HA (AF F) σ 
   rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Unfold `infMat`. Rewrite using `[conjA_mat]`. Set `f : AF F ⊗[F] E →+* ℂ` to `θ.comp (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom`. Establish `e : ∀ {a b : ℕ} (X : Matrix (Fin a) (Fin b) E), (X.map (inclR (F` using `F) (AF F))).map f = X.map τ := by`. Introduce `a b X`.
+
+Use extensionality with `i j`. Conclude with `hθ.1 (X i j)`. Use `show (_ * _ * _ : Matrix _ _ _).map f = _ * Matrix.map _ f * _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e, e]`.
+-/
 theorem conjA_infMat (h : IsoPair (σ : E →+* E) J J' T T') (g : HA (AF F) σ J)
     {τ : E →+* ℂ} {θ : Ainf F ⊗[F] E →+* ℂ} (hθ : IsInfEmb τ θ) :
     infMat σ J' θ (conjA h g) = T.map τ * infMat σ J θ g * T'.map τ := by
@@ -151,6 +193,13 @@ theorem conjA_infMat (h : IsoPair (σ : E →+* E) J J' T T') (g : HA (AF F) σ 
   rw [Matrix.map_mul, Matrix.map_mul, e, e]
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a, ha, T *ᵥ x, hL x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.mulVec, dotProduct, inclR, TensorProduct.tmul_sum]`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem latHat_mulVec (T : Matrix (Fin N) (Fin M) E) {L : Set (Fin M → E)} {L' : Set (Fin N → E)}
     (hL : ∀ x ∈ L, T *ᵥ x ∈ L') (y : Fin M → Af F ⊗[F] E) (hy : y ∈ latHat F E L) :
     T.map (inclR (F := F) (Af F)) *ᵥ y ∈ latHat F E L' := by
@@ -171,6 +220,9 @@ section Frames
 variable {E : Type} [Field E] {σ : E →+* E} {M N : ℕ} {J : Matrix (Fin M) (Fin M) E}
   {J' : Matrix (Fin N) (Fin N) E} {T : Matrix (Fin N) (Fin M) E} {T' : Matrix (Fin M) (Fin N) E}
 
+/- English proof (translation)
+Establish `e : (T.map τ)ᴴ = (cT σ T).map τ`. Use extensionality with `i j`. Simplify using `[cT, hτ]`. Rewrite using `[Matrix.conjTranspose_mul, e, ← h.2.2.1, Matrix.map_mul, Matrix.map_mul, ← hA]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem frame_transport (h : IsoPair σ J J' T T') (τ : E →+* ℂ)
     (hτ : ∀ a, τ (σ a) = starRingEnd ℂ (τ a)) {ι : Type} [Fintype ι] (S : Matrix ι ι ℂ)
     (A : Matrix ι (Fin N) ℂ) (hA : Aᴴ * S * A = J'.map τ) :
@@ -180,6 +232,11 @@ theorem frame_transport (h : IsoPair σ J J' T T') (τ : E →+* ℂ)
   rw [Matrix.conjTranspose_mul, e, ← h.2.2.1, Matrix.map_mul, Matrix.map_mul, ← hA]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e1 : T.map τ * T'.map τ = 1`. Rewrite using `[← Matrix.map_mul, h.1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2 : T'.map τ * T.map τ = 1`. Rewrite using `[← Matrix.map_mul, h.2.1, Matrix.map_one _ (map_zero _) (map_one _)]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `k`. Rewrite using `[← Matrix.mul_assoc, k]`. Simplify using `only [Matrix.mul_assoc, e2, Matrix.mul_one]`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frame_iff (h : IsoPair σ J J' T T') (τ : E →+* ℂ) {ι : Type} [Fintype ι] (b : Matrix ι ι ℂ)
     (A : Matrix ι (Fin N) ℂ) (x : Matrix (Fin M) (Fin M) ℂ) :
     b * A = A * (T.map τ * x * T'.map τ) ↔ b * (A * T.map τ) = A * T.map τ * x := by
@@ -203,6 +260,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   {σ : E →ₐ[F] E} {M N : ℕ} {J : Matrix (Fin M) (Fin M) E} {J' : Matrix (Fin N) (Fin N) E}
   {T : Matrix (Fin N) (Fin M) E} {T' : Matrix (Fin M) (Fin N) E}
 
+/- English proof (translation)
+Establish `e1 : T.map (inclR (F` using `F) (Af F)) * T'.map (inclR (F := F) (Af F)) = 1 := by`. Rewrite using `[← Matrix.map_mul, h.1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2 : T'.map (inclR (F` using `F) (Af F)) * T.map (inclR (F := F) (Af F)) = 1 := by`. Rewrite using `[← Matrix.map_mul, h.2.1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `k1 : ∀ y, T.map (inclR (F` using `F) (Af F)) *ᵥ y ∈ latHat F E L' ↔ y ∈ latHat F E L := by`.
+
+Introduce `y`. Use `⟨fun hy => ?_, latHat_mulVec T hL y⟩` and prove the remaining obligations. Use `latHat_mulVec T' hL' _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `k2 : ∀ y, T'.map (inclR (F` using `F) (Af F)) *ᵥ y ∈ latHat F E L ↔ y ∈ latHat F E L' := by`.
+
+Introduce `y`. Use `⟨fun hy => ?_, latHat_mulVec T' hL' y⟩` and prove the remaining obligations. Use `latHat_mulVec T hL _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, e1, Matrix.one_mulVec]`. Then use the resulting hypothesis. Rewrite using `[conjA_finMat]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `k y`. Use `k (T.map (inclR (F := F) (Af F)) *ᵥ y)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, e2, Matrix.mul_one, ← Matrix.mulVec_mulVec, k1, k1]`. Then use the resulting hypothesis. Introduce `k y`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, k1, ← k, k2]`.
+-/
 theorem stab_transport (h : IsoPair (σ : E →+* E) J J' T T') {L : Set (Fin M → E)}
     {L' : Set (Fin N → E)} (hL : ∀ x ∈ L, T *ᵥ x ∈ L') (hL' : ∀ x ∈ L', T' *ᵥ x ∈ L)
     (g : HA (AF F) σ J) :
@@ -232,6 +300,11 @@ theorem stab_transport (h : IsoPair (σ : E →+* E) J J' T T') {L : Set (Fin M 
 
 end Lat
 
+/- English proof (translation)
+Establish `h1` using `hL _ hx`. Establish `h2` using `LinearMap.toMatrix_mulVec_repr V.frame V'.frame e (∑ i, x i • V.frame i)`. Rewrite `h2` using `[Module.Basis.repr_sum_self]`. Use `show ∑ i, (LinearMap.toMatrix V.frame V'.frame e *ᵥ x) i • V'.frame i ∈ V'.L0`. Rewrite using `[h2, Module.Basis.sum_repr]`.
+
+Conclude with `h1`.
+-/
 theorem mem_std_lattice_iff_integral_coords (D : D7) (V V' : HSp D) (e : V.V →ₗ[D.host.E] V'.V)
     (hL : ∀ x, x ∈ V.L0 → e x ∈ V'.L0) (x : Fin V.rank → D.host.E) (hx : x ∈ L0c D V) :
     LinearMap.toMatrix V.frame V'.frame e *ᵥ x ∈ L0c D V' := by
@@ -242,6 +315,23 @@ theorem mem_std_lattice_iff_integral_coords (D : D7) (V V' : HSp D) (e : V.V →
   rw [h2, Module.Basis.sum_repr]
   exact h1
 
+/- English proof (translation)
+Introduce `D V V' e he hL`. Establish `h : IsoPair (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram V'.gram (LinearMap.toMatrix V.frame V'.frame e.toLinearMap) (LinearMap.toMatrix V'.frame V.frame e.symm.toLinearMap)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix_comp]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← LinearMap.toMatrix_comp]`. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.embMat_isom D.sp.cm V V' e.toLinearMap he`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.embMat_isom D.sp.cm V' V e.symm.toLinearMap (fun x y => by`. Use `he (e.symm x) (e.symm y)` as an intermediate fact.
+
+Rewrite `this` using `[e.apply_symm_apply, e.apply_symm_apply]`. Conclude with `this.symm)`. Establish `c1` using `conjA_continuous h`. Establish `c2 : Continuous (conjA h).symm` using `conjA_continuous h.symm`. Use `⟨conjA h, c1, c2, fun g => ⟨conjA_rat h g, fun hg => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `conjA_rat h.symm _ hg` as an intermediate fact. Rewrite `this` using `[← conjA_symm h, MulEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Introduce `P Q μ hμ`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V'.gram` as an intermediate fact.
+
+Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V'.gram` as an intermediate fact. Use `hμ.1` as an intermediate fact. Establish `hτ : ∀ (ρ : D.what₂.Tau) a, embOf D ρ ((D.sp.cm.sig : D.host.E →+* D.host.E) a) = starRingEnd ℂ (embOf D ρ a)` using `fun ρ a => D.sp.cm.cmUnram.2.1 _ a`. Use `⟨MulEquiv.isHaarMeasure_map μ (conjA h) c1 c2, hμ.2.1, fun θ hθ => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨A, hA⟩` from `(hμ.2.2 θ hθ).1`. Conclude with `⟨_, fun ρ => frame_transport h.symm (embOf D ρ) (hτ ρ) _ (A ρ) (hA ρ)⟩`. Introduce `A hA B hB`. Establish `key` using `(hμ.2.2 θ hθ).2 _ (fun ρ => frame_transport h (embOf D ρ) (hτ ρ) _ (A ρ) (hA ρ)) B hB`. Set `H : GA D V ≃ₜ GA D V'` to `⟨(conjA h).toEquiv, c1, c2⟩`.
+
+Use `Eq.trans (H.toMeasurableEquiv.map_apply _) ?_` and prove the remaining obligations. Use `Eq.trans (congrArg μ ?_) key` and prove the remaining obligations. Use extensionality with `g`. Use `and_congr (stab_transport h (mem_std_lattice_iff_integral_coords D V V' _ fun x => (hL x).1) (mem_std_lattice_iff_integral_coords D V' V _ fun x hx => (hL _).2 (by simpa using hx)) g) ?_` and prove the remaining obligations. Use `forall_congr' fun ρ => exists_congr fun b => and_congr Iff.rfl ?_` and prove the remaining obligations.
+
+Use `Iff.trans ?_ (frame_iff h (embOf D ρ) _ (A ρ) _)` and prove the remaining obligations. Rewrite using `[← conjA_infMat h g (hθ ρ)]`. Both sides reduce to the same expression.
+-/
 theorem transport : ∀ (D : D7) (V V' : HSp D) (e : V.V ≃ₗ[D.host.E] V'.V), (∀ x y, V'.hT (e x) (e y) = V.hT x y) → (∀ x, x ∈ V.L0 ↔ e x ∈ V'.L0) → ∃ φ : GA D V ≃* GA D V', Continuous φ ∧ Continuous φ.symm ∧ (∀ g, g ∈ GQ V ↔ φ g ∈ GQ V') ∧ ∀ (P Q : ℕ) (μ : Measure (GA D V)), IsVolMeas D V P Q μ → IsVolMeas D V' P Q (μ.map φ) := by
   intro D V V' e he hL
   have h : IsoPair (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram V'.gram

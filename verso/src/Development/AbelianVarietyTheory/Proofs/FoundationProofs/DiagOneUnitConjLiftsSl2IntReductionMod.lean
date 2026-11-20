@@ -10,6 +10,9 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `GlobalTheory.specialLinearGroup_map_zmod_surjective (Fin 2) N ⟨(g : Matrix (Fin 2) (Fin 2) (ZMod N)), hg⟩`. Use `⟨γ, Units.ext ?_⟩` and prove the remaining obligations. Use `show ((Matrix.SpecialLinearGroup.toGL (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod N)) γ) : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)) = g`. Rewrite using `[hγ]`. Both sides reduce to the same expression.
+-/
 theorem exists_redGL_eq {N : ℕ} (g : GL (Fin 2) (ZMod N))
     (hg : Matrix.det (g : Matrix (Fin 2) (Fin 2) (ZMod N)) = 1) : ∃ γ : SL(2, ℤ), redGL N γ = g := by
   obtain ⟨γ, hγ⟩ := GlobalTheory.specialLinearGroup_map_zmod_surjective (Fin 2) N ⟨(g : Matrix (Fin 2) (Fin 2) (ZMod N)), hg⟩
@@ -17,6 +20,15 @@ theorem exists_redGL_eq {N : ℕ} (g : GL (Fin 2) (ZMod N))
   show ((Matrix.SpecialLinearGroup.toGL (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod N)) γ) : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)) = g
   rw [hγ]; rfl
 
+/- English proof (translation)
+Introduce `N _ u`. Establish `hdet : ∀ γ : SL(2, ℤ), Matrix.det ((redGL N γ : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)) = 1`. Introduce `γ`. Conclude with `(Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod N)) γ).2`. Establish `hconj : ∀ (a g : GL (Fin 2) (ZMod N)), Matrix.det ((g : Matrix (Fin 2) (Fin 2) (ZMod N))) = 1 → Matrix.det (((a⁻¹ * g * a : GL (Fin 2) (ZMod N))) : Matrix (Fin 2) (Fin 2) (ZMod N)) = 1`.
+
+Introduce `a g hg`. Simplify using `only [Units.val_mul, Matrix.det_mul]`. Rewrite using `[hg, mul_one, ← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.det_one]`. Use `⟨fun γ => ?_, fun γ' => ?_⟩` and prove the remaining obligations. Take `⟨γ', h⟩` from `exists_redGL_eq _ (hconj (dg u) (redGL N γ) (hdet γ))`.
+
+Use `⟨γ', ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Use `group`. Take `⟨γ, h⟩` from `exists_redGL_eq _ (hconj (dg u)⁻¹ (redGL N γ') (hdet γ'))`. Use `⟨γ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h]`. Use `group`.
+-/
 theorem dg_conj_lift : ∀ (N : ℕ) [NeZero N] (u : (ZMod N)ˣ), (∀ γ : SL(2, ℤ), ∃ γ' : SL(2, ℤ), dg u * redGL N γ' = redGL N γ * dg u) ∧ ∀ γ' : SL(2, ℤ), ∃ γ : SL(2, ℤ), dg u * redGL N γ' = redGL N γ * dg u := by
   intro N _ u
   have hdet : ∀ γ : SL(2, ℤ), Matrix.det ((redGL N γ : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)) = 1 := by

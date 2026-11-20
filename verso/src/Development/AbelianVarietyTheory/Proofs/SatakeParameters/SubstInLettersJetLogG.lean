@@ -12,6 +12,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formal
 noncomputable section
 namespace GlobalTheory.OnePlace.Letters
 
+/- English proof (translation)
+Use `show jetLogG p n' v 0 = 0`. Unfold `jetLogG`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `h`.
+
+Establish `h2` using `congrArg (fun m : ZMod n' × β →₀ ℕ => m (v.1 - 2 * (e : ZMod n'), v.2)) h`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply, Finsupp.single_eq_same] at h2`. Conclude with `(pow_ne_zero e (pow_ne_zero 2 (Fact.out : p.Prime).ne_zero)) h2.symm`.
+-/
 theorem constantCoeff_jetLogG (p : ℕ) [Fact p.Prime] (n' : ℕ) {β : Type} (v : ZMod n' × β) :
     MvPowerSeries.constantCoeff (jetLogG p n' v) = 0 := by
   show jetLogG p n' v 0 = 0
@@ -31,10 +36,18 @@ def posEquiv (n r0 r1 : ℕ) [NeZero n] : Zidx n r0 r1 ≃ ZMod n × Fin r0 × F
   right_inv v := by
     ext <;> simp [toFin, ZMod.natCast_zmod_val]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_inLetters {n r0 r1 : ℕ} [NeZero n] {R : Type} [Semiring R] (f : MvPowerSeries (Zidx n r0 r1) R)
     (m : ZMod n × Fin r0 × Fin r1 →₀ ℕ) :
     MvPowerSeries.coeff m (inLetters f) = MvPowerSeries.coeff (Finsupp.mapDomain (posEquiv n r0 r1).symm m) f := rfl
 
+/- English proof (translation)
+Use extensionality with `m`. Establish `hm : m = Finsupp.mapDomain (posEquiv n r0 r1) (Finsupp.mapDomain (posEquiv n r0 r1).symm m)`. Rewrite using `[← Finsupp.mapDomain_comp, Equiv.self_comp_symm, Finsupp.mapDomain_id]`. Establish `h1` using `MvPowerSeries.coeff_embDomain_rename (posEquiv n r0 r1).toEmbedding f (Finsupp.mapDomain (posEquiv n r0 r1).symm m)`. Rewrite `h1` using `[Finsupp.embDomain_eq_mapDomain]`.
+
+Rewrite using `[coeff_inLetters]`. Use `conv_rhs => rw [hm]`. Conclude with `h1.symm`.
+-/
 theorem inLetters_eq_rename {n r0 r1 : ℕ} [NeZero n] {R : Type} [CommRing R] (f : MvPowerSeries (Zidx n r0 r1) R) :
     inLetters f = MvPowerSeries.rename (posEquiv n r0 r1) f := by
   ext m
@@ -47,12 +60,20 @@ theorem inLetters_eq_rename {n r0 r1 : ℕ} [NeZero n] {R : Type} [CommRing R] (
   conv_rhs => rw [hm]
   exact h1.symm
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[MvPowerSeries.coeff_map, coeff_inLetters, coeff_inLetters, MvPowerSeries.coeff_map]`.
+-/
 theorem map_inLetters {n r0 r1 : ℕ} [NeZero n] {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
     (f : MvPowerSeries (Zidx n r0 r1) R) :
     MvPowerSeries.map φ (inLetters f) = inLetters (MvPowerSeries.map φ f) := by
   ext m
   rw [MvPowerSeries.coeff_map, coeff_inLetters, coeff_inLetters, MvPowerSeries.coeff_map]
 
+/- English proof (translation)
+Use `⟨fun z => constantCoeff_jetLogG p n' _, ?_⟩` and prove the remaining obligations. Establish `ha : MvPowerSeries.HasSubst (fun v : ZMod n' × Fin r0 × Fin r1 => MvPowerSeries.C (1 : ℂ_[p]) * jetLogG p n' v)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun v => by`. Rewrite using `[map_mul, constantCoeff_jetLogG, mul_zero]`. Rewrite using `[map_inLetters, inLetters_eq_rename, MvPowerSeries.rename_eq_subst, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.HasSubst.X_comp _) ha]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[Function.comp_apply, MvPowerSeries.subst_X ha, map_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem subst_inLetters_jetLogG {p : ℕ} [Fact p.Prime] {n' r0 r1 : ℕ} [NeZero n'] (F : MvPowerSeries (Zidx n' r0 r1) (FormalGroupSystem.K0 p)) :
     (∀ z, MvPowerSeries.constantCoeff (jetZ p n' r0 r1 z) = 0) ∧
     MvPowerSeries.subst (fun v : ZMod n' × Fin r0 × Fin r1 => MvPowerSeries.C (1 : ℂ_[p]) * jetLogG p n' v)

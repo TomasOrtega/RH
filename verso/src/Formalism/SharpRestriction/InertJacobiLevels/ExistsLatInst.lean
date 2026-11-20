@@ -11,15 +11,24 @@ section Base
 
 variable {N : ℕ} [NeZero N]
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [succ_nsmul, ← add_assoc, bsC_step, ih]`.
+-/
 theorem bsC_add_nsmul (h t : ZMod N) (i : ℕ) : bsC h (t + i • h) = bsC h t := by
   induction i with
   | zero => simp
   | succ i ih => rw [succ_nsmul, ← add_assoc, bsC_step, ih]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `bsC_eq h t`. Rewrite using `[hi, bsC_add_nsmul, ← hi]`.
+-/
 theorem bsC_idem (h t : ZMod N) : bsC h (bsC h t) = bsC h t := by
   obtain ⟨i, hi⟩ := bsC_eq h t
   rw [hi, bsC_add_nsmul, ← hi]
 
+/- English proof (translation)
+Rewrite using `[← bsC_idem h x', e, bsC_add_nsmul, bsC_idem]`.
+-/
 theorem bsC_unique (h x x' : ZMod N) (i : ℕ) (e : bsC h x' = bsC h x + i • h) : bsC h x' = bsC h x := by
   rw [← bsC_idem h x', e, bsC_add_nsmul, bsC_idem]
 
@@ -29,15 +38,24 @@ section BaseA
 
 variable {φ : Formalism.HC.Frame}
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [succ_nsmul, ← add_assoc, bsA_step, ih]`.
+-/
 theorem bsA_add_nsmul (h t : φ.A) (i : ℕ) : bsA h (t + i • h) = bsA h t := by
   induction i with
   | zero => simp
   | succ i ih => rw [succ_nsmul, ← add_assoc, bsA_step, ih]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `bsA_eq h t`. Rewrite using `[hi, bsA_add_nsmul, ← hi]`.
+-/
 theorem bsA_idem (h t : φ.A) : bsA h (bsA h t) = bsA h t := by
   obtain ⟨i, hi⟩ := bsA_eq h t
   rw [hi, bsA_add_nsmul, ← hi]
 
+/- English proof (translation)
+Rewrite using `[← bsA_idem h x', e, bsA_add_nsmul, bsA_idem]`.
+-/
 theorem bsA_unique (h x x' : φ.A) (i : ℕ) (e : bsA h x' = bsA h x + i • h) : bsA h x' = bsA h x := by
   rw [← bsA_idem h x', e, bsA_add_nsmul, bsA_idem]
 
@@ -53,6 +71,11 @@ def recB : D7 := withGatCB D h0 (rOfB D sc) eOf (baseB D)
 
 def tiesB : GatTies (recB D h0 sc eOf) := gatTiesCB D h0 (rOfB D sc) eOf (baseB D)
 
+/- English proof (translation)
+Unfold `G.stepP`. Rewrite using `[if_neg]`. Introduce `h`. Establish `h1 : D.host.cls p = PrimeClass.inertClass` using `hg.2.2.1`. Establish `h2 : D.host.cls p = PrimeClass.signal` using `h`.
+
+Rewrite `h2` using `[h1]`. Conclude with `PrimeClass.noConfusion h2`.
+-/
 theorem stepP_of_gidx {T p : ℕ} (hg : GIdx D.host T p) : G.stepP D p = G.hP D p := by
   unfold G.stepP
   rw [if_neg]
@@ -62,6 +85,9 @@ theorem stepP_of_gidx {T p : ℕ} (hg : GIdx D.host T p) : G.stepP D p = G.hP D 
   rw [h1] at h2
   exact PrimeClass.noConfusion h2
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨x', rfl⟩ i e`. Rewrite `e`, the goal using `[stepP_of_gidx D hg]`. Conclude with `bsA_unique _ _ _ i e`.
+-/
 theorem baseB_sep (u : D.what₂.Word) {T p : ℕ} (hg : GIdx D.host T p) :
     ∀ t ∈ baseB D u p, ∀ t' ∈ baseB D u p, ∀ i : ℕ, t' = t + i • G.hP D p → t' = t := by
   rintro _ ⟨x, rfl⟩ _ ⟨x', rfl⟩ i e
@@ -93,14 +119,23 @@ def posHypB {L : SizeData₂ (recB D h0 sc eOf)} (X : G.Inst (recB D h0 sc eOf) 
     rw [hsc]
     rfl
 
+/- English proof (translation)
+The claim follows from `withGatC_M D h0 (rOfB D sc) eOf (fun u p => tau1P D.R.toFrame '' baseB D u p) u w hg`.
+-/
 theorem recB_M (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : ((recB D h0 sc eOf).gat u w hg).M = ⊥ :=
   withGatC_M D h0 (rOfB D sc) eOf (fun u p => tau1P D.R.toFrame '' baseB D u p) u w hg
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem recB_e (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     ((recB D h0 sc eOf).gat u w hg).e = eOf (D.what₂.places.resChar w) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(latHypOf (tiesB D h0 sc eOf) X (posHypB D h0 sc eOf X hbs hsc) c c_le hcl hoff hw1).latInst, (latHypOf (tiesB D h0 sc eOf) X (posHypB D h0 sc eOf X hbs hsc) c c_le hcl hoff hw1).latTied hf, fun w => sizeDataLat_of_M_bot X _ K (recB_M D h0 sc eOf) hl w⟩`.
+-/
 theorem exists_latInst {L : SizeData₂ (recB D h0 sc eOf)} (X : G.Inst (recB D h0 sc eOf) L) (K : G.Consts) (hbs : X.bs = bsA)
     (hsc : L.sc = sc)
     (hf : ∀ j ∈ SizeData₂.lifts (recB D h0 sc eOf), ∀ (τ : (recB D h0 sc eOf).what₂.Tau) (z : Bool × G.HH (recB D h0 sc eOf)),

@@ -17,6 +17,13 @@ open GlobalTheory.LKDef GlobalTheory.LKMid.PairConj
 
 variable {p : ℕ} [Fact p.Prime] {G : HTGroup p}
 
+/- English proof (translation)
+Establish `e1 : (((y * β * shU G y)⁻¹ : G.Cˣ) : G.C) = sh G ((y⁻¹ : G.Cˣ) : G.C) * (((β⁻¹ : G.Cˣ) : G.C) * ((y⁻¹ : G.Cˣ) : G.C))`. Simplify using `only [_root_.mul_inv_rev, Units.val_mul]`. Both sides reduce to the same expression. Establish `e2 : G.psi v (sh G ((y⁻¹ : G.Cˣ) : G.C)) = (G.gram v)⁻¹ * (G.psi v ((y⁻¹ : G.Cˣ) : G.C))ᴴ * G.gram v` using `G.psi_star v _`. Establish `hg : G.gram v * (G.gram v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (Ne.isUnit (G.gram_det v))`.
+
+Establish `e3 : G.gram v * G.psi v (((y * β * shU G y)⁻¹ : G.Cˣ) : G.C) = (G.psi v ((y⁻¹ : G.Cˣ) : G.C))ᴴ * (G.gram v * G.psi v ((β⁻¹ : G.Cˣ) : G.C)) * G.psi v ((y⁻¹ : G.Cˣ) : G.C)`. Rewrite using `[e1, map_mul, map_mul, e2]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hg, Matrix.one_mul]; simp only [Matrix.mul_assoc]`.
+
+Rewrite using `[e3, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`.
+-/
 theorem form_conj (v : InfinitePlace G.F) (β y : G.Cˣ) (x : Fin G.n → ℂ) :
     star x ⬝ᵥ ((G.gram v * G.psi v (((y * β * shU G y)⁻¹ : G.Cˣ) : G.C)) *ᵥ x) =
       star (G.psi v ((y⁻¹ : G.Cˣ) : G.C) *ᵥ x) ⬝ᵥ
@@ -75,9 +82,19 @@ def conjD (P : DPair G) (y : G.Cˣ) : DPair G where
     rw [form_conj]
     exact P.posR v _ hM
 
+/- English proof (translation)
+The claim follows from `conj_val P.β y`.
+-/
 theorem conjD_β (P : DPair G) (y : G.Cˣ) :
     (((conjD P y).β : G.Cˣ) : G.C) = (y : G.C) * P.β * sh G y := conj_val P.β y
 
+/- English proof (translation)
+Use `⟨conjD P y, ⟨y, 1, one_pos, ?_, rfl⟩, rfl, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul, conjD_β]`. Introduce `x t hx`. Establish `h` using `triv_conj_unit (AfP p) (P.β : G.C) y x t hx`. Rewrite `h` using `[← conjD_β]`.
+
+Use `⟨_, h, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Use `show (x * (Units.map (inC G (AfP p)).toMonoidHom y)⁻¹) * Units.map (inC G (AfP p)).toMonoidHom (y * P.γ * y⁻¹) * (x * (Units.map (inC G (AfP p)).toMonoidHom y)⁻¹)⁻¹ = x * Units.map (inC G (AfP p)).toMonoidHom P.γ * x⁻¹`. Simplify using `only [map_mul, map_inv]`.
+
+Use `group`. Both sides reduce to the same expression.
+-/
 theorem exists_conj (P : DPair G) (y : G.Cˣ) :
     ∃ P' : DPair G, P.Rel P' ∧ P'.γ = y * P.γ * y⁻¹ ∧ P'.c = P.c ∧
       ∀ (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t),
@@ -99,6 +116,11 @@ theorem exists_conj (P : DPair G) (y : G.Cˣ) :
       group
     · rfl
 
+/- English proof (translation)
+Establish `h` using `congrArg (Algebra.norm ℚ) P.sim`. Rewrite `h` using `[map_mul, map_mul, map_mul, Algebra.norm_algebraMap]`. Establish `hb : Algebra.norm ℚ (P.β : G.C) ≠ 0` using `(P.β.isUnit.map (Algebra.norm ℚ)).ne_zero`. Apply `mul_right_cancel₀ hb` to reduce the goal to its premises. Rewrite using `[← h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_sim (P : DPair G) :
     Algebra.norm ℚ (P.γ : G.C) * Algebra.norm ℚ (sh G P.γ) = (P.c : ℚ) ^ Module.finrank ℚ G.C := by
   have h := congrArg (Algebra.norm ℚ) P.sim
@@ -107,6 +129,11 @@ theorem norm_sim (P : DPair G) :
   apply mul_right_cancel₀ hb
   rw [← h]; ring
 
+/- English proof (translation)
+Establish `h1` using `norm_sim P`. Establish `h2` using `norm_sim P'`. Rewrite `h2` using `[hγ, h1]`. Establish `hN : Module.finrank ℚ G.C ≠ 0` using `Module.finrank_pos.ne'`. Break down `(pow_eq_pow_iff_of_ne_zero hN).1 h2.symm with h | ⟨h, _⟩` into its components or cases.
+
+Conclude with `Or.inl (Units.ext h)`. Conclude with `Or.inr (Units.ext (by rw [h, Units.val_neg]))`.
+-/
 theorem c_eq_or_eq_neg (P P' : DPair G) (hγ : P'.γ = P.γ) : P'.c = P.c ∨ P'.c = -P.c := by
   have h1 := norm_sim P
   have h2 := norm_sim P'
@@ -116,6 +143,11 @@ theorem c_eq_or_eq_neg (P P' : DPair G) (hγ : P'.γ = P.γ) : P'.c = P.c ∨ P'
   · exact Or.inl (Units.ext h)
   · exact Or.inr (Units.ext (by rw [h, Units.val_neg]))
 
+/- English proof (translation)
+Unfold `DPair.term at h`. Use `split_ifs at h with hd`. Unfold `DPair.termAt pointSum at h`. Take `⟨q, hq⟩` from `not_forall.1 (fun hc => h (finsum_eq_zero_of_forall_eq_zero hc))`. Use `⟨_, _, P.trivAf.choose_spec.choose_spec, (Quotient.out q).1, fun h0 => hq ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h0, zero_mul, mul_zero]`. Conclude with `absurd rfl h`.
+-/
 theorem exists_ne_zero_of_term_ne_zero (P : DPair G) (Kf : Subgroup G.GAf)
     (f : G.GAf → ℂ) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ) (h : P.term Kf f r K φ ≠ 0) :
     ∃ (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t) (g : G.GAf),
@@ -138,6 +170,11 @@ open GlobalTheory.LKDef
 
 variable {p : ℕ} [Fact p.Prime] {G : HTGroup p}
 
+/- English proof (translation)
+Use `⟨g.1.1⁻¹ * x, t * g.1.2⁻¹, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_triv_star (starT G.star (AfP p)) (inC G (AfP p) P.β) ((g.1.1⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) (x : AfP p ⊗[ℚ] G.C) (t : AfP p) ((g.1.2⁻¹ : (AfP p)ˣ) : AfP p) hx (mem_uGroup.1 (g⁻¹).2)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(g.1.1⁻¹ * x) * Units.map (inC G (AfP p)).toMonoidHom P.γ * (g.1.1⁻¹ * x)⁻¹ = g.1.1⁻¹ * (x * Units.map (inC G (AfP p)).toMonoidHom P.γ * x⁻¹) * g.1.1 group`.
+
+Express the relevant statement in the definitionally equal form `Units.map (algebraMap ℚ (AfP p)).toMonoidHom P.c = g.1.2⁻¹ * Units.map (algebraMap ℚ (AfP p)).toMonoidHom P.c * g.1.2`. Rewrite using `[mul_comm g.1.2⁻¹, inv_mul_cancel_right]`.
+-/
 theorem exists_triv_toAf_eq_conj (P : DPair G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) P.β x t) (g : G.GAf) : ∃ (x' : (AfP p ⊗[ℚ] G.C)ˣ) (t' : (AfP p)ˣ)
     (hx' : Triv G (AfP p) P.β x' t'), P.toAf x' t' hx' P.self = g⁻¹ * P.toAf x t hx P.self * g := by
@@ -153,6 +190,17 @@ theorem exists_triv_toAf_eq_conj (P : DPair G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t :
         g.1.2⁻¹ * Units.map (algebraMap ℚ (AfP p)).toMonoidHom P.c * g.1.2
       rw [mul_comm g.1.2⁻¹, inv_mul_cancel_right]
 
+/- English proof (translation)
+Establish `hmul : ∀ x y : G.C, sh G (x * y) = sh G y * sh G x` using `fun x y => by`. Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`. Establish `hinv : ∀ y : G.Cˣ, sh G y * sh G ((y⁻¹ : G.Cˣ) : G.C) = 1` using `fun y => by`. Rewrite using `[← hmul, Units.inv_mul, sh_one_eq]`. Establish `hP` using `P.sim`.
+
+Establish `hQ` using `Q.sim`. Rewrite `hP` using `[hγ, hc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e1 : ((P.β * Q.β⁻¹ : G.Cˣ) : G.C) * Q.γ * (Q.β * sh G Q.γ) = algebraMap ℚ G.C Q.c * P.β`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hQ]`. Simplify using `only [← Algebra.smul_def, mul_smul_comm]`. Use `_ = _ := by rw [Units.val_mul, mul_assoc, Units.inv_mul, mul_one]`. Establish `e2 : (Q.γ : G.C) * ((P.β * Q.β⁻¹ : G.Cˣ) : G.C) * (Q.β * sh G Q.γ) = algebraMap ℚ G.C Q.c * P.β`. Rewrite using `[← hP, Units.val_mul]`.
+
+Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Establish `e3 : (Q.β : G.C) * sh G Q.γ * (sh G ((Q.γ⁻¹ : G.Cˣ) : G.C) * ((Q.β⁻¹ : G.Cˣ) : G.C)) = 1`. Rewrite using `[mul_assoc, ← mul_assoc (sh G Q.γ), hinv, one_mul, Units.mul_inv]`. Establish `e4` using `congrArg (· * (sh G ((Q.γ⁻¹ : G.Cˣ) : G.C) * ((Q.β⁻¹ : G.Cˣ) : G.C))) (e1.trans e2.symm)`. Rewrite `e4` using `[mul_assoc _ (_ * sh G _), mul_assoc _ (_ * sh G _), e3, mul_one, mul_one]`. Then use the resulting hypothesis.
+
+Establish `h` using `hinv Q.β`. Rewrite `h` using `[Q.sym]`. Rewrite using `[Units.val_mul, hmul, P.sym, ← mul_assoc, h, one_mul]`.
+-/
 theorem quot_commute_and_fixed (P Q : DPair G) (hγ : P.γ = Q.γ) (hc : P.c = Q.c) :
     ((P.β * Q.β⁻¹ : G.Cˣ) : G.C) * Q.γ = Q.γ * ((P.β * Q.β⁻¹ : G.Cˣ) : G.C) ∧
     (Q.β : G.C) * sh G ((P.β * Q.β⁻¹ : G.Cˣ) : G.C) * ((Q.β⁻¹ : G.Cˣ) : G.C) = ((P.β * Q.β⁻¹ : G.Cˣ) : G.C) := by
@@ -181,6 +229,11 @@ theorem quot_commute_and_fixed (P Q : DPair G) (hγ : P.γ = Q.γ) (hc : P.c = Q
     rw [Q.sym] at h
     rw [Units.val_mul, hmul, P.sym, ← mul_assoc, h, one_mul]
 
+/- English proof (translation)
+Use `⟨y, s, hs, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ((Q.β * P₁.β⁻¹ : G.Cˣ) : G.C) * (P₁.β : G.C) = Q.β`. Rewrite using `[← Units.val_mul, inv_mul_cancel_right]`. Establish `h2 : ((P.β * P₁.β⁻¹ : G.Cˣ) : G.C) * (P₁.β : G.C) = P.β`. Rewrite using `[← Units.val_mul, inv_mul_cancel_right]`.
+
+Rewrite using `[← h1, hr, ← h2]`. Generalize the expression as in `((P.β * P₁.β⁻¹ : G.Cˣ) : G.C) = a at ha ⊢`. Combine the equalities or inequalities in the displayed calculation. Establish `hy' : y * P₁.γ = P₁.γ * y` using `Units.ext (by simpa using hy)`. Rewrite using `[hQ, hP, hy', mul_inv_cancel_right]`.
+-/
 theorem rel_of_ratio (P Q P₁ : DPair G) (y : G.Cˣ) (s : ℚ) (hs : 0 < s)
     (hP : P.γ = P₁.γ) (hQ : Q.γ = P₁.γ) (hy : (y : G.C) * P₁.γ = P₁.γ * y)
     (ha : ((P.β * P₁.β⁻¹ : G.Cˣ) : G.C) * y = y * ((P.β * P₁.β⁻¹ : G.Cˣ) : G.C))
@@ -200,6 +253,9 @@ theorem rel_of_ratio (P Q P₁ : DPair G) (y : G.Cˣ) (s : ℚ) (hs : 0 < s)
   · have hy' : y * P₁.γ = P₁.γ * y := Units.ext (by simpa using hy)
     rw [hQ, hP, hy', mul_inv_cancel_right]
 
+/- English proof (translation)
+Take `⟨-, -, -, S, hS⟩` from `hT`. Use `⟨⋃ s ∈ S, (fun k : G.GAf × G.GAf => k.1 * s * k.2) '' ((L.K : Set G.GAf) ×ˢ (L.K : Set G.GAf)), S.isCompact_biUnion fun s _ => (L.compact.prod L.compact).image (by fun_prop), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, k₁, hk₁, k₂, hk₂, rfl⟩` from `hS g hg`. Conclude with `Set.mem_biUnion hs ⟨(k₁, k₂), ⟨hk₁, hk₂⟩, rfl⟩`.
+-/
 theorem supp_compact (L : G.Level) (f : G.GAf → ℂ)
     (hT : IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f) :
     ∃ Ω : Set G.GAf, IsCompact Ω ∧ ∀ g, f g ≠ 0 → g ∈ Ω := by
@@ -209,6 +265,33 @@ theorem supp_compact (L : G.Level) (f : G.GAf → ℂ)
   obtain ⟨s, hs, k₁, hk₁, k₂, hk₂, rfl⟩ := hS g hg
   exact Set.mem_biUnion hs ⟨(k₁, k₂), ⟨hk₁, hk₂⟩, rfl⟩
 
+/- English proof (translation)
+Use `set Y : Set (DPair G) := {P | P.γ = γ₀ ∧ P.c = c₀ ∧ ∃ (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t), P.toAf x t hx P.self ∈ Ω} with hYdef`. Establish `hset : {q : DCls G | ∃ P : DPair G, (Quot.mk DPair.Rel P : DCls G) = q ∧ P.γ = γ₀ ∧ P.c = c₀ ∧ ∃ (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t), P.toAf x t hx P.self ∈ Ω} = Quot.mk DPair.Rel '' Y`. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, rfl, h⟩`.
+
+Conclude with `⟨P, h, rfl⟩`. Introduce and unpack `⟨P, h, rfl⟩`. Conclude with `⟨P, rfl, h⟩`. Rewrite using `[hset]`. Break down `Y.eq_empty_or_nonempty with hY | ⟨P₁, hP₁⟩` into its components or cases.
+
+Rewrite using `[hY, Set.image_empty]`. Conclude with `Set.finite_empty`. Establish `hirr₁ : Irreducible (minpoly G.F (P₁.γ : G.C))` using `by rw [hP₁.1]; exact hirr`. Take `⟨L, _, _, ι, c, hinj, hcent, hc, hcc⟩` from `GlobalTheory.T.exists_numberField_involution_similitudeCentralizer p G P₁.β P₁.γ P₁.c P₁.sym P₁.sim hirr₁ P₁.reg.1`. Take `⟨S, hloc⟩` from `GlobalTheory.T.definitePairs_ratio_locally_rational_times_norm p G Ω hΩ P₁ L ι c hinj hcent hc`.
+
+Establish `hγ : ∀ P ∈ Y, P.γ = P₁.γ` using `fun P hP => hP.1.trans hP₁.1.symm`. Establish `hcc' : ∀ P ∈ Y, P.c = P₁.c` using `fun P hP => hP.2.1.trans hP₁.2.1.symm`. Establish `ha : ∀ P ∈ Y, ∃ a : L, ι a = ((P.β * P₁.β⁻¹ : G.Cˣ) : G.C)` using `fun P hP => (hcent _).1 (quot_commute_and_fixed P P₁ (hγ P hP) (hcc' P hP)).1`. Use `set X : Set L := {a | ∃ P ∈ Y, ι a = ((P.β * P₁.β⁻¹ : G.Cˣ) : G.C)} with hXdef`. Take `⟨R, hR⟩` from `GlobalTheory.FixedNormCls.finite_classes_mod_rat_norms L c hcc S X (by`.
+
+Introduce and unpack `a ⟨P, hP, hPa⟩`. Use `⟨fun h0 => ?_, hinj ?_, fun v hv => hloc P (hγ P hP) (hcc' P hP) hP.2.2 a hPa v hv⟩` and prove the remaining obligations. Rewrite `hPa` using `[h0, map_zero]`. Conclude with `(P.β * P₁.β⁻¹).ne_zero hPa.symm`. Rewrite using `[hc, hPa]`.
+
+Conclude with `(quot_commute_and_fixed P P₁ (hγ P hP) (hcc' P hP)).2)`. Set `good : L → Prop → DPair G → Prop` to `fun b s P => P ∈ Y ∧ ∃ (a : L) (q : ℚ) (z : L), ι a = ((P.β * P₁.β⁻¹ : G.Cˣ) : G.C) ∧ (0 < q ↔ s) ∧ q ≠ 0 ∧ z ≠ 0 ∧ a = algebraMap ℚ L q * b * (z * c z)`. Set `rep : L × Bool → DPair G` to `fun bs => if h : ∃ P, good bs.1 (bs.2 = true) P then h.choose else P₁`. Use `((R ×ˢ (Finset.univ : Finset Bool) : Finset (L × Bool)).finite_toSet.image (fun bs => Quot.mk DPair.Rel (rep bs))).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, rfl⟩`.
+
+Take `⟨a, hPa⟩` from `ha P hP`. Take `⟨b, hb, q, z, hq, hz, hab⟩` from `hR a ⟨P, hP, hPa⟩`. Establish `hex : ∃ P', good b (decide (0 < q) = true) P'` using `⟨P, hP, a, q, z, hPa, decide_eq_true_iff.symm, hq, hz, hab⟩`. Use `⟨(b, decide (0 < q)), Finset.mem_coe.2 (Finset.mem_product.2 ⟨hb, Finset.mem_univ _⟩), ?_⟩` and prove the remaining obligations. Establish `hrep : rep (b, decide (0 < q)) = hex.choose` using `dif_pos hex`.
+
+Take `⟨hP', a', q', z', hPa', hsgn, hq', hz', hab'⟩` from `hex.choose_spec`. Simplify using `only [hrep]`. Apply `Quot.sound` to reduce the goal to its premises. Use `set P' := hex.choose`. Establish `hpos : 0 < q / q'`.
+
+Establish `hs : (0 < q' ↔ 0 < q)` using `by simpa using hsgn`. Break down `lt_or_gt_of_ne hq with h | h` into its components or cases. Conclude with `div_pos_of_neg_of_neg h (lt_of_le_of_ne (not_lt.1 (fun h' => absurd (hs.1 h') (not_lt.2 h.le))) hq')`. Conclude with `div_pos h (hs.2 h)`. Use `set w : L := z / z' with hw`.
+
+Establish `hw0 : w ≠ 0` using `div_ne_zero hz hz'`. Set `y : G.Cˣ` to `Units.map ι.toMonoidHom (Units.mk0 w hw0)`. Establish `hy : (y : G.C) = ι w` using `rfl`. Establish `hrat : a = algebraMap ℚ L (q / q') * a' * (w * c w)`. Rewrite using `[hab, hab', hw, map_div₀, map_div₀]`.
+
+Establish `hcz' : c z' ≠ 0`. Introduce `h`. Apply `hz'` to reduce the goal to its premises. Use `congrArg c h` as an intermediate fact. Rewrite `this` using `[hcc, map_zero]`. Then use the resulting hypothesis.
+
+Establish `hq'' : algebraMap ℚ L q' ≠ 0` using `(map_ne_zero _).2 hq'`. Clear the denominators using the available nonvanishing facts. Apply `rel_of_ratio P' P P₁ y (q / q') hpos (hγ P' hP') (hγ P hP)` to reduce the goal to its premises. Rewrite using `[hy]`. Conclude with `((hcent _).2 ⟨w, rfl⟩)`.
+
+Rewrite using `[hy, ← hPa', ← map_mul, ← map_mul, mul_comm]`. Rewrite using `[← hPa, hrat, hy, ← hPa', ← hc, map_mul, map_mul, map_mul, AlgHom.commutes]`.
+-/
 theorem finite_of_compact (Ω : Set G.GAf) (hΩ : IsCompact Ω) (γ₀ : G.Cˣ)
     (hirr : Irreducible (minpoly G.F (γ₀ : G.C))) (c₀ : ℚˣ) :
     {q : DCls G | ∃ P : DPair G, (Quot.mk DPair.Rel P : DCls G) = q ∧ P.γ = γ₀ ∧ P.c = c₀ ∧
@@ -274,6 +357,9 @@ theorem finite_of_compact (Ω : Set G.GAf) (hΩ : IsCompact Ω) (γ₀ : G.Cˣ)
   · rw [hy, ← hPa', ← map_mul, ← map_mul, mul_comm]
   · rw [← hPa, hrat, hy, ← hPa', ← hc, map_mul, map_mul, map_mul, AlgHom.commutes]
 
+/- English proof (translation)
+Take `⟨Ω, hΩ, hf⟩` from `supp_compact L f hT`. Use `(finite_of_compact Ω hΩ γ₀ hirr c₀).subset ?_` and prove the remaining obligations. Introduce and unpack `q ⟨P, rfl, hγ, hc, x, t, hx, g, hne⟩`. Take `⟨x', t', hx', he⟩` from `exists_triv_toAf_eq_conj P x t hx g`. Conclude with `⟨P, rfl, hγ, hc, x', t', hx', he ▸ hf _ hne⟩`.
+-/
 theorem finite_classes_fixed_gamma (L : G.Level) (f : G.GAf → ℂ)
     (hT : IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f) (γ₀ : G.Cˣ)
     (hirr : Irreducible (minpoly G.F (γ₀ : G.C))) (c₀ : ℚˣ) :
@@ -290,6 +376,19 @@ end GlobalTheory.LKDefFin
 
 open GlobalTheory.LKDef GlobalTheory.LKDefFin in
 
+/- English proof (translation)
+Introduce `p _ G _ L f hf _ K' f' _ _ P0`. Distinguish the cases in `hne : {q : DCls G | (Quot.out q).pol = P0 ∧ Irreducible (Quot.out q).pol ∧ (Quot.out q).term L.K.toSubgroup f 1 K' f' ≠ 0}.Nonempty`. Take `⟨q₀, hq₀⟩` from `hne`. Establish `hirr₀ : Irreducible (minpoly G.F ((Quot.out q₀).γ : G.C))` using `hq₀.2.1`. Use `((finite_classes_fixed_gamma L f hf (Quot.out q₀).γ hirr₀ (Quot.out q₀).c).union (finite_classes_fixed_gamma L f hf (Quot.out q₀).γ hirr₀ (-(Quot.out q₀).c))).subset ?_` and prove the remaining obligations.
+
+Introduce `q hq`. Take `⟨x, t, hx, g, hg⟩` from `exists_ne_zero_of_term_ne_zero _ _ _ _ _ _ hq.2.2`. Establish `hpol : minpoly G.F ((Quot.out q₀).γ : G.C) = minpoly G.F ((Quot.out q).γ : G.C)` using `hq₀.1.trans hq.1.symm`. Establish `hirrq : Irreducible (minpoly G.F ((Quot.out q).γ : G.C))` using `hq.2.1`. Take `⟨y, hy⟩` from `GlobalTheory.LKCx.units_conj_of_minpoly_eq_of_irreducible p G (Quot.out q₀).γ (Quot.out q).γ hpol hirrq`.
+
+Take `⟨P', hrel, hγ, hc', htr⟩` from `exists_conj (Quot.out q) y`. Take `⟨x', hx', he⟩` from `htr x t hx`. Establish `hq' : (Quot.mk DPair.Rel P' : DCls G) = q`. Rewrite using `[← Quot.sound hrel]`. Conclude with `Quot.out_eq q`.
+
+Establish `hγ' : P'.γ = (Quot.out q₀).γ`. Rewrite using `[hγ]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hy]`. Simplify using the standard rewrite rules.
+
+Establish `hg' : f (g⁻¹ * P'.toAf x' t hx' P'.self * g) ≠ 0` using `by rw [he]; exact hg`. Break down `c_eq_or_eq_neg (Quot.out q₀) P' hγ' with hc | hc` into its components or cases. Conclude with `Or.inl ⟨P', hq', hγ', hc, x', t, hx', g, hg'⟩`. Conclude with `Or.inr ⟨P', hq', hγ', hc, x', t, hx', g, hg'⟩`. Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty]`.
+
+Rewrite using `[hne]`. Conclude with `Set.finite_empty`.
+-/
 theorem GlobalTheory.LKDefFin.finite_classes_of_pol : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 →
     ∀ (L : G.Level) (f : G.GAf → ℂ), IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f →
       (∀ k ∈ L.K.toSubgroup, ∀ k' ∈ L.K.toSubgroup, ∀ g, f (k * g * k') = f g) →

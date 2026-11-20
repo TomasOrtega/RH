@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CFin
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n r m J X Y Z hXZ hYZ t a ha w τ`. Take `⟨hX, hY, hZ⟩` from `ha.2 w τ`. Establish `hZc : archMat σ J τ (projArch σ J w a) * Z.map τ.1 = Z.map τ.1` using `Matrix.ext fun i j => by`. Establish `h` using `congrFun (hZ (fun l => Z l j) (funext fun i => by simpa [Matrix.mul_apply, mulVec, dotProduct] using congrFun (congrFun hXZ i) j) (funext fun i => by simpa [Matrix.mul_apply, mulVec, dotProduct] using congrFun (congrFun hYZ i) j)) i`. Simplify `h` using `[Matrix.mul_apply, mulVec, dotProduct]`.
+
+Establish `e : (frm X Z Y).map τ.1 = Matrix.fromCols (X.map τ.1) (Matrix.fromCols (Z.map τ.1) (Y.map τ.1))`. Apply the tactic sequence `ext i (k | k | k) <;> rfl`. Rewrite using `[e, Matrix.mul_fromCols, Matrix.mul_fromCols, hX, hY, hZc]`. Use extensionality with `i (k | k | k)`. Simplify using `[Matrix.mul_diagonal, wt]`.
+
+Simplify using `[Matrix.mul_diagonal, wt]`. Simplify using `[Matrix.mul_diagonal, wt]`.
+-/
 theorem torus_diag_witt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n r m : ℕ) (J : Matrix (Fin n) (Fin n) E) (X Y : Matrix (Fin n) (Fin r) E) (Z : Matrix (Fin n) (Fin m) E), cT (σ : E →+* E) X * J * Z = 0 → cT (σ : E →+* E) Y * J * Z = 0 → ∀ (t : Fin r → ℝ) (a : GAd σ J), IsTorusElt σ J X Y t a → ∀ (w : InfinitePlace F) (τ : EmbOver E w), archMat σ J τ (projArch σ J w a) * (frm X Z Y).map τ.1 = (frm X Z Y).map τ.1 * diagonal (fun u => ((wt m t u : ℝ) : ℂ)) := by
   intro F E _ _ _ _ _ σ n r m J X Y Z hXZ hYZ t a ha w τ
   obtain ⟨hX, hY, hZ⟩ := ha.2 w τ

@@ -19,6 +19,11 @@ variable {O Γ R R' : Type} [CommRing O] [Group Γ] [CommRing R] [CommRing R'] {
 end Map
 section Gal
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}
+/- English proof (translation)
+Establish `h1 : (T.fr ∅).IsRes ((residue c₁.O).comp (inc h)) (Q.map (residue c₁.O))`. Use `⟨pair_map hQ.pair _, hQ.res, fun i j n => ?_⟩` and prove the remaining obligations. Establish `h2` using `(hQ.cont i j 1).comp (Ideal.Quotient.lift (maximalIdeal c₁.O ^ 1) (residue c₁.O) fun x hx => (residue_eq_zero_iff x).2 (by rwa [pow_one] at hx))`. Conclude with `h2.comp (Ideal.Quotient.mk ((⊥ : Ideal (ResidueField c₁.O)) ^ n))`. Establish `h2` using `(chainMap (T.fr ∅) _ (𝔞.j c₁) _).1.2 h1`.
+
+Establish `e1 : (𝔞.j c₁).comp ((residue c₁.O).comp (inc h)) = 𝔞.red c` using `RingHom.ext fun x => congrArg (residue 𝔞.V) (𝔞.compat c c₁ h x)`. Rewrite `h2` using `[e1]`. Conclude with `h2`.
+-/
 theorem seed_res_alt (T : Tower D) (𝔞 : Amb l) {ι : PadicAlgCl l ≃+* ℂ} {c₁ : Coef l} {h : c.O ≤ c₁.O}
     {Q : PD T.ι (G T.F Ω) c₁.O} (hQ : T.SeedPairAlt ι h Q) : (T.fr ∅).IsRes (𝔞.red c) (Q.map (𝔞.red c₁)) := by
   have h1 : (T.fr ∅).IsRes ((residue c₁.O).comp (inc h)) (Q.map (residue c₁.O)) := by

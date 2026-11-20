@@ -12,6 +12,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.RunIn
 
+/- English proof (translation)
+Use `eq_top_iff.mpr fun v _ => ?_` and prove the remaining obligations. Establish `key : ∀ x ∈ Submodule.span K S, c • x ∈ Submodule.span K ((fun g => c • g) '' S)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul e x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ e hx`.
+
+Establish `hv : c⁻¹ • v ∈ Submodule.span K S` using `hS ▸ Submodule.mem_top`. Simplify `key _ hv` using `[smul_smul, hc]`.
+-/
 theorem span_image_smul_top {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (c : K) (hc : c ≠ 0)
     (S : Set V) (hS : Submodule.span K S = ⊤) : Submodule.span K ((fun g => c • g) '' S) = ⊤ := by
   refine eq_top_iff.mpr fun v _ => ?_
@@ -25,6 +32,35 @@ theorem span_image_smul_top {K V : Type*} [Field K] [AddCommGroup V] [Module K V
   have hv : c⁻¹ • v ∈ Submodule.span K S := hS ▸ Submodule.mem_top
   simpa [smul_smul, hc] using key _ hv
 
+/- English proof (translation)
+Introduce `D B P j X w s Sh a b hs ha hb hsa hSh hspan`. Set `N : ℕ` to `D.host.g 0 * D.host.g 1`. Set `k : ℕ` to `D.R.f * D.R.r * w.n`. Set `t : 𝓞 B.KO` to `s * (N : 𝓞 B.KO) ^ k`. Establish `hN1 : (1 : ℝ) ≤ N`.
+
+Establish `h0` using `(D.host.g_prime 0).one_lt`. Establish `h1` using `(D.host.g_prime 1).one_lt`. Establish `: 1 ≤ N` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Conclude with `this` after adjusting the coercions. Establish `htK : ((t : 𝓞 B.KO) : B.KO) = (s : B.KO) * ((N : ℕ) : B.KO) ^ k`.
+
+Simplify using `[t]`. Establish `hsK : (s : B.KO) ≠ 0` using `fun h => hs (by exact_mod_cast h)`. Establish `hNK : ((N : ℕ) : B.KO) ≠ 0`. Establish `: N ≠ 0`. Introduce `h`.
+
+Rewrite `hN1` using `[h]`. Evaluate the numerical expressions using `at hN1`. Conclude with `this` after adjusting the coercions. Establish `ht0 : ((t : 𝓞 B.KO) : B.KO) ≠ 0`. Rewrite using `[htK]`.
+
+Conclude with `mul_ne_zero hsK (pow_ne_zero _ hNK)`. Establish `hsm : ∀ g : B.Cusp j w, t • g = ((t : 𝓞 B.KO) : B.KO) • g` using `fun g => (algebraMap_smul B.KO t g).symm`. Establish `hlam : 0 ≤ Real.log N ∧ Real.log N ≤ lamStar D`. Establish `h2` using `(pPow_size D j w).2.2.1`. Use `⟨Real.log_nonneg hN1, ?_⟩` and prove the remaining obligations.
+
+Unfold `Formalism.MainNotions.WeightAlgebra.lamStar`. Establish `: ((N : ℕ) : ℝ) = (D.host.g 0 : ℝ) * D.host.g 1` using `by simp [N]`. Rewrite using `[← this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : (k : ℝ) ≤ w.size`.
+
+Unfold `WeightFamilies.Wt.size`. Establish `hm : (1 : ℝ) ≤ ((max (D.R.sigW j).2 1 : ℕ) : ℝ)` using `by exact_mod_cast le_max_right _ _`. Establish `hsum : 0 ≤ ∑ τ, ((∑ i, (w.aP τ i : ℝ)) + ∑ i, (w.aM τ i : ℝ))` using `by positivity`. Establish `: (k : ℝ) ≤ (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ) * (w.n : ℝ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨Sh.image fun g => t • g, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hx`. Take `⟨g, hg, rfl⟩` from `hx`.
+
+Simplify using `only [PJ.Thc, PJ.scaled]`. Use `Submodule.mem_map.mpr ⟨((N : 𝓞 B.KO) ^ k) • g, Submodule.mem_map.mpr ⟨g, (hSh g hg).1, by simp [N, k]⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [t, mul_smul, LinearMap.smul_apply, LinearMap.id_apply]`. Establish `: ((Sh.image fun g => t • g : Finset (B.Cusp j w)) : Set (B.Cusp j w)) = (fun g => ((t : 𝓞 B.KO) : B.KO) • g) '' (Sh : Set (B.Cusp j w))`. Rewrite using `[Finset.coe_image]`.
+
+Conclude with `congrArg (· '' (Sh : Set (B.Cusp j w))) (funext hsm)`. Rewrite using `[this]`. Conclude with `span_image_smul_top _ ht0 _ hspan`. Introduce `x hx`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.mp hx`.
+
+Apply `WeightFamilies.meanLogSup_le` to reduce the goal to its premises. Introduce `σ`. Rewrite using `[hsm, B.supN_smul, htK]`. Establish `hσs : 0 < ‖σ (s : B.KO)‖` using `norm_pos_iff.mpr ((map_ne_zero σ).mpr hsK)`. Establish `hnorm : ‖σ ((s : B.KO) * ((N : ℕ) : B.KO) ^ k)‖ = ‖σ (s : B.KO)‖ * (N : ℝ) ^ k`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hnorm]`. Establish `hlog_s` using `hsa σ`. Establish `hG` using `(hSh g hg).2 σ`. Establish `hkN : (k : ℝ) * Real.log N ≤ lamStar D * w.size`.
+
+Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hg0 : B.supN j w σ g = 0`. Rewrite using `[hg0, mul_zero, Real.log_zero]`. Establish `: 0 ≤ lamStar D * w.size` using `mul_nonneg (hlam.1.trans hlam.2) (by linarith [WeightFamilies.Wt.one_le_size w])`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hNk : (0 : ℝ) < (N : ℝ) ^ k` using `pow_pos (by linarith) _`. Rewrite using `[Real.log_mul (mul_pos hσs hNk).ne' hg0, Real.log_mul hσs.ne' hNk.ne', Real.log_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem shortG_scaled : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (w : WeightFamilies.Wt D j) (s : 𝓞 B.KO) (Sh : Finset (B.Cusp j w)) (a b : ℝ), s ≠ 0 → 0 ≤ a → 0 ≤ b → (∀ σ : B.KO →+* ℂ, Real.log ‖σ (s : B.KO)‖ ≤ a) → (∀ g ∈ Sh, g ∈ X.shortTh w ∧ ∀ σ, Real.log (B.supN j w σ g) ≤ b) → Submodule.span B.KO (Sh : Set (B.Cusp j w)) = ⊤ → ShortG X w (X.Thc s w) (a + b + lamStar D * w.size) := by
   intro D B P j X w s Sh a b hs ha hb hsa hSh hspan
   classical

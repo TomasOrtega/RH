@@ -15,6 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
+/- English proof (translation)
+Unfold `levChi`. Use `congr 1`. Establish `e1 : levFn (R.βY 0) (R.datYt t 0 R.triv) (finE (Yc D 0) k) = levFn (R.βY 0) (withP (R.datYt t 0 R.triv) (LevelP.triv (R.datYt t 0 R.triv).Pg (R.datYt t 0 R.triv).r ℂ)) (finE (Yc D 0) k)` using `rfl`. Rewrite using `[e1, levFn_withP]`. Rewrite using `[show ext1 (LevelP.triv (R.datYt t 0 R.triv).Pg (R.datYt t 0 R.triv).r ℂ).H (⇑(LevelP.triv (R.datYt t 0 R.triv).Pg (R.datYt t 0 R.triv).r ℂ).chi) (rTup (R.βY 0) (R.datYt t 0 R.triv) (finE (Yc D 0) k)) = 1 from subgroupCharExtension_one_apply _ _, one_mul, levFn_flag1]`.
+
+Unfold `LevCh.datYt LevCh.dat0`. Conclude with `levFn_datY_noQ rank_lowerChainSpace_zero_le (r_le_Y 0) D.R.t 0 R.Pg (R.Q t) R.triv R.chi (R.xiR t) (fun _ => 1) Frm.B _`.
+-/
 theorem flag_character_eq_principal (t : T) (k : GA D (Yc D 0)) :
     levChi (Yc D 0) (R.βY 0) (R.datYt t 0 R.triv) k = levChi (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv)) k := by
   unfold levChi

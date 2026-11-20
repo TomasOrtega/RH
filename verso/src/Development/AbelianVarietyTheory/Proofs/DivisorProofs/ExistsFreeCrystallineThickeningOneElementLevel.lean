@@ -19,6 +19,11 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 
 namespace GlobalTheory.PDForm.FreeThick
 
+/- English proof (translation)
+Use extensionality with `p`. Establish `hp : p ∈ Submodule.span B (Set.range Q.e)` using `Q.e.mem_span p`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`. Conclude with `h2 k`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `smul b x _ hx => rw [Algebra.smul_def, map_mul, map_mul, hx, h1]`.
+-/
 theorem ringHom_eq_of_basis {B C : Type} [CommRing B] [CommRing C] (Q : PDPoly B) {f g : Q.P →+* C}
     (h1 : ∀ b, f (algebraMap B Q.P b) = g (algebraMap B Q.P b)) (h2 : ∀ k, f (Q.e k) = g (Q.e k)) : f = g := by
   ext p
@@ -35,6 +40,51 @@ namespace GlobalTheory.PDForm
 
 open GlobalTheory.PDForm.FreeThick in
 
+/- English proof (translation)
+Introduce `R _ I κ X t n T hT`. Take `⟨Q⟩` from `GlobalTheory.exists_pdPoly T.B`. Take `⟨η, hη⟩` from `GlobalTheory.T.exists_dividedPowers_ext_isStd T.B T.J T.δ Q`. Take `⟨hlift, ε, hε⟩` from `GlobalTheory.PDA.PDPoly.exists_lift_and_aug T.B Q`. Establish `hfil` using `GlobalTheory.PDA.fil_properties Q.P (Q.ext T.J) η`.
+
+Take `⟨K, hK⟩ : ∃ K : Ideal Q.P, K = fil η (n + 1)` from `⟨_, rfl⟩`. Establish `hsub : η.IsSubDPIdeal K` using `by rw [hK]; exact GlobalTheory.PDA.fil_isSubDPIdeal Q.P (Q.ext T.J) η (n + 1) (by omega)`. Take `⟨δ', hδ', huniv⟩` from `(GlobalTheory.DPQuot.quotient_subDPIdeal Q.P (Q.ext T.J) η).1 K hsub`. Establish `hKle : K ≤ Q.ext T.J` using `by rw [hK]; exact (hfil.2.2.1 1 (n + 1) (by omega)).trans hfil.2.1.le`. Use `letI : Algebra R Q.P := ((algebraMap T.B Q.P).comp (algebraMap R T.B)).toAlgebra`.
+
+Use `haveI : IsScalarTower R T.B Q.P := IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `hε1 : ∀ b, ε (algebraMap T.B Q.P b) = b` using `fun b ↦ by simp`. Establish `hεJ : ∀ p : Q.P, ε p ∈ T.J ↔ p ∈ Q.ext T.J`. Introduce `p`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hp`. Establish `: p = algebraMap T.B Q.P (ε p) + (p - algebraMap T.B Q.P (ε p))` using `by ring`. Rewrite using `[this]`. Use `add_mem (Q.algebraMap_mem_ext hp) (Ideal.mem_sup_right ((hε _).2 ?_))` and prove the remaining obligations. Rewrite using `[map_sub, hε1, sub_self]`.
+
+Introduce `hp`. Establish `hle : Q.ext T.J ≤ T.J.comap (ε : Q.P →+* T.B)`. Use `sup_le (Ideal.map_le_iff_le_comap.2 fun b hb ↦ ?_) fun q hq ↦ ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap]`. Express the relevant statement in the definitionally equal form `ε (algebraMap T.B Q.P b) ∈ T.J`.
+
+Rewrite using `[hε1]`. Conclude with `hb`. Rewrite using `[Ideal.mem_comap]`. Express the relevant statement in the definitionally equal form `ε q ∈ T.J`. Rewrite using `[(hε q).1 hq]`.
+
+Conclude with `T.J.zero_mem`. Conclude with `hle hp`. Set `π₀ : Q.P →+* T.B₀` to `T.π.comp (ε : Q.P →+* T.B)`. Establish `hπ₀ : ∀ p, π₀ p = 0 ↔ p ∈ Q.ext T.J` using `fun p ↦ (T.ker _).trans (hεJ p)`. Set `πF : Q.P ⧸ K →+* T.B₀` to `Ideal.Quotient.lift K π₀ fun p hp ↦ (hπ₀ p).2 (hKle hp)`.
+
+Establish `hπF : ∀ p, πF (Ideal.Quotient.mk K p) = T.π (ε p)` using `fun p ↦ rfl`. Establish `hlev : IsLev δ' (n + 1)`. Establish `h` using `GlobalTheory.T.dividedPowerFiltrationIdeal_le_map_of_isDPMorphism Q.P (Q.ext T.J) η (Q.P ⧸ K) _ δ' (Ideal.Quotient.mk K) hδ' rfl (n + 1)`. Rewrite `h` using `[← hK, Ideal.map_quotient_self]`. Conclude with `le_bot_iff.1 h`.
+
+Establish `halg : algebraMap R (Q.P ⧸ K) = (Ideal.Quotient.mk K).comp ((algebraMap T.B Q.P).comp (algebraMap R T.B))`. Both sides reduce to the same expression. Set `F : Thick κ t` to `{ B := Q.P ⧸ K J := (Q.ext T.J).map (Ideal.Quotient.mk K) δ := δ' nil := (isDPNilpotent_iff_exists_isLevel δ').2 ⟨_, hlev⟩ dp := by rw [halg]; exact IsDPMorphism.comp _ hδ' (IsDPMorphism.comp _ hη.dp T.dp) B₀ := T.B₀ π := πF surj := fun b₀ ↦ by`. Take `⟨b, rfl⟩` from `T.surj b₀`. Conclude with `⟨Ideal.Quotient.mk K (algebraMap T.B Q.P b), by rw [hπF, hε1]⟩`.
+
+Use `ker := fun y ↦ by`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[Ideal.mem_quotient_iff_mem hKle]`. Conclude with `hπ₀ p`. Use `x := T.x`.
+
+Use `w := by`. Rewrite using `[T.w]`. Use `congr 1`. Use `RingHom.ext fun r ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T.π (algebraMap R T.B r) = T.π (ε (algebraMap T.B Q.P (algebraMap R T.B r)))`.
+
+Rewrite using `[hε1] }`. Set `φ : T.B →ₐ[R] F.B` to `{ (Ideal.Quotient.mk K).comp (algebraMap T.B Q.P) with commutes' := fun _ ↦ rfl }`. Set `u : T ⟶ F` to `⟨φ, RingHom.id T.B₀, fun b ↦ by`. Express the relevant statement in the definitionally equal form `T.π b = T.π (ε (algebraMap T.B Q.P b))`. Rewrite using `[hε1],`.
+
+Use the proof step `IsDPMorphism.comp _ hδ' hη.dp, by rw [spMap_id, Category.id_comp]⟩`. Use `⟨F, u, fun _ ↦ Ideal.Quotient.mk K (Q.e 1), ⟨hlev, fun _ ↦ Ideal.mem_map_of_mem _ (Q.e_one_mem_ext T.J), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `S hS a c hc`. Establish `hS' : fil S.δ (n + 1) = ⊥` using `hS`. Take `⟨G, hG1, hG2⟩` from `hlift S.B (a.φ : T.B →+* S.B) (fun k ↦ S.δ.dpow k (c ())) (S.δ.dpow_zero (hc ())) fun m k ↦ S.δ.mul_dpow (hc ())`.
+
+Establish `hGa : G.comp (algebraMap T.B Q.P) = (a.φ : T.B →+* S.B)` using `RingHom.ext hG1`. Establish `hGdp : IsDPMorphism η S.δ G` using `GlobalTheory.PDA.PDPoly.isDPMorphism_of_isStd T.B T.J T.δ Q η hη S.B S.J S.δ G (c ()) (hc ()) (by rw [hGa]; exact a.dp) hG2`. Establish `hGK : ∀ p ∈ K, G p = 0` using `fun p hp ↦ by`. Establish `h` using `hfil.2.2.2.2.2.2 S.B S.J S.δ G hGdp (n + 1)`. Rewrite `h` using `[hS', ← hK]`.
+
+Conclude with `(Ideal.mem_bot).1 (h (Ideal.mem_map_of_mem G hp))`. Set `Gb : Q.P ⧸ K →+* S.B` to `Ideal.Quotient.lift K G hGK`. Establish `hGb : ∀ p, Gb (Ideal.Quotient.mk K p) = G p` using `fun p ↦ rfl`. Set `gφ : F.B →ₐ[R] S.B` to `{ Gb with commutes' := fun r ↦ by`. Express the relevant statement in the definitionally equal form `G (algebraMap T.B Q.P (algebraMap R T.B r)) = _`.
+
+Rewrite using `[hG1]`. Conclude with `a.φ.commutes r }`. Establish `hgdp : IsDPMorphism F.δ S.δ (gφ : F.B →+* S.B)`. Use `huniv S.B S.J S.δ Gb ?_` and prove the remaining obligations. Establish `: Gb.comp (Ideal.Quotient.mk K) = G` using `RingHom.ext hGb`.
+
+Rewrite using `[this]`. Conclude with `hGdp`. Set `g : F ⟶ S` to `⟨gφ, a.φ₀, fun b' ↦ by`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective b'`. Express the relevant statement in the definitionally equal form `a.φ₀ (T.π (ε p)) = S.π (G p)`.
+
+Rewrite using `[a.comm, show a.φ (ε p) = G (algebraMap T.B Q.P (ε p)) from (hG1 _).symm]`. Establish `hm : p - algebraMap T.B Q.P (ε p) ∈ Q.ext T.J` using `Ideal.mem_sup_right ((hε _).2 (by rw [map_sub, hε1, sub_self]))`. Establish `h2` using `hGdp.1 (Ideal.mem_map_of_mem G hm)`. Rewrite `h2` using `[← S.ker, map_sub, map_sub, sub_eq_zero]`. Conclude with `h2.symm,`.
+
+Use the proof step `hgdp, a.pt⟩`. Use `⟨g, ⟨Thick.hom_ext fun b ↦ hG1 b, fun _ ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G (Q.e 1) = c ()`. Rewrite using `[hG2 1, S.δ.dpow_one (hc ())]`. Introduce and unpack `g' ⟨h1, h2⟩`.
+
+Use `Thick.hom_ext fun b' ↦ ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective b'`. Express the relevant statement in the definitionally equal form `((g'.φ : F.B →+* S.B).comp (Ideal.Quotient.mk K)) p = G p`. Establish `hHdp : IsDPMorphism η S.δ ((g'.φ : F.B →+* S.B).comp (Ideal.Quotient.mk K))` using `IsDPMorphism.comp _ g'.dp hδ'`. Use `congrArg (fun f : Q.P →+* S.B ↦ f p) (ringHom_eq_of_basis Q (fun b ↦ ?_) fun k ↦ ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(u ≫ g').φ b = G (algebraMap T.B Q.P b)`. Rewrite using `[h1]`. Conclude with `(hG1 b).symm`. Rewrite using `[hG2 k, ← hη.var k, hHdp.map_dpow (Q.e_one_mem_ext T.J)]`. Express the relevant statement in the definitionally equal form `S.δ.dpow k (g'.φ (Ideal.Quotient.mk K (Q.e 1))) = _`.
+
+Rewrite using `[show g'.φ (Ideal.Quotient.mk K (Q.e 1)) = c () from h2 ()]`. Establish `hsemi : SemiHom (RingHom.id R) (Ideal.Quotient.mk K)` using `fun r p ↦ map_smul (Ideal.Quotient.mkₐ R K) r p`. Conclude with `GlobalTheory.T.poincareLemma_truncated_divPowerPoly_oneVariable R T.B T.J T.δ Q η (Q.P ⧸ K) F.J δ' (Ideal.Quotient.mk K) n hη hT hsemi hδ' Ideal.Quotient.mk_surjective rfl (fun b ↦ by rw [Ideal.Quotient.eq_zero_iff_mem, hK]) φ (SemiHom.of_algHom u.φ) u.dp fun _ ↦ rfl`.
+-/
 theorem exists_isFree_one_qAt : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I) (X : Scheme.{0})
     (t : X ⟶ Sp R) (n : ℕ) (T : Thick κ t), IsLev T.δ (n + 1) → ∃ (F : Thick κ t) (u : T ⟶ F) (τ : Unit → F.B),
       IsFree (n + 1) u τ ∧ (KK κ t).QAt u := by

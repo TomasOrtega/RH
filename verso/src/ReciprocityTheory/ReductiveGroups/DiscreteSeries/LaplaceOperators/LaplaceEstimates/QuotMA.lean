@@ -15,6 +15,11 @@ section Cls
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `e : (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) = fun g => G (Formalism.MainNotions.S.umat g)`. Use function extensionality and compare the values at `fun g => h _ (unitary_matrix_mem_set ε g)`. Distinguish the cases in `hF : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)`. Establish `hG : MemLp (fun g : Formalism.REAL.UJ ε => G (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `e ▸ hF`. Rewrite using `[toL2_eq_memLp_toLp ε hF, toL2_eq_memLp_toLp ε hG, MemLp.toLp_eq_toLp_iff]`.
+
+Conclude with `Filter.EventuallyEq.of_eq e`. Establish `hG : ¬ MemLp (fun g : Formalism.REAL.UJ ε => G (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `e ▸ hF`. Rewrite using `[toL2_eq_zero_of_not_memLp ε hF, toL2_eq_zero_of_not_memLp ε hG]`.
+-/
 theorem toL2_congr_on_unitary_bis (ε : Fin n → Bool) {F G : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : ∀ g ∈ UJset ε, F g = G g) : toL2 ε F = toL2 ε G := by
   have e : (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) = fun g => G (Formalism.MainNotions.S.umat g) :=
@@ -26,6 +31,17 @@ theorem toL2_congr_on_unitary_bis (ε : Fin n → Bool) {F G : Matrix (Fin n) (F
   · have hG : ¬ MemLp (fun g : Formalism.REAL.UJ ε => G (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε) := e ▸ hF
     rw [toL2_eq_zero_of_not_memLp ε hF, toL2_eq_zero_of_not_memLp ε hG]
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `Submodule.exists_isCompl G`. Set `p` to `G.projectionOnto q hq`. Establish `hpG : ∀ f ∈ G, ((p f : G) : Y) = f` using `fun f hf => by`. Conclude with `congrArg Subtype.val (Submodule.projectionOnto_apply_left hq ⟨f, hf⟩)`. Establish `hmem : ∀ f : Y, toL2 ε (L (p f)) ∈ smD ε (rreg ε)` using `fun f => toL2_mem_smD_of_isSmoothL2 (hsm _ (p f).2)`.
+
+Establish `hL2 : ∀ f : Y, MemLp (fun g : Formalism.REAL.UJ ε => L (p f) (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `fun f => (hsm _ (p f).2).2 []`. Set `T : Y →ₗ[ℂ] smD ε (rreg ε)` to `{ toFun := fun f => ⟨toL2 ε (L (p f)), hmem f⟩ map_add' := fun f g => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add]`. Rewrite using `[map_add, Submodule.coe_add, map_add]`.
+
+Conclude with `toL2_add_smooth ε (hL2 f) (hL2 g)`. Use the proof step `map_smul' := fun c f => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, RingHom.id_apply]`. Rewrite using `[map_smul, Submodule.coe_smul, map_smul]`.
+
+Conclude with `toL2_smul_smooth ε c _ }`. Establish `hT : ∀ f ∈ G, (T f : L2 ε) = toL2 ε (L f)` using `fun f hf => by show toL2 ε (L (p f)) = _`. Rewrite using `[hpG f hf]`. Use `⟨T, hT, fun a b f hf => ?_⟩` and prove the remaining obligations. Establish `e1 : T f = ⟨toL2 ε (L f), toL2_mem_smD_of_isSmoothL2 (hsm f hf)⟩` using `Subtype.ext (hT f hf)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hT _ (hG a b f hf), e1, rightDerivative_toL2 (hsm f hf) a b]`. Conclude with `toL2_congr_on_unitary_bis ε fun g hg => (hder f hf a b g hg).symm`.
+-/
 theorem exists_lin {Y : Type*} [AddCommGroup Y] [Module ℂ Y] (ε : Fin n → Bool)
     (A : Fin n → Fin n → Module.End ℂ Y) (G : Submodule ℂ Y)
     (L : Y →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (hsm : ∀ f ∈ G, IsSmoothL2 ε (L f))
@@ -81,6 +97,9 @@ def tMapDL (σ : Mat k r → (H →L[ℂ] H)) (x₁ : Fin (2 * r + k + 1) → �
       RingHom.id_apply, smul_eq_mul, Finset.mul_sum]
     refine Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tMapDL_apply (σ : Mat k r → (H →L[ℂ] H)) (x₁ : Fin (2 * r + k + 1) → ℂ) (x₀ : Mat k r) (w : H)
     (f : Fin (2 * r + k + 1) → D) : tMapDL σ x₁ x₀ w f = tMapD σ x₁ x₀ w (fun c => ((f c : D) : H)) := rfl
 
@@ -93,6 +112,19 @@ universe u
 variable {n : ℕ} {D : Type*} [NormedAddCommGroup D] [InnerProductSpace ℂ D] {ε : Fin n → Bool}
   {E : Fin n → Fin n → Module.End ℂ D}
 
+/- English proof (translation)
+Establish `hlift : ∀ (Y : Type u) [AddCommGroup Y] [Module ℂ Y] (B : Fin n → Fin n → Module.End ℂ Y) (ψ : (Fin n → D) →ₗ[ℂ] Y), (∀ a b, ε a = ε b → ∀ x ∈ X, ψ (LemK.tensVd E a b x) = B a b (ψ x)) → ∀ y ∈ X.map ψ, IsKHWVec ε B Λ y → ∃ x ∈ X, IsKHWVec ε (LemK.tensVd E) Λ x ∧ ψ x = y`. Introduce `Y _ _ B ψ hψ y hy hyK`. Take `⟨x₀, hx₀, rfl⟩` from `Submodule.mem_map.1 hy`. Take `⟨S, hSX, hfd, hSk, hx₀S⟩` from `hXk x₀ hx₀`. Take `⟨x, hxS, hxK, hx⟩` from `LemK.exists_highest_weight_lift_pi hU ψ hfd hSk (fun a b hab z hz => hψ a b hab z (hSX hz)) hx₀S hyK`.
+
+Conclude with `⟨x, hSX hxS, hxK, hx⟩`. Distinguish the cases in `hex : ∃ ys ∈ X, ys ≠ 0 ∧ IsKHWVec ε (LemK.tensVd E) Λ ys`. Take `⟨ys, hys, hys0, hysK⟩` from `hex`. Use `⟨ys, hys, fun Y _ _ B ψ hψ y hy hyK => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxK, rfl⟩` from `hlift Y B ψ hψ y hy hyK`.
+
+Take `⟨c₁, c₂, hc, hsum⟩` from `hK2 x ys hx hys hxK hysK`. Distinguish the cases in `h1 : c₁ = 0`. It suffices to derive a contradiction. Establish `h2 : c₂ ≠ 0` using `hc.resolve_left (not_not.2 h1)`. Rewrite `hsum` using `[h1, zero_smul, zero_add]`.
+
+Conclude with `hys0 ((smul_eq_zero.1 hsum).resolve_left h2)`. Use `⟨-(c₂ / c₁), ?_⟩` and prove the remaining obligations. Establish `: x = -(c₂ / c₁) • ys`. Establish `h3 : c₁ • x = -(c₂ • ys)` using `eq_neg_of_add_eq_zero_left hsum`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[this, map_smul]`. Use `⟨0, zero_mem _, fun Y _ _ B ψ hψ y hy hyK => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxK, rfl⟩` from `hlift Y B ψ hψ y hy hyK`. Establish `: x = 0`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hex ⟨x, hx, h0, hxK⟩`. Conclude with `⟨0, by rw [this, map_zero, zero_smul]⟩`.
+-/
 theorem line (hU : IsKUnitary ε E) (X : Submodule ℂ (Fin n → D)) (Λ : Fin n → ℝ)
     (hXk : ∀ y ∈ X, ∃ S : Submodule ℂ (Fin n → D), S ≤ X ∧ FiniteDimensional ℂ S ∧
       IsKStableSub ε (LemK.tensVd E) S ∧ y ∈ S)

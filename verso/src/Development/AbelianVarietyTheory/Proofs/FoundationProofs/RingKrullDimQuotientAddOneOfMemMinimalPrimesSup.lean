@@ -9,6 +9,15 @@ namespace GlobalTheory
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Take `⟨s, g, hinj, hint⟩` from `exists_integral_inj_algHom_of_fg k A`. Set `: Algebra (MvPolynomial (Fin s) k) A` to `g.toRingHom.toAlgebra`. Establish `: Algebra.IsIntegral (MvPolynomial (Fin s) k) A` using `⟨hint⟩`. Establish `hinj' : Function.Injective (algebraMap (MvPolynomial (Fin s) k) A)` using `hinj`. Establish `: FaithfulSMul (MvPolynomial (Fin s) k) A` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hinj'`.
+
+Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing k A`. Use `set p := q.comap (algebraMap (MvPolynomial (Fin s) k) A) with hp`. Establish `: q.LiesOver p` using `⟨rfl⟩`. Establish `h1 : p.height ≤ q.height`. Rewrite using `[Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p q]`.
+
+Conclude with `le_self_add`. Establish `h2 : q.height ≤ p.height`. Establish `e1` using `PrimeSpectrum.height_eq_orderHeight (⟨q, inferInstance⟩ : PrimeSpectrum A)`. Establish `e2` using `PrimeSpectrum.height_eq_orderHeight (⟨p, inferInstance⟩ : PrimeSpectrum _)`. Simplify using `only at e1 e2`.
+
+Rewrite using `[e1, e2]`. Conclude with `Order.height_le_height_apply_of_strictMono (fun P : PrimeSpectrum A => (⟨P.asIdeal.comap (algebraMap (MvPolynomial (Fin s) k) A), inferInstance⟩ : PrimeSpectrum _)) (fun P Q hPQ => Ideal.IsIntegral.comap_lt_comap (R := MvPolynomial (Fin s) k) (show P.asIdeal < Q.asIdeal from hPQ) …`. Rewrite using `[le_antisymm h2 h1, ReciprocityTheory.CA.ringKrullDim_quotient_eq_quotient_comap_of_isIntegral (A := MvPolynomial (Fin s) k) q, ReciprocityTheory.CA.height_add_ringKrullDim_quotient_mvPolynomial_field, ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective hinj', MvPolyn …`. Simplify using the standard rewrite rules.
+-/
 theorem height_add_ringKrullDim_quotient_of_finiteType (k : Type*) {A : Type*} [Field k]
     [CommRing A] [IsDomain A] [Algebra k A] [Algebra.FiniteType k A] (q : Ideal A) [q.IsPrime] :
     (q.height : WithBot ℕ∞) + ringKrullDim (A ⧸ q) = ringKrullDim A := by
@@ -42,6 +51,15 @@ theorem height_add_ringKrullDim_quotient_of_finiteType (k : Type*) {A : Type*} [
     MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]
   simp
 
+/- English proof (translation)
+Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing k A`. Establish `: Q.IsPrime` using `hQ.1.1`. Establish `hPQ : P ≤ Q` using `le_sup_left.trans hQ.1.2`. Establish `hfQ : f ∈ Q` using `hQ.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self f))`. Establish `: (Q.map (Ideal.Quotient.mk P)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hPQ)`.
+
+Establish `h1` using `Ideal.map_height_le_one_of_mem_minimalPrimes hQ`. Establish `h2 : (Q.map (Ideal.Quotient.mk P)).height ≠ 0`. Rewrite using `[Ne, Ideal.height_eq_zero_iff, IsDomain.minimalPrimes_eq_singleton_bot, Set.mem_singleton_iff]`. Introduce `h`. Use `Ideal.mem_map_of_mem (Ideal.Quotient.mk P) hfQ` as an intermediate fact.
+
+Rewrite `this` using `[h, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hf this`. Establish `h3 : (Q.map (Ideal.Quotient.mk P)).height = 1` using `le_antisymm h1 (Order.one_le_iff_ne_zero.2 h2)`. Establish `h4` using `height_add_ringKrullDim_quotient_of_finiteType k (Q.map (Ideal.Quotient.mk P))`. Rewrite `h4` using `[h3, ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hPQ), add_comm]`.
+
+Conclude with `h4`.
+-/
 theorem ringKrullDim_quotient_add_one_of_mem_minimalPrimes_sup (k : Type*) {A : Type*} [Field k]
     [CommRing A] [Algebra k A] [Algebra.FiniteType k A] {P Q : Ideal A} [P.IsPrime] {f : A}
     (hf : f ∉ P) (hQ : Q ∈ (P ⊔ Ideal.span {f}).minimalPrimes) :
@@ -70,11 +88,17 @@ open MvPolynomial DirectSum
 
 variable {ι k : Type*} [Field k]
 
+/- English proof (translation)
+The claim follows from `hI.sup (Ideal.homogeneous_span _ _ (by rintro x rfl; exact ⟨d, hf⟩))`.
+-/
 theorem isHomogeneous_sup_span_singleton {I : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k)) {f : MvPolynomial ι k} {d : ℕ}
     (hf : f.IsHomogeneous d) : (I ⊔ Ideal.span {f}).IsHomogeneous (homogeneousSubmodule ι k) :=
   hI.sup (Ideal.homogeneous_span _ _ (by rintro x rfl; exact ⟨d, hf⟩))
 
+/- English proof (translation)
+Introduce `n g hg`. Rewrite `hg`, the goal using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Rewrite using `[← coe_decompose_mul_add_of_right_mem (homogeneousSubmodule ι k) (j := d) hf]`. Conclude with `hI _ hg`.
+-/
 theorem isHomogeneous_colon_singleton {I : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k)) {f : MvPolynomial ι k} {d : ℕ}
     (hf : f.IsHomogeneous d) :
@@ -86,6 +110,17 @@ theorem isHomogeneous_colon_singleton {I : Ideal (MvPolynomial ι k)}
 
 variable [Finite ι]
 
+/- English proof (translation)
+Establish `h1` using `finrank_quotPiece_add (I ⊔ Ideal.span {f}) (n + d)`. Establish `h2` using `finrank_quotPiece_add (Submodule.colon I {f}) n`. Establish `h3` using `finrank_quotPiece_add I (n + d)`. Establish `e` using `GradedHilbert.finrank_sup_map_add_finrank_inf_comap (LinearMap.mulRight k f) (homogeneousSubmodule ι k n) (I.restrictScalars k ⊓ homogeneousSubmodule ι k (n + d))`. Establish `a₁ : (I ⊔ Ideal.span {f}).restrictScalars k ⊓ homogeneousSubmodule ι k (n + d) = (I.restrictScalars k ⊓ homogeneousSubmodule ι k (n + d)) ⊔ (homogeneousSubmodule ι k n).map (LinearMap.mulRight k f)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `m ⟨hm, hmn⟩`. Take `⟨a, ha, _, hb, rfl⟩` from `Submodule.mem_sup.1 hm`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Rewrite using `[← decompose_of_mem_same (homogeneousSubmodule ι k) hmn, decompose_add, DirectSum.add_apply, Submodule.coe_add, coe_decompose_mul_add_of_right_mem _ (j := d) hf]`.
+
+Conclude with `Submodule.add_mem_sup ⟨hI _ ha, SetLike.coe_mem _⟩ ⟨_, SetLike.coe_mem _, rfl⟩`. Use `sup_le (inf_le_inf_right _ fun m hm => Submodule.mem_sup_left hm) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `⟨Ideal.mem_sup_right (Ideal.mem_span_singleton'.2 ⟨m, rfl⟩), IsHomogeneous.mul hm hf⟩`. Establish `a₂ : (Submodule.colon I {f}).restrictScalars k ⊓ homogeneousSubmodule ι k n = homogeneousSubmodule ι k n ⊓ (I.restrictScalars k ⊓ homogeneousSubmodule ι k (n + d)).comap (LinearMap.mulRight k f)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `m ⟨hm, hmn⟩`. Conclude with `⟨hmn, Submodule.mem_colon_singleton.1 hm, IsHomogeneous.mul hmn hf⟩`. Introduce and unpack `m ⟨hm, hm', -⟩`. Conclude with `⟨Submodule.mem_colon_singleton.2 hm', hm⟩`.
+
+Rewrite `h1` using `[a₁]`. Rewrite `h2` using `[a₂]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_quotPiece_sup_add_colon {I : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k)) {f : MvPolynomial ι k} {d : ℕ}
     (hf : f.IsHomogeneous d) (n : ℕ) :
@@ -122,6 +157,11 @@ theorem finrank_quotPiece_sup_add_colon {I : Ideal (MvPolynomial ι k)}
   rw [a₂] at h2
   omega
 
+/- English proof (translation)
+Apply `polynomial_eq_of_eventually_eval_nat` to reduce the goal to its premises. Take `⟨N, hN⟩` from `eventually_atTop.1 (eventually_finrank_quotPiece (isHomogeneous_colon_singleton hI hf))`. Use `filter_upwards [eventually_finrank_quotPiece hI, eventually_finrank_quotPiece (isHomogeneous_sup_span_singleton hI hf), eventually_ge_atTop (N + d)] with n h1 h2 h3`. Take `⟨n, rfl⟩ : ∃ m, n = m + d` from `⟨n - d, by omega⟩`. Rewrite using `[Polynomial.eval_add, ← h1, ← h2, ← finrank_quotPiece_sup_add_colon hI hf n, Nat.cast_add, hN n (by omega)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem idealHilbertPoly_eq_sup_add_colon {I : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k)) {f : MvPolynomial ι k} {d : ℕ}
     (hf : f.IsHomogeneous d) :
@@ -138,6 +178,11 @@ theorem idealHilbertPoly_eq_sup_add_colon {I : Ideal (MvPolynomial ι k)}
     hN n (by omega)]
   simp
 
+/- English proof (translation)
+Establish `h` using `idealHilbertPoly_eq_sup_add_colon hI hf`. Establish `e : Submodule.colon P {f} = P`. Use extensionality with `g`. Rewrite using `[Submodule.mem_colon_singleton, smul_eq_mul, hP.mul_mem_iff_mem_or_mem]`. Simplify using `[hfP]`.
+
+Rewrite `h` using `[e]`. Take the linear combination `-h`.
+-/
 theorem idealHilbertPoly_sup_of_isPrime {P : Ideal (MvPolynomial ι k)} [hP : P.IsPrime]
     (hI : P.IsHomogeneous (homogeneousSubmodule ι k)) {f : MvPolynomial ι k} {d : ℕ}
     (hf : f.IsHomogeneous d) (hfP : f ∉ P) :
@@ -151,6 +196,11 @@ theorem idealHilbertPoly_sup_of_isPrime {P : Ideal (MvPolynomial ι k)} [hP : P.
   rw [e] at h
   linear_combination -h
 
+/- English proof (translation)
+Use `degree_le_of_eventually_eval_nat (eventually_idealHilbertPoly_nonneg hJ) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_finrank_quotPiece hI, eventually_finrank_quotPiece hJ] with n h1 h2`. Establish `h3` using `finrank_quotPiece_add I n`. Establish `h4` using `finrank_quotPiece_add J n`. Establish `h5 : finrank k (I.restrictScalars k ⊓ homogeneousSubmodule ι k n : Submodule k _) ≤ finrank k (J.restrictScalars k ⊓ homogeneousSubmodule ι k n : Submodule k _)` using `Submodule.finrank_mono (inf_le_inf_right _ fun x hx => h hx)`.
+
+Rewrite using `[← h1, ← h2]`. Conclude with `(by omega)` after adjusting the coercions.
+-/
 theorem degree_idealHilbertPoly_anti {I J : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k))
     (hJ : J.IsHomogeneous (homogeneousSubmodule ι k)) (h : I ≤ J) :
@@ -165,6 +215,13 @@ theorem degree_idealHilbertPoly_anti {I J : Ideal (MvPolynomial ι k)}
   rw [← h1, ← h2]
   exact_mod_cast (by omega)
 
+/- English proof (translation)
+Apply `polynomial_eq_of_eventually_eval_nat` to reduce the goal to its premises. Use `filter_upwards [eventually_finrank_quotPiece hI, eventually_ge_atTop 1] with n h1 h2`. Establish `: quotPiece I n = ⊥`. Rewrite using `[quotPiece_natCast, eq_bot_iff]`. Introduce and unpack `_ ⟨p, hp, rfl⟩`.
+
+Establish `h3` using `mem_idealOfVars_pow_of_isHomogeneous hp h2`. Rewrite `h3` using `[pow_one]`. Establish `h4 : idealOfVars ι k ≤ I`. Rewrite using `[Ideal.span_le, Set.range_subset_iff]`. Conclude with `h`.
+
+Simplify `h4 h3` using `[Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← h1, this]`. Simplify using the standard rewrite rules.
+-/
 theorem idealHilbertPoly_eq_zero_of_forall_X_mem {I : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k))
     (h : ∀ i, (X i : MvPolynomial ι k) ∈ I) : idealHilbertPoly I = 0 := by
@@ -181,6 +238,11 @@ theorem idealHilbertPoly_eq_zero_of_forall_X_mem {I : Ideal (MvPolynomial ι k)}
   rw [← h1, this]
   simp
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨n, hn⟩` from `(eventually_finrank_quotPiece hI).exists`. Use `(isHilbertPoly_idealHilbertPoly hI).finite n` as an intermediate fact. Establish `hbot : quotPiece P n = ⊥` using `by simpa [h0] using hn`. Establish `hmem : Ideal.Quotient.mk P (X i ^ n) ∈ quotPiece P n`.
+
+Rewrite using `[quotPiece_natCast]`. Conclude with `⟨X i ^ n, isHomogeneous_X_pow i n, rfl⟩`. Rewrite `hmem` using `[hbot, Submodule.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h (hP.mem_of_pow_mem _ hmem)`.
+-/
 theorem idealHilbertPoly_ne_zero_of_X_notMem {P : Ideal (MvPolynomial ι k)} [hP : P.IsPrime]
     (hI : P.IsHomogeneous (homogeneousSubmodule ι k)) {i : ι}
     (h : (X i : MvPolynomial ι k) ∉ P) : idealHilbertPoly P ≠ 0 := by
@@ -196,6 +258,11 @@ theorem idealHilbertPoly_ne_zero_of_X_notMem {P : Ideal (MvPolynomial ι k)} [hP
 
 omit [Finite ι] in
 
+/- English proof (translation)
+Rewrite `hp` using `[hI.isPrime_iff]`. Use `push Not at hp`. Take `⟨g, f, -, ⟨d, hf⟩, hgf, hg, hfI⟩` from `hp h`. Use `⟨d, f, hf, lt_of_le_of_ne le_sup_left fun e => hfI ?_, lt_of_le_of_ne (fun x hx => Submodule.mem_colon_singleton.2 (I.mul_mem_right _ hx)) fun e => hg ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self f)`. Rewrite using `[e]`. Conclude with `Submodule.mem_colon_singleton.2 hgf`.
+-/
 theorem exists_form_lt_sup_lt_colon {I : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k)) (h : I ≠ ⊤) (hp : ¬ I.IsPrime) :
     ∃ (d : ℕ) (f : MvPolynomial ι k), f.IsHomogeneous d ∧ I < I ⊔ Ideal.span {f} ∧
@@ -208,10 +275,16 @@ theorem exists_form_lt_sup_lt_colon {I : Ideal (MvPolynomial ι k)}
   · rw [e]; exact Ideal.mem_sup_right (Ideal.mem_span_singleton_self f)
   · rw [e]; exact Submodule.mem_colon_singleton.2 hgf
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, ← Polynomial.C_neg, ← taylor_apply, degree_taylor]`.
+-/
 theorem degree_comp_X_sub_C_rat (P : ℚ[X]) (r : ℚ) :
     (P.comp (Polynomial.X - Polynomial.C r)).degree = P.degree := by
   rw [sub_eq_add_neg, ← Polynomial.C_neg, ← taylor_apply, degree_taylor]
 
+/- English proof (translation)
+Use `degree_comp_X_add_C_sub_lt P (-r) e h` as an intermediate fact. Rewrite `this` using `[Polynomial.C_neg, ← sub_eq_add_neg]`. Use `coeff_eq_zero_of_degree_lt this` as an intermediate fact. Rewrite `this` using `[Polynomial.coeff_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem coeff_comp_X_sub_C_rat {P : ℚ[X]} {e : ℕ} (h : P.degree ≤ e) (r : ℚ) :
     (P.comp (Polynomial.X - Polynomial.C r)).coeff e = P.coeff e := by
   have := degree_comp_X_add_C_sub_lt P (-r) e h
@@ -219,6 +292,11 @@ theorem coeff_comp_X_sub_C_rat {P : ℚ[X]} {e : ℕ} (h : P.degree ≤ e) (r : 
   have := coeff_eq_zero_of_degree_lt this
   rwa [Polynomial.coeff_sub, sub_eq_zero] at this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hP0 : P ≠ 0` using `by rintro rfl; simp at hlt`. Rewrite `hlt` using `[degree_eq_natDegree hP0, Nat.cast_lt]`. Take `⟨e, he⟩ : ∃ e, P.natDegree = e + 1` from `⟨P.natDegree - 1, by omega⟩`.
+
+Establish `h1` using `(coeff_sub_comp_X_sub_C P 1 e (by rw [← he]; exact degree_le_natDegree)).2`. Rewrite `h1` using `[coeff_eq_zero_of_degree_lt (h.trans_le (by exact_mod_cast (by omega : m ≤ e))), ← he, one_mul, eq_comm, mul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `absurd h1 (by positivity)`. Conclude with `hP0 (leadingCoeff_eq_zero.1 h1)`.
+-/
 theorem degree_eq_of_degree_sub_comp {P : ℚ[X]} {m : ℕ}
     (h : (P - P.comp (Polynomial.X - Polynomial.C 1)).degree < m) : P.degree ≤ m := by
   by_contra hlt
@@ -233,9 +311,27 @@ theorem degree_eq_of_degree_sub_comp {P : ℚ[X]} {m : ℕ}
   · exact absurd h1 (by positivity)
   · exact hP0 (leadingCoeff_eq_zero.1 h1)
 
+/- English proof (translation)
+The claim follows from `idealHilbertPoly_eq_zero_of_forall_X_mem (Ideal.IsHomogeneous.top _) fun _ => trivial`.
+-/
 theorem idealHilbertPoly_top : idealHilbertPoly (⊤ : Ideal (MvPolynomial ι k)) = 0 :=
   idealHilbertPoly_eq_zero_of_forall_X_mem (Ideal.IsHomogeneous.top _) fun _ => trivial
 
+/- English proof (translation)
+Proceed by induction on `I using IsNoetherian.induction generalizing m with`. Consider the case `_ I ih`. Establish `mono : ∀ J, I ≤ J → ringKrullDim (MvPolynomial ι k ⧸ J) ≤ m` using `fun J hJ => (ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective hJ)).trans hm`. Distinguish the cases in `htop : I = ⊤`. Rewrite using `[htop, idealHilbertPoly_top]`.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hp : Ideal.IsPrime I`. Distinguish the cases in `hX : ∀ i, (X i : MvPolynomial ι k) ∈ I`. Rewrite using `[idealHilbertPoly_eq_zero_of_forall_X_mem hI hX]`. Simplify using the standard rewrite rules.
+
+Use `push Not at hX`. Take `⟨i, hi⟩` from `hX`. Establish `hJ` using `isHomogeneous_sup_span_singleton hI (isHomogeneous_X k i)`. Establish `hlt : I < I ⊔ Ideal.span {X i}` using `lt_of_le_of_ne le_sup_left fun e => hi (by`. Rewrite using `[e]`.
+
+Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hne : I ⊔ Ideal.span {X i} ≠ ⊤` using `ne_top_of_le_ne_top idealOfVars_ne_top (sup_le (le_idealOfVars_of_isHomogeneous hI htop) (Ideal.span_mono (Set.singleton_subset_iff.2 ⟨i, rfl⟩)))`. Take `⟨δ, hδ⟩` from `exists_ringKrullDim_quotient_mvPolynomial_eq_nat hne`. Establish `h1` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hlt.le) (Ideal.Quotient.factor_surjective _) (r := Ideal.Quotient.mk I (X i)) (mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])) (by`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `h2 : δ + 1 ≤ m`. Use `h1.trans hm` as an intermediate fact. Rewrite `this` using `[hδ]`. Conclude with `this` after adjusting the coercions.
+
+Establish `h3` using `ih _ hlt hJ hδ.le`. Rewrite `h3` using `[idealHilbertPoly_sup_of_isPrime hI (isHomogeneous_X k i) hi, Nat.cast_one]`. Conclude with `(degree_eq_of_degree_sub_comp h3).trans_lt (by exact_mod_cast h2)`. Take `⟨d, f, hf, h1, h2⟩` from `exists_form_lt_sup_lt_colon hI htop hp`. Rewrite using `[idealHilbertPoly_eq_sup_add_colon hI hf]`.
+
+Use `(degree_add_le _ _).trans_lt (max_lt (ih _ h1 (isHomogeneous_sup_span_singleton hI hf) (mono _ h1.le)) ?_)` and prove the remaining obligations. Rewrite using `[degree_comp_X_sub_C_rat]`. Conclude with `ih _ h2 (isHomogeneous_colon_singleton hI hf) (mono _ h2.le)`.
+-/
 theorem degree_idealHilbertPoly_lt {I : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k)) {m : ℕ}
     (hm : ringKrullDim (MvPolynomial ι k ⧸ I) ≤ m) : (idealHilbertPoly I).degree < m := by
@@ -276,6 +372,13 @@ theorem degree_idealHilbertPoly_lt {I : Ideal (MvPolynomial ι k)}
     rw [degree_comp_X_sub_C_rat]
     exact ih _ h2 (isHomogeneous_colon_singleton hI hf) (mono _ h2.le)
 
+/- English proof (translation)
+Rewrite using `[← ringKrullDim_eq_zero_of_field k]`. Use `ringKrullDim_le_of_surjective (algebraMap k _) fun x => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨a, rfl⟩`.
+
+Consider the case `add p q hp hq`. Take `⟨a, ha⟩` from `hp`. Take `⟨b, hb⟩` from `hq`. Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb]⟩`. Consider the case `mul_X p i _`.
+
+Conclude with `⟨0, by rw [map_zero, eq_comm, Ideal.Quotient.eq_zero_iff_mem]; exact I.mul_mem_left _ (h i)⟩`.
+-/
 theorem ringKrullDim_quotient_le_zero_of_forall_X_mem {I : Ideal (MvPolynomial ι k)}
     (h : ∀ i, (X i : MvPolynomial ι k) ∈ I) : ringKrullDim (MvPolynomial ι k ⧸ I) ≤ 0 := by
   rw [← ringKrullDim_eq_zero_of_field k]
@@ -290,6 +393,23 @@ theorem ringKrullDim_quotient_le_zero_of_forall_X_mem {I : Ideal (MvPolynomial �
   | mul_X p i _ =>
     exact ⟨0, by rw [map_zero, eq_comm, Ideal.Quotient.eq_zero_iff_mem]; exact I.mul_mem_left _ (h i)⟩
 
+/- English proof (translation)
+Use `le_antisymm ((degree_le_iff_coeff_zero _ _).2 fun m hm => (degree_lt_iff_coeff_zero _ _).1 (degree_idealHilbertPoly_lt hI he.le) m (by exact_mod_cast hm)) ?_` and prove the remaining obligations. Proceed by induction on `e generalizing P with`. Consider the case `zero`. Establish `: ¬ ∀ i, (X i : MvPolynomial ι k) ∈ P` using `fun h => by`. Use `ringKrullDim_quotient_le_zero_of_forall_X_mem h` as an intermediate fact.
+
+Rewrite `this` using `[he]`. Conclude with `absurd this (by norm_num)`. Use `push Not at this`. Take `⟨i, hi⟩` from `this`. Conclude with `zero_le_degree_iff.2 (idealHilbertPoly_ne_zero_of_X_notMem hI hi)`.
+
+Consider the case `succ e ih`. Establish `: ¬ ∀ i, (X i : MvPolynomial ι k) ∈ P` using `fun h => by`. Use `ringKrullDim_quotient_le_zero_of_forall_X_mem h` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `absurd this (by exact_mod_cast (by omega))`.
+
+Use `push Not at this`. Take `⟨i, hi⟩` from `this`. Establish `hJ` using `isHomogeneous_sup_span_singleton hI (isHomogeneous_X k i)`. Establish `hne : P ⊔ Ideal.span {X i} ≠ ⊤` using `ne_top_of_le_ne_top idealOfVars_ne_top (sup_le (le_idealOfVars_of_isHomogeneous hI hP.ne_top) (Ideal.span_mono (Set.singleton_subset_iff.2 ⟨i, rfl⟩)))`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+
+Take `⟨Q, hQ, -⟩` from `Ideal.exists_minimalPrimes_le hle`. Establish `: Q.IsPrime` using `hQ.1.1`. Establish `hQh` using `isHomogeneous_of_mem_minimalPrimes _ hJ hQ`. Take `⟨δ, hδ⟩` from `exists_ringKrullDim_quotient_mvPolynomial_eq_nat this.ne_top`. Establish `h1` using `ringKrullDim_quotient_add_one_of_mem_minimalPrimes_sup k hi hQ`.
+
+Rewrite `h1` using `[he, hδ]`. Choose the witnesses or unpack the hypotheses as in `rfl : δ = e + 1 := by`. Establish `: δ + 1 = e + 1 + 1` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `(ih hQh hδ).trans (degree_idealHilbertPoly_anti hJ hQh hQ.1.2)`.
+
+Rewrite `h2` using `[idealHilbertPoly_sup_of_isPrime hI (isHomogeneous_X k i) hi]`. Assume the negation of the conclusion as `hlt`. Establish `h3 : (idealHilbertPoly P).degree ≤ e` using `(degree_le_iff_coeff_zero _ _).2 fun m hm => (degree_lt_iff_coeff_zero _ _).1 (not_le.1 hlt) m (by exact_mod_cast hm)`. Establish `h4` using `degree_comp_X_add_C_sub_lt _ (-((1 : ℕ) : ℚ)) e h3`. Rewrite `h4` using `[Polynomial.C_neg, ← sub_eq_add_neg, ← degree_neg, neg_sub]`.
+
+Conclude with `absurd h2 (not_le.2 h4)`.
+-/
 theorem degree_idealHilbertPoly_eq_of_isPrime {P : Ideal (MvPolynomial ι k)} [hP : P.IsPrime]
     (hI : P.IsHomogeneous (homogeneousSubmodule ι k)) {e : ℕ}
     (he : ringKrullDim (MvPolynomial ι k ⧸ P) = (e + 1 : ℕ)) :
@@ -336,6 +456,21 @@ theorem degree_idealHilbertPoly_eq_of_isPrime {P : Ideal (MvPolynomial ι k)} [h
     rw [Polynomial.C_neg, ← sub_eq_add_neg, ← degree_neg, neg_sub] at h4
     exact absurd h2 (not_le.2 h4)
 
+/- English proof (translation)
+Proceed by induction on `I using IsNoetherian.induction with`. Consider the case `_ I ih`. Distinguish the cases in `htop : I = ⊤`. Substitute `htop` using the available equality. Simplify using `[idealHilbertPoly_top, Ideal.minimalPrimes_top]`.
+
+Distinguish the cases in `hp : Ideal.IsPrime I`. Simplify using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Take `⟨d, f, hf, h1, h2⟩` from `exists_form_lt_sup_lt_colon hI htop hp`. Establish `hJ₁` using `isHomogeneous_sup_span_singleton hI hf`. Establish `hJ₂` using `isHomogeneous_colon_singleton hI hf`.
+
+Establish `e₁` using `(degree_idealHilbertPoly_anti hI hJ₁ h1.le).trans he`. Establish `e₂` using `(degree_idealHilbertPoly_anti hI hJ₂ h2.le).trans he`. Establish `nn : ∀ J : Ideal (MvPolynomial ι k), J.IsHomogeneous (homogeneousSubmodule ι k) → I ≤ J → ∀ Q ∈ J.minimalPrimes, 0 ≤ (idealHilbertPoly Q).coeff e`. Introduce `J hJ hIJ Q hQ`. Establish `hQh` using `isHomogeneous_of_mem_minimalPrimes _ hJ hQ`.
+
+Conclude with `coeff_nonneg_of_eventually_eval_nat ((degree_idealHilbertPoly_anti hI hQh (hIJ.trans hQ.1.2)).trans he) (eventually_idealHilbertPoly_nonneg hQh)`. Rewrite using `[idealHilbertPoly_eq_sup_add_colon hI hf, Polynomial.coeff_add, coeff_comp_X_sub_C_rat e₂]`. Use `le_trans ?_ (add_le_add (ih _ h1 hJ₁ e₁) (ih _ h2 hJ₂ e₂))` and prove the remaining obligations. Rewrite using `[← Finset.sum_union_inter]`. Use `le_add_of_le_of_nonneg (Finset.sum_le_sum_of_subset_of_nonneg ?_ ?_) (Finset.sum_nonneg ?_)` and prove the remaining obligations.
+
+Introduce `Q hQ`. Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset] at hQ ⊢`. Distinguish the cases in `hfQ : f ∈ Q`. Conclude with `Or.inl ⟨⟨hQ.1.1, sup_le hQ.1.2 ((Ideal.span_singleton_le_iff_mem _).2 hfQ)⟩, fun R hR hRQ => hQ.2 ⟨hR.1, h1.le.trans hR.2⟩ hRQ⟩`. Conclude with `Or.inr ⟨⟨hQ.1.1, fun g hg => (hQ.1.1.mem_or_mem (hQ.1.2 (Submodule.mem_colon_singleton.1 hg))).resolve_right hfQ⟩, fun R hR hRQ => hQ.2 ⟨hR.1, h2.le.trans hR.2⟩ hRQ⟩`.
+
+Introduce `Q hQ _`. Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset] at hQ`. Conclude with `hQ.elim (nn _ hJ₁ h1.le Q) (nn _ hJ₂ h2.le Q)`. Introduce `Q hQ`. Simplify using `only [Finset.mem_inter, Set.Finite.mem_toFinset] at hQ`.
+
+Conclude with `nn _ hJ₁ h1.le Q hQ.1`.
+-/
 theorem sum_coeff_idealHilbertPoly_minimalPrimes_le {I : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k)) {e : ℕ}
     (he : (idealHilbertPoly I).degree ≤ e) :

@@ -12,6 +12,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [DiscreteTopology Γ]
   (μ : Measure G) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Rewrite using `[L2.inner_def, integral_quotientMeasure]`. Use `integral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [h] with y hy`. Rewrite using `[hy]`. Simplify using `[RCLike.inner_apply, mul_comm]`.
+-/
 private theorem inner_eq_setIntegral_of_ae (w v : Lp ℂ 2 (quotientMeasure Γ μ)) {g : G → ℂ}
     (h : ∀ᵐ y ∂μ, (v : RightCosetSpace Γ → ℂ) (mk Γ y) = g y) :
     inner ℂ w v = ∫ y in fundamentalDomain Γ, conj (w (mk Γ y)) * g y ∂μ := by
@@ -21,6 +24,27 @@ private theorem inner_eq_setIntegral_of_ae (w v : Lp ℂ 2 (quotientMeasure Γ �
   rw [hy]
   simp [RCLike.inner_apply, mul_comm]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hb`. Use `choose v hvτ hvr using hrep`. Set `Φ : G → ℂ` to `fun m => ∫ u, Ψ u m ∂lam`. Establish `hΦc : Continuous Φ`. Use `continuous_of_dominated (bound := fun _ => C) ?_ ?_ (integrable_const _) ?_` and prove the remaining obligations.
+
+Introduce `m`. Conclude with `(hc.comp (by fun_prop : Continuous fun u : U => (u, m))).aestronglyMeasurable`. Introduce `m`. Conclude with `Eventually.of_forall fun u => hC u m`. Conclude with `Eventually.of_forall fun u => hc.comp (by fun_prop : Continuous fun m => (u, m))`.
+
+Establish `hΦb : ∀ m, ‖Φ m‖ ≤ C * lam.real univ` using `fun m => norm_integral_le_of_norm_le_const (Eventually.of_forall fun u => hC u m)`. Set `f : RightCosetSpace Γ → ℂ` to `Quotient.lift Φ (by`. Introduce and unpack `a b ⟨γ, rfl⟩`. Express the relevant statement in the definitionally equal form `Φ ((γ : G) * b) = Φ b`. Simplify using `only [Φ, hinv _ _ γ.2])`.
+
+Establish `hfc : Continuous f` using `(isOpenQuotientMap_mk Γ).isQuotientMap.continuous_iff.2 hΦc`. Establish `hf2 : MemLp f 2 (quotientMeasure Γ μ)` using `MemLp.of_bound hfc.aestronglyMeasurable (C * lam.real univ) (Eventually.of_forall fun q => by`. Take `⟨y, rfl⟩` from `mk_surjective Γ q`. Conclude with `hΦb y)`. Establish `hrepΦ : ∀ᵐ y ∂μ, ((hf2.toLp f : Lp ℂ 2 (quotientMeasure Γ μ)) : RightCosetSpace Γ → ℂ) (mk Γ y) = Φ y`.
+
+Establish `h` using `(quasiMeasurePreserving_mk Γ μ).ae (MemLp.coeFn_toLp hf2)`. Use `filter_upwards [h] with y hy`. Rewrite using `[hy]`. Both sides reduce to the same expression. Use `⟨hf2.toLp f, ?_, hrepΦ⟩` and prove the remaining obligations.
+
+Use `haveI : CompleteSpace τ := hτ.completeSpace_coe`. Rewrite using `[← Submodule.orthogonal_orthogonal τ, Submodule.mem_orthogonal]`. Introduce `w hw`. Rewrite using `[inner_eq_setIntegral_of_ae Γ μ w _ hrepΦ]`. Establish `hw1 : Integrable (fun y => w (mk Γ y)) (μ.restrict (fundamentalDomain Γ))`.
+
+Establish `h1 : Integrable w (quotientMeasure Γ μ)` using `(Lp.memLp w).integrable (by norm_num)`. Conclude with `Integrable.comp_measurable h1 (measurable_mk Γ)`. Establish `hwm : StronglyMeasurable (fun y => w (mk Γ y))` using `stronglyMeasurable_lift Γ μ w`. Establish `hint : Integrable (Function.uncurry fun (u : U) (y : G) => conj (w (mk Γ y)) * Ψ u y) (lam.prod (μ.restrict (fundamentalDomain Γ)))`. Use `Integrable.mono' ((hw1.norm.mul_const C).comp_snd lam) ?_ ?_` and prove the remaining obligations.
+
+Establish `h1 : StronglyMeasurable (fun p : U × G => conj (w (mk Γ p.2)))` using `continuous_star.comp_stronglyMeasurable (hwm.comp_measurable measurable_snd)`. Conclude with `h1.aestronglyMeasurable.mul hc.aestronglyMeasurable`. Use `Eventually.of_forall fun p => ?_` and prove the remaining obligations. Simplify using `only [Function.uncurry, norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_left (hC p.1 p.2) (norm_nonneg _)`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Φ, integral_const_mul]`. Use `_ = ∫ u, ∫ y in fundamentalDomain Γ, conj (w (mk Γ y)) * Ψ u y ∂μ ∂lam := (integral_integral_swap hint).symm`. Use `_ = 0 := by`. Establish `h0 : ∀ u, ∫ y in fundamentalDomain Γ, conj (w (mk Γ y)) * Ψ u y ∂μ = 0`.
+
+Introduce `u`. Rewrite using `[← inner_eq_setIntegral_of_ae Γ μ w (v u) (hvr u)]`. Conclude with `Submodule.inner_left_of_mem_orthogonal (hvτ u) hw`. Simplify using `[h0]`.
+-/
 private theorem closed_stable [IsFiniteMeasure (quotientMeasure Γ μ)]
     (τ : Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ μ))) (hτ : IsClosed (τ : Set (Lp ℂ 2 (quotientMeasure Γ μ))))
     (U : Type) [TopologicalSpace U] [SecondCountableTopology U] [MeasurableSpace U] [BorelSpace U]
@@ -89,6 +113,9 @@ private theorem closed_stable [IsFiniteMeasure (quotientMeasure Γ μ)]
 
 end Gen
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ τ hτ U _ _ _ _ lam _ Ψ hc hb hinv hrep`. Use `haveI : IsFiniteMeasure (quotientMeasure (Gam K n) μ) := isFiniteMeasure_quotientMeasure (K := K) (n := n) μ`. Conclude with `closed_stable (Gam K n) μ τ hτ U lam Ψ hc hb hinv hrep`.
+-/
 theorem UpperTheory.reps_integral_mem_closed_submodule :
     ∀ {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (τ : Submodule ℂ (L2 μ)), IsClosed (τ : Set (L2 μ)) →
       ∀ (U : Type) [TopologicalSpace U] [SecondCountableTopology U] [MeasurableSpace U] [BorelSpace U] (lam : Measure U) [IsFiniteMeasure lam] (Ψ : U → G1 K n → ℂ),

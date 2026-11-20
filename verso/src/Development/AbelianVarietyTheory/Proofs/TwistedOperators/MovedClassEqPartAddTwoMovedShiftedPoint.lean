@@ -30,25 +30,45 @@ open GlobalTheory.LiftLevel
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem partAt_eq_smul {S T : HSp D} (c : AE D) (w : WO S T) : partAt c w = c • w := by
   ext i j; rfl
 
+/- English proof (translation)
+Simplify using `only [actO, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem actO_smul' (S T : HSp D) (g : GA D S) (h : GA D T) (c : AE D) (x : WO S T) :
     actO S T g h (c • x) = c • actO S T g h x := by
   simp only [actO, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Simplify using `using GlobalTheory.WeilVacMove.actO_inv_actO (S := S) (T := T) g⁻¹ 1 x`.
+-/
 theorem actO_actO_inv (S T : HSp D) (g : GA D S) (x : WO S T) : actO S T g 1 (actO S T g⁻¹ 1 x) = x := by
   simpa using GlobalTheory.WeilVacMove.actO_inv_actO (S := S) (T := T) g⁻¹ 1 x
 
+/- English proof (translation)
+Use extensionality with `a k`. Simplify using `only [finW, two_nsmul, Matrix.add_apply, Matrix.of_apply, TensorProduct.tmul_add]`.
+-/
 theorem finW_two (S T : HSp D) (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     finW S T (2 • y) = 2 • finW S T y := by
   ext a k
   simp only [finW, two_nsmul, Matrix.add_apply, Matrix.of_apply, TensorProduct.tmul_add]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨v, hv, u, hu, e⟩ => ⟨v, hv, u, h hu, e⟩`.
+-/
 theorem tens_mono {E : Type} [Field E] [NumberField E] {n r : ℕ} (Λ : Lt E n) {L L' : Lt E r} (h : L ≤ L') :
     tens Λ L ≤ tens Λ L' :=
   AddSubgroup.closure_mono fun _ ⟨v, hv, u, hu, e⟩ => ⟨v, hv, u, h hu, e⟩
 
+/- English proof (translation)
+Establish `key : tens Λ (Ideal.span {(2 : 𝓞 E)} • N) ≤ (tens Λ N).map (DistribMulAction.toAddMonoidHom (Matrix (Fin n) (Fin r) E) (2 : ℕ))`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, u, hu, rfl⟩`. Rewrite `hu` using `[Submodule.ideal_span_singleton_smul]`. Take `⟨u', hu', rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hu`.
+
+Use `⟨vecMulVec v u', AddSubgroup.subset_closure ⟨v, hv, u', hu', rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[vecMulVec_apply, two_smul, two_nsmul, mul_add]`. Take `⟨y', hy', e⟩` from `key hy`. Conclude with `⟨y', hy', e.symm⟩`.
+-/
 theorem tens_two {E : Type} [Field E] [NumberField E] {n r : ℕ} (Λ : Lt E n) (N : Lt E r)
     {y : Matrix (Fin n) (Fin r) E} (hy : y ∈ tens Λ (Ideal.span {(2 : 𝓞 E)} • N)) :
     ∃ y' ∈ tens Λ N, y = 2 • y' := by
@@ -64,11 +84,39 @@ theorem tens_two {E : Type} [Field E] [NumberField E] {n r : ℕ} (Λ : Lt E n) 
   obtain ⟨y', hy', e⟩ := key hy
   exact ⟨y', hy', e.symm⟩
 
+/- English proof (translation)
+Introduce `v hv b hb`. Conclude with `Submodule.smul_mono le_rfl Submodule.smul_le_right (Submodule.smul_mem _ b hv)`.
+-/
 theorem mem_sh {S T : HSp D} (C : Ctx S T) (Lv : GlobalTheory.SW.Level C.X) :
     Lv.𝔪 • (conjI Lv.𝔪 • C.X.Λ) ≤ Lv.sh C.X.Λ := by
   intro v hv b hb
   exact Submodule.smul_mono le_rfl Submodule.smul_le_right (Submodule.smul_mem _ b hv)
 
+/- English proof (translation)
+Introduce `D S T C hn ΛT hT hAA βS βT hβS hβT Pg Q ξ hPg h2 e he a k₀ Λ' hab hmov hgen hΛ' Lv hLv y hy`. Rewrite `hy` using `[Submodule.mul_smul]`. Take `⟨y', hy', rfl⟩` from `tens_two _ _ hy`. Establish `hS` using `C.m.gS`. Use `set std := stdL D.host.E S.rank with hstd`.
+
+Use `set x := finW S T y' with hx`. Use `set X := actO S T k₀ 1 x with hX`. Establish `hX2 : actO S T k₀ 1 (finW S T (2 • y')) = 2 • X`. Rewrite using `[finW_two, GlobalTheory.WeilVacMove.actO_two_nsmul]`. Rewrite using `[hX2]`.
+
+Establish `hxM : x ∈ hatA S T (tens std (conjI Lv.𝔪 • C.X.Λ))`. Rewrite using `[hx, GlobalTheory.Ker.SignVac.finW_eq]`. Conclude with `GlobalTheory.Ker.SignVac.finTens_mem (GlobalTheory.TensLatMove.intAf_one (D := D)) hy'`. Establish `hE : partAt e x ∈ hatA S T (tens std (Lv.sh C.X.Λ))` using `GlobalTheory.T.idempotentPart_finitePoint_mem_shiftedTensorLattice D S T C Pg Q e he Lv hLv y' hy'`. Establish `hF : partAt (1 - e - cA D e) x ∈ hatA S T (tens std (Lv.sh C.X.Λ))`.
+
+Use `GlobalTheory.T.offIdempotent_scale_mem_completedTensorLattice D S T e (Pg ∪ Q) he _ _ ?_ x hxM` and prove the remaining obligations. Establish `: (∏ PP ∈ Pg ∪ Q, conjI PP.asIdeal) = Lv.𝔪` using `by rw [hLv]; rfl`. Rewrite using `[this]`. Conclude with `mem_sh C Lv`. Establish `hB : (1 - cA D e) • x ∈ hatA S T (tens std (Lv.sh C.X.Λ))`.
+
+Establish `: (1 - cA D e) • x = partAt e x + partAt (1 - e - cA D e) x`. Rewrite using `[partAt_eq_smul, partAt_eq_smul, ← add_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `add_mem hE hF`. Establish `hmov1 : IsMov (fmt T 1) (Lv.sh C.X.Λ) (Lv.sh C.X.Λ)`. Establish `hmt1 : Formalism.L2.Theta.mt T 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Establish `hfmt1 : fmt T 1 = 1` using `by simp [fmt, hmt1]`. Rewrite using `[hfmt1]`.
+
+Introduce `u`. Conclude with `⟨fun h => ⟨u, h, (Matrix.one_mulVec u).symm⟩, fun ⟨u₀, h, e⟩ => by rw [e, Matrix.one_mulVec]; exact h⟩`. Take `⟨u₀, hu₀, hu₀e⟩` from `(GlobalTheory.TensLatMove.mem_hatA_iff S T hS k₀⁻¹ 1 Λ' std (Lv.sh C.X.Λ) (Lv.sh C.X.Λ) hΛ' hmov1 _).1 hB`. Establish `hv : partAt (1 - cA D e) X = u₀`. Rewrite using `[partAt_eq_smul, hX, ← actO_smul', hu₀e, actO_actO_inv]`.
+
+Use `⟨partAt (1 - cA D e) X, hv ▸ hu₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[partAt_eq_smul, partAt_eq_smul, smul_comm (cA D e) (2 : ℕ) X, ← smul_add, ← add_smul]`. Use `congr 1`. Rewrite using `[add_sub_cancel, one_smul]`. Establish `hce : cA D e * cA D e = cA D e` using `by rw [← map_mul, GlobalTheory.PlaceVec.idemSum_mul_self he]`.
+
+Establish `hint1 : finPart D (cA D e) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hce])`. Establish `hce' : (1 - cA D e) * (1 - cA D e) = 1 - cA D e` using `by linear_combination hce`. Establish `hint2 : finPart D (1 - cA D e) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hce'])`. Establish `hstar : ∀ v : Fin S.rank → D.host.E, v ∈ std ↔ star v ∈ std`. Establish `: ∀ v : Fin S.rank → D.host.E, v ∈ std → star v ∈ std` using `fun v hv => (GlobalTheory.SW.Base.mem_stdL _).2 fun a => GlobalTheory.SW.Base.isIntegral_cc ((GlobalTheory.SW.Base.mem_stdL _).1 hv a)`.
+
+Conclude with `fun v => ⟨this v, fun h => by simpa using this _ h⟩`. Establish `hlat` using `GlobalTheory.Ker.LatTens.latO_eq_hatA D S T C std std ΛT C.X.Λ hstar hAA`. Establish `hxΛ : x ∈ hatA S T (tens std C.X.Λ)`. Rewrite using `[hx, GlobalTheory.Ker.SignVac.finW_eq]`. Conclude with `GlobalTheory.Ker.SignVac.finTens_mem (GlobalTheory.TensLatMove.intAf_one (D := D)) (tens_mono _ Submodule.smul_le_right hy')`.
+
+Rewrite `hxΛ` using `[← hlat]`. Establish `hP` using `Formalism.IndefR.Fin.latO_smul_mem S T std ΛT hint1 hxΛ`. Establish `hR` using `Formalism.IndefR.Fin.latO_smul_mem S T std ΛT hint2 hxΛ`. Establish `hpair` using `GlobalTheory.LatVac.char_sympl_eq_one C.std (GlobalTheory.Ker.Base.selfDualC_stdL hS) hT hP hR`. Establish `hpair' : C.ψ (symplO S T (cA D e • X) ((1 - cA D e) • X)) = 1`.
+
+Rewrite using `[hX, ← actO_smul', ← actO_smul', GlobalTheory.SymplOInv.symplO_actO]`. Conclude with `hpair`. Rewrite using `[partAt_eq_smul, partAt_eq_smul, smul_comm (cA D e) (2 : ℕ) X, two_nsmul, two_nsmul, GlobalTheory.SplitScalar.symplOH_add_left, GlobalTheory.SplitScalar.symplOH_add_self, GlobalTheory.LatVac.symplO_add_right, AddChar.map_add_eq_mul, hpair', one_mul]`.
+-/
 theorem moved_class : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤ S.rank) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ e : AE D, IsIdemSum e (Pg ∪ Q) → ∀ (a : AE D) (k₀ : GA D S) (Λ' : Lt D.host.E S.rank), (∃ b : AE D, a * b = e) → GlobalTheory.LiftLevel.IsMover S T βS βT e a k₀ → GlobalTheory.LiftLevel.IsGen C βS βT Pg Q e a → IsMov (fmtC S k₀⁻¹) Λ' (stdL D.host.E S.rank) → ∀ Lv : GlobalTheory.SW.Level C.X, Lv.𝔪 = GlobalTheory.LiftLevel.liftI Pg Q → ∀ y ∈ tens (stdL D.host.E S.rank) ((Ideal.span {2} * conjI Lv.𝔪) • C.X.Λ), ∃ v ∈ hatA S T (tens Λ' (Lv.sh C.X.Λ)), actO S T k₀ 1 (finW S T y) = GlobalTheory.LiftLevel.partAt (cA D e) (actO S T k₀ 1 (finW S T y)) + 2 • v ∧ C.ψ (symplOH S T (GlobalTheory.LiftLevel.partAt (cA D e) (actO S T k₀ 1 (finW S T y))) (2 • v)) = 1 := by
   intro D S T C hn ΛT hT hAA βS βT hβS hβT Pg Q ξ hPg h2 e he a k₀ Λ' hab hmov hgen hΛ' Lv hLv y hy
   rw [Submodule.mul_smul] at hy

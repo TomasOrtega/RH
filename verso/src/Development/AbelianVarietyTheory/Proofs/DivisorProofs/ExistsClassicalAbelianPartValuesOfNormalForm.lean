@@ -30,6 +30,9 @@ def frW {x : KeyIn ℂ} {Y : Scheme.{0}} {M : LB Y} {φ : x.P.A.left ⟶ Y} (w :
 
 variable {x : KeyIn ℂ} {Y : Scheme.{0}} {M : LB Y} {φ : x.P.A.left ⟶ Y} {w : LB.Iso x.P.L (M.pull φ)} {g : ℕ}
 
+/- English proof (translation)
+Unfold `frW`. Establish `hi` using `le_chartAt x.P.isLB (u.ex z).left`. Rewrite using `[u.fr_compat _ k z ((le_preimage_inf _ _ _).2 ⟨hi, hk⟩), ← _root_.mul_assoc]`. Conclude with `congrArg (· * u.fr k z) (GlobalTheory.Ex.Arch.FibEx.val_iso _ (pull_isLB hM φ) hw _ _ _ ((le_preimage_wchart _ _ _ _).2 fun _ => hj) hi hk)`.
+-/
 theorem frW_eq (hM : M.IsLB) (hw : w.IsGen) (u : HolUnif x.P.A x.P.L g) (j : M.ι) (z : Fin g → ℂ) (k : x.P.L.ι)
     (hj : ⊤ ≤ ((u.ex z).left ≫ φ) ⁻¹ᵁ M.U j) (hk : ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U k) :
     frW w u j z = valAt' (u.ex z).left _ (w.s (fun _ => j, k)).val * u.fr k z := by
@@ -39,12 +42,18 @@ theorem frW_eq (hM : M.IsLB) (hw : w.IsGen) (u : HolUnif x.P.A x.P.L g) (j : M.�
   exact congrArg (· * u.fr k z) (GlobalTheory.Ex.Arch.FibEx.val_iso _ (pull_isLB hM φ) hw _ _ _
     ((le_preimage_wchart _ _ _ _).2 fun _ => hj) hi hk)
 
+/- English proof (translation)
+Establish `hi` using `le_chartAt x.P.isLB (u.ex z).left`. Conclude with `mul_ne_zero (val_unit_ne_zero _ valueRules ((le_preimage_inf _ _ _).2 ⟨(le_preimage_wchart _ _ _ _).2 fun _ => hj, hi⟩) _) (u.fr_ne _ _ hi)`.
+-/
 theorem frW_ne (u : HolUnif x.P.A x.P.L g) (j : M.ι) (z : Fin g → ℂ) (hj : ⊤ ≤ ((u.ex z).left ≫ φ) ⁻¹ᵁ M.U j) :
     frW w u j z ≠ 0 := by
   have hi := le_chartAt x.P.isLB (u.ex z).left
   exact mul_ne_zero (val_unit_ne_zero _ valueRules
     ((le_preimage_inf _ _ _).2 ⟨(le_preimage_wchart _ _ _ _).2 fun _ => hj, hi⟩) _) (u.fr_ne _ _ hi)
 
+/- English proof (translation)
+Unfold `frW`. Rewrite using `[← _root_.mul_assoc]`. Conclude with `congrArg (· * _) (GlobalTheory.Ex.Arch.val_iso_chart x.P.isLB hw _ i j _ hi hj (le_chartAt x.P.isLB (u.ex z).left))`.
+-/
 theorem frW_compat (hw : w.IsGen) (u : HolUnif x.P.A x.P.L g) (i j : M.ι) (z : Fin g → ℂ)
     (hi : ⊤ ≤ ((u.ex z).left ≫ φ) ⁻¹ᵁ M.U i) (hj : ⊤ ≤ ((u.ex z).left ≫ φ) ⁻¹ᵁ M.U j) :
     frW w u i z = valAt' ((u.ex z).left ≫ φ) (M.U i ⊓ M.U j) (M.g i j).val * frW w u j z := by
@@ -52,6 +61,11 @@ theorem frW_compat (hw : w.IsGen) (u : HolUnif x.P.A x.P.L g) (i j : M.ι) (z : 
   rw [← _root_.mul_assoc]
   exact congrArg (· * _) (GlobalTheory.Ex.Arch.val_iso_chart x.P.isLB hw _ i j _ hi hj (le_chartAt x.P.isLB (u.ex z).left))
 
+/- English proof (translation)
+Introduce `z₀ hz₀`. Establish `hk` using `le_chartAt x.P.isLB (u.ex z₀).left`. Establish `a : ⊤ ≤ (u.ex z₀).left ⁻¹ᵁ (((M.pull φ).div x.P.L).U (fun _ => j, FrameValue.chartAt x.P.isLB (u.ex z₀).left))` using `(le_preimage_inf _ _ _).2 ⟨(le_preimage_wchart _ _ _ _).2 fun _ => hz₀, hk⟩`. Take `⟨o₂, d₂⟩` from `u.hol _ (w.s (fun _ => j, FrameValue.chartAt x.P.isLB (u.ex z₀).left)).val`. Establish `n₂` using `o₂.mem_nhds a`.
+
+Establish `d` using `(d₂.differentiableAt n₂).fun_mul ((u.fr_hol _).differentiableAt ((u.hol _ 0).1.mem_nhds hk))`. Use `(d.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [n₂] with z hz`. Take `⟨h₁, h₂⟩` from `(le_preimage_inf _ _ _).1 hz`. Conclude with `frW_eq hM hw u j z _ ((le_preimage_wchart _ _ _ _).1 h₁ PUnit.unit) h₂`.
+-/
 theorem frW_hol (hM : M.IsLB) (hw : w.IsGen) (u : HolUnif x.P.A x.P.L g) (j : M.ι) :
     DifferentiableOn ℂ (frW w u j) {z | ⊤ ≤ ((u.ex z).left ≫ φ) ⁻¹ᵁ M.U j} := by
   intro z₀ hz₀
@@ -66,6 +80,9 @@ theorem frW_hol (hM : M.IsLB) (hw : w.IsGen) (u : HolUnif x.P.A x.P.L g) (j : M.
   obtain ⟨h₁, h₂⟩ := (le_preimage_inf _ _ _).1 hz
   exact frW_eq hM hw u j z _ ((le_preimage_wchart _ _ _ _).1 h₁ PUnit.unit) h₂
 
+/- English proof (translation)
+Use `show valAt' p V (resG X h ((f.app U).hom s)) = _`. Rewrite using `[valAt'_res _ h _ hV, valAt'_comp]`.
+-/
 theorem valAt'_appLE_comp {X X' : Scheme.{0}} (p : Sp ℂ ⟶ X) (f : X ⟶ X') (U : X'.Opens) (V : X.Opens) (h : V ≤ f ⁻¹ᵁ U)
     (hV : ⊤ ≤ p ⁻¹ᵁ V) (s : Γ(X', U)) : valAt' p V ((f.appLE U V h).hom s) = valAt' (p ≫ f) U s := by
   show valAt' p V (resG X h ((f.app U).hom s)) = _
@@ -77,11 +94,17 @@ namespace GlobalTheory.MBLow.Cl.GeoOne
 
 open GlobalTheory.CubeValues GlobalTheory.SymmetricSemicharacter GlobalTheory.EigenNorm GlobalTheory.FrameValue
 
+/- English proof (translation)
+Simplify using `only [TF, jFK, jK, spMap, Over.mk_hom]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem tf_hom (R : Type) [CommRing R] [IsDomain R] [Algebra (FractionRing R) ℂ] :
     (TF (R := R) ℂ).hom = spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R))) := by
   simp only [TF, jFK, jK, spMap, Over.mk_hom]
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Establish `hz : z = algebraMap A _ z.fst + algebraMap A _ z.snd * DualNumber.eps`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[hz, map_add, map_mul, h1, h1, h2]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl, dualMap]`.
+-/
 theorem eq_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (F : DualNumber A →+* DualNumber B)
     (h1 : ∀ a, F (algebraMap A _ a) = algebraMap B _ (f a)) (h2 : F DualNumber.eps = DualNumber.eps) : F = dualMap f := by
   refine RingHom.ext fun z => ?_
@@ -90,11 +113,17 @@ theorem eq_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (F : D
   rw [hz, map_add, map_mul, h1, h1, h2]
   ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl, dualMap]
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Conclude with `(GlobalTheory.LamT.existsUnique_isDiff_and_linear x u).1`.
+-/
 theorem eu_gen (x : KeyIn ℂ) (g : ℕ) (hg : x.P.g = g) (u : HolUnif x.P.A x.P.L g) :
     ∀ w, IsTangent w → ∃! W, u.IsDiff W w := by
   subst hg
   exact (GlobalTheory.LamT.existsUnique_isDiff_and_linear x u).1
 
+/- English proof (translation)
+Establish `: (1 : 𝟙_ (Over S) ⟶ X) = η[X]`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem one_left {S : Scheme.{0}} (X : Over S) [GrpObj X] : (1 : 𝟙_ (Over S) ⟶ X).left = eSec X := by
   have : (1 : 𝟙_ (Over S) ⟶ X) = η[X] := by
     rw [Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]
@@ -106,6 +135,45 @@ namespace GlobalTheory.MBLow.Cl
 
 open GlobalTheory.CubeValues GlobalTheory.SymmetricSemicharacter GlobalTheory.EigenNorm GlobalTheory.FrameValue GlobalTheory.MBLow.Cl.GeoOne
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D hψ hτ _ N ν y hyP hrig hth x hg hy u τ a b c W hpb hnf`. Take `⟨P, gpos, rig, rig_gen, th, th_ne, v, basis⟩` from `y`. Substitute `hyP` using the available equality. Consider the cases of `hrig`. Take `⟨th', hth', hνth⟩` from `hth`.
+
+Consider the cases of `hth'`. Take `⟨φ, he, w, hg', F, hφ, hw, hrigm, hthm, hF1, hF2, hv⟩` from `hpb`. Establish `hnf'` using `hnf`. Take `⟨hs, hp, ha, hb, hc, hΛ, hrigu, hfn, hdiff⟩` from `hnf'`. Take `⟨e, he'⟩` from `LiePull.exists_pushEquiv hφ (𝟙_ (Over (Sp ℂ))) (TF (R := R) ℂ).hom (by rw [tf_hom]; exact (Category.id_comp _).symm)`.
+
+Establish `hJ` using `ν.good`. Establish `hex0 : u.ex 0 = 1`. Use `u.ex_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+
+Establish `h0 : (u.ex 0).left ≫ φ = spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R))) ≫ eSec D.P.A` using `by rw [hex0, one_left]; exact he`. Establish `hrg0 : frW w u (ν.J (spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R))) ≫ eSec D.P.A)) 0 = ν.rg`. Unfold `NumOf.rg vF`. Rewrite using `[tf_hom]`. Conclude with `GlobalTheory.T.uniformisedFibre_frame_at_origin_eq_rigidification R D x φ he w hw hrigm _ u hrigu _ _ (le_chartAt _ _) (hJ _)`.
+
+Establish `hrgne : ν.rg ≠ 0`. Rewrite using `[← hrg0]`. Use `frW_ne u _ 0 ?_` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `hJ _`.
+
+Establish `hthz : ∀ z, sF ν.th ((u.ex z).left ≫ φ) ν.J = c * thetaChar τ a b z * frW w u (ν.J ((u.ex z).left ≫ φ)) z`. Introduce `z`. Establish `hj : ⊤ ≤ ((u.ex z).left ≫ φ) ⁻¹ᵁ D.P.L.U (ν.J ((u.ex z).left ≫ φ))` using `hJ _`. Establish `hle : (D.P.L.wchart (fun _ : Fin 1 => 𝟙 D.P.A.left) fun _ => ν.J ((u.ex z).left ≫ φ)) ≤ D.P.L.U (ν.J ((u.ex z).left ≫ φ))` using `fun q hq => Set.mem_iInter.1 hq 0`. Establish `e0 : sF ν.th ((u.ex z).left ≫ φ) ν.J = valAt' ((u.ex z).left ≫ φ) _ (resG _ hle (th.f (ν.J ((u.ex z).left ≫ φ))))`.
+
+Rewrite using `[← hνth _ hle]`. Both sides reduce to the same expression. Rewrite using `[e0, valAt'_res _ hle _ ((le_preimage_wchart _ _ _ _).2 fun _ => by rw [Category.comp_id]; exact hj)]`. Establish `hk` using `le_chartAt x.P.isLB (u.ex z).left`. Establish `hV : ((D.P.L.pull φ).U (fun _ => ν.J ((u.ex z).left ≫ φ))) ⊓ x.P.L.U (FrameValue.chartAt x.P.isLB (u.ex z).left) ≤ φ ⁻¹ᵁ D.P.L.U (ν.J ((u.ex z).left ≫ φ))` using `inf_le_left.trans (LB.wchart_le _ _ _ PUnit.unit)`.
+
+Establish `hpV : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (((D.P.L.pull φ).U (fun _ => ν.J ((u.ex z).left ≫ φ))) ⊓ x.P.L.U (FrameValue.chartAt x.P.isLB (u.ex z).left))` using `(le_preimage_inf _ _ _).2 ⟨(le_preimage_wchart _ _ _ _).2 fun _ => hj, hk⟩`. Establish `hm` using `congrArg (valAt' (u.ex z).left _) (hthm (fun _ => ν.J ((u.ex z).left ≫ φ)) _ hV)`. Rewrite `hm` using `[valAt'_appLE_comp _ _ _ _ hV hpV, valAt'_mul, valAt'_res _ _ _ hpV, hfn _ z hk]`. Simplify using `only at hm`. Rewrite using `[hm]`.
+
+Unfold `frW`. Establish `key : ∀ A B C E : ℂ, A = B → A * (C * E) = C * (B * E)` using `by intros; subst_vars; ring`. Conclude with `key _ _ _ _ rfl`. Set `d : AB N.toNumB D.P.g` to `{ τ := τ, a := a, b := b, c := c, symm := hs, pos := hp, ha := ha, hb := hb, hc := hc ex := fun z => ν.eA.symm (e (u.ex z)) ex_add := fun z w => by simp only [u.ex_add, map_mul] onto := fun q => by`. Take `⟨p, hp⟩` from `e.surjective (ν.eA q)`.
+
+Take `⟨z, rfl⟩` from `u.ex_onto p`. Conclude with `⟨z, show ν.eA.symm (e (u.ex z)) = q by rw [hp, MulEquiv.symm_apply_apply]⟩`. Use `ker := fun z => by`. Rewrite using `[MulEquiv.map_eq_one_iff, MulEquiv.map_eq_one_iff, u.ker, hΛ]`. Use `fr := fun z => Units.mk0 (frW w u (ν.J ((u.ex z).left ≫ φ)) z / ν.rg) (div_ne_zero (frW_ne u _ z (hJ _)) hrgne)`.
+
+Use `fr_zero := by`. Use `ext`. Rewrite using `[Units.val_mk0, Units.val_one, h0, hrg0, div_self hrgne]`. Use `fr_per := fun M N z => by`. Simplify using `only [Units.val_mk0]`.
+
+Establish `hl : u.ex (z + perV τ M N) = u.ex z`. Rewrite using `[u.ex_add, (u.ker _).2 ((hΛ _).2 ⟨M, N, rfl⟩), _root_.mul_one]`. Unfold `frW`. Rewrite using `[hl, frame_eq_autV_mul _ x hg u τ a b c W hnf M N _ z (le_chartAt _ _)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `th := fun z => by`. Establish `h1` using `ν.th_eq (ν.eA.symm (e (u.ex z)))`. Rewrite `h1` using `[MulEquiv.apply_symm_apply, he']`. Express the relevant statement in the definitionally equal form `N.th _ * ν.rg = _ at h1`. Rewrite `h1` using `[hthz z]`.
+
+Rewrite using `[Units.val_mk0]`. Clear the denominators using the available nonvanishing facts. Conclude with `h1 }`. Establish `hE : ∀ z, (ν.eA (d.ex z)).left = (u.ex z).left ≫ φ` using `fun z => by show (ν.eA (ν.eA.symm (e (u.ex z)))).left = _`. Rewrite using `[MulEquiv.apply_symm_apply, he']`.
+
+Use `⟨d, ⟨fun i z => frW w u i z, GlobalTheory.T.holomorphic_functionValues_classicalUniformisation R D N ν _ d x u φ hφ hE, fun i => ?_, fun i j z h => ?_, fun z => ?_, fun bb hbb => ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [hE]`. Conclude with `frW_hol D.P.isLB hw u i`. Rewrite `h`, the goal using `[hE]`. Conclude with `frW_compat hw u i j z ((le_preimage_inf _ _ _).1 h).1 ((le_preimage_inf _ _ _).1 h).2`.
+
+Rewrite using `[hE] show (frW w u (ν.J ((u.ex z).left ≫ φ)) z / ν.rg) * ν.rg = _`. Conclude with `div_mul_cancel₀ _ hrgne`. Take `⟨b', hb't, hb'⟩` from `GlobalTheory.T.dualPointOverOrigin_lifts_tangentVector_uniformised R D x φ hφ he bb hbb`. Take `⟨W', hW', -⟩` from `eu_gen x _ hg u b' hb't`. Conclude with `⟨W', (GlobalTheory.T.holomorphic_uniformization_complex_base_change R D N ν _ d x u φ hφ hE b' bb hb't hb' W').2 hW'⟩`.
+
+Introduce `vB hvB i bb hbb W'`. Establish `hvi : v i = vB i`. Use `eq_of_heq (hvB i)` as an intermediate fact. Rewrite `this` using `[Fin.cast_eq_self]`. Then use the resulting hypothesis. Establish `hF : F = dualMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R)))` using `eq_dualMap _ F hF1 hF2`.
+
+Establish `hb' : (x.v (i.cast hg.symm)).left ≫ φ = bb.left`. Rewrite using `[hv, hbb, hF, ← hvi]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.T.holomorphic_uniformization_complex_base_change R D N ν _ d x u φ hφ hE _ bb (x.basis.1 _) hb' W']`. Take `⟨W0, -, huniq⟩` from `eu_gen x _ hg u _ (x.basis.1 (i.cast hg.symm))`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(huniq _ h).trans (huniq _ (hdiff i)).symm`. Introduce and unpack `rfl`. Conclude with `hdiff i`.
+-/
 theorem exists_ab_geo_of_nf : AllC fun {R} _ _ {D} _ {N} ν => ∀ (y : KeyIn R) (_ : y.P = D.P), HEq y.rig D.rig → (∃ th : D.P.L.Sec, HEq y.th th ∧ ∀ i : D.P.L.ι, ∀ h : LB.wchart D.P.L (fun _ : Fin 1 => 𝟙 D.P.A.left) (fun _ => i) ≤ D.P.L.U i, ν.th.f (fun _ => i) = resG _ h (th.f i)) → ∀ (x : KeyIn ℂ) (hg : x.P.g = D.P.g) (hy : y.P.g = D.P.g) (u : HolUnif x.P.A x.P.L D.P.g) (τ : Matrix (Fin D.P.g) (Fin D.P.g) ℂ) (a b : Fin D.P.g → ℂ) (c : ℂ) (W : Fin D.P.g → Fin D.P.g → ℂ), KeyPB x y ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R))) → NF x hg u τ a b c W → ∃ (d : AB N.toNumB D.P.g) (_ : Geo ν d), d.c = c ∧ ∀ (vB : Fin D.P.g → (epsR R ⟶ D.P.A)), (∀ i, HEq (y.v (i.cast hy.symm)) (vB i)) → ∀ i (bb : TE R ℂ ⟶ D.P.A), bb.left = spMap (dualMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R)))) ≫ (vB i).left → ∀ W', IsD ν d W' bb ↔ W' = W i := by
   intro R _ _ _ _ D hψ hτ _ N ν y hyP hrig hth x hg hy u τ a b c W hpb hnf
   obtain ⟨P, gpos, rig, rig_gen, th, th_ne, v, basis⟩ := y

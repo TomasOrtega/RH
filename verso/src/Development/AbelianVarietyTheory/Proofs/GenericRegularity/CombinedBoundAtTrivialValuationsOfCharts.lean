@@ -19,6 +19,11 @@ section
 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
+/- English proof (translation)
+Establish `hw' : algebraMap V (FractionRing V) w ≠ 0`. Introduce `h; apply hw; exact IsFractionRing.injective V (FractionRing V) (by rw [h, map_zero])`. Establish `h1` using `IsDedekindDomain.HeightOneSpectrum.valuation_le_one (IsDiscreteValuationRing.maximalIdeal V) (K := FractionRing V) w`. Establish `h0 : valV V (algebraMap V (FractionRing V) w) ≠ 0` using `valV_ne_zero hw'`. Establish `h2 : WithZero.log (valV V (algebraMap V (FractionRing V) w)) ≤ WithZero.log (1 : WithZero (Multiplicative ℤ))` using `(WithZero.log_le_log h0 one_ne_zero).2 h1`.
+
+Rewrite `h2` using `[WithZero.log_one]`. Unfold `vV`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_nonneg (w : V) (hw : w ≠ 0) : 0 ≤ vV V (algebraMap V (FractionRing V) w) := by
   have hw' : algebraMap V (FractionRing V) w ≠ 0 := by
     intro h; apply hw; exact IsFractionRing.injective V (FractionRing V) (by rw [h, map_zero])
@@ -31,6 +36,9 @@ theorem vV_nonneg (w : V) (hw : w ≠ 0) : 0 ≤ vV V (algebraMap V (FractionRin
   unfold vV
   omega
 
+/- English proof (translation)
+Establish `h1 : (IsDiscreteValuationRing.maximalIdeal V).valuation (FractionRing V) (algebraMap V _ u) = 1` using `(IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem (K := FractionRing V) (IsDiscreteValuationRing.maximalIdeal V)).2 hu`. Unfold `vV valV`. Rewrite using `[h1, WithZero.log_one, neg_zero]`.
+-/
 theorem vV_unit (u : V) (hu : u ∉ maximalIdeal V) : vV V (algebraMap V (FractionRing V) u) = 0 := by
   have h1 : (IsDiscreteValuationRing.maximalIdeal V).valuation (FractionRing V) (algebraMap V _ u) = 1 :=
     (IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem (K := FractionRing V)
@@ -38,6 +46,13 @@ theorem vV_unit (u : V) (hu : u ∉ maximalIdeal V) : vV V (algebraMap V (Fracti
   unfold vV valV
   rw [h1, WithZero.log_one, neg_zero]
 
+/- English proof (translation)
+Establish `h0 : valV V y ≠ 0` using `valV_ne_zero hy`. Establish `hle : valV V y ≤ 1`. Rewrite using `[← WithZero.log_le_log h0 one_ne_zero, WithZero.log_one]`. Unfold `vV at h`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨w, hw⟩` from `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one (R := V) (K := FractionRing V) y (fun v => by`. Establish `hv : v = IsDiscreteValuationRing.maximalIdeal V`. Establish `hm : v.asIdeal.IsMaximal` using `v.isPrime.isMaximal v.ne_bot`. Use `ext1`. Conclude with `IsLocalRing.eq_maximalIdeal hm`.
+
+Rewrite using `[hv]`. Conclude with `hle)`. Conclude with `⟨w, hw⟩`.
+-/
 theorem mem_of_vV_nonneg (y : FractionRing V) (hy : y ≠ 0) (h : 0 ≤ vV V y) :
     ∃ w : V, algebraMap V (FractionRing V) w = y := by
   have h0 : valV V y ≠ 0 := valV_ne_zero hy
@@ -55,6 +70,11 @@ theorem mem_of_vV_nonneg (y : FractionRing V) (hy : y ≠ 0) (h : 0 ≤ vV V y) 
       exact hle)
   exact ⟨w, hw⟩
 
+/- English proof (translation)
+Distinguish the cases in `hw : w = 0`. Rewrite using `[hw, map_zero, nval_zero]`. Conclude with `le_top`. Establish `hw' : algebraMap V (FractionRing V) w ≠ 0`. Introduce `h; apply hw; exact IsFractionRing.injective V (FractionRing V) (by rw [h, map_zero])`.
+
+Rewrite using `[nval_of_ne hw']`. Conclude with `EReal.coe_nonneg.2 (div_nonneg (by exact_mod_cast vV_nonneg w hw) (Nat.cast_nonneg e))`.
+-/
 theorem nval_nonneg (e : ℕ) (w : V) : 0 ≤ nval V e (algebraMap V (FractionRing V) w) := by
   by_cases hw : w = 0
   · rw [hw, map_zero, nval_zero]
@@ -64,6 +84,9 @@ theorem nval_nonneg (e : ℕ) (w : V) : 0 ≤ nval V e (algebraMap V (FractionRi
     rw [nval_of_ne hw']
     exact EReal.coe_nonneg.2 (div_nonneg (by exact_mod_cast vV_nonneg w hw) (Nat.cast_nonneg e))
 
+/- English proof (translation)
+Establish `hu0 : u ≠ 0` using `fun h => hu (h ▸ (maximalIdeal V).zero_mem)`. Establish `hu' : algebraMap V (FractionRing V) u ≠ 0`. Introduce `h; apply hu0; exact IsFractionRing.injective V (FractionRing V) (by rw [h, map_zero])`. Rewrite using `[nval_of_ne hu', vV_unit u hu]`. Simplify using the standard rewrite rules.
+-/
 theorem nval_unit (e : ℕ) (u : V) (hu : u ∉ maximalIdeal V) : nval V e (algebraMap V (FractionRing V) u) = 0 := by
   have hu0 : u ≠ 0 := fun h => hu (h ▸ (maximalIdeal V).zero_mem)
   have hu' : algebraMap V (FractionRing V) u ≠ 0 := by
@@ -71,11 +94,25 @@ theorem nval_unit (e : ℕ) (u : V) (hu : u ∉ maximalIdeal V) : nval V e (alge
   rw [nval_of_ne hu', vV_unit u hu]
   simp
 
+/- English proof (translation)
+Introduce `h; apply hx; exact IsFractionRing.injective V (FractionRing V) (by rw [h, map_zero])`.
+-/
 theorem ne_zero_map {x : V} (hx : x ≠ 0) : algebraMap V (FractionRing V) x ≠ 0 := by
   intro h; apply hx; exact IsFractionRing.injective V (FractionRing V) (by rw [h, map_zero])
 
 variable {A : Type} [CommRing A] [IsDomain A]
 
+/- English proof (translation)
+Take `⟨x, s, hs, hfs, rfl⟩` from `h`. Establish `has : a * s = x * b`. Apply `IsFractionRing.injective A (FractionRing A)` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← hab, ← hfs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hφ : φ a * φ s = φ x * φ b` using `by rw [← map_mul, ← map_mul, has]`. Distinguish the cases in `ha : φ a = 0`. Establish `hx : φ x = 0`. Rewrite `hφ` using `[ha, zero_mul]`. Conclude with `(mul_eq_zero.1 hφ.symm).resolve_right hb`.
+
+Rewrite using `[ha, hx, map_zero, nval_zero, nval_of_ne (ne_zero_map hs), nval_of_ne (ne_zero_map hb), EReal.top_sub_coe, EReal.top_sub_coe]`. Establish `hx : φ x ≠ 0`. Introduce `hx`. Rewrite `hφ` using `[hx, zero_mul]`. Conclude with `mul_ne_zero ha hs hφ`.
+
+Establish `hv` using `congrArg (vV V) (congrArg (algebraMap V (FractionRing V)) hφ)`. Rewrite `hv` using `[map_mul, map_mul, vV_mul (ne_zero_map ha) (ne_zero_map hs), vV_mul (ne_zero_map hx) (ne_zero_map hb)]`. Rewrite using `[nval_of_ne (ne_zero_map ha), nval_of_ne (ne_zero_map hb), nval_of_ne (ne_zero_map hx), nval_of_ne (ne_zero_map hs), ← EReal.coe_sub, ← EReal.coe_sub, div_sub_div_same, div_sub_div_same]`. Use `congr 2`. Establish `: ((vV V (algebraMap V (FractionRing V) (φ x)) : ℤ) : ℝ) - (vV V (algebraMap V (FractionRing V) (φ s)) : ℤ) = ((vV V (algebraMap V (FractionRing V) (φ a)) : ℤ) : ℝ) - (vV V (algebraMap V (FractionRing V) (φ b)) : ℤ)`.
+
+Establish `: (vV V (algebraMap V (FractionRing V) (φ x)) : ℤ) - vV V (algebraMap V (FractionRing V) (φ s)) = vV V (algebraMap V (FractionRing V) (φ a)) - vV V (algebraMap V (FractionRing V) (φ b))` using `by omega`. Conclude with `this` after adjusting the coercions. Conclude with `this`.
+-/
 theorem chval_eq (φ : A →+* V) (e : ℕ) (f : FractionRing A) (r : EReal) (h : ChV φ e f r) (a b : A)
     (hab : f * algebraMap A (FractionRing A) b = algebraMap A (FractionRing A) a) (hb : φ b ≠ 0) :
     r = nval V e (algebraMap V (FractionRing V) (φ a)) - nval V e (algebraMap V (FractionRing V) (φ b)) := by
@@ -109,6 +146,15 @@ theorem chval_eq (φ : A →+* V) (e : ℕ) (f : FractionRing A) (r : EReal) (h 
       exact_mod_cast this
     exact this
 
+/- English proof (translation)
+Distinguish the cases in `ha : φ a = 0`. Conclude with `⟨0, by rw [ha, zero_mul]⟩`. Rewrite `hr` using `[chval_eq φ e f r h a b hab hb, nval_of_ne (ne_zero_map ha), nval_of_ne (ne_zero_map hb), ← EReal.coe_sub, EReal.coe_nonneg, div_sub_div_same]`. Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast he`. Establish `hle : (vV V (algebraMap V (FractionRing V) (φ b)) : ℝ) ≤ vV V (algebraMap V (FractionRing V) (φ a))`.
+
+Use `(div_nonneg_iff.1 hr)` as an intermediate fact. Break down `this with ⟨h1, -⟩ | ⟨-, h2⟩` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle' : vV V (algebraMap V (FractionRing V) (φ b)) ≤ vV V (algebraMap V (FractionRing V) (φ a))`.
+
+Conclude with `hle` after adjusting the coercions. Use `set y := algebraMap V (FractionRing V) (φ a) / algebraMap V (FractionRing V) (φ b)`. Establish `hy0 : y ≠ 0` using `div_ne_zero (ne_zero_map ha) (ne_zero_map hb)`. Establish `hyv : vV V y + vV V (algebraMap V (FractionRing V) (φ b)) = vV V (algebraMap V (FractionRing V) (φ a))`. Rewrite using `[← vV_mul hy0 (ne_zero_map hb), div_mul_cancel₀ _ (ne_zero_map hb)]`.
+
+Take `⟨w, hw⟩` from `mem_of_vV_nonneg y hy0 (by omega)`. Use `⟨w, IsFractionRing.injective V (FractionRing V) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hw, div_mul_cancel₀ _ (ne_zero_map hb)]`.
+-/
 theorem chval_div (φ : A →+* V) (e : ℕ) (he : 0 < e) (f : FractionRing A) (r : EReal) (h : ChV φ e f r)
     (hr : 0 ≤ r) (a b : A) (hab : f * algebraMap A (FractionRing A) b = algebraMap A (FractionRing A) a)
     (hb : φ b ≠ 0) : ∃ w : V, φ a = w * φ b := by
@@ -132,6 +178,9 @@ theorem chval_div (φ : A →+* V) (e : ℕ) (he : 0 < e) (f : FractionRing A) (
   refine ⟨w, IsFractionRing.injective V (FractionRing V) ?_⟩
   rw [map_mul, hw, div_mul_cancel₀ _ (ne_zero_map hb)]
 
+/- English proof (translation)
+Establish `hs0 : φ s ≠ 0` using `fun h0 => hs (h0 ▸ (maximalIdeal V).zero_mem)`. Rewrite using `[chval_eq φ e f r h a s hfs hs0, nval_unit e _ hs, sub_zero]`. Conclude with `nval_nonneg e _`.
+-/
 theorem chval_nonneg (φ : A →+* V) (e : ℕ) (f : FractionRing A) (r : EReal) (h : ChV φ e f r) (a s : A)
     (hfs : f * algebraMap A (FractionRing A) s = algebraMap A (FractionRing A) a) (hs : φ s ∉ maximalIdeal V) :
     0 ≤ r := by
@@ -148,17 +197,26 @@ variable {A : Type} [CommRing A] [IsDomain A]
 
 def vr (e : ℕ) (x : V) : ℝ := (vV V (algebraMap V (FractionRing V) x) : ℝ) / e
 
+/- English proof (translation)
+Rewrite using `[nval_of_ne (ne_zero_map hx)]`. Both sides reduce to the same expression.
+-/
 theorem nval_eq_vr (e : ℕ) {x : V} (hx : x ≠ 0) :
     nval V e (algebraMap V (FractionRing V) x) = (vr e x : EReal) := by
   rw [nval_of_ne (ne_zero_map hx)]
   rfl
 
+/- English proof (translation)
+Unfold `vr`. Rewrite using `[map_mul, vV_mul (ne_zero_map hx) (ne_zero_map hy)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vr_mul (e : ℕ) {x y : V} (hx : x ≠ 0) (hy : y ≠ 0) : vr e (x * y) = vr e x + vr e y := by
   unfold vr
   rw [map_mul, vV_mul (ne_zero_map hx) (ne_zero_map hy)]
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h` using `vV_unit (V := V) 1 (fun h => (maximalIdeal V).ne_top_iff_one.1 (Ideal.IsPrime.ne_top inferInstance) h)`. Unfold `vr`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem vr_one (e : ℕ) : vr e (1 : V) = 0 := by
   have h := vV_unit (V := V) 1
     (fun h => (maximalIdeal V).ne_top_iff_one.1 (Ideal.IsPrime.ne_top inferInstance) h)
@@ -166,6 +224,13 @@ theorem vr_one (e : ℕ) : vr e (1 : V) = 0 := by
   rw [h]
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, s, hs, hfs, hu⟩`. Establish `hx : φ x ≠ 0`. Introduce `hx`. Rewrite `hu` using `[hx, map_zero, nval_zero, nval_of_ne (ne_zero_map hs), EReal.top_sub_coe]`.
+
+Conclude with `EReal.coe_ne_top u hu`. Use `⟨x, s, hs, hx, hfs, ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[nval_eq_vr e hx, nval_eq_vr e hs, ← EReal.coe_sub]`. Conclude with `EReal.coe_injective hu`. Introduce and unpack `⟨x, s, hs, hx, hfs, hu⟩`.
+
+Use `⟨x, s, hs, hfs, ?_⟩` and prove the remaining obligations. Rewrite using `[nval_eq_vr e hx, nval_eq_vr e hs, ← EReal.coe_sub, hu]`.
+-/
 theorem chval_fin_iff (φ : A →+* V) (e : ℕ) (f : FractionRing A) (u : ℝ) :
     ChV φ e f (u : EReal) ↔ ∃ x s : A, φ s ≠ 0 ∧ φ x ≠ 0 ∧
       f * algebraMap A (FractionRing A) s = algebraMap A (FractionRing A) x ∧ u = vr e (φ x) - vr e (φ s) := by
@@ -182,6 +247,13 @@ theorem chval_fin_iff (φ : A →+* V) (e : ℕ) (f : FractionRing A) (u : ℝ) 
     refine ⟨x, s, hs, hfs, ?_⟩
     rw [nval_eq_vr e hx, nval_eq_vr e hs, ← EReal.coe_sub, hu]
 
+/- English proof (translation)
+Take `⟨x1, s1, hs1, hx1, hf1, hu1⟩` from `(chval_fin_iff φ e f1 u1).1 h1`. Take `⟨x2, s2, hs2, hx2, hf2, hu2⟩` from `(chval_fin_iff φ e f2 u2).1 h2`. Use `(chval_fin_iff φ e _ _).2 ⟨x1 * x2, s1 * s2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hs1 hs2`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hx1 hx2`. Rewrite using `[map_mul, map_mul, ← hf1, ← hf2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul, vr_mul e hx1 hx2, vr_mul e hs1 hs2, hu1, hu2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chval_fin_mul (φ : A →+* V) (e : ℕ) {f1 f2 : FractionRing A} {u1 u2 : ℝ}
     (h1 : ChV φ e f1 (u1 : EReal)) (h2 : ChV φ e f2 (u2 : EReal)) :
     ChV φ e (f1 * f2) ((u1 + u2 : ℝ) : EReal) := by
@@ -193,9 +265,17 @@ theorem chval_fin_mul (φ : A →+* V) (e : ℕ) {f1 f2 : FractionRing A} {u1 u2
   · rw [map_mul, map_mul, ← hf1, ← hf2]; ring
   · rw [map_mul, map_mul, vr_mul e hx1 hx2, vr_mul e hs1 hs2, hu1, hu2]; ring
 
+/- English proof (translation)
+Apply the tactic sequence `refine (chval_fin_iff φ e _ _).2 ⟨1, 1, ?_, ?_, ?_, ?_⟩ <;> simp [vr_one]`.
+-/
 theorem chval_fin_one (φ : A →+* V) (e : ℕ) : ChV φ e (1 : FractionRing A) ((0 : ℝ) : EReal) := by
   refine (chval_fin_iff φ e _ _).2 ⟨1, 1, ?_, ?_, ?_, ?_⟩ <;> simp [vr_one]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simpa using chval_fin_one φ e`. Consider the case `succ N ih`. Use `chval_fin_mul φ e ih h` as an intermediate fact. Rewrite using `[pow_succ]`.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chval_fin_pow (φ : A →+* V) (e : ℕ) {f : FractionRing A} {u : ℝ} (h : ChV φ e f (u : EReal))
     (N : ℕ) : ChV φ e (f ^ N) (((N : ℝ) * u : ℝ) : EReal) := by
   induction N with
@@ -207,6 +287,13 @@ theorem chval_fin_pow (φ : A →+* V) (e : ℕ) {f : FractionRing A} {u : ℝ} 
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨x, s, hs, hx, hfs, hu⟩` from `(chval_fin_iff φ e f u).1 h`. Establish `hx0 : x ≠ 0` using `fun h0 => hx (by rw [h0, map_zero])`. Establish `hxK : algebraMap A (FractionRing A) x ≠ 0` using `fun h0 => hx0 (IsFractionRing.injective A _ (by rw [h0, map_zero]))`. Establish `hf0 : f ≠ 0`. Introduce `h0`.
+
+Rewrite `hfs` using `[h0, zero_mul]`. Conclude with `hxK hfs.symm`. Use `(chval_fin_iff φ e _ _).2 ⟨s, x, hx, hs, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfs]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hu]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chval_fin_inv (φ : A →+* V) (e : ℕ) {f : FractionRing A} {u : ℝ} (h : ChV φ e f (u : EReal)) :
     ChV φ e f⁻¹ ((-u : ℝ) : EReal) := by
   obtain ⟨x, s, hs, hx, hfs, hu⟩ := (chval_fin_iff φ e f u).1 h
@@ -221,6 +308,9 @@ theorem chval_fin_inv (φ : A →+* V) (e : ℕ) {f : FractionRing A} {u : ℝ} 
     field_simp
   · rw [hu]; ring
 
+/- English proof (translation)
+Use `(chval_fin_iff φ e _ _).2 ⟨a, 1, ?_, ha, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `one_ne_zero`. Rewrite using `[map_one, mul_one]`. Rewrite using `[map_one, vr_one, sub_zero]`.
+-/
 theorem chval_fin_alg (φ : A →+* V) (e : ℕ) (a : A) (ha : φ a ≠ 0) :
     ChV φ e (algebraMap A (FractionRing A) a) ((vr e (φ a) : ℝ) : EReal) := by
   refine (chval_fin_iff φ e _ _).2 ⟨a, 1, ?_, ha, ?_, ?_⟩
@@ -228,6 +318,11 @@ theorem chval_fin_alg (φ : A →+* V) (e : ℕ) (a : A) (ha : φ a ≠ 0) :
   · rw [map_one, mul_one]
   · rw [map_one, vr_one, sub_zero]
 
+/- English proof (translation)
+Break down `Int.eq_nat_or_neg Z with ⟨N, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast]`. Conclude with `chval_fin_pow φ e h N` after adjusting the coercions. Rewrite using `[zpow_neg, zpow_natCast]`. Use `chval_fin_inv φ e (chval_fin_pow φ e h N)` as an intermediate fact.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chval_fin_zpow (φ : A →+* V) (e : ℕ) {f : FractionRing A} {u : ℝ} (h : ChV φ e f (u : EReal))
     (Z : ℤ) : ChV φ e (f ^ Z) (((Z : ℝ) * u : ℝ) : EReal) := by
   rcases Int.eq_nat_or_neg Z with ⟨N, rfl | rfl⟩
@@ -243,10 +338,16 @@ end
 
 section
 
+/- English proof (translation)
+Simplify using `[vV, valV]`.
+-/
 theorem vV_zero' {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] :
     vV (K' := FractionRing V) V 0 = 0 := by
   simp [vV, valV]
 
+/- English proof (translation)
+Use `Formalism.L2.Pj.RegC.key_centre g x hx0 (fun V _ _ _ _ _ φ a b hab hb hφx => ?_) qq hqq` and prove the remaining obligations. Take `⟨e, r, he, hr, hr0⟩` from `hpts V φ hφx`. Conclude with `chval_div φ.toRingHom e he g r hr hr0 a b hab hb`.
+-/
 theorem transfer'' {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CharZero O]
     [CommRing A] [IsDomain A] [Algebra O A] [Algebra.FiniteType O A] [Module.Flat O A]
@@ -260,6 +361,39 @@ theorem transfer'' {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRi
   obtain ⟨e, r, he, hr, hr0⟩ := hpts V φ hφx
   exact chval_div φ.toRingHom e he g r hr hr0 a b hab hb
 
+/- English proof (translation)
+Use `set ϖA : FractionRing A := algebraMap A (FractionRing A) (algebraMap O A ϖ)`. Use `set g : FractionRing A := ϖA ^ Aexp * fe ^ B * (fw ^ N)⁻¹`. Establish `hgval : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Algebra O V] (φ : A →ₐ[O] V) (e : ℕ) (w t : ℝ), algebraMap O V ϖ ≠ 0 → ChV φ.toRingHom e fw (w : EReal) → ChV φ.toRingHom e fe (t : EReal) → ChV φ.toRingHom e g (((Aexp : ℝ) * vr e (algebraMap O V ϖ) + B …`. Introduce `V _ _ _ _ φ e w t hϖ hW hT`. Establish `h1 : φ.toRingHom (algebraMap O A ϖ) ≠ 0`.
+
+Rewrite using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Conclude with `hϖ`. Establish `hϖv` using `chval_fin_alg φ.toRingHom e (algebraMap O A ϖ) h1`. Rewrite using `[show φ.toRingHom (algebraMap O A ϖ) = algebraMap O V ϖ by`. Rewrite `hϖv` using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]]`.
+
+Conclude with `chval_fin_mul _ _ (chval_fin_mul _ _ (chval_fin_zpow _ _ hϖv Aexp) (chval_fin_pow _ _ hT B)) (chval_fin_inv _ _ (chval_fin_pow _ _ hW N))`. Establish `hyeK : algebraMap A (FractionRing A) ye ≠ 0` using `fun h => hye (IsFractionRing.injective A _ (by rw [h, map_zero]))`. Take `⟨a, s, hs, hgs⟩` from `transfer'' (O := O) g (x * ye) (mul_ne_zero hx hye) (fun V _ _ _ _ _ φ' hφ' => by`. Rewrite `hφ'` using `[map_mul]`. Establish `hφ'x : φ' x ≠ 0` using `left_ne_zero_of_mul hφ'`.
+
+Establish `hφ'y : φ' ye ≠ 0` using `right_ne_zero_of_mul hφ'`. Take `⟨e', W', T', he', hϖ', hW', hT', hT0, hb⟩` from `halg V φ' hφ'x`. Establish `hϖ0 : algebraMap O V ϖ ≠ 0`. Introduce `h0`. Rewrite `hϖ'` using `[h0, map_zero, vV_zero', zero_mul]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hP : ∀ k : ℕ, φ' ((algebraMap O A ϖ * x) ^ k) ≠ 0`. Introduce `k`. Rewrite using `[map_pow, map_mul, AlgHom.commutes]`. Conclude with `pow_ne_zero _ (mul_ne_zero hϖ0 hφ'x)`.
+
+Establish `hTe` using `chval_eq φ'.toRingHom e' fe T' hT' ye _ hfe (hP te)`. Establish `hTf : T' = ((vr e' (φ' ye) - vr e' (φ' ((algebraMap O A ϖ * x) ^ te)) : ℝ) : EReal)`. Rewrite using `[hTe, EReal.coe_sub, ← nval_eq_vr e' hφ'y, ← nval_eq_vr e' (hP te)]`. Both sides reduce to the same expression. Take `⟨xw, sw, hsw, hfws, hWv⟩` from `hW'`.
+
+Establish `hrel : fw * algebraMap A (FractionRing A) yw = algebraMap A (FractionRing A) ((algebraMap O A ϖ * x) ^ tw)`. Rewrite using `[← hfw]`. Clear the denominators using the available nonvanishing facts. Establish `hxy : xw * yw = sw * (algebraMap O A ϖ * x) ^ tw`. Apply `IsFractionRing.injective A (FractionRing A)` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, map_mul, ← hfws, ← hrel]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxw : φ' xw ≠ 0`. Introduce `h0`. Use `congrArg φ' hxy` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_mul, h0, zero_mul]`. Conclude with `mul_ne_zero hsw (hP tw) this.symm`. Establish `hWf : W' = ((vr e' (φ' xw) - vr e' (φ' sw) : ℝ) : EReal)`. Rewrite using `[hWv, EReal.coe_sub]`. Conclude with `congrArg₂ (· - ·) (nval_eq_vr e' hxw) (nval_eq_vr e' hsw)`.
+
+Use `set w' := vr e' (φ' xw) - vr e' (φ' sw)`. Use `set t' := vr e' (φ' ye) - vr e' (φ' ((algebraMap O A ϖ * x) ^ te))`. Establish `hWc : ChV φ'.toRingHom e' fw (w' : EReal)` using `hWf ▸ ⟨xw, sw, hsw, hfws, hWv⟩`. Establish `hTc : ChV φ'.toRingHom e' fe (t' : EReal)` using `hTf ▸ hT'`. Establish `ht0 : 0 ≤ t'` using `by rw [hTf] at hT0; exact_mod_cast hT0`.
+
+Establish `hwb : w' ≤ nu0 + c' * t'`. Use `hb (by rw [hTf]; exact EReal.coe_ne_top _)` as an intermediate fact. Rewrite `this` using `[hWf, hTf, ← EReal.coe_mul, ← EReal.coe_add]`. Conclude with `this` after adjusting the coercions. Establish `hκ : vr e' (algebraMap O V ϖ) * eO = 1`.
+
+Unfold `vr`. Establish `hv : ((vV (K'` using `FractionRing V) V (algebraMap V (FractionRing V) (algebraMap O V ϖ)) : ℤ) : ℝ) * eO = e' := by`. Conclude with `hϖ'` after adjusting the coercions. Establish `he'r : (0 : ℝ) < e'` using `by exact_mod_cast he'`. Clear the denominators using the available nonvanishing facts.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨e', _, he', hgval V φ' e' w' t' hϖ0 hWc hTc, ?_⟩` and prove the remaining obligations. Establish `heOr : (0 : ℝ) < eO` using `by exact_mod_cast heO`. Establish `h1 : (N : ℝ) * nu0 ≤ Aexp * vr e' (algebraMap O V ϖ)`. Establish `hv1 : vr e' (algebraMap O V ϖ) = 1 / eO`.
+
+Rewrite using `[eq_div_iff (ne_of_gt heOr)]`. Conclude with `hκ`. Establish `: (Aexp : ℝ) * vr e' (algebraMap O V ϖ) = Aexp / eO`. Rewrite using `[hv1, mul_one_div]`. Rewrite using `[this, le_div_iff₀ heOr]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (N : ℝ) * c' * t' ≤ B * t'` using `mul_le_mul_of_nonneg_right hB ht0`. Establish `h3 : (N : ℝ) * w' ≤ N * (nu0 + c' * t')` using `mul_le_mul_of_nonneg_left hwb (Nat.cast_nonneg N)`. Conclude with `EReal.coe_nonneg.2 (by nlinarith))`. Use the proof step `((maximalIdeal V).comap φ.toRingHom) hqq`.
+
+Establish `hval` using `hgval V φ e w t hφϖ hW hT`. Use `chval_nonneg φ.toRingHom e g _ hval a s hgs hs` as an intermediate fact. Establish `h0` using `EReal.coe_nonneg.1 this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem comb_core {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CharZero O]
     [CommRing A] [IsDomain A] [Algebra O A] [Algebra.FiniteType O A] [Module.Flat O A]
@@ -372,6 +506,11 @@ section
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 variable {A : Type} [CommRing A] [IsDomain A]
 
+/- English proof (translation)
+Take `⟨x, s, hs, -, rfl⟩` from `h`. Rewrite using `[nval_eq_vr e hs]`. Distinguish the cases in `hx : φ x = 0`. Rewrite using `[hx, map_zero, nval_zero, EReal.top_sub_coe]`. Conclude with `top_ne_bot`.
+
+Rewrite using `[nval_eq_vr e hx, ← EReal.coe_sub]`. Conclude with `EReal.coe_ne_bot _`.
+-/
 theorem chval_ne_bot {φ : A →+* V} {e : ℕ} {f : FractionRing A} {r : EReal} (h : ChV φ e f r) : r ≠ ⊥ := by
   obtain ⟨x, s, hs, -, rfl⟩ := h
   rw [nval_eq_vr e hs]
@@ -379,9 +518,15 @@ theorem chval_ne_bot {φ : A →+* V} {e : ℕ} {f : FractionRing A} {r : EReal}
   · rw [hx, map_zero, nval_zero, EReal.top_sub_coe]; exact top_ne_bot
   · rw [nval_eq_vr e hx, ← EReal.coe_sub]; exact EReal.coe_ne_bot _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨r.toReal, (EReal.coe_toReal h h').symm⟩`.
+-/
 theorem fin_of_ne_top {r : EReal} (h : r ≠ ⊤) (h' : r ≠ ⊥) : ∃ t : ℝ, r = (t : EReal) :=
   ⟨r.toReal, (EReal.coe_toReal h h').symm⟩
 
+/- English proof (translation)
+Take `⟨x, s, hs, hfs, rfl⟩` from `h`. Establish `hx : x = 0`. Rewrite `hfs` using `[zero_mul]`. Conclude with `IsFractionRing.injective A (FractionRing A) (by rw [← hfs, map_zero])`. Rewrite using `[hx, map_zero, map_zero, nval_zero, nval_eq_vr e hs, EReal.top_sub_coe]`.
+-/
 theorem chval_zero {φ : A →+* V} {e : ℕ} {r : EReal} (h : ChV φ e (0 : FractionRing A) r) : r = ⊤ := by
   obtain ⟨x, s, hs, hfs, rfl⟩ := h
   have hx : x = 0 := by
@@ -389,6 +534,15 @@ theorem chval_zero {φ : A →+* V} {e : ℕ} {r : EReal} (h : ChV φ e (0 : Fra
     exact IsFractionRing.injective A (FractionRing A) (by rw [← hfs, map_zero])
   rw [hx, map_zero, map_zero, nval_zero, nval_eq_vr e hs, EReal.top_sub_coe]
 
+/- English proof (translation)
+Take `⟨x1, s1, hs1, hf1, rfl⟩` from `h1`. Establish `hrel : algebraMap A (FractionRing A) xk * f1 * algebraMap A (FractionRing A) s1 = algebraMap A (FractionRing A) (xk * x1)` using `by rw [mul_assoc, hf1, map_mul]`. Rewrite using `[chval_eq φ e _ r2 h2 (xk * x1) s1 hrel hs1, map_mul, map_mul, nval_mul, nval_eq_vr e hs1]`. Establish `h0` using `nval_nonneg e (φ xk)`. Distinguish the cases in `hx : φ x1 = 0`.
+
+Establish `hX` using `nval_ne_bot (V := V) e (algebraMap V (FractionRing V) (φ xk))`. Rewrite using `[hx, map_zero, nval_zero]`. Conclude with `EReal.sub_le_sub (le_of_eq (EReal.add_top_of_ne_bot hX).symm) le_rfl`. Rewrite using `[nval_eq_vr e hx]`. Break down `eq_or_ne (nval V e (algebraMap V (FractionRing V) (φ xk))) ⊤ with ht | ht` into its components or cases.
+
+Rewrite using `[ht, EReal.top_add_of_ne_bot (EReal.coe_ne_bot _), EReal.top_sub_coe]`. Conclude with `le_top`. Take `⟨u, hu⟩` from `fin_of_ne_top ht (nval_ne_bot (V := V) e _)`. Rewrite using `[hu, ← EReal.coe_add, ← EReal.coe_sub, ← EReal.coe_sub, EReal.coe_le_coe_iff]`. Rewrite `h0` using `[hu]`.
+
+Use `EReal.coe_nonneg.1 h0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ratio_ge {φ : A →+* V} {e : ℕ} {f1 : FractionRing A} {r1 r2 : EReal} {xk : A}
     (h1 : ChV φ e f1 r1) (h2 : ChV φ e (algebraMap A (FractionRing A) xk * f1) r2) : r1 ≤ r2 := by
   obtain ⟨x1, s1, hs1, hf1, rfl⟩ := h1
@@ -409,6 +563,13 @@ theorem ratio_ge {φ : A →+* V} {e : ℕ} {f1 : FractionRing A} {r1 r2 : EReal
       have := EReal.coe_nonneg.1 h0
       linarith
 
+/- English proof (translation)
+Take `⟨xw, sw, hsw, hfws, hWv⟩` from `hW`. Establish `hrel' : fw * algebraMap A (FractionRing A) yw = algebraMap A (FractionRing A) P`. Rewrite using `[← hrel]`. Clear the denominators using the available nonvanishing facts. Establish `hxy : xw * yw = sw * P`.
+
+Apply `IsFractionRing.injective A (FractionRing A)` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← hfws, ← hrel']`. Expand and normalize the polynomial expressions, which then agree. Establish `hxw : φ xw ≠ 0`. Introduce `h0`.
+
+Use `congrArg φ hxy` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, h0, zero_mul]`. Conclude with `mul_ne_zero hsw hP this.symm`. Conclude with `⟨vr e (φ xw) - vr e (φ sw), by rw [hWv, nval_eq_vr e hxw, nval_eq_vr e hsw, EReal.coe_sub]⟩`.
+-/
 theorem w_fin {φ : A →+* V} {e : ℕ} {fw : FractionRing A} {W : EReal} (hW : ChV φ e fw W) (P yw : A)
     (hrel : fw⁻¹ * algebraMap A (FractionRing A) P = algebraMap A (FractionRing A) yw) (hfw0 : fw ≠ 0)
     (hP : φ P ≠ 0) : ∃ w : ℝ, W = (w : EReal) := by
@@ -425,6 +586,15 @@ theorem w_fin {φ : A →+* V} {e : ℕ} {fw : FractionRing A} {W : EReal} (hW :
     exact mul_ne_zero hsw hP this.symm
   exact ⟨vr e (φ xw) - vr e (φ sw), by rw [hWv, nval_eq_vr e hxw, nval_eq_vr e hsw, EReal.coe_sub]⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hδ0 : 0 < w - nu - c' * t` using `by linarith`. Establish `heOr : (0 : ℝ) < eO` using `by exact_mod_cast heO`. Take `⟨N, hN⟩` from `exists_nat_gt ((1 / eO + t) / (w - nu - c' * t))`.
+
+Establish `hNr : (0 : ℝ) < N` using `lt_of_le_of_lt (div_nonneg (by positivity) hδ0.le) hN`. Establish `hN0 : 0 < N` using `by exact_mod_cast hNr`. Establish `h1` using `h N hN0`. Establish `hc1 : (⌈(eO : ℝ) * N * nu⌉ : ℝ) ≤ eO * N * nu + 1` using `(Int.ceil_lt_add_one _).le`. Establish `hc2 : (⌈(N : ℝ) * c'⌉₊ : ℝ) ≤ N * c' + 1` using `(Nat.ceil_lt_add_one (by positivity)).le`.
+
+Establish `h2 : (⌈(eO : ℝ) * N * nu⌉ : ℝ) * (1 / eO) ≤ N * nu + 1 / eO`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (⌈(N : ℝ) * c'⌉₊ : ℝ) * t ≤ (N * c' + 1) * t` using `mul_le_mul_of_nonneg_right hc2 ht`. Establish `key : (N : ℝ) * (w - nu - c' * t) ≤ 1 / eO + t` using `by nlinarith`. Use `(div_lt_iff₀ hδ0).1 hN` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem limit_lam (w t nu c' : ℝ) (eO : ℕ) (heO : 0 < eO) (ht : 0 ≤ t) (hc' : 0 ≤ c')
     (h : ∀ N : ℕ, 0 < N → (N : ℝ) * w ≤ (⌈(eO : ℝ) * N * nu⌉ : ℝ) * (1 / eO) + (⌈(N : ℝ) * c'⌉₊ : ℝ) * t) :
     w ≤ nu + c' * t := by
@@ -447,6 +617,9 @@ theorem limit_lam (w t nu c' : ℝ) (eO : ℕ) (heO : 0 < eO) (ht : 0 ≤ t) (hc
   have := (div_lt_iff₀ hδ0).1 hN
   linarith
 
+/- English proof (translation)
+Use `limit_lam w t 0 c' 1 one_pos ht hc' (fun N hN => by` as an intermediate fact. Use `h N hN` as an intermediate fact. Simplify using `only [mul_zero, Int.ceil_zero, Int.cast_zero, zero_mul, zero_add]`. Conclude with `this)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem limit_triv (w t c' : ℝ) (ht : 0 ≤ t) (hc' : 0 ≤ c')
     (h : ∀ N : ℕ, 0 < N → (N : ℝ) * w ≤ (⌈(N : ℝ) * c'⌉₊ : ℝ) * t) : w ≤ c' * t := by
   have := limit_lam w t 0 c' 1 one_pos ht hc' (fun N hN => by
@@ -471,6 +644,13 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Introduce `q hq`. Take `⟨j, V, _, _, _, _, φ, hcen, -, ⟨x, hxE, hφx⟩, hChV⟩` from `hQ q hq`. Establish `hx0 : x ≠ 0` using `fun h => hφx (by rw [h, map_zero])`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible S.O`. Establish `hqq : (maximalIdeal V).comap φ.toRingHom ⊔ Ideal.map (algebraMap S.O (S.A j)) (maximalIdeal S.O) ≠ ⊤`.
+
+Establish `hm : maximalIdeal S.O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Rewrite using `[hm, Ideal.map_span, Set.image_singleton, sup_comm]`. Conclude with `hcen ϖ hϖ`. Take `⟨a', s', hs', hfs'⟩` from `transfer'' (O := S.O) (S.ch j F) x hx0 (fun V _ _ _ _ _ φ hφx => by`. Take `⟨ioV, e', hov, -, v, hv, hChV⟩` from `S.pts j V φ ⟨x, hxE, hφx⟩`.
+
+Conclude with `⟨e', v F, hov.1, hChV a n F hF, h0 v hv⟩) ((maximalIdeal V).comap φ.toRingHom) hqq`. Conclude with `chval_nonneg φ.toRingHom 1 (S.ch j F) _ (hChV a n F hF) a' s' hfs' hs'`.
+-/
 theorem nonneg_triv {la : HeightOneSpectrum (𝓞 c.F)}
     (S : SCharts Xo c la) (hQ : S.CovQ) {a n} {F : Rul Xo c} (hF : F ∈ sec Xo c a n)
     (h0 : ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v F) : ∀ q ∈ trivSet Xo c, 0 ≤ q F := by
@@ -491,6 +671,29 @@ theorem nonneg_triv {la : HeightOneSpectrum (𝓞 c.F)}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `q hq hT`. Take `⟨kj, hkj⟩` from `hF`. Take `⟨j, V, _, _, _, _, φ, hcen, hunit, ⟨x, hxE, hφx⟩, hChV⟩` from `hQ q hq`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible S.O`. Establish `heO : 0 < S.eO` using `S.overO.1`.
+
+Establish `hx0 : x ≠ 0` using `fun h => hφx (by rw [h, map_zero])`. Establish `hu` using `hunit ϖ hϖ`. Establish `hϖ0 : algebraMap S.O V ϖ ≠ 0` using `hu.ne_zero`. Take `⟨hfw0, hrat, hinv⟩` from `hkj j`. Take `⟨yw, tw, hyw⟩` from `hinv x hxE ϖ hϖ`.
+
+Take `⟨ye, te, hye⟩` from `S.reg j aE nE et het x hxE ϖ hϖ`. Establish `hP : ∀ k : ℕ, φ ((algebraMap S.O (S.A j) ϖ * x) ^ k) ≠ 0` using `fun k => by`. Rewrite using `[map_pow, map_mul, AlgHom.commutes]`. Conclude with `pow_ne_zero _ (mul_ne_zero hϖ0 hφx)`. Establish `hWc` using `hChV aL nL (ws (kj j)) (hws _)`.
+
+Establish `hTc` using `hChV aE nE et het`. Take `⟨w, hw⟩` from `w_fin hWc _ yw hyw hfw0 (hP tw)`. Take `⟨t, ht⟩` from `fin_of_ne_top hT (chval_ne_bot hTc)`. Establish `hye0 : ye ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hye` using `[map_zero]`. Establish `hPK : algebraMap (S.A j) (FractionRing (S.A j)) ((algebraMap S.O (S.A j) ϖ * x) ^ te) ≠ 0`. Introduce `h0`. Apply `hP te` to reduce the goal to its premises. Rewrite using `[IsFractionRing.injective (S.A j) (FractionRing (S.A j)) (h0.trans (map_zero _).symm), map_zero]`.
+
+Establish `hfe0 : S.ch j et = 0` using `(mul_eq_zero.1 hye).resolve_right hPK`. Rewrite `hTc` using `[hfe0]`. Conclude with `hT (chval_zero hTc)`. Establish `ht0 : 0 ≤ t`. Use `nonneg_triv S hQ het (fun v' hv' => (hyp v' hv').1) q hq` as an intermediate fact.
+
+Rewrite `this` using `[ht]`. Conclude with `this` after adjusting the coercions. Establish `hκ : vr 1 (algebraMap S.O V ϖ) = 0`. Unfold `vr`. Rewrite using `[vV_unit _ (fun h => (IsLocalRing.mem_maximalIdeal _).1 h hu)]`.
+
+Simplify using the standard rewrite rules. Establish `hqq : (maximalIdeal V).comap φ.toRingHom ⊔ Ideal.map (algebraMap S.O (S.A j)) (maximalIdeal S.O) ≠ ⊤`. Establish `hm : maximalIdeal S.O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Rewrite using `[hm, Ideal.map_span, Set.image_singleton, sup_comm]`. Conclude with `hcen ϖ hϖ`.
+
+Establish `key : ∀ N : ℕ, 0 < N → (N : ℝ) * w ≤ (⌈(N : ℝ) * c'⌉₊ : ℝ) * t`. Introduce `N _`. Use `comb_core ϖ S.eO heO (S.ch j (ws (kj j))) (S.ch j et) hfw0 x hx0 ye hye0 te hye yw tw hyw nu c' N ⌈(S.eO : ℝ) * N * nu⌉ ⌈(N : ℝ) * c'⌉₊ (Int.le_ceil _) (Nat.le_ceil _) (fun V' _ _ _ _ _ φ' hφ'x => by` as an intermediate fact. Take `⟨ioV', e', hov', hϖ', v', hv', hch'⟩` from `S.pts j V' φ' ⟨x, hxE, hφ'x⟩`. Use `⟨e', v' (ws (kj j)), v' et, hov'.1, hϖ' ϖ hϖ, hch' aL nL _ (hws _), hch' aE nE et het, (hyp v' hv').1, fun hT' => ?_⟩` and prove the remaining obligations.
+
+Use `le_trans (le_iInf fun k => ?_) ((hyp v' hv').2 hT')` and prove the remaining obligations. Take `⟨xk, hxk⟩` from `hrat k`. Establish `h2` using `hch' aL nL (ws k) (hws k)`. Rewrite `h2` using `[hxk]`. Conclude with `ratio_ge (hch' aL nL _ (hws _)) h2)`.
+
+Use `V φ hφx hϖ0 hqq 1 w t (hw ▸ hWc) (ht ▸ hTc)`. Rewrite `this` using `[hκ, mul_zero, zero_add]`. Conclude with `this`. Establish `hlim` using `limit_triv w t c' ht0 hc' key`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comb_triv {la : HeightOneSpectrum (𝓞 c.F)}
     (S : SCharts Xo c la) (hQ : S.CovQ) {m : ℕ} (ws : Fin m → Rul Xo c) (hF : S.FamW ws)
     {aL nL} (hws : ∀ k, ws k ∈ sec Xo c aL nL)
@@ -562,6 +765,9 @@ theorem comb_triv {la : HeightOneSpectrum (𝓞 c.F)}
     _ ≤ ((c' * t : ℝ) : EReal) := EReal.coe_le_coe_iff.2 hlim
     _ = (c' : EReal) * q et := by rw [ht, EReal.coe_mul]
 
+/- English proof (translation)
+Use `⟨q.T, q.ι, q.y, fun a ha => ?_, rfl⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `q.triv a ha`. Rewrite using `[← hu]`. Conclude with `vV_unit (u : q.T.V) (fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit)`.
+-/
 theorem ordQ_mem_trivSet (q : QPt Xo c) : ordQ Xo c q ∈ trivSet Xo c := by
   refine ⟨q.T, q.ι, q.y, fun a ha => ?_, rfl⟩
   obtain ⟨u, hu⟩ := q.triv a ha
@@ -574,6 +780,9 @@ end GlobalTheory.Reg.TrivBound
 
 namespace GlobalTheory.Reg
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c hS hN C hC aL nL aE nE k ws et c' hc' hws het ⟨la, nu, hyp⟩ q`. Establish `hws' : ∀ i, ws i ∈ sec Xo c aL nL` using `fun i => hC _ _ (hws i)`. Establish `het' : et ∈ sec Xo c aE nE` using `hC _ _ het`. Take `⟨S, hF, hQ⟩` from `(hS la).2 aL nL k ws hws' (hN la aL nL k ws hws' fun v hv => (hyp v hv).2.1)`. Conclude with `⟨TrivBound.nonneg_triv S hQ het' (fun v hv => (hyp v hv).1) _ (TrivBound.ordQ_mem_trivSet q), TrivBound.comb_triv S hQ ws hF hws' het' nu c' hc' (fun v hv => ⟨(hyp v hv).1, (hyp v hv).2.2⟩) _ (TrivBound.ordQ_mem_trivSet q)⟩`.
+-/
 theorem combined_bound_at_trivial_valuations_of_charts :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), (∀ la : HeightOneSpectrum (𝓞 c.F), (∃ S : SCharts Xo c la, S.CovQ) ∧ ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (ws : Fin m → Rul Xo c), (∀ i, ws i ∈ sec Xo c a n) → Formalism.L2.PjFree.NoCommonZero Xo c ws → ∃ S : SCharts Xo c la, S.FamW ws ∧ S.CovQ) → (∀ (la : HeightOneSpectrum (𝓞 c.F)) (a : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (ws : Fin m → Rul Xo c), (∀ i, ws i ∈ sec Xo c a n) → (∀ v ∈ Formalism.L2.PjFree.valSet Xo c (Formalism.L2.PjFree.algCls Xo c) la, ∃ i, v (ws i) ≠ ⊤) → Formalism.L2.PjFree.NoCommonZero Xo c ws) → ∀ C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c), (∀ a n, C a n ≤ sec Xo c a n) → Formalism.L2.PjFree.RegularityR2Quotient Xo c C := by
   intro E _ _ _ H Dw l Xo c hS hN C hC aL nL aE nE k ws et c' hc' hws het ⟨la, nu, hyp⟩ q

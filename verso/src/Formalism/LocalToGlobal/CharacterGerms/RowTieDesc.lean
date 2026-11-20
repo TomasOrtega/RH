@@ -22,6 +22,9 @@ variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io}
 def chartDerivativeCoefficient (C3 : IntChart T io y) (k n : ℕ) (f : PS T.Fr n (chD C3.ch)) (P : MvPolynomial (LtN Dw n) T.Fr) : T.Fr :=
   nabValN (a3B C3) T.Fr (a3h C3) H.w0 k f (fun ℓ => ℓ.2.2) (fun ℓ => chartUnitVectors C3 ⟨ℓ.1, ℓ.2.1⟩) P
 
+/- English proof (translation)
+Unfold `nuLocC chartDerivativeCoefficient`. Conclude with `le_trans (iInf₂_le P hP) (iInf₂_le f hf)`.
+-/
 theorem nuLocC_le_nval (C3 : IntChart T io y) (e k : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (P : MvPolynomial (LtN Dw n) T.Fr) (hP : P ∈ FFV (Dw := Dw) T a n) (f : PS T.Fr n (chD C3.ch)) (hf : IsIntPS T f) :
     nuLocC C3 e k a n ≤ nval T.V e (chartDerivativeCoefficient C3 k n f P) := by
@@ -34,6 +37,9 @@ section Val
 
 variable {C : Type} [Field C] {V : VF C}
 
+/- English proof (translation)
+Use `Finset.sum_induction z (fun w => x ≤ V.v w) (fun a b ha hb => le_trans (le_min ha hb) (V.v.map_add a b)) ?_ (fun i _ => h i)` and prove the remaining obligations. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`.
+-/
 theorem le_v_sum (x : WithTop ℝ) {m : ℕ} (z : Fin m → C) (h : ∀ i, x ≤ V.v (z i)) : x ≤ V.v (∑ i, z i) := by
   refine Finset.sum_induction z (fun w => x ≤ V.v w)
     (fun a b ha hb => le_trans (le_min ha hb) (V.v.map_add a b)) ?_ (fun i _ => h i)
@@ -67,6 +73,15 @@ def NvalEqSt : Prop :=
 
 variable {Xo c}
 
+/- English proof (translation)
+Introduce `T io y C3 C _ _ V ι hι k Y hY a n`. Unfold `FBChart.nuPlE`. Use `le_iInf₂ fun x hx => ?_` and prove the remaining obligations. Take `⟨P, hP, f, hf, rfl⟩` from `hx`. Take `⟨m, r, Pi, fi, hr, hPi, hfi, heq⟩` from `h2 T io y C3 C V ι hι k Y hY a n P hP f hf`.
+
+Establish `hz : ∀ i, nuLocC C3 (eOf T V) k a n ≤ (WithBot.some (V.v (Y.nab (chartLetterSystem C3 V ι a) n (MvPowerSeries.map ι (fi i)) (MvPolynomial.map ι (Pi i)))) : WithBot (WithTop ℝ))`. Introduce `i`. Rewrite using `[h1 T io y C3 C V ι k Y hY a n (fi i) (Pi i), h3 T C V ι hι]`. Conclude with `nuLocC_le_nval C3 (eOf T V) k a n (Pi i) (hPi i) (fi i) (hfi i)`. Rewrite using `[heq]`.
+
+Generalize the expression as in `nuLocC C3 (eOf T V) k a n = ν at hz ⊢`. Break down `ν with _ | w` into its components or cases. Conclude with `bot_le`. Use `WithBot.coe_le_coe.mpr (le_v_sum w _ fun i => ?_)` and prove the remaining obligations. Establish `hzi` using `WithBot.coe_le_coe.mp (hz i)`.
+
+Rewrite using `[AddValuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem descent_of (h1 : NabMapSt Xo c) (h2 : DescSpanSt Xo c) (h3 : NvalEqSt) : DescentSt Xo c := by
   intro T io y C3 C _ _ V ι hι k Y hY a n
   unfold FBChart.nuPlE

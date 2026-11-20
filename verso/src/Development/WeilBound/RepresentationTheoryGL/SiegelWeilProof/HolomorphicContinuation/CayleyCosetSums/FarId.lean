@@ -4,6 +4,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.HSt
 
+/- English proof (translation)
+The claim follows from `farId_of curveGR fzDer`.
+-/
 theorem farId : FarId := farId_of curveGR fzDer
 
 end PositivityTheory.Rg.Sw.HSt

@@ -44,6 +44,11 @@ local macro "tie_cases" : tactic => `(tactic| (
   ksub h6 ε' M.ε
   ksub h7 f' M.fr))
 
+/- English proof (translation)
+Use `tie_cases`. Use `ksub hX X' X`. Use `ksub hU U' U`. Use `ksub hν ν' ν`. Use `ksub hfd fd' fd`.
+
+Conclude with `(by with_unfolding_all exact (h0 :))`.
+-/
 private theorem is_of (hP : B'.toPre = B.toPre) (hW : HEq W' W) (h : DSTie M' M)
     {X : HMod (MMap M)} {X' : HMod (MMap M')} (hX : HEq X' X)
     {U : Submodule ℂ (MMap M)} {U' : Submodule ℂ (MMap M')} (hU : HEq U' U)
@@ -56,6 +61,11 @@ private theorem is_of (hP : B'.toPre = B.toPre) (hW : HEq W' W) (h : DSTie M' M)
   ksub hfd fd' fd
   exact (by with_unfolding_all exact (h0 :))
 
+/- English proof (translation)
+Substitute `hG` using the available equality. Take `rfl` from `eq_of_heq hi`. Use `tie_cases`. Use `ksub hX X' X`. Use `ksub hρ ρ' ρ`.
+
+Use `ksub hL L' L`. Conclude with `(by with_unfolding_all exact (h0 :))`.
+-/
 private theorem act_of (hP : B'.toPre = B.toPre) (hW : HEq W' W) (h : DSTie M' M)
     {X : HMod (MMap M)} {X' : HMod (MMap M')} (hX : HEq X' X)
     {G G' : Type} [iG : Group G] [iG' : Group G'] (hG : G' = G) (hi : HEq iG' iG)
@@ -86,6 +96,11 @@ local macro "pre_cases" : tactic => `(tactic| (
   clear h
   subst e))
 
+/- English proof (translation)
+Substitute `hG` using the available equality. Take `rfl` from `eq_of_heq hi`. Use `pre_cases`. Use `ksub hβ β' β`. Use `ksub hPg Pg' Pg`.
+
+Use `ksub he eG' eG`. Conclude with `(by with_unfolding_all exact ((HEq.refl (fun g => Links.actL _ (β i) (LiftExt.datW i Pg) (eG g))) :))`.
+-/
 private theorem actL_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i')
     {β : ∀ i, GL (Fin (Wc a.D i).rank) (Lev.EAf a.D)} {β' : ∀ i, GL (Fin (Wc a'.D i).rank) (Lev.EAf a'.D)} (hβ : HEq β' β)
     {Pg : Finset (Pl a.D.host.E)} {Pg' : Finset (Pl a'.D.host.E)} (hPg : HEq Pg' Pg)
@@ -100,6 +115,11 @@ private theorem actL_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a
   ksub he eG' eG
   exact (by with_unfolding_all exact ((HEq.refl (fun g => Links.actL _ (β i) (LiftExt.datW i Pg) (eG g))) :))
 
+/- English proof (translation)
+Use `pre_cases`. Use `ksub hβ β' β`. Use `ksub hPg Pg' Pg`. Use `ksub hν ν' ν`. Use `ksub hfd fd' fd`.
+
+Conclude with `(by with_unfolding_all exact (h0 :))`.
+-/
 private theorem meas_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i')
     {β : ∀ i, GL (Fin (Wc a.D i).rank) (Lev.EAf a.D)} {β' : ∀ i, GL (Fin (Wc a'.D i).rank) (Lev.EAf a'.D)} (hβ : HEq β' β)
     {Pg : Finset (Pl a.D.host.E)} {Pg' : Finset (Pl a'.D.host.E)} (hPg : HEq Pg' Pg)
@@ -114,6 +134,9 @@ private theorem meas_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'
   ksub hfd fd' fd
   exact (by with_unfolding_all exact (h0 :))
 
+/- English proof (translation)
+Use `pre_cases`. Use `ksub hBV BV' BV`. Conclude with `(by with_unfolding_all exact (h0 :))`.
+-/
 private theorem onb_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i')
     {BV : a.D.what₂.Tau → Matrix (Fin (Vc a.D i).rank) (Fin (Vc a.D i).rank) ℂ}
     {BV' : a'.D.what₂.Tau → Matrix (Fin (Vc a'.D i').rank) (Fin (Vc a'.D i').rank) ℂ} (hBV : HEq BV' BV)
@@ -123,6 +146,17 @@ private theorem onb_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.
   ksub hBV BV' BV
   exact (by with_unfolding_all exact (h0 :))
 
+/- English proof (translation)
+Establish `e : labE (D` using `a.D) a.D.what₂.embLL = tauE a.D := funext fun τ => B.fields_embC τ`. Establish `e' : labE (D` using `a'.D) a'.D.what₂.embLL = tauE a'.D := funext fun τ => B'.fields_embC τ`. Unfold `labE at *`. Generalize the expression as in `labLL a'.D = l' at e' ⊢`. Generalize the expression as in `labLL a.D = l at e ⊢`.
+
+Generalize the expression as in `a'.D.what₂.embLL = j' at e' hι`. Generalize the expression as in `a.D.what₂.embLL = j at e hι`. Establish `ht : HEq (tauE a'.D) (tauE a.D)` using `by clear e e' hι`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`.
+
+Substitute `hP` using the available equality. Conclude with `(by with_unfolding_all exact ((HEq.refl (tauE a.D)) :))`. Rewrite `ht` using `[← e, ← e']`. Use `clear e e'`. Break down `B' with ⟨P'⟩` into its components or cases.
+
+Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Establish `ht'` using `eq_of_heq ht`. Use `heq_of_eq (funext fun τ => RingHom.ext fun x => ?_)` and prove the remaining obligations. Establish `k` using `DFunLike.congr_fun (congrFun ht' τ) x`.
+
+Conclude with `congrArg σ' (j'.injective (k.trans (hι _).symm))`.
+-/
 private theorem labE_heq (hP : B'.toPre = B.toPre) (ι : a.D.what₂.LL →+* a'.D.what₂.LL)
     (hι : ∀ x, a'.D.what₂.embLL (ι x) = a.D.what₂.embLL x) (σ' : a'.D.what₂.LL →+* ℂ) :
     HEq (labE (D := a'.D) σ') (labE (D := a.D) (σ'.comp ι)) := by
@@ -149,6 +183,11 @@ private theorem labE_heq (hP : B'.toPre = B.toPre) (ι : a.D.what₂.LL →+* a'
   have k := DFunLike.congr_fun (congrFun ht' τ) x
   exact congrArg σ' (j'.injective (k.trans (hι _).symm))
 
+/- English proof (translation)
+Unfold `kapAt lab`. Generalize the expression as in `labE (D := a'.D) σ' = l' at hl ⊢`. Generalize the expression as in `labE (D := a.D) σ = l at hl ⊢`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`.
+
+Substitute `hP` using the available equality. Use `ksub hW W' W`. Use `ksub hl l' l`. Conclude with `rfl`.
+-/
 private theorem dim_eq (hP : B'.toPre = B.toPre) {W : HSp a.D} {W' : HSp a'.D} (hW : HEq W' W) {σ : a.D.what₂.LL →+* ℂ}
     {σ' : a'.D.what₂.LL →+* ℂ} (hl : HEq (labE (D := a'.D) σ') (labE (D := a.D) σ)) :
     (∏ ρ, ((dimK _ _ (kapAt W' σ' ρ) : ℚ) : ℂ)) = ∏ ρ, ((dimK _ _ (kapAt W σ ρ) : ℚ) : ℂ) := by
@@ -167,6 +206,11 @@ variable {G G' : Type} [iG : Group G] [Fintype G] [iG' : Group G'] [Fintype G'] 
   {Ks Ks' : Type} [Field Ks] [NumberField Ks] [Algebra Ks a.D.what₂.LL] [Field Ks'] [NumberField Ks'] [Algebra Ks' a'.D.what₂.LL]
   {R : RealDat a.D A Ks} {R' : RealDat a'.D A' Ks'}
 
+/- English proof (translation)
+Establish `hW` using `wc_heq hP h`. Establish `hl` using `lev_heq hP h hβ hPg`. Establish `hd` using `dim_eq hP hW (labE_heq hP ι hι σ')`. Establish `f0 : (R.HW i (σ'.comp ι)).Is (Mult R.θ _ (levS _ (R.βW i) (LiftExt.datW i R.Pg)) (levChi _ (R.βW i) (LiftExt.datW i R.Pg))) fun T T' => (∏ ρ, ((dimK _ _ (kapAt (Wc a.D i) (σ'.comp ι) ρ) : ℚ) : ℂ)) * ipM (R.MW i (σ'.comp ι)) (R.νW i) (R.fdW i) T T'` using `(by with_unfolding_all exact ((h0 i (σ'.comp ι)) :))`. Rewrite `f0` using `[← hd]`.
+
+Establish `k` using `is_of hP hW hM hH (mult_heq hP hW hM hθ hl.1 hl.2) hν hfd _ f0`. Conclude with `(by with_unfolding_all exact (k :))`.
+-/
 private theorem hw_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i')
     (hθ : HEq R'.θ R.θ) (hβ : HEq R'.βW R.βW) (hPg : HEq R'.Pg R.Pg) (ι : a.D.what₂.LL →+* a'.D.what₂.LL)
     (hι : ∀ x, a'.D.what₂.embLL (ι x) = a.D.what₂.embLL x) (σ' : a'.D.what₂.LL →+* ℂ)
@@ -182,6 +226,9 @@ private theorem hw_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D
   have k := is_of hP hW hM hH (mult_heq hP hW hM hθ hl.1 hl.2) hν hfd _ f0
   exact (by with_unfolding_all exact (k :))
 
+/- English proof (translation)
+Establish `hW` using `wc_heq hP h`. Establish `f0 : ∀ g x, (R.HW i σ).e (R.gW i σ g x) = postOn _ ((fun g => Links.actL _ (R.βW i) (LiftExt.datW i R.Pg) (R.eG g)) g) ((R.HW i σ).e x)` using `(by with_unfolding_all exact ((h0 i σ) :))`. Establish `k` using `act_of hP hW hM hH hG hi hg (actL_heq hP h hβ hPg hG hi he) f0`. Conclude with `(by with_unfolding_all exact (k :))`.
+-/
 private theorem gw_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i')
     (hG : G' = G) (hi : HEq iG' iG) (hβ : HEq R'.βW R.βW) (hPg : HEq R'.Pg R.Pg) (he : HEq R'.eG R.eG)
     {σ : a.D.what₂.LL →+* ℂ} {σ' : a'.D.what₂.LL →+* ℂ}
@@ -195,6 +242,9 @@ private theorem gw_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D
   have k := act_of hP hW hM hH hG hi hg (actL_heq hP h hβ hPg hG hi he) f0
   exact (by with_unfolding_all exact (k :))
 
+/- English proof (translation)
+Establish `f0 : IsMeasFD (Wc a.D i) (lev a.D.sp.cm (Wc a.D i).gram (R.βW i) (LiftExt.datW i R.Pg)) (R.νW i) (R.fdW i)` using `(by with_unfolding_all exact ((h0 i) :))`. Establish `k` using `meas_of hP h hβ hPg hν hfd f0`. Conclude with `(by with_unfolding_all exact (k :))`.
+-/
 private theorem nu_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i')
     (hβ : HEq R'.βW R.βW) (hPg : HEq R'.Pg R.Pg) (hν : HEq (R'.νW i') (R.νW i)) (hfd : HEq (R'.fdW i') (R.fdW i))
     (h0 : R.models_νW) :
@@ -203,6 +253,11 @@ private theorem nu_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D
   have k := meas_of hP h hβ hPg hν hfd f0
   exact (by with_unfolding_all exact (k :))
 
+/- English proof (translation)
+Establish `hm` using `LiftExt.m_eq (a := a) (a' := a') hP`. Use `⟨fun i' σ' => ?_, fun i' σ' => ?_, fun i' => ?_, fun i' => ?_⟩` and prove the remaining obligations. Use `all_goals`. Establish `h : ((Fin.cast hm i' : Fin a.D.R.m) : ℕ) = i'` using `rfl`. Generalize the expression as in `(Fin.cast hm i' : Fin a.D.R.m) = i at h`.
+
+Use `obt ⟨hBV, hν, hfd, h2⟩ := H i i' h`. Conclude with `hw_of hP h hθ hβ hPg ι hι σ' (h2 σ').1 (h2 σ').2.1 hν hfd h0.HW`. Conclude with `gw_of hP h hG hi hβ hPg he (h2 σ').1 (h2 σ').2.1 (h2 σ').2.2 h0.gW`. Conclude with `nu_of hP h hβ hPg hν hfd h0.νW`. Conclude with `onb_of hP h hBV (h0.BV i)`.
+-/
 private theorem modW_of (hP : B'.toPre = B.toPre) (hG : G' = G) (hi : HEq iG' iG)
     (hθ : HEq R'.θ R.θ) (hβ : HEq R'.βW R.βW) (hPg : HEq R'.Pg R.Pg) (he : HEq R'.eG R.eG) (ι : a.D.what₂.LL →+* a'.D.what₂.LL)
     (hι : ∀ x, a'.D.what₂.embLL (ι x) = a.D.what₂.embLL x)
@@ -229,6 +284,13 @@ end
 
 open GlobalTheory.Mem.R3.Rw.ModWExt in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Ks _ _ _ Xg tr z Wt' R' hE hpx hS`. Use `letI := z.alg`. Establish `hP : B'.toPre = B.toPre` using `hE.1`. Establish `hG` using `LiftExt.gc_eq hP hpx`. Establish `hb` using `z.pins.char.base.models`.
+
+Set `ι : (w.st Z).toD7.what₂.LL →+* (w'.st Z').toD7.what₂.LL` to `(B'.embLL.rangeRestrictFieldEquiv.symm : B'.embLL.fieldRange →+* B'.LL).comp (B.embLL.codRestrict B'.embLL.fieldRange fun x => hE.2.2.2 ⟨x, rfl⟩)`. Establish `hι : ∀ x, (w'.st Z').toD7.what₂.embLL (ι x) = (w.st Z).toD7.what₂.embLL x` using `fun x => congrArg Subtype.val (B'.embLL.rangeRestrictFieldEquiv.apply_symm_apply ⟨B.embLL x, hE.2.2.2 ⟨x, rfl⟩⟩)`. Use `clear_value ι`. Use `obt ⟨-, hθ, hβ, -, -, -, -, -, -, hPg, he, -, h1, -⟩ := hS`. Use `modW_of (a := Z) (a' := Z') (R := z.R.toRealDat) (R' := R'.toRealDat) hP hG.1 hG.2 hθ hβ hPg he ι hι (fun i i' h => ?_) hb` and prove the remaining obligations.
+
+Use `obt ⟨-, -, -, -, -, -, hBV, -, -, -, -, -, -, -, -, -, hν, hfd, h2⟩ := h1 i i' h`. Use `⟨hBV, hν, hfd, fun σ' => ?_⟩` and prove the remaining obligations. Use `obt ⟨⟨m1, m2, m3, m4, m5, m6, m7, -⟩, hH, hg, -⟩ := (h2 ι hι).1 σ'`. Conclude with `⟨⟨m1, m2, m3, m4, m5, m6, m7⟩, hH, hg⟩`.
+-/
 theorem _root_.GlobalTheory.T.modW_of_rSideW : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (w'.st Z').toD7.what₂.LL] {Xg : Finset (Gc B' w'.px → B'.LL)} {tr : TrI B' w'.px}

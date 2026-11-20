@@ -10,6 +10,9 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.Dec
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h0 : I.n = 0` using `by omega`. Use `haveI : IsEmpty (Fin I.n) := by rw [h0]; infer_instance`. Conclude with `hW.1 (Subsingleton.elim _ _)`.
+-/
 theorem one_le_rank_of_isIsot (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) (hW : I.IsIsot W) :
     1 ≤ I.n := by
   by_contra h
@@ -17,6 +20,15 @@ theorem one_le_rank_of_isIsot (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)
   haveI : IsEmpty (Fin I.n) := by rw [h0]; infer_instance
   exact hW.1 (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Take `⟨hpos, hcont, hinv, -⟩` from `GlobalTheory.T.truncatedLeastLatticeSize_lipschitz_properties I (one_le_rank_of_isIsot I W hW)`. Take `⟨-, -, -, -, Cp, hCp, -, hcov⟩` from `GlobalTheory.UnipApprox.strong_approximation I W hW`. Establish `hc : Continuous fun y : I.GA => tau1 I (y * x)` using `hcont.comp (continuous_id.mul continuous_const)`. Establish `key : ∀ m ∈ I.NA W, ∃ y ∈ Cp, tau1 I (m * x) = tau1 I (y * x)`. Introduce `m hm`.
+
+Take `⟨γ, hγ, hy⟩` from `hcov m hm`. Use `⟨γ⁻¹ * m, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← hinv γ hγ.1 (γ⁻¹ * m * x)]`. Use `congr 1`. Use `group`.
+
+Break down `Cp.eq_empty_or_nonempty with he | hne` into its components or cases. Use `⟨1, one_pos, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, -⟩` from `key m hm`. Rewrite `hy` using `[he]`. Conclude with `hy.elim`.
+
+Take `⟨y₀, -, hmin⟩` from `hCp.exists_isMinOn hne hc.continuousOn`. Use `⟨tau1 I (y₀ * x), hpos _, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `key m hm`. Rewrite using `[e]`. Conclude with `hmin hy`.
+-/
 theorem exists_pos_le_tau1_mul_of_mem_NA_of_isIsot (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) (x : I.GA)
     (hW : I.IsIsot W) : ∃ c : ℝ, 0 < c ∧ ∀ m ∈ I.NA W, c ≤ tau1 I (m * x) := by
   obtain ⟨hpos, hcont, hinv, -⟩ := GlobalTheory.T.truncatedLeastLatticeSize_lipschitz_properties I (one_le_rank_of_isIsot I W hW)

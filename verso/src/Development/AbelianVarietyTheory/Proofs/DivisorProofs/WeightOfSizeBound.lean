@@ -19,6 +19,13 @@ section Arith
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : (j + 1) * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ hj`. Establish `h2 : (i + 1) * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ hi`. Establish `h3 : rankV D (i + 1) (j + 1) ≤ bigN D`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hk` using `D.R.m_add_three_le_k`.
+
+Unfold `rankV bigN`. Rewrite using `[mul_add, mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Establish `h4` using `(isLeast_gap D 1).1.2.1`. Establish `h5 : bigN D ≤ bigN D ^ 3` using `Nat.le_self_pow (by norm_num) _`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem rankV_lt_gap {i j : ℕ} (hi : i < D.R.m) (hj : j < D.R.m) : rankV D (i + 1) (j + 1) < gap D 1 := by
   have h1 : (j + 1) * D.R.t ≤ D.R.m * D.R.t := Nat.mul_le_mul_right _ hj
   have h2 : (i + 1) * sLen D ≤ D.R.m * sLen D := Nat.mul_le_mul_right _ hi
@@ -32,6 +39,11 @@ theorem rankV_lt_gap {i j : ℕ} (hi : i < D.R.m) (hj : j < D.R.m) : rankV D (i 
   have h5 : bigN D ≤ bigN D ^ 3 := Nat.le_self_pow (by norm_num) _
   omega
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, hbe, -⟩` from `hs`. Establish `e1 : (D.hc τ).e ⟨j, hj⟩ = ((num D 1 τ).e (j + 1) : ℚ)` using `(GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D 1) (cen D 1 τ)).2.2 ⟨j, hj⟩`. Take `⟨hb0, he4⟩` from `hbe τ ⟨j, hj⟩`. Establish `hg` using `(D.hc τ).gap_be ⟨j, hj⟩`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `by positivity`.
+
+Rewrite `hg`, `he4` using `[e1]`. Use `⟨?_, by exact_mod_cast he4⟩` and prove the remaining obligations. Establish `: (0 : ℚ) ≤ ((num D 1 τ).e (j + 1) : ℚ)` using `by linarith`. Conclude with `this` after adjusting the coercions.
+-/
 theorem numE_bounds {L : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows L) (τ : D.what₂.Tau) {j : ℕ} (hj : j < D.R.m) :
     0 ≤ (num D 1 τ).e (j + 1) ∧ ((num D 1 τ).e (j + 1) : ℝ) ≤ 4 * L.sc.b := by
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, hbe, -⟩ := hs
@@ -45,6 +57,21 @@ theorem numE_bounds {L : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFull
   have : (0 : ℚ) ≤ ((num D 1 τ).e (j + 1) : ℚ) := by linarith
   exact_mod_cast this
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, hgap, -, -⟩` from `hs`. Use `set G0 := GridData.ofHCParam (D.hc τ) (sLen D) (gap D 1) 0 with hG0`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `ev : (D.hc τ).v ⟨0, by omega⟩ = (G0.v 2 : ℚ)` using `(GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D 1) 0).1 ⟨0, by omega⟩`. Take `⟨v0, v1⟩` from `L.cloud_v τ ⟨0, by omega⟩`.
+
+Rewrite `v0`, `v1` using `[ev]`. Establish `hmid : G0.mid i = (G0.v 2 : ℚ) + 1 / 2 + ((D.R.m : ℚ) + 1 - i) * (gap D 1 : ℚ) + (gap D 1 : ℚ) / 2` using `G0.mid_eq h1`. Establish `hc : cen D 1 τ i = ⌊G0.mid i⌋` using `rfl`. Establish `hS` using `L.Sc_pos`. Establish `hi1 : (1 : ℝ) ≤ i` using `by exact_mod_cast h1`.
+
+Establish `hi2 : (i : ℝ) ≤ D.R.m` using `by exact_mod_cast h2`. Establish `hγ : (0 : ℝ) ≤ gap D 1` using `by positivity`. Establish `hmR : ((G0.mid i : ℚ) : ℝ) = (G0.v 2 : ℝ) + 1 / 2 + ((D.R.m : ℝ) + 1 - i) * (gap D 1 : ℝ) + (gap D 1 : ℝ) / 2`. Rewrite using `[hmid]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `v0' : (0 : ℝ) ≤ (G0.v 2 : ℝ)` using `by exact_mod_cast v0`. Establish `v1' : (G0.v 2 : ℝ) ≤ L.Sc` using `by exact_mod_cast v1`. Establish `m0 : (0 : ℝ) ≤ ((G0.mid i : ℚ) : ℝ)`. Rewrite using `[hmR]; have : (0 : ℝ) ≤ ((D.R.m : ℝ) + 1 - i) * (gap D 1 : ℝ) := mul_nonneg (by linarith) hγ`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `m1 : ((G0.mid i : ℚ) : ℝ) ≤ L.sc.b`. Rewrite using `[hmR]`. Establish `: ((D.R.m : ℝ) + 1 - i) * (gap D 1 : ℝ) + (gap D 1 : ℝ) / 2 ≤ ((D.R.m : ℝ) + 1) * gap D 1` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `m0q : (0 : ℚ) ≤ G0.mid i` using `by exact_mod_cast m0`. Use `⟨hc ▸ Int.floor_nonneg.2 m0q, ?_⟩` and prove the remaining obligations. Establish `hf : ((⌊G0.mid i⌋ : ℚ) : ℝ) ≤ ((G0.mid i : ℚ) : ℝ)` using `by exact_mod_cast Int.floor_le (G0.mid i)`. Rewrite using `[hc]`. Move the coercions through the operations in `at hf ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cen_bounds {L : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows L) (τ : D.what₂.Tau) {i : ℕ} (h1 : 1 ≤ i)
     (h2 : i ≤ D.R.m) : 0 ≤ cen D 1 τ i ∧ (cen D 1 τ i : ℝ) ≤ L.sc.b := by
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, hgap, -, -⟩ := hs
@@ -79,6 +106,11 @@ theorem cen_bounds {L : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFullH
   push_cast at hf ⊢
   linarith
 
+/- English proof (translation)
+Take `⟨-, -, -, hm, -, -, -, -, -, -, -, hgap, -, -⟩` from `hs`. Establish `hS` using `L.Sc_pos`. Establish `h4` using `(isLeast_gap D 1).1.2.1`. Establish `h15 : 15 ≤ gap D 1` using `by have : 6 ≤ sLen D := by unfold sLen; omega`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hγ : (15 : ℝ) ≤ gap D 1` using `by exact_mod_cast h15`. Establish `hm' : (44 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm`. Apply the tactic sequence `constructor <;> nlinarith`.
+-/
 theorem gap_le_b {L : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows L) : (gap D 1 : ℝ) ≤ L.sc.b ∧ 675 ≤ L.sc.b := by
   obtain ⟨-, -, -, hm, -, -, -, -, -, -, -, hgap, -, -⟩ := hs
   have hS := L.Sc_pos
@@ -89,6 +121,21 @@ theorem gap_le_b {L : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFullHec
   have hm' : (44 : ℝ) ≤ D.R.m := by exact_mod_cast hm
   constructor <;> nlinarith
 
+/- English proof (translation)
+Take `⟨hγb, hb⟩` from `gap_le_b hs`. Establish `key : ∀ x : Fin D.R.m × Fin D.R.m × D.what₂.Tau, max (wtA D 1 x.1 x.2.1 x.2.2).natAbs (wtA' D 1 x.1 x.2.1 x.2.2).natAbs ≤ ⌊10 * L.sc.b⌋₊`. Introduce and unpack `⟨i, j, τ⟩`. Establish `hr` using `rankV_lt_gap (D := D) i.2 j.2`. Apply the tactic sequence `have hij : rankV D i j ≤ rankV D (i + 1) (j + 1) := by unfold rankV; gcongr <;> omega`.
+
+Establish `hbs : botSmall D i j ≤ rankV D (i + 1) (j + 1)` using `by unfold botSmall; omega`. Establish `hbb : botBig D i j ≤ rankV D (i + 1) (j + 1)` using `by unfold botBig; omega`. Establish `hp : rankV D i j % 2 ≤ 1` using `Nat.le_of_lt_succ (Nat.mod_lt _ (by norm_num))`. Take `⟨e0, e1⟩` from `numE_bounds hs τ j.2`. Take `⟨c0, c1⟩` from `cen_bounds hs τ (i := D.R.m - i) (by omega) (by omega)`.
+
+Simplify using `only`. Use `max_le (Nat.le_floor ?_) (Nat.le_floor ?_)` and prove the remaining obligations. Establish `hA : |wtA D 1 i j τ| ≤ 2 * (num D 1 τ).e (j + 1) + 1 + gap D 1`. Rewrite using `[abs_le]`. Unfold `wtA`.
+
+Apply the tactic sequence `constructor <;> omega`. Establish `hA' : |((wtA D 1 i j τ : ℤ) : ℝ)| ≤ 2 * ((num D 1 τ).e (j + 1) : ℝ) + 1 + (gap D 1 : ℝ)`. Conclude with `hA` after adjusting the coercions. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hA : |wtA' D 1 i j τ| ≤ 2 * cen D 1 τ (D.R.m - i) + 1 + gap D 1`. Rewrite using `[abs_le]`. Unfold `wtA'`. Apply the tactic sequence `constructor <;> omega`. Establish `hA' : |((wtA' D 1 i j τ : ℤ) : ℝ)| ≤ 2 * (cen D 1 τ (D.R.m - i) : ℝ) + 1 + (gap D 1 : ℝ)`.
+
+Conclude with `hA` after adjusting the coercions. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsup : maxWt D 1 ≤ max 1 ⌊10 * L.sc.b⌋₊` using `max_le_max le_rfl (Finset.sup_le fun x _ => key x)`. Establish `hfl : (⌊10 * L.sc.b⌋₊ : ℝ) ≤ 10 * L.sc.b` using `Nat.floor_le (by linarith)`.
+
+Use `⟨by exact_mod_cast le_max_left 1 _, ?_, hb⟩` and prove the remaining obligations. Establish `: (maxWt D 1 : ℝ) ≤ ((max 1 ⌊10 * L.sc.b⌋₊ : ℕ) : ℝ)` using `by exact_mod_cast hsup`. Rewrite `this` using `[Nat.cast_max, Nat.cast_one]`. Conclude with `this.trans (max_le (by linarith) hfl)`.
+-/
 theorem maxWt_le {L : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows L) :
     1 ≤ (maxWt D 1 : ℝ) ∧ (maxWt D 1 : ℝ) ≤ 10 * L.sc.b ∧ 675 ≤ L.sc.b := by
   obtain ⟨hγb, hb⟩ := gap_le_b hs
@@ -129,6 +176,15 @@ theorem maxWt_le {L : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFullHec
 
 end Arith
 
+/- English proof (translation)
+Take `⟨e, he, h⟩` from `h`. Use `⟨0, fun CF _ => ⟨e, he, fun eps h1 h2 => ?_⟩⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `h eps h1 h2`. Use `⟨K, fun Fm CH hc hL _ => ⟨10, fun C hC => ?_⟩⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `hK Fm CH hc hL`.
+
+Use `⟨x0, fun x hx hle i p hp d hd => ?_⟩` and prove the remaining obligations. Establish `hs` using `hx0 x hx hle i p hp`. Take `⟨-, a, ha⟩` from `hd`. Establish `hw : d.Bw = (maxWt _ 1 : ℝ)` using `ha.sq.weight`. Take `⟨w1, w2, hb⟩` from `maxWt_le hs`.
+
+Establish `eb : p.Z.b = (Fm.L x i).sc.b` using `rfl`. Use `show 1 ≤ d.Bw ∧ d.Bw ≤ C * p.Z.b ∧ Real.log d.Bw ≤ C * Real.log p.Z.b`. Rewrite using `[hw, eb]`. Establish `hb0 : 0 < (Fm.L x i).sc.b` using `by linarith`. Establish `l10 : Real.log 10 ≤ Real.log (Fm.L x i).sc.b` using `Real.log_le_log (by norm_num) (by linarith)`.
+
+Establish `l0 : 0 ≤ Real.log (Fm.L x i).sc.b` using `l10.trans' (Real.log_nonneg (by norm_num))`. Use `⟨w1, w2.trans (by nlinarith), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wt_tie (h : SizeAt) : Wt @Comparison₂ := by
   obtain ⟨e, he, h⟩ := h
   refine ⟨0, fun CF _ => ⟨e, he, fun eps h1 h2 => ?_⟩⟩

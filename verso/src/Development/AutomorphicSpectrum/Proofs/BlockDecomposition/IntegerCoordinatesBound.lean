@@ -3,6 +3,19 @@ open NumberField
 
 namespace GlobalTheory.CompanionTheory.NumberFieldCoord
 
+/- English proof (translation)
+Introduce `E _ _ I _ τ hτ`. Use `set Lc := LinearMap.toContinuousLinearMap (mixedEmbedding.latticeBasis E).equivFun.toLinearMap with hLc`. Use `⟨‖Lc‖ + 1, by positivity, fun e R hR k => ?_⟩` and prove the remaining obligations. Establish `hR0 : 0 ≤ R`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`.
+
+Take `⟨i, -⟩` from `hτ w`. Conclude with `(norm_nonneg _).trans (hR i)`. Establish `hw : ∀ w : InfinitePlace E, w (e : E) ≤ R`. Introduce `w`. Take `⟨i, rfl⟩` from `hτ w`.
+
+Simplify `hR i` using `only [InfinitePlace.apply]`. Establish `hn : ‖mixedEmbedding E (e : E)‖ ≤ R`. Rewrite using `[Prod.norm_def]`. Use `max_le ?_ ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg hR0).2 fun w => ?_` and prove the remaining obligations.
+
+Establish `h` using `hw w.1`. Rewrite `h` using `[← InfinitePlace.norm_embedding_of_isReal w.2]`. Simplify `h` using `[mixedEmbedding]`. Use `(pi_norm_le_iff_of_nonneg hR0).2 fun w => ?_` and prove the remaining obligations. Establish `h` using `hw w.1`.
+
+Rewrite `h` using `[← InfinitePlace.norm_embedding_eq]`. Simplify `h` using `[mixedEmbedding]`. Establish `hval : Lc (mixedEmbedding E (e : E)) k = (((RingOfIntegers.basis E).repr e k : ℤ) : ℝ)`. Express the relevant statement in the definitionally equal form `(mixedEmbedding.latticeBasis E).equivFun (mixedEmbedding E (e : E)) k = _`. Rewrite using `[Module.Basis.equivFun_apply, mixedEmbedding.latticeBasis_repr_apply]`.
+
+Use `integralBasis_repr_apply E e k` as an intermediate fact. Rewrite using `[show (e : E) = algebraMap (𝓞 E) E e from rfl, this]`. Simplify using the standard rewrite rules. Rewrite using `[← hval, ← Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem abs_repr_le_of_forall_norm_embedding_le :
     ∀ {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] (τ : I → (E →+* ℂ)),
       Function.Surjective (fun i => InfinitePlace.mk (τ i)) →

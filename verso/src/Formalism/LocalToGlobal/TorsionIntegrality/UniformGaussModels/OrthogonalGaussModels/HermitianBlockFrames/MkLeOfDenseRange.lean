@@ -5,6 +5,11 @@ open Cardinal
 
 namespace Formalism.L2.Th1.Top.FrP.UnitaryGroupMassFormula.HermFrame
 
+/- English proof (translation)
+Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Take `⟨N, hN⟩` from `exists_nat_one_div_lt hε`. Use `⟨N, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_comm]`.
+
+Establish `hk' : (N : ℝ) + 1 ≤ (k : ℝ) + 1` using `by exact_mod_cast Nat.add_le_add_right hk 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tendsto_of_choice {X Y : Type} [MetricSpace X] (f : Y → X) (x : X) (u : ℕ → Y)
     (hu : ∀ k : ℕ, dist x (f (u k)) < 1 / ((k : ℝ) + 1)) :
     Filter.Tendsto (fun k => f (u k)) Filter.atTop (nhds x) := by
@@ -18,6 +23,11 @@ theorem tendsto_of_choice {X Y : Type} [MetricSpace X] (f : Y → X) (x : X) (u 
     _ ≤ 1 / ((N : ℝ) + 1) := one_div_le_one_div_of_le (by positivity) hk'
     _ < ε := hN
 
+/- English proof (translation)
+Establish `h : ∀ x : X, ∀ k : ℕ, ∃ y, dist x (f y) < 1 / ((k : ℝ) + 1)` using `fun x k => Metric.denseRange_iff.mp hf x _ (by positivity)`. Use `choose u hu using h`. Use `Cardinal.mk_le_of_injective (f := u) ?_` and prove the remaining obligations. Introduce `x x' hxx'`. Establish `hx` using `tendsto_of_choice f x (u x) (hu x)`.
+
+Establish `hx'` using `tendsto_of_choice f x' (u x') (hu x')`. Rewrite `hx` using `[hxx']`. Conclude with `tendsto_nhds_unique hx hx'`.
+-/
 theorem mk_le_of_denseRange {X Y : Type} [MetricSpace X] {f : Y → X} (hf : DenseRange f) :
     #X ≤ #(ℕ → Y) := by
   have h : ∀ x : X, ∀ k : ℕ, ∃ y, dist x (f y) < 1 / ((k : ℝ) + 1) := fun x k =>
@@ -30,23 +40,38 @@ theorem mk_le_of_denseRange {X Y : Type} [MetricSpace X] {f : Y → X} (hf : Den
   rw [hxx'] at hx
   exact tendsto_nhds_unique hx hx'
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mk_padic_le (p : ℕ) [Fact p.Prime] : #ℚ_[p] ≤ 𝔠 := by
   calc #ℚ_[p] ≤ #(ℕ → ℚ) := mk_le_of_denseRange (Padic.denseRange_ratCast p)
     _ = 𝔠 := by rw [← power_def, Cardinal.mkRat, Cardinal.mk_nat, aleph0_power_aleph0]
 
+/- English proof (translation)
+The claim follows from `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[p] (PadicAlgCl p)).trans (max_le (mk_padic_le p) aleph0_le_continuum)`.
+-/
 theorem mk_padicAlgCl_le (p : ℕ) [Fact p.Prime] : #(PadicAlgCl p) ≤ 𝔠 :=
   (Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[p] (PadicAlgCl p)).trans
     (max_le (mk_padic_le p) aleph0_le_continuum)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mk_padicComplex_le (p : ℕ) [Fact p.Prime] : #ℂ_[p] ≤ 𝔠 := by
   calc #ℂ_[p] ≤ #(ℕ → PadicAlgCl p) := mk_le_of_denseRange UniformSpace.Completion.denseRange_coe
     _ = #(PadicAlgCl p) ^ ℵ₀ := by rw [← power_def, Cardinal.mk_nat]
     _ ≤ 𝔠 ^ ℵ₀ := power_le_power_right (mk_padicAlgCl_le p)
     _ = 𝔠 := continuum_power_aleph0
 
+/- English proof (translation)
+The claim follows from `le_antisymm (mk_padicComplex_le p) (continuum_le_cardinal_of_nontriviallyNormedField _)`.
+-/
 theorem mk_padicComplex (p : ℕ) [Fact p.Prime] : #ℂ_[p] = 𝔠 :=
   le_antisymm (mk_padicComplex_le p) (continuum_le_cardinal_of_nontriviallyNormedField _)
 
+/- English proof (translation)
+Apply `IsAlgClosed.ringEquiv_of_equiv_of_charZero` to reduce the goal to its premises. Rewrite using `[Cardinal.mk_complex]`. Conclude with `Cardinal.aleph0_lt_continuum`. Conclude with `Cardinal.eq.mp (by rw [Cardinal.mk_complex, mk_padicComplex])`.
+-/
 theorem exists_iota (p : ℕ) [Fact p.Prime] : Nonempty (ℂ ≃+* ℂ_[p]) := by
   apply IsAlgClosed.ringEquiv_of_equiv_of_charZero
   · rw [Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum

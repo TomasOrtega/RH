@@ -4,6 +4,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ZH GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.FlagBundle GlobalTheory.GoodMetric GlobalTheory.FlagPush
 open Classical
 
+/- English proof (translation)
+Introduce `F k L _ _ _ _ _ α j d hα hj hd`. Set `jF : L →ₐ[F] RatFunc k` to `{ j with commutes' := fun x => by show j (algebraMap F L x) = algebraMap k (RatFunc k) (algebraMap F k x)`. Rewrite using `[← hα, ← hj]`. Use `rfl }`. Establish `h1 : Algebra.trdeg F L ≤ Algebra.trdeg F (RatFunc k)` using `trdeg_le_of_injective jF j.injective`.
+
+Establish `hR : Algebra.trdeg k (RatFunc k) = 1`. Establish `: Algebra.IsAlgebraic (Polynomial k) (RatFunc k)` using `IsLocalization.isAlgebraic (RatFunc k) (nonZeroDivisors (Polynomial k))`. Rewrite using `[← trdeg_add_eq k (Polynomial k), trdeg_eq_zero (R := Polynomial k) (A := RatFunc k), add_zero, Polynomial.trdeg_of_isDomain]`. Establish `h2` using `trdeg_add_eq F k (A := RatFunc k)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.FlagPush.trdeg_le_succ_of_ratFunc :
     ∀ (F k L : Type) [Field F] [Field k] [Field L] [Algebra F k] [Algebra F L] (α : k →+* L)
       (j : L →+* RatFunc k) (d : ℕ), α.comp (algebraMap F k) = algebraMap F L →

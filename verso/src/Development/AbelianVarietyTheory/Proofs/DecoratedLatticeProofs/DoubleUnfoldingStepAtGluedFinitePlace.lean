@@ -43,6 +43,13 @@ def caSub (V : HSp D) : Submodule ℂ (GA D V → ℂ) where
   zero_mem' := ⟨fun _ _ _ => rfl, continuous_const⟩
   smul_mem' c φ h := ⟨fun γ hγ g => by rw [Pi.smul_apply, Pi.smul_apply, h.1 γ hγ], h.2.const_smul c⟩
 
+/- English proof (translation)
+Use `⟨mkLin (fun v => mkLin (fun x => mkLin (fun y => ⟨hand0 s₁ s₂ l vL v.1 (U₁ x) (U₂ y), Comm.contAut_hand0 s₁ s₂ l vL v.2 (h₁ x) (h₂ y)⟩) ?_) ?_) ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Introduce `c y y'`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `hand0 s₁ s₂ l vL v.1 (U₁ x) (U₂ (c • y + y')) = _`. Rewrite using `[map_add, map_smul]`.
+
+Conclude with `Comm.doubleThetaUnfolding_linear_second_datum s₁ s₂ l vL v.2 (h₁ x) (h₂ y) (h₂ y') c`. Introduce `c x x'`. Use `LinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `hand0 s₁ s₂ l vL v.1 (U₁ (c • x + x')) (U₂ y) = _`. Rewrite using `[map_add, map_smul]`.
+
+Conclude with `Comm.doubleThetaUnfolding_linear_first_datum s₁ s₂ l vL v.2 (h₁ x) (h₁ x') (h₂ y) c`. Introduce `c v v'`. Use `LinearMap.ext fun x => LinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Conclude with `Comm.doubleThetaUnfolding_linear_function s₁ s₂ l vL v.2 v'.2 (h₁ x) (h₂ y) c`.
+-/
 theorem exists_trilinear {σ : ℕ} {B : BesLev D (σ + 1)} {J : JacLev D (σ + 1)} {B' : BesLev D σ} (s₁ : StepBF ψ B J)
     (s₂ : StepFB ψ J B') (l : Link B B'.L B'.ζ) (vL : VolM D B'.L.rank J.W₀.rank) {M₁ M₂ : Type} [AddCommGroup M₁]
     [Module ℂ M₁] [AddCommGroup M₂] [Module ℂ M₂] (U₁ : M₁ →ₗ[ℂ] WO B.V₀ J.W₀ → ℂ) (U₂ : M₂ →ₗ[ℂ] WO J.W₀ B'.V₀ → ℂ)
@@ -65,6 +72,9 @@ theorem exists_trilinear {σ : ℕ} {B : BesLev D (σ + 1)} {J : JacLev D (σ + 
     refine LinearMap.ext fun x => LinearMap.ext fun y => Subtype.ext ?_
     exact Comm.doubleThetaUnfolding_linear_function s₁ s₂ l vL v.2 v'.2 (h₁ x) (h₂ y) c
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h₁`. Simplify using `only [handFB, pairKer, contractT, thPair, Pi.smul_apply, smul_eq_mul, star_mul']`. Repeatedly rewrite using `[show ∀ x y : ℂ, x * (star c * y) = star c * (x * y) from fun x y => by ring, integral_const_mul]`.
+-/
 theorem handFB_smul' {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : StepFB ψ J B)
     (vL : VolM D B.L.rank J.W₀.rank) (c : ℂ) (Y : GA D J.W₀ → WO J.W₀ B.L → ℂ) (Ξ : WO J.W₀ B.V₀ → ℂ) :
     handFB s vL (c • Y) Ξ = star c • handFB s vL Y Ξ := by
@@ -72,11 +82,19 @@ theorem handFB_smul' {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : S
   simp only [handFB, pairKer, contractT, thPair, Pi.smul_apply, smul_eq_mul, star_mul']
   simp_rw [show ∀ x y : ℂ, x * (star c * y) = star c * (x * y) from fun x y => by ring, integral_const_mul]
 
+/- English proof (translation)
+Use `handFB_smul' s vL 0 0 Ξ` as an intermediate fact. Simplify using `using this`.
+-/
 theorem handFB_zero {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : StepFB ψ J B)
     (vL : VolM D B.L.rank J.W₀.rank) (Ξ : WO J.W₀ B.V₀ → ℂ) : handFB s vL 0 Ξ = 0 := by
   have := handFB_smul' s vL 0 0 Ξ
   simpa using this
 
+/- English proof (translation)
+Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `h w`. Simplify using `[handBF]`. Introduce `a S ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ih, map_add]`.
+
+Use `Comm.handBF_right s l hφ (hU (x a)) (hU (∑ i ∈ S, x i)) 1` as an intermediate fact. Rewrite `this` using `[one_smul, star_one, one_smul]`. Conclude with `this.symm`.
+-/
 theorem handBF_sum {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (s : StepBF ψ B J) {L' : HSp D}
     {ζ' : Fin L'.rank → D.host.E} (l : Link B L' ζ') {φ : GA D B.A → ℂ} (hφ : IsContAut B.A φ) {M : Type}
     [AddCommGroup M] [Module ℂ M] (U : M →ₗ[ℂ] WO B.V₀ J.W₀ → ℂ) (hU : ∀ x, IsThetaFunO ψ B.V₀ J.W₀ (U x))
@@ -92,6 +110,11 @@ theorem handBF_sum {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (s : StepBF ψ
     rw [one_smul, star_one, one_smul] at this
     exact this.symm
 
+/- English proof (translation)
+Establish `e1 : handBF s₁ l φ₀ Ξ₁ = star c₀ • handBF s₁ l φ' (U (∑ i ∈ S, x i))`. Rewrite using `[← handBF_sum s₁ l hφ' U hU S x]`. Use function extensionality and compare the values at `g w`. Rewrite using `[handBF_eq, h]`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, star_mul', star_sum, handBF_eq]`.
+
+Rewrite using `[hand0, e1, handFB_smul', star_star]`. Both sides reduce to the same expression.
+-/
 theorem lift_step {σ : ℕ} {B : BesLev D (σ + 1)} {J : JacLev D (σ + 1)} {B' : BesLev D σ} (s₁ : StepBF ψ B J)
     (s₂ : StepFB ψ J B') (l : Link B B'.L B'.ζ) (vL : VolM D B'.L.rank J.W₀.rank) {c₀ : ℂ} {φ₀ φ' : GA D B.A → ℂ}
     (hφ' : IsContAut B.A φ') {M : Type} [AddCommGroup M] [Module ℂ M] (U : M →ₗ[ℂ] WO B.V₀ J.W₀ → ℂ)
@@ -118,6 +141,13 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use `haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k`. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun y => ?_, HasCompactSupport.intro (Comm.isCompact_lat Q.lat) fun y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ Q.lat`. Use `⟨{z | z - y ∈ Q.ker}, (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.isOpen_lat Q.ker).preimage (continuous_id.sub continuous_const), by simp [zero_mem], fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : Q.HasVal z (Q.ev y)`.
+
+Use `(GlobalTheory.LatPair.Pair.mem_ker.1 hz).add (GlobalTheory.LatPair.Pair.hasVal_ev hy)` as an intermediate fact. Simplify using `using this`. Simplify using `only [charInd, vecInd, if_pos hz'.mem, if_pos hy, hz'.ev_eq]`. Use `⟨(Q.lat : Set (n → k))ᶜ, (Comm.isCompact_lat Q.lat).isClosed.isOpen_compl, hy, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : z ∉ Q.lat` using `hz`.
+
+Simplify using `only [charInd, vecInd, if_neg hz', if_neg hy, mul_zero]`. Establish `hy' : y ∉ Q.lat` using `hy`. Simplify using `only [charInd, vecInd, if_neg hy', mul_zero]`.
+-/
 theorem charInd_mem' (χ : AddChar 𝓀[k] ℂ) (Q : Pair k n) : charInd χ Q ∈ SB (n → k) := by
   haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k
   refine ⟨(IsLocallyConstant.iff_exists_open _).2 fun y => ?_,
@@ -135,6 +165,13 @@ theorem charInd_mem' (χ : AddChar 𝓀[k] ℂ) (Q : Pair k n) : charInd χ Q �
   · have hy' : y ∉ Q.lat := hy
     simp only [charInd, vecInd, if_neg hy', mul_zero]
 
+/- English proof (translation)
+Establish `h1 : ∀ y, y ∈ L → g • y ∈ L` using `fun y hy => by`. Rewrite using `[← hg]`. Conclude with `Submodule.smul_mem_pointwise_smul y g L hy`. Establish `h2 : ∀ y, y ∈ L → g⁻¹ • y ∈ L` using `fun y hy => GlobalTheory.LatPair.mem_smul_iff.1 (by rw [hg]; exact hy)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h y hy`. Use `h _ (h2 y hy)` as an intermediate fact. Rewrite `this` using `[← dotProduct_mulVec, show g.val *ᵥ (g⁻¹ • y) = y from smul_inv_smul g y]`. Then use the resulting hypothesis. Introduce `h y hy`. Rewrite using `[← dotProduct_mulVec]`.
+
+Conclude with `h _ (h1 y hy)`.
+-/
 theorem inDual_vecMul {L : Submodule 𝒪[k] (n → k)} {g : GL n k} (hg : g • L = L) (η : n → k) :
     InDual L (η ᵥ* g.val) ↔ InDual L η := by
   have h1 : ∀ y, y ∈ L → g • y ∈ L := fun y hy => by
@@ -148,12 +185,20 @@ theorem inDual_vecMul {L : Submodule 𝒪[k] (n → k)} {g : GL n k} (hg : g •
     rw [← dotProduct_mulVec]
     exact h _ (h1 y hy)
 
+/- English proof (translation)
+Unfold `dualInd`. Conclude with `if_congr (inDual_vecMul hg η) rfl rfl`.
+-/
 theorem dualInd_vecMul {L : Submodule 𝒪[k] (n → k)} {g : GL n k} (hg : g • L = L) (η : n → k) :
     dualInd L (η ᵥ* g.val) = dualInd L η := by
   classical
   unfold dualInd
   exact if_congr (inDual_vecMul hg η) rfl rfl
 
+/- English proof (translation)
+Establish `: g.val *ᵥ y ∈ L ↔ y ∈ L`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `GlobalTheory.LatPair.mem_smul_iff.1 (show g.val *ᵥ y ∈ g • L by rw [hg]; exact h)` as an intermediate fact. Rewrite `this` using `[show g⁻¹ • (g.val *ᵥ y) = y from inv_smul_smul g y]`. Then use the resulting hypothesis.
+
+Introduce `h`. Rewrite using `[← hg]`. Conclude with `Submodule.smul_mem_pointwise_smul y g L h`. Unfold `vecInd`. Conclude with `if_congr this rfl rfl`.
+-/
 theorem vecInd_mulVec {L : Submodule 𝒪[k] (n → k)} {g : GL n k} (hg : g • L = L) (y : n → k) :
     vecInd L (g.val *ᵥ y) = vecInd L y := by
   classical
@@ -167,10 +212,20 @@ theorem vecInd_mulVec {L : Submodule 𝒪[k] (n → k)} {g : GL n k} (hg : g •
   unfold vecInd
   exact if_congr this rfl rfl
 
+/- English proof (translation)
+Use `h.smul (-1)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem hasVal_neg {P : Pair k n} {x : n → k} {a : 𝓀[k]} (h : P.HasVal x a) : P.HasVal (-x) (-a) := by
   have := h.smul (-1)
   simpa using this
 
+/- English proof (translation)
+Use `Pair.ext fun x a => ?_` and prove the remaining obligations. Rewrite using `[Pair.smul_hasVal, Pair.dia_hasVal]`. Establish `e1 : ((-1 : GL n k)⁻¹ • x) = -x` using `by show (((-1 : GL n k)⁻¹ : GL n k) : Matrix n n k) *ᵥ x = -x`. Simplify using `[Matrix.neg_mulVec]`. Establish `e2 : (((-1 : 𝓀[k]ˣ)⁻¹ : 𝓀[k]ˣ) : 𝓀[k]) * a = -a` using `by simp`.
+
+Rewrite using `[e1, e2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using hasVal_neg h`. Introduce `h`.
+
+Simplify using `using hasVal_neg h`.
+-/
 theorem neg_one_smul_pair (P : Pair k n) : ((-1 : GL n k) • P) = ((-1 : 𝓀[k]ˣ) • P) := by
   refine Pair.ext fun x a => ?_
   rw [Pair.smul_hasVal, Pair.dia_hasVal]
@@ -183,15 +238,24 @@ theorem neg_one_smul_pair (P : Pair k n) : ((-1 : GL n k) • P) = ((-1 : 𝓀[k
   · intro h; simpa using hasVal_neg h
   · intro h; simpa using hasVal_neg h
 
+/- English proof (translation)
+Simplify using `[Matrix.det_neg]`.
+-/
 theorem val_det_neg_one : valuation k ((Matrix.GeneralLinearGroup.det (-1 : GL n k) : kˣ) : k) = 1 := by
   simp [Matrix.det_neg]
 
 omit [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Simplify using `only [FFStar_apply, Submodule.coe_sum, Submodule.coe_smul]`.
+-/
 theorem val_FFStar' {S : HSp D} (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (φ : Form k n (caSub S)) (P : Pair k n) :
     (FFStar q χ φ P).1 = FFStar q χ (fun Q => (φ Q).1) P := by
   simp only [FFStar_apply, Submodule.coe_sum, Submodule.coe_smul]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+The claim follows from `Units.ext (by change (fromBlocks g.val 0 0 (1 : Matrix (Fin 1) (Fin 1) k)).det = g.val.det rw [det_fromBlocks_zero₂₁, det_one, mul_one])`.
+-/
 theorem det_embX_one' (g : GL n k) :
     Matrix.GeneralLinearGroup.det (GlobalTheory.RootEx.embX 1 g) = Matrix.GeneralLinearGroup.det g :=
   Units.ext (by
@@ -205,6 +269,9 @@ section Over
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {p : SplitPt D k}
   {S T : HSp D} {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
+/- English proof (translation)
+Take `⟨H1, H2, -⟩` from `GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n n' ψ hψ S T α β LS LT h.1 h.2.1 f₀ h.2.2.1`. Use `choose U hU hU' using fun Ψ : SB (Matrix n n' k) => H1 Ψ.1 Ψ.2`. Conclude with `⟨mkLin U fun c x y => (hU' _ _ (hlin _ _ (hU x) c _ _ (hU y))).symm, hU, hU', fun Ψ => (H2 _ _ (hU Ψ)).1⟩`.
+-/
 theorem overMap (hψ : IsStdChar D ψ (-1)) {α : Frame p S n'} {β : Frame p T n} {LS : Lat S} {LT : Lat T}
     {f₀ : WO S T → ℂ} {Ψ₀ : Matrix n n' k → ℂ} {Ξ : WO S T → ℂ} (h : Over ψ α β LS LT f₀ Ψ₀ Ξ)
     (hlin : ∀ (Ψ : Matrix n n' k → ℂ) (f : WO S T → ℂ), Over ψ α β LS LT f₀ Ψ f → ∀ (c : ℂ) (Ψ' : Matrix n n' k → ℂ)
@@ -215,6 +282,11 @@ theorem overMap (hψ : IsStdChar D ψ (-1)) {α : Frame p S n'} {β : Frame p T 
   choose U hU hU' using fun Ψ : SB (Matrix n n' k) => H1 Ψ.1 Ψ.2
   exact ⟨mkLin U fun c x y => (hU' _ _ (hlin _ _ (hU x) c _ _ (hU y))).symm, hU, hU', fun Ψ => (H2 _ _ (hU Ψ)).1⟩
 
+/- English proof (translation)
+Rewrite using `[show (GlobalTheory.RootEx.embX 1 g).val = fromBlocks g.val 0 0 1 from rfl, tensCol, tensCol, h]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Use extensionality with `i`.
+
+Simplify using `[Matrix.mul_apply, mulVec, dotProduct]`.
+-/
 theorem tensCol_subst' {Ψ Ψ' : Matrix n n' k → ℂ} (a : (n → k) → ℂ) (u : Matrix n n k) (g : GL n' k)
     (h : ∀ x, Ψ' x = Ψ (u * x * g.val)) (x : Matrix n (n' ⊕ Fin 1) k) :
     tensCol Ψ a (u * x * (GlobalTheory.RootEx.embX 1 g).val) = tensCol Ψ' (fun y => a (u *ᵥ y)) x := by
@@ -225,6 +297,11 @@ theorem tensCol_subst' {Ψ Ψ' : Matrix n n' k → ℂ} (a : (n → k) → ℂ) 
   · ext i
     simp [Matrix.mul_apply, mulVec, dotProduct]
 
+/- English proof (translation)
+Rewrite using `[← map_inv, show (GlobalTheory.RootEx.embX 1 h₀⁻¹).val = fromBlocks (h₀⁻¹ : GL n k).val 0 0 1 from rfl, tensRow, tensRow, h]`. Generalize the expression as in `(h₀⁻¹ : GL n k).val = w`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+
+Use extensionality with `i`. Simplify using `[Matrix.mul_apply, vecMul, dotProduct]`.
+-/
 theorem tensRow_subst' {Ψ Ψ' : Matrix n n' k → ℂ} (b : (n' → k) → ℂ) (h₀ : GL n k) (u : Matrix n' n' k)
     (h : ∀ x, Ψ' x = Ψ ((h₀⁻¹ : GL n k).val * x * u)) (x : Matrix (n ⊕ Fin 1) n' k) :
     tensRow Ψ b (((GlobalTheory.RootEx.embX 1 h₀)⁻¹ : GL (n ⊕ Fin 1) k).val * x * u) = tensRow Ψ' (fun η => b (η ᵥ* u)) x := by
@@ -244,6 +321,121 @@ namespace GlobalTheory.FinPl.Vertex
 
 open Classical in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ p q ψ χ hχ hIs`. Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Use `haveI := secondCountable k`. Take `⟨e, he, HC⟩` from `GlobalTheory.T.splitPlace_lineComponents_contraction D k p ψ χ hIs`.
+
+Take `⟨ν, hν, -⟩` from `exists_isUnitVol k`. Set `ε : 𝓀[k]ˣ` to `if e = 1 then 1 else -1`. Establish `hεe : (e = 1 ∧ ε = 1) ∨ (e = -1 ∧ ε = -1)`. Distinguish the cases in `h1 : e = 1`. Conclude with `Or.inl ⟨h1, if_pos h1⟩`.
+
+Conclude with `Or.inr ⟨he.resolve_left h1, if_neg h1⟩`. Use `⟨ε, ?_, ?_⟩` and prove the remaining obligations. Break down `hεe with ⟨-, h⟩ | ⟨-, h⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr h`.
+
+Introduce `n n' n'' _ _ _ _ _ _ σ B J B' s₁ s₂ l vL hu₁ hu₂ α α₀ β γ γ₀ hα hγ P P₁ Q`. Establish `hψ : IsStdChar D ψ (-1)` using `s₁.weil₀.std`. Establish `hχc : Continuous χ`. Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h1 : Continuous fun a => psiE ψ (p.sec a)` using `hψ.1.1.comp (ht.comp p.cont_sec)`.
+
+Establish `h2 : (fun a => ((χ a : Circle) : ℂ)) = fun a => psiE ψ (p.sec a)` using `funext hIs`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous (fun a => ((χ a : Circle) : ℂ))`. Rewrite using `[h2]`. Conclude with `h1`.
+
+Take `⟨lS₁, lT₁, uS₁, uT₁, lin₁⟩` from `GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ _ _ _ _ _ s₁.weil₀`. Take `⟨lS₂, lT₂, uS₂, uT₂, lin₂⟩` from `GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ _ _ _ _ _ s₂.weil₀`. Establish `vS₁` using `uS₁ hu₁.2`. Establish `vT₁` using `uT₁ hu₁.1`. Establish `vS₂` using `uS₂ hu₂.2`.
+
+Establish `vT₂` using `uT₂ hu₂.1`. Take `⟨⟨c₀, HS⟩, SG2⟩` from `GlobalTheory.T.sourceLiftAtGluedPlace_proof D k p n n' q χ hχ (resChar χ hχ q) rfl ψ B.V₀ B.A B.L J.W₀ B.o B.ζ B.line B.cpt B.vA s₁.χV s₁.χW s₁.om₀ s₁.weil₀ hu₁.1 hu₁.2 α α₀ β hα P P₁ Q.lat`. Take `⟨D1, -, -⟩` from `GlobalTheory.T.gluedLattice_finite_expansions_localField k n n' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat`. Take `⟨-, D2, D3⟩` from `GlobalTheory.T.gluedLattice_finite_expansions_localField k n n'' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat`. Set `μ : Measure (n → k)` to `Measure.pi fun _ => ν`.
+
+Establish `I0 : fpair χ e μ (vecInd Q.lat) (dualInd Q.lat) ≠ 0` using `Comm.fpair_ne_zero χ hχc e he μ Q.lat`. Establish `hvec` using `Comm.vecInd_mem Q.lat`. Establish `hdual` using `Comm.dualInd_mem Q.lat`. Set `col : ∀ Ψ : Matrix n n' k → ℂ, Ψ ∈ SB (Matrix n n' k) → ∀ a : (n → k) → ℂ, a ∈ SB (n → k) → SB (Matrix n (n' ⊕ Fin 1) k)` to `fun Ψ hΨ a ha => ⟨tensCol Ψ a, Comm.tensCol_mem hΨ ha⟩`. Set `row : ∀ Ψ : Matrix n'' n k → ℂ, Ψ ∈ SB (Matrix n'' n k) → ∀ b : (n → k) → ℂ, b ∈ SB (n → k) → SB (Matrix (n'' ⊕ Fin 1) n k)` to `fun Ψ hΨ b hb => ⟨tensRow Ψ b, Comm.tensRow_mem hΨ hb⟩`.
+
+Establish `one_emb : ∀ {S₀ A L : HSp D} (o : OrthDec S₀ A L), o.emb (1, 1) = 1` using `fun o => map_one o.emb`. Use `⟨fun R => ⟨c₀ * ((withLat Q.lat).card : ℂ), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `L₁ L₂ L₂' L₃ f₁ Ξ₁ Ξ₁' f₂ Ξ₂ Ξ₂' o₁ o₁' o₂ o₂' φ hφ`. Take `⟨U₁, a₁, b₁, t₁⟩` from `overMap hψ o₁ fun Ψ f h => (lin₁ _ _ α₀ β L₁ L₂ f₁ Ψ f h).2.2`. Take `⟨U₂, a₂, b₂, t₂⟩` from `overMap hψ o₂ fun Ψ f h => (lin₂ _ _ β γ₀ L₂' L₃ f₂ Ψ f h).2.2`.
+
+Take `⟨Θ, hΘ⟩` from `exists_trilinear s₁ s₂ l vL U₁ U₂ t₁ t₂`. Establish `key : ∀ (v : caSub B.A) (Ψ₁ : Matrix n n' k → ℂ) (h₁ : Ψ₁ ∈ SB (Matrix n n' k)) (Ψ₂ : Matrix n'' n k → ℂ) (h₂ : Ψ₂ ∈ SB (Matrix n'' n k)) (a a' b b' : (n → k) → ℂ) (ha : a ∈ SB (n → k)) (ha' : a' ∈ SB (n → k)) (hb : b ∈ SB (n → k)) (hb' : b' ∈ SB (n → k)), fpair χ e μ a' b' • (Θ …`. Introduce `v Ψ₁ h₁ Ψ₂ h₂ a a' b b' ha ha' hb hb'`. Rewrite using `[hΘ, hΘ]`. Conclude with `HC n n' n'' σ B J B' s₁ s₂ l vL α α₀ β γ γ₀ hα hγ μ L₁ L₂ L₂' L₃ f₁ _ _ f₂ _ _ Ψ₁ Ψ₂ a a' b b' ha ha' hb hb' (a₁ (col Ψ₁ h₁ a ha)) (a₁ (col Ψ₁ h₁ a' ha')) (a₂ (row Ψ₂ h₂ b hb)) (a₂ (row Ψ₂ h₂ b' hb')) v.1 v.2`.
+
+Establish `hFF : ∀ A : Pair k n', IsContAut B.A (FFStar q (resChar χ hχ q) φ A)` using `fun A => by`. Use `(FFStar q (resChar χ hχ q) (fun P₂ => (⟨φ P₂, hφ.2.2 P₂⟩ : caSub B.A)) A).2` as an intermediate fact. Rewrite `this` using `[val_FFStar']`. Then use the resulting hypothesis. Set `v' : caSub B.A` to `⟨_, hFF P₁⟩`. Set `x : Pair k n → SB (Matrix n (n' ⊕ Fin 1) k)` to `fun Q' => col (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (charInd (resChar χ hχ q) Q') (charInd_mem' _ Q')`.
+
+Set `xv : Pair k n' → Pair k n → SB (Matrix n (n' ⊕ Fin 1) k)` to `fun A Q' => col (phiOne A Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem A Q') (vecInd Q.lat) hvec`. Set `yd : Pair k n → SB (Matrix (n'' ⊕ Fin 1) n k)` to `fun Q'' => row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (dualInd Q.lat) hdual`. Set `y₀ : SB (Matrix (n'' ⊕ Fin 1) n k)` to `row (latInd Q.lat R.ker) (latInd_mem_SB _ _) (dualInd Q.lat) hdual`. Set `y : Pair k n → SB (Matrix (n'' ⊕ Fin 1) n k)` to `fun Q'' => row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (cosetInd q Q''.lat Q''.red) (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _)`. Establish `h2 : hand0 s₁ s₂ l vL (φ P) Ξ₁ Ξ₂ = c₀ • hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ P₁) (U₁ (∑ Q' ∈ withLat Q.lat, x Q')) Ξ₂` using `lift_step s₁ s₂ l vL (hFF P₁) U₁ t₁ (withLat Q.lat) x Ξ₁ Ξ₂ (HS L₁ L₂ f₁ Ξ₁ (fun Q' => U₁ (x Q')) o₁ (fun Q' _ => a₁ (x Q')) φ hφ)`.
+
+Establish `hΞ₂ : Ξ₂ = U₂ (y₀ + ∑ Q'' ∈ withLat Q.lat, y Q'')`. Rewrite using `[b₂ ⟨_, o₂.2.2.2.1⟩ Ξ₂ o₂]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, Submodule.coe_sum]`.
+
+Conclude with `D2 R`. Establish `t0 : ∀ Q' ∈ withLat Q.lat, (Θ v' (x Q') y₀).1 = 0` using `fun Q' hQ' => by`. Use `key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (latInd Q.lat R.ker) (latInd_mem_SB _ _) (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (dualInd Q.lat) (dualInd Q.lat) (charInd_mem' _ Q') hvec hdual hdual` as an intermediate fact. Establish `hf` using `GlobalTheory.T.fourierPairing_pairCharIndicator_dualLatticeIndicator_zero k n q χ hχ e he μ Q'`. Rewrite `hf` using `[mem_withLat.1 hQ']`.
+
+Rewrite `this` using `[hf, zero_smul]`. Conclude with `(smul_eq_zero.1 this).resolve_left I0`. Establish `t1 : ∀ Q' ∈ withLat Q.lat, ∑ Q'' ∈ withLat Q.lat, (Θ v' (x Q') (y Q'')).1 = (Θ v' (xv P₁ Q') (yd (ε • Q'))).1`. Introduce `Q' hQ'`. Establish `hQ'l : Q'.lat = Q.lat` using `mem_withLat.1 hQ'`.
+
+Establish `hmem : ε • Q' ∈ withLat Q.lat` using `mem_withLat.2 (by rw [Pair.dia_lat, hQ'l])`. Rewrite using `[Finset.sum_eq_single_of_mem (ε • Q') hmem]`. Use `key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (phiOne (ε • Q') R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ R) (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (cosetInd q (ε • Q').lat …` as an intermediate fact. Rewrite `this` using `[(GlobalTheory.T.fourierPairing_pairCharIndicator_cosetIndicator k n q χ hχ e ε hεe μ Q' (ε • Q') (by rw [Pair.dia_lat])).1 rfl, hQ'l]`. Conclude with `smul_right_injective _ I0 this`.
+
+Introduce `Q'' hQ'' hne`. Establish `hQ''l : Q''.lat = Q.lat` using `mem_withLat.1 hQ''`. Use `key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ R) (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (cosetInd q Q''.lat Q''.red) ( …` as an intermediate fact. Rewrite `this` using `[(GlobalTheory.T.fourierPairing_pairCharIndicator_cosetIndicator k n q χ hχ e ε hεe μ Q' Q'' (hQ''l.trans hQ'l.symm)).2 hne, zero_smul]`. Conclude with `(smul_eq_zero.1 this).resolve_left I0`.
+
+Establish `hmove : ∀ (Q₀ : Pair k n) (g : GL n k), g • Q.lat = Q.lat → (Θ v' (xv P₁ (g • Q₀)) (yd (g • ε • Q₀))).1 = (Θ v' (xv P₁ Q₀) (yd (ε • Q₀))).1`. Introduce `Q₀ g hgL`. Establish `hdet` using `GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.valuation_det_of_fix Q.lat hgL`. Establish `hgL' : g⁻¹ • Q.lat = Q.lat` using `by conv_lhs => rw [← hgL]`. Conclude with `inv_smul_smul g Q.lat`.
+
+Establish `e1 : s₁.om₀ (α₀.gl 1, β.gl g) (U₁ (xv P₁ Q₀)) = U₁ (xv P₁ (g • Q₀))`. Use `b₁ _ _ ?_` and prove the remaining obligations. Use `(lin₁ _ _ α₀ β L₁ L₂ f₁ _ _ (a₁ (xv P₁ Q₀))).1 1 g` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`.
+
+Establish `hl : ((lS₁ (Matrix.GeneralLinearGroup.det (1 : GL (n' ⊕ Fin 1) k)) : ℂˣ) : ℂ) = 1` using `by simp`. Establish `hr : ((lT₁ (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) = 1` using `by rw [vT₁ _ hdet]; rfl`. Use `show tensCol (phiOne P₁ (g • Q₀)) (vecInd Q.lat) z = _ * _ * tensCol (phiOne P₁ Q₀) (vecInd Q.lat) _`. Rewrite using `[hl, hr, one_mul, one_mul, show (1 : GL (n' ⊕ Fin 1) k) = GlobalTheory.RootEx.embX 1 (1 : GL n' k) from (map_one _).symm, tensCol_subst' (vecInd Q.lat) ((g⁻¹ : GL n k) : Matrix n n k) (1 : GL n' k) (Ψ' := phiOne P₁ (g • Q₀)) (fun x => by`. Use `phiOne_smul (P := P₁) (Q := Q₀) (x := x) (1 : GL n' k) g` as an intermediate fact.
+
+Rewrite `this` using `[one_smul]`. Conclude with `this) z]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `(vecInd_mulVec hgL' w).symm`.
+
+Establish `e2 : s₂.om₀ (β.gl g, γ₀.gl 1) (U₂ (yd (ε • Q₀))) = U₂ (yd (g • ε • Q₀))`. Use `b₂ _ _ ?_` and prove the remaining obligations. Use `(lin₂ _ _ β γ₀ L₂' L₃ f₂ _ _ (a₂ (yd (ε • Q₀)))).1 g 1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`.
+
+Establish `hl : ((lS₂ (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) = 1` using `by rw [vS₂ _ hdet]; rfl`. Establish `hr : ((lT₂ (Matrix.GeneralLinearGroup.det (1 : GL (n'' ⊕ Fin 1) k)) : ℂˣ) : ℂ) = 1` using `by simp`. Use `show tensRow (phiOne (g • ε • Q₀) R) (dualInd Q.lat) z = _ * _ * tensRow (phiOne (ε • Q₀) R) (dualInd Q.lat) _`. Rewrite using `[hl, hr, one_mul, one_mul, show (1 : GL (n'' ⊕ Fin 1) k) = GlobalTheory.RootEx.embX 1 (1 : GL n'' k) from (map_one _).symm, tensRow_subst' (dualInd Q.lat) (1 : GL n'' k) (g : Matrix n n k) (Ψ' := phiOne (g • ε • Q₀) R) (fun x => by`. Use `phiOne_smul (P := ε • Q₀) (Q := R) (x := x) g (1 : GL n'' k)` as an intermediate fact.
+
+Rewrite `this` using `[one_smul]`. Conclude with `this) z]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `(dualInd_vecMul hgL w).symm`.
+
+Establish `e3` using `Comm.doubleThetaUnfolding_equivariant_unitaryGroups s₁ s₂ l vL (hFF P₁) (t₁ (xv P₁ Q₀)) (t₂ (yd (ε • Q₀))) 1 (β.gl g) 1`. Rewrite `e3` using `[one_emb, one_emb]`. Rewrite using `[hΘ, hΘ, ← e1, ← e2, map_one α₀.gl, map_one γ₀.gl]`. Rewrite using `[show (fun x : GA D B.A => FFStar q (resChar χ hχ q) φ P₁ (x * 1)) = FFStar q (resChar χ hχ q) φ P₁ from`. Use function extensionality and compare the values at `fun x => by rw [mul_one]] at e3`.
+
+Rewrite using `[e3]`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_one]`. Establish `hall : ∀ Q' ∈ withLat Q.lat, (Θ v' (xv P₁ Q') (yd (ε • Q'))).1 = (Θ v' (xv P₁ (ε⁻¹ • Q)) (yd (ε • ε⁻¹ • Q))).1`. Introduce `Q' hQ'`.
+
+Take `⟨g, hg⟩` from `MulAction.exists_smul_eq (GL n k) (ε⁻¹ • Q) Q'`. Establish `hgL : g • Q.lat = Q.lat`. Use `congrArg Pair.lat hg` as an intermediate fact. Rewrite `this` using `[Pair.smul_lat, Pair.dia_lat, mem_withLat.1 hQ']`. Conclude with `this`.
+
+Use `hmove (ε⁻¹ • Q) g hgL` as an intermediate fact. Rewrite `this` using `[hg, smul_comm g ε (ε⁻¹ • Q), hg]`. Conclude with `this`. Establish `hid : ∀ Y', s₂.om₀ (1, 1) Y' = Y'` using `fun Y' => by`. Rewrite using `[show ((1 : GA D J.W₀), (1 : GA D B'.V₀)) = 1 from rfl, map_one]`.
+
+Both sides reduce to the same expression. Establish `hsrc : ∀ (g : GL n' k), valuation k ((Matrix.GeneralLinearGroup.det g : kˣ) : k) = 1 → ∀ A A' : Pair k n', hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ (g • A)) (U₁ (xv (g • A') Q)) (U₂ (yd Q)) = hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ A) (U₁ (xv A' Q)) (U₂ (yd Q))`. Introduce `g hdet A A'`. Establish `e1 : s₁.om₀ (α₀.gl (GlobalTheory.RootEx.embX 1 g), β.gl 1) (U₁ (xv A' Q)) = U₁ (xv (g • A') Q)`. Use `b₁ _ _ ?_` and prove the remaining obligations.
+
+Use `(lin₁ _ _ α₀ β L₁ L₂ f₁ _ _ (a₁ (xv A' Q))).1 (GlobalTheory.RootEx.embX 1 g) 1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Establish `hl : ((lS₁ (Matrix.GeneralLinearGroup.det (GlobalTheory.RootEx.embX 1 g)) : ℂˣ) : ℂ) = 1`. Rewrite using `[det_embX_one', vS₁ _ hdet]`.
+
+Both sides reduce to the same expression. Establish `hr : ((lT₁ (Matrix.GeneralLinearGroup.det (1 : GL n k)) : ℂˣ) : ℂ) = 1` using `by simp`. Use `show tensCol (phiOne (g • A') Q) (vecInd Q.lat) z = _ * _ * tensCol (phiOne A' Q) (vecInd Q.lat) _`. Rewrite using `[hl, hr, one_mul, one_mul, tensCol_subst' (vecInd Q.lat) (((1 : GL n k)⁻¹ : GL n k) : Matrix n n k) g (Ψ' := phiOne (g • A') Q) (fun x => by`. Use `phiOne_smul (P := A') (Q := Q) (x := x) g (1 : GL n k)` as an intermediate fact.
+
+Rewrite `this` using `[one_smul]`. Conclude with `this) z]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules.
+
+Establish `e3` using `Comm.doubleThetaUnfolding_equivariant_unitaryGroups s₁ s₂ l vL (hFF A) (t₁ (xv A' Q)) (t₂ (yd Q)) (α.gl g) 1 1`. Rewrite `e3` using `[one_emb, Comm.emb_gl hα g, hid]`. Establish `e4 : FFStar q (resChar χ hχ q) φ (g • A) = fun x => FFStar q (resChar χ hχ q) φ A (x * α.gl g)` using `FFStar_mem_EqForm q _ hφ.1 g A`. Rewrite using `[e4, ← e1, map_one β.gl, e3]`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[mul_one]`. Choose the witnesses or unpack the hypotheses as in `⟨g₁, hg₁a, hg₁b, hg₁d⟩ : ∃ g₁ : GL n' k, g₁ • P₁ = ε • P₁ ∧ g₁ • (ε • P₁) = P₁ ∧ valuation k ((Matrix.GeneralLinearGroup.det g₁ : kˣ) : k) = 1 := by`. Break down `hεe with ⟨-, h⟩ | ⟨-, h⟩` into its components or cases. Conclude with `⟨1, by rw [h, one_smul, one_smul], by rw [h, one_smul, one_smul], by simp⟩`. Use `⟨-1, by rw [neg_one_smul_pair, h], ?_, val_det_neg_one⟩` and prove the remaining obligations.
+
+Rewrite using `[neg_one_smul_pair, h, smul_smul]`. Simplify using the standard rewrite rules. Establish `hfin : (Θ v' (xv P₁ (ε⁻¹ • Q)) (yd (ε • ε⁻¹ • Q))).1 = hand0 s₁ s₂ l vL (dia ε (FFStar q (resChar χ hχ q) φ) P₁) Ξ₁' Ξ₂'`. Rewrite using `[hΘ, b₁ (xv P₁ Q) Ξ₁' o₁', b₂ (yd Q) Ξ₂' o₂', dia_apply, smul_inv_smul]`. Establish `hx : xv P₁ (ε⁻¹ • Q) = xv (ε • P₁) Q`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show tensCol (phiOne P₁ (ε⁻¹ • Q)) _ = tensCol (phiOne (ε • P₁) Q) _`. Use `phiOne_dia (P := P₁) (Q := ε⁻¹ • Q) ε` as an intermediate fact. Rewrite `this` using `[smul_inv_smul]`. Rewrite using `[this]`.
+
+Rewrite using `[hx]`. Use `hsrc g₁ hg₁d P₁ (ε • P₁)` as an intermediate fact. Rewrite `this` using `[hg₁a, hg₁b]`. Conclude with `this.symm`. Establish `hexp : hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ P₁) (U₁ (∑ Q' ∈ withLat Q.lat, x Q')) (U₂ (y₀ + ∑ Q'' ∈ withLat Q.lat, y Q'')) = ∑ Q' ∈ withLat Q.lat, ((Θ v' (x Q') y₀).1 + ∑ Q'' ∈ withLat Q.lat, (Θ v' (x Q') (y Q'')).1)`.
+
+Use `(hΘ v' _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[map_sum, LinearMap.sum_apply, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun Q' _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_sum, Submodule.coe_add, Submodule.coe_sum]`. Rewrite using `[h2, hΞ₂, hexp, Finset.sum_congr rfl fun Q' hQ' => by rw [t0 Q' hQ', zero_add, t1 Q' hQ', hall Q' hQ'], Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, hfin]`.
+
+Introduce `Λ _ L₁ L₂ L₂' L₃ f₁ Ξ₁ f₂ Ξ₂ o₁ o₂ φ hφ`. Establish `hL : latInd Q.lat Λ ∈ SB (Matrix n'' n k)` using `latInd_mem_SB _ _`. Break down `o₂ with o₂ | o₂` into its components or cases. Rewrite `o₂` using `[(D3 Λ).1]`. Take `⟨U₁, a₁, b₁, t₁⟩` from `overMap hψ o₁ fun Ψ f h => (lin₁ _ _ α₀ β L₁ L₂ f₁ Ψ f h).2.2`.
+
+Take `⟨U₂, a₂, b₂, t₂⟩` from `overMap hψ o₂ fun Ψ f h => (lin₂ _ _ β γ₀ L₂' L₃ f₂ Ψ f h).2.2`. Take `⟨Θ, hΘ⟩` from `exists_trilinear s₁ s₂ l vL U₁ U₂ t₁ t₂`. Establish `key : ∀ (v : caSub B.A) (Ψ₁ : Matrix n n' k → ℂ) (h₁ : Ψ₁ ∈ SB (Matrix n n' k)) (Ψ₂ : Matrix n'' n k → ℂ) (h₂ : Ψ₂ ∈ SB (Matrix n'' n k)) (a a' b b' : (n → k) → ℂ) (ha : a ∈ SB (n → k)) (ha' : a' ∈ SB (n → k)) (hb : b ∈ SB (n → k)) (hb' : b' ∈ SB (n → k)), fpair χ e μ a' b' • (Θ …`. Introduce `v Ψ₁ h₁ Ψ₂ h₂ a a' b b' ha ha' hb hb'`. Rewrite using `[hΘ, hΘ]`.
+
+Conclude with `HC n n' n'' σ B J B' s₁ s₂ l vL α α₀ β γ γ₀ hα hγ μ L₁ L₂ L₂' L₃ f₁ _ _ f₂ _ _ Ψ₁ Ψ₂ a a' b b' ha ha' hb hb' (a₁ (col Ψ₁ h₁ a ha)) (a₁ (col Ψ₁ h₁ a' ha')) (a₂ (row Ψ₂ h₂ b hb)) (a₂ (row Ψ₂ h₂ b' hb')) v.1 v.2`. Establish `hFF : IsContAut B.A (FFStar q (resChar χ hχ q) φ P₁)`. Use `(FFStar q (resChar χ hχ q) (fun P₂ => (⟨φ P₂, hφ.2.2 P₂⟩ : caSub B.A)) P₁).2` as an intermediate fact. Rewrite `this` using `[val_FFStar']`. Then use the resulting hypothesis. Set `v' : caSub B.A` to `⟨_, hFF⟩`.
+
+Set `x : Pair k n → SB (Matrix n (n' ⊕ Fin 1) k)` to `fun Q' => col (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (charInd (resChar χ hχ q) Q') (charInd_mem' _ Q')`. Set `yK : SB (Matrix (n'' ⊕ Fin 1) n k)` to `row (latInd Q.lat Λ) hL (dualInd Q.lat) hdual`. Establish `h2 : hand0 s₁ s₂ l vL (φ P) Ξ₁ Ξ₂ = c₀ • hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ P₁) (U₁ (∑ Q' ∈ withLat Q.lat, x Q')) Ξ₂` using `lift_step s₁ s₂ l vL hFF U₁ t₁ (withLat Q.lat) x Ξ₁ Ξ₂ (HS L₁ L₂ f₁ Ξ₁ (fun Q' => U₁ (x Q')) o₁ (fun Q' _ => a₁ (x Q')) φ hφ)`. Establish `hsum : hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ P₁) (U₁ (∑ Q' ∈ withLat Q.lat, x Q')) (U₂ yK) = ∑ Q' ∈ withLat Q.lat, (Θ v' (x Q') yK).1`. Use `(hΘ v' _ _).symm.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum, LinearMap.sum_apply, Submodule.coe_sum]`. Establish `t0 : ∀ Q' ∈ withLat Q.lat, (Θ v' (x Q') yK).1 = 0` using `fun Q' hQ' => by`. Use `key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (latInd Q.lat Λ) hL (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (dualInd Q.lat) (dualInd Q.lat) (charInd_mem' _ Q') hvec hdual hdual` as an intermediate fact. Establish `hf` using `GlobalTheory.T.fourierPairing_pairCharIndicator_dualLatticeIndicator_zero k n q χ hχ e he μ Q'`. Rewrite `hf` using `[mem_withLat.1 hQ']`.
+
+Rewrite `this` using `[hf, zero_smul]`. Conclude with `(smul_eq_zero.1 this).resolve_left I0`. Rewrite using `[h2, b₂ yK Ξ₂ o₂, hsum, Finset.sum_eq_zero t0, smul_zero]`. Rewrite `o₂` using `[(D3 Λ).2]`. Take `⟨btot, hbdef⟩ : ∃ b, b = dualInd Q.lat + ∑ Q'' ∈ withLat Q.lat, cosetInd q Q''.lat Q''.red` from `⟨_, rfl⟩`.
+
+Rewrite `o₂` using `[← hbdef]`. Establish `hbtot : btot ∈ SB (n → k)`. Rewrite using `[hbdef]`. Conclude with `add_mem hdual (Submodule.sum_mem _ fun Q'' _ => GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _)`. Take `⟨U₁, a₁, b₁, t₁⟩` from `overMap hψ o₁ fun Ψ f h => (lin₁ _ _ α₀ β L₁ L₂ f₁ Ψ f h).2.2`.
+
+Take `⟨U₂, a₂, b₂, t₂⟩` from `overMap hψ o₂ fun Ψ f h => (lin₂ _ _ β γ₀ L₂' L₃ f₂ Ψ f h).2.2`. Take `⟨Θ, hΘ⟩` from `exists_trilinear s₁ s₂ l vL U₁ U₂ t₁ t₂`. Establish `key : ∀ (v : caSub B.A) (Ψ₁ : Matrix n n' k → ℂ) (h₁ : Ψ₁ ∈ SB (Matrix n n' k)) (Ψ₂ : Matrix n'' n k → ℂ) (h₂ : Ψ₂ ∈ SB (Matrix n'' n k)) (a a' b b' : (n → k) → ℂ) (ha : a ∈ SB (n → k)) (ha' : a' ∈ SB (n → k)) (hb : b ∈ SB (n → k)) (hb' : b' ∈ SB (n → k)), fpair χ e μ a' b' • (Θ …`. Introduce `v Ψ₁ h₁ Ψ₂ h₂ a a' b b' ha ha' hb hb'`. Rewrite using `[hΘ, hΘ]`.
+
+Conclude with `HC n n' n'' σ B J B' s₁ s₂ l vL α α₀ β γ γ₀ hα hγ μ L₁ L₂ L₂' L₃ f₁ _ _ f₂ _ _ Ψ₁ Ψ₂ a a' b b' ha ha' hb hb' (a₁ (col Ψ₁ h₁ a ha)) (a₁ (col Ψ₁ h₁ a' ha')) (a₂ (row Ψ₂ h₂ b hb)) (a₂ (row Ψ₂ h₂ b' hb')) v.1 v.2`. Take `⟨DualityPairingFormula, DualityIsometry⟩` from `D1 P`. Generalize the expression as in `((resCard k : ℂ) ^ Fintype.card n) = r at DualityPairingFormula DualityIsometry`. Set `vP : caSub B.A` to `⟨φ P, hφ.2.2 P⟩`. Set `yP : SB (Matrix (n'' ⊕ Fin 1) n k)` to `row (latInd Q.lat Λ) hL btot hbtot`.
+
+Establish `hM : ∀ Q' : Pair k n, (latInd P.ker Q'.ker + mainDatum q (resChar χ hχ q) 1 P Q') ∈ SB (Matrix n n' k)` using `fun Q' => add_mem (latInd_mem_SB _ _) (GlobalTheory.T.gluedLatticeDatum_mainPart_mem_schwartzBruhat k n n' q _ 1 P Q')`. Set `x₀ : SB (Matrix n (n' ⊕ Fin 1) k)` to `col (latInd P.ker Q.lat) (latInd_mem_SB _ _) (vecInd Q.lat) hvec`. Set `xm : Pair k n → SB (Matrix n (n' ⊕ Fin 1) k)` to `fun Q' => col (latInd P.ker Q'.ker + mainDatum q (resChar χ hχ q) 1 P Q') (hM Q') (charInd (resChar χ hχ q) Q') (charInd_mem' _ Q')`. Set `xmv : Pair k n → SB (Matrix n (n' ⊕ Fin 1) k)` to `fun Q' => col (latInd P.ker Q'.ker + mainDatum q (resChar χ hχ q) 1 P Q') (hM Q') (vecInd Q.lat) hvec`. Set `xL : SB (Matrix n (n' ⊕ Fin 1) k)` to `col (latInd P.lat Q.lat) (latInd_mem_SB _ _) (vecInd Q.lat) hvec`.
+
+Establish `hΞ₁ : Ξ₁ = U₁ (r⁻¹ • (x₀ + ∑ Q' ∈ withLat Q.lat, xm Q'))`. Rewrite using `[b₁ ⟨_, o₁.2.2.2.1⟩ Ξ₁ o₁]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, Submodule.coe_add, Submodule.coe_sum]`.
+
+Conclude with `DualityPairingFormula`. Establish `hs : x₀ + ∑ Q' ∈ withLat Q.lat, xmv Q' = r • xL`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, Submodule.coe_add, Submodule.coe_sum]`. Use `show tensCol (latInd P.ker Q.lat) (vecInd Q.lat) + ∑ Q' ∈ withLat Q.lat, tensCol (latInd P.ker Q'.ker + mainDatum q (resChar χ hχ q) 1 P Q') (vecInd Q.lat) = r • tensCol (latInd P.lat Q.lat) (vecInd Q.lat)`.
+
+Establish `e : r • tensCol (latInd P.lat Q.lat) (vecInd Q.lat) = tensCol (r • latInd P.lat Q.lat) (vecInd Q.lat)`. Use function extensionality and compare the values at `z`. Simplify using `only [tensCol, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[e, ← DualityIsometry]`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [tensCol, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, add_mul, Finset.sum_mul]`. Establish `hm : ∀ Q' ∈ withLat Q.lat, (Θ vP (xm Q') yP).1 = (Θ vP (xmv Q') yP).1`. Introduce `Q' hQ'`. Use `key vP _ (hM Q') (latInd Q.lat Λ) hL (charInd (resChar χ hχ q) Q') (vecInd Q.lat) btot btot (charInd_mem' _ Q') hvec hbtot hbtot` as an intermediate fact. Establish `f4` using `GlobalTheory.T.fourierPairing_charIndicator_dualLattice_cosets k n q χ hχ e he μ Q'`.
+
+Establish `f3` using `GlobalTheory.T.fourierPairing_dualIndicator_add_nonzeroCosets k n q χ hχ e he μ Q.lat`. Rewrite `f4` using `[mem_withLat.1 hQ', ← hbdef]`. Rewrite `f3` using `[← hbdef]`. Rewrite `this` using `[f3, f4]`. Conclude with `smul_right_injective _ I0 this`.
+
+Establish `hzero : (Θ vP xL yP).1 = 0`. Rewrite using `[hΘ]`. Establish `h0` using `SG2 L₁ L₂ f₁ (U₁ xL) (vecInd Q.lat) (Or.inl (a₁ xL)) φ hφ`. Establish `: handBF s₁ l (φ P) (U₁ xL) = 0`. Use function extensionality and compare the values at `g w`.
+
+Rewrite using `[handBF_eq, h0]`. Simplify using the standard rewrite rules. Use `show handFB s₂ vL (handBF s₁ l (φ P) (U₁ xL)) (U₂ yP) = 0`. Rewrite using `[this, handFB_zero]`. Rewrite using `[hΞ₁, b₂ yP Ξ₂ o₂]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_smul, map_add, map_sum, LinearMap.smul_apply, LinearMap.add_apply, LinearMap.sum_apply, Submodule.coe_smul, Submodule.coe_add, Submodule.coe_sum]`. Use `_ = r⁻¹ • ((Θ vP x₀ yP).1 + ∑ Q' ∈ withLat Q.lat, (Θ vP (xmv Q') yP).1) := by`. Rewrite using `[Finset.sum_congr rfl hm]`. Use `_ = r⁻¹ • (Θ vP (x₀ + ∑ Q' ∈ withLat Q.lat, xmv Q') yP).1 := by`.
+
+Rewrite using `[map_add, map_sum, LinearMap.add_apply, LinearMap.sum_apply, Submodule.coe_add, Submodule.coe_sum]`. Use `_ = 0 := by`. Rewrite using `[hs, map_smul, LinearMap.smul_apply, Submodule.coe_smul, hzero, smul_zero, smul_zero]`.
+-/
 theorem vertexGlued (D : D7) : VertexGlued D := by
   intro k _ _ _ _ p q ψ χ hχ hIs
   letI : MeasurableSpace k := borel k

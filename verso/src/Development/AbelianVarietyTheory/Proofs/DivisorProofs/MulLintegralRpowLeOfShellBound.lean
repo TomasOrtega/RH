@@ -5,6 +5,11 @@ open scoped ENNReal
 
 namespace GlobalTheory.ResLine
 
+/- English proof (translation)
+Establish `hl : 0 ≤ -Real.log t`. Use `Real.log_nonpos h0.le h1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨⌊-Real.log t⌋₊, ?_, ?_⟩` and prove the remaining obligations. Use `Nat.lt_floor_add_one (-Real.log t)` as an intermediate fact.
+
+Rewrite using `[← Real.lt_log_iff_exp_lt h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Nat.floor_le hl` as an intermediate fact. Rewrite using `[← Real.log_le_iff_le_exp h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_shell_of_le_one {t : ℝ} (h0 : 0 < t) (h1 : t ≤ 1) :
     ∃ j : ℕ, Real.exp (-(j + 1 : ℝ)) < t ∧ t ≤ Real.exp (-(j : ℝ)) := by
   have hl : 0 ≤ -Real.log t := by
@@ -18,6 +23,11 @@ theorem exists_shell_of_le_one {t : ℝ} (h0 : 0 < t) (h1 : t ≤ 1) :
     rw [← Real.log_le_iff_le_exp h0]
     linarith
 
+/- English proof (translation)
+Establish `h2 : ε + 1 ≤ Real.exp ε` using `Real.add_one_le_exp ε`. Establish `h3 : Real.exp (-ε) * Real.exp ε = 1` using `by rw [← Real.exp_add]; simp`. Establish `h4 : 0 < Real.exp (-ε)` using `Real.exp_pos _`. Establish `h5 : Real.exp (-ε) * (ε + 1) ≤ 1` using `by nlinarith`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem le_two_mul_one_sub_exp_neg {ε : ℝ} (h0 : 0 < ε) (h1 : ε ≤ 1) :
     ε ≤ 2 * (1 - Real.exp (-ε)) := by
   have h2 : ε + 1 ≤ Real.exp ε := Real.add_one_le_exp ε
@@ -28,6 +38,25 @@ theorem le_two_mul_one_sub_exp_neg {ε : ℝ} (h0 : 0 < ε) (h1 : ε ≤ 1) :
   push Not at hc
   nlinarith
 
+/- English proof (translation)
+Introduce `X _ μ h d B hm hpos hd hB ε hε0 hε1`. Use `set S : ℕ → Set X := fun j => {x | Real.exp (-(j + 1 : ℝ)) < h x ∧ h x ≤ Real.exp (-(j : ℝ))} with hS`. Establish `hSm : ∀ j, MeasurableSet (S j)` using `fun j => (measurableSet_lt measurable_const hm).inter (measurableSet_le hm measurable_const)`. Use `set c : ℕ → ℝ≥0∞ := fun j => ENNReal.ofReal (Real.exp (-((d + ε) * j))) with hc`. Establish `hpt : ∀ x, (if h x ≤ 1 then ENNReal.ofReal (h x ^ (d + ε)) else 0) ≤ ∑' j, (S j).indicator (fun _ => c j) x`.
+
+Introduce `x`. Use `split_ifs with hx`. Take `⟨j, hj⟩` from `exists_shell_of_le_one (hpos x) hx`. Use `le_trans ?_ (ENNReal.le_tsum j)` and prove the remaining obligations. Establish `hxS : x ∈ S j` using `hj`.
+
+Rewrite using `[Set.indicator_of_mem hxS]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `zero_le`. Use `set r : ℝ := Real.exp (-ε) with hr`. Establish `hr0 : 0 < r` using `Real.exp_pos _`. Establish `hr1 : r < 1`.
+
+Rewrite using `[hr, Real.exp_lt_one_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint : ∫⁻ x, (if h x ≤ 1 then ENNReal.ofReal (h x ^ (d + ε)) else 0) ∂μ ≤ B * (1 - ENNReal.ofReal r)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun j => ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_indicator_const (hSm j)]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hB j`. Use `_ = B * (c j * ENNReal.ofReal (Real.exp (d * j))) := by ring`. Use `_ = B * (ENNReal.ofReal r) ^ j := by`.
+
+Use `congr 1`. Rewrite using `[hc, ← ENNReal.ofReal_mul (Real.exp_pos _).le, ← ENNReal.ofReal_pow hr0.le, hr, ← Real.exp_add, ← Real.exp_nat_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `_ = B * (1 - ENNReal.ofReal r)⁻¹ := by`.
+
+Rewrite using `[ENNReal.tsum_mul_left, ENNReal.tsum_geometric]`. Establish `hkey : ENNReal.ofReal ε * (1 - ENNReal.ofReal r)⁻¹ ≤ 2`. Establish `e1 : (1 : ℝ≥0∞) - ENNReal.ofReal r = ENNReal.ofReal (1 - r)`. Rewrite using `[ENNReal.ofReal_sub _ hr0.le, ENNReal.ofReal_one]`. Establish `hp : 0 < 1 - r` using `by linarith`.
+
+Rewrite using `[e1, ← ENNReal.ofReal_inv_of_pos hp, ← ENNReal.ofReal_mul hε0.le, ← ENNReal.ofReal_ofNat 2]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ hp]`. Conclude with `le_two_mul_one_sub_exp_neg hε0 hε1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_lintegral_rpow_le_of_shell_bound :
     ∀ (X : Type) [MeasurableSpace X] (μ : Measure X) (h : X → ℝ) (d : ℝ) (B : ℝ≥0∞), Measurable h → (∀ x, 0 < h x) → 0 < d → (∀ j : ℕ, μ {x | Real.exp (-(j + 1 : ℝ)) < h x ∧ h x ≤ Real.exp (-(j : ℝ))} ≤ B * ENNReal.ofReal (Real.exp (d * j))) → ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ENNReal.ofReal ε * ∫⁻ x, (if h x ≤ 1 then ENNReal.ofReal (h x ^ (d + ε)) else 0) ∂μ ≤ 2 * B := by
   intro X _ μ h d B hm hpos hd hB ε hε0 hε1

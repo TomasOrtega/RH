@@ -30,6 +30,11 @@ namespace GlobalTheory.CompanionTheory.GL2Factorization.RealPlace
 
 abbrev mE (n : ℤ) : ℝ := ((n.natAbs + 1 : ℕ) : ℝ) / 2
 
+/- English proof (translation)
+Establish `h : Continuous (fun a : ℝˣ => (((|(a : ℝ)| : ℝ)) : ℂ))` using `Complex.continuous_ofReal.comp (Units.continuous_val.abs)`. Establish `h2 : Continuous (fun a : ℝˣ => (((|(a : ℝ)| : ℝ)) : ℂ) ^ s)`. Use `h.cpow continuous_const fun a => Or.inl ?_` and prove the remaining obligations. Simplify using `using a.ne_zero`. Establish `e : chR false s = fun a : ℝˣ => (((|(a : ℝ)| : ℝ)) : ℂ) ^ s`.
+
+Use function extensionality and compare the values at `a`. Simplify using `[chR]`. Rewrite using `[e]`. Conclude with `h2`.
+-/
 theorem cont_chR (s : ℂ) : Continuous (chR false s) := by
   have h : Continuous (fun a : ℝˣ => (((|(a : ℝ)| : ℝ)) : ℂ)) :=
     Complex.continuous_ofReal.comp (Units.continuous_val.abs)
@@ -42,6 +47,9 @@ theorem cont_chR (s : ℂ) : Continuous (chR false s) := by
   rw [e]
   exact h2
 
+/- English proof (translation)
+Unfold `rI`. Establish `h` using `GlobalTheory.T.continuous_iwasawa_real_parametrization`. Establish `h1 : Continuous (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => p.1)` using `continuous_fst`. Establish `h2 : Continuous (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => p.2.1)` using `continuous_snd.fst`. Conclude with `(((c3.comp (GlobalTheory.T.continuous_real_embedding_GL3.comp h)).mul (c2.comp h)).mul ((cont_chR _).comp h1)).mul ((cont_chR _).comp h2)`.
+-/
 theorem cont_rI {W₃ : GL (Fin 3) ℝ → ℂ} {W₂ : GL (Fin 2) ℝ → ℂ} (c3 : Continuous W₃) (c2 : Continuous W₂) (s : ℂ) :
     Continuous (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => rI W₃ W₂ s p.1 p.2.1 p.2.2) := by
   unfold rI
@@ -50,6 +58,11 @@ theorem cont_rI {W₃ : GL (Fin 3) ℝ → ℂ} {W₂ : GL (Fin 2) ℝ → ℂ} 
   have h2 : Continuous (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => p.2.1) := continuous_snd.fst
   exact (((c3.comp (GlobalTheory.T.continuous_real_embedding_GL3.comp h)).mul (c2.comp h)).mul ((cont_chR _).comp h1)).mul ((cont_chR _).comp h2)
 
+/- English proof (translation)
+Establish `h : Continuous (fun p : ℝˣ × ℝˣ × ℝ => ((p.1, p.2.1, GL2LocalData.kR p.2.2 ε) : ℝˣ × ℝˣ × GL (Fin 2) ℝ))` using `continuous_fst.prodMk (continuous_snd.fst.prodMk ((GlobalTheory.T.continuous_real_rotation_orthogonal ε).1.comp continuous_snd.snd))`. Establish `h2` using `(cont_rI c3 c2 s).comp h`. Establish `e : GL2LocalData.iwR W₃ W₂ s ε = (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => rI W₃ W₂ s p.1 p.2.1 p.2.2) ∘ (fun p : ℝˣ × ℝˣ × ℝ => ((p.1, p.2.1, GL2LocalData.kR p.2.2 ε) : ℝˣ × ℝˣ × GL (Fin 2) ℝ))`. Use function extensionality and compare the values at `p`. Simplify using `only [GL2LocalData.iwR, rI, Function.comp]`.
+
+Rewrite using `[e]`. Conclude with `h2`.
+-/
 theorem cont_iwR {W₃ : GL (Fin 3) ℝ → ℂ} {W₂ : GL (Fin 2) ℝ → ℂ} (c3 : Continuous W₃) (c2 : Continuous W₂)
     (s : ℂ) (ε : Bool) : Continuous (GL2LocalData.iwR W₃ W₂ s ε) := by
   have h : Continuous (fun p : ℝˣ × ℝˣ × ℝ => ((p.1, p.2.1, GL2LocalData.kR p.2.2 ε) : ℝˣ × ℝˣ × GL (Fin 2) ℝ)) :=
@@ -62,6 +75,13 @@ theorem cont_iwR {W₃ : GL (Fin 3) ℝ → ℂ} {W₂ : GL (Fin 2) ℝ → ℂ}
   rw [e]
   exact h2
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_nat_gt (max (s.re - 3 / 2 + m - T) (2 * s.re - 1 - T))`. Establish `hN1 : s.re - 3 / 2 + m - T < N` using `lt_of_le_of_lt (le_max_left _ _) hN`. Establish `hN2 : 2 * s.re - 1 - T < N` using `lt_of_le_of_lt (le_max_right _ _) hN`. Take `⟨C, hC⟩` from `h3 N`. Establish `hT : (0 : ℝ) ≤ T` using `Nat.cast_nonneg T`.
+
+Use `GlobalTheory.T.integrable_iwasawa_real_of_decay _ C (s.re - 3 / 2 + m - T) (2 * s.re - 1 - T) N (cont_iwR c3 c2 s ε).aestronglyMeasurable (by linarith) (by linarith) hN1 hN2 ?_` and prove the remaining obligations. Introduce `a b θ`. Establish `ha : 0 < |(a : ℝ)|` using `abs_pos.2 a.ne_zero`. Establish `hb : 0 < |(b : ℝ)|` using `abs_pos.2 b.ne_zero`. Establish `ho` using `(GlobalTheory.T.continuous_real_rotation_orthogonal ε).2 θ`.
+
+Use `GlobalTheory.T.norm_zeta_integrand_decay_bound (W₃ (GL2LocalData.emR (dg2 (a * b) b * GL2LocalData.kR θ ε))) (W₂ (dg2 (a * b) b * GL2LocalData.kR θ ε)) s |(a : ℝ)| |(b : ℝ)| C m T N ha hb (hC a b _ ho) (h2 a b _ ho)` as an intermediate fact. Simplify `this` using `[GL2LocalData.iwR, chR]`.
+-/
 theorem int_core (W₃ : GL (Fin 3) ℝ → ℂ) (W₂ : GL (Fin 2) ℝ → ℂ) (c3 : Continuous W₃) (c2 : Continuous W₂)
     (T : ℕ) (m : ℝ) (hm : 0 ≤ m)
     (h3 : ∀ N : ℕ, ∃ C : ℝ, ∀ (a b : ℝˣ) (k : GL (Fin 2) ℝ), k.val * k.valᵀ = 1 →
@@ -84,6 +104,11 @@ theorem int_core (W₃ : GL (Fin 3) ℝ → ℂ) (W₂ : GL (Fin 2) ℝ → ℂ)
     |(a : ℝ)| |(b : ℝ)| C m T N ha hb (hC a b _ ho) (h2 a b _ ho)
   simpa [GL2LocalData.iwR, chR] using this
 
+/- English proof (translation)
+Establish `hd : Continuous (fun g : GL (Fin 2) ℝ => |(g.val).det|)` using `(Continuous.matrix_det Units.continuous_val).abs`. Establish `hd' : Continuous (fun g : GL (Fin 2) ℝ => (((|(g.val).det| : ℝ)) : ℂ))` using `Complex.continuous_ofReal.comp hd`. Unfold `thR`. Use `(GlobalTheory.T.continuous_real_whittaker n).mul (hd'.cpow continuous_const ?_)` and prove the remaining obligations. Introduce `g`.
+
+Use `Or.inl ?_` and prove the remaining obligations. Simplify using `using (g.det.ne_zero)`.
+-/
 theorem cont_thR (n : ℤ) (t : ℝ) : Continuous (thR n t) := by
   have hd : Continuous (fun g : GL (Fin 2) ℝ => |(g.val).det|) :=
     (Continuous.matrix_det Units.continuous_val).abs
@@ -95,6 +120,13 @@ theorem cont_thR (n : ℤ) (t : ℝ) : Continuous (thR n t) := by
   refine Or.inl ?_
   simpa using (g.det.ne_zero)
 
+/- English proof (translation)
+Establish `hdet : 0 < |((dg2 (a * b) b * k).val).det|` using `abs_pos.2 ((dg2 (a * b) b * k).det.ne_zero)`. Unfold `thR`. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hdet]`. Simplify using `only [Complex.mul_re, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, one_mul, sub_zero, Real.rpow_zero, mul_one]`. Use `(GlobalTheory.T.norm_real_whittaker_torus_le n a b k hk).trans ?_` and prove the remaining obligations.
+
+Establish `h1 : Real.exp (-(2 * Real.pi * |(a : ℝ)|)) ≤ 1`. Rewrite using `[Real.exp_le_one_iff]`. Establish `h0` using `abs_nonneg (a : ℝ)`. Establish `hp` using `Real.pi_pos`. Use polynomial arithmetic with `[mul_nonneg hp.le h0]`.
+
+Conclude with `mul_le_of_le_one_right (by positivity) h1`.
+-/
 theorem norm_thR_le (n : ℤ) (t : ℝ) (a b : ℝˣ) (k : GL (Fin 2) ℝ) (hk : k.val * k.valᵀ = 1) :
     ‖thR n t (dg2 (a * b) b * k)‖ ≤ |(a : ℝ)| ^ mE n := by
   have hdet : 0 < |((dg2 (a * b) b * k).val).det| := abs_pos.2 ((dg2 (a * b) b * k).det.ne_zero)
@@ -109,6 +141,23 @@ theorem norm_thR_le (n : ℤ) (t : ℝ) (a b : ℝˣ) (k : GL (Fin 2) ℝ) (hk :
     nlinarith [mul_nonneg hp.le h0]
   exact mul_le_of_le_one_right (by positivity) h1
 
+/- English proof (translation)
+Introduce `k V E h W hW n t`. Establish `cW : Continuous W` using `GlobalTheory.T.continuous_of_smooth_real_GL3 W (h.smooth W hW)`. Establish `cT : Continuous (thR n t)` using `cont_thR n t`. Establish `cW' : Continuous (GL2LocalData.dW3R W)`. Unfold `GL2LocalData.dW3R`.
+
+Conclude with `cW.comp (continuous_const.mul (GlobalTheory.T.continuous_real_transposeInv 3))`. Establish `cT' : Continuous (GL2LocalData.dW2R (thR n t))`. Unfold `GL2LocalData.dW2R`. Conclude with `cT.comp (continuous_const.mul (GlobalTheory.T.continuous_real_transposeInv 2))`. Use `⟨fun s => ⟨cont_rI cW cT s, cont_rI cW' cT' s⟩, ?_⟩` and prove the remaining obligations.
+
+Take `⟨T, hT⟩` from `h.gauge W hW`. Establish `hm : 0 ≤ mE n` using `by unfold mE; positivity`. Use `⟨(T : ℝ) + 3, fun s hs ε => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `int_core W (thR n t) cW cT T (mE n) hm ?_ (fun a b k hk => norm_thR_le n t a b k hk) s hs ε` and prove the remaining obligations. Introduce `N`.
+
+Take `⟨C, hC⟩` from `hT N`. Use `⟨C, fun a b k hk => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `GlobalTheory.T.embedding_iwasawa_real_orthogonal a b k hk`. Rewrite using `[e1]`. Conclude with `hC a b _ e2`.
+
+Use `int_core _ _ cW' cT' T (mE n) hm ?_ ?_ s hs ε` and prove the remaining obligations. Introduce `N`. Take `⟨C, hC⟩` from `hT N`. Use `⟨C, fun a b k hk => ?_⟩` and prove the remaining obligations. Take `⟨o, ho, e⟩` from `GlobalTheory.T.weyl3_transposeInv_embedding_iwasawa a b k hk`.
+
+Establish `e' : GL2LocalData.dW3R W (GL2LocalData.emR (dg2 (a * b) b * k)) = W (dg (b * a) a 1 * o)`. Unfold `GL2LocalData.dW3R`. Rewrite using `[e, h.cen W hW]`. Rewrite using `[e']`. Use `hC b a o ho` as an intermediate fact.
+
+Rewrite `this` using `[mul_comm |(b : ℝ)| |(a : ℝ)|, mul_comm (1 + |(b : ℝ)|) (1 + |(a : ℝ)|)]`. Conclude with `this`. Introduce `a b k hk`. Take `⟨k', hk', e⟩` from `GlobalTheory.T.weyl_transposeInv_iwasawa_real a b k hk`. Unfold `GL2LocalData.dW2R`.
+
+Rewrite using `[e]`. Conclude with `norm_thR_le n t a _ k' hk'`.
+-/
 theorem main : ∀ (k : ℕ) (V : Submodule ℂ (GL (Fin 3) ℝ → ℂ)) (E : Fin 3 → Fin 3 → Module.End ℂ V), WhR k V E → ∀ W ∈ V, ∀ (n : ℤ) (t : ℝ),
   (∀ s : ℂ, Continuous (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => rI W (thR n t) s p.1 p.2.1 p.2.2) ∧
     Continuous (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => rI (GL2LocalData.dW3R W) (GL2LocalData.dW2R (thR n t)) s p.1 p.2.1 p.2.2)) ∧

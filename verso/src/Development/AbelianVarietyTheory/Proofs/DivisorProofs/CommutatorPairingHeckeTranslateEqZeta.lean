@@ -20,6 +20,17 @@ open GlobalTheory.CechPic
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ A), DiagPairing.pc hP (x * x') y = DiagPairing.pc hP x y + DiagPairing.pc hP x' y` using `fun T x x' y => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A _ hA hD hamp P hP h₁ h₂ T x x' y).1`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`.
+
+Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `DiagPairing.pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+
+Establish `hB' : ∀ (T : Over S) (x y y' : T ⟶ A), DiagPairing.pc hP x (y * y') = DiagPairing.pc hP x y + DiagPairing.pc hP x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A _ hA hD hamp P hP h₁ h₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`.
+
+Unfold `DiagPairing.pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Use `(cls_eq_iff (LB.isLB_linComb hD _ _) (pull_isLB hD _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_lbPow hD, cls_pull hD, cls_pull hP, ← pull_comp, ← Over.comp_left, comp_lift, Category.comp_id]`.
+
+Establish `e1 : pull (lift (Out.mulA A k) (Out.mulA A k)).left (cls P hP) = DiagPairing.pc hP (Out.mulA A k) (Out.mulA A k)` using `rfl`. Establish `e2 : pull (lift (𝟙 A) (𝟙 A)).left (cls P hP) = DiagPairing.pc hP (𝟙 A) (𝟙 A)` using `rfl`. Rewrite using `[e1, e2, Out.mulA, DiagPairing.pc_pow_left hP hB, DiagPairing.pc_pow_right hP hB', smul_smul, sq]`.
+-/
 theorem lbIso_mulA_diag (hA : IsAbelianScheme A) {P : LB (G2 A).left} (hP : P.IsLB)
     (hamp : Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left))
     (h₁ : ∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen)
@@ -59,6 +70,19 @@ end GlobalTheory.HeckeWeilValue
 
 open GlobalTheory.HeckeWeilValue in
 
+/- English proof (translation)
+Introduce `p _ D R _ b g c k M hc hk hEF _ hck S s o κ _ _ x β _ I n hn hnp u v e he`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hL : (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB` using `pull_isLB o.isLB _`. Establish `hk0 : 0 < k` using `levelPos_of_coprime hk`. Establish `hc0 : 0 < c` using `levelPos_of_coprime hc`.
+
+Establish `hmc : k ^ 2 / c * c = k ^ 2` using `Nat.div_mul_cancel hck`. Establish `hm0 : 0 < k ^ 2 / c` using `Nat.div_pos (Nat.le_of_dvd (by positivity) hck) hc0`. Establish `hmp : (k ^ 2 / c).Coprime p` using `Nat.Coprime.coprime_dvd_left (Dvd.intro c hmc) (Nat.Coprime.pow_left 2 hk)`. Use `set m := k ^ 2 / c with hm`. Establish `hN : 0 < n * (m * k ^ 2)` using `by positivity`.
+
+Establish `hNp : (n * (m * k ^ 2)).Coprime p` using `Nat.Coprime.mul hnp (Nat.Coprime.mul hmp (Nat.Coprime.pow_left 2 hk))`. Establish `eN : n * (m * k ^ 2) = n * k * (m * k)` using `by ring`. Establish `hev : ∀ w : D.La, I.ev (n * k) (g w) = I.ev (n * (m * k ^ 2)) (m • g w) ≫ Out.mulA o.A k` using `fun w => by`. Rewrite using `[Out.mulA, MonObj.comp_pow, Category.comp_id, ← TateIsoO.ev_nsmul, smul_smul, mul_comm k m, TateIsoO.ev_nsmul, eN, I.tower (n * k) (m * k) (by positivity) (by positivity) (by rw [← eN]; exact hNp)]`. Use `haveI := isMonHom_mulA (A := o.A) k`.
+
+Establish `hw` using `lbIso_mulA_diag o.ab o.isLB o.ample o.rig₁ o.rig₂ k`. Rewrite `he` using `[hev u, hev v]`. Establish `h1` using `GlobalTheory.WeilIsogeny.weilIs_pull_hom hG o.ab hL hL (Out.mulA o.A k) hw he`. Establish `h2` using `I.isom (n * (m * k ^ 2)) hN hNp (m • g u) (m • g v)`. Establish `eZ : ((n * m : ℕ) : ℤ) * ((k ^ 2 : ℕ) : ℤ) = ((n * (m * k ^ 2) : ℕ) : ℤ)` using `by push_cast; ring`.
+
+Rewrite `h1` using `[eZ]`. Rewrite using `[GlobalTheory.CommutatorPairing.weilIs_unique hG o.ab hL h1 h2]`. Use `congr 1`. Establish `eF : D.EF (m • g u) (m • g v) = ((m * k ^ 2 : ℕ) : ℤ) * D.EF u v`. Simplify using `only [map_nsmul, LinearMap.smul_apply, hEF, nsmul_eq_mul]`.
+
+Rewrite using `[← hmc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eF, show (2 : ℤ) * (((m * k ^ 2 : ℕ) : ℤ) * D.EF u v) = ((m * k ^ 2 : ℕ) : ℤ) * (2 * D.EF u v) by ring, zpow_mul, zpow_natCast, I.ζ_pow n (m * k ^ 2) hn (by positivity) hNp]`.
+-/
 theorem GlobalTheory.UPel.HT.Hecke.weil_value_translate : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : Base D R) (g : D.La →ₗ[D.O] D.La) (c k M : ℕ), c.Coprime p → k.Coprime p → (∀ x y, D.EF (g x) (g y) = c * D.EF x y) → (∀ x, ∃ y, g y = k • x) → c ∣ k ^ 2 → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b M s) (κ : Type) [Field κ] [IsAlgClosed κ] (x : Sp κ ⟶ S) (β : R →+* κ), x ≫ s = spMap β → ∀ (I : TateIsoO D κ (Over.mk x ⟶ o.A) (fun c g => g ≫ o.act.act c) (fun n g g' z => Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) n g g' (unitOn z))) (n : ℕ), 0 < n → n.Coprime p → ∀ (u v : D.La) (e : (Γ((Over.mk x).left, ⊤))ˣ), Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) ((n * (k ^ 2 / c) : ℕ) : ℤ) (I.ev (n * k) (g u)) (I.ev (n * k) (g v)) e → e = unitOn (I.ζ n ^ (2 * D.EF u v)) := by
   intro p _ D R _ b g c k M hc hk hEF _ hck S s o κ _ _ x β _ I n hn hnp u v e he
   have hG : Out.GlobalFnsSt := GlobalTheory.globalFns_holds

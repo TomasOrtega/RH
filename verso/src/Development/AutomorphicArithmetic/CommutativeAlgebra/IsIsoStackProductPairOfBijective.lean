@@ -25,24 +25,42 @@ private noncomputable def invD (hd : BD ρ σ A) (p : b.D.obj A × c.D.obj A) : 
 private noncomputable def invG (hg : BG ρ σ A) (p : b.G.obj A × c.G.obj A) : a.G.obj A :=
   (Equiv.ofBijective _ hg).symm p
 
+/- English proof (translation)
+Conclude with `congrArg Prod.fst (Equiv.ofBijective_apply_symm_apply _ hd p)`.
+-/
 private theorem invD_fst (hd : BD ρ σ A) (p : b.D.obj A × c.D.obj A) : ρ.d.app A (invD hd p) = p.1 := by
   exact congrArg Prod.fst (Equiv.ofBijective_apply_symm_apply _ hd p)
 
+/- English proof (translation)
+Conclude with `congrArg Prod.snd (Equiv.ofBijective_apply_symm_apply _ hd p)`.
+-/
 private theorem invD_snd (hd : BD ρ σ A) (p : b.D.obj A × c.D.obj A) : σ.d.app A (invD hd p) = p.2 := by
   exact congrArg Prod.snd (Equiv.ofBijective_apply_symm_apply _ hd p)
 
+/- English proof (translation)
+Conclude with `congrArg Prod.fst (Equiv.ofBijective_apply_symm_apply _ hg p)`.
+-/
 private theorem invG_fst (hg : BG ρ σ A) (p : b.G.obj A × c.G.obj A) : ρ.g.app A (invG hg p) = p.1 := by
   exact congrArg Prod.fst (Equiv.ofBijective_apply_symm_apply _ hg p)
 
+/- English proof (translation)
+Conclude with `congrArg Prod.snd (Equiv.ofBijective_apply_symm_apply _ hg p)`.
+-/
 private theorem invG_snd (hg : BG ρ σ A) (p : b.G.obj A × c.G.obj A) : σ.g.app A (invG hg p) = p.2 := by
   exact congrArg Prod.snd (Equiv.ofBijective_apply_symm_apply _ hg p)
 
+/- English proof (translation)
+Apply `hd.1` to reduce the goal to its premises. Use `(Equiv.ofBijective_apply_symm_apply _ hd p).trans ?_` and prove the remaining obligations. Conclude with `Prod.ext h1.symm h2.symm`.
+-/
 private theorem invD_eq (hd : BD ρ σ A) {x : a.D.obj A} {p : b.D.obj A × c.D.obj A}
     (h1 : ρ.d.app A x = p.1) (h2 : σ.d.app A x = p.2) : invD hd p = x := by
   apply hd.1
   refine (Equiv.ofBijective_apply_symm_apply _ hd p).trans ?_
   exact Prod.ext h1.symm h2.symm
 
+/- English proof (translation)
+Apply `hg.1` to reduce the goal to its premises. Use `(Equiv.ofBijective_apply_symm_apply _ hg p).trans ?_` and prove the remaining obligations. Conclude with `Prod.ext h1.symm h2.symm`.
+-/
 private theorem invG_eq (hg : BG ρ σ A) {x : a.G.obj A} {p : b.G.obj A × c.G.obj A}
     (h1 : ρ.g.app A x = p.1) (h2 : σ.g.app A x = p.2) : invG hg p = x := by
   apply hg.1
@@ -83,6 +101,11 @@ private noncomputable def lift (hd : BD ρ σ A) (hg : BG ρ σ A)
       rw [invG_snd, invG_snd]
       rfl
 
+/- English proof (translation)
+Use `Functor.hext (fun j => ?_) (fun i j f => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(⟨ρ.d.app A (invD hd ((y.obj j).pt, (z.obj j).pt))⟩ : Ob b A) = y.obj j`. Rewrite using `[invD_fst]`. Use `Ob.hom_heq ?_ ?_ _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(⟨ρ.d.app A (invD hd ((y.obj i).pt, (z.obj i).pt))⟩ : Ob b A) = y.obj i`.
+
+Rewrite using `[invD_fst]`. Express the relevant statement in the definitionally equal form `(⟨ρ.d.app A (invD hd ((y.obj j).pt, (z.obj j).pt))⟩ : Ob b A) = y.obj j`. Rewrite using `[invD_fst]`. Express the relevant statement in the definitionally equal form `ρ.g.app A (invG hg ((y.map f).1, (z.map f).1)) = (y.map f).1`. Rewrite using `[invG_fst]`.
+-/
 private theorem lift_fst (hd : BD ρ σ A) (hg : BG ρ σ A)
     {J : Type} [Category.{0} J] (y : J ⥤ Ob b A) (z : J ⥤ Ob c A) :
     lift hd hg y z ⋙ ρ.fn A = y := by
@@ -97,6 +120,11 @@ private theorem lift_fst (hd : BD ρ σ A) (hg : BG ρ σ A)
     · change ρ.g.app A (invG hg ((y.map f).1, (z.map f).1)) = (y.map f).1
       rw [invG_fst]
 
+/- English proof (translation)
+Use `Functor.hext (fun j => ?_) (fun i j f => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(⟨σ.d.app A (invD hd ((y.obj j).pt, (z.obj j).pt))⟩ : Ob c A) = z.obj j`. Rewrite using `[invD_snd]`. Use `Ob.hom_heq ?_ ?_ _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(⟨σ.d.app A (invD hd ((y.obj i).pt, (z.obj i).pt))⟩ : Ob c A) = z.obj i`.
+
+Rewrite using `[invD_snd]`. Express the relevant statement in the definitionally equal form `(⟨σ.d.app A (invD hd ((y.obj j).pt, (z.obj j).pt))⟩ : Ob c A) = z.obj j`. Rewrite using `[invD_snd]`. Express the relevant statement in the definitionally equal form `σ.g.app A (invG hg ((y.map f).1, (z.map f).1)) = (z.map f).1`. Rewrite using `[invG_snd]`.
+-/
 private theorem lift_snd (hd : BD ρ σ A) (hg : BG ρ σ A)
     {J : Type} [Category.{0} J] (y : J ⥤ Ob b A) (z : J ⥤ Ob c A) :
     lift hd hg y z ⋙ σ.fn A = z := by
@@ -111,6 +139,11 @@ private theorem lift_snd (hd : BD ρ σ A) (hg : BG ρ σ A)
     · change σ.g.app A (invG hg ((y.map f).1, (z.map f).1)) = (z.map f).1
       rw [invG_snd]
 
+/- English proof (translation)
+Use `Functor.hext (fun j => ?_) (fun i j f => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(⟨invD hd (ρ.d.app A (w.obj j).pt, σ.d.app A (w.obj j).pt)⟩ : Ob a A) = w.obj j`. Rewrite using `[invD_eq hd rfl rfl]`. Use `Ob.hom_heq ?_ ?_ _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(⟨invD hd (ρ.d.app A (w.obj i).pt, σ.d.app A (w.obj i).pt)⟩ : Ob a A) = w.obj i`.
+
+Rewrite using `[invD_eq hd rfl rfl]`. Express the relevant statement in the definitionally equal form `(⟨invD hd (ρ.d.app A (w.obj j).pt, σ.d.app A (w.obj j).pt)⟩ : Ob a A) = w.obj j`. Rewrite using `[invD_eq hd rfl rfl]`. Express the relevant statement in the definitionally equal form `invG hg (ρ.g.app A (w.map f).1, σ.g.app A (w.map f).1) = (w.map f).1`. Conclude with `invG_eq hg rfl rfl`.
+-/
 private theorem lift_comp (hd : BD ρ σ A) (hg : BG ρ σ A)
     {J : Type} [Category.{0} J] (w : J ⥤ Ob a A) :
     lift hd hg (w ⋙ ρ.fn A) (w ⋙ σ.fn A) = w := by
@@ -125,6 +158,9 @@ private theorem lift_comp (hd : BD ρ σ A) (hg : BG ρ σ A)
     · change invG hg (ρ.g.app A (w.map f).1, σ.g.app A (w.map f).1) = (w.map f).1
       exact invG_eq hg rfl rfl
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem comp_inj (hd : BD ρ σ A) (hg : BG ρ σ A)
     {J : Type} [Category.{0} J] {w w' : J ⥤ Ob a A}
     (h1 : w ⋙ ρ.fn A = w' ⋙ ρ.fn A) (h2 : w ⋙ σ.fn A = w' ⋙ σ.fn A) : w = w' := by
@@ -135,6 +171,11 @@ private theorem comp_inj (hd : BD ρ σ A) (hg : BG ρ σ A)
 end UpperTheory.InverseDerivation
 
 open UpperTheory.InverseDerivation in
+/- English proof (translation)
+Introduce `E a b c ρ σ hd hg`. Use `isIso_of_bijective_on_simplices _ (fun k T => ?_)` and prove the remaining obligations. Set `A : CommRingCat` to `Scheme.Γ.obj (op T)`. Express the relevant statement in the definitionally equal form `Function.Bijective (fun p : (E.obj (op (SimplexCategory.mk k))).obj (op T) × (Fin (k+1) ⥤ Ob a A) => (((p.1, p.2 ⋙ ρ.fn A), p.2 ⋙ σ.fn A) : ((E.obj (op (SimplexCategory.mk k))).obj (op T) × (Fin (k+1) ⥤ Ob b A)) × (Fin (k+1) ⥤ Ob c A)))`. Use `⟨fun p q h => ?_, fun q => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Prod.mk.injEq] at h`. Take `⟨⟨h1, h2⟩, h3⟩` from `h`. Conclude with `Prod.ext h1 (comp_inj (hd A) (hg A) h2 h3)`. Use `⟨(q.1.1, lift (hd A) (hg A) q.1.2 q.2), ?_⟩` and prove the remaining obligations. Simplify using `only [lift_fst, lift_snd]`.
+-/
 theorem UpperTheory.isIso_stackProductPair_of_bijective :
     ∀ (E : Spc) {a b c : Act} (ρ : Act.Hom a b) (σ : Act.Hom a c),
         (∀ A, Function.Bijective (fun x : a.D.obj A => ((ρ.d.app A x, σ.d.app A x) : b.D.obj A × c.D.obj A))) →
